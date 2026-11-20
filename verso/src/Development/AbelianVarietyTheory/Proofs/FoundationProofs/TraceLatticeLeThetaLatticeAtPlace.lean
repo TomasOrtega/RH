@@ -54,7 +54,7 @@ variable {h fw ι ℓ U ψ ph v p} {hinj : Function.Injective D.what₂.OtoLL} {
     {y : (Fin (O.nX v i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (srcDim A ι (R.mu v) U ψ) → D.what₂.LL)}
 
 /- English proof (translation)
-The claim follows from `Formalism.DivisionValues.GluingInclusion.le_of_forall_localized_le_of_not_isField (RingOfIntegers.not_isField _) _ _ fun lam => (em (Formalism.EigenvalueLevelCeiling.plc lam = p)).elim (h2 lam) (h1 lam)`.
+A detailed English derivation is pending.
 -/
 theorem traceLat_le (h1 : CompareOffOwn h fw ι ℓ U ψ ph v p) (h2 : CompareAtOwn h fw ι ℓ U ψ ph v p) :
     traceLat h fw ι ℓ U ψ ≤ thetaBase R ι U ψ ph v p :=
@@ -68,7 +68,7 @@ def comapEquiv {P G : Type} [Group P] [Group G] {inc : P →* G} (hi : Function.
     exact ⟨⟨g, show inc g ∈ U from hg ▸ u.2⟩, Subtype.ext hg⟩⟩
 
 /- English proof (translation)
-Take `⟨Λ, N, x₀, P, x, h1, h2, h3, h4, h5, h6, h7⟩` from `hf`. Conclude with `⟨Λ, N, x₀, P, fun u => x (e u), h1, h2, h3, h4, h5, h6, fun u => he u ▸ h7 (e u)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isOrbitFamily_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l}
@@ -86,15 +86,13 @@ abbrev coordEquiv (h : LawsP T.toTop) (fw : FWTie T.J R κ v₀) (ι : Fin D.R.m
   LinearEquiv.ofBijective (toForms h fw ι z) (toForms_bijective h fw ι z)
 
 /- English proof (translation)
-Establish `hm : (O.Th0 v i).map ((toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) = traceLat h fw ι ℓ U ψ`. Rewrite using `[t.Th0_eq, t.U_eq]`. Unfold `thetaEig traceSpan traceLat`. Rewrite using `[Submodule.map_span, Set.image_image]`. Establish `key : ∀ f : U → (recB h.toLawsCore).Cusp ((ι : ℕ) + 1) (κ ι), (toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL) (∑ᶠ u : U.comap inc, O.ψ (u : P) • z.symm (1 ⊗ₜ[(recB h.toLawsCore).KO] f (comapEquiv hi hU u))) = ∑ᶠ u : U, ((ψ u : D.what₂.LLˣ) : D.what₂.LL) • cuspTo h fw ι (f u)` using `fun f => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_finsum _ (Set.toFinite _), ← finsum_comp_equiv (comapEquiv hi hU)]`. Use `finsum_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.restrictScalars_apply, toForms_tmul, one_smul, ← algebraMap_smul D.what₂.LL]`. Conclude with `congrArg (· • _) (t.ψ_eq u u.2)`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Use `⟨fun u => f ((comapEquiv hi hU).symm u), isOrbitFamily_comp hf _ (fun u => ?_), ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun a : U => ℓ a) ((comapEquiv hi hU).apply_symm_apply u).symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(key _).symm.trans ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨fun u => f (comapEquiv hi hU u), isOrbitFamily_comp hf _ fun u => rfl, key f⟩`. Rewrite using `[← hm]`.
-
-Conclude with `(Submodule.comap_map_eq_of_injective (f := (toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) (toForms_bijective h fw ι z).1 _).symm`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Th0_eq_comap (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (hi : Function.Injective inc)
     (hU : U ≤ inc.range) :
@@ -126,15 +124,15 @@ theorem Th0_eq_comap (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U
     (toForms_bijective h fw ι z).1 _).symm
 
 /- English proof (translation)
-Establish `hb` using `toForms_bijective h fw ι z`. Use extensionality with `x`. Use `and_congr ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ Formalism.EigenvalueLevelCeiling.eig _ _ _ ↔ ∀ u : U, _`. Unfold `Formalism.EigenvalueLevelCeiling.eig`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite using `[t.U_eq]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hx u`. Take `⟨g, hg⟩` from `hU u.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hg' : inc g ∈ U` using `hg ▸ u.2`. Take `rfl : u = ⟨inc g, hg'⟩` from `Subtype.ext hg.symm`. Rewrite using `[hχ, one_mul, ← t.rho_eq_of_actionPin ha, hx ⟨g, hg'⟩, map_smul, t.ψ_eq g hg']`. Introduce `hx u`. Apply `hb.1` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[t.rho_eq_of_actionPin ha, hx ⟨inc u, u.2⟩, hχ, one_mul, map_smul, t.ψ_eq u u.2]`. Express the relevant statement in the definitionally equal form `x ∈ O.V₀ i ↔ _`. Rewrite using `[t.V₀_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, (t.e_eOp a).symm⟩`. Introduce and unpack `⟨a, ha⟩`. Take `⟨b, rfl⟩` from `hb.2 a`. Conclude with `⟨b, hb.1 ((t.e_eOp b).trans ha)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Zg_eq_comap (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (hU : U ≤ inc.range) (hχ : ∀ u : U, (R.FW ι).chi u = 1) :
@@ -166,7 +164,7 @@ theorem Zg_eq_comap (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U 
       exact ⟨b, hb.1 ((t.e_eOp b).trans ha)⟩
 
 /- English proof (translation)
-Unfold `OnObj.eJ`. Rewrite using `[Zg_eq_comap t ha hU hχ, t.ThJ_eq]`. Conclude with `isLatIn_comap (coordEquiv h fw ι z) t.e_eOp ⟨(thetaBase_fg hd hM).map _, hR⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatIn_eJ (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (hU : U ≤ inc.range) (hχ : ∀ u : U, (R.FW ι).chi u = 1) (hd : FormsDetermined R ι)
@@ -176,9 +174,9 @@ theorem isLatIn_eJ (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U �
   exact isLatIn_comap (coordEquiv h fw ι z) t.e_eOp ⟨(thetaBase_fg hd hM).map _, hR⟩
 
 /- English proof (translation)
-Establish `hb` using `toForms_bijective h fw ι z`. Establish `e` using `Th0_eq_comap t hi hU`. Establish `hfg' : (traceLat h fw ι ℓ U ψ).FG`. Use `hfg.map ((toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL))` as an intermediate fact. Rewrite `this` using `[e, Submodule.map_comap_eq_of_surjective (f := (toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) hb.2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Zg_eq_comap t ha hU hχ, e]`. Conclude with `isLatIn_comap (coordEquiv h fw ι z) t.e_eOp ⟨hfg'.map _, (span_map_congr _ hC).trans hR⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_lattice_full_rank (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (ha : ActionPin h fw ι ℓ)
     (hi : Function.Injective inc) (hU : U ≤ inc.range) (hχ : ∀ u : U, (R.FW ι).chi u = 1)
@@ -193,9 +191,7 @@ theorem theta_lattice_full_rank (t : OnTie h fw hinj EX p ι wL wF nT O v i z ac
   exact isLatIn_comap (coordEquiv h fw ι z) t.e_eOp ⟨hfg'.map _, (span_map_congr _ hC).trans hR⟩
 
 /- English proof (translation)
-Rewrite using `[Th0_eq_comap t hi hU, t.ThJ_eq]`. Use `localization_comap_le v _ (hA v fun e => ?_)` and prove the remaining obligations. Establish `h1` using `hp.1`. Use `split_ifs at h1 with h2`. Conclude with `D.host.pde_ne (h2.symm.trans (e.trans h1))`.
-
-Conclude with `h2 (e.trans h1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_lattice_le_theta_lattice_at_place (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (hi : Function.Injective inc)
     (hU : U ≤ inc.range) {n : ℕ} (hp : RunPin R ι n v p) (hA : CompareOffOwn h fw ι ℓ U ψ ph v p) :
@@ -208,9 +204,9 @@ theorem trace_lattice_le_theta_lattice_at_place (t : OnTie h fw hinj EX p ι wL 
   · exact h2 (e.trans h1)
 
 /- English proof (translation)
-Establish `hle : O.Th0 v i ≤ O.ThJ v i`. Rewrite using `[Th0_eq_comap t hi hU, t.ThJ_eq]`. Conclude with `Submodule.comap_mono (traceLat_le hA hO)`. Use `⟨hle, Submodule.FG.of_le ?_ hle⟩` and prove the remaining obligations. Establish `hb` using `toForms_bijective h fw ι z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.fg_of_fg_map_injective ((toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) hb.1 ?_` and prove the remaining obligations. Rewrite using `[t.ThJ_eq, Submodule.map_comap_eq_of_surjective (f := (toForms h fw ι z).restrictScalars (𝓞 D.what₂.LL)) hb.2]`. Conclude with `thetaBase_fg hd hM`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Th0_le_ThJ (t : OnTie h fw hinj EX p ι wL wF nT O v i z act inc ℓ U ψ ph y) (hi : Function.Injective inc)
     (hU : U ≤ inc.range) (hd : FormsDetermined R ι) (hM : SpanOverClasses R ι U ψ ph v p)
@@ -239,16 +235,16 @@ def RankAtPlaces (O : OnObj S P c) : Prop :=
 def fillJ (O : OnObj S P c) : OnObj S P c := { O with ThJ := fun v j => O.ThJ v j ⊔ O.Th0 v j }
 
 /- English proof (translation)
-Introduce `w hw` and use `⟨fun j => ⟨((h w hw).1 j).1, ((h w hw).1 j).2.1, Formalism.HermitianLatticesTheory.locBasic_locS_mono _ ((h w hw).1 j).2.2⟩, fun j => ⟨((h w hw).2 j).1, ((h w hw).2 j).2.1, Formalism.HermitianLatticesTheory.locBasic_locS_mono _ ((h w hw).2 j).2.2⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rankAtPlaces_of {O : OnObj S P c} (h : LeafRankJ O) : RankAtPlaces O := fun w hw =>
   ⟨fun j => ⟨((h w hw).1 j).1, ((h w hw).1 j).2.1, Formalism.HermitianLatticesTheory.locBasic_locS_mono _ ((h w hw).1 j).2.2⟩,
     fun j => ⟨((h w hw).2 j).1, ((h w hw).2 j).2.1, Formalism.HermitianLatticesTheory.locBasic_locS_mono _ ((h w hw).2 j).2.2⟩⟩
 
 /- English proof (translation)
-Establish `key : ∀ v j, Formalism.EigenvalueLevelCeiling.IsLatIn (O.Zg j) ((O.Th0 v j).map ((O.e j).restrictScalars (𝓞 K))) → Formalism.EigenvalueLevelCeiling.IsLatIn (O.Zg j) (O.eJ v j) → Formalism.EigenvalueLevelCeiling.IsLatIn (O.Zg j) ((fillJ O).eJ v j)` using `fun v j a b => by`. Express the relevant statement in the definitionally equal form `Formalism.EigenvalueLevelCeiling.IsLatIn _ ((O.ThJ v j ⊔ O.Th0 v j).map ((O.e j).restrictScalars (𝓞 K)))`. Rewrite using `[Submodule.map_sup]`. Use `⟨b.1.sup a.1, le_antisymm (Submodule.span_le.2 ?_) ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≤ (O.Zg j).restrictScalars (𝓞 K)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `sup_le (fun x hx => b.2.le (Submodule.subset_span hx)) fun x hx => a.2.le (Submodule.subset_span hx)`. Conclude with `b.2.ge.trans (Submodule.span_mono (show O.eJ v j ≤ _ from le_sup_left))`. Conclude with `fun w hw => ⟨fun j => ⟨((h w hw).1 j).1, key _ j ((h w hw).1 j).1 ((h w hw).1 j).2.1, le_sup_right⟩, fun j => ⟨((h w hw).2 j).1, key _ j ((h w hw).2 j).1 ((h w hw).2 j).2.1, le_sup_right⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem leafRankJ_fillJ {O : OnObj S P c} (h : RankAtPlaces O) : LeafRankJ (fillJ O) := by
   have key : ∀ v j, Formalism.EigenvalueLevelCeiling.IsLatIn (O.Zg j) ((O.Th0 v j).map ((O.e j).restrictScalars (𝓞 K))) →
@@ -264,9 +260,9 @@ theorem leafRankJ_fillJ {O : OnObj S P c} (h : RankAtPlaces O) : LeafRankJ (fill
       fun j => ⟨((h w hw).2 j).1, key _ j ((h w hw).2 j).1 ((h w hw).2 j).2.1, le_sup_right⟩⟩
 
 /- English proof (translation)
-Establish `h1 : O.ThJ v j ⊔ O.Th0 v j ≤ localization₂ v.asIdeal (O.ThJ v j)` using `sup_le (Formalism.HermitianLatticesTheory.locBasic_le_locS _ _) ((Formalism.HermitianLatticesTheory.locBasic_le_locS _ _).trans h)`. Establish `h2 : (fillJ O).eJ v j ≤ localization₂ v.asIdeal (O.eJ v j)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨s, hs, hsx⟩` from `h1 hx`. Conclude with `⟨s, hs, _, hsx, map_smul ((O.e j).restrictScalars (𝓞 K)) s x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h3 : localization₂ v.asIdeal ((fillJ O).eJ v j) = localization₂ v.asIdeal (O.eJ v j)` using `le_antisymm ((Formalism.HermitianLatticesTheory.locBasic_locS_mono _ h2).trans (Formalism.HermitianLatticesTheory.locBasic_locS_idem _ _).le) (Formalism.HermitianLatticesTheory.locBasic_locS_mono _ (Submodule.map_mono le_sup_left))`. Conclude with `(Formalism.EigenvalueLevelCeiling.lix_locP v M _).trans ((congrArg _ h3).trans (Formalism.EigenvalueLevelCeiling.lix_locP v M _).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lix_fillJ {O : OnObj S P c} {v : HeightOneSpectrum (𝓞 K)} {j : Bs.J}
     (h : localization₂ v.asIdeal (O.Th0 v j) ≤ localization₂ v.asIdeal (O.ThJ v j)) (M : Submodule (𝓞 K) (Fin (O.nZ j) → K)) :
@@ -283,7 +279,7 @@ theorem lix_fillJ {O : OnObj S P c} {v : HeightOneSpectrum (𝓞 K)} {j : Bs.J}
   exact (Formalism.EigenvalueLevelCeiling.lix_locP v M _).trans ((congrArg _ h3).trans (Formalism.EigenvalueLevelCeiling.lix_locP v M _).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w hw => ⟨fun j => ⟨((h1.1 w hw).1 j).1, ((h1.1 w hw).1 j).2.trans_eq (congrArg (fun a : ℤ => (a : ℝ) + _) (lix_fillJ ((h w hw).1 j).2.2 _).symm)⟩, fun j => ⟨((h1.1 w hw).2 j).1, ((h1.1 w hw).2 j).2.trans_eq (congrArg (fun a : ℤ => (a : ℝ) + _) (lix_fillJ ((h w hw).2 j).2.2 _ …`.
+Supply the required witnesses or components.
 -/
 theorem leafTW1_fillJ {O : OnObj S P c} (h : RankAtPlaces O) (h1 : LeafTW1 O) : LeafTW1 (fillJ O) :=
   ⟨fun w hw =>
@@ -293,7 +289,7 @@ theorem leafTW1_fillJ {O : OnObj S P c} (h : RankAtPlaces O) (h1 : LeafTW1 O) : 
         (congrArg (fun a : ℤ => (a : ℝ) + _) (lix_fillJ ((h w hw).2 j).2.2 _).symm)⟩⟩, h1.2⟩
 
 /- English proof (translation)
-The claim follows from `on_core N (fillJ O) CE hRk hMk hSup hProj hC hSp hS hT0 hD (leafRankJ_fillJ hJ) hI h2 (leafTW1_fillJ hJ h1) hSh hIU hBS hUn hG hR h2p hL hPg hSz hX hBad hJS hJE hCE tE1`.
+A detailed English derivation is pending.
 -/
 theorem on_core_atPlaces (N : IndefNum Bs) (O : OnObj S P c) (CE : ℝ) (hRk : RankRows S)
     (hMk : LeafMackey O) (hSup : LeafSup O) (hProj : LeafProj O) (hC : TieCoord O)
@@ -327,9 +323,9 @@ variable {T : HeightOneSpectrum (𝓞 D.what₂.LL) → Full D} [inst : ∀ v, A
   {y : ∀ v i, (Fin (O.nX v i) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (srcDim A (ι i) ((R v).mu v) U ψ) → D.what₂.LL)}
 
 /- English proof (translation)
-Establish `hn : ∀ v (i : Fin D.R.m), (κ i).n = D.R.nV` using `fun v i => ((fw v).kap i (D.eTau.symm ⟨1, Subgroup.one_mem _⟩)).2.2`. Introduce `w hw`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `t` using `(t w hw).1 i`. Conclude with `⟨theta_lattice_full_rank t ((ha w hw).1 i) hi hU ((hχ w hw).1 i) ((hR w hw).1 i) ((hC w hw).1 i) (((hK w hw).1 i).2.1.of_le (t.Th0_le_ThK (hn w _))), isLatIn_eJ t ((ha w hw).1 i) hU ((hχ w hw).1 i) ((hd w hw).1 i) ((hM w hw).1 i) ((hR w hw).1 i), trace_lattice_le_theta_lattice_at …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `t` using `(t w hw).2 i`. Conclude with `⟨theta_lattice_full_rank t ((ha w hw).2 i) hi hU ((hχ w hw).2 i) ((hR w hw).2 i) ((hC w hw).2 i) (((hK w hw).2 i).2.1.of_le (t.Th0_le_ThK (hn w _))), isLatIn_eJ t ((ha w hw).2 i) hU ((hχ w hw).2 i) ((hd w hw).2 i) ((hM w hw).2 i) ((hR w hw).2 i), trace_lattice_le_theta_lattice_at …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rankAtPlaces_of_tie
     (t : AtPair S fun v => ∀ i, OnTie (h v) (fw v) hinj EX (p v) (ι i) (wL i) (wF i) nT O v i (z v i) (act v i) inc (ℓ v i) U ψ
@@ -361,9 +357,9 @@ theorem rankAtPlaces_of_tie
       trace_lattice_le_theta_lattice_at_place t hi hU ((hp w hw).2 i) ((hA w hw).2 i)⟩
 
 /- English proof (translation)
-Introduce `w hw`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `t` using `(t w hw).1 i`. Establish `k` using `Th0_le_ThJ t hi hU ((hd w hw).1 i) ((hM w hw).1 i) ((hA w hw).1 i) ((hO w hw).1 i)`. Conclude with `⟨theta_lattice_full_rank t ((ha w hw).1 i) hi hU ((hχ w hw).1 i) ((hR w hw).1 i) ((hC w hw).1 i) k.2, isLatIn_eJ t ((ha w hw).1 i) hU ((hχ w hw).1 i) ((hd w hw).1 i) ((hM w hw).1 i) ((hR w hw).1 i), k.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `t` using `(t w hw).2 i`. Establish `k` using `Th0_le_ThJ t hi hU ((hd w hw).2 i) ((hM w hw).2 i) ((hA w hw).2 i) ((hO w hw).2 i)`. Conclude with `⟨theta_lattice_full_rank t ((ha w hw).2 i) hi hU ((hχ w hw).2 i) ((hR w hw).2 i) ((hC w hw).2 i) k.2, isLatIn_eJ t ((ha w hw).2 i) hU ((hχ w hw).2 i) ((hd w hw).2 i) ((hM w hw).2 i) ((hR w hw).2 i), k.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem leafRankJ_of_tie
     (t : AtPair S fun v => ∀ i, OnTie (h v) (fw v) hinj EX (p v) (ι i) (wL i) (wF i) nT O v i (z v i) (act v i) inc (ℓ v i) U ψ

@@ -51,151 +51,151 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Model
 
 /- English proof (translation)
-The claim follows from `BlowUpChart.proof`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpChart.full : BlowUpChart.Statement := BlowUpChart.proof
 
 /- English proof (translation)
-The claim follows from `ChartGlue.proof`.
+A detailed English derivation is pending.
 -/
 theorem ChartGlue.full : ChartGlue.Statement := ChartGlue.proof
 
 /- English proof (translation)
-The claim follows from `FiniteIntegralClosure.proof`.
+A detailed English derivation is pending.
 -/
 theorem FiniteIntegralClosure.full : FiniteIntegralClosure.Statement := FiniteIntegralClosure.proof
 
 /- English proof (translation)
-The claim follows from `GenericGermInjective.proof`.
+A detailed English derivation is pending.
 -/
 theorem GenericGermInjective.full : GenericGermInjective.Statement := GenericGermInjective.proof
 
 /- English proof (translation)
-The claim follows from `GenericSectionsInj.proof`.
+A detailed English derivation is pending.
 -/
 theorem GenericSectionsInj.full : GenericSectionsInj.Statement := GenericSectionsInj.proof
 
 /- English proof (translation)
-The claim follows from `GlueModulesStar.proof`.
+A detailed English derivation is pending.
 -/
 theorem GlueModulesStar.full : GlueModulesStar.Statement := GlueModulesStar.proof
 
 /- English proof (translation)
-The claim follows from `HeightOneIntersection.proof`.
+A detailed English derivation is pending.
 -/
 theorem HeightOneIntersection.full : HeightOneIntersection.Statement := HeightOneIntersection.proof
 
 /- English proof (translation)
-The claim follows from `InvOpenInside.proof`.
+A detailed English derivation is pending.
 -/
 theorem InvOpenInside.full : InvOpenInside.Statement := InvOpenInside.proof
 
 /- English proof (translation)
-The claim follows from `InvOpenInsideRat.proof`.
+A detailed English derivation is pending.
 -/
 theorem InvOpenInsideRat.full : InvOpenInsideRat.Statement := InvOpenInsideRat.proof
 
 /- English proof (translation)
-The claim follows from `MertensUpper.proof`.
+A detailed English derivation is pending.
 -/
 theorem MertensUpper.full : MertensUpper.Statement := MertensUpper.proof
 
 /- English proof (translation)
-The claim follows from `PrimeOpensCover.proof`.
+A detailed English derivation is pending.
 -/
 theorem PrimeOpensCover.full : PrimeOpensCover.Statement := PrimeOpensCover.proof
 
 /- English proof (translation)
-The claim follows from `RatLocalAffine.proof`.
+A detailed English derivation is pending.
 -/
 theorem RatLocalAffine.full : RatLocalAffine.Statement := RatLocalAffine.proof
 
 /- English proof (translation)
-The claim follows from `SectionNef.proof`.
+A detailed English derivation is pending.
 -/
 theorem SectionNef.full : SectionNef.Statement := SectionNef.proof
 
 /- English proof (translation)
-The claim follows from `SectionNefGenerated.proof`.
+A detailed English derivation is pending.
 -/
 theorem SectionNefGenerated.full : SectionNefGenerated.Statement := SectionNefGenerated.proof
 
 /- English proof (translation)
-The claim follows from `TorsionFreeQuotientLength.proof`.
+A detailed English derivation is pending.
 -/
 theorem TorsionFreeQuotientLength.full : TorsionFreeQuotientLength.Statement := TorsionFreeQuotientLength.proof
 
 /- English proof (translation)
-The claim follows from `VectorBundleLocal.proof`.
+A detailed English derivation is pending.
 -/
 theorem VectorBundleLocal.full : VectorBundleLocal.Statement := VectorBundleLocal.proof
 
 /- English proof (translation)
-The claim follows from `VectorBundleRestrict.proof`.
+A detailed English derivation is pending.
 -/
 theorem VectorBundleRestrict.full : VectorBundleRestrict.Statement := VectorBundleRestrict.proof
 
 /- English proof (translation)
-The claim follows from `PullbackFaithful.proof`.
+A detailed English derivation is pending.
 -/
 theorem PullbackFaithful.full : PullbackFaithful.Statement.{0} := PullbackFaithful.proof
 
 /- English proof (translation)
-The claim follows from `KrullAkizukiQuotientLength.proof TorsionFreeQuotientLength.full`.
+A detailed English derivation is pending.
 -/
 theorem KrullAkizukiQuotientLength.full : KrullAkizukiQuotientLength.Statement :=
   KrullAkizukiQuotientLength.proof TorsionFreeQuotientLength.full
 
 /- English proof (translation)
-The claim follows from `KrullAkizuki.proof KrullAkizukiQuotientLength.full`.
+A detailed English derivation is pending.
 -/
 theorem KrullAkizuki.full : KrullAkizuki.Statement :=
   KrullAkizuki.proof KrullAkizukiQuotientLength.full
 
 /- English proof (translation)
-The claim follows from `DominatingDVR.proof KrullAkizuki.full BlowUpChart.full`.
+A detailed English derivation is pending.
 -/
 theorem DominatingDVR.full : DominatingDVR.Statement :=
   DominatingDVR.proof KrullAkizuki.full BlowUpChart.full
 
 /- English proof (translation)
-The claim follows from `HeightOneSections.proof GenericGermInjective.full`.
+A detailed English derivation is pending.
 -/
 theorem HeightOneSections.full : HeightOneSections.Statement :=
   HeightOneSections.proof GenericGermInjective.full
 
 /- English proof (translation)
-The claim follows from `BundlesAgree.proof GenericGermInjective.full HeightOneSections.full`.
+A detailed English derivation is pending.
 -/
 theorem BundlesAgree.full : BundlesAgree.Statement :=
   BundlesAgree.proof GenericGermInjective.full HeightOneSections.full
 
 /- English proof (translation)
-The claim follows from `ChartBundlesAgree.proof HeightOneIntersection.full`.
+A detailed English derivation is pending.
 -/
 theorem ChartBundlesAgree.full : ChartBundlesAgree.Statement :=
   ChartBundlesAgree.proof HeightOneIntersection.full
 
 /- English proof (translation)
-The claim follows from `LatticesAgree.proof HeightOneIntersection.full`.
+A detailed English derivation is pending.
 -/
 theorem LatticesAgree.full : LatticesAgree.Statement :=
   LatticesAgree.proof HeightOneIntersection.full
 
 /- English proof (translation)
-The claim follows from `SumCp.proof MertensUpper.full`.
+A detailed English derivation is pending.
 -/
 theorem SumCp.full : SumCp.Statement :=
   SumCp.proof MertensUpper.full
 
 /- English proof (translation)
-The claim follows from `SpreadHomInj.proof GenericSectionsInj.full PullbackFaithful.full`.
+A detailed English derivation is pending.
 -/
 theorem SpreadHomInj.full : SpreadHomInj.Statement :=
   SpreadHomInj.proof GenericSectionsInj.full PullbackFaithful.full
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model.FiniteIntegralClosure.normalization_of_scheme (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model.FiniteIntegralClosure.scheme_of_alg (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model.FiniteI …`.
+A detailed English derivation is pending.
 -/
 theorem FiniteNormalization.full : FiniteNormalization.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model.FiniteIntegralClosure.normalization_of_scheme
@@ -203,21 +203,21 @@ theorem FiniteNormalization.full : FiniteNormalization.Statement :=
       (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model.FiniteIntegralClosure.alg_iff.mp FiniteIntegralClosure.full))
 
 /- English proof (translation)
-The claim follows from `ClearDenominators.proof hPB RatLocalAffine.full`.
+A detailed English derivation is pending.
 -/
 theorem ClearDenominators.of_open (hPB : PullbackBasis.Statement.{0}) :
     ClearDenominators.Statement :=
   ClearDenominators.proof hPB RatLocalAffine.full
 
 /- English proof (translation)
-The claim follows from `SpreadLocal.proof hFB hBI`.
+A detailed English derivation is pending.
 -/
 theorem SpreadLocal.of_open (hFB : FreeSheafBasis.Statement.{0})
     (hBI : BasisIsoFree.Statement.{0}) : SpreadLocal.Statement :=
   SpreadLocal.proof hFB hBI
 
 /- English proof (translation)
-The claim follows from `SpreadBundleNbhd.proof (SpreadLocal.of_open hFB hBI) hSS`.
+A detailed English derivation is pending.
 -/
 theorem SpreadBundleNbhd.of_open (hFB : FreeSheafBasis.Statement.{0})
     (hBI : BasisIsoFree.Statement.{0}) (hSS : SpreadStep.Statement) :
@@ -225,35 +225,35 @@ theorem SpreadBundleNbhd.of_open (hFB : FreeSheafBasis.Statement.{0})
   SpreadBundleNbhd.proof (SpreadLocal.of_open hFB hBI) hSS
 
 /- English proof (translation)
-The claim follows from `SpreadBundle.proof (SpreadBundleNbhd.of_open hFB hBI hSS) InvOpenInside.full`.
+A detailed English derivation is pending.
 -/
 theorem SpreadBundle.of_open (hFB : FreeSheafBasis.Statement.{0})
     (hBI : BasisIsoFree.Statement.{0}) (hSS : SpreadStep.Statement) : SpreadBundle.Statement :=
   SpreadBundle.proof (SpreadBundleNbhd.of_open hFB hBI hSS) InvOpenInside.full
 
 /- English proof (translation)
-The claim follows from `SpreadHomNbhd.proof hDH hGP hHS`.
+A detailed English derivation is pending.
 -/
 theorem SpreadHomNbhd.of_open (hDH : DescendHom.Statement) (hGP : GenericPullInj.Statement)
     (hHS : SpreadHomSections.Statement) : SpreadHomNbhd.Statement :=
   SpreadHomNbhd.proof hDH hGP hHS
 
 /- English proof (translation)
-The claim follows from `SpreadHom.proof (SpreadHomNbhd.of_open hDH hGP hHS) InvOpenInsideRat.full`.
+A detailed English derivation is pending.
 -/
 theorem SpreadHom.of_open (hDH : DescendHom.Statement) (hGP : GenericPullInj.Statement)
     (hHS : SpreadHomSections.Statement) : SpreadHom.Statement :=
   SpreadHom.proof (SpreadHomNbhd.of_open hDH hGP hHS) InvOpenInsideRat.full
 
 /- English proof (translation)
-The claim follows from `SpreadIso.proof (SpreadHom.of_open hDH hGP hHS) SpreadHomInj.full`.
+A detailed English derivation is pending.
 -/
 theorem SpreadIso.of_open (hDH : DescendHom.Statement) (hGP : GenericPullInj.Statement)
     (hHS : SpreadHomSections.Statement) : SpreadIso.Statement :=
   SpreadIso.proof (SpreadHom.of_open hDH hGP hHS) SpreadHomInj.full
 
 /- English proof (translation)
-The claim follows from `GlueBundles.proof (SpreadBundle.of_open hFB hBI hSS) (SpreadIso.of_open hDH hGP hHS) PrimeOpensCover.full GlueModulesStar.full VectorBundleRestrict.full VectorBundleLocal.full`.
+A detailed English derivation is pending.
 -/
 theorem GlueBundles.of_open (hFB : FreeSheafBasis.Statement.{0})
     (hBI : BasisIsoFree.Statement.{0}) (hSS : SpreadStep.Statement)
@@ -267,70 +267,70 @@ end GroundTheory.Heights₂.Heights.Model
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model
 
 /- English proof (translation)
-The claim follows from `BlowUpChart.equiv.mp GroundTheory.Heights₂.Heights.Model.BlowUpChart.full`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpChart.full : BlowUpChart.Statement :=
   BlowUpChart.equiv.mp GroundTheory.Heights₂.Heights.Model.BlowUpChart.full
 
 /- English proof (translation)
-The claim follows from `BundlesAgree.equiv.mp GroundTheory.Heights₂.Heights.Model.BundlesAgree.full`.
+A detailed English derivation is pending.
 -/
 theorem BundlesAgree.full : BundlesAgree.Statement :=
   BundlesAgree.equiv.mp GroundTheory.Heights₂.Heights.Model.BundlesAgree.full
 
 /- English proof (translation)
-The claim follows from `HeightOneIntersection.equiv.mp GroundTheory.Heights₂.Heights.Model.HeightOneIntersection.full`.
+A detailed English derivation is pending.
 -/
 theorem HeightOneIntersection.full : HeightOneIntersection.Statement :=
   HeightOneIntersection.equiv.mp GroundTheory.Heights₂.Heights.Model.HeightOneIntersection.full
 
 /- English proof (translation)
-The claim follows from `KrullAkizuki.equiv.mp GroundTheory.Heights₂.Heights.Model.KrullAkizuki.full`.
+A detailed English derivation is pending.
 -/
 theorem KrullAkizuki.full : KrullAkizuki.Statement :=
   KrullAkizuki.equiv.mp GroundTheory.Heights₂.Heights.Model.KrullAkizuki.full
 
 /- English proof (translation)
-The claim follows from `LatticesAgree.equiv.mp GroundTheory.Heights₂.Heights.Model.LatticesAgree.full`.
+A detailed English derivation is pending.
 -/
 theorem LatticesAgree.full : LatticesAgree.Statement :=
   LatticesAgree.equiv.mp GroundTheory.Heights₂.Heights.Model.LatticesAgree.full
 
 /- English proof (translation)
-The claim follows from `MertensUpper.equiv.mp GroundTheory.Heights₂.Heights.Model.MertensUpper.full`.
+A detailed English derivation is pending.
 -/
 theorem MertensUpper.full : MertensUpper.Statement :=
   MertensUpper.equiv.mp GroundTheory.Heights₂.Heights.Model.MertensUpper.full
 
 /- English proof (translation)
-The claim follows from `SumCp.equiv.mp GroundTheory.Heights₂.Heights.Model.SumCp.full`.
+A detailed English derivation is pending.
 -/
 theorem SumCp.full : SumCp.Statement :=
   SumCp.equiv.mp GroundTheory.Heights₂.Heights.Model.SumCp.full
 
 /- English proof (translation)
-The claim follows from `SectionNef.equiv.mp ⟨GroundTheory.Heights₂.Heights.Model.SectionNef.full, GroundTheory.Heights₂.Heights.Model.SectionNefGenerated.full⟩`.
+A detailed English derivation is pending.
 -/
 theorem SectionNef.full : SectionNef.Statement :=
   SectionNef.equiv.mp ⟨GroundTheory.Heights₂.Heights.Model.SectionNef.full,
     GroundTheory.Heights₂.Heights.Model.SectionNefGenerated.full⟩
 
 /- English proof (translation)
-The claim follows from `FiniteIntegralClosure.equiv.mp ⟨GroundTheory.Heights₂.Heights.Model.FiniteIntegralClosure.full, GroundTheory.Heights₂.Heights.Model.FiniteNormalization.full⟩`.
+A detailed English derivation is pending.
 -/
 theorem FiniteIntegralClosure.full : FiniteIntegralClosure.Statement :=
   FiniteIntegralClosure.equiv.mp ⟨GroundTheory.Heights₂.Heights.Model.FiniteIntegralClosure.full,
     GroundTheory.Heights₂.Heights.Model.FiniteNormalization.full⟩
 
 /- English proof (translation)
-The claim follows from `DominatingDVR.equiv.mp ⟨GroundTheory.Heights₂.Heights.Model.DominatingDVR.full, hS⟩`.
+A detailed English derivation is pending.
 -/
 theorem DominatingDVR.of_open (hS : GroundTheory.Heights₂.Heights.Model.DominatingDVRScheme.Statement) :
     DominatingDVR.Statement :=
   DominatingDVR.equiv.mp ⟨GroundTheory.Heights₂.Heights.Model.DominatingDVR.full, hS⟩
 
 /- English proof (translation)
-The claim follows from `ClearDenominators.equiv.mp (GroundTheory.Heights₂.Heights.Model.ClearDenominators.of_open hPB)`.
+A detailed English derivation is pending.
 -/
 theorem ClearDenominators.of_open
     (hPB : GroundTheory.Heights₂.Heights.Model.PullbackBasis.Statement.{0}) :
@@ -338,7 +338,7 @@ theorem ClearDenominators.of_open
   ClearDenominators.equiv.mp (GroundTheory.Heights₂.Heights.Model.ClearDenominators.of_open hPB)
 
 /- English proof (translation)
-The claim follows from `SpreadBundle.equiv.mp (GroundTheory.Heights₂.Heights.Model.SpreadBundle.of_open hFB hBI hSS)`.
+A detailed English derivation is pending.
 -/
 theorem SpreadBundle.of_open (hFB : GroundTheory.Heights₂.Heights.Model.FreeSheafBasis.Statement.{0})
     (hBI : GroundTheory.Heights₂.Heights.Model.BasisIsoFree.Statement.{0})
@@ -346,7 +346,7 @@ theorem SpreadBundle.of_open (hFB : GroundTheory.Heights₂.Heights.Model.FreeSh
   SpreadBundle.equiv.mp (GroundTheory.Heights₂.Heights.Model.SpreadBundle.of_open hFB hBI hSS)
 
 /- English proof (translation)
-The claim follows from `SpreadIso.equiv.mp (GroundTheory.Heights₂.Heights.Model.SpreadIso.of_open hDH hGP hHS)`.
+A detailed English derivation is pending.
 -/
 theorem SpreadIso.of_open (hDH : GroundTheory.Heights₂.Heights.Model.DescendHom.Statement)
     (hGP : GroundTheory.Heights₂.Heights.Model.GenericPullInj.Statement)

@@ -36,7 +36,7 @@ theorem form_app (h : IsGrpPullback G₁ G x φ) (p : LieG G₁) {T : (Sp k).Ope
     (form h p).app T s = dualApp (tangent p) le_top ((omegaBase h).app T s) := rfl
 
 /- English proof (translation)
-The claim follows from `preimage_le_of_lieG p (le_of_sq (unitSec_comp h) hW hT)`.
+A detailed English derivation is pending.
 -/
 theorem pre_le (h : IsGrpPullback G₁ G x φ) (p : LieG G₁) {V : S.Opens} {W : G.left.Opens}
     (hW : V ≤ unitSec G ⁻¹ᵁ W) {T : (Sp k).Opens} (hT : T ≤ x ⁻¹ᵁ V) :
@@ -44,7 +44,7 @@ theorem pre_le (h : IsGrpPullback G₁ G x φ) (p : LieG G₁) {V : S.Opens} {W 
   preimage_le_of_lieG p (le_of_sq (unitSec_comp h) hW hT)
 
 /- English proof (translation)
-Establish `hV : T ≤ sec (epsZero k) ⁻¹ᵁ (specO k (DualNumber k)).hom ⁻¹ᵁ T` using `(le_preimage_of_comp (sec_hom (epsZero k))).2 le_rfl`. Rewrite using `[form_app, omegaBase_dUnit h hW hT (le_of_sq (unitSec_comp h) hW hT) le_rfl]`. Conclude with `dualApp_tangent_dUnit p _ _ hV le_rfl (pre_le h p hW hT) a b ((appLE_appLE rfl _ _ _ f).trans e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_dUnit (h : IsGrpPullback G₁ G x φ) (p : LieG G₁) {V : S.Opens} {W : G.left.Opens}
     (hW : V ≤ unitSec G ⁻¹ᵁ W) {T : (Sp k).Opens} (hT : T ≤ x ⁻¹ᵁ V) (f : Γ(G.left, W))
@@ -63,7 +63,7 @@ theorem form_dUnit (h : IsGrpPullback G₁ G x φ) (p : LieG G₁) {V : S.Opens}
 variable {k' : Type} [CommRing k'] (r : k →+* k') (F : DualNumber k →+* DualNumber k')
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext hF)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spMap_comp_hom (hF : ∀ a, F (algebraMap k _ a) = algebraMap k' _ (r a)) :
     spMap F ≫ (specO k (DualNumber k)).hom = (specO k' (DualNumber k')).hom ≫ spMap r := by
@@ -73,7 +73,7 @@ theorem spMap_comp_hom (hF : ∀ a, F (algebraMap k _ a) = algebraMap k' _ (r a)
   exact CommRingCat.hom_ext (RingHom.ext hF)
 
 /- English proof (translation)
-Use `congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom F)) DualNumber.eps).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (Scheme.ΓSpecIso (.of (DualNumber k'))).inv.hom he`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spMap_epsFn (he : F DualNumber.eps = DualNumber.eps) :
     (spMap F).appLE ⊤ ⊤ (le_preimage_top _ _) (epsFn k) = epsFn k' := by
@@ -81,9 +81,9 @@ theorem spMap_epsFn (he : F DualNumber.eps = DualNumber.eps) :
   exact congrArg (Scheme.ΓSpecIso (.of (DualNumber k'))).inv.hom he
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(F a).fst = r a.fst`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: a = algebraMap k _ a.fst + algebraMap k _ a.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Use `conv_lhs => rw [this, map_add, map_mul, hF, hF, he]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epsZero_spMap (hF : ∀ a, F (algebraMap k _ a) = algebraMap k' _ (r a))
     (he : F DualNumber.eps = DualNumber.eps) :
@@ -101,17 +101,15 @@ theorem epsZero_spMap (hF : ∀ a, F (algebraMap k _ a) = algebraMap k' _ (r a))
 variable {G₂ : Over (Sp k')} [GrpObj G₂] {ψ : G₂.left ⟶ G.left}
 
 /- English proof (translation)
-Establish `key (y : (⊤ : (Sp k').Opens)) : ∃ T' : (Sp k').Opens, y.1 ∈ T' ∧ resG (Sp k') (le_top : T' ≤ ⊤) ((form h₂ q).app ⊤ (pullbackSections _ (omega G) h' s) : Γ(Sp k', ⊤)) = resG (Sp k') (le_top : T' ≤ ⊤) ((spMap r).appLE ⊤ ⊤ (le_preimage_top _ _) ((form h₁ p).app ⊤ (pullbackSections x …`. Take `⟨U, W, hU, hle, c⟩` from `GlobalTheory.Conormal.exists_isChart (sec_hom (MonObj.one (X := G))) (V := V) (x := x (spMap r y.1)) (h trivial)`. Take `⟨T, hT, hyT, hTU⟩` from `QCoh.exists_affine_mem_le (U := x ⁻¹ᵁ U) (spMap r y.1) hU`. Take `⟨f, hf⟩` from `c.d_surjective (sec_hom (MonObj.one (X := G))) (resM _ hle s)`. Establish `hf' : dUnit G c.le f = resM (omega G) hle s` using `hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTU' : spMap r ⁻¹ᵁ T ≤ (spMap r ≫ x) ⁻¹ᵁ U` using `(spMap r).preimage_mono hTU`. Take `⟨⟨a, b⟩, e⟩` from `(bijective_add_mul_epsFn k T hT).2 ((p.1.left ≫ φ).appLE W _ (pre_le h₁ p c.le hTU) f)`. Establish `e₁` using `form_dUnit h₁ p c.le hTU f a b e.symm`. Establish `kk : (specO k' (DualNumber k')).hom ⁻¹ᵁ spMap r ⁻¹ᵁ T ≤ spMap F ⁻¹ᵁ (specO k (DualNumber k)).hom ⁻¹ᵁ T` using `(le_preimage_of_comp (spMap_comp_hom r F hF)).2 le_rfl`. Establish `kk' : (specO k' (DualNumber k')).hom ⁻¹ᵁ spMap r ⁻¹ᵁ T ≤ ((specO k' (DualNumber k')).hom ≫ spMap r) ⁻¹ᵁ T` using `le_rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n (z : Γ(Sp k, T)) : (spMap F).appLE _ _ kk ((specO k (DualNumber k)).hom.appLE T _ le_rfl z) = (specO k' (DualNumber k')).hom.appLE _ _ le_rfl ((spMap r).appLE T _ le_rfl z)` using `(appLE_appLE (spMap_comp_hom r F hF) _ _ kk' z).trans (appLE_appLE rfl _ _ kk' z).symm`. Establish `n' : (spMap F).appLE _ _ kk (resG _ le_top (epsFn k)) = resG _ le_top (epsFn k')` using `(appLE_resG _ _ _ _).trans ((resG_appLE _ le_top (le_preimage_top _ _) _).symm.trans (congrArg _ (spMap_epsFn F he)))`. Establish `e₂` using `form_dUnit h₂ q c.le hTU' f ((spMap r).appLE T _ le_rfl a) ((spMap r).appLE T _ le_rfl b) (by`. Use `(appLE_appLE hq.symm (pre_le h₁ p c.le hTU) kk _ f).symm.trans ?_` and prove the remaining obligations. Use `(congrArg ((spMap F).appLE _ _ kk) e.symm).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_add _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (n a) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (n b) n')))`. Rewrite `e₁`, `e₂` using `[hf', QCoh.pullbackSections_res]`. Use `⟨spMap r ⁻¹ᵁ T, hyT, ?_⟩` and prove the remaining obligations. Use `(app_resM (form h₂ q) le_top _).symm.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QCoh.res_pullbackSections, e₂, ← e₁]`. Use `.trans ?_ ((appLE_resG (spMap r) (le_top : T ≤ ⊤) le_rfl _).trans (resG_appLE (spMap r) le_top (le_preimage_top _ _) _).symm)` and prove the remaining obligations. Use `congrArg _ ?_` and prove the remaining obligations. Use `.trans ?_ (app_resM (form h₁ p) le_top _)` and prove the remaining obligations. Rewrite using `[QCoh.res_pullbackSections]`.
-
-Use `choose T hT hs using key`. Conclude with `LB.fun_ext_of_cover T (fun _ => le_top) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hT _⟩) hs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_baseChange [QuasiSeparated G.hom] (hF : ∀ a, F (algebraMap k _ a) = algebraMap k' _ (r a))
     (he : F DualNumber.eps = DualNumber.eps) (h₁ : IsGrpPullback G₁ G x φ) (h₂ : IsGrpPullback G₂ G (spMap r ≫ x) ψ)
@@ -165,11 +163,11 @@ theorem form_baseChange [QuasiSeparated G.hom] (hF : ∀ a, F (algebraMap k _ a)
   exact LB.fun_ext_of_cover T (fun _ => le_top) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hT _⟩) hs
 
 /- English proof (translation)
-Establish `w : (spMap F ≫ p.1.left ≫ φ) ≫ G.hom = (specO k' (DualNumber k')).hom ≫ spMap r ≫ x`. Rewrite using `[Category.assoc, Category.assoc, h₁.1.w, ← Category.assoc p.1.left, Over.w p.1, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ x) (spMap_comp_hom r F hF)`. Set `q : specO k' (DualNumber k') ⟶ G₂` to `Over.homMk (h₂.1.lift _ (specO k' (DualNumber k')).hom w) (h₂.1.lift_snd _ _ _)`. Establish `hq : q.left ≫ ψ = spMap F ≫ p.1.left ≫ φ` using `h₂.1.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (toUnit (specO k' k')).left = 𝟙 (Sp k')`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Use `⟨⟨q, Over.OverMorphism.ext (h₂.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))⟩, hq⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, ht, Category.assoc, hq, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : sec (epsZero k') ≫ spMap F ≫ p.1.left ≫ φ = (spMap r ≫ x) ≫ unitSec G`. Rewrite using `[← Category.assoc, epsZero_spMap r F hF he, Category.assoc, ← Category.assoc (sec _), sec_epsZero_comp, unitSec_comp h₁, Category.assoc]`. Conclude with `e.trans ((unitSec_comp h₂).symm.trans (Category.id_comp _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lieG (hF : ∀ a, F (algebraMap k _ a) = algebraMap k' _ (r a))
     (he : F DualNumber.eps = DualNumber.eps) (h₁ : IsGrpPullback G₁ G x φ) (h₂ : IsGrpPullback G₂ G (spMap r ≫ x) ψ)
@@ -192,13 +190,13 @@ theorem exists_lieG (hF : ∀ a, F (algebraMap k _ a) = algebraMap k' _ (r a))
   exact e.trans ((unitSec_comp h₂).symm.trans (Category.id_comp _).symm)
 
 /- English proof (translation)
-Introduce and unpack `S G _ _ g c R R' _ _ ξ r _ y y' rfl hG - ⟨hc, hy⟩ ⟨hc', hy'⟩ F hF he j`. Take `⟨p, hp, hp'⟩` from `hy j`. Take `⟨q, hq, hq'⟩` from `hy' j`. Establish `h₁` using `isGrpPullback_pullback G ξ`. Establish `h₂` using `isGrpPullback_pullback G (spMap r ≫ ξ)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `exists_lieG r F hF he h₁ h₂ p`. Establish `hfr : VB.IsFrame (pfr c (spMap r ≫ ξ) hc')`. Establish `k₁` using `((c.isFrame.pullback (spMap r ≫ ξ)).res hc').map_iso (omegaBase h₂)`. Establish `k₂ (b : Fin g) : resM _ hc' (pullbackSections (spMap r ≫ ξ) (omega G) le_rfl (c.e b)) = pullbackSections (spMap r ≫ ξ) (omega G) hc' (c.e b)` using `QCoh.res_pullbackSections _ _ _ _ _`. Simplify using `only [k₂] at k₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `k₁`. Take `rfl : w = q` from `tangent_injective R' _ (hfr.dual_ext le_rfl fun b => by`. Rewrite using `[resM_self]`. Use `(form_baseChange r F hF he h₁ h₂ p w hw hc hc' (c.e b)).trans ?_` and prove the remaining obligations. Use `.trans (congrArg ((spMap r).appLE ⊤ ⊤ (le_preimage_top _ _)) (hp' b)) (.trans ?_ (hq' b).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(apply_ite _ _ _ _).trans (if_congr Iff.rfl (map_one ((spMap r).appLE ⊤ ⊤ (le_preimage_top _ _)).hom) (map_zero ((spMap r).appLE ⊤ ⊤ (le_preimage_top _ _)).hom)))`. Rewrite using `[← hq, ← hp]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem dual_vec : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (c : VB.Chart (LieVB.omega G) g) (R R' : Type)
     [CommRing R] [CommRing R'] (ξ : Sp R ⟶ S) (r : R →+* R') (ξ' : Sp R' ⟶ S) (y : Fin g → (epsR R ⟶ KeyVals.bG G ξ))

@@ -16,13 +16,13 @@ namespace GlobalTheory.ThLoc.GoodTwo
 open PI.GoodTwo
 
 /- English proof (translation)
-Introduce `d L _ hd4 hcm`. Take `⟨a, τ, ha, h⟩` from `GlobalTheory.exists_lattice_eq_mul_tau L`. Establish `e : Formalism.L2.Th1.CM.jInv L = (GlobalTheory.latticeCurve L).j`. Rewrite using `[WeierstrassCurve.j, Units.val_inv_eq_inv_val, WeierstrassCurve.coe_Δ', GlobalTheory.latticeCurve_Δ, GlobalTheory.latticeCurve_c₄, Formalism.L2.Th1.CM.jInv]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, GlobalTheory.latticeCurve_j ha h]`. Use `GlobalTheory.isIntegral_modularJ_of_mul_mem (α := Formalism.L2.Th1.CM.omegaK d) ?_ ?_` and prove the remaining obligations. Introduce `m hm`. Establish `him` using `congrArg Complex.im hm`. Simplify using `[Formalism.L2.Th1.CM.omegaK] at him`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Take `⟨m, n, rfl⟩` from `Submodule.mem_span_pair.1 hx`. Take `⟨m', n', h'⟩` from `(h _).1 (hcm _ ((h _).2 ⟨m, n, rfl⟩))`. Use `Submodule.mem_span_pair.2 ⟨m', n', ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [zsmul_eq_mul, mul_one]`. Apply `mul_left_cancel₀ ha` to reduce the goal to its premises. Rewrite using `[h']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isIntegral_jInv : Formalism.L2.Th1.CM.JInvariantIntegrality := by
   intro d L _ hd4 hcm
@@ -46,7 +46,7 @@ theorem isIntegral_jInv : Formalism.L2.Th1.CM.JInvariantIntegrality := by
     rw [h']; ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.MomOne.model_norm_le_one_of_isIntegral ((isIntegral_jInv d L hsq hmod hcm).map_of_comp_eq (RingHom.id ℤ) (ι : ℂ →+* ℂ_[p]) (RingHom.ext_int _ _))`.
+A detailed English derivation is pending.
 -/
 theorem norm_jInv_le_one (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hmod : d % 4 = 3) (hcm : Formalism.L2.Th1.CM.HasCMBy d L)
     (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) : ‖ι (Formalism.L2.Th1.CM.jInv L)‖ ≤ 1 :=
@@ -82,37 +82,35 @@ open Formalism.L2.Th1.CM (HasCMBy omegaK jInv)
 open Formalism.L2.Th1.F (scalePair)
 
 /- English proof (translation)
-Introduce `K _ _ _ W g2 g3 hΔ hD hrel`. Establish `hcr` using `W.c_relation`. Take `⟨G2, hG2⟩ : ∃ G2 : K, G2 = W.c₄ / 12` from `⟨_, rfl⟩`. Take `⟨G3, hG3⟩ : ∃ G3 : K, G3 = W.c₆ / 216` from `⟨_, rfl⟩`. Rewrite using `[← hG2, ← hG3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc4 : W.c₄ = 12 * G2` using `by rw [hG2]; ring`. Establish `hc6 : W.c₆ = 216 * G3` using `by rw [hG3]; ring`. Establish `hΔG : W.Δ = G2 ^ 3 - 27 * G3 ^ 2`. Establish `h1728 : (1728 : K) ≠ 0` using `by norm_num`. Apply `mul_left_cancel₀ h1728` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hcr, hc4, hc6]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hrel` using `[hc4, hΔG]`. Rewrite `hΔ` using `[hΔG]`. Establish `key : G2 ^ 3 * g3 ^ 2 = g2 ^ 3 * G3 ^ 2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h : (46656 : K) ≠ 0` using `by norm_num`. Apply `mul_left_cancel₀ h` to reduce the goal to its premises. Take the linear combination `(-1 : K) * hrel`. Distinguish the cases in `hg2 : g2 = 0`. Substitute `hg2` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hg3 : g3 ≠ 0`. Introduce and unpack `rfl; exact hD (by ring)`. Establish `hG2z : G2 = 0`. Establish `h0 : (12 * G2) ^ 3 * ((0 : K) ^ 3 - 27 * g3 ^ 2) = 0` using `by rw [hrel]; ring`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `pow_eq_zero_iff (n := 3) (by norm_num) |>.1 h` as an intermediate fact. Simplify using `using this`. Conclude with `absurd h hD`. Substitute `hG2z` using the available equality. Establish `hG3 : G3 ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl; exact hΔ (by ring)`. Take `⟨u, hu⟩` from `IsAlgClosed.exists_pow_nat_eq (G3 / g3) (by norm_num : 0 < 6)`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl; exact div_ne_zero hG3 hg3 (by rw [← hu]; ring)`. Conclude with `⟨u, hu0, by ring, by rw [hu, div_mul_cancel₀ _ hg3]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg3 : g3 = 0`. Substitute `hg3` using the available equality. Establish `hG3z : G3 = 0`. Establish `h0 : g2 ^ 3 * G3 ^ 2 = 0` using `by rw [← key]; ring`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `absurd (pow_eq_zero_iff (n := 3) (by norm_num) |>.1 h) hg2`. Conclude with `pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h`. Substitute `hG3z` using the available equality. Establish `hG2 : G2 ≠ 0`. Introduce and unpack `rfl; exact hΔ (by ring)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨u, hu⟩` from `IsAlgClosed.exists_pow_nat_eq (G2 / g2) (by norm_num : 0 < 4)`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl; exact div_ne_zero hG2 hg2 (by rw [← hu]; ring)`. Conclude with `⟨u, hu0, by rw [hu, div_mul_cancel₀ _ hg2], by ring⟩`. Establish `hG2 : G2 ≠ 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `h0 : g2 ^ 3 * G3 ^ 2 = 0` using `by rw [← key]; ring`. Establish `hG3 : G3 = 0`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (pow_eq_zero_iff (n := 3) (by norm_num) |>.1 h) hg2`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h`. Substitute `hG3; exact hΔ (by ring)` using the available equality. Establish `hG3 : G3 ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : G2 ^ 3 * g3 ^ 2 = 0` using `by rw [key]; ring`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `hG2 (pow_eq_zero_iff (n := 3) (by norm_num) |>.1 h)`. Conclude with `hg3 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h)`. Take `⟨s, hs⟩ : ∃ s : K, s = (G3 / g3) / (G2 / g2)` from `⟨_, rfl⟩`. Establish `hs0 : s ≠ 0`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `div_ne_zero (div_ne_zero hG3 hg3) (div_ne_zero hG2 hg2)`. Establish `hs2 : s ^ 2 = G2 / g2`. Rewrite using `[hs, div_pow, div_pow, div_pow, div_div_eq_mul_div, div_eq_div_iff (by positivity) hg2]`. Clear the denominators using the available nonvanishing facts.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `(-1 : K) * key`. Take `⟨u, hu⟩` from `IsAlgClosed.exists_pow_nat_eq s (by norm_num : 0 < 2)`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl; exact hs0 (by rw [← hu]; ring)`. Use `⟨u, hu0, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[show u ^ 4 = (u ^ 2) ^ 2 by ring, hu, hs2, div_mul_cancel₀ _ hg2]`. Rewrite using `[show u ^ 6 = (u ^ 2) ^ 2 * u ^ 2 by ring, hu, hs2, hs]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem twist : Twist := by
   intro K _ _ _ W g2 g3 hΔ hD hrel
@@ -200,17 +198,17 @@ open Formalism.L2.Th1.CM (HasCMBy omegaK jInv)
 open Formalism.L2.Th1.F (scalePair)
 
 /- English proof (translation)
-Introduce `L ι W hΔ hj`. Establish `hd : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 ≠ 0` using `Formalism.L2.Th1.F.discNeZero L`. Establish `hdι : ι (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) = (ι L.g₂) ^ 3 - 27 * (ι L.g₃) ^ 2`. Simplify using `[map_sub, map_mul, map_pow, map_ofNat]`. Establish `hd' : (ι L.g₂) ^ 3 - 27 * (ι L.g₃) ^ 2 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hdι]`. Conclude with `(map_ne_zero ι).mpr hd`. Establish `hjι : ι (jInv L) = 1728 * (ι L.g₂) ^ 3 / ((ι L.g₂) ^ 3 - 27 * (ι L.g₃) ^ 2)`. Unfold `jInv`. Rewrite using `[map_div₀, hdι]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul, map_pow, map_ofNat]`. Establish `hrel : W.c₄ ^ 3 * ((ι L.g₂) ^ 3 - 27 * (ι L.g₃) ^ 2) = 1728 * (ι L.g₂) ^ 3 * W.Δ`. Rewrite using `[hj, hjι]`. Clear the denominators using the available nonvanishing facts. Take `⟨u, hu, h4, h6⟩` from `hT ℂ_[2] W (ι L.g₂) (ι L.g₃) hΔ hd' hrel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : ι.symm u ≠ 0`. Introduce `h0`. Apply `hu` to reduce the goal to its premises. Use `congrArg ι h0` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : (ι.symm u)⁻¹ ≠ 0` using `inv_ne_zero hu'`. Establish `hH` using `Formalism.L2.Th1.F.homogeneity L (ι.symm u)⁻¹ hc`. Use `⟨(ι.symm u)⁻¹, hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hH.2.2.2.2.2.2.2.2.2.1, h4]`. Simplify using `[map_mul, map_pow, inv_pow, inv_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH.2.2.2.2.2.2.2.2.2.2, h6]`. Simplify using `[map_mul, map_pow, inv_pow, inv_inv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deuringScale_of (hT : Twist) : DeuringScale := by
   intro L ι W hΔ hj
@@ -245,7 +243,7 @@ end
 section
 
 /- English proof (translation)
-The claim follows from `deuringScale_of HalfW.twist`.
+A detailed English derivation is pending.
 -/
 theorem deuring_lattice_homothety_two_adic : DeuringScale := deuringScale_of HalfW.twist
 
@@ -254,9 +252,9 @@ end
 section
 
 /- English proof (translation)
-Establish `h2 : ‖((2 : ℚ_[2]) : ℂ_[2])‖ = 1 / 2`. Rewrite using `[PadicComplex.norm_extends']`. Use `Padic.norm_p (p := 2)` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hc : ((2 : ℚ_[2]) : ℂ_[2]) = 2`. Use `PadicComplex.coe_natCast 2 2` as an intermediate fact. Rewrite using `[map_ofNat]`. Simplify using `using this`. Rewrite `h2` using `[hc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cubic_norm_two : ‖(2 : ℂ_[2])‖ = 1 / 2 := by
   have h2 : ‖((2 : ℚ_[2]) : ℂ_[2])‖ = 1 / 2 := by
@@ -271,18 +269,18 @@ theorem cubic_norm_two : ‖(2 : ℂ_[2])‖ = 1 / 2 := by
   rwa [hc] at h2
 
 /- English proof (translation)
-Rewrite using `[show (16 : ℂ_[2]) = 2 ^ 4 by norm_num, norm_pow, cubic_norm_two]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem cubic_norm_sixteen : ‖(16 : ℂ_[2])‖ = 1 / 16 := by
   rw [show (16 : ℂ_[2]) = 2 ^ 4 by norm_num, norm_pow, cubic_norm_two]
   norm_num
 
 /- English proof (translation)
-Introduce `j r hj h`. Assume the negation of the conclusion as `hr`. Use `push Not at hr`. Establish `h16 : ‖(16 : ℂ_[2])‖ < ‖r‖` using `by rw [cubic_norm_sixteen]; linarith`. Establish `e : ‖r + 16‖ = ‖r‖`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h16.ne', max_eq_left h16.le]`. Establish `hn : ‖r + 16‖ ^ 3 = ‖j‖ * ‖r‖`. Rewrite using `[← norm_pow, h, norm_mul]`. Rewrite `hn` using `[e]`. Establish `hpos : 0 < ‖r‖` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖r‖ ^ 3 ≤ ‖r‖` using `by rw [hn]; exact mul_le_of_le_one_left (norm_nonneg _) hj`. Establish `h2 : 1 < ‖r‖ ^ 2` using `one_lt_pow₀ hr (by norm_num)`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left h2 hpos]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem integral_root_cubic_X_add_sixteen_two_adic : RootCubic := by
   intro j r hj h
@@ -300,9 +298,9 @@ theorem integral_root_cubic_X_add_sixteen_two_adic : RootCubic := by
   nlinarith [mul_lt_mul_of_pos_left h2 hpos]
 
 /- English proof (translation)
-Introduce `j r hr h`. Establish `h16 : ‖(16 : ℂ_[2])‖ < ‖r‖` using `by rw [cubic_norm_sixteen, hr]; norm_num`. Establish `e : ‖r + 16‖ = ‖r‖`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h16.ne', max_eq_left h16.le]`. Establish `hn : ‖r + 16‖ ^ 3 = ‖j‖ * ‖r‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, h, norm_mul]`. Rewrite `hn` using `[e, hr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem unit_root_cubic_forces_unit_jInvariant : UnitOfRoot := by
   intro j r hr h
@@ -322,7 +320,7 @@ open Formalism.L2.Th1.CM (HasCMBy omegaK jInv)
 open Formalism.L2.Th1.F (scalePair)
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' (p := 2) ((3:ℕ) : ℚ_[2])`. Rewrite `h` using `[Padic.norm_natCast_eq_one_iff.2 (by norm_num)]`. Rewrite using `[← h]`. Use `congr 1`. Rewrite using `[map_natCast, PadicComplex.coe_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -335,14 +333,14 @@ theorem norm_three_padicComplex_two : ‖(3 : ℂ_[2])‖ = 1 := by
   rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Th1.F.discNeZero L`.
+A detailed English derivation is pending.
 -/
 theorem disc_ne_zero (L : PeriodPair) : disc L ≠ 0 := Formalism.L2.Th1.F.discNeZero L
 
 /- English proof (translation)
-Establish `hinv : π⁻¹ ≠ 0` using `inv_ne_zero hπ`. Establish `hH` using `Formalism.L2.Th1.F.homogeneity L π⁻¹ hinv`. Establish `hlat : M.lattice = (scalePair L π⁻¹ hinv).lattice`. Use extensionality with `z`. Rewrite using `[hM z, hH.1 z, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hO` using `Formalism.L2.Th1.F.latticeOnly M (scalePair L π⁻¹ hinv) hlat`. Take `⟨-, -, -, -, -, -, -, hg2, hg3⟩` from `hO`. Take `⟨-, -, -, -, -, -, -, -, -, h2, h3⟩` from `hH`. Unfold `disc`. Rewrite using `[hg2, hg3, h2, h3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -361,23 +359,23 @@ theorem disc_of_mul (L M : PeriodPair) (π : ℂ) (hπ : π ≠ 0) (hM : ∀ z, 
   field_simp
 
 /- English proof (translation)
-Introduce `d L hsf hd hL ι`. Take `⟨h, x, y, hh, hy, hxy⟩` from `hN d hsf hd`. Take `⟨π, hπ, hπ1⟩` from `hP d hd h x y hh hy hxy ι`. Take `⟨M, hM0, hMcm, hMidx, hMh⟩` from `hC d L hd hL h x y hy hxy π hπ`. Establish `hd4 : d % 4 = 3` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hπ1`. Use `set r : ℕ → ℂ := fun i => disc (M (i + 1)) / disc (M i) with hr_def`. Establish `hcub : ∀ i, i < h → (r i + 16) ^ 3 = jInv (M i) * r i`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `e` using `hW (M i) (M (i + 1)) (hMidx i hi)`. Establish `h0` using `disc_ne_zero (M i)`. Simplify using `only [hr_def]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e`. Establish `hcubι : ∀ i, i < h → (ι (r i) + 16) ^ 3 = ι (jInv (M i)) * ι (r i)`. Introduce `i hi`. Use `congrArg ι (hcub i hi)` as an intermediate fact. Simplify `this` using `[map_add, map_pow, map_mul, map_ofNat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hle : ∀ i, i < h → ‖ι (r i)‖ ≤ 1` using `fun i hi => hR _ _ (norm_jInv_le_one d (M i) hsf hd4 (hMcm i) 2 ι) (hcubι i hi)`. Establish `htel : ∀ n, ∏ i ∈ Finset.range n, r i = disc (M n) / disc (M 0)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [div_self (disc_ne_zero (M 0))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[Finset.prod_range_succ, ih]`. Simplify using `only [hr_def]`. Use `disc_ne_zero (M n)` as an intermediate fact. Use `disc_ne_zero (M 0)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hprod : ∏ i ∈ Finset.range h, r i = π ^ 12`. Rewrite using `[htel, disc_of_mul L (M h) π hπ0 hMh, hM0]`. Clear denominators, using `[disc_ne_zero L]` for the nonvanishing conditions. Establish `hnorm : ∏ i ∈ Finset.range h, ‖ι (r i)‖ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_prod, ← map_prod, hprod, map_pow, norm_pow, hπ1, one_pow]`. Take `⟨k, rfl⟩ : ∃ k, h = k + 1` from `⟨h - 1, by omega⟩`. Rewrite `hnorm` using `[Finset.prod_range_succ']`. Establish `hrest : ∏ i ∈ Finset.range k, ‖ι (r (i + 1))‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun i hi => hle (i + 1) (by simp at hi; omega))`. Establish `h0le` using `hle 0 (by omega)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : ‖ι (r 0)‖ = 1`. Use `mul_le_of_le_one_left (norm_nonneg (ι (r 0))) hrest` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hU _ _ hr0 (hcubι 0 (by omega))` as an intermediate fact. Rewrite `this` using `[hM0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem jUnit_of (hW : TwoIsog) (hN : NormPow) (hC : Chain) (hR : RootCubic) (hU : UnitOfRoot)
     (hP : UnitChoice) : JUnit := by
@@ -432,19 +430,17 @@ theorem jUnit_of (hW : TwoIsog) (hN : NormPow) (hC : Chain) (hR : RootCubic) (hU
   rwa [hM0] at this
 
 /- English proof (translation)
-Introduce `d L hsf hd hL ι`. Establish `hj1 : ‖ι (jInv L)‖ = 1` using `hJ d L hsf hd hL ι`. Take `⟨a, ha, hc4, hΔ⟩` from `Formalism.ELL.deuring_model ℂ_[2] norm_three_padicComplex_two (ι (jInv L)) hj1.le`. Establish `hΔ0 : (Formalism.ELL.deuring a).Δ ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hΔ` using `[h0, norm_zero]`. Evaluate the numerical expressions using `at hΔ`. Take `⟨c, hc, h4, h6⟩` from `hS L ι _ hΔ0 hc4`. Establish `hinv` using `(Formalism.ELL.deuring_invariant ℂ_[2] a).2`. Establish `hc4n : ‖(Formalism.ELL.deuring a).c₄‖ = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg norm hc4`. Rewrite `h` using `[norm_pow, norm_mul, hj1, hΔ, one_mul]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h`. Establish `hsub : ‖a ^ 3 - 24‖ ≤ 1`. Rewrite using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) ha`. Rewrite using `[norm_neg]`. Conclude with `IsUltrametricDist.norm_natCast_le_one ℂ_[2] 24` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha1 : ‖a‖ = 1`. Rewrite `hc4n` using `[hinv, norm_mul]`. Establish `: 1 ≤ ‖a‖`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm ha this`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨c, hc, Formalism.ELL.deuring a, ⟨h4, h6⟩, ⟨?_, ?_, ?_, ?_, ?_, hΔ⟩, ?_⟩` and prove the remaining obligations. Conclude with `ha`. Simplify using `[Formalism.ELL.deuring]`. Simplify using `[Formalism.ELL.deuring]`. Simplify using `[Formalism.ELL.deuring]`.
-
-Simplify using `[Formalism.ELL.deuring]`. Conclude with `ha1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem full_of (hS : DeuringScale) (hJ : JUnit) : Full := by
   intro d L hsf hd hL ι
@@ -484,7 +480,7 @@ theorem full_of (hS : DeuringScale) (hJ : JUnit) : Full := by
   · exact ha1
 
 /- English proof (translation)
-The claim follows from `full_of hT (jUnit_of hW hN hC hR hU hP)`.
+A detailed English derivation is pending.
 -/
 theorem full_of_steps (hT : DeuringScale) (hW : TwoIsog) (hN : NormPow) (hC : Chain) (hR : RootCubic)
     (hU : UnitOfRoot) (hP : UnitChoice) : Full :=
@@ -495,7 +491,7 @@ end
 section
 
 /- English proof (translation)
-The claim follows from `full_of_steps deuring_lattice_homothety_two_adic hW hN hC integral_root_cubic_X_add_sixteen_two_adic unit_root_cubic_forces_unit_jInvariant hP`.
+A detailed English derivation is pending.
 -/
 theorem full_of_open (hW : TwoIsog) (hN : NormPow) (hC : Chain) (hP : UnitChoice) : Full :=
   full_of_steps deuring_lattice_homothety_two_adic hW hN hC integral_root_cubic_X_add_sixteen_two_adic unit_root_cubic_forces_unit_jInvariant hP
@@ -506,19 +502,17 @@ section
 namespace IsogenyReduction
 
 /- English proof (translation)
-Use `set f : ℂ → ℂ := fun z => (z ^ k)⁻¹ with hf`. Use `set A : Set ℂ := (L.lattice : Set ℂ) with hA`. Use `set B : Set ℂ := {z | z - t ∈ L.lattice} with hB`. Establish `hAs : HasSum (f ∘ (Subtype.val : A → ℂ)) (L.G k)`. Use `L.hasSum_sumInvPow 0 hk` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [sub_zero, PeriodPair.sumInvPow_zero] at this`. Conclude with `this`. Set `e : L.lattice ≃ B` to `{ toFun := fun l => ⟨l.1 - t, by show l.1 - t - t ∈ L.lattice`. Use `L.lattice.sub_mem l.2 h2t` as an intermediate fact. Rewrite using `[show l.1 - 2 * t = l.1 - t - t by ring] at this⟩` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `invFun := fun z => ⟨z.1 + t, by`. Establish `h1 : z.1 - t ∈ L.lattice` using `z.2`. Use `L.lattice.add_mem h1 h2t` as an intermediate fact. Rewrite using `[show z.1 - t + 2 * t = z.1 + t by ring] at this⟩` and apply the resulting hypothesis. Use `left_inv := fun l => by ext; simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `right_inv := fun z => by ext; simp }`. Establish `hBs : HasSum (f ∘ (Subtype.val : B → ℂ)) (L.sumInvPow t k)`. Rewrite using `[← e.hasSum_iff]`. Use `L.hasSum_sumInvPow t hk` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Both sides reduce to the same expression. Establish `hdis : Disjoint A B`. Rewrite using `[Set.disjoint_left]`. Introduce `z hzA hzB`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `ht` to reduce the goal to its premises. Use `L.lattice.sub_mem hzA hzB` as an intermediate fact. Simplify using `using this`. Establish `hU` using `hAs.add_disjoint hdis hBs`. Establish `hset : (L'.lattice : Set ℂ) = A ∪ B`.
-
-Use extensionality with `z`. Simplify using `only [Set.mem_union, A, B, Set.mem_ofPred_eq, SetLike.mem_coe]`. Conclude with `hL' z`. Rewrite `hU` using `[hasSum_subtype_iff_indicator, ← hset, ← hasSum_subtype_iff_indicator]`. Conclude with `hU.tsum_eq`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma G_split (L L' : PeriodPair) (t : ℂ) (h2t : 2 * t ∈ L.lattice)
     (hL' : ∀ z, z ∈ L'.lattice ↔ (z ∈ L.lattice ∨ z - t ∈ L.lattice)) (ht : t ∉ L.lattice)
@@ -562,7 +556,7 @@ lemma G_split (L L' : PeriodPair) (t : ℂ) (h2t : 2 * t ∈ L.lattice)
   exact hU.tsum_eq
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℂ L.weierstrassP z` using `(L.analyticOnNhd_weierstrassP z hz).differentiableAt`. Use `hd.hasDerivAt` as an intermediate fact. Rewrite `this` using `[L.deriv_weierstrassP]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma hasDerivAt_P (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     HasDerivAt L.weierstrassP (L.derivWeierstrassP z) z := by
@@ -572,18 +566,18 @@ lemma hasDerivAt_P (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
   rwa [L.deriv_weierstrassP] at this
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.Th1.F.pSecond L z hz).deriv`.
+A detailed English derivation is pending.
 -/
 lemma deriv_two (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     deriv L.derivWeierstrassP z = 6 * L.weierstrassP z ^ 2 - L.g₂ / 2 :=
   (Formalism.L2.Th1.F.pSecond L z hz).deriv
 
 /- English proof (translation)
-Establish `hev : deriv L.derivWeierstrassP =ᶠ[𝓝 z] fun w => 6 * L.weierstrassP w ^ 2 - L.g₂ / 2` using `by filter_upwards [L.isClosed_lattice.isOpen_compl.mem_nhds hz] with w hw using deriv_two L hw`. Rewrite using `[hev.deriv_eq]`. Establish `hP` using `hasDerivAt_P L hz`. Establish `h2 : HasDerivAt (fun w => 6 * L.weierstrassP w ^ 2 - L.g₂ / 2) (12 * L.weierstrassP z * L.derivWeierstrassP z) z`. Use `((hP.mul hP).const_mul 6).sub_const (L.g₂ / 2)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun w => 6 * L.weierstrassP w ^ 2 - L.g₂ / 2) = fun x => 6 * (L.weierstrassP * L.weierstrassP) x - L.g₂ / 2`. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.congr_deriv (by ring)`. Conclude with `h2.deriv`.
+A detailed English derivation is pending.
 -/
 lemma deriv_three (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     deriv (deriv L.derivWeierstrassP) z = 12 * L.weierstrassP z * L.derivWeierstrassP z := by
@@ -602,9 +596,9 @@ lemma deriv_three (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
   exact h2.deriv
 
 /- English proof (translation)
-Establish `hev : deriv (deriv L.derivWeierstrassP) =ᶠ[𝓝 z] fun w => 12 * L.weierstrassP w * L.derivWeierstrassP w` using `by filter_upwards [L.isClosed_lattice.isOpen_compl.mem_nhds hz] with w hw using deriv_three L hw`. Rewrite using `[hev.deriv_eq]`. Establish `hP` using `hasDerivAt_P L hz`. Establish `hQ` using `Formalism.L2.Th1.F.pSecond L z hz`. Establish `h2` using `(hP.const_mul 12).mul hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun w => 12 * L.weierstrassP w * L.derivWeierstrassP w) = (fun y => 12 * L.weierstrassP y) * L.derivWeierstrassP`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Rewrite using `[hfun, h2.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma deriv_four (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     deriv (deriv (deriv L.derivWeierstrassP)) z =
@@ -623,9 +617,9 @@ lemma deriv_four (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
   ring
 
 /- English proof (translation)
-Establish `h` using `L.iteratedDeriv_weierstrassPExcept_self t (n := 2)`. Rewrite `h` using `[L.weierstrassPExcept_of_notMem t ht]`. Establish `h2 : iteratedDeriv 2 L.weierstrassP t = deriv L.derivWeierstrassP t`. Rewrite using `[show (2 : ℕ) = 0 + 1 + 1 from rfl, iteratedDeriv_succ, iteratedDeriv_succ, iteratedDeriv_zero, L.deriv_weierstrassP]`. Rewrite `h` using `[h2, deriv_two L ht]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `[Nat.factorial] at h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sumInvPow_four (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) :
     L.sumInvPow t 4 = (6 * L.weierstrassP t ^ 2 - L.g₂ / 2) / 6 := by
@@ -639,9 +633,9 @@ lemma sumInvPow_four (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) :
   rw [h]; ring
 
 /- English proof (translation)
-Establish `h` using `L.iteratedDeriv_weierstrassPExcept_self t (n := 4)`. Rewrite `h` using `[L.weierstrassPExcept_of_notMem t ht]`. Establish `h2 : iteratedDeriv 4 L.weierstrassP t = deriv (deriv (deriv L.derivWeierstrassP)) t`. Rewrite using `[show (4 : ℕ) = 0 + 1 + 1 + 1 + 1 from rfl, iteratedDeriv_succ, iteratedDeriv_succ, iteratedDeriv_succ, iteratedDeriv_succ, iteratedDeriv_zero, L.deriv_weierstrassP]`. Rewrite `h` using `[h2, deriv_four L ht]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `[Nat.factorial] at h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sumInvPow_six (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) :
     L.sumInvPow t 6 = (12 * L.derivWeierstrassP t ^ 2
@@ -656,7 +650,7 @@ lemma sumInvPow_six (L : PeriodPair) {t : ℂ} (ht : t ∉ L.lattice) :
   rw [h]; ring
 
 /- English proof (translation)
-Establish `hr : 1728 * g2 ^ 3 / (g2 ^ 3 - 27 * g3 ^ 2) * ((60 * e ^ 2 - 4 * g2) ^ 3 - 27 * (g3 + 84 * e ^ 3 - 7 * g2 * e) ^ 2) * (g2 ^ 3 - 27 * g3 ^ 2) ^ 2 = 1728 * g2 ^ 3 * ((60 * e ^ 2 - 4 * g2) ^ 3 - 27 * (g3 + 84 * e ^ 3 - 7 * g2 * e) ^ 2) * (g2 ^ 3 - 27 * g3 ^ 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hr]`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma alg (e g2 g3 : ℂ) (h : g3 = 4 * e ^ 3 - g2 * e) (hd : g2 ^ 3 - 27 * g3 ^ 2 ≠ 0) :
     ((60 * e ^ 2 - 4 * g2) ^ 3 - 27 * (g3 + 84 * e ^ 3 - 7 * g2 * e) ^ 2
@@ -679,15 +673,15 @@ end IsogenyReduction
 open IsogenyReduction
 
 /- English proof (translation)
-Introduce and unpack `L L' ⟨t, ht, h2t, hL'⟩`. Establish `hG4` using `G_split L L' t h2t hL' ht 4 (by norm_num)`. Establish `hG6` using `G_split L L' t h2t hL' ht 6 (by norm_num)`. Establish `hp' : L.derivWeierstrassP t = 0`. Establish `h1 : L.derivWeierstrassP (t - 2 * t) = L.derivWeierstrassP t` using `L.derivWeierstrassP_sub_coe t ⟨2 * t, h2t⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[show t - 2 * t = -t by ring, L.derivWeierstrassP_neg]`. Take the linear combination `(-1 / 2 : ℂ) * h1`. Establish `hrel` using `L.derivWeierstrassP_sq t ht`. Rewrite `hrel` using `[hp']`. Establish `hS4` using `sumInvPow_four L ht`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hS6` using `sumInvPow_six L ht`. Rewrite `hS6` using `[hp']`. Use `set e := L.weierstrassP t with he`. Establish `hg2 : L.g₂ = 60 * L.G 4` using `rfl`. Establish `hg3 : L.g₃ = 140 * L.G 6` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2' : L'.g₂ = 60 * e ^ 2 - 4 * L.g₂` using `by show 60 * L'.G 4 = _`. Rewrite using `[hG4, hS4, hg2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg3' : L'.g₃ = L.g₃ + 84 * e ^ 3 - 7 * L.g₂ * e` using `by show 140 * L'.G 6 = _`. Rewrite using `[hG6, hS6, hg3, hg2]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd` using `Formalism.L2.Th1.F.discNeZero L`. Simplify using `only [disc, Formalism.L2.Th1.CM.jInv]`. Rewrite using `[hg2', hg3']`. Conclude with `alg e L.g₂ L.g₃ (by linear_combination hrel) hd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twoIsogeny_discriminant_ratio_cubic : TwoIsog := by
   rintro L L' ⟨t, ht, h2t, hL'⟩
@@ -724,9 +718,9 @@ section
 open Formalism.L2.Th1.CM (omegaK)
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' (p := 2) ((2 : ℕ) : ℚ_[2])`. Establish `h2 : (((2 : ℕ) : ℚ_[2]) : ℂ_[2]) = 2`. Rewrite using `[map_natCast, PadicComplex.coe_natCast]`. Evaluate the numerical expressions. Rewrite `h` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_two_lt_one : ‖(2 : ℂ_[2])‖ < 1 := by
   have h := PadicComplex.norm_extends' (p := 2) ((2 : ℕ) : ℚ_[2])
@@ -737,9 +731,9 @@ theorem norm_two_lt_one : ‖(2 : ℂ_[2])‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hn`. Establish `hk : ‖(2 : ℂ_[2]) * (k : ℂ_[2])‖ < 1`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : ((2 * k + 1 : ℤ) : ℂ_[2]) = 2 * (k : ℂ_[2]) + 1` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact hk.ne)]`. Rewrite using `[norm_one]`. Conclude with `max_eq_right hk.le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_odd_eq_one (n : ℤ) (hn : Odd n) : ‖(n : ℂ_[2])‖ = 1 := by
   obtain ⟨k, rfl⟩ := hn
@@ -753,16 +747,16 @@ theorem norm_odd_eq_one (n : ℤ) (hn : Odd n) : ‖(n : ℂ_[2])‖ = 1 := by
   rw [norm_one]; exact max_eq_right hk.le
 
 /- English proof (translation)
-Simplify using `only [omegaK, map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omegaK_add_conj (d : ℕ) : omegaK d + conj (omegaK d) = 1 := by
   simp only [omegaK, map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]
   ring
 
 /- English proof (translation)
-Establish `hs2 : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = d`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Unfold `omegaK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Take the linear combination `((Real.sqrt d : ℝ) : ℂ) ^ 2 * Complex.I_sq - hs2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omegaK_sq_four (d : ℕ) : 4 * omegaK d ^ 2 = 4 * omegaK d - (1 + d) := by
   have hs2 : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = d := by
@@ -771,23 +765,19 @@ theorem omegaK_sq_four (d : ℕ) : 4 * omegaK d ^ 2 = 4 * omegaK d - (1 + d) := 
   linear_combination ((Real.sqrt d : ℝ) : ℂ) ^ 2 * Complex.I_sq - hs2
 
 /- English proof (translation)
-Introduce `d hd h x y hh hy hxy ι`. Use `set q := (d + 1) / 4 with hqdef`. Use `set ω := omegaK d with hωdef`. Establish `hs` using `omegaK_add_conj d`. Establish `hc : conj ω = 1 - ω` using `by linear_combination hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : 4 * ω ^ 2 = 4 * ω - (1 + d)` using `omegaK_sq_four d`. Establish `hq4 : 4 * (q : ℂ) = 1 + d`. Establish `h4 : 4 * q = d + 1` using `by omega`. Use `congrArg (Nat.cast (R := ℂ)) h4` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul, Nat.cast_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Move the coercions through the operations in `at this`. Take the linear combination `this`. Use `set a := ι ((x : ℂ) + (y : ℂ) * ω) with ha_def`. Use `set b := ι ((x : ℂ) + (y : ℂ) * conj ω) with hb_def`. Establish `hsum : a + b = ((2 * x + y : ℤ) : ℂ_[2])`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ha_def, hb_def, ← map_add, hc, show ((x : ℂ) + y * ω + (x + y * (1 - ω))) = ((2 * x + y : ℤ) : ℂ) by push_cast; ring]`. Conclude with `map_intCast ι _`. Establish `hprod : a * b = 2 ^ h`. Establish `hx` using `congrArg (Int.cast (R := ℂ)) hxy`. Move the coercions through the operations in `at hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha_def, hb_def, ← map_mul, show ((x : ℂ) + y * ω) * (x + y * conj ω) = 2 ^ h by`. Rewrite using `[hc]`. Take the linear combination `hx + (-(y : ℂ) ^ 2 / 4) * hsq + (-(y : ℂ) ^ 2 / 4) * hq4]`. Rewrite using `[map_pow, map_ofNat]`. Establish `hodd : Odd (2 * x + y)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Break down `hy with ⟨k, rfl⟩; exact ⟨x + k, by ring⟩` into its components or cases. Establish `hn1 : ‖a + b‖ = 1` using `by rw [hsum]; exact norm_odd_eq_one _ hodd`. Establish `hlt : ‖a‖ * ‖b‖ < 1`. Rewrite using `[← norm_mul, hprod, norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) norm_two_lt_one hh.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `ha : ‖a‖ < 1`. Use `⟨(x : ℂ) + y * conj ω, Or.inr rfl, ?_⟩ show ‖b‖ = 1` and prove the remaining obligations. Establish `e : b = (a + b) + (-a)` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg, hn1]; exact ha.ne'), norm_neg, hn1]`. Conclude with `max_eq_left ha.le`.
-
-Establish `hb : ‖b‖ < 1`. Establish `ha'` using `not_lt.mp ha`. Use polynomial arithmetic with `[norm_nonneg b]`. Use `⟨(x : ℂ) + y * ω, Or.inl rfl, ?_⟩` and prove the remaining obligations. Use `show ‖a‖ = 1`.
-
-Establish `e : a = (a + b) + (-b)` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg, hn1]; exact hb.ne'), norm_neg, hn1]`. Conclude with `max_eq_left hb.le`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_conjugate_norm_two_power_two_adic : UnitChoice := by
   intro d hd h x y hh hy hxy ι
@@ -843,7 +833,7 @@ end
 section
 
 /- English proof (translation)
-The claim follows from `full_of_open twoIsogeny_discriminant_ratio_cubic hN hC exists_unit_conjugate_norm_two_power_two_adic`.
+A detailed English derivation is pending.
 -/
 theorem full_of_normPow_chain (hN : NormPow) (hC : Chain) : Full :=
   full_of_open twoIsogeny_discriminant_ratio_cubic hN hC exists_unit_conjugate_norm_two_power_two_adic
@@ -853,9 +843,9 @@ end
 section
 
 /- English proof (translation)
-Introduce `d L hd hL h x y hy hN π hπ`. Break down `hπ with hπ | hπ` into its components or cases. Conclude with `ChainBetweenPairs.chain_core d L hd hL h x y hy hN π hπ`. Use `ChainBetweenPairs.chain_core d L hd hL h (x + y) (-y) hy.neg (by rw [← hN]; ring) π ?_` and prove the remaining obligations. Rewrite using `[hπ, ChainBetweenPairs.conj_omega]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem stable_lattice_chain_successive_index_two : Chain := by
   intro d L hd hL h x y hy hN π hπ
@@ -871,7 +861,7 @@ end
 section
 
 /- English proof (translation)
-The claim follows from `full_of_normPow_chain hN stable_lattice_chain_successive_index_two`.
+A detailed English derivation is pending.
 -/
 theorem full_of_normPow (hN : NormPow) : Full :=
   full_of_normPow_chain hN stable_lattice_chain_successive_index_two
@@ -881,14 +871,14 @@ end
 section
 
 /- English proof (translation)
-Introduce `d hd h7` and use `AlgebraicValuationTrichotomy.exists_norm_eq_two_pow d hd h7`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPrincipal_pow_prime_over_two : NormPow := fun d hd h7 => AlgebraicValuationTrichotomy.exists_norm_eq_two_pow d hd h7
 
 end
 
 /- English proof (translation)
-The claim follows from `full_of_normPow isPrincipal_pow_prime_over_two`.
+A detailed English derivation is pending.
 -/
 theorem goodModelTwo : Formalism.L2.Th1.Top.GoodModelTwo := full_of_normPow isPrincipal_pow_prime_over_two
 

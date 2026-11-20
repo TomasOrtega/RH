@@ -6,11 +6,11 @@ open NumberField IntermediateField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1` using `geom_sum₂_mul x y m`. Rewrite `h1` using `[hx, hy, sub_self, mul_eq_zero, sub_eq_zero]`. Establish `h2` using `congrArg (Ideal.Quotient.mk P) (h1.resolve_right hne)`. Establish `h3 : Ideal.Quotient.mk P x = Ideal.Quotient.mk P y` using `Ideal.Quotient.eq.mpr hxy`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[RingHom.map_geom_sum₂, h3, geom_sum₂_self, map_zero, ← map_pow, ← map_natCast (Ideal.Quotient.mk P), ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Break down `hP.mem_or_mem h2 with h4 | h4` into its components or cases. Conclude with `hm h4`. Establish `h5 : y ∈ P` using `hP.mem_of_pow_mem _ h4`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `P.pow_mem_of_mem h5 m (Nat.pos_of_ne_zero hm0)`. Rewrite `h6` using `[hy]`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).mpr h6)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_pow_eq_one_of_sub_mem {S : Type*} [CommRing S] [IsDomain S] (P : Ideal S) [hP : P.IsPrime] {m : ℕ} (hm : (m : S) ∉ P)
     {x y : S} (hx : x ^ m = 1) (hy : y ^ m = 1) (hxy : x - y ∈ P) : x = y := by
@@ -30,11 +30,11 @@ private theorem eq_of_pow_eq_one_of_sub_mem {S : Type*} [CommRing S] [IsDomain S
     exact hP.ne_top ((Ideal.eq_top_iff_one P).mpr h6)
 
 /- English proof (translation)
-Introduce `φ H p hp hpw P hP hpP ξ ξ' hξ hξ' hsub`. Establish `key : ∀ x : 𝓞 H.E, H.IsRt (x : H.E) → x ^ H.muW = 1`. Introduce `x hx`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(H.isRt_iff _).1 hx`. Establish `hw : ((H.muW : ℕ) : 𝓞 H.E) ∉ P`. Introduce `h`. Establish `hc : IsCoprime ((p : ℕ) : 𝓞 H.E) ((H.muW : ℕ) : 𝓞 H.E)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hp).2 hpw)`. Take `⟨a, b, hab⟩` from `hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `P.add_mem (P.mul_mem_left a hpP) (P.mul_mem_left b h)`. Conclude with `eq_of_pow_eq_one_of_sub_mem P hw (key ξ hξ) (key ξ' hξ') hsub`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.Formalism.HC.HostAx.isRt_eq_one_of_sub_mem :
     ∀ {φ : Frame} (H : HostAx φ) (p : ℕ), p.Prime → ¬ p ∣ H.muW → ∀ (P : Ideal (𝓞 H.E)), P.IsPrime → (p : 𝓞 H.E) ∈ P →

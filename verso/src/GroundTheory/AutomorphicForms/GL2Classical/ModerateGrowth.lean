@@ -21,9 +21,9 @@ local notation "𝔸f" => FiniteAdeleRing (𝓞 ℚ) ℚ
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-Establish `hc : IsCusp (toReal δ • (OnePoint.infty : OnePoint ℝ)) (Gamma0 N : Subgroup (GL (Fin 2) ℝ))`. Rewrite using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z, isCusp_SL2Z_iff]`. Use `⟨δ • OnePoint.infty, ?_⟩` and prove the remaining obligations. Rewrite using `[← Rat.coe_castHom, OnePoint.map_smul, OnePoint.map_infty]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `f.bdd_at_cusps' hc (toReal δ) rfl`.
+A detailed English derivation is pending.
 -/
 theorem isBoundedAtImInfty_slash_toReal_of_modularForm (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (δ : GL (Fin 2) ℚ) : IsBoundedAtImInfty ((f : ℍ → ℂ) ∣[k] toReal δ) := by
@@ -35,9 +35,9 @@ theorem isBoundedAtImInfty_slash_toReal_of_modularForm (f : ModularForm (Gamma0 
   exact f.bdd_at_cusps' hc (toReal δ) rfl
 
 /- English proof (translation)
-Take `⟨M, hM, hconj⟩` from `exists_level_conj N (finiteDiagonal ℚ 2 δ⁻¹)`. Use `⟨M, hM, fun z => ?_⟩` and prove the remaining obligations. Establish `hMmem : algebraMap ℚ 𝔸f (M : ℚ) ∈ levelIdeal M` using `⟨1, one_mem _, by simp⟩`. Establish `hmem : finiteDiagonal ℚ 2 (δ * unipRat M * δ⁻¹) ∈ Gamma0Level N`. Use `finiteDiagonal_conj_mem (N := N) hconj (γ := δ⁻¹) (u := 1) (one_mem _) (by rw [mul_one]) hMmem` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`. Use `slash_periodic hf (M : ℚ) hmem z` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_period_slash_toReal (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (δ : GL (Fin 2) ℚ) : ∃ M : ℕ, 0 < M ∧ ∀ z : ℍ,
@@ -55,27 +55,23 @@ theorem exists_period_slash_toReal (f : SlashInvariantForm (Gamma0 N : Subgroup 
   simpa using this
 
 /- English proof (translation)
-Use `set F := (f : ℍ → ℂ) ∣[k] toReal δ with hF`. Take `⟨B₁, A, hA⟩` from `isBoundedAtImInfty_iff.1 (isBoundedAtImInfty_slash_toReal_of_modularForm f δ)`. Take `⟨M, hM, hper⟩` from `exists_period_slash_toReal f.toSlashInvariantForm δ`. Establish `hMpos : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `hcont : Continuous F` using `(f.holo'.slash k (toReal δ)).continuous`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ p : ℝ × ℝ, 0 < ((p.1 : ℂ) + ((max p.2 t₀ : ℝ) : ℂ) * Complex.I).im` using `fun p => by`. Establish `: (0 : ℝ) < max p.2 t₀` using `lt_max_of_lt_right ht₀`. Simplify using `using this`. Use `set P : ℝ × ℝ → ℍ := fun p => ⟨(p.1 : ℂ) + ((max p.2 t₀ : ℝ) : ℂ) * Complex.I, hpos p⟩ with hPdef`. Establish `hP : Continuous P`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(UpperHalfPlane.isOpenEmbedding_coe.isInducing.continuous_iff).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun p : ℝ × ℝ => (p.1 : ℂ) + ((max p.2 t₀ : ℝ) : ℂ) * Complex.I`. Use `fun_prop`. Establish `hK : IsCompact (Set.Icc (0 : ℝ) M ×ˢ Set.Icc t₀ (max A t₀))` using `isCompact_Icc.prod isCompact_Icc`. Take `⟨B₂, hB₂⟩` from `hK.exists_bound_of_continuousOn (hcont.comp hP).continuousOn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `⟨max B₁ B₂, fun z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hzA : A ≤ z.im`. Conclude with `(hA z hzA).trans (le_max_left _ _)`. Use `push Not at hzA`. Use `set n : ℤ := ⌊z.re / M⌋ with hn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set G : ℝ → ℂ := fun t => F (t +ᵥ z) with hG`. Establish `hGper : Function.Periodic G M` using `fun t => by`. Simplify using `only [hG]`. Rewrite using `[add_comm, add_vadd]`. Conclude with `hper _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hFz : F (((-n : ℤ) : ℝ) * M +ᵥ z) = F z`. Use `hGper.int_mul (-n) 0` as an intermediate fact. Simplify `this` using `[hG]`. Use `set z' : ℍ := ((-n : ℤ) : ℝ) * M +ᵥ z with hz'`. Establish `hre : z'.re = z.re - n * M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz', vadd_re]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `him : z'.im = z.im` using `by rw [hz', vadd_im]`. Establish `hfl1 : (n : ℝ) ≤ z.re / M` using `Int.floor_le _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hfl2 : z.re / M < n + 1` using `Int.lt_floor_add_one _`. Establish `hre0 : 0 ≤ z'.re`. Rewrite using `[hre]`. Use `(le_div_iff₀ hMpos).1 hfl1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hreM : z'.re ≤ M`. Rewrite using `[hre]`. Use `(div_lt_iff₀ hMpos).1 hfl2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzP : z' = P (z'.re, z'.im)`.
-
-Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Simplify using `only [hPdef, UpperHalfPlane.coe_mk]`. Rewrite using `[max_eq_left (him ▸ hz)]`. Conclude with `(Complex.re_add_im _).symm`. Establish `hmem : (z'.re, z'.im) ∈ Set.Icc (0 : ℝ) M ×ˢ Set.Icc t₀ (max A t₀)` using `⟨⟨hre0, hreM⟩, ⟨him ▸ hz, him ▸ (hzA.le.trans (le_max_left _ _))⟩⟩`.
-
-Use `hB₂ _ hmem` as an intermediate fact. Rewrite `this` using `[Function.comp_apply, ← hzP, hz', hFz]`. Conclude with `this.trans (le_max_right _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_slash_toReal_of_le_im (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (δ : GL (Fin 2) ℚ) {t₀ : ℝ} (ht₀ : 0 < t₀) :
@@ -134,15 +130,15 @@ theorem exists_bound_slash_toReal_of_le_im (f : ModularForm (Gamma0 N : Subgroup
   exact this.trans (le_max_right _ _)
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_bound_slash_toReal_of_le_im f τ ht₀`. Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`. Establish `hτR : 0 < (toReal τ).det.val` using `by rw [det_toReal]; exact_mod_cast hτ`. Take `⟨c, hcdef⟩ : ∃ c : ℂ, c = (((toReal τ).det.val : ℂ) ^ (k - 1))⁻¹ * (Real.sqrt (toReal τ).det.val : ℂ) ^ k` from `⟨_, rfl⟩`. Use `⟨‖c‖ * B, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : 0 < (toReal τ * borelGL z).det.val`. Rewrite using `[map_mul, Units.val_mul]`. Conclude with `mul_pos hτR (det_borelGL_pos z)`. Establish `h1` using `archLift_mul_left (k := k) (f : ℍ → ℂ) hτR (det_borelGL_pos z)`. Rewrite `h1` using `[archLift_borelGL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ((toReal τ).det.val : ℂ) ^ (k - 1) ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast hτR.ne')`. Establish `e : archLift k f (toReal τ * borelGL z) = c * ((Real.sqrt z.im : ℂ) ^ k * ((f : ℍ → ℂ) ∣[k] toReal τ) z)`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hne |>.2 h1]`. Rewrite using `[hcdef]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[liftEquiv_apply]`. Express the relevant statement in the definitionally equal form `‖adelicLift N k f (realEmb (toReal τ * borelGL z))‖ ≤ _`. Rewrite using `[adelicLift_realEmb hf hdet, e, norm_mul, norm_mul, norm_zpow, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]`. Establish `hB'` using `hB z hz`. Establish `hc0` using `norm_nonneg c`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 ≤ Real.sqrt z.im ^ k` using `zpow_nonneg (Real.sqrt_nonneg _) _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_bound_liftEquiv_toReal_mul_borelGL
     (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (τ : GL (Fin 2) ℚ)
@@ -181,7 +177,7 @@ theorem exists_bound_liftEquiv_toReal_mul_borelGL
     _ = ‖c‖ * B * Real.sqrt z.im ^ k := by ring
 
 /- English proof (translation)
-Use `hφ.apply_realEmb_mul_finiteDiagonal epsilon y (u := (finiteDiagonal ℚ 2 epsilon)⁻¹) (inv_mem (finiteDiagonal_epsilon_mem N))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, map_one, mul_one]`. Rewrite using `[this, ← map_inv, epsilon_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsWeightLevel.apply_realEmb_epsilon_mul {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ)
     (y : GL (Fin 2) ℝ) : φ (realEmb (toReal epsilon * y)) = φ (realEmb y) := by
@@ -191,7 +187,7 @@ theorem IsWeightLevel.apply_realEmb_epsilon_mul {φ : AdelicGL ℚ 2 → ℂ} (h
   rw [this, ← map_inv, epsilon_inv]
 
 /- English proof (translation)
-Use `det_toReal_epsilon` as an intermediate fact. Rewrite `this` using `[det_toReal]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_epsilon_val : (epsilon.det.val : ℚ) = -1 := by
   have := det_toReal_epsilon
@@ -199,15 +195,13 @@ theorem det_epsilon_val : (epsilon.det.val : ℚ) = -1 := by
   exact_mod_cast this
 
 /- English proof (translation)
-Use `set φ := (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ)`. Establish `hφ : IsWeightLevel N k φ` using `(liftEquiv N k f.toSlashInvariantForm).2`. Take `⟨γ, u, hu, hc⟩` from `exists_eq_finiteDiagonal_mul N c`. Use `set σ : GL (Fin 2) ℚ := γ⁻¹ * (if e then epsilon else 1) with hσ`. Establish `hval : ∀ z : ℍ, φ (realEmb ((if e then toReal epsilon else 1) * borelGL z) * finEmb ℚ 2 c) = φ (realEmb (toReal σ * borelGL z))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[hc, hφ.apply_realEmb_mul_finiteDiagonal γ _ hu]`. Use `congr 2`. Rewrite using `[hσ, map_mul, map_inv, mul_assoc]`. Apply the tactic sequence `cases e <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hσpos : 0 < (σ.det.val : ℚ)`. Take `⟨B, hB⟩` from `exists_bound_liftEquiv_toReal_mul_borelGL f σ hσpos ht₀`. Conclude with `⟨B, fun z hz => (hval z).symm ▸ hB z hz⟩`. Establish `hneg : (σ.det.val : ℚ) < 0` using `lt_of_le_of_ne (not_lt.1 hσpos) (Units.ne_zero _)`. Establish `hpos : 0 < ((epsilon * σ).det.val : ℚ)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[map_mul, Units.val_mul, det_epsilon_val]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨B, hB⟩` from `exists_bound_liftEquiv_toReal_mul_borelGL f (epsilon * σ) hpos ht₀`. Use `⟨B, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hval z, ← hφ.apply_realEmb_epsilon_mul, ← mul_assoc, ← map_mul]`.
-
-Conclude with `hB z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_liftEquiv_borelGL_mul_finEmb
     (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (c : FiniteAdelicGL ℚ 2) (e : Bool)
@@ -240,7 +234,7 @@ theorem exists_bound_liftEquiv_borelGL_mul_finEmb
     exact hB z hz
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (finEmb ℚ 2 b) (realEmb c), ← realEmb_mul_finEmb_comm c b]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagonal_mul_realEmb_mul_finEmb_mul (δ : GL (Fin 2) ℚ) (a c : GL (Fin 2) ℝ)
     (b d : FiniteAdelicGL ℚ 2) :
@@ -252,7 +246,7 @@ theorem diagonal_mul_realEmb_mul_finEmb_mul (δ : GL (Fin 2) ℚ) (a c : GL (Fin
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `e : realEmb (X * kGL w hw) * finEmb ℚ 2 c = realEmb X * finEmb ℚ 2 c * realEmb (kGL w hw)`. Rewrite using `[map_mul, mul_assoc, realEmb_mul_finEmb_comm (kGL w hw) c, ← mul_assoc]`. Establish `hn : ‖w / (‖w‖ : ℂ)‖ = 1`. Rewrite using `[norm_div, Complex.norm_real, Real.norm_of_nonneg (norm_nonneg _), div_self (norm_ne_zero_iff.2 hw)]`. Rewrite using `[e, hφ.right_kGL, norm_mul, norm_zpow, hn, _root_.one_zpow, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsWeightLevel.norm_apply_realEmb_mul_kGL_mul_finEmb {φ : AdelicGL ℚ 2 → ℂ}
     (hφ : IsWeightLevel N k φ) (X : GL (Fin 2) ℝ) {w : ℂ} (hw : w ≠ 0) (c : FiniteAdelicGL ℚ 2) :
@@ -264,11 +258,11 @@ theorem IsWeightLevel.norm_apply_realEmb_mul_kGL_mul_finEmb {φ : AdelicGL ℚ 2
   rw [e, hφ.right_kGL, norm_mul, norm_zpow, hn, _root_.one_zpow, one_mul]
 
 /- English proof (translation)
-Establish `hpos : 0 < (-(starRingEnd ℂ) (z : ℂ)).im` using `by simpa using z.im_pos`. Use `⟨⟨-(starRingEnd ℂ) (z : ℂ), hpos⟩, by change (-(starRingEnd ℂ) (z : ℂ)).im = _; simp, ?_⟩` and prove the remaining obligations. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, coe_borelGL, coe_kGL, coe_toReal_epsilon]`. Establish `h1 : UpperHalfPlane.im ⟨-(starRingEnd ℂ) (z : ℂ), hpos⟩ = z.im`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(-(starRingEnd ℂ) (z : ℂ)).im = _`. Simplify using the standard rewrite rules. Establish `h2 : UpperHalfPlane.re ⟨-(starRingEnd ℂ) (z : ℂ), hpos⟩ = -z.re`. Express the relevant statement in the definitionally equal form `(-(starRingEnd ℂ) (z : ℂ)).re = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_borelGL_mul_kGL_mul_epsilon (z : ℍ) (r : ℝ) (hr : (r : ℂ) ≠ 0) :
     ∃ z' : ℍ, z'.im = z.im ∧
@@ -286,15 +280,13 @@ theorem exists_borelGL_mul_kGL_mul_epsilon (z : ℍ) (r : ℝ) (hr : (r : ℂ) �
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hYpos : 0 < Y` using `ht₀.trans_le hY`. Establish `hH0 : 0 < H` using `zero_lt_one.trans_le hH`. Establish `hC : 0 ≤ C`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[pow_pos hH0 4]`. Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Simplify using `only [Int.natAbs_natCast, zpow_natCast]`. Establish `hs : Real.sqrt Y ≤ Real.sqrt C * H ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_mul hC, show H ^ 4 = (H ^ 2) ^ 2 by ring, Real.sqrt_sq (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (Real.sqrt_nonneg _) (le_max_right _ _) _) (by positivity)`. Use `_ ≤ (max 1 (Real.sqrt t₀)⁻¹) ^ m * (max 1 (Real.sqrt C)) ^ m * H ^ (2 * m) := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `one_le_pow₀ (le_max_left _ _)`. Simplify using `only [Int.natAbs_neg, Int.natAbs_natCast, _root_.zpow_neg, zpow_natCast]`. Establish `hst : 0 < Real.sqrt t₀` using `Real.sqrt_pos.2 ht₀`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, mul_one]`.
-
-Conclude with `pow_le_pow_left₀ (inv_nonneg.2 hst.le) (le_max_right _ _) _`. Use `_ ≤ (max 1 (Real.sqrt t₀)⁻¹) ^ m * (max 1 (Real.sqrt C)) ^ m * H ^ (2 * m) := by gcongr`. Conclude with `one_le_pow₀ (le_max_left _ _)`. Conclude with `one_le_pow₀ hH`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_zpow_le_of_le_of_le {Y t₀ C H : ℝ} (ht₀ : 0 < t₀) (hY : t₀ ≤ Y) (hYC : Y ≤ C * H ^ 4)
     (hH : 1 ≤ H) (k : ℤ) :
@@ -335,25 +327,21 @@ theorem sqrt_zpow_le_of_le_of_le {Y t₀ C H : ℝ} (ht₀ : 0 < t₀) (hY : t�
           · exact one_le_pow₀ hH
 
 /- English proof (translation)
-Use `set φ := (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) with hφdef`. Establish `hφ : IsWeightLevel N k φ` using `(liftEquiv N k f.toSlashInvariantForm).2`. Take `⟨t₀, ht₀, hred⟩` from `Reduction.exists_reduced (K := ℚ)`. Take `⟨C, hC⟩` from `exists_finset_cover N`. Establish `hB : ∀ p : C × Bool, ∃ B : ℝ, ∀ z : ℍ, t₀ ≤ z.im → ‖φ (realEmb ((if p.2 then toReal epsilon else 1) * borelGL z) * finEmb ℚ 2 p.1)‖ ≤ B * Real.sqrt z.im ^ k` using `fun p => exists_bound_liftEquiv_borelGL_mul_finEmb f p.1 p.2 ht₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose B hBp using hB`. Use `set B₀ : ℝ := ∑ p, |B p| with hB₀def`. Establish `hB₀0 : 0 ≤ B₀` using `Finset.sum_nonneg fun p _ => abs_nonneg _`. Establish `hB₀ : ∀ c ∈ C, ∀ (e : Bool) (z : ℍ), t₀ ≤ z.im → ‖φ (realEmb ((if e then toReal epsilon else 1) * borelGL z) * finEmb ℚ 2 c)‖ ≤ B₀ * Real.sqrt z.im ^ k`. Introduce `c hc e z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(hBp (⟨c, hc⟩, e) z hz).trans (mul_le_mul_of_nonneg_right ?_ (zpow_nonneg (Real.sqrt_nonneg _) _))` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun p => |B p|) (fun p _ => abs_nonneg _) (Finset.mem_univ _))`. Use `set C4 : ℝ := (∏ w : InfinitePlace ℚ, (2 : ℝ) ^ w.mult) * (∏ w : InfinitePlace ℚ, (√((2 : ℕ) : ℝ) * ((2 : ℕ) : ℝ)) ^ w.mult) ^ 2 with hC4`. Use `⟨B₀ * ((max 1 (Real.sqrt t₀)⁻¹) ^ k.natAbs * (max 1 (Real.sqrt C4)) ^ k.natAbs), 2 * k.natAbs, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, hb, κ, hκ, heq, hr⟩` from `hred 2 g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr01` using `hr 0 1 rfl`. Take `⟨δ, z, r, hr0, hzim, w, hw, hbdec⟩` from `exists_eq_diagonal_mul_borelGL_mul hb`. Establish `hratio` using `adeleAbs_div_le_height_pow_four hb hκ heq`. Rewrite `hratio` using `[← hzim]`. Establish `hd : 0 < Reduction.adeleAbs ((b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← IsUnit.unit_spec (Reduction.isUnit_apply_self_of_mem_adelicBorel hb 1), Reduction.adeleAbs_units]`. Conclude with `(GroundTheory.Global.IdeleGroup.ideleModule ℚ _).2`. Establish `hY0 : t₀ ≤ z.im`. Rewrite using `[hzim, le_div_iff₀ hd]`. Conclude with `hr01`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : ‖φ g‖ ≤ B₀ * Real.sqrt z.im ^ k`. Establish `h1 : φ g = φ (b * κ)`. Rewrite using `[← heq]`. Conclude with `(hφ.isLeftInvariant γ g).symm`. Rewrite using `[h1, hbdec, ← realEmb_realPart_mul_finEmb κ, diagonal_mul_realEmb_mul_finEmb_mul, hφ.isLeftInvariant]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hcC, hcu⟩` from `hC (w * (prodEquiv ℚ 2 κ).2) (mul_mem hw (finitePart_mem_integralFiniteGL hκ))`. Establish `e2 : finEmb ℚ 2 (w * (prodEquiv ℚ 2 κ).2) = finEmb ℚ 2 c * finEmb ℚ 2 (c⁻¹ * (w * (prodEquiv ℚ 2 κ).2))`. Rewrite using `[← map_mul, mul_inv_cancel_left]`. Rewrite using `[e2, ← mul_assoc, hφ.right_level _ _ hcu]`. Take `⟨h1o, h2o, h3o⟩` from `realPart_orthogonal hκ`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w', hw'0, -, hK⟩` from `exists_eq_kGL_of_orthogonal (realPart κ) h1o h2o h3o`. Break down `hK with hK | hK` into its components or cases. Rewrite using `[hK, mul_assoc, kGL_mul, hφ.norm_apply_realEmb_mul_kGL_mul_finEmb]`. Simplify using `using hB₀ c hcC false z hY0`. Take `⟨z', hz'im, hz'eq⟩` from `exists_borelGL_mul_kGL_mul_epsilon z r hr0`.
-
-Rewrite using `[hK, ← mul_assoc, hz'eq, mul_assoc, kGL_mul, hφ.norm_apply_realEmb_mul_kGL_mul_finEmb]`. Use `hB₀ c hcC true z' (hz'im ▸ hY0)` as an intermediate fact. Rewrite `this` using `[hz'im]`. Simplify using `using this`. Use `hval.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (sqrt_zpow_le_of_le_of_le ht₀ hY0 hratio (one_le_height g) k) hB₀0`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasModerateGrowth_liftEquiv_modularForm
     (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :

@@ -46,7 +46,7 @@ def IsFib (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (Q : 
   IsGrpPullback Q.A D.P.A (TF (R := R) F).hom Φ ∧ LBIso Q.L (D.P.L.pull Φ) ∧ Q.g = D.P.g
 
 /- English proof (translation)
-Take `⟨P', φ, hφ, hg, hm, ht⟩` from `hB _ _ (TF (R := R) F).hom D.P`. Use `⟨P', φ, ⟨hφ, fun T x y x₀ y₀ hx hy => ?_⟩, LBIso.symm ht, hg⟩` and prove the remaining obligations. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_isFib (hB : PolBaseChangeSt) (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] :
     ∃ Q Φ, IsFib D F Q Φ := by

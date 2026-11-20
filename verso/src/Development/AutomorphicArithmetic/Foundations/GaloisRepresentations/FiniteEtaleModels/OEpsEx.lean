@@ -1,25 +1,21 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.FiniteEtaleModels.LiftUnit
 
 /- English proof (translation)
-Introduce `A _ _ _ 𝔟₁ 𝔟₂ a₁ a₂ M₁ M₂ t hpos hM hle h₁ h₂`. Unfold `UpperTheory.Gal.Int.Geo.IsGen at h₁ h₂`. Establish `hM1 : (M₁ : A) ≠ 0` using `Nat.cast_ne_zero.mpr hpos.ne'`. Establish `hMc : (M₁ : A) = (t : A) * (M₂ : A)` using `by rw [hM]; push_cast; ring`. Use `set I₁ := Ideal.span {a₁} ⊔ Ideal.span {(M₁ : A)} with hI₁`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI₁0 : I₁ ≠ ⊥`. Introduce `h`. Establish `hmem : (M₁ : A) ∈ I₁` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hM1 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h𝔟0 : 𝔟₁ ≠ ⊥`. Introduce `h`. Rewrite `h₁` using `[h, Ideal.mul_bot, eq_comm, Ideal.span_singleton_eq_bot]`. Conclude with `hM1 h₁`. Establish `hkey : ∀ {J : Ideal A}, J * 𝔟₂ ≤ Ideal.span {(M₁ : A)} → J ≤ I₁`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `J hJ`. Establish `h3 : J * 𝔟₁ ≤ I₁ * 𝔟₁`. Rewrite using `[h₁]`. Conclude with `le_trans (Ideal.mul_mono_right hle) hJ`. Rewrite `h3`, the goal using `[← Ideal.dvd_iff_le]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_dvd_mul_iff_right h𝔟0).mp h3`. Establish `hta : (t : A) * a₂ ∈ I₁`. Establish `hsp : Ideal.span {(t : A) * a₂} ≤ I₁`. Apply `hkey` to reduce the goal to its premises. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, mul_assoc, hMc, ← Ideal.span_singleton_mul_span_singleton, ← h₂]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mono_right (Ideal.mul_mono_left le_sup_left)`. Conclude with `hsp (Ideal.mem_span_singleton_self _)`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hta`. Take `⟨ε, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨ε, ⟨-d, by rw [← hyz]; ring⟩, ?_⟩` and prove the remaining obligations. Establish `hJK : I₁ * Ideal.span {ε} ⊔ Ideal.span {(M₁ : A)} = Ideal.span {(t : A)} * (Ideal.span {a₂} ⊔ Ideal.span {(M₂ : A)})`. Rewrite using `[Ideal.mul_sup, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton, ← hMc, hI₁, Ideal.sup_mul, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton]`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le (sup_le ?_ ?_) le_sup_right` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `hae : a₁ * ε = (t : A) * a₂ - d * M₁` using `by rw [← hyz]; ring`. Rewrite using `[hae]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`.
-
-Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← hyz]`. Use `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mem_sup_left ?_)) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))` and prove the remaining obligations. Rewrite using `[mul_comm]`.
-
-Conclude with `Ideal.mem_span_singleton_self _`. Apply `mul_left_cancel₀ hI₁0` to reduce the goal to its premises. Rewrite using `[h₁, ← mul_assoc, Ideal.mul_sup, h₁, hJK, mul_assoc, h₂, Ideal.span_singleton_mul_span_singleton, ← hMc]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.O.epsEx :
     UpperTheory.Gal.FiniteEtaleModels.O.EpsEx := by

@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.GaloisFromAdm
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 D.host.E)} ≠ 0`. Simplify using `using hl`. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem placesOver_finite (D : D7) (l : ℕ) (hl : l ≠ 0) : (placesOver D.host.E l).Finite := by
   have h0 : Ideal.span {((l : ℕ) : 𝓞 D.host.E)} ≠ 0 := by
@@ -16,9 +16,9 @@ theorem placesOver_finite (D : D7) (l : ℕ) (hl : l ≠ 0) : (placesOver D.host
   exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv
 
 /- English proof (translation)
-Introduce `D h i a ha π hc hr`. Take `⟨ρ, hcont, hss, haway, -⟩` from `(h i).1 a ha π hc hr`. Use `⟨ρ, hcont, hss, ?_⟩` and prove the remaining obligations. Establish `hfin` using `placesOver_finite D (D.nd.l i) (Fact.out : (D.nd.l i).Prime).ne_zero`. Use `filter_upwards [D.naut.locG_unr_ae π, hfin.eventually_cofinite_notMem] with w hu hw B φ hB hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.naut.wdOf_frob i ρ w hw hcont (by rw [(haway w hw).1]; exact (D.naut.unr_tw _ _).2 hu) B φ hB hφ, (haway w hw).1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, SumRepresentations.adm2 D → GlobalTheory.BlockComplement.GaloisRepsCusp D := by
   intro D h i a ha π hc hr

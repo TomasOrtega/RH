@@ -111,7 +111,7 @@ def numL (num : Multiset A → ℝ) (d : ℕ) : MvPolynomial A ℝ →ₗ[ℝ] �
   (MvPolynomial.basisMonomials A ℝ).constr ℝ fun m => if m.degree = d then num (Finsupp.toMultiset m) else 0
 
 /- English proof (translation)
-Establish `h : ({a, b} : Multiset ℝ) = a ::ₘ b ::ₘ 0` using `rfl`. Simplify using `only [h, polar, Multiset.powerset_cons, Multiset.powerset_zero]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example (a b : ℝ) : polar (fun x : ℝ => x ^ 2) {a, b} = a * b := by
   have h : ({a, b} : Multiset ℝ) = a ::ₘ b ::ₘ 0 := rfl
@@ -120,7 +120,7 @@ example (a b : ℝ) : polar (fun x : ℝ => x ^ 2) {a, b} = a * b := by
   ring
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.X a ^ d : MvPolynomial A ℝ) = MvPolynomial.basisMonomials A ℝ (Finsupp.single a d)`. Simplify using `[MvPolynomial.X_pow_eq_monomial]`. Rewrite using `[h, numL, Module.Basis.constr_basis]`. Simplify using `[Multiset.nsmul_singleton]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem numL_X_pow (num : Multiset A → ℝ) (d : ℕ) (a : A) :
     numL num d (MvPolynomial.X a ^ d) = num (Multiset.replicate d a) := by
@@ -130,9 +130,9 @@ theorem numL_X_pow (num : Multiset A → ℝ) (d : ℕ) (a : A) :
   simp [Multiset.nsmul_singleton]
 
 /- English proof (translation)
-Rewrite using `[P.as_sum, map_sum]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `h1 : m.degree = e`. Use `hP (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h2 : MvPolynomial.monomial m (P.coeff m) = P.coeff m • MvPolynomial.basisMonomials A ℝ m`. Simplify using `[MvPolynomial.smul_monomial]`. Rewrite using `[h2, map_smul, numL, Module.Basis.constr_basis, if_neg (h1 ▸ he), smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem numL_homog (num : Multiset A → ℝ) (d e : ℕ) (he : e ≠ d) (P : MvPolynomial A ℝ) (hP : P.IsHomogeneous e) :
     numL num d P = 0 := by
@@ -179,7 +179,7 @@ def realExample (Tau : Type) (N g : ℕ) : ArIn Tau N g Unit where
   whole a R _ _ := if a 2 then R else 1
 
 /- English proof (translation)
-Rewrite using `[arDeg, LinearMap.sum_apply, Fintype.sum_unique]`. Express the relevant statement in the definitionally equal form `numL _ _ (MvPolynomial.rename _ _) = _`. Rewrite using `[map_pow, MvPolynomial.rename_X, numL_X_pow]`. Simplify using `[realExample, ind, -Multiset.replicate_succ]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem realToy_arDeg {Tau : Type} [Fintype Tau] {N g : ℕ} (x : Tau × Fin N) (S : Finset ℕ) (R : ℝ) :
     (realExample Tau N g).arDeg S R (MvPolynomial.X x ^ (Formalism.DegreeFormula.dimFl Tau N + 1)) =
@@ -190,7 +190,7 @@ theorem realToy_arDeg {Tau : Type} [Fintype Tau] {N g : ℕ} (x : Tau × Fin N) 
   simp [realExample, ind, -Multiset.replicate_succ]
 
 /- English proof (translation)
-Rewrite using `[arDeg, LinearMap.sum_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => numL_homog _ _ _ hd _ hP.rename_isHomogeneous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arDeg_homog (S : Finset ℕ) (R : ℝ) (P : MvPolynomial (DV.Rt Tau N) ℝ) (d : ℕ)
     (hd : d ≠ Formalism.DegreeFormula.dimFl Tau N + 1) (hP : P.IsHomogeneous d) : I.arDeg S R P = 0 := by
@@ -198,9 +198,9 @@ theorem arDeg_homog (S : Finset ℕ) (R : ℝ) (P : MvPolynomial (DV.Rt Tau N) �
   exact Finset.sum_eq_zero fun c _ => numL_homog _ _ _ hd _ hP.rename_isHomogeneous
 
 /- English proof (translation)
-Establish `e : Function.update (ind S) p true = ind (insert p S)`. Apply the tactic sequence `funext q; by_cases h : q = p <;> simp [ind, h]`. Rewrite using `[arMix, arDeg, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => congrArg (numL _ _) ?_` and prove the remaining obligations. Establish `: (I.mixEv S R p c).comp (DV.tagHT Tau N) = MvPolynomial.rename fun x => I.root (ind (insert p S)) R x c`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `x : 1`. Simplify using `[mixEv, DV.tagHT, e]`. Conclude with `congrArg (fun f => f P) this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arMix_HT (S : Finset ℕ) (R : ℝ) (p : ℕ) (P : MvPolynomial (DV.Rt Tau N) ℝ) :
     I.arMix S R p (DV.tagHT Tau N P) = I.arDeg (insert p S) R P := by
@@ -213,9 +213,9 @@ theorem arMix_HT (S : Finset ℕ) (R : ℝ) (p : ℕ) (P : MvPolynomial (DV.Rt T
   exact congrArg (fun f => f P) this
 
 /- English proof (translation)
-Establish `e : Function.update (ind S) p false = ind (S.erase p)`. Apply the tactic sequence `funext q; by_cases h : q = p <;> simp [ind, h]`. Rewrite using `[arMix, arDeg, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => congrArg (numL _ _) ?_` and prove the remaining obligations. Establish `: (I.mixEv S R p c).comp (DV.tagDR Tau N) = MvPolynomial.rename fun x => I.root (ind (S.erase p)) R x c`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `x : 1`. Simplify using `[mixEv, DV.tagDR, e]`. Conclude with `congrArg (fun f => f P) this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arMix_DR (S : Finset ℕ) (R : ℝ) (p : ℕ) (P : MvPolynomial (DV.Rt Tau N) ℝ) :
     I.arMix S R p (DV.tagDR Tau N P) = I.arDeg (S.erase p) R P := by
@@ -290,7 +290,7 @@ def GlobSt.projLine {M : ℕ → Type} (m : ∀ p, M p) : GlobSt M where
   limRA d := 0 ≤ d
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_refl (0 : ℚ), lt_irrefl (0 : ℚ)⟩`.
+Supply the required witnesses or components.
 -/
 example {M : ℕ → Type} (m : ∀ p, M p) : (GlobSt.projLine m).nefFibM (0 : ℚ) ∧ ¬ (GlobSt.projLine m).ampleGen (0 : ℚ) :=
   ⟨le_refl (0 : ℚ), lt_irrefl (0 : ℚ)⟩
@@ -367,7 +367,7 @@ def mpEquiv (p : ℕ) [h : Fact p.Prime] (la : PlL D p) : (padOf s L G M F I).Mp
   right_inv _ := rfl
 
 /- English proof (translation)
-Simplify using `only [normDet, dif_pos hp, phi, Finset.sum_sub_distrib]`. Rewrite using `[_root_.mul_assoc, ← Real.exp_add, add_sub_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem normDet_false (p : ℕ) (hp : p.Prime) (τ : D.what₂.Tau) (y : Pt s) (a : Qb) :
     normDet s p false τ y a = normDet s p true τ y a * Real.exp (∑ i, phi s p y (τ, i)) := by

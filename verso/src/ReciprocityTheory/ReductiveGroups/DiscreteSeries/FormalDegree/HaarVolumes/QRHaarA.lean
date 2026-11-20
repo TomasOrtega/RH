@@ -18,7 +18,7 @@ def qrDom (N : ℕ) : Set (UNgrp N × TriCo N) := Set.univ ×ˢ triPos N
 def glSet (N : ℕ) : Set (Fin N → Fin N → ℂ) := {Z | (Matrix.of Z).det ≠ 0}
 
 /- English proof (translation)
-Unfold `triPos`. Simplify using `only [Set.ofPred_forall]`. Conclude with `MeasurableSet.iInter fun j => measurableSet_lt measurable_const ((measurable_pi_apply j).comp measurable_fst)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurableSet_triPos : MeasurableSet (triPos N) := by
   unfold triPos
@@ -27,34 +27,34 @@ theorem measurableSet_triPos : MeasurableSet (triPos N) := by
     measurableSet_lt measurable_const ((measurable_pi_apply j).comp measurable_fst)
 
 /- English proof (translation)
-The claim follows from `MeasurableSet.univ.prod measurableSet_triPos`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_qrDom : MeasurableSet (qrDom N) :=
   MeasurableSet.univ.prod measurableSet_triPos
 
 /- English proof (translation)
-The claim follows from `show Continuous fun Z : Matrix (Fin N) (Fin N) ℂ => Z.det from continuous_id.matrix_det`.
+A detailed English derivation is pending.
 -/
 theorem continuous_det_of : Continuous fun Z : Fin N → Fin N → ℂ => (Matrix.of Z).det :=
   show Continuous fun Z : Matrix (Fin N) (Fin N) ℂ => Z.det from continuous_id.matrix_det
 
 /- English proof (translation)
-The claim follows from `(isOpen_ne_fun continuous_det_of continuous_const).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_glSet : MeasurableSet (glSet N) :=
   (isOpen_ne_fun continuous_det_of continuous_const).measurableSet
 
 /- English proof (translation)
-The claim follows from `qrMap_continuous.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_qrMap : Measurable (qrMap (N := N)) := qrMap_continuous.measurable
 
 def qrW (p : qrDom N) : Fin N → Fin N → ℂ := qrMap p.1
 
 /- English proof (translation)
-Rewrite using `[show Set.range (qrW (N := N)) = qrMap '' qrDom N by`. Use extensionality with `Z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨p.1, p.2, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨⟨p, hp⟩, rfl⟩]`. Conclude with `qrMap_image`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_qrW : Set.range (qrW (N := N)) = glSet N := by
   rw [show Set.range (qrW (N := N)) = qrMap '' qrDom N by
@@ -64,11 +64,9 @@ theorem range_qrW : Set.range (qrW (N := N)) = glSet N := by
   exact qrMap_image
 
 /- English proof (translation)
-Introduce `p q h`. Conclude with `Subtype.ext (qrMap_injOn p.2 q.2 h)`. Use `measurable := measurable_qrMap.comp measurable_subtype_coe`. Use the proof step `measurableSet_image' := by`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : MeasurableSet (Subtype.val '' s : Set (UNgrp N × TriCo N))` using `(MeasurableEmbedding.subtype_coe measurableSet_qrDom).measurableSet_image' hs`. Establish `h2 : qrW '' s = qrMap '' (Subtype.val '' s)`. Rewrite using `[Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[h2]`.
-
-Use `qrMap_measurableSet_image _ h1 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, _, rfl⟩`. Conclude with `p.2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_qrW : MeasurableEmbedding (qrW (N := N)) where
   injective := by
@@ -91,33 +89,31 @@ def nuW (N : ℕ) : Measure (qrDom N) := (gmMeas N).comap qrW
 def nuQR (N : ℕ) : Measure (UNgrp N × TriCo N) := (nuW N).map Subtype.val
 
 /- English proof (translation)
-Rewrite using `[nuW, measurableEmbedding_qrW.map_comap, range_qrW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_qrW_nuW : (nuW N).map qrW = (gmMeas N).restrict (glSet N) := by
   rw [nuW, measurableEmbedding_qrW.map_comap, range_qrW]
 
 /- English proof (translation)
-Rewrite using `[nuQR, Measure.map_map measurable_qrMap measurable_subtype_coe]`. Conclude with `map_qrW_nuW`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_qrMap_nuQR : (nuQR N).map qrMap = (gmMeas N).restrict (glSet N) := by
   rw [nuQR, Measure.map_map measurable_qrMap measurable_subtype_coe]
   exact map_qrW_nuW
 
 /- English proof (translation)
-Rewrite using `[nuQR, Measure.map_apply measurable_subtype_coe hs, nuW, measurableEmbedding_qrW.comap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nuQR_apply (s : Set (UNgrp N × TriCo N)) (hs : MeasurableSet s) :
     nuQR N s = gmMeas N (qrW '' (Subtype.val ⁻¹' s)) := by
   rw [nuQR, Measure.map_apply measurable_subtype_coe hs, nuW, measurableEmbedding_qrW.comap_apply]
 
 /- English proof (translation)
-Set `φW : qrDom N → qrDom N` to `fun p => ⟨φ p.1, hφW p.1 p.2⟩`. Establish `hφWm : Measurable φW` using `(hφ.comp measurable_subtype_coe).subtype_mk`. Establish `key : (nuW N).map φW = nuW N`. Establish `h1 : ((nuW N).map φW).map qrW = (nuW N).map qrW`. Rewrite using `[Measure.map_map measurableEmbedding_qrW.measurable hφWm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : qrW ∘ φW = ψ ∘ qrW`. Use function extensionality and compare the values at `p`. Conclude with `hcomm p.1 p.2`. Rewrite using `[hc, ← Measure.map_map hψ measurableEmbedding_qrW.measurable, map_qrW_nuW]`. Use `conv_lhs => rw [← hψG]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Measure.restrict_map hψ measurableSet_glSet, hψm]`. Establish `h2` using `congrArg (fun m => m.comap qrW) h1`. Simplify using `only [measurableEmbedding_qrW.comap_map] at h2`. Conclude with `h2`. Rewrite using `[nuQR, Measure.map_map hφ measurable_subtype_coe]`.
-
-Establish `: φ ∘ Subtype.val = Subtype.val ∘ φW` using `rfl`. Rewrite using `[this, ← Measure.map_map measurable_subtype_coe hφWm, key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuQR_map_eq (φ : UNgrp N × TriCo N → UNgrp N × TriCo N) (hφ : Measurable φ)
     (hφW : ∀ p ∈ qrDom N, φ p ∈ qrDom N) (ψ : (Fin N → Fin N → ℂ) → (Fin N → Fin N → ℂ))
@@ -142,15 +138,15 @@ theorem nuQR_map_eq (φ : UNgrp N × TriCo N → UNgrp N × TriCo N) (hφ : Meas
   rw [this, ← Measure.map_map measurable_subtype_coe hφWm, key]
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).mp (k : (Matrix (Fin N) (Fin N) ℂ)ˣ).isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_toM_ne_zero (k : UNgrp N) : (toM k).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).mp (k : (Matrix (Fin N) (Fin N) ℂ)ˣ).isUnit).ne_zero
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular]`. Simplify using `[upMat]`. Introduce `a b hba`. Establish `h1 : a ≠ b` using `ne_of_gt hba`. Establish `h2 : ¬ a < b` using `not_lt.mpr (le_of_lt hba)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[upMat, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_upMat (t : TriCo N) : (upMat t).det = ∏ j, ((t.1 j : ℝ) : ℂ) := by
   rw [Matrix.det_of_isUpperTriangular]
@@ -161,7 +157,7 @@ theorem det_upMat (t : TriCo N) : (upMat t).det = ∏ j, ((t.1 j : ℝ) : ℂ) :
     simp [upMat, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[det_upMat]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun j _ => by`. Conclude with `(ne_of_gt (ht j))` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_upMat_ne_zero (t : TriCo N) (ht : t ∈ triPos N) : (upMat t).det ≠ 0 := by
   rw [det_upMat]
@@ -169,9 +165,7 @@ theorem det_upMat_ne_zero (t : TriCo N) (ht : t ∈ triPos N) : (upMat t).det �
     exact_mod_cast (ne_of_gt (ht j))
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [upMat]`. Use `split_ifs with h1 h2`. Conclude with `Complex.continuous_ofReal.comp ((continuous_apply a).comp continuous_fst)`. Conclude with `(continuous_apply _).comp continuous_snd`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_upMat : Continuous (upMat (N := N)) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -182,7 +176,7 @@ theorem continuous_upMat : Continuous (upMat (N := N)) := by
   · exact continuous_const
 
 /- English proof (translation)
-Use `Continuous.prodMk (continuous_pi fun j => ?_) (continuous_pi fun ab => ?_)` and prove the remaining obligations. Conclude with `Complex.continuous_re.comp ((continuous_apply j).comp (continuous_apply j))`. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_triCoOf : Continuous (triCoOf (N := N)) := by
   refine Continuous.prodMk (continuous_pi fun j => ?_) (continuous_pi fun ab => ?_)
@@ -192,13 +186,13 @@ theorem continuous_triCoOf : Continuous (triCoOf (N := N)) := by
 def triR (t0 : TriCo N) (t : TriCo N) : TriCo N := triCoOf (upMat t * upMat t0)
 
 /- English proof (translation)
-The claim follows from `continuous_triCoOf.comp (continuous_upMat.matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_triR (t0 : TriCo N) : Continuous (triR t0) :=
   continuous_triCoOf.comp (continuous_upMat.matrix_mul continuous_const)
 
 /- English proof (translation)
-Establish `hc : Continuous fun Z : Fin N → Fin N → ℂ => Matrix.of.symm (g * Matrix.of Z)`. Conclude with `(continuous_const.matrix_mul continuous_id : Continuous fun Z : Matrix (Fin N) (Fin N) ℂ => g * Z)`. Conclude with `hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_mulLeft_mat (g : Matrix (Fin N) (Fin N) ℂ) :
     Measurable fun Z : Fin N → Fin N → ℂ => Matrix.of.symm (g * Matrix.of Z) := by
@@ -207,7 +201,7 @@ theorem measurable_mulLeft_mat (g : Matrix (Fin N) (Fin N) ℂ) :
   exact hc.measurable
 
 /- English proof (translation)
-Establish `hc : Continuous fun Z : Fin N → Fin N → ℂ => Matrix.of.symm (Matrix.of Z * g)`. Conclude with `(continuous_id.matrix_mul continuous_const : Continuous fun Z : Matrix (Fin N) (Fin N) ℂ => Z * g)`. Conclude with `hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_mulRight_mat (g : Matrix (Fin N) (Fin N) ℂ) :
     Measurable fun Z : Fin N → Fin N → ℂ => Matrix.of.symm (Matrix.of Z * g) := by
@@ -216,9 +210,9 @@ theorem measurable_mulRight_mat (g : Matrix (Fin N) (Fin N) ℂ) :
   exact hc.measurable
 
 /- English proof (translation)
-Use `nuQR_map_eq _ ((measurable_const_mul k0).comp measurable_fst |>.prodMk measurable_snd) (fun p hp => ⟨trivial, hp.2⟩) (fun Z => Matrix.of.symm (toM k0 * Matrix.of Z)) (measurable_mulLeft_mat _) (gmMeas_map_mul_left _ (det_toM_ne_zero k0)) ?_ ?_` and prove the remaining obligations. Use extensionality with `Z`. Simplify using `only [glSet, Set.mem_preimage, Set.mem_ofPred_eq]`. Express the relevant statement in the definitionally equal form `(toM k0 * Matrix.of Z).det ≠ 0 ↔ _`. Rewrite using `[Matrix.det_mul]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => right_ne_zero_of_mul h, fun h => mul_ne_zero (det_toM_ne_zero k0) h⟩`. Introduce `p _`. Simplify using `only [qrMap]`. Express the relevant statement in the definitionally equal form `Matrix.of.symm (toM (k0 * p.1) * upMat p.2) = Matrix.of.symm (toM k0 * (toM p.1 * upMat p.2))`. Rewrite using `[← Matrix.mul_assoc]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -238,13 +232,13 @@ theorem nuQR_map_left (k0 : UNgrp N) :
     rw [← Matrix.mul_assoc]; rfl
 
 /- English proof (translation)
-Use `nuQR_map_eq _ (measurable_fst.prodMk ((continuous_triR t0).measurable.comp measurable_snd)) ?_ (fun Z => Matrix.of.symm (Matrix.of Z * upMat t0)) (measurable_mulRight_mat _) (gmMeas_map_mul_right _ (det_upMat_ne_zero t0 h0)) ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Use `⟨trivial, fun j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 < (triR t0 p.2).1 j`. Rewrite using `[triR, (upMat_triCoOf_mul p.2 t0).2 j]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_pos (hp.2 j) (h0 j)`. Use extensionality with `Z`. Simplify using `only [glSet, Set.mem_preimage, Set.mem_ofPred_eq]`. Express the relevant statement in the definitionally equal form `(Matrix.of Z * upMat t0).det ≠ 0 ↔ _`. Rewrite using `[Matrix.det_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => left_ne_zero_of_mul h, fun h => mul_ne_zero h (det_upMat_ne_zero t0 h0)⟩`. Introduce `p _`. Simplify using `only [qrMap, triR]`. Rewrite using `[(upMat_triCoOf_mul p.2 t0).1]`. Express the relevant statement in the definitionally equal form `Matrix.of.symm (toM p.1 * (upMat p.2 * upMat t0)) = Matrix.of.symm ((toM p.1 * upMat p.2) * upMat t0)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem nuQR_map_right (t0 : TriCo N) (h0 : t0 ∈ triPos N) :
     (nuQR N).map (fun p : UNgrp N × TriCo N => (p.1, triR t0 p.2)) = nuQR N := by
@@ -270,7 +264,7 @@ theorem nuQR_map_right (t0 : TriCo N) (h0 : t0 ∈ triPos N) :
 def kap (N : ℕ) : Measure (TriCo N) := (nuQR N).map Prod.snd
 
 /- English proof (translation)
-Rewrite using `[kap, Measure.map_apply measurable_snd measurableSet_triPos.compl, nuQR_apply _ (measurable_snd measurableSet_triPos.compl)]`. Establish `: (Subtype.val ⁻¹' (Prod.snd ⁻¹' (triPos N)ᶜ) : Set (qrDom N)) = ∅` using `Set.eq_empty_iff_forall_notMem.mpr fun p hp => hp p.2.2`. Rewrite using `[this, Set.image_empty, measure_empty]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_compl : kap N (triPos N)ᶜ = 0 := by
   rw [kap, Measure.map_apply measurable_snd measurableSet_triPos.compl,
@@ -280,9 +274,9 @@ theorem kap_compl : kap N (triPos N)ᶜ = 0 := by
   rw [this, Set.image_empty, measure_empty]
 
 /- English proof (translation)
-Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Rewrite using `[kap, Measure.map_apply measurable_snd hKm, nuQR_apply _ (measurable_snd hKm)]`. Use `lt_of_le_of_lt (measure_mono ?_) (gmMeas_compact_lt_top (qrMap '' (Set.univ ×ˢ K)) ((isCompact_univ.prod hK).image qrMap_continuous) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `⟨p.1, ⟨trivial, hp⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Establish `: qrMap p ∈ qrMap '' (Set.univ ×ˢ triPos N)` using `⟨p, ⟨trivial, hKs hp.2⟩, rfl⟩`. Rewrite `this` using `[qrMap_image]`. Conclude with `this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_compact [CompactSpace (UNgrp N)] (K : Set (TriCo N)) (hK : IsCompact K)
     (hKs : K ⊆ triPos N) : kap N K < ⊤ := by
@@ -298,7 +292,7 @@ theorem kap_compact [CompactSpace (UNgrp N)] (K : Set (TriCo N)) (hK : IsCompact
     exact this
 
 /- English proof (translation)
-Establish `hm : Measurable fun p : UNgrp N × TriCo N => (p.1, triR t0 p.2)` using `measurable_fst.prodMk ((continuous_triR t0).measurable.comp measurable_snd)`. Rewrite using `[kap, Measure.map_map (continuous_triR t0).measurable measurable_snd]`. Establish `: triR t0 ∘ Prod.snd = Prod.snd ∘ (fun p : UNgrp N × TriCo N => (p.1, triR t0 p.2))` using `rfl`. Rewrite using `[this, ← Measure.map_map measurable_snd hm, nuQR_map_right t0 h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_inv (t0 : TriCo N) (h0 : t0 ∈ triPos N) : (kap N).map (triR t0) = kap N := by
   have hm : Measurable fun p : UNgrp N × TriCo N => (p.1, triR t0 p.2) :=
@@ -308,21 +302,21 @@ theorem kap_inv (t0 : TriCo N) (h0 : t0 ∈ triPos N) : (kap N).map (triR t0) = 
   rw [this, ← Measure.map_map measurable_snd hm, nuQR_map_right t0 h0]
 
 /- English proof (translation)
-The claim follows from `triMeas_unique (kap N) kap_compl kap_compact (fun t0 h0 => kap_inv t0 h0)`.
+A detailed English derivation is pending.
 -/
 theorem kap_eq [CompactSpace (UNgrp N)] : ∃ c : ENNReal, c ≠ ⊤ ∧ kap N = c • triMeas N :=
   triMeas_unique (kap N) kap_compl kap_compact (fun t0 h0 => kap_inv t0 h0)
 
 /- English proof (translation)
-Use `set ρ : Measure (UNgrp N) := ((nuQR N).restrict (Prod.snd ⁻¹' t)).map Prod.fst with hρ`. Establish `hρA : ∀ A, MeasurableSet A → ρ A = nuQR N (A ×ˢ t)`. Introduce `A hA`. Rewrite using `[hρ, Measure.map_apply measurable_fst hA, Measure.restrict_apply (measurable_fst hA)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hρu : ρ Set.univ = kap N t`. Rewrite using `[hρA _ MeasurableSet.univ, kap, Measure.map_apply measurable_snd ht, Set.univ_prod]`. Establish `: IsFiniteMeasure ρ` using `⟨by rw [hρu]; exact hfin⟩`. Establish `: ρ.IsMulLeftInvariant` using `⟨fun g => by`. Establish `hL : Measurable fun p : UNgrp N × TriCo N => (g * p.1, p.2)` using `((measurable_const_mul g).comp measurable_fst).prodMk measurable_snd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ, Measure.map_map (measurable_const_mul g) measurable_fst]`. Establish `: (fun x => g * x) ∘ Prod.fst = Prod.fst ∘ (fun p : UNgrp N × TriCo N => (g * p.1, p.2))` using `rfl`. Rewrite using `[this, ← Measure.map_map measurable_fst hL]`. Use `congr 1`. Use `Measure.restrict_map (μ := nuQR N) hL (measurable_snd ht)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[nuQR_map_left]`. Conclude with `this.symm⟩`. Establish `hsm` using `Measure.isMulInvariant_eq_smul_of_compactSpace ρ μ`. Establish `hc : ρ.haarScalarFactor μ = kap N t`. Use `congrArg (fun m : Measure (UNgrp N) => m Set.univ) hsm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Measure.smul_apply, measure_univ] at this`. Rewrite using `[← hρu, this]`. Simplify using the standard rewrite rules. Rewrite using `[← hρA s hs, hsm, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, hc, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuQR_rect (μ : Measure (UNgrp N)) [μ.IsHaarMeasure] [IsProbabilityMeasure μ]
     [CompactSpace (UNgrp N)] (s : Set (UNgrp N)) (hs : MeasurableSet s) (t : Set (TriCo N))
@@ -355,9 +349,9 @@ theorem nuQR_rect (μ : Measure (UNgrp N)) [μ.IsHaarMeasure] [IsProbabilityMeas
   rw [← hρA s hs, hsm, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, hc, mul_comm]
 
 /- English proof (translation)
-Use `Measure.prod_eq_generateFrom (C := {s | MeasurableSet s}) (D := {t | MeasurableSet t ∧ kap N t < ⊤}) MeasurableSpace.generateFrom_measurableSet ?_ MeasurableSpace.isPiSystem_measurableSet ?_ μ.toFiniteSpanningSetsIn ((kap N).toFiniteSpanningSetsIn.mono' fun t ht => ⟨ht.1, ht.2⟩) …` and prove the remaining obligations. Use `le_antisymm (MeasurableSpace.generateFrom_le fun t ht => ht.1) fun t ht => ?_` and prove the remaining obligations. Rewrite using `[← Set.inter_univ t, ← iUnion_spanningSets (kap N), Set.inter_iUnion]`. Conclude with `MeasurableSet.iUnion fun n => MeasurableSpace.measurableSet_generateFrom ⟨ht.inter (measurableSet_spanningSets (kap N) n), lt_of_le_of_lt (measure_mono Set.inter_subset_right) (measure_spanningSets_lt_top (kap N) n)⟩`. Introduce `s hs t ht _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨hs.1.inter ht.1, lt_of_le_of_lt (measure_mono Set.inter_subset_left) hs.2⟩`. Introduce `s hs t ht`. Conclude with `nuQR_rect μ s hs t ht.1 ht.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nuQR_eq_prod (μ : Measure (UNgrp N)) [μ.IsHaarMeasure] [IsProbabilityMeasure μ]
     [CompactSpace (UNgrp N)] [SigmaFinite (kap N)] : μ.prod (kap N) = nuQR N := by
@@ -376,7 +370,7 @@ theorem nuQR_eq_prod (μ : Measure (UNgrp N)) [μ.IsHaarMeasure] [IsProbabilityM
     exact nuQR_rect μ s hs t ht.1 ht.2
 
 /- English proof (translation)
-Unfold `gmDens`. Conclude with `(by fun_prop : Measurable fun x : ℂ => ENNReal.ofReal (‖x‖ ^ (-(2 * (N:ℤ))))).comp continuous_det_of.measurable`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_gmDens : Measurable (gmDens N) := by
   unfold gmDens
@@ -384,18 +378,18 @@ theorem measurable_gmDens : Measurable (gmDens N) := by
     continuous_det_of.measurable
 
 /- English proof (translation)
-Unfold `triDens`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_triDens : Measurable (triDens (N := N)) := by
   unfold triDens
   fun_prop
 
 /- English proof (translation)
-Establish `hk : inUJ (fun _ : Fin N => true) (toM k)` using `k.2`. Establish `hJ : Jm (fun _ : Fin N => true) = 1`. Unfold `Jm`. Simplify using the standard rewrite rules. Unfold `inUJ at hk`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite `hk` using `[hJ, Matrix.mul_one]`. Establish `h1` using `congrArg Matrix.det hk`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`. Establish `h2 : Complex.normSq (toM k).det = 1`. Establish `h3` using `Complex.normSq_eq_conj_mul_self (z := (toM k).det)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((Complex.normSq (toM k).det : ℝ) : ℂ) = 1` using `by rw [h3]; exact h1`. Conclude with `h4` after adjusting the coercions. Establish `h5 : ‖(toM k).det‖ ^ 2 = 1` using `by rw [Complex.sq_norm, h2]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h5`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_det_toM (k : UNgrp N) : ‖(toM k).det‖ = 1 := by
   have hk : inUJ (fun _ : Fin N => true) (toM k) := k.2
@@ -413,7 +407,7 @@ theorem norm_det_toM (k : UNgrp N) : ‖(toM k).det‖ = 1 := by
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h5
 
 /- English proof (translation)
-Establish `hn : ‖(Matrix.of Z).det‖ ≠ 0` using `norm_ne_zero_iff.mpr hZ`. Rewrite using `[gmDens, ← ENNReal.ofReal_mul (zpow_nonneg (norm_nonneg _) _), ← zpow_natCast, ← zpow_add₀ hn]`. Use `push_cast`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem gmDens_mul (Z : Fin N → Fin N → ℂ) (hZ : Z ∈ glSet N) :
     gmDens N Z * ENNReal.ofReal (‖(Matrix.of Z).det‖ ^ (2 * N)) = 1 := by
@@ -424,9 +418,9 @@ theorem gmDens_mul (Z : Fin N → Fin N → ℂ) (hZ : Z ∈ glSet N) :
   simp
 
 /- English proof (translation)
-Establish `hpos : ∀ j, 0 ≤ t.1 j ^ (-(2 * ((j : ℕ) : ℤ) + 1))` using `fun j => zpow_nonneg (ht j).le _`. Rewrite using `[triDens, ← ENNReal.ofReal_mul (Finset.prod_nonneg fun j _ => hpos j), ← Finset.prod_pow, ← Finset.prod_mul_distrib, qrWt]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `j.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (ne_of_gt (ht j))]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem triDens_mul (t : TriCo N) (ht : t ∈ triPos N) :
     triDens t * ENNReal.ofReal ((∏ j, t.1 j) ^ (2 * N)) = ENNReal.ofReal (qrWt t) := by
@@ -441,9 +435,9 @@ theorem triDens_mul (t : TriCo N) (ht : t ∈ triPos N) :
   omega
 
 /- English proof (translation)
-Use `congr 2`. Establish `: Matrix.of (qrMap (k, t)) = toM k * upMat t`. Simplify using `[qrMap]`. Rewrite using `[this, Matrix.det_mul, norm_mul, norm_det_toM, one_mul, det_upMat, norm_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (ht j).le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_qrMap (k : UNgrp N) (t : TriCo N) (ht : t ∈ triPos N) :
     ENNReal.ofReal (‖(Matrix.of (qrMap (k, t))).det‖ ^ (2 * N)) =

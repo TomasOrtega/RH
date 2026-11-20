@@ -30,7 +30,7 @@ def ball (K : Type) [NormedField K] [IsUltrametricDist K] : Subring K where
   neg_mem' := fun {a} ha => by simpa using ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball {K : Type} [NormedField K] [IsUltrametricDist K] {x : K} : x ∈ ball K ↔ ‖x‖ ≤ 1 := Iff.rfl
 
@@ -39,9 +39,9 @@ section Gen
 variable {K : Type} [Field K] [CharZero K] (R : Subring K)
 
 /- English proof (translation)
-Unfold `lgF`. Rewrite using `[PowerSeries.coeff_mk, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h1 : 1 < (l ^ 2) ^ j` using `Nat.one_lt_pow hj (Nat.one_lt_pow two_ne_zero (by omega))`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem coeff_one_lgF {l : ℕ} (hl : 2 ≤ l) : PowerSeries.coeff 1 (lgF K l) = 1 := by
   unfold lgF
@@ -55,7 +55,7 @@ theorem coeff_one_lgF {l : ℕ} (hl : 2 ≤ l) : PowerSeries.coeff 1 (lgF K l) =
   · simp
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Unfold `lgF`. Rewrite using `[PowerSeries.coeff_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_lgF (l : ℕ) : PowerSeries.constantCoeff (lgF K l) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
@@ -64,11 +64,9 @@ theorem cc_lgF (l : ℕ) : PowerSeries.constantCoeff (lgF K l) = 0 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_derivative]`. Unfold `lgF`. Rewrite using `[PowerSeries.coeff_mk, Finset.sum_mul]`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp : (l : K) ≠ 0` using `by exact_mod_cast (by omega : l ≠ 0)`. Establish `e : ((n : K) + 1) = (l : K) ^ j * (l : K) ^ j`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Conclude with `h` after adjusting the coercions. Rewrite using `[e, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero j hp), one_mul]`.
-
-Conclude with `R.pow_mem (natCast_mem R l) j`. Rewrite using `[zero_mul]`. Conclude with `R.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lgF_deriv_int {l : ℕ} (hl : 2 ≤ l) (n : ℕ) :
     PowerSeries.coeff n (PowerSeries.derivative K (lgF K l)) ∈ R := by
@@ -87,7 +85,7 @@ theorem lgF_deriv_int {l : ℕ} (hl : 2 ≤ l) (n : ℕ) :
     exact R.zero_mem
 
 /- English proof (translation)
-Establish `hu : IsUnit (PowerSeries.coeff 1 (lgF K l))` using `by rw [coeff_one_lgF hl]; exact isUnit_one`. Unfold `expF`. Rewrite using `[dif_pos hu]`. Use `hur_substInv R (cc_lgF l) hu ?_ (lgF_deriv_int R hl)` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative, coeff_one_lgF hl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -100,7 +98,7 @@ theorem hur_expF {l : ℕ} (hl : 2 ≤ l) : Hur R ((expF K l : PowerSeries K) : 
   simp
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_def]`. Conclude with `hur_subst R (fun _ => ha0) (fun _ => ha) hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hur_psubst {τ : Type} [Finite τ] {a : MvPowerSeries τ K} (ha0 : MvPowerSeries.constantCoeff a = 0) (ha : Hur R a)
     {g : PowerSeries K} (hg : Hur R (g : MvPowerSeries Unit K)) : Hur R (PowerSeries.subst a g) := by
@@ -108,7 +106,7 @@ theorem hur_psubst {τ : Type} [Finite τ] {a : MvPowerSeries τ K} (ha0 : MvPow
   exact hur_subst R (fun _ => ha0) (fun _ => ha) hg
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_def, cc_subst (fun _ => ha0)]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_psubst {τ : Type} [Finite τ] {a : MvPowerSeries τ K} (ha0 : MvPowerSeries.constantCoeff a = 0)
     {g : PowerSeries K} (hg : PowerSeries.constantCoeff g = 0) :
@@ -117,11 +115,11 @@ theorem cc_psubst {τ : Type} [Finite τ] {a : MvPowerSeries τ K} (ha0 : MvPowe
   exact hg
 
 /- English proof (translation)
-Introduce `n`. Establish `hn : n = Finsupp.single () (n ())`. Use extensionality with `u`. Simplify using the standard rewrite rules. Establish `hc : MvPowerSeries.coeff n (PowerSeries.exp K : MvPowerSeries Unit K) = PowerSeries.coeff (n ()) (PowerSeries.exp K)` using `by conv_lhs => rw [hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hf : (fc n : K) = ((n ()).factorial : K)`. Rewrite using `[fc_of_subset (S := Finset.univ) (Finset.subset_univ _)]`. Simplify using the standard rewrite rules. Rewrite using `[hc, hf, PowerSeries.coeff_exp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((n ()).factorial : K) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hur_exp : Hur R ((PowerSeries.exp K : PowerSeries K) : MvPowerSeries Unit K) := by
   intro n
@@ -141,7 +139,7 @@ theorem hur_exp : Hur R ((PowerSeries.exp K : PowerSeries K) : MvPowerSeries Uni
 end Gen
 
 /- English proof (translation)
-The claim follows from `hur_psubst R h0 hh (hur_exp R)`.
+A detailed English derivation is pending.
 -/
 theorem hur_mvExp {K : Type} [NormedField K] [CharZero K] (R : Subring K) {τ : Type} [Finite τ] {h : MvPowerSeries τ K}
     (h0 : MvPowerSeries.constantCoeff h = 0) (hh : Hur R h) : Hur R (Formalism.DworkPowerSeriesWeights.mvExp h) :=
@@ -152,9 +150,7 @@ section Cp
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h1 : ‖σ a - a ^ l‖ ≤ 1` using `(hσ.2.2.2.2 a ha).trans (inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt.le))`. Establish `h2 : ‖a ^ l‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha`. Establish `e : ((σ a : MaximalUnramifiedExtension l) : ℂ_[l]) = ((σ a - a ^ l : MaximalUnramifiedExtension l) : ℂ_[l]) + ((a ^ l : MaximalUnramifiedExtension l) : ℂ_[l])` using `by push_cast; ring`. Use `show ‖((σ a : MaximalUnramifiedExtension l) : ℂ_[l])‖ ≤ 1`. Rewrite using `[e]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_frob_le {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} (hσ : UnrOK (MaximalUnramifiedExtension l) l σ) {a : MaximalUnramifiedExtension l} (ha : ‖a‖ ≤ 1) : ‖σ a‖ ≤ 1 := by
   have h1 : ‖σ a - a ^ l‖ ≤ 1 := (hσ.2.2.2.2 a ha).trans (inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt.le))
@@ -166,7 +162,7 @@ theorem norm_frob_le {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedE
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih => rw [Function.iterate_succ_apply']`. Conclude with `norm_frob_le hσ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_iter_le {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} (hσ : UnrOK (MaximalUnramifiedExtension l) l σ) {a : MaximalUnramifiedExtension l} (ha : ‖a‖ ≤ 1) (k : ℕ) : ‖σ^[k] a‖ ≤ 1 := by
   induction k with
@@ -176,7 +172,7 @@ theorem norm_iter_le {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedE
 variable {d N0 N1 : ℕ} [NeZero d]
 
 /- English proof (translation)
-The claim follows from `hur_mul _ (hur_C _ hc) (hur_X _ v)`.
+A detailed English derivation is pending.
 -/
 theorem hur_linTerm (c : ℂ_[l]) (hc : ‖c‖ ≤ 1) (v : ZMod d × Fin N0 × Fin N1) :
     Hur (ball ℂ_[l]) (MvPowerSeries.C c * MvPowerSeries.X v : MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l]) :=
@@ -191,9 +187,9 @@ def vL (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (c
     MvPowerSeries.C ((MaximalUnramifiedExtension l).subtype (σ^[s.val] c)) * (MvPowerSeries.X (s, a, b) : MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `hur_sum _ _ _ fun s _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `hur_linTerm _ (norm_iter_le hσ hc _) _`. Conclude with `hur_zero _`. Unfold `uL`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem uL_spec {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} (hσ : UnrOK (MaximalUnramifiedExtension l) l σ) {c : MaximalUnramifiedExtension l} (hc : ‖c‖ ≤ 1) (a : Fin N0) (b : Fin N1) :
     Hur (ball ℂ_[l]) (uL (d := d) σ c a b) ∧ MvPowerSeries.constantCoeff (uL (d := d) σ c a b) = 0 := by
@@ -208,9 +204,9 @@ theorem uL_spec {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtens
     split_ifs <;> simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `hur_sum _ _ _ fun s _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `hur_zero _`. Conclude with `hur_linTerm _ (norm_iter_le hσ hc _) _`. Unfold `vL`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem vL_spec {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} (hσ : UnrOK (MaximalUnramifiedExtension l) l σ) {c : MaximalUnramifiedExtension l} (hc : ‖c‖ ≤ 1) (a : Fin N0) (b : Fin N1) :
     Hur (ball ℂ_[l]) (vL (d := d) σ c a b) ∧ MvPowerSeries.constantCoeff (vL (d := d) σ c a b) = 0 := by
@@ -225,7 +221,7 @@ theorem vL_spec {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtens
     split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.Th1.D.expSpec ℂ_[l] l hl).1`.
+A detailed English derivation is pending.
 -/
 theorem cc_expF (hl : 2 ≤ l) : PowerSeries.constantCoeff (expF ℂ_[l] l) = 0 :=
   (Formalism.L2.Th1.D.expSpec ℂ_[l] l hl).1
@@ -233,23 +229,23 @@ theorem cc_expF (hl : 2 ≤ l) : PowerSeries.constantCoeff (expF ℂ_[l] l) = 0 
 variable {ι : Type}
 
 /- English proof (translation)
-Simplify using `[xOfZ, uL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xOfZ_false (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (om oms : ι → MaximalUnramifiedExtension l) (r : ι) (a : Fin N0) (b : Fin N1) :
     xOfZ (d := d) l (MaximalUnramifiedExtension l).subtype σ om oms (false, r, a, b) = PowerSeries.subst (uL (d := d) σ (oms r) a b) (expF ℂ_[l] l) := by
   simp [xOfZ, uL]
 
 /- English proof (translation)
-Simplify using `[xOfZ, vL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xOfZ_true (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (om oms : ι → MaximalUnramifiedExtension l) (r : ι) (a : Fin N0) (b : Fin N1) :
     xOfZ (d := d) l (MaximalUnramifiedExtension l).subtype σ om oms (true, r, a, b) = PowerSeries.subst (vL (d := d) σ (om r) a b) (expF ℂ_[l] l) := by
   simp [xOfZ, vL]
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Take `⟨t, r, a, b⟩` from `x`. Consider the cases of `t`. Rewrite using `[xOfZ_false]`. Establish `h` using `uL_spec (d := d) hσ (hO r).2 a b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨hur_psubst _ h.2 h.1 (hur_expF _ hl), cc_psubst h.2 (cc_expF hl)⟩`. Rewrite using `[xOfZ_true]`. Establish `h` using `vL_spec (d := d) hσ (hO r).1 a b`. Conclude with `⟨hur_psubst _ h.2 h.1 (hur_expF _ hl), cc_psubst h.2 (cc_expF hl)⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem xOfZ_spec (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (hσ : UnrOK (MaximalUnramifiedExtension l) l σ) (om oms : ι → MaximalUnramifiedExtension l)
     (hO : ∀ r, ‖om r‖ ≤ 1 ∧ ‖oms r‖ ≤ 1) (x : Bool × ι × Fin N0 × Fin N1) :
@@ -266,9 +262,9 @@ theorem xOfZ_spec (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExte
     exact ⟨hur_psubst _ h.2 h.1 (hur_expF _ hl), cc_psubst h.2 (cc_expF hl)⟩
 
 /- English proof (translation)
-Introduce `n`. Establish `hf : (fc n : ℂ_[l]) = (((n 0).factorial * (n 1).factorial : ℕ) : ℂ_[l])`. Rewrite using `[fc_of_subset (S := Finset.univ) (Finset.subset_univ _), Fin.prod_univ_two]`. Use `push_cast`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hf, MvPowerSeries.coeff_map]`. Use `h n` as an intermediate fact. Rewrite using `[mem_ball]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hur_addC (be0 : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension l))
     (h : ∀ n : Fin 2 →₀ ℕ, ‖(((n 0).factorial * (n 1).factorial : ℕ) : MaximalUnramifiedExtension l) * MvPowerSeries.coeff n (addC l be0)‖ ≤ 1) :
@@ -284,13 +280,11 @@ theorem hur_addC (be0 : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension l))
   simpa using this
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hcc : ∀ (K : Type) [Field K] [CharZero K] (i : Fin 2), MvPowerSeries.constantCoeff (at1 i (expF K l)) = 0` using `fun K _ _ i => cc_psubst (by simp) (Formalism.L2.Th1.D.expSpec K l hl).1`. Unfold `addC`. Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by fin_cases i`. Conclude with `hcc _ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hcc _ 1))]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hat : ∀ i : Fin 2, MvPowerSeries.map (MaximalUnramifiedExtension l).subtype (at1 i (expF (MaximalUnramifiedExtension l) l)) = at1 i (expF ℂ_[l] l)`. Introduce `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `at1`. Use `PowerSeries.map_subst (PowerSeries.HasSubst.X (S := MaximalUnramifiedExtension l) i) (h := (MaximalUnramifiedExtension l).subtype) (expF (MaximalUnramifiedExtension l) l)` as an intermediate fact. Rewrite using `[this, Formalism.L2.Th1.Top.PAdicPowerSeriesCoefficients.map_expF _ hl, MvPowerSeries.map_X]`. Use `fin_cases i`. Conclude with `hat 0`.
-
-Conclude with `hat 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_addC (be0 : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension l)) :
     MvPowerSeries.map (MaximalUnramifiedExtension l).subtype (addC l be0) =
@@ -322,19 +316,15 @@ section Main
 variable {l : ℕ} [Fact l.Prime] {d N0 N1 : ℕ} [NeZero d] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `h0 : ∀ i : Fin 2, MvPowerSeries.constantCoeff ((![u, v] : Fin 2 → MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l]) i) = 0`. Introduce `i`. Use `fin_cases i`. Conclude with `hu0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv0`. Establish `h1 : ∀ i : Fin 2, Hur (ball ℂ_[l]) ((![u, v] : Fin 2 → MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l]) i)`. Introduce `i`. Use `fin_cases i`. Conclude with `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv`. Establish `hs2` using `MvPowerSeries.hasSubst_of_constantCoeff_zero h0`. Establish `hc : ∀ i : Fin 2, MvPowerSeries.constantCoeff (at1 i (expF ℂ_[l] l)) = 0` using `fun i => cc_psubst (by simp) (cc_expF hl)`. Establish `hs1 : MvPowerSeries.HasSubst (![at1 (0 : Fin 2) (expF ℂ_[l] l), at1 (1 : Fin 2) (expF ℂ_[l] l)] : Fin 2 → MvPowerSeries (Fin 2) ℂ_[l])` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by fin_cases i`. Conclude with `hc 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc 1)`. Establish `hat : ∀ i : Fin 2, MvPowerSeries.subst ![u, v] (at1 i (expF ℂ_[l] l)) = PowerSeries.subst ((![u, v] : Fin 2 → MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l]) i) (expF ℂ_[l] l)`. Introduce `i`. Unfold `at1`. Rewrite using `[PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)) hs2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `_`. Rewrite using `[MvPowerSeries.subst_X hs2]`. Establish `e : MvPowerSeries.subst ![PowerSeries.subst u (expF ℂ_[l] l), PowerSeries.subst v (expF ℂ_[l] l)] (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype be0) = MvPowerSeries.subst ![u, v] (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype (addC l be0))`. Rewrite using `[map_addC, MvPowerSeries.subst_comp_subst_apply hs1 hs2]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `(hat 0).symm`. Conclude with `(hat 1).symm`.
-
-Rewrite using `[e]`. Conclude with `hur_subst _ h0 h1 hb`.
+A detailed English derivation is pending.
 -/
 theorem hur_pair (u v : MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l]) (hu : Hur (ball ℂ_[l]) u)
     (hu0 : MvPowerSeries.constantCoeff u = 0) (hv : Hur (ball ℂ_[l]) v) (hv0 : MvPowerSeries.constantCoeff v = 0)
@@ -381,9 +371,9 @@ theorem hur_pair (u v : MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l]) (hu 
   exact hur_subst _ h0 h1 hb
 
 /- English proof (translation)
-Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Unfold `sumE`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom hs, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)) hs]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[MvPowerSeries.subst_X hs]`. Apply the tactic sequence `fin_cases i <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_sumE {a : Bool × ι × Fin N0 × Fin N1 → MvPowerSeries (ZMod d × Fin N0 × Fin N1) ℂ_[l]}
     (ha : ∀ x, MvPowerSeries.constantCoeff (a x) = 0) (B : MvPowerSeries (Fin 2) ℂ_[l]) :
@@ -401,7 +391,7 @@ theorem subst_sumE {a : Bool × ι × Fin N0 × Fin N1 → MvPowerSeries (ZMod d
   fin_cases i <;> simp
 
 /- English proof (translation)
-Unfold `sumE`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[cc_subst (fun _ => by simp), h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_sumE (B : MvPowerSeries (Fin 2) ℂ_[l]) (h : MvPowerSeries.constantCoeff B = 0) :
     MvPowerSeries.constantCoeff (sumE (ι := ι) (N0 := N0) (N1 := N1) B) = 0 := by
@@ -411,17 +401,17 @@ theorem cc_sumE (B : MvPowerSeries (Fin 2) ℂ_[l]) (h : MvPowerSeries.constantC
   rw [cc_subst (fun _ => by simp), h]
 
 /- English proof (translation)
-Establish `ha0 : ∀ x : Bool × ι × Fin N0 × Fin N1, MvPowerSeries.constantCoeff (xOfZ (d` using `d) l (MaximalUnramifiedExtension l).subtype σ om oms x) = 0 := fun x => (xOfZ_spec σ hσ om oms hO x).2`. Establish `ha1 : ∀ x : Bool × ι × Fin N0 × Fin N1, Hur (ball ℂ_[l]) (xOfZ (d` using `d) l (MaximalUnramifiedExtension l).subtype σ om oms x) := fun x => (xOfZ_spec σ hσ om oms hO x).1`. Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Establish `hB0 : MvPowerSeries.constantCoeff (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype be0) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, hb0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS0` using `cc_sumE (ι := ι) (N0 := N0) (N1 := N1) _ hB0`. Establish `hadd` using `hur_addC be0 hj`. Establish `hS : Hur (ball ℂ_[l]) (MvPowerSeries.subst (xOfZ (d` using `d) (N0 := N0) (N1 := N1) l (MaximalUnramifiedExtension l).subtype σ om oms) (sumE (ι := ι) (N0 := N0) (N1 := N1) (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype be0))) := by`. Rewrite using `[subst_sumE ha0]`. Use `hur_sum _ _ _ fun e _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, a, b⟩` from `e`. Rewrite using `[xOfZ_false, xOfZ_true]`. Establish `h1` using `uL_spec (d := d) hσ (hO r).2 a b`. Establish `h2` using `vL_spec (d := d) hσ (hO r).1 a b`. Conclude with `hur_pair _ _ h1.1 h1.2 h2.1 h2.2 be0 hadd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `thetaInZ`. Rewrite using `[MvPowerSeries.subst_mul hs]`. Use `hur_mul _ ?_ (hur_subst _ ha0 ha1 (hur_of_int _ hU))` and prove the remaining obligations. Establish `hN : MvPowerSeries.constantCoeff (-(sumE (ι` using `ι) (N0 := N0) (N1 := N1) (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype be0))) = 0 := by`. Rewrite using `[map_neg, hS0, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.DworkPowerSeriesWeights.mvExp`. Rewrite using `[PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hN)) hs]`. Establish `hneg : MvPowerSeries.subst (xOfZ (d` using `d) (N0 := N0) (N1 := N1) l (MaximalUnramifiedExtension l).subtype σ om oms) (-(sumE (ι := ι) (N0 := N0) (N1 := N1) (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype be0))) = -MvPowerSeries.subst (xOfZ (d := d) (N0 := N0) (N1 := N1) l (MaximalUnramifiedExtension l).subtype …`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_neg]`. Use `hur_subst _ (fun _ => ?_) (fun _ => ?_) (hur_exp _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cc_subst ha0, hN]`. Rewrite using `[hneg]`. Conclude with `hur_neg _ hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hur_theta (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (hσ : UnrOK (MaximalUnramifiedExtension l) l σ) (be0 : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension l))
     (hb0 : MvPowerSeries.constantCoeff be0 = 0)
@@ -467,11 +457,11 @@ theorem hur_theta (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExte
     exact hur_neg _ hS
 
 /- English proof (translation)
-Establish `e : (fun v : τ => (MvPowerSeries.C ep * MvPowerSeries.X v : MvPowerSeries τ ℂ_[l])) = ((fun _ : τ => ep) • (MvPowerSeries.X : τ → MvPowerSeries τ ℂ_[l]))`. Use function extensionality and compare the values at `v`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`. Establish `hn` using `h n`. Rewrite `hn` using `[e, ← MvPowerSeries.rescale_eq_subst, MvPowerSeries.coeff_rescale, mem_ball, norm_mul, norm_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp : ‖n.prod fun _ m => ep ^ m‖ = 1`. Unfold `Finsupp.prod`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun x _ => by rw [norm_pow, hep, one_pow]`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hn` using `[hp]`.
+A detailed English derivation is pending.
 -/
 theorem jets_of_scaled {τ : Type} [Finite τ] (ep : ℂ_[l]) (hep : ‖ep‖ = 1) (Th : MvPowerSeries τ ℂ_[l])
     (h : Hur (ball ℂ_[l]) (MvPowerSeries.subst (fun v : τ => (MvPowerSeries.C ep * MvPowerSeries.X v : MvPowerSeries τ ℂ_[l])) Th))
@@ -492,13 +482,11 @@ theorem jets_of_scaled {τ : Type} [Finite τ] (ep : ℂ_[l]) (hep : ‖ep‖ = 
 end Main
 
 /- English proof (translation)
-Introduce and unpack `Lc ep be hep ⟨σ, F, be0, om, oms, ζ, hD, rfl⟩ hB`. Take `⟨U0, hU, hTh⟩` from `GlobalTheory.T.exists_integral_orbit_series Lc ep σ F be0 om oms ζ hD hB`. Take `⟨hσ, hF, h1, h2, hO, hT, -⟩` from `hD`. Establish `hb0 : MvPowerSeries.constantCoeff be0 = 0` using `h1.1 0 (Or.inl rfl)`. Establish `hH` using `hur_theta (d := Lc.d) (N0 := Lc.N0) (N1 := Lc.N1) σ hσ be0 hb0 (GlobalTheory.T.addCoord_exponent_integral_jets_unramified Lc.l σ F be0 hσ hF h1 h2) om oms hO.1 U0 hU`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hH` using `[← hTh]`. Establish `hJ` using `jets_of_scaled ep hep Lc.Th hH`. Introduce `I m`. Rewrite using `[neg_zero, Real.rpow_zero]`. Unfold `product_zeroth_first_parts.applyAt0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[MvPolynomial.coeff_sum]`. Use `(ball ℂ_[Lc.l]).sum_mem fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs`. Rewrite using `[mul_assoc]`.
-
-Conclude with `(ball ℂ_[Lc.l]).mul_mem (intCast_mem _ _) (hJ _)`. Conclude with `(ball ℂ_[Lc.l]).zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kvalGe_zero : ∀ (Lc : product_zeroth_first_parts.Loc) (ep : ℂ_[Lc.l]) (be : MvPowerSeries (ZMod Lc.d) ℂ_[Lc.l]), ‖ep‖ = 1 → BeStd Lc.l Lc.d be → OrbitPlaces.OrbitThetaExpansion Lc ep (-1) be → product_zeroth_first_parts.KvalGe Lc.N0 Lc.N1 Lc.l Lc.nu Lc.Th 0 := by
   rintro Lc ep be hep ⟨σ, F, be0, om, oms, ζ, hD, rfl⟩ hB

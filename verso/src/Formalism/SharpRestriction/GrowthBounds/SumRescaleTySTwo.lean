@@ -14,7 +14,7 @@ namespace SelfConjCharts
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Establish `hS : PowerSeries.HasSubst ((PowerSeries.X : PowerSeries C) ^ l)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hl.ne'])`. Rewrite using `[PowerSeries.subst_comp_subst_apply hS hS]`. Use `congr 1`. Rewrite using `[← PowerSeries.coe_substAlgHom hS, map_pow, PowerSeries.coe_substAlgHom hS, PowerSeries.subst_X hS, ← pow_mul, sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_X_pow_X_pow {l : ℕ} (hl : 0 < l) (f : PowerSeries C) :
     PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ l) (PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ l) f) =
@@ -26,9 +26,9 @@ theorem subst_X_pow_X_pow {l : ℕ} (hl : 0 < l) (f : PowerSeries C) :
   rw [← PowerSeries.coe_substAlgHom hS, map_pow, PowerSeries.coe_substAlgHom hS, PowerSeries.subst_X hS, ← pow_mul, sq]
 
 /- English proof (translation)
-Establish `e : (fun s => (l : C) * a (s + 1)) = fun s => if s < 1 then 0 else (l : C) * a (s - 1 + 2)`. Use function extensionality and compare the values at `s`. Consider the cases of `s with`. Consider the case `zero => simp [ha]`. Consider the case `succ s => simp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← subst_tyS_Fs hl hζ a, ← subst_X_pow_X_pow (by omega)]`. Use `congr 1`. Rewrite using `[← tyS_Vpow hl, e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_rescale_tyS_two {l : ℕ} (hl : 2 ≤ l) {ζ : C} (hζ : IsPrimitiveRoot ζ l) (a : ℕ → C) (ha : a 1 = 0) :
     ∑ k ∈ Finset.range l, PowerSeries.rescale (ζ ^ k) (tyS l a) =
@@ -43,7 +43,7 @@ theorem sum_rescale_tyS_two {l : ℕ} (hl : 2 ≤ l) {ζ : C} (hζ : IsPrimitive
   rw [← tyS_Vpow hl, e]
 
 /- English proof (translation)
-Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `h1 : ∀ k, (ζ ^ k) ^ (l ^ (i + 1)) = 1`. Introduce `k`. Rewrite using `[← pow_mul, mul_comm, pow_mul, pow_succ', pow_mul, hζ.pow_eq_one, one_pow, one_pow]`. Simplify using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_root_pow {l : ℕ} {ζ : C} (hζ : IsPrimitiveRoot ζ l) (j : ℕ) (hj : 1 ≤ j) :
     ∑ k ∈ Finset.range l, (ζ ^ k) ^ (l ^ j) = (l : C) := by
@@ -54,7 +54,7 @@ theorem sum_root_pow {l : ℕ} {ζ : C} (hζ : IsPrimitiveRoot ζ l) (j : ℕ) (
   simp [h1]
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Simplify using `only [PowerSeries.coeff_rescale]`. Rewrite using `[← Finset.sum_mul, sum_root_pow hζ j hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_sum_rescale {l : ℕ} {ζ : C} (hζ : IsPrimitiveRoot ζ l) (j : ℕ) (hj : 1 ≤ j) (f : PowerSeries C) :
     PowerSeries.coeff (l ^ j) (∑ k ∈ Finset.range l, PowerSeries.rescale (ζ ^ k) f) =
@@ -68,27 +68,27 @@ section MM
 variable {V : VF C}
 
 /- English proof (translation)
-Unfold `VF.MM at *`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mmA_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) := by
   unfold VF.MM at *
   exact lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)
 
 /- English proof (translation)
-Unfold `VF.MM`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mmA_zero : V.MM (0 : C) := by
   unfold VF.MM
   simp
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (fun x => V.MM x) (fun _ _ => mmA_add) mmA_zero h`.
+A detailed English derivation is pending.
 -/
 theorem mmA_sum {ι : Type} (s : Finset ι) (f : ι → C) (h : ∀ i ∈ s, V.MM (f i)) : V.MM (∑ i ∈ s, f i) :=
   Finset.sum_induction f (fun x => V.MM x) (fun _ _ => mmA_add) mmA_zero h
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `MaximalIdealCongruence.mm_mul_ge' hb ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mmA_mul_int {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   rw [mul_comm]
@@ -100,37 +100,35 @@ end SelfConjCharts
 
 open SelfConjCharts in
 /- English proof (translation)
-Introduce `C _ _ V d I _ κ _ X hB H ζ hζ g a w x hG hV2`. Establish `hl2` using `V.l_prime.two_le`. Establish `hl0 : 0 < V.l` using `by omega`. Establish `hxT : x ∈ X.TySet V g` using `hG.1.1`. Establish `hx1 : ∀ c, x 1 (Sum.inl c) = 0` using `hG.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyT : Vpow 1 (fun i n => (V.l : C) * x (i + 2) n) ∈ X.TySet V g`. Establish `hF` using `(H g).Fm x hxT`. Establish `h3` using `(H g).t3 (fun q => (RawChart.cart (H g)).c0' x q) (fun q => hG.c0'_int q)`. Establish `hsub` using `(H g).add _ _ hF ((H g).neg _ h3)`. Use `hsub using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `i n`. Consider the cases of `i with`. Consider the case `zero`. Consider the cases of `n with`. Consider the case `inl c => simp [Vpow, Fs, const0, hx1 c]`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr q => simp [Vpow, Fs, const0, Cart.c0']`. Consider the case `succ i => simp [Vpow, Fs, const0]`. Establish `hyT'` using `X.unV_mem V g hB.lg0 hB.exlg hζ _ hyT`. Take `⟨γ, lam, hγ, hlam, hγ1, hγ2⟩` from `id hxT`. Take `⟨δ, -, hδ, -, hδ1, -⟩` from `hyT'`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨γ, δ, hγ, hδ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[hδ1 i, hγ1 i, subst_pow_sum_smul (by positivity)]`. Simplify using `only [rescale_sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, sum_rescale_tyS_two hl2 hζ _ (hx1 c)]`. Introduce `i`. Rewrite using `[coeff_one_of_mem X hB (x := fun i n => (V.l : C) * x (i + 2) n) (fun i => (hδ i).1) hδ1 i]`. Conclude with `mmA_sum _ _ fun c _ => MaximalIdealCongruence.mm_mul_ge' (hB.uint g c i) (hV2 c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Establish `hA : ∀ n, PowerSeries.coeff n (alongCv γ (X.sg (X.u (1 - g) q))) = PowerSeries.coeff n (lam q) - PowerSeries.coeff n (tyS V.l fun s => x s (Sum.inr q)) + ∑ c : I g, (if X.ty g c = X.ty (1 - g) q then X.sg1 (X.u g c) (X.u (1 - g) q) * PowerSeries.coeff n (tyS V.l fun s => x s (Sum …`. Introduce `n`. Establish `e` using `congrArg (PowerSeries.coeff n) (hγ2 q)`. Simplify using `only [map_add, map_sub, map_sum, apply_ite (PowerSeries.coeff n), PowerSeries.coeff_smul, map_zero, smul_eq_mul] at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e`. Establish `hT1 : ∀ b : ℕ → C, PowerSeries.coeff V.l (tyS V.l b) = b 1` using `fun b => by`. Simplify using `using coeff_tyS_pow hl2 b 1`. Establish `hT2 : ∀ b : ℕ → C, PowerSeries.coeff (V.l ^ 2) (tyS V.l b) = b 2` using `fun b => coeff_tyS_pow hl2 b 2`. Establish `hN1 : ∀ f : PowerSeries C, PowerSeries.coeff V.l (∑ k ∈ Finset.range V.l, PowerSeries.rescale (ζ ^ k) f) = (V.l : C) * PowerSeries.coeff V.l f` using `fun f => by simpa using coeff_sum_rescale hζ 1 le_rfl f`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN2 : ∀ f : PowerSeries C, PowerSeries.coeff (V.l ^ 2) (∑ k ∈ Finset.range V.l, PowerSeries.rescale (ζ ^ k) f) = (V.l : C) * PowerSeries.coeff (V.l ^ 2) f` using `fun f => coeff_sum_rescale hζ 2 (by norm_num) f`. Establish `hl2pos : 0 < V.l ^ 2` using `by positivity`. Establish `hS1 : ∀ f : PowerSeries C, PowerSeries.coeff V.l (PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ (V.l ^ 2)) f) = 0` using `fun f => coeff_subst_X_pow_of_not_dvd hl2pos f V.l (fun h => by`. Use `Nat.le_of_dvd hl0 h` as an intermediate fact. Use the proof step `nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS2 : ∀ f : PowerSeries C, PowerSeries.coeff (V.l ^ 2) (PowerSeries.subst ((PowerSeries.X : PowerSeries C) ^ (V.l ^ 2)) f) = PowerSeries.coeff 1 f` using `fun f => by simpa using coeff_subst_X_pow hl2pos f 1`. Use `⟨hG.c0'_int q, ?_, ?_⟩` and prove the remaining obligations. Establish `e : PowerSeries.coeff V.l (phi X V.l ζ γ δ (X.u (1 - g) q)) - (RawChart.cart (H g)).c0' x q = -((V.l : C) * PowerSeries.coeff V.l (lam q))`. Unfold `phi`. Rewrite using `[map_sub, hS1, hN1, hA]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hT1, hx1, mul_zero, ite_self, Finset.sum_const_zero, add_zero, Cart.c0']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `MaximalIdealCongruence.mm_neg (MaximalIdealCongruence.mm_l_mul ((hlam q).2 _))`. Establish `hB1 : PowerSeries.coeff 1 (alongCv δ (X.sg (X.u (1 - g) q))) = ∑ c : I g, ((V.l : C) * x 2 (Sum.inl c)) * X.sg1 (X.u g c) (X.u (1 - g) q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_alongCv_low le_rfl (fun j m hm => by`. Take `rfl : m = 0` from `by omega`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, (hδ j).1]) (X.constantCoeff_sg hB.axis0 _)]`. Simplify using `only [coeff_one_of_mem X hB (x := fun i n => (V.l : C) * x (i + 2) n) (fun i => (hδ i).1) hδ1, RawChart.sg1, Finset.mul_sum, zero_add]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `key : (∑ c : I g, ((V.l : C) * x 2 (Sum.inl c)) * X.sg1 (X.u g c) (X.u (1 - g) q)) - (V.l : C) * ∑ c : I g, (if X.ty g c = X.ty (1 - g) q then X.sg1 (X.u g c) (X.u (1 - g) q) * x 2 (Sum.inl c) else 0) = ∑ c : I g, (if X.ty g c = X.ty (1 - g) q then 0 else ((V.l : C) * x 2 (Sum.in …`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> ring`. Establish `e : PowerSeries.coeff (V.l ^ 2) (phi X V.l ζ γ δ (X.u (1 - g) q)) - (V.l : C) * x 2 (Sum.inr q) = (∑ c : I g, (if X.ty g c = X.ty (1 - g) q then 0 else ((V.l : C) * x 2 (Sum.inl c)) * X.sg1 (X.u g c) (X.u (1 - g) q))) + -((V.l : C) * PowerSeries.coeff (V.l ^ 2) (lam q))`. Unfold `phi`. Rewrite using `[map_sub, hS2, hN2, hA, hB1]`. Simplify using `only [hT2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `key`. Rewrite using `[e]`. Use `mmA_add (mmA_sum _ _ fun c _ => ?_) (MaximalIdealCongruence.mm_neg (MaximalIdealCongruence.mm_l_mul ((hlam q).2 _)))` and prove the remaining obligations. Use `split_ifs with hm`. Conclude with `mmA_zero`.
-
-Conclude with `mmA_mul_int (hV2 c) (hB.hmis g c q hm)`.
+A detailed English derivation is pending.
 -/
 theorem good_curve_closed : GoodCurveClosed := by
   intro C _ _ V d I _ κ _ X hB H ζ hζ g a w x hG hV2

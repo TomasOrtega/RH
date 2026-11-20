@@ -13,7 +13,7 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.L2.SG.HidaS
   Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates Formalism.L2.SG.RealObj.InfCut
 
 /- English proof (translation)
-Rewrite using `[LyM, LinearMap.det_toLin', Matrix.det_diagonal]`. Simplify using `only [Fintype.prod_sum_type, dY, Finset.prod_const_one, one_mul, mul_one, Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_bool]`. Rewrite using `[show r * 2 = 2 * r by ring, pow_mul, Real.sq_sqrt hT.le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem det_LyM {r k : ℕ} {T : ℝ} (hT : 0 < T) : LinearMap.det (LyM (k := k) (r := r) T) = T ^ r := by
   rw [LyM, LinearMap.det_toLin', Matrix.det_diagonal]
@@ -22,51 +22,43 @@ theorem det_LyM {r k : ℕ} {T : ℝ} (hT : 0 < T) : LinearMap.det (LyM (k := k)
   rw [show r * 2 = 2 * r by ring, pow_mul, Real.sq_sqrt hT.le]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hFJ` using `isFrameJ_of hT hee hff hef hww hew hfw hez hfz hzz hzw`. Establish `emb` using `embQ hFJ`. Establish `hQz : Qm e f w (z0v T z) *ᵥ zBv k r T = z` using `Qm_zB hT z`. Use `set Ψ := cM (ε := ε) (Qi ε e f w (z0v T z)) (Qm e f w (z0v T z)) with hΨ`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φ : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ) → Mt k r` to `fun t => WlocSk.NB.phi0 t.1 t.2`. Establish `hΦc : Continuous Φ` using `WlocSk.NB.continuous_nilpotent_chart`. Set `ψ : Mt k r → (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)` to `fun x => (WlocSk.NB.psiC x, WlocSk.NB.psiR x)`. Establish `hψc : Continuous ψ` using `WlocSk.NB.continuous_psiC.prodMk WlocSk.NB.continuous_psiR`. Establish `hleft : Function.LeftInverse ψ Φ` using `fun t => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `WlocSk.NB.nilpotent_chart_right_inverse t.1 t.2`. Use `show (WlocSk.NB.psiC (WlocSk.NB.phi0 t.1 t.2), WlocSk.NB.psiR (WlocSk.NB.phi0 t.1 t.2)) = t`. Rewrite using `[h1, h2]`. Establish `hΦe : MeasurableEmbedding Φ`. Use `MeasurableEmbedding.of_measurable_inverse hΦc.measurable ?_ hψc.measurable hleft` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hr : Set.range Φ = {x | Φ (ψ x) = x}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩ show Φ (ψ (Φ t)) = Φ t`. Rewrite using `[hleft t]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hx`. Conclude with `⟨ψ x, hx⟩`. Rewrite using `[hr]`. Conclude with `(isClosed_eq (hΦc.comp hψc) continuous_id).measurableSet`. Establish `hΦN : ∀ t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ), WlocSk.NB.phi0 t.1 t.2 ∈ Nset k r` using `fun t => WlocSk.NB.test_vector_mem_schwartz_bruhat t.1 t.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set ν := (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))).map Φ with hν`. Use `haveI : SigmaFinite ν := hΦe.sigmaFinite_map`. Establish `hν0 : ν ≠ 0`. Introduce `h0`. Rewrite `h0` using `[hν, Measure.map_eq_zero_iff hΦe.measurable.aemeasurable]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_univ.measure_ne_zero (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))) Set.univ_nonempty (by rw [h0, Measure.coe_zero, Pi.zero_apply])`. Establish `hrange : ∀ t, ∃ g : Formalism.REAL.UJ ε, Ψ g = Φ t` using `fun t => by`. Use `⟨toUJ _ (conjQ_UJ hFJ (hΦN t).1), ?_⟩` and prove the remaining obligations. Use `show (Qi ε e f w (z0v T z) * uMat (toUJ _ (conjQ_UJ hFJ (hΦN t).1)) * Qm e f w (z0v T z) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = WlocSk.NB.phi0 t.1 t.2`. Rewrite using `[uMat_toUJ, Qi_Qm_conj hFJ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `set lam0 := Measure.comap Ψ ν with hlam0`. Establish `hmap : lam0.map Ψ = ν`. Rewrite using `[hlam0, emb.map_comap]`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations. Rewrite using `[ae_iff, hν, hΦe.map_apply]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `measure_empty (μ := (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))))` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Take `⟨g, hg⟩` from `hrange t`. Conclude with `⟨g, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `haveI : SigmaFinite lam0 := SigmaFinite.of_map _ emb.measurable.aemeasurable (by rw [hmap]; infer_instance)`. Establish `hNz : NLoc ε e (Qm e f w (z0v T z) *ᵥ zBv k r T) = NLoc ε e z` using `by rw [hQz]`. Establish `hz0 : ∃ t : ℂ, z0v T z = t • (Qm e f w (z0v T z) *ᵥ zBv k r T)` using `⟨(((Real.sqrt T)⁻¹ : ℝ) : ℂ), by rw [hQz]; rfl⟩`. Establish `hHaar : IsHaarLoc (NLoc ε e z) lam0`. Use `⟨inferInstance, fun h0 => hν0 (by rw [← hmap, h0, Measure.map_zero]), ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hlam0, emb.comap_apply, hν, hΦe.map_apply]`. Use `measure_empty (μ := (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))))` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_compl_iff, Set.mem_empty_iff_false, iff_false, not_exists, not_and]`. Introduce `g hg hgt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hg` to reduce the goal to its premises. Rewrite using `[← hNz]`. Use `inN_of_conj hFJ (inWb_zB T) ?_` and prove the remaining obligations. Establish `: (Qi ε e f w (z0v T z) * uMat g * Qm e f w (z0v T z) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = WlocSk.NB.phi0 t.1 t.2` using `hgt`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hΦN t`. Establish `hs' : InN ε e (Qm e f w (z0v T z) *ᵥ zBv k r T) (uMat s)`. Establish `h1 : s ∈ NLoc ε e (Qm e f w (z0v T z) *ᵥ zBv k r T)` using `by rw [hNz]; exact hs`. Conclude with `h1`. Establish `h0 : Qi ε e f w (z0v T z) * uMat s * Qm e f w (z0v T z) ∈ Nset k r` using `conj_mem_Nset hFJ hz0 (uMat_mem s) hs'`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set m0 := Qi ε e f w (z0v T z) * uMat s * Qm e f w (z0v T z) with hm0`. Establish `hfun : Ψ ∘ (fun x => s * x) = lmulM m0 ∘ Ψ`. Use function extensionality and compare the values at `x`. Use `show (Qi ε e f w (z0v T z) * uMat (s * x) * Qm e f w (z0v T z) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = m0 * (Qi ε e f w (z0v T z) * uMat x * Qm e f w (z0v T z))`. Rewrite using `[uMat_mul, hm0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (Qi ε e f w (z0v T z) * uMat s) (Qm e f w (z0v T z)) (Qi ε e f w (z0v T z)), Qm_mul_Qi hFJ, Matrix.mul_one]`. Establish `hsh : lmulM m0 ∘ Φ = Φ ∘ (fun t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ) => (t.1 + WlocSk.NB.shG m0 t.1, t.2 + WlocSk.NB.shH m0 t.1))`. Use function extensionality and compare the values at `t`. Take `⟨h1, h2⟩` from `WlocSk.NB.lmul_coord h0 t.1 t.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `WlocSk.UnitaryGroupBasics.mem_n_mul h0 (WlocSk.NB.test_vector_mem_schwartz_bruhat t.1 t.2)`. Use `show m0 * WlocSk.NB.phi0 t.1 t.2 = WlocSk.NB.phi0 (t.1 + WlocSk.NB.shG m0 t.1) (t.2 + WlocSk.NB.shH m0 t.1)`. Rewrite using `[← h1, ← h2]`. Conclude with `(WlocSk.NB.nilpotent_chart_left_inverse hmem).symm`. Establish `hmp` using `WlocSk.NB.shear_mp (d := r) WlocSk.NB.rk (WlocSk.NB.shG m0) (WlocSk.NB.shH m0) (fun i => (WlocSk.NB.continuous_shG m0 i).measurable) (fun i x y h => WlocSk.NB.shG_dep m0 i x y h) (WlocSk.NB.continuous_shH m0).measurable`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (lam0.map (fun x => s * x)).map Ψ = lam0.map Ψ`. Rewrite using `[Measure.map_map emb.measurable (measurable_const_mul s), hfun, ← Measure.map_map (measurable_lmulM m0) emb.measurable, hmap, hν, Measure.map_map (measurable_lmulM m0) hΦe.measurable, hsh, ← Measure.map_map hΦe.measurable hmp.measurable, hmp.map_eq]`. Rewrite using `[← emb.comap_map (lam0.map (fun x => s * x)), key, emb.comap_map]`. Establish `hkc : ∀ᵐ g ∂lam0, kapL ε e f w z g = (Kc T ∘ Ψ) g` using `by filter_upwards [(ae_iff.2 hHaar.2.2.1 : ∀ᵐ g ∂lam0, g ∈ NLoc ε e z)] with g hg`. Establish `hg' : InN ε e (Qm e f w (z0v T z) *ᵥ zBv k r T) (uMat g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : g ∈ NLoc ε e (Qm e f w (z0v T z) *ᵥ zBv k r T)` using `by rw [hNz]; exact hg`. Conclude with `h1`. Conclude with `kapL_eq hFJ hT g (conj_mem_Nset hFJ hz0 (uMat_mem g) hg')`. Establish `hdet` using `det_LyM_ne (k := k) (r := r) hT`. Use `set c : ℝ≥0∞ := ENNReal.ofReal |(LinearMap.det (LyM (k := k) (r := r) T))⁻¹| with hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : c ≠ 0` using `by rw [hc]; exact (ENNReal.ofReal_pos.2 (abs_pos.2 (inv_ne_zero hdet))).ne'`. Establish `hcT : c ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hmeasK : AEMeasurable (kapL ε e f w z) lam0` using `((Kc_cont T).measurable.comp emb.measurable).aemeasurable.congr (Filter.EventuallyEq.symm hkc)`. Establish `hcomp : Kc T ∘ Φ = LyM (k` using `k) (r := r) T ∘ Rc := by`. Use function extensionality and compare the values at `t`.
-
-Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, Function.comp_apply, LyM_apply]`. Conclude with `chart_kappa_coordinates T t i`. Establish `hH : Formalism.MainNotions.S.haarLie (Nset k r) 1 = ENNReal.ofReal ((2 : ℝ) ^ (r ^ 2 + r * k)) • ν`. Rewrite using `[hν]`.
-
-Conclude with `exponential_chart_haar k r`. Establish `hrefN : refNg rfl ε e f w (z0v T z) = ENNReal.ofReal ((2 : ℝ) ^ (r ^ 2 + r * k)) • lam0`. Rewrite using `[refNg_rfl]`. Use extensionality with `s _`. Use `show (Measure.comap Ψ (Formalism.MainNotions.S.haarLie (Nset k r) 1)) s = _`.
-
-Rewrite using `[emb.comap_apply, hH, Measure.smul_apply, Measure.smul_apply, hlam0, emb.comap_apply]`. Establish `hlamK : lam0.map (kapL ε e f w z) = c • volume`. Rewrite using `[Measure.map_congr hkc, ← Measure.map_map (Kc_cont T).measurable emb.measurable, hmap, hν, Measure.map_map (Kc_cont T).measurable hΦe.measurable, hcomp, ← Measure.map_map (LyM (k := k) (r := r) T).continuous_of_finiteDimensional.measurable Rc_cont.measurable, map_Rc, Measure.map_ …`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrefN]`.
-
-Conclude with `hmeasK.smul_measure _`. Rewrite using `[hrefN, Measure.map_smul, hlamK, smul_smul, hc, det_LyM hT, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 2`. Rewrite using `[abs_of_pos (by positivity)]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem refN_map_kapL {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ)
     (w : Fin k → Fin n → ℂ) (z : Fin n → ℂ) {T : ℝ} (hT : 0 < T)

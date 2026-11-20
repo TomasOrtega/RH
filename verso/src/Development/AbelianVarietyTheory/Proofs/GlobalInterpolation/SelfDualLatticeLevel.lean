@@ -9,7 +9,7 @@ namespace GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeLevel
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.UG Formalism.MainNotions.StandardLattice
 
 /- English proof (translation)
-The claim follows from `and_congr_right fun _ => and_congr_right fun _ => eq_comm`.
+A detailed English derivation is pending.
 -/
 theorem isSelfDualLat_iff {E : Type} [Field E] [NumberField E] {n : Type} [Fintype n]
     (σ : E →+* E) (J : Matrix n n E) (N : Submodule (𝓞 E) (n → E)) :
@@ -17,7 +17,7 @@ theorem isSelfDualLat_iff {E : Type} [Field E] [NumberField E] {n : Type} [Finty
   and_congr_right fun _ => and_congr_right fun _ => eq_comm
 
 /- English proof (translation)
-The claim follows from `isSelfDualLat_iff _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem self_dual_lattice_iff_x0 (D : D7) (N : Submodule (𝓞 D.host.E) (Fin D.R.k → D.host.E)) :
     (letI := D.host.cmStar
@@ -26,7 +26,7 @@ theorem self_dual_lattice_iff_x0 (D : D7) (N : Submodule (𝓞 D.host.E) (Fin D.
   isSelfDualLat_iff _ _ _
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun N => imp_congr (self_dual_lattice_iff_x0 D N) Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem indexAt_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     SelfDualStabiliserIndex.IndexAt D Lv u ↔ SelfDualLatticeIndex.IndexAt D Lv u :=
@@ -34,7 +34,7 @@ theorem indexAt_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     imp_congr (self_dual_lattice_iff_x0 D N) Iff.rfl
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun D => forall_congr' fun Lv => forall_congr' fun u => indexAt_iff D Lv u`.
+A detailed English derivation is pending.
 -/
 theorem indexKU_iff : SelfDualStabiliserIndex.IndexKU ↔ SelfDualLatticeIndex.StabiliserLevelIndexFormula :=
   forall_congr' fun D => forall_congr' fun Lv => forall_congr' fun u => indexAt_iff D Lv u

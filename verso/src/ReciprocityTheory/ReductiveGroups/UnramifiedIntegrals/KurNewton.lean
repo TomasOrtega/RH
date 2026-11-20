@@ -30,7 +30,7 @@ def newtonBall (K : Type) [NormedField K] [IsUltrametricDist K] : Subring K wher
     rwa [norm_neg]
 
 /- English proof (translation)
-Establish `hp : (↑P.coeffs : Set K) ⊆ newtonBall K`. Introduce `c hc`. Take `⟨i, -, rfl⟩` from `Polynomial.mem_coeffs_iff.mp (Finset.mem_coe.mp hc)`. Conclude with `hP i`. Conclude with `⟨P.toSubring (newtonBall K) hp, Polynomial.map_toSubring P (newtonBall K) hp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem newton_exists_poly (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) :
     ∃ Q : Polynomial (newtonBall K), Q.map (newtonBall K).subtype = P := by
@@ -41,7 +41,7 @@ theorem newton_exists_poly (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1
   exact ⟨P.toSubring (newtonBall K) hp, Polynomial.map_toSubring P (newtonBall K) hp⟩
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_map]`. Conclude with `Polynomial.eval₂_at_apply (newtonBall K).subtype a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newton_eval_ball (Q : Polynomial (newtonBall K)) (a : newtonBall K) :
     (Q.map (newtonBall K).subtype).eval (a : K) = ((Q.eval a : newtonBall K) : K) := by
@@ -49,9 +49,9 @@ theorem newton_eval_ball (Q : Polynomial (newtonBall K)) (a : newtonBall K) :
   exact Polynomial.eval₂_at_apply (newtonBall K).subtype a
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `newton_exists_poly P hP`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion Q ⟨x, hx⟩ ⟨y, hy⟩`. Use `⟨k, k.2, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun z : newtonBall K => (z : K)) hk`. Establish `e1` using `newton_eval_ball Q (⟨x, hx⟩ + ⟨y, hy⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `newton_eval_ball Q ⟨x, hx⟩`. Establish `e3` using `newton_eval_ball (Polynomial.derivative Q) ⟨x, hx⟩`. Rewrite using `[Polynomial.derivative_map]`. Simplify using `only [Subring.coe_add, Subring.coe_mul, Subring.coe_pow] at h e1 e2 e3`. Rewrite using `[e1, e2, e3, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem newton_expansion (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) (x y : K)
     (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) :
@@ -68,9 +68,9 @@ theorem newton_expansion (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) 
   rw [e1, e2, e3, h]
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `newton_exists_poly P hP`. Take `⟨k, hk⟩` from `Polynomial.evalSubFactor Q ⟨x, hx⟩ ⟨y, hy⟩`. Establish `h` using `congrArg (fun z : newtonBall K => (z : K)) hk`. Establish `e1` using `newton_eval_ball Q ⟨x, hx⟩`. Establish `e2` using `newton_eval_ball Q ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AddSubgroupClass.coe_sub, Subring.coe_mul] at h e1 e2`. Rewrite using `[e1, e2, h, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) k.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newton_lipschitz (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) (x y : K)
     (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖P.eval x - P.eval y‖ ≤ ‖x - y‖ := by
@@ -84,7 +84,7 @@ theorem newton_lipschitz (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) 
   exact mul_le_of_le_one_left (norm_nonneg _) k.2
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `newton_exists_poly P hP`. Rewrite using `[Polynomial.derivative_map, Polynomial.coeff_map]`. Conclude with `((Polynomial.derivative Q).coeff i).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem newton_derivative_coeff (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) (i : ℕ) :
     ‖P.derivative.coeff i‖ ≤ 1 := by
@@ -93,15 +93,15 @@ theorem newton_derivative_coeff (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ 
   exact ((Polynomial.derivative Q).coeff i).2
 
 /- English proof (translation)
-Establish `hd : P.derivative.eval x ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`. Use `set t : K := -(P.eval x / P.derivative.eval x) with ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : ‖t‖ = ‖P.eval x‖` using `by rw [ht, norm_neg, norm_div, h1, div_one]`. Establish `ht1 : ‖t‖ ≤ 1` using `hnt ▸ h0.le`. Establish `hy : ‖x + t‖ ≤ 1` using `(IsUltrametricDist.norm_add_le_max x t).trans (max_le hx ht1)`. Take `⟨k, hk, he⟩` from `newton_expansion P hP x t hx ht1`. Use `⟨x + t, hy, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl` using `newton_lipschitz P.derivative (newton_derivative_coeff P hP) (x + t) x hy hx`. Rewrite `hl` using `[add_sub_cancel_left, hnt]`. Establish `hlt : ‖P.derivative.eval (x + t) - P.derivative.eval x‖ < ‖P.derivative.eval x‖`. Rewrite using `[h1]`. Conclude with `lt_of_le_of_lt hl h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, max_eq_right hlt.le, h1]`. Conclude with `this`. Establish `hz : P.eval x + P.derivative.eval x * t = 0`. Rewrite using `[ht]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, hz, zero_add, norm_mul, norm_pow, hnt]`. Conclude with `mul_le_of_le_one_left (by positivity) hk`. Rewrite using `[add_sub_cancel_left, hnt]`.
+A detailed English derivation is pending.
 -/
 theorem newton_step (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) (x : K) (hx : ‖x‖ ≤ 1)
     (h0 : ‖P.eval x‖ < 1) (h1 : ‖P.derivative.eval x‖ = 1) :
@@ -135,25 +135,21 @@ end Ball
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
 /- English proof (translation)
-Use `set c : ℝ := ‖P.eval x₀‖ with hc`. Establish `hc0 : 0 ≤ c` using `norm_nonneg _`. Set `S : Type` to `{x : K // ‖x‖ ≤ 1 ∧ ‖P.eval x‖ < 1 ∧ ‖P.derivative.eval x‖ = 1}`. Establish `step : ∀ s : S, ∃ s' : S, ‖P.eval s'.1‖ ≤ ‖P.eval s.1‖ ^ 2 ∧ ‖s'.1 - s.1‖ ≤ ‖P.eval s.1‖`. Introduce `s`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hy1, hy2, hy3⟩` from `newton_step P hP s.1 s.2.1 s.2.2.1 s.2.2.2`. Establish `: ‖P.eval y‖ < 1` using `lt_of_le_of_lt hy2 (pow_lt_one₀ (norm_nonneg _) s.2.2.1 two_ne_zero)`. Conclude with `⟨⟨y, hy, this, hy1⟩, hy2, hy3⟩`. Use `choose g hg1 hg2 using step`. Set `u : ℕ → S` to `fun n => Nat.rec ⟨x₀, hx, h0, h1⟩ (fun _ s => g s) n`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : (u 0).1 = x₀` using `rfl`. Establish `hus : ∀ n, u (n + 1) = g (u n)` using `fun _ => rfl`. Establish `hval : ∀ n, ‖P.eval (u n).1‖ ≤ c * c ^ n`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [hu0, pow_zero, mul_one]`. Consider the case `succ n ih`. Establish `hle : ‖P.eval (u n).1‖ ≤ c` using `ih.trans (mul_le_of_le_one_right hc0 (pow_le_one₀ hc0 h0.le))`. Combine the equalities or inequalities in the displayed calculation. Establish `hdist : ∀ n, dist (u n).1 (u (n + 1)).1 ≤ c * c ^ n`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[dist_comm, dist_eq_norm, hus]`. Conclude with `(hg2 _).trans (hval n)`. Establish `hcau : CauchySeq (fun n => (u n).1)` using `cauchySeq_of_le_geometric c c h0 hdist`. Take `⟨x, hxl⟩` from `cauchySeq_tendsto_of_complete hcau`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hnear : ∀ n, ‖(u n).1 - x₀‖ ≤ c`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [hu0, sub_self, norm_zero]`. Conclude with `hc0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `succ n ih`. Establish `h2 : ‖(u (n + 1)).1 - (u n).1‖ ≤ c`. Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `(hdist n).trans (mul_le_of_le_one_right hc0 (pow_le_one₀ hc0 h0.le))`. Use `IsUltrametricDist.norm_add_le_max ((u (n + 1)).1 - (u n).1) ((u n).1 - x₀)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[sub_add_sub_cancel]`. Conclude with `this.trans (max_le h2 ih)`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Establish `hl1 : Filter.Tendsto (fun n => P.eval (u n).1) Filter.atTop (nhds (P.eval x))` using `(P.continuous.tendsto x).comp hxl`. Establish `hl2 : Filter.Tendsto (fun n => P.eval (u n).1) Filter.atTop (nhds 0)`.
-
-Apply `squeeze_zero_norm hval` to reduce the goal to its premises. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one hc0 h0).const_mul c` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Then use the resulting hypothesis. Conclude with `tendsto_nhds_unique hl1 hl2`. Establish `hl : Filter.Tendsto (fun n => ‖(u n).1 - x₀‖) Filter.atTop (nhds ‖x - x₀‖)` using `(hxl.sub_const x₀).norm`.
-
-Conclude with `le_of_tendsto' hl hnear`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem newton_root (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) (x₀ : K) (hx : ‖x₀‖ ≤ 1)
     (h0 : ‖P.eval x₀‖ < 1) (h1 : ‖P.derivative.eval x₀‖ = 1) :

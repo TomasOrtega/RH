@@ -27,7 +27,7 @@ def prodAll (pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N) (P : ∀ i, MvPolyn
   ∏ i, MvPolynomial.rename (fun x : Fin (what₂ i) × WV I => (pl ⟨i, x.1⟩, x.2)) (P i)
 
 /- English proof (translation)
-Unfold `kindAll`. Establish `hex : ∃ s', pl s' = pl s` using `⟨s, rfl⟩`. Rewrite using `[dif_pos hex]`. Establish `hc : hex.choose = s` using `hpl hex.choose_spec`. Rewrite using `[hc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem kindAll_pl {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} (hpl : Function.Injective pl)
     (kind : ∀ i, Fin (what₂ i) → Knd d) (s : Σ i : Fin K, Fin (what₂ i)) : kindAll pl kind (pl s) = kind s.1 s.2 := by
@@ -38,9 +38,9 @@ theorem kindAll_pl {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} (hpl : Funct
   rw [hc]
 
 /- English proof (translation)
-Unfold `prodAll at h`. Establish `h1` using `MvPolynomial.vars_prod _ h`. Rewrite `h1` using `[Finset.mem_biUnion]`. Take `⟨i, -, hi⟩` from `h1`. Establish `h2` using `MvPolynomial.vars_rename _ _ hi`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[Finset.mem_image]`. Take `⟨⟨r, w'⟩, hw', heq⟩` from `h2`. Simplify using `only [Prod.mk.injEq] at heq`. Take `⟨rfl, rfl⟩` from `heq`. Conclude with `⟨⟨i, r⟩, rfl, hw'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_vars_prodAll {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} {P : ∀ i, MvPolynomial (Fin (what₂ i) × WV I) C}
     {ρ : Fin N} {w : WV I} (h : (ρ, w) ∈ (prodAll pl P).vars) :
@@ -64,9 +64,7 @@ variable {C : Type} [Field C] {V : VF C} {d : ℕ} {I J : Fin 2 → Type} [∀ g
   {N K : ℕ} {what₂ : Fin K → ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H w hw`. Take `⟨μ, hμ, hx⟩` from `(MvPolynomial.mem_vars _).1 hw`. Conclude with `H μ hμ w (Finsupp.mem_support_iff.1 hx)`. Introduce `H μ hμ w hx`.
-
-Conclude with `H w ((MvPolynomial.mem_vars _).2 ⟨μ, hμ, Finsupp.mem_support_iff.2 hx⟩)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma forall_support_ne_zero_iff_forall_mem_vars {R0 : Type} [Field R0] {α β : Type} (Q : MvPolynomial (α × β) R0)
     (ρ : α) (T : β → Prop) :
@@ -79,11 +77,11 @@ private lemma forall_support_ne_zero_iff_forall_mem_vars {R0 : Type} [Field R0] 
     exact H w ((MvPolynomial.mem_vars _).2 ⟨μ, hμ, Finsupp.mem_support_iff.2 hx⟩)
 
 /- English proof (translation)
-Unfold `RowsOK`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun ρ g a a' hk => ?_, fun ρ hk => ?_⟩` and prove the remaining obligations. Take `⟨h1a, h1b, h1c⟩` from `h1 ρ g a a' hk`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1a, h1b, (forall_support_ne_zero_iff_forall_mem_vars P ρ (OnLeafV G g a a')).1 h1c⟩`. Take `⟨g, hg⟩` from `h2 ρ hk`. Conclude with `⟨g, (forall_support_ne_zero_iff_forall_mem_vars P ρ (fun w => w.1 = g)).1 hg⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun ρ g a a' hk => ?_, fun ρ hk => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1a, h1b, h1c⟩` from `h1 ρ g a a' hk`. Conclude with `⟨h1a, h1b, (forall_support_ne_zero_iff_forall_mem_vars P ρ (OnLeafV G g a a')).2 h1c⟩`. Take `⟨g, hg⟩` from `h2 ρ hk`. Conclude with `⟨g, (forall_support_ne_zero_iff_forall_mem_vars P ρ (fun w => w.1 = g)).2 hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowsOK_iff (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop) {N : ℕ} (P : MvPolynomial (Fin N × WV I) C)
     (kind : Fin N → Knd d) : RowsOK G alt P kind ↔
@@ -106,17 +104,17 @@ theorem rowsOK_iff (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop) {N : ℕ} (P :
       exact ⟨g, (forall_support_ne_zero_iff_forall_mem_vars P ρ (fun w => w.1 = g)).2 hg⟩
 
 /- English proof (translation)
-Rewrite using `[rowsOK_iff]`. Establish `h'` using `fun i => (rowsOK_iff G alt (P i) (kind i)).1 (h i)`. Use `⟨fun ρ g a a' hk => ?_, fun ρ hk => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ s, pl s = ρ`. Take `⟨s, rfl⟩` from `hex`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite `hk` using `[kindAll_pl hpl]`. Take `⟨h1, h2, h3⟩` from `(h' s.1).1 s.2 g a a' hk`. Use `⟨h1, h2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨s', hs', hw'⟩` from `mem_vars_prodAll hw`. Establish `hss` using `hpl hs'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hss` using the available equality. Conclude with `h3 w hw'`. It suffices to derive a contradiction. Unfold `kindAll at hk`. Rewrite `hk` using `[dif_neg hex]`.
+Substitute using the available equality. It suffices to derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hk`. Distinguish the cases in `hex : ∃ s, pl s = ρ`. Take `⟨s, rfl⟩` from `hex`. Rewrite `hk` using `[kindAll_pl hpl]`. Take `⟨g, hg⟩` from `(h' s.1).2 s.2 hk`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨s', hs', hw'⟩` from `mem_vars_prodAll hw`. Establish `hss` using `hpl hs'`. Substitute `hss` using the available equality. Conclude with `hg w hw'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨0, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨s', hs', -⟩` from `mem_vars_prodAll hw`. Conclude with `absurd ⟨s', hs'⟩ hex`.
+A detailed English derivation is pending.
 -/
 theorem rowsOK_prodAll (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop)
     {pl : (Σ i : Fin K, Fin (what₂ i)) → Fin N} (hpl : Function.Injective pl)

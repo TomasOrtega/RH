@@ -28,9 +28,9 @@ def LeafUnitAW : Prop := ∀ (q : ℕ) [NeZero q] (E : Spc) (i : ℤ)
       CohomologyClass.mk γ = Ht.cast (by ring) (by ring) (CohomologyClass.mk β : Ht q E n i)
 
 /- English proof (translation)
-Introduce `q _ E hE n i a`. Take `⟨β, rfl⟩` from `CohomologyClass.mk_surjective a`. Take `⟨μ, hμ, hU⟩` from `h1 q i`. Take `⟨⟨α, hα⟩, hαone⟩` from `hone q E hE`. Take `⟨γ, hγ, hγc⟩` from `h2 q E i μ hU α (h2a q E hE α hα) n β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `htw : IsTwPair (twPair q 0 i)` using `pick_spec (hex q 0 i)`. Establish `hc : cup q (one q E) (CohomologyClass.mk β) = (twPair q 0 i).cup E rfl (one q E) (CohomologyClass.mk β)` using `rfl`. Rewrite using `[hc, hun q 0 i _ μ htw hμ E rfl, hαone α hα, (hcup (ZMod q) μ E rfl).2 α β γ hγ, hγc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafRingUnit_of (hcup : LeafCupSpec) (hex : LeafTwPairExists) (hun : LeafTwPairUnique) (hone : LeafOneSpec)
     (h1 : LeafUnitPair) (h2a : LeafOneLoc) (h2 : LeafUnitAW) : LeafRingUnit := by

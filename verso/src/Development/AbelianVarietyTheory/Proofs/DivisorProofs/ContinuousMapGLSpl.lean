@@ -16,9 +16,9 @@ Both sides reduce to the same expression.
 theorem pLoc_idem_spl (T : Finset (Pl E)) (w : Pl E) : pLoc E w (idem E T) = if w ∈ T then 1 else 0 := rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc E w (((idem E T • g.val + (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))) : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) i j) = _`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, pLoc_idem_spl]`. Use `split_ifs with h`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, apply_ite (pLoc E w)]`.
+A detailed English derivation is pending.
 -/
 theorem pLoc_prjG_spl (T : Finset (Pl E)) (w : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     GeneralLinearGroup.map (pLoc E w) (prjG E n T g) =
@@ -32,7 +32,7 @@ theorem pLoc_prjG_spl (T : Finset (Pl E)) (w : Pl E) (g : GL (Fin n) (FiniteAdel
   · simp [Matrix.one_apply, apply_ite (pLoc E w)]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => Subtype.ext (funext fun w => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin n) (w.adicCompletion E) => x.val i j) (H w)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glAf_ext_spl {g h : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)}
     (H : ∀ w, GeneralLinearGroup.map (pLoc E w) g = GeneralLinearGroup.map (pLoc E w) h) : g = h := by
@@ -40,16 +40,14 @@ theorem glAf_ext_spl {g h : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)}
   exact congrArg (fun x : GL (Fin n) (w.adicCompletion E) => x.val i j) (H w)
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.continuous_eval (R := fun w : Pl E => w.adicCompletion E) (A := fun w : Pl E => (w.adicCompletionIntegers E : Set (w.adicCompletion E))) w`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pLoc_spl (w : Pl E) : Continuous (pLoc E w) :=
   RestrictedProduct.continuous_eval (R := fun w : Pl E => w.adicCompletion E)
     (A := fun w : Pl E => (w.adicCompletionIntegers E : Set (w.adicCompletion E))) w
 
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (Pl E))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `f : v.adicCompletion E → RestrictedProduct (fun u : Pl E => u.adicCompletion E) (fun u => (u.adicCompletionIntegers E : Set (u.adicCompletion E))) (Filter.principal {v}ᶜ)` to `fun a => ⟨Pi.single v a, fun u hu => by`. Rewrite using `[Set.mem_setOf_eq, Pi.single_eq_of_ne hu]`. Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`.
-
-Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hf`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_sLoc_spl (v : Pl E) : Continuous (sLoc E v) := by
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (Pl E)) :=
@@ -62,13 +60,13 @@ theorem continuous_sLoc_spl (v : Pl E) : Continuous (sLoc E v) := by
   exact (RestrictedProduct.continuous_inclusion hS).comp hf
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (Continuous.matrix_map continuous_id (continuous_pLoc_spl E w))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mapGL_spl (w : Pl E) : Continuous (GeneralLinearGroup.map (n := Fin n) (pLoc E w)) :=
   Continuous.units_map _ (Continuous.matrix_map continuous_id (continuous_pLoc_spl E w))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.add (Continuous.matrix_map continuous_id (continuous_sLoc_spl E w)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locGL_spl (w : Pl E) : Continuous (locGL E n w) :=
   Continuous.units_map _ (continuous_const.add (Continuous.matrix_map continuous_id (continuous_sLoc_spl E w)))
@@ -79,34 +77,34 @@ def psiG_spl (u : Pl E) (p : GLw n u × GLw n (cPl E u)) : GL (Fin n) (FiniteAde
   locGL E n u p.1 * locGL E n (cPl E u) p.2
 
 /- English proof (translation)
-Rewrite using `[psiG_spl, map_mul, pLoc_locGL, pLoc_locGL_of_ne (Ne.symm hu), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pLoc_psiG_self_spl {u : Pl E} (hu : cPl E u ≠ u) (p : GLw n u × GLw n (cPl E u)) :
     GeneralLinearGroup.map (pLoc E u) (psiG_spl u p) = p.1 := by
   rw [psiG_spl, map_mul, pLoc_locGL, pLoc_locGL_of_ne (Ne.symm hu), mul_one]
 
 /- English proof (translation)
-Rewrite using `[psiG_spl, map_mul, pLoc_locGL, pLoc_locGL_of_ne hu, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pLoc_psiG_conj_spl {u : Pl E} (hu : cPl E u ≠ u) (p : GLw n u × GLw n (cPl E u)) :
     GeneralLinearGroup.map (pLoc E (cPl E u)) (psiG_spl u p) = p.2 := by
   rw [psiG_spl, map_mul, pLoc_locGL, pLoc_locGL_of_ne hu, one_mul]
 
 /- English proof (translation)
-Rewrite using `[psiG_spl, map_mul, pLoc_locGL_of_ne h1, pLoc_locGL_of_ne h2, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pLoc_psiG_of_ne_spl {u w : Pl E} (h1 : w ≠ u) (h2 : w ≠ cPl E u) (p : GLw n u × GLw n (cPl E u)) :
     GeneralLinearGroup.map (pLoc E w) (psiG_spl u p) = 1 := by
   rw [psiG_spl, map_mul, pLoc_locGL_of_ne h1, pLoc_locGL_of_ne h2, one_mul]
 
 /- English proof (translation)
-Simplify using `[orb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orb_spl {u w : Pl E} : w ∈ orb E u ↔ w = u ∨ w = cPl E u := by
   simp [orb]
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `g.2`. Rewrite using `[← hh, pLoc_prjG_spl, if_neg (by rw [mem_orb_spl]; tauto)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pLoc_gam_of_ne_spl {u w : Pl E} (h1 : w ≠ u) (h2 : w ≠ cPl E u) (g : Gam E n u) :
     GeneralLinearGroup.map (pLoc E w) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) = 1 := by
@@ -114,9 +112,9 @@ theorem pLoc_gam_of_ne_spl {u w : Pl E} (h1 : w ≠ u) (h2 : w ≠ cPl E u) (g :
   rw [← hh, pLoc_prjG_spl, if_neg (by rw [mem_orb_spl]; tauto)]
 
 /- English proof (translation)
-Use `⟨psiG_spl u p, glAf_ext_spl E n fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[pLoc_prjG_spl]`. Use `split_ifs with hw`. Both sides reduce to the same expression. Rewrite `hw` using `[mem_orb_spl, not_or]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_psiG_of_ne_spl hw.1 hw.2]`.
+A detailed English derivation is pending.
 -/
 theorem psiG_mem_spl {u : Pl E} (hu : cPl E u ≠ u) (p : GLw n u × GLw n (cPl E u)) : psiG_spl u p ∈ Gam E n u := by
   refine ⟨psiG_spl u p, glAf_ext_spl E n fun w => ?_⟩

@@ -16,11 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AffineCover
 
 /- English proof (translation)
-Take `⟨H, hH, m, s, hc, hs⟩` from `hp`. Establish `: Smooth f` using `SmoothOfRelativeDimension.smooth g f`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`. Establish `: CompactSpace X` using `⟨by`. Establish `e : (Set.univ : Set X) = ⋃ i, (nonzeroLocus (s i) : Set X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← TopologicalSpace.Opens.coe_iSup, hc]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isCompact_iUnion fun i => (hs i).1.isCompact⟩`. Establish `: IsNoetherian X` using `⟨⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD, h⟩` from `exists_affine_le_coheight (X := X) (fun F hF => exists_isAffineOpen_of_finite (cst f ⊤) hH s hc (fun i => (hs i).1) F hF) (g + 1)`. Use `⟨D, hD, top_le_iff.1 fun x _ => not_not.1 fun hx => ?_⟩` and prove the remaining obligations. Use `(h x hx).trans (coheight_le_of_smooth f hf x)` as an intermediate fact. Conclude with `Nat.not_succ_le_self _ (by exact_mod_cast this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cover_of_isProjBy_of_infinite (K : Type) [Field K] [Infinite K] (X : Scheme.{0})
     (f : X ⟶ Spec (CommRingCat.of K)) (g : ℕ) (hf : SmoothOfRelativeDimension g f) (hp : IsProjBy f) :
@@ -42,7 +42,7 @@ theorem exists_cover_of_isProjBy_of_infinite (K : Type) [Field K] [Infinite K] (
   exact Nat.not_succ_le_self _ (by exact_mod_cast this)
 
 /- English proof (translation)
-Introduce `K _ _ X _ f g hf hp` and use `exists_cover_of_isProjBy_of_infinite K X f g hf hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_cover_of_isProjBy :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K)) (g : ℕ), SmoothOfRelativeDimension g f → IsProjBy f → ∃ D : Fin (g + 1) → X.Opens, (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ :=

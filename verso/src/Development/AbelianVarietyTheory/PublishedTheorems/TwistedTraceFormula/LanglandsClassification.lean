@@ -94,11 +94,11 @@ def LanglandsClassification : Prop :=
   Induced ∧ Quotient ∧ Classification ∧ Limit ∧ StandardSpan ∧ StandardIndependent ∧ TemperedLevi
 
 /- English proof (translation)
-Take `⟨⟨N, hN⟩, hc, -⟩` from `UnipRad.flagN_subgroup_closed_keeps n ε _ _ _ (isIsoFlag_opp D.flag)`. Rewrite using `[Datum.Nbar, ← hN]`. Rewrite `hc` using `[← hN]`. Establish `: LocallyCompactSpace N` using `hc.locallyCompactSpace`. Use `⟨(Measure.haar : Measure N).map Subtype.val, fun h => NeZero.ne _ ((Measure.map_eq_zero_iff measurable_subtype_coe.aemeasurable).1 h), ⟨fun T hT => ?_⟩, ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Measure.map_apply measurable_subtype_coe hT.measurableSet]`. Conclude with `(hc.isClosedEmbedding_subtypeVal.isCompact_preimage hT).measure_lt_top`. Rewrite using `[Measure.map_apply measurable_subtype_coe hc.measurableSet.compl]`. Use `measure_empty (μ := (Measure.haar : Measure N))` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `conv_rhs => rw [← map_mul_left_eq_self Measure.haar (⟨s, hs⟩ : N)]`. Rewrite using `[Measure.map_map (measurable_const_mul s) measurable_subtype_coe, Measure.map_map measurable_subtype_coe (measurable_const_mul _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Langlands.exists_isHaarSub_nbar {n : ℕ} {ε : Fin n → Bool} (D : Datum ε) :
     ∃ ν : Measure (UJ ε), IsHaarSub D.Nbar ν := by
@@ -121,9 +121,9 @@ theorem Langlands.exists_isHaarSub_nbar {n : ℕ} {ε : Fin n → Bool} (D : Dat
     rfl
 
 /- English proof (translation)
-Take `⟨⟨a, j, W, hW, hj, V, σ, hσ, s⟩, H, ρ, ι, hm⟩` from `I`. Take `rfl : a = 0` from `h`. Establish `hU : IsURepOn (UJset ε) σ`. Use `hσ.2.2.1` as an intermediate fact. Rewrite `this` using `[leviOne_zero hW, mats_top]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨U, -, hU⟩` from `hm.unique (isIndModel_zero hW hU s) fun _ hf _ hy => indFun_mul_right hf hy`. Conclude with `⟨leviOne_zero hW, U, mats_top (ε := ε) ▸ hU⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Langlands.equiv_of_zero {n : ℕ} {ε : Fin n → Bool} (I : IndModule ε) (h : I.a = 0) :
     I.M = ⊤ ∧ ∃ U : I.H ≃ₗᵢ[ℂ] I.V, ∀ g ∈ UJset ε, ∀ v, U (I.ρ g v) = I.σ g (U v) := by

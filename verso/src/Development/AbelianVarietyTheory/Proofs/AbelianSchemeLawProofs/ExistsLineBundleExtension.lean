@@ -11,7 +11,7 @@ namespace GlobalTheory.ExtendLineBundle
 variable {X Y : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem genericPoint_mem {U : X.Opens} {x : X} (hx : x ∈ U) : genericPoint X ∈ U :=
   ((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩
@@ -20,7 +20,7 @@ def localSubring (x : X) : Subring X.functionField :=
   (algebraMap (X.presheaf.stalk x) X.functionField).range
 
 /- English proof (translation)
-The claim follows from `haveI : Nonempty U := ⟨⟨x, hx⟩⟩ Scheme.algebraMap_germ_eq_germToFunctionField X hx s`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_germ {U : X.Opens} {x : X} (hx : x ∈ U) (h : genericPoint X ∈ U)
     (s : Γ(X, U)) :
@@ -30,14 +30,14 @@ theorem algebraMap_germ {U : X.Opens} {x : X} (hx : x ∈ U) (h : genericPoint X
   Scheme.algebraMap_germ_eq_germToFunctionField X hx s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, algebraMap_germ hx h s⟩`.
+Supply the required witnesses or components.
 -/
 theorem germ_mem {U : X.Opens} {x : X} (hx : x ∈ U) (h : genericPoint X ∈ U) (s : Γ(X, U)) :
     X.presheaf.germ U _ h s ∈ localSubring x :=
   ⟨_, algebraMap_germ hx h s⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `ht`. Take `⟨U, hx, s, rfl⟩` from `X.presheaf.exists_germ_eq a`. Conclude with `⟨U, hx, s, (algebraMap_germ hx _ s).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_section_of_mem {x : X} {t : X.functionField} (ht : t ∈ localSubring x) :
     ∃ (U : X.Opens) (hx : x ∈ U) (s : Γ(X, U)),
@@ -47,7 +47,7 @@ theorem exists_section_of_mem {x : X} {t : X.functionField} (ht : t ∈ localSub
   exact ⟨U, hx, s, (algebraMap_germ hx _ s).symm⟩
 
 /- English proof (translation)
-Take `⟨U, hx, s, rfl⟩` from `exists_section_of_mem ht`. Use `filter_upwards [U.isOpen.mem_nhds hx] with y hy`. Conclude with `germ_mem hy _ s`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_mem {x : X} {t : X.functionField} (ht : t ∈ localSubring x) :
     ∀ᶠ y in nhds x, t ∈ localSubring y := by
@@ -56,9 +56,9 @@ theorem eventually_mem {x : X} {t : X.functionField} (ht : t ∈ localSubring x)
   exact germ_mem hy _ s
 
 /- English proof (translation)
-Use `choose V hV s hs using fun x : U => exists_section_of_mem (ht x.1 x.2)`. Establish `hη : ∀ x : U, genericPoint X ∈ V x ⊓ U` using `fun x => ⟨genericPoint_mem (hV x), h⟩`. Establish `hs' : ∀ x : U, X.presheaf.germ (V x ⊓ U) _ (hη x) (X.presheaf.map (homOfLE (inf_le_left : V x ⊓ U ≤ V x)).op (s x)) = t` using `fun x => (X.presheaf.germ_res_apply _ _ _ _).trans (hs x)`. Take `⟨a, ha, -⟩` from `X.sheaf.existsUnique_gluing' (fun x : U => V x ⊓ U) U (fun x => homOfLE inf_le_right) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hV _, hy⟩) (fun x => X.presheaf.map (homOfLE (inf_le_left : V x ⊓ U ≤ V x)).op (s x)) (fun x y => germ_injective_of_isIntegral X (U := (V x ⊓ U) ⊓ (V y ⊓ …`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs' ⟨_, h⟩]`. Conclude with `(X.presheaf.germ_res_apply (homOfLE inf_le_right) _ (hη ⟨_, h⟩) a).symm.trans (congrArg _ (ha ⟨_, h⟩))`.
+A detailed English derivation is pending.
 -/
 theorem exists_section {U : X.Opens} (h : genericPoint X ∈ U) {t : X.functionField}
     (ht : ∀ x ∈ U, t ∈ localSubring x) : ∃ s : Γ(X, U), X.presheaf.germ U _ h s = t := by
@@ -80,9 +80,9 @@ theorem exists_section {U : X.Opens} (h : genericPoint X ∈ U) {t : X.functionF
     (congrArg _ (ha ⟨_, h⟩))
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `exists_section ha ht`. Take `⟨n, b, e⟩` from `exists_eq_pow_mul_of_isAffineOpen X U hU a s`. Use `⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (X.presheaf.germ _ _ ha) e`. Rewrite `e'` using `[map_mul, map_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `r : ∀ c : Γ(X, U), X.presheaf.germ _ _ ha (c |_ X.basicOpen a) = X.presheaf.germ U _ h c` using `fun c => X.presheaf.germ_res_apply _ _ _ _`. Rewrite `e'` using `[r, r]`. Rewrite using `[← e']`. Conclude with `germ_mem hx h b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (a : Γ(X, U))
     (h : genericPoint X ∈ U) (ha : genericPoint X ∈ X.basicOpen a) {t : X.functionField}
@@ -100,7 +100,7 @@ theorem exists_pow_mul_mem {U : X.Opens} (hU : IsAffineOpen U) (a : Γ(X, U))
   exact germ_mem hx h b
 
 /- English proof (translation)
-Establish `hyU` using `X.basicOpen_le a hy`. Take `⟨b, hb⟩` from `((X.mem_basicOpen a y hyU).1 hy).exists_right_inv`. Establish `e` using `congrArg (algebraMap (X.presheaf.stalk y) X.functionField) hb`. Rewrite `e` using `[map_mul, map_one, algebraMap_germ hyU h]`. Conclude with `⟨left_ne_zero_of_mul_eq_one e, b, eq_inv_of_mul_eq_one_right e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem inv_germ_mem {U : X.Opens} (a : Γ(X, U)) (h : genericPoint X ∈ U) {y : X}
     (hy : y ∈ X.basicOpen a) :
@@ -112,21 +112,21 @@ theorem inv_germ_mem {U : X.Opens} (a : Γ(X, U)) (h : genericPoint X ∈ U) {y 
   exact ⟨left_ne_zero_of_mul_eq_one e, b, eq_inv_of_mul_eq_one_right e⟩
 
 /- English proof (translation)
-Consider the cases of `isEmpty_or_nonempty ι with`. Consider the case `inl h => exact ⟨1, one_ne_zero, fun k => h.elim k, fun _ ⟨k⟩ => h.elim k⟩`. Consider the case `inr hι`. Take `⟨k₀⟩` from `hι`. Use `Fintype.ofFinite ι` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI : StrongNormalizationMonoid R := UniqueFactorizationMonoid.strongNormalizationMonoid`. Use `letI : NormalizedGCDMonoid R := UniqueFactorizationMonoid.toNormalizedGCDMonoid R`. Take `⟨⟨d, hd⟩, hdc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) c`. Use `choose e he using hdc`. Establish `hd0 : algebraMap R K d ≠ 0` using `IsFractionRing.to_map_eq_zero_iff.not.mpr (nonZeroDivisors.ne_zero hd)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : ∀ k, algebraMap R K (e k) = algebraMap R K d * c k` using `fun k => by`. Rewrite using `[he k, Algebra.smul_def]`. Establish `hg : Finset.univ.gcd e ≠ 0` using `fun h => by`. Use `he' k₀` as an intermediate fact. Rewrite `this` using `[Finset.gcd_eq_zero_iff.1 h k₀ (Finset.mem_univ _), map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hd0 (hc k₀) this.symm`. Establish `hg0 : algebraMap R K (Finset.univ.gcd e) ≠ 0` using `IsFractionRing.to_map_eq_zero_iff.not.mpr hg`. Use `⟨algebraMap R K (Finset.univ.gcd e) / algebraMap R K d, div_ne_zero hg0 hd0, fun k => ?_, fun t _ ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Finset.gcd_dvd (f := e) (Finset.mem_univ k)`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `he' k` as an intermediate fact. Rewrite `this` using `[hr, map_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := R) t`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : algebraMap R K q ≠ 0` using `IsFractionRing.to_map_eq_zero_iff.not.mpr (nonZeroDivisors.ne_zero hq)`. Establish `h1 : d * q ∣ Finset.univ.gcd fun k => p * e k` using `Finset.dvd_gcd fun k _ => by`. Take `⟨r, hr⟩` from `ht k`. Use `⟨r, IsFractionRing.injective R K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, he', hr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨r, hr⟩` from `h1.trans (Finset.gcd_mul_left' _ _ p).dvd`. Use `⟨r, ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap R K) hr` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-this`.
+A detailed English derivation is pending.
 -/
 theorem exists_gcd_fraction {R K : Type*} [CommRing R] [IsDomain R] [UniqueFactorizationMonoid R]
     [Field K] [Algebra R K] [IsFractionRing R K] {ι : Type*} [Finite ι] (c : ι → K)
@@ -180,7 +180,7 @@ theorem exists_gcd_fraction {R K : Type*} [CommRing R] [IsDomain R] [UniqueFacto
 def localUnits (x : X) : Subgroup X.functionFieldˣ := (localSubring x).toSubmonoid.units
 
 /- English proof (translation)
-Rewrite using `[← Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_localUnits {x : X} {t : X.functionFieldˣ} :
     t ∈ localUnits x ↔ t.val ∈ localSubring x ∧ t.val⁻¹ ∈ localSubring x := by
@@ -191,27 +191,27 @@ def Compatible (T : Set (X.Opens × X.functionFieldˣ)) : Prop :=
   ∀ p ∈ T, ∀ q ∈ T, ∀ y, y ∈ p.1 → y ∈ q.1 → p.2 / q.2 ∈ localUnits y
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hη : genericPoint X ∈ U` using `genericPoint_mem hxU`. Set `C : Set X` to `{y | y ∈ U ∧ ∃ p ∈ T, y ∈ p.1}`. Establish `hC : ∀ y : C, ∃ p ∈ T, ∃ a : Γ(X, U), X.basicOpen a ≤ p.1 ∧ y.1 ∈ X.basicOpen a`. Introduce and unpack `⟨y, hy, p, hp, hyp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨a, ha, hya⟩` from `IsAffineOpen.exists_basicOpen_le hU (V := p.1) ⟨y, hyp⟩ hy`. Conclude with `⟨p, hp, a, ha, hya⟩`. Use `choose P hP a ha hya using hC`. Take `⟨t, ht⟩` from `(NoetherianSpace.isCompact C).elim_finite_subcover (fun y : C => (X.basicOpen (a y) : Set X)) (fun y => (X.basicOpen (a y)).isOpen) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hya _⟩)`. Set `α : t → X.functionField` to `fun k => X.presheaf.germ U _ hη (a k)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : t → X.functionField` to `fun k => (P k).2`. Establish `hα : ∀ k, α k ≠ 0` using `fun k => (inv_germ_mem _ hη (hya k)).1`. Establish `hf : ∀ k, f k ≠ 0` using `fun k => Units.ne_zero _`. Establish `h1 : ∀ kl : t × t, ∃ n : ℕ, (α kl.1 * α kl.2) ^ n * (f kl.1 / f kl.2) ∈ localSubring x`. Introduce and unpack `⟨k, l⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_mul_mem hU (a k * a l) hη (t := f k / f l) (by rw [Scheme.basicOpen_mul]; exact ⟨genericPoint_mem (hya _), genericPoint_mem (hya _)⟩) (fun y hy => by`. Rewrite `hy` using `[Scheme.basicOpen_mul]`. Use `(mem_localUnits.1 (hT _ (hP k) _ (hP l) y (ha _ hy.1) (ha _ hy.2))).1` as an intermediate fact. Rewrite using `[Units.val_div_eq_div_val] at this)` and apply the resulting hypothesis. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hn x hxU` as an intermediate fact. Rewrite `this` using `[map_mul]`. Then use the resulting hypothesis. Use `choose n hn using h1`. Take `⟨N, hN⟩` from `(Set.finite_range n).bddAbove`. Establish `h2 : ∀ k l, (α k ^ N * f k) * (α l ^ N / f l) ∈ localSubring x` using `fun k l => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le (hN ⟨(k, l), rfl⟩)`. Use `mul_mem (pow_mem (mul_mem (germ_mem hxU hη (a k)) (germ_mem hxU hη (a l))) m) (hn (k, l))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = (α k * α l) ^ m * _`. Rewrite using `[hm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨h, h0, h3, h4⟩` from `exists_gcd_fraction (R := X.presheaf.stalk x) (fun k => α k ^ N * f k) (fun k => mul_ne_zero (pow_ne_zero _ (hα k)) (hf k))`. Establish `h5 : ∀ᶠ y in nhds x, ∀ k, α k ^ N * f k / h ∈ localSubring y ∧ h * (α k ^ N / f k) ∈ localSubring y` using `Filter.eventually_all.2 fun k => (eventually_mem (h3 k)).and (eventually_mem (h4 _ ⟨k⟩ fun l => h2 l k))`. Take `⟨W, hW, hWo, hxW⟩` from `eventually_nhds_iff.1 h5`. Use `⟨⟨W, hWo⟩ ⊓ U, Units.mk0 h h0, ⟨hxW, hxU⟩, fun p hp y hy hyp => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk, hyk⟩` from `Set.mem_iUnion₂.1 (ht (show y ∈ C from ⟨hy.2, p, hp, hyp⟩))`. Establish `hi : (α ⟨k, hk⟩ ^ N)⁻¹ ∈ localSubring y`. Rewrite using `[← inv_pow]`. Conclude with `pow_mem (inv_germ_mem _ hη hyk).2 N`. Take `⟨h6, h7⟩` from `hW y hy.1 ⟨k, hk⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h8 : Units.mk0 h h0 / (P k).2 ∈ localUnits y`. Rewrite using `[mem_localUnits, Units.val_div_eq_div_val]`. Use `pow_ne_zero N (hα ⟨k, hk⟩)` as an intermediate fact. Use `hf ⟨k, hk⟩` as an intermediate fact. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 
-Use `mul_mem hi h7 using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `h / f ⟨k, hk⟩ = _`. Clear the denominators using the available nonvanishing facts. Use `mul_mem hi h6 using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `(h / f ⟨k, hk⟩)⁻¹ = _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Clear the denominators using the available nonvanishing facts. Use `mul_mem h8 (hT _ (hP k) _ hp y (ha _ hyk) hyp)` as an intermediate fact. Rewrite `this` using `[div_mul_div_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_local_equation [NoetherianSpace X] {T : Set (X.Opens × X.functionFieldˣ)}
     (hT : Compatible T) (x : X) [UniqueFactorizationMonoid (X.presheaf.stalk x)] :
@@ -283,11 +283,9 @@ theorem exists_local_equation [NoetherianSpace X] {T : Set (X.Opens × X.functio
   rwa [div_mul_div_cancel] at this
 
 /- English proof (translation)
-Take `⟨T, h₁, hT⟩` from `zorn_subset_nonempty {T : Set (X.Opens × X.functionFieldˣ) | Compatible T} (fun c hc hch _ => ⟨⋃₀ c, fun p ⟨s, hs, hp⟩ q ⟨s', hs', hq⟩ => by`. Break down `hch.total hs hs' with h | h` into its components or cases. Use `exacts [hc hs' p (h hp) q hq, hc hs p hp q (h hq)], fun s hs => Set.subset_sUnion_of_mem hs⟩)`. Use `T₀ h₀`. Use `⟨T, h₁, hT.prop, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hX x` as an intermediate fact. Take `⟨W, h, hx, hW⟩` from `exists_local_equation hT.prop x`. Use `⟨(W, h), hT.2 (y := insert (W, h) T) ?_ (Set.subset_insert _ _) (Set.mem_insert _ _), hx⟩` and prove the remaining obligations. Introduce and unpack `p (rfl | hp) q (rfl | hq) y hyp hyq`. Rewrite using `[div_self']`.
-
-Conclude with `one_mem _`. Conclude with `hW q hq y hyp hyq`. Rewrite using `[← inv_div]`. Conclude with `inv_mem (hW p hp y hyq hyp)`. Conclude with `hT.prop p hp q hq y hyp hyq`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compatible_cover [NoetherianSpace X]
     (hX : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x))
@@ -316,7 +314,7 @@ def unitVal (U : X.Opens) : Γ(X, U)ˣ →* X.functionFieldˣ :=
   if h : genericPoint X ∈ U then Units.map (X.presheaf.germ U _ h).hom else 1
 
 /- English proof (translation)
-Rewrite using `[unitVal, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_unitVal {U : X.Opens} (h : genericPoint X ∈ U) (a : Γ(X, U)ˣ) :
     (unitVal U a).val = X.presheaf.germ U _ h a.val := by
@@ -324,7 +322,7 @@ theorem val_unitVal {U : X.Opens} (h : genericPoint X ∈ U) (a : Γ(X, U)ˣ) :
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_unitVal h, val_unitVal (hle h)]`. Conclude with `X.presheaf.germ_res_apply (homOfLE hle) _ h a.val`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitVal_res {U V : X.Opens} (hle : V ≤ U) (h : genericPoint X ∈ V) (a : Γ(X, U)ˣ) :
     unitVal V (res hle a) = unitVal U a := by
@@ -333,9 +331,9 @@ theorem unitVal_res {U V : X.Opens} (hle : V ≤ U) (h : genericPoint X ∈ V) (
   exact X.presheaf.germ_res_apply (homOfLE hle) _ h a.val
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Apply `TopCat.Presheaf.section_ext X.sheaf U` to reduce the goal to its premises. Introduce `x hx`. Establish `hη` using `genericPoint_mem hx`. Establish `e` using `congrArg Units.val (h hη)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[val_unitVal hη, val_unitVal hη]`. Rewrite using `[germ_injective_of_isIntegral X _ hη e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_ext {U : X.Opens} {a b : Γ(X, U)ˣ}
     (h : genericPoint X ∈ U → unitVal U a = unitVal U b) : a = b := by
@@ -348,7 +346,7 @@ theorem unit_ext {U : X.Opens} {a b : Γ(X, U)ˣ}
   rw [germ_injective_of_isIntegral X _ hη e]
 
 /- English proof (translation)
-Establish `hη` using `genericPoint_mem hy`. Rewrite using `[mem_localUnits, ← Units.val_inv_eq_inv_val, ← map_inv, val_unitVal hη, val_unitVal hη]`. Conclude with `⟨germ_mem hy _ _, germ_mem hy _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unitVal_mem {U : X.Opens} {y : X} (hy : y ∈ U) (a : Γ(X, U)ˣ) :
     unitVal U a ∈ localUnits y := by
@@ -357,9 +355,9 @@ theorem unitVal_mem {U : X.Opens} {y : X} (hy : y ∈ U) (a : Γ(X, U)ˣ) :
   exact ⟨germ_mem hy _ _, germ_mem hy _ _⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : genericPoint X ∈ U`. Take `⟨a, ha⟩` from `exists_section h fun y hy => (mem_localUnits.1 (ht y hy)).1`. Take `⟨b, hb⟩` from `exists_section h fun y hy => (mem_localUnits.1 (ht y hy)).2`. Establish `hab : a * b = 1` using `germ_injective_of_isIntegral X _ h (by`. Rewrite using `[map_mul, map_one, ha, hb, mul_inv_cancel₀ t.ne_zero])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Units.mkOfMulEqOne a b hab, fun _ => Units.ext ((val_unitVal h _).trans ha)⟩`. Conclude with `⟨1, fun h' => (h h').elim⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_unit {U : X.Opens} {t : X.functionFieldˣ} (ht : ∀ y ∈ U, t ∈ localUnits y) :
     ∃ a : Γ(X, U)ˣ, genericPoint X ∈ U → unitVal U a = t := by
@@ -378,7 +376,7 @@ def imageUnit (V : Y.Opens) : Γ(Y, V)ˣ ≃* Γ(X, j ''ᵁ V)ˣ :=
 
 omit [IsIntegral X] in
 /- English proof (translation)
-The claim follows from `Units.ext (congrArg (fun q => q.hom a.val) (j.appIso_inv_naturality (homOfLE hle).op))`.
+A detailed English derivation is pending.
 -/
 theorem imageUnit_res {U V : Y.Opens} (hle : V ≤ U) (a : Γ(Y, U)ˣ) :
     imageUnit j V (res hle a) = res (j.image_mono hle) (imageUnit j U a) :=
@@ -386,7 +384,7 @@ theorem imageUnit_res {U V : Y.Opens} (hle : V ≤ U) (a : Γ(Y, U)ˣ) :
 
 omit [IsIntegral X] in
 /- English proof (translation)
-The claim follows from `Units.ext (congrArg (fun q => q.hom a.val) (j.app_appIso_inv U))`.
+A detailed English derivation is pending.
 -/
 theorem imageUnit_pull (U : X.Opens) (a : Γ(X, U)ˣ) :
     imageUnit j (j ⁻¹ᵁ U) (pullU j U a) = res (Set.image_preimage_subset j U.1) a :=
@@ -396,14 +394,14 @@ def imageVal (V : Y.Opens) : Γ(Y, V)ˣ →* X.functionFieldˣ :=
   (unitVal (j ''ᵁ V)).comp (imageUnit j V).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `(congrArg (unitVal _) (imageUnit_res j hle a)).trans (unitVal_res _ h _)`.
+A detailed English derivation is pending.
 -/
 theorem imageVal_res {U V : Y.Opens} (hle : V ≤ U) (h : genericPoint X ∈ j ''ᵁ V)
     (a : Γ(Y, U)ˣ) : imageVal j V (res hle a) = imageVal j U a :=
   (congrArg (unitVal _) (imageUnit_res j hle a)).trans (unitVal_res _ h _)
 
 /- English proof (translation)
-The claim follows from `(imageVal_res j hle h _).trans ((congrArg (unitVal _) (imageUnit_pull j U a)).trans (unitVal_res _ (j.image_mono hle h) _))`.
+A detailed English derivation is pending.
 -/
 theorem imageVal_res_pull {U : X.Opens} {V : Y.Opens} (hle : V ≤ j ⁻¹ᵁ U)
     (h : genericPoint X ∈ j ''ᵁ V) (a : Γ(X, U)ˣ) :
@@ -412,16 +410,14 @@ theorem imageVal_res_pull {U : X.Opens} {V : Y.Opens} (hle : V ≤ j ⁻¹ᵁ U)
     (unitVal_res _ (j.image_mono hle h) _))
 
 /- English proof (translation)
-The claim follows from `(imageUnit j V).injective (unit_ext h)`.
+A detailed English derivation is pending.
 -/
 theorem image_unit_ext {V : Y.Opens} {a b : Γ(Y, V)ˣ}
     (h : genericPoint X ∈ j ''ᵁ V → imageVal j V a = imageVal j V b) : a = b :=
   (imageUnit j V).injective (unit_ext h)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_unit (U := j ''ᵁ V) (t := t) (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `ht y hy)`. Use `⟨(imageUnit j V).symm a, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha h]`.
-
-Conclude with `congrArg (unitVal _) ((imageUnit j V).apply_symm_apply a)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_image_unit {V : Y.Opens} {t : X.functionFieldˣ}
     (ht : ∀ y ∈ V, t ∈ localUnits (j y)) :
@@ -435,7 +431,7 @@ theorem exists_image_unit {V : Y.Opens} {t : X.functionFieldˣ}
 
 omit [IsIntegral X] in
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hU`. Conclude with `j.apply_mem_image_iff.2 ⟨hy, j.apply_mem_image_iff.1 hV⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_image_inf {U V : Y.Opens} {x : X} (hU : x ∈ j ''ᵁ U) (hV : x ∈ j ''ᵁ V) :
     x ∈ j ''ᵁ (U ⊓ V) := by
@@ -443,9 +439,9 @@ theorem mem_image_inf {U V : Y.Opens} {x : X} (hU : x ∈ j ''ᵁ U) (hV : x ∈
   exact j.apply_mem_image_iff.2 ⟨hy, j.apply_mem_image_iff.1 hV⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ i₀, genericPoint X ∈ j ''ᵁ L.U i₀`. Take `⟨i₀, h₀⟩` from `h`. Use `⟨fun i => imageVal j _ (L.g i i₀), fun i k hi hk => ?_⟩` and prove the remaining obligations. Establish `hη` using `mem_image_inf j (mem_image_inf j hi hk) h₀`. Establish `e` using `congrArg (imageVal j _) (hL.cocycle i k i₀)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[map_mul, imageVal_res j _ hη, imageVal_res j _ hη, imageVal_res j _ hη]`. Conclude with `eq_div_iff_mul_eq'.2 e`. Conclude with `⟨1, fun i _ hi => (h ⟨i, hi⟩).elim⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equations (L : LB Y) (hL : L.IsLB) : ∃ f : L.ι → X.functionFieldˣ,
     ∀ i k, genericPoint X ∈ j ''ᵁ L.U i → genericPoint X ∈ j ''ᵁ L.U k →
@@ -460,11 +456,11 @@ theorem exists_equations (L : LB Y) (hL : L.IsLB) : ∃ f : L.ι → X.functionF
   · exact ⟨1, fun i _ hi => (h ⟨i, hi⟩).elim⟩
 
 /- English proof (translation)
-Introduce `(p : M.ι × N.ι) (q : M.ι × N.ι)`. Use `image_unit_ext j (V := M.U p.1 ⊓ N.U p.2 ⊓ (M.U q.1 ⊓ N.U q.2)) fun h => ?_` and prove the remaining obligations. Establish `hp` using `j.image_mono inf_le_left h`. Establish `hq` using `j.image_mono inf_le_right h`. Establish `e₁` using `ha p.1 q.1 (j.image_mono inf_le_left hp) (j.image_mono inf_le_left hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `hb p.2 q.2 (j.image_mono inf_le_right hp) (j.image_mono inf_le_right hq)`. Establish `key : ∀ (V : Y.Opens) (_ : genericPoint X ∈ j ''ᵁ V) (l₁ : V ≤ M.U p.1 ⊓ N.U p.2) (l₂ : V ≤ M.U p.1 ⊓ M.U q.1) (l₃ : V ≤ N.U p.2 ⊓ N.U q.2) (l₄ : V ≤ M.U q.1 ⊓ N.U q.2), imageVal j V (res l₁ (s p)) = imageVal j V (res l₂ (M.g p.1 q.1) * (res l₃ (N.g p.2 q.2))⁻¹ * res l₄ (s q))`. Introduce `V h l₁ l₂ l₃ l₄`. Rewrite using `[map_mul, map_mul, map_inv, imageVal_res j _ h, imageVal_res j _ h, imageVal_res j _ h, imageVal_res j _ h, e₁, e₂, hs p hp, hs q hq]`. Rewrite using `[inv_div, mul_right_comm, div_mul_div_cancel, div_mul_div_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ h _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isGen_of_equations (M N : LB Y) (a : M.ι → X.functionFieldˣ) (b : N.ι → X.functionFieldˣ)
     (ha : ∀ i k, genericPoint X ∈ j ''ᵁ M.U i → genericPoint X ∈ j ''ᵁ M.U k →
@@ -491,7 +487,7 @@ theorem isGen_of_equations (M N : LB Y) (a : M.ι → X.functionFieldˣ) (b : N.
   exact key _ h _ _ _ _
 
 /- English proof (translation)
-Use `(congrArg (imageVal j _) ((Fintype.prod_unique (ι := PUnit) _).trans (zpow_one _))).trans ?_` and prove the remaining obligations. Conclude with `imageVal_res_pull j (U := M.U (p ⟨⟩) ⊓ M.U (q ⟨⟩)) _ h _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem imageVal_pull (M : LB X) (p q : PUnit → M.ι)
     (h : genericPoint X ∈ j ''ᵁ (LB.wchart M (fun _ => j) p ⊓ LB.wchart M (fun _ => j) q)) :
@@ -506,15 +502,13 @@ namespace GlobalTheory
 open ExtendLineBundle
 
 /- English proof (translation)
-Establish `: IsNoetherian X` using `{}`. Take `⟨f, hf⟩` from `exists_equations j L hL`. Take `⟨T, h₀, hT, hc⟩` from `exists_compatible_cover hX (T₀ := Set.range fun i => (j ''ᵁ L.U i, f i)) (by`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨k, rfl⟩ y hi hk`. Rewrite using `[← hf i k (genericPoint_mem hi) (genericPoint_mem hk)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unitVal_mem (mem_image_inf j hi hk) _)`. Use `choose g hg using fun p q : T => exists_unit (U := p.1.1 ⊓ q.1.1) (t := p.1.2 / q.1.2) fun y hy => hT _ p.2 _ q.2 y hy.1 hy.2`. Set `L' : LB X` to `⟨T, fun p => p.1.1, g⟩`. Use `choose s hs using fun p : L.ι × (PUnit → T) => exists_image_unit j (V := L.U p.1 ⊓ LB.wchart L' (fun _ => j) p.2) (t := f p.1 / (p.2 ⟨⟩).1.2) fun y hy => hT _ (h₀ ⟨p.1, rfl⟩) _ (p.2 ⟨⟩).2 (j y) (j.apply_mem_image_iff.2 hy.1) (LB.wchart_le L' (fun _ => j) p.2 ⟨⟩ hy.2)`. Use `⟨L', ⟨?_, fun p => unit_ext fun h => ?_, fun p q r => unit_ext fun h => ?_⟩, ⟨s⟩, isGen_of_equations j L (L'.pull j) f (fun p => (p ⟨⟩).1.2) hf (fun p q hp hq => ?_) s hs⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `top_unique fun x _ => ?_` and prove the remaining obligations. Take `⟨p, hp, hx⟩` from `hc x`. Conclude with `Opens.mem_iSup.2 ⟨⟨p, hp⟩, hx⟩`. Rewrite using `[unitVal_res _ h, map_one]`. Conclude with `(hg p p ⟨h, h⟩).trans (div_self' _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, unitVal_res _ h, unitVal_res _ h, unitVal_res _ h]`. Conclude with `(congrArg₂ (· * ·) (hg p q h.1) (hg q r ⟨h.1.2, h.2⟩)).trans ((div_mul_div_cancel _ _ _).trans (hg p r ⟨h.1.1, h.2⟩).symm)`. Establish `hw` using `mem_image_inf j hp hq`. Use `(imageVal_pull j L' p q hw).trans (hg (p ⟨⟩) (q ⟨⟩) ?_)` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hw`.
-
-Rewrite using `[← e]`. Conclude with `⟨LB.wchart_le L' (fun _ => j) p ⟨⟩ hy.1, LB.wchart_le L' (fun _ => j) q ⟨⟩ hy.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lineBundle_extension (X Y : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [CompactSpace X] (j : Y ⟶ X) (hj : IsOpenImmersion j)

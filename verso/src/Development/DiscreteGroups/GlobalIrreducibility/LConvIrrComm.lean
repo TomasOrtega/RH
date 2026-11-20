@@ -8,7 +8,7 @@ open UniformSpace
 namespace DiscreteGroups.sglob.LConv.IrreduciblePresentation
 
 /- English proof (translation)
-Use `congrArg (fun A : E →L[ℂ] E => A v) h` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comm_apply {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {S T : E →L[ℂ] E}
     (h : S * T = T * S) (v : E) : S (T v) = T (S v) := by
@@ -33,25 +33,23 @@ theorem formOf_apply (S : Hs B hB →L[ℂ] Hs B hB) (x y : M) :
 variable {G : Type} [Group G] (ρ : Representation ℂ G M) (hinv : ∀ g x y, B (ρ g x) (ρ g y) = B x y)
 
 /- English proof (translation)
-Use `set a : ℝ := (2 * (‖S‖ + 1))⁻¹ with ha_def`. Establish `ha : 0 < a` using `by positivity`. Establish `hsym : ∀ u v, ⟪S u, v⟫_ℂ = ⟪u, S v⟫_ℂ` using `fun u v => by`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.star_eq_adjoint, hS.star_eq]`. Establish `hherm : ∀ x y, starRingEnd ℂ (formOf B hB S x y) = formOf B hB S y x` using `fun x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[formOf_apply, formOf_apply, inner_conj_symm, hsym]`. Establish `hinvQ : ∀ g x y, formOf B hB S (ρ g x) (ρ g y) = formOf B hB S x y` using `fun g x y => by`. Rewrite using `[formOf_apply, formOf_apply, ← pi_iota B hB ρ hinv, ← pi_iota B hB ρ hinv, comm_apply (hc g), pi_inner]`. Establish `hbd : ∀ x, |(formOf B hB S x x).re| ≤ ‖S‖ * ‖iota B hB x‖ ^ 2` using `fun x => by`. Rewrite using `[formOf_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ x, |a * (formOf B hB S x x).re| ≤ (B x x).re / 2` using `fun x => by`. Rewrite using `[re_B B hB, abs_mul, abs_of_pos ha]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : IsInvForm ρ (((1 / 2 : ℝ) : ℂ) • B + (a : ℂ) • formOf B hB S)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine ⟨fun x y => ?_, fun x => ?_, fun g x y => ?_⟩ <;>`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[map_add, map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal, hB.1, hherm]`. Rewrite using `[Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Use `abs_le.1 (key x)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hext.1.2.2, hinvQ]`. Establish `h2 : IsInvForm ρ (B - (((1 / 2 : ℝ) : ℂ) • B + (a : ℂ) • formOf B hB S))`. Apply the tactic sequence `refine ⟨fun x y => ?_, fun x => ?_, fun g x y => ?_⟩ <;>`. Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_add, map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal, hB.1, hherm]`. Rewrite using `[Complex.sub_re, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Use `abs_le.1 (key x)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hext.1.2.2, hinvQ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc'⟩` from `hext.2 _ h1 h2`. Establish `ha' : (a : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ha.ne'`. Establish `hQ : ∀ x y, formOf B hB S x y = ((a : ℂ)⁻¹ * (c - ((1 / 2 : ℝ) : ℂ))) * B x y` using `fun x y => by`. Establish `h` using `hc' x y`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, eq_inv_mul_iff_mul_eq₀ ha']`. Take the linear combination `h`. Use `set d := (a : ℂ)⁻¹ * (c - ((1 / 2 : ℝ) : ℂ))`. Establish `hQ' : ∀ x y : M, ⟪iota B hB x, S (iota B hB y)⟫_ℂ = d * ⟪iota B hB x, iota B hB y⟫_ℂ` using `fun x y => by`. Rewrite using `[inner_iota, ← formOf_apply]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hQ x y`. Establish `hall : ∀ u v : Hs B hB, ⟪u, S v⟫_ℂ = d * ⟪u, v⟫_ℂ`. Introduce `u v`. Use `Completion.induction_on₂ u v ?_ fun p q => ?_` and prove the remaining obligations. Conclude with `isClosed_eq (continuous_fst.inner (S.continuous.comp continuous_snd)) (continuous_const.mul (continuous_fst.inner continuous_snd))`.
-
-Conclude with `hQ' p q`. Use `⟨d, ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hall, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_smul_right]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_sa (hext : IsExtremeForm ρ B) (S : Hs B hB →L[ℂ] Hs B hB) (hS : IsSelfAdjoint S)
     (hc : ∀ g, S * pi B hB ρ hinv g = pi B hB ρ hinv g * S) : ∃ c : ℂ, S = c • 1 := by
@@ -108,11 +106,11 @@ theorem scalar_sa (hext : IsExtremeForm ρ B) (S : Hs B hB →L[ℂ] Hs B hB) (h
   rw [hall, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_smul_right]
 
 /- English proof (translation)
-Establish `hT' : ∀ g, star T * pi B hB ρ hinv g = pi B hB ρ hinv g * star T` using `fun g => by`. Establish `h` using `congrArg star (hT g⁻¹)`. Simplify using `only [star_mul, star_pi, inv_inv] at h`. Conclude with `h.symm`. Establish `hre : ∀ g, (realPart T : Hs B hB →L[ℂ] Hs B hB) * pi B hB ρ hinv g = pi B hB ρ hinv g * realPart T` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [realPart_apply_coe, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, hT, hT']`. Establish `him : ∀ g, (imaginaryPart T : Hs B hB →L[ℂ] Hs B hB) * pi B hB ρ hinv g = pi B hB ρ hinv g * imaginaryPart T` using `fun g => by`. Simplify using `only [imaginaryPart_apply_coe, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, hT, hT']`. Take `⟨c₁, h₁⟩` from `scalar_sa B hB ρ hinv hext _ (realPart T).prop hre`. Take `⟨c₂, h₂⟩` from `scalar_sa B hB ρ hinv hext _ (imaginaryPart T).prop him`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c₁ + Complex.I * c₂, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← realPart_add_I_smul_imaginaryPart T]`. Rewrite using `[h₁, h₂, smul_smul, add_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutant (hext : IsExtremeForm ρ B) (T : Hs B hB →L[ℂ] Hs B hB)
     (hT : ∀ g, T * pi B hB ρ hinv g = pi B hB ρ hinv g * T) : ∃ c : ℂ, T = c • 1 := by

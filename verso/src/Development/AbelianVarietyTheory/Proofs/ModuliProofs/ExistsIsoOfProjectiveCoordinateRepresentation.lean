@@ -19,14 +19,14 @@ def NoZero {W : T.Opens} (f : σ → Γ(T, W)) : Prop :=
   ∀ t (ht : t ∈ W), ∃ i, IsUnit ((T.presheaf.germ W t ht).hom (f i))
 
 /- English proof (translation)
-Introduce `t ht` and use `(hf t (h ht)).imp fun i hi => by rwa [germ_resG]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NoZero.res {W W' : T.Opens} {f : σ → Γ(T, W)} (hf : NoZero f) (h : W' ≤ W) :
     NoZero fun i => resG T h (f i) := fun t ht =>
   (hf t (h ht)).imp fun i hi => by rwa [germ_resG]
 
 /- English proof (translation)
-The claim follows from `ext_germ fun t ht => by obtain ⟨i, hi⟩ := hf t ht have := congrArg (T.presheaf.germ W t ht).hom (h i) rw [map_mul, map_mul] at this exact hi.mul_right_cancel this`.
+A detailed English derivation is pending.
 -/
 theorem NoZero.cancel {W : T.Opens} {f : σ → Γ(T, W)} (hf : NoZero f) {a b : Γ(T, W)}
     (h : ∀ i, a * f i = b * f i) : a = b :=
@@ -37,11 +37,11 @@ theorem NoZero.cancel {W : T.Opens} {f : σ → Γ(T, W)} (hf : NoZero f) {a b :
     exact hi.mul_right_cancel this
 
 /- English proof (translation)
-Use `choose V hV ht u hu e using fun t : W => H t.1 t.2`. Take `⟨r, hr'⟩ : ∃ r : Γ(T, W), ∀ t, resG T (hV t) r = u t` from `(T.sheaf.existsUnique_gluing' V W (fun t => homOfLE (hV t)) (fun t h => Opens.mem_iSup.2 ⟨⟨t, h⟩, ht _⟩) u (fun a b => by`. Use `(hf.res (inf_le_left.trans (hV a) : V a ⊓ V b ≤ W)).cancel fun i => ?_` and prove the remaining obligations. Establish `e₁` using `congrArg (resG T (inf_le_left : V a ⊓ V b ≤ _)) (e a i)`. Establish `e₂` using `congrArg (resG T (inf_le_right : V a ⊓ V b ≤ _)) (e b i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₁`, `e₂` using `[map_mul, resG_resG, resG_resG]`. Conclude with `e₁.symm.trans e₂)).exists`. Use `⟨r, T.toRingedSpace.isUnit_of_isUnit_germ _ _ fun t h => ?_, fun i => ext_germ fun t h => ?_⟩` and prove the remaining obligations. Use `(hu ⟨t, h⟩).map (T.presheaf.germ _ t (ht ⟨t, h⟩)).hom` as an intermediate fact. Rewrite `this` using `[← hr', germ_resG]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg (T.presheaf.germ _ t (ht ⟨t, h⟩)).hom (e ⟨t, h⟩ i)` as an intermediate fact. Rewrite `this` using `[← hr', ← map_mul, germ_resG, germ_resG]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem NoZero.glue {W : T.Opens} {f f' : σ → Γ(T, W)} (hf : NoZero f)
     (H : ∀ t ∈ W, ∃ (V : T.Opens) (h : V ≤ W), t ∈ V ∧ ∃ u : Γ(T, V), IsUnit u ∧
@@ -63,7 +63,7 @@ theorem NoZero.glue {W : T.Opens} {f f' : σ → Γ(T, W)} (hf : NoZero f)
     rwa [← hr', ← map_mul, germ_resG, germ_resG] at this
 
 /- English proof (translation)
-Establish `h : W ≤ x ⁻¹ᵁ (M.U j ⊓ M.U k)` using `le_inf hj hk`. Use `congrArg (x.appLE (M.U j ⊓ M.U k) W h).hom (a.compat j k)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `(appLE_resG x inf_le_left h _).symm.trans (this.trans (congrArg (_ * ·) (appLE_resG x inf_le_right h _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_compat {M : LB X} (a : M.Sec) (x : T ⟶ X) {W : T.Opens} (j k : M.ι) (hj : W ≤ x ⁻¹ᵁ M.U j)
     (hk : W ≤ x ⁻¹ᵁ M.U k) :
@@ -82,14 +82,14 @@ variable {M : LB X} {th : σ → M.Sec} {M' : LB X'} {th' : σ → M'.Sec} {M'' 
   {x : T ⟶ X} {x' : T ⟶ X'} {x'' : T ⟶ X''}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨j, h, 1, isUnit_one, fun _ => (one_mul _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame_chart (j : M.ι) {W : T.Opens} (h : W ≤ x ⁻¹ᵁ M.U j) :
     Frame M th x W fun i => (x.appLE _ W h).hom ((th i).f j) :=
   ⟨j, h, 1, isUnit_one, fun _ => (one_mul _).symm⟩
 
 /- English proof (translation)
-Take `⟨j, hj, u, hu, e⟩` from `H`. Conclude with `⟨j, h.trans hj, resG T h u, hu.map _, fun i => by rw [← map_mul, ← e, resG_appLE]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Frame.res {W W' : T.Opens} {f : σ → Γ(T, W)} (H : Frame M th x W f) (h : W' ≤ W) :
     Frame M th x W' fun i => resG T h (f i) := by
@@ -97,7 +97,7 @@ theorem Frame.res {W W' : T.Opens} {f : σ → Γ(T, W)} (H : Frame M th x W f) 
   exact ⟨j, h.trans hj, resG T h u, hu.map _, fun i => by rw [← map_mul, ← e, resG_appLE]⟩
 
 /- English proof (translation)
-Take `⟨j, hj, u, hu, e⟩` from `H`. Conclude with `⟨j, h.trans (g.preimage_mono hj), (g.appLE W W' h).hom u, hu.map _, fun i => by rw [← map_mul, ← e, appLE_appLE]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Frame.comp {W : T.Opens} {f : σ → Γ(T, W)} (H : Frame M th x W f) (g : T' ⟶ T) {W' : T'.Opens}
     (h : W' ≤ g ⁻¹ᵁ W) : Frame M th (g ≫ x) W' fun i => (g.appLE W W' h).hom (f i) := by
@@ -106,7 +106,7 @@ theorem Frame.comp {W : T.Opens} {f : σ → Γ(T, W)} (H : Frame M th x W f) (g
     fun i => by rw [← map_mul, ← e, appLE_appLE]⟩
 
 /- English proof (translation)
-Take `⟨j, hj, u, hu, e⟩` from `H`. Conclude with `⟨j, hj, u * c, hu.mul hc, fun i => by rw [e, h, mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Frame.mul {W : T.Opens} {f f' : σ → Γ(T, W)} (H : Frame M th x W f') {c : Γ(T, W)} (hc : IsUnit c)
     (h : ∀ i, f' i = c * f i) : Frame M th x W f := by
@@ -114,7 +114,7 @@ theorem Frame.mul {W : T.Opens} {f f' : σ → Γ(T, W)} (H : Frame M th x W f')
   exact ⟨j, hj, u * c, hu.mul hc, fun i => by rw [e, h, mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨j, hj, u, hu, e⟩` from `H`. Take `⟨k, hk, u', hu', e'⟩` from `H'`. Take `⟨u', rfl⟩` from `hu'`. Use `⟨u'⁻¹.val * (x.appLE (M.U k ⊓ M.U j) W (le_inf hk hj)).hom (M.g k j).val * u, ((Units.isUnit _).mul ((Units.isUnit _).map _)).mul hu, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← e, mul_assoc, ← appLE_compat _ x k j hk hj, e', Units.inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Frame.ratio {W : T.Opens} {f f' : σ → Γ(T, W)} (H : Frame M th x W f) (H' : Frame M th x W f') :
     ∃ c : Γ(T, W), IsUnit c ∧ ∀ i, f' i = c * f i := by
@@ -129,13 +129,13 @@ def Same (M : LB X) (th : σ → M.Sec) (x : T ⟶ X) (M' : LB X') (th' : σ →
   ∀ t : T, ∃ W : T.Opens, t ∈ W ∧ ∃ f, Frame M th x W f ∧ Frame M' th' x' W f
 
 /- English proof (translation)
-Introduce `t` and use `(H t).imp fun _ h => ⟨h.1, h.2.imp fun _ h => h.symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Same.symm (H : Same M th x M' th' x') : Same M' th' x' M th x := fun t =>
   (H t).imp fun _ h => ⟨h.1, h.2.imp fun _ h => h.symm⟩
 
 /- English proof (translation)
-Introduce `t` and use `by obtain ⟨W, hW, f, h₁, h₂⟩ := H t obtain ⟨V, hV, f', h₃, h₄⟩ := H' t obtain ⟨c, hc, e⟩ := (h₂.res (inf_le_left : W ⊓ V ≤ W)).ratio (h₃.res inf_le_right) exact ⟨W ⊓ V, ⟨hW, hV⟩, _, h₁.res inf_le_left, (h₄.res inf_le_right).mul hc e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Same.trans (H : Same M th x M' th' x') (H' : Same M' th' x' M'' th'' x'') :
     Same M th x M'' th'' x'' := fun t => by
@@ -145,7 +145,7 @@ theorem Same.trans (H : Same M th x M' th' x') (H' : Same M' th' x' M'' th'' x''
   exact ⟨W ⊓ V, ⟨hW, hV⟩, _, h₁.res inf_le_left, (h₄.res inf_le_right).mul hc e⟩
 
 /- English proof (translation)
-Introduce `t` and use `by obtain ⟨W, hW, f, h₁, h₂⟩ := H (g t) exact ⟨g ⁻¹ᵁ W, hW, _, h₁.comp g le_rfl, h₂.comp g le_rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Same.comp (H : Same M th x M' th' x') (g : T' ⟶ T) : Same M th (g ≫ x) M' th' (g ≫ x') := fun t => by
   obtain ⟨W, hW, f, h₁, h₂⟩ := H (g t)
@@ -155,7 +155,7 @@ def LocCoord (M : LB X) (th : σ → M.Sec) (x : T ⟶ X) (v : σ → Γ(T, ⊤)
   ∀ t : T, ∃ W : T.Opens, t ∈ W ∧ Frame M th x W fun i => resG T le_top (v i)
 
 /- English proof (translation)
-Introduce `t` and use `by obtain ⟨W, hW, h₁⟩ := H t obtain ⟨V, hV, h₂⟩ := H' t have h₃ := h₁.res (inf_le_left : W ⊓ V ≤ W) have h₄ := h₂.res (inf_le_right : W ⊓ V ≤ V) simp only [resG_resG] at h₃ h₄ exact ⟨W ⊓ V, ⟨hW, hV⟩, _, h₃, h₄⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocCoord.same {v : σ → Γ(T, ⊤)} (H : LocCoord M th x v) (H' : LocCoord M' th' x' v) :
     Same M th x M' th' x' := fun t => by
@@ -167,7 +167,7 @@ theorem LocCoord.same {v : σ → Γ(T, ⊤)} (H : LocCoord M th x v) (H' : LocC
   exact ⟨W ⊓ V, ⟨hW, hV⟩, _, h₃, h₄⟩
 
 /- English proof (translation)
-Introduce `t` and use `by obtain ⟨W, hW, h₁⟩ := H t obtain ⟨V, hV, f', h₃, h₄⟩ := H' t obtain ⟨c, hc, e⟩ := (h₁.res (inf_le_left : W ⊓ V ≤ W)).ratio (h₃.res inf_le_right) refine ⟨W ⊓ V, ⟨hW, hV⟩, (h₄.res inf_le_right).mul hc fun i => (e i).trans ?_⟩ rw [resG_resG]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocCoord.of_same {v : σ → Γ(T, ⊤)} (H : LocCoord M th x v) (H' : Same M th x M' th' x') :
     LocCoord M' th' x' v := fun t => by
@@ -178,7 +178,7 @@ theorem LocCoord.of_same {v : σ → Γ(T, ⊤)} (H : LocCoord M th x v) (H' : S
   rw [resG_resG]
 
 /- English proof (translation)
-Use `(congrArg (fun u => resG T (le_inf hj hk) (Units.val u)) (pull_g M x j k)).trans ?_` and prove the remaining obligations. Conclude with `resG_resG _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resG_pull_g (x : T ⟶ X) (j k : PUnit → M.ι) {W : T.Opens} (hj : W ≤ (M.pull x).U j)
     (hk : W ≤ (M.pull x).U k) :
@@ -194,9 +194,9 @@ variable {A : Type} [CommRing A]
 abbrev fn (v : σ → A) : σ → Γ(Sp A, ⊤) := fun i => (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (v i)
 
 /- English proof (translation)
-Introduce `t ht`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `: Ideal.span (Set.range f) ≤ (IsLocalRing.maximalIdeal _).comap (T.presheaf.germ W t ht).hom` using `Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hn i)`. Establish `h1` using `this (h.ge (Submodule.mem_top (x := 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Ideal.mem_comap, map_one]`. Conclude with `h1 isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem noZero_of_span {W : T.Opens} {f : σ → Γ(T, W)} (h : Ideal.span (Set.range f) = ⊤) : NoZero f := by
   intro t ht
@@ -210,7 +210,7 @@ theorem noZero_of_span {W : T.Opens} {f : σ → Γ(T, W)} (h : Ideal.span (Set.
   exact h1 isUnit_one
 
 /- English proof (translation)
-Use `congrArg (Ideal.map φ) h` as an intermediate fact. Rewrite `this` using `[Ideal.map_top, Ideal.map_span, ← Set.range_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem span_map_eq_top {B : Type} [CommRing B] (φ : A →+* B) {v : σ → A} (h : Ideal.span (Set.range v) = ⊤) :
     Ideal.span (Set.range fun i => φ (v i)) = ⊤ := by
@@ -218,7 +218,7 @@ theorem span_map_eq_top {B : Type} [CommRing B] (φ : A →+* B) {v : σ → A} 
   rwa [Ideal.map_top, Ideal.map_span, ← Set.range_comp] at this
 
 /- English proof (translation)
-Introduce `t` and use `by obtain ⟨τ, -, e⟩ := H obtain ⟨j, hj⟩ := LB.mem_of_cover hM (x t) exact ⟨(M.pull x).U fun _ => j, (pull_U M x fun _ => j).ge hj, j, (pull_U M x fun _ => j).le, (τ.s fun _ => j).val, Units.isUnit _, fun i => (e i (fun _ => j) _).trans (mul_comm _ _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locCoord_of_secCoord (hM : M.IsLB) {x : Sp A ⟶ X} {v : σ → A} (H : SecCoord M th x v) :
     LocCoord M th x (fn v) := fun t => by
@@ -228,13 +228,13 @@ theorem locCoord_of_secCoord (hM : M.IsLB) {x : Sp A ⟶ X} {v : σ → A} (H : 
     (τ.s fun _ => j).val, Units.isUnit _, fun i => (e i (fun _ => j) _).trans (mul_comm _ _)⟩
 
 /- English proof (translation)
-Establish `nz : NoZero (fn v)` using `noZero_of_span (span_map_eq_top _ hv)`. Establish `key : ∀ j : PUnit → M.ι, ∃ u : Γ(Sp A, (M.pull x).U j), IsUnit u ∧ ∀ i, (x.appLE _ _ (pull_U M x j).le).hom ((th i).f (j ⟨⟩)) = u * resG _ le_top (fn v i)` using `fun j => (nz.res le_top).glue fun t ht => by`. Take `⟨W, hW, h₁⟩` from `H t`. Take `⟨c, hc, e⟩` from `(h₁.res (inf_le_left : W ⊓ (M.pull x).U j ≤ W)).ratio ((frame_chart (j ⟨⟩) (pull_U M x j).le).res inf_le_right)`. Conclude with `⟨W ⊓ (M.pull x).U j, inf_le_right, ⟨hW, ht⟩, c, hc, fun i => (e i).trans (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[resG_resG, resG_resG])⟩`. Use `choose u hu e using key`. Use `⟨⟨fun j => (hu j).unit⟩, fun j k => Units.ext ?_, fun i j _ => (e j i).trans (mul_comm _ _)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG _ inf_le_left (u j) = ((M.pull x).g j k).val * resG _ inf_le_right (u k)`. Use `(nz.res (le_top : (M.pull x).U j ⊓ (M.pull x).U k ≤ ⊤)).cancel fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁` using `congrArg (resG _ (inf_le_left : (M.pull x).U j ⊓ (M.pull x).U k ≤ _)) (e j i)`. Establish `e₂` using `congrArg (resG _ (inf_le_right : (M.pull x).U j ⊓ (M.pull x).U k ≤ _)) (e k i)`. Rewrite `e₁`, `e₂` using `[map_mul, resG_resG, resG_appLE]`. Establish `e₃` using `resG_pull_g x j k (inf_le_left : (M.pull x).U j ⊓ (M.pull x).U k ≤ _) inf_le_right`. Rewrite `e₃` using `[resG_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e₁, mul_assoc, ← e₂, e₃]`. Conclude with `appLE_compat _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem secCoord_of_locCoord {x : Sp A ⟶ X} {v : σ → A} (hv : Ideal.span (Set.range v) = ⊤)
     (H : LocCoord M th x (fn v)) : SecCoord M th x v := by
@@ -265,11 +265,11 @@ section Top
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Take `⟨j, hj, u, ⟨u, rfl⟩, e⟩` from `H`. Establish `hle : ∀ k : PUnit → M.ι, (M.pull x).U k ≤ x ⁻¹ᵁ (M.U (k ⟨⟩) ⊓ M.U j)` using `fun k => le_inf (pull_U M x k).le (le_top.trans hj)`. Use `⟨⟨fun k => res (hle k) (pullU x _ (M.g (k ⟨⟩) j)) * res le_top u⟩, fun k l => ?_, fun i k h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `res inf_le_left (res (hle k) (pullU x _ (M.g (k ⟨⟩) j)) * res le_top u) = (M.pull x).g k l * res inf_le_right (res (hle l) (pullU x _ (M.g (l ⟨⟩) j)) * res le_top u)`. Rewrite using `[pull_g M x k l, map_mul, map_mul, LB.res_res, LB.res_res, LB.res_res, LB.res_res]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· * _) (LB.pull_cocycle hM x _ _ _ _ _ _).symm).trans (mul_assoc _ _ _)`. Establish `e₁` using `congrArg (resG _ (le_top : (M.pull x).U k ≤ ⊤)) (e i)`. Rewrite `e₁` using `[map_mul, resG_appLE]`. Use `(appLE_compat _ x (k ⟨⟩) j h (le_top.trans hj)).trans ?_` and prove the remaining obligations. Rewrite using `[e₁, ← mul_assoc, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem secCoord_of_frame (hM : M.IsLB) {x : Sp A ⟶ X} {v : σ → A} (H : Frame M th x ⊤ (fn v)) :
     SecCoord M th x v := by
@@ -290,7 +290,7 @@ theorem secCoord_of_frame (hM : M.IsLB) {x : Sp A ⟶ X} {v : σ → A} (H : Fra
 end Top
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg _ (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromSpec_appLE_top {U : T.Opens} (hU : IsAffineOpen U) :
     hU.fromSpec.appLE U ⊤ hU.fromSpec_preimage_self.ge = (Scheme.ΓSpecIso _).inv := by
@@ -298,9 +298,9 @@ theorem fromSpec_appLE_top {U : T.Opens} (hU : IsAffineOpen U) :
   exact (congrArg _ (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `LB.mem_of_cover hM (x t)`. Take `⟨W, hW, ht, h⟩` from `exists_isAffineOpen_mem_and_subset (U := x ⁻¹ᵁ M.U j) (x := t) hj`. Use `⟨W, hW, j, h, ht, secCoord_of_frame hM ?_⟩` and prove the remaining obligations. Use `(frame_chart (th := th) j h).comp hW.fromSpec hW.fromSpec_preimage_self.ge` as an intermediate fact. Rewrite `this` using `[fromSpec_appLE_top]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_affine_secCoord (hM : M.IsLB) (th : σ → M.Sec) (x : T ⟶ X) (t : T) :
     ∃ (W : T.Opens) (hW : IsAffineOpen W) (j : M.ι) (h : W ≤ x ⁻¹ᵁ M.U j), t ∈ W ∧
@@ -313,7 +313,7 @@ theorem exists_affine_secCoord (hM : M.IsLB) (th : σ → M.Sec) (x : T ⟶ X) (
   exact this
 
 /- English proof (translation)
-Introduce `t` and use `by obtain ⟨W, ht, h⟩ := H t obtain ⟨V, hV, f, ⟨j, hj, u, hu, e⟩, ⟨k, hk, u', hu', e'⟩⟩ := h ⟨t, ht⟩ have hle : V ≤ W.ι ⁻¹ᵁ (W.ι ''ᵁ V) := (W.ι.preimage_image_eq V).ge have : IsIso (W.ι.appLE (W.ι ''ᵁ V) V hle) := by rw [← Scheme.Hom.appIso_hom'] infer_instance have hb := Concrete …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem same_of_local (H : ∀ t : T, ∃ W : T.Opens, t ∈ W ∧ Same M th (W.ι ≫ x) M' th' (W.ι ≫ x')) :
     Same M th x M' th' x' := fun t => by
@@ -342,35 +342,35 @@ section Rep
 variable {R : Type} [CommRing R] {I I' : Ideal (MvPolynomial σ R)} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage p).hom, (Spec.map_preimage p).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap {A : Type} [CommRing A] (p : Sp A ⟶ Sp R) : ∃ β : R →+* A, p = spMap β :=
   ⟨(Spec.preimage p).hom, (Spec.map_preimage p).symm⟩
 
 /- English proof (translation)
-The claim follows from `(exists_spMap (x ≫ s)).elim fun β hβ => (h.2.1 A β x v hβ H).1`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_top (h : ProjRep I s M th) {A : Type} [CommRing A] {x : Sp A ⟶ X} {v : σ → A}
     (H : SecCoord M th x v) : Ideal.span (Set.range v) = ⊤ :=
   (exists_spMap (x ≫ s)).elim fun β hβ => (h.2.1 A β x v hβ H).1
 
 /- English proof (translation)
-The claim follows from `secCoord_of_locCoord (span_eq_top h H) ((locCoord_of_secCoord h.1 H).of_same H')`.
+A detailed English derivation is pending.
 -/
 theorem secCoord_of_same (h : ProjRep I s M th) {A : Type} [CommRing A] {x : Sp A ⟶ X} {x' : Sp A ⟶ X'}
     {v : σ → A} (H : SecCoord M th x v) (H' : Same M th x M' th' x') : SecCoord M' th' x' v :=
   secCoord_of_locCoord (span_eq_top h H) ((locCoord_of_secCoord h.1 H).of_same H')
 
 /- English proof (translation)
-Rewrite using `[← hW.isoSpec_inv_ι, Iso.hom_inv_id_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isoSpec_hom_fromSpec {W : T.Opens} (hW : IsAffineOpen W) : hW.isoSpec.hom ≫ hW.fromSpec = W.ι := by
   rw [← hW.isoSpec_inv_ι, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Use `Scheme.hom_ext_of_forall _ _ fun t => ?_` and prove the remaining obligations. Take `⟨W, hW, j, hj, ht, hc⟩` from `exists_affine_secCoord h.1 th x t`. Take `⟨β, hβ⟩` from `exists_spMap (A := Γ(T, W)) ((hW.fromSpec ≫ x) ≫ s)`. Take `⟨h₁, h₂⟩` from `h.2.1 _ β _ _ hβ hc`. Establish `hy` using `secCoord_of_same h hc (H.comp hW.fromSpec)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : hW.fromSpec ≫ x = hW.fromSpec ≫ y` using `(h.2.2 _ β _ h₁ h₂).unique ⟨hβ, hc⟩ ⟨((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) hs.symm)).trans ((Category.assoc _ _ _).symm.trans hβ), hy⟩`. Use `⟨W, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← isoSpec_hom_fromSpec hW, Category.assoc, Category.assoc, e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_same (h : ProjRep I s M th) {x y : T ⟶ X} (hs : x ≫ s = y ≫ s) (H : Same M th x M th y) :
     x = y := by
@@ -385,15 +385,15 @@ theorem eq_of_same (h : ProjRep I s M th) {x y : T ⟶ X} (hs : x ≫ s = y ≫ 
   rw [← isoSpec_hom_fromSpec hW, Category.assoc, Category.assoc, e]
 
 /- English proof (translation)
-Establish `loc : ∀ t : X, ∃ W : X.Opens, t ∈ W ∧ ∃ m : W.toScheme ⟶ X', m ≫ s' = W.ι ≫ s ∧ Same M th W.ι M' th' m` using `fun t => by`. Take `⟨W, hW, j, hj, ht, hc⟩` from `exists_affine_secCoord h.1 th (𝟙 X) t`. Rewrite `hc` using `[Category.comp_id]`. Take `⟨β, hβ⟩` from `exists_spMap (A := Γ(X, W)) (hW.fromSpec ≫ s)`. Take `⟨h₁, h₂⟩` from `h.2.1 _ β _ _ hβ hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, ⟨hy, hy'⟩, -⟩` from `h'.2.2 _ β _ h₁ (hI _ β _ h₁ h₂)`. Use `⟨W, ht, hW.isoSpec.hom ≫ y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← isoSpec_hom_fromSpec hW, Category.assoc, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) (hy.trans hβ.symm)`. Rewrite using `[← isoSpec_hom_fromSpec hW]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((locCoord_of_secCoord h.1 hc).same (locCoord_of_secCoord h'.1 hy')).comp _`. Use `choose W ht m hm hS using loc`. Establish `hcov : IsOpenCover W` using `eq_top_iff.2 fun t _ => Opens.mem_iSup.2 ⟨t, ht t⟩`. Set `𝒰` to `X.openCoverOfIsOpenCover W hcov`. Establish `hc : ∀ a b : X, pullback.fst (W a).ι (W b).ι ≫ m a = pullback.snd (W a).ι (W b).ι ≫ m b` using `fun a b => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `eq_of_same h' ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hm, hm, pullback.condition_assoc]`. Establish `h₁` using `((hS a).comp (pullback.fst (W a).ι (W b).ι)).symm`. Rewrite `h₁` using `[pullback.condition]`. Conclude with `h₁.trans ((hS b).comp _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ t : X, (W t).ι ≫ 𝒰.glueMorphisms m hc = m t` using `fun t => 𝒰.ι_glueMorphisms m hc t`. Use `⟨𝒰.glueMorphisms m hc, Scheme.hom_ext_of_forall _ _ fun t => ⟨W t, ht t, ?_⟩, same_of_local fun t => ⟨W t, ht t, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg, hm]`. Rewrite using `[hg, Category.comp_id]`. Conclude with `hS t`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom (h : ProjRep I s M th) (h' : ProjRep I' s' M' th')
     (hI : ∀ (A : Type) [CommRing A] (β : R →+* A) (v : σ → A), Ideal.span (Set.range v) = ⊤ →
@@ -428,7 +428,7 @@ theorem exists_hom (h : ProjRep I s M th) (h' : ProjRep I' s' M' th')
     exact hS t
 
 /- English proof (translation)
-Introduce `t ht` and use `by obtain ⟨W, hW, j, hj, htW, hc⟩ := exists_affine_secCoord h.1 th (𝟙 X) t obtain ⟨i, hi⟩ := noZero_of_span (span_eq_top h hc) t htW refine ⟨i, ?_⟩ have hm : t ∈ W ⊓ M.U k := ⟨htW, ht⟩ have e := congrArg (X.presheaf.germ _ t hm).hom (sec_compat (th i) j k (inf_le_left.trans hj) i …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem noZero_chart (h : ProjRep I s M th) (k : M.ι) : NoZero fun i => (th i).f k := fun t ht => by
   obtain ⟨W, hW, j, hj, htW, hc⟩ := exists_affine_secCoord h.1 th (𝟙 X) t
@@ -442,17 +442,15 @@ theorem noZero_chart (h : ProjRep I s M th) (k : M.ι) : NoZero fun i => (th i).
   exact isUnit_of_mul_isUnit_right ((congrArg IsUnit e).mp hi')
 
 /- English proof (translation)
-Set `B` to `M'.pull e`. Establish `key : ∀ p : (PUnit → M'.ι) × M.ι, ∃ u : Γ(X, B.U p.1 ⊓ M.U p.2), IsUnit u ∧ ∀ i, (e.appLE _ _ (inf_le_left.trans (pull_U M' e p.1).le)).hom ((th' i).f (p.1 ⟨⟩)) = u * resG X inf_le_right ((th i).f p.2)` using `fun p => ((noZero_chart h p.2).res inf_le_right).glue fun t ht => by`. Take `⟨W, hW, f, h₁, h₂⟩` from `H t`. Establish `hp : B.U p.1 ⊓ M.U p.2 ≤ 𝟙 X ⁻¹ᵁ M.U p.2` using `inf_le_right`. Take `⟨c, hc, e₁⟩` from `((frame_chart (th := th) (x := 𝟙 X) p.2 hp).res inf_le_right).ratio (h₁.res (inf_le_left : W ⊓ (B.U p.1 ⊓ M.U p.2) ≤ W))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, e₂⟩` from `(h₂.res (inf_le_left : W ⊓ (B.U p.1 ⊓ M.U p.2) ≤ W)).ratio ((frame_chart (p.1 ⟨⟩) (inf_le_left.trans (pull_U M' e p.1).le)).res inf_le_right)`. Use `⟨W ⊓ (B.U p.1 ⊓ M.U p.2), inf_le_right, ⟨hW, ht⟩, d * c, hd.mul hc, fun i => (e₂ i).trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `congrArg (d * ·) (e₁ i)`. Use `choose u hu E using key`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨fun p => (hu p).unit⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p, q⟩ ⟨p', q'⟩`. Establish `hp : B.U p ⊓ M.U q ⊓ (B.U p' ⊓ M.U q') ≤ B.U p` using `inf_le_left.trans inf_le_left`. Establish `hq : B.U p ⊓ M.U q ⊓ (B.U p' ⊓ M.U q') ≤ M.U q` using `inf_le_left.trans inf_le_right`. Establish `hp' : B.U p ⊓ M.U q ⊓ (B.U p' ⊓ M.U q') ≤ B.U p'` using `inf_le_right.trans inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : B.U p ⊓ M.U q ⊓ (B.U p' ⊓ M.U q') ≤ M.U q'` using `inf_le_right.trans inf_le_right`. Establish `key : res (le_inf hp hq) (hu (p, q)).unit * res (le_inf hq hq') (M.g q q') = res (le_inf hp hp') (B.g p p') * res (le_inf hp' hq') (hu (p', q')).unit`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG X (le_inf hp hq) (u (p, q)) * resG X (le_inf hq hq') (M.g q q').val = resG X (le_inf hp hp') (B.g p p').val * resG X (le_inf hp' hq') (u (p', q'))`. Use `((noZero_chart h q').res hq').cancel fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `congrArg (resG X (le_inf hp hq)) (E (p, q) i)`. Establish `e₂` using `congrArg (resG X (le_inf hp' hq')) (E (p', q') i)`. Rewrite `e₁`, `e₂` using `[map_mul, resG_resG, resG_appLE]`. Rewrite using `[mul_assoc, mul_assoc, ← sec_compat (th i) q q' hq hq', ← e₁, ← e₂, resG_pull_g e p p' hp hp']`. Conclude with `appLE_compat _ _ _ _ _ _`.
-
-Express the relevant statement in the definitionally equal form `res (le_inf hp hq) (hu (p, q)).unit = res (le_inf hp hp') (B.g p p') * (res (le_inf hq hq') (M.g q q'))⁻¹ * res (le_inf hp' hq') (hu (p', q')).unit`. Rewrite using `[mul_right_comm, ← key, mul_inv_cancel_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_same (h : ProjRep I s M th) {e : X ⟶ X'} (H : Same M th (𝟙 X) M' th' e) :
     LBIso M (M'.pull e) := by
@@ -495,11 +493,11 @@ theorem lbIso_of_same (h : ProjRep I s M th) {e : X ⟶ X'} (H : Same M th (𝟙
 end Rep
 
 /- English proof (translation)
-Introduce `R σ _ I I' Z Z' s s' M M' th th' h h' hI`. Take `⟨a, ha, Ha⟩` from `exists_hom h h' fun A _ β v hv => (hI A β v hv).1`. Take `⟨b, hb, Hb⟩` from `exists_hom h' h fun A _ β v hv => (hI A β v hv).2`. Establish `Hab` using `Hb.comp a`. Establish `Hba` using `Ha.comp b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `Hab`, `Hba` using `[Category.comp_id]`. Use `⟨⟨a, b, eq_of_same h ?_ (Ha.trans Hab).symm, eq_of_same h' ?_ (Hb.trans Hba).symm⟩, ha, lbIso_of_same h Ha, fun A _ x v => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hb, ha, Category.id_comp]`. Rewrite using `[Category.assoc, ha, hb, Category.id_comp]`. Establish `Hx` using `Ha.comp x`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `Hx` using `[Category.comp_id]`. Conclude with `⟨fun H => secCoord_of_same h H Hx, fun H => secCoord_of_same h' H Hx.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_iso_of_projRep : ∀ (R σ : Type) [CommRing R] (I I' : Ideal (MvPolynomial σ R)) (Z Z' : Scheme.{0}) (s : Z ⟶ Sp R) (s' : Z' ⟶ Sp R) (M : LB Z) (M' : LB Z') (th : σ → M.Sec) (th' : σ → M'.Sec), ProjRep I s M th → ProjRep I' s' M' th' → (∀ (R' : Type) [CommRing R'] (β : R →+* R') (v : σ → R'), Ideal.span (Set.range v) = ⊤ → ((∀ F ∈ I, MvPolynomial.eval₂ β v F = 0) ↔ ∀ F ∈ I', MvPolynomial.eval₂ β v F = 0)) → ∃ e : Z ≅ Z', e.hom ≫ s' = s ∧ LBIso M (M'.pull e.hom) ∧ ∀ (R' : Type) [CommRing R'] (x : Sp R' ⟶ Z) (v : σ → R'), SecCoord M th x v ↔ SecCoord M' th' (x ≫ e.hom) v := by
   intro R σ _ I I' Z Z' s s' M M' th th' h h' hI

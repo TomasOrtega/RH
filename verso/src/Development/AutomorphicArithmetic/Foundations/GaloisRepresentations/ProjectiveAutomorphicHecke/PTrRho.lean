@@ -6,11 +6,11 @@ open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep GlobalT
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ n W g`. Use `set e := GlobalTheory.BCT.TrKer.wspEquivVV W`. Use `set F : GlobalTheory.BCT.TrKer.Wsp W →ₗ[ℂ] GlobalTheory.BCT.TrKer.Wsp W := PiTensorProduct.map (fun v => GlobalTheory.Branching.sqRep ℂ n (W v) (g v)) with hF`. Establish `hcomp : Formalism.L2.DIV.rhoK W g ∘ₗ (e : GlobalTheory.BCT.TrKer.Wsp W →ₗ[ℂ] _) = (e : GlobalTheory.BCT.TrKer.Wsp W →ₗ[ℂ] _) ∘ₗ F`. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `MultilinearMap.ext (fun u => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, hF, PiTensorProduct.map_tprod]`. Use `show Formalism.L2.DIV.rhoK W g (GlobalTheory.BCT.TrKer.wspToVV W (PiTensorProduct.tprod ℂ u)) = GlobalTheory.BCT.TrKer.wspToVV W (PiTensorProduct.tprod ℂ _)`. Rewrite using `[GlobalTheory.BCT.TrKer.wspToVV_tprod, GlobalTheory.BCT.TrKer.wspToVV_tprod, rhoK_tenMul]`. Establish `hconj : Formalism.L2.DIV.rhoK W g = e.conj F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearEquiv.conj_apply, ← hcomp]`. Use `LinearMap.ext (fun x => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[hconj, LinearMap.trace_conj', hF, GlobalTheory.BCT.TrKer.trace_piMap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pTrRho_of :
     UpperTheory.Gal.CertificateRingHomMap.TrRho := by

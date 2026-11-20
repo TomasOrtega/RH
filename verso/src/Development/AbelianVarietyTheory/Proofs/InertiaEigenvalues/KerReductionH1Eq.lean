@@ -20,9 +20,9 @@ variable {G : Type} [Group G] [TopologicalSpace G]
     {ρ : Representation LL G V}
 
 /- English proof (translation)
-Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H w`. Establish `hw : b • w = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show b • w.1 g = 0`. Take `⟨t, ht⟩` from `Submodule.Quotient.mk_surjective _ (w.1 g)`. Rewrite using `[← ht, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self b) Submodule.mem_top`. Rewrite using `[← Submodule.Quotient.mk_smul, hw, Submodule.Quotient.mk_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_H1Q_eq_zero (L : Lattice (O := O) ρ) (b : O)
     (hI : StableSub L (Ideal.span {b} • ⊤ : Submodule O ↥L.T)) (z : QuotientCohomology L _ hI) : b • z = 0 := by
@@ -40,7 +40,7 @@ theorem smul_H1Q_eq_zero (L : Lattice (O := O) ρ) (b : O)
 variable [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-Use `Submodule.mem_inf.2 ⟨⟨?_, fun g h => ?_⟩, Submodule.mem_pi.2 fun g _ => L.T.sub_mem (L.stable g x x.2) x.2⟩` and prove the remaining obligations. Repeatedly rewrite using `[sub_eq_add_neg]`. Conclude with `(hρ x).add continuous_const`. Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cob_mem_Z1T (L : Lattice (O := O) ρ) (hρ : ∀ m, Continuous fun g => ρ g m) (x : ↥L.T) :
     (fun g => ρ g x - x) ∈ latticeCocycles L := by
@@ -52,31 +52,27 @@ theorem cob_mem_Z1T (L : Lattice (O := O) ρ) (hρ : ∀ m, Continuous fun g => 
     abel
 
 /- English proof (translation)
-Set `g0 : ↥(latticeCocycles L) →ₗ[O] ↥(quotientCocycles L _ hI)` to `(redT L _).codRestrict _ hZ`. Establish `hB : (latticeCoboundaries L).comap (latticeCocycles L).subtype ≤ ((BQ L _ hI).comap (quotientCocycles L _ hI).subtype).comap g0`. Introduce `d hd`. Rewrite `hd` using `[Submodule.mem_comap, Submodule.subtype_apply]`. Take `⟨x, hx, hxd⟩` from `hd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_comap, Submodule.mem_comap, Submodule.subtype_apply]`. Use `⟨Submodule.Quotient.mk ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `show actQ L _ hI g (Submodule.Quotient.mk ⟨x, hx⟩) - Submodule.Quotient.mk ⟨x, hx⟩ = Submodule.Quotient.mk (evT L g d)`. Rewrite using `[show actQ L _ hI g (Submodule.Quotient.mk ⟨x, hx⟩) = Submodule.Quotient.mk (actT L g ⟨x, hx⟩) from rfl, ← Submodule.Quotient.mk_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ρ g x - x = (d : _ → V) g`. Rewrite using `[← hxd]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : LatticeCohomology L →ₗ[O] QuotientCohomology L _ hI` to `Submodule.mapQ _ _ g0 hB`. Use `⟨f, ?_, fun d => ⟨hZ d, rfl⟩⟩` and prove the remaining obligations. Establish `hkill` using `smul_H1Q_eq_zero L b hI`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, rfl⟩` from `Submodule.Quotient.mk_surjective ((latticeCoboundaries L).comap (latticeCocycles L).subtype) z`. Rewrite `hz` using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (g0 d) = (0 : QuotientCohomology L _ hI) at hz`. Rewrite `hz` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Take `⟨y, hy⟩` from `hz`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective (Ideal.span {b} • ⊤ : Submodule O ↥L.T) y`. Establish `hg : ∀ g, ∃ t : ↥L.T, evT L g d - (actT L g x - x) = b • t`. Introduce `g`. Establish `h1` using `congrFun hy g`. Express the relevant statement in the definitionally equal form `actQ L _ hI g (Submodule.Quotient.mk x) - Submodule.Quotient.mk x = Submodule.Quotient.mk (evT L g d) at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[show actQ L _ hI g (Submodule.Quotient.mk x) = Submodule.Quotient.mk (actT L g x) from rfl, ← Submodule.Quotient.mk_sub, Submodule.Quotient.eq]`. Rewrite using `[← GlobalTheory.RedLocConst.mem_span_smul_top', ← neg_sub]`. Conclude with `neg_mem h1`. Use `choose t ht using hg`. Set `cx : ↥(latticeCocycles L)` to `⟨_, cob_mem_Z1T L hρ x⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ g, (d : _ → V) g - (ρ g x - x) = algebraMap O LL b • ((t g : ↥L.T) : V)`. Introduce `g`. Rewrite using `[algebraMap_smul]`. Conclude with `congrArg Subtype.val (ht g)`. Establish `hd'Z : (fun g => ((t g : ↥L.T) : V)) ∈ latticeCocycles L`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun g => ((t g : ↥L.T) : V)) = (algebraMap O LL b)⁻¹ • ((d : _ → V) - (cx : _ → V))`. Use function extensionality and compare the values at `g`. Use `show _ = (algebraMap O LL b)⁻¹ • ((d : _ → V) g - (ρ g x - x))`. Rewrite using `[h2, inv_smul_smul₀ hb]`. Use `Submodule.mem_inf.2 ⟨?_, Submodule.mem_pi.2 fun g _ => (t g).2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Conclude with `(continuousCocycles ρ).smul_mem _ ((continuousCocycles ρ).sub_mem (Submodule.mem_inf.1 d.2).1 (Submodule.mem_inf.1 cx.2).1)`. Establish `hdec : d = b • (⟨_, hd'Z⟩ : ↥(latticeCocycles L)) + cx`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (d : _ → V) g = b • ((t g : ↥L.T) : V) + (ρ g x - x)`. Rewrite using `[← algebraMap_smul LL b, ← h2, sub_add_cancel]`. Establish `hcx : (Submodule.Quotient.mk cx : LatticeCohomology L) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Conclude with `⟨x, x.2, rfl⟩`.
-
-Rewrite using `[hdec, Submodule.Quotient.mk_add, hcx, add_zero, Submodule.Quotient.mk_smul]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self b) Submodule.mem_top`. Rewrite using `[Submodule.smul_le]`. Introduce `a ha z _`. Take `⟨a', rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
-
-Rewrite using `[LinearMap.mem_ker, map_smul, mul_smul, hkill, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_red_gen (L : Lattice (O := O) ρ) (hρ : ∀ m, Continuous fun g => ρ g m) (b : O)
     (hb : algebraMap O LL b ≠ 0) (hI : StableSub L (Ideal.span {b} • ⊤ : Submodule O ↥L.T))
@@ -154,23 +150,19 @@ theorem ker_red_gen (L : Lattice (O := O) ρ) (hρ : ∀ m, Continuous fun g => 
 end Gen
 
 /- English proof (translation)
-Take `⟨⟨hDom, hDVR, hFr⟩, hfd, hmt, htr, hopen⟩` from `hO`. Use `haveI := hDom`. Use `haveI := hDVR`. Use `haveI := hFr`. Use `haveI := htr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalAddGroup A.V := IsModuleTopology.topologicalAddGroup LL A.V`. Establish `hT : IsOpen (LA.T : Set A.V)` using `Formalism.MainNotions.BlochKatoDuality.Br.lat_open hopen LA.T LA.fg LA.span`. Use `set c : LL := algebraMap O LL b with hcdef`. Establish `hTr : IsOpen ((fun v : A.V => c • v) '' (LA.T : Set A.V))` using `(Homeomorph.smulOfNeZero c hb).isOpenMap _ hT`. Establish `hsm : ∀ v : A.V, c • v = b • v` using `fun v => by rw [hcdef, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ x : ↥LA.T, x ∈ (Ideal.span {b} • ⊤ : Submodule O ↥LA.T) ↔ (x : A.V) ∈ (fun v : A.V => c • v) '' (LA.T : Set A.V)`. Introduce `x`. Rewrite using `[GlobalTheory.RedLocConst.mem_span_smul_top']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y, y.2, ?_⟩` and prove the remaining obligations. Use `show c • (y : A.V) = _`. Rewrite using `[hsm]`. Both sides reduce to the same expression. Introduce and unpack `⟨y, hy, hxy⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨y, hy⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy]`. Use `show c • y = b • y`. Conclude with `hsm y`. Establish `ha : (a : _ → A.V) ∈ latticeCocycles LA` using `a.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨hcont, hcoc⟩, -⟩` from `ha`. Establish `hval : ∀ g, ((redT LA (Ideal.span {b} • ⊤ : Submodule O ↥LA.T) a) g) = Submodule.Quotient.mk (evT LA g a)` using `fun g => rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(fun g => (a : _ → A.V) g - (a : _ → A.V) g0) ⁻¹' ((fun v : A.V => c • v) '' (LA.T : Set A.V)), hTr.preimage (hcont.sub continuous_const), ?_, ?_⟩` and prove the remaining obligations. Use `show (a : _ → A.V) g0 - (a : _ → A.V) g0 ∈ (fun v : A.V => c • v) '' (LA.T : Set A.V)`. Rewrite using `[sub_self]`. Conclude with `⟨0, LA.T.zero_mem, smul_zero c⟩`. Introduce `g hg`.
-
-Rewrite using `[hval, hval, Submodule.Quotient.eq, hmem]`. Conclude with `hg`. Introduce `g h`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (evT LA (g * h) a) : ↥LA.T ⧸ (Ideal.span {b} • ⊤ : Submodule O ↥LA.T)) = Submodule.Quotient.mk (evT LA g a) + actQ LA _ hI g (Submodule.Quotient.mk (evT LA h a))`. Rewrite using `[show actQ LA _ hI g (Submodule.Quotient.mk (evT LA h a)) = Submodule.Quotient.mk (actT LA g (evT LA h a)) from rfl, ← Submodule.Quotient.mk_add]`.
-
-Establish `hx : evT LA (g * h) a = evT LA g a + actT LA g (evT LA h a)` using `Subtype.ext (hcoc g h)`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redT_mem_Z1Q_of_ne (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [Field LL]
     [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL]
@@ -224,9 +216,9 @@ theorem redT_mem_Z1Q_of_ne (l : ℕ) [Fact l.Prime] (K : FinExt l) (LL : Type) [
     rw [hx]
 
 /- English proof (translation)
-Introduce `l _ P K LL _ _ _ O _ _ hO A LA r hI`. Establish `hb : algebraMap O LL (((l : ℕ) : O) ^ r) ≠ 0`. Rewrite using `[map_pow, map_natCast]`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap ℚ_[l] LL)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Conclude with `ker_red_gen LA A.cont _ hb hI (redT_mem_Z1Q_of_ne l K LL O hO A LA _ hb hI)`.
+A detailed English derivation is pending.
 -/
 theorem ker_reduction_H1 : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (r : ℕ) (hI : StableSub LA (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O ↥LA.T)), ∃ f : LatticeCohomology LA →ₗ[O] QuotientCohomology LA _ hI, LinearMap.ker f = (Ideal.span {((l : ℕ) : O) ^ r} • ⊤ : Submodule O (LatticeCohomology LA)) ∧ ∀ d : ↥(latticeCocycles LA), ∃ h : redT LA _ d ∈ quotientCocycles LA _ hI, f (Submodule.Quotient.mk d) = Submodule.Quotient.mk ⟨redT LA _ d, h⟩ := by
   intro l _ P K LL _ _ _ O _ _ hO A LA r hI

@@ -21,13 +21,13 @@ private noncomputable abbrev fp (x : UA L n) : GL (Fin n) (Af L) :=
   Matrix.GeneralLinearGroup.map (pFin L) (x : GA L n)
 
 /- English proof (translation)
-The claim follows from `continuous_mapFin.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 private theorem cont_fp : Continuous (fp : UA L n → GL (Fin n) (Af L)) :=
   continuous_mapFin.comp continuous_subtype_val
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[finiteRestrictedEquiv_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem e_apply (w : Plc L) (x : UA L n) : finiteRestrictedEquiv L n (fp x) w = cLoc w x := by
   refine Units.ext (Matrix.ext fun a b => ?_)
@@ -35,7 +35,7 @@ private theorem e_apply (w : Plc L) (x : UA L n) : finiteRestrictedEquiv L n (fp
   rfl
 
 /- English proof (translation)
-Establish `e : (cLoc w : UA L n → GL (Fin n) (w.adicCompletion L)) = fun x => finiteRestrictedEquiv L n (fp x) w` using `funext fun x => (e_apply w x).symm`. Rewrite using `[e]`. Conclude with `(RestrictedProduct.continuous_eval w).comp ((finiteRestrictedEquiv L n).continuous.comp cont_fp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_cLoc (w : Plc L) : Continuous (cLoc w : UA L n → GL (Fin n) (w.adicCompletion L)) := by
   have e : (cLoc w : UA L n → GL (Fin n) (w.adicCompletion L)) =
@@ -44,15 +44,15 @@ private theorem cont_cLoc (w : Plc L) : Continuous (cLoc w : UA L n → GL (Fin 
   exact (RestrictedProduct.continuous_eval w).comp ((finiteRestrictedEquiv L n).continuous.comp cont_fp)
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun a b => by rw [prodEquiv_apply_snd]; rfl)`.
+A detailed English derivation is pending.
 -/
 private theorem snd_eq (x : UA L n) : (prodEquiv L n (x : GA L n)).2 = fp x :=
   Units.ext (Matrix.ext fun a b => by rw [prodEquiv_apply_snd]; rfl)
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[prodEquiv_apply_fst]`. Establish `key` using `congrArg (fun g : GL (Fin n) (Cinf L) => g.1 a b) (MonoidHom.mem_ker.1 x.2)`. Use `(infEq L).symm.injective (key.trans ?_)` and prove the remaining obligations. Distinguish the cases in `h : a = b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem fst_eq (x : finU L n) : (prodEquiv L n ((x : UA L n) : GA L n)).1 = 1 := by
   refine Units.ext (Matrix.ext fun a b => ?_)
@@ -65,20 +65,18 @@ private theorem fst_eq (x : finU L n) : (prodEquiv L n ((x : UA L n) : GA L n)).
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Simplify using `[Kall, Subgroup.mem_inf, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_Kall {x : UA L n} :
     x ∈ Kall L n ↔ x ∈ finU L n ∧ ∀ w : Plc L, cLoc w x ∈ GlobalTheory.LFun.KGL w n := by
   simp [Kall, Subgroup.mem_inf, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Take `⟨A, hA, eA⟩` from `isOpen_induced_iff.1 hU`. Take `⟨B, hB, rfl⟩` from `isOpen_induced_iff.1 hA`. Set `c : GL (Fin n) (Af L) → GA L n` to `fun k => (prodEquiv L n).symm (1, k)`. Establish `hc : Continuous c` using `(prodEquiv L n).symm.continuous.comp (continuous_const.prodMk continuous_id)`. Establish `hx : ∀ x : finU L n, c (fp x.1) = ((x : UA L n) : GA L n)` using `fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(prodEquiv L n).symm _ = _`. Rewrite using `[← fst_eq x, ← snd_eq]`. Conclude with `(prodEquiv L n).symm_apply_apply _`. Establish `hmem : ∀ x : finU L n, (x : UA L n) ∈ U ↔ ((x : UA L n) : GA L n) ∈ B` using `fun x => (Set.ext_iff.1 eA x).symm`. Use `⟨c ⁻¹' B, hB.preimage hc, ?_, fun x hx' => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hx 1`. Establish `h1 : fp ((1 : finU L n) : UA L n) = 1` using `map_one _`. Rewrite `h` using `[h1]`. Rewrite using `[Set.mem_preimage, h]`. Conclude with `(hmem 1).1 (one_mem U)`.
-
-Rewrite `hx'` using `[Set.mem_preimage, hx]`. Conclude with `(hmem x).2 hx'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_open {U : Subgroup (UA L n)} (hU : IsOpen {x : finU L n | (x : UA L n) ∈ U}) :
     ∃ O : Set (GL (Fin n) (Af L)), IsOpen O ∧ 1 ∈ O ∧ ∀ x : finU L n, fp x.1 ∈ O → (x : UA L n) ∈ U := by
@@ -102,13 +100,13 @@ private theorem exists_open {U : Subgroup (UA L n)} (hU : IsOpen {x : finU L n |
     exact (hmem x).2 hx'
 
 /- English proof (translation)
-Set `e` to `finiteRestrictedEquiv L n`. Set `s` to `RestrictedProduct.structureMap (fun v : Plc L => GL (Fin n) (v.adicCompletion L)) (fun v => (integralGL (v.adicCompletion L) n : Set (GL (Fin n) (v.adicCompletion L)))) Filter.cofinite`. Establish `hs : Continuous fun a => e.symm (s a)` using `e.symm.continuous.comp RestrictedProduct.isEmbedding_structureMap.continuous`. Establish `hone : e.symm (s fun v => ⟨1, one_mem _⟩) = 1`. Establish `: s (fun v => ⟨1, one_mem _⟩) = 1` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, map_one]`. Take `⟨T, u, hu, hT⟩` from `isOpen_pi_iff.1 (hO.preimage hs) (fun v => ⟨1, one_mem _⟩) (by rw [Set.mem_preimage, hone]; exact h1)`. Use `⟨T, fun g hg hgT => ?_⟩` and prove the remaining obligations. Establish `hint` using `(mem_integralFiniteGL_iff_forall L n).1 hg`. Establish `hg' : e.symm (s fun v => ⟨e g v, hint v⟩) = g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: s (fun v => ⟨e g v, hint v⟩) = e g`. Use extensionality with `v`. Both sides reduce to the same expression. Rewrite using `[this, e.symm_apply_apply]`. Rewrite using `[← hg']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hT fun v hv => ?_` and prove the remaining obligations. Establish `: (⟨e g v, hint v⟩ : (integralGL (v.adicCompletion L) n : Set (GL (Fin n) (v.adicCompletion L)))) = ⟨1, one_mem _⟩` using `Subtype.ext (hgT v hv)`. Rewrite using `[this]`. Conclude with `(hu v hv).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nbhd {O : Set (GL (Fin n) (Af L))} (hO : IsOpen O) (h1 : 1 ∈ O) :
     ∃ T : Finset (Plc L), ∀ g : GL (Fin n) (Af L), g ∈ integralFiniteGL L n →
@@ -138,7 +136,7 @@ private theorem nbhd {O : Set (GL (Fin n) (Af L))} (hO : IsOpen O) (h1 : 1 ∈ O
   exact (hu v hv).2
 
 /- English proof (translation)
-The claim follows from `(mem_integralFiniteGL_iff_forall L n).2 fun v => by rw [e_apply] exact GlobalTheory.StabInt.mem_integralGL_of_mem_KGL (hx v)`.
+A detailed English derivation is pending.
 -/
 private theorem fp_mem {x : UA L n} (hx : ∀ w : Plc L, cLoc w x ∈ GlobalTheory.LFun.KGL w n) :
     fp x ∈ integralFiniteGL L n :=
@@ -147,9 +145,9 @@ private theorem fp_mem {x : UA L n} (hx : ∀ w : Plc L, cLoc w x ∈ GlobalTheo
     exact GlobalTheory.StabInt.mem_integralGL_of_mem_KGL (hx v)
 
 /- English proof (translation)
-Take `⟨O, hO, h1, hOU⟩` from `exists_open hU`. Take `⟨T, hT⟩` from `nbhd hO h1`. Use `⟨T, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hK, hA⟩` from `Subgroup.mem_inf.1 hx`. Take `⟨hf, hi⟩` from `mem_Kall.1 hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hOU ⟨x, hf⟩ (hT _ (fp_mem hi) fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[e_apply]`. Establish `h` using `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hA v) hv`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h v) rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem clause1 (U : Subgroup (UA L n)) (hU : IsOpen {x : finU L n | (x : UA L n) ∈ U}) :
     ∃ T : Finset (Plc L), Kall L n ⊓ ⨅ w ∈ T, away n w ≤ U := by
@@ -164,9 +162,9 @@ private theorem clause1 (U : Subgroup (UA L n)) (hU : IsOpen {x : finU L n | (x 
   exact MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h v) rfl)
 
 /- English proof (translation)
-Use `⟨le_rfl, ?_⟩` and prove the remaining obligations. Establish `e : {x : finU L n | (x : UA L n) ∈ Kall L n} = (fun x : finU L n => fp x.1) ⁻¹' (integralFiniteGL L n : Set (GL (Fin n) (Af L)))`. Use extensionality with `x`. Use `⟨fun h => fp_mem (mem_Kall.1 h).2, fun h => mem_Kall.2 ⟨x.2, fun w => ?_⟩⟩` and prove the remaining obligations. Establish `h'` using `(mem_integralFiniteGL_iff_forall L n).1 h w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h'` using `[e_apply]`. Conclude with `GlobalTheory.StabInt.mem_KGL_of_mem_integralGL h'`. Rewrite using `[e]`. Conclude with `(isOpen_integralFiniteGL L n).preimage (cont_fp.comp continuous_subtype_val)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem clause2 : IsLevel (Kall L n) := by
   refine ⟨le_rfl, ?_⟩
@@ -181,9 +179,9 @@ private theorem clause2 : IsLevel (Kall L n) := by
   exact (isOpen_integralFiniteGL L n).preimage (cont_fp.comp continuous_subtype_val)
 
 /- English proof (translation)
-Use `⟨inf_le_left.trans hU.1, ?_⟩` and prove the remaining obligations. Establish `e : {x : finU L n | (x : UA L n) ∈ lev U S V} = {x : finU L n | (x : UA L n) ∈ U} ∩ ⋂ w ∈ S, (fun x : finU L n => cLoc w (x : UA L n)) ⁻¹' ((V w).J n : Set (GL (Fin n) (Kw w)))`. Use extensionality with `x`. Simplify using `[lev, Subgroup.mem_inf, Subgroup.mem_iInf]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU.2.inter (isOpen_biInter_finset fun w _ => ((Sig.finFacts _ (V w)).2.2.2.2.2 n).2.1.preimage ((cont_cLoc w).comp continuous_subtype_val))`.
+A detailed English derivation is pending.
 -/
 private theorem clause3 (U : Subgroup (UA L n)) (hU : IsLevel U) (S : Finset (Plc L))
     (V : ∀ w : Plc L, Sig.Lev (Kw w)) : IsLevel (lev U S V) := by
@@ -197,9 +195,9 @@ private theorem clause3 (U : Subgroup (UA L n)) (hU : IsLevel U) (S : Finset (Pl
     ((Sig.finFacts _ (V w)).2.2.2.2.2 n).2.1.preimage ((cont_cLoc w).comp continuous_subtype_val))
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `clause1 U hU.2`. Establish `hfin : ∀ t : Plc L, {w : Plc L | w.under (𝓞 (Lp L)) = t.under (𝓞 (Lp L))}.Finite` using `fun t => ((IsDedekindDomain.primesOver_finite (t.under (𝓞 (Lp L))).asIdeal (𝓞 L)).preimage (fun a _ b _ h => HeightOneSpectrum.ext h)).subset fun w hw => ⟨w.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal hw).symm⟩⟩`. Use `Filter.eventually_cofinite.2 ((T.finite_toSet.biUnion fun t _ => hfin t).subset fun w hw => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `hw fun x hx => hT ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hl, hK⟩` from `Subgroup.mem_inf.1 hx`. Use `Subgroup.mem_inf.2 ⟨hK, Subgroup.mem_iInf.2 fun t => Subgroup.mem_iInf.2 fun ht => Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hl).2 u) fun huw => hn ?_` and prove the remaining obligations. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 ht) (huw.symm.trans hu)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem clause4 (U : Subgroup (UA L n)) (hU : IsLevel U) :
     ∀ᶠ w : Plc L in Filter.cofinite, locU n w ⊓ Kall L n ≤ U := by
@@ -221,7 +219,7 @@ end UpperTheory.V.Z.Sym.Al.CofinalityAlt
 
 open UpperTheory.V.Z.Sym.Al.CofinalityAlt in
 /- English proof (translation)
-Introduce `L _ _ _ n`. Conclude with `⟨clause1, clause2, clause3, clause4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.Al.cof :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ),

@@ -7,7 +7,7 @@ open GlobalTheory.StdUnn
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n p hp`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hp`. Take `⟨m, u, b, e, hm, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hp a ha`. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ (Subgroup.subset_closure (Or.inr (Or.inl ⟨_, _, hm⟩))) (Subgroup.subset_closure (Or.inl ⟨b, hu⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pIn : PIn := by
   intro D n p hp

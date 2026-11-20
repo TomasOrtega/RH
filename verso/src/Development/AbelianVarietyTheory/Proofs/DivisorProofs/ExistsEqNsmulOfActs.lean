@@ -11,7 +11,7 @@ open scoped TensorProduct
 namespace GlobalTheory.LKGeo
 
 /- English proof (translation)
-Take `⟨w, hw, e⟩` from `hg.1 v hv`. Rewrite using `[e]`. Conclude with `add_mem hv (nsmul_mem hw N)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actG_mem_laHat {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {N : ℕ} {g : G.GAf}
     (hg : g ∈ L.KN N) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) : L.actG g v ∈ LaHat D := by

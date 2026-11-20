@@ -12,7 +12,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.ModelS
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero => simp [epow, Matrix.one_apply]`. Consider the case `succ m ih => simp only [epow, pow_succ', Matrix.mul_apply, Matrix.of_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem epow_eq_pow_of {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a b : Fin n) :
@@ -22,7 +22,7 @@ theorem epow_eq_pow_of {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProduct
   | succ m ih => simp only [epow, pow_succ', Matrix.mul_apply, Matrix.of_apply, ih]
 
 /- English proof (translation)
-Introduce `n V _ _ E hE m a b`. Rewrite using `[eq_comm, ← sub_eq_zero]`. Simplify using `only [gelA, epow_eq_pow_of]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Simplify using `only [GlobalTheory.SmoothForms.comm_pow_of_apply E hE, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gelA_central : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V), Formalism.REAL.GlRel E →

@@ -11,9 +11,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `hP Q Lk C CT hC hE h23`. Use `((GlobalTheory.Fc.RowE.row hE).and h23).imp fun 𝒜 σ _ hh => ?_` and prove the remaining obligations. Take `⟨hA, ε1, hε, hcl⟩` from `hh`. Use `⟨ε1, hε, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hcl e he hle`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Establish `hF : FactsF Fm C CT` using `fun x hx i => hA Fm (GlobalTheory.Cp.d3_a hc) x hx i`. Conclude with `GlobalTheory.T.linkN_along_family_of_localBounds Fm (GlobalTheory.T.conclusion_of_family_facts hP Fm C CT hC hc.1.2 hF (hK Fm CH hc hL))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linkN_row : Hypotheses₂ → ∀ (Q : GlobalTheory.Mem.Top.V4.Slot) (Lk : GlobalTheory.Fc.LkT GlobalTheory.Fc.Bundle) (C : ℝ) (CT : ℕ), 0 ≤ C →
     GlobalTheory.Fc.RowE Q Lk (fun _ D O _ _ => GlobalTheory.NFacts.Facts D O.ex.nch ∧ Extra D C CT) →

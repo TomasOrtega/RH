@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable (D : D7)
 
 /- English proof (translation)
-The claim follows from `|Cnt.Gz D T T' Z τ| ≤ 2 * β ^ 2 * (b ^ (C * (D.R.m : ℝ) ^ 2) * Formalism.MainNotions.GramProductBounds.Pt D b C Z τ) ^ 2 := by have hr1 : D.R.rS + 1 ∈ Finset.Icc 1 (D.R.rS + 1) := Finset.mem_Icc.2 ⟨by omega, le_rfl⟩ have hr0 : D.R.rS ∈ Finset.Icc 1 (D.R.rS + 1) := Finset.mem_Icc. …`.
+A detailed English derivation is pending.
 -/
 theorem absGz_le (Z : GramM D) {b C β T T' : ℝ} (hb : 0 < b) (hβ : 1 ≤ β) (hT0 : 0 ≤ T) (hT : T ≤ β)
     (hT0' : 0 ≤ T') (hT' : T' ≤ β) (hr : 1 ≤ D.R.rS) (τ : D.what₂.Tau) :
@@ -41,13 +41,13 @@ theorem absGz_le (Z : GramM D) {b C β T T' : ℝ} (hb : 0 < b) (hβ : 1 ≤ β)
 def Gbd (b C β : ℝ) (Z : GramM D) : ℝ := (2 * β ^ 2 * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2) ^ D.R.f * sizeZ D b C Z ^ 2
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `lt_of_lt_of_le zero_lt_one hb`. Establish `hH : 1 ≤ b ^ (C * (D.R.m : ℝ) ^ 2)` using `Real.one_le_rpow hb (by positivity)`. Establish `hf : (Finset.univ : Finset D.what₂.Tau).card = D.R.f` using `by rw [Finset.card_univ, D.what₂.card_Tau]`. Establish `hP1 : ∀ τ, 1 ≤ Formalism.MainNotions.GramProductBounds.Pt D b C Z τ` using `fun τ => Formalism.MainNotions.GramProductBounds.one_le_prod_max _ _`. Establish `step : ∀ τ, max 1 |Cnt.Gz D T T' Z τ| ≤ (2 * β ^ 2 * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2) * Formalism.MainNotions.GramProductBounds.Pt D b C Z τ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Establish `h1 : 1 ≤ (2 * β ^ 2 * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2) * Formalism.MainNotions.GramProductBounds.Pt D b C Z τ ^ 2`. Establish `: 1 ≤ 2 * β ^ 2 * (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2`. Establish `h2 : 1 ≤ β ^ 2` using `one_le_pow₀ hβ`. Establish `h3 : 1 ≤ (b ^ (C * (D.R.m : ℝ) ^ 2)) ^ 2` using `one_le_pow₀ hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `one_le_mul_of_one_le_of_one_le this (one_le_pow₀ (hP1 τ))`. Use `max_le h1 (le_trans (absGz_le D Z (C := C) hb0 hβ hT0 hT hT0' hT' hr τ) (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Unfold `Gbd`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, hf, Finset.prod_pow, Formalism.MainNotions.GramProductBounds.sizeZ_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_max_absGz_le (Z : GramM D) {b C β T T' : ℝ} (hb : 1 ≤ b) (hC : 0 ≤ C) (hβ : 1 ≤ β) (hT0 : 0 ≤ T)
     (hT : T ≤ β) (hT0' : 0 ≤ T') (hT' : T' ≤ β) (hr : 1 ≤ D.R.rS) :
@@ -75,9 +75,7 @@ theorem prod_max_absGz_le (Z : GramM D) {b C β T T' : ℝ} (hb : 1 ≤ b) (hC :
         rw [Finset.prod_mul_distrib, Finset.prod_const, hf, Finset.prod_pow, Formalism.MainNotions.GramProductBounds.sizeZ_eq]
 
 /- English proof (translation)
-Use `le_trans ?_ (prod_max_absGz_le D Z hb hC hβ hT0 hT hT0' hT' hr)` and prove the remaining obligations. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `τ _`. Conclude with `le_trans zero_le_one (le_max_left _ _)`. Introduce `τ _`.
-
-Conclude with `max_le_max le_rfl (le_abs_self _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prod_max_Gz_le (Z : GramM D) {b C β T T' : ℝ} (hb : 1 ≤ b) (hC : 0 ≤ C) (hβ : 1 ≤ β) (hT0 : 0 ≤ T)
     (hT : T ≤ β) (hT0' : 0 ≤ T') (hT' : T' ≤ β) (hr : 1 ≤ D.R.rS) :
@@ -90,9 +88,9 @@ theorem prod_max_Gz_le (Z : GramM D) {b C β T T' : ℝ} (hb : 1 ≤ b) (hC : 0 
     exact max_le_max le_rfl (le_abs_self _)
 
 /- English proof (translation)
-Unfold `embS`. Use `first`. Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj _ _`. Consider the case `exact NumberField.IsCMField.embedding_complexConj _ _`. Consider the case `exact NumberField.IsCMField.map_complexConj _ _`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) (D.host.emb _) x : _)`.
+A detailed English derivation is pending.
 -/
 theorem embS_star (τ : D.what₂.Tau) (x : D.host.E) : embS D τ (star x) = starRingEnd ℂ (embS D τ x) := by
   unfold embS
@@ -103,7 +101,7 @@ theorem embS_star (τ : D.what₂.Tau) (x : D.host.E) : embS D τ (star x) = sta
   | exact (NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) (D.host.emb _) x : _)
 
 /- English proof (translation)
-Unfold `frameExp`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frameExp_succ : frameExp D.R.rS (D.R.rS + 1) = frameExp D.R.rS D.R.rS := by
   unfold frameExp
@@ -113,9 +111,9 @@ theorem frameExp_succ : frameExp D.R.rS (D.R.rS + 1) = frameExp D.R.rS D.R.rS :=
 def wG : ℝ := D.host.rdE ^ (-(2 * (frameExp D.R.rS D.R.rS : ℝ)))
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.one_le_rpow _ (by positivity)` to reduce the goal to its premises. Establish `h` using `NumberField.discr_ne_zero D.host.E`. Establish `h' : (1 : ℤ) ≤ |discr D.host.E|` using `Int.one_le_abs h`. Establish `h'' : ((1 : ℤ) : ℝ) ≤ ((|discr D.host.E| : ℤ) : ℝ)` using `by exact_mod_cast h'`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h''` using `[Int.cast_abs]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem one_le_host_rdE : 1 ≤ D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
@@ -126,7 +124,7 @@ private theorem one_le_host_rdE : 1 ≤ D.host.rdE := by
   simpa [Int.cast_abs] using h''
 
 /- English proof (translation)
-Unfold `frameExp`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 private theorem frameExp_self_le_succ_sq (r : ℕ) : frameExp r r ≤ (r + 1) ^ 2 := by
   unfold frameExp
@@ -136,14 +134,14 @@ private theorem frameExp_self_le_succ_sq (r : ℕ) : frameExp r r ≤ (r + 1) ^ 
     _ ≤ (r + 1) ^ 2 := by nlinarith
 
 /- English proof (translation)
-Unfold `wG`. Conclude with `Real.rpow_pos_of_pos (lt_of_lt_of_le one_pos (one_le_host_rdE D)) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wG_pos : 0 < wG D := by
   unfold wG
   exact Real.rpow_pos_of_pos (lt_of_lt_of_le one_pos (one_le_host_rdE D)) _
 
 /- English proof (translation)
-Unfold `wG`. Apply `Real.rpow_le_one_of_one_le_of_nonpos (one_le_host_rdE D)` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ (frameExp D.R.rS D.R.rS : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem wG_le_one : wG D ≤ 1 := by
   unfold wG
@@ -152,9 +150,9 @@ theorem wG_le_one : wG D ≤ 1 := by
   linarith
 
 /- English proof (translation)
-Establish `h1` using `one_le_host_rdE D`. Establish `h0 : (0 : ℝ) ≤ D.host.rdE` using `by linarith`. Unfold `wG R1`. Rewrite using `[Real.rpow_neg h0, inv_inv]`. Apply `Real.rpow_le_rpow_of_exponent_le h1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `frameExp_self_le_succ_sq D.R.rS`. Establish `h3 : ((frameExp D.R.rS D.R.rS : ℕ) : ℝ) ≤ ((D.R.rS : ℝ) + 1) ^ 2` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem wG_inv_le : (wG D)⁻¹ ≤ R1 D := by
   have h1 := one_le_host_rdE D
@@ -167,7 +165,7 @@ theorem wG_inv_le : (wG D)⁻¹ ≤ R1 D := by
   linarith
 
 /- English proof (translation)
-The claim follows from `|Cnt.Gz D (Tu D u) (Tu D u') (ZhatL (lf D F0) F') τ| = ‖embS D τ (Gval (lf D F0) F')‖ * wG D ^ 2 := by have e1 : ∀ x : D.host.E, embS D τ (x * star x) = ((Complex.normSq (embS D τ x) : ℝ) : ℂ) := by intro x; rw [map_mul, embS_star, Complex.mul_conj] have hG : embS D τ (Gval (lf D …`.
+A detailed English derivation is pending.
 -/
 theorem absGz_eq {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : FlagU D u')
     (τ : D.what₂.Tau) :
@@ -193,23 +191,21 @@ theorem absGz_eq {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : �
   ring
 
 /- English proof (translation)
-Use `set Z := ZhatL (lf D F0) F'`. Use `set γ := Gval (lf D F0) F'`. Use `set s := wG D ^ 2 with hs`. Establish `hs0 : 0 < s` using `pow_pos (wG_pos D) 2`. Establish `hs1 : s ≤ 1` using `pow_le_one₀ (wG_pos D).le (wG_le_one D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsi : 1 ≤ s⁻¹` using `one_le_inv₀ hs0 |>.2 hs1`. Establish `hsR : s⁻¹ ≤ R1 D ^ 2`. Rewrite using `[hs, ← inv_pow]`. Conclude with `pow_le_pow_left₀ (inv_nonneg.2 (wG_pos D).le) (wG_inv_le D) 2`. Establish `hf : (Finset.univ : Finset D.what₂.Tau).card = D.R.f` using `by rw [Finset.card_univ, D.what₂.card_Tau]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ τ, 0 < ‖embS D τ γ‖` using `fun τ => norm_embS_pos D hγ0 τ`. Establish `habs : ∀ τ, |Cnt.Gz D (Tu D u) (Tu D u') Z τ| = ‖embS D τ γ‖ * s` using `fun τ => absGz_eq D F0 F' τ`. Establish `hT0 : (0 : ℝ) ≤ ((Tu D u : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hT0' : (0 : ℝ) ≤ ((Tu D u' : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `h1 : ∀ τ, max 1 (Cnt.Gz D (Tu D u) (Tu D u') Z τ)⁻¹ ≤ max 1 ‖embS D τ γ‖⁻¹ * s⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `τ`. Establish `hpos : 0 < |Cnt.Gz D (Tu D u) (Tu D u') Z τ|` using `by rw [habs]; exact mul_pos (hn τ) hs0`. Establish `h2 : max 1 (Cnt.Gz D (Tu D u) (Tu D u') Z τ)⁻¹ ≤ max 1 |Cnt.Gz D (Tu D u) (Tu D u') Z τ|⁻¹`. Break down `le_or_gt (Cnt.Gz D (Tu D u) (Tu D u') Z τ) 0 with h | h` into its components or cases. Rewrite using `[max_eq_left (le_trans (inv_nonpos.2 h) zero_le_one)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_max_left _ _`. Rewrite using `[abs_of_pos h]`. Use `le_trans h2 ?_` and prove the remaining obligations. Rewrite using `[habs, mul_inv]`. Use `le_trans (max_mul_le (inv_nonneg.2 (norm_nonneg _)) (inv_nonneg.2 hs0.le)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right hsi]`. Establish `h3 : ∀ τ, max 1 ‖embS D τ γ‖ ≤ max 1 |Cnt.Gz D (Tu D u) (Tu D u') Z τ| * s⁻¹`. Introduce `τ`. Establish `e : ‖embS D τ γ‖ = |Cnt.Gz D (Tu D u) (Tu D u') Z τ| * s⁻¹`. Rewrite using `[habs, mul_assoc, mul_inv_cancel₀ hs0.ne', mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `le_trans (max_mul_le (abs_nonneg _) (inv_nonneg.2 hs0.le)) ?_` and prove the remaining obligations. Rewrite using `[max_eq_right hsi]`. Establish `hG` using `prod_max_absGz_le D Z hb hC hβ hT0 hT hT0' hT' hr`. Establish `hP0 : 0 ≤ ∏ τ, max 1 ‖embS D τ γ‖⁻¹` using `Finset.prod_nonneg fun τ _ => le_trans zero_le_one (le_max_left _ _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, hf]`. Use `_ ≤ Gbd D b C β Z * (R1 D ^ 2) ^ D.R.f * (R1 D ^ 2) ^ D.R.f := by`. Establish `hsf : s⁻¹ ^ D.R.f ≤ (R1 D ^ 2) ^ D.R.f` using `pow_le_pow_left₀ (inv_nonneg.2 hs0.le) hsR _`. Establish `hA : 0 ≤ ∏ τ, max 1 |Cnt.Gz D (Tu D u) (Tu D u') Z τ|` using `Finset.prod_nonneg fun τ _ => le_trans zero_le_one (le_max_left _ _)`.
-
-Establish `hsf0 : 0 ≤ s⁻¹ ^ D.R.f` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ Gbd D b C β Z` using `le_trans hA hG`. Use the proof step `positivity)`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod_max_Gz_inv_le {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F' : FlagU D u') (hγ : Gval (lf D F0) F' ∈ intS D) (hγ0 : Gval (lf D F0) F' ≠ 0)

@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped nonZeroDivisors ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.thetaLine_lower_bound_of_degree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FThetaPolynomialLowerBoundOfThetaLineDegree.lean&line=11#L11)
 -/

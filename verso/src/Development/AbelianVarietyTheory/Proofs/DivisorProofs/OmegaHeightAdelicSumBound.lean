@@ -34,7 +34,7 @@ set_option autoImplicit false
 namespace GlobalTheory.OmRead
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨k, -, hk⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum ha)`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hk)]`. Conclude with `⟨rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem det_support {E : Type} [Field E] (g : ℕ) : ∀ a ∈ (detOmSym E g).support,
     a.1 = (fun _ => false) ∧ a.2.1 = none := by
@@ -45,7 +45,7 @@ private theorem det_support {E : Type} [Field E] (g : ℕ) : ∀ a ∈ (detOmSym
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Unfold `parOf`. Use `split_ifs with h`. Conclude with `(det_support g _ h.choose_spec).2`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem parOf_det {E : Type} [Field E] (g : ℕ) : parOf (detOmSym E g) = none := by
   unfold parOf
@@ -54,7 +54,7 @@ private theorem parOf_det {E : Type} [Field E] (g : ℕ) : parOf (detOmSym E g) 
   · rfl
 
 /- English proof (translation)
-Rewrite using `[detOmSym, ← Finsupp.sum_finset_sum_index (by simp) (by intros; push_cast; ring), ← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv Fin.revPerm _ _ fun k => ?_` and prove the remaining obligations. Rewrite using `[wholeSym, Finsupp.sum_single_index (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem det_sum {E : Type} [Field E] (g : ℕ) (f : ((E →+* ℂ) × ℕ) ⊕ ℕ → ℝ) :
     ((detOmSym E g).sum fun a n => (n : ℝ) * f a.2.2) = -∑ k : Fin g, f (.inr k) := by
@@ -65,11 +65,11 @@ private theorem det_sum {E : Type} [Field E] (g : ℕ) (f : ((E →+* ℂ) × �
   simp
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `(GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw).2 x`. Apply the tactic sequence `rw [expo, detOmSym, ← Finsupp.sum_finset_sum_index (by simp) (by intros; split_ifs <;> simp), Finset.sum_eq_single (Fin.rev k)]`. Rewrite using `[wholeSym, Finsupp.sum_single_index (by simp)]`. Simplify using `[letterOf]`. Introduce `b _ hb`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[wholeSym, Finsupp.sum_single_index (by simp), if_neg]`. Introduce `h`. Establish `: (letters Dw).get (Fin.rev b) = (letters Dw).get k`. Rewrite `h` using `[letterOf, List.getElem?_eq_getElem (Fin.rev b).2]`. Conclude with `Option.some.inj h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hb (by rw [← (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw).1 this, Fin.rev_rev])`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem expo_det {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (x : Pad.Letter Dw) : expo Dw (detOmSym E (letters Dw).length) x = -1 := by
@@ -89,7 +89,7 @@ private theorem expo_det {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   · simp
 
 /- English proof (translation)
-Use `show q ((spMap ι) (IsLocalRing.closedPoint K')) = q _`. Rewrite using `[Subsingleton.elim ((spMap ι) (IsLocalRing.closedPoint K')) (IsLocalRing.closedPoint K)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem below_map {K K' : Type} [Field K] [Field K'] (ι : K →+* K') {X : Scheme.{0}} (q : Sp K ⟶ X) :
     below (spMap ι ≫ q) = below q := by
@@ -103,14 +103,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sp_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Rewrite using `[← sp_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dual_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (dualMap (g.comp f)) = spMap (dualMap g) ≫ spMap (dualMap f) := by
@@ -119,15 +119,13 @@ private theorem dual_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] 
   ext r <;> simp [dualMap]
 
 /- English proof (translation)
-Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Establish `: Algebra.IsAlgebraic ℚ Qb` using `algebraicClosure.isAlgebraic ℚ ℂ`. Take `⟨y, ψ, φ₁, f, t, t', h₁, h₂, h₃⟩` from `h`. Establish `hl` using `CoordUniq.isLocalHom_of_algebraic φ₁ ψ`. Establish `hy : below q = y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h₁]`. Use `show Y.Y.X.fromSpecStalk y (spMap ψ (IsLocalRing.closedPoint Qb)) = y`. Establish `: IsLocalHom (CommRingCat.ofHom ψ).hom` using `hl`. Rewrite using `[Spec_closedPoint, Scheme.fromSpecStalk_closedPoint]`. Take `⟨φ₂, f₂, t₂, hT, ht⟩` from `Y.gr_spec y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `CoordUniq.exists_unit_ratio f f₂ (IsFractionRing.injective (Y.Y.X.presheaf.stalk y) Y.Y.X.functionField) h₂ hT`. Establish `ht' : ∀ τ i, (Y.gr τ i).IsEqn y (t τ i)` using `fun τ i => (ht τ i).iff_unitAt.2 ⟨u τ i, (u τ i).isUnit, by`. Rewrite using `[hu _ _ _ _ h₂ hT τ i, Units.val_mul, mul_div_cancel_left₀ _ (Units.ne_zero _)]`. Use the proof step `rfl⟩`. Establish `hE : ∀ s : Finset (Pad.Letter Dw), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn y (∏ z ∈ s, t z.1 z.2 ^ n z)` using `fun s => by classical`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y`. Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((ht' _ _).zsmul _).add ih`. Take `⟨w, hw, hw'⟩` from `(Base.isEqn_eqn (divOf Y n) y).iff_unitAt.1 (hE Finset.univ)`.
-
-Use `⟨_, ?_, y, ψ, φ₁, f, t, t', w, h₁, h₂, h₃, ?_, rfl⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (hw.map ψ).ne_zero (Units.ne_zero _)`. Rewrite using `[hw', hy, div_eq_inv_mul, Units.val_inv_eq_inv_val]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord_ex {φ : c.F →+* Qb} {x : Sp Qb ⟶ Z.X} {g : EigFrame Z φ x} {q : Sp Qb ⟶ Y.Y.X}
     (h : Y.Carries q g) (n : Pad.Letter Dw → ℤ) :
@@ -158,9 +156,9 @@ private theorem coord_ex {φ : c.F →+* Qb} {x : Sp Qb ⟶ Z.X} {g : EigFrame Z
   · rw [hw', hy, div_eq_inv_mul, Units.val_inv_eq_inv_val]
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', r, h₁, h₂, ⟨a₁, a₂, a₃⟩, h₄, rfl⟩` from `h`. Use `⟨y, ι.comp ψ, φ₁, f, t, fun τ i => Units.map (ι : K →* K') (t' τ i), r, by rw [h₁, sp_comp, Category.assoc], h₂, ⟨by rw [hx, a₁, sp_comp, Category.assoc], by rw [hφ, a₂, RingHom.comp_assoc], fun τ i => ?_⟩, h₄, ?_⟩` and prove the remaining obligations. Take `⟨cf, b₁, b₂, b₃⟩` from `a₃ τ i`. Use `⟨fun k => ι (cf k), by simp [b₁], fun k hk => by simp [b₂ k hk], ?_⟩` and prove the remaining obligations. Use `GlobalTheory.GradedPieces.comb_map ι hx.symm b₃` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hg τ i]`. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[dual_comp, Category.assoc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coord_map {K K' : Type} [Field K] [Field K'] (ι : K →+* K') {φ : c.F →+* K} {x : Sp K ⟶ Z.X}
     {g : EigFrame Z φ x} {φ' : c.F →+* K'} {x' : Sp K' ⟶ Z.X} {g' : EigFrame Z φ' x'} {q : Sp K ⟶ Y.Y.X}
@@ -180,9 +178,9 @@ private theorem coord_map {K K' : Type} [Field K] [Field K'] (ι : K →+* K') {
 end Free
 
 /- English proof (translation)
-Establish `hz' : z.1 ≫ genι s.T.Z = spMap (starRingEnd ℂ) ≫ z₁.1 ≫ genι s.T.Z` using `by rw [hz, Category.assoc]`. Take `⟨f₁, hf₁⟩` from `FinalTheorems.exists_isHodgeFrame_iff.2 hb`. Take `⟨f, hf⟩` from `f₁.exists_isMap (starRingEnd ℂ) hσ hz'`. Establish `cc : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ` using `by ext; simp`. Establish `hf' : IsHodgeFrame s.U z f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf₁.conj (by rw [hσ, ← RingHom.comp_assoc, cc, RingHom.id_comp]) (by rw [hz, ← Category.assoc, ← sp_comp, cc]; exact ((congrArg (· ≫ _) (Spec.map_id _)).trans (Category.id_comp _)).symm) fun τ i => ?_` and prove the remaining obligations. Rewrite using `[hf τ i, ← Category.assoc, ← dual_comp, cc, spMap_dualMap_id, Category.id_comp]`. Rewrite using `[x.hodge_gram hf', x.hodge_gram hf₁, hf.co τ hg hz']`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem hodge_conj {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     {σ σ₁ : κ.c.F →+* ℂ} {z : GlobalTheory.CxPts (genStr s.T.Z) σ} {z₁ : GlobalTheory.CxPts (genStr s.T.Z) σ₁}
@@ -204,11 +202,11 @@ private theorem hodge_conj {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ 
   simp [Matrix.mul_apply, map_ofNat]
 
 /- English proof (translation)
-Establish `h5 : F.P₀.g = (letters O.S.Dw).length`. Take `⟨_, _, _, -, -, -, -, h5, -⟩` from `hT`. Conclude with `h5`. Establish `hs : ∀ (k : Fin F.P₀.g) t (b : Fin (O.S.Dw.mult t)), (letters O.S.Dw)[(k : ℕ)]? = some ⟨t, b⟩ → stepVec O F t b = Pi.single k 1` using `fun k t b hk => by`. Take `⟨q, h1, h2, -⟩` from `UpperTheory.lie_lattice_generator D O K F t b b.2 h5`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk' : (k : ℕ) < (letters O.S.Dw).length` using `h5 ▸ k.2`. Establish `hq' : (q : ℕ) < (letters O.S.Dw).length` using `h5 ▸ q.2`. Rewrite `hk` using `[List.getElem?_eq_getElem hk']`. Rewrite `h1` using `[List.getElem?_eq_getElem hq']`. Use `(GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective O.S.Dw).1 (a₁ := ⟨q, hq'⟩) (a₂ := ⟨k, hk'⟩) ((Option.some.inj h1).trans (Option.some.inj hk).symm)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, show q = k from Fin.ext (congrArg Fin.val this :)]`. Use `UpperTheory.posDef_letter_block_matrix O.S.Dw _ (h.gram (θ.comp ι) fun k => Pi.single k 1) _ h5 (fun t => (x.hodge _).pos _ g t) (fun k k' t b b' hk hk' => ?_) fun k k' a a' hk hk' ha => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.fibre_hermitian_embedding D O x y hy K F ι h hT hH θ σ hG hσ z hz g hg t b b', hs k t b hk, hs k' t b' hk']`. Both sides reduce to the same expression. Conclude with `UpperTheory.hermitian_distinct_letters_orthogonal D O y hy K F ι h hT hH θ (hσ ▸ hG) k k' a a' hk hk' ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem gram_good {D : D7} (O : Setup D) (x : ToroidalCompactificationData O.s) (y : Pad.Pt O.s) (hy : below y.y ∉ genBd O.s.T.Z)
     {K : Type} [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (h : HermFam K (Fin F.P₀.g → K))
@@ -236,13 +234,13 @@ private theorem gram_good {D : D7} (O : Setup D) (x : ToroidalCompactificationDa
   · exact UpperTheory.hermitian_distinct_letters_orthogonal D O y hy K F ι h hT hH θ (hσ ▸ hG) k k' a a' hk hk' ha
 
 /- English proof (translation)
-Distinguish the cases in `hG : Formalism.L2.PjFree.GoodEmb O.κ.c σ`. Conclude with `gram_good O x y hy F ι h hT hH θ σ hG hσ z hz g hg`. Establish `hG' : Formalism.L2.PjFree.GoodEmb O.κ.c ((starRingEnd ℂ).comp σ)`. Use `Formalism.L2.PjFree.goodEmb_goodOf O.κ.c σ` as an intermediate fact. Unfold `Formalism.L2.PjFree.goodOf at this`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[if_neg hG]`. Then use the resulting hypothesis. Set `z' : GlobalTheory.CxPts (genStr O.s.T.Z) ((starRingEnd ℂ).comp σ)` to `⟨spMap (starRingEnd ℂ) ≫ z.1, by rw [Category.assoc, z.2, sp_comp]⟩`. Take `⟨g', hg'⟩` from `g.exists_isMap (x' := z'.1 ≫ genι O.s.T.Z) (starRingEnd ℂ) rfl (Category.assoc _ _ _)`. Establish `hb : ¬ LiesIn z (genBd O.s.T.Z)` using `by show below z.1 ∉ _`. Rewrite using `[hz, below_map]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `e` using `gram_good O x y hy F ι h hT hH ((starRingEnd ℂ).comp θ) _ hG' (by rw [hσ, RingHom.comp_assoc]) z' (show spMap (starRingEnd ℂ) ≫ z.1 = _ by rw [hz, ← Category.assoc, ← sp_comp]) g' fun τ i => by rw [hg' τ i, hg τ i, dual_comp, Category.assoc]`. Establish `hcj` using `fun τ => hodge_conj (z := z') (z₁ := z) x rfl rfl hg' hb τ`. Simplify using `only [hcj, grSq_map_conj] at e`. Rewrite using `[← e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc : (h.gram (((starRingEnd ℂ).comp θ).comp ι) fun k => Pi.single k 1) = (starRingEnd ℂ).mapMatrix (h.gram (θ.comp ι) fun k => Pi.single k 1)`. Use extensionality with `a b`. Conclude with `(GlobalTheory.T.semi_fibration_lie_lattice_full K F).2.2.1 h hH (θ.comp ι) _ _`. Rewrite using `[hc, ← RingHom.map_det, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gram_all {D : D7} (O : Setup D) (x : ToroidalCompactificationData O.s) (y : Pad.Pt O.s) (hy : below y.y ∉ genBd O.s.T.Z)
     {K : Type} [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (h : HermFam K (Fin F.P₀.g → K))
@@ -275,13 +273,13 @@ private theorem gram_all {D : D7} (O : Setup D) (x : ToroidalCompactificationDat
   rw [hc, ← RingHom.map_det, Complex.conj_re]
 
 /- English proof (translation)
-Establish `hz' : ((O.Φ.C c).down z).1 = spMap θ ≫ y.y` using `by show z.1 ≫ _ = _`. Rewrite using `[hz, Category.assoc, hq]`. Establish `hσ' : embOf O.κ.e σ = θ.comp y.fK`. Use `((O.Φ.C c).down z).2` as an intermediate fact. Rewrite `this` using `[hz', Category.assoc, y.y_over, ← sp_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg CommRingCat.Hom.hom (Spec.map_injective this)).symm`. Establish `hz'' : ((O.Φ.C c).down z).1 ≫ genι O.s.T.Z = spMap θ ≫ y.y ≫ genι O.s.T.Z` using `by rw [hz', Category.assoc]`. Take `⟨g, hg⟩` from `y.frame.exists_isMap θ hσ' hz''`. Establish `hc' : IsCoord (O.Φ.C c) z.1 g n f (θ b)` using `hz ▸ coord_map (O.Φ.C c) θ hσ' hz'' hg hc`. Rewrite using `[pn_metsOf none hc', gram_all O x y hy F ι h hT hH θ _ hσ' _ hz' g hg]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : ∀ a : Pad.Letter O.S.Dw, 0 < grSq ((x.hodge (embOf O.κ.e σ)).gram _ g a.1) a.2` using `fun a => grSq_pos ((x.hodge _).pos _ g _) _`. Establish `hτ : ‖θ b‖ ≠ 0` using `by simpa using hb0`. Simplify using `only [hn, zpow_neg, zpow_one, Finset.prod_inv_distrib, ToroidalCompactificationData.eigMetAt]`. Rewrite using `[Real.log_mul (pow_ne_zero _ hτ) (inv_ne_zero (Finset.prod_pos fun a _ => hp a).ne'), Real.log_pow, Real.log_inv]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem inf_loc {D : D7} (O : Setup D) (x : ToroidalCompactificationData O.s) (y : Pad.Pt O.s) (hy : below y.y ∉ genBd O.s.T.Z)
     {K : Type} [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (h : HermFam K (Fin F.P₀.g → K))
@@ -311,13 +309,13 @@ private theorem inf_loc {D : D7} (O : Setup D) (x : ToroidalCompactificationData
   ring
 
 /- English proof (translation)
-Establish `h5 : F.P₀.g = (letters O.S.Dw).length`. Take `⟨_, _, _, -, -, -, -, h5, -⟩` from `hT`. Conclude with `h5`. Establish `hk : (k : ℕ) < (letters O.S.Dw).length` using `h5 ▸ k.2`. Rewrite using `[lnStep, dif_pos hk]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ∀ (x : Sp ℂ_[p] ⟶ O.s.T.Z.X) {m : ℕ} (e : m = (letters O.S.Dw).length) (u : Fin (letters O.S.Dw).length → _) (k : Fin m), grNorm O.s.T.Z.t x (latDR O.s.T.Z.t x) u (Fin.cast e k) = grNorm O.s.T.Z.t x (latDR O.s.T.Z.t x) (fun a => u (Fin.cast e a)) k`. Introduce `x m e u k`. Substitute `e` using the available equality. Both sides reduce to the same expression. Use `(congrArg Real.log (hu _ h5 _ k)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key` using `UpperTheory.dual_number_tangent_coordinates D O y K F ι hT p io (fun a : Fin F.P₀.g => spMap (dualMap io) ≫ y.u ((letters O.S.Dw).get (Fin.cast h5 a)).1 ((letters O.S.Dw).get (Fin.cast h5 a)).2) fun a x hx => by`. Take `rfl : (letters O.S.Dw).get (Fin.cast h5 a) = x` from `Option.some.inj ((List.getElem?_eq_getElem (Fin.cast h5 a).2).symm.trans hx)`. Both sides reduce to the same expression. Rewrite using `[grNorm, lnGrP]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Use `exists_congr fun cf => and_congr_right fun _ => and_congr_right fun _ => and_congr_left fun _ => ⟨fun ⟨w, hw, hc⟩ => (key cf w hc).1 hw, fun hs => ?_⟩` and prove the remaining obligations. Take `⟨w, -, hw⟩` from `Guard.exists_comb (fun a : Fin F.P₀.g => GlobalTheory.FactorDepth.isTanAtG_map _ io (y.tan ((letters O.S.Dw).get (Fin.cast h5 a)).1 ((letters O.S.Dw).get (Fin.cast h5 a)).2)) cf`. Conclude with `⟨w, (key cf w hw).2 hs, hw⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem step_eq {D : D7} (O : Setup D) (y : Pad.Pt O.s) {K : Type} [Field K] [NumberField K] (F : SemiFib K)
     (ι : K →+* Qb) (hT : FibTie O y F ι) (p : ℕ) [Fact p.Prime] (io : Qb →+* ℂ_[p]) (k : Fin F.P₀.g) :
@@ -353,19 +351,17 @@ end GlobalTheory.OmRead
 
 open GlobalTheory.OmRead GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.HeightParts in
 /- English proof (translation)
-Introduce `_ _ D O hO _ A Tr H hR`. Take `⟨xa, _, hcw⟩` from `hO`. Use `⟨0, fun y hy K _ _ F ι h hT hH => le_of_eq (abs_eq_zero.2 (sub_eq_zero.2 ?_))⟩` and prove the remaining obligations. Establish `hy' : below y.y ∉ genBd O.s.T.Z` using `(hR.ht.int y).1 hy`. Establish `h5 : F.P₀.g = (letters O.S.Dw).length`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _, _, -, -, -, -, h5, -⟩` from `hT`. Conclude with `h5`. Establish `hg : D.R.f * O.N = F.P₀.g` using `(h5.trans (length_letters O.S)).symm`. Take `⟨q, hq, hcar, hx⟩` from `liesUnder_basePt O.Φ y`. Take `⟨b, hb0, hc⟩` from `coord_ex (O.Φ.C (compPt O.s y)) hcar (expo O.S.Dw (detOmSym D.host.E F.P₀.g))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstr : q ≫ (O.Φ.C (compPt O.s y)).Y.str = spMap (y.fK.comp O.κ.e.toRingHom)`. Rewrite using `[← (O.Φ.C (compPt O.s y)).π_str, ← Category.assoc, hq, ← Category.assoc, y.y_over, sp_comp]`. Take `⟨c, t, hc0, hct⟩` from `UpperTheory.lattice_grading_log_product K _ F.lieLat (GlobalTheory.T.semi_fibration_lie_lattice_full K F).1`. Establish `e` using `UpperTheory.height_log_norm_formula _ K _ _ (adlOf (O.Φ.C (compPt O.s y)) (metsOf xa O.Φ _) (detOmSym D.host.E F.P₀.g)) _ q ι b c (-t) (fun σ => -((1 / 2) * Real.log (h.gram σ fun k => Pi.single k 1).det.re)) rfl rfl hstr hb0 hc0 (fun θ σ z hz => by`. Simplify using `only [adlOf, parOf_det]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `inf_loc O xa y hy' F ι h hT hH _ q hq _ (fun a => by rw [h5]; exact expo_det _ a) _ b hb0 hc θ σ z hz)`. Use `fun v ε θ z hz => by`. Take `⟨hp, -, hw⟩` from `ioOf_spec _ v ε`. Use `haveI := Fact.mk hp`. Use `(UpperTheory.coordinate_eigenframe_height (O.Φ.C (compPt O.s y)) _ _ y.frame q _ b hb0 hc v ε θ z (fun a ha => congrFun (det_support _ a ha).1 _) hz).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[det_sum, hw (θ (ι c))]`. Use `erw [Finset.sum_congr rfl fun k _ => step_eq O y F ι hT (resP v) ((ioOf (resP v) ε).comp θ) k]`. Rewrite using `[hct]`. Simplify using `only [RingHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : finPart F.lieLat = t * ∑ τ : K →+* ℂ, Real.log ‖τ c‖`. Rewrite using `[← UpperTheory.padic_log_sum_eq_archimedean K c t hc0, finPart]`. Use `finsum_congr fun p => ?_` and prove the remaining obligations. Use `split_ifs with hp`. Conclude with `finsum_congr fun j => @hct p ⟨hp⟩ j`.
-
-Both sides reduce to the same expression. Rewrite using `[omHt, hcw.hm_eq, hg, ← hx, e, adelSum, hf, Finset.sum_neg_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.omega_height_adelic_sum_bound : Hypotheses2 → HypothesesH → OnObj fun D O _ _ H _ => ∃ C : ℝ, ∀ y : Pt O.s, y ∈ H.int → ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (h : HermFam K (Fin F.P₀.g → K)), FibTie O y F ι → F.IsHerm h → |omHt O O.met.hm y - adelSum h F.lieLat / Module.finrank ℚ K| ≤ C := by
   intro _ _ D O hO _ A Tr H hR

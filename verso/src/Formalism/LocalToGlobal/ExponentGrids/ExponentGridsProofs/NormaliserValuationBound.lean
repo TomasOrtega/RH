@@ -20,9 +20,9 @@ open Formalism.DivisionValues.ValuationRepresentative Formalism.DivisionValues.P
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `h1 : (x : K) = algebraMap (𝓞 K) K x` using `rfl`. Rewrite using `[h1, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_if_neg _ hx]`. Use `congr 1`. Rewrite using `[neg_inj]`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Unfold `vw`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w (by simpa using hx)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_int (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x ≠ 0) :
     w.valuation K (x : K) = WithZero.exp (-(vw w (x : K))) := by
@@ -36,11 +36,11 @@ theorem val_int (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x ≠ 0) :
   rw [← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w (by simpa using hx)]
 
 /- English proof (translation)
-Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hx0 : algebraMap (𝓞 K) K x ≠ 0` using `(div_ne_zero_iff.mp ha).1`. Establish `hy0 : algebraMap (𝓞 K) K y ≠ 0` using `(div_ne_zero_iff.mp ha).2`. Establish `hx : x ≠ 0` using `fun h => hx0 (by rw [h, map_zero])`. Establish `hy1 : y ≠ 0` using `fun h => hy0 (by rw [h, map_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vx` using `val_int w x hx`. Establish `vy` using `val_int w y hy1`. Rewrite `vx` using `[show ((x : K)) = algebraMap (𝓞 K) K x from rfl]`. Rewrite `vy` using `[show ((y : K)) = algebraMap (𝓞 K) K y from rfl]`. Establish `hmul : vw w (algebraMap (𝓞 K) K x) = vw w (algebraMap (𝓞 K) K x / algebraMap (𝓞 K) K y) + vw w (algebraMap (𝓞 K) K y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← vw_mul w _ _ ha hy0, div_mul_cancel₀ _ hy0]`. Rewrite using `[map_div₀, vx, vy, ← WithZero.exp_sub]`. Use `congr 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem val_eq (w : HeightOneSpectrum (𝓞 K)) (a : K) (ha : a ≠ 0) :
     w.valuation K a = WithZero.exp (-(vw w a)) := by
@@ -61,9 +61,9 @@ theorem val_eq (w : HeightOneSpectrum (𝓞 K)) (a : K) (ha : a ≠ 0) :
   linarith
 
 /- English proof (translation)
-Establish `h1` using `(w.valuation K).map_add a b`. Rewrite `h1` using `[val_eq w a ha, val_eq w b hb, val_eq w _ hab]`. Break down `le_max_iff.mp h1 with h | h` into its components or cases. Establish `h2` using `WithZero.exp_le_exp.mp h`. Conclude with `le_trans (min_le_left _ _) (by linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `WithZero.exp_le_exp.mp h`. Conclude with `le_trans (min_le_right _ _) (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem vw_add (w : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) (hab : a + b ≠ 0) :
     min (vw w a) (vw w b) ≤ vw w (a + b) := by
@@ -81,7 +81,7 @@ def fQ (w : HeightOneSpectrum (𝓞 K)) (e : ℚ) (a : K) : WithTop ℚ :=
   if a = 0 then ⊤ else (((vw w a : ℚ) / e : ℚ) : WithTop ℚ)
 
 /- English proof (translation)
-Unfold `fQ`. Conclude with `if_neg ha`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fQ_ne (w : HeightOneSpectrum (𝓞 K)) (e : ℚ) (a : K) (ha : a ≠ 0) :
     fQ w e a = (((vw w a : ℚ) / e : ℚ) : WithTop ℚ) := by
@@ -89,7 +89,7 @@ theorem fQ_ne (w : HeightOneSpectrum (𝓞 K)) (e : ℚ) (a : K) (ha : a ≠ 0) 
   exact if_neg ha
 
 /- English proof (translation)
-Unfold `fQ`. Conclude with `if_pos rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fQ_zero (w : HeightOneSpectrum (𝓞 K)) (e : ℚ) : fQ w e (0 : K) = ⊤ := by
   unfold fQ

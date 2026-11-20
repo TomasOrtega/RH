@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 private lemma esI_val' (l : Fin r) : (esI k r l).val = 2 * r + k - l.val := rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[eI_val_weyl_conjugation_fixed_column, esI_val']`. Use `l.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma eI_ne_esI (l : Fin r) : eI k r l ≠ esI k r l := by
   intro h
@@ -38,45 +38,45 @@ lemma eI_ne_esI (l : Fin r) : eI k r l ≠ esI k r l := by
   omega
 
 /- English proof (translation)
-Simplify using `[sw]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sw_e (l : Fin r) : sw (k := k) l (eI k r l) = esI k r l := by
   simp [sw]
 
 /- English proof (translation)
-Simplify using `[sw, (eI_ne_esI l).symm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma swap_dual_isotropic (l : Fin r) : sw (k := k) l (esI k r l) = eI k r l := by
   simp [sw, (eI_ne_esI l).symm]
 
 /- English proof (translation)
-Simplify using `[sw, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sw_o (l : Fin r) {p : Fin (2 * r + k + 1)} (h1 : p ≠ eI k r l) (h2 : p ≠ esI k r l) :
     sw l p = p := by
   simp [sw, h1, h2]
 
 /- English proof (translation)
-Simplify using `[al]`.
+Simplify using the standard rewrite rules.
 -/
 lemma al_e (l : Fin r) (c : ℂ) : al (k := k) l c (eI k r l) = c := by
   simp [al]
 
 /- English proof (translation)
-Simplify using `[al, (eI_ne_esI l).symm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma reflection_scalar_dual_isotropic (l : Fin r) (c : ℂ) : al (k := k) l c (esI k r l) = (star c)⁻¹ := by
   simp [al, (eI_ne_esI l).symm]
 
 /- English proof (translation)
-Simplify using `[al, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 lemma al_o (l : Fin r) (c : ℂ) {p : Fin (2 * r + k + 1)} (h1 : p ≠ eI k r l) (h2 : p ≠ esI k r l) :
     al l c p = 1 := by
   simp [al, h1, h2]
 
 /- English proof (translation)
-Distinguish the cases in `h1 : p = eI k r l`. Conclude with `Or.inl h1`. Distinguish the cases in `h2 : p = esI k r l`. Conclude with `Or.inr (Or.inl h2)`. Conclude with `Or.inr (Or.inr ⟨h1, h2⟩)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the second alternative.
 -/
 lemma trich (l : Fin r) (p : Fin (2 * r + k + 1)) :
     p = eI k r l ∨ p = esI k r l ∨ (p ≠ eI k r l ∧ p ≠ esI k r l) := by
@@ -87,9 +87,9 @@ lemma trich (l : Fin r) (p : Fin (2 * r + k + 1)) :
     · exact Or.inr (Or.inr ⟨h1, h2⟩)
 
 /- English proof (translation)
-Break down `trich l p with h | h | ⟨h1, h2⟩` into its components or cases. Substitute `h` using the available equality. Rewrite using `[sw_e, swap_dual_isotropic]`. Substitute `h` using the available equality. Rewrite using `[swap_dual_isotropic, sw_e]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sw_o l h1 h2, sw_o l h1 h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sw_sw (l : Fin r) (p : Fin (2 * r + k + 1)) : sw l (sw l p) = p := by
   rcases trich l p with h | h | ⟨h1, h2⟩
@@ -100,7 +100,7 @@ lemma sw_sw (l : Fin r) (p : Fin (2 * r + k + 1)) : sw l (sw l p) = p := by
   · rw [sw_o l h1 h2, sw_o l h1 h2]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases trich l q with hq | hq | ⟨hq1, hq2⟩ <;> rcases trich l i with hi | hi | ⟨hi1, hi2⟩ <;> (try subst hq) <;> (try subst hi) <;> (try have hq1' := Ne.symm hq1) <;> (try have hq2' := Ne.symm hq2) <;> (try have hi1' := Ne.symm hi1) <;> (try have hi2' := Ne.symm hi2) <;>`. Simplify using `[w1, sw_e, swap_dual_isotropic, al_e, reflection_scalar_dual_isotropic, sw_o, al_o, eI_ne_esI, (eI_ne_esI l).symm, *]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma weyl_lift_eq_pair (l : Fin r) (c : ℂ) (i q : Fin (2 * r + k + 1)) :
     w1 k r l c i q = if i = sw l q then al l c q else 0 := by
@@ -110,9 +110,9 @@ lemma weyl_lift_eq_pair (l : Fin r) (c : ℂ) (i q : Fin (2 * r + k + 1)) :
     simp [w1, sw_e, swap_dual_isotropic, al_e, reflection_scalar_dual_isotropic, sw_o, al_o, eI_ne_esI, (eI_ne_esI l).symm, *]
 
 /- English proof (translation)
-Rewrite using `[weyl_lift_eq_pair]`. Distinguish the cases in `h : i = sw l p`. Substitute `h` using the available equality. Rewrite using `[sw_sw]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h' : p ≠ sw l i` using `fun h' => h (by rw [h', sw_sw])`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma reflection_row_formula (l : Fin r) (c : ℂ) (p i : Fin (2 * r + k + 1)) :
     w1 k r l c p i = if i = sw l p then al l c (sw l p) else 0 := by
@@ -125,7 +125,7 @@ lemma reflection_row_formula (l : Fin r) (c : ℂ) (p i : Fin (2 * r + k + 1)) :
     simp [h, h']
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_e_row (l : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (eI k r l) j = if j = esI k r l then 1 else 0 := by
@@ -135,7 +135,7 @@ lemma hpk_e_row (l : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_s_row (l : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (esI k r l) j = if j = eI k r l then 1 else 0 := by
@@ -145,7 +145,7 @@ lemma hpk_s_row (l : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Establish `hi` using `i.isLt`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_e_col (l : Fin r) (i : Fin (2 * r + k + 1)) :
     Hpk k r i (eI k r l) = if i = esI k r l then 1 else 0 := by
@@ -155,7 +155,7 @@ lemma hpk_e_col (l : Fin r) (i : Fin (2 * r + k + 1)) :
   split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Establish `hi` using `i.isLt`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_s_col (l : Fin r) (i : Fin (2 * r + k + 1)) :
     Hpk k r i (esI k r l) = if i = eI k r l then 1 else 0 := by
@@ -165,7 +165,7 @@ lemma hpk_s_col (l : Fin r) (i : Fin (2 * r + k + 1)) :
   split_ifs <;> (try simp only [Fin.ext_iff, eI_val_weyl_conjugation_fixed_column, esI_val'] at *) <;> first | rfl | omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma mulVec_bvec {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (j : Fin m) :
     M *ᵥ bvec j = fun i => M i j := by
@@ -173,7 +173,7 @@ lemma mulVec_bvec {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (j : Fin m) :
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [herm, bvec]`. Rewrite using `[← Pi.single_star, star_one, single_dotProduct, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma herm_bvec {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ) (j : Fin m) :
     herm H v (bvec j) = (H *ᵥ v) j := by
@@ -181,7 +181,7 @@ lemma herm_bvec {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ) (
   rw [← Pi.single_star, star_one, single_dotProduct, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[hw]`. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, hw, apply_ite (star : ℂ → ℂ), star_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma monomial_conj {m : ℕ} (w H : Matrix (Fin m) (Fin m) ℂ) (σ : Fin m → Fin m) (α : Fin m → ℂ)
     (hw : ∀ i q, w i q = if i = σ q then α q else 0) (p q : Fin m) :
@@ -194,7 +194,7 @@ lemma monomial_conj {m : ℕ} (w H : Matrix (Fin m) (Fin m) ℂ) (σ : Fin m →
     Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, hg, apply_ite (star : ℂ → ℂ), star_one, star_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma conj_fixed_col {m : ℕ} (g H : Matrix (Fin m) (Fin m) ℂ) (p : Fin m)
     (hg : ∀ i, g i p = if i = p then 1 else 0) (q : Fin m) :
@@ -207,7 +207,7 @@ lemma conj_fixed_col {m : ℕ} (g H : Matrix (Fin m) (Fin m) ℂ) (p : Fin m)
     zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
 
 /- English proof (translation)
-Simplify using `only [UH, Set.mem_setOf_eq]`. Use extensionality with `p q`. Rewrite using `[monomial_conj _ _ (sw l) (al l c) (weyl_lift_eq_pair l c)]`. Apply the tactic sequence `rcases trich l p with hp | hp | ⟨hp1, hp2⟩ <;> rcases trich l q with hq | hq | ⟨hq1, hq2⟩ <;> (try subst hp) <;> (try subst hq) <;>`. Simplify using `[sw_e, swap_dual_isotropic, al_e, reflection_scalar_dual_isotropic, sw_o, al_o, hpk_e_row, hpk_s_row, hpk_e_col, hpk_s_col, eI_ne_esI, (eI_ne_esI l).symm, hc, *]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma reflection_mem_unitary (l : Fin r) (c : ℂ) (hc : c ≠ 0) : w1 k r l c ∈ UH (Hpk k r) := by
   simp only [UH, Set.mem_setOf_eq]
@@ -219,7 +219,7 @@ lemma reflection_mem_unitary (l : Fin r) (c : ℂ) (hc : c ≠ 0) : w1 k r l c �
       (eI_ne_esI l).symm, hc, *]
 
 /- English proof (translation)
-Rewrite using `[mulVec_bvec]`. Use function extensionality and compare the values at `i`. Rewrite using `[weyl_lift_eq_pair, sw_o l h1 h2, al_o l c h1 h2]`. Simplify using `[bvec, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma reflection_fixes_basis_vector (l : Fin r) (c : ℂ) (j : Fin (2 * r + k + 1)) (h1 : j ≠ eI k r l) (h2 : j ≠ esI k r l) :
     w1 k r l c *ᵥ bvec j = bvec j := by
@@ -229,9 +229,9 @@ lemma reflection_fixes_basis_vector (l : Fin r) (c : ℂ) (j : Fin (2 * r + k + 
   simp [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [Glev, Set.mem_setOf_eq]`. Use `⟨reflection_mem_unitary l c hc, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hal : a.val < l.val` using `by simpa using ha`. Establish `h1` using `a.isLt`. Establish `h2` using `l.isLt`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨reflection_fixes_basis_vector l c _ ?_ ?_, reflection_fixes_basis_vector l c _ ?_ ?_⟩ <;> intro h <;> have h' := congrArg Fin.val h <;>`. Apply the tactic sequence `simp only [eI_val_weyl_conjugation_fixed_column, esI_val'] at h' <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma reflection_mem_Glev_castSucc (l : Fin r) (c : ℂ) (hc : c ≠ 0) : w1 k r l c ∈ Glev k r l.castSucc := by
   simp only [Glev, Set.mem_setOf_eq]
@@ -248,9 +248,9 @@ variable (l : Fin r) (g : Mx k r) (hg : g ∈ Glev k r l.succ)
 include hg
 
 /- English proof (translation)
-Establish `h` using `hg`. Simplify using `only [Glev, Set.mem_setOf_eq] at h`. Establish `e` using `(h.2 l (by simp)).1`. Rewrite `e` using `[mulVec_bvec]`. Establish `e'` using `congrFun e i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `e'` using `[bvec, Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma g_col_e (i : Fin (2 * r + k + 1)) : g i (eI k r l) = if i = eI k r l then 1 else 0 := by
   have h := hg
@@ -261,9 +261,9 @@ lemma g_col_e (i : Fin (2 * r + k + 1)) : g i (eI k r l) = if i = eI k r l then 
   simpa [bvec, Pi.single_apply] using e'
 
 /- English proof (translation)
-Establish `h` using `hg`. Simplify using `only [Glev, Set.mem_setOf_eq] at h`. Establish `e` using `(h.2 l (by simp)).2`. Rewrite `e` using `[mulVec_bvec]`. Establish `e'` using `congrFun e i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `e'` using `[bvec, Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma diagonal_column_dual_isotropic (i : Fin (2 * r + k + 1)) : g i (esI k r l) = if i = esI k r l then 1 else 0 := by
   have h := hg
@@ -274,9 +274,9 @@ lemma diagonal_column_dual_isotropic (i : Fin (2 * r + k + 1)) : g i (esI k r l)
   simpa [bvec, Pi.single_apply] using e'
 
 /- English proof (translation)
-Establish `h` using `hg`. Simplify using `only [Glev, UH, Set.mem_setOf_eq] at h`. Establish `e` using `conj_fixed_col g (Hpk k r) (eI k r l) (g_col_e l g hg) j`. Rewrite `e` using `[h.1]`. Simplify using `only [hpk_e_row, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 lemma diagonal_row_dual_isotropic (j : Fin (2 * r + k + 1)) : g (esI k r l) j = if j = esI k r l then 1 else 0 := by
   have h := hg
@@ -287,9 +287,9 @@ lemma diagonal_row_dual_isotropic (j : Fin (2 * r + k + 1)) : g (esI k r l) j = 
   exact e.symm
 
 /- English proof (translation)
-Establish `h` using `hg`. Simplify using `only [Glev, UH, Set.mem_setOf_eq] at h`. Establish `e` using `conj_fixed_col g (Hpk k r) (esI k r l) (diagonal_column_dual_isotropic l g hg) j`. Rewrite `e` using `[h.1]`. Simplify using `only [hpk_s_row, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 lemma g_row_e (j : Fin (2 * r + k + 1)) : g (eI k r l) j = if j = eI k r l then 1 else 0 := by
   have h := hg
@@ -300,7 +300,7 @@ lemma g_row_e (j : Fin (2 * r + k + 1)) : g (eI k r l) j = if j = eI k r l then 
   exact e.symm
 
 /- English proof (translation)
-Establish `h` using `hg`. Simplify using `only [Glev, Set.mem_setOf_eq] at h ⊢`. Use `⟨h.1, fun a ha => h.2 a ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.coe_castSucc, Fin.val_succ] at ha ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma g_mem_cast : g ∈ Glev k r l.castSucc := by
   have h := hg
@@ -310,9 +310,9 @@ lemma g_mem_cast : g ∈ Glev k r l.castSucc := by
   omega
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Repeatedly rewrite using `[reflection_row_formula l c p, (weyl_lift_eq_pair l c · q)]`. Simplify using `only [ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`. Establish `hr1` using `g_row_e l g hg`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr2` using `diagonal_row_dual_isotropic l g hg`. Establish `hc1` using `g_col_e l g hg`. Establish `hc2` using `diagonal_column_dual_isotropic l g hg`. Apply the tactic sequence `rcases trich l p with hp | hp | ⟨hp1, hp2⟩ <;> rcases trich l q with hq | hq | ⟨hq1, hq2⟩ <;> (try subst hp) <;> (try subst hq) <;>`. Simplify using `[sw_e, swap_dual_isotropic, al_e, reflection_scalar_dual_isotropic, sw_o, al_o, eI_ne_esI, (eI_ne_esI l).symm, *]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma w1_commute_of_mem_Glev (c : ℂ) : w1 k r l c * g = g * w1 k r l c := by
   ext p q
@@ -328,9 +328,9 @@ lemma w1_commute_of_mem_Glev (c : ℂ) : w1 k r l c * g = g * w1 k r l c := by
     simp [sw_e, swap_dual_isotropic, al_e, reflection_scalar_dual_isotropic, sw_o, al_o, eI_ne_esI, (eI_ne_esI l).symm, *]
 
 /- English proof (translation)
-Establish `h` using `hg`. Simplify using `only [Glev, Set.mem_setOf_eq] at h`. Establish `hge : g *ᵥ bvec (eI k r l) = bvec (eI k r l)` using `(h.2 l (by simp)).1`. Rewrite using `[herm_bvec, ← Matrix.mulVec_mulVec, hge, mulVec_bvec]`. Simplify using `only [Matrix.mulVec, dotProduct, hpk_e_row, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[weyl_lift_eq_pair, sw_e, al_e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma reflection_hermitian_value (c : ℂ) :
     herm (Hpk k r) ((w1 k r l c * g) *ᵥ bvec (eI k r l)) (bvec (eI k r l)) = c := by
@@ -346,7 +346,7 @@ lemma reflection_hermitian_value (c : ℂ) :
 end G
 
 /- English proof (translation)
-Introduce `k r l c hc`. Conclude with `⟨reflection_mem_Glev_castSucc l c hc, fun g hg => ⟨g_mem_cast l g hg, w1_commute_of_mem_Glev l g hg c, reflection_hermitian_value l g hg c⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isotropic_reflection_properties : Formalism.FourierDecayAlt.Q.WeylLevelElementFacts := by
   intro k r l c hc

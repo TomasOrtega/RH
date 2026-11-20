@@ -16,18 +16,18 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
 def toT (g : GtPtF D F) : GtPt D (TF (R := R) F) := ⟨g.b, g.s, g.isGen, g.s_zero, g.mult⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isZero_toT (g : GtPtF D F) : (toT g).IsZero ↔ g.IsZero := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isPullF_iff_isPull (x : Spec (CommRingCat.of F) ⟶ T.left) (g : GtPt D T) (g' : GtPtF D F) :
     GtPt.IsPullF F x g g' ↔ GtPt.IsPull (T' := TF (R := R) F) x g (toT g') := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← Over.w g.b, ← Category.assoc, ← H.1]`. Conclude with `Over.w g'.b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_of_isPullF {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {g' : GtPtF D F}
     (H : GtPt.IsPullF F x g g') : x ≫ T.hom = jFK (R := R) F ≫ jK R := by
@@ -35,7 +35,7 @@ theorem over_of_isPullF {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} 
   exact Over.w g'.b
 
 /- English proof (translation)
-Establish `e` using `(GlobalTheory.TorusCoord.comp_eq_of_left g.b g'.b x (𝟙 _) (H.1.symm.trans (Category.id_comp _).symm)).1 χ k`. Conclude with `((e.trans (Category.id_comp _)).trans (congrFun (GlobalTheory.TorusCoord.gtφT_eq g'.b χ) k).symm).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maps_eq {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {g' : GtPtF D F}
     (H : GtPt.IsPullF F x g g') (χ : D.X) (k : Fin 4) :
@@ -44,7 +44,7 @@ theorem maps_eq {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {g' : Gt
   exact ((e.trans (Category.id_comp _)).trans (congrFun (GlobalTheory.TorusCoord.gtφT_eq g'.b χ) k).symm).symm
 
 /- English proof (translation)
-The claim follows from `and_congr ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (·.left) h⟩ (forall_congr' fun _ => ⟨fun h _ _ hJ => (val_corr hJ h _).trans ((val_pull hJ _ _ _).trans (by rw [Category.id_comp])), fun h => corr_of_val D.P.isLB fun y J hJ => (h y J hJ).trans ((val_pull hJ _ _ _).tr …`.
+A detailed English derivation is pending.
 -/
 theorem isPullF_iff (σ : TF (R := R) F ⟶ T) (g : GtPt D T) (g' : GtPtF D F) :
     GtPt.IsPullF F σ.left g g' ↔ g'.b = σ ≫ g.b ∧
@@ -55,7 +55,7 @@ theorem isPullF_iff (σ : TF (R := R) F ⟶ T) (g : GtPt D T) (g' : GtPtF D F) :
       ((val_pull hJ _ _ _).trans (by rw [Category.id_comp])).symm⟩)
 
 /- English proof (translation)
-Take `⟨b, s, h, _, _⟩` from `g`. Take `⟨b', s', h', _, _⟩` from `g'`. Take `rfl : b = b'` from `hb`. Take `rfl : s = s'` from `funext fun χ => GlobalTheory.TorusCoord.gen_eq_of_corr D.P.isLB (h χ) (h' χ) (corr_of_val D.P.isLB (hs χ))`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ext_valF {g g' : GtPtF D F} (hb : g.b = g'.b)
     (hs : ∀ χ y J, Good D.P.L y J → val (g.s χ) (𝟙 _) y J = val (g'.s χ) (𝟙 _) y J) : g = g' := by
@@ -67,7 +67,7 @@ theorem ext_valF {g g' : GtPtF D F} (hb : g.b = g'.b)
   rfl
 
 /- English proof (translation)
-The claim follows from `ext_valF (Over.OverMorphism.ext (H.1.trans H'.1.symm)) fun χ _ _ hJ => (val_corr hJ (H.2 χ) (𝟙 _)).trans (val_corr hJ (H'.2 χ) (𝟙 _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPullF_unique {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {a a' : GtPtF D F}
     (H : GtPt.IsPullF F x g a) (H' : GtPt.IsPullF F x g a') : a = a' :=
@@ -75,9 +75,9 @@ theorem isPullF_unique {x : Spec (CommRingCat.of F) ⟶ T.left} {g : GtPt D T} {
     (val_corr hJ (H.2 χ) (𝟙 _)).trans (val_corr hJ (H'.2 χ) (𝟙 _)).symm
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.TorusCoord.comp_eq_of_left ξ.b (σ ≫ ξ.b) σ.left (𝟙 _) (Category.id_comp _).symm`. Establish `vp : ∀ χ y J, Good D.P.L y J → val (LB.pullGen D.P.L _ _ (ξ.s χ) σ.left) (𝟙 _) y J = val (ξ.s χ) σ.left y J` using `fun χ y J hJ => by`. Rewrite using `[val_pull hJ, Category.id_comp]`. Take `⟨g, hb, hv⟩` from `exists_gt (σ ≫ ξ.b) (fun χ => LB.pullGen D.P.L _ _ (ξ.s χ) σ.left) (fun χ => DVR.pullGen_isGen _ _ _ _ (ξ.isGen χ) _) (fun χ U _ f => Finset.prod_congr rfl fun k _ => congrArg (fun q => f q ^ DegPre.gtε k) ((e.1 χ k).trans ((Category.id_comp _).trans (congrFun (GlobalTheory.Torus …`. Rewrite using `[vp _ y J hJ, vp _ y J hJ, vp _ y J hJ, ← GlobalTheory.TorusCoord.val_s_mul ξ σ.left χ χ' y J hJ, e.2 χ χ', ← val_cubAt hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (_ * ·) (val_pull hJ _ _ _))`. Conclude with `⟨g, (isPullF_iff σ ξ g).2 ⟨hb, fun χ y J hJ => (hv χ y J hJ).trans (vp χ y J hJ)⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isPullF (σ : TF (R := R) F ⟶ T) (ξ : GtPt D T) : ∃ g, GtPt.IsPullF F σ.left ξ g := by
   have e := GlobalTheory.TorusCoord.comp_eq_of_left ξ.b (σ ≫ ξ.b) σ.left (𝟙 _) (Category.id_comp _).symm
@@ -96,7 +96,7 @@ theorem exists_isPullF (σ : TF (R := R) F ⟶ T) (ξ : GtPt D T) : ∃ g, GtPt.
   exact ⟨g, (isPullF_iff σ ξ g).2 ⟨hb, fun χ y J hJ => (hv χ y J hJ).trans (vp χ y J hJ)⟩⟩
 
 /- English proof (translation)
-Introduce `U _ h` and use `by rw [Fin.prod_univ_four] show h (cP D T χ * 1).left ^ (-1 : ℤ) * h (cP D T χ).left ^ (1 : ℤ) * h (1 : T ⟶ D.P.A).left ^ (1 : ℤ) * h (1 : T ⟶ D.P.A).left ^ (-1 : ℤ) = _ rw [_root_.mul_one]; simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formEq_zero (χ : D.X) : FormEq (K' := PEmpty) (DegPre.gtφT D T (DegPre.zeroT D T) χ) DegPre.gtε
     PEmpty.elim PEmpty.elim := fun U _ h => by
@@ -106,7 +106,7 @@ theorem formEq_zero (χ : D.X) : FormEq (K' := PEmpty) (DegPre.gtφT D T (DegPre
   rw [_root_.mul_one]; simp
 
 /- English proof (translation)
-Take `⟨hb, hv⟩` from `(isPullF_iff σ g g').1 H`. Use `(isZero_iff g').2 ⟨?_, fun χ y J hJ => (hv χ y J hJ).trans ((val_corr hJ (h.2 χ) _).trans (val_one _))⟩` and prove the remaining obligations. Rewrite using `[hb, h.1]`. Conclude with `MonObj.comp_one σ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_restrict {σ : TF (R := R) F ⟶ T} {g : GtPt D T} {g' : GtPtF D F} (H : GtPt.IsPullF F σ.left g g')
     (h : g.IsZero) : g'.IsZero := by
@@ -115,11 +115,9 @@ theorem isZero_restrict {σ : TF (R := R) F ⟶ T} {g : GtPt D T} {g' : GtPtF D 
   rw [hb, h.1]; exact MonObj.comp_one σ
 
 /- English proof (translation)
-Take `⟨ab, av⟩` from `(isPullF_iff σ _ _).1 Ha`. Take `⟨bb, bv⟩` from `(isPullF_iff σ _ _).1 Hb`. Take `⟨cb, cv⟩` from `(isPullF_iff σ _ _).1 Hc`. Use `(isAdd_iff _ _ _).2 ⟨?_, fun χ y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[cb, ab, bb, h.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MonObj.comp_mul _ _ _`. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_cub D.cub σ hJ _ _ _))).symm.trans ((val_corr hJ (h.2 χ) σ.left).trans (val_mul hJ _ _ _))`. Establish `c : σ ≫ DegPre.cT D T χ = cP D _ χ` using `by rw [cP, comp_toUnit_assoc]`. Rewrite `e` using `[c, ← ab, ← bb]`. Rewrite using `[av χ y J hJ, bv χ y J hJ, cv χ y J hJ]`.
-
-Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdd_restrict {σ : TF (R := R) F ⟶ T} {a b c : GtPt D T} {a' b' c' : GtPtF D F}
     (Ha : GtPt.IsPullF F σ.left a a') (Hb : GtPt.IsPullF F σ.left b b') (Hc : GtPt.IsPullF F σ.left c c')
@@ -137,7 +135,7 @@ theorem isAdd_restrict {σ : TF (R := R) F ⟶ T} {a b c : GtPt D T} {a' b' c' :
     exact e
 
 /- English proof (translation)
-Take `⟨u, u0, us, rfl⟩` from `h`. Use `choose v hv using fun i => exists_isPullF σ (u i)`. Conclude with `⟨v, isZero_restrict (hv _) u0, fun i => isAdd_restrict (hv _) Ha (hv _) (us i), isPullF_unique (hv _) Hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNsmul_restrict {σ : TF (R := R) F ⟶ T} {k : ℕ} {a c : GtPt D T} {a' c' : GtPtF D F}
     (Ha : GtPt.IsPullF F σ.left a a') (Hc : GtPt.IsPullF F σ.left c c') (h : GtPt.IsNsmul k a c) :
@@ -149,15 +147,13 @@ theorem isNsmul_restrict {σ : TF (R := R) F ⟶ T} {k : ℕ} {a c : GtPt D T} {
 variable {W : (Spec (CommRingCat.of R)).Opens} {ψW : PsiOn D W} {S : Over W.toScheme}
 
 /- English proof (translation)
-Take `⟨ab, av⟩` from `(isPullF_iff σ _ _).1 Ha`. Establish `hw : (σ.left ≫ S.hom) ≫ W.ι = jFK (R` using `R) F ≫ jK R := by`. Rewrite using `[Category.assoc]`. Conclude with `Over.w σ`. Set `r` to `(isPullback_morphismRestrict (jK R) W).lift (σ.left ≫ S.hom) (jFK (R := R) F) hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `r1 : r ≫ (jK R ∣_ W) = σ.left ≫ S.hom` using `IsPullback.lift_fst _ _ _ _`. Establish `r2 : r ≫ (jK R ⁻¹ᵁ W).ι = jFK (R` using `R) F := IsPullback.lift_snd _ _ _ _`. Use `(isIota_iff _ _).2 ⟨?_, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[ab, h.1, cP, comp_toUnit_assoc]`. Establish `p : ∀ α, val (ψW.psi α) (σ.left ≫ S.hom) z J = val (D.psi α) (jFK (R` using `R) F) z J := fun α => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (ψW.psi_eq α) r).trans (val_pull hJ _ _ _))` as an intermediate fact. Rewrite `this` using `[r1, r2]`. Then use the resulting hypothesis. Establish `q : val (D.rigW W) (σ.left ≫ S.hom) z J = val D.rigK (jFK (R` using `R) F) z J := (val_pull hJ _ _ _).trans ((congrArg (fun m => val D.rig m z J) hw).trans (val_pull hJ _ _ _).symm)`. Use `(av χ z J hJ).trans ((val_corr hJ (h.2 χ) _).trans ((val_pull hJ _ _ _).trans ?_))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ((val_inv _ _).trans ((congrArg (·⁻¹) q).trans (val_inv _ _).symm))` and prove the remaining obligations. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ((val_inv _ _).trans ((congrArg (·⁻¹) (p _)).trans (val_inv _ _).symm))` and prove the remaining obligations. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations.
-
-Conclude with `congrArg₂ (· * ·) (p _) ((val_inv _ _).trans ((congrArg (·⁻¹) (p _)).trans (val_inv _ _).symm))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIota_restrict {σ : TF (R := R) F ⟶ overW W S} {y : D.X} {a : GtPt D (overW W S)} {a' : GtPtF D F}
     (Ha : GtPt.IsPullF F σ.left a a') (h : GtPt.IsIotaW ψW y a) : GtPtF.IsIota y a' := by
@@ -184,9 +180,9 @@ theorem isIota_restrict {σ : TF (R := R) F ⟶ overW W S} {y : D.X} {a : GtPt D
     exact congrArg₂ (· * ·) (p _) ((val_inv _ _).trans ((congrArg (·⁻¹) (p _)).trans (val_inv _ _).symm))
 
 /- English proof (translation)
-Use `⟨fun ⟨_, h, _⟩ => over_of_isPullF h.2, fun hx => ?_⟩` and prove the remaining obligations. Set `σ : TF (R` to `R) F ⟶ overW W S := Over.homMk x hx`. Take `⟨g, hg⟩` from `exists_isPullF σ p.g`. Take `⟨h, h1, h2⟩` from `p.eq`. Take `⟨h', hh⟩` from `exists_isPullF σ h`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨p.y, g, h', isNsmul_restrict hg hh h1, isIota_restrict hh h2⟩, ⟨rfl, hg⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, g', _⟩ ⟨rfl, e⟩`. Take `rfl : g' = g` from `isPullF_unique e hg`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem existsUnique_pair_iff {k : ℕ} (x : Spec (CommRingCat.of F) ⟶ S.left) (p : QkPtW D W ψW k S) :
     (∃! q : QkPt D F k, QkPtW.IsPullF F x p q) ↔ x ≫ S.hom ≫ W.ι = jFK (R := R) F ≫ jK R := by

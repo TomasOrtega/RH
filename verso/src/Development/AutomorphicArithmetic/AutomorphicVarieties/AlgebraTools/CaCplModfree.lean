@@ -10,13 +10,13 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Flatnes
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Rewrite using `[Module.Flat.iff_lTensor_preserves_injective_linearMap]`. Introduce `N N' _ _ _ _ f hf`. Establish `h1 : Function.Injective (TensorProduct.AlgebraTensorModule.lTensor R M f)` using `Module.Flat.lTensor_preserves_injective_linearMap f hf`. Establish `h2 : Function.Injective (LinearMap.lTensor B (TensorProduct.AlgebraTensorModule.lTensor R M f))` using `Module.Flat.lTensor_preserves_injective_linearMap _ h1`. Establish `h3 : ∀ x, TensorProduct.AlgebraTensorModule.assoc Λ R R B M N' (LinearMap.lTensor (TensorProduct R B M) f x) = LinearMap.lTensor B (TensorProduct.AlgebraTensorModule.lTensor R M f) (TensorProduct.AlgebraTensorModule.assoc Λ R R B M N x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul y n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [TensorProduct.add_tmul, map_add, hx, hy]`. Consider the case `tmul b m => simp`. Introduce `x y hxy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(TensorProduct.AlgebraTensorModule.assoc Λ R R B M N).injective` to reduce the goal to its premises. Apply `h2` to reduce the goal to its premises. Rewrite using `[← h3, ← h3, hxy]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mult_operator_shifts_twist {Λ R B M : Type} [CommRing Λ] [CommRing R] [Algebra Λ R]
     [AddCommGroup B] [Module R B] [Module Λ B] [IsScalarTower Λ R B]
@@ -48,7 +48,7 @@ private theorem mult_operator_shifts_twist {Λ R B M : Type} [CommRing Λ] [Comm
   rw [← h3, ← h3, hxy]
 
 /- English proof (translation)
-Use `letI : Module (B ⧸ J) N := hJ.module`. Use `haveI : IsScalarTower B (B ⧸ J) N := hJ.isScalarTower`. Use `haveI : IsScalarTower L (B ⧸ J) N := hJ.isScalarTower`. Use `haveI : Module.Finite (B ⧸ J) N := Module.Finite.of_restrictScalars_finite B _ _`. Conclude with `Module.Finite.trans (B ⧸ J) N`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem fin_of_killed {L B N : Type} [CommRing L] [CommRing B] [Algebra L B]
     [AddCommGroup N] [Module B N] [Module L N] [IsScalarTower L B N] [Module.Finite B N]
@@ -61,7 +61,7 @@ private theorem fin_of_killed {L B N : Type} [CommRing L] [CommRing B] [Algebra 
   exact Module.Finite.trans (B ⧸ J) N
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi2b.fin_quot_ann`.
+A detailed English derivation is pending.
 -/
 private theorem fin_quot_ann {Λ R M : Type} [CommRing Λ] [IsNoetherianRing Λ] [CommRing R]
     [Algebra Λ R] [AddCommGroup M] [Module R M] [Module Λ M] [IsScalarTower Λ R M]
@@ -69,7 +69,7 @@ private theorem fin_quot_ann {Λ R M : Type} [CommRing Λ] [IsNoetherianRing Λ]
   _root_.UpperTheory.Reformulated.B.Qi2b.fin_quot_ann
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.FlatnessPrecompleteProducts.finite_free_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.finite_free_baseChange :
     ∀ (Λ R : Type) [CommRing Λ] [IsNoetherianRing Λ] [CommRing R] [IsNoetherianRing R] [Algebra Λ R]

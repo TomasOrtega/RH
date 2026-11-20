@@ -6,9 +6,7 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 
 namespace UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hlt : ∀ u : ZMod p, M * u.val < p * M` using `fun u => by`. Rewrite using `[mul_comm p M]`. Conclude with `(Nat.mul_lt_mul_left hM).2 (ZMod.val_lt u)`. Rewrite `h` using `[ZMod.natCast_eq_natCast_iff', Nat.mod_eq_of_lt (hlt s), Nat.mod_eq_of_lt (hlt t)]`.
-
-Conclude with `ZMod.val_injective p (Nat.eq_of_mul_eq_mul_left hM h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tp_inj (p M : ℕ) [NeZero p] [NeZero M] (s t : ZMod p)
     (h : ((M * s.val : ℕ) : ZMod (p * M)) = ((M * t.val : ℕ) : ZMod (p * M))) : s = t := by
@@ -20,9 +18,9 @@ private theorem tp_inj (p M : ℕ) [NeZero p] [NeZero M] (s t : ZMod p)
   exact ZMod.val_injective p (Nat.eq_of_mul_eq_mul_left hM h)
 
 /- English proof (translation)
-Establish `hw : M ∣ w.val`. Rewrite `h` using `[ZMod.castHom_apply, ZMod.cast_eq_val, CharP.cast_eq_zero_iff (ZMod M) M]`. Conclude with `h`. Take `⟨k, hk⟩` from `hw`. Establish `hkp : k < p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `ZMod.val_lt w`. Rewrite `hv` using `[hk, mul_comm p M]`. Conclude with `Nat.lt_of_mul_lt_mul_left hv`. Use `⟨(k : ZMod p), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt hkp, ← hk, ZMod.natCast_zmod_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tp_surj (p M : ℕ) [NeZero p] [NeZero M] (w : ZMod (p * M))
     (h : ZMod.castHom (dvd_mul_left M p) (ZMod M) w = 0) : ∃ t : ZMod p, w = ((M * t.val : ℕ) : ZMod (p * M)) := by
@@ -38,7 +36,7 @@ private theorem tp_surj (p M : ℕ) [NeZero p] [NeZero M] (w : ZMod (p * M))
   rw [ZMod.val_natCast, Nat.mod_eq_of_lt hkp, ← hk, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Unfold `up`. Rewrite using `[map_natCast]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dn_up (p M : ℕ) [NeZero p] [NeZero M] (x : Row M) (i : Fin 2) :
     ZMod.castHom (dvd_mul_left M p) (ZMod M) (up p M x i) = ((p : ZMod M) • x) i := by
@@ -47,17 +45,17 @@ private theorem dn_up (p M : ℕ) [NeZero p] [NeZero M] (x : Row M) (i : Fin 2) 
   simp
 
 /- English proof (translation)
-Establish `htp : ∀ (t : Fin 2 → ZMod p) (i : Fin 2), ZMod.castHom (dvd_mul_left M p) (ZMod M) (tp p M t i) = 0`. Introduce `t i`. Use `show ZMod.castHom (dvd_mul_left M p) (ZMod M) ((M * (t i).val : ℕ) : ZMod (p * M)) = 0`. Rewrite using `[map_natCast, Nat.cast_mul, ZMod.natCast_self, zero_mul]`. Use `symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_bij (fun t _ => up p M x + tp p M t) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t _`. Rewrite using `[hS]`. Use function extensionality and compare the values at `i`. Use `show ZMod.castHom (dvd_mul_left M p) (ZMod M) (up p M x i + tp p M t i) = ((p : ZMod M) • x) i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add, dn_up, htp, add_zero]`. Introduce `t _ t' _ h`. Use function extensionality and compare the values at `i`. Establish `hi` using `add_left_cancel (congrFun h i)`. Conclude with `tp_inj p M (t i) (t' i) hi`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Rewrite `hz` using `[hS]`. Establish `hex : ∀ i, ∃ s : ZMod p, z i - up p M x i = ((M * s.val : ℕ) : ZMod (p * M))`. Introduce `i`. Apply `tp_surj p M` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzi : ZMod.castHom (dvd_mul_left M p) (ZMod M) (z i) = ((p : ZMod M) • x) i` using `congrFun hz i`. Rewrite using `[map_sub, dn_up, hzi, sub_self]`. Use `choose t ht using hex`. Use `⟨t, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Use `show up p M x i + ((M * (t i).val : ℕ) : ZMod (p * M)) = z i`. Rewrite using `[← ht i]`. Normalize the expressions using the abelian group laws. Introduce `t _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem prod_fib {G : Type} [CommMonoid G] (p M : ℕ) [NeZero p] [NeZero M] [NeZero (p * M)] (x : Row M)
     (S : Finset (Row (p * M))) (hS : ∀ z, z ∈ S ↔ dn p M z = (p : ZMod M) • x) (f : Row (p * M) → G) :
@@ -95,7 +93,7 @@ private theorem prod_fib {G : Type} [CommMonoid G] (p M : ℕ) [NeZero p] [NeZer
     rfl
 
 /- English proof (translation)
-Introduce `h`. Consider the cases of `o with`. Consider the case `none => simpa [lin] using congrFun h 1`. Consider the case `some j => simpa [lin] using congrFun h 0`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem lin_ne (p N : ℕ) [Fact p.Prime] (o : Option (Fin p)) : lin p N o ≠ 0 := by
   intro h
@@ -104,17 +102,17 @@ private theorem lin_ne (p N : ℕ) [Fact p.Prime] (o : Option (Fin p)) : lin p N
   | some j => simpa [lin] using congrFun h 0
 
 /- English proof (translation)
-Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Consider the cases of `o with`. Consider the case `none`. Consider the cases of `o' with`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => rfl`. Consider the case `some j'`. It suffices to derive a contradiction. Simplify using `[lin] at h0 h1`. Apply `hi` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[← h0]`. Simplify using `using h1`. Consider the case `some j`. Consider the cases of `o' with`. Consider the case `none`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-It suffices to derive a contradiction. Simplify using `[lin] at h0`. Conclude with `hi h0`. Consider the case `some j'`. Simplify using `[lin] at h0 h1`.
+It suffices to derive a contradiction. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Establish `h2 : ((N * (j : ℕ) : ℕ) : ZMod p) = ((N * (j' : ℕ) : ℕ) : ZMod p)`. Move the coercions through the operations in `at h1 ⊢`. Conclude with `mul_left_cancel₀ hi h1`. Move the coercions through the operations in `at h2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ((j : ℕ) : ZMod p) = ((j' : ℕ) : ZMod p)` using `mul_left_cancel₀ hN h2`. Rewrite `h3` using `[ZMod.natCast_eq_natCast_iff', Nat.mod_eq_of_lt j.isLt, Nat.mod_eq_of_lt j'.isLt]`. Rewrite using `[Fin.ext h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lin_eq (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0) (o o' : Option (Fin p)) (i i' : ZMod p) (hi : i ≠ 0)
     (h : i • lin p N o = i' • lin p N o') : o = o' := by
@@ -148,11 +146,11 @@ private theorem lin_eq (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0) (o o
       rw [Fin.ext h3]
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `none`. Use `⟨w 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[lin]`. Simplify using `[lin]`. Consider the case `some j`. Use `⟨w 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Simplify using `[lin]`. Simplify using `[lin] at h ⊢`. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem lin_dep (p N : ℕ) [Fact p.Prime] (o : Option (Fin p)) (w : Fin 2 → ZMod p)
     (h : lin p N o 0 * w 1 - lin p N o 1 * w 0 = 0) : ∃ j : ZMod p, w = j • lin p N o := by
@@ -172,7 +170,7 @@ private theorem lin_dep (p N : ℕ) [Fact p.Prime] (o : Option (Fin p)) (w : Fin
       linear_combination h
 
 /- English proof (translation)
-Distinguish the cases in `h0 : w 0 = 0`. Conclude with `⟨none, lin_dep p N none w (by simp [lin, h0])⟩`. Use `⟨some ⟨(w 1 / w 0 / N).val, ZMod.val_lt _⟩, lin_dep p N _ w ?_⟩` and prove the remaining obligations. Simplify using `only [lin]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Nat.cast_mul, ZMod.natCast_val, ZMod.cast_id', id]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -187,35 +185,35 @@ private theorem lin_surj (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0) (w
     ring
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_product' (s := Finset.univ) (t := (Finset.univ : Finset (ZMod p × ZMod p)).erase 0) (fun o ij => F (ij.1 • lin p N o) (ij.2 • lin p N o))]`. Use `Finset.prod_bij (fun oij _ => (oij.2.1 • lin p N oij.1, oij.2.2 • lin p N oij.1)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨o, i, j⟩ h`. Establish `hne : ((i, j) : ZMod p × ZMod p) ≠ 0` using `Finset.ne_of_mem_erase (Finset.mem_product.1 h).2`. Rewrite using `[Finset.mem_erase, Finset.mem_filter]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `h1` using `congrArg Prod.fst h0`. Establish `h2` using `congrArg Prod.snd h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Prod.fst_zero, Prod.snd_zero, smul_eq_zero] at h1 h2`. Establish `hl` using `lin_ne p N o`. Rewrite using `[show i = 0 from h1.resolve_right hl, show j = 0 from h2.resolve_right hl]`. Both sides reduce to the same expression. Rewrite using `[not_not]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨o, i, j⟩ h ⟨o', i', j'⟩ h' heq`. Establish `hne : ((i, j) : ZMod p × ZMod p) ≠ 0` using `Finset.ne_of_mem_erase (Finset.mem_product.1 h).2`. Establish `hi` using `congrArg Prod.fst heq`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `congrArg Prod.snd heq`. Simplify using `only at hi hj`. Establish `ho : o = o'`. Distinguish the cases in `hi0 : i = 0`. Establish `hj0 : j ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `hj0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hi0, hj0]`. Both sides reduce to the same expression. Conclude with `lin_eq p N hN o o' j j' hj0 hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality.
 
-Conclude with `lin_eq p N hN o o' i i' hi0 hi`. Substitute `ho` using the available equality. Establish `hl` using `lin_ne p N o`. Establish `e1 : i = i'` using `smul_left_injective (ZMod p) hl hi`. Establish `e2 : j = j'` using `smul_left_injective (ZMod p) hl hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e1, e2]`. Introduce and unpack `⟨t, t'⟩ hmem`. Rewrite `hmem` using `[Finset.mem_erase, Finset.mem_filter, not_not]`. Take `⟨hne, -, hdet⟩` from `hmem`. Simplify using `only at hdet`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ht : t = 0`. Take `⟨o, j, hj⟩` from `lin_surj p N hN t'`. Establish `hj0 : j ≠ 0`. Introduce `hj0`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ht, hj, hj0, zero_smul]`. Both sides reduce to the same expression. Use `⟨⟨o, 0, j⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_product, Finset.mem_erase]`. Use `⟨Finset.mem_univ _, ?_, Finset.mem_univ _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Conclude with `hj0 (congrArg Prod.snd h0)`. Simplify using `only [zero_smul]`. Rewrite using `[ht, hj]`. Take `⟨o, i, hi⟩` from `lin_surj p N hN t`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hi0 : i ≠ 0`. Introduce `hi0`. Apply `ht` to reduce the goal to its premises. Rewrite using `[hi, hi0, zero_smul]`. Establish `hd : lin p N o 0 * t' 1 - lin p N o 1 * t' 0 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd' : i * (lin p N o 0 * t' 1 - lin p N o 1 * t' 0) = 0`. Rewrite `hdet` using `[hi]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at hdet`. Take the linear combination `hdet`. Conclude with `(mul_eq_zero.1 hd').resolve_left hi0`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj⟩` from `lin_dep p N o t' hd`. Use `⟨⟨o, i, j⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_product, Finset.mem_erase]`. Use `⟨Finset.mem_univ _, ?_, Finset.mem_univ _⟩` and prove the remaining obligations. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Conclude with `hi0 (congrArg Prod.fst h0)`. Simplify using `only`. Rewrite using `[hi, hj]`. Introduce `_ _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem prod_dep {G : Type} [CommMonoid G] (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0)
     (F : (Fin 2 → ZMod p) → (Fin 2 → ZMod p) → G) :
@@ -300,13 +298,13 @@ private theorem prod_dep {G : Type} [CommMonoid G] (p N : ℕ) [Fact p.Prime] (h
     rfl
 
 /- English proof (translation)
-Establish `hinner : ∀ o : Option (Fin p), ∏ i : ZMod p, ∏ j : ZMod p, F (i • lin p N o) (j • lin p N o) = (∏ ij ∈ (Finset.univ : Finset (ZMod p × ZMod p)).erase 0, F (ij.1 • lin p N o) (ij.2 • lin p N o)) * F 0 0`. Introduce `o`. Rewrite using `[← Fintype.prod_prod_type' (fun i j => F (i • lin p N o) (j • lin p N o))]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun ij : ZMod p × ZMod p => F (ij.1 • lin p N o) (ij.2 • lin p N o)) (Finset.mem_univ 0)]`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Establish `hmem : (0 : (Fin 2 → ZMod p) × (Fin 2 → ZMod p)) ∈ Finset.univ.filter (fun tt : (Fin 2 → ZMod p) × (Fin 2 → ZMod p) => ¬ (tt.1 0 * tt.2 1 - tt.1 1 * tt.2 0 ≠ 0))`. Simplify using the standard rewrite rules. Establish `hfull : ∏ t, ∏ t', F t t' = (∏ tt ∈ Finset.univ.filter (fun tt : (Fin 2 → ZMod p) × (Fin 2 → ZMod p) => tt.1 0 * tt.2 1 - tt.1 1 * tt.2 0 ≠ 0), F tt.1 tt.2) * (F 0 0 * ∏ tt ∈ (Finset.univ.filter (fun tt : (Fin 2 → ZMod p) × (Fin 2 → ZMod p) => ¬ (tt.1 0 * tt.2 1 - tt.1 1 * tt.2 0 …`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.prod_prod_type' F]`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun tt : (Fin 2 → ZMod p) × (Fin 2 → ZMod p) => tt.1 0 * tt.2 1 - tt.1 1 * tt.2 0 ≠ 0)]`. Use `congr 1`. Conclude with `(Finset.mul_prod_erase _ (fun tt : (Fin 2 → ZMod p) × (Fin 2 → ZMod p) => F tt.1 tt.2) hmem).symm`. Rewrite using `[Finset.prod_congr rfl (fun o _ => hinner o), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_option, Fintype.card_fin, prod_dep p N hN F, hfull, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, mul_comm, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem prod_pairs {G : Type} [CommMonoid G] (p N : ℕ) [Fact p.Prime] (hN : (N : ZMod p) ≠ 0)
     (F : (Fin 2 → ZMod p) → (Fin 2 → ZMod p) → G) :
@@ -343,13 +341,11 @@ private theorem prod_pairs {G : Type} [CommMonoid G] (p N : ℕ) [Fact p.Prime] 
 end UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X p N M₀ _ _ hcop a x y`. Establish `hN : (N : ZMod p) ≠ 0`. Introduce `h`. Rewrite `h` using `[CharP.cast_eq_zero_iff (ZMod p) p]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).1 (Nat.Coprime.coprime_dvd_right (dvd_mul_right N M₀) hcop) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `htp0 : tp p M₀ 0 = 0`. Use function extensionality and compare the values at `i`. Simplify using `[tp]`. Establish `key` using `prod_pairs p N hN (fun t t' => a (up p M₀ x + tp p M₀ t) (up p M₀ y + tp p M₀ t'))`. Unfold `pushB pushL pushD`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, htp0, add_zero, add_zero]`. Use `congr 1`. Rewrite using `[prod_fib p M₀ x (Finset.univ.filter fun x' => dn p M₀ x' = (p : ZMod M₀) • x) (by simp) (fun x' => ∏ y' ∈ Finset.univ.filter (fun y' => dn p M₀ y' = (p : ZMod M₀) • y), a x' y')]`. Use `Finset.prod_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Establish `hy` using `prod_fib p M₀ y (Finset.univ.filter fun y' => dn p M₀ y' = (p : ZMod M₀) • y) (fun z => by simp) (a (up p M₀ x + tp p M₀ t))`.
-
-Conclude with `hy.symm`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sPairs :
     UpperTheory.V.Z.Kato.Nb.SPairs := by

@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights
 open Module
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, Ring.ord_mul' O (mem_nonZeroDivisors_of_ne_zero (ha j)), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem LengthQuotientDet.ord_prod {O : Type} [CommRing O] [IsDomain O] {ι : Type*} (s : Finset ι)
     (a : ι → O) (ha : ∀ i, a i ≠ 0) : Ring.ord O (∏ i ∈ s, a i) = ∑ i ∈ s, Ring.ord O (a i) := by
@@ -19,17 +19,15 @@ theorem LengthQuotientDet.ord_prod {O : Type} [CommRing O] [IsDomain O] {ι : Ty
       Ring.ord_mul' O (mem_nonZeroDivisors_of_ne_zero (ha j)), ih]
 
 /- English proof (translation)
-Introduce `O _ _ _ M _ _ _ _ φ hdet`. Establish `hinj : Function.Injective φ` using `LinearMap.ker_eq_bot.mp (not_not.mp (mt LinearMap.det_eq_zero_iff_ker_ne_bot.mpr hdet))`. Use `set ι := Module.Free.ChooseBasisIndex O M`. Set `b` to `Module.Free.chooseBasis O M`. Establish `hrank : finrank O (LinearMap.range φ) = finrank O M` using `LinearMap.finrank_range_of_inj hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set a := Submodule.smithNormalFormCoeffs b hrank`. Set `b'` to `Submodule.smithNormalFormTopBasis b hrank`. Set `ab` to `Submodule.smithNormalFormBotBasis b hrank`. Establish `ha : ∀ i, a i ≠ 0` using `Submodule.smithNormalFormCoeffs_ne_zero b hrank`. Establish `hlen : Module.length O (M ⧸ LinearMap.range φ) = ∑ i, Ring.ord O (a i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[(Submodule.quotientEquivPiSpan (LinearMap.range φ) b hrank).length_eq, Module.length_pi_of_fintype]`. Both sides reduce to the same expression. Set `v : Basis ι O M` to `ab.map (LinearEquiv.ofInjective φ hinj).symm`. Establish `hv : ∀ i, φ (v i) = a i • b' i`. Introduce `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : φ (v i) = ((LinearEquiv.ofInjective φ hinj) (v i) : M)` using `(LinearEquiv.ofInjective_apply _ _).symm`. Rewrite using `[h1]`. Simplify using `only [v, Basis.map_apply, LinearEquiv.apply_symm_apply]`. Conclude with `Submodule.smithNormalFormBotBasis_def b hrank i`. Establish `hdetprod : LinearMap.det φ * b'.det v = ∏ i, a i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Basis.det_comp]`. Establish `: (⇑φ ∘ ⇑v) = fun i => a i • b' i` using `funext hv`. Rewrite using `[this, AlternatingMap.map_smul_univ, Basis.det_self, smul_eq_mul, mul_one]`. Establish `hassoc : Associated (LinearMap.det φ) (∏ i, a i)`. Take `⟨u, hu⟩` from `b'.isUnit_det v`.
-
-Conclude with `⟨u, by rw [hu]; exact hdetprod⟩`. Rewrite using `[hlen, Ring.ord_eq_of_associated hassoc, LengthQuotientDet.ord_prod _ _ ha]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LengthQuotientDet.proof : LengthQuotientDet.Statement := by
   intro O _ _ _ M _ _ _ _ φ hdet

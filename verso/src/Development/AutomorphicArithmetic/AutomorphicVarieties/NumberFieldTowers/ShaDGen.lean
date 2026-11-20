@@ -7,21 +7,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ _ l hl N U V _ e γ hU hVU hγ`. Establish `key : ∀ φ : Dinf l N U, dTw l N U e γ φ = φ → ∀ v ∈ V, dTw l N U e v φ = φ`. Introduce `φ hφ v hv`. Take `⟨n, hn⟩` from `(dinfNil k Ω l N U hU φ.1 φ.2).1`. Take `⟨r, hr⟩` from `(dinfTors k Ω l N U).1 hU φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlev : ∀ w ∈ U, cycZ k Ω l w ∈ KStar.TotallyRealRoots.princ l (max n r) → dTw l N U e w φ = φ`. Introduce `w hw hc`. Establish `h1 : dRep l N U w φ = φ` using `Subtype.ext (hn w ⟨hw, KStar.TotallyRealRoots.princ_anti (le_max_left n r) hc⟩)`. Establish `h2 : cycZ k Ω l w ^ (-e) ∈ KStar.TotallyRealRoots.princ l r` using `Subgroup.zpow_mem _ (KStar.TotallyRealRoots.princ_anti (le_max_right n r) hc) _`. Rewrite `h2` using `[KStar.TotallyRealRoots.mem_princ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc'⟩` from `h2`. Rewrite using `[dTw_apply, LinearMap.smul_apply, h1, sub_eq_iff_eq_add.1 hc', add_smul, one_smul, mul_comm, mul_smul, hr, smul_zero, zero_add]`. Establish `hz : ∀ j : ℤ, dTw l N U e (γ ^ j) φ = φ`. Introduce `j`. Set `S : Subgroup (G k Ω)` to `{ carrier := {g | dTw l N U e g φ = φ} mul_mem' := fun {a b} ha hb => by show dTw l N U e (a * b) φ = φ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[map_mul, Module.End.mul_apply, show dTw l N U e b φ = φ from hb]`. Conclude with `ha`. Use the proof step `one_mem' := by show dTw l N U e 1 φ = φ`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use the proof step `inv_mem' := fun {a} ha => by show dTw l N U e a⁻¹ φ = φ conv_lhs => rw [← show dTw l N U e a φ = φ from ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Use `rfl }`. Conclude with `S.zpow_mem (show γ ∈ S from hφ) j`. Establish `hcl : cycZ k Ω l v ∈ closure ((Subgroup.zpowers (cycZ k Ω l γ) : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ)` using `hγ.2 ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hop : IsOpen ((fun x : ℤ_[l]ˣ => x⁻¹ * cycZ k Ω l v) ⁻¹' (KStar.TotallyRealRoots.princ l (max n r) : Set ℤ_[l]ˣ))` using `(KStar.TotallyRealRoots.isOpen_princ _).preimage (by fun_prop)`. Take `⟨x, hx, j, rfl⟩` from `mem_closure_iff.1 hcl _ hop (by simp [one_mem])`. Establish `h3` using `hlev ((γ ^ j)⁻¹ * v) (U.mul_mem (U.inv_mem (U.zpow_mem (hVU hγ.1) j)) (hVU hv)) (by rw [map_mul, map_inv, map_zpow]; exact hx)`. Establish `h4 : v = γ ^ j * ((γ ^ j)⁻¹ * v)` using `by group`. Rewrite using `[h4, map_mul, Module.End.mul_apply, h3, hz]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Use extensionality with `φ`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, Module.End.one_apply]`. Conclude with `⟨fun h => h ⟨γ, hγ.1⟩, fun h v => key φ h v.1 v.2⟩`. Use extensionality with `φ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, Module.End.one_apply]`. Use `⟨fun h => h ⟨γ⁻¹, V.inv_mem hγ.1⟩, fun h v => key φ ?_ v.1 v.2⟩` and prove the remaining obligations. Use `conv_lhs => rw [← h]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Tower.shaDGen :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U V : Subgroup (G k Ω)) [U.Normal] (e : ℤ) (γ : G k Ω), IsClosed (U : Set (G k Ω)) → V ≤ U → IsGen l V γ →

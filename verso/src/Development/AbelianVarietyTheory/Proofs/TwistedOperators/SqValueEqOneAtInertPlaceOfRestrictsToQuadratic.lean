@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace InertValue
 
 /- English proof (translation)
-Conclude with `Pi.mulSingle_eq_of_ne h _`.
+A detailed English derivation is pending.
 -/
 theorem single_ne' {K : Type} [Field K] [NumberField K] {P Q : HeightOneSpectrum (𝓞 K)} (h : Q ≠ P)
     (u : (P.adicCompletion K)ˣ) : (GlobalTheory.CMVal.single P u : FiniteAdeleRing (𝓞 K) K) Q = 1 := by
@@ -24,13 +24,11 @@ theorem single_ne' {K : Type} [Field K] [NumberField K] {P Q : HeightOneSpectrum
   exact Pi.mulSingle_eq_of_ne h _
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hπ`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.mk0 (algebraMap F (Fv F v) π) ((map_ne_zero _).2 hπ0), ?_⟩` and prove the remaining obligations. Establish `hw' : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = w.asIdeal` using `hw`. Establish `: w.asIdeal.LiesOver v.asIdeal` using `⟨by subst h; rfl⟩`. Establish `he : v.asIdeal.ramificationIdx' w.asIdeal = 1`. Apply `Ideal.ramificationIdx'_spec` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one, hw']`. Conclude with `InertChart.not_map_le_sq hw`. Use `show Valued.v (complMap h (algebraMap F (Fv F v) π)) = WithZero.exp (-1)`. Rewrite using `[complMap_algebraMap]`. Establish `hvw : Valued.v (algebraMap E (w.adicCompletion E) (algebraMap F E π)) = w.valuation E (algebraMap F E π)`.
-
-Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := w) (algebraMap F E π)`. Rewrite using `[hvw, ← HeightOneSpectrum.valuation_liesOver E v w, he, pow_one, hπ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnifAt (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) :
     ∃ a : (Fv F v)ˣ, IsUnifAt w (Units.map (complMap h).toMonoidHom a) := by
@@ -53,17 +51,17 @@ theorem exists_isUnifAt (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) :
   rw [hvw, ← HeightOneSpectrum.valuation_liesOver E v w, he, pow_one, hπ]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `key : (finAdEquiv F E).symm ((GlobalTheory.CMVal.single w (Units.map (complMap rfl).toMonoidHom a) : (FiniteAdeleRing (𝓞 E) E)ˣ) : FiniteAdeleRing (𝓞 E) E) = ((GlobalTheory.CMVal.single (w.under (𝓞 F)) a : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (1 : E)`. Rewrite using `[RingEquiv.symm_apply_eq]`. Use `FiniteAdeleRing.ext (h := fun u => ?_)` and prove the remaining obligations. Rewrite using `[finAdEquiv_apply (rfl : u.under (𝓞 F) = _)]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.TensorProduct.map_tmul, toCompl_tmul, map_one, mul_one]`. Establish `same : ∀ (K : Type) [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) (z : (P.adicCompletion K)ˣ), ((GlobalTheory.CMVal.single P z : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) P = z` using `fun K _ _ P z => Pi.mulSingle_eq_same (M := fun R : HeightOneSpectrum (𝓞 K) => R.adicCompletion K) P (z : P.adicCompletion K)`. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Rewrite using `[same]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (complMap (rfl : u.under (𝓞 F) = _)) (same F _ a).symm`. Establish `hne : u.under (𝓞 F) ≠ w.under (𝓞 F)` using `fun h' => hu ((InertChart.under_eq_iff hw u).1 h')`. Rewrite using `[single_ne' hu]`. Establish `e2 : ((GlobalTheory.CMVal.single (w.under (𝓞 F)) a : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) (u.under (𝓞 F)) = 1` using `single_ne' hne a`. Conclude with `((congrArg (complMap (rfl : u.under (𝓞 F) = _)) e2).trans (map_one _)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show 1 - extZero F E 1 + extZero F E ((finAdEquiv F E).symm ((GlobalTheory.CMVal.single w (Units.map (complMap rfl).toMonoidHom a) : (FiniteAdeleRing (𝓞 E) E)ˣ) : FiniteAdeleRing (𝓞 E) E)) = algebraMap (AF F) (AF F ⊗[F] E) ((MonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 …`. Rewrite using `[key]`. Generalize the expression as in `((GlobalTheory.CMVal.single (w.under (𝓞 F)) a : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) = s`. Establish `h2 : extZero F E 1 = (@id (AF F) (LinearMap.inr F (Ainf F) (Af F) 1)) ⊗ₜ[F] (1 : E)` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU_tmul _ _ 1 1`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : extZero F E (s ⊗ₜ[F] (1 : E)) = (@id (AF F) (LinearMap.inr F (Ainf F) (Af F) s)) ⊗ₜ[F] (1 : E)` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU_tmul _ _ s 1`. Establish `h4 : algebraMap (AF F) (AF F ⊗[F] E) (MonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F) s) = (@id (AF F) (MonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F) s)) ⊗ₜ[F] (1 : E)` using `rfl`. Establish `hX : (1 : AF F) - (@id (AF F) (LinearMap.inr F (Ainf F) (Af F) 1)) + (@id (AF F) (LinearMap.inr F (Ainf F) (Af F) s)) = (@id (AF F) (MonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F) s))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (1 : Ainf F) - 0 + 0 = 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using the standard rewrite rules. Use `show (1 : Af F) - 1 + s = s`. Simplify using the standard rewrite rules. Rewrite using `[h2, h3, h4, ← hX, TensorProduct.add_tmul, TensorProduct.sub_tmul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem locIdele_complMap (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) (a : (Fv F v)ˣ) :
     locIdele F w (Units.map (complMap h).toMonoidHom a) =
@@ -115,9 +113,9 @@ theorem locIdele_complMap (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) (a
   rfl
 
 /- English proof (translation)
-Establish `hn` using `hη.2.2.1 (ideleMap F E a)`. Establish `hnorm : Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (ideleMap F E a) = a ^ 2`. Apply `Units.ext` to reduce the goal to its premises. Use `show Algebra.norm (AF F) (algebraMap (AF F) (AF F ⊗[F] E) (a : AF F)) = ((a ^ 2 : (AF F)ˣ) : AF F)`. Rewrite using `[Units.val_pow_eq_pow_val, Algebra.norm_algebraMap_of_basis (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)), Fintype.card_fin, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[hnorm, map_pow]`. Conclude with `hn`.
+A detailed English derivation is pending.
 -/
 theorem eta_sq (h2 : Module.finrank F E = 2) {η : (AF F)ˣ →* Circle} (hη : IsEta F E η) (a : (AF F)ˣ) :
     η a ^ 2 = 1 := by
@@ -135,11 +133,11 @@ end InertValue
 open InertValue in
 
 /- English proof (translation)
-Take `⟨⟨η, hη⟩, hres⟩` from `hμ`. Establish `h2 : Module.finrank F E = 2` using `hσ.2.2.1`. Establish `hw' : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = w.asIdeal` using `hw`. Establish `hv : w.under (𝓞 F) = v` using `by ext1`. Use `symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Use `v.isMaximal.eq_of_le (w.under (𝓞 F)).isPrime.ne_top ?_` and prove the remaining obligations. Conclude with `Ideal.map_le_iff_le_comap.1 hw'.le`. Take `⟨a, ha⟩` from `exists_isUnifAt hw hv`. Rewrite using `[← UnrAt.locChar_eq_val hu ha]`. Simplify using `only [locChar, MonoidHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[locIdele_complMap hw hv a, hres η hη, ← map_pow, ← pow_mul, mul_comm, pow_mul, eta_sq h2 hη, one_pow, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem val_sq_eq_one_of_isInertAt (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (μ : (TensorProduct F (AF F) E)ˣ →* Circle) (b : ℕ) (hμ : ResEta F E μ b)

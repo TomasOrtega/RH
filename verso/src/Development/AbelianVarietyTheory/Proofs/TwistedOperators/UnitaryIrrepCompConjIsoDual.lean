@@ -10,9 +10,9 @@ namespace GlobalTheory.OneFunctional
 open GlobalTheory.ValCmp
 
 /- English proof (translation)
-Establish `hdet : IsUnit (g : Matrix (Fin n) (Fin n) K).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit g)`. Establish `hinv : (((g : Matrix (Fin n) (Fin n) K)⁻¹).transpose)⁻¹ = (g : Matrix (Fin n) (Fin n) K).transpose`. Rewrite using `[← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hdet]`. Establish `hpow : (((g : Matrix (Fin n) (Fin n) K)⁻¹).transpose).det ^ (-lam.detShift) = (g : Matrix (Fin n) (Fin n) K).det ^ lam.detShift`. Rewrite using `[Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', inv_zpow', neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.ValCmp.rnd, LinearMap.smul_apply, AlgHom.toLinearMap_apply, hinv, hpow, sqAct, detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqAct_eq_rnd_invTranspose (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) (g : GL (Fin n) K) (f : MP K n) :
     sqAct K n lam g f = rnd K lam.detShift ((g : Matrix (Fin n) (Fin n) K)⁻¹).transpose f := by
@@ -27,7 +27,7 @@ theorem sqAct_eq_rnd_invTranspose (K : Type) [Field K] (n : ℕ) (lam : DomWeigh
     Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]
 
 /- English proof (translation)
-Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (Nat.succ_pos m)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma detShift_eq_w_last {m : ℕ} (lam : DomWeight (m + 1)) : lam.detShift = lam.w (Fin.last m) := by
   unfold DomWeight.detShift
@@ -35,7 +35,7 @@ private lemma detShift_eq_w_last {m : ℕ} (lam : DomWeight (m + 1)) : lam.detSh
   rfl
 
 /- English proof (translation)
-Introduce `i j hij`. Unfold `DomWeight.natW`. Conclude with `Int.toNat_le_toNat (sub_le_sub_right (lam.anti hij) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma natW_antitone_succ {m : ℕ} (lam : DomWeight (m + 1)) : Antitone lam.natW := by
   intro i j hij
@@ -43,14 +43,14 @@ private lemma natW_antitone_succ {m : ℕ} (lam : DomWeight (m + 1)) : Antitone 
   exact Int.toNat_le_toNat (sub_le_sub_right (lam.anti hij) _)
 
 /- English proof (translation)
-Unfold `DomWeight.natW`. Rewrite using `[detShift_eq_w_last, sub_self, Int.toNat_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma natW_last_eq_zero {m : ℕ} (lam : DomWeight (m + 1)) : lam.natW (Fin.last m) = 0 := by
   unfold DomWeight.natW
   rw [detShift_eq_w_last, sub_self, Int.toNat_zero]
 
 /- English proof (translation)
-Rewrite using `[detShift_eq_w_last]`. Use `show -lam.w (Fin.rev (Fin.last m)) = -lam.w 0`. Rewrite using `[Fin.rev_last]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma dual_detShift_eq_neg_w_zero {m : ℕ} (lam : DomWeight (m + 1)) : lam.dual.detShift = -lam.w 0 := by
   rw [detShift_eq_w_last]
@@ -58,9 +58,9 @@ private lemma dual_detShift_eq_neg_w_zero {m : ℕ} (lam : DomWeight (m + 1)) : 
   rw [Fin.rev_last]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h0 : lam.w (Fin.rev i) ≤ lam.w 0` using `lam.anti (Fin.zero_le _)`. Establish `h1 : lam.w (Fin.last m) ≤ lam.w (Fin.rev i)` using `lam.anti (Fin.le_last _)`. Establish `h2 : lam.dual.w i = -lam.w (Fin.rev i)` using `rfl`. Use `show (lam.dual.w i - lam.dual.detShift).toNat = (lam.w 0 - lam.detShift).toNat - (lam.w (Fin.rev i) - lam.detShift).toNat`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dual_detShift_eq_neg_w_zero, h2, detShift_eq_w_last]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma natW_dual_eq_nuDual {m : ℕ} (lam : DomWeight (m + 1)) :
     lam.dual.natW = GlobalTheory.ValCmp.nuDual lam.natW := by
@@ -74,7 +74,7 @@ private lemma natW_dual_eq_nuDual {m : ℕ} (lam : DomWeight (m + 1)) :
   omega
 
 /- English proof (translation)
-Establish `h0 : lam.w (Fin.last m) ≤ lam.w 0` using `lam.anti (Fin.zero_le _)`. Rewrite using `[dual_detShift_eq_neg_w_zero, detShift_eq_w_last]`. Simplify using `only [DomWeight.natW, detShift_eq_w_last]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma neg_detShift_add_natW_zero_eq_dual_detShift {m : ℕ} (lam : DomWeight (m + 1)) :
     -(lam.detShift + ((lam.natW 0 : ℕ) : ℤ) + 0) = lam.dual.detShift := by
@@ -84,19 +84,17 @@ private lemma neg_detShift_add_natW_zero_eq_dual_detShift {m : ℕ} (lam : DomWe
   omega
 
 /- English proof (translation)
-Introduce `n hn lam`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨Ψ, hinj, hmap, hact, -, -⟩` from `GlobalTheory.ValCmp.exists_posOk_dual ℂ ℂ m lam.natW (natW_antitone_succ lam) (natW_last_eq_zero lam) lam.detShift 0`. Establish `hmem : ∀ f : nablaSq ℂ (m + 1) lam, Ψ f ∈ nablaSq ℂ (m + 1) lam.dual`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `Ψ f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ (m + 1) (m + 1) lam.dual.natW`. Rewrite using `[natW_dual_eq_nuDual, ← hmap]`. Conclude with `Submodule.mem_map_of_mem f.2`. Set `L : nablaSq ℂ (m + 1) lam →ₗ[ℂ] nablaSq ℂ (m + 1) lam.dual` to `(Ψ ∘ₗ (nablaSq ℂ (m + 1) lam).subtype).codRestrict _ hmem`. Establish `hL : Function.Bijective L`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `f f' h`. Establish `h1 : Ψ ((f : MP ℂ (m + 1)) - f') = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (sub_eq_zero.mp (hinj _ (Submodule.sub_mem _ f.2 f'.2) h1))`. Introduce and unpack `⟨y, hy⟩`. Establish `hy' : y ∈ (Formalism.GradedWeylDivisibility.dualWeyl ℂ (m + 1) (m + 1) lam.natW).map Ψ`. Rewrite using `[hmap, ← natW_dual_eq_nuDual]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx, hxy⟩` from `Submodule.mem_map.mp hy'`. Conclude with `⟨⟨x, hx⟩, Subtype.ext hxy⟩`. Use `⟨LinearEquiv.ofBijective L hL, fun g x => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (g : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ).det`. Establish `hdet` using `congrArg Matrix.det (Matrix.mem_unitaryGroup_iff.mp g.2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, hdet⟩`. Establish `hg : ((((star (g : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)).transpose)⁻¹).transpose) = (g : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)`. Rewrite using `[Matrix.transpose_nonsing_inv, Matrix.transpose_transpose]`. Conclude with `Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff.mp g.2)`.
-
-Express the relevant statement in the definitionally equal form `Ψ (sqAct ℂ (m + 1) lam (unitaryIncl (m + 1) (conjU (m + 1) g)) (x : MP ℂ (m + 1))) = sqAct ℂ (m + 1) lam.dual (unitaryIncl (m + 1) g) (Ψ x)`. Rewrite using `[sqAct_eq_rnd_invTranspose, sqAct_eq_rnd_invTranspose]`. Simplify using `only [GlobalTheory.Branching.unitaryIncl_coe, conjU_coe]`. Rewrite using `[hg, hact _ hu _ x.2, zpow_zero, one_smul, neg_detShift_add_natW_zero_eq_dual_detShift]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_irr_comp_conjU : ∀ (n : ℕ), 0 < n → ∀ lam : DomWeight n,
     Iso ((irr n lam).comp (conjU n) : Representation ℂ (U n) (nablaSq ℂ n lam)) (irr n lam.dual) := by

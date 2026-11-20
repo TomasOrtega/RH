@@ -13,7 +13,7 @@ section Generic
 variable {L : Type} [Fintype L] [DecidableEq L] (sg : L → Bool) {r : ℕ} [NeZero r] (d : L → ℕ)
 
 /- English proof (translation)
-Establish `h` using `(hπ G hG).2.2.2 A hA hAW`. Rewrite `h` using `[fock_sub_left]`. Rewrite using `[fock_comm A (π G), fock_comm A G]`. Conclude with `(sub_eq_zero.mp h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_proj_right {W : Set (MvPolynomial (L × Fin r) K)}
     {π : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K}
@@ -25,9 +25,9 @@ theorem fock_proj_right {W : Set (MvPolynomial (L × Fin r) K)}
   exact (sub_eq_zero.mp h).symm
 
 /- English proof (translation)
-Take `⟨⟨π'', hπ''⟩, -⟩` from `hP hD L sg r d S'' th''`. Establish `hfix : π'' F = F` using `(hπ'' F hF).2.2.1 hFW`. Establish `hcomm : π (π'' F) = π'' (π F)`. Break down `hS with h | h | h` into its components or cases. Conclude with `((hP hD L sg r d S th).2 π hπ).2.1 S'' (Or.inl h) th'' π'' hπ'' F hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `(((hP hD L sg r d S'' th'').2 π'' hπ'').2.1 S (Or.inl h) th π hπ F hF).symm`. Conclude with `((hP hD L sg r d S th).2 π hπ).2.1 S'' (Or.inr h) th'' π'' hπ'' F hF`. Establish `hE : π F = π'' (π F)` using `by rw [← hcomm, hfix]`. Rewrite using `[hE]`. Conclude with `(hπ'' (π F) (hπ F hF).1).2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_preserves (hP : PROJ K v p C0) (hD : DVRHyp v p) {S S'' : Finset L} {th th'' : ℤ}
     {π : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K}
@@ -46,9 +46,9 @@ theorem proj_preserves (hP : PROJ K v p C0) (hD : DVRHyp v p) {S S'' : Finset L}
   exact (hπ'' (π F) (hπ F hF).1).2.1
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[bge_iff]`. Establish `hb` using `((hP hD L sg r d S th).2 π hπ).2.2 F hF`. Establish `h2` using `ha.trans hb`. Generalize the expression as in `vBB v (π F) = x at h2 ⊢`. Proceed by induction on `x using WithTop.recTopCoe with`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `top => exact le_top`. Consider the case `coe x`. Rewrite `h2` using `[← WithTop.coe_add, WithTop.coe_le_coe]`. Rewrite using `[WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bge_proj (hP : PROJ K v p C0) (hD : DVRHyp v p) {S : Finset L} {th : ℤ}
     {π : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K}
@@ -67,21 +67,19 @@ theorem bge_proj (hP : PROJ K v p C0) (hD : DVRHyp v p) {S : Finset L} {th : ℤ
     linarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨LinearMap.id, fun F hF => hF, fun F _ x hx => by simp at hx, fun A _ _ G _ => rfl, ?_, fun S'' th'' _ F _ hFW => hFW, fun i _ _ a F _ => rfl⟩` and prove the remaining obligations. Introduce `F _ a ha`. Simplify using `using ha`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `@insert x s hx ih`. Establish `hpair' : ∀ y ∈ s, ∀ z ∈ s, S y ⊆ S z ∨ S z ⊆ S y ∨ Disjoint (S y) (S z)` using `fun y hy z hz => hpair y (Finset.mem_insert_of_mem hy) z (Finset.mem_insert_of_mem hz)`. Take `⟨Pr, h1, h2, h3, h4, h5, h6⟩` from `ih hpair'`. Take `⟨⟨πx, hπx⟩, -⟩` from `hP hD L sg r d (S x) (th x)`. Establish `hPx` using `(hP hD L sg r d (S x) (th x)).2 πx hπx`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨πx ∘ₗ Pr, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `F hF`. Conclude with `(hπx _ (h1 F hF)).1`. Introduce `F hF y hy`. Break down `Finset.mem_insert.mp hy with rfl | hy` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hπx _ (h1 F hF)).2.1`. Conclude with `proj_preserves sg d hP hD hπx (hpair _ (Finset.mem_insert_self _ s) y (Finset.mem_insert_of_mem hy)) (h1 F hF) (h2 F hF y hy)`. Introduce `A hA hAW G hG`. Rewrite using `[LinearMap.comp_apply, fock_proj_right d hπx hA (hAW x (Finset.mem_insert_self x s)) (h1 G hG)]`. Conclude with `h3 A hA (fun y hy => hAW y (Finset.mem_insert_of_mem hy)) G hG`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F hF a ha`. Establish `hb` using `bge_proj sg d hP hD hπx (h1 F hF) (h4 F hF a ha)`. Rewrite using `[LinearMap.comp_apply]`. Use `bge_mono v ?_ hb` and prove the remaining obligations. Rewrite using `[Finset.card_insert_eq_ite, if_neg hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_of_eq` to reduce the goal to its premises. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `S'' th'' hS F hF hFW`. Establish `hPr` using `h5 S'' th'' (fun y hy => hS y (Finset.mem_insert_of_mem hy)) F hF hFW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply]`. Break down `hS x (Finset.mem_insert_self x s) with h | h` into its components or cases. Conclude with `proj_preserves sg d hP hD hπx (Or.inl h) (h1 F hF) hPr`. Conclude with `proj_preserves sg d hP hD hπx (Or.inr (Or.inr h)) (h1 F hF) hPr`. Introduce `i hi hout a F hF`.
-
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, h6 i hi (fun y hy => hout y (Finset.mem_insert_of_mem hy)) a F hF]`. Conclude with `hPx.1 i hi (hout x (Finset.mem_insert_self x s)) a (Pr F) (h1 F hF)`.
+A detailed English derivation is pending.
 -/
 theorem prodProj (hP : PROJ K v p C0) (hD : DVRHyp v p) {ι : Type} (s : Finset ι)
     (S : ι → Finset L) (th : ι → ℤ)
@@ -148,7 +146,7 @@ section Torus
 variable {L : Type} [DecidableEq L] (sg : L → Bool) {r : ℕ}
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' G (fun α c => ?_) (fun P Q hP hQ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.X_mul_pderiv_monomial, dg_monomial, MvPolynomial.smul_monomial, nsmul_eq_mul]`. Rewrite using `[map_add, mul_add, hP, hQ, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem euler_eq_dg {σ : Type} (x : σ) (G : MvPolynomial σ K) :
     X x * pderiv x G = dg (fun ξ => (ξ x : K)) G := by
@@ -157,9 +155,9 @@ theorem euler_eq_dg {σ : Type} (x : σ) (G : MvPolynomial σ K) :
   · rw [map_add, mul_add, hP, hQ, map_add]
 
 /- English proof (translation)
-Rewrite using `[dg_eq_sum_f, MvPolynomial.coeff_sum]`. Distinguish the cases in `h : α ∈ F.support`. Rewrite using `[Finset.sum_eq_single α (fun β _ hβ => by rw [MvPolynomial.coeff_monomial, if_neg hβ]) (fun h' => absurd h h'), MvPolynomial.coeff_monomial, if_pos rfl]`. Establish `h0 : F.coeff α = 0` using `by simpa using h`. Rewrite using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero (fun β hβ => by`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg (fun (e : β = α) => h (e ▸ hβ))])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_dg_eq_mul_coeff {σ : Type} (f : (σ →₀ ℕ) → K) (F : MvPolynomial σ K)
     (α : σ →₀ ℕ) : (dg f F).coeff α = f α * F.coeff α := by
@@ -174,13 +172,13 @@ private theorem coeff_dg_eq_mul_coeff {σ : Type} (f : (σ →₀ ℕ) → K) (F
       rw [MvPolynomial.coeff_monomial, if_neg (fun (e : β = α) => h (e ▸ hβ))])
 
 /- English proof (translation)
-Establish `hmono : (monomial ζ (1 : K) : MvPolynomial (L × Fin r) K) ∈ PolK K r d`. Rewrite using `[mem_PolK_iff]`. Introduce `α hα k`. Establish `hαζ : α = ζ`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hα` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_monomial, if_neg (Ne.symm hne)]`. Conclude with `hα rfl`. Rewrite using `[hαζ]`. Conclude with `hζ k`. Establish `h` using `hcomm a _ hmono`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[euler_eq_dg, euler_eq_dg]`. Simplify using `only [dg_monomial, mul_one] at h`. Establish `h'` using `congrArg (fun G => MvPolynomial.coeff ζ' G) h`. Simplify using `only [coeff_dg_eq_mul_coeff] at h'`. Establish `hsm : (monomial ζ ((ζ (i, a) : ℕ) : K) : MvPolynomial (L × Fin r) K) = ((ζ (i, a) : ℕ) : K) • monomial ζ (1 : K)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite `h'` using `[hsm, map_smul, MvPolynomial.coeff_smul, smul_eq_mul]`. Establish `hne : (Pr (monomial ζ 1)).coeff ζ' ≠ 0` using `by simpa using hζ'`. Establish `hc` using `mul_right_cancel₀ hne h'`. Conclude with `hc.symm` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proj_keeps_letter (d : L → ℕ)
     (Pr : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K) (i : L)
@@ -214,9 +212,9 @@ theorem proj_keeps_letter (d : L → ℕ)
 end Torus
 
 /- English proof (translation)
-Establish `hmono : (monomial ζ (1 : K) : MvPolynomial (L × Fin r) K) ∈ PolK K r d`. Rewrite using `[mem_PolK_iff]`. Introduce `α hα k`. Establish `hαζ : α = ζ`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hα` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_monomial, if_neg (Ne.symm hne)]`. Conclude with `hα rfl`. Rewrite using `[hαζ]`. Conclude with `hζ k`. Conclude with `⟨fun k => (mem_PolK_iff d _).mp (h1 _ hmono) ζ' hζ' k, fun i hi hout a => proj_keeps_letter d Pr i (h6 i hi hout) ζ hζ ζ' hζ' a⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem prodProj_entries {L : Type} [Fintype L] [DecidableEq L] (sg : L → Bool) {r : ℕ} [NeZero r]
     (d : L → ℕ) {ι : Type} (s : Finset ι) (S : ι → Finset L)

@@ -10,13 +10,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.Per
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Take `⟨k, m, hm, h⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.factorial_ne_zero n) l hp.ne_one`. Establish `hk : k ≤ n`. Establish `h1 : k ≤ padicValNat l n.factorial` using `(padicValNat_dvd_iff_le (Nat.factorial_ne_zero n)).1 ⟨m, h⟩`. Establish `h2` using `sub_one_mul_padicValNat_factorial (p := l) n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ l - 1` using `by have := hp.two_le; omega`. Establish `h4 : padicValNat l n.factorial ≤ (l - 1) * padicValNat l n.factorial` using `Nat.le_mul_of_pos_left _ h3`. Use linear arithmetic over natural numbers and integers. Establish `hu : IsUnit ((m : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).2 hm`. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Use `⟨u * (l : ℤ_[l]) ^ j, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `((l : ℤ_[l]) ^ (k + j)) * hu`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_factorial_mul_eq_pow (l : ℕ) [Fact l.Prime] (n : ℕ) :
     ∃ c : ℤ_[l], ((n.factorial : ℕ) : ℤ_[l]) * c = ((l : ℕ) : ℤ_[l]) ^ n := by
@@ -41,7 +41,7 @@ theorem exists_factorial_mul_eq_pow (l : ℕ) [Fact l.Prime] (n : ℕ) :
   linear_combination ((l : ℤ_[l]) ^ (k + j)) * hu
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_factorial_mul_eq_pow l n`. Use `⟨algebraMap ℤ_[l] (Ainf l) c, ?_⟩` and prove the remaining obligations. Simplify `congrArg (algebraMap ℤ_[l] (Ainf l)) hc` using `only [map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_factorial_mul_eq_pow_ainf (l : ℕ) [Fact l.Prime] (n : ℕ) :
     ∃ c : Ainf l, ((n.factorial : ℕ) : Ainf l) * c = ((l : ℕ) : Ainf l) ^ n := by

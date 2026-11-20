@@ -11,7 +11,7 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 namespace GlobalTheory.CompanionTheory.LatLevel
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Simplify using `only [dk, gB, Ideal.quotientMap_mk, Ideal.Quotient.factor_mk]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem dk_gB {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ}
     (h : LevHyp l K M) (k : ℕ) (g : K.fixingSubgroup) (x : Bk l (k + 1)) :
@@ -20,7 +20,7 @@ theorem dk_gB {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgC
   simp only [dk, gB, Ideal.quotientMap_mk, Ideal.Quotient.factor_mk]
 
 /- English proof (translation)
-Introduce `m g a`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `dk_gB h (m + 1) g a.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem levSys_dA_σA {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ}
     (h : LevHyp l K M) : ∀ m g a,

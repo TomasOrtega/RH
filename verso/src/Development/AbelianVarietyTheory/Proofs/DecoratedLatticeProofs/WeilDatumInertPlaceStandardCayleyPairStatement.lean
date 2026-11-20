@@ -14,7 +14,7 @@ open Formalism.MainNotions.SchurIrreducible (IsSplit)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ChainOnto.std_cayley_of_inert` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FWeilDatumInertPlaceStandardCayleyPair.lean&line=34#L34)
 -/

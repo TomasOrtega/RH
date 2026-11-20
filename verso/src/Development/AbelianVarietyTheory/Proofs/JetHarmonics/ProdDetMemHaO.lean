@@ -17,7 +17,7 @@ def cMat (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fin s → Fin n → k) :
   Matrix.of fun ρ i : Fin s => ∑ b, C (B ρ b) * (X ⟨τ, Fin.castLE hs i, b⟩ : MvPolynomial (Letter Ty r n) k)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `S.sum_mem fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (S.prod_mem fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {R : Type} [CommRing R] (S : Subring R) {s : ℕ} (M : Matrix (Fin s) (Fin s) R)
     (h : ∀ i j, M i j ∈ S) : M.det ∈ S := by
@@ -27,9 +27,9 @@ theorem det_mem {R : Type} [CommRing R] (S : Subring R) {s : ℕ} (M : Matrix (F
   exact zsmul_mem (S.prod_mem fun i _ => h _ _) _
 
 /- English proof (translation)
-Use `det_mem (supported k S).toSubring _ fun ρ i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ supported k S`. Simplify using `only [cMat, Matrix.of_apply]`. Use `Subalgebra.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : B ρ b = 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hb, C_0, zero_mul]`. Conclude with `Subalgebra.zero_mem _`. Use `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) ?_` and prove the remaining obligations. Rewrite using `[supported_eq_adjoin_X]`. Conclude with `Algebra.subset_adjoin ⟨_, h ρ _ b hb, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cMat_supported (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fin s → Fin n → k) (S : Set (Letter Ty r n))
     (h : ∀ ρ i b, B ρ b ≠ 0 → (⟨τ, i, b⟩ : Letter Ty r n) ∈ S) :
@@ -44,7 +44,7 @@ theorem cMat_supported (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fin s → Fin 
     rw [supported_eq_adjoin_X]; exact Algebra.subset_adjoin ⟨_, h ρ _ b hb, rfl⟩
 
 /- English proof (translation)
-Use `det_mem _ _ fun ρ i => ?_` and prove the remaining obligations. Simplify using `only [cMat, Matrix.of_apply]`. Use `Subring.sum_mem _ fun b _ => Subring.mul_mem _ ⟨C ⟨B ρ b, h ρ b⟩, by simp⟩ ⟨X _, map_X _ _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cMat_range (O : Subring k) (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fin s → Fin n → k)
     (h : ∀ ρ b, B ρ b ∈ O) :
@@ -54,25 +54,23 @@ theorem cMat_range (O : Subring k) (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fi
   refine Subring.sum_mem _ fun b _ => Subring.mul_mem _ ⟨C ⟨B ρ b, h ρ b⟩, by simp⟩ ⟨X _, map_X _ _⟩
 
 /- English proof (translation)
-Rewrite using `[AlgHom.map_det]`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality. Distinguish the cases in `hin : i.val < s`. Establish `hin' : i'.val < s` using `lt_trans hii hin`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Set `i0 : Fin s` to `⟨i.val, hin⟩`. Set `i1 : Fin s` to `⟨i'.val, hin'⟩`. Establish `hne : i0 ≠ i1`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [i0, i1] at this`. Conclude with `(ne_of_gt hii) (Fin.ext this)`. Establish `hmat : (rowShift r n k τ i i' t).mapMatrix (cMat τ s hs B) = (cMat τ s hs B).updateCol i0 (fun p => cMat τ s hs B p i0 + (C t : MvPolynomial (Letter Ty r n) k) • cMat τ s hs B p i1)`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, cMat, Matrix.of_apply, map_sum, map_mul, algHom_C, algebraMap_eq, rowShift, aeval_X, Matrix.updateCol_apply, crSig_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : q = i0`. Substitute `hp` using the available equality. Establish `hc : Fin.castLE hs i0 = i` using `Fin.ext rfl`. Establish `hc1 : Fin.castLE hs i1 = i'` using `Fin.ext rfl`. Simplify using `only [hc, hc1, if_true, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[if_neg hp]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hp` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castLE] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmat]`. Conclude with `Matrix.det_updateCol_add_smul_self _ hne (C t)`. Establish `hmat : (rowShift r n k τ i i' t).mapMatrix (cMat τ s hs B) = cMat τ s hs B`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, cMat, Matrix.of_apply, map_sum, map_mul, algHom_C, algebraMap_eq, rowShift, aeval_X, crSig_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castLE] at this`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hmat]`. Establish `hmat : (rowShift r n k σ i i' t).mapMatrix (cMat τ s hs B) = cMat τ s hs B`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, cMat, Matrix.of_apply, map_sum, map_mul, algHom_C, algebraMap_eq, rowShift, aeval_X]`.
-
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (crSig_ne hτ)]`. Rewrite using `[hmat]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cMat_rowShift [Fintype Ty] (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fin s → Fin n → k)
     (σ : Ty) (i i' : Fin (r σ)) (hii : i' < i) (t : k) :
@@ -132,11 +130,11 @@ theorem cMat_rowShift [Fintype Ty] (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fi
     rw [hmat]
 
 /- English proof (translation)
-Rewrite using `[← mem_weightedHomogeneousSubmodule, Matrix.det_apply]`. Use `Submodule.sum_mem _ fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule, ← crRowSum τ σ s i0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsWeightedHomogeneous.prod _ _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Simplify using `only [cMat, Matrix.of_apply]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[C_mul']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `isWeightedHomogeneous_X k (crW (r := r) (n := n) σ i0) ⟨τ, Fin.castLE hs j, b⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cMat_hom [Fintype Ty] (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fin s → Fin n → k) (σ : Ty) (i0 : ℕ) :
     IsWeightedHomogeneous (crW (r := r) (n := n) σ i0) (cMat τ s hs B).det
@@ -156,23 +154,21 @@ theorem cMat_hom [Fintype Ty] (τ : Ty) (s : ℕ) (hs : s ≤ r τ) (B : Fin s �
   exact isWeightedHomogeneous_X k (crW (r := r) (n := n) σ i0) ⟨τ, Fin.castLE hs j, b⟩
 
 /- English proof (translation)
-Introduce `Ty _ r n k _ O cc isX a A _ σ s hs B e hO _ hdis hdeg`. Express the relevant statement in the definitionally equal form `(∏ α, (cMat (σ α) (s α) (hs α) (B α)).det ^ e α) ∈ _`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Set `S : Set (Letter Ty r n)` to `{ℓ | ∃ α, e α ≠ 0 ∧ σ α = ℓ.1 ∧ ∃ ρ, B α ρ ℓ.2.2 ≠ 0}`. Establish `hS : (∏ α, (cMat (σ α) (s α) (hs α) (B α)).det ^ e α) ∈ supported k S`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Subalgebra.prod_mem _ fun α _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : e α = 0`. Rewrite using `[he, pow_zero]`. Conclude with `Subalgebra.one_mem _`. Conclude with `Subalgebra.pow_mem _ (cMat_supported _ _ _ _ S fun ρ i b hb => (show _ ∈ S from ⟨α, he, rfl, ρ, hb⟩)) _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `(∏ α, (cMat (σ α) (s α) (hs α) (B α)).det ^ e α) = P at hS`. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `τ _ i i'`. Simplify using `only [lap, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Use `Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Establish `key : pderiv (⟨τ, i, b⟩ : Letter Ty r n) (pderiv (⟨cc τ, i', b⟩ : Letter Ty r n) P) = 0`. Distinguish the cases in `hg : (⟨cc τ, i', b⟩ : Letter Ty r n) ∈ S`. Establish `hg' : (⟨τ, i, b⟩ : Letter Ty r n) ∉ S`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨α, he, hσ, ρ, hρ⟩`. Take `⟨α', he', hσ', ρ', hρ'⟩` from `hg`. Break down `hdis α α' he he' (by rw [hσ', hσ]) ρ ρ' b with h | h` into its components or cases. Conclude with `hρ h`. Conclude with `hρ' h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pderiv_eq_zero_of_notMem_vars (fun hv => hg' (mem_supported.1 (crPderiv_supported _ hS) hv))`. Rewrite using `[pderiv_eq_zero_of_notMem_vars (fun hv => hg (mem_supported.1 hS hv)), map_zero]`. Simplify using `using congrArg (fun x => (1 : k) • x) key`. Simplify using `[Matrix.one_apply_ne hb]`. Introduce `τ i i' hii t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, cMat_rowShift _ _ _ _ _ _ _ hii]`. Introduce `m hm τ i`. Rewrite using `[← crW_weight]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun α => (cMat (σ α) (s α) (hs α) (B α)).det ^ e α) (fun α => e α • (if σ α = τ ∧ i.val < s α then 1 else 0)) (fun α _ => (cMat_hom (σ α) (s α) (hs α) (B α) τ i.val).pow (e α))`. Rewrite using `[h (Finsupp.mem_support_iff.1 hm), ← hdeg τ i, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Introduce `m`.
-
-Take `⟨Q, hQ⟩ : (∏ α, (cMat (σ α) (s α) (hs α) (B α)).det ^ e α) ∈ (MvPolynomial.map (σ` from `Letter Ty r n) O.subtype).range := Subring.prod_mem _ fun α _ => Subring.pow_mem _ (cMat_range O _ _ _ _ (hO α)) _`. Rewrite using `[← hQ, coeff_map]`. Conclude with `(Q.coeff m).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_det_mem_HaO : ∀ (Ty : Type) [Fintype Ty] (r : Ty → ℕ) (n : ℕ) (k : Type) [Field k] (O : Subring k) (cc : Ty → Ty) (isX : Ty → Prop) (a : Ty → ℕ → ℕ) (A : Type) [Fintype A] (σ : A → Ty) (s : A → ℕ) (hs : ∀ α, s α ≤ r (σ α)) (B : ∀ α, Fin (s α) → Fin n → k) (e : A → ℕ), (∀ α ρ b, B α ρ b ∈ O) → (∀ τ, cc τ ≠ τ) → (∀ α α', e α ≠ 0 → e α' ≠ 0 → σ α' = cc (σ α) → ∀ ρ ρ' b, B α ρ b = 0 ∨ B α' ρ' b = 0) → (∀ (τ : Ty) (i : Fin (r τ)), ∑ α ∈ Finset.univ.filter (fun α => σ α = τ ∧ i.val < s α), e α = a τ i) → (∏ α, (Matrix.of fun ρ i : Fin (s α) => ∑ b, MvPolynomial.C (B α ρ b) * (MvPolynomial.X ⟨σ α, Fin.castLE (hs α) i, b⟩ : MvPolynomial (Letter Ty r n) k)).det ^ e α) ∈ HaO r n k O cc isX a := by
   intro Ty _ r n k _ O cc isX a A _ σ s hs B e hO _ hdis hdeg

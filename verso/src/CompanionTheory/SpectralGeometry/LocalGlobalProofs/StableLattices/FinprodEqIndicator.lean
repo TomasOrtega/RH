@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.EulerPos
 
 /- English proof (translation)
-Establish `e : ∏ i ∈ s, z i = ((∏ i ∈ s, (z i).re : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => Complex.ext (by simp) (by simp [(h i).2])`. Rewrite using `[e, Complex.ofReal_re, ENNReal.ofReal_prod_of_nonneg fun i _ => (h i).1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofReal_re_prod {ι : Type*} (s : Finset ι) (z : ι → ℂ)
     (h : ∀ i, 0 ≤ (z i).re ∧ (z i).im = 0) :
@@ -23,7 +23,7 @@ theorem ofReal_re_prod {ι : Type*} (s : Finset ι) (z : ι → ℂ)
   rw [e, Complex.ofReal_re, ENNReal.ofReal_prod_of_nonneg fun i _ => (h i).1]
 
 /- English proof (translation)
-Establish `h` using `(ENNReal.continuous_ofReal.tendsto p).comp hp`. Use `h.congr fun s => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Conclude with `ENNReal.ofReal_prod_of_nonneg fun i _ => h0 i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasProd_ofReal {ι : Type*} {a : ι → ℝ} {p : ℝ} (hp : HasProd a p) (h0 : ∀ i, 0 ≤ a i) :
     HasProd (fun i => ENNReal.ofReal (a i)) (ENNReal.ofReal p) := by
@@ -33,13 +33,13 @@ theorem hasProd_ofReal {ι : Type*} {a : ι → ℝ} {p : ℝ} (hp : HasProd a p
   exact ENNReal.ofReal_prod_of_nonneg fun i _ => h0 i
 
 /- English proof (translation)
-Set `r : ι → ℝ` to `fun v => (L v).toReal`. Establish `hr0 : ∀ v, 0 ≤ r v` using `fun v => ENNReal.toReal_nonneg`. Establish `hLr : ∀ v, ENNReal.ofReal (r v) = L v` using `fun v => ENNReal.ofReal_toReal (hL v)`. Establish `hra : ∀ v, v ∉ S → r v = a v` using `fun v hv => by`. Simplify using `only [r]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hoff v hv, ENNReal.toReal_ofReal (ha0 v)]`. Establish `hsr : Summable fun v => |r v - 1|`. Use `hsum.congr_cofinite ?_` and prove the remaining obligations. Use `filter_upwards [S.finite_toSet.compl_mem_cofinite] with v hv`. Rewrite using `[hra v (by simpa using hv)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, hsplit, -, -⟩` from `AbsTprod.abs_tprod ι r hsr`. Take `⟨-, htp⟩` from `hsplit S`. Establish `hT : ∏' v : {v // v ∉ S}, r v.1 = ∏' v : {v // v ∉ S}, a v.1` using `tprod_congr fun v => hra v.1 v.2`. Establish `hp` using `hasProd_ofReal hm.hasProd hr0`. Establish `e : (fun i => ENNReal.ofReal (r i)) = L` using `funext hLr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[e, htp, hT, ENNReal.ofReal_mul (Finset.prod_nonneg fun v _ => hr0 v), ENNReal.ofReal_prod_of_nonneg fun v _ => hr0 v]`. Simplify `hp` using `only [hLr]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasProd_of_tail {ι : Type} (L : ι → ℝ≥0∞) (a : ι → ℝ) (S : Finset ι) (hL : ∀ v, L v ≠ ⊤)
     (ha0 : ∀ v, 0 ≤ a v) (hoff : ∀ v, v ∉ S → L v = ENNReal.ofReal (a v))
@@ -67,17 +67,15 @@ theorem hasProd_of_tail {ι : Type} (L : ι → ℝ≥0∞) (a : ι → ℝ) (S 
   simpa only [hLr] using hp
 
 /- English proof (translation)
-Distinguish the cases in `hX : X ∈ intOff b S`. Rewrite using `[Set.indicator_of_mem hX]`. Use `finprod_eq_prod_of_mulSupport_subset _ ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hv` to reduce the goal to its premises. Establish `hvS' : v ∉ S` using `by simpa using hvS`. Simplify using `only [hS v hvS']`. Conclude with `Set.indicator_of_mem (hX v hvS') _`. Rewrite using `[Set.indicator_of_notMem hX]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∃ v, v ∉ S ∧ projV v (projFin X) ∉ latV b v`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hX hne`. Take `⟨v, hvS, hv⟩` from `this`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `finprod_eq_zero _ v ?_ ?_` and prove the remaining obligations. Simplify using `only [hS v hvS]`. Conclude with `Set.indicator_of_notMem hv _`. Establish `hfin : {w | projV w (projFin X) ∉ latV b w}.Finite` using `Filter.eventually_cofinite.1 (MeasProj.eventually_mem_latV b (projFin X))`. Use `(hfin.union S.finite_toSet).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w hw`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not, Finset.mem_coe] at hc`. Apply `hw` to reduce the goal to its premises. Simplify using `only [hS w hc.2]`.
-
-Conclude with `Set.indicator_of_mem hc.1 _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finprod_eq_indicator {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d n M : ℕ}
     (b : Module.Basis (Fin d) F E)
@@ -119,29 +117,27 @@ theorem finprod_eq_indicator {F E : Type} [Field F] [NumberField F] [Field E] [A
 end GlobalTheory.CompanionTheory.SW.EulerPos
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM d b n M I minf m hEu hm cinf c hc Φ Φi Φf Φv hΦi hpure hpos hprod`. Take `⟨hpi, hpf, hpv, hlat, -⟩` from `GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b n M`. Use `haveI := GlobalTheory.CompanionTheory.SW.PureMeas.borelSpace_af F E σ hCM n M`. Use `haveI := GlobalTheory.CompanionTheory.SW.PureMeas.borelSpace_ainf F E σ hCM n M`. Use `haveI : ∀ v, BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E) := fun v => GlobalTheory.CompanionTheory.SW.PureMeas.borelSpace_fv F E σ hCM n M v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hfin, hsum, S₀, hEP⟩` from `hEu`. Take `⟨-, -, -, -, -, -, -, S₁, hS₁⟩` from `GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F cinf cinf c c hc hc`. Set `S : Finset (HeightOneSpectrum (𝓞 F))` to `(S₀ ∪ S₁) ∪ (Filter.eventually_cofinite.1 hpure.2.1).toFinset`. Establish `hS : ∀ v, v ∉ S → Φv v = (latV b v).indicator 1`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (by simpa using h))`. Establish `hS₀ : S₀ ⊆ S` using `fun v hv => Finset.mem_union_left _ (Finset.mem_union_left _ hv)`. Establish `hS₁S : S₁ ⊆ S` using `fun v hv => Finset.mem_union_left _ (Finset.mem_union_right _ hv)`. Take `⟨hc1, hcS⟩` from `hS₁ S hS₁S`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℝ≥0∞` to `fun v X => ENNReal.ofReal (Φv v X).re`. Establish `hcv : ∀ v, Continuous (Φv v)` using `fun v => (hpure.1 v).1.continuous`. Establish `hφ : ∀ v, Measurable (φ v)` using `fun v => ENNReal.measurable_ofReal.comp (Complex.measurable_re.comp (hcv v).measurable)`. Establish `hΦ : Φ = pureL b S Φi φ`. Use function extensionality and compare the values at `X`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod X, hpure.2.2 (projFin X), GlobalTheory.CompanionTheory.SW.EulerPos.finprod_eq_indicator b Φv S hS X]`. Unfold `pureL`. Distinguish the cases in `hX : X ∈ intOff b S`. Rewrite using `[Set.indicator_of_mem hX, Set.indicator_of_mem hX, GlobalTheory.CompanionTheory.SW.EulerPos.ofReal_re_prod S _ fun v => hpos v _]`. Simplify using `[Set.indicator_of_notMem hX]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBfin : ∀ v, ∫⁻ X, φ v X ∂(m v) ≠ ⊤`. Introduce `v`. Use `haveI := hm v`. Establish `hi : Integrable (Φv v) (m v)` using `(hcv v).integrable_of_hasCompactSupport (hpure.1 v).2`. Conclude with `hi.re.lintegral_lt_top.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hLB : ∀ v, ∫⁻ X, φ v X ∂(c v • m v) = (c v : ℝ≥0∞) * ∫⁻ X, φ v X ∂(m v)`. Introduce `v`. Rewrite using `[lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Establish `hLfin : ∀ v, ∫⁻ X, φ v X ∂(c v • m v) ≠ ⊤` using `fun v => by`. Rewrite using `[hLB v]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `ENNReal.mul_ne_top ENNReal.coe_ne_top (hBfin v)`. Set `a : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => (m v (latV b v)).toReal`. Establish `hoff : ∀ v, v ∉ S → ∫⁻ X, φ v X ∂(c v • m v) = ENNReal.ofReal (a v)`. Introduce `v hv`. Establish `hl : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `(hlat v).2.measurableSet`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hφv : φ v = (latV b v).indicator 1`. Use function extensionality and compare the values at `X`. Simplify using `only [φ, hS v hv]`. Distinguish the cases in `hX : X ∈ (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))`. Simplify using `[Set.indicator_of_mem hX]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[Set.indicator_of_notMem hX]`. Rewrite using `[hLB v, hc1 v hv, hφv, lintegral_indicator_one hl]`. Simplify using `only [ENNReal.coe_one, one_mul, a]`. Conclude with `(ENNReal.ofReal_toReal (hfin v).ne).symm`. Establish `hHP` using `GlobalTheory.CompanionTheory.SW.EulerPos.hasProd_of_tail (fun v => ∫⁻ X, φ v X ∂(c v • m v)) a S hLfin (fun _ => ENNReal.toReal_nonneg) hoff hsum`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, hHP.multipliable, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`. Conclude with `GlobalTheory.CompanionTheory.SW.PureMeas.measurable_pureL F E σ hCM d b n M S Φi φ hΦi hφ`. Express the relevant statement in the definitionally equal form `∫⁻ X, Φ X ∂I = (∫⁻ X, Φi X ∂(cinf • minf)) * ∏' v, ∫⁻ X, φ v X ∂(c v • m v)`. Establish `h1 : (cinf : ℝ≥0∞) * ∏ v ∈ S, (c v : ℝ≥0∞) = 1` using `by exact_mod_cast hcS`.
-
-Rewrite using `[hHP.tprod_eq, hΦ, hEP S hS₀ Φi φ hΦi hφ, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, Finset.prod_congr rfl fun v _ => hLB v, Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.EulerPos.euler_pos : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (minf : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (m : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), IsEulerProd b I 1 minf m → (∀ v, IsLocallyFiniteMeasure (m v)) → ∀ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c → ∀ (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞) (Φi : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞) (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ) (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ), Measurable Φi → IsPureFin b Φf Φv → (∀ v Y, 0 ≤ (Φv v Y).re ∧ (Φv v Y).im = 0) → (∀ X, Φ X = Φi (projInf X) * ENNReal.ofReal (Φf (projFin X)).re) → Measurable Φ ∧ Multipliable (fun v => ∫⁻ X, ENNReal.ofReal (Φv v X).re ∂(c v • m v)) ∧ ∫⁻ X, Φ X ∂I = (∫⁻ X, Φi X ∂(cinf • minf)) * ∏' v, ∫⁻ X, ENNReal.ofReal (Φv v X).re ∂(c v • m v) := by
   intro F E _ _ _ _ _ σ hCM d b n M I minf m hEu hm cinf c hc Φ Φi Φf Φv hΦi hpure hpos hprod

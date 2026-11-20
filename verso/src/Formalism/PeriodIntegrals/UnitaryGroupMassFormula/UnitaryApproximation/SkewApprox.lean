@@ -10,7 +10,7 @@ open Matrix TensorProduct NumberField IsDedekindDomain
 namespace PI.UnitaryApproxFinWork
 
 /- English proof (translation)
-Establish `h2 : ((2 : 𝓞 F) : F) = 2` using `map_ofNat (algebraMap (𝓞 F) F) 2`. Simplify using `only [dv, h2, map_ofNat]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dv_two {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) : dv E v 2 = 2 := by
@@ -18,15 +18,15 @@ theorem dv_two {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   simp only [dv, h2, map_ofNat]
 
 /- English proof (translation)
-Establish `h2δ : (2 * δ : 𝓞 F) ≠ 0` using `mul_ne_zero two_ne_zero hδ`. Establish `hz : ∀ i j, ∃ e : E, ∀ v ∈ T, Cong E v (2 * δ) (Y v i j - PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F) e) := fun i j => hAE F E T (fun v => Y v i j) (2 * δ) h2δ`. Use `choose Z hZ using hz`. Use `⟨Matrix.of fun i j => (2⁻¹ : E) * (Z i j - σ (Z j i)), ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use extensionality with `i j show (σ : E →+* E) ((2⁻¹ : E) * (Z j i - σ (Z i j))) = -((2⁻¹ : E) * (Z i j - σ (Z j i)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.coe_toRingHom, map_mul, map_inv₀, map_ofNat, map_sub, hσ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨A, hAS, hAeq⟩` from `MC_of_entries (E := E) (v := v) (d := 2 * δ) (M := Y v - (Matrix.of Z).map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F))) (fun i j => hZ i j v hv)`. Use `⟨PI.UnitaryApproxDefs.cT (PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F)) A - A, MS_sub (MS_cT σ hAS) hAS, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e1` using `congrFun (congrFun hAeq i) j`. Establish `e2` using `congrArg (PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F)) (congrFun (congrFun hAeq j) i)`. Establish `e3` using `congrFun (congrFun (hY v hv) i) j`. Express the relevant statement in the definitionally equal form `PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) (Y v j i) = -(Y v i j) at e3`. Express the relevant statement in the definitionally equal form `Y v i j - PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (Z i j) = dv E v (2 * δ) * A i j at e1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) (Y v j i - PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (Z j i)) = PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) (dv E v (2 * δ) * A j i) at e2`. Rewrite `e2` using `[map_sub, map_mul, sigR_inclE, sigR_dv]`. Rewrite `e1`, `e2` using `[dv_mul, dv_two]`. Express the relevant statement in the definitionally equal form `PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) ((2⁻¹ : E) * (Z i j - σ (Z j i))) - Y v i j = dv E v δ * (PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F) (A j i) - A i j)`. Establish `hh : PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F) (2⁻¹ : E) * 2 = 1 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_ofNat (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F)) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`. Rewrite using `[map_mul, map_sub]`. Take the linear combination `(-(PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (2⁻¹ : E))) * e1 + (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (2⁻¹ : E)) * e2 - (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (2⁻¹ : E)) * e3 + (Y v i j + dv E v δ * (PI.UnitaryApproxDefs.sigR …`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem skew_approx (hAE : ApproxE) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {n : Type} [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e)

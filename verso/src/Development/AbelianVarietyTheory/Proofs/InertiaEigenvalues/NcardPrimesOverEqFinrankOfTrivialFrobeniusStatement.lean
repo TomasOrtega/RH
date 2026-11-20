@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NcardPrimesOve
 open NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_finite_ncard_primesOver_eq_finrank_of_pow_absNorm_sub_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNcardPrimesOverEqFinrankOfTrivialFrobenius.lean&line=26#L26)
 -/

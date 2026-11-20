@@ -4,19 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
 /- English proof (translation)
-Introduce `hA`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `F Ω _ _ _ _ _ l _ ι δ hopen`. Take `⟨h1, -, -⟩` from `hA F Ω l ι`. Establish `hcont : Continuous δ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `continuous_of_continuousAt_one δ ?_` and prove the remaining obligations. Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Use `filter_upwards [hopen.mem_nhds (Subgroup.one_mem _)] with x hx`. Rewrite `hx` using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Rewrite using `[hx, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Finite (Formalism.ConjugateSelfDual.G F Ω ⧸ δ.ker) := Subgroup.quotient_finite_of_isOpen _ hopen`. Use `haveI : δ.ker.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `h1 δ hcont fun w _ => ?_` and prove the remaining obligations. Take `⟨A, hAw⟩` from `exists_isPlaceOver Ω w`. Use `⟨A, hAw, 0, δ.ker.index, Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero, fun s _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[neg_zero, zpow_zero, mul_one, ← map_pow]`. Conclude with `Subgroup.pow_index_mem δ.ker s`. Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ δ hδ`. Set `E : IntermediateField K Ω` to `(IsScalarTower.toAlgHom K M Ω).fieldRange`. Use `haveI : FiniteDimensional K M := Module.Finite.of_restrictScalars_finite ℚ K M`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional K E := LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField (IsScalarTower.toAlgHom K M Ω)).toLinearEquiv`. Use `Subgroup.isOpen_mono ?_ E.fixingSubgroup_isOpen` and prove the remaining obligations. Introduce `g hg`. Establish `hfix : ∀ m : M, g (algebraMap M Ω m) = algebraMap M Ω m`. Introduce `m`.
-
-Conclude with `(IntermediateField.mem_fixingSubgroup_iff E g).mp hg _ ⟨m, rfl⟩`. Set `g' : Formalism.ConjugateSelfDual.G M Ω` to `{ g.toRingEquiv with commutes' := hfix }`. Establish `hres : UpperTheory.V.Af.resG K M Ω g' = g`. Use extensionality with `x`. Both sides reduce to the same expression.
-
-Rewrite using `[MonoidHom.mem_ker, ← hres, ← MonoidHom.comp_apply, hδ, MonoidHom.one_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteCharacter_of_algebraic_cyclotomic :
     UpperTheory.V.Af.AlgOfCyc → UpperTheory.V.Af.Sol.FinChar := by

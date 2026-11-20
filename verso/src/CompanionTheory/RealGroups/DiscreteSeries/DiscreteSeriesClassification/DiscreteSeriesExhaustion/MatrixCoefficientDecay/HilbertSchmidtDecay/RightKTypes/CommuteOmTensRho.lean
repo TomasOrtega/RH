@@ -16,7 +16,7 @@ section
 variable {ε : Fin n → Bool} {X : GMod n}
 
 /- English proof (translation)
-Establish `hu : S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `(show S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ _ from k.2).1`. Conclude with `⟨by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.mp hu, by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.mp hu⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kr_unit (k : S7.KG ε) : (S7.toMK k)ᴴ * S7.toMK k = 1 ∧ S7.toMK k * (S7.toMK k)ᴴ = 1 := by
   have hu : S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ :=
@@ -25,7 +25,7 @@ theorem kr_unit (k : S7.KG ε) : (S7.toMK k)ᴴ * S7.toMK k = 1 ∧ S7.toMK k * 
     by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.mp hu⟩
 
 /- English proof (translation)
-Establish `hu : S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `(show S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ _ from k.2).1`. Conclude with `entry_norm_bound_of_unitary hu a b`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kr_entry (k : S7.KG ε) (a b : Fin n) : ‖S7.toMK k a b‖ ≤ 1 := by
   have hu : S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ :=
@@ -47,7 +47,7 @@ theorem tensRho_apply (A : KAct ε X) (k : S7.KG ε) (u : Fin n → X.V) (b : Fi
     tensRho A k u b = ∑ i, S7.toMK k b i • A.ρ k (u i) := rfl
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (kr_unit k).2 b) d`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem kr_one_apply (k : S7.KG ε) (b d : Fin n) :
     ∑ i, S7.toMK k b i * (S7.toMK k)ᴴ i d = if b = d then 1 else 0 := by
@@ -55,7 +55,7 @@ theorem kr_one_apply (k : S7.KG ε) (b d : Fin n) :
   rwa [Matrix.mul_apply, Matrix.one_apply] at h
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (kr_unit k).1 b) d`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem kr_one_apply' (k : S7.KG ε) (b d : Fin n) :
     ∑ i, (S7.toMK k)ᴴ b i * S7.toMK k i d = if b = d then 1 else 0 := by
@@ -63,9 +63,9 @@ theorem kr_one_apply' (k : S7.KG ε) (b d : Fin n) :
   rwa [Matrix.mul_apply, Matrix.one_apply] at h
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ d, ∑ i, (S7.toMK k b i * (α * (S7.toMK k)ᴴ i d)) • w d = (α * ∑ i, S7.toMK k b i * (S7.toMK k)ᴴ i d) • w d`. Introduce `d`. Rewrite using `[← Finset.sum_smul, Finset.mul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Simplify using `only [h, kr_one_apply, mul_ite, mul_one, mul_zero, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_toMK_mul_conjTranspose_smul_eq_smul {M : Type} [AddCommGroup M] [Module ℂ M] (k : S7.KG ε) (b : Fin n)
     (α : ℂ) (w : Fin n → M) :
@@ -81,9 +81,9 @@ private theorem sum_toMK_mul_conjTranspose_smul_eq_smul {M : Type} [AddCommGroup
     Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use `LinearMap.ext fun u => funext fun b => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`. Simplify using `only [om_apply, tensRho_apply, map_sum, map_smul, A.compat, Finset.smul_sum, smul_smul]`. Use `conv_rhs =>`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `enter [2, a]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [sum_toMK_mul_conjTranspose_smul_eq_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_om_tensRho (A : KAct ε X) (k : S7.KG ε) : Commute (om X) (tensRho A k) := by
   refine LinearMap.ext fun u => funext fun b => ?_
@@ -97,9 +97,9 @@ theorem commute_om_tensRho (A : KAct ε X) (k : S7.KG ε) : Commute (om X) (tens
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [tensRho_apply, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ i, ∑ d, (α * (S7.toMK k)ᴴ b d * S7.toMK k d i) • A.ρ k (u i) = (α * if b = i then 1 else 0) • A.ρ k (u i)`. Introduce `i`. Rewrite using `[← Finset.sum_smul, ← kr_one_apply' k b i, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Simplify using `only [h, mul_ite, mul_one, mul_zero, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_conjTranspose_toMK_smul_tensRho_eq (A : KAct ε X) (k : S7.KG ε) (u : Fin n → X.V) (b : Fin n) (α : ℂ) :
     ∑ d, (α * (S7.toMK k)ᴴ b d) • tensRho A k u d = α • A.ρ k (u b) := by
@@ -114,13 +114,13 @@ private theorem sum_conjTranspose_toMK_smul_tensRho_eq (A : KAct ε X) (k : S7.K
   simp only [h, mul_ite, mul_one, mul_zero, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `e1 : tensRho A k (tensE X a b u) j = ∑ i, S7.toMK k j i • A.ρ k (X.E a b (u i)) + S7.toMK k j a • A.ρ k (u b)`. Rewrite using `[tensRho_apply]`. Simplify using `only [tensE_apply, map_add, smul_add, Finset.sum_add_distrib]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[apply_ite (A.ρ k)]`. Establish `e2 : (∑ c, ∑ d, (S7.toMK k c a * (S7.toMK k)ᴴ b d) • tensE X c d (tensRho A k u)) j = ∑ c, ∑ d, (S7.toMK k c a * (S7.toMK k)ᴴ b d) • X.E c d (tensRho A k u j) + S7.toMK k j a • A.ρ k (u b)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, tensE_apply, smul_add, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using `only [smul_ite, smul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `sum_conjTranspose_toMK_smul_tensRho_eq A k u b _`. Rewrite using `[e1, e2]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [A.compat, Finset.smul_sum, smul_smul, tensRho_apply, map_sum, map_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun i _ => by congr 1; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensRho_compat (A : KAct ε X) (k : S7.KG ε) (a b : Fin n) (u : Fin n → X.V) :
     tensRho A k (tensE X a b u) =
@@ -157,7 +157,7 @@ Both sides reduce to the same expression.
 theorem sv_smul {z : ℂ} (c : ℂ) (u : (step X z).V) : sv (c • u) = c • sv u := rfl
 
 /- English proof (translation)
-Conclude with `Submodule.coe_sum (stepSub X z) f s`.
+A detailed English derivation is pending.
 -/
 theorem sv_sum {z : ℂ} {ι : Type} (s : Finset ι) (f : ι → (step X z).V) : sv (∑ i ∈ s, f i) = ∑ i ∈ s, sv (f i) := by
   exact Submodule.coe_sum (stepSub X z) f s
@@ -168,7 +168,7 @@ Both sides reduce to the same expression.
 theorem sv_E {z : ℂ} (a b : Fin n) (u : (step X z).V) : sv ((step X z).E a b u) = tensE X a b (sv u) := rfl
 
 /- English proof (translation)
-Conclude with `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem sv_inj {z : ℂ} {u v : (step X z).V} (h : sv u = sv v) : u = v := by
   exact Subtype.ext h
@@ -192,9 +192,9 @@ theorem stepEmb_apply (A : KAct ε X) (z : ℂ) (u : (step X z).V) (i : Fin n) :
     stepEmb A z u i = A.emb ((sv u) i) := rfl
 
 /- English proof (translation)
-Introduce `u v h`. Apply `sv_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `A.inj` to reduce the goal to its premises. Establish `h'` using `congrFun h i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h'` using `[stepEmb_apply, stepEmb_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stepEmb_inj (A : KAct ε X) (z : ℂ) : Function.Injective (stepEmb A z) := by
   intro u v h
@@ -205,7 +205,7 @@ theorem stepEmb_inj (A : KAct ε X) (z : ℂ) : Function.Injective (stepEmb A z)
   rwa [stepEmb_apply, stepEmb_apply] at h'
 
 /- English proof (translation)
-Apply `sv_inj` to reduce the goal to its premises. Simplify using `only [stepRho_coe, sv_E, sv_sum, sv_smul]`. Conclude with `tensRho_compat A k a b (sv x)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stepRho_compat (A : KAct ε X) (z : ℂ) (k : S7.KG ε) (a b : Fin n) (x : (step X z).V) :
     stepRho A z k ((step X z).E a b x) =

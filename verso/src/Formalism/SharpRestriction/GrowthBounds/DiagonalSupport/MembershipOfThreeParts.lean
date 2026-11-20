@@ -10,13 +10,13 @@ noncomputable section
 namespace Formalism.MainNotions.Proposition5Numerics
 
 /- English proof (translation)
-The claim follows from `restDecG_of atl valSlice valComp hVB hXX hDd`.
+A detailed English derivation is pending.
 -/
 theorem decomposition_of_three_parts (hVB : RestValBdG) (hXX : RestXXG) (hDd : RestDdG) : RestDecG :=
   restDecG_of atl valSlice valComp hVB hXX hDd
 
 /- English proof (translation)
-The claim follows from `membership_of_four_parts (decomposition_of_three_parts hVB hXX hDd) restAlgG restDegG restLabG D CLa Ck Crk Cdeg`.
+A detailed English derivation is pending.
 -/
 theorem membership_of_three_parts (hVB : RestValBdG) (hXX : RestXXG) (hDd : RestDdG) (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) :
     RestMemb D CLa Ck Crk Cdeg :=

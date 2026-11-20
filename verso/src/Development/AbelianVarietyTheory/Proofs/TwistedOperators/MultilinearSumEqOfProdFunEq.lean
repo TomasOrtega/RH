@@ -6,19 +6,17 @@ namespace GlobalTheory
 open Finset
 
 /- English proof (translation)
-Introduce `h`. Establish `hkey : ∀ l, ∃ (s : Finset (X l)) (E : X l → X l → ℂ), (∀ x, E x ∈ V l) ∧ ∀ u ∈ (a.support.image (fun c => (f c l : X l → ℂ)) ∪ a.support.image (fun c => (g c l : X l → ℂ))), u = ∑ x ∈ s, u x • E x` using `fun l => GlobalTheory.T.exists_finset_eq_sum_smul_of_mem_submodule (V l) _ (by`. Introduce `u hu`. Simplify using `only [Finset.mem_union, Finset.mem_image] at hu`. Break down `hu with ⟨c, -, rfl⟩ | ⟨c, -, rfl⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(f c l).2`. Conclude with `(g c l).2)`. Use `choose s E hEV hE using hkey`. Set `e : ∀ l, X l → V l` to `fun l x => ⟨E l x, hEV l x⟩`. Establish `expand : ∀ (u : ∀ l, V l), (∀ l, (u l : X l → ℂ) = ∑ x ∈ s l, (u l : X l → ℂ) x • E l x) → Φ u = ∑ ξ ∈ Fintype.piFinset s, (∏ l, (u l : X l → ℂ) (ξ l)) * Φ (fun l => e l (ξ l))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `u hu`. Establish `hu' : u = fun l => ∑ x ∈ s l, (u l : X l → ℂ) x • e l x`. Use function extensionality and compare the values at `l`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu l`. Use `conv_lhs => rw [hu', MultilinearMap.map_sum_finset]`. Use `Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`. Establish `gen : ∀ f' : κ → ∀ l, V l, (∀ c ∈ a.support, ∀ l, (f' c l : X l → ℂ) = ∑ x ∈ s l, (f' c l : X l → ℂ) x • E l x) → (a.sum fun c b => b * Φ (f' c)) = ∑ ξ ∈ Fintype.piFinset s, (a.sum fun c b => b * ∏ l, (f' c l : X l → ℂ) (ξ l)) * Φ (fun l => e l (ξ l))`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `f' hf'`. Combine the equalities or inequalities in the displayed calculation. Unfold `Finsupp.sum`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Use `show a c * Φ (f' c) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[expand (f' c) (hf' c hc)]`. Use `_ = _ := by`. Simplify using `only [Finsupp.sum, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ξ _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[gen f (fun c hc l => hE l _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hc))), gen g (fun c hc l => hE l _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hc)))]`. Use `Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Rewrite using `[h ξ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multilinear_sum_eq_of_prod_fun_eq
     {ι κ : Type} [Fintype ι] {X : ι → Type} (V : ∀ l, Submodule ℂ (X l → ℂ))

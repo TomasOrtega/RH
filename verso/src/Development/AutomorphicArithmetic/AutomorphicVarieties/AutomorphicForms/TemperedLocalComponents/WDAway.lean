@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.L
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne
 
 /- English proof (translation)
-Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots (show 0 < M from hM)]`. Establish `e : {s : G F Ω | ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ} = ⋂ ζ ∈ {ζ : Ω | ζ ^ M = 1}, (MulAction.stabilizer (Ω ≃ₐ[F] Ω) ζ : Set (Ω ≃ₐ[F] Ω))`. Use extensionality with `s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[MulAction.mem_stabilizer_iff]`. Rewrite using `[e]`. Conclude with `hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral ζ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Af.isOpen_fixMu {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {M : ℕ}
     (hM : 1 ≤ M) : IsOpen {s : G F Ω | ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ} := by
@@ -22,13 +22,13 @@ private theorem UpperTheory.V.Af.isOpen_fixMu {F Ω : Type} [Field F] [Field Ω]
   exact hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral ζ
 
 /- English proof (translation)
-Introduce `_ F Ω _ _ _ _ _ l _ ι n M hM r _ w hl A h χ hχ hd x hx`. Take `⟨g, hg⟩` from `hd`. Set `r' : G F Ω →* GL (Fin n) (Qbar l)` to `(MulAut.conj g).toMonoidHom.comp r`. Establish `hr' : ∀ s, r' s = g * r s * g⁻¹` using `fun s => rfl`. Establish `hx' : IsWDOf ι r' x` using `hx.of_conj hl g fun s => by rw [hr', inv_mul_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, φ, hφ, N, a, hN, ha, rfl⟩` from `hx'`. Establish `hs : IsSmooth (r'.comp (Weil h).subtype)`. Use `.of_open ((UpperTheory.V.Af.isOpen_fixMu (F := F) (Ω := Ω) hM).preimage continuous_subtype_val) (fun ζ _ => rfl) fun σ hσ => Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r' σ : Matrix (Fin n) (Fin n) (Qbar l)) = 1`. Rewrite using `[hr', hg σ σ.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[fun i => hχ i σ hσ]`. Take `rfl : N = 0` from `hN.unique ht ((isMonodromy_zero_iff (h := h)).mpr hs)`. Use `⟨fun i => (Units.map ι.toRingHom.toMonoidHom).comp (χ i), a, fun i s hs => ?_, rfl, ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `[hχ i s hs]`. Rewrite using `[ha.1, map_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsFrobSS.ρ_ineIncl (ρ := hN.rep hl ht hφ ι) ha (hN.isSmooth_rep hl ht _ ι), hN.rep_apply, wdMat_zero, coe_ineIncl, hr', hg s s.2, toEndC_apply, Matrix.diagonal_map (map_zero ι)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Af.wdAway :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.WDAway := by

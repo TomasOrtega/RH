@@ -16,7 +16,7 @@ variable {M : Type*} [AddCommGroup M] [Module ℂ M] {MM : Type} [AddCommGroup M
   {S : Type*} [AddCommGroup S] [Module ℂ S]
 
 /- English proof (translation)
-Simplify using `only [Xs, Submodule.mem_inf, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigenTensorSpace_iff {Y : Type*} [AddCommGroup Y] [Module ℂ Y] {B : Module.End ℂ (Fin n → Y)}
     {P : Submodule ℂ Y} {t : ℝ} {f : Fin n → Y} :
@@ -25,47 +25,45 @@ theorem mem_eigenTensorSpace_iff {Y : Type*} [AddCommGroup Y] [Module ℂ Y] {B 
     LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]
 
 /- English proof (translation)
-Use `set q := k2aQ lam s with hqdef`. Use `set c := q.eval ((thV lam s : ℝ) : ℂ) with hcdef`. Establish `hc : c ≠ 0` using `aux_statement_18 lam s hanti`. Establish `hVC` using `verma_cone n MM EM lam φ s hEM hlow hwt hgen hanti`. Establish `hK1` using `(verma_product_identity n MM EM lam φ hEM hlow hwt hgen).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAq : ∀ a b, ε a = ε b → Commute (A a b) (aeval ES q)` using `fun a b h => lagrangeFactor_eval_ne_zero (hAE a b h) q`. Establish `hTq : ∀ u, eeV E (T u) = ((thV lam s : ℝ) : ℂ) • T u → T (aeval ES q u) = c • T u`. Introduce `u hu`. Rewrite using `[aeval_intertwine_alt T ES (eeV E) hTE, aeval_eigenvector hu]`. Establish `hKq : ∀ (ν : Fin n → ℝ) (u : S), IsKHWVec ε A ν u → IsKHWVec ε A ν (aeval ES q u)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ν u hu`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, (hAq a a rfl).eq, Module.End.mul_apply, hu.1 a, map_smul]`. Rewrite using `[← Module.End.mul_apply, (hAq a b he).eq, Module.End.mul_apply, hu.2 a b hab he, map_zero]`. Establish `hkey : ∀ (ν : Fin n → ℝ) (u : S), IsKHWVec ε A ν u → ∀ l, KirrLow ε l → θ (kirrWord A (aeval ES q u) l) ∈ Xs (eeV EM) ⊤ (thV lam s) ∧ ∀ a, tensV EM a a (θ (kirrWord A (aeval ES q u) l)) = (((kirrWt ν l + (lam + rho n) - lowK ε lam) a : ℝ) : ℂ) • θ (kirrWord A (aeval ES q u) l)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ν u hu l hl`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mem_eigenTensorSpace_iff]`. Use `⟨fun _ => Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[commute_aeval_of_commute_alt hAq u l hl, aeval_intertwine_alt θ ES (eeV EM) hθE, ← sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `shifted_aeval_lagrange_eq_zero (eeV EM) lam s hK1 (θ (kirrWord A u l))` as an intermediate fact. Simplify using `using this`. Introduce `a`. Establish `hw` using `word_isWeightVector hA (hKq ν u hu).1 l hl a`. Establish `h2` using `hθA a (kirrWord A (aeval ES q u) l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hw, map_smul]`. Rewrite using `[eq_sub_of_add_eq h2.symm, ← sub_smul]`. Use `congr 1`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `μ f hf hf0 hμ`. Take `⟨u, hu, rfl⟩` from `hlift μ f (mem_eigenTensorSpace_iff.1 hf).1 hμ`. Assume the negation of the conclusion as `hcone`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hf0` to reduce the goal to its premises. Establish `hθW : ∀ x ∈ kirrSpan ε A (aeval ES q u), θ x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, rfl⟩` from `hy`. Take `⟨hmem, hw⟩` from `hkey μ u hu l hl`. Assume the negation of the conclusion as `hne`. Apply `hcone` to reduce the goal to its premises. Establish `h1` using `hVC.1.1 _ _ hmem hne hw`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e : (kirrWt μ l + (lam + rho n) - lowK ε lam) - (lam + rho n + Pi.single s 1) = kirrWt μ l - lowK ε (lam + Pi.single s 1)`. Unfold `lowK`. Normalize the expressions using the abelian group laws. Rewrite `h1` using `[e]`. Establish `h2` using `root_swap_eq_neg h1 (weight_sub_mem_rootCone (ε := ε) μ l hl)`.
+Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT0` using `hTR _ (wordSpan_isKStable hA (hKq μ u hu)) hθW _ (kirrWord_mem (A := A) (ε := ε) (l := []) _ (by simp [KirrLow]))`. Simplify using `only [kirrWord] at hT0`. Rewrite `hT0` using `[hTq u (mem_eigenTensorSpace_iff.1 hf).2]`. Conclude with `(smul_eq_zero.1 hT0).resolve_left hc`. Introduce `f₁ f₂ hf₁ hf₂ hk₁ hk₂`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u₁, hu₁, rfl⟩` from `hlift _ _ (mem_eigenTensorSpace_iff.1 hf₁).1 hk₁`. Take `⟨u₂, hu₂, rfl⟩` from `hlift _ _ (mem_eigenTensorSpace_iff.1 hf₂).1 hk₂`. Use `set Λ' := lowK ε (lam + Pi.single s 1) with hΛ'`. Establish `e0 : kirrWt Λ' [] + (lam + rho n) - lowK ε lam = lam + rho n + Pi.single s 1`. Simplify using `only [kirrWt, hΛ']`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Unfold `lowK`. Normalize the expressions using the abelian group laws. Take `⟨hm₁, hw₁⟩` from `hkey Λ' u₁ hu₁ [] (by simp [KirrLow])`. Take `⟨hm₂, hw₂⟩` from `hkey Λ' u₂ hu₂ [] (by simp [KirrLow])`. Rewrite `hw₁`, `hw₂` using `[e0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c₁, c₂, hne, hsum⟩` from `hVC.1.2 _ _ hm₁ hm₂ hw₁ hw₂`. Use `⟨c₁, c₂, hne, ?_⟩` and prove the remaining obligations. Establish `hu : IsKHWVec ε A Λ' (c₁ • u₁ + c₂ • u₂)`. Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, hu₁.1 a, hu₂.1 a, smul_add, smul_comm c₁, smul_comm c₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[map_add, map_smul, map_smul, hu₁.2 a b hab he, hu₂.2 a b hab he, smul_zero, smul_zero, add_zero]`. Establish `hθW : ∀ x ∈ kirrSpan ε A (aeval ES q (c₁ • u₁ + c₂ • u₂)), θ x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, hl, rfl⟩` from `hy`. Break down `l with _ | ⟨p, l'⟩` into its components or cases. Simplify using `only [kirrWord] at hsum ⊢`. Rewrite using `[map_add, map_smul, map_smul, map_add, map_smul, map_smul, hsum]`. Take `⟨hmem, hw⟩` from `hkey Λ' _ hu (p :: l') hl`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne0`. Establish `h1` using `hVC.1.1 _ _ hmem hne0 hw`. Establish `e : (kirrWt Λ' (p :: l') + (lam + rho n) - lowK ε lam) - (lam + rho n + Pi.single s 1) = kirrWt Λ' (p :: l') - Λ'`. Rewrite using `[hΛ']`. Unfold `lowK`.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Normalize the expressions using the abelian group laws. Rewrite `h1` using `[e]`. Conclude with `not_rootCone_of_ne Λ' (p :: l') hl (List.cons_ne_nil _ _) h1`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a x _ hx => rw [map_smul, hx, smul_zero]`. Establish `hT0` using `hTR _ (wordSpan_isKStable hA (hKq Λ' _ hu)) hθW _ (kirrWord_mem (A := A) (ε := ε) (l := []) _ (by simp [KirrLow]))`. Simplify using `only [kirrWord] at hT0`. Establish `heig : eeV E (T (c₁ • u₁ + c₂ • u₂)) = ((thV lam s : ℝ) : ℂ) • T (c₁ • u₁ + c₂ • u₂)`. Rewrite using `[map_add, map_smul, map_smul, map_add, map_smul, map_smul, (mem_eigenTensorSpace_iff.1 hf₁).2, (mem_eigenTensorSpace_iff.1 hf₂).2, smul_add, smul_comm c₁, smul_comm c₂]`.
-
-Rewrite `hT0` using `[hTq _ heig]`. Use `(smul_eq_zero.1 hT0).resolve_left hc` as an intermediate fact. Rewrite `this` using `[map_add, map_smul, map_smul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowestKType_tensor_lift (ε : Fin n → Bool) (lam : Fin n → ℝ) (s : Fin n) (hanti : StrictAnti lam)
     (E : Fin n → Fin n → Module.End ℂ M) (P : Submodule ℂ M)

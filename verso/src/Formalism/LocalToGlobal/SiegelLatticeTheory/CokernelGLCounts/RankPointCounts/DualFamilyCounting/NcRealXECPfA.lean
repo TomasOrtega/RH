@@ -29,48 +29,48 @@ def ConstStep : Prop := ∀ k r : ℕ, ∃ Λ : (J k r → ℝ) → Formalism.Ma
   (volume : Measure (Formalism.MainNotions.S.lieE (Nset k r))) = ENNReal.ofReal ((2 : ℝ) ^ (r ^ 2 + r * k)) • volume.map Λ
 
 /- English proof (translation)
-Apply the tactic sequence `have := a.isLt; unfold dg eI; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_eI (a : Fin r) : dg k r (eI k r a) = a.val := by
   have := a.isLt; unfold dg eI; simp only; split_ifs <;> omega
 /- English proof (translation)
-Apply the tactic sequence `have := j.isLt; unfold dg wI; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_wI (j : Fin (k + 1)) : dg k r (wI k r j) = r := by
   have := j.isLt; unfold dg wI; simp only; split_ifs <;> omega
 /- English proof (translation)
-Apply the tactic sequence `have := a.isLt; unfold dg esI; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_esI (a : Fin r) : dg k r (esI k r a) = 2 * r - a.val := by
   have := a.isLt; unfold dg esI; simp only; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold Formalism.QuantumDeterminants.WeylGroupFacts.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gtau_eI (a : Fin r) : Formalism.QuantumDeterminants.WeylGroupFacts.tau k r (eI k r a) = esI k r a := by
   unfold Formalism.QuantumDeterminants.WeylGroupFacts.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega
 /- English proof (translation)
-Apply the tactic sequence `unfold Formalism.QuantumDeterminants.WeylGroupFacts.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gtau_esI (a : Fin r) : Formalism.QuantumDeterminants.WeylGroupFacts.tau k r (esI k r a) = eI k r a := by
   unfold Formalism.QuantumDeterminants.WeylGroupFacts.tau eI esI; apply Fin.ext; simp only; split_ifs <;> omega
 /- English proof (translation)
-Apply the tactic sequence `unfold Formalism.QuantumDeterminants.WeylGroupFacts.tau wI; apply Fin.ext; simp only; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gtau_wI (j : Fin (k + 1)) : Formalism.QuantumDeterminants.WeylGroupFacts.tau k r (wI k r j) = wI k r j := by
   unfold Formalism.QuantumDeterminants.WeylGroupFacts.tau wI; apply Fin.ext; simp only; split_ifs <;> omega
 /- English proof (translation)
-Apply the tactic sequence `unfold Formalism.QuantumDeterminants.WeylGroupFacts.sgn eI; simp only; split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gsgn_eI (a : Fin r) : Formalism.QuantumDeterminants.WeylGroupFacts.sgn k r (eI k r a) = 1 := by
   unfold Formalism.QuantumDeterminants.WeylGroupFacts.sgn eI; simp only; split_ifs <;> first | rfl | omega
 /- English proof (translation)
-Apply the tactic sequence `unfold Formalism.QuantumDeterminants.WeylGroupFacts.sgn esI; simp only; split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gsgn_esI (a : Fin r) : Formalism.QuantumDeterminants.WeylGroupFacts.sgn k r (esI k r a) = 1 := by
   unfold Formalism.QuantumDeterminants.WeylGroupFacts.sgn esI; simp only; split_ifs <;> first | rfl | omega
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.WeylGroupFacts.sgn wI dD`. Simplify using `only [Matrix.diagonal_apply_eq]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gsgn_wI (j : Fin (k + 1)) : Formalism.QuantumDeterminants.WeylGroupFacts.sgn k r (wI k r j) = dD k j j := by
   unfold Formalism.QuantumDeterminants.WeylGroupFacts.sgn wI dD
@@ -78,32 +78,32 @@ theorem gsgn_wI (j : Fin (k + 1)) : Formalism.QuantumDeterminants.WeylGroupFacts
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [dD, Matrix.diagonal_apply_eq]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dD_star (j : Fin (k + 1)) : star (dD k j j) = dD k j j := by
   simp only [dD, Matrix.diagonal_apply_eq]; split_ifs <;> simp
 /- English proof (translation)
-Apply the tactic sequence `simp only [dD, Matrix.diagonal_apply_eq]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dD_sq' (j : Fin (k + 1)) : dD k j j * dD k j j = 1 := by
   simp only [dD, Matrix.diagonal_apply_eq]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Matrix.sub_apply, Matrix.one_apply]; unfold cA; rw [dif_neg (not_lt.2 h)]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_matrix_lower (x : CI k r → ℂ) {a b : Fin r} (h : b ≤ a) : (cA x - 1) a b = 0 := by
   rw [Matrix.sub_apply, Matrix.one_apply]; unfold cA; rw [dif_neg (not_lt.2 h)]; split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply, Matrix.one_apply, if_neg (ne_of_lt h)]`. Unfold `cA`. Rewrite using `[dif_pos h, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_matrix_upper (x : CI k r → ℂ) {a b : Fin r} (h : a < b) : (cA x - 1) a b = x (Sum.inl ⟨(a, b), h⟩) := by
   rw [Matrix.sub_apply, Matrix.one_apply, if_neg (ne_of_lt h)]; unfold cA; rw [dif_pos h, sub_zero]
 
 /- English proof (translation)
-Unfold `cK`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Rewrite using `[dif_pos h, dif_neg (not_lt.2 h.le), dif_pos h, star_neg, star_star, add_neg_cancel]`. Substitute `h` using the available equality. Rewrite using `[dif_neg (lt_irrefl _), dif_neg (lt_irrefl _), star_mul', Complex.star_def, Complex.conj_ofReal, Complex.conj_I]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg (not_lt.2 h.le), dif_pos h, dif_pos h, neg_add_cancel]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem cK_skew (x : CI k r → ℂ) (s : Fin r → ℝ) (a b : Fin r) : cK x s a b + star (cK x s b a) = 0 := by
   unfold cK
@@ -120,49 +120,49 @@ section entries
 variable (t : (CI k r → ℂ) × (Fin r → ℝ))
 
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_ee, Matrix.zero_apply, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_ee (a b : Fin r) : Lm t (eI k r a) (eI k r b) = (cA t.1 - 1) a b := by
   simp only [Lm, Matrix.sub_apply, mk_ee, Matrix.zero_apply, sub_zero]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_ew, Matrix.zero_apply, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_ew (a : Fin r) (j : Fin (k + 1)) : Lm t (eI k r a) (wI k r j) = cB t.1 a j := by
   simp only [Lm, Matrix.sub_apply, mk_ew, Matrix.zero_apply, sub_zero]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_es, Matrix.zero_apply, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_es (a b : Fin r) : Lm t (eI k r a) (esI k r b) = cK t.1 t.2 a b := by
   simp only [Lm, Matrix.sub_apply, mk_es, Matrix.zero_apply, sub_zero]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_we, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_we (j : Fin (k + 1)) (b : Fin r) : Lm t (wI k r j) (eI k r b) = 0 := by
   simp only [Lm, Matrix.sub_apply, mk_we, sub_zero]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_ww, sub_self]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_ww (j c : Fin (k + 1)) : Lm t (wI k r j) (wI k r c) = 0 := by
   simp only [Lm, Matrix.sub_apply, mk_ww, sub_self]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_ws, Matrix.zero_apply, sub_zero, Matrix.neg_apply, dD_mul_apply, conjTranspose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_ws (j : Fin (k + 1)) (b : Fin r) :
     Lm t (wI k r j) (esI k r b) = -(dD k j j * star (cB t.1 b j)) := by
   simp only [Lm, Matrix.sub_apply, mk_ws, Matrix.zero_apply, sub_zero, Matrix.neg_apply, dD_mul_apply,
     conjTranspose_apply]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_se, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_se (a b : Fin r) : Lm t (esI k r a) (eI k r b) = 0 := by
   simp only [Lm, Matrix.sub_apply, mk_se, sub_zero]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_sw, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_sw (a : Fin r) (j : Fin (k + 1)) : Lm t (esI k r a) (wI k r j) = 0 := by
   simp only [Lm, Matrix.sub_apply, mk_sw, sub_zero]
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.sub_apply, mk_ss, Matrix.zero_apply, sub_zero, Matrix.neg_apply, conjTranspose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Lm_ss (a b : Fin r) : Lm t (esI k r a) (esI k r b) = -star ((cA t.1 - 1) b a) := by
   simp only [Lm, Matrix.sub_apply, mk_ss, Matrix.zero_apply, sub_zero, Matrix.neg_apply, conjTranspose_apply]
@@ -170,11 +170,11 @@ Simplify using `only [Lm, Matrix.sub_apply, mk_ss, Matrix.zero_apply, sub_zero, 
 end entries
 
 /- English proof (translation)
-Introduce `i j h`. Take `⟨p, rfl⟩` from `(posE k r).surjective i`. Take `⟨q, rfl⟩` from `(posE k r).surjective j`. Apply the tactic sequence `rcases p with a | c | a <;> rcases q with b | c' | b <;>`. Apply the tactic sequence `simp only [posE_apply, pos, dg_eI, dg_wI, dg_esI] at h <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [posE_apply, pos, Lm_ee, Lm_ew, Lm_es, Lm_we, Lm_ww, Lm_ws, Lm_se, Lm_sw, Lm_ss]`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `exact chart_matrix_lower _ (Fin.le_iff_val_le_val.2 (by omega))`. Consider the case `(rw [neg_eq_zero, star_eq_zero]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `chart_matrix_lower _ (Fin.le_iff_val_le_val.2 (by have := a.isLt; have := b.isLt; omega)))`. Consider the case `(exfalso; first`. Consider the case `(have := a.isLt; have := b.isLt; omega)`. Consider the case `(have := a.isLt; omega)`. Consider the case `(have := b.isLt; omega))`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chart_filtration_one (t : (CI k r → ℂ) × (Fin r → ℝ)) : Fil 1 (Lm t) := by
   intro i j h
@@ -194,9 +194,9 @@ theorem chart_filtration_one (t : (CI k r → ℂ) × (Fin r → ℝ)) : Fil 1 (
         | (have := b.isLt; omega))
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, adjH_apply, Matrix.zero_apply]`. Take `⟨p, rfl⟩` from `(posE k r).surjective i`. Take `⟨q, rfl⟩` from `(posE k r).surjective j`. Apply the tactic sequence `rcases p with a | c | a <;> rcases q with b | c' | b <;>`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [posE_apply, pos, gtau_eI, gtau_esI, gtau_wI, gsgn_eI, gsgn_esI, gsgn_wI, Lm_ee, Lm_ew, Lm_es, Lm_we, Lm_ww, Lm_ws, Lm_se, Lm_sw, Lm_ss, star_zero, mul_zero, zero_mul, add_zero, one_mul, mul_one, star_neg, star_star, neg_add_cancel, star_mul', dD_star]`. Apply the tactic sequence `all_goals first`. Consider the case `rw [add_neg_cancel]`. Consider the case `linear_combination cK_skew t.1 t.2 a b`. Consider the case `linear_combination (-(cB t.1 a c')) * dD_sq' c'`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Lm_adj (t : (CI k r → ℂ) × (Fin r → ℝ)) : adjH (Lm t) + Lm t = 0 := by
   ext i j
@@ -213,7 +213,7 @@ theorem Lm_adj (t : (CI k r → ℂ) × (Fin r → ℝ)) : adjH (Lm t) + Lm t = 
     | linear_combination (-(cB t.1 a c')) * dD_sq' c'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨chart_filtration_one t, Lm_adj t⟩`.
+Supply the required witnesses or components.
 -/
 theorem Lm_mem (t : (CI k r → ℂ) × (Fin r → ℝ)) : Lm t ∈ lieN k r := ⟨chart_filtration_one t, Lm_adj t⟩
 
@@ -228,29 +228,29 @@ def ht : J k r → ℕ
   | Sum.inr a => 2 * r - 2 * a.val
 
 /- English proof (translation)
-Simplify using `only [toC]`. Rewrite using `[h (Sum.inl (Sum.inl c)) hc, h (Sum.inl (Sum.inr c)) hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordinate_first_eq {y y' : J k r → ℝ} {p : ℕ} (h : ∀ j, ht j < p → y j = y' j) {c : CI k r} (hc : hC c < p) :
     (toC y).1 c = (toC y').1 c := by
   simp only [toC]; rw [h (Sum.inl (Sum.inl c)) hc, h (Sum.inl (Sum.inr c)) hc]
 
 /- English proof (translation)
-Simplify using `only [toC]`. Rewrite using `[h (Sum.inr a) ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordinate_second_eq {y y' : J k r → ℝ} {p : ℕ} (h : ∀ j, ht j < p → y j = y' j) {a : Fin r}
     (ha : 2 * r - 2 * a.val < p) : (toC y).2 a = (toC y').2 a := by
   simp only [toC]; rw [h (Sum.inr a) ha]
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.sub_apply, sub_eq_zero]`. Take `⟨P, rfl⟩` from `(posE k r).surjective i`. Take `⟨Q, rfl⟩` from `(posE k r).surjective j`. Apply the tactic sequence `rcases P with a | c | a <;> rcases Q with b | c' | b <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [posE_apply, pos, dg_eI, dg_wI, dg_esI] at hij <;>`. Simplify using `only [posE_apply, pos, Lm_ee, Lm_ew, Lm_es, Lm_we, Lm_ww, Lm_ws, Lm_se, Lm_sw, Lm_ss]`. Distinguish the cases in `hab : a < b`. Rewrite using `[chart_matrix_upper _ hab, chart_matrix_upper _ hab]`. Conclude with `coordinate_first_eq h (by simp only [hC]; omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab)]`. Conclude with `coordinate_first_eq h (by simp only [hC]; omega)`. Unfold `cK split_ifs with h1 h2`. Conclude with `coordinate_first_eq h (by simp only [hC]; have := b.isLt; omega)`. Rewrite using `[coordinate_first_eq h (by simp only [hC]; have := a.isLt; omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a = b` using `le_antisymm (not_lt.1 h2) (not_lt.1 h1)`. Substitute `e` using the available equality. Rewrite using `[coordinate_second_eq h (by have := a.isLt; omega)]`. Simplify using `only [cB]`. Rewrite using `[coordinate_first_eq h (c := Sum.inr (Sum.inl (b, c))) (by simp only [hC]; have := b.isLt; omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : b < a`. Rewrite using `[chart_matrix_upper _ hab, chart_matrix_upper _ hab]`. Rewrite using `[coordinate_first_eq h (by simp only [hC]; have := a.isLt; have := b.isLt; omega)]`. Rewrite using `[chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lm_fil_sub {y y' : J k r → ℝ} {p : ℕ} (h : ∀ j, ht j < p → y j = y' j) :
     Fil p (Lm (toC y) - Lm (toC y')) := by
@@ -281,15 +281,15 @@ theorem Lm_fil_sub {y y' : J k r → ℝ} {p : ℕ} (h : ∀ j, ht j < p → y j
     · rw [chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`. Take `⟨P, rfl⟩` from `(posE k r).surjective i`. Take `⟨Q, rfl⟩` from `(posE k r).surjective j`. Apply the tactic sequence `rcases P with a | c | a <;> rcases Q with b | c' | b <;>`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [posE_apply, pos, Lm_ee, Lm_ew, Lm_es, Lm_we, Lm_ww, Lm_ws, Lm_se, Lm_sw, Lm_ss, add_zero]`. Distinguish the cases in `hab : a < b`. Rewrite using `[chart_matrix_upper _ hab, chart_matrix_upper _ hab, chart_matrix_upper _ hab]`. Both sides reduce to the same expression. Rewrite using `[chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab), add_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `cK split_ifs`. Both sides reduce to the same expression. Simplify using `only [Prod.fst_add, Pi.add_apply, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Prod.snd_add, Pi.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cB, Prod.fst_add, Pi.add_apply, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hab : b < a`. Rewrite using `[chart_matrix_upper _ hab, chart_matrix_upper _ hab, chart_matrix_upper _ hab]`. Simplify using `only [Prod.fst_add, Pi.add_apply, star_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -316,15 +316,15 @@ theorem Lm_add (t t' : (CI k r → ℂ) × (Fin r → ℝ)) : Lm (t + t') = Lm t
     · rw [chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab)]; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Complex.real_smul]`. Take `⟨P, rfl⟩` from `(posE k r).surjective i`. Take `⟨Q, rfl⟩` from `(posE k r).surjective j`. Apply the tactic sequence `rcases P with a | c | a <;> rcases Q with b | c' | b <;>`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [posE_apply, pos, Lm_ee, Lm_ew, Lm_es, Lm_we, Lm_ww, Lm_ws, Lm_se, Lm_sw, Lm_ss, mul_zero]`. Distinguish the cases in `hab : a < b`. Rewrite using `[chart_matrix_upper _ hab, chart_matrix_upper _ hab]`. Simplify using `[Complex.real_smul]`. Rewrite using `[chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab), mul_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cB, Complex.real_smul]`. Unfold `cK split_ifs`. Simplify using `[Complex.real_smul]`. Simplify using `only [Prod.smul_fst, Pi.smul_apply, Complex.real_smul, star_mul', Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cB, Prod.smul_fst, Pi.smul_apply, Complex.real_smul, star_mul', Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hab : b < a`. Rewrite using `[chart_matrix_upper _ hab, chart_matrix_upper _ hab]`. Simplify using `only [Prod.smul_fst, Pi.smul_apply, Complex.real_smul, star_mul', Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -354,7 +354,7 @@ theorem Lm_smul (c : ℝ) (t : (CI k r → ℂ) × (Fin r → ℝ)) : Lm (c • 
     · rw [chart_matrix_lower _ (not_lt.1 hab), chart_matrix_lower _ (not_lt.1 hab)]; simp
 
 /- English proof (translation)
-Use extensionality with `i`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
 theorem toC_add (y y' : J k r → ℝ) : toC (y + y') = toC y + toC y' := by
   ext i
@@ -362,7 +362,7 @@ theorem toC_add (y y' : J k r → ℝ) : toC (y + y') = toC y + toC y' := by
   · rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `apply Complex.ext <;> simp [toC]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 -/
 theorem toC_smul (c : ℝ) (y : J k r → ℝ) : toC (c • y) = c • toC y := by
   ext i
@@ -380,7 +380,7 @@ Both sides reduce to the same expression.
 theorem LJ_apply (y : J k r → ℝ) : LJ y = Lm (toC y) := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.continuous_of_finiteDimensional _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_LJ : Continuous (LJ (k := k) (r := r)) := LinearMap.continuous_of_finiteDimensional _
 

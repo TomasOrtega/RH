@@ -12,9 +12,7 @@ section Norms
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `haveI := v.isMaximal`. Use `letI := Ideal.Quotient.field v.asIdeal`. Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 F ⧸ v.asIdeal)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`.
-
-Conclude with `FiniteField.isPrimePow_card _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrimePow_absNorm (v : HeightOneSpectrum (𝓞 F)) : IsPrimePow (Ideal.absNorm v.asIdeal) := by
   haveI := v.isMaximal
@@ -25,9 +23,9 @@ theorem isPrimePow_absNorm (v : HeightOneSpectrum (𝓞 F)) : IsPrimePow (Ideal.
   exact FiniteField.isPrimePow_card _
 
 /- English proof (translation)
-Establish `h1 : ∏ v ∈ S, v.asIdeal ∣ Ideal.span {(n : 𝓞 F)}` using `Finset.prod_dvd_of_coprime (fun v _ w _ hvw => (HeightOneSpectrum.isCoprime_of_ne v w hvw)) fun v hv => Ideal.dvd_span_singleton.2 (h v hv)`. Establish `h2` using `map_dvd Ideal.absNorm h1`. Rewrite `h2` using `[map_prod, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Establish `h3` using `Nat.le_of_dvd (by positivity) h2`. Establish `h4 : ∀ v ∈ S, ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0` using `fun v _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isPrimePow_absNorm v).ne_zero` after adjusting the coercions. Rewrite using `[← Real.log_prod h4, ← Real.log_pow]`. Use `Real.log_le_log (Finset.prod_pos fun v hv => lt_of_le_of_ne (Nat.cast_nonneg _) (h4 v hv).symm) ?_` and prove the remaining obligations. Conclude with `h3` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_log_absNorm_le (S : Finset (HeightOneSpectrum (𝓞 F))) {n : ℕ} (hn : n ≠ 0)
     (h : ∀ v ∈ S, (n : 𝓞 F) ∈ v.asIdeal) :
@@ -47,15 +45,15 @@ theorem sum_log_absNorm_le (S : Finset (HeightOneSpectrum (𝓞 F))) {n : ℕ} (
 end Norms
 
 /- English proof (translation)
-Establish `hfL : 0 ≤ O.f * Real.log b` using `by positivity`. Establish `hlq : 0 < Real.log (O.qq O.sv0)` using `Real.log_pos (by exact_mod_cast (hq _ h0).one_lt)`. Establish `hP0 : 0 ≤ O.PPF C b` using `by linarith`. Use `⟨⟨hq, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `FunData.Sig0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite `hS`, the goal using `[← Finset.add_sum_erase _ _ h0]`. Establish `e1 : ∑ q ∈ O.S0.erase O.sv0, (O.ee C b q : ℝ) * Real.log (O.qq q) = 2 * ∑ q ∈ O.S0.erase O.sv0, Real.log (O.qq q)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q hq' => ?_` and prove the remaining obligations. Simplify using `[FunData.ee, Finset.ne_of_mem_erase hq']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e2 : (O.ee C b O.sv0 : ℝ) * Real.log (O.qq O.sv0) ≤ O.PPF C b + Real.log (O.qq O.sv0)`. Establish `h` using `Nat.floor_le (div_nonneg hP0 hlq.le)`. Rewrite `h` using `[le_div_iff₀ hlq]`. Simplify using `only [FunData.ee, if_true]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `LeafCS FunData.cS`. Establish `e1 : ∑ q ∈ O.S0, (O.cc q : ℝ) * Real.log (O.qq q) ≤ 2 * ∑ q ∈ O.S0, Real.log (O.qq q)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun q hq' => mul_le_mul_of_nonneg_right ?_ (Real.log_natCast_nonneg _)` and prove the remaining obligations. Conclude with `hc q hq'` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem leaves_of_sum {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs}
     (O : FunData K Df) (C b : ℝ) (hL : 0 ≤ Real.log b) (h0 : O.sv0 ∈ O.S0) (hq : ∀ q ∈ O.S0, IsPrimePow (O.qq q))
@@ -89,15 +87,15 @@ theorem leaves_of_sum {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : De
     linarith
 
 /- English proof (translation)
-Establish `p0` using `(GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec D).1.pos`. Establish `p1` using `(D.host.g_prime 0).pos`. Establish `p2` using `(D.host.g_prime 1).pos`. Establish `p3` using `D.host.pde_prime.pos`. Establish `p4` using `D.host.pde'_prime.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : Module.finrank ℚ D.host.F = D.R.f`. Rewrite using `[D.host.finrank_hostF, Ranks.f, Ranks.n]`. Establish `key` using `sum_log_absNorm_le P.S0 (n := GlobalTheory.ChiGrid.q0 D * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde')) (by positivity) fun v hv => by`. Rewrite using `[Nat.cast_mul]`. Break down `P.mem_S0_of_sum_eq.1 hv with rfl | hv` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Ideal.mul_mem_right _ _ P.basePlace_over_qZero`. Conclude with `Ideal.mul_mem_left _ _ (Formalism.L2.DIV.mem_primesOf.1 hv).2`. Rewrite `key` using `[hF]`. Use `key.trans ?_` and prove the remaining obligations. Establish `hb : Real.log s.b = s.L` using `Real.log_exp _`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : s.X' ≤ Real.exp s.L` using `Real.exp_le_exp.2 (Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le (by linarith [s.eps_pos]))`. Establish `hl : ∀ {n : ℕ} {y : ℝ}, 0 < n → (n : ℝ) ≤ Real.exp y → Real.log n ≤ y` using `fun hn h => (Real.log_le_iff_le_exp (by exact_mod_cast hn)).2 h`. Establish `a0` using `hl p0 (h3.le.trans hX)`. Establish `a1` using `hl p1 (hg 0)`. Establish `a2` using `hl p2 (hg 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `hl p3 (h1.le.trans hX)`. Establish `a4` using `hl p4 (h2.le.trans hX)`. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), hb, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) (Nat.cast_nonneg _)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramifiedPlaces_sum_log_absNorm_le {D : D7} {T : Type} {Lc : Formalism.IndefR.Links.LevCh D T} (P : GlobalTheory.ChiGrid.Places Lc) (s : Formalism.BasicNotions.Scale)
     (hg : ∀ j : Fin 2, ((D.host.g j : ℕ) : ℝ) ≤ Real.exp (9 * s.L)) (h1 : (D.host.pde : ℝ) < s.X')
@@ -134,11 +132,11 @@ theorem ramifiedPlaces_sum_log_absNorm_le {D : D7} {T : Type} {Lc : Formalism.In
   exact mul_le_mul_of_nonneg_left (by linarith) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Establish `hf' : (1 : ℝ) ≤ O.f` using `by exact_mod_cast hf`. Establish `hn' : (1 : ℝ) ≤ O.nr` using `by exact_mod_cast hn`. Establish `h1' : (1 : ℝ) ≤ O.g1` using `by exact_mod_cast h1`. Establish `h2' : (1 : ℝ) ≤ O.g2` using `by exact_mod_cast h2`. Establish `h3' : (1 : ℝ) ≤ O.pd` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4' : (1 : ℝ) ≤ O.pd'` using `by exact_mod_cast h4`. Establish `h5' : (1 : ℝ) ≤ |(O.dE : ℝ)|` using `by exact_mod_cast Int.one_le_abs h5`. Establish `hl : 0 ≤ Real.log b` using `Real.log_nonneg hb`. Establish `e1 : Real.log b ≤ Real.log (b * O.nr * O.g1 * O.g2 * O.pd * O.pd' * |(O.dE : ℝ)|)`. Use `Real.log_le_log (by linarith) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (O.f : ℝ) ≤ (O.f : ℝ) ^ 2` using `le_self_pow₀ hf' two_ne_zero`. Establish `e3 : (1 : ℝ) ≤ (O.nr : ℝ) ^ 6` using `one_le_pow₀ hn'`. Unfold `FunData.PPF`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_PPF {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs}
     (O : FunData K Df) {C b : ℝ} (hC : 42 ≤ C) (hb : 1 ≤ b) (hf : 1 ≤ O.f) (hn : 1 ≤ O.nr) (h1 : 1 ≤ O.g1) (h2 : 1 ≤ O.g2)
@@ -168,11 +166,13 @@ namespace GlobalTheory.BigTop.Fun
 open RamSum
 
 /- English proof (translation)
-Use `⟨0, fun CF _ => ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Use `⟨42, fun C hC => EvPt.of_forall fun x hx i p _ d _ => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hg, h1, h2, -⟩` from `hF.1.2.2.2.2.2.2.2.2 x hx i`. Establish `h3` using `hF.2.2.1 x hx i`. Establish `hb : 1 ≤ (Fm.L x i).sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `leaves_of_sum d.O C p.Z.b (Real.log_nonneg hb) (d.G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl)) (fun v _ => isPrimePow_absNorm v) (ramifiedPlaces_sum_log_absNorm_le d.G.pl (Fm.L x i).sc hg h1 h2 h3) (fun v _ => ?_) (le_PPF d.O hC hb ?_ ?_ ((Fm.D x i).host.g_prime 0).pos ((Fm.D x i).host. …` and prove the remaining obligations. Apply the tactic sequence `unfold FunIn.O FunIn.data dsimp only split_ifs <;> omega`. Use `(Fm.D x i).R.m_le_f` as an intermediate fact. Use `(Fm.D x i).R.two_le_m` as an intermediate fact. Use `show 1 ≤ (Fm.D x i).R.f`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Use `(Fm.D x i).R.two_le_m show 1 ≤ (Fm.D x i).R.k + (Fm.D x i).R.m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+A detailed English derivation is pending.
 -/
 theorem ramified_sums_seventh_bound : RamifiedSumBound := by
   refine ⟨0, fun CF _ => ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ _ => ?_⟩⟩⟩

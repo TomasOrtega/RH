@@ -8,7 +8,7 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Unfold `iy`. Use `split_ifs`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `pLoc ℚ v ((1 : Af ℚ) - 0 + 0) = 1`. Rewrite using `[sub_zero, add_zero, map_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cp_iy (v : H.P ℚ) (r : ℝ) : H.cp v ((iy r : (A ℚ)ˣ) : A ℚ) = 1 := by
   unfold iy
@@ -18,11 +18,11 @@ private theorem cp_iy (v : H.P ℚ) (r : ℝ) : H.cp v ((iy r : (A ℚ)ˣ) : A �
     rw [sub_zero, add_zero, map_one]
 
 /- English proof (translation)
-Unfold `pin`. Use `finprod_induction (fun x : (A ℚ)ˣ => H.cp v (x : A ℚ) = 1) (by simp) ?_ ?_` and prove the remaining obligations. Introduce `x y hx hy`. Rewrite using `[Units.val_mul, map_mul, hx, hy, one_mul]`. Introduce `v'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hv : v = v'`. Substitute `hv` using the available equality. Rewrite using `[Nat.factorization_eq_zero_of_not_dvd h]`. Simplify using the standard rewrite rules. Establish `: H.cp v ((pv v' : (A ℚ)ˣ) : A ℚ) = 1` using `by classical`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Pi.mulSingle_eq_of_ne hv _`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, this, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cp_pin (v : H.P ℚ) (n : ℕ) (h : ¬ normV v ∣ n) :
     H.cp v ((pin n : (A ℚ)ˣ) : A ℚ) = 1 := by
@@ -41,7 +41,7 @@ private theorem cp_pin (v : H.P ℚ) (n : ℕ) (h : ¬ normV v ∣ n) :
       rw [Units.val_pow_eq_pow_val, map_pow, this, one_pow]
 
 /- English proof (translation)
-Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun y : GL (Fin 2) (Af ℚ) => pLoc ℚ v (y.val i j)) (TR.pFin_infGL (E := ℚ) (a := 2) _ : Matrix.GeneralLinearGroup.map (pFin ℚ) (rot t) = 1)`. Use `h.trans ?_` and prove the remaining obligations. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cp_rot (v : H.P ℚ) (t : ℝ) :
     Matrix.GeneralLinearGroup.map (H.cp v) (rot t) = 1 := by
@@ -53,7 +53,7 @@ private theorem cp_rot (v : H.P ℚ) (t : ℝ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `H.cp v ((aE a).val i j) = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, h]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cp_aE (v : H.P ℚ) (a : (A ℚ)ˣ) (h : H.cp v (a : A ℚ) = 1) :
     Matrix.GeneralLinearGroup.map (H.cp v) (aE a) = 1 := by
@@ -62,13 +62,11 @@ private theorem cp_aE (v : H.P ℚ) (a : (A ℚ)ˣ) (h : H.cp v (a : A ℚ) = 1)
   fin_cases i <;> fin_cases j <;> simp [aE, h]
 
 /- English proof (translation)
-Introduce `E _ _ v n r t _ h w hw`. Establish `hx : Matrix.GeneralLinearGroup.map (H.cp v) (aE (iy r * pin n) * rot t) = 1`. Rewrite using `[map_mul, cp_rot, cp_aE v _ (by rw [Units.val_mul, map_mul, cp_iy, cp_pin v n h, one_mul]), one_mul]`. Generalize the expression as in `aE (iy r * pin n) * rot t = x at hx`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Establish `: Matrix.GeneralLinearGroup.map (H.cp w) (em E x) = 1`. Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Establish `e : H.cp (w.under (𝓞 ℚ)) (x.val i j) = (1 : Matrix (Fin 2) (Fin 2) _) i j` using `congrArg (fun y : GL (Fin 2) _ => y.val i j) hx`. Express the relevant statement in the definitionally equal form `GroundTheory.Global.SemiLocal.completionMap (GroundTheory.Global.AdeleBaseChange.below ℚ w) w (H.cp (w.under (𝓞 ℚ)) (x.val i j)) = (1 : Matrix (Fin 2) (Fin 2) _) i j`. Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `map_one (GroundTheory.Global.SemiLocal.completionMap (GroundTheory.Global.AdeleBaseChange.below ℚ w) w)`. Conclude with `map_zero (GroundTheory.Global.SemiLocal.completionMap (GroundTheory.Global.AdeleBaseChange.below ℚ w) w)`. Unfold `H.KAt`. Rewrite using `[this]`.
-
-Conclude with `one_mem _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.kAt_diag_ideleOfNat_mul_rotation_of_not_dvd :
     ∀ (E : Type) [Field E] [NumberField E] (v : H.P ℚ) (n : ℕ) (r t : ℝ), 0 < n → ¬ normV v ∣ n → ∀ w : H.P E, w.under (𝓞 ℚ) = v →

@@ -12,14 +12,14 @@ namespace Formalism.MainNotions.Ext.CutA
 open Formalism.MainNotions.GL3Theta Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.GL3r7
 
 /- English proof (translation)
-Introduce `p _ g S hOk hp hsw hint hadd hC hbi hm1 hex`. Conclude with `split_zero_g p g.l g.ex g.ph (l0 g) hOk.2.2.1 hOk.2.2.2 (ph0 g) S hp hsw hint hadd hC hbi hm1 hex`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem splitZeroG_holds : SplitZeroG := by
   intro p _ g S hOk hp hsw hint hadd hC hbi hm1 hex
   exact split_zero_g p g.l g.ex g.ph (l0 g) hOk.2.2.1 hOk.2.2.2 (ph0 g) S hp hsw hint hadd hC hbi hm1 hex
 
 /- English proof (translation)
-Introduce `p hp g hOk hI`. Take `⟨⟨h1, h2, h3, h4, h6, hΔ⟩, hW, he0, hel⟩` from `hOk`. Conclude with `formal_group_tri_factor p g.W g.wq g.ex h1 h2 h3 h4 h6 hΔ hW he0 hel hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lemma_three_one_third_holds : LemmaThreeOneThird := by
   intro p hp g hOk hI
@@ -27,7 +27,7 @@ theorem lemma_three_one_third_holds : LemmaThreeOneThird := by
   exact formal_group_tri_factor p g.W g.wq g.ex h1 h2 h3 h4 h6 hΔ hW he0 hel hI
 
 /- English proof (translation)
-Introduce `p hp g hOk hI`. Take `⟨⟨h1, h2, h3, h4, h6, hΔ⟩, hW, he0, hel⟩` from `hOk`. Conclude with `fglChordFactor p g.W g.wq g.ex h1 h2 h3 h4 h6 hΔ hW he0 hel hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lemma_three_one_second_holds : UnitTraceSumSecondBound := by
   intro p hp g hOk hI
@@ -35,7 +35,7 @@ theorem lemma_three_one_second_holds : UnitTraceSumSecondBound := by
   exact fglChordFactor p g.W g.wq g.ex h1 h2 h3 h4 h6 hΔ hW he0 hel hI
 
 /- English proof (translation)
-Introduce `p hp g hOk hE hQ hn`. Take `⟨⟨h1, h2, h3, h4, h6, hΔ⟩, hW, he0, hel⟩` from `hOk`. Conclude with `thetaCube_triple_relation p g.W g.wq g.l g.ex (ePhi1 g.lam g.abelian₂ g.C g.wq) _ h1 h2 h3 h4 h6 hW he0 hel hE hQ hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cube3OfDet_holds : Cube3OfDet := by
   intro p hp g hOk hE hQ hn
@@ -43,13 +43,13 @@ theorem cube3OfDet_holds : Cube3OfDet := by
   exact thetaCube_triple_relation p g.W g.wq g.l g.ex (ePhi1 g.lam g.abelian₂ g.C g.wq) _ h1 h2 h3 h4 h6 hW he0 hel hE hQ hn
 
 /- English proof (translation)
-The claim follows from `cube_second_identity_of_determinant lemma_three_one_third_holds cube3OfDet_holds D hQ (addInt_holds D)`.
+A detailed English derivation is pending.
 -/
 theorem cube_second_of_determinant_formula (D : Formalism.BasicNotions.D7) (hQ : PAdicFrobeniusStickelberger D) : cube3 D :=
   cube_second_identity_of_determinant lemma_three_one_third_holds cube3OfDet_holds D hQ (addInt_holds D)
 
 /- English proof (translation)
-Introduce `p hp g hOk hE hId hn`. Take `⟨_, hW, he0, hel⟩` from `hOk`. Conclude with `phiCubeOfFactor p _ g.ex _ _ he0 hel hE hId hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cube_first_of_addition_holds : CubeIdentityFromAdditionFormula := by
   intro p hp g hOk hE hId hn
@@ -57,13 +57,13 @@ theorem cube_first_of_addition_holds : CubeIdentityFromAdditionFormula := by
   exact phiCubeOfFactor p _ g.ex _ _ he0 hel hE hId hn
 
 /- English proof (translation)
-The claim follows from `addition_identity_of_sigma_formula lemma_three_one_second_holds cube_first_of_addition_holds D hQ (ePhiOne_holds D) (addInt_holds D)`.
+A detailed English derivation is pending.
 -/
 theorem cube_first_of_addition_formula (D : Formalism.BasicNotions.D7) (hQ : PAdicSigmaAdditionFormula D) : cube2 D :=
   addition_identity_of_sigma_formula lemma_three_one_second_holds cube_first_of_addition_holds D hQ (ePhiOne_holds D) (addInt_holds D)
 
 /- English proof (translation)
-The claim follows from `cube_of cube_of_two_identities_holds D (cube_first_of_addition_formula D hQ) (cube_second_of_determinant_formula D hQd)`.
+A detailed English derivation is pending.
 -/
 theorem theorem_of_cube_of_addition_formulas (D : Formalism.BasicNotions.D7) (hQ : PAdicSigmaAdditionFormula D) (hQd : PAdicFrobeniusStickelberger D) : cube D :=
   cube_of cube_of_two_identities_holds D (cube_first_of_addition_formula D hQ) (cube_second_of_determinant_formula D hQd)

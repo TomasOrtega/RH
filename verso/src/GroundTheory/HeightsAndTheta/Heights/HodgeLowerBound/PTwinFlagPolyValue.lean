@@ -15,13 +15,13 @@ namespace FlagPolynomialValue
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Simplify using `using isValueAt_intCast y z 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isValueAt_zero (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) : IsValueAt y (0 : Ω) z (0 : ℂ) := by
   simpa using isValueAt_intCast y z 0
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isValueAt_zero y z`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `isValueAt_add (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValueAt_sum {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} {α : Type} (s : Finset α) (f : α → Ω)
     (g : α → ℂ) (h : ∀ a ∈ s, IsValueAt y (f a) z (g a)) :
@@ -37,7 +37,7 @@ theorem isValueAt_sum {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} {α :
 omit [Fintype K] in
 
 /- English proof (translation)
-Introduce `μ` and use `by rw [coeff_add, coeff_add]; exact isValueAt_add (h μ) (h' μ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valPoly_add {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} {σ : Type} {P P' : MvPolynomial σ Ω}
     {Q Q' : MvPolynomial σ ℂ} (h : ValPoly y z P Q) (h' : ValPoly y z P' Q') :
@@ -45,7 +45,7 @@ theorem valPoly_add {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} {σ : T
   rw [coeff_add, coeff_add]; exact isValueAt_add (h μ) (h' μ)
 
 /- English proof (translation)
-Introduce `μ` and use `by classical rw [coeff_mul, coeff_mul] exact isValueAt_sum _ _ _ fun x _ => isValueAt_mul (h x.1) (h' x.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valPoly_mul {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} {σ : Type} {P P' : MvPolynomial σ Ω}
     {Q Q' : MvPolynomial σ ℂ} (h : ValPoly y z P Q) (h' : ValPoly y z P' Q') :
@@ -55,7 +55,7 @@ theorem valPoly_mul {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} {σ : T
   exact isValueAt_sum _ _ _ fun x _ => isValueAt_mul (h x.1) (h' x.2)
 
 /- English proof (translation)
-Introduce `μ` and use `by classical rw [coeff_C, coeff_C] split_ifs · exact isValueAt_intCast y z n · exact isValueAt_zero y z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valPoly_intC (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) {σ : Type} (n : ℤ) :
     ValPoly y z (C (n : Ω) : MvPolynomial σ Ω) (C (n : ℂ)) := fun μ => by
@@ -66,11 +66,11 @@ theorem valPoly_intC (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) {σ : 
   · exact isValueAt_zero y z
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y z σ κ A B hAB F`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C n`. Establish `h` using `valPoly_intC y z (σ := σ) n`. Simplify using `only [aeval_C, map_intCast] at h ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using h`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add]`. Conclude with `valPoly_add hp hq`. Consider the case `mul_X p j hp`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, aeval_X, aeval_X]`. Conclude with `valPoly_mul hp (hAB j)`.
+A detailed English derivation is pending.
 -/
 theorem proof : FlagPolynomialValue.Statement := by
   intro K _ ι _ Ω _ y z σ κ A B hAB F

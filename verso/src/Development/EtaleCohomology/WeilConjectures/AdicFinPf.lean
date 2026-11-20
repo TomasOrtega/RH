@@ -21,13 +21,13 @@ theorem lev_smul (k : ℕ) (r : ℤ_[l]) (x : Hl l E n i) :
     LateralTheory.KummerTheory.lev l (r • x) k = PadicInt.toZModPow k r • LateralTheory.KummerTheory.lev l x k := rfl
 
 /- English proof (translation)
-The claim follows from `x.2 k`.
+A detailed English derivation is pending.
 -/
 theorem lev_red (k : ℕ) (x : Hl l E n i) :
     red (l ^ (k + 1)) (l ^ k) E n i (LateralTheory.KummerTheory.lev l x (k + 1)) = LateralTheory.KummerTheory.lev l x k := x.2 k
 
 /- English proof (translation)
-Use `conv_lhs => rw [← ZMod.natCast_zmod_val c, Nat.cast_smul_eq_nsmul, map_nsmul]`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_smul {Q q : ℕ} [NeZero Q] [NeZero q] (h : q ∣ Q) (c : ZMod Q) (z : Ht Q E n i) :
     red Q q E n i (c • z) = ZMod.castHom h (ZMod q) c • red Q q E n i z := by
@@ -37,9 +37,9 @@ theorem red_smul {Q q : ℕ} [NeZero Q] [NeZero q] (h : q ∣ Q) (c : ZMod Q) (z
 open LateralTheory.KummerTheory in
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x; exact ⟨0, Submodule.zero_mem _, x, by simp⟩`. Consider the case `succ k ih`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm, y, rfl⟩` from `ih x`. Take `⟨t, y', rfl⟩` from `hg y`. Use `⟨m + ((l : ℤ_[l]) ^ k) • g t, Submodule.add_mem _ hm (Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)), y', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_smul, ← pow_add, add_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_mod {ι : Type*} (g : ι → Hl l E n i)
     (hg : ∀ x : Hl l E n i, ∃ t y, x = g t + ((l : ℤ_[l]) ^ 1) • y) :
@@ -55,37 +55,35 @@ theorem gen_mod {ι : Type*} (g : ι → Hl l E n i)
     rw [smul_add, smul_smul, ← pow_add, add_assoc]
 
 /- English proof (translation)
-Rewrite using `[lev_smul, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_pow_smul (k : ℕ) (y : Hl l E n i) : LateralTheory.KummerTheory.lev l (((l : ℤ_[l]) ^ k) • y) k = 0 := by
   rw [lev_smul, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_smul]
 
 /- English proof (translation)
-Introduce `l _ E n i hfin hker`. Set `S : Set (Ht (l ^ 1) E n i)` to `Set.range fun x : Hl l E n i => LateralTheory.KummerTheory.lev l x 1`. Use `haveI : Finite (Ht (l ^ 1) E n i) := hfin 1`. Use `haveI : Fintype S := Fintype.ofFinite S`. Set `g : S → Hl l E n i` to `fun s => s.2.choose`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgs : ∀ s : S, LateralTheory.KummerTheory.lev l (g s) 1 = s.1` using `fun s => s.2.choose_spec`. Establish `hg : ∀ x : Hl l E n i, ∃ t y, x = g t + ((l : ℤ_[l]) ^ 1) • y`. Introduce `x`. Use `⟨⟨_, x, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hker 1 (x - g ⟨_, x, rfl⟩) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `levHom l E n i 1 (x - _) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr (hgs ⟨_, x, rfl⟩).symm)`. Conclude with `⟨y, by rw [← hy]; abel⟩`. Rewrite using `[Module.finite_def, Submodule.fg_def]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨Set.range g, Set.finite_range g, eq_top_iff.mpr fun x _ => ?_⟩` and prove the remaining obligations. Set `T : ℕ → Type 1` to `fun k => {a : S → ZMod (l ^ k) // LateralTheory.KummerTheory.lev l x k = ∑ t, a t • LateralTheory.KummerTheory.lev l (g t) k}`. Establish `hT : ∀ k (a : T (k + 1)), LateralTheory.KummerTheory.lev l x k = ∑ t, ZMod.castHom (pow_dvd_pow l (Nat.le_succ k)) (ZMod (l ^ k)) (a.1 t) • LateralTheory.KummerTheory.lev l (g t) k`. Introduce `k a`. Use `(lev_red l E n i k x).symm.trans ((congrArg _ a.2).trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[red_smul _ _ _ (pow_dvd_pow l (Nat.le_succ k)), lev_red]`. Set `f : ∀ k, T (k + 1) ⟶ T k` to `fun k => TypeCat.ofHom fun a => (⟨fun t => ZMod.castHom (pow_dvd_pow l (Nat.le_succ k)) (ZMod (l ^ k)) (a.1 t), hT k a⟩ : T k)`. Set `F : ℕᵒᵖ ⥤ Type 1` to `Functor.ofOpSequence f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Use `haveI : ∀ j : ℕᵒᵖ, Finite (F.obj j) := fun j => by`. Express the relevant statement in the definitionally equal form `Finite (T j.unop)`. Conclude with `Subtype.finite`. Use `haveI : ∀ j : ℕᵒᵖ, Nonempty (F.obj j) := fun j => by`. Express the relevant statement in the definitionally equal form `Nonempty (T j.unop)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨m, hm, y, rfl⟩` from `gen_mod l E n i g hg j.unop x`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ_[l]).mp hm`. Use `⟨⟨fun t => PadicInt.toZModPow j.unop (c t), ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `levHom l E n i _ (_ + _) = _`. Rewrite using `[map_add, map_sum, show levHom l E n i j.unop (((l : ℤ_[l]) ^ j.unop) • y) = 0 from lev_pow_smul l E n i _ y, add_zero]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨sec, hsec⟩` from `nonempty_sections_of_finite_inverse_system F`. Set `A : ∀ k, T k` to `fun k => sec (Opposite.op k)`. Establish `hA : ∀ k t, ZMod.castHom (pow_dvd_pow l (Nat.le_succ k)) (ZMod (l ^ k)) ((A (k + 1)).1 t) = (A k).1 t`. Introduce `k t`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hsec (homOfLE (Nat.le_add_right k 1)).op` as an intermediate fact. Rewrite `this` using `[Functor.ofOpSequence_map_homOfLE_succ]`. Use `Eq.trans ?_ (congrArg (fun b : T k => b.1 t) this)` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hdiv : ∀ t j, (l : ℤ) ^ j ∣ (((A (j + 1)).1 t).val : ℤ) - (((A j).1 t).val : ℤ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t j`. Establish `h` using `hA j t`. Rewrite `h` using `[ZMod.castHom_apply, ZMod.cast_eq_val, ← ZMod.natCast_zmod_val ((A j).1 t)]`. Establish `h2 : ((((A j).1 t).val : ℤ) : ZMod (l ^ j)) = ((((A (j + 1)).1 t).val : ℤ) : ZMod (l ^ j))`. Simplify using `only [Int.cast_natCast]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.symm`. Rewrite `h2` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Conclude with `h2` after adjusting the coercions. Set `α : S → ℤ_[l]` to `fun t => PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun j => (((A j).1 t).val : ℤ)) l (hdiv t))`. Establish `hα : ∀ k t, PadicInt.toZModPow k (α t) = (A k).1 t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `k t`. Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub _ _ (hdiv t), Int.cast_natCast, ZMod.natCast_zmod_val]`. Use `(Submodule.mem_span_range_iff_exists_fun ℤ_[l]).mpr ⟨α, Subtype.ext (funext fun k => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `levHom l E n i k (∑ t, α t • g t) = LateralTheory.KummerTheory.lev l x k`. Rewrite using `[map_sum, (A k).2]`.
-
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LateralTheory.KummerTheory.lev l (α t • g t) k = _`. Rewrite using `[lev_smul, hα]`.
+A detailed English derivation is pending.
 -/
 theorem AdicFin_of : LateralTheory.KummerTheory.AdicFin := by
   intro l _ E n i hfin hker

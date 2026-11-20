@@ -26,20 +26,20 @@ instance : SetLike (CMType E) (E →+* ℂ) where
 instance : PartialOrder (CMType E) := .ofSetLike (CMType E) (E →+* ℂ)
 
 /- English proof (translation)
-The claim follows from `Φ.mem_iff_conjugate_notMem' τ`.
+A detailed English derivation is pending.
 -/
 theorem mem_iff_conjugate_notMem (Φ : CMType E) (τ : E →+* ℂ) :
     τ ∈ Φ ↔ ComplexEmbedding.conjugate τ ∉ Φ := Φ.mem_iff_conjugate_notMem' τ
 
 /- English proof (translation)
-Rewrite using `[mem_iff_conjugate_notMem Φ τ, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjugate_mem_iff (Φ : CMType E) (τ : E →+* ℂ) :
     ComplexEmbedding.conjugate τ ∈ Φ ↔ τ ∉ Φ := by
   rw [mem_iff_conjugate_notMem Φ τ, not_not]
 
 /- English proof (translation)
-Rewrite using `[conjugate_mem_iff]`. Conclude with `em _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_or_conjugate_mem (Φ : CMType E) (τ : E →+* ℂ) :
     τ ∈ Φ ∨ ComplexEmbedding.conjugate τ ∈ Φ := by
@@ -51,7 +51,7 @@ def conjugate (Φ : CMType E) : CMType E where
   mem_iff_conjugate_notMem' _ := Φ.mem_iff_conjugate_notMem _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_conjugate (Φ : CMType E) (τ : E →+* ℂ) :
     τ ∈ Φ.conjugate ↔ ComplexEmbedding.conjugate τ ∈ Φ := Iff.rfl
@@ -98,7 +98,7 @@ variable {E : Type*} [Field E] [NumberField E] (Φ : CMType E)
 noncomputable instance : Fintype Φ := Fintype.ofFinite _
 
 /- English proof (translation)
-Rewrite using `[← Φ.sumEquiv.sum_comp, Fintype.sum_sum_type, Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_univ_eq {M : Type*} [AddCommMonoid M] (g : (E →+* ℂ) → M) :
     ∑ τ, g τ = ∑ τ : Φ, (g τ + g (ComplexEmbedding.conjugate τ.1)) := by
@@ -106,13 +106,13 @@ theorem sum_univ_eq {M : Type*} [AddCommMonoid M] (g : (E →+* ℂ) → M) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Embeddings.card E ℂ, ← Fintype.card_congr Φ.sumEquiv, Fintype.card_sum, two_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_mul_card : 2 * Fintype.card Φ = Module.finrank ℚ E := by
   rw [← Embeddings.card E ℂ, ← Fintype.card_congr Φ.sumEquiv, Fintype.card_sum, two_mul]
 
 /- English proof (translation)
-Establish `h` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h` using `[Algebra.IsQuadraticExtension.finrank_eq_two _ E, ← Φ.two_mul_card]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_eq_finrank [IsCMField E] :
     Fintype.card Φ = Module.finrank ℚ (maximalRealSubfield E) := by
@@ -127,9 +127,9 @@ instance : Nonempty Φ := by
   omega
 
 /- English proof (translation)
-Establish `h : ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ σ : E →+* ℂ, σ x`. Rewrite using `[Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) (fun f => f x) (fun φ => φ x) (fun _ => rfl), ← trace_eq_sum_embeddings ℂ (K := ℚ) (x := x)]`. Simplify using the standard rewrite rules. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, h, Φ.sum_univ_eq, Complex.ofReal_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_sum_two_mul_re (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ τ : Φ, 2 * (τ.1 x).re := by
@@ -143,15 +143,15 @@ theorem trace_eq_sum_two_mul_re (x : E) :
   rw [ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℂ (fun τ : E →+* ℂ => (fun a : 𝓞 E => τ (a : E)))`. Establish `h1` using `linearIndependent_monoidHom (𝓞 E) ℂ`. Use `h1.comp (fun τ : E →+* ℂ => (τ.comp (algebraMap (𝓞 E) E)).toMonoidHom) ?_` and prove the remaining obligations. Introduce `τ τ' hτ`. Use `IsFractionRing.ringHom_ext (A := 𝓞 E) fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `DFunLike.congr_fun hτ a`. Establish `h2` using `Fintype.linearIndependent_iff.mp hli (fun τ => Sum.elim δ (fun σ => conj (δ σ)) (Φ.sumEquiv.symm τ)) (by`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply, ← Φ.sumEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Establish `h3 : ((∑ τ : Φ, 2 * (τ.1 (a : E) * δ τ).re : ℝ) : ℂ) = 0`. Rewrite using `[← Finset.mul_sum, h a]`. Simplify using the standard rewrite rules. Rewrite using `[← h3, Complex.ofReal_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.add_conj, map_mul]`. Express the relevant statement in the definitionally equal form `δ τ * τ.1 a + conj (δ τ) * ComplexEmbedding.conjugate τ.1 a = _`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use the proof step `ring)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `τ`. Simplify using `using h2 (Φ.sumEquiv (.inl τ))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_re_eq_zero (δ : Φ → ℂ)
     (h : ∀ a : 𝓞 E, ∑ τ : Φ, (τ.1 (a : E) * δ τ).re = 0) : δ = 0 := by
@@ -182,7 +182,7 @@ theorem eq_zero_of_sum_re_eq_zero (δ : Φ → ℂ)
 end NumberField
 
 /- English proof (translation)
-Introduce `h`. Take `⟨τ⟩ : Nonempty Φ` from `inferInstance`. Establish `h1 : τ.1 ∈ Φ.conjugate` using `by rw [h]; exact τ.2`. Conclude with `(Φ.mem_iff_conjugate_notMem _).mp τ.2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example {E : Type*} [Field E] [NumberField E] (Φ : CMType E) : Φ.conjugate ≠ Φ := by
   intro h

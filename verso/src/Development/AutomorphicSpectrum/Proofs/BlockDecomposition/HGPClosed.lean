@@ -9,7 +9,7 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.
 namespace GlobalTheory.CompanionTheory.MirGP
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m j`. Establish `h` using `GlobalTheory.SmGL.LeviInt.levi_integral_facts k Bool (Fin (m + j + 1)) (GlobalTheory.SmGL.Two (Fin m) (Fin (j + 1))) (GlobalTheory.BZMir.Leib.eGP m j)`. Conclude with `h.2.2.2.2.2.2.1.preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_HGP : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m j : ℕ), IsClosed (MirabolicParabolic k m j : Set (Mir k (m + j))) := by
   intro k _ _ _ _ m j

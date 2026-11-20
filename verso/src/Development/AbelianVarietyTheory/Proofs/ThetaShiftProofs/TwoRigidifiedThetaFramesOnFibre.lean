@@ -14,14 +14,14 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 namespace GlobalTheory.TwoFrames
 
 /- English proof (translation)
-Unfold `valR valAt' valAt`. Reduce the equality to equality of the corresponding arguments.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem valR_eq_valAt' {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) : valR x U f = valAt' x U f := by
   unfold valR valAt' valAt
   congr
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_map {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (f : Γ(X, U)) :
     (X.presheaf.map (homOfLE k).op).hom ((X.presheaf.map (homOfLE h).op).hom f) =
@@ -30,11 +30,11 @@ theorem map_map {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (k : W ≤ V) (
   rfl
 
 /- English proof (translation)
-Establish `le : ∀ J : PUnit → L.ι, (L.pull p).U J ≤ LB.wchart L (fun _ : Fin 1 => p) (fun _ => J PUnit.unit)` using `fun J y hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy PUnit.unit`. Use `⟨⟨fun J => (Z'.presheaf.map (homOfLE (le J)).op).hom (σ.f (fun _ => J PUnit.unit)), fun J J' => ?_⟩, fun j x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Z'.presheaf.map (homOfLE (inf_le_inf (le J) (le J'))).op).hom (σ.compat (fun _ => J PUnit.unit) (fun _ => J' PUnit.unit))`. Use `((map_map _ _ _).trans (map_map _ _ _).symm).trans (h.trans ((map_mul _ _ _).trans ?_))` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ((map_map _ _ _).trans (map_map _ _ _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LB.LinComb, Finset.univ_unique, Finset.prod_singleton, Nat.cast_one, zpow_one]`. Use `(map_map _ _ _).trans ?_` and prove the remaining obligations. Use `symm`. Use `Eq.trans (congrArg Units.val (?_ : (L.pull p).g J J' = res (le_inf (inf_le_left.trans (LB.wchart_le L _ J PUnit.unit)) (inf_le_right.trans (LB.wchart_le L _ J' PUnit.unit))) (pullU p _ (L.g (J PUnit.unit) (J' PUnit.unit))))) rfl` and prove the remaining obligations. Use `show ∏ k : PUnit, _ = _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp : ∀ {G : Type} [CommGroup G] (x : G), ∏ _k : PUnit.{1}, x ^ (1 : ℤ) = x` using `fun x => by simp`. Conclude with `hp _`. Use `Eq.trans ?_ (valR_eq_valAt' x _ _).symm` and prove the remaining obligations. Conclude with `GlobalTheory.valAt'_map x _ _ (fun q hq => mem_pull.2 ((top_le_preimage_comp _ _ _).1 hx hq))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_pow_one {Z Z' : Scheme.{0}} {L : LB Z} {p : Z' ⟶ Z} (σ : SecP L p 1) :
     ∃ s : (L.pull p).Sec, ∀ (j : L.ι) (x : Sp ℂ ⟶ Z'), ⊤ ≤ (x ≫ p) ⁻¹ᵁ L.U j →
@@ -60,31 +60,27 @@ theorem exists_sec_of_pow_one {Z Z' : Scheme.{0}} {L : LB Z} {p : Z' ⟶ Z} (σ 
     exact GlobalTheory.valAt'_map x _ _ (fun q hq => mem_pull.2 ((top_le_preimage_comp _ _ _).1 hx hq))
 
 /- English proof (translation)
-Introduce `hL _ E _ _ _ H _ D l Xo A lin cst w y₀ π fr g h e ϑ fr' hF he hT hϑ th hth hS`. Take `⟨d', n', c', r', s', hs'⟩` from `hT`. Establish `ch : ∀ v, ∃ j, ⊤ ≤ (π v).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun v => by`. Take `⟨j, hj⟩` from `exists_chart Xo.univ.t.PP.isLB ((π v).left (default : PrimeSpectrum ℂ))`. Conclude with `⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose J hJ using ch`. Establish `n : ∀ v j, ⊤ ≤ (π v).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → fr j v ≠ 0` using `fun v j hj => ((hF.frm v).1 j hj).ne_zero`. Establish `key : ∀ v j, ⊤ ≤ (π v).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → fr' j (h v) = fr' (J v) (h v) / fr (J v) v * fr j v`. Introduce `v j hj`. Establish `hi` using `(top_le_preimage_inf _ _ _).2 ⟨hj, hJ v⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a` using `(hF.frm v).2 j (J v) hi`. Establish `b` using `c' j (J v) (h v) (by rw [he]; exact hi)`. Rewrite `b` using `[he]`. Rewrite `a` using `[valR_eq_valAt']`. Use `beta_reduce at a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `n v _ (hJ v)` as an intermediate fact. Rewrite using `[b, a]`. Clear the denominators using the available nonvanishing facts. Take `⟨σ, hσ⟩` from `hF.sec th hth`. Take `⟨s, hs⟩` from `exists_sec_of_pow_one σ`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `ThetaFamily.exists_values_line_fibre hL.globalSectionsRank Xo.univ y₀`. Take `⟨a, ha⟩` from `hu s`. Take `⟨a', ha'⟩` from `hu s'`. Establish `f1 : ∀ v, fib (π v) ≫ pullback.fst _ _ = (π v).left` using `fun v => pullback.lift_fst _ _ _`. Establish `f2 : ∀ v, fib (π v) ≫ pullback.snd _ _ = 𝟙 _` using `fun v => pullback.lift_snd _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m : ∀ v, ⊤ ≤ (fib (π v) ≫ pullback.fst _ _) ⁻¹ᵁ Xo.univ.t.PP.L.U (J v)` using `fun v => by`. Rewrite using `[f1]`. Conclude with `hJ v`. Establish `m' : ∀ v, ⊤ ≤ fib (π v) ⁻¹ᵁ (Xo.univ.t.PP.L.pull (pullback.fst Xo.univ.t.G.hom y₀)).U (fun _ => J v)` using `fun v q hq => mem_pull.2 ((top_le_preimage_comp _ _ _).1 (m v) hq)`. Establish `e1 : ∀ v, A.Sum 1 0 th w v * fr (J v) v = a * u (fun _ => J v) (fib (π v))` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha _ _ (f2 v) (m' v), hs _ _ (m v), hσ v _ (m v), pow_one]`. Establish `e2 : ∀ v, ϑ (h v) * fr' (J v) (h v) = a' * u (fun _ => J v) (fib (π v))` using `fun v => by`. Rewrite using `[← ha' _ _ (f2 v) (m' v), hs' _ (h v) _ ((f1 v).trans (he v).symm) (f2 v) (by rw [he]; exact hJ v)]`. Establish `n'' : ∀ v, fr' (J v) (h v) ≠ 0` using `fun v => n' _ _ (by rw [he]; exact hJ v)`. Establish `a0 : a ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Take `⟨v, hv⟩` from `hS`. Conclude with `mul_ne_zero hv (n v _ (hJ v)) ((e1 v).trans (zero_mul _))`. Establish `a0' : a' ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hϑ`. Take `⟨v, rfl⟩` from `h.surjective z`. Conclude with `mul_ne_zero hz (n'' v) ((e2 v).trans (zero_mul _))`. Use `⟨a / a', fun v => fr' (J v) (h v) / fr (J v) v, div_ne_zero a0 a0', fun v₀ => ?_, fun v => div_ne_zero (n'' v) (n v _ (hJ v)), ?_, key, fun v => ?_⟩` and prove the remaining obligations. Establish `op : IsOpen {v | ⊤ ≤ (π v).left ⁻¹ᵁ Xo.univ.t.PP.L.U (J v₀)}`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using (hF.hol (Xo.univ.t.PP.L.U (J v₀)) 0).1`. Establish `nh` using `op.mem_nhds (hJ v₀)`. Establish `d1 : DifferentiableOn ℂ (fun v => fr' (J v₀) (h v)) {v | ⊤ ≤ (π v).left ⁻¹ᵁ Xo.univ.t.PP.L.U (J v₀)}` using `(d' (J v₀)).comp h.differentiable.differentiableOn fun v hv => by show ⊤ ≤ e (h v) ⁻¹ᵁ _`. Rewrite using `[he]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `d2` using `((d1.mul ((hF.fr_hol (J v₀)).inv fun v hv => n v _ hv)).differentiableAt nh)`. Use `d2.congr_of_eventuallyEq (Filter.mem_of_superset nh fun v hv => ?_)` and prove the remaining obligations. Use `show fr' (J v) (h v) / fr (J v) v = fr' (J v₀) (h v) * (fr (J v₀) v)⁻¹`. Rewrite using `[key v _ hv, mul_inv_cancel_right₀ (n v _ hv)]`. Use `show fr' (J 0) (h 0) / fr (J 0) 0 = 1`.
-
-Establish `h0 : e 0 = (π 0).left` using `by rw [← he, map_zero]`. Rewrite using `[div_eq_one_iff_eq (n 0 _ (hJ 0)), map_zero, r' _ (by rw [h0]; exact hJ 0), hF.rig _ (hJ 0)]`. Use `n v _ (hJ v)` as an intermediate fact. Establish `b1` using `e1 v`. Establish `b2` using `e2 v`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `a' * b1 - a * b2`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem two_frames : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (A : AnArc (𝓞 E)) lin cst (w : ℂ) (y₀ : Sp ℂ ⟶ Xo.X) (π : A.V → (Over.mk y₀ ⟶ Xo.univ.t.G)) fr (g : ℕ) (h : A.V ≃L[ℂ] (Fin g → ℂ)) (e : (Fin g → ℂ) → (Sp ℂ ⟶ Xo.univ.t.G.left)) (ϑ : (Fin g → ℂ) → ℂ) fr', IsFibAt A Xo.univ.t lin cst w y₀ π fr → (∀ v, e (h v) = (π v).left) → IsThetaFrameAt Xo.univ.t.PP y₀ e ϑ fr' → (∃ z, ϑ z ≠ 0) → ∀ th ∈ A.Theta 1 0, (∃ v, A.Sum 1 0 th w v ≠ 0) → ∃ (lam : ℂ) (f : A.V → ℂ), lam ≠ 0 ∧ Differentiable ℂ f ∧ (∀ v, f v ≠ 0) ∧ f 0 = 1 ∧ (∀ v j, ⊤ ≤ (π v).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → fr' j (h v) = f v * fr j v) ∧ ∀ v, A.Sum 1 0 th w v = lam * ϑ (h v) * f v := by
   intro hL _ E _ _ _ H _ D l Xo A lin cst w y₀ π fr g h e ϑ fr' hF he hT hϑ th hth hS

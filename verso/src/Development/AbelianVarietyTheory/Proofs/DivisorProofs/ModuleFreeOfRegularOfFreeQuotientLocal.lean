@@ -7,11 +7,9 @@ open IsLocalRing
 namespace GlobalTheory.AnnRegSeq
 
 /- English proof (translation)
-Use `set I : Ideal R := Ideal.span {f}`. Establish `hsub : I • (⊤ : Submodule R A) = (I.map (algebraMap R A)).restrictScalars R` using `Ideal.smul_top_eq_map I`. Set `e0 : (A ⧸ I • (⊤ : Submodule R A)) ≃ₗ[R] (A ⧸ I.map (algebraMap R A))` to `(Submodule.quotEquivOfEq _ _ hsub).trans (Submodule.Quotient.restrictScalarsEquiv R (I.map (algebraMap R A)))`. Set `e : (A ⧸ I • (⊤ : Submodule R A)) ≃ₗ[R ⧸ I] (A ⧸ I.map (algebraMap R A))` to `{ e0.toAddEquiv with map_smul' := by`. Introduce `c x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `show e0 (Ideal.Quotient.mk I c • Submodule.Quotient.mk x) = Ideal.Quotient.mk I c • e0 (Submodule.Quotient.mk x)`. Rewrite using `[← Ideal.Quotient.algebraMap_eq, algebraMap_smul, algebraMap_smul, map_smul] }`. Use `haveI := hfree`.
-
-Use `haveI : Module.Free (R ⧸ I) (A ⧸ I • (⊤ : Submodule R A)) := Module.Free.of_equiv e.symm`. Conclude with `free_of_free_quotient hf reg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_of_free_quotient_map (R A : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [CommRing A] [Algebra R A] [Module.Finite R A] (f : R) (hf : f ∈ maximalIdeal R)

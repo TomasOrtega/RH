@@ -5,21 +5,19 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hδ0 : 0 ≤ δ` using `(norm_nonneg _).trans (hδ 0)`. Establish `key : ∀ h : V, ‖h‖ = t → ‖fderiv ℝ g v h‖ ≤ 2 * δ + C * t * t`. Introduce `h hh`. Establish `hψd : ∀ x, DifferentiableAt ℝ (fun y => g y - fderiv ℝ g v y) x` using `fun x => (hg x).sub (fderiv ℝ g v).differentiableAt`. Establish `hψf : ∀ x, fderiv ℝ (fun y => g y - fderiv ℝ g v y) x = fderiv ℝ g x - fderiv ℝ g v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Conclude with `((hg x).hasFDerivAt.sub (fderiv ℝ g v).hasFDerivAt).fderiv`. Establish `hb : ∀ x ∈ Metric.closedBall v t, ‖fderiv ℝ (fun y => g y - fderiv ℝ g v y) x‖ ≤ C * t`. Introduce `x hx`. Rewrite using `[hψf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Metric.mem_closedBall, dist_eq_norm]`. Conclude with `(hL x v).trans (mul_le_mul_of_nonneg_left hx hC)`. Establish `hvh : v + h ∈ Metric.closedBall v t`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm, add_sub_cancel_left, hh]`. Establish `hmv` using `Convex.norm_image_sub_le_of_norm_fderiv_le (fun x _ => hψd x) hb (convex_closedBall v t) (Metric.mem_closedBall_self ht.le) hvh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmv` using `[add_sub_cancel_left, hh, map_add]`. Establish `e1 : g (v + h) - (fderiv ℝ g v v + fderiv ℝ g v h) - (g v - fderiv ℝ g v v) = (g (v + h) - g v) - fderiv ℝ g v h` using `by abel`. Rewrite `hmv` using `[e1]`. Establish `e2 : fderiv ℝ g v h = (g (v + h) - g v) - ((g (v + h) - g v) - fderiv ℝ g v h)` using `by abel`. Rewrite using `[e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hnn : 0 ≤ 2 * δ / t + C * t` using `add_nonneg (div_nonneg (by linarith) ht.le) (mul_nonneg hC ht.le)`. Use `ContinuousLinearMap.opNorm_le_bound _ hnn (fun u => ?_)` and prove the remaining obligations. Break down `eq_or_ne u 0 with rfl | hu` into its components or cases. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : 0 < ‖u‖` using `norm_pos_iff.2 hu`. Establish `hs : 0 ≤ t / ‖u‖` using `div_nonneg ht.le hu'.le`. Establish `hk` using `key ((t / ‖u‖) • u) (by rw [norm_smul, Real.norm_of_nonneg hs, div_mul_cancel₀ t hu'.ne'])`. Rewrite `hk` using `[ContinuousLinearMap.map_smul, norm_smul, Real.norm_of_nonneg hs]`. Establish `h3 : ‖fderiv ℝ g v u‖ * t ≤ (2 * δ + C * t * t) * ‖u‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : ‖fderiv ℝ g v u‖ * t = (t / ‖u‖ * ‖fderiv ℝ g v u‖) * ‖u‖`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right hk hu'.le`. Establish `e3 : (2 * δ / t + C * t) * ‖u‖ = (2 * δ + C * t * t) * ‖u‖ / t`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e3, le_div_iff₀ ht]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_fderiv_le_of_small_of_lipschitz {V E : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] {g : V → E} (hg : Differentiable ℝ g) {C δ t : ℝ}
@@ -73,7 +71,7 @@ theorem norm_fderiv_le_of_small_of_lipschitz {V E : Type*} [NormedAddCommGroup V
   exact h3
 
 /- English proof (translation)
-Establish `hd : Differentiable ℝ (iteratedFDeriv ℝ n f)` using `hf.differentiable_iteratedFDeriv (by exact_mod_cast ENat.natCast_lt_top n)`. Conclude with `Convex.norm_image_sub_le_of_norm_fderiv_le (f := iteratedFDeriv ℝ n f) (fun x _ => hd x) (fun x _ => by rw [norm_fderiv_iteratedFDeriv]; exact hC x) convex_univ (Set.mem_univ b) (Set.mem_univ a)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_sub_le_of_bound {V E : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℝ E] {f : V → E} (hf : ContDiff ℝ (⊤ : ℕ∞) f) (n : ℕ) {C : ℝ}
@@ -86,17 +84,15 @@ theorem norm_iteratedFDeriv_sub_le_of_bound {V E : Type*} [NormedAddCommGroup V]
     (Set.mem_univ a)
 
 /- English proof (translation)
-Establish `hR1 : (1 : ℝ) ≤ max 1 (D / ε)` using `le_max_left _ _`. Establish `hDR : D ≤ ε * max 1 (D / ε)`. Combine the equalities or inequalities in the displayed calculation. Establish `hη : 0 < ε / (2 * (C + 1))` using `div_pos hε (by linarith)`. Establish `hCη : C * (ε / (2 * (C + 1))) ≤ ε / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_div_assoc', div_le_div_iff₀ (by linarith) two_pos]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨S, -, hSfin, hcover⟩` from `finite_cover_balls_of_compact (isCompact_closedBall (0 : V) (max 1 (D / ε))) hη`. Establish `hS : ∀ᶠ x in l, ∀ s ∈ S, ‖h x s‖ < ε / 2`. Rewrite using `[hSfin.eventually_all]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s _`. Establish `hs` using `hp s`. Rewrite `hs` using `[tendsto_zero_iff_norm_tendsto_zero]`. Conclude with `hs.eventually (gt_mem_nhds (by linarith))`. Use `filter_upwards [hS, hL, hD] with x hxS hxL hxD v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hv : ‖v‖ ≤ max 1 (D / ε)`. Establish `hvb : v ∈ Metric.closedBall (0 : V) (max 1 (D / ε))` using `by rwa [mem_closedBall_zero_iff]`. Take `⟨s, hs, hvs⟩` from `Set.mem_iUnion₂.1 (hcover hvb)`. Rewrite `hvs` using `[Metric.mem_ball, dist_eq_norm]`. Establish `e : h x v = h x s + (h x v - h x s)` using `by abel`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `replace hv := not_le.1 hv`. Establish `hvpos : 0 < ‖v‖` using `lt_of_lt_of_le one_pos (hR1.trans hv.le)`. Establish `hmul : ‖v‖ * ‖h x v‖ ≤ ‖v‖ * ε`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `le_of_mul_le_mul_left hmul hvpos`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eventually_forall_norm_le_of_lipschitz_of_decay {X V E : Type*} {l : Filter X}
     [NormedAddCommGroup V] [ProperSpace V] [NormedAddCommGroup E] {h : X → V → E}
@@ -141,21 +137,19 @@ theorem eventually_forall_norm_le_of_lipschitz_of_decay {X V E : Type*} {l : Fil
     exact le_of_mul_le_mul_left hmul hvpos
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `ε hε`. Take `⟨C, hC0, hCb⟩` from `hb 0 1`. Take `⟨D, -, hDb⟩` from `hb 1 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `eventually_forall_norm_le_of_lipschitz_of_decay (h := fun x v => iteratedFDeriv ℝ 0 (h x) v) (C := C) (D := D) (fun v => ?_) hC0 ?_ ?_ hε` and prove the remaining obligations. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Simplify using `only [norm_iteratedFDeriv_zero]`. Conclude with `tendsto_zero_iff_norm_tendsto_zero.1 (hp v)`. Use `filter_upwards [hCb] with x hx a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Conclude with `norm_iteratedFDeriv_sub_le_of_bound ((h x).smooth ⊤) 0 (fun w => by simpa using hx w) a b`. Use `filter_upwards [hDb] with x hx w`. Simplify using `using hx w`. Consider the case `succ n ih`. Introduce `ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC0, hCb⟩` from `hb 0 (n + 2)`. Establish `ht : 0 < ε / (2 * (C + 1))` using `div_pos hε (by linarith)`. Establish `hCt : C * (ε / (2 * (C + 1))) ≤ ε / 2`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ (by linarith) two_pos]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hδ : 0 < ε * (ε / (2 * (C + 1))) / 4`. Use `mul_pos hε ht` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [ih _ hδ, hCb] with x hx hxC v`. Establish `hsm` using `(h x).smooth ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiff : Differentiable ℝ (iteratedFDeriv ℝ n (h x))` using `hsm.differentiable_iteratedFDeriv (by exact_mod_cast ENat.natCast_lt_top n)`. Establish `hLip : ∀ a b, ‖fderiv ℝ (iteratedFDeriv ℝ n (h x)) a - fderiv ℝ (iteratedFDeriv ℝ n (h x)) b‖ ≤ C * ‖a - b‖`. Introduce `a b`. Rewrite using `[fderiv_iteratedFDeriv, Function.comp_apply, Function.comp_apply, ← LinearIsometryEquiv.map_sub, LinearIsometryEquiv.norm_map]`. Conclude with `norm_iteratedFDeriv_sub_le_of_bound hsm (n + 1) (fun w => by simpa using hxC w) a b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv` using `norm_fderiv_le_of_small_of_lipschitz hdiff hC0 ht hLip hx v`. Rewrite `hv` using `[norm_fderiv_iteratedFDeriv]`. Establish `e : 2 * (ε * (ε / (2 * (C + 1))) / 4) / (ε / (2 * (C + 1))) = ε / 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `hv` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eventually_forall_norm_iteratedFDeriv_le {X V : Type*} {l : Filter X}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {h : X → SchwartzMap V ℂ}
@@ -205,17 +199,17 @@ theorem eventually_forall_norm_iteratedFDeriv_le {X V : Type*} {l : Filter X}
     linarith
 
 /- English proof (translation)
-Introduce `X _ V _ _ _ F x0 hc hb`. Establish `hb' : ∀ k n : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ x in nhds x0, ∀ v, ‖v‖ ^ k * ‖iteratedFDeriv ℝ n (F x - F x0) v‖ ≤ C`. Introduce `k n`. Take `⟨C, hC⟩` from `hb k n`. Use `⟨max C 0 + SchwartzMap.seminorm ℝ k n (F x0), add_nonneg (le_max_right _ _) (apply_nonneg _ _), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hC] with x hx v`. Combine the equalities or inequalities in the displayed calculation. Establish `hp : ∀ v, Tendsto (fun x => (F x - F x0) v) (nhds x0) (𝓝 0)`. Introduce `v`. Establish `h2` using `(hc v).tendsto.sub_const (F x0 v)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[sub_self]`. Conclude with `h2`. Rewrite using `[ContinuousAt, (schwartz_withSeminorms ℝ V ℂ).tendsto_nhds F (F x0)]`. Introduce and unpack `⟨k, n⟩ ε hε`. Take `⟨C2, hC20, hC2⟩` from `hb' (2 * k) n`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : 0 < ε ^ 2 / (4 * (C2 + 1))` using `div_pos (pow_pos hε 2) (by linarith)`. Establish `hCη : C2 * (ε ^ 2 / (4 * (C2 + 1))) ≤ (ε / 2) ^ 2`. Rewrite using `[mul_div_assoc', div_le_iff₀ (by linarith)]`. Use polynomial arithmetic with `[sq_nonneg ε]`. Use `filter_upwards [eventually_forall_norm_iteratedFDeriv_le (h := fun x => F x - F x0) hp hb' n _ hη, hC2] with x hx hx2`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show SchwartzMap.seminorm ℝ k n (F x - F x0) < ε`. Use `lt_of_le_of_lt (SchwartzMap.seminorm_le_bound ℝ k n _ (by linarith : (0 : ℝ) ≤ ε / 2) (fun v => ?_)) (by linarith)` and prove the remaining obligations. Establish `ha : 0 ≤ ‖v‖ ^ k * ‖iteratedFDeriv ℝ n (F x - F x0) v‖` using `by positivity`. Establish `hsq : (‖v‖ ^ k * ‖iteratedFDeriv ℝ n (F x - F x0) v‖) ^ 2 ≤ (ε / 2) ^ 2`. Establish `e : (‖v‖ ^ k * ‖iteratedFDeriv ℝ n (F x - F x0) v‖) ^ 2 = (‖v‖ ^ (2 * k) * ‖iteratedFDeriv ℝ n (F x - F x0) v‖) * ‖iteratedFDeriv ℝ n (F x - F x0) v‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[pow_mul']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(mul_le_mul (hx2 v) (hx v) (norm_nonneg _) hC20).trans hCη`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem schwartz_continuousAt_of_pointwise_of_bounded :
     ∀ {X : Type} [TopologicalSpace X] {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]

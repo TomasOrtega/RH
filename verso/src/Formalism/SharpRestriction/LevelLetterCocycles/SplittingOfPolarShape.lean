@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.UnusedSlot80
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup
 
 /- English proof (translation)
-The claim follows from `splitting_of_literature_exactness D HW F Cm hA h6 hH hTr hWX hFont (Split.splitShapeL_of_pieces D HW hSP (Split.polarToPoleL_of D HW F Cm hArc))`.
+A detailed English derivation is pending.
 -/
 theorem splitting_of_polar_shape (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (hA : AdmSplitA D HW F Cm) (hArc : AdmArcA D HW F Cm)

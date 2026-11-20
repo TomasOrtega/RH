@@ -20,16 +20,16 @@ section Ring
 variable {A : Type} [CommRing A] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_mulVec (g β : GL (Fin n) A) (y : Fin n → A) :
     ((g * β)⁻¹).val *ᵥ y = (β⁻¹).val *ᵥ ((g⁻¹).val *ᵥ y) := by
   rw [_root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `hc : Formalism.UG.cT σ (g * β).val = Formalism.UG.cT σ β.val * Formalism.UG.cT σ g.val`. Rewrite using `[Units.val_mul]`. Conclude with `GlobalTheory.StdFrames.cT_mul' σ _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT σ β.val * J * β.val := by rw [h]`.
+A detailed English derivation is pending.
 -/
 theorem gram_mul (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (g β : GL (Fin n) A)
     (h : Formalism.UG.cT σ g.val * J * g.val = J) :
@@ -48,7 +48,7 @@ end Ring
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a e`. Simplify using `[cA, cjA, finPart, swapAE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.UG.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem fin_cA (z : Formalism.L2.Theta.AE D) :
     ((swapAE D).comp (finPart D)) (cA D z) = cjA D (((swapAE D).comp (finPart D)) z) := by
@@ -59,11 +59,11 @@ theorem fin_cA (z : Formalism.L2.Theta.AE D) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hg : Formalism.UG.cT (cA D) (g.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) * V.gram.map (incA D) * (g.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) = V.gram.map (incA D)` using `g.2`. Establish `key` using `congrArg ((swapAE D).comp (finPart D)).mapMatrix hg`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_mul] at key`. Establish `hcT : ∀ M : Matrix (Fin V.rank) (Fin V.rank) (AE D), (Formalism.UG.cT (cA D) M).map ((swapAE D).comp (finPart D)) = Formalism.UG.cT (cjA D) (M.map ((swapAE D).comp (finPart D)))`. Introduce `M`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `fin_cA (M j i)`. Establish `hJ : (V.gram.map (incA D)).map ((swapAE D).comp (finPart D)) = V.gram.map (inc D)`. Rewrite using `[Matrix.map_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hfin : ((finE V g).val : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) = (g.1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map ((swapAE D).comp (finPart D))` using `rfl`. Rewrite `key` using `[hcT, hJ]`. Rewrite using `[hfin]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_unitary (V : HSp D) (g : GA D V) :
     Formalism.UG.cT (cjA D) (finE V g).val * V.gram.map (inc D) * (finE V g).val = V.gram.map (inc D) := by
@@ -88,7 +88,7 @@ theorem finE_unitary (V : HSp D) (g : GA D V) :
   exact key
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.Carries`. Conclude with `forall_congr' fun y => Iff.rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem carries_iff {n : ℕ} (g : GL (Fin n) (EAf D)) (Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) :
     Formalism.L2.Herm.Carries g Λ Λ' ↔ ∀ y, y ∈ hat Λ' ↔ (g⁻¹).val *ᵥ y ∈ hat (D := D) Λ := by
@@ -96,11 +96,11 @@ theorem carries_iff {n : ℕ} (g : GL (Fin n) (EAf D)) (Λ Λ' : Submodule (𝓞
   exact forall_congr' fun y => Iff.rfl
 
 /- English proof (translation)
-Introduce `V Λ hΛ d _hd`. Take `⟨β, rfl, hβ⟩` from `exists_orth hΛ`. Establish `hcar : Formalism.L2.Herm.Carries (finE V d) (lat β) (lat (finE V d * β))`. Rewrite using `[carries_iff]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_hat_lat, mem_hat_lat, inv_mul_mulVec]`. Establish `hgram : GlobalTheory.StdFrames.gramOf V (finE V d * β) = 1` using `(gram_mul (cjA D) (V.gram.map (inc D)) (finE V d) β (finE_unitary V d)).trans hβ`. Use `⟨⟨lat (finE V d * β), GlobalTheory.NormSum.AdLattice.lat_isLattice _, hcar⟩, fun Λ' hΛ' hc => ?_⟩` and prove the remaining obligations. Establish `heq : Λ' = lat (finE V d * β)`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← inc_mem_hat_iff hΛ' x, ← inc_mem_hat_iff (GlobalTheory.NormSum.AdLattice.lat_isLattice (finE V d * β)) x]`. Rewrite `hc`, `hcar` using `[carries_iff]`. Rewrite using `[hc, hcar]`. Rewrite using `[heq]`. Conclude with `isSelfDualC_lat (by rw [hgram]; exact unimod_one)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imageSt (D : D7) : ImageSt D := by
   intro V Λ hΛ d _hd

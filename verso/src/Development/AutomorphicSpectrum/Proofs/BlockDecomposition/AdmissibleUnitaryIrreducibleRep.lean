@@ -14,19 +14,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.admitted
 
 /- English proof (translation)
-Introduce `n G hG hA H _ _ _ σ hσ hirr`. Use `⟨hσ.1, hσ.2.2, fun k hk v => hσ.2.1 k hk.1 v, ?_⟩` and prove the remaining obligations. Introduce `S hfd hS _`. Use `haveI := hfd`. Set `b` to `Module.finBasis ℂ S`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose Y hYfd _ hvY hY using fun i => hA H σ hσ hirr S hS (b i) (b i).2`. Use `haveI : ∀ i, FiniteDimensional ℂ (Y i) := hYfd`. Establish `hsup : FiniteDimensional ℂ (⨆ i, Y i : Submodule ℂ H)` using `Submodule.finiteDimensional_iSup Y`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ i, Y i) (sSup_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨Θ, rfl, hΘ⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : H →L[ℂ] H` to `(LinearMap.toContinuousLinearMap (Θ.domRestrict S)).comp S.orthogonalProjectionOnto`. Establish `hT : ∀ k ∈ GlobalTheory.LinRed.maxCpt G, ∀ u, T (σ k u) = σ k (T u)`. Introduce `k hk u`. Establish `hk1 : k * k.conjTranspose = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.2`. Establish `hks : k.conjTranspose ∈ GlobalTheory.LinRed.maxCpt G` using `⟨hG.star_mem k hk.1, Unitary.star_mem hk.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hiso : ∀ x y, ⟪σ k x, σ k y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun x y => (LinearIsometry.mk (σ k : H →ₗ[ℂ] H) (hσ.2.1 k hk.1)).inner_map_map x y`. Establish `hP : ((S.orthogonalProjectionOnto (σ k u) : S) : H) = σ k (S.orthogonalProjectionOnto u : S)`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hS k hk _ (S.orthogonalProjectionOnto u).2) ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : σ k (σ k.conjTranspose w) = w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ hk.1 _ hks.1, hk1, hσ.1.1]`. Both sides reduce to the same expression. Rewrite using `[← hw', ← map_sub, hiso]`. Conclude with `S.starProjection_inner_eq_zero u _ (hS _ hks w hw)`. Establish `h` using `hΘ k hk _ (S.orthogonalProjectionOnto u).2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `[T, hP]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv' : v = ((⟨v, hv⟩ : S) : H)` using `rfl`. Rewrite using `[hv', ← b.sum_repr ⟨v, hv⟩]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul]`.
-
-Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem i ?_)` and prove the remaining obligations. Use `hY i T hT _ (hvY i)` as an intermediate fact. Simplify `this` using `[T]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAdmissible_of_unitary_irreducible : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)}, GlobalTheory.LinRed.IsLinRed G →
     PositivityTheory.Tls2.Iua.AdmG G → ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

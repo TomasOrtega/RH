@@ -5,15 +5,15 @@ open MvPolynomial Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A B M _ _ _ _ _ r D m hDm G G' hGG'`. Establish `h0 : ∑ i, X i * (fun i => G i - G' i) i = 0`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, hGG', sub_self]`. Take `⟨H, hanti, hdiag, hG⟩` from `GlobalTheory.T.koszul_syzygy_antisymmetric_coefficients A r (fun i => G i - G' i) h0`. Establish `hG' : ∀ i, G i - G' i = ∑ j, X j * H i j` using `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Establish `hterm : ∀ i, aeval D (G i) • m i - aeval D (G' i) • m i = ∑ j, aeval D (H i j) • (D j • m i)`. Introduce `i`. Rewrite using `[← sub_smul, ← map_sub, hG' i, map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, aeval_X, mul_comm, mul_smul]`. Repeatedly rewrite using `[hterm]`. Rewrite using `[← Finset.sum_product' (s := (univ : Finset (Fin r))) (t := univ) (f := fun i j => aeval D (H i j) • (D j • m i))]`. Use `Finset.sum_involution (fun p _ => (p.2, p.1)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only`. Rewrite using `[hanti j i, map_neg, neg_smul, (hDm i j).symm, add_neg_cancel]`. Introduce and unpack `⟨i, j⟩ _ hne heq`. Simplify using `only [Prod.mk.injEq] at heq`. Take `⟨rfl, -⟩` from `heq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hne (by simp only [hdiag, map_zero, zero_smul])`. Introduce `p _`. Simplify using the standard rewrite rules. Introduce `p _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bracket_indep_of_cofactors : ∀ (A B M : Type) [CommRing A] [CommRing B] [Algebra A B]
     [AddCommGroup M] [Module B M] (r : ℕ) (D : Fin r → B) (m : Fin r → M),

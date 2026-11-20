@@ -8,23 +8,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CuspApproxCompact
 
 /- English proof (translation)
-Establish `hint : ∀ φ : GA D V → ℂ, Continuous φ → (∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) → ∀ W, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V W → ∀ μ : Measure (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) W), μ.IsHaarM …`. Introduce `φ hc hl W hW μ hμ 𝓕 h𝓕 g`. Rewrite `hl` using `[GlobalTheory.AutFunCompare.GQ_eq]`. Conclude with `GlobalTheory.AutFunCompare.integrableOn_constTerm D.sp.cm V W hW φ hc hl μ hμ 𝓕 h𝓕 g`. Rewrite using `[GlobalTheory.AutFunCompare.isCuspFun_iff_constTerm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW μ hμ 𝓕 h𝓕 g`. Take `⟨K, hK, hKc⟩` from `GlobalTheory.AutFunCompare.unipRad_cocompact D.sp.cm V W hW`. Establish `hcont : Continuous fun n : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) W => (n : GA D V) * g`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Conclude with `continuous_subtype_val.mul continuous_const`. Establish `hC : IsCompact ((fun n : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) W => (n : GA D V) * g) '' K)` using `hK.image hcont`. Establish `h1` using `hint (fun _ => (1 : ℂ)) continuous_const (fun _ _ _ => rfl) W hW μ hμ 𝓕 h𝓕 g`. Establish `hfin : μ 𝓕 < ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `(integrableOn_const_iff (C := (1 : ℂ))).1 h1 with h | h` into its components or cases. Conclude with `absurd h (by simp)`. Conclude with `h`. Establish `hM0 : 0 ≤ μ.real 𝓕` using `measureReal_nonneg`. Establish `key : ∀ δ : ℝ, 0 < δ → ‖GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.constTerm D.sp.cm V W μ 𝓕 f g‖ ≤ δ * μ.real 𝓕`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `δ hδ`. Take `⟨ψ, hψc, hψl, hψcusp, hψ⟩` from `ha _ hC δ hδ`. Establish `h0` using `(GlobalTheory.AutFunCompare.isCuspFun_iff_constTerm V ψ).1 hψcusp W hW μ hμ 𝓕 h𝓕 g`. Establish `hfi` using `hint f hf hl W hW μ hμ 𝓕 h𝓕 g`. Establish `hψi` using `hint ψ hψc hψl W hW μ hμ 𝓕 h𝓕 g`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.constTerm at h0 ⊢`. Establish `e : ∫ n in 𝓕, f ((n : GA D V) * g) ∂μ = ∫ n in 𝓕, (f ((n : GA D V) * g) - ψ ((n : GA D V) * g)) ∂μ`. Rewrite using `[integral_sub hfi hψi, h0, sub_zero]`. Rewrite using `[e]`. Use `norm_setIntegral_le_of_norm_le_const hfin fun n _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hk⟩` from `hKc n`. Establish `hγ' : ((γ : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) W) : GA D V) ∈ GQ V`. Rewrite using `[GlobalTheory.AutFunCompare.GQ_eq]`. Conclude with `Subgroup.mem_subgroupOf.1 hγ`. Establish `ee : f ((n : GA D V) * g) - ψ ((n : GA D V) * g) = f (((γ * n : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) W) : GA D V) * g) - ψ (((γ * n : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_mul, mul_assoc, hl _ hγ', hψl _ hγ']`. Rewrite using `[ee]`. Conclude with `(hψ _ ⟨_, hk, rfl⟩).le`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.constTerm D.sp.cm V W μ 𝓕 f g‖` using `norm_pos_iff.2 hne`.
-
-Use `key (‖GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.constTerm D.sp.cm V W μ 𝓕 f g‖ / (μ.real 𝓕 + 1)) (div_pos hpos (by linarith))` as an intermediate fact. Rewrite `this` using `[div_mul_eq_mul_div, le_div_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isCuspFun_of_approx (D : D7) (V : HSp D) (f : GA D V → ℂ) (hf : Continuous f)
     (hl : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g)

@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.RowReal
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hφ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem left_cast {D : D7} {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)} (X : LSp D) (h : X = ⟨D.sp.X', Λ⟩)
     (φ : GA D D.sp.X' → ℂ) (hφ : ∀ γ ∈ GQ D.sp.X', ∀ g, φ (γ * g) = φ g) :
@@ -22,7 +22,7 @@ theorem left_cast {D : D7} {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank →
   exact hφ
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩` and prove the remaining obligations. Use `⟨fun a ξ γ hγ g => GlobalTheory.RowBplus.pairVec_left ch.G ch.W.θ ξ (col_mem ch a) hγ g, fun t y η => ?_⟩` and prove the remaining obligations. Establish `hm` using `hS.core.models`. Conclude with `left_cast (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) (fun g => η (R.cX.ext ((R.HX t).e y) g)) (fun γ hγ g => congrArg η (GlobalTheory.ThetaProjEquiv.ext_left R.cX ((R.HX t).e y) _ _ ((hm.HX t).2.1.le ⟨y, rfl⟩) γ hγ g))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gen_left : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch =>
     (∀ a ξ, ∀ γ ∈ GQ (ch.G.V (.top 0)), ∀ g,

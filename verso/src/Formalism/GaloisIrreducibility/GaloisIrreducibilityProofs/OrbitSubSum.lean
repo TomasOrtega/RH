@@ -5,9 +5,9 @@ namespace Formalism.GaloisIrreducibility
 open Classical
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hx`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hO.1 _ ih`.
+A detailed English derivation is pending.
 -/
 lemma orbit_iterate_mem {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbit f O)
     {x : α} (hx : x ∈ O) : ∀ n : ℕ, f^[n] x ∈ O := by
@@ -19,9 +19,9 @@ lemma orbit_iterate_mem {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbi
     exact hO.1 _ ih
 
 /- English proof (translation)
-Apply `Finset.Subset.antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hy`. Conclude with `hO.1 x hx`. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hO.2 (f y) (hO.1 y hy) y hy`. Rewrite `hn` using `[← Function.iterate_succ_apply, Function.iterate_succ_apply']`. Conclude with `Finset.mem_image.mpr ⟨f^[n] y, orbit_iterate_mem hO hy n, hn⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma orbit_image_eq {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbit f O) :
     O.image f = O := by
@@ -35,7 +35,7 @@ lemma orbit_image_eq {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbit f
     exact Finset.mem_image.mpr ⟨f^[n] y, orbit_iterate_mem hO hy n, hn⟩
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn f O`. Rewrite using `[← Finset.card_image_iff, orbit_image_eq hO]`. Rewrite using `[← Finset.image_val_of_injOn hinj, orbit_image_eq hO]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma orbit_map_eq {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbit f O) :
     O.val.map f = O.val := by
@@ -44,9 +44,9 @@ lemma orbit_map_eq {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbit f O
   rw [← Finset.image_val_of_injOn hinj, orbit_image_eq hO]
 
 /- English proof (translation)
-Rewrite using `[Multiset.le_iff_subset O.nodup]`. Introduce `y hy`. Take `⟨n, rfl⟩` from `hO.2 x hxO y (Finset.mem_val.mp hy)`. Use `clear hy`. Proceed by induction on `n with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using hxM`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ← hM]`. Conclude with `Multiset.mem_map_of_mem f ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma orbit_le {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbit f O) {M' : Multiset α}
     (hM : M'.map f = M') {x : α} (hxO : x ∈ O) (hxM : x ∈ M') : O.val ≤ M' := by
@@ -61,15 +61,13 @@ lemma orbit_le {α : Type} {f : α → α} {O : Finset α} (hO : IsOrbit f O) {M
     exact Multiset.mem_map_of_mem f ih
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.strongInduction with`. Consider the case `H I ih`. Introduce `M' hO hle hM`. Distinguish the cases in `h0 : M' = 0`. Conclude with `⟨∅, Finset.empty_subset _, by simp [h0]⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `Multiset.exists_mem_of_ne_zero h0`. Establish `hxs : x ∈ ∑ i ∈ I, (O i).val` using `Multiset.mem_of_le hle hx`. Rewrite `hxs` using `[Multiset.mem_sum]`. Take `⟨i0, hi0, hxi⟩` from `hxs`. Establish `hle0 : (O i0).val ≤ M'` using `orbit_le (hO i0 hi0) hM (Finset.mem_val.mp hxi) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M'', rfl⟩ : ∃ M'', M' = (O i0).val + M''` from `⟨M' - (O i0).val, (add_tsub_cancel_of_le hle0).symm⟩`. Establish `hM'' : M''.map f = M''`. Rewrite `hM` using `[Multiset.map_add, orbit_map_eq (hO i0 hi0)]`. Conclude with `add_left_cancel hM`. Establish `hle'' : M'' ≤ ∑ i ∈ I.erase i0, (O i).val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[← Finset.add_sum_erase I _ hi0]`. Conclude with `(add_le_add_iff_left _).mp hle`. Take `⟨J, hJ, hc⟩` from `ih (I.erase i0) (Finset.erase_ssubset hi0) M'' (fun i hi => hO i (Finset.mem_of_mem_erase hi)) hle'' hM''`. Use `⟨insert i0 J, Finset.insert_subset hi0 (hJ.trans (Finset.erase_subset _ _)), ?_⟩` and prove the remaining obligations. Establish `hnot : i0 ∉ J` using `fun h => by simpa using hJ h`.
-
-Rewrite using `[Finset.sum_insert hnot, Multiset.card_add, hc, Finset.card_val]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_multiset_orbit_sum {α ι : Type} (f : α → α) (O : ι → Finset α) (I : Finset ι) :
     ∀ (M' : Multiset α), (∀ i ∈ I, IsOrbit f (O i)) → M' ≤ ∑ i ∈ I, (O i).val →
@@ -99,7 +97,7 @@ theorem invariant_multiset_orbit_sum {α ι : Type} (f : α → α) (O : ι → 
   rw [Finset.sum_insert hnot, Multiset.card_add, hc, Finset.card_val]
 
 /- English proof (translation)
-Introduce `α ι f O I M' hO hle hM`. Conclude with `invariant_multiset_orbit_sum f O I M' hO hle hM`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orbit_subset_sum : OrbitSubSum := by
   intro α ι f O I M' hO hle hM

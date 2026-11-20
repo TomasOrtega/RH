@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Unfold `negLD`. Rewrite using `[DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hs, DirichletCharacter.deriv_LFunction_eq_deriv_LSeries χ hs, DirichletCharacter.LFunction_eq_LSeries χ hs]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma negLogDeriv_eq_LSeries {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ}
     (hs : 1 < s.re) : negLD χ s = LSeries (↗χ * ↗Λ) s := by
@@ -19,7 +19,7 @@ lemma negLogDeriv_eq_LSeries {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q
   ring
 
 /- English proof (translation)
-Rewrite using `[negLogDeriv_eq_LSeries χ hs]`. Conclude with `Complex.hasSum_re (DirichletCharacter.LSeriesSummable_twist_vonMangoldt χ hs).hasSum`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasSum_re_term {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ}
     (hs : 1 < s.re) : HasSum (fun n ↦ (term (↗χ * ↗Λ) s n).re) (negLD χ s).re := by
@@ -27,9 +27,9 @@ lemma hasSum_re_term {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : �
   exact Complex.hasSum_re (DirichletCharacter.LSeriesSummable_twist_vonMangoldt χ hs).hasSum
 
 /- English proof (translation)
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[LSeries.term_def]`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hn`. Rewrite using `[LSeries.term_def, if_neg hn, Complex.cpow_add _ _ hn']`. Use `push_cast`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg n)]`. Use `push_cast`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[div_mul_div_comm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma term_ofReal_add_mul_I {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ u : ℝ) (n : ℕ) :
     term (↗χ * ↗Λ) ((σ : ℂ) + u * I) n =
@@ -46,9 +46,9 @@ lemma term_ofReal_add_mul_I {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
     ring
 
 /- English proof (translation)
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[LSeries.term_def]`. Rewrite using `[LSeries.term_def, if_neg hn]`. Use `push_cast`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg n)]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma term_ofReal {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ : ℝ) (n : ℕ) :
     term (↗χ * ↗Λ) (σ : ℂ) n = ((Λ n / (n : ℝ) ^ σ : ℝ) : ℂ) * χ n := by
@@ -62,25 +62,25 @@ lemma term_ofReal {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ : ℝ
     ring
 
 /- English proof (translation)
-The claim follows from `div_nonneg ArithmeticFunction.vonMangoldt_nonneg (Real.rpow_nonneg (Nat.cast_nonneg n) σ)`.
+A detailed English derivation is pending.
 -/
 lemma vonMangoldt_div_rpow_nonneg (σ : ℝ) (n : ℕ) : 0 ≤ Λ n / (n : ℝ) ^ σ :=
   div_nonneg ArithmeticFunction.vonMangoldt_nonneg (Real.rpow_nonneg (Nat.cast_nonneg n) σ)
 
 /- English proof (translation)
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[LSeries.term_def]`. Establish `ha` using `vonMangoldt_div_rpow_nonneg σ n`. Rewrite using `[term_ofReal, term_ofReal_add_mul_I, term_ofReal_add_mul_I]`. Distinguish the cases in `hu : IsUnit (n : ZMod q)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : (1 : DirichletCharacter ℂ q) n = 1` using `MulChar.one_apply hu`. Establish `h2 : (χ ^ 2) n = (χ n) ^ 2` using `MulChar.pow_apply' χ two_ne_zero _`. Establish `hχ1 : ‖χ n‖ = 1`. Use `DirichletCharacter.unit_norm_eq_one χ hu.unit` as an intermediate fact. Rewrite `this` using `[IsUnit.unit_spec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hc : ‖(n : ℂ) ^ ((t : ℂ) * I)‖ = 1`. Rewrite using `[Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hn)]`. Simplify using the standard rewrite rules. Establish `hc2 : (n : ℂ) ^ (((2 * t : ℝ) : ℂ) * I) = ((n : ℂ) ^ ((t : ℂ) * I)) ^ 2`. Rewrite using `[← Complex.cpow_nat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Use `set w := χ n / (n : ℂ) ^ ((t : ℂ) * I) with hw_def`. Establish `hw : ‖w‖ = 1` using `by rw [hw_def, norm_div, hχ1, hc, div_one]`. Establish `hw2 : (χ ^ 2) n / (n : ℂ) ^ (((2 * t : ℝ) : ℂ) * I) = w ^ 2`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hc2, div_pow]`. Rewrite using `[h1, hw2]`. Establish `hn1 : w.re * w.re + w.im * w.im = 1`. Rewrite using `[← Complex.normSq_apply, Complex.normSq_eq_norm_sq, hw]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hre : (w ^ 2).re = 2 * w.re ^ 2 - 1`. Rewrite using `[sq, Complex.mul_re]`. Use polynomial arithmetic with `[hn1]`. Rewrite using `[Complex.re_ofReal_mul, Complex.re_ofReal_mul, Complex.re_ofReal_mul, hre, Complex.one_re]`. Use polynomial arithmetic with `[mul_nonneg ha (sq_nonneg (1 + w.re))]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : DirichletCharacter ℂ q) n = 0` using `MulChar.map_nonunit _ hu`. Establish `h2 : χ n = 0` using `MulChar.map_nonunit _ hu`. Establish `h3 : (χ ^ 2) n = 0` using `MulChar.map_nonunit _ hu`. Simplify using `[h1, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma term_three_four_one_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (σ t : ℝ) (n : ℕ) :
     0 ≤ 3 * (term (↗(1 : DirichletCharacter ℂ q) * ↗Λ) (σ : ℂ) n).re
@@ -122,7 +122,7 @@ lemma term_three_four_one_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter �
     simp [h1, h2, h3]
 
 /- English proof (translation)
-Establish `h : χ n * χ n = 1`. Rewrite using `[← pow_two, ← MulChar.pow_apply' χ two_ne_zero, hχ, MulChar.one_apply hu]`. Conclude with `mul_self_eq_one_iff.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_one_or_eq_neg_one_of_sq_eq_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1)
     {n : ℕ} (hu : IsUnit (n : ZMod q)) : χ n = 1 ∨ χ n = -1 := by
@@ -131,9 +131,9 @@ lemma eq_one_or_eq_neg_one_of_sq_eq_one {q : ℕ} [NeZero q] (χ : DirichletChar
   exact mul_self_eq_one_iff.mp h
 
 /- English proof (translation)
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[LSeries.term_def]`. Establish `ha` using `vonMangoldt_div_rpow_nonneg σ n`. Rewrite using `[term_ofReal, term_ofReal]`. Distinguish the cases in `hu : IsUnit (n : ZMod q)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[MulChar.one_apply hu]`. Apply the tactic sequence `rcases eq_one_or_eq_neg_one_of_sq_eq_one χ hχ hu with h | h <;> rw [h] <;>`. Apply the tactic sequence `simp only [Complex.re_ofReal_mul, Complex.one_re, Complex.neg_re] <;> linarith`. Rewrite using `[MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma term_one_add_real_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1)
     (σ : ℝ) (n : ℕ) :
@@ -151,11 +151,11 @@ lemma term_one_add_real_nonneg {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ
     simp
 
 /- English proof (translation)
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[LSeries.term_def]`. Establish `ha` using `vonMangoldt_div_rpow_nonneg σ n`. Rewrite using `[term_ofReal, term_ofReal, term_ofReal, term_ofReal, MulChar.mul_apply]`. Distinguish the cases in `hu : IsUnit (n : ZMod q)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[MulChar.one_apply hu]`. Apply the tactic sequence `rcases eq_one_or_eq_neg_one_of_sq_eq_one χ₁ h₁ hu with h | h <;>`. Apply the tactic sequence `rcases eq_one_or_eq_neg_one_of_sq_eq_one χ₂ h₂ hu with h' | h' <;> rw [h, h'] <;>`. Apply the tactic sequence `generalize Λ n / (n : ℝ) ^ σ = a at ha ⊢ <;>`. Apply the tactic sequence `simp [Complex.re_ofReal_mul] <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu, MulChar.map_nonunit _ hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma term_two_real_nonneg {q : ℕ} [NeZero q] (χ₁ χ₂ : DirichletCharacter ℂ q)
     (h₁ : χ₁ ^ 2 = 1) (h₂ : χ₂ ^ 2 = 1) (σ : ℝ) (n : ℕ) :
@@ -177,11 +177,9 @@ lemma term_two_real_nonneg {q : ℕ} [NeZero q] (χ₁ χ₂ : DirichletCharacte
     simp
 
 /- English proof (translation)
-Introduce `q _ σ hσ`. Establish `hs1 : 1 < ((σ : ℂ)).re` using `by simpa using hσ`. Establish `H1 : ∀ χ : DirichletCharacter ℂ q, HasSum (fun n ↦ (term (↗χ * ↗Λ) (σ : ℂ) n).re) (negLD χ (σ : ℂ)).re` using `fun χ => hasSum_re_term χ hs1`. Use `⟨fun χ t => ?_, fun χ hχ => ?_, fun χ₁ χ₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hs2 : 1 < ((σ : ℂ) + t * I).re` using `by simpa using hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs3 : 1 < ((σ : ℂ) + ((2 * t : ℝ) : ℂ) * I).re` using `by simpa using hσ`. Establish `HS` using `(((H1 1).mul_left 3).add ((hasSum_re_term χ hs2).mul_left 4)).add (hasSum_re_term (χ ^ 2) hs3)`. Establish `e : ((σ : ℂ) + 2 * t * I) = (σ : ℂ) + ((2 * t : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `HasSum.nonneg (fun n => term_three_four_one_nonneg χ σ t n) HS`.
-
-Conclude with `HasSum.nonneg (fun n => term_one_add_real_nonneg χ hχ σ n) ((H1 1).add (H1 χ))`. Conclude with `HasSum.nonneg (fun n => term_two_real_nonneg χ₁ χ₂ h₁ h₂ σ n) ((((H1 1).add (H1 χ₁)).add (H1 χ₂)).add (H1 (χ₁ * χ₂)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negLogDerivPositivity : Positivity := by
   intro q _ σ hσ

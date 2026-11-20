@@ -9,13 +9,13 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ n S hS`. Take `⟨hart, -, h2, hinv, hδ, hfix, hunit⟩` from `GlobalTheory.T.tensor_involution_algebra_properties F E σ hσ R`. Use `haveI : IsArtinianRing (R ⊗[F] E) := hart`. Use `haveI : Finite (MaximalSpectrum (R ⊗[F] E)) := inferInstance`. Establish `hrep` using `GlobalTheory.T.hermitian_unit_form_represents_unit (R ⊗[F] E) (sigR R σ) hinv h2 hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, d, hg, hd, hgd⟩` from `GlobalTheory.T.hermitian_unit_form_diagonalizes (R ⊗[F] E) (sigR R σ) hinv hrep n (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) S.2 hS`. Use `choose r hr using fun i => hfix (d i) (hd i).2`. Establish `hru : ∀ i, IsUnit (r i)` using `fun i => (hunit (r i)).1 (hr i ▸ (hd i).1)`. Establish `hgi : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hg`. Establish `hdiag : Matrix.diagonal (fun i => (((hru i).unit : R) ⊗ₜ[F] (1 : E) : R ⊗[F] E)) = Matrix.diagonal d`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[hr i]`. Use `⟨g⁻¹, fun i => (hru i).unit, Matrix.isUnit_nonsing_inv_det g hg, ?_⟩` and prove the remaining obligations. Rewrite using `[hdiag, ← hgd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : cT (sigR R σ) g⁻¹ * cT (sigR R σ) g = 1`. Rewrite using `[← cT_mul, hgi, cT_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, hgi, one_mul, mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermR_unit_diagonalisable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [IsArtinianRing R] [IsReduced R] (n : ℕ) (S : HermR R σ n), IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det → ∃ (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (d : Fin n → Rˣ), IsUnit g.det ∧ (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = cT (sigR R σ) g * Matrix.diagonal (fun i => ((d i : R) ⊗ₜ[F] (1 : E) : R ⊗[F] E)) * g := by
   intro F E _ _ _ _ _ σ hσ R _ _ _ _ n S hS

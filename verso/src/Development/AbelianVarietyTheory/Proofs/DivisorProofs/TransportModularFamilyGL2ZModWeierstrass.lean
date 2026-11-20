@@ -18,17 +18,17 @@ open GlobalTheory.WpFam
 namespace GlobalTheory.WpFamGL
 
 /- English proof (translation)
-Introduce `g N N' w _ a A F F' τ₀ τ₁ ω₀ ω₁ hN' hdiv hζ hF hFF' hω₀ h4 h6 hwp α`. Set `e : Fin 2 → Fin 2 → ZMod N` to `fun i => Pi.single i 1`. Set `m : Fin 2 × Bool → ℕ` to `fun s => if s.2 then 3 else 2`. Set `u : Fin 2 × Bool → GL (Fin 2) (ZMod N) → ℍ → ℂ` to `fun s β => if s.2 then wpd N (vmul (e s.1) (β * 1)) else wp N (vmul (e s.1) (β * 1))`. Set `u' : Fin 2 × Bool → GL (Fin 2) (ZMod N) → ℍ → ℂ` to `fun s β => u s (β * dg a)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hact : ActBij (gact N 1)` using `(GlobalTheory.WpFam.Act.isRAct_gact N 1).actBij`. Establish `hu : ∀ s, IsFam (gact N 1) (m s) (u s)`. Introduce and unpack `⟨i, _ | _⟩`. Simplify `(GlobalTheory.WpFamGL.main N 1 (e i)).1` using `[m, u]`. Simplify `(GlobalTheory.WpFamGL.main N 1 (e i)).2` using `[m, u]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `huu' : ∀ s β, QConj g N' (u s β) (u' s β)`. Introduce and unpack `⟨i, _ | _⟩ β`. Establish `h` using `(GlobalTheory.WpFam.ConjExp.qConj_torsion N g a hζ (vmul (e i) β)).1`. Rewrite `h` using `[GlobalTheory.WpFam.Act.vmul_vmul]`. Simplify `h.of_dvd hN' hdiv` using `[u, u']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `(GlobalTheory.WpFam.ConjExp.qConj_torsion N g a hζ (vmul (e i) β)).2.1`. Rewrite `h` using `[GlobalTheory.WpFam.Act.vmul_vmul]`. Simplify `h.of_dvd hN' hdiv` using `[u, u']`. Establish `hsep : ∀ β, (∀ s, u s β τ₀ = u s α τ₀) → F β τ₀ = F α τ₀`. Introduce `β hβ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: β = α` using `GlobalTheory.WpFam.SepGL.main N τ₀ β α fun i => ⟨by simpa [u] using hβ (i, false), by simpa [u] using hβ (i, true)⟩`. Rewrite using `[this]`. Establish `hα : α * A * (dg a)⁻¹ * dg a = α * A` using `by group`. Establish `hval : ∀ s, g (u s α τ₀ / ω₀ ^ m s) = u' s (α * A * (dg a)⁻¹) τ₁ / ω₁ ^ m s`. Introduce and unpack `⟨i, _ | _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify `(hwp (vmul (e i) α)).1` using `[u, u', m, hα, GlobalTheory.WpFam.Act.vmul_vmul]`. Simplify `(hwp (vmul (e i) α)).2` using `[u, u', m, hα, GlobalTheory.WpFam.Act.vmul_vmul]`. Establish `key` using `GlobalTheory.QFam.transport_of_separating g (GL (Fin 2) (ZMod N)) (Fin 2 × Bool) (gact N 1) N' w m F (fun β => F' (β * dg a)) u u' τ₀ τ₁ ω₀ ω₁ hN' hact hF hu hFF' huu' hω₀ h4 h6 α (α * A * (dg a)⁻¹) hsep hval`. Simplify `key` using `[hα]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem transport_GL : ∀ (g : ℂ ≃+* ℂ) (N N' w : ℕ) [NeZero N] (a : (ZMod N)ˣ) (A : GL (Fin 2) (ZMod N)) (F F' : GL (Fin 2) (ZMod N) → ℍ → ℂ) (τ₀ τ₁ : ℍ) (ω₀ ω₁ : ℂ), 0 < N' → N ∣ N' → ZetaAct g N a → IsFam (gact N 1) w F → (∀ α, QConj g N' (F α) (F' (α * dg a))) → ω₀ ≠ 0 → g (E₄ τ₀ / ω₀ ^ 4) = E₄ τ₁ / ω₁ ^ 4 → g (E₆ τ₀ / ω₀ ^ 6) = E₆ τ₁ / ω₁ ^ 6 → (∀ x, g (wp N x τ₀ / ω₀ ^ 2) = wp N (vmul x A) τ₁ / ω₁ ^ 2 ∧ g (wpd N x τ₀ / ω₀ ^ 3) = wpd N (vmul x A) τ₁ / ω₁ ^ 3) → ∀ α, g (F α τ₀ / ω₀ ^ w) = F' (α * A) τ₁ / ω₁ ^ w := by
   classical

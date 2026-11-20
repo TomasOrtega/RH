@@ -7,7 +7,7 @@ namespace Cmp6
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Use `RingHom.ext fun x => Reformulated.AutPerF.Tilt.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[Reformulated.AutPerF.Tilt.coeff_map]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff n x)`. Express the relevant statement in the definitionally equal form `_ = Formalism.Per6.modPEquiv l (PreTilt.coeff n x)`. Rewrite using `[← ha, Ideal.quotientMap_mk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -20,14 +20,14 @@ theorem tiltMap_eq : Reformulated.AutPerF.Tilt.map l (e l).toRingHom = Formalism
   rfl
 
 /- English proof (translation)
-Rewrite using `[Reformulated.AutPerF.Ainf.map, tiltMap_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ainfMap_eq : Reformulated.AutPerF.Ainf.map l (e l).toRingHom = Formalism.Per6.ainfMap l := by
   rw [Reformulated.AutPerF.Ainf.map, tiltMap_eq]
   rfl
 
 /- English proof (translation)
-The claim follows from `Reformulated.AutPerF.adicMap_algebraMap _ _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem acrisNHom_algebraMap (y : Reformulated.AutPerF.AcrisZero l (NC l)) :
     acrisNHom l (algebraMap _ (Reformulated.AutPerF.Acris l (NC l)) y) =
@@ -42,7 +42,7 @@ theorem zeroEquiv_algebraMap (a : Reformulated.AutPerF.Ainf l (NC l)) :
       algebraMap (AInf ℂ_[l] l) (ACris.ACrisZero ℂ_[l] l) a := rfl
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (Reformulated.AutPerF.Ainf l (NC l)) (Reformulated.AutPerF.AcrisZero l (NC l)) (Reformulated.AutPerF.Acris l (NC l))]`. Express the relevant statement in the definitionally equal form `acrisNHom l _ = _`. Rewrite using `[acrisNHom_algebraMap, zeroEquiv_algebraMap, IsScalarTower.algebraMap_apply (AInf ℂ_[l] l) (ACris.ACrisZero ℂ_[l] l) (ACris.ACris ℂ_[l] l)]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem acrisN_algebraMap_ainf (a : Reformulated.AutPerF.Ainf l (NC l)) :
     acrisN l (algebraMap (Reformulated.AutPerF.Ainf l (NC l)) (Reformulated.AutPerF.Acris l (NC l)) a) =
@@ -54,7 +54,7 @@ theorem acrisN_algebraMap_ainf (a : Reformulated.AutPerF.Ainf l (NC l)) :
     IsScalarTower.algebraMap_apply (AInf ℂ_[l] l) (ACris.ACrisZero ℂ_[l] l) (ACris.ACris ℂ_[l] l)]
 
 /- English proof (translation)
-Rewrite using `[cA_apply, Reformulated.AutPerF.Acris.map_algebraMap, ainfMap_eq]`. Conclude with `acrisN_algebraMap_ainf l _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_algebraMap (a : Reformulated.AutPerF.Ainf l (OC l)) :
     cA l (algebraMap (Reformulated.AutPerF.Ainf l (OC l)) (Reformulated.AutPerF.Acris l (OC l)) a) =

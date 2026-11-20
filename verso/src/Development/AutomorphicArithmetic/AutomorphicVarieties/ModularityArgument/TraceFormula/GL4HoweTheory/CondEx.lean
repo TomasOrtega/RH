@@ -4,11 +4,11 @@ import Development.DiscreteGroups.GlobalIrreducibility.ExistsUniformizerValuatio
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Introduce `E _ _ _ _ ϖ hϖ ψ hψ hψ1`. Take `⟨c, hc⟩` from `DiscreteGroups.sglob.DzType.exists_hasConductor_of_continuous_ne_one ψ hψ hψ1`. Establish `h1 : ord E ϖ = 1` using `ord_eq_one hϖ`. Establish `hz : ∀ d : ℤ, ord E (ϖ ^ d) = d`. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `d with`. Consider the case `ofNat n => simp [DiscreteGroups.sglob.DzType.ord_pow_bis, h1]`. Consider the case `negSucc n`. Rewrite using `[zpow_negSucc, DiscreteGroups.sglob.DzType.ord_inv_eq_neg_ord, DiscreteGroups.sglob.DzType.ord_pow_bis, h1, Int.negSucc_eq]`. Use `push_cast`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hv : valuation E ((ϖ ^ ord E c : Eˣ) : E) = valuation E (c : E)` using `le_antisymm ((DiscreteGroups.sglob.DzType.valuation_le_iff_ord_le _ _).2 (by rw [hz])) ((DiscreteGroups.sglob.DzType.valuation_le_iff_ord_le _ _).2 (by rw [hz]))`. Use `⟨ord E c, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `hc x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.condEx :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (ϖ : Eˣ), valuation E (ϖ : E) = uniformizer E → ∀ ψ : AddChar E Circle, Continuous ψ → ψ ≠ 1 → ∃ d : ℤ, HasConductor ψ (ϖ ^ d) := by

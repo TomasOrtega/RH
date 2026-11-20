@@ -16,9 +16,9 @@ namespace GlobalTheory.BKLim.Lower
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : bk.ev bk.E = 0` using `inclW_injective (h.trans (map_zero _).symm)`. Establish `hu` using `(GlobalTheory.BSP.isUnit_inclW_of_isPer l K bk τ hτ).1`. Establish `h1` using `hτ.1`. Rewrite `h1` using `[h0, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(hu.map (frobW l)).ne_zero`. Rewrite `h2` using `[frobW_inclW, h1, map_zero]`. Conclude with `h2 rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evW_E_ne_zero (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) : bk.evW bk.E ≠ 0 := by
   intro h
@@ -31,7 +31,7 @@ theorem evW_E_ne_zero (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) : bk.evW bk.
   exact h2 rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul' {R S : Type*} [CommRing R] [CommRing S] {d : ℕ} (f : R →+* S) (c : R)
     (M : Matrix (Fin d) (Fin d) R) : (c • M).map f = f c • M.map f := by
@@ -82,11 +82,11 @@ def lower (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {N₀ k d : ℕ} {ρ : �
   gal := F.gal
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ C hC N N₀ d ρ F hF H hH`. Break down `le_total N N₀ with h | h` into its components or cases. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Conclude with `⟨raise bk F k, rfl, rfl⟩`. Take `⟨Y, Y', hY, -⟩` from `GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N d ρ F.toPre`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨hdA, hdA'⟩` from `(GlobalTheory.T.adaptedBasis_theta_galoisFixed_poles l K bk τ hτ C hC N d ρ F Y hF hY H).2 N₀ h hH`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite `hdA`, `hdA'` using `[Nat.add_sub_cancel_left]`. Use `choose A₀ hA₀ using hdA`. Use `choose A₀' hA₀' using hdA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨lower bk hτ F (Matrix.of A₀) (Matrix.of A₀') ?_ ?_, rfl, rfl⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hA₀ i j]`. Use extensionality with `i j`. Simplify using `[hA₀' i j]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_jumps_le : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (C : Core l), C.InvdR → ∀ (N N₀ d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (F : Frame bk N d ρ), F.IsDR → ∀ H : Hodge C (bk.ev bk.E) (fun g => (ρ g).map (zOm l)) K, (∀ i, |(H.p i : ℤ) - H.q| ≤ N₀) → ∃ F₀ : Frame bk N₀ d ρ, F₀.T = F.T ∧ F₀.ε = F.ε := by
   intro l _ K bk τ hτ C hC N N₀ d ρ F hF H hH

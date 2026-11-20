@@ -27,25 +27,25 @@ section Kernel
 variable {V W : HSp D} (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (g : GA D V) (h : GA D W)
 
 /- English proof (translation)
-Simplify using `[thetaKO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_zero : thetaKO ω g h 0 = 0 := by
   simp [thetaKO]
 
 /- English proof (translation)
-Simplify using `[thetaKO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_add (f f' : WO V W → ℂ) : thetaKO ω g h (f + f') = thetaKO ω g h f + thetaKO ω g h f' := by
   simp [thetaKO]
 
 /- English proof (translation)
-Simplify using `[thetaKO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_sub (f f' : WO V W → ℂ) : thetaKO ω g h (f - f') = thetaKO ω g h f - thetaKO ω g h f' := by
   simp [thetaKO]
 
 /- English proof (translation)
-Simplify using `[thetaKO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_smul (c : ℂ) (f : WO V W → ℂ) : thetaKO ω g h (c • f) = c * thetaKO ω g h f := by
   simp [thetaKO]
@@ -53,9 +53,9 @@ theorem thetaKO_smul (c : ℂ) (f : WO V W → ℂ) : thetaKO ω g h (c • f) =
 end Kernel
 
 /- English proof (translation)
-Establish `hT : IsMultMap θ M J χ (PiTensorProduct.lift.symm F)` using `(GlobalTheory.MultMem.mem_mult_iff D θ W S M J χ _).1 ((mem_multT θ M J χ F).1 hF)`. Establish `hFv : ∀ x, F x = PiTensorProduct.lift (PiTensorProduct.lift.symm F) x` using `fun x => by`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hFv, LinearMap.map_smul, PiTensorProduct.lift.tprod]`. Conclude with `⟨GlobalTheory.MultMem.isAutFunSm_smul r (hT.aut x), GlobalTheory.MultMem.isCuspFun_smul r (hT.cusp x)⟩`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Conclude with `⟨GlobalTheory.MultMem.isAutFunSm_add ha.1 hb.1, GlobalTheory.MultMem.isCuspFun_add ha.1.toIsAutFun hb.1.toIsAutFun ha.2 hb.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem multT_apply_cusp {W : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel W S) (J : Set (GA D W))
     (χ : GA D W → ℂ) (F : SmT M →ₗ[ℂ] (GA D W → ℂ)) (hF : F ∈ MultT θ M J χ) (v : SmT M) :
@@ -74,15 +74,15 @@ theorem multT_apply_cusp {W : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D
       GlobalTheory.MultMem.isCuspFun_add ha.1.toIsAutFun hb.1.toIsAutFun ha.2 hb.2⟩
 
 /- English proof (translation)
-Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero`. Use `⟨GlobalTheory.OrientedHeis.theta_zero, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Lift.liftInt, thetaKO_zero]`. Consider the case `add a b _ _ ha hb`. Use `⟨GlobalTheory.OrientedHeis.theta_add ha.1 hb.1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun ha.2 x`. Establish `h2` using `congrFun hb.2 x`. Simplify using `only [Lift.liftInt, Pi.zero_apply] at h1 h2 ⊢`. Simplify using `only [thetaKO_add, add_mul]`. Rewrite using `[integral_add (hI a ha.1 x) (hI b hb.1 x), h1, h2, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c a _ ha`. Use `⟨GlobalTheory.OrientedHeis.theta_smul c ha.1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `h1` using `congrFun ha.2 x`. Simplify using `only [Lift.liftInt, Pi.zero_apply] at h1 ⊢`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [thetaKO_smul, mul_assoc]`. Rewrite using `[integral_const_mul, h1, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftInt_span_eq_zero {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {ν : Measure (GA D W)} {𝓕 : Set (GA D W)} {Φ : GA D W → ℂ}
@@ -113,9 +113,9 @@ theorem liftInt_span_eq_zero {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
     rw [integral_const_mul, h1, mul_zero]
 
 /- English proof (translation)
-Use `le_antisymm (ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_) bot_le` and prove the remaining obligations. Rewrite using `[zero_add]`. Break down `eq_or_ne K 0 with rfl | hK0` into its components or cases. Conclude with `(h 1 one_pos).trans (by simp)`. Establish `hε' : (ε : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.2 hε.ne'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h (ε / K) (ENNReal.div_pos hε' hK)` as an intermediate fact. Rewrite `this` using `[ENNReal.mul_div_cancel hK0 hK]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_le_mul_pos {a K : ℝ≥0∞} (hK : K ≠ ∞) (h : ∀ δ : ℝ≥0∞, 0 < δ → a ≤ K * δ) : a = 0 := by
   refine le_antisymm (ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_) bot_le
@@ -127,17 +127,17 @@ theorem eq_zero_of_le_mul_pos {a K : ℝ≥0∞} (hK : K ≠ ∞) (h : ∀ δ : 
     rwa [ENNReal.mul_div_cancel hK0 hK] at this
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hL.bound`. Take `⟨d, hd⟩` from `hA 0`. Take `⟨C, hC⟩` from `hd μ 𝓓 hμ h𝓓 U hU`. Establish `hint : ∀ f', IsThetaFunO ψ V W f' → ∀ x, IntegrableOn (fun h => thetaKO ω x h f' * Φ h) 𝓕 ν` using `fun f' hf' x => by`. Simplify `hL.integ f' Φ hf' hΦ x 1` using `[rTr]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key : ∀ g ∈ GlobalTheory.Size.thetaLevel ψ V W U, Lift.liftInt ν 𝓕 (thetaKO ω) g Φ = 0 → growthSob θ V 0 A (lift ω ν 𝓕 f Φ) ≤ C * sobO ψ θ μ 𝓓 d (f - g) * decayInt ν 𝓕 A Φ`. Introduce `g hg hg0`. Establish `hb` using `hC (f - g) (sub_mem hf hg) Φ hΦ`. Establish `heq : lift ω ν 𝓕 (f - g) Φ = lift ω ν 𝓕 f Φ`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0` using `congrFun hg0 x`. Simplify using `only [lift, Lift.liftInt, Pi.zero_apply] at h0 ⊢`. Simplify using `only [thetaKO_sub, sub_mul]`. Rewrite using `[integral_sub (hint f hf.1 x) (hint g hg.1 x), h0, sub_zero]`. Rewrite `hb` using `[heq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hdec` using `hL.decay_ne_top Φ hΦ A`. Establish `hz : growthSob θ V 0 A (lift ω ν 𝓕 f Φ) = 0`. Use `eq_zero_of_le_mul_pos (K := C * decayInt ν 𝓕 A Φ) (ENNReal.mul_ne_top ENNReal.coe_ne_top hdec) ?_` and prove the remaining obligations. Introduce `δ hδ`. Take `⟨g, hg, hg0, hsm⟩` from `happ d δ hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hz' : growthSize V A (lift ω ν 𝓕 f Φ) = 0` using `by simpa [growthSob] using hz`. Unfold `growthSize at hz'`. Use function extensionality and compare the values at `x`. Establish `hx` using `ENNReal.ofReal_eq_zero.1 ((ENNReal.iSup_eq_zero.1 hz') x)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hpos : 0 < height V x ^ A` using `pow_pos (lt_of_lt_of_le one_pos ((height_laws V).1 x)) A`. Rewrite `hx` using `[div_le_iff₀ hpos, zero_mul]`. Conclude with `norm_le_zero_iff.1 hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftInt_eq_zero_of_approx {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {ν : Measure (GA D W)} {𝓕 : Set (GA D W)}
@@ -183,13 +183,13 @@ theorem liftInt_eq_zero_of_approx {θ : InfFam D} {ψ : AddChar (AF D.host.F) �
   exact norm_le_zero_iff.1 hx
 
 /- English proof (translation)
-Introduce `h1 h2 h3 D k i V' W M' θ ψ hθ hk hi hsig ω' hω' ν 𝓕 hν h𝓕 J χ F hF v f' hf'`. Take `⟨χS, χT, hW, hexp⟩` from `hω'`. Establish `hLaws` using `GlobalTheory.Chain.LiftReg.liftProps_obj h3 D V' W θ ψ χS χT ω' hθ hW ν 𝓕 hν h𝓕`. Establish `hcv` using `multT_apply_cusp θ M' J χ F hF v`. Take `⟨A⟩` from `(GlobalTheory.FrameExists.frame_exists_signCompat D V').1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, 𝓓, hcov⟩` from `GlobalTheory.Size.exists_isCovolOne V' W`. Establish `hstd : IsStdChar D ψ (-1)` using `hW.std`. Take `⟨U, hU, hfU, happ⟩` from `GlobalTheory.FockDensity.fockDense D V' W A (Fr.ofModel M') θ ψ hstd hθ μ 𝓓 hcov f' hf'`. Establish `hint : ∀ f, IsThetaFunO ψ V' W f → ∀ x, IntegrableOn (fun h => thetaKO ω' x h f * F v h) 𝓕 ν` using `fun f hf x => by simpa [rTr] using hLaws.integ f (F v) hf hcv x 1`. Use `liftInt_eq_zero_of_approx hLaws hcv (μ := μ) (𝓓 := 𝓓) hcov.1 hcov.2.1 hU hfU ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d δ hδ`. Take `⟨g, hg, hgU, hsm⟩` from `happ d δ hδ`. Use `⟨g, hgU, ?_, hsm⟩` and prove the remaining obligations. Use `(liftInt_span_eq_zero hint ?_ g hg).2` and prove the remaining obligations. Introduce and unpack `_ ⟨f₀, P, hvac, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hstd hθ A.cart A.onb (Fr.ofModel M').cart (Fr.ofModel M').onb hvac.1 P`. Conclude with `GlobalTheory.LowerMembers.lowVanishFock h1 h2 h3 D k i V' W M' θ ψ hθ hk hi hsig ω' ⟨χS, χT, hW, hexp⟩ ν 𝓕 hν h𝓕 J χ F hF v A f₀ hvac P`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lowVanish_obj : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →
     ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.LoweredSignatureVanishing.LowVanish D := by

@@ -13,11 +13,11 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
 open Classical in
 
 /- English proof (translation)
-Introduce `a`. Use `⟨((Finset.univ : Finset (C.cls i)).filter fun c => ∃ L, G.P.IsLatTup L ∧ clsOf H a L = c).attach.image (fun c => ((Finset.mem_filter.1 c.2).2).choose), ?_, ?_⟩` and prove the remaining obligations. Introduce `L hL`. Take `⟨c, _, rfl⟩` from `Finset.mem_image.1 hL`. Conclude with `((Finset.mem_filter.1 c.2).2).choose_spec.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `L hL`. Establish `hc : clsOf H a L ∈ (Finset.univ : Finset (C.cls i)).filter fun c => ∃ L, G.P.IsLatTup L ∧ clsOf H a L = c` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, L, hL, rfl⟩`. Use `⟨_, Finset.mem_image.2 ⟨⟨clsOf H a L, hc⟩, Finset.mem_attach _ _, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `spec` using `((Finset.mem_filter.1 hc).2).choose_spec`. Take `⟨_, γ, hγ⟩` from `(clsOf_iff H X a a _ L spec.1 hL).1 spec.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨γ, hγ⟩`.
+A detailed English derivation is pending.
 -/
 theorem finClasses_of (H : ∀ β, S.Core e β) (X : ChX S) : G.FinClasses := by
   intro a

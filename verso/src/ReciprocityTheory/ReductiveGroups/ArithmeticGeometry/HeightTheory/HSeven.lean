@@ -20,23 +20,23 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Simplify using `only`. Establish `hf : ∀ c, d.wx x c ∈ 𝒜 c d.wL ∧ d.wx x c ≠ 0` using `fun c => ⟨d.wx_mem hd x c, hx c⟩`. Establish `hK : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hi : (0 : ℝ) < d.i` using `by exact_mod_cast hd.i_ge`. Establish `hg : (0 : ℝ) < d.g0` using `by exact_mod_cast hd.g_zero_ge_ask_sum`.
+Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : ((d.n1 : ℕ) : ℝ) = (d.i : ℝ) * d.g0` using `by simp [Data.n1]`. Establish `hn1pos : (0 : ℝ) < d.n1` using `by rw [hn1]; positivity`. Establish `hdel : (0 : ℝ) ≤ d.del` using `Nat.cast_nonneg _`. Establish `hla` using `d.la_part hd h hH1 (d.wx x) hf`. Establish `hsg` using `d.sg_part hd h hI2be (d.wx x) hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `d.logHeight_section_bound hd h hF1d (d.wx x) hf`. Take `⟨-, -, hind3, hind4⟩` from `d.h_ind hd h hI2be`. Establish `hta1 : ∀ c, d.ta1 c ∈ 𝒜 c ((2 : ℕ) • d.G1) ∧ d.ta1 c ≠ 0` using `fun c => ⟨hd.firstSectionMem c, hd.firstSectionNeZero c⟩`. Establish `hta2 : ∀ c, d.ta2 c ∈ 𝒜 c d.G2 ∧ d.ta2 c ≠ 0` using `fun c => ⟨hd.secondSectionMem c, hd.secondSectionNeZero c⟩`. Establish `hbdd1` using `fun sg => hd.bdd sg _ d.ta1 (Or.inr (Or.inr (Or.inr (Or.inl ⟨rfl, rfl⟩))))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbdd2` using `fun sg => hd.bdd sg _ d.ta2 (Or.inr (Or.inr (Or.inr (Or.inr ⟨rfl, rfl⟩))))`. Establish `hint1` using `fun c sg => (d.int_Nsg hd h hI2be c sg).1 ((2 : ℕ) • d.G1) (d.ta1 c) (by simp) (hd.firstSectionMem c) (hd.firstSectionNeZero c)`. Establish `hint2` using `fun c sg => (d.int_Nsg hd h hI2be c sg).1 d.G2 (d.ta2 c) (by simp) (hd.secondSectionMem c) (hd.secondSectionNeZero c)`. Establish `h41` using `(d.h_four hd h _ d.ta1 hta1 hd.ordDoubleFirstSection_nonneg hbdd1 hint1).1`. Establish `h42` using `(d.h_four hd h _ d.ta2 hta2 hd.ordSecondSectionNonneg hbdd2 hint2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hsup1, hsup2⟩` from `hSup`. Establish `m1` using `mul_le_mul_of_nonneg_left hsup1 hdel`. Establish `m2` using `mul_le_mul_of_nonneg_left hsup2 hdel`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : d.Hgt h d.wL (d.wx x) = (∑ᶠ la, d.NlaG h d.wL (d.wx x) la * logNorm la) / (Module.finrank ℚ K : ℝ) + meanK (d.Nsg d.wL (d.wx x)) + d.h0f h d.wL (d.wx x)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : d.HgtMM h (d.wx x) = (∑ᶠ la, d.NlaMM h (d.wx x) la * logNorm la) / (Module.finrank ℚ K : ℝ) + meanK (d.NsgMM (d.wx x)) + d.mahlerMeasureHeight h (d.wx x)` using `rfl`. Establish `e3 : d.Hgt h (d.n1 • d.wde) d.et = (∑ᶠ la, d.NlaG h (d.n1 • d.wde) d.et la * logNorm la) / (Module.finrank ℚ K : ℝ) + meanK (d.Nsg (d.n1 • d.wde) d.et) + d.h0f h (d.n1 • d.wde) d.et` using `rfl`. Establish `hla'` using `div_le_div_of_nonneg_right hla hK.le`. Rewrite `hla'` using `[add_div, add_div, mul_div_assoc, mul_div_assoc]`. Establish `eH : d.cc * d.g0 * (d.Hgt h (d.n1 • d.wde) d.et / d.n1) = d.cc / d.i * d.Hgt h (d.n1 • d.wde) d.et`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hn1]`. Clear the denominators using the available nonvanishing facts. Establish `eA : d.D * d.cc * d.g0 * ((d.aG h (d.n1 • d.wde) d.et : ℝ) / d.n1) * (Real.log (d.N + 1 : ℕ) + 1 / 2) = d.D * (Real.log (d.N + 1 : ℕ) + 1 / 2) * (d.cc / d.i) * (d.aG h (d.n1 • d.wde) d.et : ℝ)`. Rewrite using `[hn1]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e1, e2, eH, eA, e3]`. Use polynomial arithmetic with `[hla', hsg, h0]`. Establish `hd3` using `hind3 x hx`. Establish `eq : d.Hgt h (d.n1 • d.wde) d.et / d.n1 = d.Hgt h d.wL (d.wx x) - d.Hgt h ((2 : ℕ) • d.G1) d.ta1 / 2`. Rewrite using `[div_eq_iff hn1pos.ne']`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[eq]`. Combine the linear relations using `[h41, m1]`. Establish `hd4` using `hind4 x ta' hx hta'`. Combine the linear relations using `[h42, m2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem h_seven (hd : d.AxH 𝒜) (h : d.S1) (hH1 : d.FinitePlaceHyp) (hF1d : d.TrivialPlaceHyp) (hSup : d.HtSup)
     (hI2be : d.HeightIntegralBoundEstimate) (x : Fin (d.N + 1) → K) (hx : ∀ c, d.wx x c ≠ 0) (ta' : ∀ c, A c)

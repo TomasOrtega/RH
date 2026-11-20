@@ -10,23 +10,21 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hm0 : (m : L) ≠ 0`. Establish `: m ≠ 0` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hx : ∀ v : HeightOneSpectrum (𝓞 L), v.valuation L ((δ - 1) / m) ≤ 1`. Introduce `v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, e⟩` from `h v`. Establish `hma : (m : v.adicCompletion L) = algebraMap L (v.adicCompletion L) (m : L)` using `by simp`. Establish `hm0' : (m : v.adicCompletion L) ≠ 0`. Rewrite using `[hma]`. Conclude with `(map_ne_zero _).2 hm0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxa : algebraMap L (v.adicCompletion L) ((δ - 1) / m) = a`. Rewrite using `[map_div₀, map_sub, map_one, e, ← hma]`. Clear the denominators using the available nonvanishing facts. Establish `hval : Valued.v (algebraMap L (v.adicCompletion L) ((δ - 1) / m)) = v.valuation L ((δ - 1) / m)` using `v.valuedAdicCompletion_eq_valuation' _`. Rewrite using `[← hval, hxa]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `ha`. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one L _ hx`. Assume the negation of the conclusion as `hne`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[map_zero]`. Establish `: δ - 1 = 0`. Use `hy.symm` as an intermediate fact. Rewrite `this` using `[div_eq_zero_iff, or_iff_left hm0]`. Then use the resulting hypothesis. Conclude with `hne (sub_eq_zero.1 this)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ∀ z : InfinitePlace L, z ((y : 𝓞 L) : L) < 1`. Introduce `z`. Establish `hyx : ((y : 𝓞 L) : L) = (δ - 1) / m` using `hy`. Establish `hn : ‖z.embedding δ‖ = 1`. Establish `e1 : z.embedding δ * (starRingEnd ℂ) (z.embedding δ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← map_mul, hδ, map_one]`. Establish `e2` using `congrArg norm e1`. Rewrite `e2` using `[norm_mul, Complex.norm_conj, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (z.embedding δ)]`. Rewrite using `[← InfinitePlace.norm_embedding_eq, hyx, map_div₀, map_sub, map_one, map_natCast, norm_div, Complex.norm_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm3 : (3 : ℝ) ≤ m` using `by exact_mod_cast hm`. Rewrite using `[div_lt_one (by linarith)]`. Use `norm_sub_le (z.embedding δ) 1` as an intermediate fact. Rewrite `this` using `[hn, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Take `⟨w₀⟩ : Nonempty (InfinitePlace L)` from `inferInstance`. Use `InfinitePlace.one_le_of_lt_one (w := w₀) hy0 (fun z _ => hlt z)` as an intermediate fact. Combine the linear relations using `[hlt w₀]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_cong {L : Type} [Field L] [NumberField L] [IsCMField L] (m : ℕ) (hm : 3 ≤ m) (δ : L)
     (hδ : δ * IsCMField.complexConj L δ = 1)
@@ -79,9 +77,9 @@ private theorem eq_one_of_cong {L : Type} [Field L] [NumberField L] [IsCMField L
   linarith [hlt w₀]
 
 /- English proof (translation)
-Take `⟨a, ha, ea⟩` from `h 0 0`. Take `⟨b, hb, eb⟩` from `h 0 1`. Take `⟨c, hc, ec⟩` from `h 1 0`. Take `⟨d, hd, ed⟩` from `h 1 1`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide), Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide), sub_zero] at ea eb ec ed`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hmO : (m : w.adicCompletion L) ∈ w.adicCompletionIntegers L` using `natCast_mem _ m`. Use `⟨a + d + m * (a * d - b * c), add_mem (add_mem ha hd) (mul_mem hmO (sub_mem (mul_mem ha hd) (mul_mem hb hc))), ?_⟩` and prove the remaining obligations. Establish `e0 : M 0 0 = 1 + m * a` using `by rw [← ea]; ring`. Establish `e3 : M 1 1 = 1 + m * d` using `by rw [← ed]; ring`. Rewrite using `[Matrix.det_fin_two, e0, e3, eb, ec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -103,37 +101,35 @@ private theorem det_cong {L : Type} [Field L] [NumberField L] [IsCMField L] {m :
   ring
 
 /- English proof (translation)
-Introduce `L _ _ _ m hm U hU f hf k hk hr u hu hfu`. Take `⟨γ₀, hγ₀'⟩` from `hr`. Establish `hγ₀ : ratGL L 2 γ₀ = ((f * k : UA L 2) : GA L 2)` using `hγ₀'`. Establish `hg : Formalism.UG.cT (conjAd L) ((f * k : UA L 2) : GA L 2).val * 1 * ((f * k : UA L 2) : GA L 2).val = 1` using `(f * k).2`. Rewrite `hg` using `[← hγ₀, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : (ratGL L 2 γ₀).val = γ₀.val.map (algebraMap L (Ad L))` using `rfl`. Rewrite `hg` using `[hv, GlobalTheory.DefU.ClassFin.cT_map (algebraMap L (Ad L)) (IsCMField.complexConj L).toRingEquiv.toRingHom (conjAd L) (fun y => (conjAd_algebraMap y).symm), ← Matrix.map_mul]`. Use `haveI hnt : Nontrivial (Ad L) := show Nontrivial (InfiniteAdeleRing L × FiniteAdeleRing (𝓞 L) L) from inferInstance`. Establish `hUL : Formalism.UG.cT (IsCMField.complexConj L).toRingEquiv.toRingHom γ₀.val * γ₀.val = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrFun₂ hg i j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.one_apply]`. Rewrite using `[Matrix.one_apply]`. Apply `(algebraMap L (Ad L)).injective` to reduce the goal to its premises. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hδ : γ₀.val.det * IsCMField.complexConj L γ₀.val.det = 1`. Use `congrArg Matrix.det hUL` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Establish `hc : (Formalism.UG.cT (IsCMField.complexConj L).toRingEquiv.toRingHom γ₀.val).det = IsCMField.complexConj L γ₀.val.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.UG.cT, Matrix.det_transpose]`. Conclude with `(RingHom.map_det (IsCMField.complexConj L).toRingEquiv.toRingHom γ₀.val).symm`. Rewrite `this` using `[hc]`. Rewrite using `[mul_comm]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : (f : GA L 2).val.det * (k : GA L 2).val.det = algebraMap L (Ad L) γ₀.val.det`. Rewrite using `[RingHom.map_det]`. Establish `h2 : (γ₀.val.map (algebraMap L (Ad L))) = ((f * k : UA L 2) : GA L 2).val` using `by rw [← hv, hγ₀]`. Express the relevant statement in the definitionally equal form `_ = (γ₀.val.map (algebraMap L (Ad L))).det`. Rewrite using `[h2, ← Matrix.det_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hkF : pFin L (k : GA L 2).val.det = 1`. Establish `hk' : Matrix.GeneralLinearGroup.map (pFin L) (k : GA L 2) = 1` using `hk`. Rewrite using `[RingHom.map_det]`. Use `congrArg (fun g : GL (Fin 2) (Af L) => g.val.det) hk'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hfI : pInf L (f : GA L 2).val.det = 1`. Establish `hf' : Matrix.GeneralLinearGroup.map (pInf L) (f : GA L 2) = 1` using `hf`. Rewrite using `[RingHom.map_det]`. Use `congrArg (fun g : GL (Fin 2) (Cinf L) => g.val.det) hf'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hdu : (f : GA L 2).val.det * (u : GA L 2).val.det = 1`. Establish `h1 : Matrix.GeneralLinearGroup.det ((f * u : UA L 2) : GA L 2) = 1` using `hfu`. Use `congrArg Units.val h1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huv : (u : GA L 2).val.det * ((u⁻¹ : UA L 2) : GA L 2).val.det = 1`. Rewrite using `[← Matrix.det_mul]`. Establish `: (u : GA L 2).val * ((u⁻¹ : UA L 2) : GA L 2).val = 1`. Use `congrArg (fun x : UA L 2 => (x : GA L 2).val) (mul_inv_cancel u)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this, Matrix.det_one]`. Establish `hfv : (f : GA L 2).val.det = ((u⁻¹ : UA L 2) : GA L 2).val.det`. Combine the equalities or inequalities in the displayed calculation. Establish `hcong : ∀ w : HeightOneSpectrum (𝓞 L), ∃ a ∈ w.adicCompletionIntegers L, algebraMap L (w.adicCompletion L) γ₀.val.det - 1 = (m : w.adicCompletion L) * a`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem` using `((hU (u⁻¹)).1 (U.inv_mem hu)).2 w`. Take `⟨a, ha, e⟩` from `det_cong (mL w (u⁻¹ : UA L 2)) hmem`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`. Establish `e1 : (mL w (u⁻¹ : UA L 2)).det = pLoc L w (pFin L ((u⁻¹ : UA L 2) : GA L 2).val.det)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.comp_apply, RingHom.map_det]`. Both sides reduce to the same expression. Establish `e2 : algebraMap L (w.adicCompletion L) γ₀.val.det = pLoc L w (pFin L (algebraMap L (Ad L) γ₀.val.det))` using `rfl`. Rewrite using `[e1, e2, ← hD, hfv, map_mul, hkF, mul_one]`. Establish `h1 : γ₀.val.det = 1` using `eq_one_of_cong m hm _ hδ hcong`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hD` using `[h1, map_one]`. Establish `hfF : pFin L (f : GA L 2).val.det = 1`. Use `congrArg (pFin L) hD` as an intermediate fact. Rewrite `this` using `[map_mul, hkF, mul_one, map_one]`. Then use the resulting hypothesis. Establish `hf1 : (f : GA L 2).val.det = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `Prod.ext ?_ hfF` and prove the remaining obligations. Apply `(infEq L).symm.injective` to reduce the goal to its premises. Establish `e : (infEq L).symm ((1 : Ad L).1) = 1` using `map_one _`. Conclude with `hfI.trans e.symm`. Establish `hk1 : (k : GA L 2).val.det = 1` using `by rwa [hf1, one_mul] at hD`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Conclude with `hf1`. Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Conclude with `hk1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.detRoot :
     UpperTheory.V.Z.Sym.So.DetRoot := by

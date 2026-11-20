@@ -11,21 +11,19 @@ section
 section Helpers
 open IsLocalRing Matrix UpperTheory.V.Hi
 /- English proof (translation)
-Establish `hle : ∀ K, MK K ≤ S` using `fun K => by`. Rewrite using `[← hfix]`. Conclude with `Submodule.map_subtype_le _ _`. Establish `hmem : ∀ K (z : S), (z : P) ∈ MK K ↔ z ∈ fixd ρ (κ K)` using `fun K z => by`. Rewrite using `[← hfix]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun ⟨y, hy, e⟩ => Subtype.ext e ▸ hy, fun h => ⟨z, h, rfl⟩⟩`. Set `e : ∀ K, (MK K).comap S.subtype ≃ₗ[A] MK K` to `fun K => Submodule.comapSubtypeEquivOfLe (hle K)`. Establish `he : ∀ K y, (e K y : P) = (y : S)` using `fun _ _ => rfl`. Establish `he' : ∀ K y, (((e K).symm y : S) : P) = y` using `fun K y => by rw [← he, LinearEquiv.apply_symm_apply]`. Take `⟨α, hα⟩` from `levelUR2Glue A R S Lev (fun K => (MK K).comap S.subtype) (fun K => (e K).symm.conjRingEquiv.toRingHom.comp (μ K)) hex (fun K K' => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K'', h1, h2⟩` from `hinf K K'`. Conclude with `⟨K'', fun z hz => (hmem _ z).2 fun k hk => (hmem _ z).1 hz k (h1 hk), fun z hz => (hmem _ z).2 fun k hk => (hmem _ z).1 hz k (h2 hk)⟩)`. Use the proof step `(fun K K' h t y => by`. Establish `h' : MK K ≤ MK K'` using `fun x hx => h (x := ⟨x, hle K hx⟩) hx`. Use `hμ K K' (Submodule.inclusion h') (Submodule.inclusion_injective h') (fun i y y' hy => hy) t (e K y)` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Conclude with `(he' K' _).trans ((congrArg Subtype.val this).symm.trans (he' K _).symm))`. Establish `h2 : ∀ K t (y : MK K) (z : S), (z : P) = y → (α t z : P) = μ K t y` using `fun K t y z hz => by`. Establish `hy : y = e K ⟨z, show (z : P) ∈ MK K from hz ▸ y.2⟩` using `Subtype.ext hz.symm`. Rewrite using `[hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg Subtype.val (hα K t ⟨z, show (z : P) ∈ MK K from hz ▸ y.2⟩)).trans (he' K _)`. Use `⟨α, fun t g z => ?_, h2⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hex z`. Take `⟨K', hK'⟩` from `hconj K g`. Set `φ : MK K →ₗ[A] MK K'` to `(S.subtype ∘ₗ ρ g ∘ₗ Submodule.inclusion (hle K)).codRestrict _ fun y => (hmem K' _).2 fun k hk => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hmem K (Submodule.inclusion (hle K) y)).1 y.2 _ (hK' k hk)` as an intermediate fact. Express the relevant statement in the definitionally equal form `ρ k (ρ g _) = ρ g _`. Use `conv_rhs => rw [← this]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, ← mul_assoc, mul_inv_cancel_left]`. Establish `hφ : ∀ y, (φ y : P) = ρ g (Submodule.inclusion (hle K) y)` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective φ` using `fun y y' h => by`. Establish `h3 : ρ g (Submodule.inclusion (hle K) y) = ρ g (Submodule.inclusion (hle K) y')` using `Subtype.ext (by rw [← hφ, ← hφ, h])`. Establish `h4` using `congrArg (ρ g⁻¹) h3`. Simplify using `only [Representation.inv_self_apply] at h4`. Conclude with `Submodule.inclusion_injective _ h4`.
-
-Establish `h5` using `hμ K K' φ hinj (fun i y y' hy => hop g i _ _ hy) t ⟨z, hK⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[h2 K' t (φ ⟨z, hK⟩) (ρ g z) rfl, ← h5, hφ]`. Conclude with `congrArg (fun x => (ρ g x : P)) (Subtype.ext (h2 K t ⟨z, hK⟩ z rfl).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ae_abs {A R P Lev B ι : Type} [CommRing A] [CommRing R] [AddCommGroup P] [Module A P] [Nonempty Lev] [Group B]
     (MK : Lev → Submodule A P) (S : Submodule A P) (op : ι → Module.End A P) (ρ : Representation A B S) (κ : Lev → Subgroup B)
@@ -82,14 +80,14 @@ private theorem ae_abs {A R P Lev B ι : Type} [CommRing A] [CommRing R] [AddCom
   rw [h2 K' t (φ ⟨z, hK⟩) (ρ g z) rfl, ← h5, hφ]
   exact congrArg (fun x => (ρ g x : P)) (Subtype.ext (h2 K t ⟨z, hK⟩ z rfl).symm)
 /- English proof (translation)
-Rewrite using `[← Finset.noncommProd_mulSingle g]`. Conclude with `Finset.noncommProd_induction _ _ _ p hm h1 fun q _ => hs q _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ae_ind {Q : Type} [Fintype Q] [DecidableEq Q] {G : Q → Type} [∀ q, Group (G q)] (p : (∀ q, G q) → Prop)
     (h1 : p 1) (hm : ∀ g g', p g → p g' → p (g * g')) (hs : ∀ q g, p (Pi.mulSingle q g)) (g : ∀ q, G q) : p g := by
   rw [← Finset.noncommProd_mulSingle g]
   exact Finset.noncommProd_induction _ _ _ p hm h1 fun q _ => hs q _
 /- English proof (translation)
-The claim follows from `ae_ind _ (fun i z z' h => by simpa using h) (fun g g' hg hg' i z z' h => by rw [map_mul] exact hg i _ _ (hg' i z z' h)) (fun q g i z z' h => by rw [hρ, hρ, h, ← Module.End.mul_apply, (hop q g i).eq, Module.End.mul_apply])`.
+A detailed English derivation is pending.
 -/
 private theorem ae_gen {Q : Type} [Fintype Q] [DecidableEq Q] {G : Q → Type} [∀ q, Group (G q)] {A P ι : Type} [CommRing A]
     [AddCommGroup P] [Module A P] (S : Submodule A P) (op : ι → Module.End A P) (ρ : Representation A (∀ q, G q) S)
@@ -104,7 +102,7 @@ private theorem ae_gen {Q : Type} [Fintype Q] [DecidableEq Q] {G : Q → Type} [
 section Top
 variable {Q : Type} {G : Q → Type} [∀ q, Group (G q)] [∀ q, TopologicalSpace (G q)] [∀ q, IsTopologicalGroup (G q)]
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun q => K.1 q ⊓ K'.1 q, fun q => ⟨(K.2 q).1.inter (K'.2 q).1, (K.2 q).2.inter_right ((K'.1 q).isClosed_of_isOpen (K'.2 q).1)⟩⟩, fun _ hk q hq => (hk q hq).1, fun _ hk q hq => (hk q hq).2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ae_inf (K K' : {K : ∀ q, Subgroup (G q) // ∀ q, IsOpen (K q : Set (G q)) ∧ IsCompact (K q : Set (G q))}) :
     ∃ K'' : {K : ∀ q, Subgroup (G q) // ∀ q, IsOpen (K q : Set (G q)) ∧ IsCompact (K q : Set (G q))},
@@ -113,7 +111,7 @@ private theorem ae_inf (K K' : {K : ∀ q, Subgroup (G q) // ∀ q, IsOpen (K q 
       (K.2 q).2.inter_right ((K'.1 q).isClosed_of_isOpen (K'.2 q).1)⟩⟩,
     fun _ hk q hq => (hk q hq).1, fun _ hk q hq => (hk q hq).2⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun q => (K.1 q).comap (MulAut.conj (g q)⁻¹).toMonoidHom, fun q => by let e := (Homeomorph.mulLeft (g q)⁻¹).trans (Homeomorph.mulRight (g q)⁻¹⁻¹) exact ⟨(K.2 q).1.preimage e.continuous, e.isCompact_preimage.2 (K.2 q).2⟩⟩, fun k hk q hq => by simpa using hk q hq⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ae_conj (K : {K : ∀ q, Subgroup (G q) // ∀ q, IsOpen (K q : Set (G q)) ∧ IsCompact (K q : Set (G q))})
     (g : ∀ q, G q) : ∃ K' : {K : ∀ q, Subgroup (G q) // ∀ q, IsOpen (K q : Set (G q)) ∧ IsCompact (K q : Set (G q))},
@@ -124,7 +122,7 @@ private theorem ae_conj (K : {K : ∀ q, Subgroup (G q) // ∀ q, IsOpen (K q : 
     fun k hk q hq => by simpa using hk q hq⟩
 end Top
 /- English proof (translation)
-Unfold `Frame.U Iwa.uOp`. Use `finsum_induction (fun t => Commute (X.ra τ u) t) (Commute.zero_right _) (fun _ _ => Commute.add_right) fun q => ?_` and prove the remaining obligations. Use `LinearMap.ext fun f => funext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(τ u : Matrix (Fin m) (Fin m) A) *ᵥ f (g * ((u : Ga), 1) * (1, _)) = (τ u : Matrix (Fin m) (Fin m) A) *ᵥ f (g * (1, _) * ((u : Ga), 1))`. Simplify using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem ae_commU {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {A : Type} [CommRing A] {m : ℕ}
     (τ : X.Ub →* GL (Fin m) A) (u : X.Ub) (b : Gp) : Commute (X.ra τ u) (X.U A m b) := by
@@ -135,14 +133,14 @@ private theorem ae_commU {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X :
     (τ u : Matrix (Fin m) (Fin m) A) *ᵥ f (g * (1, _) * ((u : Ga), 1))
   simp [mul_assoc]
 /- English proof (translation)
-The claim follows from `finsum_induction (fun t => Commute (ρ u) t) (Commute.zero_right _) (fun _ _ => Commute.add_right) fun _ => (h _).map ρ`.
+A detailed English derivation is pending.
 -/
 private theorem ae_dc {A H H' M : Type} [CommRing A] [Group H] [Group H'] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (s : H' →* H) (u : H) (h : ∀ g, Commute u (s g)) (K K' : Subgroup H') (x : H') :
     Commute (ρ u) (dc (ρ.comp s) K K' x) :=
   finsum_induction (fun t => Commute (ρ u) t) (Commute.zero_right _) (fun _ _ => Commute.add_right) fun _ => (h _).map ρ
 /- English proof (translation)
-Use `haveI : Subsingleton Y := h ▸ inferInstance`. Conclude with `⟨⟨⟨⟨fun _ => 0, Subsingleton.elim _ _⟩, fun _ _ => Subsingleton.elim _ _⟩, rfl, fun _ _ => Subsingleton.elim _ _⟩, fun _ _ => Subsingleton.elim _ _, this⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ae_bot {A R P : Type} [CommRing A] [CommRing R] [AddCommGroup P] [Module A P] {Y : Submodule A P} (h : Y = ⊥)
     (lam : A → R) : ∃ μ : R →+* Module.End A Y, (∀ b y, μ (lam b) y = b • y) ∧ Subsingleton Y := by
@@ -150,7 +148,7 @@ private theorem ae_bot {A R P : Type} [CommRing A] [CommRing R] [AddCommGroup P]
   exact ⟨⟨⟨⟨fun _ => 0, Subsingleton.elim _ _⟩, fun _ _ => Subsingleton.elim _ _⟩, rfl, fun _ _ => Subsingleton.elim _ _⟩,
     fun _ _ => Subsingleton.elim _ _, this⟩
 /- English proof (translation)
-Use `⟨(heckeAlg Y op).val.toRingHom.comp f.toRingHom, fun _ => rfl, fun b y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f (lam b) : Module.End A Y) y = _`. Rewrite using `[hl]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ae_mu {O A R P ι : Type} [CommRing O] [CommRing A] [CommRing R] [AddCommGroup P] [Module A P]
     {Y : Submodule A P} {op : ι → Module.End A P} [Fact (CommOn Y op)] [Algebra O R] [Algebra O (heckeAlg Y op)]
@@ -161,13 +159,13 @@ private theorem ae_mu {O A R P ι : Type} [CommRing O] [CommRing A] [CommRing R]
   rw [hl]
   rfl
 /- English proof (translation)
-Introduce `_` and use `absurd (inferInstance : Subsingleton (heckeAlg Y op)) (not_subsingleton _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ae_nt {A P ι : Type} [CommRing A] [AddCommGroup P] [Module A P] {Y : Submodule A P}
     {op : ι → Module.End A P} [Nontrivial (heckeAlg Y op)] : ¬ Subsingleton Y := fun _ =>
   absurd (inferInstance : Subsingleton (heckeAlg Y op)) (not_subsingleton _)
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim y 0, map_zero, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ae_zero {A M N : Type} [CommRing A] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N]
     (h : Subsingleton M) (φ : M →ₗ[A] N) (s : Module.End A M) (t : Module.End A N) (y : M) : φ (s y) = t (φ y) := by
@@ -189,7 +187,7 @@ private def ae_Ok (K : H.Lev) (μ : R →+* Module.End A (H.MK θ a K)) : Prop :
     ∃ (_ : Fact (CommOn (H.MK θ a K) (H.op A))) (_ : Alg.IsCO c.O (H.TK θ a K)) (f : R →ₐ[c.O] H.TK θ a K),
       H.IsMap θ a K D₀ ψ₀ f ∧ ∀ t, μ t = (f t : Module.End A (H.MK θ a K))
 /- English proof (translation)
-Break down `hJ with h | ⟨i1, i2, f, -, hf, -, hl, -⟩` into its components or cases. Conclude with `(ae_bot (A := A) (R := R) (P := H.X.Fn A H.m) (Y := H.MK θ a K) h.1 lam).imp fun μ h => ⟨h.1, .inl h.2⟩`. Conclude with `(ae_mu (A := A) (P := H.X.Fn A H.m) (Y := H.MK θ a K) (op := H.op A) f lam hl).imp fun μ h => ⟨h.2, .inr ⟨i1, i2, f, hf, h.1⟩⟩`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem ae_ex (lam : A →ₐ[c.O] R) (K : H.Lev) (J : Ideal R) (hJ : H.IsJ θ a K D₀ ψ₀ lam J) :
     ∃ μ : R →+* Module.End A (H.MK θ a K), (∀ b y, μ (lam b) y = b • y) ∧ ae_Ok H θ a D₀ ψ₀ K μ := by
@@ -198,9 +196,7 @@ private theorem ae_ex (lam : A →ₐ[c.O] R) (K : H.Lev) (J : Ideal R) (hJ : H.
   · exact (ae_mu (A := A) (P := H.X.Fn A H.m) (Y := H.MK θ a K) (op := H.op A) f lam hl).imp
       fun μ h => ⟨h.2, .inr ⟨i1, i2, f, hf, h.1⟩⟩
 /- English proof (translation)
-Break down `h with h | ⟨i1, i2, f, hf, e⟩` into its components or cases. Conclude with `ae_zero h φ (μ t) (μ' t) y`. Break down `h' with h | ⟨i1', i2', f', hf', e'⟩` into its components or cases. Conclude with `h.elim _ _`. Rewrite using `[e, e']`.
-
-Conclude with `_root_.UpperTheory.V.Hi.level_change_compat_rank_two_of_dense_weight hN L Ω l n c H hH A θ hθ a K K' R D₀ ψ₀ hU f f' hf hf' φ hφ (fun i y => hc i y _ rfl) t y`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ae_cmp (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) (hH : H.Ax) (hθ : H.IsWt θ)
     (hU : ∀ (T : Type) [CommRing T] [Algebra c.O T] [Alg.IsCO c.O T] (f g : R →ₐ[c.O] T),
@@ -217,7 +213,7 @@ private theorem ae_cmp (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.Literatur
   rw [e, e']
   exact _root_.UpperTheory.V.Hi.level_change_compat_rank_two_of_dense_weight hN L Ω l n c H hH A θ hθ a K K' R D₀ ψ₀ hU f f' hf hf' φ hφ (fun i y => hc i y _ rfl) t y
 /- English proof (translation)
-Break down `h with h | ⟨_, _, h⟩` into its components or cases. Conclude with `absurd h (ae_nt (op := H.op A))`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem ae_out (K : H.Lev) (μ : R →+* Module.End A (H.MK θ a K)) (h : ae_Ok H θ a D₀ ψ₀ K μ)
     [Fact (CommOn (H.MK θ a K) (H.op A))] [Alg.IsCO c.O (H.TK θ a K)] :
@@ -226,7 +222,7 @@ private theorem ae_out (K : H.Lev) (μ : R →+* Module.End A (H.MK θ a K)) (h 
   · exact absurd h (ae_nt (op := H.op A))
   · exact h
 /- English proof (translation)
-Break down `i with x | x` into its components or cases. Conclude with `ae_dc _ _ _ (hH.sectionsCommuteAtSplit q _ x.1.2 g) _ _ _`. Conclude with `ae_commU _ _ _ _`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem ae_op (hH : H.Ax) (q : H.Q) (g : GLw n (H.wq q)) (i : H.Op) :
     Commute (H.X.ra (H.τA A) (H.sec (H.wq q) g)) (H.op A i) := by
@@ -235,11 +231,9 @@ private theorem ae_op (hH : H.Ax) (q : H.Q) (g : GLw n (H.wq q)) (i : H.Op) :
   · exact ae_commU _ _ _ _
 end
 /- English proof (translation)
-Introduce `hN L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ a _ ρ hρ hfix hex R _ _ D₀ ψ₀ lam hU hJ`. Use `haveI : Nonempty H.Lev := ⟨⟨fun q => KO _ (Fin n), fun q => ⟨GlobalTheory.SplitFlip.isOpen_KO, GlobalTheory.SplitFlip.isCompact_KO⟩⟩⟩`. Use `choose μ hμ1 hμ2 using fun K => ae_ex H θ a D₀ ψ₀ lam K _ (hJ K).choose_spec`. Take `⟨α, h1, h2⟩` from `ae_abs (H.MK θ a) _ (H.op A) ρ (fun K : H.Lev => Subgroup.pi Set.univ K.1) hfix hex ae_inf ae_conj (ae_gen _ (H.op A) ρ (fun q g => H.X.ra (H.τA A) (H.sec (H.wq q) g)) hρ (ae_op H hH)) μ (fun K K' => ae_cmp H θ a D₀ ψ₀ hN hH hθ hU K K' _ _ (hμ2 K) (hμ2 K'))`. Use `⟨α, fun b z => ?_, h1, fun K i1 i2 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK⟩` from `hex z`. Conclude with `Subtype.ext ((h2 K _ ⟨z, hK⟩ z rfl).trans (congrArg Subtype.val (hμ1 K b ⟨z, hK⟩)))`. Take `⟨f, hf, e⟩` from `ae_out H θ a D₀ ψ₀ K _ (hμ2 K)`. Use `⟨f, hf, fun t y z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`.
-
-Conclude with `h2 K t y z hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.levelUR2ActEx_alt :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →

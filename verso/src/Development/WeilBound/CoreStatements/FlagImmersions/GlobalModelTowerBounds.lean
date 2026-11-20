@@ -17,7 +17,7 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSett
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Introduce `_ E _ _ _ _ H D Xo l c Y _ T o II _ _ _ _ _ B a`. Take `⟨n₀, N₀, hn, -, hne, hmem⟩` from `GlobalTheory.T.root_origin_weight_identity E H D l (Xo l) c _ _ Y (o.S B) (T.M B a) (o.Sys a) (o.Fx a) (o.Or B a) T.nu (o.nu_eq a)`. Use `⟨(o.Fx a).kA * (o.Fx a).q', n₀, Nat.mul_pos ?_ (o.Fx a).q'_pos, hn, _, hne, hmem⟩` and prove the remaining obligations. Rewrite using `[← (o.Or B a).kA_eq]`. Conclude with `(T.M B a).kA_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem global_model_tower_bounds : Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : RootTower (CMType H) (D.p + D.q)) (o : GoodOrigin Y T) (II : IntersectionSystem), IsGlobal Xo l c Y → o.Extra → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → ∀ B a, (T.M B a).EffDiff T.nu := by
   intro _ E _ _ _ _ H D Xo l c Y _ T o II _ _ _ _ _ B a

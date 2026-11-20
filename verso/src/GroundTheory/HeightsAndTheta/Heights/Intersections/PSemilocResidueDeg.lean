@@ -11,13 +11,11 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hZ hs hsP hW W' hW' _ G' J' hJ`. Establish `hrel : ∀ k', ∃ i, (X ⟨k', i⟩ : MRing ι') ∉ W'` using `hW'.1.2.2`. Use `choose i' hi' using hrel`. Establish `hfib : IsProjVarF (fibreIdeal κ G') 0` using `hDim K ι K' ι' κ v P' n s α W hv hP' hZ hs hsP hW W' hW' G'`. Establish `hz : ∀ k : FibreBlock κ, G'.x' ⟨k.1, i' k.1⟩ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k h0`. Apply `hi' k.1` to reduce the goal to its premises. Rewrite using `[← G'.genericFibre_ker_target, RingHom.mem_ker, aeval_X]`. Conclude with `h0`. Establish `hj : IsChart (fibreIdeal κ G') (fun k => i' k.1)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k hk`. Apply `hz k` to reduce the goal to its premises. Rewrite `hk` using `[fibreIdeal, RingHom.mem_ker, aeval_X]`. Conclude with `hk`. Use `⟨_, hAdj K ι K' ι' κ v P' n s α W hv hP' hZ hs hsP hW W' hW' G' i' hi', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hJ.1 _ Fin.elim0 _ hfib hj]`. Conclude with `congrArg _ (ChartRankAdjoin.proof (FibreBlock κ) (fibreIdx ι' κ) G'.Φ G'.Φ' (fun q => G'.x' ⟨q.1.1, q.2⟩) (fun k => i' k.1) hz hfib.1.2.1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SemilocResidueDeg.proof (hDim : SemilocResidueFibreDim.Statement) (hAdj : SemilocResidueAdjoin.Statement) :
     SemilocResidueDeg.Statement := by

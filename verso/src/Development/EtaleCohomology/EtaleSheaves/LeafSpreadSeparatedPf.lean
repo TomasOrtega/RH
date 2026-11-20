@@ -7,16 +7,16 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 namespace LateralTheory.E.LeafSpreadSeparatedPf
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem incl_comp {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R S R' : Subalgebra k Ω} (h : R ≤ S)
     (h' : S ≤ R') : incl h' ≫ incl h = incl (h.trans h') := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `hc : r ≫ q = (q' ≫ incl hS) ≫ incl h`. Rewrite using `[Category.assoc, incl_comp]`. Conclude with `hE.w`. Establish `outer : IsPullback (pullback.lift r (q' ≫ incl hS) hc ≫ pullback.fst q (incl h)) q' q (incl hS ≫ incl h)`. Rewrite using `[pullback.lift_fst, incl_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hE`. Establish `sq` using `IsPullback.of_right outer (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback q (incl h))`. Conclude with `MorphismProperty.of_isPullback (P := @IsSeparated) sq inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem sep_of_stage {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R S R' : Subalgebra k Ω} (h : R ≤ S)
     (hS : S ≤ R') (hR : R ≤ R') {D E : Scheme.{0}} (q : D ⟶ Sp R) [IsSeparated (pullback.snd q (incl h))]
@@ -44,18 +44,18 @@ def LeafDiagBC : Prop := ∀ {D Z T : Scheme.{0}} (q : D ⟶ Z) (t : T ⟶ Z),
     IsSeparated (pullback.snd q t) ↔ IsClosedImmersion (BC (pullback.diagonal q) (pullback.snd q q ≫ q) q (by simp) t)
 
 /- English proof (translation)
-Substitute `w` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ci_congr {X Y Z T : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (p : X ⟶ Z) (w : f ≫ g = p) (t : T ⟶ Z) :
     IsClosedImmersion (BC f g p w t) ↔ IsClosedImmersion (BC f g (f ≫ g) rfl t) := by
   subst w; rfl
 
 /- English proof (translation)
-Introduce `D Z T q t`. Apply the tactic sequence `have e1 : pullback.snd q t = (pullbackSymmetry q t).hom ≫ pullback.fst t q := by simp`. Establish `e2 : IsSeparated (pullback.snd q t) ↔ IsSeparated (pullback.fst t q)`. Rewrite using `[e1]`. Conclude with `MorphismProperty.cancel_left_of_respectsIso (P := @IsSeparated) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Establish `e3 : IsSeparated (pullback.fst t q) ↔ IsClosedImmersion (pullback.diagonal (pullback.fst t q))` using `⟨fun h => h.isClosedImmersion_diagonal, fun h => ⟨h⟩⟩`. Rewrite using `[e3, diagonal_pullback_fst, MorphismProperty.cancel_left_of_respectsIso (P := @IsClosedImmersion), MorphismProperty.cancel_right_of_respectsIso (P := @IsClosedImmersion)]`. Establish `: ((Over.pullback t).map (Over.homMk (pullback.diagonal q) : Over.mk q ⟶ Over.mk (pullback.snd q q ≫ q))).left = BC (pullback.diagonal q) (pullback.snd q q ≫ q) q (by simp) t`. Apply the tactic sequence `apply pullback.hom_ext <;> simp only [BC, pullback.map, Category.comp_id] <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem separated_base_change_iff_diagonal_closed_immersion_holds : LeafDiagBC := by
   intro D Z T q t
@@ -73,9 +73,9 @@ theorem separated_base_change_iff_diagonal_closed_immersion_holds : LeafDiagBC :
   rw [this]
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR C D c q v hf hc hv`. Take `⟨h1, h2, h3⟩` from `hf`. Establish `s0 : IsSeparated (pullback.snd q (toR R))`. Rewrite using `[← hv.isoPullback_inv_snd]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ci` using `(ci_congr _ _ _ _ _).1 ((hD q (toR R)).1 s0)`. Establish `hfg : pullback.diagonal q ≫ pullback.snd q q ≫ q = q` using `by simp`. Take `⟨S, h, hS, ci'⟩` from `hC k Ω R hR (pullback.diagonal q) (pullback.snd q q ≫ q) ⟨inferInstance, inferInstance, inferInstance⟩ (by rw [hfg]; exact ⟨h1, h2, h3⟩) ci`. Use `(hD q (incl h)).2 ((ci_congr _ _ _ (by simp) _).2 ci')` as an intermediate fact. Conclude with `⟨S, h, hS, fun R' hS' hRR E q' r hE => sep_of_stage h hS' hRR q q' r hE⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem of_two (hC : LeafClosedImmSpread) (hD : LeafDiagBC) :
     LateralTheory.E.LeafSpreadProperPf.LeafSpreadSeparated := by

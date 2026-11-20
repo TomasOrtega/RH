@@ -21,11 +21,11 @@ Both sides reduce to the same expression.
 theorem first_integral_eq (Λ : AddSubgroup ℂ) (ω : ℂ) (G : ℂ → ℂ) : PI.U1 Λ ω G = Formalism.MainNotions.TaylorLogMetric.U1 Λ ω G := rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, -, h4, -⟩` from `Formalism.L2.Th1.F.sgStarBasic L`. Use `⟨h1, h4, h2, fun ω hω z => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.GlobalTheoryTheory.taylorLogMetric_U1_eq_U1, Formalism.L2.Th1.F2.thetaTranslationOperator_apply]`. Establish `hfix` using `Formalism.L2.Th1.F.sgStarFixed L ω z hω`. Distinguish the cases in `h : ω / 2 ∈ L.lattice`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hs : Formalism.L2.Th1.F.semiChar L ω = 1` using `by unfold Formalism.L2.Th1.F.semiChar; simp [h]`. Establish `h' : ω / 2 ∈ L.lattice.toAddSubgroup` using `h`. Rewrite using `[if_pos h', one_mul, ← hfix, hs, one_mul]`. Establish `hs : Formalism.L2.Th1.F.semiChar L ω = -1` using `by unfold Formalism.L2.Th1.F.semiChar; simp [h]`. Establish `h' : ω / 2 ∉ L.lattice.toAddSubgroup` using `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg h', ← hfix, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sgStar_spec (L : PeriodPair) :
     Differentiable ℂ (Formalism.L2.Th1.F.sgStar L) ∧ deriv (Formalism.L2.Th1.F.sgStar L) 0 = 1 ∧
@@ -46,11 +46,11 @@ theorem sgStar_spec (L : PeriodPair) :
     ring
 
 /- English proof (translation)
-Establish `hlat : L.lattice.toAddSubgroup = PI.lat2 L.ω₁ L.ω₂` using `Submodule.span_int_eq_addSubgroupClosure _`. Establish `hIm : ((starRingEnd ℂ) L.ω₁ * L.ω₂).im ≠ 0`. Use `Formalism.L2.Th1.F.areaPos L` as an intermediate fact. Unfold `Formalism.L2.Th1.F.area at this`. Conclude with `abs_pos.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hF` using `sgStar_spec L`. Establish `hE` using `Classical.epsilon_spec (p := fun G : ℂ → ℂ => Differentiable ℂ G ∧ deriv G 0 = 1 ∧ (∀ z, G (-z) = -G z) ∧ ∀ ω ∈ L.lattice.toAddSubgroup, ∀ z, Formalism.MainNotions.TaylorLogMetric.U1 L.lattice.toAddSubgroup ω G z = (if ω / 2 ∈ L.lattice.toAddSubgroup then 1 else -1) * G z) ⟨_, hF …`. Establish `huniq : ∀ G G' : ℂ → ℂ, (Differentiable ℂ G ∧ deriv G 0 = 1 ∧ (∀ z, G (-z) = -G z) ∧ ∀ ω ∈ L.lattice.toAddSubgroup, ∀ z, Formalism.MainNotions.TaylorLogMetric.U1 L.lattice.toAddSubgroup ω G z = (if ω / 2 ∈ L.lattice.toAddSubgroup then 1 else -1) * G z) → (Differentiable ℂ G' ∧ de …`. Introduce `G G' hG hG'`. Rewrite `hG`, `hG'` using `[hlat]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `sigma_star_unique L.ω₁ L.ω₂ hIm G G' hG hG'`. Unfold `Formalism.MainNotions.TaylorLogMetric.sgStar`. Conclude with `huniq _ _ hE hF`.
+A detailed English derivation is pending.
 -/
 theorem sgStar_eq (L : PeriodPair) : Formalism.MainNotions.TaylorLogMetric.sgStar L.lattice.toAddSubgroup = Formalism.L2.Th1.F.sgStar L := by
   have hlat : L.lattice.toAddSubgroup = PI.lat2 L.ω₁ L.ω₂ := Submodule.span_int_eq_addSubgroupClosure _
@@ -76,7 +76,7 @@ theorem sgStar_eq (L : PeriodPair) : Formalism.MainNotions.TaylorLogMetric.sgSta
   exact huniq _ _ hE hF
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `GL3Theta.th0 Formalism.L2.Th1.F.th0`. Rewrite using `[sgStar_eq, Formalism.L2.GlobalTheoryTheory.taylorLogMetric_U1_eq_U1, Formalism.L2.Th1.F2.thetaTranslationOperator_apply, Formalism.L2.Th1.F2.thetaTranslationOperator_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaZero_periodLattice_eq (L : PeriodPair) (t : ℂ) : GL3Theta.th0 L.lattice.toAddSubgroup t = Formalism.L2.Th1.F.th0 L t := by
   funext z
@@ -84,7 +84,7 @@ theorem thetaZero_periodLattice_eq (L : PeriodPair) (t : ℂ) : GL3Theta.th0 L.l
   rw [sgStar_eq, Formalism.L2.GlobalTheoryTheory.taylorLogMetric_U1_eq_U1, Formalism.L2.Th1.F2.thetaTranslationOperator_apply, Formalism.L2.Th1.F2.thetaTranslationOperator_apply]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.F.cmTheta`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cmTheta_eq (d : ℕ) : Formalism.L2.Th1.F.cmTheta 1 d = (1 + Complex.I * (Real.sqrt d : ℂ)) / 2 := by
   unfold Formalism.L2.Th1.F.cmTheta
@@ -92,16 +92,16 @@ theorem cmTheta_eq (d : ℕ) : Formalism.L2.Th1.F.cmTheta 1 d = (1 + Complex.I *
   ring
 
 /- English proof (translation)
-Rewrite using `[cmTheta_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem one_sub_cmTheta_eq (d : ℕ) : 1 - Formalism.L2.Th1.F.cmTheta 1 d = (1 - Complex.I * (Real.sqrt d : ℂ)) / 2 := by
   rw [cmTheta_eq]
   ring
 
 /- English proof (translation)
-Take `⟨L, rfl⟩` from `hL`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.is_theta_zero_iff, thetaZero_periodLattice_eq]`. Establish `hd : D.host.d % 8 = 7` using `by have := D.host.hyp.2.2.2.1; omega`. Take `⟨h2, h3, h4⟩` from `ht`. Establish `e2 : 2 * t0 / 2 = t0` using `by ring`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `Formalism.L2.Th1.F2.theta_zero_witness_holds D.host.d L (2 * t0) hd hCM h2 (by rw [e2, cmTheta_eq]; exact h3) (by rw [e2, one_sub_cmTheta_eq]; exact h4)`. Rewrite `h` using `[e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem is_theta_at_torsion_point (D : D7) (Λ : AddSubgroup ℂ) (hL : F2.IsLat Λ) (hCM : F2.HasCM D.host.d Λ) (t0 : ℂ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D Λ t0) : GL3Theta.IsTheta0 D.host.d Λ (GL3Theta.th0 Λ t0) := by
@@ -115,9 +115,9 @@ theorem is_theta_at_torsion_point (D : D7) (Λ : AddSubgroup ℂ) (hL : F2.IsLat
   rwa [e2] at h
 
 /- English proof (translation)
-Take `⟨L, rfl⟩` from `hL`. Take `⟨ω₀, h0, h1, h2⟩` from `Formalism.L2.Th1.F2.two_torsion_off_kernels_exists D.host.d L`. Use `⟨ω₀ / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show 2 * (ω₀ / 2) = ω₀ by ring]; exact h0`. Rewrite using `[← cmTheta_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[← one_sub_cmTheta_eq]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_point_of_lattice (D : D7) (Λ : AddSubgroup ℂ) (hL : F2.IsLat Λ) : ∃ t0, GL3Theta.IsTwoTorsionPointUnkilled D Λ t0 := by
   obtain ⟨L, rfl⟩ := hL
@@ -129,7 +129,7 @@ theorem exists_torsion_point_of_lattice (D : D7) (Λ : AddSubgroup ℂ) (hL : F2
 
 variable [Fact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.CMConjSetF] in
 /- English proof (translation)
-Introduce `cc hcc δ hδ M _ hD ρ t0 ht`. Take `⟨hL, hC⟩` from `Formalism.L2.Th1.F2.lambda_conj_lattice_uniform D cc hcc δ hδ M hD ρ`. Conclude with `is_theta_at_torsion_point D _ hL hC t0 ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conjugate_theta_values (D : D7) : ThetaConjugation D := by
   intro cc hcc δ hδ M _ hD ρ t0 ht
@@ -138,16 +138,16 @@ theorem conjugate_theta_values (D : D7) : ThetaConjugation D := by
 
 variable [Fact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.CMConjSetF] in
 /- English proof (translation)
-Introduce `cc hcc δ hδ M _ hD ρ`. Conclude with `exists_torsion_point_of_lattice D _ (Formalism.L2.Th1.F2.lambda_conj_lattice_uniform D cc hcc δ hδ M hD ρ).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem conjugate_torsion_point_exists (D : D7) : ConjugateTorsionPointExists D := by
   intro cc hcc δ hδ M _ hD ρ
   exact exists_torsion_point_of_lattice D _ (Formalism.L2.Th1.F2.lambda_conj_lattice_uniform D cc hcc δ hδ M hD ρ).1
 
 /- English proof (translation)
-Establish `h : ∀ z : ℂ, -Real.pi * ‖z‖ ^ 2 / Formalism.MainNotions.TaylorLogMetric.area Λ = -Real.pi * (GL3Theta.hf1 Λ z z).re`. Introduce `z`. Unfold `GL3Theta.hf1`. Rewrite using `[Complex.mul_conj, Complex.div_ofReal_re, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `StandardLatticesGL3.nrm1Sq GL3Theta.normSq1`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem genus_one_norm_sq_eq (Λ : AddSubgroup ℂ) (g : ℂ → ℂ) : StandardLatticesGL3.nrm1Sq Λ g = GL3Theta.normSq1 Λ g := by
   have h : ∀ z : ℂ, -Real.pi * ‖z‖ ^ 2 / Formalism.MainNotions.TaylorLogMetric.area Λ = -Real.pi * (GL3Theta.hf1 Λ z z).re := by
@@ -159,7 +159,7 @@ theorem genus_one_norm_sq_eq (Λ : AddSubgroup ℂ) (g : ℂ → ℂ) : Standard
   simp only [h]
 
 /- English proof (translation)
-Establish `h : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ D.host.rdE` using `(UpperTheory.KR.log_qd_le_rd D.host.toHostAx D.host.flPS).2.2.1`. Unfold `Host.v`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem v_ge (D : D7) : Real.sqrt ((D.host.q : ℝ) * D.host.d) / 2 ≤ D.host.v := by
   have h : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ D.host.rdE :=
@@ -168,7 +168,7 @@ theorem v_ge (D : D7) : Real.sqrt ((D.host.q : ℝ) * D.host.d) / 2 ≤ D.host.v
   linarith
 
 /- English proof (translation)
-Establish `hp` using `D.host.hyp.1`. Establish `h8` using `D.host.hyp.2.2.1`. Establish `: 3 ≤ D.host.q` using `by have := hp.two_le; omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_ge (D : D7) : (3 : ℝ) ≤ D.host.q := by
   have hp := D.host.hyp.1
@@ -177,7 +177,7 @@ theorem q_ge (D : D7) : (3 : ℝ) ≤ D.host.q := by
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `h` using `D.host.hyp.2.2.2.1`. Establish `: 7 ≤ D.host.d` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem d_ge (D : D7) : (7 : ℝ) ≤ D.host.d := by
   have h := D.host.hyp.2.2.2.1
@@ -185,9 +185,9 @@ theorem d_ge (D : D7) : (7 : ℝ) ≤ D.host.d := by
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hv` using `v_ge D`. Establish `hq` using `q_ge D`. Establish `hd` using `d_ge D`. Establish `h0 : (0 : ℝ) ≤ (D.host.q : ℝ) * D.host.d` using `by positivity`. Establish `hs` using `Real.sq_sqrt h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0` using `Real.sqrt_nonneg ((D.host.q : ℝ) * D.host.d)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_le_v (D : D7) : 1 ≤ D.host.v := by
   have hv := v_ge D
@@ -199,13 +199,13 @@ theorem one_le_v (D : D7) : 1 ≤ D.host.v := by
   nlinarith
 
 /- English proof (translation)
-Unfold `SqrtDGammaLeLogV`. Establish `hq` using `q_ge D`. Establish `hd` using `d_ge D`. Establish `hv` using `v_ge D`. Establish `hsd : 0 < Real.sqrt (D.host.d : ℝ)` using `Real.sqrt_pos.2 (by linarith)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq0 : 0 ≤ Real.sqrt (D.host.q : ℝ)` using `Real.sqrt_nonneg _`. Establish `hsq2` using `Real.sq_sqrt (show (0 : ℝ) ≤ D.host.q by linarith)`. Establish `hsq : (4 : ℝ) / 3 ≤ Real.sqrt (D.host.q : ℝ)` using `by nlinarith`. Establish `hpos : 0 < Real.sqrt (D.host.q : ℝ) / 2` using `by linarith`. Establish `hm : Real.sqrt ((D.host.q : ℝ) * D.host.d) = Real.sqrt (D.host.q : ℝ) * Real.sqrt (D.host.d : ℝ)` using `Real.sqrt_mul (by linarith) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : Real.log (Real.sqrt (D.host.q : ℝ) / 2 * Real.sqrt (D.host.d : ℝ)) ≤ Real.log D.host.v`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Rewrite `hv` using `[hm]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hlog` using `[Real.log_mul hpos.ne' hsd.ne']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Real.one_sub_inv_le_log_of_pos hpos`. Establish `h2 : (Real.sqrt (D.host.q : ℝ) / 2)⁻¹ ≤ 3 / 2`. Rewrite using `[inv_le_comm₀ hpos (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hγ` using `Real.one_half_lt_eulerMascheroniConstant`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -235,7 +235,7 @@ theorem sqrtDGammaLeLogV (D : D7) : SqrtDGammaLeLogV D := by
 
 variable [Fact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.CMConjSetF] in
 /- English proof (translation)
-Introduce `D hn cc hcc δ hδ B χ ht N N' L₁ L₁' L₂ L₂' a₁ a₂ M _ hD c₁ c₂ ρ`. Establish `: NumberField M` using `NumberField.mk`. Take `⟨t0', ht0'⟩` from `conjugate_torsion_point_exists D cc hcc δ hδ M hD ρ`. Establish `hc : StandardLatticesGL3.Crv D cc δ` using `⟨hcc, hδ⟩`. Rewrite using `[(hn cc δ hc _ B.t0 N N' L₁ L₁' (StandardLatticesGL3.admissible_self_dual_even a₁).1 (StandardLatticesGL3.admissible_self_dual_even a₁).2.1 (StandardLatticesGL3.admissible_self_dual_even a₁).2.2 _ (ht _ B.t0 N N' L₁ L₁' a₁) M ρ hD c₁ t0' ht0').1, (hn cc δ hc _ B.t0 N N' L₂ L₂' (S …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem link_conjugate_curves : LinkConjE := by
   intro D hn cc hcc δ hδ B χ ht N N' L₁ L₁' L₂ L₂' a₁ a₂ M _ hD c₁ c₂ ρ
@@ -249,17 +249,17 @@ theorem link_conjugate_curves : LinkConjE := by
 
 variable [Fact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.CMConjSetF] in
 /- English proof (translation)
-Introduce `D hn hm cc hcc δ hδ B χ ht C hC Lsc hL N N' L L' hA M _ hD hcoef`. Establish `: NumberField M` using `NumberField.mk`. Establish `hc : StandardLatticesGL3.Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `hex : ∀ ρ : M →ₐ[ℚ] ℂ, ∃ t, GL3Theta.IsTwoTorsionPointUnkilled D (lamConj M ρ (lamOf D cc δ)) t` using `conjugate_torsion_point_exists D cc hcc δ hδ M hD`. Use `choose t0' ht0' using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `G : (M →ₐ[ℚ] ℂ) → ℂ → ℂ` to `fun ρ => GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) (t0' ρ)`. Establish `hG : ∀ ρ, GL3Theta.IsTheta0 D.host.d (lamConj M ρ (lamOf D cc δ)) (G ρ)` using `fun ρ => conjugate_theta_values D cc hcc δ hδ M hD ρ _ (ht0' ρ)`. Establish `hmean` using `hm cc δ hcc hδ M hD G hG`. Establish `hnorm : ∀ ρ, normSq D (torConj D (tor0 D cc δ) M ρ) (La D (torConj D (tor0 D cc δ) M ρ) L L') (fnConj D M ρ (B.eNat χ N N' L L')) = GL3Theta.normSq1 (lamConj M ρ (lamOf D cc δ)) (G ρ) ^ (fF D * N * N')`. Introduce `ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hn cc δ hc _ B.t0 N N' L L' (StandardLatticesGL3.admissible_self_dual_even hA).1 (StandardLatticesGL3.admissible_self_dual_even hA).2.1 (StandardLatticesGL3.admissible_self_dual_even hA).2.2 _ (ht _ B.t0 N N' L L' hA) M ρ hD hcoef (t0' ρ) (ht0' ρ)).1, genus_one_norm_sq_eq]`. Establish `key : meanLogNormSq D (tor0 D cc δ) L L' M (B.eNat χ N N' L L') = ((fF D * N * N' : ℕ) : ℝ) * ((∑ ρ : M →ₐ[ℚ] ℂ, Real.log (GL3Theta.normSq1 (lamConj M ρ (lamOf D cc δ)) (G ρ))) / (Module.finrank ℚ M : ℝ))`. Unfold `meanLogNormSq`. Repeatedly rewrite using `[hnorm, Real.log_pow]`. Rewrite using `[← Finset.mul_sum, mul_div_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `hv` using `sqrtDGammaLeLogV D`. Unfold `SqrtDGammaLeLogV at hv`. Establish `hv0 : 0 ≤ Real.log D.host.v` using `Real.log_nonneg (one_le_v D)`. Establish `hk : (0 : ℝ) ≤ ((fF D * N * N' : ℕ) : ℝ)` using `by positivity`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `habs` using `le_abs_self (logDerivativeAtOne D)`. Establish `habs0` using `abs_nonneg (logDerivativeAtOne D)`. Establish `hLsc : 0 ≤ Lsc` using `by linarith`. Establish `hb : (1 / 2) * (Real.log (Real.sqrt D.host.d) - Real.eulerMascheroniConstant + logDerivativeAtOne D) ≤ C * Lsc`. Establish `h1 : (1 / 2) * (Real.log (Real.sqrt D.host.d) - Real.eulerMascheroniConstant + logDerivativeAtOne D) ≤ (1 / 2) * Lsc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (1 / 2) * Lsc ≤ C * Lsc` using `mul_le_mul_of_nonneg_right hC hLsc`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem link_mean_value : LinkMeanE := by
   intro D hn hm cc hcc δ hδ B χ ht C hC Lsc hL N N' L L' hA M _ hD hcoef

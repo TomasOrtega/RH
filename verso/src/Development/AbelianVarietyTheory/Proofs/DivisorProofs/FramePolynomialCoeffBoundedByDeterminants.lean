@@ -26,33 +26,31 @@ open GlobalTheory.LamT (CMPt)
 namespace GlobalTheory.FrameCoeffLoc
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz e k he0 p T iK hT hiK M`. Introduce `φ yT y' g a hφ hyT hy' ha hg hL hS cl hcl F hF hv G hG μ`. Set `io : c.F →+* T.Fr` to `iK.comp (algebraMap c.F z.K)`. Use `letI := io.toAlgebra`. Establish `hτ : (∏ b, (g b).det ^ k b) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b _ => pow_ne_zero _ (hg b).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hyx : yT.x = spMap iK ≫ z.x` using `by rw [hyT.1, hφ, hz.2.2.2.1]`. Establish `main : ∃ w : T.V, MvPolynomial.coeff μ (MvPolynomial.map iK G) * ∏ v : Formalism.L2.LamCM.FrVar Dw.mult, cl v.1 v.2.2 ^ μ v = (∏ b, (g b).det ^ k b) * algebraMap T.V T.Fr w`. Use `Formalism.L2.LamCM.coeff_integral_local T.V T.Fr _ Dw.mult (MvPolynomial.map iK G) (fun b => (g b)⁻¹) cl _ inferInstance hT hτ (fun b => (Matrix.isUnit_nonsing_inv_det _ (hg b)).ne_zero) hcl ?_ μ` and prove the remaining obligations. Introduce `W KW _ _ _ _ _ _ _ fW hW hWf _ hfW Y X hX hXY`. Establish `hinj : Function.Injective (algebraMap T.V W)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y h`. Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Apply `fW.injective` to reduce the goal to its premises. Rewrite using `[hfW, hfW, h]`. Use `haveI : CharZero W := charZero_of_injective_ringHom hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `T' : Formalism.L2.Pj.CDVR` to `⟨W⟩`. Set `κ : KW →+* T'.Fr` to `((FractionRing.algEquiv W KW).symm : KW ≃ₐ[W] FractionRing W).toRingEquiv.toRingHom`. Establish `hκ : ∀ w : W, κ (algebraMap W KW w) = algebraMap T'.V T'.Fr w` using `fun w => (FractionRing.algEquiv W KW).symm.commutes w`. Set `i : T.Fr →+* T'.Fr` to `κ.comp fW`. Establish `hψ : (algebraMap T'.V T'.Fr).comp (algebraMap T.V W) = i.comp (algebraMap T.V T.Fr)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `show _ = κ (fW _)`. Rewrite using `[hfW, hκ]`. Both sides reduce to the same expression. Use `letI := (i.comp io).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `iA : T.Fr →ₐ[c.F] T'.Fr` to `{ i with commutes' := fun _ => rfl }`. Take `⟨yW, hyW⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ iA yT`. Take `⟨y'', hy''⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ iA y'`. Establish `hc` using `(GlobalTheory.Frames.ChgBC.frChg_baseChange E H Dw l Xo c _ _ iA yT y' yW y'' g a hy' hyW).1 hy''`. Establish `hXt : ∀ b, IsUnit ((X b).transpose : Matrix _ _ T'.V).det` using `fun b => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_transpose]`. Conclude with `hX b`. Establish `hXu : ∀ b, IsUnit (((X b).transpose : Matrix _ _ T'.V).map (algebraMap T'.V T'.Fr)).det` using `fun b => by`. Use `(hXt b).map (algebraMap T'.V T'.Fr)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c T'.Fr y'' _ 1 hXu`. Establish `hint` using `GlobalTheory.LamT.LocClause.integral_baseChange_chg z T T' iK M (algebraMap T.V W) i hψ io iA y' y'' w (fun b => (X b).transpose) rfl (hy'.1.trans hyx) hL hS hy'' hXt hw`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.T.ruleValue_integral_of_supLattice_values_nonneg E H Dw l Xo c F hv T' (i.comp io) hWf w hint`. Establish `hYX : ∀ b, (Y b).transpose = ((X b).map (algebraMap W KW)).transpose * (g b).map fW` using `fun b => by`. Rewrite using `[← hXY b, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (hg b)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hYX' : ∀ b, ((Y b).map κ).transpose = ((X b).transpose : Matrix _ _ T'.V).map (algebraMap T'.V T'.Fr) * (g b).map iA` using `fun b => by`. Rewrite using `[← Matrix.transpose_map, hYX b, Matrix.map_mul]`. Use `congr 1`. Use extensionality with `j k`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hκ _`. Establish `hdet : ∀ b, ((Y b).map κ).det = algebraMap T'.V T'.Fr (X b).det * i (g b).det` using `fun b => by`. Rewrite using `[← Matrix.det_transpose, hYX' b, Matrix.det_mul]`. Use `congr 1`. Rewrite using `[← Matrix.det_transpose (X b)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(RingHom.map_det _ _).symm`. Conclude with `(RingHom.map_det i (g b)).symm`. Establish `hYd : ∀ b, ((Y b).map κ).det ≠ 0` using `fun b => by`. Rewrite using `[hdet b]`. Conclude with `mul_ne_zero ((hX b).map (algebraMap T'.V T'.Fr)).ne_zero ((map_ne_zero i).2 (hg b).ne_zero)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsn : (iA a : T'.Fr) ≠ 0` using `(map_ne_zero iA).2 ha`. Establish `hc' : GlobalTheory.Frames.FrChg (fun b => ((Y b).map κ).transpose) ((Units.mk0 (iA a) hsn : T'.Frˣ) : T'.Fr) yW w`. Establish `c2` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c T'.Fr yW y'' w).2 _ _ _ _ hc hw`. Simplify `c2` using `[hYX']`. Establish `hbc` using `GlobalTheory.T.frameRelation_integerExponentSection_baseChange E H Dw l Xo c z.K z.y e k he0 F hF G hG T'.Fr (iA.comp φ) yW w (fun b => (Y b).map κ) (Units.mk0 (iA a) hsn) hYd (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans φ iA hyT hyW) hc'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨(∏ b, (X b).det ^ k b) * w₀, κ.injective ?_⟩` and prove the remaining obligations. Establish `hP : MvPolynomial.map κ (MvPolynomial.map fW (MvPolynomial.map iK G)) = MvPolynomial.map (iA.comp φ).toRingHom G`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map, ← hφ]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.LamT.LocClause.map_evalFr, hP, ← hbc, ← hw₀]`.
-
-Simplify using `only [hdet, map_mul, map_prod, map_pow, hκ, Finset.prod_mul_distrib, mul_pow]`. Use `show _ = (∏ b, i (g b).det ^ k b) * _`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w, hw⟩` from `main`. Conclude with `⟨w, by rw [← hw, MvPolynomial.coeff_map]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coeff_mul_prod_mem_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →

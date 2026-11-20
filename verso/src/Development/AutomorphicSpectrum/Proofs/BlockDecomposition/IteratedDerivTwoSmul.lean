@@ -21,7 +21,7 @@ section Ops
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `h` using `fun X : Mat n => GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X hf`. Unfold `Eu`. Conclude with `((h _).add (contDiffOn_const.smul (h _))).const_smul _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Eu_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (a b : Fin n) :
     ContDiffOn ℝ ∞ (Eu s a b f) (GLs n) := by
@@ -30,11 +30,11 @@ theorem Eu_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Boo
   exact ((h _).add (contDiffOn_const.smul (h _))).const_smul _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b`. Distinguish the cases in `hab : a = b`. Simplify `hf` using `[Epow, hab]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Epow, if_neg hab]`. Conclude with `contDiffOn_const (c := (0 : V))`. Consider the case `succ m ih`. Introduce `a b`. Establish `e : Epow s (m + 1) a b f = fun x => ∑ c, Eu s a c (Epow s m c b f) x`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Epow, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun c _ => Eu_smooth (ih c b) s a c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (m : ℕ) :
     ∀ a b : Fin n, ContDiffOn ℝ ∞ (Epow s m a b f) (GLs n) := by
@@ -54,7 +54,7 @@ theorem Epow_smooth {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : B
     exact ContDiffOn.sum fun c _ => Eu_smooth (ih c b) s a c
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, GlobalTheory.CompanionTheory.RCalc.Rd_add _ hf hf' hx, smul_add]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Eu_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n)) (s : Bool)
     (a b : Fin n) : Set.EqOn (Eu s a b (f + f')) (Eu s a b f + Eu s a b f') (GLs n) := by
@@ -63,7 +63,7 @@ theorem Eu_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : C
   abel
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, GlobalTheory.CompanionTheory.RCalc.Rd_smul c _ hf hx]`. Use `module`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Eu_smul (c : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (a b : Fin n) :
     Set.EqOn (Eu s a b (c • f)) (c • Eu s a b f) (GLs n) := by
@@ -72,9 +72,9 @@ theorem Eu_smul (c : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) 
   module
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x hx`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b x hx`. Simplify using `only [Epow, Finset.sum_apply, Pi.add_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (ih c b) s a c hx]`. Conclude with `Eu_add (Epow_smooth hf s m c b) (Epow_smooth hf' s m c b) s a c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n))
     (s : Bool) (m : ℕ) : ∀ a b : Fin n, Set.EqOn (Epow s m a b (f + f')) (Epow s m a b f + Epow s m a b f') (GLs n) := by
@@ -90,9 +90,9 @@ theorem Epow_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' :
     exact Eu_add (Epow_smooth hf s m c b) (Epow_smooth hf' s m c b) s a c hx
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x hx`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b x hx`. Simplify using `only [Epow, Finset.sum_apply, Pi.smul_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (ih c b) s a c hx]`. Conclude with `Eu_smul k (Epow_smooth hf s m c b) s a c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_smul (k : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (m : ℕ) :
     ∀ a b : Fin n, Set.EqOn (Epow s m a b (k • f)) (k • Epow s m a b f) (GLs n) := by
@@ -108,7 +108,7 @@ theorem Epow_smul (k : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)
     exact Eu_smul k (Epow_smooth hf s m c b) s a c hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply, Pi.add_apply, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_add hf hf' s m a a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n))
     (s : Bool) (m : ℕ) : Set.EqOn (gel s m (f + f')) (gel s m f + gel s m f') (GLs n) := by
@@ -117,7 +117,7 @@ theorem gel_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : 
   exact Finset.sum_congr rfl fun a _ => Epow_add hf hf' s m a a hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply, Pi.smul_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_smul k hf s m a a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_smul (k : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (m : ℕ) :
     Set.EqOn (gel s m (k • f)) (k • gel s m f) (GLs n) := by
@@ -126,7 +126,7 @@ theorem gel_smul (k : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
   exact Finset.sum_congr rfl fun a _ => Epow_smul k hf s m a a hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, gel_add hf hf' _ _ hx, smul_add]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Om_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n)) :
     Set.EqOn (Om (f + f')) (Om f + Om f') (GLs n) := by
@@ -135,7 +135,7 @@ theorem Om_add {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : C
   abel
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, gel_smul k hf _ _ hx]`. Use `module`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Om_smul (k : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (Om (k • f)) (k • Om f) (GLs n) := by
@@ -144,9 +144,9 @@ theorem Om_smul (k : ℂ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) 
   module
 
 /- English proof (translation)
-Establish `h2 : ∀ φ : ℝ → V, iteratedDeriv 2 φ = deriv (deriv φ)` using `fun φ => by`. Rewrite using `[iteratedDeriv_eq_iterate]`. Both sides reduce to the same expression. Establish `hd : deriv (fun s => w s + w' s) = fun s => deriv w s + deriv w' s`. Use function extensionality and compare the values at `fun s => deriv_fun_add (hw.differentiable (by simp) s) (hw'.differentiable (by simp) s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : Differentiable ℝ (deriv w)` using `(contDiff_infty_iff_deriv.1 hw).2.differentiable (by simp)`. Establish `e2 : Differentiable ℝ (deriv w')` using `(contDiff_infty_iff_deriv.1 hw').2.differentiable (by simp)`. Rewrite using `[h2, h2, h2, hd]`. Conclude with `deriv_fun_add (e1 t) (e2 t)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterated_integral_add {w w' : ℝ → V} (hw : ContDiff ℝ ∞ w) (hw' : ContDiff ℝ ∞ w') (t : ℝ) :
     iteratedDeriv 2 (fun s => w s + w' s) t = iteratedDeriv 2 w t + iteratedDeriv 2 w' t := by
@@ -160,9 +160,9 @@ theorem iterated_integral_add {w w' : ℝ → V} (hw : ContDiff ℝ ∞ w) (hw' 
   exact deriv_fun_add (e1 t) (e2 t)
 
 /- English proof (translation)
-Establish `h2 : ∀ φ : ℝ → V, iteratedDeriv 2 φ = deriv (deriv φ)` using `fun φ => by`. Rewrite using `[iteratedDeriv_eq_iterate]`. Both sides reduce to the same expression. Establish `hd : deriv (fun s => k • w s) = fun s => k • deriv w s`. Use function extensionality and compare the values at `fun s => deriv_fun_const_smul k (hw.differentiable (by simp) s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : Differentiable ℝ (deriv w)` using `(contDiff_infty_iff_deriv.1 hw).2.differentiable (by simp)`. Rewrite using `[h2, h2, hd]`. Conclude with `deriv_fun_const_smul k (e1 t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_two_smul (k : ℂ) {w : ℝ → V} (hw : ContDiff ℝ ∞ w) (t : ℝ) :
     iteratedDeriv 2 (fun s => k • w s) t = k • iteratedDeriv 2 w t := by
@@ -177,9 +177,9 @@ theorem iteratedDeriv_two_smul (k : ℂ) {w : ℝ → V} (hw : ContDiff ℝ ∞ 
 end Ops
 
 /- English proof (translation)
-Use `⟨hu.1.add hv.1, fun t => ⟨(hu.2.1 t).1.add (hv.2.1 t).1, ?_⟩, fun t g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Introduce `g hg k`. Simplify using `only [(hu.2.1 t).2 g hg k, (hv.2.1 t).2 g hg k, map_add]`. Rewrite using `[iterated_integral_add (GlobalTheory.CompanionTheory.WaveAll.wave_line hu hg) (GlobalTheory.CompanionTheory.WaveAll.wave_line hv hg), hu.2.2.1 t g hg, hv.2.2.1 t g hg]`. Conclude with `(Om_add (hu.2.1 t).1 (hv.2.1 t).1 hg).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℝ (fun s => u s g) 0` using `((GlobalTheory.CompanionTheory.WaveAll.wave_line hu hg).differentiable (by simp)).differentiableAt`. Establish `h2 : DifferentiableAt ℝ (fun s => v s g) 0` using `((GlobalTheory.CompanionTheory.WaveAll.wave_line hv hg).differentiable (by simp)).differentiableAt`. Rewrite using `[deriv_fun_add h1 h2, hu.2.2.2 g hg, hv.2.2.2 g hg, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_add {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (hv : IsWave E v) :
     IsWave E fun t y => u t y + v t y := by
@@ -195,9 +195,9 @@ theorem wave_add {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (h
     rw [deriv_fun_add h1 h2, hu.2.2.2 g hg, hv.2.2.2 g hg, add_zero]
 
 /- English proof (translation)
-Use `⟨hu.1.const_smul k, fun t => ⟨(hu.2.1 t).1.const_smul k, ?_⟩, fun t g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Introduce `g hg k'`. Simplify using `only [(hu.2.1 t).2 g hg k', map_smul]`. Rewrite using `[iteratedDeriv_two_smul k (GlobalTheory.CompanionTheory.WaveAll.wave_line hu hg), hu.2.2.1 t g hg]`. Conclude with `(Om_smul k (hu.2.1 t).1 hg).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℝ (fun s => u s g) 0` using `((GlobalTheory.CompanionTheory.WaveAll.wave_line hu hg).differentiable (by simp)).differentiableAt`. Rewrite using `[deriv_fun_const_smul k h1, hu.2.2.2 g hg, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_smul (k : ℂ) {E : KMod n} {u : ℝ → Mat n → E.V} (hu : IsWave E u) :
     IsWave E fun t y => k • u t y := by

@@ -5,11 +5,11 @@ open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
 /- English proof (translation)
-Establish `hm : ∀ n, MeasurableSet (compactCovering G n)ᶜ` using `fun n => (isCompact_compactCovering G n).isClosed.measurableSet.compl`. Establish `ht : Tendsto (fun n => ∫ g, (compactCovering G n)ᶜ.indicator (fun g => ‖f g‖) g ∂μ) atTop (𝓝 (∫ _g, (0 : ℝ) ∂μ))`. Use `tendsto_integral_of_dominated_convergence (fun g => ‖f g‖) (fun n => (hf.norm.indicator (hm n)).aestronglyMeasurable) hf.norm (fun n => ?_) ?_` and prove the remaining obligations. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Simplify using `using norm_indicator_le_norm_self (s := (compactCovering G n)ᶜ) (fun g => ‖f g‖) g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_mem_compactCovering g`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop n] with m hm'`. Establish `: g ∈ compactCovering G m` using `compactCovering_subset G hm' hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Rewrite `ht` using `[integral_zero]`. Take `⟨n, hn⟩` from `(ht.eventually (ge_mem_nhds hε)).exists`. Conclude with `⟨_, isCompact_compactCovering G n, hn⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_compact_tail {G : Type} [TopologicalSpace G] [LocallyCompactSpace G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) (f : G → ℂ)
@@ -34,11 +34,11 @@ private theorem exists_compact_tail {G : Type} [TopologicalSpace G] [LocallyComp
   exact ⟨_, isCompact_compactCovering G n, hn⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hh`. Establish `hH` using `hr.contH`. Use `⟨by fun_prop, fun g => ?_, fun g m hm => ?_, fun g t => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_exp_I_mul_ofReal, one_mul]`. Conclude with `h2 g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hr.inv g m hm, h3 g m hm]`. Simplify using `only [hr.move g t, h4 g t]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem isEig_twist {G : Type} [Group G] [TopologicalSpace G] {N : Set G} {a : ℝ → G} {H : G → ℝ}
     (hr : IsRay N a H) {s s' C : ℝ} {h : G → ℂ} (hh : IsEig N a s' C h) :
@@ -55,33 +55,31 @@ private theorem isEig_twist {G : Type} [Group G] [TopologicalSpace G] {N : Set G
     ring
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ N a H f hr hf ε hε`. Take `⟨D, hD, hDε⟩` from `exists_compact_tail μ f hf (ε / 4) (by positivity)`. Take `⟨c, hc⟩` from `hr.bdd D hD`. Establish `hmD : MeasurableSet Dᶜ` using `hD.isClosed.measurableSet.compl`. Use `set A : ℝ := ∫ g, ‖f g‖ ∂μ with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ A` using `integral_nonneg fun g => norm_nonneg _`. Use `set δ : ℝ := ε / 2 / ((|c| + 1) * (A + 1)) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hδe : δ * ((|c| + 1) * (A + 1)) = ε / 2` using `by rw [hδ]; field_simp`. Use `⟨δ, hδ0, fun s s' r hs hop C h hh x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : 0 ≤ C` using `(norm_nonneg _).trans (hh.2.1 1)`. Establish `ht` using `isEig_twist (s := s) hr hh`. Establish `h1` using `hop C _ ht x`. Establish `hint : ∀ {t : ℝ} {k : G → ℂ}, IsEig N a t C k → Integrable (fun g => f g * k (g⁻¹ * x)) μ`. Introduce `t k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1` using `hk.1`. Establish `hc : Continuous fun g : G => k (g⁻¹ * x)` using `by fun_prop`. Conclude with `hf.mul_bdd hc.aestronglyMeasurable (Eventually.of_forall fun g => hk.2.1 _)`. Use `set u : ℂ := Complex.exp (Complex.I * ((-((s - s') * H x) : ℝ) : ℂ)) with hu`. Establish `hu1 : ‖u‖ = 1` using `Complex.norm_exp_I_mul_ofReal _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set k : G → ℂ := fun g => Complex.exp (Complex.I * (((s - s') * H g : ℝ) : ℂ)) * h g with hk`. Establish `hdiff : u * conv μ f k x - conv μ f h x = ∫ g, (u * (f g * k (g⁻¹ * x)) - f g * h (g⁻¹ * x)) ∂μ`. Rewrite using `[integral_sub ((hint ht).const_mul u) (hint hh), integral_const_mul]`. Both sides reduce to the same expression. Establish `hpt : ∀ g, ‖u * (f g * k (g⁻¹ * x)) - f g * h (g⁻¹ * x)‖ ≤ C * (δ * (|c| + 1) * ‖f g‖ + 2 * Dᶜ.indicator (fun g => ‖f g‖) g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `g`. Establish `e : u * (f g * k (g⁻¹ * x)) - f g * h (g⁻¹ * x) = h (g⁻¹ * x) * ((Complex.exp (Complex.I * (((s - s') * (H (g⁻¹ * x) - H x) : ℝ) : ℂ)) - 1) * f g)`. Establish `: Complex.exp (Complex.I * (((s - s') * (H (g⁻¹ * x) - H x) : ℝ) : ℂ)) = u * Complex.exp (Complex.I * (((s - s') * H (g⁻¹ * x) : ℝ) : ℂ))`. Rewrite using `[hu, ← Complex.exp_add]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul (hh.2.1 _) ?_ (by positivity) hC` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ D`. Establish `h2` using `Real.norm_exp_I_mul_ofReal_sub_one_le (x := (s - s') * (H (g⁻¹ * x) - H x))`. Establish `h3 : ‖(s - s') * (H (g⁻¹ * x) - H x)‖ ≤ δ * (|c| + 1)`. Rewrite using `[Real.norm_eq_abs, abs_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul hs.le ((hc g hg x).trans (by linarith [le_abs_self c])) (abs_nonneg _) hδ0.le`. Establish `h4 : Dᶜ.indicator (fun g => ‖f g‖) g = 0` using `by simp [hg]`. Rewrite using `[h4, mul_zero, add_zero]`. Conclude with `mul_le_mul_of_nonneg_right (h2.trans h3) (norm_nonneg _)`. Establish `h2 : ‖Complex.exp (Complex.I * (((s - s') * (H (g⁻¹ * x) - H x) : ℝ) : ℂ)) - 1‖ ≤ 2`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_exp_I_mul_ofReal, norm_one]`. Evaluate the numerical expressions. Establish `h4 : Dᶜ.indicator (fun g => ‖f g‖) g = ‖f g‖` using `by simp [hg]`. Rewrite using `[h4]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `mul_le_mul_of_nonneg_right h2 (norm_nonneg (f g))`. Establish `h6 : 0 ≤ δ * (|c| + 1) * ‖f g‖` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi1 : Integrable (fun g => δ * (|c| + 1) * ‖f g‖) μ` using `hf.norm.const_mul _`. Establish `hi2 : Integrable (fun g => 2 * Dᶜ.indicator (fun g => ‖f g‖) g) μ` using `(hf.norm.indicator hmD).const_mul _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : ‖u * conv μ f k x - conv μ f h x‖ ≤ C * ε`. Rewrite using `[hdiff]`. Use `(norm_integral_le_of_norm_le ((hi1.add hi2).const_mul C) (Eventually.of_forall hpt)).trans ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Rewrite using `[integral_const_mul, integral_add hi1 hi2, integral_const_mul, integral_const_mul, ← hA]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_le_mul_of_nonneg_left ?_ hC` and prove the remaining obligations. Establish `: 0 ≤ δ * (|c| + 1)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ‖u * conv μ f k x‖ ≤ r * C` using `by rw [norm_mul, hu1, one_mul]; exact h1`. Establish `h3 : ‖conv μ f h x‖ ≤ ‖u * conv μ f k x‖ + ‖u * conv μ f k x - conv μ f h x‖`.
-
-Simplify using `using norm_sub_le (u * conv μ f k x) (u * conv μ f k x - conv μ f h x)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.opLe_near :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]

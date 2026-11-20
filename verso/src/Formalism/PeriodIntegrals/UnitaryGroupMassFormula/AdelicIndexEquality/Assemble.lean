@@ -10,13 +10,13 @@ open scoped TensorProduct
 open Formalism.MainNotions.S
 
 /- English proof (translation)
-Unfold `ModQHom`. Introduce `G _ K hK`. Establish `hk1 : ∀ k ∈ K, dIdx K k = 1`. Introduce `k hk`. Unfold `dIdx`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Subgroup.relIndex_eq_one]`. Introduce `y hy`. Use `Subgroup.mem_map.2 ⟨k⁻¹ * y * k, K.mul_mem (K.mul_mem (K.inv_mem hk) hy) hk, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`. Use `⟨fun x y => modQ_mul K hK x y, fun k hk => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `modQ`. Rewrite using `[hk1 k hk, hk1 k⁻¹ (K.inv_mem hk)]`. Evaluate the numerical expressions. Unfold `modQ at hx`. Establish `hne : (dIdx K x⁻¹ : ℚ) ≠ 0` using `by exact_mod_cast hK x⁻¹`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `hx` using `[div_eq_one_iff_eq hne]`. Conclude with `hx` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mod_q_hom : ModQHom := by
   unfold ModQHom
@@ -44,14 +44,14 @@ variable (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
 def liftFn (hL : LiftU) (g : Uv I v) : I.Gf := Classical.choose (hL I v g g.2)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hL I v g g.2)`.
+A detailed English derivation is pending.
 -/
 theorem liftFn_spec (hL : LiftU) (g : Uv I v) :
     matV I v ((liftFn I v hL g : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = g ∧ SuppAt I v (liftFn I v hL g) :=
   Classical.choose_spec (hL I v g g.2)
 
 /- English proof (translation)
-Apply `hJ I` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w = v`. Rewrite using `[hw, hy, (liftFn_spec I v hL g).1]`. Rewrite using `[hs w hw, (liftFn_spec I v hL g).2 w hw]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_liftFn (hL : LiftU) (hJ : MatVInj) (g : Uv I v) (y : I.Gf)
     (hy : matV I v (y : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = g) (hs : SuppAt I v y) :
@@ -92,11 +92,11 @@ def chiV (hC : KComm) (hL : LiftU) (hJ : MatVInj) : Uv I v →* ℚ where
   map_mul' g h := by simp only [map_mul]; exact modQ_mul _ (hC I) _ _
 
 /- English proof (translation)
-Establish `h1 : ∀ z : G, (∀ x : G, z * x * z⁻¹ = x) → dIdx K z = 1`. Introduce `z hz`. Unfold `dIdx`. Rewrite using `[Subgroup.relIndex_eq_one]`. Introduce `k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subgroup.mem_map.2 ⟨k, hk, by simp [MulAut.conj_apply, hz k]⟩`. Establish `h2 : ∀ x : G, y⁻¹ * x * y⁻¹⁻¹ = x`. Introduce `x`. Establish `hx` using `hy x`. Rewrite using `[inv_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `modQ`. Rewrite using `[h1 y hy, h1 y⁻¹ h2]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 private theorem modQ_eq_one_of_central {G : Type} [Group G] (K : Subgroup G) (y : G)
     (hy : ∀ x : G, y * x * y⁻¹ = x) : modQ K y = 1 := by
@@ -117,21 +117,19 @@ private theorem modQ_eq_one_of_central {G : Type} [Group G] (K : Subgroup G) (y 
   norm_num
 
 /- English proof (translation)
-Establish `hM` using `mod_q_hom I.Gf (PI.AdIndexEq.Ksub I) (hC I)`. Establish `hpos : ∀ g, 0 < chiV I v hC hL hJ g`. Introduce `g`. Use `show 0 < modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ g)`. Unfold `modQ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `div_pos` to reduce the goal to its premises. Conclude with `Nat.pos_of_ne_zero (hC I _)` after adjusting the coercions. Conclude with `Nat.pos_of_ne_zero (hC I _)` after adjusting the coercions. Use `⟨hpos, fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `show modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ s) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyv : matV I v ((liftHom I v hL hJ s : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) = s`. Rewrite using `[liftHom_apply]`. Conclude with `(liftFn_spec I v hL s).1`. Establish `hys : SuppAt I v (liftHom I v hL hJ s)`. Rewrite using `[liftHom_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(liftFn_spec I v hL s).2`. Apply `modQ_eq_one_of_central` to reduce the goal to its premises. Introduce `x`. Apply `hJ I` to reduce the goal to its premises. Introduce `w`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Distinguish the cases in `hw : w = v`. Rewrite using `[hw]`. Establish `hc` using `congrArg Subtype.val (hs ⟨_, hU I v x⟩)`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_mk] at hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hyv, hc, mul_inv_cancel_right]`. Rewrite using `[hys w hw, one_mul, inv_one, mul_one]`. Take `⟨m, hm, hsm⟩` from `hs`. Establish `hpow : chiV I v hC hL hJ (s ^ m) = 1` using `by show modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ (s ^ m)) = 1`. Apply `hM.2.1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hK I _).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[liftHom_apply]`. Distinguish the cases in `hw : w = v`. Rewrite using `[hw, (liftFn_spec I v hL (s ^ m)).1]`. Conclude with `hsm`.
-
-Rewrite using `[(liftFn_spec I v hL (s ^ m)).2 w hw]`. Conclude with `(Kv I w).one_mem`. Rewrite `hpow` using `[map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (hpos s).le (by omega)).1 hpow`.
+A detailed English derivation is pending.
 -/
 theorem chiV_props (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob) :
     (∀ g, 0 < chiV I v hC hL hJ g) ∧
@@ -181,7 +179,7 @@ theorem chiV_props (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : K
     exact (pow_eq_one_iff_of_nonneg (hpos s).le (by omega)).1 hpow
 
 /- English proof (translation)
-Use `show modQ (PI.AdIndexEq.Ksub I) y = modQ (PI.AdIndexEq.Ksub I) (liftHom I v hL hJ ⟨_, hU I v y⟩)`. Rewrite using `[liftHom_apply, ← eq_liftFn I v hL hJ ⟨_, hU I v y⟩ y rfl hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modQ_of_supp (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (y : I.Gf) (hy : SuppAt I v y) :
     modQ (PI.AdIndexEq.Ksub I) y = chiV I v hC hL hJ ⟨_, hU I v y⟩ := by
@@ -191,7 +189,7 @@ theorem modQ_of_supp (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (y : 
 end Lift
 
 /- English proof (translation)
-Unfold `LocInert`. Introduce `I v hv y hy`. Take `⟨h1, h2, h3⟩` from `chiV_props I v hC hL hJ hU hK`. Rewrite using `[modQ_of_supp I v hC hL hJ hU y hy]`. Conclude with `h I v hv _ h1 h2 h3 _`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInert_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob)
     (h : LocInertChi) : LocInert := by
@@ -202,7 +200,7 @@ theorem locInert_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : 
   exact h I v hv _ h1 h2 h3 _
 
 /- English proof (translation)
-Unfold `LocSplit`. Introduce `I v hv y hy`. Take `⟨h1, h2, h3⟩` from `chiV_props I v hC hL hJ hU hK`. Rewrite using `[modQ_of_supp I v hC hL hJ hU y hy]`. Conclude with `h I v hv _ h1 h2 h3 _`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSplit_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob)
     (h : LocSplitChi) : LocSplit := by
@@ -213,15 +211,13 @@ theorem locSplit_of (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : 
   exact h I v hv _ h1 h2 h3 _
 
 /- English proof (translation)
-Unfold `PI.AdIndexEq.IndexEq`. Introduce `I x`. Establish `hM` using `mod_q_hom I.Gf (PI.AdIndexEq.Ksub I) (hC I)`. Establish `hloc : ∀ v (y : I.Gf), SuppAt I v y → modQ (PI.AdIndexEq.Ksub I) y = 1`. Introduce `v y hy`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hv : IsFieldAt I v`. Conclude with `locInert_of hC hL hJ hU hK hI I v hv y hy`. Conclude with `locSplit_of hC hL hJ hU hK hS I v hv y hy`. Establish `hxm` using `hR I x`. Establish `hx : modQ (PI.AdIndexEq.Ksub I) x = 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hxm using Subgroup.closure_induction with`. Consider the case `mem y hy`. Break down `hy with ⟨v, hv⟩ | hy` into its components or cases. Conclude with `hloc v y hv`. Conclude with `hM.2.1 y hy`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `one => exact modQ_one _`. Consider the case `mul a b _ _ ha hb => rw [hM.1, ha, hb, one_mul]`. Consider the case `inv a _ ha`. Establish `h1` using `hM.1 a a⁻¹`. Rewrite `h1` using `[mul_inv_cancel, modQ_one, ha, one_mul]`.
-
-Conclude with `h1.symm`. Conclude with `hM.2.2 x hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indexEq_of_loc (hC : KComm) (hL : LiftU) (hJ : MatVInj) (hU : MatVU) (hK : KLocGlob)
     (hR : ReduceLoc) (hS : LocSplitChi) (hI : LocInertChi) : PI.AdIndexEq.IndexEq := by

@@ -15,9 +15,9 @@ def jW (g : GL (Fin p ⊕ Fin q) ℂ) (z : Matrix (Fin p) (Fin q) ℂ) : Matrix 
     moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) z * (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₂₁
 
 /- English proof (translation)
-Unfold `Upq UJ`. Simplify using `only [Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_ofPred_eq]`. Establish `hc : cT (starRingEnd ℂ) (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ`. Use extensionality with `i j`. Simplify using `[cT, conjTranspose_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upq_iff {g : GL (Fin p ⊕ Fin q) ℂ} : g ∈ Upq p q ↔
     (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ * Jpq p q * g = Jpq p q := by
@@ -29,7 +29,7 @@ theorem upq_iff {g : GL (Fin p ⊕ Fin q) ℂ} : g ∈ Upq p q ↔
   rw [hc]
 
 /- English proof (translation)
-Unfold `Jpq`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Jpq_sq : Jpq p q * Jpq p q = 1 := by
   unfold Jpq
@@ -37,9 +37,9 @@ theorem Jpq_sq : Jpq p q * Jpq p q = 1 := by
   simp
 
 /- English proof (translation)
-Establish `h` using `upq_iff.mp hg`. Generalize the expression as in `(g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = G at h ⊢`. Establish `h1 : (Jpq p q * Gᴴ * Jpq p q) * G = 1`. Rewrite using `[show Jpq p q * Gᴴ * Jpq p q * G = Jpq p q * (Gᴴ * Jpq p q * G) by simp only [Matrix.mul_assoc], h, Jpq_sq]`. Establish `h2 : G * (Jpq p q * Gᴴ * Jpq p q) = 1`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.inv_eq_left_inv h1]`. Conclude with `Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse h1)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Jpq_sq, Matrix.mul_one]`. Use `_ = Jpq p q := by rw [h2, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upq_right {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) :
     (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * Jpq p q * (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)ᴴ =
@@ -56,14 +56,14 @@ theorem upq_right {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) :
     _ = Jpq p q := by rw [h2, Matrix.one_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) j <;> simp [Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma Jpq_mul_fromRows {n : Type*} (C : Matrix (Fin p) n ℂ) (D : Matrix (Fin q) n ℂ) :
     Jpq p q * fromRows C D = fromRows C (-D) := by
   ext (i | i) j <;> simp [Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, Jpq_mul_fromRows]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma conjTranspose_fromRows_mul_Jpq_mul_fromRows {n m : Type*} (A : Matrix (Fin p) n ℂ) (B : Matrix (Fin q) n ℂ)
     (C : Matrix (Fin p) m ℂ) (D : Matrix (Fin q) m ℂ) :
@@ -73,14 +73,14 @@ private lemma conjTranspose_fromRows_mul_Jpq_mul_fromRows {n m : Type*} (A : Mat
   simp [Matrix.mul_apply, Fintype.sum_sum_type, sub_eq_add_neg]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i (j | j) <;> simp [Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma fromCols_mul_Jpq {m : Type*} (A : Matrix m (Fin p) ℂ) (B : Matrix m (Fin q) ℂ) :
     fromCols A B * Jpq p q = fromCols A (-B) := by
   ext i (j | j) <;> simp [Jpq, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[fromCols_mul_Jpq]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma fromCols_mul_Jpq_mul_conjTranspose_fromCols {m n : Type*} (A : Matrix m (Fin p) ℂ) (B : Matrix m (Fin q) ℂ)
     (C : Matrix n (Fin p) ℂ) (D : Matrix n (Fin q) ℂ) :
@@ -90,7 +90,7 @@ private lemma fromCols_mul_Jpq_mul_conjTranspose_fromCols {m n : Type*} (A : Mat
   simp [Matrix.mul_apply, Fintype.sum_sum_type, sub_eq_add_neg]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) j <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma blocks_mul_fromRows {n : Type*} (M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)
     (X : Matrix (Fin p) n ℂ) (Y : Matrix (Fin q) n ℂ) :
@@ -99,9 +99,9 @@ private lemma blocks_mul_fromRows {n : Type*} (M : Matrix (Fin p ⊕ Fin q) (Fin
     Matrix.toBlocks₂₁, Matrix.toBlocks₂₂]
 
 /- English proof (translation)
-Establish `h` using `upq_iff.mp hg`. Unfold `kapQ hQ`. Generalize the expression as in `(g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = G at h ⊢`. Establish `e1 : (G * fromRows z (1 : Matrix (Fin q) (Fin q) ℂ))ᴴ * Jpq p q * (G * fromRows z (1 : Matrix (Fin q) (Fin q) ℂ)) = (fromRows z (1 : Matrix (Fin q) (Fin q) ℂ))ᴴ * Jpq p q * fromRows z (1 : Matrix (Fin q) (Fin q) ℂ)`. Rewrite using `[conjTranspose_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← h]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `e1` using `[blocks_mul_fromRows, conjTranspose_fromRows_mul_Jpq_mul_fromRows, conjTranspose_fromRows_mul_Jpq_mul_fromRows]`. Simplify using `only [Matrix.mul_one, conjTranspose_one] at e1`. Simplify `congrArg Neg.neg e1` using `only [neg_sub]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem kapQ_gram {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) (z : Matrix (Fin p) (Fin q) ℂ) :
     (kapQ g z)ᴴ * kapQ g z -
@@ -122,9 +122,9 @@ theorem kapQ_gram {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) (z : Matri
   simpa only [neg_sub] using congrArg Neg.neg e1
 
 /- English proof (translation)
-Establish `h1` using `kapQ_gram hg z`. Establish `hpd : ((kapQ g z)ᴴ * kapQ g z).PosDef`. Rewrite using `[eq_add_of_sub_eq h1]`. Conclude with `Matrix.PosDef.add_posSemidef (by exact hz) (posSemidef_conjTranspose_mul_self _)`. Rewrite using `[isUnit_iff_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `hpd.det_pos` as an intermediate fact. Rewrite `this` using `[det_mul, det_conjTranspose, h0, mul_zero]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapQ_isUnit {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) : IsUnit (kapQ g z).det := by
@@ -139,7 +139,7 @@ theorem kapQ_isUnit {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Mat
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `hu` using `kapQ_isUnit hg hz`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[moeb, Matrix.mul_assoc]`. Both sides reduce to the same expression. Use `_ = _ := by rw [Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem moeb_mul_kapQ {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) : moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) z * kapQ g z =
@@ -153,9 +153,9 @@ theorem moeb_mul_kapQ {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : M
     _ = _ := by rw [Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e` using `moeb_mul_kapQ hg hz`. Establish `h1` using `kapQ_gram hg z`. Combine the equalities or inequalities in the displayed calculation. Unfold `hQ`. Rewrite using `[conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = hQ z := by rw [e]; exact h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hQ_moeb {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) :
@@ -170,7 +170,7 @@ theorem hQ_moeb {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix 
     _ = hQ z := by rw [e]; exact h1
 
 /- English proof (translation)
-Establish `hu : IsUnit (kapQ g z)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (kapQ_isUnit hg hz)`. Establish `h2 : ((kapQ g z)ᴴ * hQ (moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) z) * kapQ g z).PosDef`. Rewrite using `[hQ_moeb hg hz]`. Conclude with `hz`. Conclude with `(Matrix.IsUnit.posDef_star_left_conjugate_iff hu).mp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moeb_mem {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) : moeb (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) z ∈ hcDom p q := by
@@ -180,7 +180,7 @@ theorem moeb_mem {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix
   exact (Matrix.IsUnit.posDef_star_left_conjugate_iff hu).mp h2
 
 /- English proof (translation)
-Apply the tactic sequence `ext i (j | j) <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma fromCols_mul_eq_blocks {m : Type*} (X : Matrix m (Fin p) ℂ) (Y : Matrix m (Fin q) ℂ)
     (M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) :
@@ -189,24 +189,22 @@ private lemma fromCols_mul_eq_blocks {m : Type*} (X : Matrix m (Fin p) ℂ) (Y :
     Matrix.toBlocks₂₁, Matrix.toBlocks₂₂]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i (j | j) <;> simp [Matrix.mul_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma mul_fromCols' {m k : Type*} [Fintype m] (N : Matrix k m ℂ) (X : Matrix m (Fin p) ℂ)
     (Y : Matrix m (Fin q) ℂ) : N * fromCols X Y = fromCols (N * X) (N * Y) := by
   ext i (j | j) <;> simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `h` using `upq_right hg`. Establish `e` using `moeb_mul_kapQ hg hz`. Unfold `jW hP`. Unfold `kapQ at e`. Generalize the expression as in `(g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = G at h e ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `moeb G z = w at e ⊢`. Rewrite `e` using `[Matrix.mul_add, ← Matrix.mul_assoc]`. Establish `k1 : fromCols (1 : Matrix (Fin p) (Fin p) ℂ) (-w) * G = (G.toBlocks₁₁ - w * G.toBlocks₂₁) * fromCols (1 : Matrix (Fin p) (Fin p) ℂ) (-z)`. Rewrite using `[fromCols_mul_eq_blocks, mul_fromCols']`. Establish `b1 : (1 : Matrix (Fin p) (Fin p) ℂ) * G.toBlocks₁₁ + -w * G.toBlocks₂₁ = (G.toBlocks₁₁ - w * G.toBlocks₂₁) * 1`.
+Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_mul, Matrix.mul_one, Matrix.neg_mul, sub_eq_add_neg]`. Establish `b2 : (1 : Matrix (Fin p) (Fin p) ℂ) * G.toBlocks₁₂ + -w * G.toBlocks₂₂ = (G.toBlocks₁₁ - w * G.toBlocks₂₁) * -z`. Rewrite using `[Matrix.one_mul, Matrix.neg_mul, eq_sub_of_add_eq' e, Matrix.mul_neg, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[b1, b2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : (G.toBlocks₁₁ - w * G.toBlocks₂₁) * (fromCols (1 : Matrix (Fin p) (Fin p) ℂ) (-z) * Jpq p q * (fromCols (1 : Matrix (Fin p) (Fin p) ℂ) (-z))ᴴ) * (G.toBlocks₁₁ - w * G.toBlocks₂₁)ᴴ = fromCols (1 : Matrix (Fin p) (Fin p) ℂ) (-w) * Jpq p q * (fromCols (1 : Matrix (Fin p) (Fin p …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (fromCols (1 : Matrix (Fin p) (Fin p) ℂ) (-w) * G) * Jpq p q * (fromCols (1 : Matrix (Fin p) (Fin p) ℂ) (-w) * G)ᴴ := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k1]`. Use `_ = _ := by`. Rewrite using `[conjTranspose_mul]`. Use `conv_rhs => rw [← h]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Rewrite `k2` using `[fromCols_mul_Jpq_mul_conjTranspose_fromCols, fromCols_mul_Jpq_mul_conjTranspose_fromCols]`. Simplify `k2` using `only [conjTranspose_one, Matrix.mul_one, conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hP_moeb {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) :
@@ -244,9 +242,9 @@ theorem hP_moeb {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix 
   simpa only [conjTranspose_one, Matrix.mul_one, conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg] using k2
 
 /- English proof (translation)
-Establish `hpd : (hQ z).PosDef` using `hz`. Establish `hu : IsUnit (hQ z).det` using `isUnit_iff_ne_zero.mpr hpd.det_pos.ne'`. Establish `key : z * (hQ z * (hQ z)⁻¹) * zᴴ = z * zᴴ` using `by rw [Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Generalize the expression as in `(hQ z)⁻¹ = R at key ⊢`. Unfold `hQ at key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions.
 
-Unfold `hP`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc] at key ⊢`. Rewrite using `[← key]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem hP_mul_eq_one {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) :
     hP z * (1 + z * (hQ z)⁻¹ * zᴴ) = 1 := by
@@ -262,7 +260,7 @@ theorem hP_mul_eq_one {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) :
   abel
 
 /- English proof (translation)
-Establish `e : (hP z)⁻¹ = 1 + z * (hQ z)⁻¹ * zᴴ` using `Matrix.inv_eq_right_inv (hP_mul_eq_one hz)`. Rewrite using `[e]`. Establish `hq : (hQ z).PosDef` using `hz`. Conclude with `Matrix.PosDef.one.add_posSemidef (hq.inv.posSemidef.mul_mul_conjTranspose_same z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hP_inv_posDef {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) : (hP z)⁻¹.PosDef := by
   have e : (hP z)⁻¹ = 1 + z * (hQ z)⁻¹ * zᴴ := Matrix.inv_eq_right_inv (hP_mul_eq_one hz)
@@ -271,7 +269,7 @@ theorem hP_inv_posDef {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) : 
   exact Matrix.PosDef.one.add_posSemidef (hq.inv.posSemidef.mul_mul_conjTranspose_same z)
 
 /- English proof (translation)
-Establish `hu : IsUnit (hP z).det` using `Matrix.isUnit_det_of_right_inverse (hP_mul_eq_one hz)`. Establish `h` using `(hP_inv_posDef hz).inv`. Rewrite `h` using `[Matrix.nonsing_inv_nonsing_inv _ hu]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hP_posDef {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) : (hP z).PosDef := by
   have hu : IsUnit (hP z).det := Matrix.isUnit_det_of_right_inverse (hP_mul_eq_one hz)
@@ -279,7 +277,7 @@ theorem hP_posDef {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) : (hP 
   rwa [Matrix.nonsing_inv_nonsing_inv _ hu] at h
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h` using `(hP_posDef (moeb_mem hg hz)).det_pos`. Rewrite `h` using `[← hP_moeb hg hz, det_mul, det_mul, det_conjTranspose, h0]`. Simplify using `at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jW_isUnit {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) : IsUnit (jW g z).det := by
@@ -290,7 +288,7 @@ theorem jW_isUnit {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matri
   simp at h
 
 /- English proof (translation)
-Establish `hu` using `jW_isUnit hg hz`. Establish `hu' : IsUnit (jW g z)ᴴ.det` using `by rw [det_conjTranspose]; exact hu.star`. Rewrite using `[← hP_moeb hg hz, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_nonsing_inv_cancel_left _ _ hu', Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hP_inv_moeb {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) :
@@ -304,7 +302,7 @@ def autE (g : GL (Fin p ⊕ Fin q) ℂ) (z : Matrix (Fin p) (Fin q) ℂ) :
     Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := fromBlocks (jW g z) 0 0 (kapQ g z)
 
 /- English proof (translation)
-Unfold `autE`. Rewrite using `[det_fromBlocks_zero₁₂]`. Conclude with `(jW_isUnit hg hz).mul (kapQ_isUnit hg hz)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem autE_isUnit {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) : IsUnit (autE g z).det := by
@@ -313,9 +311,9 @@ theorem autE_isUnit {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Mat
   exact (jW_isUnit hg hz).mul (kapQ_isUnit hg hz)
 
 /- English proof (translation)
-Establish `e` using `moeb_mul_kapQ hg hz`. Unfold `jW`. Use `conv_lhs => rw [← fromBlocks_toBlocks (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)]`. Rewrite using `[fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, e, sub_add_cancel]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mul_frame {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) :
@@ -336,9 +334,9 @@ def blkMet (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin q) (Fin q) ℂ) :
     Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := fromBlocks A 0 0 B
 
 /- English proof (translation)
-Unfold `blkMet`. Establish `hpsd : (fromBlocks A 0 0 B).PosSemidef`. Set `_` to `Matrix.invertibleOfIsUnitDet A (isUnit_iff_ne_zero.mpr hA.det_pos.ne')`. Establish `h0 : (0 : Matrix (Fin q) (Fin p) ℂ) = (0 : Matrix (Fin p) (Fin q) ℂ)ᴴ` using `by simp`. Rewrite using `[h0]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.PosDef.fromBlocks₁₁ _ _ hA).2 (by simpa using hB.posSemidef)`. Use `hpsd.posDef_iff_isUnit.2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_fromBlocks_zero₁₂]`. Conclude with `(isUnit_iff_ne_zero.mpr hA.det_pos.ne').mul (isUnit_iff_ne_zero.mpr hB.det_pos.ne')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blkMet_posDef {A : Matrix (Fin p) (Fin p) ℂ} {B : Matrix (Fin q) (Fin q) ℂ} (hA : A.PosDef)
     (hB : B.PosDef) : (blkMet A B).PosDef := by
@@ -353,7 +351,7 @@ theorem blkMet_posDef {A : Matrix (Fin p) (Fin p) ℂ} {B : Matrix (Fin q) (Fin 
   exact (isUnit_iff_ne_zero.mpr hA.det_pos.ne').mul (isUnit_iff_ne_zero.mpr hB.det_pos.ne')
 
 /- English proof (translation)
-Unfold `autE blkMet`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem autE_blkMet (g : GL (Fin p ⊕ Fin q) ℂ) (z : Matrix (Fin p) (Fin q) ℂ)
     (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin q) (Fin q) ℂ) :
@@ -367,7 +365,7 @@ def hodge (c : ℝ) (z : Matrix (Fin p) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) 
   blkMet ((c : ℂ) • (hP z)⁻¹) ((c : ℂ) • hQ z)
 
 /- English proof (translation)
-Unfold `hodge`. Establish `hc' : (0 : ℂ) < (c : ℂ)` using `Complex.zero_lt_real.mpr hc`. Conclude with `blkMet_posDef ((hP_inv_posDef hz).smul hc') ((show (hQ z).PosDef from hz).smul hc')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hodge_posDef {c : ℝ} (hc : 0 < c) {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) :
     (hodge c z).PosDef := by
@@ -376,7 +374,7 @@ theorem hodge_posDef {c : ℝ} (hc : 0 < c) {z : Matrix (Fin p) (Fin q) ℂ} (hz
   exact blkMet_posDef ((hP_inv_posDef hz).smul hc') ((show (hQ z).PosDef from hz).smul hc')
 
 /- English proof (translation)
-Unfold `hodge`. Rewrite using `[autE_blkMet]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hP_inv_moeb hg hz, hQ_moeb hg hz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hodge_moeb (c : ℝ) {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q) {z : Matrix (Fin p) (Fin q) ℂ}
     (hz : z ∈ hcDom p q) :
@@ -387,7 +385,7 @@ theorem hodge_moeb (c : ℝ) {g : GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ Upq p q)
   rw [hP_inv_moeb hg hz, hQ_moeb hg hz]
 
 /- English proof (translation)
-Unfold `hodge blkMet`. Establish `hdet : (hP z).det = (hQ z).det` using `Matrix.det_one_sub_mul_comm z zᴴ`. Establish `hne : (hQ z).det ≠ 0` using `(show (hQ z).PosDef from hz).det_pos.ne'`. Rewrite using `[det_fromBlocks_zero₁₂, det_smul, det_smul, det_nonsing_inv, Fintype.card_fin, Fintype.card_fin, hdet, Ring.inverse_eq_inv', pow_add]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem det_hodge (c : ℝ) {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p q) :
     (hodge c z).det = (c : ℂ) ^ (p + q) := by
@@ -399,7 +397,7 @@ theorem det_hodge (c : ℝ) {z : Matrix (Fin p) (Fin q) ℂ} (hz : z ∈ hcDom p
   field_simp
 
 /- English proof (translation)
-Simplify using `[hodge, blkMet, hP, hQ, ← fromBlocks_one, fromBlocks_smul]`.
+Simplify using the standard rewrite rules.
 -/
 example (c : ℝ) : hodge c (0 : Matrix (Fin p) (Fin q) ℂ) = (c : ℂ) • 1 := by
   simp [hodge, blkMet, hP, hQ, ← fromBlocks_one, fromBlocks_smul]

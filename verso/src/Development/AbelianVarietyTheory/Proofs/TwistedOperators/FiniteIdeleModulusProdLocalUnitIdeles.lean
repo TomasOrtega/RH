@@ -17,11 +17,9 @@ noncomputable section
 namespace GlobalTheory.ProductIdeleModulus
 
 /- English proof (translation)
-Establish `hker : RingHom.ker (algebraMap (𝓞 F) (𝓞 E)) ≤ v.asIdeal`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))]`. Conclude with `bot_le`. Use `haveI := v.isMaximal`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral v.asIdeal hker`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQc, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))]`. Use `⟨⟨Q, hQ.isPrime, hQ0⟩, ?_⟩` and prove the remaining obligations.
-
-Use `ext1`. Conclude with `hQc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_under_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) : ∃ Q : HeightOneSpectrum (𝓞 E), Q.under (𝓞 F) = v := by
@@ -40,7 +38,7 @@ theorem exists_under_eq {F E : Type} [Field F] [NumberField F] [Field E] [Number
   exact hQc
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_iff {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (x : w.adicCompletion E) :
@@ -51,9 +49,7 @@ theorem valuation_eq_one_iff {E : Type} [Field E] [NumberField E] (w : HeightOne
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one
 
 /- English proof (translation)
-Establish `hm : finPart D (z * cA D z) ∈ intAE D`. Rewrite using `[map_mul]`. Conclude with `GlobalTheory.SplitLatBasis.mul_mem_intAE D hz (GlobalTheory.IdemSupport.finPart_cA_mem hz)`. Establish `h` using `(hΦ.int _).1 hm Q`. Rewrite `h` using `[← GlobalTheory.SplitDetCharacter.algebraMap_norm, hΦ.base]`.
-
-Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_comp_le_one {D : D7} {Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E} (hΦ : GlobalTheory.IdemSupport.Comp D Φ)
     {z : AE D} (hz : finPart D z ∈ intAE D) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
@@ -67,13 +63,13 @@ theorem norm_comp_le_one {D : D7} {Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.
   exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin`. Use `(finprod_congr fun v => ?_).trans finprod_one` and prove the remaining obligations. Take `⟨Q, rfl⟩` from `exists_under_eq (E := D.host.E) v`. Establish `a1` using `norm_comp_le_one hΦ h1 Q`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a2` using `norm_comp_le_one hΦ h2 Q`. Establish `hn : Algebra.norm (AF D.host.F) (x : AE D) * Algebra.norm (AF D.host.F) ((x⁻¹ : (AE D)ˣ) : AE D) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hprod : Valued.v (GlobalTheory.AdeleBaseChange.locMap D.host.F Q ((Algebra.norm (AF D.host.F) (x : AE D)).2 (Q.under (𝓞 D.host.F)))) * Valued.v (GlobalTheory.AdeleBaseChange.locMap D.host.F Q ((Algebra.norm (AF D.host.F) ((x⁻¹ : (AE D)ˣ) : AE D)).2 (Q.under (𝓞 D.host.F)))) = 1`. Rewrite using `[← map_mul, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Algebra.norm (AF D.host.F) (x : AE D)).2 (Q.under (𝓞 D.host.F)) * (Algebra.norm (AF D.host.F) ((x⁻¹ : (AE D)ˣ) : AE D)).2 (Q.under (𝓞 D.host.F)) = 1`. Use `congrArg (fun a : AF D.host.F => a.2 (Q.under (𝓞 D.host.F))) hn` as an intermediate fact. Conclude with `this`. Rewrite using `[this, map_one, map_one]`. Establish `hv1 : Valued.v (GlobalTheory.AdeleBaseChange.locMap D.host.F Q ((Algebra.norm (AF D.host.F) (x : AE D)).2 (Q.under (𝓞 D.host.F)))) = 1` using `le_antisymm a1 (hprod.symm.le.trans (mul_le_of_le_one_right' a2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `(GlobalTheory.TwU.IntegralHilbert90Unramified.locMap_val_eq_one_iff Q _).1 hv1`. Establish `e : ((GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.normV D (Q.under (𝓞 D.host.F)) x : (Fv D.host.F (Q.under (𝓞 D.host.F)))ˣ) : Fv D.host.F (Q.under (𝓞 D.host.F))) = (Algebra.norm (AF D.host.F) (x : AE D)).2 (Q.under (𝓞 D.host.F))` using `rfl`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV, e, hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absFin_eq_one_of_int {D : D7} (x : (AE D)ˣ) (h1 : finPart D (x : AE D) ∈ intAE D)
     (h2 : finPart D ((x⁻¹ : (AE D)ˣ) : AE D) ∈ intAE D) : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D x = 1 := by
@@ -108,9 +104,9 @@ end GlobalTheory.ProductIdeleModulus
 namespace GlobalTheory.TopLevelInv
 
 /- English proof (translation)
-Introduce `D P y hy`. Establish `hone : ∀ w : P, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D (GlobalTheory.LFun.locIdele D.host.F w.1 (y w)) = 1`. Introduce `w`. Establish `hv : Valued.v ((y w : Kw w.1)) = 1` using `(GlobalTheory.ProductIdeleModulus.valuation_eq_one_iff w.1 _).1 (hy w)`. Use `GlobalTheory.ProductIdeleModulus.absFin_eq_one_of_int _ ((GlobalTheory.LFun.EulerTie.locIdele_int_iff w.1 (y w)).2 hv.le) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv]`. Use `(GlobalTheory.LFun.EulerTie.locIdele_int_iff w.1 (y w)⁻¹).2 ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hv, inv_one]`. Use `Finset.prod_induction _ (fun z => GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D z = 1) (fun a b ha hb => by rw [GlobalTheory.SplitLinear.absFin_mul, ha, hb, one_mul]) ?_ (fun w _ => hone w)` and prove the remaining obligations. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem absFin_prod_locIdele_unit : ∀ {D : D7} (P : Finset (Pl D.host.E)) (y : ∀ w : P, (Kw w.1)ˣ),
     (∀ w, valuation (Kw w.1) (y w : Kw w.1) = 1) →

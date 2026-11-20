@@ -12,19 +12,17 @@ variable {LL : Type} [Field LL] {D : Type} [AddCommGroup D] [Module LL D] [Finit
   {n : ℕ} {Emb : Type} [Fintype Emb]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ i, D' ⊓ F.Dl i = ⊥`. Use `left`. Rewrite using `[hD.2]`. Simplify using `[h]`. Use `right push Not at h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `h`. Establish `key : ∀ j, F.Dl j ≤ D' → F.Dl (j + 1) ≤ D'`. Introduce `j hj`. Rewrite using `[← F.φ_Dl j]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hD.1 x (hj hx)`. Establish `hi' : F.Dl i ≤ D'`. Establish `hle : D' ⊓ F.Dl i ≤ F.Dl i` using `inf_le_right`. Establish `h1 : finrank LL ↥(D' ⊓ F.Dl i) ≠ 0`. Rewrite using `[Ne, Submodule.finrank_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi`. Establish `h2 : finrank LL ↥(D' ⊓ F.Dl i) ≤ finrank LL ↥(F.Dl i)` using `Submodule.finrank_mono hle`. Establish `heq : D' ⊓ F.Dl i = F.Dl i` using `Submodule.eq_of_le_of_finrank_eq hle (by rw [hl i] at h2 ⊢; omega)`. Rewrite using `[← heq]`. Conclude with `inf_le_left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hall : ∀ k : ℕ, F.Dl (i + k) ≤ D'`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hi'`. Consider the case `succ k ih`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `key _ ih` as an intermediate fact. Rewrite `this` using `[add_assoc, ← Nat.cast_succ]`. Then use the resulting hypothesis. Establish `hj : ∀ j, F.Dl j ≤ D'`. Introduce `j`. Use `hall (j - i).val` as an intermediate fact.
-
-Rewrite `this` using `[ZMod.natCast_zmod_val, add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff, ← F.internal.submodule_iSup_eq_top]`. Conclude with `iSup_le hj`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankOne_isSub_bot_or_top [NeZero n] (F : FilPhi LL D n Emb)
     (hl : ∀ i, finrank LL ↥(F.Dl i) = 1) (D' : Submodule LL D) (hD : F.IsSub D') :
@@ -64,7 +62,7 @@ theorem rankOne_isSub_bot_or_top [NeZero n] (F : FilPhi LL D n Emb)
     exact iSup_le hj
 
 /- English proof (translation)
-Establish `h0 : ∀ S : Submodule LL D, finrank LL ↥(S ⊓ ⊥) = 0` using `fun S => by`. Rewrite using `[Submodule.finrank_eq_zero]`. Conclude with `inf_bot_eq S`. Simplify using `[tH, tHw, mult, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rankOne_tH_bot (F : FilPhi LL D n Emb) : F.tH ⊥ = 0 := by
   have h0 : ∀ S : Submodule LL D, finrank LL ↥(S ⊓ ⊥) = 0 := fun S => by
@@ -72,14 +70,14 @@ theorem rankOne_tH_bot (F : FilPhi LL D n Emb) : F.tH ⊥ = 0 := by
   simp [tH, tHw, mult, h0]
 
 /- English proof (translation)
-The claim follows from `LinearMap.det_eq_one_of_subsingleton _`.
+A detailed English derivation is pending.
 -/
 theorem rankOne_det_bot (F : FilPhi LL D n Emb) (h : ∀ x ∈ (⊥ : Submodule LL D), F.φ x ∈ (⊥ : Submodule LL D)) :
     LinearMap.det (F.φres ⊥ h) = 1 :=
   LinearMap.det_eq_one_of_subsingleton _
 
 /- English proof (translation)
-Establish `hc : (F.φ : D →ₗ[LL] D) = (Submodule.topEquiv : ↥(⊤ : Submodule LL D) ≃ₗ[LL] D).toLinearMap ∘ₗ F.φres ⊤ h ∘ₗ (Submodule.topEquiv : ↥(⊤ : Submodule LL D) ≃ₗ[LL] D).symm.toLinearMap`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hc, LinearMap.det_conj]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem rankOne_det_top (F : FilPhi LL D n Emb) (h : ∀ x ∈ (⊤ : Submodule LL D), F.φ x ∈ (⊤ : Submodule LL D)) :
     LinearMap.det (F.φres ⊤ h) = LinearMap.det (F.φ : D →ₗ[LL] D) := by
@@ -91,11 +89,11 @@ theorem rankOne_det_top (F : FilPhi LL D n Emb) (h : ∀ x ∈ (⊤ : Submodule 
 end FilPhi
 
 /- English proof (translation)
-Introduce `LL _ D _ _ _ n _ Emb _ F v hl`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce `htop`. Use `⟨htop, fun D' h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Break down `F.rankOne_isSub_bot_or_top hl D' h with rfl | rfl` into its components or cases. Unfold `FilPhi.NewtonAbove`. Rewrite using `[F.rankOne_tH_bot, F.rankOne_det_bot, AddValuation.map_one]`. Simplify using the standard rewrite rules. Unfold `FilPhi.NewtonAbove`.
+Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[F.rankOne_det_top]`. Conclude with `le_of_eq htop`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankOneWA : RankOneWA := by
   intro LL _ D _ _ _ n _ Emb _ F v hl

@@ -10,9 +10,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Establish `hr : ComplexEmbedding.IsReal (Complex.ofRealHom.comp σ)`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hv : (InfinitePlace.mk (Complex.ofRealHom.comp σ)).IsReal` using `⟨_, hr, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨_, hv, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal hr]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_isReal_embedding_eq_hom {F : Type} [Field F] (σ : F →+* ℝ) :
     ∃ (v : InfinitePlace F) (hv : v.IsReal), InfinitePlace.embedding_of_isReal hv = σ := by
@@ -28,9 +28,9 @@ theorem exists_isReal_embedding_eq_hom {F : Type} [Field F] (σ : F →+* ℝ) :
   rfl
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ hG hC a ha hf hi`. Use `GlobalTheory.T.hasseNormPrinciple_of_isCyclic K L hG hC a ha ⟨hf, fun alg => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hσ⟩` from `exists_isReal_embedding_eq_hom (algebraMap K ℝ)`. Set `φ : v.Completion →ₐ[K] ℝ` to `{ InfinitePlace.Completion.extensionEmbeddingOfIsReal hv with commutes' := fun x => by`. Rewrite using `[← hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv ((WithAbs.equiv v.1).symm x) }`. Conclude with `(GlobalTheory.T.isNormFromBaseChange_base_change_properties K L).1 v.Completion ℝ φ a (hi v)`.
+A detailed English derivation is pending.
 -/
 theorem hasseNorm : GlobalTheory.Published.HasseNorm := by
   intro K L _ _ _ _ _ hG hC a ha hf hi

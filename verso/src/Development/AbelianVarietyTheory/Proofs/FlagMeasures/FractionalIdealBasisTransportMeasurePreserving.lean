@@ -6,15 +6,13 @@ open scoped TensorProduct ENNReal nonZeroDivisors Classical
 namespace GlobalTheory.SnMass.VolN
 
 /- English proof (translation)
-Use `set b₀ := mixedEmbedding.fractionalIdealLatticeBasis K J with hb₀`. Use `⟨_, inferInstance, b₀.map e.toLinearEquiv, ?_, ?_⟩` and prove the remaining obligations. Set `f : mixedEmbedding.mixedSpace K →ₗ[ℤ] W` to `e.toLinearEquiv.toLinearMap.restrictScalars ℤ`. Establish `hr : Set.range (b₀.map e.toLinearEquiv) = f '' Set.range b₀`. Rewrite using `[← Set.range_comp]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h0 : (Submodule.span ℤ (Set.range b₀) : Set (mixedEmbedding.mixedSpace K)) = mixedEmbedding K '' (J : Set K)`. Use extensionality with `x`. Conclude with `mixedEmbedding.mem_span_fractionalIdealLatticeBasis K J`. Rewrite using `[hr, Submodule.span_image, Submodule.map_coe, h0, Set.image_image]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hfd : ZSpan.fundamentalDomain (b₀.map e.toLinearEquiv) = e '' ZSpan.fundamentalDomain b₀` using `(ZSpan.map_fundamentalDomain b₀ e.toLinearEquiv).symm`. Set `E` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hE : MeasurePreserving E volume μ` using `he`. Establish `h1 : μ (ZSpan.fundamentalDomain (b₀.map e.toLinearEquiv)) = volume (ZSpan.fundamentalDomain b₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hE.measure_preimage_equiv, hfd]`. Use `congr 1`. Conclude with `Set.preimage_image_eq _ e.injective`. Rewrite using `[h1]`. Establish `hfin : volume (ZSpan.fundamentalDomain b₀) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded b₀).measure_lt_top.ne`.
-
-Rewrite using `[← ENNReal.ofReal_toReal hfin, ← mixedEmbedding.covolume_idealLattice K J, ZLattice.covolume_eq_measure_fundamentalDomain _ _ (mixedEmbedding.fundamentalDomain_idealLattice K J), measureReal_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fractionalIdeal_basis_transport (K : Type) [Field K] [NumberField K] {W : Type} [NormedAddCommGroup W]
     [NormedSpace ℝ W] [MeasurableSpace W] [BorelSpace W] (μ : Measure W)

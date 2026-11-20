@@ -10,7 +10,7 @@ open scoped Matrix
 namespace PositivityTheory.HtPt.Rd
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_range]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_ext {n : ℕ} (s : Fin n → NNReal) :
     ∏ i ∈ Finset.range n, (fun i => if h : i < n then s ⟨i, h⟩ else 1) i = ∏ i, s i := by
@@ -18,9 +18,9 @@ theorem prod_ext {n : ℕ} (s : Fin n → NNReal) :
   simp
 
 /- English proof (translation)
-Establish `key : Finset.range (min j n) = (Finset.range n).filter (fun i => i < j)`. Use extensionality with `i`. Simplify using `only [Finset.mem_range, Finset.mem_filter, lt_min_iff]`. The claim follows by propositional logic. Rewrite using `[key, Finset.prod_filter, Finset.prod_filter, ← Fin.prod_univ_eq_prod_range (fun i => if i < j then (if h : i < n then s ⟨i, h⟩ else 1) else 1) n]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem prod_ext_min {n : ℕ} (s : Fin n → NNReal) (j : ℕ) :
     ∏ i ∈ Finset.range (min j n), (fun i => if h : i < n then s ⟨i, h⟩ else 1) i =
@@ -35,9 +35,9 @@ theorem prod_ext_min {n : ℕ} (s : Fin n → NNReal) (j : ℕ) :
   simp
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hR hp F _ _ _ _ f hcard N _ _ _ _ AA hst n b χ s r hs hr`. Establish `key` using `chain_le hex hsq hsplit hos p C v R hR hp F f hcard χ n N AA hst (flagSub b) (fun i => if h : i < n then b ⟨i, h⟩ else 0) (isChain_flag b) (fun i => if h : i < n then s ⟨i, h⟩ else 1) r (by`. Introduce `i hi`. Establish `e1 : (if h : i < n then b ⟨i, h⟩ else 0) = b ⟨i, hi⟩` using `dif_pos hi`. Establish `e2 : (if h : i < n then s ⟨i, h⟩ else 1) = s ⟨i, hi⟩` using `dif_pos hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show HasLen v R (OmType (stepOrder AA.carrier (flagSub b i) (if h : i < n then b ⟨i, h⟩ else 0)) χ) (if h : i < n then s ⟨i, h⟩ else 1)`. Rewrite using `[e1, e2]`. Conclude with `hs ⟨i, hi⟩) hr`. Rewrite `key` using `[prod_ext]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flag_om_of (hex : type_of% @GlobalTheory.T.teichmuller_character_exists) (hsq : type_of% @GlobalTheory.T.stable_hopf_order_subgroup_restriction)
     (hsplit : type_of% @GlobalTheory.T.stable_hopf_order_fundamental_ideal) (hos : type_of% @GlobalTheory.T.stable_hopf_order_subgroup_characters) : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (n : ℕ) (b : Module.Basis (Fin n) F N), ∀ (χ : MulChar F R) (s : Fin n → NNReal) (r : NNReal), (∀ i : Fin n, HasLen v R (OmType (stepOrder AA.carrier (flagSub b i) (b i)) χ) (s i)) → HasLen v R (OmType AA.carrier χ) r → ∏ i, s i ≤ r := by
@@ -56,9 +56,9 @@ theorem flag_om_of (hex : type_of% @GlobalTheory.T.teichmuller_character_exists)
   rwa [prod_ext] at key
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hR hp F _ _ _ _ f hcard N _ _ _ _ AA hst n b χ s hs hr j`. Establish `key` using `chain_partial hex hsq hsplit hos p C v R hR hp F f hcard hstep χ n N AA hst (flagSub b) (fun i => if h : i < n then b ⟨i, h⟩ else 0) (isChain_flag b) (fun i => if h : i < n then s ⟨i, h⟩ else 1) (by`. Introduce `i hi`. Establish `e1 : (if h : i < n then b ⟨i, h⟩ else 0) = b ⟨i, hi⟩` using `dif_pos hi`. Establish `e2 : (if h : i < n then s ⟨i, h⟩ else 1) = s ⟨i, hi⟩` using `dif_pos hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show HasLen v R (OmType (stepOrder AA.carrier (flagSub b i) (if h : i < n then b ⟨i, h⟩ else 0)) χ) (if h : i < n then s ⟨i, h⟩ else 1)`. Rewrite using `[e1, e2]`. Conclude with `hs ⟨i, hi⟩)`. Use the proof step `(by rwa [prod_ext]) j`. Rewrite `key` using `[prod_ext_min]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gr_partial_of (hex : type_of% @GlobalTheory.T.teichmuller_character_exists) (hsq : type_of% @GlobalTheory.T.stable_hopf_order_subgroup_restriction)
     (hstep : type_of% @GlobalTheory.T.stable_hopf_order_subgroup_translation) (hsplit : type_of% @GlobalTheory.T.stable_hopf_order_fundamental_ideal)

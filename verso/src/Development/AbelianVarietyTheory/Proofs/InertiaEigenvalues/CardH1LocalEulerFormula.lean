@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace GlobalTheory.EulerFree
 
 /- English proof (translation)
-Establish `hle : ReciprocityTheory.Def.B1 π ⊤ ≤ ReciprocityTheory.Def.Z1 π ⊤`. Introduce and unpack `_ ⟨m, -, rfl⟩`. Use `⟨⟨(hlc m).comp (fun x => x - m), fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `π x.1 (π x.2 m - m) - (π (x.1 * x.2) m - m) + (π x.1 m - m) = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card ((ReciprocityTheory.Def.B1 π ⊤).submoduleOf (ReciprocityTheory.Def.Z1 π ⊤))`. Establish `h2 : Nat.card ((ReciprocityTheory.Def.B1 π ⊤).submoduleOf (ReciprocityTheory.Def.Z1 π ⊤)) = Nat.card (ReciprocityTheory.Def.B1 π ⊤)` using `Nat.card_congr (Submodule.comapSubtypeEquivOfLe hle).toEquiv`. Establish `hinj : Function.Injective (ReciprocityTheory.Def.d0 π)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff, ← h0]`. Introduce `m hm g`. Conclude with `sub_eq_zero.1 (congrFun (LinearMap.mem_ker.1 hm) g)`. Establish `h3 : Nat.card (ReciprocityTheory.Def.B1 π ⊤) = Nat.card M` using `(Nat.card_congr (Submodule.topEquiv.symm.trans (Submodule.equivMapOfInjective _ hinj ⊤)).toEquiv).symm`. Rewrite using `[h1, h2, h3, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_Z1_of_invariants_eq_bot {O G M : Type} [CommRing O] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module O M] (π : Representation O G M)
@@ -39,23 +39,21 @@ theorem card_Z1_of_invariants_eq_bot {O G M : Type} [CommRing O] [Group G] [Topo
   rw [h1, h2, h3, mul_comm]
 
 /- English proof (translation)
-Establish `ha' : ∀ g m, rho (φ g) m = π g m` using `fun g m => by rw [ha, φ.symm_apply_apply]`. Establish `hH0 : Nat.card (ReciprocityTheory.Gal.H0 rho) = 1`. Establish `: ReciprocityTheory.Gal.H0 rho = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: m ∈ π.invariants` using `fun g => by rw [← ha']; exact hm (φ g)`. Rewrite `this` using `[h0]`. Conclude with `this`. Rewrite using `[this]`. Conclude with `Nat.card_unique`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH2 : Nat.card (ReciprocityTheory.Gal.H2 rho) = 1`. Establish `: Subsingleton (ReciprocityTheory.Gal.H2 rho)`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun z _ => ?_)` and prove the remaining obligations. Set `z' : ReciprocityTheory.Def.Z2 π ⊤` to `⟨fun x => z.1 (φ x.1, φ x.2), ⟨(IsLocallyConstant.iff_continuous _).2 (z.2.1.comp ((hφ.1.comp continuous_fst).prodMk (hφ.1.comp continuous_snd))), fun _ => Submodule.mem_top⟩, by`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `z.2.2 (φ x.1) (φ x.2.1) (φ x.2.2)` as an intermediate fact. Rewrite `this` using `[ha', ← map_mul, ← map_mul]`. Conclude with `this⟩`. Establish `hz' : z' ∈ (ReciprocityTheory.Def.B2 π ⊤).submoduleOf (ReciprocityTheory.Def.Z2 π ⊤)`. Rewrite using `[Submodule.Quotient.subsingleton_iff.1 h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.mem_top`. Take `⟨b, hb, hbz⟩` from `hz'`. Use `⟨fun g => b (φ.symm g), hb.1.continuous.comp hφ.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `h : π (φ.symm x.1) (b (φ.symm x.2)) - b (φ.symm x.1 * φ.symm x.2) + b (φ.symm x.1) = z.1 (φ (φ.symm x.1), φ (φ.symm x.2))` using `congrFun hbz (φ.symm x.1, φ.symm x.2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[φ.apply_symm_apply, φ.apply_symm_apply, ← map_mul, ← ha]`. Conclude with `h`. Conclude with `Nat.card_unique`. Establish `hZ` using `GlobalTheory.CocycleCount.card_cocycles_mul_invariants_discrete _ _ M rho hrho`. Set `E : ↥(ReciprocityTheory.Def.Z1 π ⊤) ≃ ↥(ReciprocityTheory.Gal.Z1 rho)` to `{ toFun := fun c => ⟨fun g => c.1 (φ.symm g), c.2.1.1.continuous.comp hφ.2, fun g h => by beta_reduce`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, map_mul, cocycle_mul]⟩`. Use `invFun := fun c => ⟨fun g => c.1 (φ g), ⟨(IsLocallyConstant.iff_continuous _).2 (c.2.1.comp hφ.1), fun _ => Submodule.mem_top⟩, by`. Use function extensionality and compare the values at `x`. Use `c.2.2 (φ x.1) (φ x.2)` as an intermediate fact. Rewrite `this` using `[ha', ← map_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `π x.1 (c.1 (φ x.2)) - c.1 (φ (x.1 * x.2)) + c.1 (φ x.1) = 0`. Rewrite using `[this]`. Use the proof step `abel⟩`. Use `left_inv := fun c => Subtype.ext (funext fun g => congrArg c.1 (φ.symm_apply_apply g))`. Use `right_inv := fun c => Subtype.ext (funext fun g => congrArg c.1 (φ.apply_symm_apply g)) }`.
-
-Establish `hM : 0 < Nat.card M` using `Nat.card_pos`. Apply `Nat.eq_of_mul_eq_mul_right hM` to reduce the goal to its premises. Rewrite using `[← card_Z1_of_invariants_eq_bot π hlc h0, Nat.card_congr E]`. Rewrite `hZ` using `[hEu, hH0, hH2]`. Simplify using `using hZ`.
+A detailed English derivation is pending.
 -/
 theorem card_H1_of_euler (R O G G' : Type) [CommRing R] [CommRing O] [Group G] [TopologicalSpace G]
     [Group G'] [TopologicalSpace G'] (φ : G' ≃* G) (hφ : Continuous φ ∧ Continuous φ.symm)
@@ -120,11 +118,11 @@ theorem card_H1_of_euler (R O G G' : Type) [CommRing R] [CommRing O] [Group G] [
   simpa using hZ
 
 /- English proof (translation)
-Introduce `hE l _ K O M _ _ _ _ π hl hlc h0 h2`. Establish `hK : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Set `_ : TopologicalSpace M` to `⊥`. Establish `_ : DiscreteTopology M` using `⟨rfl⟩`. Establish `hr' : ∀ m : M, l ^ 1 • m = 0` using `fun m => by rw [pow_one, hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `_ : NeZero (l ^ 1)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Set `_ : Module (ZMod (l ^ 1)) M` to `AddCommGroup.zmodModule hr'`. Set `φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `IntermediateField.fixingSubgroupEquiv K.1`. Establish `hφ : Continuous φ ∧ Continuous φ.symm` using `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1`. Set `rho : Representation (ZMod (l ^ 1)) (Formalism.GaloisCohomology.GK l K.1) M` to `GlobalTheory.CocycleCount.repOfAction _ (fun g => (π (φ.symm g)).toAddMonoidHom) (fun m => by simp) (fun g h m => by simp)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hrho : ReciprocityTheory.Gal.ContAction rho`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Conclude with `(hlc m).continuous.comp hφ.2`. Conclude with `card_H1_of_euler _ O _ _ φ hφ M rho hrho _ (hE l K.1 hK 1 M rho Nat.one_pos hrho) π (fun _ _ => rfl) hlc h0 h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_H1_eq_pow :
     Formalism.GaloisCohomology.LocalEulerCharK → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] [Finite M] (π : Representation O ↥(GK K) M), (∀ m : M, l • m = 0) → (∀ m, IsLocallyConstant fun g => π g m) → π.invariants = ⊥ → Subsingleton (ReciprocityTheory.Def.H2 π ⊤) → Nat.card (ReciprocityTheory.Def.H1 π ⊤) = Nat.card M ^ Module.finrank ℚ_[l] ↥K.1 := by

@@ -9,7 +9,7 @@ open Matrix
 namespace PGaussSqrt
 
 /- English proof (translation)
-Use `conv_lhs => rw [hH.spectral_theorem, Unitary.conjStarAlgAut_apply]`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_eq_transpose_of_trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_eigenvectors_mul_diagonal {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} (hH : Y.IsHermitian) :
     Y = (hH.eigenvectorUnitary : Matrix (Fin g) (Fin g) ℝ) * diagonal hH.eigenvalues *
@@ -21,11 +21,9 @@ theorem eq_eigenvectors_mul_diagonal {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} 
 end PGaussSqrt
 
 /- English proof (translation)
-Introduce `g Y hY`. Use `set hH := hY.isHermitian`. Use `set U : Matrix (Fin g) (Fin g) ℝ := (hH.eigenvectorUnitary : Matrix (Fin g) (Fin g) ℝ) with hUdef`. Use `⟨diagonal (fun i => √(hH.eigenvalues i)) * Uᵀ, ?_⟩` and prove the remaining obligations. Establish `hnn : ∀ i, 0 ≤ hH.eigenvalues i` using `fun i => (hY.eigenvalues_pos i).le`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.diagonal_transpose]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsq : (fun i => √(hH.eigenvalues i) * √(hH.eigenvalues i)) = hH.eigenvalues`. Use function extensionality and compare the values at `fun i => Real.mul_self_sqrt (hnn i)`. Rewrite using `[diagonal_mul_diagonal, hsq]`.
-
-Use `_ = Y := (PGaussSqrt.eq_eigenvectors_mul_diagonal hH).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GaussSqrt.proof : GaussSqrt.Statement := by
   intro g Y hY

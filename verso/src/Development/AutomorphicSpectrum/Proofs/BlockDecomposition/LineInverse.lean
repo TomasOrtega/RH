@@ -17,11 +17,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `key : t - s - t * s * δ = 0` using `by linear_combination -hs`. Establish `key' : t - s - s * t * δ = 0` using `by linear_combination -hs`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [add_mul, mul_sub, one_mul, mul_one, smul_mul_smul_comm, he, smul_smul, sub_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Use `_ = 1 := by rw [key, zero_smul, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [sub_mul, mul_add, one_mul, mul_one, smul_mul_smul_comm, he, smul_smul, sub_smul]`. Normalize the expressions using the abelian group laws.
-
-Use `_ = 1 := by rw [key', zero_smul, add_zero]`.
+Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem line_inverse {e : Mat n} {δ t s : ℂ} (he : e * e = δ • e) (hs : s * (1 + t * δ) = t) :
     (1 + t • e) * (1 - s • e) = 1 ∧ (1 - s • e) * (1 + t • e) = 1 := by
@@ -38,11 +36,9 @@ theorem line_inverse {e : Mat n} {δ t s : ℂ} (he : e * e = δ • e) (hs : s 
       _ = 1 := by rw [key', zero_smul, add_zero]
 
 /- English proof (translation)
-Establish `hc : ContinuousAt (fun t : ℂ => 1 + t * δ) 0` using `by fun_prop`. Establish `hδ : ∀ᶠ t : ℂ in 𝓝 0, 1 + t * δ ≠ 0` using `hc.eventually_ne (by simp)`. Use `filter_upwards [eventually_line_unit e, hδ] with t hu hne`. Establish `hs : t / (1 + t * δ) * (1 + t * δ) = t` using `div_mul_cancel₀ t hne`. Take `⟨-, hyx⟩` from `line_inverse he hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB' : (1 + t • e) * B * (1 - (t / (1 + t * δ)) • e) = B + t • (e * B) + (-(t / (1 + t * δ))) • (B * e) + (-(t * (t / (1 + t * δ)))) • (e * B * e)`. Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, mul_assoc]`. Use `module`. Establish `hcomm : (1 + t • e) * B = ((1 + t • e) * B * (1 - (t / (1 + t * δ)) • e)) * (1 + t • e)`. Rewrite using `[mul_assoc ((1 + t • e) * B), hyx, mul_one]`.
-
-Rewrite using `[conj_XA hD hu hcomm, hB', XA_add, XA_add, XA_add, XA_smul, XA_smul, XA_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_line {lam : Fin n → ℤ} (hD : HolRm lam) {e : Mat n} (B : Mat n) {δ : ℂ} (he : e * e = δ • e) :
     ∀ᶠ t : ℂ in 𝓝 0, Rm lam (1 + t • e) * XA lam B =
@@ -63,19 +59,17 @@ theorem conj_line {lam : Fin n → ℤ} (hD : HolRm lam) {e : Mat n} (B : Mat n)
   rw [conj_XA hD hu hcomm, hB', XA_add, XA_add, XA_add, XA_smul, XA_smul, XA_smul]
 
 /- English proof (translation)
-Establish `hden : HasDerivAt (fun t : ℂ => 1 + t * δ) δ 0`. Simplify using `using ((hasDerivAt_id' (0:ℂ)).mul_const δ).const_add 1`. Establish `hs : HasDerivAt (fun t : ℂ => t / (1 + t * δ)) 1 0`. Establish `h` using `(hasDerivAt_id' (0:ℂ)).div hden (by simp)`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hts : HasDerivAt (fun t : ℂ => t * (t / (1 + t * δ))) 0 0`. Establish `h` using `(hasDerivAt_id' (0:ℂ)).mul hs`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hprod : ∀ (P Q : ℂ → Matrix (Jd n lam) (Jd n lam) ℂ) (P' Q' : Matrix (Jd n lam) (Jd n lam) ℂ), (∀ i k, HasDerivAt (fun t => P t i k) (P' i k) 0) → (∀ k j, HasDerivAt (fun t => Q t k j) (Q' k j) 0) → ∀ i j, HasDerivAt (fun t => (P t * Q t) i j) ((P' * Q 0 + P 0 * Q') i j) 0`. Introduce `P Q P' Q' hP hQ i j`. Simplify using `only [Matrix.mul_apply, Matrix.add_apply, ← Finset.sum_add_distrib]`. Conclude with `HasDerivAt.fun_sum fun k _ => (hP i k).mul (hQ k j)`. Establish `hR : ∀ i k, HasDerivAt (fun t : ℂ => Rm lam (1 + t • e) i k) (XA lam e i k) 0` using `hasDerivAt_line hD e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ k j, HasDerivAt (fun _ : ℂ => XA lam B k j) ((0 : Matrix (Jd n lam) (Jd n lam) ℂ) k j) 0` using `fun k j => by`. Simplify using `using hasDerivAt_const (0:ℂ) (XA lam B k j)`. Establish `hG : ∀ i k, HasDerivAt (fun t : ℂ => (XA lam B + t • XA lam (e * B) + (-(t / (1 + t * δ))) • XA lam (B * e) + (-(t * (t / (1 + t * δ)))) • XA lam (e * B * e)) i k) ((XA lam (e * B) - XA lam (B * e)) i k) 0`. Introduce `i k`. Establish `h` using `((((hasDerivAt_id' (0:ℂ)).mul_const (XA lam (e * B) i k)).const_add (XA lam B i k)).add (hs.neg.mul_const (XA lam (B * e) i k))).add (hts.neg.mul_const (XA lam (e * B * e) i k))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.sub_apply]`. Conclude with `h.congr_deriv (by ring)`. Use extensionality with `i j`. Establish `hL` using `hprod (fun t => Rm lam (1 + t • e)) (fun _ => XA lam B) (XA lam e) 0 hR hC i j`. Establish `hRt` using `hprod (fun t : ℂ => XA lam B + t • XA lam (e * B) + (-(t / (1 + t * δ))) • XA lam (B * e) + (-(t * (t / (1 + t * δ)))) • XA lam (e * B * e)) (fun t => Rm lam (1 + t • e)) (XA lam (e * B) - XA lam (B * e)) (XA lam e) hG hR i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (fun t : ℂ => (Rm lam (1 + t • e) * XA lam B) i j) =ᶠ[𝓝 0] (fun t : ℂ => ((XA lam B + t • XA lam (e * B) + (-(t / (1 + t * δ))) • XA lam (B * e) + (-(t * (t / (1 + t * δ)))) • XA lam (e * B * e)) * Rm lam (1 + t • e)) i j)` using `by filter_upwards [conj_line hD B he] with t ht`. Conclude with `congrArg (fun M => M i j) ht`. Establish `huniq` using `hL.unique (hRt.congr_of_eventuallyEq heq)`. Simplify using `only [zero_smul, add_zero, Rm_one, mul_zero, mul_one, zero_div, neg_zero, zero_mul] at huniq`. Rewrite using `[Matrix.sub_apply, huniq, Matrix.add_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem comm_XA {lam : Fin n → ℤ} (hD : HolRm lam) {e : Mat n} (B : Mat n) {δ : ℂ} (he : e * e = δ • e) :
     XA lam e * XA lam B - XA lam B * XA lam e = XA lam (e * B) - XA lam (B * e) := by
@@ -123,19 +117,19 @@ theorem comm_XA {lam : Fin n → ℤ} (hD : HolRm lam) {e : Mat n} (B : Mat n) {
   ring
 
 /- English proof (translation)
-Simplify using `using XA_smul lam (0 : ℂ) (0 : Mat n)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem XA_zero (lam : Fin n → ℤ) : XA lam (0 : Mat n) = 0 := by
   simpa using XA_smul lam (0 : ℂ) (0 : Mat n)
 
 /- English proof (translation)
-Introduce `n lam hD a b c d`. Establish `hsq : (Matrix.single a b (1:ℂ) : Mat n) * Matrix.single a b 1 = (if b = a then (1:ℂ) else 0) • Matrix.single a b 1`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, one_smul, Matrix.single_mul_single_same, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, zero_smul, Matrix.single_mul_single_of_ne _ _ _ _ h]`. Establish `key` using `comm_XA hD (Matrix.single c d (1:ℂ)) hsq`. Establish `hEB : XA lam ((Matrix.single a b (1:ℂ) : Mat n) * Matrix.single c d 1) = if b = c then XA lam (Matrix.single a d 1) else 0`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, Matrix.single_mul_single_same, one_mul]`. Rewrite using `[if_neg h, Matrix.single_mul_single_of_ne _ _ _ _ h, XA_zero]`. Establish `hBE : XA lam ((Matrix.single c d (1:ℂ) : Mat n) * Matrix.single a b 1) = if d = a then XA lam (Matrix.single c b 1) else 0`. Distinguish the cases in `h : d = a`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, Matrix.single_mul_single_same, one_mul]`. Rewrite using `[if_neg h, Matrix.single_mul_single_of_ne _ _ _ _ h, XA_zero]`. Simplify using `only [Xu]`. Rewrite using `[key, hEB, hBE]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem xu_glRel : ∀ (n : ℕ) (lam : Fin n → ℤ), HolRm lam → Formalism.HadamardInequality.GlRel (Xu lam) := by
   intro n lam hD a b c d

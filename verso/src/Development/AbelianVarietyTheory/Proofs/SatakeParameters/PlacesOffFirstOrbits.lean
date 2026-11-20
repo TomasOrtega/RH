@@ -14,7 +14,7 @@ variable {V H : Type} [AddCommGroup H] [Finite H] {h : H} {bs : H → H}
 
 omit [Finite H] in
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [succ_nsmul, ← add_assoc, hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem inv_nsmul {Z : Type} {f : H → Z} (hf : ∀ t, f (t + h) = f t) (t : H) (i : ℕ) : f (t + i • h) = f t := by
   induction i with
@@ -22,9 +22,9 @@ theorem inv_nsmul {Z : Type} {f : H → Z} (hf : ∀ t, f (t + h) = f t) (t : H)
   | succ i ih => rw [succ_nsmul, ← add_assoc, hf, ih]
 
 /- English proof (translation)
-Establish `hpos : 0 < addOrderOf h` using `addOrderOf_pos h`. Use `⟨(i * (addOrderOf h - 1)) % addOrderOf h, Nat.mod_lt _ hpos, ?_⟩` and prove the remaining obligations. Rewrite using `[mod_addOrderOf_nsmul, add_assoc, ← add_nsmul]`. Establish `: i + i * (addOrderOf h - 1) = i * addOrderOf h`. Take `⟨m, hm⟩ : ∃ m, addOrderOf h = m + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hpos).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_comm, mul_nsmul, addOrderOf_nsmul_eq_zero, nsmul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_back (a : H) (i : ℕ) : ∃ k, k < addOrderOf h ∧ a + i • h + k • h = a := by
   have hpos : 0 < addOrderOf h := addOrderOf_pos h
@@ -36,23 +36,23 @@ theorem exists_back (a : H) (i : ℕ) : ∃ k, k < addOrderOf h ∧ a + i • h 
   rw [this, mul_comm, mul_nsmul, addOrderOf_nsmul_eq_zero, nsmul_zero, add_zero]
 
 /- English proof (translation)
-Establish `hpos : 0 < addOrderOf h` using `addOrderOf_pos h`. Establish `reach : ∀ v, ∃ s, π ⟨v, s⟩ = (β v, bs (r v))` using `fun v => by`. Take `⟨i, hi⟩` from `horb (r v)`. Take `⟨k, hk, hk'⟩` from `exists_back (h := h) (bs (r v)) i`. Use `⟨⟨k, by rw [hn]; exact hk⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hπ]`. Rewrite `hk'` using `[hi]`. Simplify using `only [hk']`. Establish `h1 : ∀ v, v ∉ (Finset.univ.image bs).image vOf → β v = true` using `fun v hvn => by`. Assume the negation of the conclusion as `hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hb' : β v = false` using `by simpa using hb`. Take `⟨s, hs⟩` from `reach v`. Establish `hm : bs (r v) ∈ Finset.univ.image bs` using `Finset.mem_image_of_mem _ (Finset.mem_univ _)`. Establish `h0` using `hv _ hm ⟨0, by rw [hn]; exact hpos⟩`. Simplify using `only [zero_smul, add_zero] at h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hs` using `[hb', ← h0]`. Use `congrArg Sigma.fst (π.injective hs)` as an intermediate fact. Conclude with `hvn (Finset.mem_image.2 ⟨_, hm, this.symm⟩)`. Use `⟨h1, fun f hf => ?_⟩` and prove the remaining obligations. Use `Finset.sum_bij (fun v _ => bs (r v)) (fun v _ => Finset.mem_image_of_mem _ (Finset.mem_univ _)) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv1 v' hv2 he`. Take `⟨s, hs⟩` from `reach v`. Take `⟨s', hs'⟩` from `reach v'`. Rewrite `hs` using `[h1 v (Finset.mem_sdiff.1 hv1).2]`. Rewrite `hs'` using `[h1 v' (Finset.mem_sdiff.1 hv2).2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `he' : bs (r v) = bs (r v')` using `he`. Rewrite `hs` using `[he', ← hs']`. Conclude with `congrArg Sigma.fst (π.injective hs)`. Introduce `t0 ht0`. Take `⟨t, -, rfl⟩` from `Finset.mem_image.1 ht0`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨v, s⟩, hvs⟩` from `π.surjective (true, bs t)`. Use `⟨v, Finset.mem_sdiff.2 ⟨Finset.mem_univ _, fun hm => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨t1, ht1, rfl⟩` from `Finset.mem_image.1 hm`. Rewrite `hvs` using `[hv t1 ht1]`. Consider the cases of `congrArg Prod.fst hvs`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hvs` using `[hπ]`. Establish `e1 : r v + s.val • h = bs t` using `congrArg Prod.snd hvs`. Take `⟨i, hi⟩` from `horb t`. Use `show bs (r v) = bs t`. Rewrite using `[← inv_nsmul hstep (r v) s.val, e1, ← inv_nsmul hstep (bs t) i, hi]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Take `⟨i, hi⟩` from `horb (r v)`. Rewrite using `[← inv_nsmul hf (bs (r v)) i, hi]`.
+A detailed English derivation is pending.
 -/
 theorem second_orbits [Fintype V] [Fintype H] [DecidableEq V] [DecidableEq H] (n' : V → ℕ) (hn : ∀ v, n' v = addOrderOf h)
     (π : (Σ v, Fin (n' v)) ≃ Bool × H) (β : V → Bool) (r : V → H)
@@ -111,33 +111,33 @@ end Abstract
 open NumberField GlobalTheory.InertCompare
 
 /- English proof (translation)
-The claim follows from `orderOf_ofAdd_eq_addOrderOf t`.
+A detailed English derivation is pending.
 -/
 theorem orderOf_iotaH (φ : Formalism.HC.Frame) (t : φ.A) : orderOf (φ.iota t) = addOrderOf t :=
   orderOf_ofAdd_eq_addOrderOf t
 
 /- English proof (translation)
-Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eTau_tauPl (D : D7) (z : Bool × HH D) : ((D.eTau (tauPl D z) : D.R.Psi) : D.R.GG) = plGG D z := by
   unfold tauPl
   rw [Equiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `D.eTau.injective (Subtype.ext (h.trans (eTau_tauPl D z).symm))`.
+A detailed English derivation is pending.
 -/
 theorem eq_tauPl (D : D7) {τ : D.what₂.Tau} {z : Bool × HH D} (h : ((D.eTau τ : D.R.Psi) : D.R.GG) = plGG D z) :
     τ = tauPl D z :=
   D.eTau.injective (Subtype.ext (h.trans (eTau_tauPl D z).symm))
 
 /- English proof (translation)
-Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨hg.1⟩`. Establish `hc : IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)` using `Or.inl hg.2.2.1`. Establish `: (Ideal.span {((D.what₂.places.resChar w : ℕ) : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hg.1.ne_zero)).2 (Nat.prime_iff_prime_int.1 hg.1)`. Take `⟨⟨P, hP1, hP2⟩⟩` from `(Ideal.span {((D.what₂.places.resChar w : ℕ) : ℤ)}).nonempty_primesOver (S := 𝓞 D.host.E)`. Take `⟨φ, hφ, hstep⟩` from `exists_frob_step D _ hc P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, hq, hd⟩` from `ne_of_inert D _ hc`. Establish `hn : (D.gat u w hg).P.n' v = addOrderOf (hP D (D.what₂.places.resChar w))`. Rewrite using `[hT.gat_n u w hg v P φ hφ, galE_frob_snd D _ h2 hq hd P φ hφ, orderOf_iotaH]`. Establish `hpos : 0 < (D.gat u w hg).P.n' v` using `by rw [hn]; exact addOrderOf_pos _`. Take `⟨z, hz⟩` from `(tauPl_bijective D).2 (hT.gat_pos u w hg ⟨v, ⟨0, hpos⟩⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨hn, z, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`. Proceed by induction on `s with`. Consider the case `zero => rw [posPl_zero, hz]`. Consider the case `succ s ih`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hs' : s < (D.gat u w hg).P.n' v` using `Nat.lt_of_succ_lt hs`. Establish `e1 : (⟨s + 1, hs⟩ : Fin ((D.gat u w hg).P.n' v)) = posAdd ⟨s, hs'⟩ 1` using `Fin.ext (Nat.mod_eq_of_lt hs).symm`. Use `eq_tauPl D ?_` and prove the remaining obligations. Use `show _ = plGG D (posPl D _ z (s + 1))`. Rewrite using `[e1, hT.gat_step u w hg v ⟨s, hs'⟩ P φ hφ, ih hs', eTau_tauPl, ← posPl_add, hstep]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_positions (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hT : GatTies D) (v : Fin (D.gat u w hg).P.nV) :
@@ -167,17 +167,15 @@ theorem orbit_positions (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     rw [e1, hT.gat_step u w hg v ⟨s, hs'⟩ P φ hφ, ih hs', eTau_tauPl, ← posPl_add, hstep]
 
 /- English proof (translation)
-Introduce `D u w hg L hT X Y hL`. Establish `hs : ¬ IsSg D (D.what₂.places.resChar w)` using `fun hs => by`. Use `hg.2.2.1.symm.trans hs` as an intermediate fact. Consider the cases of `this`. Establish `hstepP : stepP D (D.what₂.places.resChar w) = hP D (D.what₂.places.resChar w)` using `if_neg hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `hnP : nP D (D.what₂.places.resChar w) = addOrderOf (hP D (D.what₂.places.resChar w))` using `if_neg hs`. Establish `hpos : ∀ (z : Bool × HH D) (e : ℕ), posPl D (D.what₂.places.resChar w) z e = (z.1, z.2 + e • hP D (D.what₂.places.resChar w))` using `fun z e => by`. Simplify using `[posPl, partner, hs]`. Establish `hn` using `fun v => (orbit_positions D u w hg hT v).1`. Use `choose z hz using fun v => (orbit_positions D u w hg hT v).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, hT2, hT1⟩` from `hL u w hg`. Establish `hreps : reps X (D.what₂.places.resChar w) = Finset.univ.image (X.bs (hP D (D.what₂.places.resChar w)))`. Unfold `reps`. Rewrite using `[hstepP]`. Establish `key` using `second_orbits (h := hP D (D.what₂.places.resChar w)) (bs := X.bs (hP D (D.what₂.places.resChar w))) (D.gat u w hg).P.n' hn ((hT.gat_pos u w hg).trans (plEquiv D).symm) (fun v => (z v).1) (fun v => (z v).2) (fun v s => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.trans_apply, Equiv.symm_apply_eq, hz, hpos]`. Use the proof step `rfl)`. Use the proof step `(X.bs_orb _) (X.bs_step _) (Y.vOf u w hg)`. Use the proof step `(fun t0 ht0 s => by`. Rewrite using `[Equiv.trans_apply, Equiv.symm_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eq_tauPl D ((hT1 t0 (hreps ▸ ht0)).2 s).1)`. Rewrite using `[hreps]`. Use `⟨fun v => (z v).2, fun v hv => ?_, key.2⟩` and prove the remaining obligations. Establish `hb : z v = (true, (z v).2)` using `Prod.ext (key.1 v hv) rfl`. Use `⟨(hn v).trans hnP.symm, ?_, fun s => by rw [hz, ← hb]⟩` and prove the remaining obligations.
-
-Use `Finset.eq_empty_of_forall_notMem fun s => (hT2 v s ((z v).2 + s.val • hP D (D.what₂.places.resChar w)) ?_).1` and prove the remaining obligations. Rewrite using `[hz, eTau_tauPl, hpos, hb]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem places_off_first_orbits : ∀ (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (L : SizeData₂ D) (hT : GatTies D) (X : Inst D L) (Y : LatInst D), LatTied hT X Y → ∃ r : Fin (D.gat u w hg).P.nV → HH D, (∀ v, v ∉ (reps X (D.what₂.places.resChar w)).image (Y.vOf u w hg) → (D.gat u w hg).P.n' v = nP D (D.what₂.places.resChar w) ∧ (Y.Fl u w hg).TT v = ∅ ∧ ∀ s : Fin ((D.gat u w hg).P.n' v), hT.gat_pos u w hg ⟨v, s⟩ = tauPl D (posPl D (D.what₂.places.resChar w) (true, r v) s.val)) ∧ ∀ f : HH D → ℝ, (∀ t, f (t + hP D (D.what₂.places.resChar w)) = f t) → ∑ v ∈ Finset.univ \ (reps X (D.what₂.places.resChar w)).image (Y.vOf u w hg), f (r v) = ∑ t ∈ reps X (D.what₂.places.resChar w), f t := by
   intro D u w hg L hT X Y hL

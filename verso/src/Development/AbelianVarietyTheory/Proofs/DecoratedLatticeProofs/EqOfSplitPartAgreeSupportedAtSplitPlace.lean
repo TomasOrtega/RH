@@ -12,34 +12,34 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul (S : HSp D) (g g' : GA D S) : mt S (g * g') = mt S g * mt S g' := by
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one (S : HSp D) : mt S 1 = 1 := by
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Take the linear combination `(-1 : A) * k1 + k2 + k3 - k4`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_of_parts {A : Type*} [CommRing A] {e f m m' o : A} (k1 : (e + f) * (m - o) = m - o)
     (k2 : (e + f) * (m' - o) = m' - o) (k3 : e * m = e * m') (k4 : f * m' = f * m) : m = m' := by
   linear_combination (-1 : A) * k1 + k2 + k3 - k4
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem mt_unit (S : HSp D) (g : GA D S) :
     ((mt S g).map (cA D)).transpose * (HSpace.gram S).map (incA D) * mt S g = (HSpace.gram S).map (incA D) := g.2
 
 /- English proof (translation)
-Establish `hu` using `mt_unit S g`. Establish `h1 : mt S g * mt S g⁻¹ = 1` using `by rw [← mt_mul, mul_inv_cancel, mt_one]`. Establish `hmap : (e • mt S g).map (cA D) = cA D e • (mt S g).map (cA D)`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmap, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ (mt S g), h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_mul_conj_inv (S : HSp D) (e : AE D) (g : GA D S) :
     (HSpace.gram S).map (incA D) * (cA D e • mt S g⁻¹) =
@@ -56,21 +56,17 @@ theorem gram_mul_conj_inv (S : HSp D) (e : AE D) (g : GA D S) :
         rw [Matrix.mul_assoc _ (mt S g), h1, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `D S e h h' _ hs hs' hee`. Establish `hJu : IsUnit ((HSpace.gram S).map (incA D)).det`. Establish `hd : ((HSpace.gram S).map (incA D)).det = incA D (HSpace.gram S).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hd]`. Conclude with `(gram_isUnit_det S).map _`. Establish `hE : e • mt S h = e • mt S h'`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hee i j`. Establish `hN : cA D e • mt S h⁻¹ = cA D e • mt S h'⁻¹`. Establish `h2` using `(gram_mul_conj_inv S e h).trans ((congrArg (fun X : Matrix (Fin S.rank) (Fin S.rank) (AE D) => (X.map (cA D)).transpose * (HSpace.gram S).map (incA D)) hE).trans (gram_mul_conj_inv S e h').symm)`. Establish `h3` using `congrArg (fun X => ((HSpace.gram S).map (incA D))⁻¹ * X) h2`. Simplify `h3` using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJu, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : mt S h⁻¹ * mt S h = 1` using `by rw [← mt_mul, inv_mul_cancel, mt_one]`. Establish `a2 : mt S h' * mt S h'⁻¹ = 1` using `by rw [← mt_mul, mul_inv_cancel, mt_one]`. Establish `hM : cA D e • mt S h' = cA D e • mt S h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, a1, Matrix.mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ = mt S h' * (cA D e • mt S h⁻¹) * mt S h := by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = mt S h' * (cA D e • mt S h'⁻¹) * mt S h := by rw [hN]`. Use `_ = cA D e • mt S h := by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, a2, Matrix.one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMM : mt S h = mt S h'`. Use extensionality with `i j`. Establish `k1` using `hs i j`. Establish `k2` using `hs' i j`. Establish `k3` using `hee i j`.
-
-Establish `k4 : cA D e * mt S h' i j = cA D e * mt S h i j`. Use `congrFun (congrFun hM i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `this`. Simplify using `only [Matrix.sub_apply] at k1 k2`.
-
-Conclude with `eq_of_parts k1 k2 k3 k4`. Conclude with `Subtype.ext (Units.ext hMM)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_split_part : ∀ (D : D7) (S : HSp D) (e : AE D) (h h' : GA D S), IsSplitIdem D e → SuppAt e S h →
     SuppAt e S h' → (∀ i j, e * Formalism.L2.Theta.mt S h i j = e * Formalism.L2.Theta.mt S h' i j) → h = h' := by

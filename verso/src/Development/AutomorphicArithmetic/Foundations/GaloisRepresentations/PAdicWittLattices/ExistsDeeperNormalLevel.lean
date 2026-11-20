@@ -13,7 +13,7 @@ section SlopeTestRemainingChoices
 open GlobalTheory.KS GlobalTheory.KS.PowPB
 
 /- English proof (translation)
-Substitute `hf hφ` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem powMap_congr' {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} {f f' : S' ⟶ S}
     {φ φ' : A'.left ⟶ A.left} (hf : f = f') (hφ : φ = φ') (h : φ ≫ A.hom = A'.hom ≫ f)
@@ -21,7 +21,7 @@ private theorem powMap_congr' {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} {f
   subst hf hφ; rfl
 
 /- English proof (translation)
-Apply `pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[powMap_w, Category.comp_id, Category.id_comp]`. Introduce `i`. Rewrite using `[powMap_pr, Category.comp_id, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem powMap_id' {S : Scheme.{0}} (A : Over S) (h : 𝟙 A.left ≫ A.hom = A.hom ≫ 𝟙 S) (m : ℕ) :
     powMap (𝟙 S) (𝟙 A.left) h m = 𝟙 _ := by
@@ -31,7 +31,7 @@ private theorem powMap_id' {S : Scheme.{0}} (A : Over S) (h : 𝟙 A.left ≫ A.
     rw [powMap_pr, Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Apply `pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, powMap_w, ← Category.assoc, powMap_w, powMap_w, Category.assoc]`. Introduce `i`. Rewrite using `[Category.assoc, powMap_pr, ← Category.assoc, powMap_pr, powMap_pr, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem powMap_comp' {S S' S'' : Scheme.{0}} {A : Over S} {A' : Over S'} {A'' : Over S''}
     (f : S' ⟶ S) (g : S'' ⟶ S') (φ : A'.left ⟶ A.left) (χ : A''.left ⟶ A'.left)
@@ -44,11 +44,11 @@ private theorem powMap_comp' {S S' S'' : Scheme.{0}} {A : Over S} {A' : Over S'}
     rw [Category.assoc, powMap_pr, ← Category.assoc, powMap_pr, powMap_pr, Category.assoc]
 
 /- English proof (translation)
-Establish `e1 : x ≫ (pow A' m).hom ≫ π' ≫ π = x ≫ (pow A' m).hom ≫ π`. Use `congrArg (· ≫ (pow A m).hom) hxy` as an intermediate fact. Simplify using `only [Category.assoc, powMap_w] at this`. Rewrite `this` using `[← Category.assoc y, ← h1]`. Simplify `this.symm` using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `pb.hom_ext` to reduce the goal to its premises. Rewrite using `[← hxy, Category.assoc]`. Apply `pow_left_hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, powMap_w, reassoc_of% (powMap_w π' Φ' w' m)]`. Conclude with `e1.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `only [Category.assoc, powMap_pr, reassoc_of% (powMap_pr π' Φ' w' m i)]`. Use `h2 (x ≫ (pr A' i).left) (by rw [Category.assoc, Over.w])` as an intermediate fact. Simplify `this.symm` using `only [Category.assoc]`. Rewrite using `[Category.assoc, powMap_w, ← Category.assoc, h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem powMap_ext' {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} (π : S' ⟶ S) (Φ : A'.left ⟶ A.left)
     (w : Φ ≫ A.hom = A'.hom ≫ π) (π' : S' ⟶ S') (Φ' : A'.left ⟶ A'.left) (w' : Φ' ≫ A'.hom = A'.hom ≫ π') (m : ℕ)
@@ -84,11 +84,9 @@ private def intSub (L : Link D G) : Submonoid G.GAf where
   mul_mem' := UpperTheory.Gal.Int.Geo.Integ.mul
 
 /- English proof (translation)
-Use `choose c hc hadm using fun (N : ℕ) (g : G.GAf) => (hK p D G L N).2.1 g`. Use `set M : ℕ := j.1 * ∏ x ∈ S, (x.1.1 * c x.1.1 x.2) with hMdef`. Establish `hcop : M.Coprime p` using `Nat.Coprime.mul j.2.2 (Nat.Coprime.prod_left fun x _ => Nat.Coprime.mul x.1.2.2 (hc _ _))`. Establish `hM0 : 0 < M`. Break down `Nat.eq_zero_or_pos M with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcop` using `[h, Nat.coprime_zero_left]`. Conclude with `absurd hcop (Fact.out : p.Prime).one_lt.ne'`. Conclude with `h`. Establish `hjM : j.1 ∣ M` using `dvd_mul_right _ _`. Use `⟨⟨M, le_trans j.2.1 (Nat.le_of_dvd hM0 hjM), hcop⟩, UpperTheory.Gal.Int.Geo.KN_anti hjM, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `κ hκ u hu`. Conclude with `(hK p D G L M).1 κ (UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) hκ) u hu`. Introduce `x hx u hu`. Establish `hd : x.1.1 * c x.1.1 x.2 ∣ M` using `dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ hx) _`. Conclude with `hadm x.1.1 x.2 u (UpperTheory.Gal.Int.Geo.KN_anti hd hu)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_deeper_normal_level (hK : KNBasic) (L : Link D G) (j : Lv p) (S : Finset (Lv p × G.GAf)) :
     ∃ m : Lv p, L.KN m.1 ≤ L.KN j.1 ∧ (∀ κ ∈ L.KN j.1, ∀ u ∈ L.KN m.1, κ * u * κ⁻¹ ∈ L.KN m.1) ∧
@@ -114,7 +112,7 @@ private theorem exists_deeper_normal_level (hK : KNBasic) (L : Link D G) (j : Lv
 end Lat
 
 /- English proof (translation)
-Take `⟨-, o, ψ, φ, -, rfl⟩` from `hW`. Rewrite using `[Category.assoc, φ.cart.1.w, ← Category.assoc, Over.w]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_univ_hom_eq_of_wit {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {R : Type}
     [CommRing R] [Algebra ℚ R] {gb : GBase D.toG R} {h : G.GAf} {N N' : ℕ} {X' : GenModel gb N'}
@@ -124,25 +122,21 @@ private theorem comp_univ_hom_eq_of_wit {p : ℕ} [Fact p.Prime] {D : Datum p} {
   rw [Category.assoc, φ.cart.1.w, ← Category.assoc, Over.w]
 
 /- English proof (translation)
-Introduce `hK hU hC hCart hEx hOne hTr hFree p _ D G L _ R _ _ gb k`. Establish `hM : ∀ N : Lv p, Nonempty (GenModel gb N.1)` using `fun N => GlobalTheory.T.unitaryCharZeroGenericModel_nonempty p D R gb N.1 N.2.1 N.2.2`. Set `M : (N : Lv p) → GenModel gb N.1` to `fun N => (hM N).some`. Establish `hint : ∀ {N : ℕ} {u : G.GAf}, u ∈ L.KN N → Integ L u` using `fun hu => UpperTheory.Gal.Int.Geo.integ_of_mem (UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) hu)`. Establish `hw : ∀ (N' N : Lv p) (h : G.GAf), Integ L h → AdmK L N'.1 N.1 h → ∃ (π : (M N').X ⟶ (M N).X) (Φ : (M N').univ.A.left ⟶ (M N).univ.A.left), Wit L h (M N') (M N) π Φ` using `fun N' N h a b => hEx p D G L R gb M N' N h a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose πc Φc hWc using hw`. Establish `hpb : ∀ (i j : Lv p) (a : Integ L 1) (b : AdmK L i.1 j.1 1), IsPullback (GlobalTheory.KS.powMap (πc i j 1 a b) (Φc i j 1 a b) (comp_univ_hom_eq_of_wit (hWc i j 1 a b)) k) (GlobalTheory.KS.pow (M i).univ.A k).hom (GlobalTheory.KS.pow (M j).univ.A k).hom (πc i j 1 a b)` using `fun i j a b => GlobalTheory.KS.PowPB.powMap_isPullback _ _ _ _ _ _ _ (hCart p D G L R gb i.1 j.1 (M i) (M j) 1 (one_mem _) _ _ (hWc i j 1 a b)) k`. Set `T : Tower (Sp R) G.GAf` to `Tower.mk (Lv p) (K := fun N => L.KN N.1) (Δ := intSub L) (K_le := fun _ _ hk => hint hk) (deep := fun j S => exists_deeper_normal_level hK L j S) (idx := fun i j => (hK p D G L j.1).2.2 i.1 (by have := j.2.1; omega) (by have := i.2.1; omega)) (Z := fun N => (GlobalTheory.KS.pow ( …`. Introduce `i j h a b`. Rewrite using `[← Category.assoc, GlobalTheory.KS.PowPB.powMap_w, Category.assoc, (hWc i j h a b).1])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(tr_self := by`. Introduce `i u a b hu`. Establish `hid` using `(hC p D G L R gb i i i (M i) (M i) (M i) u u).1 u hu`. Take `⟨e1, e2⟩` from `hU p D G L R gb i i (M i) (M i) u a b _ _ _ _ (hWc i i u a b) hid`. Conclude with `(powMap_congr' e1 e2 _ (by simp) k).trans (powMap_id' _ _ k))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use the proof step `(tr_mul := by`. Introduce `i j m h h' a b a' b' a'' b''`. Establish `hcomp` using `(hC p D G L R gb i j m (M i) (M j) (M m) h h').2 a' b' _ _ _ _ (hWc i j h a b) (hWc j m h' a' b')`. Take `⟨e1, e2⟩` from `hU p D G L R gb i m (M i) (M m) (h' * h) a'' b'' _ _ _ _ hcomp (hWc i m (h' * h) a'' b'')`. Conclude with `(powMap_comp' _ _ _ _ _ _ (comp_univ_hom_eq_of_wit hcomp) k).trans (powMap_congr' e1 e2 _ _ k))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the proof step `(fin := by`. Introduce `i j a b`. Conclude with `MorphismProperty.of_isPullback (P := @IsFinite) (hpb i j a b).flip (hOne p D G L R gb M i j b _ _ (hWc i j 1 a b)).1)`. Use the proof step `(etale := by`. Introduce `i j a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MorphismProperty.of_isPullback (P := @Etale) (hpb i j a b).flip (hOne p D G L R gb M i j b _ _ (hWc i j 1 a b)).2.1)`. Use the proof step `(onto := by`. Introduce `i j a b`. Conclude with `MorphismProperty.of_isPullback (P := @Surjective) (hpb i j a b).flip (hOne p D G L R gb M i j b _ _ (hWc i j 1 a b)).2.2)`. Use the proof step `(trans := by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j a b hnorm Ω _ _ x y hxy`. Establish `hbase : (x ≫ (GlobalTheory.KS.pow (M i).univ.A k).hom) ≫ πc i j 1 a b = (y ≫ (GlobalTheory.KS.pow (M i).univ.A k).hom) ≫ πc i j 1 a b`. Use `congrArg (· ≫ (GlobalTheory.KS.pow (M j).univ.A k).hom) hxy` as an intermediate fact. Simplify using `only [Category.assoc, GlobalTheory.KS.PowPB.powMap_w] at this`. Simplify `this` using `only [Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hall⟩` from `hTr p D G L R gb M i j (πc i j 1 a b) (Φc i j 1 a b) (hWc i j 1 a b) Ω _ _ hbase`. Use `⟨u, hu, hint hu, hnorm u hu, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hall _ _ (hWc i i u (hint hu) (hnorm u hu))`. Conclude with `powMap_ext' _ _ _ _ _ _ k (hpb i j a b) x y hxy h1 h2)`. Use the proof step `(free := by`.
-
-Introduce `i j hij u hu a b Ω _ _ x hx`. Use `hFree p D G L R gb M i j hij u hu (πc i i u a b) (Φc i i u a b) (hWc i i u a b) Ω (x ≫ (GlobalTheory.KS.pow (M i).univ.A k).hom) ?_` and prove the remaining obligations. Use `congrArg (· ≫ (GlobalTheory.KS.pow (M i).univ.A k).hom) hx` as an intermediate fact. Simplify `this)` using `only [Category.assoc, GlobalTheory.KS.PowPB.powMap_w]`. Use `⟨⟨T, Equiv.refl _, fun N => rfl, fun h => Iff.rfl, M, fun N => Iso.refl _, fun N => Category.id_comp _, ?_⟩⟩` and prove the remaining obligations.
-
-Introduce `N' N h a b`. Establish `hc` using `comp_univ_hom_eq_of_wit (hWc N' N h a b)`. Take `⟨hs, o, ψ, φ, ht, hΦ⟩` from `hWc N' N h a b`. Use `⟨πc N' N h a b, o, ψ, φ, hΦ ▸ hc, hs, ht, ?_⟩` and prove the remaining obligations. Conclude with `(Category.comp_id _).trans ((powMap_congr' rfl hΦ hc (hΦ ▸ hc) k).trans (Category.id_comp _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pKSEx :
     KNBasic → WitUniq → WitComp → WitCart → WitEx → WitOne → WitTrans → WitFree → KSEx := by

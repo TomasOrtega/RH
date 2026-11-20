@@ -18,13 +18,13 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {r : ℕ} {h : Fin (r + 1) → Ω}
 
 /- English proof (translation)
-Establish `hmon : ∀ (d : Fin (r + 1) →₀ ℕ) (t : Finset (Fin (r + 1))), ∏ j ∈ t, h j ^ d j ∈ Q ^ (∑ j ∈ t, d j)`. Introduce `d t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.sum_empty, pow_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Consider the case `insert j t hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, pow_add]`. Conclude with `Submodule.mul_mem_mul (Submodule.pow_mem_pow _ (hQ j) _) ih`. Rewrite using `[f.as_sum, map_sum]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial]`. Establish `hdeg : ∑ j ∈ d.support, d j = e`. Use `hf (mem_support_iff.mp hd)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm` using `hmon d d.support`. Rewrite `hm` using `[hdeg]`. Use `Submodule.smul_mem (Q ^ e) (⟨algebraMap S Ω (coeff d f), Subalgebra.algebraMap_mem _ _⟩ : chartRing S x I) hm` as an intermediate fact. Rewrite `this` using `[chartRing_smul_def]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_pow {I : Chart x} {Q : Submodule (chartRing S x I) Ω} (hQ : ∀ l, h l ∈ Q)
     {f : MvPolynomial (Fin (r + 1)) S} {e : ℕ} (hf : f.IsHomogeneous e) : aeval h f ∈ Q ^ e := by
@@ -54,11 +54,9 @@ theorem aeval_mem_pow {I : Chart x} {Q : Submodule (chartRing S x I) Ω} (hQ : �
 omit [Module S E] [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Use `Submodule.span_induction (p := fun z _ => q • z ∈ (F.twist (H.pow (c + d))).sub I) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, y, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨p * q, AmpleTwistLocal.mul_mem_pow H I hp d hq, y, hy, by`. Rewrite using `[smul_smul, mul_comm]⟩`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Introduce `a z _ hz`. Rewrite using `[Subalgebra.smul_def, smul_smul, mul_comm, ← smul_smul, ← Subalgebra.smul_def]`. Conclude with `Submodule.smul_mem _ a hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_twist_pow (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Chart x) {c d : ℕ} {z : E}
     {q : Ω} (hz : z ∈ (F.twist (H.pow c)).sub I) (hq : q ∈ (H.pow d).sub I) :
@@ -76,13 +74,13 @@ theorem smul_mem_twist_pow (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Cha
     exact Submodule.smul_mem _ a hz
 
 /- English proof (translation)
-The claim follows from `(Submodule.restrictScalars_mem S _ _).mp ((Submodule.mem_iInf _).mp hz I)`.
+A detailed English derivation is pending.
 -/
 theorem mem_sub_of_mem_secs {H : SubSystem S x Ω} {z : Ω} (hz : z ∈ H.secs) (I : Chart x) : z ∈ H.sub I :=
   (Submodule.restrictScalars_mem S _ _).mp ((Submodule.mem_iInf _).mp hz I)
 
 /- English proof (translation)
-Use `AmpleTwistLocal.pow_mem_pow H I ?_ n` and prove the remaining obligations. Rewrite using `[SubSystem.pow_sub, ← AmpleAffineGen.aeval_monoProd (S := S)]`. Conclude with `aeval_mem_pow hh (AmpleAffineGen.monoProd_isHomogeneous T)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow_mem (H : SubSystem S x Ω) (I : Chart x) (hh : ∀ l, h l ∈ H.sub I)
     (T : Finset (Fin (r + 1))) (n : ℕ) : (∏ l ∈ T, h l) ^ n ∈ (H.pow (T.card * n)).sub I := by
@@ -91,13 +89,13 @@ theorem prod_pow_mem (H : SubSystem S x Ω) (I : Chart x) (hh : ∀ l, h l ∈ H
   exact aeval_mem_pow hh (AmpleAffineGen.monoProd_isHomogeneous T)
 
 /- English proof (translation)
-Use `⟨fun he => ?_, fun he => Submodule.subset_span he⟩` and prove the remaining obligations. Use `Submodule.span_induction (p := fun e _ => ∃ n : ℕ, xProd J ^ n • e ∈ (F.twist (H.pow (J.1.card * n))).sub I) (fun _ h => h) ?_ ?_ ?_ he` and prove the remaining obligations. Conclude with `⟨0, by rw [smul_zero]; exact Submodule.zero_mem _⟩`. Introduce and unpack `a b _ _ ⟨n, hn⟩ ⟨m, hm⟩`. Use `⟨n + m, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : xProd J ^ (n + m) • (a + b) = xProd J ^ m • (xProd J ^ n • a) + xProd J ^ n • (xProd J ^ m • b)`. Rewrite using `[smul_add, smul_smul, smul_smul, ← pow_add, ← pow_add, Nat.add_comm m n]`. Rewrite using `[e1]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Use `smul_mem_twist_pow F H I hn (prod_pow_mem H I hh J.1 m)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← Nat.mul_add]`. Then use the resulting hypothesis. Use `smul_mem_twist_pow F H I hm (prod_pow_mem H I hh J.1 n)` as an intermediate fact. Rewrite `this` using `[← Nat.mul_add, Nat.add_comm m n]`. Then use the resulting hypothesis. Introduce and unpack `c a _ ⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : xProd J ^ n • c • a = (⟨algebraMap S Ω c, Subalgebra.algebraMap_mem _ _⟩ : chartRing S x I) • (xProd J ^ n • a)`. Rewrite using `[Subalgebra.smul_def, ← algebraMap_smul Ω c a, smul_smul, smul_smul, mul_comm]`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_secsOnZChart (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Chart x)
     (hh : ∀ l, h l ∈ H.sub I) (J : Chart h) (e : E) :
@@ -127,11 +125,11 @@ theorem mem_secsOnZChart (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Chart
     exact Submodule.smul_mem _ _ hn
 
 /- English proof (translation)
-Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Conclude with `⟨1, AmpleAffineGen.monoProd (T.erase i), AmpleAffineGen.monoProd_mem_monos (Finset.erase_subset _ _), by`. Rewrite using `[pow_one, AmpleAffineGen.monoProd, AmpleAffineGen.monoProd, Finset.mul_prod_erase _ _ (by exact_mod_cast hi)]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Consider the case `one => exact ⟨0, 1, one_mem _, by simp⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨k, t, ht, e⟩` from `ha`. Take `⟨k', t', ht', e'⟩` from `hb`. Conclude with `⟨k + k', t * t', mul_mem ht ht', by`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[pow_add, ← e, ← e']`. Use the proof step `ring⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_monoProd_pow {T : Finset (Fin (r + 1))} {s : Poly S r} (hs : s ∈ monos T) :
     ∃ (k : ℕ) (t : Poly S r), t ∈ monos T ∧ s * t = AmpleAffineGen.monoProd T ^ k := by
@@ -151,15 +149,13 @@ theorem exists_mul_eq_monoProd_pow {T : Finset (Fin (r + 1))} {s : Poly S r} (hs
       rw [pow_add, ← e, ← e']; ring⟩
 
 /- English proof (translation)
-Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `ha`. Take `⟨k, t, ht, hst⟩` from `exists_mul_eq_monoProd_pow hs`. Take `⟨d, htd⟩` from `monos_isHomogeneous ht`. Establish `hval : aeval h s * aeval h t = xProd J ^ k`. Rewrite using `[← map_mul, hst, map_pow, AmpleAffineGen.aeval_monoProd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hne : AmpleAffineGen.monoProd (S` using `S) J.1 ^ k ≠ 0 := by`. Introduce `h0`. Use `congrArg (aeval h) h0` as an intermediate fact. Rewrite `this` using `[map_pow, AmpleAffineGen.aeval_monoProd, map_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ (AmpleAffineGen.xProd_ne_zero J) this`. Establish `hdeg : e + d = J.1.card * k`. Establish `h1` using `hse.mul htd`. Rewrite `h1` using `[hst]`. Conclude with `h1.inj_right ((AmpleAffineGen.monoProd_isHomogeneous J.1).pow k) hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hs0 : aeval h s ≠ 0` using `eval_ne_zero_of_mem_monos J hs`. Establish `e1 : aeval h f / aeval h s * xProd J ^ k = aeval h (f * t)`. Rewrite using `[← hval, map_mul]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e1, SubSystem.pow_sub, ← hdeg]`. Conclude with `aeval_mem_pow hh (hf.mul htd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_xProd_pow_mem (H : SubSystem S x Ω) (I : Chart x) (hh : ∀ l, h l ∈ H.sub I)
     (J : Chart h) {a : Ω} (ha : a ∈ chartRing S h J) :
@@ -186,9 +182,9 @@ theorem exists_mul_xProd_pow_mem (H : SubSystem S x Ω) (I : Chart x) (hh : ∀ 
   exact aeval_mem_pow hh (hf.mul htd)
 
 /- English proof (translation)
-Rewrite `he`, the goal using `[mem_secsOnZChart F H I hh]`. Take `⟨n, hn⟩` from `he`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `e1 : xProd J' ^ n • e = (∏ l ∈ J'.1 \ J.1, h l) ^ n • (xProd J ^ n • e)`. Rewrite using `[smul_smul, ← mul_pow]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `xProd`. Rewrite using `[Finset.prod_sdiff hJ]`. Rewrite using `[e1]`. Use `smul_mem_twist_pow F H I hn (prod_pow_mem H I hh (J'.1 \ J.1) n)` as an intermediate fact. Rewrite `this` using `[← Nat.add_mul, Nat.add_comm, Finset.card_sdiff_add_card_eq_card hJ]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem secsOnZChart_mono (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Chart x)
     (hh : ∀ l, h l ∈ H.sub I) {J J' : Chart h} (hJ : J.1 ⊆ J'.1) {e : E}
@@ -206,31 +202,29 @@ theorem secsOnZChart_mono (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Char
   rwa [← Nat.add_mul, Nat.add_comm, Finset.card_sdiff_add_card_eq_card hJ] at this
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x E _ _ _ _ F H r h hv`. Establish `hh : ∀ I l, h l ∈ H.toSubSystem.sub I` using `fun I l => mem_sub_of_mem_secs (hv.mem_secs l) I`. Establish `mem : ∀ (J : Chart h) (e : E), e ∈ secsOnZ F.toSubSystem H.toSubSystem h J ↔ ∀ I, ∃ n : ℕ, xProd J ^ n • e ∈ (F.toSubSystem.twist (H.toSubSystem.pow (J.1.card * n))).sub I`. Introduce `J e`. Rewrite using `[secsOnZ, Submodule.mem_iInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `forall_congr' fun I => mem_secsOnZChart F.toSubSystem H.toSubSystem I (hh I) J e`. Establish `smul : ∀ (J : Chart h) (a : chartRing S h J) (e : E), e ∈ secsOnZ F.toSubSystem H.toSubSystem h J → (a : Ω) • e ∈ secsOnZ F.toSubSystem H.toSubSystem h J`. Introduce `J a e he`. Rewrite `he`, the goal using `[mem]`. Introduce `I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `he I`. Take `⟨k, hk⟩` from `exists_mul_xProd_pow_mem H.toSubSystem I (hh I) J a.2`. Use `⟨n + k, ?_⟩` and prove the remaining obligations. Establish `e1 : xProd J ^ (n + k) • (a : Ω) • e = ((a : Ω) * xProd J ^ k) • (xProd J ^ n • e)`. Rewrite using `[smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Rewrite using `[e1, Nat.mul_add]`. Conclude with `smul_mem_twist_pow F.toSubSystem H.toSubSystem I hn hk`. Establish `mono : ∀ J J' : Chart h, J.1 ⊆ J'.1 → ∀ e, e ∈ secsOnZ F.toSubSystem H.toSubSystem h J → e ∈ secsOnZ F.toSubSystem H.toSubSystem h J'`. Introduce `J J' hJ e he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `he`, the goal using `[secsOnZ, Submodule.mem_iInf]`. Conclude with `fun I => secsOnZChart_mono F.toSubSystem H.toSubSystem I (hh I) hJ (he I)`. Set `sub : ∀ J : Chart h, Submodule (chartRing S h J) E` to `fun J => { carrier := secsOnZ F.toSubSystem H.toSubSystem h J add_mem' := fun ha hb => Submodule.add_mem _ ha hb zero_mem' := Submodule.zero_mem _ smul_mem' := fun a e he => smul J a e he }`. Use `⟨{ sub := sub, mono := fun J J' hJ e he => mono J J' hJ e he, mem_iff := ?_ }, fun J => ?_⟩` and prove the remaining obligations. Introduce `J J' hJ y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Express the relevant statement in the definitionally equal form `y ∈ secsOnZ F.toSubSystem H.toSubSystem h J' at hy`. Rewrite `hy` using `[mem]`. Use `choose n hn using hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM⟩` from `Finite.bddAbove_range n`. Establish `hM' : ∀ I, n I ≤ M` using `fun I => hM ⟨I, rfl⟩`. Use `⟨⟨AmpleAffineGen.chartRatio J J' ^ M, pow_mem (AmpleAffineGen.chartRatio_mem J J') M⟩, ?_, ?_⟩` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one ⟨AmpleAffineGen.chartRatio J' J ^ M, pow_mem (AmpleAffineGen.chartRatio_mem J' J) M⟩ (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AmpleAffineGen.chartRatio J J' ^ M * AmpleAffineGen.chartRatio J' J ^ M = 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow, AmpleAffineGen.chartRatio_mul_chartRatio, one_pow]`. Express the relevant statement in the definitionally equal form `AmpleAffineGen.chartRatio J J' ^ M • y ∈ secsOnZ F.toSubSystem H.toSubSystem h J`. Rewrite using `[mem]`. Introduce `I`. Use `⟨J'.1.card * M, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJpos : 0 < J.1.card` using `Finset.card_pos.mpr J.2.1`. Establish `hnK : n I ≤ J.1.card * M` using `(hM' I).trans (Nat.le_mul_of_pos_left M hJpos)`. Establish `e1 : xProd J ^ (J'.1.card * M) • (AmpleAffineGen.chartRatio J J' ^ M • y) = xProd J' ^ (J.1.card * M - n I) • (xProd J' ^ n I • y)`. Rewrite using `[smul_smul, smul_smul, ← pow_add, Nat.sub_add_cancel hnK, AmpleAffineGen.chartRatio, div_pow, ← pow_mul, ← pow_mul, ← mul_div_assoc, mul_div_cancel_left₀ _ (pow_ne_zero _ (AmpleAffineGen.xProd_ne_zero J))]`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `smul_mem_twist_pow F.toSubSystem H.toSubSystem I (hn I) (prod_pow_mem H.toSubSystem I (hh I) J'.1 (J.1.card * M - n I))` as an intermediate fact. Establish `e2 : J'.1.card * n I + J'.1.card * (J.1.card * M - n I) = J.1.card * (J'.1.card * M)`. Rewrite using `[← Nat.mul_add, Nat.add_sub_cancel' hnK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e2]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `this`. Introduce and unpack `⟨a, ha, hay⟩`. Express the relevant statement in the definitionally equal form `y ∈ secsOnZ F.toSubSystem H.toSubSystem h J'`. Establish `h1 : (a : Ω) • y ∈ secsOnZ F.toSubSystem H.toSubSystem h J'` using `mono J J' hJ _ hay`. Take `⟨u, hu⟩` from `ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `smul J' (↑u⁻¹) _ h1`. Establish `hinv : ((↑u⁻¹ : chartRing S h J') : Ω) * (a : Ω) = 1`. Use `congrArg Subtype.val u.inv_mul` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`.
-
-Rewrite `h2` using `[smul_smul, hinv, one_smul]`. Then use the resulting hypothesis. Use extensionality with `e`. Conclude with `Iff.rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem proof : VeryAmpleZFamily.Statement := by
   intro S _ Ω _ _ N x E _ _ _ _ F H r h hv

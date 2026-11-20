@@ -16,7 +16,7 @@ namespace GlobalTheory.ImaginaryModulus
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -24,13 +24,11 @@ theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = 
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `hx : ∃ x, σ x ≠ x`. Take `⟨x, hx⟩` from `hx`. Use `⟨x - σ x, sub_ne_zero.2 (Ne.symm hx), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, sig_sig h]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hx`. It suffices to derive a contradiction. Establish `hr : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Expand and normalize the polynomial expressions, which then agree. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hx x]`. Conclude with `this.symm`.
-
-Conclude with `InfinitePlace.isComplex_mk_iff.1 (h.2.1.isComplex _) hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -50,13 +48,13 @@ theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : E, δ �
     exact InfinitePlace.isComplex_mk_iff.1 (h.2.1.isComplex _) hr
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => simp [cA, sigR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = sigR (AF F) σ z := by
   induction z using TensorProduct.induction_on with
@@ -134,25 +132,19 @@ def scal [IsTopologicalRing (AE F E)] : AE F E ≃ₜ+ Matrix (Fin 1) (Fin 1) (A
   continuous_invFun := (continuous_apply 0).comp (continuous_apply 0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB _ _ _ _ l L hL`. Establish `hcm` using `hB.cm`. Use `haveI : IsTotallyReal F := hcm.1`. Establish `hσ` using `sig_sig hcm`. Take `⟨δ, hδ0, hδ⟩` from `exists_anti hcm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hlc, hsc, ht2⟩` from `topAE F E`. Use `letI : MeasurableSpace (AE F E) := borel _`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Matrix (Fin 1) (Fin 1) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin 1 → Fin 1 → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin 1) (Fin 1) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin 1 → Fin 1 → AE F E))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `letI : MeasurableSpace (Matrix (Fin 1) (Fin 1) (AE F E)) := borel _`. Use `haveI : BorelSpace (Matrix (Fin 1) (Fin 1) (AE F E)) := ⟨rfl⟩`. Use `set Φ := splitIm σ hσ δ hδ0 hδ`. Use `set M : AE F E ≃ₜ+ AE F E := (Φ.symm.trans (GlobalTheory.ModuLR.prodCE L L)).trans Φ`. Use `set a : (AE F E)ˣ := l * GlobalTheory.Doubling.conjUnit σ l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `ha : (a : AE F E) = l * cA σ l` using `by show (l : AE F E) * sigR (AF F) σ l = _`. Rewrite using `[cA_eq_sigR]`. Establish `hM : ∀ z, M z = a * z`. Introduce `z`. Take `⟨p, rfl⟩` from `Φ.surjective z`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show Φ (GlobalTheory.ModuLR.prodCE L L (Φ.symm (Φ p))) = a * Φ p`. Rewrite using `[ContinuousAddEquiv.symm_apply_apply, GlobalTheory.ModuLR.prodCE_apply, splitIm_apply, splitIm_apply, hL, hL, ha]`. Expand and normalize the polynomial expressions, which then agree. Use `set g : GL (Fin 1) (AE F E) := Units.map (Matrix.scalar (Fin 1) : AE F E →+* _).toMonoidHom a`. Establish `hg : Matrix.GeneralLinearGroup.det g = a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]`. Both sides reduce to the same expression. Establish `hT : ((scal F E).symm.trans M).trans (scal F E) = GlobalTheory.ModuLR.lrCE g 1`. Use extensionality with `u i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Use `show M (u 0 0) = (((g : Matrix (Fin 1) (Fin 1) (AE F E)) * u * 1 : Matrix (Fin 1) (Fin 1) (AE F E)) 0 0)`. Rewrite using `[hM, Matrix.mul_one, Matrix.mul_apply, Fin.sum_univ_one]`. Both sides reduce to the same expression. Establish `h1 : addEquivAddHaarChar M = absE F E a`.
-
-Use `GlobalTheory.ModuLR.addEquivAddHaarChar_transport (scal F E) M` as an intermediate fact. Rewrite using `[← this, hT]`. Rewrite using `[GlobalTheory.ModuLR.chi_lr F E 1 1 g 1, hg, map_one, map_one]`. Simplify using the standard rewrite rules. Use `haveI : SecondCountableTopology (imA σ) := Topology.IsEmbedding.subtypeVal.secondCountableTopology`.
-
-Use `haveI : T2Space (imA σ) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : BorelSpace (imA σ × imA σ) := Prod.borelSpace`. Establish `h2 : addEquivAddHaarChar M = addEquivAddHaarChar L * addEquivAddHaarChar L`. Rewrite using `[GlobalTheory.ModuLR.addEquivAddHaarChar_transport Φ, GlobalTheory.ModuLR.addEquivAddHaarChar_prodCE]`. Establish `h3 : absE F E a = absE F E l * absE F E l`.
-
-Rewrite using `[map_mul, GlobalTheory.Doubling.absE_conjUnit]`. Conclude with `(mul_self_inj (by positivity) (by positivity)).1 (h2.symm.trans (h1.trans h3))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_imA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ →

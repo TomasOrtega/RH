@@ -8,19 +8,19 @@ open Formalism.UG (cT bc)
 namespace GlobalTheory.SphEis
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ H _ _ _ _ _ _ _ _ e Γ Λ _ hmem hfin π 𝓜 hπ h𝓜`. Set `E : G ≃ᵐ H` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hE : ∀ x, E x = e x` using `fun _ => rfl`. Use `set μ : Measure G := π.map E.symm with hμdef`. Establish `hμ : μ.IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map π e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqmp : MeasureTheory.Measure.QuasiMeasurePreserving E μ π`. Use `⟨E.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hμdef, Measure.map_map E.measurable E.symm.measurable]`. Simplify using `only [MeasurableEquiv.self_comp_symm, Measure.map_id]`. Conclude with `Measure.AbsolutelyContinuous.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : Λ → Γ` to `fun l => ⟨e.symm l, (hmem _).2 (by simpa using l.2)⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun x : Γ => e (x : G)) hab` as an intermediate fact. Simplify `this` using `[φ]`. Introduce `g`. Use `⟨⟨e g, (hmem g).1 g.2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[φ]`. Establish `hsemi : ∀ l : Λ, Function.Semiconj E (φ l • ·) (l • ·)`. Introduce `l x`. Use `show e ((e.symm l : G) * x) = (l : H) * e x`. Simplify using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `h𝓜.preimage_of_equiv hqmp hφ hsemi`. Establish `hlt` using `hfin μ hμ _ hF`. Establish `: μ (E ⁻¹' 𝓜) = π 𝓜`. Rewrite using `[hμdef, MeasurableEquiv.map_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `hlt` using `[this]`. Conclude with `hlt.ne`.
+A detailed English derivation is pending.
 -/
 theorem covolume_ne_top_of_continuousMulEquiv : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (e : G ≃ₜ* H) (Γ : Subgroup G) (Λ : Subgroup H) [Countable Γ], (∀ g, g ∈ Γ ↔ e g ∈ Λ) → (∀ μ : Measure G, μ.IsHaarMeasure → ∀ 𝓕, IsFundamentalDomain Γ 𝓕 μ → μ 𝓕 < ⊤) → ∀ (π : Measure H) (𝓜 : Set H), π.IsHaarMeasure → IsFundamentalDomain Λ 𝓜 π → π 𝓜 ≠ ⊤ := by
   intro G _ _ _ _ _ _ _ _ H _ _ _ _ _ _ _ _ e Γ Λ _ hmem hfin π 𝓜 hπ h𝓜

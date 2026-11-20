@@ -14,18 +14,16 @@ def unifV {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) 
   ((v.valuation_exists_uniformizer F).choose : Fv F v)
 
 /- English proof (translation)
-Rewrite using `[unifV, v.valuedAdicCompletion_eq_valuation', (v.valuation_exists_uniformizer F).choose_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unifV_val {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Valued.v (unifV v) = WithZero.exp (-1 : ℤ) := by
   rw [unifV, v.valuedAdicCompletion_eq_valuation', (v.valuation_exists_uniformizer F).choose_spec]
 
 /- English proof (translation)
-Establish `hv` using `unifV_val v`. Establish `h1 : Valued.v (unifV v) < 1`. Rewrite using `[hv]`. Evaluate the decidable proposition. Use `⟨fun h => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hlt : ‖unifV v‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.2 h1`. Conclude with `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hlt`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`.
-
-Conclude with `h1.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unifV_spec {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     unifV v ≠ 0 ∧ Tendsto (fun k : ℕ => unifV v ^ k) atTop (𝓝 0) ∧
@@ -102,19 +100,17 @@ def CntAA : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
             μ (lamF b v a M 0)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet ψ hψ d b`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `filter_upwards [hV F E σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet ψ hψ d b, hH F E σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet d b, hI F E σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet d b, hC F E σ hCM M J hJ hSa hSc a ha1 ha2 X0 hT hdet d b] with v hv hh hi hc`. Introduce `μv hμ νv hν`. Use `hμ.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hν.1` as an intermediate fact. Take `⟨l1, l2, l3, l4, l5, l6, l7⟩` from `hL F E σ d b a M v`. Use `⟨latSub b v a M, lamF b v a M, hF b v σ a, rfl, (PositiveNearLattice.isClopen_latV b v a M).isOpen, PositiveNearLattice.isCompact_latV b v a M, l4, l1, l2, l3, l5, l6, l7, hh, ?_⟩` and prove the remaining obligations. Take `⟨k, K, i1, i2, i3, i4, σ', J', T', hQ, h2, hJ', hJu, hT', hTu, hcard, hcnt⟩` from `hc μv hμ.1`. Use `⟨k, K, i1, i2, i3, i4, σ', J', T', hQ, h2, hJ', hJu, hT', hTu, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcard]`. Both sides reduce to the same expression. Take `⟨e1, e2⟩` from `hi μv νv hμ.1 hν.1`. Rewrite `e1` using `[hv.1 μv hμ, ← hcard]`. Rewrite `e2` using `[hv.2 νv hν, ← hcard]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (μv (latV b v ∩ _) / νv _).toReal = _`. Rewrite using `[hcnt, ENNReal.toReal_div, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Establish `f1` using `congrArg ENNReal.toReal e1`. Establish `f2` using `congrArg ENNReal.toReal e2`. Rewrite `f1`, `f2` using `[ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_natCast, ENNReal.toReal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (0 : ℝ) < Nat.card k` using `by exact_mod_cast Nat.card_pos`. Establish `hle : a ^ 2 ≤ 2 * M * a` using `by nlinarith`. Establish `hp : (Nat.card k : ℝ) ^ (2 * M * a) = (Nat.card k : ℝ) ^ (2 * M * a - a ^ 2) * (Nat.card k : ℝ) ^ (a ^ 2)`. Rewrite using `[← pow_add, Nat.sub_add_cancel hle]`. Establish `hA : (0 : ℝ) < (Nat.card k : ℝ) ^ (2 * M * a - a ^ 2)` using `pow_pos hq _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB : (0 : ℝ) < (Nat.card k : ℝ) ^ (a ^ 2)` using `pow_pos hq _`. Rewrite `f1` using `[hp]`. Establish `hn : (νv (hF b v σ a 0)).toReal = 1 / (Nat.card k : ℝ) ^ (a ^ 2)` using `by field_simp; linarith`. Establish `hm : (μv (lamF b v a M 0)).toReal = 1 / ((Nat.card k : ℝ) ^ (2 * M * a - a ^ 2) * (Nat.card k : ℝ) ^ (a ^ 2))` using `by field_simp; linarith`. Rewrite using `[hm, hn]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem resAA_of (hV : VolAA) (hL : LatFacts) (hH : HensAA) (hI : IdxAA) (hC : CntAA) :
     ResAA := by

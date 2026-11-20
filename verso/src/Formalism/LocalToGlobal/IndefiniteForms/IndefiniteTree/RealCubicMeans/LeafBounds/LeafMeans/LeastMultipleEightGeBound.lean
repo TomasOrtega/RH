@@ -18,19 +18,19 @@ def zeroConstantLowerBound (f r jp : ℕ) : ℕ := max (r + (nX f r jp + 1).choo
 def leastMultipleEightBound (f r jp : ℕ) : ℕ := 8 * ((zeroConstantLowerBound f r jp + 7) / 8)
 
 /- English proof (translation)
-The claim follows from `Dvd.intro _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem eight_dvd_least_multiple (f r jp : ℕ) : 8 ∣ leastMultipleEightBound f r jp := Dvd.intro _ rfl
 
 /- English proof (translation)
-Unfold `leastMultipleEightBound`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem least_multiple_eight_ge_bound (f r jp : ℕ) : zeroConstantLowerBound f r jp ≤ leastMultipleEightBound f r jp := by
   unfold leastMultipleEightBound
   omega
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `h8`. Unfold `leastMultipleEightBound`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem least_multiple_eight_le (f r jp c : ℕ) (h8 : 8 ∣ c) (hc : zeroConstantLowerBound f r jp ≤ c) : leastMultipleEightBound f r jp ≤ c := by
   obtain ⟨t, rfl⟩ := h8
@@ -82,7 +82,7 @@ def pgOf (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : Slo
   eta := (faceLiftPage R F I J hd).η
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pgOf_ranks (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : SlopeArithmeticParameters R.toRealDat)
     (hd : NeZero D.host.d) (j : Fin D.R.m) :
@@ -92,7 +92,7 @@ theorem pgOf_ranks (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat
   ⟨rfl, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Use `show D.R.m - ((j : ℕ) + 1) ≤ D.R.k + D.R.m - 1`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pgOf_jp_le (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : SlopeArithmeticParameters R.toRealDat)
     (hd : NeZero D.host.d) (j : Fin D.R.m) : (pgOf R F I J hd j).jp ≤ D.R.r := by
@@ -137,14 +137,14 @@ structure LeafTie (P : MeansPack Tau ι) (Lv : Leaves Tau) (pg : PgNums) : Prop 
   hlevel : 1 ≤ Lv.level
 
 /- English proof (translation)
-Unfold `MeansPack.indexMeanConstant`. Rewrite using `[t.fourth_root_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem seventh_constant_eq {r4 : ℝ} {P : MeansPack Tau ι} {pg : PgNums} (t : PackPage r4 P pg) : P.indexMeanConstant = 100 + 9 * |r4| := by
   unfold MeansPack.indexMeanConstant
   rw [t.fourth_root_eq]
 
 /- English proof (translation)
-Unfold `MeansPack.E0`. Rewrite using `[t.hc0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem error_bound_eq_defined {r4 : ℝ} {P : MeansPack Tau ι} {pg : PgNums} (t : PackPage r4 P pg) :
     P.E0 = (P.f : ℝ) * P.N * ((leastMultipleEightBound P.f P.N P.jp : ℝ) + 4 * P.N) := by
@@ -152,7 +152,7 @@ theorem error_bound_eq_defined {r4 : ℝ} {P : MeansPack Tau ι} {pg : PgNums} (
   rw [t.hc0]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `tl.heloc q hq`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[td.he]`. Unfold `Leaves.eDef`. Conclude with `(Finset.le_fold_max _).mpr (Or.inr ⟨y, hy, le_rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rnd_le_e {P : MeansPack Tau ι} {Lv : Leaves Tau} {pg : PgNums} (td : DefTie P Lv) (tl : LeafTie P Lv pg)
     (q : ℕ) (hq : q.Prime) : ∃ y ∈ Lv.eloc q, y + Lv.rnd P q ≤ P.e q := by
@@ -163,7 +163,7 @@ theorem rnd_le_e {P : MeansPack Tau ι} {Lv : Leaves Tau} {pg : PgNums} (td : De
   exact (Finset.le_fold_max _).mpr (Or.inr ⟨y, hy, le_rfl⟩)
 
 /- English proof (translation)
-Unfold `MeansPack.LL0 SlopeBoundParameters.LL0 SlopeBoundParameters.llx SlopeBoundParameters.Lc`. Rewrite using `[t.hb, t.hx, t.hrd, t.hLp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem log_scale_eq_page_value {r4 : ℝ} (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : SlopeArithmeticParameters R.toRealDat)
     (hd : NeZero D.host.d) (j : Fin D.R.m) {P : MeansPack Tau ι} (t : PackPage r4 P (pgOf R F I J hd j)) :
@@ -182,7 +182,7 @@ structure RecTie6 (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat)
   hQ : J.Qcc j = P.Qcc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨t6.hX, t6.hsl, tp.hT.symm, log_scale_eq_page_value R F I J hd j tp, t6.hU, t6.hE, t6.hcc, t6.hQ⟩`.
+Supply the required witnesses or components.
 -/
 theorem recTie_of {r4 : ℝ} (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : SlopeArithmeticParameters R.toRealDat)
     (hd : NeZero D.host.d) (j : Fin D.R.m) {P : MeansPack Tau (J.ι j)} (t6 : RecTie6 R F I J hd j P)
@@ -197,7 +197,7 @@ structure FullTie (r4 : ℝ) (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R
   leaves : LeafTie P Lv (pgOf R F I J hd j)
 
 /- English proof (translation)
-The claim follows from `leafMeans_of_pack R F I J hd j P (recTie_of R F I J hd j t.recs t.page) h ha hdd he h6 hp h7 (by rw [seventh_constant_eq t.page]; exact hCa) hCb`.
+A detailed English derivation is pending.
 -/
 theorem leafMeans_of_tied (r4 : ℝ) (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat)
     (J : SlopeArithmeticParameters R.toRealDat) (hd : NeZero D.host.d) (j : Fin D.R.m) (P : MeansPack Tau (J.ι j)) (Lv : Leaves Tau)
@@ -272,14 +272,14 @@ def baseE : ℕ →₀ ℝ := Finsupp.single 2 2
 def tiedPack : MeansPack (Fin 1) (Fin 1) := packOf basePack2 baseLeaves2 baseE
 
 /- English proof (translation)
-Use `show Leaves.vddDef baseLeaves2 basePack2 q = 0`. Simplify using `[Leaves.vddDef, baseLeaves2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tiedPack_vdd (q : ℕ) : tiedPack.vdd q = 0 := by
   show Leaves.vddDef baseLeaves2 basePack2 q = 0
   simp [Leaves.vddDef, baseLeaves2]
 
 /- English proof (translation)
-Unfold `Leaves.rnd kpDef`. Rewrite using `[tiedPack_vdd]`. Simplify using `only [baseLeaves2, mul_one]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tiedPack_rnd (q : ℕ) : Leaves.rnd baseLeaves2 tiedPack q = if q ∣ 2 then 2 else 0 := by
   unfold Leaves.rnd kpDef
@@ -288,15 +288,13 @@ theorem tiedPack_rnd (q : ℕ) : Leaves.rnd baseLeaves2 tiedPack q = if q ∣ 2 
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use `⟨fun _ => rfl, fun _ => rfl, rfl, fun _ => rfl, fun _ => rfl, rfl, rfl, rfl, rfl, fun q => ?_⟩` and prove the remaining obligations. Use `show baseE q = Leaves.eDef baseLeaves2 tiedPack q`. Unfold `Leaves.eDef`. Rewrite using `[tiedPack_rnd]`. Distinguish the cases in `hq : q.Prime`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hel : baseLeaves2.eloc q = {0}` using `if_pos hq`. Rewrite using `[hel, Finset.fold_singleton]`. Distinguish the cases in `h2 : q = 2`. Substitute `h2` using the available equality. Simplify using `[baseE]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hn : ¬ q ∣ 2`. Introduce `hd`. Break down `(Nat.dvd_prime Nat.prime_two).mp hd with h | h` into its components or cases. Conclude with `hq.one_lt.ne' h`. Conclude with `h2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[if_neg hn]`. Simplify using `[baseE, Ne.symm h2]`. Establish `hel : baseLeaves2.eloc q = ∅` using `if_neg hq`. Rewrite using `[hel, Finset.fold_empty]`. Establish `h2 : q ≠ 2` using `fun h => hq (h ▸ Nat.prime_two)`.
-
-Simplify using `[baseE, Ne.symm h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tie_tiedPack : DefTie tiedPack baseLeaves2 := by
   refine ⟨fun _ => rfl, fun _ => rfl, rfl, fun _ => rfl, fun _ => rfl, rfl, rfl, rfl, rfl, fun q => ?_⟩
@@ -327,15 +325,11 @@ Evaluate the decidable proposition.
 theorem least_multiple_eight_base_eq : leastMultipleEightBound 1 2 0 = 24 := by decide
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, rfl, ?_, ?_, rfl, rfl, ?_, rfl, ?_, ?_, ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Use `show ((2 : ℕ) : ℝ) = 2`. Evaluate the numerical expressions. Use `show ((1 : ℕ) : ℝ) = 1`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Evaluate the numerical expressions. Evaluate the numerical expressions. Evaluate the numerical expressions.
 
-Use `show ((1 : ℕ) : ℝ) = 1`. Evaluate the numerical expressions. Use `show ((0 : ℕ) : ℝ) = 0`. Evaluate the numerical expressions. Use `show ((0 : ℕ) : ℝ) = 0`.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Use `show Leaves.rdDef baseLeaves2 basePack2 = 1`. Simplify using `[Leaves.rdDef, baseLeaves2]`. Use `show (128 : ℝ) = 128 / 1`. Evaluate the numerical expressions.
-
-Use `show (24 : ℝ) = ((leastMultipleEightBound 1 2 0 : ℕ) : ℝ)`. Rewrite using `[least_multiple_eight_base_eq]`. Evaluate the numerical expressions. Use `show 8 ∣ 24`. Evaluate the decidable proposition.
-
-Use `show 8 * 1 * 2 + 4 ≤ 24`. Evaluate the decidable proposition. Use `show 24 ≤ 16 * 1 * 2 ^ 2 + 8`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. Evaluate the decidable proposition. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem page_tiedPack : PackPage 0 tiedPack basePg := by
   refine ⟨?_, ?_, ?_, rfl, ?_, ?_, rfl, rfl, ?_, rfl, ?_, ?_, ?_, ?_, ?_, rfl⟩
@@ -354,9 +348,9 @@ theorem page_tiedPack : PackPage 0 tiedPack basePg := by
   · show 24 ≤ 16 * 1 * 2 ^ 2 + 8; decide
 
 /- English proof (translation)
-Use `⟨fun _ => rfl, ?_, ?_, ?_, le_rfl⟩` and prove the remaining obligations. Use `show ((0 : ℕ) : ℝ) + 2 = 2`. Evaluate the numerical expressions. Introduce `q hq show (if q.Prime then ({0} : Finset ℝ) else ∅).Nonempty`. Rewrite using `[if_pos hq]`.
+Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.singleton_nonempty 0`. Introduce `q hq show (if q.Prime then ({0} : Finset ℝ) else ∅) = ∅`. Rewrite using `[if_neg hq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leaf_tiedPack : LeafTie tiedPack baseLeaves2 basePg := by
   refine ⟨fun _ => rfl, ?_, ?_, ?_, le_rfl⟩
@@ -369,17 +363,13 @@ theorem leaf_tiedPack : LeafTie tiedPack baseLeaves2 basePg := by
     rw [if_neg hq]
 
 /- English proof (translation)
-Establish `e2 : (5 : ℝ) ≤ Real.exp 2`. Establish `h` using `Real.quadratic_le_exp_of_nonneg (by norm_num : (0 : ℝ) ≤ 2)`. Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : Real.exp 4 = Real.exp 2 * Real.exp 2` using `by rw [← Real.exp_add]; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (0 : ℝ) < Real.exp 4`. Conclude with `Real.exp_pos 4`. Use `show (1 : ℝ) ≤ Real.log (Real.exp 4)`. Rewrite using `[Real.log_exp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Use `show (1 : ℝ) ≤ Leaves.rdDef baseLeaves2 basePack2`. Simplify using `[Leaves.rdDef, baseLeaves2]`. Use `show (1 : ℝ) ≤ Real.exp (Real.exp 1)`. Conclude with `Real.one_le_exp (Real.exp_pos 1).le`.
+Evaluate the numerical expressions. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `show (1 : ℝ) ≤ Real.log (Real.log (Real.exp (Real.exp 1)))`. Rewrite using `[Real.log_exp, Real.log_exp]`. Use `show (1 : ℕ) ≤ 1`. Conclude with `le_rfl`. Use `show (1 : ℕ) ≤ 2`.
-
-Evaluate the numerical expressions. Use `show 32 * ((1 : ℕ) : ℝ) * ((2 : ℕ) : ℝ) ^ 2 ≤ 128`. Evaluate the numerical expressions. Use `show 4 * ((1 : ℕ) : ℝ) * ((2 : ℕ) : ℝ) ^ 2 ≤ Real.exp 4`. Rewrite using `[e4]`.
-
-Evaluate the numerical expressions. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem rows_tiedPack : Rows tiedPack := by
   have e2 : (5 : ℝ) ≤ Real.exp 2 := by
@@ -407,7 +397,7 @@ theorem rows_tiedPack : Rows tiedPack := by
     rw [e4]; norm_num; nlinarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨tie_tiedPack, page_tiedPack, leaf_tiedPack, rows_tiedPack⟩`.
+Supply the required witnesses or components.
 -/
 theorem ties_and_rows :
     DefTie tiedPack baseLeaves2 ∧ PackPage 0 tiedPack basePg ∧ LeafTie tiedPack baseLeaves2 basePg ∧ Rows tiedPack :=

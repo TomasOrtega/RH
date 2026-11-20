@@ -24,13 +24,13 @@ namespace GlobalTheory.FamTrace.AtG
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat row col hc κ hκ y hy hIn v hv`. Establish `hstd` using `hA.tr.std.some u`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0 : Fin 2, ((I.rec7 l Z).host.g i0 : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal := by`. Break down `hv with h | h` into its components or cases. Conclude with `⟨0, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨1, h⟩`. Take `⟨w, hw, -, hu, -⟩` from `GlobalTheory.Mem.Col2.TC.GLev0.exists_w (F0 W u).gl hstd.gl.piG i0 v hi0`. Establish `hwP : w ∈ (pk W).Pg` using `(hA.lev.2.1 w).2 (GlobalTheory.Mem.Col2.TC.GLev0.mem_vGs.2 ⟨i0, hw⟩)`. Take `⟨i, hi⟩` from `a.pl.surjective ⟨w, hwP⟩`. Establish `hqv : (a.G i).q.v = v`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[((ha.tie row col).2.idem i).2, hi]`. Conclude with `hu`. Establish `hTv : ((((I.rec7 l Z).mem u).A.T : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal` using `GlobalTheory.Mem.Col2.TC.GLev0.T_notMem X u i0 hi0`. Establish `hx` using `GlobalTheory.T.true_geometry_compact_level_property W hA u a hat κ hκ y hy hIn.1 v hTv`. Establish `hfr : (F0 W u).glev0.fr i0 v hi0 = 1` using `hstd.fr0 i0 v hi0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((F0 W u).glev0.mem i0 v hi0 _ hx).2 ?_` and prove the remaining obligations. Rewrite using `[hfr]`. Conclude with `GlobalTheory.T.true_geometry_final_index W hA u a ha hat row col hc κ hκ y hy i v i0 hi0 hqv (GlobalTheory.T.true_geometry_final_measure W hA u a ha hat κ hIn.2.2 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Uloc_badG : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → GlobalTheory.FamTrace.InLevG a κ → ∀ v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F), v ∈ Formalism.L2.Forms.badG (I.rec7 l Z) → Formalism.UG.bc (Formalism.UG.prV (E := (I.rec7 l Z).host.E) v) (y : GL _ _) ∈ (F0 W u).cls0.lev.Uloc v := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat row col hc κ hκ y hy hIn v hv

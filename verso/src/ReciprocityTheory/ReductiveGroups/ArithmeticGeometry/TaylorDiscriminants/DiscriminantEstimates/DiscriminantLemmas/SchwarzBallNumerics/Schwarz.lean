@@ -6,15 +6,15 @@ namespace PI.UnitaryGroupMassFormula.TBNum
 open ComplexConjugate
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.TB.SchwarzBallSt`. Introduce `E _ _ u ρ M hρ hu hM z hz`. Break down `eq_or_ne z 0 with rfl | hz0` into its components or cases. Simplify using the standard rewrite rules. Establish `hzpos : 0 < ‖z‖` using `norm_pos_iff.mpr hz0`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzρ : ‖z‖ < ρ` using `mem_ball_zero_iff.mp hz`. Establish `hmaps : Set.MapsTo (fun w : ℂ => w • z) (Metric.ball 0 (ρ / ‖z‖)) (Metric.ball (0 : E) ρ)`. Introduce `w hw`. Rewrite `hw`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw` using `[lt_div_iff₀ hzpos]`. Conclude with `hw`. Establish `hg : DifferentiableOn ℂ (fun w : ℂ => u (w • z)) (Metric.ball 0 (ρ / ‖z‖))` using `hu.comp (differentiable_id.smul_const z).differentiableOn hmaps`. Establish `h1 : (1 : ℂ) ∈ Metric.ball (0 : ℂ) (ρ / ‖z‖)`. Rewrite using `[mem_ball_zero_iff, norm_one, lt_div_iff₀ hzpos, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hzρ`. Establish `hmap2 : Set.MapsTo (fun w : ℂ => u (w • z)) (Metric.ball 0 (ρ / ‖z‖)) (Metric.closedBall (u ((0 : ℂ) • z)) M)`. Introduce `w hw`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm, zero_smul]`. Conclude with `hM _ (hmaps hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS` using `Complex.dist_le_div_mul_dist_of_mapsTo_ball hg hmap2 h1`. Simplify using `only [one_smul, zero_smul, dist_eq_norm, sub_zero, norm_one, mul_one] at hS`. Rewrite `hS` using `[div_div_eq_mul_div]`. Conclude with `hS`.
+A detailed English derivation is pending.
 -/
 theorem schwarzBall : ReciprocityTheory.ChartRestriction.G.TB.SchwarzBallSt := by
   unfold ReciprocityTheory.ChartRestriction.G.TB.SchwarzBallSt

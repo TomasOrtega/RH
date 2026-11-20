@@ -33,26 +33,26 @@ theorem mat_one : mat (1 : GU σ n) = 1 := rfl
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem mat_injective {g g' : GU σ n} (h : mat g = mat g') : g = g' := Subtype.ext (Units.ext h)
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul (g : GU σ n) : mat g⁻¹ * mat g = 1 := by rw [← mat_mul, inv_mul_cancel, mat_one]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Rewrite using `[← mat_mul, mul_inv_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_mul_inv (g : GU σ n) : mat g * mat g⁻¹ = 1 := by rw [← mat_mul, mul_inv_cancel, mat_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev]`. Establish `: i.val + i.rev.val + 1 = n` using `by have := i.2; rw [Fin.val_rev]; omega`. Simplify using `only [antiJ, this, if_true, one_mul]`. Introduce `b _ hb`. Establish `: ¬ (i.val + b.val + 1 = n)` using `fun h => hb (Fin.ext (by rw [Fin.val_rev]; omega))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[antiJ, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem antiJ_mul_apply (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (antiJ L n * M) i j = M i.rev j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i.rev]
@@ -64,9 +64,9 @@ theorem antiJ_mul_apply (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (antiJ L 
   · simp
 
 /- English proof (translation)
-Establish `h1 : cT σ (mat g) * antiJ L n * mat g = antiJ L n` using `g.2`. Establish `h2 : mat g⁻¹ = antiJ L n * (cT σ (mat g) * antiJ L n)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, GlobalTheory.UnitarySwap.antiJ_mul_self, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc, mat_mul_inv, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, antiJ_mul_apply, P.fSatake_cTJ]`.
+A detailed English derivation is pending.
 -/
 theorem mat_inv_apply (g : GU σ n) (i j : Fin n) : mat g⁻¹ i j = σ (mat g j.rev i.rev) := by
   have h1 : cT σ (mat g) * antiJ L n * mat g = antiJ L n := g.2
@@ -77,7 +77,7 @@ theorem mat_inv_apply (g : GU σ n) (i j : Fin n) : mat g⁻¹ i j = σ (mat g j
   rw [h2, antiJ_mul_apply, P.fSatake_cTJ]
 
 /- English proof (translation)
-Establish `h : (antiJ L n * (cT σ M * antiJ L n)) * M = 1`. Rewrite using `[Matrix.mul_assoc, hM, GlobalTheory.UnitarySwap.antiJ_mul_self]`. Conclude with `⟨⟨⟨M, _, mul_eq_one_comm.1 h, h⟩, hM⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_mat (M : Matrix (Fin n) (Fin n) L) (hM : cT σ M * antiJ L n * M = antiJ L n) :
     ∃ g : GU σ n, mat g = M := by
@@ -86,9 +86,9 @@ theorem exists_mat (M : Matrix (Fin n) (Fin n) L) (hM : cT σ M * antiJ L n * M 
   exact ⟨⟨⟨M, _, mul_eq_one_comm.1 h, h⟩, hM⟩, rfl⟩
 
 /- English proof (translation)
-Use `⟨fun h => P.fSatake_K_int h, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : ∀ i j, mat g⁻¹ i j ∈ intL L` using `fun i j => by`. Rewrite using `[mat_inv_apply]`. Use `show Valued.v (σ _) ≤ 1`. Rewrite using `[hσ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h _ _`. Take `⟨x, hx, e⟩` from `P.cartan_exists_glint (intL L) _ _ (mat_mul_inv g) h h'`. Establish `: x = (g : GL (Fin n) L)` using `Units.ext e`. Rewrite `hx` using `[this]`. Conclude with `⟨g.2, hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_KU_iff (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) :
     g ∈ KU σ n ↔ ∀ i j, mat g i j ∈ intL L := by
@@ -104,11 +104,11 @@ theorem mem_KU_iff (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) :
   exact ⟨g.2, hx⟩
 
 /- English proof (translation)
-Establish `hint : ∀ i j, antiJ L n i j ∈ intL L`. Introduce `i j`. Unfold `antiJ`. Use `split_ifs`. Conclude with `one_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨J, hJ, hJe⟩` from `P.cartan_exists_glint (intL L) _ _ (GlobalTheory.UnitarySwap.antiJ_mul_self (L := L) (n := n)) hint hint`. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `GlobalTheory.UnitarySwap.inv_mem_doubleCoset hU hJ (g := (g : GL (Fin n) L)) (by`. Introduce `i j`. Rewrite using `[hJe]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [antiJ, add_comm i.val j.val]`. Apply the tactic sequence `split_ifs <;> simp) (by rw [hJe]; exact g.2)`. Rewrite `hk₁`, `hk₂` using `[hJe]`. Conclude with `⟨⟨k₁, hk₁.1⟩, hk₁, ⟨k₂, hk₂.1⟩, hk₂, Subtype.ext e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inv_mem_dc [CompleteSpace L] {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (g : GU σ n) :
     ∃ k₁ ∈ KU σ n, ∃ k₂ ∈ KU σ n, g⁻¹ = k₁ * g * k₂ := by

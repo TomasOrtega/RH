@@ -17,15 +17,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ A _ p G t c d N hN`. Set `e : ℕ → (G.A N →ₐ[R] G.A N)` to `fun j ↦ (toConv (AlgHom.id R (G.A N)) ^ j).ofConv`. Set `K : ℕ → G.A N` to `fun j ↦ fv d.f (G.A N) (G.A N) (e j) (t.y N) + e j (d.h N)`. Establish `hm : ∀ j, (mulBy R (G.A N) j : G.A N →ₐ[R] G.A N) = e j` using `fun j ↦ by`. Establish `h` using `comp_mulBy_pts (AlgHom.id R (G.A N)) j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[AlgHom.id_comp]`. Then use the resulting hypothesis. Establish `hy : ∀ j, spOver (e j) ≫ t.y N = t.y N ^ j` using `fun j ↦ by`. Rewrite using `[← hm]`. Conclude with `t.mulBy_y N j`. Establish `he1 : e 1 = AlgHom.id R (G.A N)` using `by simp only [e, pow_one, ofConv_toConv]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hes : ∀ i, (toConv (e i) * toConv (AlgHom.id R (G.A N))).ofConv = e (i + 1)` using `fun i ↦ by`. Simplify using `only [e, toConv_ofConv, pow_succ]`. Establish `hterm : ∀ i, Algebra.TensorProduct.lift (mulBy R (G.A N) i : G.A N →ₐ[R] G.A N) (AlgHom.id R (G.A N)) (fun _ _ ↦ Commute.all _ _) (d.coc N) = d.g (G.A N) (t.y N ^ i) (t.y N) - (K (i + 1) - K i - K 1)`. Introduce `i`. Rewrite using `[hm i, Dat.lift_coc R A p G t c d N (G.A N) (e i) (AlgHom.id R _), hy, spOver_id, Category.id_comp, hes]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [K, he1]`. Establish `hq : e (p ^ N) = e 0` using `t.inj N (G.A N) _ _ (by rw [hy, hy, t.y_pow, pow_zero])`. Establish `hz : ((p ^ N : ℕ) : G.A N) = 0`. Rewrite using `[Nat.cast_pow, ← map_natCast (algebraMap R (G.A N)), ← map_pow, hN, map_zero]`. Rewrite using `[diagSum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.toLinearMap_apply, hterm]`. Rewrite using `[chi, Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_range_sub (fun j ↦ K j), Finset.sum_const, Finset.card_range, nsmul_eq_mul, hz, zero_mul, sub_zero]`. Establish `: K (p ^ N) = K 0` using `by simp only [K, hq]`. Rewrite using `[this, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dat.diagSum_coc : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (N : ℕ), (p : R) ^ N = 0 → diagSum R (G.A N) (p ^ N) (d.coc N) = chi (p ^ N) d.g (G.A N) (t.y N) := by
   intro R _ A _ p G t c d N hN

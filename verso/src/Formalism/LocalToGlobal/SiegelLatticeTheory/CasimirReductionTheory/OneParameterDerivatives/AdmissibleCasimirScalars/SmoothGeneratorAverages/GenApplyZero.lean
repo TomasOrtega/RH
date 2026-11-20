@@ -14,7 +14,7 @@ open Formalism.MainNotions.S Formalism.REAL Formalism.MainNotions.BridgeCPX
 namespace CoordinateExpansion
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hf : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) ((ContinuousLinearEquiv.refl ℂ (Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℂ] Matrix (Fin n) (Fin n) ℂ)) 0`. Conclude with `hasStrictFDerivAt_exp_zero (𝕂 := ℂ) (𝔸 := Matrix (Fin n) (Fin n) ℂ)`. Conclude with `⟨hf.toOpenPartialHomeomorph _, hf.mem_toOpenPartialHomeomorph_source, fun Z _ => rfl⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exp_localHomeo (n : ℕ) :
     ∃ e : OpenPartialHomeomorph (Matrix (Fin n) (Fin n) ℂ) (Matrix (Fin n) (Fin n) ℂ),
@@ -33,7 +33,7 @@ def coord (Z : Matrix (Fin n) (Fin n) ℂ) (p : Fin n × Fin n) : ℝ :=
   if p.1 = p.2 then (Z p.1 p.1).im else if p.1 < p.2 then (Z p.1 p.2).re else (Z p.2 p.1).im
 
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Conclude with `Complex.continuous_im.comp (continuous_id.matrix_elem _ _)`. Conclude with `Complex.continuous_re.comp (continuous_id.matrix_elem _ _)`. Conclude with `Complex.continuous_im.comp (continuous_id.matrix_elem _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_coord (p : Fin n × Fin n) : Continuous fun Z : Matrix (Fin n) (Fin n) ℂ => coord Z p := by
   unfold coord
@@ -43,7 +43,7 @@ theorem continuous_coord (p : Fin n × Fin n) : Continuous fun Z : Matrix (Fin n
   · exact Complex.continuous_im.comp (continuous_id.matrix_elem _ _)
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hZ a) b`. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Jm, Matrix.conjTranspose_apply, Matrix.zero_apply] at h`. Simplify using `only [sg]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb] at h ⊢ <;> first | linear_combination h | linear_combination -h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entry_of_inG {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z) (a b : Fin n) :
     Z a b = -((sg ε (a, b) : ℝ) : ℂ) * star (Z b a) := by
@@ -55,7 +55,7 @@ theorem entry_of_inG {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (hZ 
     first | linear_combination h | linear_combination -h
 
 /- English proof (translation)
-Simplify using `only [sg]`. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[if_pos h.symm, if_pos h]`. Rewrite using `[if_neg (fun h' => h h'.symm), if_neg h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_swap (ε : Fin n → Bool) (a b : Fin n) : sg ε (b, a) = sg ε (a, b) := by
   simp only [sg]
@@ -64,7 +64,7 @@ theorem sg_swap (ε : Fin n → Bool) (a b : Fin n) : sg ε (b, a) = sg ε (a, b
   · rw [if_neg (fun h' => h h'.symm), if_neg h]
 
 /- English proof (translation)
-Take `⟨p1, p2⟩` from `p`. Simplify using `only [ne_eq, Prod.mk.injEq] at h1 h2`. Unfold `gen`. Apply the tactic sequence `split_ifs <;> simp [Matrix.single_apply] <;> aesop`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gen_apply_zero (ε : Fin n → Bool) (p : Fin n × Fin n) (i j : Fin n) (h1 : p ≠ (i, j)) (h2 : p ≠ (j, i)) :
     gen ε p i j = 0 := by
@@ -74,13 +74,13 @@ theorem gen_apply_zero (ε : Fin n → Bool) (p : Fin n × Fin n) (i j : Fin n) 
   split_ifs <;> simp [Matrix.single_apply] <;> aesop
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Rewrite using `[Fintype.sum_eq_add (i, j) (j, i) (by simp [h.ne]) (fun q hq => by rw [gen_apply_zero ε q i j hq.1 hq.2, mul_zero])]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[coord, gen, h, h.ne, h.ne', not_lt.mpr h.le, Matrix.single_apply]`. Rewrite using `[Fintype.sum_eq_single (i, i) (fun q hq => by rw [gen_apply_zero ε q i i hq hq, mul_zero])]`. Establish `he` using `entry_of_inG hZ i i`. Simplify using `only [sg, if_true] at he`. Establish `hre : (Z i i).re = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Complex.re he`. Simplify using `at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[coord, gen, Matrix.single_apply]`. Apply the tactic sequence `try (apply Complex.ext <;> simp [hre])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Fintype.sum_eq_add (i, j) (j, i) (by simp [h.ne']) (fun q hq => by rw [gen_apply_zero ε q i j hq.1 hq.2, mul_zero])]`. Rewrite using `[entry_of_inG hZ i j]`. Simplify using `[coord, gen, h, h.ne, h.ne', not_lt.mpr h.le, Matrix.single_apply, sg_swap]`. Apply the tactic sequence `try (apply Complex.ext <;> simp <;> ring)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_sum_gen {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z) :
     Z = ∑ p, ((coord Z p : ℝ) : ℂ) • gen ε p := by
@@ -107,17 +107,17 @@ theorem eq_sum_gen {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : 
     try (apply Complex.ext <;> simp <;> ring)
 
 /- English proof (translation)
-Establish `hJJ : Jm ε * Jm ε = 1`. Rewrite using `[Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hJi : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv hJJ`. Establish `hJu : IsUnit (Jm ε)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_left_inverse hJJ)`. Establish `hJh : (Jm ε)ᴴ = Jm ε`. Rewrite using `[Jm, Matrix.diagonal_conjTranspose]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs with ha <;> simp [ha]`. Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hgl : (Jm ε * gᴴ * Jm ε) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', hJJ]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgi : g⁻¹ = Jm ε * gᴴ * Jm ε` using `Matrix.inv_eq_left_inv hgl`. Establish `key : NormedSpace.exp (-(Jm ε * Zᴴ * Jm ε)) = g`. Establish `h1 : -(Jm ε * Zᴴ * Jm ε) = Jm ε * (-Z)ᴴ * (Jm ε)⁻¹`. Rewrite using `[hJi, Matrix.conjTranspose_neg, Matrix.mul_neg, Matrix.neg_mul]`. Rewrite using `[h1, Matrix.exp_conj _ _ hJu, Matrix.exp_conjTranspose, Matrix.exp_neg, hZg, hgi, hJi, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJh]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hJJ, Matrix.one_mul, Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Establish `hτ : -(Jm ε * Zᴴ * Jm ε) = Z` using `e.injOn hτZ hZ (by rw [hee _ hτZ, hee _ hZ, key, hZg])`. Use `show Zᴴ * Jm ε + Jm ε * Z = 0`. Establish `hJZ : Jm ε * Z = -(Zᴴ * Jm ε)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Rewrite using `[hJZ, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_of_log {ε : Fin n → Bool} (e : OpenPartialHomeomorph (Matrix (Fin n) (Fin n) ℂ) (Matrix (Fin n) (Fin n) ℂ))
     (hee : ∀ Z ∈ e.source, e Z = NormedSpace.exp Z) {Z g : Matrix (Fin n) (Fin n) ℂ} (hZ : Z ∈ e.source)
@@ -159,21 +159,17 @@ theorem inG_of_log {ε : Fin n → Bool} (e : OpenPartialHomeomorph (Matrix (Fin
 end CoordinateExpansion
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ D hD W C' hC' hdense`. Take `⟨e, he0, hee⟩` from `CoordinateExpansion.exp_localHomeo n`. Use `set M := max C' 0 with hM`. Set `τ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun Z => -(Jm ε * Zᴴ * Jm ε)`. Establish `hτ : Continuous τ` using `((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const).neg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `V : Set (Matrix (Fin n) (Fin n) ℂ)` to `e.source ∩ τ ⁻¹' e.source ∩ {Z | (∑ p, |CoordinateExpansion.coord Z p|) * M < 1 / 2}`. Establish `hVo : IsOpen V`. Use `(e.open_source.inter (e.open_source.preimage hτ)).inter (isOpen_lt ?_ continuous_const)` and prove the remaining obligations. Conclude with `(continuous_finsetSum _ fun p _ => (CoordinateExpansion.continuous_coord p).abs).mul continuous_const`. Establish `hV0 : (0 : Matrix (Fin n) (Fin n) ℂ) ∈ V`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨⟨he0, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `he0` using `[τ]`. Simplify using `[CoordinateExpansion.coord]`. Establish `himg : IsOpen (e '' V)` using `e.isOpen_image_of_subset_source hVo (fun Z h => h.1.1)`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ e '' V` using `⟨0, hV0, by rw [hee 0 he0, NormedSpace.exp_zero]⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨(fun g : UJ ε => umat g) ⁻¹' (e '' V), ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_umat.continuousAt.preimage_mem_nhds (himg.mem_nhds (by exact h1))`. Introduce and unpack `g ⟨Z, hZV, hZg⟩ v hv`. Establish `hZg' : NormedSpace.exp Z = umat g` using `by rw [← hee Z hZV.1.1]; exact hZg`. Establish `hG : inG ε Z` using `CoordinateExpansion.inG_of_log e hee hZV.1.1 hZV.1.2 (umat_mem g) hZg'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ((D ⊓ W : Submodule ℂ H) : Set H) ⊆ {u : H | ‖σ (umat g) u - u‖ ≤ ‖u‖ / 2}`. Introduce `u hu`. Establish `huD : u ∈ D` using `hu.1`. Establish `huW : u ∈ W` using `hu.2`. Use `show ‖σ (umat g) u - u‖ ≤ ‖u‖ / 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hZg']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hD.lin _ u huD, ← CoordinateExpansion.eq_sum_gen hG]`. Use `_ ≤ ∑ p, |CoordinateExpansion.coord Z p| * (M * ‖u‖) := by`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun p _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs]`. Use `mul_le_mul_of_nonneg_left ((hC' p u huD huW).trans ?_) (abs_nonneg _)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)`. Use `_ = ((∑ p, |CoordinateExpansion.coord Z p|) * M) * ‖u‖ := by`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Use `_ ≤ (1 / 2) * ‖u‖ := mul_le_mul_of_nonneg_right hZV.2.le (norm_nonneg _)`. Use `_ = ‖u‖ / 2 := by ring`. Establish `hcl : IsClosed {u : H | ‖σ (umat g) u - u‖ ≤ ‖u‖ / 2}` using `isClosed_le (((σ (umat g)).continuous.sub continuous_id).norm) (continuous_norm.div_const _)`. Conclude with `closure_minimal key hcl (hdense v hv)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem c6 : SmallMotionNeighbourhood := by
   intro n ε H _ _ _ σ D hD W C' hC' hdense

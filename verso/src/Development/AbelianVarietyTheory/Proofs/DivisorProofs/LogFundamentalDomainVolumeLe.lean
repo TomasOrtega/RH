@@ -34,9 +34,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CovTop.VolUp
 
 /- English proof (translation)
-Use `le_trans ?_ (measure_iUnion_le S)` and prove the remaining obligations. Rewrite using `[h.measure_eq_tsum (⋃ j, S j)]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce `x hx`. Take `⟨j, γ, hγ, hj⟩` from `hc x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Set.mem_iUnion.2 ⟨(⟨γ, hγ⟩ : Γ)⁻¹, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv_smul_set_iff]`. Conclude with `Set.mem_iUnion.2 ⟨j, hj⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_le_tsum_of_cover {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G)
     [μ.IsMulLeftInvariant] (Γ : Subgroup G) [Countable Γ] {𝓕 : Set G} (h : IsFundamentalDomain Γ 𝓕 μ) {J : Type} [Countable J]
@@ -55,17 +55,15 @@ noncomputable def torBd (E : Type) [Field E] [NumberField E] (r : ℕ) : ℝ :=
     (Real.sqrt r * ∏ i ∈ Finset.Icc 2 r, ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ i) ^ fdeg E)
 
 /- English proof (translation)
-Establish `htor` using `GlobalTheory.UCls.torusBound E r 3 G Λ (by omega) (by omega) hU hSD`. Use `set h : ℕ := classNumber E * 3 ^ (2 * fdeg E) with hh`. Use `set K : ℝ := ((3 : ℕ) : ℝ) ^ (2 * fdeg E * r ^ 2) * rdE E ^ ((fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2) * (Real.sqrt r * ∏ i ∈ Finset.Icc 2 r, ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ i) ^ fdeg E with hK`. Set `cv : Fin m → ℝ≥0∞` to `fun i => covolume (inReal (X i).Ψ (X i).Gm (X i).Γ) (realSU (X i).Ψ (X i).Gm) (riemHaar (X i).Ψ (X i).Gm (x0 i))`. Establish `hTA : ∀ i, IsTA (IsCMField.complexConj E) (g i).det` using `fun i => GlobalTheory.unitary_det_isTA E r G (g i) hSD.2.1 (hUA i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Fin m → Quot fun a b : {t : RA (maximalRealSubfield E) E // IsTA (IsCMField.complexConj E) t} => TEquiv (IsCMField.complexConj E) G (Λ : Set (Fin r → E)) 3 a.1 b.1` to `fun i => Quot.mk _ ⟨(g i).det, hTA i⟩`. Establish `hQfin : Finite (Quot fun a b : {t : RA (maximalRealSubfield E) E // IsTA (IsCMField.complexConj E) t} => TEquiv (IsCMField.complexConj E) G (Λ : Set (Fin r → E)) 3 a.1 b.1)`. Assume the negation of the conclusion as `hinf`. Rewrite `hinf` using `[not_finite_iff_infinite]`. Establish `h1 : torusNo (IsCMField.complexConj E) G (Λ : Set (Fin r → E)) 3 = ⊤` using `ENat.card_eq_top_of_infinite`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `htor` using `[h1]`. Conclude with `absurd htor (by simp)`. Establish `hcard : (Finset.univ.image f).card ≤ h`. Establish `h1 : (Finset.univ.image f).card ≤ Nat.card (Quot fun a b : {t : RA (maximalRealSubfield E) E // IsTA (IsCMField.complexConj E) t} => TEquiv (IsCMField.complexConj E) G (Λ : Set (Fin r → E)) 3 a.1 b.1)` using `by haveI := Fintype.ofFinite (Quot fun a b : {t : RA (maximalRealSubfield E) E // IsTA (IsCMField.complexConj E) t} => TEquiv (IsCMField.complexConj E) G (Λ : Set (Fin r → E)) 3 a.1 b.1)`. Rewrite using `[Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.card_le_univ _`. Establish `h2 : ((Nat.card (Quot fun a b : {t : RA (maximalRealSubfield E) E // IsTA (IsCMField.complexConj E) t} => TEquiv (IsCMField.complexConj E) G (Λ : Set (Fin r → E)) 3 a.1 b.1) : ℕ) : ℕ∞) ≤ h`. Rewrite using `[← ENat.card_eq_coe_natCard]`. Conclude with `htor`. Conclude with `h1.trans (by exact_mod_cast h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfib : ∀ q ∈ Finset.univ.image f, ∑ i ∈ Finset.univ.filter (fun i => f i = q), cv i ≤ ENNReal.ofReal K`. Introduce `q hq`. Take `⟨i0, -, hi0⟩` from `Finset.mem_image.1 hq`. Use `GlobalTheory.T.unitary_frames_strong_approximation hT E r 3 m G Λ Ψ X g x0 _ (g i0) hr le_rfl hU hSD (hUA i0) hUA ?_ (fun i _ j _ => hdist i j) (fun i _ => hX i)` and prove the remaining obligations. Introduce `i hi`.
-
-Establish `hfi : f i0 = f i` using `by rw [hi0, (Finset.mem_filter.1 hi).2]`. Conclude with `GlobalTheory.UCls.torus_eqvGen_main E r 3 G (Λ : Set (Fin r → E)) ⟨(g i0).det, hTA i0⟩ ⟨(g i).det, hTA i⟩ (Quot.eqvGen_exact hfi)`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.univ.image f) (g := f) (fun i _ => Finset.mem_image_of_mem f (Finset.mem_univ i))]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_covolume_le_torBd (hT : GlobalTheory.Published.TamagawaSpecialUnitary) (E : Type) [Field E] [NumberField E] [IsCMField E]
     (r m : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (Ψ : Finset (E →+* ℂ)) (X : Fin m → Data E r)
@@ -123,7 +121,7 @@ theorem sum_covolume_le_torBd (hT : GlobalTheory.Published.TamagawaSpecialUnitar
     _ = _ := by rw [hh, hK, torBd]; push_cast; rfl
 
 /- English proof (translation)
-Substitute `h1 h2 h3` using the available equality. Conclude with `⟨x, hx, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_frame_transport {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (p0 : ℕ) (x : Frame Ψ r) (h1 : X.Ψ = Ψ) (h2 : X.Gm = G)
@@ -137,29 +135,23 @@ theorem exists_frame_transport {E : Type} [Field E] [NumberField E] [IsCMField E
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hrk` using the available equality. Take `⟨-, -, hB, hC⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI := hF.1.1`. Take `⟨⟨θ, hθ⟩, H1⟩` from `hF.1.2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨A, hA⟩, H2⟩` from `H1 θ hθ`. Take `⟨⟨m, hm⟩, -⟩` from `H2 A hA`. Take `⟨X₀, σ, x, e, hG, hσ, hx, hid⟩` from `GlobalTheory.T.exists_flagDomain_orthonormalFrame_identification D V P Q hV hsig A hA`. Establish `hcard : X₀.Ψ.card = D.R.f`. Rewrite using `[← Fintype.card_coe, ← Fintype.card_congr σ, D.what₂.card_Tau]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf : 1 ≤ X₀.Ψ.card` using `by rw [hcard]; unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Take `⟨rp, hrpc, hrp⟩` from `GlobalTheory.T.exists_continuous_realComponentHom_unitaryAdelic D V θ A hV hθ hA`. Set `a₀ : ∀ ρ : D.what₂.Tau, Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2` to `fun ρ => (e ρ).symm ⟨0, by omega⟩`. Take `⟨π, hπc, hπ, hπe⟩` from `GlobalTheory.T.exists_continuous_equivariant_detOneFactorProjection D.host.E V.rank D.what₂.Tau _ _ X₀.Ψ X₀.Gm x σ A e a₀ hid`. Establish `hreal` using `GlobalTheory.T.unitary_group_measure_decomposition D.host.E V.rank D.what₂.Tau _ _ X₀.Ψ X₀.Gm x σ A e a₀ π m (by omega) hf hid hπc hπ hπe hm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hreal` using `[hcard]`. Take `⟨J, hJ, g, hg, hdist, hcov⟩` from `GlobalTheory.T.exists_countable_coset_representatives D V (GlobalTheory.Member.latC V) K₀ hK₀o hK₀`. Establish `hSD` using `GlobalTheory.Member.selfDualLat_neg_gram_transpose D V`. Establish `hUA` using `fun j => GlobalTheory.FinUA.isUA_finHom D V (g j)`. Use `choose L hL hLhat hLsd using fun j => GlobalTheory.UCls.selfDual_latOf_translate D.host.E V.rank _ _ _ hSD (hUA j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose X hXG hXΨ hXp hXΛ hXΓ using fun j => GlobalTheory.PrincData.exists_princ_data D.host.E V.rank 3 X₀ (L j) le_rfl (hLsd j).2.2.1 (hLsd j).2.2.2.1`. Use `haveI : (riemHaar X₀.Ψ X₀.Gm x).IsMulLeftInvariant := by unfold riemHaar; infer_instance`. Use `choose S hSm hSv hSc using fun j => GlobalTheory.T.exists_fundamental_set_measure_realSU_stabilizer D.host.E V.rank X₀.Ψ X₀.Gm (L j) (X j).Γ (riemHaar X₀.Ψ X₀.Gm x) X₀.cmType (hLsd j).2.2.1 (hLsd j).2.2.2.1 (fun γ hγ => ((hXΓ j γ).1 hγ).1)`. Use `choose y hy hyv using fun j => exists_frame_transport (X j) X₀.Ψ X₀.Gm X₀.p0 x (hXΨ j) (hXG j) (hXp j) hx`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`. Establish `hBm : ∀ j, MeasurableSet (π ⁻¹' S j)` using `fun j => hπc.measurable (hSm j)`. Set `T : J → Set (GA D V)` to `fun j => {h | finE V ((g j)⁻¹ * h) ∈ K₀ ∧ rp h ∈ π ⁻¹' S j}`. Establish `hTm : ∀ j, MeasurableSet (T j)` using `fun j => ((hK₀o.preimage (continuous_const.mul continuous_id)).measurableSet).inter (hrpc.measurable (hBm j))`. Establish `hTc : ∀ h, ∃ j, ∃ γ ∈ GQ V, γ * h ∈ T j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `h`. Take `⟨j, γ, hγ, hk⟩` from `hcov h`. Take `⟨δ, hδ, hδs, hδS⟩` from `hSc j (π (rp (γ * h)))`. Take `⟨γ', hγ', hinf, hKM⟩` from `GlobalTheory.T.lattice_completion_image_finHom_mulVec D V (GlobalTheory.Member.latC V) (L j) (g j) δ (hLhat j) (hG ▸ ((hXΓ j δ).1 hδ).1)`. Use `⟨j, γ' * γ, (GQ V).mul_mem hγ' hγ, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `K₀.mul_mem (hK₀ _ hKM) hk` as an intermediate fact. Rewrite `this` using `[← map_mul]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use `group`. Express the relevant statement in the definitionally equal form `π (rp (γ' * γ * h)) ∈ S j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, map_mul, hπe ⟨embGL X₀.Ψ V.rank δ, hδs⟩ (rp γ') fun ρ => ?_]`. Conclude with `hδS`. Rewrite using `[hrp γ' ρ, hinf (σ ρ).1 _ ((hσ ρ).symm ▸ hθ ρ)]`. Both sides reduce to the same expression. Use `set C := ENNReal.ofReal ((1000 * (D.R.f : ℝ) * (V.rank : ℝ) ^ 3) ^ (D.R.f * V.rank ^ 2)) with hC'`.
-
-Establish `hTle : ∀ j, μ (T j) ≤ (K.relIndex K₀ : ℝ≥0∞) * C * covolume (inReal (X j).Ψ (X j).Gm (X j).Γ) (realSU (X j).Ψ (X j).Gm) (riemHaar (X j).Ψ (X j).Gm (y j))`. Introduce `j`. Use `(GlobalTheory.T.measure_translateLevel_realBox_le_index_mul D V θ A m rp K K₀ μ hV hθ hA hm hrpc hrp hle hn hKo hF.1 (g j) (hg j) _ (hBm j)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hyv j, ← hSv j]`. Use `gcongr`.
-
-Conclude with `hreal _ (hSm j)`. Use `(measure_le_tsum_of_cover μ (GQ V) hF.2 T hTm hTc).trans ((ENNReal.tsum_le_tsum hTle).trans ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_left]`. Use `gcongr`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`.
-
-Use `iSup_le fun s => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort s, ← s.equivFin.symm.sum_comp]`. Conclude with `sum_covolume_le_torBd hT D.host.E V.rank s.card _ (GlobalTheory.Member.latC V) X₀.Ψ (fun i => X (s.equivFin.symm i)) (fun i => (finHom V (g (s.equivFin.symm i))).1) (fun i => y (s.equivFin.symm i)) hr hU hSD (fun i => hUA _) (fun i j h => s.equivFin.symm.injective (Subtype.ext (h …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_le (hT : GlobalTheory.Published.TamagawaSpecialUnitary) (D : D7) (V : HSp D) (hV : V.SigOK) (P Q : ℕ)
     (hsig : ∀ τ, V.sig τ = (P, Q)) (r : ℕ) (hrk : V.rank = r) (hr : 2 ≤ r) (hU : Unr D.host.E)
@@ -244,27 +236,25 @@ namespace GlobalTheory.CovTop.VolUp
 open Formalism.IndefR.Links in
 
 /- English proof (translation)
-Take `⟨hn, hnl⟩` from `GlobalTheory.T.level_index_bound_of_classicalTheorems hP D Tu C t0 hC i P`. Establish `hrk : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hr : 2 ≤ D.R.r` using `Formalism.L2.Geo.two_le_r D`. Establish `hm` using `mass_le hP.p6 D (Wc D i) (D.sp.W_sig _) _ _ (D.sp.W_sigval _ (Nat.le_add_left _ _) i.2) _ hrk hr (GlobalTheory.InertOfConj.unram D) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i (Formalism.L2 …`. Use `set n := (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P).relIndex (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i (Formalism.L2.DIV.LevelP.full _ _ _)) with hndef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[show Module.finrank ℚ D.host.E = 4 * D.R.ord from D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree. Establish `hfd : fdeg D.host.E = D.R.f` using `by unfold fdeg; omega`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : 2 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hnV : D.R.r ≤ D.R.nV` using `Nat.le_add_right _ _`. Take `⟨h1, -, h3, h4⟩` from `hL`. Establish `hfR : (2 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `hrR : (2 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnR : (D.R.r : ℝ) ≤ D.R.nV` using `by exact_mod_cast hnV`. Establish `hfr : (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 ≤ Real.exp L`. Use `le_trans ?_ h1` and prove the remaining obligations. Rewrite using `[sq, ← mul_assoc]`. Use `gcongr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : 1 ≤ L`. Establish `: Real.exp 1 ≤ Real.exp L`. Use `Real.exp_one_lt_d9` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `Real.exp_le_exp.1 this`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd1 : (1 : ℝ) ≤ |(discr D.host.E : ℝ)|`. Use `Int.one_le_abs (discr_ne_zero D.host.E)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hrd1 : 1 ≤ rdE D.host.E` using `Real.one_le_rpow hd1 (by positivity)`. Establish `hlog : Real.log (rdE D.host.E) = Real.log |(discr D.host.E : ℝ)| / (2 * D.R.f)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `rdE dE`. Rewrite using `[Real.log_rpow (by linarith), hfin]; push_cast; ring`. Establish `hh` using `GlobalTheory.log_classNumber_le_log_abs_discr_div D.host.E D.R.f hfin`. Rewrite `hh` using `[← hlog]`. Establish `hrdL : Real.log (rdE D.host.E) ≤ 2 * L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: rdE D.host.E = D.host.rdE` using `rfl`. Rewrite using `[this]`. Combine the linear relations using `[abs_nonneg (dlogL D 1)]`. Establish `hP0 : 0 ≤ Real.sqrt D.R.r * ∏ i ∈ Finset.Icc 2 D.R.r, ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ i` using `mul_nonneg (Real.sqrt_nonneg _) (Finset.prod_nonneg fun i _ => tsum_nonneg fun n => by positivity)`. Establish `ha` using `GlobalTheory.T.explicit_height_bound_log_discriminant D.R.f D.R.r L n _ (classNumber D.host.E) (rdE D.host.E) _ hf hr hL1 hfr hrd1 hrdL (by exact_mod_cast Nat.pos_of_ne_zero hn) hnl h3 (by exact_mod_cast classNumber_pos D.host.E) hh hP0 (GlobalTheory.volumeConstant_le D.R.r hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : (μ 𝓕).toReal ≤ Real.exp (119 * (D.R.f * (D.R.r : ℝ) ^ 2 * L))`. Use `ENNReal.toReal_le_of_le_ofReal (Real.exp_pos _).le (hm.trans ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Unfold `torBd`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hfd]`. Conclude with `ha`. Establish `h0 : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * Real.log ((D.R.r : ℝ) + 3)` using `mul_nonneg (by positivity) (Real.log_nonneg (by linarith))`. Establish `h5 : Real.log (μ 𝓕).toReal ≤ 119 * (D.R.f * (D.R.r : ℝ) ^ 2 * L)`. Break down `(ENNReal.toReal_nonneg (a := μ 𝓕)).eq_or_lt with h | h` into its components or cases.
-
-Rewrite using `[← h, Real.log_zero]`. Check the signs of the components of the expression. Conclude with `(Real.log_le_iff_le_exp h).2 hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_mass_le (hP : GlobalTheory.CovTop.Hypotheses2) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m)
     (P : Formalism.L2.DIV.LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i)))

@@ -21,7 +21,7 @@ abbrev Idx (n d : ℕ) := Fin n ⊕ ({p : Fin n × Fin n // p.1 < p.2} × Fin d)
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul s e => simp [TensorProduct.smul_tmul', HaarCoord.sigR_tmul]`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_smul (σ : E →ₐ[F] E) (r : R) (y : R ⊗[F] E) :
     sigR R σ (r • y) = r • sigR R σ y := by
@@ -45,35 +45,35 @@ def coordOf (b : Module.Basis (Fin d) F E) (S : Matrix (Fin n) (Fin n) (R ⊗[F]
     (fun q => (Algebra.TensorProduct.basis R b).repr (S q.1.1.1 q.1.1.2) q.2)
 
 /- English proof (translation)
-Simplify using `only [psi, HaarCoord.hermMat, dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_lt (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E) (x : Idx n d → R) {a c : Fin n}
     (h : a < c) : psi R σ b x a c = offE R b x ⟨(a, c), h⟩ := by
   simp only [psi, HaarCoord.hermMat, dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [psi, HaarCoord.hermMat, dif_neg (not_lt_of_gt h), dif_pos h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_gt (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E) (x : Idx n d → R) {a c : Fin n}
     (h : c < a) : psi R σ b x a c = sigR R σ (offE R b x ⟨(c, a), h⟩) := by
   simp only [psi, HaarCoord.hermMat, dif_neg (not_lt_of_gt h), dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [psi, HaarCoord.hermMat, lt_irrefl, dite_false]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_eq (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E) (x : Idx n d → R) (a : Fin n) :
     psi R σ b x a a = x (Sum.inl a) ⊗ₜ[F] (1 : E) := by
   simp only [psi, HaarCoord.hermMat, lt_irrefl, dite_false]
 
 /- English proof (translation)
-Simplify using `[offE, TensorProduct.add_tmul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem offE_add (b : Module.Basis (Fin d) F E) (x y : Idx n d → R) (p) :
     offE R b (x + y) p = offE R b x p + offE R b y p := by
   simp [offE, TensorProduct.add_tmul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[offE, Finset.smul_sum, TensorProduct.smul_tmul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem offE_smul (b : Module.Basis (Fin d) F E) (r : R) (x : Idx n d → R) (p) :
     offE R b (r • x) p = r • offE R b x p := by
@@ -117,16 +117,16 @@ def mg (σ : E →ₐ[F] E) (G : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
   map_smul' r S := by simp [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-The claim follows from `HaarCoord.hermMat_mem R hinv n _`.
+A detailed English derivation is pending.
 -/
 theorem psi_mem {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) (b : Module.Basis (Fin d) F E)
     (x : Idx n d → R) : psi R σ b x ∈ HermR R σ n :=
   HaarCoord.hermMat_mem R hinv n _
 
 /- English proof (translation)
-Use extensionality with `i`. Break down `i with i | ⟨⟨⟨a, c⟩, h⟩, k⟩` into its components or cases. Simplify using `only [coordOf, Sum.elim_inl, psi_eq]`. Conclude with `HaarCoord.half_trace_tmul R h2 _`. Establish `h' : a < c` using `h`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [coordOf, Sum.elim_inr, psi_lt R σ b x h', offE]`. Establish `: (∑ k, x (Sum.inr (⟨(a, c), h⟩, k)) ⊗ₜ[F] b k) = ∑ k, x (Sum.inr (⟨(a, c), h⟩, k)) • Algebra.TensorProduct.basis R b k`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`. Rewrite using `[this, Module.Basis.repr_sum_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_psi [CharZero F] (h2 : Module.finrank F E = 2) (σ : E →ₐ[F] E)
     (b : Module.Basis (Fin d) F E) (x : Idx n d → R) : coordOf R b (psi R σ b x) = x := by
@@ -143,13 +143,11 @@ theorem coord_psi [CharZero F] (h2 : Module.finrank F E = 2) (σ : E →ₐ[F] E
     rw [this, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Establish `hoff : ∀ p : {p : Fin n × Fin n // p.1 < p.2}, offE R b (coordOf R b S) p = S p.1.1 p.1.2`. Introduce `p`. Use `(Algebra.TensorProduct.basis R b).sum_repr (S p.1.1 p.1.2)` as an intermediate fact. Use `conv_rhs => rw [← this]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[coordOf, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`. Use extensionality with `a c`. Break down `lt_trichotomy a c with h | h | h` into its components or cases. Rewrite using `[psi_lt R σ b _ h, hoff]`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `HaarCoord.fixed_eq_tmul R hinv h2 hδ hσδ (S a a) (hS a a)`. Rewrite using `[psi_eq]`. Simplify using `only [coordOf, Sum.elim_inl]`. Rewrite using `[hr, HaarCoord.half_trace_tmul R h2]`. Rewrite using `[psi_gt R σ b _ h, hoff]`.
-
-Conclude with `hS a c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_coord [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
     (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
@@ -173,11 +171,11 @@ theorem psi_coord [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x
     exact hS a c
 
 /- English proof (translation)
-Establish `key : ∀ T : Matrix (Fin n) (Fin n) (R ⊗[F] E), T ∈ HermR R σ n ↔ cT (sigR R σ) T = T`. Introduce `T`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `h a c`. Introduce `h a c`. Conclude with `congrFun (congrFun h a) c`. Rewrite `hS`, the goal using `[key]`. Establish `hcc : cT (sigR R σ) (cT (sigR R σ) G) = G`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a c`. Simplify using `[cT, HaarCoord.sigR_sigR R hinv]`. Express the relevant statement in the definitionally equal form `cT (sigR R σ) (cT (sigR R σ) G * S * G) = cT (sigR R σ) G * S * G`. Rewrite using `[cT_mul, cT_mul, hcc, hS, Matrix.mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mg_mem {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x) (G : Matrix (Fin n) (Fin n) (R ⊗[F] E))
     {S : Matrix (Fin n) (Fin n) (R ⊗[F] E)} (hS : S ∈ HermR R σ n) : mg R σ G S ∈ HermR R σ n := by
@@ -208,13 +206,13 @@ def phi : F ⊗[F] E →+* R ⊗[F] E :=
   (Algebra.TensorProduct.map (Algebra.ofId F R) (AlgHom.id F E)).toRingHom
 
 /- English proof (translation)
-Simplify using `[phi, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_tmul (r : F) (e : E) : phi R (r ⊗ₜ[F] e) = algebraMap F R r ⊗ₜ[F] e := by
   simp [phi, Algebra.ofId_apply]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul r e => rw [HaarCoord.sigR_tmul, phi_tmul, phi_tmul, HaarCoord.sigR_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem phi_sig (σ : E →ₐ[F] E) (y : F ⊗[F] E) : phi R (sigR F σ y) = sigR R σ (phi R y) := by
   induction y with
@@ -223,7 +221,7 @@ theorem phi_sig (σ : E →ₐ[F] E) (y : F ⊗[F] E) : phi R (sigR F σ y) = si
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `h1 : inclR F e = (1 : F) ⊗ₜ[F] e` using `rfl`. Establish `h2 : inclR R e = (1 : R) ⊗ₜ[F] e` using `rfl`. Rewrite using `[h1, h2, phi_tmul, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_incl (e : E) : phi R (inclR F e) = inclR R e := by
   have h1 : inclR F e = (1 : F) ⊗ₜ[F] e := rfl
@@ -231,16 +229,16 @@ theorem phi_incl (e : E) : phi R (inclR F e) = inclR R e := by
   rw [h1, h2, phi_tmul, map_one]
 
 /- English proof (translation)
-Simplify using `[offE, map_sum, phi_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem offE_map (b : Module.Basis (Fin d) F E) (x : Idx n d → F) (p) :
     phi R (offE F b x p) = offE R b (fun i => algebraMap F R (x i)) p := by
   simp [offE, map_sum, phi_tmul]
 
 /- English proof (translation)
-Use extensionality with `a c`. Rewrite using `[Matrix.map_apply]`. Break down `lt_trichotomy a c with h | h | h` into its components or cases. Rewrite using `[psi_lt F σ b _ h, psi_lt R σ b _ h, offE_map]`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[psi_eq, psi_eq, phi_tmul]`. Rewrite using `[psi_gt F σ b _ h, psi_gt R σ b _ h, phi_sig, offE_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_map (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E) (x : Idx n d → F) :
     (psi F σ b x).map (phi R) = psi R σ b (fun i => algebraMap F R (x i)) := by
@@ -253,9 +251,9 @@ theorem psi_map (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E) (x : Idx n d
   · rw [psi_gt F σ b _ h, psi_gt R σ b _ h, phi_sig, offE_map]
 
 /- English proof (translation)
-Establish `hg : (g.map (inclR F)).map (phi R) = g.map (inclR R)`. Use extensionality with `a c`. Simplify using `[phi_incl]`. Establish `hc : (cT (sigR F σ) (g.map (inclR F))).map (phi R) = cT (sigR R σ) (g.map (inclR R))`. Use extensionality with `a c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[cT, phi_sig, phi_incl]`. Express the relevant statement in the definitionally equal form `(cT (sigR F σ) (g.map (inclR F)) * S * g.map (inclR F)).map (phi R) = cT (sigR R σ) (g.map (inclR R)) * S.map (phi R) * g.map (inclR R)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hg, hc]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mg_map (σ : E →ₐ[F] E) (g : Matrix (Fin n) (Fin n) E) (S : Matrix (Fin n) (Fin n) (F ⊗[F] E)) :
     (mg F σ (g.map (inclR F)) S).map (phi R) = mg R σ (g.map (inclR R)) (S.map (phi R)) := by
@@ -281,7 +279,7 @@ theorem Lmap_apply (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E) (g : Matr
     Lmap R σ b g x = coordOf R b (mg R σ (g.map (inclR R)) (psi R σ b x)) := rfl
 
 /- English proof (translation)
-Establish `hH` using `mg_mem F hinv (g.map (inclR F)) (psi_mem F hinv b x)`. Establish `e1` using `psi_coord F hinv h2 hδ hσδ b hH`. Rewrite using `[Lmap_apply, ← psi_map, ← mg_map, ← e1, psi_map, coord_psi R h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Lmap_bc [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
     (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
@@ -297,9 +295,9 @@ def Amat (σ : E →ₐ[F] E) (b : Module.Basis (Fin d) F E) (g : Matrix (Fin n)
   LinearMap.toMatrix' (Lmap F σ b g)
 
 /- English proof (translation)
-Establish `key : (Amat σ b g).map (algebraMap F R) = LinearMap.toMatrix' (Lmap R σ b g)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Amat, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply]`. Establish `e : (Pi.single j (1 : R) : Idx n d → R) = fun j' => algebraMap F R ((Pi.single j (1 : F) : Idx n d → F) j')`. Use function extensionality and compare the values at `j'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e, Lmap_bc R hinv h2 hδ hσδ]`. Rewrite using `[key, LinearMap.toMatrix'_mulVec]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Amat_spec [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
     (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
@@ -317,11 +315,11 @@ theorem Amat_spec [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x
   rw [key, LinearMap.toMatrix'_mulVec]
 
 /- English proof (translation)
-Establish `hH` using `mg_mem (F := F) R hinv (g'.map (inclR R)) (psi_mem R hinv b x)`. Establish `e1` using `psi_coord R hinv h2 hδ hσδ b hH`. Establish `hone : g'.map (inclR (F` using `F) R) * g.map (inclR (F := F) R) = 1 := by`. Rewrite using `[← Matrix.map_mul, hgg, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Lmap_apply R σ b g, Lmap_apply R σ b g', e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: mg R σ (g.map (inclR R)) (mg R σ (g'.map (inclR R)) (psi R σ b x)) = psi R σ b x`. Express the relevant statement in the definitionally equal form `cT (sigR R σ) (g.map (inclR R)) * (cT (sigR R σ) (g'.map (inclR R)) * psi R σ b x * g'.map (inclR R)) * g.map (inclR R) = _`. Establish `: cT (sigR R σ) (g.map (inclR R)) * cT (sigR R σ) (g'.map (inclR R)) = 1`. Rewrite using `[← cT_mul, hone, cT_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[this, coord_psi R h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Lmap_inv [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
     (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
@@ -343,9 +341,9 @@ theorem Lmap_inv [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
   rw [this, coord_psi R h2]
 
 /- English proof (translation)
-Establish `hgg : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g (isUnit_iff_ne_zero.mpr hg)`. Establish `: Amat σ b g * Amat σ b g⁻¹ = 1`. Rewrite using `[Amat, Amat, ← LinearMap.toMatrix'_comp]`. Establish `: Lmap F σ b g ∘ₗ Lmap F σ b g⁻¹ = LinearMap.id` using `LinearMap.ext fun x => Lmap_inv F hinv h2 hδ hσδ b hgg x`. Rewrite using `[this, LinearMap.toMatrix'_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.isUnit_det_of_right_inverse this).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem Amat_det [CharZero F] {σ : E →ₐ[F] E} (hinv : ∀ x, σ (σ x) = x)
     (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
@@ -368,9 +366,9 @@ variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
 variable {d n : ℕ}
 
 /- English proof (translation)
-Use `IsModuleTopology.continuous_of_linearMap (R := R) (A := R) (B := R ⊗[F] E) (LinearMap.toSpanSingleton R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e))` as an intermediate fact. Establish `h : (fun r : R => r ⊗ₜ[F] e) = ⇑(LinearMap.toSpanSingleton R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e))`. Use function extensionality and compare the values at `r`. Simplify using `[TensorProduct.smul_tmul']`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tmul [IsTopologicalRing R] [ContinuousAdd (R ⊗[F] E)]
     [ContinuousSMul R (R ⊗[F] E)] (e : E) : Continuous fun r : R => r ⊗ₜ[F] e := by
@@ -384,7 +382,7 @@ theorem continuous_tmul [IsTopologicalRing R] [ContinuousAdd (R ⊗[F] E)]
   exact this
 
 /- English proof (translation)
-The claim follows from `continuous_finset_sum _ fun k _ => (continuous_tmul R (b k)).comp (continuous_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_offE [IsTopologicalRing R] [ContinuousAdd (R ⊗[F] E)]
     [ContinuousSMul R (R ⊗[F] E)] (b : Module.Basis (Fin d) F E) (p) :
@@ -392,9 +390,9 @@ theorem continuous_offE [IsTopologicalRing R] [ContinuousAdd (R ⊗[F] E)]
   continuous_finset_sum _ fun k _ => (continuous_tmul R (b k)).comp (continuous_apply _)
 
 /- English proof (translation)
-Use `continuous_matrix fun a c => ?_` and prove the remaining obligations. Break down `lt_trichotomy a c with h | h | h` into its components or cases. Simplify using `only [psi_lt R σ b _ h]`. Conclude with `continuous_offE R b _`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [psi_eq]`. Conclude with `(continuous_tmul R (1 : E)).comp (continuous_apply _)`. Simplify using `only [psi_gt R σ b _ h]`. Conclude with `hsig.comp (continuous_offE R b _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_psi [IsTopologicalRing R] [ContinuousAdd (R ⊗[F] E)]
     [ContinuousSMul R (R ⊗[F] E)] {σ : E →ₐ[F] E} (hsig : Continuous (sigR R σ))
@@ -411,7 +409,7 @@ theorem continuous_psi [IsTopologicalRing R] [ContinuousAdd (R ⊗[F] E)]
     exact hsig.comp (continuous_offE R b _)
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Break down `i with i | q` into its components or cases. Conclude with `continuous_const.mul (htr.comp (continuous_apply_apply i i))`. Conclude with `((continuous_apply q.2).comp hrepr.continuous).comp (continuous_apply_apply q.1.1.1 q.1.1.2)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_coordOf [IsTopologicalRing R] (b : Module.Basis (Fin d) F E)
     (htr : Continuous (Algebra.trace R (R ⊗[F] E)))
@@ -430,15 +428,13 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨t1, t2, t3, t4, t5, t6, t7, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R`. Establish `h2 : Module.finrank F E = 2` using `hcm.2.2.1`. Take `⟨hinv, δ, hδ, hσδ⟩` from `HaarCoord.conj_facts hcm`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R _`. Use `haveI : BorelSpace (HermR R σ n) := ⟨rfl⟩`. Set `K : (Idx n d → R) ≃ₜ HermR R σ n` to `{ toFun := fun x => ⟨psi R σ b x, psi_mem R hinv b x⟩ invFun := fun S => coordOf R b (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) left_inv := fun x => coord_psi R h2 σ b x right_inv := fun S => Subtype.ext (psi_coord R hinv h2 hδ hσδ b S.2) continuous_toFun := (continuous_psi R t5 b). …`. Establish `hKadd : ∀ x y, K (x + y) = K x + K y` using `fun x y => Subtype.ext ((psiL R σ b).map_add x y)`. Set `e : (Idx n d → R) ≃+ HermR R σ n` to `AddEquiv.mk' K.toEquiv hKadd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : (ν.map K.symm).IsAddHaarMeasure` using `e.symm.isAddHaarMeasure_map ν K.symm.continuous K.continuous`. Set `T : (Idx n d → R) → (Idx n d → R)` to `fun x => (Amat σ b g).map (algebraMap F R) *ᵥ x`. Establish `hT : Continuous T` using `continuous_const.matrix_mulVec continuous_id`. Establish `hτeq : τ = K ∘ T ∘ K.symm`. Use function extensionality and compare the values at `S`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hS : psi R σ b (coordOf R b (S : Matrix (Fin n) (Fin n) (R ⊗[F] E))) = S` using `psi_coord R hinv h2 hδ hσδ b S.2`. Establish `hM : (τ S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = mg R σ (g.map (inclR R)) (S : Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `hτ S`. Express the relevant statement in the definitionally equal form `(τ S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = psi R σ b (T (coordOf R b S.1))`. Simplify using `only [T]`.
-
-Rewrite using `[Amat_spec R hinv h2 hδ hσδ, Lmap_apply, hS, ← hM]`. Conclude with `(psi_coord R hinv h2 hδ hσδ b (τ S).2).symm`. Rewrite using `[hτeq, ← Measure.map_map K.continuous.measurable (hT.measurable.comp K.symm.continuous.measurable), ← Measure.map_map hT.measurable K.symm.continuous.measurable, hc _ hμ, Measure.map_smul, Measure.map_map K.continuous.measurable K.symm.continuous.measurable]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_eq_of_coord {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ)
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
@@ -496,11 +492,11 @@ namespace GlobalTheory.CompanionTheory.SW
 open PfHerm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n g hg`. Establish `h2 : Module.finrank F E = 2` using `hcm.2.2.1`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Take `⟨hinv, δ, hδ, hσδ⟩` from `HaarCoord.conj_facts hcm`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨cinf, c, hU, hI, hF⟩` from `GlobalTheory.T.addHaar_map_mulVec_eq_smul_at_all_places F (Idx n 2) (Amat σ b g) (Amat_det hinv h2 hδ hσδ b hg)`. Use `⟨cinf, c, hU, ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨l1, l2, l3, l4, -⟩` from `isLocR_Ainf F hcm.1 haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Conclude with `fun ν hν τ hτ => map_eq_of_coord hcm (Ainf F) b g cinf hI ν hν τ hτ`. Take `⟨l1, l2, l3, l4, -⟩` from `LocFv.isLocR_Fv F v haveI : BorelSpace (Fv F v) := ⟨rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun ν hν τ hτ => map_eq_of_coord hcm (Fv F v) b g (c v) (hF v) ν hν τ hτ`.
+A detailed English derivation is pending.
 -/
 theorem pf_herm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) E), g.det ≠ 0 → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ ν : Measure (HermR (Ainf F) σ n), ν.IsAddHaarMeasure → ∀ τ : HermR (Ainf F) σ n → HermR (Ainf F) σ n, (∀ S, (τ S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) = cT (sigR (Ainf F) σ) (g.map (inclR (Ainf F))) * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * g.map (inclR (Ainf F))) → ν.map τ = cinf • ν) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (∀ ν : Measure (HermR (Fv F v) σ n), ν.IsAddHaarMeasure → ∀ τ : HermR (Fv F v) σ n → HermR (Fv F v) σ n, (∀ S, (τ S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = cT (sigR (Fv F v) σ) (g.map (inclR (Fv F v))) * (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * g.map (inclR (Fv F v))) → ν.map τ = c v • ν) := by
   intro F E _ _ _ _ _ σ hcm n g hg

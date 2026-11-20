@@ -7,34 +7,34 @@ namespace UpperTheory.V.Ws
 private def gdot (u v : ℤ × ℤ) : ℤ := u.1 * v.1 + u.2 * v.2
 
 /- English proof (translation)
-Use `revert i j`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem gdot_self (i j : Fin 4) (h : i ≠ j) : 0 < gdot (wt i j) (wt i j) := by
   revert i j; decide
 
 /- English proof (translation)
-Use `revert i j k l`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem gdot_neg (i j k l : Fin 4) (h : gdot (wt i j) (wt k l) < 0) :
     j = k ∨ l = i ∨ j = l.rev ∨ k.rev = i := by
   revert i j k l; decide
 
 /- English proof (translation)
-Simplify using `[wt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wt_add' (i j k : Fin 4) : wt i k = wt i j + wt j k := by
   simp [wt]
 
 /- English proof (translation)
-Use `revert i j`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem sgn_sq (i j : Fin 4) : (sgn i * sgn j) * (sgn i * sgn j) = 1 := by
   revert i j; decide
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [gdot]`. Consider the case `cons b L ih`. Establish `hb` using `h b List.mem_cons_self`. Establish `hL` using `ih (fun c hc => h c (List.mem_cons_of_mem _ hc))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : gdot u ((b :: L).map f).sum = gdot u (f b) + gdot u (L.map f).sum`. Simplify using `only [List.map_cons, List.sum_cons, gdot, Prod.fst_add, Prod.snd_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_nonneg hb hL`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gdot_sum {α : Type} (f : α → ℤ × ℤ) (u : ℤ × ℤ) (L : List α) (h : ∀ b ∈ L, 0 ≤ gdot u (f b)) :
     0 ≤ gdot u (L.map f).sum := by
@@ -52,7 +52,7 @@ private theorem gdot_sum {α : Type} (f : α → ℤ × ℤ) (u : ℤ × ℤ) (L
 variable {A : Type} [CommRing A] {𝓡 : Subring (M4 A)}
 
 /- English proof (translation)
-Use `⟨(sgn j.rev * sgn i.rev) • adj x, zsmul_mem (ha x hx) _, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, adj_apply, Fin.rev_rev, Fin.rev_rev, smul_smul, sgn_sq, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gflip (ha : ∀ x ∈ 𝓡, adj x ∈ 𝓡) {x : M4 A} (hx : x ∈ 𝓡) (i j : Fin 4) :
     ∃ x' ∈ 𝓡, x' j.rev i.rev = x i j := by
@@ -60,7 +60,7 @@ private theorem gflip (ha : ∀ x ∈ 𝓡, adj x ∈ 𝓡) {x : M4 A} (hx : x �
   rw [Matrix.smul_apply, adj_apply, Fin.rev_rev, Fin.rev_rev, smul_smul, sgn_sq, one_smul]
 
 /- English proof (translation)
-Use `⟨x * Matrix.single j j 1 * y, mul_mem (mul_mem hx (h1 j)) hy, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem gcomp (h1 : ∀ i, Matrix.single i i 1 ∈ 𝓡) {x y : M4 A} (hx : x ∈ 𝓡) (hy : y ∈ 𝓡) (i j k : Fin 4) :
     ∃ z ∈ 𝓡, z i k = x i j * y j k := by
@@ -68,13 +68,13 @@ private theorem gcomp (h1 : ∀ i, Matrix.single i i 1 ∈ 𝓡) {x y : M4 A} (h
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Take `hjk | hli | hjl | hki` from `gdot_neg i j k l h`. Substitute `hjk` using the available equality. Take `⟨z, hz, hz'⟩` from `gcomp h1 hx hy i j l`. Conclude with `⟨z, hz, i, l, wt_add' i j l, hz'⟩`. Substitute `hli` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Substitute using the available equality.
 
-Take `⟨z, hz, hz'⟩` from `gcomp h1 hy hx k l j`. Conclude with `⟨z, hz, k, j, by rw [wt_add' k l j, add_comm], by rw [hz', mul_comm]⟩`. Substitute `hjl` using the available equality. Take `⟨y', hy', hy''⟩` from `gflip ha hy k l`. Take `⟨z, hz, hz'⟩` from `gcomp h1 hx hy' i l.rev k.rev`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz, i, k.rev, by rw [wt_add' i l.rev k.rev, wt_rev], by rw [hz', hy'']⟩`. Substitute `hki` using the available equality. Take `⟨x', hx', hx''⟩` from `gflip ha hx k.rev j`. Rewrite `hx''` using `[Fin.rev_rev]`. Take `⟨z, hz, hz'⟩` from `gcomp h1 hx' hy j.rev k l`.
+Supply the required witnesses or components. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz, j.rev, l, by rw [wt_add' j.rev k l, ← wt_rev k.rev j, Fin.rev_rev], by rw [hz', hx'']⟩`.
+Supply the required witnesses or components.
 -/
 private theorem gmerge (h1 : ∀ i, Matrix.single i i 1 ∈ 𝓡) (ha : ∀ x ∈ 𝓡, adj x ∈ 𝓡) {x y : M4 A} (hx : x ∈ 𝓡)
     (hy : y ∈ 𝓡) (i j k l : Fin 4) (h : gdot (wt i j) (wt k l) < 0) :
@@ -99,31 +99,29 @@ private theorem gmerge (h1 : ∀ i, Matrix.single i i 1 ∈ 𝓡) (ha : ∀ x �
 end UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `A _ E 𝓡 h1 htr ha L hL hsum`. Establish `hdiag : ∀ x ∈ 𝓡, ∀ p, x p p ∈ E`. Introduce `x hx p`. Establish `h` using `htr _ (mul_mem (h1 p) hx)`. Establish `e : (Matrix.single p p 1 * x : M4 A).trace = x p p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. It suffices to establish `key : ∀ n (L : List (M4 A × Fin 4 × Fin 4)), L.length = n → (∀ x ∈ L, x.1 ∈ 𝓡) → (L.map fun x => wt x.2.1 x.2.2).sum = 0 → (L.map fun x => x.1 x.2.1 x.2.2).prod ∈ E from key _ L rfl hL hsum`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ n ih`. Introduce `L hn hL hsum`. Consider the cases of `L with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `E.one_mem`. Consider the case `cons a rest`. Take `⟨x, i, j⟩` from `a`. Simplify using `only [List.map_cons, List.sum_cons, List.prod_cons] at hsum ⊢`. Establish `hx : x ∈ 𝓡` using `hL _ List.mem_cons_self`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrest : ∀ y ∈ rest, y.1 ∈ 𝓡` using `fun y hy => hL y (List.mem_cons_of_mem _ hy)`. Establish `hlen : rest.length < n`. Simplify using `at hn`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Establish `hs : (rest.map fun x => wt x.2.1 x.2.2).sum = 0`. Rewrite `hsum` using `[(wt_eq_zero i i).2 rfl, zero_add]`. Conclude with `hsum`. Conclude with `mul_mem (hdiag x hx i) (ih _ hlen rest rfl hrest hs)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hpos` using `UpperTheory.V.Ws.gdot_self i j hij`. Establish `hneg : ∃ b ∈ rest, UpperTheory.V.Ws.gdot (wt i j) (wt b.2.1 b.2.2) < 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h0` using `UpperTheory.V.Ws.gdot_sum (fun b : M4 A × Fin 4 × Fin 4 => wt b.2.1 b.2.2) (wt i j) rest hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : UpperTheory.V.Ws.gdot (wt i j) (wt i j + (rest.map fun b => wt b.2.1 b.2.2).sum) = UpperTheory.V.Ws.gdot (wt i j) (wt i j) + UpperTheory.V.Ws.gdot (wt i j) (rest.map fun b => wt b.2.1 b.2.2).sum`. Simplify using `only [UpperTheory.V.Ws.gdot, Prod.fst_add, Prod.snd_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `e0 : UpperTheory.V.Ws.gdot (wt i j) 0 = 0` using `by simp [UpperTheory.V.Ws.gdot]`. Rewrite `e` using `[hsum, e0]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨b, hb, hbneg⟩` from `hneg`. Take `⟨y, k, l⟩` from `b`. Establish `hy : y ∈ 𝓡` using `hrest _ hb`. Take `⟨s, t, rfl⟩` from `List.append_of_mem hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨z, hz, p, q, hw, hzv⟩` from `UpperTheory.V.Ws.gmerge h1 ha hx hy i j k l hbneg`. Establish `hlen' : ((z, p, q) :: (s ++ t)).length < n`. Simplify using `at hn ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hL' : ∀ w ∈ ((z, p, q) :: (s ++ t)), w.1 ∈ 𝓡`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `w hw'`. Simplify using `only [List.mem_cons, List.mem_append] at hw'`. Break down `hw' with rfl | hw' | hw'` into its components or cases. Conclude with `hz`. Conclude with `hrest w (by simp [hw'])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hrest w (by simp [hw'])`. Establish `hsum' : (((z, p, q) :: (s ++ t)).map fun x => wt x.2.1 x.2.2).sum = 0`. Simplify using `only [List.map_cons, List.map_append, List.sum_cons, List.sum_append] at hsum ⊢`. Rewrite using `[hw]`. Take the linear combination `hsum`.
-
-Use `ih _ hlen' _ rfl hL' hsum'` as an intermediate fact. Simplify using `only [List.map_cons, List.map_append, List.prod_cons, List.prod_append] at this ⊢`. Rewrite `this` using `[hzv]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxGma :
     ∀ {A : Type} [CommRing A] (E : Subring A) (𝓡 : Subring (M4 A)), (∀ i, Matrix.single i i 1 ∈ 𝓡) → (∀ x ∈ 𝓡, x.trace ∈ E) → (∀ x ∈ 𝓡, adj x ∈ 𝓡) → ∀ L : List (M4 A × Fin 4 × Fin 4), (∀ x ∈ L, x.1 ∈ 𝓡) → (L.map fun x => wt x.2.1 x.2.2).sum = 0 → (L.map fun x => x.1 x.2.1 x.2.2).prod ∈ E := by

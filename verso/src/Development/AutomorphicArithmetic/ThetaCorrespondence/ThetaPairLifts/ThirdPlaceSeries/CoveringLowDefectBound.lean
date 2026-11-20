@@ -15,19 +15,19 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CovTop.DefLow
 /- English proof (translation)
-Introduce `hP hG hA`. Establish `hc` using `_root_.GlobalTheory.T.two_mul_defBound_sub_le_muCore_of_gramAt hP`. Use `Closed.imp ((hA.and (hG.and (_root_.GlobalTheory.CovTop.WtShape.wtN_z.and _root_.GlobalTheory.T.weight_dimension_log_bound'))).and hc) fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨CA, hCA, xA, eA⟩, ⟨CG, -, xG, eG⟩, ⟨CW, -, xW, eW⟩, ⟨C3, hC3, x3, e3⟩⟩, ⟨C₀, hC₀, x0, h1⟩⟩` from `h`. Use `⟨CA + C3 + C₀, by positivity, max (max (max xA xG) (max xW x3)) x0, fun x hx hle' ι p hp i hi => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle` using `le_trans (le_max_left _ _) hle'`. Establish `l0 : x0 ≤ x` using `le_trans (le_max_right _ _) hle'`. Establish `lA : xA ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hle`. Establish `lG : xG ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hle`. Establish `lW : xW ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l3 : x3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hle`. Establish `a` using `eA x hx lA ι p hp i`. Establish `g` using `eG x hx lG ι p hp i`. Establish `w` using `eW x hx lW ι p hp i`. Establish `s` using `e3 x hx l3 ι p hp i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c` using `h1 x hx l0 ι p hp i hi g`. Establish `hk` using `(Fm.D x ι).R.m_add_three_le_k`. Establish `q0 : (dat p i).q = 0`. Rewrite using `[w.sig.2.1]`. Unfold `Ranks.sigW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `p1 : 1 ≤ (dat p i).p`. Rewrite using `[w.sig.1]`. Unfold `Ranks.sigW`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `ar` using `GlobalTheory.T.two_definiteBound_ge_anchoredMainTerm_sub_crude_errors _ _ (dat p i) (wtA (p.κ i)) (p.κ i).n ((Fm.D x ι).R.k - 1) (ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm q0 p1 (p.κ i).n_even`. Establish `a1` using `a.1`. Simplify using `only [q0, Nat.cast_zero, sub_zero] at a1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `a1` using `[abs_le]`. Unfold `LowAt`. Combine the linear relations using `[a1.1, a1.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem covering_low_defect_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.AnchorCondition → _root_.GlobalTheory.CovTop.LowDefectCondition := by
   intro hP hG hA
@@ -66,7 +66,7 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DefLow.covering_low_defect_alt | exact _root_.GlobalTheory.CovTop.DefLow.covering_low_defect_alt | (intros; apply _root_.GlobalTheory.CovTop.DefLow.covering_low_defect_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lowDef_of_gram_of_anchor : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.AnchorCondition → _root_.GlobalTheory.CovTop.LowDefectCondition := by
   first | exact @_root_.GlobalTheory.CovTop.DefLow.covering_low_defect_alt | exact _root_.GlobalTheory.CovTop.DefLow.covering_low_defect_alt | (intros; apply _root_.GlobalTheory.CovTop.DefLow.covering_low_defect_alt <;> assumption)

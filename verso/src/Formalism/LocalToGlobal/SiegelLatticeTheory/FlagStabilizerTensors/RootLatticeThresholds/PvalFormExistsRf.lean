@@ -13,7 +13,7 @@ namespace Formalism.L2.SG.Pf.KernelOfEmbedding
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X}
 
 /- English proof (translation)
-The claim follows from `pairAmpConst_of (fun w => Formalism.L2.SG.Closed.NeatKu_holds X w Y.hK) hRF Formalism.L2.SG.Pf.iotaRepC_holds Formalism.L2.SG.Pf.ampRepNC_holds (fun _ X => chi_n_bilinear X) hOI`.
+A detailed English derivation is pending.
 -/
 theorem pairAmpConst_holds (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y)
     (hOI : ∀ w w', OOIntAll X w w' (X.Fu w) (X.Fu w') (Y.what₂ w) (Y.what₂ w')) : PairAmpConst Y :=
@@ -23,7 +23,7 @@ theorem pairAmpConst_holds (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y)
 variable {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF))
 
 /- English proof (translation)
-The claim follows from `pvalForm_exists' W hI (AmpCov_holds Y) (pairAmpConst_holds hRF hOI) hN`.
+A detailed English derivation is pending.
 -/
 theorem pvalForm_exists_rf (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y)
     (hOI : ∀ w w', OOIntAll X w w' (X.Fu w) (X.Fu w') (Y.what₂ w) (Y.what₂ w')) (hN : FibreCountEq hF) :
@@ -31,13 +31,13 @@ theorem pvalForm_exists_rf (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y)
   pvalForm_exists' W hI (AmpCov_holds Y) (pairAmpConst_holds hRF hOI) hN
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.Act.rowFree_of (fun w => Formalism.L2.SG.Closed.NeatKu_holds X w Y.hK) Formalism.L2.SG.Pf.iotaRepC_holds`.
+A detailed English derivation is pending.
 -/
 theorem rowFree_holds : Formalism.L2.SG.Pf.FibreCounting.RowFree Y :=
   Formalism.L2.SG.Pf.Act.rowFree_of (fun w => Formalism.L2.SG.Closed.NeatKu_holds X w Y.hK) Formalism.L2.SG.Pf.iotaRepC_holds
 
 /- English proof (translation)
-The claim follows from `pvalForm_exists_rf W hI rowFree_holds hOI hN`.
+A detailed English derivation is pending.
 -/
 theorem pvalForm_exists_oi (hOI : ∀ w w', OOIntAll X w w' (X.Fu w) (X.Fu w') (Y.what₂ w) (Y.what₂ w'))
     (hN : FibreCountEq hF) : ∃ A : AmpDat X, PvalForm W hI A :=

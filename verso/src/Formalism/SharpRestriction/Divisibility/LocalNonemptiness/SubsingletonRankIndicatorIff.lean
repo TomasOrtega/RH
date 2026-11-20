@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.DIV.Inh
 open Formalism.BasicNotions Formalism.MainNotions.ModuliIntegralCharts NumberField
 
 /- English proof (translation)
-Conclude with `⟨{ Dat := Empty rk := fun w => w.elim jj := fun w => w.elim jj_range := fun w => w.elim loc := fun w => w.elim ex := fun w => w.elim NgC := fun _ => Unit NgC_ne := fun _ => ⟨()⟩ KF := fun _ _ => Unit kfNorm := fun _ _ => 1 pbKF := fun w => w.elim levIn := fun _ _ => True Xg := fu …`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_local_provision_degenerate (D : D7) : Nonempty (ModuliIntegralCharts.Prov D) := by
   exact ⟨{
@@ -50,14 +50,14 @@ Both sides reduce to the same expression.
 theorem cjO_coe (c : 𝓞 D.host.E) : ((cjO D c : 𝓞 D.host.E) : D.host.E) = D.host.conj (c : D.host.E) := rfl
 
 /- English proof (translation)
-Conclude with `(D.host.der.conj_iff (σ : D.host.E →+* ℂ) D.host.conj).mpr (D.host.gal.apply_symm_apply _) x`.
+A detailed English derivation is pending.
 -/
 theorem emb_conj (σ : D.host.E →ₐ[ℚ] ℂ) (x : D.host.E) : σ (D.host.conj x) = starRingEnd ℂ (σ x) := by
   exact (D.host.der.conj_iff (σ : D.host.E →+* ℂ) D.host.conj).mpr
     (D.host.gal.apply_symm_apply _) x
 
 /- English proof (translation)
-Establish `h : ∀ y, D.host.φ₀ (D.host.conj y) = starRingEnd ℂ (D.host.φ₀ y)` using `(D.host.der.conj_iff D.host.φ₀ D.host.conj).mpr (D.host.gal.apply_symm_apply _)`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[h, h, Complex.conj_conj]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj' (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   have h : ∀ y, D.host.φ₀ (D.host.conj y) = starRingEnd ℂ (D.host.φ₀ y) :=
@@ -79,7 +79,7 @@ theorem beO_apply (a b : 𝓞 D.host.E) :
     beO D a b = ((Algebra.trace ℤ (𝓞 D.host.E) (a * cjO D b) : ℤ) : ℝ) := rfl
 
 /- English proof (translation)
-Establish `h1` using `Algebra.coe_trace_int x`. Establish `h2` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := D.host.E) (x := (x : D.host.E))`. Rewrite using `[← h2, ← h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trC (x : 𝓞 D.host.E) :
     ((Algebra.trace ℤ (𝓞 D.host.E) x : ℤ) : ℂ) = ∑ σ : D.host.E →ₐ[ℚ] ℂ, σ (x : D.host.E) := by
@@ -89,9 +89,9 @@ theorem trC (x : 𝓞 D.host.E) :
   simp
 
 /- English proof (translation)
-Rewrite using `[beO_apply, Complex.ofReal_intCast, trC]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `e : ((a * cjO D b : 𝓞 D.host.E) : D.host.E) = (a : D.host.E) * D.host.conj (b : D.host.E)`. Rewrite using `[← cjO_coe]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[e, map_mul, emb_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem beO_eq (a b : 𝓞 D.host.E) : ((beO D a b : ℝ) : ℂ) =
     ∑ σ : D.host.E →ₐ[ℚ] ℂ, σ (a : D.host.E) * starRingEnd ℂ (σ (b : D.host.E)) := by
@@ -102,7 +102,7 @@ theorem beO_eq (a b : 𝓞 D.host.E) : ((beO D a b : ℝ) : ℂ) =
   rw [e, map_mul, emb_conj]
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← Complex.conj_ofReal (beO D a b : ℝ), beO_eq, beO_eq, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_conj, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem beO_symm (a b : 𝓞 D.host.E) : beO D a b = beO D b a := by
   apply Complex.ofReal_injective
@@ -111,11 +111,11 @@ theorem beO_symm (a b : 𝓞 D.host.E) : beO D a b = beO D b a := by
   rw [map_mul, Complex.conj_conj, mul_comm]
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[beO_eq, beO_eq]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hc : σ (c' : D.host.E) = starRingEnd ℂ (σ (c : D.host.E))` using `by rw [h, emb_conj]`. Establish `e1 : ((c • a : 𝓞 D.host.E) : D.host.E) = (c : D.host.E) * a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul]`. Use `norm_cast`. Establish `e2 : ((c' • b : 𝓞 D.host.E) : D.host.E) = (c' : D.host.E) * b`. Rewrite using `[smul_eq_mul]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[e1, e2, map_mul, map_mul, map_mul, hc, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem beO_bal (c c' : 𝓞 D.host.E) (h : (c' : D.host.E) = D.host.conj (c : D.host.E)) (a b : 𝓞 D.host.E) :
     beO D (c • a) b = beO D a (c' • b) := by
@@ -131,7 +131,7 @@ theorem beO_bal (c c' : 𝓞 D.host.E) (h : (c' : D.host.E) = D.host.conj (c : D
   ring
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[beO_eq, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem beO_self (a : 𝓞 D.host.E) : beO D a a = ∑ σ : D.host.E →ₐ[ℚ] ℂ, Complex.normSq (σ (a : D.host.E)) := by
   apply Complex.ofReal_injective
@@ -140,14 +140,14 @@ theorem beO_self (a : 𝓞 D.host.E) : beO D a a = ∑ σ : D.host.E →ₐ[ℚ]
   rw [Complex.mul_conj]
 
 /- English proof (translation)
-Rewrite using `[beO_self]`. Conclude with `Finset.sum_nonneg fun σ _ => Complex.normSq_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beO_nonneg (a : 𝓞 D.host.E) : 0 ≤ beO D a a := by
   rw [beO_self]
   exact Finset.sum_nonneg fun σ _ => Complex.normSq_nonneg _
 
 /- English proof (translation)
-Rewrite using `[beO_self]`. Set `σ0 : D.host.E →ₐ[ℚ] ℂ` to `D.host.φ₀.toRatAlgHom`. Establish `ha : (a : D.host.E) ≠ 0` using `by exact_mod_cast h`. Establish `hs : σ0 (a : D.host.E) ≠ 0` using `(map_ne_zero σ0).mpr ha`. Conclude with `lt_of_lt_of_le (Complex.normSq_pos.mpr hs) (Finset.single_le_sum (f := fun σ : D.host.E →ₐ[ℚ] ℂ => Complex.normSq (σ (a : D.host.E))) (fun σ _ => Complex.normSq_nonneg _) (Finset.mem_univ σ0))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem beO_pos (a : 𝓞 D.host.E) (h : a ≠ 0) : 0 < beO D a a := by
   rw [beO_self]
@@ -162,13 +162,13 @@ def beK (k : ℕ) : (Fin k → 𝓞 D.host.E) →ₗ[ℤ] (Fin k → 𝓞 D.host
   ∑ i, (beO D).compl₁₂ (LinearMap.proj i) (LinearMap.proj i)
 
 /- English proof (translation)
-Simplify using `[beK, LinearMap.sum_apply, LinearMap.compl₁₂_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem beK_apply (k : ℕ) (a b : Fin k → 𝓞 D.host.E) : beK D k a b = ∑ i, beO D (a i) (b i) := by
   simp [beK, LinearMap.sum_apply, LinearMap.compl₁₂_apply]
 
 /- English proof (translation)
-Use `⟨∑ i, Algebra.trace ℤ (𝓞 D.host.E) (a i * cjO D (b i)), ?_⟩` and prove the remaining obligations. Rewrite using `[beK_apply, Int.cast_sum]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem beK_int (k : ℕ) (a b : Fin k → 𝓞 D.host.E) : ∃ z : ℤ, beK D k a b = z := by
   refine ⟨∑ i, Algebra.trace ℤ (𝓞 D.host.E) (a i * cjO D (b i)), ?_⟩
@@ -176,7 +176,7 @@ theorem beK_int (k : ℕ) (a b : Fin k → 𝓞 D.host.E) : ∃ z : ℤ, beK D k
   rfl
 
 /- English proof (translation)
-Rewrite using `[beK_apply]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp h`. Conclude with `Finset.sum_pos' (fun j _ => beO_nonneg D _) ⟨i, Finset.mem_univ _, beO_pos D _ hi⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem beK_pos (k : ℕ) (a : Fin k → 𝓞 D.host.E) (h : a ≠ 0) : 0 < beK D k a a := by
   rw [beK_apply]
@@ -184,11 +184,11 @@ theorem beK_pos (k : ℕ) (a : Fin k → 𝓞 D.host.E) (h : a ≠ 0) : 0 < beK 
   exact Finset.sum_pos' (fun j _ => beO_nonneg D _) ⟨i, Finset.mem_univ _, beO_pos D _ hi⟩
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[beO_eq, Finset.mul_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ i, ∑ σ : D.host.E →ₐ[ℚ] ℂ, ∑ j, (c i : ℂ) * c j * (σ (a i : D.host.E) * starRingEnd ℂ (σ (a j : D.host.E))) := Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Use `_ = ∑ σ : D.host.E →ₐ[ℚ] ℂ, ∑ i, ∑ j, (c i : ℂ) * c j * (σ (a i : D.host.E) * starRingEnd ℂ (σ (a j : D.host.E))) := Finset.sum_comm`. Use `_ = ((∑ σ : D.host.E →ₐ[ℚ] ℂ, Complex.normSq (∑ i, (c i : ℂ) * σ (a i : D.host.E)) : ℝ) : ℂ) := by`. Use `push_cast`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.mul_conj, map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem beO_sum {ι : Type} [Fintype ι] (a : ι → 𝓞 D.host.E) (c : ι → ℝ) :
     ∑ i, ∑ j, c i * c j * beO D (a i) (a j) =
@@ -215,9 +215,7 @@ theorem beO_sum {ι : Type} [Fintype ι] (a : ι → 𝓞 D.host.E) (c : ι → 
         ring
 
 /- English proof (translation)
-Simplify using `only [beK_apply, Finset.mul_sum]`. Use `conv_lhs => enter [2, i]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
-
-Conclude with `beO_sum D (fun i => a i m) c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem beK_sum (k : ℕ) {ι : Type} [Fintype ι] (a : ι → Fin k → 𝓞 D.host.E) (c : ι → ℝ) :
     ∑ i, ∑ j, c i * c j * beK D k (a i) (a j) =
@@ -232,19 +230,17 @@ def bK (k : ℕ) : Module.Basis (Σ _ : Fin k, Module.Free.ChooseBasisIndex ℤ 
   Pi.basis fun _ => RingOfIntegers.basis D.host.E
 
 /- English proof (translation)
-Take `⟨⟨m0, t0⟩, h0⟩` from `Function.ne_iff.mp hc`. Establish `key : ∃ σ : D.host.E →ₐ[ℚ] ℂ, ∑ i, (c i : ℂ) * σ ((bK D k i m0 : 𝓞 D.host.E) : D.host.E) ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Set `B` to `NumberField.integralBasis D.host.E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hred : ∀ σ : D.host.E →ₐ[ℚ] ℂ, ∑ t, (c ⟨m0, t⟩ : ℂ) * σ (B t) = 0`. Introduce `σ`. Establish `h` using `hne σ`. Rewrite `h` using `[Fintype.sum_sigma, Finset.sum_eq_single m0 (fun m' _ hm' => ?_) (by simp)]`. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `[B, bK, Pi.basis_apply, NumberField.integralBasis_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Simplify using `[bK, Pi.basis_apply, Pi.single_apply, Ne.symm hm']`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)) = Fintype.card (D.host.E →ₐ[ℚ] ℂ)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.card, Module.finrank_eq_card_basis B]`. Set `e` to `Fintype.equivOfCardEq hcard`. Establish `hdet : (Algebra.embeddingsMatrixReindex ℚ ℂ B e).det ≠ 0`. Introduce `hd`. Establish `h2` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ ℂ B e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hd, zero_pow two_ne_zero, map_eq_zero_iff _ (algebraMap ℚ ℂ).injective]`. Conclude with `Algebra.discr_not_zero_of_basis ℚ B h2`. Establish `hv` using `Matrix.eq_zero_of_vecMul_eq_zero hdet (v := fun t => (c ⟨m0, t⟩ : ℂ)) (by`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_apply, Equiv.symm_symm, Matrix.of_apply, Pi.zero_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hred (e j))`. Establish `h1` using `congrFun hv t0`. Simplify using `only [Pi.zero_apply, Complex.ofReal_eq_zero] at h1`. Conclude with `h0 h1`. Take `⟨σ, hσ⟩` from `key`.
-
-Rewrite using `[beK_sum]`. Use `Finset.sum_pos' (fun m _ => Finset.sum_nonneg fun σ _ => Complex.normSq_nonneg _) ⟨m0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_pos' (fun _ _ => Complex.normSq_nonneg _) ⟨σ, Finset.mem_univ _, Complex.normSq_pos.mpr hσ⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem beK_posDef (k : ℕ) (c : (Σ _ : Fin k, Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)) → ℝ) (hc : c ≠ 0) :
     0 < ∑ i, ∑ j, c i * c j * beK D k (bK D k i) (bK D k j) := by
@@ -293,14 +289,14 @@ open Classical in
 def rk01 (P : Prop) : ℕ := if P then 0 else 1
 
 /- English proof (translation)
-Unfold `rk01`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rank_indicator_le_one (P : Prop) : rk01 P ≤ 1 := by
   unfold rk01
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, NumberField.RingOfIntegers.rank, D.host.der.finrank_E]`. Simplify using `only [Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_copies (k : ℕ) : Module.finrank ℤ (Fin k → 𝓞 D.host.E) = 2 * D.R.f * k := by
   rw [Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
@@ -309,9 +305,9 @@ theorem finrank_copies (k : ℕ) : Module.finrank ℤ (Fin k → 𝓞 D.host.E) 
   ring
 
 /- English proof (translation)
-Unfold `rk01`. Distinguish the cases in `h : P`. Rewrite using `[if_pos h]`. Conclude with `⟨fun _ => h, fun _ => inferInstance⟩`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hs => ?_, fun hp => absurd hp h⟩` and prove the remaining obligations. It suffices to derive a contradiction. Establish `h1` using `congrFun (hs.elim (fun _ => (0 : 𝓞 D.host.E)) (fun _ => 1)) 0`. Conclude with `zero_ne_one h1`.
+Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_rank_indicator_iff (P : Prop) : Subsingleton (Fin (rk01 P) → 𝓞 D.host.E) ↔ P := by
   unfold rk01
@@ -327,13 +323,13 @@ theorem subsingleton_rank_indicator_iff (P : Prop) : Subsingleton (Fin (rk01 P) 
 def pmM (dg : PsiT D → ℕ → ℤ) (n : ℕ) : ℤ := ∑ t : D.what₂.Tau, ∑ k ∈ Finset.Icc 1 n, |dg (D.eTau t) k|
 
 /- English proof (translation)
-Conclude with `Finset.sum_nonneg fun t _ => Finset.sum_nonneg fun k _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem pmM_nonneg (dg : PsiT D → ℕ → ℤ) (n : ℕ) : 0 ≤ pmM D dg n := by
   exact Finset.sum_nonneg fun t _ => Finset.sum_nonneg fun k _ => abs_nonneg _
 
 /- English proof (translation)
-The claim follows from `|∑ k ∈ s, dg τ k| ≤ pmM D dg n := by have h1 : |∑ k ∈ s, dg τ k| ≤ ∑ k ∈ s, |dg τ k| := Finset.abs_sum_le_sum_abs _ _ have h2 : ∑ k ∈ s, |dg τ k| ≤ ∑ k ∈ Finset.Icc 1 n, |dg τ k| := Finset.sum_le_sum_of_subset_of_nonneg hs (fun _ _ _ => abs_nonneg _) have h3 : ∑ k ∈ Finset.Icc 1 …`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_pmM (dg : PsiT D → ℕ → ℤ) (n : ℕ) (τ : PsiT D) (s : Finset ℕ) (hs : s ⊆ Finset.Icc 1 n) :
     |∑ k ∈ s, dg τ k| ≤ pmM D dg n := by
@@ -356,9 +352,9 @@ instance (n : ℕ) : NeZero (nn n) := ⟨by unfold nn; split_ifs <;> omega⟩
 abbrev AtM (k n : ℕ) : Type := Fin k → ZMod (nn n)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul]`. Distinguish the cases in `h : n = 0`. Simplify using `[h]`. Establish `hn : nn n = n` using `if_neg h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (n : ZMod (nn n)) = 0` using `(CharP.cast_eq_zero_iff (ZMod (nn n)) (nn n) n).mpr (by rw [hn])`. Rewrite using `[this, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem atM_tors (k n : ℕ) (x : AtM k n) : n • x = 0 := by
   funext i
@@ -370,7 +366,7 @@ theorem atM_tors (k n : ℕ) (x : AtM k n) : n • x = 0 := by
     rw [this, zero_mul]
 
 /- English proof (translation)
-Establish `hn : nn n = n` using `if_neg (by omega)`. Rewrite using `[Fintype.card_fun, ZMod.card, Fintype.card_fin, hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem atM_card (k n : ℕ) (h : 0 < n) : Fintype.card (AtM k n) = n ^ k := by
   have hn : nn n = n := if_neg (by omega)
@@ -690,7 +686,7 @@ open LocalProvisionModel
 variable (D : D7)
 
 /- English proof (translation)
-Use `⟨provDegenerate D {rj : ℕ × ℕ // 1 ≤ rj.2 ∧ rj.2 + 1 ≤ rj.1} (fun w => w.1.1) (fun w => w.1.2) (fun w => w.2) (fun _ p => mpTrivialAb D p (Classical.choice (nonempty_coefficient_field p))), ?_⟩` and prove the remaining obligations. Introduce `r j hj hr`. Conclude with `⟨⟨(r, j), hj, hr⟩, rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_full_local_provision :
     ∃ P : ModuliIntegralCharts.Prov D, ∀ r j, 1 ≤ j → j + 1 ≤ r → ∃ w : P.Dat, P.rk w = r ∧ P.jj w = j := by

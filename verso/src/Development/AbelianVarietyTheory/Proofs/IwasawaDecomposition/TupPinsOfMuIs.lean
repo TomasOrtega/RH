@@ -16,11 +16,9 @@ open scoped nonZeroDivisors IntermediateField
 namespace GlobalTheory.Mem.HD.TupPin
 
 /- English proof (translation)
-Establish `a1 : Chr.IsTwist B.host (Set.range B.host.g) f.del` using `Chr.isTwist_of_isDelta B.host.pde_prime (GlobalTheory.HostSplit.split_of_one_mod B.R B.host _ B.host.pde_prime B.pde_cond.1).1 (fun ⟨i, h⟩ => (B.host.pde_ne_g i).1 h.symm) f.isDel`. Establish `a2 : Chr.IsTwist B.host (Set.range B.host.g) f.del'` using `Chr.isTwist_of_isDelta B.host.pde'_prime (GlobalTheory.HostSplit.split_of_one_mod B.R B.host _ B.host.pde'_prime B.pde_cond.2).1 (fun ⟨i, h⟩ => (B.host.pde_ne_g i).2 h.symm) f.isDel'`. Introduce and unpack `ξ ((rfl | rfl | rfl) | ⟨w, rfl⟩)`. Conclude with `Chr.isTwist_one _ _`. Conclude with `a1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `a2`. Establish `h` using `T.psi_tw w`. Establish `a3 : Chr.IsTwist B.host (Set.range B.host.g) (T.psi w)` using `⟨h.1, h.2.1, h.2.2.1, fun v hv => ⟨(h.2.2.2 v hv).1, (h.2.2.2 v hv).2.1, (h.2.2.2 v hv).2.2.1, fun ⟨i, hi⟩ => (h.2.2.2 v hv).2.2.2 (Or.inr (Or.inl ⟨i, hi.symm⟩))⟩⟩`. Unfold `TwDat.xiTw`. Use `split_ifs`.
-
-Use `exacts [a2.mul_twist a3, a1.mul_twist a3]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isTwist_types (B : Base) (f : Fr B.toPre) (T : TwDat B) :
     ∀ ξ ∈ T.set f, Chr.IsTwist B.host (Set.range B.host.g) ξ := by
@@ -43,9 +41,7 @@ theorem isTwist_types (B : Base) (f : Fr B.toPre) (T : TwDat B) :
     exacts [a2.mul_twist a3, a1.mul_twist a3]
 
 /- English proof (translation)
-Establish `hψ : (T.psi w).UnrAt v` using `fun x _ => (T.psi_is w).atl v hv x`. Unfold `TwDat.xiTw`. Use `split_ifs with h`. Use `(f.isDel'.unr v fun hn => B.host.pde_ne ?_).mul hψ` and prove the remaining obligations. Rewrite `hv` using `[h]`.
-
-Conclude with `Examples₂.PlacesToy.prime_mem_unique v B.host.pde_prime B.host.pde'_prime hv hn`. Conclude with `(f.isDel.unr v fun hn => h (Examples₂.PlacesToy.prime_mem_unique v (B.places.resChar_prime w) B.host.pde_prime hv hn)).mul hψ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiTw_unr (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : B.places.Pl) (v : HeightOneSpectrum (𝓞 B.host.E))
     (hv : OverP B.host (B.places.resChar w) v) : (T.xiTw f w).UnrAt v := by
@@ -59,11 +55,11 @@ theorem xiTw_unr (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : B.places.Pl) (v 
       (Examples₂.PlacesToy.prime_mem_unique v (B.places.resChar_prime w) B.host.pde_prime hv hn)).mul hψ
 
 /- English proof (translation)
-Introduce `X f T xi h nch tp hxi`. Use `⟨fun μ v hv => ?_, fun w v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[hxi]`. Take `⟨h1, h2, h3, h4⟩` from `(isTwist_types X.B f T (xi μ) (h.range ▸ Set.mem_range_self μ)).2.2.2 v hv`. Conclude with `⟨h1, h2, h3, fun k hk => h4 ⟨k, Examples₂.PlacesToy.prime_mem_unique v (X.B.host.g_prime k) h2 hk (Ideal.absNorm_mem _)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hxi] show (xi (X.W.muAt w)).UnrAt v`. Distinguish the cases in `hw : X.B.places.resChar w ∈ T.pl`. Rewrite using `[h.on w hw, h.tw w]`. Conclude with `xiTw_unr X.B f T w v hv`. Rewrite using `[h.off w hw, h.mu0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun x _ => HChar.loc_one _ _`.
+A detailed English derivation is pending.
 -/
 theorem tupPins_of_muIs : ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (xi : X.C.Tup → HChar X.B.host.E), MuIs X f T xi → ∀ (nch : NChoice X.toD7) (tp : TupTied X.toD7 (Fr.at X f) nch), tp.xi = xi → TupPins tp := by
   intro X f T xi h nch tp hxi

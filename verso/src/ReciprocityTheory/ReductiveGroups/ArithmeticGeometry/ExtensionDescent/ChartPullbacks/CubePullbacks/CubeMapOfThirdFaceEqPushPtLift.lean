@@ -21,7 +21,7 @@ variable {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonO
   [IsCommMonObj G] (m : CubeMap G' G)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [pzero, eSec]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma pzero_left {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] (T : Over S₀) :
     (pzero H T).left = T.hom ≫ eSec H := by
@@ -30,7 +30,7 @@ lemma pzero_left {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] (T : Over S₀) 
     | simp [pzero, eSec]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [eSec]`. Consider the case `(unfold eSec; exact Over.w _)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma eSec_hom {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] : eSec H ≫ H.hom = 𝟙 _ := by
   first
@@ -38,7 +38,7 @@ lemma eSec_hom {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] : eSec H ≫ H.hom
     | (unfold eSec; exact Over.w _)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [psum, pzero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma psum_empty {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H] {T : Over S₀} {n : ℕ}
     (x : Fin n → (T ⟶ H)) : psum H x ∅ = pzero H T := by
@@ -47,7 +47,7 @@ lemma psum_empty {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H]
     | simp [psum, pzero]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [padd, pzero]`. Consider the case `simp [padd]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma padd_pzero {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H] {T : Over S₀}
     (a : T ⟶ H) : padd H a (pzero H T) = a := by
@@ -56,7 +56,7 @@ lemma padd_pzero {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H]
     | simp [padd]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> first`. Consider the case `exact padd_pzero H _`. Consider the case `simp [psum, List.finRange, padd_pzero]`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 -/
 lemma psum_single {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H] {T : Over S₀}
     (x : Fin 3 → (T ⟶ H)) (i : Fin 3) : psum H x {i} = x i := by
@@ -66,7 +66,7 @@ lemma psum_single {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H
       | simp [psum, List.finRange, padd_pzero]
 
 /- English proof (translation)
-Establish `h` using `m.psum_comm ∅`. Rewrite `h` using `[psum_empty, psum_empty, pzero_left, pzero_left, Category.assoc, m.e_comm]`. Establish `h2` using `congrArg (· ≫ G.hom) h`. Simplify using `only [Category.assoc, eSec_hom, Category.comp_id] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cubeMap_lies_over_base : m.F3 ≫ (G3 G).hom = (G3 G').hom ≫ m.e := by
   have h := m.psum_comm ∅
@@ -76,16 +76,16 @@ lemma cubeMap_lies_over_base : m.F3 ≫ (G3 G).hom = (G3 G').hom ≫ m.e := by
   exact h2.symm
 
 /- English proof (translation)
-Establish `h` using `m.psum_comm {i}`. Rewrite `h` using `[psum_single, psum_single]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma cubeMap_on_coordinates (i : Fin 3) : (x3 G' i).left ≫ m.F = m.F3 ≫ (x3 G i).left := by
   have h := m.psum_comm {i}
   rwa [psum_single, psum_single] at h
 
 /- English proof (translation)
-Establish `key : (x3 G' 0).left ≫ G'.hom ≫ m.e = (x3 G' 0).left ≫ m.F ≫ G.hom`. Rewrite using `[← Category.assoc, Over.w (x3 G' 0), ← cubeMap_lies_over_base, ← Category.assoc, cubeMap_on_coordinates, Category.assoc, Over.w (x3 G 0)]`. Establish `hs : (lift (𝟙 G') (lift (𝟙 G') (𝟙 G')) : G' ⟶ G3 G') ≫ x3 G' 0 = 𝟙 G'`. Simplify using `[x3]`. Establish `hl` using `congrArg (fun f => f.left) hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Over.comp_left, Over.id_left] at hl`. Establish `h` using `congrArg (fun f => (lift (𝟙 G') (lift (𝟙 G') (𝟙 G')) : G' ⟶ G3 G').left ≫ f) key`. Simplify using `only [← Category.assoc, hl, Category.id_comp] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem m_over : G'.hom ≫ m.e = m.F ≫ G.hom := by
   have key : (x3 G' 0).left ≫ G'.hom ≫ m.e = (x3 G' 0).left ≫ m.F ≫ G.hom := by
@@ -110,7 +110,7 @@ Both sides reduce to the same expression.
 lemma tb_left {T : Over S'} (y : T ⟶ G') : (tb m y).left = y.left ≫ m.F := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `[tb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma tb_comp {T T' : Over S'} (a : T' ⟶ T) (y : T ⟶ G') :
     tb m (a ≫ y) = (Over.map m.e).map a ≫ tb m y := by
@@ -118,7 +118,7 @@ lemma tb_comp {T T' : Over S'} (a : T' ⟶ T) (y : T ⟶ G') :
   simp [tb]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[tb_left, pzero_left, pzero_left, Category.assoc, m.e_comm]`. Apply the tactic sequence `all_goals first | rfl | simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tb_pzero (T : Over S') : tb m (pzero G' T) = pzero G ((Over.map m.e).obj T) := by
   ext
@@ -126,7 +126,7 @@ lemma tb_pzero (T : Over S') : tb m (pzero G' T) = pzero G ((Over.map m.e).obj T
   all_goals first | rfl | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact congrArg (padd H (x 0)) (padd_pzero H (x 1))`. Consider the case `(show padd H (x 0) (padd H (x 1) (pzero H T)) = _; rw [padd_pzero])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma psum_01 {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H] {T : Over S₀}
     (x : Fin 3 → (T ⟶ H)) : psum H x {0, 1} = padd H (x 0) (x 1) := by
@@ -135,7 +135,7 @@ lemma psum_01 {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] [IsCommMonObj H] {T
     | (show padd H (x 0) (padd H (x 1) (pzero H T)) = _; rw [padd_pzero])
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [padd, ← Category.assoc, CartesianMonoidalCategory.comp_lift])`. Consider the case `(unfold padd; rw [← Category.assoc, CartesianMonoidalCategory.comp_lift])`. Consider the case `simp [padd]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma comp_padd' {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] {T T' : Over S₀} (L : T' ⟶ T)
     (a b : T ⟶ H) : L ≫ padd H a b = padd H (L ≫ a) (L ≫ b) := by
@@ -145,7 +145,7 @@ lemma comp_padd' {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] {T T' : Over S�
     | simp [padd]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [pzero]`. Consider the case `(unfold pzero; simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma comp_pzero' {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] {T T' : Over S₀} (L : T' ⟶ T) :
     L ≫ pzero H T = pzero H T' := by
@@ -159,7 +159,7 @@ abbrev L3 : (Over.map m.e).obj (G3 G') ⟶ G3 G :=
   lift (tb m (x3 G' 0)) (lift (tb m (x3 G' 1)) (tb m (x3 G' 2)))
 
 /- English proof (translation)
-Use `ext`. Use `first`. Consider the case `simp [cubeMapOverAlt, tb, cubeMap_on_coordinates]`. Consider the case `(simp only [cubeMapOverAlt, tb, Over.comp_left, Over.homMk_left]; exact (cubeMap_on_coordinates m i).symm)`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma cubeMapOver_comp_proj (i : Fin 3) : cubeMapOverAlt m ≫ x3 G i = tb m (x3 G' i) := by
   ext
@@ -168,7 +168,7 @@ lemma cubeMapOver_comp_proj (i : Fin 3) : cubeMapOverAlt m ≫ x3 G i = tb m (x3
     | (simp only [cubeMapOverAlt, tb, Over.comp_left, Over.homMk_left]; exact (cubeMap_on_coordinates m i).symm)
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify `cubeMapOver_comp_proj m 0` using `[x3]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify `cubeMapOver_comp_proj m 1` using `[x3]`. Simplify `cubeMapOver_comp_proj m 2` using `[x3]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma cubeMapOver_eq_productMap : cubeMapOverAlt m = L3 m := by
   apply CartesianMonoidalCategory.hom_ext
@@ -178,21 +178,21 @@ lemma cubeMapOver_eq_productMap : cubeMapOverAlt m = L3 m := by
     · simpa [x3] using cubeMapOver_comp_proj m 2
 
 /- English proof (translation)
-Rewrite using `[← cubeMapOver_eq_productMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma cubeMapOf_thirdFace_eq_pushPt_lift : m.F3 = (L3 m).left := by
   rw [← cubeMapOver_eq_productMap]
   rfl
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[tb_left, m.psum_comm, Over.comp_left, ← cubeMapOf_thirdFace_eq_pushPt_lift]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma tb_psum3 (I : Finset (Fin 3)) : tb m (psum G' (x3 G') I) = L3 m ≫ psum G (x3 G) I := by
   ext
   rw [tb_left, m.psum_comm, Over.comp_left, ← cubeMapOf_thirdFace_eq_pushPt_lift]
 
 /- English proof (translation)
-Simplify using `only [L3, comp_lift, ← tb_comp]`. Simplify using `[x3]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma tb_lift3 {T : Over S'} (a b c : T ⟶ G') :
     (Over.map m.e).map (lift a (lift b c)) ≫ L3 m = lift (tb m a) (lift (tb m b) (tb m c)) := by
@@ -200,9 +200,9 @@ lemma tb_lift3 {T : Over S'} (a b c : T ⟶ G') :
   simp [x3]
 
 /- English proof (translation)
-Use `ext`. Establish `hw : lift y (lift z y) ≫ padd G' (x3 G' 0) (x3 G' 1) = padd G' y z`. Simplify using `[comp_padd', x3]`. Establish `h01` using `m.psum_comm {0, 1}`. Rewrite `h01` using `[psum_01, psum_01]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg (fun f => f.left) (tb_lift3 m y z y)`. Simplify using `only [Over.comp_left, Over.map_map_left] at h3`. Rewrite using `[tb_left, ← hw, Over.comp_left, Category.assoc, h01, cubeMapOf_thirdFace_eq_pushPt_lift, ← Category.assoc, h3, ← Over.comp_left, comp_padd']`. Simplify using `[x3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma tb_padd {T : Over S'} (y z : T ⟶ G') : tb m (padd G' y z) = padd G (tb m y) (tb m z) := by
   ext
@@ -217,7 +217,7 @@ lemma tb_padd {T : Over S'} (y z : T ⟶ G') : tb m (padd G' y z) = padd G (tb m
   simp [x3]
 
 /- English proof (translation)
-Rewrite using `[cubeMapOf_thirdFace_eq_pushPt_lift]`. Establish `h` using `congrArg (fun f => f.left) (tb_lift3 m p q r)`. Simplify using `only [Over.comp_left, Over.map_map_left] at h`. Rewrite using `[h, hp, hq, hr, ← comp_lift, ← comp_lift, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma lift_triple_comm_pullback {T : Over S'} {T0 : Over S} (L : (Over.map m.e).obj T ⟶ T0) (p q r : T ⟶ G')
     (p0 q0 r0 : T0 ⟶ G) (hp : tb m p = L ≫ p0) (hq : tb m q = L ≫ q0) (hr : tb m r = L ≫ r0) :
@@ -237,36 +237,36 @@ def pullbackMapSquare : (G2 G').left ⟶ (G2 G).left := (L2 m).left
 def pullbackMapFourth : (G4 G').left ⟶ (G4 G).left := (L4 m).left
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> simp [L2, x2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma pullback_proj_square (j : Fin 2) : tb m (x2 G' j) = L2 m ≫ x2 G j := by
   fin_cases j <;> simp [L2, x2]
 
 /- English proof (translation)
-Rewrite using `[← cubeMapOver_eq_productMap, cubeMapOver_comp_proj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pullback_proj_cube (j : Fin 3) : tb m (x3 G' j) = L3 m ≫ x3 G j := by
   rw [← cubeMapOver_eq_productMap, cubeMapOver_comp_proj]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> simp [L4, x4]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma pullback_proj_fourth (j : Fin 4) : tb m (x4 G' j) = L4 m ≫ x4 G j := by
   fin_cases j <;> simp [L4, x4]
 
 /- English proof (translation)
-Rewrite using `[tb_pzero, comp_pzero']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma tb_pzero' {T : Over S'} {T0 : Over S} (L : (Over.map m.e).obj T ⟶ T0) :
     tb m (pzero G' T) = L ≫ pzero G T0 := by
   rw [tb_pzero, comp_pzero']
 
 /- English proof (translation)
-Use `fin_cases i`. Establish `h` using `lift_triple_comm_pullback m (L2 m) (pzero G' (G2 G')) (x2 G' 0) (x2 G' 1) (pzero G (G2 G)) (x2 G 0) (x2 G 1) (tb_pzero' m (L2 m)) (pullback_proj_square m 0) (pullback_proj_square m 1) first`. Consider the case `exact h`. Consider the case `(simp only [faceMap, pullbackMapSquare]; exact h)`. Consider the case `simpa [faceMap, pullbackMapSquare] using h`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h` using `lift_triple_comm_pullback m (L2 m) (x2 G' 0) (pzero G' (G2 G')) (x2 G' 1) (x2 G 0) (pzero G (G2 G)) (x2 G 1) (pullback_proj_square m 0) (tb_pzero' m (L2 m)) (pullback_proj_square m 1) first`. Consider the case `exact h`. Consider the case `(simp only [faceMap, pullbackMapSquare]; exact h)`. Consider the case `simpa [faceMap, pullbackMapSquare] using h`. Establish `h` using `lift_triple_comm_pullback m (L2 m) (x2 G' 0) (x2 G' 1) (pzero G' (G2 G')) (x2 G 0) (x2 G 1) (pzero G (G2 G)) (pullback_proj_square m 0) (pullback_proj_square m 1) (tb_pzero' m (L2 m)) first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact h`. Consider the case `(simp only [faceMap, pullbackMapSquare]; exact h)`. Consider the case `simpa [faceMap, pullbackMapSquare] using h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem face_comm (i : Fin 3) :
     (faceMap G' i).left ≫ m.F3 = pullbackMapSquare m ≫ (faceMap G i).left := by
@@ -288,7 +288,7 @@ theorem face_comm (i : Fin 3) :
       | simpa [faceMap, pullbackMapSquare] using h
 
 /- English proof (translation)
-Rewrite using `[lift_triple_comm_pullback m (L3 m) (x3 G' 1) (x3 G' 0) (x3 G' 2) (x3 G 1) (x3 G 0) (x3 G 2) (pullback_proj_cube m 1) (pullback_proj_cube m 0) (pullback_proj_cube m 2), cubeMapOf_thirdFace_eq_pushPt_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_first_two_comm :
     (lift (x3 G' 1) (lift (x3 G' 0) (x3 G' 2))).left ≫ m.F3 =
@@ -297,7 +297,7 @@ theorem swap_first_two_comm :
     (pullback_proj_cube m 1) (pullback_proj_cube m 0) (pullback_proj_cube m 2), cubeMapOf_thirdFace_eq_pushPt_lift]
 
 /- English proof (translation)
-Rewrite using `[lift_triple_comm_pullback m (L3 m) (x3 G' 0) (x3 G' 2) (x3 G' 1) (x3 G 0) (x3 G 2) (x3 G 1) (pullback_proj_cube m 0) (pullback_proj_cube m 2) (pullback_proj_cube m 1), cubeMapOf_thirdFace_eq_pushPt_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_last_two_comm :
     (lift (x3 G' 0) (lift (x3 G' 2) (x3 G' 1))).left ≫ m.F3 =
@@ -306,7 +306,7 @@ theorem swap_last_two_comm :
     (pullback_proj_cube m 0) (pullback_proj_cube m 2) (pullback_proj_cube m 1), cubeMapOf_thirdFace_eq_pushPt_lift]
 
 /- English proof (translation)
-Rewrite using `[show pullbackMapFourth m = (L4 m).left from rfl, lift_triple_comm_pullback m (L4 m) _ _ _ _ _ _ (pullback_proj_fourth m a) (pullback_proj_fourth m b) (pullback_proj_fourth m c)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cube_face_comm (a b c : Fin 4) :
     (lift (x4 G' a) (lift (x4 G' b) (x4 G' c))).left ≫ m.F3 =
@@ -315,7 +315,7 @@ theorem cube_face_comm (a b c : Fin 4) :
     lift_triple_comm_pullback m (L4 m) _ _ _ _ _ _ (pullback_proj_fourth m a) (pullback_proj_fourth m b) (pullback_proj_fourth m c)]
 
 /- English proof (translation)
-Establish `hp : tb m (padd G' (x4 G' a) (x4 G' b)) = L4 m ≫ padd G (x4 G a) (x4 G b)`. Rewrite using `[tb_padd, pullback_proj_fourth, pullback_proj_fourth, comp_padd']`. Rewrite using `[show pullbackMapFourth m = (L4 m).left from rfl, lift_triple_comm_pullback m (L4 m) _ _ _ _ _ _ hp (pullback_proj_fourth m c) (pullback_proj_fourth m d)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cube_sum_face_comm (a b c d : Fin 4) :
     (lift (padd G' (x4 G' a) (x4 G' b)) (lift (x4 G' c) (x4 G' d))).left ≫ m.F3 =
@@ -326,7 +326,7 @@ theorem cube_sum_face_comm (a b c d : Fin 4) :
     lift_triple_comm_pullback m (L4 m) _ _ _ _ _ _ hp (pullback_proj_fourth m c) (pullback_proj_fourth m d)]
 
 /- English proof (translation)
-Establish `hq : tb m (padd G' (x4 G' b) (x4 G' c)) = L4 m ≫ padd G (x4 G b) (x4 G c)`. Rewrite using `[tb_padd, pullback_proj_fourth, pullback_proj_fourth, comp_padd']`. Rewrite using `[show pullbackMapFourth m = (L4 m).left from rfl, lift_triple_comm_pullback m (L4 m) _ _ _ _ _ _ (pullback_proj_fourth m a) hq (pullback_proj_fourth m d)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem c4p'_comm (a b c d : Fin 4) :
     (lift (x4 G' a) (lift (padd G' (x4 G' b) (x4 G' c)) (x4 G' d))).left ≫ m.F3 =
@@ -337,11 +337,11 @@ theorem c4p'_comm (a b c d : Fin 4) :
     lift_triple_comm_pullback m (L4 m) _ _ _ _ _ _ (pullback_proj_fourth m a) hq (pullback_proj_fourth m d)]
 
 /- English proof (translation)
-Establish `hm : ∀ {T0 : Over S} (a b : T0 ⟶ G), padd G a b = pzero G T0 → b = a ≫ ι[G]`. Introduce `T0 a b hab`. Establish `h1 : (a ≫ ι[G]) * a = 1`. Express the relevant statement in the definitionally equal form `lift (a ≫ ι[G]) a ≫ μ = toUnit _ ≫ η`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `h2 : a * b = 1`. Express the relevant statement in the definitionally equal form `lift a b ≫ μ = toUnit _ ≫ η`. Conclude with `hab`. Conclude with `(left_inv_eq_right_inv h1 h2).symm`. Apply `hm` to reduce the goal to its premises.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← tb_padd, ← tb_pzero]`. Use `congr 1`. Simplify using `[padd, pzero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma tb_inv {T : Over S'} (y : T ⟶ G') : tb m (y ≫ ι[G']) = tb m y ≫ ι[G] := by
   have hm : ∀ {T0 : Over S} (a b : T0 ⟶ G), padd G a b = pzero G T0 → b = a ≫ ι[G] := by
@@ -359,7 +359,7 @@ lemma tb_inv {T : Over S'} (y : T ⟶ G') : tb m (y ≫ ι[G']) = tb m y ≫ ι[
   simp [padd, pzero]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.left) (tb_inv m (𝟙 G'))`. Simplify `h` using `[tb_left]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_comm : (GrpObj.inv (X := G')).left ≫ m.F = m.F ≫ (GrpObj.inv (X := G)).left := by
   have h := congrArg (fun f => f.left) (tb_inv m (𝟙 G'))

@@ -258,7 +258,7 @@ def reduceOrder (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}
     emptyMarkedSeq T
 
 /- English proof (translation)
-Unfold `reduceOrder`. Rewrite using `[dif_pos hv, if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem reduceOrder_of_orderAtLeastLocus_eq_empty (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (resolveLower : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (hv : T.IsAdmissible)

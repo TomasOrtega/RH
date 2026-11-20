@@ -11,7 +11,7 @@ variable {F F' : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarc
   [Field F'] [ValuativeRel F'] [TopologicalSpace F'] [IsNonarchimedeanLocalField F']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [ord_one]`. Consider the case `succ k ih => rw [pow_succ, ord_mul (pow_ne_zero _ hx) hx, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_pow_nat {x : F} (hx : x ≠ 0) (n : ℕ) : ord (x ^ n) = n * ord x := by
   induction n with
@@ -19,20 +19,20 @@ theorem ord_pow_nat {x : F} (hx : x ≠ 0) (n : ℕ) : ord (x ^ n) = n * ord x :
   | succ k ih => rw [pow_succ, ord_mul (pow_ne_zero _ hx) hx, ih]; push_cast; ring
 
 /- English proof (translation)
-Use `ord_units_zpow (Units.mk0 x hx) k` as an intermediate fact. Simplify `this` using `[Units.val_zpow_eq_zpow_val]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ord_zpow' {x : F} (hx : x ≠ 0) (k : ℤ) : ord (x ^ k) = k * ord x := by
   have := ord_units_zpow (Units.mk0 x hx) k
   simpa [Units.val_zpow_eq_zpow_val] using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[(hasBasis_nhds_zero_valBall (K := F)).tendsto_right_iff]`. Introduce `i _`. Use `filter_upwards [Filter.eventually_ge_atTop i.toNat] with n hn`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, mem_valBall_iff_le_ord (pow_ne_zero _ hx), ord_pow_nat hx]`. Establish `: (i.toNat : ℤ) ≤ n` using `by exact_mod_cast hn`. Establish `h2 : i ≤ n` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Establish `hm` using `h (valBall_mem_nhds (K := F) 1)`. Take `⟨n, hn⟩` from `(Filter.eventually_atTop.mp (Filter.mem_map.mp hm))`. Use `hn (n + 1) (by omega)` as an intermediate fact. Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mem_valBall_iff_le_ord (pow_ne_zero _ hx), ord_pow_nat hx]`. Move the coercions through the operations in `at this`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ord_pos_iff_tendsto {x : F} (hx : x ≠ 0) :
     0 < ord x ↔ Filter.Tendsto (fun n : ℕ => x ^ n) Filter.atTop (𝓝 0) := by
@@ -61,9 +61,9 @@ variable (φ : F ≃+* F') (h1 : Continuous φ) (h2 : Continuous φ.symm)
 include h1 h2
 
 /- English proof (translation)
-Establish `hx' : φ x ≠ 0` using `by simpa using hx`. Rewrite using `[ord_pos_iff_tendsto hx, ord_pos_iff_tendsto hx']`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `((h2.tendsto' _ _ (by simp)).comp h)` using `[Function.comp_def, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Simplify `((h1.tendsto' _ _ (by simp)).comp h)` using `[Function.comp_def, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ord_pos_iff {x : F} (hx : x ≠ 0) : 0 < ord (φ x) ↔ 0 < ord x := by
   have hx' : φ x ≠ 0 := by simpa using hx
@@ -75,7 +75,7 @@ theorem ord_pos_iff {x : F} (hx : x ≠ 0) : 0 < ord (φ x) ↔ 0 < ord x := by
     simpa [Function.comp_def, map_pow] using ((h1.tendsto' _ _ (by simp)).comp h)
 
 /- English proof (translation)
-Establish `hx' : φ x ≠ 0` using `by simpa using hx`. Establish `a` using `ord_pos_iff φ h1 h2 hx`. Establish `b` using `ord_pos_iff φ h1 h2 (inv_ne_zero hx)`. Rewrite `b` using `[map_inv₀, ord_inv hx, ord_inv hx']`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_eq_zero_iff {x : F} (hx : x ≠ 0) : ord (φ x) = 0 ↔ ord x = 0 := by
   have hx' : φ x ≠ 0 := by simpa using hx
@@ -85,15 +85,15 @@ theorem ord_eq_zero_iff {x : F} (hx : x ≠ 0) : ord (φ x) = 0 ↔ ord x = 0 :=
   omega
 
 /- English proof (translation)
-Take `⟨π, hπ0, hπ⟩` from `exists_ord_eq F 1`. Take `⟨π', hπ0', hπ'⟩` from `exists_ord_eq F' 1`. Use `set ρ := φ.symm π' with hρ`. Establish `hρ0 : ρ ≠ 0` using `by simpa [hρ] using hπ0'`. Establish `hφρ : φ ρ = π'` using `by simp [hρ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφπ0 : φ π ≠ 0` using `by simpa using hπ0`. Establish `hm : 0 < ord (φ π)` using `(ord_pos_iff φ h1 h2 hπ0).mpr (by omega)`. Establish `hn : 0 < ord ρ` using `(ord_pos_iff φ h1 h2 hρ0).mp (by rw [hφρ]; omega)`. Use `set m := ord (φ π) with hmdef`. Establish `hz : ord (π * ρ ^ (-m)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(ord_eq_zero_iff φ h1 h2 (mul_ne_zero hπ0 (zpow_ne_zero _ hρ0))).mp ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zpow₀, hφρ, ord_mul hφπ0 (zpow_ne_zero _ hπ0'), ord_zpow' hπ0', hπ', ← hmdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[ord_mul hπ0 (zpow_ne_zero _ hρ0), ord_zpow' hρ0, hπ]`. Establish `hm1 : m = 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hmn : m * ord ρ = 1` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hw : ord (x * π ^ (-ord x)) = 0`. Rewrite using `[ord_mul hx (zpow_ne_zero _ hπ0), ord_zpow' hπ0, hπ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'` using `(ord_eq_zero_iff φ h1 h2 (mul_ne_zero hx (zpow_ne_zero _ hπ0))).mpr hw`. Establish `hx' : φ x ≠ 0` using `by simpa using hx`. Rewrite `hw'` using `[map_mul, map_zpow₀, ord_mul hx' (zpow_ne_zero _ hφπ0), ord_zpow' hφπ0, ← hmdef, hm1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ord_map {x : F} (hx : x ≠ 0) : ord (φ x) = ord x := by
   obtain ⟨π, hπ0, hπ⟩ := exists_ord_eq F 1
@@ -122,7 +122,7 @@ theorem ord_map {x : F} (hx : x ≠ 0) : ord (φ x) = ord x := by
   linarith
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx, zero_mem]`. Establish `hx' : φ x ≠ 0` using `by simpa using hx`. Rewrite using `[mem_valBall_iff_le_ord hx, mem_valBall_iff_le_ord hx', ord_map φ h1 h2 hx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_valBall_iff (n : ℤ) {x : F} : φ x ∈ valBall F' n ↔ x ∈ valBall F n := by
   by_cases hx : x = 0
@@ -131,7 +131,7 @@ theorem map_mem_valBall_iff (n : ℤ) {x : F} : φ x ∈ valBall F' n ↔ x ∈ 
   rw [mem_valBall_iff_le_ord hx, mem_valBall_iff_le_ord hx', ord_map φ h1 h2 hx]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `map_mem_valBall_iff φ h1 h2 n`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem preimage_valBall (n : ℤ) : φ ⁻¹' (valBall F' n : Set F') = valBall F n := by
   ext x
@@ -142,9 +142,9 @@ section Meas
 variable [MeasurableSpace F] [BorelSpace F] [MeasurableSpace F'] [BorelSpace F']
 
 /- English proof (translation)
-Set `e : F ≃ₜ+ F'` to `{ φ.toAddEquiv with continuous_toFun := h1, continuous_invFun := h2 }`. Establish `: (Measure.map e (haarIntegers F)).IsAddHaarMeasure` using `e.isAddHaarMeasure_map _`. Establish `h : (Measure.map φ (haarIntegers F)).IsAddHaarMeasure` using `this`. Establish `h3` using `eq_smul_haarIntegers (Measure.map φ (haarIntegers F))`. Rewrite `h3` using `[← coe_valBall_zero, Measure.map_apply h1.measurable (measurableSet_valBall 0), preimage_valBall φ h1 h2, coe_valBall_zero, haarIntegers_integers, one_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem map_haarIntegers : Measure.map φ (haarIntegers F) = haarIntegers F' := by
   let e : F ≃ₜ+ F' := { φ.toAddEquiv with continuous_toFun := h1, continuous_invFun := h2 }
@@ -156,9 +156,9 @@ theorem map_haarIntegers : Measure.map φ (haarIntegers F) = haarIntegers F' := 
   exact h3
 
 /- English proof (translation)
-Establish `h : Measure.map φ (haarIntegers F) (valBall F' 1 : Set F') = haarIntegers F' (valBall F' 1 : Set F')`. Rewrite using `[map_haarIntegers φ h1 h2]`. Rewrite `h` using `[Measure.map_apply h1.measurable (measurableSet_valBall 1), preimage_valBall φ h1 h2, haarIntegers_valBall, haarIntegers_valBall]`. Establish `h' : ((residueCard F : ℝ≥0) ^ (-1 : ℤ)) = ((residueCard F' : ℝ≥0) ^ (-1 : ℤ))`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[zpow_neg_one, zpow_neg_one, inv_inj]`. Conclude with `h'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem residueCard_eq : residueCard F = residueCard F' := by
   have h : Measure.map φ (haarIntegers F) (valBall F' 1 : Set F') = haarIntegers F' (valBall F' 1 : Set F') := by
@@ -171,7 +171,7 @@ theorem residueCard_eq : residueCard F = residueCard F' := by
   exact_mod_cast h'
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hx' : φ x ≠ 0` using `by simpa using hx`. Rewrite using `[modulus_of_ne_zero hx, modulus_of_ne_zero hx', ord_map φ h1 h2 hx, residueCard_eq φ h1 h2]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_map (x : F) : modulus (φ x) = modulus x := by
   by_cases hx : x = 0
@@ -181,9 +181,9 @@ theorem modulus_map (x : F) : modulus (φ x) = modulus x := by
 
 omit [MeasurableSpace F] [BorelSpace F] [MeasurableSpace F'] [BorelSpace F'] in
 /- English proof (translation)
-Unfold `addCharConductor`. Use `congr 1`. Use extensionality with `n`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (φ.symm y) ((map_mem_valBall_iff φ h1 h2 n).mp (by simpa using hy))` as an intermediate fact. Simplify using `using this`. Introduce `h x hx`. Conclude with `h (φ x) ((map_mem_valBall_iff φ h1 h2 n).mpr hx)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem addCharConductor_comp (ψ : AddChar F' Circle) :
     addCharConductor (ψ.compAddMonoidHom (φ : F →+ F')) = addCharConductor ψ := by
@@ -198,7 +198,7 @@ theorem addCharConductor_comp (ψ : AddChar F' Circle) :
     exact h (φ x) ((map_mem_valBall_iff φ h1 h2 n).mpr hx)
 
 /- English proof (translation)
-Unfold `selfDualMeasure`. Rewrite using `[Measure.map_smul, map_haarIntegers φ h1 h2, addCharConductor_comp φ h1 h2, residueCard_eq φ h1 h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_selfDualMeasure (ψ : AddChar F' Circle) :
     Measure.map φ (selfDualMeasure (ψ.compAddMonoidHom (φ : F →+ F'))) = selfDualMeasure ψ := by
@@ -214,13 +214,13 @@ abbrev um : Fˣ →* F'ˣ := Units.map (φ : F →* F')
 
 omit h1 h2 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.map (φ.symm : F' →* F) v, by ext; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem um_surjective (v : F'ˣ) : ∃ u : Fˣ, um φ u = v :=
   ⟨Units.map (φ.symm : F' →* F) v, by ext; simp⟩
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[mem_unitFiltrationUnits_zero_iff_ord, mem_unitFiltrationUnits_zero_iff_ord]`. Conclude with `ord_eq_zero_iff φ h1 h2 u.ne_zero`. Rewrite using `[mem_unitFiltrationUnits_iff_valBall hn, mem_unitFiltrationUnits_iff_valBall hn, ← map_mem_valBall_iff φ h1 h2]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_filt_iff (n : ℕ) (u : Fˣ) :
     um φ u ∈ unitFiltrationUnits F' n ↔ u ∈ unitFiltrationUnits F n := by
@@ -232,9 +232,7 @@ theorem mem_filt_iff (n : ℕ) (u : Fˣ) :
     simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Take `⟨u, rfl⟩` from `um_surjective φ v`. Conclude with `h ((mem_filt_iff φ h1 h2 n u).mp hv)`. Introduce `h u hu`.
-
-Conclude with `h ((mem_filt_iff φ h1 h2 n u).mpr hu)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem filt_le_ker_iff (μ : F'ˣ →* ℂˣ) (n : ℕ) :
     unitFiltrationUnits F n ≤ (μ.comp (um φ)).ker ↔ unitFiltrationUnits F' n ≤ μ.ker := by
@@ -246,14 +244,14 @@ theorem filt_le_ker_iff (μ : F'ˣ →* ℂˣ) (n : ℕ) :
     exact h ((mem_filt_iff φ h1 h2 n u).mpr hu)
 
 /- English proof (translation)
-The claim follows from `filt_le_ker_iff φ h1 h2 μ 0`.
+A detailed English derivation is pending.
 -/
 theorem isUnramified_comp_iff (μ : F'ˣ →* ℂˣ) :
     IsUnramifiedChar (μ.comp (um φ)) ↔ IsUnramifiedChar μ :=
   filt_le_ker_iff φ h1 h2 μ 0
 
 /- English proof (translation)
-Unfold `quasiCharConductor`. Use `congr 1`. Use extensionality with `n`. Conclude with `filt_le_ker_iff φ h1 h2 μ n`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem conductor_comp (μ : F'ˣ →* ℂˣ) :
     quasiCharConductor (μ.comp (um φ)) = quasiCharConductor μ := by
@@ -263,9 +261,9 @@ theorem conductor_comp (μ : F'ˣ →* ℂˣ) :
   exact filt_le_ker_iff φ h1 h2 μ n
 
 /- English proof (translation)
-Establish `hord : ord (((um φ (unifUnit F)) * (unifUnit F')⁻¹ : F'ˣ) : F') = 0`. Rewrite using `[ord_units_mul, ord_units_inv, ord_unifUnit]`. Establish `: ord ((um φ (unifUnit F) : F'ˣ) : F') = ord (φ (unifUnit F : F))` using `rfl`. Rewrite using `[this, ord_map φ h1 h2 (unifUnit F).ne_zero, ord_unifUnit]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `isUnramifiedChar_iff.mp hμ _ hord` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_comp {μ : F'ˣ →* ℂˣ} (hμ : IsUnramifiedChar μ) :
     (μ.comp (um φ)) (unifUnit F) = μ (unifUnit F') := by
@@ -281,7 +279,7 @@ theorem unif_comp {μ : F'ˣ →* ℂˣ} (hμ : IsUnramifiedChar μ) :
 variable [MeasurableSpace F] [BorelSpace F] [MeasurableSpace F'] [BorelSpace F']
 
 /- English proof (translation)
-Distinguish the cases in `hμ : IsUnramifiedChar μ`. Rewrite using `[localLFactor_of_isUnramified hμ, localLFactor_of_isUnramified ((isUnramified_comp_iff φ h1 h2 μ).mpr hμ), unif_comp φ h1 h2 hμ, residueCard_eq φ h1 h2]`. Rewrite using `[localLFactor_of_not_isUnramified hμ, localLFactor_of_not_isUnramified (mt (isUnramified_comp_iff φ h1 h2 μ).mp hμ)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem localLFactor_comp (μ : F'ˣ →* ℂˣ) (s : ℂ) :
     localLFactor (μ.comp (um φ)) s = localLFactor μ s := by
@@ -294,9 +292,9 @@ theorem localLFactor_comp (μ : F'ˣ →* ℂˣ) (s : ℂ) :
 
 omit h1 h2 [MeasurableSpace F] [BorelSpace F] [MeasurableSpace F'] [BorelSpace F'] in
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[quasiCharExt, hx]`. Establish `e : φ x = ((um φ (Units.mk0 x hx) : F'ˣ) : F')` using `rfl`. Rewrite using `[e, quasiCharExt_units]`. Use `conv_lhs => rw [show x = ((Units.mk0 x hx : Fˣ) : F) from rfl, quasiCharExt_units]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem quasiCharExt_comp (μ : F'ˣ →* ℂˣ) (x : F) :
     quasiCharExt (μ.comp (um φ))⁻¹ x = quasiCharExt μ⁻¹ (φ x) := by
@@ -308,11 +306,11 @@ theorem quasiCharExt_comp (μ : F'ˣ →* ℂˣ) (x : F) :
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hμ : IsUnramifiedChar μ`. Rewrite using `[localEpsilon_of_isUnramified hμ, localEpsilon_of_isUnramified ((isUnramified_comp_iff φ h1 h2 μ).mpr hμ), unif_comp φ h1 h2 hμ, residueCard_eq φ h1 h2, addCharConductor_comp φ h1 h2]`. Rewrite using `[localEpsilon_of_not_isUnramified hμ, localEpsilon_of_not_isUnramified (mt (isUnramified_comp_iff φ h1 h2 μ).mp hμ), addCharConductor_comp φ h1 h2, conductor_comp φ h1 h2, ← map_selfDualMeasure φ h1 h2 ψ]`. Set `e : F ≃ₜ F'` to `{ φ.toEquiv with continuous_toFun := h1, continuous_invFun := h2 }`. Establish `hemb : MeasurableEmbedding φ` using `e.measurableEmbedding`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hemb.setIntegral_map]`. Establish `hpre : φ ⁻¹' ((valBall F' (addCharConductor ψ - quasiCharConductor μ) : Set F') \ valBall F' (addCharConductor ψ - quasiCharConductor μ + 1)) = (valBall F (addCharConductor ψ - quasiCharConductor μ) : Set F) \ valBall F (addCharConductor ψ - quasiCharConductor μ + 1)`. Rewrite using `[Set.preimage_diff, preimage_valBall φ h1 h2, preimage_valBall φ h1 h2]`. Rewrite using `[hpre]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[quasiCharExt_comp, modulus_map φ h1 h2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem localEpsilon_comp (ψ : AddChar F' Circle) (μ : F'ˣ →* ℂˣ) (s : ℂ) :
     localEpsilon (μ.comp (um φ)) (ψ.compAddMonoidHom (φ : F →+ F')) s = localEpsilon μ ψ s := by
@@ -342,7 +340,7 @@ end Char
 end Tr
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ _ _ _ _ _ _ _ _ φ h1 h2 ψ _ _ μ _ s`. Establish `hinv : (μ.comp (Units.map (φ : F →* F')))⁻¹ = (μ⁻¹).comp (Units.map (φ : F →* F'))` using `rfl`. Unfold `gam`. Rewrite using `[hinv, localLFactor_comp φ h1 h2, localLFactor_comp φ h1 h2, localEpsilon_comp φ h1 h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gam_equiv : ∀ (F F' : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [Field F'] [ValuativeRel F'] [TopologicalSpace F'] [IsNonarchimedeanLocalField F'] [MeasurableSpace F'] [BorelSpace F'] (φ : F ≃+* F'), Continuous φ → Continuous φ.symm → ∀ ψ : AddChar F' Circle, Continuous ψ → ψ ≠ 1 → ∀ μ : F'ˣ →* ℂˣ, IsUnit1 μ → ∀ s : ℂ, gam (ψ.compAddMonoidHom (φ : F →+ F')) (μ.comp (Units.map (φ : F →* F'))) s = gam ψ μ s := by
   intro F F' _ _ _ _ _ _ _ _ _ _ _ _ φ h1 h2 ψ _ _ μ _ s

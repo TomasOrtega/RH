@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PicGlue
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: IsIso (O.ι.app W)` using `Scheme.Hom.isIso_app _ _ (by simpa using hW)`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_appLE_ι {Z : Scheme.{0}} (O W : Z.Opens) (hW : W ≤ O) (W' : O.toScheme.Opens)
     (h : W' = O.ι ⁻¹ᵁ W) : Function.Bijective (O.ι.appLE W W' h.le) := by
@@ -23,15 +23,15 @@ theorem bijective_appLE_ι {Z : Scheme.{0}} (O W : Z.Opens) (hW : W ≤ O) (W' :
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Introduce `T Z _ _ hT U hU p O e hs hg he hcov`. Use `GlobalTheory.T.cechPicard_eq_zero_of_twoOpen_cover_units_split Z O (p ⁻¹ᵁ U) hcov fun F => ?_` and prove the remaining obligations. Establish `h1 : (O.ι ≫ p) ⁻¹ᵁ U = O.ι ⁻¹ᵁ (O ⊓ p ⁻¹ᵁ U)`. Rewrite using `[Scheme.Hom.preimage_inf, Scheme.Opens.ι_preimage_self, top_inf_eq, Scheme.Hom.comp_preimage]`. Establish `h2 : (⊤ : O.toScheme.Opens) = O.ι ⁻¹ᵁ O` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b1` using `bijective_appLE_ι O (O ⊓ p ⁻¹ᵁ U) inf_le_left _ h1`. Establish `b2` using `bijective_appLE_ι O O le_rfl _ h2`. Take `⟨G, w, hGw⟩` from `GlobalTheory.T.unit_above_dense_open_eq_global_mul_pullback T O hT U hU (O.ι ≫ p) e hs hg he (Units.map (O.ι.appLE (O ⊓ p ⁻¹ᵁ U) _ h1.le).hom.toMonoidHom F)`. Set `ε` to `RingEquiv.ofBijective (O.ι.appLE O ⊤ h2.le).hom b2`. Use `⟨Units.map ε.symm.toMonoidHom G, pullU p U w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `b1.1` to reduce the goal to its premises. Establish `hv` using `congrArg Units.val hGw`. Establish `hG : (O.ι.appLE O ⊤ h2.le).hom (ε.symm G) = G` using `ε.apply_symm_apply _`. Express the relevant statement in the definitionally equal form `(O.ι.appLE (O ⊓ p ⁻¹ᵁ U) _ h1.le).hom F = O.toScheme.presheaf.map (homOfLE le_top).op (G : Γ(O, ⊤)) * (O.ι ≫ p).app U (w : Γ(T, U)) at hv`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(O.ι.appLE (O ⊓ p ⁻¹ᵁ U) _ h1.le).hom F = (O.ι.appLE (O ⊓ p ⁻¹ᵁ U) _ h1.le).hom (Z.presheaf.map (homOfLE inf_le_left).op (ε.symm G) * Z.presheaf.map (homOfLE inf_le_right).op (p.app U (w : Γ(T, U))))`. Rewrite using `[hv, map_mul, ← hG]`. Use `congr 1`. Rewrite using `[hG] conv_lhs => rw [← hG]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_pull_eq_zero : ∀ (T Z : Scheme.{0}) [IsIntegral T] [IsLocallyNoetherian T], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme T → ∀ (U : T.Opens), (U : Set T).Nonempty → ∀ (p : Z ⟶ T) (O : Z.Opens) (e : T ⟶ O.toScheme), Smooth (O.ι ≫ p) → GeometricallyIntegral (O.ι ≫ p) → e ≫ O.ι ≫ p = 𝟙 _ → O ⊔ p ⁻¹ᵁ U = ⊤ → ∀ c : Pic Z, GlobalTheory.CechPic.pull O.ι c = 0 → GlobalTheory.CechPic.pull (p ⁻¹ᵁ U).ι c = 0 → c = 0 := by
   intro T Z _ _ hT U hU p O e hs hg he hcov

@@ -7,15 +7,13 @@ namespace PI.Dv.Tr
 open Module
 
 /- English proof (translation)
-Establish `hroot : B.charpoly.IsRoot μ` using `(Polynomial.mem_roots (Matrix.charpoly_monic B).ne_zero).mp hμ`. Rewrite `hroot` using `[Polynomial.IsRoot, Matrix.eval_charpoly]`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hroot`. Establish `hsc : Matrix.mulVec (Matrix.scalar n μ) v = μ • v`. Use extensionality with `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Establish `hBv : Matrix.mulVec B v = μ • v`. Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero, hsc]`. Conclude with `hv.symm`. Establish `hpow : ∀ k : ℕ, Matrix.mulVec (B ^ k) v = μ ^ k • v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hBv, Matrix.mulVec_smul, ih, smul_smul, pow_succ, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hpow m`. Rewrite `h1` using `[hB, Matrix.one_mulVec]`. Assume the negation of the conclusion as `hne`. Establish `h2 : (1 - μ ^ m) • v = 0` using `by rw [sub_smul, one_smul, ← h1, sub_self]`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases.
-
-Conclude with `hne (by linear_combination -h)`. Conclude with `hv0 h`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma root_pow_eq_one {n : Type} [Fintype n] [DecidableEq n] (B : Matrix n n ℂ) (m : ℕ) (hB : B ^ m = 1) (μ : ℂ)
     (hμ : μ ∈ B.charpoly.roots) : μ ^ m = 1 := by
@@ -45,17 +43,15 @@ lemma root_pow_eq_one {n : Type} [Fintype n] [DecidableEq n] (B : Matrix n n ℂ
 variable {K : Type} [Field K] {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K W`. Use `set A := LinearMap.toMatrix b b f with hAdef`. Use `set B : Matrix (Fin (finrank K W)) (Fin (finrank K W)) ℂ := σ.mapMatrix A with hBdef`. Establish `htr : σ (LinearMap.trace K W f) = B.trace`. Rewrite using `[LinearMap.trace_eq_matrix_trace K b, hBdef]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.trace, map_sum, RingHom.mapMatrix_apply, hAdef]`. Establish `hApow : ∀ k : ℕ, A ^ k = LinearMap.toMatrix b b (f ^ k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [LinearMap.toMatrix_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ k ih => rw [pow_succ, ih, pow_succ, LinearMap.toMatrix_mul]`. Establish `hB : B ^ m = 1`. Rewrite using `[hBdef, ← map_pow, hApow, hf, LinearMap.toMatrix_one, map_one]`. Establish `hroots : ∀ μ ∈ B.charpoly.roots, μ ^ m = 1` using `fun μ hμ => root_pow_eq_one B m hB μ hμ`. Establish `hsum : B.trace = B.charpoly.roots.sum` using `Matrix.trace_eq_sum_roots_charpoly B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[htr, hsum]`. Use `(norm_multiset_sum_le _).trans ?_` and prove the remaining obligations. Establish `hmap : B.charpoly.roots.map (fun μ => ‖μ‖) = B.charpoly.roots.map (fun _ => (1 : ℝ))` using `Multiset.map_congr rfl fun μ hμ => Complex.norm_eq_one_of_pow_eq_one (hroots μ hμ) hm.ne'`. Rewrite using `[hmap, Multiset.map_const', Multiset.sum_replicate, nsmul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `Polynomial.card_roots' B.charpoly`. Rewrite `hc` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Conclude with `hc` after adjusting the coercions. Establish `hint : IsIntegral ℤ (σ (LinearMap.trace K W f))`. Rewrite using `[htr, hsum]`.
-
-Conclude with `IsIntegral.multiset_sum fun μ hμ => IsIntegral.of_pow hm (by rw [hroots μ hμ]; exact isIntegral_one)`. Conclude with `(isIntegral_algHom_iff σ.toIntAlgHom σ.injective).mp hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma trace_finite_order (f : Module.End K W) (m : ℕ) (hm : 0 < m) (hf : f ^ m = 1) (σ : K →+* ℂ) :
     ‖σ (LinearMap.trace K W f)‖ ≤ finrank K W ∧ IsIntegral ℤ (LinearMap.trace K W f) := by

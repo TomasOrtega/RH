@@ -14,35 +14,35 @@ private def hM (p : ℕ) : Option (Fin p) → Matrix (Fin 2) (Fin 2) ℤ
   | some u => !![1, ((u : ℕ) : ℤ); 0, (p : ℤ)]
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> simp [hM, Matrix.det_fin_two_of]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem hM_det (p : ℕ) (x : Option (Fin p)) : (hM p x).det = p := by
   cases x <;> simp [hM, Matrix.det_fin_two_of]
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> simp [hM]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem hM_10 (p : ℕ) (x : Option (Fin p)) : hM p x 1 0 = 0 := by
   cases x <;> simp [hM]
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. It suffices to establish `h : ∃ (γ : Matrix (Fin 2) (Fin 2) ℤ) (y : Option (Fin p)), δ = γ * hM p y by`. Take `⟨γ, y, h⟩` from `h`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨γ, ?_⟩, y, h⟩` and prove the remaining obligations. Rewrite `hδ` using `[h, Matrix.det_mul, hM_det]`. Conclude with `mul_right_cancel₀ hp0 (by rw [hδ, one_mul])`. Rewrite `hδ` using `[Matrix.det_fin_two]`. Establish `hz : (δ 0 0 : ZMod p) * δ 1 1 - (δ 0 1 : ZMod p) * δ 1 0 = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (Int.cast : ℤ → ZMod p) hδ` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ u : ZMod p, (δ 0 1 : ZMod p) = δ 0 0 * u → (δ 1 1 : ZMod p) = δ 1 0 * u → ∃ (γ : Matrix (Fin 2) (Fin 2) ℤ) (y : Option (Fin p)), δ = γ * hM p y`. Introduce `u h1 h2`. Establish `d1 : (p : ℤ) ∣ δ 0 1 - δ 0 0 * (u.val : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `[h1]`. Establish `d2 : (p : ℤ) ∣ δ 1 1 - δ 1 0 * (u.val : ℤ)`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `[h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `d1`. Take `⟨d, hd⟩` from `d2`. Use `⟨!![δ 0 0, b; δ 1 0, d], some ⟨u.val, ZMod.val_lt u⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [hM, Matrix.mul_fin_two] <;> simp at hb hd ⊢`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Take the linear combination `hb`. Take the linear combination `hd`. Distinguish the cases in `ha : (δ 0 0 : ZMod p) = 0`. Distinguish the cases in `hc : (δ 1 0 : ZMod p) = 0`. Rewrite `ha`, `hc` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `ha`. Take `⟨c, hc⟩` from `hc`. Use `⟨!![a, δ 0 1; c, δ 1 1], none, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [hM, Matrix.mul_fin_two] <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `ha`. Take the linear combination `hc`. Use `key (δ 1 1 / δ 1 0) ?_ (by field_simp)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hz`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `key (δ 0 1 / δ 0 0) (by field_simp) ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `hz`.
+A detailed English derivation is pending.
 -/
 private theorem hM_exists {p : ℕ} (hp : p.Prime) (δ : Matrix (Fin 2) (Fin 2) ℤ) (hδ : δ.det = p) :
     ∃ (γ : SL(2, ℤ)) (y : Option (Fin p)), δ = γ.1 * hM p y := by
@@ -90,11 +90,11 @@ private theorem hM_exists {p : ℕ} (hp : p.Prime) (δ : Matrix (Fin 2) (Fin 2) 
     linear_combination hz
 
 /- English proof (translation)
-Establish `hnd : ¬ (p : ℤ) ∣ 1` using `fun h => hp.not_dvd_one (by exact_mod_cast h)`. Establish `h00` using `congrFun (congrFun h 0) 0`. Establish `h01` using `congrFun (congrFun h 0) 1`. Establish `h10` using `congrFun (congrFun h 1) 0`. Establish `h11` using `congrFun (congrFun h 1) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases x with _ | u <;> rcases y with _ | v <;>`. Simplify using `[hM, Matrix.mul_apply, Fin.sum_univ_two] at h00 h01 h10 h11 ⊢`. Rewrite `h11` using `[← h10]`. Conclude with `hnd ⟨γ 1 1, by linear_combination h11⟩`. Conclude with `hnd ⟨γ 0 0, by linear_combination h00⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h01` using `[← h00]`. Establish `: (u : ℤ) ≡ (v : ℤ) [ZMOD p]` using `(Int.modEq_iff_dvd.2 ⟨γ 0 1, by linear_combination h01⟩).symm`. Establish `h2 : (u : ℕ) ≡ (v : ℕ) [MOD p]` using `Int.natCast_modEq_iff.1 this`. Conclude with `Fin.ext (Nat.ModEq.eq_of_lt_of_lt h2 u.2 v.2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hM_inj {p : ℕ} (hp : p.Prime) (γ : Matrix (Fin 2) (Fin 2) ℤ) {x y : Option (Fin p)}
     (h : hM p x = γ * hM p y) : x = y := by
@@ -114,11 +114,9 @@ private theorem hM_inj {p : ℕ} (hp : p.Prime) (γ : Matrix (Fin 2) (Fin 2) ℤ
     exact Fin.ext (Nat.ModEq.eq_of_lt_of_lt h2 u.2 v.2)
 
 /- English proof (translation)
-Use `choose δ σ h using fun x => hM_exists hp (hM p x * γ.1) (by rw [Matrix.det_mul, hM_det, γ.2, mul_one])`. Use `⟨σ, δ, Finite.injective_iff_bijective.1 fun x y e => ?_, h⟩` and prove the remaining obligations. Use `hM_inj hp ((δ x * (δ y)⁻¹ : SL(2, ℤ))).1 ?_` and prove the remaining obligations. Establish `e1 : γ.1 * (γ⁻¹ : SL(2, ℤ)).1 = 1` using `congrArg Subtype.val (mul_inv_cancel γ)`. Establish `e2 : ((δ y)⁻¹ : SL(2, ℤ)).1 * (δ y).1 = 1` using `congrArg Subtype.val (inv_mul_cancel (δ y))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h x, e, e2, mul_one]`. Use `_ = (δ x).1 * ((δ y)⁻¹ : SL(2, ℤ)).1 * ((hM p y * γ.1) * (γ⁻¹ : SL(2, ℤ)).1) := by`. Rewrite using `[h y]`. Simplify using `only [mul_assoc]`.
-
-Use `_ = _ := by rw [mul_assoc (hM p y), e1, mul_one]; rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hM_perm {p : ℕ} (hp : p.Prime) (γ : SL(2, ℤ)) :
     ∃ (σ : Option (Fin p) → Option (Fin p)) (δ : Option (Fin p) → SL(2, ℤ)), Function.Bijective σ ∧
@@ -146,22 +144,22 @@ private theorem hG_val {p : ℕ} (hp : p.Prime) (x : Option (Fin p)) :
     (hG hp x).1 = (Int.castRingHom ℝ).mapMatrix (hM p x) := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hG_val, ← RingHom.map_det, hM_det]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hG_det {p : ℕ} (hp : p.Prime) (x : Option (Fin p)) : (hG hp x).det.val = p := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, hG_val, ← RingHom.map_det, hM_det]; simp
 
 /- English proof (translation)
-Establish `: 0 < (hG hp x).det.val` using `by rw [hG_det]; exact_mod_cast hp.pos`. Rewrite using `[σ, if_pos this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hG_σ {p : ℕ} (hp : p.Prime) (x : Option (Fin p)) (c : ℂ) : σ (hG hp x) c = c := by
   have : 0 < (hG hp x).det.val := by rw [hG_det]; exact_mod_cast hp.pos
   rw [σ, if_pos this]; rfl
 
 /- English proof (translation)
-Rewrite using `[SL_slash, SL_slash, ← SlashAction.slash_mul, ← SlashAction.slash_mul]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (Int.castRingHom ℝ).mapMatrix h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem hG_slash {p : ℕ} (hp : p.Prime) (k : ℤ) (f : ℍ → ℂ) {x y : Option (Fin p)} {γ δ : SL(2, ℤ)}
     (h : hM p x * γ.1 = δ.1 * hM p y) : (f ∣[k] hG hp x) ∣[k] γ = (f ∣[k] δ) ∣[k] hG hp y := by
@@ -176,7 +174,7 @@ private def hT {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : DirichletChara
   ∑ x : Option (Fin p), χ ((hM p x 0 0 : ℤ) : ZMod N) • f ∣[(k : ℤ)] hG hp x
 
 /- English proof (translation)
-Rewrite using `[hT, SlashAction.sum_slash]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[SL_smul_slash, hG_slash hp k f (h x)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hT_slash {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : DirichletCharacter ℂ N) (f : ℍ → ℂ)
     (γ : SL(2, ℤ)) {s : Option (Fin p) → Option (Fin p)} {δ : Option (Fin p) → SL(2, ℤ)}
@@ -188,17 +186,15 @@ private theorem hT_slash {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : Diri
   rw [SL_smul_slash, hG_slash hp k f (h x)]
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨s, δ, hs, h⟩` from `hM_perm hp γ`. Rewrite using `[hT_slash hp k χ f γ h, hT, Finset.smul_sum, ← hs.sum_comp fun y => χ ((γ 1 1 : ℤ) : ZMod N) • χ ((hM p y 0 0 : ℤ) : ZMod N) • f ∣[(k : ℤ)] hG hp y]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite `hγ` using `[Gamma0_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h00` using `congrArg (Int.cast : ℤ → ZMod N) (congrFun (congrFun (h x) 0) 0)`. Establish `h10` using `congrArg (Int.cast : ℤ → ZMod N) (congrFun (congrFun (h x) 1) 0)`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hM_10, hγ] at h00 h10`. Establish `dγ` using `congrArg (Int.cast : ℤ → ZMod N) (γ.det_coe)`. Establish `dδ` using `congrArg (Int.cast : ℤ → ZMod N) ((δ x).det_coe)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `dγ`, `dδ` using `[Matrix.det_fin_two]`. Move the coercions through the operations in `at dγ dδ`. Rewrite `dγ` using `[hγ, mul_zero, sub_zero]`. Distinguish the cases in `hu : IsUnit ((hM p (s x) 0 0 : ℤ) : ZMod N)`. Establish `hc : (((δ x) 1 0 : ℤ) : ZMod N) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `hu.mul_left_eq_zero.1 h10.symm`. Rewrite using `[hf (δ x) (Gamma0_mem.2 hc), smul_slash, hG_σ, smul_smul, smul_smul, ← map_mul, ← map_mul]`. Use `congr 2`. Rewrite `dδ` using `[hc, mul_zero, sub_zero]`. Take the linear combination `(((γ 1 1 : ℤ) : ZMod N) * (((δ x) 1 1 : ℤ) : ZMod N)) * h00 - (((hM p x 0 0 : ℤ) : ZMod N) * (((δ x) 1 1 : ℤ) : ZMod N)) * dγ + (((hM p (s x) 0 0 : ℤ) : ZMod N) * ((γ 1 1 : ℤ) : ZMod N)) * dδ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hx : ¬ IsUnit ((hM p x 0 0 : ℤ) : ZMod N)` using `fun hx => hu <| by`. Use `hx.mul (IsUnit.of_mul_eq_one _ dγ)` as an intermediate fact. Rewrite `this` using `[h00]`. Conclude with `isUnit_of_mul_isUnit_right this`. Rewrite using `[χ.map_nonunit hu, χ.map_nonunit hx]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hT_char {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : DirichletCharacter ℂ N) {f : ℍ → ℂ}
     (hf : HasChar k χ f) : HasChar k χ (hT hp k χ f) := by
@@ -233,11 +229,11 @@ private theorem hT_char {p : ℕ} (hp : p.Prime) (k : ℕ) {N : ℕ} (χ : Diric
     simp
 
 /- English proof (translation)
-Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hp1 : (p : ℂ) - 1 ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast hp.ne_one)`. Establish `hpos : ∀ x, 0 < (hG hp x).det.val` using `fun x => by rw [hG_det]; exact_mod_cast hp.pos`. Establish `e0 : (f ∣[(k : ℤ)] hG hp none) z = (p : ℂ) ^ (k - 1) * f (ofComplex (p * (z : ℂ)))`. Rewrite using `[slash_apply, hG_σ, hG_det, ← ofComplex_apply (hG hp none • z), coe_smul_of_det_pos (hpos _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Simplify using `[num, denom, hG_val, hM, mul_comm]`. Establish `e1 : ∀ u : Fin p, (f ∣[(k : ℤ)] hG hp (some u)) z = (p : ℂ)⁻¹ * f (ofComplex (((z : ℂ) + (u : ℕ)) / p))` using `fun u => by`. Rewrite using `[slash_apply, hG_σ, hG_det, ← ofComplex_apply (hG hp (some u) • z), coe_smul_of_det_pos (hpos _)]`. Simplify using `[num, denom, hG_val, hM, zpow_sub₀ hp0]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hT, Finset.sum_apply, Fintype.sum_option]`. Simplify using `only [Pi.smul_apply, e0, e1, heckeOne, smul_eq_mul]`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun b : ℕ => f (ofComplex (((z : ℂ) + b) / p))), Finset.mul_sum]`. Simplify using `[hM]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -265,7 +261,7 @@ private theorem hT_apply {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : 1 ≤ k) {N : 
 end UpperTheory.V.Sd
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.hecke_existence.heckeEx`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.heckeEx :
     UpperTheory.V.Sd.HeckeEx :=

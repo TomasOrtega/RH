@@ -8,11 +8,11 @@ open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `I _ W Z f hf he`. Take `⟨k, ⟨e⟩⟩` from `Finite.exists_equiv_fin I`. Establish `hfold` using `GlobalTheory.Et.TrivTors.isFinite_sigmaDesc_fin W k`. Set `i : (∐ fun _ : I => W) ≅ ∐ fun _ : Fin k => W` to `Sigma.whiskerEquiv (f := fun _ : I => W) (g := fun _ : Fin k => W) e fun _ => Iso.refl W`. Establish `hd : (Sigma.desc fun _ : I => f) = i.hom ≫ (Sigma.desc fun _ : Fin k => 𝟙 W) ≫ f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[i]`. Use `⟨by rw [hd]; infer_instance, ?_⟩` and prove the remaining obligations. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @Etale)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun _ => inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.lSigFin_holds :
     LSigFin := by

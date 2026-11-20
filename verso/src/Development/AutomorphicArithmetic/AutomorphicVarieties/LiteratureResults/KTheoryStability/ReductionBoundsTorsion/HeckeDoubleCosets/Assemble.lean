@@ -9,9 +9,9 @@ namespace PositivityTheory.KB.AffineStabilizerVanishing
 open PositivityTheory.KB
 
 /- English proof (translation)
-Introduce `a b h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h2` using `congrArg (fun g : GL (Fin N) L => (g : Matrix (Fin N) (Fin N) L) i j) h`. Simplify using `[toK] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem toK_injective (L : Type) [Field L] [NumberField L] (N : ℕ) : Function.Injective (toK L N) := by
   intro a b h
@@ -22,7 +22,7 @@ theorem toK_injective (L : Type) [Field L] [NumberField L] (N : ℕ) : Function.
   exact_mod_cast h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [dC, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dC_addS {Y : Type} {m : ℕ} (F F' : (Fin (m + 1) → Y) → ℝ) (c : ℝ) :
     dC (F + c • F') = dC F + c • dC F' := by
@@ -31,14 +31,14 @@ theorem dC_addS {Y : Type} {m : ℕ} (F F' : (Fin (m + 1) → Y) → ℝ) (c : �
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[dC]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dC_zeroS {Y : Type} {m : ℕ} : dC (0 : (Fin (m + 1) → Y) → ℝ) = 0 := by
   funext y
   simp [dC]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[hecke]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem hecke_zero {G H K Y : Type} [Group G] [Group H] [Group K] [MulAction H Y] (ρ : G →* K) (τ : K →* H)
     (q : K) : hecke ρ τ q (0 : Y → ℝ) = 0 := by
@@ -49,7 +49,7 @@ section
 variable {G H Y : Type} [Group G] [Group H] [MulAction H Y]
 
 /- English proof (translation)
-Unfold `ev`. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `Finsupp.sum_add`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_fadd1 (ρ : G →* H) {m : ℕ} (F F' : (Fin (m + 1) → Y) → ℝ) (y : Y) (z : Chn G m) :
     ev ρ (F + F') y z = ev ρ F y z + ev ρ F' y z := by
@@ -58,7 +58,7 @@ theorem ev_fadd1 (ρ : G →* H) {m : ℕ} (F F' : (Fin (m + 1) → Y) → ℝ) 
   exact Finsupp.sum_add
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Finsupp.mul_sum]`. Conclude with `Finsupp.sum_congr fun g _ => by simp only [Pi.smul_apply, smul_eq_mul]; ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_fsmul (ρ : G →* H) {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (c : ℝ) (y : Y) (z : Chn G m) :
     ev ρ (c • F) y z = c * ev ρ F y z := by
@@ -89,9 +89,9 @@ def resF (L : Type) [Field L] [NumberField L] (n r k : ℕ) (G : (Fin (k + 2) �
   fun y => G fun j => stab L n (n + r) (Nat.le_add_right n r) (y j)
 
 /- English proof (translation)
-Establish `hk : LinearMap.ker P ≤ LinearMap.ker Q` using `fun v hv => h v hv`. Take `⟨M, hM⟩` from `LinearMap.exists_extend (((LinearMap.ker P).liftQ Q hk).comp (P.quotKerEquivRange.symm : LinearMap.range P →ₗ[ℝ] V ⧸ LinearMap.ker P))`. Use `⟨‖LinearMap.toContinuousLinearMap M‖, norm_nonneg _, fun v => ?_⟩` and prove the remaining obligations. Establish `hv : Q v = M (P v)`. Use `LinearMap.congr_fun hM ⟨P v, LinearMap.mem_range_self P v⟩` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression. Rewrite using `[hv]`. Conclude with `(LinearMap.toContinuousLinearMap M).le_opNorm (P v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift_map_comp {V ι : Type} [AddCommGroup V] [Module ℝ V] [Fintype ι]
     (P Q : V →ₗ[ℝ] (ι → ℝ)) (h : ∀ v, P v = 0 → Q v = 0) :
@@ -109,9 +109,9 @@ private theorem lift_map_comp {V ι : Type} [AddCommGroup V] [Module ℝ V] [Fin
   exact (LinearMap.toContinuousLinearMap M).le_opNorm (P v)
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨z', hz', hb⟩` from `hs z hz`. Establish `h1 : z' ∈ LinearMap.ker E` using `(Submodule.span_le (p := LinearMap.ker E)).2 (fun w hw => h0 w hw) hz'`. Establish `h2` using `hbd _ hb`. Rewrite `h2` using `[map_sub, LinearMap.mem_ker.1 h1, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mem_all_maximalIdeal_pow {G : Type} [Group G] {k : ℕ} (E : Chn G (k + 1) →ₗ[ℝ] ℝ)
     (s : Finset (Chn G (k + 1)))
@@ -126,7 +126,7 @@ private theorem eq_zero_of_mem_all_maximalIdeal_pow {G : Type} [Group G] {k : �
   exact h2
 
 /- English proof (translation)
-Unfold `ev cmap`. Rewrite using `[Finsupp.lmapDomain_apply, Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by ring)]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Simplify using `only [resF, smul_eq_mul, mul_one, ← map_partialProd, hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem ev_resF_eq_ev_cmap_stab (L : Type) [Field L] [NumberField L] (n r k : ℕ)
     (hc : ∀ c : Gm L n, toK L (n + r) (stab (𝓞 L) n (n + r) (Nat.le_add_right n r) c) =
@@ -140,7 +140,7 @@ private theorem ev_resF_eq_ev_cmap_stab (L : Type) [Field L] [NumberField L] (n 
   simp only [resF, smul_eq_mul, mul_one, ← map_partialProd, hc]
 
 /- English proof (translation)
-Use `⟨Finsupp.lsum ℝ fun g => LinearMap.id.smulRight (F fun j => ρ (Fin.partialProd g j) • y), fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.lsum_apply]`. Unfold `ev`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Simplify using `[smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem exists_linearMap_eq_ev {G : Type} [Group G] {H Y : Type} [Group H] [MulAction H Y] (ρ : G →* H)
     {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Y) :
@@ -153,69 +153,61 @@ private theorem exists_linearMap_eq_ev {G : Type} [Group G] {H Y : Type} [Group 
   simp [smul_eq_mul]
 
 /- English proof (translation)
-Unfold `SHecke`. Introduce `L _ _ hL k hk π hπ`. Establish `hπ0 : π ≠ 0` using `hπ.ne_zero`. Establish `hCh'` using `hCh`. Take `⟨_, hcm, _, _⟩` from `hCh`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbdmap : ∀ {G H : Type} [Group G] [Group H] (f : G →* H) (w : Chn G (k + 1)), IsBd w → IsBd (cmap f (k + 1) w)`. Introduce `G H _ _ f w hw`. Take `⟨v, rfl⟩` from `hw`. Conclude with `⟨cmap f (k + 2) v, hcm G H f (k + 1) v⟩`. Establish `hcycmap : ∀ {G H : Type} [Group G] [Group H] (f : G →* H) (w : Chn G (k + 1)), IsCyc w → IsCyc (cmap f (k + 1) w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `G H _ _ f w hw`. Unfold `IsCyc at *`. Rewrite using `[hcm, hw, map_zero]`. Use `set n := 2 * (k + 1) + 4 with hn_def`. Establish `hn1 : 1 ≤ n` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs1, hs2⟩` from `hFin L hL n k`. Establish `hfinn` using `(hI L n π hπ).1`. Set `P : invCoc L n k →ₗ[ℝ] (↥s → ℝ)` to `{ toFun := fun H z₀ => ev (toK L n) (H : (Fin (k + 2) → GK L n) → ℝ) 1 z₀.1 map_add' := fun H H' => by`. Use function extensionality and compare the values at `z₀`. Simplify using `only [Submodule.coe_add, ev_fadd1, Pi.add_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `map_smul' := fun c H => by`. Use function extensionality and compare the values at `z₀`. Simplify using `only [Submodule.coe_smul, ev_fsmul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply] }`. Set `Q : invCoc L n k →ₗ[ℝ] (↥s → ℝ)` to `{ toFun := fun H z₀ => ev (toK L n) (hecke (toK L n) (MonoidHom.id (GK L n)) (qel L n π hπ0) (H : (Fin (k + 2) → GK L n) → ℝ)) 1 z₀.1 map_add' := fun H H' => by`. Use function extensionality and compare the values at `z₀`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hF _ _ (toK L n) _ hfinn (k + 1) H H' 1 H.2.1).2.2`. Rewrite `h1` using `[one_smul, one_smul]`. Simplify using `only [Submodule.coe_add, h1, ev_fadd1, Pi.add_apply]`. Use the proof step `map_smul' := fun c H => by`. Use function extensionality and compare the values at `z₀`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `(hF _ _ (toK L n) _ hfinn (k + 1) 0 H c (fun _ _ => rfl)).2.2`. Rewrite `h1` using `[zero_add, hecke_zero, zero_add]`. Simplify using `only [Submodule.coe_smul, h1, ev_fsmul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply] }`. Establish `hPQ : ∀ H, P H = 0 → Q H = 0`. Introduce `H hH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvan : ∀ z : Chn (Gm L n) (k + 1), IsCyc z → ev (toK L n) (H : (Fin (k + 2) → GK L n) → ℝ) 1 z = 0`. Take `⟨E, hE⟩` from `exists_linearMap_eq_ev (toK L n) (H : (Fin (k + 2) → GK L n) → ℝ) (1 : GK L n)`. Introduce `z hz`. Rewrite using `[← hE]`. Use `eq_zero_of_mem_all_maximalIdeal_pow E s hs2 (fun w hw => ?_) (fun w hw => ?_) z hz` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hE]`. Conclude with `(hEv _ _ _ (toK L n) k _ H.2.1 H.2.2).1 1 w hw`. Rewrite using `[hE]`. Conclude with `congrFun hH ⟨w, hw⟩`. Use function extensionality and compare the values at `z₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hK hEv _ _ (toK L n) (toK_injective L n) _ hfinn k _ H.2.1 H.2.2 hvan z₀.1 (hs1 _ z₀.2)`. Take `⟨K, hK0, hKb⟩` from `lift_map_comp P Q hPQ`. Use `set i0 : ℝ := ((Gq (toK L n) (qel L n π hπ0)).index : ℝ) with hi0_def`. Use `⟨n + 1 + ⌈5 * (1 + K) * i0⌉₊, fun N hN F hFi hFc hdec z hz => ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩ : ∃ r, N = n + r` from `⟨N - n, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 1 ≤ r` using `by omega`. Establish `hfinN` using `hI L (n + r) π hπ`. Use `set iN : ℝ := ((Gq (toK L (n + r)) (qel L (n + r) π hπ0)).index : ℝ) with hiN_def`. Establish `hiN : ((n + r : ℕ) : ℝ) ≤ iN` using `Nat.cast_le.2 hfinN.2`. Establish `hi0 : 0 ≤ i0` using `Nat.cast_nonneg _`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hceil : 5 * (1 + K) * i0 ≤ iN`. Establish `h1` using `Nat.le_ceil (5 * (1 + K) * i0)`. Establish `h2 : ((n + 1 + ⌈5 * (1 + K) * i0⌉₊ : ℕ) : ℝ) ≤ ((n + r : ℕ) : ℝ)` using `by exact_mod_cast hN`. Move the coercions through the operations in `at h2 hiN`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hiNpos : 0 < iN`. Establish `h1 : (1 : ℝ) ≤ ((n + r : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ n + r)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set a : ℝ := i0 / iN with ha`. Establish `ha0 : 0 ≤ a` using `div_nonneg hi0 hiNpos.le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `haK : a * (1 + K) ≤ 1 / 5`. Rewrite using `[ha, div_mul_eq_mul_div, div_le_iff₀ hiNpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha15 : a ≤ 1 / 5` using `by nlinarith [mul_nonneg ha0 hK0]`. Use `set TN : ((Fin (k + 2) → GK L (n + r)) → ℝ) → ((Fin (k + 2) → GK L (n + r)) → ℝ) := hecke (toK L (n + r)) (MonoidHom.id (GK L (n + r))) (qel L (n + r) π hπ0) with hTN`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hit : ∀ j, Inv (toK L (n + r)) (TN^[j] F) ∧ dC (TN^[j] F) = 0`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact ⟨hFi, hFc⟩`. Consider the case `succ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Function.iterate_succ_apply']`. Take `⟨h1, h2, _⟩` from `hF _ _ (toK L (n + r)) _ hfinN.1 (k + 1) (TN^[j] F) 0 0 ih.1`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ih.2, hecke_zero]`. Establish `hc` using `(hSK L π hπ0 n r hn1).1`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hres : ∀ G : (Fin (k + 2) → GK L (n + r)) → ℝ, Inv (toK L (n + r)) G → dC G = 0 → resF L n r k G ∈ invCoc L n k`. Introduce `G hGi hGc`. Use `⟨fun g y => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hGi (stab (𝓞 L) n (n + r) (Nat.le_add_right n r) g) (fun j => stab L n (n + r) (Nat.le_add_right n r) (y j))`. Rewrite `h1` using `[hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [resF, smul_eq_mul, map_mul] at h1 ⊢`. Conclude with `h1`. Use function extensionality and compare the values at `y`. Establish `h1` using `congrFun hGc (fun j => stab L n (n + r) (Nat.le_add_right n r) (y j))`. Simplify `h1` using `[dC, resF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x : ℕ → (↥s → ℝ)` to `fun j z₀ => ev (toK L (n + r)) (TN^[j] F) 1 (cmap (stab (𝓞 L) n (n + r) (Nat.le_add_right n r)) (k + 1) z₀.1)`. Establish `hstep : ∀ j, (4 / 5 : ℝ) * ‖x j‖ ≤ ‖x (j + 1)‖`. Introduce `j`. Establish `hy : ‖Q ⟨resF L n r k (TN^[j] F), hres _ (hit j).1 (hit j).2⟩‖ ≤ K * ‖x j‖`. Establish `hP : P ⟨resF L n r k (TN^[j] F), hres _ (hit j).1 (hit j).2⟩ = x j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun z₀ => ev_resF_eq_ev_cmap_stab L n r k hc _ z₀.1`. Rewrite using `[← hP]`. Conclude with `hKb _`. Establish `hxy : (1 - a) • x j = x (j + 1) - a • Q ⟨resF L n r k (TN^[j] F), hres _ (hit j).1 (hit j).2⟩`. Use function extensionality and compare the values at `z₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1' : x (j + 1) z₀ = (1 - a) * x j z₀ + a * Q ⟨resF L n r k (TN^[j] F), hres _ (hit j).1 (hit j).2⟩ z₀`. Establish `h1` using `hKey hCh' hEv hAff L hL k hk π hπ n r hn1 hr (TN^[j] F) (hit j).1 (hit j).2 z₀.1 (hs1 _ z₀.2)`. Simplify using `only [x, Function.iterate_succ_apply']`. Conclude with `h1`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1']`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `norm_sub_le (x (j + 1)) (a • Q ⟨resF L n r k (TN^[j] F), hres _ (hit j).1 (hit j).2⟩)`. Rewrite `h1` using `[← hxy, norm_smul, norm_smul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg ha0, abs_of_nonneg (by linarith)]`. Establish `h2` using `mul_le_mul_of_nonneg_left hy ha0`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `mul_le_mul_of_nonneg_right haK (norm_nonneg (x j))`. Use polynomial arithmetic with `[norm_nonneg (x j)]`. Establish `hlow : ∀ j, (4 / 5 : ℝ) ^ j * ‖x 0‖ ≤ ‖x j‖`. Introduce `j`. Proceed by induction on `j with`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ]`. Use polynomial arithmetic with `[hstep j, ih]`. Establish `hdec' : ∀ z₀ : ↥s, ∃ C : ℝ, ∀ j, |x j z₀| ≤ C * (3 / 5) ^ j` using `fun z₀ => hdec _ (hcycmap _ _ (hs1 _ z₀.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `choose C hC using hdec'`. Establish `hup : ∀ j, ‖x j‖ ≤ (∑ z₀, |C z₀|) * (3 / 5) ^ j`. Introduce `j`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun z₀ => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.single_le_sum (f := fun z => |C z|) (fun _ _ => abs_nonneg _) (Finset.mem_univ z₀)`. Establish `hx0 : ‖x 0‖ = 0` using `by set D := ∑ z₀, |C z₀|`. Establish `hb : ∀ j, ‖x 0‖ ≤ D * (3 / 4) ^ j`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(hlow j).trans (hup j)`. Establish `hp : (0 : ℝ) < (4 / 5) ^ j` using `by positivity`. Establish `h2 : (3 / 5 : ℝ) ^ j = (3 / 4) ^ j * (4 / 5) ^ j` using `by rw [← mul_pow]; norm_num`. Rewrite `h1` using `[h2]`. Establish `h3 : (4 / 5 : ℝ) ^ j * ‖x 0‖ ≤ (4 / 5) ^ j * (D * (3 / 4) ^ j)` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `le_of_mul_le_mul_left h3 hp`. Establish `ht : Filter.Tendsto (fun j : ℕ => D * (3 / 4 : ℝ) ^ j) Filter.atTop (nhds 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num : (0 : ℝ) ≤ 3 / 4) (by norm_num)).const_mul D`. Conclude with `le_antisymm (ge_of_tendsto' ht hb) (norm_nonneg _)`. Establish `hx0' : ∀ z₀ ∈ s, ev (toK L (n + r)) F 1 (cmap (stab (𝓞 L) n (n + r) (Nat.le_add_right n r)) (k + 1) z₀) = 0`.
-
-Introduce `z₀ hz₀`. Conclude with `congrFun (norm_eq_zero.1 hx0) ⟨z₀, hz₀⟩`. Take `⟨E, hE⟩` from `exists_linearMap_eq_ev (toK L (n + r)) F (1 : GK L (n + r))`. Establish `hall` using `eq_zero_of_mem_all_maximalIdeal_pow (E.comp (cmap (stab (𝓞 L) n (n + r) (Nat.le_add_right n r)) (k + 1))) s hs2 (fun w hw => by`. Rewrite using `[LinearMap.comp_apply, hE]`.
-
-Conclude with `(hEv _ _ _ _ k F hFi hFc).1 1 _ (hbdmap _ w hw))`. Use the proof step `(fun w hw => by`. Rewrite using `[LinearMap.comp_apply, hE]`. Conclude with `hx0' w hw)`. Take `⟨z₀, hz₀, hb⟩` from `(hSt (𝓞 L) k n (n + r) (Nat.le_add_right n r) (le_refl _)).2 z hz`.
-
-Establish `h1` using `(hEv _ _ _ _ k F hFi hFc).1 1 _ hb`. Establish `h2` using `hall z₀ hz₀`. Rewrite `h1` using `[← hE, map_sub]`. Rewrite `h2` using `[LinearMap.comp_apply]`. Rewrite using `[← hE]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem assemble (hCh : SChain) (hEv : SEv) (hSt : SStab) (hFin : SFin) (hAff : SAff) (hKey : PKey)
     (hF : PHeckeFormal) (hK : PHeckeKer) (hI : PIndex) (hSK : PStabK) : SHecke := by

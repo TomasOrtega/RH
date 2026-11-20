@@ -18,7 +18,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {Y : Type} [AddCommGroup Y] [Module ℂ Y]
 
 /- English proof (translation)
-Substitute `hbb` using the available equality. Take `⟨f, g, ⟨ψ⟩⟩` from `GlobalTheory.T.first_cell_functor_equiv χ₁ χ₂ h₁ h₂ u v`. Take `⟨φ⟩` from `hσ f g`. Conclude with `⟨(compEquiv' φ (leviTwo k (Fin 1) (Fin (u + v))).toMonoidHom).trans ψ⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cell_first_step (χ₁ χ₂ : kˣ →* ℂˣ) (h₁ : IsSmoothChar χ₁) (h₂ : IsSmoothChar χ₂) (u v : ℕ)
     (bb : SizeMatrix (Two (Fin (u + 1)) (Fin v)) (Two (Fin 1) (Fin (u + v)))) (hbb : bb = cellFirst u v)
@@ -36,7 +36,7 @@ theorem cell_first_step (χ₁ χ₂ : kˣ →* ℂˣ) (h₁ : IsSmoothChar χ�
   exact ⟨(compEquiv' φ (leviTwo k (Fin 1) (Fin (u + v))).toMonoidHom).trans ψ⟩
 
 /- English proof (translation)
-Take `⟨hv, rfl⟩` from `(eq_cellFirst_or u v bb).resolve_left hbb`. Take `⟨f, g, hz⟩` from `GlobalTheory.T.second_cell_functor_apply χ₁ χ₂ u v hv ϖ`. Take `⟨φ⟩` from `hσ f g`. Conclude with `smul_of_equiv φ _ _ hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cell_other_scalar (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)
     (bb : SizeMatrix (Two (Fin (u + 1)) (Fin v)) (Two (Fin 1) (Fin (u + v)))) (hbb : bb ≠ cellFirst u v) (ϖ : kˣ)
@@ -57,11 +57,11 @@ end Cells
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hG χ₁ χ₂ h₁ h₂ u v e ϖ`. Establish `hJ : JacquetOfInducedFiltration k` using `hG k`. Establish `H` using `hJ Bool Bool (Fin (u + 1 + v)) (Two (Fin (u + 1)) (Fin v)) (Two (Fin 1) (Fin (u + v))) (two (stdSum (rfl : u + 1 + v = u + 1 + v))) (two e)`. Take `⟨N, H⟩` from `H`. Take `⟨b, hb⟩` from `H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom` using `continuous_prodMk.2 ⟨continuous_apply _, continuous_apply _⟩`. Establish `hsm : IsSmooth ((extTensor (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom)` using `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff _).2 h₁.detChar) ((isSmooth_ofChar_iff _).2 h₂.detChar)) _ hc`. Establish `HS` using `hb (TensorProduct ℂ ℂ ℂ) ((extTensor (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)).comp (leviTwo k (Fin (u + 1)) (Fin v)).symm.toMonoidHom) hsm`. Take `⟨S, hmono, h0, htop, hS⟩` from `HS`. Establish `ht₀ : b (b.symm (cellFirst u v)) = cellFirst u v` using `b.apply_symm_apply _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨N, assemble _ (leviTwo k (Fin 1) (Fin (u + v))).toMonoidHom S hmono h0 htop _ (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) (((χ₂ * absPow k ((1 - (v : ℂ)) / 2)) ϖ : ℂˣ) : ℂ) (b.symm (cellFirst u v)) (cell_first_step χ₁ χ₂ h₁ h₂ u v _ ht₀ _ (hS _)) (fun t ht => cell_other_scalar χ₁ χ …`.
+Supply the required witnesses or components.
 -/
 theorem jac_prod_det_filtration : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.GeometricLemmaFiltration → ∀ (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ → ∀ (u v : ℕ) (e : Fin 1 ⊕ Fin (u + v) ≃ Fin (u + 1 + v)) (ϖ : kˣ), ∃ (N : ℕ) (S : Fin (N + 1) → Subrepresentation (jac₂ e (prod₂ (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)))), Monotone S ∧ S 0 = ⊥ ∧ S (Fin.last N) = ⊤ ∧ ∃ t₀ : Fin N, Nonempty ((subQuot (S t₀.succ) (S t₀.castSucc)).Equiv (extTensor (detRep (Fin 1) (χ₁ * absPow k (-(u : ℂ) / 2))) (prod₂ (detRep (Fin u) (χ₁ * absPow k (1 / 2))) (detRep (Fin v) χ₂)))) ∧ ∀ t, t ≠ t₀ → ∀ w ∈ (S t.succ).toSubmodule, jac₂ e (prod₂ (detRep (Fin (u + 1)) χ₁) (detRep (Fin v) χ₂)) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) w - (((χ₂ * absPow k ((1 - (v : ℂ)) / 2)) ϖ : ℂˣ) : ℂ) • w ∈ (S t.castSucc).toSubmodule := by
   intro k _ _ _ _ hG χ₁ χ₂ h₁ h₂ u v e ϖ

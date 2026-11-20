@@ -34,15 +34,15 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E :
   (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa' φ r b hb ho i v s b0 a0`. Take `⟨h1, h2⟩` from `hL j hj L0 hL0 La' hLa' φ r b hb ho i v`. Prove the components needed by the constructor for the conclusion. Take `⟨w, hw⟩` from `entry_int (W := X.G.P.W v) (Gm X M φ v) (Gmi X M φ v) (Gmi_mul_Gm X M φ (hM j L0) v) ((b i).map (fun y => ρ v (D.host.conj y)))ᵀ (Gp X M φ v) h2 a0 b0`. Establish `e1 : ∑ B, ∑ A, ρ v (D.host.conj (b i B A)) * Gp X M φ v B b0 * Gmi X M φ v a0 A = (Gmi X M φ v * ((b i).map (fun y => ρ v (D.host.conj y)))ᵀ * Gp X M φ v) a0 b0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hw]`. Conclude with `hT v s w`. Take `⟨w, hw⟩` from `entry_int (W := X.G.P.W v) (Gp X M φ v) (Gpi X M φ v) (Gpi_mul_Gp X M φ (hM (j + 1) La') v) ((b i).map (ρ v)) (Gm X M φ v) h1 b0 a0`. Establish `e1 : ∑ B, ∑ A, ρ v (b i B A) * Gm X M φ v A a0 * Gpi X M φ v b0 B = (Gpi X M φ v * (b i).map (ρ v) * Gm X M φ v) b0 a0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hw]`. Conclude with `hT v s w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameIntLt_of (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v) (hM : MInv X M) (hT : TwInt X E)
     (hL : FrameLatMapLt X M hfin D large₂ Lg' ρ) : FrameIntLt X E hfin D large₂ Lg' M ρ := by
@@ -93,13 +93,11 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E :
   (M : ∀ j, X.Lt j → ∀ v : X.Pl, Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v))
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa' r b hb ho φ`. Take `⟨σ, twK, wK, hσ, htwK, hσtw, hwK, hσw, hwn⟩` from `hF`. Establish `hL` using `hT j hj L0 hL0 La' hLa' r b hb ho`. Establish `hH : IsHypPair σ (fK X D M φ b ρ twK wK) (fK' X D M φ b ρ twK wK)`. Unfold `IsHypPair`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨fun e i => ⟨?_, ?_⟩, fun e i => ⟨?_, ?_⟩, fun e e' => ?_, fun e e' => ?_, fun e e' => ?_⟩` and prove the remaining obligations. Conclude with `norm_fK X E D M φ b ρ twK wK htwK hwn (fun i v s b0 a0 => (hI j hj L0 hL0 La' hLa' φ r b hb ho i v s b0 a0).1) e i`. Conclude with `sigma2_fK X D M φ b ρ twK wK σ hσtw hσw hev hconj e i`. Conclude with `norm_fK' X E D M φ b ρ twK wK htwK hconj hwn (fun i v s b1 a1 => (hI j hj L0 hL0 La' hLa' φ r b hb ho i v s b1 a1).2) e i`. Conclude with `sigma2_fK' X D M φ b ρ twK wK σ hσtw hσw hev hconj e i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `iso_fK X E D pos lam M φ b ρ twK wK hρ htwK σ hσtw hσw hev hconj hL e e'`. Conclude with `iso_fK' X E D pos lam M φ b ρ twK wK hρ htwK σ hσtw hσw hev hconj hL e e'`. Rewrite using `[dual_fK X E D pos lam M φ b ρ twK wK hρ htwK σ hσtw hσw hev hconj hL (hM j L0) (hM (j + 1) La') e e']`. Use `⟨σ, fK X D M φ b ρ twK wK, fK' X D M φ b ρ twK wK, hσ, hH, fun e i => ?_, fun e i => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_one, one_mul]`.
-
-Conclude with `coe_fK X E D pos lam M φ b ρ twK wK hρ htwK hwK e i`. Rewrite using `[inv_one, one_mul]`. Conclude with `coe_fK' X E D pos lam M φ b ρ twK wK hρ htwK hwK hconj e i`.
+A detailed English derivation is pending.
 -/
 theorem hypCoordLt_of (lam : Qbar →+* ℂ_[p]) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v)
     (hT : LamTraceLt X hfin D large₂ Lg' lam) (hρ : LamPosG X E D pos lam ρ) (hF : FrobTw X E)
@@ -128,15 +126,13 @@ theorem hypCoordLt_of (lam : Qbar →+* ℂ_[p]) (ρ : ∀ v : X.Pl, D.host.E �
     exact coe_fK' X E D pos lam M φ b ρ twK wK hρ htwK hwK hconj e i
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa' φ`. Take `⟨r, b, hb, ho⟩` from `h1 j hj L0 hL0 La' hLa'`. Take `⟨σ, f, f', hσ, hH, hf, hf'⟩` from `h3 j hj L0 hL0 La' hLa' r b hb ho φ`. Establish `hL` using `h2 j hj L0 hL0 La' hLa' r b hb ho`. Use `⟨r, b, hb, ho, σ, f, f', hσ, hH, fun k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(isLin_stdLin X E pos M φ k).repr, Fintype.sum_sum_type]`. Simplify using `only [hypLin, Finset.mul_sum, mul_add, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun i e => MvPowerSeries.C (c * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) * (MvPowerSeries.C (f e i : ℂ_[p]) * MvPowerSeries.X (Sum.inl e))), Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun i e => MvPower …`. Use `congr 1`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← mul_assoc, ← map_mul]`. Rewrite using `[← Finset.sum_mul, ← map_sum]`. Use `congr 2`. Simplify using `only [hf]`. Conclude with `(coord_recon D lam b hL hc0 (fun k' => frVec X E pos M φ (Sum.inl e) k') k).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc, ← map_mul]`. Rewrite using `[← Finset.sum_mul, ← map_sum]`. Use `congr 2`. Simplify using `only [hf']`.
-
-Conclude with `(coord_recon D lam b hL hc0 (fun k' => frVec X E pos M φ (Sum.inr e) k') k).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frameStdLt_of (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p]) (hc0 : c ≠ 0) (h1 : OnbExLt X hfin D large₂ Lg')
     (h2 : LamTraceLt X hfin D large₂ Lg' lam) (h3 : HypCoordLt X E hfin D pos large₂ Lg' M lam c) :
@@ -169,7 +165,7 @@ theorem frameStdLt_of (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p]) (hc0 : c ≠ 0) (
     exact (coord_recon D lam b hL hc0 (fun k' => frVec X E pos M φ (Sum.inr e) k') k).symm
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa' φ`. Take `⟨r, b, hb, ho, σ, f, f', hσ, hH, hk⟩` from `h j hj L0 hL0 La' hLa' φ`. Conclude with `⟨r, b, hb, ho, σ, f, f', hσ, hH, fun k => (linFrame_subGen X E pos M φ k).trans (hk k)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frameLinLt_of_std (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p]) (h : FrameStdLt X E hfin D pos large₂ Lg' M lam c) :
     FrameLinLt X E hfin D pos large₂ Lg' (fun j La La' => subGen X E pos M j La La') lam c := by
@@ -178,9 +174,9 @@ theorem frameLinLt_of_std (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p]) (h : FrameStd
   exact ⟨r, b, hb, ho, σ, f, f', hσ, hH, fun k => (linFrame_subGen X E pos M φ k).trans (hk k)⟩
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa' φ`. Take `⟨r, b, hb, ho, σ, f, f', hσ, hH, hk⟩` from `h j hj L0 hL0 La' hLa' φ`. Use `⟨r, b, hb, ho, σ, f, f', hσ, hH, ?_⟩` and prove the remaining obligations. Rewrite using `[thA_thFOf_linSub X E pos φ S F, subst_hypLin_thOrth]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Conclude with `hk k`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem frameHypLt_of_lin (S : ∀ j, X.Lt j → X.Lt (j + 1) →
       (D.what₂.Tau × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) →
@@ -198,7 +194,7 @@ theorem frameHypLt_of_lin (S : ∀ j, X.Lt j → X.Lt (j + 1) →
   exact hk k
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa'` and use `hO D p h5 hin _ _ _ _ (hadm j hj L0 hL0 La' hLa')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem onbExLt_of (hO : Formalism.L2.KerInert.OrthBasisExists) (h5 : 5 ≤ p) (hin : jacobiSym (-(D.host.d : ℤ)) p = -1)
     (hadm : ∀ j, j < X.mm → ∀ (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1),
@@ -207,7 +203,7 @@ theorem onbExLt_of (hO : Formalism.L2.KerInert.OrthBasisExists) (h5 : 5 ≤ p) (
   fun j hj L0 hL0 La' hLa' => hO D p h5 hin _ _ _ _ (hadm j hj L0 hL0 La' hLa')
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa' _ b hb` and use `rank_of_locBasis _ _ (hadm j hj L0 hL0 La' hLa').2.2.1 (hadm j hj L0 hL0 La' hLa').2.2.2 b hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rankTieLt_of (hadm : ∀ j, j < X.mm → ∀ (L0 : X.Lt j), L0 ∈ Formalism.L2.G.Pend.repOf X.Lv hfin j → ∀ La' : X.Lt (j + 1),
       (X.Pj (j + 1)).IsLatTup La'.2 → admitted D _ _ (large₂ j L0 La') (Lg' j L0 La')) :
@@ -216,7 +212,7 @@ theorem rankTieLt_of (hadm : ∀ j, j < X.mm → ∀ (L0 : X.Lt j), L0 ∈ Forma
     rank_of_locBasis _ _ (hadm j hj L0 hL0 La' hLa').2.2.1 (hadm j hj L0 hL0 La' hLa').2.2.2 b hb
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa' r b hb ho` and use `lamONB_of_cols D lam b (h1 j hj L0 hL0 La' hLa' r b hb) (h2 j L0 hL0 La' hLa' r b hb ho)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lamTraceLt_of (lam : Qbar →+* ℂ_[p]) (h1 : RankTieLt X hfin D large₂ Lg') (h2 : ColTie X hfin D large₂ Lg' lam) :
     LamTraceLt X hfin D large₂ Lg' lam :=
@@ -224,7 +220,7 @@ theorem lamTraceLt_of (lam : Qbar →+* ℂ_[p]) (h1 : RankTieLt X hfin D large�
     lamONB_of_cols D lam b (h1 j hj L0 hL0 La' hLa' r b hb) (h2 j L0 hL0 La' hLa' r b hb ho)
 
 /- English proof (translation)
-The claim follows from `frameHypLt_of_lin X E hfin D pos large₂ Lg' _ lam 1 (frameLinLt_of_std X E hfin D pos large₂ Lg' M lam 1 (frameStdLt_of X E hfin D pos large₂ Lg' M lam 1 one_ne_zero h1 hT (hypCoordLt_of X E hfin D pos large₂ Lg' M lam ρ hT hρ hF (fun v => (X.G.P.setting v).even) (conj_conj D) hM …`.
+A detailed English derivation is pending.
 -/
 theorem frameHypLt_of_lat (lam : Qbar →+* ℂ_[p]) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v)
     (h1 : OnbExLt X hfin D large₂ Lg') (hT : LamTraceLt X hfin D large₂ Lg' lam) (hρ : LamPosG X E D pos lam ρ)
@@ -245,7 +241,7 @@ namespace Formalism.L2.KerInert.RepLt
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Th1.H Formalism.L2.KerInert.RepComb
 
 /- English proof (translation)
-Take `⟨S, hS, hpS, hΞ⟩` from `hD`. Establish `hTA : TransAlg D B.tor (B.eNat χ)` using `transcendence_algebraic_eigen D cc δ B χ hcc hδ (KS.Lat.delta_ne hcc hδ) (B.stdOK hcc hδ) hAlg`. Introduce `j hj L0 h0 La' hL'`. Establish `h` using `hA j hj L0 h0 La' hL'`. Conclude with `⟨h, combined_kernel_twisted D cc δ B χ _ _ SS cl _ _ _ S p lam h h.2.2.2.1 h.2.2.1.2.1 (aaOf_fg cc) (laFacts_of_adm B hcc hδ h) hS.1 hS (hΞ j L0 La') hpS (lambda_in_lattice_pair cc δ _ _) hTA⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem combAtLt_of_dataRec {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.Sys p) [IsFractionRing X.G.O X.G.Kf]
     (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
@@ -269,7 +265,7 @@ theorem combAtLt_of_dataRec {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.
     (laFacts_of_adm B hcc hδ h) hS.1 hS (hΞ j L0 La') hpS (lambda_in_lattice_pair cc δ _ _) hTA⟩
 
 /- English proof (translation)
-Introduce `j hj L0 h0 La' hL'`. Take `⟨hA, hC⟩` from `h j hj L0 h0 La' hL'`. Conclude with `⟨hA, Formalism.L2.KerInert.Rep.isComb_scalar D T e lam _ hC (hs j hj L0 h0 La' hL').1 _ (hs j hj L0 h0 La' hL').2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem combAtLt_scalar {p : ℕ} [Fact p.Prime] (X : Formalism.MainNotions.FormalGroupSystem.Sys p) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7)
     (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
@@ -298,7 +294,7 @@ open Formalism.L2.G.Pend (k0ToC wittFractionAlgebraCp OcC Frm thA thFOf)
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
 
 /- English proof (translation)
-Introduce `j hj L0 h0 La' hL' φ`. Conclude with `k1gen_of_orth h5 hB hC (hO j hj L0 h0 La' hL' φ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem firstKernelLawSmallSteps_of_curve_orthAllLt {p : ℕ} [Fact p.Prime] (h5 : 5 ≤ p) (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
     (E : Formalism.L2.G.Pend.CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (be : MvPowerSeries (Fin 2) (K0 p))
@@ -311,11 +307,11 @@ theorem firstKernelLawSmallSteps_of_curve_orthAllLt {p : ℕ} [Fact p.Prime] (h5
   exact k1gen_of_orth h5 hB hC (hO j hj L0 h0 La' hL' φ)
 
 /- English proof (translation)
-Take `⟨g2, g3, ε, s2, hC, hD⟩` from `curveDict_data hCD D cc δ hLT hA h5 hIn hM`. Establish `hD' : DictInt D g.lam B.tor.abelian₂ (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * (Formalism.L2.KerInert.BeCob.eLT hLT)⁻¹) g2 g3 s2 ε`. Rewrite using `[← hLam]`. Conclude with `hD D`. Take `⟨C, wq, hMod, hW, hDi⟩` from `hD'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `firstKernelLawSmallSteps_of_curve_orthAllLt h5 X E hfin _ pos _ hB g2 g3 ε s2 hC ?_` and prove the remaining obligations. Introduce `j hj L0 h0 La' hL' φ`. Take `⟨r, b, hLB, hON, σ, f, f', hσ, hP, hEq⟩` from `hFH j hj L0 h0 La' hL' φ`. Take `⟨hAdm, hCb⟩` from `hComb j hj L0 h0 La' hL'`. Use `⟨r, thOrth D g.lam (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * (Formalism.L2.KerInert.BeCob.eLT hLT)⁻¹) b (F j L0 La'), σ, f, f', hσ, hP, ?_, hDi _ _ r b _ (hInt D cc δ B hcc hδ χ hχ p h5 hin g.lam _ _ _ _ hAdm (F j L0 La') hCb C wq r b hMod hW hLB hON)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEq, hFr, thOrth_sclY]`.
+A detailed English derivation is pending.
 -/
 theorem K1_representatives_LT_of_dictionary (hCD : CurveDict) (hInt : Formalism.L2.KerInert.IntInert) (D : D7) {p : ℕ} [Fact p.Prime] (h5 : 5 ≤ p)
     (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : Formalism.L2.G.Pend.CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses)

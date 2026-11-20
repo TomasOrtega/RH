@@ -12,11 +12,11 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M 
 variable {r : ℕ}
 
 /- English proof (translation)
-Unfold `HermSp.om'`. Rewrite using `[h_sum_left]`. Take `⟨h0, hl⟩` from `hF'`. Use `split_ifs with hb`. Substitute `hb` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[hl, adj_last]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c _ hc`. Rewrite using `[h0 c (Fin.last r) (Or.inl hc), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[h0 c b (Or.inr hb), mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_om'_f'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (b : Fin (r + 1)) :
     H.h (H.om' f f') (f' b) = if b = Fin.last r then -algebraMap F E T' * H.Dl f f' r else 0 := by
@@ -37,9 +37,9 @@ theorem h_om'_f'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotio
     rw [h0 c b (Or.inr hb), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[show H.h (H.om' f f') (H.om' f f') = H.h (H.om' f f') (∑ b, (H.Zhat f f').adjugate b (Fin.last r) • f' b) from rfl, h_sum_right]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[h_om'_f'U H f f' T' hF', if_pos rfl, adj_last]`. Introduce `b _ hb`. Rewrite using `[h_om'_f'U H f f' T' hF', if_neg hb, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem h_om'_om'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') :
     H.h (H.om' f f') (H.om' f f') = M.L.cj (H.Dl f f' r) * (-algebraMap F E T' * H.Dl f f' r) := by
@@ -53,37 +53,35 @@ theorem h_om'_om'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNoti
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun E).mp hv`. Establish `hvxy : v = (∑ a, c (Sum.inl a) • f a) + ∑ b, c (Sum.inr b) • f' b`. Rewrite using `[← hc, Fintype.sum_sum_type]`. Both sides reduce to the same expression. Rewrite `h1`, `h2` using `[hvxy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hvxy]`. Establish `key1 : ∀ a, Matrix.mulVec (H.Zhat f f') (fun b => c (Sum.inr b)) a = if a = Fin.last r then algebraMap F E T * c (Sum.inl (Fin.last r)) else 0`. Introduce `a`. Establish `h` using `h1 a`. Rewrite `h` using `[HermSp.h_add_left, h_sum_left, h_sum_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∑ i, c (Sum.inl i) * H.h (f i) (f a) = if a = Fin.last r then c (Sum.inl (Fin.last r)) * -algebraMap F E T else 0` using `by split_ifs with ha`. Substitute `ha` using the available equality. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[hF.2]`. Introduce `i _ hi`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF.1 i (Fin.last r) (Or.inl hi), mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF.1 i a (Or.inr ha), mul_zero]`. Establish `hw : Matrix.mulVec (H.Zhat f f') (fun b => c (Sum.inr b)) a = ∑ b, c (Sum.inr b) * H.h (f' b) (f a)`. Simplify using `only [Matrix.mulVec, dotProduct, HermSp.Zhat, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl (fun b _ => mul_comm _ _)`. Rewrite using `[hw]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hs]`. Use `split_ifs with ha`. Rewrite `h` using `[if_pos ha]`. Take the linear combination `h`. Rewrite `h` using `[if_neg ha, zero_add]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h`. Establish `key2 : ∀ b, H.Dl f f' (r + 1) * c (Sum.inr b) = (H.Zhat f f').adjugate b (Fin.last r) * (algebraMap F E T * c (Sum.inl (Fin.last r)))`. Introduce `b`. Establish `hm : Matrix.mulVec (H.Zhat f f').adjugate (Matrix.mulVec (H.Zhat f f') (fun b => c (Sum.inr b))) = H.Dl f f' (r + 1) • (fun b => c (Sum.inr b))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec, dl_full]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `congrFun hm b`. Rewrite `hb` using `[funext key1]`. Rewrite `hb` using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← hb]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxl : c (Sum.inl (Fin.last r)) = 0`. Rewrite `h2` using `[h_add_right, h_sum_right, h_sum_right]`. Establish `s1 : ∑ a, M.L.cj (c (Sum.inl a)) * H.h (H.om' f f') (f a) = M.L.cj (c (Sum.inl (Fin.last r))) * H.Dl f f' (r + 1)`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[h_om'_f, if_pos rfl, dl_full]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i _ hi`. Rewrite using `[h_om'_f, if_neg hi, mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Establish `s2 : ∑ b, M.L.cj (c (Sum.inr b)) * H.h (H.om' f f') (f' b) = M.L.cj (c (Sum.inr (Fin.last r))) * (-algebraMap F E T' * H.Dl f f' r)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[h_om'_f'U H f f' T' hF', if_pos rfl]`. Introduce `i _ hi`. Rewrite using `[h_om'_f'U H f f' T' hF', if_neg hi, mul_zero]`. Introduce `h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite `h2` using `[s1, s2]`. Establish `k` using `key2 (Fin.last r)`. Rewrite `k` using `[adj_last]`. Establish `kc` using `congrArg M.L.cj k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `kc` using `[map_mul, map_mul, map_mul, AlgEquiv.commutes]`. Rewrite `hG` using `[map_mul]`. Establish `hX : M.L.cj (c (Sum.inl (Fin.last r))) * (H.Dl f f' (r + 1) * M.L.cj (H.Dl f f' (r + 1)) - algebraMap F E T * algebraMap F E T' * (H.Dl f f' r * M.L.cj (H.Dl f f' r))) = 0`. Take the linear combination `M.L.cj (H.Dl f f' (r + 1)) * h2 + (algebraMap F E T' * H.Dl f f' r) * kc`. Establish `hX0` using `hG.mul_left_eq_zero.mp hX`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg M.L.cj hX0` as an intermediate fact. Rewrite `this` using `[M.L.cj_cj, map_zero]`. Then use the resulting hypothesis. Establish `hy : ∀ b, c (Sum.inr b) = 0`. Introduce `b`. Establish `k` using `key2 b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k` using `[hxl, mul_zero, mul_zero]`. Conclude with `hD.mul_right_eq_zero.mp k`. Establish `hy0 : ∑ b, c (Sum.inr b) • f' b = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`.
-
-Rewrite using `[hy b, zero_smul]`. Rewrite using `[hy0, add_zero, Fin.sum_univ_castSucc, hxl, zero_smul, add_zero]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `i _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_X_ofU (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1)))
@@ -184,7 +182,7 @@ theorem mem_X_ofU (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNoti
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[omP, H.h_smul_left, h_smul_right, h_om'_om'U H f f' T' hF']`. Establish `h1 : Ring.inverse (H.Dl f f' (r + 1)) * H.Dl f f' (r + 1) = 1` using `Ring.inverse_mul_cancel _ hD`. Establish `h2 : M.L.cj (Ring.inverse (H.Dl f f' (r + 1))) * M.L.cj (H.Dl f f' (r + 1)) = 1`. Rewrite using `[← map_mul, h1, map_one]`. Take the linear combination `(-algebraMap F E T' * (H.Dl f f' r * M.L.cj (H.Dl f f' r)) * M.L.cj (Ring.inverse (H.Dl f f' (r + 1))) * M.L.cj (H.Dl f f' (r + 1))) * h1 + (-algebraMap F E T' * (H.Dl f f' r * M.L.cj (H.Dl f f' r))) * h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nu_mul (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
     (hD : IsUnit (H.Dl f f' (r + 1))) :
@@ -199,7 +197,7 @@ theorem nu_mul (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.
     (-algebraMap F E T' * (H.Dl f f' r * M.L.cj (H.Dl f f' r))) * h2
 
 /- English proof (translation)
-Establish `key : (1 + algebraMap F E T * H.h (omP H f f') (omP H f f')) * (H.Dl f f' (r + 1) * M.L.cj (H.Dl f f' (r + 1))) = H.Dl f f' (r + 1) * M.L.cj (H.Dl f f' (r + 1)) - algebraMap F E (T * T') * (H.Dl f f' r * M.L.cj (H.Dl f f' r))`. Rewrite using `[map_mul]`. Take the linear combination `(algebraMap F E T) * nu_mul H f f' T' hF' hD`. Establish `: IsUnit ((1 + algebraMap F E T * H.h (omP H f f') (omP H f f')) * (H.Dl f f' (r + 1) * M.L.cj (H.Dl f f' (r + 1))))` using `by rw [key]; exact hG`. Conclude with `isUnit_of_mul_isUnit_left this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eta_unit (f f' : Fin (r + 1) → V) (T T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
     (hD : IsUnit (H.Dl f f' (r + 1)))
@@ -217,20 +215,20 @@ theorem eta_unit (f f' : Fin (r + 1) → V) (T T' : F) (hF' : Formalism.MainNoti
   exact isUnit_of_mul_isUnit_left this
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, H.h_add_left, ← neg_one_smul E y, H.h_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem h_sub_left' (x y z : V) : H.h (x - y) z = H.h x z - H.h y z := by
   rw [sub_eq_add_neg, H.h_add_left, ← neg_one_smul E y, H.h_smul_left]
   ring
 
 /- English proof (translation)
-Establish `hom'eq : H.om' f f' = H.Dl f f' (r + 1) • omP H f f'`. Unfold `omP`. Rewrite using `[smul_smul, Ring.mul_inverse_cancel _ hD, one_smul]`. Apply `mem_X_ofU H f f' T T' hF hF' hD hG` to reduce the goal to its premises. Use `Submodule.sub_mem _ hu (Submodule.add_mem _ (Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ (omP_mem_span H f f')))` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.subset_span ⟨Sum.inl (Fin.last r), rfl⟩`. Introduce `a`. Rewrite using `[h_sub_left', HermSp.h_add_left, HermSp.h_smul_left, HermSp.h_smul_left, h_omP_f H f f' hD a]`. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, hF.2, hβ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg ha, hF.1 (Fin.last r) a (Or.inr ha)]`. Take `⟨i, rfl⟩` from `Fin.exists_castSucc_eq.mpr ha`. Rewrite using `[(mem_perpX_iff H f u).mp hX i]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hw : H.h (u - (α • f (Fin.last r) + β • omP H f f')) (omP H f f') = 0`. Rewrite using `[h_sub_left', HermSp.h_add_left, HermSp.h_smul_left, HermSp.h_smul_left, h_z_omP H f f' hD, hβ]`. Take the linear combination `-hα`. Rewrite using `[hom'eq, HermSp.h_smul_left, H.h_herm _ (omP H f f'), hw, map_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decompU (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1)))
@@ -267,7 +265,7 @@ theorem decompU (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotion
     rw [hom'eq, HermSp.h_smul_left, H.h_herm _ (omP H f f'), hw, map_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hmem` using `decompU H f f' T T' hF hF' hD hG (u : V) hu u.2 α (H.h u (f (Fin.last r)) + algebraMap F E T * α) hα rfl`. Rewrite using `[← map_smul, ← map_smul, ← map_add]`. Simplify using `only [HermSp.mkW, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`. Simplify using `using hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mkW_decompU (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1)))
@@ -286,9 +284,9 @@ theorem mkW_decompU (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNo
   simpa using hmem
 
 /- English proof (translation)
-Establish `e₁` using `nu_mul H f₁ f₁' T' hF₁' hD₁`. Establish `e₂` using `nu_mul H f₂ f₂' T' hF₂' hD₂`. Establish `crel : M.L.cj (H.Dl f₁ f₁' r) * M.L.cj (H.Dl f₂ f₂' (r + 1)) = M.L.cj (H.Dl f₂ f₂' r) * M.L.cj (H.Dl f₁ f₁' (r + 1))`. Rewrite using `[← map_mul, ← map_mul, hrel]`. Establish `hN : IsUnit ((H.Dl f₁ f₁' (r + 1) * M.L.cj (H.Dl f₁ f₁' (r + 1))) * (H.Dl f₂ f₂' (r + 1) * M.L.cj (H.Dl f₂ f₂' (r + 1))))` using `(hD₁.mul (hD₁.map M.L.cj)).mul (hD₂.mul (hD₂.map M.L.cj))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hN.mul_right_cancel` to reduce the goal to its premises. Take the linear combination `(H.Dl f₂ f₂' (r + 1) * M.L.cj (H.Dl f₂ f₂' (r + 1))) * e₁ - (H.Dl f₁ f₁' (r + 1) * M.L.cj (H.Dl f₁ f₁' (r + 1))) * e₂ - algebraMap F E T' * (M.L.cj (H.Dl f₁ f₁' r) * M.L.cj (H.Dl f₂ f₂' (r + 1))) * hrel - algebraMap F E T' * (H.Dl f₂ f₂' r * H.Dl f₁ f₁' (r + 1)) * crel`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nu_eq (f₁ f₁' f₂ f₂' : Fin (r + 1) → V) (T' : F) (hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H f₁' T')
     (hF₂' : Formalism.MainNotions.ThinScalesBound.FrameK H f₂' T') (hD₁ : IsUnit (H.Dl f₁ f₁' (r + 1))) (hD₂ : IsUnit (H.Dl f₂ f₂' (r + 1)))
@@ -309,9 +307,9 @@ theorem nu_eq (f₁ f₁' f₂ f₂' : Fin (r + 1) → V) (T' : F) (hF₁' : For
     algebraMap F E T' * (H.Dl f₂ f₂' r * H.Dl f₁ f₁' (r + 1)) * crel
 
 /- English proof (translation)
-Establish `e1` using `eta_unit H f₁ f₁' T T' hF₁' hD₁ hG₁`. Take `⟨α, hα₁⟩ : ∃ α : E, α * (1 + algebraMap F E T * H.h (omP H f₁ f₁') (omP H f₁ f₁')) = H.h u₁ (omP H f₁ f₁') - H.h (omP H f₁ f₁') (omP H f₁ f₁') * H.h u₁ (f₁ (Fin.last r))` from `⟨(H.h u₁ (omP H f₁ f₁') - H.h (omP H f₁ f₁') (omP H f₁ f₁') * H.h u₁ (f₁ (Fin.last r))) * Ring.inverse (1 + algebraMap F E T * H.h (omP H f₁ f₁') (omP H f₁ f₁')), by rw [mul_assoc, Ring.inverse_mul_cancel _ e1, mul_one]⟩`. Establish `hα₂ : α * (1 + algebraMap F E T * H.h (omP H f₂ f₂') (omP H f₂ f₂')) = H.h u₂ (omP H f₂ f₂') - H.h (omP H f₂ f₂') (omP H f₂ f₂') * H.h u₂ (f₂ (Fin.last r))`. Rewrite using `[← hν, c1, c2]`. Conclude with `hα₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mkW_decompU H f₂ f₂' T T' hF₂ hF₂' hD₂ hG₂ u₂ hu₂ α hα₂, c1, mkW_decompU H f₁ f₁' T T' hF₁ hF₁' hD₁ hG₁ u₁ hu₁ α hα₁, map_add, map_smul, map_smul, hz, ho]`.
+A detailed English derivation is pending.
 -/
 theorem mkW_transport {f₁ f₁' f₂ f₂' : Fin (r + 1) → V} {T T' : F}
     (hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H f₁ T) (hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H f₁' T')

@@ -17,19 +17,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum
 end GlobalTheory.CuspValueType
 /- English proof (translation)
-Introduce `hP D θ hθ N hN F hF w τ`. Establish `hgood : GoodPar N.V.rank (N.V.sig (tauE D τ)).1 (N.V.sig (tauE D τ)).2 (N.S τ)` using `⟨N.M.lam τ, N.M.ε τ, N.M.enum τ, GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (N.M.enum τ).1 (N.M.ds τ), GlobalTheory.TypeAtCompare.card_eq_of_congr (N.M.fr_unit τ) (N.M.fr_gram τ) (hN (tauE D τ))⟩`. Establish `key : ∀ T, Mult.IsMultMap θ N.M ∅ 1 T → ∀ v, T v ∈ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.typeSub θ N.V τ (N.S τ)` using `fun T hT v => GlobalTheory.SeriesToClosure.hasTypeAt_of_isTypeAt θ N.V τ (N.S τ) (T v) hP.discreteSeriesUpqExists (GlobalTheory.Published.discreteSeriesHermitianUnique_iff.1 hP.discreteSeriesHermitianUnique) hP.harishChandraModules hP.casselmanWallach hθ hN hgood (hT.aut v) (Glob …`. Establish `main : ∀ T ∈ Mult.Mult θ N.M ∅ 1, ∀ w, PiTensorProduct.lift T w ∈ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.typeSub θ N.V τ (N.S τ)`. Introduce `T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Introduce `w`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_smul, PiTensorProduct.lift.tprod]`. Conclude with `Submodule.smul_mem _ r (key T hT v)`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `w`. Simplify using `only [map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `w`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ (ha w) (hb w)`. Consider the case `smul c a _ ha`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ c (ha w)`. Establish `hF'` using `(Mult.mem_multT θ N.M ∅ 1 F).1 hF`. Establish `eF : F = PiTensorProduct.lift (PiTensorProduct.lift.symm F)` using `(LinearEquiv.apply_symm_apply _ F).symm`. Rewrite using `[eF]`.
-
-Conclude with `main _ hF' w`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : InfFam D), IsInfFam (D := D) θ → ∀ (N : GlobalTheory.Grid.Node D), N.V.SigOK → ∀ F ∈ N.Cusp θ, ∀ (w : SmT N.M) (τ : D.what₂.Tau), GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt θ N.V τ (N.S τ) (F w) := by
   intro hP D θ hθ N hN F hF w τ
@@ -78,7 +76,7 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type | exact _root_.GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type | (intros; apply _root_.GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cusp_value_has_prescribed_type : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : InfFam D), IsInfFam (D := D) θ → ∀ (N : GlobalTheory.Grid.Node D), N.V.SigOK → ∀ F ∈ N.Cusp θ, ∀ (w : SmT N.M) (τ : D.what₂.Tau), GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt θ N.V τ (N.S τ) (F w) := by
   first | exact @_root_.GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type | exact _root_.GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type | (intros; apply _root_.GlobalTheory.CuspValueType.hasTypeAt_cusp_of_cusp_value_type <;> assumption)

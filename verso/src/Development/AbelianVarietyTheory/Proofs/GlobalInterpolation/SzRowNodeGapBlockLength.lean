@@ -17,13 +17,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hx1 : 1 ≤ x` using `by linarith`. Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `hm0 : 0 ≤ m` using `by linarith`. Establish `hp : ∀ n : ℕ, n ≤ 1000 → x ^ n ≤ h` using `fun n hn => (pow_le_pow_right₀ hx1 hn).trans hh`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : T ^ 2 ≤ x ^ 756`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : t ≤ x ^ 756` using `ht.trans (pow_le_pow_right₀ hx1 (by norm_num))`. Establish `h3 : 6 * x ^ 756 ≤ x ^ 757`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h4` using `hp 757 (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = x ^ 891 := by ring`. Use `_ ≤ h := hp _ (by norm_num)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nodeGap_blockLength_poly (x T t P Dy f m N k c h : ℝ) (hx : 6 ≤ x)
     (hT0 : 0 ≤ T) (hT : T ≤ x ^ 378) (ht : t ≤ x ^ 401) (hP0 : 0 ≤ P) (hP : P ≤ x ^ 85)
@@ -63,27 +63,25 @@ theorem nodeGap_blockLength_poly (x T t P Dy f m N k c h : ℝ) (hx : 6 ≤ x)
       _ ≤ h := hp _ (by norm_num)
 
 /- English proof (translation)
-Introduce `eps he he' C hC`. Take `⟨x1, hx1⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'`. Establish `heP : C.T.eP = 12` using `hC.2.2.2.2.2.2.2.2.1`. Establish `hCP : 1000 ≤ C.T.CP` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Use `⟨0, fun cD _ => ⟨1000, fun ch hch => ⟨max (max x1 6) (max C.T.CP C.T.ChT), ?_⟩⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `D L hLe hx V`. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hxa, hx6⟩, hxP, hxC⟩` from `hx`. Take `⟨hf, hm, hr, hkr, -, -, hL1, -, hZ, hD, -, -, -, ht, hN, hm1, -⟩` from `hx1 L.sc D.R hLe hxa V.ranks`. Use `set x := L.sc.x with hxdef`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx1' : 1 ≤ x` using `by linarith`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hm1' : (1 : ℝ) ≤ D.R.m` using `(Real.one_le_rpow hx1' (by rw [hLe]; linarith)).trans hm1`. Establish `cast : ∀ n : ℕ, x ^ ((n : ℕ) : ℝ) = x ^ n` using `fun n => Real.rpow_natCast x n`. Establish `hZ0 : 0 ≤ zBase L` using `by unfold zBase; have : (0:ℝ) ≤ L.sc.L := by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hZ7 : zBase L ≤ x ^ 7`. Rewrite using `[← cast]`. Conclude with `hZ.trans (Real.rpow_le_rpow_of_exponent_le hx1' (by norm_num))`. Establish `hPe : zBase L ^ C.T.eP = zBase L ^ (12 : ℕ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heP]`. Apply the tactic sequence `first | rfl | exact_mod_cast Real.rpow_natCast _ 12`. Use `nodeGap_blockLength_poly x _ _ _ _ _ _ _ _ _ _ hx6 (Nat.cast_nonneg _) ?_ ?_ ?_ ?_ (Nat.cast_nonneg _) ?_ (Nat.cast_nonneg _) ?_ hm1' hm (Nat.cast_nonneg _) ?_ (Nat.cast_nonneg _) ?_ hxC ?_` and prove the remaining obligations. Establish `h1 : x ^ (377 : ℝ) = x ^ 377` using `by exact_mod_cast cast 377`. Establish `h2 : ((TOv L.sc : ℕ) : ℝ) ≤ x ^ 377 + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `TOv`. Rewrite using `[← hxdef, h1]`. Conclude with `(Nat.ceil_lt_add_one (by positivity)).le`. Establish `h3 : (1 : ℝ) ≤ x ^ 377` using `one_le_pow₀ hx1'`. Establish `h4 : 2 * x ^ 377 ≤ x ^ 378`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `ht` after adjusting the coercions. Rewrite using `[hPe]; have : 0 ≤ C.T.CP := by linarith`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hPe]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hD` after adjusting the coercions. Conclude with `hf` after adjusting the coercions. Conclude with `hN` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: (D.R.k : ℝ) ≤ D.R.r` using `by exact_mod_cast hkr`. Conclude with `this.trans (by exact_mod_cast hr)`. Establish `h1 : h0 L = (h0v L.sc ch : ℝ)`. Unfold `h0`. Rewrite using `[V.eta_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, ← cast]`. Unfold `h0v`. Rewrite using `[← hxdef]`. Establish `h2 : x ^ ((1000 : ℕ) : ℝ) ≤ x ^ ch` using `Real.rpow_le_rpow_of_exponent_le hx1' (by exact_mod_cast hch)`.
-
-Establish `h3` using `Nat.le_ceil (x ^ ch)`. Establish `h4 : (0 : ℝ) ≤ (⌈x ^ ch⌉₊ : ℝ)` using `Nat.cast_nonneg _`. Move the coercions through the operations in `at *`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem szRow_nodeGap_blockLength : SzRow (fun C D L => (4 * ((TOv L.sc : ℕ) : ℝ) ^ 2 + 2 * D.R.t ≤ h0 L) ∧ ((C.T.CP * zBase L ^ C.T.eP) * (D.R.f * D.R.r.choose 2 : ℕ) * D.R.f * (D.R.m : ℝ) ^ 2 * (D.R.N D.R.m : ℝ) * (TOv L.sc : ℕ) ≤ h0 L) ∧ ((C.T.CP * zBase L ^ C.T.eP) * ((D.R.f : ℝ) * D.R.m * D.R.k) ^ 3 * D.R.k / D.R.m ≤ h0 L) ∧ (C.T.ChT * (TOv L.sc : ℕ) * (D.R.N D.R.m : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * (D.R.f * D.R.r.choose 2 : ℕ) * (C.T.CP * zBase L ^ C.T.eP) ≤ h0 L)) := by
   intro eps he he' C hC
@@ -145,9 +143,9 @@ theorem szRow_nodeGap_blockLength : SzRow (fun C D L => (4 * ((TOv L.sc : ℕ) :
     linarith
 
 /- English proof (translation)
-Establish `hand` using `szRow_and_imp.1`. Establish `hall` using `hand _ _ GlobalTheory.T.sizes_PP_and_dim_and_TOv_le_x_rpow_Ct <| hand _ _ GlobalTheory.T.explicitChoice_windowRank_conditions <| hand _ _ GlobalTheory.T.explicitChoice_windowRank_le_polyBound <| hand _ _ GlobalTheory.T.sizes_PP_pow_mul_dim_pow_div_le_TOv <| hand _ _ GlobalTheory. …`. Use `szRow_and_imp.2 _ _ hall ?_` and prove the remaining obligations. Introduce and unpack `C cD ch D L hS - ⟨⟨a1, a2, a3⟩, ⟨b1, b2, b3, b4, b5, b6, b7, b8⟩, ⟨c1, c2⟩, ⟨d1, d2⟩, ⟨e1, e2, e3, e4⟩, ⟨f1, f2, f3, f4⟩, ⟨g1, g2⟩, ⟨h1, h2, h3, h4⟩, ⟨i1, i2, i3⟩⟩ P hP`. Take `⟨-, -, -, -, -, -, -, hCp, heP, -, -, -, -, hCP, -, hlast⟩` from `hS`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hCb : 1 ≤ C.T.Cb` using `hlast _ (by simp [FC.cLast])`. Establish `hChT : 1 ≤ C.T.ChT` using `hlast _ (by simp [FC.cLast])`. Establish `hCbN : 1 ≤ C.T.CbN` using `hlast _ (by simp [FC.cLast])`. Use `⟨{ TO := TOv L.sc nWn := nWv D.R L.sc nP := 8 * D.R.f * D.R.r + 4 PP := C.T.CP * zBase L ^ C.T.eP Dp := D.R.f * D.R.r.choose 2 s := D.R.r + 6 CP := C.T.CP one_le_CP := by linarith eP := C.T.eP eP_ge := heP.ge Cp := C.T.Cp Cp_ge := hCp.ge Cb := C.T.Cb Cb_nonneg := by linarith cTO …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem szRow_blockLengthParams : SzRow (fun C D L => ∀ P : ParameterChoice' D L, P.CnW = C.P.CnW → ∃ T : ParamsT D L P,
     [T.CP, T.eP, T.Cp, T.Cb, T.cTO, T.ChT, T.CbN] = C.PT ∧ T.eP = C.T.eP) := by

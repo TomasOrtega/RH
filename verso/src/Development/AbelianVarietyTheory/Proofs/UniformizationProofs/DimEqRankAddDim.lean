@@ -17,7 +17,7 @@ open GlobalTheory.UT
 namespace GlobalTheory.UT
 
 /- English proof (translation)
-Introduce and unpack `⟨hL, hL₂, -, -, -⟩ R _ _ _ I hadm D A G _ _ hG U`. Use `haveI := hG.geomConnected`. Establish `h₁` using `GlobalTheory.finrank_fam_of_expBij hL.secBaseChange R I hadm D A G U.toUnifPre 2 (by norm_num) (U.expand 2 (by norm_num))`. Establish `h₂` using `(GlobalTheory.FamDimension.main hL.globalFns hL.cube hL.square hL₂.secTwist R I D (FractionRing R) 2 (by norm_num)).2`. Conclude with `Nat.pow_right_injective (le_refl 2) (h₁.symm.trans h₂)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_eq_rank_add_dim :
     LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => A.g = D.toPre.rank + D.toPre.P.g := by

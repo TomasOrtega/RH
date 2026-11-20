@@ -14,7 +14,7 @@ namespace GlobalTheory.Mem.HFld.Transp
 open Formalism.L2.Col Polynomial
 
 /- English proof (translation)
-Unfold `chiC`. Rewrite using `[dif_pos w.2, dif_pos hu]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiC_apply {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) (j : Fin B.R.m)
     (w : {w // w ∈ (B.primes px).vGs}) (y : 𝓞 B.host.E) (hu : IsUnit (Ideal.Quotient.mk w.1.asIdeal y)) :
@@ -23,7 +23,7 @@ theorem chiC_apply {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) (j : Fin
   rw [dif_pos w.2, dif_pos hu]
 
 /- English proof (translation)
-Unfold `qC`. Rewrite using `[dif_pos ⟨a, rfl⟩]`. Use `congr 1`. Conclude with `hI.xi_inj (Exists.choose_spec (⟨a, rfl⟩ : ∃ a', I.xi a' = I.xi a))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem qC_xi {B : Base} {px : PreX B.toPre} {I : Col2.ColIn B px} (hI : I.Ok) (a : I.ι) : qC I (I.xi a) = I.Q a := by
   unfold qC
@@ -32,7 +32,7 @@ theorem qC_xi {B : Base} {px : PreX B.toPre} {I : Col2.ColIn B px} (hI : I.Ok) (
   exact hI.xi_inj (Exists.choose_spec (⟨a, rfl⟩ : ∃ a', I.xi a' = I.xi a))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem rowTyQ_congr {X : Fields} (R : Ranks) {ξ ξ' : Chr X.F X.E X.K} (h : ξ = ξ')
     {Q Q' : Finset (HeightOneSpectrum (𝓞 X.E))} (Pp : Q) (hp : Pp.1 ∈ Q') :
@@ -41,7 +41,7 @@ theorem rowTyQ_congr {X : Fields} (R : Ranks) {ξ ξ' : Chr X.F X.E X.K} (h : ξ
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mtTyQ_congr {X : Fields} (R : Ranks) {ξ ξ' : Chr X.F X.E X.K} (h : ξ = ξ')
     {Q Q' : Finset (HeightOneSpectrum (𝓞 X.E))} (Pp : Q) (hp : Pp.1 ∈ Q') :
@@ -51,39 +51,35 @@ theorem mtTyQ_congr {X : Fields} (R : Ranks) {ξ ξ' : Chr X.F X.E X.K} (h : ξ 
 
 set_option maxHeartbeats 6000000 in
 /- English proof (translation)
-Take `⟨hP, -, hXi, hpiG, hchi, hq⟩` from `hcfg`. Establish `hQa` using `qC_xi hI a`. Establish `hxr` using `hI.xi_reads a`. Establish `hchiA` using `chiC_apply I`. Take `⟨P, LL, embLL, hcx, embE, hφ, LL0, _, Ks, _, _, _, _, _, _, _, _⟩` from `B`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P0, LL', embLL', hcx', embE', hφ', LL0', g0, Ks', k1, k2, k3, k4, k5, k6, k7, k8⟩` from `B0`. Take `rfl : P = P0` from `hP`. Express the relevant statement in the definitionally equal form `LL' →+* LL at ι`. Establish `hι' : ∀ x, embLL (ι x) = embLL' x` using `fun x => RingHom.congr_fun hι x`. Establish `hE : embE = ι.comp embE'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Apply `embLL.injective` to reduce the goal to its premises. Establish `h1` using `RingHom.congr_fun hφ x`. Establish `h2` using `RingHom.congr_fun hφ' x`. Simplify using `only [RingHom.comp_apply] at h1 h2 ⊢`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hι', h2]`. Substitute `hE` using the available equality. Take `⟨piG, _, _, _, piT, _, _, _, _, _, _, _, _, _, _, _, _⟩` from `px`. Take `⟨piG', _, _, _, piT', _, _, _, _, _, _, _, _, _, _, _, _⟩` from `px0`. Take `rfl : piG = piG'` from `eq_of_heq hpiG`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hXi'` using `eq_of_heq hXi`. Choose the witnesses or unpack the hypotheses as in `⟨a0, ha0⟩ : ∃ a0, I0.xi a0 = I.xi a := by`. Establish `h : I.xi a ∈ Set.range I.xi` using `⟨a, rfl⟩`. Rewrite `h` using `[hXi']`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : I.Q a = I0.Q a0`. Rewrite using `[← hQa, ← qC_xi hI0 a0, ha0]`. Conclude with `congrFun (eq_of_heq hq) _`. Establish `htup : (I.tup a).1 = chrMap ι (I0.tup a0).1`. Use `hxr.inj ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[← ha0]`. Use `(hI0.xi_reads a0 x).trans ?_` and prove the remaining obligations. Conclude with `(hι' _).symm`. Establish `hchi'` using `eq_of_heq hchi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hch : ∀ (j : Fin P.R.m) w, I.Ch.chi j w = (Units.map ι.toMonoidHom).comp (I0.Ch.chi j w)`. Introduce `j w`. Use extensionality with `u`. Apply `embLL.injective` to reduce the goal to its premises. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (u : 𝓞 P.host.E ⧸ w.1.asIdeal)`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (Ideal.Quotient.mk w.1.asIdeal y)` using `hy ▸ u.isUnit`. Establish `hu' : hu.unit = u` using `Units.ext (by rw [IsUnit.unit_spec]; exact hy)`. Establish `h1` using `congrFun (congrFun (congrFun hchi' j) w.1) y`. Rewrite `h1` using `[hchiA j w y hu, chiC_apply I0 j w y hu, hu']`. Use `h1.trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hι' _).symm`. Set `B0' : Base` to `⟨P, LL', embLL', hcx', embE', hφ', LL0', g0, Ks', k1, k2, k3, k4, k5, k6, k7, k8⟩`. Establish `hQ' : QE I.sel (I.tup a).1 = QE I0.sel (I0.tup a0).1` using `hQ`. Establish `hca : ∀ w s, chiAt I.Ch w s = (Units.map ι.toMonoidHom).comp (chiAt I0.Ch w s)`. Introduce `w s`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `chiAt`. Rewrite using `[← extChi_coefMap]`. Conclude with `congrArg (fun f => extChi f s) (funext fun j => hch j w)`. Establish `hA : rowTyK (R` using `P.R) I.Ch = (rowTyK (R := P.R) I0.Ch).coefMap ι := by`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrArg (Lev.mk (HKJ (𝓞 P.host.E ⧸ w.1.asIdeal) (P.R.N P.R.m - 1) P.R.r P.R.t P.R.m)) ((congrArg (fun χ => lamK χ (P.R.N P.R.m - 1) P.R.r (List.replicate P.R.m P.R.t)) (funext (hca w))).trans (lamK_coefMap ι _ _ _))`. Establish `hAm : ∀ k, mtTyK (R` using `P.R) I.Ch k = (mtTyK (R := P.R) I0.Ch k).coefMap ι := by`. Introduce `k`. Use function extensionality and compare the values at `w`. Establish `h : (fun _ : ℕ => (chiAt I.Ch w (k - 1))⁻¹) = fun _ : ℕ => (Units.map ι.toMonoidHom).comp (chiAt I0.Ch w (k - 1))⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `fun _ => (congrArg (·⁻¹) (hca w (k - 1))).trans (coefMap_comp_inv ι _)`. Conclude with `congrArg (Lev.mk (HKV (𝓞 P.host.E ⧸ w.1.asIdeal) P.R.nV P.R.r P.R.t)) ((congrArg (fun χ => lamK χ P.R.nV P.R.r [P.R.t]) h).trans (lamK_coefMap ι _ _ _))`. Establish `hB : ∀ Pp : {Pp // Pp ∈ QE I.sel (I.tup a).1}, rowTyQ P.R (I.tup a).1 (QE I.sel (I.tup a).1) Pp = (rowTyQ P.R (I0.tup a0).1 (QE I0.sel (I0.tup a0).1) ⟨Pp.1, hQ' ▸ Pp.2⟩).coefMap ι`. Introduce `Pp`. Rewrite using `[← rowTyQ_coefMap (L := LL) (ι := ι) P.R (I0.tup a0) (QE I0.sel (I0.tup a0).1) ⟨Pp.1, hQ' ▸ Pp.2⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `rowTyQ_congr P.R htup Pp _`. Establish `hBm : ∀ Pp : {Pp // Pp ∈ QE I.sel (I.tup a).1}, mtTyQ P.R (I.tup a).1 (QE I.sel (I.tup a).1) Pp = (mtTyQ P.R (I0.tup a0).1 (QE I0.sel (I0.tup a0).1) ⟨Pp.1, hQ' ▸ Pp.2⟩).coefMap ι`. Introduce `Pp`. Rewrite using `[← mtTyQ_coefMap (L := LL) (ι := ι) P.R (I0.tup a0) (QE I0.sel (I0.tup a0).1) ⟨Pp.1, hQ' ▸ Pp.2⟩]`. Conclude with `mtTyQ_congr P.R htup Pp _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hTy : rowTyKK (R` using `P.R) I.Ch I.sel (I.tup a) = ((rowTyKK (R := P.R) I0.Ch I0.sel (I0.tup a0)).coefMap ι).reidx (congrArg (uSG _) hQ') := LevFam.glue_coefMap_reidx ι hQ' _ _ _ _ hA hB`. Establish `hTyL : ∀ k, mtTyKK (R` using `P.R) I.Ch I.sel (I.tup a) k = ((mtTyKK (R := P.R) I0.Ch I0.sel (I0.tup a0) k).coefMap ι).reidx (congrArg (uSG _) hQ') := fun k => LevFam.glue_coefMap_reidx ι hQ' _ _ _ _ (hAm k) hBm`. Use `⟨a0, fun p hp hsp => ?_, fun j p hp hsp => ?_⟩` and prove the remaining obligations. Unfold `HeckeFieldsInAll rowPts mtildeKGSD at *`. Rewrite using `[hTy]`.
-
-Establish `hfd` using `GSD.finiteDimensional_EqFun _ (mtildeKOk B0'.wts I0.Ch I0.sel (I0.tup a0) hX0)`. Establish `key` using `hfs_splitAll_sq_reidx (X := B0'.fields) (L := LL) ι (congrArg (uSG _) hQ') B0'.wts.sgTrue (rowTyKK (R := P.R) I0.Ch I0.sel (I0.tup a0)) ∅ hfd (GlobalTheory.InertSame.heckeCommAll_all _ _) hp hsp`. Conclude with `key`. Unfold `HeckeFieldsInAll liftPts mtKGSD at *`. Rewrite using `[hTyL]`.
-
-Establish `hfd` using `GSD.finiteDimensional_EqFun _ (mtKOk B0'.wts I0.Ch I0.sel (I0.tup a0) hX0 (j.1 + 1))`. Establish `key` using `hfs_splitAll_rd_reidx (X := B0'.fields) (L := LL) ι (congrArg (uSG _) hQ') (B0'.wts.lamV (j.1 + 1)) (mtTyKK (R := P.R) I0.Ch I0.sel (I0.tup a0) (j.1 + 1)) ∅ hfd (GlobalTheory.InertSame.heckeCommAll_all _ _) hp hsp`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem core (B0 : Base) (px0 : PreX B0.toPre) (I0 : Col2.ColIn B0 px0) (B : Base) (px : PreX B.toPre)
     (I : Col2.ColIn B px) (hX0 : B0.fields.Ok) (hI0 : I0.Ok) (hI : I.Ok) (hcfg : SameCfg B px I B0 px0 I0)
@@ -192,9 +188,9 @@ theorem core (B0 : Base) (px0 : PreX B0.toPre) (I0 : Col2.ColIn B0 px0) (B : Bas
     exact key
 
 /- English proof (translation)
-Use `Polynomial.Splits.of_splits_map σ ?_ ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_map, hι]`. Conclude with `IsAlgClosed.splits _`. Introduce `z hz`. Rewrite `hz` using `[Polynomial.map_map, hι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hr z hz`. Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splits_of_roots_mem {K L : Type} [Field K] [Field L] (σ0 : K →+* ℂ) (σ : L →+* ℂ) (ι : K →+* L)
     (hι : σ.comp ι = σ0) (p : K[X]) (hr : ∀ z ∈ (p.map σ0).roots, ∃ y, σ y = z) : (p.map ι).Splits := by
@@ -207,25 +203,21 @@ theorem splits_of_roots_mem {K L : Type} [Field K] [Field L] (σ0 : K →+* ℂ)
     exact ⟨y, hy⟩
 
 /- English proof (translation)
-Introduce `B0 px0 I0 hX0 hI0`. Establish `hR : ∀ a0 : I0.ι, ∃ p, HeckePolyFor (heckeFamAll (rowPts B0.wts I0.Ch I0.sel (I0.tup a0)) ∅) p` using `fun a0 => by haveI := GSD.finiteDimensional_EqFun _ (mtildeKOk B0.wts I0.Ch I0.sel (I0.tup a0) hX0)`. Conclude with `hfs_exists_poly _`. Establish `hL : ∀ (a0 : I0.ι) (k : ℕ), ∃ p, HeckePolyFor (heckeFamAll (liftPts B0.wts I0.Ch I0.sel (I0.tup a0) k) ∅) p` using `fun a0 k => by haveI := GSD.finiteDimensional_EqFun _ (mtKOk B0.wts I0.Ch I0.sel (I0.tup a0) hX0 k)`. Conclude with `hfs_exists_poly _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose pR hpR using hR`. Use `choose pL hpL using hL`. Set `bas` to `Module.finBasis ℚ B0.LL`. Set `rts : B0.LL[X] → Finset ℂ` to `fun p => (p.map B0.embLL).roots.toFinset`. Set `s : Finset ℂ` to `Finset.univ.image (fun i => B0.embLL (bas i)) ∪ Finset.univ.biUnion (fun a0 : I0.ι => rts (pR a0) ∪ (Finset.range B0.R.m).biUnion (fun k => rts (pL a0 (k + 1))))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hrts : ∀ p : B0.LL[X], p ≠ 0 → ∀ z ∈ rts p, IsAlgebraic ℚ z`. Introduce `p hp z hz`. Use `letI : Algebra B0.LL ℂ := B0.embLL.toAlgebra`. Use `haveI : IsScalarTower ℚ B0.LL ℂ := IsScalarTower.of_algebraMap_eq fun q => by simp`. Establish `h1 : IsAlgebraic B0.LL z` using `⟨p, hp, by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : z ∈ (p.map B0.embLL).roots` using `Multiset.mem_toFinset.1 hz`. Rewrite `h2` using `[Polynomial.mem_roots (Polynomial.map_ne_zero hp)]`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map]`. Conclude with `h2⟩`. Conclude with `h1.restrictScalars ℚ`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨s, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `(isAlgebraic_algHom_iff B0.embLL.toRatAlgHom B0.embLL.injective).2 (Algebra.IsAlgebraic.isAlgebraic _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a0, -, h⟩` from `Finset.mem_biUnion.1 h`. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `hrts _ (hpR a0).1 z h`. Take `⟨k, -, h⟩` from `Finset.mem_biUnion.1 h`. Conclude with `hrts _ (hpL a0 (k + 1)).1 z h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `B px I hX hI hcfg hs a`. Establish `hm : B.R.m = B0.R.m` using `congrArg (fun P : Pre => P.R.m) hcfg.1`. Establish `hLL : ∀ x : B0.LL, ∃ y : B.LL, B.embLL y = B0.embLL x`. Introduce `x`. Establish `hb : ∀ i, B0.embLL (bas i) ∈ B.LLC` using `fun i => hs _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : B0.embLL x ∈ B.LLC`. Rewrite using `[← bas.sum_repr x, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul]`. Conclude with `SMulMemClass.smul_mem _ (hb i)`.
-
-Conclude with `hx`. Use `choose f hf using hLL`. Set `ι : B0.LL →+* B.LL` to `{ toFun := f map_one' := B.embLL.injective (by rw [hf, map_one, map_one]) map_mul' := fun x y => B.embLL.injective (by rw [hf, map_mul, map_mul, hf, hf]) map_zero' := B.embLL.injective (by rw [hf, map_zero, map_zero]) map_add' := fun x y => B.embLL.injective (by rw [hf, map_add, …`. Establish `hι : B.embLL.comp ι = B0.embLL` using `RingHom.ext hf`. Establish `hsp : ∀ p : B0.LL[X], (∀ z ∈ rts p, z ∈ s) → (p.map ι).Splits` using `fun p hp => splits_of_roots_mem B0.embLL B.embLL ι hι p fun z hz => hs z (hp z (Multiset.mem_toFinset.2 hz))`.
-
-Take `⟨a0, hrow, hlift⟩` from `core B0 px0 I0 B px I hX0 hI0 hI hcfg ι hι a`. Use `⟨hrow (pR a0) (hpR a0) (hsp _ fun z hz => ?_), fun j => hlift j (pL a0 (j.1 + 1)) (hpL a0 (j.1 + 1)) (hsp _ fun z hz => ?_)⟩` and prove the remaining obligations. Conclude with `Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨a0, Finset.mem_univ _, Finset.mem_union_left _ hz⟩)`. Use `Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨a0, Finset.mem_univ _, Finset.mem_union_right _ ?_⟩)` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.2 ⟨j.1, Finset.mem_range.2 (hm ▸ j.2), hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem transp : ∀ (B0 : Base) (px0 : PreX B0.toPre) (I0 : Col2.ColIn B0 px0), B0.fields.Ok → I0.Ok →
   ∃ s : Finset ℂ, (∀ z ∈ s, IsAlgebraic ℚ z) ∧

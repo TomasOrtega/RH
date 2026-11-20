@@ -17,33 +17,29 @@ noncomputable section
 namespace GlobalTheory.LocDualInt
 
 /- English proof (translation)
-Introduce `p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ hK hO hF i D hD hinv x hx`. Use `haveI := hD.t2'`. Use `haveI : IsGalois K (PadicAlgCl p) := inferInstance`. Use `haveI : CompactSpace (Formalism.GaloisCohomology.GK p K) := inferInstance`. Use `haveI : CompactSpace G := i.symm.toHomeomorph.compactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H c => ?_`. Assume the negation of the conclusion as `hx0`. Establish `hcB : (c : G → VT ⧸ D.T) ∉ B1 D.ρA` using `fun h => hx0 ((Submodule.Quotient.mk_eq_zero _).2 h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `GlobalTheory.T.continuous_quotient_torsion_bounded D.T hD.lat hD.openT ϖ hϖ (c : G → VT ⧸ D.T) c.2.1`. Establish `hcyc : ∀ (g : G) (n : ℕ) (ζ : PadicAlgCl p), ζ ^ (p ^ n) = 1 → ∃ a : ℕ, (i g) ζ = ζ ^ a ∧ ((D.ε g : Oˣ) : O) - (a : O) ∈ Ideal.span {(p : O) ^ n}`. Introduce `g n ζ hζ`. Take `⟨a, h1, h2⟩` from `hD.cyc (i g) n ζ hζ`. Establish `e : (ReciprocityTheory.ChartRestriction.T2.carry i D.ε) (i g) = D.ε g`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `D.ε (i.symm (i g)) = D.ε g`. Conclude with `congrArg D.ε (i.symm_apply_apply g)`. Rewrite `h2` using `[e]`. Conclude with `⟨a, h1, h2⟩`. Take `⟨hcpt, hopen, hbasis⟩` from `GlobalTheory.T.dualLattice_compact_powSmul_nhds_basis D hO.compact hF.emb hD.lat hD.perf hD.t2' ϖ hϖ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := hcpt`. Set `X : ℕ → Type` to `fun k => G → ↥D.T' ⧸ powSub (M := ↥D.T') ϖ (r + k)`. Set `Y : ∀ k, Set (X k)` to `fun k => {z | z ∈ Z1 (quotRep D.ρTl' ϖ (r + k)) ∧ cupMod D (c : G → VT ⧸ D.T) ϖ (r + k) z ∉ B2 (twist D.ε (KO O))}`. Establish `hle : ∀ k, r + k ≤ r + (k + 1)` using `fun k => by omega`. Set `f : ∀ k, X (k + 1) → X k` to `fun k z g => Submodule.factor (powSub_anti (M := ↥D.T') ϖ (hle k)) (z g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hfin : ∀ k, (Y k).Finite` using `fun k => (GlobalTheory.T.finite_cocycles_quotient_pow_smul_of_isOpen hT hK hO.p_mem i D.ρTl' (sub_contAction D.contT' _ D.stT') ϖ hϖ hopen (r + k)).subset (fun z hz => hz.1)`. Establish `hne : ∀ k, (Y k).Nonempty` using `fun k => by`. Take `⟨z, hz, hz'⟩` from `GlobalTheory.T.exists_cocycle_cup_not_coboundary_finiteLevel hT hK hO.ring hO.compact hO.t2 hO.adic hO.p_mem hO.p_ne hF.emb i D hcyc hD.lat hD.perf hD.contT hD.openT hD.t2 hD.t2' hD.cs hD.cs' ϖ hϖ c.1 c.2 hcB r hr (r + k) (by omega)`. Conclude with `⟨z, hz, hz'⟩`. Establish `hmap : ∀ k, ∀ z ∈ Y (k + 1), f k z ∈ Y k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce and unpack `k z ⟨hz, hnc⟩`. Use `⟨factor_mem_cocycles_pow_quot D.ρTl' ϖ (hle k) hz, ?_⟩` and prove the remaining obligations. Establish `e` using `cupMod_factor D hr (Nat.le_add_right r k) (hle k) z`. Use `show cupMod D (c : G → VT ⧸ D.T) ϖ (r + k) (fun g => Submodule.factor (powSub_anti (M := ↥D.T') ϖ (hle k)) (z g)) ∉ _`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hnc`. Take `⟨s, hs⟩` from `GlobalTheory.exists_compatible_seq_of_finite_nonempty X f Y hfin hne hmap`. Set `w : ℕ → G → ↥D.T'` to `fun k g => qlift (s k g)`. Establish `hwZ : ∀ k, (fun g => (Submodule.Quotient.mk (w k g) : ↥D.T' ⧸ powSub (M` using `↥D.T') ϖ (r + k))) ∈ Z1 (quotRep D.ρTl' ϖ (r + k)) := by`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun g => (Submodule.Quotient.mk (w k g) : ↥D.T' ⧸ powSub (M` using `↥D.T') ϖ (r + k))) = s k := funext fun g => mk_qlift _`. Rewrite using `[e]`. Conclude with `(hs k).1.1`. Establish `hstep : ∀ k g, w (k + 1) g - w k g ∈ powSub (M` using `↥D.T') ϖ (r + k) := by`. Introduce `k g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `(Submodule.Quotient.eq _).1` to reduce the goal to its premises. Establish `e1 : (Submodule.Quotient.mk (w (k + 1) g) : ↥D.T' ⧸ powSub (M` using `↥D.T') ϖ (r + k)) = f k (s (k + 1)) g := by show _ = Submodule.factor (powSub_anti (M := ↥D.T') ϖ (hle k)) (s (k + 1) g) conv_rhs => rw [← mk_qlift (s (k + 1) g)]`. Both sides reduce to the same expression. Rewrite using `[e1, (hs k).2]`. Conclude with `(mk_qlift (s k g)).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he, hew⟩` from `GlobalTheory.T.exists_continuous_cocycle_lift_of_compatible' D.ρTl' ϖ r hopen hbasis w hwZ hstep`. Establish `h1` using `hx (Submodule.Quotient.mk ⟨e, he⟩)`. Establish `h2 : ((cupCocycleZ1Z1 D.ρA D.ρTl' (twist D.ε (KO O)) (pairKO D.bT D.T) (pairKO_cont D.bT D.contbT D.T) D.pairKO_equiv (sub_contAction D.contT' _ D.stT') c ⟨e, he⟩) : G × G → KO O) ∈ B2 (twist D.ε (KO O))`. Establish `h3 : D.inv (Submodule.Quotient.mk (cupCocycleZ1Z1 D.ρA D.ρTl' (twist D.ε (KO O)) (pairKO D.bT D.T) (pairKO_cont D.bT D.contbT D.T) D.pairKO_equiv (sub_contAction D.contT' _ D.stT') c ⟨e, he⟩)) = D.inv 0`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `h6` using `(Submodule.Quotient.mk_eq_zero _).1 (hinv h3)`. Conclude with `h6`. Apply `(hs 0).1.2` to reduce the goal to its premises. Establish `h4 : cupMod D (c : G → VT ⧸ D.T) ϖ (r + 0) (s 0) = ((cupCocycleZ1Z1 D.ρA D.ρTl' (twist D.ε (KO O)) (pairKO D.bT D.T) (pairKO_cont D.bT D.contbT D.T) D.pairKO_equiv (sub_contAction D.contT' _ D.stT') c ⟨e, he⟩) : G × G → KO O)`.
-
-Use function extensionality and compare the values at `q`. Use `pairKO_eq_of_sub_mem D (hr q.1) ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Use `powSub_stable _ ϖ r q.1 _ ?_` and prove the remaining obligations. Establish `h5` using `hew 0 q.2`.
-
-Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ h5`. Rewrite using `[h4]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem int_iso_of_localTateDuality (hT : Formalism.GaloisCohomology.LocalTateDualityK) : ReciprocityTheory.ChartRestriction.T2.IntIso := by
   intro p _ K O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ hK hO hF i D hD hinv x hx

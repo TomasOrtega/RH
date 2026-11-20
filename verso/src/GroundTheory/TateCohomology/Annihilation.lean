@@ -12,7 +12,7 @@ universe u
 variable {R G : Type u} [CommRing R] [Group G] [Fintype G]
 
 /- English proof (translation)
-Rewrite `ha` using `[Representation.mem_invariants]`. Simplify using `[Representation.norm, LinearMap.sum_apply, ha]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_apply_of_mem_invariants (A : Rep.{u} R G) {a : A} (ha : a ∈ A.ρ.invariants) :
     A.ρ.norm a = Fintype.card G • a := by
@@ -20,9 +20,9 @@ theorem norm_apply_of_mem_invariants (A : Rep.{u} R G) {a : A} (ha : a ∈ A.ρ.
   simp [Representation.norm, LinearMap.sum_apply, ha]
 
 /- English proof (translation)
-Set `e` to `((tateCohomologyZeroIso R G).app A).toLinearEquiv`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective (normRangeInvariants A) (e x)`. Rewrite using `[← hy]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (Submodule.Quotient.mk (Fintype.card G • y) : A.ρ.invariants ⧸ normRangeInvariants A) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, mem_normRangeInvariants_iff]`. Conclude with `⟨y, by rw [norm_apply_of_mem_invariants A y.2]; rfl⟩`. Rewrite `h` using `[Submodule.Quotient.mk_smul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_smul_tateCohomology_zero (A : Rep.{u} R G) (x : tateCohomology A 0) :
     Fintype.card G • x = 0 := by
@@ -39,7 +39,7 @@ theorem card_smul_tateCohomology_zero (A : Rep.{u} R G) (x : tateCohomology A 0)
   exact h
 
 /- English proof (translation)
-Set `e` to `(coindShiftIso A n).toLinearEquiv`. Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[← map_nsmul, h, map_zero]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_smul_succ {n : ℤ}
     (h : ∀ (A : Rep.{u} R G) (x : tateCohomology A n), Fintype.card G • x = 0)
@@ -49,7 +49,7 @@ private theorem card_smul_succ {n : ℤ}
   rw [← map_nsmul, h, map_zero]
 
 /- English proof (translation)
-Set `e` to `(indShiftIso A n).toLinearEquiv`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero, h]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_smul_pred {n : ℤ}
     (h : ∀ (A : Rep.{u} R G) (x : tateCohomology A (n + 1)), Fintype.card G • x = 0)
@@ -59,9 +59,9 @@ private theorem card_smul_pred {n : ℤ}
   rw [map_nsmul, map_zero, h]
 
 /- English proof (translation)
-Proceed by induction on `n using Int.induction_on generalizing A with`. Consider the case `zero => exact card_smul_tateCohomology_zero A x`. Consider the case `succ n ih => exact card_smul_succ (fun A x => ih A x) A x`. Consider the case `pred n ih`. Use `card_smul_pred ?_ A x` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_add_cancel]`. Conclude with `ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_smul_tateCohomology (A : Rep.{u} R G) (n : ℤ) (x : tateCohomology A n) :
     Fintype.card G • x = 0 := by

@@ -76,7 +76,7 @@ def RDnLocM (Tf : FormsTied D u) : Prop :=
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun`. Take `⟨e, he1, he2⟩` from `h i hi v c z hz`. Conclude with `⟨e, he1, fun γ' η' κ' hsup' hrel' hl1' hfun' => he2 γ η κ hsup hrel hl1 hl2 hfun γ' η' κ' hsup' hrel' hl1' hfun'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rupLocM_of (Tf : FormsTied D u) (h : RUpLoc Tf) : RUpLocM Tf := by
   intro i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun
@@ -86,7 +86,7 @@ theorem rupLocM_of (Tf : FormsTied D u) (h : RUpLoc Tf) : RUpLocM Tf := by
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'`. Take `⟨e, he1, he2⟩` from `h i hi v c g hg`. Conclude with `⟨e, he1, fun z hz γ η κ hsup hrel hl1 hl2 hfun => he2 z hz γ' η' κ' hsup' hrel' hl1' hfun' γ η κ hsup hrel hl1 hl2 hfun⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rdnLocM_of (Tf : FormsTied D u) (h : RDnLoc Tf) : RDnLocM Tf := by
   intro i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'
@@ -97,15 +97,15 @@ theorem rdnLocM_of (Tf : FormsTied D u) (h : RDnLoc Tf) : RDnLocM Tf := by
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `i hi v c x hx`. Take `⟨z, rfl⟩` from `(Tf.lv i hi).pr_surj v c x`. Take `⟨γ, η, κ, hsup, hrel, hl1, hl2, hfun, htr⟩` from `Tf.up i hi v c z hx`. Take `⟨e, he1, he2⟩` from `hL i hi v c z hx γ η κ hsup hrel hl1 hl2 hfun`. Establish `hg0 : ((D.fm u).fv i v c).comp e.toLinearMap ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `LinearMap.congr_fun h0 ((D.fm u).te i v ((D.fm u).up i v c ((Tf.lv i hi).pr v c z)))`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, he1, hx, LinearMap.zero_apply] at h1`. Conclude with `one_ne_zero h1`. Take `⟨γ', η', κ', hsup', hrel', hl1', hfun', htr'⟩` from `Tf.dn i hi v _ _ hg0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk` using `he2 γ' η' κ' hsup' hrel' hl1' hfun'`. Establish `hcls : (D.fm u).dn i v ((D.fm u).up i v c ((Tf.lv i hi).pr v c z)) (((D.fm u).fv i v c).comp e.toLinearMap) = c`. Apply `(Tf.cls i hi).y_bij.1` to reduce the goal to its premises. Apply `rnd_cls _ (γ.1 * γ'.1) ((UJ _ _).mul_mem γ.2 γ'.2) _ _ ⟨_, hk⟩` to reduce the goal to its premises. Rewrite using `[map_mul, mul_assoc, hrel', ← mul_assoc, ← mul_assoc, hrel]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Use `⟨e, he1, hcls, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgφ⟩` from `forms_from_adelic_function Tf i hi φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hg).1`. Rewrite using `[hgφ, htr' g hgA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨G, hG, hGv⟩` from `rnd_fill (Tf.cls i hi).lev (embT D) (fun τ x => embedding_conj_compat D τ x) ((Tf.cls i hi).y ((D.fm u).up i v c ((Tf.lv i hi).pr v c z))) (hS i hi _) (g ((Tf.cls i hi).y ((D.fm u).up i v c ((Tf.lv i hi).pr v c z)) * η'))`. Rewrite using `[← hGv, htr G hG, hgφ c]`. Rewrite `hrel'` using `[hcls]`. Establish `hχ` using `rnd_chi (Tf.cls i hi).lev (Tf.atT.eV v).1 (level_places_not_bad Tf.atT v) η η' hsup hsup' κ κ' ⟨_, hk⟩ rfl`. Rewrite using `[rnd_core (Tf.cls i hi).lev (embT D) (fun τ x => embedding_conj_compat D τ x) hgA hG _ _ η η' γ.1 γ'.1 γ.2 γ'.2 κ κ' ⟨_, hk⟩ hrel hrel' rfl hχ hGv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rnd_roundUpM (Tf : FormsTied D u) (hL : RUpLocM Tf) (hS : RndStab Tf) : Formalism.MainNotions.product_first_zeroth_parts.RoundUp D u := by
   intro i hi v c x hx
@@ -140,17 +140,17 @@ theorem rnd_roundUpM (Tf : FormsTied D u) (hL : RUpLocM Tf) (hS : RndStab Tf) : 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `i hi v c g hg`. Establish `hg0 : g ≠ 0`. Introduce `h0`. Rewrite `hg` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', η', κ', hsup', hrel', hl1', hfun', htr'⟩` from `Tf.dn i hi v c g hg0`. Take `⟨e, he1, he2⟩` from `hL i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'`. Take `⟨z, hz⟩` from `(Tf.lv i hi).pr_surj v ((D.fm u).dn i v c g) (e.symm ((D.fm u).te i v c))`. Establish `hfz : (D.fm u).fv i v ((D.fm u).dn i v c g) ((Tf.lv i hi).pr v _ z) = 1`. Rewrite using `[hz, he1, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, hg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, η, κ, hsup, hrel, hl1, hl2, hfun, htr⟩` from `Tf.up i hi v _ z hfz`. Establish `hk` using `he2 z hz γ η κ hsup hrel hl1 hl2 hfun`. Establish `hcls : (D.fm u).up i v ((D.fm u).dn i v c g) ((Tf.lv i hi).pr v _ z) = c`. Apply `(Tf.cls i hi).y_bij.1` to reduce the goal to its premises. Apply `rnd_cls _ (γ'.1 * γ.1) ((UJ _ _).mul_mem γ'.2 γ.2) _ _ ⟨_, hk⟩` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_assoc, hrel, ← mul_assoc, ← mul_assoc, hrel']`. Use `group`. Use `⟨e, he1, ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Conclude with `hcls`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hz]`. Take `⟨f0, hf0, hgφ⟩` from `forms_from_adelic_function Tf i hi φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hf0).1`. Rewrite using `[hgφ, htr f0 hgA]`. Take `⟨G, hG, hGv⟩` from `rnd_fill (Tf.cls i hi).lev (embT D) (fun τ x => embedding_conj_compat D τ x) ((Tf.cls i hi).y ((D.fm u).dn i v c g)) (hS i hi _) (f0 ((Tf.cls i hi).y ((D.fm u).dn i v c g) * η))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hGv, htr' G hG, hgφ c]`. Rewrite `hrel` using `[hcls]`. Establish `hχ` using `rnd_chi (Tf.cls i hi).lev (Tf.atT.eV v).1 (level_places_not_bad Tf.atT v) η' η hsup' hsup κ' κ ⟨_, hk⟩ rfl`. Rewrite using `[rnd_core (Tf.cls i hi).lev (embT D) (fun τ x => embedding_conj_compat D τ x) hgA hG _ _ η' η γ'.1 γ.1 γ'.2 γ.2 κ' κ ⟨_, hk⟩ hrel' hrel rfl hχ hGv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rnd_roundDnM (Tf : FormsTied D u) (hL : RDnLocM Tf) (hS : RndStab Tf) : Formalism.MainNotions.product_first_zeroth_parts.RoundDn D u := by
   intro i hi v c g hg
@@ -224,13 +224,11 @@ def DnNat (Tf : FormsTied D u) : Prop :=
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hχ` using `rnd_chi (Tf.cls i hi).lev (Tf.atT.eV v).1 (level_places_not_bad Tf.atT v) η η' hsup hsup' κ κ' ⟨_, hk⟩ rfl`. Establish `e0 : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γ.1 * γ'.1) * yd.1 = yc.1 * (⟨_, hk⟩ : (Tf.cls i hi).lev.U).1 := by`. Rewrite using `[map_mul, mul_assoc, hD, ← mul_assoc, ← mul_assoc, hU]`. Simplify using `only`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : yc.1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (γ.1 * γ'.1) * yd.1 * ((⟨_, hk⟩ : (Tf.cls i hi).lev.U)⁻¹ : (Tf.cls i hi).lev.U).1 := by`. Rewrite using `[e0, InvMemClass.coe_inv]`. Use `group`. Establish `hγγ : γ.1 * γ'.1 ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)` using `(UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)).mul_mem γ.2 γ'.2`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a3` using `adelic_value_translate (Tf.cls i hi).lev (embT D) (fun τ x => embedding_conj_compat D τ x) hg (γ.1 * γ'.1) hγγ yd yc (⟨_, hk⟩ : (Tf.cls i hi).lev.U)⁻¹ e3 ((Tf.val i hi).eY s)`. Simplify using `only [natTr, Equiv.apply_symm_apply]`. Rewrite using `[a3, rnd_tr_tr, rnd_tr_congr (embT D) (fun τ x => embedding_conj_compat D τ x) (mul_inv_rev γ.1 γ'.1).symm _ ((UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)).inv_mem hγγ)]`. Rewrite using `[map_inv, hχ]`. Simplify using `only [mul_inv, Units.val_mul, Units.val_inv_eq_inv_val]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rnd_natCore (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT)
     {g : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D i hi → ℂ} (hg : g ∈ AdFun (Tf.cls i hi).lev (embT D))
@@ -261,15 +259,13 @@ theorem rnd_natCore (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.me
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `i hi v c x hx`. Take `⟨z, rfl⟩` from `(Tf.lv i hi).pr_surj v c x`. Take `⟨γ, η, κ, hsup, hrel, hl1, hl2, hfun, htr⟩` from `hU i hi v c z hx`. Take `⟨e, he1, he2⟩` from `hL i hi v c z hx γ η κ hsup hrel hl1 hl2 hfun`. Establish `hg0 : ((D.fm u).fv i v c).comp e.toLinearMap ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `LinearMap.congr_fun h0 ((D.fm u).te i v ((D.fm u).up i v c ((Tf.lv i hi).pr v c z)))`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, he1, hx, LinearMap.zero_apply] at h1`. Conclude with `one_ne_zero h1`. Take `⟨γ', η', κ', hsup', hrel', hl1', hfun', htr'⟩` from `hD i hi v _ _ hg0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk` using `he2 γ' η' κ' hsup' hrel' hl1' hfun'`. Establish `hcls : (D.fm u).dn i v ((D.fm u).up i v c ((Tf.lv i hi).pr v c z)) (((D.fm u).fv i v c).comp e.toLinearMap) = c`. Apply `(Tf.cls i hi).y_bij.1` to reduce the goal to its premises. Apply `rnd_cls _ (γ.1 * γ'.1) ((UJ _ _).mul_mem γ.2 γ'.2) _ _ ⟨_, hk⟩` to reduce the goal to its premises. Rewrite using `[map_mul, mul_assoc, hrel', ← mul_assoc, ← mul_assoc, hrel]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Use `⟨e, he1, hcls, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgφ⟩` from `forms_from_adelic_function Tf i hi φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hg).1`. Rewrite using `[htr', htr, hgφ, hgφ c]`.
-
-Conclude with `rnd_natCore Tf i hi v hgA _ _ _ η η' γ γ' κ κ' hsup hsup' hrel hrel' hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rnd_roundUpN (Tf : FormsTied D u) (hU : UpNat Tf) (hD : DnNat Tf) (hL : RUpLocM Tf) :
     Formalism.MainNotions.product_first_zeroth_parts.RoundUp D u := by
@@ -298,15 +294,15 @@ theorem rnd_roundUpN (Tf : FormsTied D u) (hU : UpNat Tf) (hD : DnNat Tf) (hL : 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `i hi v c g hg`. Establish `hg0 : g ≠ 0`. Introduce `h0`. Rewrite `hg` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', η', κ', hsup', hrel', hl1', hfun', htr'⟩` from `hD i hi v c g hg0`. Take `⟨e, he1, he2⟩` from `hL i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'`. Take `⟨z, hz⟩` from `(Tf.lv i hi).pr_surj v ((D.fm u).dn i v c g) (e.symm ((D.fm u).te i v c))`. Establish `hfz : (D.fm u).fv i v ((D.fm u).dn i v c g) ((Tf.lv i hi).pr v _ z) = 1`. Rewrite using `[hz, he1, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, hg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, η, κ, hsup, hrel, hl1, hl2, hfun, htr⟩` from `hU i hi v _ z hfz`. Establish `hk` using `he2 z hz γ η κ hsup hrel hl1 hl2 hfun`. Establish `hcls : (D.fm u).up i v ((D.fm u).dn i v c g) ((Tf.lv i hi).pr v _ z) = c`. Apply `(Tf.cls i hi).y_bij.1` to reduce the goal to its premises. Apply `rnd_cls _ (γ'.1 * γ.1) ((UJ _ _).mul_mem γ'.2 γ.2) _ _ ⟨_, hk⟩` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_assoc, hrel, ← mul_assoc, ← mul_assoc, hrel']`. Use `group`. Use `⟨e, he1, ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Conclude with `hcls`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hz]`. Take `⟨f0, hf0, hgφ⟩` from `forms_from_adelic_function Tf i hi φ hφ`. Establish `hgA` using `(Submodule.mem_inf.1 hf0).1`. Rewrite using `[htr, htr', hgφ, hgφ c]`. Conclude with `rnd_natCore Tf i hi v hgA _ _ _ η' η γ' γ κ' κ hsup' hsup hrel' hrel hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rnd_roundDnN (Tf : FormsTied D u) (hU : UpNat Tf) (hD : DnNat Tf) (hL : RDnLocM Tf) :
     Formalism.MainNotions.product_first_zeroth_parts.RoundDn D u := by
@@ -334,9 +330,9 @@ theorem rnd_roundDnN (Tf : FormsTied D u) (hU : UpNat Tf) (hD : DnNat Tf) (hL : 
   exact rnd_natCore Tf i hi v hgA _ _ _ η' η γ' γ κ' κ hsup' hsup hrel' hrel hk
 
 /- English proof (translation)
-Apply `admissible_of_split_and_round_trips` to reduce the goal to its premises. Introduce `D u Tf hc`. Conclude with `(h D u Tf hc).2.2.2.2`. Introduce and unpack `D u ⟨Tf, hc⟩`. Take `⟨h1, h2, h3, h4, _⟩` from `h D u Tf hc`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨rnd_roundUpN Tf h1 h2 h3, rnd_roundDnN Tf h1 h2 h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem rnd_linkAdmT_ofN
     (h : ∀ (D : D7) (u : D.what₂.Word) (Tf : FormsTied D u), ChiFin Tf →
@@ -349,9 +345,9 @@ theorem rnd_linkAdmT_ofN
     exact ⟨rnd_roundUpN Tf h1 h2 h3, rnd_roundDnN Tf h1 h2 h4⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `e1 : (yc * η).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 * yu.1 * (κ⁻¹ : (Tf.cls i hi).lev.U).1 := by`. Simplify using `only [Subgroup.coe_mul, hU, InvMemClass.coe_inv]`. Use `group`. Establish `a1` using `adelic_value_translate (Tf.cls i hi).lev (embT D) (fun τ x => embedding_conj_compat D τ x) hg γ.1 γ.2 yu (yc * η) κ⁻¹ e1 ((Tf.val i hi).eY s)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [natTr, Equiv.apply_symm_apply]`. Rewrite using `[a1, map_inv, Units.val_inv_eq_inv_val]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natTr_adFun (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m)
     {g : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D i hi → ℂ} (hg : g ∈ AdFun (Tf.cls i hi).lev (embT D))
@@ -369,7 +365,7 @@ theorem natTr_adFun (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `v c z hz`. Take `⟨γ, η, κ, h1, h2, h3, h4, h5, h6⟩` from `h i hi v c z hz`. Conclude with `⟨γ, η, κ, h1, h2, h3, h4, h5, fun g hg => by rw [h6]; exact natTr_adFun Tf i hi hg _ _ η γ κ h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem upNat_upTie (Tf : FormsTied D u) (h : UpNat Tf) (i : ℕ) (hi : i ≤ D.R.m) :
     UpTie (Tf.lv i hi) (Tf.cls i hi) (Tf.val i hi) := by
@@ -380,7 +376,7 @@ theorem upNat_upTie (Tf : FormsTied D u) (h : UpNat Tf) (i : ℕ) (hi : i ≤ D.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `v c g hg0`. Take `⟨γ, η, κ, h1, h2, h3, h4, h5⟩` from `h i hi v c g hg0`. Conclude with `⟨γ, η, κ, h1, h2, h3, h4, fun f hf => by rw [h5]; exact natTr_adFun Tf i hi hf _ _ η γ κ h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dnNat_dnTie (Tf : FormsTied D u) (h : DnNat Tf) (i : ℕ) (hi : i ≤ D.R.m) :
     DnTie (Tf.lv i hi) (Tf.cls i hi) (Tf.val i hi) := by

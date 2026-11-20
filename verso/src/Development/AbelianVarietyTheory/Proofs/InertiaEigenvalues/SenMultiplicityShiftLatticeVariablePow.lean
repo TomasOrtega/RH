@@ -8,9 +8,7 @@ open GlobalTheory.PhiGam
 open scoped LaurentSeries PowerSeries
 
 /- English proof (translation)
-Establish `hmono : Monotone fun m : ℕ => Q.comap (S ^ m)`. Use `monotone_nat_of_le_succ fun m p hp => ?_` and prove the remaining obligations. Rewrite `hp`, the goal using `[Submodule.mem_comap]`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hQ _ hp`.
-
-Conclude with `Submodule.mem_iSup_of_directed _ hmono.directed_le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iSup_comap_pow {k U : Type} [Field k] [AddCommGroup U] [Module k U] (S : Module.End k U)
     (Q : Submodule k U) (hQ : ∀ p ∈ Q, S p ∈ Q) (u : U) :
@@ -23,25 +21,23 @@ theorem mem_iSup_comap_pow {k U : Type} [Field k] [AddCommGroup U] [Module k U] 
   exact Submodule.mem_iSup_of_directed _ hmono.directed_le
 
 /- English proof (translation)
-Unfold `gmult`. Use `set S := T - algebraMap k (Module.End k U) y with hSdef`. Use `set S' := T' - algebraMap k (Module.End k U) x with hS'def`. Establish `hS : ∀ u, S u = T u - y • u` using `fun u => by simp [hSdef, Module.algebraMap_end_apply]`. Establish `hS' : ∀ u, S' u = T' u - x • u` using `fun u => by simp [hS'def, Module.algebraMap_end_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSP : ∀ p ∈ P, S p ∈ P` using `fun p hp => by rw [hS]; exact P.sub_mem (hP p hp) (P.smul_mem _ hp)`. Establish `hSQ : ∀ p ∈ Q, S p ∈ Q` using `fun p hp => by rw [hS]; exact Q.sub_mem (hQ p hp) (Q.smul_mem _ hp)`. Establish `hSQ' : ∀ p ∈ Q', S' p ∈ Q'` using `fun p hp => by`. Rewrite using `[hS']`. Conclude with `Q'.sub_mem (hQ' p hp) (Q'.smul_mem _ hp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpow : ∀ m : ℕ, ∀ p ∈ P, (S ^ m) p ∈ P ∧ (S' ^ m) (e p) - e ((S ^ m) p) ∈ Q'`. Introduce `m p hp`. Proceed by induction on `m with`. Consider the case `zero => simpa using hp`. Consider the case `succ m ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply]`. Use `⟨hSP _ h1, ?_⟩` and prove the remaining obligations. Establish `h3` using `h _ h1`. Rewrite `h3` using `[← hS, ← hS']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4` using `Q'.add_mem (hSQ' _ h2) h3`. Rewrite `h4` using `[map_sub]`. Simplify using `using h4`. Use `set A := P ⊓ ⨆ m : ℕ, Q.comap (S ^ m) with hA`. Use `set A' := P' ⊓ ⨆ m : ℕ, Q'.comap (S' ^ m) with hA'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `heA : ∀ u, e u ∈ A' ↔ u ∈ A`. Introduce `u`. Rewrite using `[hA, hA', Submodule.mem_inf, Submodule.mem_inf, heP, mem_iSup_comap_pow S Q hSQ, mem_iSup_comap_pow S' Q' hSQ']`. Use `and_congr_right fun hu => exists_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[← heQ]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `(hpow m u hu).2`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Simplify using `using Q'.sub_mem h1 h2`. Introduce `h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using Q'.add_mem h2 h1`. Establish `hmap : A.map (e : U →ₗ[k] U) = A'`. Use extensionality with `u`. Take `⟨u, rfl⟩` from `e.surjective u`. Rewrite using `[heA]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_map_equiv A |>.trans (by simp)`. Set `E : A ≃ₗ[k] A'` to `e.ofSubmodules A A' hmap`. Establish `hE : ∀ z : A, ((E z : A') : U) = e z` using `fun z => rfl`. Use `(Submodule.Quotient.equiv (Q.submoduleOf A) (Q'.submoduleOf A') E ?_).finrank_eq.symm` and prove the remaining obligations. Use extensionality with `z`.
-
-Take `⟨z, rfl⟩` from `E.surjective z`. Use `(Submodule.mem_map_equiv _).trans ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `(z : U) ∈ Q ↔ ((E z : A') : U) ∈ Q'`. Rewrite using `[hE, heQ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmult_transport {k U : Type} [Field k] [AddCommGroup U] [Module k U] (T T' : Module.End k U)
     (P Q P' Q' : Submodule k U) (e : U ≃ₗ[k] U) (x y : k)
@@ -99,13 +95,13 @@ theorem gmult_transport {k U : Type} [Field k] [AddCommGroup U] [Module k U] (T 
   rw [hE, heQ]
 
 /- English proof (translation)
-Introduce `k _ l _ _ R V _ _ _ _ _ _ _ _ g hg N _ hC a x`. Establish `hv : vv k ≠ 0` using `vv_ne_zero k`. Set `e : V ≃ₗ[k] V` to `(LinearEquiv.smulOfNeZero k⸨X⸩ V (vv k ^ a) (zpow_ne_zero a hv)).restrictScalars k`. Establish `he : ∀ u, e u = vv k ^ a • u` using `fun u => rfl`. Establish `hmem : ∀ (M : Submodule k⟦X⟧ V) (u : V), e u ∈ sh a M ↔ u ∈ M` using `fun M u => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, mem_sh_iff_smul_mem, smul_smul, ← zpow_add₀ hv, neg_add_cancel, zpow_zero, one_smul]`. Establish `hsh : sh 1 (sh a N) = sh a (sh 1 N)` using `by rw [sh_sh_eq, sh_sh_eq, add_comm]`. Unfold `sen qmult`. Use `gmult_transport (nab g) (nab g) _ _ _ _ e x (x + a) (fun u => hmem N u) (fun u => ?_) (fun p hp => Window.nab_mem hC hp) (fun p hp => Window.nab_mem_sh R hg hC 1 hp) (fun p hp => ?_) (fun p hp => ?_)` and prove the remaining obligations. Rewrite using `[hsh]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem _ u`. Rewrite `hp`, the goal using `[sh_sh_eq]`. Conclude with `Window.nab_mem_sh R hg hC _ hp`. Take `⟨n', hn', h⟩` from `Window.nab_shift R hg hC a hp`. Rewrite `h` using `[← he, ← he]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsh, h, ← map_smul, ← map_sub, ← map_sub]`. Use `(hmem _ _).2 (mem_sh_iff_exists.2 ⟨n', hn', ?_⟩)` and prove the remaining obligations. Rewrite using `[zpow_one, add_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sen_sh : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (g : V →ₗ[k] V), Semi R.γ g → ∀ N : Submodule k⟦X⟧ V, IsLat N → CondC g N → ∀ (a : ℤ) (x : k), sen g (sh a N) x = sen g N (x + a) := by
   intro k _ l _ _ R V _ _ _ _ _ _ _ _ g hg N _ hC a x

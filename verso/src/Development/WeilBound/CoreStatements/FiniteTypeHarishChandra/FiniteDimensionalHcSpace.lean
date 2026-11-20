@@ -48,7 +48,7 @@ def indF [Fintype Γ] (H : Subgroup Γ) (φ : Γ → ℂ) (g : Γ) : ℂ :=
 def cj (x : Γ) (B : Subgroup Γ) : Subgroup Γ := B.comap (MulAut.conj x).toMonoidHom
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cj {x h : Γ} {B : Subgroup Γ} : h ∈ cj x B ↔ x * h * x⁻¹ ∈ B := Iff.rfl
 

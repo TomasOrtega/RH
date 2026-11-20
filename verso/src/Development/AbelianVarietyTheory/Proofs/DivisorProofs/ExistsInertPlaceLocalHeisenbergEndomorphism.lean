@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.InertRho
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w _ _ L _ _ ϖ σL q δ JS JT ψL κ ιS ιT hC`. Take `⟨-, -, -, -, -, -, -, -, -, hAt, -⟩` from `hC`. Establish `hstd` using `hTr.base.std`. Set `ρ : Matrix (Fin (a + a')) (Fin a') L → Module.End ℂ (SB (Fin a' × Fin (a + a') → Fv F v))` to `fun x => { toFun := fun m => ⟨schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v (κ x)) m, GlobalTheory.SchrSB.schr_mem_SB B.ψ hstd.1 v _ _ m.2⟩ map_add' := fun m m' => by`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Simplify using `only [schr, Submodule.coe_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c m => by`. Use extensionality with `y`. Simplify using `only [schr, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `ring }`. Conclude with `⟨ρ, fun x m => GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ v (κ x) (hAt x) m⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rho : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

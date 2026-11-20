@@ -18,19 +18,19 @@ local notation "sI" => IsLocalization.Away.invSelf (S := PreDisc l (0 : WittVect
 
 omit [Field k] [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-The claim follows from `Nat.cast_pos.2 hl.out.pos`.
+A detailed English derivation is pending.
 -/
 theorem l_pos : (0 : ℝ) < l := Nat.cast_pos.2 hl.out.pos
 
 omit [Field k] [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-The claim follows from `Nat.one_lt_cast.2 hl.out.one_lt`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_l : (1 : ℝ) < l := Nat.one_lt_cast.2 hl.out.one_lt
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap (𝕎k) (Pk)) l]`. Conclude with `IsLocalization.Away.mul_invSelf _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mul_inv : (l : Pk) * sI = 1 := by
   rw [← map_natCast (algebraMap (𝕎k) (Pk)) l]
@@ -39,7 +39,7 @@ theorem l_mul_inv : (l : Pk) * sI = 1 := by
 omit [CharP k l] [PerfectRing k l] in
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l (WittVector l k) 0 1).2.1 (ofPre l 0 1 y)`. Rewrite `h` using `[← map_natCast (ofPre l (0 : WittVector l k) 1) l, ← map_mul, norm_ofPre, norm_ofPre]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_mul (y : Pk) : ‖(l : Pk) * y‖ = ‖y‖ / l := by
   have h := (GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l (WittVector l k) 0 1).2.1 (ofPre l 0 1 y)
@@ -48,7 +48,7 @@ theorem norm_l_mul (y : Pk) : ‖(l : Pk) * y‖ = ‖y‖ / l := by
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', mul_assoc, norm_l_mul, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_l_pow_mul (m : ℕ) (y : Pk) : ‖(l : Pk) ^ m * y‖ = ‖y‖ / (l : ℝ) ^ m := by
   induction m with
@@ -57,7 +57,7 @@ theorem norm_l_pow_mul (m : ℕ) (y : Pk) : ‖(l : Pk) ^ m * y‖ = ‖y‖ / (
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-Establish `h` using `norm_l_pow_mul n (sI ^ n * y)`. Rewrite `h` using `[← mul_assoc, ← mul_pow, l_mul_inv, one_pow, one_mul]`. Rewrite using `[h, div_mul_cancel₀ _ (pow_ne_zero _ l_pos.ne')]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_inv_pow_mul (n : ℕ) (y : Pk) : ‖sI ^ n * y‖ = ‖y‖ * (l : ℝ) ^ n := by
   have h := norm_l_pow_mul n (sI ^ n * y)
@@ -66,7 +66,7 @@ theorem norm_inv_pow_mul (n : ℕ) (y : Pk) : ‖sI ^ n * y‖ = ‖y‖ * (l : 
 
 omit [PerfectRing k l] in
 /- English proof (translation)
-Use `IsLocalization.injective (M := Submonoid.powers (l : 𝕎k)) (Pk) ?_` and prove the remaining obligations. Use `powers_le_nonZeroDivisors_of_noZeroDivisors ?_` and prove the remaining obligations. Introduce `h`. Use `congrArg (fun x : 𝕎k => x.coeff 1) h` as an intermediate fact. Simplify using `[WittVector.coeff_p_one] at this`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_injective : Function.Injective (algebraMap (𝕎k) (Pk)) := by
   refine IsLocalization.injective (M := Submonoid.powers (l : 𝕎k)) (Pk) ?_
@@ -76,15 +76,15 @@ theorem algebraMap_injective : Function.Injective (algebraMap (𝕎k) (Pk)) := b
   simp [WittVector.coeff_p_one] at this
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, b, c, h1, rfl⟩` from `hx`. Break down `Nat.eq_zero_or_pos b with rfl | hb` into its components or cases. Establish `hca : c < a`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2 : (l : ℝ) ^ c < (l : ℝ) ^ a`. Simplify using `only [NNReal.coe_one, one_pow, mul_one] at h1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_lt_pow_iff_right₀ one_lt_l).1 h2`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hca`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(l : 𝕎k) ^ d, ?_⟩` and prove the remaining obligations. Simplify using `only [pow_zero, mul_one, map_mul, map_pow, map_natCast]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨0, by simp [zero_pow hb.ne']⟩`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨w, rfl⟩` from `hx`. Take `⟨w', rfl⟩` from `hy`. Conclude with `⟨w + w', by rw [mul_add, map_add]⟩`. Consider the case `smul c x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `hx`. Conclude with `⟨c * w, by rw [Algebra.smul_def, ← map_mul, mul_left_comm]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ball_lt_one {r : ℝ} (hr : r < 1) {y : Pk} (hy : y ∈ ball l (0 : 𝕎k) 1 r) :
     ∃ w : 𝕎k, y = algebraMap (𝕎k) (Pk) ((l : 𝕎k) * w) := by
@@ -115,7 +115,7 @@ theorem ball_lt_one {r : ℝ} (hr : r < 1) {y : Pk} (hy : y ∈ ball l (0 : 𝕎
     exact ⟨c * w, by rw [Algebra.smul_def, ← map_mul, mul_left_comm]⟩
 
 /- English proof (translation)
-Use `le_antisymm (norm_algebraMap_le _) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Take `⟨r, hr1, hr2⟩` from `exists_between h`. Take `⟨w, hw⟩` from `ball_lt_one hr2 (mem_ball_of_gauge_lt l (0 : 𝕎k) 1 hr1)`. Establish `hv : (v : 𝕎k) = (l : 𝕎k) * w` using `algebraMap_injective hw`. Conclude with `(WittVector.irreducible l).not_isUnit (isUnit_of_mul_isUnit_left (hv ▸ v.isUnit))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_alg_unit (v : (𝕎k)ˣ) : ‖algebraMap (𝕎k) (Pk) v‖ = 1 := by
   refine le_antisymm (norm_algebraMap_le _) (not_lt.1 fun h => ?_)
@@ -125,25 +125,23 @@ theorem norm_alg_unit (v : (𝕎k)ˣ) : ‖algebraMap (𝕎k) (Pk) v‖ = 1 := b
   exact (WittVector.irreducible l).not_isUnit (isUnit_of_mul_isUnit_left (hv ▸ v.isUnit))
 
 /- English proof (translation)
-Rewrite using `[norm_l_pow_mul, norm_inv_pow_mul, norm_alg_unit, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_nf (v : (𝕎k)ˣ) (m n : ℕ) :
     ‖(l : Pk) ^ m * (sI ^ n * algebraMap (𝕎k) (Pk) v)‖ = (l : ℝ) ^ n / (l : ℝ) ^ m := by
   rw [norm_l_pow_mul, norm_inv_pow_mul, norm_alg_unit, one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_pow, map_natCast, norm_l_pow_mul, norm_alg_unit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_alg_pow_mul (v : (𝕎k)ˣ) (m : ℕ) :
     ‖algebraMap (𝕎k) (Pk) ((l : 𝕎k) ^ m * v)‖ = 1 / (l : ℝ) ^ m := by
   rw [map_mul, map_pow, map_natCast, norm_l_pow_mul, norm_alg_unit]
 
 /- English proof (translation)
-Take `⟨n, w, h⟩` from `IsLocalization.Away.surj (l : 𝕎k) y`. Establish `e : y = sI ^ n * algebraMap (𝕎k) (Pk) w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsLocalization.Away.mul_invSelf, one_pow, mul_one]`. Use `_ = sI ^ n * (y * algebraMap (𝕎k) (Pk) (l : 𝕎k) ^ n) := by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = _ := by rw [h]`. Establish `hw : w ≠ 0` using `by rintro rfl; exact hy (by rw [e, map_zero, mul_zero])`. Take `⟨m, v, hv⟩` from `WittVector.exists_eq_pow_p_mul' w hw`. Use `⟨v, m, n, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hv, map_mul, map_pow, map_natCast]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normal_form (y : Pk) (hy : y ≠ 0) :
     ∃ (v : (𝕎k)ˣ) (m n : ℕ), y = (l : Pk) ^ m * (sI ^ n * algebraMap (𝕎k) (Pk) v) := by
@@ -160,9 +158,9 @@ theorem normal_form (y : Pk) (hy : y ≠ 0) :
   ring
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Take `⟨v, m, n, rfl⟩` from `normal_form x hx`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨v', m', n', rfl⟩` from `normal_form y hy`. Establish `e : (l : Pk) ^ m * (sI ^ n * algebraMap (𝕎k) (Pk) v) * ((l : Pk) ^ m' * (sI ^ n' * algebraMap (𝕎k) (Pk) v')) = (l : Pk) ^ (m + m') * (sI ^ (n + n') * algebraMap (𝕎k) (Pk) ↑(v * v'))`. Rewrite using `[Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_nf, norm_nf, norm_nf, pow_add, pow_add, mul_div_mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_mul_pre (x y : Pk) : ‖x * y‖ = ‖x‖ * ‖y‖ := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -178,7 +176,7 @@ theorem norm_mul_pre (x y : Pk) : ‖x * y‖ = ‖x‖ * ‖y‖ := by
   rw [e, norm_nf, norm_nf, norm_nf, pow_add, pow_add, mul_div_mul_comm]
 
 /- English proof (translation)
-Use `(denseRange_ofPre l (0 : 𝕎k) 1).induction_on x (isClosed_eq (continuous_norm.comp (continuous_id.mul continuous_const)) (continuous_norm.mul continuous_const)) fun a => ?_` and prove the remaining obligations. Use `(denseRange_ofPre l (0 : 𝕎k) 1).induction_on y (isClosed_eq (continuous_norm.comp (continuous_const.mul continuous_id)) (continuous_const.mul continuous_norm)) fun b => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, norm_ofPre, norm_ofPre, norm_ofPre]`. Conclude with `norm_mul_pre a b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_disc (x y : Dk) : ‖x * y‖ = ‖x‖ * ‖y‖ := by
   refine (denseRange_ofPre l (0 : 𝕎k) 1).induction_on x
@@ -191,16 +189,16 @@ theorem norm_mul_disc (x y : Dk) : ‖x * y‖ = ‖x‖ * ‖y‖ := by
   exact norm_mul_pre a b
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `hw`. Conclude with `(norm_ofPre l (0 : 𝕎k) 1 _).trans (norm_alg_unit v)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_toDisc_unit (w : 𝕎k) (hw : IsUnit w) : ‖toDisc l (0 : 𝕎k) 1 w‖ = 1 := by
   obtain ⟨v, rfl⟩ := hw
   exact (norm_ofPre l (0 : 𝕎k) 1 _).trans (norm_alg_unit v)
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun w hw => by_contra fun hw0 => ?_` and prove the remaining obligations. Take `⟨m, v, rfl⟩` from `WittVector.exists_eq_pow_p_mul' w hw0`. Establish `h` using `(norm_ofPre l (0 : 𝕎k) 1 _).symm.trans (congrArg norm hw)`. Rewrite `h` using `[norm_zero]`. Establish `h2` using `norm_alg_pow_mul v m`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[norm_preDisc, h]`. Conclude with `(one_div_pos.2 (pow_pos l_pos m)).ne h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toDisc_injective : Function.Injective (toDisc l (0 : 𝕎k) 1) := by
   refine (injective_iff_map_eq_zero _).2 fun w hw => by_contra fun hw0 => ?_
@@ -212,9 +210,9 @@ theorem toDisc_injective : Function.Injective (toDisc l (0 : 𝕎k) 1) := by
   exact (one_div_pos.2 (pow_pos l_pos m)).ne h2
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy0` into its components or cases. Conclude with `⟨0, by simp⟩`. Take `⟨v, m, n, rfl⟩` from `normal_form y hy0`. Rewrite `hy` using `[norm_nf, div_lt_iff₀ (pow_pos l_pos m), ← pow_succ']`. Establish `hnm : n ≤ m` using `Nat.lt_succ_iff.1 ((pow_lt_pow_iff_right₀ one_lt_l).1 hy)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hnm`. Use `⟨(l : 𝕎k) ^ d * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mem_range_of_norm_lt (y : Pk) (hy : ‖y‖ < l) : ∃ w : 𝕎k, y = algebraMap (𝕎k) (Pk) w := by
   rcases eq_or_ne y 0 with rfl | hy0
@@ -230,7 +228,7 @@ theorem mem_range_of_norm_lt (y : Pk) (hy : ‖y‖ < l) : ∃ w : 𝕎k, y = al
     _ = _ := by rw [l_mul_inv, one_pow, one_mul]
 
 /- English proof (translation)
-Break down `eq_or_ne w 0 with rfl | hw0` into its components or cases. Conclude with `dvd_zero _`. Take `⟨m, v, rfl⟩` from `WittVector.exists_eq_pow_p_mul' w hw0`. Rewrite `h` using `[norm_alg_pow_mul, one_div_le_one_div (pow_pos l_pos _) (pow_pos l_pos _), pow_le_pow_iff_right₀ one_lt_l]`. Conclude with `(pow_dvd_pow _ h).mul_right _`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_norm_le (w : 𝕎k) (j : ℕ) (h : ‖algebraMap (𝕎k) (Pk) w‖ ≤ 1 / (l : ℝ) ^ j) :
     (l : 𝕎k) ^ j ∣ w := by
@@ -243,7 +241,7 @@ theorem dvd_of_norm_le (w : 𝕎k) (j : ℕ) (h : ‖algebraMap (𝕎k) (Pk) w�
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-Rewrite using `[map_mul, map_pow, map_natCast, norm_l_pow_mul]`. Use `gcongr`. Conclude with `norm_algebraMap_le z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_alg_l_pow_mul_le (z : 𝕎k) (j : ℕ) :
     ‖algebraMap (𝕎k) (Pk) ((l : 𝕎k) ^ j * z)‖ ≤ 1 / (l : ℝ) ^ j := by
@@ -253,33 +251,31 @@ theorem norm_alg_l_pow_mul_le (z : 𝕎k) (j : ℕ) :
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-Rewrite using `[← map_sub, norm_ofPre]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_ofPre_sub (a b : Pk) : ‖ofPre l (0 : 𝕎k) 1 a - ofPre l (0 : 𝕎k) 1 b‖ = ‖a - b‖ := by
   rw [← map_sub, norm_ofPre]; rfl
 
 /- English proof (translation)
-Establish `hε : ∀ j : ℕ, (0 : ℝ) < 1 / (2 * (l : ℝ) ^ j)` using `fun j => by have := l_pos (l := l); positivity`. Use `choose y hy using fun j : ℕ => (denseRange_ofPre l (0 : 𝕎k) 1).exists_dist_lt x (hε j)`. Simplify using `only [dist_eq_norm] at hy`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.out.two_le`. Establish `hεle : ∀ j : ℕ, 1 / (2 * (l : ℝ) ^ j) ≤ 1 / 2` using `fun j => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ (l : ℝ) ^ j` using `one_le_pow₀ one_lt_l.le`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbd : ∀ j, ‖y j‖ < l` using `fun j => by`. Establish `h1 : ‖ofPre l (0 : 𝕎k) 1 (y j)‖ ≤ ‖x‖ + ‖x - ofPre l (0 : 𝕎k) 1 (y j)‖`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `norm_sub_le x (x - ofPre l (0 : 𝕎k) 1 (y j))` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Rewrite `h1` using `[norm_ofPre]`. Use `hy j` as an intermediate fact. Use `hεle j` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `show gauge l (0 : 𝕎k) 1 (y j) < l`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose w hw using fun j => mem_range_of_norm_lt (y j) (hbd j)`. Establish `hcau : ∀ {m n : ℕ}, m ≤ n → (l : 𝕎k) ^ m ∣ w m - w n` using `fun {m n} hmn => by`. Use `dvd_of_norm_le _ m ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : ‖ofPre l (0 : 𝕎k) 1 (y m) - ofPre l (0 : 𝕎k) 1 (y n)‖ ≤ ‖x - ofPre l (0 : 𝕎k) 1 (y m)‖ + ‖x - ofPre l (0 : 𝕎k) 1 (y n)‖`. Use `norm_sub_le (x - ofPre l (0 : 𝕎k) 1 (y n)) (x - ofPre l (0 : 𝕎k) 1 (y m))` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : y m - y n = algebraMap (𝕎k) (Pk) (w m - w n)` using `by rw [hw m, hw n, map_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[norm_ofPre_sub, e]`. Establish `h2 : 1 / (2 * (l : ℝ) ^ n) ≤ 1 / (2 * (l : ℝ) ^ m)` using `one_div_le_one_div_of_le (mul_pos two_pos (pow_pos l_pos m)) (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ one_lt_l.le hmn) zero_le_two)`. Use `hy m` as an intermediate fact. Use `hy n` as an intermediate fact. Establish `h3 : 1 / (2 * (l : ℝ) ^ m) + 1 / (2 * (l : ℝ) ^ m) = 1 / (l : ℝ) ^ m` using `by field_simp; ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(l : 𝕎k)}) w fun {m n} hmn => by`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `hcau hmn`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at hL`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨L, ?_⟩` and prove the remaining obligations. Establish `hb : ∀ n : ℕ, ‖toDisc l (0 : 𝕎k) 1 L - x‖ ≤ 2 * (1 / (l : ℝ)) ^ n` using `fun n => by`. Take `⟨z, hz⟩` from `hL n`. Establish `h1 : ‖toDisc l (0 : 𝕎k) 1 L - x‖ ≤ ‖toDisc l (0 : 𝕎k) 1 L - ofPre l (0 : 𝕎k) 1 (y n)‖ + ‖x - ofPre l (0 : 𝕎k) 1 (y n)‖`. Use `norm_sub_le (toDisc l (0 : 𝕎k) 1 L - ofPre l (0 : 𝕎k) 1 (y n)) (x - ofPre l (0 : 𝕎k) 1 (y n))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `h2 : ‖toDisc l (0 : 𝕎k) 1 L - ofPre l (0 : 𝕎k) 1 (y n)‖ ≤ 1 / (l : ℝ) ^ n`. Rewrite using `[show toDisc l (0 : 𝕎k) 1 L = ofPre l (0 : 𝕎k) 1 (algebraMap (𝕎k) (Pk) L) from rfl, norm_ofPre_sub, norm_sub_rev, hw n, ← map_sub, hz]`. Conclude with `norm_alg_l_pow_mul_le z n`. Use `hy n` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `hεle n` as an intermediate fact. Establish `h3 : 1 / (2 * (l : ℝ) ^ n) ≤ 1 / (l : ℝ) ^ n` using `one_div_le_one_div_of_le (pow_pos l_pos n) (by linarith [pow_pos (l_pos (l := l)) n])`. Rewrite using `[div_pow, one_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hne`.
-
-Establish `hpos : 0 < ‖toDisc l (0 : 𝕎k) 1 L - x‖` using `norm_pos_iff.2 (sub_ne_zero.2 (Ne.symm hne))`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (half_pos hpos) ((div_lt_one (l_pos (l := l))).2 one_lt_l)`. Combine the linear relations using `[hb n]`.
+Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_of_norm_le (x : Dk) (hx : ‖x‖ ≤ 1) : ∃ w : 𝕎k, x = toDisc l (0 : 𝕎k) 1 w := by
   have hε : ∀ j : ℕ, (0 : ℝ) < 1 / (2 * (l : ℝ) ^ j) := fun j => by have := l_pos (l := l); positivity
@@ -351,7 +347,7 @@ end GlobalTheory.BSP.DiscZero
 open GlobalTheory.BSP.DiscZero in
 
 /- English proof (translation)
-Introduce `l _ K bk`. Conclude with `⟨norm_mul_disc, exists_of_norm_le, toDisc_injective, norm_toDisc_unit⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.BSP.disc_zero_one : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     (∀ x y : Disc l (0 : Wq l bk.a) 1, ‖x * y‖ = ‖x‖ * ‖y‖) ∧

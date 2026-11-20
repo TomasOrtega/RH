@@ -3,17 +3,17 @@ import Mathlib
 namespace Bl.general_b_fact_second'''''
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ M hM x`. Establish `hx : x ∈ Submodule.span K (M : Set V)`. Rewrite using `[hM.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Establish `h1 : (a * b) • y = b • (a • y)` using `by rw [mul_comm, mul_smul]`. Establish `h2 : (a * b) • z = a • (b • z)` using `by rw [mul_smul]`. Rewrite using `[smul_add, h1, h2]`. Conclude with `M.add_mem (zsmul_mem hay b) (zsmul_mem hbz a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨d, hd, hint⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (IsAlgebraic.of_finite ℚ c)).exists_integral_multiple`. Set `w : NumberField.RingOfIntegers K` to `⟨d • c, hint⟩`. Use `⟨d * a, mul_ne_zero hd ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw : (algebraMap (NumberField.RingOfIntegers K) K w) = (d : K) * c` using `by show (d • c : K) = _`. Rewrite using `[zsmul_eq_mul]`. Establish `key : (d * a) • (c • y) = w • (a • y)`. Rewrite using `[← algebraMap_smul K w (a • y), hw, ← Int.cast_smul_eq_zsmul K, ← Int.cast_smul_eq_zsmul K, smul_smul, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `M.smul_mem w hay`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K V : Type} [inst : Field.{0} K] [NumberField.{0} K] [StarRing.{0} K] [inst_3 : AddCommGroup.{0} V]

@@ -10,15 +10,13 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ h2 hfix R _ _`. Establish `hσσ : ∀ a : E, σ (σ a) = a` using `fun a => quad_sigma_sigma (σ := σ) (h2 := h2) (hfix := hfix) a`. Use `⟨fun z => quad_sig_sig σ R hσσ z, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨θ, _hθ0, hσθ, ⟨d, _hd0, hd⟩, hli⟩` from `quad_exists_theta (σ := σ) (h2 := h2) (hfix := hfix)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, rfl⟩ : ∃ a b : R, z = a ⊗ₜ[F] (1 : E) + b ⊗ₜ[F] θ` from `⟨_, _, quad_decomp (h2 := h2) (hli := hli) (R := R) z⟩`. Rewrite `hz` using `[quad_sig (R := R) (σ := σ) (hσθ := hσθ)]`. Establish `h1 : (-b) ⊗ₜ[F] θ = b ⊗ₜ[F] θ` using `add_left_cancel hz`. Establish `hb : b ⊗ₜ[F] θ = 0`. Establish `h2' : (2 : F) • (b ⊗ₜ[F] θ) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[two_smul]`. Use `nth_rewrite 1 [← h1]`. Rewrite using `[TensorProduct.neg_tmul, neg_add_cancel]`. Conclude with `(smul_eq_zero.mp h2').resolve_left two_ne_zero`. Establish `h12 : algebraMap F R (1 / 2) * (2 * a) = a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← mul_assoc, show (2 : R) = algebraMap F R 2 from (map_ofNat _ 2).symm, ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[quad_trace (R := R) (hd := hd), hb, add_zero, h12]`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Conclude with `h2`.
-
-Conclude with `hli`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stFix : StFix := by
   intro F E _ _ _ _ σ h2 hfix R _ _

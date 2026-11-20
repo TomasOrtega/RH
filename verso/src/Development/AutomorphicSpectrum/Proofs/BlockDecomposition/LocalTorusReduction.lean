@@ -14,7 +14,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Establish `ht : 0 < (modulus (x : F) : ℝ)`. Conclude with `GroundTheory.LocalField.modulus_pos x.ne_zero` after adjusting the coercions. Unfold `mp`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos ht]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem norm_mp_half (x : Fˣ) :
     ‖mp x (1 / 2)‖ = (modulus (x : F) : ℝ) ^ (1 / 2 : ℝ) := by
@@ -25,9 +25,9 @@ theorem norm_mp_half (x : Fˣ) :
   norm_num
 
 /- English proof (translation)
-Rewrite using `[Real.mul_rpow ha.le hb.le, Real.rpow_neg hb.le]`. Establish `hb' : b ^ (1 / 2 : ℝ) ≠ 0` using `(Real.rpow_pos_of_pos hb _).ne'`. Establish `: a ^ (3 / 4 : ℝ) = a ^ (1 / 2 : ℝ) * a ^ (1 / 4 : ℝ)`. Rewrite using `[← Real.rpow_add ha]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rpow_torus {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
     (a * b) ^ (1 / 2 : ℝ) * (a ^ (1 / 4 : ℝ) * b ^ (-(1 / 2) : ℝ)) = a ^ (3 / 4 : ℝ) := by
@@ -40,21 +40,19 @@ theorem rpow_torus {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
   field_simp
 
 /- English proof (translation)
-Introduce `hT hF hI F _ _ _ _ _ _ ψ ν W' Φ hyp`. Take `⟨hs, hu, ⟨V', hV, hW⟩, hΦ⟩` from `id hyp`. Take `⟨C₁, R, h1⟩` from `hF F ψ hs Φ hΦ`. Take `⟨C₂, h2⟩` from `hI F ψ hs ν hu V' hV W' hW R`. Use `⟨max C₁ 0 * max C₂ 0, fun t₁ t₂ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hint, hle⟩` from `h2 t₁ t₂`. Establish `hm1 : 0 < (modulus (t₁ : F) : ℝ)`. Conclude with `GroundTheory.LocalField.modulus_pos t₁.ne_zero` after adjusting the coercions. Establish `hm2 : 0 < (modulus (t₂ : F) : ℝ)`. Conclude with `GroundTheory.LocalField.modulus_pos t₂.ne_zero` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC₁ : 0 ≤ max C₁ 0` using `le_max_right _ _`. Establish `hC₂ : 0 ≤ max C₂ 0` using `le_max_right _ _`. Use `set G : GL (Fin 2) F → ℝ := (om R t₂).indicator fun k => ‖W' (dg2 t₁ t₂ * k⁻¹)‖ * (modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ) ^ (1 / 2 : ℝ) with hGd`. Establish `hG0 : ∀ k, 0 ≤ G k` using `fun k => Set.indicator_nonneg (fun _ _ => mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (by positivity) _)) k`. Establish `hpt : ∀ k : GL (Fin 2) F, ‖W' (dg2 t₁ t₂ * k⁻¹) * mp (GeneralLinearGroup.det k) (1 / 2) * pft ψ Φ (k : Matrix (Fin 2) (Fin 2) F) (fun j => (t₂ : F) * ((k⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j)‖ ≤ max C₁ 0 * G k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Distinguish the cases in `hp : pft ψ Φ (k : Matrix (Fin 2) (Fin 2) F) (fun j => (t₂ : F) * ((k⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j) = 0`. Rewrite using `[hp, mul_zero, norm_zero]`. Conclude with `mul_nonneg hC₁ (hG0 k)`. Take `⟨hb, hsup⟩` from `h1 (k : Matrix (Fin 2) (Fin 2) F) (fun j => (t₂ : F) * ((k⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hk, hξ⟩` from `hsup hp`. Establish `hmem : k ∈ om R t₂` using `⟨hk, hξ⟩`. Establish `hGk : G k = ‖W' (dg2 t₁ t₂ * k⁻¹)‖ * (modulus ((GeneralLinearGroup.det k : Fˣ) : F) : ℝ) ^ (1 / 2 : ℝ)`. Rewrite using `[hGd, Set.indicator_of_mem hmem]`. Rewrite using `[norm_mul, norm_mul, norm_mp_half, ← hGk, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul ((hb).trans (le_max_left _ _)) le_rfl (by rw [hGk]; exact mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (by positivity) _)) hC₁`. Establish `hbound : ‖∫ k, W' (dg2 t₁ t₂ * k⁻¹) * mp (GeneralLinearGroup.det k) (1 / 2) * pft ψ Φ (k : Matrix (Fin 2) (Fin 2) F) (fun j => (t₂ : F) * ((k⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 j) ∂hG ψ‖ ≤ max C₁ 0 * (max C₂ 0 * ((modulus (t₁ : F) : ℝ) ^ (1 / 4 : ℝ) * (modulus (t₂ : …`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Establish `hmono` using `integral_mono_of_nonneg (μ := hG ψ) (Filter.Eventually.of_forall fun k => norm_nonneg _) (hint.const_mul (max C₁ 0)) (Filter.Eventually.of_forall hpt)`. Use `hmono.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul]`. Use `mul_le_mul_of_nonneg_left ?_ hC₁` and prove the remaining obligations. Use `hle.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (mul_nonneg (Real.rpow_nonneg hm1.le _) (Real.rpow_nonneg hm2.le _))`.
-
-Rewrite using `[hT F ψ ν W' Φ hyp t₁ t₂, norm_mul, norm_mp_half, Units.val_mul, GroundTheory.LocalField.modulus_mul, NNReal.coe_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gTor : Ad3.LFS.GTor := by
   intro hT hF hI F _ _ _ _ _ _ ψ ν W' Φ hyp

@@ -4,9 +4,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `X S deg κ hκ`. Establish `hq : ∀ q, Cardinal.mk {x : S // deg x = q} ≤ κ q`. Introduce `q`. Set `e` to `Fintype.equivFin {x : S // deg x = q}`. Rewrite using `[Cardinal.mk_fintype]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `hκ q _ (fun i => ((e.symm i).1 : X)) ?_ (fun i => ⟨(e.symm i).1.2, (e.symm i).2⟩)` and prove the remaining obligations. Introduce `i j hij`. Conclude with `e.symm.injective (Subtype.ext (Subtype.ext hij))`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.count :
     UpperTheory.V.Lit.Bor.Count := by

@@ -8,7 +8,7 @@ noncomputable section
 namespace GroundTheory.PAdicHodge
 
 /- English proof (translation)
-Use `⟨(3 + q) / 4, by linarith, by linarith, ?_⟩` and prove the remaining obligations. Establish `h1 : 0 < 1 - q` using `by linarith`. Establish `h2 : 0 < 27 - 10 * q - q * q` using `by nlinarith`. Use polynomial arithmetic with `[mul_pos h1 h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exists_lt_mul_mul_lt_one {q : ℝ} (hq0 : 0 ≤ q) (hq : q < 1) :
     ∃ s : ℝ, 0 < s ∧ s < 1 ∧ q < s * s * s := by
@@ -32,7 +32,7 @@ omit [IsUltrametricDist K] [IsUltrametricDist C] [Fact p.Prime] [IsPerfectoidFie
   [IsPerfectoidField C p] in
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap K C), norm_algebraMap']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_algebra : ‖(p : C)‖ = ‖(p : K)‖ := by
   rw [← map_natCast (algebraMap K C), norm_algebraMap']
@@ -41,7 +41,7 @@ omit [NontriviallyNormedField K] [IsUltrametricDist K] [NontriviallyNormedField 
   [Fact p.Prime] [IsPerfectoidField K p] [IsPerfectoidField C p] in
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, max_eq_right h.le]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_of_norm_sub_lt {E : Type*} [SeminormedAddCommGroup E] [IsUltrametricDist E]
     {x y : E} (h : ‖x - y‖ < ‖y‖) : ‖x‖ = ‖y‖ := by
@@ -50,29 +50,25 @@ theorem norm_eq_of_norm_sub_lt {E : Type*} [SeminormedAddCommGroup E] [IsUltrame
   exact this
 
 /- English proof (translation)
-Establish `hwj0 : 0 < ‖w j‖` using `hr.trans_lt (hwr j)`. Establish `ht1 : t ≤ 1`. Establish `e : ∑ j', (Pi.single j (1 : K♭) : ι → K♭) j' • w j' = w j`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by rw [Pi.single_eq_of_ne hb, zero_smul]) (fun h => absurd (Finset.mem_univ j) h), Pi.single_eq_same, one_smul]`. Use `hw (Pi.single j 1) j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[e, Pi.single_eq_same, one_smul]`. Conclude with `le_of_mul_le_mul_right (by linarith) hwj0`. Establish `hr1 : r < 1` using `(hwr j).trans_le (hw1 j)`. Establish `htr : t * r ≤ 1` using `by nlinarith`. Establish `hpρ : ‖(p : K)‖ ≤ ρ` using `hp.trans (by nlinarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpl : ‖(p : K)‖ < ‖l j‖` using `hpρ.trans_lt hj`. Establish `hA : ∀ i, ∃ a : 𝒪K♭, ‖((a.untilt : normInteger K) : K) - l i‖ ≤ ‖(p : K)‖` using `fun i => by`. Take `⟨a, ha⟩` from `exists_mk_untilt_eq (p := p) (⟨l i, mem_normInteger.2 (hl1 i)⟩ : normInteger K)`. Conclude with `⟨a, mk_eq_mk_iff_norm_sub_le.1 ha⟩`. Use `choose a ha using hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose b hb using fun i => (norm_le_one_iff_exists_algebraMap (K := C) (p := p)).1 (hw1 i)`. Use `set φ := preTiltMap p (algebraMap K C) (norm_algebraMap' C) with hφ`. Use `set d : ι → 𝒪C♭ := fun i => φ (a i) * b i with hd`. Establish `hdw : ∀ i, algebraMap 𝒪C♭ C♭ (d i) = algebraMap 𝒪K♭ K♭ (a i) • w i`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, algebraMap_tilt_eq, tiltMap_algebraMap, ← hb i, ← map_mul]`. Establish `hsharp : ∀ i, tiltSharp C p (w i) = ((b i).untilt : C)`. Introduce `i`. Rewrite using `[← hb i, tiltSharp_algebraMap]`. Establish `hdu : ∀ i, ((d i).untilt : C) = algebraMap K C ((a i).untilt : K) * tiltSharp C p (w i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i`. Rewrite using `[hd, untilt_mul, Subring.coe_mul, coe_untilt_preTiltMap, hsharp]`. Use `set A : C := ((∑ i, d i).untilt : C) with hA`. Establish `hAn : ‖A‖ = ‖∑ i, algebraMap 𝒪K♭ K♭ (a i) • w i‖`. Rewrite using `[hA, ← tiltSharp_algebraMap, norm_tiltSharp, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hdw]`. Establish `hsw : ∀ i, ‖tiltSharp C p (w i)‖ ≤ 1` using `fun i => by rw [norm_tiltSharp]; exact hw1 i`. Establish `haj : ‖algebraMap 𝒪K♭ K♭ (a j)‖ = ‖l j‖`. Rewrite using `[norm_algebraMap_preTilt, preTilt_norm_def]`. Conclude with `norm_eq_of_norm_sub_lt ((ha j).trans_lt hpl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hAbig : t * r * ρ < ‖A‖`. Rewrite using `[hAn]`. Use `lt_of_lt_of_le ?_ (hw _ j)` and prove the remaining obligations. Rewrite using `[norm_smul, haj]`. Establish `: ρ * r < ‖l j‖ * ‖w j‖` using `mul_lt_mul'' hj (hwr j) hρ.le hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hS : ‖∑ i, ((d i).untilt : C) - A‖ ≤ ‖(p : K)‖`. Rewrite using `[norm_sub_rev, hA, ← norm_natCast_algebra (C := C)]`. Conclude with `norm_untilt_sum_sub_le Finset.univ d`. Establish `hT : ‖∑ i, l i • tiltSharp C p (w i) - ∑ i, ((d i).untilt : C)‖ ≤ ‖(p : K)‖`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hdu, Algebra.smul_def, ← sub_mul, ← map_sub, norm_mul, norm_algebraMap', norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ha i`.
-
-Conclude with `hsw i`. Use `_ = _ := mul_one _`. Establish `hE : ‖∑ i, l i • tiltSharp C p (w i) - A‖ ≤ ‖(p : K)‖`. Establish `e : ∑ i, l i • tiltSharp C p (w i) - A = (∑ i, l i • tiltSharp C p (w i) - ∑ i, ((d i).untilt : C)) + (∑ i, ((d i).untilt : C) - A)` using `by abel`. Rewrite using `[e]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hT hS)`. Rewrite using `[norm_eq_of_norm_sub_lt (hE.trans_lt (hp.trans_lt hAbig))]`. Conclude with `hAbig`.
+A detailed English derivation is pending.
 -/
 theorem lt_norm_sum_smul_tiltSharp {ι : Type*} [Fintype ι] {w : ι → C♭} {t r ρ : ℝ}
     (hw : ∀ (c : ι → K♭) (i : ι), t * ‖c i • w i‖ ≤ ‖∑ j, c j • w j‖)
@@ -150,15 +146,13 @@ theorem lt_norm_sum_smul_tiltSharp {ι : Type*} [Fintype ι] {w : ι → C♭} {
   exact hAbig
 
 /- English proof (translation)
-Distinguish the cases in `hli : l i = 0`. Rewrite using `[hli, norm_zero, mul_zero]`. Conclude with `norm_nonneg _`. Take `⟨i0, -, hi0⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖l j‖) ⟨i, Finset.mem_univ i⟩`. Use `set m := ‖l i0‖ with hm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli0 : ‖l i‖ ≤ m` using `hi0 i (Finset.mem_univ i)`. Establish `hm0 : 0 < m` using `(norm_pos_iff.2 hli).trans_le hli0`. Take `⟨c, hc1, hc2⟩` from `exists_norm_mem_Ioc p (K := K) (div_pos hρ hm0) (div_lt_div_of_pos_right hρ1 hm0)`. Establish `hc0 : 0 < ‖c‖` using `(div_pos hρ hm0).trans hc1`. Establish `hcm : ‖c‖ * m ≤ 1` using `by rwa [le_div_iff₀ hm0] at hc2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm' : ρ < ‖c‖ * m` using `by rwa [div_lt_iff₀ hm0] at hc1`. Establish `key` using `lt_norm_sum_smul_tiltSharp (C := C) hw hw1 hwr ht hr hρ hp (l := fun j => c * l j) (j := i0) (fun j => by`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_left (hi0 j (Finset.mem_univ j)) (norm_nonneg c)).trans hcm)`. Use the proof step `(by rw [norm_mul]; exact hcm')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ∑ j, (c * l j) • tiltSharp C p (w j) = c • ∑ j, l j • tiltSharp C p (w j)`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [mul_smul]`. Rewrite `key` using `[e, norm_smul]`. Establish `hX` using `norm_nonneg (∑ j, l j • tiltSharp C p (w j))`.
-
-Establish `htrρ : 0 ≤ t * r * ρ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_norm_le_norm_sum_smul_tiltSharp {ι : Type*} [Fintype ι] {w : ι → C♭} {t r ρ : ℝ}
     (hw : ∀ (c : ι → K♭) (i : ι), t * ‖c i • w i‖ ≤ ‖∑ j, c j • w j‖)
@@ -195,9 +189,9 @@ theorem mul_norm_le_norm_sum_smul_tiltSharp {ι : Type*} [Fintype ι] {w : ι �
     _ = _ := one_mul _
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `h` using `mul_norm_le_norm_sum_smul_tiltSharp (C := C) hw hw1 hwr ht hr.le hρ hρ1 hp g i`. Rewrite `h` using `[hg, norm_zero]`. Establish `hpos : 0 < t * r * ρ` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ‖g i‖ ≤ 0` using `by nlinarith [norm_nonneg (g i)]`. Conclude with `norm_le_zero_iff.1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearIndependent_tiltSharp {ι : Type*} [Fintype ι] {w : ι → C♭} {t r ρ : ℝ}
     (hw : ∀ (c : ι → K♭) (i : ι), t * ‖c i • w i‖ ≤ ‖∑ j, c j • w j‖)
@@ -213,13 +207,13 @@ theorem linearIndependent_tiltSharp {ι : Type*} [Fintype ι] {w : ι → C♭} 
   exact norm_le_zero_iff.1 this
 
 /- English proof (translation)
-Take `⟨w', hli, hspan, horth⟩` from `exists_orthogonal_of_linearIndependent hv ht`. Establish `hw'0 : ∀ i, 0 < ‖w' i‖` using `fun i => norm_pos_iff.2 (hli.ne_zero i)`. Establish `hE : ∀ i, ∃ e : K♭, r / ‖w' i‖ < ‖e‖ ∧ ‖e‖ ≤ 1 / ‖w' i‖` using `fun i => exists_norm_mem_Ioc p (div_pos hr0 (hw'0 i)) (div_lt_div_of_pos_right hr1 (hw'0 i))`. Use `choose e he1 he2 using hE`. Establish `he0 : ∀ i, e i ≠ 0` using `fun i => norm_pos_iff.1 ((div_pos hr0 (hw'0 i)).trans (he1 i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmul : ∀ c : ι → K♭, ∑ j, c j • (e j • w' j) = ∑ j, (c j * e j) • w' j` using `fun c => by`. Simplify using `only [mul_smul]`. Use `⟨fun i => e i • w' i, ?_, fun i => Submodule.smul_mem _ _ (hspan i), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[hsmul]`. Use `(Fintype.linearIndependent_iff.1 hli) _ hg i` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_right (he0 i)`. Introduce `c i`. Rewrite using `[hsmul, ← mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `horth (fun j => c j * e j) i`. Rewrite using `[norm_smul]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_orthogonal_normalized {ι : Type*} [Fintype ι] {v : ι → C♭}
     (hv : LinearIndependent K♭ v) {t r : ℝ} (ht : t < 1) (hr0 : 0 < r) (hr1 : r < 1) :
@@ -251,7 +245,7 @@ theorem exists_orthogonal_normalized {ι : Type*} [Fintype ι] {v : ι → C♭}
         _ < ‖e i‖ * ‖w' i‖ := mul_lt_mul_of_pos_right (he1 i) (hw'0 i)
 
 /- English proof (translation)
-Take `⟨s, hs0, hs1, hs⟩` from `exists_lt_mul_mul_lt_one (norm_nonneg (p : K)) (IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p))`. Take `⟨w, hli, hspan, horth, hnorm⟩` from `exists_orthogonal_normalized (K := K) (C := C) hv hs1 hs0 hs1`. Conclude with `⟨w, s, s, s, hs0, hs1, hs0, hs1, hs0, hs1, hs.le, hli, hspan, horth, hnorm, mul_norm_le_norm_sum_smul_tiltSharp horth (fun i => (hnorm i).1) (fun i => (hnorm i).2) hs0 hs0.le hs0 hs1 hs.le⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tiltSharp_family {ι : Type*} [Fintype ι] {v : ι → C♭}
     (hv : LinearIndependent K♭ v) :
@@ -269,7 +263,7 @@ theorem exists_tiltSharp_family {ι : Type*} [Fintype ι] {v : ι → C♭}
       hs0 hs0.le hs0 hs1 hs.le⟩
 
 /- English proof (translation)
-Take `⟨w, t, r, ρ, ht0, -, hr0, -, hρ0, hρ1, hp, hli, hspan, horth, hnorm, -⟩` from `exists_tiltSharp_family (K := K) (C := C) hv`. Conclude with `⟨w, hspan, fun i => (hnorm i).1, hli, linearIndependent_tiltSharp horth (fun i => (hnorm i).1) (fun i => (hnorm i).2) ht0 hr0 hρ0 hρ1 hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tiltSharp_linearIndependent {ι : Type*} [Fintype ι] {v : ι → C♭}
     (hv : LinearIndependent K♭ v) :

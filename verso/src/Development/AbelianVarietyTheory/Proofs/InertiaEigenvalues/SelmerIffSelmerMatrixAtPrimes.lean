@@ -12,7 +12,7 @@ namespace GlobalTheory.SelMatrixCompare
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `h.map (algebraMap (X.O0 i) (X.O i))`. Rewrite `h2` using `[map_natCast]`. Conclude with `X.O_l i h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem_maximalIdeal (i : X.Tw) : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i) := by
   intro h
@@ -21,7 +21,7 @@ theorem l_mem_maximalIdeal (i : X.Tw) : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing
   exact X.O_l i h2
 
 /- English proof (translation)
-Establish `h` using `Ideal.mem_map_of_mem (algebraMap (X.O0 i) (abelian₂ X i M ι)) (l_mem_maximalIdeal X i)`. Rewrite `h` using `[map_natCast]`. Conclude with `Ideal.mem_sup_left h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem_maxLam (i : X.Tw) (M : ℕ) (ι : Type) : ((X.l i : ℕ) : abelian₂ X i M ι) ∈ maxLam X i M ι := by
   have h := Ideal.mem_map_of_mem (algebraMap (X.O0 i) (abelian₂ X i M ι)) (l_mem_maximalIdeal X i)
@@ -29,17 +29,17 @@ theorem l_mem_maxLam (i : X.Tw) (M : ℕ) (ι : Type) : ((X.l i : ℕ) : abelian
   exact Ideal.mem_sup_left h
 
 /- English proof (translation)
-Establish `hp : (X.l i).Prime` using `(X.lPrime i).out`. Establish `: NeZero (X.l i ^ M)` using `⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `h0 : (IsLocalRing.maximalIdeal (X.O0 i)).map (algebraMap (X.O0 i) (abelian₂ X i M ι)) ≤ m`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Establish `: (m.comap (algebraMap (X.O0 i) (abelian₂ X i M ι))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.eq_maximalIdeal this).ge`. Use `sup_le h0 ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hl : ((X.l i : ℕ) : abelian₂ X i M ι) ∈ m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Ideal.mem_map_of_mem (algebraMap (X.O0 i) (abelian₂ X i M ι)) (l_mem_maximalIdeal X i)`. Rewrite `h` using `[map_natCast]`. Conclude with `h0 h`. Establish `: Nontrivial (abelian₂ X i M ι ⧸ m)` using `Ideal.Quotient.nontrivial_iff.2 hm.ne_top`. Establish `: CharP (abelian₂ X i M ι ⧸ m) (X.l i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(CharP.charP_iff_prime_eq_zero hp).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk m)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hl`. Establish `hg : (Multiplicative.ofAdd (Pi.single q 1) : Del X i M ι) ^ (X.l i ^ M) = 1`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [toAdd_pow, toAdd_ofAdd, Pi.smul_apply, toAdd_one, Pi.zero_apply]`. Rewrite using `[nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Use `hm.isPrime.mem_of_pow_mem (X.l i ^ M) ?_` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [toLam, MvPolynomial.aeval_X, map_sub, map_one]`. Rewrite using `[sub_pow_char_pow, ← map_pow, ← map_pow]`. Rewrite using `[one_pow, sub_eq_zero]`. Use `map_one (Ideal.Quotient.mk m) using 2` and compare the differences between its conclusion and the goal. Use `map_one (MonoidAlgebra.of (X.O0 i) (Del X i M ι)) using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem maxLam_le (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (m : Ideal (abelian₂ X i M ι)) [hm : m.IsMaximal] :
     maxLam X i M ι ≤ m := by
@@ -77,11 +77,11 @@ theorem maxLam_le (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (m : Ideal (abel
   convert map_one (MonoidAlgebra.of (X.O0 i) (Del X i M ι)) using 2
 
 /- English proof (translation)
-Take `⟨F, rfl⟩` from `toLam_surjective X i M ι x`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨a, by rw [MvPolynomial.algHom_C, sub_self]; exact zero_mem _⟩`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hq`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Use `add_mem ha hb` as an intermediate fact. Rewrite using `[map_add, map_add]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p q _`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, sub_zero, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (Ideal.subset_span ⟨q, rfl⟩))`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (x : abelian₂ X i M ι) :
     ∃ c : X.O0 i, x - algebraMap (X.O0 i) (abelian₂ X i M ι) c ∈ maxLam X i M ι := by
@@ -102,9 +102,9 @@ theorem exists_const (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (x : abelian�
     exact Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (Ideal.subset_span ⟨q, rfl⟩))
 
 /- English proof (translation)
-Use `⟨fun hx hu => maxLam_ne_top X i M ι (Ideal.eq_top_of_isUnit_mem _ hx hu), fun hx => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hxm⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hx)`. Take `⟨c, hc⟩` from `exists_const X i M ι x`. Establish `h1 : algebraMap (X.O0 i) (abelian₂ X i M ι) c ∈ m`. Use `sub_mem hxm (maxLam_le X i M ι m hc)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h2 : c ∈ IsLocalRing.maximalIdeal (X.O0 i)` using `fun hu => hm.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 (hu.map _))`. Establish `h3 : algebraMap (X.O0 i) (abelian₂ X i M ι) c ∈ maxLam X i M ι` using `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ h2)`. Use `add_mem hc h3` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_maxLam_iff (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (x : abelian₂ X i M ι) :
     x ∈ maxLam X i M ι ↔ ¬ IsUnit x := by
@@ -122,7 +122,7 @@ theorem mem_maxLam_iff (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (x : abelia
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ (maxLam_ne_top X i M ι)`. Establish `: maxLam X i M ι = m` using `le_antisymm hle fun x hx => (mem_maxLam_iff X i M ι x).2 fun hu => hm.ne_top (Ideal.eq_top_of_isUnit_mem _ hx hu)`. Rewrite using `[this]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem maxLam_isMaximal (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] : (maxLam X i M ι).IsMaximal := by
   obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal _ (maxLam_ne_top X i M ι)
@@ -131,7 +131,7 @@ theorem maxLam_isMaximal (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] : (maxLam
   rwa [this]
 
 /- English proof (translation)
-Establish `: IsSimpleModule (abelian₂ X i M ι) (abelian₂ X i M ι ⧸ maxLam X i M ι)` using `isSimpleModule_iff_isCoatom.2 (maxLam_isMaximal X i M ι).out`. Conclude with `Module.length_eq_one (abelian₂ X i M ι) (abelian₂ X i M ι ⧸ maxLam X i M ι)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_resLam (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] :
     Module.length (abelian₂ X i M ι) (ResLam X i M ι) = 1 := by
@@ -140,7 +140,7 @@ theorem length_resLam (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] :
   exact Module.length_eq_one (abelian₂ X i M ι) (abelian₂ X i M ι ⧸ maxLam X i M ι)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective (maxLam X i M ι) b`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Ideal.mul_mem_right y _ hx)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem smul_resLam (i : X.Tw) (M : ℕ) (ι : Type) (x : abelian₂ X i M ι) (hx : x ∈ maxLam X i M ι) (b : ResLam X i M ι) :
     x • b = 0 := by
@@ -150,11 +150,11 @@ theorem smul_resLam (i : X.Tw) (M : ℕ) (ι : Type) (x : abelian₂ X i M ι) (
 variable {X} (bkP : BKPh X)
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `h`. Establish `hB : ∀ b : ResLam X i M ι, ∃ n : ℕ, (X.l i ^ n) • b = 0` using `fun b => ⟨1, by rw [pow_one, ← Nat.cast_smul_eq_nsmul (abelian₂ X i M ι)]; exact smul_resLam X i M ι _ (l_mem_maxLam X i M ι) b⟩`. Establish `hk : LinearMap.ker (matAct (M` using `ResLam X i M ι) Φ) = ⊤ := by`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `∑ y, Φ x y • v y = 0`. Conclude with `Finset.sum_eq_zero fun y _ => smul_resLam X i M ι _ (hΦ x y) (v y)`. Rewrite using `[← (e (ResLam X i M ι) hB).length_eq, (LinearEquiv.ofTop _ hk).length_eq, Module.length_pi_of_fintype]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[length_resLam]`.
+A detailed English derivation is pending.
 -/
 theorem length_sel_of_computes (i : X.Tw) (s : X.Sig i) (M : ℕ) {ι : Type} [Fintype ι]
     (d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))) (Q : Finset (PlE D.host)) (a : ℕ)
@@ -174,7 +174,7 @@ theorem length_sel_of_computes (i : X.Tw) (s : X.Sig i) (M : ℕ) {ι : Type} [F
   simp [length_resLam]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, fun b c => (mem_maxLam_iff X i M ι _).1 (h.2.2 b c)⟩, fun h => have h2 : ∀ b c, Φ b c ∈ maxLam X i M ι := fun b c => (mem_maxLam_iff X i M ι _).2 (h.2 b c) ⟨h.1, length_sel_of_computes bkP i s M d Q a Φ h.1 h2, h2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSelMatrix_iff (i : X.Tw) (s : X.Sig i) (M : ℕ) {ι : Type} [Fintype ι]
     (d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))) (Q : Finset (PlE D.host)) (a : ℕ)
@@ -185,7 +185,7 @@ theorem isSelMatrix_iff (i : X.Tw) (s : X.Sig i) (M : ℕ) {ι : Type} [Fintype 
     ⟨h.1, length_sel_of_computes bkP i s M d Q a Φ h.1 h2, h2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.2.1, le_trans (by norm_num) h.2.2.2.2.2.2⟩, h.2.2.2.2.1, h.2.2.2.2.2.2⟩, fun h => ⟨h.1.1, h.1.2.1, h.1.2.2.1, h.1.2.2.2.1, h.2.1, h.1.2.2.2.2.1, h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem galHyp_iff (i : X.Tw) (s : X.Sig i) :
     GalHyp bkP i s ↔ TripleHyp bkP i s ∧ True ∧ 100 ≤ D.R.r :=
@@ -194,9 +194,9 @@ theorem galHyp_iff (i : X.Tw) (s : X.Sig i) :
     fun h => ⟨h.1.1, h.1.2.1, h.1.2.2.1, h.1.2.2.2.1, h.2.1, h.1.2.2.2.2.1, h.2.2⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i s hG M hM A ι _ P d Q hA hQ`. Take `⟨a, Φ, hΦ⟩` from `h i s hG M ι P d Q hM hA.empty hQ`. Conclude with `⟨a, Φ, (isSelMatrix_iff bkP i s M d Q a Φ).2 hΦ⟩`. Introduce `h i s hG M ι _ P d Q hM hA hQ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, Φ, hΦ⟩` from `h i s hG M hM ∅ ι P d Q hA hQ`. Conclude with `⟨a, Φ, (isSelMatrix_iff bkP i s M d Q a Φ).1 hΦ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem selmer_iff_selmer_matrix_at_primes : ThmS bkP ↔ SelmerMatrixChosenPrimes bkP := by
   constructor
@@ -208,9 +208,9 @@ theorem selmer_iff_selmer_matrix_at_primes : ThmS bkP ↔ SelmerMatrixChosenPrim
     exact ⟨a, Φ, (isSelMatrix_iff bkP i s M d Q a Φ).1 hΦ⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i s hG M ι _ P d Q hS`. Take `⟨a, Φ, hΦ⟩` from `h i s hG M ι P Q d hS`. Conclude with `⟨a, Φ, (isSelMatrix_iff bkP i s M d Q a Φ).1 hΦ⟩`. Introduce `h i s hG M ι _ P Q d hS`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, Φ, hΦ⟩` from `h i s hG M ι P d Q hS`. Conclude with `⟨a, Φ, (isSelMatrix_iff bkP i s M d Q a Φ).2 hΦ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem selMatrix_iff : SelMatrix bkP ↔
     ∀ (i : X.Tw) (s : X.Sig i), TripleHyp bkP i s → ∀ (M : ℕ) (ι : Type) [Fintype ι] (P : ι → PlE D.host) d
@@ -225,13 +225,13 @@ theorem selMatrix_iff : SelMatrix bkP ↔
     exact ⟨a, Φ, (isSelMatrix_iff bkP i s M d Q a Φ).2 hΦ⟩
 
 /- English proof (translation)
-The claim follows from `(selmer_iff_selmer_matrix_at_primes bkP).2 (selmerMatrixAuxiliaryPrimes_of_selMatrix bkP h)`.
+A detailed English derivation is pending.
 -/
 theorem thmS_of_selMatrix (h : SelMatrix bkP) : ThmS bkP :=
   (selmer_iff_selmer_matrix_at_primes bkP).2 (selmerMatrixAuxiliaryPrimes_of_selMatrix bkP h)
 
 /- English proof (translation)
-Introduce `_ _ _ bkP` and use `⟨selmer_iff_selmer_matrix_at_primes bkP, thmS_of_selMatrix bkP, fun i s M _ _ d Q a Φ => isSelMatrix_iff bkP i s M d Q a Φ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem compare : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X),
     (ThmS bkP ↔ SelmerMatrixChosenPrimes bkP) ∧ (SelMatrix bkP → ThmS bkP) ∧

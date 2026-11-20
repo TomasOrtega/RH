@@ -6,7 +6,7 @@ namespace GroundTheory.Automorphic
 open Module
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_comm_of_mul_inv_comm {G : Type*} [Group G] {a x : G} (hx : x * a⁻¹ = a⁻¹ * x) :
     a * x = x * a := by
@@ -24,7 +24,7 @@ variable (h : HermitianForm F E V)
 omit [FiniteDimensional E V] in
 
 /- English proof (translation)
-Rewrite `*` using `[mem_torusE]`. Establish `h1` using `congrArg h.adjointEquiv ht`. Rewrite `h1` using `[adjointEquiv_mul, adjointEquiv_mul, (h.mem_unitaryGroup_iff_adjointEquiv γ).1 hγ]`. Conclude with `mul_comm_of_mul_inv_comm h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjointEquiv_mem_torusE {γ t : V ≃ₗ[E] V} (hγ : γ ∈ h.unitaryGroup)
     (ht : t ∈ torusE γ) : h.adjointEquiv t ∈ torusE γ := by
@@ -36,9 +36,9 @@ theorem adjointEquiv_mem_torusE {γ t : V ≃ₗ[E] V} (hγ : γ ∈ h.unitaryGr
 omit [FiniteDimensional E V] in
 
 /- English proof (translation)
-Establish `hγ'` using `(h.mem_unitaryGroup_iff_adjointEquiv γ).1 hγ`. Rewrite using `[mem_unitaryGroup_iff_adjointEquiv_mul, mem_torusE, adjointEquiv_mul, adjointEquiv_mul, adjointEquiv_inv, hγ']`. Use `set A := h.adjointEquiv g`. Prove the components needed by the constructor for the conclusion. Introduce `hX`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `hc`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem conj_mem_unitaryGroup_iff {γ : V ≃ₗ[E] V} (hγ : γ ∈ h.unitaryGroup) (g : V ≃ₗ[E] V) :
     g * γ * g⁻¹ ∈ h.unitaryGroup ↔ h.adjointEquiv g * g ∈ torusE γ := by
@@ -58,7 +58,7 @@ theorem conj_mem_unitaryGroup_iff {γ : V ≃ₗ[E] V} (hγ : γ ∈ h.unitaryGr
 omit [FiniteDimensional E V] in
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff_adjointEquiv_mul, adjointEquiv_mul, adjointEquiv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_inv_mem_unitaryGroup {a b : V ≃ₗ[E] V}
     (hab : h.adjointEquiv a * a = h.adjointEquiv b * b) : b * a⁻¹ ∈ h.unitaryGroup := by
@@ -83,7 +83,7 @@ Both sides reduce to the same expression.
     (h.torusStar γ t).val = h.adjointEquiv t.val := rfl
 
 /- English proof (translation)
-The claim follows from `TorusE.ext (by simp [adjointEquiv_adjointEquiv])`.
+A detailed English derivation is pending.
 -/
 theorem torusStar_torusStar (t : TorusE (γ : V ≃ₗ[E] V)) : h.torusStar γ (h.torusStar γ t) = t :=
   TorusE.ext (by simp [adjointEquiv_adjointEquiv])
@@ -101,7 +101,7 @@ noncomputable def selfAdjointTorus : Subgroup (TorusE (γ : V ≃ₗ[E] V)) :=
   MonoidHom.eqLocus (h.torusStar γ) (MonoidHom.id _)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_selfAdjointTorus {c : TorusE (γ : V ≃ₗ[E] V)} :
     c ∈ h.selfAdjointTorus γ ↔ h.torusStar γ c = c := Iff.rfl
@@ -110,7 +110,7 @@ noncomputable def normTorus : Subgroup (TorusE (γ : V ≃ₗ[E] V)) :=
   (h.torusNorm γ).range
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[mem_selfAdjointTorus, torusNorm_apply, map_mul, torusStar_torusStar, mul_comm]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem normTorus_le : h.normTorus γ ≤ h.selfAdjointTorus γ := by
   rintro _ ⟨t, rfl⟩
@@ -122,7 +122,7 @@ noncomputable def torusF : Subgroup (TorusE (γ : V ≃ₗ[E] V)) :=
   (h.torusNorm γ).ker
 
 /- English proof (translation)
-Rewrite using `[torusF, MonoidHom.mem_ker, torusNorm_apply, mem_unitaryGroup_iff_adjointEquiv_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Simplify using `using congrArg TorusE.val ht`. Introduce `ht; exact TorusE.ext (by simpa using ht)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem mem_torusF_iff (t : TorusE (γ : V ≃ₗ[E] V)) :
     t ∈ h.torusF γ ↔ t.val ∈ h.unitaryGroup := by
@@ -132,9 +132,9 @@ theorem mem_torusF_iff (t : TorusE (γ : V ≃ₗ[E] V)) :
   · intro ht; exact TorusE.ext (by simpa using ht)
 
 /- English proof (translation)
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨t, ht⟩`. Use `⟨t, ?_⟩` and prove the remaining obligations. Simplify using `[ht]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_mk_iff (c c' : h.selfAdjointTorus γ) :
     (QuotientGroup.mk c : h.centralizerTorusFirstCohomology γ) = QuotientGroup.mk c' ↔
@@ -164,7 +164,7 @@ noncomputable def invOf (g : V ≃ₗ[E] V) (hg : g * γ * g⁻¹ ∈ h.unitaryG
   QuotientGroup.mk (h.normOf γ g hg)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (TorusE.ext hgg)`.
+A detailed English derivation is pending.
 -/
 theorem normOf_eq_of_adjoint (g g' : V ≃ₗ[E] V) (hg : g * γ * g⁻¹ ∈ h.unitaryGroup)
     (hg' : g' * γ * g'⁻¹ ∈ h.unitaryGroup)
@@ -172,11 +172,11 @@ theorem normOf_eq_of_adjoint (g g' : V ≃ₗ[E] V) (hg : g * γ * g⁻¹ ∈ h.
   Subtype.ext (TorusE.ext hgg)
 
 /- English proof (translation)
-Establish `htE : g⁻¹ * g' ∈ torusE (γ : V ≃ₗ[E] V)`. Rewrite using `[mem_torusE]`. Combine the equalities or inequalities in the displayed calculation. Use `set t := TorusE.mk _ htE`. Rewrite using `[invOf, invOf, mk_eq_mk_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `hc : (h.normOf γ g hg : TorusE (γ : V ≃ₗ[E] V)) * h.torusNorm γ t = h.torusStar γ t * h.normOf γ g hg * t`. Rewrite using `[torusNorm_apply]`. Simplify using `only [mul_comm, mul_left_comm]`. Rewrite using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `TorusE.ext` to reduce the goal to its premises. Simplify using `only [TorusE.val_mul, val_torusStar, val_normOf, t, TorusE.val_mk, adjointEquiv_mul, adjointEquiv_inv]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invOf_eq_of_eq (g g' : V ≃ₗ[E] V) (hg : g * γ * g⁻¹ ∈ h.unitaryGroup)
     (hg' : g' * γ * g'⁻¹ ∈ h.unitaryGroup) (heq : g * γ * g⁻¹ = g' * γ * g'⁻¹) :
@@ -205,7 +205,7 @@ noncomputable def stableInv (γ' : V ≃ₗ[E] V) : h.centralizerTorusFirstCohom
     h.invOf γ H.choose (by rw [H.choose_spec.1]; exact H.choose_spec.2) else 1
 
 /- English proof (translation)
-Establish `H : ∃ g' : V ≃ₗ[E] V, g' * γ * g'⁻¹ = g * γ * g⁻¹ ∧ g * γ * g⁻¹ ∈ h.unitaryGroup` using `⟨g, rfl, hg⟩`. Rewrite using `[stableInv, dif_pos H]`. Conclude with `h.invOf_eq_of_eq γ _ _ _ _ H.choose_spec.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stableInv_conj (g : V ≃ₗ[E] V) (hg : g * γ * g⁻¹ ∈ h.unitaryGroup) :
     h.stableInv γ (g * γ * g⁻¹) = h.invOf γ g hg := by
@@ -215,7 +215,7 @@ theorem stableInv_conj (g : V ≃ₗ[E] V) (hg : g * γ * g⁻¹ ∈ h.unitaryGr
   exact h.invOf_eq_of_eq γ _ _ _ _ H.choose_spec.1
 
 /- English proof (translation)
-Establish `hg : (1 : V ≃ₗ[E] V) * γ * 1⁻¹ ∈ h.unitaryGroup` using `by simp`. Use `h.stableInv_conj γ 1 hg` as an intermediate fact. Simplify using `only [one_mul, inv_one, mul_one] at this`. Establish `h1 : h.normOf γ 1 hg = 1` using `Subtype.ext (TorusE.ext (by simp [adjointEquiv_one]))`. Rewrite using `[this, invOf, h1, QuotientGroup.mk_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem stableInv_self : h.stableInv γ γ = 1 := by
   have hg : (1 : V ≃ₗ[E] V) * γ * 1⁻¹ ∈ h.unitaryGroup := by simp
@@ -225,17 +225,15 @@ theorem stableInv_self : h.stableInv γ γ = 1 := by
   rw [this, invOf, h1, QuotientGroup.mk_one]
 
 /- English proof (translation)
-Take `⟨g₁, rfl⟩` from `s₁`. Take `⟨g₂, rfl⟩` from `s₂`. Rewrite using `[stableInv_conj _ _ _ h₁, stableInv_conj _ _ _ h₂]`. Prove the components needed by the constructor for the conclusion. Introduce `heq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `heq` using `[invOf, invOf, mk_eq_mk_iff]`. Take `⟨t, ht⟩` from `heq`. Establish `htγ` using `mem_torusE.1 t.val_mem`. Use `set a := g₁ * t.val with ha`. Establish `hc : (h.normOf γ g₁ h₁ : TorusE (γ : V ≃ₗ[E] V)) * h.torusNorm γ t = h.torusStar γ t * h.normOf γ g₁ h₁ * t`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[torusNorm_apply]`. Simplify using `only [mul_comm, mul_left_comm]`. Establish `key : h.adjointEquiv a * a = h.adjointEquiv g₂ * g₂`. Use `congrArg TorusE.val (ht.trans hc)` as an intermediate fact. Simplify using `only [TorusE.val_mul, val_torusStar, val_normOf] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ha, adjointEquiv_mul]`. Use `group`. Use `⟨g₂ * a⁻¹, h.mul_inv_mem_unitaryGroup key, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨u, hu, hu'⟩`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hug : (u * g₁) * γ * (u * g₁)⁻¹ = g₂ * γ * g₂⁻¹`. Rewrite using `[← hu']`. Use `group`. Establish `hug' : (u * g₁) * γ * (u * g₁)⁻¹ ∈ h.unitaryGroup` using `by rw [hug]; exact h₂`. Rewrite using `[← h.invOf_eq_of_eq γ _ _ hug' h₂ hug, invOf, invOf, h.normOf_eq_of_adjoint γ (u * g₁) g₁ hug' h₁]`.
-
-Rewrite using `[adjointEquiv_mul, (h.mem_unitaryGroup_iff_adjointEquiv u).1 hu]`. Use `group`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stableInv_eq_stableInv_iff {γ₁ γ₂ : V ≃ₗ[E] V} (h₁ : γ₁ ∈ h.unitaryGroup)
     (h₂ : γ₂ ∈ h.unitaryGroup) (s₁ : StablyConjugate (γ : V ≃ₗ[E] V) γ₁)
@@ -283,9 +281,9 @@ theorem twistOf_apply (c : h.selfAdjointTorus γ) (x y : V) :
     (h.twistOf γ c).toSesq x y = h.toSesq ((c : TorusE (γ : V ≃ₗ[E] V)).val x) y := rfl
 
 /- English proof (translation)
-Rewrite `hcc` using `[mk_eq_mk_iff]`. Take `⟨t, ht⟩` from `hcc`. Establish `hc : (c : TorusE (γ : V ≃ₗ[E] V)) * h.torusNorm γ t = h.torusStar γ t * c * t`. Rewrite using `[torusNorm_apply]`. Simplify using `only [mul_comm, mul_left_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Isometric.symm ⟨t.val, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[twistOf_apply, twistOf_apply, ← h.toSesq_adjointEquiv_left t.val, ht, hc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twistOf_isometric_of_mk_eq {c c' : h.selfAdjointTorus γ}
     (hcc : (QuotientGroup.mk c : h.centralizerTorusFirstCohomology γ) = QuotientGroup.mk c') :
@@ -307,19 +305,17 @@ def InKernel (x : h.centralizerTorusFirstCohomology γ) : Prop :=
       fun H => (h.twistOf_isometric_of_mk_eq γ hcc).trans H⟩)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem inKernel_mk (c : h.selfAdjointTorus γ) :
     h.InKernel γ (QuotientGroup.mk c) ↔ Isometric (h.twistOf γ c) h := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H c`. Rewrite using `[inKernel_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hU, ⟨g, rfl⟩, hinv⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hinv` using `[stableInv_conj _ _ _ hU, invOf]`. Establish `H0 : Isometric (h.twistOf γ (h.normOf γ g hU)) h` using `⟨g, fun x y => by rw [twistOf_apply, val_normOf, toSesq_apply_apply]⟩`. Conclude with `(h.twistOf_isometric_of_mk_eq γ hinv).symm.trans H0`. Introduce and unpack `⟨e, he⟩`. Establish `hee : h.adjointEquiv e * e = (c : TorusE (γ : V ≃ₗ[E] V)).val` using `(h.forall_toSesq_eq_iff e _).1 fun x y => (he x y).trans (twistOf_apply _ _ _ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : e * γ * e⁻¹ ∈ h.unitaryGroup`. Rewrite using `[h.conj_mem_unitaryGroup_iff γ.2, hee]`. Conclude with `(c : TorusE (γ : V ≃ₗ[E] V)).val_mem`. Use `⟨_, hU, ⟨e, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[stableInv_conj _ _ _ hU, invOf]`.
-
-Use `congr 1`. Conclude with `Subtype.ext (TorusE.ext hee)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_stableInv_eq_iff (x : h.centralizerTorusFirstCohomology γ) :
     (∃ γ' ∈ h.unitaryGroup, StablyConjugate (γ : V ≃ₗ[E] V) γ' ∧ h.stableInv γ γ' = x) ↔

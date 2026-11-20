@@ -23,7 +23,7 @@ def liftAdd (φ : L →ₐ[K] A) (v : (L ≃ₐ[K] L) → A) : CrossedProduct hf
     coeffAddHom
 
 /- English proof (translation)
-Simplify using `[liftAdd, coeffAddHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftAdd_single (φ : L →ₐ[K] A) (v : (L ≃ₐ[K] L) → A) (σ : L ≃ₐ[K] L) (a : L) :
     liftAdd φ v (single σ a : CrossedProduct hf) = φ a * v σ := by
@@ -60,21 +60,21 @@ variable (φ : L →ₐ[K] A) (v : (L ≃ₐ[K] L) → A) (hcomm : ∀ σ a, v �
     (hmul : ∀ σ τ, v σ * v τ = φ (f (σ, τ)) * v (σ * τ)) (hone : v 1 = φ (f (1, 1)))
 
 /- English proof (translation)
-The claim follows from `liftAdd_single φ v σ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lift_single (σ : L ≃ₐ[K] L) (a : L) :
     lift (hf := hf) φ v hcomm hmul hone (single σ a) = φ a * v σ :=
   liftAdd_single φ v σ a
 
 /- English proof (translation)
-Rewrite using `[incl_apply, lift_single, hone, map_mul, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem lift_incl (a : L) : lift (hf := hf) φ v hcomm hmul hone (incl a) = φ a := by
   rw [incl_apply, lift_single, hone, map_mul, mul_assoc, ← map_mul, Units.inv_mul, map_one,
     mul_one]
 
 /- English proof (translation)
-Rewrite using `[u, lift_single, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem lift_u (σ : L ≃ₐ[K] L) : lift (hf := hf) φ v hcomm hmul hone (u σ) = v σ := by
   rw [u, lift_single, map_one, one_mul]
@@ -82,7 +82,7 @@ Rewrite using `[u, lift_single, map_one, one_mul]`.
 end
 
 /- English proof (translation)
-Use extensionality with `x`. Proceed by induction on `x using induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `single σ a => rw [← incl_mul_u, map_mul, map_mul, hL, hu]`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem algHom_ext {g₁ g₂ : CrossedProduct hf →ₐ[K] A} (hL : ∀ a, g₁ (incl a) = g₂ (incl a))
     (hu : ∀ σ, g₁ (u σ) = g₂ (u σ)) : g₁ = g₂ := by
@@ -99,7 +99,7 @@ section coboundary
 variable {f' : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ}
 
 /- English proof (translation)
-Establish `h` using `hx σ τ`. Rewrite `h` using `[Pi.div_apply, div_mul_eq_mul_div, div_eq_div_iff_mul_eq_mul]`. Establish `h'` using `congrArg (fun y : Lˣ => (y : L)) h`. Simplify using `only [Units.val_mul, val_smul_units] at h'`. Take the linear combination `h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_smul_mul_eq_of_coboundary {x : (L ≃ₐ[K] L) → Lˣ}
     (hx : ∀ σ τ : L ≃ₐ[K] L, σ • x τ / x (σ * τ) * x σ = (f' / f) (σ, τ)) (σ τ : L ≃ₐ[K] L) :
@@ -163,7 +163,7 @@ def equivOfIsMulCoboundary₂ (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f'
       rw [← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]))
 
 /- English proof (translation)
-Simplify using `[equivOfIsMulCoboundary₂]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem equivOfIsMulCoboundary₂_incl (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f')
     (h : IsMulCoboundary₂ (f' / f)) (a : L) :
@@ -171,7 +171,7 @@ Simplify using `[equivOfIsMulCoboundary₂]`.
   simp [equivOfIsMulCoboundary₂]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨equivOfIsMulCoboundary₂ hf hf' h, equivOfIsMulCoboundary₂_incl hf hf' h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algEquiv_of_isMulCoboundary₂ (hf : IsMulCocycle₂ f) (hf' : IsMulCocycle₂ f')
     (h : IsMulCoboundary₂ (f' / f)) :
@@ -183,7 +183,7 @@ end coboundary
 section split
 
 /- English proof (translation)
-Introduce `_ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMulCocycle₂_one : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) :=
   fun _ _ _ => by simp
@@ -202,7 +202,7 @@ def toEnd (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ)
       simp)
 
 /- English proof (translation)
-Simplify using `[toEnd]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem toEnd_single (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ))
     (σ : L ≃ₐ[K] L) (a y : L) : toEnd hf (single σ a) y = a * σ y := by
@@ -211,7 +211,7 @@ Simplify using `[toEnd]`.
 variable [FiniteDimensional K L] [IsGalois K L]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (toEnd hf)` using `RingHom.injective (toEnd hf).toRingHom`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Establish `hdim : Module.finrank K (CrossedProduct hf) = Module.finrank K (Module.End K L)`. Rewrite using `[finrank_eq_sq, Module.finrank_linearMap, sq]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := (toEnd hf).toLinearMap)).1 hinj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toEnd_bijective (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ)) :
     Function.Bijective (toEnd hf) := by
@@ -240,7 +240,7 @@ def matrixEquiv (hf : IsMulCocycle₂ (1 : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) �
 omit [FiniteDimensional K L] [IsGalois K L] in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h`. Use `⟨x⁻¹, fun σ τ => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.inv_apply]`. Rewrite using `[← hx σ τ, smul_inv']`. Simplify using `only [div_eq_mul_inv, mul_inv, inv_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMulCoboundary₂_inv {g : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (h : IsMulCoboundary₂ g) :
     IsMulCoboundary₂ g⁻¹ := by

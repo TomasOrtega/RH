@@ -17,14 +17,14 @@ def w0c : Lc X la w := w0inv X la w
 def NoRow0 (β : Idx D j N →₀ ℕ) : Prop := ∀ k, β (0, k) = 0
 
 /- English proof (translation)
-The claim follows from `section_mul_inverse_eq_one X la w`.
+A detailed English derivation is pending.
 -/
 theorem section_mul_inverse_completion :
     algebraMap (Rp X la N) (Lc X la w) (sec X la w 0) * w0c X la w = 1 :=
   section_mul_inverse_eq_one X la w
 
 /- English proof (translation)
-Rewrite using `[coe_sfr, frac_apply, pow_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_sfr_Lc (i : Fin (WeightFamilies.dimY D j + 1)) :
     ((sfr X la w i : ↥(Frac0 X la w)) : Lw X la w) =
@@ -33,9 +33,9 @@ theorem coe_sfr_Lc (i : Fin (WeightFamilies.dimY D j + 1)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[hasseRp_sec]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hasseOp_Tv, if_neg h0, if_neg, map_zero, zero_smul]`. Introduce `e`. Use `hβ k` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[e, Finsupp.single_eq_same]`. Conclude with `one_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasse_section_eq_zero {β : Idx D j N →₀ ℕ} (hβ : NoRow0 β) (h0 : β ≠ 0) :
     hasseRp X la N β (sec X la w 0) = 0 := by
@@ -48,15 +48,15 @@ theorem hasse_section_eq_zero {β : Idx D j N →₀ ℕ} (hβ : NoRow0 β) (h0 
   exact one_ne_zero this
 
 /- English proof (translation)
-Rewrite using `[coe_sfr_Lc]`. Establish `hy : algebraMap (Rp X la N) (Lc X la w) (sec X la w 0) * (algebraMap (Rp X la N) (Lc X la w) (sec X la w i) * w0c X la w) = algebraMap (Rp X la N) (Lc X la w) (sec X la w i)`. Rewrite using `[mul_left_comm, section_mul_inverse_completion, mul_one]`. Establish `h` using `hasse_of_mul_eq X la w β hy`. Rewrite `h` using `[Finset.sum_eq_single ((0 : Idx D j N →₀ ℕ), β)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hasseRp_zero] at h dsimp only`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[section_mul_inverse_completion, one_mul]`. Use `_ = _ := by rw [mul_comm (algebraMap _ _ _) (w0c X la w), mul_assoc, h, mul_comm]`. Introduce and unpack `⟨q1, q2⟩ hq hne`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hq` using `[mem_antidiagonal]`. Simplify using `only at hq`. Establish `hq1 : q1 ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hq` using `[zero_add]`. Rewrite using `[hq]`. Establish `hn : NoRow0 q1` using `fun k => by`. Establish `h1` using `congrArg (fun f : Idx D j N →₀ ℕ => f (0, k)) hq`. Simplify using `only [Finsupp.add_apply] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `hβ k`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hasse_section_eq_zero X la w hn hq1, map_zero, zero_mul]`. Introduce `h'`. Conclude with `absurd (mem_antidiagonal.2 (zero_add β)) h'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasse_sfr {β : Idx D j N →₀ ℕ} (hβ : NoRow0 β) (i : Fin (WeightFamilies.dimY D j + 1)) :
     hasse X la w β ((sfr X la w i : ↥(Frac0 X la w)) : Lw X la w) =
@@ -103,18 +103,18 @@ theorem bcol_apply {N : ℕ} (jj : Fin N) (α : Fin (WeightFamilies.dimY D j) �
     PoleLengthBounds.bcol jj α p = if p.2 = jj then Fin.cases (motive := fun _ => ℕ) 0 α p.1 else 0 := rfl
 
 /- English proof (translation)
-Introduce `k` and use `by rw [bcol_apply] split_ifs <;> rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bcol_noRow0 {N : ℕ} (jj : Fin N) (α : Fin (WeightFamilies.dimY D j) → ℕ) : NoRow0 (PoleLengthBounds.bcol jj α) := fun k => by
   rw [bcol_apply]
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩`. Rewrite using `[Finsupp.tsub_apply, bcol_apply, bcol_apply, Finsupp.single_apply]`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Establish `: ((l.succ, jj) : Idx D j N) ≠ (0, k)` using `fun e => Fin.succ_ne_zero l (congrArg Prod.fst e)`. Simplify using `[this]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : k = jj`. Substitute `hk` using the available equality. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ((l.succ, k) : Idx D j N) ≠ (i.succ, k)` using `fun e => hi (Fin.succ_injective _ (congrArg Prod.fst e)).symm`. Simplify using `[this, Pi.single_apply, hi]`. Establish `: ((l.succ, jj) : Idx D j N) ≠ (i.succ, k)` using `fun e => hk (congrArg Prod.snd e).symm`. Simplify using `[this, hk]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem bcol_sub_single {N : ℕ} (jj : Fin N) (α : Fin (WeightFamilies.dimY D j) → ℕ) (l : Fin (WeightFamilies.dimY D j)) :
     PoleLengthBounds.bcol jj α - Finsupp.single (l.succ, jj) 1 = PoleLengthBounds.bcol jj (α - Pi.single l 1) := by
@@ -133,16 +133,16 @@ theorem bcol_sub_single {N : ℕ} (jj : Fin N) (α : Fin (WeightFamilies.dimY D 
       simp [this, hk]
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, Finset.sum_add_distrib, Finset.sum_pi_single', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_add_single {d : ℕ} (δ : Fin d → ℕ) (l : Fin d) :
     ∑ i, (δ + Pi.single l 1 : Fin d → ℕ) i = ∑ i, δ i + 1 := by
   simp only [Pi.add_apply, Finset.sum_add_distrib, Finset.sum_pi_single', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[Pi.single_apply, hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eq_sub_add_single {d : ℕ} (δ : Fin d → ℕ) (l : Fin d) (h : 1 ≤ δ l) :
     δ = (δ - Pi.single l 1) + Pi.single l 1 := by
@@ -152,7 +152,7 @@ theorem eq_sub_add_single {d : ℕ} (δ : Fin d → ℕ) (l : Fin d) (h : 1 ≤ 
   · simp [Pi.single_apply, hi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using `[h]`. Simplify using `[Pi.single_apply, hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sub_single_of_zero {d : ℕ} (δ : Fin d → ℕ) (l : Fin d) (h : δ l = 0) : δ - Pi.single l 1 = δ := by
   funext i
@@ -161,7 +161,7 @@ theorem sub_single_of_zero {d : ℕ} (δ : Fin d → ℕ) (l : Fin d) (h : δ l 
   · simp [Pi.single_apply, hi]
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [PoleLengthBounds.wfr, coe_weightZeroFraction, frac_apply, pow_one] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coe_wfr_Lc (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (jj : Fin G.N) :
     ((PoleLengthBounds.wfr G la jj : ↥(Frac0 X la G.w)) : Lw X la G.w) =
@@ -169,7 +169,7 @@ theorem coe_wfr_Lc (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (�
   simp only [PoleLengthBounds.wfr, coe_weightZeroFraction, frac_apply, pow_one] <;> rfl
 
 /- English proof (translation)
-Establish `hn : NoRow0 (Finsupp.single ((l.succ, jj) : Idx D j G.N) 1)` using `fun k => by`. Rewrite using `[Finsupp.single_apply, if_neg]`. Conclude with `fun e => Fin.succ_ne_zero l (congrArg Prod.fst e)`. Rewrite using `[hasse_sfr X la G.w hn, hasseRp_single, pdRp_sec, if_pos rfl, coe_wfr_Lc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasse_single_sfr (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (jj : Fin G.N)
     (l : Fin (WeightFamilies.dimY D j)) :
@@ -182,13 +182,13 @@ theorem hasse_single_sfr (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectr
   rw [hasse_sfr X la G.w hn, hasseRp_single, pdRp_sec, if_pos rfl, coe_wfr_Lc]
 
 /- English proof (translation)
-Establish `hn : NoRow0 c` using `fun k => by`. Use `hc (0, k)` as an intermediate fact. Rewrite `this` using `[bcol_noRow0 jj α k]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hasse_sfr X la G.w hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : ∃ p, c = Finsupp.single p 1`. Take `⟨p, rfl⟩` from `h1`. Rewrite using `[hasseRp_single, pdRp_sec]`. Distinguish the cases in `hp : p.1 = l.succ`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Establish `hp2 : p.2 = jj`. Assume the negation of the conclusion as `hne`. Use `hc p` as an intermediate fact. Rewrite `this` using `[Finsupp.single_eq_same, bcol_apply, if_neg hne]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `he (by rw [show p = (l.succ, jj) from Prod.ext hp hp2])`. Rewrite using `[if_neg hp, map_zero, zero_mul]`. Use `push Not at h1`. Rewrite using `[hasseRp_sec_eq_zero X la G.w h0 h1, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasse_sfr_eq_zero (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (jj : Fin G.N)
     (α : Fin (WeightFamilies.dimY D j) → ℕ) (l : Fin (WeightFamilies.dimY D j)) {c : Idx D j G.N →₀ ℕ}
@@ -215,49 +215,47 @@ theorem hasse_sfr_eq_zero (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpect
     rw [hasseRp_sec_eq_zero X la G.w h0 h1, map_zero, zero_mul]
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la jj`. It suffices to establish `H : ∀ (s : ℕ) (γ α : Fin (WeightFamilies.dimY D j) → ℕ), ∑ i, γ i = s → s ≤ ∑ i, α i → hasse X la G.w (PoleLengthBounds.bcol jj α) ((PoleLengthBounds.ym G la γ : ↥(Frac0 X la G.w)) : Lw X la G.w) = if γ = α then ((PoleLengthBounds.wfr G la jj : ↥(Frac0 X la G.w)) : Lw X la G.w) ^ …`. Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `γ α hγ _`. Establish `hγ0 : γ = 0`. Use function extensionality and compare the values at `i`. Conclude with `(Finset.sum_eq_zero_iff.1 hγ) i (Finset.mem_univ i)`. Substitute `hγ0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hym : PoleLengthBounds.ym G la 0 = 1` using `by simp [PoleLengthBounds.ym]`. Rewrite using `[hym, OneMemClass.coe_one]`. Distinguish the cases in `hα : α = 0`. Substitute `hα` using the available equality. Establish `hb : PoleLengthBounds.bcol jj (0 : Fin (WeightFamilies.dimY D j) → ℕ) = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨i, k⟩`. Rewrite using `[bcol_apply]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp`. Rewrite using `[hb, if_pos rfl]`. Use `(hasse_zero X la G.w _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `hb : PoleLengthBounds.bcol jj α ≠ 0`. Introduce `h`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hα`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun f : Idx D j G.N →₀ ℕ => f (i.succ, jj)) h` as an intermediate fact. Simplify using `only [bcol_apply, Fin.cases_succ, Finsupp.coe_zero, Pi.zero_apply] at this`. Conclude with `hi this`. Rewrite using `[if_neg (Ne.symm hα)]`. Use `hasse_emb X la G.w hb 1` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Rewrite `this` using `[map_one, map_one]`. Conclude with `this`. Consider the case `succ s ih`. Introduce `γ α hγ hs`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, 1 ≤ γ l := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: ∑ i, γ i = 0` using `Finset.sum_eq_zero fun i _ => by have := hc i; omega`. Use linear arithmetic over natural numbers and integers. Take `⟨γ', rfl⟩ : ∃ γ' : Fin (WeightFamilies.dimY D j) → ℕ, γ = γ' + Pi.single l 1` from `⟨_, eq_sub_add_single γ l hl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hγ's : ∑ i, γ' i = s`. Use `sum_add_single γ' l` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hym : PoleLengthBounds.ym G la (γ' + Pi.single l 1) = sfr X la G.w l.succ * PoleLengthBounds.ym G la γ'` using `PoleLengthBounds.prod_pow_add_single (fun i => sfr X la G.w i.succ) γ' l`. Rewrite using `[hym, MulMemClass.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(hasse_mul X la G.w (PoleLengthBounds.bcol jj α) _ _).trans ?_` and prove the remaining obligations. Establish `hIHa : hasse X la G.w (PoleLengthBounds.bcol jj α) ((PoleLengthBounds.ym G la γ' : ↥(Frac0 X la G.w)) : Lw X la G.w) = 0`. Rewrite using `[ih γ' α hγ's (by omega), if_neg]`. Both sides reduce to the same expression. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsα : s ≤ ∑ i, (α - Pi.single l 1 : Fin (WeightFamilies.dimY D j) → ℕ) i`. Establish `h1 : ∑ i, α i ≤ ∑ i, ((α - Pi.single l 1) + Pi.single l 1 : Fin (WeightFamilies.dimY D j) → ℕ) i` using `Finset.sum_le_sum fun i _ => le_tsub_add`. Rewrite `h1` using `[sum_add_single]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hIHb` using `ih γ' (α - Pi.single l 1) hγ's hsα`. Establish `tb : hasse X la G.w (Finsupp.single ((l.succ, jj) : Idx D j G.N) 1) ((sfr X la G.w l.succ : ↥(Frac0 X la G.w)) : Lw X la G.w) * hasse X la G.w (PoleLengthBounds.bcol jj α - Finsupp.single ((l.succ, jj) : Idx D j G.N) 1) ((PoleLengthBounds.ym G la γ' : ↥(Frac0 X la G.w)) : Lw X la …`. Rewrite using `[hasse_single_sfr, bcol_sub_single, hIHb]`. Distinguish the cases in `hγα : γ' + Pi.single l 1 = α`. Establish `hγ'α : γ' = α - Pi.single l 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hγα]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[if_pos hγ'α, if_pos hγα, ← hγ'α, ← hγα, sum_add_single, pow_succ']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg hγα, if_neg]`. Conclude with `mul_zero _`. Introduce `h`. Apply `hγα` to reduce the goal to its premises. Distinguish the cases in `hal : 1 ≤ α l`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[eq_sub_add_single α l hal, ← h]`. It suffices to derive a contradiction. Establish `hα0 : α l = 0` using `by omega`. Rewrite `h` using `[sub_single_of_zero α l hα0]`. Substitute `h` using the available equality.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hne : (((0 : Idx D j G.N →₀ ℕ), PoleLengthBounds.bcol jj α) : (Idx D j G.N →₀ ℕ) × (Idx D j G.N →₀ ℕ)) ≠ (Finsupp.single ((l.succ, jj) : Idx D j G.N) 1, PoleLengthBounds.bcol jj α - Finsupp.single ((l.succ, jj) : Idx D j G.N) 1)` using `fun h => (Finsupp.single_ne_zero.2 one_ne_zero) (congrArg Prod.fst h).symm`. Rewrite using `[Finset.sum_eq_add _ _ hne]`. Simplify using `only`. Rewrite using `[hIHa, mul_zero, zero_add]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `tb`. Introduce and unpack `⟨c1, c2⟩ hc ⟨h1, h2⟩`. Rewrite `hc` using `[mem_antidiagonal]`. Simplify using `only at hc ⊢`. Establish `hc1 : c1 ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `h1` to reduce the goal to its premises. Rewrite `hc` using `[zero_add]`. Rewrite using `[hc]`. Establish `hce : c1 ≠ Finsupp.single ((l.succ, jj) : Idx D j G.N) 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Apply `h2` to reduce the goal to its premises. Rewrite using `[← hc, add_tsub_cancel_left]`. Establish `hle : ∀ p, c1 p ≤ PoleLengthBounds.bcol jj α p` using `fun p => by`. Use `congrArg (fun f : Idx D j G.N →₀ ℕ => f p) hc` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Simplify using `only [Finsupp.add_apply] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hasse_sfr_eq_zero G la jj α l hle hc1 hce, zero_mul]`. Introduce `h`. Conclude with `absurd (mem_antidiagonal.2 (zero_add _)) h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hnot dsimp only`. Rewrite using `[tb, if_neg]`. Both sides reduce to the same expression. Introduce `hγα`. Apply `hnot` to reduce the goal to its premises.
-
-Apply `mem_antidiagonal.2` to reduce the goal to its premises. Simplify using `only`. Use `add_tsub_cancel_of_le (Finsupp.single_le_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[bcol_apply, if_pos rfl, Fin.cases_succ, ← hγα]`. Simplify using the standard rewrite rules.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ymDeriv : PoleLengthBounds.YmDeriv := by
   intro D B P j X ka wL wF G la jj

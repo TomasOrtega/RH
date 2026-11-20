@@ -16,17 +16,17 @@ noncomputable section
 namespace GlobalTheory.AbBaseChangeSq
 
 /- English proof (translation)
-Introduce `R₀ R₁ _ _ _ A _ g hA hg`. Set `f : Sp R₁ ⟶ Sp R₀` to `spMap (algebraMap R₀ R₁)`. Set `F` to `Over.pullback f`. Set `B : Over (Sp R₁)` to `F.obj A`. Use `letI : GrpObj B := Functor.grpObjObj`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `hB : IsGrpPullback B A f (pullback.fst A.hom f)` using `isGrpPullback_pullback A f`. Take `⟨hAB, hgB⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback _ A B _ g hB hA hg`. Establish `mapL : ∀ {X Y : Over (Sp R₀)} (a : X ⟶ Y), (F.map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Set `m` to `Functor.LaxMonoidal.μ F A A`. Use `⟨B, inferInstance, pullback.fst A.hom f, m.left ≫ pullback.fst (A ⊗ A).hom f, hAB, hgB, hB.1, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsIso m := inferInstanceAs (IsIso (Functor.Monoidal.μIso F A A).hom) haveI : IsIso m.left := (Over.forget _).map_isIso m`. Establish `h1 : IsPullback m.left (B ⊗ B).hom (F.obj (A ⊗ A)).hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Category.comp_id]; exact Over.w m⟩`. Establish `h2` using `h1.paste_horiz (IsPullback.of_hasPullback (A ⊗ A).hom f)`. Rewrite `h2` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `e : μ[B] = m ≫ F.map μ[A]` using `Functor.obj.μ_def (F := F) A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Over.comp_left, Category.assoc, mapL, Category.assoc]`. Rewrite using `[Category.assoc, ← mapL, ← Category.assoc, ← Over.comp_left]`. Simplify using `[m]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, ← mapL, ← Category.assoc, ← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[m]`. Both sides reduce to the same expression. Establish `e : lift (𝟙 B) (1 : B ⟶ B) ≫ m = F.map (lift (𝟙 A) (1 : A ⟶ A))`. Rewrite using `[← Functor.Monoidal.lift_μ, F.map_id, Functor.map_one]`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, mapL]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : lift (1 : B ⟶ B) (𝟙 B) ≫ m = F.map (lift (1 : A ⟶ A) (𝟙 A))`. Rewrite using `[← Functor.Monoidal.lift_μ, F.map_id, Functor.map_one]`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, mapL]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_baseChange_and_sq : ∀ (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁] (A : Over (Sp R₀)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ (B : Over (Sp R₁)) (_ : GrpObj B) (pr : B.left ⟶ A.left) (pr' : (B ⊗ B).left ⟶ (A ⊗ A).left), IsAbelianScheme B ∧ SmoothOfRelativeDimension g B.hom ∧ IsPullback pr B.hom A.hom (spMap (algebraMap R₀ R₁)) ∧ IsPullback pr' (B ⊗ B).hom (A ⊗ A).hom (spMap (algebraMap R₀ R₁)) ∧ (μ[B]).left ≫ pr = pr' ≫ (μ[A]).left ∧ (fst B B).left ≫ pr = pr' ≫ (fst A A).left ∧ (snd B B).left ≫ pr = pr' ≫ (snd A A).left ∧ (CartesianMonoidalCategory.lift (𝟙 B) (1 : B ⟶ B)).left ≫ pr' = pr ≫ (CartesianMonoidalCategory.lift (𝟙 A) (1 : A ⟶ A)).left ∧ (CartesianMonoidalCategory.lift (1 : B ⟶ B) (𝟙 B)).left ≫ pr' = pr ≫ (CartesianMonoidalCategory.lift (1 : A ⟶ A) (𝟙 A)).left := by
   intro R₀ R₁ _ _ _ A _ g hA hg

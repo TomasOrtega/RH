@@ -17,7 +17,7 @@ namespace Formalism.L2.SG.TheoremS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `open Formalism.FourierDecayAlt.P.GrowthPolynomialOperator in`. Conclude with `t_PairBoundFromLocal t_MainRow t_PairBound Formalism.FourierDecayAlt.P.HilbertSchmidtNorm.localCores Formalism.FourierDecayAlt.P.HilbertSchmidtNorm.globalCores t_LatticeLink t_AxiomsOfLocalModel Formalism.FourierDecayAlt.P.lattice_average_induction t_PairBoundAbstract t_PriceOfIo …`.
+A detailed English derivation is pending.
 -/
 theorem pbApplied : ∀ C₄ Cthr : ℝ, 1 ≤ C₄ →
     ∃ CA C : ℝ, Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧

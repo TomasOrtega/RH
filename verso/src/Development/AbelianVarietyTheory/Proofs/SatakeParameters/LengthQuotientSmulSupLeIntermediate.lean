@@ -4,13 +4,13 @@ open Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hf : Function.Injective ((Y.comap W.subtype).mapQ Y W.subtype le_rfl)`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.ker_mapQ]`. Simplify using the standard rewrite rules. Use `Module.length_eq_add_of_exact ((Y.comap W.subtype).mapQ Y W.subtype le_rfl) (Submodule.factor hYW) hf (Submodule.factor_surjective hYW) ?_` and prove the remaining obligations. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hx : x ∈ W`.
+Proceed by induction. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨Submodule.Quotient.mk ⟨x, hx⟩, rfl⟩`. Introduce and unpack `⟨w, hw⟩`. Rewrite using `[← hw]`. Proceed by induction on `w using Submodule.Quotient.induction_on with`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `H z => simp [Submodule.Quotient.mk_eq_zero]`.
+Treat this case separately.
 -/
 theorem length_quotient_tower_of_le {R : Type} [CommRing R] {X : Type} [AddCommGroup X] [Module R X]
     (Y W : Submodule R X) (hYW : Y ≤ W) :
@@ -35,23 +35,21 @@ theorem length_quotient_tower_of_le {R : Type} [CommRing R] {X : Type} [AddCommG
       | H z => simp [Submodule.Quotient.mk_eq_zero]
 
 /- English proof (translation)
-Introduce `O A _ _ _ Z B B' a hBB'`. Use `set N : Submodule O Z := (Z.map (a • (LinearMap.id : A →ₗ[O] A)) ⊔ B).comap Z.subtype with hN`. Use `set C : Submodule O Z := B'.comap Z.subtype with hC`. Use `set K : Submodule O Z := N ⊔ C with hK`. Rewrite using `[length_quotient_tower_of_le N K le_sup_left, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `add_le_add ?_ ?_` and prove the remaining obligations. Set `f : (↥Z ⧸ C) →ₗ[O] (↥Z ⧸ K)` to `Submodule.factor (le_sup_right : C ≤ K)`. Establish `hf : LinearMap.range (a • (LinearMap.id : (↥Z ⧸ C) →ₗ[O] (↥Z ⧸ C))) ≤ LinearMap.ker f`. Introduce and unpack `y ⟨q, rfl⟩`. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `H z`. Rewrite using `[LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, map_smul]`. Express the relevant statement in the definitionally equal form `a • (Submodule.Quotient.mk z : ↥Z ⧸ K) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.mem_sup_left ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `show ((a • z : Z) : A) ∈ Z.map (a • (LinearMap.id : A →ₗ[O] A)) ⊔ B`. Conclude with `Submodule.mem_sup_left ⟨z, z.2, by simp⟩`. Use `Module.length_le_of_surjective (Submodule.liftQ _ f hf) ?_` and prove the remaining obligations. Introduce `w`. Proceed by induction on `w using Submodule.Quotient.induction_on with`.
+Treat this case separately. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `H z`. Conclude with `⟨Submodule.Quotient.mk (Submodule.Quotient.mk z), rfl⟩`. Set `ι : ↥(Z ⊓ B') →ₗ[O] K` to `LinearMap.codRestrict K (LinearMap.codRestrict Z (Z ⊓ B').subtype (fun x => x.2.1)) (fun x => Submodule.mem_sup_right (show _ ∈ C from x.2.2))`. Set `φ : ↥(Z ⊓ B') →ₗ[O] (↥K ⧸ N.comap K.subtype)` to `(N.comap K.subtype).mkQ ∘ₗ ι`. Establish `hφ : B.comap (Z ⊓ B').subtype ≤ LinearMap.ker φ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `x hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `show ((x : A)) ∈ Z.map (a • (LinearMap.id : A →ₗ[O] A)) ⊔ B`. Conclude with `Submodule.mem_sup_right hx`. Use `Module.length_le_of_surjective (Submodule.liftQ _ φ hφ) ?_` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H k`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp k.2`. Use `⟨Submodule.Quotient.mk ⟨(z : A), z.2, hz⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.liftQ_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `: ((ι ⟨(z : A), z.2, hz⟩ - k : K) : Z) = -y`. Use `ext`. Simplify using `only [ι, ← hyz, Submodule.coe_sub, Submodule.coe_neg, Submodule.coe_add]`. Express the relevant statement in the definitionally equal form `(z : A) - ((y : A) + (z : A)) = -(y : A)`.
-
-Normalize the expressions using the abelian group laws. Use `show ((ι ⟨(z : A), z.2, hz⟩ - k : K) : Z) ∈ N`. Rewrite using `[this]`. Conclude with `N.neg_mem hy`.
+A detailed English derivation is pending.
 -/
 theorem length_quotient_smul_sup_le : ∀ (O A : Type) [CommRing O] [AddCommGroup A] [Module O A]
     (Z B B' : Submodule O A) (a : O), B ≤ B' →

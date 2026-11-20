@@ -13,9 +13,9 @@ private def LowZero {ι K : Type} [Field K] (a : ℕ) (f : MvPowerSeries ι K) :
   ∀ m : ι →₀ ℕ, m.degree < a → MvPowerSeries.coeff m f = 0
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x.1 + x.2 = m` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx`. Establish `hdeg : x.1.degree + x.2.degree = m.degree` using `by rw [← hx', map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : x.1.degree < a`. Rewrite using `[hf _ h, zero_mul]`. Rewrite using `[hg _ (by omega), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lowZero_mul {ι K : Type} [Field K] {a b : ℕ} {f g : MvPowerSeries ι K}
     (hf : LowZero a f) (hg : LowZero b g) : LowZero (a + b) (f * g) := by
@@ -29,13 +29,13 @@ private theorem lowZero_mul {ι K : Type} [Field K] {a b : ℕ} {f g : MvPowerSe
   · rw [hg _ (by omega), mul_zero]
 
 /- English proof (translation)
-Introduce `_ hm` and use `absurd hm (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lowZero_one {ι K : Type} [Field K] : LowZero 0 (1 : MvPowerSeries ι K) :=
   fun _ hm => absurd hm (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa using lowZero_one`. Consider the case `succ e ih => rw [pow_succ]`. Conclude with `lowZero_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem lowZero_pow {ι K : Type} [Field K] {f : MvPowerSeries ι K}
     (hf : LowZero 1 f) (e : ℕ) : LowZero e (f ^ e) := by
@@ -44,7 +44,7 @@ private theorem lowZero_pow {ι K : Type} [Field K] {f : MvPowerSeries ι K}
   | succ e ih => rw [pow_succ]; exact lowZero_mul ih hf
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using lowZero_one`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Conclude with `lowZero_mul (lowZero_pow (ha i) _) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lowZero_prod {ι K : Type} [Field K] (a : ι → MvPowerSeries ι K)
     (ha : ∀ i, LowZero 1 (a i)) (k : ι →₀ ℕ) (s : Finset ι) :
@@ -56,11 +56,11 @@ private theorem lowZero_prod {ι K : Type} [Field K] (a : ι → MvPowerSeries �
     exact lowZero_mul (lowZero_pow (ha i) _) ih
 
 /- English proof (translation)
-Establish `ha1 : ∀ i, LowZero 1 (a i)`. Introduce `i n hn`. Establish `hn0 : n = 0`. Establish `: n.degree = 0` using `by omega`. Conclude with `(Finsupp.degree_eq_zero_iff n).mp this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ha i]`. Rewrite using `[MvPowerSeries.coeff_subst hs]`. Use `finsum_eq_zero_of_forall_eq_zero fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k.degree ≤ d`. Rewrite using `[hW k hk, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `lowZero_prod a ha1 k k.support m (by`. Establish `: k.degree = ∑ i ∈ k.support, k i` using `rfl`. Use the proof step `omega)`. Establish `e : (k.prod fun s e => a s ^ e) = ∏ i ∈ k.support, a i ^ k i` using `rfl`. Rewrite using `[e, h, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_subst_low {ι K : Type} [Field K] (a : ι → MvPowerSeries ι K)
     (hs : MvPowerSeries.HasSubst a) (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0)
@@ -83,17 +83,17 @@ private theorem coeff_subst_low {ι K : Type} [Field K] (a : ι → MvPowerSerie
     rw [e, h, smul_zero]
 
 /- English proof (translation)
-Establish `hs` using `Pf.en_Ec_hs p K1 (ι := ι)`. Use `set c : (ι →₀ ℕ) → K1 := fun n => MvPowerSeries.coeff n (inParamK p K1 U) with hc`. Establish `hmon : ∀ n, MvPowerSeries.subst (Pf.en_Ec p K1) (MvPowerSeries.monomial n (1 : K1)) = MvPowerSeries.map (algebraMap (K0 p) K1) (Un n)`. Introduce `n`. Establish `h1 : inParamK p K1 (MvPowerSeries.map (algebraMap (K0 p) K1) (Un n)) = MvPowerSeries.monomial n (1 : K1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Pf.th_inParamK_map p (K0 p) K1 (Un n)`. Rewrite using `[h2, ← Pf.th_inParam_eq, (hUn n).1]`. Use extensionality with `k`. Rewrite using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_monomial, MvPowerSeries.coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Pf.en_Ec_inParamK]`. Use `set W : MvPowerSeries ι K1 := inParamK p K1 U - ∑ n ∈ S, c n • MvPowerSeries.monomial n (1 : K1) with hWdef`. Establish `hWlow : ∀ k : ι →₀ ℕ, k.degree ≤ d → MvPowerSeries.coeff k W = 0`. Introduce `k hk`. Establish `hkS` using `hS k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hWdef, map_sub, map_sum]`. Simplify using `only [MvPowerSeries.coeff_smul, MvPowerSeries.coeff_monomial, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq S k]`. Simplify using `[hkS, hc]`. Establish `hV : MvPowerSeries.subst (Pf.en_Ec p K1) W = U - ∑ n ∈ S, c n • MvPowerSeries.map (algebraMap (K0 p) K1) (Un n)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, hWdef, map_sub, map_sum, MvPowerSeries.coe_substAlgHom hs, Pf.en_Ec_inParamK]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_smul, MvPowerSeries.coe_substAlgHom hs, hmon n]`. Establish `h0` using `coeff_subst_low (Pf.en_Ec p K1) hs (Pf.en_Ec_zero p K1) W d hWlow m hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hV, map_sub, map_sum, sub_eq_zero]`. Rewrite using `[h0]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [MvPowerSeries.coeff_smul, MvPowerSeries.coeff_map, hc, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem low_coeff_of_param (p : ℕ) [Fact p.Prime] (ι : Type) [Fintype ι] (K1 : Type) [Field K1]
     [Algebra (K0 p) K1] (Un : (ι →₀ ℕ) → MvPowerSeries ι (K0 p))

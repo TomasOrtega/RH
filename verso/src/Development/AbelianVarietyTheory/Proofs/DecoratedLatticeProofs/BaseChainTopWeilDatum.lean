@@ -15,15 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BaseChain
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hP hf j h`. Establish `hm : j + 1 + 1 = D.R.m` using `by omega`. Establish `hC` using `hP.bot.hyp.2.2.2.1`. Establish `hQ : (pk W).Q W.P.A3.A.μ0 = ∅`. Use extensionality with `PP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.notMem_empty, iff_false]`. Conclude with `GlobalTheory.MiTop.not_mem_Q_base W PP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (pk W).ψ (Yc D n) D.sp.X' (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).1 (Lift.chrStep ((pk W).toLevCh.mu W.P.A3.A.μ0) (pk W).eta D.R.m).2 (Eq.rec (motive` using `fun n _ => Om (Yc D n) D.sp.X') ((pk W).ωX W.P.A3.A.μ0) e) := by`. Introduce and unpack `n rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hC.chain.ωX W.P.A3.A.μ0`. Use `key _ (idx_top h)` as an intermediate fact. Simplify using `only [com, stageY, stageX, stepX, GlobalTheory.ChainOnto.Com.chS, GlobalTheory.ChainOnto.Com.chT]`. Rewrite using `[hm]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(pk W).xiR W.P.A3.A.μ0, vacT (pk W) j h, ?_⟩` and prove the remaining obligations. Establish `hv` using `(hf.row W.P.A3.A.μ0).vT j h`. Rewrite `hv` using `[hQ]`. Simplify using `only [com, stageY, stageX, stepX]`. Rewrite using `[hm]`.
-
-Conclude with `hv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepX_weil_vec : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ j (h : j + 2 * 0 + 2 = D.R.m), IsWeilDatumO (GlobalTheory.BaseChain.com W).ψ (GlobalTheory.BaseChain.stageY W (j + 1)).V (GlobalTheory.BaseChain.stageX W).V ((GlobalTheory.BaseChain.com W).chS (j + 1 + 1)) ((GlobalTheory.BaseChain.com W).chT (j + 1 + 1)) (GlobalTheory.BaseChain.stepX f j h).ω ∧ ∃ ξ f₀, IsStepVecOf (GlobalTheory.BaseChain.com W).ψ (GlobalTheory.BaseChain.com W).θ (GlobalTheory.BaseChain.stageY W (j + 1)).V (GlobalTheory.BaseChain.stageX W).V (cart (GlobalTheory.BaseChain.stageY W (j + 1)).M) (cart (GlobalTheory.BaseChain.stageX W).M) (GlobalTheory.BaseChain.stageY W (j + 1)).Λ (GlobalTheory.BaseChain.stageX W).Λ (GlobalTheory.BaseChain.stageY W (j + 1)).β (GlobalTheory.BaseChain.stageX W).β (GlobalTheory.BaseChain.stageY W (j + 1)).L ((GlobalTheory.BaseChain.com W).chi (j + 1 + 1)) ∅ ξ f₀ (GlobalTheory.BaseChain.stepX f j h).f := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hf j h

@@ -19,15 +19,15 @@ noncomputable section
 namespace GlobalTheory.ConeSmallTermMeas
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' _ e' hE K _ _ hK _ _ γ _ X om om' om₁ om₁' hT hT₁ Φ hΦ hf hiw hdec w h r`. Establish `hM` using `hT.geo.hM'`. Establish `hM₁` using `hT₁.geo.hM'`. Establish `hψ` using `hT.base.std`. Establish `hW : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `hT.weil'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l₀, hl₀, hl₀eq⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin b × Fin (a + b))`. Establish `hl` using `GlobalTheory.ConeMeasV.comp_schr_mem_adm hψ (G.M'.co.e (shiftB σ H H' 1)) (GlobalTheory.ConeMeasV.comp_ev_mem_adm hM hM₁ hE hl₀)`. Establish `hΦA` using `GlobalTheory.ConeMeasV.polData_le_schA hM hΦ.1`. Establish `hc` using `hW.2.2 _ hl Φ hΦA`. Establish `hsplit` using `hW.isUSplitting`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `heq : (fun g => termW B G.M' H H' e' om' Φ γ w g h) = fun g => ((l₀ ∘ₗ e') ∘ₗ GlobalTheory.ConeMeasV.schrLin B.ψ (G.M'.co.e (shiftB σ H H' 1))) (om' (g, γ w * h) Φ)`. Use function extensionality and compare the values at `g`. Establish `h1 : om' (g, γ w * h) Φ ∈ schA F _` using `hsplit.pres (g, γ w * h) Φ hΦA`. Establish `h2` using `GlobalTheory.ConeMeasV.schr_mem_schA hψ (G.M'.co.e (shiftB σ H H' 1)) h1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hE.maps _ h2`. Conclude with `(hl₀eq _ h3).symm`. Establish `hcT : Continuous fun g => termW B G.M' H H' e' om' Φ γ w g h`. Rewrite using `[heq]`. Conclude with `hc.comp (continuous_id.prodMk continuous_const)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨K', -, -, hK'stab, hK'cpt, -, -⟩` from `GlobalTheory.StabHaar.stabEx hKP.base F E σ B (b + 2) G.V' _ _ hT.base hT.geo.hV'`. Establish `hKK : K = K'` using `Subgroup.ext fun g => (hK g).trans (hK'stab g).symm`. Substitute `hKK` using the available equality. Establish `hcont : Continuous hf` using `GlobalTheory.ConeSmallMeas.continuous_ht K hK'cpt H.x hf hiw hdec`. Conclude with `(hcT.norm.measurable.mul (hcont.measurable.pow_const r)).aestronglyMeasurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem termW_mul_ht_aestronglyMeasurable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

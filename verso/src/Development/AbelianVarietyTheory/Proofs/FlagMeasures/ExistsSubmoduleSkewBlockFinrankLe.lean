@@ -24,15 +24,15 @@ def skewOpsBlock (F : Type) [NormedAddCommGroup F] [InnerProductSpace ℂ F] :
     linear_combination (c : ℂ) * h1
 
 /- English proof (translation)
-Set `J : (F →L[ℂ] F) →ₗ[ℝ] (F →L[ℂ] F)` to `{ toFun := fun M => Complex.I • M map_add' := fun a b => smul_add _ _ _ map_smul' := fun c a => by simp only [RingHom.id_apply]; exact smul_comm _ _ _ }`. Establish `hJ : Function.Injective J`. Introduce `a b h`. Conclude with `smul_right_injective _ Complex.I_ne_zero h`. Establish `hd : Disjoint (skewOpsBlock F) ((skewOpsBlock F).map J)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `a ha ⟨b, hb, rfl⟩`. Establish `hb0 : b = 0`. Use extensionality with `x`. Establish `h1` using `ha x (b x)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hb x (b x)`. Establish `e : ∀ y, J b y = Complex.I • b y` using `fun y => rfl`. Simplify using `only [e, inner_smul_left, inner_smul_right, Complex.conj_I] at h1`. Establish `h3 : ⟪b x, b x⟫_ℂ = 0`. Take the linear combination `(Complex.I / 2) * h1 + (1 / 2 : ℂ) * h2 + ((⟪b x, b x⟫_ℂ - ⟪x, b (b x)⟫_ℂ) / 2) * Complex.I_mul_I`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3`. Rewrite using `[hb0, map_zero]`. Use `haveI : FiniteDimensional ℝ (F →L[ℂ] F) := FiniteDimensional.complexToReal _`. Establish `h1` using `Submodule.finrank_add_finrank_le_of_disjoint hd`. Rewrite `h1` using `[← (Submodule.equivMapOfInjective J hJ (skewOpsBlock F)).finrank_eq, finrank_real_of_complex]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Module.finrank ℂ (F →L[ℂ] F) = Module.finrank ℂ F ^ 2`. Rewrite using `[← (LinearMap.toContinuousLinearMap (𝕜 := ℂ) (E := F) (F' := F)).finrank_eq, Module.finrank_linearMap, sq]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_skewOpsBlock_le (F : Type) [NormedAddCommGroup F] [InnerProductSpace ℂ F]
     [FiniteDimensional ℂ F] :
@@ -68,11 +68,9 @@ theorem finrank_skewOpsBlock_le (F : Type) [NormedAddCommGroup F] [InnerProductS
   omega
 
 /- English proof (translation)
-Set `Φ : (E →L[ℂ] E) →ₗ[ℝ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))` to `{ toFun := fun M => E.subtypeL ∘L M ∘L E.orthogonalProjection map_add' := fun a b => by ext1 x; rfl map_smul' := fun c a => by ext1 x; rfl }`. Use `haveI : FiniteDimensional ℝ (E →L[ℂ] E) := FiniteDimensional.complexToReal _`. Use `⟨(skewOpsBlock E).map Φ, (Submodule.finrank_map_le Φ _).trans (finrank_skewOpsBlock_le E), ?_⟩` and prove the remaining obligations. Introduce `T hT`. Use `⟨E.orthogonalProjection ∘L T ∘L E.subtypeL, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x z`. Use `hT x x.2 z z.2` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, Submodule.subtypeL_apply, Submodule.inner_orthogonalProjection_eq_of_mem_left, Submodule.inner_orthogonalProjection_eq_of_mem_right]`. Conclude with `this`. Use `ext1 x`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_submodule_skew_block_finrank_le (n : ℕ)
     (E : Submodule ℂ (EuclideanSpace ℂ (Fin n))) :

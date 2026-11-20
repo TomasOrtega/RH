@@ -30,29 +30,25 @@ namespace GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `Step.of_evLgG (GlobalTheory.Mem.Top.evLgG_of_evLg ?_)` and prove the remaining obligations. Use `GlobalTheory.Mem.Top.V4.TwoPass.ev_mono ?_ (GlobalTheory.Mem.Top.V4.TwoPass.ev_and GlobalTheory.Mem.HostFrames.hostHyp_frames_ev GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientField)` and prove the remaining obligations. Introduce and unpack `K ⟨hK, hO⟩`. Use `hO.imp ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `B' f' T' hOv hOB w' ⟨pin⟩ B f T w _ _ _ _ Z hX Wt z _ _ _ _ Z' hX' _ hgrp _ core' alg' _ _ hKs _ _ _ _ _`. Use `set Wt' : Set B'.places.Pl := {v | B'.places.resChar v ∈ T'.pl} with hWt`. Use `letI := alg'`. Take `⟨hHH, -, -, hPos, hStd, hStdX, -, -⟩` from `hK (w'.st Z') hOv`. Establish `hok` using `w'.ok`.
+Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `w'.C_eq`. Establish `hrange` using `w'.xi_range`. Establish `hsel : SelHalf w'.I`. Introduce `a b P hP P' hP' hq`. Take `⟨q, hq, hqP, hqP'⟩` from `hq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, -, rfl⟩` from `(Formalism.L2.Col.mem_QE _ _ _).1 hP`. Take `⟨v', -, rfl⟩` from `(Formalism.L2.Col.mem_QE _ _ _).1 hP'`. Establish `hab : ∀ v, (w'.I.sel v).under (𝓞 B'.host.F) = v` using `fun v => by`. Establish `h` using `pin.above v`. Unfold `Formalism.L2.Host.aboveF at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Set.Finite.mem_toFinset]`. Conclude with `h`. Establish `hmem : ∀ v, ((q : 𝓞 B'.host.E) ∈ (w'.I.sel v).asIdeal) → (q : 𝓞 B'.host.F) ∈ v.asIdeal` using `fun v h => by`. Rewrite using `[← hab v]`. Use `show (q : 𝓞 B'.host.F) ∈ (w'.I.sel v).asIdeal.comap (algebraMap _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `h`. Use `pin.half v v' q hq (hmem v hqP) (hmem v' hqP')` as an intermediate fact. Conclude with `congrArg HeightOneSpectrum.asIdeal this`. Establish `hfin : Wt'.Finite` using `GlobalTheory.Mem.Top.TwFin.finite_pl B' T'.pl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : ∀ v ∈ Wt', B'.places.conj v ∈ Wt'` using `fun v hv => by simpa only [hWt, Set.mem_setOf_eq, GlobalTheory.Mem.Top.TwFin.resChar_conj] using hv`. Establish `hch : Fld.charField f' ≤ B'.KsC` using `(GlobalTheory.Mem.Base.KsExact.lower w'.exact).2.2.1`. Take `⟨hVals, -⟩` from `hOB w'.px w'.I hX' hok hC hrange`. Establish `hrange' : Set.range w'.I.xi = T'.set w'.I.C` using `by rw [hC]; exact hrange`. Establish `hCK : ∀ x ∈ (w'.st Z').B.Ks, ∃ y : core'.Q.c.F, algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL y = x` using `hKs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCE : ∀ x : (w'.st Z').toD7.host.E, ∃ y : core'.Q.c.F, algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL y = (w'.st Z').toD7.embE x` using `fun x => hKs _ (B'.E_le_Ks x)`. Establish `hmu : ∀ (L : Formalism.IndefR.Links.LevCh (w'.st Z').toD7 (TupU w'.I (usedOf w'.I T' Wt'))), L.Is (mu0F (X` using `(w'.st Z').B.fields) (tuOf w'.I (usedOf w'.I T' Wt'))) → L.C = Top.Fr.at (w'.st Z') w'.I.C → ∀ (i : Fin (w'.st Z').toD7.R.m) (x : (AE (w'.st Z').toD7)ˣ), infPart (w'.st Z').toD7 (x : AE (w'.st Z').toD7) = 1 → ∃ y : core'.Q.c.F, ((L.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) = (w'.st Z'). …`. Introduce `L hL hLC i x hx`. Establish `hLC' : L.C = Fr.at (w'.st Z') f'` using `hLC.trans (by rw [hC])`. Establish `hmem : ((L.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) ∈ Formalism.L2.Pj.FO (w'.st Z').toD7`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.CoreExact.char_mem_of_values (w'.st Z').toD7 _ _ (hL.mu0 i) (Formalism.L2.Pj.FO (w'.st Z').toD7) ?_ ?_ x hx` and prove the remaining obligations. Rewrite using `[hLC', ← GlobalTheory.CoreExact.KsC_eq]`. Conclude with `(le_iSup (fun j => Fld.valueField (f'.mu0 j) 0) i).trans (le_sup_left.trans (le_sup_left.trans (le_sup_left.trans (le_sup_left.trans hch))))`. Introduce `k`. Take `⟨n, hn, hi⟩` from `(L.C.isMu0 i).inf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose z hz using fun g => ((w'.st Z').toD7.hc ((w'.st Z').toD7.eTau.symm g)).e_int i`. Establish `hnz : n = fun g => 2 * -z g` using `funext fun g => by`. Establish `h1` using `hn g`. Simplify using `only [Formalism.L2.Host.eExp, hz] at h1`. Conclude with `h1` after adjusting the coercions.
-
-Rewrite `hi` using `[hnz]`. Rewrite using `[hi k]`. Use `prod_mem fun g _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RefCharValues.sign_zpow_even _ ((map_ne_zero _).2 k.ne_zero)]`. Conclude with `zpow_mem (div_mem (Formalism.L2.Pj.conj_mem_FO _ _ _) (Formalism.L2.Pj.conj_mem_FO _ ((starRingEnd ℂ).comp _) _)) _`.
-
-Take `⟨x₁, hx₁, hx₁'⟩` from `(mem_FO_assembled_iff (w'.st Z') _).1 hmem`. Take `⟨y, hy⟩` from `hCK x₁ hx₁`. Conclude with `⟨y, by rw [hy]; exact hx₁'.symm⟩`. Conclude with `GlobalTheory.T.exists_analyticData_kept_clauses_columnChoices (w'.st Z') w'.px w'.I hX' T' Wt' core'.Q.c.F h6 hfin hconj hok hrange' hsel hgrp hVals hHH hStd hStdX hPos hCK hCE hmu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem seed_at_enl : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

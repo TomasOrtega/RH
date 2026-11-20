@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalGlobalInclusion.Sm
 namespace PI
 
 /- English proof (translation)
-The claim follows from `PI.LocGlobInclWork.main`.
+A detailed English derivation is pending.
 -/
 theorem local_global_inclusion' : PI.LocGlobIncl := PI.LocGlobInclWork.main
 

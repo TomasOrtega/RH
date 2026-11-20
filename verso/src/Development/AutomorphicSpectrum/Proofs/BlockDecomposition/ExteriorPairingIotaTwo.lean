@@ -16,9 +16,9 @@ variable {R V W V' W' : Type} [CommRing R] [AddCommGroup V] [Module R V] [AddCom
   [AddCommGroup V'] [Module R V'] [AddCommGroup W'] [Module R W']
 
 /- English proof (translation)
-Set `e : (V × V) ≃ₗ[R] W` to `LinearEquiv.ofBijective (P.coprod Q) hb`. Establish `hP : ∀ x, e.symm (P x) = (x, 0)` using `fun x ↦ e.symm_apply_eq.2 (by`. Express the relevant statement in the definitionally equal form `P x = P x + Q 0`. Use the proof step `simp)`. Establish `hQ : ∀ x, e.symm (Q x) = (0, x)` using `fun x ↦ e.symm_apply_eq.2 (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Q x = P 0 + Q x`. Use the proof step `simp)`. Apply the tactic sequence `refine ⟨LinearMap.fst R V V ∘ₗ e.symm.toLinearMap, LinearMap.snd R V V ∘ₗ e.symm.toLinearMap, ?_, ?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `intro x <;> simp [hP, hQ]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_retract (P Q : V →ₗ[R] W) (hb : Function.Bijective fun x : V × V ↦ P x.1 + Q x.2) :
     ∃ r s : W →ₗ[R] V, (∀ x, r (P x) = x) ∧ (∀ x, r (Q x) = 0) ∧ (∀ x, s (P x) = 0) ∧ ∀ x, s (Q x) = x := by
@@ -31,9 +31,9 @@ theorem exists_retract (P Q : V →ₗ[R] W) (hb : Function.Bijective fun x : V 
     intro x <;> simp [hP, hQ]
 
 /- English proof (translation)
-Take `⟨r, -, a1, a2, -, -⟩` from `exists_retract P₁ Q₁ h₁`. Take `⟨-, s, -, -, b1, b2⟩` from `exists_retract P₂ Q₂ h₂`. Establish `e1 : r ∘ₗ (P₁ + Q₁) = LinearMap.id` using `LinearMap.ext fun x ↦ by simp [a1, a2]`. Establish `e2 : s ∘ₗ (P₂ + Q₂) = LinearMap.id` using `LinearMap.ext fun x ↦ by simp [b1, b2]`. Establish `e3 : s ∘ₗ P₂ = 0` using `LinearMap.ext fun x ↦ by simp [b1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : r ∘ₗ Q₁ = 0` using `LinearMap.ext fun x ↦ by simp [a2]`. Use `congrArg (TensorProduct.map r s) h` as an intermediate fact. Rewrite `this` using `[map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← TensorProduct.map_comp, ← TensorProduct.map_comp, ← TensorProduct.map_comp, e1, e2, e3, e4, TensorProduct.map_id, TensorProduct.map_zero_right, TensorProduct.map_zero_left]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_tprim (P₁ Q₁ : V →ₗ[R] W) (P₂ Q₂ : V' →ₗ[R] W')
     (h₁ : Function.Bijective fun x : V × V ↦ P₁ x.1 + Q₁ x.2)
@@ -55,13 +55,13 @@ theorem eq_zero_of_tprim (P₁ Q₁ : V →ₗ[R] W) (P₂ Q₂ : V' →ₗ[R] W
 abbrev i2 (a b : V) : ⋀[R]^2 V := exteriorPower.ιMulti R 2 ![a, b]
 
 /- English proof (translation)
-The claim follows from `congrArg _ (by ext i; fin_cases i <;> rfl)`.
+A detailed English derivation is pending.
 -/
 theorem iota_multi_two_eta (v : Fin 2 → V) : exteriorPower.ιMulti R 2 v = i2 (R := R) (v 0) (v 1) :=
   congrArg _ (by ext i; fin_cases i <;> rfl)
 
 /- English proof (translation)
-The claim follows from `exteriorPower.linearMap_ext (AlternatingMap.ext fun v ↦ by simpa [iota_multi_two_eta] using h (v 0) (v 1))`.
+A detailed English derivation is pending.
 -/
 theorem ext2 {N : Type} [AddCommGroup N] [Module R N] {f g : ⋀[R]^2 V →ₗ[R] N}
     (h : ∀ a b, f (i2 a b) = g (i2 a b)) : f = g :=
@@ -69,19 +69,19 @@ theorem ext2 {N : Type} [AddCommGroup N] [Module R N] {f g : ⋀[R]^2 V →ₗ[R
     simpa [iota_multi_two_eta] using h (v 0) (v 1))
 
 /- English proof (translation)
-Rewrite using `[exteriorPower.map_apply_ιMulti, iota_multi_two_eta]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exterior_map_iota_two (f : V →ₗ[R] W) (a b : V) : exteriorPower.map 2 f (i2 (R := R) a b) = i2 (f a) (f b) := by
   rw [exteriorPower.map_apply_ιMulti, iota_multi_two_eta]; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up0 (a b c : V) : Function.update ![a, b] 0 c = ![c, b] := by
   ext i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up1 (a b c : V) : Function.update ![a, b] 1 c = ![a, c] := by
   ext i; fin_cases i <;> rfl
@@ -107,13 +107,13 @@ Both sides reduce to the same expression.
 theorem wedge_basis_apply (a b : V) : b2 (R := R) a b = i2 a b := rfl
 
 /- English proof (translation)
-The claim follows from `(exteriorPower.ιMulti R 2 (M := V)).map_eq_zero_of_eq ![a, a] (i := 0) (j := 1) rfl (by decide)`.
+A detailed English derivation is pending.
 -/
 theorem wedge_basis_self_zero (a : V) : b2 (R := R) a a = 0 :=
   (exteriorPower.ιMulti R 2 (M := V)).map_eq_zero_of_eq ![a, a] (i := 0) (j := 1) rfl (by decide)
 
 /- English proof (translation)
-Use `wedge_basis_self_zero (R := R) (a + b)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, wedge_basis_self_zero, zero_add, add_zero] at this`. Conclude with `eq_neg_of_add_eq_zero_left this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wedge_basis_swap_neg (a b : V) : b2 (R := R) b a = -b2 (R := R) a b := by
   have := wedge_basis_self_zero (R := R) (a + b)
@@ -124,33 +124,31 @@ def pair2 (l u : V →ₗ[R] R) : ⋀[R]^2 V →ₗ[R] R :=
   exteriorPower.alternatingMapLinearEquiv (Matrix.detRowAlternating.compLinearMap (LinearMap.pi ![l, u]))
 
 /- English proof (translation)
-The claim follows from `(exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _).trans (Matrix.det_fin_two _)`.
+A detailed English derivation is pending.
 -/
 theorem exterior_pairing_iota_two (l u : V →ₗ[R] R) (a b : V) : pair2 l u (i2 a b) = l a * u b - u a * l b :=
   (exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _).trans (Matrix.det_fin_two _)
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' R V`. Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Set `c : Fin n → V →ₗ[R] R` to `fun i ↦ LinearMap.proj i ∘ₗ s`. Set `e : Fin n → V` to `fun i ↦ f (Pi.single i 1)`. Establish `he : ∀ x, ∑ i, c i x • e i = x` using `fun x ↦ by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : f (s x) = x` using `LinearMap.congr_fun hs x`. Use `conv_rhs => rw [← h1, ← Finset.univ_sum_single (s x), map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← map_smul]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[c]`. Simplify using `[c, Pi.single_eq_of_ne hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Ψ : ⋀[R]^2 V →ₗ[R] ⋀[R]^2 V` to `∑ i, ∑ j, if i < j then (LinearMap.toSpanSingleton R _ (b2 (e i) (e j))) ∘ₗ pair2 (c i) (c j) else 0`. Establish `hΨ : Ψ = LinearMap.id` using `ext2 fun a b ↦ by`. Set `g : Fin n → Fin n → ⋀[R]^2 V` to `fun i j ↦ (c i a * c j b) • b2 (e i) (e j)`. Establish `hg0 : ∀ i, g i i = 0` using `fun i ↦ by simp [g, wedge_basis_self_zero]`. Establish `h1 : i2 a b = ∑ i, ∑ j, g i j` using `by conv_lhs => rw [← wedge_basis_apply, ← he a, ← he b]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, Finset.smul_sum, g, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `h2 : ∑ i, ∑ j, (if i < j then g j i else 0) = ∑ i, ∑ j, (if j < i then g i j else 0)` using `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Ψ (i2 a b) = ∑ i, ∑ j, ((if i < j then g i j else 0) + if i < j then g j i else 0)`. Simplify using `only [Ψ, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Use `split_ifs with hij`. Rewrite using `[LinearMap.comp_apply, exterior_pairing_iota_two, LinearMap.toSpanSingleton_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g]`. Rewrite using `[wedge_basis_swap_neg (e i) (e j)]`. Use `module`. Simplify using the standard rewrite rules. Rewrite using `[h3, LinearMap.id_apply, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[h2, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Simplify using `[hij, hij.not_gt]`. Substitute `hij` using the available equality. Simplify using `[hg0]`. Simplify using `[hij, hij.not_gt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.congr_fun hΨ t` as an intermediate fact. Rewrite `this` using `[LinearMap.id_apply]`. Rewrite using `[← this]`. Simplify using `only [Ψ, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun j _ ↦ ?_` and prove the remaining obligations.
-
-Apply the tactic sequence `split_ifs <;> simp [h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pair2 [Module.Finite R V] [Module.Projective R V] (t : ⋀[R]^2 V)
     (h : ∀ l u : V →ₗ[R] R, pair2 l u t = 0) : t = 0 := by
@@ -208,11 +206,11 @@ theorem eq_zero_of_pair2 [Module.Finite R V] [Module.Projective R V] (t : ⋀[R]
   split_ifs <;> simp [h]
 
 /- English proof (translation)
-Take `⟨r, s, a1, a2, b1, b2'⟩` from `exists_retract P Q hb`. Use `eq_zero_of_pair2 t fun l u ↦ ?_` and prove the remaining obligations. Establish `e1 : pair2 (l ∘ₗ r) (u ∘ₗ s) ∘ₗ exteriorPower.map 2 (P + Q) = pair2 l u` using `ext2 fun a b ↦ by`. Rewrite using `[LinearMap.comp_apply, exterior_map_iota_two, exterior_pairing_iota_two, exterior_pairing_iota_two]`. Simplify using `[a1, a2, b1, b2']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : pair2 (l ∘ₗ r) (u ∘ₗ s) ∘ₗ exteriorPower.map 2 P = 0` using `ext2 fun a b ↦ by`. Rewrite using `[LinearMap.comp_apply, exterior_map_iota_two, exterior_pairing_iota_two]`. Simplify using `[a1, a2, b1, b2']`. Establish `e3 : pair2 (l ∘ₗ r) (u ∘ₗ s) ∘ₗ exteriorPower.map 2 Q = 0` using `ext2 fun a b ↦ by`. Rewrite using `[LinearMap.comp_apply, exterior_map_iota_two, exterior_pairing_iota_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[a1, a2, b1, b2']`. Use `congrArg (pair2 (l ∘ₗ r) (u ∘ₗ s)) h` as an intermediate fact. Rewrite `this` using `[map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← LinearMap.comp_apply, e1, e2, e3]`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_prim [Module.Finite R V] [Module.Projective R V] (P Q : V →ₗ[R] W)
     (hb : Function.Bijective fun x : V × V ↦ P x.1 + Q x.2) (t : ⋀[R]^2 V)
@@ -240,9 +238,9 @@ variable {R : Type} [CommRing R] {C E : Type} [Category.{0} C] [Category.{0} E]
   {F : C ⥤ CommAlgCat.{0} R} {G : E ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f ω`. Rewrite using `[TensorProduct.map_tmul, hG, hF, prodFirstProjection_smul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+Treat this case separately.
 -/
 theorem mu_pull (m : CoefMap (RingHom.id R) F G)
     (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F) (muG : Z1 G ⊗[R] Glob1 G →ₗ[R] A1 G)
@@ -257,7 +255,7 @@ theorem mu_pull (m : CoefMap (RingHom.id R) F G)
   | add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f ω => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rTensor_pull (m : CoefMap (RingHom.id R) F G) (t : Z1 F ⊗[R] Glob1 F) :
     (H1.mk G).rTensor (Glob1 G) (TensorProduct.map m.pullbackOneCocycle (pullGlob1 m) t) =
@@ -268,7 +266,7 @@ theorem rTensor_pull (m : CoefMap (RingHom.id R) F G) (t : Z1 F ⊗[R] Glob1 F) 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(H1.mk_eq_mk (F := G) (f := m.pullbackOneCocycle f) (f' := p.pullbackOneCocycle f + q.pullbackOneCocycle f)).1 (by`. Use `hm1 (H1.mk F f)` as an intermediate fact. Rewrite using `[CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, ← map_add] at this)` and apply the resulting hypothesis. Conclude with `⟨g, fun T T' φ ↦ congrFun (congrFun (congrFun hg T) T') φ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem exists_prim_cochain (m p q : CoefMap (RingHom.id R) F G)
     (hm1 : ∀ c, m.pull1 c = p.pull1 c + q.pull1 c) (f : Z1 F) :
@@ -280,11 +278,11 @@ theorem exists_prim_cochain (m p q : CoefMap (RingHom.id R) F G)
   exact ⟨g, fun T T' φ ↦ congrFun (congrFun (congrFun hg T) T') φ⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_prim_cochain m p q hm1 f`. Establish `hz` using `hG3 (TensorProduct.map m.pullbackOneCocycle (pullGlob1 m) t - TensorProduct.map p.pullbackOneCocycle (pullGlob1 p) t - TensorProduct.map q.pullbackOneCocycle (pullGlob1 q) t) (fun T ↦ KaehlerDifferential.D R _ (g T)) (fun T T' φ ↦ by`. Establish `e` using `congrArg (KaehlerDifferential.D R (G.obj T')) (hg φ)`. Simplify using `only [map_sub, map_add] at e`. Simplify using `only [map_sub, Pi.sub_apply, mu_pull _ muF muG hF hG, ht, cechDeRhamCoefMapOneForms_D, p1_D]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [CoefMap.pullCocycleOne_apply]`. Use the proof step `abel)`. Rewrite `hz` using `[map_sub, map_sub, rTensor_pull, rTensor_pull, rTensor_pull]`. Establish `e1 : m.pull1 = p.pull1 + q.pull1` using `LinearMap.ext hm1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : pullGlob1 m = pullGlob1 p + pullGlob1 q` using `LinearMap.ext hmW`. Rewrite `hz` using `[e1, e2]`. Use `eq_zero_of_tprim p.pull1 q.pull1 (pullGlob1 p) (pullGlob1 q) hH hW _ ?_` and prove the remaining obligations. Rewrite `hz` using `[sub_sub, sub_eq_zero]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_zero (m p q : CoefMap (RingHom.id R) F G)
     (hH : Function.Bijective fun x : H1 F × H1 F ↦ p.pull1 x.1 + q.pull1 x.2)
@@ -329,13 +327,13 @@ Both sides reduce to the same expression.
 theorem evT_tmul (g : C0 F) (ω : Glob1 F) (T : C) : evT (g ⊗ₜ ω) T = g T • ω.1 T := rfl
 
 /- English proof (translation)
-Set `d' : C0 F →ₗ[R] Z1 F` to `(d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F)`. Establish `hex : Function.Exact d' (H1.mk F)` using `fun y ↦ by`. Rewrite using `[H1.mk_eq_zero]`. Conclude with `⟨fun ⟨g, hg⟩ ↦ ⟨g, Subtype.ext hg⟩, fun ⟨g, hg⟩ ↦ ⟨g, congrArg Subtype.val hg⟩⟩`. Establish `key : ∀ (s : C0 F ⊗[R] Glob1 F) (T T' : C) (φ : T ⟶ T'), muF ((d').rTensor (Glob1 F) s) T T' φ = evT s T' - p1 F φ (evT s T)` using `fun s ↦ by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => intro T T' φ`. Simplify using the standard rewrite rules. Consider the case `tmul g ω`. Introduce `T T' φ`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.rTensor_tmul, hF, evT_tmul, evT_tmul, oneFormsMapOfFunctorMorphism_smul, ← ω.2 φ, ← sub_smul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Introduce `T T' φ`. Simplify using `only [map_add, Pi.add_apply, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Take `⟨s, rfl⟩` from `(rTensor_exact (Glob1 F) hex (H1.mk_surjective F) t).1 h0`. Conclude with `⟨evT s, key s⟩`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prim (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
     (hF : ∀ f ω T T' φ, muF (f ⊗ₜ ω) T T' φ = f.1 T T' φ • ω.1 T')
@@ -361,7 +359,7 @@ theorem exists_prim (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
   exact ⟨evT s, key s⟩
 
 /- English proof (translation)
-Establish `e : (LinearMap.proj T : W0 G 2 →ₗ[R] _) ∘ₗ νG ∘ₗ exteriorPower.map 2 (pullGlob1 m) = (qOm m 2 T) ∘ₗ (LinearMap.proj (m.G.obj T) : W0 F 2 →ₗ[R] _) ∘ₗ νF` using `ext2 fun a b ↦ by`. Simplify using `only [LinearMap.comp_apply, exterior_map_iota_two, LinearMap.proj_apply]`. Rewrite using `[hG, hF, qOm_wedge]`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun e t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nu_pull (m : CoefMap (RingHom.id R) F G)
     (νF : ⋀[R]^2 (Glob1 F) →ₗ[R] W0 F 2) (νG : ⋀[R]^2 (Glob1 G) →ₗ[R] W0 G 2)
@@ -377,15 +375,13 @@ theorem nu_pull (m : CoefMap (RingHom.id R) F G)
   exact LinearMap.congr_fun e t
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_prim_cochain m p q hm1 f`. Establish `conn : ∀ (m' : CoefMap (RingHom.id R) F G) {T T' : E} (φ : T ⟶ T'), q1 m' T' (β _) = p1 G φ (q1 m' T (β _)) + KaehlerDifferential.D R _ ((m'.pullbackOneCocycle f).1 T T' φ)` using `fun m' T T' φ ↦ by`. Rewrite using `[hβ (m'.G.map φ), map_add, cechDeRhamCoefMapOneForms_naturality, cechDeRhamCoefMapOneForms_D]`. Both sides reduce to the same expression. Set `ga : A0 G` to `fun T ↦ q1 m T (β _) - q1 p T (β _) - q1 q T (β _) - KaehlerDifferential.D R _ (g T)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hga : ga ∈ Glob1 G` using `fun T T' φ ↦ by`. Establish `e` using `congrArg (KaehlerDifferential.D R (G.obj T')) (hg φ)`. Simplify using `only [map_sub, map_add] at e`. Simplify using `only [ga, map_sub, p1_D]`. Rewrite using `[conn m φ, conn p φ, conn q φ, sub_eq_iff_eq_add.1 e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Take `⟨⟨a, b⟩, hab⟩` from `hW.2 ⟨ga, hga⟩`. Establish `hcl : ∀ (a : Glob1 F) (T : C), dOne R _ (a.1 T) = 0` using `fun a ↦ by`. Establish `h : a ∈ Closed1 F` using `by rw [hC]; exact Submodule.mem_top`. Conclude with `h`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ga T = q1 p T (a.1 _) + q1 q T (b.1 _)` using `(congrFun (congrArg Subtype.val hab) T).symm`. Establish `e0 : dOne R _ (ga T) = 0`. Rewrite using `[e, map_add, ← qOm_dOne, ← qOm_dOne, hcl, hcl, map_zero, map_zero, add_zero]`. Simplify using `only [ga, map_sub, dOne_D, sub_zero, ← qOm_dOne] at e0`. Rewrite `e0` using `[sub_sub, sub_eq_zero]`.
-
-Conclude with `e0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_prim (m p q : CoefMap (RingHom.id R) F G)
     (hW : Function.Bijective fun x : Glob1 F × Glob1 F ↦ pullGlob1 p x.1 + pullGlob1 q x.2)
@@ -416,11 +412,11 @@ theorem two_prim (m p q : CoefMap (RingHom.id R) F G)
   exact e0
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hsurj (fun T ↦ dOne R _ (β T)) (fun T T' φ ↦ by`. Rewrite using `[hβ φ, map_add, dOne_D, add_zero, pOm_dOne])`. Establish `h1 : exteriorPower.map 2 (pullGlob1 m) t = exteriorPower.map 2 (pullGlob1 p) t + exteriorPower.map 2 (pullGlob1 q) t` using `hinj (by`. Rewrite using `[map_add]`. Use function extensionality and compare the values at `T`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.add_apply, nu_pull m νF νG hF hG, nu_pull p νF νG hF hG, nu_pull q νF νG hF hG, ht]`. Conclude with `two_prim m p q hW hm1 hC f β hβ T)`. Establish `e2 : pullGlob1 m = pullGlob1 p + pullGlob1 q` using `LinearMap.ext hmW`. Rewrite `h1` using `[e2]`. Establish `ht0` using `eq_zero_of_prim (pullGlob1 p) (pullGlob1 q) hW t h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun ht T` as an intermediate fact. Rewrite `this` using `[ht0, map_zero]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_of_conn (m p q : CoefMap (RingHom.id R) F G) [Module.Finite R (Glob1 F)]
     [Module.Projective R (Glob1 F)]
@@ -454,15 +450,15 @@ theorem closed_of_conn (m p q : CoefMap (RingHom.id R) F G) [Module.Finite R (Gl
 end Frame
 
 /- English proof (translation)
-Introduce `h1 h2 R _ C _ F hF hBi hC c`. Take `⟨E, _, G, m, p, q, hSG, hPG, hH, hW, hm1, hmW, -⟩` from `hBi`. Establish `hFG : Framed G`. Take `⟨-, -, hfin, hproj⟩` from `hF`. Set `e : (Glob1 F × Glob1 F) ≃ₗ[R] Glob1 G` to `LinearEquiv.ofBijective ((pullGlob1 p).coprod (pullGlob1 q)) hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `⟨hSG, hPG, Module.Finite.equiv e, Module.Projective.of_equiv e⟩`. Take `⟨muF, hmF, hmS, -⟩` from `h1 R C F hF`. Take `⟨muG, hmG, -, hG3⟩` from `h1 R E G hFG`. Take `⟨νF, hνF, -, hsurj⟩` from `h2 R C F hF`. Take `⟨νG, hνG, hinj, -⟩` from `h2 R E G hFG`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Take `⟨t, ht⟩` from `hmS (fun T T' φ ↦ KaehlerDifferential.D R _ (f.1 T T' φ)) (fun T T' T'' φ ψ ↦ by`. Rewrite using `[Z1.comp f, map_add, p1_D])`. Establish `hz` using `class_zero m p q hH hW hm1 hmW muF muG hmF hmG hG3 f t (fun T T' φ ↦ congrFun (congrFun (congrFun ht T) T') φ)`. Take `⟨β, hβ⟩` from `exists_prim muF hmF t hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hconn : ∀ ⦃T T' : C⦄ (φ : T ⟶ T'), β T' = p1 F φ (β T) + KaehlerDifferential.D R _ (f.1 T T' φ)` using `fun T T' φ ↦ by`. Establish `e : KaehlerDifferential.D R _ (f.1 T T' φ) = β T' - p1 F φ (β T)` using `(congrFun (congrFun (congrFun ht T) T') φ).symm.trans (hβ T T' φ)`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Use `haveI := hF.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `haveI := hF.2.2.2`. Establish `hcl` using `closed_of_conn m p q hW hm1 hmW hC νF νG hνF hνG hinj hsurj f β hconn`. Conclude with `⟨Hyp1.mk F ⟨(f.1, β), mem_cechDeRhamTotalCocyclesOne_iff.2 ⟨f.2, hconn, hcl⟩⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_of_forms : OneFormCohSt → TwoFormCohSt → LiftSt := by
   intro h1 h2 R _ C _ F hF hBi hC c

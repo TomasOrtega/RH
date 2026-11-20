@@ -13,7 +13,7 @@ section Algebra
 variable {F : Type} [Field F] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [cM, Matrix.of_apply]`. Rewrite using `[dif_pos ⟨hj, hi⟩]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cM_apply_pos (k : ℕ) (x : Fin (k + 1) → F) {i j : Fin n} (hj : (j : ℕ) = k + 1)
     (hi : (i : ℕ) < k + 1) : cM n k x i j = x ⟨i, hi⟩ := by
@@ -21,7 +21,7 @@ theorem cM_apply_pos (k : ℕ) (x : Fin (k + 1) → F) {i j : Fin n} (hj : (j : 
   rw [dif_pos ⟨hj, hi⟩]
 
 /- English proof (translation)
-Simplify using `only [cM, Matrix.of_apply]`. Rewrite using `[dif_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cM_apply_neg (k : ℕ) (x : Fin (k + 1) → F) {i j : Fin n}
     (h : ¬((j : ℕ) = k + 1 ∧ (i : ℕ) < k + 1)) : cM n k x i j = 0 := by
@@ -29,7 +29,7 @@ theorem cM_apply_neg (k : ℕ) (x : Fin (k + 1) → F) {i j : Fin n}
   rw [dif_neg h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`. Distinguish the cases in `h : (j : ℕ) = k + 1 ∧ (i : ℕ) < k + 1`. Rewrite using `[cM_apply_pos k _ h.1 h.2, cM_apply_pos k _ h.1 h.2, cM_apply_pos k _ h.1 h.2, Pi.add_apply]`. Rewrite using `[cM_apply_neg k _ h, cM_apply_neg k _ h, cM_apply_neg k _ h, add_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cM_add (k : ℕ) (x y : Fin (k + 1) → F) :
     cM n k (x + y) = cM n k x + cM n k y := by
@@ -40,7 +40,7 @@ theorem cM_add (k : ℕ) (x y : Fin (k + 1) → F) :
   · rw [cM_apply_neg k _ h, cM_apply_neg k _ h, cM_apply_neg k _ h, add_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.zero_apply]`. Distinguish the cases in `h : (j : ℕ) = k + 1 ∧ (i : ℕ) < k + 1`. Rewrite using `[cM_apply_pos k _ h.1 h.2, Pi.zero_apply]`. Rewrite using `[cM_apply_neg k _ h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cM_zero (k : ℕ) : cM n k (0 : Fin (k + 1) → F) = 0 := by
   ext i j
@@ -56,9 +56,9 @@ theorem col_coe (k : ℕ) (x : Fin (k + 1) → F) :
     ((col n k x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1 + cM n k x := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : (l : ℕ) = k + 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[cM_apply_neg k y (fun h => absurd h.2 (by omega)), mul_zero]`. Rewrite using `[cM_apply_neg k x (fun h => hl h.1), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cM_mul_cM_eq_zero (k : ℕ) (x y : Fin (k + 1) → F) :
     cM n k x * cM n k y = 0 := by
@@ -71,7 +71,7 @@ private theorem cM_mul_cM_eq_zero (k : ℕ) (x y : Fin (k + 1) → F) :
   · rw [cM_apply_neg k x (fun h => hl h.1), zero_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, col_coe, col_coe, col_coe, cM_add, add_mul, one_mul, mul_add, mul_one, cM_mul_cM_eq_zero, add_zero]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem col_add (k : ℕ) (x y : Fin (k + 1) → F) :
     col n k (x + y) = col n k x * col n k y := by
@@ -81,14 +81,14 @@ theorem col_add (k : ℕ) (x y : Fin (k + 1) → F) :
   abel
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[col_coe, cM_zero, add_zero, Units.val_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem col_zero (k : ℕ) : col n k (0 : Fin (k + 1) → F) = 1 := by
   apply Units.ext
   rw [col_coe, cM_zero, add_zero, Units.val_one]
 
 /- English proof (translation)
-Unfold `inP`. Rewrite using `[col_coe]`. Use `⟨fun i j h => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, cM_apply_neg k x (fun h' => absurd h'.2 (by omega)), add_zero]`. Rewrite using `[Matrix.add_apply, cM_apply_neg k x (fun h' => absurd h'.1 (by omega)), add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inP_col (k : ℕ) (x : Fin (k + 1) → F) : inP (k + 1) (col n k x) := by
   unfold inP
@@ -98,14 +98,14 @@ theorem inP_col (k : ℕ) (x : Fin (k + 1) → F) : inP (k + 1) (col n k x) := b
   · rw [Matrix.add_apply, cM_apply_neg k x (fun h' => absurd h'.1 (by omega)), add_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Conclude with `⟨fun i j hi => h1 i j (by omega), fun i j hj => h2 i j (by omega)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inP_succ {k : ℕ} {g : GL (Fin n) F} (h : inP k g) : inP (k + 1) g := by
   obtain ⟨h1, h2⟩ := h
   exact ⟨fun i j hi => h1 i j (by omega), fun i j hj => h2 i j (by omega)⟩
 
 /- English proof (translation)
-Establish `hij' : (j : ℕ) < i` using `hij`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (Fin.ne_of_val_ne (by omega)), cM_apply_neg k x (fun h => by obtain ⟨h1, h2⟩ := h; omega), add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem col_upper (k : ℕ) (x : Fin (k + 1) → F) {i j : Fin n} (hij : j < i) :
     (1 + cM n k x) i j = 0 := by
@@ -114,14 +114,14 @@ theorem col_upper (k : ℕ) (x : Fin (k + 1) → F) {i j : Fin n} (hij : j < i) 
     cM_apply_neg k x (fun h => by obtain ⟨h1, h2⟩ := h; omega), add_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, cM_apply_neg k x (fun h => by obtain ⟨h1, h2⟩ := h; omega), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem col_diag (k : ℕ) (x : Fin (k + 1) → F) (i : Fin n) : (1 + cM n k x) i i = 1 := by
   rw [Matrix.add_apply, Matrix.one_apply_eq,
     cM_apply_neg k x (fun h => by obtain ⟨h1, h2⟩ := h; omega), add_zero]
 
 /- English proof (translation)
-Rewrite using `[col_coe]`. Conclude with `(Matrix.det_of_isUpperTriangular (fun i j hij => col_upper k x hij)).trans (Finset.prod_eq_one (fun i _ => col_diag k x i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_col (k : ℕ) (x : Fin (k + 1) → F) :
     ((col n k x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det = 1 := by
@@ -130,15 +130,13 @@ theorem det_col (k : ℕ) (x : Fin (k + 1) → F) :
     (Finset.prod_eq_one (fun i _ => col_diag k x i))
 
 /- English proof (translation)
-Unfold `Whittaker.superdiagSum`. Rewrite using `[Finset.sum_eq_single (⟨k, by omega⟩ : Fin n)]`. Rewrite using `[Finset.sum_eq_single (⟨k + 1, hk⟩ : Fin n)]`. Rewrite using `[if_pos rfl, Matrix.add_apply, Matrix.one_apply_ne (Fin.ne_of_val_ne (by simp)), cM_apply_pos k x rfl (by simp), zero_add]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `j _ hj split_ifs with h`. Conclude with `absurd (Fin.ext (by simpa using h)) hj`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _ hi`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Use `split_ifs with h`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (Fin.ne_of_val_ne (by omega)), zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `cM_apply_neg k x` to reduce the goal to its premises. Introduce and unpack `⟨h1, h2⟩`. Apply `hi` to reduce the goal to its premises. Conclude with `Fin.ext (by simp; omega)`. Both sides reduce to the same expression.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem superdiagSum_col {k : ℕ} (hk : k + 1 < n) (x : Fin (k + 1) → F) :
     Whittaker.superdiagSum (1 + cM n k x) = x (Fin.last k) := by
@@ -168,7 +166,7 @@ theorem superdiagSum_col {k : ℕ} (hk : k + 1 < n) (x : Fin (k + 1) → F) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `Whittaker.psiN`. Rewrite using `[col_coe, superdiagSum_col hk x]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiN_col {k : ℕ} (hk : k + 1 < n) (ψ : AddChar F ℂ) (x : Fin (k + 1) → F) :
     Whittaker.psiN ψ (col n k x) = ψ (x (Fin.last k)) := by
@@ -176,7 +174,7 @@ theorem psiN_col {k : ℕ} (hk : k + 1 < n) (ψ : AddChar F ℂ) (x : Fin (k + 1
   rw [col_coe, superdiagSum_col hk x]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq]`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (fun e => h (Fin.castLE_injective hk e))]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_castLE {k : ℕ} (hk : k + 1 ≤ n) (i j : Fin (k + 1)) :
     (1 : Matrix (Fin n) (Fin n) F) (Fin.castLE hk i) (Fin.castLE hk j) =
@@ -187,11 +185,11 @@ theorem one_castLE {k : ℕ} (hk : k + 1 ≤ n) (i j : Fin (k + 1)) :
   · rw [Matrix.one_apply_ne h, Matrix.one_apply_ne (fun e => h (Fin.castLE_injective hk e))]
 
 /- English proof (translation)
-Establish `hblk : ∀ i, ¬((i : Fin n) : ℕ) < k + 1 → ∀ j, ((j : Fin n) : ℕ) < k + 1 → M i j = 0`. Introduce `i hi j hj`. Rewrite using `[hM i j (by omega), Matrix.one_apply_ne (Fin.ne_of_val_ne (by omega))]`. Rewrite using `[Matrix.twoBlockTriangular_det M (fun i => (i : ℕ) < k + 1) hblk]`. Establish `hone : Matrix.toSquareBlockProp M (fun i => ¬((i : Fin n) : ℕ) < k + 1) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Rewrite using `[Matrix.toSquareBlockProp, Matrix.toBlock_apply, hM i j (by omega)]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (fun e => h (congrArg Subtype.val e))]`. Rewrite using `[hone, Matrix.det_one, mul_one]`. Set `e : Fin (k + 1) ≃ {i : Fin n // (i : ℕ) < k + 1}` to `{ toFun := fun i => ⟨Fin.castLE hk i, i.2⟩ invFun := fun i => ⟨i.1, i.2⟩ left_inv := fun i => rfl right_inv := fun i => rfl }`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_eq_submatrix {k : ℕ} (hk : k + 1 ≤ n) (M : Matrix (Fin n) (Fin n) F)
     (hM : ∀ i j : Fin n, k + 1 ≤ (i : ℕ) → M i j = (1 : Matrix (Fin n) (Fin n) F) i j) :
@@ -217,9 +215,9 @@ theorem det_eq_submatrix {k : ℕ} (hk : k + 1 ≤ n) (M : Matrix (Fin n) (Fin n
   rfl
 
 /- English proof (translation)
-Establish `hmap : ∑ l ∈ Finset.univ.map (⟨Fin.castLE hk, Fin.castLE_injective hk⟩ : Fin (k + 1) ↪ Fin n), f l = ∑ l : Fin (k + 1), f (Fin.castLE hk l)` using `Finset.sum_map _ _ _`. Rewrite using `[← hmap]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `l _ hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hf` to reduce the goal to its premises. Introduce `hlt`. Apply `hl` to reduce the goal to its premises. Rewrite using `[Finset.mem_map]`. Conclude with `⟨⟨l, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sum_castLE {k : ℕ} (hk : k + 1 ≤ n) (f : Fin n → F)
     (hf : ∀ l : Fin n, ¬(l : ℕ) < k + 1 → f l = 0) :
@@ -237,13 +235,13 @@ theorem sum_castLE {k : ℕ} (hk : k + 1 ≤ n) (f : Fin n → F)
   exact ⟨⟨l, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hj : (j : ℕ) = k + 1`. Distinguish the cases in `hi : (i : ℕ) < k + 1`. Rewrite using `[cM_apply_pos k _ hj hi, sum_castLE hk (fun l => g i l * cM n k x l j) (fun l hl => by rw [cM_apply_neg k x (fun h => hl h.2), mul_zero])]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.submatrix_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[cM_apply_pos k x hj l.2]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[cM_apply_neg k _ (fun h => hi h.2)]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : (l : ℕ) < k + 1`. Rewrite using `[hM i l (by omega), Matrix.one_apply_ne (Fin.ne_of_val_ne (by omega)), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cM_apply_neg k x (fun h => hl h.2), mul_zero]`. Rewrite using `[cM_apply_neg k _ (fun h => hj h.1)]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[cM_apply_neg k x (fun h => hj h.1), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_cM {k : ℕ} (hk : k + 1 ≤ n) (g : Matrix (Fin n) (Fin n) F)
     (hM : ∀ i j : Fin n, k + 1 ≤ (i : ℕ) → g i j = (1 : Matrix (Fin n) (Fin n) F) i j)
@@ -273,11 +271,11 @@ theorem mul_cM {k : ℕ} (hk : k + 1 ≤ n) (g : Matrix (Fin n) (Fin n) F)
     rw [cM_apply_neg k x (fun h => hj h.1), mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (⟨k + 1, hk⟩ : Fin n)]`. Rewrite using `[hM _ j (le_refl _)]`. Distinguish the cases in `hj : j = ⟨k + 1, hk⟩`. Substitute `hj` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Matrix.one_apply_eq, mul_one]`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hj), mul_zero, cM_apply_neg k y (fun h => hj (Fin.ext h.1))]`. Introduce `l _ hl`. Rewrite using `[cM_apply_neg k y (fun h => hl (Fin.ext h.1)), zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem cM_mul_row {k : ℕ} (hk : k + 1 < n) (g : Matrix (Fin n) (Fin n) F)
     (hM : ∀ i j : Fin n, k + 1 ≤ (i : ℕ) → g i j = (1 : Matrix (Fin n) (Fin n) F) i j)
@@ -296,7 +294,7 @@ theorem cM_mul_row {k : ℕ} (hk : k + 1 < n) (g : Matrix (Fin n) (Fin n) F)
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, col_coe, col_coe, mul_add, add_mul, mul_one, one_mul, mul_cM hk.le _ hM x, cM_mul_row hk _ hM]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_col {k : ℕ} (hk : k + 1 < n) (g : GL (Fin n) F)
     (hM : ∀ i j : Fin n, k + 1 ≤ (i : ℕ) →
@@ -314,14 +312,14 @@ def extM {k : ℕ} (n : ℕ) (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) : Matrix
     else (1 : Matrix (Fin n) (Fin n) F) i j
 
 /- English proof (translation)
-Rewrite using `[extM, Matrix.of_apply, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extM_pos {k : ℕ} (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) {i j : Fin n}
     (h : (i : ℕ) < k + 1 ∧ (j : ℕ) < k + 1) : extM n t i j = t ⟨i, h.1⟩ ⟨j, h.2⟩ := by
   rw [extM, Matrix.of_apply, dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[extM, Matrix.of_apply, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extM_neg {k : ℕ} (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) {i j : Fin n}
     (h : ¬((i : ℕ) < k + 1 ∧ (j : ℕ) < k + 1)) :
@@ -329,7 +327,7 @@ theorem extM_neg {k : ℕ} (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) {i j : Fin
   rw [extM, Matrix.of_apply, dif_neg h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, extM_pos t (i := Fin.castLE hk i) (j := Fin.castLE hk j) ⟨i.2, j.2⟩]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extM_submatrix {k : ℕ} (hk : k + 1 ≤ n) (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) :
     (extM n t).submatrix (Fin.castLE hk) (Fin.castLE hk) = t := by
@@ -338,23 +336,23 @@ theorem extM_submatrix {k : ℕ} (hk : k + 1 ≤ n) (t : Matrix (Fin (k + 1)) (F
   rfl
 
 /- English proof (translation)
-Conclude with `extM_neg t (fun h => by obtain ⟨h1, h2⟩ := h; omega)`.
+A detailed English derivation is pending.
 -/
 theorem extM_row {k : ℕ} (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) (i j : Fin n)
     (hi : k + 1 ≤ (i : ℕ)) : extM n t i j = (1 : Matrix (Fin n) (Fin n) F) i j := by
   exact extM_neg t (fun h => by obtain ⟨h1, h2⟩ := h; omega)
 
 /- English proof (translation)
-Rewrite using `[det_eq_submatrix hk (extM n t) (fun i j hi => extM_row t i j hi), extM_submatrix hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_extM {k : ℕ} (hk : k + 1 ≤ n) (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) :
     (extM n t).det = t.det := by
   rw [det_eq_submatrix hk (extM n t) (fun i j hi => extM_row t i j hi), extM_submatrix hk]
 
 /- English proof (translation)
-Take `⟨hg1, hg2⟩` from `hg`. Establish `hd` using `det_eq_submatrix hk.le (g : Matrix (Fin n) (Fin n) F) hg1`. Establish `hdet : (g : Matrix (Fin n) (Fin n) F).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.ne_zero _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet' : ((g : Matrix (Fin n) (Fin n) F).submatrix (Fin.castLE hk.le) (Fin.castLE hk.le)).det ≠ 0`. Rewrite using `[← hd]`. Conclude with `hdet`. Conclude with `⟨Matrix.nonsingInvUnit ((g : Matrix (Fin n) (Fin n) F).submatrix (Fin.castLE hk.le) (Fin.castLE hk.le)) (isUnit_iff_ne_zero.mpr hdet'), rfl, hd.symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_block {k : ℕ} (hk : k + 1 < n) (g : GL (Fin n) F) (hg : inP (k + 1) g) :
     ∃ t : GL (Fin (k + 1)) F, (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) =
@@ -373,9 +371,9 @@ theorem exists_block {k : ℕ} (hk : k + 1 < n) (g : GL (Fin n) F) (hg : inP (k 
     (Fin.castLE hk.le)) (isUnit_iff_ne_zero.mpr hdet'), rfl, hd.symm⟩
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Take `⟨h1, _⟩` from `hg`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.submatrix_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last k)]`. Rewrite using `[h1 _ _ (by simp), Matrix.one_apply_eq, one_mul]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _ hl`. Rewrite using `[h1 _ _ (by simp), Matrix.one_apply_ne (fun e => hl (Fin.castLE_injective _ e).symm), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem last_mulVec {k : ℕ} (hk : k + 1 < n) (g : GL (Fin n) F) (hg : inP k g)
     (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F)
@@ -392,9 +390,9 @@ theorem last_mulVec {k : ℕ} (hk : k + 1 < n) (g : GL (Fin n) F) (hg : inP k g)
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hdet : (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.ne_zero _`. Establish `hdet' : (extM n (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F)).det ≠ 0`. Rewrite using `[det_extM hk.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hdet`. Conclude with `⟨Matrix.nonsingInvUnit (extM n (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F)) (isUnit_iff_ne_zero.mpr hdet'), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext {k : ℕ} (hk : k + 1 < n) (t : GL (Fin (k + 1)) F) :
     ∃ g : GL (Fin n) F, (g : Matrix (Fin n) (Fin n) F) =
@@ -416,9 +414,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {n : ℕ}
 
 /- English proof (translation)
-Unfold `inU`. Use `⟨?_, fun i j hj => ?_⟩` and prove the remaining obligations. Use `show ((col n k x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).IsUpperTriangular ∧ ∀ i, ((col n k x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = 1`. Rewrite using `[col_coe]`. Conclude with `⟨fun i j hij => col_upper k x hij, fun i => col_diag k x i⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[col_coe, Matrix.add_apply, cM_apply_neg k x (fun h => by obtain ⟨h1, h2⟩ := h; omega), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem inU_col (k : ℕ) (x : Fin (k + 1) → F) : inU k (col n k x) := by
   unfold inU
@@ -431,9 +429,9 @@ theorem inU_col (k : ℕ) (x : Fin (k + 1) → F) : inU k (col n k x) := by
       add_zero]
 
 /- English proof (translation)
-Unfold `PositivityTheory.JacquetShalikaLocal.Div at h ⊢`. Introduce `i j`. Distinguish the cases in `h' : (i : ℕ) < k + 1 ∧ (j : ℕ) < k + 1`. Take `⟨y, hy, hyeq⟩` from `h ⟨i, h'.1⟩ ⟨j, h'.2⟩`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.sub_apply, extM_pos t h', ← hyeq, Matrix.sub_apply]`. Use `congr 1`. Conclude with `one_castLE hk ⟨i, h'.1⟩ ⟨j, h'.2⟩`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, extM_neg t h', sub_self, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_extM {k : ℕ} (c : ℕ) (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F)
     (hk : k + 1 ≤ n) (h : Div c (t - 1)) : Div c (extM n t - 1) := by
@@ -451,15 +449,13 @@ theorem div_extM {k : ℕ} (c : ℕ) (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F)
 end Local
 
 /- English proof (translation)
-Unfold `ColumnsMirabolic ForF`. Introduce `F _ _ _ _ _ _ μ _ ψ _ n k hk`. Use `⟨fun x y => col_add k x y, col_zero k, fun x => ⟨inP_col k x, inU_col k x, det_col k x, psiN_col hk ψ x⟩, fun g hg => inP_succ hg, fun g hg => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `hg1 : ∀ i j : Fin n, k + 1 ≤ (i : ℕ) → (g : Matrix (Fin n) (Fin n) F) i j = (1 : Matrix (Fin n) (Fin n) F) i j` using `hg.1`. Take `⟨t, ht, hdt⟩` from `exists_block hk g hg`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, hdt, fun x => conj_col hk g hg1 _ ht x, fun hgk x => last_mulVec hk g hgk _ ht x⟩`. Take `⟨g, hg⟩` from `exists_ext hk t`. Establish `hsub : (t : Matrix (Fin (k + 1)) (Fin (k + 1)) F) = (g : Matrix (Fin n) (Fin n) F).submatrix (Fin.castLE hk.le) (Fin.castLE hk.le)`. Rewrite using `[hg, extM_submatrix]`. Establish `hrow : ∀ i j : Fin n, k + 1 ≤ (i : ℕ) → (g : Matrix (Fin n) (Fin n) F) i j = (1 : Matrix (Fin n) (Fin n) F) i j`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j hi`. Rewrite using `[hg]`. Conclude with `extM_row _ i j hi`. Establish `hP : inP (k + 1) g`. Unfold `inP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hrow, fun i j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `extM_neg _ (fun h => by obtain ⟨h1, h2⟩ := h; omega)`. Use `⟨g, hP, by rw [hg, det_extM hk.le], fun x => conj_col hk g hrow _ hsub x, ?_⟩` and prove the remaining obligations. Introduce `c hc`.
-
-Rewrite using `[hg]`. Conclude with `div_extM c _ hk.le hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem column_mirabolic_holds : ColumnsMirabolic := by
   unfold ColumnsMirabolic ForF

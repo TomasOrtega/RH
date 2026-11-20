@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LiftAway
 
 /- English proof (translation)
-Establish `h` using `Ideal.mul_mem_mul hu hv`. Rewrite `h` using `[← Ideal.map_mul, ← pow_two, hI, Ideal.zero_eq_bot, Ideal.map_bot]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_mem_map {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
     {I : Ideal R} (hI : I ^ 2 = 0) {u v : S} (hu : u ∈ I.map (algebraMap R S))
@@ -19,7 +19,7 @@ theorem mul_eq_zero_of_mem_map {R S : Type} [CommRing R] [CommRing S] [Algebra R
   exact h
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `hy`. Take `⟨m, c, hc⟩` from `hz`. Use `⟨n + m, b * a ^ m + c * a ^ n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, ← hb, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frac_add {B B' : Type} [CommRing B] [CommRing B'] [Algebra B B'] {a : B} {y z : B'}
     (hy : ∃ (n : ℕ) (b : B), y * algebraMap B B' a ^ n = algebraMap B B' b)
@@ -32,53 +32,49 @@ theorem frac_add {B B' : Type} [CommRing B] [CommRing B'] [Algebra B B'] {a : B}
   ring
 
 /- English proof (translation)
-Use `haveI := hloc`. Use `haveI := hflat`. Use `set φ := algebraMap B B' with hφ`. Establish `hφs : ∀ (r : R) (b : B), φ (r • b) = r • φ b` using `fun r b => by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, hφ, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : IsUnit (φ a)`. Establish `hu : IsUnit (p' (φ a))`. Rewrite using `[hcomm]`. Conclude with `IsLocalization.Away.algebraMap_isUnit (p a)`. Take `⟨v, hv⟩` from `hp' (↑hu.unit⁻¹ : B₀')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : φ a * v - 1 ∈ I.map (algebraMap R B')`. Rewrite using `[← hker', map_sub, map_mul, hv, map_one, IsUnit.mul_val_inv, sub_self]`. Establish `h2` using `mul_eq_zero_of_mem_map hI hn hn`. Use `isUnit_iff_exists_inv.mpr ⟨v * (1 - (φ a * v - 1)), ?_⟩` and prove the remaining obligations. Take the linear combination `(-1 : B') * h2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `lift0 : ∀ y : B', ∃ (n : ℕ) (b : B), y * φ a ^ n - φ b ∈ I.map (algebraMap R B')`. Introduce `y`. Take `⟨⟨z, s, hs⟩, hz⟩` from `IsLocalization.surj (Submonoid.powers (p a)) (p' y)`. Take `⟨n, rfl⟩` from `hs`. Take `⟨b, rfl⟩` from `hp z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨n, b, ?_⟩` and prove the remaining obligations. Simplify using `only at hz`. Rewrite using `[← hker', map_sub, map_mul, map_pow, hcomm, hcomm, ← map_pow, hz, sub_self]`. Establish `fracI : ∀ i ∈ I, ∀ y : B', ∃ (n : ℕ) (b : B), algebraMap R B' i * y * φ a ^ n = φ b`. Introduce `i hi y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, b, hb⟩` from `lift0 y`. Use `⟨n, algebraMap R B i * b, ?_⟩` and prove the remaining obligations. Establish `h0` using `mul_eq_zero_of_mem_map hI (Ideal.mem_map_of_mem (algebraMap R B') hi) hb`. Rewrite using `[map_mul, hφ, ← IsScalarTower.algebraMap_apply]`. Take the linear combination `h0`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `fracMem : ∀ z ∈ I.map (algebraMap R B'), ∃ (n : ℕ) (b : B), z * φ a ^ n = φ b`. Introduce `z hz`. Express the relevant statement in the definitionally equal form `z ∈ Submodule.span B' (algebraMap R B' '' I) at hz`. Establish `key : ∀ c : B', ∃ (n : ℕ) (b : B), (c * z) * φ a ^ n = φ b`. Proceed by induction on `hz using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Introduce `c`. Take `⟨n, b, hb⟩` from `fracI i hi c`. Conclude with `⟨n, b, by rw [← hb]; ring⟩`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => intro c; exact ⟨0, 0, by simp⟩`. Consider the case `add x y _ _ hx hy => intro c`. Rewrite using `[mul_add]`. Conclude with `frac_add (hx c) (hy c)`. Consider the case `smul d x _ hx => intro c`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx (c * d)`. Simplify using `using key 1`. Establish `surj : ∀ y : B', ∃ (n : ℕ) (b : B), y * φ a ^ n = φ b`. Introduce `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨n, b, hb⟩` from `lift0 y`. Take `⟨m, c, hc⟩` from `fracMem _ hb`. Use `⟨n + m, c + b * a ^ m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `kerI : ∀ x : B, φ x = 0 → ∃ n : ℕ, a ^ n * x ∈ I.map (algebraMap R B)`. Introduce `x hx`. Establish `h : algebraMap B₀ B₀' (p x) = 0` using `by rw [← hcomm, hx, map_zero]`. Take `⟨⟨s, hs⟩, h2⟩` from `(IsLocalization.map_eq_zero_iff (M := Submonoid.powers (p a)) (S := B₀') (p x)).mp h`. Take `⟨n, rfl⟩` from `hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Use `⟨n, (hker _).mp ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `h2`. Establish `core : ∀ x ∈ I.map (algebraMap R B), φ x = 0 → ∃ N : ℕ, a ^ N * x = 0`. Introduce `x hxI hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `x ∈ Submodule.span B (algebraMap R B '' I) at hxI`. Take `⟨k, c, g, rfl⟩` from `Submodule.mem_span_set'.mp hxI`. Use `choose i hi hgi using fun j => (g j).2`. Establish `hrel : ∑ j, i j • φ (c j) = 0`. Rewrite using `[← hx, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, Algebra.smul_def, ← hgi j, hφ, IsScalarTower.algebraMap_apply R B B', mul_comm]`. Take `⟨l, A, y, hy, hA⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := R) (M := B') (f := i) (x := fun j => φ (c j)) hrel`. Use `choose m d hd using fun j => surj (y j)`. Take `⟨M, hMdef⟩ : ∃ M, M = ∑ j, m j` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hMle : ∀ j, m j ≤ M` using `fun j => hMdef ▸ Finset.single_le_sum (fun j _ => Nat.zero_le (m j)) (Finset.mem_univ j)`. Establish `hM : ∀ j, y j * φ a ^ M = φ (d j * a ^ (M - m j))`. Introduce `j`. Take `⟨t, ht⟩` from `Nat.exists_eq_add_of_le (hMle j)`. Rewrite using `[ht, Nat.add_sub_cancel_left, map_mul, map_pow, ← hd j, pow_add]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `he : ∀ q, φ (c q * a ^ M - ∑ j, A q j • (d j * a ^ (M - m j))) = 0`. Introduce `q`. Rewrite using `[map_sub, map_mul, map_pow, map_sum]`. Repeatedly rewrite using `[hφs, ← hM]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show φ (c q) = ∑ j, A q j • y j from hy q, Finset.sum_mul]`. Simplify using `[smul_mul_assoc]`. Use `choose n' hn' using fun q => kerI _ (he q)`. Take `⟨N, hNdef⟩ : ∃ N, N = ∑ q, n' q` from `⟨_, rfl⟩`. Establish `hNle : ∀ q, n' q ≤ N` using `fun q => hNdef ▸ Finset.single_le_sum (fun q _ => Nat.zero_le (n' q)) (Finset.mem_univ q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities.
 
-Establish `hz : ∀ q, algebraMap R B (i q) * (a ^ N * (c q * a ^ M - ∑ j, A q j • (d j * a ^ (M - m j)))) = 0`. Introduce `q`. Take `⟨t, ht⟩` from `Nat.exists_eq_add_of_le (hNle q)`. Rewrite using `[ht, pow_add, mul_comm (a ^ n' q), mul_assoc, mul_left_comm, mul_eq_zero_of_mem_map hI (Ideal.mem_map_of_mem _ (hi q)) (hn' q), mul_zero]`. Use `⟨N + M, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `step : ∀ q, a ^ (N + M) * (c q • (g q : B)) = ∑ j, algebraMap R B (i q * A q j) * (a ^ N * (d j * a ^ (M - m j)))`. Introduce `q`. Establish `h1` using `hz q`. Rewrite using `[← hgi q, smul_eq_mul]`. Rewrite `h1`, the goal using `[map_mul, Algebra.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h1` using `[mul_sub, mul_sub, sub_eq_zero, Finset.mul_sum, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun q _ => step q, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← map_sum, hA j, map_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `kerAll : ∀ x : B, φ x = 0 → ∃ N : ℕ, a ^ N * x = 0`. Introduce `x hx`. Take `⟨n, hn⟩` from `kerI x hx`. Take `⟨N, hN⟩` from `core _ hn (by rw [map_mul, hx, mul_zero])`. Conclude with `⟨N + n, by rw [pow_add, mul_assoc, hN]⟩`.
-
-Use `(isLocalization_iff _ _).mpr ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Conclude with `(map_pow φ a n).symm ▸ hunit.pow n`. Introduce `y`. Take `⟨n, b, hb⟩` from `surj y`.
-
-Conclude with `⟨(b, ⟨a ^ n, n, rfl⟩), by simpa only [map_pow] using hb⟩`. Introduce `x y hxy`. Take `⟨n, hn⟩` from `kerAll (x - y) (by rw [map_sub, hxy, sub_self])`. Conclude with `⟨⟨a ^ n, n, rfl⟩, by rw [← sub_eq_zero, ← mul_sub]; exact hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLocalization_away_of_flat_lift (R B B' B₀ B₀' : Type) [CommRing R] [CommRing B]
     [CommRing B'] [CommRing B₀] [CommRing B₀'] [Algebra R B] [Algebra R B'] [Algebra B B']

@@ -18,13 +18,13 @@ def djVarMat (k j ρ : ℕ) :
   fun a b => MvPolynomial.X (Sum.inl (⟨2 * (j + ρ) + k - a.val, by omega⟩, ⟨b.val, by omega⟩))
 
 /- English proof (translation)
-Use `⟨∑ σ : Equiv.Perm (Fin j), MvPolynomial.C ((((Equiv.Perm.sign σ : ℤˣ) : ℤ) : ℂ)) * ∏ i, djVarMat k j ρ (σ i) i, ?_, ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finsetSum _ _).trans ?_` and prove the remaining obligations. Use `Finset.sup_le fun σ _ => ?_` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(MvPolynomial.totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `[djVarMat, MvPolynomial.totalDegree_X]`. Use `_ = j := by simp`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[DjU, Matrix.det_apply']`. Simplify using `only [map_sum, map_mul, map_prod, MvPolynomial.eval_C]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[djVarMat, Zh, MvPolynomial.eval_X]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPolyDeg_determinant_derivative (k j ρ : ℕ) : IsPolyDeg j (DjU k j ρ) := by
   refine ⟨∑ σ : Equiv.Perm (Fin j),
@@ -47,7 +47,7 @@ theorem isPolyDeg_determinant_derivative (k j ρ : ℕ) : IsPolyDeg j (DjU k j �
     simp [djVarMat, Zh, MvPolynomial.eval_X]
 
 /- English proof (translation)
-Introduce `k j ρ` and use `isPolyDeg_determinant_derivative k j ρ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem determinant_derivative_polynomial : DjPoly := fun k j ρ => isPolyDeg_determinant_derivative k j ρ
 

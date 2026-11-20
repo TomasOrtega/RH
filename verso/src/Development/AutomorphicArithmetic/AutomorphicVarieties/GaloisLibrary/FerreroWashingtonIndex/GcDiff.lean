@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih`. Establish `e : a + (c + 1) = (a + c) + 1` using `by omega`. Establish `h1 : ∀ j : ℕ, (((j + 1 : ℕ) : ZMod M) = (((a + c + 1 : ℕ)) : ZMod M)) ↔ ((j : ZMod M) = ((a + c : ℕ) : ZMod M))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Use `push_cast`. Conclude with `add_left_inj 1`. Establish `h2 : ((0 : ℕ) : ZMod M) = ((a + c + 1 : ℕ) : ZMod M) ↔ M ∣ a + c + 1`. Rewrite using `[Nat.cast_zero, eq_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CharP.cast_eq_zero_iff (ZMod M) M _`. Rewrite using `[e, Nat.succ_div, Finset.sum_range_succ']`. Simplify using `only [h1, h2]`. Rewrite using `[Nat.cast_add, ih]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem norm_index_count_bound (M a c : ℕ) :
     (((a + c) / M : ℕ) : ℤ) = ((a / M : ℕ) : ℤ) +
@@ -30,23 +30,23 @@ private theorem norm_index_count_bound (M a c : ℕ) :
     split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Introduce `M c _ s hc`. Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hinv : (c : ZMod M)⁻¹ * (c : ZMod M) = 1`. Rewrite using `[mul_comm]`. Conclude with `ZMod.coe_mul_inv_eq_one c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hts : (c : ZMod M)⁻¹ * (s - c) = (c : ZMod M)⁻¹ * s - 1`. Rewrite using `[mul_sub, hinv]`. Unfold `UpperTheory.V.FW.gc`. Rewrite using `[hts]`. Use `set t : ZMod M := (c : ZMod M)⁻¹ * s with ht`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : s = (c : ZMod M) * t`. Rewrite using `[ht, ← mul_assoc, ZMod.coe_mul_inv_eq_one c hc, one_mul]`. Use `set w := (t - 1).val with hw`. Establish `htw : t = ((w + 1 : ℕ) : ZMod M)`. Rewrite using `[Nat.cast_add, Nat.cast_one, hw, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key` using `norm_index_count_bound M (c * w) c`. Establish `hcast : ((c * w + c : ℕ) : ZMod M) = s`. Rewrite using `[hs, htw]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hcast]`. Break down `Nat.lt_or_ge (w + 1) M with h | h` into its components or cases. Establish `hvt : t.val = w + 1`. Rewrite using `[htw, ZMod.val_natCast, Nat.mod_eq_of_lt h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0`. Introduce `h0`. Establish `t0 : t = 0` using `by rw [ht, h0, mul_zero]`. Rewrite `hvt` using `[t0, ZMod.val_zero]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvt, if_neg hs0, sub_zero]`. Establish `e : c * (w + 1) = c * w + c` using `by ring`. Rewrite using `[e, key]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwe : w + 1 = M`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `ZMod.val_lt (t - 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ht0 : t = 0` using `by rw [htw, hwe, ZMod.natCast_self]`. Establish `hs0 : s = 0` using `by rw [hs, ht0, mul_zero]`. Rewrite using `[ht0, ZMod.val_zero, if_pos hs0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : c * w + c = c * M` using `by rw [← hwe]; ring`. Rewrite `key` using `[e, Nat.mul_div_cancel _ hM]`. Simplify using `only [mul_zero, Nat.zero_div, Nat.cast_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.gcDiff :
     ∀ (M c : ℕ) [NeZero M] (s : ZMod M), c.Coprime M → gc M c s - gc M c (s - c) = (∑ j ∈ Finset.range c, if (j : ZMod M) = s then 1 else 0) - if s = 0 then (c : ℤ) else 0 := by

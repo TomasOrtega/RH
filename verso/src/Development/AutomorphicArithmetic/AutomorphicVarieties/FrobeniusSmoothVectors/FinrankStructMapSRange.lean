@@ -4,23 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ hF`. Establish `h2 : (2 : k) ≠ 0`. Introduce `h`. Establish `h' : ((2 : ℕ) : k) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[CharP.cast_eq_zero_iff k l]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hF.l_odd ((Nat.prime_dvd_prime_iff_eq (Fact.out : l.Prime) Nat.prime_two).mp h')`. Use `set χ := F.Ψ⁻¹ ^ 2 * F.delK k with hχ`. Establish `hc : ((χ F.c : kˣ) : k) = -1`. Simplify using `[hχ, Frame.delK, hF.del_c, hF.Ψ_c]`. Set `Z` to `Z1C F.loc (chRep χ) fun _ => (⊥ : Submodule k k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : Z →ₗ[k] (F.G0 → k)` to `{ toFun := fun x g => (x.1.1 g + ((χ g : k) * x.1.1 F.c - x.1.1 F.c) * 2⁻¹) * (F.Ψ g : k) map_add' := by`. Introduce `x y`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `map_smul' := by`. Introduce `r x`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Use `ring }`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hker : Submodule.comap Z.subtype (continuousCoboundaries1 (chRep χ) fun _ => (⊥ : Submodule k k)) ≤ LinearMap.ker f`. Introduce and unpack `⟨x, hx⟩ hb`. Rewrite `hb` using `[Submodule.mem_comap]`. Take `⟨X, hX, -⟩` from `hb`. Rewrite using `[LinearMap.mem_ker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Establish `e1` using `hX (g : F.Γ)`. Establish `e2` using `hX F.c`. Simplify using `only [Submodule.subtype_apply, chRep_apply, hc] at e1 e2`. Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Set `L` to `Submodule.liftQ _ f hker`. Establish `hle : F.strS k ≤ LinearMap.range L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha`. Take `⟨x, hx, hx0, hax⟩` from `frame_extension_of_locallyConstant hF a ha`. Use `⟨Submodule.Quotient.mk ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.liftQ_apply]`. Use function extensionality and compare the values at `g`.
-
-Simplify using `[f, hx0, hax]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.finrank_structMapS_range :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → Module.rank k (F.strS k) ≤ C₀ := by

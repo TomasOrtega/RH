@@ -33,12 +33,12 @@ def LTCrysAll : Prop :=
         ∀ n : ℤ, Bw.multE P LL ψ τ' n = if n = (if j = j₀ then -1 else 0) then 1 else 0
 
 /- English proof (translation)
-The claim follows from `LTInh.ltCrys_iff_emb.2 H`.
+A detailed English derivation is pending.
 -/
 theorem ltCrys_of_all (H : LTCrysAll) : LTCrys := LTInh.ltCrys_iff_emb.2 H
 
 /- English proof (translation)
-The claim follows from `LTInh.emb_of_conrad H`.
+A detailed English derivation is pending.
 -/
 theorem all_of_conrad (H : ConradLocalTied) : LTCrysAll := LTInh.emb_of_conrad H
 
@@ -56,24 +56,24 @@ def JumpAt (k : ℤ) : Prop :=
         ∀ n : ℤ, Bw.multE P LL ψ τ' n = if n = k then 1 else 0
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ P AI hT w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hc hψ`. Conclude with `(H E Ω l P AI hT w A h O Bw hB a ha π hπ j₀ LL ψ hc hψ).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jumpAt_of_ltCrys (H : LTCrys) : JumpAt (-1) := by
   intro E Ω _ _ _ _ _ l _ P AI hT w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hc hψ
   exact (H E Ω l P AI hT w A h O Bw hB a ha π hπ j₀ LL ψ hc hψ).2.2.1
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure ℚ`. Establish `: Fact (Nat.Prime 2)` using `⟨Nat.prime_two⟩`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : HeightOneSpectrum (𝓞 ℚ), w ∈ placesOver ℚ 2 := by`. Establish `hne : Ideal.span {((2 : ℕ) : 𝓞 ℚ)} ≠ ⊤`. Introduce `e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : Ideal.absNorm (Ideal.span {((2 : ℕ) : 𝓞 ℚ)}) = 2`. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `: ((2 : ℕ) : 𝓞 ℚ) = algebraMap ℤ (𝓞 ℚ) ((2 : ℕ) : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[e]`. Simplify using `at h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hm : ((2 : ℕ) : 𝓞 ℚ) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Conclude with `⟨⟨M, hM.isPrime, fun e => by rw [e] at hm; simp at hm⟩, hm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨P, AI, hT⟩` from `GlobalTheory.MemLoc.exists_locPrime_tied 2`. Take `⟨A, h⟩` from `exists_isPlaceOver Ω w`. Take `⟨j, L₀, hj, H'⟩` from `GlobalTheory.PlaceBridge.exists_locBridge 2 ℚ Ω w A hw h`. Take `⟨Bw, e, -⟩` from `H' L₀ le_rfl`. Establish `hB : GlobalTheory.Pst.Induces Bw` using `fun x => by rw [e]; exact hj x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `GlobalTheory.localArtinExists_holds ℚ Ω A w h`. Take `⟨j₀, hj₀⟩` from `LTInh.exists_emb Bw h hB (AlgHom.id ℚ_[2] ↥Bw.Kw.1)`. Take `⟨π, hπ, hπl⟩` from `LTInh.exists_unif_rat (l := 2) hw`. Take `⟨LL, ψ, hL, h1, h2, -⟩` from `LTInh.exists_char h a ha π hπ j₀ Bw.LL`. Set `τ' : ↥Bw.Kw.1 →ₐ[ℚ_[2]] ↥LL.1` to `IntermediateField.inclusion fun x hx => hL (Bw.LL_split Bw.Kw.1.val ⟨x, hx⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `e1` using `H ℚ Ω 2 P AI hT w A h _ Bw hB a ha π hπ j₀ LL ψ h1 h2 τ' hj₀ (-1)`. Apply the tactic sequence `have e2 := (LTInh.holds_rat P AI hT h Bw hB a ha π hπl j₀ LL ψ h1 h2).2.2.1 τ' (fun x => by convert hj₀ x using 1 <;> first | rfl | simp) (-1)`. Rewrite `e1` using `[e2]`. Assume the negation of the conclusion as `hk`. Simplify using `[Ne.symm hk] at e1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 -/
 theorem eq_neg_one_of_jumpAt {k : ℤ} (H : JumpAt k) : k = -1 := by
   let Ω := AlgebraicClosure ℚ

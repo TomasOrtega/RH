@@ -28,13 +28,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 attribute [local instance] Over.cartesianMonoidalCategory CategoryTheory.Hom.group
 
 /- English proof (translation)
-Establish `hsim` using `exists_obj_twist_by_similitude SimAlg.sim_group`. Establish `hred : IsReduced Xo.X` using `by haveI := Xo.smooth`. Conclude with `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ Xo.s (SmoothOfRelativeDimension.smooth D.dim _)).1`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨i, hi⟩` from `(ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ Xo.univ Xo.univ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg'⟩` from `(SimAlg.sim_group E H D hpq).2.2.2 g`. Establish `hν' : (l.A : ℤ) ∣ g'.ν l.A - 1`. Establish `h₁` using `(hg' l.A l.A_pos).2`. Establish `: g'.ν l.A - 1 = (g.ν l.A * g'.ν l.A - 1) - (g.ν l.A - 1) * g'.ν l.A` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `dvd_sub h₁ (hν.mul_right _)`. Take `⟨o₁, m₁, a₁, b₁⟩` from `hsim E H D l _ _ _ _ Xo.univ g hpq hν`. Take `⟨o₂, m₂, a₂, b₂⟩` from `hsim E H D l _ _ _ _ Xo.univ g' hpq hν'`. Take `⟨f, hf⟩` from `Moduli.LevelAction.exists_twists Xo g hred i.toSABMap hi o₁ m₁ a₁ b₁`. Take `⟨f', hf'⟩` from `Moduli.LevelAction.exists_twists Xo g' hred i.toSABMap hi o₂ m₂ a₂ b₂`.
-
-Conclude with `⟨⟨f, f', Moduli.LevelAction.comp_eq_id_of_twists Xo hred i hf hf' (fun a => ((hg' _ hM).1 a).2) (fun a => ((hg' _ l.A_pos).1 a).2), Moduli.LevelAction.comp_eq_id_of_twists Xo hred i hf' hf (fun a => ((hg' _ hM).1 a).1) (fun a => ((hg' _ l.A_pos).1 a).1)⟩, hf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_levAut (hpq : 1 ≤ D.p + D.q) (Xo : Moduli D l) (g : Sim D)
     (hν : (l.A : ℤ) ∣ g.ν l.A - 1) : ∃ ρ : Xo.X ≅ Xo.X, Xo.LevAut g ρ := by
@@ -61,7 +59,7 @@ theorem exists_levAut (hpq : 1 ≤ D.p + D.q) (Xo : Moduli D l) (g : Sim D)
       (fun a => ((hg' _ l.A_pos).1 a).1)⟩, hf⟩
 
 /- English proof (translation)
-Establish `e : a = (a - b) + b` using `by abel`. Rewrite using `[e, Xo.univ.eta_add, Xo.univ.eta_ker _ h, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_congr (Xo : Moduli D l) {a b : D.La} (h : a - b ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) :
     Xo.univ.eta a = Xo.univ.eta b := by
@@ -69,7 +67,7 @@ theorem eta_congr (Xo : Moduli D l) {a b : D.La} (h : a - b ∈ l.Mb • (⊤ : 
   rw [e, Xo.univ.eta_add, Xo.univ.eta_ker _ h, one_mul]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h`. Establish `e : a = (a - b) + b` using `by abel`. Rewrite using `[e, Xo.univ.etaA_add, hx, Xo.univ.etaA_ker, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem etaA_congr (Xo : Moduli D l) {a b : D.La} (h : D.ModN l.A (a - b)) :
     Xo.univ.etaA a = Xo.univ.etaA b := by
@@ -78,7 +76,7 @@ theorem etaA_congr (Xo : Moduli D l) {a b : D.La} (h : D.ModN l.A (a - b)) :
   rw [e, Xo.univ.etaA_add, hx, Xo.univ.etaA_ker, one_mul]
 
 /- English proof (translation)
-Use `GlobalTheory.exists_sim_of_aut_mod E H D l l.A (liftLa γ) hpq l.A_pos hA fun x hx => ?_` and prove the remaining obligations. Establish `h` using `liftLa_spec γ x`. Rewrite `h` using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hx]`. Establish `h2` using `γ.map_eq_zero_iff.1 h.symm`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sim (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (γ : LaMod D l ≃ₗ[𝓞 E] LaMod D l) :
     ∃ g : Sim D, (∀ a, g.f l.M a - liftLa γ a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) ∧
@@ -90,9 +88,9 @@ theorem exists_sim (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (γ : LaMod D 
   exact (Submodule.Quotient.mk_eq_zero _).1 h2
 
 /- English proof (translation)
-Take `⟨g, h1, h2, h3⟩` from `exists_sim hpq hA γ`. Take `⟨ρ, hs, ν, hM, hAA⟩` from `exists_levAut hpq Xo g h3`. Use `⟨ρ.hom, ν, inferInstance, hs, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← eta_congr Xo (h1 a)]`. Conclude with `hM a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hAA a`. Rewrite `e` using `[etaA_congr Xo (h2 a)]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Moduli D l)
     (γ : LaMod D l ≃ₗ[𝓞 E] LaMod D l) :
@@ -107,7 +105,7 @@ theorem exists_move (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Moduli 
     exact e
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.levelMove_moduli_unique_universalTriple E H D l Xo c ρ ρ' ν ν' _ _ _ _ hpq (fun a => by simp) (fun a => ⟨0, by simp⟩) i i' h h' (exists_sim hpq hA γ)`.
+A detailed English derivation is pending.
 -/
 theorem move_unique (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Moduli D l) (c : Coeff l)
     (γ : LaMod D l ≃ₗ[𝓞 E] LaMod D l) {ρ ρ' : Xo.X ⟶ Xo.X} {ν : SABMap Xo.univ.t Xo.univ.t ρ}
@@ -118,7 +116,7 @@ theorem move_unique (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Moduli 
     (exists_sim hpq hA γ)
 
 /- English proof (translation)
-Take `⟨ρ', ν', i', h', hm⟩` from `hy`. Take `⟨rfl, e⟩` from `move_unique hpq hA Xo c γ i i' h h'`. Take `⟨⟨w, hw⟩, hu⟩` from `GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H D l Xo c ρ ν h.1 S y`. Rewrite using `[← hu w y' ν' e.symm hw hm]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem frMove_transfer (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Moduli D l) (c : Coeff l)
     (γ : LaMod D l ≃ₗ[𝓞 E] LaMod D l) {ρ : Xo.X ⟶ Xo.X} {ν : SABMap Xo.univ.t Xo.univ.t ρ} (i : IsIso ρ)
@@ -130,7 +128,7 @@ theorem frMove_transfer (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Mod
   rwa [← hu w y' ν' e.symm hw hm]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.eq]`. Conclude with `liftLa_spec 1 a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftLa_one_sub (a : D.La) :
     liftLa (1 : LaMod D l ≃ₗ[𝓞 E] LaMod D l) a - a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
@@ -138,7 +136,7 @@ theorem liftLa_one_sub (a : D.La) :
   exact liftLa_spec 1 a
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.eq]`. Establish `h1` using `liftLa_spec (γ * δ) a`. Establish `h2` using `liftLa_spec γ (liftLa δ a)`. Rewrite `h2` using `[liftLa_spec δ a]`. Conclude with `h1.trans h2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftLa_mul_sub (γ δ : LaMod D l ≃ₗ[𝓞 E] LaMod D l) (a : D.La) :
     liftLa (γ * δ) a - liftLa γ (liftLa δ a) ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := by
@@ -149,19 +147,19 @@ theorem liftLa_mul_sub (γ δ : LaMod D l ≃ₗ[𝓞 E] LaMod D l) (a : D.La) :
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hpq l₁ hA`. Take `⟨⟨ι, hι, hone⟩, hmul, hnb⟩` from `GlobalTheory.T.framedPointMove_calculus E H Dw l Xo c`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g S _ _ y`. Take `⟨ρ, ν, i, h⟩` from `exists_move hpq hA Xo g.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `(GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H Dw l Xo c ρ ν h.1 S y).1`. Conclude with `⟨y', ρ, ν, i, h, hy'⟩`. Introduce `g S _ _ y y' y'' h' h''`. Take `⟨ρ, ν, i, h, hm⟩` from `h'`. Establish `hm'` using `frMove_transfer hpq hA Xo c g.1 i h h''`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl` from `(GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H Dw l Xo c ρ ν h.1 S y).2 y' y'' ν rfl hm hm'`. Conclude with `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) y').2.1`. Introduce `S _ _ y`. Use `⟨𝟙 _, ι, inferInstance, ⟨Category.id_comp _, fun a => ?_, fun a => ?_⟩, hone S y⟩` and prove the remaining obligations. Rewrite using `[hι, Category.comp_id, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (eta_congr Xo (liftLa_one_sub a))`. Rewrite using `[hι, Category.comp_id, Category.id_comp]`. Both sides reduce to the same expression. Introduce `g g' S _ _ y y' y'' h h'`. Take `⟨ρ, ν, i, h, hm⟩` from `h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ', ν', i', h', hm'⟩` from `h'`. Take `⟨μ, hμ, hc⟩` from `hmul ρ ρ' ν ν'`. Use `⟨ρ ≫ ρ', μ, inferInstance, ⟨?_, fun a => ?_, fun a => ?_⟩, hc S y y' y'' hm hm'⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h'.1, h.1]`. Establish `e : Xo.univ.eta ((levG (g * g')).1 a) = Xo.univ.eta ((levG g).1 ((levG g').1 a))` using `eta_congr Xo (liftLa_mul_sub g.1 g'.1 a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, hμ, ← Category.assoc, h.2.1, Category.assoc, h'.2.1, Category.assoc]`. Establish `e : (levG (g * g')).2 a = (levG g).2 ((levG g').2 a)` using `rfl`. Rewrite using `[e, hμ, ← Category.assoc, h.2.2, Category.assoc, h'.2.2, Category.assoc]`. Introduce `g S T _ _ _ _ φ y y' z z' hyz hy hz`. Take `⟨ρ, ν, i, h, hm⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hnb ρ ν).1 S T φ y y' z z' hyz hm (frMove_transfer hpq hA Xo c g.1 i h hz)`. Introduce `g S _ _ t y y' z z' hyz hy hz`. Take `⟨ρ, ν, i, h, hm⟩` from `hy`. Conclude with `(hnb ρ ν).2 S t y y' z z' hyz hm (frMove_transfer hpq hA Xo c g.1 i h hz)`.
+A detailed English derivation is pending.
 -/
 theorem levLaws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ l₁ : Level H, l.A.Coprime l.M → LevLaws Xo c l₁ := by
   intro E _ _ _ H Dw l Xo c hpq l₁ hA

@@ -14,30 +14,30 @@ def BS (c : R) (M : Type w) [AddCommGroup M] [Module R M] : Prop :=
     ∀ x : M, (∀ n : ℕ, ∃ y, x = c ^ n • y) → c ^ k • x = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨k, fun x _ _ => h x, fun x _ => h x⟩`.
+Supply the required witnesses or components.
 -/
 theorem BS.of_pow {c : R} {M : Type w} [AddCommGroup M] [Module R M] (k : ℕ)
     (h : ∀ x : M, c ^ k • x = 0) : BS c M :=
   ⟨k, fun x _ _ => h x, fun x _ => h x⟩
 
 /- English proof (translation)
-Take `⟨k₁, t₁, s₁⟩` from `h₁`. Take `⟨k₂, t₂, s₂⟩` from `h₂`. Establish `key : ∀ (y : M) (n : ℕ), c ^ n • y ∈ N → c ^ k₂ • y ∈ N`. Introduce `y n hy`. Establish `h0 : c ^ n • (N.mkQ y) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero N).2 hy`. Establish `h1` using `t₂ _ _ h0`. Rewrite `h1` using `[← map_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨k₁ + k₂, ?_, ?_⟩` and prove the remaining obligations. Introduce `x n hx`. Establish `hm : c ^ k₂ • x ∈ N` using `key x n (by rw [hx]; exact N.zero_mem)`. Establish `h0 : c ^ n • (⟨_, hm⟩ : N) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_smul, Submodule.coe_zero]`. Rewrite using `[smul_comm, hx, smul_zero]`. Establish `h1` using `congrArg Subtype.val (t₁ _ _ h0)`. Simplify using `only [Submodule.coe_smul, Submodule.coe_zero] at h1`. Rewrite using `[pow_add, mul_smul, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx2 : c ^ k₂ • x ∈ N`. Establish `h0 : c ^ k₂ • N.mkQ x = 0` using `s₂ _ (fun m => by`. Take `⟨y, hy⟩` from `hx m`. Conclude with `⟨N.mkQ y, by rw [hy, map_smul]⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[← map_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 h0`. Establish `hw : ∀ n : ℕ, ∃ w : N, x = c ^ n • (w : M)`. Introduce `n`. Take `⟨y, hy⟩` from `hx (n + k₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hy2 : c ^ k₂ • y ∈ N`. Use `key y (k₂ + (n + k₂)) ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_smul, ← hy]`. Conclude with `hx2`. Conclude with `⟨⟨_, hy2⟩, by rw [hy, pow_add, mul_smul]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨w₀, hw₀⟩` from `hw 0`. Establish `hxN : x ∈ N`. Rewrite using `[hw₀]`. Simplify using the standard rewrite rules. Establish `h1` using `congrArg Subtype.val (s₁ ⟨x, hxN⟩ (fun n => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw'⟩` from `hw n`. Conclude with `⟨w, Subtype.ext (by simpa using hw')⟩))`. Simplify using `only [Submodule.coe_smul, Submodule.coe_zero] at h1`. Rewrite using `[add_comm, pow_add, mul_smul, h1, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem BS.ext {c : R} {M : Type w} [AddCommGroup M] [Module R M] (N : Submodule R M)
     (h₁ : BS c N) (h₂ : BS c (M ⧸ N)) : BS c M := by
@@ -86,13 +86,13 @@ theorem BS.ext {c : R} {M : Type w} [AddCommGroup M] [Module R M] (N : Submodule
     rw [add_comm, pow_add, mul_smul, h1, smul_zero]
 
 /- English proof (translation)
-Take `⟨k, t, s⟩` from `h`. Use `⟨k + a, ?_, ?_⟩` and prove the remaining obligations. Introduce `x n hx`. Establish `h0 : c ^ n • (⟨_, hN x⟩ : N) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Submodule.coe_smul, Submodule.coe_zero]`. Rewrite using `[smul_comm, hx, smul_zero]`. Establish `h1` using `congrArg Subtype.val (t _ _ h0)`. Simplify using `only [Submodule.coe_smul, Submodule.coe_zero] at h1`. Rewrite using `[pow_add, mul_smul, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `h1` using `congrArg Subtype.val (s ⟨_, hN x⟩ (fun n => by`. Take `⟨y, hy⟩` from `hx n`. Use `⟨⟨_, hN y⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy, smul_comm]))`. Simplify using `only [Submodule.coe_smul, Submodule.coe_zero] at h1`. Rewrite using `[pow_add, mul_smul, h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem BS.of_submodule {c : R} {M : Type w} [AddCommGroup M] [Module R M] (N : Submodule R M)
     (a : ℕ) (hN : ∀ x : M, c ^ a • x ∈ N) (h : BS c N) : BS c M := by
@@ -120,17 +120,17 @@ section Base
 variable {I : Ideal R} {c : R}
 
 /- English proof (translation)
-Distinguish the cases in `hJ : ∀ t : R, t • m = 0 → t ∈ I`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Introduce `x n hx`. Take `⟨r, rfl⟩` from `hm x`. Rewrite `hx` using `[smul_smul]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hI.mem_or_mem (hJ _ hx) with h | h` into its components or cases. Conclude with `absurd (hI.mem_of_pow_mem _ h) hc`. Simplify using `[hM r h m]`. Introduce `x hx`. Take `⟨r, rfl⟩` from `hm x`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : r ∈ I`. Use `hs r (fun n => ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx n`. Take `⟨s, rfl⟩` from `hm y`. Rewrite `hy` using `[smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (r - c ^ n * s) ∈ I` using `hJ _ (by rw [sub_smul, hy, sub_self])`. Establish `h1 : r = c ^ n * s + (r - c ^ n * s)` using `by ring`. Rewrite using `[h1]`. Conclude with `Submodule.add_mem_sup (Ideal.mem_span_singleton'.2 ⟨s, mul_comm _ _⟩) h0`. Simplify using `[hM r hr m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `push Not at hJ`. Take `⟨t, ht, htI⟩` from `hJ`. Take `⟨n, hn⟩` from `hv t htI`. Take `⟨a, ha, i, hi, hai⟩` from `Submodule.mem_sup.1 hn`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `BS.of_pow n (fun x => ?_)` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hm x`. Rewrite using `[smul_comm, ← hai, add_smul, mul_smul, ht, smul_zero, hM i hi m, add_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem BS.cyclic (hI : I.IsPrime) (hc : c ∉ I)
     (hv : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -167,15 +167,15 @@ theorem BS.cyclic (hI : I.IsPrime) (hc : c ∉ I)
     rw [smul_comm, ← hai, add_smul, mul_smul, ht, smul_zero, hM i hi m, add_zero, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Introduce `M _ _ _ g hg`. Use `BS.of_pow 0 (fun x => ?_)` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span R (Set.range g)` using `by rw [hg]; trivial`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Set.range g = ∅` using `Set.range_eq_empty g`. Rewrite `hx` using `[this, Submodule.span_empty, Submodule.mem_bot]`. Simplify using `[hx]`. Consider the case `succ a ih`. Introduce `M _ _ hM g hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `BS.ext (Submodule.span R {g 0}) ?_ ?_` and prove the remaining obligations. Use `BS.cyclic hI hc hv hs (fun i hi x => Subtype.ext (by simpa using hM i hi x)) ⟨g 0, Submodule.mem_span_singleton_self _⟩ (fun x => ?_)` and prove the remaining obligations. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 x.2`. Conclude with `⟨r, Subtype.ext (by simpa using hr.symm)⟩`. Use `ih _ (fun i hi x => ?_) (fun j => Submodule.mkQ _ (g j.succ)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`. Rewrite using `[← map_smul, hM i hi y, map_zero]`. Rewrite using `[eq_top_iff, ← Submodule.range_mkQ (Submodule.span R {g 0}), LinearMap.range_eq_map, ← hg, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Submodule.mkQ (Submodule.span R {g 0}) (g 0) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_span_singleton_self (g 0))`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BS.of_gens (hI : I.IsPrime) (hc : c ∉ I)
     (hv : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -211,15 +211,15 @@ theorem BS.of_gens (hI : I.IsPrime) (hc : c ∉ I)
         · exact Submodule.subset_span ⟨j, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero`. Introduce `M _ _ _ hM`. Use `BS.of_pow 0 (fun x => ?_)` and prove the remaining obligations. Simplify using `using hM 1 (by simp) x`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ s ih`. Introduce `M _ _ hfin hM`. Establish `hN : (I • (⊤ : Submodule R M)).FG` using `Submodule.FG.smul hfg Module.Finite.fg_top`. Use `BS.ext (I • (⊤ : Submodule R M)) ?_ ?_` and prove the remaining obligations. Use `ih _ (Module.Finite.iff_fg.2 hN) (fun r hr x => Subtype.ext ?_)` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `x`. Simplify using `only [Submodule.coe_smul, Submodule.coe_zero]`. Proceed by induction on `hx using Submodule.smul_induction_on' with`. Consider the case `smul i hi y _`. Rewrite using `[smul_smul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM _ (by rw [pow_succ]; exact Ideal.mul_mem_mul hr hi) y`. Consider the case `add x _ y _ hx hy => rw [smul_add, hx, hy, add_zero]`. Take `⟨a, g, hg⟩` from `Module.Finite.exists_fin (R := R) (M := M ⧸ (I • (⊤ : Submodule R M)))`. Use `BS.of_gens hI hc hv hs a _ (fun i hi x => ?_) g hg` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.smul_mem_smul hi (Submodule.mem_top (x := y)))`.
+A detailed English derivation is pending.
 -/
 theorem BS.of_finite (hfg : I.FG) (hI : I.IsPrime) (hc : c ∉ I)
     (hv : ∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I)
@@ -253,25 +253,23 @@ theorem BS.of_finite (hfg : I.FG) (hI : I.IsPrime) (hc : c ∉ I)
 end Base
 
 /- English proof (translation)
-Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Use `choose y hy using hx`. Establish `hr : ∀ n, ∃ r : Fin m → R, ∑ i, r i • g i = c ^ a • y n`. Introduce `n`. Use `hN (y n)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hg]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun R).1 this`. Use `choose r hr using hr`. Set `S : Fin m → ℕ → R` to `fun i n => ∑ j ∈ Finset.range n, c ^ j * r j i`. Establish `hmod : ∀ (u v : R) (n : ℕ), u ≡ v [SMOD ((Ideal.span {c}) ^ n • ⊤ : Submodule R R)] ↔ ∃ t, u - v = c ^ n * t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `u v n`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩; exact ⟨t, by rw [← ht, mul_comm]⟩`. Introduce and unpack `⟨t, ht⟩; exact ⟨t, by rw [ht, mul_comm]⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hlim : ∀ i, ∃ s : R, ∀ n, ∃ t, S i n - s = c ^ n * t`. Introduce `i`. Take `⟨L, hL⟩` from `hc.prec' (S i) (fun {p q} hpq => by`. Rewrite using `[hmod]`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hpq`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨- ∑ j ∈ Finset.range d, c ^ j * r (p + j) i, ?_⟩` and prove the remaining obligations. Simplify using `only [S]`. Rewrite using `[Finset.sum_range_add, mul_neg, Finset.mul_sum]`. Simplify using `only [pow_add, mul_assoc]`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `⟨L, fun n => (hmod _ _ _).1 (hL n)⟩`. Use `choose s t ht using hlim`. Establish `hpart : ∀ n, c ^ a • x n = c ^ a • x 0 + ∑ i, S i n • g i`. Introduce `n`. Proceed by induction on `n with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `zero => simp [S]`. Consider the case `succ n ih`. Establish `h1 : c ^ a • x (n + 1) = c ^ a • x n + c ^ n • (c ^ a • y n)`. Rewrite using `[smul_comm (c ^ n), ← smul_add, ← hy n]`. Use `congr 1`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h1, ih, ← hr n, add_assoc, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [S]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_range_succ, add_smul, mul_smul]`. Use `⟨c ^ a • x 0 + ∑ i, s i • g i, fun n => ⟨∑ i, (- t i n) • g i, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hpart n, add_sub_add_left_eq_sub, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← sub_smul, smul_smul, show s i - S i n = c ^ n * - t i n by`.
-
-Rewrite using `[mul_neg, ← ht i n]`. Use the proof step `ring]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limit_of_cauchy {c : R} (hc : IsPrecomplete (Ideal.span {c}) R)
     {M : Type w} [AddCommGroup M] [Module R M] (N : Submodule R M) (hfg : N.FG) (a : ℕ)
@@ -328,17 +326,17 @@ theorem limit_of_cauchy {c : R} (hc : IsPrecomplete (Ideal.span {c}) R)
     rw [mul_neg, ← ht i n]; ring]
 
 /- English proof (translation)
-Introduce `R _ I c hfg hnil hprime _ hv hpre hsep M _ _ hM`. Take `⟨a, N, hN, hx⟩` from `hM`. Take `⟨s, hs⟩` from `hnil`. Establish `hBS : BS c M`. Distinguish the cases in `hc : c ∈ I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `BS.of_pow s (fun x => ?_)` and prove the remaining obligations. Establish `h0 : c ^ s ∈ I ^ s` using `Ideal.pow_mem_pow hc s`. Rewrite `h0` using `[hs]`. Establish `h1 : c ^ s = 0` using `h0`. Simplify using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `BS.of_submodule N a hx ?_` and prove the remaining obligations. Use `BS.of_finite hfg hprime hc hv hsep s _ (Module.Finite.iff_fg.2 hN) (fun r hr y => ?_)` and prove the remaining obligations. Rewrite `hr` using `[hs]`. Establish `h1 : r = 0` using `hr`. Simplify using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨k, ht, hd⟩` from `hBS`. Use `⟨k + a, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x n h`. Rewrite using `[add_comm, pow_add, mul_smul, ht x n h, smul_zero]`. Introduce `x h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_comm, pow_add, mul_smul, hd x h, smul_zero]`. Introduce `x h`. Take `⟨z, hz⟩` from `limit_of_cauchy hpre N hN a hx x h`. Use `⟨c ^ k • z, fun n => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hz n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨c ^ k • y, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_smul, ← smul_sub, hy, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem afg_separated_complete :
     ∀ (R : Type) [CommRing R] (I : Ideal R) (c : R), I.FG → IsNilpotent I → I.IsPrime →

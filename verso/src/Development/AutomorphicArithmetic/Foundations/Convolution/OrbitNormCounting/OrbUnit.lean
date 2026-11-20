@@ -5,9 +5,9 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Establish `htop : rStab (fun _ : H => c) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `k _ x`. Both sides reduce to the same expression. Unfold `avg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[htop, Subgroup.index_top, Nat.cast_one, inv_one, one_mul]`. Rewrite using `[finsum_eq_single (fun _ => c) ((1 : H) : H ⧸ (⊤ : Subgroup H))]`. Introduce `x hx`. Conclude with `absurd (QuotientGroup.subsingleton_quotient_top.elim x _) hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem avg_const' {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have htop : rStab (fun _ : H => c) = ⊤ := by
@@ -21,17 +21,17 @@ private theorem avg_const' {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c)
   exact absurd (QuotientGroup.subsingleton_quotient_top.elim x _) hx
 
 /- English proof (translation)
-Unfold `cptPart at hc ⊢`. Proceed by induction on `hc using Subgroup.closure_induction with`. Consider the case `mem x hx`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨T.mul_mem (T.mul_mem (T.inv_mem ht) hx.1) ht, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : G ≃ₜ G` to `(Homeomorph.mulLeft t⁻¹).trans (Homeomorph.mulRight t)`. Establish `he : ∀ y, e y = t⁻¹ * y * t` using `fun y => rfl`. Establish `hz : ∀ n : ℤ, (t⁻¹ * x * t) ^ n = t⁻¹ * x ^ n * t`. Introduce `n`. Simplify using `using (conj_zpow (a := t⁻¹) (b := x) (i := n))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `himg : (Subgroup.zpowers (t⁻¹ * x * t) : Set G) = e '' (Subgroup.zpowers x : Set G)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, rfl⟩`. Conclude with `⟨x ^ n, ⟨n, rfl⟩, (hz n).symm⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨n, rfl⟩, rfl⟩`. Conclude with `⟨n, hz n⟩`. Rewrite using `[himg, ← e.image_closure]`. Conclude with `hx.2.image e.continuous`. Consider the case `one => simp`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Establish `: t⁻¹ * (x * y) * t = (t⁻¹ * x * t) * (t⁻¹ * y * t)` using `by group`. Rewrite using `[this]`. Conclude with `Subgroup.mul_mem _ hx hy`. Consider the case `inv x _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: t⁻¹ * x⁻¹ * t = (t⁻¹ * x * t)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `Subgroup.inv_mem _ hx`.
+A detailed English derivation is pending.
 -/
 private theorem cptPart_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (T : Subgroup G) {t c : G} (ht : t ∈ T) (hc : c ∈ cptPart T) : t⁻¹ * c * t ∈ cptPart T := by
@@ -65,23 +65,23 @@ private theorem cptPart_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
     exact Subgroup.inv_mem _ hx
 
 /- English proof (translation)
-Introduce `G _ _ _ θ K δ hθ hδ horb hcpt`. Unfold `twOrb`. Rewrite using `[finsum_eq_single _ (DoubleCoset.mk (twCent θ δ) K 1)]`. Take `⟨t, k, ht, hk, hx⟩` from `DoubleCoset.mk_out_eq_mul (twCent θ δ) K (1 : G)`. Generalize the expression as in `hxx : Quotient.out (DoubleCoset.mk (twCent θ δ) K 1) = x at hx ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `hx` using `[mul_one]`. Establish `ht' : t * δ = δ * θ t` using `ht`. Establish `h1 : (twCent θ δ ⊓ K.map (MulAut.conj x).toMonoidHom).relIndex (cptPart (twCent θ δ)) = 1`. Rewrite using `[Subgroup.relIndex_eq_one]`. Introduce `c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc'` using `cptPart_conj _ ht hc`. Rewrite `hc`, `hc'` using `[hcpt]`. Use `⟨hc.1, k⁻¹ * (t⁻¹ * c * t) * k, K.mul_mem (K.mul_mem (K.inv_mem hk) hc'.2) hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (fun k' : K => (K : Set G).indicator (1 : G → ℂ) ((x * k')⁻¹ * δ * θ (x * k'))) = fun _ => 1`. Use function extensionality and compare the values at `k'`. Establish `e : (x * k')⁻¹ * δ * θ (x * k') = (k * k')⁻¹ * δ * θ (k * k')`. Establish `: δ * θ (x * k') = t * δ * θ (k * k')`. Rewrite using `[ht', hx, mul_assoc t k, map_mul θ t, mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, this, hx]`. Use `group`. Establish `hkk : k * k' ∈ K` using `K.mul_mem hk k'.2`. Rewrite using `[e, Set.indicator_of_mem]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `K.mul_mem (K.mul_mem (K.inv_mem hkk) hδ) (hθ _ hkk)`. Rewrite using `[h1, h2, avg_const']`. Simplify using the standard rewrite rules. Introduce `q hq`. Establish `h2 : (fun k' : K => (K : Set G).indicator (1 : G → ℂ) ((Quotient.out q * k')⁻¹ * δ * θ (Quotient.out q * k'))) = fun _ => 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `k'`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hy`. Apply `hq` to reduce the goal to its premises. Take `⟨k, hk, e⟩` from `horb _ hy ⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[← DoubleCoset.out_eq' (twCent θ δ) K q]`. Use `symm`. Rewrite using `[DoubleCoset.eq]`. Use `⟨Quotient.out q * k' * k⁻¹, ?_, k * (k' : G)⁻¹, K.mul_mem hk (K.inv_mem k'.2), ?_⟩` and prove the remaining obligations. Generalize the expression as in `Quotient.out q * (k' : G) = g at e show g * k⁻¹ * δ = δ * θ (g * k⁻¹)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Use `show Quotient.out q = _ group`. Rewrite using `[h2, avg_const', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G3.orbUnit :
     UpperTheory.ConvolutionTheory.G3.OrbUnit := by

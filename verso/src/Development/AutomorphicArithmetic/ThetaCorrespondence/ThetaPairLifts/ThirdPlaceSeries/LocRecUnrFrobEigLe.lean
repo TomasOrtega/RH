@@ -14,11 +14,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.RowSphSmall
 open GlobalTheory.CuspRep.ParLaws GlobalTheory.LocLanglands
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h`. Establish `hunr : (_root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL h (cls σ)).unr` using `(_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_unramified_iff_spherical H σ).2 hs`. Use `⟨hunr, ?_⟩` and prove the remaining obligations. Take `⟨α, hα⟩` from `_root_.UpperTheory.One.M.exists_hasSatake_of_unr_alt H hunr`. Rewrite using `[_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_eq_diagonal_inv_of_has_satake H hα, GlobalTheory.WeilDeligne.WD.frobEig_diag]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.SatHecke.isUnitarySatakeAt_of_hasSatake E w n (GlobalTheory.SplitRead.Irr.ofIrrRep σ) α hα hu`. Establish `h2 : GlobalTheory.RowSatakeBound.IsUnitarySatakeAt w n ((Finset.univ.val.map fun i => (α i : ℂ)).map (·⁻¹))`. Use `GlobalTheory.RowSatakeBound.finite_residue w` as an intermediate fact. Conclude with `GlobalTheory.SatakeInv.isUnitarySatake_map_inv _ _ _ _ h1`. Introduce `b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2.norm_le` to reduce the goal to its premises. Simplify `hb` using `[Multiset.map_map, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem reciprocity_unramified_and_norm_frobenius_eigenvalue_le (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {E Ω : Type} [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : Formalism.ConjugateSelfDual.IsPlaceOver A w)

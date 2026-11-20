@@ -7,15 +7,13 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 variable {d : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨W, hW, hxW, r, f, hf, hSW⟩` from `hS x`. Take `⟨W', hW', hxW', r', f', hf', hTW⟩` from `hT x`. Use `⟨W ∩ W', hW.inter hW', ⟨hxW, hxW'⟩, r * r', fun k y => f (finProdFinEquiv.symm k).1 y * f' (finProdFinEquiv.symm k).2 y, fun k j => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : A.HoloOn (W ∩ W') (f (finProdFinEquiv.symm k).1)` using `fun j => (hf _ j).mono fun z hz => ⟨hz.1, hz.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : A.HoloOn (W ∩ W') (f' (finProdFinEquiv.symm k).2)` using `fun j => (hf' _ j).mono fun z hz => ⟨hz.1, hz.2.2⟩`. Conclude with `(h1 j).mul (h2 j)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hyW, hyW'⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hyW, hyW'⟩, fun k => ?_⟩` and prove the remaining obligations. Break down `hy with hy | hy` into its components or cases. Conclude with `mul_eq_zero_of_left ((hSW.le ⟨hy, hyW⟩).2 _) _`. Conclude with `mul_eq_zero_of_right _ ((hTW.le ⟨hy, hyW'⟩).2 _)`. Introduce and unpack `⟨⟨hyW, hyW'⟩, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `⟨?_, hyW, hyW'⟩` and prove the remaining obligations. Distinguish the cases in `h0 : ∀ i, f i y = 0`. Conclude with `Or.inl (hSW.ge ⟨hyW, h0⟩).1`. Take `⟨i, hi⟩` from `not_forall.1 h0`. Use `Or.inr (hTW.ge ⟨hyW', fun i' => ?_⟩).1` and prove the remaining obligations.
-
-Use `h (finProdFinEquiv (i, i'))` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAnalyticSubset_union {A : FinHolAtlas d X} {S T : Set X} (hS : A.IsAnalyticSubset S)
     (hT : A.IsAnalyticSubset T) : A.IsAnalyticSubset (S ∪ T) := by
@@ -48,7 +46,7 @@ theorem isAnalyticSubset_union {A : FinHolAtlas d X} {S T : Set X} (hS : A.IsAna
         exact (mul_eq_zero.1 this).resolve_left hi
 
 /- English proof (translation)
-Introduce `x`. Use `⟨Set.univ, isOpen_univ, trivial, 1, fun _ _ => 1, fun _ j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `analyticOnNhd_const`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAnalyticSubset_empty' (A : FinHolAtlas d X) : A.IsAnalyticSubset ∅ := by
   intro x
@@ -58,7 +56,7 @@ theorem isAnalyticSubset_empty' (A : FinHolAtlas d X) : A.IsAnalyticSubset ∅ :
     simp
 
 /- English proof (translation)
-The claim follows from `| 0, Zs, _ => by simpa using isAnalyticSubset_empty' A | r + 1, Zs, h => by rw [Set.iUnion_fin_add_one_eq_iUnion_succ] exact isAnalyticSubset_union (h 0) (isAnalyticSubset_iUnion r _ fun i => h i.succ)`.
+A detailed English derivation is pending.
 -/
 theorem isAnalyticSubset_iUnion {A : FinHolAtlas d X} : ∀ (r : ℕ) (Zs : Fin r → Set X),
     (∀ i, A.IsAnalyticSubset (Zs i)) → A.IsAnalyticSubset (⋃ i, Zs i)
@@ -68,11 +66,11 @@ theorem isAnalyticSubset_iUnion {A : FinHolAtlas d X} : ∀ (r : ℕ) (Zs : Fin 
     exact isAnalyticSubset_union (h 0) (isAnalyticSubset_iUnion r _ fun i => h i.succ)
 
 /- English proof (translation)
-Introduce `d X _ At C r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `Zs hC _ hsub`. Take `⟨x, hx⟩` from `hC.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `using hsub hx`. Consider the case `succ r ih`. Introduce `Zs hC hZ hsub`. Rewrite `hsub` using `[Set.iUnion_fin_add_one_eq_iUnion_succ]`. Establish `hU` using `isAnalyticSubset_iUnion r (fun i => Zs i.succ) fun i => hZ i.succ`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hC.2.2 _ _ (isAnalyticSubset_inter hC.1 (hZ 0)) (isAnalyticSubset_inter hC.1 hU) (by rw [← Set.inter_union_distrib_left]; exact (Set.inter_eq_left.2 hsub).symm) with h | h` into its components or cases. Conclude with `⟨0, Set.inter_eq_left.1 h.symm⟩`. Take `⟨i, hi⟩` from `ih (fun i => Zs i.succ) hC (fun i => hZ i.succ) (Set.inter_eq_left.1 h.symm)`. Conclude with `⟨i.succ, hi⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_subset_of_subset_iUnion : ∀ (d : ℕ) (X : Type) [TopologicalSpace X]
     (At : FinHolAtlas d X) (C : Set X) (r : ℕ) (Zs : Fin r → Set X),

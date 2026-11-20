@@ -10,11 +10,11 @@ open GlobalTheory.SiegelTor
 namespace GlobalTheory.Poinc.TraitGlue
 
 /- English proof (translation)
-Establish `ha' : algebraMap A (FractionRing A) a ≠ 0` using `fun e => ha (IsFractionRing.injective A (FractionRing A) (e.trans (map_zero _).symm))`. Take `⟨c, hc⟩` from `KrullAlg.mem_range_of_forall_height_one (A := A) (algebraMap A (FractionRing A) b / algebraMap A (FractionRing A) a) (fun P hP h1 => by`. Take `⟨c, hc⟩` from `h P h1`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl c`. Establish `e : algebraMap A (Localization.AtPrime P) (s * b) = algebraMap A (Localization.AtPrime P) (a * r)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, hc, mul_left_comm, IsLocalization.mk'_spec']`. Establish `e' : s * b = a * r` using `IsLocalization.injective _ P.primeCompl_le_nonZeroDivisors e`. Use `⟨s, s.2, r, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, ← map_mul, e', map_mul, mul_div_cancel_left₀ _ ha'])`. Use `⟨c, IsFractionRing.injective A (FractionRing A) ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hc, mul_div_cancel₀ _ ha']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_of_height_one {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] {a b : A}
     (ha : a ≠ 0) (h : ∀ (P : Ideal A) [P.IsPrime], P.height = 1 →
@@ -34,13 +34,13 @@ theorem dvd_of_height_one {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing
   rw [map_mul, hc, mul_div_cancel₀ _ ha']
 
 /- English proof (translation)
-Use `(hX x).2` as an intermediate fact. Use `dvd_of_height_one ha fun q _ hq => ?_` and prove the remaining obligations. Set `y : PrimeSpectrum (X.presheaf.stalk x)` to `⟨q, inferInstance⟩`. Take `⟨e, he⟩` from `LocalRingGeneralisation.stalk_fromSpecStalk_equiv X x q`. Establish `hs : X.fromSpecStalk x y ⤳ x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: X.fromSpecStalk x y ∈ Set.range (X.fromSpecStalk x)` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hcomp : ∀ t, e ((X.presheaf.stalkSpecializes hs).hom t) = algebraMap _ (Localization.AtPrime q) t`. Introduce `t`. Take `⟨U, hxU, s, rfl⟩` from `X.presheaf.exists_germ_eq t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `congrArg (fun f => f.hom s) (TopCat.Presheaf.germ_stalkSpecializes X.presheaf hxU hs)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h3`. Use `erw [h3]`. Conclude with `he U _ hxU s`. Rewrite using `[← hcomp, ← hcomp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `map_dvd e (h _ hs ?_)` and prove the remaining obligations. Rewrite using `[ringKrullDim_eq_of_ringEquiv e, IsLocalization.AtPrime.ringKrullDim_eq_height q, hq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dvd_of_generisations {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (x : X)
@@ -67,13 +67,11 @@ theorem dvd_of_generisations {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetheria
   rfl
 
 /- English proof (translation)
-Take `⟨a, haV, hza⟩` from `hW.exists_basicOpen_le ⟨z, hzV⟩ hzW`. Establish `: Nonempty W` using `⟨⟨z, hzW⟩⟩`. Establish `: IsNoetherianRing Γ(X, W)` using `IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hza`. Establish `hfin` using `(KrullAlg.finite_height_one ha).preimage (f := fun p : PrimeSpectrum Γ(X, W) => p.asIdeal) (fun _ _ _ _ e => PrimeSpectrum.ext e)`. Use `(hfin.image (fun p => hW.fromSpec p)).subset ?_` and prove the remaining obligations. Introduce and unpack `η ⟨h1, h2, h3⟩`. Use `letI : Algebra Γ(X, W) (X.presheaf.stalk η) := X.presheaf.algebra_section_stalk ⟨η, h1⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Use `haveI := hW.isLocalization_stalk ⟨η, h1⟩`. Use `⟨hW.primeIdealOf ⟨η, h1⟩, ⟨inferInstance, ?_, ?_⟩, hW.fromSpec_primeIdealOf ⟨η, h1⟩⟩` and prove the remaining obligations. Rewrite `h2` using `[IsLocalization.AtPrime.ringKrullDim_eq_height (hW.primeIdealOf ⟨η, h1⟩).asIdeal]`. Conclude with `h2` after adjusting the coercions. Assume the negation of the conclusion as `hn`.
-
-Use `h3 (haV ((X.mem_basicOpen a η h1).2 ?_))` and prove the remaining obligations. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk η) (hW.primeIdealOf ⟨η, h1⟩).asIdeal a).2 hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_dim_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {W : X.Opens} (hW : IsAffineOpen W)
     (V : X.Opens) {z : X} (hzW : z ∈ W) (hzV : z ∈ V) :
@@ -98,9 +96,9 @@ theorem finite_dim_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {
     exact (IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk η) (hW.primeIdealOf ⟨η, h1⟩).asIdeal a).2 hn
 
 /- English proof (translation)
-Establish `key : ∀ {a c : A}, Associated (φ a) (φ (a * c)) → φ a ≠ 0 → Associated a (a * c)`. Introduce `a c h ha`. Rewrite `h` using `[map_mul]`. Establish `: IsUnit (φ c)` using `isUnit_of_associated_mul h.symm ha`. Conclude with `(associated_mul_unit_left _ _ (isUnit_of_map_unit φ c this)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `ValuationRing.dvd_total a b with ⟨c, rfl⟩ | ⟨c, rfl⟩` into its components or cases. Conclude with `key h ha`. Conclude with `(key h.symm (h.ne_zero_iff.1 ha)).symm`.
+A detailed English derivation is pending.
 -/
 theorem associated_of_map {A V : Type} [CommRing A] [IsDomain A] [ValuationRing A] [CommRing V] [IsDomain V]
     (φ : A →+* V) [IsLocalHom φ] {a b : A} (h : Associated (φ a) (φ b)) (ha : φ a ≠ 0) : Associated a b := by
@@ -114,11 +112,11 @@ theorem associated_of_map {A V : Type} [CommRing A] [IsDomain A] [ValuationRing 
   · exact (key h.symm (h.ne_zero_iff.1 ha)).symm
 
 /- English proof (translation)
-Use `(hX η).2` as an intermediate fact. Establish `hle : Ring.KrullDimLE 1 (X.presheaf.stalk η)`. Rewrite using `[Ring.krullDimLE_iff, h]`. Evaluate the numerical expressions. Establish `: Ring.DimensionLEOne (X.presheaf.stalk η)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use `⟨fun {p} hp hprime => ?_⟩` and prove the remaining obligations. Break down `Ring.krullDimLE_one_iff.mp hle p hprime with h | h` into its components or cases. Rewrite `h` using `[IsDomain.minimalPrimes_eq_singleton_bot]`. Conclude with `absurd h hp`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDedekindDomain (X.presheaf.stalk η)` using `(isDedekindDomain_iff _ (FractionRing (X.presheaf.stalk η))).mpr ⟨inferInstance, inferInstance, inferInstance, fun {y} hy => IsIntegrallyClosed.isIntegral_iff.mp hy⟩`. Establish `h2` using `(tfae_of_isNoetherianRing_of_isLocalRing_of_isDomain (X.presheaf.stalk η)).out 2 1`. Conclude with `h2.1 this`.
+A detailed English derivation is pending.
 -/
 theorem valuationRing_stalk {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (η : X)
@@ -140,26 +138,24 @@ theorem valuationRing_stalk {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian
   exact h2.1 this
 
 /- English proof (translation)
-The claim follows from `congrArg (fun f => f.hom s) (TopCat.Presheaf.germ_stalkSpecializes X.presheaf hx h)`.
+A detailed English derivation is pending.
 -/
 theorem specializes_germ {X : Scheme.{0}} {W : X.Opens} {x η : X} (h : η ⤳ x) (hx : x ∈ W) (hη : η ∈ W) (s : Γ(X, W)) :
     (X.presheaf.stalkSpecializes h).hom ((X.presheaf.germ W x hx).hom s) = (X.presheaf.germ W η hη).hom s :=
   congrArg (fun f => f.hom s) (TopCat.Presheaf.germ_stalkSpecializes X.presheaf hx h)
 
 /- English proof (translation)
-Take `⟨W₀, hx₀, s₀, hs₀⟩` from `X.presheaf.exists_germ_eq (f x)`. Take `⟨⟨W, hW⟩, hx, hle⟩` from `EffCartierData.exists_affine_le hx₀`. Set `s : Γ(X, W)` to `resG X hle s₀`. Establish `hs : (X.presheaf.germ W x hx).hom s = f x` using `(Cartier.germ_resG hle _ hx _).trans hs₀`. Set `B : Set X` to `{η | ∃ hη : η ∈ W, ringKrullDim (X.presheaf.stalk η) = 1 ∧ ¬ Associated ((X.presheaf.germ W η hη).hom s) (f η)}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hgen : ∀ {V : X.Opens} {y : X}, y ∈ V → genericPoint X ∈ V` using `fun {V y} hy => ((genericPoint_spec X).mem_open_set_iff V.isOpen).mpr ⟨y, trivial, hy⟩`. Establish `hB : B.Finite`. Break down `B.eq_empty_or_nonempty with h | ⟨η₀, -, h₀, -⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `fun e => h0 (by rw [← hs, e, map_zero])`. Establish `hb : genericPoint X ∈ X.basicOpen s`. Rewrite using `[X.mem_basicOpen s _ (hgen hx)]`. Establish `: (X.presheaf.germ W _ (hgen hx)).hom s ≠ 0` using `fun e => hs0 (germ_injective_of_isIntegral X _ (hgen hx) (e.trans (map_zero _).symm))`. Conclude with `(IsUnit.mk0 (G₀ := X.functionField) _ this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(finite_dim_one hW (U ⊓ X.basicOpen s) (hgen hx) ⟨hne η₀ h₀, hb⟩).subset ?_` and prove the remaining obligations. Introduce and unpack `η ⟨h1, h2, h3⟩`. Use `⟨h1, h2, fun h4 => h3 ?_⟩` and prove the remaining obligations. Conclude with `(associated_one_iff_isUnit.2 ((X.mem_basicOpen s η h1).1 h4.2)).trans (associated_one_iff_isUnit.2 (hU η h4.1 h2)).symm`. Establish `hcl : IsClosed (⋃ η ∈ B, closure ({η} : Set X))` using `hB.isClosed_biUnion fun _ _ => isClosed_closure`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `W' : X.Opens` to `W ⊓ ⟨_, hcl.isOpen_compl⟩`. Establish `hx' : x ∈ W'`. Use `⟨hx, fun hm => ?_⟩` and prove the remaining obligations. Take `⟨η, ⟨h1, h2, h3⟩, h4⟩` from `Set.mem_iUnion₂.1 hm`. Establish `h5 : η ⤳ x` using `specializes_iff_mem_closure.2 h4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h3 ?_` and prove the remaining obligations. Rewrite using `[← specializes_germ h5 hx h1, hs]`. Conclude with `hc η h5 h2`. Use `⟨W', hx', resG X inf_le_left s, (Cartier.germ_resG _ _ hx' _).trans hs, fun η hη h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[Cartier.germ_resG]`.
-
-Assume the negation of the conclusion as `hn`. Conclude with `hη.2 (Set.mem_iUnion₂.2 ⟨η, ⟨hη.1, h1, hn⟩, subset_closure rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_spread {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (U : X.Opens)
     (f : ∀ x : X, X.presheaf.stalk x) (hU : ∀ η ∈ U, ringKrullDim (X.presheaf.stalk η) = 1 → IsUnit (f η))
@@ -206,13 +202,13 @@ theorem exists_spread {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (U
   exact hη.2 (Set.mem_iUnion₂.2 ⟨η, ⟨hη.1, h1, hn⟩, subset_closure rfl⟩)
 
 /- English proof (translation)
-Use `choose W hx s hs hW using fun x => exists_spread U f hU hne x (h0 x) (hc x)`. Establish `hs0 : ∀ x, s x ≠ 0` using `fun x e => h0 x (by rw [← hs x, e, map_zero])`. Establish `hreg : ∀ x, Cartier.IsRegularFn (s x)` using `fun x => Cartier.isRegularFn_of_ne_zero (hs0 x)`. Establish `hdvd : ∀ (i j y : X) (hi : y ∈ W i) (hj : y ∈ W j), (X.presheaf.germ _ y hi).hom (s i) ∣ (X.presheaf.germ _ y hj).hom (s j)`. Introduce `i j y hi hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_of_generisations hX y (fun e => hs0 i (germ_injective_of_isIntegral X _ hi (e.trans (map_zero _).symm))) fun η hη h1 => ?_` and prove the remaining obligations. Establish `hi' : η ∈ W i` using `hη.mem_open (W i).isOpen hi`. Establish `hj' : η ∈ W j` using `hη.mem_open (W j).isOpen hj`. Rewrite using `[specializes_germ hη hi hi', specializes_germ hη hj hj']`. Conclude with `((hW i η hi' h1).trans (hW j η hj' h1).symm).dvd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `D : EffCartierData X` to `{ ι := X U := W f := s cover := eq_top_iff.2 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩ regular := hreg assoc := fun i j => ((hreg i).resG _).associated_of_germ ((hreg j).resG _) fun y hy => by`. Rewrite using `[Cartier.germ_resG, Cartier.germ_resG]`. Conclude with `le_antisymm (Ideal.span_singleton_le_span_singleton.2 (hdvd j i y hy.2 hy.1)) (Ideal.span_singleton_le_span_singleton.2 (hdvd i j y hy.1 hy.2)) }`. Use `⟨D, fun x hxD hxU => ?_, fun x => (D.stalkId_idealSheaf x x (hx x)).trans (congrArg (fun t => Ideal.span {t}) (hs x))⟩` and prove the remaining obligations. Use `(D.mem_support_iff x (hx x)).1 hxD ((X.mem_basicOpen (s x) x (hx x)).2 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `IsUnit ((X.presheaf.germ _ x (hx x)).hom (s x))`. Rewrite using `[hs x]`. Use `isUnit_of_dvd_one (dvd_of_generisations hX x (h0 x) fun η hη h1 => ?_)` and prove the remaining obligations. Conclude with `((hc x η hη h1).symm.isUnit (hU η (hη.mem_open U.isOpen hxU) h1)).dvd`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_germs {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (U : X.Opens)
@@ -252,21 +248,17 @@ theorem exists_of_germs {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
   exact ((hc x η hη h1).symm.isUnit (hU η (hη.mem_open U.isOpen hxU) h1)).dvd
 
 /- English proof (translation)
-Introduce `X _ _ hX U R hR hT hf`. Establish `hf' : ∀ x : X, ∃ f : X.presheaf.stalk x, f ≠ 0 ∧ ∀ (T : ATrait X) (h : T.ξ (closedPoint T.V) ⤳ x) (a : ℕ), T.GenIn U → R T a → T.HasOrd h f a`. Introduce `x`. Take `⟨f, hf⟩` from `hf x`. Distinguish the cases in `h0 : f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, one_ne_zero, fun T h a h1 h2 => ?_⟩` and prove the remaining obligations. Use `hf T h a h1 h2` as an intermediate fact. Rewrite `this` using `[h0, ATrait.HasOrd, map_zero, map_zero, Ideal.span_singleton_eq_span_singleton]`. Conclude with `absurd (this.eq_zero_iff.1 rfl) (pow_ne_zero _ T.irr.ne_zero)`. Conclude with `⟨f, h0, hf⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose f h0 hf using hf'`. Establish `hself : ∀ (T : ATrait X) (a : ℕ), T.GenIn U → R T a → Ideal.span {(Scheme.stalkClosedPointTo T.ξ).hom (f _)} = Ideal.span {T.ϖ ^ a}`. Introduce `T a h1 h2`. Use `hf _ T specializes_rfl a h1 h2` as an intermediate fact. Rewrite `this` using `[ATrait.HasOrd, TopCat.Presheaf.stalkSpecializes_refl, CommRingCat.hom_id, RingHom.id_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD, hD'⟩` from `exists_of_germs hX U f (fun η hη h1 => by`. Take `⟨T, a, e, ⟨rfl, -⟩, h2, h3⟩` from `hT η h1`. Establish `ha : a = 0` using `hR T a (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint p).map T.ξ.continuous).mem_open U.isOpen hη) h3`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hself T a h2 h3` as an intermediate fact. Rewrite `this` using `[ha, pow_zero, Ideal.span_singleton_one, Ideal.span_singleton_eq_top]`. Conclude with `isUnit_of_map_unit _ _ this)`. Use the proof step `(fun η h1 => by`. Take `⟨T, a, e, -, h2, -⟩` from `hT η h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p⟩ : Nonempty (Sp (FractionRing T.V))` from `inferInstanceAs (Nonempty (PrimeSpectrum _))`. Conclude with `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨_, trivial, h2 ⟨p, rfl⟩⟩) h0`. Use the proof step `(fun x η h h1 => by`. Take `⟨T, a, e, ⟨rfl, -⟩, h2, h3⟩` from `hT η h1`. Use `valuationRing_stalk hX _ h1` as an intermediate fact.
-
-Establish `e1` using `Ideal.span_singleton_eq_span_singleton.1 (hf x T h a h2 h3)`. Establish `e2` using `Ideal.span_singleton_eq_span_singleton.1 (hself T a h2 h3)`. Conclude with `associated_of_map (Scheme.stalkClosedPointTo T.ξ).hom (e1.trans e2.symm) (e1.ne_zero_iff.2 (pow_ne_zero _ T.irr.ne_zero)))`. Use `⟨D, hD, fun T a h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[idlAlong, hD', Ideal.map_span, Set.image_singleton]`.
-
-Conclude with `hself T a h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_effCartier_of_orders : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ∀ (U : X.Opens) (R : ATrait X → ℕ → Prop), (∀ (T : ATrait X) (a : ℕ), Set.range T.ξ ⊆ U → R T a → a = 0) → (∀ η : X, ringKrullDim (X.presheaf.stalk η) = 1 → ∃ (T : ATrait X) (a e : ℕ), T.CentredAt η e ∧ T.GenIn U ∧ R T a) → (∀ x : X, ∃ f : X.presheaf.stalk x, ∀ (T : ATrait X) (h : T.ξ (closedPoint T.V) ⤳ x) (a : ℕ), T.GenIn U → R T a → T.HasOrd h f a) → ∃ D : EffCartierData X, (∀ x ∈ D.idealSheaf.support, x ∉ U) ∧ ∀ (T : ATrait X) (a : ℕ), T.GenIn U → R T a → idlAlong D.idealSheaf T.ξ = Ideal.span {T.ϖ ^ a} := by
   intro X _ _ hX U R hR hT hf

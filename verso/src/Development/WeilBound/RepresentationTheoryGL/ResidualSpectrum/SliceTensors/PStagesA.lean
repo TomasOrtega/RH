@@ -12,7 +12,7 @@ namespace PositivityTheory.Rg.Rs.InductionInStages
 variable {R : Type} [CommRing R] {a d₁ d₂ r s : ℕ}
 
 /- English proof (translation)
-Rewrite using `[stdBlocks_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_stdBlocks_const {d N : ℕ} (h : ∑ _ : Fin d, a = N) (b : Fin d) (i : Fin a) :
     ((stdBlocks (fun _ : Fin d => a) h ⟨b, i⟩ : Fin N) : ℕ) = (b : ℕ) * a + i := by
@@ -20,14 +20,14 @@ theorem val_stdBlocks_const {d N : ℕ} (h : ∑ _ : Fin d, a = N) (b : Fin d) (
   simp
 
 /- English proof (translation)
-Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_const_eq {d N : ℕ} (h : ∑ _ : Fin d, a = N) : N = d * a := by
   rw [← h]
   simp
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[val_stdBlocks_const, Fin.coe_castAdd, Fin.coe_castAdd, val_stdBlocks_const]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdBlocks_castAdd (h₁ : ∑ _ : Fin d₁, a = r) (H : ∑ _ : Fin (d₁ + d₂), a = r + s) (b : Fin d₁) (i : Fin a) :
     stdBlocks (fun _ : Fin (d₁ + d₂) => a) H ⟨Fin.castAdd d₂ b, i⟩ = Fin.castAdd s (stdBlocks (fun _ : Fin d₁ => a) h₁ ⟨b, i⟩) := by
@@ -35,7 +35,7 @@ theorem stdBlocks_castAdd (h₁ : ∑ _ : Fin d₁, a = r) (H : ∑ _ : Fin (d�
   rw [val_stdBlocks_const, Fin.coe_castAdd, Fin.coe_castAdd, val_stdBlocks_const]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [val_stdBlocks_const, Fin.val_natAdd, sum_const_eq h₁]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stdBlocks_natAdd (h₁ : ∑ _ : Fin d₁, a = r) (h₂ : ∑ _ : Fin d₂, a = s) (H : ∑ _ : Fin (d₁ + d₂), a = r + s)
     (b : Fin d₂) (i : Fin a) :
@@ -45,37 +45,37 @@ theorem stdBlocks_natAdd (h₁ : ∑ _ : Fin d₁, a = r) (h₂ : ∑ _ : Fin d�
   ring
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_cc (m : GL (Fin r) R × GL (Fin s) R) (i j : Fin r) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.castAdd s i) (Fin.castAdd s j) = (m.1 : Matrix _ _ R) i j := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_nn (m : GL (Fin r) R × GL (Fin s) R) (i j : Fin s) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.natAdd r i) (Fin.natAdd r j) = (m.2 : Matrix _ _ R) i j := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_cn (m : GL (Fin r) R × GL (Fin s) R) (i : Fin r) (j : Fin s) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.castAdd s i) (Fin.natAdd r j) = 0 := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_nc (m : GL (Fin r) R × GL (Fin s) R) (i : Fin s) (j : Fin r) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (Fin.natAdd r i) (Fin.castAdd s j) = 0 := by
   simp [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin (r + s)) (Fin (r + s)) R) + nilM x) i (Fin.castAdd s k) = _`. Rewrite using `[Matrix.add_apply]`. Establish `h0 : nilM x i (Fin.castAdd s k) = 0`. Simplify using `only [nilM, Matrix.of_apply, Fin.coe_castAdd]`. Rewrite using `[dif_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd h.2 (not_le.2 k.isLt)`. Rewrite using `[h0, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_col (x : BlockIx (r + s) r → R) (i : Fin (r + s)) (k : Fin r) :
     ((unip x : GL (Fin (r + s)) R) : Matrix _ _ R) i (Fin.castAdd s k) =
@@ -90,9 +90,9 @@ theorem unip_col (x : BlockIx (r + s) r → R) (i : Fin (r + s)) (k : Fin r) :
   rw [h0, add_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin (r + s)) (Fin (r + s)) R) + nilM x) (Fin.natAdd r k) j = _`. Rewrite using `[Matrix.add_apply]`. Establish `h0 : nilM x (Fin.natAdd r k) j = 0`. Simplify using `only [nilM, Matrix.of_apply, Fin.coe_natAdd]`. Rewrite using `[dif_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem unip_row (x : BlockIx (r + s) r → R) (k : Fin s) (j : Fin (r + s)) :
     ((unip x : GL (Fin (r + s)) R) : Matrix _ _ R) (Fin.natAdd r k) j =
@@ -107,7 +107,7 @@ theorem unip_row (x : BlockIx (r + s) r → R) (k : Fin s) (j : Fin (r + s)) :
   rw [h0, add_zero]
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_add, unip_col, lev_nc, lev_cc, mul_zero, Finset.sum_const_zero, add_zero, Matrix.one_apply, Fin.castAdd_inj, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unip_lev_cc (x : BlockIx (r + s) r → R) (m : GL (Fin r) R × GL (Fin s) R) (i j : Fin r) :
     ((unip x * lev R r s m : GL (Fin (r + s)) R) : Matrix _ _ R) (Fin.castAdd s i) (Fin.castAdd s j) = (m.1 : Matrix _ _ R) i j := by
@@ -116,7 +116,7 @@ theorem unip_lev_cc (x : BlockIx (r + s) r → R) (m : GL (Fin r) R × GL (Fin s
     Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul, Matrix.mul_apply, unip_row]`. Rewrite using `[← Matrix.mul_apply, Matrix.one_mul, lev_nn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unip_lev_nn (x : BlockIx (r + s) r → R) (m : GL (Fin r) R × GL (Fin s) R) (i j : Fin s) :
     ((unip x * lev R r s m : GL (Fin (r + s)) R) : Matrix _ _ R) (Fin.natAdd r i) (Fin.natAdd r j) = (m.2 : Matrix _ _ R) i j := by
@@ -124,7 +124,7 @@ theorem unip_lev_nn (x : BlockIx (r + s) r → R) (m : GL (Fin r) R × GL (Fin s
   rw [← Matrix.mul_apply, Matrix.one_mul, lev_nn]
 
 /- English proof (translation)
-Break down `lt_or_ge (b : ℕ) d₁ with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨b, h⟩, Fin.ext rfl⟩`. Use `Or.inr ⟨⟨b - d₁, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem castAdd_or_natAdd (b : Fin (d₁ + d₂)) : (∃ c, b = Fin.castAdd d₂ c) ∨ ∃ c, b = Fin.natAdd d₁ c := by
   rcases lt_or_ge (b : ℕ) d₁ with h | h
@@ -134,15 +134,15 @@ theorem castAdd_or_natAdd (b : Fin (d₁ + d₂)) : (∃ c, b = Fin.castAdd d₂
     omega
 
 /- English proof (translation)
-Establish `hcn : ∀ (c : Fin d₁) (c' : Fin d₂), Fin.castAdd d₂ c ≠ Fin.natAdd d₁ c'`. Introduce `c c' h`. Establish `h1` using `congrArg Fin.val h`. Establish `h2` using `c.isLt`. Simplify using `only [Fin.coe_castAdd, Fin.coe_natAdd] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨⟨b, i⟩, rfl⟩` from `(stdBlocks (fun _ : Fin (d₁ + d₂) => a) H).surjective p`. Take `⟨⟨b', j⟩, rfl⟩` from `(stdBlocks (fun _ : Fin (d₁ + d₂) => a) H).surjective q`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases castAdd_or_natAdd b with ⟨c, rfl⟩ | ⟨c, rfl⟩ <;>`. Break down `castAdd_or_natAdd b' with ⟨c', rfl⟩ | ⟨c', rfl⟩` into its components or cases. Distinguish the cases in `hc : c = c'`. Substitute `hc` using the available equality. Rewrite using `[leviEmb_apply_same, stdBlocks_castAdd h₁ H, stdBlocks_castAdd h₁ H, lev_cc, leviEmb_apply_same]`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviEmb_apply_ne R _ _ (fun h => hc (Fin.castAdd_injective _ _ h)), stdBlocks_castAdd h₁ H, stdBlocks_castAdd h₁ H, lev_cc, leviEmb_apply_ne R _ _ hc]`. Rewrite using `[leviEmb_apply_ne R _ _ (hcn c c'), stdBlocks_castAdd h₁ H, stdBlocks_natAdd h₁ h₂ H, lev_cn]`. Rewrite using `[leviEmb_apply_ne R _ _ (fun h => hcn c' c h.symm), stdBlocks_natAdd h₁ h₂ H, stdBlocks_castAdd h₁ H, lev_nc]`. Distinguish the cases in `hc : c = c'`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[leviEmb_apply_same, stdBlocks_natAdd h₁ h₂ H, stdBlocks_natAdd h₁ h₂ H, lev_nn, leviEmb_apply_same]`. Rewrite using `[leviEmb_apply_ne R _ _ (fun h => hc (Fin.natAdd_injective _ _ h)), stdBlocks_natAdd h₁ h₂ H, stdBlocks_natAdd h₁ h₂ H, lev_nn, leviEmb_apply_ne R _ _ hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviEmb_split (h₁ : ∑ _ : Fin d₁, a = r) (h₂ : ∑ _ : Fin d₂, a = s) (H : ∑ _ : Fin (d₁ + d₂), a = r + s)
     (m : ∀ _ : Fin (d₁ + d₂), GL (Fin a) R) :
@@ -176,21 +176,21 @@ theorem leviEmb_split (h₁ : ∑ _ : Fin d₁, a = r) (h₂ : ∑ _ : Fin d₂,
         stdBlocks_natAdd h₁ h₂ H, lev_nn, leviEmb_apply_ne R _ _ hc]
 
 /- English proof (translation)
-Establish `low : ∀ g : GL (Fin (r + s)) R, g ∈ parab R (stdBlocks (fun _ : Fin (d₁ + d₂) => a) H) → ∀ i j : Fin (r + s), r ≤ (i : ℕ) → (j : ℕ) < r → (g : Matrix _ _ R) i j = 0`. Introduce `g hg i j hi hj`. Rewrite `hg` using `[mem_parab_iff]`. Establish `hi'` using `i.isLt`. Take `⟨i', rfl⟩ : ∃ i' : Fin s, i = Fin.natAdd r i'` from `⟨⟨i - r, by omega⟩, Fin.ext (by simp only [Fin.coe_natAdd]; omega)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j', rfl⟩ : ∃ j' : Fin r, j = Fin.castAdd s j'` from `⟨⟨j, hj⟩, rfl⟩`. Take `⟨⟨c, i''⟩, rfl⟩` from `(stdBlocks (fun _ : Fin d₂ => a) h₂).surjective i'`. Take `⟨⟨c', j''⟩, rfl⟩` from `(stdBlocks (fun _ : Fin d₁ => a) h₁).surjective j'`. Rewrite using `[← stdBlocks_natAdd h₁ h₂ H, ← stdBlocks_castAdd h₁ H]`. Apply `hg` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `c'.isLt` as an intermediate fact. Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.coe_castAdd, Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers. Take `⟨hvP, hvD⟩` from `mem_unipRad.1 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hvP'` using `mem_parab_iff.1 hvP`. Establish `hinvP : v⁻¹ ∈ parab R (stdBlocks (fun _ : Fin (d₁ + d₂) => a) H)` using `(mem_unipRad.1 ((unipRad R _).inv_mem hv)).1`. Take `⟨x, m, hvm⟩` from `GlobalTheory.CompanionTheory.CTFin.IwaFin.exists_unip_mul_lev r s v (low v hvP) (low v⁻¹ hinvP)`. Use `⟨x, m.1, m.2, ?_, ?_, hvm⟩` and prove the remaining obligations. Rewrite using `[mem_unipRad, mem_parab_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `α β i j hβα`. Rewrite using `[← unip_lev_cc x m, ← hvm, ← stdBlocks_castAdd h₁ H, ← stdBlocks_castAdd h₁ H]`. Apply `hvP'` to reduce the goal to its premises. Rewrite `hβα`, the goal using `[Fin.lt_def]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify `hβα` using `only [Fin.coe_castAdd]`. Introduce `α i j`. Rewrite using `[← unip_lev_cc x m, ← hvm, ← stdBlocks_castAdd h₁ H, ← stdBlocks_castAdd h₁ H]`. Conclude with `hvD _ _ _`. Rewrite using `[mem_unipRad, mem_parab_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `α β i j hβα`. Rewrite using `[← unip_lev_nn x m, ← hvm, ← stdBlocks_natAdd h₁ h₂ H, ← stdBlocks_natAdd h₁ h₂ H]`. Apply `hvP'` to reduce the goal to its premises. Rewrite `hβα`, the goal using `[Fin.lt_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers. Introduce `α i j`. Rewrite using `[← unip_lev_nn x m, ← hvm, ← stdBlocks_natAdd h₁ h₂ H, ← stdBlocks_natAdd h₁ h₂ H]`. Conclude with `hvD _ _ _`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipRad_split (h₁ : ∑ _ : Fin d₁, a = r) (h₂ : ∑ _ : Fin d₂, a = s) (H : ∑ _ : Fin (d₁ + d₂), a = r + s)
     {v : GL (Fin (r + s)) R} (hv : v ∈ unipRad R (stdBlocks (fun _ : Fin (d₁ + d₂) => a) H)) :

@@ -13,28 +13,28 @@ namespace GlobalTheory.RealWeil.Intertw
 variable {l : Type} [Fintype l]
 
 /- English proof (translation)
-Simplify using `only [sympl, pPart_smul, qPart_smul, real_inner_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sympl_smul_left (r : ℝ) (w w' : l ⊕ l → ℝ) : sympl (r • w) w' = r * sympl w w' := by
   simp only [sympl, pPart_smul, qPart_smul, real_inner_smul_left]
   ring
 
 /- English proof (translation)
-Simplify using `only [sympl, pPart_smul, qPart_smul, real_inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sympl_smul_right (r : ℝ) (w w' : l ⊕ l → ℝ) : sympl w (r • w') = r * sympl w w' := by
   simp only [sympl, pPart_smul, qPart_smul, real_inner_smul_right]
   ring
 
 /- English proof (translation)
-Simplify using `only [sympl, real_inner_comm (pPart w) (qPart w'), real_inner_comm (qPart w) (pPart w')]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sympl_antisymm (w w' : l ⊕ l → ℝ) : sympl w w' = -sympl w' w := by
   simp only [sympl, real_inner_comm (pPart w) (qPart w'), real_inner_comm (qPart w) (pPart w')]
   ring
 
 /- English proof (translation)
-Establish `h1 : pPart (u - u') = pPart u - pPart u'` using `rfl`. Establish `h2 : qPart (u - u') = qPart u - qPart u'` using `rfl`. Simplify using `only [sympl, h1, h2, inner_sub_left]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sympl_sub_left (u u' z : l ⊕ l → ℝ) : sympl (u - u') z = sympl u z - sympl u' z := by
   have h1 : pPart (u - u') = pPart u - pPart u' := rfl
@@ -43,7 +43,7 @@ theorem sympl_sub_left (u u' z : l ⊕ l → ℝ) : sympl (u - u') z = sympl u z
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hD`. Use `h D⁻¹` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hD, mul_one, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem eq_zero_of_exp_eq_one (D : ℝ) (h : ∀ r : ℝ, exp (((π * (r * D) : ℝ) : ℂ) * I) = 1) : D = 0 := by
   by_contra hD
@@ -52,9 +52,9 @@ theorem eq_zero_of_exp_eq_one (D : ℝ) (h : ∀ r : ℝ, exp (((π * (r * D) : 
   norm_num at this
 
 /- English proof (translation)
-Simplify using `only [rhoFun, neg_add_cancel, GroundTheory.Global.gaussianSchwartz_apply]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Introduce `h`. Use `norm_phase w (-pPart w)` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rhoFun_gaussian_ne_zero (w : l ⊕ l → ℝ) :
     rhoFun w ⇑(GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ l)) (-pPart w) ≠ 0 := by
@@ -67,14 +67,14 @@ theorem rhoFun_gaussian_ne_zero (w : l ⊕ l → ℝ) :
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coe_smul_sch (c : ℂ) (f : Sch l) : ⇑(c • f) = c • ⇑f := by
   funext x
   simp
 
 /- English proof (translation)
-Use `congrFun h x` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ hx this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_smul_eq_smul {c c' : ℂ} {F : EuclideanSpace ℝ l → ℂ} {x : EuclideanSpace ℝ l} (hx : F x ≠ 0)
     (h : c • F = c' • F) : c = c' := by
@@ -83,21 +83,19 @@ theorem eq_of_smul_eq_smul {c c' : ℂ} {F : EuclideanSpace ℝ l → ℂ} {x : 
   exact mul_right_cancel₀ hx this
 
 /- English proof (translation)
-Use `set g0 := GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ l) with hg0`. Establish `key : ∀ z : l ⊕ l → ℝ, exp (((π * (2 * sympl (u - u') z) : ℝ) : ℂ) * I) = 1`. Introduce `z`. Take `⟨g1, hg1⟩` from `exists_schwartz_rhoFun l z g0`. Establish `h1` using `h g1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hg1, rhoFun_rhoFun, rhoFun_rhoFun]`. Establish `h2` using `congrArg (rhoFun z) (h g0)`. Rewrite `h2` using `[rhoFun_rhoFun, rhoFun_rhoFun, add_comm z u, add_comm z u', sympl_antisymm z u, sympl_antisymm z u']`. Use `set a := sympl u z`. Use `set b := sympl u' z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set F := rhoFun (u + z) ⇑g0`. Use `set G := rhoFun (u' + z) ⇑g0`. Establish `h3 : (exp (((π * -b : ℝ) : ℂ) * I) * exp (((π * a : ℝ) : ℂ) * I)) • F = (exp (((π * b : ℝ) : ℂ) * I) * exp (((π * -a : ℝ) : ℂ) * I)) • F`. Rewrite using `[mul_smul, h1, smul_smul, mul_comm, ← smul_smul, ← h2, smul_smul, mul_smul]`. Establish `h4` using `eq_of_smul_eq_smul (rhoFun_gaussian_ne_zero (u + z)) h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h4` using `[← Complex.exp_add, ← Complex.exp_add]`. Rewrite using `[sympl_sub_left]`. Establish `e : ((π * (2 * (a - b)) : ℝ) : ℂ) * I = (((π * -b : ℝ) : ℂ) * I + ((π * a : ℝ) : ℂ) * I) - (((π * b : ℝ) : ℂ) * I + ((π * -a : ℝ) : ℂ) * I)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Complex.exp_sub, h4, div_self (exp_ne_zero _)]`. Establish `hz : ∀ z, sympl (u - u') z = 0`. Introduce `z`. Use `eq_zero_of_exp_eq_one (2 * sympl (u - u') z) fun r => by` as an intermediate fact. Use `key (r • z)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[sympl_smul_right, show 2 * (r * sympl (u - u') z) = r * (2 * sympl (u - u') z) by ring]`. Then use the resulting hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJ : Matrix.J l ℝ *ᵥ (u - u') = 0`. Use extensionality with `b`. Use `hz (Pi.single b 1)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[sympl_antisymm, sympl_single]`. Simplify using `using this`. Establish `hd : u - u' = 0`. Establish `: u - u' = -((Matrix.J l ℝ * Matrix.J l ℝ) *ᵥ (u - u'))`. Rewrite using `[Matrix.J_squared, Matrix.neg_mulVec, Matrix.one_mulVec, neg_neg]`.
-
-Rewrite using `[this, ← Matrix.mulVec_mulVec, hJ, Matrix.mulVec_zero, neg_zero]`. Conclude with `sub_eq_zero.mp hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_rhoFun_eq {u u' : l ⊕ l → ℝ} (h : ∀ g : Sch l, rhoFun u ⇑g = rhoFun u' ⇑g) : u = u' := by
   classical
@@ -148,21 +146,21 @@ namespace GlobalTheory.RealWeil
 open Intertw in
 
 /- English proof (translation)
-Introduce `l _ A T hadd h0 hI _`. Establish `hsurj : ∀ t (h : Sch l), T t (T (-t) h) = h` using `fun t h => by rw [← hadd, add_neg_cancel, h0]`. Use `⟨fun t w w' => ?_, fun s t w => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `hE : ∀ v v' : l ⊕ l → ℝ, exp (((π * sympl (A t v) (A t v') : ℝ) : ℂ) * I) = exp (((π * sympl v v' : ℝ) : ℂ) * I)`. Introduce `v v'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set g0 := GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ l) with hg0`. Take `⟨f₁, hf₁⟩` from `exists_schwartz_rhoFun l v' (T (-t) g0)`. Take `⟨f₂, hf₂⟩` from `exists_schwartz_rhoFun l v f₁`. Take `⟨f₃, hf₃⟩` from `exists_schwartz_rhoFun l (v + v') (T (-t) g0)`. Establish `e2 : f₂ = exp (((π * sympl v v' : ℝ) : ℂ) * I) • f₃`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `DFunLike.coe_injective` to reduce the goal to its premises. Rewrite using `[coe_smul_sch, hf₂, hf₁, hf₃, rhoFun_rhoFun]`. Establish `k1` using `hI t v' (T (-t) g0) f₁ hf₁`. Establish `k2` using `hI t v f₁ f₂ hf₂`. Establish `k3` using `hI t (v + v') (T (-t) g0) f₃ hf₃`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k1`, `k3` using `[hsurj]`. Rewrite `k2` using `[k1, rhoFun_rhoFun, e2, map_smul, coe_smul_sch, k3, map_add]`. Conclude with `(eq_of_smul_eq_smul (rhoFun_gaussian_ne_zero (A t v + A t v')) k2).symm`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Use `eq_zero_of_exp_eq_one _ fun r => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hE (r • w) w'` as an intermediate fact. Rewrite `this` using `[map_smul, sympl_smul_left, sympl_smul_left]`. Rewrite using `[show ((π * (r * (sympl (A t w) (A t w') - sympl w w')) : ℝ) : ℂ) * I = ((π * (r * sympl (A t w) (A t w')) : ℝ) : ℂ) * I - ((π * (r * sympl w w') : ℝ) : ℂ) * I by push_cast; ring, Complex.exp_sub, this, div_self (exp_ne_zero _)]`. Apply `Intertw.eq_of_rhoFun_eq` to reduce the goal to its premises. Introduce `g`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f₁, hf₁⟩` from `exists_schwartz_rhoFun l w (T (-(s + t)) g)`. Establish `h1` using `hI (s + t) w _ f₁ hf₁`. Establish `h2` using `hI t w _ f₁ hf₁`. Establish `h3` using `hI s (A t w) _ _ h2`. Rewrite `h1` using `[hsurj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h3` using `[← hadd, ← hadd, hsurj, h1]`. Conclude with `h3`. Apply `Intertw.eq_of_rhoFun_eq` to reduce the goal to its premises. Introduce `g`. Take `⟨f₁, hf₁⟩` from `exists_schwartz_rhoFun l w g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hI 0 w g f₁ hf₁`. Rewrite `h` using `[h0, h0]`. Rewrite using `[← h, hf₁]`.
+A detailed English derivation is pending.
 -/
 theorem intertwining_symplectic_and_group_law : ∀ (l : Type) [Fintype l]
     (A : ℝ → (l ⊕ l → ℝ) →ₗ[ℝ] (l ⊕ l → ℝ)) (T : ℝ → Sch l →ₗ[ℂ] Sch l),

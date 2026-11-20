@@ -17,7 +17,7 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem reindex_finCongr_self {n : ℕ} {α : Type} (h : n = n) (A : Matrix (Fin n) (Fin n) α) :
     Matrix.reindex (finCongr h) (finCongr h) A = A := by
@@ -25,23 +25,21 @@ theorem reindex_finCongr_self {n : ℕ} {α : Type} (h : n = n) (A : Matrix (Fin
   rfl
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC h k`. Establish `hr` using `C.hr`. Substitute `hr` using the available equality. Take `⟨hA, -, hL⟩` from `GlobalTheory.T.archimedeanMatrix_unitary_continuous_multiplicative D V C.θ hC.inf`. Establish `hG : (C.M.X k).Gm = -V.gramᵀ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(hC.modelW k).1, reindex_finCongr_self]`. Establish `hfr : ∀ u (τ : (C.M.X k).Ψ), mat (C.fr u k) τ = archM V (C.θ τ.1) u * C.x₀ τ.1` using `fun u τ => rfl`. Establish `hext : ∀ x y : Frame (C.M.X k).Ψ V.rank, (∀ τ, mat x τ = mat y τ) → x = y` using `fun x y hxy => funext fun τ => hxy τ`. Take `⟨-, h2, h3⟩` from `GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular D.host.E V.rank (C.M.X k).p0 (C.M.X k).Ψ (C.M.X k).Gm (C.M.X k).Gm_herm`. Take `⟨-, h4⟩` from `GlobalTheory.UnitFrames.frame_mul_triangular_orthonormal D.host.E V.rank (C.M.X k).p0 (C.M.X k).Ψ (C.M.X k).Gm (C.M.X k).Gm_herm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `horth : ∀ u (τ : (C.M.X k).Ψ), gram τ.1 (C.M.X k).Gm (mat (C.fr u k) τ) = Matrix.diagonal fun a : Fin V.rank => ((sgn (C.M.X k).p0 (a : ℕ) : ℝ) : ℂ)`. Introduce `u τ`. Rewrite using `[hfr, h3 τ.1 _ _ (by rw [hG]; exact (hA τ.1).2.2.2.2 u)]`. Conclude with `hC.orth k τ.1 τ.2`. Use `⟨horth h, (h2 _ (horth h)).1, (h2 _ (horth h)).2, ?_, fun u hu => ?_, fun u => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Conclude with `(hA τ.1).2.2.2.1.matrix_mul (continuous_const (y := C.x₀ τ.1))`. Use `hext _ _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[hfr, hfr, (hA τ.1).2.1, (hA τ.1).2.2.1 u hu, mul_one]`. Use `hext _ _ fun τ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : IsUnit (C.x₀ τ.1).det`. Use `((h2 _ (horth 1)).1 τ).1` as an intermediate fact. Rewrite `this` using `[hfr, (hA τ.1).1, one_mul]`. Conclude with `isUnit_iff_ne_zero.2 this`. Use `show _ = mat (C.fr h k) τ * ((mat (C.fr 1 k) τ)⁻¹ * archM V (C.θ τ.1) u * mat (C.fr 1 k) τ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfr, hfr, hfr, (hA τ.1).2.1, (hA τ.1).1, one_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`. Establish `hmem : ∀ τ : D.host.E →+* ℂ, τ ∈ (C.M.X k).Ψ ↔ τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD`. Introduce `τ`. Rewrite using `[(hC.base.type k).2 τ, hC.iota.rt, hC.iota.rt0]`. Establish `hex : ∀ τ : D.host.E →+* ℂ, ∃ u : Matrix (Fin V.rank) (Fin V.rank) ℂ, ∀ hτ : τ ∈ (C.M.X k).Ψ, uᵀ * (-V.gramᵀ).map τ * u.map (starRingEnd ℂ) = (-V.gramᵀ).map τ ∧ mat x ⟨τ, hτ⟩ = u * C.x₀ τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `τ`. Distinguish the cases in `hτ : τ ∈ (C.M.X k).Ψ`. Take `⟨u, hu⟩` from `h4 τ (C.x₀ τ) (mat x ⟨τ, hτ⟩) (hC.orth k τ hτ) ((hx ⟨τ, hτ⟩).trans (hC.orth k τ hτ).symm)`. Rewrite `hu` using `[hG]`. Conclude with `⟨u, fun _ => hu⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨1, fun h' => absurd h' hτ⟩`. Use `choose u hu using hex`. Take `⟨a, ha, hau⟩` from `hL u fun τ hτ => (hu τ ((hmem τ).2 hτ)).1`. Use `⟨a, ha, hext _ _ fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hfr, hau τ.1 ((hmem τ.1).1 τ.2)]`.
-
-Conclude with `((hu τ.1 τ.2).2).symm`.
+A detailed English derivation is pending.
 -/
 theorem fr_orthonormal_unit : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ h k, (∀ τ : (C.M.X k).Ψ, gram τ.1 (C.M.X k).Gm (mat (C.fr h k) τ) = Matrix.diagonal fun a : Fin r => ((sgn (C.M.X k).p0 (a : ℕ) : ℝ) : ℂ)) ∧ C.fr h k ∈ (C.M.X k).dom ∧ (∀ τ i, ‖dmin (C.M.X k).Gm (C.fr h k) τ i‖ = 1) ∧ Continuous (fun u => C.fr u k) ∧ (∀ u ∈ GfC V, C.fr (h * u) k = C.fr h k) ∧ (∀ u, C.fr (h * u) k = rmul (C.fr h k) (archMat V C.th C.hr (fun k => C.fr 1 k) u k)) ∧ ∀ x : Frame (C.M.X k).Ψ r, (∀ τ : (C.M.X k).Ψ, gram τ.1 (C.M.X k).Gm (mat x τ) = Matrix.diagonal fun a : Fin r => ((sgn (C.M.X k).p0 (a : ℕ) : ℝ) : ℂ)) → ∃ u ∈ GinfC V, C.fr u k = x := by
   intro D H Dw l Xo c σ V r C hC h k

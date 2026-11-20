@@ -36,7 +36,7 @@ def IsSpread (k : ℕ) (f : Lt1 Dw) : Prop := InPsi H f.1 ∧ rk f + 2 ≤ k
 def IsSmall (f : Lt1 Dw) : Prop := ¬ InPsi H f.1
 
 /- English proof (translation)
-Unfold `IsBig IsSmall IsSpread`. Distinguish the cases in `h : InPsi H f.1`. Simplify using `only [h, true_and, not_true, false_or]`. Use linear arithmetic over natural numbers and integers. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem not_isBig_iff (k : ℕ) (f : Lt1 Dw) : ¬ IsBig k f ↔ IsSmall f ∨ IsSpread k f := by
   unfold IsBig IsSmall IsSpread

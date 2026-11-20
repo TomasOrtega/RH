@@ -10,11 +10,11 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n S hS C hC hC1`. Use `choose γ hγ0 hγ using fun w => GlobalTheory.LocBound.bound_charpoly_nrmL E n w (C w) (hC w)`. Set `g : Pl E → WithZero (Multiplicative ℤ)` to `fun w => if C w ⊆ GlobalTheory.LFun.KGL w n then 1 else γ w`. Establish `hlev : ∀ w : Pl E, IsLevel (thL n w) (GlobalTheory.LFun.KGL w n) (GlobalTheory.LFun.KGL w n)` using `fun w => ⟨(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1, le_rfl, fun k hk => GlobalTheory.BCT.ThBasic.thL_mem_KGL hU n w k hk⟩`. Apply the tactic sequence `refine (GlobalTheory.BCT.GeoFin.finite_ell_bounded E n S hS g (fun w => by by_cases h : C w ⊆ GlobalTheory.LFun.KGL w n <;> simp [g, h, hγ0]) (hC1.mono fun w h => by simp [g, h])).subset ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `P ⟨hP, hPS⟩`. Use `⟨hP, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hPS w hw`. Rewrite using `[← e]`. Distinguish the cases in `h : C w ⊆ GlobalTheory.LFun.KGL w n`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, if_pos h, inv_one]`. Conclude with `GlobalTheory.BCT.GeoFin.charpoly_nrmL_integral E n w (hlev w) y (h hy)`. Simplify using `only [g, if_neg h]`. Conclude with `hγ w y hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G3.polFin :
     UpperTheory.ConvolutionTheory.G3.PolFin := by

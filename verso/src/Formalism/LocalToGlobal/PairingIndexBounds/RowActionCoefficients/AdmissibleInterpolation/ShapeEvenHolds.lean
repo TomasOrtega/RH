@@ -16,9 +16,9 @@ section Heights
 variable {n : ℕ} {ν : Fin n → ℕ}
 
 /- English proof (translation)
-Unfold `colH`. Rewrite using `[← Fin.card_Iic t]`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Iic]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, lt_of_lt_of_le h (hν hs)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem colH_ge (hν : Antitone ν) {k : ℕ} (t : Fin n) (h : k < ν t) : t.val + 1 ≤ colH ν k := by
   unfold colH
@@ -30,9 +30,9 @@ theorem colH_ge (hν : Antitone ν) {k : ℕ} (t : Fin n) (h : k < ν t) : t.val
   exact ⟨Finset.mem_univ _, lt_of_lt_of_le h (hν hs)⟩
 
 /- English proof (translation)
-Unfold `colH`. Rewrite using `[← Fin.card_Iio t]`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_filter]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hst`. Use `push_neg at hst`. Conclude with `absurd (lt_of_lt_of_le hs.2 (hν hst)) (not_lt.mpr h)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem colH_le_of (hν : Antitone ν) {k : ℕ} (t : Fin n) (h : ν t ≤ k) : colH ν k ≤ t.val := by
   unfold colH
@@ -46,9 +46,7 @@ theorem colH_le_of (hν : Antitone ν) {k : ℕ} (t : Fin n) (h : ν t ≤ k) : 
   exact absurd (lt_of_lt_of_le hs.2 (hν hst)) (not_lt.mpr h)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Conclude with `absurd (colH_le_of hν t h') (not_le.mpr h)`.
-
-Introduce `h`. Conclude with `Nat.lt_of_succ_le (colH_ge hν t h)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lt_colH_iff (hν : Antitone ν) (k : ℕ) (t : Fin n) : t.val < colH ν k ↔ k < ν t := by
   constructor
@@ -62,9 +60,9 @@ theorem lt_colH_iff (hν : Antitone ν) (k : ℕ) (t : Fin n) : t.val < colH ν 
 end Heights
 
 /- English proof (translation)
-Establish `e : (Finset.univ.filter fun k : Fin c => k.val < m).map Fin.valEmbedding = Finset.range m`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hk`. Introduce `hx`. Conclude with `⟨⟨x, by omega⟩, hx, rfl⟩`. Rewrite using `[← Finset.card_map Fin.valEmbedding, e, Finset.card_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fin_lt (c m : ℕ) (hm : m ≤ c) : (Finset.univ.filter fun k : Fin c => k.val < m).card = m := by
   have e : (Finset.univ.filter fun k : Fin c => k.val < m).map Fin.valEmbedding = Finset.range m := by
@@ -79,22 +77,22 @@ theorem card_fin_lt (c m : ℕ) (hm : m ≤ c) : (Finset.univ.filter fun k : Fin
   rw [← Finset.card_map Fin.valEmbedding, e, Finset.card_range]
 
 /- English proof (translation)
-Introduce `s t hst`. Conclude with `Nat.sub_le_sub_left (hμ (Fin.rev_le_rev.mpr hst)) c`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kap_antitone {n : ℕ} {μ : Fin n → ℕ} (hμ : Antitone μ) (c : ℕ) : Antitone fun t : Fin n => c - μ t.rev := by
   intro s t hst
   exact Nat.sub_le_sub_left (hμ (Fin.rev_le_rev.mpr hst)) c
 
 /- English proof (translation)
-Simplify using `only [colH]`. Establish `e1 : (Finset.univ.filter fun t : Fin n => (Fin.rev k).val < c - μ t.rev).card = (Finset.univ.filter fun s : Fin n => ¬ k.val < μ s).card`. Use `Finset.card_bij (fun t _ => t.rev) ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_rev] at ht ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `hc t.rev` as an intermediate fact. Use `k.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ h`. Conclude with `Fin.rev_injective h`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `⟨s.rev, ?_, Fin.rev_rev s⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_rev, Fin.rev_rev] at hs ⊢`. Use `hc s` as an intermediate fact. Use `k.isLt` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsub : (Finset.univ.filter fun s : Fin n => k.val < μ s) ⊆ Finset.univ` using `Finset.subset_univ _`. Establish `h2` using `Finset.card_sdiff_add_card_eq_card hsub`. Establish `h3 : (Finset.univ.filter fun s : Fin n => ¬ k.val < μ s) = Finset.univ \ (Finset.univ.filter fun s : Fin n => k.val < μ s)`. Use extensionality with `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_sdiff]`. Rewrite `h2` using `[Finset.card_univ, Fintype.card_fin]`. Rewrite `e1` using `[h3]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem colH_kap {n : ℕ} {μ : Fin n → ℕ} (c : ℕ) (hc : ∀ t, μ t ≤ c) (k : Fin c) :
     n - colH μ k.val = colH (fun t : Fin n => c - μ t.rev) (Fin.rev k).val := by
@@ -126,13 +124,13 @@ theorem colH_kap {n : ℕ} {μ : Fin n → ℕ} (c : ℕ) (hc : ∀ t, μ t ≤ 
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hln : l ≤ n`. Establish `e` using `congrFun h ⟨l - 1, by omega⟩`. Simplify using `only [shapeDeg] at e`. Establish `e1 : (Finset.univ.filter fun k => l ≤ sz k) = (Finset.univ.filter fun k => l - 1 < sz k)`. Use extensionality with `k`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `constructor <;> intro <;> omega`. Establish `e2 : (Finset.univ.filter fun k => l ≤ sz' k) = (Finset.univ.filter fun k => l - 1 < sz' k)`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> intro <;> omega`. Rewrite using `[e1, e2]`. Conclude with `e`. Use `push_neg at hln`. Establish `e1 : (Finset.univ.filter fun k => l ≤ sz k) = ∅` using `Finset.filter_eq_empty_iff.mpr fun k _ => by have := hsz k; omega`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (Finset.univ.filter fun k => l ≤ sz' k) = ∅` using `Finset.filter_eq_empty_iff.mpr fun k _ => by have := hsz' k; omega`. Rewrite using `[e1, e2, Finset.card_empty, Finset.card_empty]`.
+A detailed English derivation is pending.
 -/
 theorem card_ge_eq {n K K' : ℕ} (sz : Fin K → ℕ) (sz' : Fin K' → ℕ) (hsz : ∀ k, sz k ≤ n) (hsz' : ∀ k, sz' k ≤ n)
     (h : (shapeDeg sz : Fin n → ℕ) = shapeDeg sz') (l : ℕ) (hl : 0 < l) :
@@ -158,9 +156,9 @@ theorem card_ge_eq {n K K' : ℕ} (sz : Fin K → ℕ) (sz' : Fin K' → ℕ) (h
     rw [e1, e2, Finset.card_empty, Finset.card_empty]
 
 /- English proof (translation)
-Establish `hsub : (Finset.univ.filter fun k => l + 1 ≤ sz k) ⊆ (Finset.univ.filter fun k => l ≤ sz k)`. Introduce `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `Finset.card_sdiff_add_card_eq_card hsub`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h3 : (Finset.univ.filter fun k => sz k = l) = (Finset.univ.filter fun k => l ≤ sz k) \ (Finset.univ.filter fun k => l + 1 ≤ sz k)`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_sdiff]`. Apply the tactic sequence `constructor <;> intro <;> omega`. Rewrite using `[h3]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -181,7 +179,7 @@ theorem card_eq_sub {K : ℕ} (sz : Fin K → ℕ) (l : ℕ) :
   omega
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype, Fintype.card_subtype, card_eq_sub, card_eq_sub, card_ge_eq sz sz' hsz hsz' h l hl, card_ge_eq sz sz' hsz hsz' h (l + 1) (Nat.succ_pos l)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_eq {n K K' : ℕ} (sz : Fin K → ℕ) (sz' : Fin K' → ℕ) (hsz : ∀ k, sz k ≤ n) (hsz' : ∀ k, sz' k ≤ n)
     (h : (shapeDeg sz : Fin n → ℕ) = shapeDeg sz') (l : ℕ) (hl : 0 < l) :
@@ -190,7 +188,7 @@ theorem card_eq_eq {n K K' : ℕ} (sz : Fin K → ℕ) (sz' : Fin K' → ℕ) (h
     card_ge_eq sz sz' hsz hsz' h l hl, card_ge_eq sz sz' hsz hsz' h (l + 1) (Nat.succ_pos l)]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem initMinor_cast (B : Type) [CommRing B] {r n s s' : ℕ} (e : s = s') (J : Fin s → Fin r) (hs : s ≤ n)
     (hs' : s' ≤ n) : initMinor B (n := n) (fun j : Fin s' => J (Fin.cast e.symm j)) hs' = initMinor B J hs := by
@@ -198,7 +196,7 @@ theorem initMinor_cast (B : Type) [CommRing B] {r n s s' : ℕ} (e : s = s') (J 
   rfl
 
 /- English proof (translation)
-Rewrite using `[initMinor]`. Conclude with `Matrix.det_isEmpty`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem initMinor_zero (B : Type) [CommRing B] {r n : ℕ} (J : Fin 0 → Fin r) (hs : 0 ≤ n) :
     initMinor B (n := n) J hs = 1 := by
@@ -206,7 +204,7 @@ theorem initMinor_zero (B : Type) [CommRing B] {r n : ℕ} (J : Fin 0 → Fin r)
   exact Matrix.det_isEmpty
 
 /- English proof (translation)
-Substitute `h0` using the available equality. Conclude with `initMinor_zero B J hs`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem initMinor_eq_one (B : Type) [CommRing B] {r n s : ℕ} (J : Fin s → Fin r) (hs : s ≤ n) (h0 : s = 0) :
     initMinor B (n := n) J hs = 1 := by
@@ -218,9 +216,9 @@ end ConjugatePartitionShape
 open ConjugatePartitionShape
 
 /- English proof (translation)
-Introduce `n ν hν c hc`. Use function extensionality and compare the values at `t`. Simplify using `only [shapeDeg]`. Rewrite using `[← card_fin_lt c (ν t) (hc t)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `lt_colH_iff hν k.val t`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shape_even_holds : ShapeE := by
   intro n ν hν c hc
@@ -233,13 +231,11 @@ theorem shape_even_holds : ShapeE := by
   exact lt_colH_iff hν k.val t
 
 /- English proof (translation)
-Introduce `n μ hμ c hc`. Use function extensionality and compare the values at `t`. Simplify using `only [shapeDeg]`. Rewrite using `[← card_fin_lt c (c - μ t.rev) (Nat.sub_le c _)]`. Use `Finset.card_bij (fun k _ => Fin.rev k) ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Rewrite `hk` using `[colH_kap c (fun s => hc s) k]`. Conclude with `(lt_colH_iff (kap_antitone hμ c) _ t).mp hk`. Introduce `a _ b _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.rev_injective h`. Introduce `k hk`. Use `⟨Fin.rev k, ?_, Fin.rev_rev k⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Rewrite using `[colH_kap c (fun s => hc s) (Fin.rev k), Fin.rev_rev]`.
-
-Conclude with `(lt_colH_iff (kap_antitone hμ c) _ t).mpr hk`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shape_odd_holds : ShapeO := by
   intro n μ hμ c hc
@@ -260,17 +256,17 @@ theorem shape_odd_holds : ShapeO := by
     exact (lt_colH_iff (kap_antitone hμ c) _ t).mpr hk
 
 /- English proof (translation)
-Introduce `B _ r n K K' sz sz' hsz hsz' h I`. Establish `hE : ∀ l, 0 < l → Nonempty ({k' // sz' k' = l} ≃ {k // sz k = l})` using `fun l hl => ⟨Fintype.equivOfCardEq (card_eq_eq sz sz' hsz hsz' h l hl)⟩`. Set `e : ∀ l, 0 < l → ({k' // sz' k' = l} ≃ {k // sz k = l})` to `fun l hl => Classical.choice (hE l hl)`. Set `I' : ∀ k', Fin (sz' k') → Fin r` to `fun k' => if hk : 0 < sz' k' then fun j => I (e (sz' k') hk ⟨k', rfl⟩).1 (Fin.cast (e (sz' k') hk ⟨k', rfl⟩).2.symm j) else fun j => absurd j.2 (by omega)`. Use `⟨I', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `bideterminant`. Establish `hmaps : ∀ k ∈ (Finset.univ : Finset (Fin K)), sz k ∈ Finset.range (n + 1)` using `fun k _ => Finset.mem_range.mpr (Nat.lt_succ_of_le (hsz k))`. Establish `hmaps' : ∀ k ∈ (Finset.univ : Finset (Fin K')), sz' k ∈ Finset.range (n + 1)` using `fun k _ => Finset.mem_range.mpr (Nat.lt_succ_of_le (hsz' k))`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to hmaps, ← Finset.prod_fiberwise_of_maps_to hmaps']`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Nat.eq_zero_or_pos l with hl | hl` into its components or cases. Substitute `hl` using the available equality. Rewrite using `[Finset.prod_eq_one, Finset.prod_eq_one]`. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `initMinor_eq_one B _ _ hk`. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk`. Conclude with `initMinor_eq_one B _ _ hk`. Rewrite using `[Finset.prod_subtype _ (p := fun k => sz k = l) (by simp), Finset.prod_subtype _ (p := fun k' => sz' k' = l) (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `Fintype.prod_equiv (e l hl) _ _ fun x' => ?_` and prove the remaining obligations. Take `⟨k', hk'⟩` from `x'`. Substitute `hk'` using the available equality. Establish `hI : I' k' = fun j => I (e (sz' k') hl ⟨k', rfl⟩).1 (Fin.cast (e (sz' k') hl ⟨k', rfl⟩).2.symm j)` using `dif_pos hl`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hI]`. Conclude with `initMinor_cast B (e (sz' k') hl ⟨k', rfl⟩).2 _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem reorder_holds : Reorder := by
   intro B _ r n K K' sz sz' hsz hsz' h I

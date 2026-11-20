@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMeasurableLint
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_measurable_lintegral_coset_eq_one` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsMeasurableLintegralCosetEqOneClosedSubgrou.lean&line=11#L11)
 -/

@@ -9,7 +9,7 @@ section Ring
 variable {R M : Type} [CommRing R] [Ring M] [Algebra R M]
 
 /- English proof (translation)
-Establish `h1 : x * y - 1 = (x - 1) * y + (y - 1)` using `by noncomm_ring`. Rewrite using `[h1, smul_add, ← smul_mul_assoc, hx, zero_mul, zero_add, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cong_mul {e : R} {x y : M} (hx : (1 - e) • (x - 1) = 0) (hy : (1 - e) • (y - 1) = 0) :
     (1 - e) • (x * y - 1) = 0 := by
@@ -17,7 +17,7 @@ theorem cong_mul {e : R} {x y : M} (hx : (1 - e) • (x - 1) = 0) (hy : (1 - e) 
   rw [h1, smul_add, ← smul_mul_assoc, hx, zero_mul, zero_add, hy]
 
 /- English proof (translation)
-Establish `h1 : y - 1 = -(y * (x - 1))` using `by rw [mul_sub, hxy, mul_one]; abel`. Rewrite using `[h1, smul_neg, ← mul_smul_comm, hx, mul_zero, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cong_inv {e : R} {x y : M} (hx : (1 - e) • (x - 1) = 0) (hxy : y * x = 1) :
     (1 - e) • (y - 1) = 0 := by
@@ -25,13 +25,11 @@ theorem cong_inv {e : R} {x y : M} (hx : (1 - e) • (x - 1) = 0) (hxy : y * x =
   rw [h1, smul_neg, ← mul_smul_comm, hx, mul_zero, neg_zero]
 
 /- English proof (translation)
-Establish `hu : e • (K - 1) = K - 1`. Rewrite `hK` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `hK.symm`. Establish `hv : e • (h - 1) = h - 1`. Rewrite `hhe` using `[sub_smul, one_smul, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hhe.symm`. Establish `hua : (K - 1) * a = e • K`. Establish `hK1 : K - 1 = K * (1 - k)` using `by rw [mul_sub, mul_one, hKk]`. Rewrite using `[hK1, mul_assoc, ha, mul_smul_comm, mul_one]`. Establish `hbv : b * (h - 1) = e • h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh1 : h - 1 = (1 - h') * h` using `by rw [sub_mul, one_mul, hh]`. Rewrite using `[hh1, ← mul_assoc, hb, smul_mul_assoc, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hbv, hua]`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`.
-
-Use `_ = h - 1 := by rw [hu, hv]; noncomm_ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key {e : R} {k K h h' a b : M} (hKk : K * k = 1) (hh : h' * h = 1)
     (hK : (1 - e) • (K - 1) = 0) (hhe : (1 - e) • (h - 1) = 0)
@@ -59,15 +57,15 @@ end Ring
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {β : Type} [Fintype β] [DecidableEq β]
 
 /- English proof (translation)
-Establish `hT : aᵀ * (1 - k)ᵀ = e • (1 : Matrix β β A)`. Rewrite using `[← transpose_mul, ha, transpose_smul, transpose_one]`. Establish `hac : (1 - k.map c) * a.map c = e • (1 : Matrix β β A)`. Establish `h1` using `congrArg c.mapMatrix ha`. Rewrite `h1` using `[map_mul, map_sub, map_one, map_smul, map_one, AlgHom.mapMatrix_apply, AlgHom.mapMatrix_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `heac : e • a.map c = a.map c`. Establish `h1` using `congrArg c.mapMatrix hea`. Rewrite `h1` using `[map_smul, AlgHom.mapMatrix_apply]`. Then use the resulting hypothesis. Establish `heaT : e • aᵀ = aᵀ` using `by rw [← transpose_smul, hea]`. Establish `hid : (1 - k)ᵀ * J * (1 - k.map c) = (1 - k)ᵀ * J + J * (1 - k.map c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[transpose_sub, transpose_one]`. Establish `e1 : (1 - kᵀ) * J * (1 - k.map c) = (1 - kᵀ) * J + J * (1 - k.map c) + (kᵀ * J * k.map c - J)` using `by noncomm_ring`. Rewrite using `[e1, hk, sub_self, add_zero]`. Establish `main : aᵀ * ((1 - k)ᵀ * J * (1 - k.map c)) * a.map c = e • J`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hT, hac, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, he]`. Establish `t1 : aᵀ * ((1 - k)ᵀ * J) * a.map c = J * a.map c`. Rewrite using `[← Matrix.mul_assoc, hT, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, ← Matrix.mul_smul, heac]`. Establish `t2 : aᵀ * (J * (1 - k.map c)) * a.map c = aᵀ * J`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hac, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_smul, ← Matrix.smul_mul, heaT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `main` using `[hid, Matrix.mul_add, Matrix.add_mul, t1, t2]`. Rewrite using `[add_comm]`. Conclude with `main`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayley (c : A →ₐ[R] A) {J k a : Matrix β β A} {e : R} (hk : kᵀ * J * k.map c = J) (hea : e • a = a)
     (ha : (1 - k) * a = e • (1 : Matrix β β A)) (he : e * e = e) : aᵀ * J + J * a.map c = e • J := by
@@ -114,13 +112,13 @@ def unip (N : Matrix β β A) : GL (β ⊕ β) A where
     congr 1 <;> noncomm_ring
 
 /- English proof (translation)
-Use `show ((unip N : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A)ᵀ * GlobalTheory.WeilM.dbl J * ((unip N : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A).map c = GlobalTheory.WeilM.dbl J`. Establish `hU : ((unip N : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = fromBlocks (1 + N) (-N) N (1 - N)` using `rfl`. Establish `hm1 : (1 + N).map c = 1 + N.map c`. Establish `h` using `map_add c.mapMatrix 1 N`. Rewrite `h` using `[map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hm2 : (-N).map c = -N.map c` using `map_neg c.mapMatrix N`. Establish `hm3 : (1 - N).map c = 1 - N.map c`. Establish `h` using `map_sub c.mapMatrix 1 N`. Rewrite `h` using `[map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Rewrite using `[hU, GlobalTheory.WeilM.dbl, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [transpose_add, transpose_sub, transpose_neg, transpose_one, hm1, hm2, hm3]`. Use `fromBlocks_inj.mpr ⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem unip_mem (c : A →ₐ[R] A) {J N : Matrix β β A} (hN : Nᵀ * J + J * N.map c = 0) :
     unip N ∈ GlobalTheory.WeilM.UG c (GlobalTheory.WeilM.dbl J) := by
@@ -152,7 +150,7 @@ theorem unip_mem (c : A →ₐ[R] A) {J N : Matrix β β A} (hN : Nᵀ * J + J *
       _ = -J := by rw [hN, add_zero]
 
 /- English proof (translation)
-Establish `h1 : fromBlocks x (0 : Matrix β β A) (0 : Matrix β β A) (1 : Matrix β β A) - 1 = fromBlocks (x - 1) 0 0 0`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply]`. Rewrite using `[h1, fromBlocks_smul, hx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cong_block {e : R} {x : Matrix β β A} (hx : (1 - e) • (x - 1) = 0) :
     (1 - e) • (fromBlocks x (0 : Matrix β β A) (0 : Matrix β β A) (1 : Matrix β β A) - 1) = 0 := by
@@ -163,33 +161,31 @@ theorem cong_block {e : R} {x : Matrix β β A} (hx : (1 - e) • (x - 1) = 0) :
   simp
 
 /- English proof (translation)
-Introduce `R A _ _ _ c β _ _ J _ e he g k hg hk a b hea heb hak hka hbh hhb gd kd hgd hkd`. Take `⟨Km, hKm⟩ : ∃ Km : Matrix β β A, Km = (((k : GL β A)⁻¹ : GL β A) : Matrix β β A)` from `⟨_, rfl⟩`. Take `⟨gi, hgi⟩ : ∃ gi : Matrix β β A, gi = (((g : GL β A)⁻¹ : GL β A) : Matrix β β A)` from `⟨_, rfl⟩`. Establish `hKk : Km * ((k : GL β A) : Matrix β β A) = 1` using `by rw [hKm]; exact Units.inv_mul _`. Establish `hkK : ((k : GL β A) : Matrix β β A) * Km = 1` using `by rw [hKm]; exact Units.mul_inv _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgig : gi * ((g : GL β A) : Matrix β β A) = 1` using `by rw [hgi]; exact Units.inv_mul _`. Establish `hggi : ((g : GL β A) : Matrix β β A) * gi = 1` using `by rw [hgi]; exact Units.mul_inv _`. Establish `hhgk : (((g⁻¹ * k : GlobalTheory.WeilM.UG c J) : GL β A) : Matrix β β A) = gi * ((k : GL β A) : Matrix β β A)` using `by rw [hgi]; rfl`. Establish `hh : (((g⁻¹ * k : GlobalTheory.WeilM.UG c J) : GL β A) : Matrix β β A) * (Km * ((g : GL β A) : Matrix β β A)) = 1`. Rewrite using `[hhgk, Matrix.mul_assoc, ← Matrix.mul_assoc ((k : GL β A) : Matrix β β A) Km, hkK, Matrix.one_mul, hgig]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh2 : Km * ((g : GL β A) : Matrix β β A) * (((g⁻¹ * k : GlobalTheory.WeilM.UG c J) : GL β A) : Matrix β β A) = 1`. Rewrite using `[hhgk, Matrix.mul_assoc, ← Matrix.mul_assoc ((g : GL β A) : Matrix β β A) gi, hggi, Matrix.one_mul, hKk]`. Establish `hKc : (1 - e) • (Km - 1) = 0` using `cong_inv hk hKk`. Establish `hhc : (1 - e) • (Km * ((g : GL β A) : Matrix β β A) - 1) = 0` using `cong_mul hKc hg`. Establish `key1` using `key hKk hh hKc hhc hka hbh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key2` using `key hh2 hkK hhc hKc hhb hak`. Establish `hca` using `cayley c (J := J) (k := ((k : GL β A) : Matrix β β A)) (a := a) k.2 hea hka he`. Establish `hcb` using `cayley c (J := J) (k := (((g⁻¹ * k : GlobalTheory.WeilM.UG c J) : GL β A) : Matrix β β A)) (a := b) (g⁻¹ * k).2 heb hhb he`. Establish `hskew : (a - b)ᵀ * J + J * (a - b).map c = 0`. Establish `hmap : (a - b).map c = a.map c - b.map c` using `by ext i j; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[transpose_sub, hmap, Matrix.sub_mul, Matrix.mul_sub]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨u, hu⟩ : ∃ u : GlobalTheory.WeilM.UG c (GlobalTheory.WeilM.dbl J), ((u : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = fromBlocks (1 + (a - b)) (-(a - b)) (a - b) (1 - (a - b)) ∧ (((u⁻¹ : GlobalTheory.WeilM.UG c (GlobalTheory.WeilM.dbl J)) : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) …` from `⟨⟨unip (a - b), unip_mem c hskew⟩, rfl, rfl⟩`. Establish `h2 : (((kd⁻¹ : GlobalTheory.WeilM.UG c (GlobalTheory.WeilM.dbl J)) : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) * ((kd : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = 1` using `Units.inv_mul _`. Establish `hkdinv : (((kd⁻¹ : GlobalTheory.WeilM.UG c (GlobalTheory.WeilM.dbl J)) : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = fromBlocks Km 0 0 1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((kd : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks Km 0 0 1 = 1`. Rewrite using `[hkd, fromBlocks_multiply, hkK]`. Simplify using `[fromBlocks_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hblk : ∀ P Q S T : Matrix β β A, fromBlocks P Q S T - 1 = fromBlocks (P - 1) Q S (T - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `P Q S T`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply]`. Establish `hN0 : (1 - e) • (a - b) = 0` using `by simp [smul_sub, sub_smul, hea, heb]`. Establish `hN0' : (1 - e) • (b - a) = 0` using `by simp [smul_sub, sub_smul, hea, heb]`. Establish `hkdc : (1 - e) • (((kd : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) - 1) = 0` using `by rw [hkd]; exact cong_block hk`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgdc : (1 - e) • (((gd : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) - 1) = 0` using `by rw [hgd]; exact cong_block hg`. Establish `hkdic : (1 - e) • ((((kd⁻¹ : GlobalTheory.WeilM.UG c (GlobalTheory.WeilM.dbl J)) : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) - 1) = 0` using `cong_inv hkdc h2`. Establish `huc : (1 - e) • (((u : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) - 1) = 0`. Rewrite using `[hu.1, hblk, fromBlocks_smul]`. Simplify using `[hN0, hN0']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `ht : (1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1)) * (1 - (a - b) * (Km - 1)) = 1`. Establish `e1 : (1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1)) * (1 - (a - b) * (Km - 1)) = (1 - (a - b) * (Km - 1)) - (b - a) * ((Km * ((g : GL β A) : Matrix β β A) - 1) * (1 - (a - b) * (Km - 1)))` using `by noncomm_ring`. Rewrite using `[e1, key2]`. Use `noncomm_ring`. Establish `hK2 : Km * (1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1)) = (1 + (a - b)) * (Km * ((g : GL β A) : Matrix β β A)) - (a - b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Km * (1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1)) = (Km - 1) * (1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1)) + (1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1))` using `by noncomm_ring`. Rewrite using `[e1, key1]`. Use `noncomm_ring`. Establish `hfin : ((k : GL β A) : Matrix β β A) * ((1 + (a - b)) * (Km * ((g : GL β A) : Matrix β β A)) - (a - b)) = 1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1)`. Rewrite using `[← hK2, ← Matrix.mul_assoc, hkK, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : (((kd * u * kd⁻¹ * gd : GlobalTheory.WeilM.UG c (GlobalTheory.WeilM.dbl J)) : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) = ((kd : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) * ((u : GL (β ⊕ β) A) : Matrix (β ⊕ β) (β ⊕ β) A) * (((kd⁻¹ : GlobalTheory.WeilM.UG c (GlobalTheory.Weil …` using `rfl`. Use `⟨u⁻¹, kd * u * kd⁻¹ * gd, 1, ⟨1 - (b - a) * (Km * ((g : GL β A) : Matrix β β A) - 1), 1 - (a - b) * (Km - 1), ht, mul_eq_one_comm.mp ht⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hu.2, hblk, fromBlocks_smul]`. Simplify using `[hN0, hN0']`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `cong_mul (cong_mul (cong_mul hkdc huc) hkdic) hgdc`. Rewrite using `[hu.2, GlobalTheory.WeilM.diagCols]`. Simplify using `only [fromBlocks_mul_fromRows, fromRows_mul, Units.val_one, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[fromRows_ext_iff]`. Apply the tactic sequence `constructor <;> abel`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, hkd, hu.1, hkdinv, hgd, GlobalTheory.WeilM.diagCols]`. Simplify using `only [Matrix.mul_assoc, fromBlocks_mul_fromRows, fromRows_mul, Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Units.val_mk]`. Rewrite using `[fromRows_ext_iff]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `refine Eq.trans ?_ (hfin.trans ?_) <;> noncomm_ring`.
-
-Use `noncomm_ring`. Use `group`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem decomposition : ∀ (R A : Type) [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] (c : A →ₐ[R] A) (β : Type) [inst_3 : Fintype β] [inst_4 : DecidableEq β] (J : Matrix β β A), IsUnit (Matrix.det J) →
     ∀ (e : R), e * e = e →

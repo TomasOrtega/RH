@@ -10,7 +10,7 @@ open Matrix Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.P.W
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `(Algebra.commute_algebraMap_left Y x).add_left hp` using `[Tm]`. Simplify `hc.neg_left` using `[Tm]`. Simplify `hci` using `[Tm]`. Simplify using `[Tm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem tm_entry_comm (Y : ℂ) {p c ci x : A} (hp : Commute p x) (hc : Commute c x)
     (hci : Commute ci x) (i j : Fin 2) : Commute (Tm Y p c ci i j) x := by
@@ -21,14 +21,14 @@ theorem tm_entry_comm (Y : ℂ) {p c ci x : A} (hp : Commute p x) (hc : Commute 
   · simp [Tm]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, h, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_l {x y : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A} (h : x * y = y * x)
     (Z : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) : x * (y * Z) = y * (x * Z) := by
   rw [← Matrix.mul_assoc, h, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Pf, Matrix.one_apply, Algebra.algebraMap_eq_smul_one, sub_smul, sub_mul, smul_mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flip_row (D : ℂ) (K : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) :
     ((D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) - Pf A) * K) (0, 0) (0, 0) =
@@ -37,7 +37,7 @@ theorem flip_row (D : ℂ) (K : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) :
     Algebra.algebraMap_eq_smul_one, sub_smul, sub_mul, smul_mul_assoc]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Pf, Matrix.one_apply, Algebra.algebraMap_eq_smul_one, sub_smul, sub_mul, mul_sub, mul_one, smul_mul_assoc, mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flip_col (D : ℂ) (K : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) :
     (K * (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) - Pf A)) (0, 0) (0, 0) =
@@ -46,13 +46,13 @@ theorem flip_col (D : ℂ) (K : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) :
     Algebra.algebraMap_eq_smul_one, sub_smul, sub_mul, mul_sub, mul_one, smul_mul_assoc, mul_smul_comm]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, E1, E2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_embedding_mul_entry (M N : Matrix (Fin 2) (Fin 2) A) : (E1 M * E2 N) (0, 0) (0, 0) = M 0 0 * N 0 0 := by
   simp [Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, E1, E2]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, E1, E2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_embedding_mul_entry_swap (M N : Matrix (Fin 2) (Fin 2) A) : (E2 N * E1 M) (0, 0) (0, 0) = N 0 0 * M 0 0 := by
   simp [Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, E1, E2]

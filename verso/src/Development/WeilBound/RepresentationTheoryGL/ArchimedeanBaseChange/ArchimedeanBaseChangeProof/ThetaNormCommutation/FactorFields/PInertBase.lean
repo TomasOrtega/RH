@@ -11,7 +11,7 @@ open scoped Classical TensorProduct
 namespace PositivityTheory.Rg.BcB.G3.InertBaseP
 
 /- English proof (translation)
-Establish `h` using `(IsCMField.complexConj_eq_self_iff (K := E) (x := y)).1 hy`. Conclude with `⟨⟨y, h⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_real (E : Type) [Field E] [NumberField E] [IsCMField E] (y : E)
     (hy : IsCMField.complexConj E y = y) :
@@ -20,11 +20,9 @@ theorem exists_real (E : Type) [Field E] [NumberField E] [IsCMField E] (y : E)
   exact ⟨⟨y, h⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_real E ((x + IsCMField.complexConj E x) / 2) (by`. Rewrite using `[map_div₀, map_add, IsCMField.complexConj_apply_apply, map_ofNat]`. Use the proof step `ring)`. Take `⟨q, hq⟩` from `exists_real E ((x - IsCMField.complexConj E x) / (2 * s)) (by`. Rewrite using `[map_div₀, map_sub, map_mul, IsCMField.complexConj_apply_apply, map_ofNat, hcs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Use `⟨p, q, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hq]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem decomp (E : Type) [Field E] [NumberField E] [IsCMField E] (s : E) (hs : s ≠ 0)
     (hcs : IsCMField.complexConj E s = -s) (x : E) :
@@ -42,15 +40,15 @@ end PositivityTheory.Rg.BcB.G3.InertBaseP
 namespace PositivityTheory.Rg.BcB.G3
 
 /- English proof (translation)
-Introduce `E _ _ _ hU s d hs hcs hd w hw`. Take `⟨hcont, -, -, hin, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Take `⟨hconj, -⟩` from `hin hw`. Establish `h : w.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))` using `rfl`. Establish `hc2` using `GlobalTheory.LFun.SplitChart.continuous_complMap (E := E) h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.LFun.complMap h, fun x => GlobalTheory.LFun.complMap_algebraMap h x, fun x => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `heq` using `(HeightOneSpectrum.denseRange_algebraMap (K := maximalRealSubfield E) (w.under (𝓞 (maximalRealSubfield E)))).equalizer (hcont.comp hc2) hc2 (funext fun a => by`. Simplify using `only [Function.comp_apply, GlobalTheory.LFun.complMap_algebraMap, hconj, AlgEquiv.commutes])`. Conclude with `congrFun heq x`. Take `⟨t, rfl⟩` from `GlobalTheory.LFun.ConjPlace.toCompl_surjective h z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a x`. Take `⟨p, q, hx⟩` from `InertBaseP.decomp E s hs hcs x`. Use `⟨a * algebraMap _ _ p, a * algebraMap _ _ q, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.LFun.toCompl_tmul, hx, map_mul, map_add, GlobalTheory.LFun.complMap_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add t1 t2 e1 e2`. Take `⟨a1, b1, f1⟩` from `e1`. Take `⟨a2, b2, f2⟩` from `e2`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a1 + a2, b1 + b2, by rw [map_add, f1, f2, map_add, map_add]; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem inertBase_pf (h1 : TensorCompl) : InertBase := by
   intro E _ _ _ hU s d hs hcs hd w hw

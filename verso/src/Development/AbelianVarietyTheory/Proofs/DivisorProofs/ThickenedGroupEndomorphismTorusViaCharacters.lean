@@ -14,9 +14,9 @@ namespace GlobalTheory.Mum.EndThick
 open GlobalTheory.TorusCoord GlobalTheory.OLinearCompare
 
 /- English proof (translation)
-Use `ext1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Over.pullback_map_left, Category.assoc, pullback.lift_fst]`. Use `hF` as an intermediate fact. Simplify using `only [GtCoord.pG, Over.comp_left, Over.map_map_left, DegPre.prBe, Over.homMk_left] at this`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Category.assoc]`. Simplify using `only [Over.comp_left, Over.pullback_map_left, Category.assoc, pullback.lift_snd]`. Establish `h1 : g.q.left ≫ pullback.snd D.P.A.hom (thick R I e) = pullback.snd G.hom (thick R I e)` using `Over.w g.q`. Establish `h2 : F.left ≫ pullback.snd G.hom (thick R I e) = pullback.snd G.hom (thick R I e)` using `Over.w F`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_comm_of_isCoordEnd {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
@@ -36,15 +36,15 @@ theorem q_comm_of_isCoordEnd {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} 
     rw [h1, h2]
 
 /- English proof (translation)
-Introduce `R _ _ I D e G _ _ g a a' _ _ h' u hu h₀ F hF`. Establish `hb : IsMonHom ((Over.pullback (thick R I e)).map a)` using `inferInstance`. Establish `hq` using `q_comm_of_isCoordEnd g a F hF.1`. Establish `hd : (g.i ≫ F) ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A]`. Rewrite using `[Category.assoc, hq, ← Category.assoc, g.isKernel.w, Category.assoc, IsMonHom.one_hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩ : ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X ⟶ splitTorus _ D.X, t ≫ g.i = g.i ≫ F` from `⟨g.isKernel.lift _ _ hd, g.isKernel.lift_fst _ _ hd⟩`. Use `⟨t, fun χ => unit_ext fun y hy => ?_, ht.symm⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `TLinPf.idx_exists D.P.L D.P.isLB y`. Establish `hJ : Good D.P.L y J` using `hJ`. Use `g.q_hom` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v₁` using `val_torus g χ hJ t 1`. Establish `v₂` using `val_torus g (h' χ) hJ (𝟙 _) 1`. Rewrite `v₁`, `v₂` using `[_root_.mul_one, val_unit g _ hJ, _root_.mul_one]`. Rewrite `v₁` using `[ht]`. Rewrite `v₂` using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : TorusCoord.im g g.i = 1` using `(im_congr g (x' := 1) (by`. Rewrite using `[g.isKernel.w, MonObj.one_comp, Hom.one_def])).trans (im_one g)`. Establish `v₃ : val (LB.pullGen D.P.L _ _ u (lift (toUnit _ ≫ D.c χ) g.pG).left) g.i.left y J = 1` using `(val_pull_lift u χ g.pG ((Over.map (thick R I e)).map g.i) hJ).trans ((congrArg _ e1).trans (val₂_axis D.P.isAb D.P.isLB a' a u hu h₀ hJ _))`. Establish `v₄` using `(hF.2 χ _ g.i.left y J hJ).trans ((congrArg₂ (· * ·) v₂ v₃).trans (_root_.mul_one _))`. Use `(gm_res _ y (V := ⊤) (U := t.left ⁻¹ᵁ ⊤) (fun _ _ => trivial) trivial _).trans ((gm_pull (𝟙 _) t.left y ⊤ trivial _).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp]`. Rewrite `v₁` using `[Over.comp_left]`. Conclude with `v₁.symm.trans v₄`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_of_isCoordEnd : ∀ {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) (a a' : D.P.A ⟶ D.P.A) [IsMonHom a] [IsMonHom a'] (h' : D.X →+ D.X), ∀ (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A a' a) rosatiε)), u.IsGen → LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L) → ∀ (F : thickObj R I e G ⟶ thickObj R I e G), IsCoordEnd g a a' h' u F → ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.X ⟶ splitTorus _ D.X, TorusEndOf D.X h' t ∧ g.i ≫ F = t ≫ g.i := by
   intro R _ _ I D e G _ _ g a a' _ _ h' u hu h₀ F hF

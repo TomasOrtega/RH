@@ -6,16 +6,16 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Irreduc
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Z.Bc
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.IrreducibleSubrep.irr_of_iso h e`.
+A detailed English derivation is pending.
 -/
 private theorem irr_of_iso {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k} (h : IsIrr r)
     (e : RepIso r r') : IsIrr r' :=
   _root_.UpperTheory.Reformulated.B.IrreducibleSubrep.irr_of_iso h e
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ l _ ι n r r' e H hc K _ _ _ _ _ _ hK hi`. Establish `e' : RepIso (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) (r'.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω))`. Take `⟨g, hg⟩` from `e`. Conclude with `⟨g, fun s => hg _⟩`. Take `⟨π, h1, -, h3⟩` from `H (continuous_of_iso hc e) K hK (irr_of_iso hi e')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨π, h1, (UpperTheory.galoisRep_irreducibility_criterion.1 _ (G K Ω) _ n _).2.1 hi, h3.mono fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨B, hB, hE⟩` from `hw`. Conclude with `⟨B, hB, hE.of_iso e'.symm'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Bc.autQIso :
     AutQIso := by

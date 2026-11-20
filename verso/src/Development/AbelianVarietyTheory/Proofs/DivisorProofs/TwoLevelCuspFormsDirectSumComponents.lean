@@ -42,7 +42,7 @@ theorem cut_apply (M : TwoLevels E r U C) (c : C) (v : C → M.dom → ℂ) (c' 
     cut M c v c' = if c' = c then v c' else 0 := rfl
 
 /- English proof (translation)
-Introduce `c'`. Distinguish the cases in `h : c' = c`. Simplify `hF c'` using `[h]`. Simplify using `only [h, if_false]`. Conclude with `⟨BoundedSectionAlgebra.bdd_zero _ _, fun ξ _ x _ => BoundedSectionAlgebra.fj_zero _ _ ξ x 0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem cutF_mem_SS (M : TwoLevels E r U C) (la : Wt M.Ψ r) (c : C) {F : C → Frame M.Ψ r → ℂ}
     (hF : F ∈ M.SS la) : (fun c' => if c' = c then F c' else 0) ∈ M.SS la := by
@@ -53,9 +53,9 @@ theorem cutF_mem_SS (M : TwoLevels E r U C) (la : Wt M.Ψ r) (c : C) {F : C → 
     exact ⟨BoundedSectionAlgebra.bdd_zero _ _, fun ξ _ x _ => BoundedSectionAlgebra.fj_zero _ _ ξ x 0⟩
 
 /- English proof (translation)
-Establish `: (M.cusp la).map (cut M c) ≤ M.cusp la`. Unfold `TwoLevels.cusp`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨F, hF, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨_, cutF_mem_SS M la c hF, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `c' x`. Simplify using `[TwoLevels.res, cut_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `this ⟨v, hv, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cut_mem_cusp (M : TwoLevels E r U C) (la : Wt M.Ψ r) (c : C) {v : C → M.dom → ℂ}
     (hv : v ∈ M.cusp la) : cut M c v ∈ M.cusp la := by
@@ -70,11 +70,11 @@ theorem cut_mem_cusp (M : TwoLevels E r U C) (la : Wt M.Ψ r) (c : C) {v : C →
   exact this ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Establish `hcut : cut M c v = v`. Use function extensionality and compare the values at `c' x`. Distinguish the cases in `h : c' = c`. Simplify using `[cut_apply, h]`. Simplify using `[cut_apply, h, hc c' h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hcut]`. Establish `: (M.cusp la).map (cut M c) ≤ Submodule.span ℂ (M.res '' {F | F ∈ M.SS la ∧ ∀ c', c' ≠ c → F c' = 0})`. Unfold `TwoLevels.cusp`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨F, hF, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Submodule.subset_span ⟨_, ⟨cutF_mem_SS M la c hF, fun c' hc' => by simp [hc']⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c' x`. Simplify using `[TwoLevels.res, cut_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `this ⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_span_of_onComp (M : TwoLevels E r U C) (la : Wt M.Ψ r) (c : C) {v : C → M.dom → ℂ}
     (hv : v ∈ M.cusp la) (hc : v ∈ onComp M c) :
@@ -106,21 +106,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Typ
   [DecidableEq C]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hρ`. Take `⟨w, hwc⟩` from `w`. Establish `hs` using `mem_span_of_onComp M la c hwc hw`. Use `clear hw`. Use `revert hwc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Proceed by induction.
 
-It suffices to establish `H : ∀ h' : w ∈ M.cusp la, ((ρ g⁻¹ ⟨w, h'⟩ : M.cusp la) : C → M.dom → ℂ) ∈ onComp M (g⁻¹ • c) from fun h' => H h'`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨F, ⟨hF, hFc⟩, rfl⟩` from `hy`. Introduce `h' c' hc'`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Establish `hgc : g • c' ≠ c` using `fun h => hc' (eq_inv_smul_iff.2 h)`. Use `ha g F hF c' x` as an intermediate fact. Rewrite using `[this]`. Simplify using `[TwoLevels.pull, hFc _ hgc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `h'`. Establish `: (⟨0, h'⟩ : M.cusp la) = 0` using `rfl`. Rewrite using `[this, map_zero]`. Conclude with `(onComp M (g⁻¹ • c)).zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add x y hx hy ihx ihy`. Introduce `h'`. Establish `hx' : x ∈ M.cusp la` using `(Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨F, ⟨hF, -⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨F, hF, rfl⟩)) hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y ∈ M.cusp la` using `(Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨F, ⟨hF, -⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨F, hF, rfl⟩)) hy`. Establish `: (⟨x + y, h'⟩ : M.cusp la) = ⟨x, hx'⟩ + ⟨y, hy'⟩` using `rfl`. Rewrite using `[this, map_add, Submodule.coe_add]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(onComp M (g⁻¹ • c)).add_mem (ihx hx') (ihy hy')`. Consider the case `smul t x hx ihx`. Introduce `h'`. Establish `hx' : x ∈ M.cusp la` using `(Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨F, ⟨hF, -⟩, rfl⟩`.
-
-Conclude with `Submodule.subset_span ⟨F, hF, rfl⟩)) hx`. Establish `: (⟨t • x, h'⟩ : M.cusp la) = t • ⟨x, hx'⟩` using `rfl`. Rewrite using `[this, map_smul, Submodule.coe_smul]`. Conclude with `(onComp M (g⁻¹ • c)).smul_mem t (ihx hx')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullRep_onComp (M : TwoLevels E r U C) (la : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp la))
     (hρ : IsPullRep M la ρ) (g : U) (c : C) (w : M.cusp la) (hw : (w : C → M.dom → ℂ) ∈ onComp M c) :
@@ -167,21 +165,21 @@ end GlobalTheory.ShareOn.Decomp
 open GlobalTheory.ShareOn.Decomp in
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ _ _ M ka ρ hρ`. Establish `: Fintype C` using `Fintype.ofFinite C`. Use `⟨fun c => (onComp M c).comap (M.cusp ka).subtype, ?_, ?_⟩` and prove the remaining obligations. Apply `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top` to reduce the goal to its premises. Rewrite using `[iSupIndep_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx2`. Establish `hle : (⨆ j, ⨆ (_ : j ≠ i), (onComp M j).comap (M.cusp ka).subtype) ≤ LinearMap.ker ((LinearMap.proj i : (C → M.dom → ℂ) →ₗ[ℂ] (M.dom → ℂ)) ∘ₗ (M.cusp ka).subtype)`. Use `iSup₂_le fun j hj => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, Submodule.coe_subtype]`. Conclude with `hy i (Ne.symm hj)`. Establish `h0` using `hle hx2`. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, Submodule.coe_subtype] at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c'`. Distinguish the cases in `h : c' = i`. Substitute `h` using the available equality. Simplify using `using h0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx c' h`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨v, hv⟩ -`. Establish `hsum : (⟨v, hv⟩ : M.cusp ka) = ∑ c, ⟨GlobalTheory.ShareOn.Decomp.cut M c v, cut_mem_cusp M ka c hv⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_sum]`. Use function extensionality and compare the values at `c' x`. Simplify using `only [Finset.sum_apply, GlobalTheory.ShareOn.Decomp.cut_apply]`. Apply the tactic sequence `have hh : ∀ c, (if c' = c then v c' else 0) x = if c' = c then v c' x else 0 := fun c => by split_ifs <;> rfl`. Simplify using `only [hh]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Use `Submodule.sum_mem_iSup fun c => ?_` and prove the remaining obligations. Introduce `c' hc'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.ShareOn.Decomp.cut_apply, hc']`. Introduce `h c v hv`. Use `pullRep_onComp M ka ρ hρ h⁻¹ c v hv` as an intermediate fact. Simplify using `only [inv_inv] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ShareOn.cusp_decomp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [Finite C]
     [DecidableEq C] [MulAction U C] (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp ka)),

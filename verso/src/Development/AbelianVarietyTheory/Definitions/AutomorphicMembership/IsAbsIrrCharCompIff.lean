@@ -13,9 +13,9 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain F
 namespace GlobalTheory.Mem.R3
 
 /- English proof (translation)
-Take `⟨n, ρ, hρ, hχ⟩` from `h`. Use `⟨n, ρ.comp e.toMonoidHom, ?_, fun t => hχ (e t)⟩` and prove the remaining obligations. Use `{ toNontrivial := ⟨⟨⊥, ⊤, fun q => ?_⟩⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Conclude with `(bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ.comp e.toMonoidHom)) q :))`. Set `S' : Subrepresentation ρ` to `⟨S.toSubmodule, fun g v hv => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `e.surjective g`. Conclude with `S.apply_mem_toSubmodule x hv⟩`. Break down `hρ.eq_bot_or_eq_top S' with q | q` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) q :))`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) q :))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isAbsIrrChar_comp {K G H : Type} [Field K] [Group G] [Group H] (e : G ≃* H) {χ : H → K} (h : IsAbsIrrChar χ) :
     IsAbsIrrChar fun g => χ (e g) := by
@@ -32,7 +32,7 @@ theorem isAbsIrrChar_comp {K G H : Type} [Field K] [Group G] [Group H] (e : G �
     · exact Or.inr (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) q :))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using isAbsIrrChar_comp e.symm h, isAbsIrrChar_comp e⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAbsIrrChar_comp_iff {K G H : Type} [Field K] [Group G] [Group H] (e : G ≃* H) {χ : H → K} :
     (IsAbsIrrChar fun g => χ (e g)) ↔ IsAbsIrrChar χ :=
@@ -101,20 +101,20 @@ def ValsIn : Prop :=
     ∀ a, ∀ P ∈ I.Q a, ∃ z : B.LL, IsPrimitiveRoot z (Nat.card (kP P))
 
 /- English proof (translation)
-Unfold `tuOf`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_tuOf {U : Set I.ι} {τ : Tup B.fields.F B.fields.E B.fields.K I.S} : τ ∈ tuOf I U ↔ ∃ a ∈ U, I.tup a = τ := by
   unfold tuOf
   simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
 
 /- English proof (translation)
-The claim follows from `(mem_tuOf I).trans ⟨fun ⟨_, hb, e⟩ => I.tup_inj e ▸ hb, fun h => ⟨a, h, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem tup_mem_tuOf {U : Set I.ι} {a : I.ι} : I.tup a ∈ tuOf I U ↔ a ∈ U :=
   (mem_tuOf I).trans ⟨fun ⟨_, hb, e⟩ => I.tup_inj e ▸ hb, fun h => ⟨a, h, rfl⟩⟩
 
 /- English proof (translation)
-Establish `h' : ∃ a, I.tup a = t.1` using `⟨a, h⟩`. Unfold `ixOf`. Rewrite using `[dif_pos h']`. Conclude with `I.tup_inj (h'.choose_spec.trans h.symm)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ixOf_eq {U : Set I.ι} {t : TupU I U} {a : I.ι} (h : I.tup a = t.1) : ixOf I U t = a := by
   have h' : ∃ a, I.tup a = t.1 := ⟨a, h⟩
@@ -123,9 +123,9 @@ theorem ixOf_eq {U : Set I.ι} {t : TupU I U} {a : I.ι} (h : I.tup a = t.1) : i
   exact I.tup_inj (h'.choose_spec.trans h.symm)
 
 /- English proof (translation)
-Establish `h : ∃ a, I.tup a = t.1`. Break down `t.2 with h | h` into its components or cases. Conclude with `⟨I.mu0, I.trueColumn_tuple_trivial_eq_one.trans h.symm⟩`. Take `⟨a, -, e⟩` from `(mem_tuOf I).1 h`. Conclude with `⟨a, e⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `h`. Rewrite using `[ixOf_eq I ha, ha]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tup_ixOf {U : Set I.ι} (t : TupU I U) : I.tup (ixOf I U t) = t.1 := by
   have h : ∃ a, I.tup a = t.1 := by
@@ -137,20 +137,20 @@ theorem tup_ixOf {U : Set I.ι} (t : TupU I U) : I.tup (ixOf I U t) = t.1 := by
   rw [ixOf_eq I ha, ha]
 
 /- English proof (translation)
-The claim follows from `ixOf_eq I I.trueColumn_tuple_trivial_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem ixOf_mu0F (U : Set I.ι) : ixOf I U (mu0F (X := B.fields) (tuOf I U)) = I.mu0 := ixOf_eq I I.trueColumn_tuple_trivial_eq_one
 
 /- English proof (translation)
-Introduce `t t' h` and use `Subtype.ext ((tup_ixOf I t).symm.trans ((congrArg I.tup h).trans (tup_ixOf I t')))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ixOf_injective (U : Set I.ι) : Function.Injective (ixOf I U) := fun t t' h =>
   Subtype.ext ((tup_ixOf I t).symm.trans ((congrArg I.tup h).trans (tup_ixOf I t')))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Break down `t.2 with h | h` into its components or cases. Conclude with `Or.inl (ixOf_eq I (I.trueColumn_tuple_trivial_eq_one.trans h.symm))`. Conclude with `Or.inr ((tup_mem_tuOf I).1 (by rw [tup_ixOf]; exact h))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Introduce and unpack `(rfl | h)`. Conclude with `⟨_, ixOf_mu0F I U⟩`. Conclude with `⟨⟨I.tup a, Or.inr ((tup_mem_tuOf I).2 h)⟩, ixOf_eq I rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mem_range_ixOf {U : Set I.ι} {a : I.ι} : a ∈ Set.range (ixOf I U) ↔ a = I.mu0 ∨ a ∈ U := by
   constructor
@@ -163,7 +163,7 @@ theorem mem_range_ixOf {U : Set I.ι} {a : I.ι} : a ∈ Set.range (ixOf I U) �
     · exact ⟨⟨I.tup a, Or.inr ((tup_mem_tuOf I).2 h)⟩, ixOf_eq I rfl⟩
 
 /- English proof (translation)
-Introduce `_ ⟨w, hw, e⟩` and use `⟨w, h hw, e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem usedOf_mono (T : Top.TwDat B) {Wt Wt' : Set B.places.Pl} (h : Wt ⊆ Wt') : usedOf I T Wt ⊆ usedOf I T Wt' :=
   fun _ ⟨w, hw, e⟩ => ⟨w, h hw, e⟩
@@ -211,9 +211,9 @@ theorem famC_muVal (j : Fin B.R.m) (t : TupU I U) (P : PlS B px) :
 end Fields
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `Units.ne_zero _ (hz.symm.trans (map_zero _))`. Establish `h' : ∃ z : B.LLˣ, ∃ b, I.tup b = I.tup a ∧ B.embLL (z : B.LL) = (((I.xi b).val P : ℂˣ) : ℂ)` using `⟨Units.mk0 z hz0, a, rfl, hz⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `xiValOf`. Rewrite using `[dif_pos h']`. Take `⟨b, hb, e⟩` from `h'.choose_spec`. Rewrite using `[e, I.tup_inj hb]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embLL_xiValOf (a : I.ι) (P : HeightOneSpectrum (𝓞 B.fields.E))
     (h : ∃ z : B.LL, B.embLL z = (((I.xi a).val P : ℂˣ) : ℂ)) :
@@ -230,28 +230,28 @@ theorem embLL_xiValOf (a : I.ι) (P : HeightOneSpectrum (𝓞 B.fields.E))
   rw [e, I.tup_inj hb]
 
 /- English proof (translation)
-Unfold `psiC`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiC_of_mem {PP : Pl B.host.E} (h : PP ∈ (B.primes px).vGs) : psiC I PP = I.Ch.psi0 ⟨PP, h⟩ := by
   unfold psiC
   rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `psiC`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiC_of_notMem {PP : Pl B.host.E} (h : PP ∉ (B.primes px).vGs) : psiC I PP = 1 := by
   unfold psiC
   rw [dif_neg h]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.R3.embLL_xiValOf I a P (h.1 a P hP)`.
+A detailed English derivation is pending.
 -/
 theorem ValsIn.embLL_xiValOf {I : ColIn B px} (h : ValsIn I) (a : I.ι) (P : HeightOneSpectrum (𝓞 B.fields.E))
     (hP : (I.xi a).UnrAt P) : B.embLL (xiValOf I (I.tup a) P : B.LL) = (((I.xi a).val P : ℂˣ) : ℂ) :=
   GlobalTheory.Mem.R3.embLL_xiValOf I a P (h.1 a P hP)
 
 /- English proof (translation)
-Use `Finset.eq_empty_of_forall_notMem fun τ h => ?_` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `(mem_tuOf I).1 h`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 example : tuOf I ∅ = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun τ h => ?_
@@ -259,12 +259,12 @@ example : tuOf I ∅ = ∅ := by
   exact ha
 
 /- English proof (translation)
-The claim follows from `(mem_tuOf I).2 ⟨_, rfl, I.trueColumn_tuple_trivial_eq_one⟩`.
+A detailed English derivation is pending.
 -/
 example : (1 : Tup B.fields.F B.fields.E B.fields.K I.S) ∈ tuOf I {I.mu0} := (mem_tuOf I).2 ⟨_, rfl, I.trueColumn_tuple_trivial_eq_one⟩
 
 /- English proof (translation)
-Establish `e : (((I.xi I.mu0).val P : ℂˣ) : ℂ) = 1`. Rewrite using `[h.trueColumnChoices_heckeChar_reference_eq_one]`. Both sides reduce to the same expression. Rewrite using `[embLL_xiValOf I I.mu0 P ⟨1, by rw [e, map_one]⟩, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 example (h : I.Ok) (P : HeightOneSpectrum (𝓞 B.fields.E)) : B.embLL (xiValOf I (I.tup I.mu0) P : B.LL) = 1 := by
   have e : (((I.xi I.mu0).val P : ℂˣ) : ℂ) = 1 := by
@@ -273,7 +273,7 @@ example (h : I.Ok) (P : HeightOneSpectrum (𝓞 B.fields.E)) : B.embLL (xiValOf 
   rw [embLL_xiValOf I I.mu0 P ⟨1, by rw [e, map_one]⟩, e]
 
 /- English proof (translation)
-The claim follows from `Set.eq_empty_of_forall_notMem fun _ ⟨_, h, _⟩ => h`.
+A detailed English derivation is pending.
 -/
 example (T : Top.TwDat B) : usedOf I T ∅ = ∅ := Set.eq_empty_of_forall_notMem fun _ ⟨_, h, _⟩ => h
 
@@ -312,7 +312,7 @@ def GoodSet (eR : Gc X.B px ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px → X.B.
     ∀ g, X.B.embLL ((idemOf Xg).coeff g) = X.toD7.ntypes.e0.coeff (eR g)
 
 /- English proof (translation)
-Set `_ : Fintype (G0g X.toD7.nd)` to `Fintype.ofEquiv _ eR.toEquiv`. Use `and_congr_left' (forall_congr' fun χ => iff_congr Iff.rfl ?_)` and prove the remaining obligations. Rewrite using `[Formalism.L2.Col.mem_XgE, ← Equiv.sum_comp eR.toEquiv, isAbsIrrChar_comp_iff eR.symm]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem goodSet_iff (eR : Gc X.B px ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px → X.B.LL)) :
     GoodSet X (px := px) eR Xg ↔
@@ -325,21 +325,21 @@ theorem goodSet_iff (eR : Gc X.B px ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px 
   simp
 
 /- English proof (translation)
-The claim follows from `Finset.ext fun χ => (h.1 χ).trans (h'.1 χ).symm`.
+A detailed English derivation is pending.
 -/
 theorem GoodSet.unique {eR : Gc X.B px ≃* G0g X.toD7.nd} {Xg Xg' : Finset (Gc X.B px → X.B.LL)}
     (h : GoodSet X (px := px) eR Xg) (h' : GoodSet X (px := px) eR Xg') : Xg = Xg' :=
   Finset.ext fun χ => (h.1 χ).trans (h'.1 χ).symm
 
 /- English proof (translation)
-Introduce `χ hχ` and use `((((goodSet_iff X eR Xg).1 h).1 χ).1 hχ).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GoodSet.irr {eR : Gc X.B px ≃* G0g X.toD7.nd} {Xg : Finset (Gc X.B px → X.B.LL)}
     (h : GoodSet X (px := px) eR Xg) : ∀ χ ∈ Xg, IsAbsIrrChar χ :=
   fun χ hχ => ((((goodSet_iff X eR Xg).1 h).1 χ).1 hχ).1
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isIdG_refl : IsPlacewiseIdentity X (px := px) (Pg := (X.B.primes px).vGs) (MulEquiv.refl _) := fun _ _ _ _ => rfl
 

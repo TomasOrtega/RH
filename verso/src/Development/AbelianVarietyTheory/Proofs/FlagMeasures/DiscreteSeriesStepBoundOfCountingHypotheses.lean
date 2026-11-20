@@ -14,11 +14,11 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Introduce `B Cg n₀ d p q b hn₀ hC`. Take `⟨-, -, -, -, -, -, hrk, -, -, -, -, -, h, -, hgap, -, -, -, h120, -⟩` from `countHyp_numerics B Cg n₀ d p q b hn₀ hC`. Establish `hK` using `countHyp_isKTypeOf_lowKSub B Cg n₀ d p q b hn₀ hC`. Take `⟨hD, -, -, -, -, -, -, -, hlam, -⟩` from `hC`. Use `GlobalTheory.StepGlob.stepBoundAt_of_local B b (fun v => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hpar, hds, -, -⟩` from `hD v`. Establish `hU : IsURepOn (UJset (B.I.ε v)) (B.σ v)` using `hds.2.2.1`. Establish `h120v : 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h`. Rewrite using `[hrk v]`. Conclude with `h120`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heig` using `GlobalTheory.T.lowestKType_infinitesimalChar_large_gap B.I.n (B.I.ε v) (B.lam v) (B.H v) (B.σ v) hpar hds h (hgap v) h120v`. Conclude with `⟨hU, GlobalTheory.StepBoundOneRep.stepBound_of_eigen B.I.n (B.I.ε v) (B.H v) (B.σ v) (B.lam v) b hU (hK v) heig (hlam v)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepBoundAt_of_countHyp : ∀ (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : InfinitePlace B.I.F → ℝ)
     (p q : ℕ) (b : ℝ), 8 ≤ n₀ → CountHyp B Cg n₀ d p q b → ∀ P : ℕ, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.StepBoundAt B b P := by

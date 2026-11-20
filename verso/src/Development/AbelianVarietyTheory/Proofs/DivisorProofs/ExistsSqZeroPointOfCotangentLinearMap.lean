@@ -23,13 +23,13 @@ variable (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] [Modul
   [IsCentralScalar O M]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Spec.map _).base ((Spec.map _).base x) = x`. Rewrite using `[Spec.map_base, Spec.map_base]`. Use `revert x`. Introduce `(x : PrimeSpectrum (TrivSqZeroExt O M))`. Express the relevant statement in the definitionally equal form `PrimeSpectrum.comap (TrivSqZeroExt.fstHom O O M).toRingHom (PrimeSpectrum.comap (algebraMap O (TrivSqZeroExt O M)) x) = x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `PrimeSpectrum.ext (Ideal.ext fun r => ?_)` and prove the remaining obligations. Simplify using `only [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`. Establish `hsq : (TrivSqZeroExt.inr r.snd : TrivSqZeroExt O M) ∈ x.asIdeal` using `x.isPrime.mem_of_pow_mem 2 (by rw [pow_two, TrivSqZeroExt.inr_mul_inr]; exact x.asIdeal.zero_mem)`. Establish `e : r = algebraMap O (TrivSqZeroExt O M) r.fst + TrivSqZeroExt.inr r.snd`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap O (TrivSqZeroExt O M) r.fst ∈ x.asIdeal ↔ r ∈ x.asIdeal`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[e]`. Conclude with `x.asIdeal.add_mem h hsq`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `: algebraMap O (TrivSqZeroExt O M) r.fst = r - TrivSqZeroExt.inr r.snd`. Rewrite using `[eq_sub_iff_add_eq, ← e]`. Rewrite using `[this]`. Conclude with `x.asIdeal.sub_mem h hsq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_zeroSec_base (x : (TM O M).left) :
     (sec (zeroSec O M)).base ((TM O M).hom.base x) = x := by
@@ -57,7 +57,7 @@ theorem sec_zeroSec_base (x : (TM O M).left) :
     exact x.asIdeal.sub_mem h hsq
 
 /- English proof (translation)
-Introduce `x hx` and use `by have := h hx rwa [Scheme.Hom.mem_preimage, sec_zeroSec_base] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_of_le_zeroSec {V : (Sp O).Opens} {W : (TM O M).left.Opens}
     (h : V ≤ sec (zeroSec O M) ⁻¹ᵁ W) : (TM O M).hom ⁻¹ᵁ V ≤ W := fun x hx => by
@@ -65,9 +65,9 @@ theorem le_of_le_zeroSec {V : (Sp O).Opens} {W : (TM O M).left.Opens}
   rwa [Scheme.Hom.mem_preimage, sec_zeroSec_base] at this
 
 /- English proof (translation)
-Use `GlobalTheory.SquareZero.mul_eq_zero_of_app_eq_zero (TrivSqZeroExt O M) O (TrivSqZeroExt.fstHom O O M).toRingHom (fun a => ⟨TrivSqZeroExt.inl a, by simp⟩) ?_ (TM O M).left (Sp O) (𝟙 _) (𝟙 _) (sec (zeroSec O M)) (IsPullback.of_vert_isIso ⟨by simp; rfl⟩) U x y hx hy` and prove the remaining obligations. Rewrite using `[eq_bot_iff, pow_two]`. Use `Ideal.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Establish `ha' : a.fst = 0` using `ha`. Establish `hb' : b.fst = 0` using `hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha', hb']`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_eq_zero_of_zeroSec (U : (TM O M).left.Opens) (x y : Γ((TM O M).left, U))
     (hx : (sec (zeroSec O M)).app U x = 0) (hy : (sec (zeroSec O M)).app U y = 0) : x * y = 0 := by
@@ -84,11 +84,11 @@ theorem mul_eq_zero_of_zeroSec (U : (TM O M).left.Opens) (x y : Γ((TM O M).left
 end
 
 /- English proof (translation)
-Establish `: IsIso ((tilde.adjunction (R` using `.of O)).counit.app F) := Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent (R := .of O) F`. Establish `h` using `GlobalTheory.OmegaGlobal.map_bijective_of_isIso_counit (tilde.adjunction (R := .of O)) F G`. Prove the components needed by the constructor for the conclusion. Introduce `φ ψ e`. Apply `h.1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `s`. Conclude with `congr($e s)`. Introduce `f`. Set `g : (moduleSpecΓFunctor (R` to `.of O)).obj F →ₗ[CommRingCat.of O] (moduleSpecΓFunctor (R := .of O)).obj G := { toFun := f map_add' := f.map_add map_smul' := fun a s => f.map_smul ((Sp O).presheaf.map (TopologicalSpace.Opens.leTop ⊤).op ((Scheme.ΓSpecIso (.of O)).inv a)) s }`. Take `⟨φ, hφ⟩` from `h.2 (ConcreteCategory.ofHom (C := ModuleCat (CommRingCat.of O)) g)`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ, LinearMap.ext fun s => ?_⟩` and prove the remaining obligations. Conclude with `congr($hφ s)`.
+A detailed English derivation is pending.
 -/
 theorem appLinear_top_bijective {O : Type} [CommRing O] (F G : (Sp O).Modules) [F.IsQuasicoherent] :
     Function.Bijective fun φ : F ⟶ G => GlobalTheory.QCoh.appLinear φ ⊤ := by
@@ -159,13 +159,13 @@ theorem toFn_resM {V V' : (Sp O).Opens} (k : V' ≤ V) (s : Γ(pushO O M, V)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(le_preimage_iff (sec_hom (zeroSec O M))).2 le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem le_zeroSec_pre (V : (Sp O).Opens) : V ≤ sec (zeroSec O M) ⁻¹ᵁ (TM O M).hom ⁻¹ᵁ V :=
   (le_preimage_iff (sec_hom (zeroSec O M))).2 le_rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.DualPull.resG_appLE, Scheme.Hom.app_eq_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_zeroSec_eq (V : (Sp O).Opens) (x : Γ((TM O M).left, (TM O M).hom ⁻¹ᵁ V)) :
     (sec (zeroSec O M)).app _ x = resG (Sp O) ((le_preimage_iff (sec_hom (zeroSec O M))).1 le_rfl)
@@ -213,7 +213,7 @@ variable (hD : VanD O M A D)
 include hD
 
 /- English proof (translation)
-The claim follows from `mul_eq_zero_of_zeroSec O M _ _ _ (by rw [app_zeroSec_eq]; exact (congrArg _ (hD _ _ h f)).trans (map_zero _)) (by rw [app_zeroSec_eq]; exact (congrArg _ (hD _ _ h g)).trans (map_zero _))`.
+A detailed English derivation is pending.
 -/
 theorem der_mul_der {W : A.left.Opens} {V : (Sp O).Opens} (h : V ≤ unitSec A ⁻¹ᵁ W)
     (f g : Γ(A.left, W)) :
@@ -249,7 +249,7 @@ theorem psiM_apply (W : A.left.Opens) (f : Γ(A.left, W)) : psiM D hD W f =
       toFn (D.app le_rfl f) := rfl
 
 /- English proof (translation)
-Rewrite using `[psiM_apply, psiM_apply, map_add, D.app_res, ← D.res_app le_rfl ((unitSec A).preimage_mono h), toFn_resM, GlobalTheory.DualPull.resG_appLE, GlobalTheory.DualPull.appLE_resG (unitSec A), ← GlobalTheory.DualPull.resG_appLE (unitSec A) ((unitSec A).preimage_mono h) le_rfl, GlobalThe …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiM_nat (W W' : A.left.Opens) (h : W' ≤ W) (f : Γ(A.left, W)) :
     psiM D hD W' (resG A.left h f) =
@@ -271,7 +271,7 @@ def deformM : (TM O M).left ⟶ A.left :=
       (toFn (D.app le_rfl f))).trans (der_mul_der D hD le_rfl f f)⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.KS.DerMorK.deformHom_base _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem deformM_base : (deformM D hD).base = ((TM O M).hom ≫ unitSec A).base :=
   GlobalTheory.KS.DerMorK.deformHom_base _ _ _ _
@@ -292,9 +292,9 @@ theorem deformM_appLE' (W : A.left.Opens) {U : (TM O M).left.Opens}
 attribute [local irreducible] deformM
 
 /- English proof (translation)
-Establish `he : unitSec A ≫ A.hom = 𝟙 _` using `sec_hom η[A]`. Establish `h₀ : (TM O M).hom ≫ unitSec A ≫ A.hom = (TM O M).hom` using `by rw [he, Category.comp_id]`. Establish `hb : (deformM D hD ≫ A.hom).base = (TM O M).hom.base`. Rewrite using `[Scheme.Hom.comp_base, deformM_base, ← Scheme.Hom.comp_base, Category.assoc, h₀]`. Use `GlobalTheory.KS.DerMorK.hom_ext_appLE hb fun U k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a`. Establish `k' : (TM O M).hom ⁻¹ᵁ U ≤ (TM O M).hom ⁻¹ᵁ unitSec A ⁻¹ᵁ A.hom ⁻¹ᵁ U` using `(le_preimage_of_comp h₀).2 le_rfl`. Establish `e1` using `(deformM_preimage D hD (A.hom ⁻¹ᵁ U)).ge`. Use `(appLE_appLE (f := deformM D hD) rfl le_rfl (k'.trans e1) k a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[deformM_appLE', psiM_apply, D.app_base, toFn_zero, add_zero, appLE_base he _ _ ((le_preimage_iff he).1 le_rfl), GlobalTheory.DualPull.appLE_resG, GlobalTheory.DualPull.resG_appLE, Scheme.Hom.appLE_eq_app]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem deformM_comp : deformM D hD ≫ A.hom = (TM O M).hom := by
   have he : unitSec A ≫ A.hom = 𝟙 _ := sec_hom η[A]
@@ -311,7 +311,7 @@ theorem deformM_comp : deformM D hD ≫ A.hom = (TM O M).hom := by
     appLE_base he _ _ ((le_preimage_iff he).1 le_rfl), GlobalTheory.DualPull.appLE_resG,
     GlobalTheory.DualPull.resG_appLE, Scheme.Hom.appLE_eq_app]
 /- English proof (translation)
-Rewrite using `[psiM_apply, map_add, appLE_base (sec_hom (zeroSec O M)) _ _ le_rfl, resG_self]`. Establish `h0 : (sec (zeroSec O M)).appLE _ _ k (toFn (D.app (le_refl (unitSec A ⁻¹ᵁ W)) f)) = 0` using `hD _ _ le_rfl f`. Rewrite using `[h0, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem zeroSec_psiM {W : A.left.Opens} (k : unitSec A ⁻¹ᵁ W ≤
       sec (zeroSec O M) ⁻¹ᵁ (TM O M).hom ⁻¹ᵁ unitSec A ⁻¹ᵁ W) (f : Γ(A.left, W)) :
@@ -322,9 +322,9 @@ theorem zeroSec_psiM {W : A.left.Opens} (k : unitSec A ⁻¹ᵁ W ≤
   rw [h0, add_zero]
 
 /- English proof (translation)
-Establish `hz : sec (zeroSec O M) ≫ (TM O M).hom = 𝟙 _` using `sec_hom (zeroSec O M)`. Establish `h₀ : sec (zeroSec O M) ≫ (TM O M).hom ≫ unitSec A = unitSec A` using `by rw [reassoc_of% hz]`. Establish `hb : (sec (zeroSec O M) ≫ deformM D hD).base = (unitSec A).base`. Rewrite using `[Scheme.Hom.comp_base, deformM_base, ← Scheme.Hom.comp_base, h₀]`. Use `GlobalTheory.KS.DerMorK.hom_ext_appLE hb fun W k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `f`. Establish `k' : unitSec A ⁻¹ᵁ W ≤ sec (zeroSec O M) ⁻¹ᵁ (TM O M).hom ⁻¹ᵁ unitSec A ⁻¹ᵁ W` using `(le_preimage_of_comp h₀).2 le_rfl`. Use `(appLE_appLE (f := sec (zeroSec O M)) (g := deformM D hD) (V := (TM O M).hom ⁻¹ᵁ unitSec A ⁻¹ᵁ W) rfl (deformM_preimage D hD W).ge k' k f).symm.trans ?_` and prove the remaining obligations. Rewrite using `[deformM_appLE', resG_self, zeroSec_psiM, Scheme.Hom.appLE_eq_app]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zeroSec_deformM : sec (zeroSec O M) ≫ deformM D hD = unitSec A := by
   have hz : sec (zeroSec O M) ≫ (TM O M).hom = 𝟙 _ := sec_hom (zeroSec O M)
@@ -342,7 +342,7 @@ theorem zeroSec_deformM : sec (zeroSec O M) ≫ deformM D hD = unitSec A := by
 def ptM : TM O M ⟶ A := Over.homMk (deformM D hD) (deformM_comp D hD)
 
 /- English proof (translation)
-Use `ext1`. Simplify using `only [Over.comp_left]`. Conclude with `zeroSec_deformM D hD`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zeroSec_ptM : zeroSec O M ≫ ptM D hD = η[A] := by
   ext1
@@ -362,7 +362,7 @@ def centerFn {W : (TM O M).left.Opens} {V : (Sp O).Opens} (h : V ≤ sec (zeroSe
     (TM O M).hom.appLE _ _ ((TM O M).hom.preimage_mono h) ((sec (zeroSec O M)).appLE W _ le_rfl b)
 
 /- English proof (translation)
-Rewrite using `[centerFn, map_sub, GlobalTheory.DualPull.appLE_resG, appLE_base (sec_hom (zeroSec O M)) _ _ h, GlobalTheory.DualPull.resG_appLE, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem centerFn_van {W : (TM O M).left.Opens} {V : (Sp O).Opens}
     (h : V ≤ sec (zeroSec O M) ⁻¹ᵁ W) (b : Γ((TM O M).left, W)) :
@@ -371,7 +371,7 @@ theorem centerFn_van {W : (TM O M).left.Opens} {V : (Sp O).Opens}
     GlobalTheory.DualPull.resG_appLE, sub_self]
 
 /- English proof (translation)
-Rewrite using `[app_zeroSec_eq, centerFn_van, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem centerFn_app_zero {W : (TM O M).left.Opens} {V : (Sp O).Opens}
     (h : V ≤ sec (zeroSec O M) ⁻¹ᵁ W) (b : Γ((TM O M).left, W)) :
@@ -426,7 +426,7 @@ variable (O M) in
 def rhoM : conormal (sec (zeroSec O M)) ⟶ pushO O M := (centerDer O M).lift
 
 /- English proof (translation)
-The claim follows from `Der.lift_d (sec_hom (zeroSec O M)) _ h b`.
+A detailed English derivation is pending.
 -/
 theorem rhoM_d {W : (TM O M).left.Opens} {V : (Sp O).Opens}
     (h : V ≤ sec (zeroSec O M) ⁻¹ᵁ W) (b : Γ((TM O M).left, W)) :
@@ -434,9 +434,9 @@ theorem rhoM_d {W : (TM O M).left.Opens} {V : (Sp O).Opens}
   Der.lift_d (sec_hom (zeroSec O M)) _ h b
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `(isChart O M).d_surjective (sec_hom (zeroSec O M)) c`. Rewrite using `[rhoM_d, toFn_centerDer, kappa_d, centerFn]`. Use `(map_sub (toTsze O M) _ _).trans ?_` and prove the remaining obligations. Establish `e1 : toTsze O M (resG (TM O M).left (le_of_le_zeroSec O M (isChart O M).le) b) = toTsze O M b`. Rewrite using `[show resG (TM O M).left (le_of_le_zeroSec O M (isChart O M).le) b = resG (TM O M).left (le_refl ⊤) b from rfl, resG_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `toTsze_base O M ((sec (zeroSec O M)).appLE ⊤ ⊤ le_top b)`. Establish `e3` using `toO_sec O M b`. Use `erw [e1, e2, e3]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rhoM_top (c : Γ(conormal (sec (zeroSec O M)), ⊤)) :
     toTsze O M (toFn ((rhoM O M).app ⊤ c)) = TrivSqZeroExt.inr (kappa O M c) := by
@@ -461,11 +461,11 @@ variable {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M] [Modul
   [IsCentralScalar O M] {A : Over (Sp O)} [GrpObj A]
 
 /- English proof (translation)
-Use `omega_hom_ext fun W f => ?_` and prove the remaining obligations. Establish `hW' : unitSec A ⁻¹ᵁ W ≤ sec (zeroSec O M) ⁻¹ᵁ deformM D hD ⁻¹ᵁ W` using `(le_preimage_of_comp (zeroSec_deformM D hD)).2 le_rfl`. Express the relevant statement in the definitionally equal form `(rhoM O M).app _ ((cotMap (ptM D hD) (zeroSec_ptM D hD)).app (unitSec A ⁻¹ᵁ W) (d (sec_hom η[A]) le_rfl f)) = _`. Rewrite using `[cotMap_d (ptM D hD) (zeroSec_ptM D hD) _ hW' le_rfl f]`. Rewrite using `[rhoM_d]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (omegaHomEquiv A (pushO O M) ((omegaHomEquiv A (pushO O M)).symm D)).app (le_refl (unitSec A ⁻¹ᵁ W)) f = D.app le_rfl f` using `by rw [Equiv.apply_symm_apply]`. Rewrite `e` using `[omegaHomEquiv_app]`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ofFn (centerFn hW' _) = ofFn (toFn (D.app le_rfl f))`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : (ptM D hD).left.appLE W (deformM D hD ⁻¹ᵁ W) le_rfl f = resG (TM O M).left (deformM_preimage D hD W).le (psiM D hD W f)` using `deformM_appLE' D hD W le_rfl f`. Rewrite using `[e1, centerFn, resG_resG, resG_self, GlobalTheory.DualPull.appLE_resG, ← GlobalTheory.DualPull.appLE_resG (TM O M).hom hW' le_rfl, GlobalTheory.DualPull.resG_appLE, zeroSec_psiM, psiM_apply, Scheme.Hom.appLE_eq_app]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cotMap_ptM_rhoM (D : Der A.hom (unitSec A) (pushO O M)) (hD : VanD O M A D) :
     cotMap (ptM D hD) (zeroSec_ptM D hD) ≫ rhoM O M = (omegaHomEquiv A (pushO O M)).symm D := by
@@ -490,29 +490,27 @@ theorem cotMap_ptM_rhoM (D : Der A.hom (unitSec A) (pushO O M)) (hD : VanD O M A
   abel
 
 /- English proof (translation)
-Introduce `O _ A _ hqc M _ _ _ _ l`. Set `ofT : TrivSqZeroExt O M →+* Γ((TM O M).left, (TM O M).hom ⁻¹ᵁ ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt O M))).inv.hom`. Establish `hT (x : TrivSqZeroExt O M) : toTsze O M (ofT x) = x` using `Iso.inv_hom_id_apply _ _`. Set `l' : Γ(omega A, ⊤) → M` to `fun w => l w`. Establish `hl'add (w w' : Γ(omega A, ⊤)) : l' (w + w') = l' w + l' w'` using `l.map_add w w'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl'smul (a : O) (w : Γ(omega A, ⊤)) : l' (cst O a • w) = a • l' w` using `l.map_smul a w`. Set `g : Γ(omega A, ⊤) →ₗ[Γ(Sp O, ⊤)] Γ(pushO O M, ⊤)` to `{ toFun := fun w => ofFn (ofT (TrivSqZeroExt.inr (l' w))) map_add' := fun w w' => by`. Use `(congrArg (fun m => ofFn (ofT (TrivSqZeroExt.inr m))) (hl'add w w')).trans ?_` and prove the remaining obligations. Rewrite using `[TrivSqZeroExt.inr_add, map_add, ofFn_add]`. Use the proof step `map_smul' := fun r w => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩ : ∃ a, r = cst O a` from `⟨toO O r, (Iso.hom_inv_id_apply _ _).symm⟩`. Establish `e : l' (cst O a • w) = a • l' w` using `hl'smul a w`. Rewrite using `[RingHom.id_apply]`. Express the relevant statement in the definitionally equal form `ofFn (ofT (TrivSqZeroExt.inr (l' (cst O a • w)))) = ofFn ((TM O M).hom.app ⊤ (cst O a) * ofT (TrivSqZeroExt.inr (l' w)))`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt O M))).hom).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toTsze O M _ = toTsze O M _`. Use `(congrArg (fun m => toTsze O M (ofT (TrivSqZeroExt.inr m))) e).trans ?_` and prove the remaining obligations. Rewrite using `[hT]`. Use `Eq.trans ?_ (map_mul (toTsze O M) ((TM O M).hom.app ⊤ (cst O a)) (ofT (TrivSqZeroExt.inr (l' w)))).symm` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : toTsze O M ((TM O M).hom.app ⊤ (cst O a)) = algebraMap O (TrivSqZeroExt O M) a`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `(toTsze_base O M (cst O a)).trans (congrArg _ (Iso.inv_hom_id_apply _ _))`. Use `Eq.trans ?_ (congrArg₂ (fun x y : TrivSqZeroExt O M => x * y) hb (hT _)).symm` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl] }`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hqc`. Take `⟨φ, hφ⟩` from `(appLinear_top_bijective (omega A) (pushO O M)).2 g`. Establish `hφw (w : Γ(omega A, ⊤)) : φ.app ⊤ w = g w` using `congr($hφ w)`. Establish `hφ0 : φ ≫ toBase = 0`. Apply `(appLinear_top_bijective (omega A) (GlobalTheory.structureModule (Sp O))).1` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toBase.app ⊤ (φ.app ⊤ w) = 0`. Rewrite using `[hφw, toBase_app]`. Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of O)).hom).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toO O _ = toO O 0`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_zero]`. Use `erw [toO_sec O M (ofT (TrivSqZeroExt.inr (l' w)))]`. Rewrite using `[hT]`. Both sides reduce to the same expression. Set `D` to `omegaHomEquiv A (pushO O M) φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hD : VanD O M A D` using `fun W V h f => by`. Express the relevant statement in the definitionally equal form `toBase.app V (D.app h f) = 0`. Rewrite using `[omegaHomEquiv_app]`. Express the relevant statement in the definitionally equal form `(φ ≫ toBase).app V _ = 0`. Rewrite using `[hφ0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨ptM D hD, zeroSec_ptM D hD, fun w => ?_⟩` and prove the remaining obligations. Establish `key` using `cotMap_ptM_rhoM D hD`. Rewrite `key` using `[Equiv.symm_apply_apply]`. Establish `h1` using `rhoM_top ((cotMap (ptM D hD) (zeroSec_ptM D hD)).app ⊤ w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : (rhoM O M).app ⊤ ((cotMap (ptM D hD) (zeroSec_ptM D hD)).app ⊤ w) = φ.app ⊤ w`. Rewrite using `[← key]`. Both sides reduce to the same expression. Establish `h3 : toTsze O M (toFn (φ.app ⊤ w)) = TrivSqZeroExt.inr (l w)` using `(congrArg (fun x => toTsze O M (toFn x)) (hφw w)).trans (hT _)`. Rewrite using `[Phi_apply]`.
-
-Conclude with `TrivSqZeroExt.inr_injective (h1.symm.trans ((congrArg (fun x => toTsze O M (toFn x)) h2).trans h3))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_Phi_eq_of_linearMap : ∀ (O : Type) [CommRing O] (A : Over (Sp O)) [GrpObj A],
     (GlobalTheory.LieVB.omega A).IsQuasicoherent → ∀ (M : Type) [AddCommGroup M] [Module O M]

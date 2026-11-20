@@ -22,21 +22,19 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.DepthZeroRow
 /- English proof (translation)
-Introduce `hP hL D P hRow hLab hCen hGreen hChi`. Take `⟨S, hS, -, -⟩` from `_root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws hP.fin hL D P hRow`. Establish `hLoc : _root_.GlobalTheory.PendOf.LocalDatumCondition hL D` using `_root_.GlobalTheory.DepthZeroAssembly.locDZ_of_split_reg_m_alt hL D (_root_.GlobalTheory.T.splitLoc_of_greenLab_depth_zero hP hL D P.ty.grp hGreen) (_root_.UpperTheory.Lit.Dz.blockTypeSplitProp hP hL D P.ty.grp hGreen)`. Establish `hConj : ConjDual D` using `_root_.GlobalTheory.T.conjDual_of_labAll hP hL D P hLab`. Introduce `i k v PI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Introduce `ρ f hρ hser hocc hsq hu`. Establish `hw : IsSplitPl D.host (D.naut.plGw k v)` using `GlobalTheory.T.isSplitPlace_of_over_type_prime D k _ (D.naut.plGw_over k v)`. Take `⟨x, hx⟩` from `_root_.GlobalTheory.T.exists_blockVec_notKilled_of_occurs hP hL D P hCen S hS i PI k v hw ρ f ⟨hρ, hser⟩ hocc`. Take `⟨htame, hχ, u, hu', hlabχ⟩` from `_root_.GlobalTheory.T.nonGalois_tame_label_mu_alt hP hL D P hChi S hS i k v hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hmono, hlab⟩` from `hLoc k v (S i _ hw).mu hχ (u : ZMod (D.host.g k)) ((S i _ hw).rep PI) ρ f htame hlabχ ⟨hρ, hser⟩ hsq (hu u hu') ⟨x, hx⟩`. Establish `hrc : _root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D (D.naut.plGw k v) _ ((S i _ hw).rep PI) = P.T.e _ (D.naut.locV i PI (D.naut.plGw k v))`. Rewrite using `[← hS.rc i _ hw]`. Conclude with `((S i _ hw).locV PI).symm`. Establish `hm0 : D.naut.mono0 (D.naut.locV i PI (D.naut.plGw k v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmono` using `[hrc]`. Conclude with `(P.T.mono0 _ _).2 hmono`. Establish `hl : D.naut.items₂ k (D.naut.plGw k v) (D.naut.locV i PI (D.naut.plGw k v)) = f * (X - C (u : ZMod (D.host.g k))) ^ D.R.t`. Rewrite using `[P.lab k v, ← hlab]`. Unfold `_root_.GlobalTheory.PendOf.localLabelPolynomial`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hrc]`. Establish `hf0 : D.ntypes.eSer k f ≠ 0`. Introduce `h0`. Rewrite `hser` using `[h0, mul_zero]`. Conclude with `GlobalTheory.SerOSys.ZSum.zIdem_ne_zero ρ hρ hser.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdegf : f.natDegree = D.R.r`. Assume the negation of the conclusion as `hne`. Conclude with `hf0 (D.ntypes.eSer_zero k f fun h => hne h.2.1)`. Establish `hfne : f ≠ 0`. Introduce `h; apply hf0; exact D.ntypes.eSer_zero k f fun h' => by rw [h] at h'; exact (h'.1.ne_zero rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hdeg : (f * (X - C (u : ZMod (D.host.g k))) ^ D.R.t).natDegree = D.R.nV`. Rewrite using `[natDegree_mul hfne (pow_ne_zero _ (X_sub_C_ne_zero _)), natDegree_pow, natDegree_X_sub_C, hdegf, mul_one]`. Both sides reduce to the same expression. Use `⟨u, hu', hm0, hl, fun w' hc => ?_⟩` and prove the remaining obligations. Take `⟨hc1, -, hc3⟩` from `hConj i PI k v w' hc`.
-
-Establish `hroots : Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w' (D.naut.locV i PI w')) = (Formalism.CyclotomicNorms.rootsBar (f * (X - C (u : ZMod (D.host.g k))) ^ D.R.t)).map (·⁻¹)`. Rewrite using `[hc3, hl]`. Use `⟨hc1 hm0, ?_, hroots⟩` and prove the remaining obligations. Rewrite using `[← card_rootsBar, hroots, Multiset.card_map, card_rootsBar, hdeg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → LabAll D P.T → GlobalTheory.HeightCounting.Up.CenLoc D P.M → GreenLab P.ty.grp → ChiTOk D P.cf → PairedCharacterCondition.RT.AdmDepthZeroTypes (D := D) := by
   intro hP hL D P hRow hLab hCen hGreen hChi
@@ -89,7 +87,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DepthZeroRow.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.DepthZeroRow.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.DepthZeroRow.locComp_of_isRc_classMapD_cenLoc <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.admDepthZero_of_rowMod_labAll_greenLab : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → LabAll D P.T → GlobalTheory.HeightCounting.Up.CenLoc D P.M → GreenLab P.ty.grp → ChiTOk D P.cf → PairedCharacterCondition.RT.AdmDepthZeroTypes (D := D) := by
   first | exact @_root_.GlobalTheory.DepthZeroRow.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.DepthZeroRow.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.DepthZeroRow.locComp_of_isRc_classMapD_cenLoc <;> assumption)

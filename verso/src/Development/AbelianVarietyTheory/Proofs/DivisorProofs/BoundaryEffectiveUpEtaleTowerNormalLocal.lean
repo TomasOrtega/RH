@@ -19,23 +19,23 @@ noncomputable section
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `K L _ _ cK cL n r R T ι ψ τ x φ θ hT hx hφ hθ hE`. Establish `hinj : Function.Injective ι` using `fun a b h => by`. Use `congrArg ψ h` as an intermediate fact. Rewrite `this` using `[hT.retr, hT.retr]`. Then use the resulting hypothesis. Establish `hi : Function.Injective (fun g : R => (ι g : L))` using `Subtype.val_injective.comp hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hι0 : ∀ g : R, g ≠ 0 → (ι g : L) ≠ 0` using `fun g hg h => hg (hinj (Subtype.ext (by simpa using h)))`. Use `⟨fun h => ?_, ?_, fun P hP => ?_⟩` and prove the remaining obligations. Establish `hC` using `GlobalTheory.T.isFreeGen_topForm_etaleTower_transcendenceBasis cK cL n r R T ι ψ τ x hT hx`. Conclude with `one_ne_zero (hC.1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Rewrite using `[Finsupp.add_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Finsupp.mapDomain (fun g : R => (ι g : L)) φ 0 = 0`. Establish `e` using `Finsupp.mapDomain_apply hi φ 0`. Simplify using `only [map_zero, ZeroMemClass.coe_zero] at e`. Rewrite using `[e]`. Conclude with `Finsupp.notMem_support_iff.1 fun h => hφ 0 h rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Finsupp.mapDomain (fun g : T => (g : L)) θ 0 = 0`. Establish `e` using `Finsupp.mapDomain_apply Subtype.val_injective θ 0`. Simplify using `only [ZeroMemClass.coe_zero] at e`. Rewrite using `[e]`. Conclude with `Finsupp.notMem_support_iff.1 fun h => (hθ 0 h).1 rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, h2, add_zero]`. Establish `hq : ∀ {M : Type} [Field M] (c : ℂ →+* M) (E : Place c) {A : Type} (f : A → M) (ξ : A →₀ ℚ), E.ordQ (Finsupp.mapDomain f ξ) = ξ.sum fun g t => t * (E.ord (f g) : ℚ)`. Introduce `M _ c E A f ξ`. Rewrite using `[Place.ordQ, Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hθ' : 0 ≤ P.ordQ (Finsupp.mapDomain (fun g : T => (g : L)) θ)`. Rewrite using `[hq]`. Use `Finset.sum_nonneg fun g hg => mul_nonneg (hθ g hg).2 ?_` and prove the remaining obligations. Conclude with `(P.ord_nonneg_iff (hθ g hg).1).2 (hP.1 _ g.2)` after adjusting the coercions. Rewrite `hθ'` using `[hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Place.disc, map_add]`. Break down `GlobalTheory.T.dvrPlace_centre_on_base_of_etaleTowerOverNormalLocal cK cL r R T ι ψ τ P hT hP with h0 | ⟨P0, hP0, h0⟩` into its components or cases. Rewrite using `[GlobalTheory.T.order_differential_form_et_tower cK cL n r R T ι ψ τ x P hT hx hP h0, hq, hq]`. Establish `: (φ.sum fun g t => t * (P.ord (ι g : L) : ℚ)) = 0` using `Finset.sum_eq_zero fun g hg => by dsimp only; rw [h0 g (hφ g hg)]; simp`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `GlobalTheory.T.dvrPlace_ord_eq_along_etaleTower cK cL r R T ι ψ τ P P0 hT hP hP0 h0`. Establish `hd` using `hE.2.2 P0 hP0`. Rewrite `hd` using `[Place.disc, hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[GlobalTheory.T.formOrder_wedge_eq_of_etaleTower_heightOnePrime cK cL n r R T ι ψ τ x P P0 hT hx hP hP0 h1, hq, hq]`. Establish `: (φ.sum fun g t => t * (P.ord (ι g : L) : ℚ)) = φ.sum fun g t => t * (P0.ord (g : K) : ℚ)` using `Finset.sum_congr rfl fun g hg => by dsimp only; rw [h1 g (hφ g hg)]`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem effAt_etTower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (n r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (x : Fin n → R) (φ : R →₀ ℚ) (θ : T →₀ ℚ),

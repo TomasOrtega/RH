@@ -11,15 +11,15 @@ namespace GlobalTheory.GamDisc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X H _`. Establish `hS` using `GlobalTheory.LatFin.latFin.2 r X 2`. Use `set S := {γ : GL (Fin r) E | IsUStab X.Gm X.Λ γ ∧ ∀ (τ : X.Ψ) (a b : Fin r), ‖τ.1 ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ 2} with hSdef`. Set `F : GL (Fin r) E → Set H` to `fun γ => {g : H | ∀ τ : X.Ψ, ((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1}`. Establish `hF : ∀ γ, (F γ).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ`. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `g hg g' hg'`. Use `Subtype.ext (funext fun τ => Units.ext ?_)` and prove the remaining obligations. Conclude with `(hg τ).trans (hg' τ).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : (⋃ γ ∈ S, F γ).Finite` using `hS.biUnion fun γ _ => hF γ`. Establish `hC : ((⋃ γ ∈ S, F γ) \ {1})ᶜ ∈ 𝓝 (1 : H)` using `(hT.subset Set.diff_subset).isClosed.isOpen_compl.mem_nhds (by simp)`. Establish `hV : ∀ᶠ g : H in 𝓝 1, ∀ (τ : X.Ψ) (a b : Fin r), ‖((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) a b‖ < 2`. Simplify using `only [Filter.eventually_all]`. Introduce `τ a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous fun g : H => ‖((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) a b‖` using `((Units.continuous_val.comp ((continuous_apply τ).comp continuous_subtype_val)).matrix_elem a b).norm`. Use `hc.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`. Use `⟨_, Filter.inter_mem hC hV, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨γ, hγ, hg⟩ ⟨h1, h2⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Use `h1 ⟨Set.mem_biUnion (x := γ) ⟨hγ, fun τ a b => ?_⟩ hg, hne⟩` and prove the remaining obligations. Use `h2 τ a b` as an intermediate fact. Rewrite `this` using `[hg τ]`. Conclude with `this.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamDisc : (∀ (r : ℕ) (X : Data E r) (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∃ U ∈ 𝓝 (1 : H), ∀ g : H, (∃ γ : GL (Fin r) E, IsUStab X.Gm X.Λ γ ∧ ∀ τ : X.Ψ, ((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1) → g ∈ U → g = 1) := by
   intro r X H _

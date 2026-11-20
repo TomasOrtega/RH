@@ -10,7 +10,7 @@ namespace PI.OpWords
 variable {K : Type} [Field K] {k d : ℕ}
 
 /- English proof (translation)
-Use extensionality with `v`. Break down `v with i | i` into its components or cases. Simplify using `[Finsupp.mapDomain_apply Sum.inl_injective, Finsupp.mapDomain_notin_range]`. Simplify using `[Finsupp.mapDomain_apply Sum.inr_injective, Finsupp.mapDomain_notin_range]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma mapDomain_inl_add_inr (u g : Fin k →₀ ℕ) :
     u.mapDomain Sum.inl + g.mapDomain Sum.inr = Finsupp.sumElim u g := by
@@ -20,9 +20,9 @@ lemma mapDomain_inl_add_inr (u g : Fin k →₀ ℕ) :
   · simp [Finsupp.mapDomain_apply Sum.inr_injective, Finsupp.mapDomain_notin_range]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Prove the components needed by the constructor for the conclusion. Use extensionality with `i`. Establish `h1` using `congrArg (fun f => f (Sum.inl i)) h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using h1`. Use extensionality with `i`. Establish `h1` using `congrArg (fun f => f (Sum.inr i)) h`. Simplify using `using h1`. Introduce and unpack `⟨rfl, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
 Both sides reduce to the same expression.
 -/
@@ -41,7 +41,7 @@ lemma sumElim_inj {u g u' g' : Fin k →₀ ℕ} :
     rfl
 
 /- English proof (translation)
-Use `⟨Finsupp.comapDomain Sum.inl n Sum.inl_injective.injOn, Finsupp.comapDomain Sum.inr n Sum.inr_injective.injOn, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Apply the tactic sequence `rcases v with i | i <;> simp [Finsupp.comapDomain_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma exists_sumElim (n : Fin k ⊕ Fin k →₀ ℕ) : ∃ m g : Fin k →₀ ℕ, n = Finsupp.sumElim m g := by
   refine ⟨Finsupp.comapDomain Sum.inl n Sum.inl_injective.injOn,
@@ -50,7 +50,7 @@ lemma exists_sumElim (n : Fin k ⊕ Fin k →₀ ℕ) : ∃ m g : Fin k →₀ �
   rcases v with i | i <;> simp [Finsupp.comapDomain_apply]
 
 /- English proof (translation)
-Use extensionality with `n`. Take `⟨m, g, rfl⟩` from `exists_sumElim n`. Conclude with `h m g`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma pol_ext {P Q : Pol K k}
     (h : ∀ m g : Fin k →₀ ℕ, coeff (Finsupp.sumElim m g) P = coeff (Finsupp.sumElim m g) Q) : P = Q := by
@@ -59,7 +59,7 @@ lemma pol_ext {P Q : Pol K k}
   exact h m g
 
 /- English proof (translation)
-Use extensionality with `v`. Apply the tactic sequence `rcases v with i | i <;> simp [Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sumElim_sub_single_inr (m g : Fin k →₀ ℕ) (b : Fin k) :
     Finsupp.sumElim m g - single (Sum.inr b) 1 = Finsupp.sumElim m (g - single b 1) := by
@@ -67,7 +67,7 @@ lemma sumElim_sub_single_inr (m g : Fin k →₀ ℕ) (b : Fin k) :
   rcases v with i | i <;> simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Use extensionality with `v`. Apply the tactic sequence `rcases v with i | i <;> simp [Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sumElim_add_single_inr (m g : Fin k →₀ ℕ) (b : Fin k) :
     Finsupp.sumElim m g + single (Sum.inr b) 1 = Finsupp.sumElim m (g + single b 1) := by
@@ -75,9 +75,9 @@ lemma sumElim_add_single_inr (m g : Fin k →₀ ℕ) (b : Fin k) :
   rcases v with i | i <;> simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on'`. Use `next u c =>`. Rewrite using `[rename_monomial, monomial_mul, mapDomain_inl_add_inr]`. Simplify using `only [coeff_monomial, sumElim_inj, mul_one]`. Apply the tactic sequence `by_cases h1 : u = m <;> by_cases h2 : g' = g <;> simp [h1, h2]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `next p q hp hq =>`. Rewrite using `[map_add, add_mul, coeff_add, hp, hq]`. Apply the tactic sequence `split_ifs <;> simp [coeff_add]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma coeff_term (P : MvPolynomial (Fin k) K) (m g g' : Fin k →₀ ℕ) :
     coeff (Finsupp.sumElim m g) (rename Sum.inl P * monomial (g'.mapDomain Sum.inr) (1 : K)) =
@@ -93,7 +93,7 @@ lemma coeff_term (P : MvPolynomial (Fin k) K) (m g g' : Fin k →₀ ℕ) :
     split_ifs <;> simp [coeff_add]
 
 /- English proof (translation)
-Unfold `mono`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma mono_val (g : Fin k →₀ ℕ) :
     (mono K k d g : MvPolynomial (Fin k) K) = if g.degree = d then monomial g 1 else 0 := by
@@ -101,7 +101,7 @@ lemma mono_val (g : Fin k →₀ ℕ) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.mem_finsuppAntidiag, Finsupp.degree_eq_sum]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mem_antidiag_iff (g : Fin k →₀ ℕ) :
     g ∈ (Finset.univ : Finset (Fin k)).finsuppAntidiag d ↔ g.degree = d := by
@@ -109,7 +109,7 @@ lemma mem_antidiag_iff (g : Fin k →₀ ℕ) :
   simp
 
 /- English proof (translation)
-Simplify using `[kappa]`.
+Simplify using the standard rewrite rules.
 -/
 lemma kappa_apply (A : Module.End K ↥(homogeneousSubmodule (Fin k) K d)) :
     kappa K k d A = ∑ g ∈ (Finset.univ : Finset (Fin k)).finsuppAntidiag d,
@@ -118,9 +118,9 @@ lemma kappa_apply (A : Module.End K ↥(homogeneousSubmodule (Fin k) K d)) :
   simp [kappa]
 
 /- English proof (translation)
-Rewrite using `[kappa_apply, coeff_sum]`. Simplify using `only [coeff_smul, coeff_term, smul_eq_mul, mul_ite, mul_zero, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite `h` using `[mem_antidiag_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : mono K k d g = 0`. Unfold `mono`. Rewrite using `[dif_neg h]`. Rewrite using `[h0, map_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma coeff_kappa (A : Module.End K ↥(homogeneousSubmodule (Fin k) K d)) (m g : Fin k →₀ ℕ) :
     coeff (Finsupp.sumElim m g) (kappa K k d A) =
@@ -138,7 +138,7 @@ lemma coeff_kappa (A : Module.End K ↥(homogeneousSubmodule (Fin k) K d)) (m g 
     simp
 
 /- English proof (translation)
-Establish `hF` using `(mem_homogeneousSubmodule d _).1 F.2`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hF h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma degree_of_coeff_ne (F : ↥(homogeneousSubmodule (Fin k) K d)) {m : Fin k →₀ ℕ}
     (h : coeff m (F : MvPolynomial (Fin k) K) ≠ 0) : m.degree = d := by
@@ -147,7 +147,7 @@ lemma degree_of_coeff_ne (F : ↥(homogeneousSubmodule (Fin k) K d)) {m : Fin k 
   exact hF h
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Use `conv_lhs => rw [(F : MvPolynomial (Fin k) K).as_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, mono_val, if_pos (degree_of_coeff_ne F (MvPolynomial.mem_support_iff.1 hg)), smul_monomial, smul_eq_mul, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_sum_mono (F : ↥(homogeneousSubmodule (Fin k) K d)) :
     F = ∑ g ∈ (F : MvPolynomial (Fin k) K).support,
@@ -160,14 +160,14 @@ lemma eq_sum_mono (F : ↥(homogeneousSubmodule (Fin k) K d)) :
     smul_monomial, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Conclude with `Finsupp.prod_fintype _ _ (fun _ => by simp)`.
+A detailed English derivation is pending.
 -/
 lemma prodFact_fintype (g : Fin k →₀ ℕ) :
     g.prod (fun _ n => (n.factorial : K)) = ∏ i, ((g i).factorial : K) := by
   exact Finsupp.prod_fintype _ _ (fun _ => by simp)
 
 /- English proof (translation)
-Rewrite using `[prodFact_fintype]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma prodFact_ne_zero [CharZero K] (g : Fin k →₀ ℕ) :
     g.prod (fun _ n => (n.factorial : K)) ≠ 0 := by
@@ -175,16 +175,16 @@ lemma prodFact_ne_zero [CharZero K] (g : Fin k →₀ ℕ) :
   exact Finset.prod_ne_zero_iff.2 (fun i _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _))
 
 /- English proof (translation)
-Unfold `invFact`. Conclude with `inv_ne_zero (prodFact_ne_zero g)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma invFact_ne_zero [CharZero K] (g : Fin k →₀ ℕ) : invFact K g ≠ 0 := by
   unfold invFact
   exact inv_ne_zero (prodFact_ne_zero g)
 
 /- English proof (translation)
-Rewrite using `[prodFact_fintype, prodFact_fintype, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Establish `h1 : ∏ j ∈ Finset.univ.erase i, (((g + single i 1 : Fin k →₀ ℕ) j).factorial : K) = ∏ j ∈ Finset.univ.erase i, ((g j).factorial : K)`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply, Finset.ne_of_mem_erase hj, Ne.symm (Finset.ne_of_mem_erase hj)]`. Rewrite using `[h1, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma prodFact_add_single (g : Fin k →₀ ℕ) (i : Fin k) :
     (g + single i 1).prod (fun _ n => (n.factorial : K)) =
@@ -200,7 +200,7 @@ lemma prodFact_add_single (g : Fin k →₀ ℕ) (i : Fin k) :
   ring
 
 /- English proof (translation)
-Unfold `invFact`. Rewrite using `[prodFact_add_single, mul_inv]`. Establish `h1 : ((g i : K) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (g i)`. Rewrite using `[mul_comm ((g i : K) + 1)⁻¹ _, mul_assoc, inv_mul_cancel₀ h1, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma invFact_add_single [CharZero K] (g : Fin k →₀ ℕ) (i : Fin k) :
     invFact K (g + single i 1) * ((g i : K) + 1) = invFact K g := by
@@ -210,9 +210,9 @@ lemma invFact_add_single [CharZero K] (g : Fin k →₀ ℕ) (i : Fin k) :
   rw [mul_comm ((g i : K) + 1)⁻¹ _, mul_assoc, inv_mul_cancel₀ h1, mul_one]
 
 /- English proof (translation)
-Establish `hle : single b 1 ≤ g`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hs : ∀ c : Fin k, (single c 1 : Fin k →₀ ℕ).degree = 1` using `fun c => by`. Rewrite using `[Finsupp.degree_eq_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply]`. Use `conv_rhs => rw [← tsub_add_cancel_of_le hle]`. Rewrite using `[map_add, map_add, hs, hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma degree_sub_add (g : Fin k →₀ ℕ) (a b : Fin k) (hb : g b ≠ 0) :
     (g - single b 1 + single a 1).degree = g.degree := by
@@ -233,9 +233,9 @@ lemma Ed_val (a b : Fin k) (F : ↥(homogeneousSubmodule (Fin k) K d)) :
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Ed_val, Submodule.coe_smul, mono_val, mono_val]`. Distinguish the cases in `hb : g b = 0`. Apply the tactic sequence `split_ifs <;> simp [pderiv_monomial, hb]`. Rewrite using `[degree_sub_add g a b hb] split_ifs with h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_monomial, X, monomial_mul, smul_monomial, add_comm (Finsupp.single a 1)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma Ed_mono (a b : Fin k) (g : Fin k →₀ ℕ) :
     Formalism.MainNotions.TestSideCounting.Ed K k d a b (mono K k d g) =
@@ -251,20 +251,20 @@ lemma Ed_mono (a b : Fin k) (g : Fin k →₀ ℕ) :
     · simp
 
 /- English proof (translation)
-Simplify using `[pderiv_monomial, Finsupp.mapDomain_notin_range]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pderiv_inl_xi (b : Fin k) (g : Fin k →₀ ℕ) :
     pderiv (Sum.inl b) (monomial (g.mapDomain Sum.inr) (1 : K) : Pol K k) = 0 := by
   simp [pderiv_monomial, Finsupp.mapDomain_notin_range]
 
 /- English proof (translation)
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, wx, Fintype.sum_sum_type, Finsupp.degree_eq_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma weight_wx (m g : Fin k →₀ ℕ) : Finsupp.weight (wx k) (Finsupp.sumElim m g) = m.degree := by
   simp [Finsupp.weight_apply, Finsupp.sum_fintype, wx, Fintype.sum_sum_type, Finsupp.degree_eq_sum]
 
 /- English proof (translation)
-Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, wxi, Fintype.sum_sum_type, Finsupp.degree_eq_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma weight_wxi (m g : Fin k →₀ ℕ) : Finsupp.weight (wxi k) (Finsupp.sumElim m g) = g.degree := by
   simp [Finsupp.weight_apply, Finsupp.sum_fintype, wxi, Fintype.sum_sum_type, Finsupp.degree_eq_sum]

@@ -19,13 +19,13 @@ abbrev leviInvSqrtModular (γ : Fin n → ℕ) : levi F n γ →* ℂ :=
   (invSqrtModular F n γ).comp leviIncl
 
 /- English proof (translation)
-The claim follows from `right_ne_zero_of_mul_eq_one (sqrtModular_mul_invSqrtModular (leviIncl m))`.
+A detailed English derivation is pending.
 -/
 theorem leviInvSqrtModular_ne_zero (m : levi F n γ) : leviInvSqrtModular (F := F) γ m ≠ 0 :=
   right_ne_zero_of_mul_eq_one (sqrtModular_mul_invSqrtModular (leviIncl m))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(integralGL F n).subgroupOf (levi F n γ), (isOpen_integralGL F n).preimage continuous_subtype_val, fun u hu => invSqrtModular_leviIncl_of_mem u (Subgroup.mem_subgroupOf.1 hu)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_leviInvSqrtModular_eq_one :
     ∃ U : Subgroup (levi F n γ), IsOpen (U : Set (levi F n γ)) ∧
@@ -35,7 +35,7 @@ theorem exists_leviInvSqrtModular_eq_one :
     fun u hu => invSqrtModular_leviIncl_of_mem u (Subgroup.mem_subgroupOf.1 hu)⟩
 
 /- English proof (translation)
-Establish `hid` using `congrArg (fun ψ : leviPar F n γ (β ∘ w) →* ℂ => ψ (cellLeviSubIncl F β γ w b)) (cellScalarHom_eq_normScalarHom (F := F) (β := β) (γ := γ) (w := w))`. Rewrite using `[twist_apply, cellInducing_apply, map_smul, map_smul, cellCoinvEquiv_cellCoinvRep, smul_smul, smul_smul]`. Use `show _ = (normLeviParSqrtModular F γ (β ∘ w) (cellLeviSubIncl F β γ w b)) • twist (normLeviParInvSqrtModular F β (γ ∘ ⇑w⁻¹)) (levJacquetAction β σ (γ ∘ ⇑w⁻¹)) (cellInnerHom β γ w (cellLeviSubIncl F β γ w b)) (cellCoinvEquiv β γ w σ x)`. Rewrite using `[twist_apply, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cellCoinvEquiv_twist (w : Equiv.Perm (Fin n)) (b : cellLeviSub F β γ w)
     (x : Representation.Coinvariants (cellRepA β γ w σ)) :
@@ -70,7 +70,7 @@ def indCongrHom (w : Equiv.Perm (Fin n)) :
     fun g => LinearMap.ext fun φ => indCongr_indRep _ _ g φ⟩
 
 /- English proof (translation)
-The claim follows from `(indTwist (leviInvSqrtModular (F := F) γ) leviInvSqrtModular_ne_zero exists_leviInvSqrtModular_eq_one).injective`.
+A detailed English derivation is pending.
 -/
 theorem indTwistHom_injective (w : Equiv.Perm (Fin n)) :
     Function.Injective (indTwistHom (F := F) (β := β) (γ := γ) σ w) :=
@@ -78,7 +78,7 @@ theorem indTwistHom_injective (w : Equiv.Perm (Fin n)) :
       exists_leviInvSqrtModular_eq_one).injective
 
 /- English proof (translation)
-The claim follows from `(indTwist (leviInvSqrtModular (F := F) γ) leviInvSqrtModular_ne_zero exists_leviInvSqrtModular_eq_one).surjective`.
+A detailed English derivation is pending.
 -/
 theorem indTwistHom_surjective (w : Equiv.Perm (Fin n)) :
     Function.Surjective (indTwistHom (F := F) (β := β) (γ := γ) σ w) :=
@@ -86,25 +86,25 @@ theorem indTwistHom_surjective (w : Equiv.Perm (Fin n)) :
       exists_leviInvSqrtModular_eq_one).surjective
 
 /- English proof (translation)
-The claim follows from `(indCongr (cellCoinvEquiv β γ w σ) (cellCoinvEquiv_twist σ w)).injective`.
+A detailed English derivation is pending.
 -/
 theorem indCongrHom_injective (w : Equiv.Perm (Fin n)) :
     Function.Injective (indCongrHom (F := F) (β := β) (γ := γ) σ w) :=
   (indCongr (cellCoinvEquiv β γ w σ) (cellCoinvEquiv_twist σ w)).injective
 
 /- English proof (translation)
-The claim follows from `(indCongr (cellCoinvEquiv β γ w σ) (cellCoinvEquiv_twist σ w)).surjective`.
+A detailed English derivation is pending.
 -/
 theorem indCongrHom_surjective (w : Equiv.Perm (Fin n)) :
     Function.Surjective (indCongrHom (F := F) (β := β) (γ := γ) σ w) :=
   (indCongr (cellCoinvEquiv β γ w σ) (cellCoinvEquiv_twist σ w)).surjective
 
 /- English proof (translation)
-Take `⟨k, w, hcov, V, h0, hk, hmono, hV, hΨ⟩` from `exists_filtration_jacquetModule_parabolicInd σ hσ`. Use `⟨k, w, hcov, V, h0, hk, hmono, hV, fun j => ?_⟩` and prove the remaining obligations. Take `⟨Ψ₀, hsurj, hker⟩` from `hΨ j`. Use `⟨(indCongrHom σ (w j)).comp ((indTwistHom σ (w j)).comp Ψ₀), ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(indCongrHom_surjective σ (w j)).comp ((indTwistHom_surjective σ (w j)).comp hsurj)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hker x]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `indTwistHom_injective σ (w j)` to reduce the goal to its premises. Apply `indCongrHom_injective σ (w j)` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, map_zero]`. Conclude with `h`. Introduce `h show (indCongrHom σ (w j)) ((indTwistHom σ (w j)) (Ψ₀ x)) = 0`. Rewrite using `[h, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geometricLemma (hσ : IsSmooth σ) :
     ∃ (k : ℕ) (w : Fin k → Equiv.Perm (Fin n)),

@@ -9,13 +9,13 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.SdAny
 
 /- English proof (translation)
-Take `⟨hH, hinv⟩` from `h`. Establish `hemb : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Use `⟨e.isAddHaarMeasure_map μ, ?_⟩` and prove the remaining obligations. Introduce `Φ hc hs hint z`. Set `H : V → ℂ` to `fun y => ∫ x, Φ (e x) * χ x y ∂μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h1 : ∀ y, ∫ x, Φ x * χ (e.symm x) (e.symm y) ∂(μ.map e) = H (e.symm y)` using `fun y => by`. Rewrite using `[hemb.integral_map]`. Simplify using `[H]`. Simplify using `only [h1] at hint ⊢`. Establish `hint2 : Integrable H μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `(hemb.integrable_map_iff).1 hint`. Simplify `h2` using `[Function.comp_def]`. Establish `h3` using `hinv (Φ ∘ e) (hc.comp e.continuous) (hs.comp_homeomorph e.toHomeomorph) hint2 (e.symm z)`. Rewrite using `[hemb.integral_map]`. Simplify using `only [ContinuousAddEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `h3.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem selfDual_map {V W : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] [AddCommGroup W] [TopologicalSpace W]
@@ -56,15 +56,15 @@ def evalE : (Unit → R) ≃ₜ+ R where
 variable [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R]
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Establish `hχ : (fun x y : Unit → R => ψR (x ⬝ᵥ ((1 : Matrix Unit Unit R) *ᵥ y))) = fun x y => ψR (evalE x * evalE y)`. Use function extensionality and compare the values at `x y`. Simplify using `[evalE, dotProduct]`. Rewrite `h` using `[hχ]`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : Measurable (evalE : (Unit → R) ≃ₜ+ R)` using `evalE.continuous.measurable`. Establish `hms : Measurable (evalE.symm : R ≃ₜ+ (Unit → R))` using `evalE.symm.continuous.measurable`. Establish `hp : (Measure.pi fun _ : Unit => lam).map evalE = lam` using `(measurePreserving_funUnique lam Unit).map_eq`. Establish `hmm : ∀ μ : Measure R, (μ.map evalE.symm).map evalE = μ` using `fun μ => by`. Rewrite using `[Measure.map_map hm hms]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Measure.map_id` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hν`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `selfDual_map evalE.symm ν _ hν`. Establish `h2` using `(h _).1 h1`. Establish `h3` using `congrArg (Measure.map evalE) h2`. Rewrite `h3` using `[hmm, Measure.map_smul, hp]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Establish `h1` using `selfDual_map evalE _ _ ((h _).2 rfl)`. Rewrite `h1` using `[Measure.map_smul, hp]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem iff_of_unit (ψR : R → ℂ) (lam : Measure R) [SigmaFinite lam] (c : ℝ≥0)
     (B : Matrix Unit Unit R) (hB : B = 1)
@@ -101,11 +101,9 @@ theorem iff_of_unit (ψR : R → ℂ) (lam : Measure R) [SigmaFinite lam] (c : �
 end Unit
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM laminf lam hinf hlam ψ hψ`. Take `⟨cinf, c, hU, h1, h2⟩` from `GlobalTheory.CompanionTheory.SW.SdCoord.selfDual_coord F hCM.1 laminf lam hinf hlam ψ hψ Unit 1 (Matrix.isSymm_one) (by simp)`. Use `⟨cinf, c, hU, fun ν => ?_, fun v ν => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, -, -, -, -⟩` from `isLocR_Ainf F hCM.1 haveI := a1`. Use `haveI := a2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := a3`. Use `haveI := a4 haveI : BorelSpace (Ainf F) := ⟨rfl⟩ haveI := hinf.1`. Conclude with `iff_of_unit (psiInf F ψ) laminf cinf _ (Matrix.map_one _ (map_zero _) (map_one _)) h1 ν`. Take `⟨a1, a2, a3, a4, -, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v haveI := a1`. Use `haveI := a2`.
-
-Use `haveI := a3`. Use `haveI := a4 haveI : BorelSpace (Fv F v) := ⟨rfl⟩ haveI := (hlam v).1`. Conclude with `iff_of_unit (psiV F ψ v) (lam v) (c v) _ (Matrix.map_one _ (map_zero _) (map_one _)) (h2 v) ν`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ ψ, IsCharAF F ψ → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ ν : Measure (Ainf F), SelfDual ν (fun s t => psiInf F ψ (s * t)) ↔ ν = cinf • laminf) ∧ ∀ v : HeightOneSpectrum (𝓞 F), ∀ ν : Measure (Fv F v), SelfDual ν (fun s t => psiV F ψ v (s * t)) ↔ ν = c v • lam v := by
   intro F E _ _ _ _ _ σ hCM laminf lam hinf hlam ψ hψ

@@ -19,15 +19,15 @@ noncomputable section
 namespace GlobalTheory.FockKFinX
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hx`. Take `⟨S₀, hS₀, hS₀k⟩` from `GlobalTheory.T.theta_pair_polynomial_compact hKP.base F E σ B n d X W M χX χW om r s r' s' hP f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨S₀.map (GlobalTheory.FockKFin.pureL φ), inferInstance, fun k hk => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : UA σ W.J) ∈ UAt σ W (evI F)`. Introduce `u _`. Simplify using `[mat]`. Take `⟨A, hA⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_UAt hP.base.std hP.weil (k, 1) hk.1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.T.weil_rep_intertwines_action F E σ B.ψ n d X W M om hP.good (k, 1) A hA f φ hφ hvac]`. Conclude with `Submodule.mem_map_of_mem (hS₀k k hk (A f) (hA f))`. Consider the case `zero`. Conclude with `⟨⊥, inferInstance, fun k _ => by rw [map_zero]; exact Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨S₁, h₁, k₁⟩` from `hx`. Take `⟨S₂, h₂, k₂⟩` from `hy`. Conclude with `⟨S₁ ⊔ S₂, inferInstance, fun k hk => by`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (k₁ k hk) (k₂ k hk)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ hx`. Take `⟨S, h, k₁⟩` from `hx`. Conclude with `⟨S, h, fun k hk => by rw [map_smul]; exact Submodule.smul_mem _ c (k₁ k hk)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem polData_kfinX : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ PolData B M,

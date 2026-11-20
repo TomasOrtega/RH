@@ -90,7 +90,7 @@ def twAct (p q r s : ℕ) (τ : ℂ) : Mat r s →ₗ[ℂ] Module.End ℂ (Pol p
   fockAct2 p q r s + (τ • Matrix.traceLinearMap (Ix r s) ℂ ℂ).smulRight 1
 
 /- English proof (translation)
-Simplify using `[twAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twAct_apply (p q r s : ℕ) (τ : ℂ) (W : Mat r s) (f : Pol p q r s) :
     twAct p q r s τ W f = fockAct2 p q r s W f + (τ * W.trace) • f := by
@@ -116,7 +116,7 @@ def thAct (p q r s : ℕ) (c τ : ℂ) : Mat r s →ₗ[ℂ] Module.End ℂ (ThC
     rw [mul_left_comm]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `thMkC p q r s c (fockAct2 p q r s W f) + (τ * W.trace) • thMkC p q r s c f = _`. Rewrite using `[twAct_apply, map_add, map_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem thAct_mk (p q r s : ℕ) (c τ : ℂ) (W : Mat r s) (f : Pol p q r s) :
     thAct p q r s c τ W (thMkC p q r s c f) = thMkC p q r s c (twAct p q r s τ W f) := by

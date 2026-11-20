@@ -14,7 +14,7 @@ namespace FsInvPow
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[fsHerm_h, Inter.ofMetrics_fs_h]`. Unfold `refNorm`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← sq_rpow_half (Real.sqrt_nonneg _) (a k), Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fsHerm_h_eq (a : K → ℤ) (z : (Σ k, ι k) → ℂ) :
     (fsHerm ι a).h z = (HermLine.ofMetrics (fun k => fsMetric (ι k)) a).h z := by
@@ -25,7 +25,7 @@ theorem fsHerm_h_eq (a : K → ℤ) (z : (Σ k, ι k) → ℂ) :
     Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
 
 /- English proof (translation)
-Establish `h : (fsHerm ι a).h = (HermLine.ofMetrics (fun k => fsMetric (ι k)) a).h` using `funext (fsHerm_h_eq a)`. Unfold `IsSmoothHerm`. Rewrite using `[h]`. Conclude with `Inter.isSmoothHerm_ofMetrics_fs a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_fsHerm (a : K → ℤ) : IsSmoothHerm (fsHerm ι a) := by
   have h : (fsHerm ι a).h = (HermLine.ofMetrics (fun k => fsMetric (ι k)) a).h := funext (fsHerm_h_eq a)
@@ -34,7 +34,7 @@ theorem isSmoothHerm_fsHerm (a : K → ℤ) : IsSmoothHerm (fsHerm ι a) := by
   exact Inter.isSmoothHerm_ofMetrics_fs a
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.fsMulti`. Conclude with `Inter.isSmoothHerm_ofMetrics_fs _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_fsMulti : IsSmoothHerm (GroundTheory.Heights₂.Heights.fsMulti ι) := by
   unfold GroundTheory.Heights₂.Heights.fsMulti
@@ -44,23 +44,23 @@ abbrev invTensor (ι : K → Type) [∀ k, Fintype (ι k)] : HermLine ι :=
   (fsHerm ι (fun _ => -1)).tensor (GroundTheory.Heights₂.Heights.fsMulti ι)
 
 /- English proof (translation)
-Use `show ContDiffOn ℝ _ (fun z => (fsHerm ι (fun _ => -1)).h z * (GroundTheory.Heights₂.Heights.fsMulti ι).h z) _`. Conclude with `(isSmoothHerm_fsHerm _).mul isSmoothHerm_fsMulti`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_invTensor : IsSmoothHerm (invTensor ι) := by
   show ContDiffOn ℝ _ (fun z => (fsHerm ι (fun _ => -1)).h z * (GroundTheory.Heights₂.Heights.fsMulti ι).h z) _
   exact (isSmoothHerm_fsHerm _).mul isSmoothHerm_fsMulti
 
 /- English proof (translation)
-Use `show (-1 : ℤ) + 1 = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invTensor_a (k : K) : (invTensor ι).a k = ((0 : K → ℕ) k : ℤ) := by
   show (-1 : ℤ) + 1 = _
   simp
 
 /- English proof (translation)
-Use `show (fsHerm ι (fun _ => -1)).h z * (GroundTheory.Heights₂.Heights.fsMulti ι).h z = 1`. Rewrite using `[fsHerm_h_eq]`. Unfold `GroundTheory.Heights₂.Heights.fsMulti`. Rewrite using `[Inter.ofMetrics_fs_h, Inter.ofMetrics_fs_h, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hz k`. Establish `hS : Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2) ≠ 0` using `(Real.sqrt_pos.2 (Finset.sum_pos' (fun j _ => sq_nonneg ‖z ⟨k, j⟩‖) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩)).ne'`. Use `show Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2) ^ (-1 : ℤ) * Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2) ^ (1 : ℤ) = 1`. Rewrite using `[zpow_neg_one, zpow_one]`. Conclude with `inv_mul_cancel₀ hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invTensor_h {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : (invTensor ι).h z = 1 := by
   show (fsHerm ι (fun _ => -1)).h z * (GroundTheory.Heights₂.Heights.fsMulti ι).h z = 1
@@ -79,11 +79,9 @@ theorem invTensor_h {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Establish `h0 : ∀ y w, sheetDensity P hΨ.choose φ g y w = 0`. Introduce `y w`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[hg _ hγ.choose_spec.2.self_of_nhds.2.1, zero_mul]`. Both sides reduce to the same expression. Simplify using `[h0]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_eq_zero {e : ℕ} (P : Ideal (MRing ι)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
     (g : ((Σ k, ι k) → ℂ) → ℝ) (hg : ∀ z ∈ mcPts P, g z = 0) : ptsIntegral P φ g = 0 := by
@@ -100,13 +98,13 @@ theorem ptsIntegral_eq_zero {e : ℕ} (P : Ideal (MRing ι)) (φ : Fin e → ((�
   · rfl
 
 /- English proof (translation)
-Establish `h1 : IsMultiHomog (1 : MRing ι) (0 : K → ℕ)` using `by classical`. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl hm`. Establish `hne : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Rewrite using `[(hII K ι).2.2 P n L (invTensor ι) 1 0 hP hL isSmoothHerm_invTensor invTensor_a h1 hne]`. Unfold `recR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsupp : divSupp P (1 : MRing ι) = ∅`. Unfold `divSupp`. Rewrite using `[Ideal.span_singleton_one, sup_top_eq, Ideal.minimalPrimes_top]`. Simplify using the standard rewrite rules. Establish `hint : arInt P 1 (invTensor ι) L = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `arInt`. Use `ptsIntegral_eq_zero P _ _ fun z hz => ?_` and prove the remaining obligations. Simplify using `[logNorm, invTensor_h hz.1]`. Simplify using `[hsupp, hint]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snoc_invTensor (II : IntersectionSystem) (hII : IsIntersectionSystem II) (P : Ideal (MRing ι)) (n : ℕ)
     (L : Fin n → HermLine ι) (hP : IsArithVar P (n + 1)) (hL : ∀ j, IsSmoothHerm (L j)) :
@@ -133,17 +131,17 @@ theorem snoc_invTensor (II : IntersectionSystem) (hII : IsIntersectionSystem II)
   simp [hsupp, hint]
 
 /- English proof (translation)
-Set `σ` to `Equiv.swap j (Fin.last n)`. Set `L : Fin n → HermLine ι` to `fun i => M (σ (Fin.castSucc i))`. Establish `hL : ∀ i, IsSmoothHerm (L i)` using `fun i => hM _`. Establish `key : ∀ C, Function.update M j C ∘ σ = Fin.snoc L C`. Introduce `C`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[σ]`. Simplify using `only [Function.comp_apply, Fin.snoc_castSucc, L]`. Rewrite using `[Function.update_of_ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `h` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Conclude with `(Fin.castSucc_lt_last i).ne h`. Establish `hsm : ∀ C, IsSmoothHerm C → ∀ i, IsSmoothHerm (Function.update M j C i)`. Introduce `C hC i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `using hC`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hM i`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsym : ∀ C, IsSmoothHerm C → II K ι P (n + 1) (Function.update M j C) = II K ι P (n + 1) (Fin.snoc L C)`. Introduce `C hC`. Rewrite using `[← key C]`. Conclude with `((hII K ι).1 P (n + 1) _ σ hP (hsm C hC)).symm`. Rewrite using `[hsym _ (isSmoothHerm_fsHerm _), hsym _ isSmoothHerm_fsMulti]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hadd` using `(hII K ι).2.1 P n L (fsHerm ι fun _ => -1) (GroundTheory.Heights₂.Heights.fsMulti ι) hP hL (isSmoothHerm_fsHerm _) isSmoothHerm_fsMulti`. Rewrite `hadd` using `[snoc_invTensor II hII P n L hP hL]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem intersection_update_fsHerm_neg_one (II : IntersectionSystem) (hII : IsIntersectionSystem II) (P : Ideal (MRing ι)) (n : ℕ)
     (M : Fin (n + 1) → HermLine ι) (hP : IsArithVar P (n + 1)) (hM : ∀ i, IsSmoothHerm (M i))
@@ -182,27 +180,25 @@ theorem intersection_update_fsHerm_neg_one (II : IntersectionSystem) (hII : IsIn
   linarith
 
 /- English proof (translation)
-Introduce `II K _ ι _ P d hII hP`. Consider the cases of `d with`. Consider the case `zero`. Rewrite using `[pow_zero, one_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `i.elim0`. Consider the case `succ n`. Set `M : ℕ → Fin (n + 1) → HermLine ι` to `fun k i => if (i : ℕ) < k then GroundTheory.Heights₂.Heights.fsMulti ι else fsHerm ι fun _ => -1`. Establish `hM : ∀ k i, IsSmoothHerm (M k i)`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k i`. Simplify using `only [M]`. Use `split_ifs`. Conclude with `isSmoothHerm_fsMulti`. Conclude with `isSmoothHerm_fsHerm _`.
+Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `step : ∀ k, (hk : k < n + 1) → II K ι P (n + 1) (M k) = -II K ι P (n + 1) (M (k + 1))`. Introduce `k hk`. Establish `h1 : Function.update (M k) ⟨k, hk⟩ (fsHerm ι fun _ => -1) = M k`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = ⟨k, hk⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using `[M]`. Rewrite using `[Function.update_of_ne h]`. Establish `h2 : Function.update (M k) ⟨k, hk⟩ (GroundTheory.Heights₂.Heights.fsMulti ι) = M (k + 1)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = ⟨k, hk⟩`. Substitute `h` using the available equality. Simplify using `[M]`. Rewrite using `[Function.update_of_ne h]`. Establish `hik : (i : ℕ) ≠ k` using `fun e => h (Fin.ext e)`.
+Establish an intermediate fact. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [M]`. Distinguish the cases in `hi : (i : ℕ) < k`. Rewrite using `[if_pos hi, if_pos (by omega)]`. Rewrite using `[if_neg hi, if_neg (by omega)]`. Rewrite using `[← h1, ← h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `intersection_update_fsHerm_neg_one II hII P n (M k) hP (hM k) ⟨k, hk⟩`. Establish `hpow : ∀ k, k ≤ n + 1 → II K ι P (n + 1) (M 0) = (-1) ^ k * II K ι P (n + 1) (M k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `hk`. Rewrite using `[ih (by omega), step k (by omega), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0 : M 0 = fun _ => fsHerm ι fun _ => -1`. Use function extensionality and compare the values at `i`. Simplify using `[M]`. Establish `hd : M (n + 1) = fun _ => GroundTheory.Heights₂.Heights.fsMulti ι`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[M, i.isLt]`. Rewrite using `[← h0, ← hd]`. Conclude with `hpow (n + 1) le_rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : FsInvPow.Statement := by
   intro II K _ ι _ P d hII hP

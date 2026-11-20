@@ -13,14 +13,14 @@ def sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if i.val < r ∨ r + k < i.val then ⟨2 * r + k - i.val, by omega⟩ else i
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sig; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (sig k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := by
   unfold sig; split_ifs <;> rfl
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Establish `hi` using `i.isLt`. Establish `h1` using `sig_val k r i`. Establish `h2` using `sig_val k r (sig k r i)`. Apply the tactic sequence `split_ifs at h1 h2 <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i := by
   apply Fin.ext
@@ -32,7 +32,7 @@ lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i :=
 def sgn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `h1` using `sig_val k r i`. Unfold `sgn`. Apply the tactic sequence `split_ifs at h1 ⊢ <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn k r i := by
   have hi := i.isLt
@@ -41,9 +41,9 @@ lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn 
   split_ifs at h1 ⊢ <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `hs` using `sig_val k r i`. Establish `e1 : (j = sig k r i) ↔ j.val = (sig k r i).val` using `Fin.ext_iff`. Establish `e2 : (i = j) ↔ i.val = j.val` using `Fin.ext_iff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.QuantumDeterminants.Hpk sgn`. Simplify using `only [e1, e2]`. Apply the tactic sequence `split_ifs at * <;> first | rfl | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.Hpk k r i j = if j = sig k r i then sgn k r i else 0 := by
@@ -57,9 +57,9 @@ lemma Hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs at * <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_apply]`. Simplify using `only [Hpk_eq k r i, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Hpk_eq, sig_sig, sgn_sig, one_apply]`. Distinguish the cases in `h : j = i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `rw [if_pos h, if_pos h.symm]; unfold sgn; split_ifs <;> norm_num`. Rewrite using `[if_neg h, if_neg (Ne.symm h), mul_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 lemma Hpk_sq (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
   ext i j
@@ -73,16 +73,16 @@ lemma Hpk_sq (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.Qua
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `show (1 : Mat k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma one_mem : (1 : Mat k r) ∈ Gr k r := by
   show (1 : Mat k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r
   simp
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`. Establish `hb' : bᴴ * Formalism.QuantumDeterminants.Hpk k r * b = Formalism.QuantumDeterminants.Hpk k r` using `hb`. Use `show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [ha', hb']`.
+A detailed English derivation is pending.
 -/
 lemma mul_mem {a b : Mat k r} (ha : a ∈ Gr k r) (hb : b ∈ Gr k r) : a * b ∈ Gr k r := by
   have ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r := ha
@@ -93,9 +93,9 @@ lemma mul_mem {a b : Mat k r} (ha : a ∈ Gr k r) (hb : b ∈ Gr k r) : a * b �
     _ = Formalism.QuantumDeterminants.Hpk k r := by rw [ha', hb']
 
 /- English proof (translation)
-Establish `hs' : sᴴ * Formalism.QuantumDeterminants.Hpk k r * s = Formalism.QuantumDeterminants.Hpk k r` using `hs`. Establish `hsx' : (s * x)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (s * x) = Formalism.QuantumDeterminants.Hpk k r` using `hsx`. Use `show xᴴ * Formalism.QuantumDeterminants.Hpk k r * x = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := hsx'`.
+A detailed English derivation is pending.
 -/
 lemma of_mul_mem {s x : Mat k r} (hs : s ∈ Gr k r) (hsx : s * x ∈ Gr k r) : x ∈ Gr k r := by
   have hs' : sᴴ * Formalism.QuantumDeterminants.Hpk k r * s = Formalism.QuantumDeterminants.Hpk k r := hs
@@ -107,7 +107,7 @@ lemma of_mul_mem {s x : Mat k r} (hs : s ∈ Gr k r) (hsx : s * x ∈ Gr k r) : 
     _ = Formalism.QuantumDeterminants.Hpk k r := hsx'
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma inv_left {g : Mat k r} (hg : g ∈ Gr k r) :
     (Formalism.QuantumDeterminants.Hpk k r * gᴴ * Formalism.QuantumDeterminants.Hpk k r) * g = 1 := by
@@ -117,44 +117,44 @@ lemma inv_left {g : Mat k r} (hg : g ∈ Gr k r) :
     _ = 1 := by rw [hg', Hpk_sq]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (inv_left hg)`.
+A detailed English derivation is pending.
 -/
 lemma inv_eq {g : Mat k r} (hg : g ∈ Gr k r) : g⁻¹ = Formalism.QuantumDeterminants.Hpk k r * gᴴ * Formalism.QuantumDeterminants.Hpk k r :=
   Matrix.inv_eq_left_inv (inv_left hg)
 
 /- English proof (translation)
-Rewrite using `[inv_eq hg]`. Conclude with `inv_left hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inv_mul {g : Mat k r} (hg : g ∈ Gr k r) : g⁻¹ * g = 1 := by
   rw [inv_eq hg]; exact inv_left hg
 
 /- English proof (translation)
-Rewrite using `[inv_eq hg]`. Conclude with `mul_eq_one_comm.mp (inv_left hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mul_inv {g : Mat k r} (hg : g ∈ Gr k r) : g * g⁻¹ = 1 := by
   rw [inv_eq hg]; exact mul_eq_one_comm.mp (inv_left hg)
 
 /- English proof (translation)
-Apply `of_mul_mem hg` to reduce the goal to its premises. Rewrite using `[mul_inv hg]`. Conclude with `one_mem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inv_mem {g : Mat k r} (hg : g ∈ Gr k r) : g⁻¹ ∈ Gr k r := by
   apply of_mul_mem hg
   rw [mul_inv hg]; exact one_mem
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x : Mat k r => xᴴ * Formalism.QuantumDeterminants.Hpk k r * x)` using `by fun_prop`. Conclude with `isClosed_eq hc continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isClosed_Gr : IsClosed (Gr k r) := by
   have hc : Continuous (fun x : Mat k r => xᴴ * Formalism.QuantumDeterminants.Hpk k r * x) := by fun_prop
   exact isClosed_eq hc continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_id`.
+A detailed English derivation is pending.
 -/
 lemma continuous_of : Continuous (fun x : Formalism.QuantumDeterminants.Mt k r => (Matrix.of x : Mat k r)) := continuous_id
 
 /- English proof (translation)
-The claim follows from `(isClosed_Gr.preimage continuous_of).measurableSet`.
+A detailed English derivation is pending.
 -/
 lemma measurableSet_Gr : MeasurableSet {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∈ Gr k r} :=
   (isClosed_Gr.preimage continuous_of).measurableSet
@@ -166,7 +166,7 @@ section Unfold
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.1 : Mat k r)` using `continuous_fst`. Establish `h2 : Continuous fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.2 : Mat k r)` using `continuous_snd`. Conclude with `h1.matrix_mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_mulP : Continuous (mulP (k := k) (r := r)) := by
   have h1 : Continuous fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.1 : Mat k r) :=
@@ -176,12 +176,12 @@ lemma continuous_mulP : Continuous (mulP (k := k) (r := r)) := by
   exact h1.matrix_mul h2
 
 /- English proof (translation)
-The claim follows from `continuous_mulP.measurable`.
+A detailed English derivation is pending.
 -/
 lemma measurable_mulP : Measurable (mulP (k := k) (r := r)) := continuous_mulP.measurable
 
 /- English proof (translation)
-Establish `h1 : Continuous fun s : Formalism.QuantumDeterminants.Mt k r => (Matrix.of s : Mat k r)` using `continuous_id`. Conclude with `h1.matrix_mul continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_rmul (x : Formalism.QuantumDeterminants.Mt k r) :
     Continuous (fun s : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of s * Matrix.of x) i j : Formalism.QuantumDeterminants.Mt k r)) := by
@@ -189,9 +189,9 @@ lemma continuous_rmul (x : Formalism.QuantumDeterminants.Mt k r) :
   exact h1.matrix_mul continuous_const
 
 /- English proof (translation)
-Establish `hin : ∀ x : Formalism.QuantumDeterminants.Mt k r, ∫⁻ p, f (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) ∂(μW.prod μN) = cS * ∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS`. Introduce `x`. Establish `hm : Measurable (fun s : Formalism.QuantumDeterminants.Mt k r => f (fun i j => (Matrix.of s * Matrix.of x) i j))` using `hf.comp (continuous_rmul x).measurable`. Establish `h` using `lintegral_map (μ := μW.prod μN) hm measurable_mulP`. Rewrite `h` using `[hP, lintegral_smul_measure, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`. Rewrite using `[lintegral_congr hin, lintegral_const_mul' _ _ hcS, hQ f hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_weil {μG μS ν μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} {cS : ℝ≥0∞} (hcS : cS ≠ ⊤)
     (hP : (μW.prod μN).map mulP = cS • μS) (hQ : IsQuotMeas μG μS ν)
@@ -210,15 +210,13 @@ theorem unfold_weil {μG μS ν μW μN : Measure (Formalism.QuantumDeterminants
   rw [lintegral_congr hin, lintegral_const_mul' _ _ hcS, hQ f hf]
 
 /- English proof (translation)
-Use `set E : Set (Formalism.QuantumDeterminants.Mt k r) := {x | Matrix.of x ∉ Gr k r} with hEdef`. Establish `hE : MeasurableSet E` using `Grp.measurableSet_Gr.compl`. Establish `hw` using `hQ (E.indicator 1) (measurable_one.indicator hE)`. Rewrite `hw` using `[lintegral_indicator_one hE, hG]`. Establish `hlow : ∀ x, E.indicator (fun _ => μS Set.univ) x ≤ ∫⁻ s, E.indicator 1 (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ E`. Rewrite using `[Set.indicator_of_mem hx]`. Establish `hae : ∀ᵐ s ∂μS, Matrix.of s ∈ T` using `ae_iff.mpr hSc`. Establish `h1 : ∀ᵐ s ∂μS, E.indicator 1 (fun i j => (Matrix.of s * Matrix.of x) i j) = (1 : ℝ≥0∞)` using `by filter_upwards [hae] with s hs`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Set.indicator_of_mem` to reduce the goal to its premises. Introduce `hsx`. Conclude with `hx (Grp.of_mul_mem (hTG hs) hsx)`. Rewrite using `[lintegral_congr_ae h1, lintegral_one]`. Rewrite using `[Set.indicator_of_notMem hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_le`. Establish `h2` using `lintegral_mono (μ := ν) hlow`. Rewrite `h2` using `[lintegral_indicator_const hE, ← hw]`. Establish `hpos : μS Set.univ ≠ 0`. Introduce `h0`.
-
-Conclude with `hS0 (Measure.measure_univ_eq_zero.mp h0)`. Conclude with `(mul_eq_zero.mp (le_zero_iff.mp h2)).resolve_left hpos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nu_conc {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt k r)} {T : Set (Mat k r)} (hQ : IsQuotMeas μG μS ν)
     (hG : μG {x | Matrix.of x ∉ Gr k r} = 0) (hS0 : μS ≠ 0) (hSc : μS {x | Matrix.of x ∉ T} = 0)
@@ -257,7 +255,7 @@ variable {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {u : 
   {μG μS ν μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)}
 
 /- English proof (translation)
-Take `⟨hset, -⟩` from `hyp`. Take `⟨-, -, hz, hT, -⟩` from `hset`. Take `⟨hW, hN, -⟩` from `hSG k r z c hz hT`. Introduce and unpack `s ⟨h, hh, m, hm, rfl⟩`. Conclude with `Grp.mul_mem (hW hh) (hN hm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma S_sub_G (hSG : SGrp) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) :
     Formalism.QuantumDeterminants.Sset k r z ⊆ Gr k r := by
@@ -268,7 +266,7 @@ lemma S_sub_G (hSG : SGrp) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) 
   exact Grp.mul_mem (hW hh) (hN hm)
 
 /- English proof (translation)
-Take `⟨cS, h0, htop, hP⟩` from `hSP k r z c u v b H σ Vp π w μG μS ν μW μN hyp`. Conclude with `⟨cS, h0, htop, fun f hf => unfold_weil htop hP hyp.2.2.2.2.2.2.1 f hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unfold_of (hSP : SProd) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) :
     ∃ cS : ℝ≥0∞, cS ≠ 0 ∧ cS ≠ ⊤ ∧ ∀ f : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞, Measurable f →
@@ -278,7 +276,7 @@ theorem unfold_of (hSP : SProd) (hyp : Hyp k r z c u v b σ π w μG μS ν μW 
   exact ⟨cS, h0, htop, fun f hf => unfold_weil htop hP hyp.2.2.2.2.2.2.1 f hf⟩
 
 /- English proof (translation)
-Establish `hS` using `S_sub_G hSG hyp`. Take `⟨-, -, -, -, hG, hSm, hQ, -⟩` from `hyp`. Conclude with `nu_conc hQ hG.2.2.1 hSm.2.1 hSm.2.2.1 hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nu_conc_of (hSG : SGrp) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) :
     ν {x | Matrix.of x ∉ Gr k r} = 0 := by

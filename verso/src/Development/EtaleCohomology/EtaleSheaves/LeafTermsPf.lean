@@ -8,7 +8,7 @@ namespace LateralTheory.E.LeafTermsPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem HKpull_comp {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ) (x : HK R M F n) :
     HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
@@ -17,7 +17,7 @@ theorem HKpull_comp {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : 
   simp [zcomp, Cochain.ofHom_comp]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem HKpull_id (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) : HK.pull R (𝟙 K) F n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -25,7 +25,7 @@ theorem HKpull_id (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) : HK.pull R 
   simp [zcomp]
 
 /- English proof (translation)
-The claim follows from `Finite.of_surjective (HK.pull R s F n) (fun x => ⟨HK.pull R t F n x, by rw [← HKpull_comp, h, HKpull_id]⟩)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_retract {K L : Cx R} (s : K ⟶ L) (t : L ⟶ K) (h : s ≫ t = 𝟙 K) (F : Shv R) (n : ℤ)
     (hL : Finite (HK R L F n)) : Finite (HK R K F n) :=
@@ -33,7 +33,7 @@ theorem finite_of_retract {K L : Cx R} (s : K ⟶ L) (t : L ⟶ K) (h : s ≫ t 
     ⟨HK.pull R t F n x, by rw [← HKpull_comp, h, HKpull_id]⟩)
 
 /- English proof (translation)
-The claim follows from `finite_of_retract _ _ (((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).mapIso e).hom_inv_id) F n hB`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_iso {A B : Shv R} (e : A ≅ B) (F : Shv R) (n : ℤ)
     (hB : Finite (HK R ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).obj B) F n)) :
@@ -41,11 +41,11 @@ theorem finite_of_iso {A B : Shv R} (e : A ≅ B) (F : Shv R) (n : ℤ)
   finite_of_retract _ _ (((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).mapIso e).hom_inv_id) F n hB
 
 /- English proof (translation)
-Establish `h` using `HomologicalComplex.extend_d_eq ((chainsN R).obj (disc.obj P)) ComplexShape.embeddingDownNat (i := 1) (j := 0) (i' := -1) (j' := 0) rfl rfl`. Express the relevant statement in the definitionally equal form `(((chainsN R).obj (disc.obj P)).extend ComplexShape.embeddingDownNat).d (-1) 0 = 0`. Rewrite using `[h]`. Establish `: ((chainsN R).obj (disc.obj P)).d 1 0 = 0`. Simplify using `[chainsN, Fin.sum_univ_two, SimplicialObject.δ, disc]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `(erw [neg_one_smul, one_smul, add_neg_cancel])`. Consider the case `(simp only [one_smul, neg_smul]; exact add_neg_cancel _)`. Consider the case `abel`. Apply the tactic sequence `all_goals rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem d_const_zero (P : PSh) : ((chains R).obj (disc.obj P)).d (-1) 0 = 0 := by
   have h := HomologicalComplex.extend_d_eq ((chainsN R).obj (disc.obj P)) ComplexShape.embeddingDownNat
@@ -68,14 +68,14 @@ def proj0 (P : PSh) : (chains R).obj (disc.obj P) ⟶
     subst this; rw [d_const_zero]; simp)
 
 /- English proof (translation)
-Apply `HomologicalComplex.to_single_hom_ext` to reduce the goal to its premises. Simplify using `[LateralTheory.E.LeafSSCut.incl0, proj0]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem etale_chain_complex_degree_zero_incl_proj_eq_id (P : PSh) : LateralTheory.E.LeafSSCut.incl0 ((chains R).obj (disc.obj P)) ≫ proj0 P = 𝟙 _ := by
   apply HomologicalComplex.to_single_hom_ext
   simp [LateralTheory.E.LeafSSCut.incl0, proj0]
 
 /- English proof (translation)
-The claim follows from `finite_of_iso (chainsXIso R (disc.obj (yoneda.obj Z)) 0).symm F m (finite_of_retract _ _ (etale_chain_complex_degree_zero_incl_proj_eq_id (R := R) (yoneda.obj Z)) F m h)`.
+A detailed English derivation is pending.
 -/
 theorem finite_single_of_H (Z : Scheme.{0}) (F : Shv R) (m : ℤ) (h : Finite (H R (sch.obj Z) F m)) :
     Finite (HK R ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).obj ((free R).obj (yoneda.obj Z))) F m) :=
@@ -97,11 +97,11 @@ def ofPb (n : ℕ) : pullback (WidePullback.base (fun _ : Fin n => f)) f ⟶ W f
     (by intro j; refine Fin.cases ?_ (fun j => ?_) j <;> simp [pullback.condition, WidePullback.lift_π, WidePullback.lift_π_assoc, WidePullback.lift_base, WidePullback.lift_base_assoc])
 
 /- English proof (translation)
-Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [Category.assoc, Category.id_comp]`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[ofPb, WidePullback.lift_π]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cases_zero]`. Rewrite using `[toPb, pullback.lift_snd]`. Rewrite using `[ofPb, WidePullback.lift_π]`. Simplify using `only [Fin.cases_succ]`. Rewrite using `[toPb, pullback.lift_fst_assoc, WidePullback.lift_π]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, Category.id_comp]`. Rewrite using `[ofPb, WidePullback.lift_base, toPb, pullback.lift_snd_assoc, WidePullback.π_arrow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem toPb_ofPb (n : ℕ) : toPb f n ≫ ofPb f n = 𝟙 _ := by
   apply WidePullback.hom_ext
@@ -115,11 +115,11 @@ theorem toPb_ofPb (n : ℕ) : toPb f n ≫ ofPb f n = 𝟙 _ := by
     rw [ofPb, WidePullback.lift_base, toPb, pullback.lift_snd_assoc, WidePullback.π_arrow]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [Category.assoc, Category.id_comp]`. Rewrite using `[toPb, pullback.lift_fst_assoc, WidePullback.lift_π, ofPb, WidePullback.lift_π]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cases_succ]`. Simplify using `only [Category.assoc, Category.id_comp]`. Rewrite using `[toPb, pullback.lift_fst_assoc, WidePullback.lift_base, ofPb, WidePullback.lift_base, pullback.condition]`. Simplify using `only [Category.assoc, Category.id_comp]`. Rewrite using `[toPb, pullback.lift_snd, ofPb, WidePullback.lift_π]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cases_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ofPb_toPb (n : ℕ) : ofPb f n ≫ toPb f n = 𝟙 _ := by
   apply pullback.hom_ext
@@ -135,14 +135,14 @@ theorem ofPb_toPb (n : ℕ) : ofPb f n ≫ toPb f n = 𝟙 _ := by
     simp only [Fin.cases_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨WidePullback.lift (𝟙 X) (fun j => j.elim0) (fun j => j.elim0), by refine ⟨WidePullback.hom_ext _ _ _ (fun j => j.elim0) (by simp [WidePullback.lift_π, WidePullback.lift_π_assoc, WidePullback.lift_base, WidePullback.lift_base_assoc]), by simp [WidePullback.lift_π, WidePullback.l …`.
+Supply the required witnesses or components.
 -/
 theorem base_zero_iso : IsIso (WidePullback.base (fun _ : Fin 0 => f)) :=
   ⟨⟨WidePullback.lift (𝟙 X) (fun j => j.elim0) (fun j => j.elim0), by
     refine ⟨WidePullback.hom_ext _ _ _ (fun j => j.elim0) (by simp [WidePullback.lift_π, WidePullback.lift_π_assoc, WidePullback.lift_base, WidePullback.lift_base_assoc]), by simp [WidePullback.lift_π, WidePullback.lift_π_assoc, WidePullback.lift_base, WidePullback.lift_base_assoc]⟩⟩⟩
 
 /- English proof (translation)
-The claim follows from `| 0 => by have := base_zero_iso f first | infer_instance | exact MorphismProperty.of_isIso (P := @IsProper) _ | n + 1 => by have := base_proper n have hi : IsIso (toPb f n) := ⟨⟨ofPb f n, toPb_ofPb f n, ofPb_toPb f n⟩⟩ have : WidePullback.base (fun _ : Fin (n + 1) => f) = toPb f …`.
+A detailed English derivation is pending.
 -/
 theorem base_proper [IsProper f] : ∀ n : ℕ, IsProper (WidePullback.base (fun _ : Fin n => f))
   | 0 => by
@@ -162,7 +162,7 @@ def eIso (n : ℕ) : yoneda.obj (W f n) ≅ widePullback (yoneda.obj X) (fun _ :
 end Geo
 
 /- English proof (translation)
-Introduce `_ R _ F Y X f _ r m hZ`. Use `finite_of_iso ((chainsXIso R (cech f) r) ≪≫ (free R).mapIso (eIso f (r + 1)).symm) F m ?_` and prove the remaining obligations. Conclude with `finite_single_of_H _ F m (hZ _ _ (base_proper f (r + 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LeafTerms_of : LateralTheory.E.LeafSSCut.LeafTerms := by
   intro _ R _ F Y X f _ r m hZ

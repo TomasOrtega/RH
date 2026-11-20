@@ -12,14 +12,14 @@ section Smooth
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-The claim follows from `(LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ a)).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mulLeft {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => a * g) :=
   (LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ a)).contDiff
 
 /- English proof (translation)
-Unfold `inUH at *`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inUH_mul {n : ℕ} {H a g : Matrix (Fin n) (Fin n) ℂ} (ha : inUH H a) (hg : inUH H g) :
     inUH H (a * g) := by
@@ -29,9 +29,9 @@ theorem inUH_mul {n : ℕ} {H a g : Matrix (Fin n) (Fin n) ℂ} (ha : inUH H a) 
     _ = H := by rw [ha, hg]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf (a * g₀) (inUH_mul ha hg₀)`. Establish `hc` using `contDiff_mulLeft a`. Use `⟨(fun g => a * g) ⁻¹' U, fun g => F (a * g), hU.preimage hc.continuous, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hF.comp hc.contDiffOn (fun _ h => h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hgH`. Conclude with `hfF _ hg (inUH_mul ha hgH)`.
+A detailed English derivation is pending.
 -/
 theorem smoothOnH_translate {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {H a : Matrix (Fin n) (Fin n) ℂ} (ha : inUH H a) {f : Matrix (Fin n) (Fin n) ℂ → E}
@@ -47,9 +47,9 @@ theorem smoothOnH_translate {n : ℕ} {E : Type*} [NormedAddCommGroup E] [Normed
 end Smooth
 
 /- English proof (translation)
-Proceed by induction on `ws with`. Consider the case `nil => rfl`. Consider the case `cons X w ih`. Use function extensionality and compare the values at `g`. Use `show rdM X (rdWord w _) g = rdM X (rdWord w f) (a * g)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih]`. Simplify using `only [rdM, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdWord_translate {m : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (a : Matrix (Fin m) (Fin m) ℂ) (ws : List (Matrix (Fin m) (Fin m) ℂ))
@@ -66,9 +66,9 @@ theorem rdWord_translate {m : ℕ} {V : Type*} [NormedAddCommGroup V] [NormedSpa
 variable {k r : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `hdet : IsUnit a.det`. Conclude with `⟨Matrix.mul_nonsing_inv a hdet, Matrix.nonsing_inv_mul a hdet⟩`. It suffices to derive a contradiction. Establish `h0 : a⁻¹ ∈ GG k r` using `(gg_closedSub k r).2.2.2.2 a ha`. Rewrite `h0` using `[Matrix.nonsing_inv_apply_not_isUnit a hdet]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (0 : Mat k r)ᴴ * Hpk k r * 0 = Hpk k r` using `h0`. Set `i : Fin (2 * r + k + 1)` to `⟨r + k, by omega⟩`. Establish `h2 : Hpk k r i i = -1` using `by simp [Hpk, i]`. Rewrite `h2` using `[← h1]`. Simplify using `at h2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_of_mem {a : Mat k r} (ha : a ∈ GG k r) : a * a⁻¹ = 1 ∧ a⁻¹ * a = 1 := by
   by_cases hdet : IsUnit a.det
@@ -83,7 +83,7 @@ theorem inv_of_mem {a : Mat k r} (ha : a ∈ GG k r) : a * a⁻¹ = 1 ∧ a⁻¹
     simp at h2
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [lmulM, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_lmul (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -91,9 +91,9 @@ theorem continuous_lmul (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r)
   fun_prop
 
 /- English proof (translation)
-Set `e : Mt k r ≃ₜ Mt k r` to `{ toFun := lmulM a invFun := lmulM b left_inv := fun x => by show b * (a * Matrix.of x) = x`. Rewrite using `[← Matrix.mul_assoc, hba, Matrix.one_mul]`. Both sides reduce to the same expression. Use `right_inv := fun x => by show a * (b * Matrix.of x) = x`. Rewrite using `[← Matrix.mul_assoc, hab, Matrix.one_mul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `continuous_toFun := continuous_lmul a`. Use `continuous_invFun := continuous_lmul b }`. Conclude with `e.measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_lmul {a b : Mat k r} (hab : a * b = 1) (hba : b * a = 1) :
     MeasurableEmbedding (lmulM a : Mt k r → Mt k r) := by
@@ -113,7 +113,7 @@ theorem measurableEmbedding_lmul {a b : Mat k r} (hab : a * b = 1) (hba : b * a 
   exact e.measurableEmbedding
 
 /- English proof (translation)
-Establish `hemb` using `measurableEmbedding_lmul (inv_of_mem ha).1 (inv_of_mem ha).2`. Establish `hmap : μ.map (lmulM a) = μ` using `hμ.2.2.2 a ha`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hemb.restrict_map, hmap]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_translate_le {μ : Measure (Mt k r)} (hμ : IsHaarOn (GG k r) μ) {a : Mat k r}
     (ha : a ∈ GG k r) {K₀ K₂ : Set (Mt k r)} (hK : ∀ y ∈ K₀, lmulM a y ∈ K₂)
@@ -129,7 +129,7 @@ theorem lintegral_translate_le {μ : Measure (Mt k r)} (hμ : IsHaarOn (GG k r) 
         rw [← hemb.restrict_map, hmap]
 
 /- English proof (translation)
-Distinguish the cases in `h : AEStronglyMeasurable g ν`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hg) h]`. Conclude with `ENNReal.ofReal_toReal_le`. Rewrite using `[integral_non_aestronglyMeasurable h]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofReal_integral_le {α : Type*} [MeasurableSpace α] (ν : Measure α) (g : α → ℝ)
     (hg : ∀ y, 0 ≤ g y) : ENNReal.ofReal (∫ y, g y ∂ν) ≤ ∫⁻ y, ENNReal.ofReal (g y) ∂ν := by
@@ -140,9 +140,9 @@ theorem ofReal_integral_le {α : Type*} [MeasurableSpace α] (ν : Measure α) (
     simp
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Take `⟨h0, h1⟩` from `ih fun b hb => h b (List.mem_cons_of_mem _ hb)`. Simplify using `only [List.map_cons, List.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨add_nonneg (hu a) h0, ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_add (hu a) h0]`. Conclude with `add_le_add (h a List.mem_cons_self) h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem list_sum_ofReal {α : Type*} (l : List α) (u : α → ℝ) (v : α → ENNReal) (hu : ∀ a, 0 ≤ u a)
     (h : ∀ a ∈ l, ENNReal.ofReal (u a) ≤ v a) :
@@ -157,13 +157,13 @@ theorem list_sum_ofReal {α : Type*} (l : List α) (u : α → ℝ) (v : α → 
     exact add_le_add (h a List.mem_cons_self) h1
 
 /- English proof (translation)
-Introduce `k r μ C₀ Ws K₀ hμ hK₀ hS Q hQ`. Set `pr : Mt k r × Mt k r → Mt k r` to `fun p => lmulM (Matrix.of p.1) p.2`. Establish `hpr : Continuous pr`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [pr, lmulM, Matrix.mul_apply, Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Use `⟨pr '' (Q ×ˢ K₀), (hQ.prod hK₀).image hpr, ?_⟩` and prove the remaining obligations. Introduce `B _ _ _ f hf _ x hxQ hxG`. Establish `hsm : SmoothOnH (Hpk k r) (fun g => f (Matrix.of x * g))` using `smoothOnH_translate (a := Matrix.of x) hxG hf`. Establish `hkey` using `hS B (fun g => f (Matrix.of x * g)) hsm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_one, rdWord_translate] at hkey`. Take `⟨hS0, hSum⟩` from `list_sum_ofReal Ws (fun ws => ∫ y in K₀, ‖rdWord ws f (Matrix.of x * Matrix.of y)‖ ^ 2 ∂μ) (fun ws => ∫⁻ y in pr '' (Q ×ˢ K₀), (‖rdWord ws f (Matrix.of y)‖₊ : ENNReal) ^ 2 ∂μ) (fun _ => integral_nonneg fun _ => by positivity) (fun ws _ => by`. Use `(ofReal_integral_le _ _ fun _ => by positivity).trans ?_` and prove the remaining obligations. Establish `hφ` using `lintegral_translate_le hμ (a := Matrix.of x) hxG (K₀ := K₀) (K₂ := pr '' (Q ×ˢ K₀)) (fun y hy => ⟨(x, y), ⟨hxQ, hy⟩, rfl⟩) (fun y => (‖rdWord ws f (Matrix.of y)‖₊ : ENNReal) ^ 2)`. Use `le_trans (le_of_eq ?_) hφ` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Use the proof step `rfl)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sobolev_translate : ∀ (k r : ℕ) (μ : Measure (Mt k r)) (C₀ : ℝ) (Ws : List (List (Mat k r))) (K₀ : Set (Mt k r)), IsHaarOn (GG k r) μ → IsCompact K₀ → (∀ (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (f : Mat k r → B), SmoothOnH (Hpk k r) f → ‖f 1‖ ^ 2 ≤ C₀ * (Ws.map fun ws => ∫ x in K₀, ‖rdWord ws f (Matrix.of x)‖ ^ 2 ∂μ).sum) → ∀ Q : Set (Mt k r), IsCompact Q → ∃ K₂ : Set (Mt k r), IsCompact K₂ ∧ ∀ (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (f : Mat k r → B), SmoothOnH (Hpk k r) f → (∀ ws ∈ Ws, ContinuousOn (rdWord ws f) (GG k r)) → ∀ x ∈ Q, Matrix.of x ∈ GG k r → ENNReal.ofReal (‖f (Matrix.of x)‖ ^ 2) ≤ ENNReal.ofReal |C₀| * (Ws.map fun ws => ∫⁻ y in K₂, (‖rdWord ws f (Matrix.of y)‖₊ : ENNReal) ^ 2 ∂μ).sum := by
   intro k r μ C₀ Ws K₀ hμ hK₀ hS Q hQ

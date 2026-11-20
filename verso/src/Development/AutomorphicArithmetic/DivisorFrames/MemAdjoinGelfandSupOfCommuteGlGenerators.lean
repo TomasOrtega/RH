@@ -13,13 +13,13 @@ open GlobalTheory.SmoothForms
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {X : Fin n → Fin n → A}
 
 /- English proof (translation)
-Establish `hBC : Subalgebra.toSubmodule B * Subalgebra.toSubmodule C ≤ Subalgebra.toSubmodule C * Subalgebra.toSubmodule B` using `Submodule.mul_le.2 fun b hb c hc => by`. Rewrite using `[← h c hc b hb]`. Conclude with `Submodule.mul_mem_mul hc hb`. Establish `hCC : Subalgebra.toSubmodule C * Subalgebra.toSubmodule C ≤ Subalgebra.toSubmodule C` using `Submodule.mul_le.2 fun a ha b hb => show a * b ∈ C from C.mul_mem ha hb`. Establish `hBB : Subalgebra.toSubmodule B * Subalgebra.toSubmodule B ≤ Subalgebra.toSubmodule B` using `Submodule.mul_le.2 fun a ha b hb => show a * b ∈ B from B.mul_mem ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : (Subalgebra.toSubmodule C * Subalgebra.toSubmodule B) * (Subalgebra.toSubmodule C * Subalgebra.toSubmodule B) ≤ Subalgebra.toSubmodule C * Subalgebra.toSubmodule B`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : A) ∈ Subalgebra.toSubmodule C * Subalgebra.toSubmodule B`. Simplify using `using Submodule.mul_mem_mul (show (1 : A) ∈ Subalgebra.toSubmodule C from one_mem C) (show (1 : A) ∈ Subalgebra.toSubmodule B from one_mem B)`. Set `S : Subalgebra ℂ A` to `Submodule.toSubalgebra (Subalgebra.toSubmodule C * Subalgebra.toSubmodule B) h1 (fun x y hx hy => hmul (Submodule.mul_mem_mul hx hy))`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : C ⊔ B ≤ S`. Use `sup_le (fun c hc => ?_) (fun b hb => ?_)` and prove the remaining obligations. Use `Submodule.mul_mem_mul (show c ∈ Subalgebra.toSubmodule C from hc) (show (1 : A) ∈ Subalgebra.toSubmodule B from one_mem B)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.mul_mem_mul (show (1 : A) ∈ Subalgebra.toSubmodule C from one_mem C) (show b ∈ Subalgebra.toSubmodule B from hb)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `this`. Conclude with `hle hz`.
+A detailed English derivation is pending.
 -/
 private theorem mem_mul_of_sup (C B : Subalgebra ℂ A) (h : ∀ a ∈ C, ∀ b ∈ B, a * b = b * a) {z : A}
     (hz : z ∈ C ⊔ B) : z ∈ Subalgebra.toSubmodule C * Subalgebra.toSubmodule B := by
@@ -63,17 +63,17 @@ private theorem mem_mul_of_sup (C B : Subalgebra ℂ A) (h : ∀ a ∈ C, ∀ b 
   exact hle hz
 
 /- English proof (translation)
-The claim follows from `Submodule.mul_le.2 fun _ hm _ hp => Submodule.mul_mem_mul (h hm) hp`.
+A detailed English derivation is pending.
 -/
 private theorem mul_mono_left {M N P : Submodule ℂ A} (h : M ≤ N) : M * P ≤ N * P :=
   Submodule.mul_le.2 fun _ hm _ hp => Submodule.mul_mem_mul (h hm) hp
 
 /- English proof (translation)
-Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `m hm b hb`. Establish `hb' : b ∈ B` using `hb`. Establish `: X i j * (m * b) - m * b * X i j = (X i j * m - m * X i j) * b`. Simplify using `only [sub_mul, mul_assoc, ← hB b hb' i j]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Submodule.mul_mem_mul (filt_ad hX d i j hm) hb`. Introduce `x y hx hy`. Establish `: X i j * (x + y) - (x + y) * X i j = (X i j * x - x * X i j) + (X i j * y - y * X i j)`. Rewrite using `[mul_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem filtB_ad (hX : GlRel X) (B : Subalgebra ℂ A) (hB : ∀ b ∈ B, ∀ i j, X i j * b = b * X i j)
     (d : ℕ) (i j : Fin n) {y : A} (hy : y ∈ filt X d * Subalgebra.toSubmodule B) :
@@ -92,7 +92,7 @@ private theorem filtB_ad (hX : GlRel X) (B : Subalgebra ℂ A) (hB : ∀ b ∈ B
     exact add_mem hx hy
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.blockDiag_apply, Matrix.mul_apply, Fintype.sum_prod_type, Matrix.blockDiagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem blockDiag_left {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq κ] (P : κ → Matrix ι ι ℂ)
     (N : Matrix (ι × κ) (ι × κ) ℂ) (k : κ) : (blockDiagonal P * N).blockDiag k = P k * N.blockDiag k := by
@@ -100,7 +100,7 @@ private theorem blockDiag_left {ι κ : Type} [Fintype ι] [Fintype κ] [Decidab
   simp [Matrix.blockDiag_apply, Matrix.mul_apply, Fintype.sum_prod_type, Matrix.blockDiagonal_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.blockDiag_apply, Matrix.mul_apply, Fintype.sum_prod_type, Matrix.blockDiagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem blockDiag_right {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq κ] (P : κ → Matrix ι ι ℂ)
     (N : Matrix (ι × κ) (ι × κ) ℂ) (k : κ) : (N * blockDiagonal P).blockDiag k = N.blockDiag k * P k := by
@@ -120,7 +120,7 @@ private theorem Phi_apply (d : ℕ) {r : ℕ} (b : Fin r → A) (N) :
     Phi X d b N = ∑ k, wordMap X d (N.blockDiag k) * b k := rfl
 
 /- English proof (translation)
-Rewrite using `[Phi_apply, Phi_apply, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [blockDiag_sub, Pi.sub_apply, blockDiag_left, blockDiag_right]`. Rewrite using `[← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits _ _ X hX d i j]`. Simplify using `only [sub_mul, mul_assoc, ← hb k i j]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem Phi_ad (hX : GlRel X) (d : ℕ) {r : ℕ} (b : Fin r → A) (hb : ∀ k i j, X i j * b k = b k * X i j)
     (i j : Fin n) (N) :
@@ -133,19 +133,17 @@ private theorem Phi_ad (hX : GlRel X) (d : ℕ) {r : ℕ} (b : Fin r → A) (hb 
   simp only [sub_mul, mul_assoc, ← hb k i j]
 
 /- English proof (translation)
-Establish `hcomm : ∀ T : Matrix (Fin d → Fin n) (Fin d → Fin n) ℂ, (∀ π, T * permMat n d π = permMat n d π * T) → M₀ * T = T * M₀`. Introduce `T hT`. Establish `hTa` using `GlobalTheory.T.mem_adjoin_glAction_of_commute_tensorPerm n d T hT`. Establish `hT' : T ∈ Subalgebra.centralizer ℂ {M₀}`. Use `Algebra.adjoin_le ?_ hTa` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Conclude with `(h2 p.1 p.2).symm`. Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 hT' M₀ rfl`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction.
 
-Establish `hspan` using `GlobalTheory.T.bicommutant_tensorFactorPerm_mem_span n d M₀ hcomm`. Use `clear hcomm h2`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨π, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.permutationWord_gelfandPolynomial_mod_shorter _ _ X hX d π`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c₁, hc₁, h₁⟩` from `hx`. Take `⟨c₂, hc₂, h₂⟩` from `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨c₁ + c₂, add_mem hc₁ hc₂, ?_⟩` and prove the remaining obligations. Establish `: wordMap X d (x + y) - (c₁ + c₂) = (wordMap X d x - c₁) + (wordMap X d y - c₂)`. Rewrite using `[map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem h₁ h₂`. Consider the case `smul a x _ hx`. Take `⟨c, hc, h⟩` from `hx`. Use `⟨a • c, Subalgebra.smul_mem _ hc a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub]`.
-
-Conclude with `Submodule.smul_mem _ a h`.
+A detailed English derivation is pending.
 -/
 private theorem word_of_comm (hX : GlRel X) (d : ℕ) (M₀ : Matrix (Fin d → Fin n) (Fin d → Fin n) ℂ)
     (h2 : ∀ i j, polar n d i j * M₀ = M₀ * polar n d i j) :
@@ -183,9 +181,9 @@ private theorem word_of_comm (hX : GlRel X) (d : ℕ) (M₀ : Matrix (Fin d → 
     exact Submodule.smul_mem _ a h
 
 /- English proof (translation)
-Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `m hm c hc`. Take `⟨M', rfl⟩` from `LinearMap.mem_range.1 hm`. Use `⟨1, fun _ => c, blockDiagonal fun _ => M', fun _ => hc, ?_⟩` and prove the remaining obligations. Simplify using `[Phi_apply, blockDiag_blockDiagonal]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `x y ⟨r, b, M, hb, rfl⟩ ⟨r', b', M', hb', rfl⟩`. Use `⟨r + r', Fin.append b b', blockDiagonal (Fin.append M.blockDiag M'.blockDiag), ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) k <;> simp [hb, hb']`. Simplify using `[Phi_apply, blockDiag_blockDiagonal, Fin.sum_univ_add]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem exists_Phi (B : Subalgebra ℂ A) (d : ℕ) {x : A}
     (hx : x ∈ LinearMap.range (wordMap X d) * Subalgebra.toSubmodule B) :
@@ -203,31 +201,27 @@ private theorem exists_Phi (B : Subalgebra ℂ A) (d : ℕ) {x : A}
     · simp [Phi_apply, blockDiag_blockDiagonal, Fin.sum_univ_add]
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `z hz _`. Establish `h0 : filt X 0 = ⊥` using `by simp [filt]`. Rewrite `hz` using `[h0, Submodule.bot_mul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(Submodule.mem_bot ℂ).1 hz]`. Conclude with `zero_mem _`. Consider the case `succ d ih`. Introduce `z hz hcz`. Establish `hle : filt X (d + 1) * Subalgebra.toSubmodule B ≤ LinearMap.range (wordMap X d) * Subalgebra.toSubmodule B ⊔ filt X d * Subalgebra.toSubmodule B`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.sup_mul]`. Conclude with `mul_mono_left (filt_succ d)`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 (hle hz)`. Take `⟨r, b, M, hbB, rfl⟩` from `exists_Phi B d hx`. Establish `hb : ∀ k i j, X i j * b k = b k * X i j` using `fun k => hB _ (hbB k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S : Set (Matrix ((Fin d → Fin n) × Fin r) ((Fin d → Fin n) × Fin r) ℂ)` to `Set.range fun p : Fin n × Fin n => blockDiagonal fun _ : Fin r => polar n d p.1 p.2`. Set `N` to `(filt X d * Subalgebra.toSubmodule B).comap (Phi X d b)`. Establish `hS : ∀ x ∈ S, xᴴ ∈ S`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨(p.2, p.1), by simp [blockDiagonal_conjTranspose, polar_conjTranspose]⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hN : ∀ x ∈ S, ∀ y ∈ N, x * y - y * x ∈ N`. Introduce and unpack `_ ⟨p, rfl⟩ y' hy'`. Use `show Phi X d b (_ * _ - _ * _) ∈ filt X d * Subalgebra.toSubmodule B`. Simplify using `only`. Rewrite using `[Phi_ad hX d b hb]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions.
 
-Conclude with `filtB_ad hX B hB d p.1 p.2 hy'`. Establish `hM : ∀ x ∈ S, x * M - M * x ∈ N`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `show Phi X d b (_ * _ - _ * _) ∈ filt X d * Subalgebra.toSubmodule B`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Phi_ad hX d b hb]`. Establish `e` using `hcz p.1 p.2`. Establish `: X p.1 p.2 * Phi X d b M - Phi X d b M * X p.1 p.2 = -(X p.1 p.2 * y - y * X p.1 p.2)`. Rewrite `e` using `[mul_add, add_mul]`. Rewrite using `[neg_sub, sub_eq_sub_iff_add_eq_add, add_comm (y * X p.1 p.2)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `e`. Rewrite using `[this]`. Conclude with `neg_mem (filtB_ad hX B hB d p.1 p.2 hy)`. Take `⟨M₀, hMM₀, hM₀⟩` from `GlobalTheory.T.commutant_lift_mod_stable_selfAdjoint _ S N hS hN M hM`. Establish `h2 : ∀ k i j, polar n d i j * M₀.blockDiag k = M₀.blockDiag k * polar n d i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k i j`. Establish `e` using `congrArg (fun Q => Q.blockDiag k) (hM₀ _ ⟨(i, j), rfl⟩)`. Simplify `e` using `[blockDiag_left, blockDiag_right]`. Use `choose c hcG hcf using fun k => word_of_comm hX d (M₀.blockDiag k) (h2 k)`. Establish `huT : ∑ k, c k * b k ∈ Algebra.adjoin ℂ (Set.range (gelfA X)) ⊔ B` using `Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ ((le_sup_left : Algebra.adjoin ℂ (Set.range (gelfA X)) ≤ _ ⊔ B) (hcG k)) ((le_sup_right : B ≤ Algebra.adjoin ℂ (Set.range (gelfA X)) ⊔ B) (hbB k))`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : Phi X d b M + y - ∑ k, c k * b k = Phi X d b (M - M₀) + y + ∑ k, (wordMap X d (M₀.blockDiag k) - c k) * b k`. Rewrite using `[map_sub, Phi_apply d b M₀]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Establish `hwmem : Phi X d b M + y - ∑ k, c k * b k ∈ filt X d * Subalgebra.toSubmodule B`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw]`. Conclude with `add_mem (add_mem hMM₀ hy) (Submodule.sum_mem _ fun k _ => Submodule.mul_mem_mul (hcf k) (hbB k))`. Establish `hucomm : ∀ i j, X i j * ∑ k, c k * b k = (∑ k, c k * b k) * X i j`. Introduce `i j`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, gelf_adjoin_comm hX (hcG k) i j, mul_assoc, hb k i j, ← mul_assoc]`. Establish `hwcomm : ∀ i j, X i j * (Phi X d b M + y - ∑ k, c k * b k) = (Phi X d b M + y - ∑ k, c k * b k) * X i j`. Introduce `i j`. Rewrite using `[mul_sub, sub_mul, hcz i j, hucomm i j]`.
-
-Establish `hmem` using `ih _ hwmem hwcomm`. Establish `e : Phi X d b M + y = (Phi X d b M + y - ∑ k, c k * b k) + ∑ k, c k * b k` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem hmem huT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem central_of_filtB (hX : GlRel X) (B : Subalgebra ℂ A)
     (hB : ∀ b ∈ B, ∀ i j, X i j * b = b * X i j) (d : ℕ) :
@@ -309,13 +303,13 @@ private theorem central_of_filtB (hX : GlRel X) (B : Subalgebra ℂ A)
     exact add_mem hmem huT
 
 /- English proof (translation)
-Establish `hcomm : ∀ a ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => X p.1 p.2), ∀ b ∈ B, a * b = b * a`. Introduce `a ha b hb`. Establish `hcen : a ∈ Subalgebra.centralizer ℂ {b}`. Use `Algebra.adjoin_le ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Conclude with `(hB g hb p.1 p.2).symm`. Conclude with `((Subalgebra.mem_centralizer_iff ℂ).1 hcen b rfl).symm`. Establish `hz'` using `mem_mul_of_sup _ B hcomm hz`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d, z ∈ filt X d * Subalgebra.toSubmodule B := by`. Use `Submodule.mul_induction_on hz' ?_ ?_` and prove the remaining obligations. Introduce `m hm b hb`. Take `⟨d, hd⟩` from `exists_filt (show m ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => X p.1 p.2) from hm)`. Conclude with `⟨d, Submodule.mul_mem_mul hd hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `x y ⟨d₁, h₁⟩ ⟨d₂, h₂⟩`. Conclude with `⟨max d₁ d₂, add_mem (mul_mono_left (filt_mono (le_max_left _ _)) h₁) (mul_mono_left (filt_mono (le_max_right _ _)) h₂)⟩`. Conclude with `central_of_filtB hX B hB d z hd hc`.
+A detailed English derivation is pending.
 -/
 private theorem main (hX : GlRel X) (B : Subalgebra ℂ A)
     (hB : ∀ b ∈ B, ∀ i j, X i j * b = b * X i j) (z : A)
@@ -345,7 +339,7 @@ private theorem main (hX : GlRel X) (B : Subalgebra ℂ A)
 end UpperTheory.AdjointWordCommutation
 
 /- English proof (translation)
-Introduce `A _ _ n X hX B hB z hz hc`. Conclude with `UpperTheory.AdjointWordCommutation.main hX B hB z hz hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.mem_adjoin_gelfand_sup_of_commute_glGenerators :
     ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (X : Fin n → Fin n → A), GlRel X → ∀ B : Subalgebra ℂ A, (∀ b ∈ B, ∀ i j, X i j * b = b * X i j) → ∀ z ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => X p.1 p.2) ⊔ B, (∀ i j, X i j * z = z * X i j) → z ∈ Algebra.adjoin ℂ (Set.range (GlobalTheory.SmoothForms.gelfA X)) ⊔ B := by

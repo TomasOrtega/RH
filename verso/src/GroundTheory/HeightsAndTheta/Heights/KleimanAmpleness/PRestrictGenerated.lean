@@ -29,7 +29,7 @@ theorem liftChart_toChartY (I : Chart x) (h : ∀ i ∈ I.1, y i ≠ 0) :
     liftChart hxy (toChartY y I h) = I := rfl
 
 /- English proof (translation)
-Use `h.add J 0 (Q.sub _).zero_mem 0 (Q.sub _).zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem r_zero {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
     (h : RestrictData Q hxy Q' r) (J : Chart y) : r 0 = 0 := by
@@ -38,7 +38,7 @@ theorem r_zero {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
   simpa using this
 
 /- English proof (translation)
-Use `h.add J (u - v) (sub_mem hu hv) v hv` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `eq_sub_of_add_eq this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_sub {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
     (h : RestrictData Q hxy Q' r) (J : Chart y) {u v : Ω}
@@ -49,13 +49,13 @@ theorem r_sub {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
   exact eq_sub_of_add_eq this.symm
 
 /- English proof (translation)
-Rewrite `ht` using `[← h.span J]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht => obtain ⟨w, hw, rfl⟩ := ht`. Conclude with `⟨w, hw, rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, r_zero h J⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add t t' _ _ ht ht'`. Take `⟨w, hw, rfl⟩` from `ht`. Take `⟨w', hw', rfl⟩` from `ht'`. Conclude with `⟨w + w', add_mem hw hw', h.add J w hw w' hw'⟩`. Consider the case `smul b t _ ht`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨w, hw, rfl⟩` from `ht`. Take `⟨f, s, e, hs, hf, hse, hb⟩` from `b.2`. Set `a : chartRing S x (liftChart hxy J)` to `⟨aeval x f / aeval x s, f, s, e, hs, hf, hse, rfl⟩`. Use `⟨a • w, (Q.sub _).smul_mem a hw, ?_⟩` and prove the remaining obligations. Use `show r (aeval x f / aeval x s * w) = (b : K') * r w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.smul J w hw f s e hs hf hse, hb]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_mem {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
     (h : RestrictData Q hxy Q' r) (J : Chart y) {t : K'} (ht : t ∈ Q'.sub J) :
@@ -77,9 +77,9 @@ theorem exists_of_mem {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω →
     rw [h.smul J w hw f s e hs hf hse, hb]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨Q'', hQ''⟩` from `Q'.invertible J`. Establish `h1 : (1 : K') ∈ (1 : Submodule (chartRing S y J) K')` using `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Rewrite `h1` using `[← hQ'']`. Express the relevant statement in the definitionally equal form `(1 : K') ∈ Q'.toSubSystem.sub J * Q'' at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[h0, Submodule.bot_mul]`. Conclude with `one_ne_zero ((Submodule.mem_bot _).mp h1)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_ne_bot (Q' : LineBundle S y) (J : Chart y) : Q'.toSubSystem.sub J ≠ ⊥ := by
   intro h0
@@ -91,25 +91,21 @@ theorem sub_ne_bot (Q' : LineBundle S y) (J : Chart y) : Q'.toSubSystem.sub J �
   exact one_ne_zero ((Submodule.mem_bot _).mp h1)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀, hrw₀⟩ : ∃ w ∈ Q.toSubSystem.sub (liftChart hxy J), r w ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `sub_ne_bot Q' J` to reduce the goal to its premises. Rewrite using `[← h.span J, Submodule.span_eq_bot]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hcon w hw`. Take `⟨Q'', hQ''⟩` from `Q.invertible (liftChart hxy J)`. Establish `hmulA : ∀ u ∈ Q.toSubSystem.sub (liftChart hxy J), ∀ v ∈ Q'', u * v ∈ chartRing S x (liftChart hxy J)`. Introduce `u hu v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: u * v ∈ Q.toSubSystem.sub (liftChart hxy J) * Q''` using `Submodule.mul_mem_mul hu hv`. Express the relevant statement in the definitionally equal form `u * v ∈ Q.sub (liftChart hxy J) * Q'' at this`. Rewrite `this` using `[hQ'']`. Take `⟨b, hb⟩` from `Submodule.mem_one.mp this`. Rewrite using `[← hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `b.2`. Establish `hkey : ∀ v ∈ Q'', z * v ∈ idealMod (x` using `x) pp (liftChart hxy J) := by`. Introduce `v hv`. Take `⟨f, s, e, hs, hf, hse, ha⟩` from `hmulA z hz v hv`. Take `⟨g, t, e', ht, hg, hte, hb⟩` from `hmulA w₀ hw₀ v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h.smul J w₀ hw₀ f s e hs hf hse`. Establish `h2` using `h.smul J z hz g t e' ht hg hte`. Establish `heq : aeval x f / aeval x s * w₀ = aeval x g / aeval x t * z`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[heq, h2, hr, mul_zero]`. Establish `hs0 : aeval y s ≠ 0` using `eval_ne_zero_of_mem_monos J hs`. Establish `hfy : aeval y f = 0` using `(div_eq_zero_iff.mp ((mul_eq_zero.mp h1.symm).resolve_right hrw₀)).resolve_right hs0`. Establish `hfp : f ∈ pp`. Rewrite using `[← hpp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_primeOf_of_isHomogeneous y hf).mpr hfy`. Rewrite using `[ha]`. Conclude with `Submodule.subset_span ⟨f, s, e, hfp, hs, hf, hse, rfl⟩`. Establish `hall : ∀ m ∈ Q.sub (liftChart hxy J) * Q'', z * m ∈ (Q.toSubSystem.twist (idealSys x pp)).sub (liftChart hxy J)`. Introduce `m hm`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Proceed by induction on `hm using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem q hq v hv`. Use `Submodule.subset_span ⟨z * v, hkey v hv, q, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Consider the case `add m _ m' _ hm hm' => rw [mul_add]`. Conclude with `add_mem hm hm'`. Establish `h1 : (1 : Ω) ∈ Q.sub (liftChart hxy J) * Q''`. Rewrite using `[hQ'']`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`.
-
-Simplify using `using hall 1 h1`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_twist_of_eq_zero (Q : LineBundle S x) (Q' : LineBundle S y) {r : Ω → K'}
     {pp : Ideal (Poly S N)} (hpp : primeOf (S := S) y = pp)
@@ -165,29 +161,25 @@ end RestrictGenerated
 open RestrictGenerated in
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x K' _ _ y hxy pp _ hyp Q Q' r h hgen I`. Establish `hX : ∀ i, (X i : Poly S N) ∈ pp ↔ y i = 0` using `fun i => by`. Rewrite using `[← hyp, mem_primeOf_of_isHomogeneous y (isHomogeneous_X S i), aeval_X]`. Establish `hQtw : ∀ (I' : Chart x) (i : Fin (N + 1)), i ∈ I'.1 → y i = 0 → Q.toSubSystem.sub I' ≤ (Q.toSubSystem.twist (idealSys x pp)).sub I'` using `fun I' i hi hyi => StepThree.OnW.Gen.sub_le_twist_idealSys_of_mem _ I' hi ((hX i).mpr hyi)`. Distinguish the cases in `hI : ∀ i ∈ I.1, y i ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Use `push Not at hI`. Take `⟨i, hi, hyi⟩` from `hI`. Conclude with `le_sup_of_le_right (hQtw I i hi hyi)`. Establish `hlift : ∀ t ∈ Q'.toSubSystem.secs, ∃ s : Chart x → Ω, (∀ I', s I' ∈ Q.toSubSystem.sub I') ∧ (∀ I₁ I₂ : Chart x, I₁.1 ⊆ I₂.1 → s I₁ - s I₂ ∈ (Q.toSubSystem.twist (idealSys x pp)).sub I₂) ∧ ∀ (I' : Chart x) (hI' : ∀ i ∈ I'.1, y i ≠ 0), r (s I') = t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Establish `ht' : ∀ J, t ∈ Q'.toSubSystem.sub J` using `fun J => (Submodule.mem_iInf _).mp ht J`. Use `choose w hw hrw using fun J => exists_of_mem h J (ht' J)`. Establish `hmem : ∀ I', (if hI' : ∀ i ∈ I'.1, y i ≠ 0 then w (toChartY y I' hI') else 0) ∈ Q.toSubSystem.sub I'`. Introduce `I'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `split_ifs with hI'`. Use `hw (toChartY y I' hI')` as an intermediate fact. Rewrite `this` using `[liftChart_toChartY]`. Then use the resulting hypothesis. Conclude with `zero_mem _`. Use `⟨fun I' => if hI' : ∀ i ∈ I'.1, y i ≠ 0 then w (toChartY y I' hI') else 0, hmem, fun I₁ I₂ h12 => ?_, fun I' hI' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : ∀ i ∈ I₂.1, y i ≠ 0`. Establish `h1 : ∀ i ∈ I₁.1, y i ≠ 0` using `fun i hi => h2 i (h12 hi)`. Establish `hm1` using `Q.toSubSystem.mono I₁ I₂ h12 _ (hw (toChartY y I₁ h1))`. Establish `hm2` using `hw (toChartY y I₂ h2)`. Simplify using `only`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[dif_pos h1, dif_pos h2]`. Conclude with `mem_twist_of_eq_zero Q Q' hyp h (toChartY y I₂ h2) (sub_mem hm1 hm2) (by rw [r_sub h (toChartY y I₂ h2) hm1 hm2, hrw, hrw, sub_self])`. Use `push Not at h2`. Take `⟨i, hi, hyi⟩` from `h2`. Conclude with `hQtw I₂ i hi hyi (sub_mem (Q.toSubSystem.mono I₁ I₂ h12 _ (hmem I₁)) (hmem I₂))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only`. Rewrite using `[dif_pos hI']`. Conclude with `hrw _`. Set `J : Chart y` to `toChartY y I hI`. Establish `hJ : ∀ t ∈ Q'.toSubSystem.sub J, ∃ u ∈ Submodule.span (chartRing S x I) {z | ∃ s : Chart x → Ω, (∀ I', s I' ∈ Q.toSubSystem.sub I') ∧ (∀ I₁ I₂ : Chart x, I₁.1 ⊆ I₂.1 → s I₁ - s I₂ ∈ (Q.toSubSystem.twist (idealSys x pp)).sub I₂) ∧ z = s I}, u ∈ Q.toSubSystem.sub I ∧ r u = t`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `t ht`. Rewrite `ht` using `[← hgen J]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht`. Take `⟨s, hs, hc, hr⟩` from `hlift t ht`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `⟨s I, Submodule.subset_span ⟨s, hs, hc, rfl⟩, hs I, hr I hI⟩`. Consider the case `zero => exact ⟨0, zero_mem _, zero_mem _, r_zero h J⟩`. Consider the case `add t t' _ _ ht ht'`. Take `⟨u, hu, hu', rfl⟩` from `ht`. Take `⟨v, hv, hv', rfl⟩` from `ht'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨u + v, add_mem hu hv, add_mem hu' hv', h.add J u hu' v hv'⟩`. Consider the case `smul b t _ ht`. Take `⟨u, hu, hu', rfl⟩` from `ht`. Take `⟨f, s, e, hs, hf, hse, hb⟩` from `b.2`. Set `a : chartRing S x I` to `⟨aeval x f / aeval x s, f, s, e, hs, hf, hse, rfl⟩`.
-
-Use `⟨a • u, Submodule.smul_mem _ a hu, Submodule.smul_mem _ a hu', ?_⟩` and prove the remaining obligations. Use `show r (aeval x f / aeval x s * u) = (b : K') * r u`. Rewrite using `[h.smul J u hu' f s e hs hf hse, hb]`. Introduce `q hq`. Take `⟨u, hu, hu', hru⟩` from `hJ (r q) (h.mem J q hq)`.
-
-Establish `hd : q - u ∈ (Q.toSubSystem.twist (idealSys x pp)).sub I` using `mem_twist_of_eq_zero Q Q' hyp h J (sub_mem hq hu') (by rw [r_sub h J hq hu', hru, sub_self])`. Rewrite using `[show q = u + (q - u) by abel]`. Conclude with `Submodule.add_mem_sup hu hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RestrictGenerated.proof : RestrictGenerated.Statement.{u, w} := by
   intro S _ Ω _ _ N x K' _ _ y hxy pp _ hyp Q Q' r h hgen I

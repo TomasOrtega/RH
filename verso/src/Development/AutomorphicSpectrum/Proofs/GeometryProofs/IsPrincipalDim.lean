@@ -24,11 +24,9 @@ namespace GlobalTheory.CompanionTheory.Ar.SabModel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Use `letI := t.grp`. Use `haveI hs : IsSemiAbelian t.G := t.semi`. Use `haveI : Smooth t.G.hom := hs.smooth`. Use `haveI : GeometricallyConnected t.G.hom := hs.geomConnected`. Establish `hc` using `t.G.hom.isConnected_preimage_singleton (IsLocalRing.closedPoint K)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hu : t.G.hom ⁻¹' {IsLocalRing.closedPoint K} = Set.univ`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_univ, iff_true]`. Conclude with `Subsingleton.elim _ _`. Use `haveI : PreconnectedSpace t.G.left := ⟨by rw [← hu]; exact hc.isPreconnected⟩`.
-
-Conclude with `exists_dim_of_preconnected t.G.hom hc.nonempty.some`.
+A detailed English derivation is pending.
 -/
 theorem isPrincipal_dim {K : Type} [Field K] {t : SAB H (Sp K)} (_h : IsPrincipal t) :
     ∃ d, SmoothOfRelativeDimension d t.G.hom := by

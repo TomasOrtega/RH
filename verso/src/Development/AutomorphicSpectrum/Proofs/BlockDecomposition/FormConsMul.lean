@@ -34,7 +34,7 @@ def incl (F : C ⥤ ModuleCat.{0} R) (W : ObjectProperty C) {Q : ObjectProperty 
   ⟨fun n => Submodule.subtype _, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hx : x.1 ((CH.back_mono h).functor ⋙ s) = 0` using `x.2 _ (cosieve_res hQ W (s.map (homOfLE (Fin.zero_le _))) hs)`. Express the relevant statement in the definitionally equal form `(pairU P W).μ _ _ (CH.term (W.ι ⋙ F₂) s x.1 (CH.back h) (CH.back_mono h)) = 0`. Unfold `CH.term`. Rewrite using `[hx, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cup_mem_rel (P : CH.Pairing F₁ F₂ F₃) (W : ObjectProperty C) {Q : ObjectProperty C} (hQ : Cosieve Q)
     {p n m : ℕ} (h : p + n = m) (b : CH.Cn (W.ι ⋙ F₁) p) (x : (RC F₂ W hQ).X n) :
@@ -80,7 +80,7 @@ variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
   {F₁ F₂ F₃ : C ⥤ ModuleCat.{0} R} {ι : Type} [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `_ h` and use `h.2 α hα`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem capU_le (U : ι → ObjectProperty C) (S : Finset ι) {α : ι} (hα : α ∈ S) : capU U S ≤ U α :=
   fun _ h => h.2 α hα
@@ -96,11 +96,11 @@ def etaS (P : CH.Pairing F₁ F₂ F₃) (U : ι → ObjectProperty C) {Q : Obje
   relCup P (capU U S) hQ (by omega : 1 + n = n + 1) ((resU F₁ (capU_le U S hS)).pullC 1 (β α))
 
 /- English proof (translation)
-Use `hCK R ι (covSy F₂ U hQ) (covSy F₃ U hQ) a (hCD R ι C F₂ U Q hQ hU) (hCD R ι C F₃ U Q hQ hU) h1 h2 (rhoS P U hQ r) (etaS P U hQ β) ?_ ?_ ?_ ?_ lam lam_nat lam_diff n x hx` and prove the remaining obligations. Introduce `S n x`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CH.d _ (n + 2) ((pairU P (capU U S)).cupC _ _ x.1) = (pairU P (capU U S)).cupC _ _ (CH.d _ n x.1)`. Rewrite using `[CrystallineSemistableComparison.P.leibniz, CH.Mor.d_pullC, hr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `S T h n x`. Both sides reduce to the same expression. Introduce `α S T h hS n x`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `α S hS n x`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CH.d _ (n + 1) ((pairU P (capU U S)).cupC _ _ x.1) + (pairU P (capU U S)).cupC _ _ (CH.d _ n x.1) = (pairU P (capU U S)).cupC _ _ x.1`. Rewrite using `[CrystallineSemistableComparison.P.leibniz, CH.Mor.d_pullC, hβ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -143,15 +143,15 @@ section Top
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
 /- English proof (translation)
-Take `⟨hb2, hm2⟩` from `hT R C F Wt Q hWt (n + 2)`. Take `⟨hb1, hm1⟩` from `hT R C F Wt Q hWt (n + 1)`. Set `y' : (RC F Wt hQ).X (n + 2)` to `⟨(CH.Mor.restrict F Wt.ι).pullC (n + 2) y, (hm2 y).2 hyr⟩`. Establish `hy' : (RC F Wt hQ).d (n + 2) y' = 0`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `CH.d _ (n + 2) ((CH.Mor.restrict F Wt.ι).pullC (n + 2) y) = 0`. Rewrite using `[CH.Mor.d_pullC, hy, map_zero]`. Establish `hxy : (RC.res F hQ h).f (n + 2) y' = x` using `Subtype.ext hx.symm`. Establish `hdx : (RC F Wp hQ).d (n + 2) x = 0`. Rewrite using `[← hxy, (RC.res F hQ h).comm, hy', map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (RC.res F hQ h).mapH (n + 2) ((RC F Wt hQ).cls y' hy') = 0`. Establish `e : (RC.res F hQ h).mapH (n + 2) ((RC F Wt hQ).cls y' hy') = (RC F Wp hQ).cls x hdx`. Use `congrArg Submodule.Quotient.mk (Subtype.ext hxy)` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hB`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (RC F Wt hQ).cls y' hy' = 0` using `hb.1 (h0.trans (map_zero _).symm)`. Establish `h2 : (⟨y', hy'⟩ : (RC F Wt hQ).Z (n + 2)) ∈ ((RC F Wt hQ).B (n + 2)).submoduleOf ((RC F Wt hQ).Z (n + 2))` using `(Submodule.Quotient.mk_eq_zero _).1 h1`. Establish `h3 : y' ∈ (RC F Wt hQ).B (n + 2)` using `h2`. Take `⟨b', hb'⟩` from `h3`. Take `⟨b, hbb⟩` from `hb1.2 b'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, (hm1 b).1 (hbb ▸ b'.2), hb2.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← CH.Mor.d_pullC, hbb]`. Conclude with `congrArg Subtype.val hb'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relNull_top (hT : TopRes) (F : C ⥤ ModuleCat.{0} R) {Q : ObjectProperty C} (hQ : Cosieve Q)
     (Wt Wp : ObjectProperty C) (hWt : ∀ T, Wt T) (h : Wp ≤ Wt) {n : ℕ}
@@ -189,18 +189,18 @@ section Forms
 variable {K A B : Type} [CommRing K] [CommRing A] [CommRing B] [Algebra K A] [Algebra K B]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext_on (hFL K A A a).1 (by rintro _ ⟨g₀, v, rfl⟩; exact h g₀ v)`.
+A detailed English derivation is pending.
 -/
 theorem lin_ext (hFL : FormLaws) {a : ℕ} {M : Type*} [AddCommGroup M] [Module K M] (g g' : Om K A a →ₗ[K] M)
     (h : ∀ g₀ (v : Fin a → A), g (form K g₀ v) = g' (form K g₀ v)) : g = g' :=
   LinearMap.ext_on (hFL K A A a).1 (by rintro _ ⟨g₀, v, rfl⟩; exact h g₀ v)
 
 /- English proof (translation)
-Establish `e : ∀ x : A, (fun k => KaehlerDifferential.D K A ((Fin.cons x v : Fin (a + 1) → A) k)) = (Fin.cons (KaehlerDifferential.D K A x) (fun k => KaehlerDifferential.D K A (v k)) : Fin (a + 1) → Ω[A⁄K])`. Introduce `x`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> simp`. Unfold `form`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, e, e, Derivation.leibniz]`. Establish `h1` using `(exteriorPower.ιMulti A (a + 1) (M := Ω[A⁄K])).toMultilinearMap.cons_add (fun k => KaehlerDifferential.D K A (v k)) (u • KaehlerDifferential.D K A f) (f • KaehlerDifferential.D K A u)`. Establish `h2` using `(exteriorPower.ιMulti A (a + 1) (M := Ω[A⁄K])).toMultilinearMap.cons_smul (fun k => KaehlerDifferential.D K A (v k)) u (KaehlerDifferential.D K A f)`. Establish `h3` using `(exteriorPower.ιMulti A (a + 1) (M := Ω[A⁄K])).toMultilinearMap.cons_smul (fun k => KaehlerDifferential.D K A (v k)) f (KaehlerDifferential.D K A u)`. Simplify using `only [AlternatingMap.coe_multilinearMap] at h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, h3, smul_add, smul_comm g₀ u, smul_comm g₀ f]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_cons_mul {a : ℕ} (g₀ u f : A) (v : Fin a → A) :
     form K g₀ (Fin.cons (u * f) v : Fin (a + 1) → A) =
@@ -222,7 +222,7 @@ theorem form_cons_mul {a : ℕ} (g₀ u f : A) (v : Fin a → A) :
   rw [h1, h2, h3, smul_add, smul_comm g₀ u, smul_comm g₀ f]
 
 /- English proof (translation)
-Use `lin_ext (K := K) hFL (wuf.restrictScalars K) (u • wf.restrictScalars K + f • wu.restrictScalars K) (by` as an intermediate fact. Introduce `g₀ v`. Simplify using `[huf, hf, hu, form_cons_mul])`. Conclude with `LinearMap.congr_fun this ω`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wedge_mul (hFL : FormLaws) {a : ℕ} (u f : A) (wuf wf wu : Om K A a →ₗ[A] Om K A (a + 1))
     (huf : ∀ g₀ (g : Fin a → A), wuf (form K g₀ g) = form K g₀ (Fin.cons (u * f) g))
@@ -235,13 +235,11 @@ theorem wedge_mul (hFL : FormLaws) {a : ℕ} (u f : A) (wuf wf wu : Om K A a →
   exact LinearMap.congr_fun this ω
 
 /- English proof (translation)
-Take `⟨-, hφ⟩` from `hFL K A B a`. Take `⟨h1, h2, -⟩` from `hφ φ`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g₀, g, hg, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1]`. Use `Submodule.subset_span ⟨_, _, ?_, rfl⟩` and prove the remaining obligations. Establish `hm : ∀ {x : A}, x ∈ Ideal.span {f} → φ x ∈ Ideal.span {φ f}` using `fun {x} hx => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Conclude with `hg.imp hm fun ⟨k, hk⟩ => ⟨k, hm hk⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [h2]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem relOm_map (hFL : FormLaws) {a : ℕ} (φ : A →ₐ[K] B) (f : A) (ω : Om K A a)
     (hω : ω ∈ relOm K (Ideal.span {f}) a) : omMap φ a ω ∈ relOm K (Ideal.span {φ f}) a := by
@@ -262,9 +260,9 @@ theorem relOm_map (hFL : FormLaws) {a : ℕ} (φ : A →ₐ[K] B) (f : A) (ω : 
   | smul c x _ hx => rw [h2]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `lin_ext (K := K) hFL ((omMap φ (a + 1)).comp (w.restrictScalars K)) ((w'.restrictScalars K).comp (omMap φ a)) (by` as an intermediate fact. Introduce `g₀ v`. Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, hw]`. Rewrite using `[(hFL K A B a).2 φ |>.1, (hFL K A B (a + 1)).2 φ |>.1, hw']`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> simp)`. Conclude with `LinearMap.congr_fun this ω`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem wedge_map (hFL : FormLaws) {a : ℕ} (φ : A →ₐ[K] B) (f : A) (w : Om K A a →ₗ[A] Om K A (a + 1))
     (w' : Om K B a →ₗ[B] Om K B (a + 1))
@@ -282,9 +280,9 @@ theorem wedge_map (hFL : FormLaws) {a : ℕ} (φ : A →ₐ[K] B) (f : A) (w : O
   exact LinearMap.congr_fun this ω
 
 /- English proof (translation)
-Substitute `huf` using the available equality. Establish `e` using `wedge_mul hFL (u : A) f' w w' wu hw hw' hwu ω`. Establish `: ((u : A) * f') • (η - η' - (↑u⁻¹ : A) • wu ω) = 0`. Establish `e2 : ((u : A) * f') • ((↑u⁻¹ : A) • wu ω) = f' • wu ω`. Rewrite using `[smul_smul, mul_comm (u : A), mul_assoc, Units.mul_inv, mul_one]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_sub, smul_sub, hη, e, e2, ← hη', smul_smul]`. Normalize the expressions using the abelian group laws. Conclude with `sub_eq_zero.1 (hnz _ this)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem eta_diff (hFL : FormLaws) {a : ℕ} (u : Aˣ) (f f' : A) (huf : f = u * f')
     (hnz : ∀ ω : Om K A (a + 1), f • ω = 0 → ω = 0) (w w' wu : Om K A a →ₗ[A] Om K A (a + 1))
@@ -308,7 +306,7 @@ section abelian₂
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Set `E` to `LinearEquiv.ofBijective e he`. Use `⟨((E.symm : X →ₗ[K] O).comp i).codRestrict N fun y => (hr _).1 ?_, fun y => ?_⟩` and prove the remaining obligations. Use `⟨y, ?_⟩` and prove the remaining obligations. Conclude with `(E.apply_symm_apply (i y)).symm`. Conclude with `E.apply_symm_apply (i y)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lin_out {Hr X O : Type*} [AddCommGroup Hr] [Module K Hr] [AddCommGroup X] [Module K X] [AddCommGroup O] [Module K O]
     (i : Hr →ₗ[K] X) (e : O →ₗ[K] X) (N : Submodule K O) (he : Function.Bijective e)
@@ -320,7 +318,7 @@ theorem lin_out {Hr X O : Type*} [AddCommGroup Hr] [Module K Hr] [AddCommGroup X
   · exact E.apply_symm_apply (i y)
 
 /- English proof (translation)
-Set `E` to `LinearEquiv.ofInjective i hi`. Use `⟨(E.symm : LinearMap.range i →ₗ[K] Hr).comp ((e.domRestrict N).codRestrict _ fun ω => (hr ω).2 ω.2), fun ω => ?_⟩` and prove the remaining obligations. Use `E.apply_symm_apply ((e.domRestrict N).codRestrict _ (fun ω => (hr ω).2 ω.2) ω)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lin_in {Hr X O : Type*} [AddCommGroup Hr] [Module K Hr] [AddCommGroup X] [Module K X] [AddCommGroup O] [Module K O]
     (i : Hr →ₗ[K] X) (e : O →ₗ[K] X) (N : Submodule K O) (hi : Function.Injective i)
@@ -333,19 +331,17 @@ theorem lin_in {Hr X O : Type*} [AddCommGroup Hr] [Module K Hr] [AddCommGroup X]
 variable {A : Type} [CommRing A] [Algebra K A]
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Take `⟨w₀, hw₀⟩` from `hDW K A a f`. Establish `hex` using `hDL K A a f hnz w₀ hw₀`. Establish `uniq : ∀ η η' : Om K A (a + 1), f • η = f • η' → η = η'` using `fun η η' h => sub_eq_zero.1 (hnz _ (by rw [smul_sub, h, sub_self]))`. Set `N` to `(relOm K (Ideal.span {f}) a).restrictScalars K`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `N'` to `(relOm K (Ideal.span {f}) (a + 1)).restrictScalars K`. Establish `hch : ∀ ω : N, ∃ η : N', f • (η : Om K A (a + 1)) = w₀ ω.1` using `fun ω => by`. Take `⟨η, ⟨h1, h2⟩, -⟩` from `hex ω.1 ω.2`. Conclude with `⟨⟨η, h1⟩, h2⟩`. Use `choose T hT using hch`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `TL : N →ₗ[K] N'` to `{ toFun := T map_add' := fun x y => Subtype.ext (uniq _ _ (by`. Express the relevant statement in the definitionally equal form `f • ((T (x + y) : N') : Om K A (a + 1)) = f • (((T x : N') : Om K A (a + 1)) + (T y : N'))`. Rewrite using `[smul_add, hT, hT, hT]`. Conclude with `map_add w₀ _ _))`. Use the proof step `map_smul' := fun r x => Subtype.ext (uniq _ _ (by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `f • ((T (r • x) : N') : Om K A (a + 1)) = f • (r • ((T x : N') : Om K A (a + 1)))`. Rewrite using `[smul_comm f r, hT, hT]`. Conclude with `LinearMap.map_smul_of_tower w₀ r x.1)) }`. Take `⟨g, hg⟩` from `lin_out i₂ e₂ N he₂ hr₂`. Take `⟨g', hg'⟩` from `lin_in i₃ e₃ N' hi₃ hr₃`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨g' ∘ₗ (c • TL) ∘ₗ g, fun y ω η w hw hy hη => ?_⟩` and prove the remaining obligations. Establish `hww : w = w₀`. Use `lin_ext (K := K) hFL (w.restrictScalars K) (w₀.restrictScalars K) (fun g₀ v => by` as an intermediate fact. Simplify using `[hw, hw₀])`. Conclude with `LinearMap.ext fun x => LinearMap.congr_fun this x`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Substitute `hww` using the available equality. Establish `hgy : (g y : Om K A a) = ω` using `he₂.1 ((hg y).trans hy)`. Establish `hTy : ((T (g y) : N') : Om K A (a + 1)) = η` using `uniq _ _ (by rw [hT, hη, hgy])`. Express the relevant statement in the definitionally equal form `i₃ (g' (c • T (g y))) = _`. Rewrite using `[hg']`.
-
-Use `congr 1`. Rewrite using `[← hTy]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lam_one (hDW : DWedge) (hDL : DLog) {a : ℕ} {H₂ X₂ H₃ X₃ : Type*} [AddCommGroup H₂] [Module K H₂]
     [AddCommGroup X₂] [Module K X₂] [AddCommGroup H₃] [Module K H₃] [AddCommGroup X₃] [Module K X₃] (hFL : FormLaws)

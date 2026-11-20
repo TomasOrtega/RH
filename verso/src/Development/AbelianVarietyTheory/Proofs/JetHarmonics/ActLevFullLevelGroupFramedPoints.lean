@@ -17,19 +17,17 @@ namespace GlobalTheory.FullLevelAction
 open GlobalTheory.LevelActionLaws
 
 /- English proof (translation)
-Take `⟨⟨ι, hι, hone⟩, hmul, hnb⟩` from `GlobalTheory.T.framedPointMove_calculus E H Dw l Xo c`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g S _ _ y`. Take `⟨ρ, ν, i, h⟩` from `exists_move hpq hA Xo g`. Take `⟨y', hy'⟩` from `(GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H Dw l Xo c ρ ν h.1 S y).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y', ρ, ν, i, h, hy'⟩`. Introduce `g S _ _ y y' y'' h' h''`. Take `⟨ρ, ν, i, h, hm⟩` from `h'`. Establish `hm'` using `frMove_transfer hpq hA Xo c g i h h''`. Take `rfl` from `(GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H Dw l Xo c ρ ν h.1 S y).2 y' y'' ν rfl hm hm'`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) y').2.1`. Introduce `S _ _ y`. Use `⟨𝟙 _, ι, inferInstance, ⟨Category.id_comp _, fun a => ?_, fun a => ?_⟩, hone S y⟩` and prove the remaining obligations. Rewrite using `[hι, Category.comp_id, Category.id_comp]`. Conclude with `congrArg _ (eta_congr Xo (liftLa_one_sub a))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hι, Category.comp_id, Category.id_comp]`. Both sides reduce to the same expression. Introduce `g g' S _ _ y y' y'' h h'`. Take `⟨ρ, ν, i, h, hm⟩` from `h`. Take `⟨ρ', ν', i', h', hm'⟩` from `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨μ, hμ, hc⟩` from `hmul ρ ρ' ν ν'`. Use `⟨ρ ≫ ρ', μ, inferInstance, ⟨?_, fun a => ?_, fun a => ?_⟩, hc S y y' y'' hm hm'⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h'.1, h.1]`. Establish `e : Xo.univ.eta ((levFull Dw l (g * g')).1 a) = Xo.univ.eta ((levFull Dw l g).1 ((levFull Dw l g').1 a))` using `eta_congr Xo (liftLa_mul_sub g g' a)`. Rewrite using `[e, hμ, ← Category.assoc, h.2.1, Category.assoc, h'.2.1, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (levFull Dw l (g * g')).2 a = (levFull Dw l g).2 ((levFull Dw l g').2 a)` using `rfl`. Rewrite using `[e, hμ, ← Category.assoc, h.2.2, Category.assoc, h'.2.2, Category.assoc]`. Introduce `g S T _ _ _ _ φ y y' z z' hyz hy hz`. Take `⟨ρ, ν, i, h, hm⟩` from `hy`. Conclude with `(hnb ρ ν).1 S T φ y y' z z' hyz hm (frMove_transfer hpq hA Xo c g i h hz)`.
-
-Introduce `g S _ _ t y y' z z' hyz hy hz`. Take `⟨ρ, ν, i, h, hm⟩` from `hy`. Conclude with `(hnb ρ ν).2 S t y y' z z' hyz hm (frMove_transfer hpq hA Xo c g i h hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem actLaws_levFull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) :
@@ -73,7 +71,7 @@ theorem actLaws_levFull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     exact (hnb ρ ν).2 S t y y' z z' hyz hm (frMove_transfer hpq hA Xo c g i h hz)
 
 /- English proof (translation)
-Introduce `D Q j hpq hA`. Conclude with `actLaws_levFull (Q.Xo j) Q.c hpq (by rw [hA]; exact Nat.coprime_one_left _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem actLev_levFull : ∀ (D : D7) (Q : Par D) (j : ℕ), 1 ≤ (Q.Dw j).p + (Q.Dw j).q → Q.l.A = 1 → ActLev (Xo := Q.Xo j) Q.c (levFull (Q.Dw j) Q.l) := by
   intro D Q j hpq hA

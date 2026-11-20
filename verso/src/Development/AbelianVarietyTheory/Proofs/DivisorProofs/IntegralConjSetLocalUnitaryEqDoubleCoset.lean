@@ -19,9 +19,9 @@ namespace GlobalTheory.BCT.OrbitT
 open GlobalTheory.LatOrb
 
 /- English proof (translation)
-Introduce `v hv`. Establish `e : γ * g.val = g.val * ((g⁻¹ : GL (Fin n) K).val * γ * g.val)`. Rewrite using `[← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]`. Establish `h2 : matLat O γ (matLat O g.val (stdLat O n)) = matLat O g.val (stdLat O n)`. Rewrite using `[← matLat_mul, e, matLat_mul, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `(mem_matLat _ _ _).2 ⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_of_conj {O K : Type} [CommRing O] [Field K] [Algebra O K] {n : ℕ} (g : GL (Fin n) K)
     (γ : Matrix (Fin n) (Fin n) K)
@@ -36,25 +36,23 @@ theorem stable_of_conj {O K : Type} [CommRing O] [Field K] [Algebra O K] {n : �
   exact (mem_matLat _ _ _).2 ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hcc hcv P₀ hcop γ hγ g₁ g₂ h₁ h₂`. Use `haveI := GlobalTheory.HenselSquare.isAdicComplete_integers E w`. Establish `hσO : ∀ a : w.adicCompletionIntegers E, ∃ b : w.adicCompletionIntegers E, cj w (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E) a) = algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E) b`. Introduce `a`. Use `⟨⟨cj w a, ?_⟩, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha` using `a.2`. Rewrite `ha`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[hcv]`. Conclude with `ha`. Establish `hK : ∀ h : UL n w, h ∈ KL n w ↔ matLat (w.adicCompletionIntegers E) h.1.val (stdLat (w.adicCompletionIntegers E) n) = stdLat (w.adicCompletionIntegers E) n`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `(Subgroup.mem_subgroupOf).trans (GlobalTheory.T.mem_GLint_iff_matrixImage_standardLattice_eq (w.adicCompletionIntegers E) n h.1)`. Establish `st : ∀ g : UL n w, g⁻¹ * γ * g ∈ KL n w → ∀ v ∈ matLat (w.adicCompletionIntegers E) g.1.val (stdLat (w.adicCompletionIntegers E) n), γ.1.val *ᵥ v ∈ matLat (w.adicCompletionIntegers E) g.1.val (stdLat (w.adicCompletionIntegers E) n)`. Introduce `g hg`. Establish `h` using `(hK _).1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : ((g⁻¹ * γ * g : UL n w).1.val) = (g.1⁻¹ : GLw n w).val * γ.1.val * g.1.val` using `by simp`. Rewrite `h` using `[e]`. Conclude with `stable_of_conj g.1 γ.1.val h`. Choose the witnesses or unpack the hypotheses as in `⟨t, htU, htc, htM⟩ : ∃ t : GLw n w, t ∈ UL n w ∧ t * γ.1 = γ.1 * t ∧ matLat (w.adicCompletionIntegers E) t.val (matLat (w.adicCompletionIntegers E) g₁.1.val (stdLat (w.adicCompletionIntegers E) n)) = matLat (w.adicCompletionIntegers E) g₂.1.val (stdLat (w.adicCompletionIntegers E …`. Take `⟨p, hpu, hp⟩` from `GlobalTheory.T.exists_unit_eq_of_stable_lattices n P₀ hcop γ.1.val hγ _ _ (GlobalTheory.T.isFullRankLattice_image_standardLattice_GL n g₁.1) (GlobalTheory.T.isFullRankLattice_image_standardLattice_GL n g₂.1) (st g₁ h₁) (st g₂ h₂)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hs : IsSplitAt w`. Use `⟨hpu.unit, by simp [UL, hs], ?_, hp.symm⟩` and prove the remaining obligations. Use extensionality with `: 1`. Simplify using `only [Units.val_mul, IsUnit.unit_spec]`. Establish `e1 : aeval γ.1.val p * γ.1.val = aeval γ.1.val (p * X)` using `by rw [map_mul, aeval_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : γ.1.val * aeval γ.1.val p = aeval γ.1.val (X * p)` using `by rw [map_mul, aeval_X]`. Rewrite using `[e1, e2, mul_comm]`. Establish `hUL : ∀ h : UL n w, ((h.1.val).map (cj w))ᵀ * h.1.val = 1`. Introduce `h`. Use `h.2` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [UL, hs, if_false] at this`. Simplify `this` using `[UJ, cT]`. Establish `sd : ∀ g : UL n w, SelfDual (w.adicCompletionIntegers E) (cj w) (matLat (w.adicCompletionIntegers E) g.1.val (stdLat (w.adicCompletionIntegers E) n))` using `fun g => GlobalTheory.T.isSelfDual_image_standardLattice_unitary (cj w) hcc hσO n _ (hUL g)`. Establish `hc` using `GlobalTheory.T.matrixImage_adjoint_mul_eq_of_selfDual_lattices (cj w) hcc n (aeval γ.1.val p) hpu _ (sd g₁) (hp ▸ sd g₂)`. Take `⟨t, ht1, htc, htM⟩` from `GlobalTheory.T.exists_unitary_adjoin_lattice_image_eq n P₀ hcop γ.1.val hγ (cj w) hcc hσO (hUL γ) _ (GlobalTheory.T.isFullRankLattice_image_standardLattice_GL n g₁.1) (st g₁ h₁) p hpu hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `htu : IsUnit t` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_left_inverse ht1)`. Use `⟨htu.unit, ?_, ?_, by rw [hp]; exact htM⟩` and prove the remaining obligations. Use `show _ ∈ UL n w`. Simplify using `only [UL, hs, if_false]`. Use `show cT (cj w) _ * 1 * _ = 1`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `ht1` using `[cT]`. Use extensionality with `: 1`. Simplify using `using htc`. Use `⟨⟨t, htU⟩, ?_, (⟨t, htU⟩ * g₁)⁻¹ * g₂, ?_, by group⟩` and prove the remaining obligations. Use `show (⟨t, htU⟩ : UL n w) * γ = γ * (⟨t, htU⟩ : UL n w)`.
-
-Conclude with `Subtype.ext htc`. Rewrite using `[hK]`. Establish `e : (((⟨t, htU⟩ : UL n w) * g₁)⁻¹ * g₂ : UL n w).1.val = (g₁.1⁻¹ : GLw n w).val * ((t⁻¹ : GLw n w).val * g₂.1.val)` using `by simp [mul_assoc]`. Rewrite using `[e, matLat_mul, matLat_mul, ← htM, ← matLat_mul (a := ((t⁻¹ : GLw n w).val)), Units.inv_mul, matLat_one, ← matLat_mul, Units.inv_mul, matLat_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E),
     (∀ x, cj w (cj w x) = x) → (∀ x, Valued.v (cj w x) = Valued.v x) →

@@ -15,19 +15,19 @@ universe u v
 namespace Formalism.DworkPowerSeriesWeights
 
 /- English proof (translation)
-The claim follows from `lemmaS_of generalized_log_weight generalized_log_inverse logarithm_weight_comparison substitution_weight_bound exponential_derivative_inverse weightQuantization logarithm_weight_induction binomial_coefficient_extraction`.
+A detailed English derivation is pending.
 -/
 theorem lemmaS : LemmaS.{u} :=
   lemmaS_of generalized_log_weight generalized_log_inverse logarithm_weight_comparison substitution_weight_bound exponential_derivative_inverse
     weightQuantization logarithm_weight_induction binomial_coefficient_extraction
 
 /- English proof (translation)
-The claim follows from `oneLetterRadiusIdentity`.
+A detailed English derivation is pending.
 -/
 theorem oneLetterRadius : OneLetterRadius := oneLetterRadiusIdentity
 
 /- English proof (translation)
-The claim follows from `oneLetterR_of lemmaS generalized_log_weight logarithm_weight_comparison substitution_weight_bound substitution_weight_bound radical_weight_monotone multiplicative_weight_le exponential_weight_le factorial_valuation_bound oneLetterRadiusIdentity`.
+A detailed English derivation is pending.
 -/
 theorem oneLetterR : OneLetterR.{u, v} :=
   oneLetterR_of lemmaS generalized_log_weight logarithm_weight_comparison substitution_weight_bound substitution_weight_bound radical_weight_monotone

@@ -9,7 +9,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-The claim follows from `SplitAffineSpectral.sAff_of_parts hCh hSep SplitAffineSpectral.core SplitAffineSpectral.transfer SplitAffineSpectral.span SplitAffineSpectral.unit SplitAffineSpectral.eigen SplitAffineSpectral.evCob`.
+A detailed English derivation is pending.
 -/
 theorem sAff_of (hCh : SChain) (_hEv : SEv) (hSep : SSep) (_hBr : SBridge) : SAff :=
   SplitAffineSpectral.sAff_of_parts hCh hSep SplitAffineSpectral.core SplitAffineSpectral.transfer SplitAffineSpectral.span SplitAffineSpectral.unit SplitAffineSpectral.eigen

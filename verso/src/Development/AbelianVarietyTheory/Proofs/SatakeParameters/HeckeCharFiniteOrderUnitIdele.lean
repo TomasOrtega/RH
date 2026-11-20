@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Take `⟨-, -, -, m, hm, h⟩` from `GlobalTheory.CharFin.finite_order_of_small (R := AdeleRing (𝓞 L) L) (RingHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) (RingHom.snd _ _) id continuous_id (fun _ => rfl) (GlobalTheory.UnUnitCmp.Val.intFin L) (fun W hW => GlobalTheory.AdLat.OpenLat.exists_nsmul_adele L W …`. Conclude with `⟨m, hm, fun u h1 h2 => h u ⟨funext h1, fun v => (h2 v).le, fun v => ((unitIdl L).inv_mem h2 v).le⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem circle_pow (ψ : Ideles L →* Circle) (hψ : Continuous ψ) :
     ∃ m : ℕ, 0 < m ∧ ∀ u : Ideles L, IsFinIdele u → u ∈ unitIdl L → ψ u ^ m = 1 := by
@@ -22,13 +22,13 @@ theorem circle_pow (ψ : Ideles L →* Circle) (hψ : Continuous ψ) :
   exact ⟨m, hm, fun u h1 h2 => h u ⟨funext h1, fun v => (h2 v).le, fun v => ((unitIdl L).inv_mem h2 v).le⟩⟩
 
 /- English proof (translation)
-The claim follows from `norm_ne_zero_iff.2 (Units.ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_ne (χ : HChar L) (x : Ideles L) : ‖((χ.1 x : ℂˣ) : ℂ)‖ ≠ 0 :=
   norm_ne_zero_iff.2 (Units.ne_zero _)
 
 /- English proof (translation)
-The claim follows from `(Units.continuous_val.comp χ.2.1).norm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_norm_val (χ : HChar L) : Continuous fun x : Ideles L => ‖((χ.1 x : ℂˣ) : ℂ)‖ :=
   (Units.continuous_val.comp χ.2.1).norm
@@ -40,23 +40,21 @@ def twist (χ : HChar L) (c : ℝ) : Ideles L →* Circle where
     rw [χ.1.map_mul, Units.val_mul, norm_mul, Real.log_mul (norm_ne χ x) (norm_ne χ y), mul_add, Circle.exp_add]
 
 /- English proof (translation)
-The claim follows from `Circle.exp.continuous.comp (continuous_const.mul ((continuous_norm_val χ).log (norm_ne χ)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_twist (χ : HChar L) (c : ℝ) : Continuous (twist χ c) :=
   Circle.exp.continuous.comp (continuous_const.mul ((continuous_norm_val χ).log (norm_ne χ)))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `ht : Real.log ‖((χ.1 a : ℂˣ) : ℂ)‖ ≠ 0`. Introduce `h0`. Break down `Real.log_eq_zero.1 h0 with h | h | h` into its components or cases. Conclude with `norm_ne χ a h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `hne h`. Combine the linear relations using `[norm_nonneg ((χ.1 a : ℂˣ) : ℂ)]`. Use `set t := Real.log ‖((χ.1 a : ℂˣ) : ℂ)‖ with htdef`. Take `⟨m, hm, h⟩` from `circle_pow (twist χ (2 * Real.pi * √2 / t)) (continuous_twist χ _)`. Establish `e` using `h a h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : twist χ (2 * Real.pi * √2 / t) a = Circle.exp (2 * Real.pi * √2)`. Express the relevant statement in the definitionally equal form `Circle.exp (2 * Real.pi * √2 / t * Real.log ‖((χ.1 a : ℂˣ) : ℂ)‖) = _`. Rewrite using `[← htdef, div_mul_cancel₀ _ ht]`. Rewrite `e` using `[e1, ← Circle.exp_nsmul]`. Establish `e2` using `congrArg (fun z : Circle => (z : ℂ)) e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Circle.coe_exp, Circle.coe_one] at e2`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 e2`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `e3 : (m : ℂ) * (√2 : ℝ) = n`. Establish `: ((m : ℂ) * (√2 : ℝ)) * (2 * Real.pi * Complex.I) = n * (2 * Real.pi * Complex.I)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hn]`. Use `push_cast`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `mul_right_cancel₀ (by simp [hpi, Complex.I_ne_zero]) this`. Establish `e4 : (m : ℝ) * √2 = n` using `by exact_mod_cast e3`. Conclude with `(irrational_sqrt_two.natCast_mul hm.ne').ne_int n e4`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_eq_one (χ : HChar L) (a : Ideles L) (h1 : IsFinIdele a) (h2 : a ∈ unitIdl L) :
     ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1 := by
@@ -98,7 +96,7 @@ def unitPart (χ : HChar L) : Ideles L →* Circle where
     rw [mul_div_mul_comm]
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp χ.2.1).div (Complex.continuous_ofReal.comp (continuous_norm_val χ)) (fun x => by simpa using norm_ne χ x)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_unitPart (χ : HChar L) : Continuous (unitPart χ) := by
   refine Continuous.subtype_mk ?_ _
@@ -106,9 +104,9 @@ theorem continuous_unitPart (χ : HChar L) : Continuous (unitPart χ) := by
     (fun x => by simpa using norm_ne χ x)
 
 /- English proof (translation)
-Introduce `L _ _ χ a h1 h2`. Establish `h2' : a ∈ unitIdl L` using `h2`. Take `⟨m, hm, h⟩` from `circle_pow (unitPart χ) (continuous_unitPart χ)`. Use `⟨m, hm, Units.ext ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun z : Circle => (z : ℂ)) (h a h1 h2')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ((unitPart χ a : Circle) : ℂ) = ((χ.1 a : ℂˣ) : ℂ)`. Express the relevant statement in the definitionally equal form `((χ.1 a : ℂˣ) : ℂ) / ‖((χ.1 a : ℂˣ) : ℂ)‖ = _`. Rewrite using `[norm_eq_one χ a h1 h2']`. Simplify using the standard rewrite rules. Simplify `e` using `[e1]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_order : ∀ (L : Type) [Field L] [NumberField L] (χ : HChar L) (a : Ideles L), IsFinIdele a →
     (∀ v, Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1) → ∃ n : ℕ, 0 < n ∧ χ.1 a ^ n = 1 := by

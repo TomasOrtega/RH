@@ -24,7 +24,7 @@ variable {k : Type} [Field k] {C C' : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsInte
   [Algebra k Γ(C', ⊤)] [IsIntegral C']
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `π.surjective (genericPoint C)`. Use `((genericPoint_specializes _).antisymm ?_).eq.symm` and prove the remaining obligations. Conclude with `((genericPoint_specializes y).map π.continuous).trans (specializes_of_eq hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_genericPoint (π : C' ⟶ C) [Surjective π] : π (genericPoint C') = genericPoint C := by
   obtain ⟨y, hy⟩ := π.surjective (genericPoint C)
@@ -32,17 +32,15 @@ theorem map_genericPoint (π : C' ⟶ C) [Surjective π] : π (genericPoint C') 
   exact ((genericPoint_specializes y).map π.continuous).trans (specializes_of_eq hy)
 
 /- English proof (translation)
-Establish `hη` using `map_genericPoint π`. Use `Flat.of_stalkMap π fun x => ?_` and prove the remaining obligations. Establish `hF : IsField (C.presheaf.stalk (π (genericPoint C')))`. Rewrite using `[hη]`. Conclude with `Field.toIsField C.functionField`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : Function.Injective (π.stalkMap (genericPoint C')).hom`. Use `(injective_iff_map_eq_zero _).2 fun a h0 => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `ha`. Take `⟨c, hc⟩` from `hF.mul_inv_cancel ha`. Use `congrArg (π.stalkMap (genericPoint C')).hom hc` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, h0, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Establish `h : genericPoint C' ⤳ x` using `genericPoint_specializes x`. Establish `hπ : π (genericPoint C') ⤳ π x` using `h.map π.continuous`. Establish `hinj : Function.Injective (π.stalkMap x).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Apply `GlobalTheory.PushInv.stalkSpecializes_injective hπ` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hg` to reduce the goal to its premises. Rewrite using `[map_zero, Scheme.Hom.stalkSpecializes_stalkMap_apply π (genericPoint C') x h a, ha, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hC.isPrincipalIdealRing_stalk (π x)`. Use `haveI : IsDedekindDomain (C.presheaf.stalk (π x)) := inferInstance`. Use `letI := (π.stalkMap x).hom.toAlgebra`. Use `show Module.Flat _ _`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`.
-
-Introduce `b hb`. Take `⟨⟨a, ha⟩, hab⟩` from `(Submodule.mem_torsion_iff b).1 hb`. Establish `ha0 : (π.stalkMap x).hom a ≠ 0` using `fun h0 => nonZeroDivisors.ne_zero ha (hinj (h0.trans (map_zero _).symm))`. Establish `: (π.stalkMap x).hom a * b = 0` using `hab`. Conclude with `(Submodule.mem_bot _).2 ((mul_eq_zero.1 this).resolve_left ha0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_of_surjective (hC : IsSmoothProjCurve k C) (π : C' ⟶ C) [Surjective π] : Flat π := by
   have hη := map_genericPoint π
@@ -77,11 +75,11 @@ theorem flat_of_surjective (hC : IsSmoothProjCurve k C) (π : C' ⟶ C) [Surject
   exact (Submodule.mem_bot _).2 ((mul_eq_zero.1 this).resolve_left ha0)
 
 /- English proof (translation)
-Establish `hP` using `hC.toIsProjCurve`. Establish `hP'` using `hC'.toIsProjCurve`. Establish `hD` using `hE.isLB_det`. Establish `hD'` using `(hE.pullback π).isLB_det`. Establish `hDp` using `pull_isLB hD π`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `ProjFin.interNumOn_eq_residueDegree_mul k C C' π hP.isProjOver hP.dim_eq hη _ hD`. Rewrite `e₁` using `[interNumOn_eq_interNum_pull hf (isLB_vecOne hD)]`. Establish `e₂ : (fun j => ((![det E r] : Fin 1 → LB C) j).pull π) = ![(det E r).pull π]`. Use function extensionality and compare the values at `fun j => by fin_cases j; rfl`. Rewrite `e₁` using `[e₂]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← SlopeEigen.degLB_det hC' r (hE.pullback π), ← SlopeEigen.degLB_det hC r hE, ← degLB_congr hDp hD' (hE.lbIso_det_pullback π), hP'.degLB_eq_interNum hDp, hP.degLB_eq_interNum hD, e₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_pullback_eq [IsAlgClosed k] (hC : IsSmoothProjCurve k C) (hC' : IsSmoothProjCurve k C')
     (π : C' ⟶ C) [IsFinite π] (hη : π (genericPoint C') = genericPoint C)
@@ -104,13 +102,11 @@ theorem deg_pullback_eq [IsAlgClosed k] (hC : IsSmoothProjCurve k C) (hC' : IsSm
     hP.degLB_eq_interNum hD, e₁]
 
 /- English proof (translation)
-Introduce `k _ _ C C' _ _ _ _ hC hC' π hπ`. Take `⟨hfin, hsurj, hcomp⟩` from `hπ`. Use `haveI := hfin`. Use `haveI := hsurj`. Use `haveI : Flat π := flat_of_surjective hC π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hη` using `map_genericPoint π`. Establish `hf : ∀ a : k, π.appTop (algebraMap k Γ(C, ⊤) a) = algebraMap k Γ(C', ⊤) a` using `fun a => by`. Rewrite using `[algebraMap_eq_strHom k C a, algebraMap_eq_strHom k C' a, ← hcomp, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Establish `hdeg : 0 < π.residueDegree (genericPoint C')` using `Nat.pos_of_ne_zero ((PullbackFinitePoint.residueDegree_ne_zero_iff_finite π _).2 (residueFieldMap_finite_of_locallyQuasiFinite π _))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨_, hdeg, fun E r hE => ⟨deg_pullback_eq hC hC' π hη hf hE, fun G i hi => ?_⟩⟩` and prove the remaining obligations. Use `haveI := hi.mono`. Use `haveI := hi.isFiniteQC`. Establish `hG` using `SlopeEigen.isVB_of_mono hC hE i`. Use `haveI := hG.isQuasicoherent`.
-
-Use `haveI := hE.isQuasicoherent`. Conclude with `⟨⟨QCoh.mono_pullback_map π i, (hG.pullback π).isFiniteQC⟩, deg_pullback_eq hC hC' π hη hf hG⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_scalesDeg : ∀ (k : Type) [Field k] [IsAlgClosed k] (C C' : Scheme.{0})
     [Algebra k Γ(C, ⊤)] [IsIntegral C] [Algebra k Γ(C', ⊤)] [IsIntegral C'],

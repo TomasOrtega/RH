@@ -14,7 +14,7 @@ namespace GlobalTheory.CuspRep.TailFix
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨h, rfl⟩` from `hg`. Conclude with `(h i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entry_int {w : HeightOneSpectrum (𝓞 E)} {g : GL (Fin a) (w.adicCompletion E)} (hg : g ∈ KGL w a)
     (i j : Fin a) : g i j ∈ w.adicCompletionIntegers E := by
@@ -22,9 +22,9 @@ theorem entry_int {w : HeightOneSpectrum (𝓞 E)} {g : GL (Fin a) (w.adicComple
   exact (h i j).2
 
 /- English proof (translation)
-Set `s` to `RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) cofinite`. Establish `hs : Continuous s` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Set `lift : ∀ y : Af E, (∀ v, pLoc E v y ∈ v.adicCompletionIntegers E) → ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletionIntegers E : Set (v.adicCompletion E))` to `fun y hy v => ⟨pLoc E v y, hy v⟩`. Establish `hl : ∀ y hy, s (lift y hy) = y` using `fun y hy => FiniteAdeleRing.ext _ fun v => rfl`. Establish `h1 : Tendsto (fun b => lift (f b) (hf b)) l (𝓝 (lift x hx))` using `tendsto_pi_nhds.2 fun v => tendsto_const_nhds.congr' <| (h v).mono fun b hb => Subtype.ext hb.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hs.tendsto _).comp h1`. Rewrite `h2` using `[hl]`. Conclude with `h2.congr fun b => hl _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_of_loc {α : Type} {l : Filter α} {f : α → Af E} {x : Af E}
     (hx : ∀ v, pLoc E v x ∈ v.adicCompletionIntegers E) (hf : ∀ b v, pLoc E v (f b) ∈ v.adicCompletionIntegers E)
@@ -43,11 +43,9 @@ theorem tendsto_of_loc {α : Type} {l : Filter α} {f : α → Af E} {x : Af E}
   exact h2.congr fun b => hl _ _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Use `choose r hr1 hr2 hrU using hn`. Apply the tactic sequence `have ent : ∀ q : Finset (HeightOneSpectrum (𝓞 E)) → GL (Fin a) (Af E), (∀ F v, GeneralLinearGroup.map (pLoc E v) (q F) ∈ KGL v a) → (∀ F, ∀ v ∈ F, GeneralLinearGroup.map (pLoc E v) (q F) = 1) → Tendsto (fun F => (q F).val) atTop (𝓝 1) := fun q hq1 hq2 => tendsto_pi_nhds.2 fun i = …`. Establish `e` using `hq2 F v (hF (Finset.mem_singleton_self v))`.
+Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[← map_one (GeneralLinearGroup.map (pLoc E v))]`. Conclude with `congrArg (fun x : GL (Fin a) (v.adicCompletion E) => x i j) e`. Establish `ht : Tendsto r atTop (𝓝 1)`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `(ent r hr1 hr2).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (ent (fun F => (r F)⁻¹) (fun F v => by rw [map_inv]; exact inv_mem (hr1 F v)) (fun F v hv => by rw [map_inv, hr2 F v hv, inv_one])))`.
-
-Take `⟨F, hF⟩` from `(ht.eventually hU).exists`. Conclude with `hrU F hF`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_tail {U : Set (GL (Fin a) (Af E))} (hU : U ∈ 𝓝 (1 : GL (Fin a) (Af E))) :
     ∃ F : Finset (HeightOneSpectrum (𝓞 E)), ∀ r : GL (Fin a) (Af E),
@@ -81,23 +79,19 @@ end GlobalTheory.CuspRep.TailFix
 open GlobalTheory.CuspRep.TailFix in
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ S hS k hk1 hk2`. Establish `hU : {x : GL (Fin a) (Af E) | finRep E a x φ = φ} ∈ 𝓝 (1 : GL (Fin a) (Af E))` using `hφ.level.mem_nhds (by simp)`. Take `⟨F, hF⟩` from `exists_tail hU`. Establish `key : ∀ T : Finset (HeightOneSpectrum (𝓞 E)), ∀ k : GL (Fin a) (Af E), (∀ w ∉ S, GeneralLinearGroup.map (pLoc E w) k ∈ KGL w a) → (∀ w ∈ S, GeneralLinearGroup.map (pLoc E w) k = 1) → (∀ w ∈ F, w ∉ T → GeneralLinearGroup.map (pLoc E w) k = 1) → finRep E a k φ = φ`. Introduce `T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `k h1 h2 h3`. Use `hF k (fun v => ?_) (fun v hv => h3 v hv (by simp))` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h2 v hv]`. Conclude with `one_mem _`. Conclude with `h1 v hv`. Consider the case `insert w T hw ih`. Introduce `k h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩ : ∃ g, g = locGL E a w (GeneralLinearGroup.map (pLoc E w) k)` from `⟨_, rfl⟩`. Establish `hgH : finRep E a g φ = φ`. Distinguish the cases in `hwS : w ∈ S`. Rewrite using `[hg, h2 w hwS, map_one, map_one]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Conclude with `hS w hwS _ (h1 w hwS)`. Establish `e : ∀ v, GeneralLinearGroup.map (pLoc E v) (g⁻¹ * k) = if v = w then 1 else GeneralLinearGroup.map (pLoc E v) k` using `fun v => by`. Rewrite using `[map_mul, map_inv]`. Use `split_ifs with hv`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hv` using the available equality. Rewrite using `[hg, pLoc_locGL, inv_mul_cancel]`. Rewrite using `[hg, pLoc_locGL_of_ne hv, inv_one, one_mul]`. Establish `hk' : finRep E a (g⁻¹ * k) φ = φ`. Use `ih _ (fun v hv => ?_) (fun v hv => ?_) (fun v hv hvT => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `h1 v hv`. Rewrite using `[e]`.
-
-Use `split_ifs`. Both sides reduce to the same expression. Conclude with `h2 v hv`. Rewrite using `[e]`. Use `split_ifs with h`.
-
-Both sides reduce to the same expression. Conclude with `h3 v hv (by simp [h, hvT])`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key F k hk1 hk2 (fun w hw hwF => absurd hw hwF)`.
+Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspRep.fixed_of_locFixed : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (φ : Sm E a), IsAutForm φ → ∀ S : Finset (HeightOneSpectrum (𝓞 E)),

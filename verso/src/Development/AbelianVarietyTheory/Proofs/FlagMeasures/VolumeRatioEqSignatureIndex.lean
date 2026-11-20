@@ -11,11 +11,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.RowIndex
 
 /- English proof (translation)
-Use `⟨fun j => if h : j.1 < s then e ⟨j.1, h⟩ else if h' : j.1 < s + k then β ⟨j.1 - s, by omega⟩ else if h'' : j.1 = s + k then z else f ⟨N - 1 - j.1, by have := j.2; omega⟩, fun j a h => ?_, fun j a h => ?_, fun j h => ?_, fun j a h => ?_⟩` and prove the remaining obligations. Use `a.2 beta_reduce` as an intermediate fact. Rewrite using `[dif_pos (by omega)]`. Conclude with `congrArg e (Fin.ext h)`. Use `a.2 beta_reduce` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Conclude with `congrArg β (Fin.ext (by simp only; omega))`. Use `beta_reduce`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos h]`. Use `a.2 beta_reduce` as an intermediate fact.
-
-Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_neg (by omega)]`. Conclude with `congrArg f (Fin.ext (by simp only; omega))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_family {V : Type} {N k s : ℕ} (hN : N = s + k + 1 + s) (e : Fin s → V) (β : Fin k → V) (z : V)
     (f : Fin s → V) : ∃ b : Fin N → V, (∀ (j : Fin N) (a : Fin s), j.1 = a.1 → b j = e a) ∧
@@ -40,9 +38,9 @@ theorem exists_family {V : Type} {N k s : ℕ} (hN : N = s + k + 1 + s) (e : Fin
     exact congrArg f (Fin.ext (by simp only; omega))
 
 /- English proof (translation)
-Use `j.2` as an intermediate fact. Distinguish the cases in `h : j.1 < s`. Conclude with `Or.inl ⟨⟨_, h⟩, rfl⟩`. Distinguish the cases in `h' : j.1 < s + k`. Conclude with `Or.inr (Or.inl ⟨⟨j.1 - s, by omega⟩, by simp only; omega⟩)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Distinguish the cases in `h'' : j.1 = s + k`. Conclude with `Or.inr (Or.inr (Or.inl h''))`. Conclude with `Or.inr (Or.inr (Or.inr ⟨⟨N - 1 - j.1, by omega⟩, by simp only; omega⟩))`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the second alternative.
 -/
 theorem index_cases {N k s : ℕ} (hN : N = s + k + 1 + s) (j : Fin N) :
     (∃ a : Fin s, j.1 = a.1) ∨ (∃ a : Fin k, j.1 = s + a.1) ∨ j.1 = s + k ∨ ∃ a : Fin s, j.1 + a.1 + 1 = N := by
@@ -56,27 +54,27 @@ theorem index_cases {N k s : ℕ} (hN : N = s + k + 1 + s) (j : Fin N) :
   · exact Or.inr (Or.inr (Or.inr ⟨⟨N - 1 - j.1, by omega⟩, by simp only; omega⟩))
 
 /- English proof (translation)
-Take `⟨b, b1, b2, b3, b4⟩` from `exists_family hN e β z f`. Take `⟨b', c1, c2, c3, c4⟩` from `exists_family hN f β' z' e`. Establish `seg : ∀ (t : ℕ), t ≤ s → b '' {i | i.1 < t} = e '' {c | c.1 < t}` using `fun t ht => by`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨⟨i.1, lt_of_lt_of_le hi ht⟩, hi, (b1 _ _ rfl).symm⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨⟨c.1, by have := c.2; omega⟩, hc, b1 _ _ rfl⟩`. Establish `seg' : b '' {i | i.1 < s} = Set.range e`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[seg s le_rfl, ← Set.image_univ]`. Conclude with `congrArg _ (Set.eq_univ_of_forall fun c => c.2)`. Use `⟨b, b', fun j hj => ?_, fun j hj => ⟨b3 j hj, c3 j hj⟩, fun j a hj => ⟨b1 j a hj, ?_⟩, fun j a hj => ⟨b2 j a hj, ?_⟩, seg', fun 𝔞 g1 g2 g3 g4 g5 g6 i j => ?_⟩` and prove the remaining obligations. Rewrite using `[b1 j ⟨j.1, hj⟩ rfl, c4 j.rev ⟨j.1, hj⟩ (by rw [Fin.val_rev]; simp only; omega)]`. Rewrite using `[← seg a.1 a.2.le, ← hj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← seg']`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hi' : i.1 < j.1` using `hi`. Use `a.2` as an intermediate fact. Distinguish the cases in `h : i.1 < s`. Conclude with `Or.inl ⟨i, h, rfl⟩`. Conclude with `Or.inr ⟨⟨i.1 - s, by omega⟩, by show i.1 - s < a.1; omega, (b2 _ _ (by simp only; omega)).symm⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(⟨i, hi, rfl⟩ | ⟨c, hc, rfl⟩)`. Establish `hi' : i.1 < s` using `hi`. Conclude with `⟨i, by show i.1 < j.1; omega, rfl⟩`. Establish `hc' : c.1 < a.1` using `hc`. Use `j.2` as an intermediate fact.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨s + c.1, by omega⟩, by show s + c.1 < j.1; omega, b2 _ _ rfl⟩`. Establish `off : i.1 ≠ j.1 → ∀ x : R, 𝔞 x → 𝔞 (x - if i = j then 1 else 0)` using `fun hne x hx => by`. Rewrite using `[if_neg (fun e => hne (congrArg Fin.val e)), sub_zero]` and apply the resulting hypothesis. Establish `on : ∀ {t : ℕ} (a c : Fin t), (i.1 = j.1 ↔ a.1 = c.1) → ∀ x : R, 𝔞 (x - if a = c then 1 else 0) → 𝔞 (x - if i = j then 1 else 0)` using `fun a c hh x hx => by`. Rewrite using `[if_congr (Fin.ext_iff.trans (hh.trans Fin.ext_iff.symm)) rfl rfl]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases index_cases hN i with ⟨a, ha⟩ | ⟨a, ha⟩ | ha | ⟨a, ha⟩ <;>`. Break down `index_cases hN j with ⟨c, hc⟩ | ⟨c, hc⟩ | hc | ⟨c, hc⟩` into its components or cases. Rewrite using `[c1 i a ha, b1 j c hc]; exact on a c (by omega) _ (g1 a c).1`. Rewrite using `[c1 i a ha, b2 j c hc]; exact off (by omega) _ (g2 a c).1`. Rewrite using `[c1 i a ha, b3 j hc]; exact off (by omega) _ (g3 a).1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c1 i a ha, b4 j c hc]; exact off (by omega) _ (g1 a c).2.2.2`. Rewrite using `[c2 i a ha, b1 j c hc]; exact off (by omega) _ (g2 c a).2.2.1`. Rewrite using `[c2 i a ha, b2 j c hc]; exact on a c (by omega) _ (g4 a c)`. Rewrite using `[c2 i a ha, b3 j hc]; exact off (by omega) _ (g5 a).1`. Rewrite using `[c2 i a ha, b4 j c hc]; exact off (by omega) _ (g2 c a).2.2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c3 i ha, b1 j c hc]; exact off (by omega) _ (g3 c).2.2.1`. Rewrite using `[c3 i ha, b2 j c hc]; exact off (by omega) _ (g5 c).2`. Rewrite using `[c3 i ha, b3 j hc, if_pos (Fin.ext (ha.trans hc.symm))]`. Conclude with `g6`. Rewrite using `[c3 i ha, b4 j c hc]; exact off (by omega) _ (g3 c).2.2.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c4 i a ha, b1 j c hc]; exact off (by omega) _ (g1 a c).2.2.1`. Rewrite using `[c4 i a ha, b2 j c hc]; exact off (by omega) _ (g2 a c).2.1`. Rewrite using `[c4 i a ha, b3 j hc]; exact off (by omega) _ (g3 a).2.1`. Rewrite using `[c4 i a ha, b4 j c hc]; exact on a c (by omega) _ (g1 a c).2.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_families {V R : Type} [CommRing R] {N k s : ℕ} (hN : N = s + k + 1 + s) (h : V → V → R)
     (e f : Fin s → V) (β β' : Fin k → V) (z z' : V) :
@@ -150,11 +148,11 @@ theorem exists_dual_families {V R : Type} [CommRing R] {N k s : ℕ} (hN : N = s
 variable {I : AutInst}
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, zero_mem _, (smul_zero _).symm⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨z, hz, rfl⟩` from `hx`. Take `⟨z', hz', rfl⟩` from `hy`. Conclude with `⟨z + z', add_mem hz hz', (smul_add _ _ _).symm⟩`. Consider the case `smul a x _ hx`. Take `⟨z, hz, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a • z, Submodule.smul_mem _ a hz, smul_comm (a : I.E ⊗[I.F] Af I.F) _ z⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_mL {m : ℕ} {x : VA I} : x ∈ mL I m ↔ ∃ z ∈ I.Lf, x = (m : I.E ⊗[I.F] Af I.F) • z := by
   refine ⟨fun h => ?_, fun h => Submodule.subset_span h⟩
@@ -170,9 +168,9 @@ theorem mem_mL {m : ℕ} {x : VA I} : x ∈ mL I m ↔ ∃ z ∈ I.Lf, x = (m : 
     exact ⟨a • z, Submodule.smul_mem _ a hz, smul_comm (a : I.E ⊗[I.F] Af I.F) _ z⟩
 
 /- English proof (translation)
-Unfold `InMod`. Rewrite using `[← Submodule.coe_subtype, ← Submodule.map_span, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨t, ht, rfl⟩, u, hu, rfl⟩`. Take `⟨z, hz, rfl⟩` from `mem_mL.1 hu`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, z, hz, rfl⟩`. Introduce and unpack `⟨t, ht, z, hz, rfl⟩`. Conclude with `⟨_, ⟨t, ht, rfl⟩, _, mem_mL.2 ⟨z, hz, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem inMod_iff (m : ℕ) (S : Set I.Lf) (y : VA I) : InMod I m (Subtype.val '' S) y ↔
     ∃ t ∈ Submodule.span (IntAf I.F I.E) S, ∃ z ∈ I.Lf, y = t.1 + (m : I.E ⊗[I.F] Af I.F) • z := by
@@ -186,7 +184,7 @@ theorem inMod_iff (m : ℕ) (S : Set I.Lf) (y : VA I) : InMod I m (Subtype.val '
     exact ⟨_, ⟨t, ht, rfl⟩, _, mem_mL.2 ⟨z, hz, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨t, ht, e⟩` from `h`. Use `Ideal.mem_span_singleton.2 ⟨⟨t, ht⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_span_of_zmod {m : ℕ} {a : IntAf I.F I.E} (h : ZMod' I m a) : a ∈ Ideal.span {(m : IntAf I.F I.E)} := by
   obtain ⟨t, ht, e⟩ := h
@@ -194,7 +192,7 @@ theorem mem_span_of_zmod {m : ℕ} {a : IntAf I.F I.E} (h : ZMod' I m a) : a ∈
   simpa using e
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton.1 h`. Rewrite using `[map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigI_mem {m : ℕ} {a : IntAf I.F I.E} (h : a ∈ Ideal.span {(m : IntAf I.F I.E)}) :
     sigI I a ∈ Ideal.span {(m : IntAf I.F I.E)} := by
@@ -203,7 +201,7 @@ theorem sigI_mem {m : ℕ} {a : IntAf I.F I.E} (h : a ∈ Ideal.span {(m : IntAf
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Rewrite using `[← sigI_hI, ← neg_one_smul (IntAf I.F I.E) x, hI_smul, map_mul, sigI_hI, map_neg, map_one, neg_one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hI_neg (x y : I.Lf) : hI (-x) y = -hI x y := by
   rw [← sigI_hI, ← neg_one_smul (IntAf I.F I.E) x, hI_smul, map_mul, sigI_hI, map_neg, map_one, neg_one_mul]
@@ -211,33 +209,29 @@ theorem hI_neg (x y : I.Lf) : hI (-x) y = -hI x y := by
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨b, b', b1, b2, b3, b4, b5, b6⟩` from `exists_dual_families hN (hI (I := I)) e f' β β' z (-z)`. Establish `hle : ∀ l (v : HeightOneSpectrum (𝓞 I.E)), ((g l : ℕ) : 𝓞 I.E) ∈ v.asIdeal → 𝔤 ≤ extId I v.asIdeal`. Introduce `l v hv`. Rewrite using `[h𝔤, Ideal.span_singleton_le_iff_mem, extId_eq_map_psi, ← map_natCast (psi I.F I.E) G]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG, Nat.cast_mul]`. Use `fin_cases l`. Conclude with `Ideal.mul_mem_right _ _ hv`. Conclude with `Ideal.mul_mem_left _ _ hv`. Establish `sw : ∀ {x y : I.Lf}, hI x y ∈ 𝔤 → hI y x ∈ 𝔤` using `fun {x y} h => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← sigI_hI, h𝔤]`. Conclude with `sigI_mem (h𝔤 ▸ h)`. Establish `sw' : ∀ a c, (hI (f' a) (e c) - if a = c then 1 else 0) ∈ 𝔤` using `fun a c => by`. Establish `h` using `sigI_mem (h𝔤 ▸ (g1 c a).2.2)`. Rewrite `h` using `[map_sub, sigI_hI, apply_ite (sigI I), map_one, map_zero, if_congr eq_comm rfl rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h𝔤 ▸ h`. Establish `e4 : 1 - ε - sigI I ε ∈ 𝔤`. Take `⟨y, hy⟩` from `e3`. Establish `h` using `congrArg (hI z) hy`. Rewrite `h` using `[hI_smul, hI_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : 1 - ε - sigI I ε = (1 - ε - sigI I ε) * (hI z z + 1) - G * hI z y` using `by rw [← h]; ring`. Rewrite using `[h']`. Conclude with `sub_mem (Ideal.mul_mem_left _ _ g2) (Ideal.mul_mem_right _ _ (h𝔤 ▸ Ideal.mem_span_singleton_self _))`. Use `vol_ratio_rows hN hn g hg hne hrad hsp hf hcard ε e1 e2 (fun l v hv => hle l v hv e4) b b' (fun l v hv hε => ?_) b1 (fun j hj => by rw [(b2 j hj).1, (b2 j hj).2, neg_neg]) (fun j hj hj' => ?_) μf _ fun x => ?_` and prove the remaining obligations. Establish `L` using `hle l v hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `b6 (· ∈ extId I v.asIdeal) (fun a c => ⟨L (sw' a c), L (g1 a c).2.2, L (g1 a c).1, L (g1 a c).2.1⟩) (fun a c => ⟨L ((g4 c).2.2 a).2.1, L ((g4 c).2.2 a).1, L (sw ((g4 c).2.2 a).2.2.1), L (sw ((g4 c).2.2 a).2.2.2)⟩) (fun a => ⟨L (g3 a).2, L (g3 a).1, ?_, ?_⟩) (fun a c => ?_) (fun c …` and prove the remaining obligations. Rewrite using `[hI_neg]`. Conclude with `neg_mem (L (sw (g3 a).1))`. Rewrite using `[hI_neg]`. Conclude with `neg_mem (L (sw (g3 a).2))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `L (g5 a c) split_ifs at h ⊢`. Use `sub_mem h hε` as an intermediate fact. Rewrite `this` using `[sub_sub, add_sub_cancel]`. Then use the resulting hypothesis. Conclude with `h`. Rewrite using `[hI_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Conclude with `neg_mem (L (g4 c).1)`. Rewrite using `[hI_neg, ← neg_add']`. Conclude with `neg_mem (L g2)`. Rewrite using `[(b4 j ⟨j.1 - s, by omega⟩ (by simp only; omega)).1, hβ]`. Substitute `hG show x ∈ I.Kset ∧ _ ↔ _` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[← exists_prop]`. Use `exists_congr fun hx => ?_` and prove the remaining obligations. Establish `hc : ∀ y : I.Lf, (latEnd hx y - y).1 = (I.fmat x - 1) *ᵥ y.1` using `fun y => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hc, ← inMod_iff]`. Establish `i1 : ∀ S, (fun a => (e a).1) '' S = Subtype.val '' (e '' S)` using `fun S => (Set.image_image _ _ _).symm`. Establish `i2 : ∀ S, (fun a => (β a).1) '' S = Subtype.val '' (β '' S)` using `fun S => (Set.image_image _ _ _).symm`. Establish `i3 : (Set.range fun a => (e a).1) = Subtype.val '' Set.range e` using `Set.range_comp Subtype.val e`. Unfold `K2cong`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [i1, i2, i3, ← Set.image_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨H1, H2, H3⟩`. Use `⟨fun j hj => ?_, fun j hj => by rw [b5, (b2 j hj).1]; exact H2⟩` and prove the remaining obligations. Distinguish the cases in `h : j.1 < s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[(b3 j ⟨_, h⟩ rfl).1, (b3 j ⟨_, h⟩ rfl).2]`. Conclude with `H1 _`. Establish `h' : j.1 = s + (⟨j.1 - s, by omega⟩ : Fin k).1` using `by simp only; omega`. Rewrite using `[(b4 j _ h').1, (b4 j _ h').2]`. Conclude with `H3 _`.
-
-Introduce and unpack `⟨H1, H2⟩`. Use `⟨fun a => ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `ha` using `a.2`. Establish `h` using `H1 ⟨a.1, by omega⟩ (by simp only; omega)`. Rewrite `h` using `[(b3 _ a rfl).1, (b3 _ a rfl).2]`. Then use the resulting hypothesis.
-
-Establish `h` using `H2 ⟨s + k, by omega⟩ rfl`. Rewrite `h` using `[b5, (b2 _ rfl).1]`. Then use the resulting hypothesis. Establish `ha` using `a.2`. Establish `h` using `H1 ⟨s + a.1, by omega⟩ (by simp only; omega)`. Rewrite `h` using `[(b4 _ a rfl).1, (b4 _ a rfl).2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vol_ratio_frame {N f k s : ℕ} (hN : N = s + k + 1 + s) (hn : I.n = N) (g : Fin 2 → ℕ)
     (hg : ∀ i, (g i).Prime) (hne : g 0 ≠ g 1) (hrad : ∀ i, (Ideal.span {((g i : ℕ) : 𝓞 I.E)}).IsRadical)
@@ -327,11 +321,11 @@ theorem vol_ratio_frame {N f k s : ℕ} (hN : N = s + k + 1 + s) (hn : I.n = N) 
         rwa [(b4 _ a rfl).1, (b4 _ a rfl).2] at h
 
 /- English proof (translation)
-Introduce `D X`. Establish `hm` using `D.R.two_le_m`. Take `⟨a, ha⟩` from `D.R.m_even`. Establish `hN : D.R.r = D.R.rS + D.R.k + 1 + D.R.rS` using `by unfold Ranks.r Ranks.rS; omega`. Establish `hE : Module.finrank ℚ D.host.E = 2 * D.R.f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[D.host.finrank_cmField, Ranks.f, Ranks.n]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs` using `fun i => split_facts X.ιE (D.host.g_prime i) (D.nd.g_split i)`. Take `⟨i1, i2, i3⟩` from `X.vectorsInLattice`. Take `⟨y, hy, ey⟩` from `mem_mL.1 (X.ew_full _ i2)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `vol_ratio_frame hN X.n_eq D.host.g D.host.g_prime D.host.g_ne (fun i => (hs i).2.1) (fun i => (hs i).2.2) (by unfold Ranks.f Ranks.n; positivity) (fun i => (hs i).1.trans hE) X.B.g X.g_eq _ rfl ⟨X.ew, X.ew_int⟩ (Subtype.ext X.ew_idem) (Subtype.ext X.ew_orth) (fun a => ⟨X.e0 a, (i …` and prove the remaining obligations. Use `ey.trans ?_ show _ = (((X.B.g : ℕ) : IntAf X.B.I.F X.B.I.E) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y` and prove the remaining obligations. Rewrite using `[Subring.coe_natCast]`. Apply the tactic sequence `have h := (X.gramIntegral a c).2.2 split_ifs at h ⊢ <;> exact h`. Apply the tactic sequence `have h := X.bw_dual i j split_ifs at h ⊢ <;> exact h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem volume_ratio_eq_signature_index : ∀ (D : D7) (X : HidaSetting D),
     (X.B.μf X.B.I.Kset).toReal / X.volK2 = Formalism.MainNotions.StandardLattice.idxSig D (D.host.g 0) (D.host.g 1) := by

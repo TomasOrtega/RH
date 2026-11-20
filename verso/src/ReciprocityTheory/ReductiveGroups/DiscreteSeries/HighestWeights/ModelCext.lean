@@ -14,7 +14,7 @@ def bdPart (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin 
   Matrix.of fun a b => if ε a = ε b then Z a b else 0
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases ha : ε a <;> by_cases hb : ε b <;>`. Apply the tactic sequence `simp [cpart1, bdPart, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, ha, hb] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpart1_bdPart_apply (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     cpart1 ε (bdPart ε Z) a b = if ε a = ε b then (Z a b - star (Z b a)) / 2 else 0 := by
@@ -22,7 +22,7 @@ theorem cpart1_bdPart_apply (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) �
     simp [cpart1, bdPart, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, ha, hb] <;> ring
 
 /- English proof (translation)
-Establish `hI : (1 / (2 * Complex.I)) = -Complex.I / 2`. Rewrite using `[one_div, mul_inv, Complex.inv_I]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `by_cases ha : ε a <;> by_cases hb : ε b <;>`. Apply the tactic sequence `simp [cpart2, hI, bdPart, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, ha, hb] <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpart2_bdPart_apply (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     cpart2 ε (bdPart ε Z) a b = if ε a = ε b then -Complex.I * (Z a b + star (Z b a)) / 2 else 0 := by
@@ -32,9 +32,9 @@ theorem cpart2_bdPart_apply (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) �
     simp [cpart2, hI, bdPart, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, ha, hb] <;> ring
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hX.1 a) b`. Establish `h2` using `congrFun (congrFun hX.2 a) b`. Apply the tactic sequence `by_cases ha : ε a <;> by_cases hb : ε b <;>`. Simplify using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, ha, hb] at h1 h2 ⊢`. Apply the tactic sequence `all_goals first`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `exact ⟨by linear_combination h2 / 2, by linear_combination h1 + h2⟩`. Consider the case `exact ⟨by linear_combination -h2 / 2, by linear_combination -h1 - h2⟩`. Consider the case `linear_combination h1 | linear_combination -h1`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inK_apply (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (a b : Fin n) :
     (ε a ≠ ε b → X a b = 0) ∧ star (X b a) = - X a b := by
@@ -48,7 +48,7 @@ theorem inK_apply (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : i
     | linear_combination h1 | linear_combination -h1
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> ext a b <;>`. Apply the tactic sequence `simp only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.add_apply, Matrix.conjTranspose_apply, cpart1_bdPart_apply, Matrix.zero_apply] <;>`. Apply the tactic sequence `by_cases ha : ε a <;> by_cases hb : ε b <;> simp [ha, hb] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inK_cpart1_bdPart (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     inK ε (cpart1 ε (bdPart ε Z)) := by
@@ -58,7 +58,7 @@ theorem inK_cpart1_bdPart (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ)
     by_cases ha : ε a <;> by_cases hb : ε b <;> simp [ha, hb] <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> ext a b <;>`. Apply the tactic sequence `simp only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.add_apply, Matrix.conjTranspose_apply, cpart2_bdPart_apply, Matrix.zero_apply] <;>`. Apply the tactic sequence `by_cases ha : ε a <;> by_cases hb : ε b <;> simp [ha, hb] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inK_cpart2_bdPart (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     inK ε (cpart2 ε (bdPart ε Z)) := by
@@ -68,11 +68,11 @@ theorem inK_cpart2_bdPart (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ)
     by_cases ha : ε a <;> by_cases hb : ε b <;> simp [ha, hb] <;> ring
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> ext a b`. Take `⟨h0, hs⟩` from `inK_apply ε hX a b`. Rewrite using `[cpart1_bdPart_apply]`. Use `split_ifs with h`. Rewrite using `[hs]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(h0 h).symm`. Take `⟨h0, hs⟩` from `inK_apply ε hX a b`. Rewrite using `[Matrix.zero_apply, cpart2_bdPart_apply]`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
 
-Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cpart_bdPart_of_inK (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     cpart1 ε (bdPart ε X) = X ∧ cpart2 ε (bdPart ε X) = 0 := by
@@ -89,7 +89,7 @@ theorem cpart_bdPart_of_inK (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) �
     · rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, cpart1_bdPart_apply, star_add]`. Apply the tactic sequence `split_ifs <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpart1_bdPart_add (ε : Fin n → Bool) (Z Z' : Matrix (Fin n) (Fin n) ℂ) :
     cpart1 ε (bdPart ε (Z + Z')) = cpart1 ε (bdPart ε Z) + cpart1 ε (bdPart ε Z') := by
@@ -98,7 +98,7 @@ theorem cpart1_bdPart_add (ε : Fin n → Bool) (Z Z' : Matrix (Fin n) (Fin n) �
   split_ifs <;> ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, cpart2_bdPart_apply, star_add]`. Apply the tactic sequence `split_ifs <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpart2_bdPart_add (ε : Fin n → Bool) (Z Z' : Matrix (Fin n) (Fin n) ℂ) :
     cpart2 ε (bdPart ε (Z + Z')) = cpart2 ε (bdPart ε Z) + cpart2 ε (bdPart ε Z') := by
@@ -107,7 +107,7 @@ theorem cpart2_bdPart_add (ε : Fin n → Bool) (Z Z' : Matrix (Fin n) (Fin n) �
   split_ifs <;> ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cpart1_bdPart_apply, cpart2_bdPart_apply, star_mul']`. Use `split_ifs`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpart1_bdPart_smul (ε : Fin n → Bool) (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
     cpart1 ε (bdPart ε (c • Z)) =
@@ -119,7 +119,7 @@ theorem cpart1_bdPart_smul (ε : Fin n → Bool) (c : ℂ) (Z : Matrix (Fin n) (
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cpart1_bdPart_apply, cpart2_bdPart_apply, star_mul']`. Use `split_ifs`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpart2_bdPart_smul (ε : Fin n → Bool) (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
     cpart2 ε (bdPart ε (c • Z)) =
@@ -131,9 +131,9 @@ theorem cpart2_bdPart_smul (ε : Fin n → Bool) (c : ℂ) (Z : Matrix (Fin n) (
   · simp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hX`. Establish `hr : star (r : ℂ) = r` using `by simp`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `((r : ℂ) • X)ᴴ * Jm ε + Jm ε * ((r : ℂ) • X) = 0`. Express the relevant statement in the definitionally equal form `Xᴴ * Jm ε + Jm ε * X = 0 at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[conjTranspose_smul, hr, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inK_ofReal_smul (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (r : ℝ) :
     inK ε ((r : ℂ) • X) := by
@@ -154,7 +154,7 @@ def RLinOnK (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ → (V →L[�
     A (X + Y) = A X + A Y ∧ A ((r : ℂ) • X) = (r : ℂ) • A X
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rLinOnK_zero (ε : Fin n → Bool) : RLinOnK ε (0 : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)) :=
   fun _ _ _ _ _ => by simp
@@ -164,7 +164,7 @@ def cext (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] 
   A (cpart1 ε (bdPart ε Z)) + Complex.I • A (cpart2 ε (bdPart ε Z))
 
 /- English proof (translation)
-Establish `hc : (c.re : ℂ) + c.im * Complex.I = c` using `Complex.re_add_im c`. Use `push_cast`. Take the linear combination `(norm := module) hc • (u + Complex.I • v) - ((c.im : ℂ) * Complex.I_sq) • v`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem smul_combo (c : ℂ) (u v : V →L[ℂ] V) :
     ((c.re : ℝ) : ℂ) • u + ((-c.im : ℝ) : ℂ) • v + Complex.I • (((c.im : ℝ) : ℂ) • u + ((c.re : ℝ) : ℂ) • v) =
@@ -174,7 +174,7 @@ theorem smul_combo (c : ℂ) (u v : V →L[ℂ] V) :
   linear_combination (norm := module) hc • (u + Complex.I • v) - ((c.im : ℂ) * Complex.I_sq) • v
 
 /- English proof (translation)
-Unfold `cext`. Rewrite using `[cpart1_bdPart_add, cpart2_bdPart_add, (hA _ _ 0 (inK_cpart1_bdPart ε Z) (inK_cpart1_bdPart ε Z')).1, (hA _ _ 0 (inK_cpart2_bdPart ε Z) (inK_cpart2_bdPart ε Z')).1, smul_add]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cext_add (ε : Fin n → Bool) {A : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} (hA : RLinOnK ε A)
     (Z Z' : Matrix (Fin n) (Fin n) ℂ) : cext ε A (Z + Z') = cext ε A Z + cext ε A Z' := by
@@ -185,7 +185,7 @@ theorem cext_add (ε : Fin n → Bool) {A : Matrix (Fin n) (Fin n) ℂ → (V �
   abel
 
 /- English proof (translation)
-Establish `hP` using `inK_cpart1_bdPart ε Z`. Establish `hQ` using `inK_cpart2_bdPart ε Z`. Unfold `cext`. Rewrite using `[cpart1_bdPart_smul, cpart2_bdPart_smul, (hA _ _ 0 (inK_ofReal_smul ε hP _) (inK_ofReal_smul ε hQ _)).1, (hA _ _ 0 (inK_ofReal_smul ε hP _) (inK_ofReal_smul ε hQ _)).1, (hA _ _ c.re hP hP).2, (hA _ _ (-c.im) hQ hQ).2, (hA _ _ c.im hP hP).2, (hA _ _ c.re hQ hQ).2]`. Conclude with `smul_combo c _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cext_smul (ε : Fin n → Bool) {A : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} (hA : RLinOnK ε A)
     (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) : cext ε A (c • Z) = c • cext ε A Z := by
@@ -199,9 +199,9 @@ theorem cext_smul (ε : Fin n → Bool) {A : Matrix (Fin n) (Fin n) ℂ → (V �
   exact smul_combo c _ _
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `cpart_bdPart_of_inK ε hX`. Establish `h0 : A 0 = 0`. Use `(hA X X 0 hX hX).2` as an intermediate fact. Simplify using `using this`. Unfold `cext`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, h2, h0, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cext_of_inK (ε : Fin n → Bool) {A : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} (hA : RLinOnK ε A)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) : cext ε A X = A X := by

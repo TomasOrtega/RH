@@ -29,9 +29,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hy (Quotient.mk'' x)`. Take `⟨a, ha, b, hb, hab⟩` from `(DoubleCoset.eq _ _ (y c) x).1 hc`. Take `⟨γ, hγ, e⟩` from `Subgroup.mem_subgroupOf.1 ha`. Use function extensionality and compare the values at `s`. Take `⟨s', hs'⟩` from `exists_isTr' emb γ s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `hg γ hγ (y c) x ⟨b.1, Subgroup.mem_subgroupOf.1 hb⟩ (by rw [hab, e]; rfl) s s' hs'` as an intermediate fact. Rewrite using `[this, h0 c]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_reps (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) {C : Type} (y : C → GA σ J)
     (hy : Function.Surjective (fun c => (Quotient.mk'' (y c) : Cls S))) (g) (hg : g ∈ AdFun S emb)
@@ -45,7 +45,7 @@ theorem eq_zero_of_reps (S : StepLevel F E σ J T f bad) (emb : ι → E →+* �
   rw [this, h0 c]; simp
 
 /- English proof (translation)
-Establish `hκ` using `(S.U_eq _).1 κ.2`. Rewrite using `[← (hp.2.1 (y * η) ⟨κ.1, hκ.1⟩).2 (hκ.2 v)]`. Conclude with `hp.1 γ.1 γ.2 y' _ h.symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_move {S : StepLevel F E σ J T f bad} {v : HeightOneSpectrum (𝓞 F)} {hv : (T : 𝓞 F) ∈ v.asIdeal}
     {k : Type} [Field k] {p : GA σ J → Pr (𝓞 E) (Fin n → E) k} (hp : PMap S v hv p)
@@ -65,7 +65,7 @@ def rs (g : GA (sigD D) (gramN D 0 (Nat.zero_le _)) → Fr D 0 (Nat.zero_le _) �
 
 include T in
 /- English proof (translation)
-Take `⟨C, hC, -⟩` from `T.val0.de`. Establish `hσσ : ∀ x, sigD D (sigD D x) = x` using `fun x => by rw [forms_involution_eq_host_conj, forms_involution_eq_host_conj, host_conj_involutive]`. Rewrite using `[← hC]`. Use extensionality with `a b`. Simplify using `[cT, Matrix.mul_apply, hσσ, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem herm : cT (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) = gramN D 0 (Nat.zero_le _) := by
   obtain ⟨C, hC, -⟩ := T.val0.de
@@ -75,11 +75,11 @@ theorem herm : cT (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))
   simp [cT, Matrix.mul_apply, hσσ, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[T.val0.Fi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, h⟩`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c z`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun (congrFun h c) (T.val0.eY z)` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this`. Conclude with `this`. Introduce and unpack `⟨g, hg, rfl⟩`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c z`. Use `show g _ z = g _ (T.val0.eY (T.val0.eY.symm z))`. Rewrite using `[Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Fi (φ : LT.Fn D u 0) : φ ∈ (D.fm u).Fi 0 ↔ ∃ g ∈ AdForms T.cls0.lev (embT D) (lamT u 0), rs T g = φ := by
   rw [T.val0.Fi]
@@ -97,7 +97,7 @@ theorem mem_Fi (φ : LT.Fn D u 0) : φ ∈ (D.fm u).Fi 0 ↔ ∃ g ∈ AdForms T
     rw [Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `eq_zero_of_reps _ _ T.cls0.y T.cls0.y_bij.2 g hg (fun c => ?_) x` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Use `congrFun (congrFun h c) (T.val0.eY.symm s)` as an intermediate fact. Simplify `this` using `[rs]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_of_rs (g) (hg : g ∈ AdFun T.cls0.lev (embT D)) (h : rs T g = 0) (x) : g x = 0 := by
   refine eq_zero_of_reps _ _ T.cls0.y T.cls0.y_bij.2 g hg (fun c => ?_) x
@@ -106,7 +106,7 @@ theorem zero_of_rs (g) (hg : g ∈ AdFun T.cls0.lev (embT D)) (h : rs T g = 0) (
   simpa [rs] using this
 
 /- English proof (translation)
-Take `⟨k, hk, hkT⟩` from `unit_lift_int_prime_field (D.mem u).A.T_prime ((D.mem u).A.card_Fv v) a`. Take `⟨e, he, hee, hσ⟩` from `splitAtT_of_tied T.atT v`. Take `⟨δ, hδ⟩` from `is_diamond_of_local_diamond _ _ _ k (local_diamond_of_split_idempotent T.cls0.lev _ (T.atT.eV v).2 (D.mem u).A.T_prime k hkT e he hee hσ)`. Conclude with `⟨k, δ, hk, hδ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_dia (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) :
     ∃ (k : ℤ) (δ : GA (sigD D) (gramN D 0 (Nat.zero_le _))), (k : (D.mem u).A.Fv v) = a ∧
@@ -118,7 +118,7 @@ theorem exists_dia (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) :
   exact ⟨k, δ, hk, hδ⟩
 
 /- English proof (translation)
-Rewrite `h` using `[Nat.cast_smul_eq_nsmul]`. Conclude with `(smul_eq_zero.1 h).resolve_left (D.mem u).A.T_prime.ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsionFree (x : Fin (D.R.N 0) → D.host.E) (h : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • x = 0) : x = 0 := by
   rw [Nat.cast_smul_eq_nsmul] at h
@@ -133,13 +133,13 @@ include hp hy
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `hun` using `GlobalTheory.T.levelPrime_unramifiedUniformizer D u T.atT v`. Establish `key : ∀ w : (D.fm u).lv 0 v c, (D.fm u).fv 0 v c w = 1 → ∃ η : GA (sigD D) (gramN D 0 (Nat.zero_le _)), AtV (T.atT.eV v).1 η ∧ ((p (T.cls0.y c * η)).Ok (T.atT.res v) ∧ (p (T.cls0.y c * η)).IsKer (pc T.lv0 v c).L ∧ ∃ e, (p (T.cls0.y c * η)).f e = 1 ∧ locExt (T.atT.res v) (Ld D u 0 …`. Introduce `w hw`. Take `⟨z, rfl⟩` from `T.lv0.pr_surj v c w`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, η, κ, h1, h2, h3, h4, h5, h6⟩` from `T.up_natural_level_zero.upTie v c z hw`. Use `⟨η, h1, ?_, h6 g hg⟩` and prove the remaining obligations. Rewrite using `[pair_move hp γ _ _ η κ h2, hy]`. Conclude with `⟨(pc_ok _ _ _).act _, GlobalTheory.T.upwardLevelMove_incidence_of_pairs D u T.atT 0 _ T.lv0 T.cls0 v c _ z γ.1 hw h3 h4 h5⟩`. Use `choose! η h1 h2 h3 using key`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsum` using `GlobalTheory.T.finsum_pairsAbove_eq_affineHyperplane _ _ _ _ _ (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) (pc T.lv0 v c) (locExt (T.atT.res v) (Ld D u 0 (Nat.zero_le _) c) (T.lv0.pr v c)) ((D.fm u).fv 0 v c) (fun w => p (T.cls0.y c * η w)) (valAt (T.atT.eV v).1 p g (T.cls0. …`. Establish `hval` using `(GlobalTheory.T.adelicForm_values_near_point_spec _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp g hg).1`. Use function extensionality and compare the values at `s`. Use `show _ = upAd _ _ _ p g (T.cls0.y c) (T.val0.eY s)`. Unfold `upAd`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy, hsum, finsum_mem_eq_finite_toFinset_sum _ (Set.toFinite _), Finset.sum_apply]`. Simplify using `only [LT.Uop, LinearMap.pi_apply, LinearMap.sum_apply, Finset.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearEquiv.coe_coe]`. Use `Finset.sum_congr (by ext w; simp) fun w hw => ?_` and prove the remaining obligations. Establish `hw' : (D.fm u).fv 0 v c w = 1` using `by simpa using hw`. Rewrite using `[h3 w hw', hval _ _ (h1 w hw')]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uop_rs (g) (hg : g ∈ AdFun T.cls0.lev (embT D)) :
     LT.Uop D u 0 v (rs T g) = rs T (upAd (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) (T.atT.eV v).1 p g) := by
@@ -175,7 +175,7 @@ theorem uop_rs (g) (hg : g ∈ AdFun T.cls0.lev (embT D)) :
   rw [h3 w hw', hval _ _ (h1 w hw')]
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `(mem_Fi T φ).1 hφ`. Rewrite using `[uop_rs T v p hp hy g hg.1, mem_Fi T]`. Conclude with `⟨_, GlobalTheory.T.upwardOperator_mem_adelicForms _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp _ _ _ g hg, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem uop_mem (φ : LT.Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) : LT.Uop D u 0 v φ ∈ (D.fm u).Fi 0 := by
   obtain ⟨g, hg, rfl⟩ := (mem_Fi T φ).1 hφ
@@ -184,11 +184,11 @@ theorem uop_mem (φ : LT.Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) : LT.Uop D u 0 v
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `(mem_Fi T φ).1 hφ`. Take `⟨k, δ, hk, hδ⟩` from `exists_dia T v' a`. Establish `hU` using `GlobalTheory.T.upwardOperator_mem_adelicForms _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) _ g hg`. Establish `e1 : (D.mem u).A.rhoT v' a (rs T g) = rs T (fun x => g (x * δ))` using `rhoT_eq T.val0 v' a k hk δ hδ g hg.1`. Rewrite using `[e1, uop_rs T v p hp hy g hg.1, uop_rs T v p hp hy _ (adelic_function_right_translate_diamond _ _ _ _ (level_places_not_bad T.atT v') hδ hg.1)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(rhoT_eq T.val0 v' a k hk δ hδ _ hU.1).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c s`. Establish `hne : (T.atT.eV v').1 = (T.atT.eV v).1 → (k : (D.mem u).A.Fv v) ≠ 0`. Introduce `h`. Take `rfl : v' = v` from `T.atT.eV.injective (Subtype.ext h)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk]`. Conclude with `a.ne_zero`. Conclude with `(congrFun (GlobalTheory.T.upwardHeckeOperator_commute_diamond _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p (level_places_not_bad T.atT v) hp (T.atT.res v) _ (T.atT.res_surj v) hok g hg.1 _ (T.atT.eV v').2 k δ (level_places_not_bad T.atT v') hne hδ _) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uop_rho (hok : ∀ x, (p x).Ok (T.atT.res v)) (φ : LT.Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) (v' : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v')ˣ) :
     (D.mem u).A.rhoT v' a (LT.Uop D u 0 v φ) = LT.Uop D u 0 v ((D.mem u).A.rhoT v' a φ) := by
@@ -209,9 +209,9 @@ theorem uop_rho (hok : ∀ x, (p x).Ok (T.atT.res v)) (φ : LT.Fn D u 0) (hφ : 
     (T.atT.res v) _ (T.atT.res_surj v) hok g hg.1 _ (T.atT.eV v').2 k δ (level_places_not_bad T.atT v') hne hδ _) _).symm
 
 /- English proof (translation)
-Establish `h1 : φ ∈ (D.fm u).Fi 0` using `by rw [(D.fm u).Fi_zero]; exact hφ.1`. Use `⟨by rw [← (D.fm u).Fi_zero]; exact uop_mem T v p hp hy φ h1, (Submodule.mem_iInf _).2 fun v' => ?_⟩` and prove the remaining obligations. Establish `h2 : (D.mem u).A.Nm v' φ = 0` using `(Submodule.mem_iInf _).1 hφ.2 v'`. Use `show (D.mem u).A.Nm v' _ = 0`. Unfold `ColumnsAtT.Nm at h2 ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, the goal using `[LinearMap.sum_apply]`. Rewrite using `[Finset.sum_congr rfl (fun a _ => uop_rho T v p hp hy hok φ h1 v' a), ← map_sum, h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uop_ram (hok : ∀ x, (p x).Ok (T.atT.res v)) (φ : LT.Fn D u 0) (hφ : φ ∈ (D.mem u).A.Mram) : LT.Uop D u 0 v φ ∈ (D.mem u).A.Mram := by
   have h1 : φ ∈ (D.fm u).Fi 0 := by rw [(D.fm u).Fi_zero]; exact hφ.1
@@ -224,25 +224,21 @@ theorem uop_ram (hok : ∀ x, (p x).Ok (T.atT.res v)) (φ : LT.Fn D u 0) (hφ : 
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Establish `h1 : φ ∈ (D.fm u).Fi 0` using `by rw [(D.fm u).Fi_zero]; exact hφ.1`. Establish `h2 : (D.mem u).A.Nm v φ = 0` using `(Submodule.mem_iInf _).1 hφ.2 v`. Take `⟨g, hg, rfl⟩` from `(mem_Fi T φ).1 h1`. Establish `hun` using `GlobalTheory.T.levelPrime_unramifiedUniformizer D u T.atT v`. Establish `hb` using `level_places_not_bad T.atT v`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hv1, hv2, hv3⟩` from `GlobalTheory.T.adelicForm_values_near_point_spec _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p hb hp g hg.1`. Establish `hU` using `GlobalTheory.T.upwardOperator_mem_adelicForms _ _ _ _ _ _ _ _ _ T.cls0.lev (embT D) _ (T.atT.eV v).2 _ p hb hp (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) _ g hg`. Rewrite `h0` using `[uop_rs T v p hp hy g hg.1]`. Establish `hU0` using `zero_of_rs T _ hU.1 h0`. Use `choose k δ hk hδ using exists_dia T v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ x, ∑ a, g (x * δ a) = 0`. Introduce `x`. Establish `hm : (∑ a, fun x => g (x * δ a)) ∈ AdFun T.cls0.lev (embT D)` using `Submodule.sum_mem _ fun a _ => adelic_function_right_translate_diamond _ _ _ _ hb (hδ a) hg.1`. Use `zero_of_rs T _ hm (by` as an intermediate fact. Rewrite using `[← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ColumnsAtT.Nm`. Establish `e : ∀ a, (D.mem u).A.rhoT v a (rs T g) = rs T (fun x => g (x * δ a))` using `fun a => rhoT_eq T.val0 v a (k a) (hk a) (δ a) (hδ a) g hg.1`. Rewrite using `[LinearMap.sum_apply, Finset.sum_congr rfl (fun a _ => e a)]`. Use function extensionality and compare the values at `c s`. Simplify using `only [rs, Finset.sum_apply]) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Finset.sum_apply]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `c`. Use `haveI : Module.Finite ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) := Module.finite_of_finrank_pos (by rw [(D.fm u).lk_rank]; exact D.R.N_pos 0)`. Use `haveI : Finite ((D.fm u).lk 0 v c) := Module.finite_of_finite ((D.mem u).A.Fv v)`. Establish `hinj` using `GlobalTheory.T.eq_zero_of_sum_inc_eq_zero_of_sum_dil_eq_zero _ _ _ _ _ (T.atT.res v) (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) (loc (T.atT.res v) (Lk T.atT 0 (Nat.zero_le _) v c)) (locExt (T.atT.res v) (Lk T.atT 0 (Nat.zero_le _) v c) (T.lv0.prk v c)) (valAt (T.atT.eV v).1 p g (T.cls0.y …`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, η, κ, e1, e2, e3, e4, -⟩` from `T.down_natural_level_zero v c g' hg'`. Take `⟨f1, f2⟩` from `GlobalTheory.T.downwardLevelMove_reaches_kernelLattice D u T.atT 0 _ T.lv0 T.cls0 v c _ g' γ.1 e3 e4`. Establish `hm` using `pair_move hp γ _ _ η κ e2`. Rewrite `hm` using `[hy]`. Use `⟨_, f1, f2, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hU0 (T.cls0.y c * η)` as an intermediate fact. Unfold `upAd at this`. Rewrite using `[hm, hv2 _ _ e1] at this)` and apply the resulting hypothesis. Use the proof step `(fun q _ _ => by`. Establish `e : ∀ a : ((D.mem u).A.Fv v)ˣ, valAt (T.atT.eV v).1 p g (T.cls0.y c) (q.dil (a : (D.mem u).A.Fv v)) = valAt (T.atT.eV v).1 p (fun y => g (y * δ a)) (T.cls0.y c) q` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← hk a]; exact hv3 (k a) (δ a) _ q (by rw [hk a]; exact a.ne_zero) (hδ a)`. Rewrite using `[Finset.sum_congr rfl (fun a _ => e a)]`. Unfold `valAt`. Use `split_ifs with h`. Conclude with `hN _`.
-
-Use the proof step `simp)`. Use the proof step `(pc T.lv0 v c) (pc_ok _ _ _) (pc_isKer T.lv0 T.cls0 v c)`. Establish `h3` using `hv1 (T.cls0.y c) 1 (fun v' _ => map_one _)`. Rewrite `h3` using `[mul_one, hy, hinj]`. Use function extensionality and compare the values at `s`.
-
-Use `show g _ _ = 0`. Rewrite using `[← h3]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem uop_inj (φ : LT.Fn D u 0) (hφ : φ ∈ (D.mem u).A.Mram) (h0 : LT.Uop D u 0 v φ = 0) : φ = 0 := by
   classical
@@ -311,7 +307,7 @@ namespace GlobalTheory.LevelHecke
 open Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top
 
 /- English proof (translation)
-Use `choose p hp hy hok using GlobalTheory.T.exists_equivariant_local_pair_map_adelic D u T.atT 0 _ T.lv0 T.cls0 T.fMe0 T.fv0 (Main.herm T)`. Use `GlobalTheory.T.ramifiedForms_commensurable_of_U_stable_injective D u (fun v x hx => ?_) (fun v φ hφ => Main.uop_inj T v (p v) (hp v) (hy v) φ hφ) w` and prove the remaining obligations. Establish `h1` using `Main.uop_ram T v (p v) (hp v) (hy v) (hok v) _ hx`. Take `⟨y, hy'⟩` from `GlobalTheory.T.upwardOperator_preserves_rationality D u T h v x (by rw [(D.fm u).Fi_zero]; exact h1.1)`. Conclude with `⟨y, by show (D.fm u).emb 0 y ∈ (D.mem u).A.Mram; rw [hy']; exact h1, hy'⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem commensurable_of_tied (D : D7) (u : D.what₂.Word) (T : Forms0 D u)
     (h : ∀ i v h x, ∃ r : D.what₂.LL, D.what₂.embLL r = T.gl.psi0 i v h x) (w : D.what₂.places.Pl) :
@@ -324,7 +320,7 @@ theorem commensurable_of_tied (D : D7) (u : D.what₂.Word) (T : Forms0 D u)
   exact ⟨y, by show (D.fm u).emb 0 y ∈ (D.mem u).A.Mram; rw [hy']; exact h1, hy'⟩
 
 /- English proof (translation)
-Introduce `X _ _ T _ h u w _` and use `commensurable_of_tied X.toD7 u (T u) (h u) w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem commensurable_at_level : ∀ (X : Stages), Nonempty (PreX X.B.toPre) → ∀ (H : Formalism.L2.Herm.ColsHermS X.toD7) (T : ∀ u, Formalism.L2.Forms.Forms0 X.toD7 u), (∀ u, Formalism.L2.Forms.Joint0 H.base.lev0 u (T u)) → (∀ u i v h x, ∃ r : X.B.LL, X.B.embLL r = (T u).gl.psi0 i v h x) → ∀ u (w : X.toD7.what₂.places.Pl), X.toD7.what₂.places.resChar w = (X.toD7.mem u).A.T → ∃ n : ℕ, n ≠ 0 ∧ (∀ x ∈ DV.MramL X.toD7 u, X.toD7.nuIn u (n • x) ∈ LT.Nlam X.toD7 u w) ∧ ∀ x, X.toD7.nuIn u x ∈ LT.Nlam X.toD7 u w → InLoc (X.toD7.plEq w) (DV.MramL X.toD7 u) (n • x) :=
   fun X _ _ T _ h u w _ => commensurable_of_tied X.toD7 u (T u) (h u) w

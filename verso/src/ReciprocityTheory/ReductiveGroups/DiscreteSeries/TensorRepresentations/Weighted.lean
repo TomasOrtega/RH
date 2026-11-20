@@ -14,9 +14,9 @@ variable {n : ℕ}
 open MeasureTheory
 
 /- English proof (translation)
-Introduce `v hv w hw`. Use `show MemLp (wdF ε (wdCoef ε ((w : smD ε (rreg ε)) : L2 ε) v)) 2 (Formalism.REAL.muG ε)`. Break down `isEmpty_or_nonempty (Fin n) with hn | hne` into its components or cases. Establish `e : wdF ε (wdCoef ε ((w : smD ε (rreg ε)) : L2 ε) v) = 0`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[wdF, S7.hs]`. Rewrite using `[e]`. Conclude with `MemLp.zero`. Take `⟨i⟩` from `hne`. Conclude with `wd_key hP hv₀ i (w : L2 ε) (fun x hx => wd_gen_datum hgap hP hv₀ hΨw i w hw x hx) v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weighted_datum {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V} (hgap : StdGap ε lam)

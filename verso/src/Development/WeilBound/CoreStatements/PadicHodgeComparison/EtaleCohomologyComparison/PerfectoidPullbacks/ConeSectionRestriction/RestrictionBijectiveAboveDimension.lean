@@ -14,7 +14,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.LogCris DividedPowers
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-Take `⟨N, i, hi, hip, -⟩` from `hD`. Conclude with `GlobalTheory.CommonModel.isProper_of_isProjOver ⟨N, i, hi, hip⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isProper_of_isO1 {R : Type} [CommRing R] {X : Scheme.{0}} {p : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R}
     {D : E.LineData X} (hD : IsTautologicalLine p D) : IsProper p := by
@@ -22,7 +22,7 @@ theorem isProper_of_isO1 {R : Type} [CommRing R] {X : Scheme.{0}} {p : X ⟶ Rec
   exact GlobalTheory.CommonModel.isProper_of_isProjOver ⟨N, i, hi, hip⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr {R : Type} [CommRing R] (K : Cx.{1} R) {n : ℕ} {a b : K.X n} (h : a = b) (ha : K.d n a = 0)
     (hb : K.d n b = 0) : K.cls a ha = K.cls b hb := by
@@ -32,21 +32,21 @@ variable {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (Com
 
 omit [CharZero K] in
 /- English proof (translation)
-Introduce `T hT` and use `⟨⟨show pdP T.δ S = ⊥ from eq_bot_iff.2 ((dividedPowerFiltration_anti T.δ h).trans (le_of_eq hT.1.1)), hT.1.2⟩, hT.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ks_mono (𝒱 : Set X.Opens) {s S : ℕ} (h : s ≤ S) : KS q s 𝒱 ≤ KS q S 𝒱 := fun T hT =>
   ⟨⟨show pdP T.δ S = ⊥ from eq_bot_iff.2 ((dividedPowerFiltration_anti T.δ h).trans (le_of_eq hT.1.1)), hT.1.2⟩, hT.2⟩
 
 omit [CharZero K] in
 /- English proof (translation)
-The claim follows from `c.property.1.1`.
+A detailed English derivation is pending.
 -/
 theorem ks_pd (𝒱 : Set X.Opens) (s : ℕ) (c : (KS q s 𝒱).FullSubcategory) : ((KS q s 𝒱).ι.obj c).pdPow s = ⊥ :=
   c.property.1.1
 
 omit [CharZero K] in
 /- English proof (translation)
-Take `⟨-, V, ⟨σ, hσ⟩, hV⟩` from `c.property`. Conclude with `⟨V, σ, hσ, hV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ks_sec (D : E.LineData X) (s : ℕ) (c : (KS q s (𝒱D D)).FullSubcategory) :
     ∃ (V : X.Opens) (σ : (V : Scheme.{0}) ⟶ D.Y), σ ≫ D.f = V.ι ∧ InU V ((KS q s (𝒱D D)).ι.obj c) := by
@@ -58,7 +58,7 @@ def clsK (D : E.LineData X) (s : ℕ) (Λ : CLiftK (KS q s (𝒱D D)).ι D) :
   (CH.cx ((KS q s (𝒱D D)).ι ⋙ O (smFun X q))).cls (zK Λ s) (zK_cocycle Λ s (ks_pd q _ s))
 
 /- English proof (translation)
-Use `(CrystallineSemistableComparison.P.mapH_cls (CH.Mor.restrict (g ⋙ O (smFun X q)) h).hom 2 (zK Λ s) hz ?_).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CH.d _ 2 ((CH.Mor.restrict (g ⋙ O (smFun X q)) h).pullC 2 (zK Λ s)) = 0`. Rewrite using `[CH.Mor.d_pullC, hz, map_zero]`. Conclude with `cls_congr _ (zK_precomp Λ h s).symm _ _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_cls_zK {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {g : C ⥤ Thick (smFun X q)} {D : E.LineData X}
     (Λ : CLiftK g D) (h : C' ⥤ C) (s : ℕ) (hz : CH.d _ 2 (zK Λ s) = 0) (hz' : CH.d _ 2 (zK (Λ.precomp h) s) = 0) :
@@ -70,9 +70,7 @@ theorem pull_cls_zK {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {g : C �
   · exact cls_congr _ (zK_precomp Λ h s).symm _ _
 
 /- English proof (translation)
-Establish `hz1 : CH.d _ 2 (zK (ΛS.precomp (ObjectProperty.ιOfLE (ks_mono q (𝒱D D) h))) S) = 0` using `zK_cocycle (ΛS.precomp (ObjectProperty.ιOfLE (ks_mono q (𝒱D D) h))) S (fun c => (ks_mono q (𝒱D D) h _ c.property).1.1)`. Establish `hz2 : CH.d _ 2 (zK (ΛS.precomp (ObjectProperty.ιOfLE (ks_mono q (𝒱D D) h))) s) = 0` using `zK_cocycle (ΛS.precomp (ObjectProperty.ιOfLE (ks_mono q (𝒱D D) h))) s (ks_pd q _ s)`. Use `(pull_cls_zK q ΛS _ S _ hz1).trans ((cls_congr _ ?_ hz1 hz2).trans ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `σ`. Conclude with `(plogK_congr _ h (ks_pd q _ s _) (r_sub_one_mem _ σ)).symm`.
-
-Conclude with `zK_cls_eq _ Λ s (ks_pd q _ s) hz2 _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem clsK_res (D : E.LineData X) {s S : ℕ} (h : s ≤ S) (Λ : CLiftK (KS q s (𝒱D D)).ι D)
     (ΛS : CLiftK (KS q S (𝒱D D)).ι D) :
@@ -89,7 +87,7 @@ theorem clsK_res (D : E.LineData X) {s S : ℕ} (h : s ≤ S) (Λ : CLiftK (KS q
   · exact zK_cls_eq _ Λ s (ks_pd q _ s) hz2 _
 
 /- English proof (translation)
-The claim follows from `(CrystallineSemistableComparison.P.pull_comp (CH.Mor.restrict F G) (CH.Mor.restrict (G ⋙ F) G') n x).1`.
+A detailed English derivation is pending.
 -/
 theorem pull_restrict_comp {R : Type} [CommRing R] {C C' C'' : Type 1} [Category.{0} C] [Category.{0} C']
     [Category.{0} C''] (F : C ⥤ ModuleCat.{0} R) (G : C' ⥤ C) (G' : C'' ⥤ C') (n : ℕ) (x : CH.H F n) :
@@ -97,7 +95,7 @@ theorem pull_restrict_comp {R : Type} [CommRing R] {C C' C'' : Type 1} [Category
   (CrystallineSemistableComparison.P.pull_comp (CH.Mor.restrict F G) (CH.Mor.restrict (G ⋙ F) G') n x).1
 
 /- English proof (translation)
-The claim follows from `pull_restrict_comp (O (smFun X q)) (KS q S 𝒱).ι (ObjectProperty.ιOfLE (ks_mono q 𝒱 h)) 2 x`.
+A detailed English derivation is pending.
 -/
 theorem resK_res (𝒱 : Set X.Opens) {s S : ℕ} (h : s ≤ S) (x : HdR q 2) :
     resK q (KS q s 𝒱) 2 x = (CH.Mor.restrict ((KS q S 𝒱).ι ⋙ O (smFun X q)) (ObjectProperty.ιOfLE (ks_mono q 𝒱 h))).pull 2
@@ -105,9 +103,9 @@ theorem resK_res (𝒱 : Set X.Opens) {s S : ℕ} (h : s ≤ S) (x : HdR q 2) :
   pull_restrict_comp (O (smFun X q)) (KS q S 𝒱).ι (ObjectProperty.ιOfLE (ks_mono q 𝒱 h)) 2 x
 
 /- English proof (translation)
-Establish `hP : IsProper q` using `isProper_of_isO1 hD`. Take `⟨U, hU⟩` from `(cov_ex q).2 d inferInstance`. Establish `hcov : sSup (𝒱D D) = ⊤`. Take `⟨N, i, -, -, hi⟩` from `hD`. Conclude with `sSup_𝒱D D N i hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hS`. Conclude with `(k_iso q U S (fun α => by rw [hU]; exact hS) (𝒱D D) hcov 2).1`.
+A detailed English derivation is pending.
 -/
 theorem restriction_bijective_above_dimension (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) :
     ∀ S, d < S → Function.Bijective (resK q (KS q S (𝒱D D)) 2) := by
@@ -120,9 +118,9 @@ theorem restriction_bijective_above_dimension (d : ℕ) [SmoothOfRelativeDimensi
   exact (k_iso q U S (fun α => by rw [hU]; exact hS) (𝒱D D) hcov 2).1
 
 /- English proof (translation)
-Set `ΛS` to `(lift_exists q D S).some`. Establish `hz1 : CH.d _ 2 (zK (ΛS.precomp g') S) = 0` using `zK_cocycle (ΛS.precomp g') S (fun c => (g'.obj c).property.1.1)`. Establish `hz2 : CH.d _ 2 (zK (ΛS.precomp g') s) = 0` using `zK_cocycle (ΛS.precomp g') s hs`. Rewrite using `[pull_restrict_comp (O (smFun X q)) (KS q S (𝒱D D)).ι g' 2 x]`. Express the relevant statement in the definitionally equal form `_ = (CH.Mor.restrict ((KS q S (𝒱D D)).ι ⋙ O (smFun X q)) g').pull 2 (resK q (KS q S (𝒱D D)) 2 x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hA ΛS]`. Use `(zK_cls_eq Λ (ΛS.precomp g') s hs hz hz2).trans ?_` and prove the remaining obligations. Use `(cls_congr _ (funext fun σ => plogK_congr _ hsS (hs _) (r_sub_one_mem _ σ)) hz2 hz1).trans ?_` and prove the remaining obligations. Conclude with `(pull_cls_zK q ΛS g' S _ hz1).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem test_factor (D : E.LineData X) (S : ℕ) (x : HdR q 2)
     (hA : ∀ ΛS : CLiftK (KS q S (𝒱D D)).ι D, resK q (KS q S (𝒱D D)) 2 x = clsK q D S ΛS)
@@ -143,9 +141,9 @@ theorem test_factor (D : E.LineData X) (S : ℕ) (x : HdR q 2)
   exact (pull_cls_zK q ΛS g' S _ hz1).symm
 
 /- English proof (translation)
-Establish `hk` using `restriction_bijective_above_dimension q d D hD`. Set `Λ₀` to `(lift_exists q D (d + 1)).some`. Take `⟨z, hz, hzf, hzc⟩` from `hc (d + 1) _ (KS q (d + 1) (𝒱D D)).ι (ks_pd q _ _) (ks_sec q D _) Λ₀`. Take `⟨z', hz', hzf', hzc'⟩` from `hc' (d + 1) _ (KS q (d + 1) (𝒱D D)).ι (ks_pd q _ _) (ks_sec q D _) Λ₀`. Establish `e : z = z'` using `funext fun σ => (hzf σ).trans (hzf' σ).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Conclude with `(hk (d + 1) (by omega)).1 (hzc.symm.trans hzc')`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isFirstChernDeRham_unique_of (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) (c c' : HdR q 2)
     (hc : IsFirstChernDeRham q D c) (hc' : IsFirstChernDeRham q D c') : c = c' := by
@@ -158,13 +156,13 @@ theorem isFirstChernDeRham_unique_of (d : ℕ) [SmoothOfRelativeDimension d q] (
   exact (hk (d + 1) (by omega)).1 (hzc.symm.trans hzc')
 
 /- English proof (translation)
-Establish `hk` using `restriction_bijective_above_dimension q d D hD`. Set `Λ₀` to `(lift_exists q D (d + 1)).some`. Set `x` to `Function.surjInv (hk (d + 1) (by omega)).2 (clsK q D (d + 1) Λ₀)`. Establish `hx : resK q (KS q (d + 1) (𝒱D D)) 2 x = clsK q D (d + 1) Λ₀` using `Function.surjInv_eq _ _`. Establish `hA : ∀ S, d + 1 ≤ S → ∀ ΛS : CLiftK (KS q S (𝒱D D)).ι D, resK q (KS q S (𝒱D D)) 2 x = clsK q D S ΛS`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S hS ΛS`. Take `⟨x', hx'⟩` from `(hk S (by omega)).2 (clsK q D S ΛS)`. Establish `e : resK q (KS q (d + 1) (𝒱D D)) 2 x' = resK q (KS q (d + 1) (𝒱D D)) 2 x`. Rewrite using `[resK_res q (𝒱D D) hS x', hx', clsK_res q D hS Λ₀ ΛS, hx]`. Rewrite using `[← (hk (d + 1) (by omega)).1 e, hx']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, fun s C _ g hs hV Λ => ⟨zK Λ s, zK_cocycle Λ s hs, fun σ => rfl, ?_⟩⟩` and prove the remaining obligations. Set `S` to `max s (d + 1)`. Set `g' : C ⥤ (KS q S (𝒱D D)).FullSubcategory` to `ObjectProperty.lift _ g fun c => ⟨⟨show pdP _ S = ⊥ from eq_bot_iff.2 ((dividedPowerFiltration_anti _ (le_max_left _ _)).trans (le_of_eq (hs c))), fun r y hy => by simpa using hy⟩, by`. Take `⟨V, σ, hσ, hV⟩` from `hV c`. Conclude with `⟨V, ⟨σ, hσ⟩, hV⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `test_factor q D S x (hA S (le_max_right _ _)) g' (le_max_left _ _) hs Λ (zK_cocycle Λ s hs)`.
+A detailed English derivation is pending.
 -/
 theorem isFirstChernDeRham_exists_of (d : ℕ) [SmoothOfRelativeDimension d q] (D : E.LineData X) (hD : IsTautologicalLine q D) :
     ∃ c : HdR q 2, IsFirstChernDeRham q D c := by

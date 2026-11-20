@@ -20,7 +20,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {hR : Rd.R
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `_ hD E _ _ _ hE n hn π hπ S T F₀ F h` and use `h1 E n π S T F₀.K F₀.W (F.toGenIn hD h) (Q F) rfl fun i _ hχ => q_of F i hE hn hπ h hχ h2 h3 h4 h5 h6 h7 h8 h9`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockCand_of (h1 : ChiTr) (h2 : LimAt) (h3 : Ident) (h4 : PowNe) (h5 : PreOfTree) (h6 : JoinEx) (h7 : FG.LevRead)
     (h8 : FG.FRGood) (h9 : FG.FRWeight) : BlockCand := fun _ hD E _ _ _ hE n hn π hπ S T F₀ F h =>

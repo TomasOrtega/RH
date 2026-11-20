@@ -18,7 +18,7 @@ namespace GlobalTheory.Katz.LazardModP
 variable (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p]
 
 /- English proof (translation)
-Introduce `h` and use `pow_ne_zero m (WittVector.p_nonzero p k) (IsFractionRing.injective (WittVector p k) (Fr p k) (by rw [h, map_zero]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_pow_ne_zero (m : ℕ) :
     algebraMap (WittVector p k) (Fr p k) ((p : WittVector p k) ^ m) ≠ 0 := fun h =>
@@ -26,16 +26,16 @@ theorem algebraMap_pow_ne_zero (m : ℕ) :
     (IsFractionRing.injective (WittVector p k) (Fr p k) (by rw [h, map_zero]))
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_wsmul {σ : Type} (w : WittVector p k) (f : MvPowerSeries σ (Fr p k))
     (α : σ →₀ ℕ) : coeff α (w • f) = algebraMap (WittVector p k) (Fr p k) w * coeff α f := by
   rw [← Algebra.smul_def]; rfl
 
 /- English proof (translation)
-Introduce `α`. Take `⟨w, hw⟩` from `hf α`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[coeff_wsmul, map_mul]`. Rewrite using `[one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `algebraMap_pow_ne_zero p k 1`. Rewrite `h0` using `[pow_one]`. Conclude with `mul_left_cancel₀ h0 hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_one_of_p_smul {σ : Type} (f : MvPowerSeries σ (Fr p k))
     (hf : (p : WittVector p k) • f ∈ intBy p k σ (p : WittVector p k)) : f ∈ intBy p k σ 1 := by
@@ -49,13 +49,13 @@ theorem mem_one_of_p_smul {σ : Type} (f : MvPowerSeries σ (Fr p k))
   exact mul_left_cancel₀ h0 hw
 
 /- English proof (translation)
-Establish `hfin` using `Finsupp.finite_of_degree_le (σ := Fin d ⊕ Fin d) N`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (WittVector p k)) (hfin.toFinset.image fun γ => coeff γ e)`. Establish `hb0 : (b : WittVector p k) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`. Take `⟨n, u, hu⟩` from `WittVector.exists_eq_pow_p_mul' (b : WittVector p k) hb0`. Use `⟨n + 1, fun γ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hγ : γ.degree = N`. Establish `hmem : coeff γ e ∈ hfin.toFinset.image fun γ => coeff γ e` using `Finset.mem_image.2 ⟨γ, by simp [hγ], rfl⟩`. Take `⟨w, hw⟩` from `hb _ hmem`. Use `⟨((u⁻¹ : (WittVector p k)ˣ) : WittVector p k) * w, ?_⟩` and prove the remaining obligations. Establish `hw' : algebraMap (WittVector p k) (Fr p k) w = algebraMap (WittVector p k) (Fr p k) (b : WittVector p k) * coeff γ e`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hw, Algebra.smul_def]`. Establish `hu1 : algebraMap (WittVector p k) (Fr p k) ((u⁻¹ : (WittVector p k)ˣ) : WittVector p k) * algebraMap (WittVector p k) (Fr p k) (u : WittVector p k) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `hw'` using `[hu, map_mul, map_pow]`. Rewrite using `[coeff_wsmul, map_mul, map_mul, map_pow, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-algebraMap (WittVector p k) (Fr p k) (p : WittVector p k) * algebraMap (WittVector p k) (Fr p k) ((u⁻¹ : (WittVector p k)ˣ) : WittVector p k)) * hw' + (-algebraMap (WittVector p k) (Fr p k) (p : WittVector p k) ^ n * algebraMap (WittVector p k) (Fr p k) (p : WittVector p k) * c …`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_wsmul, he γ hγ]`. Simplify using the standard rewrite rules.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_pow_smul_mem {d N : ℕ} (e : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k))
     (he : ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree ≠ N → coeff γ e = 0) :
@@ -89,11 +89,11 @@ theorem exists_pow_smul_mem {d N : ℕ} (e : MvPowerSeries (Fin d ⊕ Fin d) (Fr
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use extensionality with `γ`. Rewrite using `[coeff_lift]`. Simplify using `only [addLaw, map_add, coeff_X]`. Distinguish the cases in `h1 : γ = Finsupp.single (Sum.inl i) 1`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : γ ≠ Finsupp.single (Sum.inr i) 1`. Rewrite using `[h1]`. Introduce `h`. Conclude with `Sum.inl_ne_inr ((Finsupp.single_left_inj one_ne_zero).1 h)`. Simplify using `only [if_pos h1, if_neg h2, add_zero, map_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : γ = Finsupp.single (Sum.inr i) 1`. Simplify using `only [if_neg h1, if_pos h2, zero_add, map_one, map_one]`. Simplify using `only [if_neg h1, if_neg h2, add_zero, WittVector.teichmuller_zero, map_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_addLaw (d : ℕ) :
     (fun i => Katz.lift p (addLaw k d i)) = addLaw (Fr p k) d := by
@@ -116,31 +116,27 @@ namespace GlobalTheory.Katz.LazardModP
 variable (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p]
 
 /- English proof (translation)
-Establish `hconst : ∀ i, constantCoeff (addLaw (Fr p k) d i) = 0` using `fun i => by simp [addLaw]`. Establish `hA` using `GlobalTheory.T.formalGroupLawCoboundaryTwo_coboundaryOne (Fr p k) d (addLaw (Fr p k) d) hconst 0`. Establish `hlaw : IsLaw (addLaw (Fr p k) d)` using `hA.2.2.2.2.1`. Establish `hcob0 : cob1 (addLaw (Fr p k) d) 0 = 0`. Use `formalCoboundary_smul hconst 0 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Establish `hR` using `GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k (Fin d ⊕ Fin d)`. Establish `hR3` using `GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k (Fin d ⊕ (Fin d ⊕ Fin d))`. Establish `hRC` using `GlobalTheory.T.reduction_commutes_formalGroupLawCoboundaries p k d (addLaw k d) (fun i => by simp [addLaw])`. Rewrite `hRC` using `[lift_addLaw]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `e _ _ _ hm`. Use `⟨0, fun _ _ => by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hcob0, sub_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hm`. Consider the case `succ m ih`. Introduce `e he hcb hsw hm`. Establish `hsm : ∀ {σ : Type} (x : MvPowerSeries σ (Fr p k)), ((p : WittVector p k) ^ m) • x = algebraMap (WittVector p k) (Fr p k) ((p : WittVector p k) ^ m) • x` using `fun x => (algebraMap_smul (Fr p k) _ x).symm`. Establish `hQ` using `algebraMap_pow_ne_zero p k m`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[pow_succ', mul_smul]`. Establish `he'` using `mem_one_of_p_smul p k _ hm`. Take `⟨c, hc⟩` from `(hR.1 _).1 he'`. Establish `hcb' : cob2 (addLaw (Fr p k) d) (((p : WittVector p k) ^ m) • e) ∈ intBy p k _ (p : WittVector p k)`. Rewrite using `[hsm, (hA.2.2.2.1 _ e).1, ← hsm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hcb`. Establish `hsw' : swap (((p : WittVector p k) ^ m) • e) - ((p : WittVector p k) ^ m) • e ∈ intBy p k _ (p : WittVector p k)`. Rewrite using `[hsm, (hA.2.2.2.1 _ e).2, ← smul_sub, ← hsm]`. Conclude with `Submodule.smul_mem _ _ hsw`. Take `⟨hr2, hrs⟩` from `hRC.1 _ _ hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : cob2 (addLaw k d) c = 0` using `hR3.2.1 _ _ _ hr2 ((hR3.2.2.2.2.2.1 _).1 hcb')`. Establish `hcs : swap c = c` using `sub_eq_zero.1 (hR.2.1 _ _ _ (hR.2.2.2.1 _ _ _ _ hrs hc).2 ((hR.2.2.2.2.2.1 _).1 hsw'))`. Establish `hch : ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree ≠ N → coeff γ c = 0`. Introduce `γ hγ`. Take `⟨w, hw1, hw2⟩` from `hc γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw1` using `[coeff_wsmul, he γ hγ, mul_zero]`. Establish `hw0 : w = 0` using `IsFractionRing.injective (WittVector p k) (Fr p k) (by rw [← hw1, map_zero])`. Rewrite using `[← hw2, hw0, map_zero]`. Take `⟨h', hh', hred⟩` from `GlobalTheory.T.homogeneous_cocycle_additiveLaw_reduction_coboundary p k d N c hN ⟨hc2, hcs⟩ hch`. Establish `hdiff : ((p : WittVector p k) ^ m) • e - cob1 (addLaw (Fr p k) d) h' ∈ intBy p k _ (p : WittVector p k)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hR.2.2.2.1 _ _ _ _ hc hred).2` as an intermediate fact. Rewrite `this` using `[sub_self]`. Conclude with `(hR.2.2.2.2.2.1 _).2 this`. Establish `hcobh1 : ((p : WittVector p k) ^ m) • cob1 (addLaw (Fr p k) d) ((algebraMap (WittVector p k) (Fr p k) ((p : WittVector p k) ^ m))⁻¹ • h') = cob1 (addLaw (Fr p k) d) h'`. Rewrite using `[hsm, ← formalCoboundary_smul hconst, smul_smul, mul_inv_cancel₀ hQ, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hh1 : ∀ α : Fin d →₀ ℕ, α.degree ≠ N → coeff α ((algebraMap (WittVector p k) (Fr p k) ((p : WittVector p k) ^ m))⁻¹ • h') = 0`. Introduce `α hα`. Rewrite using `[coeff_smul, hh' α hα, mul_zero]`. Establish `hcoc` using `(GlobalTheory.T.formalGroupLawCoboundaryTwo_coboundaryOne (Fr p k) d (addLaw (Fr p k) d) hconst ((algebraMap (WittVector p k) (Fr p k) ((p : WittVector p k) ^ m))⁻¹ • h')).2.2.2.2.2 hlaw`. Take `⟨h2, hh2, hfin⟩` from `ih (e - cob1 (addLaw (Fr p k) d) ((algebraMap (WittVector p k) (Fr p k) ((p : WittVector p k) ^ m))⁻¹ • h')) (fun γ hγ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[map_sub, he γ hγ, (GlobalTheory.T.additive_formal_group_coboundary_homogeneous (Fr p k) d N).1 _ hh1 γ hγ, sub_zero])`. Use the proof step `(by rw [((hA.2.2.1) e _).2.1, hcoc.1, sub_zero]; exact hcb)`. Use the proof step `(by`. Rewrite using `[((hA.2.2.1) e _).2.2, hcoc.2]`. Use `hsw using 1` and compare the differences between its conclusion and the goal.
-
-Use the proof step `abel)`. Use the proof step `(by rw [smul_sub, hcobh1]; exact hdiff)`. Use `⟨(algebraMap (WittVector p k) (Fr p k) ((p : WittVector p k) ^ m))⁻¹ • h' + h2, fun α hα => by rw [map_add, hh1 α hα, hh2 α hα, add_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[formalCoboundary_add hconst]`. Use `hfin using 1` and compare the differences between its conclusion and the goal.
-
-Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem step (d N : ℕ) (hN : 2 ≤ N) (m : ℕ) : ∀ e : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k),
     (∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree ≠ N → coeff γ e = 0) →
@@ -229,7 +225,7 @@ end GlobalTheory.Katz.LazardModP
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ d N e hN he hcb hsw`. Take `⟨m, hm⟩` from `LazardModP.exists_pow_smul_mem p k e he`. Conclude with `LazardModP.step p k d N hN m e he hcb hsw hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lazard_mod_p_frac : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (d N : ℕ) (e : MvPowerSeries (Fin d ⊕ Fin d) (Fr p k)), 2 ≤ N →

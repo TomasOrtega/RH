@@ -26,15 +26,15 @@ open GlobalTheory.UT
 namespace GlobalTheory.UT
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U n k k' hk`. Establish `hL` using `U.LG.isLB`. Establish `hcube : GlobalTheory.MulPull.HasGen U.LG.L (thφ G (x3 G)) thε` using `⟨U.cubG.t, U.cubG.isGen⟩`. Establish `hrig : GlobalTheory.MulPull.HasGen U.LG.L (K` using `PUnit) (fun _ => eSec G) (fun _ => 1) := ⟨U.LG.rig, U.LG.rigGen⟩`. Establish `hneg : GlobalTheory.MulPull.HasGen U.LG.L (K` using `Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1] := ⟨U.symG, U.symG_gen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `main : GlobalTheory.MulPull.HasGen U.LG.L (K` using `Fin 2) ![(𝟙 G : G ⟶ G).left, (𝟙 G ^ n).left] ![(n : ℤ) ^ 2, -1] := by`. Use `GlobalTheory.MulPull.hasGen_pow hL hcube (𝟙 G) ?_ ?_ n` and prove the remaining obligations. Use `(hrig.pull (toUnit G).left).of_formEq hL (fun W _ h => ?_)` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, _root_.mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `hneg.inv.of_formEq hL (fun W _ h => ?_)` and prove the remaining obligations. Establish `e : ((𝟙 G : G ⟶ G)⁻¹) = ι[G]` using `Category.id_comp _`. Rewrite using `[e]`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, _root_.mul_one, neg_neg]`. Conclude with `_root_.mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `main`. Establish `hp : GlobalTheory.MulPull.HasGen U.LG.L (K` using `Fin 2) ![(𝟙 G : G ⟶ G).left, (𝟙 G ^ n).left] (fun i => (k : ℤ) * (![(n : ℤ) ^ 2, -1] : Fin 2 → ℤ) i) := ⟨_, powGen_isGen _ _ _ t ht k⟩`. Use `hp.of_formEq hL (fun W _ h => ?_)` and prove the remaining obligations. Substitute `hk` using the available equality. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, _root_.mul_one, mul_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gen_mulPull_pow_unif : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (n k k' : ℕ), k' = k * n ^ 2 → ∃ β : LB.Gen (LB.LinComb U.LG.L (K := Fin 2) ![𝟙 _, (𝟙 G ^ n).left] ![(k' : ℤ), -(k : ℤ)]), β.IsGen := by
   intro R _ _ I D A G _ _ U n k k' hk

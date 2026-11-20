@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P.LongWeylElement
 section PartL
 
 /- English proof (translation)
-Use `first`. Consider the case `(show Continuous fun x : Mt k r => (a * Matrix.of x * a⁻¹ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)`. Consider the case `(unfold conjM; fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conjM_cont {k r : ℕ} (a : Mat k r) : Continuous (conjM a : Mt k r → Mt k r) := by
   first
@@ -22,7 +22,7 @@ theorem conjM_cont {k r : ℕ} (a : Mat k r) : Continuous (conjM a : Mt k r → 
     | (unfold conjM; fun_prop)
 
 /- English proof (translation)
-Use `first`. Consider the case `(show Continuous fun x : Mt k r => (a * Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)`. Conclude with `continuous_const.matrix_mul continuous_id)`. Consider the case `(unfold lmulM; fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lmulM_cont {k r : ℕ} (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
   first
@@ -31,7 +31,7 @@ theorem lmulM_cont {k r : ℕ} (a : Mat k r) : Continuous (lmulM a : Mt k r → 
     | (unfold lmulM; fun_prop)
 
 /- English proof (translation)
-Use `first`. Consider the case `(show Continuous fun x : Fin n → Fin n → ℂ => (Matrix.of x * a : Matrix (Fin n) (Fin n) ℂ)`. Conclude with `continuous_id.matrix_mul continuous_const)`. Consider the case `(unfold rmulF; fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rmulF_cont {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : Continuous (rmulF a) := by
   first
@@ -42,7 +42,7 @@ theorem rmulF_cont {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : Continuous (rmul
 def mid (k r' : ℕ) (p : Fin (2 * (1 + r') + k + 1)) : Prop := 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1
 
 /- English proof (translation)
-Use `s.isLt` as an intermediate fact. Use `show 1 ≤ s.val + 1 ∧ s.val + 1 < 2 * r' + k + 1 + 1`. Apply the tactic sequence `constructor <;> omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mid_levPos (k r' : ℕ) (s : Fin (2 * r' + k + 1)) : mid k r' (levPos k 1 r' s) := by
   have := s.isLt
@@ -50,9 +50,9 @@ theorem mid_levPos (k r' : ℕ) (s : Fin (2 * r' + k + 1)) : mid k r' (levPos k 
   constructor <;> omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1` using `h`. Use `⟨⟨p.val - 1, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Use `show p.val - 1 + 1 = p.val`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨s, rfl⟩`. Conclude with `mid_levPos k r' s`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mid_iff (k r' : ℕ) (p : Fin (2 * (1 + r') + k + 1)) : mid k r' p ↔ p ∈ Set.range (levPos k 1 r') := by
   constructor
@@ -65,7 +65,7 @@ theorem mid_iff (k r' : ℕ) (p : Fin (2 * (1 + r') + k + 1)) : mid k r' p ↔ p
     exact mid_levPos k r' s
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h' : a.val + 1 = b.val + 1` using `congrArg Fin.val h`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levPos_inj (k r' : ℕ) : Function.Injective (levPos k 1 r') := by
   intro a b h
@@ -73,7 +73,7 @@ theorem levPos_inj (k r' : ℕ) : Function.Injective (levPos k 1 r') := by
   exact Fin.ext (by omega)
 
 /- English proof (translation)
-Establish `hs` using `s.isLt`. Establish `ht` using `t.isLt`. Establish `h3 : s.val ≤ 2 * r' + k` using `by omega`. Establish `h4 : t.val ≤ 2 * r' + k` using `by omega`. Simplify using `[ιLev, levPos, h3, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lev_mm (k r' : ℕ) (g : Mat k r') (s t : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g (levPos k 1 r' s) (levPos k 1 r' t) = g s t := by
@@ -84,7 +84,7 @@ theorem lev_mm (k r' : ℕ) (g : Mat k r') (s t : Fin (2 * r' + k + 1)) :
   simp [ιLev, levPos, h3, h4]
 
 /- English proof (translation)
-Establish `hp' : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1` using `hp`. Establish `hq' : ¬ (1 ≤ q.val ∧ q.val < 2 * r' + k + 1 + 1)` using `hq`. Simplify using `only [ιLev, dif_pos hp', dif_neg hq']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lev_mn (k r' : ℕ) (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hp : mid k r' p) (hq : ¬ mid k r' q) :
     ιLev k 1 r' g p q = 0 := by
@@ -93,7 +93,7 @@ theorem lev_mn (k r' : ℕ) (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (h
   simp only [ιLev, dif_pos hp', dif_neg hq']
 
 /- English proof (translation)
-Establish `hp' : ¬ (1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1)` using `hp`. Simplify using `only [ιLev, dif_neg hp']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lev_n (k r' : ℕ) (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hp : ¬ mid k r' p) :
     ιLev k 1 r' g p q = if p = q then 1 else 0 := by
@@ -101,7 +101,7 @@ theorem lev_n (k r' : ℕ) (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hp
   simp only [ιLev, dif_neg hp']
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [ιLev, Matrix.one_apply, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lev_one (k r' : ℕ) : ιLev k 1 r' 1 = 1 := by
   ext p q
@@ -109,7 +109,7 @@ theorem lev_one (k r' : ℕ) : ιLev k 1 r' 1 = 1 := by
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.FourierDecayAlt.P.B2x2.lev_mul k r' g h`. Consider the case `exact (Formalism.FourierDecayAlt.P.B2x5.lev_mul k r' g h).symm`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lev_mul (k r' : ℕ) (g h : Mat k r') : ιLev k 1 r' (g * h) = ιLev k 1 r' g * ιLev k 1 r' h := by
   first
@@ -119,7 +119,7 @@ theorem lev_mul (k r' : ℕ) (g h : Mat k r') : ιLev k 1 r' (g * h) = ιLev k 1
 def blk (k r' : ℕ) (x : Mt k (1 + r')) : Mt k r' := fun s t => x (levPos k 1 r' s) (levPos k 1 r' t)
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold blk; fun_prop)`. Consider the case `exact continuous_pi fun s => continuous_pi fun t => (continuous_apply (levPos k 1 r' t)).comp (continuous_apply (levPos k 1 r' s))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blk_cont (k r' : ℕ) : Continuous (blk k r') := by
   first
@@ -128,16 +128,16 @@ theorem blk_cont (k r' : ℕ) : Continuous (blk k r') := by
         (continuous_apply (levPos k 1 r' t)).comp (continuous_apply (levPos k 1 r' s))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s t`. Conclude with `lev_mm k r' (Matrix.of x) s t`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem blk_lev (k r' : ℕ) (x : Mt k r') : blk k r' (levM k r' x) = x := by
   funext s t
   exact lev_mm k r' (Matrix.of x) s t
 
 /- English proof (translation)
-Use `continuous_pi fun p => continuous_pi fun q => ?_` and prove the remaining obligations. Use `show Continuous fun x : Mt k r' => ιLev k 1 r' (Matrix.of x) p q`. Simplify using `only [ιLev]`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `exact continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `fun_prop`. Consider the case `exact (continuous_apply _).comp (continuous_apply _)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem levM_cont (k r' : ℕ) : Continuous (levM k r') := by
   refine continuous_pi fun p => continuous_pi fun q => ?_
@@ -160,7 +160,7 @@ def iZ (k r' : ℕ) : Fin (2 * (1 + r') + k + 1) := ⟨0, by omega⟩
 def iL (k r' : ℕ) : Fin (2 * (1 + r') + k + 1) := ⟨2 * (1 + r') + k, by omega⟩
 
 /- English proof (translation)
-Simplify using `only [w0]`. Rewrite using `[if_neg h1, if_neg h2, if_neg]`. Introduce and unpack `⟨h, h'⟩`. Conclude with `h3 ⟨congrArg Fin.val h, h'⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma weight_zero_not_pos_det (c : ℂ) (i q : Fin (2 * (1 + r') + k + 1)) (h1 : ¬(i.val = 0 ∧ q.val = 2 * (1 + r') + k))
     (h2 : ¬(i.val = 2 * (1 + r') + k ∧ q.val = 0)) (h3 : ¬(i.val = q.val ∧ 0 < i.val ∧ i.val < 2 * (1 + r') + k)) :
@@ -171,7 +171,7 @@ lemma weight_zero_not_pos_det (c : ℂ) (i q : Fin (2 * (1 + r') + k + 1)) (h1 :
   exact h3 ⟨congrArg Fin.val h, h'⟩
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hm` using `m.isLt`. Simplify using `only [w0, iL, iZ, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma w0_apply_eq_ite_first_index (c : ℂ) (i m : Fin (2 * (1 + r') + k + 1)) :
     w0 k r' c i m = if i.val = 0 then (if m = iL k r' then (star c)⁻¹ else 0)
@@ -182,7 +182,7 @@ private lemma w0_apply_eq_ite_first_index (c : ℂ) (i m : Fin (2 * (1 + r') + k
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [w0_apply_eq_ite_first_index]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma weylMatrix_mul_apply (c : ℂ) (A : Mat k (1 + r')) (i j : Fin (2 * (1 + r') + k + 1)) :
     (w0 k r' c * A) i j = if i.val = 0 then (star c)⁻¹ * A (iL k r') j
@@ -192,7 +192,7 @@ lemma weylMatrix_mul_apply (c : ℂ) (A : Mat k (1 + r')) (i j : Fin (2 * (1 + r
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Establish `hm` using `m.isLt`. Simplify using `only [w0, iL, iZ, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma w0_apply_eq_ite_col (c : ℂ) (m j : Fin (2 * (1 + r') + k + 1)) :
     w0 k r' c m j = if j.val = 0 then (if m = iL k r' then c else 0)
@@ -203,7 +203,7 @@ private lemma w0_apply_eq_ite_col (c : ℂ) (m j : Fin (2 * (1 + r') + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [w0_apply_eq_ite_col]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma mul_long_weyl_element_apply (c : ℂ) (A : Mat k (1 + r')) (i j : Fin (2 * (1 + r') + k + 1)) :
     (A * w0 k r' c) i j = if j.val = 0 then A i (iL k r') * c
@@ -213,7 +213,7 @@ lemma mul_long_weyl_element_apply (c : ℂ) (A : Mat k (1 + r')) (i j : Fin (2 *
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply `lev_n` to reduce the goal to its premises. Use `show ¬ (1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1)`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma lev_out_row (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hp : p.val = 0 ∨ p.val = 2 * (1 + r') + k) :
     ιLev k 1 r' g p q = if p = q then 1 else 0 := by
@@ -222,9 +222,9 @@ lemma lev_out_row (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hp : p.val 
   omega
 
 /- English proof (translation)
-Establish `hq' : ¬ mid k r' q` using `by show ¬ (1 ≤ q.val ∧ q.val < 2 * r' + k + 1 + 1)`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hp : mid k r' p`. Rewrite using `[lev_mn k r' g p q hp hq', if_neg]`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hq' hp`. Conclude with `lev_n k r' g p q hp`.
+A detailed English derivation is pending.
 -/
 lemma lev_out_col (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hq : q.val = 0 ∨ q.val = 2 * (1 + r') + k) :
     ιLev k 1 r' g p q = if p = q then 1 else 0 := by
@@ -238,7 +238,7 @@ lemma lev_out_col (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hq : q.val 
   · exact lev_n k r' g p q hp
 
 /- English proof (translation)
-Simplify using `only [ιLev, dif_pos hp, dif_pos hq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lev_mid (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1)
     (hq : 1 ≤ q.val ∧ q.val < 2 * r' + k + 1 + 1) :
@@ -246,11 +246,11 @@ lemma lev_mid (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hp : 1 ≤ p.va
   simp only [ιLev, dif_pos hp, dif_pos hq]
 
 /- English proof (translation)
-Introduce `k r' c g`. Use extensionality with `i j`. Rewrite using `[weylMatrix_mul_apply, mul_long_weyl_element_apply, lev_out_row g (iL k r') j (Or.inr rfl), lev_out_row g (iZ k r') j (Or.inl rfl), lev_out_col g i (iL k r') (Or.inr rfl), lev_out_col g i (iZ k r') (Or.inl rfl)]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hj0 : j.val = 0 ∨ j.val = 2 * (1 + r') + k`. Rewrite using `[lev_out_col g i j hj0]`. Simplify using `only [iL, iZ, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)`. Distinguish the cases in `hi0 : i.val = 0 ∨ i.val = 2 * (1 + r') + k`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[lev_out_row g i j hi0]`. Simplify using `only [iL, iZ, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)`. Apply the tactic sequence `simp only [iL, iZ, Fin.ext_iff, Fin.val_mk] split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem t_w0comm : WeylElementCommutesLevelOne := by
   intro k r' c g
@@ -271,7 +271,7 @@ theorem t_w0comm : WeylElementCommutesLevelOne := by
       split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private lemma matrix_apply_congr_of_eq {n m : ℕ} (μ : Matrix (Fin n) (Fin m) ℂ) {a b c d : ℕ} {ha : a < n} {hb : b < m}
     {hc : c < n} {hd : d < m} (h1 : a = c) (h2 : b = d) : μ ⟨a, ha⟩ ⟨b, hb⟩ = μ ⟨c, hc⟩ ⟨d, hd⟩ := by
@@ -282,19 +282,19 @@ private lemma matrix_apply_congr_of_eq {n m : ℕ} (μ : Matrix (Fin n) (Fin m) 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `k r' c μ`. Use extensionality with `i j`. Rewrite using `[weylMatrix_mul_apply]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : i.val = 0`. Rewrite using `[if_pos h0, lev_out_row _ (iL k r') j (Or.inr rfl)]`. Simplify using `only [bigCell, esI, iL, a0, Fin.ext_iff, Fin.val_mk, h0]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, mul_zero]; done) | (exact matrix_apply_congr_of_eq _ (by omega) (by omega)) | (simp only [mul_one]; congr 3 <;> (try dsimp only [Fin.val_mk, Fin.coe_natAdd] at *) <;> first | omega | (ext; simp only [Fin.coe_natA …`. Distinguish the cases in `hL : i.val = 2 * (1 + r') + k`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg h0, if_pos hL, lev_out_row _ (iZ k r') j (Or.inl rfl)]`. Simplify using `only [bigCell, esI, iZ, a0, Fin.ext_iff, Fin.val_mk, hL]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, mul_zero]; done) | (exact matrix_apply_congr_of_eq _ (by omega) (by omega)) | (simp only [mul_one]; congr 3 <;> (try dsimp only [Fin.val_mk, Fin.coe_natAdd] at *) <;> first | omega | (ext; simp only [Fin.coe_natA …`. Rewrite using `[if_neg h0, if_neg hL]`. Establish `hmi : 1 ≤ i.val ∧ i.val < 2 * r' + k + 1 + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hmj : 1 ≤ j.val ∧ j.val < 2 * r' + k + 1 + 1`. Rewrite using `[lev_mid _ i j hmi hmj] dsimp only [bigCell, esI, Fin.val_mk]`. Distinguish the cases in `hA : j.val < 1 + r'`. Establish `hA' : j.val - 1 < r'` using `by omega`. Simplify using `only [hA, hA', dite_true]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, mul_zero]; done) | (exact matrix_apply_congr_of_eq _ (by omega) (by omega)) | (simp only [mul_one]; congr 3 <;> (try dsimp only [Fin.val_mk, Fin.coe_natAdd] at *) <;> first | omega | (ext; simp only [Fin.coe_natA …`. Establish `hA' : ¬ (j.val - 1 < r')` using `by omega`. Distinguish the cases in `hB : j.val ≤ 1 + r' + k`. Establish `hB' : j.val - 1 ≤ r' + k` using `by omega`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hA, hA', hB, hB', dite_true, dite_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, mul_zero]; done) | (exact matrix_apply_congr_of_eq _ (by omega) (by omega)) | (simp only [mul_one]; congr 3 <;> (try dsimp only [Fin.val_mk, Fin.coe_natAdd] at *) <;> first | omega | (ext; simp only [Fin.coe_natA …`. Establish `hB' : ¬ (j.val - 1 ≤ r' + k)` using `by omega`. Simplify using `only [hA, hA', hB, hB', dite_true, dite_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, mul_zero]; done) | (exact matrix_apply_congr_of_eq _ (by omega) (by omega)) | (simp only [mul_one]; congr 3 <;> (try dsimp only [Fin.val_mk, Fin.coe_natAdd] at *) <;> first | omega | (ext; simp only [Fin.coe_natA …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[lev_mn k r' _ i j hmi hmj]`. Simplify using `only [bigCell, esI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, mul_zero]; done) | (exact matrix_apply_congr_of_eq _ (by omega) (by omega)) | (simp only [mul_one]; congr 3 <;> (try dsimp only [Fin.val_mk, Fin.coe_natAdd] at *) <;> first | omega | (ext; simp only [Fin.coe_natA …`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem t_bigcellrec : BigCellRec := by
   intro k r' c μ
@@ -341,7 +341,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 variable {k r' : ℕ}
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Simplify using `only [mid, iZ, iL, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma not_mid_iff (p : Fin (2 * (1 + r') + k + 1)) : ¬ mid k r' p ↔ p = iZ k r' ∨ p = iL k r' := by
   have hp := p.isLt
@@ -349,7 +349,7 @@ lemma not_mid_iff (p : Fin (2 * (1 + r') + k + 1)) : ¬ mid k r' p ↔ p = iZ k 
   constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Distinguish the cases in `hp : mid k r' p`. Rewrite using `[lev_mn k r' g p q hp hq, if_neg]`. Introduce and unpack `rfl`. Conclude with `hq hp`. Conclude with `lev_n k r' g p q hp`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma lev_col_n (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hq : ¬ mid k r' q) :
     ιLev k 1 r' g p q = if p = q then 1 else 0 := by
@@ -360,7 +360,7 @@ lemma lev_col_n (g : Mat k r') (p q : Fin (2 * (1 + r') + k + 1)) (hq : ¬ mid k
   · exact lev_n k r' g p q hp
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.conjTranspose_apply, ιLev, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp; done)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma lev_conjT (g : Mat k r') : (ιLev k 1 r' g)ᴴ = ιLev k 1 r' gᴴ := by
   ext p q
@@ -368,7 +368,7 @@ lemma lev_conjT (g : Mat k r') : (ιLev k 1 r' g)ᴴ = ιLev k 1 r' gᴴ := by
   split_ifs <;> first | rfl | (exfalso; omega) | (simp; done)
 
 /- English proof (translation)
-Use extensionality with `s t`. Use `congrFun (congrFun e (levPos k 1 r' s)) (levPos k 1 r' t)` as an intermediate fact. Rewrite `this` using `[lev_mm, lev_mm]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma lev_inj {g h : Mat k r'} (e : ιLev k 1 r' g = ιLev k 1 r' h) : g = h := by
   ext s t
@@ -376,15 +376,15 @@ lemma lev_inj {g h : Mat k r'} (e : ιLev k 1 r' g = ιLev k 1 r' h) : g = h := 
   rwa [lev_mm, lev_mm] at this
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[weylMatrix_mul_apply]`. Simplify using `only [star_one, inv_one, one_mul]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : i.val = 0`. Rewrite using `[if_pos h0, lev_out_row (Hpk k r') (iL k r') j (Or.inr rfl)]`. Simplify using `only [Hpk, iL, Fin.ext_iff, Fin.val_mk, h0]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)`. Distinguish the cases in `hL : i.val = 2 * (1 + r') + k`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg h0, if_pos hL, lev_out_row (Hpk k r') (iZ k r') j (Or.inl rfl)]`. Simplify using `only [Hpk, iZ, Fin.ext_iff, Fin.val_mk, hL]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)`. Rewrite using `[if_neg h0, if_neg hL]`. Establish `hmi : mid k r' i` using `by show 1 ≤ i.val ∧ i.val < 2 * r' + k + 1 + 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hmj : mid k r' j`. Take `⟨s, rfl⟩` from `(mid_iff k r' i).1 hmi`. Take `⟨t, rfl⟩` from `(mid_iff k r' j).1 hmj`. Rewrite using `[lev_mm, Formalism.FourierDecayAlt.P.B2x4.Hpk_levPos]`.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lev_col_n (Hpk k r') i j hmj, if_neg (fun h => by subst h; exact hmj hmi)]`. Establish `hj' : ¬ (1 ≤ j.val ∧ j.val < 2 * r' + k + 1 + 1)` using `hmj`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_eq (k r' : ℕ) : Hpk k (1 + r') = w0 k r' 1 * ιLev k 1 r' (Hpk k r') := by
   ext i j
@@ -414,9 +414,9 @@ lemma Hpk_eq (k r' : ℕ) : Hpk k (1 + r') = w0 k r' 1 * ιLev k 1 r' (Hpk k r')
         split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[weylMatrix_mul_apply]`. Simplify using `only [w0_apply_eq_ite_first_index]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [iL, iZ, Matrix.one_apply, Fin.ext_iff, Fin.val_mk, star_one, inv_one, one_mul, true_and, and_true]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma long_weyl_element_sq_one (k r' : ℕ) : w0 k r' 1 * w0 k r' 1 = 1 := by
   ext i j
@@ -428,11 +428,11 @@ lemma long_weyl_element_sq_one (k r' : ℕ) : w0 k r' 1 * w0 k r' 1 = 1 := by
   split_ifs <;> first | rfl | (exfalso; omega) | (simp only [mul_one, one_mul, mul_zero, zero_mul]; done) | (simp; done) | (simp_all; done)
 
 /- English proof (translation)
-Use `show (ιLev k 1 r' g)ᴴ * Hpk k (1 + r') * ιLev k 1 r' g = Hpk k (1 + r') ↔ gᴴ * Hpk k r' * g = Hpk k r'`. Establish `key : (ιLev k 1 r' g)ᴴ * Hpk k (1 + r') * ιLev k 1 r' g = w0 k r' 1 * ιLev k 1 r' (gᴴ * Hpk k r' * g)`. Rewrite using `[lev_conjT, Hpk_eq, ← Matrix.mul_assoc, ← t_w0comm k r' 1 gᴴ]`. Simplify using `only [Matrix.mul_assoc, ← lev_mul]`. Rewrite using `[key, Hpk_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `lev_inj` to reduce the goal to its premises. Use `congrArg (fun M => w0 k r' 1 * M) h` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, long_weyl_element_sq_one, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lev_UH (g : Mat k r') : ιLev k 1 r' g ∈ GV k (1 + r') ↔ g ∈ GV k r' := by
   show (ιLev k 1 r' g)ᴴ * Hpk k (1 + r') * ιLev k 1 r' g = Hpk k (1 + r') ↔ gᴴ * Hpk k r' * g = Hpk k r'
@@ -449,7 +449,7 @@ lemma lev_UH (g : Mat k r') : ιLev k 1 r' g ∈ GV k (1 + r') ↔ g ∈ GV k r'
     rw [h]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [bvec, Matrix.mulVec_single]; done)`. Consider the case `(simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]; done)`. Consider the case `simp only [bvec, Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma col_eq {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (j p : Fin m) : (g *ᵥ bvec j) p = g p j := by
   first
@@ -459,9 +459,9 @@ lemma col_eq {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (j p : Fin m) : (g *ᵥ 
         Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p`. Use `congrFun h p` as an intermediate fact. Rewrite `this` using `[col_eq]`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[bvec, Pi.single_apply]`. Introduce `h`. Use function extensionality and compare the values at `p`. Rewrite using `[col_eq, h p]`. Simplify using `[bvec, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma fix_iff {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (j : Fin m) :
     g *ᵥ bvec j = bvec j ↔ ∀ p, g p j = if p = j then 1 else 0 := by
@@ -477,11 +477,9 @@ lemma fix_iff {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (j : Fin m) :
     simp [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h s`. Use `h (levPos k 1 r' s)` as an intermediate fact. Rewrite `this` using `[lev_mm]`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_congr (levPos_inj k r').eq_iff rfl rfl`. Introduce `h p`. Distinguish the cases in `hp : mid k r' p`. Take `⟨s, rfl⟩` from `(mid_iff k r' p).1 hp`. Rewrite using `[lev_mm, h s]`.
-
-Conclude with `if_congr (levPos_inj k r').eq_iff.symm rfl rfl`. Conclude with `lev_n k r' g p _ hp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lev_col_iff (g : Mat k r') (t : Fin (2 * r' + k + 1)) :
     (∀ p, ιLev k 1 r' g p (levPos k 1 r' t) = if p = levPos k 1 r' t then 1 else 0) ↔
@@ -510,7 +508,7 @@ Both sides reduce to the same expression.
 lemma esI_zero : esI k (1 + r') (a0 r') = iL k r' := rfl
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Use `show 1 + a.val = a.val + 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma eI_succ (a : Fin r') : eI k (1 + r') (Fin.natAdd 1 a) = levPos k 1 r' (eI k r' a) := by
   apply Fin.ext
@@ -518,7 +516,7 @@ lemma eI_succ (a : Fin r') : eI k (1 + r') (Fin.natAdd 1 a) = levPos k 1 r' (eI 
   omega
 
 /- English proof (translation)
-Use `a.isLt` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * (1 + r') + k - (1 + a.val) = 2 * r' + k - a.val + 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma esI_succ (a : Fin r') : esI k (1 + r') (Fin.natAdd 1 a) = levPos k 1 r' (esI k r' a) := by
   have := a.isLt
@@ -527,9 +525,7 @@ lemma esI_succ (a : Fin r') : esI k (1 + r') (Fin.natAdd 1 a) = levPos k 1 r' (e
   omega
 
 /- English proof (translation)
-Use `a.isLt` as an intermediate fact. Distinguish the cases in `h : a.val = 0`. Use `left`. Conclude with `Fin.ext h`. Use `right`.
-
-Use `⟨⟨a.val - 1, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Use `show a.val = 1 + (a.val - 1)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma fin_cases' (a : Fin (1 + r')) : a = a0 r' ∨ ∃ a' : Fin r', a = Fin.natAdd 1 a' := by
   have := a.isLt
@@ -542,7 +538,7 @@ lemma fin_cases' (a : Fin (1 + r')) : a = a0 r' ∨ ∃ a' : Fin r', a = Fin.nat
     omega
 
 /- English proof (translation)
-Establish `hq` using `q.isLt`. Simplify using `only [Hpk, iZ, iL, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_Z (q : Fin (2 * (1 + r') + k + 1)) : Hpk k (1 + r') (iZ k r') q = if q = iL k r' then 1 else 0 := by
   have hq := q.isLt
@@ -550,7 +546,7 @@ lemma Hpk_Z (q : Fin (2 * (1 + r') + k + 1)) : Hpk k (1 + r') (iZ k r') q = if q
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hq` using `q.isLt`. Simplify using `only [Hpk, iZ, iL, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_L (q : Fin (2 * (1 + r') + k + 1)) : Hpk k (1 + r') (iL k r') q = if q = iZ k r' then 1 else 0 := by
   have hq := q.isLt
@@ -558,9 +554,9 @@ lemma Hpk_L (q : Fin (2 * (1 + r') + k + 1)) : Hpk k (1 + r') (iL k r') q = if q
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply, Finset.sum_eq_single i₀]`. Rewrite using `[Matrix.conjTranspose_apply, hc i₀, if_pos rfl, star_one, one_mul]`. Introduce `m _ hm`. Rewrite using `[Matrix.conjTranspose_apply, hc m, if_neg hm, star_zero, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 lemma row_of_col {m : ℕ} (g H : Matrix (Fin m) (Fin m) ℂ) (i₀ j : Fin m)
     (hc : ∀ p, g p i₀ = if p = i₀ then 1 else 0) : (gᴴ * H * g) i₀ j = (H * g) i₀ j := by
@@ -572,35 +568,29 @@ lemma row_of_col {m : ℕ} (g H : Matrix (Fin m) (Fin m) ℂ) (i₀ j : Fin m)
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `k r'`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hfix⟩`. Establish `cZ : ∀ p, g p (iZ k r') = if p = iZ k r' then 1 else 0` using `(fix_iff g _).1 (hfix (a0 r')).1`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `cL : ∀ p, g p (iL k r') = if p = iL k r' then 1 else 0` using `(fix_iff g _).1 (hfix (a0 r')).2`. Establish `hGe : gᴴ * Hpk k (1 + r') * g = Hpk k (1 + r')` using `hG`. Establish `rL : ∀ q, g (iL k r') q = if q = iL k r' then 1 else 0`. Introduce `q`. Establish `h1` using `row_of_col g (Hpk k (1 + r')) (iZ k r') q cZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hGe, Matrix.mul_apply]`. Use `first`. Consider the case `(simp only [Hpk_Z, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ite_true] at h1`. Conclude with `h1.symm)`. Consider the case `(simp [Hpk_Z] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1.symm)`. Establish `rZ : ∀ q, g (iZ k r') q = if q = iZ k r' then 1 else 0`. Introduce `q`. Establish `h1` using `row_of_col g (Hpk k (1 + r')) (iL k r') q cL`. Rewrite `h1` using `[hGe, Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `first`. Consider the case `(simp only [Hpk_L, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ite_true] at h1`. Conclude with `h1.symm)`. Consider the case `(simp [Hpk_L] at h1`. Conclude with `h1.symm)`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg : g = ιLev k 1 r' (Matrix.of (blk k r' g))`. Use extensionality with `p q`. Distinguish the cases in `hp : mid k r' p`. Distinguish the cases in `hq : mid k r' q`. Take `⟨s, rfl⟩` from `(mid_iff k r' p).1 hp`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, rfl⟩` from `(mid_iff k r' q).1 hq`. Rewrite using `[lev_mm]`. Both sides reduce to the same expression. Rewrite using `[lev_mn k r' _ p q hp hq]`. Break down `(not_mid_iff q).1 hq with rfl | rfl` into its components or cases.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[cZ, if_neg]`. Introduce and unpack `rfl`. Conclude with `hq hp`. Rewrite using `[cL, if_neg]`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hq hp`. Rewrite using `[lev_n k r' _ p q hp]`. Break down `(not_mid_iff p).1 hp with rfl | rfl` into its components or cases. Rewrite using `[rZ]`. Conclude with `if_congr eq_comm rfl rfl`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[rL]`. Conclude with `if_congr eq_comm rfl rfl`. Use `⟨Matrix.of (blk k r' g), ⟨?_, ?_⟩, hg.symm⟩` and prove the remaining obligations. Rewrite using `[← lev_UH, ← hg]`. Conclude with `hG`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Prove the components needed by the constructor for the conclusion. Use `(hfix (Fin.natAdd 1 a)).1` as an intermediate fact. Rewrite `this` using `[eI_succ, fix_iff, hg, lev_col_iff]`. Conclude with `(fix_iff _ _).2 this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `(hfix (Fin.natAdd 1 a)).2` as an intermediate fact. Rewrite `this` using `[esI_succ, fix_iff, hg, lev_col_iff]`. Conclude with `(fix_iff _ _).2 this`. Introduce and unpack `⟨g', ⟨hG', hfix'⟩, rfl⟩`. Use `⟨(lev_UH g').2 hG', fun a => ?_⟩` and prove the remaining obligations.
-
-Break down `fin_cases' a with rfl | ⟨a', rfl⟩` into its components or cases. Prove the components needed by the constructor for the conclusion. Rewrite using `[fix_iff]`. Introduce `p`. Conclude with `lev_col_n g' p _ (by rw [not_mid_iff]; exact Or.inl rfl)`.
-
-Rewrite using `[fix_iff]`. Introduce `p`. Conclude with `lev_col_n g' p _ (by rw [not_mid_iff]; exact Or.inr rfl)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[eI_succ, fix_iff, lev_col_iff]`.
-
-Conclude with `(fix_iff g' _).1 (hfix' a').1`. Rewrite using `[esI_succ, fix_iff, lev_col_iff]`. Conclude with `(fix_iff g' _).1 (hfix' a').2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uWbRec : Formalism.FourierDecayAlt.B2.UWbRec := by
   intro k r'
@@ -690,7 +680,7 @@ variable {k r : ℕ}
 abbrev midW (k r : ℕ) (i : Fin (2 * r + k + 1)) : Prop := r ≤ i.val ∧ i.val ≤ r + k
 
 /- English proof (translation)
-Establish `hj' : ¬ (r ≤ j.val ∧ j.val ≤ r + k)` using `hj`. Simplify using `only [embWb, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma emb_out_col (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (q j : Fin (2 * r + k + 1)) (hj : ¬ midW k r j) :
     embWb k r μ q j = if q = j then 1 else 0 := by
@@ -699,7 +689,7 @@ lemma emb_out_col (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (q j : Fin (2 * 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hq' : ¬ (r ≤ q.val ∧ q.val ≤ r + k)` using `hq`. Simplify using `only [embWb, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma emb_out_row (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (q j : Fin (2 * r + k + 1)) (hq : ¬ midW k r q) :
     embWb k r μ q j = if q = j then 1 else 0 := by
@@ -708,14 +698,14 @@ lemma emb_out_row (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (q j : Fin (2 * 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [embWb, dif_pos (show (r ≤ q.val ∧ q.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) from ⟨hq, hj⟩)]`.
+Simplify using the standard rewrite rules.
 -/
 lemma emb_mid (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (q j : Fin (2 * r + k + 1)) (hq : midW k r q) (hj : midW k r j) :
     embWb k r μ q j = μ ⟨q.val - r, by have := hq; omega⟩ ⟨j.val - r, by have := hj; omega⟩ := by
   simp only [embWb, dif_pos (show (r ≤ q.val ∧ q.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k) from ⟨hq, hj⟩)]
 
 /- English proof (translation)
-Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Apply the tactic sequence `simp only [bigCell, dif_neg (show ¬ j.val < r by omega), dif_pos h2] <;> rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bc_mid_col (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1)) (hj : midW k r j) :
     bigCell k r c μ i j = if hi : midW k r i then μ ⟨i.val - r, by have := hi; omega⟩ ⟨j.val - r, by have := hj; omega⟩
@@ -725,7 +715,7 @@ lemma bc_mid_col (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) �
   simp only [bigCell, dif_neg (show ¬ j.val < r by omega), dif_pos h2] <;> rfl
 
 /- English proof (translation)
-Establish `h1` using `hi.1`. Establish `h2` using `hi.2`. Establish `hj' : ¬ (r ≤ j.val ∧ j.val ≤ r + k)` using `hj`. Simplify using `only [bigCell, esI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bc_mid_row_out (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
     (hi : midW k r i) (hj : ¬ midW k r j) : bigCell k r c μ i j = 0 := by
@@ -736,7 +726,7 @@ lemma bc_mid_row_out (c : Fin r → ℂ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hj' : ¬ (r ≤ j.val ∧ j.val ≤ r + k)` using `hj`. Simplify using `only [bigCell]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bc_out_col (c : Fin r → ℂ) (μ ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
     (hj : ¬ midW k r j) : bigCell k r c μ i j = bigCell k r c ν i j := by
@@ -745,7 +735,7 @@ lemma bc_out_col (c : Fin r → ℂ) (μ ν : Matrix (Fin (k + 1)) (Fin (k + 1))
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hi' : ¬ (r ≤ i.val ∧ i.val ≤ r + k)` using `hi`. Simplify using `only [bigCell]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bc_out_row (c : Fin r → ℂ) (μ ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (2 * r + k + 1))
     (hi : ¬ midW k r i) : bigCell k r c μ i j = bigCell k r c ν i j := by
@@ -754,9 +744,9 @@ lemma bc_out_row (c : Fin r → ℂ) (μ ν : Matrix (Fin (k + 1)) (Fin (k + 1))
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `h1` using `hi.1`. Establish `h2` using `hi.2`. Establish `h3` using `hj.1`. Establish `h4` using `hj.2`. Simplify using `only [bigCell, Matrix.one_apply, Fin.ext_iff, Fin.val_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma bc_one_mid (c : Fin r → ℂ) (i j : Fin (2 * r + k + 1)) (hi : midW k r i) (hj : midW k r j) :
     bigCell k r c 1 i j = if i = j then 1 else 0 := by
@@ -768,25 +758,23 @@ lemma bc_one_mid (c : Fin r → ℂ) (i j : Fin (2 * r + k + 1)) (hi : midW k r 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Introduce `k r c μ`. Prove the components needed by the constructor for the conclusion. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hj : midW k r j`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `hi : midW k r i`. Rewrite using `[bc_one_mid c i i hi hi, if_pos (rfl : i = i), one_mul, emb_mid μ i j hi hj, bc_mid_col c μ i j hj, dif_pos hi]`. Rewrite using `[emb_out_row μ i j hi, if_neg (fun h => by subst h; exact hi hj), mul_zero, bc_mid_col c μ i j hj, dif_neg hi]`. Introduce `m _ hm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hm' : midW k r m`. Distinguish the cases in `hi : midW k r i`. Rewrite using `[bc_one_mid c i m hi hm', if_neg (Ne.symm hm), zero_mul]`. Rewrite using `[bc_mid_col c 1 i m hm', dif_neg hi, zero_mul]`. Rewrite using `[emb_out_row μ m j hm', if_neg (fun h => by subst h; exact hm' hj), mul_zero]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[emb_out_col μ j j hj, if_pos (rfl : j = j), mul_one, bc_out_col c 1 μ i j hj]`. Introduce `m _ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[emb_out_col μ m j hj, if_neg hm, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : midW k r j`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[bc_one_mid c j j hj hj, if_pos (rfl : j = j), mul_one, bc_mid_col c μ i j hj]`. Distinguish the cases in `hi : midW k r i`. Rewrite using `[emb_mid μ i j hi hj, dif_pos hi]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[emb_out_row μ i j hi, dif_neg hi, if_neg (fun h => by subst h; exact hi hj)]`. Introduce `m _ hm`. Distinguish the cases in `hm' : midW k r m`. Rewrite using `[bc_one_mid c m j hm' hj, if_neg hm, mul_zero]`. Rewrite using `[bc_mid_col c 1 m j hj, dif_neg hm', mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `hi : midW k r i`. Rewrite using `[bc_mid_row_out c 1 i j hi hj, mul_zero, bc_mid_row_out c μ i j hi hj]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[emb_out_col μ i i hi, if_pos (rfl : i = i), one_mul, bc_out_col c 1 μ i j hj]`. Introduce `m _ hm`. Distinguish the cases in `hm' : midW k r m`. Rewrite using `[bc_mid_row_out c 1 m j hm' hj, mul_zero]`. Rewrite using `[emb_out_col μ i m hm', if_neg (Ne.symm hm), zero_mul]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem t_bigcellfactor : BigCellFactor := by
   intro k r c μ
@@ -847,13 +835,11 @@ section General
 variable {α α' β β' : Type*} [MeasurableSpace α] [MeasurableSpace α'] [MeasurableSpace β] [MeasurableSpace β']
 
 /- English proof (translation)
-Establish `m1 : Measurable fun p : (α × α') × (β × β') => F ((p.1.1, p.2.1), (p.1.2, p.2.2))` using `hF.comp (by fun_prop)`. Establish `e1 : ∀ x : α × β, ∫⁻ y, F (x, y) ∂(μ₂.prod ν₂) = ∫⁻ a', ∫⁻ b', F (x, (a', b')) ∂ν₂ ∂μ₂`. Introduce `x`. Conclude with `lintegral_prod (fun y : α' × β' => F (x, y)) (hF.comp (by fun_prop)).aemeasurable`. Establish `e2 : ∀ x : α × α', ∫⁻ y, F ((x.1, y.1), (x.2, y.2)) ∂(ν₁.prod ν₂) = ∫⁻ b, ∫⁻ b', F ((x.1, b), (x.2, b')) ∂ν₂ ∂ν₁`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Conclude with `lintegral_prod (fun y : β × β' => F ((x.1, y.1), (x.2, y.2))) (hF.comp (by fun_prop)).aemeasurable`. Establish `m2 : Measurable fun x : α × β => ∫⁻ a', ∫⁻ b', F (x, (a', b')) ∂ν₂ ∂μ₂` using `((hF.comp (by fun_prop : Measurable fun q : ((α × β) × α') × β' => (q.1.1, (q.1.2, q.2)))).lintegral_prod_right').lintegral_prod_right'`. Establish `m3 : Measurable fun x : α × α' => ∫⁻ b, ∫⁻ b', F ((x.1, b), (x.2, b')) ∂ν₂ ∂ν₁` using `((hF.comp (by fun_prop : Measurable fun q : ((α × α') × β) × β' => ((q.1.1.1, q.1.2), (q.1.1.2, q.2)))).lintegral_prod_right').lintegral_prod_right'`. Rewrite using `[lintegral_prod _ hF.aemeasurable, lintegral_prod _ m1.aemeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try dsimp only`. Repeatedly rewrite using `[e1, e2]`. Rewrite using `[lintegral_prod _ m2.aemeasurable, lintegral_prod _ m3.aemeasurable]`. Apply the tactic sequence `try dsimp only`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations.
-
-Establish `m4 : Measurable (Function.uncurry fun (b : β) (a' : α') => ∫⁻ b', F ((a, b), (a', b')) ∂ν₂)` using `(hF.comp (by fun_prop : Measurable fun q : (β × α') × β' => ((a, q.1.1), (q.1.2, q.2)))).lintegral_prod_right'`. Conclude with `lintegral_lintegral_swap m4.aemeasurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem swap4 (μ₁ : Measure α) (ν₁ : Measure β) (μ₂ : Measure α') (ν₂ : Measure β') [SFinite μ₁] [SFinite ν₁]
     [SFinite μ₂] [SFinite ν₂] (F : (α × β) × (α' × β') → ℝ≥0∞) (hF : Measurable F) :
@@ -891,7 +877,7 @@ def splitE (r' : ℕ) : (Fin (1 + r') → ℂ) ≃ᵐ ℂ × (Fin r' → ℂ) :=
     (MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (MeasureTheory.volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).comp (MeasurePreserving.symm _ (MeasureTheory.volume_measurePreserving_piCongrLeft (fun _ => ℂ) (finCongr (Nat.add_comm r' 1))))`. Consider the case `exact (MeasureTheory.volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).comp ((MeasureTheory.volume_measurePreserving_piCongrLeft (fun _ => ℂ) (finCongr (Nat.add_comm r' 1))).symm _)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem splitE_mp (r' : ℕ) : MeasurePreserving (splitE r') volume volume := by
   first
@@ -901,9 +887,9 @@ theorem splitE_mp (r' : ℕ) : MeasurePreserving (splitE r') volume volume := by
         ((MeasureTheory.volume_measurePreserving_piCongrLeft (fun _ => ℂ) (finCongr (Nat.add_comm r' 1))).symm _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show c _ = c (a0 r')`. Use `congr 1`. Apply the tactic sequence `all_goals (ext; simp [a0])`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a show c _ = c (Fin.natAdd 1 a)`. Use `congr 1`. Apply the tactic sequence `all_goals (ext; simp [Fin.succAbove_zero, Fin.coe_natAdd, add_comm])`.
+A detailed English derivation is pending.
 -/
 theorem splitE_eq (r' : ℕ) : (splitE r' : (Fin (1 + r') → ℂ) → ℂ × (Fin r' → ℂ)) = splitC r' := by
   funext c
@@ -917,7 +903,7 @@ theorem splitE_eq (r' : ℕ) : (splitE r' : (Fin (1 + r') → ℂ) → ℂ × (F
     all_goals (ext; simp [Fin.succAbove_zero, Fin.coe_natAdd, add_comm])
 
 /- English proof (translation)
-Rewrite using `[← splitE_eq r']`. Conclude with `(splitE_mp r').lintegral_comp_emb (splitE r').measurableEmbedding G`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_split (r' : ℕ) (G : ℂ × (Fin r' → ℂ) → ℝ≥0∞) :
     ∫⁻ c : Fin (1 + r') → ℂ, G (splitC r' c) = ∫⁻ p : ℂ × (Fin r' → ℂ), G p := by
@@ -925,11 +911,11 @@ theorem lint_split (r' : ℕ) (G : ℂ × (Fin r' → ℂ) → ℝ≥0∞) :
   exact (splitE_mp r').lintegral_comp_emb (splitE r').measurableEmbedding G
 
 /- English proof (translation)
-Simplify using `only [cWeight]`. Rewrite using `[Fin.prod_univ_add, Fin.prod_univ_one]`. Establish `e : Fin.castAdd r' (0 : Fin 1) = a0 r'` using `Fin.ext (by simp [a0])`. Rewrite using `[e]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Mdim, a0, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Mdim, Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cWeight_rec (k r' : ℕ) (c : Fin (1 + r') → ℂ) :
     cWeight k (1 + r') c = ‖c (a0 r')‖ ^ (2 * (2 * r' + k + 1)) * cWeight k r' (fun a => c (Fin.natAdd 1 a)) := by
@@ -953,7 +939,7 @@ section PartM
 variable {k r r' : ℕ}
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩`. Use `first`. Consider the case `infer_instance`. Consider the case `exact sigmaFinite_of_locallyFinite`. Consider the case `exact MeasureTheory.sigmaFinite_of_locallyFinite`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sf {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩
@@ -963,9 +949,9 @@ theorem sf {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : Sig
     | exact MeasureTheory.sigmaFinite_of_locallyFinite
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ae_iff.2 h.2.1`. Consider the case `exact ae_iff.2 h.2.2.1`. Consider the case `exact ae_iff.2 h.2.2.2`. Consider the case `exact ae_iff.2 h.2.2.2.1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ae_iff.2 h.2.2.2.2`. Consider the case `exact ae_iff.2 h.2.2.2.2.1`. Consider the case `exact ae_iff.2 h.1`. Consider the case `exact ae_iff.2 (by simpa using h.2.1)`. Consider the case `exact ae_iff.2 (by simpa using h.2.2.1)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem haar_ae {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) :
     ∀ᵐ g ∂μ, (Matrix.of g : Mat k r) ∈ U := by
@@ -984,14 +970,14 @@ def adjF (x : Mt k r) : Mt k r := (Matrix.of x : Mat k r).adjugate
 def detF (x : Mt k r) : ℂ := (Matrix.of x : Mat k r).det
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Continuous.matrix_det continuous_id`. Consider the case `(unfold detF; fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem detF_cont : Continuous (detF (k := k) (r := r)) := by
   first
     | exact Continuous.matrix_det continuous_id
     | (unfold detF; fun_prop)
 /- English proof (translation)
-Use `first`. Consider the case `exact Continuous.matrix_adjugate continuous_id`. Consider the case `(unfold adjF; fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adjF_cont : Continuous (adjF (k := k) (r := r)) := by
   first
@@ -999,9 +985,9 @@ theorem adjF_cont : Continuous (adjF (k := k) (r := r)) := by
     | (unfold adjF; fun_prop)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `first`. Consider the case `(show ((Matrix.of x : Mat k r)⁻¹ : Mat k r) = ((Matrix.of x : Mat k r).det)⁻¹ • (Matrix.of x : Mat k r).adjugate`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv'])`. Consider the case `(simp only [invM, detF, adjF]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Use the proof step `rfl)`.
+A detailed English derivation is pending.
 -/
 theorem invM_smul : (invM : Mt k r → Mt k r) = fun x => (detF x)⁻¹ • adjF x := by
   funext x
@@ -1013,7 +999,7 @@ theorem invM_smul : (invM : Mt k r → Mt k r) = fun x => (detF x)⁻¹ • adjF
        rfl)
 
 /- English proof (translation)
-Rewrite using `[invM_smul]`. Use `first`. Consider the case `exact (detF_cont.measurable.inv).smul adjF_cont.measurable`. Consider the case `exact (measurable_inv.comp detF_cont.measurable).smul adjF_cont.measurable`. Consider the case `fun_prop`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem invM_meas : Measurable (invM : Mt k r → Mt k r) := by
   rw [invM_smul]
@@ -1023,7 +1009,7 @@ theorem invM_meas : Measurable (invM : Mt k r → Mt k r) := by
     | fun_prop
 
 /- English proof (translation)
-Use `first`. Consider the case `(show Continuous fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mat k r)`. Conclude with `continuous_fst.matrix_mul continuous_snd)`. Consider the case `(unfold mulM; fun_prop)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulM_cont : Continuous (mulM : Mt k r × Mt k r → Mt k r) := by
   first
@@ -1032,13 +1018,13 @@ theorem mulM_cont : Continuous (mulM : Mt k r × Mt k r → Mt k r) := by
     | (unfold mulM; fun_prop)
 
 /- English proof (translation)
-Conclude with `mulM_cont.measurable`.
+A detailed English derivation is pending.
 -/
 theorem mulM_meas : Measurable (mulM : Mt k r × Mt k r → Mt k r) := by
   exact mulM_cont.measurable
 
 /- English proof (translation)
-Use `first`. Consider the case `exact mulM_meas.comp (hA.prodMk hB)`. Consider the case `exact mulM_meas.comp (hA.prod_mk hB)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mm_meas {α : Type*} [MeasurableSpace α] {A B : α → Mt k r} (hA : Measurable A) (hB : Measurable B) :
     Measurable (fun t => mulM (A t, B t)) := by
@@ -1047,13 +1033,13 @@ theorem mm_meas {α : Type*} [MeasurableSpace α] {A B : α → Mt k r} (hA : Me
     | exact mulM_meas.comp (hA.prod_mk hB)
 
 /- English proof (translation)
-Conclude with `(levM_cont k r').measurable`.
+A detailed English derivation is pending.
 -/
 theorem levM_meas : Measurable (levM k r') := by
   exact (levM_cont k r').measurable
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold herm; fun_prop)`. Consider the case `exact (continuous_snd.star).matrix_dotProduct (continuous_const.matrix_mulVec continuous_fst)`. Consider the case `(simp only [herm, dotProduct, Matrix.mulVec]; fun_prop)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_herm {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ) :
     Continuous fun p : (ι → ℂ) × (ι → ℂ) => herm H p.1 p.2 := by
@@ -1063,7 +1049,7 @@ lemma continuous_herm {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ) :
     | (simp only [herm, dotProduct, Matrix.mulVec]; fun_prop)
 
 /- English proof (translation)
-Use `continuous_pi fun p => ?_` and prove the remaining obligations. Use `show Continuous fun v : Fin (2 * r' + k + 1) → ℂ => liftVec k 1 r' v p`. Simplify using `only [liftVec]`. Apply the tactic sequence `split_ifs <;> first | exact continuous_const | exact continuous_apply _ | fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma continuous_lift (k r' : ℕ) : Continuous (liftVec k 1 r') := by
   refine continuous_pi fun p => ?_
@@ -1072,9 +1058,9 @@ lemma continuous_lift (k r' : ℕ) : Continuous (liftVec k 1 r') := by
   split_ifs <;> first | exact continuous_const | exact continuous_apply _ | fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : HPar k r' => herm (Hpk k r') x.1 x.1` using `by first`. Consider the case `exact (continuous_herm (Hpk k r')).comp (continuous_fst.prodMk continuous_fst)`. Consider the case `exact (continuous_herm (Hpk k r')).comp (continuous_fst.prod_mk continuous_fst)`. Unfold `hb`. Use `first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Treat this case separately.
 
-Consider the case `fun_prop`. Consider the case `exact (Complex.continuous_ofReal.comp ((Complex.continuous_re.comp h1).neg.div_const 2)).add ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_hb (k r' : ℕ) : Continuous fun x : HPar k r' => hb k r' x.1 x.2 := by
   have h1 : Continuous fun x : HPar k r' => herm (Hpk k r') x.1 x.1 := by
@@ -1088,11 +1074,9 @@ lemma continuous_hb (k r' : ℕ) : Continuous fun x : HPar k r' => hb k r' x.1 x
         ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const)
 
 /- English proof (translation)
-Establish `hv : Continuous fun x : HPar k r' => liftVec k 1 r' x.1` using `(continuous_lift k r').comp continuous_fst`. Establish `hb' : Continuous fun x : HPar k r' => hb k r' x.1 x.2` using `continuous_hb k r'`. Establish `hh : ∀ j, Continuous fun x : HPar k r' => herm (Hpk k (1 + r')) (bvec j) (liftVec k 1 r' x.1)`. Introduce `j`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `exact (continuous_herm _).comp (continuous_const.prodMk hv)`. Consider the case `exact (continuous_herm _).comp (continuous_const.prod_mk hv)`. Use `continuous_pi fun p => continuous_pi fun q => ?_` and prove the remaining obligations. Simplify using `only [heis0, heisG, Matrix.sub_apply, Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.one_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hvp : Continuous fun x : HPar k r' => liftVec k 1 r' x.1 p` using `(continuous_apply p).comp hv`.
-
-Use `fun_prop`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_heis0 (k r' : ℕ) : Continuous (heis0 k r') := by
   have hv : Continuous fun x : HPar k r' => liftVec k 1 r' x.1 := (continuous_lift k r').comp continuous_fst
@@ -1111,7 +1095,7 @@ lemma continuous_heis0 (k r' : ℕ) : Continuous (heis0 k r') := by
 def heisF (k r' : ℕ) (x : HPar k r') : Mt k (1 + r') := heis0 k r' x
 
 /- English proof (translation)
-Establish `hc : Continuous (heisF k r')` using `continuous_heis0 k r'`. Conclude with `hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heisF_meas : Measurable (heisF k r') := by
   have hc : Continuous (heisF k r') := continuous_heis0 k r'
@@ -1120,7 +1104,7 @@ theorem heisF_meas : Measurable (heisF k r') := by
 def bcF (k r : ℕ) (c : Fin r → ℂ) : Mt k r := bigCell k r c 1
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Use `show Measurable fun c : Fin r → ℂ => bigCell k r c 1 i j`. Simplify using `only [bigCell]`. Apply the tactic sequence `split_ifs <;> first | exact measurable_const | exact measurable_pi_apply _ | exact (continuous_star.measurable.comp (measurable_pi_apply _)).inv | exact continuous_star.measurable.inv | exact measurable_id | fun_prop | measurability`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem bcF_meas : Measurable (bcF k r) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
@@ -1131,7 +1115,7 @@ theorem bcF_meas : Measurable (bcF k r) := by
 def w0F (k r' : ℕ) (c : ℂ) : Mt k (1 + r') := w0 k r' c
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Use `show Measurable fun c : ℂ => w0 k r' c i j`. Simplify using `only [w0]`. Apply the tactic sequence `split_ifs <;> first | exact measurable_const | exact measurable_pi_apply _ | exact (continuous_star.measurable.comp (measurable_pi_apply _)).inv | exact continuous_star.measurable.inv | exact measurable_id | fun_prop | measurability`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem long_weyl_element_measurable : Measurable (w0F k r') := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
@@ -1140,7 +1124,7 @@ theorem long_weyl_element_measurable : Measurable (w0F k r') := by
   split_ifs <;> first | exact measurable_const | exact measurable_pi_apply _ | exact (continuous_star.measurable.comp (measurable_pi_apply _)).inv | exact continuous_star.measurable.inv | exact measurable_id | fun_prop | measurability
 
 /- English proof (translation)
-Conclude with `mm_meas (mm_meas (mm_meas (invM_meas.comp hN) hT) hM) hN'`.
+A detailed English derivation is pending.
 -/
 theorem cell_meas {α : Type*} [MeasurableSpace α] {N T M N' : α → Mt k r} (hN : Measurable N) (hT : Measurable T)
     (hM : Measurable M) (hN' : Measurable N') :
@@ -1148,7 +1132,7 @@ theorem cell_meas {α : Type*} [MeasurableSpace α] {N T M N' : α → Mt k r} (
   exact mm_meas (mm_meas (mm_meas (invM_meas.comp hN) hT) hM) hN'
 
 /- English proof (translation)
-Conclude with `mm_meas (mm_meas (mm_meas (invM_meas.comp (heisF_meas.comp hX)) (long_weyl_element_measurable.comp hC)) (levM_meas.comp hG)) (heisF_meas.comp hX')`.
+A detailed English derivation is pending.
 -/
 theorem os_meas {α : Type*} [MeasurableSpace α] {X X' : α → HPar k r'} {C : α → ℂ} {Gm : α → Mt k r'}
     (hX : Measurable X) (hC : Measurable C) (hG : Measurable Gm) (hX' : Measurable X') :
@@ -1157,7 +1141,7 @@ theorem os_meas {α : Type*} [MeasurableSpace α] {X X' : α → HPar k r'} {C :
     (heisF_meas.comp hX')
 
 /- English proof (translation)
-Establish `h1 : ιLev k 1 r' n * ιLev k 1 r' n⁻¹ = 1`. Rewrite using `[← lev_mul, Matrix.mul_nonsing_inv n hn, lev_one]`. Conclude with `(Matrix.inv_eq_right_inv h1).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_inv (n : Mat k r') (hn : IsUnit n.det) : ιLev k 1 r' n⁻¹ = (ιLev k 1 r' n)⁻¹ := by
   have h1 : ιLev k 1 r' n * ιLev k 1 r' n⁻¹ = 1 := by
@@ -1165,7 +1149,7 @@ theorem lev_inv (n : Mat k r') (hn : IsUnit n.det) : ιLev k 1 r' n⁻¹ = (ιLe
   exact (Matrix.inv_eq_right_inv h1).symm
 
 /- English proof (translation)
-Establish `h1 : ιLev k 1 r' n * ιLev k 1 r' n⁻¹ = 1`. Rewrite using `[← lev_mul, Matrix.mul_nonsing_inv n hn, lev_one]`. Conclude with `Matrix.isUnit_det_of_right_inverse h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_unit (n : Mat k r') (hn : IsUnit n.det) : IsUnit (ιLev k 1 r' n).det := by
   have h1 : ιLev k 1 r' n * ιLev k 1 r' n⁻¹ = 1 := by
@@ -1173,7 +1157,7 @@ theorem lev_unit (n : Mat k r') (hn : IsUnit n.det) : IsUnit (ιLev k 1 r' n).de
   exact Matrix.isUnit_det_of_right_inverse h1
 
 /- English proof (translation)
-Establish `e : w0 k r' c * ιLev k 1 r' n⁻¹ = (ιLev k 1 r' n)⁻¹ * w0 k r' c`. Rewrite using `[t_w0comm k r' c n⁻¹, lev_inv n hn]`. Simplify using `only [oneStep, lev_mul, Matrix.mul_inv_rev, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (w0 k r' c), e]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem os_cell (x x' : HPar k r') (c : ℂ) (B n n' m : Mat k r') (hn : IsUnit n.det) :
     oneStep k r' x c (n⁻¹ * B * m * n') x' =
@@ -1194,7 +1178,7 @@ variable {k r r' : ℕ}
 def thetaF (k r' : ℕ) (p : HPar k r' × Mt k r') : Mt k (1 + r') := mulM (levM k r' p.2, heisF k r' p.1)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact mulM_meas.comp ((levM_meas.comp measurable_snd).prodMk (heisF_meas.comp measurable_fst))`. Consider the case `exact mulM_meas.comp ((levM_meas.comp measurable_snd).prod_mk (heisF_meas.comp measurable_fst))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem thetaF_meas : Measurable (thetaF k r') := by
   first
@@ -1207,7 +1191,7 @@ Both sides reduce to the same expression.
 theorem μHeis_eq (k r' : ℕ) : μHeis k r' = (volume : Measure (HPar k r')).map (heisF k r') := rfl
 
 /- English proof (translation)
-Rewrite using `[μHeis_eq]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sfHeis : SFinite (μHeis k r') := by
   rw [μHeis_eq]
@@ -1216,13 +1200,11 @@ theorem sfHeis : SFinite (μHeis k r') := by
 attribute [local instance] sfHeis
 
 /- English proof (translation)
-Establish `: SigmaFinite μ'` using `sf hμ'`. Use `Measure.ext_of_lintegral _ fun F hF => ?_` and prove the remaining obligations. Establish `h1 : Measurable fun a : Mt k (1 + r') × Mt k (1 + r') => F (mulM a)` using `hF.comp mulM_meas`. Establish `h2 : Measurable fun a : HPar k r' × Mt k r' => F (thetaF k r' a)` using `hF.comp thetaF_meas`. Rewrite using `[lintegral_map hF mulM_meas, lintegral_map hF thetaF_meas, lintegral_prod_symm' _ h1, lintegral_prod_symm' _ h2, lintegral_map h1.lintegral_prod_left' levM_meas]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [haar_ae hμ'] with n hn`. Establish `hu : IsUnit (ιLev k 1 r' (Matrix.of n)).det` using `lev_unit _ ((hN k r').unit _ hn)`. Establish `hm : Measurable fun y : Mt k (1 + r') => F (mulM (y, levM k r' n))` using `hF.comp (mm_meas measurable_id measurable_const)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC k r' _ hn.1]`. Use `_ = ∫⁻ y, F (mulM (conjM (ιLev k 1 r' (Matrix.of n)) y, levM k r' n)) ∂(μHeis k r') := lintegral_map hm (conjM_cont _).measurable`. Use `_ = ∫⁻ x, F (mulM (conjM (ιLev k 1 r' (Matrix.of n)) (heisF k r' x), levM k r' n)) := by`. Rewrite using `[μHeis_eq]`. Conclude with `lintegral_map (hm.comp (conjM_cont _).measurable) heisF_meas`.
-
-Use `_ = ∫⁻ x, F (thetaF k r' (x, n)) := by`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `congr 1`. Use `show ιLev k 1 r' (Matrix.of n) * heis0 k r' x * (ιLev k 1 r' (Matrix.of n))⁻¹ * ιLev k 1 r' (Matrix.of n) = ιLev k 1 r' (Matrix.of n) * heis0 k r' x`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_right _ _ hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuN_eq (hC : HeisConjLevMeas) (hN : ClosedN) (μ' : Measure (Mt k r')) (hμ' : IsHaarOn (Nset k r') μ') :
     ((μHeis k r').prod (μ'.map (levM k r'))).map mulM =
@@ -1254,15 +1236,13 @@ theorem nuN_eq (hC : HeisConjLevMeas) (hN : ClosedN) (μ' : Measure (Mt k r')) (
         rw [Matrix.nonsing_inv_mul_cancel_right _ _ hu]
 
 /- English proof (translation)
-Establish `: SigmaFinite μN'` using `sf hμN'`. Establish `hcell : Measurable fun p : (Mt k (1 + r') × Mt k (1 + r')) × Mt k (1 + r') => f ((Matrix.of p.1.1)⁻¹ * (w0 k r' c * ιLev k 1 r' B) * Matrix.of p.2 * Matrix.of p.1.2)` using `hf.comp (cell_meas (N := fun p : (Mt k (1 + r') × Mt k (1 + r')) × Mt k (1 + r') => p.1.1) (T := fun _ => (w0 k r' c * ιLev k 1 r' B : Mat k (1 + r'))) (M := fun p => p.2) (N' := fun p => p.1.2) (measurable_fst.comp measurable_fst) measurable_const measurable_snd (measurable_snd. …`. Establish `hΘ : Measurable (Prod.map (Prod.map (thetaF k r') (thetaF k r')) (levM k r'))` using `(thetaF_meas.prodMap thetaF_meas).prodMap levM_meas`. Set `Fs : ((HPar k r' × Mt k r') × (HPar k r' × Mt k r')) × Mt k r' → ℝ≥0∞` to `fun s => f ((Matrix.of (thetaF k r' s.1.1))⁻¹ * (w0 k r' c * ιLev k 1 r' B) * Matrix.of (levM k r' s.2) * Matrix.of (thetaF k r' s.1.2))`. Establish `hFs : Measurable Fs` using `hf.comp (cell_meas (N := fun s : ((HPar k r' × Mt k r') × (HPar k r' × Mt k r')) × Mt k r' => thetaF k r' s.1.1) (T := fun _ => (w0 k r' c * ιLev k 1 r' B : Mat k (1 + r'))) (M := fun s => levM k r' s.2) (N' := fun s => thetaF k r' s.1.2) (thetaF_meas.comp (measurable_fst.comp me …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsw : Measurable fun p : (HPar k r' × HPar k r') × (Mt k r' × Mt k r') => ∫⁻ m, Fs (((p.1.1, p.2.1), (p.1.2, p.2.2)), m) ∂μb'`. Establish `h2 : Measurable fun p : (HPar k r' × HPar k r') × (Mt k r' × Mt k r') => (((p.1.1, p.2.1), (p.1.2, p.2.2)) : (HPar k r' × Mt k r') × (HPar k r' × Mt k r'))` using `by fun_prop`. Conclude with `hFs.lintegral_prod_right'.comp h2`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_prod_map _ _ thetaF_meas thetaF_meas, Measure.map_prod_map _ _ (thetaF_meas.prodMap thetaF_meas) levM_meas]`. Conclude with `lintegral_map hcell hΘ`. Use `_ = ∫⁻ u, ∫⁻ m, Fs (u, m) ∂μb' ∂(((volume : Measure (HPar k r')).prod μN').prod ((volume : Measure (HPar k r')).prod μN')) := lintegral_prod _ hFs.aemeasurable`. Use `_ = ∫⁻ p : (HPar k r' × HPar k r') × (Mt k r' × Mt k r'), ∫⁻ m, Fs (((p.1.1, p.2.1), (p.1.2, p.2.2)), m) ∂μb' ∂(((volume : Measure (HPar k r')).prod (volume : Measure (HPar k r'))).prod (μN'.prod μN')) := swap4 _ _ _ _ (fun u => ∫⁻ m, Fs (u, m) ∂μb') hFs.lintegral_prod_right'`. Use `_ = ∫⁻ X : HPar k r' × HPar k r', ∫⁻ Q : Mt k r' × Mt k r', ∫⁻ m, Fs (((X.1, Q.1), (X.2, Q.2)), m) ∂μb' ∂(μN'.prod μN') := lintegral_prod _ hsw.aemeasurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = _ := by`. Use `lintegral_congr fun X => ?_` and prove the remaining obligations. Establish `hq : Measurable fun q : (Mt k r' × Mt k r') × Mt k r' => f (oneStep k r' X.1 c ((Matrix.of q.1.1)⁻¹ * B * Matrix.of q.2 * Matrix.of q.1.2) X.2)` using `hf.comp (os_meas (X := fun _ => X.1) (C := fun _ => c) (X' := fun _ => X.2) measurable_const measurable_const (cell_meas (N := fun q : (Mt k r' × Mt k r') × Mt k r' => q.1.1) (T := fun _ => B) (M := fun q => q.2) (N' := fun q => q.1.2) (measurable_fst.comp measurable_fst) measura …`. Use `Eq.trans ?_ (lintegral_prod _ hq.aemeasurable).symm` and prove the remaining obligations. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
-
-Establish `hae : ∀ᵐ Q : Mt k r' × Mt k r' ∂(μN'.prod μN'), (Matrix.of Q.1 : Mat k r') ∈ Nset k r'` using `Measure.quasiMeasurePreserving_fst.ae (haar_ae hμN')`. Use `filter_upwards [hae] with Q hQ`. Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Conclude with `congrArg f (os_cell X.1 X.2 c B (Matrix.of Q.1) (Matrix.of Q.2) (Matrix.of m) ((hN k r').unit _ hQ)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem key (hN : ClosedN) (μN' μb' : Measure (Mt k r')) (hμN' : IsHaarOn (Nset k r') μN') [SigmaFinite μb']
     (f : Mt k (1 + r') → ℝ≥0∞) (hf : Measurable f) (c : ℂ) (B : Mat k r') :
@@ -1340,7 +1320,7 @@ def IterAt (k r : ℕ) : Prop :=
           f ((Matrix.of p.1.1)⁻¹ * bigCell k r c 1 * Matrix.of p.2 * Matrix.of p.1.2) ∂((μN.prod μN).prod μb)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `HU k r U μ ν hU hμ hν.conc hν.left hν.finite_compact`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations. Break down `eq_or_ne c 0 with h0 | h0` into its components or cases. Conclude with `absurd (by rw [hc, h0, zero_smul]) hν.ne_zero`. Conclude with `pos_iff_ne_zero.2 h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem haar_smul (HU : HaarUnique) {U : Set (Mat k r)} (hU : IsClosedSubgroup U) {μ ν : Measure (Mt k r)}
     (hμ : IsHaarOn U μ) (hν : IsHaarOn U ν) : ∃ a : ℝ≥0, 0 < a ∧ ν = a • μ := by
@@ -1351,7 +1331,7 @@ theorem haar_smul (HU : HaarUnique) {U : Set (Mat k r)} (hU : IsClosedSubgroup U
   · exact pos_iff_ne_zero.2 h0
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [ENNReal.smul_def, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul, lintegral_smul_measure, smul_eq_mul, ENNReal.coe_mul] ring)`. Consider the case `(simp [Measure.prod_smul_left, Measure.prod_smul_right, lintegral_smul_measure, smul_smul, ENNReal.smul_def] ring)`. Consider the case `simp [Measure.prod_smul_left, Measure.prod_smul_right, lintegral_smul_measure, smul_smul, ENNReal.smul_def, mul_comm, mul_assoc, mul_left_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lint_smul3 {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (μ : Measure α) (ν : Measure β) [SFinite μ]
     [SFinite ν] (a b : ℝ≥0) (F : (α × α) × β → ℝ≥0∞) :
@@ -1366,7 +1346,7 @@ theorem lint_smul3 {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (μ
         mul_comm, mul_assoc, mul_left_comm]
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold cWeight; fun_prop)`. Consider the case `exact ENNReal.measurable_ofReal.comp (Finset.measurable_prod _ fun a _ => ((measurable_pi_apply a).norm).pow_const _)`. Consider the case `(unfold cWeight; measurability)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cW_meas (k r : ℕ) : Measurable fun c : Fin r → ℂ => ENNReal.ofReal (cWeight k r c) := by
   first
@@ -1375,35 +1355,29 @@ theorem cW_meas (k r : ℕ) : Measurable fun c : Fin r → ℂ => ENNReal.ofReal
     | (unfold cWeight; measurability)
 
 /- English proof (translation)
-Introduce `μG μN μb hμG hμN hμb`. Take `⟨μG₁, hG₁⟩` from `hG k r'`. Take `⟨μN', hN'⟩` from `hNe k r'`. Take `⟨μb', hb'⟩` from `hWb k r'`. Take `⟨C₀, hC₀, h0⟩` from `hO k r' μG μG₁ hμG hG₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, hC₁, h1⟩` from `ih μG₁ μN' μb' hG₁ hN' hb'`. Establish `hνN : IsHaarOn (Nset k (1 + r')) (((volume : Measure (HPar k r')).prod μN').map (thetaF k r'))`. Rewrite using `[← nuN_eq hC hCN μN' hN']`. Conclude with `hNR k r' μN' hN'`. Take `⟨a, ha, hae⟩` from `haar_smul HU (hCN k (1 + r')) hμN hνN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hνb : IsHaarOn (UWb k (1 + r')) (μb'.map (levM k r'))`. Rewrite using `[uWbRec k r']`. Conclude with `(hL k r' _ μb' (hCb k r') hb').2`. Take `⟨b, hb, hbe⟩` from `haar_smul HU (hCb k (1 + r')) hμb hνb`. Establish `: SigmaFinite μG₁` using `sf hG₁`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaFinite μN'` using `sf hN'`. Establish `: SigmaFinite μb'` using `sf hb'`. Establish `: SigmaFinite μN` using `sf hμN`. Establish `: SigmaFinite μb` using `sf hμb`. Use `⟨C₀ * C₁ * (a * a * b), by positivity, fun f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Kμ : Mt k (1 + r') → ℝ≥0∞` to `fun T => ∫⁻ p : (Mt k (1 + r') × Mt k (1 + r')) × Mt k (1 + r'), f ((Matrix.of p.1.1)⁻¹ * Matrix.of T * Matrix.of p.2 * Matrix.of p.1.2) ∂((μN.prod μN).prod μb)`. Establish `hKμ : Measurable Kμ`. Establish `: Measurable fun t : Mt k (1 + r') × ((Mt k (1 + r') × Mt k (1 + r')) × Mt k (1 + r')) => f ((Matrix.of t.2.1.1)⁻¹ * Matrix.of t.1 * Matrix.of t.2.2 * Matrix.of t.2.1.2)` using `hf.comp (cell_meas (N := fun t : Mt k (1 + r') × ((Mt k (1 + r') × Mt k (1 + r')) × Mt k (1 + r')) => t.2.1.1) (T := fun t => t.1) (M := fun t => t.2.2) (N' := fun t => t.2.1.2) (by fun_prop) (by fun_prop) (by fun_prop) (by fun_prop))`. Conclude with `this.lintegral_prod_right'`. Set `TT : ℂ × (Fin r' → ℂ) → Mt k (1 + r')` to `fun p => mulM (w0F k r' p.1, levM k r' (bcF k r' p.2))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTT : Measurable TT` using `mm_meas (long_weyl_element_measurable.comp measurable_fst) (levM_meas.comp (bcF_meas.comp measurable_snd))`. Establish `step : ∀ c : ℂ, ∫⁻ p : (HPar k r' × HPar k r') × Mt k r', f (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2) ∂((volume : Measure (HPar k r' × HPar k r')).prod μG₁) = (C₁ : ℝ≥0∞) * (((a * a * b : ℝ≥0) : ℝ≥0∞) * ∫⁻ c' : Fin r' → ℂ, ENNReal.ofReal (cWeight k r' c') * Kμ (TT (c, c')))`. Introduce `c`. Establish `m1 : Measurable fun p : (HPar k r' × HPar k r') × Mt k r' => f (oneStep k r' p.1.1 c (Matrix.of p.2) p.1.2)` using `hf.comp (os_meas (X := fun p : (HPar k r' × HPar k r') × Mt k r' => p.1.1) (C := fun _ => c) (Gm := fun p => p.2) (X' := fun p => p.1.2) (by fun_prop) measurable_const (by fun_prop) (by fun_prop))`. Establish `m3 : Measurable fun t : ((HPar k r' × HPar k r') × (Fin r' → ℂ)) × ((Mt k r' × Mt k r') × Mt k r') => f (oneStep k r' t.1.1.1 c ((Matrix.of t.2.1.1)⁻¹ * bigCell k r' t.1.2 1 * Matrix.of t.2.2 * Matrix.of t.2.1.2) t.1.1.2)` using `hf.comp (os_meas (X := fun t : ((HPar k r' × HPar k r') × (Fin r' → ℂ)) × ((Mt k r' × Mt k r') × Mt k r') => t.1.1.1) (C := fun _ => c) (X' := fun t => t.1.1.2) (by fun_prop) measurable_const (cell_meas (N := fun t : ((HPar k r' × HPar k r') × (Fin r' → ℂ)) × ((Mt k r' × Mt k r') …`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun X => ?_` and prove the remaining obligations. Conclude with `h1 (fun g₁ => f (oneStep k r' X.1 c (Matrix.of g₁) X.2)) (hf.comp (os_meas (X := fun _ => X.1) (C := fun _ => c) (Gm := fun g₁ => g₁) (X' := fun _ => X.2) measurable_const measurable_const measurable_id measurable_const))`. Use `_ = (C₁ : ℝ≥0∞) * ∫⁻ X : HPar k r' × HPar k r', ∫⁻ c' : Fin r' → ℂ, ENNReal.ofReal (cWeight k r' c') * ∫⁻ q : (Mt k r' × Mt k r') × Mt k r', f (oneStep k r' X.1 c ((Matrix.of q.1.1)⁻¹ * bigCell k r' c' 1 * Matrix.of q.2 * Matrix.of q.1.2) X.2) ∂((μN'.prod μN').prod μb') := linteg …`. Use `_ = (C₁ : ℝ≥0∞) * ∫⁻ c' : Fin r' → ℂ, ∫⁻ X : HPar k r' × HPar k r', ENNReal.ofReal (cWeight k r' c') * ∫⁻ q : (Mt k r' × Mt k r') × Mt k r', f (oneStep k r' X.1 c ((Matrix.of q.1.1)⁻¹ * bigCell k r' c' 1 * Matrix.of q.2 * Matrix.of q.1.2) X.2) ∂((μN'.prod μN').prod μb') := by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations. Conclude with `(((cW_meas k r').comp measurable_snd).mul m3.lintegral_prod_right').aemeasurable`. Use `_ = (C₁ : ℝ≥0∞) * ∫⁻ c' : Fin r' → ℂ, ENNReal.ofReal (cWeight k r' c') * (((a * a * b : ℝ≥0) : ℝ≥0∞) * Kμ (TT (c, c'))) := by`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun c' => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`. Use `(key hCN μN' μb' hN' f hf c (bigCell k r' c' 1)).trans ?_` and prove the remaining obligations. Rewrite using `[hae, hbe]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lint_smul3 μN μb a b _`. Use `_ = _ := by`. Use `congr 1`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Use `lintegral_congr fun c' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_left_comm _ _ _`. Set `GG : ℂ × (Fin r' → ℂ) → ℝ≥0∞` to `fun p => ENNReal.ofReal (‖p.1‖ ^ (2 * (2 * r' + k + 1))) * (ENNReal.ofReal (cWeight k r' p.2) * Kμ (TT p))`. Establish `hGG : Measurable GG` using `Measurable.mul (by fun_prop) (((cW_meas k r').comp measurable_snd).mul (hKμ.comp hTT))`. Establish `outer : ∫⁻ c : Fin (1 + r') → ℂ, ENNReal.ofReal (cWeight k (1 + r') c) * ∫⁻ p : (Mt k (1 + r') × Mt k (1 + r')) × Mt k (1 + r'), f ((Matrix.of p.1.1)⁻¹ * bigCell k (1 + r') c 1 * Matrix.of p.2 * Matrix.of p.1.2) ∂((μN.prod μN).prod μb) = ∫⁻ c : ℂ, ENNReal.ofReal (‖c‖ ^ (2 * (2 * …`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Use `show _ = ENNReal.ofReal (‖c (a0 r')‖ ^ (2 * (2 * r' + k + 1))) * (ENNReal.ofReal (cWeight k r' fun a => c (Fin.natAdd 1 a)) * Kμ (TT (splitC r' c)))`. Rewrite using `[cWeight_rec, ENNReal.ofReal_mul (by positivity), mul_assoc, t_bigcellrec k r' c 1]`. Both sides reduce to the same expression. Use `_ = ∫⁻ p : ℂ × (Fin r' → ℂ), GG p := lint_split r' GG`.
-
-Use `_ = ∫⁻ c : ℂ, ∫⁻ c' : Fin r' → ℂ, GG (c, c') := lintegral_prod _ hGG.aemeasurable`. Use `_ = _ := by`. Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Conclude with `lintegral_const_mul' (ENNReal.ofReal (‖c‖ ^ (2 * (2 * r' + k + 1)))) (fun c' => ENNReal.ofReal (cWeight k r' c') * Kμ (TT (c, c'))) ENNReal.ofReal_ne_top`. Rewrite using `[h0 f hf, outer]`.
-
-Simplify using `only [step]`. Establish `e : ∀ (A : ℝ≥0) (w x : ℝ≥0∞), w * ((C₁ : ℝ≥0∞) * ((A : ℝ≥0∞) * x)) = ((C₁ * A : ℝ≥0) : ℝ≥0∞) * (w * x)`. Introduce `A w x`. Rewrite using `[ENNReal.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [e]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul, mul_assoc C₀ C₁]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iter_step (hO : OneStepInt) (HU : HaarUnique) (hL : LevHaar) (hCN : ClosedN) (hCb : ClosedWb)
     (hG : HaarGExists) (hNe : HaarNExists) (hWb : HaarWbExists) (hNR : NRecHaar) (hC : HeisConjLevMeas)
@@ -1522,7 +1496,7 @@ theorem iter_step (hO : OneStepInt) (HU : HaarUnique) (hL : LevHaar) (hCN : Clos
   rw [lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul, mul_assoc C₀ C₁]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [bigCell, Matrix.one_apply, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bc_zero (k : ℕ) (c : Fin 0 → ℂ) : bigCell k 0 c 1 = 1 := by
   ext i j
@@ -1532,25 +1506,25 @@ theorem bc_zero (k : ℕ) (c : Fin 0 → ℂ) : bigCell k 0 c 1 = 1 := by
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Introduce `μG μN μb hG hN hb`. Establish `hUW : UWb k 0 = GV k 0`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => ⟨h, fun a => a.elim0⟩`. Establish `hG' : IsHaarOn (UWb k 0) μG` using `by rw [hUW]; exact hG`. Take `⟨c₀, hc₀, hce⟩` from `haar_smul HU (hCb k 0) hb hG'`. Establish `: SigmaFinite μb` using `sf hb`. Set `o : Mt k 0` to `(1 : Mat k 0)`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hNd : μN = μN {o} • Measure.dirac o`. Rewrite using `[← Measure.restrict_singleton, Measure.restrict_eq_self_of_ae_mem]`. Establish `h` using `haar_ae hN`. Rewrite `h` using `[hNB k]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : μN {o} ≠ ∞` using `(hN.finite_compact {o} isCompact_singleton).ne`. Establish `hne : μN {o} ≠ 0`. Introduce `h`. Apply `hN.ne_zero` to reduce the goal to its premises. Rewrite using `[hNd, h, zero_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩ : ∃ a : ℝ≥0, μN {o} = a` from `⟨(μN {o}).toNNReal, (ENNReal.coe_toNNReal hfin).symm⟩`. Establish `ha0 : a ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[ha, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hNd' : μN = a • Measure.dirac o`. Rewrite using `[hNd, ha]`. Both sides reduce to the same expression. Use `⟨c₀ * (a * a)⁻¹, by positivity, fun f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hF : ∀ c : Fin 0 → ℂ, Measurable fun p : (Mt k 0 × Mt k 0) × Mt k 0 => f ((Matrix.of p.1.1)⁻¹ * bigCell k 0 c 1 * Matrix.of p.2 * Matrix.of p.1.2)` using `fun c => hf.comp (cell_meas (N := fun p : (Mt k 0 × Mt k 0) × Mt k 0 => p.1.1) (T := fun _ => bcF k 0 c) (M := fun p => p.2) (N' := fun p => p.1.2) (by fun_prop) measurable_const (by fun_prop) (by fun_prop))`. Establish `inner : ∀ c : Fin 0 → ℂ, ∫⁻ p : (Mt k 0 × Mt k 0) × Mt k 0, f ((Matrix.of p.1.1)⁻¹ * bigCell k 0 c 1 * Matrix.of p.2 * Matrix.of p.1.2) ∂((μN.prod μN).prod μb) = ((a * a : ℝ≥0) : ℝ≥0∞) * ∫⁻ m, f m ∂μb`. Introduce `c`. Establish `h1 : μb = (1 : ℝ≥0) • μb` using `(one_smul _ _).symm`. Rewrite using `[hNd']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [h1]`. Rewrite using `[lint_smul3 (Measure.dirac o) μb a 1, mul_one, Measure.dirac_prod_dirac, Measure.dirac_prod, lintegral_map (hF c) measurable_prodMk_left]`. Use `congr 1`. Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Use `congrArg f ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ((1 : Mat k 0)⁻¹ * bigCell k 0 c 1 * Matrix.of m * (1 : Mat k 0) : Mat k 0) = Matrix.of m`. Rewrite using `[bc_zero, inv_one, one_mul, one_mul, mul_one]`. Simplify using `only [inner]`. Rewrite using `[volume_pi, Measure.pi_of_empty, lintegral_dirac, hce, lintegral_smul_measure]`. Establish `hw : cWeight k 0 (fun a => isEmptyElim a) = 1` using `by simp [cWeight]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hw, ENNReal.ofReal_one, one_mul, ← mul_assoc, ← ENNReal.coe_mul, ENNReal.smul_def, smul_eq_mul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem iter_base (HU : HaarUnique) (hCb : ClosedWb) (hNB : NBase) (k : ℕ) : IterAt k 0 := by
   intro μG μN μb hG hN hb
@@ -1605,9 +1579,9 @@ theorem iter_base (HU : HaarUnique) (hCb : ClosedWb) (hNB : NBase) (k : ℕ) : I
   field_simp
 
 /- English proof (translation)
-Introduce `hO HU _ hL _ hCN hCb hG hNe hWb hNR hNB hC _ _ _ k r`. Proceed by induction on `r with`. Consider the case `zero => exact iter_base HU hCb hNB k`. Consider the case `succ r' ih`. Establish `h` using `iter_step hO HU hL hCN hCb hG hNe hWb hNR hC k r' ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `h` using `[Nat.add_comm 1 r']`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assembleIter : AssembleIter := by
   intro hO HU _ hL _ hCN hCb hG hNe hWb hNR hNB hC _ _ _ k r
@@ -1625,31 +1599,31 @@ end Formalism.FourierDecayAlt.P.LongWeylElement
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.LongWeylElement.t_bigcellrec`.
+A detailed English derivation is pending.
 -/
 theorem bigCellRec_statement : Formalism.FourierDecayAlt.B2.BigCellRec := by
   exact Formalism.FourierDecayAlt.P.LongWeylElement.t_bigcellrec
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.LongWeylElement.t_w0comm`.
+A detailed English derivation is pending.
 -/
 theorem long_weyl_element_commutation : Formalism.FourierDecayAlt.B2.WeylElementCommutesLevelOne := by
   exact Formalism.FourierDecayAlt.P.LongWeylElement.t_w0comm
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.LongWeylElement.uWbRec`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_weyl_recursion : Formalism.FourierDecayAlt.B2.UWbRec := by
   exact Formalism.FourierDecayAlt.P.LongWeylElement.uWbRec
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.LongWeylElement.assembleIter`.
+A detailed English derivation is pending.
 -/
 theorem iterated_integral_of_parts : Formalism.FourierDecayAlt.B2.AssembleIter := by
   exact Formalism.FourierDecayAlt.P.LongWeylElement.assembleIter
 
 /- English proof (translation)
-The claim follows from `iterated_integral_of_parts stabilizer_integration_formula haar_measure_unique_up_to_scalar haar_measure_inversion levi_haar_measure_exists unitary_group_closed unipotent_radical_closed opposite_weyl_subgroup_closed unitary_group_haar_exists unipotent_haar_exists opposite_weyl_haa …`.
+A detailed English derivation is pending.
 -/
 theorem iterated_integration_formula : Formalism.FourierDecayAlt.B2.IterInt :=
   iterated_integral_of_parts stabilizer_integration_formula haar_measure_unique_up_to_scalar haar_measure_inversion levi_haar_measure_exists unitary_group_closed
@@ -1657,7 +1631,7 @@ theorem iterated_integration_formula : Formalism.FourierDecayAlt.B2.IterInt :=
     unipotent_haar_recursion unipotent_haar_base_case heisenberg_levi_conjugation_measure bigCellRec_statement long_weyl_element_commutation unipotent_weyl_recursion
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.LongWeylElement.t_bigcellfactor`.
+A detailed English derivation is pending.
 -/
 theorem bruhat_big_cell_factorization : Formalism.FourierDecayAlt.B2.BigCellFactor := by
   exact Formalism.FourierDecayAlt.P.LongWeylElement.t_bigcellfactor

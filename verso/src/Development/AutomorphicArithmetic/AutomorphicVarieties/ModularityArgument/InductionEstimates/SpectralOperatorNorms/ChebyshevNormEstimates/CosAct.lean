@@ -8,7 +8,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Conclude with `eq_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coset_pre {G : Type*} [Group G] (U : Subgroup G) (c : G ⧸ U) :
     (QuotientGroup.mk : G → G ⧸ U) ⁻¹' {c} = (fun g => c.out⁻¹ * g) ⁻¹' (U : Set G) := by
@@ -18,7 +18,7 @@ private theorem coset_pre {G : Type*} [Group G] (U : Subgroup G) (c : G ⧸ U) :
   exact eq_comm
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ U) := QuotientGroup.discreteTopology ho`. Establish `h1 : IsCompact ((fun k : G => (QuotientGroup.mk (k * h) : G ⧸ U)) '' (U : Set G))` using `hc.image (QuotientGroup.continuous_mk.comp (continuous_mul_const h))`. Use `h1.finite_of_discrete.subset ?_` and prove the remaining obligations. Introduce and unpack `c ⟨k, hk, rfl⟩`. Conclude with `⟨k, hk, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem coset_fin {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (U : Subgroup G)
     (ho : IsOpen (U : Set G)) (hc : IsCompact (U : Set G)) (h : G) :
@@ -31,7 +31,7 @@ private theorem coset_fin {G : Type*} [Group G] [TopologicalSpace G] [IsTopologi
   exact ⟨k, hk, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[coset_pre]`. Use `⟨⟨(U.isClosed_of_isOpen ho).preimage (continuous_const_mul _), ho.preimage (continuous_const_mul _)⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Homeomorph.mulLeft c.out⁻¹).isCompact_preimage.2 hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem coset_cpt {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (U : Subgroup G)
     (ho : IsOpen (U : Set G)) (hc : IsCompact (U : Set G)) (c : G ⧸ U) :
@@ -41,15 +41,15 @@ private theorem coset_cpt {G : Type*} [Group G] [TopologicalSpace G] [IsTopologi
   exact (Homeomorph.mulLeft c.out⁻¹).isCompact_preimage.2 hc
 
 /- English proof (translation)
-Establish `hT : (QuotientGroup.mk : G → G ⧸ U) ⁻¹' (t : Set (G ⧸ U)) = ⋃ c ∈ t, (QuotientGroup.mk : G → G ⧸ U) ⁻¹' {c}`. Use extensionality with `g`. Simplify using the standard rewrite rules. Establish `hcl : IsClopen ((QuotientGroup.mk : G → G ⧸ U) ⁻¹' (t : Set (G ⧸ U)))`. Rewrite using `[hT]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClopen_biUnion_finset fun c _ => (coset_cpt U ho hc c).1`. Establish `hcp : IsCompact ((QuotientGroup.mk : G → G ⧸ U) ⁻¹' (t : Set (G ⧸ U)))`. Rewrite using `[hT]`. Conclude with `t.isCompact_biUnion fun c _ => (coset_cpt U ho hc c).2`. Use `⟨⟨⟨_, hcl.continuous_indicator (continuous_const (y := a))⟩, HasCompactSupport.intro hcp fun x hx => Set.indicator_of_notMem hx (fun _ => a)⟩, fun _ => rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `E _ _ F hF`. Establish `h1 : ∀ g, ((QuotientGroup.mk : G → G ⧸ U) ⁻¹' (t : Set (G ⧸ U))).indicator (fun _ => a) g • F g = ∑ c ∈ t, ((QuotientGroup.mk : G → G ⧸ U) ⁻¹' {c}).indicator (fun _ => a) g • F g` using `fun g => by`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Simplify using `only [Set.indicator_apply, Set.mem_preimage, Set.mem_singleton_iff, Finset.mem_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_ite_eq]`. Establish `h2 : ∀ c ∈ t, Integrable (fun g => ((QuotientGroup.mk : G → G ⧸ U) ⁻¹' {c}).indicator (fun _ => a) g • F g) m` using `fun c _ => (((coset_cpt U ho hc c).1.continuous_indicator continuous_const).smul hF).integrable_of_hasCompactSupport (HasCompactSupport.intro (coset_cpt U ho hc c).2 fun x hx => by`. Rewrite using `[Pi.smul_apply', Set.indicator_of_notMem hx, zero_smul])`. Use `(integral_congr_ae (Eventually.of_forall h1)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_mul_left_eq_self _ c.out, coset_pre]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Set.indicator_apply, Set.mem_preimage, inv_mul_cancel_left]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coset_fun {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (m : Measure G) [m.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts m] (U : Subgroup G)
@@ -90,7 +90,7 @@ private theorem coset_fun {G : Type*} [Group G] [TopologicalSpace G] [IsTopologi
   simp only [Set.indicator_apply, Set.mem_preimage, inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `⟨?_, finEmb_mem_maxCompact hk, ?_⟩` and prove the remaining obligations. Rewrite using `[MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact hk))]`. Conclude with `(AdelicGLn.prodEquiv K n).apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_facts {K : Type} [Field K] [NumberField K] {n : ℕ} {k : AdelicGLn.FiniteAdelicGL K n}
     (hk : k ∈ AdelicGLn.integralFiniteGL K n) :
@@ -102,13 +102,11 @@ private theorem fin_facts {K : Type} [Field K] [NumberField K] {n : ℕ} {k : Ad
   · exact (AdelicGLn.prodEquiv K n).apply_symm_apply _
 
 /- English proof (translation)
-Take `⟨O, hO, hU⟩` from `D.isOpen`. Establish `: (Kf : Set (AdelicGLn.FiniteAdelicGL K n)) = (AdelicGLn.integralFiniteGL K n : Set _) ∩ finEmb K n ⁻¹' O`. Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2, h3⟩` from `fin_facts (hle hk)`. Use `(hL.1 (MultiplicityOne.finProj K n k) (by rw [h1, h3])).2 (by rw [h1, h3]; exact hk)` as an intermediate fact. Rewrite `this` using `[hU, h1]`. Conclude with `⟨hle hk, this.1⟩`. Introduce and unpack `⟨hk, hk'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, h2, h3⟩` from `fin_facts hk`. Use `(hL.1 (MultiplicityOne.finProj K n k) (by rw [h1, h3])).1 (by rw [hU, h1]; exact ⟨hk', h2⟩)` as an intermediate fact. Rewrite `this` using `[h1, h3]`. Conclude with `this`. Rewrite using `[this]`.
-
-Conclude with `(AdelicGLn.isOpen_integralFiniteGL K n).inter (hO.preimage continuous_finEmb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem level_open {K : Type} [Field K] [NumberField K] {n : ℕ} {D : TypeDat K n}
     {Kf : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hL : D.Level Kf) (hle : Kf ≤ AdelicGLn.integralFiniteGL K n) :
@@ -131,9 +129,9 @@ private theorem level_open {K : Type} [Field K] [NumberField K] {n : ℕ} {D : T
   exact (AdelicGLn.isOpen_integralFiniteGL K n).inter (hO.preimage continuous_finEmb)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `fin_facts (hle hk)`. Establish `h4 : (AdelicGLn.prodEquiv K n (MultiplicityOne.finProj K n k : G1 K n)).1 = 1` using `by rw [h1, h3]`. Establish `hU : MultiplicityOne.finProj K n k ∈ D.U` using `(hL.1 _ h4).2 (by rw [h1, h3]; exact hk)`. Rewrite using `[← hf g, ← hf (g * _), ← (D.inv _ hU).integral_comp (measurableEmbedding_mulLeft _) fun y => D.e y * f (g * y)]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [D.supp] with y hy`. Rewrite using `[hL.2.2 _ hU h4 y hy, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_inv {K : Type} [Field K] [NumberField K] {n : ℕ} {D : TypeDat K n}
     {Kf : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hL : D.Level Kf) (hle : Kf ≤ AdelicGLn.integralFiniteGL K n)
@@ -148,31 +146,31 @@ private theorem fix_inv {K : Type} [Field K] [NumberField K] {n : ℕ} {D : Type
   rw [hL.2.2 _ hU h4 y hy, mul_assoc]
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' Kf hL hle h Y hY`. Establish `ho` using `level_open hL hle`. Establish `hc : IsCompact (Kf : Set (AdelicGLn.FiniteAdelicGL K (2 + 2)))` using `(AdelicGLn.isCompact_integralFiniteGL K (2 + 2)).of_isClosed_subset (Kf.isClosed_of_isOpen ho) hle`. Establish `hfin` using `coset_fin Kf ho hc h`. Set `m : Measure (AdelicGLn.FiniteAdelicGL K (2 + 2))` to `Measure.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hpos : (m.real Kf : ℝ) ≠ 0`. Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`. Conclude with `⟨(ho.measure_pos m ⟨1, Kf.one_mem⟩).ne', hc.measure_lt_top.ne⟩`. Take `⟨e, he, hint⟩` from `coset_fun m Kf ho hc hfin.toFinset ((m.real Kf : ℝ) : ℂ)⁻¹`. Take `⟨e₀, he₀, hO₀⟩` from `UpperTheory.ConvolutionTheory.Tf.prjFix K (2 + 2) μ m Kf ho hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, hmul, -, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K (2 + 2) μ Kf`. Establish `hO : ∀ (e : TF K (2 + 2)) v, Ofin μ m e v = ∫ h, e h • rhoF μ h v ∂m` using `fun e v => by`. Unfold `Ofin`. Rewrite using `[UnitaryRep.integrated_ccToL1_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hcont : ∀ v, Continuous fun h => rhoF μ h v` using `fun v => ((rightRegularRep (rationalGLOne K (2 + 2)) μ).continuous_orbit v).comp MultiplicityOne.continuous_finProj`. Establish `hYe : Y = Ofin μ m e`. Rewrite using `[hY, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[hO, ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (hint _ _ (hcont v)).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hi : Integrable (fun h => e₀ h • rhoF μ h v) m` using `(e₀.continuous.smul (hcont v)).integrable_of_hasCompactSupport e₀.hasCompactSupport.smul_right`. Rewrite using `[← hO₀, hO, ← ContinuousLinearMap.integral_comp_comm _ hi]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[map_smul, he₀, hmul, ContinuousLinearMap.comp_apply]`. Establish `hmem : ∀ g, g ∈ (QuotientGroup.mk : _ → AdelicGLn.FiniteAdelicGL K (2 + 2) ⧸ Kf) ⁻¹' (hfin.toFinset : Set _) ↔ ∃ k ∈ Kf, g⁻¹ * (k * h) ∈ Kf` using `fun g => by`. Simplify using `only [Set.mem_preimage, Set.Finite.coe_toFinset, Set.mem_setOf_eq, QuotientGroup.eq]`. Establish `hinv : ∀ k ∈ Kf, ∀ g, e (k * g) = e g ∧ e (g * k) = e g` using `fun k hk g => by classical`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [he, Set.indicator_apply, hmem]`. Use `⟨if_congr ⟨?_, ?_⟩ rfl rfl, if_congr ⟨?_, ?_⟩ rfl rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨k', hk', h'⟩`. Conclude with `⟨k⁻¹ * k', Kf.mul_mem (Kf.inv_mem hk) hk', by simpa only [mul_inv_rev, mul_assoc] using h'⟩`. Introduce and unpack `⟨k', hk', h'⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨k * k', Kf.mul_mem hk hk', by simpa only [mul_inv_rev, mul_assoc, inv_mul_cancel_left] using h'⟩`. Introduce and unpack `⟨k', hk', h'⟩`. Conclude with `⟨k', hk', by simpa only [mul_inv_rev, mul_assoc, mul_inv_cancel_left] using Kf.mul_mem hk h'⟩`. Introduce and unpack `⟨k', hk', h'⟩`. Conclude with `⟨k', hk', by simpa only [mul_inv_rev, mul_assoc] using Kf.mul_mem (Kf.inv_mem hk) h'⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨⟨s, hs, hsz⟩, hP⟩` from `finAct K μ μ₂ τ₁ τ₂ hp D d d' A A' Kf hL hle m e hinv`. Rewrite using `[hYe]`. Use `⟨⟨s, hs, fun z v x => ?_⟩, hP⟩` and prove the remaining obligations. Take `⟨hsec, hfix⟩` from `(A.onto (A.sec v)).1 ⟨v, rfl⟩`. Take `⟨-, hK, -, hH, -⟩` from `hpSpec (K := K)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfl : Continuous (flat z (A.sec v))` using `(Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hH))).mul hsec.cont`. Establish `hr : ∀ k ∈ Kf, ∀ y, flat z (A.sec v) (y * MultiplicityOne.finProj K (2 + 2) k) = flat z (A.sec v) y` using `fun k hk y => by`. Take `⟨h1, h2, -⟩` from `fin_facts (hle hk)`. Establish `h3 : MultiplicityOne.finProj K (2 + 2) k ∈ KG K (2 + 2)` using `by show ((MultiplicityOne.finProj K (2 + 2) k : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ∈ Reduction.maxCompact`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Unfold `flat`. Rewrite using `[fix_inv hL hle hfix hk, show HP 2 2 (y * MultiplicityOne.finProj K (2 + 2) k) = HP 2 2 y from (hK _ h3).2 y]`. Rewrite using `[← hsz, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `(hint ℂ (fun g => flat z (A.sec v) (x * MultiplicityOne.finProj K (2 + 2) g)) (hfl.comp (continuous_const.mul MultiplicityOne.continuous_finProj))).trans (Finset.sum_congr rfl fun c _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : ∀ g, (Kf : Set (AdelicGLn.FiniteAdelicGL K (2 + 2))).indicator (fun _ => ((m.real Kf : ℝ) : ℂ)⁻¹) g • flat z (A.sec v) (x * MultiplicityOne.finProj K (2 + 2) (c.out * g)) = (Kf : Set (AdelicGLn.FiniteAdelicGL K (2 + 2))).indicator (fun _ => ((m.real Kf : ℝ) : ℂ)⁻¹) g • flat …` using `fun g => by`. Distinguish the cases in `hg : g ∈ Kf`. Rewrite using `[map_mul, ← mul_assoc, hr g hg]`. Rewrite using `[Set.indicator_of_notMem (show g ∉ (Kf : Set _) from hg), zero_smul, zero_smul]`. Simplify using `only [h5]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_smul_const, integral_indicator_const _ ho.measurableSet, Complex.real_smul, mul_inv_cancel₀ (by exact_mod_cast hpos), one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cosAct :
     ForAllC fun K _ _ μ _ _ _ _ _ D d _ A A' => ∀ (Kf : Subgroup (AdelicGLn.FiniteAdelicGL K (2 + 2))), D.Level Kf → Kf ≤ AdelicGLn.integralFiniteGL K (2 + 2) →

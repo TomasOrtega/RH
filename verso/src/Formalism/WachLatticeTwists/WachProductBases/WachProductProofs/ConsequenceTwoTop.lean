@@ -8,39 +8,37 @@ namespace Formalism.RepresentationBoundsCohomology.N1
 open Formalism.CoboundaryTransfers Finset
 
 /- English proof (translation)
-Introduce `L R _ _ _ P _ _ _ _ t u γR γ κ _ n a y Sx hγt hγs hmod hbij hn hS x hx`. Establish `hbijm` using `pow_smul_bij t hbij`. Use `choose wv hwv using fun (k : κ) (m : ℕ) => (hbijm m).2 (n k)`. Simplify using `only at hwv`. Establish `hstep : ∀ k m, t • wv k (m + 1) = wv k m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k m`. Apply `(hbijm m).1` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[smul_smul, ← pow_succ, hwv, hwv]`. Establish `heig : ∀ k (m : ℕ), γ (wv k m) = ((u ^ (-(a k + m)) : Lˣ) : L) • wv k m`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k m`. Apply `(hbijm m).1` to reduce the goal to its premises. Simplify using `only`. Establish `h1 : γ (t ^ m • wv k m) = ((u : L) ^ m) • (t ^ m • γ (wv k m))`. Rewrite using `[hγs, map_pow, hγt, smul_pow, smul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hwv, hn]`. Rewrite using `[smul_comm (t ^ m), hwv]`. Establish `h2 : t ^ m • γ (wv k m) = ((u ^ (-(m : ℤ)) : Lˣ) : L) • (((u : L) ^ m) • (t ^ m • γ (wv k m)))`. Rewrite using `[smul_smul]`. Establish `: ((u ^ (-(m : ℤ)) : Lˣ) : L) * (u : L) ^ m = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, zpow_neg, zpow_natCast, inv_mul_cancel, Units.val_one]`. Rewrite using `[this, one_smul]`. Rewrite using `[h2, ← h1, smul_smul, ← Units.val_mul, ← zpow_add]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `key1 : ∀ k m (b : ℤ) (r : R), ∃ r' : R, γ (r • wv k m) - ((u ^ (-b) : Lˣ) : L) • (r • wv k m) = r' • wv k m`. Introduce `k m b r`. Use `⟨γR r * algebraMap L R ((u ^ (-(a k + m)) : Lˣ) : L) - algebraMap L R ((u ^ (-b) : Lˣ) : L) * r, ?_⟩` and prove the remaining obligations. Rewrite using `[hγs, heig, ← algebraMap_smul R (((u ^ (-(a k + m)) : Lˣ) : L)) (wv k m), ← algebraMap_smul R (((u ^ (-b) : Lˣ) : L)) (r • wv k m)]`. Use `module`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key2 : ∀ k (m : ℕ) (r : R), ∃ r' : R, γ (r • wv k (m + 1)) - ((u ^ (-(a k + ((m + 1 : ℕ) : ℤ))) : Lˣ) : L) • (r • wv k (m + 1)) = r' • wv k m`. Introduce `k m r`. Take `⟨r', hr'⟩` from `hmod r`. Use `set μ : L := ((u ^ (-(a k + ((m + 1 : ℕ) : ℤ))) : Lˣ) : L) with hμ`. Use `⟨r' * algebraMap L R μ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hstep k m]`. Establish `e2 : γR r = r + t * r'` using `by rw [← hr']; ring`. Rewrite using `[hγs, heig, ← hμ, ← algebraMap_smul R μ (wv k (m + 1)), ← algebraMap_smul R μ (r • wv k (m + 1)), e2]`. Use `module`. Establish `pres : ∀ k m (T : Finset ℤ) (r : R), ∃ r' : R, Polynomial.aeval γ (∏ b ∈ T, (Polynomial.X - Polynomial.C (((u ^ (-b) : Lˣ) : L)))) (r • wv k m) = r' • wv k m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `k m T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro r; exact ⟨r, by simp⟩`. Consider the case `insert b T hb ih`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r₁, h1⟩` from `ih r`. Take `⟨r₂, h2⟩` from `key1 k m b r₁`. Use `⟨r₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert hb, map_mul, Module.End.mul_apply, h1, ← h2]`. Simplify using `[Module.algebraMap_end_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `main : ∀ k (m : ℕ) (T : Finset ℤ), (∀ j ∈ Finset.Icc (1 : ℤ) m, a k + j ∈ T) → ∀ r : R, ∃ r' : R, Polynomial.aeval γ (∏ b ∈ T, (Polynomial.X - Polynomial.C (((u ^ (-b) : Lˣ) : L)))) (r • wv k m) = r' • wv k 0`. Introduce `k m`. Proceed by induction on `m with`. Consider the case `zero => intro T _ r`. Conclude with `pres k 0 T r`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `succ m ih`. Introduce `T hT r`. Establish `hb₀ : a k + ((m + 1 : ℕ) : ℤ) ∈ T` using `hT _ (Finset.mem_Icc.2 ⟨by push_cast; omega, le_refl _⟩)`. Take `⟨r₁, h1⟩` from `key2 k m r`. Take `⟨r₂, h2⟩` from `ih (T.erase (a k + ((m + 1 : ℕ) : ℤ))) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j hj`. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.1 hj`. Use `Finset.mem_erase.2 ⟨by push_cast; omega, hT j (Finset.mem_Icc.2 ⟨hj1, ?_⟩)⟩` and prove the remaining obligations. Use `push_cast`. Use the proof step `omega) r₁`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨r₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul T _ hb₀, map_mul, Module.End.mul_apply, ← h2, ← h1]`. Simplify using `[Module.algebraMap_end_apply]`. Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hx`. Establish `hxsum : x = ∑ k, r k • wv k y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `(hbijm y).1` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← hr, smul_sum]`. Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, hwv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxsum, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨r', h'⟩` from `main k y Sx (hS k) (r k)`. Rewrite using `[h']`. Establish `h0 : wv k 0 = n k` using `by simpa using hwv k 0`.
-
-Rewrite using `[h0]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem consequence_two_triangular : TriangularConsequence := by
   intro L R _ _ _ P _ _ _ _ t u γR γ κ _ n a y Sx hγt hγs hmod hbij hn hS x hx
@@ -139,15 +137,13 @@ theorem consequence_two_triangular : TriangularConsequence := by
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Introduce `O A R _ _ _ _ _ B M D P _ _ _ _ _ _ _ _ W u y Sx ρ κ _ t γR locA loc γl n a hGQ hγt hmod hbij hγls hlocs hlocγ hQt hP4 hP4e hP5 hS d hd`. Set `Ll : ρ → Submodule O P` to `fun x => (Submodule.span R (Set.range (n x))).restrictScalars O`. Set `Ly : ρ → Submodule O P` to `fun x => ((Submodule.span R (Set.range (n x))).comap (t ^ y • (LinearMap.id : P →ₗ[R] P))).restrictScalars O`. Use `consequence_two_global O A D W.N W.γ B.Q y _ ρ (fun _ => P) loc γl Ll Ly hlocγ hP5 ?_ ?_ ?_ d hd` and prove the remaining obligations. Introduce and unpack `d ⟨k, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨x', hx', h⟩` from `affineLine_localAcyclicity_of_strictHenselian_points O A B M D W k hGQ d hk`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `: W.γ d = d + B.X • x'` using `by rw [← h]; abel`. Rewrite using `[this, smul_add, smul_comm]`. Conclude with `W.N.add_mem hk (W.N.smul_mem _ hx')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd x`. Take `⟨v, hv, hQ⟩` from `hQt x`. Take `⟨vi, hvi⟩` from `hv.exists_left_inv`. Use `show t ^ y • loc x d ∈ Submodule.span R (Set.range (n x))`. Establish `h1` using `hP4 x _ hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hlocs x _ d ⟨y, hd⟩, map_pow, hQ, mul_pow, mul_smul]`. Establish `h2 : t ^ y • loc x d = vi ^ y • (v ^ y • t ^ y • loc x d)`. Rewrite using `[smul_smul, ← mul_pow, hvi, one_pow, one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ h1`.
-
-Introduce `x v hv`. Conclude with `consequence_two_triangular O R P t u γR (γl x) κ (n x) (a x) y Sx hγt (hγls x) hmod hbij (hP4e x) (hS x) v hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem consequence_two_top : TopDegreeTriangularConsequence := by
   intro O A R _ _ _ _ _ B M D P _ _ _ _ _ _ _ _ W u y Sx ρ κ _ t γR locA loc γl n a hGQ hγt hmod

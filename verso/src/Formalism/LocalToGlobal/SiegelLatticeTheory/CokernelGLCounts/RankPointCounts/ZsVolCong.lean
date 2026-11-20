@@ -12,20 +12,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locP {W : Type*} [AddCommGroup W] [Module (𝓞 D.host.E) W] (p : Ideal (𝓞 D.host.E)) [p.IsPrime]
     (L : Submodule (𝓞 D.host.E) W) (x : W) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ p L ↔ ∃ t : 𝓞 D.host.E, t ∉ p ∧ t • x ∈ L := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul D.host.E t x, LinearEquiv.map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_O (s : (VS D).V ≃ₗ[D.host.E] (VS D).V) (t : 𝓞 D.host.E) (x : (VS D).V) : s (t • x) = t • s x := by
   rw [← algebraMap_smul D.host.E t x, LinearEquiv.map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Take `⟨c, -, hc1, heq⟩` from `hc.1 P`. Rewrite using `[heq]`. Use `congr 2`. Use extensionality with `v`. Simplify using `[hc1 hgP]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conv_at {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hc : IsFixedConv Λ (Lat.gS D) F) (P : HeightOneSpectrum (𝓞 D.host.E)) (hgP : ((Lat.gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) :
@@ -37,31 +37,31 @@ theorem conv_at {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (Λ : Submodule (𝓞
   simp [hc1 hgP]
 
 /- English proof (translation)
-Establish `hP` using `P.isPrime`. Establish `hconv` using `conv_at F Λ hc P hgP`. Break down `lt_trichotomy c i with hci | hci | hci` into its components or cases. Establish `hcr : (c : ℕ) < D.R.rS` using `lt_of_lt_of_le hci (Nat.lt_succ_iff.1 i.2)`. Take `⟨a, rfl⟩ : ∃ a : Fin D.R.rS, c = Fin.castSucc a` from `⟨⟨c, hcr⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hXmem : ∀ y : Fin D.R.rS → D.host.E, (∑ a, y a • F.fl.e a) ∈ Λ → (∑ a, y a • F.fl.e a) ∈ XLam Λ F`. Introduce `y hy`. Use `Submodule.mem_inf.2 ⟨hy, ?_⟩` and prove the remaining obligations. Use `show (∑ a, y a • F.fl.e a) ∈ F.fl.X`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `hv : s F.fl.z - F.fl.z = ∑ a', uu (Fin.castSucc a') (Fin.last _) • F.fl.e a'`. Establish `h` using `hfr (Fin.last _)`. Rewrite `h` using `[sum_fvec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [FlagG.fvec, Fin.snoc_last] at h`. Rewrite using `[h, (huu _ _).2 rfl, one_smul, add_sub_cancel_right]`. Establish `hmem : s F.fl.z - F.fl.z ∈ XLam Λ F`. Rewrite using `[hv]`. Apply `hXmem` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hv]`. Conclude with `Λ.sub_mem (hs _ hz) hz`. Establish `hloc : s F.fl.z - F.fl.z ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 D.host.E) (Set.range F.fl.e))`. Rewrite using `[← hconv]`. Conclude with `⟨1, P.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact hmem⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, htv⟩` from `(mem_locP P.asIdeal _ _).1 hloc`. Establish `hv2 : t • (s F.fl.z - F.fl.z) = ∑ a', ((t : D.host.E) * uu (Fin.castSucc a') (Fin.last _)) • F.fl.e a'`. Rewrite using `[hv, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E t, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨o, ho⟩` from `coef_spanO F.fl htv _ hv2 a`. Conclude with `⟨t, ht, o, ho.symm⟩`. Consider the case `cast i'`. Establish `he : F.fl.e i' ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ F)`. Rewrite using `[hconv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨1, P.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact Submodule.subset_span ⟨i', rfl⟩⟩`. Take `⟨t1, ht1, ht1e⟩` from `(mem_locP P.asIdeal _ _).1 he`. Establish `hv : s (t1 • F.fl.e i') = ∑ a', ((t1 : D.host.E) * uu (Fin.castSucc a') (Fin.castSucc i')) • F.fl.e a'`. Establish `h` using `hfr (Fin.castSucc i')`. Rewrite `h` using `[sum_fvec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [FlagG.fvec, Fin.snoc_castSucc] at h`. Rewrite using `[smul_O, h, (huu _ _).1 (Fin.castSucc_lt_last i'), zero_smul, add_zero, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E t1, smul_smul]`. Establish `hmem : s (t1 • F.fl.e i') ∈ XLam Λ F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Apply `hXmem` to reduce the goal to its premises. Rewrite using `[← hv]`. Conclude with `hs _ (Submodule.mem_inf.1 ht1e).1`. Establish `hloc : s (t1 • F.fl.e i') ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 D.host.E) (Set.range F.fl.e))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hconv]`. Conclude with `⟨1, P.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact hmem⟩`. Take `⟨t2, ht2, ht2v⟩` from `(mem_locP P.asIdeal _ _).1 hloc`. Establish `hv2 : t2 • s (t1 • F.fl.e i') = ∑ a', ((t2 : D.host.E) * ((t1 : D.host.E) * uu (Fin.castSucc a') (Fin.castSucc i'))) • F.fl.e a'`. Rewrite using `[hv, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E t2, smul_smul]`. Take `⟨o, ho⟩` from `coef_spanO F.fl ht2v _ hv2 a`. Use `⟨t2 * t1, fun h => (hP.mem_or_mem h).elim ht2 ht1, o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Supply the required witnesses or components.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Substitute `hci` using the available equality. Conclude with `⟨1, P.asIdeal.primeCompl.one_mem, 1, by rw [(huu c c).2 rfl]; simp⟩`. Conclude with `⟨1, P.asIdeal.primeCompl.one_mem, 0, by rw [(huu c i).1 hci]; simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem int_at {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hc : IsFixedConv Λ (Lat.gS D) F) (hz : F.fl.z ∈ Λ) (s : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hs : ∀ v ∈ Λ, s v ∈ Λ)

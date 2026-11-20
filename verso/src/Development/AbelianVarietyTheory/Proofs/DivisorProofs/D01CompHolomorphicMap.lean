@@ -7,9 +7,9 @@ open scoped ContDiff
 namespace GlobalTheory.DbarChain
 
 /- English proof (translation)
-Establish `hφR : DifferentiableAt ℝ φ b` using `hφ.restrictScalars ℝ`. Establish `hcomp : fderiv ℝ (fun c => H (φ c)) b = (fderiv ℝ H (φ b)).comp (fderiv ℝ φ b)` using `fderiv_comp (x := b) (g := H) (f := φ) hH hφR`. Establish `hres : fderiv ℝ φ b = (fderiv ℂ φ b).restrictScalars ℝ` using `hφ.fderiv_restrictScalars ℝ`. Unfold `d01`. Rewrite using `[hcomp, hres]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d01_comp_holomorphic {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup E'] [NormedSpace ℂ E'] (φ : E' → E) (H : E → ℂ) (b v : E')

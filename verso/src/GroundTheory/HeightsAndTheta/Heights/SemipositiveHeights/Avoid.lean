@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.ForSecondHalf
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `R _ K _ ι _ Ws hWs`. Conclude with `GroundTheory.Heights₂.Heights.Inter.AvoidRing.exists_form_avoid (↑Ws : Set (Ideal (MRingOver R ι))) Ws.finite_toSet (fun W hW => hWs W (Finset.mem_coe.mp hW))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem avoid : ReciprocityTheory.ChartRestriction.G.AI.I2.AvoidStatement := by
   intro R _ K _ ι _ Ws hWs

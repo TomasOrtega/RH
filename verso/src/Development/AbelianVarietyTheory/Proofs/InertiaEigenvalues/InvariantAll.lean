@@ -5,15 +5,13 @@ namespace GlobalTheory.InvariantBotOrTop
 open Matrix
 
 /- English proof (translation)
-Establish `hA : A ∈ Submodule.span k (Set.range M)`. Rewrite using `[hM]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `hA`. Conclude with `hW g`. Consider the case `zero`. Introduce `x _`. Rewrite using `[Matrix.map_zero _ (map_zero _), Matrix.zero_mulVec]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `W.zero_mem`. Consider the case `add A B _ _ hA hB`. Introduce `x hx`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.add_mulVec]`. Conclude with `W.add_mem (hA x hx) (hB x hx)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c A _ hA`. Introduce `x hx`. Rewrite using `[Matrix.map_smul _ c (fun a => by rw [smul_eq_mul, map_mul, Algebra.smul_def])]`. Use `first`. Consider the case `rw [Matrix.smul_mulVec]`.
-
-Consider the case `rw [Matrix.smul_mulVec_assoc]`. Conclude with `W.smul_of_tower_mem c (hA x hx)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem invariant_all {Γ k K : Type} [Field k] [Field K] [Algebra k K] {r : ℕ}
     (M : Γ → Matrix (Fin r) (Fin r) k) (hM : Submodule.span k (Set.range M) = ⊤)
@@ -44,17 +42,17 @@ theorem invariant_all {Γ k K : Type} [Field k] [Field K] [Algebra k K] {r : ℕ
     exact W.smul_of_tower_mem c (hA x hx)
 
 /- English proof (translation)
-Distinguish the cases in `hbot : W = ⊥`. Conclude with `Or.inl hbot`. Use `right`. Take `⟨x, hxW, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, x j ≠ 0 := by`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx0 (funext h)`. Establish `he : ∀ i, (Pi.single i (1 : K) : Fin r → K) ∈ W`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h1` using `invariant_all M hM W hW (Matrix.single i j 1) x hxW`. Establish `h2 : (Matrix.single i j (1 : k)).map (algebraMap k K) *ᵥ x = x j • Pi.single i 1`. Use extensionality with `a`. Rewrite using `[Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hai : a = i`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hai` using the available equality. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Matrix.single_apply, hb, Ne.symm hb]) (by simp)]`. Simplify using `[Matrix.single_apply]`. Rewrite using `[Finset.sum_eq_zero (fun b _ => by simp [Matrix.single_apply, hai, Ne.symm hai])]`. Simplify using `[Pi.single_apply, hai]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[h2]`. Establish `h3` using `W.smul_mem (x j)⁻¹ h1`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hj, one_smul]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hy : y = ∑ i, y i • (Pi.single i (1 : K) : Fin r → K)`. Use extensionality with `a`. Simplify using `[Pi.single_apply]`. Rewrite using `[hy]`. Conclude with `W.sum_mem fun i _ => W.smul_mem _ (he i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bot_or_top {Γ k K : Type} [Field k] [Field K] [Algebra k K] {r : ℕ}
     (M : Γ → Matrix (Fin r) (Fin r) k) (hM : Submodule.span k (Set.range M) = ⊤)
@@ -94,7 +92,7 @@ theorem bot_or_top {Γ k K : Type} [Field k] [Field K] [Algebra k K] {r : ℕ}
   exact W.sum_mem fun i _ => W.smul_mem _ (he i)
 
 /- English proof (translation)
-Introduce `Γ k K _ _ _ r M hM W hW`. Conclude with `bot_or_top M hM W hW`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {Γ k K : Type} [inst : Field k] [inst_1 : Field K] [inst_2 : Algebra k K] {r : ℕ} (M : Γ → Matrix (Fin r) (Fin r) k), Submodule.span k (Set.range M) = ⊤ → ∀ (W : Submodule K (Fin r → K)), (∀ (g : Γ), ∀ x ∈ W, Matrix.mulVec (Matrix.map (M g) (⇑(Algebra.algebraMap k K) : k → K)) x ∈ W) → W = ⊥ ∨ W = ⊤ := by
   intro Γ k K _ _ _ r M hM W hW

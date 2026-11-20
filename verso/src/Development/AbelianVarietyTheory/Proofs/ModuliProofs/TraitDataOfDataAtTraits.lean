@@ -17,7 +17,7 @@ section
 variable {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ObjMaps.exists_sab_comp m m'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem map_comp {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m' : SABMap t'' t' g) (m : SABMap t' t f)
     (h : g ≫ f = k) : ∃ n : SABMap t'' t k, n.φ = m'.φ ≫ m.φ := by
@@ -25,7 +25,7 @@ theorem map_comp {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m' : SABMap t'
   exact ObjMaps.exists_sab_comp m m'
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ObjMaps.exists_sab_cancel m n`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem map_cancel {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (n : SABMap t'' t k) (m : SABMap t' t f)
     (h : g ≫ f = k) : ∃ m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by

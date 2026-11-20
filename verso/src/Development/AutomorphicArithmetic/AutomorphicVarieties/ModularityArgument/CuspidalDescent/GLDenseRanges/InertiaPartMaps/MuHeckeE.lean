@@ -10,9 +10,9 @@ open private exists_semi joint_gen act_lam from Development.AutomorphicArithmeti
 section Lin
 
 /- English proof (translation)
-Set `φ : ↥P →+ ↥Q` to `{ toFun := fun v => ⟨Ψ v.1, (h _).1 v.2⟩ map_zero' := Subtype.ext (map_zero Ψ) map_add' := fun a b => Subtype.ext (map_add Ψ a.1 b.1) }`. Establish `hb : Function.Bijective φ`. Use `⟨fun a b e => Subtype.ext (hi (congrArg Subtype.val e)), fun w => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hQ w.1 w.2`. Conclude with `⟨⟨v, (h v).2 (hv ▸ w.2)⟩, Subtype.ext hv⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `rank_eq_of_equiv_equiv ι (AddEquiv.ofBijective φ hb) ι.bijective fun k v => Subtype.ext (hs k v.1)`.
+A detailed English derivation is pending.
 -/
 private theorem rank_semi {K C V W : Type} [Field K] [Field C] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module C W]
     (ι : K ≃+* C) (Ψ : V →+ W) (hs : ∀ (k : K) v, Ψ (k • v) = ι k • Ψ v) (hi : Function.Injective Ψ) (P : Submodule K V)
@@ -28,13 +28,13 @@ private theorem rank_semi {K C V W : Type} [Field K] [Field C] [AddCommGroup V] 
   exact rank_eq_of_equiv_equiv ι (AddEquiv.ofBijective φ hb) ι.bijective fun k v => Subtype.ext (hs k v.1)
 
 /- English proof (translation)
-Set `s : Y₀ →+ W` to `AddMonoidHom.mk' (fun v => sp v) fun v v' => hadd _ v.2 _ v'.2`. Establish `key : ∀ t : Finset G, t ⊆ a.support → ∃ v : Y₀, (v : M₀) = ∑ g ∈ t, a g • ρ g m ∧ s v = ∑ g ∈ t, a g • ρ' g (sp m)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨0, by simp, by simp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert g t hg ih`. Introduce `ht`. Take `⟨v, h1, h2⟩` from `ih fun x hx => ht (Finset.mem_insert_of_mem hx)`. Take `⟨hm, hs⟩` from `h g (ht (Finset.mem_insert_self _ _))`. Use `⟨a g • ⟨ρ g m, hm⟩ + v, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_insert hg, ← h1]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_insert hg, map_add, map_zsmul, h2, ← hs]`. Both sides reduce to the same expression. Take `⟨v, h1, h2⟩` from `key _ subset_rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `e1 : opE ρ a m = ∑ g ∈ a.support, a g • ρ g m`. Simplify using `only [opE, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `e2 : opE ρ' a (sp m) = ∑ g ∈ a.support, a g • ρ' g (sp m)`. Simplify using `only [opE, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[e1, e2, ← h1, ← h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -71,19 +71,15 @@ end Lin
 section Frame
 
 /- English proof (translation)
-Take `⟨hsp, hord⟩` from `Submodule.mem_inf.1 hf`. Take `⟨hamb, hfix⟩` from `Submodule.mem_inf.1 hsp`. Establish `hc : ∀ b : Gp, Commute (X.rp A m b) (rtr A (Ga × Gp) (Fin m → A) (g, 1))` using `fun b => LinearMap.ext fun F => funext fun h => by show F (h * (1, b) * (g, 1)) = F (h * (g, 1) * (1, b))`. Conclude with `congrArg F (Prod.ext (by simp) (by simp))`. Establish `hU : Commute (X.U A m X.I.z) (rtr A (Ga × Gp) (Fin m → A) (g, 1))` using `finsum_induction (fun D => Commute D (rtr A (Ga × Gp) (Fin m → A) (g, 1))) (Commute.zero_left _) (fun _ _ => Commute.add_left) fun _ => hc _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ap : ∀ {D D' : Module.End A (X.Fn A m)}, Commute D D' → ∀ F, D (D' F) = D' (D F)` using `fun h F => LinearMap.congr_fun h F`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨?_, fun u hu => funext fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨fun γ h => ?_, fun x hx => ?_, fun t => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `show f (X.glob γ * h * (g, 1)) = f (h * (g, 1))`. Rewrite using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hamb.1 γ _`. Use `show X.rp A m x _ = _`. Rewrite using `[ap (hc x), hamb.2.1 x hx]`. Use `show X.rp A m t _ = _`. Rewrite using `[ap (hc t), hamb.2.2.1 t, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc'⟩` from `hamb.2.2.2 k`. Use `⟨c, fun y hy h i => ?_⟩` and prove the remaining obligations. Use `show f (h * (1, y) * (g, 1)) i - f (h * (g, 1)) i ∈ _`. Rewrite using `[show h * ((1 : Ga), y) * (g, 1) = h * (g, 1) * (1, y) from Prod.ext (by simp) (by simp)]`. Conclude with `hc' y hy _ i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨u', hu', e1, e2⟩` from `hg u hu`. Use `congrFun (hfix u' hu') (h * (g, 1))` as an intermediate fact. Rewrite `this` using `[Frame.ra_apply]`. Use `show (τ u : Matrix (Fin m) (Fin m) A).mulVec (f (h * ((u : Ga), 1) * (g, 1))) = f (h * (g, 1))`. Rewrite using `[← e2, ← this]`.
-
-Use `congr 2`. Conclude with `Prod.ext (by simp [e1, mul_assoc]) (by simp)`. Use `(Submodule.mem_iInf _).2 fun k => ?_` and prove the remaining obligations. Establish `hk` using `(Submodule.mem_iInf _).1 hord k`. Establish `hle : (⨆ n : ℕ, (X.valIn A m k).comap (X.U A m X.I.z ^ (n + 1) - 1)) ≤ (⨆ n : ℕ, (X.valIn A m k).comap (X.U A m X.I.z ^ (n + 1) - 1)).comap (rtr A (Ga × Gp) (Fin m → A) (g, 1))` using `iSup_le fun n v hv => Submodule.mem_comap.2 (Submodule.mem_iSup_of_mem n (Submodule.mem_comap.2 (by`.
-
-Rewrite using `[ap ((hU.pow_left (n + 1)).sub_left (Commute.one_left _))]`. Establish `hv'` using `Submodule.mem_comap.1 hv`. Conclude with `(Submodule.mem_pi.2 fun h _ => Submodule.mem_pi.2 fun i _ => Submodule.mem_pi.1 (Submodule.mem_pi.1 hv' (h * (g, 1)) trivial) i trivial))))`. Conclude with `hle hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ord_tr {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {A : Type} [CommRing A] [IsLocalRing A]
     {m : ℕ} (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ) (U : Subgroup X.Ub) (g : Ga)
@@ -141,21 +137,21 @@ variable {O A B K : Type} [CommRing O] [CommRing A] [CommRing B] [Field K] [Alge
 
 include hann in
 /- English proof (translation)
-Unfold `muE`. Use `letI : Algebra A K := (y.comp lam).toRingHom.toAlgebra`. Establish `hK : ∀ a, algebraMap A K a = y (lam a)` using `fun _ => rfl`. Take `⟨Ψ, ht, hk, hi, hr⟩` from `exists_semi M ι sp hsm hind`. Rewrite using `[joint_gen lam M hs y hann g hg hK]`.
+Replace the relevant objects with their definitions. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨ : ∀ i v, Ψ ((actL lam M hs (g i)).baseChange K v) = γ i (Ψ v)` using `fun i v => by`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul k m => rw [LinearMap.baseChange_tmul, ht, ht, map_smul, ← hop]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Both sides reduce to the same expression. Establish `hΨe : ∀ v, (N : C) • Ψ (e.baseChange K v) = E (Ψ v)` using `fun v => by`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, smul_add, hu, hv]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul k m => rw [LinearMap.baseChange_tmul, ht, ht, map_smul, ← hE, smul_comm]`. Establish `p : ∀ i (k : ℕ) (v : K ⊗[A] M), Ψ ((((actL lam M hs (g i)).baseChange K - y (g i) • 1) ^ k) v) = ((γ i - ι (y (g i)) • 1) ^ k) (Ψ v)`. Introduce `i k`. Proceed by induction on `k with`. Consider the case `zero => intro w`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `w`. Simplify using `only [pow_succ', Module.End.mul_apply, LinearMap.sub_apply, map_sub, hΨ, LinearMap.smul_apply, hk, Module.End.one_apply, ih]`. Establish `q1 : ∀ v, v ∈ (⨅ i, Module.End.maxGenEigenspace ((actL lam M hs (g i)).baseChange K) (y (g i))) ↔ Ψ v ∈ ⨅ i, (γ i).maxGenEigenspace (ι (y (g i)))`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v`. Simplify using `only [Submodule.mem_iInf, Module.End.mem_maxGenEigenspace, ← p, map_eq_zero_iff Ψ hi]`. Establish `q2 : ∀ v, v ∈ Module.End.eigenspace (e.baseChange K) 1 ↔ Ψ v ∈ LinearMap.ker (E - (N : Module.End C W))`. Introduce `v`. Establish `hn : ((N : Module.End C W)) (Ψ v) = (N : C) • Ψ v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Module.End.natCast_apply, Nat.cast_smul_eq_nsmul]`. Rewrite using `[Module.End.mem_eigenspace_iff, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, ← hΨe, one_smul, hn]`. Conclude with `⟨fun h => by rw [h], fun h => hi (smul_right_injective _ hN h)⟩`. Substitute `hZ` using the available equality. Use `congrArg Cardinal.toNat (rank_semi ι Ψ hk hi _ _ (fun v => ?_) fun w hw => (hr w).1 hw.1.1)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, Submodule.mem_inf, q1, q2]`. Conclude with `⟨fun h => ⟨⟨(hr _).2 ⟨v, rfl⟩, h.1⟩, h.2⟩, fun h => ⟨h.1.2, h.2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem mu_eqE [Module.Free A M] {I : Type} (g : I → B)
     (hg : ∀ b, actL lam M hs b ∈ Algebra.adjoin A (Set.range fun i => actL lam M hs (g i)))
@@ -210,15 +206,13 @@ end Main
 section Hecke
 
 /- English proof (translation)
-Use `choose g hg using fun i => hf (heckeGen Y op i)`. Establish `hact : ∀ b, actL j Y hs b = (f b).1` using `fun b => LinearMap.ext (hB b)`. Establish `hj : ∀ a, f (j a) = algebraMap A _ a` using `fun a => Subtype.ext ((hact _).symm.trans (act_lam j Y hs a))`. Use `mu_eqE j Y hs (z.comp f) (fun b hb => ?_) g (fun b => ?_) ι (AddMonoidHom.mk' (fun m : Y => sp m) fun m m' => hadd _ (hY m.2) _ (hY m'.2)) (fun a m => ?_) h.1 γ (fun i m => ?_) Z ?_ e N hN E hE` and prove the remaining obligations. Establish `e : f b = 0` using `Subtype.ext (LinearMap.ext fun m => (hB b m).symm.trans (hb m))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.comp_apply, e, map_zero]`. Rewrite using `[hact]`. Use `Algebra.adjoin_mono ?_ (f b).2` and prove the remaining obligations. Introduce and unpack `t ⟨i, hi⟩`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hact, hg]`. Conclude with `LinearMap.ext fun m => Subtype.ext (hi m).symm`. Rewrite `*` using `[AlgHom.comp_apply, hj, ← hz]`. Conclude with `hsm _ (hY m.2) a`. Rewrite using `[hB, hg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hop i _ (hY m.2)`. Rewrite using `[h.2]`. Simplify using `only [AlgHom.comp_apply, hg]`. Use `congr 2`. Use extensionality with `w`.
-
-Conclude with `⟨fun ⟨m, hm, e⟩ => ⟨⟨m, hm⟩, e⟩, fun ⟨m, e⟩ => ⟨m.1, m.2, e⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mu_heckeE {O A B K M₀ I C W : Type} [CommRing O] [CommRing A] [CommRing B] [Field K] [Algebra O A]
     [Algebra O B] [Algebra O K] [AddCommGroup M₀] [Module A M₀] (Y Y₀ : Submodule A M₀) (hY : Y ≤ Y₀) (op : I → Module.End A M₀)
@@ -263,15 +257,13 @@ end UpperTheory.V.Z.Desc.V0
 open UpperTheory.V.Z.Desc.V0
 
 /- English proof (translation)
-Introduce `hL L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ ι x lam d ξ c0 sp hsp hTr K a₀ _ B _ _ j f hf _ hs hB z hz G _ K₀ K₁ β a N hNK hIE hU e he`. Use `haveI := ((UpperTheory.V.Hi.hiComm L Ω l n c H hA A θ hθ K).2.2.2 a₀).2.1`. Use `haveI := ((UpperTheory.V.Hi.hiComm L Ω l n c H hA A θ hθ K).2.2.2 a₀).2.2`. Establish `hN : (N : ℂ) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h1 : N = 0` using `by exact_mod_cast h0`. Substitute `h1` using the available equality. Simplify using `at hU`. Establish `hOrd : H.MK θ a₀ K ≤ H.X.Ord (H.τA A) θ (H.lev K)` using `inf_le_left`. Establish `hE : ∀ m : H.MK θ a₀ K, (N : ℂ) • sp (e m : H.X.Fn A H.m) = opE ((trF H d).comp β) a (sp m)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m`. Establish `e1` using `hsp.smul K _ (hOrd (e m).2) (N : A)`. Rewrite `e1` using `[map_natCast, map_natCast, Nat.cast_smul_eq_nsmul, he m]`. Rewrite using `[← e1]`. Use `sp_opE _ sp (hsp.add K) _ _ a _ fun g hg => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hn` using `hNK.norm g (hIE.supp g hg)`. Conclude with `⟨ord_tr H.X _ θ _ (β g) (fun u hu => by`. Take `⟨u', h1, h2, h3⟩` from `hn.lev K u hu`. Conclude with `⟨u', h1, h2, congrArg (Matrix.GeneralLinearGroup.map (algebraMap c.O A)) h3⟩) (hOrd m.2), hTr (β g) hn K _ (hOrd m.2)⟩`. Take `⟨h1, h2⟩` from `hL L Ω l n c H hA A θ hθ ι x lam d ξ c0 sp hsp K a₀ z hz`.
-
-Conclude with `mu_heckeE (H.MK θ a₀ K) (H.X.Ord (H.τA A) θ (H.lev K)) hOrd (H.op A) j f hf hs hB z x.toRingHom hz ι sp (hsp.add K) (hsp.smul K) (H.opC ι lam d) (hsp.op K) _ ⟨h1, h2⟩ e N hN (opE ((trF H d).comp β) a) hE`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.V0.muZE :
     UpperTheory.V.Z.J.D.LocSp → MuZE := by

@@ -15,9 +15,9 @@ noncomputable instance instFintypeColChoice : Fintype (ColChoice N nu) := by
   unfold ColChoice; infer_instance
 
 /- English proof (translation)
-Unfold `nablaX minY`. Simplify using `only [map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.det_transpose]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_map_nablaX {K : Type} [CommRing K] (J : ColChoice N nu)
     (pt : Lt × ℕ × Fin N → K) :
@@ -31,7 +31,7 @@ theorem eval_map_nablaX {K : Type} [CommRing K] (J : ColChoice N nu)
   simp [Matrix.transpose_apply, RingHom.mapMatrix_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Establish `h` using `hCB Lt K N nu y`. Establish `h' : (∑ᶠ J : ColChoice N nu, C (minY N nu J y) * map (Int.castRingHom K) (nablaX N nu J)) = ∑ J : ColChoice N nu, C (minY N nu J y) * map (Int.castRingHom K) (nablaX N nu J)` using `finsum_eq_sum_of_fintype _`. Rewrite using `[← h']`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deX_eq_sum (hCB : PI.WwCauchyBinet.WwCauchyBinet) {K : Type} [CommRing K]
     (y : Lt → Fin N → ℕ → K) :
@@ -45,9 +45,9 @@ theorem deX_eq_sum (hCB : PI.WwCauchyBinet.WwCauchyBinet) {K : Type} [CommRing K
   exact h
 
 /- English proof (translation)
-Use `haveI : Infinite ℂ_[l] := Infinite.of_injective (Nat.cast : ℕ → ℂ_[l]) Nat.cast_injective`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `hx` using `hph (fun s a i => x (s, i, a))`. Rewrite `hx` using `[deX_eq_sum N nu hCB, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [MvPolynomial.C_mul', map_smul, smul_eq_mul] at hx`. Simplify using `only [map_sum, MvPolynomial.smul_eq_C_mul, MvPolynomial.eval_mul, MvPolynomial.eval_C, eval_map_nablaX, map_zero]`. Use `Eq.trans ?_ hx` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun J _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_smul_eq_zero (hCB : PI.WwCauchyBinet.WwCauchyBinet) (l : ℕ) [Fact l.Prime]
     (ph : Module.Dual ℂ_[l] (MvPolynomial (Lt × ℕ × Fin N) ℂ_[l]))
@@ -66,7 +66,7 @@ theorem sum_smul_eq_zero (hCB : PI.WwCauchyBinet.WwCauchyBinet) (l : ℕ) [Fact 
   exact Finset.sum_congr rfl fun J _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `PI.WwInjective.WwInjective`. Introduce `Lt _ _ l _ N nu ph hph J`. Conclude with `gram_vanish (fun J => nablaX N nu J) ph (sum_smul_eq_zero N nu hCB l ph hph) J`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wwInjective_of (hCB : PI.WwCauchyBinet.WwCauchyBinet) : PI.WwInjective.WwInjective := by
   unfold PI.WwInjective.WwInjective

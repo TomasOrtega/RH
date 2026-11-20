@@ -5,11 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Introduce `l t _ E _ _ T b B hb htT hTB h Ω _ _ _ D`. Use `⟨fun e he het => by rw [shaLen_eq_shaInv]; exact (h e he het).1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `e he`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `he` using `[Finset.mem_Ico]`. Rewrite using `[shaLen_eq_shaInv]`. Conclude with `(h e he.1 he.2).2`. Use `_ = ((t - 1 : ℕ) : ℝ) * b := by rw [Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]`. Use `_ ≤ T * b := mul_le_mul_of_nonneg_right (le_trans (by exact_mod_cast Nat.sub_le t 1) htT) hb`.
-
-Use `_ ≤ B := hTB`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.vvat :
     ∀ (l t : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E] (T b B : ℝ), 0 ≤ b → (t : ℝ) ≤ T → T * b ≤ B →

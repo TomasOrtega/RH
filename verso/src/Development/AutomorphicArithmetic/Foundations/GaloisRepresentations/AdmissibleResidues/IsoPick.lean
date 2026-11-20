@@ -3,23 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Hi
 
 /- English proof (translation)
-Establish `hA : ∀ i, isotypicComponent R M (S i) = ⊥ ∨ isotypicComponent R M (S i) ∈ isotypicComponents R M`. Introduce `i`. Distinguish the cases in `h : isotypicComponent R M (S i) = ⊥`. Conclude with `Or.inl h`. Use `right`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m, ⟨e⟩⟩ : ∃ m : Submodule R M, Nonempty (m ≃ₗ[R] S i) := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `h (sSup_eq_bot.2 fun m ⟨e⟩ => ((hcon m).false e).elim)`. Use `haveI : IsSimpleModule R m := IsSimpleModule.congr e`.
+Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨m, ‹_›, (LinearEquiv.isotypicComponent_eq e).symm⟩`. Set `T : Set (Submodule R M)` to `isotypicComponents R M ∩ Set.range fun i => isotypicComponent R M (S i)`. Establish `hind : iSupIndep (Subtype.val : T → Submodule R M)` using `(sSupIndep_iff _).1 ((sSupIndep_isotypicComponents R M).mono Set.inter_subset_left)`. Establish `hT : y ∈ ⨆ c : T, (c : Submodule R M)`. Use `(show (⨆ i, isotypicComponent R M (S i)) ≤ _ from iSup_le fun i => ?_) hmem` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `hA i with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `bot_le`. Conclude with `le_iSup (fun c : T => (c : Submodule R M)) ⟨_, h, i, rfl⟩`. Take `⟨f, hf, hs⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hT`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : f.support.Nonempty := by`. Rewrite using `[Finsupp.support_nonempty_iff]`. Introduce and unpack `rfl`. Conclude with `hy (by simpa using hs.symm)`. Take `⟨⟨m, hm, hcm⟩, i₀, hi₀⟩` from `c.2`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨i₀, fun hyC => ?_⟩` and prove the remaining obligations. Establish `hCD : (⨆ i : {i // IsEmpty (S i₀ ≃ₗ[R] S i)}, isotypicComponent R M (S i.1)) ≤ ⨆ (j : T) (_ : j ≠ c), (j : Submodule R M)` using `iSup_le fun ⟨i, hi⟩ => by`. Break down `hA i with h | h` into its components or cases. Express the relevant statement in the definitionally equal form `isotypicComponent R M (S i) ≤ _`. Rewrite using `[h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `bot_le`. Use `le_iSup₂_of_le (f := fun (j : T) (_ : j ≠ c) => (j : Submodule R M)) ⟨_, h, i, rfl⟩ (fun e => ?_) le_rfl` and prove the remaining obligations. Establish `he : isotypicComponent R M (S i) = c.1` using `congrArg Subtype.val e`. Establish `hle : m ≤ c.1` using `hcm ▸ m.le_isotypicComponent`. Take `⟨e₁⟩` from `isIsotypicOfType_submodule_iff.mp (IsIsotypicOfType.isotypicComponent R M (S i₀)) m (hle.trans hi₀.ge)`.
-
-Take `⟨e₂⟩` from `isIsotypicOfType_submodule_iff.mp (IsIsotypicOfType.isotypicComponent R M (S i)) m (hle.trans he.ge)`. Conclude with `hi.false (e₁.symm.trans e₂)`. Rewrite `hs` using `[Finsupp.sum, ← Finset.add_sum_erase _ _ hc]`. Establish `h2 : ∑ j ∈ f.support.erase c, f j ∈ ⨆ (j : T) (_ : j ≠ c), (j : Submodule R M)` using `Submodule.sum_mem _ fun j hj => (le_iSup₂_of_le (f := fun (j : T) (_ : j ≠ c) => (j : Submodule R M)) j (Finset.ne_of_mem_erase hj) le_rfl) (hf j)`. Establish `h3 : f c ∈ ⨆ (j : T) (_ : j ≠ c), (j : Submodule R M)`.
-
-Rewrite using `[eq_sub_of_add_eq hs]`. Conclude with `sub_mem (hCD hyC) h2`. Conclude with `Finsupp.mem_support_iff.1 hc (Submodule.disjoint_def.1 (hind c) _ (hf c) h3)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isoPick_mod {R M : Type} {I : Type 1} [Ring R] [AddCommGroup M] [Module R M]
     (S : I → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module R (S i)] [∀ i, IsSimpleModule R (S i)]
@@ -73,9 +69,7 @@ private theorem isoPick_mod {R M : Type} {I : Type 1} [Ring R] [AddCommGroup M] 
   exact Finsupp.mem_support_iff.1 hc (Submodule.disjoint_def.1 (hind c) _ (hf c) h3)
 
 /- English proof (translation)
-Use `haveI : IsSimpleModule (MonoidAlgebra ℂ H) σ.asModule := (Representation.irreducible_iff_isSimpleModule_asModule σ).mp hσ`. Set `F : σ.asModule →ₗ[MonoidAlgebra ℂ H] π.asModule` to `Representation.IntertwiningMap.equivLinearMapAsModule σ π ⟨f, fun g => LinearMap.ext (hf g)⟩`. Establish `: LinearMap.range F ≤ isotypicComponent (MonoidAlgebra ℂ H) π.asModule σ.asModule`. Break down `LinearMap.injective_or_eq_zero F with hi | hz` into its components or cases. Conclude with `le_sSup ⟨(LinearEquiv.ofInjective _ hi).symm⟩`.
-
-Rewrite using `[hz, LinearMap.range_zero]`. Conclude with `bot_le`. Conclude with `this ⟨σ.asModuleEquiv.symm s, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isoPick_range {H S Y : Type} [Group H] [AddCommGroup S] [Module ℂ S] [AddCommGroup Y] [Module ℂ Y]
     (σ : Representation ℂ H S) (π : Representation ℂ H Y) (hσ : σ.IsIrreducible)
@@ -92,9 +86,7 @@ private theorem isoPick_range {H S Y : Type} [Group H] [AddCommGroup S] [Module 
   exact this ⟨σ.asModuleEquiv.symm s, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.iSup_induction _ (motive := fun z => π.asModuleEquiv.symm z ∈ P) hv h ?_ ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b ha hb`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem ha hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isoPick_sup {H Y : Type} {J : Sort*} [Group H] [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ H Y)
     (P : Submodule (MonoidAlgebra ℂ H) π.asModule) (A : J → Submodule ℂ Y)
@@ -106,9 +98,9 @@ private theorem isoPick_sup {H Y : Type} {J : Sort*} [Group H] [AddCommGroup Y] 
     rw [map_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Set `F` to `(Representation.IntertwiningMap.equivLinearMapAsModule σ σ').symm e.toLinearMap`. Set `F'` to `(Representation.IntertwiningMap.equivLinearMapAsModule σ' σ).symm e.symm.toLinearMap`. Use `⟨Representation.Equiv.mk (LinearEquiv.ofLinear F.toLinearMap F'.toLinearMap ?_ ?_) fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Conclude with `e.apply_symm_apply (σ'.asModuleEquiv.symm v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Conclude with `e.symm_apply_apply (σ.asModuleEquiv.symm v)`. Conclude with `LinearMap.ext fun v => F.isIntertwining _ _ g v`.
+A detailed English derivation is pending.
 -/
 private theorem isoPick_equiv {H S S' : Type} [Group H] [AddCommGroup S] [Module ℂ S] [AddCommGroup S'] [Module ℂ S']
     (σ : Representation ℂ H S) (σ' : Representation ℂ H S')
@@ -123,7 +115,7 @@ private theorem isoPick_equiv {H S S' : Type} [Group H] [AddCommGroup S] [Module
   · exact LinearMap.ext fun v => F.isIntertwining _ _ g v
 
 /- English proof (translation)
-Use `isoPick_sup π P _ (fun f w hw => ?_) v hv` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hw`. Conclude with `hP (isoPick_range σ π hσ f.1 f.2 s)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem isoPick_hr {H S Y : Type} [Group H] [AddCommGroup S] [Module ℂ S] [AddCommGroup Y] [Module ℂ Y]
     (σ : Representation ℂ H S) (π : Representation ℂ H Y) (hσ : σ.IsIrreducible)
@@ -136,7 +128,7 @@ private theorem isoPick_hr {H S Y : Type} [Group H] [AddCommGroup S] [Module ℂ
   exact hP (isoPick_range σ π hσ f.1 f.2 s)
 
 /- English proof (translation)
-The claim follows from `isoPick_sup π _ _ (fun i v hv => isoPick_hr (ρ i) π (hρ i) _ (le_iSup (fun i => isotypicComponent (MonoidAlgebra ℂ H) π.asModule (ρ i).asModule) i) v hv) y (hspan y)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_iSup_isotypicComponent_of_span {H Y : Type} {I : Type 1} [Group H] [AddCommGroup Y] [Module ℂ Y] (V : I → Type)
     [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] (ρ : ∀ i, Representation ℂ H (V i)) (hρ : ∀ i, (ρ i).IsIrreducible)
@@ -147,7 +139,7 @@ private theorem mem_iSup_isotypicComponent_of_span {H Y : Type} {I : Type 1} [Gr
     (le_iSup (fun i => isotypicComponent (MonoidAlgebra ℂ H) π.asModule (ρ i).asModule) i) v hv) y (hspan y)
 
 /- English proof (translation)
-Use `isoPick_sup π _ _ (fun i v hv => isoPick_hr (ρ i.1) π (hρ i.1) _ ?_ v hv) y hy` and prove the remaining obligations. Use `le_iSup (fun i : {i // IsEmpty ((ρ i₀).asModule ≃ₗ[MonoidAlgebra ℂ H] (ρ i).asModule)} => isotypicComponent (MonoidAlgebra ℂ H) π.asModule (ρ i.1).asModule) ⟨i.1, ⟨fun e => ?_⟩⟩` and prove the remaining obligations. Take `⟨e'⟩` from `isoPick_equiv _ _ e`. Conclude with `i.2.false e'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mem_iSup_isotypic_of_not_iso {H Y : Type} {I : Type 1} [Group H] [AddCommGroup Y] [Module ℂ Y] (V : I → Type)
     [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] (ρ : ∀ i, Representation ℂ H (V i)) (hρ : ∀ i, (ρ i).IsIrreducible)
@@ -162,7 +154,7 @@ private theorem mem_iSup_isotypic_of_not_iso {H Y : Type} {I : Type 1} [Group H]
   exact i.2.false e'
 
 /- English proof (translation)
-Use `haveI : ∀ i, IsSimpleModule (MonoidAlgebra ℂ H) (ρ i).asModule := fun i => (Representation.irreducible_iff_isSimpleModule_asModule _).mp (hρ i)`. Establish `hne : π.asModuleEquiv.symm y ≠ 0` using `fun h => hy (by simpa using congrArg π.asModuleEquiv h)`. Take `⟨i₀, h⟩` from `isoPick_mod (fun i => (ρ i).asModule) (π.asModuleEquiv.symm y) hne (mem_iSup_isotypicComponent_of_span V ρ hρ π hspan y)`. Conclude with `⟨i₀, fun hy' => h (mem_iSup_isotypic_of_not_iso V ρ hρ π i₀ y hy')⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem isoPick_gen {H Y : Type} {I : Type 1} [Group H] [AddCommGroup Y] [Module ℂ Y] (V : I → Type)
     [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] (ρ : ∀ i, Representation ℂ H (V i)) (hρ : ∀ i, (ρ i).IsIrreducible)
@@ -177,7 +169,7 @@ private theorem isoPick_gen {H Y : Type} {I : Type 1} [Group H] [AddCommGroup Y]
   exact ⟨i₀, fun hy' => h (mem_iSup_isotypic_of_not_iso V ρ hρ π i₀ y hy')⟩
 
 /- English proof (translation)
-Introduce `H Y I _ _ _ _ _ σ π hspan y hy`. Conclude with `isoPick_gen (fun i => (σ i).V) (fun i => (σ i).ρ) (fun i => (σ i).irred) π hspan y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.isoPick :
     ∀ (H Y : Type) (I : Type 1) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup Y] [Module ℂ Y] (σ : I → SmIrr H) (π : Representation ℂ H Y), (∀ y, y ∈ ⨆ (i : I) (f : {f : (σ i).V →ₗ[ℂ] Y // ∀ g v, f ((σ i).ρ g v) = π g (f v)}), LinearMap.range f.1) → ∀ y : Y, y ≠ 0 → ∃ i₀ : I, y ∉ ⨆ (i : {i : I // IsEmpty ((σ i₀).ρ.Equiv (σ i).ρ)}) (f : {f : (σ i.1).V →ₗ[ℂ] Y // ∀ g v, f ((σ i.1).ρ g v) = π g (f v)}), LinearMap.range f.1 := by

@@ -10,13 +10,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, f a b = (if a < b then f a b else 0) + (if a = b then f a b else 0) + (if b < a then f a b else 0)`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.mpr h.le]`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, h.ne', not_lt.mpr h.le]`. Establish `h2 : ∑ a, ∑ b, (if b < a then f a b else 0) = ∑ a, ∑ b, (if a < b then f b a else 0)` using `Finset.sum_comm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by`. Rewrite using `[h2, add_comm (∑ a, ∑ b, (if a < b then f a b else 0)) (∑ a, f a a), add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem double_sum_diag_split {n : ℕ} (f : Fin n → Fin n → ℝ) :
     ∑ a, ∑ b, f a b = ∑ a, f a a + ∑ a, ∑ b, (if a < b then f a b + f b a else 0) := by
@@ -46,55 +46,53 @@ theorem double_sum_diag_split {n : ℕ} (f : Fin n → Fin n → ℝ) :
         split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `n ε M _ _ E lam w hD`. Take `⟨hGl, hU, hw1, ⟨hdiag, hup⟩, hcas⟩` from `hD`. Use `set Λ := lowK ε lam with hΛ`. Set `sR : Fin n → Fin n → ℝ` to `fun a b => if ε a = ε b then 1 else -1`. Establish `hsC : ∀ a b, adjSign ε a b = ((sR a b : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro a b; simp only [adjSign, sR]; split_ifs <;> simp`. Establish `hsymm : ∀ a b, sR a b = sR b a`. Introduce `a b`. Simplify using `only [sR]`. Distinguish the cases in `h : ε a = ε b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Establish `hsq : ∀ a b, sR a b * sR a b = 1`. Apply the tactic sequence `intro a b; simp only [sR]; split_ifs <;> norm_num`. Establish `hww : ⟪w, w⟫_ℂ = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hw1]`. Simplify using the standard rewrite rules. Establish `hQ : ∀ a b, ⟪w, E a b (E b a w)⟫_ℂ = ((sR a b * ‖E b a w‖ ^ 2 : ℝ) : ℂ)`. Introduce `a b`. Establish `h` using `hU b a w (E b a w)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[inner_self_eq_norm_sq_to_K, hsC]`. Establish `h1 : ((sR b a : ℝ) : ℂ) * ((sR b a : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, hsq]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, h1, one_mul]`. Use `_ = _ := by`. Rewrite using `[← h, hsymm b a]`. Apply the tactic sequence `try simp only [RCLike.ofReal_eq_complex_ofReal]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hC : ∀ a b, ⟪w, E a b (E b a w)⟫_ℂ - ⟪w, E b a (E a b w)⟫_ℂ = (((Λ a - Λ b : ℝ)) : ℂ)`. Introduce `a b`. Establish `h` using `hGl a b b a`. Rewrite `h` using `[if_pos rfl, if_pos rfl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (fun T : Module.End ℂ M => T w) h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h2`. Rewrite using `[← inner_sub_right, h2, hdiag a, hdiag b, ← sub_smul, inner_smul_right, hww, mul_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hR1 : ∀ a b, sR a b * ‖E b a w‖ ^ 2 - sR b a * ‖E a b w‖ ^ 2 = Λ a - Λ b`. Introduce `a b`. Establish `h` using `hC a b`. Rewrite `h` using `[hQ a b, hQ b a, ← Complex.ofReal_sub]`. Conclude with `h` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR2 : ∀ a, ‖E a a w‖ ^ 2 = Λ a ^ 2`. Introduce `a`. Rewrite using `[hdiag a, norm_smul, hw1, mul_one, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Establish `hR3 : ∀ a b, a < b → ε a = ε b → ‖E a b w‖ ^ 2 = 0`. Introduce `a b hab he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hup a b hab he]`. Simplify using the standard rewrite rules. Establish `hcasR : casVal lam = ∑ a, ∑ b, sR a b * ‖E b a w‖ ^ 2`. Establish `h1 : ⟪w, casimir E w⟫_ℂ = ∑ a, ∑ b, ⟪w, E a b (E b a w)⟫_ℂ`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, inner_sum]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[hcas, inner_smul_right, hww, mul_one]`. Simplify using `only [hQ] at h1`. Conclude with `h1` after adjusting the coercions. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h` using `hR1 a b`. Establish `hs1 : sR a b = 1` using `if_pos he`. Establish `hs2 : sR b a = 1` using `if_pos he.symm`. Rewrite `h` using `[hs1, hs2, hR3 a b hab he]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b hab he`. Establish `h` using `hR1 a b`. Establish `hs1 : sR a b = -1` using `if_neg he`. Establish `hs2 : sR b a = -1` using `if_neg (Ne.symm he)`. Rewrite `h` using `[hs1, hs2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ a b, (if a < b then sR a b * ‖E b a w‖ ^ 2 + sR b a * ‖E a b w‖ ^ 2 else 0) = (if a < b ∧ ε b = ε a then Λ a else 0) - (if a < b ∧ ε a = ε b then Λ b else 0) - ((if a < b ∧ ε b ≠ ε a then Λ a else 0) - (if a < b ∧ ε a ≠ ε b then Λ b else 0)) - 2 * (if a < b ∧ ε a ≠ ε b th …`. Introduce `a b`. Distinguish the cases in `hab : a < b`. Establish `h` using `hR1 a b`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `he : ε a = ε b`. Establish `hs1 : sR a b = 1` using `if_pos he`. Establish `hs2 : sR b a = 1` using `if_pos he.symm`. Establish `h0` using `hR3 a b hab he`. Rewrite `h` using `[hs1, hs2, h0]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hab, he, hs1, hs2, h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1 : sR a b = -1` using `if_neg he`. Establish `hs2 : sR b a = -1` using `if_neg (Ne.symm he)`. Rewrite `h` using `[hs1, hs2]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hab, he, Ne.symm he, hs1, hs2]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hab]`. Establish `hsw1 : ∑ a, ∑ b, (if b < a ∧ ε b = ε a then Λ a else 0) = ∑ a, ∑ b, (if a < b ∧ ε a = ε b then Λ b else 0)` using `Finset.sum_comm`. Establish `hsw2 : ∑ a, ∑ b, (if b < a ∧ ε b ≠ ε a then Λ a else 0) = ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then Λ b else 0)` using `Finset.sum_comm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hA : 2 * ∑ a, Λ a * rhoC ε a = ∑ a, ∑ b, (if a < b ∧ ε b = ε a then Λ a else 0) - ∑ a, ∑ b, (if a < b ∧ ε a = ε b then Λ b else 0)`. Rewrite using `[← hsw1, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Establish `e1 : ∑ b, (if a < b ∧ ε b = ε a then Λ a else 0) = Λ a * ∑ b, (if a < b ∧ ε b = ε a then (1:ℝ) else 0)`. Apply the tactic sequence `rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : ∑ b, (if b < a ∧ ε b = ε a then Λ a else 0) = Λ a * ∑ b, (if b < a ∧ ε b = ε a then (1:ℝ) else 0)`. Apply the tactic sequence `rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)`. Rewrite using `[e1, e2]`. Simplify using `only [rhoC, Finset.natCast_card_filter]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hB : 2 * ∑ a, Λ a * rhoN ε a = ∑ a, ∑ b, (if a < b ∧ ε b ≠ ε a then Λ a else 0) - ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then Λ b else 0)`. Rewrite using `[← hsw2, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Establish `e1 : ∑ b, (if a < b ∧ ε b ≠ ε a then Λ a else 0) = Λ a * ∑ b, (if a < b ∧ ε b ≠ ε a then (1:ℝ) else 0)`. Apply the tactic sequence `rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : ∑ b, (if b < a ∧ ε b ≠ ε a then Λ a else 0) = Λ a * ∑ b, (if b < a ∧ ε b ≠ ε a then (1:ℝ) else 0)`. Apply the tactic sequence `rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)`. Rewrite using `[e1, e2]`. Simplify using `only [rhoN, Finset.natCast_card_filter]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hdiagsum : ∑ a, sR a a * ‖E a a w‖ ^ 2 = ∑ a, Λ a ^ 2` using `Finset.sum_congr rfl (fun a _ => by rw [hR2 a, show sR a a = 1 from if_pos rfl, one_mul])`. Establish `hspl` using `double_sum_diag_split (fun a b => sR a b * ‖E b a w‖ ^ 2)`. Establish `hcasv : casVal lam = ∑ a, Λ a ^ 2 + (∑ a, ∑ b, (if a < b ∧ ε b = ε a then Λ a else 0) - ∑ a, ∑ b, (if a < b ∧ ε a = ε b then Λ b else 0) - (∑ a, ∑ b, (if a < b ∧ ε b ≠ ε a then Λ a else 0) - ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then Λ b else 0)) - 2 * ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b t …`. Rewrite using `[hcasR, hspl, hdiagsum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => hpt a b))]`. Simplify using `only [Finset.sum_sub_distrib, ← Finset.mul_sum]`. Establish `hz : ∑ a, (Λ a ^ 2 + 2 * (Λ a * rhoC ε a) - 2 * (Λ a * rhoN ε a) - lam a * lam a + (rhoN ε - rhoC ε) a * (rhoN ε - rhoC ε) a) = 0` using `Finset.sum_eq_zero (fun a _ => by simp only [hΛ, lowK, Pi.add_apply, Pi.sub_apply]; ring)`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum] at hz`. Simplify using `only [Finset.sum_filter]`.
-
-Simplify using `only [casVal, nsq, dot] at hcasv ⊢`. Combine the linear relations using `[hcasv, hz, hA, hB]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem b2Id : RaisingLoweringNormIdentities := by
   intro n ε M _ _ E lam w hD

@@ -13,7 +13,7 @@ open GlobalTheory.RowEx
 noncomputable section
 namespace GlobalTheory.RowEx
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hsc hch a u => ?_⟩⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `_root_.GlobalTheory.T.twisted_base_change_lift_exists hP hL large₂ hS ch hch CF hsc a u`. Conclude with `⟨h1, GlobalTheory.T.besselPeriodCorank_converges_column ch.W ch.M hch.vol ch.ξ _ (col_mem ch a) _ h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twisted_linear_bound (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hL : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal) : LinB := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hsc hch a u => ?_⟩⟩

@@ -13,9 +13,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.PSupp
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨(Subobject.underlyingIso i).hom.app V x, ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Subobject.underlyingIso_hom_comp_eq_mk]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨(Subobject.underlyingIso i).inv.app V x, ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Subobject.underlyingIso_arrow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma secs_mk {X : Scheme.{0}} {E F : X.Modules} (i : F ⟶ E) [Mono i] (V : X.Opens) :
     secs (Subobject.mk i) V = Set.range (i.app V) := by
@@ -39,13 +39,13 @@ lemma restrict_map_app {X : Scheme.{0}} (O : X.Opens) {Q P : X.Modules} (a : Q �
   rfl
 
 /- English proof (translation)
-Set `g : (Bb : X.Modules).restrict O.ι ⟶ E` to `(Scheme.Modules.restrictFunctor O.ι).map Bb.arrow ≫ f`. Establish `hBr : ((Bb : X.Modules).restrict O.ι).IsQuasicoherent` using `Scheme.Modules.isQuasicoherent_restrictFunctor O.ι _`. Establish `hs : ∀ U : (O : Scheme.{0}).affineOpens, secs B (U : (O : Scheme.{0}).Opens) = secs (Subobject.mk (kernel.ι (cokernel.π g))) (U : (O : Scheme.{0}).Opens)`. Introduce `U`. Rewrite using `[secs_mk, range_kernel_ι_cokernel_π_app g U.2, hB _ U.2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Use `⟨((Bb : X.Modules).restrictAppIso O.ι (U : (O : Scheme.{0}).Opens)).inv y, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply, restrict_map_app, Iso.inv_hom_id_apply]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨y, rfl⟩`. Use `⟨_, ⟨((Bb : X.Modules).restrictAppIso O.ι (U : (O : Scheme.{0}).Opens)).hom y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply, restrict_map_app]`. Establish `hEq : B = Subobject.mk (kernel.ι (cokernel.π g))` using `le_antisymm ((GlobalTheory.T.subobject_le_iff_affine_sections _ _).2 fun U => (hs U).subset) ((GlobalTheory.T.subobject_le_iff_affine_sections _ _).2 fun U => (hs U).symm.subset)`. Establish `hK : (kernel (cokernel.π g)).IsQuasicoherent` using `inferInstance`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hEq]`. Conclude with `GlobalTheory.QCoh.isQuasicoherent_of_iso (Subobject.underlyingIso (kernel.ι (cokernel.π g))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_of_secs_image {X : Scheme.{0}} (O : X.Opens) {P : X.Modules}
     {E : (O : Scheme.{0}).Modules} (hP : P.IsQuasicoherent) (hE : E.IsQuasicoherent)

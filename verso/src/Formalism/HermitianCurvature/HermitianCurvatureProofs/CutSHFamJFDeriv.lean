@@ -26,11 +26,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Establish `hGV : IsClosed (B.GV k r)` using `by show IsClosed {g : B.Mat k r | g.conjTranspose * Hpk k r * g = Hpk k r}`. Conclude with `isClosed_eq (by fun_prop) continuous_const`. Establish `hS : IsCompact (K ×ˢ (C ∩ B.GV k r))` using `hK.prod (hC.inter_right hGV)`. Establish `hcont : ContinuousOn (fun p : ℂ × B.Mat k r => H p.1 p.2) (K ×ˢ (C ∩ B.GV k r))`. Introduce and unpack `⟨t₀, γ₀⟩ ⟨ht₀, hγ₀⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨U, f, hU, hmem, hf, hHf⟩` from `hloc t₀ ht₀ γ₀ hγ₀`. Establish `hfa : ContinuousAt f (t₀, γ₀)` using `hf.continuousAt (hU.mem_nhds hmem)`. Use `hfa.continuousWithinAt.congr_of_eventuallyEq ?_ (hHf _ hmem hγ₀.2)` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds (hU.mem_nhds hmem), self_mem_nhdsWithin] with p hpU hpS`. Conclude with `hHf p hpU hpS.2.2`.
-
-Take `⟨M, hM⟩` from `hS.exists_bound_of_continuousOn hcont`. Use `⟨max M 0, le_max_right _ _, fun t ht γ hγ => ?_⟩` and prove the remaining obligations. Conclude with `(hM (t, γ) ⟨ht, hγ⟩).trans (le_max_left _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fam_bound {E : Type} [NormedAddCommGroup E] (H : ℂ → B.Mat k r → E) {K : Set ℂ} (hK : IsCompact K)
     {C : Set (B.Mat k r)} (hC : IsCompact C)
@@ -53,13 +51,11 @@ theorem fam_bound {E : Type} [NormedAddCommGroup E] (H : ℂ → B.Mat k r → E
   exact (hM (t, γ) ⟨ht, hγ⟩).trans (le_max_left _ _)
 
 /- English proof (translation)
-Establish `h1 : b⁻¹ * b = 1` using `ReciprocityTheory.ChartRestriction.DS.Xi.StepA.UH_inv_mul k r hb.1`. Establish `h2 : b * b⁻¹ = 1` using `mul_eq_one_comm.mp h1`. Use `⟨⟨?_, ?_, ?_⟩, h1⟩` and prove the remaining obligations. Establish `hU` using `hb.1`. Simplify using `only [UH, Set.mem_setOf_eq] at hU ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [h2]; simp`. Introduce `a`. Take `⟨e1, e2⟩` from `hb.2.1 a`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `conv_lhs => rw [← e1]`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Use `conv_lhs => rw [← e2]`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
-
-Use `conv_lhs => rw [← hb.2.2]`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_mem_UWset_and_inv_mul_eq_one {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {b : B.Mat k r}
     (hb : b ∈ UWset k r z) : b⁻¹ ∈ UWset k r z ∧ b⁻¹ * b = 1 := by
@@ -84,11 +80,9 @@ private theorem inv_mem_UWset_and_inv_mul_eq_one {k r : ℕ} {z : Fin (2 * r + k
     rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨ha, -, hb, -⟩` from `hp`. Take `⟨hbinv, hbb⟩` from `inv_mem_UWset_and_inv_mul_eq_one hb`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun w => ?_` and prove the remaining obligations. Establish `hw : D.π' (Matrix.of p.2.1)⁻¹ (D.π' (Matrix.of p.2.1) w) = w`. Establish `h` using `congrArg (fun L => L w) (D.π'_rep.2 _ hbinv _ hb)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hbb, D.π'_rep.1, ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply] at h`. Conclude with `h.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[D.π_unitary _ ha, hw]`. Use `_ = ‖((D.π (Matrix.of p.1.1)).comp (A.comp (D.π' (Matrix.of p.2.1)⁻¹))) (D.π' (Matrix.of p.2.1) w)‖ := rfl`.
-
-Use `_ ≤ ‖(D.π (Matrix.of p.1.1)).comp (A.comp (D.π' (Matrix.of p.2.1)⁻¹))‖ * ‖D.π' (Matrix.of p.2.1) w‖ := ContinuousLinearMap.le_opNorm _ _`. Use `_ = _ := by rw [D.π'_unitary _ hb]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_rho (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p) (A : Wq →L[ℂ] Wp) :
     ‖A‖ ≤ ‖(D.π (Matrix.of p.1.1)).comp (A.comp (D.π' (Matrix.of p.2.1)⁻¹))‖ := by
@@ -109,9 +103,7 @@ theorem norm_le_rho (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS 
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `psi ell`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul ?_))))` and prove the remaining obligations. Use `continuous_finset_sum _ fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `fun_prop`.
-
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply] fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuous_psi_of_matrix {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
     Continuous fun g : Mt k r => psi k r z c (Matrix.of g) := by
@@ -125,31 +117,27 @@ private theorem continuous_psi_of_matrix {k r : ℕ} (z : Fin (2 * r + k + 1) �
     fun_prop
 
 /- English proof (translation)
-Use `set coef : B.SS k r → ℂ := fun p => psi k r D.z cStd (Matrix.of p.1.2) * star (psi k r D.z' cStd (Matrix.of p.2.2)) with hcoef`. Establish `hcn : ∀ p, ‖coef p‖ = 1` using `fun p => by`. Simplify using `[hcoef, SmoothnessOnGoodSet.norm_psi]`. Establish `hcm : AEStronglyMeasurable coef D.μSS`. Establish `h1` using `continuous_psi_of_matrix (k := k) (r := r) D.z cStd`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `continuous_psi_of_matrix (k := k) (r := r) D.z' cStd`. Conclude with `((h1.comp (continuous_snd.comp continuous_fst)).mul ((h2.comp (continuous_snd.comp continuous_snd)).star)).aestronglyMeasurable`. Use `set A₀ : ℝ := 9 * ((r : ℝ) + 1) * (((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 1) with hA₀`. Establish `hThr : JF.TransportedAlt k r A₀ 0`. Unfold `JF.TransportedAlt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h9 : (0 : ℝ) < 9 * ((r : ℝ) + 1)` using `by positivity`. Rewrite using `[lt_div_iff₀ h9, hA₀]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hdom0 : ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), B.InCC A₀ 0 F → AEStronglyMeasurable (fun p => B.rho D p F γ₀) D.μSS ∧ ∃ b : B.SS k r → ℝ, Integrable b D.μSS ∧ ∀ᵐ p ∂D.μSS, ‖B.rho D p F γ₀‖ ≤ b p`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F hF`. Take `⟨hm, hb⟩` from `bessel_integral_domain k r Wp Wq D A₀ 0 F hThr hF`. Use `⟨by simpa [B.dLR, B.Rw] using hm [] [] (by simp) (by simp) (by simp) γ₀ hγ, ?_⟩` and prove the remaining obligations. Take `⟨b, hbi, hbb⟩` from `hb {γ₀} isCompact_singleton (by simpa using hγ)`. Conclude with `⟨b, hbi, by simpa [B.dLR, B.Rw] using hbb [] [] (by simp) (by simp) (by simp) γ₀ rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, bΦ, hbΦi, hbΦ⟩` from `hdom0 Φ (hΦcc A₀)`. Establish `hεpos : 0 < δ / (‖v‖ + 1)` using `by positivity`. Establish `hball : ∀ s ∈ Metric.ball (0 : ℝ) (δ / (‖v‖ + 1)), t + (s : ℂ) * v ∈ Metric.closedBall t δ`. Introduce `s hs`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_mul, Complex.norm_real]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hs` using `[Metric.mem_ball, dist_zero_right]`. Establish `h' : ‖s‖ * (‖v‖ + 1) < δ` using `(lt_div_iff₀ (by positivity)).mp hs`. Use polynomial arithmetic with `[norm_nonneg s, norm_nonneg v]`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := D.μSS) (x₀ := (0 : ℝ)) (F := fun (s : ℝ) p => coef p • B.rho D p (G (t + (s : ℂ) * v)) γ₀) (F' := fun (s : ℝ) p => coef p • B.rho D p (G' (t + (s : ℂ) * v)) γ₀) (bound := fun p => |c| * bΦ p) (Metric.ball_mem_nhds (0 : ℝ) hεp …`. Take `⟨-, hder⟩` from `key`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `e : (∫ p, (fun (s : ℝ) p => coef p • B.rho D p (G' (t + (s : ℂ) * v)) γ₀) 0 p ∂D.μSS) = B.JF D (G' t) γ₀`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero]`. Both sides reduce to the same expression. Rewrite `hder` using `[e]`. Conclude with `hder`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Filter.eventually_of_mem (Metric.ball_mem_nhds 0 hεpos) fun s hs => hcm.smul (hdom0 _ (hGcc _ (hball s hs) A₀)).1`. Take `⟨-, b, hbi, hbb⟩` from `hdom0 (G t) (hGcc t (Metric.mem_closedBall_self hδ.le) A₀)`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero]`. Use `hbi.mono' (hcm.smul (hdom0 _ (hGcc t (Metric.mem_closedBall_self hδ.le) A₀)).1) ?_` and prove the remaining obligations. Use `filter_upwards [hbb] with p hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_smul, hcn, one_mul]`. Conclude with `hp`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero]`. Conclude with `hcm.smul (hdom0 _ (hG'cc A₀)).1`. Use `filter_upwards [hbΦ, B5.ae_inSS D] with p hp hin s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, hcn, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [B5.ae_inSS D] with p hin s hs`. Establish `hg : B.sgs p γ₀ ∈ B.GV k r` using `B7.sgs_mem D hin hγ.1`. Take `⟨L, hL, hLv⟩` from `hd _ hg _ (hball s hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately.
 
-Establish `hline : HasDerivAt (fun s : ℝ => t + (s : ℂ) * v) v s`. Establish `h0` using `((hasDerivAt_id s).ofReal_comp.mul_const v).const_add t`. Simplify using `using h0`. Establish `h1 : HasDerivAt (fun s : ℝ => G (t + (s : ℂ) * v) (B.sgs p γ₀)) (G' (t + (s : ℂ) * v) (B.sgs p γ₀)) s`. Rewrite using `[← hLv]`.
-
-Conclude with `hL.comp_hasDerivAt s hline`. Establish `h2` using `(((ContinuousLinearMap.compL ℂ Wq Wp Wp (D.π (Matrix.of p.1.1))).comp ((ContinuousLinearMap.compL ℂ Wq Wq Wp).flip (D.π' (Matrix.of p.2.1)⁻¹))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h1`. Establish `h3` using `h2.const_smul (coef p)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`.
-
-Consider the case `rfl`. Consider the case `(funext s'; simp [B.rho, B.sgs])`. Consider the case `simp [B.rho, B.sgs]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jf_hasDerivAt (D : B.RealPlaceData k r Wp Wq) (G G' : ℂ → B.Mat k r → (Wq →L[ℂ] Wp)) (t v : ℂ) {δ : ℝ}
     (hδ : 0 < δ) {γ₀ : B.Mat k r} (hγ : γ₀ ∈ JF.Om k r D.z D.z')
@@ -248,9 +236,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `h1 : g⁻¹ * g = 1` using `ReciprocityTheory.ChartRestriction.DS.Xi.StepA.UH_inv_mul k r hg`. Establish `hne : g ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[mul_zero]`. Conclude with `zero_ne_one h1`.
-
-Conclude with `lt_of_lt_of_le (norm_pos_iff.mpr hne) (WeakDominationMajorants.Asm.sup_le_gN g)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gN_pos_of_mem_GV {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : 0 < B.gN g := by
   have h1 : g⁻¹ * g = 1 := ReciprocityTheory.ChartRestriction.DS.Xi.StepA.UH_inv_mul k r hg
@@ -261,7 +247,7 @@ private theorem gN_pos_of_mem_GV {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k 
   exact lt_of_lt_of_le (norm_pos_iff.mpr hne) (WeakDominationMajorants.Asm.sup_le_gN g)
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : B.Mat k r => B.gN g` using `WeakDominationMajorants.NInt.gN_cont k r`. Take `⟨R, hR⟩` from `(hS.inter_right B5.GV_closed).exists_bound_of_continuousOn (f := fun g : B.Mat k r => B.gN g ^ A) (fun g hg => ((Real.continuousAt_rpow_const _ _ (Or.inl (gN_pos_of_mem_GV hg.2).ne')).comp hc.continuousAt).continuousWithinAt)`. Conclude with `⟨R, fun g hg => (le_abs_self _).trans (by simpa using hR g hg)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_bound_gN_rpow_on_compact {k r : ℕ} {S : Set (B.Mat k r)} (hS : IsCompact S) (A : ℝ) :
     ∃ R, ∀ g ∈ S ∩ B.GV k r, B.gN g ^ A ≤ R := by
@@ -273,11 +259,11 @@ private theorem exists_bound_gN_rpow_on_compact {k r : ℕ} {S : Set (B.Mat k r)
   exact ⟨R, fun g hg => (le_abs_self _).trans (by simpa using hR g hg)⟩
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_bound_gN_rpow_on_compact hC A`. Use `⟨max R 0 * max M 0, hck, ?_⟩` and prove the remaining obligations. Introduce `u v _ _ hlen g hg`. Establish `hu : u = []` using `List.eq_nil_of_length_eq_zero (by omega)`. Establish `hv : v = []` using `List.eq_nil_of_length_eq_zero (by omega)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hu hv` using the available equality. Establish `e : B.dLR [] [] F = F` using `by simp [B.dLR, B.Rw]`. Rewrite using `[e]`. Distinguish the cases in `hF : F g = 0`. Rewrite using `[hF, norm_zero, mul_zero]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (le_max_right _ _) (le_max_right _ _)`. Establish `hgC : g ∈ C` using `hsupp g hF`. Conclude with `mul_le_mul ((hR g ⟨hgC, hg⟩).trans (le_max_left _ _)) ((hM g ⟨hgC, hg⟩).trans (le_max_left _ _)) (norm_nonneg _) (le_max_right _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem inCC_of_ckOn_zero_compact_support_bounded {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {F : B.Mat k r → E} (hck : B.CkOn 0 (B.GV k r) F) {C : Set (B.Mat k r)} (hC : IsCompact C)
@@ -299,9 +285,9 @@ private theorem inCC_of_ckOn_zero_compact_support_bounded {k r : ℕ} {E : Type*
       (norm_nonneg _) (le_max_right _ _)
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f, hU, hmem, hf, hHf⟩` from `hloc g₀ hg₀`. Establish `hc : ContDiff ℝ ∞ fun γ : B.Mat k r => (u, γ)` using `contDiff_const.prodMk contDiff_id`. Use `⟨(fun γ => (u, γ)) ⁻¹' U, fun γ => f (u, γ), hU.preimage hc.continuous, hmem, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hf.comp hc.contDiffOn (fun γ hγ => hγ)).of_le (by exact_mod_cast (le_top : (0 : ℕ∞) ≤ ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ hγGV`. Conclude with `hHf (u, γ) hγ hγGV`.
+A detailed English derivation is pending.
 -/
 private theorem ckOn_zero_GV_of_locally_smooth_family {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (H : ℂ → B.Mat k r → E) (u : ℂ)
@@ -317,7 +303,7 @@ private theorem ckOn_zero_GV_of_locally_smooth_family {k r : ℕ} {E : Type*} [N
     exact hHf (u, γ) hγ hγGV
 
 /- English proof (translation)
-Introduce `g₀ _`. Conclude with `⟨Set.univ, F, isOpen_univ, trivial, (contDiff_zero.mpr h).contDiffOn, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem ckOn_zero_GV_of_continuous {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {F : B.Mat k r → E} (h : Continuous F) : B.CkOn 0 (B.GV k r) F := by
@@ -325,37 +311,33 @@ private theorem ckOn_zero_GV_of_continuous {k r : ℕ} {E : Type*} [NormedAddCom
   exact ⟨Set.univ, F, isOpen_univ, trivial, (contDiff_zero.mpr h).contDiffOn, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P T _ _ j _ _ G hG t ht x hx v`. Establish `hG' : GoodFam T j (famP j G v)` using `family_derivative Wp Wq P T j G hG v`. Take `⟨hGl, hGs⟩` from `hG`. Take `⟨hGl', hGs'⟩` from `hG'`. Establish `htpos : 0 < ‖t‖` using `norm_pos_iff.mpr ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδ : 0 < ‖t‖ / 2` using `by positivity`. Establish `hK : IsCompact (Metric.closedBall t (‖t‖ / 2))` using `isCompact_closedBall t _`. Establish `hK0 : ∀ u ∈ Metric.closedBall t (‖t‖ / 2), u ≠ 0`. Introduce `u hu h0`. Rewrite `hu` using `[h0, Metric.mem_closedBall, dist_zero_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `htK : t ∈ Metric.closedBall t (‖t‖ / 2)` using `Metric.mem_closedBall_self hδ.le`. Take `⟨C₁, hC₁, _ε₁, _hε₁, hC₁s⟩` from `hGs _ hK hK0`. Take `⟨C₂, hC₂, _ε₂, _hε₂, hC₂s⟩` from `hGs' _ hK hK0`. Take `⟨M₁, -, hM₁⟩` from `fam_bound G hK hC₁ (fun t₀ ht₀ γ₀ hγ₀ => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, f, hU, hm, hf, he⟩` from `hGl t₀ (hK0 t₀ ht₀) γ₀ hγ₀.2`. Conclude with `⟨U, f, hU, hm, hf.continuousOn, he⟩)`. Take `⟨M₂, -, hM₂⟩` from `fam_bound (famP j G v) hK hC₂ (fun t₀ ht₀ γ₀ hγ₀ => by`. Take `⟨U, f, hU, hm, hf, he⟩` from `hGl' t₀ (hK0 t₀ ht₀) γ₀ hγ₀.2`. Conclude with `⟨U, f, hU, hm, hf.continuousOn, he⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Unfold `resG`. Use `set γ₀ := wCell P.k (P.r - (j + 1)) (Fin.last (P.r - (j + 1))) x.1 * x.2 with hγ₀`. Establish `hγ : γ₀ ∈ JF.Om P.k (P.r - (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z'` using `⟨PBF.wCell_mul_GV hx.1 hx.2.1, Rad.wCell_mem_omPlus (T.bs (j + 1)).z_mem (T.bs (j + 1)).z'_mem hx.1 hx.2.1 hx.2.2⟩`. Establish `hGcc : ∀ u ∈ Metric.closedBall t (‖t‖ / 2), ∀ A : ℝ, B.InCC A 0 (G u)` using `fun u hu A => inCC_of_ckOn_zero_compact_support_bounded (ckOn_zero_GV_of_locally_smooth_family G u (fun γ' hγ' => hGl u (hK0 u hu) γ' hγ')) hC₁ (fun γ h => (hC₁s u hu γ h).1) (fun γ hγ' => hM₁ u hu γ hγ') A`. Establish `hG'cc : ∀ A : ℝ, B.InCC A 0 (famP j G v t)` using `fun A => inCC_of_ckOn_zero_compact_support_bounded (ckOn_zero_GV_of_locally_smooth_family (famP j G v) t (fun γ' hγ' => hGl' t ht γ' hγ')) hC₂ (fun γ h => (hC₂s t htK γ h).1) (fun γ hγ' => hM₂ t htK γ hγ') A`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ γ ∈ B.GV P.k (P.r - (j + 1)), ∀ u ∈ Metric.closedBall t (‖t‖ / 2), ∃ L : ℂ →L[ℝ] (Wq →L[ℂ] Wp), HasFDerivAt (fun w => G w γ) L u ∧ L v = famP j G v u γ`. Introduce `γ hγ' u hu`. Take `⟨U, f, hU, hm, hf, he⟩` from `hGl u (hK0 u hu) γ hγ'`. Establish `hc : Continuous fun w : ℂ => (w, γ)` using `continuous_id.prodMk continuous_const`. Establish `hev : (fun w => G w γ) =ᶠ[𝓝 u] fun w => f (w, γ)` using `by filter_upwards [hc.continuousAt.preimage_mem_nhds (hU.mem_nhds hm)] with w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `he (w, γ) hw hγ'`. Establish `hfd : DifferentiableAt ℝ f (u, γ)` using `(hf.contDiffAt (hU.mem_nhds hm)).differentiableAt (by simp)`. Establish `hdiff : DifferentiableAt ℝ (fun w => G w γ) u` using `(hfd.comp u (differentiableAt_id.prodMk (differentiableAt_const γ))).congr_of_eventuallyEq hev`. Use `⟨fderiv ℝ (fun w => G w γ) u, hdiff.hasFDerivAt, ?_⟩` and prove the remaining obligations. Simplify using `only [famP, Set.indicator_of_mem hγ']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Choose the witnesses or unpack the hypotheses as in `⟨Φ, hΦcc, c, hdom⟩ : ∃ Φ : B.Mat P.k (P.r - (j + 1)) → (Wq →L[ℂ] Wp), (∀ A : ℝ, B.InCC A 0 Φ) ∧ ∃ c : ℝ, ∀ u ∈ Metric.closedBall t (‖t‖ / 2), ∀ p, (T.bs (j + 1)).inSS p → ‖B.rho (T.bs (j + 1)) p (famP j G v u) γ₀‖ ≤ c * ‖B.rho (T.bs (j + 1)) p Φ γ₀‖ := by`. Break down `subsingleton_or_nontrivial (Wq →L[ℂ] Wp) with hs | hs` into its components or cases. Use `⟨0, fun A => inCC_of_ckOn_zero_compact_support_bounded (ckOn_zero_GV_of_continuous continuous_const) isCompact_empty (fun γ h => (h rfl).elim) (M := 0) (fun γ hγ' => hγ'.1.elim) A, 0, ?_⟩` and prove the remaining obligations. Introduce `u _ p _`. Rewrite using `[@Subsingleton.elim _ hs (B.rho (T.bs (j + 1)) p (famP j G v u) γ₀) 0]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨A₁, hA₁⟩` from `exists_norm_eq (Wq →L[ℂ] Wp) (zero_le_one' ℝ) set C₃ : Set (B.Mat P.k (P.r - (j + 1))) := insert 1 (C₁ ∪ C₂) with hC₃`. Establish `hC₃c : IsCompact C₃` using `(hC₁.union hC₂).insert 1`. Use `set φ : B.Mat P.k (P.r - (j + 1)) → ℝ := fun y => max 0 (1 - Metric.infDist y C₃) with hφ`. Establish `hφc : Continuous φ` using `continuous_const.max (continuous_const.sub (Metric.continuous_infDist_pt C₃))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ1 : ∀ y, φ y ≤ 1` using `fun y => max_le zero_le_one (by linarith [Metric.infDist_nonneg (x := y) (s := C₃)])`. Establish `hφ0 : ∀ y, 0 ≤ φ y` using `fun y => le_max_left _ _`. Establish `hφC : ∀ y ∈ C₃, φ y = 1` using `fun y hy => by simp [hφ, Metric.infDist_zero_of_mem hy]`. Use `⟨fun y => φ y • A₁, fun A => inCC_of_ckOn_zero_compact_support_bounded (F := fun y => φ y • A₁) (ckOn_zero_GV_of_continuous (hφc.smul continuous_const)) (hC₃c.cthickening (r := 1)) ?_ (M := 1) ?_ A, max M₂ 0, ?_⟩` and prove the remaining obligations. Introduce `γ hγ'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hφne : φ γ ≠ 0` using `fun h => hγ' (by simp [h])`. Establish `hlt : Metric.infDist γ C₃ < 1`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `hφne (max_eq_left (by linarith))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨y, hy, hdy⟩` from `(Metric.infDist_lt_iff ⟨1, Set.mem_insert _ _⟩).mp hlt`. Conclude with `Metric.mem_cthickening_of_dist_le γ y 1 C₃ hy hdy.le`. Introduce `γ _`. Rewrite using `[norm_smul, hA₁, mul_one, Real.norm_eq_abs, abs_of_nonneg (hφ0 γ)]`. Conclude with `hφ1 γ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu p hin`. Establish `hy` using `B7.sgs_mem (T.bs (j + 1)) hin hγ.1`. Use `(B5.rho_norm_le (T.bs (j + 1)) hin _ _).trans ?_` and prove the remaining obligations. Establish `hΦy` using `norm_le_rho (T.bs (j + 1)) hin ((fun y => φ y • A₁) (B.sgs p γ₀))`. Distinguish the cases in `hz : famP j G v u (B.sgs p γ₀) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, norm_zero]`. Conclude with `mul_nonneg (le_max_right _ _) (norm_nonneg _)`. Establish `hmem : B.sgs p γ₀ ∈ C₂` using `(hC₂s u hu _ hz).1`. Establish `h1 : ‖famP j G v u (B.sgs p γ₀)‖ ≤ max M₂ 0` using `(hM₂ u hu _ ⟨hmem, hy⟩).trans (le_max_left _ _)`. Establish `h2 : ‖(fun y => φ y • A₁) (B.sgs p γ₀)‖ = 1`.
-
-Simplify using `only [norm_smul, hA₁, mul_one, Real.norm_eq_abs]`. Rewrite using `[hφC _ (Set.mem_insert_of_mem _ (Or.inr hmem))]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Establish `hJ` using `jf_hasDerivAt (T.bs (j + 1)) G (famP j G v) t v hδ hγ hGcc hG'cc hd Φ hΦcc c hdom`.
-
-Use `first`. Consider the case `exact ((hasDerivAt_const (0 : ℝ) (_ : ℂ)).smul hJ).congr_deriv (by simp)`. Consider the case `exact ((hasDerivAt_const (0 : ℝ) (_ : ℝ)).smul hJ).congr_deriv (by simp)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem family_orbital_derivative : CutSH.FamJFDeriv := by
   intro Wp Wq _ _ _ _ _ _ P T _ _ j _ _ G hG t ht x hx v
@@ -461,6 +443,6 @@ theorem family_orbital_derivative : CutSH.FamJFDeriv := by
 end Formalism.FourierDecayAlt.P.CutSHD
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.CutSHD.family_orbital_derivative`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.family_orbital_derivative_identity : Formalism.FourierDecayAlt.P.CutSH.FamJFDeriv := Formalism.FourierDecayAlt.P.CutSHD.family_orbital_derivative

@@ -14,7 +14,7 @@ namespace LocF
 variable {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [std, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Use `forall_congr' fun a => ⟨?_, fun h => ⟨⟨x a, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uext_mem_std (x : Fin n → Lc.K) : x ∈ Lc.std n ↔ ∀ a, x a ∈ Lc.O := by
   simp only [std, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
@@ -23,25 +23,23 @@ theorem uext_mem_std (x : Fin n → Lc.K) : x ∈ Lc.std n ↔ ∀ a, x a ∈ Lc
   rw [← hy]; exact y.2
 
 /- English proof (translation)
-Set `π' : Λ →+ V` to `AddMonoidHom.mk' (fun x => π x) (fun x y => hadd x x.2 y y.2)`. Establish `hb : ∀ a : Fin n, Matrix.mulVec (h : Matrix (Fin n) (Fin n) Lc.K) (Pi.single a 1) ∈ Λ`. Introduce `a`. Rewrite using `[hh, uext_mem_std]`. Introduce `b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hab]`. Set `b : Fin n → Λ` to `fun a => ⟨_, hb a⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `key : ∀ x ∈ Λ, ∃ z : Fin n → Lc.O, x = Matrix.mulVec (h : Matrix (Fin n) (Fin n) Lc.K) (fun a => (z a : Lc.K)) ∧ π x = ∑ a, Lc.res (z a) • π (b a)`. Introduce `x hx`. Establish `e1 : Matrix.mulVec (h : Matrix (Fin n) (Fin n) Lc.K) (Matrix.mulVec ((h⁻¹ : GL (Fin n) Lc.K) : Matrix (Fin n) (Fin n) Lc.K) x) = x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `e2` using `(uext_mem_std _).1 ((hh _).1 (e1.symm ▸ hx))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `z : Fin n → Lc.O` to `fun a => ⟨_, e2 a⟩`. Establish `e0 : x = Matrix.mulVec (h : Matrix (Fin n) (Fin n) Lc.K) (fun a => (z a : Lc.K))` using `e1.symm`. Use `⟨z, e0, ?_⟩` and prove the remaining obligations. Establish `e3 : (⟨x, hx⟩ : Λ) = ∑ a, z a • b a`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.coe_sum]`. Express the relevant statement in the definitionally equal form `x = ∑ a, (z a : Lc.K) • Matrix.mulVec (h : Matrix (Fin n) (Fin n) Lc.K) (Pi.single a 1)`. Simplify using `only [← Matrix.mulVec_smul]`. Rewrite using `[← Matrix.mulVec_sum, e0]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `c`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `e4 : π x = π' ⟨x, hx⟩` using `rfl`. Rewrite using `[e4, e3, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => hsmul (z a) _ (b a).2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent F (fun a => π (b a))`. Apply `linearIndependent_of_top_le_span_of_card_eq_finrank` to reduce the goal to its premises. Introduce `y _`. Take `⟨x, hx, rfl⟩` from `hsurj y`. Take `⟨z, -, hz⟩` from `key x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Simplify using `[hV]`. Take `⟨z, hz1, hz2⟩` from `key x hx`. Establish `hz3` using `Fintype.linearIndependent_iff.1 hli (fun a => Lc.res (z a)) (by rw [← hz2, h0])`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hz1, ← Matrix.mulVec_smul, hh, uext_mem_std]`. Introduce `a`. Take `⟨y, hy⟩` from `(Lc.res_ker _).1 (hz3 a)`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hy, ← mul_assoc, inv_mul_cancel₀ Lc.q_ne, one_mul]`.
-
-Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uext_ker {Λ : Submodule Lc.O (Fin n → Lc.K)} {h : GL (Fin n) Lc.K} (hh : Lc.IsFrame n h Λ)
     {V : Type*} [AddCommGroup V] [Module F V] (hV : Module.finrank F V = n) (π : (Fin n → Lc.K) → V)
@@ -99,16 +97,16 @@ theorem uext_ker {Λ : Submodule Lc.O (Fin n → Lc.K)} {h : GL (Fin n) Lc.K} (h
   exact y.2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `one_ne_zero (hx.symm.trans (p.2.off x h))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem uext_mem_of_ne (p : PP Lc n) {x : Fin n → Lc.K} (hx : p.1.f x = 1) : x ∈ p.1.L := by
   by_contra h
   exact one_ne_zero (hx.symm.trans (p.2.off x h))
 
 /- English proof (translation)
-Establish `h1` using `uext_mem_of_ne p₁ hx.2.2`. Establish `h2` using `uext_mem_of_ne p₁ hy.2.2`. Establish `h3 : ((q : Lc.K))⁻¹ • (x - y) ∈ p₁.1.L` using `by rw [smul_sub]; exact p₁.1.L.sub_mem h1 h2`. Establish `h4` using `p₁.2.add _ h3 _ h2`. Rewrite `h4` using `[← smul_add, sub_add_cancel, hx.2.2, hy.2.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : ((q : Lc.K))⁻¹ • (x - y) ∈ p₁.ker` using `⟨h3, by linear_combination -h4⟩`. Rewrite `h5` using `[hx.2.1]`. Conclude with `h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uext_sub_mem {p p₁ : PP Lc n} {x y : Fin n → Lc.K} (hx : p.IsUp x p₁) (hy : p.IsUp y p₁) :
     ((q : Lc.K))⁻¹ • (x - y) ∈ p.1.L := by
@@ -122,9 +120,9 @@ theorem uext_sub_mem {p p₁ : PP Lc n} {x y : Fin n → Lc.K} (hx : p.IsUp x p�
   exact h5
 
 /- English proof (translation)
-Use `⟨hx, hy.2.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `uext_mem_of_ne p₁ hy.2.2`. Establish `h5 : ((q : Lc.K))⁻¹ • (x - y) ∈ p₁.ker` using `by rw [hy.2.1]; exact hxy`. Establish `h4` using `p₁.2.add _ h5.1 _ h2`. Rewrite `h4` using `[← smul_add, sub_add_cancel, hy.2.2, h5.2, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem uext_isUp_of_sub {p p₁ : PP Lc n} {x y : Fin n → Lc.K} (hy : p.IsUp y p₁) (hx : x ∈ p.1.L)
     (hxy : ((q : Lc.K))⁻¹ • (x - y) ∈ p.1.L) : p.IsUp x p₁ := by
@@ -140,11 +138,11 @@ end LocF
 variable {D : D7} {u : D.what₂.Word} {X : Ch D u} {i : ℕ} (M : PtModel X i)
 
 /- English proof (translation)
-Establish `hxy` using `Submodule.sub_mem _ hx hy`. Establish `e` using `M.piL_add v c _ hxy _ hy`. Rewrite `e` using `[sub_add_cancel]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩` from `((M.rep c).2 v).2.lat`. Use `LocF.uext_ker hf (X.fm.lv_rank i v c) (M.piL v c) (M.piL_add v c) (M.piL_smul v c) (M.piL_surj v c) hxy ?_` and prove the remaining obligations. Rewrite `e` using `[h]`. Simplify using `using e`. Introduce `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2` using `M.piL_smul v c (X.A.T : (M.Lc v).O) _ h`. Establish `e3 : (M.Lc v).res (X.A.T : (M.Lc v).O) = 0` using `((M.Lc v).res_ker _).2 ⟨1, by simp⟩`. Rewrite `e2` using `[e3, zero_smul, Subring.smul_def, smul_smul, Subring.coe_natCast, mul_inv_cancel₀ (M.Lc v).q_ne, one_smul]`. Rewrite using `[e, e2, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem PtModel.uext_piL_eq_iff (v : X.A.vT) (c : X.C.cls i) {x y : Fin (D.R.N i) → (M.Lc v).K}
     (hx : x ∈ ((M.rep c).2 v).1.L) (hy : y ∈ ((M.rep c).2 v).1.L) :
@@ -165,29 +163,27 @@ theorem PtModel.uext_piL_eq_iff (v : X.A.vT) (c : X.C.cls i) {x y : Fin (D.R.N i
     rw [e, e2, zero_add]
 
 /- English proof (translation)
-Introduce `D u X i M v φ Φ hΦ`. Take `⟨hfin, hact, huniq⟩` from `GlobalTheory.T.levelPrime_incidence_finite_fibres_stable D u X i M v`. Prove the components needed by the constructor for the conclusion. Introduce `c choose s hs1 hs2 using M.piL_surj v c`. Establish `hf : ∀ y, X.fm.fv i v c y = 1 → ((M.rep c).2 v).1.f (s y) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[← M.piL_f v c _ (hs1 y), hs2, hy]`. Set `t : X.fm.lv i v c → LocF.PP (M.Lc v) (D.R.N i)` to `fun y => if hy : X.fm.fv i v c y = 1 then (huniq (M.rep c) _ (hf y hy)).exists.choose else (M.rep c).2 v`. Establish `ht : ∀ y, X.fm.fv i v c y = 1 → ((M.rep c).2 v).IsUp (s y) (t y)`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [t, dif_pos hy]`. Conclude with `(huniq (M.rep c) _ (hf y hy)).exists.choose_spec`. Set `P : X.fm.lv i v c → M.Pt` to `fun y => ((M.rep c).1, Function.update (M.rep c).2 v (t y))`. Establish `hbij : Set.BijOn P ((Finset.univ.filter (fun x : X.fm.lv i v c => X.fm.fv i v c x = 1) : Finset _) : Set _) {p₁ | M.Inc v (M.rep c) p₁}`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hy' : X.fm.fv i v c y = 1` using `by simpa using hy`. Use `⟨rfl, fun v' hv' => Function.update_of_ne hv' _ _, s y, hf y hy', ?_⟩` and prove the remaining obligations. Simplify using `only [P, Function.update_self]`. Conclude with `ht y hy'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy y' hy' e`. Establish `h1 : X.fm.fv i v c y = 1` using `by simpa using hy`. Establish `h2 : X.fm.fv i v c y' = 1` using `by simpa using hy'`. Establish `e1 : t y = t y'`. Use `congrFun (congrArg Prod.snd e) v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [P, Function.update_self]`. Establish `h3` using `LocF.uext_sub_mem (ht y h1) (e1 ▸ ht y' h2)`. Rewrite using `[← hs2 y, ← hs2 y']`. Conclude with `(M.uext_piL_eq_iff v c (hs1 y) (hs1 y')).2 h3`. Introduce and unpack `p₁ ⟨h1, h2, x, hx1, hx2⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy : X.fm.fv i v c (M.piL v c x) = 1` using `by rw [M.piL_f v c x hx2.1, hx1]`. Use `⟨M.piL v c x, by simpa using hy, ?_⟩` and prove the remaining obligations. Establish `h3` using `LocF.uext_isUp_of_sub hx2 (hs1 _) ((M.uext_piL_eq_iff v c (hs1 _) hx2.1).1 (hs2 _))`. Establish `h4` using `(huniq (M.rep c) _ (hf _ hy)).unique (ht _ hy) h3`. Use `Prod.ext h1.symm (funext fun v' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Simplify using `only [P, Function.update_self]`. Conclude with `h4`. Simplify using `only [P, Function.update_of_ne hv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(h2 v' hv).symm`. Establish `e1` using `finsum_mem_eq_of_bijOn (f := fun y => Φ (P y)) (g := Φ) P hbij (fun _ _ => rfl)`. Use `beta_reduce`. Rewrite using `[← e1, finsum_mem_coe_finset, Submodule.coe_sum]`. Simplify using `only [Uop, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `hy' : X.fm.fv i v c y = 1` using `by simpa using hy`. Take `⟨g, hg1, hg2⟩` from `M.up_eq v c (s y) (t y) (hf y hy') (ht y hy')`. Rewrite `hg1`, `hg2` using `[hs2]`. Rewrite using `[hΦ.1, hg2, ← hΦ.2, hg1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g p`. Establish `hbij : Set.BijOn (fun p₁ : M.Pt => g • p₁) {p₁ | M.Inc v p p₁} {p₁ | M.Inc v (g • p) p₁}`. Use `⟨fun p₁ h => (hact g p p₁).1 h, fun a _ b _ e => MulAction.injective g e, fun p₁ h => ?_⟩` and prove the remaining obligations. Use `⟨g⁻¹ • p₁, (hact g p _).2 ?_, smul_inv_smul g p₁⟩` and prove the remaining obligations. Rewrite using `[smul_inv_smul]`.
-
-Conclude with `h`. Establish `e1` using `finsum_mem_eq_of_bijOn (f := fun p₁ => M.act g (Φ p₁)) (g := Φ) _ hbij (fun a _ => (hΦ.2 g a).symm)`. Use `beta_reduce`. Rewrite using `[← e1, finsum_mem_eq_finite_toFinset_sum _ (hfin p).1, finsum_mem_eq_finite_toFinset_sum _ (hfin p).1, map_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uop_isExt : ∀ (D : D7) (u : D.what₂.Word) (X : Ch D u) (i : ℕ) (M : PtModel X i) (v : X.A.vT) (φ : Fn X i)
     (Φ : M.Pt → M.Val), M.IsExt φ Φ → M.IsExt (Uop X i v φ) (fun p => ∑ᶠ p₁ ∈ {p₁ | M.Inc v p p₁}, Φ p₁) := by

@@ -29,7 +29,7 @@ theorem base₁ (y : IntFr Xo c T io) :
       (baseOver (Sp T.Fr)).hom ≫ xOf y := rfl
 
 /- English proof (translation)
-The claim follows from `(Category.comp_id _).trans (Category.id_comp _).symm`.
+A detailed English derivation is pending.
 -/
 theorem base₂ (T : CDVR) :
     (spMap (algebraMap T.V T.Fr) : (baseOver (Sp T.Fr)).left ⟶ (baseOver (Sp T.V)).left) ≫ (baseOver (Sp T.V)).hom =
@@ -49,17 +49,17 @@ def RelModel (C : IntegralChartA3 Xo c T io y) {k : ℕ} (s : LB.Sec (LPow C.I.t
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨x', hx1, hx2, eL', heL'⟩` from `hFT T io y C`. Use `(isGerm_iff y.1 _ _ _ _ _ _ _ _).2 (isGerm_of_sv ((isChart_iff y.1 _ _ _ _ _).1 C.ch.chart) C.ch.prim.1 C.ch.frame.gen fun m z J hJ => ?_)` and prove the remaining obligations. Take `⟨J', hJ', -⟩` from `exists_good C.I.t'.PP.L C.I.t'.PP.isLB z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Take `⟨J'', hJ'', -⟩` from `exists_good C.I.G.PP.L C.I.G.PP.isLB z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ρ : Sp (Jet T.Fr (Fin 1 × Fin (chD C.ch)) m) ⟶ Sp (Jet T.V (Fin 1 × Fin (chD C.ch)) m)` to `spMap (jetCoef (algebraMap T.V T.Fr) (Fin 1 × Fin (chD C.ch)) m)`. Set `i : Sp (Jet T.Fr (Fin 1 × Fin (chD C.ch)) m) ⟶ Sp (Jet T.Fr (Fin 1 × Fin (chD C.ch)) m)` to `𝟙 _`. Take `⟨f₁, f₂⟩` from `heL' m _ i z J J' J'' hJ hJ' hJ''`. Establish `a₁` using `h₁ _ (i ≫ jetPt (x' m)) z J J' hJ hJ'`. Establish `a₂` using `h₂ _ (i ≫ jetPt (x' m)) z J'' J' hJ'' hJ'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₃` using `sv_of_isGerm hg m (i ≫ ρ) z hJ''`. Establish `e₀ : (i ≫ jetPt (x' m)) ≫ (snd (baseOver (Sp T.Fr)) C.I.t'.G).left = i ≫ (x' m).left` using `(Category.assoc _ _ _).trans (congrArg (i ≫ ·) (jetPt_snd (x' m)))`. Establish `e₁ : (i ≫ jetPt (x' m)) ≫ ThetaPtMove.psi (f` using `xOf y) C.I.m1.cart (T := baseOver (Sp T.Fr)) (T₀ := ptO Xo (xOf y)) (𝟙 (Sp T.Fr)) (base₁ y) = i ≫ jetPt (C.ch.x m) := by`. Use `(Category.assoc _ _ _).trans (congrArg (i ≫ ·) (ThetaPtMove.psi_ext ?_ ?_))` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (ThetaPtMove.psi_fst' _ _ _)).trans ((congrArg (_ ≫ ·) (Category.comp_id _)).trans ((jetPt_fst (x' m)).trans (jetPt_fst (C.ch.x m)).symm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (ThetaPtMove.psi_snd' _ _ _)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (jetPt_snd (x' m))).trans ((hx1 m).trans (jetPt_snd (C.ch.x m)).symm))))`. Establish `e₂ : (i ≫ jetPt (x' m)) ≫ ThetaPtMove.psi C.I.m2.cart (T` using `baseOver (Sp T.Fr)) (T₀ := baseOver (Sp T.V)) (spMap (algebraMap T.V T.Fr)) (base₂ T) = (i ≫ ρ) ≫ jetPt (C.xT m) := by`. Use `(Category.assoc _ _ _).trans ((congrArg (i ≫ ·) (ThetaPtMove.psi_ext ?_ ?_)).trans (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (ThetaPtMove.psi_fst' _ _ _)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (jetPt_fst (x' m))).trans (Eq.trans ?_ ((Category.assoc _ _ _).trans (congrArg (ρ ≫ ·) (jetPt_fst (C.xT m)))).symm))))` and prove the remaining obligations. Establish `q` using `congrArg (· ≫ C.I.G.G.hom) (hx2 m)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q₁ : (x' m).left ≫ C.I.t'.G.hom = spMap (algebraMap T.Fr (Jet T.Fr (Fin 1 × Fin (chD C.ch)) m))` using `(Over.w (x' m)).trans (Category.comp_id _)`. Establish `q₂ : (C.xT m).left ≫ C.I.G.G.hom = spMap (algebraMap T.V (Jet T.V (Fin 1 × Fin (chD C.ch)) m))` using `(Over.w (C.xT m)).trans (Category.comp_id _)`. Conclude with `(congrArg (· ≫ _) q₁).symm.trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) C.I.m2.cart.1.w.symm).trans ((Category.assoc _ _ _).symm.trans (q.trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) q₂))))))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (ThetaPtMove.psi_snd' _ _ _)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (jetPt_snd (x' m))).trans ((hx2 m).trans ((Category.assoc _ _ _).trans (congrArg (ρ ≫ ·) (jetPt_snd (C.xT m)))).symm))))`. Rewrite `a₁` using `[e₀, e₁, zpow_natCast, Units.val_pow_eq_pow_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `a₂` using `[e₀, e₂, zpow_natCast, Units.val_pow_eq_pow_val]`. Rewrite `f₁`, `f₂` using `[Category.comp_id]`. Use `(tie_alg a₁ a₂ a₃ f₁ f₂).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Rewrite using `[psJet_map]`. Conclude with `gs_spMap_toΓ _ i z _`.
+A detailed English derivation is pending.
 -/
 theorem germIs_of_rel (hFT : ReciprocityTheory.ChartRestriction.G.PullbackSections.FrameTieSt Xo c) (C : IntegralChartA3 Xo c T io y) {k : ℕ}
     {s : LB.Sec (LPow C.I.t'.G C.I.t'.PP.L (k : ℤ) (baseOver (Sp T.Fr)))} {F : SecN Xo (xOf y) k}
@@ -119,11 +119,11 @@ theorem germIs_of_rel (hFT : ReciprocityTheory.ChartRestriction.G.PullbackSectio
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨σ, σt, hT1, hT2⟩` from `hF`. Take `⟨σ', hσ'⟩` from `exists_sec_id C.I.G (k : ℤ) σ (baseOver (Sp T.V))`. Take `⟨s, hs⟩` from `exists_sec_id C.I.t' (k : ℤ) σt (baseOver (Sp T.Fr))`. Use `⟨s, σ', fun Z r z J J' hJ hJ' => ?_, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `q` using `hT1 Z (r ≫ (snd (baseOver (Sp T.Fr)) C.I.t'.G).left) (r ≫ ThetaPtMove.psi (f := xOf y) C.I.m1.cart (T := baseOver (Sp T.Fr)) (T₀ := ptO Xo (xOf y)) (𝟙 (Sp T.Fr)) (base₁ y)) ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (ThetaPtMove.psi_snd' _ _ _)).trans (Category.assoc _ _ _) …`. Rewrite `q` using `[Category.comp_id, ← hs Z r z J' hJ']`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Conclude with `q`. Establish `q` using `hT2 Z (r ≫ (snd (baseOver (Sp T.Fr)) C.I.t'.G).left) z J J' hJ hJ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `q` using `[Category.comp_id, ← hs Z r z J' hJ']`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Use `(hσ' Z _ z J hJ).trans (Eq.trans (congrArg (fun p => sval σ p z J) ?_) q)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (ThetaPtMove.psi_snd' _ _ _)).trans (Category.assoc _ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rel (C : IntegralChartA3 Xo c T io y) {k : ℕ} {F : SecN Xo (xOf y) k} (hF : Regular C k F) :
     ∃ s σ, RelFibre C s F ∧ RelModel C s σ := by
@@ -153,15 +153,15 @@ theorem exists_rel (C : IntegralChartA3 Xo c T io y) {k : ℕ} {F : SecN Xo (xOf
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hstar T io y C hC k hk a aV r hr hr1 hr2 U hU F F' f f' hF hf hM hyp`. Use `letI := io.toAlgebra`. Establish `hFT` using `GlobalTheory.PlaceInt.frameTie_holds E H Dw l Xo c hstar`. Establish `hA : IsAbelianScheme C.I.t'.G` using `isAbelianScheme_of_pullback_univ E H Dw l Xo _ C.I.t' _ C.I.m1`. Take `⟨hak, U₀, hU₀, hact⟩` from `hM`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, σ, h₁, h₂⟩` from `exists_rel C hF`. Take `⟨g, hg⟩` from `germSt_holds E H (Sp T.V) C.I.G T.V (𝟙 _) (chD C.ch) C.FT C.actT (Fin (chD C.ch)) C.tgT (fun j => Pi.single j (1 : T.V)) C.xT C.ph1T C.ph2T C.syT C.adT C.eT C.wPT C.chartT C.frameT C.primT hC k σ`. Take `rfl : g = f` from `germIs_unique C k F _ _ (germIs_of_rel hFT C h₁ h₂ hg) hf`. Take `⟨σ', hσ', -⟩` from `existsUnique_isTwistPull _ _ _ C.I.G.PP.isLB _ (translT _ U.pt) (translPt _ U.pt) (lift_snd _ _) k k U.φ U.isGen σ`. Set `x : baseOver (Sp T.Fr) ⟶ C.I.t'.G` to `Over.homMk r hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hx₁ : (𝟙 (Sp T.Fr) : (baseOver (Sp T.Fr)).left ⟶ (ptO Xo (xOf y)).left) ≫ a.left = x.left ≫ C.I.m1.φ` using `(Category.id_comp _).trans hr1.symm`. Establish `hx₂ : (spMap (algebraMap T.V T.Fr) : (baseOver (Sp T.Fr)).left ⟶ (baseOver (Sp T.V)).left) ≫ aV.left = x.left ≫ C.I.m2.φ` using `hr2.symm`. Establish `hn : x ^ k = 1`. Use `Over.OverMorphism.ext (C.I.m1.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `p` using `ThetaPtMove.over_pow (f := xOf y) C.I.m1.cart (T := baseOver (Sp T.Fr)) (T₀ := ptO Xo (xOf y)) (𝟙 (Sp T.Fr)) (base₁ y) hx₁ k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `p` using `[hak]`. Conclude with `p.symm.trans (ThetaPtMove.over_one (f := xOf y) C.I.m1.cart (T := baseOver (Sp T.Fr)) (T₀ := ptO Xo (xOf y)) (𝟙 (Sp T.Fr)) (base₁ y))`. Take `⟨θ₁, l₁, m₁⟩` from `ThetaPtMove.symLift_move (f := xOf y) C.I.m1.cart (T := baseOver (Sp T.Fr)) (T₀ := ptO Xo (xOf y)) (𝟙 (Sp T.Fr)) (base₁ y) C.I.rig1.1 Xo.univ.t.PP.isLB C.I.t'.PP.isLB hx₁ hn hU₀`. Take `⟨θ₂, l₂, m₂⟩` from `ThetaPtMove.symLift_move C.I.m2.cart (T := baseOver (Sp T.Fr)) (T₀ := baseOver (Sp T.V)) (spMap (algebraMap T.V T.Fr)) (base₂ T) C.I.rig2.1 C.I.G.PP.isLB C.I.t'.PP.isLB hx₂ hn hU`. Take `⟨s₁, r₁⟩` from `ThetaPtMove.exists_secRel (f := xOf y) C.I.m1.cart (T := baseOver (Sp T.Fr)) (T₀ := ptO Xo (xOf y)) (𝟙 (Sp T.Fr)) (base₁ y) C.I.rig1.1 Xo.univ.t.PP.isLB C.I.t'.PP.isLB F'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₂, r₂⟩` from `ThetaPtMove.exists_secRel C.I.m2.cart (T := baseOver (Sp T.Fr)) (T₀ := baseOver (Sp T.V)) (spMap (algebraMap T.V T.Fr)) (base₂ T) C.I.rig2.1 C.I.G.PP.isLB C.I.t'.PP.isLB σ'`. Take `rfl : s₁ = s₂` from `SymMove.act_unique firstFiveLaws.1.globalFns hA C.I.t'.PP.isLB hk l₁ l₂ (m₁ _ _ _ _ h₁ r₁ hact) (m₂ _ _ _ _ h₂ r₂ hσ')`. Conclude with `germIs_of_rel hFT C r₁ r₂ (hyp σ σ' hg hσ')`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem germIs_translate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT → ∀ (k : ℕ), Odd k → ∀ (a : ptO Xo (xOf y) ⟶ Xo.univ.t.G) (aV : baseOver (Sp T.V) ⟶ C.I.G.G) (r : Sp T.Fr ⟶ C.I.t'.G.left), r ≫ C.I.t'.G.hom = 𝟙 _ → r ≫ C.I.m1.φ = a.left → r ≫ C.I.m2.φ = spMap (algebraMap T.V T.Fr) ≫ aV.left → ∀ U : ThetaGrp C.I.G.G C.I.G.PP.L (k : ℤ) (baseOver (Sp T.V)), SymLift C.I.G.G C.I.G.PP.L (k : ℤ) k aV U → ∀ (F F' : SecN Xo (xOf y) k) (f f' : PS T.V 1 (chD C.ch)), Regular C k F → GermIs C k F f → Moves Xo a F F' → (∀ σ σ' : LB.Sec (LPow C.I.G.G C.I.G.PP.L (k : ℤ) (baseOver (Sp T.V))), IsGermG C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.actT C.eT C.wPT k σ f → IsActOf C.I.G.G C.I.G.PP.L (k : ℤ) U σ σ' → IsGermG C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.actT C.eT C.wPT k σ' f') → GermIs C k F' f' := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y C hC k hk a aV r hr hr1 hr2 U hU F F' f f' hF hf hM hyp

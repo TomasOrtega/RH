@@ -19,16 +19,16 @@ variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V K]
 
 /- English proof (translation)
-Rewrite using `[← WithZero.log_le_log (valV_ne_zero (V := V) hx) one_ne_zero, WithZero.log_one, vV]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vV_nonneg_iff_le_one (x : K) (hx : x ≠ 0) : 0 ≤ vV V x ↔ valV V x ≤ 1 := by
   rw [← WithZero.log_le_log (valV_ne_zero (V := V) hx) one_ne_zero, WithZero.log_one, vV]
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Conclude with `⟨fun _ => by simp [vV], fun _ => ⟨0, map_zero _⟩⟩`. Rewrite using `[vV_nonneg_iff_le_one x hx]`. Prove the components needed by the constructor for the conclusion.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨v, rfl⟩`. Conclude with `HeightOneSpectrum.valuation_le_one _ v`. Conclude with `fun h => IsDiscreteValuationRing.exists_lift_of_le_one (A := V) (K := K) h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem mem_range_iff (x : K) : x ∈ Set.range (algebraMap V K) ↔ 0 ≤ vV V x := by
   by_cases hx : x = 0
@@ -41,7 +41,7 @@ theorem mem_range_iff (x : K) : x ∈ Set.range (algebraMap V K) ↔ 0 ≤ vV V 
   · exact fun h => IsDiscreteValuationRing.exists_lift_of_le_one (A := V) (K := K) h
 
 /- English proof (translation)
-Establish `h1 : algebraMap V K v ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V K)).2 h0`. Establish `h2 : valV V (algebraMap V K v) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem _ v).2 h`. Use `(WithZero.log_lt_log (valV_ne_zero (V := V) h1) one_ne_zero).2 h2` as an intermediate fact. Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vV]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -53,14 +53,14 @@ theorem vV_pos {v : V} (h0 : v ≠ 0) (h : v ∈ maximalIdeal V) : 0 < vV V (alg
   simp only [vV]; omega
 
 /- English proof (translation)
-Simplify using `only [vV, map_zpow₀, WithZero.log_zpow, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vV_zpow (x : K) (n : ℤ) : vV V (x ^ n) = n * vV V x := by
   simp only [vV, map_zpow₀, WithZero.log_zpow, smul_eq_mul]
   ring
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `h`. Establish `h1` using `(mem_range_iff (V := V) (algebraMap V K (u : V))).1 ⟨_, rfl⟩`. Establish `h2` using `(mem_range_iff (V := V) (algebraMap V K ((u⁻¹ : Vˣ) : V))).1 ⟨_, rfl⟩`. Rewrite `h2` using `[map_units_inv, ← zpow_neg_one, vV_zpow]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vV_of_isUnit {v : V} (h : IsUnit v) : vV V (algebraMap V K v) = 0 := by
   obtain ⟨u, rfl⟩ := h
@@ -73,13 +73,13 @@ variable {W L : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Fie
   [IsFractionRing W L]
 
 /- English proof (translation)
-Establish `hnn : ∀ x : K, 0 ≤ vV V x → 0 ≤ vV W (i x)` using `fun x hx => by`. Take `⟨a, rfl⟩` from `(mem_range_iff x).2 hx`. Conclude with `(mem_range_iff _).1 (hi a)`. Establish `hz : ∀ x : K, vV V x = 0 → vV W (i x) = 0` using `fun x hx => by`. Establish `h1` using `hnn x hx.ge`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hnn (x ^ (-1 : ℤ)) (by rw [vV_zpow, hx]; simp)`. Rewrite `h2` using `[map_zpow₀, vV_zpow]`. Use linear arithmetic over natural numbers and integers. Take `⟨π, hπ⟩` from `(IsDiscreteValuationRing.maximalIdeal V).valuation_exists_uniformizer K`. Establish `hπ1 : vV V π = 1` using `by simp [vV, valV, hπ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ0 : π ≠ 0` using `fun h => by simp [h, vV] at hπ1`. Establish `hr` using `hnn π (by omega)`. Use `⟨(vV W (i π)).toNat, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg hr]`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, vV]`. Establish `h` using `hz (x * π ^ (-vV V x)) (by rw [vV_mul hx (zpow_ne_zero _ hπ0), vV_zpow, hπ1]; ring)`. Rewrite `h` using `[map_mul, map_zpow₀, vV_mul ((map_ne_zero i).2 hx) (zpow_ne_zero _ ((map_ne_zero i).2 hπ0)), vV_zpow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_scale (i : K →+* L) (hi : ∀ a : V, i (algebraMap V K a) ∈ Set.range (algebraMap W L)) :
     ∃ r : ℕ, ∀ x : K, vV W (i x) = (r : ℤ) * vV V x := by
@@ -104,7 +104,7 @@ theorem exists_scale (i : K →+* L) (hi : ∀ a : V, i (algebraMap V K a) ∈ S
   linarith
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `la.valuation_exists_uniformizer F`. Establish `hπ1 : vLa la π = 1` using `by simp [vLa, hπ]`. Establish `h` using `ho'.2 π`. Rewrite `h` using `[RingHom.comp_apply, hi, ho.2, hπ1, mul_one, mul_one]`. Conclude with `h.symm` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_eq {R F : Type} [CommRing R] [IsDedekindDomain R] [Field F] [Algebra R F] [IsFractionRing R F]
     {la : HeightOneSpectrum R} {io : F →+* K} {i : K →+* L} {e e' r : ℕ} (ho : OverLa la V io e)
@@ -116,23 +116,21 @@ theorem index_eq {R F : Type} [CommRing R] [IsDedekindDomain R] [Field F] [Algeb
   exact_mod_cast h.symm
 
 /- English proof (translation)
-Establish `hint : ∀ a : V, ∃ v : W, algebraMap W L v = i (algebraMap V K a)` using `fun a => (mem_range_iff _).2 (by rw [hi]; exact mul_nonneg (by positivity) ((mem_range_iff _).1 ⟨a, rfl⟩))`. Use `choose g0 hg0 using hint`. Establish `hinj` using `IsFractionRing.injective W L`. Set `g : V →+* W` to `{ toFun := g0 map_one' := hinj (by simp [hg0]) map_mul' := fun a b => hinj (by simp [hg0]) map_zero' := hinj (by simp [hg0]) map_add' := fun a b => hinj (by simp [hg0]) }`. Establish `hg : ∀ a, algebraMap W L (g a) = i (algebraMap V K a)` using `hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra V W := g.toAlgebra`. Use `letI : Algebra K L := i.toAlgebra`. Use `letI : Algebra V L := ((algebraMap W L).comp g).toAlgebra`. Establish `: IsScalarTower V W L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower V K L` using `IsScalarTower.of_algebraMap_eq fun a => hg a`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgi : Function.Injective (algebraMap V W)` using `fun a b hab => by`. Apply `IsFractionRing.injective V K` to reduce the goal to its premises. Apply `i.injective` to reduce the goal to its premises. Rewrite using `[← hg, ← hg]`. Conclude with `congrArg _ hab`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hgi`. Establish `hle : (maximalIdeal V).map (algebraMap V W) ≤ maximalIdeal W`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Distinguish the cases in `h0 : a = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h0]`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal]`. Introduce `hu`. Establish `h1 : vV W (algebraMap W L (g a)) = 0` using `vV_of_isUnit hu`. Establish `h3 : (0 : ℤ) < r * vV V (algebraMap V K a)` using `mul_pos (by exact_mod_cast hr) (vV_pos h0 ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← hi, ← hg, h1]`. Conclude with `lt_irrefl _ h3`. Establish `hne : (maximalIdeal V).map (algebraMap V W) ≠ ⊥`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective hgi]`. Conclude with `IsDiscreteValuationRing.not_a_field V`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `htop : (maximalIdeal V).map (algebraMap V W) ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal W).ne_top hle`. Establish `: IsHausdorff ((maximalIdeal V).map (algebraMap V W)) W` using `IsHausdorff.of_isDomain _ htop`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hne hϖ`. Establish `: Finite (W ⧸ (maximalIdeal V).map (algebraMap V W))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hn, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]`. Establish `: Finite (W ⧸ maximalIdeal W)` using `h'`. Conclude with `Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n`. Establish `: Module.Finite V (W ⧸ (maximalIdeal V).map (algebraMap V W))` using `Module.Finite.of_finite`. Establish `: Module.Finite V W` using `GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal V)`.
-
-Conclude with `Module.Finite.of_isLocalization V W (nonZeroDivisors V)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_scale [IsAdicComplete (maximalIdeal V) V] (i : K →+* L) {r : ℕ} (hr : 0 < r)
     (hi : ∀ z, vV W (i z) = (r : ℤ) * vV V z) (h' : Finite (ResidueField W)) : i.Finite := by
@@ -188,9 +186,9 @@ theorem finite_of_scale [IsAdicComplete (maximalIdeal V) V] (i : K →+* L) {r :
 end Valuations
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ho', hj⟩`. Take `⟨r, hr⟩` from `exists_scale j hj`. Take `rfl` from `index_eq ho ho' hr`. Establish `h0 : 0 < r` using `Nat.pos_of_mul_pos_right ho'.1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨r, rfl, ⟨finite_of_scale j h0 hr hT', h0, hr⟩, ho'⟩`. Introduce and unpack `⟨r, rfl, ⟨-, -, hr⟩, ho'⟩`. Use `⟨ho', fun a => (mem_range_iff _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `mul_nonneg (by positivity) ((mem_range_iff _).1 ⟨a, rfl⟩)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extension_iff {F : Type} [Field F] [NumberField F] {la : HeightOneSpectrum (𝓞 F)} {T T' : CDVR}
     {io : F →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e) (hT' : T'.FinRes) (j : T.Fr →+* T'.Fr) (e' : ℕ) :
@@ -212,9 +210,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T', io', e', y', ho', ha, φ, z, t, hφ, hz, hb⟩`. Use `letI := io'.toAlgebra`. Take `⟨j, hj⟩` from `φ`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `rfl : io' = j.comp io` from `RingHom.ext fun a => (hj a).symm`. Take `⟨r, -, hf, ho''⟩` from `(extension_iff ho ha j e').1 ⟨ho', hφ⟩`. Conclude with `⟨T', j, r, y', hf, ho'', ha, z, t, hz, hb⟩`. Introduce and unpack `⟨T', j, r, y', hf, ho', ha, z, t, hz, hb⟩`. Conclude with `⟨T', j.comp io, r * e, y', ho', ha, algHomOver io j, z, t, ((extension_iff ho ha j (r * e)).2 ⟨r, rfl, hf, ho'⟩).2, hz, hb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem conclusion_iff (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ)
     (ho : OverLa la T.V io e) (y : (letI := io.toAlgebra; FrPt Xo c T.Fr)) :
@@ -237,7 +235,7 @@ theorem conclusion_iff (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F 
       ((extension_iff ho ha j (r * e)).2 ⟨r, rfl, hf, ho'⟩).2, hz, hb⟩
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun la => forall_congr' fun T => forall_congr' fun io => forall_congr' fun e => forall_congr' fun ho => forall_congr' fun _ => forall_congr' fun y => conclusion_iff Xo c la T io e ho y`.
+A detailed English derivation is pending.
 -/
 theorem intAll_iff : Formalism.L2.PjFree.IntAll Xo c ↔ AllAcquireIntegralFrame Xo c :=
   forall_congr' fun la => forall_congr' fun T => forall_congr' fun io => forall_congr' fun e =>

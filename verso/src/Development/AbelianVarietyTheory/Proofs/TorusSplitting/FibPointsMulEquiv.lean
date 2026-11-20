@@ -16,9 +16,9 @@ set_option autoImplicit false
 namespace GlobalTheory.EtaVal
 
 /- English proof (translation)
-Establish `hl : ∀ x : T ⟶ G', (pushHom h T x).left = x.left ≫ φ` using `fun _ => rfl`. Establish `hinj : ∀ x y : T ⟶ G', x.left ≫ φ = y.left ≫ φ → x = y` using `fun x y e => Over.OverMorphism.ext (h.1.hom_ext e ((Over.w x).trans (Over.w y).symm))`. Establish `hb : Function.Bijective (pushHom h T)`. Use `⟨fun x y e => hinj x y (by rw [← hl, ← hl, e]), fun p => ?_⟩` and prove the remaining obligations. Use `⟨Over.homMk (h.1.lift p.left T.hom (Over.w p)) (h.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Over.OverMorphism.ext ((hl _).trans (h.1.lift_fst _ _ _))`. Establish `key : ∀ p, ((MulEquiv.ofBijective _ hb).symm p).left ≫ φ = p.left` using `fun p => (hl _).symm.trans (congrArg (fun z => z.left) ((MulEquiv.ofBijective _ hb).apply_symm_apply p))`. Use `⟨(MulEquiv.ofBijective _ hb).symm, key, fun a a' e p => hinj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[key, Over.comp_left, Over.comp_left, Category.assoc, e, ← Category.assoc, key]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv_points {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
@@ -37,7 +37,7 @@ theorem exists_mulEquiv_points {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [
   rw [key, Over.comp_left, Over.comp_left, Category.assoc, e, ← Category.assoc, key]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo R _ _ _ x A Φ F _ _ xF hx`. Substitute `hx` using the available equality. Conclude with `exists_mulEquiv_points Φ.cart (TFK (R := R) F)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem fib_points_mulEquiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (R : Type) [CommRing R] [IsDomain R] [CharZero R] (x : Sp (FractionRing R) ⟶ Xo.X) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (Φ : Fib Xo x A) (F : Type) [Field F] [Algebra (FractionRing R) F] (xF : Sp F ⟶ Xo.X), xF = spMap (algebraMap (FractionRing R) F) ≫ x → ∃ tr : (ptO Xo xF ⟶ Xo.univ.t.G) ≃* (TFK (R := R) F ⟶ A.A), (∀ p, (tr p).left ≫ Φ.φ = p.left) ∧ ∀ (a : Xo.univ.t.G ⟶ Xo.univ.t.G) (a' : A.A ⟶ A.A), a'.left ≫ Φ.φ = Φ.φ ≫ a.left → ∀ p, tr (p ≫ a) = tr p ≫ a' := by
   intro E _ _ _ H Dw l Xo R _ _ _ x A Φ F _ _ xF hx

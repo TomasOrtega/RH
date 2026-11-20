@@ -30,9 +30,9 @@ section Normal
 variable {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk hz`. Establish `: Ring.KrullDimLE 1 (X.presheaf.stalk z)` using `krullDimLE_of_coheight_le hz.le`. Establish `e` using `(Scheme.ord_eq_iff hz hf).1 h`. Establish `hm : f ∈ MonoidHom.mker (Ring.ordFrac (X.presheaf.stalk z) (K` using `X.functionField)) := by`. Express the relevant statement in the definitionally equal form `Ring.ordFrac (X.presheaf.stalk z) f = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Rewrite `hm` using `[Ring.mker_ordFrac_eq_isUnitSubmonoid]`. Take `⟨a, ha, rfl⟩` from `hm`. Conclude with `⟨a, ha, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unitAt_of_ord_eq_zero {z : X} (hz : Order.coheight z = 1) {f : X.functionField}
     (hf : f ≠ 0) (h : Scheme.ord f z = 0) : UnitAt z f := by
@@ -47,17 +47,17 @@ theorem unitAt_of_ord_eq_zero {z : X} (hz : Order.coheight z = 1) {f : X.functio
   exact ⟨a, ha, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `ReciprocityTheory.ChartRestriction.G.Out.KrullAlg.mem_range_of_forall_height_one (A := X.presheaf.stalk x) (K := X.functionField) f (fun P hP h1 => by`. Take `⟨e, he⟩` from `GlobalTheory.LocalRingGeneralisation.stalk_fromSpecStalk_equiv X x P`. Establish `hs : X.fromSpecStalk x (⟨P, inferInstance⟩ : PrimeSpectrum (X.presheaf.stalk x)) ⤳ x`. Establish `: X.fromSpecStalk x (⟨P, inferInstance⟩ : PrimeSpectrum (X.presheaf.stalk x)) ∈ Set.range (X.fromSpecStalk x)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Generalize the expression as in `X.fromSpecStalk x (⟨P, inferInstance⟩ : PrimeSpectrum (X.presheaf.stalk x)) = z at e he hs`. Establish `hz1 : Order.coheight z = 1`. Establish `h2` using `ringKrullDim_eq_of_ringEquiv e`. Rewrite `h2` using `[IsLocalization.AtPrime.ringKrullDim_eq_height P (Localization.AtPrime P), h1, ringKrullDim_stalk_eq_coheight]`. Conclude with `h2` after adjusting the coercions.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `h z hs hz1`. Establish `key : ∀ c : X.presheaf.stalk x, algebraMap (X.presheaf.stalk z) X.functionField (e.symm (algebraMap _ (Localization.AtPrime P) c)) = algebraMap _ X.functionField c`. Introduce `c`. Take `⟨U, hxU, s, rfl⟩` from `X.presheaf.exists_germ_eq c`. Establish `hzU : z ∈ U` using `hs.mem_open U.isOpen hxU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `he U hzU hxU s`. Rewrite using `[← h3, e.symm_apply_apply]`. Conclude with `(algebraMap_germ hzU s).trans (algebraMap_germ hxU s).symm`. Take `⟨⟨c, t⟩, hct⟩` from `IsLocalization.mk'_surjective P.primeCompl (e b)`. Express the relevant statement in the definitionally equal form `IsLocalization.mk' (Localization.AtPrime P) c t = e b at hct`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨t, t.2, c, ?_⟩` and prove the remaining obligations. Establish `hspec` using `IsLocalization.mk'_spec (Localization.AtPrime P) c t`. Rewrite `hspec` using `[hct]`. Use `congrArg (fun w => algebraMap (X.presheaf.stalk z) X.functionField (e.symm w)) hspec` as an intermediate fact. Simplify using `only [map_mul, e.symm_apply_apply] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[key, key, hb]`. Rewrite using `[← this, mul_comm])`. Conclude with `⟨a, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem regAt_of_forall_coheight_one (x : X) (f : X.functionField)
     (h : ∀ z : X, z ⤳ x → Order.coheight z = 1 → RegAt z f) : RegAt x f := by
@@ -97,13 +97,13 @@ theorem regAt_of_forall_coheight_one (x : X) (f : X.functionField)
 end Normal
 
 /- English proof (translation)
-Introduce `X _ _ hN D g hD`. Use `haveI := GlobalTheory.IsNormalScheme.of_pred hN`. Use `CartierDiv.ext_of_isEqn fun x => ⟨g, ?_, CartierDiv.isEqn_principal g x⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `D.exists_isEqn x`. Take `⟨V, hxV, hV⟩` from `hh.exists_nhds`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : (g : X.functionField) / h ≠ 0` using `div_ne_zero g.ne_zero h.ne_zero`. Establish `hu : ∀ z : X, z ⤳ x → Order.coheight z = 1 → UnitAt z ((g : X.functionField) / h)`. Introduce `z hs hz`. Establish `hzV : z ∈ V` using `hs.mem_open V.isOpen hxV`. Establish `e1` using `(hV z hzV).mult_eq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[hD z]`. Use `unitAt_of_ord_eq_zero hz hne ?_` and prove the remaining obligations. Establish `e2` using `Scheme.ord_mul (x := z) hne h.ne_zero`. Rewrite `e2` using `[div_mul_cancel₀ _ h.ne_zero]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `hh.iff_unitAt.2 ((unitAt_iff hne).2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `regAt_of_forall_coheight_one x _ fun z hs hz => (hu z hs hz).regAt`. Conclude with `regAt_of_forall_coheight_one x _ fun z hs hz => (hu z hs hz).inv.regAt`.
+A detailed English derivation is pending.
 -/
 theorem eq_principal_of_mult_eq : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X →
     ∀ (D : GlobalTheory.Cartier.CartierDiv X) (g : X.functionFieldˣ), (∀ z, D.mult z = Scheme.ord (g : X.functionField) z) →

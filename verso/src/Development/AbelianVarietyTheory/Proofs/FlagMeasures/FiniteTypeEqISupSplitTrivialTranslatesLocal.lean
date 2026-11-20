@@ -13,23 +13,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SerSys
 
 /- English proof (translation)
-Introduce `L _ _ _ n π s V _ _ _ T hT hTS hx`. Take `⟨hdec, hcomm, -⟩` from `GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s`. Establish `hrt : ∀ (h h' : GAf L n) (f : GAf L n → ℂ), NG.rt L n h (NG.rt L n h' f) = NG.rt L n (h * h') f`. Introduce `h h' f`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[NG.rt, mul_assoc]`. Establish `hone : ∀ f : GAf L n → ℂ, NG.rt L n 1 f = f`. Introduce `f`. Use function extensionality and compare the values at `g`. Simplify using `[NG.rt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1 : TrivOutside {s.v}ᶜ (1 : GAf L n)`. Introduce `v _`. Simplify using the standard rewrite rules. Use `set Wd := ⨆ y : {y : GAf L n // TrivOutside {s.v}ᶜ y}, LinearMap.range ((NG.rt L n y.1).comp T) with hWd`. Establish `hle : Wd ≤ π.S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun y => ?_` and prove the remaining obligations. Introduce and unpack `f ⟨a, rfl⟩`. Conclude with `π.stable _ _ (hTS a)`. Establish `hstab : ∀ h, ∀ f ∈ Wd, NG.rt L n h f ∈ Wd`. Introduce `h f hf`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.iSup_induction _ (motive := fun f => NG.rt L n h f ∈ Wd) hf ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `y _ ⟨a, rfl⟩`. Take `⟨x, y', hx1, hy', he⟩` from `hdec (h * y.1)`. Take `⟨b, hb⟩` from `hx x hx1 a`. Establish `: NG.rt L n h (NG.rt L n y.1 (T a)) = NG.rt L n y' (T b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrt, he, (hcomm x y' hx1 hy').eq, ← hrt, hb]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[this]`. Conclude with `Submodule.mem_iSup_of_mem (⟨y', hy'⟩ : {y : GAf L n // TrivOutside {s.v}ᶜ y}) ⟨b, rfl⟩`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `f₁ f₂ h₁ h₂`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ h₁ h₂`. Break down `π.irr Wd hle hstab with h0 | h0` into its components or cases. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha⟩` from `exists_ne (0 : V)`. Establish `hmem : T a ∈ Wd`. Use `Submodule.mem_iSup_of_mem (p := fun y : {y : GAf L n // TrivOutside {s.v}ᶜ y} => LinearMap.range ((NG.rt L n y.1).comp T)) (⟨1, h1⟩ : {y : GAf L n // TrivOutside {s.v}ᶜ y}) (⟨a, rfl⟩ : ((NG.rt L n 1).comp T) a ∈ LinearMap.range ((NG.rt L n 1).comp T))` as an intermediate fact. Simplify `this` using `[hone]`. Rewrite `hmem` using `[h0, Submodule.mem_bot]`.
-
-Conclude with `ha (hT (by rw [hmem, map_zero]))`. Conclude with `h0.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finTyp_eq_iSup_rt_local : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.FinTyp L n) (s : SplitPlace L) (V : Type) [AddCommGroup V] [Module ℂ V] [Nontrivial V] (T : V →ₗ[ℂ] (GAf L n → ℂ)), Function.Injective T → (∀ a, T a ∈ π.S) → (∀ x : GAf L n, TrivOutside {s.v} x → ∀ a, ∃ b, NG.rt L n x (T a) = T b) → π.S = ⨆ y : {y : GAf L n // TrivOutside {s.v}ᶜ y}, LinearMap.range ((NG.rt L n y.1).comp T) := by
   intro L _ _ _ n π s V _ _ _ T hT hTS hx

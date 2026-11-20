@@ -31,7 +31,7 @@ def HasQuotInt (φ : H → ℂ) (c : ℂ) : Prop := Integrable (descend T φ) (q
 variable {T dt dh}
 
 /- English proof (translation)
-Establish `h' : ∃ ν, IsQuotMeasure T dt dh ν` using `⟨ν, h⟩`. Rewrite using `[Orb.quotMeas, dif_pos h']`. Conclude with `h'.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsQuotMeasure.quotMeas {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν) :
     IsQuotMeasure T dt dh (quotMeas T dt dh) := by
@@ -42,28 +42,28 @@ theorem IsQuotMeasure.quotMeas {ν : Measure (Quot T)} (h : IsQuotMeasure T dt d
 omit [MeasurableSpace H] in
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `mk_eq_iff.1 (Quotient.out_eq (mk T x)).symm`. Conclude with `⟨t, ht.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_out_eq (x : H) : ∃ t : T, (mk T x).out = t * x := by
   obtain ⟨t, ht⟩ := mk_eq_iff.1 (Quotient.out_eq (mk T x)).symm
   exact ⟨t, ht.symm⟩
 
 /- English proof (translation)
-The claim follows from `measurable_from_quotient.2 (by rwa [show descend T φ ∘ Quotient.mk'' = φ from h.lift_descend])`.
+A detailed English derivation is pending.
 -/
 theorem measurable_descend {X : Type*} [MeasurableSpace X] {φ : H → X} (h : LeftInv T φ) (hm : Measurable φ) :
     Measurable (descend T φ) :=
   measurable_from_quotient.2 (by rwa [show descend T φ ∘ Quotient.mk'' = φ from h.lift_descend])
 
 /- English proof (translation)
-Introduce `f hf` and use `by rw [lintegral_smul_measure, lintegral_smul_measure, h f hf]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsQuotMeasure.smul_left {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν) (c : ℝ≥0∞) :
     IsQuotMeasure T dt (c • dh) (c • ν) := fun f hf => by
   rw [lintegral_smul_measure, lintegral_smul_measure, h f hf]
 
 /- English proof (translation)
-Introduce `f hf` and use `by simp only [lintegral_smul_measure, smul_eq_mul] rw [lintegral_const_mul' _ _ ht, ← mul_assoc, ENNReal.inv_mul_cancel h0 ht, one_mul, h f hf]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsQuotMeasure.smul_right {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν) {c : ℝ≥0∞} (h0 : c ≠ 0)
     (ht : c ≠ ∞) : IsQuotMeasure T (c • dt) dh (c⁻¹ • ν) := fun f hf => by
@@ -73,30 +73,30 @@ theorem IsQuotMeasure.smul_right {ν : Measure (Quot T)} (h : IsQuotMeasure T dt
 variable [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H] [BorelSpace H]
 
 /- English proof (translation)
-Introduce `s hs x` and use `by simpa [mul_assoc] using lintegral_mul_right_eq_self (μ := dt) (fun t : T => f (t * x)) ⟨s, hs⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leftInv_lintegral [dt.IsMulRightInvariant] (f : H → ℝ≥0∞) :
     LeftInv T fun x => ∫⁻ t : T, f (t * x) ∂dt := fun s hs x => by
   simpa [mul_assoc] using lintegral_mul_right_eq_self (μ := dt) (fun t : T => f (t * x)) ⟨s, hs⟩
 
 /- English proof (translation)
-Introduce `s hs x` and use `by simpa [mul_assoc] using integral_mul_right_eq_self (μ := dt) (fun t : T => f (t * x)) ⟨s, hs⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leftInv_integral [dt.IsMulRightInvariant] (f : H → ℂ) :
     LeftInv T fun x => ∫ t : T, f (t * x) ∂dt := fun s hs x => by
   simpa [mul_assoc] using integral_mul_right_eq_self (μ := dt) (fun t : T => f (t * x)) ⟨s, hs⟩
 
 /- English proof (translation)
-The claim follows from `(hf.comp ((measurable_subtype_coe.comp measurable_fst).mul measurable_snd)).lintegral_prod_left'`.
+A detailed English derivation is pending.
 -/
 theorem measurable_fiber [SFinite dt] {f : H → ℝ≥0∞} (hf : Measurable f) :
     Measurable fun x => ∫⁻ t : T, f (t * x) ∂dt :=
   (hf.comp ((measurable_subtype_coe.comp measurable_fst).mul measurable_snd)).lintegral_prod_left'
 
 /- English proof (translation)
-Use extensionality with `A hA`. Establish `hA'` using `measurable_mk hA`. Rewrite using `[Measure.map_apply measurable_mk hA, withDensity_apply _ hA', ← lintegral_indicator hA', h _ (hb.indicator hA'), ← lintegral_indicator_one hA]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Establish `e : ∀ t : T, mk T (t * q.out) = q` using `fun t => (mk_mul _ _).trans (Quotient.out_eq q)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hq : q ∈ A <;> simp [Set.indicator, e, hq, h1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsQuotMeasure.eq_map {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν) {b : H → ℝ≥0∞}
     (hb : Measurable b) (h1 : ∀ x, ∫⁻ t : T, b (t * x) ∂dt = 1) : ν = (dh.withDensity b).map (mk T) := by
@@ -111,7 +111,7 @@ theorem IsQuotMeasure.eq_map {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh 
 variable [LocallyCompactSpace H] [T2Space H]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Use `haveI := GlobalTheory.SqIntRep.isInvInvariant_of_unimodular dt`. Conclude with `GlobalTheory.exists_bruhat_function_closedEmbedding H T T.subtype hT.isClosedEmbedding_subtypeVal dt`.
+A detailed English derivation is pending.
 -/
 theorem exists_bruhat (hT : IsClosed (T : Set H)) (dt : Measure T) [dt.IsHaarMeasure] [dt.IsMulRightInvariant] :
     ∃ b : H → ℝ≥0∞, Measurable b ∧ ∀ x, ∫⁻ t : T, b (t * x) ∂dt = 1 := by
@@ -123,7 +123,7 @@ variable (hT : IsClosed (T : Set H)) [dt.IsHaarMeasure] [dt.IsMulRightInvariant]
 include hT
 
 /- English proof (translation)
-Take `⟨b, hb, h1⟩` from `exists_bruhat hT dt`. Rewrite using `[h.eq_map hb h1, h'.eq_map hb h1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsQuotMeasure.unique {ν ν' : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν)
     (h' : IsQuotMeasure T dt dh ν') : ν = ν' := by
@@ -131,7 +131,7 @@ theorem IsQuotMeasure.unique {ν ν' : Measure (Quot T)} (h : IsQuotMeasure T dt
   rw [h.eq_map hb h1, h'.eq_map hb h1]
 
 /- English proof (translation)
-The claim follows from `h.unique hT h.quotMeas`.
+A detailed English derivation is pending.
 -/
 theorem IsQuotMeasure.eq_quotMeas {ν : Measure (Quot T)} (h : IsQuotMeasure T dt dh ν) : ν = Orb.quotMeas T dt dh :=
   h.unique hT h.quotMeas
@@ -139,9 +139,7 @@ theorem IsQuotMeasure.eq_quotMeas {ν : Measure (Quot T)} (h : IsQuotMeasure T d
 variable (dt dh) in
 
 /- English proof (translation)
-Take `⟨b, hb, h1⟩` from `exists_bruhat hT dt`. Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Use `haveI := GlobalTheory.SqIntRep.isInvInvariant_of_unimodular dt`. Establish `key : ∀ S : Subgroup H, S = T.subtype.range → ∃ ν : Measure (Quot S), ∀ f : H → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂dh = ∫⁻ q, ∫⁻ t : T, f (t * q.out) ∂dt ∂ν`. Introduce and unpack `S rfl`.
-
-Conclude with `GlobalTheory.exists_isQuotientMeasure_of_bruhatFunction H T T.subtype measurable_subtype_coe dh dt b hb h1`. Take `⟨ν, hν⟩` from `key T (T.range_subtype).symm`. Conclude with `IsQuotMeasure.quotMeas hν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isQuotMeasure_quotMeas [SFinite dh] [dh.IsMulLeftInvariant] : IsQuotMeasure T dt dh (quotMeas T dt dh) := by
   obtain ⟨b, hb, h1⟩ := exists_bruhat hT dt
@@ -157,13 +155,13 @@ theorem isQuotMeasure_quotMeas [SFinite dh] [dh.IsMulLeftInvariant] : IsQuotMeas
 variable [SFinite dh] [dh.IsMulLeftInvariant]
 
 /- English proof (translation)
-The claim follows from `(((isQuotMeasure_quotMeas dt dh hT).smul_left c).eq_quotMeas hT).symm`.
+A detailed English derivation is pending.
 -/
 theorem quotMeas_smul_left (c : ℝ≥0∞) : quotMeas T dt (c • dh) = c • quotMeas T dt dh :=
   (((isQuotMeasure_quotMeas dt dh hT).smul_left c).eq_quotMeas hT).symm
 
 /- English proof (translation)
-Use `haveI := Measure.IsHaarMeasure.nnreal_smul dt h0`. Use `(isQuotMeasure_quotMeas dt dh hT).smul_right (c := c) (by simpa using h0) ENNReal.coe_ne_top` as an intermediate fact. Rewrite `this` using `[← ENNReal.coe_inv h0]`. Conclude with `(IsQuotMeasure.eq_quotMeas (dt := c • dt) hT this).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotMeas_smul_right {c : ℝ≥0} (h0 : c ≠ 0) : quotMeas T (c • dt) dh = c⁻¹ • quotMeas T dt dh := by
   haveI := Measure.IsHaarMeasure.nnreal_smul dt h0
@@ -172,9 +170,9 @@ theorem quotMeas_smul_right {c : ℝ≥0} (h0 : c ≠ 0) : quotMeas T (c • dt)
   exact (IsQuotMeasure.eq_quotMeas (dt := c • dt) hT this).symm
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Establish `hm : Measurable (rmul T g)` using `measurable_from_quotient.2 (measurable_mk.comp (measurable_mul_const g))`. Use `⟨hm, IsQuotMeasure.eq_quotMeas hT fun f hf => ?_⟩` and prove the remaining obligations. Establish `hi` using `leftInv_lintegral (dt := dt) f`. Rewrite using `[← lintegral_mul_right_eq_self f g, isQuotMeasure_quotMeas dt dh hT (fun x => f (x * g)) (hf.comp (measurable_mul_const g))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((lintegral_map (measurable_descend hi (measurable_fiber hf)) hm).trans (lintegral_congr fun q => ?_)).symm` and prove the remaining obligations. Use `conv_lhs => rw [← Quotient.out_eq q]`. Conclude with `(hi.descend_mk (q.out * g)).trans (by simp only [mul_assoc])`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_rmul_quotMeas [dh.IsMulRightInvariant] (g : H) :
     MeasurePreserving (rmul T g) (quotMeas T dt dh) (quotMeas T dt dh) := by
@@ -188,21 +186,19 @@ theorem measurePreserving_rmul_quotMeas [dh.IsMulRightInvariant] (g : H) :
   exact (hi.descend_mk (q.out * g)).trans (by simp only [mul_assoc])
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Take `⟨b, hb, h1⟩` from `exists_bruhat hT dt`. Establish `hW` using `isQuotMeasure_quotMeas dt dh hT`. Establish `hν` using `hW.eq_map hb h1`. Establish `hΦ : Measurable fun p : H × T => (p.2 : H) * p.1` using `(measurable_subtype_coe.comp measurable_snd).mul measurable_fst`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : MeasurePreserving (fun p : H × T => (p.2 : H) * p.1) ((dh.withDensity b).prod dt) dh`. Use `⟨hΦ, Measure.ext_of_lintegral _ fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hi` using `leftInv_lintegral (dt := dt) φ`. Rewrite using `[lintegral_map hφ hΦ, lintegral_prod (fun p : H × T => φ (p.2 * p.1)) (hφ.comp hΦ).aemeasurable, hW φ hφ, hν]`. Use `((lintegral_map (measurable_descend hi (measurable_fiber hφ)) measurable_mk).trans ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi.descend_mk]`. Establish `hm` using `hf.1.stronglyMeasurable_mk`. Use `set f' := hf.1.mk f`. Establish `hff : f =ᵐ[dh] f'` using `hf.1.ae_eq_mk`. Take `⟨N, hN, hNm, hN0⟩` from `exists_measurable_superset_of_null hff`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ q ∂quotMeas T dt dh, (fun t : T => f (t * q.out)) =ᵐ[dt] fun t : T => f' (t * q.out)`. Establish `h2` using `hW (N.indicator 1) (measurable_one.indicator hNm)`. Rewrite `h2` using `[lintegral_indicator_one hNm, hN0]`. Use `filter_upwards [(lintegral_eq_zero_iff (measurable_descend (leftInv_lintegral (dt := dt) _) (measurable_fiber (measurable_one.indicator hNm)))).1 h2.symm] with q hq`. Establish `h3` using `(lintegral_eq_zero_iff (f := fun t : T => N.indicator (1 : H → ℝ≥0∞) (t * q.out)) ((measurable_one.indicator hNm).comp (measurable_subtype_coe.mul_const _))).1 hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `filter_upwards [h3] with t ht`. Assume the negation of the conclusion as `hne`. Simplify using `[Set.indicator_of_mem (hN hne)] at ht`. Establish `hf' : Integrable f' dh` using `hf.congr hff`. Establish `hI` using `hP.integrable_comp_of_integrable hf'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `leftInv_integral (dt := dt) f'`. Establish `hFm : Measurable fun x => ∫ t : T, f' (t * x) ∂dt` using `(StronglyMeasurable.integral_prod_right' (hm.comp_measurable hΦ)).measurable`. Establish `hD` using `(measurable_descend hi hFm).aestronglyMeasurable (μ := (dh.withDensity b).map (mk T))`. Establish `e : descend T (fun x => ∫ t : T, f (t * x) ∂dt) =ᵐ[quotMeas T dt dh] descend T fun x => ∫ t : T, f' (t * x) ∂dt` using `hae.mono fun q hq => integral_congr_ae hq`. Use `⟨?_, Integrable.congr ?_ e.symm, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hW _ hm.measurable.enorm`. Establish `h3` using `ae_lt_top (measurable_descend (leftInv_lintegral (dt := dt) _) (measurable_fiber hm.measurable.enorm)) (h2 ▸ hf'.2.ne :)`. Use `filter_upwards [hae, h3] with q hq h4`. Conclude with `Integrable.congr ⟨(hm.comp_measurable (measurable_subtype_coe.mul_const _)).aestronglyMeasurable, h4⟩ hq.symm`. Rewrite using `[hν, integrable_map_measure hD measurable_mk.aemeasurable]`.
-
-Conclude with `hI.integral_prod_left.congr (.of_forall fun x => (hi.descend_mk x).symm)`. Rewrite using `[quotInt, integral_congr_ae e, hν, integral_map measurable_mk.aemeasurable hD, integral_congr_ae hff] conv_rhs => rw [← hP.map_eq, integral_map hΦ.aemeasurable hm.aestronglyMeasurable]`. Simplify using `only [hi.descend_mk]`. Conclude with `(integral_prod _ hI).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weil_integral {f : H → ℂ} (hf : Integrable f dh) :
     (∀ᵐ q ∂quotMeas T dt dh, Integrable (fun t : T => f (t * q.out)) dt) ∧
@@ -255,13 +251,13 @@ theorem weil_integral {f : H → ℂ} (hf : Integrable f dh) :
     exact (integral_prod _ hI).symm
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Take `⟨U, hU, hU1⟩` from `exists_compact_mem_nhds (1 : T)`. Establish `hK : IsCompact (((↑) : T → H) '' U * C)` using `(hU.image continuous_subtype_val).mul hC`. Establish `hm : Measurable ((((↑) : T → H) '' U * C).indicator (1 : H → ℝ≥0∞))` using `measurable_one.indicator hK.measurableSet`. Establish `hi` using `leftInv_lintegral (dt := dt) ((((↑) : T → H) '' U * C).indicator (1 : H → ℝ≥0∞))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `mul_meas_ge_le_lintegral₀ (μ := quotMeas T dt dh) (measurable_descend hi (measurable_fiber hm)).aemeasurable (dt U)`. Establish `h2` using `isQuotMeasure_quotMeas dt dh hT _ hm`. Rewrite `h2` using `[lintegral_indicator_one hK.measurableSet]`. Establish `h3` using `ENNReal.lt_top_of_mul_ne_top_right ((h1.trans_eq h2.symm).trans_lt hK.measure_lt_top).ne (Measure.measure_pos_of_mem_nhds dt hU1).ne'`. Use `(measure_mono ?_).trans_lt h3` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[mem_setOf_eq, hi.descend_mk, ← lintegral_indicator_one hU.measurableSet]`. Use `lintegral_mono fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ U`. Rewrite using `[indicator_of_mem ht, indicator_of_mem (Set.mul_mem_mul (mem_image_of_mem _ ht) hx)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `[ht]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotMeas_image_lt_top [IsFiniteMeasureOnCompacts dh] {C : Set H} (hC : IsCompact C) :
     quotMeas T dt dh (mk T '' C) < ∞ := by
@@ -285,11 +281,9 @@ theorem quotMeas_image_lt_top [IsFiniteMeasureOnCompacts dh] {C : Set H} (hC : I
   · simp [ht]
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hc.continuousOn`. Establish `hm` using `measurable_descend hi hc.measurable`. Establish `hs : Function.support (descend T φ) ⊆ mk T '' C` using `fun q hq => by`. Take `⟨t, ht, h⟩` from `h0 _ hq`. Conclude with `⟨_, h, (mk_mul ⟨t, ht⟩ _).trans (Quotient.out_eq q)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← integrableOn_iff_integrable_of_support_subset (Subset.refl _)]`. Use `Measure.integrableOn_of_bounded (M := M) ((measure_mono hs).trans_lt (quotMeas_image_lt_top hT hC)).ne hm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem (measurableSet_support hm)] with q hq`. Take `⟨x, hx, rfl⟩` from `hs hq`. Rewrite using `[hi.descend_mk]`.
-
-Conclude with `hM x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_descend [IsFiniteMeasureOnCompacts dh] {φ : H → ℂ} (hi : LeftInv T φ) (hc : Continuous φ)
     {C : Set H} (hC : IsCompact C) (h0 : ∀ x, φ x ≠ 0 → ∃ t ∈ T, t * x ∈ C) :
@@ -308,7 +302,7 @@ theorem integrable_descend [IsFiniteMeasureOnCompacts dh] {φ : H → ℂ} (hi :
   exact hM x hx
 
 /- English proof (translation)
-Establish `h0 : dt univ ≠ 0` using `(isOpen_univ.measure_pos dt univ_nonempty).ne'`. Rewrite using `[(isQuotMeasure_quotMeas dt dh hT).eq_map (b := fun _ => (dt univ)⁻¹) measurable_const fun x => by rw [lintegral_const, ENNReal.inv_mul_cancel h0 (measure_ne_top _ _)], withDensity_const, Measure.map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotMeas_of_finite [IsFiniteMeasure dt] : quotMeas T dt dh = (dt univ)⁻¹ • dh.map (mk T) := by
   have h0 : dt univ ≠ 0 := (isOpen_univ.measure_pos dt univ_nonempty).ne'
@@ -317,9 +311,9 @@ theorem quotMeas_of_finite [IsFiniteMeasure dt] : quotMeas T dt dh = (dt univ)�
     Measure.map_smul]
 
 /- English proof (translation)
-Establish `h0 : (dt.real univ : ℂ) ≠ 0`. Conclude with `ENNReal.toReal_ne_zero.2 ⟨(isOpen_univ.measure_pos dt univ_nonempty).ne', measure_ne_top _ _⟩` after adjusting the coercions. Establish `h` using `(weil_integral (dt := dt) hT hφ).2`. Establish `e : (fun x => ∫ t : T, φ (t * x) ∂dt) = fun x => (dt.real univ : ℂ) * φ x` using `funext fun x => by`. Simplify using `[fun t : T => hi t t.2 x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Use `⟨(integrable_const_mul_iff (IsUnit.mk0 _ h0) _).1 h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_div_iff h0, ← h.2, mul_comm]`. Conclude with `(integral_const_mul _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasQuotInt_of_finite [IsFiniteMeasure dt] {φ : H → ℂ} (hi : LeftInv T φ) (hφ : Integrable φ dh) :
     HasQuotInt T dt dh φ ((∫ g, φ g ∂dh) / dt.real univ) := by
@@ -375,13 +369,11 @@ instance isMulRightInvariant_map (μ : Measure H) [μ.IsMulRightInvariant] : (μ
 include hT in
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`. Establish `hT' : IsClosed (T' : Set H')`. Use `hT.preimage (map_continuous e.symm) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `using h (e.symm x)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `he : Measurable e` using `(map_continuous e).measurable`. Establish `hm : Measurable (quotMap e h)` using `measurable_from_quotient.2 (measurable_mk.comp he)`. Use `(IsQuotMeasure.eq_quotMeas hT' fun f hf => ?_).symm` and prove the remaining obligations. Establish `hi` using `leftInv_lintegral (dt := dt.map (subEquiv e h)) f`. Rewrite using `[lintegral_map hf he, isQuotMeasure_quotMeas dt dh hT (fun x => f (e x)) (hf.comp he)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `((lintegral_map (measurable_descend hi (measurable_fiber hf)) hm).trans (lintegral_congr fun q => ?_)).symm` and prove the remaining obligations. Use `conv_lhs => rw [← Quotient.out_eq q]`. Use `(hi.descend_mk (e q.out)).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_map (f := fun t : T' => f (t * e q.out)) (hf.comp (measurable_subtype_coe.mul_const _)) (map_continuous (subEquiv e h)).measurable]`. Simplify using `only [map_mul]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem quotMeas_map :
     quotMeas T' (dt.map (subEquiv e h)) (dh.map e) = (quotMeas T dt dh).map (quotMap e h) := by
@@ -407,7 +399,7 @@ omit [IsTopologicalGroup H] [SecondCountableTopology H] [LocallyCompactSpace H] 
   [SecondCountableTopology H'] [LocallyCompactSpace H'] [T2Space H'] in
 
 /- English proof (translation)
-The claim follows from `MeasurableEquiv.measurableEmbedding { toFun := quotMap e h invFun := quotMap e.symm fun x => by simpa using (h (e.symm x)).symm left_inv := fun q => Quotient.inductionOn q fun x => congrArg (mk T) (e.symm_apply_apply x) right_inv := fun q => Quotient.inductionOn q fun x => congrA …`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_quotMap : MeasurableEmbedding (quotMap e h) :=
   MeasurableEquiv.measurableEmbedding
@@ -421,9 +413,9 @@ theorem measurableEmbedding_quotMap : MeasurableEmbedding (quotMap e h) :=
 include hT in
 
 /- English proof (translation)
-Establish `e1 : descend T' φ ∘ quotMap e h = descend T (φ ∘ e)` using `funext fun q => by conv_lhs => rw [← Quotient.out_eq q]`. Conclude with `hi.descend_mk (e q.out)`. Establish `e2 : quotInt T' (dt.map (subEquiv e h)) (dh.map e) φ = quotInt T dt dh (φ ∘ e)`. Rewrite using `[quotInt, quotMeas_map e h hT, (measurableEmbedding_quotMap e h).integral_map, quotInt, ← e1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨and_congr ?_ (by rw [e2]), e2⟩` and prove the remaining obligations. Rewrite using `[quotMeas_map e h hT, (measurableEmbedding_quotMap e h).integrable_map_iff, e1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasQuotInt_map {φ : H' → ℂ} (hi : LeftInv T' φ) (c : ℂ) :
     (HasQuotInt T' (dt.map (subEquiv e h)) (dh.map e) φ c ↔ HasQuotInt T dt dh (φ ∘ e) c) ∧
@@ -448,12 +440,12 @@ abbrev cent (γ : H) : Subgroup H := Subgroup.centralizer {γ}
 def conjFn (γ : H) (f : H → ℂ) : H → ℂ := fun x => f (x⁻¹ * γ * x)
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_centralizer_singleton_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_cent {γ t : H} : t ∈ cent γ ↔ t * γ = γ * t := Subgroup.mem_centralizer_singleton_iff
 
 /- English proof (translation)
-Introduce `t ht x` and use `by have : (t * x)⁻¹ * γ * (t * x) = x⁻¹ * (t⁻¹ * (γ * t)) * x := by group rw [conjFn, this, ← mem_cent.1 (h ht), inv_mul_cancel_left, conjFn]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leftInv_conjFn {γ : H} {T : Subgroup H} (h : T ≤ cent γ) (f : H → ℂ) : LeftInv T (conjFn γ f) :=
   fun t ht x => by
@@ -481,19 +473,19 @@ Both sides reduce to the same expression.
 theorem orbInt_def : orbInt dh γ dt f = ∫ q, f (q.out⁻¹ * γ * q.out) ∂quotMeas (cent γ) dt dh := rfl
 
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem HasOrbInt.orbInt_eq (h : HasOrbInt dh γ dt f c) : orbInt dh γ dt f = c := h.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.add h'.1, (integral_add h.1 h'.1).trans (congrArg₂ (· + ·) h.2 h'.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasOrbInt.add (h : HasOrbInt dh γ dt f c) (h' : HasOrbInt dh γ dt f' c') :
     HasOrbInt dh γ dt (f + f') (c + c') :=
   ⟨h.1.add h'.1, (integral_add h.1 h'.1).trans (congrArg₂ (· + ·) h.2 h'.2)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.smul a, (integral_const_mul a _).trans (congrArg (a * ·) h.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasOrbInt.smul (h : HasOrbInt dh γ dt f c) (a : ℂ) : HasOrbInt dh γ dt (a • f) (a * c) :=
   ⟨h.1.smul a, (integral_const_mul a _).trans (congrArg (a * ·) h.2)⟩
@@ -503,7 +495,7 @@ variable [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H]
 omit [MeasurableSpace H] in
 
 /- English proof (translation)
-Rewrite using `[show (cent γ : Set H) = {t | t * γ = γ * t} from Set.ext fun _ => mem_cent]`. Conclude with `isClosed_eq (by fun_prop) (by fun_prop)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_cent (γ : H) : IsClosed (cent γ : Set H) := by
   rw [show (cent γ : Set H) = {t | t * γ = γ * t} from Set.ext fun _ => mem_cent]
@@ -512,15 +504,13 @@ theorem isClosed_cent (γ : H) : IsClosed (cent γ : Set H) := by
 omit [MeasurableSpace H] in
 
 /- English proof (translation)
-Introduce `K hK`. Set `X` to `range fun x : H => x⁻¹ * γ * x`. Use `letI : MulAction H X := { smul := fun g y => ⟨g * y * g⁻¹, by`. Take `⟨_, x, rfl⟩` from `y`. Conclude with `⟨x * g⁻¹, by group⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `one_smul := fun y => Subtype.ext (show 1 * y.1 * 1⁻¹ = y by group)`. Use `mul_smul := fun a b y => Subtype.ext (show a * b * y.1 * (a * b)⁻¹ = a * (b * y.1 * b⁻¹) * a⁻¹ by group) }`. Use `haveI : ContinuousSMul H X := ⟨Continuous.subtype_mk (f := fun p : H × X => p.1 * p.2.1 * p.1⁻¹) (by fun_prop) _⟩`. Use `haveI : MulAction.IsPretransitive H X := ⟨by`. Introduce and unpack `⟨_, x, rfl⟩ ⟨_, y, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨y⁻¹ * x, Subtype.ext (show y⁻¹ * x * (x⁻¹ * γ * x) * (y⁻¹ * x)⁻¹ = y⁻¹ * γ * y by group)⟩⟩`. Use `haveI : LocallyCompactSpace X := h.locallyCompactSpace`. Set `o : X` to `⟨γ, 1, by simp⟩`. Establish `ho : IsOpenMap fun g : H => g • o` using `isOpenMap_smul_of_sigmaCompact o`. Establish `hK' : IsCompact (((↑) : X → H) ⁻¹' K)` using `h.isClosedEmbedding_subtypeVal.isCompact_preimage hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hK'.elim_directed_cover (fun n => (fun g : H => g • o) '' interior (CompactExhaustion.choice H n)) (fun n => ho _ isOpen_interior) (fun y _ => by`. Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq H o y`. Take `⟨n, hn⟩` from `(CompactExhaustion.choice H).exists_mem g`. Conclude with `mem_iUnion.2 ⟨n + 1, g, (CompactExhaustion.choice H).subset_interior_succ n hn, rfl⟩)`. Use the proof step `(Monotone.directed_le fun a b hab => image_mono (interior_mono ((CompactExhaustion.choice H).subset hab)))`.
-
-Use `⟨_, ((CompactExhaustion.choice H).isCompact n).inv, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `hn (a := ⟨_, x, rfl⟩) hx`. Establish `e' : g * γ * g⁻¹ = x⁻¹ * γ * x` using `congrArg Subtype.val e`. Use `⟨g⁻¹ * x⁻¹, mem_cent.2 ?_, by simpa using interior_subset hg⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isProperOrbit_of_isClosed [LocallyCompactSpace H] [SecondCountableTopology H]
     (h : IsClosed (range fun x : H => x⁻¹ * γ * x)) : IsProperOrbit (cent γ) γ := by
@@ -559,7 +549,7 @@ variable [LocallyCompactSpace H] [SecondCountableTopology H] [BorelSpace H] [dh.
   [dt.IsMulRightInvariant]
 
 /- English proof (translation)
-Take `⟨C, hC, h0⟩` from `h _ hc`. Conclude with `⟨integrable_descend (isClosed_cent γ) (leftInv_conjFn le_rfl f) (hf.comp (by fun_prop)) hC fun x hx => h0 x (subset_tsupport f hx), rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsProperOrbit.hasOrbInt (h : IsProperOrbit (cent γ) γ) (hf : Continuous f) (hc : HasCompactSupport f) :
     HasOrbInt dh γ dt f (orbInt dh γ dt f) := by
@@ -568,14 +558,14 @@ theorem IsProperOrbit.hasOrbInt (h : IsProperOrbit (cent γ) γ) (hf : Continuou
     fun x hx => h0 x (subset_tsupport f hx), rfl⟩
 
 /- English proof (translation)
-The claim follows from `hasQuotInt_of_finite (isClosed_cent γ) (leftInv_conjFn le_rfl f) hf`.
+A detailed English derivation is pending.
 -/
 theorem hasOrbInt_of_finite [IsFiniteMeasure dt] (hf : Integrable (conjFn γ f) dh) :
     HasOrbInt dh γ dt f ((∫ x, f (x⁻¹ * γ * x) ∂dh) / dt.real univ) :=
   hasQuotInt_of_finite (isClosed_cent γ) (leftInv_conjFn le_rfl f) hf
 
 /- English proof (translation)
-Rewrite using `[orbInt_def, show a • dh = (a : ℝ≥0∞) • dh from rfl, quotMeas_smul_left (isClosed_cent γ), integral_smul_measure]`. Simplify using `[orbInt_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orbInt_smul_left (a : ℝ≥0) : orbInt (a • dh) γ dt f = a * orbInt dh γ dt f := by
   rw [orbInt_def, show a • dh = (a : ℝ≥0∞) • dh from rfl, quotMeas_smul_left (isClosed_cent γ), integral_smul_measure]
@@ -589,7 +579,7 @@ def centEquiv {H' : Type} [Group H'] [TopologicalSpace H'] (e : H ≃ₜ* H') (�
   subEquiv e fun x => by rw [mem_cent, mem_cent, ← h, ← map_mul, ← map_mul, e.injective.eq_iff]
 
 /- English proof (translation)
-Establish `e1 : conjFn γ' f ∘ e = conjFn γ (f ∘ e)` using `funext fun x => by simp [conjFn, h]`. Use `hasQuotInt_map e (T := cent γ) (T' := cent γ') (fun x => by rw [mem_cent, mem_cent, ← h, ← map_mul, ← map_mul, e.injective.eq_iff]) (isClosed_cent γ) dt dh (leftInv_conjFn le_rfl f) c` as an intermediate fact. Rewrite `this` using `[e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasOrbInt_map {H' : Type} [Group H'] [TopologicalSpace H'] [IsTopologicalGroup H']
     [SecondCountableTopology H'] [LocallyCompactSpace H'] [T2Space H'] [MeasurableSpace H'] [BorelSpace H']
@@ -610,13 +600,11 @@ def conjEquiv (g : H) : H ≃ₜ* H :=
     continuous_invFun := (continuous_const.mul continuous_id).mul continuous_const }
 
 /- English proof (translation)
-Establish `h1` using `hasOrbInt_map (dh := dh) (dt := dt) (conjEquiv g) h f c`. Establish `h2 : dh.map (conjEquiv g) = dh`. Establish `: (conjEquiv g : H → H) = (· * g⁻¹) ∘ (g * ·)` using `rfl`. Rewrite using `[this, ← Measure.map_map (measurable_mul_const _) (measurable_const_mul _), map_mul_left_eq_self, map_mul_right_eq_self]`. Set `r : Quot (cent γ) ≃ᵐ Quot (cent γ)` to `{ toFun := rmul _ g⁻¹ invFun := rmul _ g left_inv := fun q => by rw [← rmul_mul, inv_mul_cancel, rmul_one] right_inv := fun q => by rw [← rmul_mul, mul_inv_cancel, rmul_one] measurable_toFun := (measurePreserving_rmul_quotMeas (dt := dt) (dh := dh) (isClosed_cent γ) _).measurable …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hr : MeasurePreserving r (quotMeas _ dt dh) (quotMeas _ dt dh)` using `measurePreserving_rmul_quotMeas (isClosed_cent γ) g⁻¹`. Establish `h3 : descend (cent γ) (conjFn γ (f ∘ conjEquiv g)) = descend (cent γ) (conjFn γ f) ∘ r` using `funext fun q => by conv_rhs => rw [← Quotient.out_eq q]`. Use `Eq.trans ?_ ((leftInv_conjFn le_rfl f).descend_mk (q.out * g⁻¹)).symm` and prove the remaining obligations. Conclude with `congrArg f (show g * _ * g⁻¹ = _ by group)`. Establish `h4 : orbInt dh γ dt (f ∘ conjEquiv g) = orbInt dh γ dt f`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[orbInt, quotInt, h3]`. Conclude with `hr.integral_comp' _`. Rewrite `h1` using `[h2, h4]`. Use `⟨h1.1.trans (and_congr ?_ (by rw [← orbInt, h4, orbInt])), h1.2⟩` and prove the remaining obligations. Rewrite using `[h3]`.
-
-Conclude with `hr.integrable_comp_emb r.measurableEmbedding`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasOrbInt_conj [dh.IsMulRightInvariant] (g : H) {γ' : H} (h : g * γ * g⁻¹ = γ') (f : H → ℂ) (c : ℂ) :
     (HasOrbInt dh γ' (dt.map (centEquiv (conjEquiv g) γ h)) f c ↔ HasOrbInt dh γ dt f c) ∧
@@ -648,7 +636,7 @@ theorem hasOrbInt_conj [dh.IsMulRightInvariant] (g : H) {γ' : H} (h : g * γ * 
   exact hr.integrable_comp_emb r.measurableEmbedding
 
 /- English proof (translation)
-Use `haveI : CompactSpace (cent γ) := isCompact_iff_compactSpace.1 (isClosed_cent γ).isCompact`. Simplify using `using hasOrbInt_of_finite (dh := dh) (dt := dt) (f := 1) (integrable_const (1 : ℂ))`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 example [CompactSpace H] : HasOrbInt dh γ dt 1 (dh.real univ / dt.real univ) := by
   haveI : CompactSpace (cent γ) := isCompact_iff_compactSpace.1 (isClosed_cent γ).isCompact

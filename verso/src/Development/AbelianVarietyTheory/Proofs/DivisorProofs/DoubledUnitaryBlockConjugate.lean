@@ -35,7 +35,7 @@ def lagCoord (d₁ : ℕ) : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2
   fromRows (fromBlocks 0 1 !![1, 0; 0, 0] 0) (fromBlocks 0 1 !![0, 1; 0, 0] 0)
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [q₁, q₂, q₃, q₄, hyp, Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply, Matrix.vecMul, dotProduct, Matrix.transpose_apply] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two_by_two :
     (q₁ᵀ * (hyp : Matrix (Fin 2) (Fin 2) E) * q₁ + -(q₃ᵀ * hyp * q₃) = hyp) ∧ (q₁ᵀ * (hyp : Matrix (Fin 2) (Fin 2) E) * q₂ + -(q₃ᵀ * hyp * q₄) = 0) ∧
@@ -56,7 +56,7 @@ open Matrix GlobalTheory.PlaneLeviExt
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, -⟩` from `two_by_two (E := E)`. Simplify using `only [rot, dbl, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_neg, transpose_one, transpose_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, neg_zero, Matrix.mul_neg, Matrix.neg_mul, fromBlocks_add, h1, h2, h3, h4, fromBlocks_zer …`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem rot_gram {d₁ : ℕ} (J₁ : Matrix (Fin d₁) (Fin d₁) E) :
     (rot d₁)ᵀ * dbl (fromBlocks J₁ 0 0 hyp) * rot d₁ = dbl (fromBlocks J₁ 0 0 (hyp : Matrix (Fin 2) (Fin 2) E)) := by
@@ -66,7 +66,7 @@ theorem rot_gram {d₁ : ℕ} (J₁ : Matrix (Fin d₁) (Fin d₁) E) :
     Matrix.neg_mul, fromBlocks_add, h1, h2, h3, h4, fromBlocks_zero]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, h5, h6, h7, h8, -⟩` from `two_by_two (E := E)`. Simplify using `only [rot, fromBlocks_transpose, fromBlocks_multiply, transpose_one, transpose_zero, fromBlocks_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, h5, h6, h7, h8, fromBlocks_one, fromBlocks_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem rot_mul_transpose (d₁ : ℕ) :
     rot d₁ * (rot d₁)ᵀ = (1 : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) E) := by
@@ -76,9 +76,9 @@ theorem rot_mul_transpose (d₁ : ℕ) :
     fromBlocks_one, fromBlocks_zero]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, h9, h10, -⟩` from `two_by_two (E := E)`. Simplify using `only [rot, diagCols, lagCoord, sd, fromBlocks_mul_fromRows, fromRows_mul, fromBlocks_multiply, fromBlocks_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, h9, h10]`. Establish `e1 : (!![1, 0; 0, 0] : Matrix (Fin 2) (Fin 2) E) * !![1, 1; 1, -1] = !![1, 1; 0, 0]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e2 : (!![0, 1; 0, 0] : Matrix (Fin 2) (Fin 2) E) * !![1, 1; 1, -1] = !![1, -1; 0, 0]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[e1, e2]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem rot_diag (d₁ : ℕ) :
     (rot d₁ : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) E) *
@@ -95,7 +95,7 @@ theorem rot_diag (d₁ : ℕ) :
   rw [e1, e2]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, h11, h12⟩` from `two_by_two (E := E)`. Apply the tactic sequence `constructor <;> simp only [sd, sdInv, fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, h11, h12, fromBlocks_one]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sd_sdInv (d₁ : ℕ) : (sd d₁ : Matrix (Fin 2 ⊕ Fin d₁) (Fin d₁ ⊕ Fin 2) E) *
       (sdInv d₁ : Matrix (Fin d₁ ⊕ Fin 2) (Fin 2 ⊕ Fin d₁) E) = 1 ∧
@@ -110,7 +110,7 @@ namespace GlobalTheory.DblWitt
 open Matrix GlobalTheory.PlaneLeviExt
 
 /- English proof (translation)
-Use extensionality with `(r | r) (k | k)`. Apply the tactic sequence `all_goals first`. Consider the case `(fin_cases k <;> simp [lagCoord, frame, twoCols, GlobalTheory.DblSiegel.lagCols, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Matrix.one_apply])`. Consider the case `simp [lagCoord, frame, twoCols, GlobalTheory.DblSiegel.lagCols, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frame_lagCoord {E : Type} [Field E] [NumberField E] {d d₁ : ℕ} (H' : Plane E d d₁) :
     (fromBlocks (frame H') 0 0 (frame H') : Matrix (Fin d ⊕ Fin d) ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) E) *
@@ -129,37 +129,35 @@ namespace GlobalTheory.DblWitt
 open Matrix GlobalTheory.PlaneLeviExt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB d d₁ W W₁ H' i₀ i₁ r' s' r₁ s₁ hW hW₁ hA`. Establish `hσ : ∀ z, σ (σ z) = z`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Introduce `z`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`. Establish `hmm : ∀ {l m n : Type} [Fintype m] (X : Matrix l m E) (Y : Matrix m n E), (X * Y).map σ = X.map σ * Y.map σ` using `fun X Y => Matrix.map_mul (f := (σ : E →+* E))`. Establish `hu` using `isUnit_sq σ hσ B hW hW₁ hA`. Establish `hPQ` using `frame_mul_coframe hA.rank H' hu`. Establish `hQP` using `coframe_mul_frame hA.rank H' hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `gram_frame σ hσ B hW hA`. Use `set P := frame H' with hPdef`. Use `set Q := coframe hA.rank H' with hQdef`. Establish `hPQσ : P.map σ * Q.map σ = 1` using `by rw [← hmm, hPQ, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `hJ : Qᵀ * fromBlocks W₁.J 0 0 hyp * Q.map σ = W.J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = W.J := by rw [hPQ, hPQσ, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Set `Pd : Matrix (Fin d ⊕ Fin d) ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) E` to `fromBlocks P 0 0 P`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `Qd : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) (Fin d ⊕ Fin d) E` to `fromBlocks Q 0 0 Q`. Establish `hQdPd : Qd * Pd = 1`. Simplify using `only [Qd, Pd, fromBlocks_multiply, hQP, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, fromBlocks_one]`. Establish `hPdQd : Pd * Qd = 1`. Simplify using `only [Qd, Pd, fromBlocks_multiply, hPQ, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, fromBlocks_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : Matrix (Fin 2 ⊕ Fin d₁) (Fin d₁ ⊕ Fin 2) E` to `sd d₁`. Set `Ti : Matrix (Fin d₁ ⊕ Fin 2) (Fin 2 ⊕ Fin d₁) E` to `sdInv d₁`. Set `R : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) E` to `rot d₁`. Set `g₀ : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) E` to `Pd * R * Qd`. Set `g₁ : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) E` to `Pd * Rᵀ * Qd`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : T * Ti = 1` using `(sd_sdInv d₁).1`. Establish `hT' : Ti * T = 1` using `(sd_sdInv d₁).2`. Establish `hRR : R * Rᵀ = 1` using `rot_mul_transpose d₁`. Establish `hRR' : Rᵀ * R = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hRR`. Establish `h01 : g₀ * g₁ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h10 : g₁ * g₀ = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hmap : ∀ (a b c e : E), σ a = a → σ b = b → σ c = c → σ e = e → (!![a, b; c, e] : Matrix (Fin 2) (Fin 2) E).map σ = !![a, b; c, e]`. Apply the tactic sequence `intro a b c e ha hb hc he; ext i j; fin_cases i <;> fin_cases j <;> simp [ha, hb, hc, he]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : σ (2⁻¹) = 2⁻¹` using `by simp [map_inv₀, map_ofNat]`. Establish `h2' : σ (-2⁻¹) = -2⁻¹` using `by simp [map_neg, h2]`. Establish `hRσ : R.map σ = R`. Simplify using `only [R, rot, q₁, q₂, q₃, q₄, Matrix.fromBlocks_map, hmap _ _ _ _ h2 h2 h2' h2, hmap _ _ _ _ h2 h2 h2 h2', hmap _ _ _ _ h2 h2' h2' h2', hmap _ _ _ _ h2 h2' h2 h2, Matrix.map_zero _ (map_zero σ), Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `hPd : Pdᵀ * dbl W.J * Pd.map σ = dbl (fromBlocks W₁.J 0 0 hyp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pd, dbl, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, transpose_zero, Matrix.map_zero _ (map_zero σ), Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, hG, neg_zero]`. Establish `hQd : Qdᵀ * dbl (fromBlocks W₁.J 0 0 hyp) * Qd.map σ = dbl W.J`. Simplify using `only [Qd, dbl, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, transpose_zero, Matrix.map_zero _ (map_zero σ), Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, hJ, neg_zero]`. Establish `hunit : g₀ᵀ * dbl W.J * g₀.map σ = dbl W.J`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g₀, Matrix.transpose_mul, hmm, Matrix.mul_assoc]`. Use `_ = dbl W.J := by rw [hPd, hRσ, show Rᵀ * dbl (fromBlocks W₁.J 0 0 hyp) * R = dbl (fromBlocks W₁.J 0 0 hyp) from rot_gram W₁.J, hQd]`. Establish `h1 : Qd * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) E) = (diagCols (Fin d₁ ⊕ Fin 2) : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) (Fin d₁ ⊕ Fin 2) E) * Q`. Simplify using `only [Qd, diagCols, fromBlocks_mul_fromRows, fromRows_mul, Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`. Establish `hdiag : g₀ * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) E) = GlobalTheory.DblSiegel.lagCols H'.x H'.ι * (T * Q)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [g₀, Matrix.mul_assoc, h1]`. Use `_ = Pd * (lagCoord d₁ : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) (Fin 2 ⊕ Fin d₁) E) * (T * Q) := by`. Rewrite using `[show R * (diagCols (Fin d₁ ⊕ Fin 2) : Matrix ((Fin d₁ ⊕ Fin 2) ⊕ (Fin d₁ ⊕ Fin 2)) (Fin d₁ ⊕ Fin 2) E) = _ from rot_diag d₁]`. Simplify using `only [T, Matrix.mul_assoc]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `_ = _ := by rw [frame_lagCoord]`. Establish `hdbl : dbl (incM F W.J) = incM F (dbl W.J)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, incM]`. Set `γ : UG (cA σ) (dbl (incM F W.J))` to `⟨⟨incM F g₀, incM F g₁, by rw [← incM_mul, h01, incM_one], by rw [← incM_mul, h10, incM_one]⟩, by show (incM F g₀)ᵀ * dbl (incM F W.J) * (incM F g₀).map (cA σ) = dbl (incM F W.J)`. Rewrite using `[hdbl, cA_incM, ← incM_transpose, ← incM_mul, ← incM_mul, hunit]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Set `S₀ : Matrix (Fin 2 ⊕ Fin d₁) (Fin d) E` to `T * Q`. Set `S₀' : Matrix (Fin d) (Fin 2 ⊕ Fin d₁) E` to `P * Ti`. Establish `hS : S₀ * S₀' = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hS' : S₀' * S₀ = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨γ, incM F S₀, incM F S₀', ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hdc : (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) = incM F (diagCols (Fin d))`. Apply the tactic sequence `ext (i | i) j <;> by_cases h : i = j <;> simp [diagCols, incM, Matrix.one_apply, h]`. Establish `hlc : GlobalTheory.DblSiegel.lagCols (incV F H'.x) (incM F H'.ι) = incM F (GlobalTheory.DblSiegel.lagCols H'.x H'.ι)`.
-
-Apply the tactic sequence `ext (i | i) (k | k) <;> (try fin_cases k) <;> simp [GlobalTheory.DblSiegel.lagCols, incM, incV]`. Rewrite using `[show ((γ : GL (Fin d ⊕ Fin d) (AE F E)) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) = incM F g₀ from rfl, hdc, hlc, ← incM_mul, ← incM_mul, hdiag]`. Rewrite using `[← incM_mul, hS, incM_one]`. Rewrite using `[← incM_mul, hS', incM_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_diag_lag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r' s' r₁ s₁ : ℕ),

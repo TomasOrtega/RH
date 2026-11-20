@@ -18,7 +18,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.RunLat
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [PJ.Thc, PJ.scaled, Submodule.mem_map, LinearMap.smul_apply, LinearMap.id_apply] at hx`. Take `⟨y, ⟨z, hz, rfl⟩, rfl⟩` from `hx`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thc_le_shortTh {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j)
     (s : 𝓞 B.KO) (w : WeightFamilies.Wt D j) : X.Thc s w ≤ X.shortTh w := by
@@ -28,7 +28,7 @@ theorem thc_le_shortTh {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralC
   exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hz)
 
 /- English proof (translation)
-Take `⟨Sh, hSh, hspan, -⟩` from `h`. Use `show Submodule.span _ _ = ⊤`. Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Submodule.span_mono fun x hx => thc_le_shortTh X s w (hSh hx)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanAt_of_shortG {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j)
     (s : 𝓞 B.KO) (w : WeightFamilies.Wt D j) (β : ℝ) (h : WeightAlgebra.ShortG X w (X.Thc s w) β) : PullbackSections.SpanAt X w := by
@@ -39,11 +39,9 @@ theorem spanAt_of_shortG {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegra
   exact Submodule.span_mono fun x hx => thc_le_shortTh X s w (hSh hx)
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CR Bx CT S ka wL wF Tn nP nW h0 nus hC`. Take `⟨hPar, -, hScal, -, hH2, -, -, -⟩` from `hC`. Take `⟨-, -, -, hsK, -, po, -, -, PLam, -, -, hF, hF0, hK⟩` from `hScal`. Establish `hSpK : PullbackSections.SpanAt (recPlus h j hj) ka` using `spanAt_of_shortG _ _ _ _ hK`. Use `⟨GlobalTheory.latAt_record D _ h.toLawsCore (GlobalTheory.RunIn.gamAt_of_lawsCore' D _ h.toLawsCore) large₂ H.CA hPar j ka _ (recPlus h j hj) S wL wF hsK hSpK hH2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hu`. Break down `hu with rfl | rfl | rfl` into its components or cases. Conclude with `spanAt_of_shortG _ _ _ _ hF`. Conclude with `spanAt_of_shortG _ _ _ _ hF0`.
-
-Conclude with `hSpK`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem latAt_and_spanAt_of_hypC : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR Bx CT : ℝ) (S : Scal (recB h.toLawsCore)) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (nus : IsDedekindDomain.HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ), EtaleWeightGaps.HypC large₂ (recPlus h j hj) H C2 A2 CR Bx CT S ka wL wF Tn nP nW h0 nus → EtaleWeightGaps.LatAt (recB h.toLawsCore) j ka ∧ ∀ u ∈ ({wF, (recPlus h j hj).wF0 wL wF, ka} : Set (WeightFamilies.Wt D j)), PullbackSections.SpanAt (recPlus h j hj) u := by
   intro D T h j hj large₂ H C2 A2 CR Bx CT S ka wL wF Tn nP nW h0 nus hC

@@ -31,7 +31,7 @@ def CoreOfProj : Prop := ProjModG X → UnipCore X
 def GlobalCondition (hK : X.LevelSubgroupCharacter) : Prop := LatOfLattice X u → UnipCore X → GamUnipKu X u hK
 
 /- English proof (translation)
-The claim follows from `hG hL (hC hP)`.
+A detailed English derivation is pending.
 -/
 theorem gamUnipKu_of_projModG (hK : X.LevelSubgroupCharacter) (hP : ProjModG X) (hC : CoreOfProj X) (hG : GlobalCondition X u hK)
     (hL : LatOfLattice X u) : GamUnipKu X u hK :=

@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting.JnM
 variable {D : D7} {a b r t n : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `ext i (k | k) <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fromCols_mul_shear {R : Type} [Ring R] (w : Matrix (Fin a) (Fin r) R) (v : Matrix (Fin a) (Fin t) R)
     (y : Matrix (Fin r) (Fin t) R) :
@@ -26,7 +26,7 @@ theorem fromCols_mul_shear {R : Type} [Ring R] (w : Matrix (Fin a) (Fin r) R) (v
   ext i (k | k) <;> simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [jn, mm, Matrix.submatrix_apply, id, Matrix.mul_apply]`. Apply the tactic sequence `rcases h : (finSumFinEquiv.trans (finCongr hn)).symm j with k | k <;>`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mm_jn (hn : r + t = n) (A : Mx D b a) (x : Mx D a r) (v : Mx D a t) :
     mm A (jn hn x v) = jn hn (mm A x) (mm A v) := by
@@ -36,7 +36,7 @@ theorem mm_jn (hn : r + t = n) (A : Mx D b a) (x : Mx D a r) (v : Mx D a t) :
     simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [jn, Matrix.add_apply, Matrix.submatrix_apply, id]`. Apply the tactic sequence `rcases h : (finSumFinEquiv.trans (finCongr hn)).symm j with k | k <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jn_add (hn : r + t = n) (x x' : Mx D a r) (v v' : Mx D a t) :
     jn hn x v + jn hn x' v' = jn hn (x + x') (v + v') := by
@@ -45,7 +45,7 @@ theorem jn_add (hn : r + t = n) (x x' : Mx D a r) (v v' : Mx D a t) :
   rcases h : (finSumFinEquiv.trans (finCongr hn)).symm j with k | k <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨s, rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Apply the tactic sequence `rcases s with k | k <;> simp [jn, c1, c2]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jn_c {W : HSp D} (hn : W.rank + t = n) (U : Mx D a n) :
     jn hn (c1 hn U) (c2 hn U) = U := by
@@ -54,7 +54,7 @@ theorem jn_c {W : HSp D} (hn : W.rank + t = n) (U : Mx D a n) :
   rcases s with k | k <;> simp [jn, c1, c2]
 
 /- English proof (translation)
-Rewrite using `[Matrix.submatrix_mul_equiv, fromCols_mul_shear]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shear_gen {R : Type} [Ring R] (hn : r + t = n) (w : Matrix (Fin a) (Fin r) R)
     (v : Matrix (Fin a) (Fin t) R) (y : Matrix (Fin r) (Fin t) R) :
@@ -65,7 +65,7 @@ theorem shear_gen {R : Type} [Ring R] (hn : r + t = n) (w : Matrix (Fin a) (Fin 
   rw [Matrix.submatrix_mul_equiv, fromCols_mul_shear]
 
 /- English proof (translation)
-The claim follows from `shear_gen hn w v y`.
+A detailed English derivation is pending.
 -/
 theorem jn_bl (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) (y : Mx D r t) :
     mm (jn hn w v) (bl hn 1 y 0 1) = jn hn w (mm w y + v) :=
@@ -76,9 +76,9 @@ end GlobalTheory.CompanionTheory.ColumnSplitting.JnM
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
 /- English proof (translation)
-Introduce `D n t B W d hn x₀ g p`. Take `⟨h, U, y⟩` from `p`. Establish `hX : XU d hn x₀ h U = jn hn (mm d.jX (c1 hn U) + mm d.j0 (ww W x₀ h)) (mm d.jX (c2 hn U))`. Unfold `XU`. Use `conv_lhs => rw [← JnM.jn_c (W := W) hn U]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h0 : mm d.j0 (0 : Mx D W.rank t) = 0` using `Matrix.mul_zero _`. Rewrite using `[JnM.mm_jn, JnM.mm_jn, JnM.jn_add, h0, add_zero]`. Simplify using `only [hX, JnM.jn_bl, JnM.mm_jn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jnPi_holds : JnPi := by
   intro D n t B W d hn x₀ g p

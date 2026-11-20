@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology GlobalTheory.TateLimit UpperTheory.V UpperTheory.V.Kum UpperTheory.V.K
 
 /- English proof (translation)
-Simplify using `only [Sha1, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Introduce `i`. Establish `key : resH1 ρ' (φ i) (hφ i) (mapH1 ρ ρ' u hu he x) = mapH1 (ρ.comp (φ i)) (ρ'.comp (φ i)) u hu (fun g m => he _ m) (resH1 ρ (φ i) (hφ i) x)`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[key, hx i, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mapH1_mem_sha {R G M M' I : Type} {Dd : I → Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
@@ -25,7 +25,7 @@ private theorem mapH1_mem_sha {R G M M' I : Type} {Dd : I → Type} [CommRing R]
   rw [key, hx i, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => h _))`.
+Proceed by induction. Treat this case separately.
 -/
 private theorem mapH1_comp {R G M M' : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
@@ -38,7 +38,7 @@ private theorem mapH1_comp {R G M M' : Type} [CommRing R] [Group G] [Topological
   | H z => exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => h _))
 
 /- English proof (translation)
-Establish `he' : ∀ g m, u.symm (ρ' g m) = ρ g (u.symm m)` using `fun g m => by`. Rewrite using `[LinearEquiv.symm_apply_eq, he, LinearEquiv.apply_symm_apply]`. Conclude with `Nat.card_congr { toFun := fun x => ⟨_, mapH1_mem_sha φ hφ ρ ρ' u.toLinearMap hu he x.1 x.2⟩ invFun := fun x => ⟨_, mapH1_mem_sha φ hφ ρ' ρ u.symm.toLinearMap hw he' x.1 x.2⟩ left_inv := fun x => Subtype.ext (mapH1_comp ρ ρ' u.toLinearMap hu he u.symm.toLinearMap hw he' u.symm_app …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_sha_congr {R G M M' I : Type} {Dd : I → Type} [CommRing R] [Group G] [TopologicalSpace G]
     [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
@@ -58,13 +58,13 @@ private theorem card_sha_congr {R G M M' I : Type} {Dd : I → Type} [CommRing R
         u.apply_symm_apply x.1) }
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ D n h`. Set `ev : TDual (ZMod (l ^ 1)) (ZMod (l ^ 1)) →ₗ[ZMod (l ^ 1)] ZMod (l ^ 1)` to `{ toFun := fun φ => φ 1, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hlin : ∀ (φ : TDual (ZMod (l ^ 1)) (ZMod (l ^ 1))) (m : ZMod (l ^ 1)), φ m = m * φ 1` using `fun φ m => by`. Use `LinearMap.map_smul (show ZMod (l ^ 1) →ₗ[ZMod (l ^ 1)] ZMod (l ^ 1) from φ) m 1` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_one, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hev : Function.Bijective ev`. Use `⟨fun φ ψ h => TDual.ext fun m => ?_, fun y => ⟨y • TDual.mk LinearMap.id, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hlin φ, hlin ψ]`. Conclude with `congrArg _ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_one y`. Establish `hn : ∀ g, redChar (D.chi ^ n) 1 g = 1` using `fun g => by`. Establish `: redChar (D.chi ^ n) 1 g = redChar D.chi 1 g ^ n`. Simplify using `only [redChar, MonoidHom.comp_apply, MonoidHom.zpow_apply, map_zpow]`. Rewrite using `[this, h, one_zpow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `card_sha_congr _ _ _ (zmTw D 1 0) (LinearEquiv.ofBijective ev hev) continuous_of_discreteTopology continuous_of_discreteTopology fun g m => ?_` and prove the remaining obligations. Establish `h0 : ∀ x, zmTw D 1 0 g x = x` using `fun x => by simp [zmTw]`. Rewrite using `[h0]`. Express the relevant statement in the definitionally equal form `((redChar D.chi 1 g : (ZMod (l ^ 1))ˣ) : ZMod (l ^ 1)) * m (((redChar (D.chi ^ n) 1 g⁻¹ : (ZMod (l ^ 1))ˣ) : ZMod (l ^ 1)) * 1) = m 1`. Rewrite using `[h, hn, Units.val_one, one_mul, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.K.shaDualCard :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (D : LData L Ω l) (n : ℤ), (∀ g, redChar D.chi 1 g = 1) → Nat.card (Sha1 (zd D n 1) (locFam D.S D.A) (continuous_locFam D.S D.A)) = Nat.card (ShaZm D 1 0) := by

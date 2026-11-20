@@ -18,21 +18,21 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `cnorm`. Conclude with `Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cnorm_sq (u : ι → ℂ) : cnorm u ^ 2 = ∑ i, ‖u i‖ ^ 2 := by
   unfold cnorm
   exact Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)
 
 /- English proof (translation)
-Unfold `cnorm`. Conclude with `Real.sqrt_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cnorm_nonneg (u : ι → ℂ) : 0 ≤ cnorm u := by
   unfold cnorm
   exact Real.sqrt_nonneg _
 
 /- English proof (translation)
-Unfold `cnorm at h`. Rewrite `h` using `[Real.sqrt_eq_zero (Finset.sum_nonneg fun i _ => sq_nonneg _), Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg _)]`. Use function extensionality and compare the values at `i`. Establish `hi` using `h i (Finset.mem_univ i)`. Simplify using `using hi`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cnorm_eq_zero {u : ι → ℂ} (h : cnorm u = 0) : u = 0 := by
   unfold cnorm at h
@@ -43,9 +43,9 @@ theorem cnorm_eq_zero {u : ι → ℂ} (h : cnorm u = 0) : u = 0 := by
   simpa using hi
 
 /- English proof (translation)
-Establish `h1 : (X v)⁻¹.mulVec (vecAt b v x) = 0` using `cnorm_eq_zero h`. Establish `h2 : vecAt b v x = 0`. Establish `h3 : (X v).mulVec ((X v)⁻¹.mulVec (vecAt b v x)) = 0`. Rewrite using `[h1, Matrix.mulVec_zero]`. Rewrite `h3` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hX, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Establish `h4` using `congrFun h2 i`. Simplify using `only [vecAt, Pi.zero_apply, map_eq_zero] at h4`. Simplify using `using h4`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normAt_eq_zero (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (hX : IsUnit (X v).det) {x : V} (h : normAt b X v x = 0) : x = 0 := by
@@ -61,9 +61,9 @@ theorem normAt_eq_zero (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι 
   simpa using h4
 
 /- English proof (translation)
-Use `show (∑ i, star (fcoord b X v x i) * fcoord b X v x i) = (((cnorm (fcoord b X v x)) ^ 2 : ℝ) : ℂ)`. Rewrite using `[cnorm_sq]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem majAt_self (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x : V) : majAt b X v x x = ((normAt b X v x ^ 2 : ℝ) : ℂ) := by
@@ -77,7 +77,7 @@ theorem majAt_self (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   ring
 
 /- English proof (translation)
-Rewrite using `[majAt_self, Complex.ofReal_re]`. Conclude with `(Real.sqrt_sq (cnorm_nonneg _)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normAt_eq_sqrt (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x : V) : normAt b X v x = Real.sqrt (majAt b X v x x).re := by
@@ -85,17 +85,17 @@ theorem normAt_eq_sqrt (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι 
   exact (Real.sqrt_sq (cnorm_nonneg _)).symm
 
 /- English proof (translation)
-Introduce `v`. Establish `hadd : ∀ x y : V, fcoord b X v (x + y) = fcoord b X v x + fcoord b X v y`. Introduce `x y`. Establish `hv : vecAt b v (x + y) = vecAt b v x + vecAt b v y`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[vecAt]`. Unfold `fcoord`. Rewrite using `[hv, Matrix.mulVec_add]`. Establish `hsmul : ∀ (a : K) (x : V), fcoord b X v (a • x) = v.embedding a • fcoord b X v x`. Introduce `a x`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : vecAt b v (a • x) = v.embedding a • vecAt b v x`. Use function extensionality and compare the values at `i`. Simplify using `[vecAt]`. Unfold `fcoord`. Rewrite using `[hv, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x x' y => ?_, fun x y y' => ?_, fun a x y => ?_, fun a x y => ?_⟩` and prove the remaining obligations. Simplify using `only [majAt, hadd, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]`. Simplify using `only [majAt, hadd, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Simplify using `only [majAt, hsmul, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `first`. Consider the case `(rw [Complex.star_def]; ring)`. Consider the case `(simp only [RCLike.star_def]; ring)`. Consider the case `ring`. Simplify using `only [majAt, hsmul, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isSesq_maj (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) :
     IsSesq (fun v => majAt b X v) := by
@@ -128,17 +128,17 @@ theorem isSesq_maj (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     ring
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hH v`. Establish `hz1 : ∀ y, H v 0 y = 0`. Introduce `y`. Establish `e` using `h1 0 0 y`. Rewrite `e` using `[add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(-1 : ℂ) * e`. Establish `hz2 : ∀ x, H v x 0 = 0`. Introduce `x`. Establish `e` using `h2 x 0 0`. Rewrite `e` using `[add_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(-1 : ℂ) * e`. Establish `hsumL : ∀ (s : Finset ι) (c : ι → K) (y : V), H v (∑ i ∈ s, c i • b i) y = ∑ i ∈ s, starRingEnd ℂ (v.embedding (c i)) * H v (b i) y`. Introduce `s c y`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `[hz1]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, h1, h3, ih]`. Establish `hsumR : ∀ (s : Finset ι) (c : ι → K) (x : V), H v x (∑ i ∈ s, c i • b i) = ∑ i ∈ s, v.embedding (c i) * H v x (b i)`. Introduce `s c x`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hz2]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, h2, h4, ih]`. Use `conv_lhs => rw [← b.sum_repr x, ← b.sum_repr y]`. Simplify using `only [hsumL, hsumR, vecAt, gramOf, Matrix.of_apply, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sesq_eq_sum {H : InfinitePlace K → V → V → ℂ} (hH : IsSesq H) (b : Basis ι K V)
     (v : InfinitePlace K) (x y : V) :
@@ -174,11 +174,11 @@ theorem sesq_eq_sum {H : InfinitePlace K → V → V → ℂ} (hH : IsSesq H) (b
   ring
 
 /- English proof (translation)
-Establish `hv : ∀ i, vecAt b v (b i) = Pi.single i 1`. Introduce `i`. Use function extensionality and compare the values at `j`. Simplify using `only [vecAt]`. Rewrite using `[b.repr_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, Pi.single_apply, hj, Ne.symm hj]`. Establish `hf : ∀ i k, fcoord b X v (b i) k = (X v)⁻¹ k i`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i k`. Simplify using `[fcoord, hv, Matrix.mulVec, dotProduct, Pi.single_apply]`. Use extensionality with `i j`. Simplify using `[gramOf, majAt, hf, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramOf_maj (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K) :
     gramOf b (majAt b X v) = ((X v)⁻¹).conjTranspose * (X v)⁻¹ := by
@@ -198,15 +198,15 @@ theorem gramOf_maj (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   simp [gramOf, majAt, hf, Matrix.mul_apply, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hσ`. Take `⟨hF1, hF2, hF3, hF4⟩` from `hF`. Take `⟨hG1, hG2, hG3, hG4⟩` from `hG`. Establish `key : ∀ u w : V, F u w + F w u = G u w + G w u`. Introduce `u w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h (u + w)`. Rewrite `h1` using `[hF1, hF2, hF2, hG1, hG2, hG2]`. Take the linear combination `h1 - h u - h w`. Establish `k1` using `key x y`. Establish `k2` using `key x (a • y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k2` using `[hF4, hF3, hG4, hG3]`. Establish `hne : σ a - starRingEnd ℂ (σ a) ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises. Establish `h5` using `congrArg Complex.im h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Complex.sub_im, Complex.conj_im, Complex.zero_im] at h5`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : (σ a - starRingEnd ℂ (σ a)) * (F x y - G x y) = 0`. Take the linear combination `k2 - (starRingEnd ℂ (σ a)) * k1`. Break down `mul_eq_zero.1 hprod with h0 | h0` into its components or cases.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h0 hne`. Conclude with `sub_eq_zero.1 h0`.
+A detailed English derivation is pending.
 -/
 theorem sesq_ext {F G : V → V → ℂ} {σ : K →+* ℂ} (hσ : ∃ a : K, (σ a).im ≠ 0)
     (hF : (∀ x x' y, F (x + x') y = F x y + F x' y) ∧ (∀ x y y', F x (y + y') = F x y + F x y') ∧
@@ -240,9 +240,9 @@ theorem sesq_ext {F G : V → V → ℂ} {σ : K →+* ℂ} (hσ : ∃ a : K, (�
   · exact sub_eq_zero.1 h0
 
 /- English proof (translation)
-Establish `hc : v.IsComplex` using `IsTotallyComplex.isComplex v`. Rewrite `hc` using `[InfinitePlace.isComplex_iff]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hc` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `a`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.2 (hcon a)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_im_ne_zero [IsTotallyComplex K] (v : InfinitePlace K) :
     ∃ a : K, (v.embedding a).im ≠ 0 := by
@@ -301,9 +301,9 @@ def Iso.trans {A B C : HLat K} (I : Iso A B) (J : Iso B C) : Iso A C where
 variable {A B : HLat K}
 
 /- English proof (translation)
-Rewrite using `[← I.map_L]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Establish `hyx : y = x` using `I.e.injective hxy`. Conclude with `hyx ▸ hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Iso.mem_L (I : Iso A B) {x : A.V} : I.e x ∈ B.L ↔ x ∈ A.L := by
   rw [← I.map_L]
@@ -315,7 +315,7 @@ theorem Iso.mem_L (I : Iso A B) {x : A.V} : I.e x ∈ B.L ↔ x ∈ A.L := by
     exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← I.map_L, Submodule.map_coe, ← Submodule.span_image]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Iso.span_L (I : Iso A B) : Submodule.span K (B.L : Set B.V) =
     (Submodule.span K (A.L : Set A.V)).map I.e.toLinearMap := by
@@ -323,7 +323,7 @@ theorem Iso.span_L (I : Iso A B) : Submodule.span K (B.L : Set B.V) =
   rfl
 
 /- English proof (translation)
-Unfold `HLat.rank rkK`. Rewrite using `[I.span_L]`. Conclude with `(LinearEquiv.finrank_map_eq I.e _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.rank_eq (I : Iso A B) : A.rank = B.rank := by
   unfold HLat.rank rkK
@@ -331,11 +331,11 @@ theorem Iso.rank_eq (I : Iso A B) : A.rank = B.rank := by
   exact (LinearEquiv.finrank_map_eq I.e _).symm
 
 /- English proof (translation)
-Introduce `v`. Assume the negation of the conclusion as `hv`. Establish `h0 : ∀ y : B.V, y = 0`. Introduce `y`. Establish `hy : normAt A.b A.X v (I.e.symm y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← I.norm, LinearEquiv.apply_symm_apply]`. Use `show cnorm ((B.X v)⁻¹.mulVec (vecAt B.b v y)) = 0`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hv, Matrix.zero_mulVec]`. Simplify using `[cnorm]`. Establish `hz` using `normAt_eq_zero A.b A.X v (h v) hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hz`. Use `haveI hι : IsEmpty B.ι := ⟨fun i => B.b.ne_zero i (h0 _)⟩`. Apply `hv` to reduce the goal to its premises. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `isUnit_one`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.frameOK (I : Iso A B) (h : FrameOK A) : FrameOK B := by
   intro v
@@ -355,14 +355,14 @@ theorem Iso.frameOK (I : Iso A B) (h : FrameOK A) : FrameOK B := by
   exact isUnit_one
 
 /- English proof (translation)
-Rewrite using `[← I.map_L]`. Conclude with `h.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.fg (I : Iso A B) (h : A.L.FG) : B.L.FG := by
   rw [← I.map_L]
   exact h.map _
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨I.frameOK h1, I.fg h2, ?_⟩` and prove the remaining obligations. Rewrite using `[I.span_L, h3, Submodule.map_top]`. Conclude with `I.e.range`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.good (I : Iso A B) (h : A.Good) : B.Good := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -371,11 +371,11 @@ theorem Iso.good (I : Iso A B) (h : A.Good) : B.Good := by
   exact I.e.range
 
 /- English proof (translation)
-Take `⟨h1, -, h3, h4, h5, -, -⟩` from `rerealize K A.V A.ι B.V B.ι A.b A.X B.b B.X I.e.toLinearMap hX (I.frameOK hX) I.e.injective I.norm A.L hL`. Rewrite `h1`, `h3`, `h4`, `h5` using `[I.map_L]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `HLat.mu muDef`. Rewrite using `[h3]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `HLat.muMax muMaxDef`. Rewrite using `[h4]`. Unfold `HLat.muMin muMinDef`. Rewrite using `[h5]`. Unfold `HLat.lcv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Iso.numbers (I : Iso A B) (hX : FrameOK A) (hL : A.L.FG) :
     A.mu = B.mu ∧ A.muMax = B.muMax ∧ A.muMin = B.muMin ∧ A.lcv = B.lcv := by
@@ -395,11 +395,11 @@ def Iso.withL (I : Iso A B) (L' : Submodule (𝓞 K) A.V) :
   norm := I.norm
 
 /- English proof (translation)
-Introduce `K V ι κ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' hn L hL`. Take `⟨h1, -, h3, h4, h5, -, -⟩` from `rerealize K V ι V κ b X b' X' LinearMap.id hX hX' Function.injective_id (fun v x => (hn v x).symm) L hL`. Establish `hid : L.map ((LinearMap.id : V →ₗ[K] V).restrictScalars (𝓞 K)) = L`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, `h3`, `h4`, `h5` using `[hid]`. Use `⟨h1.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `muDef`. Rewrite using `[h3]`. Unfold `muMaxDef`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h4]`. Unfold `muMinDef`. Rewrite using `[h5]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_free : FrameFree := by
   intro K V ι κ _ _ _ _ _ _ _ _ _ _ _ b X b' X' hX hX' hn L hL
@@ -415,13 +415,11 @@ theorem frame_free : FrameFree := by
   · unfold muMinDef; rw [h5]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_im_ne_zero v`. Establish `hA` using `isSesq_maj A.b A.X v`. Establish `hB` using `isSesq_maj B.b B.X v`. Use `sesq_ext (F := fun x y => majAt B.b B.X v (I.e x) (I.e y)) (G := majAt A.b A.X v) (σ := v.embedding) ⟨a, ha⟩ ⟨?_, ?_, ?_, ?_⟩ hA ?_ x y` and prove the remaining obligations. Introduce `x x' y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add]`. Conclude with `hB.1 _ _ _`. Introduce `x y y'`. Simplify using `only [map_add]`. Conclude with `hB.2.1 _ _ _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c x y`. Simplify using `only [map_smul]`. Conclude with `hB.2.2.1 _ _ _`. Introduce `c x y`. Simplify using `only [map_smul]`.
-
-Conclude with `hB.2.2.2 _ _ _`. Introduce `z show majAt B.b B.X v (I.e z) (I.e z) = majAt A.b A.X v z z`. Rewrite using `[majAt_self, majAt_self, I.norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.maj [IsTotallyComplex K] (I : Iso A B) (v : InfinitePlace K) (x y : A.V) :
     majAt B.b B.X v (I.e x) (I.e y) = majAt A.b A.X v x y := by
@@ -452,13 +450,13 @@ section Forms
 
 open scoped MatrixOrder in
 /- English proof (translation)
-Establish `hex : ∃ B : Matrix ι ι ℂ, G = B.conjTranspose * B` using `by first`. Consider the case `exact Matrix.posSemidef_iff_eq_conjTranspose_mul_self.1 hG.posSemidef`. Consider the case `(obtain ⟨B, hB⟩ := Matrix.posSemidef_iff_eq_conjTranspose_mul_self.1 hG.posSemidef`. Conclude with `⟨B, hB⟩)`. Consider the case `(have h0 : (0 : Matrix ι ι ℂ) ≤ G := Matrix.nonneg_iff_posSemidef.2 hG.posSemidef`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨CFC.sqrt G, ?_⟩` and prove the remaining obligations. Establish `hs : (CFC.sqrt G).conjTranspose = CFC.sqrt G` using `(CFC.sqrt_nonneg G).isSelfAdjoint`. Rewrite using `[hs]`. Conclude with `(CFC.sqrt_mul_sqrt_self G h0).symm)`. Take `⟨B, hB⟩` from `hex`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, ?_, hB.symm⟩` and prove the remaining obligations. Establish `hdet : G.det ≠ 0` using `by first`. Consider the case `exact hG.det_pos.ne'`. Consider the case `exact hG.det_ne_zero`. Consider the case `exact (Matrix.isUnit_iff_isUnit_det G).1 hG.isUnit |>.ne_zero`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[hB, Matrix.det_mul, h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame {ι : Type} [Fintype ι] [DecidableEq ι] {G : Matrix ι ι ℂ} (hG : G.PosDef) :
     ∃ B : Matrix ι ι ℂ, IsUnit B.det ∧ B.conjTranspose * B = G := by
@@ -485,9 +483,9 @@ theorem exists_frame {ι : Type} [Fintype ι] [DecidableEq ι] {G : Matrix ι ι
   rw [hB, Matrix.det_mul, h0, mul_zero]
 
 /- English proof (translation)
-Establish `h` using `exists_frame hG`. Establish `hspec` using `Classical.choose_spec h`. Unfold `frameOf`. Rewrite using `[dif_pos h]`. Use `⟨Matrix.isUnit_nonsing_inv_det _ hspec.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hspec.1]`. Conclude with `hspec.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameOf_spec {ι : Type} [Fintype ι] [DecidableEq ι] {G : Matrix ι ι ℂ} (hG : G.PosDef) :
     IsUnit (frameOf G).det ∧ ((frameOf G)⁻¹).conjTranspose * (frameOf G)⁻¹ = G := by
@@ -502,11 +500,11 @@ theorem frameOf_spec {ι : Type} [Fintype ι] [DecidableEq ι] {G : Matrix ι ι
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Unfold `OfFormSpec`. Introduce `K V ι _ _ _ _ _ _ _ _ _ b L H hH hP`. Establish `hF : ∀ v, IsUnit (frameOf (gramOf b (H v))).det ∧ ((frameOf (gramOf b (H v)))⁻¹).conjTranspose * (frameOf (gramOf b (H v)))⁻¹ = gramOf b (H v)` using `fun v => frameOf_spec (hP v)`. Establish `hmaj : ∀ v x y, majAt b (fun v => frameOf (gramOf b (H v))) v x y = H v x y`. Introduce `v x y`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : majAt b (fun v => frameOf (gramOf b (H v))) v x y = ∑ i, ∑ j, starRingEnd ℂ (vecAt b v x i) * gramOf b (majAt b (fun v => frameOf (gramOf b (H v))) v) i j * vecAt b v y j` using `sesq_eq_sum (isSesq_maj b _) b v x y`. Establish `e2 : H v x y = ∑ i, ∑ j, starRingEnd ℂ (vecAt b v x i) * gramOf b (H v) i j * vecAt b v y j` using `sesq_eq_sum hH b v x y`. Rewrite using `[e1, e2, gramOf_maj, (hF v).2]`. Use `⟨fun v => (hF v).1, hmaj, fun v x => ?_⟩` and prove the remaining obligations. Rewrite using `[normAt_eq_sqrt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun t => Real.sqrt t.re) (hmaj v x x)`.
+A detailed English derivation is pending.
 -/
 theorem of_form_spec : OfFormSpec := by
   unfold OfFormSpec
@@ -528,17 +526,17 @@ theorem of_form_spec : OfFormSpec := by
   exact congrArg (fun t => Real.sqrt t.re) (hmaj v x x)
 
 /- English proof (translation)
-Introduce `v`. Establish `hG` using `hP v`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective f (LinearMap.ker_eq_bot.2 hf)`. Take `⟨M, hM⟩ : ∃ M, M = (LinearMap.toMatrix c b f).map v.embedding` from `⟨_, rfl⟩`. Establish `hinv : ((LinearMap.toMatrix b c g).map v.embedding) * M = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hM, ← Matrix.map_mul, ← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hinj : Function.Injective M.mulVec`. Introduce `a a' h`. Establish `h1` using `congrArg ((LinearMap.toMatrix b c g).map v.embedding).mulVec h`. Simplify `h1` using `[Matrix.mulVec_mulVec, hinv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hvec : ∀ j, vecAt b v (f (c j)) = fun k => M k j`. Introduce `j`. Use function extensionality and compare the values at `k`. Rewrite using `[hM]`. Simplify using `only [vecAt, Matrix.map_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.toMatrix_apply]`. Establish `hgram : gramOf c (fun x y => H v (f x) (f y)) = M.conjTranspose * gramOf b (H v) * M`. Use extensionality with `i j`. Simplify using `only [gramOf, Matrix.of_apply]`. Rewrite using `[sesq_eq_sum hH b v (f (c i)) (f (c j)), hvec, hvec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression. Use `show (gramOf c (fun x y => H v (f x) (f y))).PosDef`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgram]`. Use `first`. Consider the case `exact hG.conjTranspose_mul_mul_same hinj`. Consider the case `exact Matrix.PosDef.conjTranspose_mul_mul_same hG hinj`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem posAt_comp {V ι W κ : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
     [AddCommGroup W] [Module K W] [Fintype κ] [DecidableEq κ] (b : Basis ι K V) (c : Basis κ K W)
@@ -576,11 +574,9 @@ theorem posAt_comp {V ι W κ : Type} [AddCommGroup V] [Module K V] [Fintype ι]
   | exact Matrix.PosDef.conjTranspose_mul_mul_same hG hinj
 
 /- English proof (translation)
-Introduce `v`. Take `⟨h1, h2, h3, h4⟩` from `hH v`. Use `⟨fun x x' y => ?_, fun x y y' => ?_, fun a x y => ?_, fun a x y => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Conclude with `h1 _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `h2 _ _ _`. Simplify using `only [map_smul]`. Conclude with `h3 _ _ _`. Simplify using `only [map_smul]`.
-
-Conclude with `h4 _ _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSesq_comp {V W : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     {H : InfinitePlace K → V → V → ℂ} (hH : IsSesq H) (f : W →ₗ[K] V) :
@@ -598,11 +594,11 @@ theorem isSesq_comp {V W : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] 
     exact h4 _ _ _
 
 /- English proof (translation)
-Introduce `v`. Use `show (gramOf b (majAt b X v)).PosDef`. Rewrite using `[gramOf_maj]`. Establish `hinj : Function.Injective ((X v)⁻¹).mulVec`. Introduce `a c hac`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (X v).mulVec hac`. Simplify `h1` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hX v)]`. Use `first`. Consider the case `exact Matrix.PosDef.conjTranspose_mul_self _ hinj`. Consider the case `exact (Matrix.posDef_conjTranspose_mul_self_iff _).2 hinj`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `(have h1 := Matrix.PosDef.one.conjTranspose_mul_mul_same hinj`. Simplify using `using h1)`.
+A detailed English derivation is pending.
 -/
 theorem posAt_maj {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
     (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (hX : ∀ v, IsUnit (X v).det) :
@@ -627,7 +623,7 @@ section Pull
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `hS : IsSesq (fun v x y => majAt B.b B.X v (f x) (f y))` using `isSesq_comp (isSesq_maj B.b B.X) f`. Establish `hPos : PosAt c (fun v x y => majAt B.b B.X v (f x) (f y))` using `posAt_comp B.b c (isSesq_maj B.b B.X) (posAt_maj B.b B.X hB) f hf`. Take `⟨h1, h2, h3⟩` from `of_form_spec K W κ c (B.L.comap (f.restrictScalars (𝓞 K))) _ hS hPos`. Use `⟨h1, h2, fun v x => ?_⟩` and prove the remaining obligations. Rewrite using `[h3, normAt_eq_sqrt]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_spec1 (B : HLat K) {W κ : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
     [IsScalarTower (𝓞 K) K W] [Fintype κ] [DecidableEq κ] (c : Basis κ K W) (f : W →ₗ[K] B.V)
@@ -644,9 +640,9 @@ theorem pull_spec1 (B : HLat K) {W κ : Type} [AddCommGroup W] [Module K W] [Mod
   rw [h3, normAt_eq_sqrt]
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_comap_eq, inf_comm]`. Use `first`. Consider the case `rfl`. Consider the case `(congr 1`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[LinearMap.mem_range])`.
+A detailed English derivation is pending.
 -/
 theorem map_comap_eq' {V W : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
@@ -661,9 +657,9 @@ theorem map_comap_eq' {V W : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K
      simp [LinearMap.mem_range])
 
 /- English proof (translation)
-Unfold `rkK`. Establish `hs : Submodule.span K ((N.map (f.restrictScalars (𝓞 K)) : Submodule (𝓞 K) V) : Set V) = (Submodule.span K (N : Set W)).map f`. Rewrite using `[Submodule.map_coe, ← Submodule.span_image]`. Both sides reduce to the same expression. Rewrite using `[hs]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.equivMapOfInjective f hf _).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem rkK_map {V W : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
@@ -678,21 +674,17 @@ theorem rkK_map {V W : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   exact (Submodule.equivMapOfInjective f hf _).finrank_eq.symm
 
 /- English proof (translation)
-Introduce `K _ _ _ B W κ _ _ _ _ _ _ c f hB hf`. Take `⟨h1, h2, h3⟩` from `pull_spec1 B c f hB hf`. Establish `hf' : Function.Injective (f.restrictScalars (𝓞 K))` using `hf`. Establish `hfg : B.L.FG → (pull B c f).L.FG`. Introduce `hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Submodule.fg_of_fg_map_injective (f.restrictScalars (𝓞 K)) hf'` to reduce the goal to its premises. Use `show ((B.L.comap (f.restrictScalars (𝓞 K))).map (f.restrictScalars (𝓞 K))).FG`. Rewrite using `[map_comap_eq']`. Conclude with `Formalism.LFunctionChainParameters.slopeLatticeData.fg_of_le hL inf_le_left`. Use `⟨h1, h2, h3, fun hL => ?_, fun hG => ⟨h1, hfg hG.2.1, ?_⟩⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, r3, r4, r5, -, -⟩` from `rerealize K W κ B.V B.ι (pull B c f).b (pull B c f).X B.b B.X f h1 hB hf (fun v x => (h3 v x).symm) (pull B c f).L (hfg hL)`. Establish `hm : (pull B c f).L.map (f.restrictScalars (𝓞 K)) = B.L ⊓ (LinearMap.range f).restrictScalars (𝓞 K)` using `map_comap_eq' f B.L`. Rewrite `r3`, `r4`, `r5` using `[hm]`. Use `⟨hfg hL, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show rkK (pull B c f).L = rkK (B.L ⊓ (LinearMap.range f).restrictScalars (𝓞 K))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm, rkK_map f hf]`. Use `show muDef (pull B c f).b (pull B c f).X (pull B c f).L = muDef B.b B.X (B.L ⊓ (LinearMap.range f).restrictScalars (𝓞 K))`. Unfold `muDef`. Rewrite using `[r3]`. Use `show muMaxDef (pull B c f).b (pull B c f).X (pull B c f).L = muMaxDef B.b B.X (B.L ⊓ (LinearMap.range f).restrictScalars (𝓞 K))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `muMaxDef`. Rewrite using `[r4]`. Use `show muMinDef (pull B c f).b (pull B c f).X (pull B c f).L = muMinDef B.b B.X (B.L ⊓ (LinearMap.range f).restrictScalars (𝓞 K))`. Unfold `muMinDef`. Rewrite using `[r5]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : f x ∈ Submodule.span K (B.L : Set B.V)` using `by rw [hG.2.2]; trivial`. Take `⟨d, hd, hdx⟩` from `Formalism.LFunctionChainParameters.LLcv.span_le_locS B.L hx`. Establish `hd0 : algebraMap (𝓞 K) K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`.
-
-Establish `h4 : d • x ∈ (pull B c f).L` using `by show (f.restrictScalars (𝓞 K)) (d • x) ∈ B.L`. Rewrite using `[map_smul]`. Conclude with `hdx`. Establish `h5 : x = (algebraMap (𝓞 K) K d)⁻¹ • (d • x)`. Rewrite using `[← algebraMap_smul K d x, smul_smul, inv_mul_cancel₀ hd0, one_smul]`.
-
-Rewrite using `[h5]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h4)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_spec : PullSpec := by
   intro K _ _ _ B W κ _ _ _ _ _ _ c f hB hf
@@ -737,13 +729,11 @@ theorem pull_spec : PullSpec := by
     exact Submodule.smul_mem _ _ (Submodule.subset_span h4)
 
 /- English proof (translation)
-Set `e : A.V ≃ₗ[K] U` to `(LinearEquiv.ofInjective ψ hψ).trans (LinearEquiv.ofEq _ _ hU)`. Establish `he : ∀ a, ((e a : U) : B.V) = ψ a` using `fun a => rfl`. Establish `hps` using `pull_spec1 B (sub B U).b U.subtype hB Subtype.val_injective`. Use `⟨⟨e, ?_, fun v x => ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Use extensionality with `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite `ha` using `[hL]`. Conclude with `ha`. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `e.surjective y`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Rewrite using `[hL]`. Use `show ψ a ∈ B.L`. Rewrite using `[← he a, ha]`.
-
-Conclude with `hy`. Rewrite using `[hn]`. Conclude with `hps.2.2 v (e x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embIso' (A B : HLat K) (ψ : A.V →ₗ[K] B.V) (U : Submodule K B.V) (hB : FrameOK B)
     (hψ : Function.Injective ψ) (hU : LinearMap.range ψ = U)
@@ -770,7 +760,7 @@ theorem embIso' (A B : HLat K) (ψ : A.V →ₗ[K] B.V) (U : Submodule K B.V) (h
     exact hps.2.2 v (e x)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ A L' hA hL hle h0`. Conclude with `⟨Formalism.LFunctionChainParameters.slopeLatticeData.muMaxDef_mono A.b A.X hA hL hle h0, fun hr => Formalism.LFunctionChainParameters.slopeLatticeData.muDef_index A.b A.X hA hL hle h0 hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem with_lattice_index : WithLIndex := by
   intro K _ _ _ _ A L' hA hL hle h0
@@ -784,9 +774,9 @@ section Unitary
 variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Rewrite using `[cnorm_sq]`. Use `push_cast`. Simplify using `only [dotProduct, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cnorm_sq_eq (u : ι → ℂ) : ((cnorm u ^ 2 : ℝ) : ℂ) = star u ⬝ᵥ u := by
   rw [cnorm_sq]
@@ -798,7 +788,7 @@ theorem cnorm_sq_eq (u : ι → ℂ) : ((cnorm u ^ 2 : ℝ) : ℂ) = star u ⬝�
   ring
 
 /- English proof (translation)
-Establish `h2 : ((cnorm (M.mulVec a) ^ 2 : ℝ) : ℂ) = ((cnorm a ^ 2 : ℝ) : ℂ)`. Rewrite using `[cnorm_sq_eq, cnorm_sq_eq, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Establish `h3 : cnorm (M.mulVec a) ^ 2 = cnorm a ^ 2` using `by exact_mod_cast h2`. Rewrite using `[← Real.sqrt_sq (cnorm_nonneg (M.mulVec a)), h3, Real.sqrt_sq (cnorm_nonneg a)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnorm_mulVec {M : Matrix κ ι ℂ} (h : M.conjTranspose * M = 1) (a : ι → ℂ) :
     cnorm (M.mulVec a) = cnorm a := by
@@ -815,9 +805,9 @@ section DualSec
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {A B : HLat K}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [vecAt]`. Rewrite using `[b.repr_self]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, Pi.single_apply, hj, Ne.symm hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem vecAt_basis {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
     (b : Basis ι K V) (v : InfinitePlace K) (i : ι) : vecAt b v (b i) = Pi.single i 1 := by
@@ -830,7 +820,7 @@ theorem vecAt_basis {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [De
   · simp [Finsupp.single_apply, Pi.single_apply, hj, Ne.symm hj]
 
 /- English proof (translation)
-Unfold `fcoord`. Rewrite using `[vecAt_basis]`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_basis {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
     (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K) (i : ι) :
@@ -844,9 +834,9 @@ def Iso.umat (I : Iso A B) (v : InfinitePlace K) : Matrix B.ι A.ι ℂ :=
   (B.X v)⁻¹ * (LinearMap.toMatrix A.b B.b I.e.toLinearMap).map v.embedding * A.X v
 
 /- English proof (translation)
-Establish `hv : vecAt B.b v (I.e x) = ((LinearMap.toMatrix A.b B.b I.e.toLinearMap).map v.embedding).mulVec (vecAt A.b v x)`. Use function extensionality and compare the values at `i`. Use `show v.embedding (B.b.repr (I.e x) i) = (((LinearMap.toMatrix A.b B.b I.e.toLinearMap).map v.embedding).mulVec (v.embedding ∘ (A.b.repr x))) i`. Rewrite using `[← RingHom.map_mulVec, LinearMap.toMatrix_mulVec_repr]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Unfold `fcoord`. Rewrite using `[hv]`. Simplify using `only [Iso.umat, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hA v), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Iso.fcoord_eq (I : Iso A B) (hA : FrameOK A) (v : InfinitePlace K) (x : A.V) :
     fcoord B.b B.X v (I.e x) = (I.umat v).mulVec (fcoord A.b A.X v x) := by
@@ -864,15 +854,15 @@ theorem Iso.fcoord_eq (I : Iso A B) (hA : FrameOK A) (v : InfinitePlace K) (x : 
     Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hcol : ∀ i, fcoord B.b B.X v (I.e (A.b i)) = fun k => (I.umat v * (A.X v)⁻¹) k i`. Introduce `i`. Rewrite using `[I.fcoord_eq hA, fcoord_basis]`. Use extensionality with `k`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hG : (I.umat v * (A.X v)⁻¹).conjTranspose * (I.umat v * (A.X v)⁻¹) = ((A.X v)⁻¹).conjTranspose * (A.X v)⁻¹`. Use extensionality with `i j`. Establish `h1` using `I.maj v (A.b i) (A.b j)`. Establish `h2` using `congrFun (congrFun (gramOf_maj A.b A.X v) i) j`. Simplify using `only [gramOf, Matrix.of_apply] at h2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2, ← h1]`. Simplify using `only [majAt, hcol, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `hPu : IsUnit ((A.X v)⁻¹)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_nonsing_inv_det _ (hA v))`. Establish `hPHu : IsUnit ((A.X v)⁻¹).conjTranspose`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hPu).star`. Rewrite `hG` using `[Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `hG2` using `hPHu.mul_left_cancel hG`. Rewrite `hG2` using `[← Matrix.mul_assoc]`. Establish `hG3 : (I.umat v).conjTranspose * I.umat v * (A.X v)⁻¹ = 1 * (A.X v)⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG2, Matrix.one_mul]`. Conclude with `hPu.mul_right_cancel hG3`.
+A detailed English derivation is pending.
 -/
 theorem Iso.umat_star_mul [IsTotallyComplex K] (I : Iso A B) (hA : FrameOK A)
     (v : InfinitePlace K) : (I.umat v).conjTranspose * I.umat v = 1 := by
@@ -902,11 +892,11 @@ theorem Iso.umat_star_mul [IsTotallyComplex K] (I : Iso A B) (hA : FrameOK A)
   exact hPu.mul_right_cancel hG3
 
 /- English proof (translation)
-Establish `hB` using `I.frameOK hA`. Establish `hM : (LinearMap.toMatrix A.b B.b I.e.toLinearMap) * (LinearMap.toMatrix B.b A.b I.symm.e.toLinearMap) = 1`. Rewrite using `[← LinearMap.toMatrix_comp]`. Establish `hc : I.e.toLinearMap ∘ₗ I.symm.e.toLinearMap = LinearMap.id`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `I.e.apply_symm_apply y`. Rewrite using `[hc, LinearMap.toMatrix_id]`. Establish `hM' : (LinearMap.toMatrix A.b B.b I.e.toLinearMap).map v.embedding * (LinearMap.toMatrix B.b A.b I.symm.e.toLinearMap).map v.embedding = 1`. Rewrite using `[← Matrix.map_mul, hM, Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `Iso.umat`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (hA v), ← Matrix.mul_assoc ((LinearMap.toMatrix A.b B.b I.e.toLinearMap).map v.embedding), hM', Matrix.one_mul, Matrix.nonsing_inv_mul _ (hB v)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.umat_mul_symm (I : Iso A B) (hA : FrameOK A) (v : InfinitePlace K) :
     I.umat v * I.symm.umat v = 1 := by
@@ -928,7 +918,7 @@ theorem Iso.umat_mul_symm (I : Iso A B) (hA : FrameOK A) (v : InfinitePlace K) :
     Matrix.one_mul, Matrix.nonsing_inv_mul _ (hB v)]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[I.umat_mul_symm hA, Matrix.mul_one]`. Use `_ = I.symm.umat v := by`. Rewrite using `[← Matrix.mul_assoc, I.umat_star_mul hA, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.umat_conjTranspose [IsTotallyComplex K] (I : Iso A B) (hA : FrameOK A)
     (v : InfinitePlace K) : (I.umat v).conjTranspose = I.symm.umat v := by
@@ -939,7 +929,7 @@ theorem Iso.umat_conjTranspose [IsTotallyComplex K] (I : Iso A B) (hA : FrameOK 
         rw [← Matrix.mul_assoc, I.umat_star_mul hA, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[I.umat_conjTranspose hA, I.umat_mul_symm hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Iso.umat_mul_star [IsTotallyComplex K] (I : Iso A B) (hA : FrameOK A)
     (v : InfinitePlace K) : I.umat v * (I.umat v).conjTranspose = 1 := by
@@ -998,7 +988,7 @@ def Iso.dual [IsTotallyComplex K] (I : Iso A B) (hA : FrameOK A) :
     rw [← hw, cnorm_mulVec hU]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ A B I hG`. Establish `hd` using `dualPl K A.V A.ι A.b A.X hG.1 A.L hG.2.1 hG.2.2`. Establish `hX : FrameOK (HLatOps.dual A)` using `DualPolygon.dualFrame_unit A.X hG.1`. Take `⟨h1, h2, h3, -⟩` from `(I.dual hG.1).numbers hX hd.1`. Conclude with `⟨h1, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iso_inv_dual : IsoInvDual := by
   intro K _ _ _ _ A B I hG
@@ -1008,21 +998,19 @@ theorem iso_inv_dual : IsoInvDual := by
   exact ⟨h1, h2, h3⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ _ A hG hr`. Establish `hL : A.L ≠ ⊥` using `Formalism.LFunctionChainParameters.slopeLatticeData.ne_bot_of_rkK_pos hr`. Establish `hd` using `dualPl K A.V A.ι A.b A.X hG.1 A.L hG.2.1 hG.2.2`. Establish `hXd : ∀ v, IsUnit (dualFrame A.X v).det` using `DualPolygon.dualFrame_unit A.X hG.1`. Establish `: Module.Finite K A.V` using `Module.Finite.of_basis A.b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdne : dualLat A.L ≠ ⊥`. Introduce `h`. Establish `htop` using `hd.2.1`. Rewrite `htop` using `[h, Submodule.bot_coe, Submodule.span_zero_singleton]`. Establish `h0 : Module.finrank K (Module.Dual K A.V) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← finrank_top K (Module.Dual K A.V), ← htop, finrank_bot]`. Rewrite `h0` using `[Subspace.dual_finrank_eq]`. Establish `: rkK A.L ≤ Module.finrank K A.V` using `Submodule.finrank_le _`. Simplify using `only [HLat.rank] at hr`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hs1` using `sizeMu K A.V A.ι A.b A.X hG.1 A.L hG.2.1 hL`. Establish `hs2` using `sizeMu K (Module.Dual K A.V) A.ι A.b.dualBasis (dualFrame A.X) hXd (dualLat A.L) hd.1 hdne`. Simplify using `only at hs1 hs2`. Establish `hc : logDisc K / (2 * (Module.finrank ℚ K : ℝ)) = logDisc K / (Module.finrank ℚ K : ℝ) / 2` using `by rw [div_div, mul_comm]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show muDef A.b.dualBasis (dualFrame A.X) (dualLat A.L) = -muDef A.b A.X A.L`. Rewrite using `[hs2.2.1, hs1.2.1, hd.2.2.2.1, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `hd.2.2.2.2.1`. Rewrite `e` using `[hs2.2.2.2.1, hs1.2.2.2.2.1, ← Real.exp_neg]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `Real.exp_injective e`. Rewrite `e2` using `[hc]`. Use `show muMaxDef A.b.dualBasis (dualFrame A.X) (dualLat A.L) = -muMinDef A.b A.X A.L`. Unfold `muMaxDef muMinDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hd.2.2.2.2.2.1`. Rewrite `e` using `[hs2.2.2.2.2.1, hs1.2.2.2.1, ← Real.exp_neg]`. Establish `e2` using `Real.exp_injective e`. Rewrite `e2` using `[hc]`. Use `show muMinDef A.b.dualBasis (dualFrame A.X) (dualLat A.L) = -muMaxDef A.b A.X A.L`.
-
-Unfold `muMaxDef muMinDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dual_numbers : DualNumbers := by
   intro K _ _ _ _ A hG hr
@@ -1078,11 +1066,11 @@ section Emb
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Introduce `v`. Assume the negation of the conclusion as `hv`. Establish `h0 : ∀ y : A.V, y = 0`. Introduce `y`. Establish `hy : normAt B.b B.X v (ψ y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hn]`. Use `show cnorm ((A.X v)⁻¹.mulVec (vecAt A.b v y)) = 0`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hv, Matrix.zero_mulVec]`. Simplify using `[cnorm]`. Conclude with `hψ (by rw [normAt_eq_zero B.b B.X v (hB v) hy, map_zero])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hι : IsEmpty A.ι := ⟨fun i => A.b.ne_zero i (h0 _)⟩`. Apply `hv` to reduce the goal to its premises. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem frameOK_of_emb (A B : HLat K) (ψ : A.V →ₗ[K] B.V) (hB : FrameOK B)
     (hψ : Function.Injective ψ) (hn : ∀ v x, normAt A.b A.X v x = normAt B.b B.X v (ψ x)) :
@@ -1103,13 +1091,11 @@ theorem frameOK_of_emb (A B : HLat K) (ψ : A.V →ₗ[K] B.V) (hB : FrameOK B)
   exact isUnit_one
 
 /- English proof (translation)
-Introduce `K _ _ _ A B ψ hB hψ hn`. Establish `hA` using `frameOK_of_emb A B ψ hB hψ hn`. Use `⟨hA, fun N => ⟨(rkK_map ψ hψ N).symm, fun hN => ?_⟩⟩` and prove the remaining obligations. Take `⟨h1, -, h3, h4, h5, -, -⟩` from `rerealize K A.V A.ι B.V B.ι A.b A.X B.b B.X ψ hA hB hψ (fun v x => (hn v x).symm) N hN`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show muDef A.b A.X N = muDef B.b B.X (N.map (ψ.restrictScalars (𝓞 K)))`. Unfold `muDef`. Rewrite using `[h3]`. Use `show muMaxDef A.b A.X N = muMaxDef B.b B.X (N.map (ψ.restrictScalars (𝓞 K)))`. Unfold `muMaxDef`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h4]`. Use `show muMinDef A.b A.X N = muMinDef B.b B.X (N.map (ψ.restrictScalars (𝓞 K)))`. Unfold `muMinDef`. Rewrite using `[h5]`. Use `show (2 / (finrank ℚ K : ℝ)) * Real.log (ht A.b A.X N) = (2 / (finrank ℚ K : ℝ)) * Real.log (ht B.b B.X (N.map (ψ.restrictScalars (𝓞 K))))`.
-
-Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_numbers : EmbNumbers := by
   intro K _ _ _ A B ψ hB hψ hn
@@ -1129,7 +1115,7 @@ theorem emb_numbers : EmbNumbers := by
     rw [h1]
 
 /- English proof (translation)
-Apply `Submodule.fg_of_fg_map_injective (f.restrictScalars (𝓞 K)) hf` to reduce the goal to its premises. Rewrite using `[map_comap_eq']`. Establish `hN : IsNoetherian (𝓞 K) L` using `isNoetherian_of_fg_of_noetherian L hL`. Conclude with `isNoetherian_submodule.mp hN _ inf_le_left`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comap_fg {V W : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W]

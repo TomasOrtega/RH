@@ -15,7 +15,7 @@ section Torus
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Use `forall_congr' fun χ => ?_` and prove the remaining obligations. Establish `: (res (fun x _ => show t.left.base x ∈ (⊤ : TopologicalSpace.Opens _) from trivial) (pullU t.left ⊤ (charUnit S X χ)) : Γ((splitTorus S X).left, ⊤)ˣ).val = t.left.appTop.hom (charUnit S X χ).val`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[← this, Units.ext_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusEndOf_iff (h : X → X) (t : splitTorus S X ⟶ splitTorus S X) : TorusEndOf X h t ↔
       ∀ χ, t.left.appTop.hom (charUnit S X χ).val = (charUnit S X (h χ)).val := by
@@ -27,7 +27,7 @@ theorem torusEndOf_iff (h : X → X) (t : splitTorus S X ⟶ splitTorus S X) : T
   rw [← this, Units.ext_iff]
 
 /- English proof (translation)
-Use `(splitTorusPointsEquiv S X _).injective (MonoidHom.ext fun χ => Units.ext ?_)` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `Multiplicative.ofAdd.surjective χ`. Rewrite using `[splitTorusPointsEquiv_val, splitTorusPointsEquiv_val, (torusEndOf_iff _ _).1 ht, (torusEndOf_iff _ _).1 ht']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusEndOf_unique {h : X → X} {t t' : splitTorus S X ⟶ splitTorus S X}
     (ht : TorusEndOf X h t) (ht' : TorusEndOf X h t') : t = t' := by
@@ -37,7 +37,7 @@ theorem torusEndOf_unique {h : X → X} {t t' : splitTorus S X ⟶ splitTorus S 
     (torusEndOf_iff _ _).1 ht']
 
 /- English proof (translation)
-The claim follows from `(torusEndOf_iff _ _).2 fun χ => by rw [SplitTorusHom.appTop_comp, (torusEndOf_iff _ _).1 ht', (torusEndOf_iff _ _).1 ht]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem torusEndOf_comp {h h' : X → X} {t t' : splitTorus S X ⟶ splitTorus S X}
     (ht : TorusEndOf X h t) (ht' : TorusEndOf X h' t') : TorusEndOf X (h ∘ h') (t ≫ t') :=

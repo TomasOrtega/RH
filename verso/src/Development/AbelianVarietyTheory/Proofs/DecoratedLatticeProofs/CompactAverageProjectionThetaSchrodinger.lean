@@ -37,9 +37,9 @@ open GlobalTheory.Unf
 variable {D : D7}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [realSize, MajMeas.compAt_mul, Matrix.mul_apply]`. Use `_ ≤ ∑ τ, ∑ i, ∑ _j : Fin k, ∑ l, ‖compAt θ τ Y i l‖ * realSize θ a := by gcongr with τ _ i _ j _`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `mul_le_mul_of_nonneg_left (MajMeas.norm_compAt_le_realSize θ a τ l j) (norm_nonneg _)`. Use `_ = _ := by`. Generalize the expression as in `realSize θ a = r`. Simplify using `only [realSize, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem realSize_mul_le (θ : InfFam D) {m n k : ℕ} (Y : Mx D m n) (a : Mx D n k) :
     realSize θ (Y ⬝ a) ≤ (k * realSize θ Y) * realSize θ a := by
@@ -56,19 +56,19 @@ theorem realSize_mul_le (θ : InfFam D) {m n k : ℕ} (Y : Mx D m n) (a : Mx D n
           Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Establish `hmt : Continuous (mt T)` using `GlobalTheory.MixModel.continuous_mt T`. Take `⟨c, hc⟩` from `(hK.image ((MajMeas.continuous_realSize hθ).comp hmt)).bddAbove`. Set `P : GA D T × Mx D T.rank n → Mx D T.rank n` to `fun p => mt T p.1 ⬝ p.2`. Establish `hP : Continuous P` using `(hmt.comp continuous_fst).matrix_mul continuous_snd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨P '' (K ×ˢ K₀), (hK.prod hK₀).image hP, fun N => ⟨(1 + n * |c|) ^ N, by positivity, fun k hk u => ?_⟩⟩` and prove the remaining obligations. Establish `hyx : (mt T k : Mx D T.rank T.rank) * mt T k⁻¹ = 1` using `by show mt T (k * k⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hu : (mt T k ⬝ (mt T k⁻¹ ⬝ u) : Mx D T.rank n) = u`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hyx, Matrix.one_mul]`. Distinguish the cases in `hb : InBox K₀ (mt T k⁻¹ ⬝ u)`. Establish `hb' : InBox (P '' (K ×ˢ K₀)) u`. Take `⟨k0, hk0, hkx⟩` from `hb`. Use `⟨P (k, k0), ⟨(k, k0), ⟨hk, hk0⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : u - P (k, k0) = (mt T k ⬝ ((mt T k⁻¹ ⬝ u : Mx D T.rank n) - k0) : Mx D T.rank n)`. Rewrite using `[Matrix.mul_sub, hu]`. Rewrite using `[e, Matrix.map_mul, hkx, Matrix.mul_zero]`. Simplify using `only [maj, if_pos hb, if_pos hb']`. Establish `hs` using `realSize_mul_le θ (mt T k) (mt T k⁻¹ ⬝ u : Mx D T.rank n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hs` using `[hu]`. Establish `hck : realSize θ (mt T k) ≤ |c|` using `(hc ⟨k, hk, rfl⟩).trans (le_abs_self c)`. Establish `h0` using `realSize_nonneg θ (mt T k⁻¹ ⬝ u : Mx D T.rank n)`. Establish `h0'` using `realSize_nonneg θ u`. Generalize the expression as in `realSize θ (mt T k⁻¹ ⬝ u : Mx D T.rank n) = r at hs h0 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hs' : realSize θ u ≤ (n * |c|) * r` using `hs.trans (by gcongr)`. Establish `hn : (0 : ℝ) ≤ n * |c|` using `by positivity`. Establish `hle : 1 + realSize θ u ≤ (1 + n * |c|) * (1 + r)` using `by nlinarith`. Establish `hA : 0 < (1 + r) ^ N` using `by positivity`. Establish `hB : 0 < (1 + realSize θ u) ^ N` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_eq_one_div, ← div_eq_mul_inv, div_le_div_iff₀ hA hB, one_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) hle N`. Establish `e : maj θ K₀ N (mt T k⁻¹ ⬝ u) = 0` using `by simp only [maj, if_neg hb]`. Rewrite using `[e]`. Conclude with `mul_nonneg (by positivity) (maj_nonneg θ _ N u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_mt_le {θ : InfFam D} (hθ : IsInfFam θ) (T : HSp D) (n : ℕ) {K : Set (GA D T)} (hK : IsCompact K)
     {K₀ : Set (Mx D T.rank n)} (hK₀ : IsCompact K₀) :
@@ -111,9 +111,9 @@ theorem maj_mt_le {θ : InfFam D} (hθ : IsInfFam θ) (T : HSp D) (n : ℕ) {K :
     exact mul_nonneg (by positivity) (maj_nonneg θ _ N u)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ T.rank n`. Take `⟨-, K₀, hK₀, hC⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ T.rank n Φ (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ T.rank n Φ hΦ)`. Take `⟨C, hC⟩` from `hC N`. Take `⟨K', hK', hM⟩` from `maj_mt_le hθ T n hK hK₀`. Take `⟨C', hC', hM⟩` from `hM N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb'⟩` from `hN K' {x} hK' isCompact_singleton`. Use `⟨fun ξ => |C| * (C' * b ξ), (hb.mul_left C').mul_left |C|, fun k hk ξ => (hC _).trans ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul (le_abs_self C) ((hM k hk _).trans (mul_le_mul_of_nonneg_left (hb' x rfl ξ) hC')) (maj_nonneg _ _ _ _) (abs_nonneg C)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_summable_bound {θ : InfFam D} (hθ : IsInfFam θ) (T : HSp D) (n : ℕ) {K : Set (GA D T)} (hK : IsCompact K)
     {Φ : Mx D T.rank n → ℂ} (hΦ : Φ ∈ schwartzA θ T.rank n) (x : Mx D T.rank n) :
@@ -131,7 +131,7 @@ theorem exists_summable_bound {θ : InfFam D} (hθ : IsInfFam θ) (T : HSp D) (n
     (maj_nonneg _ _ _ _) (abs_nonneg C)
 
 /- English proof (translation)
-Establish `hg` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf ((GlobalTheory.Core.Rk.SWLaw.dblDec A).extY B y)`. Establish `hsum` using `(GlobalTheory.Core.Rk.SchPeriod.theta_eq_sum_sch D ψ hψ A B ν 𝓨 hν _ hg x).2`. Simplify using `only [GlobalTheory.Core.Rk.SchwInj.sch_heisO_extY hψ A B hν hf] at hsum`. Conclude with `hsum`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_sch {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (A B : HSp D)
     {ν : Measure (WO A B)} {𝓨 : Set (WO A B)} (hν : IsCovolOne (ratL B A) ν 𝓨) {f : WO (dblSp A) B → ℂ}
@@ -146,17 +146,15 @@ theorem hasSum_sch {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   exact hsum
 
 /- English proof (translation)
-Introduce `D ψ A B χ om hW ν 𝓨 hν K hK νK hνK φ hφ`. Establish `hψ` using `hW.std`. Take `⟨θ, hθ⟩ : ∃ θ : InfFam D, IsInfFam θ` from `GlobalTheory.DualPairCompare.exists_infFam D`. Take `⟨h1, h2, -⟩` from `GlobalTheory.SchSchwartzAll.schSchwartz D ψ hψ θ hθ A B ν 𝓨 hν`. Take `⟨f', hf', hs⟩` from `h2 _ (GlobalTheory.T.compactAverageSchwartzProjection_mem_adelicSchwartz D θ hθ B A.rank K hK νK hνK _ (h1 φ hφ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-It suffices to establish `h : projK om νK φ = f' by rw [h]; exact ⟨hf', hs⟩`. Use function extensionality and compare the values at `w`. Take `⟨x, y, rfl⟩` from `GlobalTheory.Core.Rk.SchwInj.exists_extX_add_extY A B w`. Take `⟨b, hb, hb'⟩` from `exists_summable_bound hθ B A.rank hK (h1 φ hφ) x`. Take `⟨-, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`.
+Reduce the argument to an intermediate assertion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (GA D B) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (GA D B) := (Formalism.IndefR.Eqv.ga_facts D B).1`. Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin B.rank) (Fin A.rank) D.host.E) := inferInstanceAs (Countable (Fin _ → Fin _ → _))`. Establish `hc` using `(GlobalTheory.Core.Rk.SchInt.sch_continuous_integrable D ψ hψ A B ν 𝓨 hν φ hφ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmt : Continuous fun k : K => mt B (k : GA D B)⁻¹` using `(GlobalTheory.MixModel.continuous_mt B).comp continuous_subtype_val.inv`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Establish `key` using `hasSum_integral_of_dominated_convergence (μ := νK) (F := fun (ξ : Matrix (Fin B.rank) (Fin A.rank) D.host.E) (k : K) => ψ (symplO (dblSp A) B ((GlobalTheory.Core.Rk.SWLaw.dblDec A).extX B (x + rat ξ)) ((GlobalTheory.Core.Rk.SWLaw.dblDec A).extY B y)) * sch ψ A B ν 𝓨 φ (mt B (k : …`. Establish `h` using `hasSum_sch hψ A B hν (hW.om_pres (1, (k : GA D B)) φ hφ) x y`. Simplify using `only [(GlobalTheory.Core.Rk.SchLaws.sch_laws D ψ A B χ om hW ν 𝓨 hν φ hφ).1] at h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h)`. Simplify using `only [integral_const_mul] at key`. Establish `h'` using `hasSum_sch hψ A B hν hf' x y`. Rewrite `h'` using `[hs]`. Establish `e` using `key.unique h'`.
-
-Conclude with `mul_left_cancel₀ (norm_ne_zero_iff.1 (by rw [hn]; exact one_ne_zero)) e`.
+A detailed English derivation is pending.
 -/
 theorem projK_theta_sch : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ om → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ K : Subgroup (GA D B), IsCompact (K : Set (GA D B)) → ∀ νK : Measure K, IsProbabilityMeasure νK → ∀ φ, IsThetaFunO ψ (dblSp A) B φ → IsThetaFunO ψ (dblSp A) B (projK om νK φ) ∧ sch ψ A B ν 𝓨 (projK om νK φ) = projS νK (sch ψ A B ν 𝓨 φ) := by
   intro D ψ A B χ om hW ν 𝓨 hν K hK νK hνK φ hφ

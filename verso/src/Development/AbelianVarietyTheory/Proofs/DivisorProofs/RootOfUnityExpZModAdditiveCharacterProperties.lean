@@ -7,22 +7,20 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 namespace GlobalTheory.WpFam.AddCharZMod
 
 /- English proof (translation)
-Rewrite using `[ZMod.stdAddChar_apply, ZMod.toCircle_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ch_eq (N : ℕ) [NeZero N] (j : ZMod N) : ch N j = ZMod.stdAddChar j := by
   rw [ZMod.stdAddChar_apply, ZMod.toCircle_apply]
   rfl
 
 /- English proof (translation)
-Introduce `N _`. Establish `hpow : ∀ (m : ℕ) (j : ZMod N), ch N ((m : ZMod N) * j) = ch N j ^ m`. Introduce `m j`. Rewrite using `[ch_eq, ch_eq, ← AddChar.map_nsmul_eq_pow, nsmul_eq_mul]`. Establish `hadd : ∀ i j, ch N (i + j) = ch N i * ch N j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[ch_eq, ch_eq, ch_eq]`. Conclude with `AddChar.map_add_eq_mul _ i j`. Establish `hzero : ch N 0 = 1`. Rewrite using `[ch_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `AddChar.map_zero_eq_one _`. Use `⟨fun n => ?_, hadd, hzero, fun j => ?_, hpow, fun j => ?_, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[ch_eq]`. Conclude with `ZMod.stdAddChar_coe n`. Rewrite using `[ch_eq, ← (ZMod.stdAddChar (N := N)).map_zero_eq_one, ZMod.injective_stdAddChar.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ch N (-j) * ch N j = 1`. Rewrite using `[← hadd, neg_add_cancel, hzero]`. Conclude with `eq_inv_of_mul_eq_one_left h`. Rewrite using `[ch_eq, ZMod.stdAddChar_apply]`. Conclude with `Circle.norm_coe _`.
-
-Establish `h : ch N j ^ N = 1`. Rewrite using `[← hpow, ZMod.natCast_self, zero_mul, hzero]`. Use `IsIntegral.of_pow (Nat.pos_of_neZero N) ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `isIntegral_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : ℕ) [NeZero N], (∀ n : ℤ, ch N (n : ZMod N) = Complex.exp (2 * Real.pi * Complex.I * n / N)) ∧ (∀ i j, ch N (i + j) = ch N i * ch N j) ∧ ch N 0 = 1 ∧ (∀ j, ch N j = 1 ↔ j = 0) ∧ (∀ (m : ℕ) j, ch N ((m : ZMod N) * j) = ch N j ^ m) ∧ (∀ j, ch N (-j) = (ch N j)⁻¹) ∧ (∀ j, ‖ch N j‖ = 1) ∧ (∀ j, IsIntegral ℤ (ch N j)) := by
   intro N _

@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Fan.MarkedFaces
 
 /- English proof (translation)
-Use `set σ := ∑ j, v j with hσ`. Establish `hσ1 : σ ∈ balForms bar X` using `Submodule.sum_mem _ fun j _ => hv.mem j`. Establish `hσ2 : ∀ y, 0 ≤ σ y y` using `fun y => by`. Simplify using `only [hσ, LinearMap.sum_apply]`. Conclude with `Finset.sum_nonneg fun j _ => hv.nonneg j y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσv : InRCone v σ` using `⟨fun _ => 1, fun _ => zero_le_one, toReal_sum' v⟩`. Establish `hl` using `hb σ hσ1 hσ2 hσv`. Rewrite `hl` using `[hlab X hX σ hσ1 hσ2]`. Establish `hS : ({k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ σ ∧ genRank γ = k}).Nonempty` using `⟨_, m, v, hv, hσv, rfl⟩`. Take `⟨m', γ, hγ, hσγ, hrk⟩` from `Nat.sInf_mem hS`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψσ : ψ.evalZ σ = ∑ j, ψ.evalZ (v j)`. Use `(linearOn_iff ψ v).1 hv.linear (fun _ => 1) fun _ => zero_le_one` as an intermediate fact. Rewrite `this` using `[← toReal_sum', evalR_toReal]`. Simplify using `using this`. Establish `hin` using `GlobalTheory.T.inRealCone_summands_of_evalZ_additive_cell O bar ψ X m' γ hγ m v hv.mem hv.nonneg hσγ hψσ.le`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.spanRank_le_of_inRealCone_polyhedralCell O bar ψ X m' m γ v hγ hv.mem hv.nonneg hin`. Establish `h2 : sInf {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ σ ∧ genRank γ = k} ≤ i + 1` using `by exact_mod_cast hl`. Rewrite `hr` using `[hrk]`. Conclude with `hr.trans h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genRank_le_of_label_le {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O]
     (bar : O → O) (q : ℕ)
@@ -49,13 +49,11 @@ theorem genRank_le_of_label_le {O : Type} [CommRing O] [IsDedekindDomain O] [Cha
   exact hr.trans h2
 
 /- English proof (translation)
-Take `⟨hβ1, hβ2, -, hβl, -⟩` from `hβ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, hx2, -, hx4, hx5⟩`. Conclude with `⟨hx1, hx2, GlobalTheory.T.psd_balanced_form_mem_cell_cone O bar hO q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv x hx1 hx2 hx4 hx5⟩`. Introduce and unpack `⟨hx1, hx2, hxv⟩`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hrk` using `genRank_le_of_label_le bar q ψ lab i hlab X hX v hv hb`. Establish `hvan` using `GlobalTheory.T.psd_balanced_form_vanishes_low_rank O bar hO q ψ lab hψ hlab X hX hDom m v hv β hβ1 hβ2 hβv (by rw [hβl]; exact_mod_cast hrk)`. Establish `hsum` using `inRCone_add' hβv hxv`. Establish `hs1 : β + x ∈ balForms bar X` using `add_mem hβ1 hx1`. Establish `hs2 : ∀ y, 0 ≤ (β + x) y y` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.add_apply]`. Conclude with `add_nonneg (hβ2 y) (hx2 y)`. Use `⟨hx1, hx2, fun y hy => inRCone_apply_self_eq_zero hxv y fun j => hvan j y hy, GlobalTheory.T.invFun_evalZ_add_of_linearOn_realCone O ψ X m v hv.linear β x hβv hxv, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hβl]`. Conclude with `hb _ hs1 hs2 hsum`.
-
-Take `⟨c, hc, e⟩` from `hxv`. Conclude with `carrierDim_le_of_add_cell O bar q ψ lab hlab X hX m v hv β hβ1 hβ2 (β + x) hs1 hs2 hβv 1 c one_pos hc (by rw [toReal_add', e, one_smul])`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inFace_iff_of_isMarked {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O]
     (bar : O → O) (hO : CMOrd O bar) (q : ℕ)
@@ -85,9 +83,9 @@ theorem inFace_iff_of_isMarked {O : Type} [CommRing O] [IsDedekindDomain O] [Cha
         (by rw [toReal_add', e, one_smul])
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar hO q ψ lab i hDom hψ hlab X _ _ _ _ hX m v hv hb β β' hβ hβ' hβv hβ'v`. Establish `hiff : ∀ x, InFace bar ψ lab β x ↔ InFace bar ψ lab β' x` using `fun x => by`. Rewrite using `[inFace_iff_of_isMarked bar hO q ψ lab i hψ hlab X hX (hDom X) v hv hb hβ hβv x, inFace_iff_of_isMarked bar hO q ψ lab i hψ hlab X hX (hDom X) v hv hb hβ' hβ'v x]`. Establish `hind : ∀ x, IsIndec bar ψ lab β x ↔ IsIndec bar ψ lab β' x` using `fun x => by`. Simplify using `only [IsIndec, hiff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨-, -, hp, -, S, hS, k, hk, hkS⟩` from `hβ`. Take `⟨-, -, hp', -, S', hS', k', -, hkS'⟩` from `hβ'`. Establish `hSS : S = S'` using `Finset.ext fun x => by rw [hS, hS', hind]`. Conclude with `eq_of_primitive_of_smul_eq hp hp' hk (by rw [hkS, hkS', hSS])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_isMarked_of_inRCone : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ lab : InvFun O) (i : ℕ), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsCarrierDim bar q ψ lab → ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ v → (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone v β → lab.evalZ β ≤ ((i + 1 : ℕ) : ℝ)) → ∀ β β' : LinearMap.BilinForm ℤ X, IsMarked bar ψ lab i X β → IsMarked bar ψ lab i X β' → InRCone v β → InRCone v β' → β = β' := by
   intro O _ _ _ _ bar hO q ψ lab i hDom hψ hlab X _ _ _ _ hX m v hv hb β β' hβ hβ' hβv hβ'v

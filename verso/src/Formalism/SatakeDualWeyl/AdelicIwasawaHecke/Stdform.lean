@@ -18,7 +18,7 @@ def stdformQ (M : Matrix n n ℂ) (y : n → ℂ) : ℝ :=
   (∑ i, ∑ j, starRingEnd ℂ (y i) * M i j * y j).re
 
 /- English proof (translation)
-Unfold `stdformQ`. Conclude with `Complex.continuous_re.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ((Complex.continuous_conj.comp (continuous_apply i)).mul continuous_const).mul (continuous_apply j))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem stdform_continuous_Q (M : Matrix n n ℂ) : Continuous (stdformQ M) := by
   unfold stdformQ
@@ -26,7 +26,7 @@ theorem stdform_continuous_Q (M : Matrix n n ℂ) : Continuous (stdformQ M) := b
     ((Complex.continuous_conj.comp (continuous_apply i)).mul continuous_const).mul (continuous_apply j))
 
 /- English proof (translation)
-Unfold `stdformQ`. Use `congr 1`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def, mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem stdform_Q_dot (M : Matrix n n ℂ) (y : n → ℂ) :
     stdformQ M y = (star y ⬝ᵥ (M *ᵥ y)).re := by
@@ -35,7 +35,7 @@ theorem stdform_Q_dot (M : Matrix n n ℂ) (y : n → ℂ) :
   simp only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def, mul_assoc]
 
 /- English proof (translation)
-Unfold `stdformQ`. Use `congr 1`. Use `Fintype.sum_equiv e.symm _ _ (fun k => ?_)` and prove the remaining obligations. Use `Fintype.sum_equiv e.symm _ _ (fun l => ?_)` and prove the remaining obligations. Simplify using `[Matrix.reindex_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem stdform_Q_reindex {m : Type} [Fintype m] [DecidableEq m] (M : Matrix n n ℂ) (e : n ≃ m)
     (y : n → ℂ) : stdformQ (M.reindex e e) (fun k => y (e.symm k)) = stdformQ M y := by
@@ -46,7 +46,7 @@ theorem stdform_Q_reindex {m : Type} [Fintype m] [DecidableEq m] (M : Matrix n n
   simp [Matrix.reindex_apply]
 
 /- English proof (translation)
-Unfold `stdformQ`. Simplify using `only [Complex.re_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re, Complex.mul_im, hM i j]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem stdform_Q_real (M : Matrix n n ℂ) (hM : ∀ i j, (M i j).im = 0) (y : n → ℂ) :
     stdformQ M y = stdformQ M (fun i => ((y i).re : ℂ)) + stdformQ M (fun i => ((y i).im : ℂ)) := by
@@ -56,7 +56,7 @@ theorem stdform_Q_real (M : Matrix n n ℂ) (hM : ∀ i j, (M i j).im = 0) (y : 
   simp [Complex.mul_re, Complex.mul_im, hM i j]
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stdform_normSq (z : ℂ) : (star z * z).re = Complex.normSq z := by
   rw [Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]
@@ -67,25 +67,23 @@ section Emb
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-Introduce `y`. Establish `hcont : Continuous fun y => c * stdformQ M y` using `continuous_const.mul (stdform_continuous_Q M)`. Establish `hall : ∀ x : n → E, 0 ≤ c * stdformQ M (fun i => τ (x i))`. Introduce `x`. Distinguish the cases in `hx : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Simplify using `[stdformQ]`. Conclude with `(hpos x hx).le`. Establish `hcl : IsClosed {y : n → ℂ | 0 ≤ c * stdformQ M y}` using `isClosed_le continuous_const hcont`. Distinguish the cases in `hre : ∃ e : E, (τ e).im ≠ 0`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨e0, he0⟩` from `hre`. Establish `hsurj : Function.Surjective fun ab : ℝ × ℝ => (ab.1 : ℂ) + (ab.2 : ℂ) * τ e0`. Introduce `z`. Use `⟨(z.re - z.im / (τ e0).im * (τ e0).re, z.im / (τ e0).im), ?_⟩` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[he0]`. Establish `hg : DenseRange fun ab : ℝ × ℝ => (ab.1 : ℂ) + (ab.2 : ℂ) * τ e0` using `hsurj.denseRange`. Establish `hq : DenseRange fun ab : ℚ × ℚ => ((ab.1 : ℝ), (ab.2 : ℝ))` using `Rat.denseRange_cast.prodMap Rat.denseRange_cast`. Establish `h1 : DenseRange fun ab : ℚ × ℚ => τ ((ab.1 : E) + (ab.2 : E) * e0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hg.comp hq ((Complex.continuous_ofReal.comp continuous_fst).add ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const))`. Use `h0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ab`. Simplify using `[map_add, map_mul, map_ratCast]`. Establish `h2 : DenseRange fun v : n → ℚ × ℚ => fun i => τ (((v i).1 : E) + ((v i).2 : E) * e0)` using `DenseRange.piMap (fun _ => h1)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : closure (Set.range fun v : n → ℚ × ℚ => fun i => τ (((v i).1 : E) + ((v i).2 : E) * e0)) ⊆ {y : n → ℂ | 0 ≤ c * stdformQ M y}`. Rewrite using `[hcl.closure_subset_iff]`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hall fun i => ((v i).1 : E) + ((v i).2 : E) * e0`. Conclude with `hsub (by rw [h2.closure_range]; trivial)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hre`. Establish `hM' : ∀ i j, (M i j).im = 0` using `fun i j => by`. Take `⟨e, he⟩` from `hM i j`. Rewrite using `[← he]`. Conclude with `hre e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : ∀ r : n → ℝ, 0 ≤ c * stdformQ M (fun i => ((r i : ℝ) : ℂ))`. Establish `hclR : IsClosed {r : n → ℝ | 0 ≤ c * stdformQ M (fun i => ((r i : ℝ) : ℂ))}` using `isClosed_le continuous_const (continuous_const.mul ((stdform_continuous_Q M).comp (continuous_pi fun i => Complex.continuous_ofReal.comp (continuous_apply i))))`. Establish `hd : DenseRange fun v : n → ℚ => fun i => ((v i : ℚ) : ℝ)` using `DenseRange.piMap (fun _ => Rat.denseRange_cast)`. Establish `hsub : closure (Set.range fun v : n → ℚ => fun i => ((v i : ℚ) : ℝ)) ⊆ {r : n → ℝ | 0 ≤ c * stdformQ M (fun i => ((r i : ℝ) : ℂ))}`. Rewrite using `[hclR.closure_subset_iff]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Establish `h3` using `hall fun i => ((v i : ℚ) : E)`. Simplify `h3` using `[map_ratCast]`. Introduce `r`. Conclude with `hsub (by rw [hd.closure_range]; trivial)`.
-
-Rewrite using `[stdform_Q_real M hM' y, mul_add]`. Conclude with `add_nonneg (hR _) (hR _)`.
+A detailed English derivation is pending.
 -/
 theorem stdform_psd (τ : E →+* ℂ) (M : Matrix n n ℂ) (hM : ∀ i j, ∃ e, τ e = M i j) (c : ℝ)
     (hpos : ∀ x : n → E, x ≠ 0 → 0 < c * stdformQ M (fun i => τ (x i))) :
@@ -151,7 +149,7 @@ end Emb
 end Stdform
 
 /- English proof (translation)
-Use `letI : Algebra F ℂ := ((algebraMap ℝ ℂ).comp ι).toAlgebra`. Use `haveI : Algebra.IsAlgebraic F E := Algebra.IsAlgebraic.tower_top (K := ℚ) F`. Use `⟨(IsAlgClosed.lift : E →ₐ[F] ℂ).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(IsAlgClosed.lift : E →ₐ[F] ℂ).commutes x`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem stdform_ext {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (ι : F →+* ℝ) :
@@ -167,7 +165,7 @@ section Inv
 variable {n : Type} [Fintype n] [DecidableEq n] {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h` using `RingHom.congr_fun hσ e`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stdform_conj (σ : E →ₐ[F] E) (τ : E →+* ℂ)
     (hσ : τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ) (e : E) :
@@ -176,7 +174,7 @@ theorem stdform_conj (σ : E →ₐ[F] E) (τ : E →+* ℂ)
   simpa using h
 
 /- English proof (translation)
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[stdform_conj σ τ hσ (σ e), stdform_conj σ τ hσ e, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdform_invol (σ : E →ₐ[F] E) (τ : E →+* ℂ)
     (hσ : τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ) (e : E) : σ (σ e) = e := by
@@ -184,7 +182,7 @@ theorem stdform_invol (σ : E →ₐ[F] E) (τ : E →+* ℂ)
   rw [stdform_conj σ τ hσ (σ e), stdform_conj σ τ hσ e, Complex.conj_conj]
 
 /- English proof (translation)
-Simplify using `only [hform, map_sum, map_mul, Matrix.map_apply, AlgHom.coe_toRingHom, stdform_conj σ τ hσ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdform_hform_map (σ : E →ₐ[F] E) (τ : E →+* ℂ)
     (hσ : τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ) (J : Matrix n n E) (x : n → E) :
@@ -193,9 +191,9 @@ theorem stdform_hform_map (σ : E →ₐ[F] E) (τ : E →+* ℂ)
   simp only [hform, map_sum, map_mul, Matrix.map_apply, AlgHom.coe_toRingHom, stdform_conj σ τ hσ]
 
 /- English proof (translation)
-Unfold `IsHerm at hJ`. Establish `hJ' : ∀ i j, σ (J i j) = J j i` using `fun i j => by`. Establish `h` using `congrFun (congrFun hJ j) i`. Simplify `h` using `[cT]`. Simplify using `only [hform, map_sum, map_mul, AlgHom.coe_toRingHom, stdform_invol σ τ hσ, hJ']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stdform_hform_fixed (σ : E →ₐ[F] E) (τ : E →+* ℂ)
     (hσ : τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ) (J : Matrix n n E)
@@ -211,9 +209,9 @@ theorem stdform_hform_fixed (σ : E →ₐ[F] E) (τ : E →+* ℂ)
   ring
 
 /- English proof (translation)
-Use `show (∑ i, ∑ j, starRingEnd ℂ (τ (x i)) * (J.map τ) i j * τ (x j)).re = ι a`. Rewrite using `[← stdform_hform_map σ τ hσ J x, ← ha]`. Establish `h` using `RingHom.congr_fun hι a`. Simplify using `only [RingHom.comp_apply] at h`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem stdform_Q_eq (σ : E →ₐ[F] E) (τ : E →+* ℂ)
     (hσ : τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ) (J : Matrix n n E) (ι : F →+* ℝ)
@@ -234,18 +232,18 @@ section Sign
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma re_conj_mul_self_eq_normSq (z : ℂ) : (starRingEnd ℂ z * z).re = Complex.normSq z := by
   rw [Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]
   ring
 
 /- English proof (translation)
-Establish `hPP : (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hy' : (fun k => y (e.symm k)) = (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ (((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ (fun k => y (e.symm k)))`. Rewrite using `[Matrix.mulVec_mulVec, hPP, Matrix.one_mulVec]`. Take `⟨x, hx⟩ : ∃ x, (fun k => y (e.symm k)) = (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ x` from `⟨_, hy'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Introduce `hy h0`. Apply `hy` to reduce the goal to its premises. Rewrite `hx` using `[h0, Matrix.mulVec_zero]`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using congrFun hx (e i)`. Rewrite using `[← stdform_Q_reindex M e y, stdform_Q_dot, hx, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hP]`. Simplify using `[Jpq, dotProduct, Matrix.fromBlocks_mulVec, Fintype.sum_sum_type, Complex.re_sum, stdform_normSq, re_conj_mul_self_eq_normSq, sub_eq_add_neg, Matrix.neg_mulVec, Matrix.one_mulVec, Complex.normSq_apply, Complex.neg_re, Complex.neg_im, mul_neg, Finset.sum_neg_distrib]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stdform_sig_diag {p q : ℕ} (M : Matrix n n ℂ) (e : n ≃ Fin p ⊕ Fin q)
     (P : GL (Fin p ⊕ Fin q) ℂ)
@@ -271,9 +269,9 @@ theorem stdform_sig_diag {p q : ℕ} (M : Matrix n n ℂ) (e : n ≃ Fin p ⊕ F
       Complex.neg_re, Complex.neg_im, mul_neg, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `hs`. Take `⟨x, hx0, hQ⟩` from `stdform_sig_diag M e P hP y`. Rewrite using `[hQ]`. Simplify using `only [Fin.sum_univ_zero, sub_zero]`. Take `⟨k, hk⟩` from `Function.ne_iff.mp (hx0 hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Break down `k with i | i` into its components or cases. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hk⟩`. Conclude with `Fin.elim0 i`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem stdform_sig_pos {p : ℕ} (M : Matrix n n ℂ) (hs : HasSignature M p 0) (y : n → ℂ)
     (hy : y ≠ 0) : 0 < stdformQ M y := by
@@ -288,9 +286,9 @@ theorem stdform_sig_pos {p : ℕ} (M : Matrix n n ℂ) (hs : HasSignature M p 0)
   · exact Fin.elim0 i
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `hs`. Take `⟨x, hx0, hQ⟩` from `stdform_sig_diag M e P hP y`. Rewrite using `[hQ]`. Simplify using `only [Fin.sum_univ_zero, zero_sub, neg_lt_zero]`. Take `⟨k, hk⟩` from `Function.ne_iff.mp (hx0 hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Break down `k with i | i` into its components or cases. Conclude with `Fin.elim0 i`. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hk⟩`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem stdform_sig_neg {q : ℕ} (M : Matrix n n ℂ) (hs : HasSignature M 0 q) (y : n → ℂ)
     (hy : y ≠ 0) : stdformQ M y < 0 := by
@@ -305,7 +303,7 @@ theorem stdform_sig_neg {q : ℕ} (M : Matrix n n ℂ) (hs : HasSignature M 0 q)
       ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hk⟩
 
 /- English proof (translation)
-Use `⟨(Fintype.equivFin n).trans (Equiv.sumEmpty _ _).symm, 1, ?_⟩` and prove the remaining obligations. Simplify using `[Jpq, cT]`. Use extensionality with `(i | i) (j | j)`. Apply the tactic sequence `all_goals first | exact Fin.elim0 i | exact Fin.elim0 j | simp [Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem stdform_sig_one : HasSignature (1 : Matrix n n ℂ) (Fintype.card n) 0 := by
   refine ⟨(Fintype.equivFin n).trans (Equiv.sumEmpty _ _).symm, 1, ?_⟩
@@ -314,7 +312,7 @@ theorem stdform_sig_one : HasSignature (1 : Matrix n n ℂ) (Fintype.card n) 0 :
   all_goals first | exact Fin.elim0 i | exact Fin.elim0 j | simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use `⟨(Fintype.equivFin n).trans (Equiv.emptySum _ _).symm, 1, ?_⟩` and prove the remaining obligations. Simplify using `[Jpq, cT]`. Use extensionality with `(i | i) (j | j)`. Apply the tactic sequence `all_goals first | exact Fin.elim0 i | exact Fin.elim0 j | simp [Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem stdform_sig_neg_one : HasSignature (-1 : Matrix n n ℂ) 0 (Fintype.card n) := by
   refine ⟨(Fintype.equivFin n).trans (Equiv.emptySum _ _).symm, 1, ?_⟩
@@ -325,33 +323,31 @@ theorem stdform_sig_neg_one : HasSignature (-1 : Matrix n n ℂ) 0 (Fintype.card
 end Sign
 
 /- English proof (translation)
-Introduce `F E _ _ _ n _ _ σ J ι τ hσ hι hfix hJ hdet`. Establish `hfixed : ∀ x : n → E, ∃ a : F, algebraMap F E a = hform (σ : E →+* E) J x x` using `fun x => hfix _ (stdform_hform_fixed σ τ hσ J hJ x)`. Establish `hτx : ∀ x : n → E, x ≠ 0 → (fun i => τ (x i)) ≠ 0`. Introduce `x hx h`. Apply `hx` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Conclude with `τ.injective (by simpa using this)`. Prove the components needed by the constructor for the conclusion. Introduce `hdef`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hMh : IsHerm (starRingEnd ℂ) (J.map τ)`. Establish `hJ' : ∀ i j, σ (J i j) = J j i` using `fun i j => by`. Use `congrFun (congrFun hJ j) i` as an intermediate fact. Simplify `this` using `[cT]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[← stdform_conj σ τ hσ, hJ']`. Establish `hMdet : IsUnit (J.map τ).det`. Establish `h` using `(RingHom.map_det τ J).symm`. Rewrite using `[show (J.map τ) = τ.mapMatrix J from rfl, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hdet.map τ`. Take `⟨p, q, hs⟩` from `signature_exists n (J.map τ) hMh hMdet`. Take `⟨hcard, Q, hQ⟩` from `sig_data (J.map τ) p q hs`. Establish `hM : ∀ i j, ∃ e, τ e = (J.map τ) i j` using `fun i j => ⟨J i j, rfl⟩`. Break down `hdef with hpos | hneg` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpsd` using `stdform_psd τ (J.map τ) hM 1 (fun x hx => by`. Take `⟨a, ha, hιa⟩` from `hpos x hx`. Rewrite using `[stdform_Q_eq σ τ hσ J ι hι x a ha, one_mul]`. Conclude with `hιa)`. Establish `hq : q = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hq0`. Establish `hv` using `sig_quad (J.map τ) Q hQ (Pi.single (Sum.inr ⟨0, Nat.pos_of_ne_zero hq0⟩) 1)`. Use `hpsd (Q *ᵥ Pi.single (Sum.inr ⟨0, Nat.pos_of_ne_zero hq0⟩) 1)` as an intermediate fact. Rewrite `this` using `[stdform_Q_dot, hv]`. Simplify using `[Pi.single_apply] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Substitute using the available equality. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at this`. Substitute `hq` using the available equality. Establish `hp : p = Fintype.card n` using `by omega`. Substitute `hp` using the available equality. Conclude with `Or.inl hs`.
+Substitute using the available equality. Prove the first alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpsd` using `stdform_psd τ (J.map τ) hM (-1) (fun x hx => by`. Take `⟨a, ha, hιa⟩` from `hneg x hx`. Rewrite using `[stdform_Q_eq σ τ hσ J ι hι x a ha]`. Use the proof step `linarith)`. Establish `hp : p = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hp0`. Establish `hv` using `sig_quad (J.map τ) Q hQ (Pi.single (Sum.inl ⟨0, Nat.pos_of_ne_zero hp0⟩) 1)`. Use `hpsd (Q *ᵥ Pi.single (Sum.inl ⟨0, Nat.pos_of_ne_zero hp0⟩) 1)` as an intermediate fact. Rewrite `this` using `[stdform_Q_dot, hv]`. Simplify using `[Pi.single_apply] at this`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Evaluate the numerical expressions using `at this`. Substitute `hp` using the available equality. Establish `hq : q = Fintype.card n` using `by omega`. Substitute `hq` using the available equality. Conclude with `Or.inr hs`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(hs | hs)`. Use `left`. Introduce `x hx`. Take `⟨a, ha⟩` from `hfixed x`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← stdform_Q_eq σ τ hσ J ι hι x a ha]`. Conclude with `stdform_sig_pos _ hs _ (hτx x hx)`. Use `right`. Introduce `x hx`. Take `⟨a, ha⟩` from `hfixed x`.
-
-Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← stdform_Q_eq σ τ hσ J ι hι x a ha]`. Conclude with `stdform_sig_neg _ hs _ (hτx x hx)`.
+A detailed English derivation is pending.
 -/
 theorem definite_form_signature : Formalism.UG.DefSig := by
   intro F E _ _ _ n _ _ σ J ι τ hσ hι hfix hJ hdet
@@ -425,13 +421,13 @@ theorem definite_form_signature : Formalism.UG.DefSig := by
       exact stdform_sig_neg _ hs _ (hτx x hx)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n _ _ σ hσ hfix hF`. Establish `hH1 : IsHerm (σ : E →+* E) (1 : Matrix n n E)` using `cT_one _`. Establish `hHm : IsHerm (σ : E →+* E) (-1 : Matrix n n E)`. Unfold `IsHerm cT`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[one_apply, h, Ne.symm h]`. Use `⟨hH1, ⟨hF, fun ι => ?_⟩, ⟨hF, fun ι => ?_⟩⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨τ, hτ⟩` from `stdform_ext (E := E) ι`. Use `(definite_form_signature F E n σ 1 ι τ (hσ τ) hτ hfix hH1 (by simp)).mpr (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[Matrix.map_one _ (map_zero τ) (map_one τ)]`. Conclude with `stdform_sig_one`. Take `⟨τ, hτ⟩` from `stdform_ext (E := E) ι`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(definite_form_signature F E n σ (-1) ι τ (hσ τ) hτ hfix hHm ((Matrix.isUnit_iff_isUnit_det _).mp isUnit_one.neg)).mpr (Or.inr ?_)` and prove the remaining obligations. Establish `: (-1 : Matrix n n E).map τ = -1`. Rewrite using `[Matrix.map_neg _ (map_neg τ), Matrix.map_one _ (map_zero τ) (map_one τ)]`. Rewrite using `[this]`. Conclude with `stdform_sig_neg_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standard_hermitian_form_definite : Formalism.UG.StdFormDef := by
   intro F E _ _ _ _ _ n _ _ σ hσ hfix hF

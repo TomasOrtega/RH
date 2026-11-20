@@ -8,11 +8,9 @@ open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `p _ D G L N hN`. Take `⟨K1, h1⟩` from `GlobalTheory.LKGeo.KNLevel.exists_level_eq_KN p D G L 1 one_pos`. Take `⟨KN, hKN⟩` from `GlobalTheory.LKGeo.KNLevel.exists_level_eq_KN p D G L N hN`. Establish `hc : CompactSpace (L.KN 1)`. Rewrite using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isCompact_iff_compactSpace.1 K1.compact`. Establish `ho : IsOpen (((L.KN N).subgroupOf (L.KN 1) : Subgroup (L.KN 1)) : Set (L.KN 1))`. Rewrite using `[← hKN]`. Conclude with `KN.K.isOpen.preimage continuous_subtype_val`. Establish `hf : Finite ((L.KN 1) ⧸ (L.KN N).subgroupOf (L.KN 1))` using `Subgroup.quotient_finite_of_isOpen _ ho`.
-
-Conclude with `Nat.card_pos.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.lIdx_holds :
     LIdx := by

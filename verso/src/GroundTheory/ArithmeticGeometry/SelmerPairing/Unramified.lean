@@ -53,21 +53,21 @@ variable (K Ω : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 
 /- English proof (translation)
-Establish `hker : (unramifiedDegree K Ω).ker = inertiaGroup K Ω` using `ker_unramifiedDegree`. Set `e : Gal(Ω/K) ⧸ inertiaGroup K Ω →* Multiplicative ℤ̂` to `QuotientGroup.lift (inertiaGroup K Ω) (unramifiedDegree K Ω) hker.ge`. Establish `he : ∀ g : Gal(Ω/K), e (g : Gal(Ω/K) ⧸ inertiaGroup K Ω) = unramifiedDegree K Ω g` using `fun g => rfl`. Establish `hinj : Function.Injective e`. Rewrite using `[injective_iff_map_eq_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite `hq` using `[he]`. Rewrite using `[QuotientGroup.eq_one_iff, ← hker]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq`. Establish `hsurj : Function.Surjective e` using `fun z => by`. Take `⟨g, hg⟩` from `unramifiedDegree_surjective (K := K) (Ω := Ω) z`. Conclude with `⟨g, hg⟩`. Establish `hcont : Continuous e` using `(QuotientGroup.isQuotientMap_mk (inertiaGroup K Ω)).continuous_iff.2 continuous_unramifiedDegree`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `E : Gal(Ω/K) ⧸ inertiaGroup K Ω ≃* Multiplicative ℤ̂` to `MulEquiv.ofBijective e ⟨hinj, hsurj⟩`. Set `h : Gal(Ω/K) ⧸ inertiaGroup K Ω ≃ₜ Multiplicative ℤ̂` to `Continuous.homeoOfEquivCompactToT2 (f := E.toEquiv) hcont`. Use `⟨E.symm (Multiplicative.ofAdd 1), ⟨?_, fun n hn => ?_⟩⟩` and prove the remaining obligations. Establish `himg : (Subgroup.zpowers (E.symm (Multiplicative.ofAdd 1)) : Set _) = h.symm '' (Subgroup.zpowers (Multiplicative.ofAdd (1 : ℤ̂)) : Set (Multiplicative ℤ̂))`. Use extensionality with `q`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, Subgroup.mem_zpowers_iff, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨Multiplicative.ofAdd 1 ^ m, ⟨m, rfl⟩, by change E.symm _ = _; rw [map_zpow]⟩`. Introduce and unpack `⟨y, ⟨m, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨m, by change _ = E.symm _; rw [map_zpow]⟩`. Rewrite using `[IsTopologicalGenerator, himg]`. Conclude with `h.symm.surjective.denseRange.dense_image h.symm.continuous dense_zpowers_ofAdd_one`. Set `φ : Gal(Ω/K) ⧸ inertiaGroup K Ω →* Multiplicative (ZMod n)` to `(AddMonoidHom.toMultiplicative (ProfiniteInteger.proj ⟨n, hn⟩).toAddMonoidHom).comp E.toMonoidHom`. Establish `hφ : Continuous φ` using `continuous_ofAdd.comp ((ProfiniteInteger.continuous_proj ⟨n, hn⟩).comp (continuous_toAdd.comp hcont))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨φ, ?_, ?_⟩` and prove the remaining obligations. Establish `hk : (φ.ker : Set (Gal(Ω/K) ⧸ inertiaGroup K Ω)) = φ ⁻¹' {1}`. Use extensionality with `q`. Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[hk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hφ.isOpen_preimage {1} (isOpen_discrete _)`. Use `show Multiplicative.ofAdd (ProfiniteInteger.proj ⟨n, hn⟩ (Multiplicative.toAdd (E (E.symm (Multiplicative.ofAdd 1))))) = _`. Rewrite using `[MulEquiv.apply_symm_apply, toAdd_ofAdd, map_one]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_isZHatGenerator_inertia :
     ∃ σ : Gal(Ω/K) ⧸ inertiaGroup K Ω, IsZHatGenerator σ := by

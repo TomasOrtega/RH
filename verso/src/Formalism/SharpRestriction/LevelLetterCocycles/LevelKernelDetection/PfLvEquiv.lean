@@ -11,7 +11,7 @@ section Grd
 variable {LL Ks : Type} [Field LL] [CommRing Ks] [Algebra LL Ks]
 
 /- English proof (translation)
-Introduce `i hi h0`. Apply `hi` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap LL Ks ((a ^ i : LLˣ) : LL) * τ (x.coeff i) = 0`. Rewrite using `[h0, map_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pf_LvEquiv_grdB_supp (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) (x : HahnSeries ℤ Ks) :
     (grdB τ a x).support ⊆ x.support := by
@@ -21,15 +21,15 @@ theorem Pf_LvEquiv_grdB_supp (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) (x : HahnSeries 
   rw [h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[HahnSeries.coeff_mul (x := grdB τ a x)]`. Express the relevant statement in the definitionally equal form `algebraMap LL Ks ((a ^ i : LLˣ) : LL) * τ ((x * y).coeff i) = _`. Rewrite using `[HahnSeries.coeff_mul, map_sum, Finset.mul_sum]`. Use `symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `(Finset.sum_subset (fun ij h => ?_) (fun ij hb hs => ?_)).trans (Finset.sum_congr rfl ?_)` and prove the remaining obligations. Rewrite `h`, the goal using `[Finset.mem_antidiagonal]`. Conclude with `⟨Pf_LvEquiv_grdB_supp τ a x h.1, Pf_LvEquiv_grdB_supp τ a y h.2.1, h.2.2⟩`. Rewrite `hb`, `hs` using `[Finset.mem_antidiagonal]`. Distinguish the cases in `h1 : ij.1 ∈ (grdB τ a x).support`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : ij.2 ∈ (grdB τ a y).support`. Conclude with `absurd ⟨h1, h2, hb.2.2⟩ hs`. Establish `h0 : (grdB τ a y).coeff ij.2 = 0`. Assume the negation of the conclusion as `hc`. Conclude with `h2 hc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, mul_zero]`. Establish `h0 : (grdB τ a x).coeff ij.1 = 0`. Assume the negation of the conclusion as `hc`. Conclude with `h1 hc`. Rewrite using `[h0, zero_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `ij hij`. Take `⟨-, -, hsum⟩` from `Finset.mem_antidiagonal.1 hij`. Express the relevant statement in the definitionally equal form `(algebraMap LL Ks ((a ^ ij.1 : LLˣ) : LL) * τ (x.coeff ij.1)) * (algebraMap LL Ks ((a ^ ij.2 : LLˣ) : LL) * τ (y.coeff ij.2)) = _`. Rewrite using `[map_mul τ, ← hsum, zpow_add, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Pf_LvEquiv_grdB_mul (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) (x y : HahnSeries ℤ Ks) :
     grdB τ a (x * y) = grdB τ a x * grdB τ a y := by
@@ -61,9 +61,9 @@ theorem Pf_LvEquiv_grdB_mul (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) (x y : HahnSeries
   ring
 
 /- English proof (translation)
-Use extensionality with `i`. Express the relevant statement in the definitionally equal form `algebraMap LL Ks ((a ^ i : LLˣ) : LL) * τ ((1 : HahnSeries ℤ Ks).coeff i) = _`. Simplify using `only [HahnSeries.coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Pf_LvEquiv_grdB_one (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) : grdB τ a (1 : HahnSeries ℤ Ks) = 1 := by
   ext i
@@ -77,7 +77,7 @@ theorem Pf_LvEquiv_grdB_one (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) : grdB τ a (1 : 
 end Grd
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_comm (Ring.inverse X) Z, mul_assoc, Ring.inverse_mul_cancel _ hX, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pf_LvEquiv_cancel {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (X Y Z : A)
     (E₁ E₂ : M) (hX : IsUnit X) (hinv : Z * Y = 1) (key : Y • E₁ = X • E₂) :
@@ -105,7 +105,7 @@ def Pf_LvEquiv_Φ (W : LocWach PD LL O v n) (s : ℕ) (D : Type) [AddCommGroup D
   (TensorProduct.comm LL (KsW W s) D).trans (TensorProduct.piScalarRight LL LL D (Rs LL PD.p s))
 
 /- English proof (translation)
-Simplify using `only [Pf_LvEquiv_Φ, toKsD, LinearEquiv.trans_apply, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]`. Rewrite using `[← TensorProduct.comm_symm, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pf_LvEquiv_Φ_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D]
     (f : Rs LL PD.p s → D) : Pf_LvEquiv_Φ W s D (toKsD W s D f) = f := by
@@ -114,9 +114,9 @@ theorem Pf_LvEquiv_Φ_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D]
   rw [← TensorProduct.comm_symm, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero`. Use function extensionality and compare the values at `ζ`. Simplify using the standard rewrite rules. Consider the case `tmul k d`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use function extensionality and compare the values at `ζ`. Simplify using `[Pf_LvEquiv_Φ, TensorProduct.piScalarRightHom_tmul, precomp_apply]`. Consider the case `add z z' hz hz'`. Use function extensionality and compare the values at `ζ`. Rewrite using `[map_add, map_add, hz, hz', map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -139,13 +139,13 @@ theorem Pf_LvEquiv_Φ_rTensor (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D
 variable {T : LocLat G Qp LL O} {c : ZMod n}
 
 /- English proof (translation)
-Apply `HahnModule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(((levW W uZ ιZ s).u ^ i : LLˣ) : LL) • LinearMap.rTensor (Dc W T c) (precomp LL PD.p s (redU PD.p s uZ)).toLinearMap (coefN Lb s T c x i) = coefN Lb s T c ⟨W.γD T W.gamK (x : W.DD T), W.N_Γ T W.gamK _ x.2⟩ i`. Apply `(Pf_LvEquiv_Φ W s (Dc W T c)).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.map_smul, Pf_LvEquiv_Φ_rTensor]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coefN, Pf_LvEquiv_Φ_toKsD]`. Use function extensionality and compare the values at `ζ`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Pi.smul_apply, Submodule.coe_smul]`. Establish `hprim : IsPrimitiveRoot (ζ : LL) (PD.p ^ (s + 1))` using `(mem_primitiveRoots (pos_pow PD.p s)).1 ζ.2`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv : ((s + 1 : ℕ) : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ W.gamK : O) - (((redU PD.p s uZ : (ZMod (PD.p ^ (s + 1)))ˣ) : ZMod (PD.p ^ (s + 1))).val : LL))`. Rewrite using `[hK]`. Conclude with `huZ (s + 1)`. Rewrite using `[levB_Γ T hT W.gamK c ζ ((powR LL PD.p s (redU PD.p s uZ) ζ : Rs LL PD.p s) : LL) (s + 1) _ hprim hv rfl x]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Pf_LvEquiv_grd_expN (Lb : LevB W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O)
     (hT : IsCrys PD T.ρ)
@@ -185,15 +185,13 @@ theorem Pf_LvEquiv_grd_expN (Lb : LevB W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] 
   rfl
 
 /- English proof (translation)
-Establish `hK : W.gamK = W.gam` using `W.gamK_eq_one hs1 (by omega)`. Introduce `s _ w hw hγ`. Use `show locM Lb C Hy.delta ell Λ κ Hy.kap Hy.expSemi Hy.locInv ⟨(latOf C).γ c w, hγ⟩ = gEL Hy (locM Lb C Hy.delta ell Λ κ Hy.kap Hy.expSemi Hy.locInv ⟨w, hw⟩)`. Apply `prL_inj` to reduce the goal to its premises. Introduce `s' hs'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prL_gEL Hy s' hs', prL_of_lt s' hs', prL_of_lt s' hs']`. Establish `hmL : C.t c (κ • (latOf C).γ c w) ∈ W.N T` using `Hy.kap _ hγ`. Establish `hmR : C.t c (κ • w) ∈ W.N T` using `Hy.kap _ hw`. Express the relevant statement in the definitionally equal form `Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' κ)) • expN Lb s' T c ⟨C.t c (κ • (latOf C).γ c w), hmL⟩ = (levW W uZ ιZ s').γ (Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' κ)) • expN Lb s' T c ⟨C.t c (κ • w), hmR⟩)`. Distinguish the cases in `hX : IsUnit (HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' κ))`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Level.γ, graded_semilinear_holds, Pf_LvEquiv_grd_expN Lb uZ ιZ hT levB_Γ hK huZ s' ⟨C.t c (κ • w), hmR⟩]`. Apply `Pf_LvEquiv_cancel _ (HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' ((baseIdOf hR).Bs.γ κ))) _ _ _ hX` to reduce the goal to its premises. Rewrite using `[← Hy.gamRho s' κ, ← Pf_LvEquiv_grdB_mul, Ring.inverse_mul_cancel _ hX, Pf_LvEquiv_grdB_one]`. Establish `hN : W.γD T W.gamK (C.t c (κ • w)) ∈ W.N T` using `W.N_Γ T W.gamK _ hmR`. Rewrite using `[← Hy.expSemi s' ((baseIdOf hR).Bs.γ κ) ⟨_, hmL⟩ ((W.N T).smul_mem _ hmL), ← Hy.expSemi s' κ ⟨_, hN⟩ ((W.N T).smul_mem _ hN)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(baseIdOf hR).d ((baseIdOf hR).Bs.γ κ) • C.t c (κ • (latOf C).γ c w) = (baseIdOf hR).d κ • W.γD T W.gamK (C.t c (κ • w))`. Rewrite using `[← t_γ, (latOf C).γ_semi, C.t_smul, C.t_smul]`. Conclude with `smul_comm _ _ _`.
-
-Rewrite using `[Ring.inverse_non_unit _ hX, zero_smul, zero_smul, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_holds {C : Coord W (baseIdOf hR) T} {ell : ℕ} {Λ κ : PowerSeries O} {r : ℕ}
     {lam : Fin r → Dc W T c} (Hy : LvHyp Lb hR uZ ιZ C c ell Λ κ lam) (j M g η : ℕ)
@@ -239,7 +237,7 @@ theorem equiv_holds {C : Coord W (baseIdOf hR) T} {ell : ℕ} {Λ κ : PowerSeri
   · rw [Ring.inverse_non_unit _ hX, zero_smul, zero_smul, map_zero]
 
 /- English proof (translation)
-Rewrite using `[Formalism.ExponentWindows.abelian₂, map_prod, map_prod]`. Use `Finset.prod_induction _ IsUnit (fun _ _ ha hb => ha.mul hb) isUnit_one ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[map_pow, map_pow]`. Conclude with `(hp x (Finset.mem_range.1 hx)).pow _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pf_LvEquiv_unit_lam (hR : Ring9 W) (c : ZMod n) (ell : ℕ) (H : ℕ → ℕ) (s : ℕ)
     (hp : ∀ s' < ell, IsUnit (HahnSeries.ofPowerSeries ℤ (KsW W s)
@@ -253,13 +251,13 @@ theorem Pf_LvEquiv_unit_lam (hR : Ring9 W) (c : ZMod n) (ell : ℕ) (H : ℕ →
   exact (hp x (Finset.mem_range.1 hx)).pow _
 
 /- English proof (translation)
-Substitute `hΛ` using the available equality. Introduce `s hs y`. Establish `hp : ∀ s' < ell, IsUnit (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s ((baseIdOf hR).Bs.p s')))`. Introduce `s' hs'`. Distinguish the cases in `h : s' = s`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Take `⟨ε, hε⟩` from `k1b s' hs`. Establish `hε' : rhoL hR c s' ((baseIdOf hR).Bs.p s') = (ε : PowerSeries (KsW W s')) * PowerSeries.X` using `hε`. Rewrite using `[hε', map_mul, HahnSeries.ofPowerSeries_X]`. Use `(ε.isUnit.map _).mul (isUnit_iff_exists_inv.2 ⟨HahnSeries.single (-1 : ℤ) 1, ?_⟩)` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[HahnSeries.single_mul_single]`. Simplify using the standard rewrite rules. Conclude with `((unitsAt s hs).2 s' hs' h).map _`. Establish `hU` using `Pf_LvEquiv_unit_lam hR c ell H s hp`. Use `show prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • locLM Hy.delta ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) lam Hy.loclInv y) = ∑ k, HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s (y k)) • cstD (KsW W s) (lam k)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[prL_smul, prL_of_lt s hs]`. Express the relevant statement in the definitionally equal form `HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell)) • locLF (hR := hR) (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) lam s y = _`. Rewrite using `[locLF, smul_smul, Ring.mul_inverse_cancel _ hU, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locLIs_holds {C : Coord W (baseIdOf hR) T} {ell : ℕ} {Λ κ : PowerSeries O} {r : ℕ}
     {lam : Fin r → Dc W T c} (Hy : LvHyp Lb hR uZ ιZ C c ell Λ κ lam) (j M g η : ℕ)

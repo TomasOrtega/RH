@@ -32,7 +32,7 @@ instance isDiscreteRep_dualRep_gsRoots : IsDiscreteRep (dualRep (gsRoots S N) M)
 include H hM in
 
 /- English proof (translation)
-The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK H).bijective_compactDualityMap M hM h`.
+A detailed English derivation is pending.
 -/
 theorem gsPoitouTate_duality {r s : ℕ} (h : r + s = 3) :
     Function.Bijective (compactDualityMap (gsFinFamily S ιs) (gsRoots S N) h (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M) :=
@@ -41,7 +41,7 @@ theorem gsPoitouTate_duality {r s : ℕ} (h : r + s = 3) :
 include H hM in
 
 /- English proof (translation)
-The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK H).sha M hM`.
+A detailed English derivation is pending.
 -/
 theorem gsPoitouTate_sha :
     Finite (ptSha (gsFinFamily S ιs) M 1) ∧ Finite (ptSha (gsFinFamily S ιs) (dualRep (gsRoots S N) M) 2) ∧
@@ -52,7 +52,7 @@ theorem gsPoitouTate_sha :
 include H hM in
 
 /- English proof (translation)
-The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK H).nineTerm M hM`.
+A detailed English derivation is pending.
 -/
 theorem gsPoitouTate_nineTerm :
     Function.Injective (ptGlobalToLocal (gsFinFamily S ιs) M 0).hom ∧

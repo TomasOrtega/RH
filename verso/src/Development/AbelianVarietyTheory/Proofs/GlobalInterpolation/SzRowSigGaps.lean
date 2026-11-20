@@ -8,15 +8,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hn1` using `h.n_lo`. Establish `hn2` using `h.n_le'`. Take `⟨-, ⟨-, hm⟩, ⟨-, hk⟩, -⟩` from `h`. Establish `hx1 : 1 ≤ s.x` using `by linarith`. Establish `hx0 : 0 < s.x` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `s.eps_pos`. Establish `he'` using `s.eps_lt`. Use `⟨⟨lt_of_lt_of_le (Real.rpow_pos_of_pos hx0 _) hn1, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : s.x ^ ((9 : ℝ) / 4) ≤ s.x ^ ((3 : ℕ) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1 (by push_cast; norm_num)`. Rewrite `h1` using `[Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : 0 < s.x ^ 3` using `by positivity`. Establish `h3 : s.x ^ 4 = s.x * s.x ^ 3` using `by ring`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : s.delta1 ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1 (by linarith)`. Establish `h2 : Real.sqrt (s.x * s.delta1) ≤ s.x`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Real.sqrt_le_iff.2` to reduce the goal to its premises. Use `⟨hx0.le, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : s.x ^ (9 / 2 + 10 * s.eps) ≤ s.x ^ ((5 : ℕ) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1 (by push_cast; linarith)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.rpow_natCast]`. Establish `h2 : 0 < s.x ^ 5` using `by positivity`. Establish `h3 : s.x ^ 6 = s.x * s.x ^ 5` using `by ring`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rankVal_crude (s : Scale) (R : Ranks) (hx : 2 ≤ s.x) (h : RankVal s R) :
     (0 < (R.n : ℝ) ∧ (R.n : ℝ) ≤ s.x ^ 4) ∧ (R.m : ℝ) ≤ s.x ^ 2 ∧ (R.k : ℝ) ≤ s.x ^ 6 := by
@@ -48,15 +48,15 @@ theorem rankVal_crude (s : Scale) (R : Ranks) (hx : 2 ≤ s.x) (h : RankVal s R)
     nlinarith
 
 /- English proof (translation)
-Establish `hx1 : 1 ≤ x` using `by linarith`. Establish `hx0 : 0 < x` using `by linarith`. Establish `a1 : C * k * m ^ 4 ≤ x * x ^ 6 * (x ^ 2) ^ 4`. Establish `: C * k * m ^ 4 ≤ x * k * m ^ 4` using `by gcongr`. Use `this.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `gcongr`. Establish `a2 : (1 : ℝ) ≤ x ^ 401` using `one_le_pow₀ hx1`. Establish `a3 : (k + m * (t + 1)) * m ^ 10 ≤ (x ^ 6 + x ^ 2 * (x ^ 401 + x ^ 401)) * (x ^ 2) ^ 10` using `by gcongr`. Establish `a4 : x * x ^ 6 * (x ^ 2) ^ 4 = x ^ 15` using `by ring`. Establish `a5 : (x ^ 6 + x ^ 2 * (x ^ 401 + x ^ 401)) * (x ^ 2) ^ 10 = x ^ 26 + 2 * x ^ 423` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a6 : x ^ 15 ≤ x ^ 423` using `pow_le_pow_right₀ hx1 (by norm_num)`. Establish `a7 : x ^ 26 ≤ x ^ 423` using `pow_le_pow_right₀ hx1 (by norm_num)`. Establish `a8 : (2 : ℝ) ^ 7 ≤ x ^ 7` using `by gcongr`. Establish `a9 : x ^ 430 = x ^ 7 * x ^ 423` using `by ring`. Establish `a10 : 0 < x ^ 423` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a11 : 2 ^ 7 * x ^ 423 ≤ x ^ 7 * x ^ 423` using `by gcongr`. Rewrite using `[a9]`. Rewrite `a1` using `[a4]`. Rewrite `a3` using `[a5]`. Generalize the expression as in `x ^ 423 = y at *`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem gap_crude (x C k m t : ℝ) (hx : 2 ≤ x) (hC : C ≤ x) (hk0 : 0 ≤ k) (hm0 : 0 ≤ m) (ht0 : 0 ≤ t)
     (hm : m ≤ x ^ 2) (hk : k ≤ x ^ 6) (ht : t ≤ x ^ 401) :
@@ -84,17 +84,17 @@ theorem gap_crude (x C k m t : ℝ) (hx : 2 ≤ x) (hC : C ≤ x) (hk0 : 0 ≤ k
   linarith
 
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 3) eps 434 1 1 0 (by positivity) (by linarith) one_pos`. Use `⟨x0, fun s n hs hx hn0 hn => ?_⟩` and prove the remaining obligations. Establish `hx1 : 1 ≤ s.x` using `s.one_lt_alt.le`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `h1` using `h0 s.x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hs]`. Simplify using `only [pow_zero, one_mul, mul_one] at h1`. Establish `hX0 : 0 < s.X'` using `Real.exp_pos _`. Establish `hX1 : 1 ≤ s.X'` using `Real.one_le_exp (Real.rpow_nonneg hx0.le _)`. Establish `h2 : s.x ^ 434 * s.X' ≤ s.b`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : s.x ^ 434 = Real.exp (434 * Real.log s.x)`. Rewrite using `[show (434 : ℝ) = ((434 : ℕ) : ℝ) by norm_num, Real.exp_nat_mul, Real.exp_log hx0]`. Rewrite using `[e, Scale.X', Scale.b, Scale.L, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Establish `h3 : s.x ^ 430 ≤ s.x ^ 434` using `pow_le_pow_right₀ hx1 (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : s.x ^ 434 ≤ s.b / s.X'` using `(le_div_iff₀ hX0).2 h2`. Establish `h5 : 0 < s.x ^ 434` using `by positivity`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h3.trans ((le_mul_of_one_le_right h5.le hX1).trans h2)`. Establish `e : s.b' = s.x * (s.b / s.X')` using `by rw [Scale.b', Scale.a]; ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h3.trans (h4.trans (le_mul_of_one_le_left (h5.le.trans h4) hx1))`. Establish `e : s.w'' n = (s.b / s.X') / n`. Rewrite using `[Scale.w'', Scale.b', Scale.a]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e, le_div_iff₀ hn0]`. Use `le_trans ?_ h4` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem base_sizes_ge (eps : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (s : Scale) (n : ℕ), s.eps = eps → x0 ≤ s.x →
     0 < (n : ℝ) → (n : ℝ) ≤ s.x ^ 4 → s.x ^ 430 ≤ s.b ∧ s.x ^ 430 ≤ s.b' ∧ s.x ^ 430 ≤ s.w'' n := by
@@ -129,31 +129,29 @@ theorem base_sizes_ge (eps : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (s : Scale)
       _ = s.x ^ 434 := by ring
 
 /- English proof (translation)
-Introduce `eps he _ C hC`. Take `⟨x0, hx0⟩` from `base_sizes_ge eps he`. Use `⟨430, fun cD hcD => ⟨430, fun ch hch => ⟨max x0 (max 2 C.P.Cgap), fun D L hs hx hV => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hxa : x0 ≤ L.sc.x` using `(le_max_left _ _).trans hx`. Establish `hx2 : 2 ≤ L.sc.x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxC : C.P.Cgap ≤ L.sc.x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hx`. Establish `hx1 : 1 ≤ L.sc.x` using `by linarith`. Take `⟨⟨hn0, hn⟩, hm, hk⟩` from `rankVal_crude L.sc D.R hx2 hV.ranks`. Take `⟨hb, hb', hw⟩` from `hx0 L.sc D.R.n hs hxa hn0 hn`. Establish `ht : (D.R.t : ℝ) ≤ L.sc.x ^ 401`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `L.t_win.2`. Rewrite `h1` using `[hV.Ct_eq, hC.1.2.2.2.2.2.2.2.2.2, show (401 : ℝ) = ((401 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Conclude with `h1`. Establish `hg : gapS D C.P.Cgap < L.sc.x ^ 430`. Use `gap_crude L.sc.x C.P.Cgap D.R.k D.R.m D.R.t hx2 hxC (Nat.cast_nonneg _) (Nat.cast_nonneg _) (Nat.cast_nonneg _) hm hk ht` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gapS Ranks.N`. Use `push_cast`. Conclude with `this`. Establish `hp : 0 < L.sc.x ^ 430` using `by positivity`. Establish `hpow : ∀ c : ℝ, 430 ≤ c → L.sc.x ^ 430 ≤ (⌈L.sc.x ^ c⌉₊ : ℝ)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc`. Use `le_trans ?_ (Nat.le_ceil _)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx1 (by push_cast; exact hc)`. Take `⟨hv, -, ⟨b1, hbj, htop, hthick, hthin⟩, -⟩` from `hV.hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hb1 : ∀ τ, L.sc.x ^ 430 ≤ (b1 τ : ℝ)`. Introduce `τ`. Distinguish the cases in `h1 : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Unfold `Host.topPlaces at h1`. Take `⟨t, htT, hteq⟩` from `Finset.mem_image.1 h1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[htop τ ⟨t, htT⟩ hteq.symm]`. Establish `h2` using `L.bT_ge ⟨t, htT⟩`. Establish `h3 : (0 : ℝ) ≤ (⌊L.sc.b' / L.sc.x⌋ : ℤ)`. Conclude with `Int.floor_nonneg.2 (div_nonneg (by linarith) (by linarith))` after adjusting the coercions. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Establish `h3` using `Int.le_ceil L.sc.b`. Establish `h4 : ((⌈L.sc.b⌉ : ℤ) : ℝ) ≤ (b1 τ : ℝ)` using `by exact_mod_cast (hthick τ h2).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hthin τ ⟨(D.eTau τ).2, h1, h2⟩]`. Conclude with `hw.trans (Int.le_ceil _)`. Generalize the expression as in `L.sc.x ^ 430 = y at *`. Introduce `τ`. Use `⟨fun i h => ?_, fun hk2 hm0 => ?_, fun j h => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hv, hv]`. Establish `e : D.R.k - 2 - i = (D.R.k - 2 - (i + 1)) + 1` using `by omega`. Simplify using `only [e]`. Use `hpow cD hcD` as an intermediate fact. Unfold `Delv`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hv, (hbj τ _).1]`. Use `hb1 τ` as an intermediate fact. Simplify using `only [Nat.sub_self]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[(hbj τ _).1, (hbj τ _).1]`. Use `hpow ch hch` as an intermediate fact. Unfold `h0v`.
-
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem szRow_sig_gaps : SzRow (fun C D L => (∀ τ, (∀ (i : ℕ) (h : i + 1 < D.R.k - 1), gapS D C.P.Cgap < (((D.hc τ).v ⟨i, by omega⟩ - (D.hc τ).v ⟨i + 1, h⟩ : ℚ) : ℝ)) ∧ (∀ (hk : 2 ≤ D.R.k) (hm : 0 < D.R.m), gapS D C.P.Cgap < (((D.hc τ).v ⟨D.R.k - 2, by omega⟩ + (D.hc τ).b ⟨0, hm⟩ : ℚ) : ℝ)) ∧ (∀ (j : ℕ) (h : j + 1 < D.R.m), gapS D C.P.Cgap < (((D.hc τ).b ⟨j + 1, h⟩ - (D.hc τ).b ⟨j, by omega⟩ : ℚ) : ℝ)))) := by
   intro eps he _ C hC

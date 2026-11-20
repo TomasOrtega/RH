@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ F n x x' x'' j j' h1 h2`. Take `⟨⟨hi, hl, hf, hρ, ha, hψ⟩, hw, ht⟩` from `h1`. Take `⟨⟨hi', hl', hf', hρ', ha', hψ'⟩, hw', ht'⟩` from `h2`. Use `⟨⟨hi'.comp hi, @RingHom.isLocalHom_comp _ _ _ _ _ _ j' j hl' hl, hf'.comp hf, ?_, ha'.trans ha, ?_⟩, ?_, ht'.trans ht⟩` and prove the remaining obligations. Rewrite using `[hρ', hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pushRep, GeneralLinearGroup.map_comp, MonoidHom.comp_assoc]`. Introduce `v i`. Rewrite using `[hψ', hψ]`. Use extensionality with `g`. Simplify using `[pushCh]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `v`. Rewrite using `[hw', hw, GeneralLinearGroup.map_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Pa.Det.extTrans :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x x' x'' : NP F n) (j : x.A →+* x'.A) (j' : x'.A →+* x''.A), x.Ext2 x' j → x'.Ext2 x'' j' → x.Ext2 x'' (j'.comp j) := by

@@ -47,25 +47,25 @@ def MemPtOf : Prop :=
     ∃ x : X.B.I.GA, RatLink X x n ∧ ∀ v, Mv X v x.1 = (cay (2 * D.R.rS + 2) Z).map (X.B.I.φ v)
 
 /- English proof (translation)
-Introduce `D X Y u u' t M hM hlin`. Take `⟨d1, hd1, H1⟩` from `h3 D X t.lam ((Y.rowsOK u).1 t.lam t.mem).1.1`. Take `⟨d2, hd2, H2⟩` from `h3 D X t.lam' ((Y.rowsOK u').1 t.lam' t.mem').1.1`. Take `⟨hc1, hsk, c, hc, hdiv⟩` from `h4 D X M hM`. Establish `crd_inj : ∀ a b : (VS D).V, X.crd a = X.crd b → a = b` using `fun a b h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Formalism.L2.SG.Pf.Level.toV_crd X a, h, Formalism.L2.SG.Pf.Level.toV_crd]`. Use `⟨c * d2 * d1, Nat.one_le_iff_ne_zero.2 (by positivity), fun Z hZ hZ' hZs hA => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `hA`. Take `⟨n, hni, hn⟩` from `h1 D X (gGL X le_rfl hZ) (gGL_mem X le_rfl hZ hZs)`. Establish `hn' : ∀ y, X.crd (n y) = gE X Z *ᵥ X.crd y` using `hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZs'` using `hsk Z hZs`. Take `⟨m, hmi, hm⟩` from `h1 D X (gGL X le_rfl hZ') (gGL_mem X le_rfl hZ' hZs')`. Establish `hm' : ∀ y, X.crd (m y) = gE X (Gr X (↑M⁻¹ : Matrix _ _ _) * Z * Gr X (M : Matrix _ _ _)) *ᵥ X.crd y` using `hm`. Establish `hinv : ∀ y, X.crd (t.lin⁻¹ y) = (↑M⁻¹ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y`. Introduce `y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `hlin (t.lin⁻¹ y)`. Establish `: t.lin (t.lin⁻¹ y) = y` using `by show (t.lin * t.lin⁻¹) y = y`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Rewrite `e` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hconj : t.lin⁻¹ * n * t.lin = m`. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `y`. Apply `crd_inj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show X.crd (t.lin⁻¹ (n (t.lin y))) = _`. Rewrite using `[hinv, hn', hlin, hm', Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hc1]`. Establish `e1 : Z = (d1 : X.B.I.E) • ((((c * d2 : ℕ) : 𝓞 X.B.I.E)) • A).map (fun a => (a : X.B.I.E))`. Rewrite using `[hA]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Z = ((c * d2 : ℕ) : X.B.I.E) • ((((d1 : ℕ) : 𝓞 X.B.I.E)) • A).map (fun a => (a : X.B.I.E))`. Rewrite using `[hA]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨A', hA'⟩` from `hdiv d2 ((((d1 : ℕ) : 𝓞 X.B.I.E)) • A)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnN : n ∈ NLam t.lam (lf D (X.Fu u))` using `⟨⟨hni, H1 Z n hZ ⟨_, e1⟩ hn'⟩, h2 D X u Z n hZ hn'⟩`. Establish `hmN : t.lin⁻¹ * n * t.lin ∈ NLam t.lam' (lf D (X.Fu u'))`. Rewrite using `[hconj]`. Use `⟨⟨hmi, H2 _ m hZ' ⟨A', ?_⟩ hm'⟩, h2 D X u' _ m hZ' hm'⟩` and prove the remaining obligations. Rewrite using `[← hA', ← e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hMv⟩` from `h5 D X Z n hni hn'`. Conclude with `⟨x.1, ⟨x, n, hx, rfl, hnN, hmN⟩, hMv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratMem_of (h1 : MemIsomOf) (h2 : MemFlagOf) (h3 : MemLatOf) (h4 : MemConjOf) (h5 : MemPtOf) : RatMem := by
   intro D X Y u u' t M hM hlin

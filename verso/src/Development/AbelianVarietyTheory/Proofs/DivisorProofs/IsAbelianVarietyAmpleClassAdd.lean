@@ -12,11 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV
 
 /- English proof (translation)
-Introduce `K _ A c d hc hd`. Take `⟨L, hL, rfl⟩` from `cls_surj c`. Take `⟨M, hM, rfl⟩` from `cls_surj d`. Establish `hA : IsAmpleLB L` using `(GlobalTheory.T.abelianVarietyAmpleClass_cechPicardClass_iff_ample K A L hL).1 hc`. Establish `hB : IsAmpleLB M` using `(GlobalTheory.T.abelianVarietyAmpleClass_cechPicardClass_iff_ample K A M hM).1 hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (tens L M).IsLB` using `isLB_tens hL hM`. Establish `hT : IsAmpleLB (tens L M)`. Use `hA.tensor hB hN ((cls_eq_zero_iff (LB.isLB_div (LB.isLB_div hN hL) hM)).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_div (LB.isLB_div hN hL) hM, cls_div hN hL, cls_tens hL hM]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← cls_tens hL hM hN]`. Conclude with `(GlobalTheory.T.abelianVarietyAmpleClass_cechPicardClass_iff_ample K A (tens L M) hN).2 hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAmpleCls_add : ∀ (K : Type) [Field K] (A : AbVar K) (c d : Pic A.X.left),
     IsAmpleCls c → IsAmpleCls d → IsAmpleCls (c + d) := by

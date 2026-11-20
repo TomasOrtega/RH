@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.MPDict.TwUnits
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom x.val) = _`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (h'' : W ≤ U) (x : Γ(X, U)ˣ) :
     Semi.res h' (Semi.res h x) = Semi.res h'' x := by
@@ -28,7 +28,7 @@ theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V)
   rfl
 
 /- English proof (translation)
-The claim follows from `(map_mul (Semi.res h) _ _).trans (congrArg₂ (· * ·) (res_res' _ _ h₁ _) ((map_inv (Semi.res h) _).trans (congrArg (·⁻¹) (res_res' _ _ h₂ _))))`.
+A detailed English derivation is pending.
 -/
 theorem res_div_g {X : Scheme.{0}} (T L : LB X) (p q : T.ι × L.ι) {W : X.Opens}
     (h : W ≤ (T.U p.1 ⊓ L.U p.2) ⊓ (T.U q.1 ⊓ L.U q.2)) (h₁ : W ≤ T.U p.1 ⊓ T.U q.1) (h₂ : W ≤ L.U p.2 ⊓ L.U q.2) :
@@ -37,7 +37,7 @@ theorem res_div_g {X : Scheme.{0}} (T L : LB X) (p q : T.ι × L.ι) {W : X.Open
     ((map_inv (Semi.res h) _).trans (congrArg (·⁻¹) (res_res' _ _ h₂ _))))
 
 /- English proof (translation)
-Establish `e` using `congrArg (Semi.res (le_inf hp hq)) (hw p q)`. Conclude with `((res_res' _ _ hp _).symm.trans e).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (res_div_g T L p q (le_inf hp hq) h₁ h₂) (res_res' _ _ hq _)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iso_law {X : Scheme.{0}} {L T : LB X} {w : LB.Iso L T} (hw : w.IsGen) (p q : T.ι × L.ι) {W : X.Opens}
     (hp : W ≤ T.U p.1 ⊓ L.U p.2) (hq : W ≤ T.U q.1 ⊓ L.U q.2) (h₁ : W ≤ T.U p.1 ⊓ T.U q.1)
@@ -48,7 +48,7 @@ theorem iso_law {X : Scheme.{0}} {L T : LB X} {w : LB.Iso L T} (hw : w.IsGen) (p
     (congrArg₂ (· * ·) (res_div_g T L p q (le_inf hp hq) h₁ h₂) (res_res' _ _ hq _)))
 
 /- English proof (translation)
-Establish `e` using `linComb_punit_g (O1 ℤ (n k)) (pr ℤ m n k) 1 j j'`. Rewrite `e` using `[zpow_one]`. Conclude with `(congrArg (Semi.res h) e).trans (res_res' _ _ h' _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_pull_g (k : Fin (m + 1)) (j j' : PUnit → Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ ((O1 ℤ (n k)).pull (pr ℤ m n k)).U j ⊓ ((O1 ℤ (n k)).pull (pr ℤ m n k)).U j')
@@ -62,22 +62,22 @@ def twIdx (b : Fin m) (t : ℤ) (c : ∀ k, Bk n k) : (twB m n b t).ι :=
   Prod.mk (fun _ => c b.succ) (fun _ => c 0)
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨Set.mem_iInter.2 fun _ => mchart_le c _ hx, Set.mem_iInter.2 fun _ => mchart_le c _ hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mchart_le_U (b : Fin m) (t : ℤ) (c : ∀ k, Bk n k) : mchart c ≤ (twB m n b t).U (twIdx b t c) :=
   fun _ hx => ⟨Set.mem_iInter.2 fun _ => mchart_le c _ hx, Set.mem_iInter.2 fun _ => mchart_le c _ hx⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨mchart_le c k (hW hx).1, mchart_le c' k (hW hx).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem blk_le {c c' : ∀ k, Bk n k} {W : (MP ℤ m n).Opens} (hW : W ≤ mchart c ⊓ mchart c') (k : Fin (m + 1)) :
     W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) (c k) ⊓ chart ℤ (n k) (c' k)) :=
   fun _ hx => ⟨mchart_le c k (hW hx).1, mchart_le c' k (hW hx).2⟩
 
 /- English proof (translation)
-Establish `h₁ : W ≤ ((O1 ℤ (n b.succ)).pull (pr ℤ m n b.succ)).U (fun _ => c b.succ) ⊓ ((O1 ℤ (n b.succ)).pull (pr ℤ m n b.succ)).U (fun _ => c' b.succ)` using `le_inf (fun _ hx => h hx |>.1.1) (fun _ hx => h hx |>.2.1)`. Establish `h₂ : W ≤ ((O1 ℤ (n 0)).pull (pr ℤ m n 0)).U (fun _ => c 0) ⊓ ((O1 ℤ (n 0)).pull (pr ℤ m n 0)).U (fun _ => c' 0)` using `le_inf (fun _ hx => h hx |>.1.2) (fun _ hx => h hx |>.2.2)`. Establish `e₁` using `res_pull_g b.succ (fun _ => c b.succ) (fun _ => c' b.succ) h₁ (blk_le hW b.succ)`. Establish `e₂` using `res_pull_g 0 (fun _ => c 0) (fun _ => c' 0) h₂ (blk_le hW 0)`. Establish `e₃ : (Semi.res h₂ (((O1 ℤ (n 0)).pull (pr ℤ m n 0)).g (fun _ => c 0) (fun _ => c' 0)) ^ (-t))⁻¹ = blockUnit (c 0) (c' 0) (blk_le hW 0) ^ t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zpow_neg, inv_inv]`. Conclude with `congrArg (· ^ t) e₂`. Conclude with `(res_div_g _ _ (twIdx b t c) (twIdx b t c') h h₁ h₂).trans (congrArg₂ (· * ·) e₁ ((congrArg (·⁻¹) (map_zpow (Semi.res h₂) _ (-t))).trans e₃))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_twB_g (b : Fin m) (t : ℤ) (c c' : ∀ k, Bk n k) {W : (MP ℤ m n).Opens} (hW : W ≤ mchart c ⊓ mchart c')
     (h : W ≤ (twB m n b t).U (twIdx b t c) ⊓ (twB m n b t).U (twIdx b t c')) :
@@ -99,14 +99,14 @@ theorem res_twB_g (b : Fin m) (t : ℤ) (c c' : ∀ k, Bk n k) {W : (MP ℤ m n)
     ((congrArg (·⁻¹) (map_zpow (Semi.res h₂) _ (-t))).trans e₃))
 
 /- English proof (translation)
-Rewrite using `[blockUnit, ratioUnit_self, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockUnit_self {k : Fin (m + 1)} (i : Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) i)) : blockUnit i i h = 1 := by
   rw [blockUnit, ratioUnit_self, map_one, map_one]
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, zpow_add, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single p (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_eq_single q (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -125,7 +125,7 @@ def uOf (w : LB.Iso B (twB m n b t)) (i : B.ι) (c : ∀ k, Bk n k) : Γ(MP ℤ 
   Semi.res (le_inf (inf_le_right.trans (mchart_le_U b t c)) inf_le_left) (w.s (twIdx b t c, i))
 
 /- English proof (translation)
-The claim follows from `res_res' _ _ h' _`.
+A detailed English derivation is pending.
 -/
 theorem res_uOf (w : LB.Iso B (twB m n b t)) (i : B.ι) (c : ∀ k, Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ B.U i ⊓ mchart c) (h' : W ≤ (twB m n b t).U (twIdx b t c) ⊓ B.U i) :
@@ -133,9 +133,9 @@ theorem res_uOf (w : LB.Iso B (twB m n b t)) (i : B.ι) (c : ∀ k, Bk n k) {W :
   res_res' _ _ h' _
 
 /- English proof (translation)
-Establish `hc : B.U i ⊓ B.U j ⊓ mchart c ≤ mchart c ⊓ mchart c` using `le_inf inf_le_right inf_le_right`. Establish `hU` using `(inf_le_right : B.U i ⊓ B.U j ⊓ mchart c ≤ mchart c).trans (mchart_le_U b t c)`. Establish `hi : B.U i ⊓ B.U j ⊓ mchart c ≤ (twB m n b t).U (twIdx b t c) ⊓ B.U i` using `le_inf hU (inf_le_left.trans inf_le_left)`. Establish `hj : B.U i ⊓ B.U j ⊓ mchart c ≤ (twB m n b t).U (twIdx b t c) ⊓ B.U j` using `le_inf hU (inf_le_left.trans inf_le_right)`. Establish `e` using `iso_law hw (twIdx b t c, i) (twIdx b t c, j) hi hj (le_inf hU hU) inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[res_twB_g b t c c hc, blockUnit_self, blockUnit_self, one_zpow, one_mul, one_mul]`. Rewrite using `[res_uOf w j c _ hj, res_uOf w i c _ hi]`. Conclude with `(eq_inv_mul_iff_mul_eq.1 e).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_uOf {w : LB.Iso B (twB m n b t)} (hw : w.IsGen) (i j : B.ι) (c : ∀ k, Bk n k) :
     Semi.res (le_inf (inf_le_left.trans inf_le_right) inf_le_right :
@@ -155,11 +155,11 @@ theorem frame_uOf {w : LB.Iso B (twB m n b t)} (hw : w.IsGen) (i j : B.ι) (c : 
   exact (eq_inv_mul_iff_mul_eq.1 e).symm
 
 /- English proof (translation)
-Establish `hc : B.U i ⊓ (mchart c ⊓ mchart c') ≤ mchart c ⊓ mchart c'` using `inf_le_right`. Establish `hU` using `(inf_le_right.trans inf_le_left : B.U i ⊓ (mchart c ⊓ mchart c') ≤ mchart c).trans (mchart_le_U b t c)`. Establish `hU'` using `(inf_le_right.trans inf_le_right : B.U i ⊓ (mchart c ⊓ mchart c') ≤ mchart c').trans (mchart_le_U b t c')`. Establish `hs : Semi.res (le_inf inf_le_left inf_le_left : B.U i ⊓ (mchart c ⊓ mchart c') ≤ B.U i ⊓ B.U i) (B.g i i) = 1` using `Units.ext (LB.resG_g_self hB i _)`. Establish `hi : B.U i ⊓ (mchart c ⊓ mchart c') ≤ (twB m n b t).U (twIdx b t c) ⊓ B.U i` using `le_inf hU inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : B.U i ⊓ (mchart c ⊓ mchart c') ≤ (twB m n b t).U (twIdx b t c') ⊓ B.U i` using `le_inf hU' inf_le_left`. Establish `e` using `iso_law hw (twIdx b t c, i) (twIdx b t c', i) hi hi' (le_inf hU hU') (le_inf inf_le_left inf_le_left)`. Rewrite `e` using `[res_twB_g b t c c' hc]`. Express the relevant statement in the definitionally equal form `_ = _ * (Semi.res _ (B.g i i))⁻¹ * _ at e`. Rewrite `e` using `[hs, inv_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[res_uOf w i c _ hi, res_uOf w i c' _ hi', prod_zpow_single (fun k => blockUnit (c k) (c' k) (blk_le hc k)) b.succ 0 t]`. Conclude with `e.trans (mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_uOf (hB : B.IsLB) {w : LB.Iso B (twB m n b t)} (hw : w.IsGen) (i : B.ι) (c c' : ∀ k, Bk n k) :
     Semi.res (le_inf inf_le_left (inf_le_right.trans inf_le_left) :
@@ -186,7 +186,7 @@ theorem mono_uOf (hB : B.IsLB) {w : LB.Iso B (twB m n b t)} (hw : w.IsGen) (i : 
   exact e.trans (mul_comm _ _)
 
 /- English proof (translation)
-Introduce and unpack `m n B c t hB ⟨w, hw⟩`. Conclude with `⟨uOf w, frame_uOf hw, mono_uOf hB hw⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_units : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (B : LB (MP ℤ m n)) (c : Fin m) (t : ℤ), B.IsLB → LBIso B (twB m n c t) →
   ∃ u : ∀ (i : B.ι) (c' : ∀ k, Bk n k), Γ(MP ℤ m n, B.U i ⊓ mchart c')ˣ,

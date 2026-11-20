@@ -8,7 +8,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AdicSpan.HenselSqrt.exists_sqrt) | (exact GlobalTheory.AdicSpan.HenselSqrt.exists_sqrt) | (intros; apply GlobalTheory.AdicSpan.HenselSqrt.exists_sqrt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adicIntegralTensorBasis_hensel_exists_unique_sqrt : ∀ (v : HeightOneSpectrum ℤ) (L : Type) [Field L] [NumberField L] (κ : Type) (bL : Module.Basis κ ℚ L),
     Valued.v (2 : v.adicCompletion ℚ) = 1 → IsIntB v bL 1 →

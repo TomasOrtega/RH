@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 V _ _ _ _ hV A G _ _ D U F _ _ _ k hk`. Establish `hB : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV⟩`. Conclude with `GlobalTheory.TorsionIso.torsion_eq ⟨h1, h2, h3, h4, h5⟩ V (maximalIdeal V) hB D A G (GlobalTheory.T.isSemiAbelian_of_uniformisation_over_dvr V D A G U.toUnifPre) U F k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uTors_of_laws : Laws → Laws2 → Laws3 → Laws4 → Laws5 → GlobalTheory.ZH.UTorsSt := by
   intro h1 h2 h3 h4 h5 V _ _ _ _ hV A G _ _ D U F _ _ _ k hk

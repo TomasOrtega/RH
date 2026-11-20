@@ -23,17 +23,15 @@ namespace GlobalTheory.LieSpanLoc
 open GlobalTheory.Serre GlobalTheory.FlatRow.EigLocal
 
 /- English proof (translation)
-Introduce `R O _ _ G _ _ hsm a p _ n w hw l`. Use `haveI := hsm`. Set `Gp` to `(Over.pullback (spMap (algebraMap R (Localization.AtPrime p)))).obj G`. Use `letI : GrpObj Gp := Functor.grpObjObj`. Use `haveI : IsCommMonObj Gp := Functor.isCommMonObj_obj`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp` using `isGrpPullback_pullback G (spMap (algebraMap R (Localization.AtPrime p)))`. Take `⟨ap, hap⟩` from `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback a hp`. Take `⟨ρ, hρ, -⟩` from `exists_res hp a ap hap`. Establish `hb` using `hw Gp _ hp (fun i => (ρ (w i)).hom) (fun i => hρ (w i))`. Establish `hbij` using `(Lie.isLieBasis_iff (a := ap) fun i => ρ (w i)).1 hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `hbij.2 (ρ l)`. Rewrite `hc` using `[Fintype.linearCombination_apply]`. Take `⟨⟨q, hq⟩, hqi⟩` from `IsLocalization.exist_integer_multiples p.primeCompl (Finset.univ : Finset (Fin n)) c`. Use `choose b hb' using fun i => hqi i (Finset.mem_univ _)`. Establish `hz : ρ (q • l - ∑ i, b i • w i) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smulₛₗ, ← hc, map_sum, Finset.smul_sum, sub_eq_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hb', smul_smul, Algebra.smul_def]`. Take `⟨r, hr, e⟩` from `exists_smul_eq_zero a p (q • l - ∑ i, b i • w i) (by`. Establish `e` using `hρ (q • l - ∑ i, b i • w i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₀` using `hρ 0`. Rewrite `e₀` using `[map_zero, Lie.hom_zero, Lie.hom_zero]`. Rewrite `e` using `[hz, Lie.hom_zero]`. Conclude with `e.symm.trans e₀)`. Use `⟨r * q, p.primeCompl.mul_mem hr hq, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mul_smul, sub_eq_zero.1 ((smul_sub _ _ _).symm.trans e)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_span : ∀ {R O : Type} [CommRing R] [CommRing O] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G],
     Smooth G.hom → ∀ (a : OAct O G) (p : Ideal R) [p.IsPrime] {n : ℕ} (w : Fin n → GlobalTheory.Serre.Lie a),

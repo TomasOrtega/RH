@@ -22,25 +22,23 @@ noncomputable section
 namespace GlobalTheory.USep.EvG.SymVal
 
 /- English proof (translation)
-Introduce `V₁ _ _ _ _ _ D τ₀ W₀ _ ib B₀ _ M₀ c₀ τ₁ β w hFB K _ _ ev k₀ hk₀ hk z J J₀ hJ hJ₀ a`. Take `⟨-, hM₀, hpb, hw, hc, -, -⟩` from `hFB`. Use `set φ' : Fin 2 → (D.P.A.left ⟶ D.P.A.left) := ![(ι[D.P.A]).left, 𝟙 D.P.A.left] with hφ'`. Take `⟨t, ht, hmap⟩` from `GlobalTheory.T.exists_generator_transport_down_lineBundleIso w hw hM₀ D.P.isLB φ' ![1, -1] D.sym D.sym_gen`. Establish `hφ : ∀ k, φ' k ≫ β = β ≫ (![(ι[B₀]).left, 𝟙 B₀.left] : Fin 2 → (B₀.left ⟶ B₀.left)) k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `fin_cases k`. Conclude with `GlobalTheory.PolDeg.SymPol.inv_comm hpb`. Simplify using `[hφ']`. Establish `hpt : ∀ b : D.X, (spMap ev ≫ (D.c b).left) ≫ D.P.A.hom = spMap ev` using `fun b => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Over.w (D.c b)]`. Both sides reduce to the same expression. Establish `hdef : ∀ b : D.X, DefOver k₀ ((spMap ev ≫ (D.c b).left) ≫ β)` using `fun b => by`. Establish `e : (spMap ev ≫ (D.c b).left) ≫ β = spMap (ev.comp ib) ≫ c₀ b`. Rewrite using `[Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `erw [hc b]`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.Poinc.Sep.defOver_comp k₀ (GlobalTheory.Poinc.Sep.defOver_spMap k₀ _ hk) _`. Establish `read : ∀ (x : Sp K ⟶ D.P.A.left) (z' : Sp K) (I : (Sp K ⟶ D.P.A.left) → D.P.L.ι) (I₀ : (Sp K ⟶ B₀.left) → M₀.ι), Good D.P.L z' I → Good M₀ z' I₀ → val t x z' I₀ = gwx w z' I I₀ (x ≫ (ι[D.P.A]).left) * (gwx w z' I I₀ x)⁻¹ * val D.sym x z' I`. Introduce `x z' I I₀ hI hI₀`. Establish `H` using `hmap (Sp K) x z' (fun k => I₀ ((x ≫ φ' k) ≫ β)) (fun k => I (x ≫ φ' k)) (fun k => hI₀ ((x ≫ φ' k) ≫ β)) (fun k => hI (x ≫ φ' k))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `H` using `[Category.comp_id, Fin.prod_univ_two]`. Rewrite using `[val_of t x z' I₀ (fun k => I₀ ((x ≫ φ' k) ≫ β)) (fun k => by rw [Category.assoc]), H]`. Simplify using `only [hφ', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, zpow_one, zpow_neg, Category.comp_id]`. Both sides reduce to the same expression. Establish `hx₁ : (spMap ev ≫ (D.c 0).left) ≫ (ι[D.P.A]).left = spMap ev ≫ (D.c 0).left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← Over.comp_left, ← GlobalTheory.PsiEvenPull.c_neg, neg_zero]`. Establish `hnorm : ∀ (z' : Sp K) (I₀ : (Sp K ⟶ B₀.left) → M₀.ι), Good M₀ z' I₀ → val t (spMap ev ≫ (D.c 0).left) z' I₀ = 1`. Introduce `z' I₀ hI₀`. Use `choose I hI using fun χ : Sp K ⟶ D.P.A.left => exists_chart D.P.isLB (χ z')`. Establish `hIg : Good D.P.L z' I` using `hI`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[read _ z' I I₀ hIg hI₀, hx₁, _root_.mul_inv_cancel, _root_.one_mul, GlobalTheory.Poinc.ThetaOne.c_zero]`. Establish `e1 : (1 : 𝟙_ (Over (Sp V₁)) ⟶ D.P.A).left = eSec D.P.A` using `rfl`. Rewrite using `[e1, ← val_pull hIg, val_corr hIg D.sym_rig, val_one]`. Take `⟨c, hc₀, hv⟩` from `GlobalTheory.T.generator_values_mem_subfield_galoisDescent V₁ W₀ ib D.P.A D.P.isAb B₀ β hpb.1 M₀ hM₀ (Fin 2) (fun k => φ' k ≫ β) _ hφ ![1, -1] t ht K ev k₀ hk₀ hk _ (hpt 0) (hdef 0) hnorm _ (hpt a) (hdef a) z J₀ hJ₀`. Use `⟨c, hc₀, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `r` using `read (spMap ev ≫ (D.c a).left) z J J₀ hJ hJ₀`. Establish `hneg : (spMap ev ≫ (D.c a).left) ≫ (ι[D.P.A]).left = spMap ev ≫ (D.c (-a)).left`. Rewrite using `[Category.assoc, ← Over.comp_left, ← GlobalTheory.PsiEvenPull.c_neg]`. Rewrite `r` using `[hneg]`. Establish `key : val D.sym (spMap ev ≫ (D.c a).left) z J = (gwx w z J J₀ (spMap ev ≫ (D.c (-a)).left))⁻¹ * gwx w z J J₀ (spMap ev ≫ (D.c a).left) * val t (spMap ev ≫ (D.c a).left) z J₀`.
-
-Rewrite using `[r]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Rewrite using `[key, Units.val_mul, hv]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_val : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]

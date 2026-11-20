@@ -18,7 +18,7 @@ def thetaSubO (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : Submodule ℂ (WO
   smul_mem' := fun c _ hf => Formalism.IndefR.Fin.theta_smul S T c hf
 
 /- English proof (translation)
-Set `l0 : thetaSubO ψ S T →ₗ[ℂ] ℂ` to `{ toFun := fun f => Λ f.1 map_add' := fun f g => hadd f.1 g.1 f.2 g.2 map_smul' := fun c f => hsmul c f.1 f.2 }`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend l0`. Conclude with `⟨ℓ, fun f hf => LinearMap.congr_fun hℓ ⟨f, hf⟩⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lin_of_theta {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (Λ : (WO S T → ℂ) → ℂ)
     (hadd : ∀ f g, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → Λ (f + g) = Λ f + Λ g)
@@ -32,7 +32,7 @@ theorem exists_lin_of_theta {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (Λ :
   exact ⟨ℓ, fun f hf => LinearMap.congr_fun hℓ ⟨f, hf⟩⟩
 
 /- English proof (translation)
-Establish `h` using `norm_setIntegral_le_of_norm_le_const (f := fun x => F (φ x)) hs (fun x _ => hB (φ x))`. Rewrite using `[mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_setIntegral_comp_le {α : Type*} [MeasurableSpace α] {μ : Measure α} {s : Set α} (hs : μ s < ⊤)
     {S T : HSp D} (φ : α → WO S T) (F : WO S T → ℂ) (B : ℝ) (hB : ∀ w, ‖F w‖ ≤ B) :
@@ -42,7 +42,7 @@ theorem norm_setIntegral_comp_le {α : Type*} [MeasurableSpace α] {μ : Measure
   exact h
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `theta_bounded ψ hψ S T hF`. Establish `: IsFiniteMeasure (μ.restrict s)` using `isFiniteMeasure_restrict.mpr hs`. Conclude with `Integrable.of_bound (hF.cont.comp hφ).aestronglyMeasurable B (ae_of_all _ fun x => hB (φ x))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_comp_theta {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {F : WO S T → ℂ} (hF : IsThetaFunO ψ S T F) {m n : ℕ} (φ : Mx D m n → WO S T) (hφ : Continuous φ)
@@ -53,9 +53,9 @@ theorem integrableOn_comp_theta {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdCha
   exact Integrable.of_bound (hF.cont.comp hφ).aestronglyMeasurable B (ae_of_all _ fun x => hB (φ x))
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ⟩` from `exists_lin_of_theta (ψ := ψ) (fun f => ∫ x in s, f (φ x) ∂μ) (fun f g hf hg => by`. Simplify using `only [Pi.add_apply]`. Conclude with `integral_add (integrableOn_comp_theta hψ hf φ hφ hs.ne) (integrableOn_comp_theta hψ hg φ hφ hs.ne))`. Use the proof step `(fun c f _ => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_const_mul c _)`. Use `⟨ℓ, hℓ, fun F hF B hB => ?_⟩` and prove the remaining obligations. Rewrite using `[hℓ F hF]`. Conclude with `norm_setIntegral_comp_le hs φ F B hB`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_lin {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {m n : ℕ}
     (φ : Mx D m n → WO S T) (hφ : Continuous φ) {μ : Measure (Mx D m n)} {s : Set (Mx D m n)} (hs : μ s < ⊤) :
@@ -73,7 +73,7 @@ theorem exists_int_lin {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
   exact norm_setIntegral_comp_le hs φ F B hB
 
 /- English proof (translation)
-The claim follows from `exists_int_lin hψ (embI S T C) (by unfold embI; exact continuous_const.matrix_mul continuous_id) (covolM r S.rank μ 𝓕 h𝓕).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_ellI_lin {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) {r : ℕ}
     (C : Matrix (Fin T.rank) (Fin r) D.host.E) (μ : Measure (Mx D r S.rank)) [μ.IsAddHaarMeasure]

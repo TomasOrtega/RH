@@ -10,14 +10,14 @@ namespace PI.LocJacOrd.W
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v ι _ hfin μ _ x hx`. Conclude with `PI.UnitaryGroupMassFormula.LocJacTyp.boxScale v hfin μ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem boxScale_holds : BoxScale := by
   intro F E _ _ _ _ _ v ι _ hfin μ _ x hx
   exact PI.UnitaryGroupMassFormula.LocJacTyp.boxScale v hfin μ x hx
 
 /- English proof (translation)
-The claim follows from `locJacOrd_of_sd ψ v (PI.UnitaryGroupMassFormula.LocJacTyp.Sd.sdNorm_holds (E := E) (ψ := ψ) (v := v)) boxScale_holds`.
+A detailed English derivation is pending.
 -/
 theorem locJacOrd_closed {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) : PI.LocJacOrd.LocJacOrd (E := E) ψ v :=

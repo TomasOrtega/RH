@@ -36,13 +36,13 @@ def liftT {X Y : Over (Spec (CommRingCat.of k))} (φ : Y ⟶ X) : viaT tk Y ⟶ 
 variable {tk g}
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.ChartRestriction.G.Chart.one_left'`.
+A detailed English derivation is pending.
 -/
 theorem one_left' {T : Scheme.{0}} {X : Over T} {M : Over T} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
   exact ReciprocityTheory.ChartRestriction.G.Chart.one_left'
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Over.comp_left, Formalism.L2.Pj.GSR.one_left', Formalism.L2.Pj.GSR.one_left', ← Category.assoc, Over.w u]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_one'' {T : Scheme.{0}} {X Y M : Over T} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
   ext
@@ -50,7 +50,7 @@ theorem comp_one'' {T : Scheme.{0}} {X Y M : Over T} [GrpObj M] (u : Y ⟶ X) : 
 
 include hc in
 /- English proof (translation)
-Establish `e : w.left ≫ F = w'.left ≫ F` using `(h : w.left ≫ F = _).trans (h' : w'.left ≫ F = _).symm`. Conclude with `Over.OverMorphism.ext (hc.1.hom_ext e (by rw [Over.w w, Over.w w']))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rel_uniq_w {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'} {v : X ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) (h' : Rel (F := F) tk g w' v) : w = w' := by
@@ -59,7 +59,7 @@ theorem rel_uniq_w {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'
   exact Over.OverMorphism.ext (hc.1.hom_ext e (by rw [Over.w w, Over.w w']))
 
 /- English proof (translation)
-Establish `e : v.left ≫ pullback.fst G.hom g = v'.left ≫ pullback.fst G.hom g` using `(h : _ = v.left ≫ pullback.fst G.hom g).symm.trans (h' : _ = v'.left ≫ pullback.fst G.hom g)`. Use `Over.OverMorphism.ext (pullback.hom_ext e ?_)` and prove the remaining obligations. Establish `hv : v.left ≫ pullback.snd G.hom g = X.hom` using `by simpa using Over.w v`. Establish `hv' : v'.left ≫ pullback.snd G.hom g = X.hom` using `by simpa using Over.w v'`. Rewrite using `[hv, hv']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_uniq_v {X : Over (Spec (CommRingCat.of k))} {w : viaT tk X ⟶ G'} {v v' : X ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) (h' : Rel (F := F) tk g w v') : v = v' := by
@@ -72,7 +72,7 @@ theorem rel_uniq_v {X : Over (Spec (CommRingCat.of k))} {w : viaT tk X ⟶ G'} {
 
 include hc hg in
 /- English proof (translation)
-Establish `hv : v.left ≫ pullback.snd G.hom g = X.hom` using `by simpa using Over.w v`. Establish `cond : (v.left ≫ pullback.fst G.hom g) ≫ G.hom = (X.hom ≫ tk) ≫ f`. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% hv, Category.assoc, hg]`. Conclude with `⟨Over.homMk (hc.1.lift _ _ cond) (hc.1.lift_snd _ _ cond), hc.1.lift_fst _ _ cond⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rel_exists_w {X : Over (Spec (CommRingCat.of k))} (v : X ⟶ (Over.pullback g).obj G) :
     ∃ w : viaT tk X ⟶ G', Rel (F := F) tk g w v := by
@@ -83,7 +83,7 @@ theorem rel_exists_w {X : Over (Spec (CommRingCat.of k))} (v : X ⟶ (Over.pullb
 
 include hc hg in
 /- English proof (translation)
-Establish `hw : w.left ≫ G'.hom = X.hom ≫ tk` using `Over.w w`. Establish `cond : (w.left ≫ F) ≫ G.hom = X.hom ≫ g`. Rewrite using `[Category.assoc, hc.1.w, reassoc_of% hw, hg]`. Conclude with `⟨Over.homMk (pullback.lift _ _ cond) (pullback.lift_snd _ _ cond), (pullback.lift_fst _ _ cond).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rel_exists_v {X : Over (Spec (CommRingCat.of k))} (w : viaT tk X ⟶ G') :
     ∃ v : X ⟶ (Over.pullback g).obj G, Rel (F := F) tk g w v := by
@@ -99,9 +99,9 @@ def iota2 (hg : tk ≫ f = g) (X : Over (Spec (CommRingCat.of k))) :
     rw [Category.id_comp, Category.assoc, hg])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ext`. Simplify using `only [pushPt, iota2, Over.comp_left, Over.homMk_left, Category.id_comp]`. Conclude with `(h : w.left ≫ F = _).symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `e : (pushPt (isGrpPullback_pullback G g).1.w v).left = (iota2 hg X ≫ pushPt hc.1.w w).left`. Rewrite using `[h]`. Simplify using `only [pushPt, iota2, Over.comp_left, Over.homMk_left, Category.id_comp] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rel_iff {X : Over (Spec (CommRingCat.of k))} (w : viaT tk X ⟶ G') (v : X ⟶ (Over.pullback g).obj G) :
     Rel (F := F) tk g w v ↔
@@ -119,7 +119,7 @@ theorem rel_iff {X : Over (Spec (CommRingCat.of k))} (w : viaT tk X ⟶ G') (v :
 
 include hc hg in
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[Formalism.L2.Pj.GSR.rel_iff hc hg]`. Establish `e1` using `map_mul (pushHom (isGrpPullback_pullback G g) X) v v'`. Establish `e2` using `map_mul ((preHom (iota2 hg X)).comp (pushHom hc (viaT tk X))) w w'`. Conclude with `e1.trans ((congrArg₂ (· * ·) h h').trans e2.symm)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rel_mul {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'} {v v' : X ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) (h' : Rel (F := F) tk g w' v') : Rel (F := F) tk g (w * w') (v * v') := by
@@ -130,7 +130,7 @@ theorem rel_mul {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'} {
 
 include hc hg in
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Pj.GSR.rel_iff hc hg]`. Conclude with `(map_one (pushHom (isGrpPullback_pullback G g) X)).trans (map_one ((preHom (iota2 hg X)).comp (pushHom hc (viaT tk X)))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_one {X : Over (Spec (CommRingCat.of k))} : Rel (F := F) tk g (1 : viaT tk X ⟶ G') (1 : X ⟶ (Over.pullback g).obj G) := by
   rw [Formalism.L2.Pj.GSR.rel_iff hc hg]
@@ -139,7 +139,7 @@ theorem rel_one {X : Over (Spec (CommRingCat.of k))} : Rel (F := F) tk g (1 : vi
 
 include hc hg in
 /- English proof (translation)
-The claim follows from `| 0, X, u, u', _ => by simpa using rel_one hc hg (X := X) | N + 1, X, u, u', h => by rw [List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons] exact rel_mul hc hg (h 0) (rel_prod (fun i => u i.succ) (fun i => u' i.succ) fun i => h i.succ)`.
+A detailed English derivation is pending.
 -/
 theorem rel_prod : ∀ {N : ℕ} {X : Over (Spec (CommRingCat.of k))} (u : Fin N → (viaT tk X ⟶ G'))
     (u' : Fin N → (X ⟶ (Over.pullback g).obj G)), (∀ i, Rel (F := F) tk g (u i) (u' i)) →
@@ -150,7 +150,7 @@ theorem rel_prod : ∀ {N : ℕ} {X : Over (Spec (CommRingCat.of k))} (u : Fin N
     exact rel_mul hc hg (h 0) (rel_prod (fun i => u i.succ) (fun i => u' i.succ) fun i => h i.succ)
 
 /- English proof (translation)
-Use `show (φ.left ≫ w.left) ≫ F = (φ.left ≫ v.left) ≫ pullback.fst G.hom g`. Rewrite using `[Category.assoc, Category.assoc, (h : w.left ≫ F = _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_pre {X Y : Over (Spec (CommRingCat.of k))} (φ : Y ⟶ X) {w : viaT tk X ⟶ G'}
     {v : X ⟶ (Over.pullback g).obj G} (h : Rel (F := F) tk g w v) : Rel (F := F) tk g (liftT tk φ ≫ w) (φ ≫ v) := by
@@ -158,7 +158,7 @@ theorem rel_pre {X Y : Over (Spec (CommRingCat.of k))} (φ : Y ⟶ X) {w : viaT 
   rw [Category.assoc, Category.assoc, (h : w.left ≫ F = _)]
 
 /- English proof (translation)
-Establish `h' : w.left ≫ F = v.left ≫ pullback.fst G.hom g` using `h`. Use `show (w ≫ a).left ≫ F = (v ≫ (Over.pullback g).map b).left ≫ pullback.fst G.hom g`. Use `first`. Consider the case `(simp [hab, reassoc_of% h']; erw [pullback.lift_fst])`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.Chart.rel_act (F := F) a b hab (show ReciprocityTheory.ChartRestriction.G.Chart.Rel (F := F) tk g w v from h)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rel_act (a : G' ⟶ G') (b : G ⟶ G) (hab : a.left ≫ F = F ≫ b.left) {X : Over (Spec (CommRingCat.of k))}
     {w : viaT tk X ⟶ G'} {v : X ⟶ (Over.pullback g).obj G} (h : Rel (F := F) tk g w v) :
@@ -179,7 +179,7 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] 
 
 include hc in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `Formalism.L2.Pj.GSR.rel_uniq_v h₁ h₂`. Introduce and unpack `rfl`. Conclude with `Formalism.L2.Pj.GSR.rel_uniq_w hc h₁ h₂`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rel_eq_iff {X : Over (Spec (CommRingCat.of k))} {w₁ w₂ : viaT tk X ⟶ G'} {v₁ v₂ : X ⟶ (Over.pullback g).obj G}
     (h₁ : Rel (F := F) tk g w₁ v₁) (h₂ : Rel (F := F) tk g w₂ v₂) : w₁ = w₂ ↔ v₁ = v₂ := by
@@ -191,13 +191,11 @@ theorem rel_eq_iff {X : Over (Spec (CommRingCat.of k))} {w₁ w₂ : viaT tk X �
 
 include hc hg in
 /- English proof (translation)
-Establish `h1` using `rel_pre (spMap (fstD k)) h`. Establish `h2` using `rel_one hc hg (X := sp (R₀ := k) k)`. Establish `hid : (sp (R₀` using `k) k).hom = 𝟙 _ := by show Spec.map (CommRingCat.ofHom (algebraMap k k)) = _`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : (1 : viaT tk (sp (R₀` using `k) k) ⟶ G').left = (1 : Over.mk tk ⟶ G').left := by`. Rewrite using `[one_left', one_left']`. Use `show ((sp (R₀ := k) k).hom ≫ tk) ≫ _ = tk ≫ _`. Rewrite using `[hid, Category.id_comp]`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Chart.IsTan, ← rel_eq_iff hc h1 h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `e.trans e1.symm`. Introduce `e`.
-
-Conclude with `(congrArg (fun q => q.left) e).trans e1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tan_iff {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R₀ := k) (DualNumber k) ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) :
@@ -222,9 +220,7 @@ theorem tan_iff {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R�
 
 include hc in
 /- English proof (translation)
-Rewrite using `[← rel_eq_iff hc (rel_act a b hab h) (rel_pre (spMap (scaleD s)) h)]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `Over.OverMorphism.ext e`. Introduce `e`.
-
-Conclude with `congrArg (fun q => q.left) e`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eig_iff (a : G' ⟶ G') (b : G ⟶ G) (hab : a.left ≫ F = F ≫ b.left) (s : k)
     {w : viaT tk (sp (R₀ := k) (DualNumber k)) ⟶ G'} {v : sp (R₀ := k) (DualNumber k) ⟶ (Over.pullback g).obj G}

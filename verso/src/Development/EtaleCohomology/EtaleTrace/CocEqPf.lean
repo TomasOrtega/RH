@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CochainComplex.Hom
 namespace LateralTheory.EtaleTrace
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use `sheafify_hom_ext (J := Scheme.etaleTopology) (P := (freeP R).obj P) f.hom g.hom G.property ?_` and prove the remaining obligations. Use extensionality with `U : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Use `h U.unop x` as an intermediate fact. Simplify using `only [freeGen] at this`. Simplify using `only [freeP, ModuleCat.freeMk] at this`. Simplify using `only [NatTrans.comp_app, ConcreteCategory.comp_apply]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_ext (R : Type) [CommRing R] (P : PSh) {G : Shv R} (f g : (free R).obj P ⟶ G)
     (h : ∀ (U : Scheme.{0}) (x : P.obj (op U)),
@@ -25,13 +25,13 @@ theorem free_ext (R : Type) [CommRing R] (P : PSh) {G : Shv R} (f g : (free R).o
   exact this
 
 /- English proof (translation)
-Introduce `R _ F X α β h`. Apply `Cocycle.ext` to reduce the goal to its premises. Apply `Cochain.ext₀` to reduce the goal to its premises. Introduce `q`. Break down `lt_trichotomy q 0 with hq | rfl | hq` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: (res R F).IsStrictlyGE 0` using `by unfold res; infer_instance`. Conclude with `(CochainComplex.isZero_of_isStrictlyGE (res R F) 0 q hq).eq_of_tgt _ _`. Establish `key : (chainsXIso R (sch.obj X) 0).inv ≫ α.1.v _ _ (show -((0:ℕ):ℤ) + 0 = 0 by simp) = (chainsXIso R (sch.obj X) 0).inv ≫ β.1.v _ _ (show -((0:ℕ):ℤ) + 0 = 0 by simp)`. Apply `free_ext` to reduce the goal to its premises. Introduce `U x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h U x`. Use `congrArg (fun φ => (chainsXIso R (sch.obj X) 0).hom ≫ φ) key` as an intermediate fact. Simplify using `using this`. Apply `IsZero.eq_of_src` to reduce the goal to its premises. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `i hi`. Express the relevant statement in the definitionally equal form `-(i:ℤ) = q at hi`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem cocEq : CocEq := by
   intro R _ F X α β h
@@ -55,7 +55,7 @@ theorem cocEq : CocEq := by
     omega
 
 /- English proof (translation)
-The claim follows from `cocEq`.
+A detailed English derivation is pending.
 -/
 theorem CocEq_of : CocEq := cocEq
 

@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BalProj
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y U`. Establish `hi` using `IsAffineOpen.isOpenImmersion_fromSpec U.2`. Establish `h : IsOpenMap (chart U).base` using `(Scheme.Hom.isOpenEmbedding (f := U.2.fromSpec)).isOpenMap`. Conclude with `(dense_interior Y).preimage h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart_dense_interior : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens), Dense ((chart U).base ⁻¹' (interior Y : Set Y.X)) := by
   intro E _ _ _ H Dw l Xo c Y U

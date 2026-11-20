@@ -4,9 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ResidueLatticeCount.Hec
 namespace PI.Residue
 
 /- English proof (translation)
-Rewrite using `[Real.le_log_iff_exp_le (by norm_num)]`. Establish `h3 : Real.exp (1 / 3) ^ 3 ≤ (3 / 2 : ℝ) ^ 3`. Rewrite using `[← Real.exp_nat_mul]`. Establish `: ((3 : ℕ) : ℝ) * (1 / 3) = 1` using `by norm_num`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_pow_le_pow_left₀ (by norm_num) (by norm_num) h3`.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem third_le_log : (1 : ℝ) / 3 ≤ Real.log (3 / 2) := by
   rw [Real.le_log_iff_exp_le (by norm_num)]
@@ -20,9 +20,9 @@ theorem third_le_log : (1 : ℝ) / 3 ≤ Real.log (3 / 2) := by
   exact le_of_pow_le_pow_left₀ (by norm_num) (by norm_num) h3
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Establish `hpi` using `Real.pi_gt_three`. Establish `h1 : (3 / 2 : ℝ) ^ k ≤ (3 * Real.pi / 4) ^ k` using `pow_le_pow_left₀ (by norm_num) (by linarith) k`. Establish `h2 : (3 / 2 : ℝ) ^ 2 ≤ 4 / 9 * (3 * Real.pi / 4) ^ 2` using `by nlinarith`. Establish `h3 : (0 : ℝ) ≤ (3 / 2 : ℝ) ^ k` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) ≤ 4 / 9 * (3 * Real.pi / 4) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_le_lower (m : ℕ) (hm : 2 ≤ m) :
     (3 / 2 : ℝ) ^ m ≤ 4 / 9 * (3 * Real.pi / 4) ^ m := by
@@ -38,23 +38,23 @@ theorem pow_le_lower (m : ℕ) (hm : 2 ≤ m) :
     _ = 4 / 9 * (3 * Real.pi / 4) ^ (2 + k) := by rw [pow_add]; ring
 
 /- English proof (translation)
-Use `⟨128 * Real.pi * Real.exp (1 / 2), ?_, ?_⟩` and prove the remaining obligations. Establish `hpi` using `Real.pi_gt_three`. Establish `he : 1 ≤ Real.exp (1 / 2)` using `Real.one_le_exp (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `m D hm hD`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm0 : (0 : ℝ) < m`. Establish `: 0 < m` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hD1 : (3 / 2 : ℝ) ^ m ≤ D` using `(pow_le_lower m hm).trans hD`. Establish `hDpos : 0 < D` using `lt_of_lt_of_le (by positivity) hD1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set l : ℝ := Real.log (D ^ ((1 : ℝ) / m)) with hl`. Establish `hlD : Real.log D = m * l`. Rewrite using `[hl, Real.log_rpow hDpos]`. Clear the denominators using the available nonvanishing facts. Establish `hl3 : 1 / 3 ≤ l`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Real.log ((3 / 2 : ℝ) ^ m) ≤ Real.log D` using `Real.log_le_log (by positivity) hD1`. Rewrite `h1` using `[Real.log_pow, hlD]`. Establish `h2 : Real.log (3 / 2) ≤ l` using `le_of_mul_le_mul_left h1 hm0`. Conclude with `third_le_log.trans h2`. Establish `hlpos : 0 < l` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1 + 1 / l, by linarith [one_div_pos.mpr hlpos], ?_⟩` and prove the remaining obligations. Establish `e1 : (1 + 1 / l - 1) = 1 / l` using `by ring`. Rewrite using `[e1, one_div_one_div]`. Establish `hDexp : D ^ (1 / l / 2) = Real.exp (1 / 2) ^ m`. Rewrite using `[← Real.exp_nat_mul, Real.rpow_def_of_pos hDpos, hlD]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `h4 : (4 : ℝ) ^ (1 + 1 / l) ≤ 16 ^ m`. Establish `hle : 1 + 1 / l ≤ 4`. Establish `: 1 / l ≤ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[div_le_iff₀ hlpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (4 : ℝ) = ((4 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Use `_ ≤ 16 ^ m := pow_le_pow_right₀ (by norm_num) hm`. Establish `h5 : (1 + l) ^ m ≤ (4 * l) ^ m` using `pow_le_pow_left₀ (by linarith) (by linarith) m`. Rewrite using `[hDexp]`. Establish `hpi : 0 < Real.pi` using `Real.pi_pos`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow, ← mul_pow, ← mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem optimise : Optimise := by
   refine ⟨128 * Real.pi * Real.exp (1 / 2), ?_, ?_⟩

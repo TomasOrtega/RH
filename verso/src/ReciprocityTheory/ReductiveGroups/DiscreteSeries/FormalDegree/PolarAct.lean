@@ -20,13 +20,13 @@ def actR {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ) (z : PCoord ε �
   fun ab => plog (NormedSpace.exp (pmat z) * g) ab.1.1 ab.1.2
 
 /- English proof (translation)
-Establish `hSA : IsSelfAdjoint X` using `Matrix.isHermitian_iff_isSelfAdjoint.mp hX`. Take `⟨W, hWdef⟩ : ∃ W, W = (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)` from `⟨_, rfl⟩`. Establish `hW : star W * W = 1`. Rewrite using `[hWdef]`. Conclude with `Matrix.mem_unitaryGroup_iff'.mp hX.eigenvectorUnitary.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWi : W⁻¹ = star W` using `Matrix.inv_eq_left_inv hW`. Establish `hWu : IsUnit W` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_left_inverse hW)`. Establish `hexp : NormedSpace.exp X = hX.cfc Real.exp`. Establish `hd : NormedSpace.exp (RCLike.ofReal ∘ hX.eigenvalues : Fin n → ℂ) = (RCLike.ofReal ∘ Real.exp ∘ hX.eigenvalues : Fin n → ℂ)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.ofReal_exp, ← Complex.exp_eq_exp_ℂ]`. Use `conv_lhs => rw [hX.spectral_theorem]`. Rewrite using `[Matrix.IsHermitian.cfc]`. Simplify using `only [Unitary.conjStarAlgAut_apply, Unitary.coe_star]`. Rewrite using `[← hWdef, ← hWi, Matrix.exp_conj _ _ hWu, Matrix.exp_diagonal, hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.IsHermitian.cfc_eq, hexp, ← Matrix.IsHermitian.cfc_eq, ← cfc_comp Real.log Real.exp X hSA (Real.continuousOn_log.mono (by rintro _ ⟨x, -, rfl⟩; exact (Real.exp_pos x).ne')) Real.continuous_exp.continuousOn]`. Establish `hle : Real.log ∘ Real.exp = id` using `funext Real.log_exp`. Rewrite using `[hle]`. Conclude with `cfc_id ℝ X hSA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pact_cfc_log_exp (X : Matrix (Fin n) (Fin n) ℂ) (hX : X.IsHermitian)
     (h : (NormedSpace.exp X).IsHermitian) : h.cfc Real.log = X := by
@@ -55,7 +55,7 @@ theorem pact_cfc_log_exp (X : Matrix (Fin n) (Fin n) ℂ) (hX : X.IsHermitian)
   exact cfc_id ℝ X hSA
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pact_cfc_congr {A B : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) (hB : B.IsHermitian)
     (h : A = B) (f : ℝ → ℝ) : hA.cfc f = hB.cfc f := by
@@ -63,9 +63,9 @@ theorem pact_cfc_congr {A B : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) (
   rfl
 
 /- English proof (translation)
-Establish `hE : (NormedSpace.exp X)ᴴ = NormedSpace.exp X`. Rewrite using `[← Matrix.exp_conjTranspose, hX.eq]`. Establish `h2 : (k * NormedSpace.exp X)ᴴ * (k * NormedSpace.exp X) = NormedSpace.exp (X + X)`. Rewrite using `[Matrix.exp_add_of_commute X X (Commute.refl X), Matrix.conjTranspose_mul, hE, Matrix.mul_assoc, ← Matrix.mul_assoc kᴴ k, hk, Matrix.one_mul]`. Establish `hB : (NormedSpace.exp (X + X)).IsHermitian`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Conclude with `Matrix.isHermitian_conjTranspose_mul_self _`. Unfold `plog`. Rewrite using `[pact_cfc_congr (Matrix.isHermitian_conjTranspose_mul_self (k * NormedSpace.exp X)) hB h2 Real.log, pact_cfc_log_exp (X + X) (hX.add hX) hB, ← two_smul ℂ X, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem plog_unitary_mul_exp (k X : Matrix (Fin n) (Fin n) ℂ) (hk : kᴴ * k = 1) (hX : X.IsHermitian) :
     plog (k * NormedSpace.exp X) = X := by
@@ -83,7 +83,7 @@ theorem plog_unitary_mul_exp (k X : Matrix (Fin n) (Fin n) ℂ) (hk : kᴴ * k =
   norm_num
 
 /- English proof (translation)
-Establish `hk` using `k.2`. Unfold `S7.KG Kset at hk`. Unfold `S7.toMK`. Conclude with `Matrix.mem_unitaryGroup_iff'.mp hk.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem toMK_unit_lemma {ε : Fin n → Bool} (k : KG ε) : (toMK k)ᴴ * toMK k = 1 := by
   have hk := k.2
@@ -92,13 +92,13 @@ private theorem toMK_unit_lemma {ε : Fin n → Bool} (k : KG ε) : (toMK k)ᴴ 
   exact Matrix.mem_unitaryGroup_iff'.mp hk.1
 
 /- English proof (translation)
-The claim follows from `plog_unitary_mul_exp (toMK k) (pmat z) (toMK_unit_lemma k) (pmat_isHermitian z)`.
+A detailed English derivation is pending.
 -/
 theorem plog_polarM {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) : plog (polarM (k, z)) = pmat z :=
   plog_unitary_mul_exp (toMK k) (pmat z) (toMK_unit_lemma k) (pmat_isHermitian z)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ab`. Take `⟨⟨a, b⟩, h⟩` from `ab`. Simplify using `only [pmat]`. Rewrite using `[dif_pos h]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pact_pmat_coords {ε : Fin n → Bool} (w : PCoord ε → ℂ) :
     (fun ab : PCoord ε => pmat w ab.1.1 ab.1.2) = w := by
@@ -108,7 +108,7 @@ theorem pact_pmat_coords {ε : Fin n → Bool} (w : PCoord ε → ℂ) :
   rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `actR`. Rewrite using `[h, plog_unitary_mul_exp U (pmat w) hU (pmat_isHermitian w)]`. Conclude with `pact_pmat_coords w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem actR_eq_lemma {ε : Fin n → Bool} {g U : Matrix (Fin n) (Fin n) ℂ} {z w : PCoord ε → ℂ}
     (hU : Uᴴ * U = 1) (h : NormedSpace.exp (pmat z) * g = U * NormedSpace.exp (pmat w)) :
@@ -118,7 +118,7 @@ private theorem actR_eq_lemma {ε : Fin n → Bool} {g U : Matrix (Fin n) (Fin n
   exact pact_pmat_coords w
 
 /- English proof (translation)
-Unfold `actR`. Rewrite using `[h, plog_polarM]`. Conclude with `pact_pmat_coords w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actR_of_eq_polarM {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} {z w : PCoord ε → ℂ} {k : KG ε}
     (h : NormedSpace.exp (pmat z) * g = polarM (k, w)) : actR g z = w := by
@@ -127,7 +127,7 @@ theorem actR_of_eq_polarM {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ}
   exact pact_pmat_coords w
 
 /- English proof (translation)
-Unfold `inUJ at *`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pact_inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h) :
     inUJ ε (g * h) := by
@@ -137,7 +137,7 @@ theorem pact_inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (
     _ = Jm ε := by rw [hg, hh]
 
 /- English proof (translation)
-Take `⟨⟨k, w⟩, hkw⟩` from `polarM_surj _ (pact_inUJ_mul (exp_pmat_inUJ z) hg)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[actR_of_eq_polarM hkw.symm]`. Conclude with `hkw.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actR_spec {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (z : PCoord ε → ℂ) :
     ∃ k : KG ε, NormedSpace.exp (pmat z) * g = polarM (k, actR g z) := by
@@ -147,9 +147,9 @@ theorem actR_spec {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : i
   exact hkw.symm
 
 /- English proof (translation)
-Take `⟨k1, h1⟩` from `actR_spec hg z`. Take `⟨k2, h2⟩` from `actR_spec hh (actR g z)`. Simplify using `only [polarM] at h1 h2`. Apply `actR_eq_lemma (U := toMK k1 * toMK k2)` to reduce the goal to its premises. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (toMK k1)ᴴ, toMK_unit_lemma k1, Matrix.one_mul, toMK_unit_lemma k2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, h1, Matrix.mul_assoc (toMK k1) (NormedSpace.exp (pmat (actR g z))) h, h2, Matrix.mul_assoc (toMK k1) (toMK k2)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actR_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h)
     (z : PCoord ε → ℂ) : actR (g * h) z = actR h (actR g z) := by
@@ -163,7 +163,7 @@ theorem actR_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : 
       Matrix.mul_assoc (toMK k1) (toMK k2)]
 
 /- English proof (translation)
-Apply `actR_eq_lemma (U := 1)` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_one, Matrix.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actR_one {ε : Fin n → Bool} (z : PCoord ε → ℂ) : actR (1 : Matrix (Fin n) (Fin n) ℂ) z = z := by
   apply actR_eq_lemma (U := 1)
@@ -171,14 +171,14 @@ theorem actR_one {ε : Fin n → Bool} (z : PCoord ε → ℂ) : actR (1 : Matri
   · rw [Matrix.mul_one, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[pmat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pact_pmat_zero {ε : Fin n → Bool} : pmat (0 : PCoord ε → ℂ) = 0 := by
   ext a b
   simp [pmat]
 
 /- English proof (translation)
-Establish `hk` using `k.2`. Unfold `S7.KG Kset at hk`. Unfold `S7.toMK`. Conclude with `Matrix.mem_unitaryGroup_iff.mp hk.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem toMK_unit_lemma_2 {ε : Fin n → Bool} (k : KG ε) : toMK k * (toMK k)ᴴ = 1 := by
   have hk := k.2
@@ -187,9 +187,9 @@ private theorem toMK_unit_lemma_2 {ε : Fin n → Bool} (k : KG ε) : toMK k * (
   exact Matrix.mem_unitaryGroup_iff.mp hk.1
 
 /- English proof (translation)
-Establish `hU` using `toMK_unit_lemma k`. Establish `hU' : toMK k * (toMK k)ᴴ = 1` using `toMK_unit_lemma_2 k`. Establish `hinv : toMK k⁻¹ * toMK k = 1`. Simplify using `[S7.toMK, S7.toM]`. Establish `hi1 : (toMK k)⁻¹ = (toMK k)ᴴ` using `Matrix.inv_eq_left_inv hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi2 : (toMK k)⁻¹ = toMK k⁻¹` using `Matrix.inv_eq_left_inv hinv`. Establish `hunit : IsUnit (toMK k)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_left_inverse hU)`. Apply `actR_eq_lemma hU` to reduce the goal to its premises. Establish `hi3 : (toMK k)⁻¹ᴴ = toMK k` using `by rw [hi1, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[pmat_adK, ← hi2, hi3, Matrix.exp_conj' _ _ hunit, hi1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hU', Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem actR_K {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) : actR (toMK k) z = adK k⁻¹ z := by
   have hU := toMK_unit_lemma k
@@ -206,7 +206,7 @@ theorem actR_K {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) : actR 
     Matrix.one_mul]
 
 /- English proof (translation)
-Apply `actR_eq_lemma (U := 1)` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[pact_pmat_zero, NormedSpace.exp_zero, Matrix.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actR_exp_zero {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     actR (NormedSpace.exp (pmat y)) (0 : PCoord ε → ℂ) = y := by

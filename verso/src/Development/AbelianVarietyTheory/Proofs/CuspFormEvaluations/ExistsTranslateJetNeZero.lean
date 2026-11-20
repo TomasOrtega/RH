@@ -16,27 +16,25 @@ section Algebra
 variable {k R : Type*} [CommRing k] [CommRing R] [Algebra k R]
 
 /- English proof (translation)
-Use `set I : Ideal R := Ideal.span {s | s ∈ J ∧ s ∈ m} with hI`. Establish `h2 : m ^ 2 ≤ m` using `Ideal.pow_le_self two_ne_zero`. Establish `hm1 : m ≤ I ⊔ m ^ 2`. Introduce `y hy`. Take `⟨s, hs, hs'⟩` from `hJ y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: s ∈ m` using `by simpa using m.sub_mem hy (h2 hs')`. Establish `e : y = s + (y - s)` using `by ring`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (Ideal.subset_span ⟨hs, this⟩) hs'`. Establish `hm : ∀ n, m ≤ I ⊔ m ^ (n + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `ih.trans (sup_le le_sup_left ?_)` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.sup_mul, ← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Use `_ ≤ I ⊔ m ^ (n + 1 + 1) := sup_le_sup_right Ideal.mul_le_left _`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hIB : ∀ z ∈ I, ∀ y, ∃ b ∈ B, y * z - b ∈ m ^ (D + 2)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem s hs`. Introduce `y`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, ha'⟩` from `hA y`. Use `⟨a * s, hB a ha s hs.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_mul, pow_succ]`. Conclude with `Ideal.mul_mem_mul ha' hs.2`. Consider the case `zero => intro y; exact ⟨0, B.zero_mem, by simp⟩`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add z w _ _ hz hw`. Introduce `y`. Take `⟨b, hb, hb'⟩` from `hz y`. Take `⟨c, hc, hc'⟩` from `hw y`. Use `⟨b + c, B.add_mem hb hc, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : y * (z + w) - (b + c) = (y * z - b) + (y * w - c)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ hb' hc'`. Consider the case `smul c z _ hz`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hz _`. Take `⟨s, hs, hs'⟩` from `hJ 1`. Take `⟨a, ha, ha'⟩` from `hA x`. Establish `h1 : x - a * s ∈ m`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : x - a * s = (x - a) + a * (1 - s)` using `by ring`. Rewrite using `[e]`. Conclude with `m.add_mem (Ideal.pow_le_self (Nat.succ_ne_zero _) ha') (m.mul_mem_left _ (h2 hs'))`. Take `⟨z, hz, w, hw, e⟩` from `Submodule.mem_sup.1 (hm (D + 1) h1)`. Take `⟨b, hb, hb'⟩` from `hIB z hz 1`.
-
-Use `⟨a * s + b, B.add_mem (hB a ha s hs) hb, ?_⟩` and prove the remaining obligations. Establish `e' : x - (a * s + b) = (1 * z - b) + w` using `by linear_combination -e`. Rewrite using `[e']`. Conclude with `Ideal.add_mem _ hb' hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spans_mod_pow_succ (m : Ideal R) (J A B : Submodule k R) (D : ℕ)
     (hJ : ∀ x, ∃ s ∈ J, x - s ∈ m ^ 2) (hA : ∀ x, ∃ a ∈ A, x - a ∈ m ^ (D + 1))
@@ -110,13 +108,13 @@ def TwistedLaw (Y : GT ι) (k : ℕ) (c : EuclideanSpace ℂ ι) (F : EuclideanS
     cexp (k * Real.pi * Hf v γ + Real.pi * Hf c γ + k * Real.pi * Hf γ γ / 2) * F v
 
 /- English proof (translation)
-Simplify using `[Hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_left (v w γ : EuclideanSpace ℂ ι) : Hf (v + w) γ = Hf v γ + Hf w γ := by
   simp [Hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `: ∀ γ : EuclideanSpace ℂ ι, Hf 0 γ = 0` using `fun γ => by simp [Hf]`. Simplify using `only [TwistedLaw, this, mul_zero, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem twistedLaw_zero_iff (Y : GT ι) (k : ℕ) (F : EuclideanSpace ℂ ι → ℂ) :
     TwistedLaw Y k 0 F ↔ F ∈ (powTorus Y k).Sec k := by
@@ -125,7 +123,7 @@ theorem twistedLaw_zero_iff (Y : GT ι) (k : ℕ) (F : EuclideanSpace ℂ ι →
   rfl
 
 /- English proof (translation)
-Use `⟨hF.1.mul hG.1, fun γ hγ v => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Rewrite using `[hF.2 γ hγ, hG.2 γ hγ, Hf_add_left]`. Establish `e : ((k + l : ℕ) : ℂ) * Real.pi * Hf v γ + Real.pi * (Hf c γ + Hf d γ) + ((k + l : ℕ) : ℂ) * Real.pi * Hf γ γ / 2 = (k * Real.pi * Hf v γ + Real.pi * Hf c γ + k * Real.pi * Hf γ γ / 2) + (l * Real.pi * Hf v γ + Real.pi * Hf d γ + l * Real.pi * Hf γ γ / 2)` using `by push_cast; ring`. Rewrite using `[e, Complex.exp_add (k * Real.pi * Hf v γ + Real.pi * Hf c γ + k * Real.pi * Hf γ γ / 2)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -144,9 +142,9 @@ theorem TwistedLaw.mul {Y : GT ι} {k l : ℕ} {c d : EuclideanSpace ℂ ι}
   ring
 
 /- English proof (translation)
-Use `⟨hθ.1.comp (differentiable_id.add_const a), fun γ hγ v => ?_⟩` and prove the remaining obligations. Use `hθ.2 γ hγ (v + a)` as an intermediate fact. Rewrite `this` using `[Hf_add_left]`. Simplify using `only`. Rewrite using `[add_right_comm, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using the standard rewrite rules. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twistedLaw_translate {Y : GT ι} {θ : EuclideanSpace ℂ ι → ℂ} (hθ : θ ∈ Y.Sec 1)
     (a : EuclideanSpace ℂ ι) : TwistedLaw Y 1 a (fun v => θ (v + a)) := by
@@ -160,7 +158,7 @@ theorem twistedLaw_translate {Y : GT ι} {θ : EuclideanSpace ℂ ι → ℂ} (h
   · congr 1; push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `zero => exact ⟨by simp, fun γ _ v => by simp [Hf]⟩`. Consider the case `succ p ih => rw [pow_succ, succ_nsmul]`. Conclude with `ih.mul hF`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem TwistedLaw.pow {Y : GT ι} {c : EuclideanSpace ℂ ι}
     {F : EuclideanSpace ℂ ι → ℂ} (hF : TwistedLaw Y 1 c F) (p : ℕ) :
@@ -170,22 +168,22 @@ theorem TwistedLaw.pow {Y : GT ι} {c : EuclideanSpace ℂ ι}
   | succ p ih => rw [pow_succ, succ_nsmul]; exact ih.mul hF
 
 /- English proof (translation)
-The claim follows from `SCV.analyticAt_of_differentiableOn (s := Set.univ) hF.differentiableOn univ_mem`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_of_differentiable {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [FiniteDimensional ℂ W] {F : W → ℂ} (hF : Differentiable ℂ F) (x : W) : AnalyticAt ℂ F x :=
   SCV.analyticAt_of_differentiableOn (s := Set.univ) hF.differentiableOn univ_mem
 
 /- English proof (translation)
-Take `⟨p, rfl⟩ : ∃ p, r = p + 1` from `⟨r - 1, by omega⟩`. Establish `hp : -(p : ℂ) ≠ 0`. Rewrite using `[neg_ne_zero, Nat.cast_ne_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hd : Differentiable ℂ θ` using `hθ.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `han : AnalyticOnNhd ℂ θ Set.univ` using `fun x _ => analyticAt_of_differentiable hd x`. Use `set U : Set (EuclideanSpace ℂ ι) := {x | θ x ≠ 0} with hU`. Establish `ho : IsOpen U` using `isOpen_ne_fun hd.continuous continuous_const`. Establish `hden : Dense U`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx`. Apply `h0` to reduce the goal to its premises. Use `han.eq_of_eventuallyEq (g := 0) (z₀ := x) analyticOnNhd_const ?_` and prove the remaining obligations. Use `filter_upwards [isClosed_closure.isOpen_compl.mem_nhds hx] with y hy`. Assume the negation of the conclusion as `hy'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hy (subset_closure hy')`. Take `⟨a, ha, hb, -⟩` from `exists_mem_four_of_open_dense ho hden (Homeomorph.refl _) (Homeomorph.smulOfNeZero _ hp) (Homeomorph.refl _) (Homeomorph.refl _)`. Establish `ha' : θ a ≠ 0` using `ha`. Establish `hb' : θ (-(p • a)) ≠ 0`. Establish `: θ ((-(p : ℂ)) • a) ≠ 0` using `hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[neg_smul, Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis. Establish `h` using `((twistedLaw_translate hθ a).pow p).mul (twistedLaw_translate hθ (-(p • a)))`. Rewrite `h` using `[add_neg_cancel, twistedLaw_zero_iff]`. Conclude with `⟨_, h, by simp [ha', hb']⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sec_ne_zero {Y : GT ι} {θ : EuclideanSpace ℂ ι → ℂ} (hθ : θ ∈ Y.Sec 1)
     (h0 : θ ≠ 0) {r : ℕ} (hr : 2 ≤ r) : ∃ F ∈ (powTorus Y r).Sec r, F 0 ≠ 0 := by
@@ -230,7 +228,7 @@ noncomputable def jets (Y : GT ι) (k : ℕ) : Submodule ℂ (MvPowerSeries ι �
       taylorDir_smul _ c (analyticAt_of_differentiable hF.1 0)⟩
 
 /- English proof (translation)
-Take `⟨F, hF, rfl⟩` from `hx`. Take `⟨G, hG, rfl⟩` from `hy`. Establish `h` using `((twistedLaw_zero_iff Y k F).2 hF).mul ((twistedLaw_zero_iff Y l G).2 hG)`. Rewrite `h` using `[add_zero, twistedLaw_zero_iff]`. Conclude with `⟨_, h, taylorDir_mul _ (analyticAt_of_differentiable hF.1 0) (analyticAt_of_differentiable hG.1 0)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mul_mem_jets {Y : GT ι} {k l : ℕ} {x y : MvPowerSeries ι ℂ} (hx : x ∈ jets Y k)
     (hy : y ∈ jets Y l) : x * y ∈ jets Y (k + l) := by
@@ -242,7 +240,7 @@ theorem mul_mem_jets {Y : GT ι} {k l : ℕ} {x y : MvPowerSeries ι ℂ} (hx : 
       (analyticAt_of_differentiable hG.1 0)⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg MvPowerSeries.constantCoeff (taylorDir_fderiv u hF i)`. Rewrite `h` using `[constantCoeff_taylorDir, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using `using h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_single_taylorDir {σ W : Type*} [Fintype σ] [NormedAddCommGroup W] [NormedSpace ℂ W]
     (u : σ → W) {F : W → ℂ} (hF : AnalyticAt ℂ F 0) (i : σ) :
@@ -253,11 +251,11 @@ theorem coeff_single_taylorDir {σ W : Type*} [Fintype σ] [NormedAddCommGroup W
   simpa using h.symm
 
 /- English proof (translation)
-Use `mem_germIdeal_pow_iff.2 fun d hd => ?_` and prove the remaining obligations. Distinguish the cases in `h : d = 0`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨j, rfl⟩ : ∃ j, d = Finsupp.single j 1 := by`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h1 : d.degree = 1`. Establish `: d.degree ≠ 0` using `by rwa [Ne, Finsupp.degree_eq_zero_iff]`. Use linear arithmetic over natural numbers and integers. Establish `: d ∈ Set.range fun a => Finsupp.single a 1`. Rewrite using `[Finsupp.range_single_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Take `⟨j, hj⟩` from `this`. Conclude with `⟨j, hj.symm⟩`. Simplify using `[MvPowerSeries.coeff_one, MvPowerSeries.coeff_X, Finsupp.single_left_inj]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_affine_mem_sq {σ : Type*} [Fintype σ] (x : MvPowerSeries σ ℂ) :
     x - (MvPowerSeries.constantCoeff x • (1 : MvPowerSeries σ ℂ) +
@@ -279,21 +277,19 @@ theorem sub_affine_mem_sq {σ : Type*} [Fintype σ] (x : MvPowerSeries σ ℂ) :
     simp [MvPowerSeries.coeff_one, MvPowerSeries.coeff_X, Finsupp.single_left_inj]
 
 /- English proof (translation)
-Establish `key : jets Y 3 ⊔ (germIdeal ι ℂ ^ 2).restrictScalars ℂ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Establish `hform : ∀ y, φ y = MvPowerSeries.constantCoeff y * φ 1 + ∑ i, MvPowerSeries.coeff (Finsupp.single i 1) y * φ (MvPowerSeries.X i)`. Introduce `y`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hφ (Submodule.mem_sup_right (T := (germIdeal ι ℂ ^ 2).restrictScalars ℂ) (sub_affine_mem_sq y))` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `set c : EuclideanSpace ℂ ι := ∑ i, φ (MvPowerSeries.X i) • EuclideanSpace.single i (1 : ℂ) with hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `level_three_separates_tangents Y θ hθ h0 (φ 1) c fun a b => by`. Establish `h` using `((twistedLaw_translate hθ a).mul (twistedLaw_translate hθ b)).mul (twistedLaw_translate hθ (-a - b))`. Rewrite `h` using `[show a + b + (-a - b) = 0 by abel, twistedLaw_zero_iff]`. Establish `e : (((fun v => θ (v + a)) * fun v => θ (v + b)) * fun v => θ (v + (-a - b))) = fun v => θ (v + a) * θ (v + b) * θ (v - a - b)`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mul_apply]`. Use `congr 2`. Normalize the expressions using the abelian group laws. Rewrite `h` using `[e]`. Establish `h3` using `hφ (Submodule.mem_sup_left (S := jets Y 3) ⟨_, h, rfl⟩)`.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[LinearMap.mem_ker, hform, constantCoeff_taylorDir]`. Simplify using `only [coeff_single_taylorDir _ (analyticAt_of_differentiable h.1 0)] at h3`. Rewrite using `[hc, map_sum, ← h3]`. Simplify using `only [map_smul, smul_eq_mul, zero_add, zero_sub]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `h3 : ∀ i, φ (MvPowerSeries.X i) = 0` using `fun i => by`. Use `congrArg (fun v : EuclideanSpace ℂ ι => v i) (hc.symm.trans h1)` as an intermediate fact. Simplify `this` using `[Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `hφ0` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[hform]`. Simplify using `[h2, h3]`. Take `⟨s, hs, w, hw, e⟩` from `Submodule.mem_sup.1 (key ▸ Submodule.mem_top (x := x))`.
-
-Conclude with `⟨s, hs, by rw [← e, add_sub_cancel_left]; exact hw⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jets_three {Y : GT ι} {θ : EuclideanSpace ℂ ι → ℂ} (hθ : θ ∈ Y.Sec 1) (h0 : θ ≠ 0)
     (x : MvPowerSeries ι ℂ) : ∃ s ∈ jets Y 3, x - s ∈ germIdeal ι ℂ ^ 2 := by
@@ -341,9 +337,9 @@ theorem jets_three {Y : GT ι} {θ : EuclideanSpace ℂ ι → ℂ} (hθ : θ �
   exact ⟨s, hs, by rw [← e, add_sub_cancel_left]; exact hw⟩
 
 /- English proof (translation)
-Proceed by induction on `D generalizing x with`. Consider the case `zero`. Take `⟨F, hF, hF0⟩` from `exists_sec_ne_zero hθ h0 hr`. Use `⟨(MvPowerSeries.constantCoeff x / F 0) • _, Submodule.smul_mem _ _ ⟨F, hF, rfl⟩, ?_⟩` and prove the remaining obligations. Use `mem_germIdeal_pow_iff.2 fun d hd => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : d = 0` from `by simpa [Finsupp.degree_eq_zero_iff] using hd`. Simplify using `[MvPowerSeries.smul_eq_C_mul, hF0]`. Consider the case `succ D ih`. Conclude with `spans_mod_pow_succ _ (jets Y 3) _ _ D (jets_three hθ h0) ih (fun a ha s hs => mul_mem_jets ha hs) x`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jets_span {Y : GT ι} {θ : EuclideanSpace ℂ ι → ℂ} (hθ : θ ∈ Y.Sec 1) (h0 : θ ≠ 0)
     {r : ℕ} (hr : 2 ≤ r) (D : ℕ) (x : MvPowerSeries ι ℂ) :
@@ -366,13 +362,11 @@ open ThetaJet
 open Classical in
 
 /- English proof (translation)
-Take `⟨r, rfl⟩ : ∃ r, q = r + 3 * D` from `⟨q - 3 * D, by omega⟩`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.1 hP`. Take `⟨_, ⟨F, hF, rfl⟩, hs⟩` from `jets_span hθ h0 (r := r) (by omega) D (MvPowerSeries.monomial m 1)`. Use `⟨F, hF.1, hF.2, ?_⟩` and prove the remaining obligations. Rewrite using `[dirPolyDeriv_eq_sum_coeff_taylorDir, Finset.sum_congr rfl (g := fun d => P.coeff d * ((∏ i, (d i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff d (MvPowerSeries.monomial m (1 : ℂ))), Finset.sum_eq_single m]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_monomial_same, mul_one]`. Conclude with `mul_ne_zero hm (cast_prod_factorial_ne_zero m)`. Introduce `d _ hd`. Rewrite using `[MvPowerSeries.coeff_monomial_ne hd, mul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (MvPolynomial.mem_support_iff.2 hm) h`. Introduce `d hd`. Establish `h1 : d.degree ≤ D` using `(MvPolynomial.le_totalDegree hd).trans hD`. Establish `h2` using `mem_germIdeal_pow_iff.1 hs d (by omega)`. Rewrite `h2` using `[map_sub, sub_eq_zero]`.
-
-Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_jet_ne_zero {ι : Type} [Fintype ι] (Y : GT ι) (θ : EuclideanSpace ℂ ι → ℂ) (hθ : θ ∈ Y.Sec 1) (h0 : θ ≠ 0)
     (D q : ℕ) (hq : 3 * D + 2 ≤ q) (P : MvPolynomial ι ℂ) (hP : P ≠ 0) (hD : P.totalDegree ≤ D) :

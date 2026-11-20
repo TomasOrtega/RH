@@ -24,7 +24,7 @@ def dualLat {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] (Λ : Su
     exact ⟨c * z, by rw [← Int.cast_smul_eq_zsmul ℝ c a, real_inner_smul_right, h]; push_cast; ring⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_dualLat {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E] {Λ : Submodule ℤ E}
     {y : E} : y ∈ dualLat Λ ↔ ∀ x ∈ Λ, ∃ n : ℤ, inner ℝ x y = (n : ℝ) := Iff.rfl

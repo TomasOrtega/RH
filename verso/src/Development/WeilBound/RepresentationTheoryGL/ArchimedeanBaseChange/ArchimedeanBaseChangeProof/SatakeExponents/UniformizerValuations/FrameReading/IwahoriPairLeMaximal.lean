@@ -20,28 +20,28 @@ open PositivityTheory.Rg.BcB.F
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[K2, Subgroup.coe_prod]`. Conclude with `(GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a).prod (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximal_pair_isCompact (a b : ℕ) (w : Pl E) : IsCompact (K2 a b w : Set (GLw a w × GLw b w)) := by
   rw [K2, Subgroup.coe_prod]
   exact (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a).prod (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w b)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.IwLevels.KGL_eq_KO]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KGL_open (w : Pl E) (m : ℕ) : IsOpen (GlobalTheory.LFun.KGL w m : Set (GLw m w)) := by
   rw [GlobalTheory.CompanionTheory.IwLevels.KGL_eq_KO]
   exact GlobalTheory.SplitFlip.isOpen_KO
 
 /- English proof (translation)
-Rewrite using `[K2, Subgroup.coe_prod]`. Conclude with `(KGL_open w a).prod (KGL_open w b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximal_pair_isOpen (a b : ℕ) (w : Pl E) : IsOpen (K2 a b w : Set (GLw a w × GLw b w)) := by
   rw [K2, Subgroup.coe_prod]
   exact (KGL_open w a).prod (KGL_open w b)
 
 /- English proof (translation)
-Rewrite using `[I2, Subgroup.coe_prod]`. Conclude with `(GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin a)).prod (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin b))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwahori_pair_isOpen (a b : ℕ) (w : Pl E) : IsOpen (I2 a b w : Set (GLw a w × GLw b w)) := by
   rw [I2, Subgroup.coe_prod]
@@ -49,20 +49,20 @@ theorem iwahori_pair_isOpen (a b : ℕ) (w : Pl E) : IsOpen (I2 a b w : Set (GLw
     (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin b))
 
 /- English proof (translation)
-The claim follows from `Subgroup.prod_mono (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a) (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w b)`.
+A detailed English derivation is pending.
 -/
 theorem I2_le_K2 (a b : ℕ) (w : Pl E) : I2 a b w ≤ K2 a b w :=
   Subgroup.prod_mono (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a) (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w b)
 
 /- English proof (translation)
-The claim follows from `(maximal_pair_isCompact a b w).of_isClosed_subset (Subgroup.isClosed_of_isOpen L ho) hle`.
+A detailed English derivation is pending.
 -/
 theorem compact_of_le {a b : ℕ} {w : Pl E} (L : Subgroup (GLw a w × GLw b w)) (ho : IsOpen (L : Set (GLw a w × GLw b w)))
     (hle : L ≤ K2 a b w) : IsCompact (L : Set (GLw a w × GLw b w)) :=
   (maximal_pair_isCompact a b w).of_isClosed_subset (Subgroup.isClosed_of_isOpen L ho) hle
 
 /- English proof (translation)
-Take `⟨L₁, L₂, h, ⟨h1o, h1le, -⟩, ⟨h2o, h2le, -⟩⟩` from `hd.L a ha w hw`. Rewrite using `[h, Subgroup.coe_prod]`. Conclude with `⟨h1o.prod h2o, Subgroup.prod_mono h1le h2le⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem L_open_le (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) (w : Pl E) (hw : w ∈ d.S₀ ∪ d.Bad) :
     IsOpen (d.L a w : Set (GLw a w × GLw (n - a) w)) ∧ d.L a w ≤ K2 a (n - a) w := by
@@ -71,9 +71,9 @@ theorem L_open_le (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) (w : Pl
   exact ⟨h1o.prod h2o, Subgroup.prod_mono h1le h2le⟩
 
 /- English proof (translation)
-Establish `h : IsOpen (d.lev a w : Set (GLw a w × GLw (n - a) w)) ∧ d.lev a w ≤ K2 a (n - a) w`. Unfold `LocData.lev`. Use `split_ifs with h1 h2`. Conclude with `⟨iwahori_pair_isOpen a (n - a) w, I2_le_K2 a (n - a) w⟩`. Conclude with `L_open_le d hd a ha w h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨maximal_pair_isOpen a (n - a) w, le_rfl⟩`. Conclude with `⟨h.1, compact_of_le _ h.1 h.2, h.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem locLev_oc (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) (w : Pl E) :
     IsOpen (d.lev a w : Set (GLw a w × GLw (n - a) w)) ∧ IsCompact (d.lev a w : Set (GLw a w × GLw (n - a) w)) ∧
@@ -87,9 +87,7 @@ theorem locLev_oc (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) (w : Pl
   exact ⟨h.1, compact_of_le _ h.1 h.2, h.2⟩
 
 /- English proof (translation)
-Establish `h : IsOpen (d.lev₂ a w : Set (GLw a w × GLw (n - a) w)) ∧ d.lev₂ a w ≤ K2 a (n - a) w`. Unfold `LocData.lev₂`. Use `split_ifs with h2`. Conclude with `L_open_le d hd a ha w h2`. Conclude with `⟨maximal_pair_isOpen a (n - a) w, le_rfl⟩`.
-
-Conclude with `⟨h.1, compact_of_le _ h.1 h.2, h.2⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locLev₂_oc (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) (w : Pl E) :
     IsOpen (d.lev₂ a w : Set (GLw a w × GLw (n - a) w)) ∧ IsCompact (d.lev₂ a w : Set (GLw a w × GLw (n - a) w)) ∧
@@ -115,7 +113,7 @@ def C (d : LocData E n) (a : ℕ) {S : Set (Pl E)} : ∀ i : Slot S, Set (GLw a 
   | .inr w => (d.lev₂ a w.1 : Set (GLw a w.1 × GLw (n - a) w.1))
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Conclude with `⟨(locLev_oc d hd a ha w.1).1, (locLev_oc d hd a ha w.1).2.2⟩`. Conclude with `⟨(locLev₂_oc d hd a ha w.1).1, (locLev₂_oc d hd a ha w.1).2.2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem C_open_le (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) {S : Set (Pl E)} (i : Slot S) :
     IsOpen (C d a i) ∧ C d a i ⊆ (K2 a (n - a) i.pl : Set (GLw a i.pl × GLw (n - a) i.pl)) := by
@@ -124,9 +122,9 @@ theorem C_open_le (d : LocData E n) (hd : d.Ok) (a : ℕ) (ha : a ≤ n) {S : Se
   · exact ⟨(locLev₂_oc d hd a ha w.1).1, (locLev₂_oc d hd a ha w.1).2.2⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Filter.eventually_cofinite]`. Establish `h1 : {w : {w // w ∈ S} | ¬ P w.1}.Finite` using `h.preimage Subtype.val_injective.injOn`. Establish `h2 : {w : {w // w ∈ S ∧ IsSplitAt w} | ¬ P w.1}.Finite` using `h.preimage Subtype.val_injective.injOn`. Use `((h1.image Sum.inl).union (h2.image Sum.inr)).subset ?_` and prove the remaining obligations. Introduce and unpack `(w | w) hw`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨w, hw, rfl⟩`. Conclude with `Or.inr ⟨w, hw, rfl⟩`.
+Prove the first alternative. Prove the second alternative.
 -/
 theorem position_cof {S : Set (Pl E)} {P : Pl E → Prop} (h : ∀ᶠ w in cofinite, P w) :
     ∀ᶠ i : Slot S in cofinite, P i.pl := by
@@ -139,9 +137,9 @@ theorem position_cof {S : Set (Pl E)} {P : Pl E → Prop} (h : ∀ᶠ w in cofin
   · exact Or.inr ⟨w, hw, rfl⟩
 
 /- English proof (translation)
-Use `filter_upwards [position_cof (S := S) (Rd.levCof d a)] with i hi`. Break down `i with w | w` into its components or cases. Use `show ((d.lev a w.1 : Subgroup _) : Set (GLw a w.1 × GLw (n - a) w.1)) = (K2 a (n - a) w.1 : Set _)`. Establish `h' : d.lev a w.1 = K2 a (n - a) w.1` using `hi.1`. Rewrite using `[h']`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((d.lev₂ a w.1 : Subgroup _) : Set (GLw a w.1 × GLw (n - a) w.1)) = (K2 a (n - a) w.1 : Set _)`. Establish `h' : d.lev₂ a w.1 = K2 a (n - a) w.1` using `hi.2`. Rewrite using `[h']`.
+A detailed English derivation is pending.
 -/
 theorem C_cof (d : LocData E n) (a : ℕ) {S : Set (Pl E)} :
     ∀ᶠ i : Slot S in cofinite, C d a i = (K2 a (n - a) i.pl : Set (GLw a i.pl × GLw (n - a) i.pl)) := by
@@ -155,9 +153,9 @@ theorem C_cof (d : LocData E n) (a : ℕ) {S : Set (Pl E)} :
     rw [h']
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Break down `i with w | w` into its components or cases. Conclude with `(hx w.1 w.2).1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hx w.1 w.2.1).2 w.2.2`. Introduce `hx w hw`. Conclude with `⟨hx (.inl ⟨w, hw⟩), fun hs => hx (.inr ⟨w, hw, hs⟩)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gSet_eq (S : Set (Pl E)) (d : LocData E n) (a : ℕ) :
     gSet S d a = {x : Hf E a (n - a) | ∀ i : Slot S, i.cp a (n - a) x ∈ C d a i} := by
@@ -194,7 +192,7 @@ def levSub (S : Set (Pl E)) (d : LocData E n) (a : ℕ) : Subgroup (Hf E a (n - 
     exact ⟨inv_mem (hx w hw).1, fun hs => inv_mem ((hx w hw).2 hs)⟩
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[gSet_eq]`. Conclude with `((hSl E a (n - a) Sec hS).2.2.2.2.2.1 x).2 fun i => (C_open_le d hd a ha i).2 (hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gSet_sub (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
     (ha : a ≤ n) : gSet Sec d a ⊆ (((Kf E a).prod (Kf E (n - a)) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a))) := by
@@ -203,15 +201,13 @@ theorem gSet_sub (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocD
   exact ((hSl E a (n - a) Sec hS).2.2.2.2.2.1 x).2 fun i => (C_open_le d hd a ha i).2 (hx i)
 
 /- English proof (translation)
-Establish `hSl'` using `hSl E a (n - a) Sec hS`. Take `⟨hKo1, -⟩` from `GlobalTheory.T.finite_kernel_compact_open E a`. Take `⟨hKo2, -⟩` from `GlobalTheory.T.finite_kernel_compact_open E (n - a)`. Use `set U : Set (Hf E a (n - a)) := (((Kf E a).prod (Kf E (n - a)) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a))) with hU`. Establish `hUo : IsOpen U`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU, Subgroup.coe_prod]`. Conclude with `hKo1.prod hKo2`. Establish `hF` using `(Filter.eventually_cofinite.1 (C_cof d a (S := Sec)))`. Use `set V : Set (Hf E a (n - a)) := U ∩ ⋂ i ∈ {i : Slot Sec | ¬ C d a i = (K2 a (n - a) i.pl : Set _)}, (i.cp a (n - a)) ⁻¹' C d a i with hV`. Establish `hVo : IsOpen V` using `hUo.inter (hF.isOpen_biInter fun i _ => (C_open_le d hd a ha i).1.preimage (hSl'.2.1 i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1V : (1 : Hf E a (n - a)) ∈ V`. Use `⟨one_mem _, Set.mem_iInter₂.2 fun i _ => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Hf E a (n - a)) ∈ gSet Sec d a` using `(levSub Sec d a).one_mem`. Rewrite `h1` using `[gSet_eq]`. Conclude with `h1 i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVsub : V ⊆ gSet Sec d a`. Introduce `x hx`. Rewrite using `[gSet_eq]`. Introduce `i`. Distinguish the cases in `hi : C d a i = (K2 a (n - a) i.pl : Set _)`.
-
-Rewrite using `[hi]`. Conclude with `(hSl'.2.2.2.2.2.1 x).1 hx.1 i`. Conclude with `Set.mem_iInter₂.1 hx.2 i hi`. Conclude with `Subgroup.isOpen_of_mem_nhds (levSub Sec d a) (g := 1) (Filter.mem_of_superset (hVo.mem_nhds h1V) hVsub)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gSet_open (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
     (ha : a ≤ n) : IsOpen (gSet Sec d a) := by
@@ -244,7 +240,7 @@ theorem gSet_open (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : Loc
   exact Subgroup.isOpen_of_mem_nhds (levSub Sec d a) (g := 1) (Filter.mem_of_superset (hVo.mem_nhds h1V) hVsub)
 
 /- English proof (translation)
-Rewrite using `[g₁, show {g | ((g, 1) : Hf E a (n - a)) ∈ gSet Sec d a} = (((levSub Sec d a).comap (MonoidHom.inl _ _) : Subgroup _) : Set _) from rfl, Subgroup.closure_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem g₁_coe (Sec : Set (Pl E)) (d : LocData E n) (a : ℕ) :
     (g₁ Sec d a : Set (GL (Fin a) (Af E))) = (fun g => ((g, 1) : Hf E a (n - a))) ⁻¹' gSet Sec d a := by
@@ -253,7 +249,7 @@ theorem g₁_coe (Sec : Set (Pl E)) (d : LocData E n) (a : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[g₂, show {g | ((1, g) : Hf E a (n - a)) ∈ gSet Sec d a} = (((levSub Sec d a).comap (MonoidHom.inr _ _) : Subgroup _) : Set _) from rfl, Subgroup.closure_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem g₂_coe (Sec : Set (Pl E)) (d : LocData E n) (a : ℕ) :
     (g₂ Sec d a : Set (GL (Fin (n - a)) (Af E))) = (fun g => ((1, g) : Hf E a (n - a))) ⁻¹' gSet Sec d a := by
@@ -262,9 +258,9 @@ theorem g₂_coe (Sec : Set (Pl E)) (d : LocData E n) (a : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `ho : IsOpen (g₁ Sec d a : Set (GL (Fin a) (Af E)))`. Rewrite using `[g₁_coe]`. Conclude with `(gSet_open hSl hS d hd a ha).preimage (continuous_id.prodMk continuous_const)`. Use `⟨ho, (GlobalTheory.T.finite_kernel_compact_open E a).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[g₁_coe]`. Conclude with `(Subgroup.mem_prod.1 (gSet_sub hSl hS d hd a ha hg)).1`.
+A detailed English derivation is pending.
 -/
 theorem g₁_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
     (ha : a ≤ n) : IsOpen (g₁ Sec d a : Set (GL (Fin a) (Af E))) ∧ IsCompact (g₁ Sec d a : Set (GL (Fin a) (Af E))) := by
@@ -277,9 +273,9 @@ theorem g₁_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocDa
   exact (Subgroup.mem_prod.1 (gSet_sub hSl hS d hd a ha hg)).1
 
 /- English proof (translation)
-Establish `ho : IsOpen (g₂ Sec d a : Set (GL (Fin (n - a)) (Af E)))`. Rewrite using `[g₂_coe]`. Conclude with `(gSet_open hSl hS d hd a ha).preimage (continuous_const.prodMk continuous_id)`. Use `⟨ho, (GlobalTheory.T.finite_kernel_compact_open E (n - a)).2.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[g₂_coe]`. Conclude with `(Subgroup.mem_prod.1 (gSet_sub hSl hS d hd a ha hg)).2`.
+A detailed English derivation is pending.
 -/
 theorem g₂_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
     (ha : a ≤ n) : IsOpen (g₂ Sec d a : Set (GL (Fin (n - a)) (Af E))) ∧
@@ -293,9 +289,7 @@ theorem g₂_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocDa
   exact (Subgroup.mem_prod.1 (gSet_sub hSl hS d hd a ha hg)).2
 
 /- English proof (translation)
-Establish `ho` using `gSet_open hSl hS d hd a ha`. Use `⟨ho, ?_⟩` and prove the remaining obligations. Establish `hc : IsCompact (((Kf E a).prod (Kf E (n - a)) : Subgroup (Hf E a (n - a))) : Set (Hf E a (n - a)))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.T.finite_kernel_compact_open E a).2.prod (GlobalTheory.T.finite_kernel_compact_open E (n - a)).2`.
-
-Conclude with `hc.of_isClosed_subset (Subgroup.isClosed_of_isOpen (levSub Sec d a) ho) (gSet_sub hSl hS d hd a ha)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gSet_oc (hSl : Slots) {Sec : Set (Pl E)} (hS : IsSection Sec) (d : LocData E n) (hd : d.Ok) (a : ℕ)
     (ha : a ≤ n) : IsOpen (gSet Sec d a) ∧ IsCompact (gSet Sec d a) := by

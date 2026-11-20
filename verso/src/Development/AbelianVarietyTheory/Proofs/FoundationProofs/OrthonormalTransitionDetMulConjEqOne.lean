@@ -17,7 +17,7 @@ noncomputable def hYYLeft (D : D7) {N N' : ℕ} (y : Matrix (Fin N') (Fin N) D.h
     simp only [Finset.smul_sum]
 
 /- English proof (translation)
-Establish `hc : ∀ (φ : D.host.E →+* ℂ) (z : D.host.E), φ (D.host.conj z) = starRingEnd ℂ (φ z)` using `fun φ z => D.host.conjE_apply φ z`. Unfold `hYY`. Rewrite using `[← h, ← h]`. Simplify using `only [map_sum, map_mul, hc, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -33,13 +33,13 @@ theorem hYY_herm (D : D7) (h : TraceMapNormalisation D) {N N' : ℕ} (x y : Matr
   ring
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span D.host.K (Set.range b)` using `by rw [hb.2]; trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.K).1 hx`. Establish `h1 : ∀ k, hYY D x (b k) = c k`. Introduce `k`. Express the relevant statement in the definitionally equal form `hYYLeft D (b k) x = c k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hc, map_sum]`. Establish `h2 : ∀ i, hYYLeft D (b k) (c i • b i) = if i = k then c i else 0`. Introduce `i`. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `c i • hYY D (b i) (b k) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hb.1 i k]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [h2]`. Simplify using the standard rewrite rules. Simplify using `only [h1]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hc.symm`.
+A detailed English derivation is pending.
 -/
 theorem onB_expand (D : D7) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (hb : OnB D b)
     (x : Matrix (Fin N') (Fin N) D.host.E) : x = ∑ i, hYY D x (b i) • b i := by
@@ -61,11 +61,11 @@ theorem onB_expand (D : D7) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N
   exact hc.symm
 
 /- English proof (translation)
-Establish `h1 : hYY D x y = ∑ i, hYY D x (b i) * hYY D (b i) y`. Express the relevant statement in the definitionally equal form `hYYLeft D y x = _`. Use `conv_lhs => rw [onB_expand D b hb x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (D.host.φ₀.comp (algebraMap D.host.K D.host.E)) h1`. Rewrite `h2` using `[map_sum]`. Use `h2.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← hYY_herm D h y (b i)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem onB_parseval (D : D7) (h : TraceMapNormalisation D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (hb : OnB D b) (x y : Matrix (Fin N') (Fin N) D.host.E) :
@@ -86,13 +86,11 @@ theorem onB_parseval (D : D7) (h : TraceMapNormalisation D) {N N' r : ℕ} (b : 
   rfl
 
 /- English proof (translation)
-Introduce `D hD N N' r b₀ b hb₀ hb`. Establish `hc : ∀ (φ : D.host.E →+* ℂ) (z : D.host.E), φ (D.host.conj z) = starRingEnd ℂ (φ z)` using `fun φ z => D.host.conjE_apply φ z`. Use `set M : Matrix (Fin r) (Fin r) D.host.K := Matrix.of fun i j => hYY D (b j) (b₀ i) with hM`. Set `ψ : D.host.K →+* ℂ` to `D.host.φ₀.comp (algebraMap D.host.K D.host.E)`. Establish `hA : (ψ.mapMatrix M).transpose * (starRingEnd ℂ).mapMatrix (ψ.mapMatrix M) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j k`. Rewrite using `[Matrix.mul_apply]`. Establish `h1` using `onB_parseval D hD.2 b₀ hb₀ (b j) (b k)`. Rewrite `h1` using `[hb.1 j k]`. Use `Eq.trans h1.symm ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `map_one ψ`. Conclude with `map_zero ψ`. Establish `hdet` using `congrArg Matrix.det hA`.
-
-Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_transpose, ← RingHom.map_det (starRingEnd ℂ), ← RingHom.map_det ψ, Matrix.det_one]`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hc, map_one]`. Conclude with `hdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_onB_mul_conj : ∀ (D : D7), admG1 D → ∀ (N N' r : ℕ) (b₀ b : Fin r → Matrix (Fin N') (Fin N) D.host.E), OnB D b₀ → OnB D b → (((Matrix.of fun i j => hYY D (b j) (b₀ i)).det : D.host.K) : D.host.E) * D.host.conj (((Matrix.of fun i j => hYY D (b j) (b₀ i)).det : D.host.K) : D.host.E) = 1 := by
   intro D hD N N' r b₀ b hb₀ hb

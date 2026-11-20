@@ -30,7 +30,7 @@ def StepDuF : Prop :=
             dotProduct (uV g l) (Matrix.mulVec (gHat g Zh₁ T T')⁻¹ (uV g w)) ∈ 𝒪[F]
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hk γ`. Take `⟨γ', hγ'⟩` from `h F E M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hk γ`. Conclude with `⟨γ', fun θ₁ θ₂ i₁ i₂ => isoB_of hs Zh₁ Zh₂ T T' (hU F E M g r T T' TT Zh₁ Z₁ Zσ₁ h₁) (hU F E M g r T T' TT Zh₂ Z₂ Zσ₂ h₂) θ₁ θ₂ (hγ' θ₁ θ₂ i₁ i₂)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stepDu_of (hU : GramUnitG) (h : StepDuF) : StepDu := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hk γ

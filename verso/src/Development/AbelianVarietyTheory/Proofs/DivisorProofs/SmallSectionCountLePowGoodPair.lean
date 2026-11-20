@@ -19,13 +19,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.VolBr
 
 /- English proof (translation)
-Establish `nu_nonneg : ∀ (a c : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField), 0 ≤ P.nu a c σ y f` using `fun a c σ y f => mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`. Take `⟨htH, htn⟩` from `hG.t_mem`. Take `⟨hpH, hpn⟩` from `GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P (-1) b t htH N`. Establish `e1 : (N : ℤ) + N * -1 = 0` using `by ring`. Establish `e2 : (0 : ℤ) + N * b = N * b` using `by ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmaps : ∀ f ∈ P.Bl N 0 R, f * t ^ N ∈ P.Bl 0 ((N : ℤ) * b) R`. Introduce and unpack `f ⟨hfH, hfn⟩`. Take `⟨hH, hn⟩` from `GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P N 0 (N * -1) (N * b) f (t ^ N) hfH hpH`. Rewrite `hH`, `hn` using `[e1, e2]`. Use `⟨hH, fun σ y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn σ y, hpn σ y]`. Establish `h1 : P.nu (-1) b σ y t ^ N ≤ 1` using `pow_le_one₀ (nu_nonneg _ _ _ _ _) (htn σ y)`. Conclude with `(mul_le_of_le_one_right (nu_nonneg _ _ _ _ _) h1).trans (hfn σ y)`. Establish `hinj : Set.InjOn (fun f => f * t ^ N) (P.Bl N 0 R)` using `fun x _ y _ h => mul_right_cancel₀ (pow_ne_zero N hG.t_ne) h`. Establish `hcard` using `Set.ncard_le_ncard_of_injOn _ hmaps hinj hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Pair.lc`. Break down `Nat.eq_zero_or_pos (P.Bl N 0 R).ncard with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast hcard)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_le_of_good {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p)
     {D b : ℕ} {s t : X.functionField} (hG : P.Good D b s t) (N : ℕ) (R : ℝ)
@@ -55,13 +55,13 @@ theorem lc_le_of_good {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p
   · exact Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast hcard)
 
 /- English proof (translation)
-Introduce `hHS hAC k _ X _ p D hX P b s t hG`. Establish `hRep : P.Rep 0 (b : ℤ) (P.A.pow b)`. Use `GlobalTheory.T.represents_hermitianLineBundle_pow k X p P 0 1 P.A b (GlobalTheory.T.represents_base_bundles_and_trivial k X p P).2.1` as an intermediate fact. Simplify using `using this`. Establish `hnef : (P.A.pow b).IsNef D` using `GlobalTheory.T.isNef_pow_of_isNef hAC k X p D hX P.A b hG.nef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hnef0 : ((P.A.pow b).shift (fun _ => (0 : ℝ)) fun _ => rfl).IsNef D` using `GlobalTheory.T.hermitianLineBundle_isNef_shift_of_nonneg k X p D hX (P.A.pow b) 0 le_rfl hnef`. Take `⟨Φ, hΦ⟩` from `((hAC.arExists k X p D hX).2 Unit (fun _ => P.A.pow b)).1`. Establish `hα` using `((hAC.arIso k X p D hX).2 Unit (fun _ => P.A.pow b) Φ hΦ).1 ()`. Establish `hlim` using `GlobalTheory.T.arith_hilbertSamuel_log_ball_count_tendsto hHS hAC k X p D hX P 0 b (P.A.pow b) _ 0 hRep hα hnef0 3 (by norm_num)`. Take `⟨C, hev⟩ : ∃ C : ℝ, ∀ᶠ m : ℕ in atTop, P.lc ((m : ℤ) * 0) ((m : ℤ) * b) (Real.exp (3 * m)) / (m : ℝ) ^ (D + 1) < C` from `⟨_, hlim.eventually (gt_mem_nhds (lt_add_one _))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, eventually_ge_atTop 1] with N hN hN1`. Establish `hpos : (0 : ℝ) < (N : ℝ) ^ (D + 1)`. Establish `: (1 : ℝ) ≤ N` using `by exact_mod_cast hN1`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[div_lt_iff₀ hpos]`. Simplify using `only [mul_zero] at hN`. Use `le_trans ?_ hN.le` and prove the remaining obligations. Conclude with `lc_le_of_good P hG N _ (GlobalTheory.T.hermLineBundlePair_balls_finite hHS k X p D hX P b s t hG 0 _ _ hAC)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem crude_upper_lc : GlobalTheory.Published.ArithHilbertSamuel → GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (b : ℕ) (s t : X.functionField), P.Good D b s t → ∃ C : ℝ, ∀ᶠ N : ℕ in atTop, P.lc N 0 (Real.exp (3 * N)) ≤ C * (N : ℝ) ^ (D + 1) := by
   intro hHS hAC k _ X _ p D hX P b s t hG

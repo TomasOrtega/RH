@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(Algebra.FiniteType.out : (⊤ : Subalgebra R A).FG)`. Use `⟨s.image (fun x => x - e x), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, _, rfl⟩`. Express the relevant statement in the definitionally equal form `e.rangeRestrict (x - e x) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[he]`. Introduce `b hb`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb' : e b = 0`. Use `congrArg Subtype.val (show e.rangeRestrict b = 0 from hb)` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ y : A, y - e y ∈ Ideal.span ((fun x => x - e x) '' (s : Set A))`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : y ∈ Algebra.adjoin R (s : Set A)` using `by rw [hs]; exact Algebra.mem_top`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Ideal.subset_span ⟨x, hx, rfl⟩`. Consider the case `algebraMap r => simp`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h : x + y - e (x + y) = (x - e x) + (y - e y)` using `by rw [map_add]; ring`. Rewrite using `[h]`. Conclude with `Ideal.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy`. Establish `h : x * y - e (x * y) = x * (y - e y) + e y * (x - e x)` using `by rw [map_mul]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hy) (Ideal.mul_mem_left _ _ hx)`. Simplify `key b` using `[hb']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem idempotent_algHom_ker_fg {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     [Algebra.FiniteType R A] (e : A →ₐ[R] A) (he : ∀ x, e (e x) = e x) :
@@ -47,11 +47,11 @@ theorem idempotent_algHom_ker_fg {R A : Type} [CommRing R] [CommRing A] [Algebra
     simpa [hb'] using key b
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ e he`. Establish `hq : ∀ b : e.range, e.rangeRestrict (b : A) = b`. Introduce and unpack `⟨_, a, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hsurj : Function.Surjective e.rangeRestrict` using `fun b => ⟨b, hq b⟩`. Use `{ formallySmooth := ?_, finitePresentation := ?_ }` and prove the remaining obligations. Use `Algebra.FormallySmooth.of_split e.rangeRestrict ((Ideal.Quotient.mkₐ R _).comp e.range.val) ?_` and prove the remaining obligations. Use extensionality with `b`. Simplify using `only [AlgHom.coe_comp, Function.comp_apply, Ideal.Quotient.mkₐ_eq_mk, AlgHom.coe_id, id_eq, Subalgebra.coe_val]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[AlgHom.kerSquareLift_mk, hq]`. Conclude with `Algebra.FinitePresentation.of_surjective hsurj (idempotent_algHom_ker_fg e he)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_range_of_idempotent : ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R A]
     [Algebra.Smooth R A] (e : A →ₐ[R] A), (∀ x, e (e x) = e x) → Algebra.Smooth R e.range := by

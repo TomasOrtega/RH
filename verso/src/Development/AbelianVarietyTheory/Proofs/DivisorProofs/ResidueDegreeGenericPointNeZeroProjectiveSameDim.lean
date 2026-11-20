@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.DominantProjDegree
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p q D hp hq hX hY π hπ hη`. Take `⟨N, i, hi, hcomp⟩` from `hp`. Take `⟨M, j, hj, hcomp'⟩` from `hq`. Use `haveI : IsProper (PSpace.str k N) := isProper_str k N`. Use `haveI : IsProper (PSpace.str k M) := isProper_str k M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsProper p := by rw [← hcomp]; infer_instance`. Use `haveI : IsProper (π ≫ p) := by rw [hπ, ← hcomp']; infer_instance`. Use `haveI : IsProper π := IsProper.of_comp π p`. Establish `hcl : IsClosed (Set.range π)` using `π.isClosedMap.isClosed_range`. Establish `hsurj : Surjective π` using `⟨fun x => by`.
-
-Establish `: genericPoint X ∈ Set.range π` using `⟨_, hη⟩`. Conclude with `(genericPoint_specializes x).mem_closed hcl this⟩`. Conclude with `GlobalTheory.GenFinite.residueDegree_genericPoint_ne_zero k Y X p π D inferInstance inferInstance hsurj hY hX`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem residueDegree_ne_zero_of_map_genericPoint : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D : ℕ), IsProjOver p → IsProjOver q → topologicalKrullDim X = D → topologicalKrullDim Y = D → ∀ (π : Y ⟶ X), π ≫ p = q → π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 := by
   intro k _ X Y _ _ p q D hp hq hX hY π hπ hη

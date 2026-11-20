@@ -23,25 +23,21 @@ def satSpanFamily {H : Type} [AddCommGroup H] {n : ℕ} (u : Fin n → H) : AddS
     exact ⟨k, hk, by rw [smul_neg]; exact neg_mem ha⟩
 
 /- English proof (translation)
-Introduce `l _ H T _ _ _ _ _ Q hpar hnn hdef φ hφ n u hu`. Use `set M := satSpanFamily u with hMdef`. Establish `memM : ∀ h, h ∈ M ↔ ∃ k : ℤ, k ≠ 0 ∧ k • h ∈ Submodule.span ℤ (Set.range u)` using `fun h => Iff.rfl`. Establish `hbound : ∀ (m : ℕ) (v : Fin m → M), LinearIndependent ℤ v → m ≤ n`. Introduce `m v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `choose k hk hks using fun j => (memM (v j : H)).1 (v j).2`. Set `w : Fin m → Submodule.span ℤ (Set.range u)` to `fun j => ⟨k j • (v j : H), hks j⟩`. Establish `hw : LinearIndependent ℤ w`. Rewrite `hv`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : ∑ i, (g i * k i) • v i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val hg` as an intermediate fact. Simplify `this` using `[w, mul_smul]`. Conclude with `(mul_eq_zero.1 (hv _ h1 j)).resolve_right (hk j)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : Module.Finite ℤ (Submodule.span ℤ (Set.range u)) := Module.Finite.span_of_finite ℤ (Set.finite_range u)`. Use `hw.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[finrank_span_eq_card hu]`. Simplify using `using this`. Take `⟨hfin, hfree, -⟩` from `GlobalTheory.finite_free_of_definite_form_of_rank_le M (fun x => Q x) (fun f g => by simpa using hpar f g) (fun f => hnn f) (fun f hf => Subtype.ext (hdef _ hf)) n hbound`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hfin`. Use `haveI := hfree`. Set `ψ : M →+ T` to `φ.comp M.subtype`. Establish `hlne : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hψ : ∀ (h : M) (t : T), ψ h = (l : ℤ_[l]) • t → ∃ h' : M, h = l • h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h t ht`. Take `⟨h', hh'⟩` from `hφ (h : H) t ht`. Take `⟨k, hk, hks⟩` from `(memM (h : H)).1 h.2`. Use `⟨⟨h', k * l, mul_ne_zero hk (by exact_mod_cast hlne), ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, natCast_zsmul, ← hh']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hks`. Simplify using `[hh']`. Establish `htor : ∀ t : T, (l : ℤ_[l]) • t = 0 → t = 0`. Introduce `t ht`. Establish `hl : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hlne`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(smul_eq_zero.1 ht).resolve_left hl`. Take `⟨hinj, -⟩` from `GlobalTheory.T.liftBaseChange_padicInt_injective_saturated_of_modL l M T htor ψ hψ`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hinj`. Rewrite `h1` using `[Module.finrank_baseChange]`. Set `v : Fin n → M` to `fun i => ⟨u i, 1, one_ne_zero, by`.
-
-Simplify using `using Submodule.subset_span (Set.mem_range_self i)⟩`. Establish `hv : LinearIndependent ℤ v` using `LinearIndependent.of_comp M.subtype.toIntLinearMap (by`. Establish `e : (M.subtype.toIntLinearMap : M →ₗ[ℤ] H) ∘ v = u` using `funext fun i => rfl`. Rewrite using `[e]`. Conclude with `hu)`.
-
-Establish `h2` using `hv.fintype_card_le_finrank`. Simplify using `only [Fintype.card_fin] at h2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rank_le_finrank_of_injective_mod_prime : ∀ (l : ℕ) [Fact l.Prime] (H T : Type) [AddCommGroup H] [AddCommGroup T] [Module ℤ_[l] T] [Module.Finite ℤ_[l] T] [Module.Free ℤ_[l] T] (Q : H → ℤ), (∀ f g, Q (f + g) + Q (f - g) = 2 * Q f + 2 * Q g) → (∀ f, 0 ≤ Q f) → (∀ f, Q f = 0 → f = 0) → ∀ φ : H →+ T, (∀ (h : H) (t : T), φ h = (l : ℤ_[l]) • t → ∃ h' : H, h = l • h') → ∀ (n : ℕ) (u : Fin n → H), LinearIndependent ℤ u → n ≤ Module.finrank ℤ_[l] T := by
   intro l _ H T _ _ _ _ _ Q hpar hnn hdef φ hφ n u hu

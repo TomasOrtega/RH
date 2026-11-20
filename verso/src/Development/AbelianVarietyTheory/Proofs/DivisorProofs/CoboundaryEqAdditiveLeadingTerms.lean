@@ -11,11 +11,11 @@ namespace GlobalTheory.CobLead
 open CategoryTheory TensorProduct MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Establish `hlow : ∀ H : MvPowerSeries (Fin d ⊕ Fin d) R, (∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < 1 → coeff α H = 0) → constantCoeff (subst w H) = 0`. Introduce `H hH`. Establish `h` using `(_root_.GlobalTheory.coeff_subst_leading R _ τ w w 1 H hw hw (fun _ _ _ => rfl) hH 0).1 (by simp)`. Rewrite `h` using `[coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis. Establish `hG0 : ∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < 1 → coeff α G = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `α hα`. Establish `: α = 0` using `(Finsupp.degree_eq_zero_iff α).mp (by omega)`. Rewrite using `[this, coeff_zero_eq_constantCoeff_apply, hG]`. Use `⟨hlow F (fun α hα => by rw [hFG α hα.le]; exact hG0 α hα), hlow G hG0, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdiff` using `(_root_.GlobalTheory.coeff_subst_leading R _ τ w w 2 (F - G) hw hw (fun _ _ _ => rfl) (fun α hα => by rw [map_sub, hFG α (by omega), sub_self]) γ).1 (by omega)`. Rewrite `hdiff` using `[subst_sub (hasSubst_of_constantCoeff_zero hw), map_sub, sub_eq_zero]`. Conclude with `hdiff`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma subst_constantCoeff_zero_and_linear_coeff_eq {R : Type} [CommRing R] {d : ℕ} {τ : Type}
     (w : Fin d ⊕ Fin d → MvPowerSeries τ R) (hw : ∀ s, constantCoeff (w s) = 0)
@@ -44,17 +44,17 @@ private lemma subst_constantCoeff_zero_and_linear_coeff_eq {R : Type} [CommRing 
 open CategoryTheory TensorProduct MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Introduce `R _ d μ N hμ`. Establish `hadd0 : ∀ i, constantCoeff (_root_.GlobalTheory.Katz.addLaw R d i) = 0`. Introduce `i`. Simplify using `[_root_.GlobalTheory.Katz.addLaw]`. Establish `hμ0 : ∀ i, constantCoeff (μ i) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hμ i 0 (by simp), coeff_zero_eq_constantCoeff_apply, hadd0]`. Establish `hX : ∀ {ι κ : Type} (e : ι → κ) (s : ι), constantCoeff (X (e s) : MvPowerSeries κ R) = 0` using `fun _ _ => by simp`. Use `⟨fun f hf γ => ⟨fun hγ => ?_, fun hγ => ?_⟩, fun c hc γ hγ => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.Katz.cob1 _root_.GlobalTheory.Katz.inL _root_.GlobalTheory.Katz.inR`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_sub, map_sub, (_root_.GlobalTheory.coeff_subst_leading R _ _ μ μ N f hμ0 hμ0 (fun _ _ _ => rfl) hf γ).1 hγ, (_root_.GlobalTheory.coeff_subst_leading R _ _ _ _ N f (hX Sum.inl) (hX Sum.inl) (fun _ _ _ => rfl) hf γ).1 hγ, (_root_.GlobalTheory.coeff_subst_leading R _ _ _ _ N f …`. Simplify using the standard rewrite rules. Unfold `_root_.GlobalTheory.Katz.cob1`. Rewrite using `[map_sub, map_sub, map_sub, map_sub, (_root_.GlobalTheory.coeff_subst_leading R _ _ μ (_root_.GlobalTheory.Katz.addLaw R d) N f hμ0 hadd0 (fun i γ' hγ' => hμ i γ' hγ'.le) hf γ).2 hγ]`. Establish `hpts : ∀ {τ : Type} (a b : Fin d → MvPowerSeries τ R), (∀ s, constantCoeff (a s) = 0) → (∀ s, constantCoeff (b s) = 0) → ∀ i, constantCoeff (_root_.GlobalTheory.Katz.op μ a b i) = 0 ∧ constantCoeff (_root_.GlobalTheory.Katz.op (_root_.GlobalTheory.Katz.addLaw R d) a b i) = 0 ∧ ∀ …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ a b ha hb i`. Apply the tactic sequence `exact subst_constantCoeff_zero_and_linear_coeff_eq (Sum.elim a b) (fun s => by cases s <;> simp [ha, hb]) (μ i) (_root_.GlobalTheory.Katz.addLaw R d i) (hμ i) (hadd0 i)`. Establish `hs1 : ∀ s, constantCoeff (_root_.GlobalTheory.Katz.x1 (R` using `R) (d := d) s) = 0 := fun s => by`. Simplify using `[_root_.GlobalTheory.Katz.x1]`. Establish `hs2 : ∀ s, constantCoeff (_root_.GlobalTheory.Katz.x2 (R` using `R) (d := d) s) = 0 := fun s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[_root_.GlobalTheory.Katz.x2]`. Establish `hs3 : ∀ s, constantCoeff (_root_.GlobalTheory.Katz.x3 (R` using `R) (d := d) s) = 0 := fun s => by`. Simplify using `[_root_.GlobalTheory.Katz.x3]`. Establish `h12` using `hpts _ _ hs1 hs2`. Establish `h23` using `hpts _ _ hs2 hs3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.Katz.cob2 _root_.GlobalTheory.Katz.at2`. Rewrite using `[map_sub, map_add, map_sub, map_sub, map_add, map_sub, (_root_.GlobalTheory.coeff_subst_leading R _ _ (Sum.elim (_root_.GlobalTheory.Katz.op μ _root_.GlobalTheory.Katz.x1 _root_.GlobalTheory.Katz.x2) _root_.GlobalTheory.Katz.x3) (Sum.elim (_root_.GlobalTheory.Katz.op (_root_.Glob …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.CobLead.cob_eq_additive_lead : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (N : ℕ), (∀ i (α : Fin d ⊕ Fin d →₀ ℕ), α.degree ≤ 1 → coeff α (μ i) = coeff α (_root_.GlobalTheory.Katz.addLaw R d i)) → (∀ f : MvPowerSeries (Fin d) R, (∀ α : Fin d →₀ ℕ, α.degree < N → coeff α f = 0) → ∀ γ : Fin d ⊕ Fin d →₀ ℕ, (γ.degree < N → coeff γ (_root_.GlobalTheory.Katz.cob1 μ f) = 0) ∧ (γ.degree ≤ N → coeff γ (_root_.GlobalTheory.Katz.cob1 μ f) = coeff γ (_root_.GlobalTheory.Katz.cob1 (_root_.GlobalTheory.Katz.addLaw R d) f))) ∧ ∀ c : MvPowerSeries (Fin d ⊕ Fin d) R, (∀ α : Fin d ⊕ Fin d →₀ ℕ, α.degree < N → coeff α c = 0) → ∀ γ : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ, γ.degree ≤ N → coeff γ (_root_.GlobalTheory.Katz.cob2 μ c) = coeff γ (_root_.GlobalTheory.Katz.cob2 (_root_.GlobalTheory.Katz.addLaw R d) c) := by
   intro R _ d μ N hμ

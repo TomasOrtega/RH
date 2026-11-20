@@ -21,11 +21,11 @@ namespace GlobalTheory.Mix
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-Take `⟨w, -, h⟩` from `h`. Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (M.B.U a ⊓ L.B.U b))`. Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha, hb⟩)`. Establish `hg` using `c.holo _ (w.s (a, b)).val`. Establish `h0 : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (M.B.U a ⊓ L.B.U b), (ev p σ _ (w.s (a, b)).val ∘ c.e.symm) v ≠ 0` using `fun v hv => ev_ne_zero hv.2 (w.s _).isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (L.cInf _) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).2⟩) (contDiffOn_log_normSq ho hg h0) 1 hm`. Establish `e₀ : cHess D (fun v => ((Real.log (‖(ev p σ _ (w.s (a, b)).val ∘ c.e.symm) v‖ ^ 2) : ℝ) : ℂ)) (c.e y) = 0`. Use extensionality with `a b`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log ho hm hg h0 a b`. Rewrite `e` using `[e₀, smul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_) e` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[h _ _ _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem MLine.Isom.hess_eq {L M : MLine p σ} (h : L.Isom M) (c : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) {a : M.B.ι} {b : L.B.ι} (ha : y ∈ ptsIn p σ (M.B.U a)) (hb : y ∈ ptsIn p σ (L.B.U b)) :
@@ -51,7 +51,7 @@ theorem MLine.Isom.hess_eq {L M : MLine p σ} (h : L.Isom M) (c : AlgChart p σ 
   rfl
 
 /- English proof (translation)
-Establish `e (i : Fin D)` using `(h i).hess_eq c hy (mem_pick (M i).φ.isLB y) (mem_pick (L i).φ.isLB y)`. Simplify using `only [dens, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dens_congr_isom {L M : Fin D → MLine p σ} (h : ∀ i, (L i).Isom (M i)) (c : AlgChart p σ D)
     {y : CxPts p σ} (hy : y ∈ c.e.source) : dens L c y = dens M c y := by
@@ -59,9 +59,9 @@ theorem dens_congr_isom {L M : Fin D → MLine p σ} (h : ∀ i, (L i).Isom (M i
   simp only [dens, e]
 
 /- English proof (translation)
-Use `iSup_congr fun c => Measure.ext fun S hS => ?_` and prove the remaining obligations. Rewrite using `[chartMeas_apply _ _ hS, chartMeas_apply _ _ hS]`. Use `setLIntegral_congr_fun ?_ ?_` and prove the remaining obligations. Conclude with `measurableSet_image c.e (c.e.open_source.measurableSet.inter hS) inter_subset_left`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [c.e.left_inv hy.1, dens_congr_isom h c hy.1]`.
+A detailed English derivation is pending.
 -/
 theorem part_congr_isom {L M : Fin D → MLine p σ} (h : ∀ i, (L i).Isom (M i)) (ε : ℤˣ) :
     part L ε = part M ε := by
@@ -73,7 +73,7 @@ theorem part_congr_isom {L M : Fin D → MLine p σ} (h : ∀ i, (L i).Isom (M i
     simp only [c.e.left_inv hy.1, dens_congr_isom h c hy.1]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ h ε` and use `part_congr_isom h ε`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem part_eq_of_isom : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ (D : ℕ) (L M : Fin D → MLine p σ), (∀ i, (L i).Isom (M i)) → ∀ ε : ℤˣ, part L ε = part M ε :=
   fun _ _ _ _ _ _ _ _ _ h ε => part_congr_isom h ε

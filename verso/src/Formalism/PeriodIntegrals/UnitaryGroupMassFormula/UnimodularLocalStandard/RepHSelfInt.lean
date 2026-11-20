@@ -12,9 +12,9 @@ section Int
 variable (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0)
 
 /- English proof (translation)
-Rewrite using `[area, rep_omega1, rep_omega2]`. Establish `hθ : (cmTheta b d).im = Real.sqrt d / 2`. Simplify using `[cmTheta]`. Establish `e : conj (lam * (a : ℂ)) * (lam * cmTheta b d) = ((Complex.normSq lam * a : ℝ) : ℂ) * cmTheta b d`. Rewrite using `[map_mul, Complex.conj_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.im_ofReal_mul, hθ, abs_of_nonneg]`. Conclude with `mul_nonneg (mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)) (div_nonneg (Real.sqrt_nonneg _) zero_le_two)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_area_eq : area (cmL a b d ha hd lam hlam) = Complex.normSq lam * a * (Real.sqrt d / 2) := by
   rw [area, rep_omega1, rep_omega2]
@@ -31,9 +31,9 @@ theorem rep_area_eq : area (cmL a b d ha hd lam hlam) = Complex.normSq lam * a *
     (div_nonneg (Real.sqrt_nonneg _) zero_le_two)
 
 /- English proof (translation)
-Establish `hs : (0 : ℝ) < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`. Establish `hsC : ((Real.sqrt d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs.ne'`. Establish `hnC : ((Complex.normSq lam : ℝ) : ℂ) ≠ 0`. Conclude with `(Complex.normSq_pos.mpr hlam).ne'` after adjusting the coercions. Establish `haC : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repKappa, rep_area_eq]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rep_kappa_eq : repKappa a b d ha hd lam hlam = 2 / ((Real.sqrt d : ℝ) : ℂ) := by
   have hs : (0 : ℝ) < Real.sqrt d := Real.sqrt_pos.mpr (by exact_mod_cast hd)
@@ -48,17 +48,17 @@ theorem rep_kappa_eq : repKappa a b d ha hd lam hlam = 2 / ((Real.sqrt d : ℝ) 
 variable (m : Type) [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Establish `hxd : x ∈ dualLat (stdH (cmL a b d ha hd lam hlam) m) Λ`. Rewrite using `[hΛ]`. Conclude with `hx`. Take `⟨c₂, hc₂⟩` from `hxd y hy`. Take `⟨m', hm'⟩` from `hxd (cmTheta b d • y) (hθ y hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : stdH (cmL a b d ha hd lam hlam) m x (cmTheta b d • y) = conj (cmTheta b d) * stdH (cmL a b d ha hd lam hlam) m x y`. Rewrite using `[LinearMap.map_smulₛₗ]`. Both sides reduce to the same expression. Establish `him : (stdH (cmL a b d ha hd lam hlam) m x y).im = c₂` using `hc₂`. Establish `hs : (0 : ℝ) < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsC : ((Real.sqrt d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs.ne'`. Establish `hre : (b / 2 : ℝ) * c₂ - Real.sqrt d / 2 * (stdH (cmL a b d ha hd lam hlam) m x y).re = m'`. Establish `h1 : (conj (cmTheta b d) * stdH (cmL a b d ha hd lam hlam) m x y).im = m'`. Rewrite using `[← hsm]`. Conclude with `hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[rep_conj_theta]`. Simplify using `[Complex.mul_im, him] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre' : (stdH (cmL a b d ha hd lam hlam) m x y).re = (b * c₂ - 2 * m') / Real.sqrt d`. Clear the denominators using the available nonvanishing facts.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨b * c₂ - m', c₂, ?_, him⟩` and prove the remaining obligations. Rewrite using `[rep_kappa_eq, rep_conj_theta]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hre', him]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rep_H_int (hOK : CmOK a b c d) (Λ : AddSubgroup (m → ℂ))
     (hΛ : IsSelfDual (stdH (cmL a b d ha hd lam hlam) m) Λ) (hθ : ∀ z ∈ Λ, cmTheta b d • z ∈ Λ)
@@ -101,9 +101,9 @@ theorem rep_H_int (hOK : CmOK a b c d) (Λ : AddSubgroup (m → ℂ))
       ring
 
 /- English proof (translation)
-Take `⟨n, c₂, h1, h2⟩` from `rep_H_int a b c d ha hd lam hlam m hOK Λ hΛ hθ hx hx`. Establish `him : (stdH (cmL a b d ha hd lam hlam) m x x).im = 0`. Rewrite using `[← rep_H_re (cmL a b d ha hd lam hlam) m x]`. Simplify using the standard rewrite rules. Establish `hc : (c₂ : ℂ) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (c₂ : ℝ) = 0` using `by rw [← h2, him]`. Conclude with `this` after adjusting the coercions. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rep_H_self_int (hOK : CmOK a b c d) (Λ : AddSubgroup (m → ℂ))
     (hΛ : IsSelfDual (stdH (cmL a b d ha hd lam hlam) m) Λ) (hθ : ∀ z ∈ Λ, cmTheta b d • z ∈ Λ)

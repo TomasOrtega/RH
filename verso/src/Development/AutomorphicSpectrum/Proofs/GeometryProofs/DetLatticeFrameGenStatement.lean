@@ -20,7 +20,7 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Relay.det_lattice_frame_gen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FDetLatticeFrameGen.lean&line=21#L21)
 -/

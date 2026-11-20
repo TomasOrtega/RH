@@ -8,23 +8,23 @@ section Alg
 variable {B : Type} [CommRing B]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_mul (X Y : M4 B) : adj (X * Y) = adj Y * adj X := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_one : adj (1 : M4 B) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]
 
 /- English proof (translation)
-Establish `hinv : adj ((h⁻¹ : (M4 B)ˣ) : M4 B) = h`. Establish `e1 : adj ((h⁻¹ : (M4 B)ˣ) : M4 B) * adj (h : M4 B) = 1`. Rewrite using `[← adj_mul, Units.mul_inv, adj_one]`. Rewrite `e1` using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Unfold `IsGSp at hX ⊢`. Rewrite using `[adj_mul, adj_mul, hinv, h1]`. Rewrite using `[show (h : M4 B) * (adj X * ((h⁻¹ : (M4 B)ˣ) : M4 B)) * (h * X * ((h⁻¹ : (M4 B)ˣ) : M4 B)) = h * (adj X * X) * ((h⁻¹ : (M4 B)ˣ) : M4 B) by simp only [mul_assoc, Units.inv_mul_cancel_left]]`. Rewrite using `[hX, mul_smul_comm, mul_one, smul_mul_assoc, Units.mul_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gsp_conj {ν : B} {h : (M4 B)ˣ} (h1 : adj (h : M4 B) = (h⁻¹ : (M4 B)ˣ)) {X : M4 B} (hX : IsGSp ν X) :
     IsGSp ν (h * X * (h⁻¹ : (M4 B)ˣ)) := by
@@ -61,18 +61,18 @@ private def cjA (h : (M4 B)ˣ) : M4 B →ₐ[B] M4 B where
   commutes' a := by simp [Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Simplify using `only [prj, Polynomial.aeval_algHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem prj_cjA_eq_cjA_prj (h : (M4 B)ˣ) (c : Fin 4 → B) (X : M4 B) (i : Fin 4) :
     prj c (cjA h X) i = cjA h (prj c X i) := by
   simp only [prj, Polynomial.aeval_algHom_apply]
 
 /- English proof (translation)
-Establish `hcj : ∀ g, cj h r g = cjA h (r g)` using `fun g => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcj] show ((h : M4 B) * r s₀ * ((h⁻¹ : (M4 B)ˣ) : M4 B)).charpoly = _`. Rewrite using `[Matrix.charpoly_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `hr.charpoly`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g i j hij`. Simplify using `only [hcj, prj_cjA_eq_cjA_prj, ← map_mul, hr.stable g i j hij, map_zero]`. Introduce `s hs i`. Establish `e : cjA h (r s) - ps i s • 1 = cjA h (r s - ps i s • 1)`. Rewrite using `[map_sub, map_smul, map_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hcj, prj_cjA_eq_cjA_prj, e, ← map_mul, hr.inert s hs i, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem ord_cj {H : Type} [Group H] (h : (M4 B)ˣ) {I : Subgroup H} {ps : Fin 4 → H → B} {s₀ : H}
     {r : H →* M4 B} (hr : Ord I ps s₀ r) : Ord I ps s₀ (cj h r) := by
@@ -129,11 +129,11 @@ private theorem dU_inv (Y : M4 O) :
     (((dU Y)⁻¹ : (M4 (DualNumber O))ˣ) : M4 (DualNumber O)) = 1 - Y.map TrivSqZeroExt.inr := rfl
 
 /- English proof (translation)
-Establish `hY' : adj Y = -Y` using `hY`. Rewrite using `[dU_val, dU_inv]`. Use extensionality with `i j`. Apply the tactic sequence `rw [adj_apply] fin_cases i <;> fin_cases j <;> simp [sgn, Fin.rev, Matrix.one_apply]`. Establish `hij` using `congrFun (congrFun hY' i) j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hij` using `[adj_apply]`. Rewrite using `[adj_apply]`. Simplify using `[Matrix.one_apply]`. Rewrite `hij` using `[zsmul_eq_mul, Int.cast_mul, Matrix.neg_apply]`. Apply the tactic sequence `have e1 : TrivSqZeroExt.snd (if j = i then ((sgn i : DualNumber O) * (sgn j : DualNumber O)) else 0) = 0 := by split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have e2 : (if i = j then (1 : DualNumber O) else 0).snd = 0 := by split_ifs <;> simp`. Rewrite using `[e1, e2, zero_add, zero_sub, mul_comm, hij]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dU_adj {Y : M4 O} (hY : Y ∈ sp4 O) :
     adj (dU Y : M4 (DualNumber O)) = ((dU Y)⁻¹ : (M4 (DualNumber O))ˣ) := by
@@ -154,7 +154,7 @@ private theorem dU_adj {Y : M4 O} (hY : Y ∈ sp4 O) :
     rw [e1, e2, zero_add, zero_sub, mul_comm, hij]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, TrivSqZeroExt.fst_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_fst_mul_dualNumber_matrix (A B : M4 (DualNumber O)) :
     (A * B).map TrivSqZeroExt.fst = A.map TrivSqZeroExt.fst * B.map TrivSqZeroExt.fst := by
@@ -162,7 +162,7 @@ private theorem map_fst_mul_dualNumber_matrix (A B : M4 (DualNumber O)) :
   simp [Matrix.mul_apply, TrivSqZeroExt.fst_sum]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, TrivSqZeroExt.snd_sum, TrivSqZeroExt.snd_mul, Finset.sum_add_distrib, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_snd_mul_dualNumber_matrix (A B : M4 (DualNumber O)) :
     (A * B).map TrivSqZeroExt.snd =
@@ -171,17 +171,17 @@ private theorem map_snd_mul_dualNumber_matrix (A B : M4 (DualNumber O)) :
   simp [Matrix.mul_apply, TrivSqZeroExt.snd_sum, TrivSqZeroExt.snd_mul, Finset.sum_add_distrib, mul_comm]
 
 /- English proof (translation)
-Establish `hX' : X' = X.map TrivSqZeroExt.inl` using `Matrix.ext fun a b => hX a b`. Substitute `hX'` using the available equality. Rewrite using `[dU_val, dU_inv]`. Establish `p1 : (1 + Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map TrivSqZeroExt.fst = 1`. Use extensionality with `a b`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`. Establish `p2 : (1 + Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map TrivSqZeroExt.snd = Y`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`. Establish `q1 : (1 - Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map TrivSqZeroExt.fst = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`. Establish `q2 : (1 - Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map TrivSqZeroExt.snd = -Y`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `x1 : (X.map (TrivSqZeroExt.inl : O → DualNumber O)).map TrivSqZeroExt.fst = X`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `x2 : (X.map (TrivSqZeroExt.inl : O → DualNumber O)).map TrivSqZeroExt.snd = 0`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `F : ((1 + Y.map (TrivSqZeroExt.inr : O → DualNumber O)) * X.map TrivSqZeroExt.inl * (1 - Y.map (TrivSqZeroExt.inr : O → DualNumber O))).map TrivSqZeroExt.fst = X`. Rewrite using `[map_fst_mul_dualNumber_matrix, map_fst_mul_dualNumber_matrix, p1, x1, q1, one_mul, mul_one]`. Establish `S : ((1 + Y.map (TrivSqZeroExt.inr : O → DualNumber O)) * X.map TrivSqZeroExt.inl * (1 - Y.map (TrivSqZeroExt.inr : O → DualNumber O))).map TrivSqZeroExt.snd = Y * X - X * Y`. Rewrite using `[map_snd_mul_dualNumber_matrix, map_fst_mul_dualNumber_matrix, map_snd_mul_dualNumber_matrix, p1, p2, x1, x2, q1, q2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul, mul_one, mul_zero, zero_add, mul_neg]`. Normalize the expressions using the abelian group laws. Conclude with `⟨congrFun (congrFun F a) b, congrFun (congrFun S a) b⟩`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Supply the required witnesses or components.
 -/
 private theorem dU_conj (Y X : M4 O) (X' : M4 (DualNumber O)) (hX : ∀ a b, X' a b = TrivSqZeroExt.inl (X a b))
     (a b : Fin 4) :
@@ -219,11 +219,11 @@ private theorem dU_conj (Y X : M4 O) (X' : M4 (DualNumber O)) (hX : ∀ a b, X' 
   exact ⟨congrFun (congrFun F a) b, congrFun (congrFun S a) b⟩
 
 /- English proof (translation)
-Establish `hres : ∀ y : O, res O (DualNumber O) (TrivSqZeroExt.inr y) = 0`. Introduce `y`. Establish `h2 : (res O (DualNumber O) (TrivSqZeroExt.inr y)) ^ 2 = 0`. Rewrite using `[← map_pow, pow_two]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(pow_eq_zero_iff two_ne_zero).mp h2`. Establish `hE : (Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map (res O (DualNumber O)) = 0`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply, hres]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dU_val, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), hE, add_zero]`. Rewrite using `[dU_inv, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), hE, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dU_res [IsLocalRing O] [IsCO O (DualNumber O)] (Y : M4 O) :
     (dU Y : M4 (DualNumber O)).map (res O (DualNumber O)) = 1 ∧
@@ -252,17 +252,15 @@ private theorem cjL_hom_eq_conj {B : Type} [CommRing B] {O : Type} [CommRing O] 
     (cjL h h1 h2 r).hom g = h * r.hom g * (h⁻¹ : (M4 B)ˣ) := rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD Y hY`. Take `⟨ρ₀, hhom, hpt⟩` from `r0pt D hD`. Establish `hL : D.condL (DualNumber c.O) (Lift.map (Algebra.ofId c.O (DualNumber c.O)) (D.loc ρ₀ l))`. Take `⟨B, _, _, _, _, ρ, hPl, -, y, hy⟩` from `hpt.atL`. Rewrite using `[← hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ex.condL_map D (Algebra.ofId _ _) _ (Ex.condL_map D y ρ hPl)`. Establish `hP : ∀ p ∈ D.Sb, D.condP p (DualNumber c.O) (Lift.map (Algebra.ofId c.O (DualNumber c.O)) (D.loc ρ₀ p))`. Introduce `p hp`. Take `⟨B, _, _, _, _, ρ, hPp, -, y, hy⟩` from `hpt.atP p hp`. Rewrite using `[← hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ex.condP_map D p (Algebra.ofId _ _) _ (Ex.condP_map D p y ρ hPp)`. Use `⟨fun v => cjL (dU (Y v)) (dU_res (Y v)).1 (dU_res (Y v)).2 (Lift.map (Algebra.ofId c.O (DualNumber c.O)) (D.loc ρ₀ v)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨fun g => gsp_conj (dU_adj (hY _)) (hL.1 g), ord_cj _ hL.2⟩`. Introduce `p hp`. Use `⟨fun g => gsp_conj (dU_adj (hY _)) ((hP p hp).1 g), fun g hg => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show cj _ _ g = 1`. Rewrite using `[cj_apply, (hP p hp).2 g hg, mul_one, Units.mul_inv]`. Introduce `v g a b`. Establish `hX : ∀ a b, (Lift.map (Algebra.ofId c.O (DualNumber c.O)) (D.loc ρ₀ v)).hom g a b = TrivSqZeroExt.inl (D.r0 g a b)`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show algebraMap c.O (DualNumber c.O) (ρ₀.hom g a b) = _`. Rewrite using `[hhom]`. Both sides reduce to the same expression. Establish `key` using `dU_conj (Y v) (D.r0 g) _ hX a b`. Simplify using `only [cjL_hom_eq_conj]`.
-
-Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_local_first_order_lifts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ Y : D.T → M4 c.O, (∀ v, Y v ∈ sp4 c.O) → ∃ ρ : ∀ v : D.T, Lift c.O (D.rbarAt v) (DualNumber c.O), D.LocEqs ρ ∧ ∀ (v : D.T) (g : D.Gp v) (a b : Fin 4), ((ρ v).hom g a b).fst = D.r0 g a b ∧ ((ρ v).hom g a b).snd = (Y v * D.r0 g - D.r0 g * Y v) a b := by

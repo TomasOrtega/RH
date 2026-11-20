@@ -8,7 +8,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ConjCong
 
 /- English proof (translation)
-Introduce `L _ _ _ n N g hN`. Take `⟨M, hM, h⟩` from `Formalism.IndefR.principalLevelFrame.congConj_holds L n g N hN`. Conclude with `⟨M, hM, fun κ hκ => h κ (NG.Cong.of_mul_right L n hκ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cong_conj : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n N : ℕ) (g : GAf L n), 0 < N → ∃ M : ℕ, 0 < M ∧ ∀ κ, NG.Cong L n (N * M) κ → NG.Cong L n N (g⁻¹ * κ * g) := by
   intro L _ _ _ n N g hN

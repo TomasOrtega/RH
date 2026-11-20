@@ -16,11 +16,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k i r' : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Take `⟨a, rfl⟩ : ∃ a, levPos k i r' a = p` from `⟨⟨p.val - i, by omega⟩, Fin.ext (by show p.val - i + i = p.val; omega)⟩`. Rewrite using `[liftVec_lev]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_lev]`. Simplify using `only [ιLev_lev, liftVec_lev]`. Introduce `q hq`. Rewrite using `[liftVec_out _ _ hq, mul_zero]`. Rewrite using `[liftVec_out _ _ hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, ιLev_out M p _ hp, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `liftVec_out _ _ hp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_liftVec (M : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (v : Fin (2 * r' + k + 1) → ℂ) :
     ιLev k i r' M *ᵥ liftVec k i r' v = liftVec k i r' (M *ᵥ v) := by
@@ -40,13 +40,13 @@ theorem mulVec_liftVec (M : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1))
     exact liftVec_out _ _ hp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Take `⟨a, rfl⟩ : ∃ a, levPos k i r' a = p` from `⟨⟨p.val - i, by omega⟩, Fin.ext (by show p.val - i + i = p.val; omega)⟩`. Rewrite using `[liftVec_lev]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_lev]`. Simplify using `only [hpk_lev, liftVec_lev]`. Introduce `q hq`. Rewrite using `[liftVec_out _ _ hq, mul_zero]`. Rewrite using `[liftVec_out _ _ hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[sum_lev]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `j.isLt`. Establish `hjin : i ≤ (levPos k i r' j).val ∧ (levPos k i r' j).val < 2 * r' + k + 1 + i` using `by rw [lev_val]; omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpk_out_in p (levPos k i r' j) hp hjin, zero_mul]`. Introduce `q hq`. Rewrite using `[liftVec_out _ _ hq, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpk_mulVec_liftVec (v : Fin (2 * r' + k + 1) → ℂ) :
     Hpk k (i + r') *ᵥ liftVec k i r' v = liftVec k i r' (Hpk k r' *ᵥ v) := by
@@ -71,7 +71,7 @@ theorem hpk_mulVec_liftVec (v : Fin (2 * r' + k + 1) → ℂ) :
       rw [liftVec_out _ _ hq, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply]`. Rewrite using `[sum_lev]`. Simplify using `only [liftVec_lev]`. Introduce `q hq`. Rewrite using `[liftVec_out _ _ hq, star_zero, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_liftVec (w u : Fin (2 * r' + k + 1) → ℂ) :
     star (liftVec k i r' w) ⬝ᵥ liftVec k i r' u = star w ⬝ᵥ u := by
@@ -82,7 +82,7 @@ theorem dot_liftVec (w u : Fin (2 * r' + k + 1) → ℂ) :
     rw [liftVec_out _ _ hq, star_zero, zero_mul]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[hpk_mulVec_liftVec, dot_liftVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_liftVec (v w : Fin (2 * r' + k + 1) → ℂ) :
     herm (Hpk k (i + r')) (liftVec k i r' v) (liftVec k i r' w) = herm (Hpk k r') v w := by
@@ -90,11 +90,11 @@ theorem herm_liftVec (v w : Fin (2 * r' + k + 1) → ℂ) :
   rw [hpk_mulVec_liftVec, dot_liftVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Take `⟨a, rfl⟩ : ∃ a, levPos k i r' a = p` from `⟨⟨p.val - i, by omega⟩, Fin.ext (by show p.val - i + i = p.val; omega)⟩`. Rewrite using `[liftVec_lev]`. Simplify using `only [bvec, Pi.single_apply, lev_inj.eq_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[liftVec_out _ _ hp]`. Simplify using `only [bvec, Pi.single_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Apply `hp` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[lev_val]`. Use `q.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bvec_lev (q : Fin (2 * r' + k + 1)) : bvec (levPos k i r' q) = liftVec k i r' (bvec q) := by
   funext p
@@ -113,11 +113,11 @@ theorem bvec_lev (q : Fin (2 * r' + k + 1)) : bvec (levPos k i r' q) = liftVec k
     omega
 
 /- English proof (translation)
-Simplify using `only [fvec]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[← bvec_lev]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[eI, lev_val]`. It suffices to derive a contradiction. Simplify using `only [Fin.val_zero, Fin.val_mk] at h1 h2`. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_zero, Fin.val_mk] at h1 h2`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fvec_lift (z : Fin (2 * r' + k + 1) → ℂ) :
     fvec k (i + r') (liftVec k i r' z) ⟨i, by omega⟩ = liftVec k i r' (fvec k r' z 0) := by
@@ -136,14 +136,14 @@ theorem fvec_lift (z : Fin (2 * r' + k + 1) → ℂ) :
   · rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (by rw [← (hL k i r').2, Matrix.nonsing_inv_mul _ hg, (hL k i r').1])`.
+A detailed English derivation is pending.
 -/
 theorem ιLev_inv (hL : LevHom) (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (hg : IsUnit g.det) :
     (ιLev k i r' g)⁻¹ = ιLev k i r' g⁻¹ :=
   Matrix.inv_eq_left_inv (by rw [← (hL k i r').2, Matrix.nonsing_inv_mul _ hg, (hL k i r').1])
 
 /- English proof (translation)
-Take `⟨_, hI, -⟩` from `hpkFacts k r'`. Establish `hU : gᴴ * Hpk k r' * g = Hpk k r'` using `hg`. Conclude with `Matrix.isUnit_det_of_left_inverse (B := Hpk k r' * gᴴ * Hpk k r') (by`. Rewrite using `[Matrix.mul_assoc (Hpk k r' * gᴴ), Matrix.mul_assoc (Hpk k r'), ← Matrix.mul_assoc gᴴ, hU, hI])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_UH (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (hg : g ∈ UH (Hpk k r')) :
     IsUnit g.det := by
@@ -159,7 +159,7 @@ variable (hL : LevHom)
 include hL
 
 /- English proof (translation)
-Simplify using `only [chatL]`. Rewrite using `[ha, hb]`. Use `Finset.sum_congr rfl fun j₁ _ => Finset.sum_congr rfl fun j₂ _ => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_assoc, Function.comp_assoc, qminorOp_lev]`. Apply the tactic sequence `all_goals try exact hL`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chatL_lev {t : ℕ} (pos : Fin t → Fin (2 * r' + k + 1)) (u : ℂ)
     (a β : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r') + k + 1)) ℂ → Fin t → ℂ)
@@ -176,9 +176,9 @@ theorem chatL_lev {t : ℕ} (pos : Fin t → Fin (2 * r' + k + 1)) (u : ℂ)
   all_goals try exact hL
 
 /- English proof (translation)
-Simplify using `only [chat2L]`. Rewrite using `[ha, ha₁, hb, hb₁]`. Use `Finset.sum_congr rfl fun j₁ _ => Finset.sum_congr rfl fun j₂ _ => Finset.sum_congr rfl fun j₃ _ => Finset.sum_congr rfl fun j₄ _ => ?_` and prove the remaining obligations. Use `split_ifs`. Apply the tactic sequence `rw [Function.comp_assoc, Function.comp_assoc, qminorOp_lev] all_goals try exact hL`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem second_capelli_minor_level {t : ℕ} (pos : Fin t → Fin (2 * r' + k + 1)) (u : ℂ)
     (a a₁ β β₁ : Matrix (Fin (2 * (i + r') + k + 1)) (Fin (2 * (i + r') + k + 1)) ℂ → Fin t → ℂ)
@@ -200,7 +200,7 @@ theorem second_capelli_minor_level {t : ℕ} (pos : Fin t → Fin (2 * r' + k + 
 
 omit hL in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `hpos j`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pos_comp {t : ℕ} (pos₁ : Fin t → Fin (2 * (i + r') + k + 1)) (pos₂ : Fin t → Fin (2 * r' + k + 1))
     (hpos : ∀ j, pos₁ j = levPos k i r' (pos₂ (Fin.cast rfl j))) : pos₁ = levPos k i r' ∘ pos₂ := by
@@ -208,7 +208,7 @@ theorem pos_comp {t : ℕ} (pos₁ : Fin t → Fin (2 * (i + r') + k + 1)) (pos�
   exact hpos j
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hp : pos₁ = levPos k i r' ∘ pos₂` using `pos_comp pos₁ pos₂ hpos`. Substitute `hp` using the available equality. Rewrite using `[qminorOp_lev]`. Apply the tactic sequence `all_goals try exact hL`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capL_cast {t₁ t₂ : ℕ} (h : t₁ = t₂) (pos₁ : Fin t₁ → Fin (2 * (i + r') + k + 1))
     (pos₂ : Fin t₂ → Fin (2 * r' + k + 1)) (hpos : ∀ j, pos₁ j = levPos k i r' (pos₂ (Fin.cast h j))) (u : ℂ)
@@ -223,7 +223,7 @@ theorem capL_cast {t₁ t₂ : ℕ} (h : t₁ = t₂) (pos₁ : Fin t₁ → Fin
   all_goals try exact hL
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hp : pos₁ = levPos k i r' ∘ pos₂` using `pos_comp pos₁ pos₂ hpos`. Substitute `hp` using the available equality. Conclude with `chatL_lev hL pos₂ u a β a' β' F x (funext fun j => ha j) (funext fun j => hb j)`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem chatL_cast {t₁ t₂ : ℕ} (h : t₁ = t₂) (pos₁ : Fin t₁ → Fin (2 * (i + r') + k + 1))
     (pos₂ : Fin t₂ → Fin (2 * r' + k + 1)) (hpos : ∀ j, pos₁ j = levPos k i r' (pos₂ (Fin.cast h j))) (u : ℂ)
@@ -240,7 +240,7 @@ theorem chatL_cast {t₁ t₂ : ℕ} (h : t₁ = t₂) (pos₁ : Fin t₁ → Fi
   exact chatL_lev hL pos₂ u a β a' β' F x (funext fun j => ha j) (funext fun j => hb j)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hp : pos₁ = levPos k i r' ∘ pos₂` using `pos_comp pos₁ pos₂ hpos`. Substitute `hp` using the available equality. Conclude with `second_capelli_minor_level hL pos₂ u a a₁ β β₁ a' a₁' β' β₁' F x (funext fun j => ha j) (funext fun j => ha₁ j) (funext fun j => hb j) (funext fun j => hb₁ j)`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem second_capelli_minor_cast {t₁ t₂ : ℕ} (h : t₁ = t₂) (pos₁ : Fin t₁ → Fin (2 * (i + r') + k + 1))
     (pos₂ : Fin t₂ → Fin (2 * r' + k + 1)) (hpos : ∀ j, pos₁ j = levPos k i r' (pos₂ (Fin.cast h j))) (u : ℂ)
@@ -261,14 +261,14 @@ theorem second_capelli_minor_cast {t₁ t₂ : ℕ} (h : t₁ = t₂) (pos₁ : 
 end Ops
 
 /- English proof (translation)
-Simplify using `only [mdim, Fin.val_zero, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mdim_lev (k i r' : ℕ) : mdim k (i + r') ⟨i, by omega⟩ = mdim k r' 0 := by
   simp only [mdim, Fin.val_zero, Fin.val_mk]
   omega
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [posL, lev_val, Fin.coe_cast, Fin.val_zero, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem posL_lev (k i r' : ℕ) (j : Fin (mdim k (i + r') ⟨i, by omega⟩)) :
     posL k (i + r') ⟨i, by omega⟩ j = levPos k i r' (posL k r' 0 (Fin.cast (mdim_lev k i r') j)) := by
@@ -277,7 +277,7 @@ theorem posL_lev (k i r' : ℕ) (j : Fin (mdim k (i + r') ⟨i, by omega⟩)) :
   omega
 
 /- English proof (translation)
-Unfold `uC`. Rewrite using `[mdim_lev]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uC_lev (k i r' : ℕ) (Y : ℂ) : uC k (i + r') ⟨i, by omega⟩ Y = uC k r' 0 Y := by
   unfold uC

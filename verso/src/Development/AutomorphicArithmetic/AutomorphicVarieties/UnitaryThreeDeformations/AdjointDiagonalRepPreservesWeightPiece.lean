@@ -66,11 +66,11 @@ instance (j : ℤ) : ContinuousConstSMul k (Gb k j) := ⟨fun _ => continuous_of
 def Gb.val {j : ℤ} (X : Gb k j) : Matrix (Fin 3) (Fin 3) k := Subtype.val (p := fun X => X ∈ gw k j) X
 
 /- English proof (translation)
-Introduce `X hX a b hab`. Establish `hJ : ∀ i j : Fin 3, (Jmat k 3 * Xᵀ * Jmat k 3) i j = X j.rev i.rev`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`. Apply the tactic sequence `have hw : wt b.rev a.rev = wt a b := by fin_cases a <;> fin_cases b <;> simp [wt, wt1, Fin.rev]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Express the relevant statement in the definitionally equal form `((r0 η Ψ g).mat * (if (r0 η Ψ g).right = 1 then X else thetaLie X) * (((r0 η Ψ g).left⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k)) a b = 0`. Rewrite using `[GG.mat, unitaryThreeReflection_left, ← map_inv, tor_val, tor_val]`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `split_ifs`. Rewrite using `[hX a b hab]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Unfold `thetaLie`. Rewrite using `[Matrix.neg_apply, hJ, hX b.rev a.rev (by rw [hw]; exact hab)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjoint_diagonal_rep_preserves_weight_piece (η : D →* ℤˣ) (Ψ : D →* kˣ) (j : ℤ) (g : D) :
     gw k j ≤ (gw k j).comap (adRep (r0 η Ψ) g) := by

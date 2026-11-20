@@ -10,9 +10,9 @@ open scoped ComplexOrder ENNReal Matrix
 namespace GlobalTheory.LatBasisAdapted
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Establish `h : (w ∘ f) k = (c (f k))⁻¹ • ((fun i => c i • w i) ∘ f) k`. Simplify using `[smul_smul, inv_mul_cancel₀ (hc (f k))]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_range_smul_comp {K V ι κ : Type*} [Field K] [AddCommGroup V] [Module K V]
     (c : ι → K) (hc : ∀ i, c i ≠ 0) (w : ι → V) (f : κ → ι) :
@@ -32,9 +32,9 @@ theorem span_range_smul_comp {K V ι κ : Type*} [Field K] [AddCommGroup V] [Mod
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X W₁ W₂`. Take `⟨a, b, c, w, hw, h0, h1, h2, h3⟩` from `GlobalTheory.exists_basis_adapted_two_subspaces E (Fin r → E) W₁ W₂`. Use `choose n hn hm using fun k => (GlobalTheory.LatDen.latDen r X).1 (w k)`. Establish `hc : ∀ k, (n k : E) ≠ 0` using `fun k => Nat.cast_ne_zero.2 (hn k).ne'`. Use `⟨a, b, c, fun k => (n k : E) • w k, ?_, hm, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw.units_smul (fun k => Units.mk0 _ (hc k))`. Rewrite using `[span_range_smul_comp _ hc, h0]`. Rewrite using `[span_range_smul_comp _ hc, h1]`. Rewrite using `[span_range_smul_comp _ hc, h2]`. Conclude with `(span_range_smul_comp _ hc w id).trans h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_adapted_mem : (∀ (r : ℕ) (X : Data E r) (W₁ W₂ : Submodule E (Fin r → E)), ∃ (a b c : ℕ) (w : Fin a ⊕ Fin b ⊕ Fin c → Fin r → E), LinearIndependent E w ∧ (∀ k, w k ∈ X.Λ) ∧ Submodule.span E (Set.range (w ∘ Sum.inl)) = W₁ ⊓ W₂ ∧ Submodule.span E (Set.range (w ∘ Sum.map id Sum.inl)) = W₁ ∧ Submodule.span E (Set.range (w ∘ Sum.map id Sum.inr)) = W₂ ∧ Submodule.span E (Set.range w) = W₁ ⊔ W₂) := by
   intro r X W₁ W₂

@@ -25,9 +25,9 @@ theorem mulQ_mk (a : U) (n : ℕ) (x : U) :
     mulQ a n (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (a ^ n * x) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[mulQ_mk, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨c, ?_⟩)` and prove the remaining obligations. Establish `hn` using `pow_mem ha n`. Rewrite `hc` using `[pow_succ, mul_comm (a ^ n) a, ← mul_assoc, mul_comm _ (a ^ n)]`. Rewrite using `[pow_one]`. Conclude with `(mul_cancel_left_mem_nonZeroDivisors hn).1 hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulQ_inj (a : U) (ha : a ∈ nonZeroDivisors U) (n : ℕ) : Function.Injective (mulQ a n) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -42,11 +42,11 @@ theorem mulQ_inj (a : U) (ha : a ∈ nonZeroDivisors U) (n : ℕ) : Function.Inj
   exact (mul_cancel_left_mem_nonZeroDivisors hn).1 hc
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Ideal.Quotient.mk _ c, by rw [mulQ_mk, mul_comm]⟩`. Introduce and unpack `⟨z, hz⟩`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite `hz` using `[mulQ_mk, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `hz`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c - d * a, by rw [sub_mul, mul_assoc, ← pow_succ', hd]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem mulQ_exact (a : U) (n : ℕ) :
     Function.Exact (mulQ a n) (Ideal.Quotient.factor (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow a n.le_succ))) := by

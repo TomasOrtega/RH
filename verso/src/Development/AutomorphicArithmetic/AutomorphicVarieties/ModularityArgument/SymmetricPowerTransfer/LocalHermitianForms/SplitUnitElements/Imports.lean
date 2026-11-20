@@ -3,37 +3,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ L c d m S hS y₀`. Use `haveI := L.frac`. Establish `e1 : ∀ (r : O) (a : Etau K τ), ofE Δ (algebraMap O K r • a) = algebraMap (Lsq K Δ) (EL Δ τ) (algebraMap K (Lsq K Δ) (algebraMap O K r)) * ofE Δ a`. Introduce `r a`. Apply the tactic sequence `ext <;> simp [ofE, Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e2 : ∀ (r : O) (w : EL Δ τ), star (sigL (algebraMap (Lsq K Δ) (EL Δ τ) (algebraMap K (Lsq K Δ) (algebraMap O K r)) * w)) = algebraMap (Lsq K Δ) (EL Δ τ) (algebraMap K (Lsq K Δ) (algebraMap O K r)) * star (sigL w)`. Introduce `r w`. Apply the tactic sequence `ext <;> simp [sigL] <;> ring`. Establish `e3 : ∀ (r : O) (g : Lsq K Δ), r • g = algebraMap K (Lsq K Δ) (algebraMap O K r) * g`. Introduce `r g`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply O K (Lsq K Δ)]`. Establish `hscale : ∀ (r : O) (x : Sp Δ τ) (z : EL Δ τ) (a : Etau K τ), herm c m x (0, z * ofE Δ (algebraMap O K r • a)) = r • herm c m x (0, z * ofE Δ a)`. Introduce `r x z a`. Rewrite using `[e1, mul_left_comm]`. Simplify using `only [herm, star_zero, mul_zero, zero_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e3, mul_left_comm _ (algebraMap (Lsq K Δ) (EL Δ τ) _), ← Algebra.smul_def, map_smul, smul_eq_mul]`. Establish `hadd_herm : ∀ (x y : Sp Δ τ) (w : EL Δ τ), herm c m (x + y) (0, w) = herm c m x (0, w) + herm c m y (0, w)`. Introduce `x y w`. Simplify using `[herm, add_mul, mul_add]`. Establish `hsmul_herm : ∀ (b : O) (x : Sp Δ τ) (w : EL Δ τ), herm c m (b • x) (0, w) = b • herm c m x (0, w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b x w`. Simplify using `[herm]`. Establish `lin : ∀ (r : O) (a : Etau K τ), ((0, (y₀ : EL Δ τ) * ofE Δ (r • a)) : Sp Δ τ) = r • ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ)`. Introduce `r a`. Rewrite using `[← algebraMap_smul K r a, e1, Prod.smul_mk, smul_zero, Algebra.smul_def r, IsScalarTower.algebraMap_apply O K (EL Δ τ), IsScalarTower.algebraMap_apply K (Lsq K Δ) (EL Δ τ), mul_left_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hadd : ∀ a b : Etau K τ, ((0, (y₀ : EL Δ τ) * ofE Δ (a + b)) : Sp Δ τ) = ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ) + ((0, (y₀ : EL Δ τ) * ofE Δ b) : Sp Δ τ)`. Introduce `a b`. Establish `h : ofE Δ (a + b) = ofE Δ a + ofE Δ b`. Apply the tactic sequence `ext <;> simp [ofE]`. Rewrite using `[h, mul_add, Prod.mk_add_mk, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : Etau K τ →ₗ[O] Sp Δ τ` to `{ toFun := fun a => ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ), map_add' := hadd, map_smul' := fun r a => lin r a }`. Establish `hinj : Function.Injective φ`. Introduce `a b h`. Establish `h2 : (y₀ : EL Δ τ) * ofE Δ a = (y₀ : EL Δ τ) * ofE Δ b` using `congrArg Prod.snd h`. Establish `h3` using `y₀.isUnit.mul_left_cancel h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Establish `h4` using `congrArg (fun w : EL Δ τ => w.re.re) h3`. Simplify `h4` using `[ofE]`. Establish `h4` using `congrArg (fun w : EL Δ τ => w.im.re) h3`. Simplify `h4` using `[ofE]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hS.fg`. Establish `hT : {a : Etau K τ | ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ) ∈ S} = ↑((Submodule.span O (s : Set (Sp Δ τ))).comap φ)`. Use extensionality with `a`. Rewrite using `[hs]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact.
 
-Establish `hfg : ((Submodule.span O (s : Set (Sp Δ τ))).comap φ).FG` using `by haveI : IsNoetherian O (Submodule.span O (s : Set (Sp Δ τ))) := isNoetherian_of_fg_of_noetherian _ ⟨s, rfl⟩`. Apply `Submodule.fg_of_fg_map_injective φ hinj` to reduce the goal to its premises. Establish `hle : ((Submodule.span O (s : Set (Sp Δ τ))).comap φ).map φ ≤ Submodule.span O (s : Set (Sp Δ τ))` using `Submodule.map_comap_le _ _`. Establish `h1` using `IsNoetherian.noetherian ((((Submodule.span O (s : Set (Sp Δ τ))).comap φ).map φ).comap (Submodule.span O (s : Set (Sp Δ τ))).subtype)`. Establish `h2` using `h1.map (Submodule.span O (s : Set (Sp Δ τ))).subtype`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.2 hle]`. Then use the resulting hypothesis. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hfg`. Conclude with `⟨t, by rw [hT, ht]⟩`. Establish `key : ∀ a : Etau K τ, ∃ r : O, r ≠ 0 ∧ ((0, (y₀ : EL Δ τ) * ofE Δ (algebraMap O K r • a)) : Sp Δ τ) ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Take `⟨r, hr, hri⟩` from `OE.multiple L s (fun x : Sp Δ τ => herm c m x (0, (y₀ : EL Δ τ) * ofE Δ a))`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[hS.dual]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hscale]`. Rewrite `hx` using `[hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hri x hx`. Consider the case `zero => simpa [herm] using (isIntegral_zero : IsIntegral O (0 : Lsq K Δ))`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[hadd_herm, smul_add]`. Conclude with `hx.add hy`. Consider the case `smul b x _ hx`. Rewrite using `[hsmul_herm, smul_comm, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isIntegral_algebraMap.mul hx`. Rewrite using `[eq_top_iff]`. Introduce `a _`. Take `⟨r, hr, hmem⟩` from `key a`. Establish `hk : algebraMap O K r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a = (algebraMap O K r)⁻¹ • (algebraMap O K r • a)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hk, one_smul]`. Rewrite using `[ha]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.One.lat :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ →

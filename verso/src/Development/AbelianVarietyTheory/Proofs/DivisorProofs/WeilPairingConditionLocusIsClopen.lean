@@ -31,21 +31,21 @@ section Root
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `pull_isLB o.isLB _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ o.A), pc o.isLB (x * x') y = pc o.isLB x y + pc o.isLB x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S o.A _ o.ab hD o.ample o.P o.isLB o.rig₁ o.rig₂ T x x' y).1`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb o.isLB _ _)).2 ⟨t, ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_linComb o.isLB, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ o.A), pc o.isLB x (y * y') = pc o.isLB x y + pc o.isLB x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S o.A _ o.ab hD o.ample o.P o.isLB o.rig₁ o.rig₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb o.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb o.isLB, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `lifts : ∀ z : T ⟶ o.A, z ^ M = 1 → ∀ q : T.left, ∃ V : T.left.Opens, q ∈ V ∧ ∃ θ : Out.ThetaGrp o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) M (Out.overRes V), θ.pt = Out.overResι V ≫ z` using `fun z hz q => by`. Take `⟨θ, hθ⟩` from `exists_theta_diag o.isLB hB hB' (k := M) (Out.overResι ⊤ ≫ z) (by rw [← MonObj.comp_pow, hz, MonObj.comp_one])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⊤, trivial, θ, hθ⟩`. Take `⟨c₀, hc₀⟩` from `CommutatorPairing.exists_weilIs hG o.ab hD (lifts x hx) (lifts y hy)`. Take `⟨c₁, hc₁⟩` from `CommutatorPairing.exists_weilIs hG o.ab hD (lifts 1 (one_pow M)) (lifts y hy)`. Establish `h11` using `GlobalTheory.DiagPairing.weilIs_mul_left hG o.ab hD hc₁ hc₁`. Rewrite `h11` using `[_root_.mul_one]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁ : c₁ * c₁ = c₁` using `CommutatorPairing.weilIs_unique hG o.ab hD h11 hc₁`. Establish `e₁' : c₁ = 1` using `mul_eq_left.1 e₁`. Establish `pw : ∀ m : ℕ, Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) M (x ^ (m + 1)) y (c₀ ^ (m + 1))`. Introduce `m`. Proceed by induction on `m with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simpa using hc₀`. Consider the case `succ m ih`. Rewrite using `[pow_succ x (m + 1), pow_succ c₀ (m + 1)]`. Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG o.ab hD ih hc₀`. Establish `hp` using `pw (M - 1)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[Nat.sub_add_cancel hM, hx]`. Conclude with `⟨c₀, CommutatorPairing.weilIs_unique hG o.ab hD hp (e₁' ▸ hc₁), hc₀⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_weilIs_root {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s) (M : ℕ) (T : Over S) (x y : T ⟶ o.A) (hM : 0 < M)
@@ -107,27 +107,25 @@ namespace GlobalTheory.HTWeilLocus
 open GlobalTheory.LevCover
 
 /- English proof (translation)
-Introduce `p _ D R _ b N h M hM hMp S t o Z t₁ e hadd hpow`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `hLB : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `pull_isLB o.isLB _`. Establish `hMZ : IsUnit (M : Γ(Z.left, ⊤))`. Use `(b.unit M hMp).map (fnOn (Z.hom ≫ t))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `ζu : (cycAway M)ˣ` to `Units.ofPowEqOne (zetaAway M) M (zetaAway_pow_self M hM.ne') hM.ne'`. Establish `hζv : (ζu : cycAway M) = zetaAway M` using `Units.val_ofPowEqOne _ _ _ _`. Establish `hζM : ∀ (k : Type) [Field k] (β : cycAway M →+* k), Units.map β.toMonoidHom ζu ^ M = 1` using `fun k _ β => by`. Rewrite using `[← map_pow, Units.pow_ofPowEqOne, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `P2 : (Fin h ⊕ Fin h → ℤ) → (Fin h ⊕ Fin h → ℤ) → HkClopen.GeoCond Z.left` to `fun a c k _ _ x => ∀ (β : cycAway M →+* k) (z : kˣ), x ≫ t₁ = spMap β → (z : k) = β (zetaAway M) → Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) M ((Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e a) ((Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e c) (unitOn (z ^ (2 * o …`. Establish `locPair : ∀ a c, HkClopen.Loc (P2 a c)` using `fun a c => by`. Take `⟨v, hv, hW⟩` from `exists_weilIs_root o M Z (e a) (e c) hM (hpow a) (hpow c)`. Use `(GlobalTheory.loc_units_eq Z.left M v (Units.map (fnOn t₁).toMonoidHom (ζu ^ (2 * omegaStd a c))) hMZ hv fun k _ _ g => ?_).congr fun k _ _ g => ?_` and prove the remaining obligations. Take `⟨β, hβ⟩` from `exists_spMap (g ≫ t₁)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_fnOn _ g β hβ, ← GlobalTheory.SiegCover.unitOn_pow', map_zpow, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζM, one_zpow]`. Conclude with `GlobalTheory.SiegCover.unitOn_one'`. Establish `hW'` using `GlobalTheory.CommPairing.weilIs_pull hG o.ab hLB (Over.homMk g rfl : Over.mk (g ≫ Z.hom) ⟶ Z) hW`. Take `⟨β, hβ⟩` from `exists_spMap (g ≫ t₁)`. Establish `hu` using `map_fnOn _ g β hβ (ζu ^ (2 * omegaStd a c))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[show Units.map β.toMonoidHom (ζu ^ (2 * omegaStd a c)) = Units.map β.toMonoidHom ζu ^ (2 * omegaStd a c) from map_zpow _ _ _]`. Establish `hzβ : ((Units.map β.toMonoidHom ζu : kˣ) : k) = β (zetaAway M)`. Rewrite using `[Units.coe_map]`. Conclude with `congrArg β hζv`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `E β' z hβ' hz`. Take `rfl : β = β'` from `spMap_inj' (hβ.symm.trans hβ')`. Take `rfl : z = Units.map β.toMonoidHom ζu` from `Units.ext (hz.trans hzβ.symm)`. Rewrite using `[← hu, ← E]`. Conclude with `hW'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `H`. Conclude with `GlobalTheory.CommutatorPairing.weilIs_unique hG o.ab hLB hW' (hu ▸ H β _ hβ hzβ)`. Establish `e1 : ∀ a c, e (a + M • c) = e a` using `fun a c => by`. Rewrite using `[hadd, add_map_nsmul hadd, hpow, _root_.mul_one]`. Establish `inv : ∀ (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ Z.left) (a a' c₁ c₂ : Fin h ⊕ Fin h → ℤ), P2 a a' k g → P2 (a + M • c₁) (a' + M • c₂) k g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ _ g a a' c₁ c₂ H β z hβ hz`. Rewrite using `[e1, e1]`. Establish `hzM : z ^ M = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, hz, ← map_pow, zetaAway_pow_self M hM.ne', map_one, Units.val_one])`. Take `⟨m, hm⟩ : ∃ m : ℤ, omegaStd (a + M • c₁) (a' + M • c₂) = omegaStd a a' + M * m` from `⟨_, GlobalTheory.SiegCover.omegaStd_add_nsmul M a a' c₁ c₂⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hz' : z ^ (2 * omegaStd (a + M • c₁) (a' + M • c₂)) = z ^ (2 * omegaStd a a')`. Rewrite using `[hm, mul_add, zpow_add, show (2 : ℤ) * (M * m) = M * (2 * m) by ring, zpow_mul _ (M : ℤ), zpow_natCast, hzM, one_zpow, _root_.mul_one]`. Rewrite using `[hz']`. Conclude with `H β z hβ hz`. Take `⟨κ, hκ, q, hq⟩` from `exists_finite_mod (Fin h ⊕ Fin h → ℤ) hM`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hκ`. Set `r : κ → (Fin h ⊕ Fin h → ℤ)` to `Function.invFun q`. Establish `localization₂ : HkClopen.Loc (fun (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ Z.left) => ∀ a a', P2 a a' k g)`. Use `(HkClopen.Loc.all (I₀ := κ × κ) (P := fun i => P2 (r i.1) (r i.2)) fun i => locPair _ _).congr fun k _ _ g => ⟨fun H a a' => ?_, fun H i => H _ _⟩` and prove the remaining obligations. Take `⟨c₁, e₁⟩` from `hq (r (q a)) a (Function.invFun_eq ⟨a, rfl⟩)`.
-
-Take `⟨c₂, e₂⟩` from `hq (r (q a')) a' (Function.invFun_eq ⟨a', rfl⟩)`. Rewrite using `[e₁, e₂]`. Conclude with `inv k g _ _ c₁ c₂ (H (q a, q a'))`. Conclude with `localization₂.congr fun k _ _ x => ⟨fun H β z hβ hz a c => H a c β z hβ hz, fun H a c β z hβ hz => H β z hβ hz a c⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_locus_clopen : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ), 0 < M → M.Coprime p → ∀ (S : Scheme.{0}) (t : S ⟶ Sp R) (o : Obj b N t) (Z : Over S) (t₁ : Z.left ⟶ Sp (cycAway M)) (e : (Fin h ⊕ Fin h → ℤ) → (Z ⟶ o.A)), (∀ a c, e (a + c) = e a * e c) → (∀ a, e a ^ M = 1) → GlobalTheory.HkClopen.Loc (S := Z.left) (fun k _ _ x => ∀ (β : cycAway M →+* k) (z : kˣ), x ≫ t₁ = spMap β → (z : k) = β (zetaAway M) → ∀ a c, Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) M ((Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e a) ((Over.homMk x rfl : Over.mk (x ≫ Z.hom) ⟶ Z) ≫ e c) (unitOn (z ^ (2 * omegaStd a c)))) := by
   intro p _ D R _ b N h M hM hMp S t o Z t₁ e hadd hpow

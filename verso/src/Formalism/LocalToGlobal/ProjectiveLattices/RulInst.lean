@@ -26,23 +26,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra c.F (Rul Xo c) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra (𝓞 c.F) (Rul Xo c) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsScalarTower (𝓞 c.F) c.F (Rul Xo c) := inferInstance
 /- English proof (translation)
-The claim follows from `a • f`.
+A detailed English derivation is pending.
 -/
 example (a : c.F) (f : Rul Xo c) : Rul Xo c := a • f
 /- English proof (translation)
-The claim follows from `a • f`.
+A detailed English derivation is pending.
 -/
 example (a : 𝓞 c.F) (f : Rul Xo c) : Rul Xo c := a • f
 

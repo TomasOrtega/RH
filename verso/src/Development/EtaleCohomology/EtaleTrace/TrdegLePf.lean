@@ -6,17 +6,17 @@ open Cardinal IntermediateField.algebraAdjoinAdjoin
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-Use `set L := IntermediateField.adjoin k s`. Establish `hD : ∀ x : K, KaehlerDifferential.D L K x = 0`. Introduce `x`. Establish `hx : KaehlerDifferential.D k K x ∈ Submodule.span K (KaehlerDifferential.D k K '' s)`. Rewrite using `[hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `h2` using `Submodule.mem_map_of_mem (f := KaehlerDifferential.map k L K K) hx`. Rewrite `h2` using `[Submodule.map_span, KaehlerDifferential.map_D]`. Establish `h3 : (KaehlerDifferential.map k L K K) '' (KaehlerDifferential.D k K '' s) ⊆ {0}`. Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[KaehlerDifferential.map_D]`. Establish `: y = algebraMap L K ⟨y, IntermediateField.subset_adjoin k s hy⟩` using `rfl`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, Set.mem_singleton_iff]`. Rewrite using `[this, Derivation.map_algebraMap]`. Establish `h4` using `Submodule.span_mono h3 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h4`. Establish `htop` using `KaehlerDifferential.span_range_derivation L K`. Establish `hbot : Submodule.span K (Set.range (KaehlerDifferential.D L K)) = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hD x`. Rewrite `htop` using `[hbot]`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `ha : a ∈ (⊥ : Submodule K Ω[K⁄L])` using `by rw [htop]; trivial`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : b ∈ (⊥ : Submodule K Ω[K⁄L])` using `by rw [htop]; trivial`. Rewrite `ha`, `hb` using `[Submodule.mem_bot]`. Rewrite using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kaehler_adjoin_subsingleton (k K : Type) [Field k] [Field K] [Algebra k K] (s : Set K)
     (hs : Submodule.span K (KaehlerDifferential.D k K '' s) = ⊤) :
@@ -46,15 +46,15 @@ theorem kaehler_adjoin_subsingleton (k K : Type) [Field k] [Field K] [Algebra k 
   rw [Submodule.mem_bot] at ha hb; rw [ha, hb]
 
 /- English proof (translation)
-Introduce `k K _ _ _ _`. Take `⟨b, hbs, hbsp, hbli⟩` from `exists_linearIndependent K (Set.range (KaehlerDifferential.D k K))`. Rewrite `hbsp` using `[KaehlerDifferential.span_range_derivation]`. Establish `hpre : ∀ ω : b, ∃ y : K, KaehlerDifferential.D k K y = ω` using `fun ω => hbs ω.2`. Use `choose t ht using hpre`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : Set K := Set.range t`. Establish `himg : KaehlerDifferential.D k K '' s = b`. Use extensionality with `ω`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨i, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ht]`. Conclude with `i.2`. Introduce `hω`. Conclude with `⟨t ⟨ω, hω⟩, ⟨_, rfl⟩, ht _⟩`. Establish `hsub` using `kaehler_adjoin_subsingleton k K s (by rw [himg, hbsp])`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := IntermediateField.adjoin k s`. Establish `: Algebra.FormallyUnramified L K` using `⟨hsub⟩`. Establish `: Algebra.EssFiniteType L K` using `Algebra.EssFiniteType.of_comp k L K`. Establish `: Algebra.IsSeparable L K` using `(Algebra.FormallyUnramified.iff_isSeparable L K).mp inferInstance`. Establish `: Algebra.IsAlgebraic (Algebra.adjoin k s) K` using `Algebra.IsAlgebraic.trans _ L K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Algebra.IsAlgebraic.trdeg_le_cardinalMk k s (A := K)`. Establish `h2 : #s ≤ #b` using `Cardinal.mk_range_le`. Establish `h3 : #b = (Module.finrank K Ω[K⁄k] : Cardinal)`. Rewrite using `[Module.finrank_eq_rank, ← (Module.Basis.mk hbli (le_of_eq (by rw [Subtype.range_coe, hbsp]))).mk_eq_rank'']`. Conclude with `h1.trans (h2.trans h3.le)`.
+A detailed English derivation is pending.
 -/
 theorem TrdegLe_of : TrdegLe := by
   intro k K _ _ _ _

@@ -17,7 +17,7 @@ local macro:max "kc% " e:term:max : term => `((by kexactB $e))
 namespace GlobalTheory.TwInputs.Move.TieUp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j b`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Establish `h1` using `hr ((i)) i ((HEq.refl i)) ((j)) b ((f))`. Use `eq_of_heq ?_` and prove the remaining obligations. Conclude with `(h1)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rds_eq {D : D7} {r : Rest D} {ι : D.what₂.LL →+* (overD D r).what₂.LL} {e : ↥(overD D r).LL0 ≃+* ↥D.LL0}
     (h : CopyTw D (overD D r) ι e) {ρ : Setup D.ntw} {rd : Rds D.nexp ρ} {rd' : Rds (overD D r).nexp (setupUp r ρ)}
@@ -29,9 +29,9 @@ theorem rds_eq {D : D7} {r : Rest D} {ι : D.what₂.LL →+* (overD D r).what�
   exact (h1)
 
 /- English proof (translation)
-Introduce `D D' ι e h ρ ρ' hs hρ hρ' rd rd' hr T`. Take `⟨r, rfl⟩` from `h.exists_rest`. Consider the cases of `SameData.eq_up r hs`. Establish `hrd` using `rds_eq h hr`. Substitute `hrd` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨fun i j b => (cellUp r h hρ' (T i j b)), fun i i' hi j b => ?_⟩` and prove the remaining obligations. Consider the cases of `hi`. Conclude with `(cellUp_rdV r h hρ' (T i j b))`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem tie_move : ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) {ρ : Setup D.ntw} {ρ' : Setup D'.ntw}, SameSetup ρ ρ' → ∀ (hρ : ρ.Good) (hρ' : ρ'.Good)
     (rd : Rds D.nexp ρ) (rd' : Rds D'.nexp ρ'), RdRel h rd rd' → ∀ T : Comparison₂ hρ rd,

@@ -19,7 +19,7 @@ section Det
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `hsub : (glEmbMat k n A).submatrix Fin.castSucc Fin.castSucc = A`. Use extensionality with `i j`. Simplify using `[glEmbMat]`. Rewrite using `[Matrix.det_succ_row _ (Fin.last n), Fin.sum_univ_castSucc]`. Simplify using `[glEmbMat, hsub]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_glEmbMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) : (glEmbMat k n A).det = A.det := by
   have hsub : (glEmbMat k n A).submatrix Fin.castSucc Fin.castSucc = A := by
@@ -29,11 +29,11 @@ theorem det_glEmbMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) : (glEmbMat k n A)
   simp [glEmbMat, hsub]
 
 /- English proof (translation)
-Establish `htri : (((unip k n v : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)).BlockTriangular id`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Establish `hj : j ≠ Fin.last n` using `fun h => by`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `absurd hij' (not_lt.2 (Fin.le_last i))`. Simplify using `[unip, colMat, hj, one_apply, hij'.ne']`. Rewrite using `[Matrix.det_of_upperTriangular htri]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `last => simp [unip, colMat]`. Consider the case `cast i => simp [unip, colMat, Fin.castSucc_ne_last]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem det_unip (n : ℕ) (v : Multiplicative (Fin n → k)) :
     ((unip k n v : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k).det = 1 := by
@@ -57,18 +57,18 @@ section Fix
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `[thetaA, chrA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem thetaA_zero (ψ : AddChar k Circle) (n : ℕ) : thetaA k ψ (0 : Fin n → k) = 1 := by
   ext u
   simp [thetaA, chrA]
 
 /- English proof (translation)
-Establish `htop : twKer T (MirUin k (n + 1)) (mirChar k ψ n) = ⊤` using `(Submodule.eq_top_iff' ).2 fun x => (Submodule.Quotient.mk_eq_zero _).1 (Subsingleton.elim _ _)`. Establish `hall : ∀ a : Fin (n + 1) → k, T (u : Mir k (n + 1)) v - v ∈ twKer T (MirUin k (n + 1)) (thetaA k ψ a)`. Introduce `a`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[thetaA_zero]`. Conclude with `Submodule.subset_span ⟨u, v, by simp⟩`. Take `⟨m, hm⟩` from `GlobalTheory.CompanionTheory.LinAlg.exists_GL_lastRow_eq k n a ha`. Rewrite using `[← hm]`. Use `(GlobalTheory.CompanionTheory.BZMirabolic.twKerConj k ψ (n + 1) V T (Pi.single (Fin.last n) 1) m _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.CompanionTheory.BZMir.mirChar_eq_thetaA_single k ψ n, htop]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `sub_eq_zero.1 (GlobalTheory.CompanionTheory.MirFourier.fourier k ψ hψ h1 (n + 1) V T hT _ hall)`.
+Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem unip_fixes (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1) (n : ℕ) {V : Type}
     [AddCommGroup V] [Module ℂ V] (T : Representation ℂ (Mir k (n + 1)) V) (hT : IsSmooth T)
@@ -98,9 +98,9 @@ theorem psiMinus_mk {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : R
     psiMinus k τ g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (τ (levi k n g) v) := rfl
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(u.2 : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Establish `hdet : Matrix.GeneralLinearGroup.det ((u : Mir k n) : GL (Fin (n + 1)) k) = 1`. Establish `hv' : ((u : Mir k n) : GL (Fin (n + 1)) k) = unip k n v` using `hv.symm`. Use `ext`. Rewrite using `[hv']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using det_unip n v`. Rewrite using `[detChar_apply, hdet, map_one]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem detChar_unip (χ : kˣ →* ℂˣ) (n : ℕ) (u : MirUin k n) :
     detChar (Fin (n + 1)) χ ((u : Mir k n) : GL (Fin (n + 1)) k) = 1 := by
@@ -113,7 +113,7 @@ theorem detChar_unip (χ : kˣ →* ℂˣ) (n : ℕ) (u : MirUin k n) :
   rw [detChar_apply, hdet, map_one]
 
 /- English proof (translation)
-Establish `hdet : Matrix.GeneralLinearGroup.det ((levi k n g : Mir k n) : GL (Fin (n + 1)) k) = Matrix.GeneralLinearGroup.det g`. Use `ext`. Conclude with `det_glEmbMat n (g : Matrix (Fin n) (Fin n) k)`. Rewrite using `[detChar_apply, detChar_apply, hdet]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detChar_levi (χ : kˣ →* ℂˣ) (n : ℕ) (g : GL (Fin n) k) :
     detChar (Fin (n + 1)) χ ((levi k n g : Mir k n) : GL (Fin (n + 1)) k) = detChar (Fin n) χ g := by
@@ -130,11 +130,11 @@ section Descent
 variable {G V V' : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Establish `hR : twKer T' N 1 ≤ LinearMap.ker B.flip`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, x, rfl⟩`. Use `LinearMap.mem_ker.2 (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `[hinv u v x]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `Bq` to `(twKer T' N 1).liftQ B.flip hR`. Establish `hL : twKer T N 1 ≤ LinearMap.ker Bq.flip`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, x, rfl⟩`. Simplify using `[hfix u x]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨(twKer T N 1).liftQ Bq.flip hL, fun v v' => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_descent (N : Subgroup G) (T : Representation ℂ G V) (T' : Representation ℂ G V')
     (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (hfix : ∀ (u : N) v, T (u : G) v = v)
@@ -158,13 +158,13 @@ end Descent
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ h1 n s V V' _ _ _ _ T T' hT _ B hB hnd hsub`. Establish `hfix` using `unip_fixes ψ hψ h1 n T hT hsub`. Establish `hinv : ∀ (u : MirUin k (n + 1)) v x, B v (T' (u : Mir k (n + 1)) x) = B v x`. Introduce `u v x`. Establish `h` using `hB (u : Mir k (n + 1)) v x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hfix u v, detChar_unip]`. Simplify using `using h`. Take `⟨B', hB'⟩` from `exists_descent (MirUin k (n + 1)) T T' B hfix hinv`. Use `⟨B', ?_, ?_⟩` and prove the remaining obligations. Introduce `g w w'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Take `⟨v', rfl⟩` from `Submodule.Quotient.mk_surjective _ w'`. Establish `h` using `hB (levi k (n + 1) g) v v'`. Rewrite `h` using `[detChar_levi]`. Rewrite using `[psiMinus_mk, psiMinus_mk, hB', hB', h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Establish `hv : v ≠ 0` using `fun h => hw (by rw [h]; exact Submodule.Quotient.mk_zero _)`. Take `⟨v', hv'⟩` from `hnd v hv`. Conclude with `⟨Submodule.Quotient.mk v', by rw [hB']; exact hv'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pair_psi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (n s : ℕ) (V V' : Type) [AddCommGroup V] [Module ℂ V]

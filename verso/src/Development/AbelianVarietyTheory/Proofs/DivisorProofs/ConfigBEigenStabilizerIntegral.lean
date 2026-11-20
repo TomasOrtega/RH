@@ -17,7 +17,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ShiftSupport
 
 /- English proof (translation)
-Use `⟨GlobalTheory.T.weil_action_restricted_product M ψ hψ u f φ hφ hstd, ?_⟩` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.local_operator_fixes_integral_indicator M ψ hψ u, hstd] with v h1 h2`. Rewrite using `[h2, h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ)
@@ -31,15 +31,13 @@ theorem rho_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   rw [h2, h1]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h k l`. Take `⟨ei, ev, hei, hev, hloc⟩` from `he'.loc`. Take `⟨ι₁, hι₁, hrank⟩` from `GlobalTheory.T.config_b_evaluation_intertwines_theta B G G₁ H H' hC e' he' X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc`. Establish `hS : om' (k.1, h) Φ' ∈ G.M'.So B.ψ B.τ₁` using `GlobalTheory.T.weil_representation_preserves_space hKP.base F E σ B a (b + 2) G X om om' hT (k.1, h) Φ' (Submodule.mem_inf.1 hΦ').2`. Set `R : Fn F (b + 2) (a + (b + 2)) →ₗ[ℂ] Fn F (b + 2) (a + (b + 2))` to `{ toFun := G.M'.co.rho B.ψ (shiftB σ H H' l) map_add' := fun f g => funext fun x => mul_add _ _ _ map_smul' := fun c f => funext fun x => mul_left_comm _ _ _ }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-It suffices to establish `hle : G.M'.So B.ψ B.τ₁ ≤ (G₁.M'.So B.ψ B.τ₁).comap (e'.comp R) from hle hS`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hφ, hvac, hso, rfl⟩`. Establish `hstd` using `hT.geo.hM'.std`. Take `⟨hpure, hae⟩` from `rho_pure G.M' B.ψ hT.base.std (shiftB σ H H' l) f φ hφ ((hvac.and hstd).mono fun v hv => hv.1.trans hv.2)`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (pure f φ)) ∈ G₁.M'.So B.ψ B.τ₁`. Rewrite using `[hpure, hloc _ _ (fun v => locOp_mem _ _ _) (by filter_upwards [hae, hvac] with v h1 h2; rw [h1, h2])]`. Use `Submodule.subset_span ⟨_, fun v => ev v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' l))) (φ v)), fun v => ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← (hev v).2]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem (locOp_mem _ _ _)`. Use `filter_upwards [hae, hvac] with v h1 h2`. Rewrite using `[h1, h2, (hev v).1]`. Use `⟨?_, ι₁, hι₁, fun Y hY => hrank _ hso l Y hY⟩` and prove the remaining obligations. Rewrite using `[← (hev B.v₁).2]`.
-
-Conclude with `Submodule.mem_map_of_mem (locOp_mem _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shifted_mem_So : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

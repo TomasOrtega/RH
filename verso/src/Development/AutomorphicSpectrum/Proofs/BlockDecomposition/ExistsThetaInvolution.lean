@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
 theorem adjH_apply (X : Lie E n) (i j : Fin n) : adjH X i j = star (X j i) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `p (c ((g⁻¹ : GL (Fin n) R).val j i)) = c' (((GeneralLinearGroup.map p g)⁻¹ : GL (Fin n) S).val j i)`. Rewrite using `[h, ← map_inv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_thetaR {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (c : R →+* R) (c' : S →+* S)
     (h : ∀ x, p (c x) = c' (p x)) (g : GL (Fin n) R) :
@@ -41,7 +41,7 @@ theorem map_thetaR {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (c : R
   rfl
 
 /- English proof (translation)
-The claim follows from `ga_ext (by rw [thetaA, map_thetaR _ _ _ GlobalTheory.ThetaPull.pInf_conjAd, pInf_infGL, pInf_infGL]) (by rw [thetaA, map_thetaR _ _ _ GlobalTheory.ThetaPull.pFin_conjAd, pFin_infGL, pFin_infGL, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem thetaA_infGL (y : GL (Fin n) (Cinf E)) :
     thetaA E n (infGL E n y) = infGL E n (thetaR (starRingEnd (Cinf E)) n y) :=
@@ -49,20 +49,20 @@ theorem thetaA_infGL (y : GL (Fin n) (Cinf E)) :
     (by rw [thetaA, map_thetaR _ _ _ GlobalTheory.ThetaPull.pFin_conjAd, pFin_infGL, pFin_infGL, map_one])
 
 /- English proof (translation)
-The claim follows from `ga_ext (by rw [thetaA, map_thetaR _ _ _ GlobalTheory.ThetaPull.pInf_conjAd, pInf_finGL, pInf_finGL, map_one]) (by rw [pFin_finGL]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem thetaA_finGL (k : GL (Fin n) (Af E)) : thetaA E n (finGL E n k) = finGL E n (thetaF E n k) :=
   ga_ext (by rw [thetaA, map_thetaR _ _ _ GlobalTheory.ThetaPull.pInf_conjAd, pInf_finGL, pInf_finGL, map_one])
     (by rw [pFin_finGL]; rfl)
 
 /- English proof (translation)
-Establish `e : kAt w c = infGL E n (locInf w (Unitary.toUnits c))` using `rfl`. Rewrite using `[e, thetaA_infGL]`. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[thetaR_val, ← map_inv, ← map_inv]`. Express the relevant statement in the definitionally equal form `star ((locInf w (Unitary.toUnits c)⁻¹ : GL (Fin n) (Cinf E)).val j i v) = _`. Rewrite using `[locInf_apply, locInf_apply]`. Distinguish the cases in `hv : v = w`. Simplify using `only [hv, if_true]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `star ((star c.1 : Matrix (Fin n) (Fin n) ℂ) j i) = c.1 i j`. Simplify using `[Matrix.star_apply]`. Simplify using `only [hv, if_false]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem thetaA_kAt (w : InfinitePlace E) (c : UU n) : thetaA E n (kAt w c) = kAt w c := by
   classical
@@ -84,7 +84,7 @@ theorem thetaA_kAt (w : InfinitePlace E) (c : UU n) : thetaA E n (kAt w c) = kAt
     · simp [Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]
 
 /- English proof (translation)
-Rewrite using `[thetaR_val]`. Use extensionality with `i j : 2`. Express the relevant statement in the definitionally equal form `starRingEnd (Cinf E) ((y⁻¹ : GL (Fin n) (Cinf E)).val j i) = star ((y.val)⁻¹ j i)`. Rewrite using `[Matrix.coe_units_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toL_thetaR (y : GL (Fin n) (Cinf E)) :
     toL (thetaR (starRingEnd (Cinf E)) n y).val = adjH (GlobalTheory.ThetaPull.invL (toL y.val)) := by
@@ -95,7 +95,7 @@ theorem toL_thetaR (y : GL (Fin n) (Cinf E)) :
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `id hx`. Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[← toL_thetaR, chart_val, chart_val, map_mul, thetaA_infGL]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_theta (φ : GA E n → ℂ) (g : GA E n) {x : Lie E n} (hx : x ∈ invSet E n) :
     chart (fun g => φ (thetaA E n g)) g x = chart φ (thetaA E n g) (adjH (GlobalTheory.ThetaPull.invL x)) := by
@@ -104,7 +104,7 @@ theorem chart_theta (φ : GA E n → ℂ) (g : GA E n) {x : Lie E n} (hx : x ∈
   rw [← toL_thetaR, chart_val, chart_val, map_mul, thetaA_infGL]
 
 /- English proof (translation)
-Establish `e : chart (fun g => φ (thetaA E n g)) g =ᶠ[nhds (oneL E n)] chart φ (thetaA E n g) ∘ adjH ∘ GlobalTheory.ThetaPull.invL` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun x hx => chart_theta φ g hx`. Establish `h1 : (adjH ∘ GlobalTheory.ThetaPull.invL) (oneL E n) = oneL E n` using `(toL_thetaR 1).symm.trans (by rw [map_one]; rfl)`. Establish `h2` using `HasFDerivAt.comp (oneL E n) (f := adjH ∘ GlobalTheory.ThetaPull.invL) (by rw [h1]; exact (differentiableAt_chart hφ (thetaA E n g)).hasFDerivAt) ((adjH (E := E) (n := n)).hasFDerivAt.comp (oneL E n) GlobalTheory.ThetaPull.invL_smooth.2)`. Unfold `lieD`. Rewrite using `[e.fderiv_eq, h2.fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -125,7 +125,7 @@ theorem lieD_theta (X : Lie E n) {φ : GA E n → ℂ} (hφ : φ ∈ Sm E n) (g 
 open ComplexConjugate in
 
 /- English proof (translation)
-Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding` using `fun h => (InfinitePlace.isComplex_iff.1 (IsTotallyComplex.isComplex w)) (ComplexEmbedding.isReal_iff.2 h.symm)`. Unfold `atEmb`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding, if_neg hne, if_pos rfl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atEmb_conjugate (w : InfinitePlace E) (z : ℂ) :
     atEmb (ComplexEmbedding.conjugate w.embedding) z = atEmb w.embedding (conj z) := by
@@ -137,9 +137,9 @@ theorem atEmb_conjugate (w : InfinitePlace E) (z : ℂ) :
 open ComplexConjugate in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [atEmb, InfinitePlace.mk_embedding, if_true, Pi.star_apply]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne hv, Pi.single_eq_of_ne hv, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_atEmb (w : InfinitePlace E) (z : ℂ) : star (atEmb w.embedding z) = atEmb w.embedding (conj z) := by
   funext v
@@ -153,9 +153,9 @@ def sg (w : InfinitePlace E) (a b : Fin n) (z : ℂ) : Lie E n := toL (Matrix.si
 
 open ComplexConjugate in
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Rewrite using `[adjH_apply]`. Express the relevant statement in the definitionally equal form `star (Matrix.single a b (atEmb w.embedding z) j i) = Matrix.single b a (atEmb w.embedding (conj z)) i j`. Rewrite using `[Matrix.single_apply, Matrix.single_apply]`. Distinguish the cases in `h : a = j ∧ b = i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos h.symm, star_atEmb]`. Rewrite using `[if_neg h, if_neg fun h' => h h'.symm, star_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjH_sg (w : InfinitePlace E) (a b : Fin n) (z : ℂ) : adjH (sg w a b z) = sg w b a (conj z) := by
   funext i j
@@ -186,7 +186,7 @@ def thV (π : CuspSub E n) (h : ThetaFix π) : Module.End ℂ π.V where
     rfl
 
 /- English proof (translation)
-The claim follows from `(h.2 ψ.1 ψ.2).choose_spec.2 x`.
+A detailed English derivation is pending.
 -/
 theorem thV_apply (π : CuspSub E n) (h : ThetaFix π) (ψ : π.V) (x : GA E n) :
     ((thV π h ψ : π.V) : Sm E n).1 x = (ψ : Sm E n).1 (thetaA E n x) :=

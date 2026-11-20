@@ -15,9 +15,9 @@ private abbrev omk (T : Type) [Group T] {Z : Type} [MulAction T Z] (z : Z) : orb
   Quotient.mk (orbitRel T Z) z
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : orbitRel T Z a b` using `Quotient.exact h`. Rewrite `h'` using `[orbitRel_apply]`. Conclude with `h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `Quotient.sound` to reduce the goal to its premises. Use `show orbitRel T Z a b`. Rewrite using `[orbitRel_apply]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma omk_eq_iff {Z : Type} [MulAction T Z] (a b : Z) :
     omk T a = omk T b ↔ ∃ t : T, t • b = a := by
@@ -33,14 +33,14 @@ private lemma omk_eq_iff {Z : Type} [MulAction T Z] (a b : Z) :
     exact h
 
 /- English proof (translation)
-The claim follows from `(omk_eq_iff _ _).1 (Quotient.out_eq (omk T z))`.
+A detailed English derivation is pending.
 -/
 private lemma exists_smul_out {Z : Type} [MulAction T Z] (z : Z) :
     ∃ t : T, t • z = Quotient.out (omk T z) :=
   (omk_eq_iff _ _).1 (Quotient.out_eq (omk T z))
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_smul_out (T := T) z`. Rewrite using `[← ht, hf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma inv_out {Z α : Type} [MulAction T Z] (f : Z → α) (hf : ∀ (t : T) z, f (t • z) = f z) (z : Z) :
     f (Quotient.out (omk T z)) = f z := by
@@ -48,11 +48,11 @@ private lemma inv_out {Z α : Type} [MulAction T Z] (f : Z → α) (hf : ∀ (t 
   rw [← ht, hf]
 
 /- English proof (translation)
-Establish `hmap : C.map (MulAut.conj t).toMonoidHom = C`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `hC.conj_mem b hb t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Use `⟨t⁻¹ * a * t, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hC.conj_mem a ha t⁻¹`. Simplify using `[MulAut.conj_apply, mul_assoc]`. Establish `h` using `Subgroup.relIndex_map_map_of_injective (stabilizer T z) C (f := (MulAut.conj t).toMonoidHom) (MulAut.conj t).injective`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hmap]`. Rewrite using `[stabilizer_smul_eq_stabilizer_map_conj]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma relIndex_stab_smul {Z : Type} [MulAction T Z] (C : Subgroup T) [hC : C.Normal] (t : T) (z : Z) :
     (stabilizer T (t • z)).relIndex C = (stabilizer T z).relIndex C := by
@@ -72,7 +72,7 @@ private lemma relIndex_stab_smul {Z : Type} [MulAction T Z] (C : Subgroup T) [hC
   exact h
 
 /- English proof (translation)
-Introduce `t ht`. Rewrite `ht`, the goal using `[mem_stabilizer_iff]`. Conclude with `congrArg Prod.fst ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma stab_pair_le {X Y : Type} [MulAction T X] [MulAction T Y] (x : X) (y : Y) :
     stabilizer T ((x, y) : X × Y) ≤ stabilizer T x := by
@@ -81,7 +81,7 @@ private lemma stab_pair_le {X Y : Type} [MulAction T X] [MulAction T Y] (x : X) 
   exact congrArg Prod.fst ht
 
 /- English proof (translation)
-Use extensionality with `t`. Simplify using `only [mem_stabilizer_iff, Prod.smul_mk, Prod.mk.injEq]`. Conclude with `and_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma stab_swap {X Y : Type} [MulAction T X] [MulAction T Y] (x : X) (y : Y) :
     stabilizer T ((y, x) : Y × X) = stabilizer T ((x, y) : X × Y) := by
@@ -90,13 +90,13 @@ private lemma stab_swap {X Y : Type} [MulAction T X] [MulAction T Y] (x : X) (y 
   exact and_comm
 
 /- English proof (translation)
-Establish `h1` using `index_stabilizer (stabilizer T x) y0`. Establish `h2 : stabilizer (stabilizer T x) y0 = (stabilizer T ((x, y0) : X × Y)).subgroupOf (stabilizer T x)`. Use extensionality with `⟨h, hh⟩`. Rewrite `hh` using `[mem_stabilizer_iff]`. Simplify using `only [mem_stabilizer_iff, Subgroup.mem_subgroupOf, Prod.smul_mk, Prod.mk.injEq, hh, true_and]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h3 : orbit (stabilizer T x) y0 = ((S.filter fun y => omk T ((x, y) : X × Y) = omk T ((x, y0) : X × Y) : Finset Y) : Set Y)`. Use extensionality with `y`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨h, hh0⟩, rfl⟩`. Establish `hh : h • x = x` using `mem_stabilizer_iff.1 hh0`. Establish `e : omk T ((x, (⟨h, hh0⟩ : stabilizer T x) • y0) : X × Y) = omk T ((x, y0) : X × Y)` using `(omk_eq_iff _ _).2 ⟨h, by simp [hh]⟩`. Conclude with `⟨hS _ e, e⟩`. Introduce and unpack `⟨-, e⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨t, ht⟩` from `(omk_eq_iff _ _).1 e`. Simplify using `only [Prod.smul_mk, Prod.mk.injEq] at ht`. Conclude with `⟨⟨t, mem_stabilizer_iff.2 ht.1⟩, ht.2⟩`. Rewrite using `[Subgroup.relIndex, ← h2, h1, h3, Set.ncard_coe_finset]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private lemma card_fiber {X Y : Type} [MulAction T X] [MulAction T Y] (x : X) (y0 : Y) (S : Finset Y)
     (hS : ∀ y, omk T ((x, y) : X × Y) = omk T ((x, y0) : X × Y) → y ∈ S) :
@@ -125,33 +125,31 @@ private lemma card_fiber {X Y : Type} [MulAction T X] [MulAction T Y] (x : X) (y
   rw [Subgroup.relIndex, ← h2, h1, h3, Set.ncard_coe_finset]
 
 /- English proof (translation)
-Establish `hFp : ∀ z : X × Y, F (Quotient.out (omk T z)).1 (Quotient.out (omk T z)).2 = F z.1 z.2` using `inv_out (fun z : X × Y => F z.1 z.2) (fun t z => hF t z.1 z.2)`. Establish `hGp : ∀ z : X × Y, (((stabilizer T (Quotient.out (omk T z))).relIndex C : ℕ) : ℂ) * F (Quotient.out (omk T z)).1 (Quotient.out (omk T z)).2 = (((stabilizer T z).relIndex C : ℕ) : ℂ) * F z.1 z.2` using `inv_out (fun z : X × Y => (((stabilizer T z).relIndex C : ℕ) : ℂ) * F z.1 z.2) (fun t z => by rw [relIndex_stab_smul]; simp only [Prod.smul_fst, Prod.smul_snd, hF])`. Set `π : orbitRel.Quotient T (X × Y) → orbitRel.Quotient T X` to `fun p => omk T (Quotient.out p).1`. Establish `hπ : ∀ z : X × Y, π (omk T z) = omk T z.1` using `inv_out (fun z : X × Y => omk T z.1) (fun t z => (omk_eq_iff _ _).2 ⟨t, rfl⟩)`. Establish `hRHS` using `finsum_eq_sum_of_support_subset (s := hP.toFinset) (fun p : orbitRel.Quotient T (X × Y) => (((stabilizer T (Quotient.out p)).relIndex C : ℕ) : ℂ) * F (Quotient.out p).1 (Quotient.out p).2) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp`. Simplify using `only [Function.mem_support] at hp`. Simplify using `using right_ne_zero_of_mul hp)`. Establish `hLHS` using `finsum_eq_sum_of_support_subset (s := hP.toFinset.image π) (fun q : orbitRel.Quotient T X => (((stabilizer T (Quotient.out q)).relIndex C : ℕ) : ℂ) * ∑ᶠ y, F (Quotient.out q) y) (by`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.mem_support] at hq`. Establish `hs` using `right_ne_zero_of_mul hq`. Establish `: ∃ y, F (Quotient.out q) y ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hs (by simp [hno])`. Take `⟨y, hy⟩` from `this`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Use `⟨omk T ((Quotient.out q, y) : X × Y), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFp]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Rewrite using `[hπ]`. Conclude with `Quotient.out_eq q)`. Rewrite using `[hLHS, hRHS, ← Finset.sum_fiberwise_of_maps_to (s := hP.toFinset) (t := hP.toFinset.image π) (g := π) (fun p hp => Finset.mem_image_of_mem _ hp)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set x := Quotient.out q with hxdef`. Establish `hq : omk T x = q` using `Quotient.out_eq q`. Establish `h1 : ∑ᶠ y, F x y = ∑ y ∈ (hfin x).toFinset, F x y` using `finsum_eq_sum_of_support_subset _ (by intro y hy; simpa using hy)`. Rewrite using `[h1, Finset.mul_sum]`. Establish `maps : ∀ y ∈ (hfin x).toFinset, omk T ((x, y) : X × Y) ∈ hP.toFinset.filter fun p => π p = q`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hy ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFp]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hπ]`. Conclude with `hq`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to maps]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨hpP, hpq⟩` from `hp`. Take `⟨t, ht⟩ : ∃ t : T, t • (Quotient.out p).1 = x` from `(omk_eq_iff _ _).1 (hq.trans hpq.symm)`. Establish `hp0 : omk T ((x, t • (Quotient.out p).2) : X × Y) = p`. Use `Eq.trans ((omk_eq_iff _ _).2 ⟨t, ?_⟩) (Quotient.out_eq p)` and prove the remaining obligations. Conclude with `Prod.ext ht rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y0, hy0⟩ : ∃ y0, omk T ((x, y0) : X × Y) = p` from `⟨_, hp0⟩`. Substitute `hy0` using the available equality. Establish `hne : F x y0 ≠ 0`. Use `hpP` as an intermediate fact. Rewrite `this` using `[hFp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hconst : ∀ y ∈ (hfin x).toFinset.filter fun y => omk T ((x, y) : X × Y) = omk T ((x, y0) : X × Y), (((stabilizer T x).relIndex C : ℕ) : ℂ) * F x y = (((stabilizer T x).relIndex C : ℕ) : ℂ) * F x y0`. Introduce `y hy`. Take `⟨s, hs⟩` from `(omk_eq_iff _ _).1 (Finset.mem_filter.1 hy).2`. Simplify using `only [Prod.smul_mk, Prod.mk.injEq] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hF s x y0` as an intermediate fact. Rewrite `this` using `[hs.1, hs.2]`. Rewrite using `[this]`. Establish `hcard` using `card_fiber (T := T) x y0 (hfin x).toFinset (by`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨s, hs⟩` from `(omk_eq_iff _ _).1 hy`. Simplify using `only [Prod.smul_mk, Prod.mk.injEq] at hs`. Use `hF s x y0` as an intermediate fact. Rewrite `this` using `[hs.1, hs.2]`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq]`.
-
-Rewrite using `[this]`. Conclude with `hne)`. Rewrite using `[Finset.sum_congr rfl hconst, Finset.sum_const, hcard, hGp, nsmul_eq_mul, ← Subgroup.relIndex_mul_relIndex _ _ _ (stab_pair_le x y0) (hX x)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private lemma one_side {X Y : Type} [MulAction T X] [MulAction T Y] (C : Subgroup T) [C.Normal]
     (hX : ∀ x : X, stabilizer T x ≤ C) (F : X → Y → ℂ)
@@ -245,23 +243,21 @@ private lemma one_side {X Y : Type} [MulAction T X] [MulAction T Y] (C : Subgrou
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `T X Y _ _ _ C _ hX hY F hF hx hy hq`. Establish `hFp : ∀ z : X × Y, F (Quotient.out (omk T z)).1 (Quotient.out (omk T z)).2 = F z.1 z.2` using `inv_out (fun z : X × Y => F z.1 z.2) (fun t z => hF t z.1 z.2)`. Establish `hFp' : ∀ z : Y × X, F (Quotient.out (omk T z)).2 (Quotient.out (omk T z)).1 = F z.2 z.1` using `inv_out (fun z : Y × X => F z.2 z.1) (fun t z => hF t z.2 z.1)`. Establish `hP : {p : orbitRel.Quotient T (X × Y) | F (Quotient.out p).1 (Quotient.out p).2 ≠ 0}.Finite`. Use `(hq.biUnion fun q _ => (hx (Quotient.out q)).image (fun y => omk T ((Quotient.out q, y) : X × Y))).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Take `⟨t, ht⟩` from `exists_smul_out (T := T) (Quotient.out p).1`. Establish `hne : F (Quotient.out (omk T (Quotient.out p).1)) (t • (Quotient.out p).2) ≠ 0`. Rewrite using `[← ht, hF]`. Conclude with `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_image, Set.mem_setOf_eq, exists_prop]`. Use `⟨omk T (Quotient.out p).1, ⟨_, hne⟩, _, hne, ?_⟩` and prove the remaining obligations. Conclude with `Eq.trans ((omk_eq_iff _ _).2 ⟨t, Prod.ext ht rfl⟩) (Quotient.out_eq p)`. Set `e : orbitRel.Quotient T (X × Y) ≃ orbitRel.Quotient T (Y × X)` to `Quotient.congr (Equiv.prodComm X Y) (by`. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `show orbitRel T _ a b ↔ orbitRel T _ (Equiv.prodComm X Y a) (Equiv.prodComm X Y b)`. Rewrite using `[orbitRel_apply, orbitRel_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨t, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, ht⟩`. Conclude with `⟨t, (Equiv.prodComm X Y).injective ht⟩)`. Establish `he : ∀ z : X × Y, e (omk T z) = omk T (z.2, z.1)` using `fun z => rfl`. Establish `hP' : {p : orbitRel.Quotient T (Y × X) | F (Quotient.out p).2 (Quotient.out p).1 ≠ 0}.Finite`. Use `(hP.image e).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Take `⟨⟨y, x⟩, rfl⟩` from `Quotient.exists_rep p`. Use `⟨omk T ((x, y) : X × Y), ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : F x y ≠ 0`. Use `hFp' (y, x)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at this`. Rewrite using `[← this]`. Conclude with `hp`. Use `show F (Quotient.out (omk T ((x, y) : X × Y))).1 (Quotient.out (omk T ((x, y) : X × Y))).2 ≠ 0`. Rewrite using `[hFp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h1`. Rewrite using `[one_side C hX F hF hx hP, one_side C hY (fun y x => F x y) (fun t y x => hF t x y) hy hP']`. Rewrite using `[← finsum_comp_equiv e]`. Use `finsum_congr fun p => ?_` and prove the remaining obligations. Take `⟨⟨x, y⟩, rfl⟩` from `Quotient.exists_rep p`.
-
-Establish `h1` using `inv_out (T := T) (fun z : X × Y => (((stabilizer T z).relIndex C : ℕ) : ℂ) * F z.1 z.2) (fun t z => by rw [relIndex_stab_smul]; simp only [Prod.smul_fst, Prod.smul_snd, hF]) (x, y)`. Establish `h2` using `inv_out (T := T) (fun z : Y × X => (((stabilizer T z).relIndex C : ℕ) : ℂ) * F z.2 z.1) (fun t z => by rw [relIndex_stab_smul]; simp only [Prod.smul_fst, Prod.smul_snd, hF]) (y, x)`. Use `(h1.trans ?_).trans h2.symm` and prove the remaining obligations. Simplify using `only`. Rewrite using `[stab_swap x y]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbFub : OrbFub := by
   intro T X Y _ _ _ C _ hX hY F hF hx hy hq

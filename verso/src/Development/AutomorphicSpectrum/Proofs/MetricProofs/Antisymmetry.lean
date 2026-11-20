@@ -17,27 +17,25 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 namespace GlobalTheory.CompanionTheory.Ar.PB.Top
 
 /- English proof (translation)
-Introduce `hIn II hII Ψ _ _ _ N j d hN S K _ ι _ P Re hF`. Take `⟨d₀, S₀, Re₀, hd₀, hdeg₀, href₀, hline₀, ⟨hF₀⟩⟩` from `GlobalTheory.T.flag_variety_analytic_system_exists hIn Ψ N hN`. Establish `hdim : d + 1 = antisymDegree Ψ N` using `hF.dim`. Take `rfl : d = d₀` from `by omega`. Establish `hS` using `((GlobalTheory.T.proportional' hIn Ψ N j hN hF.j_le).2 (d + 1) S hdim hF.unif).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpot` using `GlobalTheory.T.realisation_potential_degree_compatibility hIn.2.1.1 (FlBlock Ψ N) (FlIdx Ψ N) (d + 1) (Ψ × Fin N) S₀ (PFl Ψ N) Re₀`. Establish `harith : IsArithVar (PFl Ψ N) (antisymDegree Ψ N + 1)`. Rewrite using `[← hdim]`. Conclude with `Re₀.arith`. Establish `hfl` using `flLines_polys hIn II hII Ψ N hN harith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg0 : toWt S₀.degPoly = degFlPoly Ψ N`. Establish `h2` using `hfl.2`. Rewrite `h2` using `[← hdim]`. Rewrite using `[h2]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `AnSys.degPoly`. Use `congr 1`. Use function extensionality and compare the values at `w`. Establish `h3` using `hpot.2.1 w`. Simplify using `only [href₀, hdeg₀, Nat.cast_one, one_mul] at h3`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h3.symm`. Establish `hPB0 : toWt (Re₀.PB II) = hFlPoly Ψ N II`. Establish `h1` using `hfl.1`. Rewrite `h1` using `[← hdim]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Unfold `Realis.PB`. Use `congr 1`. Use function extensionality and compare the values at `w`. Unfold `Realis.limNum Realis.num`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hline₀, hdeg₀, Nat.cast_one, div_one]`. Conclude with `tendsto_const_nhds.limUnder_eq`. Establish `hdegS : S.degPoly = C (volOf S) * S₀.degPoly`. Apply `(GlobalTheory.T.weight_transform_injective_linear).2.2 Ψ N` to reduce the goal to its premises. Rewrite using `[hS, map_mul, hdeg0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Simplify using `[toWt, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`. Take `⟨Cst, hC⟩` from `GlobalTheory.T.weighted_polynomial_homogeneous_coeff_bound Ψ N (antisymDegree Ψ N + 1)`. Establish `hhomT : (toWt (Re.PB II)).IsHomogeneous (antisymDegree Ψ N + 1)`. Use `(hC.1 _ 0 ?_).1` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hdim]`. Conclude with `(formPoly_isHomogeneous_and_eval (Ψ × Fin N) (d + 1 + 1) (Re.limNum II)).1`. Establish `hhomH : (hFlPoly Ψ N II).IsHomogeneous (antisymDegree Ψ N + 1)` using `(formPoly_isHomogeneous_and_eval (Ψ × Fin N) _ _).1`. Establish `hhom : (toWt (Re.PB II) - volOf S • hFlPoly Ψ N II).IsHomogeneous (antisymDegree Ψ N + 1)`. Establish `hm` using `(homogeneousSubmodule (Ψ × Fin N) ℝ (antisymDegree Ψ N + 1)).sub_mem ((mem_homogeneousSubmodule _ _).2 hhomT) (Submodule.smul_mem _ (volOf S) ((mem_homogeneousSubmodule _ _).2 hhomH))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mem_homogeneousSubmodule _ _).1 hm`. Use `mem_antisymSpace_of_pointwise Ψ N j _ hhom ?_` and prove the remaining obligations. Introduce `τ a b hab hj lam`. Establish `e1` using `GlobalTheory.T.adjacent_swap_height_polynomial_relation hIn II hII Ψ N d S K ι P Re τ a b hab (hF.sq τ a b hab hj) lam`. Establish `e0` using `GlobalTheory.T.adjacent_swap_height_polynomial_relation hIn II hII Ψ N d S₀ (FlBlock Ψ N) (FlIdx Ψ N) (PFl Ψ N) Re₀ τ a b hab (hF₀.sq τ a b hab (Or.inl b.isLt)) lam`.
-
-Rewrite `e0` using `[hPB0]`. Rewrite `e1` using `[hdegS, (GlobalTheory.T.weight_transform_injective_linear).2.1, (GlobalTheory.T.weight_transform_injective_linear).1, Polynomial.eval_mul, Polynomial.eval_C, ← e0]`. Simplify using `only [map_sub, smul_eval]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem antisymmetry : Antisymmetry := by
   intro hIn II hII Ψ _ _ _ N j d hN S K _ ι _ P Re hF

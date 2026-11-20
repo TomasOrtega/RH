@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h1` using `s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)`. Establish `h2` using `s.hA v x`. Conclude with `h1.symm.trans h2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
@@ -19,7 +19,7 @@ private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Number
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Introduce `h'` and use `h <| by rw [← hu] change algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ u.asIdeal rwa [map_natCast]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem l_notMem {l : ℕ} {L : Type} [Field L] [NumberField L] [IsCMField L] {w u : Plc L}
     (h : ((l : ℕ) : 𝓞 (Lp L)) ∉ (w.under (𝓞 (Lp L))).asIdeal) (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) :
@@ -29,7 +29,7 @@ private theorem l_notMem {l : ℕ} {L : Type} [Field L] [NumberField L] [IsCMFie
   rwa [map_natCast]
 
 /- English proof (translation)
-Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cmp_of {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w : Plc L}
     (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) : cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
@@ -38,9 +38,9 @@ private theorem cmp_of {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFiel
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∉ u.asIdeal`. Rewrite using `[cmp_of h]`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)`. Unfold `CaseU.cmp`. Rewrite using `[dif_neg h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem cmp_loc {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w u : Plc L}
     {x : UA L n} (hx : x ∈ locU n w) (hu : u.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) :
@@ -53,9 +53,9 @@ private theorem cmp_loc {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFie
     rfl
 
 /- English proof (translation)
-Establish `hw1 : ∀ v, v = w → cLoc v x = 1`. Introduce and unpack `v rfl`. Conclude with `h1`. Break down `(GlobalTheory.SplitPts.over_split hw).2.2 u hu with rfl | rfl` into its components or cases. Conclude with `h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hce` using `GlobalTheory.SplitPts.comp_eq x (conjSrc (GlobalTheory.SplitPts.conjE L) w)`. Rewrite `hce` using `[hw1 _ (GlobalTheory.SplitPts.conjSrc_conjSrc_cm w), Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul]`. Conclude with `Units.ext hce`.
+A detailed English derivation is pending.
 -/
 private theorem cLoc_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w u : Plc L} (hw : IsSplitAt w)
     (x : UA L n) (h1 : cLoc w x = 1) (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) : cLoc u x = 1 := by
@@ -70,21 +70,19 @@ private theorem cLoc_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {n 
     exact Units.ext hce
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n _ w hw`. Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL L n w hw`. Establish `hs : ∀ y, cLoc w (e.symm y : UA L n) = y` using `fun y => by`. Rewrite using `[← he, e.apply_symm_apply]`. Use `⟨⟨(locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom, fun g => (e.symm g).2, hs, continuous_subtype_val.comp e.symm.continuous, fun x hx => ?_⟩, fun hS => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `he ⟨x, hx⟩`. Express the relevant statement in the definitionally equal form `x = (e.symm (cLoc w x) : UA L n)`. Rewrite using `[← h1, e.symm_apply_apply]`. Establish `hl : ((l : ℕ) : 𝓞 (Lp L)) ∉ (w.under (𝓞 (Lp L))).asIdeal` using `fun h => hS (Or.inl h)`. Establish `hb : Function.Bijective (((cmp n w).comp (Ub n s).subtype).comp (locA n s w).subtype)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(injective_iff_map_eq_one _).2 ?_, fun y => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨g, hg⟩, hA⟩ h1`. Take `⟨x, rfl⟩` from `(away l L n).rangeRestrict_surjective g`. Establish `h2 : cLoc w x = 1` using `(cmp_of (l_notMem hl rfl) x).symm.trans h1`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun u => ?_)))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `cLoc u.1 x = 1`. Distinguish the cases in `hu : u.1.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Conclude with `cLoc_conj hw x h2 hu`. Conclude with `(cmp_of u.2 x).symm.trans (MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hA u.1) hu))`. Establish `hU : (away l L n).rangeRestrict (e.symm y : UA L n) ∈ Ub n s`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, cmp_loc (e.symm y).2 (by`. Rewrite using `[w_under]`. Conclude with `fun h => hS (Or.inr (Or.inl (h ▸ u.2))))]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[Subgroup.mem_comap, cmp_loc (e.symm y).2 (by`. Rewrite using `[w_under]`. Conclude with `fun h => hS (Or.inr (Or.inr h.symm)))]`. Conclude with `one_mem _`. Use `⟨⟨⟨_, hU⟩, Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 (cmp_loc (e.symm y).2 hu)⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(cmp_of (l_notMem hl rfl) _).trans (hs y)`. Use `⟨hb, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Unfold `CaseU.sec`. Rewrite using `[dif_pos hb]`. Conclude with `(MulEquiv.ofBijective _ hb).apply_symm_apply g`.
-
-Unfold `CaseU.sec`. Rewrite using `[dif_pos hb]`. Conclude with `((MulEquiv.ofBijective _ hb).symm g).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.secU :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

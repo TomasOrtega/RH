@@ -5,9 +5,9 @@ namespace ReciprocityTheory.CA
 open Polynomial RingTheory.Sequence
 
 /- English proof (translation)
-Establish `hk : RingHom.ker (mapRingHom (Ideal.Quotient.mk J)) = J.map (C : S →+* S[X])`. Rewrite using `[Polynomial.ker_mapRingHom, Ideal.mk_ker]`. Rewrite `hgh`, the goal using `[← hk, RingHom.mem_ker]`. Simplify using `only [map_mul, coe_mapRingHom] at hgh`. Rewrite using `[coe_mapRingHom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hg.map (Ideal.Quotient.mk J)).mul_right_eq_zero_iff).mp hgh`.
+A detailed English derivation is pending.
 -/
 theorem pstep_monic_mem_of_mul {S : Type*} [CommRing S] (J : Ideal S) {g h : S[X]} (hg : g.Monic)
     (hgh : g * h ∈ J.map (C : S →+* S[X])) : h ∈ J.map (C : S →+* S[X]) := by
@@ -20,11 +20,11 @@ theorem pstep_monic_mem_of_mul {S : Type*} [CommRing S] (J : Ideal S) {g h : S[X
   exact ((hg.map (Ideal.Quotient.mk J)).mul_right_eq_zero_iff).mp hgh
 
 /- English proof (translation)
-Rewrite using `[isWeaklyRegular_append_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hrs.of_flat (S := S[X])`. Rewrite `h` using `[Polynomial.algebraMap_eq]`. Then use the resulting hypothesis. Rewrite using `[isWeaklyRegular_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : (Ideal.ofList (rs.map C) • ⊤ : Submodule S[X] S[X]) = (Ideal.ofList rs).map (C : S →+* S[X])`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, Ideal.map_ofList]`. Introduce `a b hab`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `g • Submodule.Quotient.mk a = g • Submodule.Quotient.mk b at hab`. Rewrite `hab` using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, hI]`. Rewrite `hab` using `[smul_eq_mul, smul_eq_mul, ← mul_sub]`. Rewrite using `[Submodule.Quotient.eq, hI]`. Conclude with `pstep_monic_mem_of_mul _ hg hab`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeaklyRegular_map_C_append_monic {S : Type*} [CommRing S] {rs : List S}
     (hrs : IsWeaklyRegular S rs) {g : S[X]} (hg : g.Monic) :
@@ -47,9 +47,9 @@ theorem isWeaklyRegular_map_C_append_monic {S : Type*} [CommRing S] {rs : List S
     exact pstep_monic_mem_of_mul _ hg hab
 
 /- English proof (translation)
-Use `letI : Algebra S T := e.toRingHom.toAlgebra`. Set `l : T ≃ₗ[S] S` to `{ e.symm.toAddEquiv with map_smul' := fun c t => by`. Express the relevant statement in the definitionally equal form `e.symm (algebraMap S T c * t) = c * e.symm t`. Rewrite using `[RingHom.algebraMap_toAlgebra, map_mul]`. Simplify using `}`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Module.Flat S T := Module.Flat.of_linearEquiv l`. Conclude with `hrs.of_flat`.
+A detailed English derivation is pending.
 -/
 theorem isWeaklyRegular_map_ringEquiv {S T : Type*} [CommRing S] [CommRing T] (e : S ≃+* T)
     {rs : List S} (hrs : IsWeaklyRegular S rs) : IsWeaklyRegular T (rs.map e) := by

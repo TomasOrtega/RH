@@ -15,9 +15,9 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : Heig
 
 omit [StarRing E] in
 /- English proof (translation)
-Establish `h : IsUnit (redP P (1 : E))`. Rewrite using `[GlobalTheory.TopStep.reduction_one₂]`. Conclude with `isUnit_one`. Establish `h1 : h.unit = 1` using `Units.ext (by rw [IsUnit.unit_spec, GlobalTheory.TopStep.reduction_one₂, Units.val_one])`. Unfold `LocE.unitV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h, h1, map_one, Units.val_one]`.
+A detailed English derivation is pending.
 -/
 theorem unitV_one (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) : LocE.unitV χ (1 : E) = 1 := by
   have h : IsUnit (redP P (1 : E)) := by
@@ -29,7 +29,7 @@ theorem unitV_one (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) : LocE.unitV χ (1 : 
 
 omit [StarRing E] in
 /- English proof (translation)
-Establish `: (Matrix.of fun s s' => A s s') = 1`. Use extensionality with `s s'`. Rewrite using `[Matrix.of_apply, hA, Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one, unitV_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitV_det_delta (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {t : ℕ} {A : Fin t → Fin t → E}
     (hA : ∀ s s', A s s' = if s = s' then 1 else 0) : LocE.unitV χ (Matrix.det (Matrix.of fun s s' => A s s')) = 1 := by
@@ -41,11 +41,11 @@ theorem unitV_det_delta (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {t : ℕ} {A : 
 omit [NumberField E] [StarRing E] in
 
 /- English proof (translation)
-Establish `h1 : LocE.fIdx k₀ c n p < n + c`. Unfold `LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h2 : LocE.fIdx k₀ c n p = LocE.fIdx k₀ c n p' ↔ p = p'`. Use `⟨fun h => ?_, fun h => by rw [h]⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `LocE.fIdx at h`. Apply the tactic sequence `split_ifs at h <;> omega`. Unfold `LocE.entB Loc.atN`. Rewrite using `[dif_pos h1, LinearMap.id_apply]`. Unfold `Loc.eN`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : p = p'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun h' => h (h2.1 h')), zero_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem entB_id (q : ℕ) {k₀ c n : ℕ} (hk : k₀ ≤ n) (ex : ℕ → ℕ) {p p' : ℕ} (hp : p < n + c) (hp' : p' < n + c) :
     LocE.entB q k₀ c n c n ex ex (LinearMap.id : HomE E (n + c) (n + c)) p p' = if p = p' then 1 else 0 := by
@@ -68,9 +68,9 @@ variable (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.
 
 omit [StarRing E] in
 /- English proof (translation)
-Use `Finset.prod_eq_one fun i hi => unitV_det_delta _ fun s s' => ?_` and prove the remaining obligations. Establish `h1 : ∀ s : Fin t, r + i * t + s.1 < r + j * t` using `fun s => by`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use `s.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hM _ _ (h1 s) (h1 s')]`. Simplify using `[Fin.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blocks_delta {r t j : ℕ} {M : ℕ → ℕ → E}
     (hM : ∀ p p', p < r + j * t → p' < r + j * t → M p p' = if p = p' then 1 else 0) :
@@ -86,7 +86,7 @@ theorem blocks_delta {r t j : ℕ} {M : ℕ → ℕ → E}
 
 omit [StarRing E] in
 /- English proof (translation)
-Rewrite using `[hM _ _ h h']`. Use `split_ifs`. Conclude with `GlobalTheory.TopStep.intAt_one`. Conclude with `GlobalTheory.TopStep.intAt_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_delta {N : ℕ} {M : ℕ → ℕ → E} (hM : ∀ p p', p < N → p' < N → M p p' = if p = p' then 1 else 0)
     (p p' : ℕ) (h : p < N) (h' : p' < N) : IntAt P (M p p') := by
@@ -97,7 +97,7 @@ theorem int_delta {N : ℕ} {M : ℕ → ℕ → E} (hM : ∀ p p', p < N → p'
 
 omit [StarRing E] in
 /- English proof (translation)
-Unfold `LocE.lamGv`. Rewrite using `[blocks_delta χ hM, mul_one, Finset.sum_eq_zero, GlobalTheory.TopStep.reduction_zero, AddChar.map_zero_eq_one]`. Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact. Rewrite using `[hM _ _ (by omega) (by omega), if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamGv_delta {r t j : ℕ} {M : ℕ → ℕ → E}
     (hM : ∀ p p', p < r + j * t → p' < r + j * t → M p p' = if p = p' then 1 else 0) :
@@ -110,9 +110,9 @@ theorem lamGv_delta {r t j : ℕ} {M : ℕ → ℕ → E}
 
 omit [StarRing E] in
 /- English proof (translation)
-Unfold `LocE.lamGvS`. Rewrite using `[blocks_delta χ hM, mul_one, Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero, GlobalTheory.TopStep.reduction_zero, AddChar.map_zero_eq_one]`. Use `all_goals`. Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM _ _ (by omega) (by omega), if_neg (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem lamGvS_delta {k₀ r t j : ℕ} (hk : k₀ ≤ r) {M : ℕ → ℕ → E}
     (hM : ∀ p p', p < r + j * t → p' < r + j * t → M p p' = if p = p' then 1 else 0) :
@@ -126,11 +126,11 @@ theorem lamGvS_delta {k₀ r t j : ℕ} (hk : k₀ ≤ r) {M : ℕ → ℕ → E
     rw [hM _ _ (by omega) (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `LocE.lamQB`. Establish `hl : ∀ s : Fin (n - kj), kj + s.1 < n + c` using `fun s => by`. Use `s.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e : (fun s t : Fin (n - kj) => Loc.atN ((LinearMap.id + (qOf P : E) • y : HomE E (n + c) (n + c)) (Loc.eN E (n + c) (kj + t.1))) (kj + s.1)) = fun s t : Fin (n - kj) => (if s = t then 1 else 0) + (qOf P : E) * y (Pi.single ⟨_, hl t⟩ 1) ⟨_, hl s⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s t`. Unfold `Loc.atN`. Rewrite using `[dif_pos (hl s), eN_eq (hl t)]`. Simplify using `[Pi.single_apply, Fin.ext_iff]`. Rewrite using `[e, unitV_congr ξ (redP_det_add_q (A := fun s t => if s = t then 1 else 0) (fun s t => ?_) fun s t => ?_), unitV_det_delta ξ fun _ _ => rfl, inv_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `GlobalTheory.TopStep.intAt_one`. Conclude with `GlobalTheory.TopStep.intAt_zero`. Simplify `mem_homS_sclLat.1 hy ⟨_, hl s⟩ ⟨_, hl t⟩` using `[LocE.scE]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lamQB_cong (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (kj n c : ℕ) {y : HomE E (n + c) (n + c)}
     (hy : y ∈ homS (LocE.lamY P (qOf P) n c 0) (LocE.lamY P (qOf P) n c 0)) :
@@ -156,15 +156,15 @@ theorem lamQB_cong (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (kj n c : ℕ) {y : 
 end Loc
 
 /- English proof (translation)
-Introduce `X Pr R Ch S mu sharp j P hj y hy`. Establish `hN : R.N j + cOf R j = R.r + j * R.t`. Unfold `Ranks.N cOf Ranks.r`. Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hk : R.k ≤ R.N j` using `Nat.le_add_right _ _`. Establish `hr : R.k ≤ R.r`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Unfold `lamYat at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Unfold `lamRow`. Distinguish the cases in `hP : P ∈ Pr.vGs`. Rewrite `hy`, the goal using `[if_pos hP]`. Establish `hZ` using `entB_int R.k (x := y) hy`. Establish `hM : ∀ p p', p < R.r + j * R.t → p' < R.r + j * R.t → LocE.entB (qOf P) R.k (cOf R j) (R.N j) (cOf R j) (R.N j) (fun i => i + 1) (fun i => i + 1) (LinearMap.id : HomE X.E (R.N j + cOf R j) (R.N j + cOf R j)) p p' = if p = p' then 1 else 0` using `fun p p' h h' => entB_id _ hk _ (hN ▸ h) (hN ▸ h')`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs`. Unfold `LocE.lamGBS`. Rewrite using `[entB_add_smul, lamGvS_congr _ _ (int_delta hM) hZ, lamGvS_delta _ _ hr hM]`. Unfold `LocE.lamGB`. Rewrite using `[entB_add_smul, lamGv_congr _ _ (int_delta hM) hZ, lamGv_delta _ _ hM]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hy`, the goal using `[if_neg hP]`. Conclude with `lamQB_cong _ _ _ _ hy`.
+A detailed English derivation is pending.
 -/
 theorem lamRow_cong : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (sharp : Bool) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), j < R.m → ∀ y : HomE X.E (R.N j + cOf R j) (R.N j + cOf R j), (∀ x ∈ lamYat (Pr := Pr) (R := R) j P, y x ∈ lamYat (Pr := Pr) (R := R) j P) → lamRow Ch mu sharp j P (LinearMap.id + (qOf P : X.E) • y) = 1 := by
   intro X Pr R Ch S mu sharp j P hj y hy

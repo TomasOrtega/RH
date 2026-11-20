@@ -18,17 +18,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Fintype (K →ₐ[Qp] LL)]
 
 /- English proof (translation)
-Establish `hB` using `unitBasis_of hUnitGen hCrysOne`. Establish `hγ : ∀ g, W.γD W.one g e = e` using `hUnitGen.2.2.1`. Introduce `i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hc1, hc2⟩` from `hc ()`. Simplify using `only [lc, Fintype.sum_unique]`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_assoc, hc1]`. Rewrite using `[W.γD_smul, hγ, hc2 δ hδ]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `c c' _ _ h`. Simplify using `only [lc, Fintype.sum_unique] at h`. Use function extensionality and compare the values at `u`. Take `⟨ε, _, huniq⟩` from `hB (c () • e)`. Conclude with `(huniq (c u) rfl).trans (huniq (c' u) h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨ε, hε, huniq⟩` from `hB x`. Take `⟨h1, h2⟩` from `hx`. Use `⟨fun _ => ε, fun _ => ⟨?_, fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hx' : x = ((letE i : LetA O n) • ε) • e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_assoc, ← hε, h1]`. Conclude with `huniq _ hx'`. Establish `hx' : x = W.γE δ ε • e` using `by conv_lhs => rw [← h2 δ hδ, hε]`. Rewrite using `[W.γD_smul, hγ]`. Conclude with `huniq _ hx'`.
-
-Simplify using `only [lc, Fintype.sum_unique]`. Conclude with `hε.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitStep_holds {e : W.DD W.one} (hUnitGen : UnitGen W e) (hCrysOne : IsCrys PD W.one.ρ) :
     UnitStep W e := by
@@ -62,33 +60,31 @@ theorem unitStep_holds {e : W.DD W.one} (hUnitGen : UnitGen W e) (hCrysOne : IsC
       exact hε.symm
 
 /- English proof (translation)
-Introduce `T₁ T₂ F hc₁ hc₂ hon`. Take `⟨m₁, B₁, hB₁, -⟩` from `exists_basis_Delta_fixed_mem_N hP9 hs hp2 T₁ hc₁.2.2.2`. Take `⟨m₂, B₂, hB₂, hB₂N⟩` from `exists_basis_Delta_fixed_mem_N hP9 hs hp2 T₂ hc₂.2.2.2`. Establish `hcu` using `isUnit_card_finiteDelta hP9 hs hp2 T₁ hc₁.2.2.2`. Establish `hlift : ∀ k, ∃ w : W.DD T₁, (∀ δ ∈ W.DelF, W.γD T₁ δ w = w) ∧ W.map F w = B₂ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨w₀, hw₀⟩` from `exists_lift_of_onto hs hLem3 hJ F hc₁ hc₂ hon (B₂ k) (hB₂N k)`. Conclude with `exists_invariant_lift_average hcu F w₀ (B₂ k) (hB₂ k) hw₀`. Use `choose w hwΔ hwF using hlift`. Use `⟨m₂, m₁ - m₂, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc` using `letterRing_isLocalRing (W := W) hOloc hOnil i`. Use `set M : Fin m₁ → Fin m₂ → W.EE := fun l k => B₂.repr (W.map F (B₁ l)) k with hMdef`. Establish `hMγ : ∀ l k, ∀ δ ∈ W.DelF, W.γE δ (M l k) = M l k`. Introduce `l k δ hδ`. Rewrite using `[hMdef, ← basis_repr_gamma B₂ hB₂ _ δ hδ, ← W.map_γ, hB₁ l δ hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : ∀ l k, k17e W i * M l k ∈ EEl W i`. Introduce `l k`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[idempotent_smul_eq_mul, ← mul_assoc, idempotent_mul_self_bis]`. Rewrite using `[map_mul, idempotent_gamma_invariant, hMγ l k δ hδ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use `choose μ hμ using fun l k => letterRing_val_surjective i _ (hM l k)`. Establish `hcoef : ∀ (u : Fin m₁ → k17R W i) (k : Fin m₂), letterRingVal W i (k17f μ u k) = ∑ l, letterRingVal W i (u l) * M l k`. Introduce `u k`. Express the relevant statement in the definitionally equal form `letterRingVal W i (∑ l, u l * μ l k) = _`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[letterRing_val_mul, hμ, ← mul_assoc, letterRing_mul_idempotent]`. Establish `hmap : ∀ u : Fin m₁ → k17R W i, W.map F (∑ l, letterRingVal W i (u l) • B₁ l) = ∑ k, letterRingVal W i (k17f μ u k) • B₂ k`. Introduce `u`. Simplify using `only [hcoef, Finset.sum_smul, map_sum, map_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ l, W.map F (B₁ l) = ∑ k, M l k • B₂ k` using `fun l => (B₂.sum_repr _).symm`. Simplify using `only [h1, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`. Establish `hstd : ∀ k, ∃ u : Fin m₁ → k17R W i, k17f μ u = Pi.single k 1`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ l, k17e W i * B₁.repr (w k) l ∈ EEl W i`. Introduce `l`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[idempotent_smul_eq_mul, ← mul_assoc, idempotent_mul_self_bis]`. Rewrite using `[map_mul, idempotent_gamma_invariant, ← basis_repr_gamma B₁ hB₁ _ δ hδ, hwΔ k δ hδ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `exists_preimage_letter_ring i _ hd`. Use `⟨u, funext fun k' => letterRing_val_injective i ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ l, letterRingVal W i (u l) • B₁ l = k17e W i • w k`. Simplify using `only [hu, ← smul_smul, ← Finset.smul_sum, B₁.sum_repr]`. Establish `h2` using `hmap u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[h1, map_smul, hwF]`. Establish `h3 : k17e W i • B₂ k = ∑ k', letterRingVal W i ((Pi.single k 1 : Fin m₂ → k17R W i) k') • B₂ k'`. Simplify using `only [Pi.single_apply]`. Simplify using `only [apply_ite (letterRingVal W i), map_zero, letterRing_val_one, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Conclude with `congrFun (basis_coefficients_unique B₂ h2.symm) k'`. Use `choose ν hν using hstd`. Establish `hsurj : Function.Surjective (k17f μ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Use `⟨∑ k, y k • ν k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [map_smul, hν]`. Use function extensionality and compare the values at `k'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Take `⟨C, hCl, hCr⟩` from `exists_basis_of_surjective (k17f μ) hsurj`. Use `⟨fun t => ∑ l, letterRingVal W i (C t l) • B₁ l, fun j => ∑ l, letterRingVal W i (Pi.basisFun (k17R W i) (Fin m₂) j l) • B₂ l, letter_invariants_basis B₁ hB₁ i C, letter_invariants_basis B₂ hB₂ i (Pi.basisFun _ _), fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hmap, hCl]`. Simplify using `only [Pi.basisFun_apply]`.
-
-Rewrite using `[hmap, hCr]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem splitStep_holds (hOloc : IsLocalRing O)
     (hOnil : ∀ c ∈ IsLocalRing.maximalIdeal O, ∃ (N : ℕ) (d : O), c ^ N = ((PD.p : ℕ) : O) * d)

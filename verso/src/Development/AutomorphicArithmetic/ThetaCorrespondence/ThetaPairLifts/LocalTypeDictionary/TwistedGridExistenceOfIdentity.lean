@@ -18,9 +18,9 @@ end GlobalTheory.RowEx.GridExPf
 namespace GlobalTheory.RowEx
 open GlobalTheory.RowEx.GridExPf
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS hQ => ?_⟩⟩` and prove the remaining obligations. Take `⟨⟨Pm, -, -⟩, -⟩` from `hS.size`. Establish `hcls : ∀ p ∈ D.host.levelPrimes, D.host.cls p = .splitK` using `Pm.level_split`. Establish `hPl` using `exists_places_of_cls T R.toLevCh A.μ0 hS.core.lev (fun k => hcls _ (D.host.g_level k)) (hcls _ D.host.pde_level.1) (hcls _ D.host.pde_level.2) (leastSplitAuxiliaryPrime_ne_typePrime_of_sizes hS.size) hQ`. Take `⟨G⟩` from `(GlobalTheory.ChiGridModel.nonempty_gridData_iff R.toLevCh A.μ0 hS.core.lev ⟨1, CF, large₂.sc.b⟩).2 hPl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW⟩` from `GlobalTheory.ChiGrid.WeilOver.exists_weil_over_of_clauses hP.weilRepresentationUnitaryPair R hS.core.lev hS.core.chain hS.core.models _ G`. Use `haveI := hS.fin`. Conclude with `⟨G, W, hW, GlobalTheory.FunObj.gridChoice_nonempty_of W hS.core.lev Set.finite_univ (GlobalTheory.RowClaim.Test.pde_ne_q hS) fun t _ P hP => GlobalTheory.RowClaim.Test.guard hS t P hP⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twisted_grid_existence_of_identity (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) : GridEx := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS hQ => ?_⟩⟩

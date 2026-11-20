@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite TensorProduct GlobalTheory
 namespace LateralTheory.EtaleFoundations.TwLocPf
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.hom x) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofRings_sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) {V U : Scheme.{0}}
     (g : V ⟶ U) (x : M.obj Γ(U, ⊤)) :
@@ -17,7 +17,7 @@ theorem ofRings_sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleC
   exact h.symm
 
 /- English proof (translation)
-Use `(ofRings_sec_res (twF q i) g _).trans ?_` and prove the remaining obligations. Unfold `twGen`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map g.appTop.hom) (Finsupp.single ζ 1)) = _`. Rewrite using `[Finsupp.mapDomain_single]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem twGen_res (q : ℕ) (i : ℤ) (V U : Scheme.{0}) (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom) := by
@@ -34,7 +34,7 @@ def TwTors : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) (U : Scheme.{0}) [Nonemp
   c • twGen i ζ = 0 → q ∣ c
 
 /- English proof (translation)
-Introduce `q _ i`. Conclude with `⟨fun U ζ y => h1 q i U ζ y, fun U _ ζ c hc => h2 q i U ζ c hc, fun V U g ζ => twGen_res q i V U g ζ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem TwLoc_of (h1 : TwSecLoc) (h2 : TwTors) : LateralTheory.EtaleFoundations.CongruenceLocalDecomposition.TwLoc := by
   intro q _ i

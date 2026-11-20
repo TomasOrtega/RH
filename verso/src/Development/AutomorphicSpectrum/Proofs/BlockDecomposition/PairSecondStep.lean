@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.EGlue.PairT₂
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Establish `hx : ∃ φ : Sm E b, φ.1 = fun x => F (m, x)` using `⟨φ, h⟩`. Unfold `sl₂`. Rewrite using `[dif_pos hx]`. Conclude with `Subtype.ext (hx.choose_spec.trans h.symm)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sl₂_eq {F : H E a b → ℂ} {m : GA E a} {φ : Sm E b} (h : φ.1 = fun x => F (m, x)) : sl₂ F m = φ := by
   have hx : ∃ φ : Sm E b, φ.1 = fun x => F (m, x) := ⟨φ, h⟩
@@ -26,22 +26,22 @@ theorem sl₂_eq {F : H E a b → ℂ} {m : GA E a} {φ : Sm E b} (h : φ.1 = fu
 variable {U₁ : Submodule ℂ (Sm E a)} {U₂ : Submodule ℂ (Sm E b)} {F G : H E a b → ℂ}
 
 /- English proof (translation)
-The claim follows from `congrFun ((hS E a b U₁ U₂ F hF).2 m).2 x`.
+A detailed English derivation is pending.
 -/
 theorem sl₂_val (hS : PairSlices) (hF : F ∈ pairSpace U₁ U₂) (m : GA E a) (x : GA E b) :
     (sl₂ F m).1 x = F (m, x) :=
   congrFun ((hS E a b U₁ U₂ F hF).2 m).2 x
 
 /- English proof (translation)
-The claim follows from `((hS E a b U₁ U₂ F hF).2 m).1`.
+A detailed English derivation is pending.
 -/
 theorem sl₂_mem (hS : PairSlices) (hF : F ∈ pairSpace U₁ U₂) (m : GA E a) : sl₂ F m ∈ U₂ :=
   ((hS E a b U₁ U₂ F hF).2 m).1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e : sl₂ (F + G) x.1 = sl₂ F x.1 + sl₂ G x.1` using `sl₂_eq (by`. Use function extensionality and compare the values at `y`. Conclude with `congrArg₂ (· + ·) (sl₂_val hS hF x.1 y) (sl₂_val hS hG x.1 y))`. Express the relevant statement in the definitionally equal form `(T (sl₂ (F + G) x.1)).1 x.2 = _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ap₂_add (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) (hF : F ∈ pairSpace U₁ U₂)
     (hG : G ∈ pairSpace U₁ U₂) : ap₂ T (F + G) = ap₂ T F + ap₂ T G := by
@@ -54,9 +54,9 @@ theorem ap₂_add (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) (hF : F ∈ 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e : sl₂ (c • F) x.1 = c • sl₂ F x.1` using `sl₂_eq (by`. Use function extensionality and compare the values at `y`. Conclude with `congrArg (c * ·) (sl₂_val hS hF x.1 y))`. Express the relevant statement in the definitionally equal form `(T (sl₂ (c • F) x.1)).1 x.2 = _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ap₂_smul (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) (c : ℂ) (hF : F ∈ pairSpace U₁ U₂) :
     ap₂ T (c • F) = c • ap₂ T F := by
@@ -69,7 +69,7 @@ theorem ap₂_smul (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) (c : ℂ) (
   rfl
 
 /- English proof (translation)
-Establish `h` using `ap₂_smul hS T (0 : ℂ) (Submodule.zero_mem (pairSpace U₁ U₂))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ap₂_zero (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) (U₁ : Submodule ℂ (Sm E a))
     (U₂ : Submodule ℂ (Sm E b)) : ap₂ T (0 : H E a b → ℂ) = 0 := by
@@ -77,7 +77,7 @@ theorem ap₂_zero (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) (U₁ : Sub
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ap₂_zero hS T U₁ U₂`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, ap₂_add hS T (hf j (Finset.mem_insert_self j s)) (Submodule.sum_mem _ fun i hi => hf i (Finset.mem_insert_of_mem hi)), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ap₂_sum (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) {α : Type} (s : Finset α)
     (f : α → H E a b → ℂ) (hf : ∀ j ∈ s, f j ∈ pairSpace U₁ U₂) :
@@ -92,9 +92,9 @@ theorem ap₂_sum (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b) {α : Type} 
       ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
 
 /- English proof (translation)
-Establish `e : sl₂ (fun y => F (y * finH g)) x.1 = act (.fin g.2) (sl₂ F (x.1 * finGL E a g.1))` using `sl₂_eq (by`. Use function extensionality and compare the values at `y`. Conclude with `(sl₂_val hS hF _ _).trans rfl)`. Express the relevant statement in the definitionally equal form `(T (sl₂ _ x.1)).1 x.2 = (T (sl₂ F (x.1 * finGL E a g.1))).1 (x.2 * finGL E b g.2)`. Rewrite using `[e, hT _ _ (sl₂_mem hS hF _)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ap₂_rt (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b)
     (hT : ∀ o, ∀ ψ ∈ U₂, T (act o ψ) = act o (T ψ)) (hF : F ∈ pairSpace U₁ U₂) (g : Hf E a b)
@@ -108,9 +108,9 @@ theorem ap₂_rt (hS : PairSlices) (T : Sm E b →ₗ[ℂ] Sm E b)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨φ₁, -, φ₂, h₂, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨act (.fin g.1) φ₁, trivial, act (.fin g.2) φ₂, hU _ _ h₂, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add F G _ _ h₁ h₂ => exact Submodule.add_mem _ h₁ h₂`. Consider the case `smul r F _ h => exact Submodule.smul_mem _ r h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rt_mem (hU : IsStable U₂) (hF : F ∈ pairSpace U₁ U₂) (g : Hf E a b) :
     (fun y => F (y * finH g)) ∈ pairSpace (⊤ : Submodule ℂ (Sm E a)) U₂ := by
@@ -123,13 +123,13 @@ theorem rt_mem (hU : IsStable U₂) (hF : F ∈ pairSpace U₁ U₂) (g : Hf E a
   | smul r F _ h => exact Submodule.smul_mem _ r h
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `h`. Use `Submodule.subset_span ⟨φ₁, h₁, T φ₂, hTU _ h₂, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : sl₂ (fun x : H E a b => φ₁.1 x.1 * φ₂.1 x.2) x.1 = φ₁.1 x.1 • φ₂` using `sl₂_eq rfl`. Express the relevant statement in the definitionally equal form `(T (sl₂ _ x.1)).1 x.2 = _`. Rewrite using `[e, map_smul]`. Both sides reduce to the same expression. Consider the case `zero`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[ap₂_zero hS T U₁ U₂]`. Conclude with `Submodule.zero_mem _`. Consider the case `add F G hF hG h₁ h₂`. Rewrite using `[ap₂_add hS T hF hG]`. Conclude with `Submodule.add_mem _ h₁ h₂`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r F hF h`. Rewrite using `[ap₂_smul hS T r hF]`. Conclude with `Submodule.smul_mem _ r h`.
+A detailed English derivation is pending.
 -/
 theorem ap₂_mem (hS : PairSlices) {U₂' : Submodule ℂ (Sm E b)} (T : Sm E b →ₗ[ℂ] Sm E b)
     (hTU : ∀ ψ ∈ U₂, T ψ ∈ U₂') (hF : F ∈ pairSpace U₁ U₂) : ap₂ T F ∈ pairSpace U₁ U₂' := by
@@ -153,13 +153,11 @@ theorem ap₂_mem (hS : PairSlices) {U₂' : Submodule ℂ (Sm E b)} (T : Sm E b
     exact Submodule.smul_mem _ r h
 
 /- English proof (translation)
-Use `⟨fun u₁ h₁ u₂ h₂ x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `e : (fun y => F (y * finH ((u₁, u₂) : Hf E a b))) = F` using `funext (hty.1 u₁ h₁ u₂ h₂)`. Establish `h` using `ap₂_rt hS T hT hF (u₁, u₂) x`. Rewrite `h` using `[e]`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ {f : Kinf E a × Kinf E b → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2}) := GlobalTheory.CompanionTheory.LimV.finiteDimensional_prodSpan_of_fd W₁ W₂ fd₁ fd₂`. Set `ev : GA E b → Sm E b →ₗ[ℂ] ℂ` to `fun y => (LinearMap.proj y : (GA E b → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (Sm E b).subtype`. Establish `h` using `GlobalTheory.CompanionTheory.LimV.BlockTy.mem_of_separating (Submodule.span ℂ {f : Kinf E a × Kinf E b → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2}) (fun k : Kinf E a × Kinf E b => act (.cpt k.2) (sl₂ F (x.1 * infGL E a (Unitary.toUnits k.1)))) ev (fun m hm => Subtyp …`. Establish `e : (fun k : Kinf E a × Kinf E b => ev y (act (.cpt k.2) (sl₂ F (x.1 * infGL E a (Unitary.toUnits k.1))))) = fun k => F ((x.1, y) * (infGL E a (Unitary.toUnits k.1), infGL E b (Unitary.toUnits k.2)))`. Use function extensionality and compare the values at `fun k => (sl₂_val hS hF _ _).trans rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[e]`. Conclude with `hty.2 (x.1, y))`. Use `h using 2 with k` and compare the differences between its conclusion and the goal. Establish `e` using `hT (.cpt k.2) _ (sl₂_mem hS hF (x.1 * infGL E a (Unitary.toUnits k.1)))`. Express the relevant statement in the definitionally equal form `_ = (T (act (.cpt k.2) (sl₂ F (x.1 * infGL E a (Unitary.toUnits k.1))))).1 x.2`.
-
-Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ap₂_type (hS : PairSlices) {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} (fd₁ : FiniteDimensional ℂ W₁)
@@ -194,13 +192,13 @@ theorem ap₂_type (hS : PairSlices) {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i x`. Establish `e : heckeAct h f i = ∑ j, ∑ g ∈ (h i j).support, (h i j g) • fun y => f j (y * finH g)`. Use function extensionality and compare the values at `y`. Simplify using `[heckeAct, Finsupp.sum, Finset.sum_apply]`. Establish `e₁ : ap₂ T (heckeAct h f i) = c • ap₂ T (f i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hh]`. Conclude with `ap₂_smul hS T c (hf i)`. Establish `e₂ : ap₂ T (heckeAct h f i) x = ∑ j, ∑ g ∈ (h i j).support, h i j g * ap₂ T (f j) (x * finH g)`. Rewrite using `[e, ap₂_sum (U₁ := ⊤) (U₂ := U₂) hS T _ _ fun j _ => Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (rt_mem hU (hf j) g), Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ap₂_sum (U₁ := ⊤) (U₂ := U₂) hS T _ _ fun g _ => Submodule.smul_mem _ _ (rt_mem hU (hf j) g), Finset.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[ap₂_smul (U₁ := ⊤) (U₂ := U₂) hS T _ (rt_mem hU (hf j) g), Pi.smul_apply, smul_eq_mul, ap₂_rt hS T hT (hf j) g x]`. Establish `e₃ : heckeAct h (fun i => ap₂ T (f i)) i x = ∑ j, ∑ g ∈ (h i j).support, h i j g * ap₂ T (f j) (x * finH g)` using `rfl`. Rewrite using `[e₃, ← e₂, e₁]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ap₂_hecke (hS : PairSlices) {ι : Type} [Fintype ι] (hU : IsStable U₂) (T : Sm E b →ₗ[ℂ] Sm E b)
     (hT : ∀ o, ∀ ψ ∈ U₂, T (act o ψ) = act o (T ψ)) {f : ι → H E a b → ℂ}
@@ -232,11 +230,11 @@ end GlobalTheory.CompanionTheory.EGlue.PairT₂
 namespace GlobalTheory.CompanionTheory.EGlue
 
 /- English proof (translation)
-Introduce `hS E _ _ _ a b ι _ K₁ K₂ W₁ W₂ U₁ U₂ U₂' T f fd₁ fd₂ hU hT hTU hf hty hne`. Use `⟨?_, fun i => PairT₂.ap₂_mem hS T hTU (hf i), fun i => PairT₂.ap₂_type hS fd₁ fd₂ T hT (hf i) (hty i), fun h c hh => PairT₂.ap₂_hecke hS hU T hT hf h c hh⟩` and prove the remaining obligations. Take `⟨i, m, φ, hφ, hTφ⟩` from `hne`. Introduce `h0`. Apply `hTφ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Establish `e : sl₂ (f i) m = φ` using `PairT₂.sl₂_eq hφ`. Establish `h1 : ap₂ T (f i) (m, y) = 0` using `congrFun (congrFun h0 i) (m, y)`. Express the relevant statement in the definitionally equal form `(T (sl₂ (f i) m)).1 y = 0 at h1`. Rewrite `h1` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem pairStep₂ : PairSlices → PairStep₂ := by
   intro hS E _ _ _ a b ι _ K₁ K₂ W₁ W₂ U₁ U₂ U₂' T f fd₁ fd₂ hU hT hTU hf hty hne

@@ -20,9 +20,9 @@ def stabSub {M W : Type} [Group M] [AddCommGroup W] [Module ℂ W] (σ : Represe
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hle : ((stabSub ρ v).comap s) ≤ stabSub (twAct ρ N θ s hs) (Submodule.Quotient.mk v)`. Introduce `m hm`. Express the relevant statement in the definitionally equal form `ρ (s m) v = v at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(twAct ρ N θ s hs) m (Submodule.Quotient.mk v) = Submodule.Quotient.mk v`. Conclude with `congrArg (Submodule.Quotient.mk (p := twKer ρ N θ)) hm`. Establish `hop : IsOpen (((stabSub ρ v).comap s : Subgroup M) : Set M)` using `(hρ v).preimage hsc`. Conclude with `Subgroup.isOpen_mono hle hop`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twAct_isSmooth {G M V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group M]
     [TopologicalSpace M] [IsTopologicalGroup M] [AddCommGroup V] [Module ℂ V]

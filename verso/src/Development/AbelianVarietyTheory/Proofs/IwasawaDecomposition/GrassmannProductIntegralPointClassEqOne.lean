@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.GrassTop
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw`. Unfold `intGr`. Rewrite using `[← GlobalTheory.GoodMetric.antisymm_chernRoots_mul_fibrePoint, degFl_rho_antisymm, prod_factorial_mult, rho_eq_flagMap, ← GlobalTheory.Schubert.schubGam_apply, GlobalTheory.SchubertPoint.schubGam_pointPoly, mul_one]`. Establish `hne : ((Dw.p.factorial * Dw.q.factorial : ℝ) ^ Fintype.card (GlobalTheory.AllWt.Psi H)) ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `mul_ne_zero (by exact_mod_cast Nat.factorial_ne_zero _) (by exact_mod_cast Nat.factorial_ne_zero _)`. Conclude with `div_self hne`.
+A detailed English derivation is pending.
 -/
 theorem intGr_pointPoly : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H),
     intGr H Dw (pointPoly H Dw) = 1 := by

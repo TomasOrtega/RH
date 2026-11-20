@@ -6,9 +6,9 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.TiltValuation
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv`. Use `haveI hdom : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p`. Use `haveI : IsDomain O := hv.hom_inj.isDomain _`. Use `haveI : ValuationRing O := ValuationRing.iff_dvd_total.2 ⟨fun a b => by`. Break down `le_total (v (algebraMap O C a)) (v (algebraMap O C b)) with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Supply the required witnesses or components.
 
-Conclude with `Or.inr (hv.dvd_of_le h)`. Conclude with `Or.inl (hv.dvd_of_le h)⟩`. Conclude with `⟨hdom, ValuationRing.iff_dvd_total.2 ⟨fun a b => GlobalTheory.FrobInt.dvd_total_tilt a b⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem tilt_isDomain_valuationRing : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∃ _ : IsDomain (PreTilt O p), ValuationRing (PreTilt O p) := by
   intro p _ C _ _ _ v O _ _ _ _ hv

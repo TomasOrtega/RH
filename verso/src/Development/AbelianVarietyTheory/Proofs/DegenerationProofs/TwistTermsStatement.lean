@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRan
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex
 open scoped BigOperators
 /- English proof (citation)
-Apply `GlobalTheory.Ex.twist_terms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FTwistTerms.lean&line=157#L157)
 -/

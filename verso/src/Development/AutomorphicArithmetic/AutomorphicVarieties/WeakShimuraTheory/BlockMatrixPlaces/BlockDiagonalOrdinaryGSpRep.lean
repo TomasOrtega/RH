@@ -30,7 +30,7 @@ variable (A : Type) [CommRing A] [IsLocalRing A] (T : Type) [AddCommGroup T] [Mo
 abbrev lev (n : ℕ) : Submodule A T := (maximalIdeal A ^ n) • ⊤
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_mono_left (Ideal.pow_le_pow_right n.le_succ)`.
+A detailed English derivation is pending.
 -/
 theorem lev_succ_le (n : ℕ) : lev A T (n + 1) ≤ lev A T n :=
   Submodule.smul_mono_left (Ideal.pow_le_pow_right n.le_succ)
@@ -108,9 +108,9 @@ def uPlus (u : M4 R) : Submodule R (uM R) where
 def eAB (R : Type) [CommRing R] : M4 R := Matrix.diagonal ![-1, 1, -1, 1]
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : lamW b = lamW j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_zero fun a _ => ?_, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e' : lamW i = lamW a`. Rewrite using `[hY a b (by rw [← e', e]; exact h), mul_zero]`. Rewrite using `[hX i a e', zero_mul]`. Rewrite using `[hZ b j e, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hAB_mul_mul {X Y Z : M4 R} (hX : IsBlock X) (hY : Y ∈ hAB R) (hZ : IsBlock Z) : X * Y * Z ∈ hAB R := by
   intro i j h
@@ -124,9 +124,9 @@ theorem hAB_mul_mul {X Y Z : M4 R} (hX : IsBlock X) (hY : Y ∈ hAB R) (hZ : IsB
   · rw [hZ b j e, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : lamW i < lamW b`. Establish `h : ∀ i b j : Fin 4, lamW i < lamW b → ¬ lamW b < lamW j` using `by decide`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hZ b j (h i b j e), mul_zero]`. Rewrite using `[hY i b e, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hAB_mul_hAB {Y Z : M4 R} (hY : Y ∈ hAB R) (hZ : Z ∈ hAB R) : Y * Z = 0 := by
   ext i j
@@ -144,11 +144,11 @@ structure BG (r : Γ →* M4 R) : Prop where
   blk : ∀ g, IsBlock (r g)
 
 /- English proof (translation)
-Use `⟨hAB_mul_mul (h.blk g) hY.1 (h.blk _), ?_⟩` and prove the remaining obligations. Take `⟨m, -, -, -, o, -, a, p, -⟩` from `grp R`. Take `⟨ν, hν⟩` from `h.gsp g`. Take `⟨ν', hν'⟩` from `h.gsp g⁻¹`. Establish `e1 : r g * r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : r g⁻¹ * r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `e3 : ν * ν' = 1`. Use `p _ _ _ _ hν hν'` as an intermediate fact. Rewrite `this` using `[e1, IsGSp, o, one_mul]`. Simplify using `using (congrFun (congrFun this 0) 0).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e4 : adj Y = -Y` using `hY.2`. Use `show adj _ = -_`. Rewrite using `[m, m, a _ _ _ hν e1, a _ _ _ hν' e2, e4, smul_mul_assoc, mul_smul_comm, mul_smul_comm, smul_smul, mul_comm ν', e3, one_smul, neg_mul, mul_neg, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BG.mem {r : Γ →* M4 R} (h : BG r) (g : Γ) {Y : M4 R} (hY : Y ∈ uM R) : r g * Y * r g⁻¹ ∈ uM R := by
   refine ⟨hAB_mul_mul (h.blk g) hY.1 (h.blk _), ?_⟩
@@ -215,14 +215,14 @@ structure BlockDiagonalOrdinaryGSpRep (S : Finset ℕ) (c s : G ℚ Ω) (B : Val
 end Gal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, IsLocallyConstant.const 0, by simp, rfl, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] (ρ : Γ → M →+ M) (c : Γ) (N : Set Γ) (H : Subgroup Γ) :
     (0 : Γ → M) ∈ Zc (fun g x => ρ g x) c N H {0} :=
   ⟨0, IsLocallyConstant.const 0, by simp, rfl, by simp, by simp⟩
 
 /- English proof (translation)
-Use `⟨fun i j h => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [lamW]`. Use `show adj _ = -_`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example {R : Type} [CommRing R] : Matrix.single 1 2 (1 : R) ∈ uM R := by
   refine ⟨fun i j h => ?_, ?_⟩

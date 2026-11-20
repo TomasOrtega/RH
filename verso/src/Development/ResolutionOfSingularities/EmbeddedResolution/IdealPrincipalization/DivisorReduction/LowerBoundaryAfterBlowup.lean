@@ -34,13 +34,13 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReductionBoundary
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_closeds_compl {α : Type u} [TopologicalSpace α]
     (S : TopologicalSpace.Closeds α) (x : α) : x ∈ S.compl ↔ x ∉ S := Iff.rfl
 
 /- English proof (translation)
-Establish `h` using `comap_le_strictTransform (𝟙 Y) F (⊤ : Y.IdealSheafData)`. Rewrite `h` using `[strictTransform_eq_saturation, Scheme.IdealSheafData.comap_id, Scheme.IdealSheafData.comap_id]`. Conclude with `top_le_iff.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem saturation_top_eq_top {Y : Scheme.{u}} (F : Y.IdealSheafData) :
     saturation F (⊤ : Y.IdealSheafData) = ⊤ := by
@@ -50,14 +50,14 @@ private theorem saturation_top_eq_top {Y : Scheme.{u}} (F : Y.IdealSheafData) :
   exact top_le_iff.mp h
 
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.comap_mul A B U.ι`.
+A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_mul {X : Scheme.{u}} (A B : X.IdealSheafData) (U : X.Opens) :
     restrictIdeal (A * B) U = restrictIdeal A U * restrictIdeal B U :=
   Scheme.IdealSheafData.comap_mul A B U.ι
 
 /- English proof (translation)
-Establish `h1` using `restrictIdeal_strictTransform (𝟙 X) Z D U`. Establish `h2` using `strictTransform_comp_ι U (𝟙 U.toScheme) Z D`. Rewrite `h2` using `[Category.id_comp]`. Rewrite using `[h1, Category.comp_id, h2, strictTransform_eq_saturation, Scheme.IdealSheafData.comap_id, Scheme.IdealSheafData.comap_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem restrictIdeal_strictTransform_id {X : Scheme.{u}} [IsLocallyNoetherian X]
     (Z D : X.IdealSheafData) (U : X.Opens) :
@@ -70,7 +70,7 @@ private theorem restrictIdeal_strictTransform_id {X : Scheme.{u}} [IsLocallyNoet
     Scheme.IdealSheafData.comap_id]
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | a :: t, h => by have h0 : g a = a := h 0 (Nat.succ_pos _) have ht : t.map g = t := map_eq_self_of_getElem g t (fun i hi => h (i + 1) (Nat.succ_lt_succ hi)) rw [List.map_cons, h0, ht]`.
+A detailed English derivation is pending.
 -/
 private theorem map_eq_self_of_getElem {α : Type u} (g : α → α) : ∀ l : List α,
     (∀ (i : ℕ) (h : i < l.length), g (l[i]'h) = l[i]'h) → l.map g = l
@@ -82,7 +82,7 @@ private theorem map_eq_self_of_getElem {α : Type u} (g : α → α) : ∀ l : L
       rw [List.map_cons, h0, ht]
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | _ :: t, 0, h => by have ht : t.map g = t := map_eq_self_of_getElem g t (fun i hi => h (i + 1) (Nat.succ_lt_succ hi) (Nat.succ_ne_zero i)) show t.map g = t exact ht | a :: t, (m + 1), h => by have h0 : g a = a := h 0 (Nat.succ_pos _) (Nat.succ_ne_zero m).symm h …`.
+A detailed English derivation is pending.
 -/
 private theorem eraseIdx_map_eq {α : Type u} (g : α → α) : ∀ (l : List α) (j : ℕ),
     (∀ (i : ℕ) (h : i < l.length), i ≠ j → g (l[i]'h) = l[i]'h) →
@@ -102,17 +102,17 @@ private theorem eraseIdx_map_eq {α : Type u} (g : α → α) : ∀ (l : List α
       rw [h0, ht]
 
 /- English proof (translation)
-Use `hV.isNoetherian` as an intermediate fact. Rewrite using `[Scheme.IdealSheafData.comap_id]`. Use `eq_of_locally_restrictIdeal_eq _ _ fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (DivisorReduction.containedComponentsIdeal T j hj).support`. Take `⟨U, hxU, n, c, a, b, hab, hnone, hsome, hinj, hZU⟩` from `exists_etaleChart_containedComponentsIdeal T hV j hj x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨U, hxU, ?_⟩` and prove the remaining obligations. Rewrite using `[restrictIdeal_strictTransform_id, hZU]`. Consider the cases of `hai : a i with`. Consider the case `none`. Rewrite using `[hnone i hi hai]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `saturation_top_eq_top _`. Consider the case `some t`. Establish `htb : t ≠ b`. Introduce `e`. Apply `hij` to reduce the goal to its premises.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hinj i j hi hj b ?_ hab` and prove the remaining obligations. Rewrite using `[hai, e]`. Establish `ht` using `hsome i hi t hai`. Establish `hq1 : QuasiCompact (saturationι (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨i, hi⟩))` using `quasiCompact_saturationι_of_isLocallyNoetherian _ _`. Establish `hq2` using `quasiCompact_saturationι_restrictIdeal (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨i, hi⟩) U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq2` using `[hZU, ht]`. Use `hq2` as an intermediate fact. Rewrite using `[ht]`. Conclude with `c.saturation_coordIdeal_of_ne t b htb`. Use `⟨(DivisorReduction.containedComponentsIdeal T j hj).support.compl, (mem_closeds_compl _ _).mpr hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hst` using `restrictIdeal_strictTransform_eq_comap_of_notMem_support (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨i, hi⟩) (DivisorReduction.containedComponentsIdeal T j hj).support.compl (fun y hy => by`. Establish `h' : y ∉ (DivisorReduction.containedComponentsIdeal T j hj).support` using `(mem_closeds_compl _ y).mp hy`. Simplify using `using h')`. Rewrite using `[hst, Scheme.IdealSheafData.comap_id]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransform_comap_boundary_of_ne (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) (i : ℕ) (hi : i < T.boundary.length) (hij : i ≠ j) :
@@ -158,7 +158,7 @@ theorem strictTransform_comap_boundary_of_ne (T : MarkedIdealWithBoundary.{u}) (
     rw [hst, Scheme.IdealSheafData.comap_id]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal T hV j hj, smooth_subschemeι_containedComponentsIdeal_comp T hV j hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSmoothDivisor_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -166,15 +166,15 @@ theorem isSmoothDivisor_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u
   ⟨isLocallyGeneratedByNonZeroDivisor_containedComponentsIdeal T hV j hj, smooth_subschemeι_containedComponentsIdeal_comp T hV j hj⟩
 
 /- English proof (translation)
-Use `hV.isNoetherian` as an intermediate fact. Rewrite using `[Scheme.IdealSheafData.comap_id]`. Use `eq_of_locally_restrictIdeal_eq _ _ fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (DivisorReduction.containedComponentsIdeal T j hj).support`. Take `⟨U, hxU, n, c, a, b, hab, hnone, hsome, hinj, hZU⟩` from `exists_etaleChart_containedComponentsIdeal T hV j hj x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨U, hxU, ?_⟩` and prove the remaining obligations. Establish `hDj` using `hsome j hj b hab`. Establish `hq1 : QuasiCompact (saturationι (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩))` using `quasiCompact_saturationι_of_isLocallyNoetherian _ _`. Establish `hq2` using `quasiCompact_saturationι_restrictIdeal (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩) U`. Rewrite `hq2` using `[hZU, hDj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hq2` as an intermediate fact. Rewrite using `[restrictIdeal_mul, restrictIdeal_strictTransform_id, hZU, hDj, c.saturation_coordIdeal_self b, Scheme.IdealSheafData.top_mul]`. Use `⟨(DivisorReduction.containedComponentsIdeal T j hj).support.compl, (mem_closeds_compl _ _).mpr hx, ?_⟩` and prove the remaining obligations. Establish `hZtop : restrictIdeal (DivisorReduction.containedComponentsIdeal T j hj) (DivisorReduction.containedComponentsIdeal T j hj).support.compl = ⊤`. Establish `h` using `restrictIdeal_exceptionalIdeal_eq_top_of_notMem_support (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) (DivisorReduction.containedComponentsIdeal T j hj).support.compl (fun y hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : y ∉ (DivisorReduction.containedComponentsIdeal T j hj).support` using `(mem_closeds_compl _ y).mp hy`. Simplify using `using h')`. Rewrite `h` using `[exceptionalIdeal_id]`. Then use the resulting hypothesis. Establish `hst` using `restrictIdeal_strictTransform_eq_comap_of_notMem_support (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩) (DivisorReduction.containedComponentsIdeal T j hj).support.compl (fun y hy => by`. Establish `h' : y ∉ (DivisorReduction.containedComponentsIdeal T j hj).support` using `(mem_closeds_compl _ y).mp hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h')`. Rewrite using `[restrictIdeal_mul, hst, Scheme.IdealSheafData.comap_id, hZtop, Scheme.IdealSheafData.mul_top]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem strictTransform_mul_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -221,11 +221,11 @@ theorem strictTransform_mul_containedComponentsIdeal (T : MarkedIdealWithBoundar
       Scheme.IdealSheafData.mul_top]
 
 /- English proof (translation)
-Use `hV.isNoetherian` as an intermediate fact. Rewrite using `[Scheme.IdealSheafData.comap_id, Set.disjoint_right]`. Introduce `x hx`. Take `⟨U, hxU, n, c, a, b, hab, hnone, hsome, hinj, hZU⟩` from `exists_etaleChart_containedComponentsIdeal T hV j hj x hx`. Establish `hDj` using `hsome j hj b hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq1 : QuasiCompact (saturationι (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩))` using `quasiCompact_saturationι_of_isLocallyNoetherian _ _`. Establish `hq2` using `quasiCompact_saturationι_restrictIdeal (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩) U`. Rewrite `hq2` using `[hZU, hDj]`. Use `hq2` as an intermediate fact. Establish `hres : restrictIdeal (Blowup.strictTransform (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) (T.boundary.get ⟨j, hj⟩)) U = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[restrictIdeal_strictTransform_id, hZU, hDj]`. Conclude with `c.saturation_coordIdeal_self b`. Conclude with `notMem_support_of_mem_opens_of_restrictIdeal_eq_top _ U hres x hxU`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disjoint_support_strictTransform_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -253,9 +253,9 @@ theorem disjoint_support_strictTransform_containedComponentsIdeal (T : MarkedIde
   exact notMem_support_of_mem_opens_of_restrictIdeal_eq_top _ U hres x hxU
 
 /- English proof (translation)
-Establish `hlist : (T.boundary.map (fun D => D.comap (𝟙 T.scheme))).map (Blowup.strictTransform (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj)) = T.boundary.map (fun D => Blowup.strictTransform (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) (D.comap (𝟙 T.sc …`. Simplify using `only [List.map_map, Function.comp_def]`. Establish `key` using `eraseIdx_map_eq (fun D : T.scheme.IdealSheafData => Blowup.strictTransform (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) (D.comap (𝟙 T.scheme))) T.boundary j (fun i h hij => strictTransform_comap_boundary_of_ne T hV j hj i h hij)`. Establish `hlen : j < (T.boundary.map (fun D => Blowup.strictTransform (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj) (D.comap (𝟙 T.scheme)))).length`. Simplify using `using hj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show ((((T.boundary.map (fun D => D.comap (𝟙 T.scheme))).map (Blowup.strictTransform (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj))) ++ [Blowup.exceptionalIdeal (𝟙 T.scheme) (DivisorReduction.containedComponentsIdeal T j hj)]).eraseIdx j).take (T.boundary.length …`. Rewrite using `[hlist, List.eraseIdx_append_of_lt_length hlen, key]`. Conclude with `List.take_left' (List.length_eraseIdx_of_lt hj)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem take_eraseIdx_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -283,7 +283,7 @@ theorem take_eraseIdx_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u})
   exact List.take_left' (List.length_eraseIdx_of_lt hj)
 
 /- English proof (translation)
-Rewrite using `[take_eraseIdx_lowerBoundaryAfterBlowup T hV j hj]`. Conclude with `inStrictNormalCrossingPosition_comap_subschemeι_eraseIdx_of_eq T.structMap T.boundary hV.snc j hj (T.boundary.get ⟨j, hj⟩) rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_comap_lowerBoundaryAfterBlowup (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (j : ℕ) (hj : j < T.boundary.length) :

@@ -28,15 +28,15 @@ def ultrafilterPrime {A : Type} [CommRing A] (U : Ultrafilter (PrimeSpectrum A))
         exact Ultrafilter.eventually_or.1 (h.mono fun t ht => t.isPrime.mem_or_mem ht) }
 
 /- English proof (translation)
-Introduce `A _ Z hZ hpc`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `p hp`. Assume the negation of the conclusion as `hn`. Establish `hne : (nhds p ⊓ Filter.principal Zᶜ).NeBot`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[Filter.neBot_iff, Ne, Filter.inf_principal_eq_bot, compl_compl]`. Conclude with `hn`. Take `⟨U, hU⟩` from `Ultrafilter.exists_le (nhds p ⊓ Filter.principal Zᶜ)`. Establish `hU1 : (U : Filter (PrimeSpectrum A)) ≤ nhds p` using `hU.trans inf_le_left`. Establish `hU2 : ∀ᶠ t in (U : Filter (PrimeSpectrum A)), t ∉ Z` using `Filter.le_principal_iff.1 (hU.trans inf_le_right)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ultrafilterPrime U ≤ p`. Introduce `c hc`. Assume the negation of the conclusion as `hcp`. Establish `h1 : ∀ᶠ t in (U : Filter (PrimeSpectrum A)), c ∈ t.asIdeal` using `hc`. Establish `h2 : ∀ᶠ t in (U : Filter (PrimeSpectrum A)), c ∉ t.asIdeal` using `hU1 ((PrimeSpectrum.basicOpen c).isOpen.mem_nhds hcp)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht1, ht2⟩` from `(h1.and h2).exists`. Conclude with `ht2 ht1`. Establish `hq : ultrafilterPrime U ∈ Z` using `hZ ((PrimeSpectrum.le_iff_specializes _ _).1 hle |> fun h => by simpa using h) hp`. Take `⟨a, I, ha, hI, hsub⟩` from `hpc _ hq`. Establish `h1 : ∀ᶠ t in (U : Filter (PrimeSpectrum A)), a ∉ t.asIdeal` using `Ultrafilter.eventually_not.2 ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ∀ᶠ t in (U : Filter (PrimeSpectrum A)), ∀ c ∈ I, c ∈ t.asIdeal` using `(Filter.eventually_all_finset I).2 fun c hc => hI c hc`. Take `⟨t, ⟨ht1, ht2⟩, ht3⟩` from `((h1.and h2).and hU2).exists`. Conclude with `ht3 (hsub t ht1 ht2)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_of_stableUnderGeneralization_of_constructible_pieces :
     ∀ (A : Type) [CommRing A] (Z : Set (PrimeSpectrum A)), StableUnderGeneralization Z → (∀ p ∈ Z, ∃ (a : A) (I : Finset A), a ∉ p.asIdeal ∧ (∀ c ∈ I, c ∈ p.asIdeal) ∧ ∀ t : PrimeSpectrum A, a ∉ t.asIdeal → (∀ c ∈ I, c ∈ t.asIdeal) → t ∈ Z) → IsOpen Z := by

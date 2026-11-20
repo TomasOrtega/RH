@@ -23,7 +23,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Establish `h1` using `Fintype.card_subtype_compl (fun k' => k' ∈ Set.range κ)`. Establish `h2 : Fintype.card {k' // k' ∈ Set.range κ} = Fintype.card K` using `Set.card_range_of_injective hκ`. Establish `h3` using `Fintype.card_subtype_le (fun k' => k' ∈ Set.range κ)`. Establish `h4 : Fintype.card (FibreBlock κ) = Fintype.card {k' // ¬ k' ∈ Set.range κ}` using `Fintype.card_congr (Equiv.refl _)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_add_card_forgottenBlocks [Fintype K] {κ : K → K'} (hκ : Function.Injective κ) :
     Fintype.card K + Fintype.card (FibreBlock κ) = Fintype.card K' := by
@@ -38,9 +38,9 @@ theorem card_add_card_forgottenBlocks [Fintype K] {κ : K → K'} (hκ : Functio
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Rewrite `ha` using `[← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h' : a ∈ I.comap (C : ℤ →+* MRing ι)` using `ha`. Rewrite `h'` using `[h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_injective_of_horizontal (I : Ideal (MRing ι)) (h : IsHorizontal I) :
     Function.Injective (algebraMap ℤ (MRing ι ⧸ I)) := by
@@ -54,7 +54,7 @@ theorem algebraMap_injective_of_horizontal (I : Ideal (MRing ι)) (h : IsHorizon
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[imageZ, Ideal.mem_comap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comap_C_imageZ (v : (Σ k, ι k) → (Σ k', ι' k')) (W' : Ideal (MRing ι')) :
     (imageZ v W').comap (C : ℤ →+* MRing ι) = W'.comap (C : ℤ →+* MRing ι') := by
@@ -62,23 +62,21 @@ theorem comap_C_imageZ (v : (Σ k, ι k) → (Σ k', ι' k')) (W' : Ideal (MRing
   simp [imageZ, Ideal.mem_comap]
 
 /- English proof (translation)
-Use `hW'.1` as an intermediate fact. Establish `: (imageZ v W').IsPrime` using `Ideal.comap_isPrime _ _`. Distinguish the cases in `hh : IsHorizontal W'`. Establish `hh' : IsHorizontal (imageZ v W')`. Unfold `IsHorizontal`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[comap_C_imageZ]`. Conclude with `hh`. Establish `hD` using `IntDomainDim.proof (MRing ι' ⧸ W') (algebraMap_injective_of_horizontal W' hh)`. Establish `hC` using `IntDomainDim.proof (MRing ι ⧸ imageZ v W') (algebraMap_injective_of_horizontal _ hh')`. Establish `ht` using `trdeg_add_card_le (S := ℤ) hv W' hW'.2.1 hW'.2.2 (algebraMap_injective_of_horizontal _ hh')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht' : Cardinal.toENat (Algebra.trdeg ℤ (MRing ι ⧸ imageZ v W')) + Fintype.card (FibreBlock κ) ≤ Cardinal.toENat (Algebra.trdeg ℤ (MRing ι' ⧸ W'))`. Use `OrderHomClass.mono Cardinal.toENat ht` as an intermediate fact. Rewrite `this` using `[map_add, Cardinal.toENat_nat]`. Conclude with `this`. Rewrite using `[hD, hC]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Cardinal.toENat (Algebra.trdeg ℤ (MRing ι ⧸ imageZ v W')) + 1 + Fintype.card (FibreBlock κ) ≤ Cardinal.toENat (Algebra.trdeg ℤ (MRing ι' ⧸ W')) + 1`. Rewrite using `[add_right_comm]`. Use `gcongr`. Conclude with `h2` after adjusting the coercions. Establish `hpr` using `charOf_prime hW'.1 hh set p := charOf W' with hpdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: Fact p.Prime` using `⟨hpr⟩`. Establish `hp' : ((p : ℕ) : MRing ι') ∈ W'` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.natCast_mem_of_charOf W'`. Establish `hp : ((p : ℕ) : MRing ι) ∈ imageZ v W'` using `by show rename v ((p : ℕ) : MRing ι) ∈ W'`. Simplify using `using hp'`. Establish `hV` using `isMultiProjPrime_red p hW' hp'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hV.1` as an intermediate fact. Use `set V := W'.map (red p) with hVdef`. Establish `: (V.comap (rename v : MRingOver (ZMod p) ι →ₐ[ZMod p] MRingOver (ZMod p) ι').toRingHom).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hinj : Function.Injective (algebraMap (ZMod p) (MRingOver (ZMod p) ι ⧸ V.comap (rename v : MRingOver (ZMod p) ι →ₐ[ZMod p] MRingOver (ZMod p) ι').toRingHom))` using `(algebraMap (ZMod p) _).injective`. Establish `ht` using `trdeg_add_card_le (S := ZMod p) hv V hV.2.1 hV.2.2 hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Algebra.FiniteType (ZMod p) (MRingOver (ZMod p) ι' ⧸ V)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ (ZMod p) V) (Ideal.Quotient.mkₐ_surjective (ZMod p) V)`. Establish `: Algebra.FiniteType (ZMod p) (MRingOver (ZMod p) ι ⧸ V.comap (rename v : MRingOver (ZMod p) ι →ₐ[ZMod p] MRingOver (ZMod p) ι').toRingHom)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ (ZMod p) _) (Ideal.Quotient.mkₐ_surjective (ZMod p) _)`. Take `⟨sD, hsD1, hsD2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ZMod p) (A := MRingOver (ZMod p) ι' ⧸ V)`. Take `⟨sC, hsC1, hsC2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ZMod p) (A := MRingOver (ZMod p) ι ⧸ V.comap (rename v : MRingOver (ZMod p) ι →ₐ[ZMod p] MRingOver (ZMod p) ι').toRingHom)`. Rewrite `ht` using `[hsD2, hsC2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : sC + Fintype.card (FibreBlock κ) ≤ sD` using `by exact_mod_cast ht`. Establish `hDdim : ringKrullDim (MRing ι' ⧸ W') = sD` using `by rw [← ringKrullDim_red p hp', hsD1]`. Establish `hCdim : ringKrullDim (MRing ι ⧸ imageZ v W') = sC`. Rewrite using `[← ringKrullDim_red p hp, ← imageVar_red p v hp']`. Conclude with `hsC1`.
-
-Rewrite using `[hDdim, hCdim]`. Conclude with `hle` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem dim_add_card_le {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {W' : Ideal (MRing ι')} (hW' : IsMultiProjPrime W') :
@@ -144,19 +142,17 @@ end FibreIncompressibility
 open FibreIncompressibility in
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW W₁ W₂ hW₁ hW₂ h12`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf2, hf1⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne h12 hne)`. Use `hP'.2.1.1` as an intermediate fact. Use `hW₁.1.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsW : s ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Establish `hs1 : rename v s ∈ W₁`. Establish `h : s ∈ imageZ v W₁` using `hW₁.2.2 ▸ hsW`. Conclude with `h`. Establish `hsP : rename v s ∉ P'` using `hsQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ringKrullDim (MRing ι' ⧸ W₁) + 1 ≤ ringKrullDim (MRing ι' ⧸ P')` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hW₁.2.1) (Ideal.Quotient.factor_surjective _) (r := Ideal.Quotient.mk P' (rename v s)) (mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])) (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero …`. Establish `h21 : ringKrullDim (MRing ι' ⧸ W₂) + 1 ≤ ringKrullDim (MRing ι' ⧸ W₁)` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor h12) (Ideal.Quotient.factor_surjective _) (r := Ideal.Quotient.mk W₁ f) (mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])) (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exac …`. Establish `hsec : IsSectionOn (imageZ v P') (HermLine.sqMetric (ι` using `ι) α) s := ⟨α, fun _ => rfl, hs, hsQ⟩`. Establish `hA` using `divSuppArith K ι (imageZ v P') n _ _ W hQ hsec hW`. Establish `hdW : ringKrullDim (MRing ι ⧸ W) = ((n + Fintype.card K : ℕ) : WithBot ℕ∞)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hh : IsHorizontal W`. Conclude with `(hA.1 hh).2.2.2`. Conclude with `(hA.2 hh).2.2`. Establish `hlow` using `dim_add_card_le hv hW₂.1`. Rewrite `hlow` using `[hW₂.2.2, hdW]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hB` using `[hP'.2.2.2]`. Establish `hcard` using `card_add_card_forgottenBlocks hv.1`. Establish `hchain : ((n + Fintype.card K + Fintype.card (FibreBlock κ) + 1 + 1 : ℕ) : WithBot ℕ∞) ≤ ((n + 1 + Fintype.card K' : ℕ) : WithBot ℕ∞)`. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`.
+Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Both sides reduce to the same expression. Use `_ ≤ ringKrullDim (MRing ι' ⧸ W₂) + 1 + 1 := by gcongr`. Use `_ ≤ ringKrullDim (MRing ι' ⧸ W₁) + 1 := by gcongr`. Use `_ ≤ _ := hB`. Establish `: n + Fintype.card K + Fintype.card (FibreBlock κ) + 1 + 1 ≤ n + 1 + Fintype.card K'`.
-
-Conclude with `hchain` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem FibreIncomp.full : Inter.FibreIncomp.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW W₁ W₂ hW₁ hW₂ h12

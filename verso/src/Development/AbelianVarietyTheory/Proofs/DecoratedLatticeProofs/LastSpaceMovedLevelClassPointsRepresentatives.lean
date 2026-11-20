@@ -14,11 +14,11 @@ namespace GlobalTheory.ClassPtReps
 variable {D : D7}
 
 /- English proof (translation)
-Establish `key : ∀ i j, (Formalism.UG.bc (Lev.swapAE D) (finHom D.sp.X' h)).1 i j = finM D.sp.X' (Formalism.L2.Forms.rankP D) h (finCongr (Formalism.L2.Forms.rankP D) i) (finCongr (Formalism.L2.Forms.rankP D) j)`. Introduce `i j`. Simplify using `only [finM, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Use `h2 ((finCongr (Formalism.L2.Forms.rankP D)).symm i) ((finCongr (Formalism.L2.Forms.rankP D)).symm j)` as an intermediate fact. Rewrite `this` using `[key]`. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun i j => by rw [key, h2]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem hasMat_iff (h : GA D D.sp.X') (y) :
     GlobalTheory.Core.Rk.Top.HasMat h y ↔ h ∈ GfC D.sp.X' ∧ finM D.sp.X' (Formalism.L2.Forms.rankP D) h = y.1 := by
@@ -37,7 +37,7 @@ theorem hasMat_iff (h : GA D D.sp.X') (y) :
     exact ⟨h1, fun i j => by rw [key, h2]⟩
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 D.host.F)`. Establish `hne : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)`. Conclude with `(evalV D.host.F ⟨P, hP.isPrime, hne⟩).toRingHom.domain_nontrivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nontrivial_finAdeles : Nontrivial (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 D.host.F)
@@ -45,7 +45,7 @@ theorem nontrivial_finAdeles : Nontrivial (FiniteAdeleRing (𝓞 D.host.F) D.hos
   exact (evalV D.host.F ⟨P, hP.isPrime, hne⟩).toRingHom.domain_nontrivial
 
 /- English proof (translation)
-Use `haveI := nontrivial_finAdeles (D := D)`. Conclude with `Formalism.UG.P.inclE_injective D.host.F D.host.E (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`.
+A detailed English derivation is pending.
 -/
 theorem inclE_inj : Function.Injective
     (Formalism.UG.inclE (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := by
@@ -53,7 +53,7 @@ theorem inclE_inj : Function.Injective
   exact Formalism.UG.P.inclE_injective D.host.F D.host.E (FiniteAdeleRing (𝓞 D.host.F) D.host.F)
 
 /- English proof (translation)
-Introduce `a b hab`. Use `Units.ext (Matrix.ext fun i j => inclE_inj (D := D) ?_)` and prove the remaining obligations. Establish `h2` using `congrArg (fun g : GL (Fin n) _ => g.val i j) hab`. Simplify `h2` using `[Formalism.UG.bc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bc_inclE_inj {n : ℕ} : Function.Injective
     (Formalism.UG.bc (Formalism.UG.inclE (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
@@ -64,11 +64,11 @@ theorem bc_inclE_inj {n : ℕ} : Function.Injective
   simpa [Formalism.UG.bc] using h2
 
 /- English proof (translation)
-Take `⟨δ, hδ, e⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Establish `e' : mt V γ = δ.1.map (incA D)` using `congrArg Units.val e.symm`. Establish `h2 : finM V rfl γ = δ.1.map (Formalism.UG.inclE (F` using `D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := by`. Simplify using `only [finM, e', finCongr_refl, Matrix.reindex_refl_refl, Matrix.map_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hδ1 : δ.1 = 1`. Apply `Matrix.map_injective (inclE_inj (D := D))` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[← h2, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show mt V γ = 1`. Rewrite using `[e', hδ1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_GQ {V : HSp D} {γ : GA D V} (hγ : γ ∈ GQ V) (h1 : finM V rfl γ = 1) : γ = 1 := by
   obtain ⟨δ, hδ, e⟩ := Subgroup.mem_subgroupOf.1 hγ
@@ -86,16 +86,16 @@ theorem eq_one_of_GQ {V : HSp D} {γ : GA D V} (hγ : γ ∈ GQ V) (h1 : finM V 
   rw [e', hδ1, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `eq_one_of_GQ hγ h1`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eq_one_of_GQ' {V : HSp D} {n : ℕ} (hn : V.rank = n) {γ : GA D V} (hγ : γ ∈ GQ V) (h1 : finM V hn γ = 1) : γ = 1 := by
   subst hn
   exact eq_one_of_GQ hγ h1
 
 /- English proof (translation)
-Establish `h3 : γ₁⁻¹ * γ₂ ∈ GQ V` using `mul_mem (inv_mem h1) h2`. Establish `h4 : finM V hn (γ₁⁻¹ * γ₂) = 1`. Use `congrArg Units.val (show GlobalTheory.ClassSumLevel.finGLHom V hn (γ₁⁻¹ * γ₂) = 1 by rw [map_mul, map_inv, e, inv_mul_cancel])` as an intermediate fact. Conclude with `this`. Use `eq_one_of_GQ' hn h3 h4` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_inv_cancel_left γ₁ γ₂, this, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem finGLHom_injOn {V : HSp D} {n : ℕ} (hn : V.rank = n) {γ₁ γ₂ : GA D V} (h1 : γ₁ ∈ GQ V) (h2 : γ₂ ∈ GQ V)
     (e : GlobalTheory.ClassSumLevel.finGLHom V hn γ₁ = GlobalTheory.ClassSumLevel.finGLHom V hn γ₂) : γ₁ = γ₂ := by
@@ -107,7 +107,7 @@ theorem finGLHom_injOn {V : HSp D} {n : ℕ} (hn : V.rank = n) {γ₁ γ₂ : GA
   rw [← mul_inv_cancel_left γ₁ γ₂, this, mul_one]
 
 /- English proof (translation)
-Use `(Nat.card_eq_of_bijective (fun a : {a // q a} => (⟨⟨ρ a.1, hρ a.1⟩, (hpq _).2 a.2⟩ : {γ : H // p γ.1})) ⟨fun a b hab => Subtype.ext (hi _ _ (congrArg (fun x : {γ : H // p γ.1} => x.1.1) hab)), fun γ => ?_⟩).symm` and prove the remaining obligations. Take `⟨a, ha⟩` from `hs γ.1.1 γ.1.2`. Conclude with `⟨⟨a, (hpq a).1 (ha ▸ γ.2)⟩, Subtype.ext (Subtype.ext ha)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem card_eq_of_lift {G A : Type} [Group G] (H : Subgroup G) (p : G → Prop) (q : A → Prop) (ρ : A → G) (hρ : ∀ a, ρ a ∈ H)
     (hpq : ∀ a, p (ρ a) ↔ q a) (hi : ∀ a b, ρ a = ρ b → a = b) (hs : ∀ γ ∈ H, ∃ a, ρ a = γ) :
@@ -121,31 +121,27 @@ open scoped ComplexOrder in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := hT.2.2.1`. Use `haveI := hT.2.2.2.2.1`. Establish `hinf : ∀ k ∈ GinfC V, k ∈ GlobalTheory.ClassSumLevel.levG V hn S` using `fun k hk => ⟨1, (GlobalTheory.ClassSumLevel.finM_eq_one_of_mem_GinfC V hn hk).symm⟩`. Establish `split : ∀ k ∈ GlobalTheory.ClassSumLevel.levG V hn S, ∃ a ∈ GinfC V, ∃ κ ∈ U, k = a * κ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k hk`. Take `⟨a, ha, κ, hκ, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 k`. Use `⟨a, ha, κ, (mem κ).2 ⟨hκ, ?_⟩, rfl⟩` and prove the remaining obligations. Use `mul_mem (inv_mem (hinf a ha)) hk` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex` using `GlobalTheory.ClassSumLevel.existsUnique_class V hn S yc hy h hh`. Use `⟨⟨fun x hx => ((mem x).1 hx).1, ?_, ?_, hf, fun g => ?_, fun c c' γ hγ k hk κ hκ e => ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Establish `hc` using `GlobalTheory.ClassSumLevel.isCompact_levG V hn S hV`. Establish `hcl : IsClosed (GfC V : Set (GA D V))`. Establish `e : (GfC V : Set (GA D V)) = {g | ((GlobalTheory.AutMult.toFin V g : GfC V) : GA D V) = g}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use extensionality with `g`. Conclude with `⟨fun hg => congrArg Subtype.val (GlobalTheory.AutMult.toFin_coe (V := V) ⟨g, hg⟩), fun hg => by`. Establish `hg' : ((GlobalTheory.AutMult.toFin V g : GfC V) : GA D V) = g` using `hg`. Rewrite using `[← hg']`. Conclude with `(GlobalTheory.AutMult.toFin V g).2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `isClosed_eq (continuous_subtype_val.comp (GlobalTheory.AutMult.continuous_toFin V)) continuous_id`. Establish `e : (U : Set (GA D V)) = (GlobalTheory.ClassSumLevel.levG V hn S : Set (GA D V)) ∩ (GfC V : Set (GA D V))` using `Set.ext fun x => (mem x).trans and_comm`. Rewrite using `[e]`. Conclude with `hc.inter_right hcl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : ((U.subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V)) = Subtype.val ⁻¹' (GlobalTheory.ClassSumLevel.levG V hn S : Set (GA D V))` using `Set.ext fun x => ⟨fun hx => ((mem x.1).1 (Subgroup.mem_subgroupOf.1 hx)).2, fun hx => Subgroup.mem_subgroupOf.2 ((mem x.1).2 ⟨x.2, hx⟩)⟩`. Rewrite using `[e]`. Conclude with `(GlobalTheory.ClassSumLevel.isOpen_levG V hn S).preimage continuous_subtype_val`. Take `⟨c, ⟨γ, hγ, k, hk, e⟩, -⟩` from `hex g`. Take `⟨a, ha, κ, hκ, rfl⟩` from `split k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨γ, hγ, c, a, ha, κ, hκ, by rw [e]; simp only [mul_assoc]⟩`. Take `⟨c₀, -, hu⟩` from `hex (h c')`. Establish `h1` using `hu c ⟨γ, hγ, k * κ, mul_mem (hinf k hk) ((mem κ).1 hκ).2, by rw [e]; simp only [mul_assoc]⟩`. Establish `h2` using `hu c' ⟨1, one_mem _, 1, one_mem _, by rw [one_mul, mul_one]⟩`. Conclude with `h1.trans h2.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hh' : GlobalTheory.ClassSumLevel.finGLHom V hn (h c) = (yc c).1` using `Units.ext (hh c)`. Establish `key : ∀ γ : GA D V, (∃ k ∈ GinfC V, ∃ κ ∈ U, γ * h c = h c * k * κ) ↔ GlobalTheory.ClassSumLevel.finGLHom V hn γ ∈ S.U.map (MulAut.conj (yc c).1).toMonoidHom`. Introduce `γ`. Establish `e1 : (∃ k ∈ GinfC V, ∃ κ ∈ U, γ * h c = h c * k * κ) ↔ (h c)⁻¹ * γ * h c ∈ GlobalTheory.ClassSumLevel.levG V hn S`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨k, hk, κ, hκ, e⟩`. Rewrite using `[mul_assoc, e, mul_assoc, inv_mul_cancel_left]`. Conclude with `mul_mem (hinf k hk) ((mem κ).1 hκ).2`. Introduce `hz`. Take `⟨a, ha, κ, hκ, e⟩` from `split _ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨a, ha, κ, hκ, by rw [mul_assoc, ← e, mul_assoc, mul_inv_cancel_left]⟩`. Rewrite using `[e1, GlobalTheory.ClassSumLevel.mem_levG_iff, map_mul, map_mul, map_inv, hh']`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨_, hz, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `show (yc c).1 * _ * (yc c).1⁻¹ = _`. Use `group`. Introduce and unpack `⟨κ, hκ, e⟩`. Establish `e' : (yc c).1 * κ * (yc c).1⁻¹ = GlobalTheory.ClassSumLevel.finGLHom V hn γ` using `e`. Rewrite using `[← e', show (yc c).1⁻¹ * ((yc c).1 * κ * (yc c).1⁻¹) * (yc c).1 = κ by group]`.
-
-Conclude with `hκ`. Establish `hr : ∀ δ : Formalism.UG.UJ (sigD D : D.host.E →+* D.host.E) (V.gram.reindex (finCongr hn) (finCongr hn)), ∃ γ ∈ GQ V, GlobalTheory.ClassSumLevel.finGLHom V hn γ = Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ.1 := fun δ => GlobalTheory.ClassSumLevel.exists_GQ_of_mem_ratPts V hn ⟨δ.1, δ.2, rfl⟩`. Use `choose ρ hρ eρ using hr`. Unfold `stabOrd`. Use `card_eq_of_lift (GQ V) (fun γ => ∃ k ∈ GinfC V, ∃ κ ∈ U, γ * h c = h c * k * κ) _ ρ hρ (fun δ => (key _).trans (by rw [eρ])) (fun a b e => ?_) fun γ hγ => ?_` and prove the remaining obligations.
-
-Conclude with `Subtype.ext (bc_inclE_inj (D := D) ((eρ a).symm.trans ((congrArg _ e).trans (eρ b))))`. Take `⟨δ, hδ, e⟩` from `GlobalTheory.ClassSumLevel.finGLHom_mem_ratPts V hn hγ`. Conclude with `⟨⟨δ, hδ⟩, finGLHom_injOn hn (hρ ⟨δ, hδ⟩) hγ ((eρ ⟨δ, hδ⟩).trans e)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isReps_of_level (V : HSp D) {n : ℕ} (hn : V.rank = n) (hV : ∀ τ, (gramAt D V τ).PosDef) {T f : ℕ}
     {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
@@ -233,11 +229,11 @@ theorem isReps_of_level (V : HSp D) {n : ℕ} (hn : V.rank = n) (hV : ∀ τ, (g
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I _ _ l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ s J _ j _ _ P t r a k tl Ch₀ A ι w _ UT ε hpin bad K eW _ _ _ hLev _ h hh`. Establish `mem : ∀ x, x ∈ UT ↔ x ∈ GfC (I.rec7 l Z).sp.X' ∧ x ∈ GlobalTheory.ClassSumLevel.levG (I.rec7 l Z).sp.X' (Formalism.L2.Forms.rankP (I.rec7 l Z)) K.lev`. Introduce `x`. Use `((hpin.lev x).trans (hLev.1 x)).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨κ, hκ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hκ.1, κ, ((hasMat_iff x _).1 hκ).2.symm⟩`. Introduce and unpack `⟨h1, κ, hκ⟩`. Conclude with `⟨κ, (hasMat_iff x _).2 ⟨h1, hκ.symm⟩⟩`. Establish `H` using `isReps_of_level (I.rec7 l Z).sp.X' (Formalism.L2.Forms.rankP (I.rec7 l Z)) (GlobalTheory.RepsObj.gramAt_posDef (D7.X'_posDef _) (I.rec7 l Z).sp.X'_sig) K.lev K.y K.y_bij h (fun c => (hh c).1) (fun c => ((hasMat_iff _ _).1 (hh c)).2) UT mem`. Use `⟨H.1, fun c => (H.2 c).trans ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Nat.card_congr ((MonoidHom.ofInjective (K.stabI_inj c)).toEquiv.trans (Equiv.subtypeEquivRight (K.stabI_range c)))).symm`.
+A detailed English derivation is pending.
 -/
 theorem isReps_stabOrd_top : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {F : FamIn (I.rec7 l Z).what₂.LL G Pl0 T (I.rec7 l Z).R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (I.rec7 l Z).what₂.LL] (R : RealDat (I.rec7 l Z) F Ks) (g : GlobalTheory.Fam.Geo (I.rec7 l Z)) (c₀ s : ℕ → ℂ) J, PinX I l Z R.ψ R.θ g.x g.vac c₀ → ∀ j : SmT R.MX →ₗ[ℂ] (FrP (I.rec7 l Z) → ℂ), GlobalTheory.Core.Rk.Top.IsJ u R.MX j → JOf R j J → ∀ (P : LevelP R.Pg (I.rec7 l Z).R.r ℂ) (t : T) (r : RowCh R P u g t) (a : I.ι) (k : ColCh (D := (I.rec7 l Z)) u ((I.rec7 l Z).chTw u a)) (tl : ColT I l u a B.R.m → CXP R P t → ℂ) (Ch₀ : ℕ → Type) (A : TwDat I l Z u a Ch₀) (ι : ∀ j, k.Ch j → Ch₀ j) w, PinChL R g k c₀ A ι w → ∀ UT ε, PinTopL R g P (t := t) k UT ε → ∀ (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (K : ClassesAtPrimes (D := (I.rec7 l Z)) (u := u) (I.fm l u a) bad) (eW : (I.per l u a).Wrow ≃ₗ[ℂ] ((I.fm l u a).clsP → FrP (I.rec7 l Z) → ℂ)), I.ReadsP a K.lev.Lb K.lev.U K.lev.chi (fun c => (K.y c).1) K.lat (fun c s => (K.stabI c s).1) → (∀ z c (y : FrP (I.rec7 l Z)) y', y'.1 = y.1 → eW z c y = z c y') → g.bT ∈ GfC _ → LevG K g.bT (levS _ R.βX (datXP R P t)) (levChi _ R.βX (datXP R P t)) → (∀ ψ f, ∃ G', ReadsG K eW j g.bT G' f.1 ∧ tl ψ f = (I.per l u a).Ptil ψ G') → ∀ h : (I.fm l u a).clsP → GA (I.rec7 l Z) (I.rec7 l Z).sp.X', (∀ c, GlobalTheory.Core.Rk.Top.HasMat (h c) (K.y c).1) → IsReps (I.rec7 l Z).sp.X' UT h ∧ ∀ c, stabOrd UT (h c) = Nat.card ((I.fm l u a).stabilizer₂ c) := by
   intro B X I _ _ l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ s J _ j _ _ P t r a k tl Ch₀ A ι w _ UT ε hpin bad K eW _ _ _ hLev _ h hh

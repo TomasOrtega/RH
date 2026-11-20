@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 private theorem red_mul' {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (A B : Matrix (Fin n) (Fin n) O) :
     red m (A * B) = red m A * red m B := Matrix.map_mul
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[red]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem red_sub' {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (A B : Matrix (Fin n) (Fin n) O) :
     red m (A - B) = red m A - red m B := by
@@ -18,7 +18,7 @@ private theorem red_sub' {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : 
   simp [red]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[red]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem red_smul' {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (a : O) (A : Matrix (Fin n) (Fin n) O) :
     red m (a • A) = algebraMap O (Om O m) a • red m A := by
@@ -26,27 +26,25 @@ private theorem red_smul' {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m :
   simp [red]
 
 /- English proof (translation)
-Introduce `l _ L G0 O _ _ _ _ _ n y D hN`. Set `M : G0.G₀ → Matrix (Fin n) (Fin n) O` to `fun g => mat y.ρ g`. Set `e : G0.G₀ → O` to `fun g => algebraMap ℤ_[l] O (G0.ε (g : G0.Γ))`. Set `Φ : D → Matrix (Fin n) (Fin n) O →ₗ[O] Matrix (Fin n) (Fin n) O` to `fun s => e s • LinearMap.mulLeft O (M s) - LinearMap.mulRight O (M s)`. Establish `hΦ : ∀ s Z, Φ s Z = e s • (M s * Z) - Z * M s` using `fun s Z => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `fixCnt l O n D Φ`. Establish `hker : (⨅ s, (Φ s).ker) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `Z hZ`. Rewrite `hZ` using `[Submodule.mem_iInf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Apply `hN Z` to reduce the goal to its premises. Introduce `g hg`. Establish `h1` using `hZ ⟨g, hg⟩`. Rewrite `h1` using `[LinearMap.mem_ker, hΦ, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `hfin : Module.finrank O ↥(⨅ s, (Φ s).ker) = 0`. Rewrite using `[hker]`. Conclude with `finrank_bot O _`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hone : red m (1 : Matrix (Fin n) (Fin n) O) = 1`. Unfold `red`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hinv : ∀ g : G0.G₀, y.ρ0 m g * y.ρ0 m g⁻¹ = 1 ∧ y.ρ0 m g⁻¹ * y.ρ0 m g = 1`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pt.ρ0, ← red_mul', ← map_mul, mul_inv_cancel, inv_mul_cancel, map_one, hone, and_self]`. Establish `hred : ∀ (g : G0.G₀) (Z : Matrix (Fin n) (Fin n) O), red m (e g • (M g * Z) - Z * M g) = epsm O G0 m g • (y.ρ0 m g * red m Z) - red m Z * y.ρ0 m g`. Introduce `g Z`. Rewrite using `[red_sub', red_smul', red_mul', red_mul']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hset : {Y : Mm O n m | ∀ g ∈ D, epsm O G0 m (g : G0.G₀) • (y.ρ0 m g * Y * y.ρ0 m g⁻¹) = Y} = {Y : Mm O n m | ∃ Y' : Matrix (Fin n) (Fin n) O, red m Y' = Y ∧ ∀ s, red m (Φ s Y') = 0}`. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨Y.map (Function.surjInv Ideal.Quotient.mk_surjective), ?_, fun s => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[red, Function.surjInv_eq]`. Establish `hY : red m (Y.map (Function.surjInv Ideal.Quotient.mk_surjective)) = Y`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[red, Function.surjInv_eq]`. Rewrite using `[hΦ, hred, hY, sub_eq_zero]`. Establish `h1` using `h s s.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, mul_assoc (y.ρ0 m s * Y), (hinv s).2, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = Y * y.ρ0 m s := by rw [h1]`. Introduce and unpack `⟨Y', rfl, h⟩ g hg`. Establish `h1` using `h ⟨g, hg⟩`. Rewrite `h1` using `[hΦ, hred, sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hset]`. Establish `h2` using `hC m`. Rewrite `h2` using `[hfin, mul_zero, zero_add]`. Conclude with `h2`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.h0v0O :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (D : Subgroup G0.G₀), y.N4 D → ∃ C : ℕ, ∀ m, {Y : Mm O n m | ∀ g ∈ D, epsm O G0 m (g : G0.G₀) • (y.ρ0 m g * Y * y.ρ0 m g⁻¹) = Y}.ncard ≤ Nat.card (ResidueField O) ^ C := by

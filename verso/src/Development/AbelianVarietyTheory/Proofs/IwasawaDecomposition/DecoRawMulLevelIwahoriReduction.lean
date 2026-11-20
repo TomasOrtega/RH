@@ -23,9 +23,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (hc : CMData F E) {n : ℕ} [NeZero n] {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Establish `h` using `decoRaw_rawSm hc ST SG 1 (⟨z, hz⟩⁻¹ : J0 hc n ST) g`. Rewrite `h` using `[map_one, map_inv]`. Establish `e : Formalism.UG.bc (iA F E) ((1 : URat hc n) : GL (Fin n) E) * g * (((⟨z, hz⟩⁻¹ : J0 hc n ST) : J0 hc n ST) : GL (Fin n) (AfE F E))⁻¹ = g * z`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem decoRaw_mul_levelIwahori_reduction (g z : GL (Fin n) (AfE F E)) (hz : z ∈ J0 hc n ST) :
     decoRaw ST SG (g * z) = (decoRaw ST SG g).act 1 (redG hc n ST SG ⟨z, hz⟩)⁻¹ := by

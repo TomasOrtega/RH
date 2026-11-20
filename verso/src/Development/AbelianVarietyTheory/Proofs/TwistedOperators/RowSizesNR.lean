@@ -22,9 +22,9 @@ def rowSizes (D : D7) : Sizes where
   t_odd := D.R.t_odd
 
 /- English proof (translation)
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Simplify using `only [Sizes.nR, rowSizes, rankX, rankP, nRk, sLen, Ranks.r]`. Use `zify [show 1 ≤ D.R.k + D.R.m by omega, show 1 ≤ D.R.k + D.R.m - 1 + 6 by omega] at *`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form.
+A detailed English derivation is pending.
 -/
 theorem rowSizes_nR (D : D7) (j : ℕ) : (rowSizes D).nR j = rankX D j := by
   have h1 := D.R.two_le_m
@@ -35,7 +35,7 @@ theorem rowSizes_nR (D : D7) (j : ℕ) : (rowSizes D).nR j = rankX D j := by
   ring_nf
 
 /- English proof (translation)
-Simplify using `only [Sizes.nC, rowSizes, rankV, Ranks.r]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowSizes_nC (D : D7) (i : ℕ) : (rowSizes D).nC i = rankV D i D.R.m := by
   simp only [Sizes.nC, rowSizes, rankV, Ranks.r]
@@ -43,7 +43,7 @@ theorem rowSizes_nC (D : D7) (i : ℕ) : (rowSizes D).nC i = rankV D i D.R.m := 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Rewrite using `[rowSizes_nR]`. Break down `j with _ | j` into its components or cases. Conclude with `((G.sp.P_is D.R.m le_rfl).rank).trans (by simp [rankX])`. Conclude with `(G.sp.X_is (j + 1) (by omega) hj).rank`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem rank_top (G : GridData L sc) {j : ℕ} (hj : j ≤ D.R.m) : (G.V (.top j)).rank = (rowSizes D).nR j := by
   rw [rowSizes_nR]
@@ -57,9 +57,7 @@ namespace GlobalTheory.RowReal
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Rewrite using `[rowSizes_nC]`. Break down `i with _ | i` into its components or cases. Use `show (columnBlock L D.R.m).sp.rank = _`. Rewrite using `[colY_m]`. Conclude with `D.sp.X'_rank.trans (by simp [rankV, Ranks.rankX'])`.
-
-Conclude with `(G.sp.V_is (i + 1) D.R.m (by omega) hi le_rfl).rank`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_gridM (G : GridData L sc) {i : ℕ} (hi : i ≤ D.R.m) : (G.V (.grid i D.R.m)).rank = (rowSizes D).nC i := by
   rw [rowSizes_nC]

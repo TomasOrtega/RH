@@ -5,9 +5,9 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 namespace GlobalTheory.AlcPerm
 
 /- English proof (translation)
-Establish `: Formalism.GradedWeylDivisibility.rowAct k (n` using `N) (σ.permMatrix k) = rename (fun v : Fin N × Fin N => (σ v.1, v.2)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, aeval_X, rename_X]`. Rewrite using `[Finset.sum_eq_single (σ v.1)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[PEquiv.toMatrix_apply, Equiv.toPEquiv_apply]`. Introduce `b _ hb`. Simplify using `[PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_permMatrix (k : Type) [Field k] (N : ℕ) (σ : Equiv.Perm (Fin N))
     (f : MvPolynomial (Fin N × Fin N) k) :
@@ -24,17 +24,15 @@ theorem rowAct_permMatrix (k : Type) [Field k] (N : ℕ) (σ : Equiv.Perm (Fin N
   rw [this]
 
 /- English proof (translation)
-Introduce `k _ N lam M hM σ f hf`. Establish `hdet : ((σ⁻¹).permMatrix k).det ≠ 0`. Rewrite using `[Matrix.det_permutation]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ⁻¹) with h | h <;> simp [h]`. Use `set g : GL (Fin N) k := Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1` using `hM k g f hf`. Establish `hid : (map (algebraMap k k) : MvPolynomial (Fin N × Fin N) k →+* _) = RingHom.id _`. Rewrite using `[Algebra.algebraMap_self]`. Conclude with `RingHom.ext fun p => map_id p`. Establish `hspan : Submodule.span k (map (algebraMap k k) '' (M : Set (MvPolynomial (Fin N × Fin N) k))) = M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hid]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hspan, hid, RingHom.id_apply]`. Establish `hgT : (g : Matrix (Fin N) (Fin N) k).transpose = σ.permMatrix k`. Rewrite using `[hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show ((σ⁻¹).permMatrix k).transpose = _`. Rewrite using `[Matrix.transpose_permMatrix, inv_inv]`. Unfold `sqAct at h1`. Rewrite `h1` using `[hgT, rowAct_permMatrix]`. Establish `hu : IsUnit (detPow k N g lam.detShift)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `detPow`. Conclude with `Units.isUnit _`. Break down `hu with ⟨u, hu⟩` into its components or cases. Rewrite `h1` using `[← hu]`. Use `M.smul_mem ((u⁻¹ : kˣ) : k) h1` as an intermediate fact.
-
-Rewrite `this` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem perm_stable : ∀ (k : Type) [Field k] (N : ℕ) (lam : DomWeight N) (M : Submodule k (MvPolynomial (Fin N × Fin N) k)), GlobalTheory.Published.IsGLSubmodule k N lam M → ∀ σ : Equiv.Perm (Fin N), ∀ f ∈ M, rename (fun v : Fin N × Fin N => (σ v.1, v.2)) f ∈ M := by
   intro k _ N lam M hM σ f hf

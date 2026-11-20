@@ -25,24 +25,24 @@ def nonRaising (σ : Type) : Submodule ℂ (Module.End ℂ (MvPolynomial σ ℂ)
     exact (totalDegree_smul_le _ _).trans (h P)
 
 /- English proof (translation)
-Introduce `_` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem : (1 : Module.End ℂ (MvPolynomial σ ℂ)) ∈ nonRaising σ := fun _ => le_rfl
 
 /- English proof (translation)
-Introduce `P` and use `(h _).trans (h' P)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mem {L L' : Module.End ℂ (MvPolynomial σ ℂ)} (h : L ∈ nonRaising σ) (h' : L' ∈ nonRaising σ) :
     L * L' ∈ nonRaising σ := fun P => (h _).trans (h' P)
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum, map_sum, Finset.mul_sum]`. Use `totalDegree_finsetSum_le fun s hs => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : s y = 0`. Simplify using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs' : (Finsupp.single y 1) + (s - Finsupp.single y 1) = s`. Rewrite using `[add_tsub_cancel_of_le]`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[totalDegree_X]`. Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations. Establish `h1` using `totalDegree_monomial_le (s - Finsupp.single y 1) (coeff s P * (s y : ℂ))`. Establish `h2 : (s.sum fun _ e => e) = 1 + (s - Finsupp.single y 1).sum fun _ e => e` using `by conv_lhs => rw [← hs']`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `Nat.add_le_add_left h1 1`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_X_mul_pderiv (x y : σ) (P : MvPolynomial σ ℂ) :
     (X x * pderiv y P).totalDegree ≤ P.totalDegree := by
@@ -66,9 +66,9 @@ theorem totalDegree_X_mul_pderiv (x y : σ) (P : MvPolynomial σ ℂ) :
     exact Nat.add_le_add_left h1 1
 
 /- English proof (translation)
-Introduce `P`. Express the relevant statement in the definitionally equal form `(pderiv y P).totalDegree ≤ _`. Distinguish the cases in `h : pderiv y P = 0`. Simplify using `[h]`. Use `le_trans ?_ (totalDegree_X_mul_pderiv y y P)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[totalDegree_mul_of_isDomain (X_ne_zero y) h]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pderiv_mem (y : σ) : (pderiv y).toLinearMap ∈ nonRaising σ := by
   intro P
@@ -80,16 +80,16 @@ theorem pderiv_mem (y : σ) : (pderiv y).toLinearMap ∈ nonRaising σ := by
     omega
 
 /- English proof (translation)
-Introduce `P` and use `totalDegree_X_mul_pderiv x y P`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_pderiv_mem (x y : σ) :
     LinearMap.mulLeft ℂ (X x : MvPolynomial σ ℂ) * (pderiv y).toLinearMap ∈ nonRaising σ :=
   fun P => totalDegree_X_mul_pderiv x y P
 
 /- English proof (translation)
-Introduce `P`. Establish `e : ((pderiv y).toLinearMap * LinearMap.mulLeft ℂ (X x : MvPolynomial σ ℂ) : Module.End ℂ (MvPolynomial σ ℂ)) P = pderiv y (X x * P)` using `rfl`. Rewrite using `[e]`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Use `(totalDegree_add _ _).trans (max_le (totalDegree_X_mul_pderiv x y P) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : x = y`. Substitute `h` using the available equality. Rewrite using `[pderiv_X_self, mul_one]`. Rewrite using `[pderiv_X_of_ne h, mul_zero, totalDegree_zero]`. Conclude with `Nat.zero_le _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_mul_mem (x y : σ) :
     (pderiv y).toLinearMap * LinearMap.mulLeft ℂ (X x : MvPolynomial σ ℂ) ∈ nonRaising σ := by
@@ -112,17 +112,15 @@ def quad (i l : Fin b) (j : Fin a) : PolF D b a :=
   if ε' i = ε j ∧ ε' l ≠ ε j then X (τ, i, j) * X (τ, l, j) else 0
 
 /- English proof (translation)
-Apply the tactic sequence `cases e <;> simp [sgn]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self (e : Bool) : sgn e * sgn e = 1 := by
   cases e <;> simp [sgn]
 
 /- English proof (translation)
-Unfold `raiO lowO quad`. Rewrite using `[smul_mul_smul_comm, sgn_mul_self, one_smul]`. Apply the tactic sequence `by_cases hi : ε' i = ε j <;> by_cases hl : ε' l = ε j`. Simplify using `only [hi, hl, if_true, ne_eq, not_true, and_false, if_false, LinearMap.mulLeft_zero_eq_zero, sub_zero]`. Conclude with `mul_pderiv_mem _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi, hl, if_true, ne_eq, not_false_iff, and_self, if_false]`. Rewrite using `[LinearMap.mulLeft_mul, Module.End.mul_eq_comp, sub_self]`. Conclude with `Submodule.zero_mem _`. Simplify using `only [hi, hl, if_true, false_and, if_false, LinearMap.mulLeft_zero_eq_zero, sub_zero, neg_mul]`. Conclude with `Submodule.neg_mem _ (mul_mem (pderiv_mem _) (pderiv_mem _))`.
-
-Simplify using `only [hi, hl, if_true, false_and, if_false, LinearMap.mulLeft_zero_eq_zero, sub_zero, neg_mul]`. Conclude with `Submodule.neg_mem _ (pderiv_mul_mem _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem term_mem (i l : Fin b) (j : Fin a) :
     raiO τ ε ε' i j * lowO τ ε ε' l j - LinearMap.mulLeft ℂ (quad τ ε ε' i l j) ∈ nonRaising (FVar D b a) := by
@@ -143,9 +141,7 @@ def quadAll (Y : Matrix (Fin b) (Fin b) ℂ) : PolF D b a :=
   ∑ i, ∑ l, Y i l • ∑ j, quad τ ε ε' i l j
 
 /- English proof (translation)
-Rewrite using `[← mem_homogeneousSubmodule]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Unfold `quad`. Use `split_ifs`. Conclude with `(isHomogeneous_X ℂ _).mul (isHomogeneous_X ℂ _)`.
-
-Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem quadAll_hom (Y : Matrix (Fin b) (Fin b) ℂ) : (quadAll τ ε ε' Y).IsHomogeneous 2 := by
   rw [← mem_homogeneousSubmodule]
@@ -157,15 +153,15 @@ theorem quadAll_hom (Y : Matrix (Fin b) (Fin b) ℂ) : (quadAll τ ε ε' Y).IsH
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `h0`. Set `pt : FVar D b a → ℂ` to `fun v => if v = (τ, i₀, j₀) ∨ v = (τ, l₀, j₀) then 1 else 0`. Establish `hq : ∀ i l j, eval pt (quad τ ε ε' i l j) = if j = j₀ ∧ l = l₀ ∧ i = i₀ then 1 else 0`. Introduce `i l j`. Unfold `quad`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hc : ε' i = ε j ∧ ε' l ≠ ε j`. Rewrite using `[if_pos hc, map_mul, eval_X, eval_X]`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Establish `h1 : i ≠ l₀` using `fun h => hl (h ▸ hc.1)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2 : l ≠ i₀` using `fun h => hc.2 (h ▸ hi)`. Apply the tactic sequence `by_cases h3 : i = i₀ <;> by_cases h4 : l = l₀ <;> simp [pt, h1, h2, h3, h4]`. Simplify using `[pt, hj]`. Rewrite using `[if_neg hc, map_zero, if_neg]`. Introduce and unpack `⟨rfl, rfl, rfl⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hc ⟨hi, hl⟩`. Use `congrArg (eval pt) h0` as an intermediate fact. Unfold `quadAll at this`. Simplify using `only [map_sum, smul_eval, hq, map_zero, ite_and] at this`. Apply `hY` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem fockQuadraticPart_ne_zero_of_offBlock_entry (Y : Matrix (Fin b) (Fin b) ℂ) (i₀ l₀ : Fin b) (j₀ : Fin a) (hi : ε' i₀ = ε j₀)
     (hl : ε' l₀ ≠ ε j₀) (hY : Y i₀ l₀ ≠ 0) : quadAll τ ε ε' Y ≠ 0 := by
@@ -193,13 +189,11 @@ theorem fockQuadraticPart_ne_zero_of_offBlock_entry (Y : Matrix (Fin b) (Fin b) 
   simpa using this
 
 /- English proof (translation)
-Establish `: fockT τ ε ε' Y - LinearMap.mulLeft ℂ (quadAll τ ε ε' Y) = ∑ i, ∑ l, Y i l • ∑ j, ((raiO τ ε ε' i j * lowO τ ε ε' l j - LinearMap.mulLeft ℂ (quad τ ε ε' i l j)) + if i = l then (1 / 2 : ℂ) • 1 else 0)`. Establish `hm : LinearMap.mulLeft ℂ (quadAll τ ε ε' Y) = ∑ i, ∑ l, Y i l • ∑ j, LinearMap.mulLeft ℂ (quad τ ε ε' i l j)`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Simplify using `[quadAll, Finset.sum_mul, LinearMap.sum_apply]`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `fockT`. Simplify using `only [← Finset.sum_sub_distrib, ← smul_sub]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => Submodule.add_mem _ (term_mem τ ε ε' i l j) ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Submodule.smul_mem _ _ one_mem`.
-
-Conclude with `Submodule.zero_mem _`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sub_mem (Y : Matrix (Fin b) (Fin b) ℂ) :
     fockT τ ε ε' Y - LinearMap.mulLeft ℂ (quadAll τ ε ε' Y) ∈ nonRaising (FVar D b a) := by
@@ -225,9 +219,9 @@ theorem sub_mem (Y : Matrix (Fin b) (Fin b) ℂ) :
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce and unpack `D a b τ ε ε' Y ha ⟨i, l, hil, h1, h2⟩`. Use `⟨quadAll τ ε ε' Y, _, ?_, quadAll_hom τ ε ε' Y, sub_mem τ ε ε' Y, by abel⟩` and prove the remaining obligations. Distinguish the cases in `h : ε' i = ε ⟨0, ha⟩`. Apply the tactic sequence `exact fockQuadraticPart_ne_zero_of_offBlock_entry τ ε ε' Y i l ⟨0, ha⟩ h (fun h' => hil (h.trans h'.symm)) h1`. Apply the tactic sequence `refine fockQuadraticPart_ne_zero_of_offBlock_entry τ ε ε' Y l i ⟨0, ha⟩ ?_ h h2 revert h hil`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases ε' i <;> cases ε' l <;> cases ε ⟨0, ha⟩ <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem fockT_decomp : ∀ (D : D7) (a b : ℕ) (τ : D.what₂.Tau) (ε : Fin a → Bool) (ε' : Fin b → Bool) (Y : Matrix (Fin b) (Fin b) ℂ), 0 < a → (∃ i l, ε' i ≠ ε' l ∧ Y i l ≠ 0 ∧ Y l i ≠ 0) → ∃ (Q : PolF D b a) (L : Module.End ℂ (PolF D b a)), Q ≠ 0 ∧ Q.IsHomogeneous 2 ∧ (∀ P, (L P).totalDegree ≤ P.totalDegree) ∧ GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ ε ε' Y = LinearMap.mulLeft ℂ Q + L := by
   rintro D a b τ ε ε' Y ha ⟨i, l, hil, h1, h2⟩

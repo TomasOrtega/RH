@@ -15,19 +15,17 @@ namespace GlobalTheory.Mem.HeckeLevel
 open GlobalTheory.Mem.Chr
 
 /- English proof (translation)
-Introduce `L _ _ χ`. Take `⟨hfin, hlev⟩` from `GlobalTheory.Mem.UnrAe.unr_ae_and_level L χ`. Use `choose n hn using hlev`. Use `⟨∏ P ∈ hfin.toFinset, (Ideal.absNorm P.asIdeal) ^ (n P), ?_, ?_⟩` and prove the remaining obligations. Use `Finset.prod_pos fun P _ => pow_pos (Nat.pos_of_ne_zero fun h => P.ne_bot ?_) _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.absNorm_eq_zero_iff.1 h`. Introduce `a ha h1 hv`. Use `GlobalTheory.Mem.LocTriv.eq_one_of_local L χ.1 χ.2.1 a ha h1 fun P x hx => ?_` and prove the remaining obligations. Establish `hxu : IsUnitAt P x`. Unfold `IsUnitAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hx]`. Conclude with `ha P`. Distinguish the cases in `hP : P ∈ hfin.toFinset`. Use `hn P x hxu ?_` and prove the remaining obligations. Rewrite using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `(hv P).trans ?_` and prove the remaining obligations. Establish `e : (((∏ Q ∈ hfin.toFinset, (Ideal.absNorm Q.asIdeal) ^ (n Q) : ℕ) : L) : P.adicCompletion L) = (((∏ Q ∈ hfin.toFinset, (Ideal.absNorm Q.asIdeal) ^ (n Q) : ℕ) : 𝓞 L) : L)`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_le_pow_iff_dvd]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : (Ideal.absNorm P.asIdeal) ^ (n P) ∣ ∏ Q ∈ hfin.toFinset, (Ideal.absNorm Q.asIdeal) ^ (n Q)` using `Finset.dvd_prod_of_mem _ hP`. Establish `hd'` using `Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast (α := 𝓞 L) hd)`. Use `Ideal.dvd_iff_le.2 (le_trans hd' ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, ← Ideal.span_singleton_pow]`. Use `Ideal.pow_right_mono ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.absNorm_mem P.asIdeal`. Establish `hu : χ.UnrAt P`. Assume the negation of the conclusion as `h`. Conclude with `hP (hfin.mem_toFinset.2 h)`.
-
-Conclude with `hu x hxu`.
+A detailed English derivation is pending.
 -/
 theorem exists_level_nat : ∀ (L : Type) [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L), ∃ M : ℕ, 0 < M ∧ ∀ a : Neutral.B1.Ideles L, a ∈ GlobalTheory.Mem.Chr.unitIdl L → (∀ w, (a : AdeleRing (𝓞 L) L).1 w = 1) → (∀ P : HeightOneSpectrum (𝓞 L), Valued.v ((a : AdeleRing (𝓞 L) L).2 P - 1) ≤ Valued.v ((M : L) : P.adicCompletion L)) → χ.1 a = 1 := by
   intro L _ _ χ

@@ -6,7 +6,7 @@ open MeasureTheory Set GlobalTheory.Orb GlobalTheory.AutomorphicL2Unitary
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Twist.ClassSumReindex.tsum_ratClass_eq_tsum_weighted` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTsumSubgroupConjugacyClassEqTsumWeighted.lean&line=8#L8)
 -/

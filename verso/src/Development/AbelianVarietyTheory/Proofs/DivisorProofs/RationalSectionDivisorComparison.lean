@@ -22,13 +22,11 @@ namespace GlobalTheory.TrivOnZeroLocus
 variable {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z]
 
 /- English proof (translation)
-Establish `h : genericPoint Z ⤳ z` using `genericPoint_specializes z`. Establish `h' : i (genericPoint Z) ⤳ i z` using `i.base.hom.map_specializes h`. Establish `hη : i (genericPoint Z) ∈ V` using `h'.mem_open V.isOpen hz`. Establish `hc' : algebraMap _ X.functionField (X.presheaf.stalkSpecializes h' c) = f`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (X.presheaf.stalkSpecializes _) ((X.presheaf.stalkSpecializes h') c) = (X.presheaf.stalkSpecializes _) c`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_comp_apply]`. Establish `hnu : ¬ IsUnit (X.presheaf.stalkSpecializes h' c)` using `fun hu => hV _ hη ⟨_, hu, hc'⟩`. Establish `hnu' : ¬ IsUnit (i.stalkMap (genericPoint Z) (X.presheaf.stalkSpecializes h' c))` using `fun hu => hnu (isUnit_of_map_unit _ _ hu)`. Establish `h0 : i.stalkMap (genericPoint Z) (X.presheaf.stalkSpecializes h' c) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hnu' (Ne.isUnit (G₀ := Z.functionField) hne)`. Establish `e` using `Scheme.Hom.stalkSpecializes_stalkMap_apply i (genericPoint Z) z h c`. Apply `GlobalTheory.PushInv.stalkSpecializes_injective h` to reduce the goal to its premises. Rewrite using `[map_zero, ← e]`.
-
-Conclude with `h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkMap_eq_zero (i : Z ⟶ X) (z : Z) (V : X.Opens) (hz : i z ∈ V) (f : X.functionField)
     (hV : ∀ z' : Z, i z' ∈ V → ¬ GlobalTheory.Cartier.UnitAt (i z') f) (c : X.presheaf.stalk (i z))
@@ -53,9 +51,9 @@ theorem stalkMap_eq_zero (i : Z ⟶ X) (z : Z) (V : X.Opens) (hz : i z ∈ V) (f
   exact h0
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hreg`. Take `⟨d, hd⟩` from `hg`. Establish `e : ca = cb + cb * c * d`. Apply `IsFractionRing.injective (X.presheaf.stalk (i y)) X.functionField` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_mul, hc, hd, h, mul_assoc _ f, mul_div_cancel₀ _ hf0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_add, map_mul, map_mul, stalkMap_eq_zero i y V hy f hV c hc, mul_zero, zero_mul, add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkMap_eq_of_congr (i : Z ⟶ X) (y : Z) (V : X.Opens) (hy : i y ∈ V) (f : X.functionField)
     (hV : ∀ z' : Z, i z' ∈ V → ¬ GlobalTheory.Cartier.UnitAt (i z') f) (hreg : GlobalTheory.Cartier.RegAt (i y) f)
@@ -73,9 +71,9 @@ theorem stalkMap_eq_of_congr (i : Z ⟶ X) (y : Z) (V : X.Opens) (hy : i y ∈ V
     add_zero]
 
 /- English proof (translation)
-Establish `key : ∀ a, ∀ y (h : y ∈ V ⊓ i ⁻¹ᵁ O a), gm (𝟙 Z) y (V ⊓ i ⁻¹ᵁ O a) (res inf_le_right (pullU i (O a) (u a))) = gm i y (O a) (u a)`. Introduce `a y h`. Rewrite using `[gm_res (𝟙 Z) y inf_le_right h, gm_pull (𝟙 Z) i y (O a) h.2, Category.id_comp]`. Take `⟨s, hs⟩` from `glue_unit V (fun a => V ⊓ i ⁻¹ᵁ O a) (fun a => inf_le_left) (fun y hy => by obtain ⟨a, ha⟩ := hcov y hy; exact TopologicalSpace.Opens.mem_iSup.2 ⟨a, hy, ha⟩) (fun a => res inf_le_right (pullU i (O a) (u a))) (fun a b y hy => by rw [key a y hy.1, key b y hy.2]; exact hcomp a b y h …`. Use `⟨s, fun a y hy ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← gm_res (𝟙 Z) y (inf_le_left : V ⊓ i ⁻¹ᵁ O a ≤ V) ⟨hy, ha⟩, hs a, key a y ⟨hy, ha⟩]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_glue (i : Z ⟶ X) (V : Z.Opens) {J : Type} (O : J → X.Opens) (u : ∀ a, Γ(X, O a)ˣ)
     (hcov : ∀ y ∈ V, ∃ a, i y ∈ O a)
@@ -97,21 +95,19 @@ end GlobalTheory.TrivOnZeroLocus
 open GlobalTheory.TrivOnZeroLocus in
 
 /- English proof (translation)
-Introduce `X _ k _ q M r hr B ρ hρ ι U t H Z _ i _ hZ`. Establish `hpt : ∀ z : Z, ∃ kk, i z ∈ M.B.U kk` using `fun z => exists_chart M.isLB (i z)`. Use `choose κ hκ using hpt`. Establish `hκu : ∀ z : Z, ¬ UnitAt (i z) (r (κ z) : X.functionField)` using `fun z => hZ z _ (hκ z)`. Use `choose α hα using fun z : Z => (H _ _ (hκ z) (hκu z)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hloc : ∀ (j : B.B.ι) (z : {z : Z // i z ∈ B.B.U j}), ∃ (O : X.Opens) (u : Γ(X, O)ˣ), i z.1 ∈ O ∧ O ≤ U (α z.1) ∧ ∀ hO, GlobalTheory.Cartier.fnOf O hO u = (t (α z.1) : X.functionField) * ρ j`. Introduce and unpack `j ⟨z, hz⟩`. Take `⟨W, hW, hWu⟩` from `((H _ _ (hκ z) (hκu z)).2.1 (α z) j (hα z) hz).exists_nhds`. Take `⟨u, hu⟩` from `GlobalTheory.Cartier.exists_unit_fnOf_eq (U := W ⊓ U (α z)) fun x hx => hWu x hx.1`. Conclude with `⟨_, u, ⟨hW, hα z⟩, inf_le_right, hu⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose O u hOm hOle hOu using hloc`. Establish `hcomp : ∀ (j : B.B.ι) (a b : {z : Z // i z ∈ B.B.U j}) (y : Z), i y ∈ O j a → i y ∈ O j b → gm i y (O j a) (u j a) = gm i y (O j b) (u j b)`. Introduce `j a b y ha hb`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val i y _ ha, gm_val i y _ hb, ← Scheme.Hom.germ_stalkMap_apply, ← Scheme.Hom.germ_stalkMap_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hy` using `H _ _ (hκ y) (hκu y)`. Use `stalkMap_eq_of_congr i y (M.B.U (κ y)) (hκ y) _ (fun z' hz' => hZ z' _ hz') (hr _ _ (hκ y)) (r (κ y)).ne_zero _ (hy.2.2 (α a.1) (α b.1) (hOle j a ha) (hOle j b hb)) _ _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Cartier.algebraMap_germ, GlobalTheory.Cartier.algebraMap_germ, hOu, hOu, Units.val_div_eq_div_val, ← mul_assoc, div_mul_cancel₀ _ (Units.ne_zero _)]`. Establish `hglue : ∀ P : (B.B.pull i).ι, ∃ s : Γ(Z, (B.B.pull i).U P)ˣ, ∀ a, ∀ y ∈ (B.B.pull i).U P, i y ∈ O (P PUnit.unit) a → gm (𝟙 Z) y _ s = gm i y (O (P PUnit.unit) a) (u (P PUnit.unit) a)` using `fun P => exists_glue i _ (O (P PUnit.unit)) (u (P PUnit.unit)) (fun y hy => ⟨⟨y, mem_pull.1 hy⟩, hOm _ _⟩) (fun a b y _ => hcomp _ a b y)`. Use `choose s hs using hglue`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(cls_eq_zero_iff _).2 ⟨⟨s⟩, (isGen_iff_germ _).2 fun y P Q hP hQ => ?_⟩` and prove the remaining obligations. Establish `hp` using `mem_pull.1 hP`. Establish `hq` using `mem_pull.1 hQ`. Establish `hg : gm (𝟙 Z) y ((B.B.pull i).U P ⊓ (B.B.pull i).U Q) ((B.B.pull i).g P Q) = gm i y _ (B.B.g (P PUnit.unit) (Q PUnit.unit))` using `by show gm (𝟙 Z) y _ (∏ _k : PUnit, (res _ (pullU i _ (B.B.g _ _))) ^ (1 : ℤ)) = _`. Establish `hm : (𝟙 Z) y ∈ (B.B.pull i).U P ⊓ (B.B.pull i).U Q` using `⟨hP, hQ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : i ((𝟙 Z) y) ∈ B.B.U (P PUnit.unit) ⊓ B.B.U (Q PUnit.unit)` using `⟨hp, hq⟩`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Use `(gm_res (𝟙 Z) y _ hm _).trans ((gm_pull (𝟙 Z) i y _ hm' _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Use `show gm (𝟙 Z) y _ (s P) = gm (𝟙 Z) y _ ((B.B.pull i).g P Q) * gm (𝟙 Z) y _ (s Q)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hs P ⟨y, hp⟩ y hP (hOm _ _), hs Q ⟨y, hq⟩ y hQ (hOm _ _), hg]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, gm_val i y _ (hOm _ _), gm_val i y _ (show i y ∈ B.B.U (P PUnit.unit) ⊓ B.B.U (Q PUnit.unit) from ⟨hp, hq⟩), gm_val i y _ (hOm _ _), ← Scheme.Hom.germ_stalkMap_apply, ← Scheme.Hom.germ_stalkMap_apply, ← Scheme.Hom.germ_stalkMap_apply, ← map_mul]`. Use `congr 1`. Apply `IsFractionRing.injective (X.presheaf.stalk (i y)) X.functionField` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, GlobalTheory.Cartier.algebraMap_germ, GlobalTheory.Cartier.algebraMap_germ, GlobalTheory.Cartier.algebraMap_germ, hOu, hOu, hρ _ _ (GlobalTheory.Cartier.gen_mem ⟨hp, hq⟩)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TrivOnZeroLocus.cls_pull_eq_zero : ∀ (X : Scheme.{0}) [IsIntegral X] (k : Type) [CommRing k] (q : X ⟶ Sp k) (M : HermLB q)
     (r : M.B.ι → X.functionFieldˣ), (∀ i, ∀ x ∈ M.B.U i, RegAt x (r i : X.functionField)) →

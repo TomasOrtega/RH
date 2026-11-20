@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.KSRechart
 
 /- English proof (translation)
-Use `show ((m.appLE U V h) ≫ Z.presheaf.map (homOfLE e).op).hom r = _`. Rewrite using `[Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resG_appLE {Y Z : Scheme.{0}} (m : Z ⟶ Y) (U : Y.Opens) {V V' : Z.Opens} (h : V ≤ m ⁻¹ᵁ U) (e : V' ≤ V)
     (r : Γ(Y, U)) : resG Z e ((m.appLE U V h).hom r) = (m.appLE U V' (e.trans h)).hom r := by
@@ -30,9 +30,9 @@ noncomputable def corr {Z : Scheme.{0}} {n : ℕ} (δ : Fin n → ∀ O : Z.Open
   else 0
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ (x ≫ m) ⁻¹ᵁ U` using `fun p hp => h (hO hp)`. Unfold `valR`. Rewrite using `[dif_pos hO, dif_pos hU]`. Use `congr 1`. Use `show ((m.appLE U O h) ≫ x.appLE O ⊤ hO).hom r = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.appLE_comp_appLE]`.
+A detailed English derivation is pending.
 -/
 private theorem valR_comp_eq_valR_app' {A : Type} [CommRing A] {X Z : Scheme.{0}} (x : Sp A ⟶ Z) (m : Z ⟶ X)
     (U : X.Opens) (O : Z.Opens) (h : O ≤ m ⁻¹ᵁ U) (hO : ⊤ ≤ x ⁻¹ᵁ O) (r : Γ(X, U)) :
@@ -49,7 +49,7 @@ end GlobalTheory.KSRechart
 namespace GlobalTheory.KSRechart
 
 /- English proof (translation)
-Rewrite using `[valR_comp_eq_valR_app' g₀ m U.1 O h hO r, hg]`. Conclude with `GlobalTheory.FlagEmb.QuotLine.valR_chart U.2 φ r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_appLE {X Z : Scheme.{0}} (m : Z ⟶ X) (U : X.affineOpens) {S : Type} [CommRing S] (φ : Γ(X, U.1) →+* S)
     (g₀ : Sp S ⟶ Z) (hg : g₀ ≫ m = spMap φ ≫ chart U) {O : Z.Opens} (h : O ≤ m ⁻¹ᵁ U.1) (hO : ⊤ ≤ g₀ ⁻¹ᵁ O)

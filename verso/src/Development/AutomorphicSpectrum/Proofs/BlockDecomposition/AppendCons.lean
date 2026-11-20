@@ -20,7 +20,7 @@ variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
   {F₁ F₂ F₃ : C ⥤ ModuleCat.{0} R}
 
 /- English proof (translation)
-Rewrite using `[CrystallineSemistableComparison.P.leibniz, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_cup_one (P : CH.Pairing F₁ F₂ F₃) (b : CH.Cn F₁ 1) (hb : CH.d F₁ 1 b = 0) {a m : ℕ} (h : 1 + a = m) (y : CH.Cn F₂ a) :
     CH.d F₃ m (P.cupC h b y) = -P.cupC (by omega : 1 + (a + 1) = m + 1) b (CH.d F₂ a y) := by
@@ -67,9 +67,9 @@ section Sch
 variable {K : Type} [Field K] {Z : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {V : Z.Opens}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Establish `e : Fin.cast (Nat.add_comm 1 a).symm (0 : Fin (a + 1)) = Fin.castAdd a (0 : Fin 1)` using `Fin.ext (by simp)`. Simplify using `only [Function.comp, e, Fin.append_left, Fin.cons_zero]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `e : Fin.cast (Nat.add_comm 1 a).symm k.succ = Fin.natAdd 1 k` using `Fin.ext (by simp [Nat.add_comm])`. Simplify using `only [Function.comp, e, Fin.append_right, Fin.cons_succ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem append_cons {M : Type*} {a : ℕ} (t : M) (g : Fin a → M) :
     Fin.append ![t] g ∘ Fin.cast (Nat.add_comm 1 a).symm = (Fin.cons t g : Fin (a + 1) → M) := by
@@ -82,7 +82,7 @@ theorem append_cons {M : Type*} {a : ℕ} (t : M) (g : Fin a → M) :
     simp only [Function.comp, e, Fin.append_right, Fin.cons_succ]
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Conclude with `hFC K Z q V 1 a g₁ g₀ ![t] g x y hx hy h₁ h₂`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem form_cup' (hFC : FormCup) {a c : ℕ} (hc : 1 + a = c) (g₁ g₀ : Sec q V) (t : Sec q V) (g : Fin a → Sec q V)
     (x : CH.Cn ((inU q V).ι ⋙ G q 1) 1) (y : CH.Cn ((inU q V).ι ⋙ G q a) a) (hx : CH.d _ 1 x = 0) (hy : CH.d _ a y = 0)
@@ -93,13 +93,13 @@ theorem form_cup' (hFC : FormCup) {a c : ℕ} (hc : 1 + a = c) (g₁ g₀ : Sec 
   exact hFC K Z q V 1 a g₁ g₀ ![t] g x y hx hy h₁ h₂
 
 /- English proof (translation)
-Set `P` to `pairU (grOk (smFun Z q) (Nat.add_comm 1 a)).pair (inU q V)`. Establish `key : (cupMap P b hb a).restrictScalars K ∘ₗ E₂ = E₃ ∘ₗ ((g₁ • w).restrictScalars K)`. Use `lin_ext hFL _ _ fun g₀ v => ?_` and prove the remaining obligations. Take `⟨⟨y', hy'⟩, hyy⟩` from `Submodule.Quotient.mk_surjective _ (E₂ (form K g₀ v))`. Establish `hy'' : CH.d _ a y' = 0` using `hy'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc' : (CH.cx _).cls y' hy'' = E₂ (form K g₀ v)` using `hyy`. Establish `hI` using `h₂ g₀ v`. Rewrite `hI` using `[← hc']`. Take `⟨hz', hform⟩` from `form_cup' hFC (Nat.add_comm 1 a) g₁ g₀ t v b y' hb hy'' hf hI`. Rewrite `hform` using `[append_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu` using `((hFU K Z q V).2 (a + 1) (g₁ * g₀) (Fin.cons t v)).unique hform (h₃ _ _)`. Express the relevant statement in the definitionally equal form `cupMap P b hb a (E₂ (form K g₀ v)) = E₃ (g₁ • w (form K g₀ v))`. Rewrite using `[← hc', hw]`. Use `(cupMap_cls P b hb y' hy'' hz').trans (hu.trans ?_)` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `mul_smul _ _ _`. Use `LinearMap.congr_fun key ω` as an intermediate fact. Express the relevant statement in the definitionally equal form `cupMap P b hb a (E₂ ω) = E₃ (g₁ • w ω) at this`. Rewrite `this` using `[← hcls]`. Conclude with `(cupMap_cls P b hb y hy hz).symm.trans this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_form (hFL : FormLaws) (hFU : FormUniq) (hFC : FormCup) {a : ℕ}
     (E₂ : Om K (Sec q V) a →ₗ[K] HV q V a a) (E₃ : Om K (Sec q V) (a + 1) →ₗ[K] HV q V (a + 1) (a + 1))

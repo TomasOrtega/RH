@@ -18,7 +18,7 @@ section
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp, conjVec]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_conjVec (z : (Σ k, J k) → ℂ) (f : MRing J) :
     MvPolynomial.eval (conjVec z) (MvPolynomial.map (Int.castRingHom ℂ) f) =
@@ -29,13 +29,13 @@ theorem eval_conjVec (z : (Σ k, J k) → ℂ) (f : MRing J) :
   | mul_X p i hp => simp [hp, conjVec]
 
 /- English proof (translation)
-The claim follows from `contDiff_pi.2 fun i => Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ i)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_conjVec : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, J k) → ℂ => conjVec z) :=
   contDiff_pi.2 fun i => Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ i)
 
 /- English proof (translation)
-Introduce `k` and use `(hz k).imp fun _ hi => (map_ne_zero _).2 hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjVec_ne {z : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : ∀ k, ∃ i, conjVec z ⟨k, i⟩ ≠ 0 :=
   fun k => (hz k).imp fun _ hi => (map_ne_zero _).2 hi
@@ -56,14 +56,14 @@ noncomputable def symmLine (Z : HermLine J) : HermLine J where
     rw [_root_.mul_mul_mul_comm, Real.sqrt_mul (mul_self_nonneg _), Real.sqrt_mul_self hP.le]
 
 /- English proof (translation)
-The claim follows from `ContDiffOn.sqrt (ContDiffOn.mul hZ (ContDiffOn.comp hZ contDiff_conjVec.contDiffOn fun _ hz => conjVec_ne hz)) fun z hz => (mul_pos (Z.pos z hz) (Z.pos _ (conjVec_ne hz))).ne'`.
+A detailed English derivation is pending.
 -/
 theorem symmLine_smooth {Z : HermLine J} (hZ : IsSmoothHerm Z) : IsSmoothHerm (symmLine Z) :=
   ContDiffOn.sqrt (ContDiffOn.mul hZ (ContDiffOn.comp hZ contDiff_conjVec.contDiffOn fun _ hz => conjVec_ne hz))
     fun z hz => (mul_pos (Z.pos z hz) (Z.pos _ (conjVec_ne hz))).ne'
 
 /- English proof (translation)
-Introduce `z`. Use `show Real.sqrt (Z.h (conjVec z) * Z.h (conjVec (conjVec z))) = Real.sqrt (Z.h z * Z.h (conjVec z))`. Rewrite using `[SncPiece.conj_conj, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symmLine_conj (Z : HermLine J) : IsConjInvariantH (symmLine Z) := by
   intro z
@@ -73,15 +73,15 @@ theorem symmLine_conj (Z : HermLine J) : IsConjInvariantH (symmLine Z) := by
 end
 
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D p hp`. Establish `hpos` using `VertFactorPos.proof II Ψ K J Ω W D p hp`. Establish `hsm` using `VertFactorSmooth.proof VertFactorPos.proof II Ψ K J Ω W D p hp`. Prove the components needed by the constructor for the conclusion. Take `⟨Z, hZa, hZs, hZ⟩` from `HermExtend.proof K J (mCoordIdeal D.y) (D.vdeg p) (D.vertFactor p) D.arith.2.1.2.1 hpos hsm.1 hsm.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Use `⟨symmLine Z, hZa, symmLine_smooth hZs, symmLine_conj Z, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hconj : D.vertFactor p (conjVec z) = D.vertFactor p z`. Take `⟨dG, dH, G, H, hG, hH, hdeg, hrel, hHz⟩` from `VertFactorSmooth.exists_forms D hp hz`. Rewrite using `[VertFactorSmooth.vertFactor_eq D hp (SncPiece.conj_mem hz) hG hH hdeg hrel (by rw [eval_conjVec]; exact (map_ne_zero _).2 hHz), VertFactorSmooth.vertFactor_eq D hp hz hG hH hdeg hrel hHz, eval_conjVec, eval_conjVec, ← map_div₀, Complex.norm_conj]`. Use `show Real.sqrt (Z.h z * Z.h (conjVec z)) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ z hz, hZ _ (SncPiece.conj_mem hz), hconj, Real.sqrt_mul_self (hpos z hz).le]`. Introduce `a t ht`. Establish `hz` using `(D.chart a).mem t ht`. Take `⟨dG, dH, G, H, hG, hH, hdeg, hrel, hHz⟩` from `VertFactorSmooth.exists_forms D hp hz`. Establish `hγ` using `(D.chart a).analytic t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ f : MRing J, AnalyticAt ℂ (fun t' => MvPolynomial.eval ((D.chart a).γ t') (MvPolynomial.map (Int.castRingHom ℂ) f)) t` using `fun f => AnalyticAt.comp (g := fun z => MvPolynomial.eval z (MvPolynomial.map (Int.castRingHom ℂ) f)) (AnalyticOnNhd.eval_mvPolynomial _ _ (Set.mem_univ _)) hγ`. Establish `h0` using `hpos _ hz`. Rewrite `h0` using `[VertFactorSmooth.vertFactor_eq D hp hz hG hH hdeg hrel hHz]`. Take `⟨L, hL, hLe⟩` from `exists_log_re ((hev G).div (hev H) hHz) (norm_pos_iff.1 h0)`. Use `⟨L, hL, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hLe, (hev H).continuousAt.eventually_ne hHz, Metric.isOpen_ball.mem_nhds ht] with t' h1 h2 h3`. Rewrite using `[VertFactorSmooth.vertFactor_eq D hp ((D.chart a).mem t' h3) hG hH hdeg hrel h2]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem vertical_factor_smooth_line : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W), ∀ p ∈ D.S, (∃ A : HermLine J, A.a = D.vdeg p ∧ IsSmoothHerm A ∧ IsConjInvariantH A ∧ ∀ z ∈ mcPts (mCoordIdeal D.y), A.h z = D.vertFactor p z) ∧ ∀ a, ∀ t ∈ Metric.ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1, ∃ G : (Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) → ℂ, AnalyticAt ℂ G t ∧ ∀ᶠ t' in 𝓝 t, Real.log (D.vertFactor p ((D.chart a).γ t')) = (G t').re := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D p hp

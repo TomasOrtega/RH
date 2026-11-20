@@ -4,11 +4,11 @@ open TensorProduct Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra (FractionRing D) K := FractionRing.liftAlgebra D K`. Use `haveI : IsScalarTower D (FractionRing D) K := FractionRing.isScalarTower_liftAlgebra D K`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap (FractionRing D) K) (by rw [LinearMap.ker_eq_bot]; exact (algebraMap (FractionRing D) K).injective)`. Establish `hg1 : g 1 = 1`. Use `LinearMap.congr_fun hg 1` as an intermediate fact.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `h2 : (1 : FractionRing D) ⊗ₜ[D] m = 0`. Use `congrArg ((g.restrictScalars D).rTensor M) h` as an intermediate fact. Simplify `this` using `[hg1]`. Take `⟨⟨d, hd⟩, hdm⟩` from `(IsLocalizedModule.eq_zero_iff (nonZeroDivisors D) (TensorProduct.mk D (FractionRing D) M 1)).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨d, nonZeroDivisors.ne_zero hd, hdm⟩`.
+A detailed English derivation is pending.
 -/
 theorem torsion_of_one_tmul_eq_zero (D K M : Type) [CommRing D] [IsDomain D] [Field K]
     [Algebra D K] [FaithfulSMul D K] [AddCommGroup M] [Module D M] (m : M)
@@ -28,13 +28,13 @@ theorem torsion_of_one_tmul_eq_zero (D K M : Type) [CommRing D] [IsDomain D] [Fi
   exact ⟨d, nonZeroDivisors.ne_zero hd, hdm⟩
 
 /- English proof (translation)
-Use `set P := RingHom.ker (algebraMap A K) with hP`. Use `haveI : P.IsPrime := RingHom.ker_isPrime _`. Use `letI : Algebra (A ⧸ P) K := (RingHom.kerLift (algebraMap A K)).toAlgebra`. Use `haveI : IsScalarTower A (A ⧸ P) K := IsScalarTower.of_algebraMap_eq' (by ext a; rfl)`. Use `haveI : FaithfulSMul (A ⧸ P) K := (faithfulSMul_iff_algebraMap_injective (A ⧸ P) K).2 (RingHom.kerLift_injective _)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `I` to `P.map (algebraMap A B)`. Set `q : B →ₗ[A] B ⧸ I` to `(Ideal.Quotient.mkₐ A I).toLinearMap`. Set `Φ : K ⊗[A] B →ₗ[A] K ⊗[A ⧸ P] (B ⧸ I)` to `(TensorProduct.mapOfCompatibleSMul (A ⧸ P) A A K (B ⧸ I)) ∘ₗ q.lTensor K`. Establish `h1 : (1 : K) ⊗ₜ[A ⧸ P] (Ideal.Quotient.mk I b) = 0`. Establish `hΦ : Φ ((1 : K) ⊗ₜ[A] b) = (1 : K) ⊗ₜ[A ⧸ P] (Ideal.Quotient.mk I b)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hΦ, h, map_zero]`. Take `⟨d, hd0, hdb⟩` from `torsion_of_one_tmul_eq_zero (A ⧸ P) K (B ⧸ I) _ h1`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Use `⟨f, fun hf => hd0 (Ideal.Quotient.eq_zero_iff_mem.2 hf), ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: Ideal.Quotient.mk I (f • b) = (Ideal.Quotient.mk P f) • Ideal.Quotient.mk I b`. Rewrite using `[Algebra.smul_def, map_mul, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this, hdb]`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_mem_ker_smul_mem_map_of_one_tmul_eq_zero (A B K : Type) [CommRing A] [CommRing B]
     [Algebra A B] [Field K] [Algebra A K] (b : B) (h : (1 : K) ⊗ₜ[A] b = 0) :

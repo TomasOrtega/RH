@@ -17,7 +17,7 @@ namespace PositivityTheory.SiegelWeilFormula.KFP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ}
 /- English proof (translation)
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.cw_add'_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.cw_mul'_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.cw_mul'_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.cw_transpose'_k, _root_.PositivityTheory.SiegelWeilFormula.KFP …`. Use `conv_rhs => rw [← Matrix.fromCols_toCols (d.cw w (incM F d.b.1))]`. Rewrite using `[Matrix.transpose_fromCols, Matrix.fromCols_mul_fromRows, add_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cw_line'_k (w : InfinitePlace F) (P Q : Mx F E d.m d.n) :
     d.cw w (P * (incM F d.b.1.toCols₂)ᵀ + Q * (incM F d.b.1.toCols₁)ᵀ) =
@@ -27,13 +27,13 @@ theorem cw_line'_k (w : InfinitePlace F) (P Q : Mx F E d.m d.n) :
   rw [Matrix.transpose_fromCols, Matrix.fromCols_mul_fromRows, add_comm]
   rfl
 /- English proof (translation)
-The claim follows from `GlobalTheory.RealScalar.realAd_smul_map σ d.B.emb d.cm X r w`.
+A detailed English derivation is pending.
 -/
 theorem cw_realAd_smul'_k (w : InfinitePlace F) {p q : Type} (r : ℝ) (X : Matrix p q (AE F E)) :
     d.cw w (realAd F r • X) = (r : ℂ) • d.cw w X :=
   GlobalTheory.RealScalar.realAd_smul_map σ d.B.emb d.cm X r w
 /- English proof (translation)
-Rewrite using `[smul_add, ← Matrix.smul_mul, ← Matrix.smul_mul, smul_comm (finOne F) (realAd F x), hW, smul_comm (finOne F) (realAd F y), hW']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finOne_smul_line'_k {W W' : Mx F E d.m d.n} (hW : finOne F • W = 0) (hW' : finOne F • W' = 0) (x y : ℝ) :
     finOne F • ((realAd F x • W) * (incM F d.b.1.toCols₂)ᵀ + (realAd F y • W') * (incM F d.b.1.toCols₁)ᵀ) = 0 := by
@@ -41,11 +41,11 @@ theorem finOne_smul_line'_k {W W' : Mx F E d.m d.n} (hW : finOne F • W = 0) (h
     smul_comm (finOne F) (realAd F y), hW']
   simp
 /- English proof (translation)
-Establish `htw` using `(_root_.PositivityTheory.SiegelWeilFormula.KFP.exists_tw_k R W).choose_spec`. Apply the tactic sequence `have hζ : R.ζ ≠ 0 := by rcases R.hζ with ⟨-, h⟩ | ⟨-, h⟩ <;> simp [h]`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.KFP.vline_k`. Rewrite using `[exp_mul_re', exp_mul_im']`. Establish `hact : ∀ v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E), actB (cA σ) (_root_.PositivityTheory.SiegelWeilFormula.KFP.rot_k R t) v = v * (mat2 (_root_.PositivityTheory.SiegelWeilFormula.KFP.rot_k R t))ᵀ` using `fun v => rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hact]`. Use `_root_.PositivityTheory.SiegelWeilFormula.Place.cw_ext_k (d := d) (fun w => ?_) ?_` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFP.cw_mul'_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.cw_transpose'_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.matrixRep_eq_frameConj, _root_.PositivityTheory.SiegelWeilFormula.KFP.cw_mul'_k, _root_.PositivityTheory.SiegelWe …`. Establish `hinv : d.cw w (incM F ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E)) * d.cw w (incM F d.b.1) = 1`. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KFP.cw_mul'_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.incM_b_inv_mul_k, _root_.PositivityTheory.SiegelWeilFormula.KFP.cw_one'_k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ (d.cw w (incM F d.b.1))ᵀ, ← Matrix.transpose_mul, hinv, Matrix.transpose_one, Matrix.mul_one, rot_cols' d.n d.m hζ (R.sg w) t z.re z.im (d.cw w W) _ (_root_.PositivityTheory.Si …`. Rewrite using `[← Matrix.smul_mul, _root_.PositivityTheory.SiegelWeilFormula.KFP.finOne_smul_line'_k (W' := _root_.PositivityTheory.SiegelWeilFormula.KFP.tw_k R W) hW htw.1, _root_.PositivityTheory.SiegelWeilFormula.KFP.finOne_smul_line'_k (W' := _root_.PositivityTheory.SiegelWeilFormula.KFP.tw …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem actB_rot_vline'_k (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (t : ℝ) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (z : ℂ) :
     actB (cA σ) (_root_.PositivityTheory.SiegelWeilFormula.KFP.rot_k R t) (_root_.PositivityTheory.SiegelWeilFormula.KFP.vline_k R W z) = _root_.PositivityTheory.SiegelWeilFormula.KFP.vline_k R W (Complex.exp (-(t * Complex.I)) * z) := by

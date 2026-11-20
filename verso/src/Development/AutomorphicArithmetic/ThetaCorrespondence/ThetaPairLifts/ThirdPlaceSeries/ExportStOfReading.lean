@@ -9,7 +9,7 @@ section
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn
 /- English proof (citation)
-Apply `GlobalTheory.T.exportSt_of_discrete_series_cover` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FThetaCorrespondence%2FThetaPairLifts%2FThirdPlaceSeries%2FExportStOfPrintsStatement.lean&line=11#L11)
 -/

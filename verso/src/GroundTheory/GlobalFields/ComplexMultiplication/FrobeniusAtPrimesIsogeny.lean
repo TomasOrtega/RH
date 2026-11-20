@@ -19,19 +19,17 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F]
   [E₁'.IsElliptic]
 
 /- English proof (translation)
-Use `set Q := vcHom C⁻¹ (inv_smul_eq_of_smul_eq C h)`. Use `set R := vcHom C' h'`. Use `set Q' := vcHom C h`. Use `set R' := vcHom C'⁻¹ (inv_smul_eq_of_smul_eq C' h')`. Establish `e1 : homConst E₁ E Q * homConst E E₁ Q' = 1` using `homConst_vcHom_mul_inv C h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : homConst E₁' E' R' * homConst E' E₁' R = 1` using `homConst_vcHom_mul_inv C' h'`. Use `set c := homConst E' E₁' R * homConst E₁ E Q`. Establish `hc : c * (homConst E₁' E' R' * homConst E E₁ Q') = 1`. Take the linear combination `(homConst E₁' E' R' * homConst E' E₁' R) * e1 + e2`. Establish `hcinv : c⁻¹ = homConst E E₁ Q' * homConst E₁' E' R'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[inv_eq_of_mul_eq_one_right hc, mul_comm]`. Use `⟨c, left_ne_zero_of_mul_eq_one hc, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `hz`. Use `⟨homConst E₁' E' R' * z * homConst E E₁ Q', homConstSet_le_mul Q' R' hz, ?_⟩` and prove the remaining obligations. Take the linear combination `z * hc`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `homConstSet_le_mul Q R hw` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `hz`. Use `⟨homConst E₁ E Q * z * homConst E' E₁' R, homConstSet_le_mul R Q hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hcinv]`. Take the linear combination `z * hc`. Introduce and unpack `⟨w, hw, rfl⟩`.
-
-Use `homConstSet_le_mul R' Q' hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hcinv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homConstSet_vc_pair (C C' : VariableChange F) (h : C • E = E₁) (h' : C' • E' = E₁') :
     ∃ c : F, c ≠ 0 ∧ (homConstSet E₁ E₁' : Set F) = (c * ·) '' homConstSet E E' ∧
@@ -79,20 +77,20 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F]
   {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic] [E''.IsElliptic]
 
 /- English proof (translation)
-Rewrite using `[← homConst_toHom, ← Isogeny.homComp_toHom, homConst_homComp, homConst_toHom, homConst_toHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invConst_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     invConst (ψ.comp φ) = invConst ψ * invConst φ := by
   rw [← homConst_toHom, ← Isogeny.homComp_toHom, homConst_homComp, homConst_toHom, homConst_toHom]
 
 /- English proof (translation)
-The claim follows from `mem_homConstSet.2 ⟨φ.toHom, homConst_toHom φ⟩`.
+A detailed English derivation is pending.
 -/
 theorem invConst_mem_homConstSet (φ : Isogeny E E') : invConst φ ∈ homConstSet E E' :=
   mem_homConstSet.2 ⟨φ.toHom, homConst_toHom φ⟩
 
 /- English proof (translation)
-Rewrite using `[← invConst_comp, dualOver_comp, invConst_mulIsogeny]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem invConst_dualOver_mul (φ : Isogeny E E') :
     invConst (dualOver φ) * invConst φ = φ.degree := by
@@ -103,7 +101,7 @@ theorem invConst_dualOver_mul (φ : Isogeny E E') :
 variable [CharZero F]
 
 /- English proof (translation)
-Introduce `h`. Use `invConst_dualOver_mul φ` as an intermediate fact. Rewrite `this` using `[h, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 φ.degree_pos.ne') this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invConst_ne_zero (φ : Isogeny E E') : invConst φ ≠ 0 := by
   intro h
@@ -118,9 +116,9 @@ section Lattice
 variable {K : Type*} [Field K] [NumberField K] (σ₀ : K →+* ℂ)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.mul_le]`. Introduce `m hm l hl`. Take `⟨x, hx, rfl⟩` from `(mem_idealLattice σ₀).1 hm`. Take `⟨a, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha : σ₀ (algebraMap (𝓞 K) K a) ∈ latticeEnd L` using `hL ▸ (mem_cmRing σ₀).2 ⟨a, rfl⟩`. Conclude with `ha l hl`. Introduce `l hl`. Establish `h1 : (1 : ℂ) ∈ idealLattice σ₀ 1` using `(mem_idealLattice σ₀).2 ⟨1, (FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩, map_one σ₀⟩`. Simplify using `using Submodule.mul_mem_mul h1 hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem idealLattice_one_mul_lattice (L : PeriodPair) (hL : latticeEnd L = cmRing σ₀) :
     idealLattice σ₀ 1 * L.lattice = L.lattice := by
@@ -139,11 +137,11 @@ theorem idealLattice_one_mul_lattice (L : PeriodPair) (hL : latticeEnd L = cmRin
 variable (hK : finrank ℚ K = 2) [IsTotallyComplex K]
 
 /- English proof (translation)
-Take `⟨L, C, hL, hC, hE⟩` from `E.exists_lattice σ₀ hK`. Take `⟨L', hL'lat, hL'⟩` from `exists_lattice_mul σ₀ hK L hL 𝔞`. Establish `h1` using `classGroup_smul_ellOf σ₀ hK L L' hL hL' 𝔞 hL'lat`. Establish `h2 : E'.toEll = (CMCurve.ofLattice σ₀ L' hL').toEll`. Rewrite using `[← h, ← hE]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Take `⟨C', hC'⟩` from `(CMCurve.toEll_eq_iff _ _).1 h2`. Establish `hC'' : C' • E'.curve = weierstrassCurve L'` using `hC'`. Take `⟨d, hd, hset, hset'⟩` from `homConstSet_vc_pair C C' hC hC''`. Rewrite `hset` using `[homConstSet_weierstrassCurve, latticeHom_eq_idealLattice σ₀ hK L L' hL 𝔞⁻¹ hL'lat]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hLL : L.lattice = idealLattice σ₀ ↑𝔞 * L'.lattice`. Rewrite using `[hL'lat, ← mul_assoc, ← idealLattice_mul, Units.mul_inv, idealLattice_one_mul_lattice σ₀ L hL]`. Rewrite `hset'` using `[homConstSet_weierstrassCurve, latticeHom_eq_idealLattice σ₀ hK L' L hL' 𝔞 hLL]`. Conclude with `⟨d⁻¹, inv_ne_zero hd, eq_image_mul_inv hd hset, eq_image_mul_inv (inv_ne_zero hd) hset'⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem homConstSet_pair_of_smul {E E' : CMCurve K} {𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     (h : (ellMulAction σ₀ hK).smul (ClassGroup.mk K 𝔞) E.toEll = E'.toEll) :
@@ -167,11 +165,11 @@ theorem homConstSet_pair_of_smul {E E' : CMCurve K} {𝔞 : (FractionalIdeal (�
 include hK in
 
 /- English proof (translation)
-Take `⟨c, hc, h1, h2⟩` from `homConstSet_pair_of_smul σ₀ hK (smul_toEll_of_homConstSet σ₀ hK hb hset)`. Establish `e : (idealLattice σ₀ ↑𝔞⁻¹ : Set ℂ) = ((c⁻¹ * b) * ·) '' idealLattice σ₀ ↑𝔞⁻¹`. Rewrite using `[← image_mul_image_mul, ← hset, h1, image_mul_image_mul, inv_mul_cancel₀ hc]`. Simplify using the standard rewrite rules. Establish `e'` using `idealLattice_mul_homothetic σ₀ (↑𝔞⁻¹) (↑𝔞 * ↑𝔞) e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmul : (↑𝔞 * ↑𝔞 * ↑𝔞⁻¹ : FractionalIdeal (𝓞 K)⁰ K) = ↑𝔞`. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Rewrite `e'` using `[← idealLattice_mul, hmul]`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← eq_image_mul_inv (mul_ne_zero (inv_ne_zero hc) hb) e']`. Use `_ = (b⁻¹ * ·) '' (idealLattice σ₀ ↑𝔞 : Set ℂ) := by`. Rewrite using `[image_mul_image_mul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem homConstSet_symm {E E' : CMCurve K} {𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {b : ℂ} (hb : b ≠ 0)
     (hset : (homConstSet E.curve E'.curve : Set ℂ) = (b * ·) '' idealLattice σ₀ ↑𝔞⁻¹) :
@@ -213,7 +211,7 @@ theorem primeUnit_val : ((primeUnit v : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : Fra
   rfl
 
 /- English proof (translation)
-Rewrite using `[Units.val_inv_eq_inv_val, primeUnit_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem primeUnit_inv_val :
     (((primeUnit v)⁻¹ : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) =
@@ -221,7 +219,7 @@ theorem primeUnit_inv_val :
   rw [Units.val_inv_eq_inv_val, primeUnit_val]
 
 /- English proof (translation)
-Rewrite using `[← ClassGroup.mk_mk0 K]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem classGroup_mk_primeUnit :
     ClassGroup.mk K (primeUnit v) =
@@ -230,9 +228,9 @@ theorem classGroup_mk_primeUnit :
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hcop : Nat.Coprime (Ideal.absNorm v.asIdeal) n` using `(Nat.Prime.coprime_iff_not_dvd hv).2 h`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `hp : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 K) ∈ v.asIdeal` using `Ideal.absNorm_mem _`. Establish `h1 : (1 : 𝓞 K) ∈ v.asIdeal`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (Int.cast : ℤ → 𝓞 K) hab`. Move the coercions through the operations in `at e`. Rewrite using `[← e]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hp) (v.asIdeal.mul_mem_left _ hn)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_dvd_of_natCast_mem (hv : (Ideal.absNorm v.asIdeal).Prime) {n : ℕ}
     (hn : (n : 𝓞 K) ∈ v.asIdeal) : Ideal.absNorm v.asIdeal ∣ n := by
@@ -248,13 +246,13 @@ theorem absNorm_dvd_of_natCast_mem (hv : (Ideal.absNorm v.asIdeal).Prime) {n : �
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Use `set p := Ideal.absNorm v.asIdeal with hpdef`. Introduce `hmem`. Establish `hp0 : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hv.ne_zero`. Establish `hle : v.asIdeal ≤ Ideal.span {(p : 𝓞 K)}`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.2 v.ne_bot)).1 hmem (algebraMap (𝓞 K) K y) (FractionalIdeal.mem_coeIdeal_of_mem _ hy)`. Take `⟨z, hz⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨z, IsFractionRing.injective (𝓞 K) K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hz, map_natCast]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hdvd` using `Ideal.absNorm_dvd_absNorm_of_le hle`. Establish `hnorm : Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ 2`. Rewrite using `[Ideal.absNorm_span_singleton, ← map_natCast (algebraMap ℤ (𝓞 K)), Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, hK]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdvd` using `[hnorm]`. Use `Nat.le_of_dvd hv.pos hdvd` as an intermediate fact. Establish `h2` using `hv.two_le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem inv_absNorm_notMem_inv (hK : finrank ℚ K = 2) (hv : (Ideal.absNorm v.asIdeal).Prime) :
     ((Ideal.absNorm v.asIdeal : K))⁻¹ ∉ (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K)⁻¹ := by
@@ -290,39 +288,33 @@ variable {K : Type*} [Field K] [NumberField K] (σ₀ : K →+* ℂ) (hK : finra
 include hK in
 
 /- English proof (translation)
-Use `set p := Ideal.absNorm v.asIdeal with hpdef`. Use `set c := invConst φ with hcdef`. Establish `hc : c ≠ 0` using `invConst_ne_zero φ`. Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hv.ne_zero`. Establish `hφu : (homConstSet E.curve E'.curve : Set ℂ) = (c * ·) '' idealLattice σ₀ ↑(primeUnit v)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[primeUnit_inv_val]`. Conclude with `hφ`. Establish `hsym` using `homConstSet_symm σ₀ hK hc hφu`. Rewrite `hsym` using `[primeUnit_val]`. Establish `hpmem : (p : ℂ) ∈ idealLattice σ₀ (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hx : ((p : K)) ∈ (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K)`. Use `FractionalIdeal.mem_coeIdeal_of_mem (S := (𝓞 K)⁰) (P := K) (Ideal.absNorm_mem v.asIdeal)` as an intermediate fact. Simplify using `using this`. Simplify using `using map_mem_idealLattice σ₀ hx`. Establish `hν : c⁻¹ * p ∈ homConstSet E'.curve E.curve`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h' : c⁻¹ * (p : ℂ) ∈ (homConstSet E'.curve E.curve : Set ℂ)`. Rewrite using `[hsym]`. Conclude with `⟨p, hpmem, rfl⟩`. Conclude with `h'`. Take `⟨Q, hQ⟩` from `mem_homConstSet.1 hν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ0 : Q ≠ 0`. Introduce and unpack `rfl`. Rewrite `hQ` using `[map_zero]`. Conclude with `mul_ne_zero (inv_ne_zero hc) hp0 hQ.symm`. Use `set ν := isogOfHom Q hQ0 with hνdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hνc : invConst ν = c⁻¹ * p` using `by rw [← homConst_toHom, isogOfHom_toHom, hQ]`. Establish `hpz : (p : ℤ) ≠ 0` using `by exact_mod_cast hv.ne_zero`. Establish `hcomp : ν.comp φ = mulIsogeny E.curve p hpz`. Establish `h1 : endConst E.curve (ν.comp φ).toHom = endConst E.curve (mulIsogeny E.curve p hpz).toHom`. Rewrite using `[endConst_apply, endConst_apply, homConst_toHom, homConst_toHom, invConst_comp, hνc, invConst_mulIsogeny]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg Subtype.val (endConst_injective h1)`. Conclude with `Subtype.ext h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hdeg1 : ν.degree * φ.degree = p ^ 2`. Rewrite using `[← Isogeny.degree_comp, hcomp, degree_mulIsogeny]`. Simplify using the standard rewrite rules. Establish `hdvd : p ∣ φ.degree`. Establish `hd : invConst (dualOver φ) ∈ (homConstSet E'.curve E.curve : Set ℂ)` using `invConst_mem_homConstSet _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hd` using `[hsym]`. Take `⟨z, hz, hz'⟩` from `hd`. Take `⟨x, hx, rfl⟩` from `(mem_idealLattice σ₀).1 hz`. Establish `e` using `invConst_dualOver_mul φ`. Rewrite `e` using `[← hcdef, ← hz']`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only at e`. Establish `hx' : σ₀ x = σ₀ (φ.degree : K)`. Rewrite using `[map_natCast, ← e]`. Clear the denominators using the available nonvanishing facts. Establish `hxK : x = φ.degree` using `σ₀.injective hx'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[hxK]`. Take `⟨y, hy, hy'⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`. Establish `: y = (φ.degree : 𝓞 K)` using `IsFractionRing.injective (𝓞 K) K (by rw [hy', map_natCast])`. Rewrite `hy` using `[this]`. Conclude with `absNorm_dvd_of_natCast_mem v hv hy`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨k, hk, hkdeg⟩` from `(Nat.dvd_prime_pow hv).1 (Dvd.intro_left _ hdeg1)`. Use `interval_cases k`. Rewrite `hdvd` using `[hkdeg, pow_zero]`. Conclude with `absurd (Nat.le_of_dvd one_pos hdvd) (by have := hv.two_le; omega)`. Rewrite using `[hkdeg, pow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Establish `hν1 : ν.degree = 1`. Rewrite `hdeg1` using `[hkdeg]`. Establish `hp2 : 0 < p ^ 2` using `pow_pos hv.pos 2`. Use the polynomial consequences of the given equalities and inequalities.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `invConst_dualOver_mul ν`. Rewrite `e` using `[hν1, hνc, Nat.cast_one]`. Establish `hd : invConst (dualOver ν) ∈ (homConstSet E.curve E'.curve : Set ℂ)` using `invConst_mem_homConstSet _`. Rewrite `hd` using `[hφ]`. Take `⟨z, hz, hz'⟩` from `hd`.
-
-Take `⟨x, hx, rfl⟩` from `(mem_idealLattice σ₀).1 hz`. Rewrite `e` using `[← hz']`. Simplify using `only at e`. Establish `e2 : σ₀ x * p = 1`. Rewrite using `[← e]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `hx' : σ₀ x = σ₀ ((p : K))⁻¹`. Rewrite using `[map_inv₀, map_natCast]`. Conclude with `eq_inv_of_mul_eq_one_left e2`. Rewrite `hx` using `[σ₀.injective hx']`.
-
-Conclude with `inv_absNorm_notMem_inv v hK hv hx`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_eq_absNorm {E E' : CMCurve K} (v : HeightOneSpectrum (𝓞 K))
     (hv : (Ideal.absNorm v.asIdeal).Prime) (φ : Isogeny E.curve E'.curve)
@@ -420,13 +412,13 @@ theorem degree_eq_absNorm {E E' : CMCurve K} (v : HeightOneSpectrum (𝓞 K))
 include hK in
 
 /- English proof (translation)
-Rewrite `h` using `[← classGroup_mk_primeUnit]`. Take `⟨c, hc, hset⟩` from `homConstSet_of_smul σ₀ hK h`. Rewrite `hset` using `[primeUnit_inv_val]`. Establish `h1 : (1 : ℂ) ∈ idealLattice σ₀ (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K)⁻¹`. Simplify using `using map_mem_idealLattice σ₀ (FractionalIdeal.one_mem_inv_coe_ideal v.ne_bot)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcmem : c ∈ homConstSet E.curve E'.curve`. Establish `h' : c ∈ (homConstSet E.curve E'.curve : Set ℂ)`. Rewrite using `[hset]`. Conclude with `⟨1, h1, mul_one c⟩`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `mem_homConstSet.1 hcmem`. Establish `hQ0 : Q ≠ 0`. Introduce and unpack `rfl`. Rewrite `hQ` using `[map_zero]`. Conclude with `hc hQ.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨isogOfHom Q hQ0, ?_⟩` and prove the remaining obligations. Rewrite using `[← homConst_toHom, isogOfHom_toHom, hQ]`. Conclude with `hset`.
+A detailed English derivation is pending.
 -/
 theorem exists_isogeny_homConstSet_eq {E E' : CMCurve K} (v : HeightOneSpectrum (𝓞 K))
     (h : (ellMulAction σ₀ hK).smul

@@ -17,11 +17,9 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨c * a, fun v => mul_mem (hc v) (ha v), x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`.
-
-Consider the case `neg y _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intAdele_smul_mem_hat {n : ℕ} (S : Set (Fin n → E)) (c : FiniteAdeleRing (𝓞 F) F)
     (hc : ∀ v, c v ∈ v.adicCompletionIntegers F) {z : Fin n → GlobalTheory.AdLat.RA F E}
@@ -37,11 +35,11 @@ theorem intAdele_smul_mem_hat {n : ℕ} (S : Set (Fin n → E)) (c : FiniteAdele
   | neg y _ h => rw [smul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a, ha, t • x, Submodule.smul_mem_smul ht hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ h h' => rw [smul_add]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem h h'`. Consider the case `neg y _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+A detailed English derivation is pending.
 -/
 theorem ideal_smul_mem_hat {n : ℕ} (I : Ideal (𝓞 E)) (L : Submodule (𝓞 E) (Fin n → E)) {t : 𝓞 E} (ht : t ∈ I)
     {z : Fin n → GlobalTheory.AdLat.RA F E} (hz : z ∈ GlobalTheory.AdLat.hat F (L : Set (Fin n → E))) :
@@ -59,7 +57,7 @@ theorem ideal_smul_mem_hat {n : ℕ} (I : Ideal (𝓞 E)) (L : Submodule (𝓞 E
   | neg y _ h => rw [smul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, nsmul_eq_mul, map_natCast]`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply, map_natCast]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_eq_smul {n : ℕ} (M : ℕ) (w : Fin n → GlobalTheory.AdLat.RA F E) :
     M • w = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (((M : 𝓞 E) : E))) • w := by
@@ -68,7 +66,7 @@ theorem nsmul_eq_smul {n : ℕ} (M : ℕ) (w : Fin n → GlobalTheory.AdLat.RA F
   rw [← Algebra.TensorProduct.includeRight_apply, map_natCast]
 
 /- English proof (translation)
-Use `conv_lhs => rw [h]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem split_sub {n : ℕ} (K : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) (x y : Fin n → GlobalTheory.AdLat.RA F E)
     (r : GlobalTheory.AdLat.RA F E) (h : x = y + r • x) :
@@ -78,7 +76,7 @@ theorem split_sub {n : ℕ} (K : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F
   abel
 
 /- English proof (translation)
-Establish `e : (fun i => c ⊗ₜ[F] x i) = (c ⊗ₜ[F] (1 : E)) • GlobalTheory.AdLat.fv F x`. Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.AdLat.fv, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e, Matrix.mulVec_smul, smul_sub]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_sub {n : ℕ} (K : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) (c : FiniteAdeleRing (𝓞 F) F)
     (x : Fin n → E) :
@@ -100,35 +98,31 @@ open scoped TensorProduct Matrix
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D V La _ _ ι hι M Mb Mh hsup hM κ hκ f hf hfb z hz`. Use `set K := (Formalism.L2.Theta.finHom V κ).1 with hKdef`. Use `set L' := Formalism.L2.Pj.latG V 1 with hL'`. Use `set P := GlobalTheory.AdLat.hat D.host.F ((Mb • L' : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E)) with hP`. Establish `hhat1 : Formalism.L2.Pj.latGHat V 1 = GlobalTheory.AdLat.hat D.host.F (L' : Set (Fin V.rank → D.host.E))` using `(GlobalTheory.Member.latG_lattice_and_completion D V 1).2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hK : ∀ y ∈ GlobalTheory.AdLat.hat D.host.F (L' : Set (Fin V.rank → D.host.E)), K *ᵥ y ∈ GlobalTheory.AdLat.hat D.host.F (L' : Set (Fin V.rank → D.host.E))`. Introduce `y hy`. Establish `h4` using `(GlobalTheory.Member.latG_lattice_and_completion D V κ).2.2.2.1`. Establish `he` using `GlobalTheory.Member.LatMove.hat_eq_of_finCong V hκ`. Establish `h5 : K *ᵥ y ∈ (Formalism.L2.Pj.latGHat V κ : Set _)` using `by rw [h4]; exact ⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h5` using `[he, hhat1]`. Conclude with `h5`. Establish `hone : ∀ v, (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) v ∈ v.adicCompletionIntegers D.host.F` using `fun v => one_mem _`. Establish `hfv : ∀ u ∈ L', Formalism.L2.Pj.finVec V u ∈ GlobalTheory.AdLat.hat D.host.F (L' : Set (Fin V.rank → D.host.E))` using `fun u hu => AddSubgroup.subset_closure ⟨1, hone, u, hu, rfl⟩`. Establish `hfvP : ∀ u ∈ (Mb • L' : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), Formalism.L2.Pj.finVec V u ∈ P` using `fun u hu => AddSubgroup.subset_closure ⟨1, hone, u, hu, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨b, hb, m, hm, hmb⟩ : ∃ b ∈ Mb, ∃ m ∈ Mh, b + m = 1` from `Submodule.mem_sup.1 (hsup ▸ Submodule.mem_top)`. Establish `hfv_sub : ∀ u u', Formalism.L2.Pj.finVec V (u - u') = Formalism.L2.Pj.finVec V u - Formalism.L2.Pj.finVec V u'`. Introduce `u u'`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.Pj.finVec, TensorProduct.tmul_sub]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hrange : ∀ x ∈ Mb • (⊤ : Submodule (𝓞 D.host.E) La), ι x ∈ (Mb • L' : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))`. Introduce `x hx`. Establish `h1 : ι x ∈ (Mb • (⊤ : Submodule (𝓞 D.host.E) La)).map ι` using `Submodule.mem_map_of_mem hx`. Rewrite `h1` using `[Submodule.map_smul'', Submodule.map_top, hι.2]`. Then use the resulting hypothesis. Establish `step1 : ∀ v : La, K *ᵥ Formalism.L2.Pj.finVec V (ι (m • v)) - Formalism.L2.Pj.finVec V (ι (m • v)) ∈ P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Take `⟨w, hw, hw'⟩` from `hf (m • v) (Submodule.smul_mem_smul hm Submodule.mem_top)`. Establish `e : K *ᵥ Formalism.L2.Pj.finVec V (ι (m • v)) - Formalism.L2.Pj.finVec V (ι (m • v)) = Formalism.L2.Pj.finVec V (ι (f (m • v) - m • v)) - M • w`. Rewrite using `[map_sub, hfv_sub, ← hw']`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `sub_mem (hfvP _ (hrange _ (hfb _))) ?_` and prove the remaining obligations. Rewrite `hw` using `[hhat1]`. Rewrite using `[nsmul_eq_smul]`. Conclude with `ideal_smul_mem_hat Mb L' hM hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `step2 : ∀ u ∈ L', K *ᵥ Formalism.L2.Pj.finVec V u - Formalism.L2.Pj.finVec V u ∈ P`. Introduce `u hu`. Establish `hu' : u ∈ LinearMap.range ι` using `by rw [hι.2]; exact hu`. Take `⟨v, rfl⟩` from `hu'`. Establish `hsplit : Formalism.L2.Pj.finVec V (ι v) = Formalism.L2.Pj.finVec V (ι (m • v)) + ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] ((b : 𝓞 D.host.E) : D.host.E)) • Formalism.L2.Pj.finVec V (ι v)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.L2.Pj.finVec, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[← TensorProduct.tmul_add]`. Use `congr 1`. Rewrite using `[Algebra.smul_def, ← add_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((algebraMap (𝓞 D.host.E) D.host.E m) + (b : D.host.E)) = 1` using `by show ((m : D.host.E)) + (b : D.host.E) = 1`. Rewrite using `[add_comm]`. Conclude with `congrArg ((↑) : 𝓞 D.host.E → D.host.E) hmb` after adjusting the coercions. Rewrite using `[this, one_mul]`. Rewrite using `[split_sub K _ _ _ hsplit]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem (step1 v) (ideal_smul_mem_hat Mb L' hb ?_)` and prove the remaining obligations. Establish `hu : ι v ∈ L'` using `by rw [hL', ← hι.2]; exact ⟨v, rfl⟩`. Conclude with `sub_mem (hK _ (hfv _ hu)) (hfv _ hu)`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨c, hc, x, hx, rfl⟩` from `hy`. Rewrite using `[gen_sub K c x]`. Conclude with `intAdele_smul_mem_hat _ c hc (step2 x hx)`. Consider the case `zero => rw [Matrix.mulVec_zero, sub_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Consider the case `add y y' _ _ h h'`. Establish `e : K *ᵥ (y + y') - (y + y') = (K *ᵥ y - y) + (K *ᵥ y' - y')`. Rewrite using `[Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `add_mem h h'`. Consider the case `neg y _ h`. Establish `e : K *ᵥ (-y) - (-y) = -(K *ᵥ y - y)`. Rewrite using `[Matrix.mulVec_neg]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[e]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_sub_mem_hat_smul : ∀ {D : D7} (V : HSp D) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), Formalism.L2.Pj.LatEmb V ι → ∀ (M : ℕ) (Mb Mh : Ideal (𝓞 D.host.E)), Mb ⊔ Mh = ⊤ → ((M : ℕ) : 𝓞 D.host.E) ∈ Mb → ∀ (κ : Formalism.L2.Theta.GA D V), GlobalTheory.Member.FinCong V 1 κ → ∀ (f : La →ₗ[𝓞 D.host.E] La), (∀ a ∈ Mh • (⊤ : Submodule (𝓞 D.host.E) La), ∃ w ∈ Formalism.L2.Pj.latGHat V 1, Formalism.L2.Pj.finVec V (ι (f a)) - (Formalism.L2.Theta.finHom V κ).1 *ᵥ Formalism.L2.Pj.finVec V (ι a) = M • w) → (∀ x, f x - x ∈ Mb • (⊤ : Submodule (𝓞 D.host.E) La)) → ∀ z ∈ GlobalTheory.AdLat.hat D.host.F (Formalism.L2.Pj.latG V 1 : Set (Fin V.rank → D.host.E)), (Formalism.L2.Theta.finHom V κ).1 *ᵥ z - z ∈ GlobalTheory.AdLat.hat D.host.F ((Mb • Formalism.L2.Pj.latG V 1 : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E)) := by
   intro D V La _ _ ι hι M Mb Mh hsup hM κ hκ f hf hfb z hz

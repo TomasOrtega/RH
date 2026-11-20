@@ -21,22 +21,22 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma specMap_contravariant_comp_ringHom {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Use `haveI := M.smooth`. Use `haveI : Smooth M.s := SmoothOfRelativeDimension.smooth (D.a * (D.n - 1)) M.s`. Use `GlobalTheory.T.isProper_of_lift_completeDvr_charZero R M.X M.s M.qproj inferInstance ?_` and prove the remaining obligations. Introduce `V K _ _ _ _ _ _ _ _ β x hx`. Take `⟨oK, ⟨hK⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N M.X (Sp K) M.s x M.univ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `hs : x ≫ M.s = s₀ at oK hK`. Take `rfl : s₀ = spMap ((algebraMap V K).comp β)` from `hs.symm.trans hx`. Take `⟨W, L, _, _, _, _, _, _, _, _, hcomp, _, hloc, _, G, _, hmod, hab⟩` from `GlobalTheory.T.harrisTaylorModuliObject_potentiallyGoodReduction p D R b N V K ((algebraMap V K).comp β) oK hc`. Take `⟨oL, ⟨hL⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N (Sp K) (Sp L) (spMap ((algebraMap V K).comp β)) (spMap (algebraMap K L)) oK`. Establish `hLs : spMap (algebraMap K L) ≫ spMap ((algebraMap V K).comp β) = spMap ((algebraMap W L).comp ((algebraMap V W).comp β))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[specMap_contravariant_comp_ringHom, ← RingHom.comp_assoc, ← RingHom.comp_assoc, hcomp]`. Generalize the expression as in `hs' : spMap (algebraMap K L) ≫ spMap ((algebraMap V K).comp β) = s₁ at oL hL`. Take `rfl : s₁ = spMap ((algebraMap W L).comp ((algebraMap V W).comp β))` from `hs'.symm.trans hLs`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.isGrpPullback_of_group_scheme_model_base_change K W L oK.A G hmod oL.A hL.φ hL.cart`. Take `⟨oW, ⟨hW⟩⟩` from `GlobalTheory.T.harrisTaylorObject_extends_over_dvr_of_abelianModel p D R b N W L ((algebraMap V W).comp β) oL G φ hab hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, ⟨hfs, ⟨hf⟩⟩, -⟩` from `M.rep (Sp W) _ oW`. Take `⟨h₁⟩` from `GlobalTheory.T.harrisTaylorObjectPullback_comp p D R b N _ _ _ _ _ _ oL oW M.univ _ _ hW hf`. Take `⟨h₂⟩` from `GlobalTheory.T.harrisTaylorObjectPullback_comp p D R b N _ _ _ _ _ _ oL oK M.univ _ _ hL hK`. Take `⟨g, -, hg⟩` from `M.rep (Sp L) _ oL`. Establish `e₁ : spMap (algebraMap W L) ≫ f = g` using `hg _ ⟨by rw [Category.assoc, hfs, specMap_contravariant_comp_ringHom], ⟨h₁⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e₂ : spMap (algebraMap K L) ≫ x = g` using `hg _ ⟨by rw [Category.assoc, hx, hLs], ⟨h₂⟩⟩`. Conclude with `⟨W, L, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hcomp, hloc, f, e₂.trans e₁.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem isProper_model_of_compact (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsDomain R]
     [CharZero R] [IsNoetherianRing R] (b : Base D R) (N : ℕ) (M : Model b N)

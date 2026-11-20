@@ -8,9 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 namespace GlobalTheory.CompanionTheory.SmoothPart
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Scheme.IdealSheafData.le_radical Z)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.le_def]`. Introduce `U x hx`. Rewrite `hx` using `[Scheme.IdealSheafData.radical_ideal]`. Take `⟨n, hn⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hn`, the goal using `[← Z.ker_subschemeι_app U, RingHom.mem_ker]`. Rewrite `hn` using `[map_pow]`. Conclude with `IsNilpotent.eq_zero ⟨n, hn⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radical_eq_of_isReduced {X : Scheme.{0}} (Z : X.IdealSheafData) [IsReduced Z.subscheme] :
     Z.radical = Z := by
@@ -24,9 +24,7 @@ theorem radical_eq_of_isReduced {X : Scheme.{0}} (Z : X.IdealSheafData) [IsReduc
   exact IsNilpotent.eq_zero ⟨n, hn⟩
 
 /- English proof (translation)
-Simplify using `only [Scheme.IdealSheafData.vanishingIdeal_ideal]`. Use `congr 1`. Use extensionality with `p`. Establish `hp : W.2.fromSpec p ∈ W.1`. Conclude with `(IsAffineOpen.range_fromSpec (U := W.1) W.2).le (Set.mem_range_self p)`.
-
-Conclude with `h _ hp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ideal_vanishingIdeal_congr {X : Scheme.{0}} (A B : Closeds X) (W : X.affineOpens)
     (h : ∀ x ∈ W.1, x ∈ A ↔ x ∈ B) :
@@ -40,7 +38,7 @@ theorem ideal_vanishingIdeal_congr {X : Scheme.{0}} (A B : Closeds X) (W : X.aff
   exact h _ hp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Scheme.IdealSheafData.inclusion_id]`. Use `infer_instance`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_inclusion_of_eq {X : Scheme.{0}} {I J : X.IdealSheafData} (h : I ≤ J) (e : I = J) :
     IsIso (Scheme.IdealSheafData.inclusion h) := by
@@ -49,11 +47,11 @@ theorem isIso_inclusion_of_eq {X : Scheme.{0}} {I J : X.IdealSheafData} (h : I �
   infer_instance
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (pullback.snd O.ι I.subschemeι)`. Rewrite using `[← Set.range_eq_univ, Scheme.Pullback.range_snd, Scheme.Opens.range_ι]`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_univ, iff_true]`. Apply `hO` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← I.range_subschemeι]`. Conclude with `Set.mem_range_self y`. Establish `: Epi (pullback.snd O.ι I.subschemeι).base` using `(TopCat.epi_iff_surjective _).2 hsurj`. Establish `: IsIso (pullback.snd O.ι I.subschemeι)` using `IsOpenImmersion.isIso _`. Establish `hincl : IsIso (Scheme.IdealSheafData.inclusion e.ge)` using `isIso_inclusion_of_eq _ e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inv (pullback.snd O.ι I.subschemeι) ≫ (I.comapIso O.ι).inv ≫ Scheme.IdealSheafData.inclusion e.ge ≫ (J.comapIso O.ι).hom ≫ pullback.snd _ _, inferInstance, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← pullback.condition, Scheme.IdealSheafData.comapIso_hom_fst_assoc, Scheme.IdealSheafData.inclusion_subschemeι_assoc, Scheme.IdealSheafData.comapIso_inv_subschemeι_assoc, pullback.condition, IsIso.inv_hom_id_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isOpenImmersion_of_comap_eq {X : Scheme.{0}} (I J : X.IdealSheafData) (O : X.Opens)
     (hO : (I.support : Set X) ⊆ O) (e : I.comap O.ι = J.comap O.ι) :
@@ -78,15 +76,15 @@ theorem exists_isOpenImmersion_of_comap_eq {X : Scheme.{0}} (I J : X.IdealSheafD
     IsIso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Introduce `k _ X g Z A O hs hA hO`. Establish `hred : IsReduced Z.subscheme` using `GlobalTheory.isReduced_of_smooth_of_isReduced (Z.subschemeι ≫ g)`. Establish `hZ : Scheme.IdealSheafData.vanishingIdeal Z.support = Z`. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_support, radical_eq_of_isReduced]`. Establish `hAO : ∀ x, x ∈ O → (x ∈ A ↔ x ∈ Z.support)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x ∈ (O : Set X)` using `hx`. Rewrite `hx'` using `[hO]`. Use `⟨fun h => hA h, fun h => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx' ⟨h, hn⟩`. Establish `key : ∀ W : X.affineOpens, W.1 ≤ O → (Scheme.IdealSheafData.vanishingIdeal A).ideal W = Z.ideal W`. Introduce `W hW`. Rewrite using `[ideal_vanishingIdeal_congr A Z.support W (fun x hx => hAO x (hW hx)), hZ]`. Establish `hcomap : (Scheme.IdealSheafData.vanishingIdeal A).comap O.ι = Z.comap O.ι`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `U : 2`. Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, key _ (Scheme.Opens.ι_image_le O U.1)]`. Use `⟨?_, hcomap⟩` and prove the remaining obligations. Establish `hsub : (((Scheme.IdealSheafData.vanishingIdeal A).support : Closeds X) : Set X) ⊆ O`. Rewrite using `[Scheme.IdealSheafData.coe_support_vanishingIdeal, hO]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun x hx hx' => hx'.2 hx`. Take `⟨h, hh, hc⟩` from `exists_isOpenImmersion_of_comap_eq _ Z O hsub hcomap`. Rewrite using `[← hc, Category.assoc]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_and_comap_eq : ∀ {k : Type} [Field k] {X : Scheme.{0}} (g : X ⟶ Sp k) (Z : X.IdealSheafData)
     (A : Closeds X) (O : X.Opens), Smooth (Z.subschemeι ≫ g) → (A : Set X) ⊆ Z.support →

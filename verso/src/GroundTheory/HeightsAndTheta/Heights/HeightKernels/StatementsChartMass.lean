@@ -21,18 +21,18 @@ def ChartMassInvariant.Statement : Prop :=
     chartMass M = chartMass (1 : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ)
 
 /- English proof (translation)
-The claim follows from `Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num`.
+A detailed English derivation is pending.
 -/
 example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef :=
   Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num
 
 /- English proof (translation)
-The claim follows from `Matrix.PosDef.one`.
+A detailed English derivation is pending.
 -/
 example (e : ℕ) : (1 : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ).PosDef := Matrix.PosDef.one
 
 /- English proof (translation)
-Simplify using `[hermChartPot]`.
+Simplify using the standard rewrite rules.
 -/
 example (e : ℕ) (y : Fin e → ℂ) :
     hermChartPot (1 : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) y =

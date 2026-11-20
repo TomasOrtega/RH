@@ -17,7 +17,7 @@ open GlobalTheory.Published.SiegelOneVector
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hcc : Continuous c`. Establish `: c = (fun a => c (p a)) ∘ s` using `funext fun y => by simp only [Function.comp, h1]`. Rewrite using `[this]`. Conclude with `hc.comp hs`. Conclude with `⟨{ toFun := c, invFun := fun z => p (σ z), left_inv := h3, right_inv := h2, continuous_toFun := hcc, continuous_invFun := hp.comp hσ }, fun _ => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homeomorph_of_sections {A Y Z : Type} [TopologicalSpace A] [TopologicalSpace Y] [TopologicalSpace Z]
     (p : A → Y) (s : Y → A) (c : Y → Z) (σ : Z → A) (hp : Continuous p) (hs : Continuous s)
@@ -34,17 +34,15 @@ theorem exists_homeomorph_of_sections {A Y Z : Type} [TopologicalSpace A] [Topol
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨e, he, hec, hec'⟩ : ∃ e : AE D ≃+* (Ainf D.host.F ⊗[D.host.F] D.host.E) × (Af D.host.F ⊗[D.host.F] D.host.E), (∀ z, (e z).1 = infPart D z ∧ (e z).2 = finPart D z) ∧ Continuous e ∧ Continuous e.symm` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hinf : ∀ y, infPart D (e.symm (y, 0)) = y` using `fun y => by`. Use `(he (e.symm (y, 0))).1` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hfin : ∀ y, finPart D (e.symm (y, 0)) = 0` using `fun y => by`. Use `(he (e.symm (y, 0))).2` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hci : Continuous (infPart D)`. Establish `: (infPart D : AE D → _) = fun z => (e z).1` using `funext fun z => ((he z).1).symm`. Rewrite using `[this]`. Conclude with `continuous_fst.comp hec`. Establish `hs : Continuous fun y : Ainf D.host.F ⊗[D.host.F] D.host.E => e.symm (y, 0)` using `hec'.comp (continuous_id.prodMk continuous_const)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hback : ∀ a : AE D, finPart D a = 0 → a = σ fun τ => θ τ (infPart D a)` using `fun a ha => by`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[(finPart D).map_sub, ha, hσ.fin, sub_zero]`. Rewrite using `[(infPart D).map_sub, (θ τ).map_sub, hσ.comp, sub_self]`. Take `⟨P, hP⟩` from `exists_homeomorph_of_sections (infPart D : AE D → _) (fun y => e.symm (y, 0)) (fun (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (τ : D.what₂.Tau) => θ τ y) σ hci hs (continuous_pi fun τ => GlobalTheory.FockCompare.continuous_comp hθ τ) hσ.cont hinf (fun z => funext fun τ => hσ.comp z …`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩ : ∃ a : AE D, a = e.symm (y, 0)` from `⟨_, rfl⟩`. Establish `h1 : infPart D a = y` using `ha ▸ hinf y`. Establish `h2 : finPart D a = 0` using `ha ▸ hfin y`. Substitute `h1` using the available equality. Conclude with `congrArg (infPart D) (hback a h2).symm)`.
-
-Conclude with `⟨P, fun y τ => congrFun (hP y) τ⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_infHomeo {θ : InfFam D} (hθ : IsInfFam θ) :
     ∃ P : (Ainf D.host.F ⊗[D.host.F] D.host.E) ≃ₜ (D.what₂.Tau → ℂ), ∀ y τ, P y τ = θ τ y := by
@@ -83,11 +81,9 @@ theorem exists_infHomeo {θ : InfFam D} (hθ : IsInfFam θ) :
   exact ⟨P, fun y τ => congrFun (hP y) τ⟩
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `exists_infHomeo hθ`. Set `Q : (Fin r → Fin m → Ainf D.host.F ⊗[D.host.F] D.host.E) ≃ₜ (D.what₂.Tau → Fin m → Fin r → ℂ)` to `{ toFun := fun Y τ i j => P (Y j i) τ invFun := fun c j i => P.symm fun τ => c τ i j left_inv := fun Y => by simp right_inv := fun c => by simp continuous_toFun := continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => (continuous_apply τ).comp (P.continuous.comp (( …`. Establish `hQ : ∀ Y τ i j, Q Y τ i j = θ τ (Y j i)` using `fun Y τ i j => hP _ _`. Establish `hadd : ∀ X Y, Q (X + Y) = Q X + Q Y` using `fun X Y => by`. Use function extensionality and compare the values at `τ i j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hQ, Pi.add_apply, map_add]`. Set `B : (D.what₂.Tau → Fin m → Fin r → ℂ) ≃L[ℝ] (Fin (Module.finrank ℝ (D.what₂.Tau → Fin m → Fin r → ℂ)) → ℝ)` to `(Module.finBasis ℝ (D.what₂.Tau → Fin m → Fin r → ℂ)).equivFun.toContinuousLinearEquiv`. Use `⟨_, (AddEquiv.mk' Q.toEquiv hadd).trans B.toLinearEquiv.toAddEquiv, B.continuous.comp Q.continuous, Q.symm.continuous.comp B.symm.continuous, SchwartzMap.compCLMOfContinuousLinearEquiv ℂ B.symm f, fun Y => ?_⟩` and prove the remaining obligations. Use `show _ = f (B.symm (B (Q Y)))`. Rewrite using `[ContinuousLinearEquiv.symm_apply_apply]`.
-
-Conclude with `congrArg f (funext fun τ => funext fun i => funext fun j => (hQ Y τ i j).symm)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSchwartzArch_comp {θ : InfFam D} (hθ : IsInfFam θ) {m r : ℕ}
     (f : SchwartzMap (D.what₂.Tau → Fin m → Fin r → ℂ) ℂ) :
@@ -118,7 +114,7 @@ theorem isSchwartzArch_comp {θ : InfFam D} (hθ : IsInfFam θ) {m r : ℕ}
   exact congrArg f (funext fun τ => funext fun i => funext fun j => (hQ Y τ i j).symm)
 
 /- English proof (translation)
-Set `S : (Fin r → Fin m → Af D.host.F ⊗[D.host.F] D.host.E) ≃ₜ (Fin m → Fin r → Af D.host.F ⊗[D.host.F] D.host.E)` to `{ toFun := fun Y i j => Y j i invFun := fun Y j i => Y i j left_inv := fun _ => rfl right_inv := fun _ => rfl continuous_toFun := continuous_pi fun i => continuous_pi fun j => (continuous_apply i).comp (continuous_apply j) continuous_invFun := continuous_pi fun j => continuous_pi …`. Conclude with `⟨hg.1.comp_continuous S.continuous, hg.2.comp_homeomorph S⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem isSB_swap {m r : ℕ} {g : (Fin m → Fin r → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ}
     (hg : g ∈ GlobalTheory.WeilM.SB (Fin m → Fin r → Af D.host.F ⊗[D.host.F] D.host.E)) :
@@ -136,7 +132,7 @@ theorem isSB_swap {m r : ℕ} {g : (Fin m → Fin r → Af D.host.F ⊗[D.host.F
   exact ⟨hg.1.comp_continuous S.continuous, hg.2.comp_homeomorph S⟩
 
 /- English proof (translation)
-Take `⟨N, e, h1, h2, f, hf⟩` from `h`. Conclude with `⟨N, e, h1, h2, c • f, fun X => by simp [hf]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSchwartzArch_smul {M n : ℕ} (c : ℂ) {Φ : (Fin n → Fin M → Ainf D.host.F ⊗[D.host.F] D.host.E) → ℂ}
     (h : IsSchwartzArch (F := D.host.F) (E := D.host.E) Φ) :
@@ -145,18 +141,18 @@ theorem isSchwartzArch_smul {M n : ℕ} (c : ℂ) {Φ : (Fin n → Fin M → Ain
   exact ⟨N, e, h1, h2, c • f, fun X => by simp [hf]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_zero {M n : ℕ} :
     IsSchwartzBruhat (F := D.host.F) (E := D.host.E) (0 : (Fin n → Fin M → AE D) → ℂ) :=
   ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨k, a, b, ha, hb, hs⟩` from `hΦ`. Take `⟨k', a', b', ha', hb', hs'⟩` from `hΨ`. Use `⟨k + k', Fin.append a a', Fin.append b b', fun i => ?_, fun i => ?_, fun X => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha i`. Rewrite using `[Fin.append_right]`. Conclude with `ha' i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb i`. Rewrite using `[Fin.append_right]`. Conclude with `hb' i`. Rewrite using `[Fin.sum_univ_add, Pi.add_apply, hs, hs']`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sb_add {M n : ℕ} {Φ Ψ : (Fin n → Fin M → AE D) → ℂ}
     (hΦ : IsSchwartzBruhat (F := D.host.F) (E := D.host.E) Φ)
@@ -175,7 +171,7 @@ theorem sb_add {M n : ℕ} {Φ Ψ : (Fin n → Fin M → AE D) → ℂ}
     simp only [Fin.append_left, Fin.append_right]
 
 /- English proof (translation)
-Take `⟨k, a, b, ha, hb, hs⟩` from `hΦ`. Use `⟨k, fun i X => c * a i X, b, fun i => isSchwartzArch_smul c (ha i), hb, fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hs, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_smul {M n : ℕ} (c : ℂ) {Φ : (Fin n → Fin M → AE D) → ℂ}
     (hΦ : IsSchwartzBruhat (F := D.host.F) (E := D.host.E) Φ) :
@@ -192,9 +188,9 @@ namespace GlobalTheory.CompanionTheory.SiegelND
 open GlobalTheory.CompanionTheory.SiegelND.SchGlue
 
 /- English proof (translation)
-Introduce `D θ hθ m r φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `⟨1, fun _ Y => f fun τ i j => θ τ (Y j i), fun _ Y => g fun i j => Y j i, fun _ => isSchwartzArch_comp hθ f, fun _ => isSB_swap hg, fun X => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Both sides reduce to the same expression. Consider the case `zero => exact sb_zero`. Consider the case `add a b _ _ ha hb => exact sb_add ha hb`. Consider the case `smul c a _ ha => exact sb_smul c ha`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isSchwartzBruhat_tupOf_of_mem_schwartzA : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m r : ℕ) (φ : Mx D m r → ℂ), φ ∈ schwartzA θ m r →
   GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (F := D.host.F) (E := D.host.E) (fun X : Fin r → Fin m → AE D => φ (tupOf X)) := by

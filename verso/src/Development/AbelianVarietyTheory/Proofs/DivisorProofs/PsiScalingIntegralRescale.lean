@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.PsiTopUnit
 
 /- English proof (translation)
-Set `φ : FractionRing R →+* Y.presheaf.stalk y` to `(Y.presheaf.germ (f ⁻¹ᵁ ⊤) y trivial).hom.comp ((f.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom)`. Establish `e1 : (gm f y ⊤ (unitOn c)).val = φ c.val` using `by rw [gm_val f y ⊤ trivial]; rfl`. Establish `e2 : gs (𝟙 Y) y ⊤ (scal f a.val) = φ a.val` using `by rw [gs_eq _ y ⊤ trivial]; rfl`. Establish `e3 : (gm (f ≫ jK R) y ⊤ (unitOn u)).val = φ (algebraMap R (FractionRing R) u.val)`. Rewrite using `[gm_val _ y ⊤ trivial]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (fun q => q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Use `show _ = (Y.presheaf.germ (f ⁻¹ᵁ ⊤) y trivial).hom ((f.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (CommRingCat.ofHom (algebraMap R (FractionRing R)) u.val)))`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, e3, ← map_mul, ← Units.val_mul, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unit_factor {R : Type} [CommRing R] [IsDomain R] {Y : Scheme.{0}}
     (f : Y ⟶ Spec (CommRingCat.of (FractionRing R))) (y : Y) (c a : (FractionRing R)ˣ) (u : Rˣ)
@@ -41,11 +41,11 @@ theorem unit_factor {R : Type} [CommRing R] [IsDomain R] {Y : Scheme.{0}}
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ _ D ga a hs c hc`. Use `choose u hu using hc`. Use `⟨⟨fun χ => LB.pullGen D.P.L _ _ (GlobalTheory.UU.scaleGen (unitOn (u χ)) (ga χ)) (⊤ : (Spec (CommRingCat.of R)).Opens).ι, fun χ => DVR.pullGen_isGen _ _ _ _ (GlobalTheory.UU.scaleGen_isGen _ (hs χ).1) _, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp, morphismRestrict_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.UU.val_scaleGen _ _ _ hJ).trans (Eq.trans ?_ (GlobalTheory.UU.val_scaleGen _ _ _ hJ).symm)` and prove the remaining obligations. Establish `hp` using `(hs χ).2 (Over.mk ((jK R ⁻¹ᵁ ⊤).ι ≫ jK R)) (Over.homMk (jK R ⁻¹ᵁ ⊤).ι) y J hJ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`. Use `erw [hp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[unit_factor _ y (c χ) (a χ) (u χ) (hu χ), _root_.mul_assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_psiOn_top_rescale : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (ga : ∀ χ : D.X, LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))) (a : D.X → (FractionRing R)ˣ), GlobalTheory.UU.PsiScal D ga a → ∀ c : D.X → (FractionRing R)ˣ, (∀ χ : D.X, ∃ u : Rˣ, c χ * a χ = Units.map (algebraMap R (FractionRing R)).toMonoidHom u) → Nonempty (PsiOn (GlobalTheory.PolDeg.rescale D c) ⊤) := by
   intro R _ _ _ D ga a hs c hc

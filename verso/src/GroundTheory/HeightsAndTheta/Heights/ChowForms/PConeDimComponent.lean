@@ -13,29 +13,27 @@ noncomputable section
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Introduce `F _ n e I W u hI hdim hu hW`. Take `⟨hmin, hrel⟩` from `hW`. Establish `hWprime : W.IsPrime` using `hmin.1.1`. Establish `hJ : IsHomogIdeal (I ⊔ Ideal.span {linForm u})` using `isHomogIdeal_sup_span_linForm hI.isHomog u`. Establish `hproj : IsProjPrime W` using `by classical`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJh` using `(isHomogIdeal_iff _).mp hJ`. Use `⟨hWprime, (isHomogIdeal_iff W).mpr ?_, hrel⟩` and prove the remaining obligations. Use `set core := (W.homogeneousCore (homogeneousSubmodule (Fin n) F)).toIdeal`. Establish `hcore_prime : core.IsPrime` using `hWprime.homogeneousCore`. Establish `hJcore : I ⊔ Ideal.span {linForm u} ≤ core`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hJh.toIdeal_homogeneousCore_eq_self]`. Conclude with `Ideal.homogeneousCore_mono _ hmin.1.2`. Establish `hle : core ≤ W` using `Ideal.toIdeal_homogeneousCore_le _ _`. Establish `heq : core = W` using `le_antisymm hle (hmin.2 ⟨hcore_prime, hJcore⟩ hle)`. Rewrite using `[Ideal.IsHomogeneous.iff_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `heq`. Use `⟨hproj, ?_⟩` and prove the remaining obligations. Establish `hIprime : I.IsPrime` using `hI.isPrime`. Establish `hIW : I ≤ W` using `le_sup_left.trans hmin.1.2`. Establish `huW : linForm u ∈ W` using `(le_sup_right.trans hmin.1.2) (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := MvPolynomial (Fin n) F ⧸ I`. Establish `_ : Algebra.FiniteType F B` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ F I) (Ideal.Quotient.mkₐ_surjective F I)`. Use `set W' : Ideal B := W.map (Ideal.Quotient.mk I)`. Establish `hW'prime : W'.IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`. Establish `hW'ne : W' ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Apply `hu` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `: Ideal.Quotient.mk I (linForm u) ∈ W'` using `Ideal.mem_map_of_mem _ huW`. Rewrite `this` using `[h, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hht : W'.height ≤ 1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hmin`. Establish `hquot : ringKrullDim (B ⧸ W') = ringKrullDim (MvPolynomial (Fin n) F ⧸ W)` using `ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hIW)`. Establish `hform` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient F W'`. Establish `hdrop` using `GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_quotient_add_one_le W' hW'ne`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite `hform`, `hdrop` using `[hquot]`. Express the relevant statement in the definitionally equal form `ringKrullDim B = _ at hdim`. Rewrite `hform`, `hdrop` using `[hdim]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : ℕ∞, ringKrullDim (MvPolynomial (Fin n) F ⧸ W) = y := by`. Consider the cases of `h : ringKrullDim (MvPolynomial (Fin n) F ⧸ W) with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `bot`. Use `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial (Fin n) F ⧸ W)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `absurd this (by simp)`. Consider the case `coe y => exact ⟨y, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hform`, `hdrop`, the goal using `[hy]`. Establish `h1 : y + 1 ≤ ((e + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast hdrop`. Establish `h2 : W'.height + y = ((e + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast hform`. Establish `hyle : y ≤ e`. Establish `: y + 1 ≤ (e : ℕ∞) + 1` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `(ENat.add_le_add_iff_right ENat.one_ne_top).mp this`. Take `⟨m, rfl⟩ : ∃ m : ℕ, (m : ℕ∞) = y` from `ENat.ne_top_iff_exists.mp (ne_top_of_le_ne_top (ENat.natCast_ne_top e) hyle)`. Establish `h3 : ((e + 1 : ℕ) : ℕ∞) ≤ 1 + m` using `by rw [← h2]; gcongr`. Establish `h4 : e + 1 ≤ 1 + m` using `by exact_mod_cast h3`. Establish `h5 : m ≤ e` using `by exact_mod_cast hyle`.
-
-Establish `: m = e` using `by omega`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ConeDimComponent.proof_closed : ConeDimComponent.Statement := by
   intro F _ n e I W u hI hdim hu hW
@@ -106,7 +104,7 @@ theorem ConeDimComponent.proof_closed : ConeDimComponent.Statement := by
   rfl
 
 /- English proof (translation)
-The claim follows from `ConeDimComponent.proof_closed`.
+A detailed English derivation is pending.
 -/
 theorem ConeDimComponent.proof (_h₁ : MinimalPrimeHomog.Statement) : ConeDimComponent.Statement :=
   ConeDimComponent.proof_closed

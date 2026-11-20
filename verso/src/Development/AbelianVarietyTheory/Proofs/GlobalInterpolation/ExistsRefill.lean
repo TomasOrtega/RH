@@ -16,7 +16,7 @@ namespace GlobalTheory.Refill
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Unfold `Arith.bsH`. Use `split_ifs with hex`. Conclude with `Nat.find_spec hex`. Conclude with `⟨0, by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bsH_orb {φ : Formalism.HC.Frame} (h t : φ.A) : ∃ i : ℕ, Arith.bsH h t + i • h = t := by
   classical
@@ -26,13 +26,13 @@ theorem bsH_orb {φ : Formalism.HC.Frame} (h t : φ.A) : ∃ i : ℕ, Arith.bsH 
   · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Establish `hiff : ∀ v : ℕ, (∃ i : ℕ, φ.ofNat v + i • h = t + h) ↔ ∃ i : ℕ, φ.ofNat v + i • h = t`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩`. Use `⟨i + (addOrderOf h - 1), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (addOrderOf h - 1) • h + h = 0`. Rewrite using `[← succ_nsmul, Nat.sub_add_cancel (addOrderOf_pos h), addOrderOf_nsmul_eq_zero]`. Rewrite using `[add_nsmul, ← add_assoc, hi, add_assoc, add_comm h, h1, add_zero]`. Introduce and unpack `⟨i, hi⟩`. Conclude with `⟨i + 1, by rw [succ_nsmul, ← add_assoc, hi]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hex : ∃ v : ℕ, ∃ i : ℕ, φ.ofNat v + i • h = t` using `⟨t.val, 0, by simp⟩`. Establish `hex' : ∃ v : ℕ, ∃ i : ℕ, φ.ofNat v + i • h = t + h` using `⟨(t + h).val, 0, by simp⟩`. Unfold `Arith.bsH`. Rewrite using `[dif_pos hex, dif_pos hex']`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Nat.find_congr' (fun {v} => hiff v)`.
+A detailed English derivation is pending.
 -/
 theorem bsH_step {φ : Formalism.HC.Frame} (h t : φ.A) : Arith.bsH h (t + h) = Arith.bsH h t := by
   classical
@@ -54,15 +54,15 @@ theorem bsH_step {φ : Formalism.HC.Frame} (h t : φ.A) : Arith.bsH h (t + h) = 
   exact Nat.find_congr' (fun {v} => hiff v)
 
 /- English proof (translation)
-Distinguish the cases in `hp : p = 0`. Use `Set.Finite.subset Set.finite_empty ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `absurd (hw.trans hp) (D.what₂.places.resChar_prime w).ne_zero`. Establish `hI : (Ideal.span {(p : 𝓞 D.what₂.LL)} : Ideal (𝓞 D.what₂.LL)) ≠ 0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `Set.Finite.subset ((Ideal.finite_factors hI).preimage D.plEq.injective.injOn) ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : D.what₂.places.resChar w = p` using `hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `D.what₂.places.val_resChar w`. Establish `h0 : ((p : ℕ) : D.what₂.LL) ≠ 0` using `by exact_mod_cast hp`. Rewrite `h1` using `[hw', D.val_eq w _ h0]`. Establish `h2 : vAdd (D.plEq w) ((p : ℕ) : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ)` using `by exact_mod_cast h1`. Establish `h3` using `D.what₂.places.ramIdx_pos w`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (D.plEq w).asIdeal ∣ _`. Rewrite using `[← IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_dvd (K := D.what₂.LL)]`. Use `lt_of_le_of_ne (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ _) (fun h => ?_)` and prove the remaining obligations. Unfold `vAdd at h2`. Establish `h4 : (algebraMap (𝓞 D.what₂.LL) D.what₂.LL (p : 𝓞 D.what₂.LL)) = ((p : ℕ) : D.what₂.LL)` using `map_natCast _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h5 : (D.plEq w).valuation D.what₂.LL ((p : ℕ) : D.what₂.LL) = 1` using `h4 ▸ h`. Rewrite `h2` using `[h5, WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finite_over (D : D7) (p : ℕ) : {w : D.what₂.places.Pl | D.what₂.places.resChar w = p}.Finite := by
   by_cases hp : p = 0
@@ -90,7 +90,7 @@ theorem finite_over (D : D7) (p : ℕ) : {w : D.what₂.places.Pl | D.what₂.pl
   omega
 
 /- English proof (translation)
-Use `Set.Finite.subset ((Set.finite_Iic B).biUnion (fun p _ => finite_over D p)) ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `Set.mem_biUnion (x := D.what₂.places.resChar w) hw rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_le (D : D7) (B : ℕ) : {w : D.what₂.places.Pl | D.what₂.places.resChar w ≤ B}.Finite := by
   refine Set.Finite.subset ((Set.finite_Iic B).biUnion (fun p _ => finite_over D p)) ?_
@@ -98,11 +98,11 @@ theorem finite_le (D : D7) (B : ℕ) : {w : D.what₂.places.Pl | D.what₂.plac
   exact Set.mem_biUnion (x := D.what₂.places.resChar w) hw rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨a, s⟩ ⟨b, t⟩ h`. Establish `h2 : D.R.iota s = D.R.iota t`. Use `congrArg Prod.snd h` as an intermediate fact. Apply the tactic sequence `cases a <;> cases b <;> exact this`. Establish `h3` using `D.R.iota_bijective.1 h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Substitute `h3` using the available equality. Establish `h1` using `congrArg (fun g => g.1.1) h`. Apply the tactic sequence `cases a <;> cases b`. Both sides reduce to the same expression. Conclude with `absurd h1 (by simp [plGG, Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2])`.
+Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Conclude with `absurd h1 (by simp [plGG, Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2])`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem plGG_inj (D : D7) : Function.Injective (plGG D) := by
   rintro ⟨a, s⟩ ⟨b, t⟩ h
@@ -119,15 +119,15 @@ theorem plGG_inj (D : D7) : Function.Injective (plGG D) := by
   · rfl
 
 /- English proof (translation)
-Simplify using `[tauPl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eTau_tauPl (D : D7) (z : Bool × HH D) : (D.eTau (tauPl D z) : D.R.GG) = plGG D z := by
   simp [tauPl]
 
 /- English proof (translation)
-Unfold `Host.topPlaces IsTopPl`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, h⟩`. Establish `: (false, t) = z` using `plGG_inj D h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `⟨rfl, ht⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨z.2, h2, ?_⟩` and prove the remaining obligations. Simplify using `[plGG, h1]`.
+Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem top_iff (D : D7) (z : Bool × HH D) : plGG D z ∈ D.host.topPlaces ↔ IsTopPl D z := by
   classical
@@ -143,9 +143,9 @@ theorem top_iff (D : D7) (z : Bool × HH D) : plGG D z ∈ D.host.topPlaces ↔ 
     simp [plGG, h1]
 
 /- English proof (translation)
-Unfold `Host.thickPlaces IsThickPl`. Rewrite using `[Finset.mem_image, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Establish `: (true, D.R.dig s + D.host.u0) = z` using `plGG_inj D h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `⟨rfl, s, hs, rfl⟩`. Introduce and unpack `⟨h1, s, h2, h3⟩`. Use `⟨s, h2, ?_⟩` and prove the remaining obligations. Simplify using `[plGG, h1, h3]`.
+Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem thick_iff (D : D7) (z : Bool × HH D) : plGG D z ∈ D.host.thickPlaces ↔ IsThickPl D z := by
   classical
@@ -169,11 +169,11 @@ def offC (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) : ℝ :=
   else if IsTopPl D z then L.sc.b' / L.sc.x else if IsThickPl D z then L.sc.b else L.sc.w'' D.R.n
 
 /- English proof (translation)
-Establish `he` using `L.etaSz_pos`. Unfold `offC`. Distinguish the cases in `hj : j ∈ SizeData₂.lifts D`. Establish `h' : z.1 = false ∧ z.2 ∈ D.host.TT` using `h`. Rewrite using `[if_pos hj, if_pos h']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Establish `h3` using `L.win_top j h1 h2 (tauPl D z) ⟨z.2, h.2⟩ (by rw [eTau_tauPl]; simp [plGG, h.1])`. Unfold `wPl bL`. Rewrite using `[dif_pos h.2]`. Apply the tactic sequence `constructor <;> linarith [h3.1, h3.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_neg hj, if_pos h]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem offC_top (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (h : IsTopPl D z) :
     L.sc.b' / L.sc.x ≤ offC L j z ∧ offC L j z ≤ L.sc.b' / L.sc.x + L.etaSz := by
@@ -191,9 +191,9 @@ theorem offC_top (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (h : IsTopPl D
     constructor <;> linarith
 
 /- English proof (translation)
-Establish `he` using `L.etaSz_pos`. Establish `hn : ¬ IsTopPl D z` using `fun h' => by have := h'.1.symm.trans h.1; simp at this`. Unfold `offC`. Distinguish the cases in `hj : j ∈ SizeData₂.lifts D`. Establish `h' : ¬ (z.1 = false ∧ z.2 ∈ D.host.TT)` using `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos hj, if_neg h', sub_zero]`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Conclude with `L.win_thick j h1 h2 (tauPl D z) (by rw [eTau_tauPl, thick_iff]; exact h)`. Rewrite using `[if_neg hj, if_neg hn, if_pos h]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem offC_thick (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (h : IsThickPl D z) :
     L.sc.b ≤ offC L j z ∧ offC L j z ≤ L.sc.b + L.etaSz + 1 := by
@@ -209,11 +209,11 @@ theorem offC_thick (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (h : IsThick
     constructor <;> linarith
 
 /- English proof (translation)
-Establish `he` using `L.etaSz_pos`. Unfold `offC`. Distinguish the cases in `hj : j ∈ SizeData₂.lifts D`. Establish `h' : ¬ (z.1 = false ∧ z.2 ∈ D.host.TT)` using `h.1`. Rewrite using `[if_pos hj, if_neg h', sub_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Use `L.win_thin j h1 h2 (tauPl D z) ?_` and prove the remaining obligations. Rewrite using `[eTau_tauPl]`. Conclude with `⟨plGG_mem_Psi D z, by rw [top_iff]; exact h.1, by rw [thick_iff]; exact h.2⟩`. Rewrite using `[if_neg hj, if_neg h.1, if_neg h.2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem offC_thin (L : SizeData₂ D) (j : ℕ) (z : Bool × HH D) (h : IsThinPl D z) :
     L.sc.w'' D.R.n ≤ offC L j z ∧ offC L j z ≤ L.sc.w'' D.R.n + L.etaSz := by
@@ -241,9 +241,9 @@ def inst (L : SizeData₂ D) (K : Consts) (Ce : ℝ) : Inst D L where
   ep := fun p => ⌈Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb p L.sc.a⌉₊
 
 /- English proof (translation)
-Use `⟨fun _ _ => rfl, fun j hj t => ?_⟩` and prove the remaining obligations. Use `show offC L j (false, t) = _`. Unfold `offC`. Rewrite using `[if_neg hj]`. Distinguish the cases in `ht : t ∈ D.host.TT`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ht, if_pos (show IsTopPl D (false, t) from ⟨rfl, ht⟩)]`. Rewrite using `[if_neg ht, if_neg (show ¬ IsTopPl D (false, t) from fun h => ht h.2), if_neg (show ¬ IsThickPl D (false, t) from fun h => by simpa using h.1)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inst_canon (L : SizeData₂ D) (K : Consts) (Ce : ℝ) : CanonInst (inst L K Ce) := by
   refine ⟨fun _ _ => rfl, fun j hj t => ?_⟩
@@ -256,9 +256,9 @@ theorem inst_canon (L : SizeData₂ D) (K : Consts) (Ce : ℝ) : CanonInst (inst
       if_neg (show ¬ IsThickPl D (false, t) from fun h => by simpa using h.1)]
 
 /- English proof (translation)
-Establish `hτ : tauPl D z = τ`. Unfold `tauPl`. Rewrite using `[Equiv.symm_apply_eq]`. Conclude with `Subtype.ext h.symm`. Unfold `fill`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `show _ + offC L j z = _`. Unfold `offC wPl`. Rewrite using `[if_pos hj, hτ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inst_fill (L : SizeData₂ D) (K : Consts) (Ce : ℝ) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (τ : D.what₂.Tau)
     (z : Bool × HH D) (h : (D.eTau τ : D.R.GG) = plGG D z) : fill (inst L K Ce) (bL L) j z = wj D j τ := by
@@ -273,13 +273,13 @@ theorem inst_fill (L : SizeData₂ D) (K : Consts) (Ce : ℝ) (j : ℕ) (hj : j 
   ring
 
 /- English proof (translation)
-Establish `hx` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hn : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 1 ≤ L.sc.b` using `Real.one_le_exp (by unfold Scale.L; positivity)`. Establish `hb' : 0 < L.sc.b'` using `by unfold Scale.b' Scale.a Scale.X'; positivity`. Establish `hw' : L.sc.w'' D.R.n ≤ L.sc.b' / L.sc.x` using `div_le_div_of_nonneg_left hb'.le hx0 (by nlinarith)`. Unfold `fill`. Distinguish the cases in `h1 : IsTopPl D z`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h' : z.1 = false ∧ z.2 ∈ D.host.TT` using `h1`. Rewrite using `[if_pos h']`. Unfold `bL`. Rewrite using `[dif_pos h1.2]`. Combine the linear relations using `[(X.off_top j z h1).1, L.bT_ge ⟨z.2, h1.2⟩]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h' : ¬ (z.1 = false ∧ z.2 ∈ D.host.TT)` using `h1`. Rewrite using `[if_neg h', zero_add]`. Distinguish the cases in `h2 : IsThickPl D z`. Combine the linear relations using `[(X.off_thick j z h2).1]`. Combine the linear relations using `[(X.off_thin j z ⟨h1, h2⟩).1]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_le_fill {L : SizeData₂ D} (X : Inst D L) (hw : 1 ≤ L.sc.w'' D.R.n) (j : ℕ) (z : Bool × HH D) :
     1 ≤ fill X (bL L) j z := by
@@ -305,7 +305,7 @@ theorem one_le_fill {L : SizeData₂ D} (X : Inst D L) (hw : 1 ≤ L.sc.w'' D.R.
     · linarith [(X.off_thin j z ⟨h1, h2⟩).1]
 
 /- English proof (translation)
-Unfold `VV`. Rewrite using `[if_neg (fun h' => h h'.1)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem VV_empty {L : SizeData₂ D} (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p : ℕ) (h : ¬ Cand D L K p) :
     VV X K a b p = ∅ := by
@@ -313,7 +313,7 @@ theorem VV_empty {L : SizeData₂ D} (X : Inst D L) (K : Consts) (a b : HH D →
   rw [if_neg (fun h' => h h'.1)]
 
 /- English proof (translation)
-Unfold `tauP`. Rewrite using `[if_pos (VV_empty X K a b p h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_eq_zero_of_not_candidate {L : SizeData₂ D} (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p : ℕ) (h : ¬ Cand D L K p) :
     tauP X K a b p = 0 := by
@@ -321,7 +321,7 @@ theorem tau_eq_zero_of_not_candidate {L : SizeData₂ D} (X : Inst D L) (K : Con
   rw [if_pos (VV_empty X K a b p h)]
 
 /- English proof (translation)
-Unfold `ioP`. Rewrite using `[dif_neg (by rw [VV_empty X K a b p h]; simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ioP_eq_zero_of_not_cand {L : SizeData₂ D} (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p : ℕ) (h : ¬ Cand D L K p) :
     ioP X K a b p = 0 := by
@@ -329,7 +329,7 @@ theorem ioP_eq_zero_of_not_cand {L : SizeData₂ D} (X : Inst D L) (K : Consts) 
   rw [dif_neg (by rw [VV_empty X K a b p h]; simp)]
 
 /- English proof (translation)
-Unfold `TTP`. Use `split_ifs`. Conclude with `subset_rfl`. Conclude with `Finset.filter_subset _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem TTP_subset {L : SizeData₂ D} (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (p : ℕ) :
     TTP X K a b p ⊆ D.host.TT := by
@@ -345,11 +345,11 @@ def Big (L : SizeData₂ D) (S : Finset D.what₂.places.Pl) : Prop :=
     D.what₂.muAt w = D.what₂.mu0
 
 /- English proof (translation)
-Use `set B : ℕ := ⌈L.sc.X'' D.R.n⌉₊ + D.host.g 0 + D.host.g 1 + D.host.d + ∑ u, ((D.mem u).A.T + (D.mem u).C.DGam) with hB`. Use `⟨((finite_le D B).union hf).toFinset, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[Set.Finite.mem_toFinset, Set.mem_union, not_or]`. Establish `h1 : B < D.what₂.places.resChar w` using `not_le.1 hw.1`. Establish `h2 : D.what₂.muAt w = D.what₂.mu0` using `not_not.1 hw.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, by omega, fun u => ?_, h2⟩` and prove the remaining obligations. Establish `: ⌈L.sc.X'' D.R.n⌉₊ < D.what₂.places.resChar w` using `by omega`. Conclude with `lt_of_le_of_lt (Nat.le_ceil _) (by exact_mod_cast this)`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : (D.mem u).A.T + (D.mem u).C.DGam ≤ ∑ u, ((D.mem u).A.T + (D.mem u).C.DGam)` using `Finset.single_le_sum (f := fun u => (D.mem u).A.T + (D.mem u).C.DGam) (fun _ _ => Nat.zero_le _) (Finset.mem_univ u)`. Use `⟨by omega, fun h => ?_⟩` and prove the remaining obligations. Use `Nat.le_of_dvd (hG u) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_big (L : SizeData₂ D) (hf : {w | D.what₂.muAt w ≠ D.what₂.mu0}.Finite) (hG : ∀ u, 0 < (D.mem u).C.DGam) :
     ∃ S, Big L S := by
@@ -416,11 +416,11 @@ def refill (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Cr : ℝ) (EX : ErrX
     wPart_ge := fun j t p e => one_le_fill X hw j _ }
 
 /- English proof (translation)
-Introduce `C cD ch D L0 EX _ hV hA hw hX hf hG hu`. Take `⟨S, hS⟩` from `exists_big L0 hf hG`. Use `⟨refill L0 (inst L0 C.GK C.cX.Ce) C.GK C.Cr EX C.cX.err S hS hA hw hX hu, inst _ C.GK C.cX.Ce, rfl, rfl, rfl, ⟨hV.ranks, hV.host, hV.hc, hV.dlog, hV.Del_eq, hV.eta_eq, hV.La_eq, hV.bT_le, hV.logFiveDepth_eq, hV.Ct_eq, hV.Cc_eq, hV.CGam_eq, hV.secondConstant_eq, hV.words, hV.etaF_ …` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `absurd (hS w h').1 (not_lt.2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h'`. Conclude with `h (hS w h').2.2.2.2`. Use `⟨fun j hj τ z h => inst_fill _ _ _ j hj τ z h, fun _ _ _ => rfl, ?_, fun _ h j _ => if_pos h, rfl, rfl, hV.La_eq.symm⟩ show Finset.map _ (Finset.filter _ _) = TTP (inst L0 C.GK C.cX.Ce) C.GK (aL L0) (bL L0) (D.what₂.places.resChar w)` and prove the remaining obligations. Use extensionality with `t`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Function.Embedding.coe_subtype]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `hs`. Introduce `ht`. Conclude with `⟨⟨t, TTP_subset _ _ _ _ _ ht⟩, ht, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_refill : ∀ (C : FC) (cD ch : ℝ) (D : D7) (L0 : SizeData₂ D) (EX : ErrX D), Std C → Val C cD ch L0 → HostArith D.host → 1 ≤ L0.sc.w'' D.R.n → L0.sc.X' ≤ L0.sc.X'' D.R.n → {w | D.what₂.muAt w ≠ D.what₂.mu0}.Finite → (∀ u, 0 < (D.mem u).C.DGam) → (∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j ∈ SizeData₂.lifts D, Fval L0 j w = 0) → ∃ (L : SizeData₂ D) (X : G.Inst D L), L.sc = L0.sc ∧ L.aT = L0.aT ∧ L.bT = L0.bT ∧ Val C cD ch L ∧ CanonInst X ∧ G.EpDef X C.cX.Ce ∧ G.KapIDef X C.GK ∧ L.FDef ∧ L.EDef EX C.GK C.cX.err ∧ (∀ w, ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ L.sc.X'' D.R.n → w ∈ L.supp) ∧ (∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → w ∈ L.supp) ∧ (∀ w, G.ParametersFill X C.GK w) ∧ ∀ p : ℕ, p.Prime → (p ∈ L.drop ↔ NoGain X C.GK C.Cr p ∧ ∀ u, p ≠ (D.mem u).A.T) := by
   intro C cD ch D L0 EX _ hV hA hw hX hf hG hu

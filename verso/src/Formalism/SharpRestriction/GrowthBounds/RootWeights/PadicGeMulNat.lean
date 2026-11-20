@@ -28,11 +28,11 @@ def HMul (p : ℕ) : Prop := ∀ (θ s s' : ℝ) (f g : ℕ → ℚ), 0 ≤ θ �
   Dec p θ (s + s') (fun n => f n * g n)
 
 /- English proof (translation)
-Break down `hx with hx | hx` into its components or cases. Substitute `hx` using the available equality. Simplify using `using hy`. Break down `hy with hy | hy` into its components or cases. Substitute `hy` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Rewrite using `[add_zero]`. Conclude with `Or.inr hx`. Distinguish the cases in `hxy : x + y = 0`. Conclude with `Or.inl hxy`. Use `right`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Establish `hm` using `padicValRat.min_le_padicValRat_add (p := p) hxy`. Establish `hm' : ((min (padicValRat p x) (padicValRat p y) : ℤ) : ℝ) ≤ (padicValRat p (x + y) : ℝ)`. Conclude with `hm` after adjusting the coercions. Rewrite `hm'` using `[Int.cast_min]`. Conclude with `le_trans (le_min hx hy) hm'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicGe_add {p : ℕ} [Fact p.Prime] {x y : ℚ} {r : ℝ} (hx : PadicGe p x r) (hy : PadicGe p y r) :
     PadicGe p (x + y) r := by
@@ -50,11 +50,11 @@ theorem padicGe_add {p : ℕ} [Fact p.Prime] {x y : ℚ} {r : ℝ} (hx : PadicGe
   exact le_trans (le_min hx hy) hm'
 
 /- English proof (translation)
-Break down `hx with hx | hx` into its components or cases. Use `left`. Simplify using `[hx]`. Break down `hy with hy | hy` into its components or cases. Use `left`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hy]`. Distinguish the cases in `h0 : x * y = 0`. Conclude with `Or.inl h0`. Use `right`. Establish `hx0 : x ≠ 0` using `left_ne_zero_of_mul h0`.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hy0 : y ≠ 0` using `right_ne_zero_of_mul h0`. Rewrite using `[padicValRat.mul hx0 hy0]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem padicGe_mul {p : ℕ} [Fact p.Prime] {x y : ℚ} {r s : ℝ} (hx : PadicGe p x r) (hy : PadicGe p y s) :
     PadicGe p (x * y) (r + s) := by
@@ -72,7 +72,7 @@ theorem padicGe_mul {p : ℕ} [Fact p.Prime] {x y : ℚ} {r s : ℝ} (hx : Padic
   linarith
 
 /- English proof (translation)
-Break down `hx with hx | hx` into its components or cases. Conclude with `Or.inl hx`. Conclude with `Or.inr (le_trans h hx)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem padicGe_mono {p : ℕ} {x : ℚ} {r s : ℝ} (hx : PadicGe p x r) (h : s ≤ r) : PadicGe p x s := by
   rcases hx with hx | hx
@@ -80,9 +80,7 @@ theorem padicGe_mono {p : ℕ} {x : ℚ} {r s : ℝ} (hx : PadicGe p x r) (h : s
   · exact Or.inr (le_trans h hx)
 
 /- English proof (translation)
-Break down `hx with hx | hx` into its components or cases. Use `left`. Simplify using `[hx]`. Use `right`. Rewrite using `[padicValRat.neg]`.
-
-Conclude with `hx`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicGe_neg {p : ℕ} {x : ℚ} {r : ℝ} (hx : PadicGe p x r) : PadicGe p (-x) r := by
   rcases hx with hx | hx
@@ -90,7 +88,7 @@ theorem padicGe_neg {p : ℕ} {x : ℚ} {r : ℝ} (hx : PadicGe p x r) : PadicGe
   · right; rw [padicValRat.neg]; exact hx
 
 /- English proof (translation)
-Distinguish the cases in `hk : (k : ℚ) = 0`. Conclude with `Or.inl hk`. Use `right`. Rewrite using `[padicValRat.of_int]`. Conclude with `(Nat.cast_nonneg _ : (0 : ℤ) ≤ (padicValInt p k : ℤ))` after adjusting the coercions.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicGe_int {p : ℕ} [Fact p.Prime] (k : ℤ) : PadicGe p (k : ℚ) 0 := by
   by_cases hk : (k : ℚ) = 0
@@ -100,7 +98,7 @@ theorem padicGe_int {p : ℕ} [Fact p.Prime] (k : ℤ) : PadicGe p (k : ℚ) 0 :
   exact_mod_cast (Nat.cast_nonneg _ : (0 : ℤ) ≤ (padicValInt p k : ℤ))
 
 /- English proof (translation)
-Establish `h` using `padicGe_mul hx (padicGe_int (p := p) (k : ℤ))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem padicGe_mul_nat {p : ℕ} [Fact p.Prime] {x : ℚ} {r : ℝ} (hx : PadicGe p x r) (k : ℕ) :
     PadicGe p (x * (k : ℚ)) r := by
@@ -108,7 +106,7 @@ theorem padicGe_mul_nat {p : ℕ} [Fact p.Prime] {x : ℚ} {r : ℝ} (hx : Padic
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact Or.inl (by simp)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `padicGe_add (h a (Finset.mem_insert_self a s)) (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicGe_sum {p : ℕ} [Fact p.Prime] {ι : Type*} (s : Finset ι) (f : ι → ℚ) {r : ℝ}
     (h : ∀ i ∈ s, PadicGe p (f i) r) : PadicGe p (∑ i ∈ s, f i) r := by

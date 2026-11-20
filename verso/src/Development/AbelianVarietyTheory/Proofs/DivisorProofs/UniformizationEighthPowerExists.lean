@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.PowE8
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `letI : Field (V₁ ⧸ maximalIdeal V₁) := Ideal.Quotient.field _`. Conclude with `⟨⟨h1, inferInstance, h2, h3⟩, h3, h4, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem isAdmissibleBase_of_completeNormalLocalCharZero (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (h : IsCN V₁) :
     GlobalTheory.LN.admitted V₁ (maximalIdeal V₁) := by
@@ -34,11 +34,11 @@ theorem isAdmissibleBase_of_completeNormalLocalCharZero (V₁ : Type) [CommRing 
   exact ⟨⟨h1, inferInstance, h2, h3⟩, h3, h4, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Introduce `g n o _ ζ F W hW V₁ _ _ _ hCN D₀ G₀ _ _ A₀ U₀ y α α₂ hS hpb hsq hlb P hP`. Establish `hL` using `GlobalTheory.abelianSchemeLaws_all`. Set `P₀` to `GlobalTheory.ValueForm.modelCP U₀.toUnifPre hL.1.globalFns`. Take `⟨Pc, hPc⟩` from `GlobalTheory.T.cubical_structure_e8_power _ G₀ P₀ W`. Take `⟨gen, hgen, hA⟩` from `GlobalTheory.T.generic_eighth_power_uniformised_is_polarised g n o ζ F W V₁ D₀ G₀ A₀ U₀ y α α₂ hpb hsq hlb P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hW8 : GlobalTheory.LN.HypW (powObj G₀ 8) Pc.L.L` using `hPc ▸ GlobalTheory.T.hypW_e8LB_powObj _ G₀ P₀ W hW`. Establish `hT : GlobalTheory.LN.ThetaNZ (powObj G₀ 8) Pc.L.L` using `hPc ▸ GlobalTheory.T.thetaNZ_e8LB_powObj hL.1 hL.2 GlobalTheory.LN.ega_holds V₁ hCN D₀ G₀ A₀ U₀ hS W hW`. Establish `hA' : LBIso (P.L.pull gen.hom.left) (Pc.L.L.pull (pullback.fst (powObj G₀ 8).hom (jK V₁)))` using `hPc ▸ hA`. Use `letI : Field (V₁ ⧸ maximalIdeal V₁) := Ideal.Quotient.field _`. Take `⟨D, U, -, -⟩` from `GlobalTheory.PrimeUnif.exists_unif hL.1 hL.2 GlobalTheory.laws3 GlobalTheory.LN.ega_holds GlobalTheory.uniformisation_total_closed V₁ (maximalIdeal V₁) (isAdmissibleBase_of_completeNormalLocalCharZero V₁ hCN) inferInstance (powObj G₀ 8) Pc (GlobalTheory.PowGrp.isSemiAbelian_pow _ …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨D, ⟨U⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unif_pow8 : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → ∀ (D₀ : DegData V₁ (maximalIdeal V₁)) (G₀ : Over (Sp V₁)) [GrpObj G₀] [IsCommMonObj G₀] (A₀ : PolAV (Sp (FractionRing V₁))) (U₀ : Unif (maximalIdeal V₁) D₀ A₀ G₀) (y : Sp (FractionRing V₁) ⟶ F.X) (α : A₀.A.left ⟶ F.univ.A.left) (α₂ : (G2 A₀.A).left ⟶ (G2 F.univ.A).left), IsSemiAbelian G₀ → IsGrpPullback A₀.A F.univ.A y α → IsSquare α α₂ → LBIso (abelian₂ A₀.A A₀.L) (F.univ.P.pull α₂) → ∀ P : PolAV (Sp (FractionRing V₁)), SharpOver F W P y → ∃ D : DegData V₁ (maximalIdeal V₁), Nonempty (Unif (maximalIdeal V₁) D P (powObj G₀ 8)) := by
   intro g n o _ ζ F W hW V₁ _ _ _ hCN D₀ G₀ _ _ A₀ U₀ y α α₂ hS hpb hsq hlb P hP

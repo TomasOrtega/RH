@@ -10,7 +10,7 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R H what₂ N nbr i w hw h2 hq hd`. Establish `hK` using `GlobalTheory.T.padicAlgCl_finite_dense_eq_adjoin' (N.l i) H.E ((nbr i w hw).j.comp (algebraMap H.E N.Om)) (nbr i w hw).Kw.1 (nbr i w hw).j_E (nbr i w hw).Kw.2 (nbr i w hw).j_dense`. Rewrite using `[hK, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `GlobalTheory.T.hostField_padicEmbedding_mem_maxUnramified H (N.l i) h2 hq hd _ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem bridge_field_le_unramified : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
     {N : NData R H what₂} (nbr : Br.NBr N) (i : N.Loc) (w : HeightOneSpectrum (𝓞 H.E))

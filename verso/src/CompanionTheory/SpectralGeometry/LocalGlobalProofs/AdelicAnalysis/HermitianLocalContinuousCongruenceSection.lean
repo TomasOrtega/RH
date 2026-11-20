@@ -8,19 +8,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ _ hR n S hS`. Take `⟨Q, o, -, -, ho, hform⟩` from `GlobalTheory.T.hermitian_orbit_local_section_subgroup F E σ hσ R hR n S hS`. Establish `hc : cT (sigR R σ) (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = 1`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[cT]`. Simplify using `[cT, Matrix.one_apply, h, Ne.symm h]`. Establish `ho1 : o 1 = S`. Apply `Subtype.ext` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hform]`. Simplify using `[hc]`. Establish `hinv : Function.LeftInverse (Function.invFun o) o` using `Function.leftInverse_invFun ho.injective`. Use `⟨Set.range o, fun S' => ((Function.invFun o S' : Q) : GL (Fin n) (R ⊗[F] E)), ho.isOpen_range, ⟨1, ho1⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hcont : ContinuousOn (Function.invFun o) (Set.range o)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `h1 : (fun y : Set.range o => Function.invFun o y.1) = ho.isEmbedding.toHomeomorph.symm`. Use function extensionality and compare the values at `y`. Take `⟨_, x, rfl⟩` from `y`. Use `show Function.invFun o (o x) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv x]`. Conclude with `ho.isEmbedding.toHomeomorph.eq_symm_apply.2 (Subtype.ext rfl)`. Establish `h2 : Continuous (fun y : Set.range o => Function.invFun o y.1)`. Rewrite using `[h1]`. Conclude with `Homeomorph.continuous _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Conclude with `h2`. Conclude with `continuous_subtype_val.comp_continuousOn hcont`. Use `show ((Function.invFun o S : Q) : GL (Fin n) (R ⊗[F] E)) = 1`. Rewrite using `[← ho1, hinv 1]`. Both sides reduce to the same expression.
-
-Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `only [hinv x]`. Conclude with `hform x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_local_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ) (S : HermR R σ n), IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det → ∃ (B : Set (HermR R σ n)) (g : HermR R σ n → GL (Fin n) (R ⊗[F] E)), IsOpen B ∧ S ∈ B ∧ ContinuousOn g B ∧ g S = 1 ∧ ∀ S' ∈ B, (S' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = cT (sigR R σ) (g S' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * (g S' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := by
   intro F E _ _ _ _ _ σ hσ R _ _ _ _ _ hR n S hS

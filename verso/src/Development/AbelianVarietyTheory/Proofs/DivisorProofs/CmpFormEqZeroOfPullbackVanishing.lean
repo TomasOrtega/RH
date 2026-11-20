@@ -46,29 +46,29 @@ def nbdMap (l : Ω[A⁄R] →ₗ[A] R') : TrivSqZeroExt A Ω[A⁄R] →ₐ[R] Tr
       ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl', ← IsScalarTower.algebraMap_apply] }
 
 /- English proof (translation)
-Simplify using `[nbdMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd_nbdMap (l : Ω[A⁄R] →ₗ[A] R') (c : TrivSqZeroExt A Ω[A⁄R]) :
     (nbdMap l c).snd = l c.snd := by
   simp [nbdMap]
 
 /- English proof (translation)
-Simplify using `[nbdMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_nbdMap (l : Ω[A⁄R] →ₗ[A] R') (c : TrivSqZeroExt A Ω[A⁄R]) :
     (nbdMap l c).fst = algebraMap A R' c.fst := by
   simp [nbdMap]
 
 /- English proof (translation)
-Establish `hx` using `affPt_w s U`. Set `Φ` to `nbdMap (R := R) l`. Set `α : Sec s U.1 →ₐ[R] TrivSqZeroExt R' R'` to `Φ.comp (diagSec R (Sec s U.1))`. Set `α₀ : Sec s U.1 →ₐ[R] R'` to `(TrivSqZeroExt.fstHom R R' R').comp α`. Establish `hπ : ∀ c, α₀ ((diagExt R (Sec s U.1)).π c) = (SqExt.ofModule R R' R').π (Φ c)` using `fun c ↦ by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Φ (diagSec R (Sec s U.1) c.fst)).fst = (Φ c).fst`. Rewrite using `[fst_nbdMap, fst_nbdMap, fst_derSec]`. Establish `e₀ : spMap (α₀ : Sec s U.1 →+* R') ≫ affPt s U = spMap ((SqExt.ofModule R R' R').π : TrivSqZeroExt R' R' →+* R') ≫ y`. Rewrite using `[← e, ← Category.assoc, ← Cris.spMap_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `Ψ` to `(diagExt R (Sec s U.1)).thickHom (SqExt.ofModule R R' R') Φ α₀ hπ hx ((SqExt.ofModule R R' R').red_w hy) e₀`. Set `a1 : Thick.triv (Sec s U.1) (affPt s U) hx ⟶ Thick.triv R' _ ((SqExt.ofModule R R' R').red_w hy)` to `Thick.trivHom α₀ e₀`. Set `a2 : Thick.triv (Sec s U.1) (affPt s U) hx ⟶ Thick.triv (TrivSqZeroExt R' R') y hy` to `Thick.trivHom α e`. Establish `k1` using `Form.ev_sq f a1 ((SqExt.ofModule R R' R').secHom ((SqExt.ofModule R R' R').red_w hy) (SqExt.ofModule R R' R').i (SqExt.ofModule R R' R').π_i) ((diagExt R (Sec s U.1)).secHom hx (diagExt R (Sec s U.1)).i fun _ ↦ rfl) Ψ rfl rfl fun c ↦ by`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.inl (α₀ c) = Φ (TrivSqZeroExt.inl c)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `ext`. Express the relevant statement in the definitionally equal form `(Φ (diagSec R (Sec s U.1) c)).fst = (Φ (TrivSqZeroExt.inl c)).fst`. Rewrite using `[fst_nbdMap, fst_nbdMap, fst_derSec, TrivSqZeroExt.fst_inl]`. Rewrite using `[TrivSqZeroExt.snd_inl, snd_nbdMap, TrivSqZeroExt.snd_inl, map_zero]`. Establish `k2` using `Form.ev_sq f a2 ((SqExt.ofModule R R' R').idHom hy) ((diagExt R (Sec s U.1)).secHom hx (diagSec R (Sec s U.1)) (fst_derSec _)) Ψ rfl rfl fun _ ↦ rfl`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SqExt.val_apply, k1, k2, add_sub_add_right_eq_sub]`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (Φ _ - Φ _) = _`. Rewrite using `[← map_sub, snd_nbdMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem snd_val_affine_eq (U : X.affineOpens) [Algebra (Sec s U.1) R'] [IsScalarTower R (Sec s U.1) R']
     (l : Ω[Sec s U.1⁄R] →ₗ[Sec s U.1] R') (y : Sp (TrivSqZeroExt R' R') ⟶ X)
@@ -112,13 +112,13 @@ theorem snd_val_affine_eq (U : X.affineOpens) [Algebra (Sec s U.1) R'] [IsScalar
 end Affine
 
 /- English proof (translation)
-Substitute `e` using the available equality. Set `E` to `SqExt.ofModule R R' R'`. Set `E'` to `SqExt.dual R'`. Establish `hy'` using `pt_w v'`. Establish `hc : ∀ r : R, algebraMap R E.C r = algebraMap R' E'.C (algebraMap R R' r)` using `fun r ↦ by`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [E, E', TrivSqZeroExt.algebraMap_eq_inl']`. Establish `e₀ : spMap (RingHom.id R') ≫ spMap (E.π : E.C →+* E.B) ≫ v'.left ≫ φ = (spMap (E'.π : E'.C →+* E'.B) ≫ v'.left) ≫ φ`. Rewrite using `[Cris.spMap_id, Category.id_comp, Category.assoc]`. Both sides reduce to the same expression. Set `Φ : E.thick _ (E.red_w hy) ⟶ m.obj (E'.thick _ (E'.red_w hy'))` to `{ φ := { RingHom.id E.C with commutes' := hc } φ₀ := RingHom.id R' comm := fun _ ↦ rfl dp := isDPMorphism_sqDP E.sq E'.sq _ fun _ ha ↦ ha pt := e₀ }`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `a : Thick.triv E.C _ hy ⟶ m.obj (Thick.triv E'.C _ hy')` to `Thick.trivHom { RingHom.id E.C with commutes' := hc } (by`. Express the relevant statement in the definitionally equal form `spMap (RingHom.id E.C) ≫ v'.left ≫ φ = v'.left ≫ φ`. Rewrite using `[Cris.spMap_id, Category.id_comp])`. Set `b : Thick.triv E.B _ (E.red_w hy) ⟶ m.obj (Thick.triv E'.B _ (E'.red_w hy'))` to `Thick.trivHom { RingHom.id R' with commutes' := fun _ ↦ rfl } e₀`. Establish `k1` using `Form.ev_sq f a (m.functor.map (E'.idHom hy')) (E.idHom hy) Φ rfl rfl fun _ ↦ rfl`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `k2` using `Form.ev_sq f b (m.functor.map (E'.secHom (E'.red_w hy') E'.i E'.π_i)) (E.secHom (E.red_w hy) E.i E.π_i) Φ rfl rfl fun _ ↦ rfl`. Establish `k : E'.val v'.left hy' (m.pullForm f).1 = E.val (v'.left ≫ φ) hy f.1` using `(congrArg₂ (fun u v : E'.C ↦ u - v) k2 k1).trans (add_sub_add_right_eq_sub (G := E'.C) _ _ _)`. Rewrite using `[tanVal_apply]`. Conclude with `congrArg (TrivSqZeroExt.snd (R := R')) k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanVal_pull_eq {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {A : Over (Sp R)}
     {B : Over (Sp R')} {φ : B.left ⟶ A.left}
@@ -157,7 +157,7 @@ theorem tanVal_pull_eq {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {
   exact congrArg (TrivSqZeroExt.snd (R := R')) k
 
 /- English proof (translation)
-Establish `h1 : RingHom.Smooth (s.appLE ⊤ U.1 le_top).hom` using `HasRingHomProperty.appLE @Smooth s hs ⟨⊤, isAffineOpen_top _⟩ U le_top`. Establish `h2 : RingHom.Smooth (secMap s U.1).hom` using `RingHom.Smooth.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv h1`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_smooth {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hs : Smooth s)
     (U : X.affineOpens) : Algebra.Smooth R (Sec s U.1) := by
@@ -172,13 +172,13 @@ end GlobalTheory.PtVanish
 namespace GlobalTheory.PtVanish
 
 /- English proof (translation)
-Establish `hsm : Smooth (X.hom ≫ 𝟙 (Sp K))` using `by rw [Category.comp_id]; exact hX`. Use `haveI : Algebra.Smooth K (Sec (X.hom ≫ 𝟙 (Sp K)) U.1) := sec_smooth _ hsm U`. Use `haveI : _root_.IsReduced (Sec (X.hom ≫ 𝟙 (Sp K)) U.1) := GlobalTheory.T.isReduced_of_smooth_over_field' K (Sec (X.hom ≫ 𝟙 (Sp K)) U.1)`. Use `GlobalTheory.T.eq_zero_of_forall_residueField_functional' (Sec (X.hom ≫ 𝟙 (Sp K)) U.1) Ω[Sec (X.hom ≫ 𝟙 (Sp K)) U.1⁄K] _ ?_` and prove the remaining obligations. Introduce `p _ l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨X', φ, m, hpb, hv⟩` from `H p.ResidueField (algebraMap K p.ResidueField)`. Set `α : Sec (X.hom ≫ 𝟙 (Sp K)) U.1 →ₐ[K] TrivSqZeroExt p.ResidueField p.ResidueField` to `(nbdMap l).comp (diagSec K (Sec (X.hom ≫ 𝟙 (Sp K)) U.1))`. Set `y` to `spMap (α : Sec (X.hom ≫ 𝟙 (Sp K)) U.1 →+* TrivSqZeroExt p.ResidueField p.ResidueField) ≫ affPt (X.hom ≫ 𝟙 (Sp K)) U`. Establish `hy : y ≫ X.hom ≫ 𝟙 (Sp K) = spMap (algebraMap K (TrivSqZeroExt p.ResidueField p.ResidueField))`. Simplify using `only [y, Category.assoc, affPt_w, ← Cris.spMap_comp, α.comp_algebraMap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have hcomp : (algebraMap p.ResidueField (DualNumber p.ResidueField)).comp (algebraMap K p.ResidueField) = algebraMap K (TrivSqZeroExt p.ResidueField p.ResidueField) := RingHom.ext fun r ↦ by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl']`. Establish `w : y ≫ X.hom = spMap (algebraMap p.ResidueField (DualNumber p.ResidueField)) ≫ spMap (algebraMap K p.ResidueField)`. Rewrite using `[← Cris.spMap_comp, hcomp, ← hy, Category.comp_id]`. Set `u : epsR p.ResidueField ⟶ X'` to `Over.homMk (hpb.lift y (spMap (algebraMap p.ResidueField (DualNumber p.ResidueField))) w) (hpb.lift_snd _ _ _)`. Establish `e : u.left ≫ φ = y` using `hpb.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hv u`. Rewrite `h` using `[tanVal_pull_eq m u y hy e f, snd_val_affine_eq U l y hy rfl f]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem connForm_eq_zero {K : Type} [Field K] {X : Over (Sp K)} (hX : Smooth X.hom)
     (f : Form (X.hom ≫ 𝟙 (Sp K)))
@@ -217,7 +217,7 @@ theorem connForm_eq_zero {K : Type} [Field K] {X : Over (Sp K)} (hX : Smooth X.h
   exact h
 
 /- English proof (translation)
-Introduce `K _ X hX f H`. Use `Subtype.ext (Subtype.ext (funext fun U ↦ ?_))` and prove the remaining obligations. Conclude with `(cmpForm_apply _ f U).trans (connForm_eq_zero hX f H U.unop)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cmpForm_eq_zero_of_tanVal : ∀ (K : Type) [Field K] (X : Over (Sp K)), Smooth X.hom → ∀ f : Form (X.hom ≫ 𝟙 (Sp K)), (∀ (L : Type) [Field L] (σ : K →+* L), ∃ (X' : Over (Sp L)) (φ : X'.left ⟶ X.left) (m : IsMor (dp0 K) (X.hom ≫ 𝟙 (Sp K)) (dp0 L) (X'.hom ≫ 𝟙 (Sp L)) σ φ), IsPullback φ X'.hom X.hom (spMap σ) ∧ ∀ u : epsR L ⟶ X', tanVal u (m.pullForm f) = 0) → GlobalTheory.CechDR.cmpForm (X.hom ≫ 𝟙 (Sp K)) f = 0 := by
   intro K _ X hX f H

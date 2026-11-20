@@ -34,15 +34,15 @@ def RegAt (a : FractionRing R) (Q : PrimeSpectrum R) : Prop :=
   ∃ s, s ∉ Q.asIdeal ∧ ∃ c : R, algebraMap R (FractionRing R) s * a = algebraMap R (FractionRing R) c
 
 /- English proof (translation)
-Introduce `Q hQ`. Assume the negation of the conclusion as `hn`. Take `⟨b, c, hc, rfl⟩` from `IsFractionRing.div_surjective (A := R) a`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Establish `hcK : algebraMap R (FractionRing R) c ≠ 0` using `IsFractionRing.to_map_eq_zero_iff.not.mpr hc0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `d : Ideal R` to `(Ideal.span {c}).colon {b}`. Establish `hd : ∀ s, s ∈ d ↔ c ∣ s * b` using `fun s => by`. Simplify using `only [d, Submodule.mem_colon_singleton, smul_eq_mul, Ideal.mem_span_singleton]`. Establish `reg : ∀ s, (∃ e : R, algebraMap R (FractionRing R) s * (algebraMap R _ b / algebraMap R _ c) = algebraMap R (FractionRing R) e) ↔ s ∈ d` using `fun s => by`. Rewrite using `[hd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun e => ?_` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, div_eq_iff hcK, ← map_mul, ← map_mul, (IsFractionRing.injective R _).eq_iff, mul_comm e]`. Establish `hdQ : d ≤ Q.asIdeal` using `fun s hs => by_contra fun hsQ => hn ⟨s, hsQ, (reg s).2 hs⟩`. Take `⟨p, hp, hpQ⟩` from `Ideal.exists_minimalPrimes_le hdQ`. Establish `hpa : p ∈ associatedPrimes R (R ⧸ d)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Module.associatedPrimes.minimalPrimes_annihilator_subset_associatedPrimes` to reduce the goal to its premises. Rewrite using `[Ideal.annihilator_quotient]`. Conclude with `hp`. Take `⟨hpp, x, hx⟩` from `isAssociatedPrime_iff.mp hpa`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : p.height = 1` using `height_eq_one_of_forall_mem_iff_dvd (b := x * b) hc0 fun r => by`. Rewrite using `[hx, Submodule.mem_colon_singleton, Submodule.mem_bot, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, hd, _root_.mul_assoc]`. Take `⟨s, hs, he⟩` from `h ⟨p, hpp⟩ (((PrimeSpectrum.le_iff_specializes ⟨p, hpp⟩ Q).mp hpQ).mem_open hU hQ) h1`. Conclude with `hs (hp.1.2 ((reg s).1 he))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem regAt_of_height_one [IsNoetherianRing R] [IsIntegrallyClosed R] {U : Set (PrimeSpectrum R)} (hU : IsOpen U)
     {a : FractionRing R} (h : ∀ P ∈ U, P.asIdeal.height = 1 → RegAt a P) : ∀ Q ∈ U, RegAt a Q := by
@@ -74,9 +74,9 @@ theorem regAt_of_height_one [IsNoetherianRing R] [IsIntegrallyClosed R] {U : Set
   exact hs (hp.1.2 ((reg s).1 he))
 
 /- English proof (translation)
-Introduce `z _`. Establish `: (jK R z : PrimeSpectrum R).asIdeal ≤ (P : PrimeSpectrum R).asIdeal`. Introduce `r hr`. Establish `hr' : algebraMap R (FractionRing R) r ∈ (z : PrimeSpectrum (FractionRing R)).asIdeal` using `hr`. Use `PrimeSpectrum.isPrime z` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hr'` using `[Ideal.eq_bot_of_prime (PrimeSpectrum.asIdeal z), Ideal.mem_bot, IsFractionRing.to_map_eq_zero_iff]`. Rewrite using `[hr']`. Conclude with `Ideal.zero_mem _`. Conclude with `((PrimeSpectrum.le_iff_specializes (jK R z) P).mp this).mem_open V.isOpen hP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_preimage {V : (Sp R).Opens} {P : Sp R} (hP : P ∈ V) : ⊤ ≤ jK R ⁻¹ᵁ V := by
   intro z _
@@ -92,7 +92,7 @@ def ev (V : (Sp R).Opens) (h : ⊤ ≤ jK R ⁻¹ᵁ V) : Γ(Sp R, V) →+* Frac
   (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom.comp ((jK R).appLE V ⊤ h).hom
 
 /- English proof (translation)
-Establish `e : (Sp R).presheaf.map (homOfLE l).op ≫ (jK R).appLE V' ⊤ h' = (jK R).appLE V ⊤ h` using `Scheme.Hom.map_appLE _ _ _`. Simplify using `only [ev, RingHom.comp_apply]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_res {V V' : (Sp R).Opens} (l : V' ≤ V) (h : ⊤ ≤ jK R ⁻¹ᵁ V) (h' : ⊤ ≤ jK R ⁻¹ᵁ V') (r : Γ(Sp R, V)) :
     ev V' h' (((Sp R).presheaf.map (homOfLE l).op).hom r) = ev V h r := by
@@ -103,7 +103,7 @@ theorem ev_res {V V' : (Sp R).Opens} (l : V' ≤ V) (h : ⊤ ≤ jK R ⁻¹ᵁ V
   rfl
 
 /- English proof (translation)
-Use `(ev_res le_top (le_refl _) h _).trans ?_` and prove the remaining obligations. Establish `e : (jK R).appLE ⊤ ⊤ (le_refl _) = (jK R).appTop` using `Scheme.Hom.appLE_eq_app _`. Simplify using `only [ev, RingHom.comp_apply]`. Rewrite using `[e, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality_assoc]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_toOpen (V : (Sp R).Opens) (h : ⊤ ≤ jK R ⁻¹ᵁ V) (r : R) :
     ev V h (DegPre.toOpen V r) = algebraMap R _ r := by
@@ -114,11 +114,11 @@ theorem ev_toOpen (V : (Sp R).Opens) (h : ⊤ ≤ jK R ⁻¹ᵁ V) (r : R) :
   simp
 
 /- English proof (translation)
-Take `⟨_, ⟨_, ⟨f, rfl⟩, rfl⟩, hf, l⟩` from `PrimeSpectrum.isBasis_basic_opens.exists_subset_of_mem_open hP V.isOpen`. Set `sI` to `Scheme.ΓSpecIso (CommRingCat.of R)`. Establish `hb : (Sp R).basicOpen (sI.inv.hom f) = PrimeSpectrum.basicOpen f` using `basicOpen_eq_of_affine (R := CommRingCat.of R) f`. Establish `l' : (Sp R).basicOpen (sI.inv.hom f) ≤ V` using `hb ▸ l`. Use `(isAffineOpen_top (Sp R)).isLocalization_basicOpen (sI.inv.hom f)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨c, _, n, rfl⟩, e⟩` from `IsLocalization.surj (Submonoid.powers (sI.inv.hom f)) (S := Γ(Sp R, (Sp R).basicOpen (sI.inv.hom f))) (((Sp R).presheaf.map (homOfLE l').op).hom r)`. Use `⟨f ^ n, sI.hom.hom c, _, l', hb ▸ hf, fun h => hf (P.2.mem_of_pow_mem n h), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `e₁ : sI.inv.hom (sI.hom.hom c) = c` using `sI.hom_inv_id_apply c`. Use `show _ * ((Sp R).presheaf.map _).hom (sI.inv.hom (f ^ n)) = ((Sp R).presheaf.map _).hom (sI.inv.hom (sI.hom.hom c))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, map_pow sI.inv.hom]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem exists_frac {V : (Sp R).Opens} {P : Sp R} (hP : P ∈ V) (r : Γ(Sp R, V)) :
     ∃ (s : R) (c : R) (V' : (Sp R).Opens) (l : V' ≤ V), P ∈ V' ∧ s ∉ (P : PrimeSpectrum R).asIdeal ∧
@@ -138,7 +138,7 @@ theorem exists_frac {V : (Sp R).Opens} {P : Sp R} (hP : P ∈ V) (r : Γ(Sp R, V
   exact e
 
 /- English proof (translation)
-Take `⟨s, c, V', l, hP', hs, e⟩` from `exists_frac hP r`. Use `⟨s, hs, c, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (ev V' (top_le_preimage hP')) e`. Rewrite `e'` using `[map_mul, ev_toOpen, ev_toOpen, ev_res l h]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem regAt_ev {V : (Sp R).Opens} (h : ⊤ ≤ jK R ⁻¹ᵁ V) {P : Sp R} (hP : P ∈ V) (r : Γ(Sp R, V)) :
     RegAt (ev V h r) P := by
@@ -148,11 +148,11 @@ theorem regAt_ev {V : (Sp R).Opens} (h : ⊤ ≤ jK R ⁻¹ᵁ V) {P : Sp R} (hP
   rwa [map_mul, ev_toOpen, ev_toOpen, ev_res l h] at e'
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Set `z : Sp (FractionRing R)` to `(default : PrimeSpectrum (FractionRing R))`. Establish `hP : jK R z ∈ V` using `h (TopologicalSpace.Opens.mem_top z)`. Take `⟨s, c, V', l, hP', hs, e⟩` from `exists_frac hP r`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Nonempty V'` using `⟨⟨_, hP'⟩⟩`. Establish `e'` using `congrArg (ev V' (top_le_preimage hP')) e`. Rewrite `e'` using `[map_mul, ev_toOpen, ev_toOpen, ev_res l h, hr, mul_zero, eq_comm, IsFractionRing.to_map_eq_zero_iff]`. Rewrite `e` using `[e', map_zero, mul_eq_zero]`. Break down `e with e | e` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e₂` using `congrArg (ev V' (top_le_preimage hP')) e`. Rewrite `e₂` using `[ev_toOpen, map_zero, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `absurd (e₂ ▸ Ideal.zero_mem _) hs`. Conclude with `map_injective_of_isIntegral (Sp R) (homOfLE l) (e.trans (map_zero _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_injective {V : (Sp R).Opens} (h : ⊤ ≤ jK R ⁻¹ᵁ V) : Function.Injective (ev V h) := by
   rw [injective_iff_map_eq_zero]
@@ -171,11 +171,11 @@ theorem ev_injective {V : (Sp R).Opens} (h : ⊤ ≤ jK R ⁻¹ᵁ V) : Function
   · exact map_injective_of_isIntegral (Sp R) (homOfLE l) (e.trans (map_zero _).symm)
 
 /- English proof (translation)
-Set `d : Ideal Γ(Sp R, V)` to `{ carrier := {s | ∃ r, ev V h r = ev V h s * a} add_mem' := by rintro s t ⟨r, hr⟩ ⟨r', hr'⟩; exact ⟨r + r', by rw [map_add, map_add, hr, hr', add_mul]⟩ zero_mem' := ⟨0, by simp⟩ smul_mem' := by rintro t s ⟨r, hr⟩; exact ⟨t * r, by rw [smul_eq_mul, map_mul, map_mul, hr, _root_.mul …`. Establish `: Ideal.span (d : Set Γ(Sp R, V)) = ⊤`. Rewrite using `[← hV.iSup_basicOpen_eq_self_iff]`. Use `le_antisymm (iSup_le fun s => (Sp R).basicOpen_le _) fun Q hQ => ?_` and prove the remaining obligations. Take `⟨s, hs, c, e⟩` from `ha Q hQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨DegPre.toOpen V s, DegPre.toOpen V c, by rw [ev_toOpen, ev_toOpen, e]⟩, ?_⟩` and prove the remaining obligations. Use `show Q ∈ (Sp R).basicOpen (((Sp R).presheaf.map (homOfLE le_top).op).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom s))`. Rewrite using `[Scheme.basicOpen_res, basicOpen_eq_of_affine]`. Conclude with `⟨hQ, hs⟩`. Rewrite `this` using `[Ideal.span_eq, Ideal.eq_top_iff_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `this`. Conclude with `⟨r, by rw [hr, map_one, _root_.one_mul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ev_eq {V : (Sp R).Opens} (hV : IsAffineOpen V) (h : ⊤ ≤ jK R ⁻¹ᵁ V) {a : FractionRing R}
     (ha : ∀ Q ∈ V, RegAt a Q) : ∃ r, ev V h r = a := by
@@ -197,7 +197,7 @@ theorem exists_ev_eq {V : (Sp R).Opens} (hV : IsAffineOpen V) (h : ⊤ ≤ jK R 
   exact ⟨r, by rw [hr, map_one, _root_.one_mul]⟩
 
 /- English proof (translation)
-Establish `: Nonempty (⊤ : (Sp (FractionRing R)).Opens)` using `⟨⟨(default : PrimeSpectrum (FractionRing R)), trivial⟩⟩`. Establish `i₁` using `map_injective_of_isIntegral (Sp (FractionRing R)) (homOfLE hV)`. Establish `i₂` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom).1`. Rewrite using `[← i₁.eq_iff, ← i₂.eq_iff, ← CommRingCat.comp_apply _ _ x, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem app_eq_iff {V : (Sp R).Opens} (hV : ⊤ ≤ jK R ⁻¹ᵁ V) {W : (Sp (FractionRing R)).Opens} (h : jK R ⁻¹ᵁ V ≤ W)
     (r : Γ(Sp R, V)) (x : Γ(Sp (FractionRing R), W)) :
@@ -211,17 +211,17 @@ theorem app_eq_iff {V : (Sp R).Opens} (hV : ⊤ ≤ jK R ⁻¹ᵁ V) {W : (Sp (F
   rfl
 
 /- English proof (translation)
-Introduce `j V hV hVU hj h`. Distinguish the cases in `hE : V = ⊥`. Substitute `hE` using the available equality. Establish `: Subsingleton Γ(Sp (FractionRing R), jK R ⁻¹ᵁ ⊥)` using `((jK R).app ⊥).hom.codomain_trivial`. Conclude with `⟨1, isUnit_one, Subsingleton.elim (α := Γ(Sp (FractionRing R), jK R ⁻¹ᵁ ⊥)) _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨P₀, hP₀⟩ : ∃ P, P ∈ V` from `by by_contra! hn`. Conclude with `hE (le_bot_iff.1 fun P hP => absurd hP (hn P))`. Establish `hT` using `top_le_preimage hP₀`. Set `a : (FractionRing R)ˣ` to `Units.map ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom.comp ((Sp (FractionRing R)).presheaf.map (homOfLE (hT.trans h)).op).hom).toMonoidHom ((D.psi y).s j)`. Establish `key : ∀ P ∈ V, (P : PrimeSpectrum R).asIdeal.height = 1 → RegAt a.val P ∧ RegAt a⁻¹.val P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP h1`. Take `⟨V₁, hP₁, H₁⟩` from `H P (hVU hP) h1`. Take `⟨_, ⟨W, hW, rfl⟩, hPW, hle⟩` from `(Sp R).isBasis_affineOpens.exists_subset_of_mem_open (show P ∈ V ⊓ V₁ from ⟨hP, hP₁⟩) (V ⊓ V₁).isOpen`. Establish `l : W ≤ V` using `fun x hx => (hle hx).1`. Establish `h' : jK R ⁻¹ᵁ W ≤ jK R ⁻¹ᵁ V` using `fun x hx => l hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, ⟨u, rfl⟩, e⟩` from `H₁ j W hW (fun x hx => (hle hx).2) (l.trans hj) (h'.trans h)`. Establish `hW'` using `top_le_preimage hPW`. Establish `e' : ev W hW' u.val = a.val` using `(app_eq_iff hW' (h'.trans h) _ _).1 e`. Establish `e₂ : ev W hW' u⁻¹.val = a⁻¹.val`. Apply `Units.eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e', ← map_mul, Units.mul_inv, map_one]`. Conclude with `⟨e' ▸ regAt_ev hW' hPW _, e₂ ▸ regAt_ev hW' hPW _⟩`. Take `⟨r, hr⟩` from `exists_ev_eq hV hT (regAt_of_height_one V.isOpen fun P hP h1 => (key P hP h1).1)`. Take `⟨r', hr'⟩` from `exists_ev_eq hV hT (regAt_of_height_one V.isOpen fun P hP h1 => (key P hP h1).2)`. Use `⟨r, IsUnit.of_mul_eq_one r' (ev_injective hT ?_), (app_eq_iff hT h _ _).2 hr⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hr, hr', Units.mul_inv, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem psiUnitOn_of_height_one [IsNoetherianRing R] [IsIntegrallyClosed R] (D : DegPre R) (y : D.X) (U : Set (Sp R))
     (H : ∀ P ∈ U, (P : PrimeSpectrum R).asIdeal.height = 1 → ∃ V : (Sp R).Opens, P ∈ V ∧ PsiUnitOn D y V) :
@@ -261,7 +261,7 @@ end Hartogs
 section Torsion
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Establish `e : pushHom hp (Over.mk t') x' = x` using `Over.OverMorphism.ext hx`. Establish `inj : Function.Injective (pushHom hp (Over.mk t'))` using `fun a b hab => Over.OverMorphism.ext (hp.1.hom_ext (congrArg (fun q => q.left) hab) ((Over.w a).trans (Over.w b).symm))`. Rewrite using `[← inj.eq_iff, map_pow, map_one, e]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_iff_of_pull {S S' W : Scheme.{0}} {g : S' ⟶ S} {t : W ⟶ S} {t' : W ⟶ S'} {A : Over S} {A' : Over S'}
     [GrpObj A] [GrpObj A'] {Φ : A'.left ⟶ A.left} (ht : t' ≫ g = t) (hp : IsGrpPullback A' A g Φ) {x : Over.mk t ⟶ A}
@@ -273,17 +273,15 @@ theorem pow_eq_one_iff_of_pull {S S' W : Scheme.{0}} {g : S' ⟶ S} {t : W ⟶ S
   rw [← inj.eq_iff, map_pow, map_one, e]
 
 /- English proof (translation)
-Establish `sq : spMap (algebraMap T F) ≫ spMap (algebraMap R T) = jFK (R` using `R) F ≫ jK R := by`. Rewrite using `[← spMap_comp, hc, spMap_comp]`. Establish `w : x.left ≫ A.hom = jFK (R` using `R) F := Over.w x`. Set `x₀ : Over.mk (jFK (R` to `R) F ≫ jK R) ⟶ G := Over.homMk (x.left ≫ Φ) (by show (x.left ≫ Φ) ≫ G.hom = jFK (R := R) F ≫ jK R`. Rewrite using `[Category.assoc, hp.1.w, ← Category.assoc, w])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h₀ : x₀ ^ k = 1` using `(pow_eq_one_iff_of_pull rfl hp (x := x₀) (x' := x) rfl).1 hx`. Set `x₁ : Over.mk (spMap (algebraMap T F)) ⟶ (Over.pullback (spMap (algebraMap R T))).obj G` to `Over.homMk (pullback.lift x₀.left (spMap (algebraMap T F)) ((Over.w x₀).trans sq.symm)) (pullback.lift_snd _ _ _)`. Establish `e₁ : x₁.left ≫ pullback.fst G.hom (spMap (algebraMap R T)) = x₀.left` using `pullback.lift_fst _ _ _`. Take `⟨x', hx'⟩` from `hT x₁ ((pow_eq_one_iff_of_pull sq (isGrpPullback_pullback G _) e₁).2 h₀)`. Establish `s₁ : spMap σ.toRingHom ≫ spMap T'.val.toRingHom = spMap T'.val.toRingHom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← spMap_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `hσ a a.2`. Establish `s₂ : spMap σ.toRingHom ≫ jFK (R` using `R) F = jFK (R := R) F := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(spMap_comp _ _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `a`. Conclude with `σ.commutes a`. Establish `s₃ : spMap σ.toRingHom ≫ x₁.left = x₁.left`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hx']`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ x') s₁)`. Use `hp.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `congrArg (· ≫ pullback.fst G.hom (spMap (algebraMap R T))) s₃` as an intermediate fact. Conclude with `(((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) e₁.symm)).trans (((Category.assoc _ _ _).symm.trans this).trans e₁)).symm`.
-
-Conclude with `(((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) w)).trans (s₂.trans w.symm)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fixed_of_extends {R T F : Type} [CommRing R] [IsDomain R] [CommRing T] [Field F] [Algebra R T] [Algebra T F]
     [Algebra (FractionRing R) F]
@@ -325,7 +323,7 @@ theorem fixed_of_extends {R T F : Type} [CommRing R] [IsDomain R] [CommRing T] [
   · exact (((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) w)).trans (s₂.trans w.symm)).symm
 
 /- English proof (translation)
-Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := (3 : R)) (b := -2) (by norm_num) with h | h` into its components or cases. Conclude with `⟨3, by norm_num, by exact_mod_cast h⟩`. Conclude with `⟨2, le_rfl, by exact_mod_cast (IsUnit.neg_iff _).1 h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_two_le_isUnit (R : Type) [CommRing R] [IsLocalRing R] : ∃ n : ℕ, 2 ≤ n ∧ IsUnit (n : R) := by
   rcases IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := (3 : R)) (b := -2) (by norm_num) with h | h
@@ -335,21 +333,21 @@ theorem exists_two_le_isUnit (R : Type) [CommRing R] [IsLocalRing R] : ∃ n : �
 end Torsion
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ h₄ h₅ R _ _ _ I hA D A G _ _ hG U hO y`. Take `⟨hB, -, hc, -, -⟩` from `hA`. Use `hB.1` as an intermediate fact. Use `hB.2.2.1` as an intermediate fact. Take `⟨n, hn, hu⟩` from `exists_two_le_isUnit R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `psiUnitOn_of_height_one D.toPre y _ fun P hP h1 => ?_` and prove the remaining obligations. Use `T.psiUnitOn_of_fixed_over_unramified_extension h₁ h₂ R D.toPre D.tau_bimult D.psi_even P h1 n hn (fun j => ?_) y` and prove the remaining obligations. Use `PrimeSpectrum.isPrime P` as an intermediate fact. Set `T` to `Localization.AtPrime (PrimeSpectrum.asIdeal P)`. Set `F` to `AlgebraicClosure (FractionRing R)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `isDiscreteValuationRing_of_height_eq_one _ h1 T` as an intermediate fact. Establish `hcomp : (algebraMap T F).comp (algebraMap R T) = (algebraMap (FractionRing R) F).comp (algebraMap R _)`. Use extensionality with `r`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, IsScalarTower.algebraMap_apply T (FractionRing R) F, ← IsScalarTower.algebraMap_apply R T (FractionRing R)]`. Establish `hinj : Function.Injective (algebraMap T F)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_eq T (FractionRing R) F]`. Conclude with `(algebraMap (FractionRing R) F).injective.comp (IsFractionRing.injective T (FractionRing R))`. Establish `hab : abLocus ((Over.pullback (spMap (algebraMap R T))).obj G) = Set.univ`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Use `(abLocus_pullback abLocusOne hG (isGrpPullback_pullback G _).1 x).1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `le : (spMap (algebraMap R T) x : PrimeSpectrum R).asIdeal ≤ (P : PrimeSpectrum R).asIdeal`. Introduce `r hr`. Establish `hr' : algebraMap R T r ∈ (x : PrimeSpectrum T).asIdeal` using `hr`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff T _ r).1 (IsLocalRing.le_maximalIdeal (PrimeSpectrum.isPrime x).ne_top hr')`. Conclude with `((PrimeSpectrum.le_iff_specializes (spMap (algebraMap R T) x) P).mp le).mem_open hO hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : 1 ≤ n ^ j` using `Nat.one_le_pow _ _ (by omega)`. Take `⟨T', hT', hπ, hx⟩` from `GlobalTheory.T.exists_unramified_ext_torsion_points_good_reduction h₁ h₂ T _ (IsSemiAbelian.pullback _ G hG) hab F hinj (n ^ j) (by simpa using (hu.map (algebraMap R T)).pow j)`. Use `⟨T'.toSubring, hT', algebraMap T T', fun r => RingHom.congr_fun hcomp r, hπ, fun σ hσ p q hpq => ?_⟩` and prove the remaining obligations. Establish `hσR : ∀ r : R, σ (algebraMap (FractionRing R) F (algebraMap R _ r)) = algebraMap (FractionRing R) F (algebraMap R _ r)` using `fun r => hσ _ ((RingHom.congr_fun hcomp r :) ▸ T'.algebraMap_mem _)`. Set `σ' : F →ₐ[FractionRing R] F` to `⟨σ.toRingHom, fun a => RingHom.congr_fun (IsLocalization.ringHom_ext (nonZeroDivisors R) (j := σ.toRingHom.comp (algebraMap (FractionRing R) F)) (k := algebraMap (FractionRing R) F) (RingHom.ext hσR)) a⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL : UT.LL` using `⟨h₁, h₂, h₃, h₄, h₅⟩`. Take `⟨f, hf, -, hfi, -⟩` from `TorsionIso.torsion_eq hL R I hB D A G hG U F (n ^ j) hk`. Use `U.gen_hom` as an intermediate fact. Establish `: IsMonHom U.gen.symm.hom` using `inferInstanceAs (IsMonHom U.gen.inv)`. Establish `gp : IsGrpPullback A.A G (jK R) (U.gen.inv.left ≫ pullback.fst G.hom (jK R))` using `((isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback G (jK R))).congr (Category.id_comp _) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : QkToAkU U.toUnifPre F (n ^ j) p (f p)` using `(hf p _).2 rfl`. Take `⟨w, hw⟩` from `U.ext`. Establish `fix` using `fixed_of_extends hcomp gp T' hx σ' hσ (f p) (hp w hw).1`. Conclude with `(hfi p q).1 ((hf q _).1 ((GlobalTheory.T.qkToAkU_iff_galois_equivariant hL R I hB D A G hG U F F σ' (n ^ j) hk p q (f p) (f p) hpq fix).1 hp))`.
+A detailed English derivation is pending.
 -/
 theorem psiUnitOn_abLocus : Laws → Laws2 → Laws3 → Laws4 → Laws5 → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → ∀ (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif I D A G, IsOpen (abLocus G) → ∀ y, PsiUnitOn D.toPre y (abLocus G) := by
   intro h₁ h₂ h₃ h₄ h₅ R _ _ _ I hA D A G _ _ hG U hO y

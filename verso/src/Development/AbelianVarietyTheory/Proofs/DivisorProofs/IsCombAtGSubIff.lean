@@ -17,14 +17,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
   {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_zero_eq :
     epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom := by
   ext s <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Set `q : tEpsG x0 ⟶ Over.mk x0` to `Over.homMk (spMap (algebraMap S (DualNumber S))) rfl`. Establish `e : spMap (epsMul (0 : S)) = spMap (algebraMap S (DualNumber S)) ≫ spMap (TrivSqZeroExt.fstHom S S S).toRingHom`. Rewrite using `[spMap_comp_spMap, epsMul_zero_eq]`. Rewrite using `[e, Category.assoc, h.2, ← MonObj.comp_one q]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eps_zero_comp {v : Sp (DualNumber S) ⟶ t.G.left} (h : IsTanAtG t x0 v) :
     spMap (epsMul (0 : S)) ≫ v = (1 : tEpsG x0 ⟶ t.G).left := by
@@ -36,13 +36,13 @@ theorem eps_zero_comp {v : Sp (DualNumber S) ⟶ t.G.left} (h : IsTanAtG t x0 v)
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ u : Fin r → (tEpsG x0 ⟶ t.G), (∀ i, (u i).left = spMap (epsMul (a i)) ≫ v i) → (List.ofFn fun k => u (σ k)).prod = (List.ofFn u).prod`. Introduce `u hu`. Rewrite using `[List.prod_ofFn, List.prod_ofFn]`. Use `Fintype.prod_of_injective σ hσ _ _ (fun j hj => ?_) (fun _ => rfl)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hu j, ha j hj, eps_zero_comp t x0 (hv j)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Conclude with `⟨fun k => u (σ k), fun k => hu (σ k), by rw [key u hu, hw]⟩`. Introduce and unpack `⟨u, hu, hw⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hU : ∀ i, (Function.extend σ u (fun _ => 1) i).left = spMap (epsMul (a i)) ≫ v i`. Introduce `i`. Distinguish the cases in `hi : i ∈ Set.range σ`. Take `⟨k, rfl⟩` from `hi`. Rewrite using `[hσ.extend_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu k`. Rewrite using `[Function.extend_apply' _ _ _ hi, ha i hi, eps_zero_comp t x0 (hv i)]`. Use `⟨_, hU, ?_⟩` and prove the remaining obligations. Rewrite using `[← key _ hU, ← hw]`. Simplify using `only [hσ.extend_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCombAtG_sub_iff {r r' : ℕ} (σ : Fin r' → Fin r) (hσ : Function.Injective σ)
     (v : Fin r → (Sp (DualNumber S) ⟶ t.G.left)) (hv : ∀ j, IsTanAtG t x0 (v j)) (a : Fin r → S)

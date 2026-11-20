@@ -18,7 +18,7 @@ def capPoly (O : Type) [CommRing O] (N : ℕ) : Polynomial (FreeAlgebra O (Fin N
     (List.ofFn (entry O N α)).prod
 
 /- English proof (translation)
-The claim follows from `| 0, g, g', _, x => by simp | m + 1, g, g', h, x => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, h 0, ofFn_intertwine ψ (fun k => g k.succ) (fun k => g' k.succ) (fun k => h k.succ)]`.
+A detailed English derivation is pending.
 -/
 theorem ofFn_intertwine {R S M M' : Type*} [CommRing R] [CommRing S] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module S M'] (ψ : M →+ M') : ∀ {m : ℕ} (g : Fin m → Module.End R M)
@@ -30,9 +30,9 @@ theorem ofFn_intertwine {R S M M' : Type*} [CommRing R] [CommRing S] [AddCommGro
       Module.End.mul_apply, h 0, ofFn_intertwine ψ (fun k => g k.succ) (fun k => g' k.succ) (fun k => h k.succ)]
 
 /- English proof (translation)
-Unfold `Formalism.BranchingDeterminantCap.capDet Formalism.BranchingDeterminantCap.bmPi Formalism.BranchingDeterminantCap.bmM`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_zsmul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `ofFn_intertwine ψ _ _ (fun k y => ?_) x` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Formalism.BranchingDeterminantCap.bmF, LinearMap.sub_apply, map_sub, h]`. Use `split_ifs`. Simplify using `[Module.End.intCast_apply, map_zsmul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capDet_intertwine {R S M M' : Type*} [CommRing R] [CommRing S] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module S M'] {n : ℕ} (ψ : M →+ M') (E : Fin n → Fin n → Module.End R M)
@@ -49,11 +49,11 @@ theorem capDet_intertwine {R S M M' : Type*} [CommRing R] [CommRing S] [AddCommG
   · simp
 
 /- English proof (translation)
-Set `K` to `FractionRing O`. Set `φ : O →+* K` to `algebraMap O K`. Establish `hφ : Function.Injective φ` using `IsFractionRing.injective O K`. Establish `hg` using `Formalism.GradedWeylDivisibility.dualWeylMap O K φ N N ν f hf`. Establish `h1` using `GlobalTheory.BrCompare.capDet_dualWeyl (K := K) hν u hg`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun i j => GlobalTheory.Mem.Gelf.rowE K N N i j) = fun a b => Formalism.GradedWeylDivisibility.rowDivL K a b 1`. Use function extensionality and compare the values at `a b`. Conclude with `LinearMap.ext fun P => (GlobalTheory.Mem.GelfCheck.rowE_eq_rowDiv K N N a b P).1`. Rewrite `h1` using `[e]`. Establish `h2` using `capDet_intertwine (MvPolynomial.map φ).toAddMonoidHom (fun a b => Formalism.GradedWeylDivisibility.rowDivL O a b 1) (fun a b => Formalism.GradedWeylDivisibility.rowDivL K a b 1) (fun i j x => (Formalism.GradedWeylDivisibility.lclosedeq_rowDiv_map φ i j 1 x).symm) u f`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.map_injective φ hφ` to reduce the goal to its premises. Establish `h3` using `h2.trans h1`. Simplify using `only [RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe] at h3`. Rewrite using `[h3, Int.cast_smul_eq_zsmul K, Int.cast_smul_eq_zsmul O, map_zsmul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capDet_dualWeyl_domain (O : Type) [CommRing O] [IsDomain O] [CharZero O] (N : ℕ) (ν : Fin N → ℕ)
     (hν : Antitone ν) (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ Formalism.GradedWeylDivisibility.dualWeyl O N N ν) (u : ℤ) :
@@ -76,17 +76,17 @@ theorem capDet_dualWeyl_domain (O : Type) [CommRing O] [IsDomain O] [CharZero O]
   rw [h3, Int.cast_smul_eq_zsmul K, Int.cast_smul_eq_zsmul O, map_zsmul]
 
 /- English proof (translation)
-Establish `hc : ∀ a : Module.End O M, Commute ((RingHom.id _) a) (v : Module.End O M)` using `fun a => (Int.cast_commute v a).symm`. Set `ev` to `Polynomial.eval₂RingHom' (RingHom.id (Module.End O M)) (v : Module.End O M) hc`. Set `Ψ` to `Polynomial.mapRingHom (Φ : FreeAlgebra O (Fin N × Fin N) →+* Module.End O M)`. Establish `key : ev (Ψ (capPoly O N)) = ∑ i ∈ Finset.range L, (v ^ i) • Φ ((capPoly O N).coeff i)` using `by show eval₂ (RingHom.id _) (v : Module.End O M) (map (Φ : FreeAlgebra O (Fin N × Fin N) →+* Module.End O M) (capPoly O N)) = _`. Rewrite using `[eval₂_eq_sum_range' _ (lt_of_le_of_lt natDegree_map_le hL)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, RingHom.id_apply, ← Int.cast_pow, zsmul_eq_mul']`. Both sides reduce to the same expression. Rewrite using `[← key]`. Unfold `capPoly Formalism.BranchingDeterminantCap.capDet Formalism.BranchingDeterminantCap.bmPi Formalism.BranchingDeterminantCap.bmM`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `hev : ∀ p, ev p = p.eval₂ (RingHom.id _) (v : Module.End O M)` using `fun _ => rfl`. Establish `hΨ : ∀ p, Ψ p = p.map (Φ : FreeAlgebra O (Fin N × Fin N) →+* Module.End O M)` using `fun _ => rfl`. Apply the tactic sequence `have e : (List.ofFn fun k => ev (Ψ (entry O N α k))) = (List.ofFn fun k => Formalism.BranchingDeterminantCap.bmF (fun a b => Φ (FreeAlgebra.ι O (a, b))) (-v) k (α k) (id k)).map Neg.neg := by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.map_ofFn]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[hev, hΨ]`. Simplify using `only [Function.comp_apply, entry, Formalism.BranchingDeterminantCap.bmF, id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Simplify using `only [Polynomial.map_add, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C, RingHom.id_apply, map_natCast, RingHom.coe_coe, Polynomial.map_natCast, Polynomial.eval₂_natCast]`. Use `push_cast`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [show (⇑ev ∘ ⇑Ψ ∘ entry O N α) = fun k => ev (Ψ (entry O N α k)) from rfl, e, List.prod_map_neg, List.length_ofFn, zsmul_eq_mul, zsmul_eq_mul]`. Use `push_cast`. Conclude with `(Int.cast_commute _ _).left_comm _`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem eval_capPoly (O : Type) [CommRing O] (N : ℕ) {M : Type} [AddCommGroup M] [Module O M]
     (Φ : FreeAlgebra O (Fin N × Fin N) →ₐ[O] Module.End O M) (v : ℤ) (L : ℕ)
@@ -129,13 +129,13 @@ theorem eval_capPoly (O : Type) [CommRing O] (N : ℕ) {M : Type} [AddCommGroup 
   exact (Int.cast_commute _ _).left_comm _
 
 /- English proof (translation)
-Introduce `i hi`. Set `Q : Polynomial P` to `∑ j ∈ Finset.range L, monomial j (a j - b j)`. Establish `hQ : Q = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono ?_ (Set.infinite_range_of_injective (Int.cast_injective (α := P)))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv` using `h v`. Simplify using `only [Set.mem_setOf_eq, IsRoot, Q, eval_finset_sum, eval_monomial]`. Rewrite `hv` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[← hv]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (fun q : Polynomial P => q.coeff i) hQ` as an intermediate fact. Simplify using `only [Q, finset_sum_coeff, coeff_monomial, coeff_zero] at this`. Rewrite `this` using `[Finset.sum_eq_single i (fun j _ hj => if_neg hj) (fun h' => absurd (Finset.mem_range.2 hi) h'), if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 this`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq_of_int (P : Type) [CommRing P] [IsDomain P] [CharZero P] (L : ℕ) (a b : ℕ → P)
     (h : ∀ v : ℤ, ∑ i ∈ Finset.range L, (v : P) ^ i * a i = ∑ i ∈ Finset.range L, (v : P) ^ i * b i) :
@@ -164,21 +164,19 @@ namespace GlobalTheory.CapelliCoeffs
 open Polynomial
 
 /- English proof (translation)
-Introduce `O _ _ _ N`. Use `⟨fun k => (capPoly O N).coeff k, fun ν hν f hf k => ?_⟩` and prove the remaining obligations. Use `set p : Polynomial ℤ := ∏ a : Fin N, (X + C (((ν a : ℤ) - (a : ℕ) : ℤ))) with hpdef`. Use `set L := (capPoly O N).natDegree + N + 1 with hLdef`. Establish `hp : p.natDegree ≤ N`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun a _ => (natDegree_X_add_C (((ν a : ℤ) - (a : ℕ) : ℤ))).le).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hE : (fun a b => evalPol O N (FreeAlgebra.ι O (a, b))) = fun a b => Formalism.GradedWeylDivisibility.rowDivL O a b 1`. Use function extensionality and compare the values at `a b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[evalPol]`. Distinguish the cases in `hk : k < L`. Use `coeff_eq_of_int (MvPolynomial (Fin N × Fin N) O) L (fun i => evalPol O N ((capPoly O N).coeff i) f) (fun i => ((p.coeff i : ℤ) : O) • f) (fun v => ?_) k hk` and prove the remaining obligations. Establish `hA` using `eval_capPoly O N (evalPol O N) v L (by omega)`. Rewrite `hA` using `[hE]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `capDet_dualWeyl_domain O N ν hν f hf (-v)`. Establish `e1 : ∑ i ∈ Finset.range L, ((v : MvPolynomial (Fin N × Fin N) O)) ^ i * evalPol O N ((capPoly O N).coeff i) f = (∑ i ∈ Finset.range L, (v ^ i) • evalPol O N ((capPoly O N).coeff i)) f`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← Int.cast_pow, ← zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑ i ∈ Finset.range L, ((v : MvPolynomial (Fin N × Fin N) O)) ^ i * (((p.coeff i : ℤ) : O) • f) = (p.eval v) • f`. Rewrite using `[eval_eq_sum_range' (n := L) (by omega), Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_pow, ← zsmul_eq_mul, Int.cast_smul_eq_zsmul, smul_smul, mul_comm]`. Establish `e3 : p.eval v = (-1 : ℤ) ^ N * ∏ j : Fin N, (-v + ((j : ℕ) : ℤ) - (ν j : ℤ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpdef, eval_prod]`. Establish `: ((-1 : ℤ) ^ N) = ∏ _j : Fin N, (-1 : ℤ)` using `by simp`. Rewrite using `[this, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [eval_add, eval_X, eval_C]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, hA, LinearMap.smul_apply, hB, e3, Int.cast_smul_eq_zsmul, smul_smul]`. Establish `h1 : (capPoly O N).coeff k = 0` using `coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `h2 : p.coeff k = 0` using `coeff_eq_zero_of_natDegree_lt (by omega)`. Use `show evalPol O N ((capPoly O N).coeff k) f = _`.
-
-Rewrite using `[h1, h2, map_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem capelli_coeff_dualWeyl : ∀ (O : Type) [CommRing O] [IsDomain O] [CharZero O] (N : ℕ),
     ∃ F : ℕ → FreeAlgebra O (Fin N × Fin N), ∀ ν : Fin N → ℕ, Antitone ν →

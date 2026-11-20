@@ -14,7 +14,7 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL hH hC hD hP`. Take `⟨⟨hfree, hhodge, hbc⟩, hcrys⟩` from `GlobalTheory.T.crystallineDeRham_abelianStructure_of_statements hL hH`. Establish `hF : GlobalTheory.Published.AbelianDeRham.Free` using `GlobalTheory.AbelianPrim.abelianDeRham_free hfree`. Conclude with `⟨hF, hhodge, hbc, GlobalTheory.Published.AbelianDeRham.rigid_of_free_of_crystallineDeRham hF hcrys, GlobalTheory.T.abelianDeRham_poincareDuality_of_cube_dual hC hD hP hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem abelianDeRham_of_crystallineSmoothLift : GlobalTheory.Published.CrystallineSmoothLift →
     GlobalTheory.Published.AbelianHodgeDeRham → GlobalTheory.Published.CubeTheorem → GlobalTheory.Published.DualAbelianScheme →

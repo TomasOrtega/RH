@@ -4,7 +4,7 @@ open MeasureTheory Set
 open UpperHalfPlane hiding I
 
 /- English proof (translation)
-Rewrite using `[UpperTheory.V.Af.Rs.pt, ← UpperHalfPlane.coe_re, ← UpperHalfPlane.coe_im, UpperHalfPlane.ofComplex_apply_of_im_pos (by simpa using hy)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pt_re_im (x y : ℝ) (hy : 0 < y) :
     (UpperTheory.V.Af.Rs.pt x y).re = x ∧ (UpperTheory.V.Af.Rs.pt x y).im = y := by
@@ -13,7 +13,7 @@ private theorem pt_re_im (x y : ℝ) (hy : 0 < y) :
   simp
 
 /- English proof (translation)
-Establish `hre : Continuous fun z : ℍ => z.re` using `Complex.continuous_re.comp UpperHalfPlane.continuous_coe`. Conclude with `(measurableSet_le measurable_const hre.measurable).inter (measurableSet_lt hre.measurable measurable_const)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem measurableSet_strip' : MeasurableSet UpperTheory.V.Af.Rs.strip := by
   have hre : Continuous fun z : ℍ => z.re := Complex.continuous_re.comp UpperHalfPlane.continuous_coe
@@ -21,13 +21,13 @@ private theorem measurableSet_strip' : MeasurableSet UpperTheory.V.Af.Rs.strip :
     (measurableSet_lt hre.measurable measurable_const)
 
 /- English proof (translation)
-Take `⟨hf, hvol⟩` from `hV`. Establish `hs : MeasurableSet ((fun p : ℝ × ℝ => UpperTheory.V.Af.Rs.pt p.1 p.2) ⁻¹' UpperTheory.V.Af.Rs.strip)` using `hf measurableSet_strip'`. Establish `hset : (fun p : ℝ × ℝ => UpperTheory.V.Af.Rs.pt p.1 p.2) ⁻¹' UpperTheory.V.Af.Rs.strip ∩ (univ ×ˢ Ioi 0) = Ico (0:ℝ) 1 ×ˢ Ioi 0`. Use extensionality with `⟨x, y⟩`. Simplify using `only [mem_inter_iff, mem_preimage, mem_prod, mem_univ, true_and, mem_Ioi, mem_Ico, UpperTheory.V.Af.Rs.strip, mem_setOf_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hy⟩`. Rewrite `h` using `[(pt_re_im x y hy).1]`. Conclude with `⟨h, hy⟩`. Introduce and unpack `⟨h, hy⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[(pt_re_im x y hy).1]`. Conclude with `⟨h, hy⟩`. Establish `h0 : (volume : Measure ℝ).prod (volume.restrict (Ioi (0:ℝ))) = ((volume : Measure ℝ).prod volume).restrict (univ ×ˢ Ioi 0)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hbase : ((volume : Measure ℝ).prod (volume.restrict (Ioi (0:ℝ)))).restrict ((fun p : ℝ × ℝ => UpperTheory.V.Af.Rs.pt p.1 p.2) ⁻¹' UpperTheory.V.Af.Rs.strip) = ((volume : Measure ℝ).restrict (Ico 0 1)).prod (volume.restrict (Ioi 0))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, Measure.restrict_restrict hs, hset, ← Measure.prod_restrict]`. Rewrite using `[hvol, Measure.restrict_map hf measurableSet_strip', restrict_withDensity hs, hbase]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem volume_restrict_strip_eq_map_withDensity (hV : UpperTheory.V.Af.Rs.VolMap) :
     (volume : Measure ℍ).restrict UpperTheory.V.Af.Rs.strip =
@@ -59,11 +59,11 @@ private theorem volume_restrict_strip_eq_map_withDensity (hV : UpperTheory.V.Af.
   rw [hvol, Measure.restrict_map hf measurableSet_strip', restrict_withDensity hs, hbase]
 
 /- English proof (translation)
-Introduce `hV φ hφ hint`. Establish `hf : Measurable fun p : ℝ × ℝ => UpperTheory.V.Af.Rs.pt p.1 p.2` using `hV.1`. Establish `hg : Measurable fun p : ℝ × ℝ => ENNReal.ofReal (1 / p.2 ^ 2)` using `by fun_prop`. Establish `hlt : ∀ᵐ p ∂(((volume : Measure ℝ).restrict (Ico 0 1)).prod (volume.restrict (Ioi 0))), ENNReal.ofReal (1 / p.2 ^ 2) < ⊤` using `Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top`. Establish `him : Continuous fun z : ℍ => z.im` using `Complex.continuous_im.comp UpperHalfPlane.continuous_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Measurable fun z : ℍ => φ z.im` using `hφ.comp him.measurable`. Use `show Integrable (fun z : ℍ => φ z.im) ((volume : Measure ℍ).restrict UpperTheory.V.Af.Rs.strip)`. Rewrite using `[volume_restrict_strip_eq_map_withDensity hV, integrable_map_measure hm.aestronglyMeasurable hf.aemeasurable, integrable_withDensity_iff_integrable_smul' hg hlt]`. Establish `h1 : Integrable (fun _ : ℝ => (1:ℝ)) (volume.restrict (Ico (0:ℝ) 1))` using `integrable_const 1`. Establish `h2 : Integrable (fun y => φ y / y ^ 2) (volume.restrict (Ioi (0:ℝ)))` using `hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1.mul_prod h2).congr ?_` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_snd.ae (ae_restrict_mem measurableSet_Ioi)] with p hp`. Simplify using `only [Function.comp_apply, (pt_re_im p.1 p.2 hp).2, ENNReal.toReal_ofReal (by positivity : (0:ℝ) ≤ 1 / p.2 ^ 2), smul_eq_mul, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.stripIm :
     UpperTheory.V.Af.Rs.VolMap → UpperTheory.V.Af.Rs.StripIm := by

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Is
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SqIntUnit.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FUnitarisableOfSquareIntegrable.lean&line=53#L53)
 -/

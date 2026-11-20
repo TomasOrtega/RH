@@ -16,9 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_isTorus h hJ hW`. Take `⟨τ, -, -, -, -, hτP⟩` from `exists_tau h hJ hW ha`. Introduce `g`. Take `⟨p, hp, k, hk, rfl⟩` from `hPK g`. Set `P : minParSub X h hJ hW` to `⟨p, hp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `⟨p * (a (τ P))⁻¹, hτP P, fun i => Real.exp (τ P i), a (τ P), fun i => Real.exp_pos _, ha.tor _, k, hk, by rw [inv_mul_cancel_right]⟩`.
+Supply the required witnesses or components.
 -/
 theorem iwasawa_of (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {K : Subgroup (GAd σ J)}
     (hPK : ∀ g, ∃ p ∈ minPar σ J X, ∃ k ∈ K, g = p * k) :
@@ -32,9 +32,9 @@ theorem iwasawa_of (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame �
     by rw [inv_mul_cancel_right]⟩
 
 /- English proof (translation)
-Establish `e : {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c} = (⋂ i : Fin r, ⋂ j : Fin r, ⋂ (_ : j.val = i.val + 1), {s : Fin r → ℝ | c * Real.exp (s j) ≤ Real.exp (s i)}) ∩ ⋂ i : Fin r, ⋂ (_ : i.val + 1 = r), {s : Fin r → ℝ | c ≤ Real.exp (s i)}`. Use extensionality with `s`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Conclude with `⟨fun h => ⟨h.2.1, h.2.2⟩, fun h => ⟨fun i => Real.exp_pos _, h.1, h.2⟩⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsClosed.inter (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_le (by fun_prop) (by fun_prop)) (isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_le (by fun_prop) (by fun_prop))`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_logCone (c : ℝ) : IsClosed {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c} := by
   have e : {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c} =
@@ -51,11 +51,11 @@ theorem isClosed_logCone (c : ℝ) : IsClosed {s : Fin r → ℝ | (fun i => Rea
 open scoped Pointwise in
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, t, ht, b, hb, k, hk, rfl⟩`. Establish `et : (fun i => Real.exp (Real.log (t i))) = t` using `funext fun i => Real.exp_log (ht.1 i)`. Establish `h3 : IsTorusElt σ J X Y t (a fun i => Real.log (t i))`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `ha.tor (fun i => Real.log (t i))`. Use `beta_reduce at h4`. Rewrite `h4` using `[et]`. Then use the resulting hypothesis. Establish `hb' : b = a (fun i => Real.log (t i))` using `isTorusElt_unique h hJ hW hb h3`. Establish `hs : (fun i => Real.log (t i)) ∈ {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c}` using `by show (fun i => Real.exp (Real.log (t i))) ∈ cone r c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[et]`. Conclude with `ht`. Conclude with `⟨p * b, ⟨p, hp, b, ⟨_, hs, hb'.symm⟩, rfl⟩, k, hk, rfl⟩`. Introduce and unpack `⟨_, ⟨p, hp, _, ⟨s, hs, rfl⟩, rfl⟩, k, hk, rfl⟩`. Conclude with `⟨p, hp, _, hs, a s, ha.tor s, k, hk, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem siegelSet_eq (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {a : (Fin r → ℝ) → GAd σ J}
     (ha : IsTorus σ J X Y a) (K : Subgroup (GAd σ J)) (Ω : Set (GAd σ J)) (c : ℝ) :
@@ -78,9 +78,9 @@ theorem siegelSet_eq (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame
     exact ⟨p, hp, _, hs, a s, ha.tor s, k, hk, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_isTorus h hJ hW`. Take `⟨τ, hτc, -, hτa, -, -⟩` from `exists_tau h hJ hW ha`. Establish `hP : IsClosed ((minParSub X h hJ hW : Subgroup (GAd σ J)) : Set (GAd σ J))` using `isClosed_minPar h hJ hW`. Establish `hsc : Continuous (ha.sub h hJ hW)` using `ha.cont.subtype_mk _`. Establish `h1 : IsClosed (ha.sub h hJ hW '' {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c})` using `PositivityTheory.ThKR.Sieg.isClosed_image_section τ hτc _ hsc hτa (isClosed_logCone c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsClosed (a '' {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c})`. Use `hP.isClosedEmbedding_subtypeVal.isClosedMap _ h1` as an intermediate fact. Rewrite `this` using `[← Set.image_comp]`. Then use the resulting hypothesis. Rewrite using `[siegelSet_eq h hJ hW ha]`. Conclude with `(h2.mul_left_of_isCompact hΩ).mul_right_of_isCompact hK`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_siegelSet (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {K : Subgroup (GAd σ J)}
     {Ω : Set (GAd σ J)} {c : ℝ} (hK : IsCompact (K : Set (GAd σ J))) (hΩ : IsCompact Ω) (hΩP : Ω ⊆ minParOne σ J X)
@@ -98,9 +98,9 @@ theorem isClosed_siegelSet (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWit
   exact (h2.mul_left_of_isCompact hΩ).mul_right_of_isCompact hK
 
 /- English proof (translation)
-Establish `: cone r c = (⋂ i, {t : Fin r → ℝ | 0 < t i}) ∩ ((⋂ i, ⋂ j, ⋂ (_ : (j : Fin r).val = (i : Fin r).val + 1), {t : Fin r → ℝ | c * t j ≤ t i}) ∩ ⋂ i, ⋂ (_ : (i : Fin r).val + 1 = r), {t : Fin r → ℝ | c ≤ t i})`. Use extensionality with `t`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(MeasurableSet.iInter fun i => measurableSet_lt measurable_const (measurable_pi_apply i)).inter ((MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => MeasurableSet.iInter fun _ => measurableSet_le (measurable_const.mul (measurable_pi_apply j)) (measurable_pi_apply i)).int …`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_cone (r : ℕ) (c : ℝ) : MeasurableSet (cone r c) := by
   have : cone r c = (⋂ i, {t : Fin r → ℝ | 0 < t i}) ∩ ((⋂ i, ⋂ j, ⋂ (_ : (j : Fin r).val = (i : Fin r).val + 1),
@@ -115,9 +115,9 @@ theorem measurableSet_cone (r : ℕ) (c : ℝ) : MeasurableSet (cone r c) := by
     (MeasurableSet.iInter fun i => MeasurableSet.iInter fun _ => measurableSet_le measurable_const (measurable_pi_apply i)))
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro i hi; simpa using hu.2.2 i (by omega)`. Consider the case `succ k ih`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : i.val + 1 < r` using `by omega`. Establish `h1` using `ih ⟨i.val + 1, hj⟩ (by simp; omega)`. Establish `h2` using `hu.2.1 i ⟨i.val + 1, hj⟩ rfl`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cone_lower {r : ℕ} {c : ℝ} (h3 : 0 ≤ c) {u : Fin r → ℝ} (hu : u ∈ cone r c) :
     ∀ k : ℕ, ∀ i : Fin r, i.val + k + 1 = r → c ^ (k + 1) ≤ u i := by
@@ -134,17 +134,17 @@ theorem cone_lower {r : ℕ} {c : ℝ} (h3 : 0 ≤ c) {u : Fin r → ℝ} (hu : 
       _ ≤ u i := h2
 
 /- English proof (translation)
-Set `Φ : (Fin r → ℝ) → Fin r → ℝ` to `fun s i => Real.exp (s i)`. Set `Φ' : (Fin r → ℝ) → (Fin r → ℝ) →L[ℝ] Fin r → ℝ` to `fun s => LinearMap.toContinuousLinearMap (Matrix.toLin' (Matrix.diagonal (Φ s)))`. Use `set D := {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c} with hD`. Establish `hDm : MeasurableSet D` using `(measurableSet_cone r c).preimage (measurable_pi_lambda _ fun i => Real.measurable_exp.comp (measurable_pi_apply i))`. Establish `hd : ∀ s ∈ D, HasFDerivWithinAt Φ (Φ' s) D s` using `fun s _ => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasFDerivAt.hasFDerivWithinAt (hasFDerivAt_pi'.2 fun i => ?_)` and prove the remaining obligations. Use `(hasFDerivAt_apply (𝕜 := ℝ) i s).exp` as an intermediate fact. Use `this.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `v`. Simplify using `[Φ', Φ, Matrix.mulVec_diagonal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi : Set.InjOn Φ D` using `fun s _ t _ e => funext fun i => Real.exp_injective (congrFun e i)`. Establish `himg : Φ '' D = cone r c`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs`. Introduce `hu`. Use `⟨fun i => Real.log (u i), ?_, funext fun i => Real.exp_log (hu.1 i)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(fun i => Real.exp (Real.log (u i))) ∈ cone r c`. Simplify `hu` using `[Real.exp_log (hu.1 _)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← himg, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hDm hd hi]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Establish `e2 : (Φ' s).det = ∏ i, Φ s i`. Simplify using `[Φ', ContinuousLinearMap.det, LinearMap.det_toLin']`. Establish `e3 : 0 < ∏ i, Φ s i` using `Finset.prod_pos fun i _ => Real.exp_pos _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : modulus F n (Φ s) = Real.exp (2 * Module.finrank ℚ F * rho2 n s)` using `modulus_exp F n s`. Rewrite using `[e2, abs_of_pos e3, e4, mul_left_comm, ← ENNReal.ofReal_mul e3.le]`. Use `congr 2`. Rewrite using `[mul_inv, mul_left_comm, mul_inv_cancel₀ e3.ne', mul_one, ← Real.exp_neg]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_logCone (F : Type) [Field F] [NumberField F] (n r : ℕ) {c : ℝ} (hc : 0 < c)
     (h : (Fin r → ℝ) → ℝ≥0∞) (hh : Measurable h) :
@@ -184,19 +184,17 @@ theorem lintegral_logCone (F : Type) [Field F] [NumberField F] (n r : ℕ) {c : 
   rw [mul_inv, mul_left_comm, mul_inv_cancel₀ e3.ne', mul_one, ← Real.exp_neg]
 
 /- English proof (translation)
-Establish `hd0 : (1 : ℝ) ≤ (Module.finrank ℚ F : ℝ)` using `Nat.one_le_cast.2 (Module.finrank_pos (R := ℚ) (M := F))`. Set `ex : Fin r → ℝ` to `fun i => -(2 * (Module.finrank ℚ F : ℝ) * ((n : ℝ) - 2 * (i.val : ℝ) - 1)) - 1`. Establish `hex : ∀ i, ex i < -1` using `fun i => by`. Establish `h1 : (i.val : ℝ) + 1 ≤ r` using `by exact_mod_cast i.isLt`. Establish `h2 : (2 * r : ℝ) ≤ n` using `by exact_mod_cast hr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < 2 * (Module.finrank ℚ F : ℝ) * ((n : ℝ) - 2 * (i.val : ℝ) - 1)` using `mul_pos (by linarith) (by linarith)`. Simplify using `only [ex]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `b : Fin r → ℝ` to `fun i => c ^ (r - i.val)`. Establish `hb : ∀ i, 0 < b i` using `fun i => pow_pos hc _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hBm : MeasurableSet (Set.univ.pi fun i => Set.Ici (b i))` using `MeasurableSet.univ_pi fun i => measurableSet_Ici`. Establish `hsub : cone r c ⊆ Set.univ.pi fun i => Set.Ici (b i)` using `fun u hu i _ => by`. Establish `h1` using `cone_lower hc.le hu (r - i.val - 1) i (by omega)`. Establish `e : r - i.val = r - i.val - 1 + 1` using `by omega`. Express the relevant statement in the definitionally equal form `c ^ (r - i.val) ≤ u i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `h1`. Establish `hB : ∀ u ∈ Set.univ.pi (fun i => Set.Ici (b i)), ENNReal.ofReal ((modulus F n u * ∏ i, u i)⁻¹) = ENNReal.ofReal (∏ i, u i ^ ex i)` using `fun u hu => by`. Use `congr 1`. Establish `hpos : ∀ i, 0 < u i` using `fun i => (hb i).trans_le (hu i (Set.mem_univ i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[modulus, ← Finset.prod_mul_distrib, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_add_one (hpos i).ne', ← Real.rpow_neg (hpos i).le]`. Use `congr 1`. Simplify using `only [ex]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : Integrable (fun u : Fin r → ℝ => ∏ i, u i ^ ex i) (volume.restrict (Set.univ.pi fun i => Set.Ici (b i)))`. Rewrite using `[volume_pi, Measure.restrict_pi_pi]`. Conclude with `Integrable.fintype_prod (f := fun i (x : ℝ) => x ^ ex i) fun i => Iff.mpr integrableOn_Ici_iff_integrableOn_Ioi (integrableOn_Ioi_rpow_of_lt (hex i) (hb i))`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_cone_lt_top (F : Type) [Field F] [NumberField F] {n r : ℕ} (hr : 2 * r ≤ n) {c : ℝ} (hc : 0 < c) :
     ∫⁻ u in cone r c, ENNReal.ofReal ((modulus F n u * ∏ i, u i)⁻¹) < ⊤ := by
@@ -241,17 +239,17 @@ theorem lintegral_cone_lt_top (F : Type) [Field F] [NumberField F] {n r : ℕ} (
     _ < ⊤ := hint.lintegral_lt_top
 
 /- English proof (translation)
-Introduce `μ hμ`. Take `⟨a, ha⟩` from `exists_isTorus h hJ hW`. Take `⟨τ, hτc, hτm, hτa, hτ0, -⟩` from `exists_tau h hJ hW ha`. Establish `hP : IsClosed ((minParSub X h hJ hW : Subgroup (GAd σ J)) : Set (GAd σ J))` using `isClosed_minPar h hJ hW`. Establish `: LocallyCompactSpace (minParSub X h hJ hW)` using `hP.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρ : (Fin r → ℝ) → ℝ` to `fun s => 2 * (Module.finrank ℚ F : ℝ) * rho2 n s`. Establish `hρ : Continuous ρ`. Simplify using `only [ρ, rho2]`. Use `fun_prop`. Establish `hρa : ∀ s t, ρ (s + t) = ρ s + ρ t` using `fun s t => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ρ, rho2, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Establish `hsub : ∀ s t, ha.sub h hJ hW (s + t) = ha.sub h hJ hW s * ha.sub h hJ hW t` using `fun s t => Subtype.ext (ha.add s t)`. Take `⟨C, hC⟩` from `PositivityTheory.ThKR.Sieg.lintegral_siegel_le μ (minParSub X h hJ hW) K hP hK (fun g => hPK g) τ hτc hτm (ha.sub h hJ hW) (ha.cont.subtype_mk _) hsub hτa ρ hρ hρa (fun s => map_mul_torus h hJ hW ha _ s) hΩ (fun p hp => ⟨minParOne_subset (hΩP hp), hτ0 p (hΩP hp)⟩) (fun m hm t => …`. Establish `hS : MeasurableSet (siegelSet σ J X Y Ω c K)` using `(isClosed_siegelSet h hJ hW hK hΩ hΩP hc).measurableSet`. Establish `hSΩ : ∀ g ∈ siegelSet σ J X Y Ω c K, ∃ p ∈ Ω, ∃ t ∈ {s : Fin r → ℝ | (fun i => Real.exp (s i)) ∈ cone r c}, ∃ k ∈ K, g = p * (ha.sub h hJ hW t : GAd σ J) * k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite `hg` using `[siegelSet_eq h hJ hW ha]`. Take `⟨_, ⟨p, hp, _, ⟨s, hs, rfl⟩, rfl⟩, k, hk, rfl⟩` from `hg`. Conclude with `⟨p, hp, s, hs, k, hk, rfl⟩`. Establish `key : ∀ (f : GAd σ J → ℝ≥0∞) (h : (Fin r → ℝ) → ℝ≥0∞), Measurable h → (∀ p ∈ Ω, ∀ t ∈ cone r c, ∀ a, IsTorusElt σ J X Y t a → ∀ k ∈ K, f (p * a * k) ≤ h t) → ∫⁻ g in siegelSet σ J X Y Ω c K, f g ∂μ ≤ C * ∫⁻ t in cone r c, h t * ENNReal.ofReal ((modulus F n t * ∏ i, t i)⁻¹)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f h' hh hf`. Establish `hh' : Measurable fun s : Fin r → ℝ => h' fun i => Real.exp (s i)` using `hh.comp (measurable_pi_lambda _ fun i => Real.measurable_exp.comp (measurable_pi_apply i))`. Establish `e` using `hC _ _ (isClosed_logCone c).measurableSet hS hSΩ f (fun s => h' fun i => Real.exp (s i)) hh' (fun p hp s hs k hk => hf p hp _ hs (a s) (ha.tor s) k hk)`. Rewrite `e` using `[lintegral_logCone F n r hc h' hh]`. Then use the resulting hypothesis. Use `⟨?_, C, key⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `key (fun _ => 1) (fun _ => 1) measurable_const (fun _ _ _ _ _ _ _ _ => le_rfl)`. Simplify using `only [one_mul, setLIntegral_const] at e`. Conclude with `lt_of_le_of_lt (by simpa using e) (ENNReal.mul_lt_top ENNReal.coe_lt_top (lintegral_cone_lt_top F (two_mul_le_of_wittFrame (sigma_sigma h) hJ hW) hc))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem siegel_measure (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {K : Subgroup (GAd σ J)}
     {Ω : Set (GAd σ J)} {c : ℝ} (hK : IsCompact (K : Set (GAd σ J))) (hΩ : IsCompact Ω) (hΩP : Ω ⊆ minParOne σ J X)
@@ -303,7 +301,7 @@ theorem siegel_measure (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFra
     (lintegral_cone_lt_top F (two_mul_le_of_wittFrame (sigma_sigma h) hJ hW) hc))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW`. Take `⟨K, Ω, c, hK, hΩ, hΩP, hc, hPK, hG, hcov, hconj, hht, hrap⟩` from `hC F E σ h n J hJ r X Y hW`. Conclude with `⟨K, Ω, c, hK, hΩ, hΩP, hc, iwasawa_of h hJ hW hPK, isClosed_siegelSet h hJ hW hK hΩ hΩP hc, hcov, hconj, siegel_measure h hJ hW hK hΩ hΩP hc hPK hG, hht, hrap⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem siegel_of_core (hC : SiegelCore) : GlobalTheory.Published.SiegelSetUnitary := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW

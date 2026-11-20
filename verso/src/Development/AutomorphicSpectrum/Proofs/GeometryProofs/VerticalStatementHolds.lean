@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 open ReciprocityTheory.ChartRestriction.G.AI.I2
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Inter.InductiveIntersectionFormula.proof`.
+A detailed English derivation is pending.
 -/
 theorem vertical_holds : VerticalStatement := GroundTheory.Heights₂.Heights.Inter.InductiveIntersectionFormula.proof
 

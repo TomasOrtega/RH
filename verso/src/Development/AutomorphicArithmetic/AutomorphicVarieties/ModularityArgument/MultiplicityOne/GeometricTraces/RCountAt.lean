@@ -7,23 +7,21 @@ open NumberField IsDedekindDomain Filter GlobalTheory.CuspRep GlobalTheory.Unita
 open UpperTheory.V.Af.Bc (cPl)
 
 /- English proof (translation)
-Introduce `hC hEv hCp hP E _ _ _ hU n hn1 hn4 π hreg hd S hS lam Z hZ B τ hB hτ K' hK' hKZ ι _ σ hdec`. Take `⟨t, Bi, hi, hev⟩` from `hEv E hU n hn1 S hS lam Z hZ K' hK' hKZ ι σ hdec`. Take `⟨-, hc, -, hSec⟩` from `hP E`. Establish `hF` using `UpperTheory.V.Af.formsFiniteGL`. Establish `hsat : ∀ w, Off Z w → ∃ τ₀ : SmIrr (GLw n w), π.IsLocComp w τ₀ ∧ HasSatGL w τ₀.ρ (B w)` using `fun w hw => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ₀, h₀⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp hF E n π w`. Conclude with `⟨τ₀, h₀.1, ((GlobalTheory.Cong.satake_locComp E n π w τ₀ h₀.1).1 _).1 (hB w hw)⟩`. Establish `hAt : ∀ i, (∀ w, Off Z w → IsSplitAt w → Bi i w = B w) → At π (σ i)` using `fun i h => by filter_upwards [off_cofinite hP Z] with w hw hs`. Take `⟨τ', h1, h2⟩` from `(hi i).2.2 w hw hs`. Conclude with `⟨τ', B w, h1, h w hw hs ▸ h2, hB w hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hCo : ∀ i, At π (σ i) → ∀ w, IsSplitAt w → ∀ τ₀, π.IsLocComp w τ₀ → Cp (σ i) w τ₀` using `fun i h => hC E hU n hn1 hn4 π hreg hd (σ i) (hdec.1 i).1 (hi i).1 h`. Establish `hEq : ∀ i, At π (σ i) → ∀ w, Off Z w → IsSplitAt w → Bi i w = B w` using `fun i h w hw hs => by`. Take `⟨τ', h1, h2⟩` from `(hi i).2.2 w hw hs`. Take `⟨τ₀, h₀, s₀⟩` from `hsat w hw`. Conclude with `HasSatGL.unique h2 ((hCp E hU n hn1 (σ i) (hdec.1 i).1 w hs τ₀ τ' (hCo i h w hs τ₀ h₀) h1).1 _ s₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{i // ¬ At π (σ i)}, inferInstance, fun j => Bi j.1, fun j => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Use `j.2 (hAt j.1 fun w hw hs => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨τ', -, h2⟩` from `(hi j.1).2.2 w hw hs`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ₀, -, s₀⟩` from `hsat w hw`. Conclude with `hno ⟨w, hw, hs, HasSatGL.card s₀, HasSatGL.card h2, hne⟩`. Introduce `f hf T hT hTZ e₁ e₂ h1 h0 k`. Take `⟨htest, htr⟩` from `hev f hf T hT hTZ e₁ e₂ k`. Use `⟨htest, fun hk => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoffT : ∀ w ∈ T, Off Z w ∧ IsSplitAt w` using `fun w hw => by`. Establish `hnZ : ∀ {u}, u ∈ T → u ∉ Z` using `fun hu hu' => Finset.disjoint_left.1 hTZ hu hu'`. Use `⟨⟨hnZ hw, fun h => ?_⟩, (hT w hw).2⟩` and prove the remaining obligations. Conclude with `((hc w).2.1 (hT w hw).2) ((hSec S hS w).2 (hT w hw).1 (hZ _ h).1)`. Establish `hval : ∀ i, At π (σ i) → val1 T e₁ e₂ (Bi i) = 1` using `fun i h => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h1]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨⟨ha, hb⟩, hs⟩` from `hoffT w hw`. Establish `hcs : IsSplitAt (cPl w)` using `(hc (cPl w)).2.2 (by rw [(hc w).1]; exact ((hc w).2.1 hs).symm)`. Establish `ho : Off Z (cPl w)` using `⟨hb, by rwa [(hc w).1]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hEq i h w ⟨ha, hb⟩ hs, hEq i h _ ho hcs]`. Establish `hterm : ∀ i, (∏ w ∈ Z, trc (t i w).ρ (KGL w n) (f w)) * val1 T e₁ e₂ (Bi i) ^ k = (if At π (σ i) then 1 else 0) * ∏ w ∈ Z, trc (τ w).ρ (KGL w n) (f w)` using `fun i => by`. Distinguish the cases in `h : At π (σ i)`. Rewrite using `[if_pos h, hval i h, one_pow, mul_one, one_mul]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
-
-Conclude with `((hCp E hU n hn1 (σ i) (hdec.1 i).1 w (hZ w hw).2 (τ w) (t i w) (hCo i h w (hZ w hw).2 _ (hτ w hw)) ((hi i).2.1 w hw)).2 (f w)).symm`. Rewrite using `[if_neg h, h0 ⟨i, h⟩, zero_pow (by omega), mul_zero, zero_mul]`. Rewrite using `[htr, Finset.sum_congr rfl fun i _ => hterm i, ← Finset.sum_mul, Finset.sum_boole, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Mult.rCountAt :
     UpperTheory.V.Z.Mult.RCountAt := by

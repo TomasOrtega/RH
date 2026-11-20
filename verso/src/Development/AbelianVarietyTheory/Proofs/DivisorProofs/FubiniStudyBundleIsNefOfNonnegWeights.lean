@@ -25,7 +25,7 @@ def fnOnOpen (U : X.Opens) (g : X.functionField) (hg : ∀ x ∈ U, RegAt x g) :
   if h : genericPoint X ∈ U then (exists_fnOf_eq h hg).choose else 0
 
 /- English proof (translation)
-Rewrite using `[fnOnOpen, dif_pos h]`. Conclude with `(exists_fnOf_eq h hg).choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnOf_fnOnOpen {U : X.Opens} {g : X.functionField} (hg : ∀ x ∈ U, RegAt x g) (h : genericPoint X ∈ U) :
     fnOf U h (fnOnOpen U g hg) = g := by
@@ -43,7 +43,7 @@ def secOfRat (B : LB X) (ρ : B.ι → X.functionFieldˣ) (hρ : IsRatSec B ρ) 
     ring
 
 /- English proof (translation)
-The claim follows from `fnOf_fnOnOpen (hg c) h`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_secOfRat {B : LB X} {ρ : B.ι → X.functionFieldˣ} (hρ : IsRatSec B ρ) {g : X.functionField}
     (hg : ∀ c, ∀ x ∈ B.U c, RegAt x (g * ρ c)) (c : B.ι) (h : genericPoint X ∈ B.U c) :
@@ -53,15 +53,15 @@ theorem fnOf_secOfRat {B : LB X} {ρ : B.ι → X.functionFieldˣ} (hρ : IsRatS
 end Sec
 
 /- English proof (translation)
-Introduce `hA k _ X _ p D hX M J _ f w hFS hw`. Establish `hsemi` using `GlobalTheory.T.semiPos_of_isFubiniStudyOfRatFnFamily k X p D M J f w hFS`. Take `⟨ρ, hρ, hreg, hφ⟩` from `hFS`. Set `s : J → M.B.Sec` to `fun j => secOfRat M.B ρ hρ (f j) fun c x hx => (hreg x c hx).1 j`. Establish `hs : ∀ j c (h : genericPoint X ∈ M.B.U c), fnOf _ h ((s j).f c) = f j * ρ c` using `fun j c h => fnOf_secOfRat hρ _ c h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `Fintype.equivFin J`. Use `GlobalTheory.T.isNef_of_semiPos_generated_by_smallSections hA k X p D hX M (Fintype.card J) (fun i => s (e.symm i)) hsemi (fun i => ?_) (fun x => ?_)` and prove the remaining obligations. Introduce `σ y`. Establish `hy : y ∈ ptsIn p σ (M.B.U (pick (M.φ σ).isLB y))` using `mem_pick _ y`. Establish `hg : genericPoint X ∈ M.B.U (pick (M.φ σ).isLB y)` using `gen_mem (mem_ptsIn.1 hy)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ l, secVal p σ (s l) (pick (M.φ σ).isLB y) y = ratVal (f l * (ρ (pick (M.φ σ).isLB y) : X.functionField)) y` using `fun l => by`. Rewrite using `[secVal_apply, ← ratVal_fnOf hy hg, hs]`. Rewrite using `[Weight.nsq, hval, hφ σ y _ hy]`. Take `⟨l, hl⟩` from `(hreg _ _ (mem_ptsIn.1 hy)).2`. Establish `hnn : ∀ m ∈ Finset.univ, 0 ≤ ‖ratVal (f m * (ρ (pick (M.φ σ).isLB y) : X.functionField)) y‖ ^ 2 * Real.exp (2 * w m)` using `fun m _ => by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos : 0 < ∑ m, ‖ratVal (f m * (ρ (pick (M.φ σ).isLB y) : X.functionField)) y‖ ^ 2 * Real.exp (2 * w m)` using `lt_of_lt_of_le (mul_pos (pow_pos (norm_pos_iff.2 (ratVal_ne_zero hl)) 2) (Real.exp_pos _)) (Finset.single_le_sum hnn (Finset.mem_univ l))`. Rewrite using `[Real.exp_neg, Real.exp_log hpos, ← div_eq_mul_inv, div_le_one hpos]`. Use `le_trans ?_ (Finset.single_le_sum hnn (Finset.mem_univ (e.symm i)))` and prove the remaining obligations. Conclude with `le_mul_of_one_le_right (by positivity) (Real.one_le_exp (by linarith [hw (e.symm i)]))`. Take `⟨c, hc⟩` from `exists_chart M.isLB x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `(hreg x c hc).2`. Use `⟨e j, ?_⟩` and prove the remaining obligations. Rewrite using `[e.symm_apply_apply, mem_nonzeroLocus_iff _ c hc, ← unitAt_fnOf_iff hc (gen_mem hc), hs]`. Conclude with `hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNef_of_isFS : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ (M : HermLB p) (J : Type) [Fintype J] (f : J → X.functionField) (w : J → ℝ),

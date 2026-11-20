@@ -19,7 +19,7 @@ namespace GlobalTheory.CompanionTheory.Ar.PB
 def agreeRate (t : ℝ) : ℝ := Real.log (Real.log (1 / t)) ^ 2 / Real.log (1 / t)
 
 /- English proof (translation)
-Establish `hx : 0 < (s ^ 2)⁻¹` using `by positivity`. Establish `h1 : (s ^ 2)⁻¹ ≤ Real.exp ((s ^ 2)⁻¹)` using `by linarith [Real.add_one_le_exp ((s ^ 2)⁻¹)]`. Rewrite using `[Real.exp_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem agree_exp_le_sq {s : ℝ} (hs : 0 < s) : Real.exp (-(s ^ 2)⁻¹) ≤ s ^ 2 := by
   have hx : 0 < (s ^ 2)⁻¹ := by positivity
@@ -29,7 +29,7 @@ theorem agree_exp_le_sq {s : ℝ} (hs : 0 < s) : Real.exp (-(s ^ 2)⁻¹) ≤ s 
     _ = s ^ 2 := inv_inv _
 
 /- English proof (translation)
-Unfold `agreeRate`. Rewrite using `[limRate_log_inv_exp]`. Establish `: 0 < (s ^ 2)⁻¹` using `by positivity`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem agreeRate_nonneg (s : ℝ) (hs : 0 < s) : 0 ≤ agreeRate (Real.exp (-(s ^ 2)⁻¹)) := by
   unfold agreeRate
@@ -38,7 +38,7 @@ theorem agreeRate_nonneg (s : ℝ) (hs : 0 < s) : 0 ≤ agreeRate (Real.exp (-(s
   positivity
 
 /- English proof (translation)
-The claim follows from `|Re.num II t w - Re.num II t' w| ≤ ((D : ℝ) + 1) * (|C'| * |agreeRate t|) := by obtain ⟨C', t₁, ht₁, ht₁0, hb⟩ := GlobalTheory.T.monge_ampere_regularization_log_log_bound hI.convergenceRate D σ S h0 refine ⟨C', t₁, ht₁, ht₁0, ?_⟩ intro II hII K _ ι _ P Re w t t' ht' htt ht have h …`.
+A detailed English derivation is pending.
 -/
 theorem agree_cauchy (hI : Inputs) (D : ℕ) (σ : Type) [Fintype σ] (S : AnSys D σ) (h0 : 0 < S.t₀) :
     ∃ C' t₁ : ℝ, 0 < t₁ ∧ t₁ ≤ S.t₀ ∧
@@ -64,17 +64,17 @@ theorem agree_cauchy (hI : Inputs) (D : ℕ) (σ : Type) [Fintype σ] (S : AnSys
   simp
 
 /- English proof (translation)
-Introduce `hI D σ _ S abelian₂ h0`. Take `⟨C', t₁, ht₁, ht₁0, hc⟩` from `agree_cauchy hI D σ S h0`. Take `⟨hlim, hrate, -, -⟩` from `limRate`. Use `⟨|abelian₂| ^ (D + 1) * (((D : ℝ) + 1) * (|C'| * 4)), min 1 t₁, lt_min one_pos ht₁, ?_⟩` and prove the remaining obligations. Introduce `II hII K _ ι _ P Re`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hδ : Tendsto (fun t => ((D : ℝ) + 1) * (|C'| * |agreeRate t|)) (𝓝[>] 0) (𝓝 0)`. Establish `: Tendsto (fun t => |agreeRate t|) (𝓝[>] 0) (𝓝 0)`. Establish `h2` using `hlim.abs`. Rewrite `h2` using `[abs_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (this.const_mul |C'|).const_mul ((D : ℝ) + 1)`. Establish `hL` using `fun w => tendsto_limUnder_of_cauchy_rate (fun t => Re.num II t w) (fun t => ((D : ℝ) + 1) * (|C'| * |agreeRate t|)) t₁ ht₁ hδ (hc II hII K ι P Re w)`. Use `⟨fun w => (hL w).1, fun s hs hss => ?_⟩` and prove the remaining obligations. Establish `hs1 : s ≤ 1` using `hss.trans (min_le_left _ _)`. Establish `hst : s ≤ t₁` using `hss.trans (min_le_right _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : Real.exp (-(s ^ 2)⁻¹) ≤ t₁`. Use `(agree_exp_le_sq hs).trans ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use `⟨hT.trans ht₁0, fun c hcL => ?_⟩` and prove the remaining obligations. Use `set t := Real.exp (-(s ^ 2)⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ w, |Re.num II t w - Re.limNum II w| ≤ ((D : ℝ) + 1) * (|C'| * |agreeRate t|)` using `fun w => (hL w).2 t (Real.exp_pos _) hT`. Establish `hb` using `(formPoly_sub_bound σ (D + 1) (Re.num II t) (Re.limNum II) _ hM).2 c`. Establish `hr : |agreeRate t| ≤ 4 * s`. Rewrite using `[abs_of_nonneg (agreeRate_nonneg s hs)]`. Conclude with `hrate s hs hs1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsum : (∑ a, |c a|) ^ (D + 1) ≤ |abelian₂| ^ (D + 1)` using `pow_le_pow_left₀ (Finset.sum_nonneg fun _ _ => abs_nonneg _) (hcL.trans (le_abs_self _)) _`. Establish `hD : (0 : ℝ) ≤ (D : ℝ) + 1` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem agreementPos : AgreementPos := by
   intro hI D σ _ S abelian₂ h0

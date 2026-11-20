@@ -18,7 +18,7 @@ def leviElt {d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d
   exact if h : ∃ m : UA σ W.J, IsLevi (W₁ := W₁) H' t 1 m then h.choose else 1
 
 /- English proof (translation)
-Rewrite using `[leviElt, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLevi_leviElt {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {t : (AE F E)ˣ}
     (h : ∃ m : UA σ W.J, IsLevi (W₁ := W₁) H' t 1 m) : IsLevi (W₁ := W₁) H' t 1 (leviElt σ W W₁ H' t) := by
@@ -40,7 +40,7 @@ theorem ctLevi_apply {σ : E →ₐ[F] E} {d d₁ : ℕ} (W : Spc F E d) (W₁ :
     ctLevi σ W W₁ H' μ 𝓕 f h t = ∫ u in 𝓕, f (u.1 * (leviElt σ W W₁ H' t * h)) ∂μ := rfl
 
 /- English proof (translation)
-The claim follows from `isLevi_leviElt ⟨1, by refine ⟨?_, ?_, ?_⟩ <;> simp [mat]⟩`.
+A detailed English derivation is pending.
 -/
 example {σ : E →ₐ[F] E} {d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) :
     IsLevi (σ := σ) (W := W) (W₁ := W₁) H' 1 1 (leviElt σ W W₁ H' 1) :=

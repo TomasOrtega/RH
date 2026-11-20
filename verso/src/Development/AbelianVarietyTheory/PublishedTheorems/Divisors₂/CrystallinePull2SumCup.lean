@@ -19,9 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbDual
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `CatCoh.H1.mk_surjective F a`. Take `⟨b, rfl⟩` from `CatCoh.H1.mk_surjective F b`. Rewrite using `[cup_mk, cup_mk, ← map_add]`. Use `CatCoh.H2.mk_eq_zero.2 ⟨fun T T' φ ↦ -(a.1 T T' φ * b.1 T T' φ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [d1_apply, Submodule.coe_add, Pi.add_apply, cupZ_apply, Z1.comp a, Z1.comp b, map_mul, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cup_add_cup {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (a b : CatCoh.H1 F) : cup F a b + cup F b a = 0 := by
@@ -56,7 +56,7 @@ def tensorForm {n : ℕ} (a : Fin n → prim κ t A) (b : Fin n → prim κ t B)
   ∑ k, (LinearMap.mul R R).compl₁₂ (Module.Dual.eval R _ (a k)) (Module.Dual.eval R _ (b k))
 
 /- English proof (translation)
-Simplify using `[tensorForm, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorForm_apply {n : ℕ} (a : Fin n → prim κ t A) (b : Fin n → prim κ t B) (x : Crys κ t A)
     (y : Crys κ t B) : tensorForm κ t A B a b x y = ∑ k, x (a k) * y (b k) := by
@@ -74,7 +74,7 @@ variable {κ : DividedPowers I} {t : S ⟶ Sp R} {A B : Over S} [GrpObj A] [GrpO
   {κ' : DividedPowers I'} {t' : S' ⟶ Sp R'} {A' B' : Over S'} [GrpObj A'] [GrpObj B']
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun h ↦ LinearMap.ext fun c ↦ by rw [push_apply, show primPull κ t (1 : A ⟶ B) c = 0 from Subtype.ext (pullOver_one c), map_zero] rfl`.
+A detailed English derivation is pending.
 -/
 theorem push_one : push κ t (1 : A ⟶ B) = 0 :=
   LinearMap.ext fun h ↦ LinearMap.ext fun c ↦ by
@@ -82,7 +82,7 @@ theorem push_one : push κ t (1 : A ⟶ B) = 0 :=
     rfl
 
 /- English proof (translation)
-Rewrite using `[← push_congr κ t e, push_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_push {C : Over S} [GrpObj C] (f : A ⟶ B) (g : B ⟶ C) (h : A ⟶ C) [IsMonHom f] [IsMonHom g]
     [IsMonHom h] (e : f ≫ g = h) (x : Crys κ t A) : push κ t g (push κ t f x) = push κ t h x := by
@@ -90,7 +90,7 @@ theorem push_push {C : Over S} [GrpObj C] (f : A ⟶ B) (g : B ⟶ C) (h : A ⟶
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `have e : (fst A B ≫ inl A B) * (snd A B ≫ inr A B) = 𝟙 _ := by ext <;> simp [MonObj.mul_comp]`. Establish `h` using `c.2 _ (fst A B ≫ inl A B) (snd A B ≫ inr A B)`. Rewrite `h` using `[e, ← pullOver_pullOver, ← pullOver_pullOver]`. Conclude with `(IsMor.pullCohomologyOne_id _ c.1).symm.trans h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_prod (c : prim κ t (A ⊗ B)) : c.1 = pullOver κ t (fst A B) (primPull κ t (inl A B) c).1 +
     pullOver κ t (snd A B) (primPull κ t (inr A B) c).1 := by
@@ -100,7 +100,7 @@ theorem prim_prod (c : prim κ t (A ⊗ B)) : c.1 = pullOver κ t (fst A B) (pri
   exact (IsMor.pullCohomologyOne_id _ c.1).symm.trans h
 
 /- English proof (translation)
-The claim follows from `m.dp base := m.base w := by rw [← Over.w (fst A B), ← Category.assoc, h₁, Category.assoc, m.w, ← Category.assoc, Over.w] mul T x y x₀ y₀ hx hy := by refine Limits.pullback.hom_ext ?_ ?_ · change (x₀ * y₀).left ≫ (fst A B).left = ((x * y).left ≫ h) ≫ (fst A B).left rw [Category.as …`.
+A detailed English derivation is pending.
 -/
 theorem grpMor_prod {σ : R →+* R'} {b : S' ⟶ S} {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left}
     (m : GrpMor κ t A κ' t' A' σ b f) (n : GrpMor κ t B κ' t' B' σ b g) {h : (A' ⊗ B').left ⟶ (A ⊗ B).left}
@@ -121,11 +121,11 @@ theorem grpMor_prod {σ : R →+* R'} {b : S' ⟶ S} {f : A'.left ⟶ A.left} {g
       refine n.mul T _ _ _ _ ?_ ?_ <;> simp only [Over.comp_left, hx, hy, Category.assoc, h₂]
 
 /- English proof (translation)
-Take `⟨N, a, c, hc, hφ⟩` from `H`. Establish `k` using `grpMor_prod m n h₁ h₂`. Use `⟨tensorForm κ' t' A' B' (fun i ↦ m.pull (a i)) fun i ↦ n.pull (c i), ⟨N, _, _, (isChern_existsUnique_and_iso R' _ κ' _ _).2 _ _ (pull_isLB hP h) hP' e _ ?_, tensorForm_apply _ _ _ _ _ _⟩, fun x x' y y' hx hy ↦ ?_⟩` and prove the remaining obligations. Use `isChern_pull k.isMor hc` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[IsMor.pullCohomologyTwo_cup]`. Use `congr 1`. Use `congr 1`. Conclude with `(IsMor.pullback1_comp _ _ (m.comp (homMor κ' t' (fst A' B'))).isMor (fun _ ↦ rfl) rfl _).trans (IsMor.pullback1_comp _ _ _ (fun _ ↦ rfl) h₁ _).symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `(IsMor.pullback1_comp _ _ (n.comp (homMor κ' t' (snd A' B'))).isMor (fun _ ↦ rfl) rfl _).trans (IsMor.pullback1_comp _ _ _ (fun _ ↦ rfl) h₂ _).symm`. Simplify using `only [tensorForm_apply, hφ, map_sum, map_mul, hx _, hy _]`.
+A detailed English derivation is pending.
 -/
 theorem IsCorrForm.pull {P : LB (A ⊗ B).left} {φ : Crys κ t A →ₗ[R] Crys κ t B →ₗ[R] R}
     (H : IsCorrForm κ t A B P φ) (hP : P.IsLB) {σ : R →+* R'} {b : S' ⟶ S} {f : A'.left ⟶ A.left}
@@ -153,11 +153,11 @@ theorem IsCorrForm.pull {P : LB (A ⊗ B).left} {φ : Crys κ t A →ₗ[R] Crys
   · simp only [tensorForm_apply, hφ, map_sum, map_mul, hx _, hy _]
 
 /- English proof (translation)
-Use `LinearMap.ext₂ fun x y ↦ ?_` and prove the remaining obligations. Set `E : prim κ t (A ⊗ B) ≃ₗ[R] Cris.H1 κ ((A ⊗ B).hom ≫ t)` to `LinearEquiv.ofTop _ C.allPrim`. Take `⟨Λ, hΛ⟩` from `C.wedge (push κ t (inl A B) x ∘ₗ E.symm.toLinearMap) (push κ t (inr A B) y ∘ₗ E.symm.toLinearMap)`. Establish `key : ∀ (a : prim κ t A) (b : prim κ t B), Λ (cup _ (pullOver κ t (fst A B) a.1) (pullOver κ t (snd A B) b.1)) = x a * y b` using `fun a b ↦ by`. Establish `e₁ : E.symm (pullOver κ t (fst A B) a.1) = primPull κ t (fst A B) a` using `Subtype.ext rfl`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : E.symm (pullOver κ t (snd A B) b.1) = primPull κ t (snd A B) b` using `Subtype.ext rfl`. Simplify using `only [hΛ, LinearMap.comp_apply, LinearEquiv.coe_coe, e₁, e₂, ← push_apply]`. Rewrite using `[push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_push _ _ _ (lift_snd _ _), push_id, push_id, push_one]`. Simplify using the standard rewrite rules. Take `⟨n, a, b, hc, hφ⟩` from `H`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n', a', b', hc', hφ'⟩` from `H'`. Establish `e` using `congrArg Λ (((isChern_existsUnique_and_iso R _ κ _ _).1 _ hP).unique hc hc')`. Simplify `e` using `only [map_sum, key, ← hφ, ← hφ']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsCorrForm.unique (C : CupSquare κ t (A ⊗ B)) {P : LB (A ⊗ B).left} (hP : P.IsLB)
     {φ φ' : Crys κ t A →ₗ[R] Crys κ t B →ₗ[R] R} (H : IsCorrForm κ t A B P φ) (H' : IsCorrForm κ t A B P φ') :
@@ -179,7 +179,7 @@ theorem IsCorrForm.unique (C : CupSquare κ t (A ⊗ B)) {P : LB (A ⊗ B).left}
   simpa only [map_sum, key, ← hφ, ← hφ'] using e
 
 /- English proof (translation)
-The claim follows from `have C := isChern_existsUnique_and_iso R _ κ _ s (C.1 _ hL).unique hz (C.2 _ _ (LB.isLB_triv X) hL ((CechPic.iso_triv_iff L).2 h) _ (isChern_zero _ _ _ fun _ _ ↦ rfl))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_triv {X : Scheme.{0}} {s : X ⟶ Sp R} {L : LB X} (hL : L.IsLB) (h : Triv L) {z : Cris.H2 κ s}
     (hz : IsChern κ s L z) : z = 0 :=
@@ -188,7 +188,7 @@ theorem eq_zero_of_triv {X : Scheme.{0}} {s : X ⟶ Sp R} {L : LB X} (hL : L.IsL
     (isChern_zero _ _ _ fun _ _ ↦ rfl))
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ IsMor.pullCohomologyTwo_cup _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crystallinePull2_sum_cup {X Y : Over S} (f : Y ⟶ X)
     (m : IsMor κ (X.hom ≫ t) κ (Y.hom ≫ t) (RingHom.id R) f.left) {n : ℕ}
@@ -198,17 +198,15 @@ theorem crystallinePull2_sum_cup {X Y : Over S} (f : Y ⟶ X)
   exact Finset.sum_congr rfl fun k _ ↦ IsMor.pullCohomologyTwo_cup _ _ _
 
 /- English proof (translation)
-Take `⟨z, hz, -⟩` from `(isChern_existsUnique_and_iso R _ κ _ ((A ⊗ B).hom ≫ t)).1 _ hP`. Take `⟨n, u, v, rfl⟩` from `C.span z`. Establish `hm : ∀ c, c ∈ prim κ t (A ⊗ B)` using `fun c ↦ C.allPrim ▸ trivial`. Set `l : Cris.H1 κ ((A ⊗ B).hom ≫ t) → prim κ t A` to `fun c ↦ primPull κ t (inl A B) ⟨c, hm c⟩`. Set `r : Cris.H1 κ ((A ⊗ B).hom ≫ t) → prim κ t B` to `fun c ↦ primPull κ t (inr A B) ⟨c, hm c⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `d : ∀ c, c = pullOver κ t (fst A B) (l c).1 + pullOver κ t (snd A B) (r c).1` using `fun c ↦ prim_prod ⟨c, hm c⟩`. Establish `z₁ : ∑ k, cup _ (pullOver κ t (fst A B) (l (u k)).1) (pullOver κ t (fst A B) (l (v k)).1) = 0`. Establish `e` using `eq_zero_of_triv (pull_isLB hP _) h₂ (isChern_pull (homMor κ t (inl A B)).isMor hz)`. Rewrite `e` using `[crystallinePull2_sum_cup]`. Rewrite using `[← crystallinePull2_sum_cup _ (homMor κ t (fst A B)).isMor]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ e).trans (map_zero _)`. Establish `z₂ : ∑ k, cup _ (pullOver κ t (snd A B) (r (u k)).1) (pullOver κ t (snd A B) (r (v k)).1) = 0`. Establish `e` using `eq_zero_of_triv (pull_isLB hP _) h₁ (isChern_pull (homMor κ t (inr A B)).isMor hz)`. Rewrite `e` using `[crystallinePull2_sum_cup]`. Rewrite using `[← crystallinePull2_sum_cup _ (homMor κ t (snd A B)).isMor]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg _ e).trans (map_zero _)`. Use `⟨_, n + n, Fin.append (fun k ↦ l (u k)) fun k ↦ -l (v k), Fin.append (fun k ↦ r (v k)) fun k ↦ r (u k), ?_, tensorForm_apply _ _ _ _ _ _⟩` and prove the remaining obligations. Use `hz using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Fin.sum_univ_add, ← add_zero (_ + _), ← add_zero (0 : Cris.H2 κ _)]`. Use `nth_rw 1 [← z₁, ← z₂]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.append_left, Fin.append_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Use `conv_rhs => rw [d (u k), d (v k)]`. Simplify using `only [Submodule.coe_neg, map_neg, LinearMap.neg_apply, map_add, LinearMap.add_apply]`. Rewrite using `[neg_eq_of_add_eq_zero_right (cup_add_cup _ _ _)]`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_isCorrForm (C : CupSquare κ t (A ⊗ B)) {P : LB (A ⊗ B).left} (hP : P.IsLB)
     (h₁ : Triv (ev P (1 : B ⟶ A) (𝟙 B))) (h₂ : Triv (ev P (𝟙 A) (1 : A ⟶ B))) :
@@ -242,9 +240,9 @@ theorem exists_isCorrForm (C : CupSquare κ t (A ⊗ B)) {P : LB (A ⊗ B).left}
   abel
 
 /- English proof (translation)
-Take `⟨χ, hχ, k⟩` from `H.pull hP (homMor κ t (𝟙 A)) (homMor κ t v) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category.comp_id]) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category.comp_id]) (pull_isLB hP₁ _) e`. Take `⟨χ₁, hχ₁, k₁⟩` from `H₁.pull hP₁ (homMor κ t u) (homMor κ t (𝟙 B₁)) (h := (lift (fst A B₁ ≫ u) (snd A B₁)).left) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category.comp_id]) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category.comp_id]) (pull_isLB hP₁ _) (ChernExists.lbIso_refl (p …`. Take `rfl` from `hχ.unique C (pull_isLB hP₁ _) hχ₁`. Establish `e₁` using `k (push κ t (𝟙 A) x) x (push κ t v y) y (fun _ ↦ rfl) fun _ ↦ rfl`. Establish `e₂` using `k₁ (push κ t u x) x (push κ t (𝟙 B₁) y) y (fun _ ↦ rfl) fun _ ↦ rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : φ (push κ t (𝟙 A) x) (push κ t v y) = φ₁ (push κ t u x) (push κ t (𝟙 B₁) y)` using `e₁.symm.trans e₂`. Rewrite `e₃` using `[push_id, push_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsCorrForm.adjoint {A₁ B₁ : Over S} [GrpObj A₁] [GrpObj B₁] (C : CupSquare κ t (A ⊗ B₁))
     {P : LB (A ⊗ B).left} {P₁ : LB (A₁ ⊗ B₁).left} (hP : P.IsLB) (hP₁ : P₁.IsLB)
@@ -264,7 +262,7 @@ theorem IsCorrForm.adjoint {A₁ B₁ : Over S} [GrpObj A₁] [GrpObj B₁] (C :
   rwa [push_id, push_id] at e₃
 
 /- English proof (translation)
-Take `⟨n, a, b, hc, hφ⟩` from `H`. Use `⟨_, ⟨n, fun k ↦ primPull κ t (fst A B) (a k), fun k ↦ primPull κ t (snd A B) (b k), hc, rfl⟩, fun X Y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[wedgeForm_apply, hφ, hφ, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ congrArg₂ (· - ·) rfl (mul_comm _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCorrForm.isPolForm {P : LB (A ⊗ B).left} {φ : Crys κ t A →ₗ[R] Crys κ t B →ₗ[R] R}
     (H : IsCorrForm κ t A B P φ) : ∃ ψ, IsPolForm κ t (A ⊗ B) P ψ ∧ ∀ X Y, ψ X Y =
@@ -276,9 +274,9 @@ theorem IsCorrForm.isPolForm {P : LB (A ⊗ B).left} {φ : Crys κ t A →ₗ[R]
   exact Finset.sum_congr rfl fun k _ ↦ congrArg₂ (· - ·) rfl (mul_comm _ _)
 
 /- English proof (translation)
-Take `⟨n, a, b, hc, rfl⟩` from `H`. Use `⟨n + n, Fin.append a fun k ↦ -b k, Fin.append b a, ?_, fun x y ↦ ?_⟩` and prove the remaining obligations. Use `(congrArg (IsChern κ _ _) ?_).mpr (PolAdjoint.isChern_cube hc (fst A A) (snd A A))` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_add, Fin.append_left, Fin.append_right, ← Finset.sum_add_distrib, Submodule.coe_neg, map_neg, LinearMap.neg_apply]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ by rw [neg_eq_of_add_eq_zero_right (cup_add_cup _ _ _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [wedgeForm_apply, Fin.sum_univ_add, Fin.append_left, Fin.append_right, map_neg, neg_mul, sub_eq_add_neg, Finset.sum_add_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem isCorrForm_lam [IsCommMonObj A] {L : LB A.left} {ψ : LinearMap.BilinForm R (Crys κ t A)}
     (H : IsPolForm κ t A L ψ) : IsCorrForm κ t A A (abelian₂ A L) ψ := by
@@ -292,11 +290,11 @@ theorem isCorrForm_lam [IsCommMonObj A] {L : LB A.left} {ψ : LinearMap.BilinFor
       sub_eq_add_neg, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `⟨eq_top_iff.2 fun c _ ↦ ?_, fun z ↦ ?_, fun X Y ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `h₁.2 c`. Conclude with `m.pullback_mem_primitive (C.allPrim ▸ trivial)`. Take `⟨z, rfl⟩` from `h₂.2 z`. Take `⟨n, a, c, rfl⟩` from `C.span z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, _, _, (map_sum _ _ _).trans (Finset.sum_congr rfl fun k _ ↦ IsMor.pullCohomologyTwo_cup _ _ _)⟩`. Take `⟨Λ, hΛ⟩` from `C.wedge (X ∘ₗ m.isMor.pull1) (Y ∘ₗ m.isMor.pull1)`. Use `⟨Λ ∘ₗ (LinearEquiv.ofBijective _ h₂).symm.toLinearMap, fun c d ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `h₁.2 c`. Take `⟨d, rfl⟩` from `h₁.2 d`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsMor.pullCohomologyTwo_cup]`. Conclude with `(congrArg Λ ((LinearEquiv.ofBijective _ h₂).symm_apply_apply _)).trans (hΛ c d)`.
+A detailed English derivation is pending.
 -/
 theorem CupSquare.of_bijective {J : Ideal R} {κ₁ : DividedPowers J} {u : S' ⟶ Sp R} (C : CupSquare κ t A)
     {b : S' ⟶ S} {f : A'.left ⟶ A.left} (m : GrpMor κ t A κ₁ u A' (RingHom.id R) b f)
@@ -315,7 +313,7 @@ theorem CupSquare.of_bijective {J : Ideal R} {κ₁ : DividedPowers J} {u : S' �
     exact (congrArg Λ ((LinearEquiv.ofBijective _ h₂).symm_apply_apply _)).trans (hΛ c d)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Limits.pullback.lift ((fst A' B').left ≫ f) ((snd A' B').left ≫ g) (by rw [Category.assoc, Category.assoc, m.1.w, n.1.w, ← Category.assoc, ← Category.assoc, Over.w, Over.w]), Limits.pullback.lift_fst _ _ _, Limits.pullback.lift_snd _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_prod_pullback {b : S' ⟶ S} {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left}
     (m : IsGrpPullback A' A b f) (n : IsGrpPullback B' B b g) : ∃ h : (A' ⊗ B').left ⟶ (A ⊗ B).left,
@@ -327,9 +325,9 @@ theorem exists_prod_pullback {b : S' ⟶ S} {f : A'.left ⟶ A.left} {g : B'.lef
 omit [GrpObj A] [GrpObj B] [GrpObj A'] [GrpObj B'] in
 
 /- English proof (translation)
-Establish `p : IsPullback (fst A B).left (snd A B).left A.hom B.hom` using `IsPullback.of_hasPullback _ _`. Establish `p' : IsPullback (fst A' B').left (snd A' B').left A'.hom B'.hom` using `IsPullback.of_hasPullback _ _`. Establish `q` using `p'.paste_horiz m`. Rewrite `q` using `[← h₁, ← n.w]`. Establish `r` using `(IsPullback.of_right q h₂ p).paste_vert n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `r` using `[Over.w, Over.w]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isPullback_prod {b : S' ⟶ S} {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left}
     (m : IsPullback f A'.hom A.hom b) (n : IsPullback g B'.hom B.hom b) {h : (A' ⊗ B').left ⟶ (A ⊗ B).left}
@@ -351,7 +349,7 @@ variable {A B : Over (Sp R)} [GrpObj A] [GrpObj B] {g g' : ℕ}
 omit [GrpObj A] [GrpObj B] in
 
 /- English proof (translation)
-Establish `: SmoothOfRelativeDimension g' (Limits.pullback.fst A.hom B.hom)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g').of_isPullback (IsPullback.of_hasPullback A.hom B.hom).flip hg'`. Rewrite using `[Over.tensorObj_hom]`. Conclude with `smoothOfRelativeDimension_comp g' g _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_prod (hg : SmoothOfRelativeDimension g A.hom) (hg' : SmoothOfRelativeDimension g' B.hom) :
     SmoothOfRelativeDimension (g' + g) (A ⊗ B).hom := by
@@ -362,7 +360,7 @@ theorem smooth_prod (hg : SmoothOfRelativeDimension g A.hom) (hg' : SmoothOfRela
   exact smoothOfRelativeDimension_comp g' g _ _
 
 /- English proof (translation)
-Take `⟨h0, -, -, -, e, he⟩` from `H R A g hA hg`. Use `⟨h0, fun z ↦ ?_, PolAdjoint.exists_wedge_functional H hA hg⟩` and prove the remaining obligations. Take `⟨n, a, b, hab⟩` from `PolExists.exists_sum_wedge (e.symm z)`. Conclude with `⟨n, a, b, by rw [← e.apply_symm_apply z, ← hab, map_sum]; exact Finset.sum_congr rfl fun k _ ↦ he _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cupSquare_of_free (H : AbelianDeRham.Free) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) : CupSquare (dp0 R) (𝟙 _) A := by
@@ -372,21 +370,21 @@ theorem cupSquare_of_free (H : AbelianDeRham.Free) (hA : IsAbelianScheme A)
   exact ⟨n, a, b, by rw [← e.apply_symm_apply z, ← hab, map_sum]; exact Finset.sum_congr rfl fun k _ ↦ he _ _⟩
 
 /- English proof (translation)
-Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `gAB` using `smooth_prod hg hg'`. Take `⟨ψ, hψ, e⟩` from `hφ.isPolForm`. Take `⟨iso, perf⟩` from `H.2.2.2.2 R _ _ hAB gAB P hP.isLB ψ hψ`. Establish `perf` using `perf hP.kTriv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, hrk⟩` from `AbelianDeRham.Free.prim H.1 hAB gAB`. Take `⟨-, ⟨N, hN⟩, _, _, hF⟩` from `H.2.1 R _ _ hAB gAB`. Establish `lag` using `PolExistsRing.mem_of_annihilates_dual ψ (PrimitiveSubmodule (A ⊗ B)) N hN _ hrk hF iso`. Establish `a₁ : ∀ x, push (dp0 R) (𝟙 _) (fst A B) (push (dp0 R) (𝟙 _) (inl A B) x) = x` using `fun x ↦ by`. Rewrite using `[push_push _ _ _ (lift_fst _ _), push_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `a₂ : ∀ x, push (dp0 R) (𝟙 _) (snd A B) (push (dp0 R) (𝟙 _) (inl A B) x) = 0` using `fun x ↦ by`. Rewrite using `[push_push _ _ _ (lift_snd _ _), push_one]`. Both sides reduce to the same expression. Establish `b₁ : ∀ y, push (dp0 R) (𝟙 _) (fst A B) (push (dp0 R) (𝟙 _) (inr A B) y) = 0` using `fun x ↦ by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[push_push _ _ _ (lift_fst _ _), push_one]`. Both sides reduce to the same expression. Establish `b₂ : ∀ y, push (dp0 R) (𝟙 _) (snd A B) (push (dp0 R) (𝟙 _) (inr A B) y) = y` using `fun x ↦ by`. Rewrite using `[push_push _ _ _ (lift_snd _ _), push_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `l : ∀ x Y, ψ (push (dp0 R) (𝟙 _) (inl A B) x) Y = φ x (push (dp0 R) (𝟙 _) (snd A B) Y)` using `fun x Y ↦ by`. Rewrite using `[e, a₁, a₂, map_zero, sub_zero]`. Establish `r : ∀ X y, ψ X (push (dp0 R) (𝟙 _) (inr A B) y) = φ (push (dp0 R) (𝟙 _) (fst A B) X) y` using `fun X y ↦ by`. Rewrite using `[e, b₁, b₂, map_zero, LinearMap.zero_apply, sub_zero]`. Use `⟨⟨⟨(injective_iff_map_eq_zero _).2 fun x hx ↦ ?_, fun k ↦ ?_⟩, ⟨(injective_iff_map_eq_zero _).2 fun y hy ↦ ?_, fun k ↦ ?_⟩⟩, fun x ↦ ⟨fun hx y hy ↦ ?_, fun hx ↦ ?_⟩, fun y ↦ ⟨fun hy x hx ↦ ?_, fun hy ↦ ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← a₁ x, (injective_iff_map_eq_zero _).1 perf.bijective_left.1 (push (dp0 R) (𝟙 _) (inl A B) x) (LinearMap.ext fun Y ↦ by rw [l, hx]; rfl), map_zero]`. Take `⟨X, hX⟩` from `perf.bijective_left.2 (k ∘ₗ push (dp0 R) (𝟙 _) (snd A B))`. Conclude with `⟨_, LinearMap.ext fun y ↦ by rw [← r, hX, LinearMap.comp_apply, b₂]⟩`. Rewrite using `[← b₂ y, (injective_iff_map_eq_zero _).1 perf.bijective_right.1 (push (dp0 R) (𝟙 _) (inr A B) y) (LinearMap.ext fun X ↦ (r X y).trans (LinearMap.congr_fun hy _)), map_zero]`. Take `⟨Y, hY⟩` from `perf.bijective_right.2 (k ∘ₗ push (dp0 R) (𝟙 _) (fst A B))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, LinearMap.ext fun x ↦ (l x Y).symm.trans ((LinearMap.congr_fun hY _).trans (congrArg k (a₁ x)))⟩`. Rewrite using `[← b₂ y, ← l]`. Conclude with `iso _ (push_mem_Fil _ hx) _ (push_mem_Fil _ hy)`. Rewrite using `[← a₁ x]`. Conclude with `push_mem_Fil _ (lag _ fun Y hY ↦ (l x Y).trans (hx _ (push_mem_Fil _ hY)))`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← b₂ y, ← l]`. Conclude with `iso _ (push_mem_Fil _ hx) _ (push_mem_Fil _ hy)`. Rewrite using `[← b₂ y]`. Use `push_mem_Fil _ (lag _ fun X hX ↦ ?_)` and prove the remaining obligations. Rewrite using `[e, b₁, b₂, map_zero, LinearMap.zero_apply, hy _ (push_mem_Fil _ hX), sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCorrForm.perfect (H : AbelianDeRham) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (hB : IsAbelianScheme B) (hg' : SmoothOfRelativeDimension g' B.hom) {P : LB (A ⊗ B).left}

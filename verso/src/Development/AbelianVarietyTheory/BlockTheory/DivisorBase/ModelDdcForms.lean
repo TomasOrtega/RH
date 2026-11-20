@@ -114,7 +114,7 @@ def PoincareFormStatement : Prop :=
                 formAt ψ (poincarePot K L s c) z w ≤ C * modelAt σ z w
 
 /- English proof (translation)
-Unfold `gradSqAt`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem gradSqAt_nonneg {e : ℕ} {X : Type} [TopologicalSpace X]
     (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (f : X → ℝ) (z w : Fin e → ℂ) :
@@ -124,7 +124,7 @@ theorem gradSqAt_nonneg {e : ℕ} {X : Type} [TopologicalSpace X]
   positivity
 
 /- English proof (translation)
-Simplify using `[rComp, normSec, logNormSec, Real.log_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rComp_eq {X : Type} [TopologicalSpace X] {m : ℕ} (L : Fin m → LocPot X)
     (s : Fin m → X → X → ℂ) (i : Fin m) (y : X) :
@@ -132,7 +132,7 @@ theorem rComp_eq {X : Type} [TopologicalSpace X] {m : ℕ} (L : Fin m → LocPot
   simp [rComp, normSec, logNormSec, Real.log_pow]
 
 /- English proof (translation)
-Simplify using `[rTot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rTot_zero {X : Type} [TopologicalSpace X] (L : Fin 0 → LocPot X)
     (s : Fin 0 → X → X → ℂ) (y : X) : rTot L s y = Real.exp 1 := by

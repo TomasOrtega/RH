@@ -21,7 +21,7 @@ namespace GlobalTheory.LevelRatio
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.ConstFam GlobalTheory.ThetaTranslate
 
 /- English proof (translation)
-Set `i` to `algebraMap ℂ⸨X⸩ (AlgebraicClosure ℂ⸨X⸩)`. Use `⟨AlgebraicClosure ℂ⸨X⸩, inferInstance, inferInstance, (i.comp (FractionRing.algEquiv ℂ⟦X⟧ ℂ⸨X⸩).toRingEquiv.toRingHom).toAlgebra, i, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg i ((FractionRing.algEquiv ℂ⟦X⟧ ℂ⸨X⸩).commutes x).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_closure : ∃ (F : Type) (_ : Field F) (_ : IsAlgClosed F) (_ : Algebra (FractionRing ℂ⟦X⟧) F)
     (i : ℂ⸨X⸩ →+* F), i.comp (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) = toF (R := ℂ⟦X⟧) F := by
@@ -31,9 +31,9 @@ theorem exists_closure : ∃ (F : Type) (_ : Field F) (_ : IsAlgClosed F) (_ : A
   exact congrArg i ((FractionRing.algEquiv ℂ⟦X⟧ ℂ⸨X⸩).commutes x).symm
 
 /- English proof (translation)
-Establish `e : spMap (f'.comp f) = spMap f' ≫ spMap f`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨h'.1.trans h.1, by rw [h'.2.1, h.2.1, e, Category.assoc], fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(val_corr hJ (h'.2.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (h.2.2 χ) _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qkExt_comp {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' F'' : Type} [Field F] [Field F']
     [Field F''] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] [Algebra (FractionRing R) F'']
@@ -47,7 +47,7 @@ theorem qkExt_comp {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' F''
   rw [e, Category.assoc]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨i, HEq.rfl, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_chart_heq {S : Scheme.{0}} {G : Over S} [GrpObj G] {L L' : RigLB G} (h : L = L') (i : L'.L.ι) :
     ∃ j : L.L.ι, HEq j i ∧ L.L.U j = L'.L.U i := by
@@ -55,7 +55,7 @@ theorem exists_chart_heq {S : Scheme.{0}} {G : Over S} [GrpObj G] {L L' : RigLB 
   exact ⟨i, HEq.rfl, rfl⟩
 
 /- English proof (translation)
-Establish `: Flat (spMap f)` using `inferInstance`. Establish `: Surjective (spMap f)` using `⟨fun y => ⟨default, Subsingleton.elim _ _⟩⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epi_spMap_field {K F : Type} [Field K] [Field F] (f : K →+* F) : Epi (spMap f) := by
   have : Flat (spMap f) := inferInstance
@@ -63,7 +63,7 @@ theorem epi_spMap_field {K F : Type} [Field K] [Field F] (f : K →+* F) : Epi (
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Establish `h : toF (R` using `ℂ⟦X⟧) F PowerSeries.X = i (HahnSeries.single 1 1) := by`. Rewrite using `[← hi, RingHom.comp_apply, LaurentSeries.coe_algebraMap, HahnSeries.ofPowerSeries_X]`. Rewrite using `[h, ← map_zpow₀, ← RatFunc.single_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_single_one {F : Type} [Field F] [Algebra (FractionRing ℂ⟦X⟧) F] {i : ℂ⸨X⸩ →+* F}
     (hi : i.comp (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) = toF (R := ℂ⟦X⟧) F) (n : ℤ) :
@@ -79,11 +79,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRi
   {Λ : GtAn a} {Ξ : ConstPts W Λ} {Φ : GenPts Λ.A W.t gen}
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_expandsAt hW hL.globalFns hk W.P.U (Λ.ε α) s₀`. Take `⟨f, σ, hf, hσ⟩` from `hm m le_rfl`. Establish `hX : toF (R` using `ℂ⟦X⟧) F (PowerSeries.X ^ m) ≠ 0 := by`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ (toF_X_ne_zero (k := ℂ) F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ, f, (toF (R := ℂ⟦X⟧) F (PowerSeries.X ^ m))⁻¹, hσ, fun x => ?_, fun q jL j h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Rewrite using `[hf.resF_eq F hL.globalFns hk x, smul_smul, inv_mul_cancel₀ hX, one_smul]`. Establish `hth` using `((ArcThetaSpaces.sections_theta hL hL2 E H D l c O β b a Λ).1 k α hk).1 s₀`. Establish `h₄` using `ArcPts.secVal_eq_mul_sval_sig hL hL2 E H D l Xo c O β Y b a χ W Λ Ξ Φ k α _ _ σ hΦ hth (ConstFamValues.main hL hL2 E H D l Xo c O β Y b a χ W Λ Ξ hW k α s₀ m f σ hf hσ) q jL j h₁ h₃`. Establish `h₅ : FormalValue.secVal (S` using `F) W.P.U.toUnifPre σ (spMap i ≫ q.left) jL = i (FormalValue.secVal (S := ℂ⸨X⸩) W.P.U.toUnifPre σ q.left jL) := FormalValue.valR_spMap i _ _ (FormalValue.top_le_secChart (h₂ ▸ h₃)) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₅, h₄, map_mul, map_single_one hi, zpow_natCast, ← map_pow, inv_mul_cancel_left₀ hX]`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral (hL : Laws) (hL2 : Laws2) (hW : WitData a W.P.D W.P.oD W.φ W.he W.w W.e) (hΦ : Ξ.IsGen Φ)
     {F : Type} [Field F] [Algebra (FractionRing ℂ⟦X⟧) F] {i : ℂ⸨X⸩ →+* F}
@@ -113,7 +113,7 @@ theorem exists_integral (hL : Laws) (hL2 : Laws2) (hW : WitData a W.P.D W.P.oD W
 omit [StarRing (𝓞 E)] [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨t, HEq.rfl, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_heq_constFam (hG : GlobalFnsSt) (hW : WitData a W.P.D W.P.oD W.φ W.he W.w W.e) (F : Type) [Field F]
     [Algebra (FractionRing ℂ⟦X⟧) F] {k : ℕ} (hk : 1 ≤ k) {x x' : a.D₀.X} (h : x = x') (t : SecBMod a.D₀ k x) :
@@ -122,7 +122,7 @@ theorem exists_heq_constFam (hG : GlobalFnsSt) (hW : WitData a W.P.D W.P.oD W.φ
   exact ⟨t, HEq.rfl, rfl⟩
 
 /- English proof (translation)
-Use `HahnSeries.ext (funext fun n => (h.2 n).trans ?_)` and prove the remaining obligations. Rewrite using `[AnArc.coeff_FSumShift]`. Use `finsum_cond_eq_sum_of_cond_iff _ fun {m} _ => ?_` and prove the remaining obligations. Rewrite using `[AnArc.mem_level, eq_sub_iff_add_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_FSumShift {O₁ : Type} [CommRing O₁] [StarRing O₁] {A : AnArc O₁} {k : ℕ} [NeZero k] {α : A.X}
     {th : (Fin A.gB → ℂ) → ℂ} {la : A.La} {z : A.V} {S : ℂ⸨X⸩} (h : IsFShift A k α th la z S) :
@@ -133,7 +133,7 @@ theorem eq_FSumShift {O₁ : Type} [CommRing O₁] [StarRing O₁] {A : AnArc O�
   rw [AnArc.mem_level, eq_sub_iff_add_eq]
 
 /- English proof (translation)
-Establish `h₁` using `Φ.val k (α + la.y) _ ((Λ.A.Theta k _).smul_mem κ (Λ.A.shift_mem_Theta hth la)) z j (by rw [fib, pullback.lift_fst]; exact hj)`. Rewrite using `[h₁, eq_FSumShift hS, Λ.A.FSumShift_eq k la (Int.mul_ediv_cancel' (hd α)).symm, AnArc.FSum_smul, ← HahnSeries.single_zero_mul_eq_smul]`. Establish `h₂ : (HahnSeries.single (Λ.A.be la.y α / k) (Complex.exp (Λ.A.lin la z)) : ℂ⸨X⸩) = HahnSeries.single (Λ.A.be la.y α / k) 1 * HahnSeries.single 0 (Complex.exp (Λ.A.lin la z))`. Rewrite using `[HahnSeries.single_mul_single, add_zero, _root_.one_mul]`. Rewrite using `[h₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -160,35 +160,33 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ Φ yF k p₀ ξ la p hΦ hyF hlev hrep hp`. Establish `hG` using `hL.globalFns`. Establish `hkM : 1 ≤ k ∧ k ∣ l.M'`. Break down `hlev with ⟨rfl, -⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `⟨l.A_pos, Nat.dvd_lcm_right _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨le_trans (by norm_num) l.three_le, Nat.dvd_lcm_left _ _⟩`. Take `⟨hk, hkM⟩` from `hkM`. Use `haveI : NeZero k := ⟨Nat.one_le_iff_ne_zero.1 hk⟩`. Establish `hdv : ∀ y z, (k : ℤ) ∣ a.be y z` using `fun y z => ((Int.natCast_dvd_natCast.2 hkM).mul_left 2).trans (a.be_dvd y z)`. Establish `hd : ∀ α, (k : ℤ) ∣ Λ.A.be la.y α` using `fun α => by rw [Λ.be_eq]; exact hdv _ _`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, s2, s3, s4, s5, s6⟩` from `W.spec`. Establish `hW : WitData a W.P.D W.P.oD W.φ W.he W.w W.e` using `⟨s1, s2, s3, s4, s5, fun F _ _ _ _ uF h₁ h₂ => (s6 F uF h₁ h₂).1⟩`. Take `⟨F, _, _, _, i, hi⟩` from `exists_closure`. Set `f : ℂ →+* F` to `constF ℂ F`. Use `letI : Algebra (FractionRing ℂ) F := (f.comp (algebraMap (FractionRing ℂ) ℂ)).toAlgebra`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hF : ∀ x, algebraMap (FractionRing ℂ) F (algebraMap ℂ _ x) = constF ℂ F x` using `fun x => congrArg f (IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ x).symm`. Take `⟨q₁, hq₁, -⟩` from `TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing ℂ) ℂ) (RingHom.comp_id _) p₀`. Take `⟨q, hq, -⟩` from `TorusExt.existsUnique_qkExt a.bimult f rfl q₁`. Take `⟨hy₁, hg₁⟩` from `hrep q₁ hq₁`. Take `⟨pp, hppy, hpp⟩` from `ThetaTranslate.exists_transport hW hF hG q (hdv q.y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbase : spMap i ≫ gen = jFK (R` using `ℂ⟦X⟧) F ≫ jK ℂ⟦X⟧ := by`. Use `Eq.trans ?_ (TF_hom (R := ℂ⟦X⟧) F).symm` and prove the remaining obligations. Rewrite using `[← hi, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `ρ : TF (R` to `ℂ⟦X⟧) F ⟶ Over.mk gen := Over.homMk (spMap i) hbase`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, hΨ⟩` from `exists_ptsEquiv W.P.U.toUnifPre F`. Take `⟨x, hx⟩` from `Ψ.surjective (ρ ≫ p)`. Establish `hxl : x.left ≫ W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (jK ℂ⟦X⟧) = (ρ ≫ p).left`. Rewrite using `[← hx, hΨ]`. Establish `hA : W.P.ToA F k pp x` using `(s6 F _ hF rfl).2 (spMap i ≫ yF) (by rw [Category.assoc, hyF, ← Category.assoc, hbase, Category.assoc]) k p₀ ξ hlev q pp x (qkExt_comp hq₁ hq) hppy hpp (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← hp, ← Category.assoc (spMap i), ← Category.assoc W.P.U.gen.inv.left, ← Category.assoc, hxl]`. Use the proof step `rfl)`. Take `⟨hpow, hcross⟩` from `cross_secVal W.P.U F hG hL.kerPow hk pp x (ρ ≫ p) hA hxl`. Use `⟨?_, ⟨NeZero.ne k, hd⟩, ?_⟩` and prove the remaining obligations. Use `epi_spMap_field i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Over.OverMorphism.ext ((cancel_epi (spMap i)).1 ?_)` and prove the remaining obligations. Rewrite `hpow` using `[← MonObj.comp_pow, ← MonObj.comp_one ρ]`. Conclude with `congrArg (fun q => q.left) hpow`. Take `⟨v₀, hv₀⟩` from `exists_normalisation (D := a.D₀) (F := ℂ) k q₁.g.b`. Take `⟨v, hv⟩` from `exists_normalisation (D := W.P.D.toPre) (F := F) k pp.g.b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, hκ, -, hphi⟩` from `phiRel_transport_constFam hG hW F f hk q₁ q pp hq hppy hpp v₀ hv₀ v hv`. Take `⟨κ₀, hκ₀, htr⟩` from `TranslateShift.fn_translate hL hL2 E H D l c O β b a Λ k la q₁ v₀ hy₁ hg₁ hv₀`. Establish `step : ∀ α, ∀ th ∈ Λ.A.Theta k α, ∃ (σ σ' : H0 W.P.U.LG.L k) (g g' : ∀ x, SecBMod W.P.D.toPre k x) (s s' : Fam W.P.D.toPre F k) (e e' : F), (∀ n, W.P.U.toUnifPre.ExpandsAt n k σ g) ∧ (∀ n, W.P.U.toUnifPre.ExpandsAt n k σ' g') ∧ (∀ x, famComp W.P.D.toPre F k x s = e • resF W.P.D.t …` using `F) W.P.U.toUnifPre σ (spMap i ≫ q.left) jL = i (ArcPts.sval (Φ.sig k α th) (fib q) j)) ∧ ∀ (z : Λ.A.V) (jL : W.P.U.LG.L.ι) (j : W.t.PP.L.ι), HEq jL j → W.P.U.LG.L.U jL = W.t.PP.L.U j → ⊤ ≤ (Φ.x z).left ⁻¹ᵁ W.t.PP.L.U j → ∀ S, IsFShift Λ.A k α th la z S → e' * FormalValue.secVal ( …`. Introduce `α th hth`. Take `⟨s₀, rfl, -⟩` from `((ArcThetaSpaces.sections_theta hL hL2 E H D l c O β b a Λ).1 k α hk).2 th hth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_isPhiTranslate hG toF_surjective_self q₁ hv₀ (Λ.ε α) s₀`. Take `⟨t', h₁, h₂⟩` from `exists_heq_constFam hG hW F hk (show Λ.ε α + q₁.y = Λ.ε (α + la.y) by rw [hy₁, map_add]) t`. Take `⟨σ, g, e, a₁, a₂, a₃⟩` from `exists_integral hL hL2 hW hΦ hi hk α s₀`. Take `⟨σ', g', e', b₁, b₂, b₃⟩` from `exists_integral hL hL2 hW hΦ hi hk (α + la.y) t'`. Use `⟨σ, σ', g, g', _, _, e, κ * toF (R := ℂ⟦X⟧) F PowerSeries.X ^ (a.be q₁.y (Λ.ε α) / k) * e', a₁, b₁, a₂, fun x => ?_, hphi (Λ.ε α) s₀ t ht, a₃, fun z jL j c₁ c₂ c₃ S hS => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, h₂, b₂, smul_smul]`. Establish `h₃` using `congrArg i (sval_shift (Φ := Φ) hd hth κ₀ z c₃ hS)`. Rewrite using `[_root_.mul_assoc _ e', b₃ _ jL j c₁ c₂ c₃, htr α s₀ t t' ht h₁, hy₁, ← Λ.be_eq, ← map_single_one hi]`. Rewrite `h₃` using `[map_mul, map_mul, map_mul _ _ S]`. Take the linear combination `κ * h₃`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `α α' th hth th' hth' z S S' j hS hS' hj`. Take `⟨σ₁, σ₁', g₁, g₁', t₁, t₁', e₁, e₁', a₁, a₂, a₃, a₄, a₅, a₆, a₇⟩` from `step α th hth`. Take `⟨σ₂, σ₂', g₂, g₂', t₂, t₂', e₂, e₂', b₁, b₂, b₃, b₄, b₅, b₆, b₇⟩` from `step α' th' hth'`. Take `⟨j', hj'⟩` from `exists_chart W.t.PP.isLB ((Φ.x z).left (IsLocalRing.closedPoint ℂ⸨X⸩))`. Use `replace hj' := (top_le_iff_mem (F := ℂ⸨X⸩) (Φ.x z).left _ _).2 hj'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨jL, c₁, c₂⟩` from `exists_chart_heq W.P.bundle j`. Take `⟨jL', c₁', c₂'⟩` from `exists_chart_heq W.P.bundle j'`. Establish `e₀ : (ρ ≫ Φ.x z) * (ρ ≫ p) = ρ ≫ (Φ.x z * p)` using `(MonObj.comp_mul _ _ _).symm`. Establish `key` using `hcross v hv σ₁ σ₂ σ₁' σ₂' g₁ g₂ g₁' g₂' t₁ t₂ t₁' t₂' e₁ e₂ e₁' e₂' a₁ b₁ a₂ b₂ a₃ b₃ a₄ b₄ a₅ b₅ (ρ ≫ Φ.x z) jL jL' (by rw [e₀, c₂]; exact FormalValue.top_le_comp hj (spMap i)) (by rw [c₂']; exact FormalValue.top_le_comp hj' (spMap i))`. Rewrite `key` using `[e₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `e₁ * FormalValue.secVal (S := F) W.P.U.toUnifPre σ₁ (spMap i ≫ (Φ.x z * p).left) jL * (e₂' * FormalValue.secVal (S := F) W.P.U.toUnifPre σ₂' (spMap i ≫ (Φ.x z).left) jL') = e₂ * FormalValue.secVal (S := F) W.P.U.toUnifPre σ₂ (spMap i ≫ (Φ.x z * p).left) jL * (e₁' * FormalValue.se …`. Rewrite `key` using `[a₆ _ jL j c₁ c₂ hj, b₆ _ jL j c₁ c₂ hj]`. Establish `d₁` using `a₇ z jL' j' c₁' c₂' hj' S hS`. Establish `d₂` using `b₇ z jL' j' c₁' c₂' hj' S' hS'`. Establish `hne : κ * i (HahnSeries.single 0 κ₀ * Φ.τ z j' ^ k) ≠ 0` using `mul_ne_zero hκ ((map_ne_zero i).2 (mul_ne_zero (HahnSeries.single_ne_zero hκ₀) (pow_ne_zero _ ((Φ.frm z).1 j' hj').ne_zero)))`.
-
-Use `i.injective (mul_left_cancel₀ hne ?_)` and prove the remaining obligations. Rewrite using `[map_mul i _ S', map_mul i _ S]`. Take the linear combination `i (HahnSeries.single 0 (Complex.exp (Λ.A.lin la z))) * key - i (ArcPts.sval (Φ.sig k α th) (fib (Φ.x z * p)) j) * d₂ + i (ArcPts.sval (Φ.sig k α' th') (fib (Φ.x z * p)) j) * d₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levelPt_of_rep : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (Ξ : ConstPts W Λ) (Φ : GenPts Λ.A W.t gen) (yF : Sp ℂ⸨X⸩ ⟶ Xo.XF c) (k : ℕ) (p₀ : Out.QkPt a.D₀ (FractionRing ℂ) k) (ξ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) (la : Λ.A.La) (p : Over.mk gen ⟶ W.t.G), Ξ.IsGen Φ → yF ≫ Y.j = gen ≫ χ → ((k = l.A ∧ ∃ v, HEq p₀ (a.etaA v) ∧ ξ = Y.oF.etaA v) ∨ (k = l.M ∧ ∃ v ∈ idealPart D l, HEq p₀ (a.eta v) ∧ ξ = Y.oF.eta v)) → Λ.Rep k p₀ la → p.left ≫ W.m.φ = yF ≫ ξ.left ≫ Y.m.φ → Φ.LevelPt k p la := by
   intro hL hL2 E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ Φ yF k p₀ ξ la p hΦ hyF hlev hrep hp

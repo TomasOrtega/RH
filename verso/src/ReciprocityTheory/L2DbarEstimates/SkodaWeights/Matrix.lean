@@ -27,7 +27,7 @@ def ProjPerpNormStatement : Prop :=
 variable {p : ℕ}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hg`. Unfold `sqNorm`. Conclude with `lt_of_lt_of_le (Complex.normSq_pos.mpr hi) (Finset.single_le_sum (fun j _ => Complex.normSq_nonneg (g j)) (Finset.mem_univ i))`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sqNorm_pos {g : Fin p → ℂ} (hg : g ≠ 0) : 0 < sqNorm g := by
   obtain ⟨i, hi⟩ := Function.ne_iff.mp hg
@@ -36,7 +36,7 @@ theorem sqNorm_pos {g : Fin p → ℂ} (hg : g ≠ 0) : 0 < sqNorm g := by
     (Finset.single_le_sum (fun j _ => Complex.normSq_nonneg (g j)) (Finset.mem_univ i))
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, sqNorm, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem star_dotProduct_self (g : Fin p → ℂ) : star g ⬝ᵥ g = ((sqNorm g : ℝ) : ℂ) := by
   simp only [dotProduct, Pi.star_apply, sqNorm, Complex.ofReal_sum]
@@ -45,16 +45,16 @@ theorem star_dotProduct_self (g : Fin p → ℂ) : star g ⬝ᵥ g = ((sqNorm g 
   rfl
 
 /- English proof (translation)
-Simplify using `[projPerp, Matrix.sub_apply, Matrix.one_apply, vecMulVec_apply, Complex.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projPerp_apply (g : Fin p → ℂ) (i l : Fin p) :
     projPerp g i l = (if i = l then 1 else 0) - ((sqNorm g : ℝ) : ℂ)⁻¹ * (g i * conj (g l)) := by
   simp [projPerp, Matrix.sub_apply, Matrix.one_apply, vecMulVec_apply, Complex.star_def]
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[mulVec, dotProduct]`. Simplify using `only [projPerp_apply, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, dotProduct, Pi.star_apply]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem projPerp_mulVec (g w : Fin p → ℂ) :
     projPerp g *ᵥ w = w - (((sqNorm g : ℝ) : ℂ)⁻¹ * (star g ⬝ᵥ w)) • g := by
@@ -70,7 +70,7 @@ theorem projPerp_mulVec (g w : Fin p → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hs : ((sqNorm g : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (sqNorm_pos hg).ne'`. Rewrite using `[projPerp_mulVec, dotProduct_sub, dotProduct_smul, star_dotProduct_self, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem star_dotProduct_projPerp_mulVec {g : Fin p → ℂ} (hg : g ≠ 0) (w : Fin p → ℂ) :
     star g ⬝ᵥ (projPerp g *ᵥ w) = 0 := by
@@ -80,7 +80,7 @@ theorem star_dotProduct_projPerp_mulVec {g : Fin p → ℂ} (hg : g ≠ 0) (w : 
   ring
 
 /- English proof (translation)
-Rewrite using `[projPerp_mulVec g (projPerp g *ᵥ w), star_dotProduct_projPerp_mulVec hg, mul_zero, zero_smul, sub_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem projPerp_mulVec_idem {g : Fin p → ℂ} (hg : g ≠ 0) (w : Fin p → ℂ) :
     projPerp g *ᵥ (projPerp g *ᵥ w) = projPerp g *ᵥ w := by
@@ -88,9 +88,9 @@ theorem projPerp_mulVec_idem {g : Fin p → ℂ} (hg : g ≠ 0) (w : Fin p → �
     zero_smul, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[projPerp_apply, projPerp_apply]`. Simplify using `only [map_sub, map_mul, map_inv₀, Complex.conj_ofReal, Complex.conj_conj, apply_ite (starRingEnd ℂ), map_one, map_zero]`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using `only [if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_projPerp (g : Fin p → ℂ) (i l : Fin p) :
     conj (projPerp g i l) = projPerp g l i := by
@@ -105,9 +105,9 @@ theorem conj_projPerp (g : Fin p → ℂ) (i l : Fin p) :
     ring
 
 /- English proof (translation)
-Establish `key : ((sqNorm (projPerp g *ᵥ w) : ℝ) : ℂ) = ((sqNorm w : ℝ) : ℂ) - ((Complex.normSq (star g ⬝ᵥ w) : ℝ) : ℂ) / ((sqNorm g : ℝ) : ℂ)`. Rewrite using `[← star_dotProduct_self (projPerp g *ᵥ w), ← star_dotProduct_self w]`. Establish `hst : star (projPerp g *ᵥ w) = star w - star (((sqNorm g : ℝ) : ℂ)⁻¹ * (star g ⬝ᵥ w)) • star g`. Rewrite using `[projPerp_mulVec, star_sub, star_smul]`. Rewrite using `[hst, sub_dotProduct, smul_dotProduct, star_dotProduct_projPerp_mulVec hg, smul_zero, sub_zero, projPerp_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul, Matrix.star_dotProduct w g, Complex.star_def, mul_assoc, Complex.mul_conj]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `key` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem sqNorm_projPerp_mulVec {g : Fin p → ℂ} (hg : g ≠ 0) (w : Fin p → ℂ) :
     sqNorm (projPerp g *ᵥ w) = sqNorm w - Complex.normSq (star g ⬝ᵥ w) / sqNorm g := by
@@ -124,13 +124,13 @@ private theorem sqNorm_projPerp_mulVec {g : Fin p → ℂ} (hg : g ≠ 0) (w : F
   exact_mod_cast key
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Establish `hcol : ∀ l, ∑ i, Complex.normSq (projPerp g i l) = 1 - Complex.normSq (g l) / sqNorm g`. Introduce `l`. Establish `h1 : sqNorm (Pi.single l (1 : ℂ)) = 1`. Unfold `sqNorm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_eq_single l (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using the standard rewrite rules. Use `sqNorm_projPerp_mulVec hg (Pi.single l (1 : ℂ))` as an intermediate fact. Establish `h2 : star g ⬝ᵥ Pi.single l (1 : ℂ) = star (g l)`. Simplify using `[dotProduct, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Matrix.mulVec_single_one, h2, h1, Complex.star_def, Complex.normSq_conj]`. Conclude with `this`. Rewrite using `[Finset.sum_congr rfl (fun l _ => hcol l), Finset.sum_sub_distrib, ← Finset.sum_div]`. Express the relevant statement in the definitionally equal form `_ - sqNorm g / sqNorm g = _`. Rewrite using `[div_self (sqNorm_pos hg).ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sum_normSq_projPerp {g : Fin p → ℂ} (hg : g ≠ 0) :
     ∑ i, ∑ l, Complex.normSq (projPerp g i l) = (p : ℝ) - 1 := by
@@ -152,7 +152,7 @@ theorem sum_normSq_projPerp {g : Fin p → ℂ} (hg : g ≠ 0) :
   simp
 
 /- English proof (translation)
-Simplify using `only [Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun q _ => norm_mul _ _))`. Use `_ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq s _ _`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem normSq_sum_mul_le {ι : Type*} (s : Finset ι) (a b : ι → ℂ) :
     Complex.normSq (∑ q ∈ s, a q * b q) ≤
@@ -164,18 +164,18 @@ theorem normSq_sum_mul_le {ι : Type*} (s : Finset ι) (a b : ι → ℂ) :
     _ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq s _ _
 
 /- English proof (translation)
-Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.transpose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trace_mul_transpose {n : ℕ} (A V : Matrix (Fin p) (Fin n) ℂ) :
     trace (A * Vᵀ) = ∑ i, ∑ k, A i k * V i k := by
   simp [Matrix.trace, Matrix.mul_apply, Matrix.transpose_apply]
 
 /- English proof (translation)
-Introduce `p n g J V hg`. Establish `hPu : ∀ i, projPerp g *ᵥ ((projPerp g * J) *ᵥ V i) = (projPerp g * J) *ᵥ V i`. Introduce `i`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `projPerp_mulVec_idem hg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : trace (projPerp g * J * Vᵀ) = ∑ x : Fin p × Fin p, projPerp g x.1 x.2 * ((projPerp g * J) *ᵥ V x.1) x.2`. Rewrite using `[trace_mul_transpose, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(congrFun (hPu i) i).symm`. Rewrite using `[htr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(normSq_sum_mul_le _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type, sum_normSq_projPerp hg]`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem skodaMatrix : SkodaMatrixStatement := by
   intro p n g J V hg
@@ -194,11 +194,11 @@ theorem skodaMatrix : SkodaMatrixStatement := by
   exact le_rfl
 
 /- English proof (translation)
-Introduce `p n g J V hg`. Establish `hs` using `sqNorm_pos hg`. Establish `hM` using `skodaMatrix p n g J V hg`. Establish `hsum : (∑ i, ∑ k, (starRingEnd ℂ ((projPerp g * J) i k) / ((sqNorm g : ℝ) : ℂ)) * starRingEnd ℂ (V i k)) = starRingEnd ℂ (trace (projPerp g * J * Vᵀ)) / ((sqNorm g : ℝ) : ℂ)`. Rewrite using `[trace_mul_transpose, map_sum, Finset.sum_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsum, Complex.normSq_div, Complex.normSq_conj, Complex.normSq_ofReal]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', mul_div_mul_left _ _ hs.ne']`. Use `_ ≤ ((p : ℝ) - 1) * (∑ i, sqNorm ((projPerp g * J) *ᵥ V i)) / sqNorm g := div_le_div_of_nonneg_right hM hs.le`. Use `_ = _ := by rw [mul_div_assoc, Finset.sum_div]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skodaPointwise : SkodaPointwiseStatement := by
   intro p n g J V hg
@@ -222,7 +222,7 @@ theorem skodaPointwise : SkodaPointwiseStatement := by
     _ = _ := by rw [mul_div_assoc, Finset.sum_div]
 
 /- English proof (translation)
-Introduce `p g w hg`. Conclude with `sqNorm_projPerp_mulVec hg w`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem projPerp_sqNorm : ProjPerpNormStatement := by
   intro p g w hg

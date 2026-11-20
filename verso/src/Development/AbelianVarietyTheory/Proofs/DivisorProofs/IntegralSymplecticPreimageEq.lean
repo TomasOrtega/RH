@@ -6,29 +6,27 @@ open scoped ContDiff
 namespace GlobalTheory.SympChange
 
 /- English proof (translation)
-Unfold `Sp.mat`. Rewrite using `[SymplecticGroup.det_eq_one γ.2]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem det_sq_eq_one {g : ℕ} (γ : Sp g) : γ.mat.det ^ 2 = 1 := by
   unfold Sp.mat
   rw [SymplecticGroup.det_eq_one γ.2]; norm_num
 
 /- English proof (translation)
-Use extensionality with `x i`. Simplify using `[Matrix.vecMul_transpose, Matrix.mulVec_transpose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulLinear_eq_toLin' {g : ℕ} (A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) :
     Matrix.vecMulLinear A = Matrix.toLin' Aᵀ := by
   ext x i; simp [Matrix.vecMul_transpose, Matrix.mulVec_transpose]
 
 /- English proof (translation)
-Establish `hd : (LinearMap.toMatrix' (Matrix.vecMulLinear γ.mat)).det ^ 2 = 1`. Rewrite using `[vecMulLinear_eq_toLin', LinearMap.toMatrix'_toLin', Matrix.det_transpose]`. Conclude with `det_sq_eq_one γ`. Establish `hdet : LinearMap.det (Matrix.vecMulLinear γ.mat) ^ 2 = 1`. Rewrite using `[← LinearMap.det_toMatrix']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd`. Establish `hne : LinearMap.det (Matrix.vecMulLinear γ.mat) ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0]`. Simplify using `at hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `habs : |(LinearMap.det (Matrix.vecMulLinear γ.mat))⁻¹| = 1`. Rewrite using `[abs_inv]`. Establish `: |LinearMap.det (Matrix.vecMulLinear γ.mat)| = 1`. Use `sq_abs (LinearMap.det (Matrix.vecMulLinear γ.mat))` as an intermediate fact. Rewrite `this` using `[hdet]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h0 : 0 ≤ |LinearMap.det (Matrix.vecMulLinear γ.mat)|` using `abs_nonneg _`. Use polynomial arithmetic with `[sq_nonneg (|LinearMap.det (Matrix.vecMulLinear γ.mat)| - 1)]`. Rewrite using `[this, inv_one]`. Use `⟨(Matrix.vecMulLinear γ.mat).continuous_of_finiteDimensional.measurable, ?_⟩` and prove the remaining obligations. Use `Real.map_linearMap_volume_pi_eq_smul_volume_pi hne` as an intermediate fact.
-
-Rewrite `this` using `[habs, ENNReal.ofReal_one, one_smul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_vecMul {g : ℕ} (γ : Sp g) :
     MeasurePreserving (fun x : Fl g => x ᵥ* γ.mat) volume volume := by
@@ -53,7 +51,7 @@ theorem measurePreserving_vecMul {g : ℕ} (γ : Sp g) :
   exact this
 
 /- English proof (translation)
-Unfold `Sp.mat`. Rewrite using `[SymplecticGroup.coe_inv']`. Conclude with `Matrix.nonsing_inv_mul _ (SymplecticGroup.symplectic_det γ.2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul_mat {g : ℕ} (γ : Sp g) : (γ⁻¹).mat * γ.mat = 1 := by
   unfold Sp.mat
@@ -61,11 +59,9 @@ theorem inv_mul_mat {g : ℕ} (γ : Sp g) : (γ⁻¹).mat * γ.mat = 1 := by
   exact Matrix.nonsing_inv_mul _ (SymplecticGroup.symplectic_det γ.2)
 
 /- English proof (translation)
-Establish `hmp` using `measurePreserving_vecMul γ⁻¹`. Set `e : Fl g ≃L[ℝ] Fl g` to `{ toLinearEquiv := { Matrix.vecMulLinear (γ⁻¹).mat with invFun := fun x => x ᵥ* γ.mat left_inv := fun x => by`. Simplify using `[Matrix.vecMul_vecMul, inv_mul_mat]`. Use `right_inv := fun x => by`. Establish `h : γ.mat * (γ⁻¹).mat = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `inv_mul_mat γ⁻¹` as an intermediate fact. Simplify using `using this`. Simplify using `[Matrix.vecMul_vecMul, h] }`. Use `continuous_toFun := (Matrix.vecMulLinear (γ⁻¹).mat).continuous_of_finiteDimensional`. Use `continuous_invFun := (Matrix.vecMulLinear γ.mat).continuous_of_finiteDimensional }`.
-
-Establish `hemb : MeasurableEmbedding (fun x : Fl g => x ᵥ* (γ⁻¹).mat)` using `e.toHomeomorph.measurableEmbedding`. Conclude with `hmp.setIntegral_preimage_emb hemb φ D`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem setIntegral_vecMul_inv {g : ℕ} {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (γ : Sp g) (D : Set (Fl g)) (φ : Fl g → F) :

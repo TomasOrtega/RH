@@ -27,12 +27,12 @@ theorem ratV_eq : ratV E ι = vecLattice E ι := rfl
 instance haar : (vecMeasure E ι).IsAddHaarMeasure := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem borel_ok : BorelSpace (ι → Ad E) := inferInstance
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) (vecMeasure E ι) (vecDomain E ι) inferInstance isAddFundamentalDomain_vecDomain f hf`. Rewrite using `[h.2.2.2, vecMeasure_vecDomain]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem avg_eq_integral (f : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f) :
     avg (ratV E ι) f = ∫ x in vecDomain E ι, f x ∂vecMeasure E ι := by
@@ -42,7 +42,7 @@ theorem avg_eq_integral (f : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f) :
   simp
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) (vecMeasure E ι) (vecDomain E ι) inferInstance isAddFundamentalDomain_vecDomain f hf).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn (f : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f) :
     IntegrableOn f (vecDomain E ι) (vecMeasure E ι) :=
@@ -50,7 +50,7 @@ theorem integrableOn (f : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f) :
     isAddFundamentalDomain_vecDomain f hf).2.2.1
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 E)`. Establish `hne : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)`. Take `⟨y, hy⟩` from `hψ.loc ⟨M, hM.isPrime, hne⟩`. Conclude with `⟨_, hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ne_one {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) : ∃ a, ψ a ≠ 1 := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 E)
@@ -59,7 +59,7 @@ theorem exists_ne_one {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) : ∃ a, ψ a 
   exact ⟨_, hy⟩
 
 /- English proof (translation)
-Use `⟨hψ.cont.comp (continuous_dot ζ), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ x`. Conclude with `hψ.map_dot ζ c x`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem per_char {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (ζ : ι → E) :
     Per (ratV E ι) (fun x => ψ (dot ζ x)) := by
@@ -68,7 +68,7 @@ theorem per_char {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (ζ : ι → E) :
   exact hψ.map_dot ζ c x
 
 /- English proof (translation)
-Rewrite using `[dot, Finset.sum_eq_single t]`. Simplify using the standard rewrite rules. Introduce `s _ hs`. Simplify using `[Pi.single_eq_of_ne hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dot_single' [DecidableEq ι] (ζ : ι → E) (t : ι) (a : Ad E) :
     dot ζ (Pi.single t a) = algebraMap E (Ad E) (ζ t) * a := by
@@ -80,15 +80,13 @@ theorem dot_single' [DecidableEq ι] (ζ : ι → E) (t : ι) (a : Ad E) :
 
 open Classical in
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[avg_eq_integral _ (per_char hψ 0)]`. Simplify using `only [dot_zero_left, AddChar.map_zero_eq_one]`. Rewrite using `[setIntegral_const]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Measure.real, vecMeasure_vecDomain]`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, ζ t ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (funext hc)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `exists_ne_one hψ`. Use `set y : ι → Ad E := Pi.single t (algebraMap E (Ad E) (ζ t)⁻¹ * a)`. Establish `hy : dot ζ y = a`. Rewrite using `[dot_single', ← mul_assoc, ← map_mul, mul_inv_cancel₀ ht, map_one, one_mul]`. Establish `h1` using `GlobalTheory.T.quotientAverage_translate_invariant (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) _ (per_char hψ ζ) y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (fun x => ψ (dot ζ (x + y))) = fun x => ψ a * ψ (dot ζ x)`. Use function extensionality and compare the values at `x`. Rewrite using `[dot_add_right, hy, AddChar.map_add_eq_mul, mul_comm]`. Rewrite `h1` using `[h2, avg_const_mul]`. Establish `h3 : (ψ a - 1) * avg (ratV E ι) (fun x => ψ (dot ζ x)) = 0`.
-
-Rewrite using `[sub_mul, h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_char {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (ζ : ι → E) :
     avg (ratV E ι) (fun x => ψ (dot ζ x)) = if ζ = 0 then 1 else 0 := by
@@ -121,7 +119,7 @@ variable (E ι) in
 abbrev Q : Type := (ι → Ad E) ⧸ ratV E ι
 
 /- English proof (translation)
-Use `haveI := (isCoLat_ratV E ι).1`. Conclude with `AddSubgroup.isClosed_of_discrete`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_ratV : IsClosed (ratV E ι : Set (ι → Ad E)) := by
   haveI := (isCoLat_ratV E ι).1
@@ -155,7 +153,7 @@ def nu : Measure (Q E ι) :=
   Measure.map (QuotientAddGroup.mk : (ι → Ad E) → Q E ι) ((vecMeasure E ι).restrict (vecDomain E ι))
 
 /- English proof (translation)
-The claim follows from `QuotientAddGroup.continuous_mk.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_mk : Measurable (QuotientAddGroup.mk : (ι → Ad E) → Q E ι) :=
   QuotientAddGroup.continuous_mk.measurable
@@ -167,7 +165,7 @@ instance instFin : IsFiniteMeasure (nu E ι) := by
   infer_instance
 
 /- English proof (translation)
-The claim follows from `integral_map measurable_mk.aemeasurable hF.aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem integral_nu (F : Q E ι → ℂ) (hF : Continuous F) :
     ∫ q, F q ∂nu E ι = ∫ x in vecDomain E ι, F (x : Q E ι) ∂vecMeasure E ι :=
@@ -187,21 +185,21 @@ Both sides reduce to the same expression.
     lift f hf (x : Q E ι) = f x := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.mul hg.1, fun γ hγ x => by simp only; rw [hf.2 γ hγ x, hg.2 γ hγ x]⟩`.
+Supply the required witnesses or components.
 -/
 theorem per_mul {f g : (ι → Ad E) → ℂ} (hf : Per (ratV E ι) f) (hg : Per (ratV E ι) g) :
     Per (ratV E ι) (fun x => f x * g x) :=
   ⟨hf.1.mul hg.1, fun γ hγ x => by simp only; rw [hf.2 γ hγ x, hg.2 γ hγ x]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Complex.continuous_conj.comp hf.1, fun γ hγ x => by simp only; rw [hf.2 γ hγ x]⟩`.
+Supply the required witnesses or components.
 -/
 theorem per_conj {f : (ι → Ad E) → ℂ} (hf : Per (ratV E ι) f) :
     Per (ratV E ι) (fun x => conj (f x)) :=
   ⟨Complex.continuous_conj.comp hf.1, fun γ hγ x => by simp only; rw [hf.2 γ hγ x]⟩
 
 /- English proof (translation)
-Rewrite using `[ContinuousMap.inner_toLp]`. Rewrite using `[integral_nu (fun q => lift f hf q * conj (lift g hg q)) ((lift f hf).continuous.mul (Complex.continuous_conj.comp (lift g hg).continuous)), avg_eq_integral _ (per_mul hf (per_conj hg))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inner_lift {f g : (ι → Ad E) → ℂ} (hf : Per (ratV E ι) f) (hg : Per (ratV E ι) g) :
     ⟪ContinuousMap.toLp 2 (nu E ι) ℂ (lift g hg), ContinuousMap.toLp 2 (nu E ι) ℂ (lift f hf)⟫_ℂ =
@@ -213,19 +211,19 @@ theorem inner_lift {f g : (ι → Ad E) → ℂ} (hf : Per (ratV E ι) f) (hg : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ.norm, one_pow, inv_one, Complex.ofReal_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_psi {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (a : Ad E) : conj (ψ a) = ψ (-a) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ.norm, one_pow, inv_one, Complex.ofReal_one, mul_one]
 
 /- English proof (translation)
-Simplify using `[dot, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_neg (ξ : ι → E) (x : ι → Ad E) : dot (-ξ) x = -dot ξ x := by
   simp [dot, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Rewrite using `[dot_add_left, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem char_mul {ψ : AddChar (Ad E) ℂ} (ξ η : ι → E) (x : ι → Ad E) :
     ψ (dot ξ x) * ψ (dot η x) = ψ (dot (ξ + η) x) := by
@@ -236,7 +234,7 @@ variable (ψ : AddChar (Ad E) ℂ) (hψ : StdPsi ψ)
 def ch (ξ : ι → E) : C(Q E ι, ℂ) := lift _ (per_char hψ ξ)
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Simplify using `only [ch, lift_mk, ContinuousMap.mul_apply]`. Rewrite using `[char_mul]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ch_add (ξ η : ι → E) : ch ψ hψ (ξ + η) = ch ψ hψ ξ * ch ψ hψ η := by
   ext q
@@ -245,7 +243,7 @@ theorem ch_add (ξ η : ι → E) : ch ψ hψ (ξ + η) = ch ψ hψ ξ * ch ψ h
   rw [char_mul]
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Simplify using `[ch, dot_zero_left]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ch_zero : ch ψ hψ (0 : ι → E) = 1 := by
   ext q
@@ -253,7 +251,7 @@ theorem ch_zero : ch ψ hψ (0 : ι → E) = 1 := by
   simp [ch, dot_zero_left]
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Simplify using `only [ch, lift_mk, ContinuousMap.star_apply]`. Rewrite using `[dot_neg, ← conj_psi hψ]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ch_neg (ξ : ι → E) : ch ψ hψ (-ξ) = star (ch ψ hψ ξ) := by
   ext q
@@ -263,11 +261,11 @@ theorem ch_neg (ξ : ι → E) : ch ψ hψ (-ξ) = star (ch ψ hψ ξ) := by
   rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective p`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `h (QuotientAddGroup.eq.2 ((hψ.forall_dot_eq_one_iff _).1 fun ξ => ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hc ξ`. Simplify using `only [ch, lift_mk] at h1`. Establish `e : -dot ξ (-x + y) = dot ξ x + -dot ξ y`. Establish `h2 : dot ξ (-x) = -dot ξ x` using `by simp [dot, Finset.sum_neg_distrib]`. Rewrite using `[dot_add_right, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, AddChar.map_add_eq_mul, h1, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ch_sep {p q : Q E ι} (h : p ≠ q) : ∃ ξ, ch ψ hψ ξ p ≠ ch ψ hψ ξ q := by
   obtain ⟨x, rfl⟩ := QuotientAddGroup.mk_surjective p
@@ -284,19 +282,17 @@ theorem ch_sep {p q : Q E ι} (h : p ≠ q) : ∃ ξ, ch ψ hψ ξ p ≠ ch ψ h
   rw [e, AddChar.map_add_eq_mul, h1, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Set `V : Submodule ℂ C(Q E ι, ℂ)` to `Submodule.span ℂ (Set.range (ch ψ hψ (ι := ι)))`. Establish `hV1 : (1 : C(Q E ι, ℂ)) ∈ V` using `Submodule.subset_span ⟨0, ch_zero ψ hψ⟩`. Establish `hVmul : ∀ p ∈ V, ∀ q ∈ V, p * q ∈ V`. Introduce `p hp q hq`. Establish `: V * V ≤ V`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩`. Conclude with `⟨a + b, ch_add ψ hψ a b⟩`. Conclude with `this (Submodule.mul_mem_mul hp hq)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hVstar : ∀ p ∈ V, star p ∈ V`. Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨-a, ch_neg ψ hψ a⟩`. Consider the case `zero => rw [star_zero]`. Conclude with `V.zero_mem`. Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `V.add_mem hx hy`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c x _ hx => rw [star_smul]`. Conclude with `V.smul_mem _ hx`. Set `S : StarSubalgebra ℂ C(Q E ι, ℂ)` to `{ toSubalgebra := V.toSubalgebra hV1 (fun p q hp hq => hVmul p hp q hq) star_mem' := fun {p} hp => hVstar p hp }`. Establish `hS : S.topologicalClosure = ⊤`. Use `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Take `⟨a, ha⟩` from `ch_sep ψ hψ hxy`. Conclude with `⟨ch ψ hψ a, ⟨ch ψ hψ a, Submodule.subset_span ⟨a, rfl⟩, rfl⟩, ha⟩`. Rewrite using `[eq_top_iff]`. Introduce `f _`.
-
-Establish `hf : f ∈ S.topologicalClosure` using `by rw [hS]; trivial`. Conclude with `hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_dense : (Submodule.span ℂ (Set.range (ch ψ hψ (ι := ι)))).topologicalClosure = ⊤ := by
   let V : Submodule ℂ C(Q E ι, ℂ) := Submodule.span ℂ (Set.range (ch ψ hψ (ι := ι)))
@@ -334,11 +330,11 @@ theorem span_dense : (Submodule.span ℂ (Set.range (ch ψ hψ (ι := ι)))).top
 def chL (ξ : ι → E) : Lp ℂ 2 (nu E ι) := ContinuousMap.toLp 2 (nu E ι) ℂ (ch ψ hψ ξ)
 
 /- English proof (translation)
-Rewrite using `[orthonormal_iff_ite]`. Introduce `ξ η`. Simplify using `only [chL, ch]`. Rewrite using `[inner_lift]`. Establish `e : (fun x => ψ (dot η x) * conj (ψ (dot ξ x))) = fun x => ψ (dot (η + -ξ) x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[conj_psi hψ, ← dot_neg, char_mul]`. Rewrite using `[e, avg_char hψ]`. Distinguish the cases in `h : ξ = η`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Rewrite `h'` using `[← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h h'.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth : Orthonormal ℂ (chL ψ hψ (ι := ι)) := by
   classical
@@ -359,15 +355,13 @@ theorem orth : Orthonormal ℂ (chL ψ hψ (ι := ι)) := by
     exact h h'.symm
 
 /- English proof (translation)
-Introduce `f _`. Establish `hd` using `ContinuousMap.toLp_denseRange ℂ (nu E ι) ℂ (p := 2) ENNReal.ofNat_ne_top`. Establish `hmaps : Set.MapsTo (ContinuousMap.toLp 2 (nu E ι) ℂ : C(Q E ι, ℂ) →L[ℂ] Lp ℂ 2 (nu E ι)) (Submodule.span ℂ (Set.range (ch ψ hψ (ι` using `ι)))) (Submodule.span ℂ (Set.range (chL ψ hψ (ι := ι)))) := by`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨ξ, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨ξ, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`. Establish `h1 : Set.range (ContinuousMap.toLp 2 (nu E ι) ℂ : C(Q E ι, ℂ) →L[ℂ] Lp ℂ 2 (nu E ι)) ⊆ ((Submodule.span ℂ (Set.range (chL ψ hψ (ι` using `ι)))).topologicalClosure : Set (Lp ℂ 2 (nu E ι))) := by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Establish `hg : g ∈ closure (Submodule.span ℂ (Set.range (ch ψ hψ (ι` using `ι))) : Set C(Q E ι, ℂ)) := by`. Rewrite using `[← Submodule.topologicalClosure_coe, span_dense]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Submodule.topologicalClosure_coe]`.
-
-Conclude with `map_mem_closure (ContinuousMap.toLp 2 (nu E ι) ℂ).continuous hg hmaps`. Conclude with `closure_minimal h1 (Submodule.isClosed_topologicalClosure _) (hd f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense : ⊤ ≤ (Submodule.span ℂ (Set.range (chL ψ hψ (ι := ι)))).topologicalClosure := by
   intro f _
@@ -396,12 +390,12 @@ theorem dense : ⊤ ≤ (Submodule.span ℂ (Set.range (chL ψ hψ (ι := ι))))
 def basis : HilbertBasis (ι → E) ℂ (Lp ℂ 2 (nu E ι)) := HilbertBasis.mk (orth ψ hψ) (dense ψ hψ)
 
 /- English proof (translation)
-The claim follows from `HilbertBasis.coe_mk _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_basis : ⇑(basis ψ hψ (ι := ι)) = chL ψ hψ := HilbertBasis.coe_mk _ _
 
 /- English proof (translation)
-Rewrite using `[chL, ch, inner_lift]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[conj_psi hψ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_chL (u : (ι → Ad E) → ℂ) (hu : Per (ratV E ι) u) (ξ : ι → E) :
     ⟪chL ψ hψ ξ, ContinuousMap.toLp 2 (nu E ι) ℂ (lift u hu)⟫_ℂ = avg (ratV E ι) (fun x => ψ (-dot ξ x) * u x) := by
@@ -412,11 +406,11 @@ theorem inner_chL (u : (ι → Ad E) → ℂ) (hu : Per (ratV E ι) u) (ξ : ι 
 
 include hψ in
 /- English proof (translation)
-Establish `h` using `(basis ψ hψ).hasSum_inner_mul_inner (ContinuousMap.toLp 2 (nu E ι) ℂ (lift g hg)) (ContinuousMap.toLp 2 (nu E ι) ℂ (lift f hf))`. Rewrite `h` using `[inner_lift]`. Establish `key : ∀ ξ, ⟪ContinuousMap.toLp 2 (nu E ι) ℂ (lift g hg), basis ψ hψ ξ⟫_ℂ * ⟪basis ψ hψ ξ, ContinuousMap.toLp 2 (nu E ι) ℂ (lift f hf)⟫_ℂ = avg (ratV E ι) (fun x => ψ (-dot ξ x) * f x) * conj (avg (ratV E ι) fun x => ψ (-dot ξ x) * g x)`. Introduce `ξ`. Establish `e1 : ⟪ContinuousMap.toLp 2 (nu E ι) ℂ (lift g hg), basis ψ hψ ξ⟫_ℂ = conj (avg (ratV E ι) fun x => ψ (-dot ξ x) * g x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← inner_conj_symm, coe_basis, inner_chL]`. Establish `e2 : ⟪basis ψ hψ ξ, ContinuousMap.toLp 2 (nu E ι) ℂ (lift f hf)⟫_ℂ = avg (ratV E ι) fun x => ψ (-dot ξ x) * f x`. Rewrite using `[coe_basis, inner_chL]`. Rewrite using `[e1, e2, mul_comm]`. Simplify using `only [key] at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem parseval (f g : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f) (hg : Per (ratV E ι) g) :
     HasSum (fun ξ : ι → E => avg (ratV E ι) (fun x => ψ (-dot ξ x) * f x) *
@@ -445,7 +439,7 @@ namespace tableDegreeThreeBase
 variable {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const.mul (per_char hψ ζ).1, fun γ hγ x => by have h := (per_char hψ ζ).2 γ hγ x simp only at h ⊢ rw [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem per_cmul {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (c : ℂ) (ζ : ι → E) :
     Per (ratV E ι) (fun x => c * ψ (dot ζ x)) :=
@@ -455,30 +449,26 @@ theorem per_cmul {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (c : ℂ) (ζ : ι 
     rw [h]⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, dot_add_left, dot_neg, AddChar.map_add_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_char {ψ : AddChar (Ad E) ℂ} (ξ η : ι → E) (x : ι → Ad E) :
     ψ (-dot ξ x) * ψ (dot η x) = ψ (dot (η - ξ) x) := by
   rw [sub_eq_add_neg, dot_add_left, dot_neg, AddChar.map_add_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `set c : (ι → E) → ℂ := fun ξ => avg (ratV E ι) fun x => ψ (-dot ξ x) * f x with hc`. Use `set S := hfin.toFinset`. Establish `hS : ∀ ξ, ξ ∉ S → c ξ = 0` using `fun ξ h => by simpa [S, c] using h`. Use `set h : (ι → Ad E) → ℂ := fun x => f x - ∑ η ∈ S, c η * ψ (dot η x) with hh_def`. Establish `hh : Per (ratV E ι) h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hf.1.sub (continuous_finsetSum _ fun η _ => (per_cmul hψ (c η) η).1), fun γ hγ x => ?_⟩` and prove the remaining obligations. Simplify using `only [h]`. Rewrite using `[hf.2 γ hγ x]`. Use `congr 1`. Use `Finset.sum_congr rfl fun η _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(per_cmul hψ (c η) η).2 γ hγ x`. Establish `hcoef : ∀ ξ, avg (ratV E ι) (fun x => ψ (-dot ξ x) * h x) = 0`. Introduce `ξ`. Rewrite using `[avg_eq_integral _ (hψ.per_twist hh ξ)]`. Establish `e : (fun x => ψ (-dot ξ x) * h x) = fun x => ψ (-dot ξ x) * f x - ∑ η ∈ S, c η * ψ (dot (η - ξ) x)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [h, mul_sub, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun η _ => ?_` and prove the remaining obligations. Rewrite using `[← twist_char]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_sub (integrableOn _ (hψ.per_twist hf ξ)) (integrable_finsetSum _ fun η _ => integrableOn _ (per_cmul hψ (c η) (η - ξ))), integral_finsetSum _ fun η _ => integrableOn _ (per_cmul hψ (c η) (η - ξ))]`. Rewrite using `[← avg_eq_integral _ (hψ.per_twist hf ξ)]`. Establish `h3 : ∀ η ∈ S, ∫ x in vecDomain E ι, c η * ψ (dot (η - ξ) x) ∂vecMeasure E ι = if ξ = η then c η else 0`. Introduce `η _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_const_mul, ← avg_eq_integral _ (per_char hψ _), avg_char hψ]`. Distinguish the cases in `hξ : ξ = η`. Substitute `hξ` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg, if_neg hξ, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h'`. Conclude with `hξ (sub_eq_zero.1 h').symm`. Rewrite using `[Finset.sum_congr rfl h3, Finset.sum_ite_eq]`. Use `split_ifs with hm`. Conclude with `sub_self _`.
-
-Rewrite using `[sub_zero]`. Conclude with `hS ξ hm`. Establish `h0` using `congrFun (eq_zero_of_avg_character_eq_zero E ι ψ hψ h hh hcoef) 0`. Simplify using `only [h, Pi.zero_apply] at h0`. Establish `hd : ∀ η : ι → E, dot η (0 : ι → Ad E) = 0` using `fun η => by simp [dot]`.
-
-Simplify using `only [hd, AddChar.map_zero_eq_one, mul_one] at h0`. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `hasSum_sum_of_ne_finset_zero hS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_case {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (f : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f)
     (hfin : {ξ : ι → E | avg (ratV E ι) (fun x => ψ (-dot ξ x) * f x) ≠ 0}.Finite) :
@@ -535,7 +525,7 @@ theorem fin_case {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (f : (ι → Ad E) 
 end tableDegreeThreeBase
 
 /- English proof (translation)
-Introduce `E _ _ ψ hψ ι _`. Conclude with `⟨fun f hf => tableDegreeThreeBase.avg_eq_integral f hf, fun f g hf hg => tableDegreeThreeBase.parseval ψ hψ f g hf hg, fun f hf hfin => tableDegreeThreeBase.fin_case hψ f hf hfin⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem poisson_base_holds : P0 := by
   intro E _ _ ψ hψ ι _

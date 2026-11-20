@@ -19,7 +19,7 @@ variable {V W U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module
   [AddCommGroup U] [Module ℂ U]
 
 /- English proof (translation)
-Unfold `Formalism.IrreducibleCountingLemmas.TYPES.RepIso at h ⊢`. Take `⟨e, he⟩` from `h`. Use `⟨e.symm, fun γ w => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem repIso_symm {ρ : Representation ℂ Γ V} {ρ' : Representation ℂ Γ W} (h : RepIso ρ ρ') :
     RepIso ρ' ρ := by
@@ -30,7 +30,7 @@ theorem repIso_symm {ρ : Representation ℂ Γ V} {ρ' : Representation ℂ Γ 
   rw [LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Unfold `Formalism.IrreducibleCountingLemmas.TYPES.RepIso at h h' ⊢`. Take `⟨e, he⟩` from `h`. Take `⟨e', he'⟩` from `h'`. Conclude with `⟨e.trans e', fun γ v => by rw [LinearEquiv.trans_apply, he, he', LinearEquiv.trans_apply]⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem repIso_trans {ρ : Representation ℂ Γ V} {ρ' : Representation ℂ Γ W}
     {ρ'' : Representation ℂ Γ U} (h : RepIso ρ ρ') (h' : RepIso ρ' ρ'') : RepIso ρ ρ'' := by
@@ -40,13 +40,13 @@ theorem repIso_trans {ρ : Representation ℂ Γ V} {ρ' : Representation ℂ Γ
   exact ⟨e.trans e', fun γ v => by rw [LinearEquiv.trans_apply, he, he', LinearEquiv.trans_apply]⟩
 
 /- English proof (translation)
-Unfold `Formalism.IrreducibleCountingLemmas.TYPES.RepIso at hi`. Unfold `Formalism.IrreducibleCountingLemmas.TYPES.IsConstituent at h ⊢`. Take `⟨e, he⟩` from `hi`. Take `⟨φ, hφ, hne⟩` from `h`. Use `⟨e.toLinearMap ∘ₗ φ, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ`. Establish `h1 : φ ∘ₗ τ.ρ γ = ρ γ ∘ₗ φ` using `hφ γ`. Use extensionality with `x`. Establish `h2` using `LinearMap.congr_fun h1 x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe] at h2 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, he]`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use extensionality with `x`. Establish `h3` using `LinearMap.congr_fun h0 x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.zero_apply] at h3 ⊢`. Conclude with `(LinearEquiv.map_eq_zero_iff e).1 h3`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isConstituent_of_repIso {τ : FDRep ℂ Γ} {ρ : Representation ℂ Γ V}
     {ρ' : Representation ℂ Γ W} (h : Formalism.IrreducibleCountingLemmas.TYPES.IsConstituent τ ρ) (hi : RepIso ρ ρ') :
@@ -76,7 +76,7 @@ section Blocks
 open Formalism.IrreducibleCountingLemmas.TYPES
 
 /- English proof (translation)
-Simplify using `only [Formalism.IrreducibleCountingLemmas.TYPES.twoBlock]`. Use `split_ifs with h`. Conclude with `⟨fun _ => h, fun _ => rfl⟩`. Conclude with `⟨fun h' => absurd h' (by decide), fun h' => absurd h' h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twoBlock_eq_zero {n a : ℕ} (i : Fin n) : twoBlock n a i = 0 ↔ (i : ℕ) < a := by
   simp only [Formalism.IrreducibleCountingLemmas.TYPES.twoBlock]
@@ -85,7 +85,7 @@ theorem twoBlock_eq_zero {n a : ℕ} (i : Fin n) : twoBlock n a i = 0 ↔ (i : �
   · exact ⟨fun h' => absurd h' (by decide), fun h' => absurd h' h⟩
 
 /- English proof (translation)
-Simplify using `only [Formalism.IrreducibleCountingLemmas.TYPES.twoBlock]`. Use `split_ifs with h`. Conclude with `⟨fun h' => absurd h' (by decide), fun h' => absurd h (by omega)⟩`. Conclude with `⟨fun _ => by omega, fun _ => rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twoBlock_eq_one {n a : ℕ} (i : Fin n) : twoBlock n a i = 1 ↔ a ≤ (i : ℕ) := by
   simp only [Formalism.IrreducibleCountingLemmas.TYPES.twoBlock]
@@ -94,7 +94,7 @@ theorem twoBlock_eq_one {n a : ℕ} (i : Fin n) : twoBlock n a i = 1 ↔ a ≤ (
   · exact ⟨fun _ => by omega, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `c`. Use `fin_cases c`. Conclude with `⟨⟨0, by omega⟩, (twoBlock_eq_zero _).2 ha⟩`. Conclude with `⟨⟨a, by omega⟩, (twoBlock_eq_one _).2 (le_refl a)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twoBlock_surj {a b : ℕ} (ha : 0 < a) (hb : 0 < b) :
     Function.Surjective (twoBlock (a + b) a) := by
@@ -132,9 +132,9 @@ def pairRep {a b : ℕ} (ρ : FDRep ℂ (GL (Fin a) K)) (ρ' : FDRep ℂ (GL (Fi
   | 1 => transp (blk1 a b).symm ρ'
 
 /- English proof (translation)
-Unfold `Formalism.IrreducibleCountingLemmas.TYPES.RepIso at h ⊢`. Take `⟨f, hf⟩` from `h`. Use `⟨f, fun γ v => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf (Formalism.IrreducibleCountingLemmas.TYPES.glEquiv K e γ) v`. Establish `h2 : f (ρ.ρ ((Formalism.IrreducibleCountingLemmas.TYPES.glEquiv K e).symm (Formalism.IrreducibleCountingLemmas.TYPES.glEquiv K e γ)) v) = ρ'.ρ ((Formalism.IrreducibleCountingLemmas.TYPES.glEquiv K e).symm (Formalism.IrreducibleCountingLemmas.TYPES.glEquiv K e γ)) (f v)` using `h1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[MulEquiv.symm_apply_apply]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repIso_of_transp {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (e : ι ≃ κ) {ρ ρ' : FDRep ℂ (GL ι K)} (h : RepIso (transp e ρ).ρ (transp e ρ').ρ) :
@@ -157,7 +157,7 @@ open Formalism.IrreducibleCountingLemmas.TYPES
 def castIrr {g : ℕ} (L : LzData g) {a a' : ℕ} (h : a = a') (τ : L.Irr a) : L.Irr a' := h ▸ τ
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem lab_castIrr {g : ℕ} (L : LzData g) {a a' : ℕ} (h : a = a') (τ : L.Irr a) :
     L.lab (castIrr L h τ) = L.lab τ := by
@@ -165,7 +165,7 @@ theorem lab_castIrr {g : ℕ} (L : LzData g) {a a' : ℕ} (h : a = a') (τ : L.I
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castIrr_inj {g : ℕ} (L : LzData g) {a a' : ℕ} (h : a = a') {τ σ : L.Irr a}
     (e : castIrr L h τ = castIrr L h σ) : τ = σ := by
@@ -205,12 +205,12 @@ def HCBody {g : ℕ} (L : LzData g) : Prop :=
         L.lab τ₁' = L.lab τ' → L.hc τ₁ τ₁' = L.hc τ τ' → τ₁ = τ ∧ τ₁' = τ')
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem admHC_iff_forall_body {D : D7} (P : Pend D) : HarishChandraLabels P ↔ ∀ k, HCBody (P.lz k) := Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (L.lab_spec τ).1.natDegree_eq_zero_iff_eq_one.1 (L.lab_spec τ).2.1`. Consider the case `exact Polynomial.eq_one_of_monic_natDegree_zero (L.lab_spec τ).1 (L.lab_spec τ).2.1`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lab_zero {g : ℕ} (L : LzData g) (τ : L.Irr 0) : L.lab τ = 1 := by
   first
@@ -218,7 +218,7 @@ theorem lab_zero {g : ℕ} (L : LzData g) (τ : L.Irr 0) : L.lab τ = 1 := by
   | exact Polynomial.eq_one_of_monic_natDegree_zero (L.lab_spec τ).1 (L.lab_spec τ).2.1
 
 /- English proof (translation)
-Establish `h1 : L.cons (L.ofIrr τ) τ` using `(L.cons_ofIrr τ τ).2 rfl`. Rewrite `h1` using `[h]`. Conclude with `(L.cons_ofIrr σ τ).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofIrr_inj {g : ℕ} (L : LzData g) {a : ℕ} {τ σ : L.Irr a} (h : L.ofIrr τ = L.ofIrr σ) :
     τ = σ := by
@@ -227,17 +227,17 @@ theorem ofIrr_inj {g : ℕ} (L : LzData g) {a : ℕ} {τ σ : L.Irr a} (h : L.of
   exact (L.cons_ofIrr σ τ).1 h1
 
 /- English proof (translation)
-Establish `hs : ∀ y : MonoidAlgebra ℂ (GL (Fin 0) (ZMod g)), ∃ c : ℂ, y = algebraMap ℂ _ c`. Introduce `y`. Use `MonoidAlgebra.induction_on (motive := fun y => ∃ c : ℂ, y = algebraMap ℂ _ c) y ?_ ?_ ?_` and prove the remaining obligations. Introduce `z`. Establish `hz : z = 1` using `Units.ext (Matrix.ext fun i _ => Fin.elim0 i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨1, by rw [map_one, hz, map_one]⟩`. Introduce `f₁ f₂ h₁ h₂`. Take `⟨c₁, e₁⟩` from `h₁`. Take `⟨c₂, e₂⟩` from `h₂`. Conclude with `⟨c₁ + c₂, by rw [e₁, e₂, map_add]⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `r f₁ h₁`. Take `⟨c₁, e₁⟩` from `h₁`. Conclude with `⟨r * c₁, by rw [e₁, map_mul, Algebra.smul_def]⟩`. Establish `key : ∀ x : L.Irr 0, L.idem x = 1`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `hs (L.idem x)`. Establish `h1` using `L.idem_idem x`. Establish `h2` using `L.idem_ne x`. Rewrite `h1` using `[hc, ← map_mul]`. Establish `h3 : c * c = c` using `(algebraMap ℂ (MonoidAlgebra ℂ (GL (Fin 0) (ZMod g)))).injective h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2 (by rw [hc, map_zero])`. Establish `h5 : c = 1` using `mul_left_cancel₀ h4 (h3.trans (mul_one c).symm)`. Rewrite using `[hc, h5, map_one]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `h6` using `L.idem_orth τ σ hne`. Rewrite `h6` using `[key τ, key σ, one_mul]`. Conclude with `one_ne_zero h6`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irr_zero_eq {g : ℕ} (L : LzData g) (τ σ : L.Irr 0) : τ = σ := by
   have hs : ∀ y : MonoidAlgebra ℂ (GL (Fin 0) (ZMod g)), ∃ c : ℂ, y = algebraMap ℂ _ c := by
@@ -273,25 +273,25 @@ theorem irr_zero_eq {g : ℕ} (L : LzData g) (τ σ : L.Irr 0) : τ = σ := by
 variable {g : ℕ} [Fact g.Prime] {C : LabelConv (ZMod g)} {O : LabelMap (ZMod g) C} {L : LzData g}
 
 /- English proof (translation)
-Introduce `a b τ τ'`. Break down `Nat.eq_zero_or_pos b with hb | hb` into its components or cases. Substitute `hb` using the available equality. Establish `h0 : L.lab τ' = 1` using `lab_zero L τ'`. Use `⟨fun σ hσ => ?_, fun _ => ⟨⟨τ, T.hc_zero_right τ τ'⟩, fun τ₁ τ₁' _ _ he => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hσ`. Rewrite `h1` using `[T.hc_zero_right τ τ']`. Establish `h2` using `(L.cons_ofIrr τ σ).1 h1`. Rewrite using `[h0, mul_one]`. Conclude with `congrArg L.lab h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[T.hc_zero_right, T.hc_zero_right]`. Conclude with `⟨ofIrr_inj L he, irr_zero_eq L _ _⟩`. Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Substitute `ha` using the available equality. Establish `h0 : L.lab τ = 1` using `lab_zero L τ`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun σ hσ => ?_, fun _ => ⟨⟨_, T.hc_zero_left τ τ'⟩, fun τ₁ τ₁' _ _ he => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hσ`. Rewrite `h1` using `[T.hc_zero_left τ τ']`. Establish `h2` using `(L.cons_ofIrr _ _).1 h1`. Rewrite using `[h2, h0, one_mul, lab_castIrr]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[T.hc_zero_left, T.hc_zero_left]`. Conclude with `⟨irr_zero_eq L _ _, castIrr_inj L _ (ofIrr_inj L he)⟩`. Establish `ha1 : 1 ≤ a` using `by omega`. Establish `hb1 : 1 ≤ b` using `by omega`. Establish `hsurj` using `twoBlock_surj ha hb`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpair : ∀ (τ₀ : L.Irr a) (τ₀' : L.Irr b) (c : Fin 2), Simple (pairRep (T.rep τ₀) (T.rep τ₀') c) ∧ HasLabelO O (pairRep (T.rep τ₀) (T.rep τ₀') c) (![L.lab τ₀, L.lab τ₀'] c)`. Introduce `τ₀ τ₀' c`. Use `match c with`. Consider the case `0 => exact ⟨(hT (blk0 a b).symm (T.rep τ₀)).1 (T.rep_simple τ₀), (hT (blk0 a b).symm (T.rep τ₀)).2 _ (T.lab_eq τ₀ ha1)⟩`. Consider the case `1 => exact ⟨(hT (blk1 a b).symm (T.rep τ₀')).1 (T.rep_simple τ₀'), (hT (blk1 a b).symm (T.rep τ₀')).2 _ (T.lab_eq τ₀' hb1)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun σ hσ => ?_, fun hcop => ?_⟩` and prove the remaining obligations. Establish `h1 : IsConstituent (T.rep σ) (T.real (L.hc τ τ')).ρ` using `(T.cons_iff _ _).1 hσ`. Establish `h2` using `isConstituent_of_repIso h1 (T.real_hc τ τ' ha1 hb1)`. Establish `h3` using `hM (a + b) 2 (twoBlock (a + b) a) (pairRep (T.rep τ) (T.rep τ')) ![L.lab τ, L.lab τ'] (T.rep σ) hsurj (hpair τ τ') (T.rep_simple σ) h2`. Establish `h4` using `T.lab_eq σ (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `(hL (a + b) (by omega) (T.rep σ) (T.rep_simple σ)).2 _ _ h4 h3`. Rewrite using `[h5, Fin.prod_univ_two]`. Apply the tactic sequence `all_goals rfl`. Take `⟨σ, hσs, hσi⟩` from `(hD (a + b) (twoBlock (a + b) a) (pairRep (T.rep τ) (T.rep τ')) (pairRep (T.rep τ) (T.rep τ')) ![L.lab τ, L.lab τ'] hsurj (fun c => ⟨(hpair τ τ' c).1, (hpair τ τ' c).1, (hpair τ τ' c).2, (hpair τ τ' c).2⟩) hcop).1`. Take `⟨τ₂, hτ₂⟩` from `T.rep_surj σ hσs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨τ₂, T.real_ext _ _ ?_⟩, fun τ₁ τ₁' e1 e2 he => ?_⟩` and prove the remaining obligations. Conclude with `repIso_trans (repIso_trans (T.real_hc τ τ' ha1 hb1) (repIso_symm hσi)) (repIso_trans hτ₂ (repIso_symm (T.real_ofIrr τ₂)))`. Establish `hp1` using `hpair τ₁ τ₁'`. Rewrite `hp1` using `[e1, e2]`. Establish `r1` using `T.real_hc τ₁ τ₁' ha1 hb1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `r1` using `[he]`. Establish `hiso` using `repIso_trans (repIso_symm (T.real_hc τ τ' ha1 hb1)) r1`. Establish `hcc` using `(hD (a + b) (twoBlock (a + b) a) (pairRep (T.rep τ) (T.rep τ')) (pairRep (T.rep τ₁) (T.rep τ₁')) ![L.lab τ, L.lab τ'] hsurj (fun c => ⟨(hpair τ τ' c).1, (hp1 c).1, (hpair τ τ' c).2, (hp1 c).2⟩) hcop).2 hiso`. Conclude with `⟨(T.rep_inj τ τ₁ (repIso_of_transp (ρ := T.rep τ) (ρ' := T.rep τ₁) (blk0 a b).symm (hcc 0))).symm, (T.rep_inj τ' τ₁' (repIso_of_transp (ρ := T.rep τ') (ρ' := T.rep τ₁') (blk1 a b).symm (hcc 1))).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem hcBody_of (T : LzTie O L) (hL : HCLabelO O) (hM : LabelMulO O) (hT : TranspO O)
     (hD : HCDisjointO O) : HCBody L := by
@@ -377,7 +377,7 @@ def TypesHC (g : ℕ) [Fact g.Prime] : Prop :=
     HCLabelO O ∧ LabelMulO O ∧ TranspO O ∧ HCDisjointO O
 
 /- English proof (translation)
-Introduce and unpack `k C O ⟨T⟩`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨h1, h2, h3, h4⟩` from `h k C O`. Conclude with `hcBody_of T h1 h2 h3 h4`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admHarishChandraRetyped_of (P : Pend D)
     (h : ∀ k : Fin 2, haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -394,7 +394,7 @@ def LzCompatibility (P : Pend D) : Prop :=
       Nonempty (LzTie O (P.lz k))
 
 /- English proof (translation)
-Rewrite using `[admHC_iff_forall_body]`. Introduce `k`. Take `⟨C, O, hT'⟩` from `hT k`. Conclude with `h k C O hT'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admHC_of_tied_labels (P : Pend D) (hT : LzCompatibility P) (h : AdmHarishChandraTypes P) : HarishChandraLabels P := by
   rw [admHC_iff_forall_body]
@@ -403,7 +403,7 @@ theorem admHC_of_tied_labels (P : Pend D) (hT : LzCompatibility P) (h : AdmHaris
   exact h k C O hT'
 
 /- English proof (translation)
-The claim follows from `admHC_of_tied_labels P hT (admHarishChandraRetyped_of P h)`.
+A detailed English derivation is pending.
 -/
 theorem admHC_of_GL_types (P : Pend D)
     (h : ∀ k : Fin 2, haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -417,7 +417,7 @@ section Refute
 open Formalism.IrreducibleCountingLemmas.TYPES
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h0 : ∑ τ : L.Irr a, L.idem τ = 0` using `Finset.sum_eq_zero (fun τ _ => absurd (Nonempty.intro τ) hne)`. Conclude with `one_ne_zero ((L.idem_sum a).symm.trans h0)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem irr_nonempty {g : ℕ} (L : LzData g) (a : ℕ) : Nonempty (L.Irr a) := by
   by_contra hne
@@ -426,9 +426,7 @@ theorem irr_nonempty {g : ℕ} (L : LzData g) (a : ℕ) : Nonempty (L.Irr a) := 
   exact one_ne_zero ((L.idem_sum a).symm.trans h0)
 
 /- English proof (translation)
-Use `⟨(Polynomial.monic_X_sub_C c).pow n, ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rw [(Polynomial.monic_X_sub_C c).natDegree_pow, Polynomial.natDegree_X_sub_C, mul_one]`. Consider the case `simp`. Rewrite using `[Polynomial.coeff_zero_eq_eval_zero, Polynomial.eval_pow, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, zero_sub]`.
-
-Conclude with `pow_ne_zero _ (neg_ne_zero.2 hc)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_XsubC {g : ℕ} [Fact g.Prime] (c : ZMod g) (hc : c ≠ 0) (n : ℕ) :
     ((X - C c) ^ n).Monic ∧ ((X - C c) ^ n).natDegree = n ∧ ((X - C c) ^ n).coeff 0 ≠ 0 := by
@@ -464,11 +462,11 @@ def relabel {g : ℕ} [Fact g.Prime] (h2 : (2 : ZMod g) ≠ 0) (L : LzData g) : 
   hc := fun {a b} _ _ => Classical.choice (irr_nonempty L (a + b))
 
 /- English proof (translation)
-Introduce `hB`. Take `⟨τ⟩` from `irr_nonempty L 1`. Apply the tactic sequence `have h1 := (hB 1 1 τ τ).1 ((relabel h2 L).hc τ τ) (by first | exact rfl | simp [relabel])`. Establish `hl1 : (relabel h2 L).lab τ = X - C 1` using `by simp [relabel]`. Establish `hl2 : (relabel h2 L).lab ((relabel h2 L).hc τ τ) = (X - C 2) ^ 2` using `by simp [relabel]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hl2, hl1]`. Establish `h3` using `congrArg (Polynomial.eval (1 : ZMod g)) h1`. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_self, mul_zero] at h3`. Establish `h4 : ((1 : ZMod g) - 2) ^ 2 = 1` using `by ring`. Rewrite `h3` using `[h4]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h3`.
+A detailed English derivation is pending.
 -/
 theorem not_HCBody_relabel {g : ℕ} [Fact g.Prime] (h2 : (2 : ZMod g) ≠ 0) (L : LzData g) :
     ¬ HCBody (relabel h2 L) := by
@@ -486,7 +484,7 @@ theorem not_HCBody_relabel {g : ℕ} [Fact g.Prime] (h2 : (2 : ZMod g) ≠ 0) (L
   exact one_ne_zero h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun T => not_HCBody_relabel h2 L (hcBody_of T hL hM hT hD)⟩`.
+Supply the required witnesses or components.
 -/
 theorem relabel_untied {g : ℕ} [Fact g.Prime] (h2 : (2 : ZMod g) ≠ 0) (L : LzData g)
     {C : LabelConv (ZMod g)} (O : LabelMap (ZMod g) C) (hL : HCLabelO O) (hM : LabelMulO O)
@@ -530,16 +528,14 @@ def KtyTie (P : Pend D) : Prop :=
     τ ∈ P.kty i PI k v → Occurs i PI k v ((P.lz k).idem τ)
 
 /- English proof (translation)
-Introduce `i PI k v τ hτ`. Conclude with `(P.kty_spec i PI k v τ).1 hτ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ktyTie_of_spec (P : Pend D) : KtyTie P := by
   intro i PI k v τ hτ
   exact (P.kty_spec i PI k v τ).1 hτ
 
 /- English proof (translation)
-Rewrite using `[P.eSer_eq, Finset.mul_sum, Finset.sum_eq_single τ]`. Rewrite using `[if_pos rfl, (P.lz k).idem_idem τ]`. Introduce `σ _ hne split_ifs`. Conclude with `(P.lz k).idem_orth τ σ (fun h => hne h.symm)`. Conclude with `mul_zero _`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idem_mul_eSer (P : Pend D) (k : Fin 2) (τ : (P.lz k).Irr D.R.r) :
     (P.lz k).idem τ * D.ntypes.eSer k ((P.lz k).lab τ) = (P.lz k).idem τ := by
@@ -553,11 +549,9 @@ theorem idem_mul_eSer (P : Pend D) (k : Fin 2) (τ : (P.lz k).Irr D.R.r) :
     exact absurd (Finset.mem_univ τ) h
 
 /- English proof (translation)
-Introduce `i k v PI τ hτ hsq hav`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨C, O, ⟨T⟩⟩` from `hT k`. Establish `e` using `T.idem_eq τ`. Establish `hz : Formalism.IrreducibleCountingLemmas.TYPES.zIdem (T.rep τ) * D.ntypes.eSer k ((P.lz k).lab τ) = Formalism.IrreducibleCountingLemmas.TYPES.zIdem (T.rep τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `idem_mul_eSer P k τ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `ho : Occurs i PI k v (Formalism.IrreducibleCountingLemmas.TYPES.zIdem (T.rep τ))`. Use `ktyTie_of_spec P i PI k v τ hτ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
-
-Conclude with `h i k v PI (T.rep τ) ((P.lz k).lab τ) (T.rep_simple τ) hz ho hsq hav`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem admDZ_of_tied_labels (P : Pend D) (hT : LzCompatibility P) (h : AdmDepthZeroTypes (D := D)) :
     admDZ P := by
@@ -575,13 +569,11 @@ theorem admDZ_of_tied_labels (P : Pend D) (hT : LzCompatibility P) (h : AdmDepth
   exact h i k v PI (T.rep τ) ((P.lz k).lab τ) (T.rep_simple τ) hz ho hsq hav
 
 /- English proof (translation)
-Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hA` using `admDZ_of_tied_labels P hT h`. Take `⟨u₁, hu₁, -, e₁, -⟩` from `hA i k v PI τ₁ h1 s1 a1`. Take `⟨u₂, hu₂, -, e₂, -⟩` from `hA i k v PI τ₂ h2 s2 a2`. Establish `e` using `e₁.symm.trans e₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : D.R.t = 0`. Simplify using `only [ht, pow_zero, mul_one] at e`. Conclude with `e`. Establish `hu : (u₁ : ZMod (D.host.g k)) = u₂`. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `a2 u₁ hu₁` to reduce the goal to its premises. Establish `h3` using `congrArg (Polynomial.eval (u₁ : ZMod (D.host.g k))) e`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_self, ne_eq, ht, not_false_eq_true, zero_pow, mul_zero] at h3`. Establish `hne' : ((u₁ : ZMod (D.host.g k)) - u₂) ^ D.R.t ≠ 0` using `pow_ne_zero _ (sub_ne_zero.2 hne)`. Conclude with `(mul_eq_zero.1 h3.symm).resolve_right hne'`.
-
-Rewrite `e` using `[hu]`. Conclude with `mul_right_cancel₀ (pow_ne_zero _ (Polynomial.X_sub_C_ne_zero _)) e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kty_labels_eq (P : Pend D) (hT : LzCompatibility P) (h : AdmDepthZeroTypes (D := D))
     (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) (PI : D.naut.AV i) (τ₁ τ₂ : (P.lz k).Irr D.R.r)
@@ -626,9 +618,9 @@ def LPMs : Prop :=
 def LPCancel : Prop := ∀ w (a b c : A.LP w), A.lpSum a c = A.lpSum b c → a = b
 
 /- English proof (translation)
-Introduce `w a b c hab`. Take `⟨Y, m, hinj, hadd⟩` from `h w`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `congrArg m hab`. Rewrite `h1` using `[hadd, hadd]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `add_right_cancel h1`.
+A detailed English derivation is pending.
 -/
 theorem lpCancel_of (h : LPMs N A) : LPCancel N A := by
   intro w a b c hab
@@ -652,7 +644,7 @@ def DepthZeroInertiaPolynomials : Prop :=
 def AdmTypeTheory : Prop := LPMs N A → DepthZeroInertiaPolynomials N A
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(unfold Formalism.MainNotions.SumRepresentations.At.MonodromyInertiaType DepthZeroInertiaPolynomials LPCancel; tauto)`. Consider the case `(simp only [Formalism.MainNotions.SumRepresentations.At.MonodromyInertiaType, DepthZeroInertiaPolynomials, LPCancel]; tauto)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem admTY_iff_and_cancel : MonodromyInertiaType N A ↔ DepthZeroInertiaPolynomials N A ∧ LPCancel N A := by
   first
@@ -661,12 +653,12 @@ theorem admTY_iff_and_cancel : MonodromyInertiaType N A ↔ DepthZeroInertiaPoly
   | (simp only [Formalism.MainNotions.SumRepresentations.At.MonodromyInertiaType, DepthZeroInertiaPolynomials, LPCancel]; tauto)
 
 /- English proof (translation)
-The claim follows from `(admTY_iff_and_cancel N A).2 ⟨h hLP, lpCancel_of N A hLP⟩`.
+A detailed English derivation is pending.
 -/
 theorem admTY_of_retyped (hLP : LPMs N A) (h : AdmTypeTheory N A) : MonodromyInertiaType N A := (admTY_iff_and_cancel N A).2 ⟨h hLP, lpCancel_of N A hLP⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact admTY_of_retyped D.nd D.naut hLP h`. Consider the case `(unfold Formalism.MainNotions.SumRepresentations.ArchimedeanSignatureMatching; exact admTY_of_retyped D.nd D.naut hLP h)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fourth_hypothesis_of_lifting (D : D7) (hLP : LPMs D.nd D.naut) (h : AdmTypeTheory D.nd D.naut) : Formalism.MainNotions.SumRepresentations.ArchimedeanSignatureMatching D := by
   first
@@ -674,11 +666,11 @@ theorem fourth_hypothesis_of_lifting (D : D7) (hLP : LPMs D.nd D.naut) (h : AdmT
   | (unfold Formalism.MainNotions.SumRepresentations.ArchimedeanSignatureMatching; exact admTY_of_retyped D.nd D.naut hLP h)
 
 /- English proof (translation)
-Introduce and unpack `⟨Y, m, hinj, hadd⟩`. Establish `h1 : m (0, true) = m (0, true) + m (0, true)` using `hadd (0, true) (0, true)`. Establish `h2 : m (0, false) = m (0, false) + m (0, false)` using `hadd (0, false) (0, false)`. Establish `e1 : m (0, true) = 0`. Establish `h3` using `congrArg Multiset.card h1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Multiset.card_add]`. Conclude with `Multiset.card_eq_zero.1 (by omega)`. Establish `e2 : m (0, false) = 0`. Establish `h3` using `congrArg Multiset.card h2`. Rewrite `h3` using `[Multiset.card_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Multiset.card_eq_zero.1 (by omega)`. Establish `h4` using `congrArg Prod.snd (hinj (e1.trans e2.symm))`. Use `first`. Consider the case `exact absurd h4 (by decide)`. Consider the case `simp at h4`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem orSum_noMs : ¬ ∃ (Y : Type) (m : ℕ × Bool → Multiset Y), Function.Injective m ∧
     ∀ a b : ℕ × Bool, m (a.1 + b.1, a.2 || b.2) = m a + m b := by

@@ -919,13 +919,13 @@ def LinkThIndep : Prop :=
       eq22 D (tor0 D cc δ) χ e → ThetaNormIndependent D (tor0 D cc δ) e
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem theta_norm_independent_of_bounds (D : Car) (T : Tor D) (C : ℝ) (e : FamE D) (h : th22 D T C e) :
     ThetaNormIndependent D T e := h.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem theta_norm_unitary_invariant_of_bounds (D : Car) (T : Tor D) (C : ℝ) (e : FamE D) (h : th22 D T C e) :
     th22U D T e := h.2.2.2

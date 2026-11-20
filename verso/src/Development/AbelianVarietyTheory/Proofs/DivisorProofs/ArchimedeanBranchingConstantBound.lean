@@ -22,15 +22,15 @@ noncomputable section
 namespace GlobalTheory.InfSize
 
 /- English proof (translation)
-Take `⟨-, -, hf, hm, -, hb, -⟩` from `hs`. Establish `hd : 1 ≤ D.host.d` using `D.host.hyp.2.1.one_lt.le`. Establish `hm1 : 1 ≤ D.R.m` using `by omega`. Establish `hf1 : 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) hf`. Establish `hN1 : 1 ≤ D.R.N D.R.m` using `by unfold Ranks.N; have := D.R.m_add_three_le_k; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : bigN D ≤ 10 * (D.R.m * D.R.f * D.R.N D.R.m ^ 2 * D.host.d)`. Establish `e1 : D.R.N D.R.m ≤ D.R.N D.R.m ^ 2` using `Nat.le_self_pow (by norm_num) _`. Establish `e2 : D.R.m * D.R.N D.R.m ≤ D.R.m * D.R.f * D.R.N D.R.m ^ 2 * D.host.d`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : bigN D ≤ 10 * (D.R.m * D.R.N D.R.m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `s1 : bigN D ≤ D.R.k + D.R.m * (D.R.t + (D.R.k + D.R.m + 6) + 1)`. Simplify using `only [bigN, sLen, Ranks.r]`. Use `gcongr`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `a1 : D.R.k ≤ D.R.m * D.R.k` using `Nat.le_mul_of_pos_left _ (by omega)`. Establish `a2 : D.R.m * D.R.t ≤ D.R.m * (D.R.m * D.R.t)` using `Nat.le_mul_of_pos_left _ (by omega)`. Establish `a3 : D.R.m ≤ D.R.m * D.R.m` using `Nat.le_mul_of_pos_left _ (by omega)`. Use `s1.trans ?_` and prove the remaining obligations. Simplify using `only [Ranks.N]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Establish `: (bigN D : ℝ) ≤ 10 * ((D.R.m * D.R.f * D.R.N D.R.m ^ 2 * D.host.d : ℕ) : ℝ)` using `by exact_mod_cast key`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bigN_le {D : D7} {large₂ : SizeData₂ D} (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) : (bigN D : ℝ) ≤ 10 * large₂.sc.b := by
   obtain ⟨-, -, hf, hm, -, hb, -⟩ := hs
@@ -59,9 +59,9 @@ theorem bigN_le {D : D7} {large₂ : SizeData₂ D} (hs : GlobalTheory.Indefinit
   linarith
 
 /- English proof (translation)
-Distinguish the cases in `hz : ∃ i, a i = 0`. Take `⟨i, hi⟩` from `hz`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) hi, Real.log_zero]`. Check the signs of the components of the expression. Use `push_neg at hz`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_prod (fun i _ => hz i)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem log_prod_le {ι : Type} [Fintype ι] (a : ι → ℝ) (c : ℝ) (h0 : ∀ i, 0 ≤ a i) (hc : 0 ≤ c)
     (h : ∀ i, Real.log (a i) ≤ c) : Real.log (∏ i, a i) ≤ Fintype.card ι * c := by
@@ -79,23 +79,21 @@ end GlobalTheory.InfSize
 open GlobalTheory.InfSize in
 
 /- English proof (translation)
-Take `⟨K1, hK1⟩` from `GlobalTheory.T.topNodeFormWeight_abs_le_linear`. Use `set c : ℝ := |K1| + 10 with hc`. Use `set c2 : ℝ := Real.log (6 * c) + 1 with hc2`. Use `⟨0, fun CF _ => ⟨5 * c * c2, fun ε => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ hAt => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hc10 : 10 ≤ c` using `by rw [hc]; linarith [abs_nonneg K1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hc2p : 1 ≤ c2`. Rewrite using `[hc2]; have : 0 ≤ Real.log (6 * c) := Real.log_nonneg (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : 1 ≤ large₂.sc.L`. Unfold `Scale.L`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hlb : Real.log large₂.sc.b = large₂.sc.L` using `Real.log_exp _`. Establish `hb1 : 1 ≤ large₂.sc.b` using `Real.one_le_exp (by linarith)`. Use `⟨hb1, ?_⟩` and prove the remaining obligations. Establish `hlog1 : 1 ≤ Real.log large₂.sc.b` using `hlb ▸ hL`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcg : ch.sc.cGap = 1` using `by rw [hAt]`. Establish `hw` using `hK1 D large₂ hS.size ch.G hcg`. Establish `hNb` using `bigN_le hS.size`. Establish `hrk : (ch.G.V (.top D.R.m)).rank ≤ bigN D` using `GlobalTheory.DefRank.rank_le_bigN ch.G (.top D.R.m) (le_refl D.R.m)`. Establish `hrkR : ((ch.G.V (.top D.R.m)).rank : ℝ) ≤ bigN D` using `by exact_mod_cast hrk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set B : ℝ := c * large₂.sc.b with hB`. Establish `hB1 : 1 ≤ B` using `by rw [hB]; nlinarith`. Establish `hlogB : Real.log (6 * B) ≤ c2 * Real.log large₂.sc.b`. Rewrite using `[hB, ← mul_assoc, Real.log_mul (by positivity) (by positivity), hc2]`. Establish `: 0 ≤ Real.log (6 * c)` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hNB : ((ch.G.V (.top D.R.m)).rank : ℝ) ≤ B`. Rewrite using `[hB]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hwB : ∀ τ i, |(((wt ch.G (.top D.R.m) τ).w i : ℤ) : ℝ)| ≤ B` using `fun τ i => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hw τ i).trans ?_` and prove the remaining obligations. Rewrite using `[hB]; exact mul_le_mul_of_nonneg_right (by rw [hc]; linarith [le_abs_self K1]) (by linarith)`. Establish `hτ : ∀ τ, Real.log (Formalism.MainNotions.PrimeDegreeVariant.brBd ch.G.sp.topDec.rank (wt ch.G (.top D.R.m) τ) (listedWt ch.G (.grid D.R.m D.R.m) τ) ^ 2) ≤ 5 * c * c2 * (bigN D : ℝ) * large₂.sc.b * Real.log large₂.sc.b`. Introduce `τ`. Use `(GlobalTheory.T.log_branching_constant_sq_le _ _ _ B hB1 hNB (hwB τ)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl6 : 0 ≤ Real.log (6 * B)` using `Real.log_nonneg (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : 0 ≤ 5 * c * c2 * (bigN D : ℝ) * large₂.sc.b * Real.log large₂.sc.b` using `by positivity`. Use `(log_prod_le _ _ (fun τ => sq_nonneg _) h0 hτ).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[D.what₂.card_Tau]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InfSize.main : ∃ CF0 : ℝ, ∀ CF : ℝ, CF0 ≤ CF → ∃ K0 : ℝ, ∀ ε : ℝ, ∃ x₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε → x₀ ≤ large₂.sc.x →
     ∀ (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m)

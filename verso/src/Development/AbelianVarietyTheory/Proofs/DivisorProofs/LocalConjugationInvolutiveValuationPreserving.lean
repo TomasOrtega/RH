@@ -13,7 +13,7 @@ namespace GlobalTheory.CjInv
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E}
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `isEquiv _ _`.
+A detailed English derivation is pending.
 -/
 theorem valuation_equiv :
     (valuation (w.adicCompletion E)).IsEquiv (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) := by
@@ -22,16 +22,16 @@ theorem valuation_equiv :
   exact isEquiv _ _
 
 /- English proof (translation)
-Simplify using `only [← not_le]`. Conclude with `not_congr valuation_equiv.one_le_iff_one_le`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lt_one_iff (x : w.adicCompletion E) : valuation (w.adicCompletion E) x < 1 ↔ Valued.v x < 1 := by
   simp only [← not_le]
   exact not_congr valuation_equiv.one_le_iff_one_le
 
 /- English proof (translation)
-Rewrite `h` using `[← lt_one_iff]`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' (w.adicCompletion E)).tendsto_right_iff]`. Introduce `γ hγ`. Establish `: MulArchimedean (ValueGroupWithZero (w.adicCompletion E))` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h (Units.mk0 γ hγ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [eventually_ge_atTop n] with m hm`. Use `show valuation _ (x ^ m) < γ`. Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_pow_zero {x : w.adicCompletion E} (h : Valued.v x < 1) :
     Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
@@ -47,16 +47,16 @@ theorem tendsto_pow_zero {x : w.adicCompletion E} (h : Valued.v x < 1) :
   exact lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn
 
 /- English proof (translation)
-Use `(IsValuativeTopology.hasBasis_nhds_zero' (w.adicCompletion E)).mem_iff.2 ⟨1, one_ne_zero, fun _ hy => hy⟩` as an intermediate fact. Simplify `this` using `only [lt_one_iff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lt_one_mem_nhds : {y : w.adicCompletion E | Valued.v y < 1} ∈ 𝓝 (0 : w.adicCompletion E) := by
   have := (IsValuativeTopology.hasBasis_nhds_zero' (w.adicCompletion E)).mem_iff.2 ⟨1, one_ne_zero, fun _ hy => hy⟩
   simpa only [lt_one_iff] using this
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun n : ℕ => s x ^ n) atTop (𝓝 0)`. Use `(hs.tendsto 0).comp (tendsto_pow_zero h)` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_pow]`. Take `⟨N, hN⟩` from `(h1.eventually lt_one_mem_nhds).exists`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Establish `: 1 ≤ Valued.v (s x ^ N)` using `by rw [map_pow]; exact one_le_pow₀ hc`. Conclude with `absurd hN (not_lt.2 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lt_one_of_map (s : w.adicCompletion E →+* w.adicCompletion E) (hs : Continuous s) {x : w.adicCompletion E}
     (h : Valued.v x < 1) : Valued.v (s x) < 1 := by
@@ -70,9 +70,9 @@ theorem lt_one_of_map (s : w.adicCompletion E →+* w.adicCompletion E) (hs : Co
   exact absurd hN (not_lt.2 this)
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0]`. Conclude with `zero_le'`. Rewrite `hx`, the goal using `[← WithZero.exp_log h0]`. Rewrite `hx` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) := by
   by_cases h0 : x = 0
@@ -83,39 +83,33 @@ theorem le_exp_neg_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ 
     omega
 
 /- English proof (translation)
-Establish `hle : ∀ y : w.adicCompletion E, Valued.v y ≤ 1 → Valued.v (s y) ≤ 1`. Introduce `y hy`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hy0 : s y ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hc` using `[h0, map_zero]`. Conclude with `absurd hc (not_lt.2 zero_le')`. Establish `h1 : Valued.v (s y)⁻¹ < 1` using `by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hc`. Establish `h2` using `lt_one_of_map s hs h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀, hss, map_inv₀]`. Establish `h0 : (0 : WithZero (Multiplicative ℤ)) < Valued.v y`. Rewrite using `[zero_lt_iff, Valuation.ne_zero_iff]`. Introduce `h`. Apply `hy0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, map_zero]`. Conclude with `absurd hy (not_le.2 ((inv_lt_one₀ h0).1 h2))`. Establish `hord : ∀ a b : w.adicCompletion E, b ≠ 0 → Valued.v a ≤ Valued.v b → Valued.v (s a) ≤ Valued.v (s b)`. Introduce `a b hb hab`. Establish `hb' : s b ≠ 0` using `(map_ne_zero s).2 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Valued.v (a / b) ≤ 1`. Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ hab zero_le'`. Establish `h2` using `hle _ h1`. Rewrite `h2` using `[map_div₀, map_div₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : (0 : WithZero (Multiplicative ℤ)) < Valued.v (s b)`. Rewrite using `[zero_lt_iff, Valuation.ne_zero_iff]`. Conclude with `hb'`. Conclude with `(div_le_one₀ h0).1 h2`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set p : w.adicCompletion E := algebraMap E (w.adicCompletion E) π with hp`. Establish `hvp : Valued.v p = WithZero.exp (-1)`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w π` as an intermediate fact. Rewrite `this` using `[hπ]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp0 : p ≠ 0`. Introduce `h`. Rewrite `hvp` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hvp.symm`. Establish `hsp0 : s p ≠ 0` using `(map_ne_zero s).2 hp0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hvsp : Valued.v (s p) = Valued.v p`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hvp]`. Apply `le_exp_neg_one` to reduce the goal to its premises. Apply `lt_one_of_map s hs` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvp]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Use `hord (s p) p hp0 (by` as an intermediate fact. Rewrite using `[hvp]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `le_exp_neg_one` to reduce the goal to its premises. Apply `lt_one_of_map s hs` to reduce the goal to its premises. Rewrite using `[hvp]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use the proof step `norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hss]`. Then use the resulting hypothesis. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero]`. Establish `hvx : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Use `set k := WithZero.log (Valued.v x) with hk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set u := x * p ^ k with hu`. Establish `hvpk : Valued.v p ^ k ≠ 0` using `zpow_ne_zero _ ((Valuation.ne_zero_iff _).2 hp0)`. Establish `hvu : Valued.v u = 1`. Rewrite using `[hu, map_mul, map_zpow₀, hvp, ← WithZero.exp_log hvx, ← hk, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hvu` using `[h, map_zero]`. Conclude with `zero_ne_one hvu`. Establish `hsu1 : Valued.v (s u) ≤ 1` using `hle u hvu.le`.
-
-Establish `hsu2 : Valued.v (s u⁻¹) ≤ 1` using `hle u⁻¹ (by rw [map_inv₀, hvu, inv_one])`. Establish `hsu : Valued.v (s u) = 1`. Apply `le_antisymm hsu1` to reduce the goal to its premises. Rewrite `hsu2` using `[map_inv₀, map_inv₀]`. Establish `h0 : (0 : WithZero (Multiplicative ℤ)) < Valued.v (s u)`.
-
-Rewrite using `[zero_lt_iff, Valuation.ne_zero_iff]`. Conclude with `(map_ne_zero s).2 hu0`. Conclude with `(inv_le_one₀ h0).1 hsu2`. Rewrite `hsu` using `[hu, map_mul, map_zpow₀, map_mul, map_zpow₀, hvsp]`. Rewrite `hvu` using `[hu, map_mul, map_zpow₀]`.
-
-Conclude with `mul_right_cancel₀ hvpk (hsu.trans hvu.symm)`.
+A detailed English derivation is pending.
 -/
 theorem valued_map_eq (s : w.adicCompletion E →+* w.adicCompletion E) (hs : Continuous s) (hss : ∀ x, s (s x) = x)
     (x : w.adicCompletion E) : Valued.v (s x) = Valued.v x := by
@@ -190,11 +184,11 @@ end GlobalTheory.CjInv
 namespace GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ w`. Establish `key : (∀ x, cj w (cj w x) = x) ∧ Continuous (cj w)`. Unfold `cj`. Use `split_ifs with h`. Take `⟨hc, hE⟩` from `h.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => ?_, hc⟩` and prove the remaining obligations. Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap E w`. Use `hd.equalizer (hc.comp hc) continuous_id (funext fun y => by` as an intermediate fact. Simplify using `only [Function.comp_apply, id_eq, hE, IsCMField.complexConj_apply_apply])`. Conclude with `congrFun this x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun x => rfl, continuous_id⟩`. Conclude with `⟨key.1, GlobalTheory.CjInv.valued_map_eq (cj w) key.2 key.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem cj_involutive_valuation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E),
     (∀ x, cj w (cj w x) = x) ∧ ∀ x, Valued.v (cj w x) = Valued.v x := by

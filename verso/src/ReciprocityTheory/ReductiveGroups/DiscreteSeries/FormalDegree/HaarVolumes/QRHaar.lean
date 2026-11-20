@@ -15,35 +15,31 @@ open ReciprocityTheory.ChartRestriction.DS.S7 ReciprocityTheory.ChartRestriction
 variable {N : ℕ}
 
 /- English proof (translation)
-Use `haveI hcpt : CompactSpace (UNgrp N) := by`. Assume the negation of the conclusion as `hnc`. Rewrite `hnc` using `[not_compactSpace_iff]`. Establish `h1` using `MeasureTheory.measure_univ_of_isMulLeftInvariant μ`. Rewrite `h1` using `[measure_univ]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `ENNReal.one_ne_top h1`. Take `⟨c, hct, hkap⟩` from `kap_eq (N := N)`. Use `haveI : SigmaFinite (triMeas N) := by`. Unfold `triMeas triDens`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (kap N) := by`. Rewrite using `[hkap]`. Use `lift c to NNReal using hct`. Use `show SigmaFinite (c • triMeas N)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hprod` using `nuQR_eq_prod (N := N) μ`. Establish `hcd : Continuous fun Z : Fin N → Fin N → ℂ => (Matrix.of Z).det` using `Continuous.matrix_det (continuous_id : Continuous fun Z : Fin N → Fin N → ℂ => Matrix.of Z)`. Establish `hdet : Measurable fun Z : Fin N → Fin N → ℂ => ENNReal.ofReal (‖(Matrix.of Z).det‖ ^ (2 * N))` using `((hcd.norm.pow _).measurable).ennreal_ofReal`. Establish `hgm : Measurable (gmDens N)`. Establish `he : gmDens N = fun Z => ENNReal.ofReal ((‖(Matrix.of Z).det‖ ^ (2 * N))⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately.
 
-Use function extensionality and compare the values at `Z`. Unfold `gmDens`. Rewrite using `[_root_.zpow_neg, show (2 * (N : ℤ)) = ((2 * N : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`. Rewrite using `[he]`. Conclude with `((hcd.norm.pow _).measurable.inv).ennreal_ofReal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htd : Measurable (triDens (N` using `N)) := by`. Unfold `triDens`. Use `first`. Consider the case `fun_prop`. Consider the case `measurability`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ f : (Fin N → Fin N → ℂ) → ENNReal, Measurable f → ∫⁻ Z, f Z = c * ∫⁻ k, (∫⁻ t in triPos N, f (qrMap (k, t)) * ENNReal.ofReal (qrWt t)) ∂μ`. Introduce `f hf`. Establish `hg : Measurable fun Z => f Z * ENNReal.ofReal (‖(Matrix.of Z).det‖ ^ (2 * N))` using `hf.mul hdet`. Establish `hgq : Measurable fun p : UNgrp N × TriCo N => f (qrMap p) * ENNReal.ofReal (‖(Matrix.of (qrMap p)).det‖ ^ (2 * N))` using `hg.comp measurable_qrMap`. Establish `s1 : ∫⁻ Z, f Z = ∫⁻ Z in glSet N, f Z`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← lintegral_add_compl f (measurableSet_glSet (N := N))]`. Establish `hc : (glSet N)ᶜ = {Z : Fin N → Fin N → ℂ | (Matrix.of Z).det = 0}`. Use extensionality with `Z`. Simplify using `[glSet]`. Rewrite using `[hc, setLIntegral_measure_zero _ _ volume_det_eq_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `s2 : ∫⁻ Z in glSet N, f Z = ∫⁻ Z, f Z * ENNReal.ofReal (‖(Matrix.of Z).det‖ ^ (2 * N)) ∂((gmMeas N).restrict (glSet N))`. Unfold `gmMeas`. Rewrite using `[restrict_withDensity measurableSet_glSet, lintegral_withDensity_eq_lintegral_mul _ hgm hg]`. Apply `setLIntegral_congr_fun measurableSet_glSet` to reduce the goal to its premises. Introduce `Z hZ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [Pi.mul_apply]`. Rewrite using `[mul_comm (f Z), ← mul_assoc, gmDens_mul Z hZ, one_mul]`. Rewrite using `[s1, s2, ← map_qrMap_nuQR, lintegral_map hg measurable_qrMap, ← hprod, lintegral_prod _ hgq.aemeasurable, ← lintegral_const_mul' _ _ hct]`. Apply `lintegral_congr` to reduce the goal to its premises. Introduce `k`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkap, lintegral_smul_measure]`. Use `congr 1`. Unfold `triMeas`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ htd (by first`. Consider the case `exact hgq.comp measurable_prodMk_left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `exact hgq.comp measurable_prod_mk_left)]`. Apply `setLIntegral_congr_fun measurableSet_triPos` to reduce the goal to its premises. Introduce `t ht`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[d_qrMap k t ht, mul_comm, mul_assoc, mul_comm _ (triDens t), triDens_mul t ht]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc0 : c ≠ 0`. Introduce `h0`. Establish `h1` using `key (fun _ => 1) measurable_const`. Rewrite `h1` using `[h0, zero_mul, lintegral_const, one_mul]`. Establish `hv : (volume : Measure (Fin N → Fin N → ℂ)) Set.univ ≠ 0`.
-
-Rewrite using `[MeasureTheory.volume_pi, Measure.pi_univ, Finset.prod_ne_zero_iff]`. Introduce `i _`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_univ, Finset.prod_ne_zero_iff]`. Introduce `j _`. Conclude with `isOpen_univ.measure_ne_zero volume Set.univ_nonempty`.
-
-Conclude with `hv h1`. Use `⟨c.toReal, ENNReal.toReal_pos hc0 hct, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Rewrite using `[ENNReal.ofReal_toReal hct]`. Conclude with `key f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qr_lintegral (μ : Measure (UNgrp N)) [μ.IsHaarMeasure] [IsProbabilityMeasure μ] :
     ∃ C : ℝ, 0 < C ∧ ∀ f : (Fin N → Fin N → ℂ) → ENNReal, Measurable f →

@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.ConjPeriods
 open GroundTheory.Heights₂.Heights.Regular
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Simplify using `using hw.1 i`. Simplify using `using hw.2 k hk`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem star_mem_logCover {n a : ℕ} (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ logCover h) :
     star w ∈ logCover h := by
@@ -20,7 +20,7 @@ theorem star_mem_logCover {n a : ℕ} (h : a ≤ n) {w : Fin n → ℂ} (hw : w 
   · simpa using hw.2 k hk
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [expCover, Pi.star_apply]`. Use `split_ifs`. Conclude with `Complex.exp_conj _`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expCover_star {n : ℕ} (a : ℕ) (w : Fin n → ℂ) : expCover a (star w) = star (expCover a w) := by
   funext k
@@ -30,9 +30,9 @@ theorem expCover_star {n : ℕ} (a : ℕ) (w : Fin n → ℂ) : expCover a (star
   · rfl
 
 /- English proof (translation)
-Establish `: logCover h = (⋂ i : Fin a, {w : Fin n → ℂ | (w (Fin.castLE h i)).re < 0}) ∩ ⋂ k : Fin n, {w : Fin n → ℂ | a ≤ k.val → ‖w k‖ < 1}`. Use extensionality with `w`. Simplify using `[logCover]`. Rewrite using `[this]`. Use `(isOpen_iInter_of_finite fun i => ?_).inter (isOpen_iInter_of_finite fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isOpen_lt (Complex.continuous_re.comp (continuous_apply _)) continuous_const`. Distinguish the cases in `hk : a ≤ k.val`. Simplify `isOpen_lt (continuous_norm.comp (continuous_apply k)) continuous_const` using `[hk]`. Simplify using `[hk]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_logCover {n a : ℕ} (h : a ≤ n) : IsOpen (logCover h) := by
   have : logCover h = (⋂ i : Fin a, {w : Fin n → ℂ | (w (Fin.castLE h i)).re < 0}) ∩
@@ -46,7 +46,7 @@ theorem isOpen_logCover {n a : ℕ} (h : a ≤ n) : IsOpen (logCover h) := by
     · simp [hk]
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `i`. Simplify using `using hz i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem star_mem_ball {n : ℕ} {z : Fin n → ℂ} (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) :
     star z ∈ Metric.ball (0 : Fin n → ℂ) 1 := by
@@ -55,7 +55,7 @@ theorem star_mem_ball {n : ℕ} {z : Fin n → ℂ} (hz : z ∈ Metric.ball (0 :
   simpa using hz i
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h1 : DifferentiableAt ℂ f (star w)` using `hf.differentiableAt (hS.mem_nhds (hst w hw))`. Establish `h2` using `h1.star_star`. Rewrite `h2` using `[star_star]`. Conclude with `h2.differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_conj {n g : ℕ} {S : Set (Fin n → ℂ)} (hS : IsOpen S) (hst : ∀ w ∈ S, star w ∈ S)
     {f : (Fin n → ℂ) → Fin g → ℂ} (hf : DifferentiableOn ℂ f S) :
@@ -67,14 +67,14 @@ theorem differentiableOn_conj {n g : ℕ} {S : Set (Fin n → ℂ)} (hS : IsOpen
   exact h2.differentiableWithinAt
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, star_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_map_conj {g : ℕ} (x y : Fin g → ℂ) (M : Matrix (Fin g) (Fin g) ℂ) :
     x ⬝ᵥ M.map (starRingEnd ℂ) *ᵥ y = star (star x ⬝ᵥ M *ᵥ star y) := by
   simp [dotProduct, Matrix.mulVec, star_sum]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `hM.apply i j` as an intermediate fact. Simplify using `[Matrix.conjTranspose_apply, ← this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isHermitian_map_conj {g : ℕ} {M : Matrix (Fin g) (Fin g) ℂ} (hM : M.IsHermitian) :
     (M.map (starRingEnd ℂ)).IsHermitian := by
@@ -83,7 +83,7 @@ theorem isHermitian_map_conj {g : ℕ} {M : Matrix (Fin g) (Fin g) ℂ} (hM : M.
   simp [Matrix.conjTranspose_apply, ← this]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = c`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem star_single {n : ℕ} (c : Fin n) :
     star (Pi.single c (2 * Real.pi * Complex.I) : Fin n → ℂ) = -Pi.single c (2 * Real.pi * Complex.I) := by
@@ -94,9 +94,9 @@ theorem star_single {n : ℕ} (c : Fin n) :
   · simp [hk]
 
 /- English proof (translation)
-Use `⟨fun j => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : Fin.castLE h j = Fin.castLE h i`. Simplify `(by simpa [hj] using hw.1 j)` using `[hj, Pi.single_apply]`. Simplify `hw.1 j` using `[Pi.single_apply, hj]`. Establish `hki : k ≠ Fin.castLE h i`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hk`. Use linear arithmetic over natural numbers and integers. Simplify `hw.2 k hk` using `[Pi.single_apply, hki]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_single_mem_logCover {n a : ℕ} (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ logCover h) (i : Fin a) :
     w - Pi.single (Fin.castLE h i) (2 * Real.pi * Complex.I) ∈ logCover h := by
@@ -179,9 +179,9 @@ def conj {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.LogPeriods n a g 
     simpa using this
 
 /- English proof (translation)
-Introduce `n a g r Λ _ L U hT`. Use `⟨conj L hT, fun u _ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [HodgeMetric.periodGram, Matrix.of_apply, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `_ * (_ ⬝ᵥ ((L.H (star u)).map (starRingEnd ℂ)) *ᵥ _) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[dot_map_conj, map_mul, Complex.conj_ofReal]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_conj_periodGram : ∀ (n a g r : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ)
     (U : Fin r → (Fin n → ℂ) → Fin g → ℂ), (∀ i, Function.Bijective (L.T i)) →

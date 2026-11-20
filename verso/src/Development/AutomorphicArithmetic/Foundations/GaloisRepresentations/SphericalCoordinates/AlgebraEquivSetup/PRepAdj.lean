@@ -5,37 +5,37 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ A n rep hrep x a b`. Take `⟨β, h1, h2⟩` from `hrep`. Establish `key : ∀ z w, LinearMap.BilinForm.baseChange ℚ (A.EF n) z w = Algebra.trace ℚ E (A.δ * ∑ i, (A.hd n i : E) * β z i * IsCMField.complexConj E (β w i))`. Establish `hσq : ∀ (q : ℚ) (b : E), IsCMField.complexConj E (q • b) = q • IsCMField.complexConj E b`. Introduce `q b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Simplify using the standard rewrite rules. Establish `hEF : ∀ v u : Fin n → 𝓞 E, ((A.EF n v u : ℤ) : ℚ) = Algebra.trace ℚ E (A.δ * ∑ i, (A.hd n i : E) * v i * IsCMField.complexConj E (u i))`. Introduce `v u`. Simplify using `only [Arith.EF, LinearMap.mk₂_apply, A.trd_spec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Simplify using `only [A.bar_eq]`. Introduce `z w`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp [ha, hb, add_mul, Finset.sum_add_distrib, mul_add]`. Consider the case `tmul q v`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb, mul_add, Finset.sum_add_distrib]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul r u`. Rewrite using `[LinearMap.BilinForm.baseChange_tmul]`. Establish `e1 : q ⊗ₜ[ℤ] v = q • ((1:ℚ) ⊗ₜ[ℤ] v)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `e2 : r ⊗ₜ[ℤ] u = r • ((1:ℚ) ⊗ₜ[ℤ] u)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e1, e2, map_smul, map_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, h1, hσq]`. Establish `hS : ∑ x, (A.hd n x : E) * q • (v x : E) * r • IsCMField.complexConj E (u x : E) = (q * r) • ∑ x, (A.hd n x : E) * v x * IsCMField.complexConj E (u x : E)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hS, mul_smul_comm, map_smul, ← hEF, zsmul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hreal : ∀ i, IsCMField.complexConj E (A.hd n i : E) = A.hd n i`. Introduce `i`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : IsCMField.complexConj E (A.c : E) = A.c`. Rewrite using `[← A.bar_eq, A.c_real]`. Simplify using `only [Arith.hd, Arith.dg]`. Apply the tactic sequence `split_ifs <;> simp [hc]`. Establish `hc0 : (A.c : E) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `h`. Use `A.c_neg` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Simplify using `at this`. Establish `hne : ∀ i, (A.hd n i : E) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `only [Arith.hd, Arith.dg]`. Apply the tactic sequence `split_ifs <;> simp [hc0]`. Rewrite using `[key, key, h2, h2]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Generalize the expression as in `β a = p`. Generalize the expression as in `β b = s`. Establish `hD : ∀ d : Fin n → E, (∀ m, d m ≠ 0) → (diagonal d)⁻¹ = diagonal (fun m => (d m)⁻¹)`. Introduce `d hd`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use extensionality with `m`. Conclude with `inv_mul_cancel₀ (hd m)`. Establish `hx : ∀ j, (MulOpposite.unop ((hermStar (A.H n) (by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Arith.H, Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hne i)) x) *ᵥ s) j =`. Use the proof step `(A.hd n j : E)⁻¹ * ∑ k, IsCMField.complexConj E (x k j) * A.hd n k * s k := by`. Introduce `j`. Simplify using `only [hermStar, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, MulOpposite.unop_op, Arith.H]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Simplify using `only [Function.comp_def, RingHom.coe_coe, hreal]`. Rewrite using `[hD _ hne, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_diagonal]`. Rewrite using `[show ∀ d : Fin n → E, diagonal d *ᵥ s = fun m => d m * s m from fun d => funext (Matrix.mulVec_diagonal d s)]`. Simplify using `only [Matrix.mulVec, dotProduct, transpose_apply, map_apply, RingHom.coe_coe]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hx]`. Simplify using `only [map_mul, map_inv₀, map_sum, hreal, IsCMField.complexConj_apply_apply, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `hne j` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pRepAdj :
     RepAdj := by

@@ -19,13 +19,13 @@ namespace GlobalTheory.SameLam
 open GlobalTheory.CechPic GlobalTheory.PrimitiveOverField
 
 /- English proof (translation)
-Take `⟨s⟩ : Nonempty (Sp K)` from `inferInstance`. Take `⟨U, hU, t, ht⟩` from `hs s`. Establish `hV : ∀ z : A.left, z ∈ A.hom ⁻¹ᵁ U` using `fun z => by show A.hom.base z ∈ U`. Rewrite using `[Subsingleton.elim (A.hom.base z) s]`. Conclude with `hU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hι : IsIso (A.hom ⁻¹ᵁ U).ι`. Rewrite using `[isIso_iff_isOpenImmersion_and_surjective]`. Use `⟨inferInstance, ⟨fun z => ?_⟩⟩` and prove the remaining obligations. Establish `hz : z ∈ Set.range (A.hom ⁻¹ᵁ U).ι.base`. Rewrite using `[Scheme.Opens.range_ι]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hV z`. Conclude with `hz`. Establish `hc` using `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 ⟨t, ht⟩`. Rewrite `hc` using `[cls_linComb hL]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, pull_comp] at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : pull (A.hom ⁻¹ᵁ U).ι (pull (GrpObj.inv : A ⟶ A).left (cls L hL) - cls L hL) = 0`. Rewrite using `[map_sub, ← hc, sub_eq_add_neg]`. Establish `h2` using `congrArg (pull (inv (A.hom ⁻¹ᵁ U).ι)) key`. Rewrite `h2` using `[← pull_comp, IsIso.inv_hom_id, pull_id, map_zero]`. Conclude with `sub_eq_zero.1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_inv_cls {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {L : LB A.left}
     (hL : L.IsLB) (hs : Out.Sym A L) : pull (GrpObj.inv : A ⟶ A).left (cls L hL) = cls L hL := by
@@ -53,29 +53,29 @@ theorem pull_inv_cls {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {L : LB A
   exact sub_eq_zero.1 h2
 
 /- English proof (translation)
-Introduce `hLaws K _ _ P P' e he hLam`. Take `⟨φ₂, hsq, hiso⟩` from `hLam`. Establish `hw : φ₂ ≫ (P.A ⊗ P.A).hom = (P'.A ⊗ P'.A).hom`. Rewrite using `[← Over.w (fst P.A P.A), ← Category.assoc, hsq.1, Category.assoc, Over.w e.hom, Over.w (fst P'.A P'.A)]`. Establish `hf : Over.homMk φ₂ hw ≫ fst P.A P.A = fst P'.A P'.A ≫ e.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `using hsq.1`. Establish `hs : Over.homMk φ₂ hw ≫ snd P.A P.A = snd P'.A P'.A ≫ e.hom`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `using hsq.2`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcube : ∀ Q : Out.PolAV (Sp K), (abelian₂ Q.A Q.L).IsLB` using `fun Q => LB.isLB_linComb Q.isLB _ _`. Establish `hLc : ∀ Q : Out.PolAV (Sp K), cls _ (hcube Q) = lam (cls Q.L Q.isLB) (fst Q.A Q.A) (snd Q.A Q.A)` using `fun Q => cls_cube_two Q.isLB _ _ (hcube Q)`. Establish `hcls` using `(cls_eq_iff (hcube P') (pull_isLB (hcube P) φ₂)).2 hiso`. Rewrite `hcls` using `[cls_pull (hcube P), hLc P', hLc P]`. Establish `hA : lam (cls P'.L P'.isLB) (fst P'.A P'.A) (snd P'.A P'.A) = lam (cls P.L P.isLB) (fst P'.A P'.A ≫ e.hom) (snd P'.A P'.A ≫ e.hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcls, ← hf, ← hs]`. Conclude with `pull_lam (Over.homMk φ₂ hw) _ _ _`. Establish `hB : lam (pull e.inv.left (cls P'.L P'.isLB)) (fst P.A P.A) (snd P.A P.A) = lam (cls P.L P.isLB) (fst P.A P.A) (snd P.A P.A)`. Establish `h1` using `congrArg (pull (lift (fst P.A P.A ≫ e.inv) (snd P.A P.A ≫ e.inv)).left) hA`. Rewrite `h1` using `[pull_lam, pull_lam]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd, Category.assoc, Iso.inv_hom_id, Category.comp_id] at h1`. Rewrite using `[lam_pull e.inv]`. Conclude with `h1`. Establish `hO : (GlobalTheory.CechPic.tens (P'.L.pull e.inv.left) (GlobalTheory.CechPic.dual P.L)).IsLB` using `isLB_tens (pull_isLB P'.isLB _) (isLB_dual P.isLB)`. Establish `hOc : cls _ hO = pull e.inv.left (cls P'.L P'.isLB) + -cls P.L P.isLB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cls_tens (pull_isLB P'.isLB _) (isLB_dual P.isLB), cls_pull P'.isLB, cls_dual P.isLB]`. Establish `hLO : (abelian₂ P.A (GlobalTheory.CechPic.tens (P'.L.pull e.inv.left) (GlobalTheory.CechPic.dual P.L))).IsLB` using `LB.isLB_linComb hO _ _`. Establish `hz : cls _ hLO = 0`. Use `(cls_cube_two hO _ _ hLO).trans ?_` and prove the remaining obligations. Rewrite using `[hOc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ (sub_eq_zero.2 hB)` and prove the remaining obligations. Simplify using `only [lam, map_add, map_neg]`. Normalize the expressions using the abelian group laws. Take `⟨u, hu⟩` from `(cls_eq_zero_iff hLO).1 hz`. Take `⟨y, hy⟩` from `GlobalTheory.PrimitiveOverField.exists_point_translate hLaws K P _ hO ⟨u, hu⟩`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyc` using `(cls_eq_iff hO (LB.isLB_linComb P.isLB _ _)).2 hy`. Rewrite `hyc` using `[hOc, cls_linComb P.isLB]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, pull_id] at hyc`. Establish `hd : pull e.inv.left (cls P'.L P'.isLB) = pull (toUnit P.A ≫ y * 𝟙 P.A).left (cls P.L P.isLB)` using `add_right_cancel hyc`. Establish `hc' : cls P'.L P'.isLB = pull (e.hom ≫ (toUnit P.A ≫ y * 𝟙 P.A)).left (cls P.L P.isLB)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.comp_left, pull_comp, ← hd, ← pull_comp, ← Over.comp_left, e.hom_inv_id, Over.id_left, pull_id]`. Use `⟨y, ?_, (cls_eq_iff P'.isLB (pull_isLB P.isLB _)).1 (by rw [cls_pull P.isLB]; exact hc')⟩` and prove the remaining obligations. Establish `hTh : ∃ t : LB.Gen (Theta P.A P.L), t.IsGen` using `GlobalTheory.Moduli.cube_of_isLB _ P P.L P.isLB`. Establish `hsymA` using `pull_inv_cls P.isLB P.sym`. Establish `hsymA'` using `pull_inv_cls P'.isLB P'.sym`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdι : pull (GrpObj.inv : P.A ⟶ P.A).left (pull e.inv.left (cls P'.L P'.isLB)) = pull e.inv.left (cls P'.L P'.isLB)`. Rewrite using `[← pull_comp, ← Over.comp_left, GrpObj.inv_hom, Over.comp_left, pull_comp, hsymA']`. Rewrite `hdι` using `[hd]`. Establish `hlc` using `GlobalTheory.PrimitiveOverField.lam_const (B := P.A) (cls P.L P.isLB) y (𝟙 P.A)`. Rewrite `hlc` using `[Over.id_left, pull_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpa : pull (GrpObj.inv : P.A ⟶ P.A).left (lam (cls P.L P.isLB) (toUnit P.A ≫ y) (𝟙 P.A)) = lam (cls P.L P.isLB) (toUnit P.A ≫ y) (𝟙 P.A)`. Rewrite using `[hlc, map_sub, hdι, hsymA]`. Rewrite `hpa` using `[pull_lam, ← Category.assoc, toUnit_unique (GrpObj.inv ≫ toUnit P.A) (toUnit P.A), Category.comp_id]`. Establish `hneg : lam (cls P.L P.isLB) (toUnit P.A ≫ y) GrpObj.inv = -lam (cls P.L P.isLB) (toUnit P.A ≫ y) (𝟙 P.A)`. Rewrite using `[lam_comm, lam_comm _ _ (𝟙 P.A), eq_neg_iff_add_eq_zero, ← lam_mul_left P.isLB hTh, GrpObj.inv_eq_inv, inv_mul_cancel, lam_one_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2a : lam (cls P.L P.isLB) (toUnit P.A ≫ y ^ 2) (𝟙 P.A) = 0`. Rewrite using `[MonObj.comp_pow, lam_pow_left P.isLB hTh, two_nsmul]`. Use `nth_rewrite 1 [← hpa]`. Rewrite using `[hneg, neg_add_cancel]`. Conclude with `GlobalTheory.PrimitiveOverField.eq_one_of_lam_eq_zero P.isLB P.ktriv _ h2a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_two_torsion_translate : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P P' : Out.PolAV (Sp K)) (e : P'.A ≅ P.A), IsMonHom e.hom → LamIs P'.A P'.L P.A (abelian₂ P.A P.L) e.hom.left → ∃ t : 𝟙_ (Over (Sp K)) ⟶ P.A, t ^ 2 = 1 ∧ LBIso P'.L (P.L.pull (e.hom ≫ ((toUnit P.A ≫ t) * 𝟙 P.A)).left) := by
   intro hLaws K _ _ P P' e he hLam

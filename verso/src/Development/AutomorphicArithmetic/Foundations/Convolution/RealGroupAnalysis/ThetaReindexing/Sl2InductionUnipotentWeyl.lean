@@ -32,9 +32,9 @@ Both sides reduce to the same expression.
 private theorem coe_wF : (wF F).1 = !![0, 1; -1, 0] := rfl
 
 /- English proof (translation)
-Establish `hdet` using `γ.det_coe`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, coe_nF, coe_wF]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> first | ring1 | linear_combination hdet | linear_combination -hdet`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem decomp (γ : Matrix.SpecialLinearGroup (Fin 2) F) (hc : γ.1 1 0 ≠ 0) :
     γ = nF ((γ.1 0 0 - 1) / γ.1 1 0) * (wF F * nF (-(γ.1 1 0)) * (wF F * wF F * wF F)) *
@@ -48,7 +48,7 @@ private theorem decomp (γ : Matrix.SpecialLinearGroup (Fin 2) F) (hc : γ.1 1 0
     first | ring1 | linear_combination hdet | linear_combination -hdet
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, coe_wF]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem decomp0 (γ : Matrix.SpecialLinearGroup (Fin 2) F) :
     γ = (γ * wF F) * (wF F * wF F * wF F) := by
@@ -58,13 +58,13 @@ private theorem decomp0 (γ : Matrix.SpecialLinearGroup (Fin 2) F) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hw3 : P (wF F * wF F * wF F)` using `hmul _ _ (hmul _ _ hw hw) hw`. Establish `key : ∀ γ : Matrix.SpecialLinearGroup (Fin 2) F, γ.1 1 0 ≠ 0 → P γ`. Introduce `γ hc`. Rewrite using `[decomp γ hc]`. Conclude with `hmul _ _ (hmul _ _ (hn _) (hmul _ _ (hmul _ _ hw (hn _)) hw3)) (hn _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : γ.1 1 0 = 0`. Establish `hdet` using `γ.det_coe`. Rewrite `hdet` using `[Matrix.det_fin_two, hc]`. Establish `hd : γ.1 1 1 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdet` using `[h]`. Simplify using `at hdet`. Rewrite using `[decomp0 γ]`. Use `hmul _ _ (key _ ?_) hw3` and prove the remaining obligations. Establish `h10 : (γ * wF F).1 1 0 = -γ.1 1 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, coe_wF, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Rewrite using `[h10]`. Conclude with `neg_ne_zero.mpr hd`. Conclude with `key γ hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem specialLinearGroup_two_induction_on_unipotent_weyl (P : Matrix.SpecialLinearGroup (Fin 2) F → Prop)
     (hmul : ∀ a b, P a → P b → P (a * b)) (hn : ∀ b, P (nF b)) (hw : P (wF F))
@@ -104,7 +104,7 @@ private theorem ratS_coe (g : Matrix.SpecialLinearGroup (Fin 2) F) (i j : Fin 2)
     (ratS F g).1 i j = rt (g.1 i j) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[ratS_coe, coe_nF]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ratS_nF (b : F) : ratS F (nF b) = nU (rt b) := by
   apply Subtype.ext
@@ -113,7 +113,7 @@ private theorem ratS_nF (b : F) : ratS F (nF b) = nU (rt b) := by
   fin_cases i <;> fin_cases j <;> simp [nU]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[ratS_coe, coe_wF]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wW]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ratS_wF : ratS F (wF F) = wW F := by
   apply Subtype.ext
@@ -122,7 +122,7 @@ private theorem ratS_wF : ratS F (wF F) = wW F := by
   fin_cases i <;> fin_cases j <;> simp [wW]
 
 /- English proof (translation)
-Simplify using `[ψ, adelicChar_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem psi_rt (x : F) : ψ (rt x) = 1 := by
   simp [ψ, adelicChar_algebraMap]
@@ -132,7 +132,7 @@ private def Good (γ : Matrix.SpecialLinearGroup (Fin 2) F) : Prop :=
     ThRow (rt ((r ᵥ* γ.1) 0)) (rt ((r ᵥ* γ.1) 1)) φ.1
 
 /- English proof (translation)
-Introduce `r φ`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, ha r, hb (r ᵥ* a.1) φ, Matrix.SpecialLinearGroup.coe_mul, Matrix.vecMul_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem good_mul (a b : Matrix.SpecialLinearGroup (Fin 2) F)
     (ha : Good W a) (hb : Good W b) : Good W (a * b) := by
@@ -141,15 +141,15 @@ private theorem good_mul (a b : Matrix.SpecialLinearGroup (Fin 2) F)
     Matrix.SpecialLinearGroup.coe_mul, Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Introduce `r φ`. Rewrite using `[ratS_nF]`. Establish `h0 : (r ᵥ* (nF b).1) 0 = r 0`. Rewrite using `[coe_nF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (r ᵥ* (nF b).1) 1 = r 1 + b * r 0`. Rewrite using `[coe_nF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Unfold `ThRow`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.ConvolutionTheory.R2.D.hatN F E D W (rt b) φ]`. Establish `hψ : ψ (rt b * ((![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 2 ^ 2 - rt D.δ * (![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 3 ^ 2)) = 1`. Establish `: rt b * ((![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 2 ^ 2 - rt D.δ * (![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 3 ^ 2) = rt (b * (ξ 0 ^ 2 - D.δ * ξ 1 ^ 2))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[map_mul, map_sub, map_pow]`. Rewrite using `[this, psi_rt]`. Rewrite using `[hψ, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp [Function.update, map_add, map_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem good_n (b : F) : Good W (nF b) := by
   intro r φ
@@ -178,9 +178,9 @@ private theorem good_n (b : F) : Good W (nF b) := by
   fin_cases i <;> simp [Function.update, map_add, map_mul]
 
 /- English proof (translation)
-Introduce `r φ`. Rewrite using `[ratS_wF]`. Establish `h0 : (r ᵥ* (wF F).1) 0 = -r 1`. Rewrite using `[coe_wF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (r ᵥ* (wF F).1) 1 = r 0`. Rewrite using `[coe_wF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite using `[h0, h1]`. Conclude with `UpperTheory.ConvolutionTheory.R2.D.rowW F E D W (r 0) (r 1) φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem good_w : Good W (wF F) := by
   intro r φ
@@ -195,7 +195,7 @@ private theorem good_w : Good W (wF F) := by
   exact UpperTheory.ConvolutionTheory.R2.D.rowW F E D W (r 0) (r 1) φ
 
 /- English proof (translation)
-The claim follows from `specialLinearGroup_two_induction_on_unipotent_weyl (Good W) (good_mul W) (good_n W) (good_w W) γ`.
+A detailed English derivation is pending.
 -/
 private theorem good_all (γ : Matrix.SpecialLinearGroup (Fin 2) F) : Good W γ :=
   specialLinearGroup_two_induction_on_unipotent_weyl (Good W) (good_mul W) (good_n W) (good_w W) γ
@@ -205,7 +205,7 @@ end Main
 end UpperTheory.ConvolutionTheory.R2.D.SL2BruhatGenerators
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W γ r φ`. Conclude with `UpperTheory.ConvolutionTheory.R2.D.SL2BruhatGenerators.good_all W γ r φ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.D.row :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ∀ γ (r : Fin 2 → F) φ, ThRow (rt (r 0)) (rt (r 1)) (W.Om (ratS F γ) φ).1 =

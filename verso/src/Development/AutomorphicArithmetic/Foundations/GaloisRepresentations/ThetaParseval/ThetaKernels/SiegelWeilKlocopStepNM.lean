@@ -17,14 +17,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
 /- English proof (translation)
-The claim follows from `R.stepN_pf w hT`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.stepN (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : ∀ (y : GR d.n) (b : Matrix (Fin d.n) (Fin d.n) ℂ), bᴴ = b → mR y = nU b →
     R.StepOK w (R.ι w y) (fun f u => Complex.exp (2 * Real.pi * Complex.I * ((R.sg w : ℤ) : ℂ) *
       Matrix.trace (b * ((Matrix.of u)ᴴ * Matrix.of u))) * f u) id :=
   R.stepN_pf w hT
 /- English proof (translation)
-The claim follows from `R.stepM_pf w hT`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.stepM (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n) ℂ), IsUnit a.det → mR y = mLoc a →
     ∃ c : ℂ, c ≠ 0 ∧ R.StepOK w (R.ι w y) (fun f u => c * f (Matrix.of u * a)) id :=

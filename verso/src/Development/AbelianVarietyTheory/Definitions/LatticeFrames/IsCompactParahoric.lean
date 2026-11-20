@@ -11,11 +11,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {A D D' : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D']
 
 /- English proof (translation)
-Use `⟨fun j hj => ?_, fun j hj => ⟨1, ⟨by simp, ?_⟩, fun y hy => by simpa using hy.1⟩⟩` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_singleton]`. Substitute `hj` using the available equality. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Establish `: (1 : GL (A ⊕ D) k).1.toBlocks₂₂ = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[toBlocks₂₂, Matrix.one_apply]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[hg j]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hj`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isReps_central {g : GL (A ⊕ D) k} (hg : ∀ j, j * g = g * j) : IsReps g {1} (fun _ => 1) := by
   refine ⟨fun j hj => ?_, fun j hj => ⟨1, ⟨by simp, ?_⟩, fun y hy => by simpa using hy.1⟩⟩
@@ -28,11 +28,11 @@ theorem isReps_central {g : GL (A ⊕ D) k} (hg : ∀ j, j * g = g * j) : IsReps
   · rw [hg j]; simpa using hj
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h _ _ (isReps_central hg)`. Introduce and unpack `rfl R d ⟨h1, h2⟩`. Take `⟨j₀, ⟨hj₀, -⟩, hu⟩` from `h2 1 (one_mem _)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hR : R = {j₀}`. Use `Finset.eq_singleton_iff_unique_mem.2 ⟨hj₀, fun j hj => hu j ⟨hj, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hg j]`. Use `inv_mem (h1 j hj).1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hR` using the available equality. Rewrite using `[Finset.sum_singleton, hg j₀, map_mul, Module.End.mul_apply, hx j₀ (h1 j₀ hj₀).1 _ (h1 j₀ hj₀).2, map_smul, smul_smul]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isTOp_central {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (A ⊕ D) k) V)
     (ξ : kˣ →* ℂˣ) {g : GL (A ⊕ D) k} (hg : ∀ j, j * g = g * j) {x : V} (hx : x ∈ typeSpace π ξ) (y : V) :
@@ -53,7 +53,7 @@ theorem isTOp_central {V : Type} [AddCommGroup V] [Module ℂ V] (π : Represent
     simp
 
 /- English proof (translation)
-Use extensionality with `(a | a) (b | b)`. Conclude with `a.elim`. Conclude with `a.elim`. Conclude with `b.elim`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_one (j g : GL (Empty ⊕ Unit) k) : j * g = g * j := by
   ext (a | a) (b | b)
@@ -63,14 +63,14 @@ theorem comm_one (j g : GL (Empty ⊕ Unit) k) : j * g = g * j := by
   · simp [Matrix.mul_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← det_submatrix_equiv_self (Equiv.emptySum Empty Unit).symm]`. Simplify using `[Matrix.det_unique]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_one_block (g : GL (Empty ⊕ Unit) k) : g.1.det = g.1 (.inr ()) (.inr ()) := by
   rw [← det_submatrix_equiv_self (Equiv.emptySum Empty Unit).symm]
   simp [Matrix.det_unique]
 
 /- English proof (translation)
-Introduce `g _ d hd` and use `by have : GeneralLinearGroup.det g = d := by ext rw [hd, GeneralLinearGroup.val_det_apply, det_one_block] simp [Matrix.det_unique, toBlocks₂₂] simp [detRep, this]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_type (χ : kˣ →* ℂˣ) : (1 : ℂ) ∈ typeSpace (detRep (Empty ⊕ Unit) χ) χ := fun g _ d hd => by
   have : GeneralLinearGroup.det g = d := by
@@ -80,15 +80,15 @@ theorem one_mem_type (χ : kˣ →* ℂˣ) : (1 : ℂ) ∈ typeSpace (detRep (Em
   simp [detRep, this]
 
 /- English proof (translation)
-Establish `hd : ∀ s : Finset Unit, GeneralLinearGroup.det (mtor (A` using `Empty) ϖ (indic s)) = ϖ ^ s.card := by`. Introduce `s`. Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, det_one_block, mtor, val_torusElt]`. Break down `Finset.eq_empty_or_nonempty s with rfl | ⟨x, hx⟩` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[indic]`. Establish `: s = {()}` using `Finset.eq_singleton_iff_unique_mem.2 ⟨hx, fun _ _ => rfl⟩`. Substitute `this` using the available equality. Simplify using `[indic]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨-, -, h⟩`. Use `(isTOp_central _ χ (fun j => comm_one j _) (one_mem_type χ) _).1 (h {()})` as an intermediate fact. Use `ext`. Simplify `this` using `[detRep, hd, genVal, Multiset.esymm, Multiset.powersetCard_one]`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Use `⟨one_mem_type χ, by simp, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[isTOp_central _ χ (fun j => comm_one j _) (one_mem_type χ)]`. Break down `Finset.eq_empty_or_nonempty s with rfl | ⟨x, hx⟩` into its components or cases. Simplify using `[detRep, hd, genVal, Multiset.esymm]`. Establish `: s = {()}` using `Finset.eq_singleton_iff_unique_mem.2 ⟨hx, fun _ _ => rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `[detRep, hd, genVal, Multiset.esymm, Multiset.powersetCard_one]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem isGen_rank_one (χ : kˣ →* ℂˣ) (ϖ : kˣ) (b : ℂˣ) :
     IsGen (detRep (Empty ⊕ Unit) χ) χ ϖ {b} (1 : ℂ) ↔ b = χ ϖ := by
@@ -116,9 +116,9 @@ theorem isGen_rank_one (χ : kˣ →* ℂˣ) (ϖ : kˣ) (b : ℂˣ) :
       simp [detRep, hd, genVal, Multiset.esymm, Multiset.powersetCard_one]
 
 /- English proof (translation)
-Introduce `j hj d hd v`. Use `one_mem_type χ j hj d hd` as an intermediate fact. Establish `h2 : detRep (Empty ⊕ Unit) χ j v = v • detRep (Empty ⊕ Unit) χ j 1`. Rewrite using `[← map_smul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.id_apply, h2, this]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isCoType_rank_one (χ : kˣ →* ℂˣ) : IsCoType (detRep (Empty ⊕ Unit) χ) χ LinearMap.id := by
   intro j hj d hd v
@@ -129,14 +129,14 @@ theorem isCoType_rank_one (χ : kˣ →* ℂˣ) : IsCoType (detRep (Empty ⊕ Un
   simp [mul_comm]
 
 /- English proof (translation)
-Simplify using `[omTwo]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omTwo_self {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (g : GL a k) (h : GL b k) (u : Matrix b a k → ℂ) : omTwo μ μ g h u = om μ⁻¹ g h u := by
   simp [omTwo]
 
 /- English proof (translation)
-Simplify using `[omTwo, om]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem omTwo_apply {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μS μT : kˣ →* ℂˣ)
     (g : GL a k) (h : GL b k) (u : Matrix b a k → ℂ) (x : Matrix b a k) :
@@ -146,9 +146,9 @@ theorem omTwo_apply {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [Decida
   field_simp
 
 /- English proof (translation)
-Establish `h : InSupp (fromBlocks 1 0 0 y : Matrix (A ⊕ D) (A ⊕ D') k)`. Use `⟨?_, by simp, fun i j => by simp⟩` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j)`. Conclude with `one_int i j`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Conclude with `hy i j`. Establish `: Units.mk0 _ h.det_ne = 1` using `by ext; simp`. Simplify using `[liftS, schur, datum, dif_pos h, this]`.
+A detailed English derivation is pending.
 -/
 theorem liftS_diag (ξ : kˣ →* ℂˣ) (ψ : Matrix D D' k → ℂ) (y : Matrix D D' k) (hy : ∀ i j, y i j ∈ 𝒪[k]) :
     liftS ξ ψ (fromBlocks (1 : Matrix A A k) 0 0 y) = ψ y := by
@@ -163,20 +163,18 @@ theorem liftS_diag (ξ : kˣ →* ℂˣ) (ψ : Matrix D D' k → ℂ) (y : Matri
   simp [liftS, schur, datum, dif_pos h, this]
 
 /- English proof (translation)
-Establish `: absPow k 0 ϖ = 1` using `by ext; simp [val_absPow]`. Simplify using `[segL, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem segL_one (ϖ : kˣ) (z : ℂˣ) : segL ϖ z 1 = {z} := by
   have : absPow k 0 ϖ = 1 := by ext; simp [val_absPow]
   simp [segL, this]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ J) := QuotientGroup.discreteTopology ho`. Set `f : G → G ⧸ J` to `fun j => QuotientGroup.mk (j * g)`. Establish `hf : Continuous f` using `QuotientGroup.continuous_mk.comp (continuous_id.mul continuous_const)`. Establish `hfin : (f '' J).Finite` using `(hc.image hf).finite_of_discrete`. Establish `hex : ∀ c ∈ f '' J, ∃ j ∈ J, f j = c` using `fun c hc => hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! s hs hs' using hex`. Use `⟨hfin.toFinset.image s, ?_, fun j hj => ⟨s (f j), ⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `j hj`. Take `⟨c, hc, rfl⟩` from `Finset.mem_image.1 hj`. Conclude with `hs c (hfin.mem_toFinset.1 hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 ⟨j, hj, rfl⟩)`. Conclude with `QuotientGroup.eq.1 (hs' (f j) ⟨j, hj, rfl⟩)`. Introduce and unpack `y ⟨hy, hy'⟩`. Take `⟨c, hc, rfl⟩` from `Finset.mem_image.1 hy`. Establish `: f (s c) = f j` using `QuotientGroup.eq.2 hy'`.
-
-Rewrite using `[← this, hs' c (hfin.mem_toFinset.1 hc)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G)
     (ho : IsOpen (J : Set G)) (hc : IsCompact (J : Set G)) (g : G) :
@@ -200,9 +198,9 @@ theorem exists_reps {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGrou
     rw [← this, hs' c (hfin.mem_toFinset.1 hc)]
 
 /- English proof (translation)
-Establish `: (parahoric k A D : Set (GL (A ⊕ D) k)) = (KO k (A ⊕ D) : Set _) ∩ ⋂ i, ⋂ j, (fun g : GL (A ⊕ D) k => g.1 (.inr i) (.inl j)) ⁻¹' {x : k | valuation k x < 1}`. Use extensionality with `g`. Simplify using `[mem_parahoric]`. Rewrite using `[this]`. Use `SplitFlip.isOpen_KO.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsOpen.preimage (Units.continuous_val.matrix_elem _ _) ?_` and prove the remaining obligations. Simplify `(valuation k).isOpen_ball 1` using `[Valuation.restrict_lt_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_parahoric : IsOpen (parahoric k A D : Set (GL (A ⊕ D) k)) := by
   have : (parahoric k A D : Set (GL (A ⊕ D) k)) = (KO k (A ⊕ D) : Set _) ∩
@@ -214,18 +212,18 @@ theorem isOpen_parahoric : IsOpen (parahoric k A D : Set (GL (A ⊕ D) k)) := by
   simpa [Valuation.restrict_lt_one_iff] using (valuation k).isOpen_ball 1
 
 /- English proof (translation)
-The claim follows from `SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ isOpen_parahoric) fun _ h => (mem_parahoric.1 h).1`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_parahoric : IsCompact (parahoric k A D : Set (GL (A ⊕ D) k)) :=
   SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ isOpen_parahoric)
     fun _ h => (mem_parahoric.1 h).1
 
 /- English proof (translation)
-Take `⟨h, hh, rfl⟩` from `hj`. Introduce `h0`. Establish `e1 : (GeneralLinearGroup.map (n` using `A ⊕ D) (algebraMap 𝒪[k] k) h).1.toBlocks₂₂ = (algebraMap 𝒪[k] k).mapMatrix h.1.toBlocks₂₂ := rfl`. Rewrite `h0` using `[e1, ← RingHom.map_det]`. Establish `h1 : h.1.toBlocks₂₂.det = 0` using `Subtype.ext h0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set u := GeneralLinearGroup.map (n := A ⊕ D) (IsLocalRing.residue 𝒪[k]) h with hu`. Establish `h21 : u.1.toBlocks₂₁ = 0`. Use extensionality with `i j`. Conclude with `hh (i := .inr i) (j := .inl j) (show false < true by decide)`. Establish `h22 : u.1.toBlocks₂₂.det = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: u.1.toBlocks₂₂ = (IsLocalRing.residue 𝒪[k]).mapMatrix h.1.toBlocks₂₂` using `rfl`. Rewrite using `[this, ← RingHom.map_det, h1, map_zero]`. Use `u.det_ne_zero` as an intermediate fact. Rewrite `this` using `[← fromBlocks_toBlocks u.1, h21, det_fromBlocks_zero₂₁, h22, mul_zero]`. Conclude with `this rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_lower_ne {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) : j.1.toBlocks₂₂.det ≠ 0 := by
   obtain ⟨h, hh, rfl⟩ := hj
@@ -246,7 +244,7 @@ theorem det_lower_ne {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) : j.1.toB
   exact this rfl
 
 /- English proof (translation)
-Take `⟨R, h1, h2⟩` from `exists_reps _ isOpen_parahoric isCompact_parahoric g`. Use `⟨R, fun j => if h : j.1.toBlocks₂₂.det ≠ 0 then Units.mk0 _ h else 1, fun j hj => ⟨h1 j hj, ?_⟩, h2⟩` and prove the remaining obligations. Simplify using `[det_lower_ne (h1 j hj)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_isReps (g : GL (A ⊕ D) k) : ∃ R d, IsReps g R d := by
   classical
@@ -255,7 +253,7 @@ theorem exists_isReps (g : GL (A ⊕ D) k) : ∃ R d, IsReps g R d := by
   simp [det_lower_ne (h1 j hj)]
 
 /- English proof (translation)
-Take `⟨R, d, hR⟩` from `exists_isReps g`. Rewrite using `[h R d hR, h' R d hR]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTOp_unique {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (A ⊕ D) k) V)
     (ξ : kˣ →* ℂˣ) (g : GL (A ⊕ D) k) {x y y' : V} (h : IsTOp π ξ g x y) (h' : IsTOp π ξ g x y') : y = y' := by
@@ -263,9 +261,9 @@ theorem isTOp_unique {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representa
   rw [h R d hR, h' R d hR]
 
 /- English proof (translation)
-Take `⟨R, h1, h2⟩` from `exists_reps (KO k D) SplitFlip.isOpen_KO SplitFlip.isCompact_KO g`. Use `⟨R.image (· * g), ?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `⟨j, h1 j hj, 1, one_mem _, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, ⟨hj, hj'⟩, hu⟩` from `h2 κ hκ`. Use `⟨j * g, ⟨Finset.mem_image_of_mem _ hj, hj'⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hy'⟩`. Take `⟨j2, hj2, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[hu j2 ⟨hj2, hy'⟩]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isRepsK (g : GL D k) : ∃ R, IsRepsK g R := by
   classical
@@ -281,11 +279,11 @@ theorem exists_isRepsK (g : GL D k) : ∃ R, IsRepsK g R := by
     rw [hu j2 ⟨hj2, hy'⟩]
 
 /- English proof (translation)
-Use `⟨fun g => (sphSection k n (1 - (Fintype.card n : ℂ) / 2) (io k n (g, 1))).re, fun κ hκ g => ⟨?_, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Use `sphSection_io_biinv (1 - (Fintype.card n : ℂ) / 2) g hκ (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Simplify using `only [this]`. Use `sphSection_io_biinv (1 - (Fintype.card n : ℂ) / 2) g (one_mem _) hκ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul]`. Simplify using `only [this]`. Simplify using `only [sphSection_torusElt hϖ]`. Establish `: -((Fintype.card n : ℂ) / 2 + (1 - (Fintype.card n : ℂ) / 2)) * ((∑ i, |e i| : ℤ) : ℂ) = ((-(sumAbs e) : ℤ) : ℂ)`. Simplify using `[sumAbs]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Complex.cpow_intCast, ← Complex.ofReal_natCast, ← Complex.ofReal_zpow, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isHgt {n : Type} [Fintype n] [DecidableEq n] {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
     ∃ H : GL n k → ℝ, IsHgt ϖ H := by

@@ -18,7 +18,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Gl
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Multiset.map_add, Multiset.prod_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.multiset_map_prod_finset_sum {α β γ : Type} [CommMonoid γ] (F : α → γ) (s : Finset β)
     (m : β → Multiset α) :
@@ -30,13 +30,13 @@ theorem GlobalTheory.multiset_map_prod_finset_sum {α β γ : Type} [CommMonoid 
     rw [Finset.sum_insert ha, Finset.prod_insert ha, Multiset.map_add, Multiset.prod_add, ih]
 
 /- English proof (translation)
-Introduce `K _ ι c d S T q hq e hT`. Establish `hq' : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hq`. Use `set F : ℂ → Polynomial K := fun u => Polynomial.X - Polynomial.C (ι.symm (u * (q : ℂ) ^ e)) with hF`. Establish `h1 : (T.map fun z : ℂˣ => Polynomial.X - Polynomial.C (ι.symm ((z : ℂ) * (q : ℂ) ^ e))) = (T.map (fun z : ℂˣ => (z : ℂ))).map F`. Rewrite using `[Multiset.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hc : ∀ M : Multiset ℂˣ, (do let a ← M; pure (a : ℂ) : Multiset ℂ) = M.map (fun z : ℂˣ => (z : ℂ))` using `fun M => Multiset.bind_singleton M _`. Simplify using `only [hc, Multiset.map_id'] at hT`. Rewrite using `[h1, ← hT, GlobalTheory.multiset_map_prod_finset_sum]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.multiset_map_prod_finset_sum]`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl (fun z _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, hF]`. Rewrite using `[Complex.cpow_add _ _ hq']`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.satake_linear_factors_regroup : ∀ (K : Type) [Field K] (ι : K ≃+* ℂ) (c : ℕ) (d : Fin c → ℕ) (S : Fin c → Multiset ℂˣ) (T : Multiset ℂˣ) (q : ℕ),
   q ≠ 0 → ∀ e : ℂ,

@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.IntEigTransport
 
 /- English proof (translation)
-Establish `: (1 : ptOver V V ⟶ G).left = η[G].left` using `by show spMap (algebraMap V V) ≫ _ = _`. Rewrite using `[show spMap (algebraMap V V) = 𝟙 _ from Spec.map_id _]`. Conclude with `Category.id_comp _`. Unfold `IsTan IsTangent`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTan_iff_isTangent' {V : Type} [CommRing V] {G : Over (Sp V)} [GrpObj G] (w : epsR V ⟶ G) :
     IsTan (V := V) (R := V) (G := G) w ↔ IsTangent w := by
@@ -30,13 +30,13 @@ theorem isTan_iff_isTangent' {V : Type} [CommRing V] {G : Over (Sp V)} [GrpObj G
   rw [this]
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c T io φ hio G S t x n τ k ub htan heig hbas`. Establish `hz : ∀ (a : 𝓞 E) (z : T.V), algebraMap T.V T.Fr z = io (embK c τ a) → z = φ (embK c τ a)`. Introduce `a z hz`. Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Rewrite using `[hz, ← hio]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hE : ∀ w : epsR T.V ⟶ G.G, IsEigV c io G τ w ↔ ∀ a, (w ≫ G.act.act a).left = spMap (epsScaleR (GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.chr c τ φ a)) ≫ w.left`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h a (φ (embK c τ a)) (by rw [← hio]; rfl)`. Introduce `h a z hz'`. Rewrite using `[hz a z hz']`. Conclude with `h a`. Establish `hC : ∀ (a : Fin k → T.V) (w : epsR T.V ⟶ G.G), IsComb ub a w ↔ IsLieComb a ub w` using `fun a w => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsEigBasis G.act (GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.chr c τ φ) ub`. Use `⟨fun i => ⟨(isTan_iff_isTangent' _).1 (htan i), (hE _).1 (heig i)⟩, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(existsUnique_congr fun a => hC a w).1 (hbas w ((isTan_iff_isTangent' _).2 hw.1) ((hE w).2 hw.2))`. Take `⟨u, hu, hu'⟩` from `GlobalTheory.FlatRow.exists_eigenBasis n hv`. Conclude with `⟨u, hu, fun i => (hu' i).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (φ : c.F →+* T.V), (algebraMap T.V T.Fr).comp φ = io → ∀ (G : SAB H (Sp T.V)) (S : Scheme.{0}) (t : SAB H S) (x : Sp T.V ⟶ S) (n : SABMap G t x) (τ : E →+* ℂ) (k : ℕ) (ub : Fin k → (epsOver T.V T.V ⟶ G.G)), (∀ i, IsTan (ub i)) → (∀ i, IsEigV c io G τ (ub i)) → (∀ w : epsOver T.V T.V ⟶ G.G, IsTan w → IsEigV c io G τ w → ∃! a : Fin k → T.V, IsComb ub a w) → ∃ v : Fin k → (GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.epsAt x ⟶ t.G), GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.IsEigenBasis t.act x (GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.chr c τ φ) v ∧ ∀ i, (v i).left = (ub i).left ≫ n.φ := by
   intro E _ _ _ H l c T io φ hio G S t x n τ k ub htan heig hbas

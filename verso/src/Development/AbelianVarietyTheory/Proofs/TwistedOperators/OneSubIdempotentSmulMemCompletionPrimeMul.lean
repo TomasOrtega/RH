@@ -16,7 +16,7 @@ open IsDedekindDomain
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.adicCompletion.valued_coe, map_inv₀, RingOfIntegers.coe_eq_algebraMap, (HeightOneSpectrum.valuation_eq_one_iff_notMem (v := Q) (K := E)).mpr hx, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem valued_v_coe_inv_le_one_of_not_mem {E : Type} [Field E] [NumberField E] (Q : HeightOneSpectrum (𝓞 E))
     {x : 𝓞 E} (hx : x ∉ Q.asIdeal) : Valued.v ((((x : E)⁻¹ : E)) : Q.adicCompletion E) ≤ 1 := by
@@ -24,30 +24,26 @@ private theorem valued_v_coe_inv_le_one_of_not_mem {E : Type} [Field E] [NumberF
     (HeightOneSpectrum.valuation_eq_one_iff_notMem (v := Q) (K := E)).mpr hx, inv_one]
 
 /- English proof (translation)
-Rewrite using `[← HeightOneSpectrum.adicCompletion.coe_mul, inv_mul_cancel₀ hx, HeightOneSpectrum.adicCompletion.coe_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem adicCompletion_coe_inv_mul_coe {E : Type} [Field E] [NumberField E] (Q : HeightOneSpectrum (𝓞 E))
     {x : E} (hx : x ≠ 0) : ((x⁻¹ : E) : Q.adicCompletion E) * ((x : E) : Q.adicCompletion E) = 1 := by
   rw [← HeightOneSpectrum.adicCompletion.coe_mul, inv_mul_cancel₀ hx, HeightOneSpectrum.adicCompletion.coe_one]
 
 /- English proof (translation)
-Take `⟨x, hxP, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Establish `hfin : {Q : HeightOneSpectrum (𝓞 E) | Q.asIdeal ∣ Ideal.span {x}}.Finite` using `Ideal.finite_factors (by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot])`. Establish `hcov : ¬ ((P.asIdeal : Set (𝓞 E)) ⊆ ⋃ Q ∈ ((hfin.toFinset.erase P : Finset (HeightOneSpectrum (𝓞 E))) : Set (HeightOneSpectrum (𝓞 E))), ((fun Q : HeightOneSpectrum (𝓞 E) => Q.asIdeal) Q : Set (𝓞 E)))`. Rewrite using `[Ideal.subset_union_prime (f := fun Q : HeightOneSpectrum (𝓞 E) => Q.asIdeal) P P (fun Q _ _ _ => Q.isPrime)]`. Introduce and unpack `⟨Q, hQS, hle⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(Finset.mem_erase.mp hQS).1 (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top hle).symm)`. Take `⟨y, hyP, hyS⟩` from `Set.not_subset.mp hcov`. Establish `hy : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → x ∈ Q.asIdeal → y ∉ Q.asIdeal`. Introduce `Q hQ hxQ hyQ`. Apply `hyS` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_biUnion (x := Q) ?_ hyQ` and prove the remaining obligations. Rewrite using `[Finset.coe_erase, Set.mem_diff, Set.Finite.coe_toFinset]`. Conclude with `⟨Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hxQ), hQ⟩`. Set `bf : ∀ Q : HeightOneSpectrum (𝓞 E), Q.adicCompletion E` to `fun Q => if Q = P then 0 else if x ∈ Q.asIdeal then 0 else (((x : E)⁻¹ : E) : Q.adicCompletion E)`. Set `cf : ∀ Q : HeightOneSpectrum (𝓞 E), Q.adicCompletion E` to `fun Q => if Q = P then 0 else if x ∈ Q.asIdeal then (((y : E)⁻¹ : E) : Q.adicCompletion E) else 0`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbf : ∀ Q, Valued.v (bf Q) ≤ 1`. Introduce `Q`. Use `show Valued.v (if Q = P then 0 else if x ∈ Q.asIdeal then 0 else (((x : E)⁻¹ : E) : Q.adicCompletion E)) ≤ 1`. Use `split_ifs with h1 h2`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Conclude with `valued_v_coe_inv_le_one_of_not_mem Q h2`. Establish `hcf : ∀ Q, Valued.v (cf Q) ≤ 1`. Introduce `Q`. Use `show Valued.v (if Q = P then 0 else if x ∈ Q.asIdeal then (((y : E)⁻¹ : E) : Q.adicCompletion E) else 0) ≤ 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h1 h2`. Simplify using the standard rewrite rules. Conclude with `valued_v_coe_inv_le_one_of_not_mem Q (hy Q h1 h2)`. Simplify using the standard rewrite rules. Set `b : FiniteAdeleRing (𝓞 E) E` to `Subtype.mk bf (Filter.Eventually.of_forall hbf)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Set `c : FiniteAdeleRing (𝓞 E) E` to `Subtype.mk cf (Filter.Eventually.of_forall hcf)`. Use `⟨x, hxP, y, hyP, b, c, hbf, hcf, ?_⟩` and prove the remaining obligations. Use `ext1 Q`. Use `show (1 : Q.adicCompletion E) - f Q = bf Q * ((x : E) : Q.adicCompletion E) + cf Q * ((y : E) : Q.adicCompletion E)`. Distinguish the cases in `hQ : Q = P`.
-
-Substitute `hQ` using the available equality. Simplify using `[bf, cf, h1]`. Establish `hxQ' : ∀ hxQ : x ∉ Q.asIdeal, (x : E) ≠ 0` using `fun hxQ h => hxQ (by rw [show x = 0 from by exact_mod_cast h]; exact Q.asIdeal.zero_mem)`. Distinguish the cases in `hxQ : x ∈ Q.asIdeal`. Establish `hyQ` using `hy Q hQ hxQ`.
-
-Establish `hy0 : (y : E) ≠ 0` using `fun h => hyQ (by rw [show y = 0 from by exact_mod_cast h]; exact Q.asIdeal.zero_mem)`. Simplify using `only [bf, cf, if_neg hQ, if_pos hxQ, h0 Q hQ, sub_zero, zero_mul, zero_add]`. Conclude with `(adicCompletion_coe_inv_mul_coe Q hy0).symm`. Simplify using `only [bf, cf, if_neg hQ, if_neg hxQ, h0 Q hQ, sub_zero, zero_mul, add_zero]`. Conclude with `(adicCompletion_coe_inv_mul_coe Q (hxQ' hxQ)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_comb {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     (f : FiniteAdeleRing (𝓞 E) E) (h1 : f P = 1) (h0 : ∀ Q, Q ≠ P → f Q = 0) :
@@ -114,17 +110,15 @@ theorem exists_comb {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum 
       exact (adicCompletion_coe_inv_mul_coe Q (hxQ' hxQ)).symm
 
 /- English proof (translation)
-Unfold `intAE at ha`. Unfold `GlobalTheory.AdLat.hat at hy ⊢`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, x, hx, rfl⟩` from `hz`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, hc, s, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨c * b, fun v => mul_mem (hc v) (hb v), (s * t) • x, Submodule.smul_mem_smul (I.mul_mem_left s ht) hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, Algebra.smul_def, map_mul, ← RingOfIntegers.coe_eq_algebraMap]`. Consider the case `zero => simp`. Consider the case `add u w _ _ hu hw`. Rewrite using `[add_mul, add_smul]`. Conclude with `AddSubgroup.add_mem _ hu hw`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `neg u _ hu`. Rewrite using `[neg_mul, neg_smul]`. Conclude with `AddSubgroup.neg_mem _ hu`. Consider the case `zero`. Rewrite using `[smul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.zero_mem _`. Consider the case `add u w _ _ hu hw`. Rewrite using `[smul_add]`. Conclude with `AddSubgroup.add_mem _ hu hw`. Consider the case `neg u _ hu`.
-
-Rewrite using `[smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hu`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_smul_mem_hat (D : D7) {n : ℕ} (I : Ideal (𝓞 D.host.E)) (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     {a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (ha : a ∈ intAE D) {t : 𝓞 D.host.E} (ht : t ∈ I)
@@ -162,19 +156,17 @@ theorem mul_smul_mem_hat (D : D7) {n : ℕ} (I : Ideal (𝓞 D.host.E)) (L : Sub
     exact AddSubgroup.neg_mem _ hu
 
 /- English proof (translation)
-Introduce `D P e n L he y hy`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨-, h1, h0⟩` from `GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ he`. Take `⟨x, hx, x', hx', b, c, hb, hc, hbc⟩` from `exists_comb P (Φ e) h1 h0`. Take `⟨zb, -, hzb⟩` from `hΦ.surj b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨zc, -, hzc⟩` from `hΦ.surj c`. Establish `hzbi : finPart D zb ∈ intAE D` using `(hΦ.int zb).mpr fun Q => by rw [hzb]; exact hb Q`. Establish `hzci : finPart D zc ∈ intAE D` using `(hΦ.int zc).mpr fun Q => by rw [hzc]; exact hc Q`. Use `set s : AE D := (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA D.host.F 0 1) ⊗ₜ[D.host.F] (1 : D.host.E) with hs`. Establish `hsi : infPart D s = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Use `show Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA D.host.F 0 1) ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `hsf : finPart D s = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Use `show Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E) ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA D.host.F 0 1) ⊗ₜ[D.host.F] (1 : D.host.E)) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Conclude with `Algebra.TensorProduct.one_def.symm`. Establish `hinc : ∀ z : D.host.E, finPart D (incA D z) = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `z`. Use `show Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E) ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ⊗ₜ[D.host.F] z) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Establish `key : (1 - e) * s = (zb * incA D (x : D.host.E) + zc * incA D (x' : D.host.E)) * s`. Apply `hΦ.ext'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, hsi, mul_zero]`. Introduce `Q`. Establish `hΦe : Φ ((1 - e) * s) = Φ ((zb * incA D (x : D.host.E) + zc * incA D (x' : D.host.E)) * s)`. Simplify using `only [map_mul, map_sub, map_one, map_add, hΦ.inc, hzb, hzc, hbc]`. Rewrite using `[hΦe]`.
-
-Establish `key' : 1 - finPart D e = finPart D zb * ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (x : D.host.E)) + finPart D zc * ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (x' : D.host.E))`. Establish `h` using `congrArg (finPart D) key`. Simplify `h` using `only [map_mul, map_sub, map_one, map_add, hsf, mul_one, hinc]`. Rewrite using `[key', add_smul]`. Conclude with `AddSubgroup.add_mem _ (mul_smul_mem_hat D P.asIdeal L hzbi hx hy) (mul_smul_mem_hat D P.asIdeal L hzci hx' hy)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_smul_mem : ∀ (D : D7) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (n : ℕ) (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)),
     Formalism.L2.NTheta.IsIdemAt e P → ∀ y ∈ GlobalTheory.AdLat.hat D.host.F (L : Set (Fin n → D.host.E)),

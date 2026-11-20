@@ -15,9 +15,9 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.ThetaDer
 /- English proof (translation)
-Introduce `_ _ D ψ θ _ _ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM f φ u f₁ _ _ hact hφ hvac`. Establish `hψ` using `h.ψ`. Substitute `hψ` using the available equality. Establish `hJ : Γ.V.J = -(sgn true W).gram`. Rewrite using `[h.JW]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[HSpace.gram]`. Conclude with `thO_pure_deriv (sgn true W) X e Bs hM.triple.base Γ.V Γ.W hJ h.JX hM.triple.geo.hV.herm Γ.M hM.triple.geo.hM f φ u f₁ hact hφ hvac`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_pure_tensor_first_deriv : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -64,7 +64,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaDer.theta_pure_tensor_first_deriv | exact _root_.GlobalTheory.ThetaDer.theta_pure_tensor_first_deriv | (intros; apply _root_.GlobalTheory.ThetaDer.theta_pure_tensor_first_deriv <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_pure_tensor_hasDerivAt_first : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

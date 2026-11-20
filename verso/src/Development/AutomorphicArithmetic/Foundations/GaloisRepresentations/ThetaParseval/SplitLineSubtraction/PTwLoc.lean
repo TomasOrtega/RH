@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r c`. Establish `h` using `GlobalTheory.TwistAbove.twist_above l P AI hT E Ω (Dec (F := E) A) O Bw a r (tw r c) c (fun g => UpperTheory.V.Af.tw_val r c g)`. Conclude with `⟨h.1, h.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.TP.Sub.twLoc_holds :
     TwLoc := by

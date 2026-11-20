@@ -11,7 +11,7 @@ open CategoryTheory GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup Coalge
 namespace GlobalTheory.ConstHT
 
 /- English proof (translation)
-The claim follows from `isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun h => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosedIn_of_integers {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) : IsIntegrallyClosedIn O C :=
@@ -19,13 +19,13 @@ theorem isIntegrallyClosedIn_of_integers {C : Type} [Field C] {v : Valuation C N
     (hv.isIntegral_iff_v_le_one.1 h)⟩
 
 /- English proof (translation)
-Establish `hsq : ∀ k, (Pi.single k (1 : O) : Fin N → O) * Pi.single k 1 = Pi.single k 1` using `fun k => by`. Apply the tactic sequence `ext j; by_cases hj : j = k <;> simp [Pi.single_apply, hj]`. Establish `hid : ∀ k, f (Pi.single k 1) = 0 ∨ f (Pi.single k 1) = 1` using `fun k => IsIdempotentElem.iff_eq_zero_or_one.1 (by`. Express the relevant statement in the definitionally equal form `f _ * f _ = f _`. Rewrite using `[← map_mul, hsq])`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ k, f (Pi.single k 1) = 1`. Rewrite using `[← map_sum, ← map_one f]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, f (Pi.single k 1) = 1 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h0 : ∑ k, f (Pi.single k 1) = 0` using `Finset.sum_eq_zero fun k _ => (hid k).resolve_right (hne k)`. Conclude with `zero_ne_one (h0.symm.trans hsum)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨k, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : v * Pi.single k 1 = (v k) • (Pi.single k 1 : Fin N → O)`. Apply the tactic sequence `ext j; by_cases hj : j = k <;> simp [Pi.single_apply, hj]`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_eq_apply_of_algHom {O : Type} [CommRing O] [IsDomain O] {N : ℕ}
     (f : (Fin N → O) →ₐ[O] O) : ∃ k, ∀ v, f v = v k := by
@@ -53,13 +53,13 @@ theorem exists_eq_apply_of_algHom {O : Type} [CommRing O] [IsDomain O] {N : ℕ}
     _ = v k := by rw [← map_mul, h1, map_smul, hk, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `AugCot.d_surjective _ w`. Take `⟨k, hk⟩` from `exists_eq_apply_of_algHom ((counitAlgHom O A).comp (e.symm : (Fin N → O) →ₐ[O] A))`. Establish `he : ∀ x, counitAlgHom O A x = e x k` using `fun x => by`. Use `hk (e x)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set b := a - algebraMap O A (counitAlgHom O A a) with hbdef`. Use `set c := e.symm (1 - Pi.single k 1) with hcdef`. Establish `hb : counitAlgHom O A b = 0` using `by simp [b]`. Establish `hc : counitAlgHom O A c = 0` using `by rw [he]; simp [c]`. Establish `hbc : b = b * c` using `e.injective <| funext fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, Pi.mul_apply]`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Rewrite using `[← he, ← he, hb, zero_mul]`. Simplify using `[c, hj]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : AugCot.d (counitAlgHom O A) b = 0`. Rewrite using `[hbc, AugCot.d_mul, hb, hc, zero_smul, zero_smul, add_zero]`. Rewrite `h` using `[hbdef, map_sub, AugCot.d_algebraMap, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cot_eq_zero_of_equiv {O A : Type} [CommRing O] [IsDomain O] [CommRing A] [Bialgebra O A]
     {N : ℕ} (e : A ≃ₐ[O] (Fin N → O)) (w : Cot O A) : w = 0 := by
@@ -83,11 +83,11 @@ theorem cot_eq_zero_of_equiv {O A : Type} [CommRing O] [IsDomain O] [CommRing A]
   rwa [hbdef, map_sub, AugCot.d_algebraMap, sub_zero] at h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `pow_dvd_sub_digit n a`. Establish `ha : a = (digit n a : ℤ_[p]) + (p : ℤ_[p]) ^ n * c` using `by rw [← hc]; ring`. Establish `h2 : (hodgeTate G ((p : ℤ_[p]) ^ n • (c • t))).1 n = 0`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul, map_nsmul]`. Express the relevant statement in the definitionally equal form `(p ^ n) • ((hodgeTate G (c • t)).1 n) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`. Conclude with `G.dual.pow_smul_cot n _`. Establish `h3 : (hodgeTate G ((digit n a : ℤ_[p]) • t)).1 n = (digit n a : O) • (hodgeTate G t).1 n`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul O]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : a • t = (digit n a : ℤ_[p]) • t + (p : ℤ_[p]) ^ n • (c • t)`. Rewrite using `[← mul_smul, ← add_smul, ← ha]`. Rewrite using `[e1, map_add]`. Express the relevant statement in the definitionally equal form `(hodgeTate G _).1 n + (hodgeTate G _).1 n = _`. Rewrite using `[h2, add_zero, h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodgeTate_smul_val {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] (G : PDivGroup p O)
     (a : ℤ_[p]) (t : G.Tate) (n : ℕ) :
@@ -114,21 +114,19 @@ namespace GlobalTheory.ConstHT
 open GlobalTheory.PDivLat
 
 /- English proof (translation)
-Take `⟨e⟩` from `hG n`. Set `Lev : (Fin h → O) →ₗ[O] Cot O (G.dual.A n)` to `(LinearMap.proj n ∘ₗ G.dual.omegaSub.subtype) ∘ₗ Fintype.linearCombination O (fun i => hodgeTate G (b i))`. Establish `hLev : ∀ c, Lev c = ∑ i, c i • (hodgeTate G (b i)).1 n` using `fun c => by`. Simplify using `only [Lev, LinearMap.comp_apply, Fintype.linearCombination_apply, map_sum, map_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hpt : ∀ t : G.Tate, (hodgeTate G t).1 n ∈ LinearMap.range Lev` using `fun t => by`. Use `⟨fun i => (digit n (b.repr t i) : O), ?_⟩` and prove the remaining obligations. Rewrite using `[hLev]`. Use `conv_rhs => rw [← b.sum_repr t]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = ((∑ i, hodgeTate G (b.repr t i • b i) : G.dual.omega) : ∀ k, Cot O (G.dual.A k)) n`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => (hodgeTate_smul_val G _ _ n).symm`. Set `β : Module.Basis (Fin (p ^ (n * G.height))) O (G.A n)` to `(Pi.basisFun O (Fin (p ^ (n * G.height)))).map e.symm.toLinearEquiv`. Set `γ : Fin (p ^ (n * G.height)) → (G.A n →ₐ[O] O)` to `fun k => (Pi.evalAlgHom O (fun _ => O) k).comp (e : G.A n →ₐ[O] _)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hγ : ∀ k, β.coord k = (γ k).toLinearMap` using `fun k => LinearMap.ext fun x => by`. Simplify using `[β, γ]`. Establish `hmem : ∀ k, dUnit O (toConv (γ k).toLinearMap : CartierDual O (G.A n)) ∈ LinearMap.range Lev` using `fun k => by`. Take `⟨t, ht⟩` from `G.pt_surjective C n (γ k)`. Use `hodgeTate_val t n` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at ht`. Rewrite `this` using `[ht]`. Rewrite using `[← this]`. Conclude with `hpt t`. Take `⟨φ, rfl⟩` from `AugCot.d_surjective _ w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hφ : φ = ∑ k, φ.ofConv (β k) • (toConv (γ k).toLinearMap : CartierDual O (G.A n))`. Use `WithConv.ofConv_injective ?_` and prove the remaining obligations. Use `conv_lhs => rw [← β.sum_dual_apply_smul_coord φ.ofConv]`. Express the relevant statement in the definitionally equal form `_ = CartierDual.toDual O (G.A n) _`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the argument to an intermediate assertion.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hγ]`. Both sides reduce to the same expression. It suffices to establish `hw : AugCot.d (counitAlgHom O (G.dual.A n)) φ ∈ LinearMap.range Lev by`. Take `⟨c, hc⟩` from `hw`.
-
-Conclude with `⟨c, (hLev c).symm.trans hc⟩`. Rewrite using `[hφ, map_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => by rw [map_smul]; exact Submodule.smul_mem _ _ (hmem k)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_span (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (O : Type) [CommRing O] [IsDomain O] [Algebra O C] [IsIntegrallyClosedIn O C]
@@ -184,33 +182,31 @@ namespace GlobalTheory.ConstHT
 open GlobalTheory.PDivLat
 
 /- English proof (translation)
-Take `⟨e⟩` from `hG n`. Set `β : Module.Basis (Fin (p ^ (n * G.height))) O (G.A n)` to `(Pi.basisFun O (Fin (p ^ (n * G.height)))).map e.symm.toLinearEquiv`. Set `γ : Fin (p ^ (n * G.height)) → (G.A n →ₐ[O] O)` to `fun k => (Pi.evalAlgHom O (fun _ => O) k).comp (e : G.A n →ₐ[O] _)`. Establish `hγ : ∀ k, β.coord k = (γ k).toLinearMap` using `fun k => LinearMap.ext fun x => by`. Simplify using `[β, γ]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `B : Module.Basis (Fin (p ^ (n * G.height))) O (CartierDual O (G.A n))` to `β.dualBasis.map (CartierDual.toDual O (G.A n)).symm`. Establish `hB : ∀ k, B k = toConv (γ k).toLinearMap` using `fun k => by`. Simplify using `only [B, Module.Basis.map_apply, Module.Basis.coe_dualBasis, hγ]`. Both sides reduce to the same expression. Establish `hall : ∀ x : G.A n →ₐ[O] O, ∃ k, x = γ k` using `fun x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `exists_eq_apply_of_algHom (x.comp e.symm.toAlgHom)`. Conclude with `⟨k, AlgHom.ext fun a => by simpa [γ] using hk (e a)⟩`. Set `Q` to `O ⧸ Ideal.span {(p : O) ^ n}`. Set `g : ZMod (p ^ n) →+ Q` to `ZMod.lift (p ^ n) ⟨Int.castAddHom Q, by`. Express the relevant statement in the definitionally equal form `(((p ^ n : ℕ) : ℤ) : Q) = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Int.cast_natCast, Nat.cast_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)⟩`. Establish `hg1 : g 1 = 1`. Rewrite using `[← Int.cast_one, ZMod.lift_coe]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `f : G.Tate →+ Q` to `g.comp ((PadicInt.toZModPow n).toAddMonoidHom.comp (b.coord i).toAddMonoidHom)`. Establish `hz : ((p : ZMod (p ^ n)) ^ n) = 0` using `by rw [← Nat.cast_pow, ZMod.natCast_self]`. Establish `hf0 : ∀ u : G.Tate, f ((p : ℤ_[p]) ^ n • u) = 0` using `fun u => by`. Simplify using `only [f, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, map_smul, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, smul_eq_mul, map_mul, map_pow, map_natCast]`. Rewrite using `[hz, zero_mul, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : ∀ t s : G.Tate, t.pt n = s.pt n → f t = f s` using `fun t s hts => by`. Establish `h1 : tateLevel G n (t - s) = 0`. Rewrite using `[map_sub, sub_eq_zero, tateLevel_apply, tateLevel_apply]`. Simplify using `only [TateOver.conv, hts]`. Take `⟨u, hu⟩` from `(TateOver.conv_eq_one_iff (t - s) n).1 (by simpa using h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, ← hu, hf0]`. Set `a : (G.A n →ₐ[O] O) → Q` to `fun x => f (Classical.choose (G.pt_surjective C n x))`. Establish `ha : ∀ t : G.Tate, a (t.pt n) = f t` using `fun t => hf _ _ (Classical.choose_spec (G.pt_surjective C n (t.pt n)))`. Set `D : CartierDual O (G.A n) →ₗ[O] Q` to `B.constr O (fun k => a (γ k))`. Establish `hDpt : ∀ x : G.A n →ₐ[O] O, D (toConv x.toLinearMap) = a x` using `fun x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hall x`. Rewrite using `[← hB, Module.Basis.constr_basis]`. Establish `hε : ∀ x : G.A n →ₐ[O] O, counitAlgHom O (CartierDual O (G.A n)) (toConv x.toLinearMap) = 1` using `fun x => by`. Rewrite using `[Bialgebra.counitAlgHom_apply, CartierDual.counit_apply]`. Conclude with `map_one x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmul : ∀ x y : G.A n →ₐ[O] O, a (toConv x * toConv y).ofConv = a x + a y` using `fun x y => by`. Take `⟨t, rfl⟩` from `G.pt_surjective C n x`. Take `⟨s, rfl⟩` from `G.pt_surjective C n y`. Express the relevant statement in the definitionally equal form `a ((t + s).pt n) = _`. Rewrite using `[ha, ha, ha, map_add]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M : CartierDual O (G.A n) →ₗ[O] CartierDual O (G.A n) →ₗ[O] Q` to `(LinearMap.lsmul O Q).compl₁₂ (counitAlgHom O (CartierDual O (G.A n))).toLinearMap D`. Establish `key : (LinearMap.mul O (CartierDual O (G.A n))).compr₂ D = M + M.flip` using `B.ext fun k => B.ext fun l => by`. Simplify using `only [LinearMap.compr₂_apply, LinearMap.mul_apply', LinearMap.add_apply, LinearMap.flip_apply, M, LinearMap.compl₁₂_apply, LinearMap.lsmul_apply, AlgHom.toLinearMap_apply, hB, hε, one_smul]`. Rewrite using `[← AlgHom.toLinearMap_convMul, hDpt, hDpt, hDpt, hmul, add_comm]`. Establish `hD : ∀ u v, D (u * v) = counitAlgHom O (CartierDual O (G.A n)) u • D v + counitAlgHom O (CartierDual O (G.A n)) v • D u` using `fun u v => LinearMap.congr_fun₂ key u v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Dl` to `AugCot.lift (counitAlgHom O (CartierDual O (G.A n))) D hD`. Establish `hDl : ∀ i', Dl ((hodgeTate G (b i')).1 n) = if i' = i then 1 else 0` using `fun i' => by`. Rewrite using `[hodgeTate_val]`. Express the relevant statement in the definitionally equal form `Dl (AugCot.d _ _) = _`. Rewrite using `[AugCot.lift_d, hDpt, ha]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [f, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, Module.Basis.coord_apply, Module.Basis.repr_self, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]`. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Rewrite using `[Finsupp.single_eq_same, map_one, hg1, if_pos rfl]`. Rewrite using `[Finsupp.single_eq_of_ne (Ne.symm hi), map_zero, map_zero, if_neg hi]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg Dl hc`. Rewrite `h2` using `[map_sum, map_zero]`. Simplify using `only [map_smul, hDl, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `h2` using `[Algebra.smul_def, mul_one]`.
-
-Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_indep (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (O : Type) [CommRing O] [IsDomain O] [Algebra O C] [IsIntegrallyClosedIn O C]
@@ -304,21 +300,19 @@ namespace GlobalTheory.ConstHT
 open GlobalTheory.PDivLat
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ hv G hG`. Use `haveI := isIntegrallyClosedIn_of_integers hv`. Use `⟨⟨fun x y => Subtype.ext (funext fun n => ?_)⟩, fun h b => ?_⟩` and prove the remaining obligations. Take `⟨e⟩` from `hG n`. Rewrite using `[cot_eq_zero_of_equiv e (x.1 n), cot_eq_zero_of_equiv e (y.1 n)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Φ := Fintype.linearCombination O fun i => hodgeTate G (b i) with hΦ`. Establish `hval : ∀ c n, (Φ c).1 n = ∑ i, c i • (hodgeTate G (b i)).1 n` using `fun c n => by`. Rewrite using `[hΦ, Fintype.linearCombination_apply]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Establish `hsmod : ∀ (n : ℕ) (x y : O), x ≡ y [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O O)] ↔ (p : O) ^ n ∣ x - y` using `fun n x y => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsHausdorff.haus' (I := Ideal.span {(p : O)}) (c i) fun n => (hsmod n _ _).2 ?_` and prove the remaining obligations. Rewrite using `[sub_zero]`. Conclude with `level_indep p C O G hG h b n c (by rw [← hval, hc]; rfl) i`. Introduce `w choose c hc using fun n => level_span p C O G hG h b n (w.1 n)`. Establish `hcompat : ∀ n i, (p : O) ^ n ∣ c (n + 1) i - c n i` using `fun n => level_indep p C O G hG h b n _ (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero, hc n, ← w.2 n, ← hc (n + 1), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, (hodgeTate G (b i)).2 n])`. Establish `hL : ∀ i, ∃ L : O, ∀ n, (p : O) ^ n ∣ c n i - L` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(p : O)}) (fun n => c n i) fun {m n} hmn => by`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => exact SModEq.refl _`. Consider the case `succ n hmn ih`. Conclude with `ih.trans ((hsmod m _ _).2 (dvd_sub_comm.1 ((pow_dvd_pow _ hmn).trans (hcompat n i))))`.
+Treat this case separately. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨L, fun n => (hsmod n _ _).1 (hL n)⟩`. Use `choose L hL using hL`. Use `⟨L, Subtype.ext (funext fun n => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Φ L).1 n = w.1 n`. Rewrite using `[hval, ← hc n, ← sub_eq_zero, ← Finset.sum_sub_distrib]`.
-
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `hL i n`. Rewrite using `[← sub_smul, show L i - c n i = -((p : O) ^ n * d) by rw [← hd]; ring, neg_smul, mul_smul, G.dual.pow_smul_cot n, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omega_const : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] [IsLocalRing O], v.Integers O → ∀ G : PDivGroup p O, IsConst G → Subsingleton G.omega ∧ ∀ (h : ℕ) (b : Module.Basis (Fin h) ℤ_[p] G.Tate), Function.Bijective (Fintype.linearCombination O fun i => hodgeTate G (b i)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ hv G hG

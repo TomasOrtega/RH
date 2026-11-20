@@ -14,14 +14,14 @@ def fsScaled (ι : K → Type) [∀ k, Fintype (ι k)] (C : ℝ) : HermLine ι :
   HermLine.constShift (fsH ι) (-Real.log C)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[fsScaled, HermLine.constShift, HermLine.tensor, fsH, HermLine.ofMetrics, HermLine.ofWeight]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fsScaled_a (ι : K → Type) [∀ k, Fintype (ι k)] (C : ℝ) : (fsScaled ι C).a = fun _ => 1 := by
   funext k
   simp [fsScaled, HermLine.constShift, HermLine.tensor, fsH, HermLine.ofMetrics, HermLine.ofWeight]
 
 /- English proof (translation)
-Simplify using `[fsScaled, HermLine.constShift, HermLine.tensor, HermLine.ofWeight, Real.exp_log hC, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsScaled_h (ι : K → Type) [∀ k, Fintype (ι k)] {C : ℝ} (hC : 0 < C) (z : (Σ k, ι k) → ℂ) :
     (fsScaled ι C).h z = C * (fsH ι).h z := by

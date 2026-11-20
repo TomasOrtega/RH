@@ -23,7 +23,7 @@ open Matrix Polynomial
 variable {E : Type} [Field E] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpolyRev, ← coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b : 2`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, mul_comm z]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_charpolyRev_eq (M : Matrix n n E) (z : E) :
     M.charpolyRev.eval z = (1 - z • M).det := by
@@ -33,45 +33,43 @@ theorem eval_charpolyRev_eq (M : Matrix n n E) (z : E) :
   by_cases h : a = b <;> simp [h, mul_comm z]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul (σ : E →+* E) (c : E) (M : Matrix n n E) :
     Formalism.UG.cT σ (c • M) = σ c • Formalism.UG.cT σ M := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add (σ : E →+* E) (M N : Matrix n n E) :
     Formalism.UG.cT σ (M + N) = Formalism.UG.cT σ M + Formalism.UG.cT σ N := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub (σ : E →+* E) (M N : Matrix n n E) :
     Formalism.UG.cT σ (M - N) = Formalism.UG.cT σ M - Formalism.UG.cT σ N := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) (M : Matrix n n E) :
     Formalism.UG.cT σ (Formalism.UG.cT σ M) = M := by
   ext i j; simp [Formalism.UG.cT, hσ]
 
 /- English proof (translation)
-Use `set A : Matrix n n E := 1 - t • X with hAdef`. Use `set P : Matrix n n E := A⁻¹`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hA`. Establish `hAP : A * P = 1` using `Matrix.mul_nonsing_inv A hu`. Establish `hPA : P * A = 1` using `Matrix.nonsing_inv_mul A hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set g : Matrix n n E := (2 : E) • P - 1`. Establish `hgA : g * A = 1 + t • X`. Rewrite using `[Matrix.sub_mul, Matrix.smul_mul, hPA, Matrix.one_mul, hAdef, two_smul]`. Normalize the expressions using the abelian group laws. Establish `hcA : Formalism.UG.cT σ A = 1 - t • Formalism.UG.cT σ X`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAdef, cT_sub, cT_smul, Formalism.UG.cT_one, ht]`. Establish `hcPA : Formalism.UG.cT σ P * Formalism.UG.cT σ A = 1`. Rewrite using `[← Formalism.UG.cT_mul, hAP, Formalism.UG.cT_one]`. Establish `hY : Formalism.UG.cT σ X * J = -(J * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `key : Formalism.UG.cT σ A * (Formalism.UG.cT σ g * J * g) * A = Formalism.UG.cT σ A * J * A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : Formalism.UG.cT σ A * (Formalism.UG.cT σ g * J * g) * A = Formalism.UG.cT σ (g * A) * J * (g * A)`. Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, hgA, hcA, cT_add, cT_smul, Formalism.UG.cT_one, ht]`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, hY]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hAdef]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.neg_mul]`. Use `module`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcPA, hAP, Matrix.one_mul, Matrix.mul_one]`.
-
-Use `_ = Formalism.UG.cT σ P * (Formalism.UG.cT σ A * (Formalism.UG.cT σ g * J * g) * A) * P := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT σ P * (Formalism.UG.cT σ A * J * A) * P := by rw [key]`. Use `_ = (Formalism.UG.cT σ P * Formalism.UG.cT σ A) * J * (A * P) := by simp only [Matrix.mul_assoc]`. Use `_ = J := by rw [hcPA, hAP, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cayley_unitary (σ : E →+* E) (J X : Matrix n n E) (t : E) (ht : σ t = t)
     (hX : Formalism.UG.cT σ X * J + J * X = 0) (hA : (1 - t • X).det ≠ 0) :
@@ -117,47 +115,45 @@ variable {E : Type} [Field E] {n : Type} [Fintype n] [DecidableEq n]
 variable {R : Type} [CommRing R] (ι : E →+* R)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smulE (c : E) (M : Matrix n n E) : (c • M).map ι = ι c • M.map ι := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_subE (M N : Matrix n n E) : (M - N).map ι = M.map ι - N.map ι := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_addE (M N : Matrix n n E) : (M + N).map ι = M.map ι + N.map ι := by
   ext i j; simp
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero ι) (map_one ι)`.
+A detailed English derivation is pending.
 -/
 theorem map_oneE : (1 : Matrix n n E).map ι = 1 := Matrix.map_one _ (map_zero ι) (map_one ι)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem map_mulE (M N : Matrix n n E) : (M * N).map ι = M.map ι * N.map ι := Matrix.map_mul
 
 /- English proof (translation)
-Establish `hp : X.charpolyRev ≠ 0`. Introduce `h`. Use `Matrix.eval_charpolyRev (M := X)` as an intermediate fact. Rewrite `this` using `[h, Polynomial.eval_zero]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hts⟩` from `hF.exists_notMem_finset (insert 0 X.charpolyRev.roots.toFinset)`. Establish `ht0 : t ≠ 0` using `fun e => hts (by simp [e])`. Establish `hdet : (1 - t • X).det ≠ 0`. Introduce `e`. Apply `hts` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_insert, Multiset.mem_toFinset, Polynomial.mem_roots hp, Polynomial.IsRoot, eval_charpolyRev_eq]`. Conclude with `Or.inr e`. Establish `hg` using `hZ _ (cayley_unitary σ J X t ht hX hdet)`. Use `set A : Matrix n n E := 1 - t • X with hAdef`. Use `set P : Matrix n n E := A⁻¹`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `hAP : A * P = 1` using `Matrix.mul_nonsing_inv A hu`. Establish `hPA : P * A = 1` using `Matrix.nonsing_inv_mul A hu`. Establish `hP : Commute Z (P.map ι)`. Establish `h1 : Commute Z (((2 : E) • P - 1).map ι + 1)` using `hg.add_right (Commute.one_right Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[map_subE, map_smulE, map_oneE, sub_add_cancel]`. Establish `h3` using `h1.smul_right (ι (2 : E)⁻¹)`. Rewrite `h3` using `[smul_smul, ← map_mul, inv_mul_cancel₀ h2, map_one, one_smul]`. Then use the resulting hypothesis. Establish `hA : Commute Z (A.map ι)`. Set `u : (Matrix n n R)ˣ` to `⟨P.map ι, A.map ι, by rw [← map_mulE, hPA, map_oneE], by rw [← map_mulE, hAP, map_oneE]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Commute.units_inv_right (u := u) hP`. Establish `h4 : Commute Z (ι t • X.map ι)`. Use `(Commute.one_right Z).sub_right hA` as an intermediate fact. Rewrite `this` using `[hAdef, map_subE, map_oneE, map_smulE, sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h5` using `h4.smul_right (ι t⁻¹)`.
-
-Rewrite `h5` using `[smul_smul, ← map_mul, inv_mul_cancel₀ ht0, map_one, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem commute_skew (σ : E →+* E) (J : Matrix n n E) (hF : {t : E | σ t = t}.Infinite) (h2 : (2 : E) ≠ 0)
     (Z : Matrix n n R) (hZ : ∀ g : Matrix n n E, Formalism.UG.cT σ g * J * g = J → Commute Z (g.map ι))
@@ -196,15 +192,15 @@ theorem commute_skew (σ : E →+* E) (J : Matrix n n E) (hF : {t : E | σ t = t
   rwa [smul_smul, ← map_mul, inv_mul_cancel₀ ht0, map_one, one_smul] at h5
 
 /- English proof (translation)
-Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.2 hJ`. Establish `hJJi : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hu`. Establish `hJiJ : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hu`. Establish `hcJi : Formalism.UG.cT σ J⁻¹ * J = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `skew : ∀ K : Matrix n n E, Formalism.UG.cT σ K = -K → Commute Z ((J⁻¹ * K).map ι)`. Introduce `K hK`. Use `commute_skew ι σ J hF h2 Z hZ _ ?_` and prove the remaining obligations. Rewrite using `[Formalism.UG.cT_mul, hK, Matrix.mul_assoc, hcJi, ← Matrix.mul_assoc, hJJi]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set K := J * M`. Establish `hK1 : Formalism.UG.cT σ (K - Formalism.UG.cT σ K) = -(K - Formalism.UG.cT σ K)`. Rewrite using `[cT_sub, cT_cT σ hσ]`. Normalize the expressions using the abelian group laws. Establish `hK2 : Formalism.UG.cT σ (ξ • (K + Formalism.UG.cT σ K)) = -(ξ • (K + Formalism.UG.cT σ K))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cT_smul, cT_add, cT_cT σ hσ, hξ, neg_smul, add_comm (Formalism.UG.cT σ K)]`. Establish `c1` using `skew _ hK1`. Establish `c2` using `(skew _ hK2).smul_right (ι ξ⁻¹)`. Establish `c3` using `(c1.add_right c2).smul_right (ι (2 : E)⁻¹)`. Establish `e : M = (2 : E)⁻¹ • (J⁻¹ * (K - Formalism.UG.cT σ K) + ξ⁻¹ • (J⁻¹ * (ξ • (K + Formalism.UG.cT σ K))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hξ0, one_smul, ← Matrix.mul_add, sub_add_add_cancel, ← two_smul E K, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ h2, one_smul, ← Matrix.mul_assoc, hJiJ, Matrix.one_mul]`. Rewrite using `[e, map_smulE, map_addE, map_smulE]`. Conclude with `c3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_all (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) (J : Matrix n n E) (hJh : Formalism.UG.cT σ J = J)
     (hJ : J.det ≠ 0) (ξ : E) (hξ : σ ξ = -ξ) (hξ0 : ξ ≠ 0)
@@ -238,9 +234,9 @@ theorem commute_all (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) (J : Matrix n 
   exact c3
 
 /- English proof (translation)
-Establish `hs : Z ∈ Set.range (Matrix.scalar n)`. Use `Matrix.mem_range_scalar_of_commute_single fun i j _ => ?_` and prove the remaining obligations. Use `(commute_all ι σ hσ J hJh hJ ξ hξ hξ0 hF h2 Z hZ (Matrix.single i j 1)).symm` as an intermediate fact. Establish `e : (Matrix.single i j (1 : E)).map ι = Matrix.single i j 1`. Use extensionality with `a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.single_apply]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `hs`. Conclude with `⟨c, by rw [← hc, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eq_smul_one (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) (J : Matrix n n E) (hJh : Formalism.UG.cT σ J = J)
     (hJ : J.det ≠ 0) (ξ : E) (hξ : σ ξ = -ξ) (hξ0 : ξ ≠ 0)
@@ -262,13 +258,11 @@ namespace GlobalTheory.CenterScalar
 open Matrix Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : D.host.E, e ∉ (algebraMap D.host.F D.host.E).range := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `htop : (⊥ : Subalgebra D.host.F D.host.E) = ⊤`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.mem_bot, Algebra.mem_top, iff_true]`. Conclude with `h x`. Establish `h1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.mp htop`. Rewrite `h1` using `[D.sp.cm.deg2]`. Evaluate the numerical expressions using `at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨e - star e, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (e - star e) = -(e - star e)`. Rewrite using `[star_sub, star_star, neg_sub]`. Introduce `h0`. Apply `he` to reduce the goal to its premises.
-
-Conclude with `(D.sp.cm.fixed e).1 (sub_eq_zero.1 h0).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_skew (D : D7) : ∃ ξ : D.host.E,
     (D.sp.cm.sig : D.host.E →+* D.host.E) ξ = -ξ ∧ ξ ≠ 0 := by
@@ -290,7 +284,7 @@ theorem exists_skew (D : D7) : ∃ ξ : D.host.E,
     exact (D.sp.cm.fixed e).1 (sub_eq_zero.1 h0).symm
 
 /- English proof (translation)
-Use `Set.Infinite.mono ?_ (Set.infinite_range_of_injective (algebraMap D.host.F D.host.E).injective)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `D.sp.cm.sig.commutes a`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fixed_infinite (D : D7) :
     {t : D.host.E | (D.sp.cm.sig : D.host.E →+* D.host.E) t = t}.Infinite := by
@@ -299,17 +293,17 @@ theorem fixed_infinite (D : D7) :
   exact D.sp.cm.sig.commutes a
 
 /- English proof (translation)
-Introduce `D V z hz`. Take `⟨ξ, hξ, hξ0⟩` from `exists_skew D`. Use `set σ : D.host.E →+* D.host.E := (D.sp.cm.sig : D.host.E →+* D.host.E)`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => star_star x`. Establish `hJh : Formalism.UG.cT σ V.gram = V.gram` using `Matrix.ext fun i j => V.herm.eq (V.frame j) (V.frame i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_smul_one (incA D) σ hσ V.gram hJh (Formalism.L2.Theta.gram_det_ne V) ξ hξ hξ0 (fixed_infinite D) two_ne_zero _ ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hdet : IsUnit g.det`. Use `isUnit_iff_ne_zero.2 fun h0 => Formalism.L2.Theta.gram_det_ne V ?_` and prove the remaining obligations. Use `congrArg Matrix.det hg` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `this.symm`. Set `gG : GL (Fin V.rank) D.host.E` to `Matrix.nonsingInvUnit g hdet`. Establish `hc : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (g.map (incA D)) = (Formalism.UG.cT σ g).map (incA D)`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Formalism.UG.cT, sigR, inclR, σ]`. Establish `hmem : Formalism.UG.bc (incA D) gG ∈ HR (AF D.host.F) D.sp.cm.sig V.gram`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (g.map (incA D)) * (V.gram.map (incA D)) * g.map (incA D) = V.gram.map (incA D)`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hg]`. Set `w : GA D V` to `⟨Formalism.UG.bc (incA D) gG, hmem⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : Formalism.L2.Theta.mt V w = g.map (incA D)` using `rfl`. Establish `hzw : w * z = z * w` using `Subgroup.mem_center_iff.1 hz w`. Establish `e1 : Formalism.L2.Theta.mt V (w * z) = Formalism.L2.Theta.mt V w * Formalism.L2.Theta.mt V z`. Simplify using `[Formalism.L2.Theta.mt, map_mul]`. Establish `e2 : Formalism.L2.Theta.mt V (z * w) = Formalism.L2.Theta.mt V z * Formalism.L2.Theta.mt V w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.L2.Theta.mt, map_mul]`. Rewrite using `[← hw]`. Express the relevant statement in the definitionally equal form `Formalism.L2.Theta.mt V z * Formalism.L2.Theta.mt V w = Formalism.L2.Theta.mt V w * Formalism.L2.Theta.mt V z`. Rewrite using `[← e1, ← e2, hzw]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem center_mt_eq_smul_one : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (z : GA D V), z ∈ Subgroup.center (GA D V) →
     ∃ c : AE D, Formalism.L2.Theta.mt V z = c • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by

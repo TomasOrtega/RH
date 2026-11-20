@@ -27,19 +27,19 @@ open GroundTheory.Heights₂.Heights.Regular
 def cst {g : ℕ} (u : Fin g → ℤ) : Fin g → ℂ := fun k => (u k : ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[cst]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cst_add {g : ℕ} (u v : Fin g → ℤ) : cst (u + v) = cst u + cst v := by
   funext k; simp [cst]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[cst]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cst_zero {g : ℕ} : cst (0 : Fin g → ℤ) = 0 := by
   funext k; simp [cst]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[cst, mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cst_mulVec {g : ℕ} (B : Matrix (Fin g) (Fin g) ℤ) (v : Fin g → ℤ) :
     B.map (fun x : ℤ => (x : ℂ)) *ᵥ cst v = cst (B *ᵥ v) := by
@@ -57,7 +57,7 @@ noncomputable def mk (u v : Fin g → ℤ) : Λ :=
   ∑ i, u i • bas (.inl i) + ∑ j, v j • bas (.inr j)
 
 /- English proof (translation)
-Use `conv_rhs => rw [← bas.sum_repr x]`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `[mk, uCo, vCo]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_coords (x : Λ) : mk bas (uCo bas x) (vCo bas x) = x := by
   conv_rhs => rw [← bas.sum_repr x]
@@ -65,33 +65,33 @@ theorem sum_coords (x : Λ) : mk bas (uCo bas x) (vCo bas x) = x := by
   simp [mk, uCo, vCo]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[uCo, mk, Module.Basis.coord_apply, Finsupp.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem uCo_mk (u v : Fin g → ℤ) : uCo bas (mk bas u v) = u := by
   funext i
   simp [uCo, mk, Module.Basis.coord_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[vCo, mk, Module.Basis.coord_apply, Finsupp.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vCo_mk (u v : Fin g → ℤ) : vCo bas (mk bas u v) = v := by
   funext i
   simp [vCo, mk, Module.Basis.coord_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[← sum_coords bas x, ← sum_coords bas y, hu, hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_coords {x y : Λ} (hu : uCo bas x = uCo bas y) (hv : vCo bas x = vCo bas y) : x = y := by
   rw [← sum_coords bas x, ← sum_coords bas y, hu, hv]
 
 /- English proof (translation)
-Establish `hx : P x = ∑ i, uCo bas x i • P (bas (.inl i)) + ∑ j, vCo bas x j • P (bas (.inr j))` using `by conv_lhs => rw [← sum_coords bas x]`. Simplify using `[mk, map_sum, map_zsmul]`. Rewrite using `[hx]`. Use function extensionality and compare the values at `k`. Establish `hsym : ∀ i j, τ i j = τ j i` using `fun i j => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun (congrFun hτ j) i` as an intermediate fact. Simplify using `using this`. Simplify using `only [hb, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, mulVec, dotProduct, transpose_apply, cst]`. Simplify using `only [ha, zsmul_eq_mul, smul_eq_mul]`. Simplify using `only [mul_add, Finset.sum_add_distrib, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hsym i j]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem per_coords (P : Λ →+ (Fin g → ℂ)) (τ A : Matrix (Fin g) (Fin g) ℂ) (hτ : τᵀ = τ)
     (ha : ∀ i k, P (bas (.inl i)) k = A i k)
@@ -115,13 +115,13 @@ theorem per_coords (P : Λ →+ (Fin g → ℂ)) (τ A : Matrix (Fin g) (Fin g) 
     rw [hsym i j]; ring
 
 /- English proof (translation)
-Establish `hskew : ∀ x y, E x y = - E y x`. Introduce `x y`. Establish `h` using `halt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, halt] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hba : ∀ i j, E (bas (.inr i)) (bas (.inl j)) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[hskew, (hE j i).2.2]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`. Use `conv_lhs => rw [← sum_coords bas x, ← sum_coords bas y]`. Simplify using `only [mk, map_add, map_sum, map_zsmul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, (hE _ _).1, (hE _ _).2.1, (hE _ _).2.2, hba, mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, mul_neg, Finset.sum_ite_eq, Finset.mem_univ, if_ …`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_one, mul_neg, Finset.sum_neg_distrib]`. Rewrite using `[sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem form_coords (E : LinearMap.BilinForm ℤ Λ)
     (hE : ∀ i j, E (bas (.inl i)) (bas (.inl j)) = 0 ∧ E (bas (.inr i)) (bas (.inr j)) = 0 ∧
@@ -156,9 +156,9 @@ section
 variable {g : ℕ}
 
 /- English proof (translation)
-Establish `hd : Tendsto (fun x => ((M x)ᵀ).det) f (𝓝 (M₀ᵀ).det)`. Establish `hc : Continuous (fun N : Matrix (Fin g) (Fin g) ℂ => Nᵀ.det)` using `(continuous_id.matrix_transpose).matrix_det`. Conclude with `(hc.tendsto _).comp h`. Establish `ha : Tendsto (fun x => ((M x)ᵀ).adjugate) f (𝓝 (M₀ᵀ).adjugate)`. Establish `hc : Continuous (fun N : Matrix (Fin g) (Fin g) ℂ => Nᵀ.adjugate)` using `(continuous_id.matrix_transpose).matrix_adjugate`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hc.tendsto _).comp h`. Establish `h0' : (M₀ᵀ).det ≠ 0` using `by rwa [det_transpose]`. Use `(hd.inv₀ h0').smul ha` as an intermediate fact. Simplify `this` using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_inv_transpose {X : Type} {f : Filter X} {M : X → Matrix (Fin g) (Fin g) ℂ}
     {M₀ : Matrix (Fin g) (Fin g) ℂ} (h : Tendsto M f (𝓝 M₀)) (h0 : M₀.det ≠ 0) :
@@ -178,11 +178,11 @@ theorem tendsto_inv_transpose {X : Type} {f : Filter X} {M : X → Matrix (Fin g
 end
 
 /- English proof (translation)
-Use `⟨fun i => φ (Pi.single i 1), fun u => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Finset.univ_sum_single u]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (Pi.single i (u i) : Fin g → ℤ) = u i • Pi.single i 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zsmul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem functional_rep {g : ℕ} (φ : (Fin g → ℤ) →+ ℤ) : ∃ p : Fin g → ℤ, ∀ u, φ u = u ⬝ᵥ p := by
   refine ⟨fun i => φ (Pi.single i 1), fun u => ?_⟩
@@ -197,11 +197,11 @@ theorem functional_rep {g : ℕ} (φ : (Fin g → ℤ) →+ ℤ) : ∃ p : Fin g
   rw [this, map_zsmul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `g Bs hT φ₁ φ₂ h`. Take `⟨p, hp⟩` from `functional_rep φ₁`. Establish `hM` using `GlobalTheory.CompanionTheory.ToricBasis.exists_isCompl_ker Bs.mulVecLin`. Take `⟨M, hM⟩` from `hM`. Set `π` to `Submodule.linearProjOfIsCompl _ _ hM.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨q, hq⟩` from `functional_rep (φ₂.comp π.toAddMonoidHom)`. Use `⟨p, q, ?_, hp, fun k => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h1 : φ₁ (Bs i) = 0` using `h _ fun v hv => congrFun hv i`. Rewrite `h1` using `[hp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Establish `h1` using `hq (k : Fin g → ℤ)`. Establish `h2 : π (k : Fin g → ℤ) = k` using `Submodule.linearProjOfIsCompl_apply_left hM.symm k`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, h2] at h1`. Rewrite using `[h1, dotProduct_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unim : ∀ (g : ℕ) (Bs : Matrix (Fin g) (Fin g) ℤ), Bsᵀ = Bs → ∀ (φ₁ : (Fin g → ℤ) →+ ℤ) (φ₂ : LinearMap.ker Bs.mulVecLin →+ ℤ), (∀ u : Fin g → ℤ, (∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → u ⬝ᵥ v = 0) → φ₁ u = 0) → ∃ p q : Fin g → ℤ, Bs *ᵥ p = 0 ∧ (∀ u, φ₁ u = u ⬝ᵥ p) ∧ ∀ k : LinearMap.ker Bs.mulVecLin, φ₂ k = q ⬝ᵥ (k : Fin g → ℤ) := by
   intro g Bs hT φ₁ φ₂ h
@@ -221,21 +221,19 @@ theorem unim : ∀ (g : ℕ) (Bs : Matrix (Fin g) (Fin g) ℤ), Bsᵀ = Bs → �
     rw [h1, dotProduct_comm]
 
 /- English proof (translation)
-Introduce `n g A hA h0`. Use `set F0 := ((A 0)ᵀ)⁻¹ with hF0`. Establish `hF : Tendsto (fun z => ((A z)ᵀ)⁻¹) (𝓝 0) (𝓝 F0)` using `tendsto_inv_transpose hA.tendsto h0`. Use `set M : ℝ := ∑ i, ∑ j, ‖F0 i j‖ + 1 with hMdef`. Establish `hM0 : 0 ≤ M` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hent : ∀ i j, ∀ᶠ z in 𝓝 (0 : Fin n → ℂ), ‖(((A z)ᵀ)⁻¹ : Matrix (Fin g) (Fin g) ℂ) i j‖ ≤ M`. Introduce `i j`. Establish `hc : Continuous (fun N : Matrix (Fin g) (Fin g) ℂ => ‖N i j‖)` using `(continuous_id.matrix_elem i j).norm`. Establish `h1 : ‖F0 i j‖ < M`. Establish `h2 : ‖F0 i j‖ ≤ ∑ j, ‖F0 i j‖` using `Finset.single_le_sum (f := fun j => ‖F0 i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∑ j, ‖F0 i j‖ ≤ ∑ i, ∑ j, ‖F0 i j‖` using `Finset.single_le_sum (f := fun i => ∑ j, ‖F0 i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Simplify using `only [hMdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(((hc.tendsto F0).comp hF).eventually (gt_mem_nhds h1)).mono fun _ h => h.le`. Establish `hdet : ∀ᶠ z in 𝓝 (0 : Fin n → ℂ), (A z).det ≠ 0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous (fun N : Matrix (Fin g) (Fin g) ℂ => N.det)` using `continuous_id.matrix_det`. Conclude with `((hc.tendsto _).comp hA.tendsto).eventually (isOpen_ne.mem_nhds h0)`. Establish `hall` using `hdet.and (eventually_all.2 fun i => eventually_all.2 fun j => hent i j)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hall`. Use `⟨ε, (g : ℝ) * ((g : ℝ) * M ^ 2), hε, by positivity, fun z hz => ⟨(hball z hz).1, fun y => ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hd, hb⟩` from `hball z hz`. Use `set v := (A z)ᵀ *ᵥ y with hv`. Establish `hy : y = ((A z)ᵀ)⁻¹ *ᵥ v`. Rewrite using `[hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (Ne.isUnit (by rwa [det_transpose])), Matrix.one_mulVec]`. Establish `hi : ∀ i, ‖y i‖ ^ 2 ≤ (g : ℝ) * M ^ 2 * ∑ j, ‖v j‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Establish `h1 : ‖y i‖ ≤ ∑ j, M * ‖v j‖`. Rewrite using `[hy]`. Simplify using `only [mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hb i j) (norm_nonneg _)`. Establish `h2 : (∑ j, M * ‖v j‖) ^ 2 ≤ (Finset.univ : Finset (Fin g)).card * ∑ j, (M * ‖v j‖) ^ 2` using `sq_sum_le_card_mul_sum_sq`. Establish `h3 : ‖y i‖ ^ 2 ≤ (∑ j, M * ‖v j‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Use `h3.trans (h2.trans (le_of_eq ?_))` and prove the remaining obligations.
-
-Simplify using `only [Finset.card_univ, Fintype.card_fin, mul_pow, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inv : ∀ (n g : ℕ) (A : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ), ContinuousAt A 0 → (A 0).det ≠ 0 → ∃ ρ K : ℝ, 0 < ρ ∧ 0 ≤ K ∧ ∀ z ∈ Metric.ball (0 : Fin n → ℂ) ρ, (A z).det ≠ 0 ∧ ∀ y : Fin g → ℂ, ∑ i, ‖y i‖ ^ 2 ≤ K * ∑ i, ‖((A z)ᵀ *ᵥ y) i‖ ^ 2 := by
   intro n g A hA h0
@@ -287,119 +285,103 @@ theorem inv : ∀ (n g : ℕ) (A : (Fin n → ℂ) → Matrix (Fin g) (Fin g) �
         ring
 
 /- English proof (translation)
-Establish `h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `hzk : ∀ k, ‖z k‖ < ρ` using `fun k => lt_of_le_of_lt (norm_le_pi_norm z k) (by simpa [dist_zero_right] using hz)`. Establish `hzball : z ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.ball_subset_ball hρ hz`. Use `set cj : Fin a → Fin n := Fin.castLE L.a_le with hcj`. Use `set l : Fin a → ℂ := fun j => if z (cj j) = 0 then 0 else Complex.log (z (cj j)) with hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Bs : Matrix (Fin g) (Fin g) ℤ := ∑ j, if z (cj j) = 0 then B j else 0 with hBs`. Use `set r : ℕ → ℝ := fun m => ρ⁻¹ + m with hr`. Use `set t : ℕ → ℂ := fun m => ((r m / (2 * Real.pi) : ℝ) : ℂ) * Complex.I with ht`. Use `set ws : ℕ → Fin n → ℂ := fun m k => if k.val < a then (if z k = 0 then -(r m : ℂ) else Complex.log (z k)) else z k with hws`. Use `set σf : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ := fun z' => T0 z' + ∑ j, (l j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ)) with hσf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrpos : ∀ m, 0 < r m` using `fun m => by`. Establish `: 0 < ρ⁻¹` using `inv_pos.2 hρ0`. Establish `h2 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Simplify using `only [hr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hexpr : ∀ m, Real.exp (-(r m)) < ρ`. Introduce `m`. Establish `h1 : r m + 1 ≤ Real.exp (r m)` using `Real.add_one_le_exp _`. Establish `h3 : ρ⁻¹ ≤ r m`. Establish `h2 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.exp_neg]`. Establish `h4 : ρ⁻¹ < Real.exp (r m)` using `by linarith`. Conclude with `inv_lt_of_inv_lt₀ hρ0 h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hws_mem : ∀ m, ws m ∈ logCover L.a_le`. Introduce `m`. Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hi : (Fin.castLE L.a_le i).val < a` using `i.2`. Simplify using `only [hws, hi, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : z (Fin.castLE L.a_le i) = 0`. Simplify using `[h0, hrpos m]`. Simplify using `only [h0, if_false, Complex.log_re]`. Conclude with `Real.log_neg (norm_pos_iff.2 h0) ((hzk _).trans_le hρ)`. Establish `hk' : ¬ k.val < a` using `not_lt.2 hk`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hws, hk', if_false]`. Conclude with `(hzk k).trans_le hρ`. Use `set zs : ℕ → Fin n → ℂ := fun m => expCover a (ws m) with hzs`. Establish `hzs_k : ∀ m k, zs m k = if k.val < a ∧ z k = 0 then ((Real.exp (-(r m)) : ℝ) : ℂ) else z k`. Introduce `m k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hzs, expCover, hws]`. Distinguish the cases in `hk : k.val < a`. Distinguish the cases in `h0 : z k = 0`. Simplify using `[hk, h0]`. Simplify using `[hk, h0, Complex.exp_log h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hk]`. Establish `hzs_ball : ∀ m, zs m ∈ Metric.ball (0 : Fin n → ℂ) ρ`. Introduce `m`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hρ0]`. Introduce `k`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hzs_k]`. Use `split_ifs`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Conclude with `hexpr m`. Conclude with `hzk k`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hrtop : Tendsto r atTop atTop` using `tendsto_atTop_add_const_left _ _ tendsto_natCast_atTop_atTop`. Establish `hzs_lim : Tendsto zs atTop (𝓝 z)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `k`. Simplify using `only [hzs_k]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h : k.val < a ∧ z k = 0`. Simplify using `only [h, and_self, if_true]`. Establish `h1 : Tendsto (fun m => Real.exp (-(r m))) atTop (𝓝 0)` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp hrtop)`. Establish `h2` using `(Complex.continuous_ofReal.tendsto 0).comp h1`. Simplify `h2` using `only [Function.comp_def, Complex.ofReal_zero]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [h, if_false]`. Conclude with `tendsto_const_nhds`. Establish `hlexp : ∀ j, z (cj j) ≠ 0 → Complex.exp (l j) = z (cj j)`. Introduce `j hj`. Simplify using `only [hl, hj, if_false]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Complex.exp_log hj`. Establish `hl0 : ∀ j, z (cj j) = 0 → l j = 0`. Introduce `j hj`. Simplify using `only [hl, hj, if_true]`. Establish `hBsR : Bs.map (fun x : ℤ => (x : ℝ)) = ∑ j, if z (cj j) = 0 then (B j).map (fun x : ℤ => (x : ℝ)) else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `p q`. Simplify using `only [hBs, Matrix.map_apply, Matrix.sum_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBsC : Bs.map (fun x : ℤ => (x : ℂ)) = ∑ j, if z (cj j) = 0 then (B j).map (fun x : ℤ => (x : ℂ)) else 0`. Use extensionality with `p q`. Simplify using `only [hBs, Matrix.map_apply, Matrix.sum_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hBsPSD : (Bs.map (fun x : ℤ => (x : ℝ))).PosSemidef`. Rewrite using `[hBsR]`. Use `posSemidef_sum _ fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `hB j`. Conclude with `PosSemidef.zero`. Establish `hBsT : Bsᵀ = Bs` using `GlobalTheory.CompanionTheory.ToricBasis.symm_of_posSemidef hBsPSD`. Establish `hker_each : ∀ v : Fin g → ℝ, Bs.map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0 → ∀ j, z (cj j) = 0 → (B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0`. Introduce `v hv j hj`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h0 : v ⬝ᵥ (Bs.map (fun x : ℤ => (x : ℝ)) *ᵥ v) = 0` using `by rw [hv]; simp`. Rewrite `h0` using `[hBsR, Matrix.sum_mulVec, dotProduct_sum]`. Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ v ⬝ᵥ ((if z (cj i) = 0 then (B i).map (fun x : ℤ => (x : ℝ)) else 0) *ᵥ v)`. Introduce `i _`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `using (hB i).dotProduct_mulVec_nonneg v`. Simplify using the standard rewrite rules. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h0 j (Finset.mem_univ j)`. Rewrite `h1` using `[if_pos hj]`. Conclude with `((hB j).dotProduct_mulVec_zero_iff v).1 (by simpa using h1)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htm : ∀ m, (-(r m : ℂ)) / (2 * Real.pi * Complex.I) = t m`. Introduce `m`. Rewrite using `[div_eq_iff h2pi]`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hdecomp : ∀ m, T0 (zs m) + ∑ j, (ws m (cj j) / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ)) = σf (zs m) + t m • Bs.map (fun x : ℤ => (x : ℂ))`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hσf]`. Rewrite using `[add_assoc, hBsC, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : (cj j).val < a` using `j.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : z (cj j) = 0`. Simplify using `only [hws, hj, if_true, h, hl, htm m]`. Simplify using the standard rewrite rules. Simplify using `only [hws, hj, if_true, h, hl, if_false]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hlower : ∀ v : Fin g → ℝ, Bs.map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0 → c * (v ⬝ᵥ v) ≤ v ⬝ᵥ (((σf z).map Complex.im) *ᵥ v)` using `fun v hv => GlobalTheory.CompanionTheory.ChartBlockLower.im_lower_on_kernel n a g L.a_le (Metric.ball 0 ρ) T0 B c Metric.isOpen_ball (hTc.mono (Metric.ball_subset_ball hρ)) hB hc hY z hz l hlexp hl0 v (fun j hj => hker_each v hv j hj)`. Establish `hT0lim : Tendsto (fun m => T0 (zs m)) atTop (𝓝 (T0 z))` using `((hTc.continuousAt (Metric.isOpen_ball.mem_nhds hzball)).tendsto).comp hzs_lim`. Establish `hAlim : Tendsto (fun m => A (zs m)) atTop (𝓝 (A z))` using `((hAc.continuousAt (Metric.isOpen_ball.mem_nhds hzball)).tendsto).comp hzs_lim`. Establish `hσlim : Tendsto (fun m => σf (zs m)) atTop (𝓝 (σf z))` using `hT0lim.add tendsto_const_nhds`. Establish `hσsym : (σf z)ᵀ = σf z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `each : ∀ m, (σf (zs m))ᵀ = σf (zs m)`. Introduce `m`. Establish `h1` using `hsym (ws m) (hws_mem m)`. Establish `h2` using `hdecomp m`. Simplify using `only [hzs] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Establish `h3 : (Bs.map (fun x : ℤ => (x : ℂ)))ᵀ = Bs.map (fun x : ℤ => (x : ℂ))`. Rewrite using `[← Matrix.transpose_map, hBsT]`. Rewrite `h1` using `[Matrix.transpose_add, Matrix.transpose_smul, h3]`. Conclude with `add_right_cancel h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc1 : Continuous (fun N : Matrix (Fin g) (Fin g) ℂ => Nᵀ)` using `continuous_id.matrix_transpose`. Conclude with `tendsto_nhds_unique ((hc1.tendsto _).comp hσlim) (hσlim.congr fun m => (each m).symm)`. Establish `hPm : ∀ m x, L.P (ws m) x = (A (zs m))ᵀ *ᵥ (cst (uCo bas x) + (σf (zs m) + t m • Bs.map (fun x : ℤ => (x : ℂ))) *ᵥ cst (vCo bas x))`. Introduce `m x`. Rewrite using `[← hdecomp m]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hP _ (hws_mem m) x`. Use `set W : Submodule ℤ Λ := LinearMap.ker (Bs.mulVecLin ∘ₗ vCo bas) with hW`. Establish `hWmem : ∀ x, x ∈ W ↔ Bs *ᵥ vCo bas x = 0`. Introduce `x`. Simplify using `[hW, LinearMap.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set perF : Λ → Fin g → ℂ := fun x => (A z)ᵀ *ᵥ (cst (uCo bas x) + σf z *ᵥ cst (vCo bas x)) with hperF`. Establish `hperF_add : ∀ x y, perF (x + y) = perF x + perF y`. Introduce `x y`. Simplify using `only [hperF, map_add, cst_add, mulVec_add]`. Use `abel_nf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set per : W →+ (Fin g → ℂ) := AddMonoidHom.mk' (fun x => perF x) (fun x y => hperF_add x y) with hper`. Establish `hper_apply : ∀ x : W, per x = perF x` using `fun x => rfl`. Establish `hmk : ∀ (u v : Fin g → ℤ), Bs *ᵥ v = 0 → mk bas u v ∈ W`. Introduce `u v hv`. Rewrite using `[hWmem, vCo_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hv`. Establish `halt` using `L.alt`. Establish `hform` using `form_coords bas L.E hE halt`. Establish `hrad : ∀ u : Fin g → ℤ, (∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → u ⬝ᵥ v = 0) → ∀ x' : W, L.E (mk bas u 0) x' = 0`. Introduce `u hu x'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hform, vCo_mk, uCo_mk, hu _ ((hWmem _).1 x'.2)]`. Simplify using the standard rewrite rules. Use `⟨ws, W, per, hws_mem, hzs_lim, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hx : Bs *ᵥ vCo bas x = 0` using `(hWmem _).1 x.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ∀ m, L.P (ws m) x = (A (zs m))ᵀ *ᵥ (cst (uCo bas x) + σf (zs m) *ᵥ cst (vCo bas x))`. Introduce `m`. Rewrite using `[hPm, Matrix.add_mulVec, Matrix.smul_mulVec, cst_mulVec, hx, cst_zero, smul_zero, add_zero]`. Establish `hcts : Continuous (fun p : Matrix (Fin g) (Fin g) ℂ × Matrix (Fin g) (Fin g) ℂ => p.1ᵀ *ᵥ (cst (uCo bas x) + p.2 *ᵥ cst (vCo bas x)))` using `(continuous_fst.matrix_transpose).matrix_mulVec (continuous_const.add (continuous_snd.matrix_mulVec continuous_const))`. Use `(hcts.tendsto (A z, σf z)).comp (hAlim.prodMk_nhds hσlim)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.congr fun m => (e m).symm`. Introduce `x p hp`. Establish `hdetz : (A z).det ≠ 0` using `(hAinv z hz).1`. Establish `hdetm : ∀ m, ((A (zs m))ᵀ).det ≠ 0` using `fun m => by`. Rewrite using `[det_transpose]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(hAinv _ (hzs_ball m)).1`. Establish `hinv` using `tendsto_inv_transpose hAlim hdetz`. Establish `hy` using `(((continuous_fst.matrix_mulVec continuous_snd : Continuous fun q : Matrix (Fin g) (Fin g) ℂ × (Fin g → ℂ) => q.1 *ᵥ q.2)).tendsto (((A z)ᵀ)⁻¹, p)).comp (hinv.prodMk_nhds hp)`. Establish `hyeq : ∀ m, ((A (zs m))ᵀ)⁻¹ *ᵥ L.P (ws m) (x m) = cst (uCo bas (x m)) + (σf (zs m) + t m • Bs.map (fun x : ℤ => (x : ℂ))) *ᵥ cst (vCo bas (x m))`. Introduce `m`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hPm, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (Ne.isUnit (hdetm m)), Matrix.one_mulVec]`. Establish `hy' : Tendsto (fun m => (fun k => ((uCo bas (x m) k : ℤ) : ℂ)) + (σf (zs m) + t m • Bs.map (fun x : ℤ => (x : ℂ))) *ᵥ (fun k => ((vCo bas (x m) k : ℤ) : ℂ))) atTop (𝓝 (((A z)ᵀ)⁻¹ *ᵥ p))` using `hy.congr fun m => hyeq m`. Establish `him : Tendsto (fun m => (t m).im) atTop atTop`. Establish `h1 : ∀ m, (t m).im = r m / (2 * Real.pi)` using `fun m => by simp only [ht, Complex.mul_I_im, Complex.ofReal_re]`. Simplify using `only [h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hrtop.atTop_div_const (by positivity)`. Establish `hYm : ∀ m, ((σf (zs m) + t m • Bs.map (fun x : ℤ => (x : ℂ))).map Complex.im - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef`. Introduce `m`. Rewrite using `[← hdecomp m]`. Use `hY _ (hzs_ball m) (fun j => ws m (cj j)) fun j => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : (cj j).val < a` using `j.2`. Simplify using `[hzs, expCover, hj]`. Take `⟨u, v, hv, hyv, hev⟩` from `GlobalTheory.T.siegel_limit_imag_bound g Bs (σf z) (fun m => σf (zs m)) (fun m => σf (zs m) + t m • Bs.map (fun x : ℤ => (x : ℂ))) t c (fun m => uCo bas (x m)) (fun m => vCo bas (x m)) _ hc hσlim him (fun _ => rfl) hYm hlower hy'`. Use `⟨⟨mk bas u v, hmk u v hv⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hper_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hperF, uCo_mk, vCo_mk]`. Establish `: cst u + σf z *ᵥ cst v = ((A z)ᵀ)⁻¹ *ᵥ p` using `hyv.symm`. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit (by rw [det_transpose]; exact hdetz)), Matrix.one_mulVec]`. Use `filter_upwards [hev] with m hm`. Use `eq_of_coords bas ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hm.1]`. Conclude with `(uCo_mk bas u v).symm`. Rewrite using `[hm.2]`. Conclude with `(vCo_mk bas u v).symm`. Introduce `φ hφ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `i₁ : (Fin g → ℤ) →+ W` to `AddMonoidHom.mk' (fun u => ⟨mk bas u 0, hmk u 0 (by simp)⟩) (by`. Introduce `u u'`. Use `Subtype.ext (eq_of_coords bas ?_ ?_)` and prove the remaining obligations. Simplify using `[uCo_mk]`. Simplify using `[vCo_mk])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `i₂ : LinearMap.ker Bs.mulVecLin →+ W` to `AddMonoidHom.mk' (fun k => ⟨mk bas 0 k, hmk 0 k (by simpa only [Matrix.mulVecLin_apply] using LinearMap.mem_ker.1 k.2)⟩) (by`. Introduce `k k'`. Use `Subtype.ext (eq_of_coords bas ?_ ?_)` and prove the remaining obligations. Simplify using `[uCo_mk]`. Simplify using `[vCo_mk])`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, q, hp, h1, h2⟩` from `unim g Bs hBsT (φ.comp i₁) (φ.comp i₂) (fun u hu => hφ _ (fun x' => hrad u hu x'))`. Use `⟨⟨mk bas (-q) p, hmk _ _ hp⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `hxs : x = i₁ (uCo bas x) + i₂ ⟨vCo bas x, by simpa using (hWmem _).1 x.2⟩`. Use `Subtype.ext (eq_of_coords bas ?_ ?_)` and prove the remaining obligations. Simplify using `[i₁, i₂, uCo_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[i₁, i₂, vCo_mk]`. Establish `e1` using `h1 (uCo bas x)`. Establish `e2` using `h2 ⟨vCo bas x, by simpa using (hWmem _).1 x.2⟩`. Simplify using `only [AddMonoidHom.comp_apply] at e1 e2`. Use `conv_lhs => rw [hxs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, e1, e2, hform, vCo_mk, uCo_mk, dotProduct_comm (uCo bas x) p]`. Simplify using the standard rewrite rules. Introduce `Hb hHb hIm hKill v`. Establish `hdetz : (A z).det ≠ 0` using `(hAinv z hz).1`. Establish `hunit : IsUnit ((A z)ᵀ).det` using `Ne.isUnit (by rw [det_transpose]; exact hdetz)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set G : Matrix (Fin g) (Fin g) ℂ := A z * Hb * (A z)ᴴ with hG`. Establish `hGh : G.IsHermitian` using `Matrix.isHermitian_mul_mul_conjTranspose (A z) hHb`. Establish `hconj : ∀ y y' : Fin g → ℂ, ((A z)ᵀ *ᵥ y) ⬝ᵥ Hb *ᵥ star ((A z)ᵀ *ᵥ y') = y ⬝ᵥ G *ᵥ star y'`. Introduce `y y'`. Rewrite using `[Matrix.mulVec_transpose, Matrix.mulVec_transpose, Matrix.star_vecMul, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrel : ∀ u u' v v' : Fin g → ℤ, Bs *ᵥ v = 0 → Bs *ᵥ v' = 0 → (((fun k => (u k : ℂ)) + σf z *ᵥ (fun k => (v k : ℂ))) ⬝ᵥ G *ᵥ star ((fun k => (u' k : ℂ)) + σf z *ᵥ (fun k => (v' k : ℂ)))).im = ((v ⬝ᵥ u' - u ⬝ᵥ v' : ℤ) : ℝ)`. Introduce `u u' v v' hv hv'`. Establish `h1` using `hIm ⟨mk bas u v, hmk u v hv⟩ ⟨mk bas u' v', hmk u' v' hv'⟩`. Rewrite `h1` using `[hper_apply, hper_apply]`. Simplify using `only [hperF, uCo_mk, vCo_mk, hconj] at h1`.
-
-Rewrite `h1` using `[hform]`. Simplify using `only [vCo_mk, uCo_mk] at h1`. Conclude with `h1`. Establish `hkerG : ∀ u : Fin g → ℤ, (∀ v : Fin g → ℤ, Bs *ᵥ v = 0 → u ⬝ᵥ v = 0) → G *ᵥ (fun k => (u k : ℂ)) = 0`. Introduce `u hu`.
-
-Establish `h1` using `hKill ⟨mk bas u 0, hmk u 0 (by simp)⟩ (fun x' => hrad u hu x')`. Rewrite `h1` using `[hper_apply]`. Simplify using `only [hperF, uCo_mk, vCo_mk, cst_zero, mulVec_zero, add_zero] at h1`. Establish `h2 : star ((A z)ᵀ *ᵥ cst u) = (A z)ᴴ *ᵥ cst u`. Use function extensionality and compare the values at `i`.
-
-Simplify using `[cst, mulVec, dotProduct, Matrix.conjTranspose_apply, map_sum]`. Rewrite `h1` using `[h2]`. Rewrite using `[hG, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Establish `h3 : Hb *ᵥ ((A z)ᴴ *ᵥ (fun k => (u k : ℂ))) = 0` using `h1`. Rewrite using `[h3, mulVec_zero]`.
-
-Use `set y : Fin g → ℂ := ((A z)ᵀ)⁻¹ *ᵥ v with hy`. Establish `hvy : (A z)ᵀ *ᵥ y = v`. Rewrite using `[hy, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hunit, Matrix.one_mulVec]`. Take `⟨f1, f2, f3⟩` from `GlobalTheory.T.riemann_form_hermitian_lattice g Bs (σf z) G c hc hBsPSD hσsym hlower hGh hrel hkerG y`. Establish `hval : v ⬝ᵥ Hb *ᵥ star v = y ⬝ᵥ G *ᵥ star y`.
-
-Rewrite using `[← hconj, hvy]`. Rewrite using `[hval]`. Use `⟨f1, ?_, fun h0 => ?_⟩` and prove the remaining obligations. Use `f2.trans ?_` and prove the remaining obligations. Establish `h1` using `(hAinv z hz).2 y`.
-
-Rewrite `h1` using `[hvy]`. Rewrite using `[_root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h1 (inv_nonneg.2 hc.le)`. Establish `h1` using `f3 h0`. Rewrite using `[← hvy]`.
-
-Establish `h2` using `Submodule.mem_map_of_mem (f := ((A z)ᵀ).mulVecLin) h1`. Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨u, hu, rfl⟩, rfl⟩`. Use `⟨⟨mk bas u 0, hmk u 0 (by simp)⟩, fun x' => hrad u hu x', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hper_apply]`. Simplify using `only [hperF, uCo_mk, vCo_mk, cst_zero, mulVec_zero, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem at_point {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ)
     (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ) (A T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ)
@@ -748,27 +730,25 @@ theorem at_point {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.LogPeriod
       rfl
 
 /- English proof (translation)
-Introduce `n a g Λ _ L`. Take `⟨bas, Q, A, T0, hE, hAd, hA0, hT0, hBpsd, hPa, hPb⟩` from `GlobalTheory.T.symplectic_polydisc_period_basis n a g Λ L`. Take `⟨ρ₁, c, C₁, hρ₁, hρ₁1, hc, hb⟩` from `(ImTauBounds.cond RiemannExtensionSlices.proof PuncturedExpOrder.proof LogCoverDescent.proof) n a g Q`. Establish `hAc : ContinuousOn A (Metric.ball 0 1)` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hAd i j).continuousOn`. Establish `hTc : ContinuousOn T0 (Metric.ball 0 1)` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hT0.1 i j).continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0ball : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Take `⟨ρ₂, K, hρ₂, hK, hinv⟩` from `inv n g A (hAc.continuousAt (Metric.isOpen_ball.mem_nhds h0ball)) hA0`. Establish `hτ : ∀ w ∈ logCover L.a_le, Q.τ w = T0 (expCover a w) + ∑ j, (w (Fin.castLE L.a_le j) / (2 * Real.pi * Complex.I)) • (Q.B j).map (fun x : ℤ => (x : ℂ))`. Introduce `w hw`. Establish `h` using `hT0.2 w hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [PeriodPolydisc.tau0] at h`. Rewrite using `[← h]`. Conclude with `(sub_add_cancel _ _).symm`. Use `set ρ : ℝ := min (min ρ₁ ρ₂) 1 with hρ`. Establish `hρpos : 0 < ρ` using `lt_min (lt_min hρ₁ hρ₂) one_pos`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ1 : ρ ≤ 1` using `min_le_right _ _`. Establish `hρρ₁ : ρ ≤ ρ₁` using `(min_le_left _ _).trans (min_le_left _ _)`. Establish `hρρ₂ : ρ ≤ ρ₂` using `(min_le_left _ _).trans (min_le_right _ _)`. Use `⟨ρ, c⁻¹ * K, hρpos, hρ1, fun z hz => ?_⟩` and prove the remaining obligations. Use `at_point L bas A T0 Q.B c K ρ hc hρpos hρ1 hE hAc hTc hK (fun z hz => hinv z (Metric.ball_subset_ball hρρ₂ hz)) hBpsd ?_ ?_ ?_ z hz` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz l hl`. Establish `hz1 : ∀ k, ‖z k‖ < 1` using `fun k => lt_of_le_of_lt (norm_le_pi_norm z k) (lt_of_lt_of_le (by simpa [dist_zero_right] using hz) hρ1)`. Set `w : Fin n → ℂ` to `fun k => if h : k.val < a then l ⟨k.val, h⟩ else z k`. Establish `hwj : ∀ j : Fin a, w (Fin.castLE L.a_le j) = l j`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hj : (Fin.castLE L.a_le j).val < a` using `j.2`. Simplify using `[w, hj]`. Establish `hexp : expCover a w = z`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k.val < a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hl ⟨k.val, hk⟩` as an intermediate fact. Simplify using `only [expCover, hk, if_true, w, dif_pos]`. Rewrite using `[this]`. Both sides reduce to the same expression. Simplify using `[expCover, hk, w]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : w ∈ logCover L.a_le`. Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hwj]`. Establish `h1 : ‖Complex.exp (l i)‖ < 1` using `by rw [hl i]; exact hz1 _`. Rewrite `h1` using `[Complex.norm_exp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Real.exp_lt_one_iff.1 h1`. Establish `hk' : ¬ k.val < a` using `not_lt.2 hk`. Simplify using `only [w, hk', dif_neg, not_false_eq_true]`. Conclude with `hz1 k`. Establish `h1` using `(hb w hw (by rw [hexp]; exact Metric.ball_subset_closedBall (Metric.ball_subset_ball hρρ₁ hz))).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hτ w hw, hexp]`. Simplify using `only [hwj] at h1`. Conclude with `h1`. Introduce `w hw`. Rewrite using `[← hτ w hw]`.
-
-Conclude with `Q.symm w hw`. Introduce `w hw x`. Rewrite using `[← hτ w hw]`. Conclude with `per_coords bas (L.P w) (Q.τ w) (A (expCover a w)) (Q.symm w hw) (hPa w hw) (hPb w hw) x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_on_limit_lattice : ∀ (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ), ∃ ρ C : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ ∀ z ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∃ (ws : ℕ → Fin n → ℂ) (W : Submodule ℤ Λ) (per : W →+ (Fin g → ℂ)), (∀ m, ws m ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le) ∧ Tendsto (fun m => GroundTheory.Heights₂.Heights.Regular.expCover a (ws m)) atTop (𝓝 z) ∧ (∀ x : W, Tendsto (fun m => L.P (ws m) x) atTop (𝓝 (per x))) ∧ (∀ (x : ℕ → Λ) (p : Fin g → ℂ), Tendsto (fun m => L.P (ws m) (x m)) atTop (𝓝 p) → ∃ x₀ : W, p = per x₀ ∧ ∀ᶠ m in atTop, x m = x₀) ∧ (∀ φ : W →+ ℤ, (∀ x : W, (∀ x' : W, L.E x x' = 0) → φ x = 0) → ∃ x₀ : W, ∀ x : W, φ x = L.E x₀ x) ∧ ∀ Hb : Matrix (Fin g) (Fin g) ℂ, Hb.IsHermitian → (∀ x x' : W, (per x ⬝ᵥ Hb *ᵥ star (per x')).im = L.E x x') → (∀ x : W, (∀ x' : W, L.E x x' = 0) → Hb *ᵥ star (per x) = 0) → ∀ v : Fin g → ℂ, 0 ≤ (v ⬝ᵥ Hb *ᵥ star v).re ∧ (v ⬝ᵥ Hb *ᵥ star v).re ≤ C * ∑ i, ‖v i‖ ^ 2 ∧ ((v ⬝ᵥ Hb *ᵥ star v).re = 0 → v ∈ Submodule.span ℂ {p | ∃ x : W, (∀ x' : W, L.E x x' = 0) ∧ p = per x}) := by
   intro n a g Λ _ L

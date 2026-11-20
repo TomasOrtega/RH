@@ -21,21 +21,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Consider the cases of `u`. Consider the cases of `w`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem latHom_ext {T T' : LocLat G Qp LL O} {u w : LatHom T.L T'.L} (h : u.f = w.f) : u = w := by
   cases u; cases w; cases h; rfl
 
 /- English proof (translation)
-Set `e : T'.V ≃ₗ[LL] T.V` to `LinearEquiv.ofBijective f.f hf`. Establish `he : ∀ g y, e.symm (T.ρ g y) = T'.ρ g (e.symm y)`. Introduce `g y`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[e.apply_symm_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `f.equiv g (e.symm y)` as an intermediate fact. Express the relevant statement in the definitionally equal form `e _ = T.ρ g (e _) at this`. Rewrite using `[this, e.apply_symm_apply]`. Take `⟨m, hm⟩` from `GlobalTheory.WachSat.exists_pow_smul_le (LL := LL) c hc T'.L.T (T.L.T.map (e.symm.toLinearMap.restrictScalars O)) T'.L.span (T.L.fg.map _)`. Use `haveI : ContinuousSMul LL T'.V := IsModuleTopology.toContinuousSMul LL T'.V`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `g : LatHom T.L T'.L` to `{ f := algebraMap O LL (c ^ m) • e.symm.toLinearMap equiv := fun g y => by simp [he] cont := IsModuleTopology.continuous_of_linearMap _ T_le := fun y hy => by`. Use `hm _ (Submodule.mem_map_of_mem hy)` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul LL]`. Conclude with `this }`. Use `⟨m, g, latHom_ext ?_, latHom_ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `y`. Express the relevant statement in the definitionally equal form `algebraMap O LL (c ^ m) • e.symm (e y) = algebraMap O LL (c ^ m) • y`. Rewrite using `[e.symm_apply_apply]`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `e (algebraMap O LL (c ^ m) • e.symm y) = algebraMap O LL (c ^ m) • y`.
-
-Rewrite using `[map_smul, e.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quasi_inverse (c : O)
     (hc : ∀ a : LL, ∃ (k : ℕ) (b : O), algebraMap O LL b = algebraMap O LL c ^ k * a)
@@ -72,13 +70,11 @@ theorem exists_quasi_inverse (c : O)
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hreg : ∀ (k : ℕ) (y : W.EE), (PD.p : W.EE) ^ k * y = 0 → y = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro y hy`. Simplify using `using hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih`. Introduce `y hy`. Conclude with `ih y (GlobalTheory.WachSat.ee_torsionFree W hp _ (by rw [← hy]; ring))`. Use `haveI := (W.DD_free T).1`. Set `b` to `Module.Free.chooseBasis W.EE (W.DD T)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hx` using `[← algebraMap_smul W.EE, map_pow, map_natCast]`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Use `congrArg (fun z => b.repr z j) hx` as an intermediate fact. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply] at this`.
-
-Simplify using `using hreg m _ this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dd_torsionFree (hp : ∀ a : O, (PD.p : O) * a = 0 → a = 0) (T : LocLat G Qp LL O) (m : ℕ)
     (x : W.DD T) (hx : ((PD.p : O) ^ m) • x = 0) : x = 0 := by
@@ -99,9 +95,9 @@ theorem dd_torsionFree (hp : ∀ a : O, (PD.p : O) * a = 0 → a = 0) (T : LocLa
   simpa using hreg m _ this
 
 /- English proof (translation)
-Set `b'` to `(W.N_base T hT).basis b`. Establish `hb : (fun j => (b j : W.DD T)) = b'`. Use function extensionality and compare the values at `j`. Conclude with `((W.N_base T hT).basis_apply b j).symm`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `b'.linearIndependent`. Rewrite using `[hb]`. Conclude with `b'.span_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globalBasis_of_basis (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ)
     (b : Module.Basis (Fin (Module.finrank O ↥T.L.T)) (LetA O n) ↥(W.N T)) :
@@ -115,9 +111,9 @@ theorem globalBasis_of_basis (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ)
   · rw [hb]; exact b'.span_eq
 
 /- English proof (translation)
-Take `⟨m, g, hgf, hfg⟩` from `exists_quasi_inverse (PD.p : O) hc f hf`. Establish `h1 : ∀ x, W.map g (W.map f x) = ((PD.p : O) ^ m) • x` using `fun x => by`. Rewrite using `[← W.map_comp, hgf, W.map_latSmul]`. Establish `h2 : ∀ x, W.map f (W.map g x) = ((PD.p : O) ^ m) • x` using `fun x => by`. Rewrite using `[← W.map_comp, hfg, W.map_latSmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, ⟨m, fun y => ⟨W.map g y, h2 y, W.map_N g hT hT' y⟩⟩, fun x => ⟨fun hx => hs m x ?_, W.map_N f hT' hT x⟩⟩` and prove the remaining obligations. Use `dd_torsionFree W hp T' m x ?_` and prove the remaining obligations. Rewrite using `[← h1, hx, map_zero]`. Rewrite using `[← h1]`. Conclude with `W.map_N g hT hT' _ hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isog_generic (hp : ∀ a : O, (PD.p : O) * a = 0 → a = 0)
     (hc : ∀ a : LL, ∃ (k : ℕ) (b : O), algebraMap O LL b = algebraMap O LL (PD.p : O) ^ k * a)
@@ -148,9 +144,9 @@ section Loc
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l)
 
 /- English proof (translation)
-Establish `hl0 : (l : ↥LL.1) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Rewrite `ha` using `[P.PD_p]`. Establish `: (l : ↥LL.1) * (a : ↥LL.1) = 0`. Use `congrArg (Subtype.val) ha` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Subtype.ext ((mul_eq_zero.1 this).resolve_left hl0)`.
+A detailed English derivation is pending.
 -/
 theorem p_regular (a : ↥(OL LL)) (ha : (((P.PD K).p : ℕ) : ↥(OL LL)) * a = 0) : a = 0 := by
   have hl0 : (l : ↥LL.1) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero
@@ -161,11 +157,11 @@ theorem p_regular (a : ↥(OL LL)) (ha : (((P.PD K).p : ℕ) : ↥(OL LL)) * a =
   exact Subtype.ext ((mul_eq_zero.1 this).resolve_left hl0)
 
 /- English proof (translation)
-Rewrite using `[P.PD_p]`. Establish `: ∃ k : ℕ, 0 ≤ P.v LL ((l : ↥LL.1) ^ k * a)`. Consider the cases of `hq : P.v LL a with`. Consider the case `top => exact ⟨0, by simp [hq]⟩`. Consider the case `coe q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Take `⟨k, hk⟩` from `exists_nat_ge (-q)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, P.v_l, hq, nsmul_one, ← WithTop.coe_natCast, ← WithTop.coe_add, ← WithTop.coe_zero, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k, hk⟩` from `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, ⟨_, (P.v_O LL _).1 hk⟩, by rw [map_natCast]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pow_mul_integral (a : ↥LL.1) : ∃ (k : ℕ) (b : ↥(OL LL)), algebraMap ↥(OL LL) ↥LL.1 b =
     algebraMap ↥(OL LL) ↥LL.1 (((P.PD K).p : ℕ) : ↥(OL LL)) ^ k * a := by
@@ -190,7 +186,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (K : FinExt l
     (LL : FinExt l) (h : Good K s LL)
 
 /- English proof (translation)
-Take `⟨b⟩` from `N_basis_loc H K s LL h T hT`. Conclude with `GlobalTheory.WachSat.mem_of_pow_smul_mem _ (p_regular P K LL) T (globalBasis_of_basis _ T hT b) m x hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sat_loc (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ) (m : ℕ) (x : (H.W K s LL h).DD T)
     (hx : ((((P.PD K).p : ℕ) : ↥(OL LL)) ^ m) • x ∈ (H.W K s LL h).N T) : x ∈ (H.W K s LL h).N T := by
@@ -198,7 +194,7 @@ theorem sat_loc (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ) (m : ℕ) (x : (H.W K 
   exact GlobalTheory.WachSat.mem_of_pow_smul_mem _ (p_regular P K LL) T (globalBasis_of_basis _ T hT b) m x hx
 
 /- English proof (translation)
-The claim follows from `isog_generic (H.W K s LL h) (p_regular P K LL) (exists_pow_mul_integral P K LL) T' T f hT' hT (sat_loc H K s LL h T' hT') hf`.
+A detailed English derivation is pending.
 -/
 theorem isog_loc (T' T : Lt K LL) (f : LatHom T'.L T.L) (hT' : IsCrys (P.PD K) T'.ρ)
     (hT : IsCrys (P.PD K) T.ρ) (hf : Function.Bijective f.f) :

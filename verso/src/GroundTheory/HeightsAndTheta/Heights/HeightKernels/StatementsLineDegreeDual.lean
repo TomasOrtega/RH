@@ -51,7 +51,7 @@ def dualNormSq (b : Module.Basis T ℤ (dualLattice F))
     (F.metric σ *ᵥ fun j => dualRecover b hb z (σ, j))).re
 
 /- English proof (translation)
-Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`. Conclude with `((Complex.lt_def.mp ((F.posDef σ).dotProduct_mulVec_pos hw)).1).le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualNormSq_term_nonneg (σ : K →+* ℂ) (w : Fin i → ℂ) :
     0 ≤ (star w ⬝ᵥ (F.metric σ *ᵥ w)).re := by
@@ -149,9 +149,9 @@ def DualGeomDegPos.Statement : Prop :=
     0 < geomDeg (dualIdeal b) (dualLine F b hb) (i - 1)
 
 /- English proof (translation)
-Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => (fun _ : Fin 1 => (1 : ℚ)) ⬝ᵥ x ∈ (algebraMap (𝓞 ℚ) ℚ).range) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨1, by fin_cases j; simp [dotProduct]⟩`. Conclude with `⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `x y _ _ ⟨a, ha⟩ ⟨c, hc⟩`. Conclude with `⟨a + c, by rw [dotProduct_add, map_add, ha, hc]⟩`. Introduce and unpack `r x _ ⟨a, ha⟩`. Use `⟨r * a, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_smul, map_mul, ha]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -173,7 +173,7 @@ theorem one_mem_dualLattice_standard :
 def oneDual : dualLattice (HermLattice.standard ℚ 1) := ⟨fun _ => 1, one_mem_dualLattice_standard⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ((oneDual : dualLattice (HermLattice.standard ℚ 1)) : Fin 1 → ℚ) 0 = 0`. Rewrite using `[h]`. Both sides reduce to the same expression. Conclude with `one_ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem oneDual_ne_zero : oneDual ≠ 0 := by
   intro h
@@ -182,19 +182,19 @@ theorem oneDual_ne_zero : oneDual ≠ 0 := by
   exact one_ne_zero h1
 
 /- English proof (translation)
-The claim follows from `linearIndependent_unique_iff.mpr oneDual_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem oneDual_linearIndependent : LinearIndependent ℤ (fun _ : Unit => oneDual) :=
   linearIndependent_unique_iff.mpr oneDual_ne_zero
 
 /- English proof (translation)
-Introduce and unpack `⟨φ, hφ⟩ -`. Establish `hx : (fun j : Fin 1 => if j = 0 then (1 : ℚ) else 0) ∈ (HermLattice.standard ℚ 1).lattice`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases j`. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `hφ _ hx`. Establish `h0 : φ 0 = algebraMap (𝓞 ℚ) ℚ a`. Rewrite using `[ha]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct]`. Rewrite using `[Set.range_const]`. Use `Submodule.mem_span_singleton.mpr ⟨Rat.ringOfIntegersEquiv a, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases j`. Use `show ((Rat.ringOfIntegersEquiv a : ℤ) : ℚ) * 1 = φ 0`. Rewrite using `[mul_one, Rat.ringOfIntegersEquiv_apply_coe, h0]`.
+A detailed English derivation is pending.
 -/
 theorem oneDual_span : ⊤ ≤ Submodule.span ℤ (Set.range fun _ : Unit => oneDual) := by
   rintro ⟨φ, hφ⟩ -
@@ -220,19 +220,19 @@ def dualBasisStandard : Module.Basis Unit ℤ (dualLattice (HermLattice.standard
   Module.Basis.mk oneDual_linearIndependent oneDual_span
 
 /- English proof (translation)
-Simplify using `[dualBasisStandard]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualBasisStandard_apply (t : Unit) : dualBasisStandard t = oneDual := by
   simp [dualBasisStandard]
 
 /- English proof (translation)
-Set `hU : Unique ((ℚ →+* ℂ) × Fin 1)` to `{ default := (Rat.castHom ℂ, 0) uniq := fun p => Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _) }`. Establish `hM : ∀ (t : Unit) (p : (ℚ →+* ℂ) × Fin 1), dualEmbMatrix dualBasisStandard t p = 1`. Introduce `t p`. Simplify using `[dualEmbMatrix, dualBasisStandard_apply, oneDual]`. Establish `hv : ∀ w : (ℚ →+* ℂ) × Fin 1 → ℂ, Matrix.mulVecLin (dualEmbMatrix dualBasisStandard) w = fun _ => w default`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w`. Use function extensionality and compare the values at `t`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Fintype.sum_unique, hM, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `w w' h`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hv, hv]`. Establish `h1` using `congrFun h ()`. Use function extensionality and compare the values at `p`. Rewrite using `[Unique.eq_default p]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Use `⟨fun _ => z (), ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualEmbMatrix_standard_bijective :
     Function.Bijective (Matrix.mulVecLin (dualEmbMatrix dualBasisStandard)) := by
@@ -259,7 +259,7 @@ theorem dualEmbMatrix_standard_bijective :
     rw [hv]
 
 /- English proof (translation)
-The claim follows from `dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective`.
+A detailed English derivation is pending.
 -/
 example : HermLine (dualBlocks Unit) :=
   dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective

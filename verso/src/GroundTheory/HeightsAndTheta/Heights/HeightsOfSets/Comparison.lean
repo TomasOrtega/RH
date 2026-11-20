@@ -16,9 +16,9 @@ def metricDefect (A : HermLine n) (z : Cone n ℂ) : ℝ :=
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `hcn : ∀ k, 0 < ‖c k‖` using `fun k ↦ norm_pos_iff.mpr (hc k)`. Establish `hl : ∀ k, 0 < l2Norm (z k)` using `fun k ↦ vectorL2Norm_pos (hz k)`. Unfold `metricDefect`. Rewrite using `[A.metric_smul c z hc hz, Real.log_mul (Finset.prod_pos fun k _ ↦ zpow_pos (hcn k) _).ne' (A.metric_pos z hz).ne', Real.log_prod (fun k _ ↦ (zpow_pos (hcn k) _).ne')]`. Establish `e : ∀ k, l2Norm (fun i ↦ c k * z k i) = ‖c k‖ * l2Norm (z k)` using `fun k ↦ vectorL2Norm_const_mul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e, Real.log_zpow]`. Simplify using `only [show ∀ k, Real.log (‖c k‖ * l2Norm (z k)) = Real.log ‖c k‖ + Real.log (l2Norm (z k)) from fun k ↦ Real.log_mul (hcn k).ne' (hl k).ne']`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem metricDefect_smul (A : HermLine n) (c : ι → ℂ) (z : Cone n ℂ) (hc : ∀ k, c k ≠ 0)
     (hz : BlockNonzero z) :
@@ -36,7 +36,7 @@ theorem metricDefect_smul (A : HermLine n) (c : ι → ℂ) (z : Cone n ℂ) (hc
   ring
 
 /- English proof (translation)
-The claim follows from `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ ↦ (continuous_norm.comp (continuous_apply i)).pow 2)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_l2Norm {m : ℕ} : Continuous (fun w : Fin m → ℂ ↦ l2Norm w) :=
   Real.continuous_sqrt.comp
@@ -48,11 +48,9 @@ def unitSpheres : Set (Cone n ℂ) := {z | ∀ k, l2Norm (z k) = 1}
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Establish `: unitSpheres n = ⋂ k, {z : Cone n ℂ | l2Norm (z k) = 1}`. Use extensionality with `z`. Simplify using `[unitSpheres]`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun k ↦ isClosed_eq (continuous_l2Norm.comp (continuous_apply k)) continuous_const`. Use `(Metric.isBounded_closedBall (x := (0 : Cone n ℂ)) (r := 1)).subset fun z hz ↦ ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).mpr fun k ↦ (pi_norm_le_iff_of_nonneg zero_le_one).mpr fun i ↦ ?_` and prove the remaining obligations. Rewrite using `[← hz k]`.
-
-Conclude with `norm_le_l2Norm (z k) i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_unitSpheres : IsCompact (unitSpheres n) := by
   apply Metric.isCompact_of_isClosed_isBounded
@@ -71,15 +69,13 @@ theorem isCompact_unitSpheres : IsCompact (unitSpheres n) := by
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `hsub : unitSpheres n ⊆ {z | BlockNonzero z}` using `fun z hz k h ↦ by`. Use `hz k` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `[l2Norm] at this`. Establish `hcont : ContinuousOn (metricDefect A) {z | BlockNonzero z}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `metricDefect`. Use `ContinuousOn.sub (A.metric_smooth.continuousOn.log fun z hz ↦ (A.metric_pos z hz).ne') ?_` and prove the remaining obligations. Use `continuousOn_finsetSum _ fun k _ ↦ continuousOn_const.mul ?_` and prove the remaining obligations. Conclude with `((continuous_l2Norm.comp (continuous_apply k)).continuousOn).log fun z hz ↦ (vectorL2Norm_pos (hz k)).ne'`. Take `⟨M, hM⟩` from `isCompact_unitSpheres.exists_bound_of_continuousOn (hcont.mono hsub)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, fun z hz ↦ ?_⟩` and prove the remaining obligations. Set `c : ι → ℂ` to `fun k ↦ (((l2Norm (z k))⁻¹ : ℝ) : ℂ)`. Establish `hc : ∀ k, c k ≠ 0` using `fun k ↦ by`. Simplify using `only [c, ne_eq, Complex.ofReal_eq_zero, inv_eq_zero]`. Conclude with `(vectorL2Norm_pos (hz k)).ne'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : (fun k i ↦ c k * z k i) ∈ unitSpheres n`. Introduce `k`. Express the relevant statement in the definitionally equal form `l2Norm (fun i ↦ c k * z k i) = 1`. Rewrite using `[vectorL2Norm_const_mul, Complex.norm_of_nonneg (inv_nonneg.mpr (vectorL2Norm_pos (hz k)).le)]`. Conclude with `inv_mul_cancel₀ (vectorL2Norm_pos (hz k)).ne'`.
-
-Use `hM _ hw` as an intermediate fact. Rewrite `this` using `[metricDefect_smul A c z hc hz, Real.norm_eq_abs]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_bound_metricDefect (A : HermLine n) :
     ∃ M, ∀ z : Cone n ℂ, BlockNonzero z → |metricDefect A z| ≤ M := by
@@ -110,7 +106,7 @@ theorem exists_bound_metricDefect (A : HermLine n) :
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Unfold `metricDefect`. Express the relevant statement in the definitionally equal form `Real.log (∏ k, l2Norm (z k)) - ∑ k, ((1 : ℤ) : ℝ) * Real.log (l2Norm (z k)) = 0`. Rewrite using `[Real.log_prod (fun k _ ↦ (vectorL2Norm_pos (hz k)).ne')]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem metricDefect_standard [Fintype ι] (z : Cone n ℂ) (hz : BlockNonzero z) :
     metricDefect (HermLine.standard n) z = 0 := by
@@ -131,13 +127,11 @@ def blockSum (y : Cone n K) (k : ι) : ℝ :=
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `hT : (⋃ i ∈ {i | y k i ≠ 0}, Function.mulSupport fun w : FinitePlace K ↦ w (y k i)).Finite` using `Set.Finite.biUnion (Set.toFinite _) fun i hi ↦ FinitePlace.hasFiniteMulSupport hi`. Use `hT.subset fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvT`. Apply `hv` to reduce the goal to its premises. Establish `h1 : ∀ i, y k i ≠ 0 → v (y k i) = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i hi`. Assume the negation of the conclusion as `hne`. Conclude with `hvT (Set.mem_biUnion (x := i) hi hne)`. Take `⟨i0, hi0⟩` from `Function.ne_iff.mp hy`. Establish `hs : (⨆ i, v (y k i)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (ciSup_le fun i ↦ ?_) (le_ciSup_of_le (Set.finite_range _).bddAbove i0 ?_)` and prove the remaining obligations. Distinguish the cases in `h : y k i = 0`. Rewrite using `[h, map_zero]`. Conclude with `zero_le_one`. Conclude with `(h1 i h).le`.
-
-Conclude with `(h1 i0 hi0).ge`. Simplify using `only [blockFin, hs, Real.log_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_support_blockFin (y : Cone n K) (k : ι) (hy : y k ≠ 0) :
     (Function.support (blockFin y k)).Finite := by
@@ -161,13 +155,13 @@ theorem finite_support_blockFin (y : Cone n K) (k : ι) (hy : y k ≠ 0) :
   simp only [blockFin, hs, Real.log_one]
 
 /- English proof (translation)
-Establish `hfin : (Function.mulSupport fun w : FinitePlace K ↦ w t).Finite` using `FinitePlace.hasFiniteMulSupport ht`. Establish `hprod` using `FinitePlace.prod_eq_inv_abs_norm ht`. Rewrite `hprod` using `[finprod_eq_prod_of_mulSupport_subset (s := hfin.toFinset) _ (fun v hv ↦ Finset.mem_coe.mpr (hfin.mem_toFinset.mpr hv))]`. Establish `hsupp : (Function.support fun v : FinitePlace K ↦ Real.log (v t)) ⊆ hfin.toFinset`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.mem_coe.mpr (hfin.mem_toFinset.mpr fun h ↦ hv ?_)` and prove the remaining obligations. Simplify using `only [h, Real.log_one]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, ← Real.log_prod (fun v _ ↦ (FinitePlace.pos_iff.mpr ht).ne'), hprod]`. Establish `h1 : (((Algebra.norm ℚ t : ℚ) : ℂ)) = ∏ σ : K →+* ℂ, σ t`. Use `Algebra.norm_eq_prod_embeddings ℚ ℂ t` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this]`. Conclude with `(Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ fun σ ↦ rfl).symm`. Rewrite using `[← Real.log_prod (fun σ _ ↦ by rw [norm_ne_zero_iff, map_ne_zero]; exact ht), ← norm_prod, ← h1, Complex.norm_ratCast]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_log_places_eq_zero {t : K} (ht : t ≠ 0) :
     (∑ᶠ v : FinitePlace K, Real.log (v t)) + ∑ σ : K →+* ℂ, Real.log ‖σ t‖ = 0 := by
@@ -196,13 +190,13 @@ theorem sum_log_places_eq_zero {t : K} (ht : t ≠ 0) :
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Take `⟨i0, hi0⟩` from `Function.ne_iff.mp hy`. Establish `ht : y k i0 ≠ 0` using `hi0`. Establish `hfin` using `finite_support_blockFin y k hy`. Establish `hfin2 : (Function.support fun v : FinitePlace K ↦ Real.log (v (y k i0))).Finite`. Use `Set.Finite.subset (FinitePlace.hasFiniteMulSupport ht) fun v hv h ↦ hv ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [h, Real.log_one]`. Set `T` to `hfin.toFinset ∪ hfin2.toFinset`. Establish `e1 : ∑ᶠ v, blockFin y k v = ∑ v ∈ T, blockFin y k v` using `finsum_eq_sum_of_support_subset _ fun v hv ↦ by`. Simplify using `only [T, Finset.coe_union, Set.mem_union, Finset.mem_coe, hfin.mem_toFinset]`. Conclude with `Or.inl hv`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the first alternative.
 
-Establish `e2 : ∑ᶠ v : FinitePlace K, Real.log (v (y k i0)) = ∑ v ∈ T, Real.log (v (y k i0))` using `finsum_eq_sum_of_support_subset _ fun v hv ↦ by`. Simplify using `only [T, Finset.coe_union, Set.mem_union, Finset.mem_coe, hfin2.mem_toFinset]`. Conclude with `Or.inr hv`. Establish `hle1 : ∑ v ∈ T, Real.log (v (y k i0)) ≤ ∑ v ∈ T, blockFin y k v` using `Finset.sum_le_sum fun v _ ↦ Real.log_le_log (FinitePlace.pos_iff.mpr ht) (le_ciSup (f := fun i ↦ v (y k i)) (Set.finite_range _).bddAbove i0)`. Establish `hle2 : ∑ σ : K →+* ℂ, Real.log ‖σ (y k i0)‖ ≤ ∑ σ : K →+* ℂ, Real.log (l2Norm fun i ↦ σ (y k i))` using `Finset.sum_le_sum fun σ _ ↦ Real.log_le_log (norm_pos_iff.mpr ((map_ne_zero σ).mpr ht)) (norm_le_l2Norm (fun i ↦ σ (y k i)) i0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `sum_log_places_eq_zero ht`. Unfold `blockSum`. Rewrite using `[e1]`. Rewrite `h0` using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem blockSum_nonneg (y : Cone n K) (k : ι) (hy : y k ≠ 0) : 0 ≤ blockSum y k := by
   obtain ⟨i0, hi0⟩ := Function.ne_iff.mp hy
@@ -238,7 +232,7 @@ end Blocks
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce `h`. Apply `hx k` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `congrArg Subtype.val (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coordVec_ne_zero {x : Cone n (AlgebraicClosure ℚ)} (hx : BlockNonzero x) (k : ι) :
     coordVec x k ≠ 0 := by
@@ -249,7 +243,7 @@ theorem coordVec_ne_zero {x : Cone n (AlgebraicClosure ℚ)} (hx : BlockNonzero 
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Introduce `k h`. Apply `coordVec_ne_zero hx k` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `(map_eq_zero σ).mp (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem blockNonzero_sigma {x : Cone n (AlgebraicClosure ℚ)} (hx : BlockNonzero x)
     (σ : coordField x →+* ℂ) : BlockNonzero (fun k i ↦ σ (coordVec x k i)) := by
@@ -261,13 +255,13 @@ theorem blockNonzero_sigma {x : Cone n (AlgebraicClosure ℚ)} (hx : BlockNonzer
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `hfin : ∀ k, (Function.support (blockFin (coordVec x) k)).Finite` using `fun k ↦ finite_support_blockFin _ k (coordVec_ne_zero hx k)`. Establish `hF : (∑ᶠ v : FinitePlace (coordField x), ∑ k, (A.deg k : ℝ) * Real.log (⨆ i, v (coordVec x k i))) = ∑ k, (A.deg k : ℝ) * ∑ᶠ v, blockFin (coordVec x) k v`. Rewrite using `[finsum_sum_comm]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_finsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `k _`. Conclude with `(hfin k).subset (Function.support_mul_subset_right _ _)`. Establish `hA : ∀ σ : coordField x →+* ℂ, Real.log (A.metric fun k i ↦ σ (coordVec x k i)) = metricDefect A (fun k i ↦ σ (coordVec x k i)) + ∑ k, (A.deg k : ℝ) * Real.log (l2Norm fun i ↦ σ (coordVec x k i))`. Introduce `σ`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `metricDefect`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : ∑ σ : coordField x →+* ℂ, ∑ k, (A.deg k : ℝ) * Real.log (l2Norm fun i ↦ σ (coordVec x k i)) = ∑ k, (A.deg k : ℝ) * ∑ σ : coordField x →+* ℂ, Real.log (l2Norm fun i ↦ σ (coordVec x k i))`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `height`. Rewrite using `[hF, Finset.sum_congr rfl fun σ _ ↦ hA σ, Finset.sum_add_distrib, hB]`. Unfold `blockSum`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem height_eq_blockSum (A : HermLine n) (x : Cone n (AlgebraicClosure ℚ))
     (hx : BlockNonzero x) :
@@ -305,9 +299,9 @@ theorem height_eq_blockSum (A : HermLine n) (x : Cone n (AlgebraicClosure ℚ))
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[height_eq_blockSum _ x hx]`. Establish `h0 : ∀ σ : coordField x →+* ℂ, metricDefect (HermLine.standard n) (fun k i ↦ σ (coordVec x k i)) = 0` using `fun σ ↦ metricDefect_standard _ (blockNonzero_sigma hx σ)`. Simplify using `only [h0, Finset.sum_const_zero, add_zero]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((1 : ℤ) : ℝ) * _ = _`. Rewrite using `[Int.cast_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_standard_eq_blockSum (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x) :
     height (HermLine.standard n) x = ((Module.finrank ℚ (coordField x) : ℝ))⁻¹ *
@@ -323,19 +317,17 @@ theorem height_standard_eq_blockSum (x : Cone n (AlgebraicClosure ℚ)) (hx : Bl
   rw [Int.cast_one, one_mul]
 
 /- English proof (translation)
-Introduce `ι _ _ n P A`. Take `⟨M, hM⟩` from `exists_bound_metricDefect A`. Use `⟨∑ k, (A.deg k).natAbs, M, fun x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hxb : BlockNonzero x` using `hx.1`. Establish `hd : (0 : ℝ) < Module.finrank ℚ (coordField x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Module.finrank_pos (R := ℚ) (M := coordField x)` after adjusting the coercions. Establish `hnn : ∀ k, 0 ≤ blockSum (coordVec x) k` using `fun k ↦ blockSum_nonneg _ k (coordVec_ne_zero hxb k)`. Rewrite using `[height_eq_blockSum A x hxb, height_standard_eq_blockSum x hxb]`. Use `set d : ℝ := (Module.finrank ℚ (coordField x) : ℝ)`. Use `set N : ℝ := ((∑ k, (A.deg k).natAbs : ℕ) : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR : |∑ σ : coordField x →+* ℂ, metricDefect A (fun k i ↦ σ (coordVec x k i))| ≤ d * M`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ M fun σ _ ↦ hM _ (blockNonzero_sigma hxb σ)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul]`. Establish `hak : ∀ k, |(A.deg k : ℝ)| ≤ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `e : |(A.deg k : ℝ)| = ((A.deg k).natAbs : ℝ)`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Rewrite using `[e]`. Simplify using `only [N, Nat.cast_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.single_le_sum (f := fun j ↦ ((A.deg j).natAbs : ℝ)) (fun j _ ↦ Nat.cast_nonneg _) (Finset.mem_univ k)`. Establish `hS : |∑ k, (A.deg k : ℝ) * blockSum (coordVec x) k| ≤ N * ∑ k, blockSum (coordVec x) k`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun k _ ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[abs_mul, abs_of_nonneg (hnn k)]`. Conclude with `mul_le_mul_of_nonneg_right (hak k) (hnn k)`. Rewrite using `[abs_mul, abs_of_pos (inv_pos.mpr hd)]`. Establish `hsum` using `(abs_add_le _ _).trans (add_le_add hS hR)`. Combine the equalities or inequalities in the displayed calculation.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem heightComparison : HeightComparison.Statement := by
   intro ι _ _ n P A

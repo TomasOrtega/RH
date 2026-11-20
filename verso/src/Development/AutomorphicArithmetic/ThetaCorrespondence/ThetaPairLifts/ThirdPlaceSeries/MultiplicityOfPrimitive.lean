@@ -9,7 +9,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 namespace GlobalTheory.MtInMain
 /- English proof (translation)
-Introduce `_` and use `GlobalTheory.MtId.sMt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prN_sMt_alt_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SMt := fun _ => GlobalTheory.MtId.sMt
 end GlobalTheory.MtInMain
@@ -18,7 +18,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MtInMain.prN_sMt_alt_alt | exact _root_.GlobalTheory.MtInMain.prN_sMt_alt_alt | (intros; apply _root_.GlobalTheory.MtInMain.prN_sMt_alt_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sMt_of_published_inputs' : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SMt := by
   first | exact @_root_.GlobalTheory.MtInMain.prN_sMt_alt_alt | exact _root_.GlobalTheory.MtInMain.prN_sMt_alt_alt | (intros; apply _root_.GlobalTheory.MtInMain.prN_sMt_alt_alt <;> assumption)

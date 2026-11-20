@@ -20,13 +20,13 @@ section Norm2
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma normSq2_nonneg (v : ι → ℂ) : 0 ≤ normSq2 v :=
   Finset.sum_nonneg fun _ _ => sq_nonneg _
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hv`. Conclude with `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma normSq2_pos {v : ι → ℂ} (hv : v ≠ 0) : 0 < normSq2 v := by
   obtain ⟨i, hi⟩ := Function.ne_iff.mp hv
@@ -34,29 +34,29 @@ lemma normSq2_pos {v : ι → ℂ} (hv : v ≠ 0) : 0 < normSq2 v := by
     ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_pos.mpr (normSq2_pos hv)`.
+A detailed English derivation is pending.
 -/
 lemma euclideanNorm_pos {v : ι → ℂ} (hv : v ≠ 0) : 0 < norm2 v := Real.sqrt_pos.mpr (normSq2_pos hv)
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (normSq2_nonneg v)`.
+A detailed English derivation is pending.
 -/
 lemma euclideanNorm_sq (v : ι → ℂ) : norm2 v ^ 2 = normSq2 v := Real.sq_sqrt (normSq2_nonneg v)
 
 /- English proof (translation)
-Simplify using `[normSq2, mul_pow, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma normSq2_smul (t : ℂ) (v : ι → ℂ) : normSq2 (t • v) = ‖t‖ ^ 2 * normSq2 v := by
   simp [normSq2, mul_pow, Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[norm2, normSq2_smul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma euclideanNorm_smul (t : ℂ) (v : ι → ℂ) : norm2 (t • v) = ‖t‖ * norm2 v := by
   rw [norm2, normSq2_smul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]; rfl
 
 /- English proof (translation)
-Rewrite using `[norm2]`. Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖v j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma norm_le_norm2 (v : ι → ℂ) (i : ι) : ‖v i‖ ≤ norm2 v := by
   rw [norm2]
@@ -68,7 +68,7 @@ end Norm2
 namespace CP
 
 /- English proof (translation)
-Rewrite using `[normSq2, Fin.sum_univ_succAbove _ i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma normSq2_chartVec (i : Fin (N + 1)) (z : Fin N → ℂ) :
     normSq2 (chartVec i z) = 1 + ∑ j, ‖z j‖ ^ 2 := by
@@ -78,13 +78,13 @@ lemma normSq2_chartVec (i : Fin (N + 1)) (z : Fin N → ℂ) :
 def tautLine (x : CP N) : Submodule ℂ (Fin (N + 1) → ℂ) := x.submodule
 
 /- English proof (translation)
-Rewrite using `[tautLine, Projectivization.submodule_eq]`. Conclude with `Submodule.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rep_mem_tautLine (x : CP N) : x.rep ∈ tautLine x := by
   rw [tautLine, Projectivization.submodule_eq]; exact Submodule.mem_span_singleton_self _
 
 /- English proof (translation)
-Rewrite using `[tautLine, Projectivization.submodule_mk]`. Conclude with `Submodule.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_tautLine_mk (v : Fin (N + 1) → ℂ) (hv : v ≠ 0) : v ∈ tautLine (Projectivization.mk ℂ v hv) := by
   rw [tautLine, Projectivization.submodule_mk]; exact Submodule.mem_span_singleton_self _
@@ -94,9 +94,9 @@ abbrev O1 (x : CP N) : Type := Module.Dual ℂ (tautLine x)
 def fsNorm (x : CP N) (φ : O1 x) : ℝ := ‖φ ⟨x.rep, rep_mem_tautLine x⟩‖ / norm2 x.rep
 
 /- English proof (translation)
-Establish `hv'` using `hv`. Rewrite `hv'` using `[tautLine, Projectivization.submodule_eq, Submodule.mem_span_singleton]`. Take `⟨t, rfl⟩` from `hv'`. Establish `ht : t ≠ 0` using `by rintro rfl; simp at hv0`. Establish `: (⟨t • x.rep, hv⟩ : tautLine x) = t • ⟨x.rep, rep_mem_tautLine x⟩` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, smul_eq_mul, norm_mul, euclideanNorm_smul, fsNorm]`. Establish `hn : 0 < norm2 x.rep` using `euclideanNorm_pos x.rep_nonzero`. Establish `ht' : 0 < ‖t‖` using `norm_pos_iff.mpr ht`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fsNorm_eq (x : CP N) (φ : O1 x) (v : Fin (N + 1) → ℂ) (hv : v ∈ tautLine x) (hv0 : v ≠ 0) :
     fsNorm x φ = ‖φ ⟨v, hv⟩‖ / norm2 v := by
@@ -111,9 +111,9 @@ theorem fsNorm_eq (x : CP N) (φ : O1 x) (v : Fin (N + 1) → ℂ) (hv : v ∈ t
   field_simp
 
 /- English proof (translation)
-Use extensionality with `⟨w, hw⟩`. Establish `hw'` using `hw`. Rewrite `hw'` using `[tautLine, Projectivization.submodule_eq, Submodule.mem_span_singleton]`. Take `⟨t, rfl⟩` from `hw'`. Establish `: (⟨t • x.rep, hw⟩ : tautLine x) = t • ⟨x.rep, rep_mem_tautLine x⟩` using `rfl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, map_smul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma tautologicalDual_ext (x : CP N) {φ ψ : O1 x} (h : φ ⟨x.rep, rep_mem_tautLine x⟩ = ψ ⟨x.rep, rep_mem_tautLine x⟩) :
     φ = ψ := by
@@ -125,9 +125,9 @@ lemma tautologicalDual_ext (x : CP N) {φ ψ : O1 x} (h : φ ⟨x.rep, rep_mem_t
   rw [this, map_smul, map_smul, h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hn : 0 < norm2 x.rep` using `euclideanNorm_pos x.rep_nonzero`. Rewrite `h` using `[fsNorm, div_eq_zero_iff, norm_eq_zero]`. Break down `h with h | h` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `tautologicalDual_ext x (by simpa using h)`. Conclude with `absurd h hn.ne'`. Introduce and unpack `rfl`. Simplify using `[fsNorm]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fsNorm_eq_zero_iff (x : CP N) (φ : O1 x) : fsNorm x φ = 0 ↔ φ = 0 := by
   constructor
@@ -142,7 +142,7 @@ theorem fsNorm_eq_zero_iff (x : CP N) (φ : O1 x) : fsNorm x φ = 0 ↔ φ = 0 :
 def restrictForm (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (x : CP N) : O1 x := ℓ.domRestrict (tautLine x)
 
 /- English proof (translation)
-The claim follows from `fsNorm_eq _ _ v (mem_tautLine_mk v hv) hv`.
+A detailed English derivation is pending.
 -/
 theorem fsNorm_restrictForm_mk (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (v : Fin (N + 1) → ℂ) (hv : v ≠ 0) :
     fsNorm (Projectivization.mk ℂ v hv) (restrictForm ℓ _) = ‖ℓ v‖ / norm2 v :=
@@ -151,9 +151,9 @@ theorem fsNorm_restrictForm_mk (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (v 
 def coordForm (i : Fin (N + 1)) : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ := LinearMap.proj i
 
 /- English proof (translation)
-Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`. Introduce `h`. Use `(fsNorm_eq_zero_iff _ _).mpr h` as an intermediate fact. Rewrite `this` using `[fsNorm_restrictForm_mk, div_eq_zero_iff, norm_eq_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `this with h1 | h1` into its components or cases. Conclude with `hx h1`. Conclude with `(euclideanNorm_pos hv).ne' h1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem restrictForm_coordForm_ne_zero (i : Fin (N + 1)) {x : CP N} (hx : x ∈ chartDomain i) :
     restrictForm (coordForm i) x ≠ 0 := by
@@ -167,14 +167,14 @@ theorem restrictForm_coordForm_ne_zero (i : Fin (N + 1)) {x : CP N} (hx : x ∈ 
     · exact (euclideanNorm_pos hv).ne' h1
 
 /- English proof (translation)
-Rewrite using `[chartInv, fsNorm_restrictForm_mk, div_pow, euclideanNorm_sq, normSq2_chartVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fsNorm_sq_chartInv (ℓ : (Fin (N + 1) → ℂ) →ₗ[ℂ] ℂ) (i : Fin (N + 1)) (z : Fin N → ℂ) :
     fsNorm (chartInv i z) (restrictForm ℓ _) ^ 2 = ‖ℓ (chartVec i z)‖ ^ 2 / (1 + ∑ j, ‖z j‖ ^ 2) := by
   rw [chartInv, fsNorm_restrictForm_mk, div_pow, euclideanNorm_sq, normSq2_chartVec]
 
 /- English proof (translation)
-Rewrite using `[fsNorm_sq_chartInv]`. Simplify using `[coordForm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fsNorm_sq_frame (i : Fin (N + 1)) (z : Fin N → ℂ) :
     fsNorm (chartInv i z) (restrictForm (coordForm i) _) ^ 2 = 1 / (1 + ∑ j, ‖z j‖ ^ 2) := by
@@ -182,7 +182,7 @@ theorem fsNorm_sq_frame (i : Fin (N + 1)) (z : Fin N → ℂ) :
   simp [coordForm]
 
 /- English proof (translation)
-The claim follows from `ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)`.
+A detailed English derivation is pending.
 -/
 lemma contDiff_normSqSum : ContDiff ℝ ∞ (fun z : Fin N → ℂ => ∑ j, ‖z j‖ ^ 2) :=
   ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)

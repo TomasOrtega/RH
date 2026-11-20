@@ -17,21 +17,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.StabFlat
 
 /- English proof (translation)
-Establish `hq : (Ideal.quotientMap (m.map ρ) ρ Ideal.le_comap_map).IsStandardSmoothOfRelativeDimension g`. Use `RingHom.isStableUnderCobaseChange_toMorphismProperty_iff.2 (RingHom.isStandardSmoothOfRelativeDimension_isStableUnderBaseChange.{0} g)` as an intermediate fact. Conclude with `MorphismProperty.of_isPushout (P := RingHom.toMorphismProperty (@RingHom.IsStandardSmoothOfRelativeDimension g)) (NilpotentLift.isPushout_quotient_map m (CommRingCat.ofHom ρ)).flip hρ`. Use `letI := ρ.toAlgebra`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension g V R` using `hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsStandardSmooth V R` using `Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth g`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing V R`. Use `⟨IsLocalization.isNoetherianRing n.primeCompl A inferInstance, ?_, ?_⟩` and prove the remaining obligations. Establish `h₁ : ρ.Flat` using `(inferInstance : Module.Flat V R)`. Establish `h₂ : (algebraMap R A).Flat` using `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat A n.primeCompl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `h₁.comp h₂`. Use `letI := Ideal.Quotient.field m`. Rewrite using `[← Ideal.map_map]`. Use `set J := m.map ρ with hJ`. Take `⟨φ, -, hφ⟩` from `hq.exists_etale_mvPolynomial`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure.
 
-Establish `hJn : RingHom.ker (Ideal.Quotient.mk J) ≤ n`. Rewrite using `[Ideal.mk_ker]` and apply the resulting hypothesis. Use `letI := φ.toAlgebra`. Establish `: Algebra.Etale (MvPolynomial (Fin g) (V ⧸ m)) (R ⧸ J)` using `hφ.toAlgebra`. Establish `: IsRegularRing (R ⧸ J)` using `isRegularRing_of_etale (MvPolynomial (Fin g) (V ⧸ m)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hm : (n.map (Ideal.Quotient.mk J)).IsMaximal` using `Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective hJn`. Establish `hle : J ≤ (J.map (algebraMap R A)).comap (algebraMap R A)` using `Ideal.le_comap_map`. Use `letI : Algebra (R ⧸ J) (A ⧸ J.map (algebraMap R A)) := (Ideal.quotientMap _ _ hle).toAlgebra`. Establish `hl` using `IsLocalization.of_surjective n.primeCompl A (S' := A ⧸ J.map (algebraMap R A)) (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective rfl (by rw [Ideal.mk_ker, Ideal.mk_ker])`. Establish `e : n.primeCompl.map (Ideal.Quotient.mk J) = (n.map (Ideal.Quotient.mk J)).primeCompl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hc : (n.map (Ideal.Quotient.mk J)).comap (Ideal.Quotient.mk J) = n`. Rewrite using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, sup_eq_left.2 hJn]`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨x', hx', e⟩ hx`. Conclude with `hx' (hc.le (show Ideal.Quotient.mk J x' ∈ _ from e ▸ hx))`. Conclude with `fun hx => ⟨x, fun h => hx (Ideal.mem_map_of_mem _ h), rfl⟩`. Rewrite `hl` using `[e]`. Use `⟨?_, (IsLocalization.AtPrime.ringKrullDim_eq_height (n.map (Ideal.Quotient.mk J)) _).trans (height_of_etale_mvPolynomial (V ⧸ m) (R ⧸ J) g _)⟩` and prove the remaining obligations.
-
-Use `IsRegularRing.isRegularLocalRing_localization (n.map (Ideal.Quotient.mk J))` as an intermediate fact. Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv (n.map (Ideal.Quotient.mk J)).primeCompl (Localization.AtPrime (n.map (Ideal.Quotient.mk J))) _).toRingEquiv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localization_of_isStandardSmooth_ideal {V R A : Type} [CommRing V] [IsNoetherianRing V] [CommRing R]
     [CommRing A] (m : Ideal V) [m.IsMaximal] {g : ℕ} {ρ : V →+* R}
@@ -88,15 +86,13 @@ theorem localization_of_isStandardSmooth_ideal {V R A : Type} [CommRing V] [IsNo
     (Localization.AtPrime (n.map (Ideal.Quotient.mk J))) _).toRingEquiv
 
 /- English proof (translation)
-Introduce `V _ _ _ X f g hg x hx σ hσ hn`. Take `⟨U, hU, W, hW, hxW, e, H⟩` from `hg.exists_isStandardSmoothOfRelativeDimension x`. Establish `hfx : f x = IsLocalRing.closedPoint V` using `((congrArg f Scheme.fromSpecStalk_closedPoint.symm).trans (congrArg (fun q => q (IsLocalRing.closedPoint _)) hσ)).trans (IsLocalRing.comap_closedPoint σ)`. Take `rfl : U = ⊤` from `(IsLocalRing.closedPoint_mem_iff U).1 (hfx ▸ e hxW)`. Set `ρ` to `(Scheme.ΓSpecIso (CommRingCat.of V)).inv ≫ f.appLE ⊤ W e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hρ : ρ.hom.IsStandardSmoothOfRelativeDimension g` using `(RingHom.isStandardSmoothOfRelativeDimension_respectsIso.cancel_left_isIso _ _).2 H`. Establish `hc : ρ ≫ X.presheaf.germ W x hxW = CommRingCat.ofHom σ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← hσ, ← hW.fromSpecStalk_eq_fromSpecStalk hxW, Spec.map_comp, Spec.map_comp, IsAffineOpen.fromSpecStalk, Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec f hU hW e, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Use `letI : Algebra Γ(X, W) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hxW⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `hl : IsLocalization.AtPrime (X.presheaf.stalk x) (hW.primeIdealOf ⟨x, hxW⟩).asIdeal` using `hW.isLocalization_stalk ⟨x, hxW⟩`. Use `haveI := hW.primeIdealOf_isMaximal_of_isClosed ⟨x, hxW⟩ hx`. Establish `hs : (algebraMap Γ(X, W) (X.presheaf.stalk x)).comp ρ.hom = σ` using `congrArg (fun q => q.hom) hc`. Establish `key` using `localization_of_isStandardSmooth_ideal (A := X.presheaf.stalk x) (IsLocalRing.maximalIdeal V) hρ (hW.primeIdealOf ⟨x, hxW⟩).asIdeal (by`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Assume the negation of the conclusion as `hm`. Establish `hu` using `IsLocalization.map_units (X.presheaf.stalk x) (⟨_, hm⟩ : (hW.primeIdealOf ⟨x, hxW⟩).asIdeal.primeCompl)`. Establish `hu' : IsUnit (σ a)` using `hs ▸ hu`. Conclude with `ha (hn.map_nonunit a hu'))`.
-
-Rewrite `key` using `[hs]`. Conclude with `key`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalk_of_smooth_local : ∀ (V : Type) [CommRing V] [IsNoetherianRing V] [IsLocalRing V] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of V)) (g : ℕ), SmoothOfRelativeDimension g f → ∀ x : X, IsClosed ({x} : Set X) → ∀ σ : V →+* X.presheaf.stalk x, X.fromSpecStalk x ≫ f = Spec.map (CommRingCat.ofHom σ) → IsLocalHom σ → IsNoetherianRing (X.presheaf.stalk x) ∧ σ.Flat ∧ IsRegularLocalRing (X.presheaf.stalk x ⧸ (IsLocalRing.maximalIdeal V).map σ) ∧ ringKrullDim (X.presheaf.stalk x ⧸ (IsLocalRing.maximalIdeal V).map σ) = g := by
   intro V _ _ _ X f g hg x hx σ hσ hn

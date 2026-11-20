@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Mi
 
 /- English proof (translation)
-Introduce `w hw`. Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `h` using `GlobalTheory.TypeSum.std_of_isDS hHC (M.ds τ)`. Conclude with `(GlobalTheory.SmoothCyclic.sm_eq M τ).ge (h.2.2.1 w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kFin_le_sm (hHC : GlobalTheory.Published.HarishChandraModules) {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     (M : DSModel V S) (τ : D.what₂.Tau) : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ ≤ M.sm τ := by
@@ -23,13 +23,13 @@ theorem kFin_le_sm (hHC : GlobalTheory.Published.HarishChandraModules) {D : D7} 
   exact (GlobalTheory.SmoothCyclic.sm_eq M τ).ge (h.2.2.1 w hw)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact fun v hv => h0 v fun τ => hv τ (Finset.notMem_empty τ)`. Consider the case `insert a s ha ih`. Introduce `v hv`. Take `⟨ℓ, hℓ, hℓv⟩` from `hΛ a v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk : ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M a, ℓ w = 0`. Introduce `w hw`. Rewrite using `[hℓv ⟨w, kFin_le_sm hHC M a hw⟩]`. Use `ih _ fun τ hτ => ?_` and prove the remaining obligations. Distinguish the cases in `e : τ = a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hw`. Rewrite using `[Function.update_of_ne e]`. Conclude with `hv τ (by simp [e, hτ])`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.KFiniteDense.eq_zero_of_kFin hHC D V S M a ℓ hℓ hk (v a) (v a).2` as an intermediate fact. Rewrite `this` using `[hℓv (v a), Function.update_eq_self]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem tprod_eq_zero_of_kFin_off (hHC : GlobalTheory.Published.HarishChandraModules) {D : D7} {V : HSp D}
     {S : D.what₂.Tau → SPar} (M : DSModel V S) (Λ : SmT M →ₗ[ℂ] ℂ) (hΛ : SepCont M Λ)
@@ -55,7 +55,7 @@ theorem tprod_eq_zero_of_kFin_off (hHC : GlobalTheory.Published.HarishChandraMod
     exact this
 
 /- English proof (translation)
-Introduce `hHC D V S M Λ hΛ h0`. Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.zero_apply]`. Conclude with `tprod_eq_zero_of_kFin_off hHC M Λ hΛ h0 Finset.univ v fun τ hτ => absurd (Finset.mem_univ τ) hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sepCont : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : SmT M →ₗ[ℂ] ℂ), SepCont M Λ → (∀ v : M.Vec, KVecP M v → Λ (PiTensorProduct.tprod ℂ v) = 0) → Λ = 0 := by
   intro hHC D V S M Λ hΛ h0
@@ -64,7 +64,7 @@ theorem eq_zero_of_sepCont : GlobalTheory.Published.HarishChandraModules → ∀
   exact tprod_eq_zero_of_kFin_off hHC M Λ hΛ h0 Finset.univ v fun τ hτ => absurd (Finset.mem_univ τ) hτ
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_sepCont`.
+A detailed English derivation is pending.
 -/
 example : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : SmT M →ₗ[ℂ] ℂ), SepCont M Λ → (∀ v : M.Vec, KVecP M v → Λ (PiTensorProduct.tprod ℂ v) = 0) → Λ = 0 := eq_zero_of_sepCont
 

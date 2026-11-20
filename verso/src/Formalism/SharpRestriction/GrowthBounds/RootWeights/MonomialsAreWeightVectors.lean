@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Rewrite using `[pderiv_monomial, show (X v : MvPolynomial σ R) = monomial (Finsupp.single v 1) 1 from rfl, monomial_mul, one_mul, add_comm (Finsupp.single v 1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem v2con_X_pderiv {R : Type*} [CommRing R] {σ : Type*} (v w : σ) (m : σ →₀ ℕ) (c : R) :
     (X v : MvPolynomial σ R) * pderiv w (monomial m c) =
@@ -18,9 +18,9 @@ theorem v2con_X_pderiv {R : Type*} [CommRing R] {σ : Type*} (v w : σ) (m : σ 
     monomial_mul, one_mul, add_comm (Finsupp.single v 1)]
 
 /- English proof (translation)
-Rewrite using `[v2con_X_pderiv]`. Distinguish the cases in `h : m v = 0`. Simplify using `[h]`. Establish `hle : Finsupp.single v 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[tsub_add_cancel_of_le hle]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem v2con_X_pderiv_self {R : Type*} [CommRing R] {σ : Type*} (v : σ) (m : σ →₀ ℕ) (c : R) :
     (X v : MvPolynomial σ R) * pderiv v (monomial m c) = monomial m (c * (m v : R)) := by
@@ -32,9 +32,9 @@ theorem v2con_X_pderiv_self {R : Type*} [CommRing R] {σ : Type*} (v : σ) (m : 
     rw [tsub_add_cancel_of_le hle]
 
 /- English proof (translation)
-Unfold `glAct wtS`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [Int.cast_sum, Finset.sum_mul]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases h1 : l ∈ S <;> by_cases h2 : LL.vec l = true <;>`. Simplify using `[h1, h2, -pderiv_monomial, v2con_X_pderiv_self, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem v2con_diag {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a : Fin n) (m : ι × Fin n →₀ ℕ) (c : R) :
@@ -49,9 +49,9 @@ theorem v2con_diag {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} 
     simp [h1, h2, -pderiv_monomial, v2con_X_pderiv_self, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `x using MvPolynomial.induction_on' with`. Consider the case `monomial m' c`. Rewrite using `[v2con_diag, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v2con_coeff_diag {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a : Fin n) (x : MvPolynomial (ι × Fin n) R) (m : ι × Fin n →₀ ℕ) :
@@ -67,13 +67,13 @@ theorem v2con_coeff_diag {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n :
     rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Introduce `R _ _ ι _ LL n S`. Prove the components needed by the constructor for the conclusion. Introduce `m c`. Rewrite using `[weightSp, Submodule.mem_iInf]`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `glAct R LL S a a (monomial m c) - _ = 0`. Rewrite using `[v2con_diag, smul_monomial, smul_eq_mul, sub_self]`. Introduce `ν x hx m hm`. Rewrite `hx` using `[weightSp, Submodule.mem_iInf]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Establish `h` using `hx a`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Establish `h2` using `congrArg (coeff m) h`. Express the relevant statement in the definitionally equal form `coeff m (glAct R LL S a a x) = _ at h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h2` using `[v2con_coeff_diag, coeff_smul, smul_eq_mul]`. Establish `hc : coeff m x ≠ 0` using `mem_support_iff.mp hm`. Establish `h3` using `mul_right_cancel₀ hc h2`. Conclude with `h3` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem monomials_are_weight_vectors : MonomialsAreWeightVectors := by
   intro R _ _ ι _ LL n S
@@ -98,19 +98,17 @@ theorem monomials_are_weight_vectors : MonomialsAreWeightVectors := by
     exact_mod_cast h3
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_restrictSupport_iff]`. Establish `hmono : ∀ (m' : ι × Fin n →₀ ℕ) (c' : R), m'.degree ≤ N → monomial m' c' ∈ restrictSupport R {m : ι × Fin n →₀ ℕ | m.degree ≤ N}`. Introduce `m' c' hm'`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.mem_singleton.mp (support_monomial_subset hy)` as an intermediate fact. Substitute `this` using the available equality. Conclude with `hm'`. Establish `hterm : ∀ (m : ι × Fin n →₀ ℕ) (c : R) (u w : ι × Fin n), m.degree ≤ N → (X u : MvPolynomial (ι × Fin n) R) * pderiv w (monomial m c) ∈ restrictSupport R {m : ι × Fin n →₀ ℕ | m.degree ≤ N}`. Introduce `m c u w hm`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[v2con_X_pderiv]`. Distinguish the cases in `h0 : m w = 0`. Simplify using `[h0]`. Apply `hmono` to reduce the goal to its premises. Establish `hle : Finsupp.single w 1 ≤ m`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `e1 : (m - Finsupp.single w 1).degree + 1 = m.degree`. Use `congrArg Finsupp.degree (tsub_add_cancel_of_le hle)` as an intermediate fact. Rewrite `this` using `[map_add, Finsupp.degree_single]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[x.as_sum, map_sum]`. Use `Submodule.sum_mem _ (fun m hm => ?_)` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hdeg : m.degree ≤ N` using `hx hm`. Unfold `glAct`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ (fun l _ => ?_)` and prove the remaining obligations. Use `split_ifs`.
-
-Conclude with `hterm m _ _ _ hdeg`. Rewrite using `[LinearMap.neg_apply]`. Conclude with `Submodule.neg_mem _ (hterm m _ _ _ hdeg)`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v2con_stable {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (N : ℕ) (a b : Fin n) (x : MvPolynomial (ι × Fin n) R)
@@ -155,11 +153,9 @@ theorem v2con_stable {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `R _ ι _ LL n S x`. Use `⟨restrictSupport R {m : ι × Fin n →₀ ℕ | m.degree ≤ x.totalDegree}, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : Finite {m : ι × Fin n →₀ ℕ | m.degree ≤ x.totalDegree} := (Finsupp.finite_of_degree_le x.totalDegree).to_subtype`. Conclude with `Module.Finite.of_basis (basisRestrictSupport R _)`. Rewrite using `[mem_restrictSupport_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Use `show m.degree ≤ x.totalDegree`. Rewrite using `[Finsupp.degree_apply]`. Conclude with `le_totalDegree hm`. Introduce `a b y hy`.
-
-Conclude with `v2con_stable LL S _ a b y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem polynomial_locally_finite : PolynomialLocallyFinite := by
   intro R _ ι _ LL n S x

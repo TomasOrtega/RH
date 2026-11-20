@@ -39,7 +39,7 @@ def coIpStd {J : Type} [Fintype J] (e : J → P) (H : M →ₗ⋆[ℂ] M →ₗ[
   ((q.factorial : ℂ))⁻¹ * coIp e H f g
 
 /- English proof (translation)
-Simplify using `[coIpStd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coIpStd_zero {J : Type} [Fintype J] (e : J → P) (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (f g : P [⋀^Fin 0]→ₗ[R] M) :
     coIpStd e H f g = coIp e H f g := by
@@ -207,11 +207,9 @@ def tupIp (d : ℕ) (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] 
 end Form
 
 /- English proof (translation)
-Use `⟨⟨fun τ a b c d => by simp, fun _ _ _ _ _ _ _ => by simp⟩, fun _ _ _ => by simp, fun _ => 1, ?_, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `h`. Simplify using `using congrFun h 0`. Introduce `S hS _`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: w = w 0 • fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
-
-Conclude with `S.smul_mem _ hS`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgLow_zero {T : Type} [Fintype T] [DecidableEq T] (n : ℕ) :
     IsAlgLow (T := T) (n := n) (d := 1) (fun _ _ _ => 0) (fun _ _ => 0) := by
@@ -230,7 +228,7 @@ theorem isAlgLow_zero {T : Type} [Fintype T] [DecidableEq T] (n : ℕ) :
 section Basic₂
 
 /- English proof (translation)
-Simplify using `[codOp, trOp, famA, famB, onEach, onIdx]`.
+Simplify using the standard rewrite rules.
 -/
 example {T : Type} [Fintype T] [DecidableEq T] {n : ℕ} {ε : T → Fin n → Bool} {M : Type} [AddCommGroup M] [Module ℂ M]
     (E : T → Fin n → Fin n → Module.End ℂ M) (ξ : T → Fin n → Fin n → Matrix (Fin 1) (Fin 1) ℂ) (x : NC ε)
@@ -239,7 +237,7 @@ example {T : Type} [Fintype T] [DecidableEq T] {n : ℕ} {ε : T → Fin n → B
   simp [codOp, trOp, famA, famB, onEach, onIdx]
 
 /- English proof (translation)
-Simplify using `[coIpStd, Nat.factorial]`.
+Simplify using the standard rewrite rules.
 -/
 example {P M J : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup M] [Module ℂ M] [Fintype J] (e : J → P)
     (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (f g : P [⋀^Fin 2]→ₗ[ℂ] M) :

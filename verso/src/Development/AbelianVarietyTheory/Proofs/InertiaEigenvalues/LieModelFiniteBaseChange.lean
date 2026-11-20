@@ -43,17 +43,15 @@ open scoped nonZeroDivisors Classical
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Take `⟨B, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Use `set ψ := SchwartzMap.compCLMOfContinuousLinearEquiv ℝ (toMixedPi E a) φ with hψ`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set K₀ : ℝ := 2 ^ M * (Finset.Iic (M, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) ψ with hK₀`. Establish `hK : 0 ≤ K₀` using `by positivity`. Use `⟨K₀ * |B|, by positivity, fun y => ?_⟩` and prove the remaining obligations. Establish `h1` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (M, 0)) (k := M) (n := 0) le_rfl le_rfl ψ (fun i => pInf E (y i))`. Rewrite `h1` using `[norm_iteratedFDeriv_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ψ (fun i => pInf E (y i)) = φ (infPartPi y)`. Rewrite using `[hψ, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, toMixedPi_pInf]`. Rewrite `h1` using `[h2]`. Simplify using `only [schwartzBruhatTensorPi, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, le_rfl, fun y => by simp⟩`. Consider the case `add G H _ _ hG hH`. Take `⟨K₁, h₁, hG⟩` from `hG`. Take `⟨K₂, h₂, hH⟩` from `hH`. Use `⟨K₁ + K₂, by positivity, fun y => le_trans ?_ (add_le_add (hG y) (hH y))⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (by positivity)`. Consider the case `smul c G _ hG`. Take `⟨K, h, hG⟩` from `hG`. Use `⟨‖c‖ * K, by positivity, fun y => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hG y) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_pow_le {G : (Fin a → Ad E) → ℂ} (hG : G ∈ schwartzBruhatPi E (Fin a)) (M : ℕ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ y, ‖G y‖ * (1 + ‖fun i => pInf E (y i)‖) ^ M ≤ K := by
@@ -88,7 +86,7 @@ theorem norm_mul_pow_le {G : (Fin a → Ad E) → ℂ} (hG : G ∈ schwartzBruha
     exact mul_le_mul_of_nonneg_left (hG y) (norm_nonneg _)
 
 /- English proof (translation)
-Take `⟨⟨L, hL, hs⟩, -⟩` from `GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments E a G hG`. Take `⟨J, hJ⟩` from `exists_subset_idealFiniteAdeles (isCompact_iUnion fun i : Fin a => hL.image (continuous_apply i))`. Use `⟨J, fun y hy => by_contra fun h => hy fun i => hJ (Set.mem_iUnion.2 ⟨i, _, hs y h, rfl⟩)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_latt {G : (Fin a → Ad E) → ℂ} (hG : G ∈ schwartzBruhatPi E (Fin a)) :
     ∃ J : (FractionalIdeal (𝓞 E)⁰ E)ˣ, ∀ y, (fun i => pFin E (y i)) ∉ latt a J → G y = 0 := by
@@ -98,13 +96,13 @@ theorem exists_latt {G : (Fin a → Ad E) → ℂ} (hG : G ∈ schwartzBruhatPi 
   refine ⟨J, fun y hy => by_contra fun h => hy fun i => hJ (Set.mem_iUnion.2 ⟨i, _, hs y h, rfl⟩)⟩
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `exists_latt hG`. Take `⟨M, C₁, h₁⟩` from `GlobalTheory.RSTheta.summable_tsum_norm_le_of_le_shortest E a J (a * Module.finrank ℚ E) GlobalTheory.RSTheta.finrank_pi_Cinf.le`. Take `⟨K, hK, hGK⟩` from `norm_mul_pow_le hG M`. Take `⟨ψ, rfl, -, -, B, hB⟩` from `GlobalTheory.T.cuspFormRapidKernelSmoothSpan_smooth_cuspidal_bounded E a GlobalTheory.CuspOrth.cuspFormsBounded π' hπ φ' hφ`. Take `⟨C₂, h₂⟩` from `GlobalTheory.T.cuspFormSmoothSpan_norm_le_shortRationalVector E a π' hπ ψ (Or.inr hφ) [] (latt a J) (GlobalTheory.RSTheta.isCompact_latt J) {1} isCompact_singleton 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C₁ * (K * |B| * |C₂|), fun g => ?_⟩` and prove the remaining obligations. Establish `hδ` using `GlobalTheory.RSnm.detAbs_pos g`. Take `⟨hs, hle⟩` from `h₁ g (K * |B| * |C₂| * (GlobalTheory.RSnm.detAbs g)⁻¹) (fun ξ => ψ.1 g ^ 2 * G (Matrix.vecMul (fun j => algebraMap E (Ad E) (ξ j)) g.val)) (by positivity) (fun ξ hξ => mul_eq_zero_of_right _ (hJ _ hξ)) (fun ξ ξ' h0 hξ' => by`. Establish `h3` using `h₂ g 1 rfl ξ' h0 hξ'`. Simplify using `only [GlobalTheory.GLFin.word, mul_one, pow_one] at h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set r := ‖fun i => pInf E (((fun j => algebraMap E (Ad E) (ξ' j)) ᵥ* g.val) i)‖ ^ (a * Module.finrank ℚ E)`. Establish `hr : 0 ≤ r` using `by positivity`. Establish `h4 : ‖ψ.1 g‖ ≤ |C₂| * (r / GlobalTheory.RSnm.detAbs g)` using `le_trans h3 (mul_le_mul_of_nonneg_right (le_abs_self _) (div_nonneg hr hδ.le))`. Rewrite using `[norm_mul, norm_pow, mul_assoc, sq]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.tsum_mul_left, mul_assoc C₁]`. Use `le_trans (le_of_eq ?_) (ENNReal.ofReal_le_ofReal hle)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[ofReal_norm, enorm_mul, enorm_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound {π' : CuspSub E a} (hπ : π'.IsUnitary) {φ' : GA E a → ℂ} (hφ : φ' ∈ GlobalTheory.JSW.mspanR π')
     {G : (Fin a → Ad E) → ℂ} (hG : G ∈ schwartzBruhatPi E (Fin a)) :
@@ -144,11 +142,11 @@ theorem exists_bound {π' : CuspSub E a} (hπ : π'.IsUnitary) {φ' : GA E a →
 end Bound
 
 /- English proof (translation)
-Introduce `E _ _ _ m π' hπ φ' hφ G hG μ _ 𝓕 h𝓕 x hx`. Take `⟨C, hC⟩` from `exists_bound hπ hφ hG`. Establish `hi : IntegrableOn (fun g : GA E (m + 1) => GlobalTheory.RSnm.detAbs g ^ (x - 1)) (𝓕 ∩ {g | GlobalTheory.RSnm.detAbs g ≤ 1}) μ` using `GlobalTheory.T.integrableOn_absDet_rpow_le_one_fundamentalDomain E (m + 1) m.succ_pos μ 𝓕 h𝓕 (x - 1) (by linarith)`. Use `ne_top_of_le_ne_top (hi.const_mul C).2.ne (lintegral_mono fun g => ?_)` and prove the remaining obligations. Establish `hδ` using `GlobalTheory.RSnm.detAbs_pos g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(mul_le_mul_left (hC g) _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← ENNReal.ofReal_mul (Real.rpow_nonneg hδ.le _), Real.enorm_eq_ofReal_abs]`. Use `ENNReal.ofReal_le_ofReal (le_trans (le_of_eq ?_) (le_abs_self _))` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Real.rpow_sub_one hδ.ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lintegral_low_ne_top : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (π' : CuspSub E (m + 1)), π'.IsUnitary →
     ∀ φ' ∈ GlobalTheory.JSW.mspanR π', ∀ G ∈ GroundTheory.Automorphic.GJMatrix.schwartzBruhatPi E (Fin (m + 1)),

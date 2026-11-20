@@ -13,7 +13,7 @@ namespace ConjIntNum
 variable {K : Type} [DecidableEq K] {ι : K → Type} {F : Type} [Field F]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite `hd` using `[coeff_map]`. Conclude with `hf fun h => hd (by rw [h, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_map {σ M : Type*} [AddCommMonoid M] (w : σ → M) (τ : F →+* F)
     {f : MvPolynomial σ F} {m : M} (hf : IsWeightedHomogeneous w f m) :
@@ -36,9 +36,9 @@ theorem quotEquiv_mk (τ : F ≃+* F) (J : Ideal (MRing ι F)) (f : MRing ι F) 
   rfl
 
 /- English proof (translation)
-Simplify using `only [gradedPiece, Submodule.mem_map, mem_weightedHomogeneousSubmodule]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hgx⟩`. Use `⟨MvPolynomial.map (τ.symm : F →+* F) g, isWeightedHomogeneous_map _ _ hg, ?_⟩` and prove the remaining obligations. Use `congrArg (quotEquiv τ J).symm hgx` as an intermediate fact.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[RingEquiv.symm_apply_apply]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨MvPolynomial.map (τ : F →+* F) f, isWeightedHomogeneous_map _ _ hf, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_gradedPiece_iff (τ : F ≃+* F) (J : Ideal (MRing ι F)) (m : K → ℕ) (x : MRing ι F ⧸ J) :
     quotEquiv τ J x ∈ gradedPiece (J.map (MvPolynomial.map (τ : F →+* F))) m ↔ x ∈ gradedPiece J m := by
@@ -65,9 +65,9 @@ def pieceEquiv (τ : F ≃+* F) (J : Ideal (MRing ι F)) (m : K → ℕ) :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `hs : ∀ (I : Ideal (MRing ι F)) (a : F) (g : MRing ι F), a • Ideal.Quotient.mk I g = Ideal.Quotient.mk I (C a * g)` using `fun I a g => by`. Rewrite using `[← smul_eq_C_mul]`. Conclude with `(map_smul (Ideal.Quotient.mkₐ F I) a g).symm`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[hs, quotEquiv_mk, quotEquiv_mk, hs, map_mul, map_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem quotEquiv_smul (τ : F ≃+* F) (J : Ideal (MRing ι F)) (c : F) (x : MRing ι F ⧸ J) :
     quotEquiv τ J (c • x) = τ c • quotEquiv τ J x := by
@@ -80,7 +80,7 @@ theorem quotEquiv_smul (τ : F ≃+* F) (J : Ideal (MRing ι F)) (c : F) (x : MR
   rfl
 
 /- English proof (translation)
-Establish `h` using `rank_eq_of_equiv_equiv (τ : F → F) (pieceEquiv τ J m) τ.bijective (fun c x => Subtype.ext (quotEquiv_smul τ J c x))`. Simplify using `only [Module.finrank, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem finrank_gradedPiece (τ : F ≃+* F) (J : Ideal (MRing ι F)) (m : K → ℕ) :
     Module.finrank F (gradedPiece (J.map (MvPolynomial.map (τ : F →+* F))) m) =
@@ -90,7 +90,7 @@ theorem finrank_gradedPiece (τ : F ≃+* F) (J : Ideal (MRing ι F)) (m : K →
   simp only [Module.finrank, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Unfold `hilbFn`. Use `split_ifs`. Rewrite using `[finrank_gradedPiece]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hilbFn_map (τ : F ≃+* F) (J : Ideal (MRing ι F)) :
     hilbFn (J.map (MvPolynomial.map (τ : F →+* F))) = hilbFn J := by
@@ -101,7 +101,7 @@ theorem hilbFn_map (τ : F ≃+* F) (J : Ideal (MRing ι F)) :
   · rfl
 
 /- English proof (translation)
-Introduce `K _ ι F _ τ J n bs`. Unfold `NumbersDVR.intNum`. Rewrite using `[hilbFn_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem proof : ConjIntNum.Statement := by
   intro K _ ι F _ τ J n bs

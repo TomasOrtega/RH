@@ -23,7 +23,7 @@ namespace GlobalTheory.ConjSchr
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [symplO, hO, GlobalTheory.ChiGrid.negSp_gram, GlobalTheory.CjNeg.inv_neg_mat, Matrix.neg_apply, map_neg, neg_mul, mul_neg, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_negS (S T : HSp D) (x y : WO S T) :
     symplO (GlobalTheory.ChiGrid.negSp S) T x y = -symplO S T x y := by
@@ -33,7 +33,7 @@ theorem symplO_negS (S T : HSp D) (x y : WO S T) :
 def cjF {X : Type} (g : X → ℂ) : X → ℂ := fun w => starRingEnd ℂ (g w)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [cjF, heisO, map_mul, GlobalTheory.CjNeg.conj_psi hψ, GlobalTheory.CjNeg.symplOH_negS, neg_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_conj {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (x : WO S T)
     (g : WO S T → ℂ) :
@@ -42,7 +42,7 @@ theorem heisO_conj {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   simp only [cjF, heisO, map_mul, GlobalTheory.CjNeg.conj_psi hψ, GlobalTheory.CjNeg.symplOH_negS, neg_neg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[cjF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cjF_cjF {X : Type} (g : X → ℂ) : cjF (cjF g) = g := by
   funext w; simp [cjF]
@@ -63,9 +63,9 @@ theorem conjLin_apply {X : Type} (T : (X → ℂ) →ₗ[ℂ] (X → ℂ)) (g : 
     conjLin T g = cjF (T (cjF g)) := rfl
 
 /- English proof (translation)
-Take `⟨hs, k, hk, hinv, hsupp⟩` from `h`. Use `⟨fun t ht => hs t ?_, k, hk, fun u hu hue t => ?_, fun t ht => hsupp t ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `ht` to reduce the goal to its premises. Simplify using `[cjF, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [cjF, hinv u hu hue t]`. Introduce `h0`. Apply `ht` to reduce the goal to its premises. Simplify using `[cjF, h0]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem isSBHalf_cjF {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ : Mx D m n → ℂ}
     (h : IsSBHalf e Λ Φ) : IsSBHalf e Λ (cjF Φ) := by
@@ -76,11 +76,11 @@ theorem isSBHalf_cjF {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Φ : 
   · intro h0; apply ht; simp [cjF, h0]
 
 /- English proof (translation)
-Establish `e1` using `h.trans _ (isSBHalf_cjF hΦ) x hx`. Rewrite using `[conjLin_apply, conjLin_apply, heisO_conj hψ]`. Establish `e2 : cjF (fun t => Φ (t + x)) = fun t => cjF Φ (t + x)` using `rfl`. Rewrite using `[e2, e1]`. Use `modul Φ hΦ y hy := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `h.modul _ (isSBHalf_cjF hΦ) y hy`. Rewrite using `[conjLin_apply, conjLin_apply, heisO_conj hψ]`. Establish `e2 : cjF (fun t => ψ (symplO S T t y) * Φ t) = fun t => ψ (symplO (GlobalTheory.ChiGrid.negSp S) T t y) * cjF Φ t`. Use function extensionality and compare the values at `t`. Simplify using `only [cjF, map_mul, GlobalTheory.CjNeg.conj_psi hψ, symplO_negS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e1]`. Use `vac := by`. Establish `e2 : cjF ((1 : ℂ) • halfInd e Λ) = (1 : ℂ) • halfInd e Λ`. Apply the tactic sequence `funext t; simp only [cjF, one_smul, halfInd]; split_ifs <;> simp`. Rewrite using `[conjLin_apply, e2, h.vac]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPlaceModel_conjLin {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {e : AE D}
     {Λ : AddSubgroup (WO S T)} {f₀ : WO S T → ℂ} {T₀ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
@@ -107,9 +107,9 @@ end GlobalTheory.ConjSchr
 
 open GlobalTheory.ConjSchr in
 /- English proof (translation)
-Introduce `D ψ hψ A WW e ΛA ΛW vac Φ f hT`. Establish `hL : latO (GlobalTheory.Grid.neg A) WW ΛA ΛW (fun _ => True) = latO A WW ΛA ΛW (fun _ => True)` using `GlobalTheory.CoreRowLat.latO_negSp A WW ΛA ΛW _`. Take `⟨⟨T₀, h0⟩, hall⟩` from `hT`. Establish `hf : f = T₀ Φ` using `hall T₀ h0`. Rewrite `h0` using `[hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨conjLin T₀, isPlaceModel_conjLin hψ h0, ?_⟩` and prove the remaining obligations. Use `show cjF f = conjLin T₀ (cjF Φ)`. Rewrite using `[conjLin_apply, cjF_cjF, hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConjSchr.conj_schroedinger_neg : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A WW : HSp D) (e : AE D) (ΛA : Set (Fin A.rank → D.host.E))
   (ΛW : Set (Fin WW.rank → D.host.E)) (vac Φ f : WO A WW → ℂ),

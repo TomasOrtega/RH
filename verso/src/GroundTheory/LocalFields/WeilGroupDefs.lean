@@ -14,7 +14,7 @@ variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   (Ω : Type*) [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 
 /- English proof (translation)
-Rewrite using `[map_zpow, unramifiedDegree_maximalUnramifiedExtensionFrobenius, ← ofAdd_zsmul, zsmul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unramifiedDegree_maximalUnramifiedExtensionFrobenius_zpow (n : ℤ) :
     unramifiedDegree K (maximalUnramifiedExtension K Ω) (maximalUnramifiedExtensionFrobenius K Ω ^ n) =
@@ -22,7 +22,7 @@ theorem unramifiedDegree_maximalUnramifiedExtensionFrobenius_zpow (n : ℤ) :
   rw [map_zpow, unramifiedDegree_maximalUnramifiedExtensionFrobenius, ← ofAdd_zsmul, zsmul_one]
 
 /- English proof (translation)
-Introduce `m n h`. Establish `h'` using `congrArg (unramifiedDegree K (maximalUnramifiedExtension K Ω)) h`. Simplify using `only [unramifiedDegree_maximalUnramifiedExtensionFrobenius_zpow] at h'`. Conclude with `Int.cast_injective (Multiplicative.ofAdd.injective h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem injective_zpow_maximalUnramifiedExtensionFrobenius :
     Function.Injective fun n : ℤ ↦ maximalUnramifiedExtensionFrobenius K Ω ^ n := by
@@ -60,7 +60,7 @@ def weilSubgroup : Subgroup (Ω ≃ₐ[K] Ω) :=
 variable {K Ω} in
 
 /- English proof (translation)
-Simplify using `only [weilSubgroup, Subgroup.mem_comap, Subgroup.mem_zpowers_iff]`. Conclude with `exists_congr fun n ↦ eq_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_weilSubgroup_iff {σ : Ω ≃ₐ[K] Ω} :
     σ ∈ weilSubgroup K Ω ↔ ∃ n : ℤ,
@@ -71,7 +71,7 @@ theorem mem_weilSubgroup_iff {σ : Ω ≃ₐ[K] Ω} :
 variable {K Ω} in
 
 /- English proof (translation)
-Rewrite using `[← unramifiedDegree_restrictNormal, ← unramifiedDegree_maximalUnramifiedExtensionFrobenius_zpow K Ω n]`. Conclude with `unramifiedDegree_maximalUnramifiedExtension_injective.eq_iff.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictNormal_eq_frobenius_zpow_iff (σ : Ω ≃ₐ[K] Ω) (n : ℤ) :
     σ.restrictNormal (maximalUnramifiedExtension K Ω) = maximalUnramifiedExtensionFrobenius K Ω ^ n ↔
@@ -82,7 +82,7 @@ theorem restrictNormal_eq_frobenius_zpow_iff (σ : Ω ≃ₐ[K] Ω) (n : ℤ) :
 variable {K Ω} in
 
 /- English proof (translation)
-Rewrite using `[mem_weilSubgroup_iff]`. Conclude with `exists_congr fun n ↦ restrictNormal_eq_frobenius_zpow_iff σ n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_weilSubgroup_iff_unramifiedDegree {σ : Ω ≃ₐ[K] Ω} :
     σ ∈ weilSubgroup K Ω ↔ ∃ n : ℤ, unramifiedDegree K Ω σ = Multiplicative.ofAdd (n : ℤ̂) := by
@@ -90,7 +90,7 @@ theorem mem_weilSubgroup_iff_unramifiedDegree {σ : Ω ≃ₐ[K] Ω} :
   exact exists_congr fun n ↦ restrictNormal_eq_frobenius_zpow_iff σ n
 
 /- English proof (translation)
-Introduce `σ hσ`. Rewrite `hσ` using `[← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker]`. Conclude with `mem_weilSubgroup_iff.2 ⟨0, by rw [zpow_zero]; exact hσ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_le_weilSubgroup :
     (maximalUnramifiedExtension K Ω).fixingSubgroup ≤ weilSubgroup K Ω := by
@@ -99,7 +99,7 @@ theorem fixingSubgroup_le_weilSubgroup :
   exact mem_weilSubgroup_iff.2 ⟨0, by rw [zpow_zero]; exact hσ⟩
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := maximalUnramifiedExtension K Ω) (E := Ω) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_restrictNormal_eq_frobenius_zpow (n : ℤ) :
     ∃ σ : Ω ≃ₐ[K] Ω,
@@ -107,15 +107,15 @@ theorem exists_restrictNormal_eq_frobenius_zpow (n : ℤ) :
   AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := maximalUnramifiedExtension K Ω) (E := Ω) _
 
 /- English proof (translation)
-Establish `: T2Space (Ω ≃ₐ[K] Ω)` using `krullTopology_t2`. Use `set C := (weilSubgroup K Ω).topologicalClosure with hC`. Establish `hCc : IsCompact (C : Set (Ω ≃ₐ[K] Ω))` using `(Subgroup.isClosed_topologicalClosure _).isCompact`. Establish `himc : IsClosed (unramifiedDegree K Ω '' (C : Set (Ω ≃ₐ[K] Ω)))` using `(hCc.image continuous_unramifiedDegree).isClosed`. Establish `hsub : (Subgroup.zpowers (Multiplicative.ofAdd (1 : ℤ̂)) : Set (Multiplicative ℤ̂)) ⊆ unramifiedDegree K Ω '' (C : Set (Ω ≃ₐ[K] Ω))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨n, rfl⟩`. Take `⟨σ, hσ⟩` from `exists_restrictNormal_eq_frobenius_zpow K Ω n`. Use `⟨σ, (weilSubgroup K Ω).le_topologicalClosure (mem_weilSubgroup_iff.2 ⟨n, hσ⟩), ?_⟩` and prove the remaining obligations. Use `show _ = Multiplicative.ofAdd 1 ^ n`. Rewrite using `[(restrictNormal_eq_frobenius_zpow_iff σ n).1 hσ, ← ofAdd_zsmul, zsmul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `huniv : unramifiedDegree K Ω '' (C : Set (Ω ≃ₐ[K] Ω)) = Set.univ`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← dense_zpowers_ofAdd_one.closure_eq]`. Conclude with `himc.closure_subset_iff.2 hsub`. Rewrite using `[dense_iff_closure_eq, ← Subgroup.topologicalClosure_coe, ← hC]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Set.eq_univ_of_forall fun τ ↦ ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hcτ⟩ : unramifiedDegree K Ω τ ∈ unramifiedDegree K Ω '' (C : Set (Ω ≃ₐ[K] Ω)) := by`. Rewrite using `[huniv]`. Discharge the goal by the elementary cases of `trivial`. Establish `hk : c⁻¹ * τ ∈ (unramifiedDegree K Ω).ker`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hcτ, inv_mul_cancel]`. Rewrite `hk` using `[ker_unramifiedDegree]`. Establish `hk' : c⁻¹ * τ ∈ C` using `(weilSubgroup K Ω).le_topologicalClosure (fixingSubgroup_le_weilSubgroup K Ω hk)`. Use `C.mul_mem hc hk'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem dense_weilSubgroup : Dense (weilSubgroup K Ω : Set (Ω ≃ₐ[K] Ω)) := by
   have : T2Space (Ω ≃ₐ[K] Ω) := krullTopology_t2
@@ -155,18 +155,18 @@ instance : Group (WeilGroup K Ω) := inferInstanceAs (Group (weilSubgroup K Ω))
 def toGal : WeilGroup K Ω →* (Ω ≃ₐ[K] Ω) := (weilSubgroup K Ω).subtype
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem toGal_injective : Function.Injective (toGal K Ω) := Subtype.val_injective
 
 /- English proof (translation)
-The claim follows from `Subgroup.range_subtype _`.
+A detailed English derivation is pending.
 -/
 theorem range_toGal : (toGal K Ω).range = weilSubgroup K Ω := Subgroup.range_subtype _
 
 variable {K Ω} in
 /- English proof (translation)
-The claim follows from `σ.2`.
+A detailed English derivation is pending.
 -/
 theorem toGal_mem (σ : WeilGroup K Ω) : toGal K Ω σ ∈ weilSubgroup K Ω := σ.2
 
@@ -184,7 +184,7 @@ theorem toGal_mk (σ : Ω ≃ₐ[K] Ω) (hσ : σ ∈ weilSubgroup K Ω) : toGal
 variable {K Ω} in
 @[ext]
 /- English proof (translation)
-The claim follows from `toGal_injective K Ω h`.
+A detailed English derivation is pending.
 -/
 theorem ext {σ τ : WeilGroup K Ω} (h : toGal K Ω σ = toGal K Ω τ) : σ = τ := toGal_injective K Ω h
 
@@ -198,7 +198,7 @@ def degree : WeilGroup K Ω →* Multiplicative ℤ :=
 variable {K Ω}
 
 /- English proof (translation)
-Establish `h` using `(frobeniusZPowersEquiv K Ω).apply_symm_apply (restrictFrobenius K Ω σ)`. Establish `h'` using `congrArg Subtype.val h`. Rewrite `h'` using `[coe_frobeniusZPowersEquiv]`. Conclude with `h'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictNormal_toGal (σ : WeilGroup K Ω) :
     (toGal K Ω σ).restrictNormal (maximalUnramifiedExtension K Ω) =
@@ -209,7 +209,7 @@ theorem restrictNormal_toGal (σ : WeilGroup K Ω) :
   exact h'.symm
 
 /- English proof (translation)
-Rewrite using `[restrictNormal_toGal]`. Conclude with `⟨fun h ↦ by rw [h, toAdd_ofAdd], fun h ↦ Multiplicative.toAdd.injective (injective_zpow_maximalUnramifiedExtensionFrobenius K Ω h)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem degree_eq_iff (σ : WeilGroup K Ω) (n : ℤ) :
     degree K Ω σ = Multiplicative.ofAdd n ↔
@@ -220,14 +220,14 @@ theorem degree_eq_iff (σ : WeilGroup K Ω) (n : ℤ) :
     Multiplicative.toAdd.injective (injective_zpow_maximalUnramifiedExtensionFrobenius K Ω h)⟩
 
 /- English proof (translation)
-The claim follows from `(restrictNormal_eq_frobenius_zpow_iff _ _).1 (restrictNormal_toGal σ)`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedDegree_toGal (σ : WeilGroup K Ω) :
     unramifiedDegree K Ω (toGal K Ω σ) = Multiplicative.ofAdd (((degree K Ω σ).toAdd : ℤ) : ℤ̂) :=
   (restrictNormal_eq_frobenius_zpow_iff _ _).1 (restrictNormal_toGal σ)
 
 /- English proof (translation)
-Rewrite using `[degree_eq_iff, restrictNormal_eq_frobenius_zpow_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degree_eq_iff_unramifiedDegree (σ : WeilGroup K Ω) (n : ℤ) :
     degree K Ω σ = Multiplicative.ofAdd n ↔
@@ -235,7 +235,7 @@ theorem degree_eq_iff_unramifiedDegree (σ : WeilGroup K Ω) (n : ℤ) :
   rw [degree_eq_iff, restrictNormal_eq_frobenius_zpow_iff]
 
 /- English proof (translation)
-Introduce `n`. Take `⟨σ, hσ⟩` from `exists_restrictNormal_eq_frobenius_zpow K Ω n.toAdd`. Conclude with `⟨mk σ (mem_weilSubgroup_iff.2 ⟨_, hσ⟩), (degree_eq_iff _ n.toAdd).2 hσ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem degree_surjective : Function.Surjective (degree K Ω) := by
   intro n
@@ -247,7 +247,7 @@ variable (K Ω) in
 def inertia : Subgroup (WeilGroup K Ω) := (degree K Ω).ker
 
 /- English proof (translation)
-Rewrite using `[inertia, MonoidHom.mem_ker, ← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker, AlgEquiv.restrictNormalHom, MonoidHom.mk'_apply, ← ofAdd_zero, degree_eq_iff, zpow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_inertia_iff {σ : WeilGroup K Ω} :
     σ ∈ inertia K Ω ↔ toGal K Ω σ ∈ (maximalUnramifiedExtension K Ω).fixingSubgroup := by
@@ -257,7 +257,7 @@ theorem mem_inertia_iff {σ : WeilGroup K Ω} :
 variable (K Ω) in
 
 /- English proof (translation)
-Use extensionality with `σ`. Conclude with `mem_inertia_iff`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem inertia_eq_comap :
     inertia K Ω = (maximalUnramifiedExtension K Ω).fixingSubgroup.comap (toGal K Ω) := by
@@ -267,7 +267,7 @@ theorem inertia_eq_comap :
 variable (K Ω) in
 
 /- English proof (translation)
-Use `⟨rfl, degree_surjective, ?_⟩` and prove the remaining obligations. Rewrite using `[inertia_eq_comap, Subgroup.map_comap_eq, range_toGal]`. Conclude with `inf_of_le_right (fixingSubgroup_le_weilSubgroup K Ω)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_inertia_degree :
     (degree K Ω).ker = inertia K Ω ∧ Function.Surjective (degree K Ω) ∧
@@ -286,12 +286,12 @@ instance instTopologicalSpace : TopologicalSpace (WeilGroup K Ω) :=
   TopologicalSpace.induced (toGalProd K Ω) inferInstance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInducing_toGalProd : IsInducing (toGalProd K Ω) := ⟨rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isInducing_toGalProd, fun _ _ h ↦ toGal_injective K Ω (congrArg Prod.fst h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmbedding_toGalProd : IsEmbedding (toGalProd K Ω) :=
   ⟨isInducing_toGalProd, fun _ _ h ↦ toGal_injective K Ω (congrArg Prod.fst h)⟩
@@ -304,19 +304,19 @@ instance : T2Space (WeilGroup K Ω) :=
   isEmbedding_toGalProd.t2Space
 
 /- English proof (translation)
-The claim follows from `continuous_fst.comp isInducing_toGalProd.continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toGal : Continuous (toGal K Ω) :=
   continuous_fst.comp isInducing_toGalProd.continuous
 
 /- English proof (translation)
-The claim follows from `continuous_snd.comp isInducing_toGalProd.continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_degree : Continuous (degree K Ω) :=
   continuous_snd.comp isInducing_toGalProd.continuous
 
 /- English proof (translation)
-Rewrite using `[isInducing_toGalProd.continuous_iff, continuous_prodMk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem continuous_iff {X : Type*} [TopologicalSpace X] {f : X → WeilGroup K Ω} :
     Continuous f ↔ Continuous (toGal K Ω ∘ f) ∧ Continuous (degree K Ω ∘ f) := by
@@ -324,13 +324,13 @@ theorem continuous_iff {X : Type*} [TopologicalSpace X] {f : X → WeilGroup K �
   rfl
 
 /- English proof (translation)
-The claim follows from `(isOpen_discrete ({1} : Set (Multiplicative ℤ))).preimage continuous_degree`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_inertia : IsOpen (inertia K Ω : Set (WeilGroup K Ω)) :=
   (isOpen_discrete ({1} : Set (Multiplicative ℤ))).preimage continuous_degree
 
 /- English proof (translation)
-The claim follows from `OpenSubgroup.isClosed ⟨inertia K Ω, isOpen_inertia⟩`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_inertia : IsClosed (inertia K Ω : Set (WeilGroup K Ω)) :=
   OpenSubgroup.isClosed ⟨inertia K Ω, isOpen_inertia⟩
@@ -370,7 +370,7 @@ instance : CompactSpace (inertia K Ω) :=
   (inertiaEquiv K Ω).toHomeomorph.symm.compactSpace
 
 /- English proof (translation)
-The claim follows from `isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace (inertia K Ω)))`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_inertia : IsCompact (inertia K Ω : Set (WeilGroup K Ω)) :=
   isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace (inertia K Ω)))
@@ -380,7 +380,7 @@ instance : LocallyCompactSpace (WeilGroup K Ω) :=
     (isOpen_inertia.mem_nhds (Subgroup.one_mem _))
 
 /- English proof (translation)
-Establish `h` using `dense_weilSubgroup K Ω`. Rewrite `h` using `[← range_toGal, MonoidHom.coe_range]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_toGal : DenseRange (toGal K Ω) := by
   have h := dense_weilSubgroup K Ω
@@ -388,14 +388,14 @@ theorem denseRange_toGal : DenseRange (toGal K Ω) := by
   exact h
 
 /- English proof (translation)
-The claim follows from `hU.preimage continuous_toGal`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_preimage_toGal {U : Set (Ω ≃ₐ[K] Ω)} (hU : IsOpen U) :
     IsOpen (toGal K Ω ⁻¹' U) :=
   hU.preimage continuous_toGal
 
 /- English proof (translation)
-The claim follows from `degree_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem exists_degree_eq_one : ∃ φ : WeilGroup K Ω, degree K Ω φ = Multiplicative.ofAdd 1 :=
   degree_surjective _

@@ -10,7 +10,7 @@ open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnitFv.unitary_split | exact GlobalTheory.UnitFv.unitary_split | (intros; apply GlobalTheory.UnitFv.unitary_split <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unitary_at_splitPlace_localBases : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) (π₁ π₂ : AE F E →+* Fv F v) (b₁ b₂ : GL (Fin d) (Fv F v)),
   (∀ z, π₁ (cA σ z) = π₂ z) → ∀ g : GlobalTheory.DblVac.UD σ W,

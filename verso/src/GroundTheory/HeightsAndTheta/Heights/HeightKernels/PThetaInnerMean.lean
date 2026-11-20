@@ -12,7 +12,7 @@ noncomputable section
 namespace KThetaInnerMean
 
 /- English proof (translation)
-Unfold `thetaSummand torusChar`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [dotProduct, Pi.add_apply, Pi.zero_apply, intVec, Complex.ofReal_zero, add_zero, mul_add, add_mul, Finset.sum_add_distrib, Complex.ofReal_add, Complex.ofReal_intCast, Complex.ofReal_mul, Complex.ofReal_sum, Complex.ofReal_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaSummand_shift {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) (a b u₁ u₂ : Fin g → ℝ)
     (k : Fin g → ℤ) :
@@ -34,15 +34,15 @@ end KThetaInnerMean
 open KThetaInnerMean in
 
 /- English proof (translation)
-Introduce `g X Y a b u₁ hY`. Establish `hS : Y.IsSymm`. Establish `h` using `hY.isHermitian`. Rewrite `h` using `[Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set E : ℝ := exp (-π * qf Y u₁) with hE`. Establish `hEpos : 0 < E` using `exp_pos _`. Use `set c : (Fin g → ℤ) → ℂ := fun k => thetaSummand X Y a b (periodMatrix X Y *ᵥ (fun i => (u₁ i : ℂ)) + fun i => ((0 : Fin g → ℝ) i : ℂ)) k with hc`. Establish `hcE : ∀ k, ‖c k‖ * E = exp (-π * qf Y (intVec k + a + u₁))` using `fun k => h₁ g X Y a b u₁ 0 k hS`. Establish `hcs : Summable fun k => ‖c k‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `(KTheta.summable_exp_qf Y hY π pi_pos (a + u₁)).mul_right E⁻¹`. Use `hs.congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← add_assoc, ← hcE k, mul_assoc, mul_inv_cancel₀ hEpos.ne', mul_one]`. Establish `hN : ∀ u₂, thetaNorm X Y a b u₁ u₂ ^ 2 = ‖∑' k, c k * torusChar k u₂‖ ^ 2 * E ^ 2`. Introduce `u₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h : thetaNorm X Y a b u₁ u₂ = ‖∑' k, thetaSummand X Y a b (periodMatrix X Y *ᵥ (fun i => (u₁ i : ℂ)) + fun i => (u₂ i : ℂ)) k‖ * E` using `rfl`. Rewrite using `[h, tsum_congr (fun k => thetaSummand_shift X Y a b u₁ u₂ k), tsum_mul_left, norm_mul, Complex.norm_exp_ofReal_mul_I, one_mul]`. Conclude with `mul_pow _ _ _`. Simplify using `only [hN]`. Rewrite using `[integral_mul_const, h₂ g c hcs, ← tsum_mul_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `tsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, hcE k, ← exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ThetaInnerMean.proof (h₁ : ThetaSummandNorm.Statement) (h₂ : ThetaCubeParseval.Statement) :
     ThetaInnerMean.Statement := by

@@ -9,11 +9,11 @@ open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.Graded
 variable {K : Type} [Field K] {r : ℕ}
 
 /- English proof (translation)
-Establish `key` using `hom_eq_on ((psiB (MvPolynomial (Bool × (Fin r × Fin r)) K) (scCol K (r + 1 + 1) t0 c)).comp (th K r b).toRingHom) ((th K r b).toRingHom.comp (scCol K (r + 1 + 1) t0 c).toRingHom) ?_ ?_ v`. Simplify using `using key`. Introduce `a`. Simplify using `[th_C, psiB_C]`. Introduce and unpack `⟨a, t⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Break down `midOf_cases t with ⟨j, rfl⟩ | ⟨ht, -⟩` into its components or cases. Establish `hne : ∀ i : Fin r, midI r i ≠ t0` using `fun i => midOf_none_ne h0 i`. Simplify using `[th_X_mid, psiB_X, scCol_X, hne, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[psiB_C]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[th_X_none _ _ _ _ _ ht, psiB_X, scCol_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem caseN (t0 : Fin (r + 1 + 1)) (h0 : midOf t0 = none) (c : K) (b : Bool)
     (v : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K) :
@@ -34,7 +34,7 @@ theorem caseN (t0 : Fin (r + 1 + 1)) (h0 : midOf t0 = none) (c : K) (b : Bool)
     · simp [th_X_none _ _ _ _ _ ht, psiB_X, scCol_X]
 
 /- English proof (translation)
-Rewrite using `[lam_eq, lcoef_comm, map_mul, caseN t0 h0, caseN t0 h0, scCol_of_hom _ _ _ _ hv, scCol_of_hom _ _ _ _ ht, map_smul, map_smul, smul_mul_smul_comm, ← pow_add, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_scaleN (L : MvPolynomial (Bool × (Fin r × Fin r)) K →ₗ[K] K) (t0 : Fin (r + 1 + 1)) (h0 : midOf t0 = none)
     (c : K) (ν ν' : Fin (r + 1 + 1) → ℕ) (v t : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K)
@@ -51,7 +51,7 @@ def thR (K : Type) [Field K] (r : ℕ) (ρ : MvPolynomial (Fin r × Fin r) K →
   (mapAlgHom ((blockEmb K (k := r) (n := r) b).comp ρ)).comp (subY K r)
 
 /- English proof (translation)
-Simplify using `only [thR, AlgHom.comp_apply, mAH_coeff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thR_coeff (ρ : MvPolynomial (Fin r × Fin r) K →ₐ[K] MvPolynomial (Fin r × Fin r) K) (b : Bool)
     (v : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K) (u : Fin (r + 1 + 1) × Fin (r + 1 + 1) →₀ ℕ) :
@@ -59,13 +59,13 @@ theorem thR_coeff (ρ : MvPolynomial (Fin r × Fin r) K →ₐ[K] MvPolynomial (
   simp only [thR, AlgHom.comp_apply, mAH_coeff]
 
 /- English proof (translation)
-Establish `key` using `hom_eq_on ((psiB (MvPolynomial (Bool × (Fin r × Fin r)) K) ψ).comp (th K r b).toRingHom) (thR K r ρ b).toRingHom ?_ ?_ v`. Simplify using `using key`. Introduce `a`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, th_C]`. Rewrite using `[psiB_C]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [thR, AlgHom.comp_apply, subY_C, mAH_C, AlgHom.commutes]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a, t⟩`. Break down `midOf_cases t with ⟨j, rfl⟩ | ⟨ht, -⟩` into its components or cases. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, th_X_mid, map_sum, map_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [thR, AlgHom.comp_apply, mAH_subY_mid]`. Rewrite using `[← hgen b a j]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[psiB_C, psiB_X]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, th_X_none _ _ _ _ _ ht]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [thR, AlgHom.comp_apply, mAH_subY_none _ _ _ _ ht]`. Rewrite using `[psiB_X, hnone a t ht, map_X]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem caseM (ψ : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K →ₐ[K] MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K)
     (ρ : MvPolynomial (Fin r × Fin r) K →ₐ[K] MvPolynomial (Fin r × Fin r) K)
@@ -97,9 +97,9 @@ theorem caseM (ψ : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K →ₐ[K
       rw [psiB_X, hnone a t ht, map_X]
 
 /- English proof (translation)
-Establish `hc : ∀ (h : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) (MvPolynomial (Bool × (Fin r × Fin r)) K)) (u : Fin (r + 1 + 1) × Fin (r + 1 + 1) →₀ ℕ), coeff u (lcoef L h) = L (coeff u h)`. Introduce `h u`. Conclude with `coeff_sum_monomial_linear L h u`. Rewrite using `[lam_eq, lcoef_comm, map_mul, caseM ψ (rowAct K l) hgen hnone, caseM ψ (rowAct K l) hgen hnone]`. Use extensionality with `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_smul, hc, hc, coeff_mul, coeff_mul, map_sum, map_sum, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[thR_coeff, thR_coeff, th_coeff, th_coeff]`. Conclude with `hInv l hl _ (hv p.1) _ (ht p.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_caseM (L : MvPolynomial (Bool × (Fin r × Fin r)) K →ₗ[K] K) (N : ℕ) (α α' : Fin r → ℕ)
     (hInv : PhInv K r N α α' L)
@@ -126,13 +126,13 @@ theorem lam_caseM (L : MvPolynomial (Bool × (Fin r × Fin r)) K →ₗ[K] K) (N
   exact hInv l hl _ (hv p.1) _ (ht p.2)
 
 /- English proof (translation)
-Establish `hdet : (Matrix.diagonal (fun i : Fin r => if i = j then c else 1)).det = c`. Rewrite using `[Matrix.det_diagonal, Finset.prod_ite_eq']`. Simplify using the standard rewrite rules. Establish `key` using `lam_caseM L N α α' hInv (scCol K (r + 1 + 1) (midI r j) c) (Matrix.diagonal (fun i : Fin r => if i = j then c else 1)) (by rw [hdet]; exact hc.isUnit) ?_ ?_ v t hv ht`. Rewrite `key` using `[hdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`. Introduce `b a j'`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [scCol_X, midI_inj, rowAct, aeval_X, Matrix.diagonal_apply, blockEmb, map_mul, map_C, map_X, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_sum, rename_C, rename_X]`. Rewrite using `[Finset.sum_eq_single i (fun x _ hx => by simp [Ne.symm hx]) (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_true, MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a t' ht'`. Rewrite using `[scCol_X]`. Establish `hne : t' ≠ midI r j` using `fun e => midOf_none_ne ht' j e.symm`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hne]`.
+A detailed English derivation is pending.
 -/
 theorem lam_scaleM (L : MvPolynomial (Bool × (Fin r × Fin r)) K →ₗ[K] K) (N : ℕ) (α α' : Fin r → ℕ)
     (hInv : PhInv K r N α α' L) (j : Fin r) (c : K) (hc : c ≠ 0)
@@ -161,11 +161,11 @@ theorem lam_scaleM (L : MvPolynomial (Bool × (Fin r × Fin r)) K →ₗ[K] K) (
     simp [hne]
 
 /- English proof (translation)
-Simplify using `only [rowAct, aeval_X, Matrix.transvection, Matrix.add_apply, Matrix.one_apply]`. Simplify using `only [map_add, add_mul, Finset.sum_add_distrib, apply_ite C, ite_mul, map_one, map_zero, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `congr 1`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Matrix.single_apply, true_and]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h' : ¬ l = i` using `fun e => h e.symm`. Simplify using `[Matrix.single_apply, h, h']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem rowAct_transv (l j : Fin r) (c : K) (i t : Fin r) :
     rowAct K (Matrix.transvection l j c) (X (i, t)) = X (i, t) + if i = l then C c * X (j, t) else 0 := by
@@ -186,15 +186,15 @@ theorem rowAct_transv (l j : Fin r) (c : K) (i t : Fin r) :
     simp [Matrix.single_apply, h, h']
 
 /- English proof (translation)
-Establish `hdet : (Matrix.transvection l j c).det = 1` using `Matrix.det_transvection_of_ne l j hlj c`. Establish `key` using `lam_caseM L N α α' hInv (colAdd K (midI r l) (midI r j) c) (Matrix.transvection l j c) (by rw [hdet]; exact isUnit_one) ?_ ?_ v t hv ht`. Rewrite `key` using `[hdet, one_pow, one_smul]`. Conclude with `key`. Introduce `b a j'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [rowAct_transv, colAdd, aeval_X, midI_inj]`. Establish `e : ∀ i : Fin r, (if i = j then X (a, midI r i) + C c * X (a, midI r l) else X (a, midI r i) : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) K) = X (a, midI r i) + if i = j then C c * X (a, midI r l) else 0`. Introduce `i`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [e, map_add, map_mul, map_C, map_X, blockEmb, rename_X, rename_C, mul_add, add_mul, Finset.sum_add_distrib, apply_ite, map_zero, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : ∀ (k : Fin r) (f g : Fin r → MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) (MvPolynomial (Bool × (Fin r × Fin r)) K)), (∑ x : Fin r, if x = k then f x + g x else f x + 0) = (∑ x : Fin r, f x) + g k`. Introduce `k f g`. Establish `h1 : ∀ x, (if x = k then f x + g x else f x + 0) = f x + if x = k then g x else 0`. Introduce `x`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hs j (fun x => C (X (b, x, j')) * X (a, midI r x)) (fun x => C (X (b, x, j')) * (C ((algebraMap K (MvPolynomial (Bool × Fin r × Fin r) K)) c) * X (a, midI r l))), hs l (fun x => C (X (b, x, j')) * X (a, midI r x)) (fun x => C (C c) * C (X (b, j, j')) * X (a, midI r x))]`. Simplify using `only [MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a t' ht'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : t' ≠ midI r j` using `fun e => midOf_none_ne ht' j e.symm`. Simplify using `[colAdd, hne]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_addM (L : MvPolynomial (Bool × (Fin r × Fin r)) K →ₗ[K] K) (N : ℕ) (α α' : Fin r → ℕ)
     (hInv : PhInv K r N α α' L) (l j : Fin r) (hlj : l ≠ j) (c : K)

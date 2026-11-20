@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.UnitaryPlaceSplit
 
 /- English proof (translation)
-Establish `h0 : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `h0' : (1 - e) * e = 0` using `by rw [mul_comm, h0]`. Establish `h1 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, h0, sub_zero]`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, he, h0, h0', h1, zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mix_mul {S A : Type} [CommRing S] [Ring A] [Algebra S A] {e : S} (he : e * e = e) (x y z w : A) :
     (e • x + (1 - e) • y) * (e • z + (1 - e) • w) = e • (x * z) + (1 - e) • (y * w) := by
@@ -23,12 +23,12 @@ variable {F : Type} [Field F] [NumberField F]
 def idemAt (v : Pl F) : AF F := LinearMap.inr F (Ainf F) (Af F) (singleFin v 1)
 
 /- English proof (translation)
-The claim follows from `evalV_singleFin_self v 1`.
+A detailed English derivation is pending.
 -/
 theorem evFin_idemAt (v : Pl F) : evFin F v (idemAt v) = 1 := evalV_singleFin_self v 1
 
 /- English proof (translation)
-Use `Prod.ext (show (0 : Ainf F) * 0 = 0 from mul_zero 0) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `singleFin v 1 * singleFin v 1 = singleFin v 1`. Rewrite using `[← singleFin_mul, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem idemAt_mul_self (v : Pl F) : idemAt v * idemAt v = idemAt v := by
   refine Prod.ext (show (0 : Ainf F) * 0 = 0 from mul_zero 0) ?_
@@ -36,9 +36,9 @@ theorem idemAt_mul_self (v : Pl F) : idemAt v * idemAt v = idemAt v := by
   rw [← singleFin_mul, one_mul]
 
 /- English proof (translation)
-Use `Prod.ext (show u.1 * (0 : Ainf F) = 0 from mul_zero _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.2 * singleFin v 1 = 0`. Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `h : w = v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Establish `: evalV F w u.2 = 0` using `hu`. Rewrite using `[this, zero_mul]`. Rewrite using `[evalV_singleFin_ne h, mul_zero]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_idemAt_of_evFin (v : Pl F) {u : AF F} (hu : evFin F v u = 0) : u * idemAt v = 0 := by
   refine Prod.ext (show u.1 * (0 : Ainf F) = 0 from mul_zero _) ?_
@@ -60,19 +60,17 @@ namespace GlobalTheory.UnitaryPlaceSplit
 open Matrix
 
 /- English proof (translation)
-Establish `hee : idemAt v * idemAt v = idemAt v` using `idemAt_mul_self v`. Use `set e : AF F := idemAt v with he_def`. Use `set G : Matrix (Fin n) (Fin n) (AE F E) := ((g.1 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) with hG`. Use `set Gi : Matrix (Fin n) (Fin n) (AE F E) := ((g.1⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) with hGi`. Establish `hGGi : G * Gi = 1` using `Units.mul_inv g.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGiG : Gi * G = 1` using `Units.inv_mul g.1`. Establish `split : ∀ X : Matrix (Fin n) (Fin n) (AE F E), X = e • X + (1 - e) • X` using `fun X => by`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Use `set M : Matrix (Fin n) (Fin n) (AE F E) := e • G + (1 - e) • 1 with hM`. Use `set N : Matrix (Fin n) (Fin n) (AE F E) := e • Gi + (1 - e) • 1 with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hMN : M * N = 1` using `by rw [hM, hN, mix_mul hee, hGGi, mul_one, ← split]`. Establish `hNM : N * M = 1` using `by rw [hM, hN, mix_mul hee, hGiG, mul_one, ← split]`. Set `g1gl : GL (Fin n) (AE F E)` to `⟨M, N, hMN, hNM⟩`. Establish `hmem : g1gl ∈ UG (cA σ) (incM F J)`. Express the relevant statement in the definitionally equal form `Mᵀ * incM F J * M.map (cA σ) = incM F J`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Gᵀ * incM F J * G.map (cA σ) = incM F J` using `g.2`. Establish `hT : Mᵀ = e • Gᵀ + (1 - e) • (1 : Matrix (Fin n) (Fin n) (AE F E))`. Rewrite using `[hM, transpose_add, transpose_smul, transpose_smul, transpose_one]`. Establish `hc : M.map (cA σ) = e • G.map (cA σ) + (1 - e) • (1 : Matrix (Fin n) (Fin n) (AE F E))`. Rewrite using `[← AlgHom.mapMatrix_apply, hM, map_add, map_smul, map_smul, map_one, AlgHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, hc, split (incM F J), mix_mul hee, mix_mul hee, hg, one_mul, mul_one]`. Set `g₁ : UA σ J` to `⟨g1gl, hmem⟩`. Establish `hm1 : mat g₁ - 1 = e • (G - 1)`. Express the relevant statement in the definitionally equal form `M - 1 = _`. Rewrite using `[hM, smul_sub, sub_smul, one_smul]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hm2 : mat (g₁⁻¹ * g) - 1 = (1 - e) • (G - 1)`. Express the relevant statement in the definitionally equal form `N * G - 1 = _`. Use `conv_lhs => rw [split G]`. Rewrite using `[hN, mix_mul hee, hGiG, one_mul, smul_sub, sub_smul (1 : AF F) e (1 : Matrix (Fin n) (Fin n) (AE F E)), one_smul]`.
-
-Normalize the expressions using the abelian group laws. Use `⟨g₁, g₁⁻¹ * g, (mul_inv_cancel_left g₁ g).symm, fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hm1, smul_smul, mul_idemAt_of_evFin v hu, zero_smul]`. Establish `h1 : (1 - e) • u = 0` using `hu (1 - e) (by rw [map_sub, map_one, he_def, evFin_idemAt, sub_self])`. Rewrite using `[hm2, smul_smul, mul_comm, ← smul_eq_mul, h1, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_at (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (g : UA σ J) :

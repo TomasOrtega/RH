@@ -19,30 +19,30 @@ variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {L : _root_.Pos
   {𝓤 : Set (Fin L.n → AE F E)} {nb : nA σ d.Y d.b → d.G}
 def Ap_k (hU : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) : Matrix (Fin d.n) (Fin d.n) (AE F E) := (hU.1 u).choose
 /- English proof (translation)
-The claim follows from `(hU.1 u).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem inFrame_uM_k (hU : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) :
     inFrame d.b (uM u) = Matrix.fromBlocks (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L u) 0 0 (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u) := (hU.1 u).choose_spec
 /- English proof (translation)
-Use `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.blk_unique_k d (A₂ := _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU v) (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU (u + v)) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_mul_k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uM_add_k (hU : L.UData uM ν 𝓤) (u v : Fin L.n → AE F E) : uM (u + v) = uM u * uM v := by
   refine _root_.PositivityTheory.SiegelWeilFormula.Act.C1.blk_unique_k d (A₂ := _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU v) (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU (u + v)) ?_
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU, Matrix.fromBlocks_multiply]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_mul_k]
 /- English proof (translation)
-Use `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.blk_unique_k d (A₂ := 1) (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU 0) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_one, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_zero_k, Matrix.fromBlocks_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem uM_zero_k (hU : L.UData uM ν 𝓤) : uM 0 = 1 := by
   refine _root_.PositivityTheory.SiegelWeilFormula.Act.C1.blk_unique_k d (A₂ := 1) (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU 0) ?_
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_one, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_zero_k, Matrix.fromBlocks_one]
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_add_k hU, neg_add_cancel, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_zero_k hU])`.
+A detailed English derivation is pending.
 -/
 theorem uM_neg_k (hU : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) : uM (-u) = (uM u)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_add_k hU, neg_add_cancel, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_zero_k hU])
 /- English proof (translation)
-Establish `h` using `congrArg (inFrame d.b) (show uM (-u) * uM u = 1 by rw [← _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_add_k hU, neg_add_cancel, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_zero_k hU])`. Rewrite `h` using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU, Matrix.fromBlocks_multiply, GlobalTheory.EisBL.DoubledParabolic.inFrame_one, ← Matrix.fromBlocks_o …`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at h`. Conclude with `(Matrix.fromBlocks_inj.1 h).2.2.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ap_neg_mul_k (hU : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) : _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU (-u) * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u = 1 := by
   have h := congrArg (inFrame d.b) (show uM (-u) * uM u = 1 by rw [← _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_add_k hU, neg_add_cancel, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_zero_k hU])
@@ -51,7 +51,7 @@ theorem Ap_neg_mul_k (hU : L.UData uM ν 𝓤) (u : Fin L.n → AE F E) : _root_
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at h
   exact (Matrix.fromBlocks_inj.1 h).2.2.2
 /- English proof (translation)
-Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← _root_.PositivityTheory.SiegelWeilFormula.Act.C1.uM_neg_k hU, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.inFrame_uM_k hU, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.in …`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_mul_k, neg_add_cancel, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_zero_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_neg_mul_k hU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_conj_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
     inFrame d.b ((uM u)⁻¹ * nb β * uM u) = Matrix.fromBlocks 1 (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L (-u) * β.1 * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u) 0 1 := by
@@ -60,7 +60,7 @@ theorem frame_conj_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_mul_k, neg_add_cancel, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_zero_k,
     _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_neg_mul_k hU]
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨_, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.frame_conj_k hU hN u β⟩`.
+A detailed English derivation is pending.
 -/
 theorem cj_mem_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L (-u) * β.1 * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u ∈ nA σ d.Y d.b :=
@@ -75,7 +75,7 @@ Both sides reduce to the same expression.
 theorem cj_val_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
     (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.cj_k hU hN u β).1 = _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L (-u) * β.1 * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u := rfl
 /- English proof (translation)
-Apply `kunf.inFrame_injective d.b` to reduce the goal to its premises. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C1.frame_conj_k hU hN, hN]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nb_cj_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
     nb (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.cj_k hU hN u β) = (uM u)⁻¹ * nb β * uM u := by
@@ -83,7 +83,7 @@ theorem nb_cj_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n → 
   rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C1.frame_conj_k hU hN, hN]
   rfl
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L u * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L (-u) = 1` using `by rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_mul_k, add_neg_cancel, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_zero_k]`. Establish `h2 : _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU (-u) = 1` using `by simpa using _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_neg_mul_k hU (-u)`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C1.cj_val_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C1.cj_val_k, neg_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cj_inv_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C1.cj_k hU hN (-u) (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.cj_k hU hN u β) = β := by
@@ -95,7 +95,7 @@ theorem cj_inv_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n →
       = (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L u * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L (-u)) * β.1 * (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU u * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Ap_k hU (-u)) := by simp only [Matrix.mul_assoc]
     _ = β.1 := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 /- English proof (translation)
-The claim follows from `((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cj_k (hU : L.UData uM ν 𝓤) (hN : IsNMap d.b nb) (u : Fin L.n → AE F E) :
     Continuous (_root_.PositivityTheory.SiegelWeilFormula.Act.C1.cj_k hU hN u) :=

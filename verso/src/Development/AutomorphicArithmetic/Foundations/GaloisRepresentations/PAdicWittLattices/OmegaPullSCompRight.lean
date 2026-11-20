@@ -17,7 +17,7 @@ section Comp
 variable {k k' : Type} [CommRing k] [CommRing k'] {φ : k →+* k'}
 
 /- English proof (translation)
-Unfold `formPullS formPull`. Use `SemiHom.mOm_mOm _ _ _ (fun b => ?_) x` and prove the remaining obligations. Simplify using `only [appSecS, appSec, Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem formPullS_formPull {X Y Y' : Scheme.{0}} {s : X ⟶ Sp k} {r : Y ⟶ Sp k} {r' : Y' ⟶ Sp k'}
     {f : Y ⟶ X} {e : Y' ⟶ Y} (hf : f ≫ s = r) (he : e ≫ r = r' ≫ spMap φ)
@@ -29,7 +29,7 @@ theorem formPullS_formPull {X Y Y' : Scheme.{0}} {s : X ⟶ Sp k} {r : Y ⟶ Sp 
   rfl
 
 /- English proof (translation)
-Unfold `formPullS formPull`. Use `SemiHom.mOm_mOm _ _ _ (fun b => ?_) x` and prove the remaining obligations. Simplify using `only [appSecS, appSec, Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem formPull_formPullS {X X' Y' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {r' : Y' ⟶ Sp k'}
     {g : X' ⟶ X} {f' : Y' ⟶ X'} (hg : g ≫ s = s' ≫ spMap φ) (hf' : f' ≫ s' = r')
@@ -41,9 +41,9 @@ theorem formPull_formPullS {X X' Y' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ 
   rfl
 
 /- English proof (translation)
-Apply `omega_hom_ext` to reduce the goal to its premises. Introduce `V y`. Rewrite using `[omegaPullS_toOmega]`. Use `show _ = (ConcreteCategory.hom ((omegaPullS he j).val.app (op (f ⁻¹ᵁ V)))) ((ConcreteCategory.hom ((omegaPull hf j).val.app (op V))) ((ConcreteCategory.hom ((toOmega s j).app (op V))) y))`. Rewrite using `[omegaPull_toOmega, omegaPullS_toOmega, formPullS_formPull hf he hu]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem omegaPullS_comp_left {X Y Y' : Scheme.{0}} {s : X ⟶ Sp k} {r : Y ⟶ Sp k} {r' : Y' ⟶ Sp k'}
     {f : Y ⟶ X} {e : Y' ⟶ Y} (hf : f ≫ s = r) (he : e ≫ r = r' ≫ spMap φ)
@@ -58,9 +58,9 @@ theorem omegaPullS_comp_left {X Y Y' : Scheme.{0}} {s : X ⟶ Sp k} {r : Y ⟶ S
   rfl
 
 /- English proof (translation)
-Apply `omega_hom_ext` to reduce the goal to its premises. Introduce `V y`. Rewrite using `[omegaPullS_toOmega]`. Use `show _ = (ConcreteCategory.hom ((omegaPull hf' j).val.app (op (g ⁻¹ᵁ V)))) ((ConcreteCategory.hom ((omegaPullS hg j).val.app (op V))) ((ConcreteCategory.hom ((toOmega s j).app (op V))) y))`. Rewrite using `[omegaPullS_toOmega, omegaPull_toOmega, formPull_formPullS hg hf' hu]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem omegaPullS_comp_right {X X' Y' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {r' : Y' ⟶ Sp k'}
     {g : X' ⟶ X} {f' : Y' ⟶ X'} (hg : g ≫ s = s' ≫ spMap φ) (hf' : f' ≫ s' = r')
@@ -75,9 +75,9 @@ theorem omegaPullS_comp_right {X X' Y' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' �
   rfl
 
 /- English proof (translation)
-Unfold `hodgePullS hodgePull`. Express the relevant statement in the definitionally equal form `(cohOn.toH' _ _ _).symm (SheafPull.pull _ (toAbSheafPush (omegaPullS he j)) _ _ ((cohOn.toH' _ _ _) ((cohOn.toH' _ _ _).symm (SheafPull.pull _ (toAbSheafPush (omegaPull hf j)) _ _ ((cohOn.toH' _ _ _) x))))) = (cohOn.toH' _ _ _).symm (SheafPull.pull _ (toAbSheafPush (omegaPullS hu …`. Rewrite using `[AddEquiv.apply_symm_apply]`. Use `congr 1`. Use `(SheafPull.pull_pull f.base e.base (toAbSheafPush (omegaPull hf j)) (toAbSheafPush (omegaPullS he j)) q _ _ _).trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[omegaPullS_comp_left hf he hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hodgePullS_hodgePull {X Y Y' : Scheme.{0}} {s : X ⟶ Sp k} {r : Y ⟶ Sp k} {r' : Y' ⟶ Sp k'}
     {f : Y ⟶ X} {e : Y' ⟶ Y} (hf : f ≫ s = r) (he : e ≫ r = r' ≫ spMap φ)
@@ -96,9 +96,9 @@ theorem hodgePullS_hodgePull {X Y Y' : Scheme.{0}} {s : X ⟶ Sp k} {r : Y ⟶ S
   rfl
 
 /- English proof (translation)
-Unfold `hodgePullS hodgePull`. Express the relevant statement in the definitionally equal form `(cohOn.toH' _ _ _).symm (SheafPull.pull _ (toAbSheafPush (omegaPull hf' j)) _ _ ((cohOn.toH' _ _ _) ((cohOn.toH' _ _ _).symm (SheafPull.pull _ (toAbSheafPush (omegaPullS hg j)) _ _ ((cohOn.toH' _ _ _) x))))) = (cohOn.toH' _ _ _).symm (SheafPull.pull _ (toAbSheafPush (omegaPullS h …`. Rewrite using `[AddEquiv.apply_symm_apply]`. Use `congr 1`. Use `(SheafPull.pull_pull g.base f'.base (toAbSheafPush (omegaPullS hg j)) (toAbSheafPush (omegaPull hf' j)) q _ _ _).trans ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[omegaPullS_comp_right hg hf' hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hodgePull_hodgePullS {X X' Y' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {r' : Y' ⟶ Sp k'}
     {g : X' ⟶ X} {f' : Y' ⟶ X'} (hg : g ≫ s = s' ≫ spMap φ) (hf' : f' ≫ s' = r')
@@ -117,7 +117,7 @@ theorem hodgePull_hodgePullS {X X' Y' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' �
   rfl
 
 /- English proof (translation)
-Substitute `huv` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem hodgePullS_congr {X X' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {u v : X' ⟶ X}
     (huv : u = v) (hu : u ≫ s = s' ≫ spMap φ) (hv : v ≫ s = s' ≫ spMap φ) (j q : ℕ)
@@ -126,7 +126,7 @@ theorem hodgePullS_congr {X X' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'
   rfl
 
 /- English proof (translation)
-Establish `hu1 : (e ≫ f) ≫ s = r' ≫ spMap φ` using `by rw [Category.assoc, hf, he]`. Establish `hu2 : (f' ≫ g) ≫ s = r' ≫ spMap φ` using `by rw [← w]; exact hu1`. Rewrite using `[hodgePullS_hodgePull hf he hu1, hodgePull_hodgePullS hg hf' hu2]`. Conclude with `hodgePullS_congr w hu1 hu2 a b x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodgePullS_nat_pull {X X' Y Y' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {g : X' ⟶ X}
     (hg : g ≫ s = s' ≫ spMap φ) {r : Y ⟶ Sp k} {r' : Y' ⟶ Sp k'} {e : Y' ⟶ Y}

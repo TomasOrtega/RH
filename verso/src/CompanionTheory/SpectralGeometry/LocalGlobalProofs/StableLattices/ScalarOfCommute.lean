@@ -17,7 +17,7 @@ open CompanionTheory.D.LK (IsKMod)
 open CompanionTheory.RgExh
 
 /- English proof (translation)
-The claim follows from `| 0, p, hm, hd => ⟨Fin.elim0, fun Y => by rw [eq_one_of_monic_natDegree_zero hm hd] simp [Formalism.QuantumDeterminants.capP]⟩ | n + 1, p, hm, hd => by have hdeg : p.degree ≠ 0 := by rw [degree_eq_natDegree hm.ne_zero, hd] exact_mod_cast Nat.succ_ne_zero n obtain ⟨z, hz⟩ := IsAlg …`.
+A detailed English derivation is pending.
 -/
 theorem monic_eval_capP : ∀ (n : ℕ) (p : ℂ[X]), p.Monic → p.natDegree = n →
     ∃ χ : Fin n → ℂ, ∀ Y : ℂ, p.eval Y = Formalism.QuantumDeterminants.capP χ Y
@@ -41,17 +41,17 @@ theorem monic_eval_capP : ∀ (n : ℕ) (p : ℂ[X]), p.Monic → p.natDegree = 
       simp [Formalism.QuantumDeterminants.capP, Fin.prod_univ_succ, sub_eq_add_neg]
 
 /- English proof (translation)
-Take `⟨c, h1, h2, h3, -⟩` from `GlobalTheory.CentreFin.exists_coef E (-(((n : ℂ) - 1) / 2)) (B := (⊥ : Subalgebra ℂ (Module.End ℂ V))) (fun u => by`. Take `⟨c, hc⟩` from `h u`. Conclude with `Algebra.mem_bot.2 ⟨c, by rw [hc, Algebra.algebraMap_eq_smul_one]⟩)`. Establish `hd : ∀ j, ∃ d : ℂ, j ≤ n → c j = d • (1 : Module.End ℂ V)` using `fun j => by`. Distinguish the cases in `hj : j ≤ n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `Algebra.mem_bot.1 (h2 j hj)`. Conclude with `⟨d, fun _ => by rw [← hd, Algebra.algebraMap_eq_smul_one]⟩`. Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose d hd using hd`. Set `q : ℂ[X]` to `∑ j ∈ Finset.range n, C (d j) * X ^ j`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : q.degree < n`. Rewrite using `[degree_lt_iff_coeff_zero]`. Introduce `m hm`. Simplify using `only [q, finset_sum_coeff, coeff_C_mul, coeff_X_pow]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: m ≠ j` using `by have := Finset.mem_range.1 hj; omega`. Simplify using `[this]`. Establish `hdg : (X ^ n + q).degree = (n : WithBot ℕ)`. Rewrite using `[degree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), degree_X_pow]`. Take `⟨χ, hχ⟩` from `monic_eval_capP n (X ^ n + q) (monic_X_pow_add hq) (natDegree_eq_of_degree_eq_some hdg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨χ, fun Y => ?_⟩` and prove the remaining obligations. Establish `e` using `h3 Y`. Rewrite `e` using `[sub_neg_eq_add]`. Establish `e2 : ∀ j ∈ Finset.range n, Y ^ j • c j = (d j * Y ^ j) • (1 : Module.End ℂ V)` using `fun j hj => by`. Rewrite using `[hd j (Finset.mem_range.1 hj).le, smul_smul, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Finset.sum_range_succ, h1, Finset.sum_congr rfl e2, ← hχ]`. Simplify using `only [q, eval_add, eval_pow, eval_X, eval_finset_sum, eval_mul, eval_C, add_smul, Finset.sum_smul]`. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_char {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (h : ∀ u, ∃ c : ℂ, qdet E u = c • (1 : Module.End ℂ V)) :
@@ -95,7 +95,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Establish `hle : D ≤ ReciprocityTheory.ChartRestriction.DS.smD ε σ` using `fun v hv => (CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H σ hσ hirr).1 v ((hK.mem v).1 hv)`. Conclude with `⟨Submodule.inclusion hle, Submodule.inclusion_injective hle, fun x => (hK.mem x).1 x.2, fun a b x => Subtype.ext (GlobalTheory.KFinIrr.smE_eq hσ hK x (hle x.2) a b)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_emb (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) (hK : IsKMod ε σ D E) :
@@ -108,9 +108,9 @@ theorem exists_emb (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotion
     fun a b x => Subtype.ext (GlobalTheory.KFinIrr.smE_eq hσ hK x (hle x.2) a b)⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_ne (0 : H)`. Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Take `⟨v, hkv, hv⟩` from `(GlobalTheory.HcPort.kfinDense_UJC hσ).exists_mem_open Metric.isOpen_ball ⟨x, Metric.mem_ball_self hpos⟩`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `[Metric.mem_ball, dist_eq_norm] at hv`. Take `⟨S, hS, hvS, hst⟩` from `hkv`. Establish `hSb : S ≠ ⊥` using `fun h => hv0 (by simpa [h] using hvS)`. Take `⟨μ, S', -, hS'⟩` from `GlobalTheory.KTypeExists.exists_kType n ε H σ hσ S hS hst hSb`. Conclude with `⟨μ, S', hS'⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_kType [Nontrivial H] (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) :
     ∃ (μ : Fin n → ℝ) (S : Submodule ℂ H), Formalism.MainNotions.S.IsKTypeOf ε σ μ S := by
@@ -127,19 +127,17 @@ theorem exists_kType [Nontrivial H] (hσ : Formalism.MainNotions.S.IsURepOn (For
   exact ⟨μ, S', hS'⟩
 
 /- English proof (translation)
-Establish `hTa : ∀ a b x, T (E a b x) = E a b (T x)` using `fun a b x => LinearMap.congr_fun (hT a b) x`. Take `⟨μ, S₀, hS₀⟩` from `exists_kType hσ`. Take `⟨v, hv0, -, hv⟩` from `hK.hw μ S₀ hS₀`. Take `⟨ι, hι, hKF, hc⟩` from `exists_emb hσ hirr hK`. Set `P : Submodule ℂ (ReciprocityTheory.ChartRestriction.DS.smD ε σ)` to `Submodule.span ℂ {w | w ∈ CompanionTheory.D.gk.HC.KF ε σ ∧ ReciprocityTheory.ChartRestriction.DS.IsKHWVec ε (ReciprocityTheory.ChartRestriction.DS.smE ε σ) μ w}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI hP : FiniteDimensional ℂ P := CompanionTheory.D.gk.HC.uAdm n ε H σ hσ hirr μ`. Set `S : Submodule ℂ D` to `Submodule.span ℂ {x | KHighest ε E μ x}`. Establish `hSP : ∀ x ∈ S, ι x ∈ P` using `fun x hx => by`. Establish `: S ≤ P.comap ι` using `Submodule.span_le.2 fun y hy => Submodule.subset_span ⟨hKF y, fun a => by rw [hc, hy.1 a, map_smul], fun a b hab he => by rw [hc, hy.2 a b hab he, map_zero]⟩`. Conclude with `this hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ S := FiniteDimensional.of_injective (ι.restrict hSP) fun x y h => Subtype.ext (hι (congrArg Subtype.val h))`. Establish `hTS : ∀ x ∈ S, T x ∈ S` using `fun x hx => by`. Establish `: S ≤ S.comap T` using `Submodule.span_le.2 fun y hy => Submodule.subset_span ⟨fun a => by rw [← hTa, hy.1 a, map_smul], fun a b hab he => by rw [← hTa, hy.2 a b hab he, map_zero]⟩`. Conclude with `this hx`. Use `haveI : Nontrivial S := Submodule.nontrivial_iff_ne_bot.2 fun h => hv0 (by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: v ∈ S` using `Submodule.subset_span hv`. Simplify `this)` using `[h]`. Take `⟨c, hcE⟩` from `Module.End.exists_eigenvalue (T.restrict hTS)`. Take `⟨w, hw⟩` from `hcE.exists_hasEigenvector`. Establish `hwe : T (w : D) = c • (w : D)` using `congrArg Subtype.val hw.apply_eq_smul`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hw0 : (w : D) ≠ 0` using `fun h => hw.2 (Subtype.ext h)`. Set `N : Submodule ℂ D` to `LinearMap.ker (T - c • (1 : Module.End ℂ D))`. Establish `hN : ∀ x, x ∈ N ↔ T x = c • x` using `fun x => by`. Simplify using `[N, sub_eq_zero]`. Break down `GlobalTheory.KFinIrr.kMod_irred n ε H σ D E inferInstance hσ hirr hK N (fun a b x hx => by` into its components or cases.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hx`, the goal using `[hN]`. Rewrite using `[hTa, hx, map_smul]) with h | h`. Conclude with `absurd (by simpa [h] using (hN w).2 hwe) hw0`. Use `⟨c, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Establish `: x ∈ N` using `h ▸ Submodule.mem_top`.
-
-Simplify using `using (hN x).1 this`.
+A detailed English derivation is pending.
 -/
 theorem scalar_of_commute [Nontrivial H] (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) (hK : IsKMod ε σ D E)
@@ -185,15 +183,13 @@ theorem scalar_of_commute [Nontrivial H] (hσ : Formalism.MainNotions.S.IsURepOn
     simpa using (hN x).1 this
 
 /- English proof (translation)
-Introduce `μ x hx0 hx a`. Take `⟨ι, hι, hKF, hc⟩` from `exists_emb hσ hirr hK`. Assume the negation of the conclusion as `hno`. Establish `hne : ∀ m : ℤ, (m : ℂ) ≠ (μ a : ℂ)` using `fun m hm => hno ⟨m, by exact_mod_cast hm.symm⟩`. Set `T : Module.End ℂ (ReciprocityTheory.ChartRestriction.DS.smD ε σ)` to `ReciprocityTheory.ChartRestriction.DS.smE ε σ a a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1 : ι x ∈ T.eigenspace (μ a : ℂ)`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Express the relevant statement in the definitionally equal form `ReciprocityTheory.ChartRestriction.DS.smE ε σ a a (ι x) = _`. Rewrite using `[hc]`. Establish `: E a a x = (μ a : ℂ) • x` using `hx a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul]`. Establish `h2 : ι x ∈ ⨆ j, ⨆ (_ : j ≠ (μ a : ℂ)), T.eigenspace j`. Establish `hle : Submodule.span ℂ {w : ReciprocityTheory.ChartRestriction.DS.smD ε σ | w ∈ CompanionTheory.D.gk.HC.KF ε σ ∧ ∃ ν : Fin n → ℤ, ∀ b, ReciprocityTheory.ChartRestriction.DS.smE ε σ b b w = (ν b : ℂ) • w} ≤ ⨆ j, ⨆ (_ : j ≠ (μ a : ℂ)), T.eigenspace j`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨-, ν, hν⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hw : w ∈ T.eigenspace (ν a : ℂ)`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `hν a`. Conclude with `(le_iSup₂_of_le (f := fun j (_ : j ≠ (μ a : ℂ)) => T.eigenspace j) (ν a : ℂ) (hne _) le_rfl) hw`. Conclude with `hle (CompanionTheory.D.gk.HC.integral_weights n ε H σ hσ hirr _ (hKF x))`.
-
-Establish `hz : ι x = 0`. Use `(Module.End.eigenspaces_iSupIndep T (μ a : ℂ))` as an intermediate fact. Conclude with `(Submodule.disjoint_def.1 this) _ h1 h2`. Conclude with `hx0 (hι (by rw [hz, map_zero]))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intWt (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) (hK : IsKMod ε σ D E) :
@@ -228,9 +224,7 @@ theorem intWt (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.U
 end Rep
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hσ hirr hH D E hK`. Take `⟨μ, S₀, hS₀⟩` from `exists_kType hσ`. Take `⟨v, hv0, -, -⟩` from `hK.hw μ S₀ hS₀`. Use `haveI : Nontrivial D := ⟨⟨v, 0, hv0⟩⟩`. Use `⟨⟨inferInstanceAs (Nontrivial D), GlobalTheory.KFinIrr.kMod_irred n ε H σ D E inferInstance hσ hirr hK⟩, ?_, intWt hσ hirr hK⟩` and prove the remaining obligations.
-
-Conclude with `exists_char E fun u => scalar_of_commute hσ hirr hK _ fun a b => Formalism.REAL.qDetCentral _ n E hK.gl u a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem startMod : CompanionTheory.RgExh.Fin.StartMod := by
   intro n ε H _ _ _ σ hσ hirr hH D E hK

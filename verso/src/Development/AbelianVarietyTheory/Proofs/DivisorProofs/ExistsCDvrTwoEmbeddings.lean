@@ -16,19 +16,17 @@ noncomputable section
 namespace GlobalTheory.TInj
 
 /- English proof (translation)
-Introduce `R R₁ R' _ _ _ _ _ _ _ _ ρ hρ hfin hR' θ₁ θ₂ hθ₁ hθ₂ hl₁ hl₂`. Take `⟨hN, hIC, hC, hCZ⟩` from `hR'`. Establish `hadm : AdmBase R' (maximalIdeal R')` using `⟨hN, inferInstance, hIC, hC⟩`. Take `⟨V₀, _, _, _, φ₀, hV₀, hφ₀, hI₀⟩` from `GlobalTheory.adic_base_embeds_valuation_algebraic_closure.1 R' (maximalIdeal R') hadm`. Establish `hcz₀ : CharZero V₀` using `charZero_of_injective_ringHom hφ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hloc₀ : IsLocalHom φ₀`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnx`. Establish `hxm : x ∈ maximalIdeal R'` using `(mem_maximalIdeal x).2 hnx`. Establish `: φ₀ x ∈ maximalIdeal V₀` using `hI₀ (Ideal.mem_map_of_mem φ₀ hxm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mem_maximalIdeal _).1 this hx`. Establish `hcd₀ : GlobalTheory.LN.CDvr V₀` using `⟨inferInstance, hV₀, hcz₀⟩`. Take `⟨V₁, _, _, _, g₁, ψ₁, hcd₁, hg₁, hlg₁, hlψ₁, hc₁⟩` from `GlobalTheory.LocExt.exists_cDvr_ext_of_finite R R₁ ρ hρ hfin V₀ hcd₀ (φ₀.comp θ₁) inferInstance`. Take `⟨V, _, _, _, g₂, ψ₂, hcd, hg₂, hlg₂, hlψ₂, hc₂⟩` from `GlobalTheory.LocExt.exists_cDvr_ext_of_finite R R₁ ρ hρ hfin V₁ hcd₁ (g₁.comp (φ₀.comp θ₂)) inferInstance`. Take `⟨hdvr, hcomp, hcz⟩` from `hcd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Algebra R R₁ := ρ.toAlgebra`. Use `haveI : Module.Finite R R₁ := hfin`. Use `haveI : Algebra.IsIntegral R R₁ := Algebra.IsIntegral.of_finite R R₁`. Establish `inj_of : ∀ f : R₁ →+* V, Function.Injective (f.comp ρ) → Function.Injective f`. Introduce `f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(RingHom.injective_iff_ker_eq_bot f).2 (Ideal.eq_bot_of_comap_eq_bot (R := R) ?_)` and prove the remaining obligations. Establish `: Ideal.comap (algebraMap R R₁) (RingHom.ker f) = RingHom.ker (f.comp ρ)` using `rfl`. Rewrite using `[this]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 hf`. Set `η' : R' →+* V` to `g₂.comp (g₁.comp φ₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hη' : Function.Injective η'` using `hg₂.comp (hg₁.comp hφ₀)`. Establish `e₁ : (g₂.comp ψ₁).comp ρ = η'.comp θ₁`. Rewrite using `[RingHom.comp_assoc, hc₁]`. Both sides reduce to the same expression. Establish `e₂ : ψ₂.comp ρ = η'.comp θ₂`.
-
-Rewrite using `[hc₂]`. Both sides reduce to the same expression. Use `⟨V, inferInstance, inferInstance, hdvr, hcz, η', g₂.comp ψ₁, ψ₂, hcomp, hη', ?_, ?_, inferInstance, hlψ₂, e₁, e₂⟩` and prove the remaining obligations. Conclude with `inj_of _ (by rw [e₁]; exact hη'.comp hθ₁)`. Conclude with `inj_of _ (by rw [e₂]; exact hη'.comp hθ₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cDvr_two_embeddings : ∀ (R R₁ R' : Type) [CommRing R] [IsLocalRing R] [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁] [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R₁), Function.Injective ρ → ρ.Finite → IsCN R' → ∀ θ₁ θ₂ : R →+* R', Function.Injective θ₁ → Function.Injective θ₂ → IsLocalHom θ₁ → IsLocalHom θ₂ → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (_ : CharZero V) (η' : R' →+* V) (f₁ f₂ : R₁ →+* V), IsAdicComplete (maximalIdeal V) V ∧ Function.Injective η' ∧ Function.Injective f₁ ∧ Function.Injective f₂ ∧ IsLocalHom f₁ ∧ IsLocalHom f₂ ∧ f₁.comp ρ = η'.comp θ₁ ∧ f₂.comp ρ = η'.comp θ₂ := by
   intro R R₁ R' _ _ _ _ _ _ _ _ ρ hρ hfin hR' θ₁ θ₂ hθ₁ hθ₂ hl₁ hl₂

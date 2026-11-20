@@ -11,9 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SmVec
 
 /- English proof (translation)
-Establish `h1 : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `h2 : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = Formalism.REAL.Jm ε := by rw [h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cyc_mul_mem_UJset {n : ℕ} {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε)
     (hb : b ∈ UJset ε) : a * b ∈ UJset ε := by
@@ -25,13 +23,13 @@ theorem cyc_mul_mem_UJset {n : ℕ} {ε : Fin n → Bool} {a b : Matrix (Fin n) 
     _ = Formalism.REAL.Jm ε := by rw [h1, h2]
 
 /- English proof (translation)
-Set `S : Submodule ℂ H` to `{ carrier := {x | ∀ g ∈ UJset ε, L (σ g x) = 0} add_mem' := fun ha hb g hg => by rw [map_add, map_add, ha g hg, hb g hg, add_zero] zero_mem' := fun g _ => by rw [map_zero, map_zero] smul_mem' := fun c x ha g hg => by rw [map_smul, map_smul, ha g hg, smul_zero] }`. Establish `hc : IsClosed (S : Set H)`. Establish `: (S : Set H) = ⋂ g ∈ UJset ε, {x | L (σ g x) = 0}`. Use extensionality with `x`. Simplify using `only [Set.mem_iInter]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isClosed_biInter fun g _ => isClosed_eq (L.continuous.comp (σ g).continuous) continuous_const`. Establish `hst : ∀ g ∈ UJset ε, ∀ x ∈ S, σ g x ∈ S` using `fun g hg x hx a ha => by`. Use `hx (a * g) (cyc_mul_mem_UJset ha hg)` as an intermediate fact.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hσ.1.2 a ha g hg]`. Then use the resulting hypothesis. Break down `hi S hc hst with h0 | h0` into its components or cases. Establish `: v ∈ S` using `h`. Rewrite `this` using `[h0]`. Conclude with `absurd this hv`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: w ∈ S` using `by rw [h0]; trivial`. Establish `h1` using `this 1 (by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * 1 = Formalism.REAL.Jm ε; simp)`. Rewrite `h1` using `[hσ.1.1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem clm_eq_zero_of_orbit {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) (hi : IsIrredOn (UJset ε) σ)
@@ -58,13 +56,13 @@ theorem clm_eq_zero_of_orbit {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedA
     rwa [hσ.1.1] at h1
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ P G hP hG hσ hi ℓ hℓ v hv hv0 h0 w hw`. Take `⟨hb, hs⟩` from `GlobalTheory.T.sobolevContinuous_form_gardingVector n ε H σ P G hP hG hσ ℓ hℓ`. Establish `key : ∀ φ, IsTest φ → ℓ (gard ε σ φ w) = 0` using `fun φ hφ => by`. Take `⟨C, hC⟩` from `hb φ hφ`. Set `L : H →L[ℂ] ℂ` to `(ℓ ∘ₗ GlobalTheory.LowTypeRestriction.garding hσ hφ.continuous hφ.2).mkContinuousOfExistsBound ⟨C, hC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `clm_eq_zero_of_orbit hσ hi L hv0 (fun g hg => ?_) w` and prove the remaining obligations. Use `show ℓ (gard ε σ φ (σ g v)) = 0`. Rewrite using `[(hs _ (sigma_mem hP hG hσ hv hg)).2 φ hφ]`. Establish `: ∀ a : Formalism.REAL.UJ ε, ℓ (σ (umat a) (σ g v)) = 0` using `fun a => by`. Use `h0 (umat a * g) (cyc_mul_mem_UJset a.2 hg)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hσ.1.2 _ a.2 g hg]`. Then use the resulting hypothesis. Simplify using `[this]`. Use `eq_zero_of_forall_test (hs w hw).1 fun φ hφ => by rw [← (hs w hw).2 φ hφ, key φ hφ]` as an intermediate fact. Establish `e : σ (umat (1 : Formalism.REAL.UJ ε)) w = w` using `by show σ 1 w = w`. Rewrite using `[hσ.1.1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify `this` using `only [e]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sobCont_eq_zero_of_orbit : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → ∀ ℓ : H →ₗ[ℂ] ℂ, Sobolev₂ (lieG G) (trRep σ P) ℓ → ∀ v ∈ smSub G (trRep σ P), v ≠ 0 → (∀ g ∈ UJset ε, ℓ (σ g v) = 0) → ∀ w ∈ smSub G (trRep σ P), ℓ w = 0 := by
   intro n ε H _ _ _ σ P G hP hG hσ hi ℓ hℓ v hv hv0 h0 w hw

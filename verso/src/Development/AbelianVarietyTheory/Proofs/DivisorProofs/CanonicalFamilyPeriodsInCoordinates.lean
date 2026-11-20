@@ -14,9 +14,7 @@ noncomputable section
 namespace GlobalTheory.UCanon.PerCoord
 
 /- English proof (translation)
-Establish `hC : (MvPolynomial.C : W →+* MvPolynomial σ W).Flat` using `by show (algebraMap W (MvPolynomial σ W)).Flat`. Rewrite using `[RingHom.flat_algebraMap_iff]`. Use `infer_instance`. Establish `h` using `RingHom.Flat.comp hC hf`. Use `letI := (ψ.comp MvPolynomial.C).toAlgebra`.
-
-Use `haveI : Module.Flat W R := h`. Use `haveI : IsLocalHom (algebraMap W R) := hl`. Use `haveI := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := W) (B := R)`. Conclude with `FaithfulSMul.algebraMap_injective W R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem comp_C_injective {W R σ : Type} [CommRing W] [IsLocalRing W] [CommRing R] [IsLocalRing R]
     (ψ : MvPolynomial σ W →+* R) (hf : ψ.Flat) (hl : IsLocalHom (ψ.comp MvPolynomial.C)) :
@@ -33,7 +31,7 @@ theorem comp_C_injective {W R σ : Type} [CommRing W] [IsLocalRing W] [CommRing 
   exact FaithfulSMul.algebraMap_injective W R
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h k, zpow_add₀ (hc k), zpow_add₀ (hc k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_zpow_add {K Ix : Type} [Field K] [Fintype Ix] (c : Ix → K) (hc : ∀ k, c k ≠ 0) (A B C D : Ix → ℤ)
     (h : ∀ k, A k = D k + B k + C k) :
@@ -47,7 +45,7 @@ end GlobalTheory.UCanon.PerCoord
 namespace GlobalTheory.UCanon.PerCoord
 
 /- English proof (translation)
-Establish `h1 : β (e b) (H.w0 • e a) = β (e a) (H.bar H.w0 • e b)` using `(hβ.1 _ _).trans (hβ.2 _ _ _)`. Establish `h2 : β (e a) (H.w0 • e b) + β (e a) (H.bar H.w0 • e b) = β (e a) (e b)`. Rewrite using `[← map_add, ← add_smul, ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.cmHostUnit_add_conj_eq_one, one_smul]`. Simplify using `only [map_add, smul_add, LinearMap.add_apply]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -63,21 +61,19 @@ theorem second_diff {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ R _ _ _ hR C Cn`. Take `⟨g, hD, hg, -, -⟩` from `Cn.data`. Establish `hinj` using `comp_C_injective Cn.ψ Cn.compl.2.2.1 Cn.ψ_loc`. Take `⟨-, hb, hU, -⟩` from `letI := H.starRing GlobalTheory.T.degenerationDataNsmulRescale_keeps_laws Cn.L.W Cn.L.D (𝓞 E) Cn.L.oa H.w0 l.M' Cn.L.even Cn.L.bimult Cn.L.w0 Cn.L.gen`. Take `⟨τ₁, hτ, hF⟩` from `GlobalTheory.UTautData.gens_fromBase _ hinj _ _ hD hb hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Cn.ε.map (pullBalEquiv H.bar Cn.e), τ₁, fun k => rfl, hF, fun a b => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ k, algebraMap R (FractionRing R) (Cn.ψ (MvPolynomial.X k)) ≠ 0`. Introduce `k`. Use `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 ?_` and prove the remaining obligations. Break down `k with i | k` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Cn.bd i]`. Conclude with `C.s_ne_zero i`. Conclude with `(Cn.tor k).ne_zero`. Use `⟨(hτ a b).1, g a * g b * (g (a + b))⁻¹, ?_, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `hsplit` using `prod_zpow_add _ hs (fun k => (l.M' : ℤ) * (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X) (Cn.e (a + b)) (H.w0 • Cn.e (a + b))) (fun k => (l.M' : ℤ) * (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X) (Cn.e a) (H.w0 • Cn.e a)) (fun k => (l.M' : ℤ) * (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X) (C …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ y, (((g y)⁻¹ : (FractionRing R)ˣ) : FractionRing R) ≠ 0` using `fun y => Units.ne_zero _`. Establish `e1 : (((g a * g b * (g (a + b))⁻¹ : (FractionRing R)ˣ)) : FractionRing R) = (((g (a + b))⁻¹ : (FractionRing R)ˣ) : FractionRing R) * ((((g a)⁻¹ : (FractionRing R)ˣ) : FractionRing R))⁻¹ * ((((g b)⁻¹ : (FractionRing R)ˣ) : FractionRing R))⁻¹`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, inv_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA` using `hne a`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB` using `hne b`. Rewrite `hA` using `[hg a]`. Rewrite `hB` using `[hg b]`. Rewrite using `[e1, hg (a + b), hsplit, hg a, hg b]`. Use `beta_reduce at hA hB ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `canc : ∀ T x y : FractionRing R, x ≠ 0 → y ≠ 0 → T * x * y * x⁻¹ * y⁻¹ = T` using `fun T x y hx hy => by`. Clear the denominators using the available nonvanishing facts. Rewrite using `[canc _ _ _ hA hB]`. Use `Eq.trans ?_ (Equiv.prod_comp finSumFinEquiv.symm (fun k => algebraMap R (FractionRing R) (Cn.ψ (MvPolynomial.X k)) ^ (((l.M' : ℤ) • ((Cn.ε.map (pullBalEquiv H.bar Cn.e)) k : LinearMap.BilinForm ℤ C.P.D.toPre.X)) a b))).symm` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun k _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.TauTwist.val_tau_rescale (D := C.P.D.toPre) g (a := a) (b := b) (x := (g a * g b)⁻¹ * g (a + b)) (by group) (𝟙 _) hJ`. Establish `h2` using `(hτ a b).2 z J hJ`. Establish `hx : g a * g b * (g (a + b))⁻¹ = ((g a * g b)⁻¹ * g (a + b))⁻¹`. Rewrite using `[mul_inv_rev, inv_inv, mul_comm]`. Rewrite using `[hx]`.
-
-Use `show _ = GlobalTheory.TauTwist.unitAt (𝟙 _) z _ * _`. Rewrite using `[map_inv]`. Conclude with `eq_inv_mul_of_mul_eq (h1.symm.trans h2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C), ∃ (ε' : Module.Basis (Fin C.m ⊕ Fin Cn.N) ℤ (balForms H.bar C.P.D.toPre.X)) (τ₀ : Gens C.P.D.toPre), (∀ k, (ε' k : LinearMap.BilinForm ℤ C.P.D.toPre.X) = pull Cn.e.toLinearMap (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X)) ∧ FromBase C.P.D.toPre τ₀ (Cn.ψ.comp MvPolynomial.C) ∧ TauIn C.P.D.toPre τ₀ (fun k => Cn.ψ (MvPolynomial.X (finSumFinEquiv.symm k))) (fun k => (l.M' : ℤ) • (ε' (finSumFinEquiv.symm k) : LinearMap.BilinForm ℤ C.P.D.toPre.X)) := by
   intro E _ _ _ H Dw l Xo c φ R _ _ _ hR C Cn

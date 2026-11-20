@@ -8,7 +8,7 @@ namespace GlobalTheory.ColNorms.NumMean
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms
 
 /- English proof (translation)
-Break down `hy.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, Real.log_zero]`. Conclude with `hX`. Conclude with `(Real.log_le_iff_le_exp h0).2 h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_le_of_le_exp {y X : ℝ} (hy : 0 ≤ y) (hX : 0 ≤ X) (h : y ≤ Real.exp X) : Real.log y ≤ X := by
   rcases hy.eq_or_lt with h0 | h0
@@ -16,7 +16,7 @@ theorem log_le_of_le_exp {y X : ℝ} (hy : 0 ≤ y) (hX : 0 ≤ X) (h : y ≤ Re
   · exact (Real.log_le_iff_le_exp h0).2 h
 
 /- English proof (translation)
-Use `log_le_of_le_exp (by positivity) (by linarith) ?_` and prove the remaining obligations. Rewrite using `[two_mul, Real.exp_add]`. Conclude with `mul_le_mul h1 h2 (by positivity) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_mul_le {h h' : ℕ} {X : ℝ} (hX : 0 ≤ X) (h1 : (h : ℝ) ≤ Real.exp X) (h2 : (h' : ℝ) ≤ Real.exp X) :
     Real.log ((h : ℝ) * h') ≤ 2 * X := by
@@ -25,7 +25,7 @@ theorem log_mul_le {h h' : ℕ} {X : ℝ} (hX : 0 ≤ X) (h1 : (h : ℝ) ≤ Rea
   exact mul_le_mul h1 h2 (by positivity) (by positivity)
 
 /- English proof (translation)
-Establish `h : (4 * N.R.ord : ℝ) ≤ N.rd ^ 2` using `N.H.der.rd_sq_ge`. Establish `h0 : (0 : ℝ) ≤ N.rd`. Unfold `NumDatum.rd Formalism.HC.HostRaw.rd`. Check the signs of the components of the expression. Establish `ho : (1 : ℝ) ≤ N.R.ord` using `by exact_mod_cast N.R.ord_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -38,12 +38,12 @@ theorem one_le_rd (N : NumDatum) : 1 ≤ N.rd := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `Real.one_le_rpow s.one_lt_alt.le s.eps_pos.le`.
+A detailed English derivation is pending.
 -/
 theorem one_le_L (s : Scale) : 1 ≤ s.L := Real.one_le_rpow s.one_lt_alt.le s.eps_pos.le
 
 /- English proof (translation)
-Use `Real.add_one_le_exp s.L` as an intermediate fact. Use `one_le_L s` as an intermediate fact. Unfold `Scale.b`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem two_le_b (s : Scale) : 2 ≤ s.b := by
   have := Real.add_one_le_exp s.L
@@ -51,14 +51,14 @@ theorem two_le_b (s : Scale) : 2 ≤ s.b := by
   unfold Scale.b; linarith
 
 /- English proof (translation)
-Establish `h : Fintype.card R.A = R.ord` using `R.card_A`. Simplify using `[RPl, Ranks.f, Ranks.n, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem card_RPl (R : Ranks) : (Fintype.card (RPl R) : ℝ) = R.f := by
   have h : Fintype.card R.A = R.ord := R.card_A
   simp [RPl, Ranks.f, Ranks.n, h]
 
 /- English proof (translation)
-Establish `: N.R.N j ≤ N.Nm`. Unfold `NumDatum.Nm Ranks.N`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hj) _`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem N_le (N : NumDatum) {j : ℕ} (hj : j ≤ N.R.m) : (N.R.N j : ℝ) ≤ N.Nm := by
   have : N.R.N j ≤ N.Nm := by
@@ -67,7 +67,7 @@ theorem N_le (N : NumDatum) {j : ℕ} (hj : j ≤ N.R.m) : (N.R.N j : ℝ) ≤ N
   exact_mod_cast this
 
 /- English proof (translation)
-Use `one_le_L s` as an intermediate fact. Use `log_le_of_le_exp hy (by positivity) ?_` and prove the remaining obligations. Rewrite using `[Real.exp_nat_mul]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_le_mul (s : Scale) {y : ℝ} (hy : 0 ≤ y) (k : ℕ) (h : y ≤ s.b ^ k) : Real.log y ≤ k * s.L := by
   have := one_le_L s

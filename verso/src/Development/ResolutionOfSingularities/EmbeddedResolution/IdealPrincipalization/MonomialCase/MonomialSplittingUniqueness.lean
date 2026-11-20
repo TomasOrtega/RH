@@ -25,15 +25,13 @@ namespace FunctorialResolution.EmbeddedResolution
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Establish `hnoe : IsNoetherianRing (X.presheaf.stalk η)` using `inferInstance`. Establish `hbot : stalkIdeal M η ≠ ⊥` using `fun h => hfin ((orderAt_eq_top_iff M η).mpr h)`. Establish `hle : (a : ℕ∞) ≤ orderAt M η` using `(le_orderAt_iff M η a).mpr (le_of_eq hM)`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hfin`. Establish `hordn : orderAt M η = (n : ℕ∞)` using `hn.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `han : a ≤ n`. Rewrite `hle` using `[hordn]`. Conclude with `hle` after adjusting the coercions. Establish `hna : n ≤ a`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hc`. Establish `hc' : a + 1 ≤ n` using `by omega`. Establish `h1 : ((a + 1 : ℕ) : ℕ∞) ≤ orderAt M η`. Rewrite using `[hordn]`. Conclude with `hc'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : stalkIdeal M η ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ (a + 1)` using `(le_orderAt_iff M η (a + 1)).mp h1`. Establish `hps : IsLocalRing.maximalIdeal (X.presheaf.stalk η) • (IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ a) = IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ (a + 1)`. Rewrite using `[Ideal.smul_eq_mul, pow_succ, mul_comm]`. Establish `hsm : (IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ a) ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk η) • (IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ a)`. Rewrite using `[hps, ← hM]`.
-
-Conclude with `h2`. Establish `hz : (IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ a) = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal (X.presheaf.stalk η)) (IsLocalRing.maximalIdeal (X.presheaf.stalk η) ^ a) (IsNoetherian.noetherian _) hsm (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Conclude with `hbot (by rw [hM, hz])`. Rewrite using `[hordn]`. Conclude with `le_antisymm hna han` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAt_eq_of_stalkIdeal_eq_maximalIdeal_pow [IsLocallyNoetherian X]
     (M : X.IdealSheafData) (η : X) (a : ℕ)
@@ -82,7 +80,7 @@ def IsMonomialOnOpen (E : List X.IdealSheafData) (M : X.IdealSheafData) (U : X.O
     ((List.finRange E.length).map (fun j => restrictIdeal (E.get j) U ^ a j)).prod
 
 /- English proof (translation)
-The claim follows from `map_list_prod (Ideal.mapHom f) L`.
+A detailed English derivation is pending.
 -/
 private theorem ideal_map_listProd {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (L : List (Ideal R)) :
@@ -90,7 +88,7 @@ private theorem ideal_map_listProd {R S : Type*} [CommRing R] [CommRing S] (f : 
   map_list_prod (Ideal.mapHom f) L
 
 /- English proof (translation)
-Establish `hcomp : g.comp f = RingHom.id R` using `RingHom.ext hgf`. Establish `hA : Ideal.map g (Ideal.map f A) = A` using `by rw [Ideal.map_map, hcomp, Ideal.map_id]`. Establish `hB : Ideal.map g (Ideal.map f B) = B` using `by rw [Ideal.map_map, hcomp, Ideal.map_id]`. Rewrite using `[← hA, ← hB, hAB]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_of_ideal_map_eq_of_ringHom_leftInverse {R S : Type*} [CommRing R] [CommRing S]
     (f : R →+* S) (g : S →+* R) (hgf : ∀ z, g (f z) = z) {A B : Ideal R}
@@ -101,7 +99,7 @@ private theorem eq_of_ideal_map_eq_of_ringHom_leftInverse {R S : Type*} [CommRin
   rw [← hA, ← hB, hAB]
 
 /- English proof (translation)
-Rewrite using `[← hk, CommRingCat.hom_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hom_apply_hom_apply_of_comp_eq {A B C : CommRingCat.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (k : A ⟶ C) (hk : f ≫ g = k) (z : A) : g.hom (f.hom z) = k.hom z := by
@@ -109,7 +107,7 @@ private theorem hom_apply_hom_apply_of_comp_eq {A B C : CommRingCat.{u}} (f : A 
   rfl
 
 /- English proof (translation)
-Rewrite using `[hom_apply_hom_apply_of_comp_eq f (inv f) (𝟙 A) (IsIso.hom_inv_id f) z, CommRingCat.hom_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem inv_hom_apply_hom_apply {A B : CommRingCat.{u}} (f : A ⟶ B) [IsIso f]
     (z : A) : (inv f).hom (f.hom z) = z := by
@@ -117,11 +115,11 @@ private theorem inv_hom_apply_hom_apply {A B : CommRingCat.{u}} (f : A ⟶ B) [I
   rfl
 
 /- English proof (translation)
-Establish `h' : restrictIdeal M U = ((List.finRange E.length).map (fun j => restrictIdeal (E.get j) U ^ a j)).prod` using `h`. Establish `hxr : x ∈ Set.range (⇑U.ι.base)`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hx`. Take `⟨y, hy⟩` from `hxr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Establish `hgf : ∀ z, (inv (U.ι.stalkMap y)).hom ((U.ι.stalkMap y).hom z) = z` using `fun z => inv_hom_apply_hom_apply (U.ι.stalkMap y) z`. Use `eq_of_ideal_map_eq_of_ringHom_leftInverse (U.ι.stalkMap y).hom (inv (U.ι.stalkMap y)).hom hgf ?_` and prove the remaining obligations. Establish `hL : ((List.finRange E.length).map (fun j => stalkIdeal (E.get j) (U.ι.base y) ^ a j)).map (fun I => Ideal.map (U.ι.stalkMap y).hom I) = ((List.finRange E.length).map (fun j => restrictIdeal (E.get j) U ^ a j)).map (fun I => stalkIdeal I y)`. Rewrite using `[List.map_map, List.map_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `List.map_congr_left ?_` and prove the remaining obligations. Introduce `j _`. Use `show Ideal.map (U.ι.stalkMap y).hom (stalkIdeal (E.get j) (U.ι.base y) ^ a j) = stalkIdeal (restrictIdeal (E.get j) U ^ a j) y`. Rewrite using `[stalkIdeal_pow, restrictIdeal_eq_comap_ι, stalkIdeal_comap, Ideal.map_pow]`. Rewrite using `[ideal_map_listProd, hL, ← stalkIdeal_listProd, ← h', restrictIdeal_eq_comap_ι, stalkIdeal_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkIdeal_eq_prod_of_isMonomialOnOpen (E : List X.IdealSheafData) (M : X.IdealSheafData)
     (U : X.Opens) (a : Fin E.length → ℕ) (h : IsMonomialOnOpen E M U a) (x : X) (hx : x ∈ U) :
@@ -152,11 +150,11 @@ theorem stalkIdeal_eq_prod_of_isMonomialOnOpen (E : List X.IdealSheafData) (M : 
     stalkIdeal_comap]
 
 /- English proof (translation)
-Establish `hmax' : ∀ C' : Set X, IsIrreducible C' → C' ⊆ (D.support : Set X) → C ⊆ C' → C' ⊆ C`. Introduce `C' h1 h2 h3`. Establish `he` using `hC.maximal C' h1 h3 h2`. Introduce `y hy`. Rewrite `hy` using `[he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy`. Establish `hNC : ¬ C ⊆ (N.support : Set X)` using `hsplit.transversal D hD C hC.isIrreducible hC.subset_support hmax'`. Establish `hηN : hC.isIrreducible.genericPoint ∉ N.support`. Introduce `h`. Use `hNC ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hC.closure_genericPoint]`. Conclude with `(N.support.2).closure_subset_iff.mpr (Set.singleton_subset_iff.mpr h)`. Establish `h0 : orderAt N hC.isIrreducible.genericPoint = 0` using `(orderAt_eq_zero_iff_not_mem_support N hC.isIrreducible.genericPoint).mpr hηN`. Rewrite using `[hsplit.eq_mul, orderAt_mul k p M N hC.isIrreducible.genericPoint, h0, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAt_genericPoint_eq_of_isMonomialSplitting {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -183,17 +181,15 @@ theorem orderAt_genericPoint_eq_of_isMonomialSplitting {k : Type u} [Field k] [C
   rw [hsplit.eq_mul, orderAt_mul k p M N hC.isIrreducible.genericPoint, h0, add_zero]
 
 /- English proof (translation)
-Establish `hxcl : x ∈ closure ({hC'.isIrreducible.genericPoint} : Set X)`. Rewrite using `[hC'.closure_genericPoint]`. Conclude with `hxC`. Establish `hηU : hC'.isIrreducible.genericPoint ∈ U`. Take `⟨z, hzU, hz⟩` from `mem_closure_iff.mp hxcl (U : Set X) U.isOpen hxU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[Set.mem_singleton_iff]`. Rewrite using `[← hz]`. Conclude with `hzU`. Establish `hprod : stalkIdeal M hC'.isIrreducible.genericPoint = ((List.finRange E.length).map (fun j => stalkIdeal (E.get j) hC'.isIrreducible.genericPoint ^ a j)).prod` using `stalkIdeal_eq_prod_of_isMonomialOnOpen E M U a ha hC'.isIrreducible.genericPoint hηU`. Establish `hlen : (l : ℕ) < ((List.finRange E.length).map (fun j => stalkIdeal (E.get j) hC'.isIrreducible.genericPoint ^ a j)).length`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hget : ((List.finRange E.length).map (fun j => stalkIdeal (E.get j) hC'.isIrreducible.genericPoint ^ a j))[(l : ℕ)]'hlen = stalkIdeal (E.get l) hC'.isIrreducible.genericPoint ^ a l`. Simplify using the standard rewrite rules. Establish `h1 : stalkIdeal M hC'.isIrreducible.genericPoint ≤ stalkIdeal (E.get l) hC'.isIrreducible.genericPoint ^ a l`. Rewrite using `[hprod, ← hget]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.list_prod_le_getElem _ _ hlen`. Establish `hle : stalkIdeal (E.get l) hC'.isIrreducible.genericPoint ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk hC'.isIrreducible.genericPoint)` using `(mem_support_iff_stalkIdeal_le_maximalIdeal (E.get l) hC'.isIrreducible.genericPoint).mp hC'.genericPoint_mem_support`. Establish `h2 : (a l : ℕ∞) ≤ orderAt M hC'.isIrreducible.genericPoint` using `(le_orderAt_iff M hC'.isIrreducible.genericPoint (a l)).mpr (h1.trans (Ideal.pow_right_mono hle (a l)))`. Establish `hIM : I ≤ M`. Rewrite using `[hsplit.eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(le_iff_forall_stalkIdeal_le _ _).mpr (fun y => ?_)` and prove the remaining obligations. Rewrite using `[stalkIdeal_mul]`. Conclude with `Ideal.mul_le_inf.trans inf_le_left`. Establish `h3 : orderAt M hC'.isIrreducible.genericPoint ≤ orderAt I hC'.isIrreducible.genericPoint` using `orderAt_le_of_le hIM hC'.isIrreducible.genericPoint`. Establish `h4 : (a l : ℕ∞) ≤ (orderAlongComponent I hC'.isIrreducible : ℕ∞)`.
-
-Rewrite using `[coe_orderAlongComponent_eq_orderAt_genericPoint hC' hI]`. Conclude with `h2.trans h3`. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exponent_le_orderAlongComponent {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -249,15 +245,15 @@ theorem exponent_le_orderAlongComponent {k : Type u} [Field k] [CharZero k]
   exact_mod_cast h4
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Introduce `i _ hi _ _`. Simplify using `at hi`. Consider the case `cons A L ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i j hi hj hij`. Consider the cases of `i with`. Consider the case `zero`. Consider the cases of `j with`. Consider the case `zero => exact absurd hij (lt_irrefl 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ j'`. Establish `hj' : j' < L.length` using `by simpa using hj`. Simplify using `only [List.prod_cons, List.getElem_cons_zero, List.getElem_cons_succ]`. Conclude with `Ideal.mul_mono le_rfl (Ideal.list_prod_le_getElem L j' hj')`. Consider the case `succ i'`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `j with`. Consider the case `zero => exact absurd hij (Nat.not_lt_zero _)`. Consider the case `succ j'`. Establish `hi' : i' < L.length` using `by simpa using hi`. Establish `hj' : j' < L.length` using `by simpa using hj`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.prod_cons, List.getElem_cons_succ]`. Conclude with `le_trans (le_trans Ideal.mul_le_inf inf_le_right) (ih i' j' hi' hj' (by omega))`.
+A detailed English derivation is pending.
 -/
 private theorem ideal_listProd_le_mul_getElem_of_lt {R : Type*} [CommRing R] (L : List (Ideal R)) :
     ∀ (i j : ℕ) (hi : i < L.length) (hj : j < L.length), i < j →
@@ -287,7 +283,7 @@ private theorem ideal_listProd_le_mul_getElem_of_lt {R : Type*} [CommRing R] (L 
                 (ih i' j' hi' hj' (by omega))
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `ideal_listProd_le_mul_getElem_of_lt L i j hi hj h`. Rewrite using `[mul_comm]`. Conclude with `ideal_listProd_le_mul_getElem_of_lt L j i hj hi h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ideal_listProd_le_mul_getElem_of_ne {R : Type*} [CommRing R] (L : List (Ideal R))
     (i j : ℕ) (hi : i < L.length) (hj : j < L.length) (hij : i ≠ j) :
@@ -298,7 +294,7 @@ private theorem ideal_listProd_le_mul_getElem_of_ne {R : Type*} [CommRing R] (L 
     exact ideal_listProd_le_mul_getElem_of_lt L j i hj hi h
 
 /- English proof (translation)
-Use `le_trans (ideal_listProd_le_mul_getElem_of_ne L i j hi hj hij) ?_` and prove the remaining obligations. Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mono hbi hcj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ideal_listProd_le_pow_add {R : Type*} [CommRing R] (m : Ideal R)
     (L : List (Ideal R)) (i j : ℕ) (hi : i < L.length) (hj : j < L.length) (hij : i ≠ j)
@@ -309,7 +305,7 @@ private theorem ideal_listProd_le_pow_add {R : Type*} [CommRing R] (m : Ideal R)
   exact Ideal.mul_mono hbi hcj
 
 /- English proof (translation)
-Rewrite using `[← Fin.prod_univ_def]`. Use `Finset.prod_eq_single j (fun l _ hl => ?_) (fun hj => absurd (Finset.mem_univ j) hj)` and prove the remaining obligations. Rewrite using `[h l hl, Ideal.one_eq_top]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ideal_listProd_finRange_eq_of_ne_eq_top {R : Type*} [CommRing R] {n : ℕ}
     (f : Fin n → Ideal R) (j : Fin n) (h : ∀ l : Fin n, l ≠ j → f l = ⊤) :
@@ -319,35 +315,31 @@ private theorem ideal_listProd_finRange_eq_of_ne_eq_top {R : Type*} [CommRing R]
   rw [h l hl, Ideal.one_eq_top]
 
 /- English proof (translation)
-Establish `hD : E.get j ∈ E` using `by simp`. Establish `hxcl : x ∈ closure ({hC.isIrreducible.genericPoint} : Set X)`. Rewrite using `[hC.closure_genericPoint]`. Conclude with `hxC`. Establish `hηU : hC.isIrreducible.genericPoint ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hzU, hz⟩` from `mem_closure_iff.mp hxcl (U : Set X) U.isOpen hxU`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Rewrite using `[← hz]`. Conclude with `hzU`. Establish `hηC : hC.isIrreducible.genericPoint ∈ C` using `hC.genericPoint_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlocj : IsEtaleLocallyCoordinateDivisor p (E.get j)` using `isEtaleLocallyCoordinateDivisor_of_inStrictNormalCrossingPosition p E hE (E.get j) hD`. Establish `hjmax : stalkIdeal (E.get j) hC.isIrreducible.genericPoint ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk hC.isIrreducible.genericPoint)` using `(mem_support_iff_stalkIdeal_le_maximalIdeal (E.get j) hC.isIrreducible.genericPoint).mp hC.genericPoint_mem_support`. Establish `hmemj : stalkIdeal (monomialPartAlongDivisor I (E.get j)) hC.isIrreducible.genericPoint = stalkIdeal (E.get j) hC.isIrreducible.genericPoint ^ orderAlongComponent I hC.isIrreducible` using `stalkIdeal_monomialPartAlongDivisor_of_mem p I hlocj hC hηC`. Establish `hbj : stalkIdeal (monomialPartAlongDivisor I (E.get j)) hC.isIrreducible.genericPoint ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk hC.isIrreducible.genericPoint) ^ orderAlongComponent I hC.isIrreducible`. Rewrite using `[hmemj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_right_mono hjmax _`. Establish `hPstalk : stalkIdeal (monomialFactorIdeal E I) hC.isIrreducible.genericPoint = (E.map (fun D => stalkIdeal (monomialPartAlongDivisor I D) hC.isIrreducible.genericPoint)).prod` using `stalkIdeal_monomialFactorIdeal E I hC.isIrreducible.genericPoint`. Establish `hPord : orderAt (monomialFactorIdeal E I) hC.isIrreducible.genericPoint = (orderAlongComponent I hC.isIrreducible : ℕ∞)` using `orderAt_monomialFactorIdeal_genericPoint p E I hE hI hD hC`. Establish `hzero : ∀ l : Fin E.length, l ≠ j → stalkIdeal (E.get l) hC.isIrreducible.genericPoint ^ a l = ⊤`. Introduce `l hlj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hs : hC.isIrreducible.genericPoint ∈ ((E.get l).support : Set X)`. Establish `hal : a l = 0`. Take `⟨C', hC', hηC'⟩` from `exists_isIrreducibleComponentOfSupport (E.get l) hC.isIrreducible.genericPoint hs`. Establish `hDl : E.get l ∈ E` using `by simp`. Establish `hlocl : IsEtaleLocallyCoordinateDivisor p (E.get l)` using `isEtaleLocallyCoordinateDivisor_of_inStrictNormalCrossingPosition p E hE (E.get l) hDl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : a l ≤ orderAlongComponent I hC'.isIrreducible` using `exponent_le_orderAlongComponent p E hE hI hsplit U a ha l hC' hC.isIrreducible.genericPoint hηU hηC'`. Establish `hmeml : stalkIdeal (monomialPartAlongDivisor I (E.get l)) hC.isIrreducible.genericPoint = stalkIdeal (E.get l) hC.isIrreducible.genericPoint ^ orderAlongComponent I hC'.isIrreducible` using `stalkIdeal_monomialPartAlongDivisor_of_mem p I hlocl hC' hηC'`. Establish `hlmax : stalkIdeal (E.get l) hC.isIrreducible.genericPoint ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk hC.isIrreducible.genericPoint)` using `(mem_support_iff_stalkIdeal_le_maximalIdeal (E.get l) hC.isIrreducible.genericPoint).mp hs`. Establish `hbl : stalkIdeal (monomialPartAlongDivisor I (E.get l)) hC.isIrreducible.genericPoint ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk hC.isIrreducible.genericPoint) ^ a l`. Rewrite using `[hmeml]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `le_trans (Ideal.pow_right_mono hlmax _) (Ideal.pow_le_pow_right hle)`. Establish `hjlen : (j : ℕ) < (E.map (fun D => stalkIdeal (monomialPartAlongDivisor I D) hC.isIrreducible.genericPoint)).length`. Simplify using the standard rewrite rules. Establish `hllen : (l : ℕ) < (E.map (fun D => stalkIdeal (monomialPartAlongDivisor I D) hC.isIrreducible.genericPoint)).length`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hjne : (j : ℕ) ≠ (l : ℕ)`. Introduce `hv`. Apply `hlj` to reduce the goal to its premises. Use `ext`. Conclude with `hv.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgj : (E.map (fun D => stalkIdeal (monomialPartAlongDivisor I D) hC.isIrreducible.genericPoint))[(j : ℕ)]'hjlen = stalkIdeal (monomialPartAlongDivisor I (E.get j)) hC.isIrreducible.genericPoint`. Simplify using the standard rewrite rules. Establish `hgl : (E.map (fun D => stalkIdeal (monomialPartAlongDivisor I D) hC.isIrreducible.genericPoint))[(l : ℕ)]'hllen = stalkIdeal (monomialPartAlongDivisor I (E.get l)) hC.isIrreducible.genericPoint`. Simplify using the standard rewrite rules. Establish `hPle : stalkIdeal (monomialFactorIdeal E I) hC.isIrreducible.genericPoint ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk hC.isIrreducible.genericPoint) ^ (orderAlongComponent I hC.isIrreducible + a l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPstalk]`. Use `ideal_listProd_le_pow_add _ _ (j : ℕ) (l : ℕ) hjlen hllen hjne _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hgj]`. Conclude with `hbj`. Rewrite using `[hgl]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hbl`. Establish `hord : ((orderAlongComponent I hC.isIrreducible + a l : ℕ) : ℕ∞) ≤ orderAt (monomialFactorIdeal E I) hC.isIrreducible.genericPoint` using `(le_orderAt_iff (monomialFactorIdeal E I) hC.isIrreducible.genericPoint (orderAlongComponent I hC.isIrreducible + a l)).mpr hPle`. Rewrite `hord` using `[hPord]`. Establish `hnat : orderAlongComponent I hC.isIrreducible + a l ≤ orderAlongComponent I hC.isIrreducible` using `by exact_mod_cast hord`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hal, pow_zero, Ideal.one_eq_top]`. Establish `hstop : stalkIdeal (E.get l) hC.isIrreducible.genericPoint = ⊤`. Assume the negation of the conclusion as `hcon`. Conclude with `hs ((mem_support_iff_stalkIdeal_ne_top (E.get l) hC.isIrreducible.genericPoint).mpr hcon)`. Rewrite using `[hstop, ← Ideal.one_eq_top, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : stalkIdeal M hC.isIrreducible.genericPoint = ((List.finRange E.length).map (fun i => stalkIdeal (E.get i) hC.isIrreducible.genericPoint ^ a i)).prod` using `stalkIdeal_eq_prod_of_isMonomialOnOpen E M U a ha hC.isIrreducible.genericPoint hηU`. Establish `hMstalk : stalkIdeal M hC.isIrreducible.genericPoint = stalkIdeal (E.get j) hC.isIrreducible.genericPoint ^ a j`. Rewrite using `[hprod]`. Conclude with `ideal_listProd_finRange_eq_of_ne_eq_top (fun i => stalkIdeal (E.get i) hC.isIrreducible.genericPoint ^ a i) j hzero`. Establish `hmaxj : stalkIdeal (E.get j) hC.isIrreducible.genericPoint = IsLocalRing.maximalIdeal (X.presheaf.stalk hC.isIrreducible.genericPoint)` using `stalkIdeal_genericPoint_eq_maximalIdeal p (E.get j) hlocj hC.isIrreducible hC.subset_support hC.maximal`.
-
-Establish `hMI : orderAt M hC.isIrreducible.genericPoint = orderAt I hC.isIrreducible.genericPoint` using `orderAt_genericPoint_eq_of_isMonomialSplitting p E hE hI hsplit hD hC`. Establish `hfin : orderAt M hC.isIrreducible.genericPoint ≠ ⊤`. Rewrite using `[hMI]`. Conclude with `orderAt_ne_top_of_nonzeroOnComponents I hI hC.isIrreducible.genericPoint`. Establish `hMord : orderAt M hC.isIrreducible.genericPoint = (a j : ℕ∞)` using `orderAt_eq_of_stalkIdeal_eq_maximalIdeal_pow M hC.isIrreducible.genericPoint (a j) (by rw [hMstalk, hmaxj]) hfin`.
-
-Establish `hco : (orderAlongComponent I hC.isIrreducible : ℕ∞) = orderAt I hC.isIrreducible.genericPoint` using `coe_orderAlongComponent_eq_orderAt_genericPoint hC hI`. Establish `hfinal : ((a j : ℕ) : ℕ∞) = ((orderAlongComponent I hC.isIrreducible : ℕ) : ℕ∞)`. Rewrite using `[← hMord, hMI, ← hco]`. Conclude with `hfinal` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exponent_eq_orderAlongComponent {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -487,7 +479,7 @@ theorem exponent_eq_orderAlongComponent {k : Type u} [Field k] [CharZero k]
   exact_mod_cast hfinal
 
 /- English proof (translation)
-Use `List.ext_getElem (by simp) ?_` and prove the remaining obligations. Introduce `n h1 h2`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem map_finRange_get_eq_map {α : Type*} {β : Type*} (l : List α) (g : α → β) :
     (List.finRange l.length).map (fun j => g (l.get j)) = l.map g := by
@@ -496,13 +488,13 @@ private theorem map_finRange_get_eq_map {α : Type*} {β : Type*} (l : List α) 
   simp
 
 /- English proof (translation)
-Take `⟨U, hxU, a, haU⟩` from `hsplit.monomial x`. Establish `hmon : IsMonomialOnOpen E M U a` using `by show M.comap U.ι = ((List.finRange E.length).map (fun j => (E.get j).comap U.ι ^ a j)).prod`. Rewrite using `[haU, Fin.prod_univ_def]`. Establish `hstep : ∀ j : Fin E.length, stalkIdeal (E.get j) x ^ a j = stalkIdeal (monomialPartAlongDivisor I (E.get j)) x`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : E.get j ∈ E` using `by simp`. Distinguish the cases in `hx : x ∈ ((E.get j).support : Set X)`. Take `⟨C, hC, hxC⟩` from `exists_isIrreducibleComponentOfSupport (E.get j) x hx`. Establish `hloc : IsEtaleLocallyCoordinateDivisor p (E.get j)` using `isEtaleLocallyCoordinateDivisor_of_inStrictNormalCrossingPosition p E hE (E.get j) hmem`. Rewrite using `[stalkIdeal_monomialPartAlongDivisor_of_mem p I hloc hC hxC, exponent_eq_orderAlongComponent p E hE hI hsplit U a hmon j hC x hxU hxC]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : stalkIdeal (E.get j) x = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `hx ((mem_support_iff_stalkIdeal_ne_top (E.get j) x).mpr hne)`. Rewrite using `[stalkIdeal_monomialPartAlongDivisor_of_not_mem_support I (E.get j) hx, h1, ← Ideal.one_eq_top, one_pow]`. Establish `hlist : (List.finRange E.length).map (fun j => stalkIdeal (E.get j) x ^ a j) = E.map (fun D => stalkIdeal (monomialPartAlongDivisor I D) x)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_finRange_get_eq_map E (fun D => stalkIdeal (monomialPartAlongDivisor I D) x)]`. Conclude with `List.map_congr_left (fun j _ => hstep j)`. Rewrite using `[stalkIdeal_eq_prod_of_isMonomialOnOpen E M U a hmon x hxU, stalkIdeal_monomialFactorIdeal E I x, hlist]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkIdeal_eq_stalkIdeal_monomialFactorIdeal {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -538,7 +530,7 @@ theorem stalkIdeal_eq_stalkIdeal_monomialFactorIdeal {k : Type u} [Field k] [Cha
     stalkIdeal_monomialFactorIdeal E I x, hlist]
 
 /- English proof (translation)
-Establish `hstalk : ∀ x : X, stalkIdeal M x = stalkIdeal (monomialFactorIdeal E I) x` using `fun x => stalkIdeal_eq_stalkIdeal_monomialFactorIdeal p E hE hI hsplit x`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `(le_iff_forall_stalkIdeal_le M (monomialFactorIdeal E I)).mpr (fun x => le_of_eq (hstalk x))`. Conclude with `(le_iff_forall_stalkIdeal_le (monomialFactorIdeal E I) M).mpr (fun x => le_of_eq (hstalk x).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_monomialFactorIdeal {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -555,11 +547,9 @@ theorem eq_monomialFactorIdeal {k : Type u} [Field k] [CharZero k]
       (fun x => le_of_eq (hstalk x).symm)
 
 /- English proof (translation)
-Establish `hM : M = monomialFactorIdeal E I` using `eq_monomialFactorIdeal p E hE hI hsplit`. Establish `hF : Blowup.IsLocallyGeneratedByNonZeroDivisor (monomialFactorIdeal E I)` using `isLocallyGeneratedByNonZeroDivisor_monomialFactorIdeal p E I hE`. Establish `hIM : I ≤ monomialFactorIdeal E I`. Rewrite using `[← hM, hsplit.eq_mul]`. Use `(le_iff_forall_stalkIdeal_le _ _).mpr (fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[stalkIdeal_mul]`. Conclude with `Ideal.mul_le_inf.trans inf_le_left`. Establish `hmul : monomialFactorIdeal E I * N = monomialFactorIdeal E I * nonMonomialFactorIdeal E I`. Rewrite using `[nonMonomialFactorIdeal_eq_idealSheafColon, hF.mul_idealSheafColon hIM, ← hM]`. Conclude with `hsplit.eq_mul.symm`.
-
-Conclude with `hF.eq_of_mul_eq_mul hmul`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_nonMonomialFactorIdeal {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]
@@ -582,7 +572,7 @@ theorem eq_nonMonomialFactorIdeal {k : Type u} [Field k] [CharZero k]
   exact hF.eq_of_mul_eq_mul hmul
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(eq_monomialFactorIdeal p E hE hI hsplit).trans (eq_monomialFactorIdeal p E hE hI hsplit').symm, (eq_nonMonomialFactorIdeal p E hE hI hsplit).trans (eq_nonMonomialFactorIdeal p E hE hI hsplit').symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMonomialSplitting_unique {k : Type u} [Field k] [CharZero k]
     [TopologicalSpace.NoetherianSpace ↥X] [IsLocallyNoetherian X]

@@ -10,9 +10,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {e : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [eval_C]`. Conclude with `analyticAt_const`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p l hp`. Simplify using `only [map_mul, eval_X]`. Conclude with `hp.mul (hf l)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_eval_of_pi {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {σ : Type*}
     {f : E → σ → ℂ} {z : E} (hf : ∀ l, AnalyticAt ℂ (f · l) z) (p : MvPolynomial σ ℂ) :
@@ -35,15 +35,15 @@ def AlgRes.GoodChart (R : AlgRes ι P D e) (ψ : OpenPartialHomeomorph R.M (Fin 
       ∀ w ∈ ψ.target, R.coord i (ψ.symm w) = g w
 
 /- English proof (translation)
-Establish `hwS : ψ.symm w ∈ ψ.source` using `ψ.map_target hw`. Establish `hxi : ψ.symm w ∈ R.src i` using `hs hwS`. Take `⟨q, F, hq0, hqF⟩` from `R.trans i j (ψ.symm w) ⟨hxi, hwj⟩`. Establish `hgw : AnalyticAt ℂ g w` using `hg w hw`. Establish `hga : ∀ l, AnalyticAt ℂ (g · l) w` using `fun l => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (R.amb i) => ℂ) l).analyticAt (g w)).comp hgw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFa : ∀ l, AnalyticAt ℂ (fun w' => eval (g w') (F l)) w` using `fun l => analyticAt_eval_of_pi hga (F l)`. Establish `hqa : AnalyticAt ℂ (fun w' => eval (g w') q) w` using `analyticAt_eval_of_pi hga q`. Establish `hq0' : eval (g w) q ≠ 0`. Rewrite using `[← hgc w hw]`. Conclude with `hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : AnalyticAt ℂ (fun w' => eval (fun l => eval (g w') (F l) / eval (g w') q) h) w` using `analyticAt_eval_of_pi (f := fun w' l => eval (g w') (F l) / eval (g w') q) (fun l => (hFa l).div hqa hq0') h`. Use `hA.congr ?_` and prove the remaining obligations. Establish `ht : ψ.target ∈ 𝓝 w` using `ψ.open_target.mem_nhds hw`. Establish `hj : ∀ᶠ w' in 𝓝 w, ψ.symm w' ∈ R.src j` using `(ψ.continuousAt_symm hw).preimage_mem_nhds ((R.isOpen_alt_bis j).mem_nhds hwj)`. Establish `hqne : ∀ᶠ w' in 𝓝 w, eval (g w') q ≠ 0` using `hqa.continuousAt.eventually_ne hq0'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [ht, hj, hqne] with w' h1 h2 h3`. Establish `hsrc : ψ.symm w' ∈ R.src i` using `hs (ψ.map_target h1)`. Establish `hcw : R.coord i (ψ.symm w') = g w'` using `hgc w' h1`. Establish `hfun : (fun l => eval (g w') (F l) / eval (g w') q) = R.coord j (ψ.symm w')`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl` using `hqF (ψ.symm w') ⟨hsrc, h2⟩ (by rw [hcw]; exact h3) l`. Rewrite `hl` using `[hcw]`. Rewrite using `[div_eq_iff h3]`. Conclude with `hl.symm`. Conclude with `congrArg (fun v => eval v h) hfun`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AlgRes.analyticAt_coord_symm (R : AlgRes ι P D e)
     {ψ : OpenPartialHomeomorph R.M (Fin e → ℂ)} {i : Fin R.n} (hs : ψ.source ⊆ R.src i)
@@ -84,11 +84,9 @@ theorem AlgRes.analyticAt_coord_symm (R : AlgRes ι P D e)
   exact congrArg (fun v => eval v h) hfun
 
 /- English proof (translation)
-Take `⟨i, hsi, -, g, hg, hgc⟩` from `hψ`. Introduce and unpack `w ⟨hw, hwS⟩`. Establish `hwS' : ψ.symm w ∈ S` using `hwS`. Establish `hev : (fun w' => evalFam r (R.coord j (ψ.symm w'))) =ᶠ[𝓝 w] (f ∘ ψ.symm)`. Establish `hS' : ∀ᶠ w' in 𝓝 w, ψ.symm w' ∈ S` using `(ψ.continuousAt_symm hw).preimage_mem_nhds (hS.mem_nhds hwS')`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hS'] with w' h1`. Conclude with `(hf _ h1).symm`. Use `AnalyticAt.congr ?_ hev` and prove the remaining obligations. Rewrite using `[analyticAt_pi_iff]`. Introduce `l`.
-
-Conclude with `R.analyticAt_coord_symm hsi hg hgc j (r l) hw (hSj hwS')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem AlgRes.analyticOnNhd_comp_symm (R : AlgRes ι P D e)
     {ψ : OpenPartialHomeomorph R.M (Fin e → ℂ)} (hψ : R.GoodChart ψ) {m : ℕ}
@@ -109,33 +107,27 @@ theorem AlgRes.analyticOnNhd_comp_symm (R : AlgRes ι P D e)
   exact R.analyticAt_coord_symm hsi hg hgc j (r l) hw (hSj hwS')
 
 /- English proof (translation)
-Use `R.regular i x hx` as an intermediate fact. Take `⟨U, V, g, hU, hpU, hV, hg, hbij, hrg⟩` from `exists_holo_coords (R.ideal i) (R.coord i x) e (R.dim i x hx) r hr`. Establish `hcont : ContinuousOn (R.coord i) (R.src i)`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `(R.isEmbedding i).continuous`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (R.coord i) (R.src i)` using `fun a ha b hb hab => congrArg Subtype.val ((R.isEmbedding i).injective (a₁ := ⟨a, ha⟩) (a₂ := ⟨b, hb⟩) hab)`. Establish `hev : Continuous (evalFam r)` using `continuous_pi fun l => MvPolynomial.continuous_eval (p := r l)`. Establish `hzero : ∀ y ∈ R.src i, R.coord i y ∈ zeroSet (R.ideal i)`. Introduce `y hy`. Establish `: R.coord i y ∈ R.coord i '' R.src i` using `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[R.image i]`. Conclude with `this`. Establish `hex : ∀ w ∈ V, ∃ y ∈ R.src i, R.coord i y = g w`. Introduce `w hw`. Establish `h1 : g w ∈ zeroSet (R.ideal i)` using `(hbij.mapsTo hw).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : g w ∈ R.coord i '' R.src i` using `by rw [R.image i]; exact h1`. Take `⟨y, hy, hyw⟩` from `hmem`. Conclude with `⟨y, hy, hyw⟩`. Set `inv : (Fin e → ℂ) → R.M` to `fun w => if h : ∃ y ∈ R.src i, R.coord i y = g w then h.choose else x`. Establish `hinv : ∀ w ∈ V, inv w ∈ R.src i ∧ R.coord i (inv w) = g w`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `h` using `hex w hw`. Simplify using `only [inv, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hback : ∀ y ∈ R.src i, R.coord i y ∈ U → g (evalFam r (R.coord i y)) = R.coord i y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy hyU`. Take `⟨w, hw, hgw⟩` from `hbij.surjOn ⟨hyU, hzero y hy⟩`. Rewrite using `[← hgw, hrg w hw]`. Set `S : Set R.M` to `R.src i ∩ R.coord i ⁻¹' (U ∩ evalFam r ⁻¹' V)`. Establish `hSo : IsOpen S` using `hcont.isOpen_inter_preimage (R.isOpen_alt_bis i) (hU.inter (hV.preimage hev))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hmapT : ∀ w ∈ V, inv w ∈ S`. Introduce `w hw`. Take `⟨h1, h2⟩` from `hinv w hw`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `show R.coord i (inv w) ∈ U ∩ evalFam r ⁻¹' V`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Use `⟨(hbij.mapsTo hw).1, ?_⟩` and prove the remaining obligations. Use `show evalFam r (g w) ∈ V`. Rewrite using `[hrg w hw]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcinv : ContinuousOn inv V`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Set `f : V → R.src i` to `fun w => ⟨inv w, (hinv w w.2).1⟩`. Establish `hf : Continuous f`. Rewrite using `[(R.isEmbedding i).continuous_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: ((fun y : R.src i => R.coord i y) ∘ f) = fun w : V => g w`. Use function extensionality and compare the values at `fun w => (hinv w w.2).2`. Rewrite using `[this]`. Conclude with `hg.continuousOn.domRestrict`. Conclude with `continuous_subtype_val.comp hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `ψ0 : OpenPartialHomeomorph R.M (Fin e → ℂ)` to `{ toFun := fun y => evalFam r (R.coord i y) invFun := inv source := S target := V map_source' := fun y hy => hy.2.2 map_target' := fun w hw => hmapT w hw left_inv' := fun y hy => by`. Take `⟨h1, h2⟩` from `hinv _ hy.2.2`. Conclude with `hinj h1 hy.1 (h2.trans (hback y hy.1 hy.2.1))`. Use the proof step `right_inv' := fun w hw => by`. Take `⟨-, h2⟩` from `hinv w hw`.
-
-Use `show evalFam r (R.coord i (inv w)) = w`. Rewrite using `[h2, hrg w hw]`. Use `open_source := hSo`. Use `open_target := hV`. Use `continuousOn_toFun := (hev.comp_continuousOn hcont).mono fun y hy => hy.1`.
-
-Use `continuousOn_invFun := hcinv }`. Establish `hxS : x ∈ S`. Take `⟨w, hw, hgw⟩` from `hbij.surjOn ⟨hpU, hzero x hx⟩`. Use `⟨hx, hpU, ?_⟩` and prove the remaining obligations. Use `show evalFam r (R.coord i x) ∈ V`.
-
-Rewrite using `[← hgw, hrg w hw]`. Conclude with `hw`. Use `⟨ψ0.restrOpen O hO, ⟨i, fun y hy => hy.1.1, ⟨r, fun y _ => rfl⟩, g, hg.mono fun w hw => hw.1, fun w hw => (hinv w hw.1).2⟩, ⟨hxS, hxO⟩, fun y hy => ⟨hy.2, hy.1.1⟩, fun y _ => rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem AlgRes.exists_goodChart (R : AlgRes ι P D e) (i : Fin R.n) (x : R.M) (hx : x ∈ R.src i)
     (r : Fin e → MvPolynomial (Fin (R.amb i)) ℂ)

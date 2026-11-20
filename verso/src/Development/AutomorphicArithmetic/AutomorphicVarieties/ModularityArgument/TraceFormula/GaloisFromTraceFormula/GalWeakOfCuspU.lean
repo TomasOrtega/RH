@@ -27,21 +27,19 @@ def GalWeak (N : ℕ) : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   ∃ (l : ℕ) (_ : Fact l.Prime) (ι : Qbar l ≃+* ℂ), GalAt E (AlgebraicClosure E) ι N
 
 /- English proof (translation)
-Use `choose a d P ha hd hu hn hemb using hSt E n D hr`. Establish `he : ∀ i, AscEmb (D.V i) (P i) (d i)` using `fun i => hemb i (P i) (Setoid.refl (α := CuspSub E (a i)) (P i))`. Establish `hcsd : ∀ i, (P i).IsCsd` using `fun i => hC E n D hr ht i (a i) (d i) (P i) (ha i) (hd i) (hu i) (hn i) (he i)`. Establish `hle : ∀ i, a i ≤ N` using `fun i => by`. Take `⟨h, -⟩` from `he i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Establish `h1 : D.N i ≤ n` using `(Finset.single_le_sum (f := D.N) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)).trans D.h.le`. Establish `h2 : a i ≤ d i * a i` using `Nat.le_mul_of_pos_left _ (hd i)`. Use linear arithmetic over natural numbers and integers. Set `s : (Σ i : Fin D.c, Fin (d i)) → ℝ` to `fun x => spehExp (d x.1) x.2 + ((a x.1 : ℝ) - n) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hreg : ∀ x : (Σ i : Fin D.c, Fin (d i)), (CG.mk ((P x.1).twist (absPow E (s x)))).IsRegAlg` using `fun x => regTw D hr x.1 (P x.1) (he x.1) x.2`. Use `choose r hrc hrf using fun x : (Σ i : Fin D.c, Fin (d i)) => hG (a x.1) (ha x.1) (hle x.1) (P x.1) (hcsd x.1) (s x) (hreg x)`. Set `e` to `Fintype.equivFin (Σ x : (Σ i : Fin D.c, Fin (d i)), Fin (a x.1))`. Use `⟨_, GlobalTheory.BlockSum.blockRep e r, GlobalTheory.BlockSum.continuous_blockRep e r hrc, ?_⟩` and prove the remaining obligations. Establish `hev` using `Filter.eventually_all.2 fun i => hS E (D.N i) (a i) (d i) (D.V i) (P i) (D.σ i) (D.pos i) (D.discrete i) (hu i) (hn i) (he i) (D.loc i) (fun k => absPow E (spehExp (d i) k)) (fun k => absPow_isAbsPow E _)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `filter_upwards [hev, Filter.eventually_all.2 hrf] with w hw hrw hl`. Use `choose b hb hsph hsat using hw`. Use `⟨⟨_, fun i => ∑ k, b i k, fun i => ⟨hsph i, hsat i⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨b', hb', rfl⟩ A g hA hg`. Establish `hbb : ∀ i, b' i = ∑ k, b i k` using `fun i => (hb' i).2.unique (hsat i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hN : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hx : ∀ x : (Σ i : Fin D.c, Fin (d i)), (r x (g ^ (-1 : ℤ))).val.charpoly = ((b x.1 x.2).map fun z : ℂˣ => X - C (ι.symm ((z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((n : ℂ) - 1) / 2)))).prod`. Introduce and unpack `⟨i, k⟩`. Establish `h1` using `(CG.HasSat.twist_absPow (hb i k) (((a i : ℝ) - n) / 2)).1`. Rewrite `h1` using `[twist_absPow_absPow]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, hσ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL E (a i) ((P i).twist (absPow E (s ⟨i, k⟩))) w`. Establish `h2 : GlobalTheory.LFun.HasSatGL w σ.ρ _` using `(GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.1 ((GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ (Fin (a i)) σ.V σ.ρ _).2 (GlobalTheory.LFun.SphComp.hasSatake_of_isLocComp _ h1 hσ))).2`. Rewrite using `[hrw ⟨i, k⟩ hl σ hσ _ h2 A g hA hg, Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun z _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[(absPow_isAbsPow E _).2.1 w, mul_assoc, ← Complex.cpow_add _ _ hN]`. Use `congrArg (fun u : ℂ => X - C (ι.symm ((z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ u))) ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.BlockSum.charpoly_blockRep, Finset.prod_congr rfl fun x _ => hx x, Fintype.prod_sigma]`.
-
-Simplify using `only [hbb]`. Rewrite using `[prod_map_sum]`. Conclude with `Finset.prod_congr rfl fun i _ => (prod_map_sum _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sideW (hS : StrSat) (hSt : Strings) (hC : CuspCsd) {E : Type} [Field E] [NumberField E] [IsCMField E] (Ω : Type) [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {N n : ℕ} (hG : GalAt E Ω ι N) (hN' : n ≤ N) (D : Pre E n)
@@ -103,25 +101,25 @@ private theorem sideW (hS : StrSat) (hSt : Strings) (hC : CuspCsd) {E : Type} [F
   exact Finset.prod_congr rfl fun i _ => (prod_map_sum _ _ _).symm
 
 /- English proof (translation)
-Take `⟨l, _, ι, hG⟩` from `hW E hu`. Take `⟨m, R, hR, hev⟩` from `sideW strSat strings_holds cuspCsd_holds (AlgebraicClosure E) ι hG hn D hr ht`. Take `⟨m', R', hR', hev'⟩` from `sideW strSat strings_holds cuspCsd_holds (AlgebraicClosure E) ι hG hn D' hr' ht'`. Establish `hl2 : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal`. Establish `h20 : ((l : ℕ) : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.eventually_cofinite.2 ?_` and prove the remaining obligations. Simplify `Formalism.L2.G.finite_setOf_mem_asIdeal (F := E) h20` using `only [not_not]`. Establish `hall` using `((hev.and hev').and (hsplit.and hl2))`. Take `hT` from `Filter.eventually_cofinite.1 hall`. Establish `hRam` using `(GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `f : G E (AlgebraicClosure E) → ℕ → Qbar l` to `fun g j => (R g⁻¹).val.charpoly.coeff j`. Set `f' : G E (AlgebraicClosure E) → ℕ → Qbar l` to `fun g j => (R' g⁻¹).val.charpoly.coeff j`. Establish `hf : Continuous f` using `continuous_pi fun j => (PositivityTheory.Rg.DzCong.CongruenceClosure.continuous_coeff_charpoly m j).comp (Units.continuous_val.comp (hR.comp continuous_inv))`. Establish `hf' : Continuous f'` using `continuous_pi fun j => (PositivityTheory.Rg.DzCong.CongruenceClosure.continuous_coeff_charpoly m' j).comp (Units.continuous_val.comp (hR'.comp continuous_inv))`. Establish `hff : f = f'` using `GlobalTheory.Published.chebotarevDegreeOne'.eq_of_frob (hT.union hRam) hf hf' (fun v hv hd A hA σ hσ => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hv`. Take `⟨⟨⟨h1, h2⟩, h3, h4⟩, h5⟩` from `hv`. Take `⟨B, hB, hB'⟩` from `h3 (PositivityTheory.Rg.DzCong.CongruenceClosure.isSplitAt_of_deg_one v hd h5)`. Establish `c1` using `(h1 h4).2 B hB A σ hA hσ`. Establish `c2` using `(h2 h4).2 B hB' A σ hA hσ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c1`, `c2` using `[_root_.zpow_neg_one]`. Use function extensionality and compare the values at `j`. Simplify using `only [f, f', c1, c2])`. Use `filter_upwards [hev, hev', hl2] with w h1 h2 h4`. Take `⟨B, hB⟩` from `(h1 h4).1`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B', hB'⟩` from `(h2 h4).1`. Take `⟨A, hA⟩` from `exists_isPlaceOver (AlgebraicClosure E) w`. Take `⟨g, hg⟩` from `Formalism.MainNotions.LatticeVariant.exists_isFrob A w hA`. Establish `c1` using `(h1 h4).2 B hB A g hA hg`. Establish `c2` using `(h2 h4).2 B' hB' A g hA hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (R (g ^ (-1 : ℤ))).val.charpoly = (R' (g ^ (-1 : ℤ))).val.charpoly`. Use extensionality with `j`. Use `congrFun (congrFun hff g) j` as an intermediate fact. Simplify `this` using `[f, f', _root_.zpow_neg_one]`. Rewrite `e` using `[c1, c2]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Set `ψ : ℂˣ → Qbar l` to `fun z => ι.symm ((z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((n : ℂ) - 1) / 2))`. Establish `hψ : Function.Injective ψ` using `fun z z' h => by`. Establish `h'` using `ι.symm.injective h`. Establish `hc : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((n : ℂ) - 1) / 2) ≠ 0` using `fun h0 => hN ((Complex.cpow_eq_zero_iff _ _).1 h0).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Units.ext (mul_right_cancel₀ hc h')`. Establish `key : ∀ C : Multiset ℂˣ, (C.map fun z : ℂˣ => X - Polynomial.C (ι.symm ((z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (((n : ℂ) - 1) / 2)))).prod = ((C.map ψ).map fun u => X - Polynomial.C u).prod` using `fun C => by`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Establish `e2` using `congrArg Polynomial.roots e`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[key, key, Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Establish `hBB : B = B'` using `Multiset.map_injective hψ e2`. Conclude with `⟨B, hB, hBB ▸ hB'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem galStep_le {N : ℕ} (hW : GalWeak N) (E : Type) [Field E] [NumberField E] [IsCMField E] (hu : GlobalTheory.BCT.Unr E) (n : ℕ)
     (hn : n ≤ N) (D D' : Pre E n) (hr : D.Reg) (hr' : D'.Reg) (ht : D.ThetaStable) (ht' : D'.ThetaStable)
@@ -185,9 +183,9 @@ theorem galStep_le {N : ℕ} (hW : GalWeak N) (E : Type) [Field E] [NumberField 
   exact ⟨B, hB, hBB ▸ hB'⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ _`. Take `⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`. Use `⟨2, inferInstance, ι, fun a ha _ P hP s hr => ?_⟩` and prove the remaining obligations. Take `⟨r, wt, HT, H⟩` from `hG E (AlgebraicClosure E) 2 ι a ha _ _ hr (GlobalTheory.HeightCounting.Blocks.isPolarized_twist_absPow hP s)`. Use `⟨r, H.cont, Filter.Eventually.of_forall fun w hl σ hσ S hS B g hB hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨rc, hrc⟩` from `(hL.1 E _ B w hB).exists`. Use `GlobalTheory.T.local_langlands_galois_compat E _ 2 ι a r H.cont w hl B hB rc hrc σ S hS _ ((H.aw hl hrc hσ).eq_unr ?_) g hg` and prove the remaining obligations. Conclude with `(GlobalTheory.WeilDeligne.WD.unr_tw _ _).2 (UpperTheory.GalN.unr_rec_of_hasSat hrc σ S hS)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem galWeak_of_cuspU (hG : UpperTheory.GalN.CuspU) (hL : GlobalTheory.Published.LocalLanglandsGL) (N : ℕ) : GalWeak N := by
   intro E _ _ _ _

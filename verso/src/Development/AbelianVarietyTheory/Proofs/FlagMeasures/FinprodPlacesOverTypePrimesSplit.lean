@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain
 namespace GlobalTheory.TypedPlacesProduct
 
 /- English proof (translation)
-Establish `hI : Ideal.span {((n : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.mpr hn`. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hv ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_over {K : Type*} [Field K] [NumberField K] {n : ℕ} (hn : n ≠ 0) :
     {v : HeightOneSpectrum (𝓞 K) | ((n : ℕ) : 𝓞 K) ∈ v.asIdeal}.Finite := by
@@ -23,9 +23,9 @@ theorem finite_over {K : Type*} [Field K] [NumberField K] {n : ℕ} (hn : n ≠ 
   exact hv
 
 /- English proof (translation)
-Establish `hs` using `finite_over (K := K) hn`. Establish `hnorm : ∀ p ∈ {p : HeightOneSpectrum (𝓞 K) | ((n : ℕ) : 𝓞 K) ∈ p.asIdeal}, φ (Ideal.absNorm p.asIdeal : ℝ) = φ n`. Introduce `p hp`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, hq p hp]`. Rewrite using `[finprod_mem_congr rfl hnorm, finprod_mem_eq_finite_toFinset_prod _ hs, Finset.prod_const, ← Nat.card_eq_card_finite_toFinset hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ hc`.
+A detailed English derivation is pending.
 -/
 theorem finprod_over {K : Type*} [Field K] [NumberField K] {n f : ℕ} (hn : n ≠ 0) (φ : ℝ → ℝ)
     (hc : Nat.card {v : HeightOneSpectrum (𝓞 K) // ((n : ℕ) : 𝓞 K) ∈ v.asIdeal} = f)
@@ -43,9 +43,9 @@ theorem finprod_over {K : Type*} [Field K] [NumberField K] {n f : ℕ} (hn : n �
   exact congrArg _ hc
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce `p ha hb`. Take `⟨u, w, huw⟩` from `(Nat.isCoprime_iff_coprime.mpr hab).map (Int.castRingHom (𝓞 K))`. Establish `h1 : (1 : 𝓞 K) ∈ p.asIdeal`. Rewrite using `[← huw]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `p.asIdeal.add_mem (p.asIdeal.mul_mem_left _ ha) (p.asIdeal.mul_mem_left _ hb)`. Conclude with `p.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma disjoint_primes_dvd_of_coprime {K : Type*} [Field K] [NumberField K] {a b : ℕ} (hab : Nat.Coprime a b) :
     Disjoint {p : HeightOneSpectrum (𝓞 K) | ((a : ℕ) : 𝓞 K) ∈ p.asIdeal}
@@ -60,7 +60,7 @@ private lemma disjoint_primes_dvd_of_coprime {K : Type*} [Field K] [NumberField 
   exact p.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)
 
 /- English proof (translation)
-Introduce `D φ hs`. Establish `hp` using `D.host.g_prime`. Establish `hne : D.host.g 0 ≠ D.host.g 1` using `D.host.g_ne`. Establish `hcop : Nat.Coprime (D.host.g 0) (D.host.g 1)` using `(Nat.coprime_primes (hp 0) (hp 1)).mpr hne`. Rewrite using `[Set.setOf_or, finprod_mem_union (disjoint_primes_dvd_of_coprime hcop) (finite_over (hp 0).ne_zero) (finite_over (hp 1).ne_zero), finprod_over (hp 0).ne_zero φ (hs 0).1 (hs 0).2, finprod_over (hp 1).ne_zero φ (hs 1).1 (hs 1).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finprod_typed_places : ∀ (D : D7) (φ : ℝ → ℝ), (∀ i, StandardLattice.SplitsF D (D.host.g i)) → (∏ᶠ p ∈ {p : HeightOneSpectrum (𝓞 D.host.F) | ((D.host.g 0 : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal ∨ ((D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal}, φ (Ideal.absNorm p.asIdeal : ℝ)) = φ (D.host.g 0) ^ D.R.f * φ (D.host.g 1) ^ D.R.f := by
   intro D φ hs

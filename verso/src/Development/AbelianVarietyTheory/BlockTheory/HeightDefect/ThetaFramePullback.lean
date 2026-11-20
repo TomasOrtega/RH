@@ -103,12 +103,12 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `y.gen`.
+A detailed English derivation is pending.
 -/
 example {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : IsGenAt y.x y.s := y.gen
 
 /- English proof (translation)
-Take `⟨G, t', m₁, m₂, -, θ, h₁, h₂⟩` from `h`. Conclude with `⟨G, t', m₁, m₂, θ, h₁, h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (h : Integral T io y) :
     letI := io.toAlgebra
@@ -119,7 +119,7 @@ example (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.
   exact ⟨G, t', m₁, m₂, θ, h₁, h₂⟩
 
 /- English proof (translation)
-Take `⟨V, hV, θ, h₁, h₂, -⟩` from `h x`. Conclude with `⟨V, hV, θ, h₁, h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example {X : Scheme.{0}} (G : Over X) (L : LB G.left) (h : PushInvertible G L) (x : X) :
     ∃ V : X.Opens, x ∈ V ∧ ∃ θ₀, IsPushGenOn G L V θ₀ := by

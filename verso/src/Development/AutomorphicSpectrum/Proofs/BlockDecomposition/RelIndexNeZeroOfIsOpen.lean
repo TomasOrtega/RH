@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SplitConvHecke
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `hop : IsOpen ((L.subgroupOf K : Subgroup K) : Set K)` using `hL.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ L.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hop`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_isOpen {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     (K L : Subgroup H) (hL : IsOpen (L : Set H)) (hK : IsCompact (K : Set H)) :

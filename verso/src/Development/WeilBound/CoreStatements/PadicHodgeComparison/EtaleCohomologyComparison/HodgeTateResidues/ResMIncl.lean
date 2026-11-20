@@ -23,7 +23,7 @@ def resM (r r' : ℤ) : CH.Mor (sq (thFil L r) (thFil L r')) (sq (sFil Q r) (sFi
   nat _ _ := rfl
 
 /- English proof (translation)
-Establish `e1 : Q.ι.EssSurj` using `⟨fun T => ⟨⟨T, h T⟩, ⟨Iso.refl _⟩⟩⟩`. Establish `e2 : Q.ι.IsEquivalence` using `{}`. Establish `: (resM Q r r').G.IsLeftAdjoint` using `inferInstanceAs Q.ι.IsLeftAdjoint`. Conclude with `CrystallineSemistableComparison.P.adj_mor _ (fun _ => Function.bijective_id) n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resM_all (h : ∀ T, Q T) (r r' : ℤ) (n : ℕ) : Function.Bijective ((resM Q r r').pull n) := by
   have e1 : Q.ι.EssSurj := ⟨fun T => ⟨⟨T, h T⟩, ⟨Iso.refl _⟩⟩⟩
@@ -33,7 +33,7 @@ theorem resM_all (h : ∀ T, Q T) (r r' : ℤ) (n : ℕ) : Function.Bijective ((
 
 variable {Q} in
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z.1 (s ⋙ Q'.ι) : sqM _ _ _) = ((incl h).sq (incl_fil h r) (incl_fil h r')).τ _ (z.1 (s ⋙ Q'.ι))`. Take `⟨y, hy, e⟩` from `sq_surj _ _ (z.1 (s ⋙ Q'.ι))`. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -55,9 +55,9 @@ def resH (Q : ObjectProperty (Thick (smFun X q))) (a n : ℕ) : Hdg q a n →ₗ
   (resM Q (a : ℤ) ((a : ℤ) + 1)).pull n
 
 /- English proof (translation)
-Set `Q₀ : ObjectProperty (Thick (smFun X q))` to `St (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) ⊤ {⊤}`. Establish `h0 : ∀ T, Q₀ T` using `fun T => ⟨trivial, ⊤, rfl, le_rfl⟩`. Establish `h1 : TO q 1 s {⊤} ≤ Q₀` using `fun T _ => h0 T`. Establish `h2 : TO q 1 s 𝒱 ≤ TO q 1 s {⊤}` using `fun T hT => ⟨hT.1, ⊤, rfl, le_rfl⟩`. Establish `b0` using `resM_all Q₀ h0 r r' n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `refl (γ := dividedPowersBot K) (q := q) (κ := Ideal.Quotient.mk ⊥) ⊤ 1 s (Or.inl ⟨rfl, rfl⟩) {⊤} h1 r r' hr n`. Establish `b2` using `(zar (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (TF 1 s) (Or.inl ⟨rfl, 1, s, rfl⟩) 𝒱 {⊤} h2 (fun W _ => by rw [h𝒱]; exact le_top) n).1 r r'`. Establish `e : ⇑((resM (TO q 1 s 𝒱) r r').pull n) = ((incl h2).sq (incl_fil h2 r) (incl_fil h2 r')).pull n ∘ ((incl h1).sq (incl_fil h1 r) (incl_fil h1 r')).pull n ∘ (resM Q₀ r r').pull n` using `funext fun x => (resM_incl h2 r r' n x).trans (congrArg _ (resM_incl h1 r r' n x))`. Rewrite using `[e]`. Conclude with `b2.comp (b1.comp b0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_bij (s : ℕ) (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (r r' : ℤ) (hr : r' ≤ s) (n : ℕ) :
     Function.Bijective ((resM (TO q 1 s 𝒱) r r').pull n) := by
@@ -77,7 +77,7 @@ theorem res_bij (s : ℕ) (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (r r' :
   exact b2.comp (b1.comp b0)
 
 /- English proof (translation)
-The claim follows from `res_bij q s 𝒱 h𝒱 _ _ (by omega) n`.
+A detailed English derivation is pending.
 -/
 theorem hdg_res (s : ℕ) (𝒱 : Set X.Opens) (h𝒱 : sSup 𝒱 = ⊤) (a : ℕ) (ha : a < s) (n : ℕ) :
     Function.Bijective (resH q (TO q 1 s 𝒱) a n) := res_bij q s 𝒱 h𝒱 _ _ (by omega) n

@@ -16,17 +16,17 @@ namespace PositivityTheory.ThKW.AdelicSchwartzProperties
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation PositivityTheory.ThKW.PhaseFourierInjectivity GlobalTheory.ThetaTransform GlobalTheory.RatDarboux
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {nS nT N : ℕ}
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hinv` using `GlobalTheory.SplitDetCharF.sig_invol hB.cm`. Establish `eB : (-1 : AF F ⊗[F] E) • incM F (-(ξ₀ • JS⁻¹)) = incM F (ξ₀ • JS⁻¹)`. Use function extensionality and compare the values at `i j`. Simplify using `[incM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hbij` using `bijective_sympBil σ hinv (JA := (1 : Matrix (Fin nT) (Fin nT) E)ᵀ) (JB := -(ξ₀ • JS⁻¹)) (by simp) (by`. Rewrite using `[← neg_smul, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 hξ)) (Matrix.isUnit_nonsing_inv_det _ (Ne.isUnit hS.2)).ne_zero)`. Set `b` to `Module.finBasis F (Matrix (Fin nT) (Fin nS) E)`. Set `b'` to `b.dualBasis.map (LinearEquiv.ofBijective _ hbij).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : ∀ i j, symp σ (-1) (1 : Matrix (Fin nT) (Fin nT) E)ᵀ (-(ξ₀ • JS⁻¹)) (b' i) (b j) = if j = i then 1 else 0` using `fun i j => by`. Establish `h1` using `(LinearEquiv.ofBijective _ hbij).apply_symm_apply (b.dualBasis i)`. Establish `h2` using `LinearMap.congr_fun h1 (b j)`. Rewrite `h2` using `[Module.Basis.dualBasis_apply_self]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : LinearMap.BilinForm (AF F) (WOF F E nS nT)` to `sympBil (cA σ) (-1) (incM F (1 : Matrix (Fin nT) (Fin nT) E)ᵀ) (incM F (-(ξ₀ • JS⁻¹)))`. Establish `hP : ∀ v u, P v u = (adB b').equivFun v ⬝ᵥ (adB b).equivFun u` using `fun v u => by`. Establish `h0 : ∀ i j, P (adB b' i) (adB b j) = if j = i then 1 else 0` using `fun i j => by`. Rewrite using `[adB_apply, adB_apply]`. Use `(symp_map (AF F) σ _ _ (b' i) (b j)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hb]`. Apply the tactic sequence `split_ifs <;> simp`. Use `conv_lhs => rw [← (adB b').sum_repr v, ← (adB b).sum_repr u]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, h0, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, dotProduct, Module.Basis.equivFun_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨_, (adB b').equivFun, (adB b).equivFun, b'.equivFun, b.equivFun, fun v u => ?_, adB_rat b', adB_rat b⟩` and prove the remaining obligations. Rewrite using `[← hP]`. Use `Eq.trans ?_ (GlobalTheory.TransportF.symplOF_eq_symp (JT := 1) rfl eB v u)` and prove the remaining obligations. Unfold `symplOF`. Rewrite using `[hOF_dual JS JT hT.2, hOF_eq_trace, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {JS : Matrix (Fin nS) (Fin nS) E}
     {JT : Matrix (Fin nT) (Fin nT) E} (hS : IsHermND σ JS) (hT : IsHermND σ JT) {ξ₀ : E} (hξ : ξ₀ ≠ 0) :
@@ -69,17 +69,17 @@ theorem pairing_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {JS :
   unfold symplOF
   rw [hOF_dual JS JT hT.2, hOF_eq_trace, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]
 /- English proof (translation)
-Establish `hinv` using `GlobalTheory.SplitDetCharF.sig_invol hB.cm`. Take `⟨N, α, β, a, b, hP, ha, hb⟩` from `_root_.PositivityTheory.ThKW.AdelicSchwartzProperties.pairing_k hB hS hT hξ`. Take `⟨d, U, V, hd, hd'⟩` from `split (nS := nS) JT hT`. Take `⟨e, he0⟩ : ∃ e : WOF F E nS (nT + nT) ≃ₗ[AF F] VA F N, ∀ w, e w = (α (d w).1, β (d w).2)` from `⟨d.trans (α.prodCongr β), fun _ => rfl⟩`. Establish `he : ∀ u v, e (dC (AF F ⊗[F] E) nT * u + dCd F JT * v) = (α v, β u)` using `fun u v => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[he0, ← hd' (v, u), d.apply_symm_apply]`. Establish `j1 : IsModuleTopology (AF F) (Fin N → AF F)` using `inferInstance`. Establish `j2 : IsModuleTopology (AF F) (VA F N)` using `inferInstance`. Establish `c1` using `cont2 (modTop _ _) j2 e`. Establish `c2` using `cont2 (modTop _ _) j1 α`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3` using `cont2 (modTop _ _) j1 β`. Use `⟨N, α, β, e, he, fun w w' => ?_, fun x => ?_, fun y z => ?_, c1.1, c1.2, c2.1, c2.2, c3.1, c3.2, fun x => ⟨_, hb x⟩, fun y => ⟨b.symm y, by rw [hb, LinearEquiv.apply_symm_apply]⟩⟩` and prove the remaining obligations. Take `⟨⟨v, u⟩, rfl⟩` from `d.symm.surjective w`. Take `⟨⟨v', u'⟩, rfl⟩` from `d.symm.surjective w'`. Establish `s1 : symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ (dC (AF F ⊗[F] E) nT * u) (dC (AF F ⊗[F] E) nT * u') = 0` using `by rw [symplOF, h_CC, mul_zero, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `s2 : symplOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ (dCd F JT * v) (dCd F JT * v') = 0`. Rewrite using `[symplOF, dCd_eq, Matrix.mul_assoc, Matrix.mul_assoc, h_AA, mul_zero, map_zero]`. Establish `s3` using `GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv _ _ JS _ hS (GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT) ξ₀ hσ (dCd F JT * v') (dC (AF F ⊗[F] E) nT * u)`. Rewrite using `[hd', hd', he, he, GlobalTheory.ThetaSchurF.symplOF_add_left, GlobalTheory.ThetaSchurF.symplOF_add_right, GlobalTheory.ThetaSchurF.symplOF_add_right, s1, s2, s3, hP, hP, symV]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨a (V * x), b (U * x), ?_⟩` and prove the remaining obligations. Rewrite using `[he0, hd, rat_mul, rat_mul, ha, hb]`. Use `⟨dC E nT * b.symm z + dCdE JT * a.symm y, ?_⟩` and prove the remaining obligations. Establish `: (ratWF (dC E nT * b.symm z + dCdE JT * a.symm y) : WOF F E nS (nT + nT)) = dC (AF F ⊗[F] E) nT * (ratWF (b.symm z) : WOF F E nS nT) + dCd F JT * (ratWF (a.symm y) : WOF F E nS nT)`. Rewrite using `[← dC_map (incAF F E), dCd, rat_mul, rat_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_add _ (map_add _) _ _`. Rewrite using `[this, he, ha, hb, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_k {σ : E →ₐ[F] E} {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E}
     {JT : Matrix (Fin nT) (Fin nT) E} (hS : IsHermND σ JS) (hT : IsHermND σ JT) {ξ₀ : E} (hξ : ξ₀ ≠ 0)

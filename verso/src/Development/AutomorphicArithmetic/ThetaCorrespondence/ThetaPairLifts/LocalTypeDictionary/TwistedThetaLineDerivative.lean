@@ -21,27 +21,23 @@ namespace GlobalTheory.ThetaLineDeriv
 open GlobalTheory.WeilM GlobalTheory.LFun Filter Topology
 open scoped Classical
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ m f f₁ r hR hD u`. Establish `hS` using `_root_.GlobalTheory.WeilArchSmooth.exists_weilRep_archimedean_smooth_orbit hP G.M B.ψ X.β (X.β / X.α) om hT.base.cm hT.base.std hT.weil γ hγ`. Establish `key : ∀ i, ∃ (v : ℝ → ℂ) (w : ℂ), (∀ t : ℝ, HasSum (fun ξ : Fin a × Fin (a + a') → F => G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑(f i)) (r i))) (fun j => algebraMap F (AF F) (ξ j))) (v t)) ∧ HasSum (fun ξ : Fin a × Fin (a + a') → F => G.M.co.rho B.ψ u …`. Introduce `i`. Distinguish the cases in `h0 : f i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `ht0 : tens (evI F) (⇑(f i)) (r i) = 0` using `by funext x; simp [tens, h0]`. Establish `ht1 : tens (evI F) (⇑(f₁ i)) (r i) = 0`. Use function extensionality and compare the values at `x`. Establish `h` using `hD i (r i) (hR i) x`. Simplify using `only [ht0, map_zero, Pi.zero_apply] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Use `⟨fun _ => 0, 0, fun t => ?_, ?_, hasDerivAt_const _ _⟩` and prove the remaining obligations. Rewrite using `[ht0, map_zero, rho_zero]`. Conclude with `hasSum_zero`. Rewrite using `[ht1, rho_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hasSum_zero`. Take `⟨c, c', hc0, hl, hact⟩` from `hS (f i)`. Take `⟨T, hT'⟩` from `GlobalTheory.ThetaSchrCont.exists_clm_hasSum G.M B.ψ hT.base.std u (f i) (r i) (hR i) h0`. Establish `htens : tens (evI F) (⇑(f₁ i)) (r i) = tens (evI F) (⇑c') (r i)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hD i (r i) (hR i) x`. Establish `h2 : HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑(f i)) (r i)) x) (tens (evI F) (⇑c') (r i) x) 0`. Establish `e : (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑(f i)) (r i)) x) = fun t => c t (fun j => evI F (x j)) * r i x`. Use function extensionality and compare the values at `t`. Rewrite using `[hact t (r i) (hR i)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(hasDerivAt_eval c (f i) c' hc0 hl _).mul_const _`. Conclude with `h1.unique h2`. Use `⟨fun t => T (c t), T c', fun t => ?_, ?_, hasDerivAt_clm c (f i) c' hc0 hl T⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact t (r i) (hR i)]`. Conclude with `hT' (c t)`. Rewrite using `[htens]`. Conclude with `hT' c'`. Use `choose v w hv hw hd using key`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : ∀ t : ℝ, GlobalTheory.WeilM.thetaSum F (G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) (∑ i, tens (evI F) (⇑(f i)) (r i)))) = ∑ i, v i t`. Introduce `t`. Rewrite using `[map_sum, rho_sum]`. Use `HasSum.tsum_eq ?_` and prove the remaining obligations. Use `hasSum_sum (s := Finset.univ) (fun i _ => hv i t) using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `ξ`. Simplify using `[Finset.sum_apply]`. Establish `e2 : GlobalTheory.WeilM.thetaSum F (G.M.co.rho B.ψ u (∑ i, tens (evI F) (⇑(f₁ i)) (r i))) = ∑ i, w i`. Rewrite using `[rho_sum]`. Use `HasSum.tsum_eq ?_` and prove the remaining obligations.
-
-Use `hasSum_sum (s := Finset.univ) (fun i _ => hw i) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ξ`. Simplify using `[Finset.sum_apply]`. Rewrite using `[show (fun t : ℝ => GlobalTheory.WeilM.thetaSum F (G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) (∑ i, tens (evI F) (⇑(f i)) (r i))))) = fun t => ∑ i, v i t from funext e1, e2]`. Establish `hs` using `HasDerivAt.sum (u := Finset.univ) (fun i _ => hd i)`.
-
-Establish `e3 : (fun t : ℝ => ∑ i, v i t) = ∑ i, v i` using `by funext t; simp [Finset.sum_apply]`. Rewrite using `[e3]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_splits_locally : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
@@ -120,7 +116,7 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaLineDeriv.lift_splits_locally | exact _root_.GlobalTheory.ThetaLineDeriv.lift_splits_locally | (intros; apply _root_.GlobalTheory.ThetaLineDeriv.lift_splits_locally <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_theta_line_derivative : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

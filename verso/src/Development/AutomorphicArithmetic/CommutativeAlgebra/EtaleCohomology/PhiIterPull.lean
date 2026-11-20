@@ -13,7 +13,7 @@ namespace UpperTheory.Ru.crystallineComparison
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `congrArg (Submodule.Quotient.mk (p := ((CH.cx F'').B j).submoduleOf ((CH.cx F'').Z j))) (Subtype.ext (h z.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem pull_tri {R : Type} [CommRing R] {C C' C'' : Type 1} [Category.{0} C] [Category.{0} C']
     [Category.{0} C''] {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R} {F'' : C'' ⥤ ModuleCat.{0} R}
@@ -24,7 +24,7 @@ private theorem pull_tri {R : Type} [CommRing R] {C C' C'' : Type 1} [Category.{
   exact congrArg (Submodule.Quotient.mk (p := ((CH.cx F'').B j).submoduleOf ((CH.cx F'').Z j))) (Subtype.ext (h z.1))
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `congrArg (Submodule.Quotient.mk (p := ((CH.cx F).B j).submoduleOf ((CH.cx F).Z j))) (Subtype.ext (h z.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem pull_self {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {F : C ⥤ ModuleCat.{0} R}
     (c : CH.Mor F F (RingHom.id R)) (j : ℕ) (h : ∀ z : CH.Cn F j, c.pullC j z = z) (x : CH.H F j) :
@@ -33,27 +33,27 @@ private theorem pull_self {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] 
   exact congrArg (Submodule.Quotient.mk (p := ((CH.cx F).B j).submoduleOf ((CH.cx F).Z j))) (Subtype.ext (h z.1))
 
 /- English proof (translation)
-The claim follows from `pull_tri (pullMor v n) (pullMor u n) (pullMor (u ≫ v) n) j (fun _ => funext fun _ => rfl) x`.
+A detailed English derivation is pending.
 -/
 private theorem pullH_comp {P P' P'' : PAlg l ⥤ Type} (u : P ⟶ P') (v : P' ⟶ P'') (n j : ℕ) (x : MH P'' n j) :
     pullH (u ≫ v) n j x = pullH u n j (pullH v n j x) :=
   pull_tri (pullMor v n) (pullMor u n) (pullMor (u ≫ v) n) j (fun _ => funext fun _ => rfl) x
 
 /- English proof (translation)
-The claim follows from `pull_self (pullMor (𝟙 P) n) j (fun _ => funext fun _ => rfl) x`.
+A detailed English derivation is pending.
 -/
 private theorem pullH_id (P : PAlg l ⥤ Type) (n j : ℕ) (x : MH P n j) : pullH (𝟙 P) n j x = x :=
   pull_self (pullMor (𝟙 P) n) j (fun _ => funext fun _ => rfl) x
 
 /- English proof (translation)
-The claim follows from `(frEx l ℤ (Spec (CommRingCat.of ℤ)) (𝟙 _) (Int.castRingHom _) (Int.castRingHom _) 0 0 (fun _ => by simp)).2.2 P P' u n j x`.
+A detailed English derivation is pending.
 -/
 private theorem phi_pull' {P P' : PAlg l ⥤ Type} (u : P ⟶ P') (n j : ℕ) (x : MH P' n j) :
     phiH P n j (pullH u n j x) = pullH u n j (phiH P' n j x) :=
   (frEx l ℤ (Spec (CommRingCat.of ℤ)) (𝟙 _) (Int.castRingHom _) (Int.castRingHom _) 0 0 (fun _ => by simp)).2.2 P P' u n j x
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, e]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem iter_semi {A B : Type*} (p : B → B) (r : A → A) (h : A → B) (e : ∀ x, p (h x) = h (r x))
     (m : ℕ) (x : A) : p^[m] (h x) = h (r^[m] x) := by
@@ -62,20 +62,20 @@ private theorem iter_semi {A B : Type*} (p : B → B) (r : A → A) (h : A → B
   | succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, e]
 
 /- English proof (translation)
-Rewrite using `[Nat.mul_succ, Function.iterate_add_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem iter_step {A : Type*} (p : A → A) (f k : ℕ) (x : A) : p^[f * (k + 1)] x = p^[f * k] (p^[f] x) := by
   rw [Nat.mul_succ, Function.iterate_add_apply]
 
 /- English proof (translation)
-The claim follows from `iter_semi _ _ (pullH u n j) (phi_pull' u n j) m x`.
+A detailed English derivation is pending.
 -/
 private theorem phi_iter_pull {P P' : PAlg l ⥤ Type} (u : P ⟶ P') (n j m : ℕ) (x : MH P' n j) :
     (phiH P n j)^[m] (pullH u n j x) = pullH u n j ((phiH P' n j)^[m] x) :=
   iter_semi _ _ (pullH u n j) (phi_pull' u n j) m x
 
 /- English proof (translation)
-Unfold `itE`. Rewrite using `[pow_succ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem itE_succ {P : PAlg l ⥤ Type} (F : P ⟶ P) (k : ℕ) : itE F (k + 1) = F ≫ itE F k := by
   unfold itE
@@ -83,7 +83,7 @@ private theorem itE_succ {P : PAlg l ⥤ Type} (F : P ⟶ P) (k : ℕ) : itE F (
   rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact (pullH_id P n j x).symm`. Consider the case `succ k ih`. Use `(iter_step (phiH P n j) f k x).trans ((congrArg _ hx).trans ((phi_iter_pull F n j (f * k) x).trans ((congrArg (pullH F n j) ih).trans ?_)))` and prove the remaining obligations. Conclude with `(pullH_comp F (itE F k) n j x).symm.trans (congrArg (fun w : P ⟶ P => pullH w n j x) (itE_succ F k).symm)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem phi_iter_itE {P : PAlg l ⥤ Type} (F : P ⟶ P) (f n j : ℕ) (x : MH P n j)
     (hx : (phiH P n j)^[f] x = pullH F n j x) (k : ℕ) :
@@ -99,7 +99,7 @@ end UpperTheory.Ru.crystallineComparison
 
 open UpperTheory.Ru.crystallineComparison in
 /- English proof (translation)
-Introduce `l _ O _ Y q g Q P ρ F f I _ a t k hT n j x hx`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (sumMH l Q (PQ q g) I a (fun i => t i ≫ ρ ≫ itE F (k i)) hT n j x)` and prove the remaining obligations. Use `congrArg (a i • ·) ?_` and prove the remaining obligations. Use `(congrArg (pullH (t i) n j) ((phi_iter_pull ρ n j (f * k i) x).trans (congrArg (pullH ρ n j) (phi_iter_itE F f n j x hx (k i))))).trans ?_` and prove the remaining obligations. Conclude with `((congrArg (pullH (t i) n j) (pullH_comp ρ (itE F (k i)) n j x).symm).trans (pullH_comp (t i) (ρ ≫ itE F (k i)) n j x).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.siteAnn :
     UpperTheory.Ru.crystallineComparison.SiteAnn := by

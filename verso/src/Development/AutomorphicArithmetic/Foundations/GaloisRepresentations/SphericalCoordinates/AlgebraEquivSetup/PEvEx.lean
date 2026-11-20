@@ -11,9 +11,7 @@ open scoped TensorProduct Classical
 namespace UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Introduce `p E _ _ _ T w hw`. Establish `hk : RingHom.ker T.Φ ≤ RingHom.ker (pLoc E w)`. Introduce `x hx`. Conclude with `RingHom.mem_ker.2 (((T.Φ_ker x).1 (RingHom.mem_ker.1 hx)) w hw)`. Use `⟨RingHom.liftOfSurjective T.Φ T.Φ_surj ⟨pLoc E w, hk⟩, fun x => ?_⟩` and prove the remaining obligations.
-
-Conclude with `RingHom.liftOfRightInverse_comp_apply _ _ _ ⟨pLoc E w, hk⟩ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pEvEx : EvEx := by
   intro p E _ _ _ T w hw

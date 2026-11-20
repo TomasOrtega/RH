@@ -2,29 +2,23 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 
 /- English proof (translation)
-Introduce `V G Gi Gv _ _ _ _ _ _ _ _ _ _ _ _ q p K h g`. Establish `comm : ∀ {A : Type} [Group A] {a b : A}, b ∈ Subgroup.centralizer ({a} : Set A) ↔ a * b = b * a`. Introduce `A _ a b`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Conclude with `⟨fun e => e.symm, fun e => e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `key : ∀ x : G, q x ∈ Subgroup.centralizer ({q g} : Set Gi) → (∀ v, p v x ∈ Subgroup.centralizer ({p v g} : Set (Gv v))) → x ∈ Subgroup.centralizer ({g} : Set G)`. Introduce `x h1 h2`. Use `comm.2 (h.ext _ _ ?_ fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `comm.1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul]`. Conclude with `comm.1 (h2 v)`. Use `{ cq := ?_, cp := ?_, opn := ?_, cpt := ?_, ae := ?_, opnU := ?_, ext := ?_, surj := ?_, prop := ?_ }` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (h.cq.comp continuous_subtype_val) _`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Continuous.subtype_mk ((h.cp v).comp continuous_subtype_val) _`. Introduce `v`. Conclude with `(h.opn v).preimage continuous_subtype_val`. Introduce `v`. Establish `hc : IsClosed ((Subgroup.centralizer ({p v g} : Set (Gv v)) : Subgroup (Gv v)) : Set (Gv v))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ((Subgroup.centralizer ({p v g} : Set (Gv v)) : Subgroup (Gv v)) : Set (Gv v)) = {x | p v g * x = x * p v g}`. Use extensionality with `x`. Conclude with `comm`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc.isClosedEmbedding_subtypeVal.isCompact_preimage (h.cpt v)`. Introduce `t`. Conclude with `h.ae t`. Introduce `S`. Conclude with `(h.opnU S).preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `a b h1 h2`. Conclude with `Subtype.ext (h.ext _ _ (congrArg Subtype.val h1) fun v => congrArg Subtype.val (h2 v))`. Introduce `gi gv hv`. Take `⟨x, hx, hx'⟩` from `h.surj gi.1 (fun v => (gv v).1) hv`. Use `⟨⟨x, key x (hx ▸ gi.2) fun v => (hx' v).symm ▸ (gv v).2⟩, Subtype.ext hx, fun v => Subtype.ext (hx' v)⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `Ci C hCi hC hae`. Rewrite using `[Subtype.isCompact_iff]`. Establish `e : Subtype.val '' {t : Subgroup.centralizer ({g} : Set G) | cen q g t ∈ Ci ∧ ∀ v, cen (p v) g t ∈ C v} = {x | q x ∈ Subtype.val '' Ci ∧ ∀ v, p v x ∈ Subtype.val '' C v}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨⟨_, h1, rfl⟩, fun v => ⟨_, h2 v, rfl⟩⟩`. Introduce and unpack `⟨⟨a, ha, ea⟩, h2⟩`. Establish `hx : x ∈ Subgroup.centralizer ({g} : Set G)`. Use `key x (ea ▸ a.2) fun v => ?_` and prove the remaining obligations.
-
-Take `⟨b, -, eb⟩` from `h2 v`. Conclude with `eb ▸ b.2`. Use `⟨⟨x, hx⟩, ⟨?_, fun v => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: cen q g ⟨x, hx⟩ = a` using `Subtype.ext ea.symm`. Rewrite using `[this]`.
-
-Conclude with `ha`. Take `⟨b, hb, eb⟩` from `h2 v`. Establish `: cen (p v) g ⟨x, hx⟩ = b` using `Subtype.ext eb.symm`. Rewrite using `[this]`. Conclude with `hb`.
-
-Rewrite using `[e]`. Use `h.prop _ _ (Subtype.isCompact_iff.1 hCi) (fun v => Subtype.isCompact_iff.1 (hC v)) ?_` and prove the remaining obligations. Use `filter_upwards [hae] with v hv`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `hv hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.restrictedProduct_centralizer_adelicGL :
     RPCen := by

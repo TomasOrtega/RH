@@ -11,38 +11,36 @@ open GroundTheory.Heights₂.Heights.NumbersDVR (MRing IsMultiProjPrime intNum h
   eventualValue)
 
 /- English proof (translation)
-Simplify using `[mixedDiff, diffStep]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mixedDiff_single {K : Type*} (b : K → ℤ) (h : (K → ℤ) → ℤ) (m : K → ℤ) :
     mixedDiff ![b] h m = h m - h (m - b) := by
   simp [mixedDiff, diffStep]
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ W _ β`. Unfold `intNum`. Apply `FieldNumbers.Relabel.eventualValue_congr` to reduce the goal to its premises. Introduce `c`. Establish `key : ∀ M : Unit ⊕ K → ℤ, (∀ j, 0 ≤ M j) → (∀ k, β k ≤ M (Sum.inr k)) → mixedDiff ![IndefiniteRowSideFullHecke.Kleiman2.pullDeg β] (hilbFn (segreLift ι F W)) M = mixedDiff ![β] (hilbFn W) (fun k => M (Sum.inr k) + M (Sum.inl ()))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `M h0 hβ`. Establish `h1 : ∀ j, 0 ≤ (M - IndefiniteRowSideFullHecke.Kleiman2.pullDeg β : Unit ⊕ K → ℤ) j`. Introduce `j`. Break down `j with _ | k` into its components or cases. Simplify `h0 (Sum.inl ())` using `[IndefiniteRowSideFullHecke.Kleiman2.pullDeg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hβ k` using `[IndefiniteRowSideFullHecke.Kleiman2.pullDeg]`. Rewrite using `[mixedDiff_single, mixedDiff_single, hilbFn_segreLift F W M h0, hilbFn_segreLift F W _ h1]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman2.pullDeg, Pi.sub_apply, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Filter.eventually_atTop, Filter.eventually_atTop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨M₀, hM₀⟩`. Use `⟨fun k => max (max (M₀ (Sum.inr k)) 0) (β k) + max (M₀ (Sum.inl ())) 0, fun n hn => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha1` using `le_max_left (M₀ (Sum.inl ())) 0`. Establish `ha2` using `le_max_right (M₀ (Sum.inl ())) 0`. Establish `hb : ∀ k, M₀ (Sum.inr k) + max (M₀ (Sum.inl ())) 0 ≤ n k ∧ 0 + max (M₀ (Sum.inl ())) 0 ≤ n k ∧ β k + max (M₀ (Sum.inl ())) 0 ≤ n k`. Introduce `k`. Use `hn k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `le_max_left (max (M₀ (Sum.inr k)) 0) (β k)` as an intermediate fact. Use `le_max_right (max (M₀ (Sum.inr k)) 0) (β k)` as an intermediate fact. Use `le_max_left (M₀ (Sum.inr k)) 0` as an intermediate fact. Use `le_max_right (M₀ (Sum.inr k)) 0` as an intermediate fact. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `M : Unit ⊕ K → ℤ` to `Sum.elim (fun _ => max (M₀ (Sum.inl ())) 0) (fun k => n k - max (M₀ (Sum.inl ())) 0)`. Establish `hMn : (fun k => M (Sum.inr k) + M (Sum.inl ())) = n`. Use function extensionality and compare the values at `k`. Simplify using `[M]`. Rewrite using `[← hMn, ← key M ?_ ?_]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hM₀` to reduce the goal to its premises. Introduce `j`. Break down `j with _ | k` into its components or cases. Conclude with `ha1`. Use `show M₀ (Sum.inr k) ≤ n k - max (M₀ (Sum.inl ())) 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear relations using `[(hb k).1]`. Introduce `j`. Break down `j with _ | k` into its components or cases. Conclude with `ha2`. Use `show 0 ≤ n k - max (M₀ (Sum.inl ())) 0`.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Combine the linear relations using `[(hb k).2.1]`. Introduce `k show β k ≤ n k - max (M₀ (Sum.inl ())) 0`. Combine the linear relations using `[(hb k).2.2]`. Introduce and unpack `⟨N, hN⟩`. Use `⟨Sum.elim (fun _ => 0) (fun k => max (max (N k) 0) (β k)), fun M hM => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMl : 0 ≤ M (Sum.inl ())` using `hM (Sum.inl ())`. Establish `hMr : ∀ k, max (max (N k) 0) (β k) ≤ M (Sum.inr k)` using `fun k => hM (Sum.inr k)`. Establish `h0 : ∀ j, 0 ≤ M j`. Introduce `j`. Break down `j with _ | k` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hMl`. Conclude with `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (hMr k)`. Establish `hβ : ∀ k, β k ≤ M (Sum.inr k)` using `fun k => le_trans (le_max_right _ _) (hMr k)`. Rewrite using `[key M h0 hβ]`. Apply `hN` to reduce the goal to its premises.
-
-Introduce `k`. Use `show N k ≤ M (Sum.inr k) + M (Sum.inl ())`. Use `le_trans (le_trans (le_max_left (N k) 0) (le_max_left _ (β k))) (hMr k)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem SegreLiftIntNum.proof : SegreLiftIntNum.Statement := by
   intro F _ K _ _ ι _ W _ β
@@ -117,7 +115,7 @@ theorem SegreLiftIntNum.proof : SegreLiftIntNum.Statement := by
     linarith
 
 /- English proof (translation)
-The claim follows from `SegreLiftIntNum.proof ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftIntNum.hyps 1`.
+A detailed English derivation is pending.
 -/
 example : intNum ℚ (segreLift (fun _ : Unit => Fin 2) ℚ ⊥) ![IndefiniteRowSideFullHecke.Kleiman2.pullDeg 1] =
     intNum ℚ (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) ![1] :=

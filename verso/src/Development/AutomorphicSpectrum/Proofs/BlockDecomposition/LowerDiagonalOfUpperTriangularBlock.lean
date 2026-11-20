@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.MuC.LeftCell
 variable {D : D7} {p : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, Matrix.mul_apply, ← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type]`. Simplify using `only [blk4, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem upper_triangular_block_mul_lower_rows (a b d : Mx D p p) (N : Mx D (p + p) (p + p)) (k : Fin p → Fin (p + p)) :
     (blk4 a b 0 d * N).submatrix (fun i : Fin p => finSumFinEquiv (Sum.inr i)) k =
@@ -23,16 +23,16 @@ theorem upper_triangular_block_mul_lower_rows (a b d : Mx D p p) (N : Mx D (p + 
     Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [lowD, h, blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lowerDiagonal_of_upper_triangular_block {a b d : Mx D p p} {q : G D p} (h : mat q = blk4 a b 0 d) : lowD q = d := by
   ext i j
   simp only [lowD, h, blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]
 
 /- English proof (translation)
-Take `⟨b, d, hm⟩` from `GlobalTheory.StdUnn.LeftInvSect.siegelParabolicUnn_matrix_blockUpperTriangular hq`. Establish `hd` using `lowerDiagonal_of_upper_triangular_block hm`. Rewrite using `[hd]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `(mat (q * g)).submatrix _ _ = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, hm]`. Conclude with `upper_triangular_block_mul_lower_rows _ _ _ _ _`. Express the relevant statement in the definitionally equal form `(mat (q * g)).submatrix _ _ = _`. Rewrite using `[GlobalTheory.StdUnn.LeftInvSect.mat_mul, hm]`. Conclude with `upper_triangular_block_mul_lower_rows _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem low_mul {q : G D p} (hq : q ∈ P D p) (g : G D p) :
     lowC (q * g) = lowD q * lowC g ∧ lowD (q * g) = lowD q * lowD g := by
@@ -48,14 +48,14 @@ theorem low_mul {q : G D p} (hq : q ∈ P D p) (g : G D p) :
     exact upper_triangular_block_mul_lower_rows _ _ _ _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[lowD, GlobalTheory.StdUnn.LeftInvSect.mat_one, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lowD_one : lowD (1 : G D p) = 1 := by
   ext i j
   simp [lowD, GlobalTheory.StdUnn.LeftInvSect.mat_one, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h` using `(low_mul ((P D p).inv_mem hq) q).2`. Rewrite `h` using `[inv_mul_cancel, lowD_one]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowD_inv_mul {q : G D p} (hq : q ∈ P D p) : lowD q⁻¹ * lowD q = 1 := by
   have h := (low_mul ((P D p).inv_mem hq) q).2
@@ -63,9 +63,9 @@ theorem lowD_inv_mul {q : G D p} (hq : q ∈ P D p) : lowD q⁻¹ * lowD q = 1 :
   exact h.symm
 
 /- English proof (translation)
-Take `⟨⟨y, hy⟩, hx⟩` from `h`. Take `⟨hC, hD⟩` from `low_mul hq g`. Use `⟨⟨mm y (lowD q⁻¹), ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(y * lowD q⁻¹) * lowC (q * g) = _`. Express the relevant statement in the definitionally equal form `y * lowC g = _ at hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hC, Matrix.mul_assoc, ← Matrix.mul_assoc (lowD q⁻¹), lowD_inv_mul hq, Matrix.one_mul, hy]`. Express the relevant statement in the definitionally equal form `lowC (q * g) * x.1.1 = _`. Express the relevant statement in the definitionally equal form `lowC g * x.1.1 = _ at hx`. Rewrite using `[hC, hD, Matrix.mul_assoc, hx, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isB_mul {e : AE D} {q g : G D p} (hq : q ∈ P D p) {x : hermS D p e} (h : IsB e g x) :
     IsB e (q * g) x := by
@@ -80,7 +80,7 @@ theorem isB_mul {e : AE D} {q g : G D p} (hq : q ∈ P D p) {x : hermS D p e} (h
     rw [hC, hD, Matrix.mul_assoc, hx, Matrix.mul_smul]
 
 /- English proof (translation)
-Introduce `D p e q g hq x`. Use `⟨fun h => ?_, isB_mul hq⟩` and prove the remaining obligations. Establish `h'` using `isB_mul ((P D p).inv_mem hq) h`. Rewrite `h'` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isB_left : ∀ {D : D7} {p : ℕ} {e : AE D} {q g : G D p} (hq : q ∈ P D p) (x : hermS D p e),
     IsB e (q * g) x ↔ IsB e g x := by

@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CentEig
 
 /- English proof (translation)
-Introduce `φ hφ`. Take `⟨hc, hu⟩` from `hm`. Break down `N with _ | n` into its components or cases. Take `rfl : m = 0` from `Multiset.card_eq_zero.1 hc`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨l, rfl⟩` from `Quot.exists_rep m`. Use `GlobalTheory.CompanionTheory.CapelliTrace.trace_of_qdet (Eop τ) l (by simpa using hc) φ fun v => ?_` and prove the remaining obligations. Use `hu (v - (n : ℂ) / 2) φ hφ` as an intermediate fact. Rewrite `this` using `[cap, show v - (n : ℂ) / 2 + (((n + 1 : ℕ) : ℂ) - 1) / 2 = v by push_cast; ring]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_Eop_eq_of_hasInfCharGL {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
     {V : Submodule ℂ (Sm E N)} {τ : E →+* ℂ} {m : Multiset ℂ} (hm : HasInfCharGL V τ m) :

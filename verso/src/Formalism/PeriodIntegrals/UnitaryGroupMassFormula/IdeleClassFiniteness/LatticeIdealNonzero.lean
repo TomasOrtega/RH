@@ -13,7 +13,7 @@ def IsIntU (b : (FiniteAdeleRing (𝓞 F) F)ˣ) : Prop :=
   ∀ w : HeightOneSpectrum (𝓞 F), Valued.v ((b : FiniteAdeleRing (𝓞 F) F) w) ≤ 1
 
 /- English proof (translation)
-Take `⟨r, hr, hmem⟩` from `exists_ne_zero_mem b`. Introduce `h`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hr hmem`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latI_ne_bot (b : (FiniteAdeleRing (𝓞 F) F)ˣ) : latI b ≠ ⊥ := by
   obtain ⟨r, hr, hmem⟩ := exists_ne_zero_mem b
@@ -27,9 +27,7 @@ def latticeIdealNonzero (b : (FiniteAdeleRing (𝓞 F) F)ˣ) : nonZeroDivisors (
 def cls (b : (FiniteAdeleRing (𝓞 F) F)ˣ) : ClassGroup (𝓞 F) := ClassGroup.mk0 (latticeIdealNonzero b)
 
 /- English proof (translation)
-Unfold `cls at h`. Rewrite `h` using `[ClassGroup.mk0_eq_mk0_iff]`. Take `⟨x, y, hx, hy, hxy⟩` from `h`. Use `⟨x, y, hx, hy, fun v => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `val_le_of_le b b0 hb (le_of_eq hxy) v`.
-
-Conclude with `val_le_of_le b0 b hb0 (le_of_eq hxy.symm) v`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_eq_of_cls (b b0 : (FiniteAdeleRing (𝓞 F) F)ˣ) (hb : IsIntU b) (hb0 : IsIntU b0)
     (h : cls b = cls b0) : ∃ x y : 𝓞 F, x ≠ 0 ∧ y ≠ 0 ∧ ∀ v : HeightOneSpectrum (𝓞 F),
@@ -49,29 +47,25 @@ namespace PIW.ClassFinD
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Icf
 
 /- English proof (translation)
-Introduce `F _ _`. Set `rep : ClassGroup (𝓞 F) → (FiniteAdeleRing (𝓞 F) F)ˣ` to `fun κ => if h : ∃ b : (FiniteAdeleRing (𝓞 F) F)ˣ, IsIntU b ∧ cls b = κ then h.choose else 1`. Use `⟨Finset.univ.image rep, fun a => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hra⟩` from `Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.AdeleIntA.exists_den (a : FiniteAdeleRing (𝓞 F) F)`. Establish `hrF : algebraMap (𝓞 F) F r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hr`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `ur : (FiniteAdeleRing (𝓞 F) F)ˣ` to `Units.map (algebraMap F (FiniteAdeleRing (𝓞 F) F) : F →* FiniteAdeleRing (𝓞 F) F) (Units.mk0 _ hrF)`. Set `b` to `ur * a`. Establish `hbw : ∀ w : HeightOneSpectrum (𝓞 F), Valued.v ((b : FiniteAdeleRing (𝓞 F) F) w) = w.intValuation r * Valued.v ((a : FiniteAdeleRing (𝓞 F) F) w)`. Introduce `w`. Rewrite using `[Units.val_mul, v_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `v_algR r w`. Establish `hb : IsIntU b`. Introduce `w`. Establish `h1 : Valued.v ((algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) r * (a : FiniteAdeleRing (𝓞 F) F)) w) ≤ 1` using `hra w`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[v_mul, v_algR]`. Rewrite using `[hbw w]`. Conclude with `h1`. Establish `hex : ∃ b' : (FiniteAdeleRing (𝓞 F) F)ˣ, IsIntU b' ∧ cls b' = cls b` using `⟨b, hb, rfl⟩`. Establish `hb0 : IsIntU (rep (cls b)) ∧ cls (rep (cls b)) = cls b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [rep, dif_pos hex]`. Conclude with `hex.choose_spec`. Take `⟨x, y, hx, hy, hv⟩` from `val_eq_of_cls b (rep (cls b)) hb hb0.1 hb0.2.symm`. Establish `hxF : algebraMap (𝓞 F) F x ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hx`. Establish `hyF : algebraMap (𝓞 F) F y ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : Fˣ` to `Units.mk0 (algebraMap (𝓞 F) F y / (algebraMap (𝓞 F) F x * algebraMap (𝓞 F) F r)) (div_ne_zero hyF (mul_ne_zero hxF hrF))`. Set `uf : (FiniteAdeleRing (𝓞 F) F)ˣ` to `Units.map (algebraMap F (FiniteAdeleRing (𝓞 F) F) : F →* FiniteAdeleRing (𝓞 F) F) f`. Set `e : (FiniteAdeleRing (𝓞 F) F)ˣ` to `(uf * rep (cls b))⁻¹ * a`. Establish `hE : ∀ w : HeightOneSpectrum (𝓞 F), Valued.v ((e : FiniteAdeleRing (𝓞 F) F) w) = 1`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX : w.intValuation x ≠ 0`. Rewrite using `[← valuation_of_algebraMap (K := F)]`. Conclude with `(Valuation.ne_zero_iff _).2 hxF`. Establish `hY : w.intValuation y ≠ 0`. Rewrite using `[← valuation_of_algebraMap (K := F)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Valuation.ne_zero_iff _).2 hyF`. Establish `hR : w.intValuation r ≠ 0`. Rewrite using `[← valuation_of_algebraMap (K := F)]`. Conclude with `(Valuation.ne_zero_iff _).2 hrF`. Establish `hUF : Valued.v ((uf : FiniteAdeleRing (𝓞 F) F) w) = w.intValuation y / (w.intValuation x * w.intValuation r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. Establish an intermediate fact.
 
-Establish `: Valued.v ((uf : FiniteAdeleRing (𝓞 F) F) w) = w.valuation F (algebraMap (𝓞 F) F y / (algebraMap (𝓞 F) F x * algebraMap (𝓞 F) F r))` using `v_algF _ w`. Rewrite using `[this, map_div₀, map_mul, valuation_of_algebraMap, valuation_of_algebraMap, valuation_of_algebraMap]`. Establish `hV : Valued.v ((uf : FiniteAdeleRing (𝓞 F) F) w) * Valued.v (((rep (cls b)) : FiniteAdeleRing (𝓞 F) F) w) = Valued.v ((a : FiniteAdeleRing (𝓞 F) F) w)`. Rewrite using `[hUF, div_mul_eq_mul_div, div_eq_iff (mul_ne_zero hX hR), ← hv w, hbw w]`. The two sides agree by associativity and commutativity.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hV0 : Valued.v ((uf : FiniteAdeleRing (𝓞 F) F) w) ≠ 0` using `v_unit_ne uf w`. Establish `hB0 : Valued.v (((rep (cls b)) : FiniteAdeleRing (𝓞 F) F) w) ≠ 0` using `v_unit_ne _ w`. Rewrite using `[Units.val_mul, v_mul, v_inv, Units.val_mul, v_mul, hV, inv_mul_cancel₀ (v_unit_ne a w)]`. Use `⟨f, rep (cls b), Finset.mem_image.2 ⟨cls b, Finset.mem_univ _, rfl⟩, e, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`.
-
-Conclude with `(hE w).le`. Introduce `w`. Establish `: Valued.v (((e⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) w) = 1`. Rewrite using `[v_inv, hE w, inv_one]`. Conclude with `this.le`.
-
-Conclude with `(mul_inv_cancel_left (uf * rep (cls b)) a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idele_class_finite : IdeleClassFin := by
   intro F _ _

@@ -27,7 +27,7 @@ def lker (l : ℕ) : Subgroup M where
     exact ⟨by rw [map_inv, ha, inv_one], m, by rw [inv_pow, hm, inv_one]⟩
 
 /- English proof (translation)
-Rewrite using `[pow_add, pow_mul, h, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_pow_eq_one {x : M} {m : ℕ} (h : x ^ l ^ m = 1) (j : ℕ) : x ^ l ^ (m + j) = 1 := by
   rw [pow_add, pow_mul, h, one_pow]
@@ -35,9 +35,9 @@ theorem pow_pow_eq_one {x : M} {m : ℕ} (h : x ^ l ^ m = 1) (j : ℕ) : x ^ l ^
 variable {φ}
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `hl.out`. Establish `h1 : orderOf k ∣ Nat.card φ.ker` using `Subgroup.orderOf_dvd_natCard _ hk`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hp).1 (orderOf_dvd_of_pow_eq_one hm)`. Establish `hpos : 0 < Nat.card φ.ker` using `Nat.card_pos_iff.2 ⟨⟨⟨1, map_one φ⟩⟩, inferInstance⟩`. Establish `h2 : j ≤ Nat.card φ.ker` using `((Nat.lt_pow_self hp.one_lt).trans_le (Nat.le_of_dvd hpos (hj ▸ h1))).le`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `orderOf_dvd_iff_pow_eq_one.1 (hj ▸ pow_dvd_pow l h2)`.
+A detailed English derivation is pending.
 -/
 theorem kill [Finite φ.ker] {k : M} (hk : φ k = 1) {m : ℕ} (hm : k ^ l ^ m = 1) :
     k ^ l ^ Nat.card φ.ker = 1 := by
@@ -50,11 +50,11 @@ theorem kill [Finite φ.ker] {k : M} (hk : φ k = 1) {m : ℕ} (hm : k ^ l ^ m =
   exact orderOf_dvd_iff_pow_eq_one.1 (hj ▸ pow_dvd_pow l h2)
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `hl.out`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite `hy` using `[pow_zero, pow_one]`. Conclude with `⟨1, by rw [map_one, hy], 0, one_pow _⟩`. Take `⟨x₀, rfl⟩` from `hs y`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < Nat.card φ.ker` using `Nat.card_pos_iff.2 ⟨⟨⟨1, map_one φ⟩⟩, inferInstance⟩`. Establish `hk : x₀ ^ l ^ n ∈ φ.ker` using `by rw [MonoidHom.mem_ker, map_pow, hy]`. Establish `hc : (x₀ ^ l ^ n) ^ Nat.card φ.ker = 1` using `orderOf_dvd_iff_pow_eq_one.1 (Subgroup.orderOf_dvd_natCard _ hk)`. Take `⟨e, u, hu, hcu⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hpos.ne' l hp.one_lt.ne'`. Establish `hcop : Nat.Coprime u (l ^ n)` using `Nat.Coprime.pow_right n (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 hu))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, -, hw⟩` from `Nat.exists_mul_mod_eq_one_of_coprime hcop (Nat.one_lt_pow hn.ne' hp.one_lt)`. Use `⟨x₀ ^ (u * w), ?_, n + e, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, pow_eq_pow_mod _ hy, hw, pow_one]`. Rewrite using `[← pow_mul, show u * w * l ^ (n + e) = l ^ n * Nat.card φ.ker * w by rw [hcu, pow_add]; ring, pow_mul, pow_mul, hc, one_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem exists_lift (hs : Function.Surjective φ) [Finite φ.ker] (n : ℕ) (y : N) (hy : y ^ l ^ n = 1) :
     ∃ x : M, φ x = y ∧ ∃ m : ℕ, x ^ l ^ m = 1 := by
@@ -77,7 +77,7 @@ theorem exists_lift (hs : Function.Surjective φ) [Finite φ.ker] (n : ℕ) (y :
       pow_mul, pow_mul, hc, one_pow]
 
 /- English proof (translation)
-Establish `h1 : φ (x * x'⁻¹) = 1` using `by rw [map_mul, map_inv, h, mul_inv_cancel]`. Establish `h2 : (x * x'⁻¹) ^ l ^ (m + m') = 1`. Rewrite using `[mul_pow, inv_pow, pow_pow_eq_one hx, add_comm, pow_pow_eq_one hx', inv_one, _root_.one_mul]`. Establish `h3` using `kill h1 h2`. Rewrite `h3` using `[mul_pow, inv_pow, mul_inv_eq_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem indep [Finite φ.ker] {x x' : M} (h : φ x = φ x') {m m' : ℕ} (hx : x ^ l ^ m = 1)
     (hx' : x' ^ l ^ m' = 1) : x ^ l ^ Nat.card φ.ker = x' ^ l ^ Nat.card φ.ker := by
@@ -93,7 +93,7 @@ include hs
 def lift (t : Tate l N) (n : ℕ) : M := (exists_lift hs n (t.lev n) (t.lev_pow n)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_lift hs n (t.lev n) (t.lev_pow n)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem lift_spec (t : Tate l N) (n : ℕ) : φ (lift hs t n) = t.lev n ∧ ∃ m : ℕ, lift hs t n ^ l ^ m = 1 :=
   (exists_lift hs n (t.lev n) (t.lev_pow n)).choose_spec
@@ -101,7 +101,7 @@ theorem lift_spec (t : Tate l N) (n : ℕ) : φ (lift hs t n) = t.lev n ∧ ∃ 
 def del (t : Tate l N) : M := lift hs t (Nat.card φ.ker) ^ l ^ Nat.card φ.ker
 
 /- English proof (translation)
-Take `⟨h1, m', h2⟩` from `lift_spec hs t (Nat.card φ.ker)`. Conclude with `indep (h1.trans hx.symm) h2 hm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem del_eq (t : Tate l N) {x : M} (hx : φ x = t.lev (Nat.card φ.ker)) {m : ℕ} (hm : x ^ l ^ m = 1) :
     del hs t = x ^ l ^ Nat.card φ.ker := by
@@ -109,7 +109,7 @@ theorem del_eq (t : Tate l N) {x : M} (hx : φ x = t.lev (Nat.card φ.ker)) {m :
   exact indep (h1.trans hx.symm) h2 hm
 
 /- English proof (translation)
-Take `⟨h1, m, h2⟩` from `lift_spec hs t (Nat.card φ.ker)`. Use `⟨by rw [del, map_pow, h1, t.lev_pow], m, ?_⟩` and prove the remaining obligations. Rewrite using `[del, ← pow_mul, mul_comm, pow_mul, h2, one_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem del_mem (t : Tate l N) : del hs t ∈ lker φ l := by
   obtain ⟨h1, m, h2⟩ := lift_spec hs t (Nat.card φ.ker)
@@ -135,9 +135,9 @@ def delta : Tate l N →+ Additive (lker φ l) where
     · rw [mul_pow]; rfl
 
 /- English proof (translation)
-Introduce `k0`. Use `set a := Nat.card φ.ker`. Take `⟨⟨k, hk1, m, hm⟩, rfl⟩ : ∃ z : lker φ l, Additive.ofMul z = k0` from `⟨Additive.toMul k0, rfl⟩`. Take `⟨s, hsa⟩` from `GlobalTheory.Published.tate_lev_surj l M hd a k (kill hk1 hm)`. Set `t : Tate l N` to `Tate.mk (fun n => φ (s.lev (n + a))) fun n => ⟨by rw [← map_pow, add_comm, s.lev_add_pow, hsa, hk1], by rw [← map_pow, add_right_comm, s.lev_succ]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Use `show Additive.ofMul _ = Additive.ofMul _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(del_eq hs t (x := s.lev (a + a)) (m := a + a) rfl (s.lev_pow _)).trans ((s.lev_add_pow a a).trans hsa)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem delta_surjective (hd : ∀ x : M, ∃ y, y ^ l = x) : Function.Surjective (delta (l := l) hs) := by
   intro k0
@@ -154,17 +154,15 @@ theorem delta_surjective (hd : ∀ x : M, ∃ y, y ^ l = x) : Function.Surjectiv
     ((s.lev_add_pow a a).trans hsa)
 
 /- English proof (translation)
-Use `set a := Nat.card φ.ker`. Use extensionality with `t`. Establish `e0 : t ∈ (delta hs).ker ↔ del hs t = 1`. Rewrite using `[AddMonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `congrArg Subtype.val (congrArg Additive.toMul h)`. Introduce `h show Additive.ofMul _ = Additive.ofMul (1 : lker φ l)`. Conclude with `congrArg Additive.ofMul (Subtype.ext h)`. Rewrite using `[e0, Submodule.mem_toAddSubgroup, LinearMap.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `lv : ∀ n, (lift hs t (n + a) ^ l ^ n) ^ l ^ a = 1` using `fun n => by`. Take `⟨h1, m, h2⟩` from `lift_spec hs t (n + a)`. Rewrite using `[← h, del_eq hs t (x := lift hs t (n + a) ^ l ^ n) (m := m) (by rw [map_pow, h1, add_comm, t.lev_add_pow]) (by rw [← pow_mul, mul_comm, pow_mul, h2, one_pow])]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `y : Tate l M` to `Tate.mk (fun n => lift hs t (n + a) ^ l ^ a) fun n => by`. Use `⟨by rw [← pow_mul, mul_comm, pow_mul]; exact lv n, ?_⟩` and prove the remaining obligations. Take `⟨h1, m, h2⟩` from `lift_spec hs t (n + 1 + a)`. Take `⟨h1', m', h2'⟩` from `lift_spec hs t (n + a)`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `indep (m := m) (m' := m') ?_ (by rw [← pow_mul, mul_comm, pow_mul, h2, one_pow]) h2'` and prove the remaining obligations. Rewrite using `[map_pow, h1, h1', show n + 1 + a = (n + a) + 1 by omega, t.lev_succ]`. Use `⟨y, Tate.ext fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[Tate.lev_map, Tate.lev_mk, map_pow, (lift_spec hs t (n + a)).1, t.lev_add_pow]`. Introduce and unpack `⟨y, rfl⟩`.
-
-Conclude with `(del_eq hs _ (x := y.lev a) (m := a) rfl (y.lev_pow a)).trans (y.lev_pow a)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem delta_ker : (delta hs).ker = (LinearMap.range (Tate.map l φ)).toAddSubgroup := by
   set a := Nat.card φ.ker
@@ -197,7 +195,7 @@ theorem delta_ker : (delta hs).ker = (LinearMap.range (Tate.map l φ)).toAddSubg
 
 omit hs in
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun y hy => Tate.ext fun n => ?_` and prove the remaining obligations. Establish `h1 : ∀ k, φ (y.lev k) = 1` using `fun k => congrArg (·.lev k) hy`. Rewrite using `[Tate.lev_zero, ← y.lev_add_pow n (Nat.card φ.ker)]`. Conclude with `kill (h1 _) (y.lev_pow _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_injective' : Function.Injective (Tate.map l φ) := by
   refine (injective_iff_map_eq_zero _).2 fun y hy => Tate.ext fun n => ?_
@@ -212,7 +210,7 @@ namespace GlobalTheory
 open GlobalTheory.TateCoker in
 
 /- English proof (translation)
-Introduce `l _ M N _ _ φ hd hs hf`. Use `⟨map_injective', ?_⟩` and prove the remaining obligations. Establish `e1 : (Tate l N ⧸ LinearMap.range (Tate.map l φ)) ≃ (Tate l N ⧸ (LinearMap.range (Tate.map l φ)).toAddSubgroup)` using `Equiv.refl _`. Rewrite using `[Nat.card_congr e1, Nat.card_congr (QuotientAddGroup.quotientAddEquivOfEq (delta_ker hs)).symm.toEquiv, Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective _ (delta_surjective hs hd)).toEquiv]`. Conclude with `Nat.card_congr (Additive.toMul.trans (Equiv.refl _))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tate_map_coker_card : ∀ (l : ℕ) [Fact l.Prime] (M N : Type) [CommGroup M] [CommGroup N] (φ : M →* N), (∀ x : M, ∃ y, y ^ l = x) → Function.Surjective φ → Finite φ.ker → Function.Injective (Tate.map l φ) ∧ Nat.card (Tate l N ⧸ LinearMap.range (Tate.map l φ)) = Nat.card {x : M // φ x = 1 ∧ ∃ n : ℕ, x ^ l ^ n = 1} := by
   intro l _ M N _ _ φ hd hs hf

@@ -11,11 +11,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.Xi.RankOneLeviIdentities
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `lt_of_lt_of_le ha h1`. Establish `hau : 0 < a + u` using `by linarith`. Establish `hav : 0 < a + v` using `by linarith`. Establish `hmono : ∀ {x e : ℝ}, 0 < x → x ≤ 2 * N → 0 ≤ e → (2 * N) ^ (-e) ≤ x ^ (-e)`. Introduce `x e hx hxN he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Real.rpow_neg (by linarith), Real.rpow_neg hx.le]`. Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hx e) (Real.rpow_le_rpow hx.le hxN he)`. Establish `e1 : (2 * N) ^ (-p) ≤ (a + u) ^ (-p)` using `hmono hau (by linarith) hp`. Establish `e2 : (2 * N) ^ (-q) ≤ (a + v) ^ (-q)` using `hmono hav (by linarith) hq`. Establish `key : 2 ^ (p + q) * ((2 * N) ^ (-p) * (2 * N) ^ (-q)) = N ^ (-(p + q))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_add (by positivity : (0:ℝ) < 2 * N), Real.mul_rpow (by norm_num : (0:ℝ) ≤ 2) hN.le, ← mul_assoc, ← Real.rpow_add (by norm_num : (0:ℝ) < 2), show p + q + (-p + -q) = (0:ℝ) by ring, Real.rpow_zero, one_mul, neg_add]`. Rewrite using `[← key]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul e1 e2 (by positivity) (by positivity)) (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_bound {N a u v p q : ℝ} (ha : 0 < a) (hu : 0 ≤ u) (hv : 0 ≤ v) (hp : 0 ≤ p) (hq : 0 ≤ q)
     (h1 : a ≤ N) (h2 : u ≤ N) (h3 : v ≤ N) :
@@ -37,9 +37,7 @@ theorem pt_bound {N a u v p q : ℝ} (ha : 0 < a) (hu : 0 ≤ u) (hv : 0 ≤ v) 
   exact mul_le_mul_of_nonneg_left (mul_le_mul e1 e2 (by positivity) (by positivity)) (by positivity)
 
 /- English proof (translation)
-Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Simplify using `only [liftVec]`. Use `split_ifs`. Conclude with `continuous_apply _`.
-
-Conclude with `continuous_const`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftVec_cont (k r' : ℕ) : Continuous fun y : Fin (2 * r' + k + 1) → ℂ => liftVec k 1 r' y := by
   apply continuous_pi
@@ -52,9 +50,9 @@ theorem liftVec_cont (k r' : ℕ) : Continuous fun y : Fin (2 * r' + k + 1) → 
 def heisM (k r' : ℕ) : HPar k r' → Mt k (1 + r') := fun x => heis0 k r' x
 
 /- English proof (translation)
-Establish `hl` using `liftVec_cont k r'`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [heisM, heis0, heisG, hb, herm, Matrix.add_apply, Matrix.sub_apply, Matrix.vecMulVec_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, dotProduct, Matrix.mulVec, Pi.star_apply]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heisenberg_map_continuous (k r' : ℕ) : Continuous (heisM k r') := by
   have hl := liftVec_cont k r'
@@ -67,9 +65,9 @@ theorem heisenberg_map_continuous (k r' : ℕ) : Continuous (heisM k r') := by
   fun_prop
 
 /- English proof (translation)
-Establish `hz : liftVec k 1 r' 0 = 0`. Use function extensionality and compare the values at `p`. Simplify using `only [liftVec, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Use extensionality with `i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Simplify using `[heis0, heisG, hb, herm, hz, Matrix.vecMulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heisenberg_at_zero (k r' : ℕ) : heis0 k r' (0, 0) = 1 := by
   have hz : liftVec k 1 r' 0 = 0 := by
@@ -80,9 +78,9 @@ theorem heisenberg_at_zero (k r' : ℕ) : heis0 k r' (0, 0) = 1 := by
   simp [heis0, heisG, hb, herm, hz, Matrix.vecMulVec]
 
 /- English proof (translation)
-Establish `h` using `hCL k r' g hg (0, 0)`. Simplify using `only [heisenberg_at_zero, mul_one, Matrix.mulVec_zero] at h`. Use `first`. Consider the case `exact Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse h)`. Consider the case `exact mul_eq_one_comm.mp h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Matrix.mul_eq_one_comm).1 h`.
+A detailed English derivation is pending.
 -/
 theorem ιLev_inv_mul (hCL : HeisConjLev) (k r' : ℕ) (g : Mat k r') (hg : g ∈ GV k r') :
     (ιLev k 1 r' g)⁻¹ * ιLev k 1 r' g = 1 := by
@@ -94,7 +92,7 @@ theorem ιLev_inv_mul (hCL : HeisConjLev) (k r' : ℕ) (g : Mat k r') (hg : g �
   | exact (Matrix.mul_eq_one_comm).1 h
 
 /- English proof (translation)
-Simplify using `only [gN]`. Conclude with `Real.continuous_sqrt.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gN_cont (k n : ℕ) : Continuous fun M : Mat k n => gN M := by
   simp only [gN]
@@ -102,13 +100,13 @@ theorem gN_cont (k n : ℕ) : Continuous fun M : Mat k n => gN M := by
     Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))
 
 /- English proof (translation)
-Establish `hinv : (ιLev k 1 r' g)⁻¹ * ιLev k 1 r' g = 1` using `ιLev_inv_mul hCL k r' g hg`. Establish `hgN` using `gN_cont k (1 + r')`. Establish `hcm : Continuous fun M : Mt k (1 + r') => w0 k r' c * Matrix.of M * ιLev k 1 r' g` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `hH : Measurable fun M : Mt k (1 + r') => ENNReal.ofReal (gN (w0 k r' c * Matrix.of M * ιLev k 1 r' g) ^ (-A))` using `((hgN.comp hcm).measurable.pow_const _).ennreal_ofReal`. Establish `hcc : Continuous (conjM (ιLev k 1 r' g) : Mt k (1 + r') → Mt k (1 + r'))` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : Measurable (conjM (ιLev k 1 r' g) : Mt k (1 + r') → Mt k (1 + r'))` using `hcc.measurable`. Establish `hheis : Measurable (heisM k r')` using `(heisenberg_map_continuous k r').measurable`. Establish `hL : ∀ x : HPar k r', ENNReal.ofReal (gN (w0 k r' c * ιLev k 1 r' g * heis0 k r' x) ^ (-A)) = (fun M : Mt k (1 + r') => ENNReal.ofReal (gN (w0 k r' c * Matrix.of M * ιLev k 1 r' g) ^ (-A))) (conjM (ιLev k 1 r' g) (heis0 k r' x))`. Introduce `x`. Establish `e : w0 k r' c * Matrix.of (conjM (ιLev k 1 r' g) (heis0 k r' x)) * ιLev k 1 r' g = w0 k r' c * ιLev k 1 r' g * heis0 k r' x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `w0 k r' c * (ιLev k 1 r' g * heis0 k r' x * (ιLev k 1 r' g)⁻¹) * ιLev k 1 r' g = w0 k r' c * ιLev k 1 r' g * heis0 k r' x`. Simplify using `only [mul_assoc, hinv, mul_one]`. Simplify using `only [e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hCM k r' g hg]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ x : HPar k r', ENNReal.ofReal (gN (w0 k r' c * Matrix.of (heis0 k r' x : Mt k (1 + r')) * ιLev k 1 r' g) ^ (-A)) := lintegral_map hH hheis`. Use `_ = _ := rfl`.
+A detailed English derivation is pending.
 -/
 theorem int_conj (hCL : HeisConjLev) (hCM : HeisConjLevMeas) (k r' : ℕ) (A : ℝ) (c : ℂ) (g : Mat k r')
     (hg : g ∈ GV k r') :
@@ -151,13 +149,11 @@ theorem int_conj (hCL : HeisConjLev) (hCM : HeisConjLevMeas) (k r' : ℕ) (A : �
     _ = _ := rfl
 
 /- English proof (translation)
-Establish `hf₁ : Measurable fun y : Fin (2 * r' + k + 1) → ℂ => ENNReal.ofReal ((a + b₁ * ‖y‖) ^ (-p))` using `((measurable_const.add (measurable_const.mul measurable_norm)).pow_const _).ennreal_ofReal`. Establish `hf₂ : Measurable fun s : ℝ => ENNReal.ofReal ((a + b₂ * ‖s‖) ^ (-q))` using `((measurable_const.add (measurable_const.mul measurable_norm)).pow_const _).ennreal_ofReal`. Establish `hX : 0 ≤ K₁ * a ^ (-p) * (a / b₁) ^ e₁` using `mul_nonneg (mul_nonneg hK₁0 (Real.rpow_nonneg ha.le _)) (Real.rpow_nonneg (div_pos ha hb₁).le _)`. Establish `h2A : (0 : ℝ) ≤ 2 ^ A` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `lintegral_mono fun x => (hF x).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul h2A, ENNReal.ofReal_mul (Real.rpow_nonneg (add_nonneg ha.le (mul_nonneg hb₁.le (norm_nonneg _))) _)]`. Use `_ = ENNReal.ofReal (2 ^ A) * ((∫⁻ y : Fin (2 * r' + k + 1) → ℂ, ENNReal.ofReal ((a + b₁ * ‖y‖) ^ (-p))) * ∫⁻ s : ℝ, ENNReal.ofReal ((a + b₂ * ‖s‖) ^ (-q))) := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lintegral_prod_mul (μ := (volume : Measure (Fin (2 * r' + k + 1) → ℂ))) (ν := (volume : Measure ℝ)) hf₁.aemeasurable hf₂.aemeasurable`. Use `_ ≤ ENNReal.ofReal (2 ^ A) * (ENNReal.ofReal (K₁ * a ^ (-p) * (a / b₁) ^ e₁) * ENNReal.ofReal (K₂ * a ^ (-q) * (a / b₂) ^ e₂)) := by gcongr`. Conclude with `hK₁ a b₁ ha hb₁`. Conclude with `hK₂ a b₂ ha hb₂`. Use `_ = _ := by`.
-
-Rewrite using `[← ENNReal.ofReal_mul hX, ← ENNReal.ofReal_mul h2A]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem int_prod (k r' : ℕ) {A p q K₁ K₂ e₁ e₂ : ℝ} (hK₁0 : 0 ≤ K₁) (hK₂0 : 0 ≤ K₂)
     (hK₁ : ∀ a b : ℝ, 0 < a → 0 < b → ∫⁻ y : Fin (2 * r' + k + 1) → ℂ, ENNReal.ofReal ((a + b * ‖y‖) ^ (-p)) ≤
@@ -197,27 +193,27 @@ theorem int_prod (k r' : ℕ) {A p q K₁ K₂ e₁ e₂ : ℝ} (hK₁0 : 0 ≤ 
         ring
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d : ℝ, d = ((4 * r' + 2 * k + 3 : ℕ) : ℝ)` from `⟨_, rfl⟩`. Rewrite `hA`, the goal using `[← hd]`. Establish `hd3 : (3 : ℝ) ≤ d` using `by rw [hd]; norm_cast; omega`. Establish `hE : (Module.finrank ℝ (Fin (2 * r' + k + 1) → ℂ) : ℝ) = d - 1`. Rewrite using `[Module.finrank_pi_fintype]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Rewrite using `[hd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨p, hp⟩ : ∃ p : ℝ, p = d - 1 + (A - d) / 2` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩ : ∃ q : ℝ, q = 1 + (A - d) / 2` from `⟨_, rfl⟩`. Establish `hpq : p + q = A` using `by rw [hp, hq]; ring`. Establish `hp0 : 0 ≤ p` using `by rw [hp]; linarith`. Establish `hq0 : 0 ≤ q` using `by rw [hq]; linarith`. Take `⟨K₁, hK₁0, hK₁⟩` from `scale_int (volume : Measure (Fin (2 * r' + k + 1) → ℂ)) (r := p) (by rw [hE, hp]; linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K₂, hK₂0, hK₂⟩` from `scale_int (volume : Measure ℝ) (r := q) (by simp only [Module.finrank_self, Nat.cast_one]; rw [hq]; linarith)`. Rewrite `hK₁` using `[hE]`. Simplify using `only [Module.finrank_self, Nat.cast_one] at hK₂`. Use `⟨2 ^ A * K₁ * K₂, fun c hc g hg => ?_⟩` and prove the remaining obligations. Establish `ha : 0 < gN g` using `lt_of_lt_of_le zero_lt_one (hGL k r' g hg)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc0 : 0 < ‖c‖` using `norm_pos_iff.2 hc`. Establish `B1` using `int_prod k r' hK₁0 hK₂0 hK₁ hK₂ (fun x => ENNReal.ofReal (gN (w0 k r' c * ιLev k 1 r' g * heis0 k r' x) ^ (-A))) ha hc0 hc0 (fun x => by`. Take `⟨h1, h2, h3⟩` from `pt_un k r' c g x hHA`. Rewrite `h3` using `[← Real.norm_eq_abs]`. Use `pt_bound ha (mul_nonneg hc0.le (norm_nonneg _)) (mul_nonneg hc0.le (norm_nonneg _)) hp0 hq0 h1 h2 h3` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hpq]`. Conclude with `ENNReal.ofReal_le_ofReal this)`. Establish `B2` using `int_prod k r' hK₁0 hK₂0 hK₁ hK₂ (fun x => ENNReal.ofReal (gN (w0 k r' c * heis0 k r' x * ιLev k 1 r' g) ^ (-A))) ha one_pos hc0 (fun x => by`. Take `⟨h1, h2, h3⟩` from `pt_conj k r' c g x hHA`. Rewrite `h3` using `[← Real.norm_eq_abs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← one_mul ‖x.1‖]`. Use `pt_bound ha (by positivity) (mul_nonneg hc0.le (norm_nonneg _)) hp0 hq0 h1 h2 h3` as an intermediate fact. Rewrite `this` using `[hpq]`. Conclude with `ENNReal.ofReal_le_ofReal this)`. Rewrite `B2` using `[← int_conj hCL hCM k r' A c g hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ea : gN g ^ (d - A) = gN g ^ (-p) * gN g ^ (d - 1) * gN g ^ (-q) * gN g ^ (1 : ℝ)`. Rewrite using `[← Real.rpow_add ha, ← Real.rpow_add ha, ← Real.rpow_add ha]`. Use `congr 1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `E1 : 2 ^ A * (K₁ * gN g ^ (-p) * (gN g / ‖c‖) ^ (d - 1)) * (K₂ * gN g ^ (-q) * (gN g / ‖c‖) ^ (1 : ℝ)) = 2 ^ A * K₁ * K₂ * ‖c‖ ^ (-d) * gN g ^ (d - A)`.
+Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ec : ‖c‖ ^ (-d) = ‖c‖ ^ (-(d - 1)) * ‖c‖ ^ (-(1 : ℝ))`. Rewrite using `[← Real.rpow_add hc0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Real.div_rpow ha.le hc0.le, Real.div_rpow ha.le hc0.le, ea, ec, Real.rpow_neg hc0.le, Real.rpow_neg hc0.le]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `E2 : 2 ^ A * (K₁ * gN g ^ (-p) * (gN g / 1) ^ (d - 1)) * (K₂ * gN g ^ (-q) * (gN g / ‖c‖) ^ (1 : ℝ)) = 2 ^ A * K₁ * K₂ * ‖c‖⁻¹ * gN g ^ (d - A)`. Rewrite using `[div_one, Real.div_rpow ha.le hc0.le, ea, Real.rpow_one, Real.rpow_one]`. Expand and normalize the polynomial expressions, which then agree. Break down `le_total (‖c‖ ^ (-d)) ‖c‖⁻¹ with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_left h, ← E1]`. Conclude with `B1`. Rewrite using `[min_eq_right h, ← E2]`. Conclude with `B2`.
+A detailed English derivation is pending.
 -/
 theorem eInt_bound' (hGL : GNLower) (hHA : HeisAct) (hCL : HeisConjLev) (hCM : HeisConjLevMeas)
     (k r' : ℕ) (A : ℝ) (hA : ((4 * r' + 2 * k + 3 : ℕ) : ℝ) < A) :

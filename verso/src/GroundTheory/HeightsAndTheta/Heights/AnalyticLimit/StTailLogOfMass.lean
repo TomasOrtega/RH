@@ -30,7 +30,7 @@ open ReciprocityTheory.AnForm.M (p1 fsPot projLine_isSmoothPotential projLine_is
 open ReciprocityTheory.AnForm.M.PLC (locDens_congr_phi mInt_congr_phi)
 
 /- English proof (translation)
-The claim follows from `add_zero _`.
+A detailed English derivation is pending.
 -/
 theorem potForm_fsPot_zero_φ (i : Fin 1) (a b : OnePoint ℂ) :
     ((fun _ : Fin 1 => potForm fsPot fun _ => (0 : ℝ)) i).φ a b = ((fun _ : Fin 1 => fsPot) i).φ a b :=

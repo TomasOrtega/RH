@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.Cartier.PullPres
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_germ h, ← algebraMap_germ (show q (genericPoint X) ∈ U from h), functionFieldMap_algebraMap, Scheme.Hom.germ_stalkMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fnOf_app {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (q : X ⟶ W) [IsDominant q]
     {U : W.Opens} (h : genericPoint X ∈ q ⁻¹ᵁ U) (a : Γ(W, U)) :
@@ -28,7 +28,7 @@ theorem fnOf_app {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (q : X ⟶ W) 
     functionFieldMap_algebraMap, Scheme.Hom.germ_stalkMap_apply]
 
 /- English proof (translation)
-The claim follows from `(fnOf_resG le hV _).trans (fnOf_app q (le hV) _)`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_res_pullU {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (q : X ⟶ W) [IsDominant q]
     {U : W.Opens} {V : X.Opens} (le : V ≤ q ⁻¹ᵁ U) (hV : genericPoint X ∈ V) (u : Γ(W, U)ˣ) :
@@ -37,9 +37,9 @@ theorem fnOf_res_pullU {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (q : X �
   (fnOf_resG le hV _).trans (fnOf_app q (le hV) _)
 
 /- English proof (translation)
-Use `⟨pull_isLB (isLB_toLB E) q, fun J K h => ?_, fun J x hx => hDE _ _ ((J PUnit.unit).2.2 _ (mem_pull.1 hx)) x rfl⟩` and prove the remaining obligations. Establish `le : ((toLB E).pull q).U J ⊓ ((toLB E).pull q).U K ≤ q ⁻¹ᵁ ((toLB E).U (J PUnit.unit) ⊓ (toLB E).U (K PUnit.unit))` using `fun y hy => ⟨mem_pull.1 hy.1, mem_pull.1 hy.2⟩`. Establish `hg : ((toLB E).pull q).g J K = res le (pullU q _ ((toLB E).g (J PUnit.unit) (K PUnit.unit)))`. Simplify using `only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hg, fnOf_res_pullU, fnOf_toLB_g]`. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, map_div₀]`. Conclude with `(div_mul_cancel₀ _ ((map_ne_zero _).2 (Units.ne_zero _))).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem presents_pull {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (q : X ⟶ W) [IsDominant q]
     (D : CartierDiv X) (E : CartierDiv W)
@@ -57,7 +57,7 @@ theorem presents_pull {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (q : X �
   exact (div_mul_cancel₀ _ ((map_ne_zero _).2 (Units.ne_zero _))).symm
 
 /- English proof (translation)
-Introduce `X W _ _ q _ D E hDE`. Rewrite using `[← cls_pull (isLB_toLB E) q (pull_isLB (isLB_toLB E) q), ← (presents_pull q D E hDE).toPic_eq, toPic_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_cls_toLB : ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (q : X ⟶ W) [IsDominant q]
     (D : CartierDiv X) (E : CartierDiv W),

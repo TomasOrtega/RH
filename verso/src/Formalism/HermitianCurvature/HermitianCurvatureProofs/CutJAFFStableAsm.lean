@@ -10,13 +10,11 @@ open NumberField Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.C
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ _ v Θ hΘ J hJ`. Take `⟨hDom, hPos⟩` from `hO E Wp Wq S T v`. Establish `hG'` using `hG S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Θ`. Establish `hsupp : ∀ f' : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)), tsupport f' ⊆ OmP S T v → B.SuppIn (B.GPos (T v).base) f'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f' hs x hx`. Establish `hxG : x ∈ B.GV S.G.k S.G.r` using `(Formalism.FourierDecayAlt.P.B5.GV_closed (k := S.G.k) (r := S.G.r)).closure_subset_iff.2 (fun y hy => hy.1) hx`. Establish `hxT : x ∈ tsupport f'` using `closure_mono (fun y hy => hy.2) hx`. Conclude with `hPos x (hs hxT) hxG`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `hQ hE _ _ _ _ (T v).base (OmP S T v) (B.opApply Θ) hDom (fun U f₁ f₂ hU he g hg hgG => (hG'.1 U f₁ f₂ hU he g hg hgG).1) (fun c f₁ g _ => (hG'.2 c f₁ g).1) (fun f₁ hf hs => (hS _ _ _ _ (T v).base Θ _ hDom.1 hPos hΘ.1 f₁ hf hs).1) ?_ J hJ` and prove the remaining obligations. Introduce `f₁ hf _ _ p hp g hg hgG`. Conclude with `hΘ.2 p hp f₁ (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hf) g (hPos g hg hgG)`. Use `hQ hE _ _ _ _ (T v).base (OmP S T v) (B.opAdj Θ) hDom (fun U f₁ f₂ hU he g hg hgG => (hG'.1 U f₁ f₂ hU he g hg hgG).2) (fun c f₁ g _ => (hG'.2 c f₁ g).2) (fun f₁ hf hs => (hS _ _ _ _ (T v).base Θ _ hDom.1 hPos hΘ.1 f₁ hf hs).2) ?_ J hJ` and prove the remaining obligations. Introduce `f₁ hf hc hs p hp g hg hgG`.
-
-Conclude with `hA _ _ _ _ (T v).base Θ hΘ.1 hΘ.2 f₁ hf hc (hsupp f₁ hs) p hp g (hPos g hg hgG)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jAFFStable_of_parts (hG : GermOps) (hE : ExtLoc) (hS : SmoothOps) (hA : AdjComm) (hQ : EquivOps)
     (hO : OmPDom) : JAFFStable := by

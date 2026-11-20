@@ -15,7 +15,7 @@ variable {L : Type} [Field L] [NumberField L] {K : Type} [Field K] [NumberField 
   {E : Type} [AddCommGroup E] [Module (𝓞 L) E]
 
 /- English proof (translation)
-Rewrite using `[baseChangeCoord_tmul, TensorProduct.smul_tmul']`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem coord_one_tmul (τ : K →+* ℂ) (b : 𝓞 K) (e : E) :
     baseChangeCoord τ ((1 : ComplexAt τ) ⊗ₜ[𝓞 K] (b ⊗ₜ[𝓞 L] e)) =
@@ -24,9 +24,9 @@ theorem coord_one_tmul (τ : K →+* ℂ) (b : 𝓞 K) (e : E) :
   congr 1
 
 /- English proof (translation)
-Proceed by induction on `X using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c e`. Rewrite using `[TensorProduct.smul_tmul', coord_one_tmul, coord_one_tmul, smul_eq_mul, smul_smul]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add X Y hX hY => rw [smul_add, tmul_add, map_add, hX, hY, tmul_add, map_add, smul_add]`.
+Treat this case separately.
 -/
 theorem coord_smul (τ : K →+* ℂ) (b : 𝓞 K) (X : 𝓞 K ⊗[𝓞 L] E) :
     baseChangeCoord τ ((1 : ComplexAt τ) ⊗ₜ[𝓞 K] (b • X)) =
@@ -39,26 +39,26 @@ theorem coord_smul (τ : K →+* ℂ) (b : 𝓞 K) (X : 𝓞 K ⊗[𝓞 L] E) :
   | add X Y hX hY => rw [smul_add, tmul_add, map_add, hX, hY, tmul_add, map_add, smul_add]
 
 /- English proof (translation)
-Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_def, complex_smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_tmul_smul (σ : L →+* ℂ) (a : 𝓞 L) (e : E) :
     (1 : ComplexAt σ) ⊗ₜ[𝓞 L] (a • e) = σ (a : L) • ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] e) := by
   rw [← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_def, complex_smul_def]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, ⟨y, rfl⟩, rfl⟩` from `hx`. Take `⟨D, a, hD, hDy, ha⟩` from `hc y`. Use `⟨(1 : 𝓞 K) ⊗ₜ[𝓞 L] (y : E), fun τ => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coord_one_tmul]`. Establish `hD' : ((D : 𝓞 L) : L) ≠ 0` using `by exact_mod_cast hD`. Establish `hσ : (τ.comp (algebraMap L K)) (D : L) ≠ 0` using `(map_ne_zero _).2 hD'`. Establish `h1 : D • (y : E) = ∑ j, a j • (f j : E)`. Use `congrArg Subtype.val hDy` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `H : (τ.comp (algebraMap L K)) (D : L) • ((1 : ComplexAt (τ.comp (algebraMap L K))) ⊗ₜ[𝓞 L] (y : E)) = (τ.comp (algebraMap L K)) (D : L) • ∑ j, τ (algebraMap L K (c y j)) • ((1 : ComplexAt (τ.comp (algebraMap L K))) ⊗ₜ[𝓞 L] (f j : E))`. Rewrite using `[← one_tmul_smul, h1, tmul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[one_tmul_smul, smul_smul, ← ha j, map_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `H2` using `congrArg (fun v => ((τ.comp (algebraMap L K)) (D : L))⁻¹ • v) H`. Simplify using `only [inv_smul_smul₀ hσ] at H2`. Simplify using `using H2`. Consider the case `zero => exact ⟨0, fun τ => by simp⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨X, hX⟩` from `hx`. Take `⟨Y, hY⟩` from `hy`. Use `⟨X + Y, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[tmul_add, map_add, hX, hY, ← Finset.sum_add_distrib]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add, add_smul]`. Consider the case `smul b x _ hx`. Take `⟨X, hX⟩` from `hx`. Use `⟨b • X, fun τ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coord_smul, hX, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, Pi.smul_apply, Algebra.smul_def, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift (F : Submodule (𝓞 L) E) {i : ℕ} (f : Fin i → F) (c : F →ₗ[𝓞 L] (Fin i → L))
     (hc : ∀ x, ∃ (D : 𝓞 L) (a : Fin i → 𝓞 L), D ≠ 0 ∧ D • x = ∑ j, a j • f j ∧
@@ -108,11 +108,11 @@ theorem exists_lift (F : Submodule (𝓞 L) E) {i : ℕ} (f : Fin i → F) (c : 
     rw [smul_smul, Pi.smul_apply, Algebra.smul_def, map_mul]
 
 /- English proof (translation)
-Introduce `L _ _ B F i f c hc K _ _ _ x hx`. Take `⟨X, hX⟩` from `exists_lift F f c hc x hx`. Use `⟨X, fun τ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `inner ℂ (FibreSpace.equiv B.metric (τ.comp (algebraMap L K)) (baseChangeCoord τ ((1 : ComplexAt τ) ⊗ₜ[𝓞 K] X))) (FibreSpace.equiv B.metric (τ.comp (algebraMap L K)) (baseChangeCoord τ ((1 : ComplexAt τ) ⊗ₜ[𝓞 K] X))) = _`. Rewrite using `[hX τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right]`. Simplify using `only [dotProduct, mulVec, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : gramMat B (τ.comp (algebraMap L K)) (fun j => (f j : B.carrier)) a b = inner ℂ (FibreSpace.equiv B.metric (τ.comp (algebraMap L K)) ((1 : ComplexAt (τ.comp (algebraMap L K))) ⊗ₜ[𝓞 L] (f a : B.carrier))) (FibreSpace.equiv B.metric (τ.comp (algebraMap L K)) ((1 : ComplexAt (τ.c …` using `rfl`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lift_length : ∀ (L : Type) [Field L] [NumberField L] (B : HermitianBundle.{0} L) (F : Submodule (𝓞 L) B.carrier) (i : ℕ) (f : Fin i → F) (c : F →ₗ[𝓞 L] (Fin i → L)), (∀ x, ∃ (D : 𝓞 L) (a : Fin i → 𝓞 L), D ≠ 0 ∧ D • x = ∑ j, a j • f j ∧ ∀ j, (D : L) * c x j = a j) → ∀ (K : Type) [Field K] [NumberField K] [Algebra L K] (x : Fin i → K), x ∈ Submodule.span (𝓞 K) ((fun (w : Fin i → L) j => algebraMap L K (w j)) '' (LinearMap.range c : Submodule (𝓞 L) (Fin i → L))) → ∃ X : (B.baseChange K).carrier, ∀ τ : K →+* ℂ, ((B.baseChange K).metric.form τ).inner ((1 : ComplexAt τ) ⊗ₜ[𝓞 K] X) ((1 : ComplexAt τ) ⊗ₜ[𝓞 K] X) = star (fun j => τ (x j)) ⬝ᵥ (gramMat B (τ.comp (algebraMap L K)) (fun j => (f j : B.carrier)) *ᵥ fun j => τ (x j)) := by
   intro L _ _ B F i f c hc K _ _ _ x hx

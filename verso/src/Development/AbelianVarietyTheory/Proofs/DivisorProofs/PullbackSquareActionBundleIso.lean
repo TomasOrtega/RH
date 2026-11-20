@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.RealMult.PullPol
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ φ₂ ≫ (fst G G).left = φ₂ ≫ (lift (snd G G) (fst G G)).left ≫ (fst G G).left`. Rewrite using `[hs.1, ← Over.comp_left, lift_fst, hs.2, ← Category.assoc, ← Over.comp_left, lift_fst]`. Express the relevant statement in the definitionally equal form `_ ≫ φ₂ ≫ (snd G G).left = φ₂ ≫ (lift (snd G G) (fst G G)).left ≫ (snd G G).left`. Rewrite using `[hs.2, ← Over.comp_left, lift_snd, hs.1, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ : G'.left ⟶ G.left}
     {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (hs : IsSquare φ φ₂) :
@@ -28,7 +28,7 @@ theorem swap_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ : G'.left 
     rw [hs.2, ← Over.comp_left, lift_snd, hs.1, ← Category.assoc, ← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ φ₂ ≫ (fst G G).left = φ₂ ≫ (lift (fst G G) (snd G G ≫ u)).left ≫ (fst G G).left`. Rewrite using `[hs.1, ← Category.assoc, ← Over.comp_left, lift_fst, ← Over.comp_left, lift_fst, hs.1]`. Express the relevant statement in the definitionally equal form `_ ≫ φ₂ ≫ (snd G G).left = φ₂ ≫ (lift (fst G G) (snd G G ≫ u)).left ≫ (snd G G).left`. Rewrite using `[hs.2, ← Category.assoc, ← Over.comp_left, lift_snd, ← Over.comp_left, lift_snd, Over.comp_left, Over.comp_left, Category.assoc, hu, ← Category.assoc, ← hs.2, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ : G'.left ⟶ G.left}
     {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (hs : IsSquare φ φ₂) (u' : G' ⟶ G') (u : G ⟶ G)
@@ -48,11 +48,11 @@ namespace GlobalTheory.RealMult.PullPol
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 S S' X b A' _ _ φ _ rm' hact φ₂ hs c c' a`. Establish `hP` using `X.isLB`. Use `⟨(cls_eq_iff (pull_isLB (hP c) φ₂) (pull_isLB (pull_isLB (hP c) φ₂) _)).1 ?_, (cls_eq_iff (pull_isLB (hP c') φ₂) (LB.isLB_div (pull_isLB (hP _) φ₂) (pull_isLB (hP c) φ₂))).1 ?_, (cls_eq_iff (pull_isLB (hP _) φ₂) (pull_isLB (pull_isLB (hP c) φ₂) _)).1 ?_⟩` and prove the remaining obligations. Establish `h` using `(cls_eq_iff (hP c) (pull_isLB (hP c) _)).2 (X.symm c)`. Rewrite `h` using `[cls_pull (hP c)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[cls_pull (pull_isLB (hP c) φ₂), cls_pull (hP c), ← GlobalTheory.CechPic.pull_comp, swap_comp hs, GlobalTheory.CechPic.pull_comp, ← h]`. Establish `h` using `(cls_eq_iff (hP c') (LB.isLB_div (hP _) (hP c))).2 (X.add c c')`. Rewrite using `[cls_div (pull_isLB (hP _) φ₂) (pull_isLB (hP c) φ₂), cls_pull (hP c'), cls_pull (hP _), cls_pull (hP c), h, cls_div (hP _) (hP c), map_sub]`. Establish `h` using `(cls_eq_iff (hP _) (pull_isLB (hP c) _)).2 (X.smul a c)`. Rewrite `h` using `[cls_pull (hP c)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[cls_pull (pull_isLB (hP c) φ₂), cls_pull (hP c), ← GlobalTheory.CechPic.pull_comp, act_comp hs _ _ (hact a), GlobalTheory.CechPic.pull_comp, ← h, cls_pull (hP _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pol_pull : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S) (A' : Over S') [GrpObj A'] [IsCommMonObj A']
     (φ : A'.left ⟶ X.A.left), IsGrpPullback A' X.A b φ → ∀ (rm' : OAct (𝓞 F) A'),

@@ -44,20 +44,20 @@ structure Ctx : Prop where
 variable {W}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C.hbij, C.hs, C.hp2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ctx.hCA (C : Ctx W) : Formalism.MainNotions.LiftingTheory.CaseA W := ⟨C.hbij, C.hs, C.hp2⟩
 
 /- English proof (translation)
-Establish `h5T` using `C.h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)`. Take `⟨y, hyN, hya, rfl⟩` from `hx`. Rewrite using `[one_smul]`. Establish `hyl : y ∈ W.Nl T (a + 1)` using `⟨y, hyN.1, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact hya⟩`. Establish `h1` using `Formalism.MainNotions.UnusedSlot80.ArcC.iter_down W C.hs T h5T (a + 1) 1 y hyl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.prod_range_one, pow_zero, AlgHom.one_apply, Nat.cast_zero, sub_zero, Nat.cast_one, add_sub_cancel_right]`. Take `⟨w, hw, w', hww, -⟩` from `q_unit W C.hR C.hp0`. Establish `hp0w : ps W 0 = w' * W.q` using `by rw [hw, ← mul_assoc, mul_comm w', hww, one_mul]`. Take `⟨dd, hdd⟩` from `Nat.exists_eq_add_of_le hN₁`. Establish `e1 : ps W 0 ^ N₁ • y = (w' ^ N₁ * W.q ^ dd) • (W.q ^ Hw A.G₀ A.S A.η (A.ty (a + 1)) • y)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hp0w, smul_smul, hdd]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `Submodule.smul_mem _ (w' ^ N₁ * W.q ^ dd) h1`. Rewrite `h2` using `[← e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨r, bb0, hb0, huniq, -⟩, -⟩` from `C.hmod T hT.1`. Establish `h3` using `Formalism.MainNotions.UnusedSlot80.ArcC.span_pow_le W T bb0 (fun z hz => (huniq z hz).exists) a 1 h2`. Take `⟨cc, hcc⟩` from `(Submodule.mem_span_range_iff_exists_fun (LetA O n)).1 h3`. Establish `hbΔ : ∀ j, Formalism.MainNotions.LiftingTheory.InNΔi W T a ((letE a : LetA O n) • bb0 j)` using `fun j => ⟨Formalism.MainNotions.UnusedSlot80.PhiPowers.smul_mem_NΔ W T (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) (hb0 j), ⟨bb0 j, (hb0 j).1, by rw [LinearMap.smul_apply, LinearMap.id_apply]⟩⟩`. Establish `hp0Δ : ps W 0 ^ N₁ ∈ W.AΔ` using `W.AΔ.pow_mem (ps_mem_AΔ W C.hR.1 0) N₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨dd, hd, hzd⟩` from `Formalism.MainNotions.WachCoordinates.Br.average C.hΔ cc (fun j => (W.φD T ^ 1 : Module.End O (W.DD T)) ((letE a : LetA O n) • bb0 j)) (fun j δ hδ => φD_pow_Δ W T (hbΔ j).1.2 1 δ hδ) (fun δ hδ => (Formalism.MainNotions.UnusedSlot80.PhiPowers.smul_mem_NΔ W T hp0Δ hyN).2 δ hδ) hcc. …`. Use `⟨r, fun j => (letE a : LetA O n) • bb0 j, dd, hbΔ, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[hzd]`. Simplify using `only [pow_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_smul_pow_eq_sum_of_inFNc (C : Ctx W) (T : LocLat G Qp LL O) (A : ArcP n) (hA : A.OK) (hT : Win W A T) (a : ZMod n)
     (N₁ : ℕ) (hN₁ : Hw A.G₀ A.S A.η (A.ty (a + 1)) ≤ N₁) (x : W.DD T) (hx : InFNc W T (a + 1) 1 x) :
@@ -93,17 +93,17 @@ theorem exists_smul_pow_eq_sum_of_inFNc (C : Ctx W) (T : LocLat G Qp LL O) (A : 
   simp only [pow_one]
 
 /- English proof (translation)
-Establish `h5T` using `C.h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)`. Take `⟨y', hy'N, hy'l, rfl⟩` from `hy`. Rewrite using `[one_smul]`. Establish `hQ : W.Q = W.q` using `by simp [LocWach.Q, C.hs]`. Establish `hyl : y' ∈ W.Nl T (a + 1 - 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel_right]`. Conclude with `⟨y', hy'N.1, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact hy'l⟩`. Establish `hM` using `h5T.1 (a + 1) y' hyl`. Rewrite `hM` using `[hQ]`. Take `⟨w, hw, w', hww, -⟩` from `q_unit W C.hR C.hp0`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hp0w : ps W 0 = w' * W.q` using `by rw [hw, ← mul_assoc, mul_comm w', hww, one_mul]`. Establish `hN : (ps W 0 ^ H * vv) • W.φD T y' ∈ W.N T`. Take `⟨dd, hdd⟩` from `Nat.exists_eq_add_of_le hH`. Establish `e1 : (ps W 0 ^ H * vv) • W.φD T y' = (w' ^ H * W.q ^ dd * vv) • (W.q ^ Mw A.G₀ A.S A.η (A.ty (a + 1)) • W.φD T y')`. Rewrite using `[hp0w, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[hdd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `(W.N T).smul_mem _ hM`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΔ : ∀ δ ∈ W.DelF, W.γD T δ ((ps W 0 ^ H * vv) • W.φD T y') = (ps W 0 ^ H * vv) • W.φD T y'`. Introduce `δ hδ`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA', (W.AΔ.mul_mem (W.AΔ.pow_mem (ps_mem_AΔ W C.hR.1 0) H) hv) δ hδ, ← W.φγ_comm, hy'N.2 δ hδ]`. Use `⟨_, ⟨hN, hΔ⟩, ?_, by rw [one_smul]⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `φD_pow_letter W T a y' hy'l 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem up1 (C : Ctx W) (T : LocLat G Qp LL O) (A : ArcP n) (hA : A.OK) (hT : Win W A T) (a : ZMod n)
     (H : ℕ) (hH : Mw A.G₀ A.S A.η (A.ty (a + 1)) ≤ H) {vv : LetA O n} (hv : vv ∈ W.AΔ) (y : W.DD T)

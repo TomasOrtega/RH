@@ -10,33 +10,31 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberF
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Set `e : K ≃ₜ (W → ℂ)` to `hΦ.homeomorph`. Establish `he : ∀ x, e x = Φ x` using `fun _ => rfl`. Set `H : (Fin 1 → Fin M → K) ≃ₜ (Fin 1 → Fin M → W → ℂ)` to `Homeomorph.piCongrRight fun _ => Homeomorph.piCongrRight fun _ => e`. Set `P : Set (Fin 1 → Fin M → W → ℂ)` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall 0 1`. Establish `hP : IsCompact P` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ y, y ∈ H ⁻¹' P ↔ ∀ a i w, ‖Φ (y a i) w‖ ≤ 1`. Introduce `y`. Simplify using `only [Set.mem_preimage, P, Set.mem_pi, Set.mem_univ, true_imp_iff, mem_closedBall_zero_iff]`. Both sides reduce to the same expression. Use `⟨H ⁻¹' P, H.isCompact_preimage.mpr hP, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨z₀, hz₀⟩`. Establish `hsum : ∀ w, ∑ i, Φ (z₀ i) w * Φ (y 0 i) w = 1`. Introduce `w`. Use `congrFun (congrArg Φ hz₀) w` as an intermediate fact. Simplify `this` using `[dotProduct, map_sum, Finset.sum_apply]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmax : ∀ w, ∃ i, (∀ j, ‖Φ (y 0 j) w‖ ≤ ‖Φ (y 0 i) w‖) ∧ Φ (y 0 i) w ≠ 0`. Introduce `w`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, Φ (y 0 i) w ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `hsum w` as an intermediate fact. Simplify using `[hall] at this`. Use `haveI : Nonempty (Fin M) := ⟨i₀⟩`. Take `⟨i, hi⟩` from `Finite.exists_max fun j => ‖Φ (y 0 j) w‖`. Use `⟨i, hi, fun h0 => hi₀ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hi i₀` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `norm_le_zero_iff.mp this`. Use `choose I hI hI0 using hmax`. Set `u : W → ℂ` to `fun w => Φ (y 0 (I w)) w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu : ∀ w, u w ≠ 0` using `hI0`. Set `a : Kˣ` to `{ val := Φ.symm fun w => (u w)⁻¹ inv := Φ.symm u val_inv := by`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Simplify using `[hu w]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `inv_val := by`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Simplify using `[hu w] }`. Establish `hΦa : ∀ w, Φ (a : K) w = (u w)⁻¹` using `fun w => by simp [a]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `z : Fin 1 → Fin M → K` to `fun _ i => Φ.symm fun w => if I w = i then 1 else 0`. Establish `hΦz : ∀ b i w, Φ (z b i) w = if I w = i then 1 else 0` using `fun b i w => by simp [z]`. Use `⟨a, z, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Introduce `b i w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `rfl : b = 0` from `Subsingleton.elim _ _`. Establish `: Φ (((a : K) • y) 0 i) w = (u w)⁻¹ * Φ (y 0 i) w`. Simplify using `[hΦa]`. Rewrite using `[this, norm_mul, norm_inv]`. Establish `hpos : 0 < ‖u w‖` using `norm_pos_iff.mpr (hu w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[inv_mul_le_iff₀ hpos, mul_one]`. Conclude with `hI w i`. Rewrite using `[hmem]`. Introduce `b i w`. Rewrite using `[hΦz b i w]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Establish `h1 : ∀ i, Φ (z 0 i) w * Φ (((a : K) • y) 0 i) w = if I w = i then (u w)⁻¹ * Φ (y 0 i) w else 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: Φ (((a : K) • y) 0 i) w = (u w)⁻¹ * Φ (y 0 i) w` using `by simp [hΦa]`. Rewrite using `[this, hΦz 0 i w]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [dotProduct, map_sum, Finset.sum_apply, map_mul, Pi.mul_apply, map_one, Pi.one_apply]`. Rewrite using `[Finset.sum_congr rfl fun i _ => h1 i]`.
-
-Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `inv_mul_cancel₀ (hu w)`.
+A detailed English derivation is pending.
 -/
 theorem reduce_of_equiv {K : Type} [CommRing K] [TopologicalSpace K] {W : Type} [Fintype W]
     (Φ : K ≃+* (W → ℂ)) (hΦ : IsHomeomorph Φ) (M : ℕ) :
@@ -125,11 +123,11 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨-, hC, -, hτ⟩` from `h`. Set `τ₀ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Establish `hnr : ¬ ComplexEmbedding.IsReal τ₀` using `fun hr => InfinitePlace.not_isReal_iff_isComplex.mpr (hC.isComplex (InfinitePlace.mk τ₀)) (InfinitePlace.isReal_mk_iff.mpr hr)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, σ x ≠ x := by`. Assume the negation of the conclusion as `hall`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hall`. Apply `hnr` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hτ τ₀ x` as an intermediate fact. Rewrite `this` using `[hall x]`. Conclude with `this.symm`. Establish `hσσ : ∀ x, σ (σ x) = x` using `fun x => τ₀.injective (by rw [hτ, hτ, star_star])`. Use `⟨x - σ x, by simp [hσσ], sub_ne_zero.mpr (Ne.symm hx)⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_delta (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ δ : E, σ δ = -δ ∧ δ ≠ 0 := by
   obtain ⟨-, hC, -, hτ⟩ := h
@@ -151,17 +149,17 @@ theorem exists_delta (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ δ : E, σ 
   refine ⟨x - σ x, by simp [hσσ], sub_ne_zero.mpr (Ne.symm hx)⟩
 
 /- English proof (translation)
-Establish `hli : LinearIndependent F ![(1 : E), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h2 : s • (1 : E) - t • δ = 0`. Use `congrArg σ.toLinearMap hst` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_add, LinearMap.map_smul, LinearMap.map_smul, map_zero]`. Simplify using `only [AlgHom.toLinearMap_apply, map_one, hδ, smul_neg] at this`. Rewrite using `[sub_eq_add_neg]` and apply the resulting hypothesis. Establish `h3 : (2 * t) • δ = 0`. Establish `: (2 * t) • δ = (s • (1 : E) + t • δ) - (s • (1 : E) - t • δ)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_smul, two_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hst, h2, sub_zero]`. Establish `ht : t = 0`. Break down `smul_eq_zero.mp h3 with h4 | h4` into its components or cases.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using h4`. Conclude with `absurd h4 h0`. Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `using hst`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E`. Rewrite using `[h.2.2.1]`. Both sides reduce to the same expression. Use `⟨basisOfLinearIndependentOfCardEqFinrank hli hcard, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_basis (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {δ : E} (hδ : σ δ = -δ) (h0 : δ ≠ 0) :
     ∃ b : Module.Basis (Fin 2) F E, b 0 = 1 ∧ b 1 = δ := by
@@ -193,7 +191,7 @@ theorem exists_basis (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {δ : E} (hδ : �
   · simp
 
 /- English proof (translation)
-Use `letI : Algebra F ℂ := w.embedding.toAlgebra`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨(IsAlgClosed.lift : E →ₐ[F] ℂ).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(IsAlgClosed.lift : E →ₐ[F] ℂ).commutes x`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_tau (w : InfinitePlace F) : ∃ τ : E →+* ℂ, τ.comp (algebraMap F E) = w.embedding := by
   letI : Algebra F ℂ := w.embedding.toAlgebra
@@ -209,21 +207,19 @@ section
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Set `inv : (InfinitePlace F → ℂ) → Fin 2 → Ainf F` to `fun z k => if k = 0 then fun w => (ρ w).symm (z w).re else fun w => (ρ w).symm ((z w).im / (t w).im)`. Establish `hinv0 : ∀ z w, inv z 0 w = (ρ w).symm (z w).re` using `fun z w => rfl`. Establish `hinv1 : ∀ z w, inv z 1 w = (ρ w).symm ((z w).im / (t w).im)` using `fun z w => rfl`. Set `fwd : (Fin 2 → Ainf F) → InfinitePlace F → ℂ` to `fun p w => ((ρ w (p 0 w) : ℝ) : ℂ) + ((ρ w (p 1 w) : ℝ) : ℂ) * t w`. Establish `hre : ∀ p w, (fwd p w).re = ρ w (p 0 w)` using `fun p w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[fwd, htre w]`. Establish `him : ∀ p w, (fwd p w).im = ρ w (p 1 w) * (t w).im` using `fun p w => by`. Simplify using `[fwd]`. Establish `hl : Function.LeftInverse inv fwd`. Introduce `p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Use `revert k`. Rewrite using `[Fin.forall_fin_two]`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv0, hre, RingEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `w`. Rewrite using `[hinv1, him, mul_div_cancel_right₀ _ (htim w), RingEquiv.symm_apply_apply]`. Establish `hr : Function.RightInverse inv fwd`. Introduce `z`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[hre, hinv0, RingEquiv.apply_symm_apply]`. Rewrite using `[him, hinv1, RingEquiv.apply_symm_apply, div_mul_cancel₀ _ (htim w)]`. Establish `hc1 : Continuous fwd`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Establish `hc : ∀ k : Fin 2, Continuous fun p : Fin 2 → Ainf F => ((ρ w (p k w) : ℝ) : ℂ)` using `fun k => Complex.continuous_ofReal.comp ((hρc w).comp ((continuous_apply w).comp (continuous_apply k)))`. Conclude with `(hc 0).add ((hc 1).mul continuous_const)`. Establish `hc2 : Continuous inv`. Use `continuous_pi fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `revert k`. Rewrite using `[Fin.forall_fin_two]`. Prove the components needed by the constructor for the conclusion. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(hρs w).comp (Complex.continuous_re.comp (continuous_apply w))`.
-
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(hρs w).comp ((Complex.continuous_im.comp (continuous_apply w)).div_const _)`. Conclude with `⟨⟨⟨fwd, inv, hl, hr⟩, hc1, hc2⟩, fun _ _ => rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_psi (ρ : ∀ w : InfinitePlace F, w.Completion ≃+* ℝ) (hρc : ∀ w, Continuous (ρ w))
     (hρs : ∀ w, Continuous (ρ w).symm) (t : InfinitePlace F → ℂ) (htre : ∀ w, (t w).re = 0)
@@ -280,27 +276,25 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨δ, hδ, hδ0⟩` from `exists_delta σ h`. Take `⟨b, hb0, hb1⟩` from `exists_basis σ h hδ hδ0`. Use `haveI hTR : IsTotallyReal F := h.1`. Use `choose τ hτ using fun w : InfinitePlace F => exists_tau (E := E) w`. Set `ρ : ∀ w : InfinitePlace F, w.Completion ≃+* ℝ` to `fun w => InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρc : ∀ w, Continuous (ρ w)` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous`. Establish `hρs : ∀ w, Continuous (ρ w).symm` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.continuous`. Establish `hρF : ∀ (w : InfinitePlace F) (x : F), ((ρ w (algebraMap F (Ainf F) x w) : ℝ) : ℂ) = τ w (algebraMap F E x)`. Introduce `w x`. Establish `h1 : τ w (algebraMap F E x) = w.embedding x` using `DFunLike.congr_fun (hτ w) x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, InfiniteAdeleRing.algebraMap_apply]`. Simplify using `only [ρ]`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w _`. Set `t : InfinitePlace F → ℂ` to `fun w => τ w δ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htre : ∀ w, (t w).re = 0`. Introduce `w`. Establish `h1 : τ w (σ δ) = star (τ w δ)` using `h.2.2.2 (τ w) δ`. Rewrite `h1` using `[hδ, map_neg]`. Establish `h2` using `congrArg Complex.re h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Complex.neg_re, Complex.star_def, Complex.conj_re] at h2`. Simplify using `only [t]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htim : ∀ w, (t w).im ≠ 0`. Introduce `w h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Conclude with `hδ0 ((map_eq_zero (τ w)).mp (Complex.ext (htre w) h0))`. Set `f : Ainf F →+* (InfinitePlace F → ℂ)` to `Pi.ringHom fun w => (Complex.ofRealHom.comp (ρ w).toRingHom).comp (Pi.evalRingHom _ w)`. Set `g : E →+* (InfinitePlace F → ℂ)` to `Pi.ringHom τ`. Use `letI alg : Algebra F (InfinitePlace F → ℂ) := (g.comp (algebraMap F E)).toAlgebra`. Set `fA : Ainf F →ₐ[F] (InfinitePlace F → ℂ)` to `{ toRingHom := f commutes' := fun x => funext fun w => hρF w x }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `gA : E →ₐ[F] (InfinitePlace F → ℂ)` to `{ toRingHom := g commutes' := fun _ => rfl }`. Set `Φ₀ : Ainf F ⊗[F] E →ₐ[F] (InfinitePlace F → ℂ)` to `Algebra.TensorProduct.productMap fA gA`. Take `⟨Ψ, hΨ⟩` from `exists_psi ρ hρc hρs t htre htim`. Set `C : (Ainf F ⊗[F] E) ≃ₜ (Fin 2 → Ainf F)` to `TopK.coordHomeo (Ainf F) b`. Establish `hC : ∀ x k, C x k = (Algebra.TensorProduct.basis (Ainf F) b).repr x k` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hform : ∀ a c : Ainf F, Φ₀ (a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] δ) = fun w => ((ρ w (a w) : ℝ) : ℂ) + ((ρ w (c w) : ℝ) : ℂ) * t w`. Introduce `a c`. Use function extensionality and compare the values at `w`. Rewrite using `[map_add]`. Simplify using `only [Φ₀, Algebra.TensorProduct.productMap_apply_tmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show ((ρ w (a w) : ℝ) : ℂ) * τ w 1 + ((ρ w (c w) : ℝ) : ℂ) * τ w δ = _`. Rewrite using `[map_one, mul_one]`. Establish `hΦ : ⇑Φ₀ = Ψ ∘ C`. Use function extensionality and compare the values at `x`. Establish `hx : x = (C x 0) ⊗ₜ[F] (1 : E) + (C x 1) ⊗ₜ[F] δ` using `by conv_lhs => rw [← (Algebra.TensorProduct.basis (Ainf F) b).sum_repr x]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Fin.sum_univ_two, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, hb0, hb1, hC, hC, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hhom : IsHomeomorph Φ₀`. Rewrite using `[hΦ]`. Conclude with `(C.trans Ψ).isHomeomorph`.
-
-Conclude with `⟨RingEquiv.ofBijective (Φ₀ : Ainf F ⊗[F] E →+* (InfinitePlace F → ℂ)) hhom.bijective, hhom⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv (σ : E →ₐ[F] E) (h : IsCMExt F E σ) :
     ∃ Φ : (Ainf F ⊗[F] E) ≃+* (InfinitePlace F → ℂ), IsHomeomorph Φ := by
@@ -373,7 +367,7 @@ theorem exists_equiv (σ : E →ₐ[F] E) (h : IsCMExt F E σ) :
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h M`. Take `⟨Φ, hΦ⟩` from `exists_equiv σ h`. Conclude with `reduce_of_equiv Φ hΦ M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unimodular_mod_units_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ), ∃ Ω : Set (Fin 1 → Fin M → Ainf F ⊗[F] E), IsCompact Ω ∧ ∀ y : Fin 1 → Fin M → Ainf F ⊗[F] E, (∃ z : Fin M → Ainf F ⊗[F] E, z ⬝ᵥ y 0 = 1) → ∃ (a : (Ainf F ⊗[F] E)ˣ) (z : Fin 1 → Fin M → Ainf F ⊗[F] E), (a : Ainf F ⊗[F] E) • y ∈ Ω ∧ z ∈ Ω ∧ z 0 ⬝ᵥ ((a : Ainf F ⊗[F] E) • y) 0 = 1 := by
   intro F E _ _ _ _ _ σ h M

@@ -5,7 +5,7 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) ?_` and prove the remaining obligations. Introduce `k _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ultra_matrix_mul_entry_le {E : Type} [NormedField E] [IsUltrametricDist E] {n : Type} [Fintype n]
     [DecidableEq n] (A B : Matrix n n E) (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b)
@@ -17,15 +17,15 @@ theorem ultra_matrix_mul_entry_le {E : Type} [NormedField E] [IsUltrametricDist 
   exact mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ha
 
 /- English proof (translation)
-Introduce `E _ _ n _ _ Y t ht0 ht1 hY m`. Proceed by induction on `m with`. Consider the case `zero => intro i j`. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Consider the case `succ m ih`. Establish `key : (1 + Y) ^ (m + 1) - 1 - ((m + 1 : ℕ) : E) • Y = ((1 + Y) ^ m - 1 - (m : E) • Y) + ((1 + Y) ^ m - 1 - (m : E) • Y) * Y + (m : E) • (Y * Y)`. Rewrite using `[pow_succ]`. Use `push_cast`. Simplify using `only [mul_add, add_mul, mul_one, one_mul, sub_mul, smul_mul_assoc, add_smul, one_smul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Introduce `i j`. Rewrite using `[key]`. Establish `h1` using `ih i j`. Establish `h2 : ‖(((1 + Y) ^ m - 1 - (m : E) • Y) * Y) i j‖ ≤ t ^ 2`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ultra_matrix_mul_entry_le _ Y (t ^ 2) t (by positivity) ht0 ih hY i j` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖((m : E) • (Y * Y)) i j‖ ≤ t ^ 2`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul]`. Use `ultra_matrix_mul_entry_le Y Y t t ht0 ht0 hY hY i j` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_apply, Matrix.add_apply]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)) h3)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_one_add_pow_sub_entry_le :
     ∀ (E : Type) [NormedField E] [IsUltrametricDist E] (n : Type) [Fintype n] [DecidableEq n]

@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.HilbMoll
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `: CompleteSpace W` using `hWc.completeSpace_coe`. Unfold `opConv`. Distinguish the cases in `hint : Integrable (fun g : Formalism.REAL.UJ ε => α (Formalism.MainNotions.S.umat g) • σ (Formalism.MainNotions.S.umat g) x) (Formalism.REAL.muG ε)`. Establish `hfix : ∀ g : Formalism.REAL.UJ ε, W.starProjection (α (Formalism.MainNotions.S.umat g) • σ (Formalism.MainNotions.S.umat g) x) = α (Formalism.MainNotions.S.umat g) • σ (Formalism.MainNotions.S.umat g) x` using `fun g => Submodule.starProjection_eq_self_iff.2 (W.smul_mem _ (hWs _ (arb_umat_mem g) x hx))`. Establish `h` using `W.starProjection.integral_comp_comm hint`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hfix] at h`. Rewrite using `[h]`. Conclude with `W.starProjection_apply_mem _`. Rewrite using `[integral_undef hint]`. Conclude with `W.zero_mem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opConv_mem_of_isClosed {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (α : Matrix (Fin n) (Fin n) ℂ → ℂ)
@@ -33,11 +33,11 @@ theorem opConv_mem_of_isClosed {H : Type*} [NormedAddCommGroup H] [InnerProductS
     exact W.zero_mem
 
 /- English proof (translation)
-Introduce `n ε W S hWc hWs hSf hSW _`. Use `hSf` as an intermediate fact. Take `⟨α, hadd, hsmul, hαK, hαsm, hαS⟩` from `exists_moll_data (rreg_isURepOn ε) S`. Set `A : L2 ε →ₗ[ℂ] L2 ε` to `{ toFun := opConv ε (rreg ε) α, map_add' := hadd, map_smul' := hsmul }`. Establish `hAv : ∀ v, A v = opConv ε (rreg ε) α v` using `fun v => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨A, fun k hk x => (hαK k hk x).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw h0`. Establish `h1` using `hαS w hw`. Rewrite `h1` using `[← hAv, h0, zero_sub, norm_neg]`. Establish `h2 : ‖w‖ ≤ 0` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `norm_le_zero_iff.1 h2`. Introduce and unpack `_ ⟨w, _, rfl⟩`. Conclude with `(mem_smD_iff ε (rreg ε) _).2 (hαsm w)`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `opConv_mem_of_isClosed ε (rreg ε) α W hWc hWs (hSW hw)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem stepMoll : PositivityTheory.RgDs.Hilb.StepMoll := by
   intro n ε W S hWc hWs hSf hSW _

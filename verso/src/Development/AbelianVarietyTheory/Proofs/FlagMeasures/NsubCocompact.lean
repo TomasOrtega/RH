@@ -10,17 +10,17 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open scoped TensorProduct ENNReal
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single a 1, fun b hb => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Pi.single_eq_of_ne (by rintro rfl; exact hb ha) _`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `only [Pi.single_eq_same, one_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, zero_smul]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨d, hd, rfl⟩` from `hy`. Use `⟨c + d, fun b hb => by simp [hc b hb, hd b hb], ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Consider the case `smul t x _ hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, rfl⟩` from `hx`. Use `⟨t • c, fun b hb => by simp [hc b hb], ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.smul_sum, mul_smul]`. Introduce and unpack `⟨c, hc, rfl⟩`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : b ∈ s`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Rewrite using `[hc b hb, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spanR_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] {n r : ℕ}
     (e : Fin r → Fin n → E) (s : Set (Fin r)) (w : Fin n → R ⊗[F] E) :
@@ -55,7 +55,7 @@ theorem mem_spanR_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) 
     · rw [hc b hb, zero_smul]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, RingHom.coe_coe, hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ.1 j i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_swap {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (x y : Fin n → E) : hE σ J y x = σ (hE σ J x y) := by
@@ -65,15 +65,15 @@ theorem hE_swap {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F]
   rw [hJ.1 j i]; ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ r P T hP`. Establish `hσ` using `conj_invol hCM`. Take `⟨h0, -, hef, -, -, -, -⟩` from `hP`. Establish `he : LinearIndependent E P.e` using `linearIndependent_of_dual P.e P.f fun a b => by`. Rewrite using `[hE_swap hσ hJ (P.e b) (P.f a), hef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1 h2 h2`. Simplify using the standard rewrite rules. Conclude with `absurd h1.symm h2`. Conclude with `absurd h2.symm h1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hlin : ∀ (g : HA (AF F) σ J) (x : Fin n → AF F ⊗[F] E), lin (AF F) σ J g x - x = ((HA.mat _ σ J g).1 - 1) *ᵥ x` using `fun g x => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Take `⟨K, hK, hm⟩` from `cocompact_of_mem_iff_adelic hσ hJ P.e he h0 (Nsub (AF F) σ J P) fun g => by`. Use `and_congr (forall_congr' fun a => ?_) (forall_congr' fun x => imp_congr Iff.rfl ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `mem_spanR_iff (F := F) (AF F) P.e {b | b < a} (lin (AF F) σ J g (ratV (F := F) (AF F) (P.e a)) - ratV (F := F) (AF F) (P.e a))` as an intermediate fact. Rewrite using `[this, hlin]`. Simplify using `only [Set.mem_setOf_eq, not_lt]`. Both sides reduce to the same expression. Use `mem_spanR_iff (F := F) (AF F) P.e Set.univ (lin (AF F) σ J g x - x)` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, hlin]`. Simplify using `only [Set.mem_univ, not_true_eq_false, false_imp_iff, implies_true, true_and]`. Use `⟨K, hK, fun m => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hm m`. Conclude with `⟨γ, hγ, k, hk, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nsub_cocompact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (P : Frame E n r) (T : F),

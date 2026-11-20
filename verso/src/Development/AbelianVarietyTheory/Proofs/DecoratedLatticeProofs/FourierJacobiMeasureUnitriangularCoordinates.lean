@@ -25,17 +25,17 @@ variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 def lv : UX D ρ →* GA D S := d.levi.comp (UX D ρ).subtype
 
 /- English proof (translation)
-The claim follows from `d.levi_mem_NFlag u.2`.
+A detailed English derivation is pending.
 -/
 theorem lv_mem (u : UX D ρ) : lv d u ∈ flagN d := d.levi_mem_NFlag u.2
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem radX_le : radX d ≤ flagN d := inf_le_left
 
 /- English proof (translation)
-Use `⟨(flagN d).mul_mem ((flagN d).mul_mem (lv_mem d u) hn.1) ((flagN d).inv_mem (lv_mem d u)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mt S (d.levi u.1 * n * (d.levi u.1)⁻¹) ⬝ d.jX = d.jX`. Rewrite using `[← map_inv, mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.levi_jX, ← Matrix.mul_assoc (mt S n), mem_fixer.1 hn.2, ← Matrix.mul_assoc, d.levi_jX, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lv_conj (n : GA D S) (hn : n ∈ radX d) (u : UX D ρ) : lv d u * n * (lv d u)⁻¹ ∈ radX d := by
   refine ⟨(flagN d).mul_mem ((flagN d).mul_mem (lv_mem d u) hn.1) ((flagN d).inv_mem (lv_mem d u)), ?_⟩
@@ -45,14 +45,14 @@ theorem lv_conj (n : GA D S) (hn : n ∈ radX d) (u : UX D ρ) : lv d u * n * (l
     Matrix.mul_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(flag_jacobi_structure D S S₀ ρ d).2.2.2.2.1 n hn.1 h, (stabX d).mul_mem ((stabX d).mul_mem (wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic d h) hn.2) ((stabX d).inv_mem (wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic d h))⟩`.
+Supply the required witnesses or components.
 -/
 theorem anisotropicEmbedding_conj_wittFlagUnipotentFixer (n : GA D S) (hn : n ∈ radX d) (h : GA D S₀) : d.emb0 h * n * (d.emb0 h)⁻¹ ∈ radX d :=
   ⟨(flag_jacobi_structure D S S₀ ρ d).2.2.2.2.1 n hn.1 h,
     (stabX d).mul_mem ((stabX d).mul_mem (wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic d h) hn.2) ((stabX d).inv_mem (wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic d h))⟩
 
 /- English proof (translation)
-Use `le_antisymm (sup_le (radX_le d) (by rintro _ ⟨u, rfl⟩; exact lv_mem d u)) fun n hn => ?_` and prove the remaining obligations. Take `⟨u, hu, b, c, rfl⟩` from `((flag_jacobi_structure D S S₀ ρ d).1 n).1 hn`. Conclude with `mul_mem (Subgroup.mem_sup_right ⟨⟨u, hu⟩, rfl⟩) (Subgroup.mem_sup_left (mul_mem (nB_mem_radX d b) (nC_mem_radX d c)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem radX_sup_lv : radX d ⊔ (lv d).range = flagN d := by
   refine le_antisymm (sup_le (radX_le d) (by rintro _ ⟨u, rfl⟩; exact lv_mem d u)) fun n hn => ?_
@@ -61,7 +61,7 @@ theorem radX_sup_lv : radX d ⊔ (lv d).range = flagN d := by
     (Subgroup.mem_sup_left (mul_mem (nB_mem_radX d b) (nC_mem_radX d c)))
 
 /- English proof (translation)
-Use `le_antisymm (sup_le (radX_le_stabX d) (by rintro _ ⟨u, rfl⟩; exact wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic d u)) fun g hg => ?_` and prove the remaining obligations. Take `⟨n, hn, h, rfl⟩` from `((flag_jacobi_structure D S S₀ ρ d).2.2.1 g).1 hg`. Conclude with `mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wittFlagUnipotentFixer_sup_anisotropic_eq_stabilizer : radX d ⊔ d.emb0.range = stabX d := by
   refine le_antisymm (sup_le (radX_le_stabX d) (by rintro _ ⟨u, rfl⟩; exact wittSmallGroupEmbedding_mem_pointwiseStabilizerIsotropic d u)) fun g hg => ?_
@@ -69,7 +69,7 @@ theorem wittFlagUnipotentFixer_sup_anisotropic_eq_stabilizer : radX d ⊔ d.emb0
   exact mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `d.pX ⬝ (mt S (n * d.levi u.1) ⬝ d.jX) = _`. Rewrite using `[mt_mul, Matrix.mul_assoc, d.levi_jX, ← Matrix.mul_assoc (mt S n), mem_fixer.1 hn.2, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockX_mul_lv {n : GA D S} (hn : n ∈ radX d) (u : UX D ρ) : blockX d (n * lv d u) = u.1.1 := by
   change d.pX ⬝ (mt S (n * d.levi u.1) ⬝ d.jX) = _
@@ -77,36 +77,34 @@ theorem blockX_mul_lv {n : GA D S} (hn : n ∈ radX d) (u : UX D ρ) : blockX d 
     Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `exists_mul_of_mem_sup_range (radX d) (lv d) (lv_conj d) (by rw [radX_sup_lv]; exact hn)`.
+A detailed English derivation is pending.
 -/
 theorem exists_rad_lv {n : GA D S} (hn : n ∈ flagN d) : ∃ n₀ ∈ radX d, ∃ u, n = n₀ * lv d u :=
   exists_mul_of_mem_sup_range (radX d) (lv d) (lv_conj d) (by rw [radX_sup_lv]; exact hn)
 
 /- English proof (translation)
-The claim follows from `continuous_const.matrix_mul ((continuous_mt S).matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_blockX : Continuous (blockX d) :=
   continuous_const.matrix_mul ((continuous_mt S).matrix_mul continuous_const)
 
 /- English proof (translation)
-Use `haveI := (lattice_Mx D S.rank ρ).2.2.2.1`. Conclude with `isClosed_eq ((continuous_mt S).matrix_mul continuous_const) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_stabX : IsClosed (stabX d : Set (GA D S)) := by
   haveI := (lattice_Mx D S.rank ρ).2.2.2.1
   exact isClosed_eq ((continuous_mt S).matrix_mul continuous_const) continuous_const
 
 /- English proof (translation)
-Use `haveI := (lattice_Mx D S.rank ρ).2.2.2.1`. Use `haveI := (lattice_Mx D S₀.rank S₀.rank).2.2.2.1`. Establish `e : (flagN d : Set (GA D S)) = (blockX d ⁻¹' GlobalTheory.UnitU.uniSet D ρ) ∩ ({g | mt S g ⬝ d.jX = d.jX ⬝ blockX d g} ∩ {g | d.p0 ⬝ (mt S g ⬝ d.j0) = 1})`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hg`. Use `⟨?_, ?_, (GlobalTheory.JacProj.flag_le d hg).2⟩` and prove the remaining obligations. Take `⟨n, hn, u, rfl⟩` from `exists_rad_lv d hg`. Rewrite using `[Set.mem_preimage, blockX_mul_lv d hn]`. Conclude with `u.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.JacProj.keeps_jX d (GlobalTheory.JacProj.flag_le d hg).1`. Introduce and unpack `⟨h1, h2, h3⟩`. Set `u : UX D ρ` to `⟨GlobalTheory.UnitU.toUnit _ h1, h1⟩`. Establish `hs : (lv d u)⁻¹ * g ∈ stabX d`. Express the relevant statement in the definitionally equal form `mt S ((lv d u)⁻¹ * g) ⬝ d.jX = d.jX`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : mt S g ⬝ d.jX = mt S (lv d u) ⬝ d.jX` using `(show _ = _ from h2).trans (d.levi_jX u.1).symm`. Rewrite using `[mt_mul, Matrix.mul_assoc, h4, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`. Take `⟨n, hn, h, he⟩` from `((flag_jacobi_structure D S S₀ ρ d).2.2.1 _).1 hs`. Establish `hg : g = lv d u * n * d.emb0 h` using `by rw [mul_assoc, ← he, mul_inv_cancel_left]`. Establish `hn' : lv d u * n ∈ flagN d` using `mul_mem (lv_mem d u) hn.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `GlobalTheory.JacProj.witt_anisotropic_block_flag_mul_embedded d hn' h`. Rewrite `h5` using `[← hg, show d.p0 ⬝ (mt S g ⬝ d.j0) = 1 from h3]`. Establish `h6 : h = 1` using `mt_injective S₀ (h5.symm.trans (mt_one S₀).symm)`. Rewrite using `[hg, h6, map_one, mul_one]`. Conclude with `hn'`.
-
-Rewrite using `[e]`. Conclude with `((GlobalTheory.UnitU.isClosed_uniSet D ρ).preimage (continuous_blockX d)).inter ((isClosed_eq ((continuous_mt S).matrix_mul continuous_const) (continuous_const.matrix_mul (continuous_blockX d))).inter (isClosed_eq (continuous_const.matrix_mul ((continuous_mt S).matrix_mul continu …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_flagN : IsClosed (flagN d : Set (GA D S)) := by
   haveI := (lattice_Mx D S.rank ρ).2.2.2.1
@@ -141,12 +139,12 @@ theorem isClosed_flagN : IsClosed (flagN d : Set (GA D S)) := by
       (isClosed_eq (continuous_const.matrix_mul ((continuous_mt S).matrix_mul continuous_const)) continuous_const))
 
 /- English proof (translation)
-The claim follows from `(isClosed_flagN d).inter (isClosed_stabX d)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_radX : IsClosed (radX d : Set (GA D S)) := (isClosed_flagN d).inter (isClosed_stabX d)
 
 /- English proof (translation)
-Use `choose n₀ hn₀ p hp using fun g : flagN d => exists_rad_lv d g.2`. Establish `hb : ∀ g, (p g).1.1 = blockX d g.1` using `fun g => by rw [hp g, blockX_mul_lv d (hn₀ g)]`. Use `⟨p, (GlobalTheory.UnitU.isClosedEmbedding_val D ρ).isInducing.continuous_iff.2 ?_, fun u n hm => ?_⟩` and prove the remaining obligations. Conclude with `((continuous_blockX d).comp continuous_subtype_val).congr fun g => (hb g).symm`. Conclude with `Subtype.ext (Units.ext ((hb _).trans (blockX_mul_lv d n.2 u)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_proj_lv : ∃ p : flagN d → UX D ρ, Continuous p ∧
     ∀ (u : UX D ρ) (n : radX d) (hm : n.1 * lv d u ∈ flagN d), p ⟨n.1 * lv d u, hm⟩ = u := by
@@ -157,9 +155,9 @@ theorem exists_proj_lv : ∃ p : flagN d → UX D ρ, Continuous p ∧
   · exact Subtype.ext (Units.ext ((hb _).trans (blockX_mul_lv d n.2 u)))
 
 /- English proof (translation)
-Establish `hb : ∀ g ∈ GQ S, blockX d g ∈ ratMx D ρ ρ` using `fun g hg => ratMx_mul (rat_mem _) (ratMx_mul ((mem_GQ_iff S g).1 hg) (rat_mem _))`. Use `⟨fun h => ?_, fun h => mul_mem h.1 (d.levi_mem_GQ h.2.1 h.2.2)⟩` and prove the remaining obligations. Establish `h1` using `hb _ h`. Establish `h2` using `hb _ (inv_mem h)`. Rewrite `h2` using `[show (n * lv d u)⁻¹ = (lv d u⁻¹ * n⁻¹ * (lv d u⁻¹)⁻¹) * lv d u⁻¹ by simp, blockX_mul_lv d (lv_conj d _ (inv_mem hn) _)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[blockX_mul_lv d hn]`. Use `⟨?_, h1, h2⟩` and prove the remaining obligations. Rewrite using `[show n = n * lv d u * (lv d u)⁻¹ by simp]`. Conclude with `mul_mem h (inv_mem (d.levi_mem_GQ h1 h2))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_lv (n : GA D S) (hn : n ∈ radX d) (u : UX D ρ) : n * lv d u ∈ GQ S ↔ n ∈ GQ S ∧ u ∈ UXQ D ρ := by
   have hb : ∀ g ∈ GQ S, blockX d g ∈ ratMx D ρ ρ := fun g hg =>
@@ -175,19 +173,19 @@ theorem rat_lv (n : GA D S) (hn : n ∈ radX d) (u : UX D ρ) : n * lv d u ∈ G
   exact mul_mem h (inv_mem (d.levi_mem_GQ h1 h2))
 
 /- English proof (translation)
-Introduce `D ρ J vU ν₀ 𝓝₀ hν₀ h𝓝₀ h𝓝₀1`. Take `⟨i1, i2, i3, i4, i5, -, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W`. Take `⟨j1, j2, j3, j4, j5, -, j7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D J.W₀`. Take `⟨k1, k2, k3⟩` from `GlobalTheory.UnitU.topology D ρ`. Establish `k4` using `(GlobalTheory.UnitU.rational D ρ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k5 : BorelSpace (UX D ρ)` using `⟨rfl⟩`. Take `⟨hU, 𝓤, h𝓤, h𝓤1⟩` from `vU.unit`. Take `⟨hN, h𝓝, h𝓝1⟩` from `J.vN.unit`. Take `⟨K, hK, hcov⟩` from `J.cpt`. Establish `hμ` using `J.v0.haar`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hpc, hp⟩` from `GlobalTheory.JacProj.exists_continuous_proj D J.W J.W₀ ρ J.d`. Establish `hle : radX J.d ⊔ J.d.emb0.range ≤ flagN J.d ⊔ J.d.emb0.range` using `sup_le_sup_right (radX_le J.d) _`. Establish `H0` using `semiMeas_haar_inv (radX J.d) J.d.emb0 (isClosed_radX J.d) J.d.continuous_embed (anisotropicEmbedding_conj_wittFlagUnipotentFixer J.d) ⟨fun g => p (Subgroup.inclusion hle g), hpc.comp (continuous_inclusion hle), fun h n => hp h ⟨n.1, n.2.1⟩⟩ (GQ J.W) (GQ J.W₀) (fun _ h => J.d.witt …`. Establish `H1` using `semiMeas_haar_inv (flagN J.d) J.d.emb0 (isClosed_flagN J.d) J.d.continuous_embed (flag_jacobi_structure D J.W J.W₀ ρ J.d).2.2.2.2.1 ⟨p, hpc, hp⟩ (GQ J.W) (GQ J.W₀) (fun _ h => J.d.wittDecomp_anisotropicEmbedding_mem_rationalPoints h) hK hcov J.v0.μ J.v0.fund J.vN.ν h𝓝 (by rw [h𝓝1 …`. Use `⟨by rw [wittFlagUnipotentFixer_sup_anisotropic_eq_stabilizer]; exact isClosed_stabX J.d, H0.1, H0.2, H1.2, fun F hF => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `l1 : LocallyCompactSpace (radX J.d)` using `(isClosed_radX J.d).locallyCompactSpace`. Establish `l2 : SecondCountableTopology (radX J.d)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `l3 : LocallyCompactSpace (flagN J.d)` using `(isClosed_flagN J.d).locallyCompactSpace`. Establish `l4 : SecondCountableTopology (flagN J.d)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hlv : Continuous (lv J.d)` using `J.d.continuous_levi.comp continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `J.d.continuous_embed`. Establish `e1 : ∫⁻ r : jacGrp J.d, F r ∂J.μR = ∫⁻ h, ∫⁻ n, F (n.1 * J.d.emb0 h) ∂J.vN.ν ∂J.v0.μ` using `lintegral_semiMeas (flagN J.d) J.d.emb0 hs J.v0.μ J.vN.ν F hF`. Establish `e2 : ∀ h, ∫⁻ n, F (n.1 * J.d.emb0 h) ∂J.vN.ν = ∫⁻ u, ∫⁻ n, F (n.1 * lv J.d u * J.d.emb0 h) ∂ν₀ ∂vU.ν` using `fun h => lintegral_of_covolOne (radX J.d) (lv J.d) (isClosed_radX J.d) hlv (lv_conj J.d) (flagN J.d) (radX_sup_lv J.d) (exists_proj_lv J.d) (GQ J.W) (UXQ D ρ) (rat_lv J.d) vU.ν h𝓤 h𝓤1 ν₀ h𝓝₀ h𝓝₀1 J.vN.ν h𝓝 h𝓝1 (fun g => F (g * J.d.emb0 h)) (hF.comp (continuous_mul_right _).measur …`. Establish `e3 : ∀ u : UX D ρ, ∫⁻ r : (radX J.d ⊔ J.d.emb0.range : Subgroup (GA D J.W)), F (r * J.d.levi u.1) ∂(semiMeas (radX J.d) J.d.emb0 J.v0.μ ν₀) = ∫⁻ h, ∫⁻ n, F (n.1 * lv J.d u * J.d.emb0 h) ∂ν₀ ∂J.v0.μ` using `fun u => by`. Rewrite using `[lintegral_semiMeas (radX J.d) J.d.emb0 hs J.v0.μ ν₀ (fun g => F (g * J.d.levi u.1)) (hF.comp (continuous_mul_right _).measurable)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc, J.d.wittHyperbolic_anisotropic_commute_levi]`. Both sides reduce to the same expression. Establish `hm : Measurable fun q : (GA D J.W₀ × UX D ρ) × radX J.d => F (q.2.1 * lv J.d q.1.2 * J.d.emb0 q.1.1)` using `hF.comp (Continuous.measurable (((continuous_subtype_val.comp continuous_snd).mul (hlv.comp (continuous_snd.comp continuous_fst))).mul (hs.comp (continuous_fst.comp continuous_fst))))`. Rewrite using `[e1]`. Simplify using `only [e2, e3]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `lintegral_lintegral_swap (hm.lintegral_prod_right' (ν := ν₀)).aemeasurable`.
+A detailed English derivation is pending.
 -/
 theorem jac_measure : ∀ (D : D7) (ρ : ℕ) (J : JacLev D ρ) (vU : VolU D ρ) (ν₀ : Measure (radX J.d)) (𝓝₀ : Set (radX J.d)), ν₀.IsHaarMeasure → IsFundamentalDomain ((GQ J.W).subgroupOf (radX J.d)) 𝓝₀ ν₀ → ν₀ 𝓝₀ = 1 → IsClosed ((radX J.d ⊔ J.d.emb0.range : Subgroup (GA D J.W)) : Set (GA D J.W)) ∧ (semiMeas (radX J.d) J.d.emb0 J.v0.μ ν₀).IsHaarMeasure ∧ (semiMeas (radX J.d) J.d.emb0 J.v0.μ ν₀).IsInvInvariant ∧ J.μR.IsInvInvariant ∧ ∀ F : GA D J.W → ENNReal, Measurable F → ∫⁻ r : jacGrp J.d, F r ∂J.μR = ∫⁻ u, ∫⁻ r : (radX J.d ⊔ J.d.emb0.range : Subgroup (GA D J.W)), F (r * J.d.levi u.1) ∂(semiMeas (radX J.d) J.d.emb0 J.v0.μ ν₀) ∂vU.ν := by
   intro D ρ J vU ν₀ 𝓝₀ hν₀ h𝓝₀ h𝓝₀1

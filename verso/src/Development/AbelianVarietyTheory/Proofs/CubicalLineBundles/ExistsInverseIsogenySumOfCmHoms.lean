@@ -16,9 +16,9 @@ namespace GlobalTheory.LamF.IsogSum
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h1` using `h (𝟙_ _) 1 1`. Rewrite `h1` using `[_root_.mul_one]`. Establish `h2 : (1 : 𝟙_ _ ⟶ G) ≫ f = 1` using `by simpa using h1`. Simplify `h2` using `[Hom.one_def]`. Use `mul_hom := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `h (G ⊗ G) (fst G G) (snd G G)`. Apply the tactic sequence `have e : lift (fst G G ≫ f) (snd G G ≫ f) = f ⊗ₘ f := by ext1 <;> simp`. Rewrite `h1` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, e]`. Conclude with `h1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_points {G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H)
     (h : ∀ (T : Over S) (a b : T ⟶ G), (a * b) ≫ f = a ≫ f * b ≫ f) : IsMonHom f where
@@ -34,16 +34,16 @@ theorem isMonHom_of_points {G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H)
     exact h1
 
 /- English proof (translation)
-The claim follows from `map_prod (MonoidHom.mk' (fun u : G ⟶ H => x ≫ u) fun _ _ => MonObj.comp_mul _ _ _) a Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem comp_prod {T G H : Over S} [GrpObj H] [IsCommMonObj H] {n : ℕ} (x : T ⟶ G)
     (a : Fin n → (G ⟶ H)) : x ≫ ∏ i, a i = ∏ i, x ≫ a i :=
   map_prod (MonoidHom.mk' (fun u : G ⟶ H => x ≫ u) fun _ _ => MonObj.comp_mul _ _ _) a Finset.univ
 
 /- English proof (translation)
-Establish `hu : inv (lift u v) ≫ u = fst _ _` using `by rw [IsIso.inv_comp_eq, lift_fst]`. Establish `hv : inv (lift u v) ≫ v = snd _ _` using `by rw [IsIso.inv_comp_eq, lift_snd]`. Take `⟨c, hc⟩ : ∃ c : T ⟶ G', ∀ i, c ≫ pG.pr i = a i` from `⟨pG.lim.lift (Fan.mk T a), fun i => pG.lim.fac (Fan.mk T a) ⟨i⟩⟩`. Take `⟨d, hd⟩ : ∃ d : T ⟶ H', ∀ i, d ≫ pH.pr i = b i` from `⟨pH.lim.lift (Fan.mk T b), fun i => pH.lim.fac (Fan.mk T b) ⟨i⟩⟩`. Use `⟨lift c d ≫ inv (lift u v), fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, reassoc_of% hu, lift_fst_assoc, hc]`. Rewrite using `[Category.assoc, reassoc_of% hv, lift_snd_assoc, hd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_point {Q G' G H' H T : Over S} [GrpObj G'] [GrpObj G] [GrpObj H'] [GrpObj H] {p q : ℕ}
     (pG : Out.IsPowGrp G' G p) (pH : Out.IsPowGrp H' H q) (u : Q ⟶ G') (v : Q ⟶ H')
@@ -64,21 +64,19 @@ end GlobalTheory.LamF.IsogSum
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `hU hL hE K _ _ σ A A' B p q φ φ' hφ hφ' hg hs`. Take `⟨P, pP, hP⟩` from `GlobalTheory.T.exists_polarisedAbelianScheme_power (𝓞 K) A p`. Take `⟨P', pP', hP'⟩` from `GlobalTheory.T.exists_polarisedAbelianScheme_power (𝓞 K) A' q`. Take `⟨Q, u, v, hu, hv, huv, hQ⟩` from `GlobalTheory.T.exists_prod_polAV_add_g hL (𝓞 K) P P'`. Use `haveI := pP.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI := pP'.hom`. Set `Φ : Q.A ⟶ B.A` to `(∏ i, u ≫ pP.pr i ≫ φ i) * ∏ i, v ≫ pP'.pr i ≫ φ' i`. Establish `hΦ : ∀ {T : Over (Sp (𝓞 K))} (x : T ⟶ Q.A), x ≫ Φ = (∏ i, (x ≫ u ≫ pP.pr i) ≫ φ i) * ∏ i, (x ≫ v ≫ pP'.pr i) ≫ φ' i`. Introduce `T x`. Simplify using `only [Φ, MonObj.comp_mul, IsogSum.comp_prod, Category.assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : IsMonHom Φ` using `IsogSum.isMonHom_of_points Φ fun T a b => by`. Simplify using `only [hΦ, MonObj.mul_comp, Finset.prod_mul_distrib]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Take `⟨N, ψ, hN, hψ, h1, h2⟩` from `GlobalTheory.T.exists_inverse_isogeny_of_surjective_points hU hL hE K σ Q B Φ (by rw [hQ, hP, hP', hg]) hm fun y => by`. Take `⟨a, b, hab⟩` from `hs y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hx'⟩` from `IsogSum.exists_point pP pP' u v a b`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, hab, List.prod_ofFn, List.prod_ofFn]`. Simplify using `only [hx, hx']`. Establish `H` using `points_sums_eq_products.1 (Sp (𝓞 K))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, fun i => ψ ≫ u ≫ pP.pr i, fun i => ψ ≫ v ≫ pP'.pr i, hN, fun T x => ?_, fun T a b => ?_⟩` and prove the remaining obligations. Take `⟨-, e1, e2, e3⟩` from `H B.A T`. Rewrite using `[e1, e2, e3, e3, List.prod_ofFn, List.prod_ofFn]`. Use `hΦ (x ≫ ψ)` as an intermediate fact. Rewrite `this` using `[Category.assoc, h2, MonObj.comp_pow, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify `this.symm` using `only [Category.assoc]`. Take `⟨-, e1, -, e3⟩` from `H B.A T`. Take `⟨x, hx, hx'⟩` from `IsogSum.exists_point pP pP' u v a b`. Establish `key : padd B.A (psumPt fun k => a k ≫ φ k) (psumPt fun k => b k ≫ φ' k) ≫ ψ = x ^ N`. Establish `: x ≫ Φ = padd B.A (psumPt fun k => a k ≫ φ k) (psumPt fun k => b k ≫ φ' k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e3, e3, List.prod_ofFn, List.prod_ofFn, hΦ]`. Simplify using `only [hx, hx']`. Rewrite using `[← this, Category.assoc, h1, MonObj.comp_pow, Category.comp_id]`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, key, MonObj.pow_comp, hx, (H A.A T).2.2.1]`.
-
-Rewrite using `[← Category.assoc, key, MonObj.pow_comp, hx', (H A'.A T).2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inverse_isogeny_of_sum : ThetaUnifAV → Out.Laws → HomExtDvr → ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (A A' B : Out.PolAV (Sp (𝓞 K))) (p q : ℕ) (φ : Fin p → (A.A ⟶ B.A)) (φ' : Fin q → (A'.A ⟶ B.A)), (∀ i, IsMonHom (φ i)) → (∀ i, IsMonHom (φ' i)) → B.g = p * A.g + q * A'.g → (∀ y : Over.mk (spMap (σ.comp (algebraMap (𝓞 K) K))) ⟶ B.A, ∃ (x : Fin p → (Over.mk (spMap (σ.comp (algebraMap (𝓞 K) K))) ⟶ A.A)) (x' : Fin q → (Over.mk (spMap (σ.comp (algebraMap (𝓞 K) K))) ⟶ A'.A)), y = (List.ofFn fun i => x i ≫ φ i).prod * (List.ofFn fun i => x' i ≫ φ' i).prod) → ∃ (N : ℕ) (ψ : Fin p → (B.A ⟶ A.A)) (ψ' : Fin q → (B.A ⟶ A'.A)), 0 < N ∧ (∀ (Tb : Over (Sp (𝓞 K))) (x : Tb ⟶ B.A), padd B.A (psumPt fun i => x ≫ ψ i ≫ φ i) (psumPt fun i => x ≫ ψ' i ≫ φ' i) = pnsmulPt N x) ∧ ∀ (Tb : Over (Sp (𝓞 K))) (a : Fin p → (Tb ⟶ A.A)) (a' : Fin q → (Tb ⟶ A'.A)), (∀ i, padd B.A (psumPt fun k => a k ≫ φ k) (psumPt fun k => a' k ≫ φ' k) ≫ ψ i = pnsmulPt N (a i)) ∧ ∀ i, padd B.A (psumPt fun k => a k ≫ φ k) (psumPt fun k => a' k ≫ φ' k) ≫ ψ' i = pnsmulPt N (a' i) := by
   intro hU hL hE K _ _ σ A A' B p q φ φ' hφ hφ' hg hs

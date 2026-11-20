@@ -23,11 +23,11 @@ section Bundle
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Establish `mem : ∀ (j : PUnit → L.ι) {x : X}, x ∈ (LB.LinComb L (K` using `PUnit) (fun _ => 𝟙 X) fun _ => n).U j → x ∈ L.U (j PUnit.unit) := fun j x hx => by simpa using Set.mem_iInter.1 hx PUnit.unit`. Use `⟨LB.isLB_linComb h.isLB _ _, fun j j' hjj => ?_, fun j x hx => (h.isEqn _ x (mem j hx)).zsmul n⟩` and prove the remaining obligations. Establish `l : (LB.LinComb L (K` using `PUnit) (fun _ => 𝟙 X) fun _ => n).U j ⊓ (LB.LinComb L (K := PUnit) (fun _ => 𝟙 X) fun _ => n).U j' ≤ L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit) := fun x hx => ⟨mem j hx.1, mem j' hx.2⟩`. Establish `hg : (LB.LinComb L (K` using `PUnit) (fun _ => 𝟙 X) fun _ => n).g j j' = res l (L.g (j PUnit.unit) (j' PUnit.unit)) ^ n := by`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Fintype.prod_unique _`. Establish `key : ∀ {U : X.Opens} (hU : genericPoint X ∈ U) (u : Γ(X, U)ˣ) (m : ℤ), fnOf U hU ((u ^ m : Γ(X, U)ˣ) : Γ(X, U)) = fnOf U hU (u : Γ(X, U)) ^ m` using `fun hU u m => by`. Establish `e` using `congrArg Units.val (map_zpow (Units.map (fnOf _ hU).toMonoidHom) u m)`. Rewrite `e` using `[Units.val_zpow_eq_zpow_val, Units.coe_map, Units.coe_map]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, h.isRatSec _ _ (l hjj), mul_zpow, hg, key]`. Use `congr 2`. Conclude with `(fnOf_resG l hjj _).symm`.
+A detailed English derivation is pending.
 -/
 theorem presents_zpow {D : CartierDiv X} {L : LB X} {r : L.ι → X.functionFieldˣ} (h : Presents D L r) (n : ℤ) :
     Presents (n • D) (LB.LinComb L (K := PUnit) (fun _ => 𝟙 X) fun _ => n) fun j => r (j PUnit.unit) ^ n := by
@@ -64,7 +64,7 @@ noncomputable def cEq (r : ∀ i, (T i).ι → X.functionFieldˣ) : ∀ l, (cBun
   | i :: l => fun q => r i (q.1 PUnit.unit) ^ b i * cEq r l q.2
 
 /- English proof (translation)
-The claim follows from `| [] => presents_zero | i :: l => by rw [List.map_cons, List.sum_cons] exact (presents_zpow (hr i) (b i)).tens (presents_cBun hr l)`.
+A detailed English derivation is pending.
 -/
 theorem presents_cBun {D : ι → CartierDiv X} {r : ∀ i, (T i).ι → X.functionFieldˣ}
     (hr : ∀ i, Presents (D i) (T i) (r i)) :
@@ -81,7 +81,7 @@ noncomputable def cWt (ψ : ∀ i, Weight p σ (T i)) : ∀ l, Weight p σ (cBun
   | i :: l => ((ψ i).zpow (b i)).tens (cWt ψ l)
 
 /- English proof (translation)
-The claim follows from `| [] => Weight.isCInf_ofFun fun y => cInfAt_const 0 y | i :: l => ((h i).zpow (b i)).tens (isCInf_cWt h l)`.
+A detailed English derivation is pending.
 -/
 theorem isCInf_cWt {ψ : ∀ i, Weight p σ (T i)} (h : ∀ i, (ψ i).IsCInf) : ∀ l, (cWt T b ψ l).IsCInf
   | [] => Weight.isCInf_ofFun fun y => cInfAt_const 0 y
@@ -92,7 +92,7 @@ noncomputable def cIdx (ψ : ∀ i, Weight p σ (T i)) (x : CxPts p σ) : ∀ l,
   | i :: l => (fun _ => pick (ψ i).isLB x, cIdx ψ x l)
 
 /- English proof (translation)
-The claim follows from `| [] => mem_ptsIn_top | i :: l => mem_ptsIn_inf.2 ⟨mem_pow_iff.2 (mem_pick (ψ i).isLB x), mem_cIdx ψ x l⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_cIdx (ψ : ∀ i, Weight p σ (T i)) (x : CxPts p σ) :
     ∀ l, x ∈ ptsIn p σ ((cBun T b l).U (cIdx T b ψ x l))
@@ -100,7 +100,7 @@ theorem mem_cIdx (ψ : ∀ i, Weight p σ (T i)) (x : CxPts p σ) :
   | i :: l => mem_ptsIn_inf.2 ⟨mem_pow_iff.2 (mem_pick (ψ i).isLB x), mem_cIdx ψ x l⟩
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | i :: l => by rw [List.map_cons, List.sum_cons, ← cWt_φ ψ x z l] exact congrArg (· + _) ((ψ i).zpow_φ (b i) _ z)`.
+A detailed English derivation is pending.
 -/
 theorem cWt_φ (ψ : ∀ i, Weight p σ (T i)) (x z : CxPts p σ) :
     ∀ l, (cWt T b ψ l).φ (cIdx T b ψ x l) z = (l.map fun i => (b i : ℝ) * (ψ i).φ (pick (ψ i).isLB x) z).sum
@@ -116,15 +116,15 @@ section Met
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F}
 
 /- English proof (translation)
-Introduce `c y hy`. Take `⟨x, rfl⟩` from `(I.pt a).surjective y`. Establish `hxU : (I.pt a).symm (I.pt a x) ∈ Q.U x` using `by simpa using Q.mem_U x`. Take `⟨f, hf⟩` from `hQ.1 x`. Establish `key : ∀ z : Pts Y (I.ε a), (I.pt a).symm z ∈ Q.U x → z ∈ ptsIn Y.str (I.ε a) ((toLB Δ).U c) → UnitAt (under z) (f * (c.1.2 : Y.Fn)) ∧ (metWeight Δ m hm).φ c z = 2 * Q.φ x ((I.pt a).symm z) + Real.log (‖ratVal (f * (c.1.2 : Y.Fn)) z‖ ^ 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz hzc`. Establish `hzc' : under z ∈ c.1.1` using `mem_ptsIn.1 hzc`. Take `⟨h₁, h₂, h₃⟩` from `hf _ hz`. Rewrite `h₁`, `h₂`, `h₃` using `[Homeomorph.apply_symm_apply]`. Establish `he : Δ.IsEqn (under z) c.1.2` using `c.2.2 _ hzc'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu` using `he.generatesAt_iff.1 h₁`. Establish `hgen` using `CartierDiv.isEqn_iff_generatesAt_inv.1 he`. Establish `hp` using `pn_pos_of_generatesAt (C := C) hgen (hm z)`. Establish `hr : 0 < ‖ratVal (f * (c.1.2 : Y.Fn)) z‖ ^ 2` using `pow_pos (norm_pos_iff.2 (ratVal_ne_zero hu)) 2`. Establish `e₁ : (f * (c.1.2 : Y.Fn)) * (c.1.2 : Y.Fn)⁻¹ = f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, mul_inv_cancel₀ (Units.ne_zero _), mul_one]`. Establish `e₂` using `C.pn_mul Y _ Δ m _ _ z hu.regAt hgen.regularAt`. Rewrite `e₂` using `[e₁]`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Rewrite using `[metWeight_φ, h₃, lnN, e₂, Real.log_mul hr.ne' hp.ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hS : IsOpen ((I.pt a).symm ⁻¹' Q.U x)` using `(Q.isOpen_U x).preimage (I.pt a).symm.continuous`. Use `(((MetricWeightSmoothness.GlobalTheory.CompanionTheory.MetWeightSmooth.cInfAt_of_smoothOn_tAtlas (isAlgAtlas_tAtlas I a) (Q.isOpen_U x) (hQ.2.1 x) hxU).const_mul 2).add (MetricWeightSmoothness.GlobalTheory.CompanionTheory.MetWeightSmooth.cInfAt_log_normSq_ratVal (key _ hxU hy).1) …` and prove the remaining obligations. Use `filter_upwards [hS.mem_nhds hxU, (isOpen_ptsIn _).mem_nhds hy] with z hz hzc`. Conclude with `(key z hz hzc).2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem metWeight_isCInf_at {e : ℕ} {M : Man e} (I : ManIs M Y) (a : Fin (M.n + 1)) {Δ : Y.Dv}
     {m : C.Met Y (I.ε a) Δ} (hm : ∀ y, PosAt m y) {Q : LocPot (M.X a)}
@@ -162,25 +162,23 @@ theorem metWeight_isCInf_at {e : ℕ} {M : Man e} (I : ManIs M Y) (a : Fin (M.n 
 end Met
 
 /- English proof (translation)
-Introduce `hCD F _ _ Y e M I a ι _ Δ m b Q hdim _ hQ`. Substitute `hdim` using the available equality. Establish `hm : ∀ i y, PosAt (m i (I.ε a)) y`. Introduce `i y`. Take `⟨x, rfl⟩` from `(I.pt a).surjective y`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `(hQ i).1 x`. Conclude with `(hf x ((Q i).mem_U x)).2.1`. Set `ψ : ∀ i, Weight Y.str (I.ε a) (toLB (Δ i))` to `fun i => metWeight (Δ i) (m i (I.ε a)) (hm i)`. Establish `hψ : ∀ i, (ψ i).IsCInf` using `fun i => metWeight_isCInf_at I a (hm i) (hQ i)`. Set `l` to `(Finset.univ : Finset ι).toList`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp` using `presents_cBun (fun i => toLB (Δ i)) b (fun i => presents_toLB (Δ i)) l`. Establish `hD : (l.map fun i => b i • Δ i).sum = ∑ i, b i • Δ i` using `Finset.sum_map_toList _ _`. Rewrite `hp` using `[hD]`. Set `φ` to `cWt (fun i => toLB (Δ i)) b ψ l`. Establish `hφ : φ.IsCInf` using `isCInf_cWt _ b hψ l`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hc⟩` from `hCD F Y (I.ε a) _ _ _ hp φ hφ`. Use `CxPts.secondCountableTopology_of_isProjOver (I.ε a) Y.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver (I.ε a) Y.isProjOver` as an intermediate fact. Establish `hA` using `isAlgAtlas_tAtlas I a`. Rewrite using `[← hc, ChernMA.chernInt_eq_mInt hφ hA continuous_const]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `TM : LocPot (M.X a)` to `InhabCalc.combPot Q (fun i => (b i : ℝ)) (fun _ => 0)`. Establish `hTM : IsPotential (M.A a) TM` using `InhabCalc.isPotential_combPot _ _ (fun i => (hQ i).2) _ _ (fun _ => contDiffOn_const)`. Set `T : LocPot (Pts Y (I.ε a))` to `TM.pullback (I.pt a).symm (I.pt a).symm.continuous`. Establish `hT : IsPotential (tAtlas (M.A a) (I.pt a)) T` using `PotentialityTransport.GlobalTheory.CompanionTheory.CarriedPot.isPotential_tAtlas_pullback _ _ _ _ _ _ hTM`. Establish `hsf : SameForm (tAtlas (M.A a) (I.pt a)) φ.locPot T`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Weight.sameForm_of_re (R := hA.anRead) _ hA hT fun x => ?_` and prove the remaining obligations. Establish `h6` using `fun i => HalfMetricWeight.GlobalTheory.CompanionTheory.Dblock.HalfWeight.half_metWeight_eq F (cxSt F) Y (I.ε a) _ _ hA (Δ i) (m i (I.ε a)) (hm i) _ (IsPot.pullback_symm (hQ i).1) x (pick (ψ i).isLB x) (mem_pick _ x)`. Use `choose W hW hxW G hG hGe using h6`. Use `⟨cIdx _ b ψ x l, mem_cIdx _ b ψ x l, ⋂ i, W i, isOpen_iInter_of_finite hW, Set.mem_iInter.2 hxW, fun z => ∑ i, (b i : ℂ) * G i z, (hA.holoOn_iff hA.anRead (isOpen_iInter_of_finite hW)).1 ?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce `j t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.analyticAt_fun_sum _ fun i _ => analyticAt_const.mul (hG i j t ⟨ht.1, Set.mem_iInter.1 ht.2 i⟩)`. Establish `e1 : ∀ i, (ψ i).φ (pick (ψ i).isLB x) z = 2 * ((Q i).φ ((I.pt a).symm x) ((I.pt a).symm z) + (G i z).re)` using `fun i => by`. Use `hGe i z (Set.mem_iInter.1 hz i)` as an intermediate fact. Simplify using `only [LocPot.pullback] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : T.φ x z = ∑ i, (b i : ℝ) * (Q i).φ ((I.pt a).symm x) ((I.pt a).symm z) + 0` using `rfl`. Establish `e4 : ∀ i, ((b i : ℂ) * G i z).re = (b i : ℝ) * (G i z).re` using `fun i => by simp`. Rewrite using `[cWt_φ, Finset.sum_map_toList, e3, Complex.re_sum]`. Simplify using `only [e1, e4]`. Rewrite using `[Finset.sum_div, add_zero, ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SameForm.mInt_eq (fun _ => hsf), MongeAmpereTransport.GlobalTheory.CompanionTheory.MaTransport.mInt_tAtlas _ _ _ _ _ _ _ (fun _ => hT) continuous_const]`. Use `InhabCalc.mInt_congr_φ (M.A a) (fun _ => ?_) _` and prove the remaining obligations. Use function extensionality and compare the values at `x z`.
-
-Simplify using `[T, TM, LocPot.pullback]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_combPot_eq_inter : GlobalTheory.Published.ChernDegree → ∀ (F : Type) [Field F] [NumberField F] (Y : GlobalTheory.ProjVar.Var F)
     (e : ℕ) (M : Man e) (I : ManIs M Y) (a : Fin (M.n + 1)) (ι : Type) [Fintype ι] (Δ : ι → Y.Dv)

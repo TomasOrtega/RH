@@ -20,7 +20,7 @@ def omLiftOfMultilinear
         PiTensorProduct.lift.toLinearMap).comp (PiTensorProduct.lift Φ)))
 
 /- English proof (translation)
-Simplify using `only [omLiftOfMultilinear, TensorProduct.lift.tmul, LinearMap.comp_apply, TensorProduct.uncurry_apply, LinearMap.llcomp_apply, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omLiftOfMultilinear_tprod
     (Φ : MultilinearMap ℂ (fun j : Fin S.m => Pol ι (S.nR j.castSucc) (S.nR j.succ))
@@ -33,9 +33,9 @@ theorem omLiftOfMultilinear_tprod
     LinearMap.llcomp_apply, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]
 
 /- English proof (translation)
-Introduce `ι _ _ S P Φ hΦ`. Use `⟨omLiftOfMultilinear P Φ, ?_, omLiftOfMultilinear_tprod P Φ⟩` and prove the remaining obligations. Introduce `g z`. Establish `key : (omLiftOfMultilinear P Φ).comp (omRep P g) = omLiftOfMultilinear P Φ`. Use extensionality with `x y v φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, TensorProduct.AlgebraTensorModule.curry_apply, TensorProduct.curry_apply, LinearMap.restrictScalars_apply]`. Rewrite using `[omRep, Representation.tprod_apply, TensorProduct.map_tmul, Representation.tprod_apply, TensorProduct.map_tmul, Representation.tprod_apply, TensorProduct.map_tmul]`. Simplify using `only [piTprod, MonoidHom.comp_apply, PiTensorProduct.mapMonoidHom_apply, PiTensorProduct.map_tprod, Pi.monoidHom_apply, omLiftOfMultilinear_tprod]`. Conclude with `hΦ g x y v φ`. Conclude with `LinearMap.congr_fun key z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invFun_of_multilinear : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {S : Sizes} (P : ι → Entries S)
     (Φ : MultilinearMap ℂ (fun j : Fin S.m => Pol ι (S.nR j.castSucc) (S.nR j.succ))

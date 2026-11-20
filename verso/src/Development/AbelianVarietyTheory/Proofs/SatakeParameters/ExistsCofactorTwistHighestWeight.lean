@@ -11,11 +11,11 @@ open MvPolynomial NumberField IsDedekindDomain Formalism.GradedWeylDivisibility 
 namespace GlobalTheory.ValCmp
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro ν _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `ν hν`. Establish `h` using `ih (fun i => ν i.castSucc) (fun a b hab => hν (by simpa using hab))`. Rewrite using `[Fin.sum_univ_castSucc (f := ν), ← h, Fin.sum_univ_castSucc]`. Establish `hle : ν (Fin.last (m + 1)) ≤ ν (Fin.last m).castSucc` using `hν (Fin.le_last _)`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fin.val_castSucc, Fin.val_last, Fin.succ_last, Fin.castSucc_zero, Fin.succ_castSucc, hd, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_mul_sub_succ : ∀ (m : ℕ) (ν : Fin (m + 1) → ℕ), Antitone ν →
     ∑ s : Fin m, s.val * (ν s.castSucc - ν s.succ) + m * ν (Fin.last m) + ν 0 = ∑ i, ν i := by
@@ -48,7 +48,7 @@ def antiDiagGL (R : Type) [CommRing R] (n : ℕ) : GL (Fin n) R where
     simp [Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Establish `: (((antiDiagGL R n)⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = Matrix.of fun a b => if b = a.rev then 1 else 0` using `rfl`. Rewrite using `[Formalism.UG.dwAct, this, rowAct, aeval_X, Finset.sum_eq_single a.rev (fun j _ hj => by simp [hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dwAct_antiDiag_X (R : Type) [CommRing R] (n : ℕ) (a s : Fin n) :
     Formalism.UG.dwAct R n n (antiDiagGL R n) (X (a, s)) = X (a.rev, s) := by
@@ -58,7 +58,7 @@ theorem dwAct_antiDiag_X (R : Type) [CommRing R] (n : ℕ) (a s : Fin n) :
   simp
 
 /- English proof (translation)
-Rewrite using `[revInitMinor, dif_pos h, lpMinor, initMinor, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `a b : 2`. Simplify using `[dwAct_antiDiag_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dwAct_antiDiag_lpMinor (R : Type) [CommRing R] (n k : ℕ) (h h' : k ≤ n) :
     Formalism.UG.dwAct R n n (antiDiagGL R n) (lpMinor R k h h') = revInitMinor R n k := by
@@ -68,7 +68,7 @@ theorem dwAct_antiDiag_lpMinor (R : Type) [CommRing R] (n k : ℕ) (h h' : k ≤
   simp [dwAct_antiDiag_X]
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `cofAct_initMinor R n (k + 1) h (by omega) 1`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Rewrite using `[revInitMinor, dif_pos (Nat.sub_le _ _)]`. Conclude with `hε`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cofAct_lpMinor (R : Type) [CommRing R] [IsDomain R] (n k : ℕ) (h h' : k + 1 ≤ n) : ∃ ε : ℤˣ,
     cofAct R n (lpMinor R (k + 1) h h') = (ε : ℤ) • ((genM R n).det ^ k * revInitMinor R n (n - (k + 1))) := by
@@ -78,19 +78,19 @@ theorem cofAct_lpMinor (R : Type) [CommRing R] [IsDomain R] (n k : ℕ) (h h' : 
   exact hε
 
 /- English proof (translation)
-Introduce `R _ _ m ν hν h0`. Establish `hmem : hw R le_rfl (nuDual ν) ∈ weyl R (m + 1) (m + 1) le_rfl (nuDual ν)` using `Submodule.subset_span ⟨[], rfl⟩`. Establish `hJ` using `Formalism.UG.Final.WeylGLStable R (m + 1) (m + 1) le_rfl (nuDual ν) (antiDiagGL R (m + 1)) _ hmem`. Establish `hnext : ∀ (μ : Fin (m + 1) → ℕ) (s : Fin m), nuNext μ s.castSucc = μ s.succ`. Introduce `μ s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: s.castSucc.val + 1 < m + 1` using `by simp`. Rewrite using `[nuNext, dif_pos this]`. Both sides reduce to the same expression. Establish `e1 : Formalism.UG.dwAct R (m + 1) (m + 1) (antiDiagGL R (m + 1)) (hw R le_rfl (nuDual ν)) = ∏ s : Fin m, revInitMinor R (m + 1) (m + 1 - (s.val + 1)) ^ (ν s.castSucc - ν s.succ)`. Rewrite using `[hw, map_prod, Fin.prod_univ_castSucc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_pow, dwAct_antiDiag_lpMinor, hnext]`. Establish `: nuDual ν (Fin.last m) = 0` using `by simp [nuDual]`. Rewrite using `[this, Nat.zero_sub, pow_zero, mul_one, ← Equiv.prod_comp Fin.revPerm]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `h1 : ν s.castSucc ≤ ν 0` using `hν (Fin.zero_le _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ν s.succ ≤ ν s.castSucc` using `hν (Fin.castSucc_lt_succ).le`. Establish `hs` using `s.isLt`. Use `congr 1`. Use `congr 1`. Simplify using `[Fin.val_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [nuDual, Fin.revPerm_apply, Fin.rev_castSucc, Fin.rev_succ, Fin.rev_rev]`. Use linear arithmetic over natural numbers and integers. Use `choose ε hε using fun s : Fin m => cofAct_lpMinor R (m + 1) s.val (by have := s.isLt; omega) (by have := s.isLt; omega)`. Use `⟨(∏ s : Fin m, (ε s : ℤ) ^ (ν s.castSucc - ν s.succ)) • _, Submodule.smul_of_tower_mem _ _ hJ, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsum : ∑ i, ν i - ν 0 = ∑ s : Fin m, s.val * (ν s.castSucc - ν s.succ)`. Use `sum_mul_sub_succ m ν hν` as an intermediate fact. Rewrite `this` using `[h0]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[CofRel, e1, hsum, hw, map_prod, Fin.prod_univ_castSucc, h0, Nat.zero_sub, pow_zero, map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_pow, hnext, Fin.val_castSucc, hε, zsmul_eq_mul, mul_pow, Finset.prod_mul_distrib, ← pow_mul, Finset.prod_pow_eq_pow_sum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_cofRel_hw : ∀ (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (ν : Fin (m + 1) → ℕ), Antitone ν → ν (Fin.last m) = 0 → ∃ g ∈ weyl R (m + 1) (m + 1) le_rfl (nuDual ν), CofRel R m ν (hw R le_rfl ν) g := by
   intro R _ _ m ν hν h0

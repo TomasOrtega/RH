@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Use `show j (c (c x)) = j x`. Rewrite using `[hj, hj, Complex.conj_conj]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complexConjugation_mul_self {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (c : Ω ≃ₐ[E] Ω) (hc : IsComplexConjugation c) : c * c = 1 := by
@@ -18,11 +18,9 @@ theorem complexConjugation_mul_self {E Ω : Type} [Field E] [Field Ω] [Algebra 
   rw [hj, hj, Complex.conj_conj]
 
 /- English proof (translation)
-Introduce and unpack `⟨j, hj⟩`. Set `φ : E →+* ℂ` to `j.comp (algebraMap E Ω)`. Establish `hφ : ComplexEmbedding.IsReal φ`. Use extensionality with `x`. Use `show starRingEnd ℂ (j (algebraMap E Ω x)) = j (algebraMap E Ω x)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hj, AlgEquiv.commutes]`. Establish `hw : (InfinitePlace.mk φ).IsReal` using `InfinitePlace.isReal_mk_iff.mpr hφ`. Establish `: IsEmpty {w : InfinitePlace E // w.IsReal}` using `by classical`. Rewrite `hE` using `[InfinitePlace.nrRealPlaces]`. Conclude with `Fintype.card_eq_zero_iff.mp (by convert hE)`.
-
-Conclude with `this.false ⟨_, hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isComplexConjugation_of_nrRealPlaces_eq_zero {E Ω : Type} [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] (hE : InfinitePlace.nrRealPlaces E = 0)
@@ -41,13 +39,13 @@ theorem not_isComplexConjugation_of_nrRealPlaces_eq_zero {E Ω : Type} [Field E]
   exact this.false ⟨_, hw⟩
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ l _ O _ _ hl M _ _ z hz c hc`. Break down `hl with hl | hE` into its components or cases. Establish `h1 : z 1 = 0`. Use `hz 1 1` as an intermediate fact. Simplify using `only [mul_one] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Establish `h2 : z c + z c = 0`. Rewrite using `[← hz, show (c * c : G E Ω) = 1 from complexConjugation_mul_self c hc, h1]`. Establish `hu : IsUnit (2 : ℤ_[l])`. Use `(PadicInt.norm_natCast_eq_one_iff (p := l) (n := 2)).mpr ((Nat.coprime_primes (Fact.out) Nat.prime_two).mpr hl)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.isUnit_iff]`. Conclude with `this` after adjusting the coercions. Establish `hu' : IsUnit (2 : O)`. Use `hu.map (algebraMap ℤ_[l] O)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3 : (2 : O) • z c = 0` using `by rw [two_smul]; exact h2`. Conclude with `(hu'.smul_left_cancel).mp (h3.trans (smul_zero _).symm)`. Conclude with `absurd hc (not_isComplexConjugation_of_nrRealPlaces_eq_zero hE c)`.
+A detailed English derivation is pending.
 -/
 theorem addHom_complexConjugation_eq_zero : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O],

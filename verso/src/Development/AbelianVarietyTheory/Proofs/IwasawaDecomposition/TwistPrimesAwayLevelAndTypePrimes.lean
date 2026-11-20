@@ -11,15 +11,13 @@ namespace GlobalTheory.Mem.Col2.TwistPrimes
 open GlobalTheory.Mem.LevTwist ReciprocityTheory.Neutral.Bridge.HCFR Neutral.B1
 
 /- English proof (translation)
-Introduce `B X I h`. Use `⟨I.twistPrimes_reference_tuple_eq_empty, fun u a P hP => ?_⟩` and prove the remaining obligations. Establish `hPr` using `(GlobalTheory.BasePrimes.primes_ok B X).1`. Establish `hg` using `good_of_mem h (I.Q_subset_SQ a hP)`. Establish `hS` using `hg.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : (conjPrime₂ P).under (𝓞 B.host.F) = P.under (𝓞 B.host.F)` using `(under_eq_iff B.host P _).2 (Or.inr rfl)`. Establish `hT : ∀ R : HeightOneSpectrum (𝓞 B.host.E), R.under (𝓞 B.host.F) = P.under (𝓞 B.host.F) → ((B.primes X).T u : 𝓞 B.host.E) ∉ R.asIdeal` using `fun R hR hm => hS (by`. Rewrite using `[← hR, (ReadTwist.plc_under_eq_iff (F := B.host.F) R (hPr.T_prime u)).2 hm]`. Conclude with `h.T_mem u)`. Establish `hpi : ∀ R : HeightOneSpectrum (𝓞 B.host.E), R.under (𝓞 B.host.F) = P.under (𝓞 B.host.F) → (B.primes X).piT u ∉ R.asIdeal` using `fun R hR hm => hT R hR (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hPr.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ hm)`. Establish `h0 : (B.primes X).piT u ≠ 0` using `fun e => by`. Use `hPr.piT_norm u` as an intermediate fact. Rewrite `this` using `[e, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hPr.T_prime u).ne_zero (Nat.cast_eq_zero.1 this.symm)`. Establish `hvT : ∀ R : HeightOneSpectrum (𝓞 B.host.E), R.under (𝓞 B.host.F) = P.under (𝓞 B.host.F) → R ∉ (B.primes X).vT u` using `fun R hR hm => hpi R hR ((mem_divs h0 _).1 hm)`. Establish `hvG : ∀ R : HeightOneSpectrum (𝓞 B.host.E), R.under (𝓞 B.host.F) = P.under (𝓞 B.host.F) → R ∉ (B.primes X).vGs` using `fun R hR hm => hS (by rw [← hR]; exact plc_mem h hm)`. Use `⟨⟨hvT P rfl, hvG P rfl, hvT _ hu, hvG _ hu, fun hc => ?_⟩, hpi P rfl, fun hm => hT P rfl ?_⟩` and prove the remaining obligations. Establish `e` using `(good_of_mem h (I.Q_subset_SQ a hc)).1`.
-
-Rewrite `e` using `[hu, hg.1]`. Conclude with `conjP_ne B.host ((GoodPlace.goodPl_under_iff _ B.host _ P).1 hg.2).1 e.symm`. Rewrite using `[← map_natCast (algebraMap (𝓞 B.host.F) (𝓞 B.host.E))]`. Conclude with `hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_primes_away : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → (I.Q I.mu0 = ∅) ∧ ∀ (u : B.Word) (a : I.ι), ∀ P ∈ I.Q a, (P ∉ (B.primes X).vT u ∧ P ∉ (B.primes X).vGs ∧ conjPrime₂ P ∉ (B.primes X).vT u ∧ conjPrime₂ P ∉ (B.primes X).vGs ∧ conjPrime₂ P ∉ I.Q a) ∧ X.piT u ∉ P.asIdeal ∧ (B.T u : 𝓞 B.host.F) ∉ (P.under (𝓞 B.host.F)).asIdeal := by
   intro B X I h

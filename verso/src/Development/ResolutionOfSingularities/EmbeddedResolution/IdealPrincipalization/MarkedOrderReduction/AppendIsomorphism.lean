@@ -36,7 +36,7 @@ private theorem appendObjIsoRight_hom {X : Scheme.{u}} (s : BlowupSequenceData X
         eqToHom (append_schemeAt_eq_right_of_pos s t₂ hj hij).symm := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem appendObjIsoRight_congr {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length))
@@ -59,7 +59,7 @@ private noncomputable def appendSchemeAtIso {X : Scheme.{u}} (s : BlowupSequence
     appendSchemeAtIsoOfLengthLt s t₁ t₂ e (i - s.length) i (by omega) (by omega) (by omega)
 
 /- English proof (translation)
-Unfold `appendSchemeAtIso`. Simplify using `only [dif_pos h, eqToIso.hom]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem appendObjIso_hom_of_le {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length))
@@ -71,7 +71,7 @@ private theorem appendObjIso_hom_of_le {X : Scheme.{u}} (s : BlowupSequenceData 
   simp only [dif_pos h, eqToIso.hom]
 
 /- English proof (translation)
-Establish `hne : ¬ i ≤ s.length` using `by omega`. Unfold `appendSchemeAtIso`. Rewrite using `[dif_neg hne]`. Conclude with `appendObjIsoRight_congr s t₁ t₂ e (i - s.length) j i (by omega) (by omega) (by omega) (by omega) hij hj hjl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appendObjIso_eq_right_of_pos {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length))
@@ -86,21 +86,21 @@ private theorem appendObjIso_eq_right_of_pos {X : Scheme.{u}} (s : BlowupSequenc
     (by omega) hij hj hjl
 
 /- English proof (translation)
-Establish `hlenc : (s.append t₁).length = (s.append t₂).length`. Rewrite using `[append_length, append_length, hlen]`. Use `toSequenceOfBlowups_isomorphic_of_iso (s.append t₁) (s.append t₂) hlenc (fun i hi => appendSchemeAtIso s t₁ t₂ e i (hi.trans_eq (append_length s t₁))) ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [appendObjIso_hom_of_le s t₁ t₂ e 0 (Nat.zero_le s.length), append_isoObjZero_hom, eqToHom_trans_assoc]`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi' : i < s.length + t₁.length` using `hi.trans_eq (append_length s t₁)`. Break down `lt_trichotomy i s.length with hlt | heq | hgt` into its components or cases. Establish `h1 : i + 1 ≤ s.length` using `by omega`. Simplify using `only [appendObjIso_hom_of_le s t₁ t₂ e (i + 1) h1, appendObjIso_hom_of_le s t₁ t₂ e i hlt.le, append_blowupMorphism_of_lt_length s t₂ hlt, append_blowupMorphism_of_lt_length s t₁ hlt, Category.assoc, eqToHom_trans, eqToHom_trans_assoc]`. Substitute `heq` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `h0lt : 0 < t₁.length` using `by omega`. Establish `h1le : 1 ≤ t₁.length` using `by omega`. Establish `hm0 : (e 1 h1le).hom ≫ t₂.map 0 = t₁.map 0 ≫ (e 0 (Nat.zero_le _)).hom` using `hmap 0 h0lt`. Simplify using `only [appendObjIso_eq_right_of_pos s t₁ t₂ e (s.length + 1) 1 rfl Nat.one_pos h1le, appendObjIsoRight_hom, appendObjIso_hom_of_le s t₁ t₂ e s.length le_rfl, append_blowupMorphism_length, Category.assoc, eqToHom_trans, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]`. Rewrite using `[reassoc_of% hm0, reassoc_of% hzero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hj1 : 0 < i - s.length` using `by omega`. Establish `hj2 : i - s.length ≤ t₁.length` using `by omega`. Establish `hj3 : i - s.length < t₁.length` using `by omega`. Simplify using `only [appendObjIso_eq_right_of_pos s t₁ t₂ e (i + 1) (i - s.length + 1) (by omega) (by omega) (by omega), appendObjIso_eq_right_of_pos s t₁ t₂ e i (i - s.length) (by omega) hj1 hj2, appendObjIsoRight_hom, append_blowupMorphism_of_length_lt s t₂ hgt, append_blowupMorphism_of_lengt …`. Rewrite using `[reassoc_of% (hmap (i - s.length) hj3)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Establish `hi' : i < s.length + t₁.length` using `hi.trans_eq (append_length s t₁)`. Break down `lt_trichotomy i s.length with hlt | heq | hgt` into its components or cases. Simplify using `only [appendObjIso_hom_of_le s t₁ t₂ e i hlt.le, append_center_of_lt_length s t₂ hlt, append_center_of_lt_length s t₁ hlt, ← Scheme.IdealSheafData.comap_comp, eqToHom_trans]`. Substitute `heq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `h0lt : 0 < t₁.length` using `by omega`. Establish `hz2 : t₁.isoZero.inv ≫ (e 0 (Nat.zero_le _)).hom = t₂.isoZero.inv`. Rewrite using `[Iso.inv_comp_eq, ← hzero, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Simplify using `only [appendObjIso_hom_of_le s t₁ t₂ e s.length le_rfl, append_center_length, ← Scheme.IdealSheafData.comap_comp, eqToHom_trans_assoc]`. Rewrite using `[← hcenter 0 h0lt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Scheme.IdealSheafData.comap_comp, Category.assoc, hz2]`. Establish `hj1 : 0 < i - s.length` using `by omega`. Establish `hj2 : i - s.length ≤ t₁.length` using `by omega`. Establish `hj3 : i - s.length < t₁.length` using `by omega`. Simplify using `only [appendObjIso_eq_right_of_pos s t₁ t₂ e i (i - s.length) (by omega) hj1 hj2, appendObjIsoRight_hom, append_center_of_length_lt s t₂ hgt, append_center_of_length_lt s t₁ hgt, ← Scheme.IdealSheafData.comap_comp, Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hcenter (i - s.length) hj3]`. Simplify using `only [← Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem append_isomorphic_of_iso {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length)) (hlen : t₁.length = t₂.length)
@@ -165,11 +165,9 @@ theorem append_isomorphic_of_iso {X : Scheme.{u}} (s : BlowupSequenceData X)
       simp only [← Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Take `⟨hlen, e, hzero, hmap, hcenter⟩` from `h`. Establish `hl1 : t₁.toSequenceOfBlowups.length = t₁.length` using `toSequenceOfBlowups_length t₁`. Establish `hl2 : t₂.toSequenceOfBlowups.length = t₂.length` using `toSequenceOfBlowups_length t₂`. Use `append_isomorphic_of_iso s t₁ t₂ (by omega) (fun i hi => e i (by omega)) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← toSequenceOfBlowups_isoObjZero t₂, ← toSequenceOfBlowups_isoObjZero t₁]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hzero`. Introduce `i hi`. Rewrite using `[← toSequenceOfBlowups_blowupMorphism t₂ i, ← toSequenceOfBlowups_blowupMorphism t₁ i]`. Conclude with `hmap i (by omega)`. Introduce `i hi`.
-
-Rewrite using `[← toSequenceOfBlowups_center t₂ i, ← toSequenceOfBlowups_center t₁ i]`. Conclude with `hcenter i (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem append_isomorphic_of_isomorphic {X : Scheme.{u}} (s : BlowupSequenceData X)
     (t₁ t₂ : BlowupSequenceData (s.obj s.length)) (h : t₁.toSequenceOfBlowups.Isomorphic t₂.toSequenceOfBlowups) :
@@ -192,7 +190,7 @@ end BlowupSequenceData
 namespace MarkedBlowupSequenceData
 
 /- English proof (translation)
-Rewrite `h` using `[toMarkedSequence_toSequenceOfBlowups, toMarkedSequence_toSequenceOfBlowups]`. Establish `key` using `BlowupSequenceData.append_isomorphic_of_isomorphic S.toBlowupSequenceData T₁.toBlowupSequenceData T₂.toBlowupSequenceData h`. Rewrite using `[toMarkedSequence_toSequenceOfBlowups, toMarkedSequence_toSequenceOfBlowups, append_toBlowupSequenceData, append_toBlowupSequenceData]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem append_isomorphic_of_isomorphic {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}

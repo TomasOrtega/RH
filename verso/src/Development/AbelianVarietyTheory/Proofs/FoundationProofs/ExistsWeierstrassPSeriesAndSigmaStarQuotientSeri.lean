@@ -18,21 +18,21 @@ abbrev tay (f : ℂ → ℂ) : PowerSeries ℂ := PowerSeries.mk (coef1 f)
 variable {f g : ℂ → ℂ}
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [PowerSeries.coeff_mk, coef1, h.iteratedDeriv_eq n]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma tay_congr (h : f =ᶠ[𝓝 0] g) : tay f = tay g := by
   ext n
   simp only [PowerSeries.coeff_mk, coef1, h.iteratedDeriv_eq n]
 
 /- English proof (translation)
-The claim follows from `tay_congr ((hf.continuousAt.eventuallyEq_nhds_iff_eventuallyEq_nhdsNE hg.continuousAt).1 h)`.
+A detailed English derivation is pending.
 -/
 lemma tay_congr' (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) (h : f =ᶠ[𝓝[≠] 0] g) :
     tay f = tay g :=
   tay_congr ((hf.continuousAt.eventuallyEq_nhds_iff_eventuallyEq_nhdsNE hg.continuousAt).1 h)
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [map_add, PowerSeries.coeff_mk, coef1, ← add_div]`. Use `congr 1`. Conclude with `iteratedDeriv_add hf.contDiffAt hg.contDiffAt`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma tay_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     tay (fun z => f z + g z) = tay f + tay g := by
@@ -42,7 +42,7 @@ lemma tay_add (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
   exact iteratedDeriv_add hf.contDiffAt hg.contDiffAt
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [map_sub, PowerSeries.coeff_mk, coef1, ← sub_div]`. Use `congr 1`. Conclude with `iteratedDeriv_sub hf.contDiffAt hg.contDiffAt`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma tay_sub (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     tay (fun z => f z - g z) = tay f - tay g := by
@@ -52,11 +52,11 @@ lemma tay_sub (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
   exact iteratedDeriv_sub hf.contDiffAt hg.contDiffAt
 
 /- English proof (translation)
-Use extensionality with `n`. Establish `h : iteratedDeriv n (fun z => f z * g z) 0 = _` using `iteratedDeriv_mul (n := n) hf.contDiffAt hg.contDiffAt`. Simplify using `only [PowerSeries.coeff_mul, PowerSeries.coeff_mk, coef1, h]`. Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Establish `e : ((n.choose i : ℂ) * (i.factorial : ℂ) * ((n - i).factorial : ℂ)) = n.factorial`. Conclude with `Nat.choose_mul_factorial_mul_factorial hi'` after adjusting the coercions. Establish `h1 : (i.factorial : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 i.factorial_ne_zero`. Establish `h2 : ((n - i).factorial : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (n - i).factorial_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (n.choose i : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.choose_pos hi').ne'`. Rewrite using `[← e]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma tay_mul (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
     tay (fun z => f z * g z) = tay f * tay g := by
@@ -76,14 +76,14 @@ lemma tay_mul (hf : AnalyticAt ℂ f 0) (hg : AnalyticAt ℂ g 0) :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk]`. Simplify using `[coef1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma constantCoeff_tay (f : ℂ → ℂ) : PowerSeries.constantCoeff (tay f) = f 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk]
   simp [coef1]
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using `[coef1]`. Simplify using `[coef1, iteratedDeriv_const]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma tay_const (c : ℂ) : tay (fun _ => c) = PowerSeries.C c := by
   ext n
@@ -92,9 +92,9 @@ lemma tay_const (c : ℂ) : tay (fun _ => c) = PowerSeries.C c := by
   · simp [coef1, iteratedDeriv_const]
 
 /- English proof (translation)
-Use extensionality with `n`. Use `Eq.trans ?_ (PowerSeries.coeff_derivativeFun (tay f) n).symm` and prove the remaining obligations. Simplify using `only [PowerSeries.coeff_mk, coef1, iteratedDeriv_succ', Nat.factorial_succ]`. Establish `h1 : (n.factorial : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 n.factorial_ne_zero`. Establish `h2 : ((n : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero n`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 lemma tay_deriv (f : ℂ → ℂ) : tay (deriv f) = PowerSeries.derivativeFun (tay f) := by
   ext n
@@ -106,7 +106,7 @@ lemma tay_deriv (f : ℂ → ℂ) : tay (deriv f) = PowerSeries.derivativeFun (t
   field_simp
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `n with _ | _ | n` into its components or cases. Simplify using `[coef1]`. Simplify using `[coef1]`. Simplify using `[coef1, iteratedDeriv_succ', iteratedDeriv_const, PowerSeries.coeff_X]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma tay_id : tay (fun z => z) = PowerSeries.X := by
   ext n
@@ -116,7 +116,7 @@ lemma tay_id : tay (fun z => z) = PowerSeries.X := by
   · simp [coef1, iteratedDeriv_succ', iteratedDeriv_const, PowerSeries.coeff_X]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [tay_const]`. Consider the case `succ n ih`. Simplify using `only [pow_succ]`. Rewrite using `[tay_mul (hf.fun_pow n) hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma tay_pow (hf : AnalyticAt ℂ f 0) (n : ℕ) : tay (fun z => f z ^ n) = tay f ^ n := by
   induction n with
@@ -128,7 +128,7 @@ lemma tay_pow (hf : AnalyticAt ℂ f 0) (n : ℕ) : tay (fun z => f z ^ n) = tay
 def sqWp (L : PeriodPair) (z : ℂ) : ℂ := 1 + z ^ 2 * L.weierstrassPExcept 0 z
 
 /- English proof (translation)
-Use `L.analyticAt_weierstrassPExcept 0` as an intermediate fact. Unfold `sqWp`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma analyticAt_sqWp (L : PeriodPair) : AnalyticAt ℂ (sqWp L) 0 := by
   have := L.analyticAt_weierstrassPExcept 0
@@ -136,7 +136,7 @@ lemma analyticAt_sqWp (L : PeriodPair) : AnalyticAt ℂ (sqWp L) 0 := by
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[← L.weierstrassPExcept_add 0, sqWp]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sqWp_eq (L : PeriodPair) {z : ℂ} (hz : z ≠ 0) : sqWp L z = z ^ 2 * L.weierstrassP z := by
   rw [← L.weierstrassPExcept_add 0, sqWp]
@@ -145,7 +145,7 @@ lemma sqWp_eq (L : PeriodPair) {z : ℂ} (hz : z ≠ 0) : sqWp L z = z ^ 2 * L.w
   ring
 
 /- English proof (translation)
-Establish `h` using `L.compl_lattice_diff_singleton_mem_nhds 0`. Use `filter_upwards [nhdsWithin_le_nhds h, self_mem_nhdsWithin] with z h1 h2 h3`. Conclude with `h1 ⟨h3, h2⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma eventually_notMem (L : PeriodPair) : ∀ᶠ z in 𝓝[≠] (0 : ℂ), z ∉ L.lattice := by
   have h := L.compl_lattice_diff_singleton_mem_nhds 0
@@ -153,7 +153,7 @@ lemma eventually_notMem (L : PeriodPair) : ∀ᶠ z in 𝓝[≠] (0 : ℂ), z �
   exact h1 ⟨h3, h2⟩
 
 /- English proof (translation)
-Establish `h0 : z ≠ 0` using `by rintro rfl; exact hz (zero_mem _)`. Establish `h1 : sqWp L =ᶠ[𝓝 z] fun w => w ^ 2 * L.weierstrassP w` using `by filter_upwards [isOpen_ne.mem_nhds h0] with w hw using sqWp_eq L hw`. Establish `h2 : DifferentiableAt ℂ L.weierstrassP z` using `L.differentiableOn_weierstrassP.differentiableAt (L.isClosed_lattice.isOpen_compl.mem_nhds hz)`. Rewrite using `[h1.deriv_eq, deriv_fun_mul (by fun_prop) h2, L.deriv_weierstrassP]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma deriv_sqWp (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
     deriv (sqWp L) z = 2 * z * L.weierstrassP z + z ^ 2 * L.derivWeierstrassP z := by
@@ -166,9 +166,9 @@ lemma deriv_sqWp (L : PeriodPair) {z : ℂ} (hz : z ∉ L.lattice) :
   simp
 
 /- English proof (translation)
-Establish `hp` using `analyticAt_sqWp L`. Establish `hd` using `hp.deriv`. Establish `hi : AnalyticAt ℂ (fun z : ℂ => z) 0` using `analyticAt_id`. Use `⟨by rw [constantCoeff_tay]; simp [sqWp], ?_⟩` and prove the remaining obligations. Establish `key` using `tay_congr' (f := fun z => (z * deriv (sqWp L) z - 2 * sqWp L z) ^ 2) (g := fun z => 4 * sqWp L z ^ 3 - L.g₂ * z ^ 4 * sqWp L z - L.g₃ * z ^ 6) (by fun_prop) (by fun_prop) (by filter_upwards [eventually_notMem L, self_mem_nhdsWithin] with z h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[deriv_sqWp L h1, sqWp_eq L h2]`. Take the linear combination `z ^ 6 * L.derivWeierstrassP_sq z h1)`. Rewrite `key` using `[tay_pow (by fun_prop), tay_sub (by fun_prop) (by fun_prop), tay_sub (by fun_prop) (by fun_prop), tay_sub (by fun_prop) (by fun_prop), tay_mul hi hd, tay_mul analyticAt_const hp, tay_mul analyticAt_const (hp.fun_pow 3), tay_mul (by fun_prop) hp, tay_mul analyticAt_const (hi.fun_p …`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isWpSer_sqWp (L : PeriodPair) : IsWpSer L.g₂ L.g₃ (tay (sqWp L)) := by
   have hp := analyticAt_sqWp L
@@ -190,11 +190,11 @@ lemma isWpSer_sqWp (L : PeriodPair) : IsWpSer L.g₂ L.g₃ (tay (sqWp L)) := by
   exact key
 
 /- English proof (translation)
-Introduce `Λ h`. Take `⟨L, hL⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ h`. Use `⟨tay (sqWp L), ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatticeInvariants.g2_eq hL, GlobalTheory.LatticeInvariants.lattice_invariant_g3_eq hL]`. Conclude with `isWpSer_sqWp L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `analyticAt_sqWp L`. Establish `hi : AnalyticAt ℂ (fun z : ℂ => z) 0` using `analyticAt_id`. Establish `hs : AnalyticAt ℂ (sgStar Λ) 0` using `h.differentiable.analyticAt 0`. Establish `ht : AnalyticAt ℂ (sqTh Λ v) 0` using `(h.differentiable_sqTh v).analyticAt 0`. Establish `key` using `tay_congr' (f := fun z => z ^ 2 * sqTh Λ v z) (g := fun z => sgStar Λ z ^ 2 * (sqWp L z - wpF Λ v * z ^ 2)) (by fun_prop) (by fun_prop) (by filter_upwards [eventually_notMem L, self_mem_nhdsWithin] with z h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.sqTh_eq hv ((hL z).not.2 h1), sqWp_eq L h2, GlobalTheory.LatticeInvariants.wpF_eq hL z]`. Use the proof step `ring)`. Rewrite `key` using `[tay_mul (hi.fun_pow 2) ht, tay_mul (hs.fun_pow 2) (by fun_prop), tay_sub hp (by fun_prop), tay_mul analyticAt_const (hi.fun_pow 2), tay_pow hi, tay_pow hs, tay_id, tay_const]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_wpSer : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∃ P : PowerSeries ℂ, IsWpSer (g2 Λ) (g3 Λ) P ∧ ∀ v, v ∉ Λ → PowerSeries.X ^ 2 * PowerSeries.mk (coef1 (sqTh Λ v)) = PowerSeries.mk (coef1 (sgStar Λ)) ^ 2 * lineSer P (wpF Λ v) := by
   intro Λ h

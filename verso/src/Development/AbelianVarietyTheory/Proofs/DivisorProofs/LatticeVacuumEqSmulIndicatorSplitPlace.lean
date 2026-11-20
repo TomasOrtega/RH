@@ -29,19 +29,19 @@ noncomputable section
 namespace GlobalTheory.VacShape
 
 /- English proof (translation)
-Introduce `D a a' Bs Γ X om om' hTr L₁ L₂ θ hθ φ₀ h0 hne hfix huniq`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_linearModel_intertwiner_goodSplitPlace Bs Γ X om om' hTr`. Establish `hfSB : ι φ₀ ∈ GlobalTheory.WeilM.SB _` using `hι.bij.mapsTo h0`. Establish `hf0 : ι φ₀ ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Use `hι.bij.injOn h0 (zero_mem _) ?_` and prove the remaining obligations. Rewrite using `[h, map_zero]`. Establish `hinv : ∀ s ∈ GlobalTheory.VacShape.Sa Bs Γ L₁ L₂, ∀ Y, ι φ₀ (Y + s) = ι φ₀ Y`. Introduce and unpack `_ ⟨u, hu, hu0, rfl⟩ Y`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable _ _ _).1 u hu`. Establish `hA` using `hfix u hu`. Rewrite `hA` using `[GlobalTheory.T.traceSymplectic_self_zero_splitSupported Bs Γ X om om' hTr u hat (Or.inl hu0), mul_zero, AddChar.map_zero_eq_one, one_smul]`. Conclude with `(hι.trans u hat hu0 φ₀ h0 φ₀ h0 hA Y).symm`. Establish `hsupp : ∀ Y ∉ GlobalTheory.VacShape.Bd Bs Γ L₁ L₂, ι φ₀ Y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y hY`. Simplify using `only [GlobalTheory.VacShape.Bd, Set.mem_setOf_eq, not_forall] at hY`. Take `⟨x, hx, hx0, rfl, u, hu, hu0, hne1⟩` from `hY`. Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable _ _ _).1 u hu`. Establish `hB` using `hfix u hu`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hB` using `[GlobalTheory.T.traceSymplectic_self_zero_splitSupported Bs Γ X om om' hTr u hat (Or.inr hu0), mul_zero, AddChar.map_zero_eq_one, one_smul]`. Establish `hm` using `hι.mult u hat hu0 φ₀ h0 φ₀ h0 hB x hx hx0`. Assume the negation of the conclusion as `h`. Conclude with `hne1 ((mul_eq_right₀ h).mp hm.symm)`. Take `⟨c, hc, hop, hcp⟩` from `GlobalTheory.T.schwartzBruhat_matrices_invariant_supported_eq_smul Bs.v₁ _ _ (GlobalTheory.T.latticePairingTrivialMatrices_sub_mem Bs Γ X om om' hTr L₁ L₂) (ι φ₀) hfSB hf0 hinv hsupp (GlobalTheory.T.schwartzBruhat_invariant_supported_eq_smul_vacuum Bs Γ X om om' hTr L₁ L₂ θ hθ ι …`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, Λ, hPΛ⟩` from `GlobalTheory.T.closure_vanishing_lattice_eq_row_lattice_matrices Bs Γ X om om' hTr L₁ L₂ hop hcp`. Use `⟨ι, P, Λ, c, hι, fun Y => ?_⟩` and prove the remaining obligations. Establish `hY` using `congrFun hc Y`. Rewrite `hY` using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hY]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Distinguish the cases in `h : Y ∈ closure (GlobalTheory.VacShape.Sa Bs Γ L₁ L₂ : Set _)`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show P.val * Y ∈ (matLat (Fin a') Λ : Set _) from (hPΛ Y).1 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (show P.val * Y ∉ (matLat (Fin a') Λ : Set _) from fun h' => h ((hPΛ Y).2 h'))]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacuum_eq_smul_indicator : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

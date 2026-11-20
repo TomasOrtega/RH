@@ -18,15 +18,13 @@ namespace GlobalTheory.Mem.Col2.TC
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z`. Take `⟨Ch, chOf, F, hF, hfin, hm, hgl, hchi⟩` from `GlobalTheory.T.exists_standardFormComparison_symmetricLevel_members I hOk hP l Z`. Take `⟨lev00, lev, cls, vT, Fv, hH0⟩` from `GlobalTheory.T.hermitianColumnChoices_of_formsLevelsClasses I hOk hP l Z Ch chOf F hfin hm (fun u => (hF u).1)`. Use `choose lev0 hLb hUl hU hy hst hsp hfrG hpi using fun u => GlobalTheory.T.stepZeroHermitianLevel_uniformiser_kills_values_alt I hOk hP l Z u (F u) (hF u).1 (lev00 u) (hH0.car0 u)`. Set `H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)` to `{ lev0 := lev0, Ch := Ch, ChFin := hfin, Ch_m := hm, chOf := chOf, lev := lev, cls := cls, vT := vT, Fv := Fv }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hH : CarH H F` using `{ eV := hH0.eV, fv := hH0.fv car0 := fun u => by show SameCar _ (lev0 u).Lb _ (lev0 u).Uloc _ (lev0 u).U _ (fun c => ((lev0 u).y c).1) _ (fun c s => ((lev0 u).stabI c s).1) _`. Rewrite using `[hLb u, hUl u, hU u, hy u, hst u]`. Conclude with `hH0.car0 u`. Use `carC := hH0.carC, carM := hH0.carM`. Use `sp := fun u => by show _ = (lev0 u).splitG; rw [hsp u]; exact hH0.sp u`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fr0 := fun u => by show ∀ i v h, _ = reGL _ _ ((lev0 u).frG i v h); rw [hfrG u]; exact hH0.fr0 u }`. Take `⟨A, hT, hAd, hSt⟩` from `GlobalTheory.T.exists_hermitian_data_carT_of_std I hOk hP l Z H F hF hH`. Take `⟨hCof, hBase, ⟨hFv⟩, X0, hX0⟩` from `GlobalTheory.T.hermitianColumns_generators_baseLattices_functionals I hOk hP l Z H F A hF hH hT (fun u w h a ha m => hpi u w h a (by rw [ha, hT.piU u]) m)`. Establish `hStd` using `(GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hP l Z).1`. Establish `hpiG : ∀ u u', (X0 u).piG = (X0 u').piG` using `fun u u' => by rw [hX0 u, hX0 u']`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpiG' : ∀ u, (F u).gl.piG = (X0 u).piG` using `fun u => by rw [hX0 u]; exact ((hF u).1.gl).piG`. Establish `hfr0 : ∀ u u', (F u).glev0.fr = (F u').glev0.fr` using `fun u u' => by`. Use function extensionality and compare the values at `j v h`. Rewrite using `[(hF u).1.fr0, (hF u').1.fr0]`. Establish `hfrP : ∀ u u', (F u).glevP.fr = (F u').glevP.fr` using `fun u u' => by`.
-
-Use function extensionality and compare the values at `j v h`. Rewrite using `[(hF u).1.frP, (hF u').1.frP]`. Use `⟨ { herm := { base := H, atT := A, levelZeroCompatibility := X0, ad := hAd, cof := hCof, piG := hpiG, stabMap := hSt, fvI := hFv, std := hStd, baseL := hBase } forms := F eV := hH.eV piU := hT.piU res := hT.res car0 := hH.car0 carC := hH.carC carM := hH.carM carP := hT.carP latti …` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem colsTiedSym_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)),
     ∃ C : ColsTiedSym (I.rec7 l Z), I.StdC l Z C ∧ ∀ u, I.StdLvC l Z u (C.forms u) := by

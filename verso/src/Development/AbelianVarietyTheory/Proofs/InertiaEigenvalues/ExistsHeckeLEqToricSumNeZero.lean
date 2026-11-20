@@ -9,11 +9,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.ToricValue
 
 /- English proof (translation)
-Introduce `R H I _ φ s κ 𝔣 χ hD`. Establish `: IsCMField H.E` using `H.isCMField_hostE`. Take `⟨hφ, -, hs, -, hb, hχ⟩` from `hD`. Establish `hn` using `GlobalTheory.ToricAssembly.not_isNormPow hb hχ`. Take `⟨Λ, hΛ⟩` from `GlobalTheory.HeckeOne.entire_of_not_normPow hχ.1 hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : Λ s ≠ 0` using `GlobalTheory.HeckePartial.IsHeckeL.ne_zero_of_one_le hχ.1 hn hΛ (by exact_mod_cast hs)`. Choose the witnesses or unpack the hypotheses as in `⟨P₀⟩ : Nonempty (HeightOneSpectrum (𝓞 H.E)) := by`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 H.E)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField _)⟩⟩`. Establish `t1` using `GlobalTheory.ToricAssembly.toricSumFormula _ I φ hφ s κ 𝔣 ∅ χ (fun _ => P₀) Λ (GlobalTheory.ToricDenomBridge.host_unramFin H) hs hb (fun _ h => absurd h (Finset.notMem_empty _)) hχ (fun _ h => absurd h (Finset.notMem_empty _)) hΛ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `t1` using `[Finset.filter_empty, Finset.prod_empty, mul_one]`. Establish `e : condQ 𝔣 ∅ = 𝔣` using `by simp [condQ]`. Rewrite `t1` using `[e]`. Conclude with `⟨Λ, hΛ, h0, fun T => ⟨fun h => h.unique t1, fun h => h ▸ t1⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_heckeL_toricSum : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (I : Type) [Fintype I] (φ : I → H.E →+* ℂ) (s : ℕ) (κ : I → ℕ) (𝔣 : Ideal (OF H.E)) (χ : Formalism.L2.Host.HChar H.E), IsHostDatum H φ s κ 𝔣 χ → ∃ Λ : ℂ → ℂ, IsHeckeL χ Λ ∧ Λ s ≠ 0 ∧ ∀ T : ℂ, IsToricSum φ s κ 𝔣 χ T ↔ T = Λ s := by
   intro R H I _ φ s κ 𝔣 χ hD

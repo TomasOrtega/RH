@@ -12,17 +12,17 @@ open private rep_retr iwahori_level_zero_eq from Development.AutomorphicArithmet
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `P` using `PH.toClassicalTheorems`. Use `UpperTheory.GalN.V.L.rwwd F Ω l ι 2 r H.cont fun w hl A h => ?_` and prove the remaining obligations. Take `⟨χ, hχ⟩` from `H.pol`. Take `⟨-, wt, HT, -, -, hall⟩` from `UpperTheory.GalN.V.exRN (exR PH) F Ω l ι 2 one_le_two π χ H.reg hχ`. Establish `hG` using `hall r H.cont H.att`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨σ, hσ⟩, hiso⟩` from `locCompR P F 2 π w`. Take `⟨rc, hrc⟩` from `P.exists_rec h`. Use `hG.ratio w hl A h rc hrc σ hσ ?_` and prove the remaining obligations. Distinguish the cases in `hc : c w = 0`. Take `⟨v, hv, hf⟩` from `H.sph w hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, hTv⟩` from `rep_retr σ.ρ σ.irred (π.locRep w) (hiso σ hσ).2 v hv`. Take `⟨B, hB⟩` from `(satLoc P F 2 w σ).1 ⟨T v, hTv, fun u hu => by rw [← hT, hf u (iwahori_level_zero_eq w ▸ hu)]⟩`. Conclude with `WD.unr_mono0 _ (UpperTheory.GalN.V.unr_algNorm hrc σ B hB)`. Establish `hA : ¬ A.valuation (l : Ω) < 1` using `fun e => hl (((UpperTheory.V.Base.places F Ω l A).2.2.1 w h).1 e)`. Take `⟨s₀, hs₀, h0⟩` from `SetLike.not_le_iff_exists.1 fun e => ((H.ram w A h).1 e).elim hc hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `UpperTheory.V.Sd.ordAway_n PH F Ω l ι ξ s c m a π r H A hA`. Use `UpperTheory.GalN.V.L.monosep F Ω A w h _ (ineIncl h ⟨s₀, hs₀⟩) (deg_ineIncl _) ?_` and prove the remaining obligations. Establish `k : UpperTheory.GalN.V.WDN ι r (rc (algNorm σ))` using `.of_aw hl H.cont ⟨(hG.away w hl A h rc hrc σ hσ).pol, (hG.away w hl A h rc hrc σ hσ).n0⟩`. Establish `e : (r s₀ : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = (X - C 1) * (X - C (ξ s₀ : Qbar l))`. Rewrite using `[← Matrix.charpoly_units_conj g, ← Matrix.coe_units_inv, ← Units.val_mul, ← Units.val_mul, hg s₀ hs₀, Matrix.charpoly_diagonal, Fin.prod_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[WD.eig, ← k.charpoly hl, coe_ineIncl, e]`. Establish `h1 : ι (ξ s₀ : Qbar l) ≠ 1` using `fun e' => h0 (Units.ext (ι.injective (by simpa using e')))`. Rewrite using `[Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_sub, map_X, map_C, map_C]`. Rewrite using `[roots_mul (mul_ne_zero (X_sub_C_ne_zero _) (X_sub_C_ne_zero _)), roots_X_sub_C, roots_X_sub_C]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.rw_of_ordForm (PH : HypothesesH) (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (ξ : G F Ω →* (Qbar l)ˣ) (s c m a π r)

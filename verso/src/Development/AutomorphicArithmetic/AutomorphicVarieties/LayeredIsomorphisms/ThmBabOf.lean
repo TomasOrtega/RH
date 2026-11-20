@@ -9,37 +9,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Introduce and unpack `⟨CK0, hK0⟩ hF hT`. Establish `hCK1 : (1 : ℝ) ≤ max CK0 1` using `le_max_right _ _`. Establish `hCKpos : (0 : ℝ) < max CK0 1` using `lt_of_lt_of_le one_pos hCK1`. Establish `hK : LemmaK (max CK0 1)` using `kmono CK0 _ (le_max_left _ _) hK0`. Set `P : ℕ → AbF → ℕ → Prop` to `fun l A R => ∃ (_ : Fact l.Prime) (L₀ : Type) (_ : Field L₀) (_ : NumberField L₀), IsAbField A L₀ ∧ ABound l R L₀`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `R0 : AbF → ℕ` to `fun M => Classical.choose (hT M)`. Set `Rl : ℕ → AbF → ℕ` to `fun l A => if h : ∃ R, P l A R then Classical.choose h else 0`. Use `⟨BConst.mk R0 Rl (max CK0 1) hCKpos, fun Ct hCt => ?_⟩` and prove the remaining obligations. Unfold `ThmBab BShape IsBWindow`. Introduce `M B' L hAux eps A1 heps heps'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `OddPrimesWithRootsOfUnity at hAux`. Establish `hCt0 : 0 < Ct` using `lt_of_lt_of_le one_pos hCt`. Use `set CK : ℝ := max CK0 1 with hCKdef`. Use `set R : ℕ := R0 M + ∑ l ∈ B', Rl l (L l) with hRdef`. Use `set J : ℝ := 2 ^ (R + 2) * (2 * CK * Ct / eps) ^ R with hJdef`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hJpos : 0 < J`. Establish `: 0 < 2 * CK * Ct / eps` using `by positivity`. Check the signs of the components of the expression. Take `⟨x0A, hA⟩` from `partA CK hCKpos hK M (R0 M) J Ct eps A1 hJpos hCt0.le heps`. Establish `hB : ∀ l ∈ B', ∃ x0 : ℝ, ∀ e t, admitted A1 Ct e t → ∀ X : ℝ, ∃ Exc : Finset ℕ, Exc.card ≤ Rl l (L l) ∧ ∀ x ≥ x0, X ^ (1 / J) ≤ x → x ≤ X → Good (eps / (2 * CK)) Ct Exc x → ∀ (_ : Fact l.Prime) (L₀' : Type) [Field L₀'] [NumberField L₀'], IsAbField (L l) L₀' → ∀ (L₁ : Type) [Field …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce `l hl`. Take `⟨hp, hl2, hmu⟩` from `hAux l hl`. Use `haveI : Fact l.Prime := ⟨hp⟩`. Distinguish the cases in `hex : ∃ (L₀ : Type) (_ : Field L₀) (_ : NumberField L₀), IsAbField (L l) L₀`. Take `⟨L₀, _, _, hab⟩` from `hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hP : ∃ R, P l (L l) R`. Take `⟨R', hR'⟩` from `hF l hl2 (L l) hmu L₀ hab`. Conclude with `⟨R', ⟨_, L₀, _, _, hab, hR'⟩⟩`. Establish `hRl : Rl l (L l) = Classical.choose hP` using `by show (if h : ∃ R, P l (L l) R then Classical.choose h else 0) = _`. Rewrite using `[dif_pos hP]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨_, L₀₀, _, _, hab0, hR0⟩` from `Classical.choose_spec hP`. Take `⟨x0, hx0⟩` from `partB CK hCKpos hK l (Classical.choose hP) hl2 (L l) hmu L₀₀ hab0 hR0 J Ct eps A1 hJpos hCt0.le heps`. Use `⟨x0, fun e t hAdm X => ?_⟩` and prove the remaining obligations. Take `⟨Exc, hcard, hx⟩` from `hx0 e t hAdm X`. Use `⟨Exc, hRl ▸ hcard, fun x hxx hlo hhi hg _ L₀' _ _ hab' L₁ _ _ _ hlay => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hlay` using `[hRl]`. Conclude with `hx x hxx hlo hhi hg L₀' hab' L₁ hlay`. Use `⟨0, fun e t _ X => ⟨∅, by simp, ?_⟩⟩` and prove the remaining obligations. Introduce `x _ _ _ _ _ L₀' _ _ hab' _ _ _ _ _`. Conclude with `absurd ⟨L₀', _, _, hab'⟩ hex`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! f hf using hB`. Use `set x1 : ℝ := max 1 (max x0A (∑ l ∈ B', |f l|)) with hx1def`. Establish `hfle : ∀ l ∈ B', f l ≤ x1` using `fun l hl => (le_abs_self _).trans ((Finset.single_le_sum (fun i _ => abs_nonneg (f i)) hl).trans ((le_max_right _ _).trans (le_max_right _ _)))`. Establish `hx0A : x0A ≤ x1` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hx1pos : 0 ≤ x1` using `zero_le_one.trans (le_max_left _ _)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max 2 (x1 ^ J), fun e t hAdm X hX q d hqd hlog => ?_⟩` and prove the remaining obligations. Establish `hX2 : 2 ≤ X` using `(le_max_left _ _).trans hX`. Establish `hXJ : x1 ^ J ≤ X` using `(le_max_right _ _).trans hX`. Establish `hlow : x1 ≤ X ^ (1 / J)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_mul hx1pos, mul_one_div_cancel hJpos.ne', Real.rpow_one]`. Use `_ ≤ X ^ (1 / J) := Real.rpow_le_rpow (Real.rpow_nonneg hx1pos _) hXJ (by positivity)`. Take `⟨L₀, _, _, hTB, hAB⟩` from `Classical.choose_spec (hT M) q d hqd`. Take `⟨ExcA, hcardA, hxA⟩` from `hA e t hAdm X q d hqd hlog L₀ hTB hAB`. Establish `hB2` using `fun l hl => hf l hl e t hAdm X`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose! g hg using hB2`. Establish `hcard : (ExcA ∪ B'.biUnion g).card ≤ R` using `(Finset.card_union_le _ _).trans (add_le_add hcardA (Finset.card_biUnion_le.trans (Finset.sum_le_sum fun l hl => (hg l hl).1)))`. Establish `heta : 0 < eps / (2 * CK)` using `by positivity`. Establish `hetaCt : eps / (2 * CK) ≤ Ct`. Establish `h1 : eps / (2 * CK) ≤ 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Y, hY, hgood⟩` from `window R (eps / (2 * CK)) Ct X (ExcA ∪ B'.biUnion g) heta hetaCt (by linarith) hcard`. Establish `hJeq : (2 : ℝ) ^ (R + 2) * (Ct / (eps / (2 * CK))) ^ R = J`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hJdef, show Ct / (eps / (2 * CK)) = 2 * CK * Ct / eps by rw [div_div_eq_mul_div]; ring]`. Rewrite `hY` using `[hJeq]`. Use `⟨Y, hY, fun x hYx hxY => ?_⟩` and prove the remaining obligations. Establish `hG` using `hgood x hYx hxY`. Establish `hXlo : X ^ (1 / J) ≤ x` using `hY.1.trans hYx`.
-
-Establish `hXhi : x ≤ X` using `hxY.trans hY.2`. Establish `hGsub : ∀ S ⊆ ExcA ∪ B'.biUnion g, Good (eps / (2 * CK)) Ct S x` using `fun S hS n hn => hG n (hS hn)`. Use `⟨hxA x (hx0A.trans (hlow.trans hXlo)) hXlo hXhi (hGsub _ Finset.subset_union_left), ?_⟩` and prove the remaining obligations. Unfold `BbAt`. Introduce `l hl _ L₀' _ _ hab L₁ _ _ _ hlay`.
-
-Conclude with `(hg l hl).2 x ((hfle l hl).trans (hlow.trans hXlo)) hXlo hXhi (hGsub _ ((Finset.subset_biUnion_of_mem g hl).trans Finset.subset_union_right)) _ L₀' hab L₁ hlay`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.thmBab_of :
     (∃ CK : ℝ, LemmaK CK) → FixedIn → TwoIn → ∃ K : BConst, ∀ Ct : ℝ, 1 ≤ Ct → ThmBab K Ct := by

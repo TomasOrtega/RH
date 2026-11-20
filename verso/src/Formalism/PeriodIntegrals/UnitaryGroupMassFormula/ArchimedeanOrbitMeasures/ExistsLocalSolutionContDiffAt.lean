@@ -7,39 +7,37 @@ namespace PI.AprimeInfW
 open Topology Filter
 
 /- English proof (translation)
-Establish `hes : ∀ u w, e.symm (u + w) = e.symm u + e.symm w`. Introduce `u w`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `b : (Fin N → ℝ) → (Fin N → ℝ) → (Fin N → ℝ)` to `fun u w => e (B (e.symm u) (e.symm w))`. Set `l : (Fin N → ℝ) → (Fin N → ℝ)` to `fun u => e (L (e.symm u))`. Establish `hb1 : ∀ u u' w, b (u + u') w = b u w + b u' w`. Introduce `u u' w`. Simplify using `only [b, hes, hB1, he]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hb2 : ∀ u w w', b u (w + w') = b u w + b u w'`. Introduce `u w w'`. Simplify using `only [b, hes, hB2, he]`. Establish `hl1 : ∀ u u', l (u + u') = l u + l u'`. Introduce `u u'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [l, hes, hL, he]`. Establish `hbc : Continuous (fun p : (Fin N → ℝ) × (Fin N → ℝ) => b p.1 p.2)` using `e.continuous.comp (hBc.comp ((e.symm.continuous.comp continuous_fst).prodMk (e.symm.continuous.comp continuous_snd)))`. Establish `hlc : Continuous l` using `e.continuous.comp (hLc.comp e.symm.continuous)`. Establish `hbs1 : ∀ (c : ℝ) u w, b (c • u) w = c • b u w`. Introduce `c u w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `map_real_smul (AddMonoidHom.mk' (fun u => b u w) (fun u u' => hb1 u u' w)) (hbc.comp (continuous_id.prodMk continuous_const)) c u`. Establish `hbs2 : ∀ (c : ℝ) u w, b u (c • w) = c • b u w`. Introduce `c u w`. Conclude with `map_real_smul (AddMonoidHom.mk' (fun w => b u w) (fun w w' => hb2 u w w')) (hbc.comp (continuous_const.prodMk continuous_id)) c w`. Set `b₂ : (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)` to `LinearMap.mk₂ ℝ b hb1 hbs1 hb2 hbs2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bL : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : ((Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)) ≃ₗ[ℝ] ((Fin N → ℝ) →L[ℝ] (Fin N → ℝ))).toLinearMap ∘ₗ b₂)`. Set `lL : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)` to `(AddMonoidHom.mk' l hl1).toRealLinearMap hlc`. Establish `hbL : ∀ u w, bL u w = b u w` using `fun u w => rfl`. Establish `hlL : ∀ u, lL u = l u` using `fun u => rfl`. Set `Ft : (Fin N → ℝ) → (Fin N → ℝ)` to `fun u => bL u u + lL u`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFt : ∀ u, Ft u = e (B (e.symm u) (e.symm u) + L (e.symm u))`. Introduce `u`. Simplify using `only [Ft, hbL, hlL, b, l, he]`. Use `set u0 := e x0 with hu0`. Establish `hy0 : Ft u0 = e (B x0 x0 + L x0)` using `by rw [hFt, hu0, e.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hTwo : ∀ w, bL u0 w + bL w u0 + lL w = (2 : ℝ) • w`. Introduce `w`. Establish `h` using `congrArg e (hD (e.symm w))`. Rewrite `h` using `[he, he, he, e.apply_symm_apply]`. Rewrite using `[hbL, hbL, hlL, two_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify `h` using `[b, l, hu0]`. Set `f₁ : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)` to `(2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ)`. Set `f₂ : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)` to `(1 / 2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ)`. Establish `h12 : Function.LeftInverse f₂ f₁` using `fun w => by`. Simplify using `only [f₁, f₂, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, smul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Establish `h21 : Function.RightInverse f₂ f₁` using `fun w => by`. Simplify using `only [f₁, f₂, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, smul_smul]`. Evaluate the numerical expressions. Set `fe : (Fin N → ℝ) ≃L[ℝ] (Fin N → ℝ)` to `ContinuousLinearEquiv.equivOfInverse f₁ f₂ h12 h21`.
+Evaluate the numerical expressions. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFs : HasStrictFDerivAt Ft (fe : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)) u0`. Establish `h0` using `(bL.hasStrictFDerivAt_of_bilinear (hasStrictFDerivAt_id u0) (hasStrictFDerivAt_id u0)).add lL.hasStrictFDerivAt`. Use `h0.congr_fderiv ?_` and prove the remaining obligations. Use `ext1 w`. Use `show bL u0 w + bL w u0 + lL w = (fe : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)) w`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hTwo]`. Both sides reduce to the same expression. Establish `hcd : ContDiffAt ℝ 1 Ft u0` using `((bL.isBoundedBilinearMap.contDiff.comp (contDiff_id.prodMk contDiff_id)).add lL.contDiff).contDiffAt`. Establish `hs : HasStrictFDerivAt Ft (fe : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)) u0` using `hcd.hasStrictFDerivAt' hFs.hasFDerivAt one_ne_zero`. Set `G` to `hcd.localInverse hFs.hasFDerivAt one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : ContinuousAt G (Ft u0)` using `hs.localInverse_continuousAt`. Establish `hGa : G (Ft u0) = u0` using `hs.localInverse_apply_image`. Establish `hGr : ∀ᶠ w in 𝓝 (Ft u0), Ft (G w) = w` using `hs.eventually_right_inverse`. Establish `hGd : ContDiffAt ℝ 1 G (Ft u0)` using `hcd.to_localInverse hFs.hasFDerivAt one_ne_zero`. Establish `hGf : HasFDerivAt G ((fe.symm : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ))) (Ft u0)` using `hs.to_localInverse.hasFDerivAt`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hGc`, `hGa`, `hGr`, `hGd`, `hGf` using `[hy0]`. Use `⟨fun y => e.symm (G (e y)), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `e.symm.continuous.continuousAt.comp (hGc.comp e.continuous.continuousAt)`. Simplify using `only [hGa, hu0, e.symm_apply_apply]`. Establish `ht : ∀ᶠ y in 𝓝 (B x0 x0 + L x0), Ft (G (e y)) = e y` using `(e.continuous.tendsto (B x0 x0 + L x0)).eventually hGr filter_upwards [ht] with y hy`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[hFt]`. Conclude with `e.injective (by rw [he]; simpa [he] using hy)`. Establish `hfun : (fun y => e (e.symm (G (e (e.symm y))))) = G`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 
-Rewrite using `[hfun]`. Conclude with `hGd`. Establish `hfun : (fun y => e (e.symm (G (e (e.symm y))))) = G`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hfun]`. Use `hGf using 1` and compare the differences between its conclusion and the goal. Use `ext1 w`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_local_solution_contDiffAt {V : Type} [AddCommGroup V] [TopologicalSpace V] {N : ℕ}
     (e : V ≃ₜ (Fin N → ℝ)) (he : ∀ x y, e (x + y) = e x + e y)

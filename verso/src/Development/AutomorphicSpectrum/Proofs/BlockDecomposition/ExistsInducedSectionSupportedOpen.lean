@@ -7,35 +7,31 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.HBBump
 
 /- English proof (translation)
-Introduce `G Z _ _ _ _ _ H ρ B hBo hBc z hz`. Establish `hwell : ∀ (h h' : H) (β β' : G), β ∈ B → β' ∈ B → (h : G) * β = (h' : G) * β' → ρ h z = ρ h' z`. Introduce `h h' β β' hβ hβ' e`. Establish `ha : ((h'⁻¹ * h : H) : G) ∈ B`. Establish `: ((h'⁻¹ * h : H) : G) = β' * β⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← e]`. Use `group`. Rewrite using `[this]`. Conclude with `B.mul_mem hβ' (B.inv_mem hβ)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hz _ ha`. Establish `h2 : h = h' * (h'⁻¹ * h)` using `by group`. Rewrite using `[h2, map_mul, Module.End.mul_apply, h1]`. Set `P : G → Prop` to `fun p => ∃ h : H, ∃ β ∈ B, p = (h : G) * β`. Set `f : G → Z` to `fun p => if hp : P p then ρ hp.choose z else 0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ (h : H) (β : G), β ∈ B → f ((h : G) * β) = ρ h z`. Introduce `h β hβ`. Establish `hp : P ((h : G) * β)` using `⟨h, β, hβ, rfl⟩`. Take `⟨β', hβ', e⟩` from `hp.choose_spec`. Simplify using `only [f, dif_pos hp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hwell _ _ _ _ hβ' hβ e.symm`. Establish `hzero : ∀ p, ¬ P p → f p = 0` using `fun p hp => by simp only [f, dif_neg hp]`. Establish `hleft : ∀ (h : H) (g : G), f ((h : G) * g) = ρ h (f g)`. Introduce `h g`. Distinguish the cases in `hg : P g`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h', β, hβ, rfl⟩` from `hg`. Establish `: (h : G) * ((h' : G) * β) = ((h * h' : H) : G) * β` using `by push_cast; group`. Rewrite using `[this, hval _ _ hβ, hval _ _ hβ, map_mul, Module.End.mul_apply]`. Establish `hn : ¬ P ((h : G) * g)`. Introduce and unpack `⟨h', β, hβ, e⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `hg ⟨h⁻¹ * h', β, hβ, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_assoc, ← e]`. Use `group`. Rewrite using `[hzero _ hn, hzero _ hg, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hright : ∀ (p : G), ∀ x ∈ B, f (p * x) = f p`. Introduce `p x hx`. Distinguish the cases in `hp : P p`. Take `⟨h, β, hβ, rfl⟩` from `hp`. Rewrite using `[mul_assoc, hval _ _ (B.mul_mem hβ hx), hval _ _ hβ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ¬ P (p * x)`. Introduce and unpack `⟨h, β, hβ, e⟩`. Use `hp ⟨h, β * x⁻¹, B.mul_mem hβ (B.inv_mem hx), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hzero _ hn, hzero _ hp]`. Set `F : indSpace H ρ` to `⟨f, hleft⟩`. Establish `hsm : F ∈ smoothPart (ind H ρ)`. Set `T : Subgroup G` to `{ carrier := {g | ind H ρ g F = F} mul_mem' := by`. Introduce `a b ha hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `hBT : (B : Set G) ⊆ T`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `x hx`. Use `show ind H ρ x F = F`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Conclude with `hright p x hx`.
-
-Conclude with `T.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (hBo.mem_nhds B.one_mem) hBT)`. Use `⟨⟨⟨F, hsm⟩, ⟨(B : Set G), hBc, ?_⟩⟩, hval, hzero⟩` and prove the remaining obligations. Introduce `g hg`. Assume the negation of the conclusion as `hc`. Use `hg (hzero g ?_)` and prove the remaining obligations.
-
-Introduce and unpack `⟨h, β, hβ, e⟩`. Conclude with `hc ⟨h, h.2, β, hβ, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bump : ∀ {G Z : Type} [Group G] [AddCommGroup Z] [Module ℂ Z] [TopologicalSpace G]
     [IsTopologicalGroup G] (H : Subgroup G) (ρ : Representation ℂ H Z) (B : Subgroup G),

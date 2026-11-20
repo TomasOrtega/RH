@@ -5,19 +5,17 @@ open scoped NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S _ u hu`. Take `⟨m, hm, hum⟩` from `Ideal.exists_le_maximal (Ideal.span {u}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hum' : u ∈ m` using `hum (Ideal.mem_span_singleton_self u)`. Use `haveI := hm.isPrime`. Take `⟨q, hq, hqm⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal S)) (J := m) bot_le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI hqp : q.IsPrime := hq.1.1`. Set `L` to `AlgebraicClosure (FractionRing (S ⧸ q))`. Set `g : S →+* L` to `((algebraMap (FractionRing (S ⧸ q)) L).comp (algebraMap (S ⧸ q) (FractionRing (S ⧸ q)))).comp (Ideal.Quotient.mk q)`. Establish `hg : ∀ s, g s = 0 ↔ s ∈ q`. Introduce `s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g, RingHom.comp_apply]`. Rewrite using `[map_eq_zero_iff _ (algebraMap (FractionRing (S ⧸ q)) L).injective, map_eq_zero_iff _ (IsFractionRing.injective (S ⧸ q) (FractionRing (S ⧸ q))), Ideal.Quotient.eq_zero_iff_mem]`. Establish `hne : m.map g.rangeRestrict ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : g.range) ∈ m.map g.rangeRestrict` using `h ▸ Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hx1⟩` from `(Ideal.mem_map_iff_of_surjective _ g.rangeRestrict_surjective).1 h1`. Establish `h2 : g (x - 1) = 0`. Use `congrArg Subtype.val hx1` as an intermediate fact. Simplify using `only [RingHom.coe_rangeRestrict, OneMemClass.coe_one] at this`. Rewrite using `[map_sub, this, map_one, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : x - 1 ∈ m` using `hqm ((hg _).1 h2)`. Establish `h4 : (1 : S) ∈ m` using `by simpa using m.sub_mem hx h3`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).2 h4)`. Take `⟨V, hV, hV'⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hne`. Establish `hmem : ∀ s, g s ∈ V` using `fun s => hV (show g s ∈ g.range from ⟨s, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨L, inferInstance, inferInstance, V, g.codRestrict V hmem, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : g u ∈ V.nonunits` using `hV' ⟨g.rangeRestrict u, Ideal.mem_map_of_mem _ hum', rfl⟩`. Establish `h2` using `(ValuationSubring.coe_mem_nonunits_iff (A := V) (a := ⟨g u, hmem u⟩)).1 h1`. Conclude with `h2`. Introduce `s hs h0`.
-
-Establish `h1 : g s = 0` using `congrArg Subtype.val h0`. Conclude with `Set.disjoint_left.1 (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hq) ((hg s).1 h1) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_not_isUnit_and_nonZeroDivisors_ne_zero :
     ∀ (S : Type) [CommRing S] (u : S), ¬ IsUnit u →

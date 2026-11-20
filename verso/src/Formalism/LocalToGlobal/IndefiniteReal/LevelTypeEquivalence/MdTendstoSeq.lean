@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {S T : HSp D} {k : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [md, Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem md_fun_succ (φ : WO S T → (Fin k → ℝ) → ℂ) (n : ℕ) (v : Fin (n + 1) → (Fin k → ℝ)) (h : ℝ) (a : Fin k → ℝ) :
     (fun y => md (φ y) (n + 1) v h a) = ((h : ℂ)⁻¹) • ((fun y => md (φ y) n (Fin.tail v) h (a + h • v 0)) +
@@ -24,7 +24,7 @@ theorem md_fun_succ (φ : WO S T → (Fin k → ℝ) → ℂ) (n : ℕ) (v : Fin
   ring
 
 /- English proof (translation)
-The claim follows from `| 0, v, h, a => by have : (fun y => md (Gf ψ M f y) 0 v h a) = heisO ψ S T (M a) f := rfl rw [this] exact thetaO_heis hψ hf (M a) ((wo_real_iff (M a)).mp (hM.2.1 a)) | n + 1, v, h, a => by rw [md_fun_succ] exact thetaO_smul _ (thetaO_add (md_theta hψ hf hM n _ h _) (thetaO_smul _ …`.
+A detailed English derivation is pending.
 -/
 theorem md_theta {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) {M : (Fin k → ℝ) →+ WO S T} (hM : IsRealFrame M) :
@@ -39,7 +39,7 @@ theorem md_theta {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {f
     exact thetaO_smul _ (thetaO_add (md_theta hψ hf hM n _ h _) (thetaO_smul _ (md_theta hψ hf hM n _ h _)))
 
 /- English proof (translation)
-The claim follows from `| 0, v, r, a => by show om (g, h) (heisO ψ S T (actO S T g⁻¹ h⁻¹ (L a)) f) = heisO ψ S T (L a) (om (g, h) f) rw [hω.om_heis g h _ f hf, actO_inv] | n + 1, v, r, a => by rw [md_fun_succ, md_fun_succ (fun x => Gf ψ L (om (g, h) f) x), map_smul, map_add, map_smul, om_md hω hf L hL g …`.
+A detailed English derivation is pending.
 -/
 theorem om_md {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hω : IsWeilDatumO ψ S T χS χT om)
@@ -56,11 +56,11 @@ theorem om_md {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
       om_md hω hf L hL g h n, om_md hω hf L hL g h n]
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨δ, hδ, hδε⟩` from `md_tendsto n φ hφ v 0 (ε / 2) (by positivity)`. Take `⟨N, hN⟩` from `exists_nat_one_div_lt hδ`. Use `⟨N, fun j hj => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dist_eq_norm]`. Establish `hpos : (0 : ℝ) < 1 / ((j : ℝ) + 1)` using `by positivity`. Establish `hlt : 1 / ((j : ℝ) + 1) < δ`. Use `lt_of_le_of_lt ?_ hN` and prove the remaining obligations. Apply `one_div_le_one_div_of_le (by positivity)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Nat.succ_le_succ hj` after adjusting the coercions. Conclude with `lt_of_le_of_lt (hδε _ hpos hlt 0 (by simpa using hδ)) (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem md_tendsto_seq {φ : (Fin k → ℝ) → ℂ} (hφ : ContDiff ℝ ∞ φ) {n : ℕ} (v : Fin n → (Fin k → ℝ)) :
     Tendsto (fun j : ℕ => md φ n v (1 / ((j : ℝ) + 1)) 0) atTop (𝓝 (iteratedFDeriv ℝ n φ 0 v)) := by

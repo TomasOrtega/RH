@@ -18,15 +18,15 @@ def filt {σ R : Type} [CommRing R] (I : Ideal R) (k : ℕ) : Ideal (MvPowerSeri
     exact Ideal.pow_le_pow_right (by omega) (hF p.2)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_filt {σ R : Type} [CommRing R] (I : Ideal R) (k : ℕ) (F : MvPowerSeries σ R) :
     F ∈ filt I k ↔ ∀ α, MvPowerSeries.coeff α F ∈ I ^ (k - α.degree) := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `α`. Rewrite using `[map_zero]`. Use `IsHausdorff.haus (I := I) inferInstance _ fun m => ?_` and prove the remaining obligations. Use `h (m + α.degree) α` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_filt {σ R : Type} [CommRing R] (I : Ideal R) [IsHausdorff I R]
     (F : MvPowerSeries σ R) (h : ∀ k, F ∈ filt I k) : F = 0 := by

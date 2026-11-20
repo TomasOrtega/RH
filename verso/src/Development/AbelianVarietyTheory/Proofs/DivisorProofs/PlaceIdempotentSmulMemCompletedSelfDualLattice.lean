@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.IdemLat
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝓞 D.host.E) ∉ P.asIdeal` using `fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Use `not_not.1 fun hn => h1 ((h 1 one_ne_zero).2 hn)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finPart_idem_mem {D : D7} {P : Pl D.host.E} {e : Formalism.L2.Theta.AE D}
     (h : ∀ x : 𝓞 D.host.E, x ≠ 0 →
@@ -38,7 +38,7 @@ theorem finPart_idem_mem {D : D7} {P : Pl D.host.E} {e : Formalism.L2.Theta.AE D
   simpa using this
 
 /- English proof (translation)
-Break down `h with ⟨⟨_, h⟩, rfl⟩ | ⟨rfl, _, h⟩` into its components or cases. Establish `he` using `finPart_idem_mem h`. Rewrite using `[RingHom.map_add]`. Conclude with `add_mem he (GlobalTheory.IdemSupport.finPart_cA_mem he)`. Conclude with `finPart_idem_mem h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_placeIdem_mem {D : D7} {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D}
     (h : IsPrimeIdem P e f) : finPart D f ∈ intAE D := by
@@ -49,7 +49,7 @@ theorem finPart_placeIdem_mem {D : D7} {P : Pl D.host.E} {e f : Formalism.L2.The
   · exact finPart_idem_mem h
 
 /- English proof (translation)
-Introduce `D V P e f h y hy`. Conclude with `(GlobalTheory.LatDual.lamHat_selfDual_and_module V).2 _ (finPart_placeIdem_mem h) y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lamHat_idem : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E) (e f : Formalism.L2.Theta.AE D), IsPrimeIdem P e f →
     ∀ y ∈ Formalism.L2.NTheta.LamHat V, finPart D f • y ∈ Formalism.L2.NTheta.LamHat V := by

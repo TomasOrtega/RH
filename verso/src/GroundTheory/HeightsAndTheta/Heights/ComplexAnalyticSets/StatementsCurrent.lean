@@ -169,14 +169,14 @@ def MassFromLelong.Statement : Prop :=
 section Inhabitants
 
 /- English proof (translation)
-Simplify using `[linForm, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linForm_single {n : ℕ} (i : Fin n) : linForm (Pi.single i (1 : ℂ)) = X i := by
   classical
   simp [linForm, Pi.single_apply]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[projHom, pullback, linPoly, Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem projHom_space (n : ℕ) :
     projHom (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ) =
@@ -187,9 +187,9 @@ theorem projHom_space (n : ℕ) :
   simp [projHom, pullback, linPoly, Matrix.one_apply]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[projHom_space]`. Introduce `a b h`. Rewrite `h` using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq, Ideal.mem_bot, sub_eq_zero]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projHom_space]`. Conclude with `RingHom.Finite.of_surjective _ (Ideal.Quotient.mkₐ_surjective ℂ _)`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteProjection_space (n : ℕ) :
     IsFiniteProjection (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ) := by
@@ -202,7 +202,7 @@ theorem isFiniteProjection_space (n : ℕ) :
     exact RingHom.Finite.of_surjective _ (Ideal.Quotient.mkₐ_surjective ℂ _)
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem space_dim (n : ℕ) :
     ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ (⊥ : Ideal (MvPolynomial (Fin n) ℂ))) = (n : ℕ) := by
@@ -211,7 +211,7 @@ theorem space_dim (n : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq, RingHom.mem_ker, map_sub]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_ker_eval_eq {n : ℕ} (p : Fin n → ℂ) (q : MvPolynomial (Fin n) ℂ) :
     Ideal.Quotient.mk (RingHom.ker (MvPolynomial.eval p)) q =
@@ -220,13 +220,13 @@ theorem mk_ker_eval_eq {n : ℕ} (p : Fin n → ℂ) (q : MvPolynomial (Fin n) �
   simp
 
 /- English proof (translation)
-Introduce `c` and use `⟨C c, eval_C c⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem eval_surjective {n : ℕ} (p : Fin n → ℂ) : Function.Surjective (MvPolynomial.eval p) :=
   fun c => ⟨C c, eval_C c⟩
 
 /- English proof (translation)
-Establish `: (RingHom.ker (MvPolynomial.eval p)).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (eval_surjective p)`. Set `` to `Ideal.Quotient.field (RingHom.ker (MvPolynomial.eval p))`. Rewrite using `[ringKrullDim_eq_zero_of_field]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem point_dim {n : ℕ} (p : Fin n → ℂ) :
     ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ RingHom.ker (MvPolynomial.eval p)) = (0 : ℕ) := by
@@ -237,13 +237,13 @@ theorem point_dim {n : ℕ} (p : Fin n → ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `hC : ∀ a : MvPolynomial (Fin 0) ℂ, a = C (MvPolynomial.eval (fun i => i.elim0) a)`. Introduce `a`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add a b ha hb => rw [map_add, C_add, ← ha, ← hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X a i _ => exact i.elim0`. Establish `hproj : ∀ c : ℂ, projHom (RingHom.ker (MvPolynomial.eval p)) A (C c) = algebraMap ℂ _ c`. Introduce `c`. Simplify using `[projHom, pullback]`. Establish `: (RingHom.ker (MvPolynomial.eval p)).IsPrime` using `RingHom.ker_isPrime _`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`. Rewrite `h` using `[hC a, hC b, hproj, hproj]`. Rewrite using `[hC a, hC b, (algebraMap ℂ _).injective h]`. Use `RingHom.Finite.of_surjective _ fun z => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨C (MvPolynomial.eval p q), by show projHom _ A (C (MvPolynomial.eval p q)) = _`. Rewrite using `[hproj, mk_ker_eval_eq]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFiniteProjection_point {n : ℕ} (p : Fin n → ℂ) (A : Matrix (Fin 0) (Fin n) ℂ) :
     IsFiniteProjection (RingHom.ker (MvPolynomial.eval p)) A := by
@@ -268,7 +268,7 @@ theorem isFiniteProjection_point {n : ℕ} (p : Fin n → ℂ) (A : Matrix (Fin 
       rw [hproj, mk_ker_eval_eq]⟩
 
 /- English proof (translation)
-Take `⟨f, -, hc, hs, -, h0⟩` from `exists_contDiff_tsupport_subset (E := Fin n → ℂ) (n := ⊤) (s := Metric.ball 0 1) (x := 0) (Metric.ball_mem_nhds 0 one_pos)`. Conclude with `⟨f, hs, hc, h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_smooth_bump (n : ℕ) :
     ∃ f : (Fin n → ℂ) → ℝ, ContDiff ℝ ∞ f ∧ HasCompactSupport f ∧ f 0 = 1 := by
@@ -277,21 +277,21 @@ theorem exists_smooth_bump (n : ℕ) :
   exact ⟨f, hs, hc, h0⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.univ, isOpen_univ, Set.subset_univ _, h.contDiffOn⟩`.
+Supply the required witnesses or components.
 -/
 theorem smoothNear_of_contDiff {n : ℕ} {S : Set (Fin n → ℂ)} {φ : (Fin n → ℂ) → ℝ}
     (h : ContDiff ℝ ∞ φ) : SmoothNear S φ :=
   ⟨Set.univ, isOpen_univ, Set.subset_univ _, h.contDiffOn⟩
 
 /- English proof (translation)
-Unfold `euclPot`. Conclude with `ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_euclPot (n : ℕ) : ContDiff ℝ ∞ (euclPot : (Fin n → ℂ) → ℝ) := by
   unfold euclPot
   exact ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)
 
 /- English proof (translation)
-Rewrite using `[linForm_single, Ideal.mem_bot]`. Conclude with `X_ne_zero i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linForm_single_not_mem_bot {n : ℕ} (i : Fin n) :
     linForm (Pi.single i (1 : ℂ)) ∉ (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) := by
@@ -299,7 +299,7 @@ theorem linForm_single_not_mem_bot {n : ℕ} (i : Fin n) :
   exact X_ne_zero i
 
 /- English proof (translation)
-Establish `hZ : ∀ y : Fin n → ℂ, y ∈ zeroSet (⊥ : Ideal (MvPolynomial (Fin n) ℂ))`. Introduce `y q hq`. Rewrite `hq` using `[Ideal.mem_bot]`. Simplify using `[hq]`. Conclude with `⟨Set.univ, isOpen_univ, Set.mem_univ _, differentiableOn_id, by simp, fun y _ => ⟨by simp, hZ y⟩, Set.univ, Filter.univ_mem, fun x' _ _ => by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isSheetAt_space {n : ℕ} (x : Fin n → ℂ) :
     IsSheetAt (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ) x id := by
@@ -322,9 +322,9 @@ def lineBranch : VarBranch (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1 0 where
     simp [hq]
 
 /- English proof (translation)
-Use `⟨RingHom.ker_isPrime _, point_dim p, isFiniteProjection_point p A, hf, fun k => k.elim0, ?_⟩` and prove the remaining obligations. Establish `hconst : chartAbsDens (RingHom.ker (MvPolynomial.eval p)) A f φ = fun _ => chartAbsDens (RingHom.ker (MvPolynomial.eval p)) A f φ 0`. Use function extensionality and compare the values at `fun y => congrArg _ (Subsingleton.elim y 0)`. Rewrite using `[hconst]`. Establish `: IsFiniteMeasure (volume : Measure (Fin 0 → ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty (x := 0)]`. Use `infer_instance`. Conclude with `integrable_const _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntegralIndep.hypotheses_inhabited (p : Fin 2 → ℂ) (A : Matrix (Fin 0) (Fin 2) ℂ)
     (f : (Fin 2 → ℂ) → ℝ) (hf : Measurable f) (φ : Fin 0 → (Fin 2 → ℂ) → ℝ) :
@@ -345,7 +345,7 @@ theorem IntegralIndep.hypotheses_inhabited (p : Fin 2 → ℂ) (A : Matrix (Fin 
   exact integrable_const _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cone_hyps, X_ne_zero 0⟩`.
+Supply the required witnesses or components.
 -/
 theorem CutOff.hypotheses_inhabited :
     (coneIdeal.IsPrime ∧ ringKrullDim (MvPolynomial (Fin 3) ℂ ⧸ coneIdeal) = (1 + 1 : ℕ) ∧
@@ -353,7 +353,7 @@ theorem CutOff.hypotheses_inhabited :
   ⟨cone_hyps, X_ne_zero 0⟩
 
 /- English proof (translation)
-Take `⟨f, hs, hc, h0⟩` from `exists_smooth_bump 2`. Conclude with `⟨f, Ideal.isPrime_bot, space_dim 2, smoothNear_of_contDiff hs, smoothNear_of_contDiff (contDiff_euclPot 2), fun _ => smoothNear_of_contDiff (contDiff_euclPot 2), Or.inl hc, h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem StokesOnVariety.hypotheses_inhabited :
     ∃ f : (Fin 2 → ℂ) → ℝ, (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)).IsPrime ∧
@@ -369,7 +369,7 @@ theorem StokesOnVariety.hypotheses_inhabited :
     Or.inl hc, h0⟩
 
 /- English proof (translation)
-Use `⟨cone_hyps, ?_, fun _ => smoothNear_of_contDiff (contDiff_euclPot 3)⟩` and prove the remaining obligations. Rewrite using `[linForm_single]`. Conclude with `X_zero_not_mem_coneIdeal`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LogIntegrable.hypotheses_inhabited :
     (coneIdeal.IsPrime ∧ ringKrullDim (MvPolynomial (Fin 3) ℂ ⧸ coneIdeal) = (2 : ℕ) ∧
@@ -381,7 +381,7 @@ theorem LogIntegrable.hypotheses_inhabited :
   exact X_zero_not_mem_coneIdeal
 
 /- English proof (translation)
-Take `⟨f, hs, hc, h0⟩` from `exists_smooth_bump 2`. Conclude with `⟨f, Ideal.isPrime_bot, space_dim 2, linForm_single_not_mem_bot 0, hs, hc, fun _ => smoothNear_of_contDiff (contDiff_euclPot 2), h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PoincareLelong.hypotheses_inhabited :
     ∃ f : (Fin 2 → ℂ) → ℝ, (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)).IsPrime ∧
@@ -395,13 +395,13 @@ theorem PoincareLelong.hypotheses_inhabited :
     fun _ => smoothNear_of_contDiff (contDiff_euclPot 2), h0⟩
 
 /- English proof (translation)
-Establish `hl : linForm (fun _ : Fin 1 => (1 : ℂ)) = X 0` using `by simp [linForm]`. Establish `hW : (Ideal.span {X 0} : Ideal (MvPolynomial (Fin 1) ℂ)).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero _)).mpr X_prime`. Establish `hZ : ∀ x : Fin 1 → ℂ, x ∈ zeroSet (Ideal.span {X 0} : Ideal (MvPolynomial (Fin 1) ℂ)) → x = 0`. Introduce `x hx`. Establish `h0` using `hx (X 0) (Ideal.subset_span rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [eval_X] at h0`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h0`. Use `⟨Ideal.isPrime_bot, space_dim 1, linForm_one_not_mem_point ℂ, ?_, ?_, ⟨Metric.ball 0 1, Metric.ball_mem_nhds 0 one_pos, fun x hx => Set.mem_iUnion.mpr ⟨0, x, hx.2, rfl⟩⟩, ⟨Set.univ, Filter.univ_mem, fun _ x hx => ?_⟩, fun b b' h => absurd (Subsingleton.elim b b') h, fun _ => ⟨fun …` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hl, bot_sup_eq, Ideal.minimalPrimes_eq_subsingleton_self]`. Both sides reduce to the same expression. Introduce `q hq`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hq`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `rfl` from `hZ x hx.1`. Conclude with `⟨0, ⟨Metric.mem_ball_self lineBranch.radius_pos, rfl⟩, rfl⟩`. Simplify using `[linEval, lineBranch]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LocalOrder.hypotheses_inhabited :
     (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)).IsPrime ∧
@@ -444,7 +444,7 @@ theorem LocalOrder.hypotheses_inhabited :
   · simp [linEval, lineBranch]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LineChowForm.isProjPrime_line, LineChowForm.isChowForm_line, LineChowForm.linForm_line, fun _ _ _ => rfl, continuousOn_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem ConeToProjective.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧

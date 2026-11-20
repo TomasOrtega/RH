@@ -26,11 +26,9 @@ theorem prjG_val (T : Finset (Pl E)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E
     (prjG E n T g).val = idem E T • g.val + (1 - idem E T) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) := rfl
 
 /- English proof (translation)
-Simplify using `only [orb, cPl, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`. Use `right`. Rewrite using `[← h, GlobalTheory.ThetaPull.conjSrc_conjSrc]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `left`. Conclude with `conjSrc_injective _ h`. Introduce and unpack `(rfl | rfl)`. Use `right`. Both sides reduce to the same expression.
-
-Use `left`. Conclude with `GlobalTheory.ThetaPull.conjSrc_conjSrc _`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conjSrc_mem_orb (u v : Pl E) :
     conjSrc (IsCMField.complexConj E).toRingEquiv v ∈ orb E u ↔ v ∈ orb E u := by
@@ -44,7 +42,7 @@ theorem conjSrc_mem_orb (u v : Pl E) :
     · left; exact GlobalTheory.ThetaPull.conjSrc_conjSrc _
 
 /- English proof (translation)
-The claim follows from `FiniteAdeleRing.ext _ fun v => by show conjLoc _ v (pLoc E _ (idem E _)) = pLoc E v (idem E _) rw [pLoc_idem, pLoc_idem] by_cases h : v ∈ orb E u · rw [if_pos ((conjSrc_mem_orb u v).2 h), if_pos h, map_one] · rw [if_neg (mt (conjSrc_mem_orb u v).1 h), if_neg h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cFin_idem (u : Pl E) : GlobalTheory.ThetaPull.cFin E (idem E (orb E u)) = idem E (orb E u) :=
   FiniteAdeleRing.ext _ fun v => by
@@ -61,9 +59,9 @@ theorem thF_val (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     (thF E n g).val = (PhiU n _).val * (((g⁻¹).val.map (GlobalTheory.ThetaPull.cFin E))ᵀ) * ((PhiU n _)⁻¹).val := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `he` using `cFin_idem (E := E) u`. Rewrite using `[thF_val, prjG_val, thF_val, ← map_inv, prjG_val]`. Establish `h1 : (idem E (orb E u) • (g⁻¹).val + (1 - idem E (orb E u)) • (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))).map (GlobalTheory.ThetaPull.cFin E) = idem E (orb E u) • (g⁻¹).val.map (GlobalTheory.ThetaPull.cFin E) + (1 - idem E (orb E u)) • 1`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, he]`. Establish `h2 : (PhiU n (FiniteAdeleRing (𝓞 E) E)).val * ((PhiU n (FiniteAdeleRing (𝓞 E) E))⁻¹).val = 1` using `Units.mul_inv _`. Rewrite using `[h1, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_smul, Matrix.transpose_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_one, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thF_prjG (u : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     thF E n (prjG E n (orb E u) g) = prjG E n (orb E u) (thF E n g) := by
@@ -79,7 +77,7 @@ theorem thF_prjG (u : Pl E) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     Matrix.add_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_one, h2]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : idem E T * (1 - idem E T) = 0` using `by rw [mul_sub, mul_one, idem_mul_self, sub_self]`. Rewrite using `[prjG_val, prjG_val, smul_add, smul_smul, smul_smul, idem_mul_self, h1, zero_smul, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prjG_prjG (T : Finset (Pl E)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) :
     prjG E n T (prjG E n T g) = prjG E n T g := by
@@ -88,7 +86,7 @@ theorem prjG_prjG (T : Finset (Pl E)) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) 
   rw [prjG_val, prjG_val, smul_add, smul_smul, smul_smul, idem_mul_self, h1, zero_smul, add_zero]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `a.2`. Use `show prjG E n (orb E u) (thF E n a.1) = thF E n a.1`. Rewrite using `[← hg, thF_prjG, prjG_prjG]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thU_val (u : Pl E) (a : Gam E n u) : (thU E n u a).1 = thF E n a.1 := by
   obtain ⟨g, hg⟩ := a.2
@@ -96,13 +94,13 @@ theorem thU_val (u : Pl E) (a : Gam E n u) : (thU E n u a).1 = thF E n a.1 := by
   rw [← hg, thF_prjG, prjG_prjG]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.thetaGL_thetaGL _ GlobalTheory.ThetaPull.cFin_cFin g`.
+A detailed English derivation is pending.
 -/
 theorem thF_thF (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) : thF E n (thF E n g) = g :=
   GlobalTheory.ThetaPull.thetaGL_thetaGL _ GlobalTheory.ThetaPull.cFin_cFin g
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => (conjFin_algebraMap (IsCMField.complexConj E).toRingEquiv x).symm) g`.
+A detailed English derivation is pending.
 -/
 theorem thF_ratF (g : GL (Fin n) E) : ratF E n (thE E n g) = thF E n (ratF E n g) :=
   GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => (conjFin_algebraMap (IsCMField.complexConj E).toRingEquiv x).symm) g

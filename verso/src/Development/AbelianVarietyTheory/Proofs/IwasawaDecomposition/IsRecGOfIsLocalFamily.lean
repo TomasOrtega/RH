@@ -40,7 +40,7 @@ def IsLocalFamily (sc : Scale) (D : D7) (L0 : LevelData D) (T : ∀ u : D.what�
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gatOf D L0 (placeId D L0 hS hC) (awayChar D L0 T hJ hψ) sc, gatOf_d D L0 T hJ _ _ sc, placeId D L0 hS hC, awayChar D L0 T hJ hψ, stdBasis D hS, embK D L0, embAlg D L0, stdBasis_std D hS, fun _ _ _ _ _ => rfl, embK_embAlg D L0, posOK_placeId hS hC _, fun u w hg => Classical.choos …`.
+Supply the required witnesses or components.
 -/
 theorem exists_isLocalFamily (sc : Scale) {D : D7} {L0 : LevelData D} (T : ∀ u : D.what₂.Word, Forms0 D u)
     (hS : Formalism.L2.Herm.StdTied D) (hC : Companion D L0) (hJ : ∀ u, Joint0 L0 u (T u)) (hψ : ∀ u, LevelZeroCharacterRational T u) :
@@ -53,9 +53,9 @@ theorem exists_isLocalFamily (sc : Scale) {D : D7} {L0 : LevelData D} (T : ∀ u
 set_option maxHeartbeats 32000000 in
 
 /- English proof (translation)
-Take `⟨I, ψ, B, iK, lam, hBs, hB, hK, hPos, hψ', rfl⟩` from `h`. Set `H0 : Formalism.L2.Herm.Herm0 (recC D sc 1 (fun u => L0 u) I ψ hd)` to `⟨fun u => L0 u, levTieG D sc 1 (fun u => L0 u) (packC D (fun u => L0 u) I ψ) hd⟩`. Set `T' : ∀ u, Forms0 (recC D sc 1 (fun u => L0 u) I ψ hd) u` to `fun u => forms0Set D (gatOf D L0 I ψ sc) hd (T u)`. Establish `CH` using `Test.comparison_statements D sc (fun u => L0 u) I ψ hd H0 (fun _ => rfl) T' B hBs hB iK lam hK hPos hJ hψ hψ'`. Establish `hpos` using `fun u w hg v s x => pos_C D sc 1 (fun u => L0 u) I ψ hd H0 (fun _ => rfl) B hBs hB iK lam hK hPos u w hg v s x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨gatTiesC D sc 1 (fun u => L0 u) I ψ hd, _, groupCompatibilityOfRecursion D sc 1 (fun u => L0 u) I ψ hd H0 (fun _ => rfl) T' B hBs hB (CH.toHyp0 hpos).toHyp (fun u w h => isHyperbolicAt_rec_of_placeIdentification D u w h (I u w h)), LayerTwoModel.isRecG_retie ⟨D, fun u => L0 u, I …`.
+Supply the required witnesses or components.
 -/
 theorem isRecG_of_isLocalFamily {sc : Scale} {D : D7} {L0 : LevelData D} {T : ∀ u : D.what₂.Word, Forms0 D u}
     (hJ : ∀ u, Joint0 L0 u (T u)) (hψ : ∀ u, LevelZeroCharacterRational T u) {g} (hd : ∀ u w h, (g u w h).d = Module.finrank ℂ (D.mem u).A.Mu0)

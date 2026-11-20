@@ -28,7 +28,7 @@ local instance borelFv (v : Pl F) : BorelSpace (Fv F v) := ⟨rfl⟩
 local instance scFv (v : Pl F) : SecondCountableTopology (Fv F v) := (GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := Fv F v)).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Measure.addHaarMeasure ⟨⟨_, IsNonarchimedeanLocalField.isCompact_closedBall _ (valuation (Fv F v) 1)⟩, by rw [(isClopen_ball one_ne_zero).2.interior_eq]; exact ⟨0, by simp⟩⟩, inferInstance, Measure.addHaarMeasure_self⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_vol (v : Pl F) : ∃ m : Measure (Fv F v), IsVol m :=
   ⟨Measure.addHaarMeasure ⟨⟨_, IsNonarchimedeanLocalField.isCompact_closedBall _ (valuation (Fv F v) 1)⟩, by
@@ -38,7 +38,7 @@ def skF {n n₁ : ℕ} (h : n = n₁ + 2) (i₀ i₁ : ℕ) (j : Fin n₁) : Fin
   have := j.2; unfold skip; split_ifs <;> omega⟩
 
 /- English proof (translation)
-Introduce `a b e` and use `Fin.ext (by have := congrArg Fin.val e simp only [skF, skip] at this split_ifs at this <;> omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem skF_inj {n n₁ : ℕ} (h : n = n₁ + 2) (i₀ i₁ : ℕ) : Function.Injective (skF h i₀ i₁) := fun a b e => Fin.ext (by
   have := congrArg Fin.val e
@@ -46,11 +46,11 @@ theorem skF_inj {n n₁ : ℕ} (h : n = n₁ + 2) (i₀ i₁ : ℕ) : Function.I
   split_ifs at this <;> omega)
 
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Use `j₁.2` as an intermediate fact. Distinguish the cases in `a : i.1 = j₀.1`. Conclude with `Or.inl (Fin.ext a)`. Distinguish the cases in `b : i.1 = j₁.1`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr (Or.inl (Fin.ext b))`. Use `Or.inr (Or.inr ?_)` and prove the remaining obligations. Distinguish the cases in `c : i.1 < j₀.1`. Conclude with `⟨⟨i.1, by omega⟩, Fin.ext (by simp [skF, skip, c])⟩`. Distinguish the cases in `d : i.1 < j₁.1`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `exact ⟨⟨i.1 - 1, by omega⟩, Fin.ext (by simp only [skF, skip]; split_ifs <;> omega)⟩`. Apply the tactic sequence `exact ⟨⟨i.1 - 2, by omega⟩, Fin.ext (by simp only [skF, skip]; split_ifs <;> omega)⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skF_cover {n n₁ : ℕ} (h : n = n₁ + 2) {j₀ j₁ : Fin n} (l : j₀.1 < j₁.1) (i : Fin n) :
     i = j₀ ∨ i = j₁ ∨ ∃ j, i = skF h j₀ j₁ j := by
@@ -68,14 +68,14 @@ theorem skF_cover {n n₁ : ℕ} (h : n = n₁ + 2) {j₀ j₁ : Fin n} (l : j�
   · exact ⟨⟨i.1 - 2, by omega⟩, Fin.ext (by simp only [skF, skip]; split_ifs <;> omega)⟩
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro e <;> have := congrArg Fin.val e <;> simp only [skF, skip] at this <;> split_ifs at this <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skF_ne {n n₁ : ℕ} (h : n = n₁ + 2) {j₀ j₁ : Fin n} (l : j₀.1 < j₁.1) (j : Fin n₁) :
     skF h j₀ j₁ j ≠ j₀ ∧ skF h j₀ j₁ j ≠ j₁ := by
   constructor <;> intro e <;> have := congrArg Fin.val e <;> simp only [skF, skip] at this <;> split_ifs at this <;> omega
 
 /- English proof (translation)
-The claim follows from `funext fun j => Fin.ext (by have := j.2 show skip 0 (b + 1) j = j + 1 unfold skip; split_ifs <;> omega)`.
+A detailed English derivation is pending.
 -/
 theorem skF_mid (b : ℕ) : skF (rfl : b + 2 = b + 2) (0 : Fin (b + 2)).1 (Fin.last (b + 1)).1 = mid := funext fun j => Fin.ext (by
   have := j.2
@@ -85,7 +85,7 @@ theorem skF_mid (b : ℕ) : skF (rfl : b + 2 = b + 2) (0 : Fin (b + 2)).1 (Fin.l
 variable {B : Base F E}
 
 /- English proof (translation)
-The claim follows from `plane hσ h hJ hε w rfl rfl (fun _ => rfl) (skF_inj _ _ _) (skF_cover _ l) (fun e => by rw [e] at l; omega) (fun j => (skF_ne _ l j).1) fun j => (skF_ne _ l j).2`.
+A detailed English derivation is pending.
 -/
 theorem plane' (hσ : IsCMExt F E σ) {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁} {j₀ j₁ : Fin n}
     (h : H.IsAdapted σ B X X₁ j₀ j₁) {ε : E} (hJ : ∀ i j, σ (X.J j i) = ε * X.J i j) (hε : ε * ε = 1) (w : B.P) (l : j₀.1 < j₁.1) :
@@ -94,9 +94,9 @@ theorem plane' (hσ : IsCMExt F E σ) {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc
     (fun j => (skF_ne _ l j).1) fun j => (skF_ne _ l j).2
 
 /- English proof (translation)
-Establish `m : CondLE (unifAt v) (condExp ν) ν` using `Nat.sInf_mem h`. Establish `h0 : condExp ν ≠ 0` using `fun e => hr fun x hx => by`. Rewrite `m` using `[e]`. Conclude with `m x ⟨hx, by simpa using (valuation (Fv F v)).map_sub_le hx.le (map_one _).le⟩`. Take `⟨κ, hκ⟩` from `Nat.exists_eq_succ_of_ne_zero h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨κ, hκ, by rw [hκ] at m; exact m, fun e => Nat.notMem_of_lt_sInf (s := {c | CondLE (unifAt v) c ν}) (by show κ < condExp ν omega) e⟩`.
+A detailed English derivation is pending.
 -/
 theorem cond_ex {ν : (Fv F v)ˣ →* ℂˣ} (h : ∃ e, CondLE (unifAt v) e ν) (hr : ¬ GlobalTheory.SplitWeil.IsUnram ν) :
     ∃ κ, condExp ν = κ + 1 ∧ CondLE (unifAt v) (κ + 1) ν ∧ ¬ CondLE (unifAt v) κ ν := by
@@ -110,9 +110,9 @@ theorem cond_ex {ν : (Fv F v)ˣ →* ℂˣ} (h : ∃ e, CondLE (unifAt v) e ν)
     omega) e⟩
 
 /- English proof (translation)
-Establish `q` using `(GlobalTheory.CompanionTheory.IdxAd.Unif.resCard_and_uniformizer F v).1`. Establish `q0 : (Ideal.absNorm v.asIdeal : ℂ) ≠ 0` using `by exact_mod_cast Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot`. Establish `g : gI m (psiV ψ v) ν (((unifAt v : Fv F v) ^ condExp ν)⁻¹) = ((GlobalTheory.SplitWeil.resCard (Fv F v) : ℂ) ^ condExp ν)⁻¹ * gauss ψ ν`. Use `letI : Fintype (Res (Fv F v) (condExp ν))ˣ := Fintype.ofFinite _`. Rewrite using `[gI_gauss (ϖ := unifAt v) hm hψ exists_isUnif.choose_spec (by omega) (h ▸ hν), gauss]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Reduce the equality to equality of the corresponding arguments. Conclude with `Subsingleton.elim _ _`. Rewrite using `[eps, ← h, g, q, show -(condExp ν : ℤ) * (1 - z) = (condExp ν * z : ℕ) - (condExp ν : ℕ) by push_cast; ring, zpow_sub₀ q0, zpow_natCast, zpow_natCast, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eps_eq {m : Measure (Fv F v)} (hm : IsVol m) {ψ : AddChar (AF F) ℂ} (hψ : IsPsi (psiV ψ v)) {ν : (Fv F v)ˣ →* ℂˣ} {κ : ℕ}
     (h : condExp ν = κ + 1) (hν : CondLE (unifAt v) (κ + 1) ν) (z : ℕ) :
@@ -131,19 +131,19 @@ theorem eps_eq {m : Measure (Fv F v)} (hm : IsVol m) {ψ : AddChar (AF F) ℂ} (
   ring
 
 /- English proof (translation)
-Establish `t` using `T.triple`. Establish `hB` using `t.base`. Take `⟨m, hm⟩` from `exists_vol w.1`. Establish `hu` using `hB.psiP w w.2`. Take `⟨hα, hβ, e, hcond, hram, -⟩` from `PositivityTheory.ThK.SplitAsm.split_character_facts F E B X a a' w (B.τ w) t.chars`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : HidaSetting a a' (unifAt w.1) (chrW X.α (B.τ w)) (chrW X.β (B.τ w)) (chrW X.ν (B.τ w))` using `⟨exists_isUnif.choose_spec, hα, hβ, e, t.geo.lt, t.geo.even, hcond⟩`. Take `⟨ι, ι', l, l', v1, v2, z⟩` from `T.fin.zeta w hw`. Establish `L` using `local_splitting_linear_skew hB.std h (grams h t.geo.hV t.geo.hW) l v1`. Establish `L'` using `lin_Bar hB.std h (grams h t.geo.hV' t.geo.hW) l' v2`. Take `⟨φ, s, a1⟩` from `L.bij.2.2 (std_mem hS.unif (by omega) hν (eA a a'))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', s', a2⟩` from `L'.bij.2.2 (std_mem hS.unif (by omega) hν (eB a a'))`. Use `⟨ι, ι', φ, φ', L, L', s, s', a1, a2, (z φ s φ' s').2 ?_, fun h0 => ?_, fun K hK k hk => ?_, fun K hK k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[a1, a2]; exact std_pair hS (hram hw) (by omega) hν`. Use `(z φ s 0 (zero_mem _)).1 (by rw [h0, map_zero])` as an intermediate fact. Rewrite `this` using `[a1, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `pRam_ne (a' := a') (β := chrW X.β (B.τ w)) hS.unif (this.trans ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `[smallP, smallF]`. Take `⟨j, l1, u1, g1, -⟩` from `model_alt hB t.geo.hV t.geo.hW (t.geo.hM.vac w) t.weil (t.geo.hV.bas w) (t.geo.hW.bas w) (ν := chrW X.ν (B.τ w)) (β := chrW X.β (B.τ w)) (MonoidHom.ext fun x => by`. Rewrite using `[chrW_div, chrW_conj hB.cm _ t.chars.resα, chrW_conj hB.cm _ t.chars.resβ, Chars.ν, chrW_div, inv_div_inv])`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(chrW_conj hB.cm _ t.chars.resβ)`. Establish `J` using `local_splitting_linear_skew hB.std h (grams h t.geo.hV t.geo.hW) l1 u1`. Take `⟨φ₁, b1, b2, b3⟩` from `g1 k (uat_closure hk.2) φ s`. Rewrite `b3` using `[lin_uniq hm hB hu t.geo.hM L J s, a1, omA_std (inB_mem h (t.geo.hV.bas w) hK hk.1), ← a1, lin_uniq hm hB hu t.geo.hM L J b1]`. Rewrite `b2` using `[L.bij.2.1 b1 s b3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨j, l1, u1, g1, -⟩` from `model_Bar hB t.geo.hV' t.geo.hW (t.geo.hM'.vac w) t.weil' (t.geo.hV'.bas w) (t.geo.hW.bas w) (δ := 1) (fun x => by rw [one_mul]; exact hu x) (one_smul _ _).symm`. Establish `J` using `lin_Bar hB.std h (grams h t.geo.hV' t.geo.hW) l1 u1`. Take `⟨φ₁, b1, b2, b3⟩` from `g1 k (uat_closure hk.2) φ' s'`. Rewrite `b3` using `[lin_uniq hm hB hu t.geo.hM' L' J s', a2]`. Use `erw [omB_std (inB_mem h (t.geo.hV'.bas w) hK hk.1)] at b3`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `erw [← a2] at b3`. Rewrite `b3` using `[lin_uniq hm hB hu t.geo.hM' L' J b1]`. Rewrite `b2` using `[L'.bij.2.1 b1 s' b3]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem data {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om om' R Rf} (T : IsMatched B G X om om' R Rf) (w : B.P) (hw : w.1 ∈ X.T)
     {sec} (h : IsSec σ (B.τ w) sec) {κ : ℕ} (hν : CondLE (unifAt w.1) (κ + 1) (chrW X.ν (B.τ w))) :
@@ -190,7 +190,7 @@ theorem data {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om om' R Rf} (T : I
     rwa [L'.bij.2.1 b1 s' b3] at b2
 
 /- English proof (translation)
-Take `⟨-, -, e, ⟨c, h1, h2⟩, hram, -⟩` from `PositivityTheory.ThK.SplitAsm.split_character_facts F E B X a a' w (B.τ w) t.chars`. Use `⟨fun x => ?_, cond_ex ⟨c, e ▸ h1.div h2⟩ (hram hw)⟩` and prove the remaining obligations. Rewrite using `[Chars.ν, chrW_div, chrW_div, chrW_conj t.base.cm _ t.chars.resα, chrW_conj t.base.cm _ t.chars.resβ, inv_div_inv, inv_div]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_data {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om om'} (t : IsTriple B G X om om') (w : B.P) (hw : w.1 ∈ X.T) :
     (∀ x, chrW X.ν ((B.τ w).comp σ) x = (chrW X.ν (B.τ w) x)⁻¹) ∧ ∃ κ, condExp (chrW X.ν (B.τ w)) = κ + 1 ∧
@@ -210,7 +210,7 @@ Both sides reduce to the same expression.
 theorem eB_val {a a' : ℕ} (i : Fin a') : (eB a a' i).1 = a + i := rfl
 
 /- English proof (translation)
-Use `grams h hX hW` as an intermediate fact. Rewrite using `[← incM_map h, ← incM_map h]`. Conclude with `⟨this.uA, this.uB⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unit_J {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (h : IsSec σ t sec) {r s r' s'} (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') :
     IsUnit (X.J.map t) ∧ IsUnit (W.J.map t) := by
@@ -219,25 +219,23 @@ theorem unit_J {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (h : IsSec σ t sec) 
   exact ⟨this.uA, this.uB⟩
 
 /- English proof (translation)
-Use `⟨1, fun F E _ _ _ _ _ σ B a b G G₁ H H' cf e ei ev e' ei' ev' he hl he' hl' K μ hK hμ X om om' R Rf om₁ om₁' R₁ Rf₁ T T₁ w hw => ?_⟩` and prove the remaining obligations. Establish `t` using `T.triple`. Establish `t₁` using `T₁.triple`. Establish `hB` using `t.base`. Take `⟨m, hm⟩` from `exists_vol w.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu` using `hB.psiP w w.2`. Establish `hϖ : IsUnif (unifAt w.1)` using `exists_isUnif.choose_spec`. Take `⟨⟨sec, h⟩, -⟩` from `section_statement F E σ hB.cm w (B.τ w)`. Take `⟨hc, κ, k1, k2, k3⟩` from `nu_data t w hw`. Take `⟨ι, ι', φ, φ', L, L', s, s', a1, a2, mt, -, -, fx⟩` from `data T w hw h k2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ι₁, ι₁', φ₁, φ₁', L₁, L₁', s₁, s₁', b1, b2, mt₁, ne₁, -, -⟩` from `data T₁ w hw h k2`. Establish `lt : (eB a (b + 2) 0).1 < (eB a (b + 2) (Fin.last _)).1` using `by simp [eB_val]`. Take `⟨pe', px'⟩` from `plane' hB.cm (j₀ := eB a (b + 2) 0) (j₁ := eB a (b + 2) (Fin.last _)) cf.hH' (ε := -1) (fun i j => by rw [t.geo.hW.skew, neg_one_mul]) (by simp) w lt`. Take `⟨pe, px⟩` from `plane' hB.cm (j₀ := 0) (j₁ := Fin.last _) cf.hH (ε := 1) (fun i j => by rw [t.geo.hV'.herm, one_mul]) (by simp) w (by simp)`. Rewrite `px'` using `[map_neg, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `px` using `[map_one]`. Establish `cv` using `skF_cover (rfl : b + 2 = b + 2) (j₀ := 0) (j₁ := Fin.last _) (by simp)`. Rewrite `pe`, `cv` using `[skF_mid]`. Establish `cv'` using `skF_cover cf.hH'.rank lt`. Establish `nz` using `skF_ne cf.hH'.rank lt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set jc := skF cf.hH'.rank (eB a (b + 2) 0) (eB a (b + 2) (Fin.last _)) with hjc`. Establish `e1 : ev w φ = ((((GlobalTheory.SplitWeil.resCard (Fv F w) : ℂ) ^ (κ + 1))⁻¹) ^ a) • φ₁`. Use `L₁.bij.2.1 ((hl.vac w).2 ▸ Submodule.mem_map_of_mem s) ((SB _).smul_mem _ s₁) (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[ev0W hm hB hu h t.geo.hM t₁.geo.hM he hl L L₁ (unit_J h t.geo.hV t.geo.hW).1 (by rw [cf.eV]; exact pe_one _ _) pe' px' cv' s, a1, map_smul, b1]`. Conclude with `int_ev hm hϖ (skF_inj _ _ _) (fun i => Fin.ext (by simp [hjc, skF, skip, eA_val, eB_val])) _ (fun ⟨i, hi⟩ => by have := congrArg Fin.val hi; have := i.2; simp [eA_val, eB_val] at *; omega) (fun j => (nz j).1.symm) y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : Finset (Fin (b + 2) × Fin (a + (b + 2)))` to `Finset.univ.filter fun p => p.1 = Fin.last _ ∨ p.2 = eB a (b + 2) (Fin.last _) ∧ p.1 ≠ 0`. Establish `hP : ∀ p, p ∈ P ↔ p.1 = Fin.last _ ∨ p.2 = eB a (b + 2) (Fin.last _) ∧ p.1 ≠ 0` using `fun p => by simp [P]`. Establish `ml : ∀ i : Fin b, mid i ≠ Fin.last (b + 1)` using `fun i h => by have := congrArg Fin.val h; simp [mid] at this; omega`. Establish `ei2 : Function.Injective (eB a (b + 2))` using `fun _ _ h => by simpa using finSumFinEquiv.injective h`. Establish `e2` using `cone_val hm hB hu L' L₁' (hl'.vac w).2 (fun φ s y => evB hm hB hu h t.geo.hM' t₁.geo.hM' he' hl' L' L₁' (unit_J h t₁.geo.hV' t₁.geo.hW).1 (unit_J h t.geo.hV' t.geo.hW).2 pe px cv pe' px' cv' P hP s y) hϖ X.ν hc k2 k3 s' s₁' a2 b2 hμ (fx K hK) (shiftB_c h px px') (skF_inj _ _ _) e …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `unfold skip; split_ifs <;> omega))`. Use the proof step `(fun j => (nz j).1.symm) (fun j => (nz j).2.symm) (fun i j => by simp [hP, ml, (nz j).2]) (by simp [hP]) (by simp [hP])`. Use the proof step `(Or.inl ⟨fun j _ => by simp [hP], fun i => by simp [hP, ml, ei2.eq_iff]⟩) (fun j => (Fin.last _, eA a (b + 2) j))`. Use the proof step `(fun _ _ h => by simpa [eA] using h) (fun p => by`. Rewrite using `[hP]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨?_, fun ⟨x, y⟩ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨Or.inl rfl, fun ⟨i, hi⟩ => by simpa using finSumFinEquiv.injective hi⟩`. Take `⟨j | j, hj⟩` from `finSumFinEquiv.surjective p.2`. Conclude with `⟨j, Prod.ext (x.resolve_right fun x => y ⟨_, x.1.symm⟩).symm hj⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨j, hj⟩ y) ((a - (b + 2)) / 2 + 1)`. Establish `q0 : (GlobalTheory.SplitWeil.resCard (Fv F w) : ℂ) ≠ 0`. Rewrite using `[(GlobalTheory.CompanionTheory.IdxAd.Unif.resCard_and_uniformizer F w).1]`. Conclude with `Ideal.absNorm_eq_zero_iff.not.2 w.1.ne_bot` after adjusting the coercions. Use `⟨φ, s, φ', s', mt, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e1, map_smul]; exact smul_ne_zero (by positivity) ne₁`. Rewrite using `[e2, e1, eps_eq hm (isPsi hB.std hu) k1 k2, map_smul, map_smul, mt₁, smul_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdB : StdB := by
   refine ⟨1, fun F E _ _ _ _ _ σ B a b G G₁ H H' cf e ei ev e' ei' ev' he hl he' hl' K μ hK hμ X om om' R Rf om₁ om₁' R₁ Rf₁ T T₁ w hw => ?_⟩
@@ -297,25 +295,23 @@ theorem stdB : StdB := by
     simp
 
 /- English proof (translation)
-Establish `t` using `T.triple`. Establish `t₁` using `T₁.triple`. Establish `hB` using `t.base`. Take `⟨m, hm⟩` from `exists_vol w.1`. Establish `hu` using `hB.psiP w w.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hϖ : IsUnif (unifAt w.1)` using `exists_isUnif.choose_spec`. Take `⟨⟨sec, h⟩, -⟩` from `section_statement F E σ hB.cm w (B.τ w)`. Take `⟨hc, κ, k1, k2, k3⟩` from `nu_data t w hw`. Take `⟨ι, ι', φ, φ', L, L', s, s', a1, a2, mt, -, fx, -⟩` from `data T w hw h k2`. Take `⟨ι₁, ι₁', φ₁, φ₁', L₁, L₁', s₁, s₁', b1, b2, mt₁, ne₁, -, -⟩` from `data T₁ w hw h k2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `lt : (eA (b + 2) a' 0).1 < (eA (b + 2) a' (Fin.last _)).1` using `by simp [eA_val]`. Take `⟨pe', px'⟩` from `plane' hB.cm (j₀ := eA (b + 2) a' 0) (j₁ := eA (b + 2) a' (Fin.last _)) hH' (ε := -1) (fun i j => by rw [t.geo.hW.skew, neg_one_mul]) (by simp) w lt`. Take `⟨pe, px⟩` from `plane' hB.cm (j₀ := 0) (j₁ := Fin.last _) hH (ε := 1) (fun i j => by rw [t.geo.hV.herm, one_mul]) (by simp) w (by simp)`. Rewrite `px'` using `[map_neg, map_one]`. Rewrite `px` using `[map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `cv` using `skF_cover (rfl : b + 2 = b + 2) (j₀ := 0) (j₁ := Fin.last _) (by simp)`. Rewrite `pe`, `cv` using `[skF_mid]`. Establish `cv'` using `skF_cover hH'.rank lt`. Establish `nz` using `skF_ne hH'.rank lt`. Use `set jc := skF hH'.rank (eA (b + 2) a' 0) (eA (b + 2) a' (Fin.last _)) with hjc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ev' w φ' = ((((GlobalTheory.SplitWeil.resCard (Fv F w) : ℂ) ^ (κ + 1))⁻¹) ^ a') • φ₁'`. Use `L₁'.bij.2.1 ((hl'.vac w).2 ▸ Submodule.mem_map_of_mem s') ((SB _).smul_mem _ s₁') (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[ev0B hm hB hu h t.geo.hM' t₁.geo.hM' he' hl' L' L₁' (unit_J h t.geo.hV' t.geo.hW).1 (by rw [eV]; exact pe_one _ _) pe' px' cv' s', a2, map_smul, b2]`. Conclude with `int_ev hm hϖ (skF_inj _ _ _) (fun i => Fin.ext (by show skip 0 (b + 1) (b + i) = b + 2 + i`. Apply the tactic sequence `unfold skip; split_ifs <;> omega)) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `(fun ⟨i, hi⟩ => by simpa using finSumFinEquiv.injective hi) (fun j => (nz j).2.symm) y`. Set `P : Finset (Fin (b + 2) × Fin (b + 2 + a'))` to `Finset.univ.filter fun p => p.2 = eA (b + 2) a' 0 ∨ p.1 = 0 ∧ p.2 ≠ eA (b + 2) a' (Fin.last _)`. Establish `hP : ∀ p, p ∈ P ↔ p.2 = eA (b + 2) a' 0 ∨ p.1 = 0 ∧ p.2 ≠ eA (b + 2) a' (Fin.last _)` using `fun p => by simp [P]`. Establish `m0 : ∀ i : Fin b, mid i ≠ 0` using `fun i h => by simpa [mid] using congrArg Fin.val h`. Establish `ei2 : Function.Injective (eA (b + 2) a')` using `fun _ _ h => by simpa using finSumFinEquiv.injective h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `cone_val hm hB hu L L₁ (hl.vac w).2 (fun φ s y => evA hm hB hu h t.geo.hM t₁.geo.hM he hl L L₁ (unit_J h t.geo.hV t.geo.hW).1 (unit_J h t₁.geo.hV t₁.geo.hW).2 pe px cv pe' px' cv' P hP s y) hϖ X.ν hc k2 k3 s s₁ a1 b1 hμ (fx K hK) (shiftA_c h px px') (skF_inj _ _ _) ei2 (fun i => …`. Apply the tactic sequence `unfold skip; split_ifs <;> omega))`. Use the proof step `(fun j => (nz j).1.symm) (fun j => (nz j).2.symm) (fun i j => by simp [hP, m0, (nz j).1]) (by simp [hP]) (by simp [hP, ei2.eq_iff])`. Use the proof step `(Or.inr ⟨fun i hi => by simp [hP, hi, ei2.eq_iff], fun j => by simp [hP, m0, ei2.eq_iff]⟩) (fun j => (0, eB (b + 2) a' j))`. Use the proof step `(fun _ _ h => by simpa [eB] using h) (fun p => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hP]`. Use `⟨?_, fun ⟨x, y⟩ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨Or.inr ⟨rfl, fun hi => by simpa using finSumFinEquiv.injective hi⟩, fun ⟨i, hi⟩ => by simpa using finSumFinEquiv.injective hi⟩`. Take `⟨j | j, hj⟩` from `finSumFinEquiv.surjective p.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨j, hj⟩ y`. Conclude with `⟨j, Prod.ext (x.resolve_left fun x => y ⟨_, x.symm⟩).1.symm hj⟩) ((b + 2 - a') / 2)`. Establish `q0 : (GlobalTheory.SplitWeil.resCard (Fv F w) : ℂ) ≠ 0`. Rewrite using `[(GlobalTheory.CompanionTheory.IdxAd.Unif.resCard_and_uniformizer F w).1]`. Conclude with `Ideal.absNorm_eq_zero_iff.not.2 w.1.ne_bot` after adjusting the coercions.
-
-Use `⟨φ, s, φ', s', mt, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, map_smul, ← mt₁]; exact smul_ne_zero (by positivity) ne₁`. Rewrite using `[e2, e1, eps_eq hm (isPsi hB.std hu) k1 k2, map_smul, map_smul, mt₁, smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem stdA_gen {b a' : ℕ} {G : Geo σ (b + 2) a'} {G₁ : Geo σ b a'} {H : Plane E (b + 2) b} {H' : Plane E (b + 2 + a') (b + a')}
     (eV : G₁.V' = G.V') (hH : H.IsAdapted σ B G.V G₁.V 0 (b + 1)) (hH' : H'.IsAdapted σ B G.W G₁.W 0 (b + 1))
@@ -384,7 +380,7 @@ theorem stdA_gen {b a' : ℕ} {G : Geo σ (b + 2) a'} {G₁ : Geo σ b a'} {H : 
   · rw [e2, e1, eps_eq hm (isPsi hB.std hu) k1 k2, map_smul, map_smul, mt₁, smul_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ cf _ _ _ _ _ _ he hl he' hl' _ _ hK hμ _ _ _ _ _ _ _ _ _ T T₁ w hw => by simpa only [map_one, Units.val_one, one_mul] using stdA_gen cf.eV cf.hH cf.hH' he hl he' hl' hK hμ T T₁ w hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem stdA : StdA :=
   ⟨1, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ cf _ _ _ _ _ _ he hl he' hl' _ _ hK hμ _ _ _ _ _ _ _ _ _ T T₁ w hw => by

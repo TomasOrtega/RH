@@ -9,13 +9,13 @@ open PI PI.UpqRep Matrix Finset
 variable {N : ℕ}
 
 /- English proof (translation)
-Conclude with `Subtype.prop (p := fun a => ε a = true) _`.
+A detailed English derivation is pending.
 -/
 theorem eps_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) : ε (ePl ε i) = true := by
   exact Subtype.prop (p := fun a => ε a = true) _
 
 /- English proof (translation)
-Conclude with `Bool.eq_false_iff.2 (Subtype.prop (p := fun a => ¬ ε a = true) _)`.
+A detailed English derivation is pending.
 -/
 theorem eps_eMi (ε : Fin N → Bool) (j : Fin (nMi ε)) : ε (eMi ε j) = false := by
   exact Bool.eq_false_iff.2 (Subtype.prop (p := fun a => ¬ ε a = true) _)
@@ -31,35 +31,35 @@ Both sides reduce to the same expression.
 theorem eMi_eq (ε : Fin N → Bool) (j : Fin (nMi ε)) : eMi ε j = (sMinus ε).orderEmbOfFin rfl j := rfl
 
 /- English proof (translation)
-Rewrite using `[ePl_eq, ePl_eq]`. Conclude with `((sPlus ε).orderEmbOfFin rfl).lt_iff_lt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ePl_lt_iff (ε : Fin N → Bool) (i j : Fin (nPl ε)) : ePl ε i < ePl ε j ↔ i < j := by
   rw [ePl_eq, ePl_eq]
   exact ((sPlus ε).orderEmbOfFin rfl).lt_iff_lt
 
 /- English proof (translation)
-Rewrite using `[eMi_eq, eMi_eq]`. Conclude with `((sMinus ε).orderEmbOfFin rfl).lt_iff_lt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eMi_lt_iff (ε : Fin N → Bool) (i j : Fin (nMi ε)) : eMi ε i < eMi ε j ↔ i < j := by
   rw [eMi_eq, eMi_eq]
   exact ((sMinus ε).orderEmbOfFin rfl).lt_iff_lt
 
 /- English proof (translation)
-Use `show blk ε (Sum.inl i) = blk ε (Sum.inl j) ↔ i = j`. Rewrite using `[(blk ε).injective.eq_iff, Sum.inl.injEq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ePl_inj (ε : Fin N → Bool) (i j : Fin (nPl ε)) : ePl ε i = ePl ε j ↔ i = j := by
   show blk ε (Sum.inl i) = blk ε (Sum.inl j) ↔ i = j
   rw [(blk ε).injective.eq_iff, Sum.inl.injEq]
 
 /- English proof (translation)
-Use `show blk ε (Sum.inr i) = blk ε (Sum.inr j) ↔ i = j`. Rewrite using `[(blk ε).injective.eq_iff, Sum.inr.injEq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eMi_inj (ε : Fin N → Bool) (i j : Fin (nMi ε)) : eMi ε i = eMi ε j ↔ i = j := by
   show blk ε (Sum.inr i) = blk ε (Sum.inr j) ↔ i = j
   rw [(blk ε).injective.eq_iff, Sum.inr.injEq]
 
 /- English proof (translation)
-Introduce `h`. Conclude with `Sum.inl_ne_inr ((blk ε).injective h)`. Use the proof step `@[to_additive]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ePl_ne_eMi (ε : Fin N → Bool) (i : Fin (nPl ε)) (j : Fin (nMi ε)) : ePl ε i ≠ eMi ε j := by
   intro h
@@ -67,7 +67,7 @@ theorem ePl_ne_eMi (ε : Fin N → Bool) (i : Fin (nPl ε)) (j : Fin (nMi ε)) :
 
 @[to_additive]
 /- English proof (translation)
-Rewrite using `[← Equiv.prod_comp (blk ε), Fintype.prod_sum_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_split {M : Type*} [CommMonoid M] (ε : Fin N → Bool) (f : Fin N → M) :
     ∏ a, f a = (∏ i, f (ePl ε i)) * ∏ j, f (eMi ε j) := by
@@ -75,15 +75,15 @@ theorem prod_split {M : Type*} [CommMonoid M] (ε : Fin N → Bool) (f : Fin N �
   rfl
 
 /- English proof (translation)
-Conclude with `fun h => ePl_ne_eMi ε i j h.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eMi_ne_ePl (ε : Fin N → Bool) (j : Fin (nMi ε)) (i : Fin (nPl ε)) : eMi ε j ≠ ePl ε i := by
   exact fun h => ePl_ne_eMi ε i j h.symm
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(blk ε).surjective b`. Break down `x with k | j` into its components or cases. Conclude with `⟨k, rfl⟩`. Establish `h2 : ε (blk ε (Sum.inr j)) = false` using `eps_eMi ε j`. Rewrite `hb` using `[h2]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hb (by decide)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_ePl_eq_of_true (ε : Fin N → Bool) (b : Fin N) (hb : ε b = true) :
     ∃ k, ePl ε k = b := by
@@ -95,9 +95,9 @@ private theorem exists_ePl_eq_of_true (ε : Fin N → Bool) (b : Fin N) (hb : ε
     exact absurd hb (by decide)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(blk ε).surjective b`. Break down `x with k | j` into its components or cases. Establish `h2 : ε (blk ε (Sum.inl k)) = true` using `eps_ePl ε k`. Rewrite `hb` using `[h2]`. Conclude with `absurd hb (by decide)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_eMi_eq_of_false (ε : Fin N → Bool) (b : Fin N) (hb : ε b = false) :
     ∃ k, eMi ε k = b := by
@@ -109,11 +109,11 @@ private theorem exists_eMi_eq_of_false (ε : Fin N → Bool) (b : Fin N) (hb : �
   · exact ⟨j, rfl⟩
 
 /- English proof (translation)
-Establish `hs : (univ.filter fun b => ePl ε i < b ∧ ε b = ε (ePl ε i)) = (Finset.Ioi i).map ⟨ePl ε, show Function.Injective (ePl ε) from fun a b h => (ePl_inj ε a b).1 h⟩`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, mem_map, mem_Ioi, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, he⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `he` using `[eps_ePl ε i]`. Take `⟨k, rfl⟩` from `exists_ePl_eq_of_true ε b he`. Conclude with `⟨k, (ePl_lt_iff ε i k).1 hb, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨(ePl_lt_iff ε i k).2 hk, by rw [eps_ePl ε i, eps_ePl ε k]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hs, Finset.card_map, Fin.card_Ioi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_gt_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) :
     (univ.filter fun b => ePl ε i < b ∧ ε b = ε (ePl ε i)).card = nPl ε - 1 - (i : ℕ) := by
@@ -131,11 +131,11 @@ theorem card_gt_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) :
   rw [hs, Finset.card_map, Fin.card_Ioi]
 
 /- English proof (translation)
-Establish `hs : (univ.filter fun b => b < ePl ε i ∧ ε b = ε (ePl ε i)) = (Finset.Iio i).map ⟨ePl ε, show Function.Injective (ePl ε) from fun a b h => (ePl_inj ε a b).1 h⟩`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, mem_map, mem_Iio, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, he⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `he` using `[eps_ePl ε i]`. Take `⟨k, rfl⟩` from `exists_ePl_eq_of_true ε b he`. Conclude with `⟨k, (ePl_lt_iff ε k i).1 hb, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨(ePl_lt_iff ε k i).2 hk, by rw [eps_ePl ε i, eps_ePl ε k]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hs, Finset.card_map, Fin.card_Iio]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_lt_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) :
     (univ.filter fun b => b < ePl ε i ∧ ε b = ε (ePl ε i)).card = (i : ℕ) := by
@@ -153,11 +153,11 @@ theorem card_lt_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) :
   rw [hs, Finset.card_map, Fin.card_Iio]
 
 /- English proof (translation)
-Establish `hs : (univ.filter fun b => eMi ε i < b ∧ ε b = ε (eMi ε i)) = (Finset.Ioi i).map ⟨eMi ε, show Function.Injective (eMi ε) from fun a b h => (eMi_inj ε a b).1 h⟩`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, mem_map, mem_Ioi, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, he⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `he` using `[eps_eMi ε i]`. Take `⟨k, rfl⟩` from `exists_eMi_eq_of_false ε b he`. Conclude with `⟨k, (eMi_lt_iff ε i k).1 hb, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨(eMi_lt_iff ε i k).2 hk, by rw [eps_eMi ε i, eps_eMi ε k]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hs, Finset.card_map, Fin.card_Ioi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_gt_eMi (ε : Fin N → Bool) (i : Fin (nMi ε)) :
     (univ.filter fun b => eMi ε i < b ∧ ε b = ε (eMi ε i)).card = nMi ε - 1 - (i : ℕ) := by
@@ -175,11 +175,11 @@ theorem card_gt_eMi (ε : Fin N → Bool) (i : Fin (nMi ε)) :
   rw [hs, Finset.card_map, Fin.card_Ioi]
 
 /- English proof (translation)
-Establish `hs : (univ.filter fun b => b < eMi ε i ∧ ε b = ε (eMi ε i)) = (Finset.Iio i).map ⟨eMi ε, show Function.Injective (eMi ε) from fun a b h => (eMi_inj ε a b).1 h⟩`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, mem_map, mem_Iio, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, he⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `he` using `[eps_eMi ε i]`. Take `⟨k, rfl⟩` from `exists_eMi_eq_of_false ε b he`. Conclude with `⟨k, (eMi_lt_iff ε k i).1 hb, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨(eMi_lt_iff ε k i).2 hk, by rw [eps_eMi ε i, eps_eMi ε k]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hs, Finset.card_map, Fin.card_Iio]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_lt_eMi (ε : Fin N → Bool) (i : Fin (nMi ε)) :
     (univ.filter fun b => b < eMi ε i ∧ ε b = ε (eMi ε i)).card = (i : ℕ) := by
@@ -197,9 +197,9 @@ theorem card_lt_eMi (ε : Fin N → Bool) (i : Fin (nMi ε)) :
   rw [hs, Finset.card_map, Fin.card_Iio]
 
 /- English proof (translation)
-Simplify using `only [rhoC]`. Rewrite using `[card_gt_ePl, card_lt_ePl]`. Establish `hi` using `i.isLt`. Establish `h1 : (i : ℕ) ≤ nPl ε - 1` using `by omega`. Establish `h2 : 1 ≤ nPl ε` using `by omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_sub h1, Nat.cast_sub h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoC_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) :
     rhoC ε (ePl ε i) = ((nPl ε : ℝ) - 1 - 2 * (i : ℕ)) / 2 := by
@@ -213,9 +213,9 @@ theorem rhoC_ePl (ε : Fin N → Bool) (i : Fin (nPl ε)) :
   ring
 
 /- English proof (translation)
-Simplify using `only [rhoC]`. Rewrite using `[card_gt_eMi, card_lt_eMi]`. Establish `hi` using `i.isLt`. Establish `h1 : (i : ℕ) ≤ nMi ε - 1` using `by omega`. Establish `h2 : 1 ≤ nMi ε` using `by omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_sub h1, Nat.cast_sub h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoC_eMi (ε : Fin N → Bool) (i : Fin (nMi ε)) :
     rhoC ε (eMi ε i) = ((nMi ε : ℝ) - 1 - 2 * (i : ℕ)) / 2 := by
@@ -229,17 +229,17 @@ theorem rhoC_eMi (ε : Fin N → Bool) (i : Fin (nMi ε)) :
   ring
 
 /- English proof (translation)
-Rewrite using `[prod_split ε]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : (univ.filter fun b => ePl ε i < b ∧ ε (ePl ε i) = ε b) = (univ.filter fun j => i < j).map ⟨ePl ε, show Function.Injective (ePl ε) from fun a b h => (ePl_inj ε a b).1 h⟩`. Use extensionality with `b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_filter, mem_univ, true_and, mem_map, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, he⟩`. Rewrite `he` using `[eps_ePl ε i]`. Take `⟨k, rfl⟩` from `exists_ePl_eq_of_true ε b he.symm`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, (ePl_lt_iff ε i k).1 hb, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨(ePl_lt_iff ε i k).2 hk, by rw [eps_ePl ε i, eps_ePl ε k]⟩`. Rewrite using `[hs, Finset.prod_map]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : (univ.filter fun b => eMi ε i < b ∧ ε (eMi ε i) = ε b) = (univ.filter fun j => i < j).map ⟨eMi ε, show Function.Injective (eMi ε) from fun a b h => (eMi_inj ε a b).1 h⟩`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, mem_map, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hb, he⟩`. Rewrite `he` using `[eps_eMi ε i]`. Take `⟨k, rfl⟩` from `exists_eMi_eq_of_false ε b he.symm`. Conclude with `⟨k, (eMi_lt_iff ε i k).1 hb, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(eMi_lt_iff ε i k).2 hk, by rw [eps_eMi ε i, eps_eMi ε k]⟩`. Rewrite using `[hs, Finset.prod_map]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_pairs_split {M : Type*} [CommMonoid M] (ε : Fin N → Bool) (g : Fin N → Fin N → M) :
     ∏ a : Fin N, ∏ b ∈ univ.filter (fun b => a < b ∧ ε a = ε b), g a b =
@@ -277,9 +277,9 @@ theorem prod_pairs_split {M : Type*} [CommMonoid M] (ε : Fin N → Bool) (g : F
     rfl
 
 /- English proof (translation)
-Introduce `N ε Λ`. Establish `hsp` using `prod_pairs_split ε (fun a b => (Λ + rhoC ε) a - (Λ + rhoC ε) b)`. Rewrite using `[hsp, wu, wu, mul_div_mul_comm]`. Use `congr 2`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, rhoC_ePl]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, rhoC_eMi]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weyl_formula_compact : FormulaStep := by
   intro N ε Λ
@@ -294,31 +294,29 @@ theorem weyl_formula_compact : FormulaStep := by
     ring
 
 /- English proof (translation)
-Introduce `N ε μ Λ hCD`. Take `⟨c, hc, hsum⟩` from `hCD`. Prove the components needed by the constructor for the conclusion. Use `⟨fun i j => c (ePl ε i) (ePl ε j), fun i j h => ⟨(ePl_lt_iff ε i j).1 (hc _ _ h).1, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hk` using `congr_fun hsum (ePl ε k)`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hk ⊢`. Establish `hT0 : ∀ j b, (c (eMi ε j) b : ℝ) * root (eMi ε j) b (ePl ε k) = 0`. Introduce `j b`. Distinguish the cases in `h0 : c (eMi ε j) b = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Establish `he` using `(hc _ _ h0).2`. Rewrite `he` using `[eps_eMi ε j]`. Establish `hb : b ≠ ePl ε k`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `he` using `[eps_ePl ε k]`. Conclude with `absurd he (by decide)`. Establish `ha : ePl ε k ≠ eMi ε j` using `ePl_ne_eMi ε k j`. Simplify using `[root, Pi.single_apply, ha, hb.symm]`. Establish `hT1 : ∀ i j, (c (ePl ε i) (eMi ε j) : ℝ) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Assume the negation of the conclusion as `h0`. Establish `he` using `(hc _ _ (by exact_mod_cast h0)).2`. Rewrite `he` using `[eps_ePl ε i, eps_eMi ε j]`. Conclude with `absurd he (by decide)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk, sum_split ε]`. Simplify using `only [hT0, Finset.sum_const_zero, add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sum_split ε]`. Simplify using `only [hT1, zero_mul, Finset.sum_const_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[root, Pi.single_apply, ePl_inj]`. Use `⟨fun i j => c (eMi ε i) (eMi ε j), fun i j h => ⟨(eMi_lt_iff ε i j).1 (hc _ _ h).1, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk` using `congr_fun hsum (eMi ε k)`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hk ⊢`. Establish `hT0 : ∀ j b, (c (ePl ε j) b : ℝ) * root (ePl ε j) b (eMi ε k) = 0`. Introduce `j b`. Distinguish the cases in `h0 : c (ePl ε j) b = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h0]`. Establish `he` using `(hc _ _ h0).2`. Rewrite `he` using `[eps_ePl ε j]`. Establish `hb : b ≠ eMi ε k`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `he` using `[eps_eMi ε k]`. Conclude with `absurd he (by decide)`. Establish `ha : eMi ε k ≠ ePl ε j` using `eMi_ne_ePl ε k j`. Simplify using `[root, Pi.single_apply, ha, hb.symm]`. Establish `hT1 : ∀ i j, (c (eMi ε i) (ePl ε j) : ℝ) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `i j`. Assume the negation of the conclusion as `h0`. Establish `he` using `(hc _ _ (by exact_mod_cast h0)).2`. Rewrite `he` using `[eps_eMi ε i, eps_ePl ε j]`. Conclude with `absurd he (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, sum_split ε]`. Simplify using `only [hT0, Finset.sum_const_zero, zero_add]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sum_split ε]`. Simplify using `only [hT1, zero_mul, Finset.sum_const_zero, zero_add]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[root, Pi.single_apply, eMi_inj]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dominant_restriction_holds : CDomRes := by
   intro N ε μ Λ hCD

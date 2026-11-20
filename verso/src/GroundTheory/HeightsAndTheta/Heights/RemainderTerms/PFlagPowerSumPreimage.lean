@@ -13,9 +13,9 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Establish `hI : Finset.Icc 1 N = Finset.Ico 1 (N + 1)`. Use extensionality with `l`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => g (i + 1)), hI, Finset.sum_Ico_eq_sum_range, Nat.add_sub_cancel]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun i _ => by rw [add_comm])`.
+A detailed English derivation is pending.
 -/
 theorem sum_Icc_one_eq_sum_fin {M : Type*} [AddCommMonoid M] (N : ℕ) (g : ℕ → M) :
     ∑ l ∈ Finset.Icc 1 N, g l = ∑ i : Fin N, g (i.val + 1) := by
@@ -28,13 +28,13 @@ theorem sum_Icc_one_eq_sum_fin {M : Type*} [AddCommMonoid M] (N : ℕ) (g : ℕ 
   exact Finset.sum_congr rfl (fun i _ => by rw [add_comm])
 
 /- English proof (translation)
-Introduce `N T hT`. Use `choose Sf hSf using fun l => Flag.exists_powerSumHom_eq (hT l)`. Use `⟨∑ i : Fin N, X i * Sf (i.val + 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_Icc_one_eq_sum_fin N (fun l => psum (Fin N) ℚ l * T l), map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hSf]`. Simplify using `[powerSumHom]`. Introduce `k hk1 hkN set j : Fin N := ⟨k - 1, by omega⟩ with hj`. Rewrite using `[coeff_sum, Finset.sum_eq_single j]`. Rewrite using `[coeff_X_mul', if_pos (by simp), tsub_self, ← constantCoeff_eq, ← Flag.constantCoeff_powerSumHom, hSf]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: j.val + 1 = k` using `by simp [hj]; omega`. Rewrite using `[this]`. Introduce `i _ hij`. Rewrite using `[coeff_X_mul', if_neg]`. Simplify using `only [Finsupp.mem_support_iff, ne_eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.single_apply, if_neg (fun h => hij h.symm)]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem FlagPowerSumPreimage.proof : FlagPowerSumPreimage.Statement := by
   intro N T hT

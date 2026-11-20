@@ -11,7 +11,7 @@ variable {D : Formalism.BasicNotions.D7} {L : Formalism.BasicNotions.SizeData₂
   {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : Formalism.BasicNotions.DivX D} {cX : Formalism.BasicNotions.ExtraC}
   {ex : Formalism.BasicNotions.Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 /- English proof (translation)
-Introduce `_`. Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, le_rfl, ⟨0, fun x hx _ ι p hp i => ratAt_of_rows p i hp.1 hp.2⟩⟩⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem covering_rational_of_local_traces : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Rat := by
   intro _
@@ -24,7 +24,7 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_rational_of_local_traces | exact _root_.GlobalTheory.CovTop.covering_rational_of_local_traces | (intros; apply _root_.GlobalTheory.CovTop.covering_rational_of_local_traces <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.covering_rationality_criterion : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.CovTop.Rat := by
   first | exact @_root_.GlobalTheory.CovTop.covering_rational_of_local_traces | exact _root_.GlobalTheory.CovTop.covering_rational_of_local_traces | (intros; apply _root_.GlobalTheory.CovTop.covering_rational_of_local_traces <;> assumption)

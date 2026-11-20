@@ -25,7 +25,7 @@ def mvPolynomialToSumCoordinateRing (k : Type u) [Field k] (M n : ℕ) :
 
 @[simp]
 /- English proof (translation)
-Simplify using `[mvPolynomialToSumCoordinateRing]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mvPolynomialToSumCoordinateRing_C (k : Type u) [Field k] (M n : ℕ)
     (t : Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) :
@@ -34,7 +34,7 @@ theorem mvPolynomialToSumCoordinateRing_C (k : Type u) [Field k] (M n : ℕ)
 
 @[simp]
 /- English proof (translation)
-Simplify using `[mvPolynomialToSumCoordinateRing]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mvPolynomialToSumCoordinateRing_X (k : Type u) [Field k] (M n : ℕ) (i : Fin n) :
     mvPolynomialToSumCoordinateRing k M n (MvPolynomial.X i) =
@@ -55,9 +55,9 @@ private theorem id_appTop_apply (X : Scheme.{u}) (t : Γ(X, ⊤)) :
     (𝟙 X : X ⟶ X).appTop t = t := by simp
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h1 : (specToAffineSpaceExtendCoords k A pA M e σ n b).appTop ((projLeft k M n).appTop a) = (Scheme.ΓSpecIso B').inv (σ (e.appTop a))`. Rewrite using `[← comp_appTop_apply_eq, specToAffineSpaceExtendCoords_comp_projLeft k A pA M e σ n b he, comp_appTop_apply_eq, specHomOfGlobalSections_appTop]`. Rewrite using `[mvPolynomialToSumCoordinateRing_C, h1]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Simplify using `only [map_add, MvPolynomial.eval₂_add, hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, MvPolynomial.eval₂_mul, mvPolynomialToSumCoordinateRing_X, hp, specToAffineSpaceExtendCoords_appTop_coord_inr, MvPolynomial.map_X, MvPolynomial.eval₂_X]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem specToAffineSpaceExtendCoords_appTop_mvPolynomial (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -83,7 +83,7 @@ theorem specToAffineSpaceExtendCoords_appTop_mvPolynomial (k : Type u) [Field k]
         specToAffineSpaceExtendCoords_appTop_coord_inr, MvPolynomial.map_X, MvPolynomial.eval₂_X]
 
 /- English proof (translation)
-The claim follows from `(AlgebraicGeometry.IsClosedImmersion.isAffine_surjective_of_isAffine (f := f)).2`.
+A detailed English derivation is pending.
 -/
 private theorem appTop_surjective_of_isClosedImmersion {X Y : Scheme.{u}}
     (f : X ⟶ Y) [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsClosedImmersion f] :
@@ -91,7 +91,7 @@ private theorem appTop_surjective_of_isClosedImmersion {X Y : Scheme.{u}}
   (AlgebraicGeometry.IsClosedImmersion.isAffine_surjective_of_isAffine (f := f)).2
 
 /- English proof (translation)
-Use extensionality with `t`. Conclude with `h t`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem appTop_ext {X Y : Scheme.{u}} {f g : X ⟶ Y}
     (h : ∀ t : Γ(Y, ⊤), f.appTop t = g.appTop t) : f.appTop = g.appTop := by
@@ -99,7 +99,7 @@ private theorem appTop_ext {X Y : Scheme.{u}} {f g : X ⟶ Y}
   exact h t
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun m : R ⟶ Γ(Spec S, ⊤) => CommRingCat.Hom.hom m r) (Scheme.ΓSpecIso_inv_naturality f)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem specMap_appTop_ΓSpecIso_inv {R S : CommRingCat.{u}} (f : R ⟶ S) (r : R) :
     (Spec.map f).appTop ((Scheme.ΓSpecIso R).inv r) = (Scheme.ΓSpecIso S).inv (f r) := by
@@ -139,7 +139,7 @@ private def affineSpaceSumToSpecPolynomialRing (k : Type u) [Field k] (M n : ℕ
     Spec.map (CommRingCat.ofHom (mvPolynomialToSumCoordinateRing k M n))
 
 /- English proof (translation)
-The claim follows from `specToAffineSpaceExtendCoords_comp_toSpec k (affineSpaceIndexedBy k (ULift.{u} (Fin M))) (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))) M (𝟙 _) (globalSectionsToPolynomialRing k M n) n (polynomialRingVariables k M n)`.
+A detailed English derivation is pending.
 -/
 private theorem comp_affineSpaceIndexedByToSpec_eq (k : Type u) [Field k] (M n : ℕ) :
     specPolynomialRingToAffineSpaceSum k M n ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin M ⊕ Fin n)) =
@@ -149,7 +149,7 @@ private theorem comp_affineSpaceIndexedByToSpec_eq (k : Type u) [Field k] (M n :
     (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))) M (𝟙 _) (globalSectionsToPolynomialRing k M n) n (polynomialRingVariables k M n)
 
 /- English proof (translation)
-Establish `h` using `specToAffineSpaceExtendCoords_appTop_coord_inl k (affineSpaceIndexedBy k (ULift.{u} (Fin M))) (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))) M (𝟙 _) (globalSectionsToPolynomialRing k M n) n (polynomialRingVariables k M n) a`. Rewrite `h` using `[Category.comp_id, specHomOfGlobalSections_appTop]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appTop_coord_inl_eq_C (k : Type u) [Field k] (M n : ℕ) (a : Fin M) :
     (specPolynomialRingToAffineSpaceSum k M n).appTop
@@ -163,7 +163,7 @@ private theorem appTop_coord_inl_eq_C (k : Type u) [Field k] (M n : ℕ) (a : Fi
   exact h
 
 /- English proof (translation)
-The claim follows from `specToAffineSpaceExtendCoords_appTop_coord_inr k (affineSpaceIndexedBy k (ULift.{u} (Fin M))) (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))) M (𝟙 _) (globalSectionsToPolynomialRing k M n) n (polynomialRingVariables k M n) j`.
+A detailed English derivation is pending.
 -/
 private theorem appTop_coord_inr_eq_X (k : Type u) [Field k] (M n : ℕ) (j : Fin n) :
     (specPolynomialRingToAffineSpaceSum k M n).appTop
@@ -174,7 +174,7 @@ private theorem appTop_coord_inr_eq_X (k : Type u) [Field k] (M n : ℕ) (j : Fi
     (affineSpaceIndexedByToSpec k (ULift.{u} (Fin M))) M (𝟙 _) (globalSectionsToPolynomialRing k M n) n (polynomialRingVariables k M n) j
 
 /- English proof (translation)
-Establish `h1 : (Spec.map (CommRingCat.ofHom (mvPolynomialToSumCoordinateRing k M n))).appTop ((Scheme.ΓSpecIso (polynomialRingOverGlobalSections k M n)).inv r) = (Scheme.ΓSpecIso Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M ⊕ Fin n)), ⊤)).inv (mvPolynomialToSumCoordinateRing k M n r)` using `specMap_appTop_ΓSpecIso_inv (CommRingCat.ofHom (mvPolynomialToSumCoordinateRing k M n)) r`. Establish `h2 : (affineSpaceSumToSpecPolynomialRing k M n).appTop ((Scheme.ΓSpecIso (polynomialRingOverGlobalSections k M n)).inv r) = ((affineSpaceIndexedBy k (ULift.{u} (Fin M ⊕ Fin n))).isoSpec.hom).appTop ((Spec.map (CommRingCat.ofHom (mvPolynomialToSumCoordinateRing k M n))).appTop ((S …` using `rfl`. Rewrite using `[h2, h1]`. Simplify using `[Scheme.isoSpec_hom, Scheme.toSpecΓ_appTop]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing (k : Type u) [Field k] (M n : ℕ)
     (r : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) :
@@ -193,13 +193,13 @@ private theorem appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing (k : Typ
   simp [Scheme.isoSpec_hom, Scheme.toSpecΓ_appTop]
 
 /- English proof (translation)
-Establish `hcomp : affineSpaceSumToSpecPolynomialRing k M n ≫ specPolynomialRingToAffineSpaceSum k M n = 𝟙 (affineSpaceIndexedBy k (ULift.{u} (Fin M ⊕ Fin n)))`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Apply `AlgebraicGeometry.ext_of_isAffine` to reduce the goal to its premises. Apply `appTop_ext` to reduce the goal to its premises. Introduce `t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, Category.id_comp, comp_affineSpaceIndexedByToSpec_eq, comp_appTop_apply_eq, comp_appTop_apply_eq, specHomOfGlobalSections_appTop, globalSectionsToPolynomialRing_apply, appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing, mvPolynomialToSumCoordinateRing_C, ← co …`. Introduce and unpack `⟨i⟩`. Take `a | j` from `i`. Rewrite using `[comp_appTop_apply_eq, appTop_coord_inl_eq_C, appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing, mvPolynomialToSumCoordinateRing_C, projLeft_appTop_coord, id_appTop_apply]`. Rewrite using `[comp_appTop_apply_eq, appTop_coord_inr_eq_X, appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing, mvPolynomialToSumCoordinateRing_X, id_appTop_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Use `⟨(Scheme.ΓSpecIso (polynomialRingOverGlobalSections k M n)).hom ((specPolynomialRingToAffineSpaceSum k M n).appTop x), ?_⟩` and prove the remaining obligations. Establish `hx : (affineSpaceSumToSpecPolynomialRing k M n).appTop ((specPolynomialRingToAffineSpaceSum k M n).appTop x) = x`. Rewrite using `[← comp_appTop_apply_eq, hcomp, id_appTop_apply]`. Rewrite using `[← appTop_ΓSpecIso_inv_eq_mvPolynomialToSumCoordinateRing k M n ((Scheme.ΓSpecIso (polynomialRingOverGlobalSections k M n)).hom ((specPolynomialRingToAffineSpaceSum k M n).appTop x)), Iso.hom_inv_id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 private theorem mvPolynomialToSumCoordinateRing_surjective (k : Type u) [Field k] (M n : ℕ) :
     Function.Surjective ⇑(mvPolynomialToSumCoordinateRing k M n) := by
@@ -228,7 +228,7 @@ private theorem mvPolynomialToSumCoordinateRing_surjective (k : Type u) [Field k
   exact hx
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `MvPolynomial.map_surjective ((e.appTop).hom) (appTop_surjective_of_isClosedImmersion e) (rel j)`. Conclude with `⟨P, hP⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mvPolynomial_map_appTop_eq (k : Type u) [Field k] (A : Scheme.{u}) (M : ℕ)
     (e : A ⟶ affineSpaceIndexedBy k (ULift.{u} (Fin M)))
@@ -241,23 +241,23 @@ theorem exists_mvPolynomial_map_appTop_eq (k : Type u) [Field k] (A : Scheme.{u}
   exact ⟨P, hP⟩
 
 /- English proof (translation)
-Establish `hsurje : Function.Surjective ⇑((e.appTop).hom)` using `appTop_surjective_of_isClosedImmersion e`. Establish `hmap : Function.Surjective ⇑(MvPolynomial.map ((e.appTop).hom) : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤) →+* MvPolynomial (Fin n) Γ(A, ⊤))` using `MvPolynomial.map_surjective _ hsurje`. Establish `hsurjS : Function.Surjective ⇑(mvPolynomialToSumCoordinateRing k M n)` using `mvPolynomialToSumCoordinateRing_surjective k M n`. Establish `hι : Function.Injective ⇑((Scheme.ΓSpecIso B').inv)`. Introduce `x y hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (fun z => (Scheme.ΓSpecIso B').hom z) hxy`. Simplify using `using h`. Establish `key : ∀ p : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤), ((specToAffineSpaceExtendCoords k A pA M e σ n b).appTop).hom (mvPolynomialToSumCoordinateRing k M n p) = (Scheme.ΓSpecIso B').inv (MvPolynomial.eval₂ σ.hom b (MvPolynomial.map (e.appTop).hom p))` using `fun p => specToAffineSpaceExtendCoords_appTop_mvPolynomial k A pA M e σ n b he p`. Establish `step1 : RingHom.ker (((specToAffineSpaceExtendCoords k A pA M e σ n b).appTop).hom.comp (mvPolynomialToSumCoordinateRing k M n)) = Ideal.comap (MvPolynomial.map ((e.appTop).hom)) (Ideal.span (Set.range rel))`. Rewrite using `[← hrel]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p`. Simplify using `only [RingHom.mem_ker, RingHom.comp_apply, Ideal.mem_comap]`. Rewrite using `[key p]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : MvPolynomial.eval₂ σ.hom b (MvPolynomial.map ((e.appTop).hom) p) = 0`. Apply `hι` to reduce the goal to its premises. Rewrite using `[h]`. Simplify using the standard rewrite rules. Simplify `h0` using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Establish `h0 : MvPolynomial.eval₂ σ.hom b (MvPolynomial.map ((e.appTop).hom) p) = 0`. Simplify `h` using `[RingHom.mem_ker]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `step2 : Ideal.span (Set.range rel) = Ideal.map (MvPolynomial.map ((e.appTop).hom)) (Ideal.span (Set.range lift))`. Rewrite using `[Ideal.map_span]`. Use `congr 1`. Rewrite using `[← Set.range_comp]`. Conclude with `congrArg Set.range (funext fun j => (hlift j).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `step3 : Ideal.comap (MvPolynomial.map ((e.appTop).hom)) (Ideal.map (MvPolynomial.map ((e.appTop).hom)) (Ideal.span (Set.range lift))) = Ideal.span (Set.range lift) ⊔ RingHom.ker (MvPolynomial.map ((e.appTop).hom) : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)) …` using `Ideal.comap_map_of_surjective _ hmap _`. Establish `step4 : RingHom.ker (MvPolynomial.map ((e.appTop).hom) : MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤) →+* MvPolynomial (Fin n) Γ(A, ⊤)) = Ideal.map (MvPolynomial.C : Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤) →+* MvPolynomial (Fin n) Γ(affineSpaceIn …` using `MvPolynomial.ker_map _`. Establish `hcomapker : Ideal.comap (mvPolynomialToSumCoordinateRing k M n) (RingHom.ker ((specToAffineSpaceExtendCoords k A pA M e σ n b).appTop).hom) = RingHom.ker (((specToAffineSpaceExtendCoords k A pA M e σ n b).appTop).hom.comp (mvPolynomialToSumCoordinateRing k M n))`. Use extensionality with `p`. Simplify using `[RingHom.mem_ker, Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcompEq : (mvPolynomialToSumCoordinateRing k M n).comp (MvPolynomial.C : Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤) →+* MvPolynomial (Fin n) Γ(affineSpaceIndexedBy k (ULift.{u} (Fin M)), ⊤)) = ((projLeft k M n).appTop).hom`. Use extensionality with `t`. Conclude with `mvPolynomialToSumCoordinateRing_C k M n t`. Establish `main` using `Ideal.map_comap_of_surjective (mvPolynomialToSumCoordinateRing k M n) hsurjS (RingHom.ker ((specToAffineSpaceExtendCoords k A pA M e σ n b).appTop).hom)`. Rewrite `main` using `[hcomapker, step1, step2, step3, step4]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← main, Ideal.map_sup, Ideal.map_span, Ideal.map_map, hcompEq]`. Establish `hrange : (⇑(mvPolynomialToSumCoordinateRing k M n) '' Set.range lift) = Set.range (fun j : Fin q => mvPolynomialToSumCoordinateRing k M n (lift j))`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hrange, sup_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_specToAffineSpaceExtendCoords_appTop (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)
@@ -352,7 +352,7 @@ theorem ker_specToAffineSpaceExtendCoords_appTop (k : Type u) [Field k] (A : Sch
   rw [hrange, sup_comm]
 
 /- English proof (translation)
-Establish `h1 : (Opens.map (specToAffineSpaceExtendCoords k A pA M e σ n b).base).obj ((affineSpaceIndexedBy k (ULift.{u} (Fin M ⊕ Fin n))).basicOpen f) = (Spec B').basicOpen ((specToAffineSpaceExtendCoords k A pA M e σ n b).appTop f)` using `Scheme.preimage_basicOpen ..`. Establish `h2 : (Spec B').basicOpen ((specToAffineSpaceExtendCoords k A pA M e σ n b).appTop f) = ⊤` using `Scheme.basicOpen_of_isUnit (Spec B') hf`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem preimage_basicOpen_specToAffineSpaceExtendCoords (k : Type u) [Field k] (A : Scheme.{u})
     [AlgebraicGeometry.IsAffine A] (pA : A ⟶ Spec (CommRingCat.of k)) (M : ℕ)

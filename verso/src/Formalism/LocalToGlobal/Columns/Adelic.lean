@@ -75,9 +75,9 @@ abbrev URat : Subgroup (GL (Fin n) E) := Formalism.L2.DIV.UR hc (1 : Matrix (Fin
 abbrev UAd : Subgroup (GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := Formalism.L2.DIV.UA hc (1 : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show (∑ k, star (Pi.single i (1 : E) k) * Pi.single j (1 : E) k) = (1 : Matrix (Fin n) (Fin n) E) i j`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same, star_one, one_mul, Pi.single_apply, Matrix.one_apply]`. Introduce `k _ hk`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hk, star_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ad_gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
   ext i j
@@ -113,11 +113,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h1 : Formalism.UG.glEquiv (a : GL (Fin n) E) = Formalism.UG.glEquiv (b : GL (Fin n) E)` using `congrArg Subtype.val hab`. Establish `h2 : (a : GL (Fin n) E) = b`. Simplify `h1` using `[Formalism.UG.glEquiv]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Subtype.ext h2`. Introduce `u`. Set `g : GL (Fin n) E` to `Matrix.GeneralLinearGroup.toLin.symm ((LinearMap.GeneralLinearGroup.generalLinearEquiv E (Fin n → E)).symm (u : Sp E n ≃ₗ[E] Sp E n))`. Establish `hg : Formalism.UG.glEquiv g = (u : Sp E n ≃ₗ[E] Sp E n)`. Simplify using `[g, Formalism.UG.glEquiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `(Formalism.UG.Final.HermBridge E (Fin n) (hStd E n) g).2`. Rewrite `h` using `[ad_gram_hStd, hg]`. Establish `hm : g ∈ URat hc n` using `h u.2`. Conclude with `⟨⟨g, hm⟩, Subtype.ext hg⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratHom_bijective : Function.Bijective (ratHom hc n) := by
   constructor
@@ -159,14 +159,14 @@ def J0 : Subgroup (GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :=
   UAd hc n ⊓ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ⊓ ⨅ P ∈ ST, mirAt (F := F) n P
 
 /- English proof (translation)
-Unfold `J0`. Conclude with `le_trans inf_le_left inf_le_left`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem congruence_le_adelic_unitary : J0 hc n ST ≤ UAd hc n := by
   unfold J0
   exact le_trans inf_le_left inf_le_left
 
 /- English proof (translation)
-Unfold `J0`. Conclude with `le_trans inf_le_left inf_le_right`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem congruence_subgroup_le_stabilizer : J0 hc n ST ≤ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := by
   unfold J0
@@ -179,7 +179,7 @@ def redG : J0 hc n ST →* GLG E n SG :=
 def K1 : Subgroup (GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := (redG hc n ST SG).ker.map (J0 hc n ST).subtype
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `K1 at hx`. Take `⟨y, -, rfl⟩` from `Subgroup.mem_map.1 hx`. Conclude with `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem principal_le_congruence_subgroup : K1 hc n ST SG ≤ J0 hc n ST := by
   intro x hx
@@ -188,7 +188,7 @@ theorem principal_le_congruence_subgroup : K1 hc n ST SG ≤ J0 hc n ST := by
   exact y.2
 
 /- English proof (translation)
-The claim follows from `le_trans (principal_le_congruence_subgroup hc n ST SG) (congruence_le_adelic_unitary hc n ST)`.
+A detailed English derivation is pending.
 -/
 theorem principal_le_adelic_unitary : K1 hc n ST SG ≤ UAd hc n :=
   le_trans (principal_le_congruence_subgroup hc n ST SG) (congruence_le_adelic_unitary hc n ST)
@@ -198,7 +198,7 @@ abbrev adPt : Type := UAd hc n ⧸ (K1 hc n ST SG).subgroupOf (UAd hc n)
 def ToUnitaryAdelic : J0 hc n ST →* UAd hc n := Subgroup.inclusion (congruence_le_adelic_unitary hc n ST)
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_subgroupOf]`. Unfold `K1`. Conclude with `Subgroup.mem_map.2 ⟨m, (MonoidHom.mem_ker).2 hm, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_principal_congruence_of {m : J0 hc n ST} (hm : redG hc n ST SG m = 1) :
     ToUnitaryAdelic hc n ST m ∈ (K1 hc n ST SG).subgroupOf (UAd hc n) := by
@@ -207,9 +207,9 @@ theorem mem_principal_congruence_of {m : J0 hc n ST} (hm : redG hc n ST SG m = 1
   exact Subgroup.mem_map.2 ⟨m, (MonoidHom.mem_ker).2 hm, rfl⟩
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[Subgroup.mem_subgroupOf]`. Unfold `K1 at ha ⊢`. Take `⟨y, hy, hya⟩` from `Subgroup.mem_map.1 ha`. Use `Subgroup.mem_map.2 ⟨k * y * k⁻¹, (redG hc n ST SG).normal_ker.conj_mem y hy k, ?_⟩` and prove the remaining obligations. Establish `hya' : (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = (a : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))` using `hya`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ = (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * (a : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * (k : GL (Fin n) (E …`. Rewrite using `[hya']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem K1_conj (k : J0 hc n ST) {a : UAd hc n} (ha : a ∈ (K1 hc n ST SG).subgroupOf (UAd hc n)) :
     ToUnitaryAdelic hc n ST k * a * (ToUnitaryAdelic hc n ST k)⁻¹ ∈ (K1 hc n ST SG).subgroupOf (UAd hc n) := by
@@ -246,9 +246,9 @@ def rawSm (γ : URat hc n) (k : J0 hc n ST) (x : UAd hc n) : UAd hc n :=
   ratIn hc n γ * x * (ToUnitaryAdelic hc n ST k)⁻¹
 
 /- English proof (translation)
-Establish `hm : redG hc n ST SG ((k₁⁻¹ * k₂ : JH hc n ST SG H) : J0 hc n ST) = 1` using `congrArg Subtype.val ((MonoidHom.mem_ker).1 hk)`. Establish `hu` using `mem_principal_congruence_of hc n ST SG hm`. Establish `hc'` using `K1_conj hc n ST SG k₁.1 (Subgroup.mul_mem _ hx (Subgroup.inv_mem _ hu))`. Use `hc' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [rawSm, map_mul, map_inv, Subgroup.coe_mul, Subgroup.coe_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem rawSm_wd (γ : URat hc n) (k₁ k₂ : JH hc n ST SG H) (x₁ x₂ : UAd hc n)
     (hk : k₁⁻¹ * k₂ ∈ (redH hc n ST SG H).ker) (hx : x₁⁻¹ * x₂ ∈ (K1 hc n ST SG).subgroupOf (UAd hc n)) :
@@ -345,7 +345,7 @@ def pullGSD (S : GSD K) (G' D' : Type) [Group G'] [MulAction G' D'] (φ : G' →
   Del := S.Del ∘ p
 
 /- English proof (translation)
-Rewrite using `[S.bV.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_self_mem (S : GSD K) (i j : S.ιV) : S.bV.repr (S.bV j) i ∈ Formalism.DivisionValues.cmMax K := by
   rw [S.bV.repr_self, Finsupp.single_apply]
@@ -395,9 +395,9 @@ def DecoPtEqv : Prop :=
 def RedHSurj : Prop := Function.Surjective (redH hc n ST SG H)
 
 /- English proof (translation)
-Establish `h1` using `ratHom_bijective hc n`. Establish `h2 : Function.Bijective (QuotientGroup.kerLift (redH hc n ST SG H))`. Use `⟨QuotientGroup.kerLift_injective _, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hR h`. Conclude with `⟨(k : JH hc n ST SG H ⧸ (redH hc n ST SG H).ker), rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `show Function.Bijective (Prod.map (ratHom hc n) (QuotientGroup.kerLift (redH hc n ST SG H)))`. Conclude with `⟨h1.1.prodMap h2.1, h1.2.prodMap h2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adHom_bijective (hR : RedHSurj hc n ST SG H) : Function.Bijective (adHom hc n ST SG H) := by
   have h1 := ratHom_bijective hc n

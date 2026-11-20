@@ -18,7 +18,7 @@ def piTensorLift (f : ∀ s, X s →ₐ[A] S) : (⨂[A] s, X s) →ₐ[A] S :=
 omit [DecidableEq σ] in
 
 /- English proof (translation)
-Use `(PiTensorProduct.lift.tprod x).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem piTensorLift_tprod (f : ∀ s, X s →ₐ[A] S) (x : ∀ s, X s) :
     piTensorLift f (tprod A x) = ∏ s, f s (x s) := by
@@ -26,7 +26,7 @@ Use `(PiTensorProduct.lift.tprod x).trans ?_` and prove the remaining obligation
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[AlgHom.comp_apply, singleAlgHom_apply, piTensorLift_tprod, Finset.prod_eq_single s (fun t _ ht => by simp [Pi.mulSingle_eq_of_ne ht]) (by simp)]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem piTensorLift_comp_single (f : ∀ s, X s →ₐ[A] S) (s : σ) :
     (piTensorLift f).comp (singleAlgHom s) = f s := by
@@ -36,7 +36,7 @@ Use extensionality with `x`. Rewrite using `[AlgHom.comp_apply, singleAlgHom_app
   simp
 
 /- English proof (translation)
-The claim follows from `congr($(piTensorLift_comp_single f s) x)`.
+A detailed English derivation is pending.
 -/
 theorem piTensorLift_single (f : ∀ s, X s →ₐ[A] S) (s : σ) (x : X s) :
     piTensorLift f (singleAlgHom s x) = f s x := congr($(piTensorLift_comp_single f s) x)
@@ -50,15 +50,15 @@ variable (A X S) in
   right_inv f := funext fun s => by simp
 
 /- English proof (translation)
-Use `Fintype.induction_empty_option (P := fun σ _ => ∀ (X : σ → Type v) [∀ s, CommRing (X s)] [∀ s, Algebra A (X s)], (∀ s (B : Type (max u v w)) [CommRing B] [Algebra A B], P B → P (B ⊗[A] X s)) → P (⨂[A] s, X s)) ?_ ?_ ?_ σ` and prove the remaining obligations. Introduce `α β _ e ih X _ _ h`. Use `Fintype.ofEquiv β e.symm` as an intermediate fact. Use `equiv _ _ (AlgEquiv.ofAlgHom (piTensorLift fun a => singleAlgHom (e a)) (piTensorLift (e.piCongrLeft (fun b => X b →ₐ[A] ⨂[A] a, X (e a)) fun a => singleAlgHom (A := fun a => X (e a)) a)) ?_ ?_) (ih (fun a => X (e a)) fun a => h (e a))` and prove the remaining obligations. Use `PiTensorProduct.algHom_ext fun b => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `e.surjective b`. Simplify using `[AlgHom.comp_assoc]`. Use `PiTensorProduct.algHom_ext fun a => ?_` and prove the remaining obligations. Simplify using `[AlgHom.comp_assoc]`. Introduce `X _ _ _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `base _ (AlgEquiv.ofAlgHom (Algebra.ofId _ _) (piTensorLift fun s => s.elim) (PiTensorProduct.algHom_ext fun s => s.elim) (Subsingleton.elim _ _))`. Introduce `α _ ih X _ _ h`. Use `equiv _ _ (AlgEquiv.ofAlgHom (Algebra.TensorProduct.lift (piTensorLift fun a => singleAlgHom (some a)) (singleAlgHom none) fun _ _ => Commute.all _ _) (piTensorLift fun o => match o with` and prove the remaining obligations. Consider the case `none => Algebra.TensorProduct.includeRight`. Consider the case `some a => Algebra.TensorProduct.includeLeft.comp (singleAlgHom (A := fun a => X (some a)) a)) ?_ ?_)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(h none _ (ih (fun a => X (some a)) fun a => h (some a)))`. Use `PiTensorProduct.algHom_ext fun o => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_assoc, piTensorLift_comp_single]`. Consider the cases of `o with`. Consider the case `none => simp`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `some a => simp [← AlgHom.comp_assoc]`. Use `Algebra.TensorProduct.ext (PiTensorProduct.algHom_ext fun a => ?_) ?_` and prove the remaining obligations. Simplify using `[AlgHom.comp_assoc]`. Use extensionality with `x`. Simplify using `[piTensorLift_single, -singleAlgHom_apply]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piTensor_induction
     (P : ∀ (B : Type (max u v w)) [CommRing B] [Algebra A B], Prop)

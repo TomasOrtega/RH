@@ -60,11 +60,11 @@ def LeafExtendZMT : Prop := ∀ (k : Type) [Field k] [IsAlgClosed k] {X : Scheme
       γ1 ≫ u0 = u1 ≫ g1 ∧ γ2 ≫ u1 = u2 ≫ g2 ∧ u0 ≫ h = e
 
 /- English proof (translation)
-Introduce `k _ _ X _ p _ Ω _ _ _ hdim C0 c0 e hc0 he hη C1 C2 γ1 γ2 h1 h2 s1 s2`. Take `⟨R, hR, D0, D1, D2, q, d1, d2, f, v0, v1, v2, hf, sp0, qc0, sm0, sp1, qc1, sm1, sp2, qc2, sm2, i0, i1, i2, qf0, qf1, qf2, dD, P0, P1, P2, c1, c2, ve⟩` from `hD k p Ω hdim c0 e hc0 he hη C1 C2 γ1 γ2 h1 h2 s1 s2`. Establish `: Algebra.FiniteType k R` using `Subalgebra.fg_iff_finiteType R |>.mp hR`. Take `⟨B, b, ι, iB, pb, oι, hι, dB⟩` from `hB k R`. Take `⟨Y0, Y1, Y2, π, g1, g2, h, V, u0, u1, u2, hs, m0, m1, m2, f1, irrY, dY, Q0, Q1, Q2, e1, e2, ue⟩` from `hE k p Ω R B b ι hι c0 γ1 γ2 e hc0 h1 h2 he q d1 d2 f v0 v1 v2 hf sp0 qc0 sm0 sp1 qc1 sm1 sp2 qc2 sm2 i0 i1 i2 qf0 qf1 qf2 P0 P1 P2 c1 c2 ve`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hR' : ringKrullDim R < topologicalKrullDim X` using `hdim R hR`. Take `⟨hle, hlt⟩` from `LateralTheory.E.LeafSpreadVCut.succ_le_of_lt hR'`. Use `hc0.1` as an intermediate fact. Take `⟨x⟩ : Nonempty C0` from `inferInstance`. Use `⟨B, Y0, Y1, Y2, b, V, π, g1, g2, h, Spec.map (CommRingCat.ofHom (algebraMap R Ω)) ≫ ι, u0, u1, u2, iB, pb, hs, m0, m1, m2, f1, lt_of_le_of_lt dB hR', irrY, dY.trans (dD.trans hle), lt_of_le_of_lt (dY.trans dD) hlt, ⟨u0 x, ?_⟩, Q0, Q1, Q2, e1, e2, ue⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show π (u0 x) ∈ (V : Set B)`. Rewrite using `[← Scheme.Hom.comp_apply, Q0.w]`. Conclude with `hs ⟨c0 x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spread_of (hD : LeafDescendQF) (hB : LateralTheory.E.LeafSpreadVCut.LeafCloseB) (hE : LeafExtendZMT) :
     CurveThroughGenericPointSpreadsToSmoothProperFamily := by
@@ -88,11 +88,11 @@ theorem spread_of (hD : LeafDescendQF) (hB : LateralTheory.E.LeafSpreadVCut.Leaf
   exact hs ⟨c0 x, rfl⟩
 
 /- English proof (translation)
-Introduce `k _ _ X _ p _ hd`. Take `⟨Ω, iF, iA, iK, C0, c0, e, hc0, he, hη, hdim⟩` from `hC k p hd`. Use `⟨Ω, iF, iA, iK, C0, c0, hc0, fun C1 C2 γ1 γ2 h1 h2 s1 s2 => ?_⟩` and prove the remaining obligations. Take `⟨B, Y0, Y1, Y2, b, V, π, g1, g2, h, s, u0, u1, u2, iB, pb, hs, m0, m1, m2, f1, dB, irr, dY, fin, ne, P0, P1, P2, w1, w2, ue⟩` from `hS k p Ω hdim c0 e hc0 he hη C1 C2 γ1 γ2 h1 h2 s1 s2`. Use `⟨B, Y0, Y1, Y2, b, V, π, g1, g2, h, s, u0, u1, u2, iB, pb, hs, m0, m1, m2, f1, ?_, dB, irr, dY, fin, ne, P0, P1, P2, w1, w2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, hx0⟩` from `hη`. Take `⟨x1, rfl⟩` from `s1.surj x0`. Take `⟨x2, rfl⟩` from `s2.surj x1`. Establish `key : u2 ≫ g2 ≫ g1 ≫ h = γ2 ≫ γ1 ≫ e`. Rewrite using `[← ue, ← Category.assoc u2 g2, ← w2, Category.assoc, ← Category.assoc u1 g1, ← w1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Use `f1` as an intermediate fact. Use `surj_of_generic (g2 ≫ g1 ≫ h) ⟨u2 x2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, key, ← hx0]`. Simplify using `only [Scheme.Hom.comp_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem geoV_of (hC : LeafCurveV) (hS : CurveThroughGenericPointSpreadsToSmoothProperFamily) : LateralTheory.E.LeafGeoCut.LeafGeoV := by
   intro k _ _ X _ p _ hd
@@ -114,7 +114,7 @@ theorem geoV_of (hC : LeafCurveV) (hS : CurveThroughGenericPointSpreadsToSmoothP
   simp only [Scheme.Hom.comp_apply]
 
 /- English proof (translation)
-The claim follows from `geoV_of hC (spread_of hD hB hE)`.
+A detailed English derivation is pending.
 -/
 theorem goal_of (hC : LeafCurveV) (hD : LeafDescendQF) (hB : LateralTheory.E.LeafSpreadVCut.LeafCloseB)
     (hE : LeafExtendZMT) : LateralTheory.E.LeafGeoCut.LeafGeoV :=

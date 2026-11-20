@@ -18,42 +18,42 @@ section Alg
 variable {K : Type} [CommRing K] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `[hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (x y : Fin N → K) :
     hform s L x y = (fun i => s (x i)) ⬝ᵥ (L *ᵥ y) := by
   simp [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[hform_eq, Matrix.mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_right (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (x y w : Fin N → K) :
     hform s L x (y - w) = hform s L x y - hform s L x w := by
   simp [hform_eq, Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `[hform_eq, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_smul_right (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (c : K) (x y : Fin N → K) :
     hform s L x (c • y) = c * hform s L x y := by
   simp [hform_eq, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_left (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (x w y : Fin N → K) :
     hform s L (x - w) y = hform s L x y - hform s L w y := by
   simp only [hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_smul_left (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (c : K) (x y : Fin N → K) :
     hform s L (c • x) y = s c * hform s L x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [hform, map_sum, map_mul, hs]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hL]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_conj (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (hs : ∀ x, s (s x) = x)
     (hL : ∀ i j, s (L j i) = L i j) (x y : Fin N → K) :
@@ -67,7 +67,7 @@ def dualV (s : K →+* K) (Li : Matrix (Fin N) (Fin N) K) (z : Fin N → K) : Fi
   fun i => s ((z ᵥ* Li) i)
 
 /- English proof (translation)
-Establish `h : hform s L (dualV s Li z) w = (z ᵥ* Li) ⬝ᵥ (L *ᵥ w)`. Simplify using `only [hform_eq, dualV, hs]`. Rewrite using `[h, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hLi, Matrix.vecMul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_dual (s : K →+* K) (L Li : Matrix (Fin N) (Fin N) K) (hs : ∀ x, s (s x) = x)
     (hLi : Li * L = 1) (z w : Fin N → K) : hform s L (dualV s Li z) w = z ⬝ᵥ w := by
@@ -79,13 +79,13 @@ def partner (s : K →+* K) (L Li : Matrix (Fin N) (Fin N) K) (half : K) (z w : 
   dualV s Li z - (half * hform s L (dualV s Li z) (dualV s Li z)) • w
 
 /- English proof (translation)
-Use `set u := dualV s Li z with hu`. Use `set A := hform s L u u with hA`. Establish `huw : hform s L u w = 1` using `by rw [hu, hform_dual s L Li hs hLi, hz]`. Establish `hwu : hform s L w u = 1` using `by rw [← hform_conj s L hs hL u w, huw, map_one]`. Establish `hsA : s A = A` using `hform_conj s L hs hL u u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : s (half * A) = half * A` using `by rw [map_mul, hh, hsA]`. Establish `hp : partner s L Li half z w = u - (half * A) • w` using `rfl`. Establish `e1 : hform s L w (u - (half * A) • w) = 1`. Rewrite using `[hform_sub_right, hform_smul_right, hwu, hw]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : hform s L (u - (half * A) • w) w = 1`. Rewrite using `[hform_sub_left, hform_smul_left, huw, hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : hform s L u (u - (half * A) • w) = A - half * A`. Rewrite using `[hform_sub_right, hform_smul_right, huw, ← hA]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hp]`. Use `⟨e1, e2, ?_⟩` and prove the remaining obligations. Rewrite using `[hform_sub_left, hform_smul_left, e1, e3, hc]`. Take the linear combination `(-A) * h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem partner_spec (s : K →+* K) (L Li : Matrix (Fin N) (Fin N) K) (half : K)
     (hs : ∀ x, s (s x) = x) (hL : ∀ i j, s (L j i) = L i j) (hLi : Li * L = 1)
@@ -112,7 +112,7 @@ theorem partner_spec (s : K →+* K) (L Li : Matrix (Fin N) (Fin N) K) (half : K
   linear_combination (-A) * h2
 
 /- English proof (translation)
-Simplify using `[hform_eq, Matrix.mulVec_single_one, dotProduct, Pi.single_apply, apply_ite s]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (i j : Fin N) :
     hform s L (Pi.single i 1) (Pi.single j 1) = L i j := by
@@ -121,7 +121,7 @@ theorem hform_single (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (i j : Fin N
 variable [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-Unfold `hform`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun p : (Fin N → K) × (Fin N → K) => p.1 i` using `(continuous_apply i).comp continuous_fst`. Establish `h2 : Continuous fun p : (Fin N → K) × (Fin N → K) => p.2 j` using `(continuous_apply j).comp continuous_snd`. Conclude with `((hs.comp h1).mul continuous_const).mul h2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_hform (s : K →+* K) (hs : Continuous s) (L : Matrix (Fin N) (Fin N) K) :
     Continuous fun p : (Fin N → K) × (Fin N → K) => hform s L p.1 p.2 := by
@@ -134,7 +134,7 @@ theorem continuous_hform (s : K →+* K) (hs : Continuous s) (L : Matrix (Fin N)
   exact ((hs.comp h1).mul continuous_const).mul h2
 
 /- English proof (translation)
-Use `continuous_pi fun i => hs.comp ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).comp (continuous_id.matrix_vecMul continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_dualV (s : K →+* K) (hs : Continuous s) (Li : Matrix (Fin N) (Fin N) K) :
     Continuous (dualV s Li) := by
@@ -142,7 +142,7 @@ theorem continuous_dualV (s : K →+* K) (hs : Continuous s) (Li : Matrix (Fin N
   exact (continuous_apply i).comp (continuous_id.matrix_vecMul continuous_const)
 
 /- English proof (translation)
-Establish `hd : Continuous fun p : (Fin N → K) × (Fin N → K) => dualV s Li p.1` using `(continuous_dualV s hs Li).comp continuous_fst`. Establish `hf : Continuous fun p : (Fin N → K) × (Fin N → K) => hform s L (dualV s Li p.1) (dualV s Li p.1)` using `(continuous_hform s hs L).comp (hd.prodMk hd)`. Unfold `partner`. Conclude with `hd.sub ((continuous_const.mul hf).smul continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_partner (s : K →+* K) (hs : Continuous s) (L Li : Matrix (Fin N) (Fin N) K)
     (half : K) : Continuous fun p : (Fin N → K) × (Fin N → K) => partner s L Li half p.1 p.2 := by
@@ -161,7 +161,7 @@ section Tens
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, hσ]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x)
     (a : R ⊗[F] E) : sigR R σ (sigR R σ a) = a := by
@@ -171,14 +171,14 @@ theorem sigR_invol (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (h
   | add x y hx hy => simp [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_incl (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (e : E) :
     sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gramR, hR, hform, ratTup, JR, sigR_incl, Matrix.map_apply, gramE, hE, map_sum, map_mul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gramR_ratTup (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {N n : ℕ}
     (J : Matrix (Fin N) (Fin N) E) (X : Fin n → Fin N → E) :
@@ -188,7 +188,7 @@ theorem gramR_ratTup (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[actW, actTup, Matrix.mulVec_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem actW_smul (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {N n : ℕ}
     (J : Matrix (Fin N) (Fin N) E) (g : HA R σ J) (a : R ⊗[F] E) (X : Fin n → Fin N → R ⊗[F] E) :
@@ -202,9 +202,7 @@ def frame (E : Type) [Field E] (M : ℕ) : Fin 2 → Fin (M + 2) → E :=
   ![Pi.single 0 1, Pi.single (Fin.succ 0) 1]
 
 /- English proof (translation)
-Establish `h : ∀ i j : Fin (M + 2), hE σ (hypJ J) (Pi.single i 1) (Pi.single j 1) = hypJ J i j` using `fun i j => hform_single (σ : E →+* E) (hypJ J) i j`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `(h 0 0).trans (by simp [hypJ])`. Conclude with `(h 0 (Fin.succ 0)).trans (by simp [hypJ])`.
-
-Conclude with `(h (Fin.succ 0) 0).trans (by simp [hypJ])`. Conclude with `(h (Fin.succ 0) (Fin.succ 0)).trans (by simp [hypJ])`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gram_frame {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) :
@@ -219,7 +217,7 @@ theorem gram_frame {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
   · exact (h (Fin.succ 0) (Fin.succ 0)).trans (by simp [hypJ])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[eOne, ratTup, frame]`. Simplify using `[eOne, ratTup, frame, Pi.single_apply, Fin.succ_ne_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eOne_eq_frame {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (M : ℕ) (a : Fin 1) :
@@ -234,9 +232,7 @@ section Core
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {N : ℕ}
 
 /- English proof (translation)
-Establish `c1 : Continuous fun p : (Fin 1 → Fin N → K) × (Fin 1 → Fin N → K) => p.1 0` using `(continuous_apply 0).comp continuous_fst`. Establish `c2 : Continuous fun p : (Fin 1 → Fin N → K) × (Fin 1 → Fin N → K) => p.2 0` using `(continuous_apply 0).comp continuous_snd`. Establish `c3` using `(continuous_partner s hs L Li half).comp (c2.prodMk c1)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
-
-Conclude with `c1`. Conclude with `c3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pair (s : K →+* K) (hs : Continuous s) (L Li : Matrix (Fin N) (Fin N) K) (half : K) :
     Continuous fun p : (Fin 1 → Fin N → K) × (Fin 1 → Fin N → K) =>
@@ -252,7 +248,7 @@ theorem continuous_pair (s : K →+* K) (hs : Continuous s) (L Li : Matrix (Fin 
   · exact c3
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `h00`. Conclude with `h01`. Conclude with `h10`. Conclude with `h11`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gram_pair (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (w p : Fin N → K)
     (h00 : hform s L w w = 0) (h01 : hform s L w p = 1) (h10 : hform s L p w = 1)
@@ -266,15 +262,15 @@ theorem gram_pair (s : K →+* K) (L : Matrix (Fin N) (Fin N) K) (w p : Fin N �
   · exact h11
 
 /- English proof (translation)
-Take `⟨C₀, hC₀, hprop⟩` from `hproper _ ((hΩ.prod hΩ).image (continuous_pair s hsc L Li half))`. Use `⟨Inv.inv '' C₀, hC₀.image continuous_inv, fun h => ?_⟩` and prove the remaining obligations. Establish `hG00 : hform s L (act h⁻¹ (X 0)) (act h⁻¹ (X 0)) = 0`. Rewrite using `[hpres, hX]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hG10 : hform s L (act h⁻¹ (X 1)) (act h⁻¹ (X 0)) = 1`. Rewrite using `[hpres, hX]`. Both sides reduce to the same expression. Establish `hunim : ∃ z : Fin N → K, z ⬝ᵥ (fun _ : Fin 1 => act h⁻¹ (X 0)) 0 = 1`. Use `⟨(fun i => s (act h⁻¹ (X 1) i)) ᵥ* L, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.dotProduct_mulVec, ← hform_eq]`. Conclude with `hG10`. Take `⟨a, z, hay, hz, hza⟩` from `hprim (fun _ => act h⁻¹ (X 0)) hunim`. Establish `hww : hform s L ((a : K) • act h⁻¹ (X 0)) ((a : K) • act h⁻¹ (X 0)) = 0`. Rewrite using `[hform_smul_left, hform_smul_right, hG00, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hza' : z 0 ⬝ᵥ ((a : K) • act h⁻¹ (X 0)) = 1` using `hza`. Take `⟨p1, p2, p3⟩` from `partner_spec s L Li half hs hL hLi hh h2 (z 0) ((a : K) • act h⁻¹ (X 0)) hww hza'`. Establish `hmem : (![((a : K) • act h⁻¹ (X 0)), partner s L Li half (z 0) ((a : K) • act h⁻¹ (X 0))] : Fin 2 → Fin N → K) ∈ (fun p : (Fin 1 → Fin N → K) × (Fin 1 → Fin N → K) => (![p.1 0, partner s L Li half (p.2 0) (p.1 0)] : Fin 2 → Fin N → K)) '' (Ω ×ˢ Ω)` using `⟨((a : K) • (fun _ => act h⁻¹ (X 0)), z), ⟨hay, hz⟩, rfl⟩`. Take `⟨c, hc, hcY⟩` from `hprop _ hmem (gram_pair s L _ _ hww p1 p2 p3)`. Use `⟨c⁻¹, ⟨c, hc, rfl⟩, a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : act c (X 0) = (a : K) • act h⁻¹ (X 0)` using `hcY 0`. Rewrite using `[inv_inv, hmul, h0, hsmul, ← hmul, mul_inv_cancel, hone]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwa_core {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     (s : K →+* K) (hsc : Continuous s) (hs : ∀ x, s (s x) = x) (L Li : Matrix (Fin N) (Fin N) K)
@@ -323,7 +319,7 @@ def actV {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   (HA.mat R σ J g : Matrix (Fin N) (Fin N) (R ⊗[F] E)).mulVec v
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_hyp {E K : Type} [Field E] [CommRing K] (φ : E →+* K) :
     (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) E).map φ = !![0, 1; 1, 0] := by
@@ -331,29 +327,25 @@ theorem map_hyp {E K : Type} [Field E] [CommRing K] (φ : E →+* K) :
   fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Establish `hJ' : IsHermND σ (hypJ J)` using `(GlobalTheory.T.hyperbolic_and_block_one_nondegenerate F E σ hCM M J hJ).1`. Take `⟨⟨lc, sc, t2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := lc`. Use `haveI := sc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := t2`. Take `⟨hTG, -, -, -, -, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 2) (hypJ J) hJ' (AF F)`. Take `⟨hTR, -, -, -, hsc, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `haveI := hTG`. Use `haveI := hTR`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨Ω, hΩ, hprim⟩` from `GlobalTheory.T.adelic_primitive_vector_compact_rescale F E σ hCM (M + 2)`. Establish `hLh : ∀ i j, sigR (AF F) σ (JR (F` using `F) (AF F) (hypJ J) j i) = JR (F := F) (AF F) (hypJ J) i j := by`. Introduce `i j`. Simplify using `only [JR, Matrix.map_apply, sigR_incl, hJ'.1 i j]`. Establish `hLi : ((hypJ J)⁻¹).map (inclR (F` using `F) (AF F)) * JR (F := F) (AF F) (hypJ J) = 1 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hu : IsUnit (hypJ J).det` using `isUnit_iff_ne_zero.mpr hJ'.2`. Establish `h1 : ((hypJ J)⁻¹ * hypJ J).map (inclR (F` using `F) (AF F)) = 1 := by`. Rewrite using `[Matrix.nonsing_inv_mul _ hu]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[← h1, Matrix.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hh : sigR (AF F) σ (inclR (F` using `F) (AF F) (1 / 2 : E)) = inclR (F := F) (AF F) (1 / 2 : E) := by`. Establish `e : σ (1 / 2 : E) = 1 / 2` using `by rw [map_div₀, map_one, map_ofNat]`. Rewrite using `[sigR_incl, e]`. Establish `h2 : 2 * inclR (F` using `F) (AF F) (1 / 2 : E) = 1 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : inclR (F` using `F) (AF F) (2 * (1 / 2 : E)) = 1 := by`. Rewrite using `[mul_one_div_cancel two_ne_zero, map_one]`. Rewrite `h3` using `[map_mul, map_ofNat]`. Conclude with `h3`. Establish `hdet : (gramE σ (hypJ J) (frame E M)).det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gram_frame, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules. Establish `hmapG : (gramE σ (hypJ J) (frame E M)).map (inclR (F` using `F) (AF F)) = !![0, 1; 1, 0] := by`. Rewrite using `[gram_frame, map_hyp]`. Establish `hX : ∀ a b, hform (sigR (AF F) σ) (JR (F` using `F) (AF F) (hypJ J)) (ratTup (AF F) (frame E M) a) (ratTup (AF F) (frame E M) b) = (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) (AF F ⊗[F] E)) a b := by`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `a b`. Rewrite using `[← hmapG, ← gramR_ratTup]`. Both sides reduce to the same expression. Take `⟨C, hC, hCh⟩` from `iwa_core (H := HA (AF F) σ (hypJ J)) (sigR (AF F) σ) hsc (sigR_invol (AF F) σ hσ) (JR (F := F) (AF F) (hypJ J)) _ hLh hLi _ hh h2 (actV (AF F) σ (hypJ J)) (fun g k v => congrFun ((hact 1).2.2.1 g k (fun _ => v)) 0) (fun v => congrFun ((hact 1).2.1 (fun _ => v)) 0) (fun g a v => M …`. Take `⟨C, hC, hp⟩` from `GlobalTheory.T.gram_orbit_compact_representative F E σ hCM (M + 2) (hypJ J) hJ' 2 (frame E M) hdet Ω₂ hΩ₂`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨C, hC, fun Y hY hg => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hcY⟩` from `hp Y hY (by`. Rewrite using `[hmapG]`. Use function extensionality and compare the values at `a b`. Conclude with `hg a b)`.
-
-Conclude with `⟨c, hc, fun i => congrFun hcY i⟩)`. Use `⟨C, hC, fun h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, a, hca⟩` from `hCh h`. Use `⟨c, hc, a, funext fun i => ?_⟩` and prove the remaining obligations. Establish `e1` using `eOne_eq_frame (F := F) (E := E) (AF F) M i`.
-
-Use `show actV (AF F) σ (hypJ J) (h * c⁻¹) (eOne _ (M + 1) i) = (a : AF F ⊗[F] E) • eOne _ (M + 1) i`. Rewrite using `[e1]`. Conclude with `hca`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∃ C : Set (HA (AF F) σ (hypJ J)), IsCompact C ∧ ∀ h : HA (AF F) σ (hypJ J), ∃ c ∈ C, ∃ a : (AF F ⊗[F] E)ˣ, actW (AF F) σ _ (h * c⁻¹) (eOne _ (M + 1)) = (a : AF F ⊗[F] E) • eOne _ (M + 1) := by
   intro F E _ _ _ _ _ σ hCM M J hJ

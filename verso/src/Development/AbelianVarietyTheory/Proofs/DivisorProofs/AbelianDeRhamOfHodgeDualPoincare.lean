@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TheoremOfCubeAbelia
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃` and use `GlobalTheory.T.abelianSchemeDeRhamStructure_of_cube_dual_poincare h₁ GlobalTheory.T.theoremOfCubeAbelianScheme_over_arbitrary_base h₂ h₃`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem abelianDeRham_of_hodge_dual_poincare :
     GlobalTheory.Published.AbelianHodgeDeRham → GlobalTheory.Published.DualAbelianScheme →

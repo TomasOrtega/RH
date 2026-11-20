@@ -13,15 +13,15 @@ def tri (q : ℕ) : Option (Fin q) → Matrix (Fin 2) (Fin 2) ℤ
   | some u => !![1, ((u : ℕ) : ℤ); 0, (q : ℤ)]
 
 /- English proof (translation)
-Apply the tactic sequence `cases x <;> simp [tri, Matrix.det_fin_two_of]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tri_det (q : ℕ) (x : Option (Fin q)) : (tri q x).det = q := by
   cases x <;> simp [tri, Matrix.det_fin_two_of]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DetZeroFactorization.main`. Consider the case `exact _root_.GlobalTheory.DetZeroFactorization.main`. Consider the case `(apply _root_.GlobalTheory.DetZeroFactorization.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DetZeroFactorization.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DetZeroFactorization.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DetZeroFactorization.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tri_exists {q : ℕ} (hp : q.Prime) (δ : Matrix (Fin 2) (Fin 2) ℤ) (hδ : δ.det = q) :
     ∃ (γ : SL(2, ℤ)) (y : Option (Fin q)), δ = γ.1 * tri q y := by
@@ -38,7 +38,7 @@ def rep (q : ℕ) (w : SL(2, ℤ)) : Option (Fin q) → Matrix (Fin 2) (Fin 2) �
   | some u => tri q (some u)
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `none => simp [rep, Matrix.det_mul, tri_det]`. Consider the case `some u => exact tri_det q (some u)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem rep_det (q : ℕ) (w : SL(2, ℤ)) (x : Option (Fin q)) : (rep q w x).det = q := by
   cases x with
@@ -46,7 +46,7 @@ theorem rep_det (q : ℕ) (w : SL(2, ℤ)) (x : Option (Fin q)) : (rep q w x).de
   | some u => exact tri_det q (some u)
 
 /- English proof (translation)
-Simplify using `[rep, tri, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rep_none_entries (q : ℕ) (w : SL(2, ℤ)) :
     rep q w none 0 0 = q * w 0 0 ∧ rep q w none 0 1 = w 0 1 ∧
@@ -54,13 +54,13 @@ theorem rep_none_entries (q : ℕ) (w : SL(2, ℤ)) :
   simp [rep, tri, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Establish `hnd : ¬ (q : ℤ) ∣ 1` using `fun h => hp.not_dvd_one (by exact_mod_cast h)`. Establish `h00` using `congrFun (congrFun h 0) 0`. Establish `h01` using `congrFun (congrFun h 0) 1`. Establish `h10` using `congrFun (congrFun h 1) 0`. Establish `h11` using `congrFun (congrFun h 1) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dγ` using `γ.det_coe`. Establish `dw` using `w.det_coe`. Rewrite `dγ`, `dw` using `[Matrix.det_fin_two]`. Take `⟨e00, e01, e10, e11⟩` from `rep_none_entries q w`. Apply the tactic sequence `rcases x with _ | u <;> rcases y with _ | v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. Simplify using `[rep, tri, Matrix.mul_apply, Fin.sum_univ_two, e00, e10] at h00 h10`. Conclude with `absurd ⟨w 0 0 * γ 1 1 - γ 0 1 * w 1 0, by rw [← h00, ← h10] at dγ; linear_combination -dγ⟩ hnd`. Simplify using `[rep, tri, Matrix.mul_apply, Fin.sum_univ_two, e00, e10] at h00 h10`. Conclude with `absurd ⟨γ 0 0 * w 0 0 + γ 0 1 * w 1 0, by linear_combination h00⟩ hnd`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[rep, tri, Matrix.mul_apply, Fin.sum_univ_two] at h00 h01 ⊢`. Rewrite `h01` using `[← h00]`. Establish `: (u : ℤ) ≡ (v : ℤ) [ZMOD q]` using `(Int.modEq_iff_dvd.2 ⟨γ 0 1, by linear_combination h01⟩).symm`. Establish `h2 : (u : ℕ) ≡ (v : ℕ) [MOD q]` using `Int.natCast_modEq_iff.1 this`. Conclude with `Fin.ext (Nat.ModEq.eq_of_lt_of_lt h2 u.2 v.2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_inj {q : ℕ} (hp : q.Prime) (w : SL(2, ℤ)) (γ : SL(2, ℤ)) {x y : Option (Fin q)}
     (h : rep q w x = γ.1 * rep q w y) : x = y := by
@@ -90,7 +90,7 @@ end GlobalTheory.Hk.CommTD
 namespace GlobalTheory.Hk.CommTD
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at h`. Conclude with `⟨dvd_trans (dvd_mul_right _ _) h, dvd_trans (dvd_mul_left _ _) h⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Supply the required witnesses or components.
 -/
 theorem zmod_of_mul {N l : ℕ} {x : ℤ} (h : ((x : ℤ) : ZMod (N * l)) = 0) :
     ((x : ℤ) : ZMod N) = 0 ∧ ((x : ℤ) : ZMod l) = 0 := by
@@ -100,9 +100,9 @@ theorem zmod_of_mul {N l : ℕ} {x : ℤ} (h : ((x : ℤ) : ZMod (N * l)) = 0) :
   exact ⟨dvd_trans (dvd_mul_right _ _) h, dvd_trans (dvd_mul_left _ _) h⟩
 
 /- English proof (translation)
-Take `⟨hN, hl⟩` from `zmod_of_mul h10`. Use `⟨(Gamma1_mem N γ).2 ⟨h00, ?_, hN⟩, Gamma0_mem.2 hl⟩` and prove the remaining obligations. Establish `dγ` using `congrArg (Int.cast : ℤ → ZMod N) γ.det_coe`. Rewrite `dγ` using `[Matrix.det_fin_two]`. Move the coercions through the operations in `at dγ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `dγ` using `[h00, hN]`. Take the linear combination `dγ`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_lev {N l : ℕ} (γ : SL(2, ℤ)) (h10 : ((γ 1 0 : ℤ) : ZMod (N * l)) = 0)
     (h00 : ((γ 0 0 : ℤ) : ZMod N) = 1) : γ ∈ lev N l := by
@@ -115,7 +115,7 @@ theorem mem_lev {N l : ℕ} (γ : SL(2, ℤ)) (h10 : ((γ 1 0 : ℤ) : ZMod (N *
   linear_combination dγ
 
 /- English proof (translation)
-Establish `hb'` using `(zmod_of_mul hb).1`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[ha, hb, hb']`. Apply the tactic sequence `constructor <;> ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_cong {N l : ℕ} (a b : Matrix (Fin 2) (Fin 2) ℤ) (ha : ((a 1 0 : ℤ) : ZMod (N * l)) = 0)
     (hb : ((b 1 0 : ℤ) : ZMod (N * l)) = 0) :
@@ -128,11 +128,11 @@ theorem mul_cong {N l : ℕ} (a b : Matrix (Fin 2) (Fin 2) ℤ) (ha : ((a 1 0 : 
   constructor <;> ring
 
 /- English proof (translation)
-Take `⟨e00, e01, e10, e11⟩` from `rep_none_entries q w`. Break down `x with _ | u` into its components or cases. Rewrite using `[e00, e10]`. Establish `h1` using `hw.2`. Establish `h0` using `(zmod_of_mul hw.1).1`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dw` using `congrArg (Int.cast : ℤ → ZMod N) w.det_coe`. Rewrite `dw` using `[Matrix.det_fin_two]`. Move the coercions through the operations in `at dw h1 ⊢`. Use `⟨by rw [hw.1, mul_zero], ?_⟩` and prove the remaining obligations. Rewrite `dw` using `[h0, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `dw`. Simplify using `[rep, tri]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem rep_cong {N l q : ℕ} {w : SL(2, ℤ)} (hw : IsDia N l q w) (x : Option (Fin q)) :
     ((rep q w x 1 0 : ℤ) : ZMod (N * l)) = 0 ∧ ((rep q w x 0 0 : ℤ) : ZMod N) = 1 := by
@@ -150,11 +150,11 @@ theorem rep_cong {N l q : ℕ} {w : SL(2, ℤ)} (hw : IsDia N l q w) (x : Option
   · simp [rep, tri]
 
 /- English proof (translation)
-Establish `hi : (((ρ⁻¹).1 1 0 : ℤ) : ZMod (N * l)) = 0`. Rewrite using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`. Simplify using `[hρ]`. Take `⟨a1, a2⟩` from `mul_cong ρ.1 m hρ h10`. Take `⟨b1, b2⟩` from `mul_cong (ρ.1 * m) (ρ⁻¹).1 a1 hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b1, ?_⟩` and prove the remaining obligations. Rewrite using `[b2, a2, h00]`. Establish `e` using `congrArg (fun M : Matrix (Fin 2) (Fin 2) ℤ => M 0 0) (congrArg Subtype.val (mul_inv_cancel ρ))`. Establish `e'` using `(mul_cong ρ.1 (ρ⁻¹).1 hρ hi).2`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_one] at e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_one, ← e', e, Matrix.one_apply_eq, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_cong {N l : ℕ} (ρ : SL(2, ℤ)) (hρ : ((ρ 1 0 : ℤ) : ZMod (N * l)) = 0)
     (m : Matrix (Fin 2) (Fin 2) ℤ) (h10 : ((m 1 0 : ℤ) : ZMod (N * l)) = 0)
@@ -174,17 +174,17 @@ theorem conj_cong {N l : ℕ} (ρ : SL(2, ℤ)) (hρ : ((ρ 1 0 : ℤ) : ZMod (N
   rw [mul_one, ← e', e, Matrix.one_apply_eq, Int.cast_one]
 
 /- English proof (translation)
-Take `⟨γ, y, hm⟩` from `tri_exists hq m hdet`. Establish `g00` using `congrFun (congrFun hm 0) 0`. Establish `g10` using `congrFun (congrFun hm 1) 0`. Break down `y with _ | u` into its components or cases. Simplify using `[tri, Matrix.mul_apply, Fin.sum_univ_two] at g00 g10`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hcop : Nat.Coprime q (N * l)` using `(Nat.Prime.coprime_iff_not_dvd hq).2 hqN`. Establish `hu : IsUnit ((q : ℕ) : ZMod (N * l))` using `(ZMod.unitOfCoprime q hcop).isUnit`. Establish `c10 : ((γ 1 0 : ℤ) : ZMod (N * l)) = 0`. Rewrite `h10` using `[g10]`. Move the coercions through the operations in `at h10`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `hu.mul_left_eq_zero.1 h10`. Use `⟨γ * w⁻¹, ?_, none, ?_⟩` and prove the remaining obligations. Establish `hwi : (((w⁻¹ : SL(2, ℤ)).1 1 0 : ℤ) : ZMod (N * l)) = 0`. Rewrite using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`. Simplify using `[hw.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2⟩` from `mul_cong γ.1 (w⁻¹).1 c10 hwi`. Use `mem_lev _ (by rw [Matrix.SpecialLinearGroup.coe_mul]; exact a1) ?_` and prove the remaining obligations. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, a2]`. Rewrite `h00` using `[g00]`. Establish `h1` using `hw.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(zmod_of_mul hw.1).1`. Rewrite using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_fin_one]`. Move the coercions through the operations in `at h00 h1 ⊢`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h00`. Rewrite using `[hm, rep, Matrix.SpecialLinearGroup.coe_mul, mul_assoc, ← mul_assoc (w⁻¹).1, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one, one_mul]`. Simplify using `[tri, Matrix.mul_apply, Fin.sum_univ_two] at g00 g10`. Use `⟨γ, mem_lev γ (by rw [← g10]; exact h10) (by rw [← g00]; exact h00), some u, hm⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rep {N l q : ℕ} (hq : q.Prime) (hqN : ¬ q ∣ N * l) {w : SL(2, ℤ)} (hw : IsDia N l q w)
     (m : Matrix (Fin 2) (Fin 2) ℤ) (hdet : m.det = q) (h10 : ((m 1 0 : ℤ) : ZMod (N * l)) = 0)
@@ -221,15 +221,13 @@ theorem exists_rep {N l q : ℕ} (hq : q.Prime) (hqN : ¬ q ∣ N * l) {w : SL(2
     refine ⟨γ, mem_lev γ (by rw [← g10]; exact h10) (by rw [← g00]; exact h00), some u, hm⟩
 
 /- English proof (translation)
-Establish `ei : (ρ⁻¹ : SL(2, ℤ)).1 * ρ.1 = 1` using `congrArg Subtype.val (inv_mul_cancel ρ)`. Establish `ex : ∀ x, ∃ γ : SL(2, ℤ), γ ∈ lev N l ∧ ∃ y, ρ.1 * rep q w x = γ.1 * rep q w y * ρ.1`. Introduce `x`. Take `⟨c1, c2⟩` from `rep_cong hw x`. Take `⟨d1, d2⟩` from `conj_cong ρ hρ _ c1 c2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, y, hy⟩` from `exists_rep hq hqN hw _ (by rw [Matrix.det_mul, Matrix.det_mul, rep_det, ρ.det_coe, (ρ⁻¹).det_coe]; ring) d1 d2`. Use `⟨γ, hγ, y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, mul_assoc _ (ρ⁻¹).1, ei, mul_one]`. Use `choose δ hδ s h using ex`. Use `⟨s, δ, Finite.injective_iff_bijective.1 fun x y e => ?_, fun x => ⟨hδ x, h x⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `rep_inj hq w (ρ⁻¹ * δ x * (δ y)⁻¹ * ρ) ?_` and prove the remaining obligations. Establish `hx` using `h x`. Establish `hy` using `h y`. Rewrite `hx` using `[e]`. Establish `e2 : ((δ y)⁻¹ : SL(2, ℤ)).1 * (δ y).1 = 1` using `congrArg Subtype.val (inv_mul_cancel (δ y))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx, e2, mul_one]`. Simplify using `only [mul_assoc]`. Use `_ = (ρ⁻¹ : SL(2, ℤ)).1 * (δ x).1 * ((δ y)⁻¹ : SL(2, ℤ)).1 * ((δ y).1 * rep q w (s y) * ρ.1) := by`. Simplify using `only [mul_assoc]`.
-
-Use `_ = _ := by rw [← hy]; simp only [Matrix.SpecialLinearGroup.coe_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perm {N l q : ℕ} (hq : q.Prime) (hqN : ¬ q ∣ N * l) {w : SL(2, ℤ)} (hw : IsDia N l q w)
     (ρ : SL(2, ℤ)) (hρ : ((ρ 1 0 : ℤ) : ZMod (N * l)) = 0) :
@@ -273,7 +271,7 @@ theorem repG_val {q : ℕ} (hq : 0 < q) (w : SL(2, ℤ)) (x : Option (Fin q)) :
     (repG hq w x).1 = (Int.castRingHom ℝ).mapMatrix (rep q w x) := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, repG_val, ← RingHom.map_det, rep_det]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repG_det {q : ℕ} (hq : 0 < q) (w : SL(2, ℤ)) (x : Option (Fin q)) :
     (repG hq w x).det.val = q := by
@@ -284,7 +282,7 @@ def diagG {q : ℕ} (hq : 0 < q) : GL (Fin 2) ℝ :=
     simp [Matrix.det_fin_two_of]; exact hq.ne')
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[repG_val, rep, map_mul]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tri, diagG]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem repG_none {q : ℕ} (hq : 0 < q) (w : SL(2, ℤ)) :
     repG hq w none = Matrix.SpecialLinearGroup.toGL ((Matrix.SpecialLinearGroup.map (Int.castRingHom ℝ)) w) * diagG hq := by
@@ -295,9 +293,9 @@ theorem repG_none {q : ℕ} (hq : 0 < q) (w : SL(2, ℤ)) :
   fin_cases i <;> fin_cases j <;> simp [tri, diagG]
 
 /- English proof (translation)
-Establish `hpos : 0 < (diagG hq).det.val`. Simplify using `[diagG, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two_of]`. Conclude with `hq`. Use function extensionality and compare the values at `z`. Rewrite using `[slash_apply, UpperHalfPlane.σ, if_pos hpos, ← ofComplex_apply (diagG hq • z), coe_smul_of_det_pos hpos]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[num, denom, diagG, vOp, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two_of]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem slash_diag {q : ℕ} (hq : 0 < q) (k : ℤ) (g : ℍ → ℂ) :
     g ∣[k] diagG hq = ((q : ℂ) ^ (k - 1)) • vOp q g := by
@@ -309,7 +307,7 @@ theorem slash_diag {q : ℕ} (hq : 0 < q) (k : ℤ) (g : ℍ → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hpos : 0 < (repG hq w (some u)).det.val` using `by rw [repG_det]; exact_mod_cast hq`. Rewrite using `[slash_apply, UpperHalfPlane.σ, if_pos hpos, repG_det, ← ofComplex_apply (repG hq w (some u) • z), coe_smul_of_det_pos hpos]`. Simplify using `[num, denom, repG_val, rep, tri, zpow_sub₀ hq0]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem slash_tri {q : ℕ} (hq : 0 < q) (k : ℤ) (w : SL(2, ℤ)) (g : ℍ → ℂ) (u : Fin q) (z : ℍ) :
     (g ∣[k] repG hq w (some u)) z = (q : ℂ)⁻¹ * g (ofComplex (((z : ℂ) + (u : ℕ)) / q)) := by
@@ -321,9 +319,9 @@ theorem slash_tri {q : ℕ} (hq : 0 < q) (k : ℤ) (w : SL(2, ℤ)) (g : ℍ →
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_option, heckeT, repG_none, SlashAction.slash_mul, ← SL_slash, slash_diag, add_comm]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [slash_tri]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[uOp, ← Finset.mul_sum, ← Fin.sum_univ_eq_sum_range (fun b : ℕ => g (ofComplex (((z : ℂ) + b) / q)))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeT_eq {q : ℕ} (hq : 0 < q) (k : ℤ) (w : SL(2, ℤ)) (g : ℍ → ℂ) :
     heckeT k q w g = ∑ x : Option (Fin q), g ∣[k] repG hq w x := by
@@ -339,9 +337,9 @@ end GlobalTheory.Hk.CommTD
 namespace GlobalTheory.Hk.CommTD
 
 /- English proof (translation)
-Rewrite using `[SL_slash, SL_slash, SL_slash, ← SlashAction.slash_mul, ← SlashAction.slash_mul, ← SlashAction.slash_mul]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (Int.castRingHom ℝ).mapMatrix h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Units.val_mul]`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slash_conj {q : ℕ} (hq : 0 < q) (k : ℤ) (w ρ δ : SL(2, ℤ)) (g : ℍ → ℂ) {x y : Option (Fin q)}
     (h : ρ.1 * rep q w x = δ.1 * rep q w y * ρ.1) :
@@ -357,9 +355,9 @@ theorem slash_conj {q : ℕ} (hq : 0 < q) (k : ℤ) (w ρ δ : SL(2, ℤ)) (g : 
 end GlobalTheory.Hk.CommTD
 
 /- English proof (translation)
-Introduce `N l q k d σ ρ _ hq hqN hσ hρ f`. Take `⟨s, δ, hs, h⟩` from `GlobalTheory.Hk.CommTD.perm hq hqN hσ ρ hρ.1`. Rewrite using `[GlobalTheory.Hk.CommTD.heckeT_eq hq.pos, GlobalTheory.Hk.CommTD.heckeT_eq hq.pos, GlobalTheory.Hk.dia, GlobalTheory.Hk.dia, SlashAction.sum_slash, ← hs.sum_comp (fun y => (⇑f ∣[k] GlobalTheory.Hk.CommTD.repG hq.pos σ y) ∣[k] ρ)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `hinv : (⇑f) ∣[k] (δ x) = ⇑f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[SL_slash]`. Conclude with `SlashInvariantFormClass.slash_action_eq f _ ⟨δ x, (h x).1, rfl⟩`. Rewrite using `[GlobalTheory.Hk.CommTD.slash_conj hq.pos k σ ρ (δ x) ⇑f (h x).2, hinv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Hk.heckeT_dia_comm : ∀ (N l q : ℕ) (k d : ℤ) (σ ρ : SL(2, ℤ)), 0 < N → q.Prime → ¬ q ∣ N * l →
     GlobalTheory.Hk.IsDia N l q σ → GlobalTheory.Hk.IsDia N l d ρ → ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k,

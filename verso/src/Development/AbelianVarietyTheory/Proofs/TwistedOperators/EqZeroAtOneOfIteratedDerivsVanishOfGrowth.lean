@@ -6,21 +6,19 @@ namespace GlobalTheory
 open Set Filter Topology
 
 /- English proof (translation)
-Use `set M : ℕ → ℝ := fun n => Real.sqrt (b * a ^ n * n.factorial) with hM`. Establish `base : ∀ k t, ‖φ k t‖ ≤ M k`. Introduce `k t`. Use `Real.abs_le_sqrt (hb k t)` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `key : ∀ m k, ∀ t ∈ Icc (0:ℝ) 1, ‖φ k t‖ ≤ M (k + m) * t ^ m / m.factorial`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro k t _`. Simplify using `using base k t`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `k`. Establish `hB : ∀ x, HasDerivAt (fun t : ℝ => M (k + (m + 1)) * t ^ (m + 1) / (m + 1).factorial) (M ((k + 1) + m) * x ^ m / m.factorial) x`. Introduce `x`. Establish `h1` using `((hasDerivAt_pow (m + 1) x).const_mul (M (k + (m + 1)))).div_const ((m + 1).factorial : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[show k + 1 + m = k + (m + 1) by ring]`. Simplify using `only [Nat.factorial_succ, Nat.cast_mul, Nat.add_sub_cancel]`. Establish `: (m.factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `image_norm_le_of_norm_deriv_right_le_deriv_boundary (f := φ k) (f' := φ (k + 1)) (a := 0) (b := 1) (fun x _ => (hd k x).continuousAt.continuousWithinAt) (fun x _ => (hd k x).hasDerivWithinAt) (B := fun t : ℝ => M (k + (m + 1)) * t ^ (m + 1) / (m + 1).factorial) (by simp [h0 k]) h …` as an intermediate fact. Conclude with `this`. Establish `hn : ∀ n : ℕ, ‖φ 0 1‖ ^ 2 ≤ b * (a ^ n / n.factorial)`. Introduce `n`. Establish `h` using `key n 0 1 (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [zero_add, one_pow, mul_one] at h`. Establish `hX : 0 ≤ b * a ^ n * n.factorial` using `le_trans (by positivity) (hb n 1)`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h 2`. Rewrite `h2` using `[div_pow, hM, Real.sq_sqrt hX]`. Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `: (n.factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Establish `ht : Tendsto (fun n : ℕ => b * (a ^ n / n.factorial)) atTop (𝓝 (b * 0))` using `(FloorSemiring.tendsto_pow_div_factorial_atTop a).const_mul b`. Rewrite `ht` using `[mul_zero]`. Establish `hle : ‖φ 0 1‖ ^ 2 ≤ 0` using `ge_of_tendsto' ht hn`.
-
-Establish `: ‖φ 0 1‖ = 0` using `by nlinarith [norm_nonneg (φ 0 1)]`. Conclude with `norm_eq_zero.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanish_at_one_of_derivs_vanish_of_growth (φ : ℕ → ℝ → ℂ) (a b : ℝ)
     (hd : ∀ k t, HasDerivAt (φ k) (φ (k + 1) t) t) (h0 : ∀ k, φ k 0 = 0)
@@ -72,7 +70,7 @@ theorem vanish_at_one_of_derivs_vanish_of_growth (φ : ℕ → ℝ → ℂ) (a b
   exact norm_eq_zero.mp this
 
 /- English proof (translation)
-The claim follows from `vanish_at_one_of_derivs_vanish_of_growth`.
+A detailed English derivation is pending.
 -/
 example : ∀ (φ : ℕ → ℝ → ℂ) (a b : ℝ), (∀ k t, HasDerivAt (φ k) (φ (k + 1) t) t) → (∀ k, φ k 0 = 0) → (∀ k t, ‖φ k t‖ ^ 2 ≤ b * a ^ k * k.factorial) → φ 0 1 = 0 :=
   vanish_at_one_of_derivs_vanish_of_growth

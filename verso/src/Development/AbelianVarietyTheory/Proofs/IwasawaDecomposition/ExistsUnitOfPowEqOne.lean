@@ -28,11 +28,9 @@ noncomputable section
 namespace GlobalTheory.WeilTorsChar
 
 /- English proof (translation)
-Set `F : (T ⟶ G') → (Over.mk (T.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by`. Express the relevant statement in the definitionally equal form `(x.left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x])`. Set `I : (Over.mk (T.hom ≫ f) ⟶ G) → (T ⟶ G')` to `fun y => Over.homMk (h.1.lift y.left T.hom (Over.w y)) (h.1.lift_snd _ _ _)`. Use `⟨⟨⟨F, I, fun x => ?_, fun y => ?_⟩, fun x y => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Conclude with `h.1.lift_fst _ _ _`. Conclude with `(h.1.lift_snd _ _ _).trans (Over.w x).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Conclude with `h.1.lift_fst _ _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(h.2 T x y (F x) (F y) rfl rfl).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv_points {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G']
     (φ : G'.left ⟶ G.left) (h : IsGrpPullback G' G f φ) (T : Over S') :

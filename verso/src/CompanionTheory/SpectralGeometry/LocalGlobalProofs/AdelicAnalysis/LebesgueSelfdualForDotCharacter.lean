@@ -9,7 +9,7 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberF
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Rewrite using `[Circle.smul_def, Real.fourierChar_apply, smul_eq_mul, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fourierChar_smul (t : ℝ) (c : ℂ) :
     (Real.fourierChar t : Circle) • c = c * Complex.exp (2 * Real.pi * Complex.I * (t : ℝ)) := by
@@ -19,17 +19,15 @@ theorem fourierChar_smul (t : ℝ) (c : ℂ) :
   ring
 
 /- English proof (translation)
-Establish `mp` using `PiLp.volume_preserving_toLp ι`. Establish `emb : MeasurableEmbedding (WithLp.toLp 2 : (ι → ℝ) → EuclideanSpace ℝ ι)` using `(MeasurableEquiv.toLp 2 (ι → ℝ)).measurableEmbedding`. Establish `hin : ∀ x y : ι → ℝ, inner ℝ (WithLp.toLp 2 x : EuclideanSpace ℝ ι) (WithLp.toLp 2 y) = x ⬝ᵥ y`. Introduce `x y`. Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dotProduct_comm]`. Use `set Ψ : EuclideanSpace ℝ ι → ℂ := fun u => Φ u.ofLp with hΨ`. Establish `hΨc : Continuous Ψ` using `hc.comp (PiLp.continuous_ofLp 2 _)`. Establish `hΨi : Integrable Ψ volume` using `(mp.integrable_comp_emb emb).1 (hc.integrable_of_hasCompactSupport hs)`. Establish `hF : ∀ y : ι → ℝ, FourierTransform.fourier Ψ (WithLp.toLp 2 y) = ∫ x : ι → ℝ, Φ x * Complex.exp (2 * Real.pi * Complex.I * (((-1 : ℝ) * (x ⬝ᵥ y) : ℝ) : ℝ))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[Real.fourier_eq, ← mp.integral_comp emb]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hin, fourierChar_smul, hΨ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hFi : Integrable (FourierTransform.fourier Ψ) volume`. Use `(mp.integrable_comp_emb emb).1 ?_` and prove the remaining obligations. Use `hi.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(hF y).symm`. Establish `hinv` using `congrFun (hΨc.fourierInv_fourier_eq hΨi hFi) (WithLp.toLp 2 (-z))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hinv` using `[Real.fourierInv_eq, ← mp.integral_comp emb]`. Establish `hval : Ψ (WithLp.toLp 2 (-z)) = Φ (-z)` using `rfl`. Rewrite using `[← hval, ← hinv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hin, fourierChar_smul, hF]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inversion_neg (ι : Type) [Fintype ι] (Φ : (ι → ℝ) → ℂ) (hc : Continuous Φ)
     (hs : HasCompactSupport Φ)
@@ -78,13 +76,13 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberF
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Introduce `ι _ ε hε`. Use `⟨inferInstance, fun Φ hc hs hi z => ?_⟩` and prove the remaining obligations. Break down `hε with rfl | rfl` into its components or cases. Establish `hG : ∀ y : ι → ℝ, (∫ x : ι → ℝ, Φ x * Complex.exp (2 * Real.pi * Complex.I * (((1 : ℝ) * (x ⬝ᵥ y) : ℝ) : ℝ))) = ∫ x : ι → ℝ, (fun u => Φ (-u)) x * Complex.exp (2 * Real.pi * Complex.I * (((-1 : ℝ) * (x ⬝ᵥ y) : ℝ) : ℝ))`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← integral_neg_eq_self (fun x : ι → ℝ => Φ x * Complex.exp (2 * Real.pi * Complex.I * (((1 : ℝ) * (x ⬝ᵥ y) : ℝ) : ℝ))) volume]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hc' : Continuous fun u : ι → ℝ => Φ (-u)` using `hc.comp continuous_neg`. Establish `hs' : HasCompactSupport fun u : ι → ℝ => Φ (-u)` using `hs.comp_homeomorph (Homeomorph.neg (ι → ℝ))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : Integrable (fun y : ι → ℝ => ∫ x : ι → ℝ, (fun u => Φ (-u)) x * Complex.exp (2 * Real.pi * Complex.I * (((-1 : ℝ) * (x ⬝ᵥ y) : ℝ) : ℝ))) volume` using `hi.congr (Filter.Eventually.of_forall hG)`. Establish `key` using `RealFourier.inversion_neg ι (fun u => Φ (-u)) hc' hs' hi' (-z)`. Simplify using `only [neg_neg] at key`. Rewrite using `[← key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hG y]`. Simplify using the standard rewrite rules. Conclude with `RealFourier.inversion_neg ι Φ hc hs hi z`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selfDual_real_coord : ∀ (ι : Type) [Fintype ι] (ε : ℝ), ε = 1 ∨ ε = -1 →
     SelfDual (volume : Measure (ι → ℝ))

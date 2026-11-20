@@ -14,7 +14,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable (d : ℕ)
 
 /- English proof (translation)
-The claim follows from `isHomogeneous_X ℂ i`.
+A detailed English derivation is pending.
 -/
 theorem X_mem_one (i : Fin (d + 1)) : (X i : MvPolynomial (Fin (d + 1)) ℂ) ∈ homogeneousSubmodule (Fin (d + 1)) ℂ 1 :=
   isHomogeneous_X ℂ i

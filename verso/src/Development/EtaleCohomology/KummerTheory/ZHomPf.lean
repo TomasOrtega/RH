@@ -15,9 +15,9 @@ def linOf {M N : Type*} [AddCommGroup M] [AddCommGroup N] [Module (ULift.{1} ℤ
     rw [← h, Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul, map_zsmul]
 
 /- English proof (translation)
-Introduce `F G f hf`. Use `⟨⟨{ app := fun U => ModuleCat.ofHom (linOf (f U.unop)), naturality := ?_ }⟩, ?_⟩` and prove the remaining obligations. Introduce `X Y g`. Use extensionality with `a`. Conclude with `(hf Y.unop X.unop g.unop a).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U a`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ZHom_of : LateralTheory.KummerTheory.BockCut.ZHom := by
   intro F G f hf

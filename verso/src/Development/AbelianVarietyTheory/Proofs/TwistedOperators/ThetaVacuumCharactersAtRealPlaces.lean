@@ -7,7 +7,7 @@ open Formalism.BasicNotions
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.thetaVacuumCharacters_realPlaces`.
+A detailed English derivation is pending.
 -/
 theorem vacChar_of_record : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.VacChar D :=
   GlobalTheory.T.thetaVacuumCharacters_realPlaces

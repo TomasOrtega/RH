@@ -18,9 +18,9 @@ open GlobalTheory.Twist (app_resM)
 namespace GlobalTheory.Vert.Flag
 
 /- English proof (translation)
-Use `isFrame_of_basis (fun W h => ((he.basis h).prod (he'.basis h)).map (QCoh.biprodSectionsEquiv F G W).symm) ?_` and prove the remaining obligations. Introduce and unpack `W h (i | i)`. Rewrite using `[Module.Basis.map_apply, Module.Basis.prod_apply, Sum.elim_inl, Sum.elim_inl, ← app_resM]`. Express the relevant statement in the definitionally equal form `(Limits.biprod.inl : F ⟶ F ⊞ G).app W _ + (Limits.biprod.inr : G ⟶ F ⊞ G).app W 0 = _`. Simplify using `[IsFrame.coe_basis]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.Basis.map_apply, Module.Basis.prod_apply, Sum.elim_inr, Sum.elim_inr, ← app_resM]`. Express the relevant statement in the definitionally equal form `(Limits.biprod.inl : F ⟶ F ⊞ G).app W 0 + (Limits.biprod.inr : G ⟶ F ⊞ G).app W _ = _`. Simplify using `[IsFrame.coe_basis]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem isFrame_biprod_top {X : Scheme.{0}} {F G : X.Modules} {ι κ : Type} [Fintype ι] [Fintype κ]
     {e : ι → Γ(F, ⊤)} {e' : κ → Γ(G, ⊤)} (he : IsFrame e) (he' : IsFrame e') :
@@ -46,11 +46,11 @@ def ofRankZero {X : Scheme.{0}} {F : X.Modules} (h : IsVB F 0) : Vert.Flag F 0 w
   isIso_last := IsIso.id F
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F e he`. Establish `h` using `he.isVB`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Fintype.card_fin]`. Conclude with `⟨ofRankZero h⟩`. Consider the case `succ n ih`. Introduce `F e he`. Take `⟨fl⟩` from `ih (freeModule X (Fin n)) (freeFrame X (Fin n)) (isFrame_freeFrame X (Fin n))`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hA : IsVB (freeModule X (Fin n) ⊞ structureModule X) (n + 1)` using `(isVB_freeModule_fin X n).biprod (isVB_structureModule X)`. Take `⟨flA⟩` from `nonempty_extend X _ _ biprod.inl n (isSubbundle_inl (isVB_structureModule X)) hA fl`. Establish `hf : IsFrame (Sum.elim (fun i => (biprod.inl : freeModule X (Fin n) ⟶ _ ⊞ structureModule X).app ⊤ (freeFrame X (Fin n) i)) fun i : Fin 1 => (biprod.inr : structureModule X ⟶ freeModule X (Fin n) ⊞ _).app ⊤ ((fun _ : Fin 1 => (1 : Γ(X, ⊤))) i))` using `isFrame_biprod_top (isFrame_freeFrame X (Fin n)) (isFrame_one ⊤)`. Conclude with `⟨flA.ofIso (hf.iso (he.comp_equiv finSumFinEquiv))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonempty_of_isFrame_top {X : Scheme.{0}} : ∀ (n : ℕ) (F : X.Modules) (e : Fin n → Γ(F, ⊤)),
     IsFrame e → Nonempty (Vert.Flag F n) := by
@@ -77,7 +77,7 @@ theorem nonempty_of_isFrame_top {X : Scheme.{0}} : ∀ (n : ℕ) (F : X.Modules)
     exact ⟨flA.ofIso (hf.iso (he.comp_equiv finSumFinEquiv))⟩
 
 /- English proof (translation)
-Introduce `K _ E n hE`. Take `⟨x⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`. Take `⟨U, e, hx, he⟩` from `hE x`. Take `rfl : U = ⊤` from `eq_top_iff.2 fun y _ => Subsingleton.elim x y ▸ hx`. Conclude with `nonempty_of_isFrame_top n E e he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonempty_of_field : ∀ (K : Type) [Field K] (E : (Spec (CommRingCat.of K)).Modules) (n : ℕ),
     GlobalTheory.VB.IsVB E n → Nonempty (Vert.Flag E n) := by

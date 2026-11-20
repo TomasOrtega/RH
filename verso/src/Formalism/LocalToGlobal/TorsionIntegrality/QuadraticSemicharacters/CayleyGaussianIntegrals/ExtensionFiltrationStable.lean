@@ -8,9 +8,9 @@ open MeasureTheory Module
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-Take `⟨hdisc, hspan⟩` from `hΛ`. Set `L : Submodule ℤ V` to `AddSubgroup.toIntSubmodule Λ`. Use `haveI : DiscreteTopology L := hdisc`. Use `haveI : IsZLattice ℝ L := ⟨hspan⟩`. Use `⟨_, inferInstance, (Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Module.Basis.ofZLatticeBasis_span]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem exists_real_basis_span_int_eq_of_isLat {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     (Λ : AddSubgroup V) (hΛ : IsLat Λ) :
@@ -25,37 +25,33 @@ private theorem exists_real_basis_span_int_eq_of_isLat {V : Type} [NormedAddComm
   rfl
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ Λ hΛ`. Take `⟨ι, _, b, hb⟩` from `exists_real_basis_span_int_eq_of_isLat Λ hΛ`. Substitute `hb` using the available equality. Use `set L := (Submodule.span ℤ (Set.range b)).toAddSubgroup with hL`. Use `set D := ZSpan.fundamentalDomain b with hDdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFD : IsAddFundamentalDomain L D μ` using `ZSpan.isAddFundamentalDomain b μ`. Establish `hbdd : Bornology.IsBounded D` using `ZSpan.fundamentalDomain_isBounded b`. Establish `hmeas : MeasurableSet D` using `ZSpan.fundamentalDomain_measurableSet b`. Establish `hne : μ D ≠ 0` using `ZSpan.measure_fundamentalDomain_ne_zero b`. Establish `htop : μ D ≠ ⊤` using `hbdd.measure_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨D, hFD, hbdd, ENNReal.toReal_pos hne htop, ?_⟩` and prove the remaining obligations. Introduce `Λ' hle hidx`. Establish `hmem : ∀ v : V, v ∈ L → ∀ x : V, (v + x ∈ D ↔ v = -(ZSpan.floor b x : V))`. Introduce `v hv x`. Use `ZSpan.vadd_mem_fundamentalDomain b ⟨v, hv⟩ x` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Subtype.ext_iff, Submodule.coe_neg]`. Conclude with `this`. Establish `hfl : ∀ x : V, (ZSpan.floor b x : V) ∈ L` using `fun x => (ZSpan.floor b x).2`. Use `set H := Λ'.addSubgroupOf L with hH`. Establish `hcardQ : Nat.card (L ⧸ H) = relIdx Λ' L` using `rfl`.
+Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite (L ⧸ H) := Nat.finite_of_card_ne_zero (by rw [hcardQ]; exact hidx)`. Use `letI : Fintype (L ⧸ H) := Fintype.ofFinite _`. Set `rep : L ⧸ H → V` to `fun q => ((Quotient.out q : L) : V)`. Establish `hrepL : ∀ q, rep q ∈ L` using `fun q => (Quotient.out q).2`. Establish `hrep : ∀ q : L ⧸ H, ((Quotient.out q : L) : L ⧸ H) = q` using `fun q => QuotientAddGroup.out_eq' q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdisj : Pairwise (Function.onFun Disjoint fun q : L ⧸ H => rep q +ᵥ D)`. Introduce `p q hpq`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `y hyp hyq`. Rewrite `hyp`, `hyq` using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `(hmem _ (L.neg_mem (hrepL p)) y).mp hyp`. Establish `e2` using `(hmem _ (L.neg_mem (hrepL q)) y).mp hyq`. Apply `hpq` to reduce the goal to its premises. Establish `hpq' : rep p = rep q`. Rewrite using `[← neg_neg (rep p), e1, ← e2, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hrep p, ← hrep q]`. Use `congr 1`. Conclude with `Subtype.ext hpq'`. Use `⟨⋃ q : L ⧸ H, rep q +ᵥ D, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `IsAddFundamentalDomain.mk' (MeasurableSet.iUnion fun q => hmeas.const_vadd _).nullMeasurableSet ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Use `set l0 : V := -(ZSpan.floor b x : V) with hl0def`. Establish `hl0 : l0 ∈ L` using `L.neg_mem (hfl x)`. Use `set q0 : L ⧸ H := ((⟨-l0, L.neg_mem hl0⟩ : L) : L ⧸ H) with hq0def`. Establish `hq0 : rep q0 + l0 ∈ Λ'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hrep q0`. Rewrite `h1` using `[hq0def, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `h2 : -(-(rep q0) + -l0) ∈ Λ'` using `Λ'.neg_mem (by simpa [rep] using h1)`. Rewrite `h2` using `[neg_add_rev, neg_neg, neg_neg, add_comm]`. Then use the resulting hypothesis. Use `⟨⟨rep q0 + l0, hq0⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show rep q0 + l0 + x ∈ ⋃ q : L ⧸ H, rep q +ᵥ D`. Use `Set.mem_iUnion.mpr ⟨q0, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add, show -rep q0 + (rep q0 + l0 + x) = l0 + x by abel]`. Conclude with `(hmem l0 hl0 x).mpr rfl`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq⟩` from `Set.mem_iUnion.mp hg`. Rewrite `hq` using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add]`. Establish `hgx : -rep q + (g : V) + x ∈ D`. Rewrite using `[add_assoc]`. Conclude with `hq`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : -rep q + (g : V) ∈ L` using `L.add_mem (L.neg_mem (hrepL q)) (hle g.2)`. Establish `e1 : -rep q + (g : V) = l0` using `(hmem _ hv x).mp hgx`. Establish `hqq : q = q0`. Rewrite using `[← hrep q, hq0def, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `h3 : -rep q + -l0 = -(g : V)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1]`. Normalize the expressions using the abelian group laws. Establish `h4 : -(g : V) ∈ Λ'` using `Λ'.neg_mem g.2`. Simplify `h4` using `[rep, h3]`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show (g : V) = rep q0 + l0`. Rewrite using `[← hqq, ← e1]`. Normalize the expressions using the abelian group laws. Conclude with `Bornology.isBounded_iUnion.mpr fun q => hbdd.vadd (rep q)`. Establish `hμ : μ (⋃ q : L ⧸ H, rep q +ᵥ D) = (Fintype.card (L ⧸ H) : ENNReal) * μ D`.
-
-Rewrite using `[measure_iUnion hdisj (fun q => hmeas.const_vadd _), tsum_fintype]`. Simplify using `[measure_vadd]`. Rewrite using `[hμ, ENNReal.toReal_mul, ENNReal.toReal_natCast, ← hcardQ, Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem fundamentalDomainExists : FundDomain := by
   intro V _ _ _ _ _ μ _ Λ hΛ
@@ -139,31 +135,27 @@ theorem fundamentalDomainExists : FundDomain := by
     rw [hμ, ENNReal.toReal_mul, ENNReal.toReal_natCast, ← hcardQ, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ H _ hH Λ' D' hD v hv hv0`. Use `set f : V → ℂ := fun z => Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H v z : ℂ)) with hf`. Establish `hadd : ∀ x y : V, altE H v (x + y) = altE H v x + altE H v y`. Introduce `x y`. Simplify using `[altE, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmul : ∀ x y : V, f (x + y) = f x * f y`. Introduce `x y`. Simplify using `only [hf, hadd]`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hper : ∀ (g : Λ') (z : V), f (g +ᵥ z) = f z`. Introduce `g z`. Take `⟨m, hm⟩` from `hv g g.2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show f ((g : V) + z) = f z`. Rewrite using `[hmul]`. Establish `: f (g : V) = 1`. Simplify using `only [hf, hm]`. Use `Complex.exp_int_mul_two_pi_mul_I m` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← this]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, one_mul]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hμ : μ D' = 0`. Conclude with `setIntegral_measure_zero _ hμ`. Use `haveI : Countable Λ' := by`. Establish `hc` using `Measure.countable_meas_pos_of_disjoint_iUnion₀ (μ := μ) (As := fun g : Λ' => g +ᵥ D') (fun g => hD.nullMeasurableSet_vadd g) hD.aedisjoint`. Establish `huniv : {g : Λ' | 0 < μ (g +ᵥ D')} = Set.univ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Rewrite using `[measure_vadd]`. Conclude with `pos_iff_ne_zero.mpr hμ`. Rewrite `hc` using `[huniv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.countable_univ_iff.mp hc`. Establish `htr : ∀ w : V, ∫ z in D', f z ∂μ = f w * ∫ z in D', f z ∂μ`. Introduce `w`. Establish `hD2 : IsAddFundamentalDomain Λ' (w +ᵥ D') μ` using `hD.vadd_of_comm w`. Establish `e1 : ∫ z in w +ᵥ D', f z ∂μ = ∫ z in D', f z ∂μ` using `hD2.setIntegral_eq hD hper`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∫ z in w +ᵥ D', f z ∂μ = ∫ z in D', f (w + z) ∂μ`. Rewrite using `[← Set.image_vadd]`. Conclude with `(measurePreserving_add_left μ w).setIntegral_image_emb (measurableEmbedding_addLeft w) f D'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hmul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[integral_const_mul]`. Establish `ha : 0 < (H v v).re` using `hH v hv0`. Use `set c : ℂ := ((1 / (2 * (H v v).re) : ℝ) : ℂ) * Complex.I with hc`. Establish `hw : altE H v (c • v) = -(1 / 2)`. Simplify using `only [altE, LinearMap.map_smulₛₗ, hc, smul_eq_mul, Complex.mul_im, map_mul, Complex.conj_ofReal, Complex.conj_I, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hfw : f (c • v) = -1`. Simplify using `only [hf, hw]`. Use `push_cast`.
-
-Establish `: 2 * (Real.pi : ℂ) * Complex.I * -(1 / 2) = -(Real.pi * Complex.I)` using `by ring`. Rewrite using `[this, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions. Use `htr (c • v)` as an intermediate fact. Rewrite `this` using `[hfw]`.
-
-Take the linear combination `this / 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem characterIntegral : CharIntegral := by
   intro V _ _ _ _ _ μ _ H _ hH Λ' D' hD v hv hv0

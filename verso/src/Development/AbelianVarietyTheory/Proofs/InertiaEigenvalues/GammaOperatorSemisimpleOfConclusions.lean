@@ -20,9 +20,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE (letE i : LetA O n) x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `show W.γ₀ g ((letE i : LetA O n) j) = (letE i : LetA O n) j`. Distinguish the cases in `h : j = i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem γD_letE_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (g : W.Gam) (i : ZMod n)
     (x : W.DD T) : W.γD T g ((letE i : LetA O n) • x) = (letE i : LetA O n) • W.γD T g x := by
@@ -35,7 +35,7 @@ theorem γD_letE_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (g : W.Ga
   · simp [letE, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   funext j
@@ -44,14 +44,14 @@ theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   · simp [letE, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[letE, Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_letE_eq_one [NeZero n] : ∑ i : ZMod n, (letE i : LetA O n) = 1 := by
   funext j
   simp [letE, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `h` using `Finset.le_sup (f := fun k : ℕ => Mi (k : ZMod n)) (Finset.mem_range.2 (ZMod.val_lt i))`. Simplify using `only [ZMod.natCast_zmod_val] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem le_Mmax_of [NeZero n] (Mi : ZMod n → ℕ) (i : ZMod n) : Mi i ≤ Formalism.MainNotions.LiftingTheory.Mmax n Mi := by
   have h := Finset.le_sup (f := fun k : ℕ => Mi (k : ZMod n)) (Finset.mem_range.2 (ZMod.val_lt i))
@@ -59,7 +59,7 @@ theorem le_Mmax_of [NeZero n] (Mi : ZMod n → ℕ) (i : ZMod n) : Mi i ≤ Form
   exact h
 
 /- English proof (translation)
-Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Conclude with `(W.N T).smul_mem _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_letE_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (a : LetA O n)
     (x : W.DD T) (hx : a • x ∈ W.N T) : a • ((letE i : LetA O n) • x) ∈ W.N T := by
@@ -67,7 +67,7 @@ theorem smul_letE_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod
   exact (W.N T).smul_mem _ hx
 
 /- English proof (translation)
-Rewrite using `[smul_comm c (letE i : LetA O n) z, ← smul_add, smul_smul, mul_comm W.π₀, ← smul_smul, h, smul_sub, γD_letE_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem letE_rec (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (c : O)
     (y z : W.DD T) (h : W.π₀ • (y + c • z) = W.γD T W.gam z - z) :
@@ -77,7 +77,7 @@ theorem letE_rec (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (
     smul_sub, γD_letE_smul]
 
 /- English proof (translation)
-Establish `e : x = ∑ i : ZMod n, (letE i : LetA O n) • x`. Rewrite using `[← Finset.sum_smul, sum_letE_eq_one, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ (fun i _ => h i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_N_of_letE [NeZero n] (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (x : W.DD T)
     (h : ∀ i : ZMod n, (letE i : LetA O n) • x ∈ W.N T) : x ∈ W.N T := by
@@ -87,7 +87,7 @@ theorem mem_N_of_letE [NeZero n] (W : LocWach PD LL O v n) (T : LocLat G Qp LL O
   exact Submodule.sum_mem _ (fun i _ => h i)
 
 /- English proof (translation)
-Rewrite `h` using `[pow_zero, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_qp_pow_zero (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (x : W.DD T)
     (h : Formalism.MainNotions.LiftingTheory.qp W ^ 0 • x ∈ W.N T) : x ∈ W.N T := by
@@ -96,29 +96,25 @@ theorem mem_of_qp_pow_zero (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (x :
 end LetterAux
 
 /- English proof (translation)
-Introduce `D HW F Cm hN l _ K s LL h`. Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K s LL h)` using `hN.2.2.2.2.2.2.2.2.1 l K s LL h`. Rewrite using `[Formalism.MainNotions.UnusedSlot35.DssRec.coreDss_iff_mem _ h9]`. Introduce `hA T Mi hi hT hJ ug hug hv cO hc Y y₀ hy hΔ seq h0 hrec`. Substitute `h0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `hs : s = 1` using `((HW l).W_s K s LL h).symm.trans hA.2.1`. Substitute `hs` using the available equality. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hCAl : Loc.CaseA K LL`. Use `⟨fun x hx => ?_, by rw [← hpl]; exact hA.2.2, h⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `hA.1.2 ⟨x, hx⟩`. Establish `h2` using `y.2.2`. Establish `: ((y : ↥(K0 K)) : Om l) = x` using `congrArg Subtype.val hy`. Rewrite `h2` using `[this]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := ((D.loc l).PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Establish `hw1 : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 ((((HW l).W K 1 LL h).χΓ ((HW l).W K 1 LL h).gam : (↥(OL LL))ˣ) : ↥(OL LL)) - 1) = 1`. Use `((HW l).W K 1 LL h).gam_gen` as an intermediate fact. Rewrite `this` using `[hA.2.1, Nat.cast_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hug1 : ug ^ (l - 1) = (((HW l).W K 1 LL h).χΓ ((HW l).W K 1 LL h).gam) ^ (l - 1)`. Use `hug` as an intermediate fact. Rewrite `this` using `[hpl]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hug' : ug = ((HW l).W K 1 LL h).χΓ ((HW l).W K 1 LL h).gam` using `GlobalTheory.units_eq_of_pow_pred_eq_of_val_one l (D.loc l) LL ug _ hug1 hv hw1`. Establish `hc' : ∀ x : ℤ, ((l : ℕ) : ↥(OL LL)) * cO x = 1 - ((((((HW l).W K 1 LL h).χΓ ((HW l).W K 1 LL h).gam) ^ (-x) : (↥(OL LL))ˣ) : ↥(OL LL)))`. Introduce `x`. Use `hc x` as an intermediate fact. Rewrite `this` using `[hpl, hug']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hjx : ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ) (j : ℕ), Formalism.MainNotions.LiftingTheory.Over ((HW l).W K 1 LL h) τ i → IsJumpV ((D.loc l).PD K) T.ρ τ a → 0 < j → j ≤ Y → a + (j : ℤ) ∈ Formalism.MainNotions.LiftingTheory.xList ((HW l).W K …`. Introduce `i τ a j hO hjump hj0 hjY`. Establish `ha` using `hJ i τ hO a hjump`. Establish `hM` using `le_Mmax_of Mi i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hH` using `le_Mmax_of hi i`. Rewrite using `[Formalism.MainNotions.LiftingTheory.xList, Finset.mem_sort, Finset.mem_image]`. Use `⟨(a, (j : ℤ)), Finset.mem_product.2 ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.LiftingTheory.jumpSet, Finset.mem_filter, Finset.mem_Icc]`. Use `⟨⟨?_, ?_⟩, τ, hjump⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `ha.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `ha.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.mem_Icc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hmem : ∀ i : ZMod (Module.finrank ℚ_[l] ↥(K0 K)), (letE i : LetA ↥(OL LL) _) • seq (Formalism.MainNotions.LiftingTheory.xList ((HW l).W K 1 LL h) T (Formalism.MainNotions.LiftingTheory.Mmax _ Mi) (Formalism.MainNotions.LiftingTheory.Mmax _ hi) Y).length ∈ ((HW l).W K 1 LL h).N T`. Introduce `i`. Establish `hDL : Formalism.MainNotions.CrystallineLiftingInputs.DL ((HW l).W K 1 LL h) T i ((letE i : LetA ↥(OL LL) _) • seq 0)`. Use `⟨by rw [smul_smul, letE_mul_self], fun δ hδ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[γD_letE_smul ((HW l).W K 1 LL h) T δ i (seq 0)]`. Establish `e2` using `hΔ δ hδ`. Conclude with `congrArg (fun z => (letE i : LetA ↥(OL LL) _) • z) e2`. Establish `hYi : Formalism.MainNotions.LiftingTheory.qp ((HW l).W K 1 LL h) ^ Y • ((letE i : LetA ↥(OL LL) _) • seq 0) ∈ ((HW l).W K 1 LL h).N T`. Conclude with `smul_letE_mem ((HW l).W K 1 LL h) T i _ (seq 0) hy`.
-
-Establish `key` using `GlobalTheory.T.wachOperatorProduct_shift_mem_lattice D HW F Cm hN l K LL hCAl T hT i 0 Y cO hc' _ (fun τ a j hO hjump hj hjY => hjx i τ a j hO hjump hj hjY) (fun k => (letE i : LetA ↥(OL LL) _) • seq k) hDL hYi (fun k hk => letE_rec ((HW l).W K 1 LL h) T i _ _ _ (hrec k hk))`. Conclude with `mem_of_qp_pow_zero ((HW l).W K 1 LL h) T _ key.2`. Conclude with `mem_N_of_letE ((HW l).W K 1 LL h) T _ hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dss_semisimple_of_used : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), Formalism.MainNotions.DeltaInvariantLattices.DeltaInvariantNormBound D HW F Cm → Formalism.MainNotions.LiftingTheory.adm19 D HW F := by

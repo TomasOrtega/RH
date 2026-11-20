@@ -8,13 +8,11 @@ def InjectiveHolomorphicOpen.Statement : Prop :=
     IsOpen U → DifferentiableOn ℂ f U → Set.InjOn f U → IsOpen (f '' U)
 
 /- English proof (translation)
-Use `⟨Metric.isOpen_ball, ?_, ?_⟩` and prove the remaining obligations. Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Rewrite using `[differentiable_pi]`. Introduce `i`. Use `fin_cases i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using differentiable_apply (𝕜 := ℂ) (0 : Fin 2)`. Establish `hd : Differentiable ℂ (fun x : Fin 2 → ℂ => x 1 + x 0 ^ 2)` using `by fun_prop`. Conclude with `hd`. Introduce `s _ t _ hst`. Establish `h0 : s 0 = t 0` using `by simpa using congrFun hst 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : s 1 + s 0 ^ 2 = t 1 + t 0 ^ 2` using `by simpa using congrFun hst 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h0`. Simplify using `only [Fin.mk_one]`.
-
-Rewrite `h1` using `[h0]`. Conclude with `add_right_cancel h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InjectiveHolomorphicOpen.hypotheses_inhabited :
     IsOpen (Metric.ball (0 : Fin 2 → ℂ) 1) ∧

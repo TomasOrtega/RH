@@ -65,11 +65,11 @@ def JDCapR : Prop :=
           trJ S T v e (B.opApply Θv J) = MA.actA (D.parOf S v) (RhvM (D.parOf S v) L y) (trJ S T v e J)
 
 /- English proof (translation)
-Take `⟨hs, hg, ho⟩` from `hP S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) _ _ Θ hΘ`. Establish `hn : (0 : ℝ) ≤ nDim S.G.k S.G.r` using `by unfold nDim; positivity`. Establish `hr : (0 : ℝ) ≤ (S.G.r : ℝ) + 1` using `by positivity`. Use `⟨hs _, hc, hg _ ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (((S.G.r + 1) * (2 * S.G.r + S.G.k + 1) : ℕ) : ℝ) = ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `nDim`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, mul_assoc]`. Conclude with `le_mul_of_one_le_left (mul_nonneg hr hn) hCc`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((B.opOrder Θ : ℕ) : ℝ) ≤ nDim S.G.k S.G.r`. Unfold `nDim`. Conclude with `ho` after adjusting the coercions. Conclude with `e2.trans (le_mul_of_one_le_left hn hCc)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hatOK_of_poly (hP : JDPolyOK) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {Wp Wq : InfinitePlace E → Type}
@@ -93,7 +93,7 @@ theorem hatOK_of_poly (hP : JDPolyOK) {E : Type} [Field E] [NumberField E] [IsCM
     exact e2.trans (le_mul_of_one_le_left hn hCc)
 
 /- English proof (translation)
-Use `⟨1, zero_le_one, ?_⟩` and prove the remaining obligations. Introduce `Cc hCc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hL y`. Take `⟨Θ, Θv, hΘ, hΘv, hc, hcv, h⟩` from `hC Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hL y`. Conclude with `⟨Θ, Θv, hatOK_of_poly hP hCc hΘ hc, hatOK_of_poly hP hCc hΘv hcv, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jDOpA_of_parts (hP : JDPolyOK) (hC : JDCapA) : JDOpA := by
   refine ⟨1, zero_le_one, ?_⟩
@@ -102,7 +102,7 @@ theorem jDOpA_of_parts (hP : JDPolyOK) (hC : JDCapA) : JDOpA := by
   exact ⟨Θ, Θv, hatOK_of_poly hP hCc hΘ hc, hatOK_of_poly hP hCc hΘv hcv, h⟩
 
 /- English proof (translation)
-Use `⟨1, zero_le_one, ?_⟩` and prove the remaining obligations. Introduce `Cc hCc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hQQ hL y`. Take `⟨Θ, Θv, hΘ, hΘv, hc, hcv, h⟩` from `hC Cc E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hQQ hL y`. Conclude with `⟨Θ, Θv, hatOK_of_poly hP hCc hΘ hc, hatOK_of_poly hP hCc hΘv hcv, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jDOpR_of_parts (hP : JDPolyOK) (hC : JDCapR) : JDOpR := by
   refine ⟨1, zero_le_one, ?_⟩

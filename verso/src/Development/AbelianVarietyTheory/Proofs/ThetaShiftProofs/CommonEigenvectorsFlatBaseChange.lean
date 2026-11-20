@@ -9,9 +9,9 @@ namespace EigFlat
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Matrix.add_vecMul]`. Consider the case `tmul s v`. Use extensionality with `j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.vecMul, dotProduct, Algebra.smul_def, Finset.sum_mul, mul_right_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piScalarRight_lTensor_vecMul {a b : Type} [Fintype a] [Fintype b] [DecidableEq a]
     [DecidableEq b] (U : Matrix a b A) (B : Type) [CommRing B] [Algebra A B]
@@ -26,13 +26,13 @@ theorem piScalarRight_lTensor_vecMul {a b : Type} [Fintype a] [Fintype b] [Decid
     simp [Matrix.vecMul, dotProduct, Algebra.smul_def, Finset.sum_mul, mul_right_comm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h w`. Take `⟨y, rfl⟩` from `(TensorProduct.piScalarRight A B B b).surjective w`. Rewrite using `[← piScalarRight_lTensor_vecMul, LinearEquiv.map_eq_zero_iff, h y]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, (piScalarRight_lTensor_vecMul U B x).symm⟩`. Introduce and unpack `⟨cf, hcf⟩`. Take `⟨x, rfl⟩` from `(TensorProduct.piScalarRight A B B a).surjective cf`. Rewrite `hcf` using `[← piScalarRight_lTensor_vecMul]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨x, (TensorProduct.piScalarRight A B B b).injective hcf⟩`. Introduce `h y`. Rewrite using `[← (TensorProduct.piScalarRight A B B c).map_eq_zero_iff, piScalarRight_lTensor_vecMul, h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨cf, hcf⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨x, rfl⟩` from `(TensorProduct.piScalarRight A B B a).surjective cf`. Rewrite `hcf` using `[← piScalarRight_lTensor_vecMul]`. Conclude with `⟨x, (TensorProduct.piScalarRight A B B b).injective hcf⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, (piScalarRight_lTensor_vecMul U B x).symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exact_iff {a b c : Type} [Fintype a] [Fintype b] [Fintype c] [DecidableEq a]
     [DecidableEq b] [DecidableEq c] (U : Matrix a b A) (H : Matrix b c A)
@@ -62,7 +62,7 @@ theorem exact_iff {a b c : Type} [Fintype a] [Fintype b] [Fintype c] [DecidableE
       exact ⟨_, (piScalarRight_lTensor_vecMul U B x).symm⟩
 
 /- English proof (translation)
-Establish `h : (TensorProduct.piScalarRight A B B b) ∘ (LinearMap.lTensor B U.vecMulLinear) = (fun cf : a → B => cf ᵥ* U.map (algebraMap A B)) ∘ (TensorProduct.piScalarRight A B B a)`. Use function extensionality and compare the values at `fun x => piScalarRight_lTensor_vecMul U B x`. Rewrite using `[← Function.Injective.of_comp_iff (TensorProduct.piScalarRight A B B b).injective, h, Function.Injective.of_comp_iff' _ (TensorProduct.piScalarRight A B B a).bijective]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_iff {a b : Type} [Fintype a] [Fintype b] [DecidableEq a]
     [DecidableEq b] (U : Matrix a b A) (B : Type) [CommRing B] [Algebra A B] :
@@ -75,17 +75,17 @@ theorem injective_iff {a b : Type} [Fintype a] [Fintype b] [DecidableEq a]
     Function.Injective.of_comp_iff' _ (TensorProduct.piScalarRight A B B a).bijective]
 
 /- English proof (translation)
-Establish `hfg : (Submodule.span A (Set.range D)).FG` using `IsNoetherian.noetherian _`. Take `⟨n, s, hs⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hfg`. Use `⟨n, Matrix.of fun j p => s p.1 j p.2, fun B _ _ w => ?_⟩` and prove the remaining obligations. Set `K : Submodule A (Matrix (Fin g) (Fin g) A)` to `{ carrier := {X | w ᵥ* X.map (algebraMap A B) = 0} zero_mem' := by simp add_mem' := by`. Introduce `X Y hX hY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq] at hX hY ⊢`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.vecMul_add, hX, hY, add_zero]`. Use the proof step `smul_mem' := by`. Introduce `r X hX`. Simplify using `only [Set.mem_setOf_eq] at hX ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (r • X).map (algebraMap A B) = algebraMap A B r • X.map (algebraMap A B)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.vecMul_smul, hX, smul_zero] }`. Establish `h1 : (∀ i, w ᵥ* (D i).map (algebraMap A B) = 0) ↔ Submodule.span A (Set.range D) ≤ K`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le, Set.range_subset_iff]`. Both sides reduce to the same expression. Establish `h2 : (∀ i, w ᵥ* (s i).map (algebraMap A B) = 0) ↔ Submodule.span A (Set.range s) ≤ K`. Rewrite using `[Submodule.span_le, Set.range_subset_iff]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← hs, ← h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use function extensionality and compare the values at `j`. Conclude with `congrFun h (i, j)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `h`. Use function extensionality and compare the values at `p`. Conclude with `congrFun (h p.1) p.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrix [IsNoetherianRing A] {I : Type} {g : ℕ} (D : I → Matrix (Fin g) (Fin g) A) :
     ∃ (n : ℕ) (H : Matrix (Fin g) (Fin n × Fin g) A), ∀ (B : Type) [CommRing B] [Algebra A B]
@@ -121,7 +121,7 @@ theorem exists_matrix [IsNoetherianRing A] {I : Type} {g : ℕ} (D : I → Matri
     exact congrFun (h p.1) p.2
 
 /- English proof (translation)
-Establish `: (M - ρ • (1 : Matrix (Fin g) (Fin g) A)).map (algebraMap A B) = M.map (algebraMap A B) - algebraMap A B ρ • (1 : Matrix (Fin g) (Fin g) B)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h, Algebra.algebraMap_eq_smul_one, sub_smul]`. Rewrite using `[this, Matrix.vecMul_sub, Matrix.vecMul_smul, Matrix.vecMul_one, sub_eq_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem eig_iff {g : ℕ} (M : Matrix (Fin g) (Fin g) A) (ρ : A) (B : Type) [CommRing B]
     [Algebra A B] (w : Fin g → B) :
@@ -134,7 +134,7 @@ theorem eig_iff {g : ℕ} (M : Matrix (Fin g) (Fin g) A) (ρ : A) (B : Type) [Co
   rw [this, Matrix.vecMul_sub, Matrix.vecMul_smul, Matrix.vecMul_one, sub_eq_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_eq {g m : ℕ} (u : Fin m → Fin g → A) (B : Type) [CommRing B]
     [Algebra A B] (cf : Fin m → B) :
@@ -144,9 +144,9 @@ theorem sum_eq {g m : ℕ} (u : Fin m → Fin g → A) (B : Type) [CommRing B]
   simp [Matrix.vecMul, dotProduct, Finset.sum_apply]
 
 /- English proof (translation)
-Establish `h : Matrix.of u * M = ρ • Matrix.of u`. Use extensionality with `k j`. Conclude with `congrFun (hu k) j`. Establish `h2 : (ρ • Matrix.of u).map (algebraMap A B) = algebraMap A B ρ • (Matrix.of u).map (algebraMap A B)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.vecMul_vecMul, ← Matrix.map_mul, h, h2, Matrix.vecMul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_map {g m : ℕ} (u : Fin m → Fin g → A) (M : Matrix (Fin g) (Fin g) A) (ρ : A)
     (hu : ∀ k, u k ᵥ* M = ρ • u k) (B : Type) [CommRing B]
@@ -166,25 +166,23 @@ end EigFlat
 open EigFlat in
 
 /- English proof (translation)
-Introduce `A _ I g m M ρ`. Prove the components needed by the constructor for the conclusion. Introduce `R _ _ _ _ u hu hR S _ _ _ w hw`. Take `⟨n, H, hH⟩` from `exists_matrix (fun i => M i - ρ i • (1 : Matrix (Fin g) (Fin g) A))`. Simplify using `only [eig_iff] at hH`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [sum_eq] at hR ⊢`. Establish `hexR : Function.Exact (LinearMap.lTensor R (Matrix.of u).vecMulLinear) (LinearMap.lTensor R H.vecMulLinear)`. Rewrite using `[exact_iff]`. Introduce `v`. Rewrite using `[hH]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨cf, hcf, -⟩` from `hR v hv`. Conclude with `⟨cf, hcf.symm⟩`. Introduce and unpack `⟨cf, rfl⟩ i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `eig_map u (M i) (ρ i) (fun k => hu k i) R cf`. Establish `hinjR : Function.Injective (LinearMap.lTensor R (Matrix.of u).vecMulLinear)`. Rewrite using `[injective_iff]`. Introduce `c₁ c₂ hc`. Conclude with `(hR _ (fun i => eig_map u (M i) (ρ i) (fun k => hu k i) R c₁)).unique rfl hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `(Module.FaithfullyFlat.lTensor_exact_iff_exact A R _ _).mp hexR`. Establish `hinj` using `(Module.FaithfullyFlat.lTensor_injective_iff_injective A R _).mp hinjR`. Establish `hexS` using `(exact_iff _ _ S).mp (Module.Flat.lTensor_exact S hex)`. Establish `hinjS` using `(injective_iff _ S).mp (Module.Flat.lTensor_preserves_injective_linearMap (M := S) _ hinj)`. Take `⟨cf, hcf⟩` from `(hexS w).mp ((hH S w).mpr hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨cf, hcf.symm, fun c' hc' => hinjS (hc'.symm.trans hcf.symm)⟩`. Introduce `_ _`. Set `N : Submodule A (Fin g → A)` to `{ carrier := {w | ∀ i, w ᵥ* M i = ρ i • w} zero_mem' := by simp add_mem' := by`. Introduce `x y hx hy i`. Rewrite using `[Matrix.add_vecMul, hx i, hy i, smul_add]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := by`. Introduce `r x hx i`. Rewrite using `[Matrix.smul_vecMul, hx i, smul_comm] }`. Take `⟨n, b⟩` from `Submodule.basisOfPid (Pi.basisFun A (Fin g)) N`. Use `⟨n, fun k => (b k : Fin g → A), fun k i => (b k).2 i, fun w hw => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ cf : Fin n → A, (∑ k, cf k • (b k : Fin g → A)) = ((b.equivFun.symm cf : N) : Fin g → A)`. Introduce `cf`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using the standard rewrite rules. Use `⟨b.equivFun ⟨w, hw⟩, ?_, fun cf hcf => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[key]`. Simplify using the standard rewrite rules. Use `beta_reduce at hcf`. Rewrite `hcf` using `[key]`.
-
-Establish `: (⟨w, hw⟩ : N) = b.equivFun.symm cf` using `Subtype.ext hcf`. Conclude with `((congrArg b.equivFun this).trans (b.equivFun.apply_symm_apply cf)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem commonEigenvectors_flat_baseChange :
     ∀ (A : Type) [CommRing A] (I : Type) (g m : ℕ) (M : I → Matrix (Fin g) (Fin g) A) (ρ : I → A), (∀ (R : Type) [CommRing R] [Algebra A R] [Module.FaithfullyFlat A R] [IsNoetherianRing A] (u : Fin m → Fin g → A), (∀ k i, u k ᵥ* M i = ρ i • u k) → (∀ w : Fin g → R, (∀ i, w ᵥ* (M i).map (algebraMap A R) = algebraMap A R (ρ i) • w) → ∃! cf : Fin m → R, w = ∑ k, cf k • (fun j => algebraMap A R (u k j))) → ∀ (S : Type) [CommRing S] [Algebra A S] [Module.Flat A S] (w : Fin g → S), (∀ i, w ᵥ* (M i).map (algebraMap A S) = algebraMap A S (ρ i) • w) → ∃! cf : Fin m → S, w = ∑ k, cf k • (fun j => algebraMap A S (u k j))) ∧ ∀ [IsDomain A] [IsPrincipalIdealRing A], ∃ (n : ℕ) (u : Fin n → Fin g → A), (∀ k i, u k ᵥ* M i = ρ i • u k) ∧ ∀ w : Fin g → A, (∀ i, w ᵥ* M i = ρ i • w) → ∃! cf : Fin n → A, w = ∑ k, cf k • u k := by

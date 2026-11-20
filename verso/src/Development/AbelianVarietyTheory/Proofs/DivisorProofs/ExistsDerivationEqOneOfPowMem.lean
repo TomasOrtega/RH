@@ -6,27 +6,23 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Introduce `p hp K _ _ L f hfL hfp htop`. Establish `hpp : p.Prime` using `hp.out`. Use `set a : L := ⟨f ^ p, hfp⟩ with ha`. Use `set q : Polynomial L := X ^ p - C a with hq`. Establish `hqf : aeval f q = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq, map_sub, map_pow, aeval_X, aeval_C]`. Conclude with `sub_eq_zero.mpr rfl`. Establish `hirr : Irreducible q`. Apply `X_pow_sub_C_irreducible_of_prime hpp` to reduce the goal to its premises. Introduce `b hb`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hfL` to reduce the goal to its premises. Establish `h1 : (b : K) ^ p = f ^ p`. Use `congrArg (fun x : L => (x : K)) hb` as an intermediate fact. Simplify `this` using `[a]`. Establish `h2 : (b : K) = f` using `frobenius_inj K p h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2 ▸ b.2`. Establish `hmon : q.Monic` using `monic_X_pow_sub_C a hpp.ne_zero`. Establish `hmin : minpoly L f = q` using `(minpoly.eq_of_irreducible_of_monic hirr hqf hmon).symm`. Establish `hdq : aeval f (derivative q) = 0`. Simplify using `[q, derivative_X_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hker : ∀ g : Polynomial L, aeval f g = 0 → aeval f (derivative g) = 0`. Introduce `g hg`. Take `⟨h, rfl⟩ : q ∣ g` from `hmin ▸ minpoly.dvd L f hg`. Simplify using `[derivative_mul, hdq, hqf]`. Establish `hint : IsIntegral L f` using `⟨q, hmon, hqf⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : ∀ x : K, ∃ g : Polynomial L, aeval f g = x`. Introduce `x`. Establish `hx : x ∈ Algebra.adjoin L ({f} : Set K)`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, htop]`. Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `(AlgHom.mem_range _).mp hx`. Use `choose G hG using hsurj`. Establish `hwd : ∀ g1 g2 : Polynomial L, aeval f g1 = aeval f g2 → aeval f (derivative g1) = aeval f (derivative g2)`. Introduce `g1 g2 h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `hker (g1 - g2) (by rw [map_sub, h, sub_self])` as an intermediate fact. Rewrite `this` using `[derivative_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Set `Dl : K →ₗ[L] K` to `{ toFun := fun x => aeval f (derivative (G x)) map_add' := fun x y => by`. Rewrite using `[← map_add, ← derivative_add]`. Apply `hwd` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG, map_add, hG, hG]`. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← map_smul (aeval f), ← map_smul derivative]`. Apply `hwd` to reduce the goal to its premises.
-
-Rewrite using `[hG, map_smul, hG] }`. Use `⟨Derivation.mk' Dl (fun x y => ?_), ?_⟩` and prove the remaining obligations. Use `show aeval f (derivative (G (x * y))) = x • aeval f (derivative (G y)) + y • aeval f (derivative (G x))`. Rewrite using `[hwd (G (x * y)) (G x * G y) (by rw [hG, map_mul, hG, hG]), derivative_mul, map_add, map_mul, map_mul, hG, hG, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `show aeval f (derivative (G f)) = 1`. Rewrite using `[hwd (G f) X (by rw [hG, aeval_X]), derivative_X, map_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_derivation_eq_one_of_pow_mem : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [CharP K p] (L : Subfield K) (f : K), f ∉ L → f ^ p ∈ L → IntermediateField.adjoin L ({f} : Set K) = ⊤ → ∃ D : Derivation L K K, D f = 1 := by
   intro p hp K _ _ L f hfL hfp htop

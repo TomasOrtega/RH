@@ -5,7 +5,7 @@ namespace GlobalTheory.CoordinateBasisBounds
 open NumberField
 
 /- English proof (translation)
-Establish `hx : IsAlgebraic ℤ x` using `IsFractionRing.isAlgebraic_iff ℤ ℚ E |>.mpr (.of_finite ℚ x)`. Take `⟨m, s, hm, h⟩` from `IsAlgebraic.exists_nsmul_eq (𝓞 E) hx`. Conclude with `⟨m, Nat.pos_of_ne_zero hm, s, by rw [← h, nsmul_eq_mul]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nat_mul_integral {E : Type} [Field E] [NumberField E] (x : E) :
     ∃ m : ℕ, 0 < m ∧ ∃ o : 𝓞 E, (m : E) * x = algebraMap (𝓞 E) E o := by
@@ -14,21 +14,19 @@ theorem nat_mul_integral {E : Type} [Field E] [NumberField E] (x : E) :
   exact ⟨m, Nat.pos_of_ne_zero hm, s, by rw [← h, nsmul_eq_mul]⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hL`. Establish `key : ∀ v ∈ S, ∃ m : ℕ, 0 < m ∧ ∀ i : Fin n, ∃ o : 𝓞 E, (m : E) * v i = algebraMap (𝓞 E) E o`. Introduce `v _`. Use `choose m hm o ho using fun i : Fin n => nat_mul_integral (v i)`. Use `⟨∏ i, m i, Finset.prod_pos (fun i _ => hm i), fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : m i ∣ ∏ j, m j` using `Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`. Take `⟨k, hk⟩` from `hd`. Use `⟨(k : 𝓞 E) * o i, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, map_mul, ← ho i, map_natCast]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose! m hm hv using key`. Use `⟨∏ v ∈ S, m v, Finset.prod_pos (fun v hv' => hm v hv'), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem v hvS`. Introduce `i`. Take `⟨o, ho⟩` from `hv v hvS i`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m hvS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(k : 𝓞 E) * o, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, map_mul, ← ho, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => intro i; exact ⟨0, by simp⟩`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add x y _ _ hx hy`. Introduce `i`. Take `⟨a, ha⟩` from `hx i`. Take `⟨b, hb⟩` from `hy i`. Conclude with `⟨a + b, by rw [map_add, ← ha, ← hb, Pi.add_apply]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c x _ hx`. Introduce `i`. Take `⟨a, ha⟩` from `hx i`. Use `⟨c * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← ha, Pi.smul_apply, Algebra.smul_def]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coord_bound {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
@@ -67,15 +65,15 @@ theorem coord_bound {E : Type} [Field E] [NumberField E] {n : ℕ}
     rw [map_mul, ← ha, Pi.smul_apply, Algebra.smul_def]; ring
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span E (L : Set (Fin n → E))` using `by rw [hspan]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem v hv => exact ⟨1, one_pos, by simpa using hv⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations. Establish `e : ((a * b : ℕ) : E) • (x + y) = b • ((a : E) • x) + a • ((b : E) • y)`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul, smul_smul, smul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `L.add_mem (nsmul_mem hax b) (nsmul_mem hby a)`. Consider the case `smul c x _ hx`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hdx⟩` from `hx`. Take `⟨m, hm, o, ho⟩` from `nat_mul_integral c`. Use `⟨m * d, Nat.mul_pos hm hd, ?_⟩` and prove the remaining obligations. Establish `e : ((m * d : ℕ) : E) • (c • x) = o • ((d : E) • x)`. Rewrite using `[← algebraMap_smul E o, ← ho, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `L.smul_mem o hdx`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_bound {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E))
@@ -104,13 +102,13 @@ theorem basis_bound {E : Type} [Field E] [NumberField E] {n : ℕ}
     exact L.smul_mem o hdx
 
 /- English proof (translation)
-Introduce `E _ _ n L hL hspan`. Take `⟨M, hM, hcoord⟩` from `GlobalTheory.CoordinateBasisBounds.coord_bound L hL`. Use `choose d hd hdL using fun j : Fin n => GlobalTheory.CoordinateBasisBounds.basis_bound L hspan (Pi.single j (1 : E))`. Use `⟨M * ∏ j, d j, Nat.mul_pos hM (Finset.prod_pos fun j _ => hd j), ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem d (Finset.mem_univ j)`. Establish `e : ((M * ∏ j, d j : ℕ) : E) • Pi.single j (1 : E) = (M * k) • ((d j : E) • Pi.single j (1 : E))`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, hk]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `nsmul_mem (hdL j) _`. Introduce `x hx i`. Take `⟨o, ho⟩` from `hcoord x hx i`. Use `⟨((∏ j, d j : ℕ) : 𝓞 E) * o, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_mul, ← ho, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ} (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)), Submodule.FG L → Submodule.span E (↑L : Set (Fin n → E)) = ⊤ → ∃ (N : ℕ), (0 : ℕ) < N ∧ (∀ (j : Fin n), (↑N : E) • Pi.single j (1 : E) ∈ L) ∧ ∀ x ∈ L, ∀ (i : Fin n), ∃ (o : NumberField.RingOfIntegers E), (↑N : E) * x i = (Algebra.algebraMap (NumberField.RingOfIntegers E) E : NumberField.RingOfIntegers E → E) o := by
   intro E _ _ n L hL hspan

@@ -7,7 +7,7 @@ section SlopeTestRemainingChoices
 variable {C : Type} [CommRing C] {m : ℕ} {I : Ideal C}
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact I.sum_mem fun k _ => I.mul_mem_left _ (hX k b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem entIn_mul_left (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (A * X) := fun a b => by
@@ -15,7 +15,7 @@ private theorem entIn_mul_left (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin m
   exact I.sum_mem fun k _ => I.mul_mem_left _ (hX k b)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact I.sum_mem fun k _ => I.mul_mem_right _ (hX a k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem entIn_mul_right (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (X * A) := fun a b => by
@@ -23,9 +23,9 @@ private theorem entIn_mul_right (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin 
   exact I.sum_mem fun k _ => I.mul_mem_right _ (hX a k)
 
 /- English proof (translation)
-Introduce `a b`. Establish `h1 : EntIn I (Jmat C m * Xᵀ)` using `entIn_mul_left _ (fun a b => hX b a)`. Establish `h2 : EntIn I (Jmat C m * Xᵀ * Jmat C m)` using `entIn_mul_right _ h1`. Unfold `thetaLie`. Rewrite using `[Matrix.neg_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `I.neg_mem (h2 a b)`.
+A detailed English derivation is pending.
 -/
 private theorem entIn_thetaLie {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (thetaLie X) := by
@@ -37,9 +37,9 @@ private theorem entIn_thetaLie {X : Matrix (Fin m) (Fin m) C}
   exact I.neg_mem (h2 a b)
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `hm : X a c * Y c b ∈ I * I` using `Ideal.mul_mem_mul (hX a c) (hY c b)`. Rewrite `hm` using `[hI]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot C).1 hm`.
+A detailed English derivation is pending.
 -/
 private theorem entIn_mul_zero (hI : I * I = ⊥) {X Y : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) (hY : EntIn I Y) : X * Y = 0 := by
@@ -57,9 +57,9 @@ private def onePlus (X : Matrix (Fin m) (Fin m) C) (h : X * X = 0) : GL (Fin m) 
   inv_val := by simp [Matrix.mul_add, Matrix.sub_mul, h]
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Simplify using `[onePlus]`. Rewrite using `[sgnAct_neg_one, theta_val, if_neg (by decide)] show Jmat C m * (1 - X)ᵀ * Jmat C m = _`. Rewrite using `[Matrix.transpose_sub, Matrix.transpose_one, mul_sub, sub_mul, mul_one, Jmat_mul_Jmat]`. Unfold `thetaLie`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_onePlus (s : ℤˣ) (X : Matrix (Fin m) (Fin m) C) (h : X * X = 0) :
     ((sgnAct m C s (onePlus X h) : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) =
@@ -75,25 +75,25 @@ private theorem act_onePlus (s : ℤˣ) (X : Matrix (Fin m) (Fin m) C) (h : X * 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `G C _ _ m I r γ hI hγ hc`. Establish `hsq : ∀ g, γ g * γ g = 0` using `fun g => entIn_mul_zero hI (hγ g) (hγ g)`. Set `P : G → GG m C` to `fun g => SemidirectProduct.inl (onePlus (γ g) (hsq g)) * r g`. Establish `hPr : ∀ g, (P g).right = (r g).right` using `fun g => by simp [P]`. Establish `hPlG : ∀ g, (P g).left = onePlus (γ g) (hsq g) * (r g).left` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[P, SemidirectProduct.mul_left]`. Establish `hPl : ∀ g, ((P g).left : Matrix (Fin m) (Fin m) C) = (1 + γ g) * (r g).mat` using `fun g => by`. Rewrite using `[hPlG, Units.val_mul]`. Both sides reduce to the same expression. Establish `h1 : γ 1 = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hc 1 1` as an intermediate fact. Simplify using `using this`. Use `⟨{ toFun := P, map_one' := ?_, map_mul' := ?_ }, fun g => ⟨hPr g, hPl g⟩⟩` and prove the remaining obligations. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hPl, h1]`. Simplify using `[GG.mat]`. Rewrite using `[hPr]`. Simplify using the standard rewrite rules. Introduce `g h show P (g * h) = P g * P h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `had : adRep r g (γ h) = (r g).mat * (if (r g).right = 1 then γ h else thetaLie (γ h)) * ((r g).left⁻¹ : GL (Fin m) C)` using `rfl`. Establish `hE : EntIn I (if (r g).right = 1 then γ h else thetaLie (γ h))` using `by split_ifs`. Conclude with `hγ h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `entIn_thetaLie (hγ h)`. Establish `hE2` using `entIn_mul_right (((r g).left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) (entIn_mul_left (r g).mat hE)`. Establish `hMiMg : (((r g).left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) * (r g).mat = 1`. Simplify using `[GG.mat]`. Establish `hz : γ g * ((r g).mat * (if (r g).right = 1 then γ h else thetaLie (γ h))) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h0` using `entIn_mul_zero hI (hγ g) hE2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc (γ g), mul_assoc _ (((r g).left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C), hMiMg, mul_one]`. Use `_ = 0 := by rw [h0, zero_mul]`. Rewrite using `[hPl, SemidirectProduct.mul_left, Units.val_mul, hPl, hPr, hPlG h, map_mul ((sgnAct m C) (r g).right), Units.val_mul, act_onePlus, hc, had, map_mul r]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [GG.mat, SemidirectProduct.mul_left, Units.val_mul]`. Simplify using `only [GG.mat] at hMiMg hz`. Generalize the expression as in `(((r g).left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) = Mi at hMiMg hz ⊢`. Generalize the expression as in `(if (r g).right = 1 then γ h else thetaLie (γ h)) = Z at hz ⊢`. Generalize the expression as in `((r g).left : Matrix (Fin m) (Fin m) C) = Mg at hMiMg hz ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Generalize the expression as in `(((sgnAct m C (r g).right) (r h).left : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) = N`. Establish `e1 : Mg * Z * Mi * (Mg * N) = Mg * Z * N`. Rewrite using `[mul_assoc (Mg * Z), ← mul_assoc Mi, hMiMg, one_mul]`. Establish `e2 : γ g * Mg * (Z * N) = 0`. Rewrite using `[mul_assoc (γ g), ← mul_assoc Mg, ← mul_assoc (γ g), hz, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul, add_mul, e1]`. Simplify using `only [one_mul, add_mul, mul_add, mul_one, mul_assoc] at e2 ⊢`. Rewrite using `[e2, add_zero]`. Normalize the expressions using the abelian group laws. Rewrite using `[hPr, SemidirectProduct.mul_right, hPr, hPr, map_mul, SemidirectProduct.mul_right]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.exists_isDeform :
     ∀ {G C : Type} [Group G] [CommRing C] {m : ℕ} (I : Ideal C) (r : G →* GG m C) (γ : G → Matrix (Fin m) (Fin m) C), I * I = ⊥ →

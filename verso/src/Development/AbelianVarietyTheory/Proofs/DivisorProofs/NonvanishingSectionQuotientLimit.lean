@@ -5,9 +5,9 @@ open Set Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Distinguish the cases in `hx : p x ∈ tsupport ρ`. Take `⟨ha, hc⟩` from `h hx`. Establish `h1 : ContinuousAt (fun y => (ρ (p y) : ℂ)) x` using `(Complex.continuous_ofReal.comp (hρ.comp hp)).continuousAt`. Conclude with `(h1.mul (ha.comp hp.continuousAt)).mul hc`. Establish `h0 : ρ =ᶠ[𝓝 (p x)] 0` using `notMem_tsupport_iff_eventuallyEq.mp hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : (fun y => (ρ (p y) : ℂ) * a (p y) * c y) =ᶠ[𝓝 x] fun _ => (0 : ℂ)` using `by filter_upwards [hp.continuousAt.preimage_mem_nhds h0] with y hy`. Simplify using `only [mem_preimage, mem_setOf_eq, Pi.zero_apply] at hy`. Simplify using `[hy]`. Conclude with `continuousAt_const.congr h0'.symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_term_continuousAt {X : Type} [TopologicalSpace X] (ρ : ℝ × ℝ → ℝ) (hρ : Continuous ρ)
     (a : ℝ × ℝ → ℂ) (c : X → ℂ) (p : X → ℝ × ℝ) (hp : Continuous p) (x : X)
@@ -26,31 +26,29 @@ theorem frame_term_continuousAt {X : Type} [TopologicalSpace X] (ρ : ℝ × ℝ
     exact continuousAt_const.congr h0'.symm
 
 /- English proof (translation)
-Introduce `B _ b₀ J O s K hK hO hcov hne hcont hratio`. Set `U : J → Set (ℝ × ℝ)` to `fun j => {v | (b₀, v) ∈ O j}`. Establish `hUo : ∀ j, IsOpen (U j)` using `fun j => (hO j).preimage (continuous_const.prodMk continuous_id)`. Establish `hKU : K ⊆ ⋃ j, U j` using `fun v _ => by`. Take `⟨j, hj⟩` from `hcov (b₀, v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_iUnion.2 ⟨j, hj⟩`. Take `⟨f, hf⟩` from `PartitionOfUnity.exists_isSubordinate hK.isClosed U hUo hKU`. Establish `hfin : {j | (tsupport (f j) ∩ K).Nonempty}.Finite` using `f.locallyFinite.closure.finite_nonempty_inter_compact hK`. Set `F` to `hfin.toFinset`. Set `r : B × ℝ × ℝ → ℂ` to `fun q => ∑ j ∈ F, (f j q.2 : ℂ) * (s j (b₀, q.2) / s j q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV1 : ∀ᶠ b in 𝓝 b₀, ∀ j ∈ F, ∀ v ∈ tsupport (f j) ∩ K, (b, v) ∈ O j`. Use `(Filter.eventually_all_finset F).2 fun j _ => ?_` and prove the remaining obligations. Use `(hK.inter_left (isClosed_tsupport _)).eventually_forall_of_forall_eventually (P := fun b v => (b, v) ∈ O j) fun v hv => ?_` and prove the remaining obligations. Conclude with `(hO j).mem_nhds (hf j hv.1)`. Set `V₁` to `{b | ∀ j ∈ F, ∀ v ∈ tsupport (f j) ∩ K, (b, v) ∈ O j}`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV₁ : V₁ ∈ 𝓝 b₀` using `hV1`. Establish `hb₀ : b₀ ∈ V₁` using `mem_of_mem_nhds hV₁`. Establish `hr₀ : ∀ v ∈ K, r (b₀, v) = 1`. Introduce `v hv`. Establish `hsupp : ∀ j, f j v ≠ 0 → j ∈ F ∧ s j (b₀, v) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `hvt : v ∈ tsupport (f j)` using `subset_tsupport _ hj`. Conclude with `⟨hfin.mem_toFinset.2 ⟨v, hvt, hv⟩, hne j _ (hf j hvt)⟩`. Establish `h1 : ∑ j ∈ F, (f j v : ℂ) * (s j (b₀, v) / s j (b₀, v)) = ∑ j ∈ F, (f j v : ℂ)`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : f j v = 0`. Simplify using `[h]`. Rewrite using `[div_self (hsupp j h).2, mul_one]`. Establish `h2 : ∑ᶠ j, f j v = ∑ j ∈ F, f j v` using `finsum_eq_sum_of_support_subset _ (fun j hj => Finset.mem_coe.2 (hsupp j hj).1)`. Use `show ∑ j ∈ F, (f j v : ℂ) * (s j (b₀, v) / s j (b₀, v)) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, ← Complex.ofReal_sum, ← h2, f.sum_eq_one hv, Complex.ofReal_one]`. Establish `hcontr : ∀ i, ContinuousOn (fun q => s i q * r q) (O i ∩ V₁ ×ˢ K)`. Introduce `i`. Establish `heq : EqOn (fun q => ∑ j ∈ F, (f j q.2 : ℂ) * s j (b₀, q.2) * (s i q / s j q)) (fun q => s i q * r q) (O i ∩ V₁ ×ˢ K)`. Introduce `q _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [r, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `ContinuousOn.congr ?_ heq.symm` and prove the remaining obligations. Introduce `q hq`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Use `tendsto_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Use `(frame_term_continuousAt (f j) (f j).continuous (fun v => s j (b₀, v)) (fun q => s i q / s j q) Prod.snd continuous_snd q fun ht => ?_).tendsto` and prove the remaining obligations. Establish `hjF : j ∈ F` using `hfin.mem_toFinset.2 ⟨q.2, ht, hq.2.2⟩`. Establish `hqj : q ∈ O j` using `hq.2.1 j hjF q.2 ⟨ht, hq.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `hb : (b₀, q.2) ∈ O j` using `hf j ht`. Conclude with `(hcont j).continuousAt ((hUo j).mem_nhds hb)`. Conclude with `(hratio i j).continuousAt (((hO i).inter (hO j)).mem_nhds ⟨hq.1, hqj⟩)`. Establish `hev : ∀ᶠ b in 𝓝 b₀, ∀ v ∈ K, (b ∈ V₁ ∧ v ∈ K) → r (b, v) ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hK.eventually_forall_of_forall_eventually (P := fun b v => (b ∈ V₁ ∧ v ∈ K) → r (b, v) ≠ 0) fun v hv => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov (b₀, v)`. Establish `hmem : (b₀, v) ∈ O i ∩ V₁ ×ˢ K` using `⟨hi, hb₀, hv⟩`. Establish `hg : s i (b₀, v) * r (b₀, v) ≠ 0`. Rewrite using `[hr₀ v hv, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `hne i _ hi`. Establish `h1` using `Filter.Tendsto.eventually (hcontr i _ hmem) (eventually_ne_nhds hg)`. Rewrite `h1` using `[eventually_nhdsWithin_iff]`. Use `filter_upwards [h1, (hO i).mem_nhds hi] with z hz hzi hzVK`. Conclude with `right_ne_zero_of_mul (hz ⟨hzi, hzVK⟩)`.
-
-Use `⟨{b | b ∈ V₁ ∧ ∀ v ∈ K, (b ∈ V₁ ∧ v ∈ K) → r (b, v) ≠ 0}, inter_mem hV₁ hev, r, ?_, fun i => (hcontr i).mono ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, v⟩ ⟨⟨hb1, hb2⟩, hv⟩`. Conclude with `hb2 v hv ⟨hb1, hv⟩`. Introduce and unpack `⟨b, v⟩ ⟨hi, ⟨hb1, _⟩, hv⟩`. Conclude with `⟨hi, hb1, hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_extend_near_fibre : ∀ (B : Type) [TopologicalSpace B] (b₀ : B) (J : Type)
     (O : J → Set (B × ℝ × ℝ)) (s : J → B × ℝ × ℝ → ℂ) (K : Set (ℝ × ℝ)), IsCompact K →

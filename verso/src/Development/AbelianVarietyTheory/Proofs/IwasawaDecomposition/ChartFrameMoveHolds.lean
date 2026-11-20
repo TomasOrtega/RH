@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.LocM.Cht
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.LocM.IsFrame, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isFrame_congr_coeff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l l' : Level H} {c : Coeff l} {c' : Coeff l'} {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R]
@@ -19,9 +19,7 @@ theorem isFrame_congr_coeff {E : Type} [Field E] [NumberField E] [IsCMField E] {
   simp only [GlobalTheory.LocM.IsFrame, h]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' c c' X X' t t' g m R _ f f' x h`. Use `⟨fun u' hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `(BaseMdl.frame_push m f u' fun τ i => (hu.1 τ i).1.1).1 ((isFrame_congr_coeff t' h x u').1 hu)`. Use `choose u' h1 h2 using fun τ i => BaseMdl.exists_lift m (hu.1 τ i).1.1`. Use `⟨u', (isFrame_congr_coeff t' h x u').2 ((BaseMdl.frame_push m f u' h2).2 ?_), h1⟩` and prove the remaining obligations.
-
-Rewrite using `[show (fun τ i => u' τ i ≫ m.φ : Vecs Dw t R) = u from funext fun τ => funext fun i => h1 τ i]`. Conclude with `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameMove : FrameMoveSt := by
   intro E _ _ _ H Dw l l' c c' X X' t t' g m R _ f f' x h

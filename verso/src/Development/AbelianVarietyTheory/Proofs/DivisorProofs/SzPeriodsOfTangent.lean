@@ -24,7 +24,7 @@ namespace GlobalTheory.LatModel
 variable {E : Type} [Field E] [NumberField E] {I : Type} {𝔠 : FracId (FR E)} {R : Subring ℂ}
 
 /- English proof (translation)
-Establish `h` using `he v v' W hv hW`. Establish `ha : a / Ω = ((e v : R) : ℂ) * (W (U.e.symm i) * Ω)⁻¹`. Rewrite using `[h, _root_.mul_inv, div_eq_mul_inv, show a * W (U.e.symm i) * ((W (U.e.symm i))⁻¹ * Ω⁻¹) = a * Ω⁻¹ * (W (U.e.symm i) * (W (U.e.symm i))⁻¹) by ring, mul_inv_cancel₀ hW0, _root_.mul_one]`. Rewrite using `[ha]`. Simplify using `using GlobalTheory.LatValRam.sz_mul (hR.2.1 _ (e v).2) hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sz_period_of_tangent {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]} {φ : I → E →+* ℂ} {L : Set E}
     {X₀ : Obj (FR E) 𝔠 (Sp R)} {X : Obj (FR E) 𝔠 (Sp ℂ)} {U : Unif φ L 0 X} {p : X.A.left ⟶ X₀.A.left} {i : I}

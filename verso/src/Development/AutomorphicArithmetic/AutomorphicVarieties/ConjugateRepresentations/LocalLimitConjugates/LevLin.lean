@@ -16,7 +16,7 @@ private def levFnSub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {
     fun m hm => by rw [map_smul, h.2.2 m hm, smul_comm]⟩
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v => simp only [LinearMap.rTensor_tmul, cmp_tmul, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem cmp_rTensor {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T : Module.End ℂ W) (i : Fin d)
     (m : W ⊗[ℂ] (Fin d → ℂ)) : cmp i (T.rTensor (Fin d → ℂ) m) = T (cmp i m) := by
@@ -26,11 +26,11 @@ private theorem cmp_rTensor {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ}
   | tmul φ v => simp only [LinearMap.rTensor_tmul, cmp_tmul, map_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ a U Ξ q`. Establish `ap : ∀ (α β : Co Ξ q) (s t : ℂ) X, (s • α + t • β) X = s • α X + t • β X` using `fun _ _ _ _ _ => rfl`. Use `⟨fun α β s t hα hβ => ⟨fun k X => ?_, fun X i hi => ?_, fun X => ?_⟩, fun α β s t => ?_, fun α hα X i => ?_, fun T α X i => ?_⟩` and prove the remaining obligations. Rewrite using `[ap, ap, hα.equiv k X, hβ.equiv k X, map_add, map_smul, map_smul]`. Rewrite using `[ap, hα.basic X i hi, hβ.basic X i hi, smul_zero, smul_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ap]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (hα.val X)) (Submodule.smul_mem _ _ (hβ.val X))`. Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Establish `e : (s • dCo (smLie Ξ) α + t • dCo (smLie Ξ) β) X = s • dCo (smLie Ξ) α X + t • dCo (smLie Ξ) β X` using `rfl`. Rewrite using `[e, dCo_apply, dCo_apply, dCo_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ap, map_add, map_smul, smul_add, Finset.sum_add_distrib, Finset.smul_sum]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Conclude with `mem_tens.1 (span_le_tens (N := levFnSub U Ξ) (fun φ h => h) (hα.val X)) i`. Rewrite using `[app_apply, cmp_rTensor]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.levLin :
     UpperTheory.V.Cj.H.LevLin := by

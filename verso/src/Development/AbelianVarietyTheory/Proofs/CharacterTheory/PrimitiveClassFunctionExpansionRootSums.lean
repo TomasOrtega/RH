@@ -16,7 +16,7 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Establish `hS : S.Finite` using `Set.toFinite S`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hS]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finsum_mem_mul_sub_sum {G : Type} [Finite G] (S : Set G) (c : ℂ) (φ : G → ℂ) (T : Finset ℕ)
     (a : ℕ → ℂ) (ψ : ℕ → G → ℂ) :
@@ -27,17 +27,15 @@ theorem finsum_mem_mul_sub_sum {G : Type} [Finite G] (S : Set G) (c : ℂ) (φ :
   simp only [Finset.mul_sum]
 
 /- English proof (translation)
-Use `set N := q ^ n - 1 with hN`. Establish `hq1 : 1 ≤ q ^ n` using `Nat.one_le_pow _ _ (by omega)`. Establish `hqn : q ≤ q ^ n` using `Nat.le_self_pow (by omega) q`. Establish `hNpos : 0 < N` using `by omega`. Establish `hcop : Nat.Coprime (q ^ i) N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Nat.Coprime (q ^ n) N`. Rewrite using `[hN, Nat.coprime_self_sub_right hq1]`. Conclude with `Nat.coprime_one_right _`. Conclude with `(h1.coprime_dvd_left (dvd_pow_self q (by omega))).pow_left i`. Establish `uniq : ∀ a b, a ∈ Finset.range N → b ∈ Finset.range N → a * q ^ i % N = b * q ^ i % N → a = b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b ha hb hab`. Establish `hmod : a ≡ b [MOD N]` using `Nat.ModEq.cancel_right_of_coprime (Nat.Coprime.gcd_eq_one hcop.symm) hab`. Establish `ha'` using `Nat.mod_eq_of_lt (Finset.mem_range.mp ha)`. Establish `hb'` using `Nat.mod_eq_of_lt (Finset.mem_range.mp hb)`. Unfold `Nat.ModEq at hmod`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨k, hk, hkeq⟩` from `Finset.surj_on_of_inj_on_of_card_le (s := Finset.range N) (t := Finset.range N) (fun k _ => k * q ^ i % N) (fun k _ => Finset.mem_range.mpr (Nat.mod_lt _ hNpos)) (fun a b ha hb hab => uniq a b ha hb hab) le_rfl (l % N) (Finset.mem_range.mpr (Nat.mod_lt _ hNpos))`. Rewrite using `[Finset.card_eq_one]`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use extensionality with `k'`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk', h'⟩`. Establish `h'' : k' * q ^ i % N = l % N` using `h'`. Conclude with `uniq k' k hk' hk (h''.trans hkeq)`.
-
-Introduce and unpack `rfl`. Conclude with `⟨hk, hkeq.symm⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_filter_mul_pow_modEq (q n i l : ℕ) (hq : 1 < q) (hn : 0 < n) (hi : i ≤ n) :
     ((Finset.range (q ^ n - 1)).filter (fun k => k * q ^ i ≡ l [MOD (q ^ n - 1)])).card = 1 := by
@@ -73,13 +71,11 @@ theorem card_filter_mul_pow_modEq (q n i l : ℕ) (hq : 1 < q) (hn : 0 < n) (hi 
     exact ⟨hk, hkeq.symm⟩
 
 /- English proof (translation)
-Establish `key : ∀ i ∈ Finset.range n, ∑ k ∈ Finset.range (q ^ n - 1), (if k * q ^ i ≡ l [MOD (q ^ n - 1)] then A k else 0) = A l`. Introduce `i hi`. Rewrite using `[← Finset.sum_filter]`. Take `⟨k, hk⟩` from `Finset.card_eq_one.mp (card_filter_mul_pow_modEq q n i l hq hn (Finset.mem_range.mp hi).le)`. Establish `hmem : k ∈ (Finset.range (q ^ n - 1)).filter (fun k => k * q ^ i ≡ l [MOD (q ^ n - 1)])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Conclude with `Finset.mem_singleton_self k`. Rewrite using `[hk, Finset.sum_singleton]`. Conclude with `hA k i (Finset.mem_filter.mp hmem).2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.card_filter, Nat.cast_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use `_ = ∑ i ∈ Finset.range n, ∑ k ∈ Finset.range (q ^ n - 1), (if k * q ^ i ≡ l [MOD (q ^ n - 1)] then A k else 0) := Finset.sum_comm`.
-
-Use `_ = ∑ i ∈ Finset.range n, A l := Finset.sum_congr rfl key`. Use `_ = n * A l := by simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sum_mul_card_filter_modEq (q n l : ℕ) (hq : 1 < q) (hn : 0 < n) (A : ℕ → ℂ)
     (hA : ∀ k i : ℕ, k * q ^ i ≡ l [MOD (q ^ n - 1)] → A k = A l) :
@@ -109,17 +105,15 @@ theorem sum_mul_card_filter_modEq (q n l : ℕ) (hq : 1 < q) (hn : 0 < n) (A : �
     _ = n * A l := by simp
 
 /- English proof (translation)
-Take `⟨α, hα⟩ : ∃ α : AlgebraicClosure F, aeval α f = 0` from `IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure F) f (degree_pos_of_irreducible hf).ne'`. Establish `hmin : minpoly F α = f` using `(minpoly.eq_of_irreducible_of_monic hf hα hm).symm`. Use `⟨α, ?_, hmin⟩` and prove the remaining obligations. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `h0` to reduce the goal to its premises. Establish `h` using `coeff_zero_eq_aeval_zero' (R := F) (A := AlgebraicClosure F) f`. Rewrite `h` using `[hα]`. Conclude with `(algebraMap F (AlgebraicClosure F)).injective (by rw [h, map_zero])`. Establish `hint : IsIntegral F α` using `⟨f, hm, by rwa [← aeval_def]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional F (IntermediateField.adjoin F ({α} : Set (AlgebraicClosure F)))` using `IntermediateField.adjoin.finiteDimensional hint`. Establish `: Finite (IntermediateField.adjoin F ({α} : Set (AlgebraicClosure F)))` using `Module.finite_of_finite F`. Set `_ : Fintype (IntermediateField.adjoin F ({α} : Set (AlgebraicClosure F)))` to `Fintype.ofFinite _`. Establish `hcard : Fintype.card (IntermediateField.adjoin F ({α} : Set (AlgebraicClosure F))) = Nat.card F ^ f.natDegree`. Rewrite using `[Fintype.card_eq_nat_card, Module.natCard_eq_pow_finrank (K := F), IntermediateField.adjoin.finrank hint, hmin]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hβ : (⟨α, IntermediateField.mem_adjoin_simple_self F α⟩ : (IntermediateField.adjoin F ({α} : Set (AlgebraicClosure F)))) ≠ 0`. Introduce `h`. Apply `hα0` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Establish `h1` using `FiniteField.pow_card_sub_one_eq_one _ hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hcard]`. Establish `h2 : α ^ (Nat.card F ^ f.natDegree - 1) = 1`. Use `congrArg Subtype.val h1` as an intermediate fact. Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : Nat.card F ^ f.natDegree - 1 ∣ Nat.card F ^ (f.natDegree * m) - 1 := by`.
-
-Conclude with `Nat.pow_sub_one_dvd_pow_sub_one (Nat.card F) (dvd_mul_right _ _)`. Rewrite using `[hr, pow_mul, h2, one_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_minpoly_eq_of_irreducible (F : Type) [Field F] [Finite F] (f : F[X]) (hm : f.Monic)
     (hf : Irreducible f) (h0 : f.coeff 0 ≠ 0) (m : ℕ) :
@@ -153,19 +147,17 @@ theorem exists_minpoly_eq_of_irreducible (F : Type) [Field F] [Finite F] (f : F[
   rw [hr, pow_mul, h2, one_pow]
 
 /- English proof (translation)
-Establish `hc0` using `torus_fourier_injective F θ hθ (Module.finrank F V) hn (fun α => ((Module.finrank F V / (minpoly F α).natDegree : ℕ) : ℂ) * mass φ (minpoly F α ^ (Module.finrank F V / (minpoly F α).natDegree))) (fun l => by rw [← GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_eq_torusSum …`. Distinguish the cases in `hex : ∃ (f : F[X]) (m : ℕ), f.Monic ∧ Irreducible f ∧ 0 < m ∧ LinearMap.charpoly g = f ^ m`. Use `swap`. Conclude with `GlobalTheory.T.classFn_eq_zero_of_charpoly_not_irreducible_pow F V φ hc hp hn g hex`. Take `⟨f, m, hfm, hfi, hm, hcp⟩` from `hex`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `GlobalTheory.T.primitiveEndClassFunction_zero_of_charpoly_mass_zero F V φ hc hp g` to reduce the goal to its premises. Establish `hdeg : f.natDegree * m = Module.finrank F V`. Use `LinearMap.charpoly_natDegree g` as an intermediate fact. Rewrite `this` using `[hcp, natDegree_pow]`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hfdeg : 0 < f.natDegree` using `natDegree_pos_iff_degree_pos.mpr (degree_pos_of_irreducible hfi)`. Establish `h0 : f.coeff 0 ≠ 0`. Introduce `h0`. Establish `hc0' : (LinearMap.charpoly g).coeff 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hcp, coeff_zero_eq_eval_zero, eval_pow, ← coeff_zero_eq_eval_zero, h0, zero_pow hm.ne']`. Establish `hdet` using `LinearMap.det_eq_sign_charpoly_coeff g`. Rewrite `hdet` using `[hc0', mul_zero]`. Establish `hu : IsUnit (LinearMap.det g)` using `LinearMap.isUnit_iff_isUnit_det g |>.mp hg`. Rewrite `hu` using `[hdet]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `not_isUnit_zero hu`. Take `⟨α, hα1, hαmin⟩` from `exists_minpoly_eq_of_irreducible F f hfm hfi h0 m`. Rewrite `hα1` using `[hdeg]`. Establish `hcα` using `hc0 α hα1`. Simplify using `only [hαmin] at hcα`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiv : Module.finrank F V / f.natDegree = m`. Rewrite using `[← hdeg]`. Conclude with `Nat.mul_div_cancel_left m hfdeg`. Rewrite `hcα` using `[hdiv]`. Rewrite using `[hcp]`.
-
-Conclude with `(mul_eq_zero.mp hcα).resolve_left (Nat.cast_ne_zero.mpr hm.ne')`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ipGL_rootSum_eq_zero (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (θ : AlgebraicClosure F →* ℂ)
@@ -207,25 +199,21 @@ theorem eq_zero_of_ipGL_rootSum_eq_zero (F : Type) [Field F] [Finite F] (V : Typ
   exact (mul_eq_zero.mp hcα).resolve_left (Nat.cast_ne_zero.mpr hm.ne')
 
 /- English proof (translation)
-Establish `: Finite (Module.End F V)` using `Module.finite_of_finite F`. Use `set n := Module.finrank F V with hn_def`. Use `set T := Finset.range (Nat.card F ^ n - 1) with hT`. Use `set R : ℕ → Module.End F V → ℂ := fun k g => rootSum θ k (LinearMap.charpoly g) with hR`. Use `set a : ℕ → ℂ := fun k => ipGL φ (R k) with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set ψ : ℕ → Module.End F V → ℂ := fun k => psi (rootSum θ k) V with hψ`. Use `set c : ℂ := glCard F n * (n : ℂ) with hc_def`. Use `set D : Module.End F V → ℂ := fun x => c * φ x - ∑ k ∈ T, a k * ψ k x with hD`. Establish `hDc : IsClassFn D`. Introduce `e x`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hD, hψ]`. Rewrite using `[hc e x]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[psi_conj F (rootSum θ k) V V e x]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hDp : IsPrimitive D`. Introduce `A h1 h2 x hx`. Use `finsum_mem_mul_sub_sum (nilRad A) c (fun y => φ (x + y)) T a (fun k y => ψ k (x + y))` as an intermediate fact. Simplify using `only [hD]`. Rewrite using `[this, hp A h1 h2 x hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ k, ∑ᶠ y ∈ nilRad A, ψ k (x + y) = 0` using `fun k => GlobalTheory.T.isPrimitiveEndClassFunction_invariantSubspaceMobiusInverse F V (rootSum θ k) (rootSum_isAdditive_and_pow_X_sub_one F θ k).1 A h1 h2 x hx`. Simplify using `[hz]`. Establish `hq : 1 < Nat.card F` using `Finite.one_lt_card`. Establish `horth : ∀ l, ipGL D (fun x : Module.End F V => rootSum θ l (LinearMap.charpoly x)) = 0`. Introduce `l`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : ∀ x, D x * star (R l x) = c * (φ x * star (R l x)) - ∑ k ∈ T, a k * (ψ k x * star (R l x))`. Introduce `x`. Simplify using `only [hD, sub_mul, Finset.sum_mul, mul_assoc]`. Establish `hsum` using `finsum_mem_mul_sub_sum {x : Module.End F V | IsUnit x} c (fun x => φ x * star (R l x)) T a (fun k x => ψ k x * star (R l x))`. Establish `h30342 : ∀ k, ipGL (ψ k) (R l) = glCard F n * (((Finset.range n).filter (fun i => k * Nat.card F ^ i ≡ l [MOD (Nat.card F ^ n - 1)])).card : ℂ)` using `fun k => GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_mobius F V θ hθ hn k l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hA : ∀ k i : ℕ, k * Nat.card F ^ i ≡ l [MOD (Nat.card F ^ n - 1)] → a k = a l` using `fun k i hki => GlobalTheory.T.innerProduct_rootPowerSum_eq_of_frobenius_modEq F V θ φ hc hp hn k l i hki`. Establish `hmain` using `sum_mul_card_filter_modEq (Nat.card F) n l hq hn a hA`. Use `show ∑ᶠ x ∈ {x : Module.End F V | IsUnit x}, D x * star (R l x) = 0`. Simplify using `only [hexp]`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∑ᶠ x ∈ {x : Module.End F V | IsUnit x}, φ x * star (R l x) = a l` using `rfl`. Establish `e2 : ∀ k, ∑ᶠ x ∈ {x : Module.End F V | IsUnit x}, ψ k x * star (R l x) = ipGL (ψ k) (R l)` using `fun k => rfl`. Simplify using `only [e1, e2, h30342]`. Establish `e3 : ∑ k ∈ T, a k * (glCard F n * (((Finset.range n).filter (fun i => k * Nat.card F ^ i ≡ l [MOD (Nat.card F ^ n - 1)])).card : ℂ)) = glCard F n * ∑ k ∈ T, a k * (((Finset.range n).filter (fun i => k * Nat.card F ^ i ≡ l [MOD (Nat.card F ^ n - 1)])).card : ℂ)`. Rewrite using `[Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, hT, hmain, hc_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz` using `eq_zero_of_ipGL_rootSum_eq_zero F V θ hθ D hDc hDp hn horth g hg`.
-
-Simplify using `only [hD] at hz`. Conclude with `sub_eq_zero.mp hz`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expand_primitive (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (θ : AlgebraicClosure F →* ℂ)

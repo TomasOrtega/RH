@@ -18,14 +18,14 @@ namespace UpperTheory.BaseChangeIdentities.FrameWordIdentity
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ n d hd a ha p`. Conclude with `(h E n d hd a ha [Sum.inl ()] 0 (by simp)).1 p`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frameWord_length_eq_one_of_hyp (h : LocWord) : heckeLevelWordBase := by
   intro E _ _ _ n d hd a ha p
   exact (h E n d hd a ha [Sum.inl ()] 0 (by simp)).1 p
 
 /- English proof (translation)
-Introduce `hR E _ _ _ hE n _ π S T F₀ F hS`. Use `choose c₀ hc₀ hc using h1 hR E n π S T F₀ F hE hS`. Conclude with `⟨fun i => F₀.C.c i * (F.B i).vol, c₀, hc₀, fun ws hws => ⟨fun i => hc i ws hws, h2 hR E n π S T F₀ F hE hS ws hws⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wordId_of (h1 : TestWord) (h2 : TraceWord) : WordId := by
   intro hR E _ _ _ hE n _ π S T F₀ F hS

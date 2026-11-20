@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DualGr
 open scoped ComplexOrder Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GradedNorm.interp_comparable` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedFormComparisonPosSemidef.lean&line=48#L48)
 -/

@@ -49,9 +49,9 @@ def elt (J K : Matrix n n R) (i j : n) (a b : R) : Matrix n n R :=
   1 + a • single i j (1 : R) - b • (K * single j i (1 : R) * J)
 
 /- English proof (translation)
-Establish `e : elt J K i j a b = transvection i j a * (K * transvection j i (-b) * J)`. Establish `h1 : single i j a = a • single i j (1 : R)` using `by simp`. Establish `h2 : single j i (-b) = (-b) • single j i (1 : R)` using `by rw [smul_single, smul_eq_mul, mul_one]`. Unfold `elt transvection`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, hKJ, smul_smul, smul_add]`. Rewrite using `[show -b * a = 0 by rw [neg_mul, mul_comm, hab, neg_zero], zero_smul, add_zero, neg_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, det_mul, det_mul, det_mul, det_transvection_of_ne _ _ hij, det_transvection_of_ne _ _ hij.symm, one_mul, mul_one, ← det_mul, hKJ, det_one]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_elt {J K : Matrix n n R} (hKJ : K * J = 1) {i j : n} (hij : i ≠ j) {a b : R} (hab : a * b = 0) :
     (elt J K i j a b).det = 1 := by
@@ -68,21 +68,19 @@ theorem det_elt {J K : Matrix n n R} (hKJ : K * J = 1) {i j : n} (hij : i ≠ j)
     mul_one, ← det_mul, hKJ, det_one]
 
 /- English proof (translation)
-Establish `hK : cT c K = K`. Establish `h : cT c K * J = 1` using `by rw [← hJ, ← cT_mul, hJK, cT_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : ∀ p q : n, cT c (single p q (1 : R)) = single q p 1`. Introduce `p q`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x y`. Simplify using `only [cT, transpose_apply, map_apply, single_apply]`. Distinguish the cases in `h : p = y ∧ q = x`. Rewrite using `[if_pos h, if_pos h.symm, map_one]`. Rewrite using `[if_neg h, if_neg (fun h' => h h'.symm), map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : cT c (elt J K i j a b) = 1 + b • single j i (1 : R) - a • (J * single i j (1 : R) * K)`. Establish `: J * single i j (1 : R) * K = cT c (K * single j i (1 : R) * J)`. Rewrite using `[cT_mul, cT_mul, hJ, hK, hs, Matrix.mul_assoc]`. Establish `hgen : ∀ X Y Z : Matrix n n R, cT c (X + a • Y - b • Z) = cT c X + b • cT c Y - a • cT c Z`. Introduce `X Y Z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x y`. Simplify using `[cT, hca, hcb]`. Rewrite using `[this, elt, hgen, cT_one, hs i j]`. Use `set N := single i j (1 : R) with hN`. Use `set N' := single j i (1 : R) with hN'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNN : N * N = 0` using `single_mul_single_of_ne _ _ _ _ hij.symm _`. Establish `hNN' : N' * N' = 0` using `single_mul_single_of_ne _ _ _ _ hij _`. Establish `h2 : cT c (elt J K i j a b) * J = J + b • (N' * J) - a • (J * N)`. Rewrite using `[h1]`. Simplify using `only [Matrix.sub_mul, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_assoc, hKJ, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : J * (K * N' * J) = N' * J`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJK, Matrix.one_mul]`. Establish `h4 : N' * J * (K * N' * J) = 0`. Rewrite using `[Matrix.mul_assoc, h3, ← Matrix.mul_assoc, hNN', Matrix.zero_mul]`. Establish `h5 : J * N * N = 0` using `by rw [Matrix.mul_assoc, hNN, Matrix.mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hba : b * a = 0` using `by rw [mul_comm, hab]`. Rewrite using `[h2]`. Unfold `elt`. Rewrite using `[← hN, ← hN']`. Simplify using `only [Matrix.sub_mul, Matrix.add_mul, Matrix.mul_sub, Matrix.mul_add, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, h3, h4, h5, smul_add, smul_sub, smul_smul, hab, hba, zero_smul, smul_zero]`.
-
-Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem unitary_elt (c : R →+* R) {J K : Matrix n n R} (hJ : cT c J = J) (hKJ : K * J = 1) (hJK : J * K = 1)
     {i j : n} (hij : i ≠ j) {a b : R} (hab : a * b = 0) (hca : c a = b) (hcb : c b = a) :
@@ -132,14 +130,14 @@ end Ring
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Iff.trans (show _ ↔ Matrix.GeneralLinearGroup.det (HA.mat (AF F) σ J g) = 1 from Iff.rfl) Units.ext_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_SUAdelic {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {g : HA (AF F) σ J} :
     g ∈ SUAdelic σ J ↔ ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)).det = 1 :=
   Iff.trans (show _ ↔ Matrix.GeneralLinearGroup.det (HA.mat (AF F) σ J g) = 1 from Iff.rfl) Units.ext_iff
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_same (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) : evalV F v (singleV F v y) = y := by
   classical
@@ -147,7 +145,7 @@ theorem evalV_single_same (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) : evalV 
     (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v y
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y h`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (y : Fv F v) :
     evalV F w (singleV F v y) = 0 := by
@@ -156,13 +154,11 @@ theorem evalV_single_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (y : Fv
     (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y h
 
 /- English proof (translation)
-Use `⟨pairA F (fun w => if w ∈ S₁ then 1 else 0) (∑ v ∈ S₂, singleV F v 1), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Conclude with `if_pos hw`. Introduce `w hw`. Conclude with `if_neg hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `v hv`. Express the relevant statement in the definitionally equal form `evalV F v (∑ v ∈ S₂, singleV F v 1) = 1`. Rewrite using `[map_sum, Finset.sum_eq_single v, evalV_single_same]`. Introduce `u _ hu`. Conclude with `evalV_single_ne hu.symm _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `h`. Conclude with `absurd hv h`. Introduce `v hv`. Express the relevant statement in the definitionally equal form `evalV F v (∑ v ∈ S₂, singleV F v 1) = 0`. Rewrite using `[map_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun u hu => evalV_single_ne (fun h : v = u => hv (h ▸ hu)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPlacesIdem (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ ε, IsPlacesIdem S₁ S₂ ε := by
@@ -184,7 +180,7 @@ theorem exists_isPlacesIdem (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (He
     exact Finset.sum_eq_zero fun u hu => evalV_single_ne (fun h : v = u => hv (h ▸ hu)) _
 
 /- English proof (translation)
-Use `letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _`. Introduce `h`. Take `⟨C, hC⟩` from `(h.isBounded).exists_norm_le`. Take `⟨x, hx⟩` from `NormedField.exists_lt_norm (Fv F v) C`. Conclude with `absurd (hC x trivial) (not_le.2 hx)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_isCompact_univ_Fv (v : HeightOneSpectrum (𝓞 F)) : ¬ IsCompact (Set.univ : Set (Fv F v)) := by
   letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _
@@ -194,42 +190,38 @@ theorem not_isCompact_univ_Fv (v : HeightOneSpectrum (𝓞 F)) : ¬ IsCompact (S
   exact absurd (hC x trivial) (not_le.2 hx)
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.continuous_eval v).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evalV (v : HeightOneSpectrum (𝓞 F)) : Continuous fun a : AF F => evalV F v (sndA F a) :=
   (RestrictedProduct.continuous_eval v).comp continuous_snd
 
 /- English proof (translation)
-Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_algebraMap (σ : E →ₐ[F] E) (t : AF F) :
     sigR (AF F) σ (algebraMap (AF F) (AF F ⊗[F] E) t) = algebraMap (AF F) (AF F ⊗[F] E) t := by
   simp [sigR, Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `hc`. Use `set c := sigR (AF F) σ with hcdef`. Use `set ι := algebraMap (AF F) (AF F ⊗[F] E) with hι`. Establish `hcι : ∀ t, c (ι t) = ι t` using `sigR_algebraMap σ`. Establish `hcc : c (c e) = e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg c hsum`. Rewrite `h` using `[map_add, hcι, ← hsum, add_comm]`. Conclude with `add_right_cancel h`. Establish `hce : c e * c e = c e` using `by rw [← map_mul, he]`. Take `⟨i, j, hij⟩ : ∃ i j : Fin M, i ≠ j` from `⟨⟨0, by omega⟩, ⟨1, by omega⟩, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hJ' : Formalism.UG.cT c (JR (F` using `F) (AF F) J) = JR (F := F) (AF F) J := by`. Conclude with `Matrix.ext fun a b => map_mem_HermR (AF F) σ J hJ.1 a b`. Establish `hu : IsUnit (JR (F` using `F) (AF F) J).det := by`. Unfold `JR`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(IsUnit.mk0 _ hJ.2).map _`. Establish `hKJ` using `Matrix.nonsing_inv_mul _ hu`. Establish `hJK` using `Matrix.mul_nonsing_inv _ hu`. Take `⟨φ, hφ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F E) (LinearMap.ker_eq_bot.2 (algebraMap F E).injective)`. Establish `hφ1 : φ 1 = 1` using `by simpa using LinearMap.congr_fun hφ 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `lam : AF F ⊗[F] E →ₗ[AF F] AF F` to `(TensorProduct.AlgebraTensorModule.rid F (AF F) (AF F)).toLinearMap ∘ₗ φ.baseChange (AF F)`. Establish `hlam : ∀ t, lam (ι t) = t`. Introduce `t`. Simplify using `[lam, hι, Algebra.TensorProduct.algebraMap_apply, hφ1]`. Set `cl : AF F ⊗[F] E →ₗ[AF F] AF F ⊗[F] E` to `{ toFun := c map_add' := map_add c map_smul' := fun t x => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, map_mul, hcι, RingHom.id_apply, Algebra.smul_def] }`. Set `L : AF F ⊗[F] E →ₗ[AF F] AF F` to `lam ∘ₗ (LinearMap.id + cl) ∘ₗ LinearMap.mulLeft (AF F) e`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Establish `hL : Continuous L` using `IsModuleTopology.continuous_of_linearMap L`. Establish `hent : Continuous fun g : HA (AF F) σ J => ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j` using `(Units.continuous_val.comp continuous_subtype_val).matrix_elem i j`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf` using `(continuous_evalV v).comp (hL.comp hent)`. Use `not_isCompact_univ_Fv v ?_` and prove the remaining obligations. Use `hc.image hf using 1` and compare the differences between its conclusion and the goal. Use `symm`. Rewrite using `[Set.eq_univ_iff_forall]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `y`. Use `set t : AF F := pairA F 0 (singleV F v y) with ht`. Establish `hab : (e * ι t) * (c e * ι t) = 0` using `by linear_combination (ι t * ι t) * hec`. Establish `hca : c (e * ι t) = c e * ι t` using `by rw [map_mul, hcι]`. Establish `hcb : c (c e * ι t) = e * ι t` using `by rw [map_mul, hcι, hcc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hdet` using `det_elt hKJ hij hab`. Set `g : HA (AF F) σ J` to `(⟨Matrix.GeneralLinearGroup.mk'' _ (isUnit_iff_exists_inv.2 ⟨1, (mul_one _).trans hdet⟩), unitary_elt c hJ' hKJ hJK hij hab hca hcb⟩ : HR (AF F) σ J)`. Establish `hg : ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) = elt (JR (F` using `F) (AF F) J) (JR (F := F) (AF F) J)⁻¹ i j (e * ι t) (c e * ι t) := rfl`. Use `⟨g, ⟨mem_SUAdelic.2 (by rw [hg, hdet]), fun p q => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← hι, ← hsum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [elt, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(ι t * Matrix.single i j (1 : AF F ⊗[F] E) p q) * (he + hec) - (ι t * ((JR (F := F) (AF F) J)⁻¹ * Matrix.single j i (1 : AF F ⊗[F] E) * JR (F := F) (AF F) J) p q) * (hce + hec)`. Establish `h1 : e * (elt (JR (F` using `F) (AF F) J) (JR (F := F) (AF F) J)⁻¹ i j (e * ι t) (c e * ι t)) i j = e * ι t := by`. Simplify using `only [elt, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply_ne hij, Matrix.single_apply_same]`. Take the linear combination `(ι t) * he - (ι t * ((JR (F := F) (AF F) J)⁻¹ * Matrix.single j i (1 : AF F ⊗[F] E) * JR (F := F) (AF F) J) i j) * hec`.
-
-Establish `h2 : L ((elt (JR (F` using `F) (AF F) J) (JR (F := F) (AF F) J)⁻¹ i j (e * ι t) (c e * ι t)) i j) = ε * t := by`. Express the relevant statement in the definitionally equal form `lam (e * _ + c (e * _)) = _`. Rewrite using `[h1, hca, ← add_mul, hsum, ← map_mul, hlam]`. Express the relevant statement in the definitionally equal form `evalV F v (sndA F (L (((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j))) = y`. Rewrite using `[hg, h2, map_mul, map_mul, hε, one_mul]`.
-
-Conclude with `evalV_single_same v y`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isCompact_split (σ : E →ₐ[F] E) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hM : 2 ≤ M)
     (hJ : IsHermND σ J) (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : evalV F v (sndA F ε) = 1)
@@ -309,11 +301,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Stan
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, ⟨α, hεα, hα1, hα0⟩, hsum⟩` from `he`. Take `⟨hcm, hherm⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Establish `hidem : IsPlacesIdem ∅ {v} ε`. Substitute `hεα` using the available equality. Use `⟨fun w hw => absurd hw (Finset.notMem_empty w), fun w _ => rfl, fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `hα1`. Conclude with `hα0 u (fun h => hu (Finset.mem_singleton.2 h))`. Establish `hnc` using `not_isCompact_split D.sp.cm.sig hV (hherm V) v ε (hidem.2.2.1 v (Finset.mem_singleton_self v)) e h1 h2 hsum`. Use `closure_mono ?_ (H _ _ _ hcm _ _ hV (hherm V) ∅ {v} ε hidem hnc g (mem_SUAdelic.2 hg))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨γ, hγ, h, hh, rfl⟩`. Use `⟨γ, hγ.2, mem_SUAdelic.1 hγ.1, h, fun i j => ?_, mem_SUAdelic.1 hh.1, rfl⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Conclude with `hh.2 i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_split (H : StrongApproxSU) (D : D7) (V : HSp D) (hV : 2 ≤ V.rank) (e : AE D) (he : IsSplitIdem D e)
     (g : GA D V) (hg : (Formalism.L2.Theta.mt V g).det = 1) :

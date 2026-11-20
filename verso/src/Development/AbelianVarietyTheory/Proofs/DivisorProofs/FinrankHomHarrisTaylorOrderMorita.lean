@@ -14,9 +14,9 @@ open scoped TensorProduct
 namespace GlobalTheory.HTRho
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.OneTensorSpanTop.span_one_tmul_eq_top`. Consider the case `exact _root_.GlobalTheory.OneTensorSpanTop.span_one_tmul_eq_top`. Consider the case `(apply _root_.GlobalTheory.OneTensorSpanTop.span_one_tmul_eq_top <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OneTensorSpanTop.span_one_tmul_eq_top <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.OneTensorSpanTop.span_one_tmul_eq_top <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OneTensorSpanTop.span_one_tmul_eq_top ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_one_tmul (k : Type) [Field k] (C O : Type) [CommRing C] [Ring O] [Algebra C O] [Algebra C k] :
     Submodule.span k (Set.range fun o : O => (1 : k) ⊗ₜ[C] o) = ⊤ := by
@@ -29,25 +29,23 @@ theorem span_one_tmul (k : Type) [Field k] (C O : Type) [CommRing C] [Ring O] [A
   | (intros; exact _root_.GlobalTheory.OneTensorSpanTop.span_one_tmul_eq_top ..)
 
 /- English proof (translation)
-Introduce `p _ D k _ _ hk χ X Y _ _ _ _ _ _ σX σY hX hY`. Use `letI : Algebra (𝓞 D.F) k := χ.toAlgebra`. Establish `hiso : Nonempty ((k ⊗[𝓞 D.F] D.O) ≃ₐ[k] Matrix (Fin D.m) (Fin D.m) k)`. Take `⟨q, hq⟩` from `CharP.exists k`. Break down `CharP.char_is_prime_or_zero k q with hq' | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hqp : q = p`. Substitute `hqp` using the available equality. Conclude with `GlobalTheory.T.harrisTaylor_tensor_order_algEquiv_matrix_charP q D k`. It suffices to derive a contradiction. Conclude with `hk q ((Nat.coprime_primes hq' (Fact.out)).2 hqp) (CharP.cast_eq_zero k q)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero k := CharP.charP_to_charZero k`. Conclude with `GlobalTheory.T.harrisTaylor_tensor_order_algEquiv_matrix_charZero p D k`. Take `⟨e⟩` from `hiso`. Take `⟨ρX, hρX⟩` from `GlobalTheory.T.exists_action_factor_through_tensor_character k (𝓞 D.F) D.O _ e X σX hX`. Take `⟨ρY, hρY⟩` from `GlobalTheory.T.exists_action_factor_through_tensor_character k (𝓞 D.F) D.O _ e Y σY hY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `heq : GlobalTheory.HTRho.homO σX σY = GlobalTheory.HTRho.homO ρX.toRingHom ρY.toRingHom`. Use extensionality with `T`. Rewrite using `[GlobalTheory.HTRho.mem_homO, GlobalTheory.HTRho.mem_homO]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hb : b ∈ Submodule.span k (Set.range fun o : D.O => e ((1 : k) ⊗ₜ[𝓞 D.F] o))`. Establish `hr : (Set.range fun o : D.O => e ((1 : k) ⊗ₜ[𝓞 D.F] o)) = (e.toLinearMap) '' Set.range (fun o : D.O => (1 : k) ⊗ₜ[𝓞 D.F] o)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, span_one_tmul, Submodule.map_top, LinearMap.range_eq_top.2 e.surjective]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨o, rfl⟩` from `hz`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hρX, hρY]`. Conclude with `h o x`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Establish `h1` using `ha x`. Establish `h2` using `hb x`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add, LinearMap.add_apply] at h1 h2 ⊢`. Rewrite using `[h1, h2]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c a _ ha`. Introduce `x`. Establish `h1` using `ha x`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_smul, LinearMap.smul_apply] at h1 ⊢`. Rewrite using `[h1]`.
-
-Introduce `h o x`. Use `h (e (1 ⊗ₜ o)) x` as an intermediate fact. Simplify `this` using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hρX, hρY]`. Rewrite using `[heq]`. Conclude with `GlobalTheory.T.sq_mul_finrank_matrixAlgebra_hom_eq_finrank_mul k D.m X Y ρX ρY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_homO_morita : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (k : Type) [Field k] [IsAlgClosed k], (∀ n : ℕ, n.Coprime p → (n : k) ≠ 0) → ∀ (χ : 𝓞 D.F →+* k) (X Y : Type) [AddCommGroup X] [Module k X] [FiniteDimensional k X] [AddCommGroup Y] [Module k Y] [FiniteDimensional k Y] (σX : D.O →+* Module.End k X) (σY : D.O →+* Module.End k Y), (∀ c, σX (algebraMap (𝓞 D.F) D.O c) = χ c • 1) → (∀ c, σY (algebraMap (𝓞 D.F) D.O c) = χ c • 1) → D.m ^ 2 * Module.finrank k (GlobalTheory.HTRho.homO σX σY) = Module.finrank k X * Module.finrank k Y := by
   intro p _ D k _ _ hk χ X Y _ _ _ _ _ _ σX σY hX hY

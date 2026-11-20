@@ -13,9 +13,9 @@ section
 open Matrix
 
 /- English proof (translation)
-Establish `h1 : Ideal.span {a} = RingHom.ker (PadicInt.toZModPow (p` using `l) a.valuation) := by`. Rewrite using `[PadicInt.ker_toZModPow]`. Use `conv_lhs => rw [PadicInt.unitCoeff_spec ha]`. Conclude with `Ideal.span_singleton_mul_left_unit (PadicInt.unitCoeff ha).isUnit _`. Establish `h2 : Nat.card (ℤ_[l] ⧸ Ideal.span {a}) = l ^ a.valuation`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Nat.card_congr (RingHom.quotientKerEquivOfSurjective (ZMod.ringHom_surjective (PadicInt.toZModPow (p := l) a.valuation))).toEquiv, Nat.card_zmod]`. Rewrite using `[h2, PadicInt.norm_eq_zpow_neg_valuation ha]`. Use `push_cast`. Rewrite using `[Padic.norm_p_pow]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_card_quot_span (l : ℕ) [Fact l.Prime] {a : ℤ_[l]} (ha : a ≠ 0) :
     ‖((Nat.card (ℤ_[l] ⧸ Ideal.span {a}) : ℕ) : ℚ_[l])‖ = ‖a‖ := by
@@ -31,9 +31,9 @@ theorem norm_card_quot_span (l : ℕ) [Fact l.Prime] {a : ℤ_[l]} (ha : a ≠ 0
   rw [Padic.norm_p_pow]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NormDetIndex.norm_det_eq_norm_index`. Consider the case `exact _root_.GlobalTheory.NormDetIndex.norm_det_eq_norm_index`. Consider the case `(apply _root_.GlobalTheory.NormDetIndex.norm_det_eq_norm_index <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormDetIndex.norm_det_eq_norm_index <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NormDetIndex.norm_det_eq_norm_index <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormDetIndex.norm_det_eq_norm_index ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_index_range (l : ℕ) [Fact l.Prime] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ ℤ_[l]) (hM : M.det ≠ 0) :
@@ -47,15 +47,13 @@ theorem norm_index_range (l : ℕ) [Fact l.Prime] {κ : Type} [Fintype κ] [Deci
   | (intros; exact _root_.GlobalTheory.NormDetIndex.norm_det_eq_norm_index ..)
 
 /- English proof (translation)
-Set `T : AddSubgroup K` to `(nsmulAddMonoidHom (α := K) (l ^ N)).ker`. Establish `hT : ∀ x, x ∈ T ↔ l ^ N • x = 0` using `fun x => Iff.rfl`. Establish `h1 : Nat.card K = Nat.card (K ⧸ T) * Nat.card {x : K // l ^ N • x = 0}` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup T`. Establish `h2 : ¬ l ∣ Nat.card (K ⧸ T)`. Introduce `hd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `exists_prime_addOrderOf_dvd_card' l hd`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Establish `h3 : l • x ∈ T`. Rewrite using `[← QuotientAddGroup.eq_zero_iff, QuotientAddGroup.mk_nsmul, ← addOrderOf_dvd_iff_nsmul_eq_zero, hy]`. Rewrite `h3` using `[hT, smul_smul, ← pow_succ, ← addOrderOf_dvd_iff_nsmul_eq_zero, Nat.dvd_prime_pow hl.out]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, -, hk⟩` from `h3`. Establish `h4 : k ≤ N`. Use `addOrderOf_le_card (x := x)` as an intermediate fact. Use `Nat.lt_pow_self (n := k) hl.out.one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h5 : x ∈ T`. Rewrite using `[hT, ← addOrderOf_dvd_iff_nsmul_eq_zero, hk]`. Conclude with `pow_dvd_pow _ h4`. Rewrite `hy` using `[(QuotientAddGroup.eq_zero_iff x).2 h5, addOrderOf_zero]`. Conclude with `hl.out.one_lt.ne hy`.
-
-Rewrite using `[h1, Nat.cast_mul, norm_mul, Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd hl.out).2 h2), one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_card_eq_torsion (l : ℕ) [hl : Fact l.Prime] (K : Type) [AddCommGroup K] [Finite K]
     (N : ℕ) (hN : Nat.card K ≤ N) :
@@ -87,11 +85,11 @@ theorem norm_card_eq_torsion (l : ℕ) [hl : Fact l.Prime] (K : Type) [AddCommGr
     ((Nat.Prime.coprime_iff_not_dvd hl.out).2 h2), one_mul]
 
 /- English proof (translation)
-Establish `: Finite V` using `Nat.finite_of_card_ne_zero (by rw [hc1]; exact pow_ne_zero _ hl.out.ne_zero)`. Establish `hr : Module.finrank (ZMod l) V = m`. Use `Module.natCard_eq_pow_finrank (K := ZMod l) (V := V)` as an intermediate fact. Rewrite `this` using `[hc1, Nat.card_zmod]`. Conclude with `(Nat.pow_right_injective hl.out.two_le this).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `b` to `Module.finBasisOfFinrankEq (ZMod l) V hr`. Establish `hs : ∀ t : Fin m → ZMod l, ∑ j, (t j).val • b j = b.equivFun.symm t`. Introduce `t`. Rewrite using `[b.equivFun_symm_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod l), ZMod.natCast_zmod_val]`. Use `⟨b, fun x => ⟨b.equivFun x, ?_, fun t ht => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [hs, LinearEquiv.symm_apply_apply]`. Simplify using `only [hs] at ht`. Rewrite using `[ht, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_zmod_basis (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (V : Type) [AddCommGroup V]
     [Module (ZMod l) V] (hc1 : Nat.card V = l ^ m) :
@@ -113,23 +111,21 @@ theorem exists_zmod_basis (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (V : Type) [Ad
     rw [ht, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Set `T : ℕ → AddSubgroup Q` to `fun k => (nsmulAddMonoidHom (α := Q) k).ker`. Establish `hT : ∀ k x, x ∈ T k ↔ k • x = 0` using `fun k x => Iff.rfl`. Establish `hc : ∀ j, Nat.card (T (l ^ j)) = l ^ (m * j)` using `h`. Establish `hc1 : Nat.card (T l) = l ^ m` using `by simpa using hc 1`. Establish `hfin : ∀ j, Finite (T (l ^ j))` using `fun j => Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hl.out.ne_zero)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : ∀ j (x : Q), l ^ j • x = 0 → ∃ y : Q, l ^ (j + 1) • y = 0 ∧ x = l • y`. Introduce `j x hx`. Use `hfin j` as an intermediate fact. Use `hfin (j + 1)` as an intermediate fact. Set `φ : T (l ^ (j + 1)) →+ T (l ^ j)` to `((nsmulAddMonoidHom (α := Q) l).comp (T (l ^ (j + 1))).subtype).codRestrict _ fun y => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `(hT _ _).1 y.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `l ^ j • l • (y : Q) = 0`. Rewrite using `[smul_smul, ← pow_succ]`. Conclude with `this`. Establish `hφ : ∀ y, (φ y : Q) = l • (y : Q)` using `fun y => rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : Nat.card φ.ker = l ^ m`. Rewrite using `[← hc1]`. Use `Nat.card_congr ⟨fun y => ⟨y.1.1, ?_⟩, fun y => ⟨⟨y.1, ?_⟩, ?_⟩, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val y.2`. Rewrite using `[hT, pow_succ, mul_smul, (hT _ _).1 y.2, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext y.2`. Establish `h1` using `AddSubgroup.card_mul_index φ.ker`. Rewrite `h1` using `[AddSubgroup.index_ker, hk, hc, mul_add, mul_one, pow_add l (m * j), mul_comm]`. Establish `h2 : Nat.card φ.range = Nat.card (T (l ^ j))`. Rewrite using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Nat.eq_of_mul_eq_mul_right (pow_pos hl.out.pos m) h1`. Establish `h3 : φ.range = ⊤` using `AddSubgroup.eq_top_of_card_eq _ h2`. Take `⟨y, hy⟩` from `AddMonoidHom.range_eq_top.1 h3 ⟨x, hx⟩`. Conclude with `⟨y, y.2, (congrArg Subtype.val hy).symm⟩`. Use `choose! g hg1 hg2 using hsurj`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨b, hb⟩` from `@exists_zmod_basis l hl m (T l) _ (AddCommGroup.zmodModule fun x => Subtype.ext x.2) hc1`. Set `τ : Fin m → ℕ → Q` to `fun i n => Nat.rec (b i : Q) (fun k x => g (k + 1) x) n`. Establish `h1 : ∀ i n, (l ^ (n + 1)) • τ i n = 0`. Introduce `i n`. Proceed by induction on `n with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [zero_add, pow_one]`. Conclude with `(b i).2`. Consider the case `succ n ih => exact hg1 _ _ ih`. Establish `hs : ∀ t : Fin m → ZMod l, ((∑ j, (t j).val • b j : T l) : Q) = ∑ j, (t j).val • τ j 0`. Introduce `t`.
-
-Rewrite using `[AddSubgroup.val_finset_sum]`. Both sides reduce to the same expression. Use `⟨τ, h1, fun i n => hg2 _ _ (h1 i n), fun x hx => ?_⟩` and prove the remaining obligations. Simplify `hb ⟨x, hx⟩` using `only [Subtype.ext_iff, hs]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_tower (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (Q : Type) [AddCommGroup Q]
     (h : ∀ j : ℕ, Nat.card {x : Q // l ^ j • x = 0} = l ^ (m * j)) :
@@ -184,23 +180,23 @@ theorem exists_tower (l : ℕ) [hl : Fact l.Prime] (m : ℕ) (Q : Type) [AddComm
   simpa only [Subtype.ext_iff, hs] using hb ⟨x, hx⟩
 
 /- English proof (translation)
-Use `set π := PadicInt.toZModPow (p := l) N with hπ`. Establish `hl0 : ((l : ℤ_[l]) ^ N) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hl.out.ne_zero)`. Establish `hz : ∀ y : κ → ℤ_[l], π ∘ y = 0 ↔ ∃ z : κ → ℤ_[l], y = ((l : ℤ_[l]) ^ N) • z`. Introduce `y`. Establish `: ∀ a : ℤ_[l], π a = 0 ↔ ∃ z, a = ((l : ℤ_[l]) ^ N) * z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[← RingHom.mem_ker, hπ, PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h choose z hz using fun i => (this (y i)).1 (congrFun h i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨z, funext hz⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `funext fun i => (this _).2 ⟨z i, rfl⟩`. Establish `hc : ∀ (P R : Matrix κ κ ℤ_[l]), R * P = ((l : ℤ_[l]) ^ N) • 1 → ∀ y z : κ → ℤ_[l], P *ᵥ y = P *ᵥ z → y = z`. Introduce `P R h y z hyz`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (R *ᵥ ·) hyz` as an intermediate fact. Simplify using `only [mulVec_mulVec, h, smul_mulVec, one_mulVec] at this`. Conclude with `smul_right_injective _ hl0 this`. Establish `hmap : ∀ y : κ → ℤ_[l], (M.map π) *ᵥ (π ∘ y) = π ∘ (M *ᵥ y)` using `fun y =>`. Use function extensionality and compare the values at `fun i => (RingHom.map_mulVec π M y i).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : (κ → ℤ_[l]) →+ (κ → ZMod (l ^ N))` to `(π.toAddMonoidHom.compLeft κ).comp A.mulVecLin.toAddMonoidHom`. Establish `hφ : ∀ y, φ y = π ∘ (A *ᵥ y)` using `fun y => rfl`. Establish `hk : φ.ker = (LinearMap.range M.mulVecLin).toAddSubgroup`. Use extensionality with `y`. Rewrite using `[AddMonoidHom.mem_ker, hφ, hz]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, hc A M h1 _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[mulVecLin_apply, mulVec_mulVec, h2, hz, smul_mulVec, one_mulVec]`. Introduce and unpack `⟨z, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨z, by rw [mulVecLin_apply, mulVec_mulVec, h2, smul_mulVec, one_mulVec]⟩`. Rewrite using `[← hk, AddSubgroup.index_ker]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun t => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `ht choose y hy using fun i => ZMod.ringHom_surjective π (t i)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : π ∘ y = t` from `funext hy`. Rewrite `ht` using `[hmap, hz]`. Take `⟨z, hz⟩` from `ht`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hc M A h2 (A *ᵥ z) y]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_mulVec, h1, hz, smul_mulVec, one_mulVec]`. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[hφ, hmap, hz]`. Conclude with `⟨z, by rw [mulVec_mulVec, h1, smul_mulVec, one_mulVec]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_ker_eq_index (l : ℕ) [hl : Fact l.Prime] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M A : Matrix κ κ ℤ_[l]) (N : ℕ) (h1 : M * A = ((l : ℤ_[l]) ^ N) • 1)
@@ -259,14 +255,14 @@ section ev
 variable {Q κ : Type} [AddCommGroup Q] [Fintype κ] {N : ℕ} [NeZero N]
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_add, ← nsmul_eq_mod_nsmul _ hx, add_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_add_smul {x : Q} (hx : N • x = 0) (a b : ZMod N) :
     (a + b).val • x = a.val • x + b.val • x := by
   rw [ZMod.val_add, ← nsmul_eq_mod_nsmul _ hx, add_smul]
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_mul, ← nsmul_eq_mod_nsmul _ hx, mul_comm, mul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_mul_smul {x : Q} (hx : N • x = 0) (a b : ZMod N) :
     (a * b).val • x = b.val • a.val • x := by
@@ -284,15 +280,15 @@ theorem ev_apply (pt : κ → Q) (h : ∀ i, N • pt i = 0) (t : κ → ZMod N)
     ev pt h t = ∑ i, (t i).val • pt i := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod N), ZMod.natCast_self, zero_smul, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_ev (pt : κ → Q) (h : ∀ i, N • pt i = 0) (t : κ → ZMod N) : N • ev pt h t = 0 := by
   rw [← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod N), ZMod.natCast_self, zero_smul, map_zero]
 
 /- English proof (translation)
-Establish `: M *ᵥ t = ∑ j, fun i => M i j * t j`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, Finset.sum_apply]`. Rewrite using `[this, map_sum, ev_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_nsmul, hM, ev_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (val_mul_smul (h' i) _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ev (g : Q →+ Q) {pt pt' : κ → Q} (h : ∀ i, N • pt i = 0) (h' : ∀ i, N • pt' i = 0)
     (M : Matrix κ κ (ZMod N)) (hM : ∀ j, g (pt j) = ∑ i, (M i j).val • pt' i) (t : κ → ZMod N) :
@@ -306,7 +302,7 @@ theorem map_ev (g : Q →+ Q) {pt pt' : κ → Q} (h : ∀ i, N • pt i = 0) (h
   exact Finset.sum_congr rfl fun i _ => (val_mul_smul (h' i) _ _).symm
 
 /- English proof (translation)
-Introduce `a b hab` and use `(hb _ (nsmul_ev pt h b)).unique hab rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ev_injective {pt : κ → Q} (h : ∀ i, N • pt i = 0)
     (hb : ∀ y : Q, N • y = 0 → ∃! c : κ → ZMod N, ∑ i, (c i).val • pt i = y) :
@@ -314,11 +310,11 @@ theorem ev_injective {pt : κ → Q} (h : ∀ i, N • pt i = 0)
   (hb _ (nsmul_ev pt h b)).unique hab rfl
 
 /- English proof (translation)
-Use `choose P hP using fun j => (hb' _ (h j)).exists`. Use `choose P' hP' using fun j => (hb _ (h' j)).exists`. Establish `e1` using `map_ev (AddMonoidHom.id Q) h h' (Matrix.of P)ᵀ fun j => (hP j).symm`. Establish `e2` using `map_ev (AddMonoidHom.id Q) h' h (Matrix.of P')ᵀ fun j => (hP' j).symm`. Simplify using `only [AddMonoidHom.id_apply] at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `f1 : (Matrix.of P)ᵀ * (Matrix.of P')ᵀ = 1`. Use `Matrix.mulVec_injective (funext fun t => ev_injective h' hb' ?_)` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, ← e1, ← e2, one_mulVec]`. Establish `f2 : (Matrix.of P)ᵀ * M = M' * (Matrix.of P)ᵀ`. Use `Matrix.mulVec_injective (funext fun t => ev_injective h' hb' ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, ← e1, ← map_ev g h' h' M' hM', ← e1, ← map_ev g h h M hM]`. Establish `hu` using `Matrix.isUnit_det_of_right_inverse f1`. Use `congrArg Matrix.det f2` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, mul_comm]`. Conclude with `hu.mul_right_cancel this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq_det [DecidableEq κ] (g : Q →+ Q) {pt pt' : κ → Q} (h : ∀ i, N • pt i = 0)
     (h' : ∀ i, N • pt' i = 0)
@@ -346,25 +342,23 @@ theorem det_eq_det [DecidableEq κ] (g : Q →+ Q) {pt pt' : κ → Q} (h : ∀ 
 end ev
 
 /- English proof (translation)
-Establish `hev : ∀ n t, f (ev (fun i => τ i n) (fun i => h1 i n) t) = ev (fun i => τ i n) (fun i => h1 i n) ((M.map (PadicInt.toZModPow (n + 1))) *ᵥ t)` using `fun n => map_ev f _ _ _ fun j => hM j n`. Establish `hinj : ∀ n, Function.Injective (ev (fun i => τ i n) (fun i => h1 i n))` using `fun n => ev_injective _ (hb n)`. Establish `hc0 : Nat.card f.ker ≠ 0` using `Nat.card_pos.ne'`. Establish `hdet : M.det ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `key : ∀ n, PadicInt.toZModPow (n + 1) (Nat.card f.ker • v i) = 0`. Introduce `n`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : ev (fun i => τ i n) (fun i => h1 i n) (PadicInt.toZModPow (n + 1) ∘ v) ∈ f.ker`. Rewrite using `[AddMonoidHom.mem_ker, hev]`. Establish `: (M.map (PadicInt.toZModPow (n + 1))) *ᵥ (PadicInt.toZModPow (n + 1) ∘ v) = 0`. Use function extensionality and compare the values at `k`. Rewrite using `[← RingHom.map_mulVec, hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, map_zero]`. Establish `h2` using `congrArg Subtype.val (card_nsmul_eq_zero' (x := (⟨_, hk⟩ : f.ker)))`. Rewrite `h2` using `[AddSubgroup.coe_nsmul, ← map_nsmul, ZeroMemClass.coe_zero, map_eq_zero_iff _ (hinj n)]`. Rewrite using `[map_nsmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun h2 i`. Establish `: Nat.card f.ker • v i = 0`. Rewrite using `[← PadicInt.ext_of_toZModPow]`. Introduce `n`. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero`. Establish `: Subsingleton (ZMod (l ^ 0))` using `ZMod.subsingleton_iff.2 (pow_zero l)`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ n => exact key n`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[nsmul_eq_mul, mul_eq_zero]`. Conclude with `this.resolve_left (Nat.cast_ne_zero.2 hc0)`. Use `set n := M.det.valuation + Nat.card f.ker with hn`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : M.det ∣ (l : ℤ_[l]) ^ (n + 1) := by`. Rewrite using `[PadicInt.unitCoeff_spec hdet, Units.mul_left_dvd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_dvd_pow _ (by omega)`. Establish `a1 : M * (c • M.adjugate) = ((l : ℤ_[l]) ^ (n + 1)) • 1`. Rewrite using `[Matrix.mul_smul, mul_adjugate, smul_smul, hc, mul_comm]`. Establish `a2 : (c • M.adjugate) * M = ((l : ℤ_[l]) ^ (n + 1)) • 1`. Rewrite using `[Matrix.smul_mul, adjugate_mul, smul_smul, hc, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_index_range l M hdet, ← card_ker_eq_index l M _ _ a1 a2, norm_card_eq_torsion l f.ker (n + 1) (by omega)]`. Use `congr 2`. Use `Nat.card_eq_of_bijective (fun t => ⟨⟨ev (fun i => τ i n) (fun i => h1 i n) t.1, ?_⟩, Subtype.ext (nsmul_ev _ _ _)⟩) ⟨fun a b hab => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_ker, hev, t.2, map_zero]`. Conclude with `Subtype.ext (hinj n (congrArg (fun z => z.1.1) hab))`.
-
-Take `⟨t, ht, -⟩` from `hb n x.1.1 (congrArg Subtype.val x.2)`. Use `⟨⟨t, hinj n ?_⟩, Subtype.ext (Subtype.ext ht)⟩` and prove the remaining obligations. Rewrite using `[← hev, ev_apply, ht, map_zero]`. Conclude with `x.1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_eq (l : ℕ) [hl : Fact l.Prime] {κ Q : Type} [Fintype κ] [DecidableEq κ]
     [AddCommGroup Q] (τ : κ → ℕ → Q) (h1 : ∀ i n, (l ^ (n + 1)) • τ i n = 0)
@@ -436,15 +430,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 
 /- English proof (translation)
-Introduce `l hl m Q _ s h`. Take `⟨τ, h1, h2, h3⟩` from `exists_tower l m Q h`. Take `⟨hb0, ρ0, hρ0⟩` from `GlobalTheory.tate_basis_matrix l (Fin m) Q τ h1 h2 h3`. Establish `hb : ∀ n (x : Q), (l ^ (n + 1)) • x = 0 → ∃! t : Fin m → ZMod (l ^ (n + 1)), ∑ j, (t j).val • τ j n = x`. Introduce `n x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hb0 n x hx` using `only [eq_comm]`. Set `ρ : Module.End ℤ Q →+* Matrix (Fin m) (Fin m) ℤ_[l]` to `ρ0.comp (addMonoidEndRingEquivInt Q).symm.toRingHom`. Establish `hρ : ∀ (f : Module.End ℤ Q) j n, f (τ j n) = ∑ k, (PadicInt.toZModPow (n + 1) (ρ f k j)).val • τ k n` using `fun f j n => hρ0 ((addMonoidEndRingEquivInt Q).symm f) j n`. Establish `hF : ∀ F : Polynomial ℤ, Polynomial.aeval (ρ s) F = ρ (Polynomial.aeval s F)` using `fun F => Polynomial.aeval_algHom_apply ρ.toIntAlgHom s F`. Use `⟨ρ s, fun F hfin => ?_, fun F h0 j x hx => ?_, fun j pt Mat hpt hbp hs => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF]`. Establish `: Finite (Polynomial.aeval s F).toAddMonoidHom.ker` using `hfin`. Conclude with `norm_det_eq l τ h1 hb (Polynomial.aeval s F).toAddMonoidHom _ (hρ _)`. Take `⟨t, ht, -⟩` from `hb j x (by rw [pow_succ', mul_smul, hx, smul_zero])`. Rewrite using `[← ht, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, hρ, ← hF, h0]`. Simplify using the standard rewrite rules. Consider the cases of `j with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Establish `: Subsingleton (ZMod (l ^ 0))` using `ZMod.subsingleton_iff.2 (pow_zero l)`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ n`. Rewrite using `[RingHom.map_det]`. Conclude with `det_eq_det s.toAddMonoidHom (fun i => h1 i n) hpt (hb n) hbp _ _ (fun j => hρ s j n) hs`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_padic_matrix : ∀ (l : ℕ) [Fact l.Prime] (m : ℕ) (Q : Type) [AddCommGroup Q] (s : Module.End ℤ Q), (∀ j : ℕ, Nat.card {x : Q // l ^ j • x = 0} = l ^ (m * j)) → ∃ U : Matrix (Fin m) (Fin m) ℤ_[l], (∀ F : Polynomial ℤ, Finite {x : Q // Polynomial.aeval s F x = 0} → ‖(Polynomial.aeval U F).det‖ = ‖((Nat.card {x : Q // Polynomial.aeval s F x = 0} : ℕ) : ℚ_[l])‖) ∧ (∀ F : Polynomial ℤ, Polynomial.aeval U F = 0 → ∀ (j : ℕ) (x : Q), l ^ j • x = 0 → Polynomial.aeval s F x = 0) ∧ ∀ (j : ℕ) (pt : Fin m → Q) (Mat : Matrix (Fin m) (Fin m) (ZMod (l ^ j))), (∀ i, l ^ j • pt i = 0) → (∀ y : Q, l ^ j • y = 0 → ∃! c : Fin m → ZMod (l ^ j), ∑ i, (c i).val • pt i = y) → (∀ i, s (pt i) = ∑ i', (Mat i' i).val • pt i') → PadicInt.toZModPow j U.det = Mat.det := by
   intro l hl m Q _ s h

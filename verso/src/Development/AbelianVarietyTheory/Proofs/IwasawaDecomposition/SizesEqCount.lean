@@ -17,7 +17,7 @@ def DsPre (B : Pre) : ℝ :=
     ∏ τ : Tau B.R, Vol.trueDsig B.R (B.hc τ)
 
 /- English proof (translation)
-Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `h`. Conclude with `⟨fun u => K.du_eq u, K.Ds_eq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Ctx.Over.sizes {K : Ctx} {B : Pre} (h : K.Over B) :
     (∀ u, (B.duStar u : ℝ) = duPre B u) ∧ B.Dstar = DsPre B := by
@@ -25,7 +25,7 @@ theorem Ctx.Over.sizes {K : Ctx} {B : Pre} (h : K.Over B) :
   exact ⟨fun u => K.du_eq u, K.Ds_eq⟩
 
 /- English proof (translation)
-Establish `h1` using `R.two_le_m`. Establish `h2` using `R.m_add_three_le_k`. Simplify using `only [sigYD, Ranks.rankY, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sigYD_zero (R : Ranks) : 2 ≤ (sigYD R 0).1 ∧ (sigYD R 0).1 + (sigYD R 0).2 = R.r := by
   have h1 := R.two_le_m
@@ -34,13 +34,13 @@ theorem sigYD_zero (R : Ranks) : 2 ≤ (sigYD R 0).1 ∧ (sigYD R 0).1 + (sigYD 
   omega
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hO.sizes`. Use `⟨fun u => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (X.toD7.mem u).A.duStar = X.B.duStar u` using `X.C.A_duStar u`. Rewrite using `[e]`. Use `(h1 u).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `duPre StandardLattice.duStarU StandardLattice.duStarP`. Use `congr 1`. Establish `e : X.toD7.what₂.Dstar = X.B.Dstar` using `(X.toD7.Dstar_eq X.toD7.u₀).symm.trans (X.C.A_Dstar _)`. Rewrite using `[e, h2]`. Establish `hvol : StandardLattice.volY0 X.toD7 = StandardLattice.massI X.toD7 X.B.R.r`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `letI := X.toD7.host.cmStar`. Use `hv.2 (X.toD7.sp.Y 0) (sigYD X.B.R 0).1 (sigYD X.B.R 0).2 (X.toD7.sp.Y_sig 0) (fun τ => X.toD7.Y_sigval 0 (Nat.zero_le _) τ) (sigYD_zero _).1` as an intermediate fact. Rewrite `this` using `[(sigYD_zero _).2]`. Conclude with `this`. Unfold `DsPre StandardLattice.DstarD StandardLattice.DstarP`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvol]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => (hd τ).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sizes_eq_count (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre) (hv : StandardLattice.VolumeEqMass₂ X.toD7)
     (hd : ∀ τ, X.S.dsig τ = Vol.trueDsig X.B.R (X.B.hc τ)) :

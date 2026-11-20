@@ -10,25 +10,21 @@ open scoped ENNReal
 namespace GlobalTheory.ChartSumBound
 
 /- English proof (translation)
-Use `set cj := B.chart j with hcj`. Use `set ck := B.chart k with hck`. Use `set O := ck.target ∩ ck.symm ⁻¹' cj.source with hOdef`. Use `set O' := cj.target ∩ cj.symm ⁻¹' ck.source with hO'def`. Establish `hO : IsOpen O` using `ck.continuousOn_symm.isOpen_inter_preimage ck.open_target cj.open_source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hO' : IsOpen O'` using `cj.continuousOn_symm.isOpen_inter_preimage cj.open_target ck.open_source`. Establish `hτ : AnalyticOnNhd ℂ (cj ∘ ck.symm) O` using `B.holo k j`. Establish `hinj : Set.InjOn (cj ∘ ck.symm) O`. Introduce `a ha b hb hab`. Conclude with `ck.symm.injOn ha.1 hb.1 (cj.injOn ha.2 hb.2 hab)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `himg : (cj ∘ ck.symm) '' O = O'`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Use `⟨cj.map_source hz.2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show cj.symm (cj (ck.symm z)) ∈ ck.source`. Rewrite using `[cj.left_inv hz.2]`. Conclude with `ck.map_target hz.1`. Introduce and unpack `⟨hw, h2⟩`. Use `⟨ck (cj.symm w), ⟨ck.map_source h2, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ck.symm (ck (cj.symm w)) ∈ cj.source`. Rewrite using `[ck.left_inv h2]`. Conclude with `cj.map_target hw`. Use `show cj (ck.symm (ck (cj.symm w))) = w`. Rewrite using `[ck.left_inv h2, cj.right_inv hw]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set F : (Fin n → ℂ) → ℝ≥0∞ := fun w => ENNReal.ofReal (χ (cj.symm w)) * (g (cj.symm w) * ‖locDens B (fun _ => Ψ) j w‖ₑ) with hF`. Establish `h1 : ∫⁻ w in cj.target, F w = ∫⁻ w in cj.target, O'.indicator F w`. Use `setLIntegral_congr_fun cj.open_target.measurableSet fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `hwO : w ∈ O'`. Rewrite using `[Set.indicator_of_mem hwO]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hwO]`. Establish `: cj.symm w ∉ ck.source` using `fun h => hwO ⟨hw, h⟩`. Simplify using `[hF, hsupp _ this]`. Establish `h2 : ∫⁻ w in cj.target, O'.indicator F w ≤ ∫⁻ w in O', F w`. Rewrite using `[setLIntegral_indicator hO'.measurableSet]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `lintegral_mono_set Set.inter_subset_left`. Establish `h3 : ∫⁻ w in O', F w = ∫⁻ z in O, ENNReal.ofReal (χ (ck.symm z)) * (g (ck.symm z) * ‖locDens B (fun _ => Ψ) k z‖ₑ)`. Rewrite using `[← himg, ReciprocityTheory.AnForm.A.lintegral_image_eq_lintegral_normSq_det_mul _ _ hO hτ hinj]`. Use `setLIntegral_congr_fun hO.measurableSet fun z hz => ?_` and prove the remaining obligations. Establish `hz2 : ck.symm z ∈ cj.source` using `hz.2`.
-
-Establish `hl` using `locDensChart B (fun _ => Ψ) (fun _ => hΨ) k j z hz.1 hz2`. Establish `hs : cj.symm ((cj ∘ ck.symm) z) = ck.symm z`. Simplify using `only [Function.comp_apply]`. Conclude with `cj.left_inv hz2`. Simplify using `only [hF, hs]`.
-
-Rewrite using `[ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq, hl, enorm_mul, Real.enorm_eq_ofReal (sq_nonneg _)]`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem move_le {n : ℕ} {Y : Type} [TopologicalSpace Y]
     (B : FinHolAtlas n Y) (Ψ : LocPot Y) (hΨ : IsPotential B Ψ) (χ : Y → ℝ)
@@ -89,11 +85,11 @@ theorem move_le {n : ℕ} {Y : Type} [TopologicalSpace Y]
     _ ≤ _ := lintegral_mono_set Set.inter_subset_left
 
 /- English proof (translation)
-Rewrite using `[maMeasure_eq_sum B _ hne, lintegral_finsetSum_measure]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `chartMeasure`. Establish `hTm` using `(B.chart k).open_target.measurableSet`. Establish `hsm : AEMeasurable (B.chart k).symm (volume.restrict (B.chart k).target)` using `(B.chart k).continuousOn_symm.aemeasurable hTm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχc : ContinuousOn (fun y => hne.some.χ k ((B.chart k).symm y)) (B.chart k).target`. Simplify `(hne.some.smooth k k).continuousOn` using `[Function.comp_def]`. Establish `hdc` using `locDensCont B (fun _ => Ψ) (fun _ => hΨ) k`. Rewrite using `[lintegral_map' hg.aemeasurable (hsm.mono_ac (withDensity_absolutelyContinuous _ _)), lintegral_withDensity_eq_lintegral_mul₀ (f := fun y => ENNReal.ofReal (hne.some.χ k ((B.chart k).symm y) * locDens B (fun _ => Ψ) k y)) (g := fun a => g ((B.chart k).symm a)) ((hχc.mul hdc).aeme …`. Use `setLIntegral_congr_fun hTm fun z hz => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `locDens_nonneg_of_psh B (fun _ => Ψ) (fun _ => hΨ) (fun _ => hpsh) k hz`. Simplify using `only [Pi.mul_apply, Function.comp_apply]`. Rewrite using `[ENNReal.ofReal_mul (hne.some.nonneg k _), Real.enorm_eq_ofReal h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lintegral_maMeasure_eq {n : ℕ} {Y : Type} [TopologicalSpace Y] [MeasurableSpace Y]
     [BorelSpace Y] (B : FinHolAtlas n Y) (Ψ : LocPot Y) (hΨ : IsPotential B Ψ) (hpsh : IsPsh B Ψ)
@@ -122,13 +118,13 @@ theorem lintegral_maMeasure_eq {n : ℕ} {Y : Type} [TopologicalSpace Y] [Measur
   ring
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ B Ψ hΨ hpsh U g hg`. Establish `hne : Nonempty (ChartPartition B)` using `existsPartition B`. Rewrite using `[lintegral_maMeasure_eq B Ψ hΨ hpsh hne g hg]`. Establish `hj : ∀ j, ∫⁻ w in (B.chart j).target ∩ (B.chart j).symm ⁻¹' U, g ((B.chart j).symm w) * ‖locDens B (fun _ => Ψ) j w‖ₑ ≤ ∑ k, ∫⁻ z in (B.chart k).target, ENNReal.ofReal (hne.some.χ k ((B.chart k).symm z)) * (g ((B.chart k).symm z) * ‖locDens B (fun _ => Ψ) k z‖ₑ)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTm` using `(B.chart j).open_target.measurableSet`. Establish `hsm : AEMeasurable (B.chart j).symm (volume.restrict (B.chart j).target)` using `(B.chart j).continuousOn_symm.aemeasurable hTm`. Establish `hdc` using `locDensCont B (fun _ => Ψ) (fun _ => hΨ) j`. Establish `hmeas : ∀ k ∈ Finset.univ, AEMeasurable (fun w => ENNReal.ofReal (hne.some.χ k ((B.chart j).symm w)) * (g ((B.chart j).symm w) * ‖locDens B (fun _ => Ψ) j w‖ₑ)) (volume.restrict (B.chart j).target)`. Introduce `k _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχc : ContinuousOn (fun y => hne.some.χ k ((B.chart j).symm y)) (B.chart j).target`. Simplify `(hne.some.smooth k j).continuousOn` using `[Function.comp_def]`. Conclude with `(hχc.aemeasurable hTm).ennreal_ofReal.mul ((hg.comp_aemeasurable hsm).mul (hdc.aemeasurable hTm).enorm)`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hTm fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul, ← ENNReal.ofReal_sum_of_nonneg (fun k _ => hne.some.nonneg k _), hne.some.sum_eq_one, ENNReal.ofReal_one, one_mul]`. Use `_ = ∑ k, ∫⁻ w in (B.chart j).target, ENNReal.ofReal (hne.some.χ k ((B.chart j).symm w)) * (g ((B.chart j).symm w) * ‖locDens B (fun _ => Ψ) j w‖ₑ) := lintegral_finsetSum' _ hmeas`. Use `_ ≤ _ := Finset.sum_le_sum fun k _ => move_le B Ψ hΨ _ k j (fun y hy => image_eq_zero_of_notMem_tsupport (fun h => hy (hne.some.tsupport_subset k h))) g`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem chartSumInt_le_card_mul :
     ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [CompactSpace Y] [T2Space Y] [MeasurableSpace Y]

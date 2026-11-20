@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.GaussMean.Step
 
 /- English proof (translation)
-Establish `: 0 < sphV i`. Unfold `sphV`. Conclude with `Finset.prod_pos fun l _ => by have := Real.pi_pos; positivity`. Unfold `volU`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem volU_pos (i : ℕ) : 0 < volU i := by
   have : 0 < sphV i := by
@@ -26,7 +26,7 @@ theorem volU_pos (i : ℕ) : 0 < volU i := by
   positivity
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.vInv`. Establish `: (0 : ℝ) < |(discr E : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero E)`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem vInv_pos (E : Type) [Field E] [NumberField E] : 0 < Formalism.HermitianLatticesTheory.vInv E := by
   unfold Formalism.HermitianLatticesTheory.vInv
@@ -34,11 +34,11 @@ theorem vInv_pos (E : Type) [Field E] [NumberField E] : 0 < Formalism.HermitianL
   positivity
 
 /- English proof (translation)
-Establish `hv` using `vInv_pos E`. Unfold `rankFac meanConst`. Use `set v := Formalism.HermitianLatticesTheory.vInv E`. Use `set f := Formalism.HermitianLatticesTheory.fDeg E`. Use `set L := Formalism.HermitianLatticesTheory.lValEta E M`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : 0 < 2 * v` using `by positivity`. Establish `key : (2 * v) ^ ((f : ℝ) * ((M : ℝ) - 1 / 2)) * (2 * v) ^ ((f : ℝ) / 2) = 2 ^ (M * f) * v ^ (M * f)`. Rewrite using `[← Real.rpow_add h2, ← mul_pow, ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hp : 0 < v ^ (M * f)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ = 2 ^ (M * f) := by rw [key]; field_simp`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem rankFac_mul_meanConst (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ)
     (hL : 0 < Formalism.HermitianLatticesTheory.lValEta E M) :
@@ -62,7 +62,7 @@ theorem rankFac_mul_meanConst (E : Type) [Field E] [NumberField E] [StarRing E] 
     _ = 2 ^ (M * f) := by rw [key]; field_simp
 
 /- English proof (translation)
-Establish `hv` using `vInv_pos E`. Unfold `meanConst`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem meanConst_pos (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ)
     (hL : 0 < Formalism.HermitianLatticesTheory.lValEta E M) : 0 < meanConst E M := by
@@ -71,7 +71,7 @@ theorem meanConst_pos (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ
   positivity
 
 /- English proof (translation)
-Establish `hv` using `vInv_pos E`. Unfold `rankFac`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem rankFac_pos (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ)
     (hL : 0 < Formalism.HermitianLatticesTheory.lValEta E M) : 0 < rankFac E M := by
@@ -80,9 +80,9 @@ theorem rankFac_pos (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ)
   positivity
 
 /- English proof (translation)
-Establish `hmd : 0 < m * d` using `mul_pos hm hd`. Establish `h1 : X = Y * ENNReal.ofReal r`. Establish `e : t * d = r * (m * d)` using `by rw [← ht]; ring`. Rewrite `h` using `[e, ENNReal.ofReal_mul hr.le, ← mul_assoc]`. Conclude with `(ENNReal.mul_left_inj (ENNReal.ofReal_pos.2 hmd).ne' ENNReal.ofReal_ne_top).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ρ = b * (r / a)` using `by field_simp; linarith`. Rewrite using `[h1, e2, ENNReal.ofReal_mul hb.le, ← mul_assoc, ENNReal.div_mul_cancel (ENNReal.ofReal_pos.2 hb).ne' ENNReal.ofReal_ne_top, ENNReal.ofReal_div_of_pos ha, mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ennreal_volume_ratio_step_cancel (X Y : ENNReal) (m d t r a b ρ : ℝ) (hm : 0 < m) (hd : 0 < d) (hr : 0 < r)
     (ha : 0 < a) (hb : 0 < b) (ht : r * m = t) (hρ : ρ * a = r * b)
@@ -99,21 +99,21 @@ theorem ennreal_volume_ratio_step_cancel (X Y : ENNReal) (m d t r a b ρ : ℝ) 
     ENNReal.ofReal_div_of_pos ha, mul_div_assoc]
 
 /- English proof (translation)
-Introduce `hS I P Q hPQ hn s hs`. Take `⟨I', e, x, A, xf, hperp, hsig⟩` from `GlobalTheory.T.exists_unit_vector_orthogonal_instance_rank_three I P Q hPQ hn s hs`. Use `⟨I', e, x, A, hperp.1, hperp.2.1, hperp.2.2.1, hperp.2.2.2.1, hperp.2.2.2.2.1, hsig, ?_⟩` and prove the remaining obligations. Introduce `c μf _ _ c' μf' _ _ hc hc'`. Take `⟨fund, hfund⟩` from `GlobalTheory.T.automorphicInstance_exists_fundamental_domain I μf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hU` using `GlobalTheory.T.gaussianSum_stabiliserUnfolding I I' e s x A xf hn hperp c μf c' μf' fund hc hc' hfund`. Take `⟨-, hM⟩` from `hS I hn s μf fund hfund`. Establish `hcov` using `(GlobalTheory.T.leftQuotientCovolume_eq_fundamentalDomain_inter I μf fund Set.univ hfund MeasurableSet.univ (fun _ _ _ _ => Set.mem_univ _)).1`. Rewrite `hcov` using `[Set.univ_inter]`. Establish `hf : Formalism.HermitianLatticesTheory.fDeg I.E = I.f` using `(GlobalTheory.T.autInst_degree_rootDiscriminant_rank I).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : 0 < Formalism.HermitianLatticesTheory.lValEta I.E I.n`. Use `(GlobalTheory.T.neg_log_prod_lValEta_le_and_pos I.E I.cm.cmUnram (I.n - 1) I.n (by omega)).2` as an intermediate fact. Establish `hI : Finset.Ioc (I.n - 1) I.n = {I.n}`. Use extensionality with `k`. Simplify using `only [Finset.mem_Ioc, Finset.mem_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[hI, Finset.prod_singleton]`. Then use the resulting hypothesis. Establish `hd : 0 < ∏ v, gaussDens (I.ε v) (sgn ℝ s)`. Use `Finset.prod_pos fun v _ => (GlobalTheory.T.gaussianQuadricDensity_exists_pos_continuous I.n (I.ε v)).2.2 s ?_` and prove the remaining obligations. Take `⟨hp, hq⟩` from `hPQ v`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the cases of `s`. Establish `: 0 < I.qAt v`. Establish `h1 : 1 ≤ Q` using `by simpa using hs`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `Finset.card_pos.1 this`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, (Finset.mem_filter.1 ha).2⟩`. Establish `: 0 < I.pAt v`. Establish `h1 : 1 ≤ P` using `by simpa using hs`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `Finset.card_pos.1 this`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, (Finset.mem_filter.1 ha).2⟩`. Establish `hR` using `GlobalTheory.T.mass_ratio_rank_factor I.E I.n (by omega)`. Establish `hn' : I.n - 1 = I'.n` using `by have := hperp.2.1; omega`. Rewrite `hR` using `[hf, hn']`. Establish `hrm` using `rankFac_mul_meanConst I.E I.n hL`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hrm` using `[hf]`. Use `ennreal_volume_ratio_step_cancel _ _ _ _ _ _ _ _ _ (meanConst_pos I.E I.n hL) hd (rankFac_pos I.E I.n hL) (pow_pos (volU_pos _) _) (pow_pos (volU_pos _) _) hrm hR ?_` and prove the remaining obligations. Rewrite using `[← hU, hM, gaugeVol, hcov]`. Simplify using `only [div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem volumeStep_of_siegelMean : SiegelMean → VolumeStep := by
   intro hS I P Q hPQ hn s hs

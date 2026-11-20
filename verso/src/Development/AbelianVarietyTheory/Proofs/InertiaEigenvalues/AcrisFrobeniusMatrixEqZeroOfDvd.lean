@@ -11,9 +11,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.CrZero
 
 /- English proof (translation)
-Proceed by induction on `k generalizing a b with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Establish `h' : p * (p ^ k * a - p ^ k * b) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, ← mul_assoc, ← mul_assoc, ← pow_succ', h, sub_self]`. Conclude with `sub_eq_zero.mp (hp _ h')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_cancel {A : Type*} [CommRing A] (p : A) (hp : ∀ x : A, p * x = 0 → x = 0)
     (k : ℕ) (a b : A) (h : p ^ k * a = p ^ k * b) : a = b := by
@@ -26,7 +26,7 @@ theorem pow_cancel {A : Type*} [CommRing A] (p : A) (hp : ∀ x : A, p * x = 0 �
     exact sub_eq_zero.mp (hp _ h')
 
 /- English proof (translation)
-Use `hH.haus x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton.mpr (h n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dvd {A : Type*} [CommRing A] (p : A)
     (hH : IsHausdorff (Ideal.span {p}) A) (x : A) (h : ∀ M : ℕ, p ^ M ∣ x) : x = 0 := by
@@ -39,27 +39,25 @@ end GlobalTheory.CrZero
 open GlobalTheory.CrZero in
 
 /- English proof (translation)
-Introduce `l _ K bk d c D₀ F F' hdiv hfr`. Take `⟨htor, hcomp, -, hphi, -⟩` from `GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk`. Use `set u := ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) X with hu`. Establish `hφu : phiA l u = u ^ l`. Rewrite using `[hu, RingHom.comp_apply, hphi, ← bk.ev_frob]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: frobS l bk.a X = X ^ l` using `by simp [frobS]`. Rewrite using `[this, map_pow, map_pow]`. Establish `hφl : ∀ k : ℕ, phiA l ((l : Per.Acris l) ^ k) = (l : Per.Acris l) ^ k`. Introduce `k`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ n : ℕ, ∃ N : Matrix (Fin d) (Fin d) (Per.Acris l), (l : Per.Acris l) ^ (c * n) • D₀ = u ^ (l ^ n) • N`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨Matrix.of fun i j => (hdiv i j).choose, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [mul_zero, pow_zero, pow_one, one_smul, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[one_mul]`. Conclude with `(hdiv i j).choose_spec`. Consider the case `succ n ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `ih`. Use `⟨F * N.map (phiA l) * F', ?_⟩` and prove the remaining obligations. Establish `hmap : ((l : Per.Acris l) ^ (c * n) • D₀).map (phiA l) = (l : Per.Acris l) ^ (c * n) • D₀.map (phiA l)`. Use extensionality with `i j`. Simplify using `[hφl]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmap2 : (u ^ (l ^ n) • N).map (phiA l) = u ^ (l ^ (n + 1)) • N.map (phiA l)`. Use extensionality with `i j`. Simplify using `[hφu, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← pow_add, mul_add, mul_one]`. Use `_ = F * (((l : Per.Acris l) ^ (c * n) • D₀).map (phiA l)) * F' := by`. Rewrite using `[hfr, hmap, Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = u ^ (l ^ (n + 1)) • (F * N.map (phiA l) * F') := by`. Rewrite using `[hN, hmap2, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i j`. Establish `hH : IsHausdorff (Ideal.span {(l : Per.Acris l)}) (Per.Acris l)` using `hcomp.toIsHausdorff`. Use `eq_zero_of_forall_dvd _ hH _ fun M => ?_` and prove the remaining obligations. Take `⟨n₀, hn₀⟩` from `GlobalTheory.T.primePow_dvd_tiltUniformizer_pow_acris_eventually l K bk c M`. Take `⟨N, hN⟩` from `key n₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨y, hy⟩` from `hn₀ n₀ le_rfl`. Establish `hent : (l : Per.Acris l) ^ (c * n₀) * D₀ i j = u ^ (l ^ n₀) * N i j`. Use `congrFun (congrFun hN i) j` as an intermediate fact. Simplify using `using this`. Establish `hpos : 1 ≤ l ^ n₀` using `Nat.one_le_pow _ _ (Fact.out : l.Prime).pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsplit : u ^ (l ^ n₀) = u * u ^ (l ^ n₀ - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hpos]`. Use `⟨u * y * N i j, ?_⟩` and prove the remaining obligations. Apply `pow_cancel _ htor (c * n₀)` to reduce the goal to its premises. Rewrite using `[hent, hsplit, hy]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKLim.acris_frob_eq_zero : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d c : ℕ)
     (D₀ F F' : Matrix (Fin d) (Fin d) (Per.Acris l)),

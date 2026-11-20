@@ -21,19 +21,15 @@ def PlainCoefficientIdentity (H : ∀ g, X.CartHyp V g) : Prop :=
         ∀ q, V.MM ((RawChart.cart (H g)).c0' x q ^ V.l - ∑ q', c1 q' * M q' q)
 
 /- English proof (translation)
-Introduce `hAlt g a hbig N w x hg hV hind`. Establish `key : ∀ g' : Fin 2, X.big g' a → X.big g' (a + 2)`. Take `⟨hd, hpar⟩` from `hAlt`. Establish `hev` using `ValuationNonnegativity.even_val_add_two hd a`. Establish `e1 : ∀ b, X.big 1 b ↔ ¬ X.big 0 b` using `fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hrk.big_compl 0 b`. Introduce `g' hb`. Use `fin_cases g'`. Conclude with `(hpar (a + 2)).2 (hev.2 ((hpar a).1 hb))`. Simplify using `only [Fin.mk_one] at hb ⊢`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite `hb`, the goal using `[e1, hpar]`. Rewrite using `[hev]` and apply the resulting hypothesis. Establish `hsmall : ¬ X.big (1 - g) (a + 2)` using `fun h2 => (hrk.big_compl g (a + 2)).1 h2 (key g hbig)`. Establish `hcard : Fintype.card {q : JJ I g // X.ty (1 - g) q = a + 2} = X.j'`. Rewrite using `[Fintype.card_subtype]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hrk.rk_small (1 - g) (a + 2) hsmall`. Take `⟨M, hM⟩` from `hcoef hAlt g a hbig`. Set `σ` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `hspan : ∀ (w : I g → C) (x : ℕ → I g ⊕ JJ I g → C), (RawChart.cart (H g)).Good a w x → (∀ c, V.MM ((RawChart.cart (H g)).V2 x c)) → ∃ b : Fin X.j' → C, ∀ q, V.MM ((RawChart.cart (H g)).c0' x q ^ V.l - ∑ r, b r * M (σ r).1 q)`. Introduce `w x hg hV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c1, hsupp, hc1⟩` from `hM w x hg hV`. Use `⟨fun r => c1 (σ r).1, fun q => ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ q', c1 q' * M q' q = ∑ r, c1 (σ r).1 * M (σ r).1 q`. Rewrite using `[← Finset.sum_filter_of_ne (p := fun q' => X.ty (1 - g) q' = a + 2) (fun q' _ hne => by`. Assume the negation of the conclusion as `hq`.
-
-Conclude with `hne (by rw [hsupp q' hq, zero_mul]))]`. Rewrite using `[Finset.sum_subtype (Finset.univ.filter fun q' => X.ty (1 - g) q' = a + 2) (p := fun q' => X.ty (1 - g) q' = a + 2) (fun q' => by simp)]`. Conclude with `(Equiv.sum_comp σ (fun s => c1 s.1 * M s.1 q)).symm`. Rewrite using `[← hsum]`. Conclude with `hc1 q`.
-
-Conclude with `ValuationNonnegativity.independence_bound_of_span_raw (RawChart.cart (H g)) a _ (hR2 hAlt g a hbig) (fun r => M (σ r).1) hspan N w x hg hV hind`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem independence_bound_raw [IsAlgClosed C] [NeZero d] (hrk : X.RankHyp) (H : ∀ g, X.CartHyp V g) (hR2 : RawChart.RankMaximalCondition H)
     (hcoef : PlainCoefficientIdentity X H) : RawChart.IndependenceBoundCondition H := by
@@ -78,7 +74,7 @@ end IndependenceBoundPlain
 section Closed
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p hrk H hR2`. Use `Y.algClosed` as an intermediate fact. Conclude with `IndependenceBoundPlain.independence_bound_raw (Y.raw p) hrk H hR2 (h C V O dd Y d I p hrk H)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem independence_bound_all_charts_of_coefficient_identity (h : CoefficientIdentityCondition) : IndependenceBoundAllCharts := by
   intro C _ _ V O _ _ dd Y d _ I _ p hrk H hR2
@@ -89,7 +85,7 @@ def CoefficientIdentitySelfConjugate : Prop :=
   AllSelf fun _ _ V _ _ _ _ X => X.RankHyp → ∀ H : ∀ g, X.CartHyp V g, IndependenceBoundPlain.PlainCoefficientIdentity X H
 
 /- English proof (translation)
-Unfold `IndependenceBoundSelfConjugate AllSelf`. Introduce `C _ _ V O _ _ dd Y d _ I0 _ p hrk H hR2`. Use `Y.algClosed` as an intermediate fact. Conclude with `IndependenceBoundPlain.independence_bound_raw (Y.rawSelf p) hrk H hR2 (h C V O dd Y d I0 p hrk H)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem independence_bound_self_conj (h : CoefficientIdentitySelfConjugate) : IndependenceBoundSelfConjugate := by
   unfold IndependenceBoundSelfConjugate AllSelf

@@ -15,11 +15,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.ResDual
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hm`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hm`. Establish `: Nontrivial (Fin r)` using `Fin.nontrivial_iff_two_le.2 hr`. Take `⟨b, hb⟩` from `exists_ne a`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (h (Matrix.single b a 1))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrFun hc a`. Establish `h2` using `congrFun hc b`. Simplify using `[Matrix.single_mulVec, Function.update, hb.symm] at h1 h2`. Break down `h1 with rfl | h1` into its components or cases. Conclude with `ha (by simpa using h2.symm)`.
-
-Conclude with `ha h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_eigen {k : Type} [Field k] {r : ℕ} (hr : 2 ≤ r) (m : Fin r → k)
     (h : ∀ A : Matrix (Fin r) (Fin r) k, A.mulVec m ∈ Submodule.span k {m}) : m = 0 := by
@@ -38,7 +36,7 @@ theorem eq_zero_of_forall_eigen {k : Type} [Field k] {r : ℕ} (hr : 2 ≤ r) (m
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[repOn, matAct, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem red_apply (i : X.Tw) (K : Type) [Field K] [Algebra (X.O0 i) K] (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)) (g : GE N)
     (m : Fin D.R.r → K) :
@@ -47,7 +45,7 @@ theorem red_apply (i : X.Tw) (K : Type) [Field K] [Algebra (X.O0 i) K] (ρ : GE 
   simp [repOn, matAct, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Establish `h3 : IsUnit (Tmat i s g).det`. Rewrite using `[← Tgl_coe]`. Conclude with `Matrix.isUnits_det_units _`. Rewrite using `[red_apply, red_apply, hρ, Tgl_coe, Tdual, dotProductBilin_apply_apply, dotProductBilin_apply_apply, Matrix.map_smul' _ _ _ (map_mul _), Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Matrix.transpose_map, Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec, M …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dot_equiv {i : X.Tw} {s : X.Sig i} (K : Type) [Field K] [Algebra (X.O0 i) K] {ρ : GE N →* GL (Fin D.R.r) (X.O0 i)}
     (hρ : IsDual i s ρ) (g : GE N) (x y : Fin D.R.r → K) :
@@ -61,7 +59,7 @@ theorem dot_equiv {i : X.Tw} {s : X.Sig i} (K : Type) [Field K] [Algebra (X.O0 i
     Matrix.nonsing_inv_mul _ h3, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Rewrite using `[Tmat, Matrix.map_smul' _ _ _ (map_mul _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Tmat_map_residue (i : X.Tw) (s : X.Sig i) (g : GE N) :
     (Tmat i s g).map (IsLocalRing.residue (X.O0 i)) =
@@ -70,7 +68,7 @@ theorem Tmat_map_residue (i : X.Tw) (s : X.Sig i) (g : GE N) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(u.isUnit.map _).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem residue_unit_ne_zero {O : Type} [CommRing O] [IsLocalRing O] (u : Oˣ) : IsLocalRing.residue O (u : O) ≠ 0 :=
   (u.isUnit.map _).ne_zero
@@ -82,13 +80,11 @@ variable {i : X.Tw} {s : X.Sig i} (hr : 2 ≤ D.R.r)
 include hr hs
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `m hm`. Use `eq_zero_of_forall_eigen hr m fun A => ?_` and prove the remaining obligations. Establish `hA : A ∈ Submodule.span (IsLocalRing.ResidueField (X.O0 i)) (Set.range (rbar X i s))` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem A hA`. Take `⟨g, rfl⟩` from `hA`. Establish `e` using `hm g`. Rewrite `e` using `[red_apply, Tgl_coe, IsLocalRing.ResidueField.algebraMap_eq, Tmat_map_residue, Matrix.smul_mulVec]`. Rewrite using `[← Submodule.smul_mem_iff _ (residue_unit_ne_zero (chiS i s g)⁻¹), e]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_span_singleton_self m`. Consider the case `zero => simp`. Consider the case `add A B _ _ hA hB => rw [Matrix.add_mulVec]`. Conclude with `Submodule.add_mem _ hA hB`. Consider the case `smul c A _ hA => rw [Matrix.smul_mulVec]`.
-
-Conclude with `Submodule.smul_mem _ c hA`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem h0_red : H0 (red i (IsLocalRing.ResidueField (X.O0 i)) (Tgl i s)) = ⊥ := by
   rw [eq_bot_iff]
@@ -107,13 +103,13 @@ theorem h0_red : H0 (red i (IsLocalRing.ResidueField (X.O0 i)) (Tgl i s)) = ⊥ 
   | smul c A _ hA => rw [Matrix.smul_mulVec]; exact Submodule.smul_mem _ c hA
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `m hm`. Use `eq_zero_of_forall_eigen hr m fun A => ?_` and prove the remaining obligations. Rewrite using `[← A.transpose_transpose]`. Establish `hA : A.transpose ∈ Submodule.span (IsLocalRing.ResidueField (X.O0 i)) (Set.range (rbar X i s))` using `hs ▸ Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Generalize the expression as in `A.transpose = B at hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA`. Take `⟨g, rfl⟩` from `hA`. Establish `e` using `hm g⁻¹`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[red_apply, hρ, Tdual, GlobalTheory.PrimeToInertia.Tmat_inv, inv_inv, Matrix.map_smul' _ _ _ (map_mul _), Matrix.transpose_map, IsLocalRing.ResidueField.algebraMap_eq, Tmat_map_residue, Matrix.transpose_smul, Matrix.smul_mulVec, Matrix.smul_mulVec]`. Rewrite using `[← Submodule.smul_mem_iff _ (residue_unit_ne_zero (chiS i s g)⁻¹), ← Submodule.smul_mem_iff _ (residue_unit_ne_zero (eps0 X i g⁻¹)), e]`. Conclude with `Submodule.mem_span_singleton_self m`. Consider the case `zero => simp`. Consider the case `add A B _ _ hA hB => rw [Matrix.transpose_add, Matrix.add_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hA hB`. Consider the case `smul c A _ hA => rw [Matrix.transpose_smul, Matrix.smul_mulVec]`. Conclude with `Submodule.smul_mem _ c hA`.
+A detailed English derivation is pending.
 -/
 theorem h0_red_dual {ρ : GE N →* GL (Fin D.R.r) (X.O0 i)} (hρ : IsDual i s ρ) :
     H0 (red i (IsLocalRing.ResidueField (X.O0 i)) ρ) = ⊥ := by
@@ -141,7 +137,7 @@ theorem h0_red_dual {ρ : GE N →* GL (Fin D.R.r) (X.O0 i)} (hρ : IsDual i s �
 end NoInv
 
 /- English proof (translation)
-Rewrite `hx` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ x.1).1 hx`. Use `⟨fun g => P m (y.1 g), ((IsLocallyConstant.iff_continuous _).2 y.2.1).comp (P m), fun g h => ?_⟩` and prove the remaining obligations. Establish `e : x.1 g = ρ g m - m` using `hm g`. Simplify using `only [e, y.2.2 g h, map_sub, map_add, LinearMap.sub_apply, hP]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -158,11 +154,11 @@ theorem cupCob_of_mk_eq_zero {Γ k M M' : Type} [Group Γ] [TopologicalSpace Γ]
   ring
 
 /- English proof (translation)
-Use `set z : ℤ_[X.l i] := ((cycZ D.host.E N.Om (X.l i) g : ℤ_[X.l i]ˣ) : ℤ_[X.l i])`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue _ (algebraMap ℤ_[X.l i] (X.O0 i) z) = ((PadicInt.toZModPow 1 z).val : _)`. Establish `: NeZero (X.l i ^ 1)` using `⟨pow_ne_zero _ (Fact.out : (X.l i).Prime).ne_zero⟩`. Establish `h : z - ((PadicInt.toZModPow 1 z).val : ℕ) ∈ RingHom.ker (PadicInt.toZModPow (p` using `X.l i) 1) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨w, hw⟩` from `h`. Establish `h0 : IsLocalRing.residue (X.O0 i) (X.l i : X.O0 i) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 (GlobalTheory.PrimeToInertia.l_mem i)`. Use `congrArg (fun t => IsLocalRing.residue _ (algebraMap ℤ_[X.l i] (X.O0 i) t)) hw` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_natCast, pow_one] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[map_natCast]`. Rewrite `this` using `[h0, zero_mul, sub_eq_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_globalCyclotomicCharacter (i : X.Tw) (g : GE N) :
     algebraMap (X.O0 i) (IsLocalRing.ResidueField (X.O0 i)) ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) =
@@ -184,7 +180,7 @@ theorem residue_globalCyclotomicCharacter (i : X.Tw) (g : GE N) :
   exact this
 
 /- English proof (translation)
-Establish `h1 : ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hS ⟨Or.inl (Set.mem_iUnion.2 ⟨k, hk⟩), hl⟩`. Establish `h2 : v ∉ X.pD i` using `fun hk => hS ⟨Or.inr hk, hl⟩`. Rewrite using `[Tmat, h.1.1 v hl h1 B hB σ hσ, chiS, X.twistCharacterFamily_unramified i _ _ v hl h1 h2 B hB σ hσ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Tmat_eq_one {bkP : BKPh X} {i : X.Tw} {s : X.Sig i} (h : GalHyp bkP i s) {v : PlE D.host}
     (hl : v ∉ placesOver D.host.E (X.l i)) (hS : v ∉ Spl (X := X) i) (B : ValuationSubring N.Om) (hB : IsPlaceOver B v)
@@ -195,7 +191,7 @@ theorem Tmat_eq_one {bkP : BKPh X} {i : X.Tw} {s : X.Sig i} (h : GalHyp bkP i s)
   simp
 
 /- English proof (translation)
-Establish `h1` using `IsTotallyComplex.finrank D.host.E`. Establish `h2 : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField, Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nrComplexPlaces_host (D : Formalism.BasicNotions.D7) [IsTotallyComplex D.host.E] :
     InfinitePlace.nrComplexPlaces D.host.E = D.R.f := by
@@ -208,29 +204,25 @@ theorem nrComplexPlaces_host (D : Formalism.BasicNotions.D7) [IsTotallyComplex D
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hl : (X.l i).Prime` using `Fact.out`. Establish `: Finite (IsLocalRing.ResidueField (X.O0 i))` using `X.twistBaseCoefficientRing_residueField_finite i`. Establish `: CharP (IsLocalRing.ResidueField (X.O0 i)) (X.l i)` using `(CharP.charP_iff_prime_eq_zero hl).2 (by`. Rewrite using `[← map_natCast (IsLocalRing.residue (X.O0 i)), IsLocalRing.residue_eq_zero_iff]`. Conclude with `GlobalTheory.PrimeToInertia.l_mem i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Establish `hres : IsRes i (IsLocalRing.ResidueField (X.O0 i))` using `fun x hx => (IsLocalRing.residue_eq_zero_iff _).2 hx`. Establish `hsurj : Function.Surjective (algebraMap (X.O0 i) (IsLocalRing.ResidueField (X.O0 i)))` using `IsLocalRing.residue_surjective`. Establish `hloc : IsLocalHom (algebraMap (X.O0 i) (IsLocalRing.ResidueField (X.O0 i)))` using `inferInstanceAs (IsLocalHom (IsLocalRing.residue (X.O0 i)))`. Establish `hr : 2 ≤ D.R.r` using `le_trans (by norm_num) h.2.2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htors : ∀ b : (IsLocalRing.ResidueField (X.O0 i)), ∃ n, ∀ x ∈ IsLocalRing.maximalIdeal (IsLocalRing.ResidueField (X.O0 i)) ^ n, x • b = 0` using `fun b => ⟨1, fun x hx => by`. Rewrite `hx` using `[pow_one, IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Rewrite using `[hx, zero_smul]⟩`. Establish `hker : IsOpen (((1 : GE N →* ((IsLocalRing.ResidueField (X.O0 i)))ˣ).ker : Subgroup (GE N)) : Set (GE N))`. Rewrite using `[MonoidHom.ker_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isOpen_univ`. Establish `hc : ContAction (red i (IsLocalRing.ResidueField (X.O0 i)) (Tgl i s))` using `GlobalTheory.PrimeToInertia.contAction_repOn (X.twistBaseCoefficientRing_isAdic i) _ (by simp_rw [Tgl_coe]; exact GlobalTheory.PrimeToInertia.continuous_Tmat i s) _ hker htors`. Establish `hc' : ContAction (red i (IsLocalRing.ResidueField (X.O0 i)) ρ)` using `GlobalTheory.PrimeToInertia.contAction_repOn (X.twistBaseCoefficientRing_isAdic i) _ (by simp_rw [hρ _]; exact GlobalTheory.PrimeToInertia.continuous_Tdual i s) _ hker htors`. Set `Sl : Finset (PlE D.host)` to `(X.S0 i).filter (· ∈ placesOver D.host.E (X.l i))`. Set `Sp : Finset (PlE D.host)` to `(X.S0 i).filter (· ∈ Spl (X := X) i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSl : ∀ v, v ∈ Sl ↔ v ∈ placesOver D.host.E (X.l i)` using `fun v => ⟨fun hv => (Finset.mem_filter.1 hv).2, fun hv => Finset.mem_filter.2 ⟨X.twistExcludedPlaces_contains_residueChar i hv, hv⟩⟩`. Establish `hSp : ∀ v, v ∈ Sp ↔ v ∈ Spl (X` using `X) i := fun v => ⟨fun hv => (Finset.mem_filter.1 hv).2, fun hv => Finset.mem_filter.2 ⟨by`. Break down `hv.1 with h1 | h1` into its components or cases. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 h1`. Conclude with `X.placesOver_subset_exceptional i j hj`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `X.primes_subset_exceptional i h1, hv⟩⟩`. Establish `hdis : Disjoint Sl Sp` using `Finset.disjoint_left.2 fun v h1 h2 => ((hSp v).1 h2).2 ((hSl v).1 h1)`. Establish `hnot : ∀ v ∉ Sl ∪ Sp, v ∉ placesOver D.host.E (X.l i) ∧ v ∉ Spl (X` using `X) i := fun v hv => by`. Rewrite `hv` using `[Finset.mem_union, not_or, hSl, hSp]`. Conclude with `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `van` using `fun v (hv : v ∈ Spl (X := X) i) => GlobalTheory.PrimeToInertia.local_cohomology_vanishes D N X bkP i s h v hv (IsLocalRing.ResidueField (X.O0 i)) 1 hker (fun g => ⟨0, by simp⟩) (IsLocalRing.ResidueField (X.O0 i)) htors (Tgl i s) (Or.inl rfl)`. Establish `cl : ∀ (τ : GE N →* GL (Fin D.R.r) (X.O0 i)) v, v ∈ placesOver D.host.E (X.l i) → Formalism.GaloisCohomology.bkCond (red i (IsLocalRing.ResidueField (X.O0 i)) τ) N.plOm (X.l i) (Spl i ∪ ↑(∅ : Finset (PlE D.host))) (bkOn bkP i τ 1 (IsLocalRing.ResidueField (X.O0 i))) v = bkOn bkP …` using `fun τ v hv => if_pos hv`. Establish `cp : ∀ (τ : GE N →* GL (Fin D.R.r) (X.O0 i)) v, v ∈ Spl (X` using `X) i → Formalism.GaloisCohomology.bkCond (red i (IsLocalRing.ResidueField (X.O0 i)) τ) N.plOm (X.l i) (Spl i ∪ ↑(∅ : Finset (PlE D.host))) (bkOn bkP i τ 1 (IsLocalRing.ResidueField (X.O0 i))) v = ⊤ := fun τ v hv => (if_neg hv.2).trans (if_pos (Or.inl hv))`. Establish `cu : ∀ (τ : GE N →* GL (Fin D.R.r) (X.O0 i)) v, v ∉ Sl ∪ Sp → Formalism.GaloisCohomology.bkCond (red i (IsLocalRing.ResidueField (X.O0 i)) τ) N.plOm (X.l i) (Spl i ∪ ↑(∅ : Finset (PlE D.host))) (bkOn bkP i τ 1 (IsLocalRing.ResidueField (X.O0 i))) v = Formalism.GaloisCohomology.un …` using `fun τ v hv => (if_neg (hnot v hv).1).trans (if_neg (by simpa using (hnot v hv).2))`. Take `⟨f1, f2, e⟩` from `GlobalTheory.T.local_duality_finite_discrete_modules hPT hLF hGF hGE D.host.E N.Om (X.l i) (IsLocalRing.ResidueField (X.O0 i)) (Fin D.R.r → (IsLocalRing.ResidueField (X.O0 i))) (Fin D.R.r → (IsLocalRing.ResidueField (X.O0 i))) (red i (IsLocalRing.ResidueField (X.O0 i)) (Tgl i s)) …`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[red_apply, Tgl_coe, Tmat_eq_one h (hnot v hv).1 (hnot v hv).2 B hB σ hσ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec, Module.End.one_apply])`. Use `_ _ (cu (Tgl i s)) (cu ρ) (fun v hv y => by`. Break down `Finset.mem_union.1 hv with hv | hv` into its components or cases. Rewrite `hv` using `[hSl]`. Rewrite using `[cl _ v hv, cl _ v hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨fun hy x hx => GlobalTheory.T.residualBlochKato_lattice_dual_orthogonal hLD D N X bkP i s h (IsLocalRing.ResidueField (X.O0 i)) hres ρ hρ v hv x y hx hy, GlobalTheory.T.mem_dualBlochKato_of_orthogonal_residual D N X bkP i s h (IsLocalRing.ResidueField (X.O0 i)) hres hsurj ρ hρ v …`. Rewrite `hv` using `[hSp]`. Rewrite using `[cp _ v hv, cp _ v hv]`. Use `⟨fun _ x _ => cupCob_of_mk_eq_zero _ _ _ _ (fun g => dot_equiv (IsLocalRing.ResidueField (X.O0 i)) hρ g.1) x y ?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations. Conclude with `(van v hv).2.1.elim _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨f1, f2, ?_⟩` and prove the remaining obligations. Establish `hset : Setup bkP i s (1 : GE N →* ((IsLocalRing.ResidueField (X.O0 i)))ˣ) ∅` using `⟨h, hloc, Module.Finite.of_surjective (Algebra.linearMap (X.O0 i) (IsLocalRing.ResidueField (X.O0 i))) hsurj, hker, fun g => ⟨0, by simp⟩, fun _ _ _ _ _ _ => rfl, by simp, fun _ _ _ _ _ _ => rfl⟩`. Establish `cnt` using `GlobalTheory.T.local_count_of_setup hLF hLD hLE h4 D N X bkP i s (IsLocalRing.ResidueField (X.O0 i)) 1 ∅ hset (IsLocalRing.ResidueField (X.O0 i)) inferInstance`. Establish `hSl' : placesOver D.host.E (X.l i) = (Sl : Set (PlE D.host))` using `Set.ext fun v => (hSl v).symm`. Rewrite `cnt` using `[hSl', finprod_mem_coe_finset, finprod_mem_coe_finset]`.
-
-Rewrite using `[Finset.prod_union hdis, Finset.prod_union hdis, h0_red hr h.2.1.1, h0_red_dual hr h.2.1.1 hρ, Finset.prod_eq_one (s := Sp) (fun v hv => by rw [(van v ((hSp v).1 hv)).1]; simp), Finset.prod_eq_one (s := Sp) (fun v hv => by`. Use `(van v ((hSp v).1 hv)).2.1` as an intermediate fact. Conclude with `Nat.card_unique),`. Use the proof step `Finset.prod_congr rfl (fun v hv => congrArg (fun L : Submodule (IsLocalRing.ResidueField (X.O0 i)) _ => Nat.card L) (cl (Tgl i s) v ((hSl v).1 hv))),`. Use the proof step `cnt, nrComplexPlaces_host, Nat.card_fun, Nat.card_fin, ← pow_mul, mul_comm D.R.r] at e`.
-
-Establish `hpos : 0 < (∏ v ∈ Sl, Nat.card (H0 ((repOn (Tgl i s) (1 : GE N →* ((IsLocalRing.ResidueField (X.O0 i)))ˣ) (IsLocalRing.ResidueField (X.O0 i))).comp (DecV N v).subtype))) * Nat.card (IsLocalRing.ResidueField (X.O0 i)) ^ (D.R.f * D.R.r)` using `mul_pos (Finset.prod_pos fun v _ => Nat.card_pos) (pow_pos Nat.card_pos _)`. Use `Nat.eq_of_mul_eq_mul_right hpos ?_` and prove the remaining obligations. Simplify using `only [Nat.card_unique, mul_one] at e`. Rewrite using `[← mul_assoc]`. Conclude with `e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eq (hPT : PoitouTateTotallyComplex) (hLF : LocalFiniteness) (hLD : LocalTateDuality) (hLE : LocalEulerChar)
     (hGF : GlobalFiniteness) (hGE : GlobalEulerChar) (h4 : Gen.ArchimedeanSignatureMatching) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i)
@@ -329,7 +321,7 @@ theorem card_eq (hPT : PoitouTateTotallyComplex) (hLF : LocalFiniteness) (hLD : 
   exact e
 
 /- English proof (translation)
-Rewrite `e` using `[Module.natCard_eq_pow_finrank (K := k), Module.natCard_eq_pow_finrank (K := k) (V := V')]`. Conclude with `Nat.pow_right_injective Finite.one_lt_card e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_card_eq {k V V' : Type} [Field k] [Finite k] [AddCommGroup V] [Module k V] [AddCommGroup V']
     [Module k V'] (f : Finite V) (f' : Finite V') (e : Nat.card V = Nat.card V') :
@@ -338,11 +330,11 @@ theorem finrank_eq_of_card_eq {k V V' : Type} [Field k] [Finite k] [AddCommGroup
   exact Nat.pow_right_injective Finite.one_lt_card e
 
 /- English proof (translation)
-Introduce `_ hPT _ _ hLF hLD hLE hGF hGE _ h4 D N X bkP i s h K _ _ _ _ hK ρ hρ`. Use `letI : TopologicalSpace (IsLocalRing.ResidueField (X.O0 i)) := ⊥`. Use `haveI : DiscreteTopology (IsLocalRing.ResidueField (X.O0 i)) := ⟨rfl⟩`. Take `⟨f1, f2, e⟩` from `card_eq hPT hLF hLD hLE hGF hGE h4 bkP i s h ρ hρ`. Use `X.twistBaseCoefficientRing_residueField_finite i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : IsRes i (IsLocalRing.ResidueField (X.O0 i))` using `fun x hx => (IsLocalRing.residue_eq_zero_iff _).2 hx`. Establish `hsurj : Function.Surjective (algebraMap (X.O0 i) (IsLocalRing.ResidueField (X.O0 i)))` using `IsLocalRing.residue_surjective`. Take `⟨a1, a2⟩` from `GlobalTheory.T.residualSelmer_baseChange_coefficientField D N X bkP i (Tgl i s) _ K hres hsurj hK ∅ Module.Finite.of_finite`. Take `⟨b1, b2⟩` from `GlobalTheory.T.residualSelmer_baseChange_coefficientField D N X bkP i ρ _ K hres hsurj hK ∅ Module.Finite.of_finite`. Use `⟨a1, b1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a2, b2]`. Conclude with `finrank_eq_of_card_eq f1 f2 e`.
+A detailed English derivation is pending.
 -/
 theorem eqDim : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal → LocalFiniteness → LocalTateDuality → LocalEulerChar → GlobalFiniteness → GlobalEulerChar → UnramifiedOrthogonality → Gen.ArchimedeanSignatureMatching → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → EqDim bkP i s := by
   intro _ hPT _ _ hLF hLD hLE hGF hGE _ h4 D N X bkP i s h K _ _ _ _ hK ρ hρ

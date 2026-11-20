@@ -25,7 +25,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[PrincipalizationRules.divisorFamily_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (L : PrincipalizationAssignment.{u}) (j : ℕ) (T : MarkedIdealWithBoundary.{u}) :
@@ -35,9 +35,9 @@ theorem divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq (hres : Fun
   rfl
 
 /- English proof (translation)
-Use `hf` as an intermediate fact. Take `⟨x, hx⟩` from `h`. Establish `hmem : x ∈ Set.range ⇑J.subschemeι`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι]`. Conclude with `hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, -⟩` from `hmem`. Use `⟨(J.subschemeι ≫ f) z, ?_⟩` and prove the remaining obligations. Rewrite using `[imageIdealSheaf_eq_ker, Scheme.Hom.support_ker]`. Conclude with `subset_closure (Set.mem_range_self z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_imageIdealSheaf_nonempty {X Y : Scheme.{u}} (f : X ⟶ Y)
     (hf : IsClosedImmersion f) (J : X.IdealSheafData)
@@ -54,11 +54,11 @@ private theorem support_imageIdealSheaf_nonempty {X Y : Scheme.{u}} (f : X ⟶ Y
   exact subset_closure (Set.mem_range_self z)
 
 /- English proof (translation)
-Establish `hcsne : (orderAtLeastLocus T.ideal T.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hcs`. Distinguish the cases in `hZ : DivisorReduction.containedComponentsIdeal T j hj = ⊤`. Establish `hvalid` using `hfacts.valid_lowerTop T hV hO hD j hj hZ`. Establish `hpr : (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData.CentersContainNoComponent` using `hfacts.properCenters (DivisorReduction.restrictToDivisor T j hj) hvalid hvalid.one_le_mult (L (DivisorReduction.restrictToDivisor T j hj))`. Use `Or.inl ⟨hZ, hpr, hfacts.isMarked_pushedTop T hV hO hD j hj hZ hvalid (L (DivisorReduction.restrictToDivisor T j hj)) hpr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hmk`. Conclude with `DivisorReduction.divisorReductionSeq_eq_of_containedComponentsIdeal_eq_top hres blowupPreservesNoetherian T (fun S _ => L S) j hj hcs hZ ⟨hfacts.lowerTriple_dim_lt T hV hcsne j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T), inferI …`. Establish `hb` using `hfacts.isBlowup_id_preIdeal T hV j hj`. Establish `hvalid` using `hfacts.valid_lowerPre T hV hO hD j hj hZ`. Establish `hpr : (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData.CentersContainNoComponent` using `hfacts.properCenters (DivisorReduction.restrictTwistedToDivisor T j hj) hvalid hvalid.one_le_mult (L (DivisorReduction.restrictTwistedToDivisor T j hj))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr ⟨hZ, hb, hpr, hfacts.isMarked_pushedPre T hV hO hD j hj hZ hb hvalid (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr, ?_⟩` and prove the remaining obligations. Introduce `hmk`. Conclude with `DivisorReduction.divisorReductionSeq_eq_of_isBlowupAlongIdealSheaf hres blowupPreservesNoetherian T (fun S _ => L S) j hj hcs hZ hb ⟨hfacts.lowerTriple_dim_lt T hV hcsne j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj), infer …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DivisorReduction.divisorReductionSeq_eq_ambientBlowupSeq_or_prepend (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -135,25 +135,23 @@ theorem DivisorReduction.divisorReductionSeq_eq_ambientBlowupSeq_or_prepend (hre
         (DivisorReduction.lowerBoundaryAfterBlowup T j hj), inferInstance⟩ hpr hmk
 
 /- English proof (translation)
-Use `DivisorReduction.isNoetherian_scheme_of_isAdmissible T hV` as an intermediate fact. Distinguish the cases in `hcs : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)`. Rewrite using `[DivisorReduction.divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty hres blowupPreservesNoetherian T (fun S _ => L S) j hj hcs]`. Introduce `i hi`. Rewrite `hi` using `[emptyMarkedSequenceOfBlowups_length]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hi (Nat.not_lt_zero i)`. Establish `hcsne : (orderAtLeastLocus T.ideal T.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hcs`. Break down `DivisorReduction.divisorReductionSeq_eq_ambientBlowupSeq_or_prepend hres hfacts L j T hV hj hO hD hcs with ⟨hZ, hpr, hmk, heq⟩ | ⟨hZ, hb, hpr, hmk, heq⟩` into its components or cases. Establish `hvalid` using `hfacts.valid_lowerTop T hV hO hD j hj hZ`. Establish `hdlt : (DivisorReduction.restrictToDivisor T j hj).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt T hV hcsne j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T)) hdim`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlen : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) (L (DivisorReduction.restrictToDivisor T j hj)) hpr).length = (L (DivisorReduction.restrictToDivisor T j hj …`. Establish `h` using `ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq hmk]`. Introduce `i hi`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length, hlen]`. Establish `hcenter : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) (L (DivisorReduction.restrictToDivisor T j hj)) hpr).center i = imageIdealSheaf (embeddingIntoAmbientBlo …`. Establish `h` using `ambientBlowupSequence_center (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr i`. Simplify using `only [MarkedBlowupSequenceData.ofMarkedSequence_center] at h`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_center, BlowupSequenceData.toMarkedBlowupSequenceData_center, hcenter]`. Conclude with `support_imageIdealSheaf_nonempty _ (isClosedImmersion_embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr i) _ (h …`. Establish `hvalid` using `hfacts.valid_lowerPre T hV hO hD j hj hZ`. Establish `hdlt : (DivisorReduction.restrictTwistedToDivisor T j hj).krullDimSucc < n` using `lt_of_lt_of_le (hfacts.lowerTriple_dim_lt T hV hcsne j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj)) hdim`. Establish `hlen : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr).length = (L (DivisorReduction.restrictTwi …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq hmk]`. Introduce `i hi`. Rewrite `hi` using `[MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length, BlowupSequenceData.prepend_length, hlen]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_center, BlowupSequenceData.toMarkedBlowupSequenceData_center]`. Consider the cases of `i with`. Consider the case `zero`. Rewrite using `[BlowupSequenceData.prepend_center_zero]`. Use `Set.nonempty_iff_ne_empty.mpr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `hE`. Conclude with `hZ ((Scheme.IdealSheafData.eq_top_iff_support_eq_empty _).mpr hE)`. Consider the case `succ k`. Rewrite using `[BlowupSequenceData.prepend_center_succ]`. Establish `hk : k < (L (DivisorReduction.restrictTwistedToDivisor T j hj)).length` using `Nat.lt_of_succ_lt_succ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcenter : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr).center k = imageIdealSheaf (embeddingI …`. Establish `h` using `ambientBlowupSequence_center (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr k`. Simplify using `only [MarkedBlowupSequenceData.ofMarkedSequence_center] at h`. Conclude with `h`. Rewrite using `[hcenter]`.
-
-Conclude with `support_imageIdealSheaf_nonempty _ (isClosedImmersion_embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr …`.
+A detailed English derivation is pending.
 -/
 theorem DivisorReduction.divisorReductionSeq_center_nonempty (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -270,19 +268,17 @@ theorem DivisorReduction.divisorReductionSeq_center_nonempty (hres : FunctorialR
           (hL.center_nonempty (DivisorReduction.restrictTwistedToDivisor T j hj) hvalid hdlt k hk)
 
 /- English proof (translation)
-Use `DivisorReduction.isNoetherian_scheme_of_isAdmissible T hV` as an intermediate fact. Distinguish the cases in `hcs : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)`. Rewrite using `[DivisorReduction.divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty hres blowupPreservesNoetherian T (fun S _ => L S) j hj hcs]`. Introduce `i hi x`. Rewrite `hi` using `[emptyMarkedSequenceOfBlowups_length]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi0 : i = 0` using `Nat.le_zero.mp hi`. Substitute `hi0` using the available equality. Establish `hid : (emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary).ideal 0 = T.ideal`. Rewrite using `[MarkedSequenceOfBlowups.ideal_zero]`. Conclude with `Scheme.IdealSheafData.comap_id _`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid]`. Conclude with `(T.isOrderBoundedByMult_iff.mp hO) x`. Break down `DivisorReduction.divisorReductionSeq_eq_ambientBlowupSeq_or_prepend hres hfacts L j T hV hj hO hD hcs with ⟨hZ, hpr, hmk, heq⟩ | ⟨hZ, hb, hpr, hmk, heq⟩` into its components or cases. Establish `hvalid` using `hfacts.valid_lowerTop T hV hO hD j hj hZ`. Establish `hlen : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) (L (DivisorReduction.restrictToDivisor T j hj)) hpr).length = (L (DivisorReduction.restrictToDivisor T j hj …`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h` using `ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq hmk]`. Introduce `i hi x`. Rewrite `hi` using `[MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length, hlen]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_ideal, BlowupSequenceData.toMarkedBlowupSequenceData_ideal]`. Conclude with `hfacts.orderAt_ctrlIdeal_le_top T hV hO hD j hj hZ hvalid (L (DivisorReduction.restrictToDivisor T j hj)) hpr i hi x`. Establish `hvalid` using `hfacts.valid_lowerPre T hV hO hD j hj hZ`. Establish `hlen : (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr).length = (L (DivisorReduction.restrictTwi …`. Establish `h` using `ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence (L (DivisorReduction.restrictTwistedToDivisor T j hj))).toBlowupSequenceData hres blowupPreservesNoetherian hpr`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq hmk]`. Introduce `i hi x`. Rewrite `hi` using `[MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length, BlowupSequenceData.prepend_length, hlen]`. Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_ideal, BlowupSequenceData.toMarkedBlowupSequenceData_ideal]`.
-
-Conclude with `hfacts.orderAt_ctrlIdeal_le_pre T hV hO hD j hj hZ hb hvalid (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr i hi x`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DivisorReduction.divisorReductionSeq_orderAt_le_mult (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -355,7 +351,7 @@ theorem DivisorReduction.divisorReductionSeq_orderAt_le_mult (hres : FunctorialR
         (L (DivisorReduction.restrictTwistedToDivisor T j hj)) hpr i hi x
 
 /- English proof (translation)
-Rewrite using `[divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq, DivisorReduction.divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty hres blowupPreservesNoetherian T (fun S _ => L S) j hj hcs]`. Conclude with `emptyMarkedSequenceOfBlowups_length T.structMap T.ideal T.mult T.boundary`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_length_eq_zero (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (n : ℕ) (L : PrincipalizationAssignment.{u}) (j : ℕ) (T : MarkedIdealWithBoundary.{u})
@@ -369,7 +365,7 @@ theorem divisorFamily_canonicalAlgorithmRules_length_eq_zero (hres : FunctorialR
   exact emptyMarkedSequenceOfBlowups_length T.structMap T.ideal T.mult T.boundary
 
 /- English proof (translation)
-Rewrite using `[divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq]`. Conclude with `DivisorReduction.divisorReductionSeq_center_nonempty hres hfacts n L O hL j T hV hdim hO hD hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_center_nonempty (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -384,7 +380,7 @@ theorem divisorFamily_canonicalAlgorithmRules_center_nonempty (hres : Functorial
   exact DivisorReduction.divisorReductionSeq_center_nonempty hres hfacts n L O hL j T hV hdim hO hD hj
 
 /- English proof (translation)
-Rewrite using `[divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq]`. Conclude with `DivisorReduction.divisorReductionSeq_orderAt_le_mult hres hfacts n L j T hV hdim hO hD hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divisorFamily_canonicalAlgorithmRules_orderAt_le_mult (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

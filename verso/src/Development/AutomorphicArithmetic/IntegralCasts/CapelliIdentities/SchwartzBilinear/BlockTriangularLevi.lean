@@ -9,7 +9,7 @@ noncomputable def GlobalTheory.SmGL.blk :
   fun {α n : Type} {m : α → Type} (e : (a : α) × m a ≃ n) (i : n) ↦ Sigma.fst (β := fun (a : α) ↦ m a) (DFunLike.coe (β := fun (x_h1 : n) ↦ (a : α) × m a) e.symm i)
 
 /- English proof (translation)
-Use `show (e.symm (e ⟨a, i⟩)).1 = a`. Rewrite using `[Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockIndex_sigma_equiv {α n : Type} {m : α → Type} (e : (a : α) × m a ≃ n) (a : α) (i : m a) :
     GlobalTheory.SmGL.blk (m := m) e (e ⟨a, i⟩) = a := by
@@ -17,13 +17,11 @@ theorem blockIndex_sigma_equiv {α n : Type} {m : α → Type} (e : (a : α) × 
   rw [Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← e.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single a]`. Introduce `b _ hb`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Break down `lt_or_gt_of_ne hb with h | h` into its components or cases. Establish `h' : GlobalTheory.SmGL.blk (m` using `m) e (e ⟨b, l⟩) < GlobalTheory.SmGL.blk (m := m) e (e ⟨a, i⟩) := by`. Rewrite using `[blockIndex_sigma_equiv, blockIndex_sigma_equiv]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX h', zero_mul]`. Establish `h' : GlobalTheory.SmGL.blk (m` using `m) e (e ⟨a, j⟩) < GlobalTheory.SmGL.blk (m := m) e (e ⟨b, l⟩) := by`. Rewrite using `[blockIndex_sigma_equiv, blockIndex_sigma_equiv]`. Conclude with `h`. Rewrite using `[hY h', mul_zero]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockTriangular_mul_submatrix {R : Type} [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [Fintype n] (e : (a : α) × m a ≃ n) (a : α) (X Y : Matrix n n R)
@@ -49,7 +47,7 @@ theorem blockTriangular_mul_submatrix {R : Type} [CommRing R] {α n : Type} {m :
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e x y hx hy`. Use `show ((x * y : GL n R) : Matrix n n R).BlockTriangular _`. Rewrite using `[Units.val_mul]`. Conclude with `Matrix.BlockTriangular.mul hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SmGL.parab_obl_1 :
     ∀ (R : Type) [inst_h0 : CommRing R] {α n : Type} {m : α → Type} [inst_h2 : LinearOrder α] [inst_h3 : Fintype n] [inst_h4 : DecidableEq n] (e : (a : α) × m a ≃ n) {x y : GL n R}, Membership.mem (γ := Set (GL n R)) {g : GL n R | g.val.BlockTriangular (GlobalTheory.SmGL.blk (m := m) e)} x → Membership.mem (γ := Set (GL n R)) {g : GL n R | g.val.BlockTriangular (GlobalTheory.SmGL.blk (m := m) e)} y → Membership.mem (γ := Set (GL n R)) {g : GL n R | g.val.BlockTriangular (GlobalTheory.SmGL.blk (m := m) e)} (x * y) := by
@@ -59,7 +57,7 @@ theorem GlobalTheory.SmGL.parab_obl_1 :
   exact Matrix.BlockTriangular.mul hx hy
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e`. Use `show ((1 : GL n R) : Matrix n n R).BlockTriangular _`. Rewrite using `[Units.val_one]`. Conclude with `Matrix.blockTriangular_one`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SmGL.parab_obl_2 :
     ∀ (R : Type) [inst_h0 : CommRing R] {α n : Type} {m : α → Type} [inst_h2 : LinearOrder α] [inst_h3 : Fintype n] [inst_h4 : DecidableEq n] (e : (a : α) × m a ≃ n), Membership.mem (γ := Set (GL n R)) {g : GL n R | g.val.BlockTriangular (GlobalTheory.SmGL.blk (m := m) e)} (OfNat.ofNat (nat_lit 1)) := by
@@ -69,7 +67,7 @@ theorem GlobalTheory.SmGL.parab_obl_2 :
   exact Matrix.blockTriangular_one
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ e x hx`. Use `show ((x⁻¹ : GL n R) : Matrix n n R).BlockTriangular _`. Rewrite using `[Matrix.coe_units_inv]`. Use `haveI : Invertible (x : Matrix n n R) := x.invertible`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SmGL.parab_obl_3 :
     ∀ (R : Type) [inst_h0 : CommRing R] {α n : Type} {m : α → Type} [inst_h2 : LinearOrder α] [inst_h3 : Fintype n] [inst_h4 : DecidableEq n] (e : (a : α) × m a ≃ n) {x : GL n R}, Membership.mem (γ := Set (GL n R)) {g : GL n R | g.val.BlockTriangular (GlobalTheory.SmGL.blk (m := m) e)} x → Membership.mem (γ := Set (GL n R)) {g : GL n R | g.val.BlockTriangular (GlobalTheory.SmGL.blk (m := m) e)} x⁻¹ := by
@@ -88,7 +86,7 @@ noncomputable def GlobalTheory.SmGL.parab :
   fun (R : Type) {inst_f0 : CommRing R} {α : Type} (m : α → Type) {inst_f1 : (a : α) → Fintype (m a)} {inst_f2 : (a : α) → DecidableEq (m a)} ↦ (a : α) → GL (m a) R
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ _ _ e a`. Use `show ((1 : GL n R) : Matrix n n R).submatrix _ _ = 1`. Rewrite using `[Units.val_one]`. Conclude with `Matrix.submatrix_one _ (e.injective.comp sigma_mk_injective)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SmGL.diagBlock_obl_1 :
     ∀ (R : Type) [inst_h0 : CommRing R] {α n : Type} {m : α → Type} [inst_h2 : LinearOrder α] [inst_h3 : (a : α) → Fintype (m a)] [inst_h4 : (a : α) → DecidableEq (m a)] [inst_h5 : Fintype n] [inst_h6 : DecidableEq n] (e : (a : α) × m a ≃ n) (a : α), Eq (α := Matrix (m a) (m a) R) (Matrix.submatrix (m := n) (n := n) (Units.val (Subtype.val (p := fun (x : GL n R) ↦ Membership.mem (γ := Subgroup (GL n R)) (GlobalTheory.SmGL.parab R (m := m) e) x) (OfNat.ofNat (nat_lit 1)))) (fun (i : m a) ↦ DFunLike.coe (β := fun (x_h7 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) fun (i : m a) ↦ DFunLike.coe (β := fun (x_h8 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) (OfNat.ofNat (nat_lit 1)) := by
@@ -98,7 +96,7 @@ theorem GlobalTheory.SmGL.diagBlock_obl_1 :
   exact Matrix.submatrix_one _ (e.injective.comp sigma_mk_injective)
 
 /- English proof (translation)
-Introduce `R _ α n m _ _ _ _ _ _ e a x y`. Establish `hx : ((x : GL n R) : Matrix n n R).BlockTriangular (GlobalTheory.SmGL.blk (m` using `m) e) := x.2`. Establish `hy : ((y : GL n R) : Matrix n n R).BlockTriangular (GlobalTheory.SmGL.blk (m` using `m) e) := y.2`. Establish `key` using `blockTriangular_mul_submatrix e a _ _ hx hy`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SmGL.diagBlock_obl_2 :
     ∀ (R : Type) [inst_h0 : CommRing R] {α n : Type} {m : α → Type} [inst_h2 : Fintype α] [inst_h3 : LinearOrder α] [inst_h4 : (a : α) → Fintype (m a)] [inst_h5 : (a : α) → DecidableEq (m a)] [inst_h6 : Fintype n] [inst_h7 : DecidableEq n] (e : (a : α) × m a ≃ n) (a : α) (x y : ↥(GlobalTheory.SmGL.parab R (m := m) e)), ((x * y).val (p := fun (x : GL n R) ↦ Membership.mem (γ := Subgroup (GL n R)) (GlobalTheory.SmGL.parab R (m := m) e) x).val.submatrix (fun (i : m a) ↦ DFunLike.coe (β := fun (x_h8 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) fun (i : m a) ↦ DFunLike.coe (β := fun (x_h9 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) = HMul.hMul (α := Matrix (m a) (m a) R) (x.val (p := fun (x : GL n R) ↦ Membership.mem (γ := Subgroup (GL n R)) (GlobalTheory.SmGL.parab R (m := m) e) x).val.submatrix (fun (i : m a) ↦ DFunLike.coe (β := fun (x_h10 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) fun (i : m a) ↦ DFunLike.coe (β := fun (x_h11 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) (y.val (p := fun (x : GL n R) ↦ Membership.mem (γ := Subgroup (GL n R)) (GlobalTheory.SmGL.parab R (m := m) e) x).val.submatrix (fun (i : m a) ↦ DFunLike.coe (β := fun (x_h12 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) fun (i : m a) ↦ DFunLike.coe (β := fun (x_h13 : (a : α) × m a) ↦ n) e (Sigma.mk (β := fun (a : α) ↦ m a) a i)) := by
@@ -137,13 +135,13 @@ noncomputable def DiscreteGroups.sglob.LConv.IsWhitTest :
   fun {k : Type} {inst_f29 : Field k} {inst_f30 : TopologicalSpace k} {m : ℕ} (ψ : AddChar k Circle) (f : GL (Fin m) k → ℂ) ↦ (∀ (u : GL (Fin m) k), Membership.mem (γ := Subgroup (GL (Fin m) k)) (GlobalTheory.SmGL.unipB k (Fin m)) u → ∀ (g : GL (Fin m) k), f (u * g) = Subtype.val (p := fun (x : ℂ) ↦ Membership.mem (γ := Submonoid ℂ) (Submonoid.unitSphere ℂ) x) (DFunLike.coe (β := fun (x_h4 : k) ↦ Circle) ψ (GlobalTheory.Whittaker.superDiag u)) * f g) ∧ IsLocallyConstant f ∧ ∃ (C : Set (GL (Fin m) k)), IsCompact C ∧ ∀ (g : GL (Fin m) k), f g ≠ OfNat.ofNat (nat_lit 0) → ∃ (u : GL (Fin m) k), Membership.mem (γ := Subgroup (GL (Fin m) k)) (GlobalTheory.SmGL.unipB k (Fin m)) u ∧ ∃ c ∈ C, g = u * c
 
 /- English proof (translation)
-Introduce `k _ _ m ψ f f' hf hf'`. Unfold `DiscreteGroups.sglob.LConv.IsWhitTest at hf hf' ⊢`. Take `⟨h1, h2, C, hC, h3⟩` from `hf`. Take `⟨h1', h2', C', hC', h3'⟩` from `hf'`. Use `⟨?_, h2.sub h2', C ∪ C', hC.union hC', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu g beta_reduce`. Rewrite using `[h1 u hu g, h1' u hu g, mul_sub]`. Introduce `g hg beta_reduce at hg`. Distinguish the cases in `hfg : f g = 0`. Establish `hfg' : f' g ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `h`. Apply `hg` to reduce the goal to its premises. Rewrite using `[hfg, h, sub_zero]`. Take `⟨u, hu, c, hc, rfl⟩` from `h3' g hfg'`. Conclude with `⟨u, hu, c, Set.mem_union_right _ hc, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨u, hu, c, hc, rfl⟩` from `h3 g hfg`. Conclude with `⟨u, hu, c, Set.mem_union_left _ hc, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem DiscreteGroups.sglob.LConv.IsWhitTest.sub :
     ∀ {k : Type} [inst_h0 : Field k] [inst_h1 : TopologicalSpace k] {m : ℕ} {ψ : AddChar k Circle} {f f' : GL (Fin m) k → ℂ}, DiscreteGroups.sglob.LConv.IsWhitTest ψ f → DiscreteGroups.sglob.LConv.IsWhitTest ψ f' → DiscreteGroups.sglob.LConv.IsWhitTest (m := m) ψ fun (g : GL (Fin m) k) ↦ f g - f' g := by

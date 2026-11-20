@@ -63,14 +63,14 @@ def IsLattice (L : Submodule (𝓞 E) (Fin N → E)) : Prop :=
   L.FG ∧ Submodule.span E (L : Set (Fin N → E)) = ⊤
 
 /- English proof (translation)
-Simplify using `[HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_left (V : HermSpace E N) (a b x : Fin N → E) :
     V.h (a + b) x = V.h a x + V.h b x := by
   simp [HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_smul_left (V : HermSpace E N) (c : E) (a x : Fin N → E) :
     V.h (c • a) x = c * V.h a x := by
@@ -105,9 +105,9 @@ def actLine (g : GL (Fin N) E) (l : Submodule E (Fin N → E)) : Submodule E (Fi
   l.map (Matrix.mulVecLin (g : Matrix (Fin N) (Fin N) E))
 
 /- English proof (translation)
-Rewrite using `[act, act, act, ← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `show ((g * g' : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ v = (g : Matrix (Fin N) (Fin N) E) *ᵥ ((g' : Matrix (Fin N) (Fin N) E) *ᵥ v)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem act_mul (g g' : GL (Fin N) E) (L : Submodule (𝓞 E) (Fin N → E)) :
     act (g * g') L = act g (act g' L) := by
@@ -120,7 +120,7 @@ theorem act_mul (g g' : GL (Fin N) E) (L : Submodule (𝓞 E) (Fin N → E)) :
   rw [Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `: linO (1 : GL (Fin N) E) = LinearMap.id`. Use extensionality with `v i`. Simplify using `[linO]`. Simplify using `[act, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem act_one (L : Submodule (𝓞 E) (Fin N → E)) : act 1 L = L := by
   have : linO (1 : GL (Fin N) E) = LinearMap.id := by
@@ -174,7 +174,7 @@ instance (V : HermSpace E N) : MeasurableSpace (RealPts V) := borel _
 instance (V : HermSpace E N) : BorelSpace (RealPts V) := ⟨rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[conjE_apply, IsCMField.complexEmbedding_complexConj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_map_embedding (w : InfinitePlace E) (A : Matrix (Fin N) (Fin N) E) :
     (A.map (conjE E)).map w.embedding = (A.map w.embedding).map (starRingEnd ℂ) := by
@@ -270,7 +270,7 @@ def inclA : E →+* AdE E :=
     (AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)).toRingHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id (maximalRealSubfield E) (AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E))) (IsCMField.complexConj E).toAlgHom ((1 : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)) ⊗ₜ x) = (1 : AdeleRing (𝓞 (maximalRealSubfield E)) …`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conjA_inclA (x : E) : conjA E (inclA E x) = inclA E (conjE E x) := by
   change Algebra.TensorProduct.map (AlgHom.id (maximalRealSubfield E)
@@ -389,7 +389,7 @@ def Unimodular.Statement : Prop :=
     (μ : Measure (RealPts V)), μ.IsHaarMeasure → μ.IsMulRightInvariant
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun g : GL (Fin N) ℂ => (g : Matrix (Fin N) (Fin N) ℂ))` using `Units.continuous_val`. Establish `hc : Continuous (fun g : GL (Fin N) ℂ => (g : Matrix (Fin N) (Fin N) ℂ)ᵀ * J * (g : Matrix (Fin N) (Fin N) ℂ).map (starRingEnd ℂ))` using `(h1.matrix_transpose.matrix_mul continuous_const).matrix_mul (h1.matrix_map Complex.continuous_conj)`. Conclude with `isClosed_eq hc continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_unitaryOf_complex (J : Matrix (Fin N) (Fin N) ℂ) :
     IsClosed (unitaryOf (starRingEnd ℂ) J : Set (GL (Fin N) ℂ)) := by
@@ -402,7 +402,7 @@ theorem isClosed_unitaryOf_complex (J : Matrix (Fin N) (Fin N) ℂ) :
   exact isClosed_eq hc continuous_const
 
 /- English proof (translation)
-Rewrite using `[realPoints, Subgroup.coe_pi]`. Conclude with `isClosed_set_pi (fun w _ => isClosed_unitaryOf_complex _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_realPoints (V : HermSpace E N) :
     IsClosed (realPoints V : Set (InfinitePlace E → GL (Fin N) ℂ)) := by
@@ -415,7 +415,7 @@ instance (V : HermSpace E N) : LocallyCompactSpace (RealPts V) := by
   exact (isClosed_realPoints V).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem haar_isHaarMeasure (V : HermSpace E N) :
     (Measure.haar : Measure (RealPts V)).IsHaarMeasure := inferInstance
@@ -451,9 +451,9 @@ def intCoords (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) :
     exact (show IsIntegral ℤ (algebraMap (𝓞 E) E c) from c.isIntegral_coe).mul (hx i)
 
 /- English proof (translation)
-Rewrite using `[stdLattice, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩ j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using (isIntegral_one : IsIntegral ℤ (1 : E))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(isIntegral_zero : IsIntegral ℤ (0 : E))` using `[Pi.single_apply, h]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stdLattice_le_intCoords : stdLattice E N ≤ intCoords E N := by
   rw [stdLattice, Submodule.span_le]
@@ -463,7 +463,7 @@ theorem stdLattice_le_intCoords : stdLattice E N ≤ intCoords E N := by
   · simpa [Pi.single_apply, h] using (isIntegral_zero : IsIntegral ℤ (0 : E))
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[stdLattice, Submodule.span_span_of_tower]`. Rewrite using `[show (Set.range fun i : Fin N => (Pi.single i 1 : Fin N → E)) = Set.range (Pi.basisFun E (Fin N)) by ext; simp [Pi.basisFun_apply]]`. Conclude with `(Pi.basisFun E (Fin N)).span_eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_stdLattice : IsLattice (stdLattice E N) := by
   refine ⟨Submodule.fg_span (Set.finite_range _), ?_⟩
@@ -473,7 +473,7 @@ theorem isLattice_stdLattice : IsLattice (stdLattice E N) := by
   exact (Pi.basisFun E (Fin N)).span_eq
 
 /- English proof (translation)
-Unfold `HermSpace.h ReciprocityTheory.ChartRestriction.G.SA.hf`. Use `IsIntegral.sum _ (fun i _ => IsIntegral.sum _ (fun j _ => ?_))` and prove the remaining obligations. Use `((hx i).mul (hJ i j)).mul ?_` and prove the remaining obligations. Simplify using `using (hy j).map (conjE E).toIntAlgHom`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isIntegral_h_of_coords (V : HermSpace E N) (hJ : ∀ i j, IsIntegral ℤ (V.J i j))
     {x y : Fin N → E} (hx : ∀ i, IsIntegral ℤ (x i)) (hy : ∀ i, IsIntegral ℤ (y i)) :
@@ -484,7 +484,7 @@ theorem isIntegral_h_of_coords (V : HermSpace E N) (hJ : ∀ i j, IsIntegral ℤ
   simpa using (hy j).map (conjE E).toIntAlgHom
 
 /- English proof (translation)
-Use `⟨isLattice_stdLattice, fun x hx y hy => ?_, le_rfl⟩` and prove the remaining obligations. Use `isIntegral_h_of_coords _ (fun i j => ?_) (stdLattice_le_intCoords hx) (stdLattice_le_intCoords hy)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hypPlane, isIntegral_zero, isIntegral_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stdLattice_isDIntegral :
     IsDIntegral (hypPlane E)
@@ -498,7 +498,7 @@ theorem stdLattice_isDIntegral :
 def e₀ (E : Type) [Field E] [NumberField E] [IsCMField E] : Fin 2 → E := Pi.single 0 1
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[e₀] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem e₀_ne_zero : e₀ E ≠ 0 := by
   intro h
@@ -506,18 +506,18 @@ theorem e₀_ne_zero : e₀ E ≠ 0 := by
   simp [e₀] at this
 
 /- English proof (translation)
-Simplify using `[HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, hypPlane, e₀, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem e₀_isotropic : (hypPlane E).h (e₀ E) (e₀ E) = 0 := by
   simp [HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, hypPlane, e₀, Fin.sum_univ_two]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨0, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem e₀_mem : e₀ E ∈ stdLattice E 2 := Submodule.subset_span ⟨0, rfl⟩
 
 /- English proof (translation)
-Use `⟨finrank_span_singleton e₀_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Simplify using `[HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, hypPlane, e₀, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem isIsotropicLine_e₀ : IsIsotropicLine (hypPlane E) (Submodule.span E {e₀ E}) := by
   refine ⟨finrank_span_singleton e₀_ne_zero, ?_⟩
@@ -526,9 +526,9 @@ theorem isIsotropicLine_e₀ : IsIsotropicLine (hypPlane E) (Submodule.span E {e
   simp [HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, hypPlane, e₀, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `⟨∑ i, ∑ φ : E →+* ℂ, ‖φ (integralBasis E i)‖, eq_top_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← (integralBasis E).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨?_, fun φ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integralBasis_apply]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_vr : ∃ vr : ℝ,
     Submodule.span ℚ {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ vr} = ⊤ := by
@@ -548,9 +548,9 @@ theorem exists_vr : ∃ vr : ℝ,
             (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Establish `key : ∀ (A : Matrix ι ι R) (u v : ι → R), ReciprocityTheory.ChartRestriction.G.SA.hf σ A u v = u ⬝ᵥ (A *ᵥ (σ ∘ v))`. Introduce `A u v`. Simplify using `[ReciprocityTheory.ChartRestriction.G.SA.hf, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`. Establish `hσ : (σ ∘ (g *ᵥ y)) = g.map σ *ᵥ (σ ∘ y)`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `RingHom.map_mulVec σ g y i`. Rewrite using `[key, key, hσ]`. Use `conv_rhs => rw [Matrix.mul_assoc, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Rewrite using `[Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hf_mulVec {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq ι] (σ : R →+* R)
     (J g : Matrix ι ι R) (x y : ι → R) :
@@ -569,7 +569,7 @@ theorem hf_mulVec {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableE
   rw [Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[HermSpace.h, hf_mulVec]`. Establish `hg : ((g : GL (Fin N) E) : Matrix (Fin N) (Fin N) E)ᵀ * V.J * ((g : GL (Fin N) E) : Matrix (Fin N) (Fin N) E).map (conjE E) = V.J` using `g.2`. Rewrite using `[hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem h_unitary (V : HermSpace E N) (g : unitaryGroup V) (x y : Fin N → E) :
     V.h (((g : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ x)
@@ -581,7 +581,7 @@ theorem h_unitary (V : HermSpace E N) (g : unitaryGroup V) (x y : Fin N → E) :
   rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Use `congrArg (fun u => ((γ⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ u) hab` as an intermediate fact. Simplify `this` using `[linO, Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linO_injective (γ : GL (Fin N) E) : Function.Injective (linO γ) := by
   intro a b hab
@@ -589,13 +589,13 @@ theorem linO_injective (γ : GL (Fin N) E) : Function.Injective (linO γ) := by
   simpa [linO, Matrix.mulVec_mulVec] using this
 
 /- English proof (translation)
-Use `set γ : GL (Fin N) E := (g : GL (Fin N) E)`. Establish `h1 : Submodule.span (𝓞 E) {(γ : Matrix (Fin N) (Fin N) E) *ᵥ v} = (Submodule.span (𝓞 E) {v}).map (linO γ)`. Rewrite using `[Submodule.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `h2 : (Submodule.span E {(γ : Matrix (Fin N) (Fin N) E) *ᵥ v}).restrictScalars (𝓞 E) = ((Submodule.span E {v}).restrictScalars (𝓞 E)).map (linO γ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Simplify using `only [Submodule.restrictScalars_mem, Submodule.mem_span_singleton, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a • v, ⟨a, rfl⟩, by simp [linO]⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨a, by simp [linO]⟩`. Establish `hL : L.map (linO γ) = L` using `hg`. Establish `h3 : L ⊓ ((Submodule.span E {v}).restrictScalars (𝓞 E)).map (linO γ) = (L ⊓ (Submodule.span E {v}).restrictScalars (𝓞 E)).map (linO γ)`. Rewrite using `[Submodule.map_inf _ (linO_injective γ), hL]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lineIndex`. Rewrite using `[h1, h2, h3, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup, AddSubgroup.relIndex_map_map_of_injective _ _ (linO_injective γ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineIndex_mulVec (V : HermSpace E N) (L : Submodule (𝓞 E) (Fin N → E))
     (g : unitaryGroup V) (hg : g ∈ stab V L) (v : Fin N → E) :
@@ -627,11 +627,11 @@ def orbitSet (V : HermSpace E N) (L : Submodule (𝓞 E) (Fin N → E)) (v : Fin
   {u | ∃ g : unitaryGroup V, g ∈ stab V L ∧ u = ((g : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ v}
 
 /- English proof (translation)
-Use `⟨⟨1, (stab V L).one_mem, by simp⟩, ?_, ?_, ?_, ⟨lineIndex L v, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `: linO (g : GL (Fin N) E) v ∈ act (g : GL (Fin N) E) L` using `Submodule.mem_map_of_mem hv`. Rewrite `this` using `[show act (g : GL (Fin N) E) L = L from hg]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Use `⟨fun h0 => hv0 ?_, by rw [h_unitary, hvv]⟩` and prove the remaining obligations. Use `congrArg (fun u => (((g : GL (Fin N) E)⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ u) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec]`. Introduce and unpack `g hg _ ⟨g', hg', rfl⟩`. Conclude with `⟨g * g', (stab V L).mul_mem hg hg', by simp [Matrix.mulVec_mulVec]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Rewrite using `[lineIndex_mulVec V L g hg]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitSet_hyps (V : HermSpace E N) (L : Submodule (𝓞 E) (Fin N → E)) (v : Fin N → E)
     (hv : v ∈ L) (hv0 : v ≠ 0) (hvv : V.h v v = 0) :
@@ -653,7 +653,7 @@ theorem orbitSet_hyps (V : HermSpace E N) (L : Submodule (𝓞 E) (Fin N → E))
     rw [lineIndex_mulVec V L g hg]
 
 /- English proof (translation)
-Take `⟨-, h2, h3, h4, h5⟩` from `orbitSet_hyps (hypPlane E) (stdLattice E 2) (e₀ E) e₀_mem e₀_ne_zero e₀_isotropic`. Conclude with `⟨stdLattice_isDIntegral, e₀_mem, e₀_ne_zero, e₀_isotropic, h2, h3, h4, h5⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hyp_example :
     IsDIntegral (hypPlane E)
@@ -678,11 +678,11 @@ instance : IsCMField (CyclotomicField 4 ℚ) := by
     (CyclotomicField.isCyclotomicExtension 4 ℚ)
 
 /- English proof (translation)
-The claim follows from `hypPlane _`.
+A detailed English derivation is pending.
 -/
 example : HermSpace (CyclotomicField 4 ℚ) 2 := hypPlane _
 /- English proof (translation)
-The claim follows from `hypMajorant _`.
+A detailed English derivation is pending.
 -/
 example : Majorant (hypPlane (CyclotomicField 4 ℚ)) := hypMajorant _
 

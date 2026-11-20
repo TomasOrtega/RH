@@ -31,7 +31,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_mul]`. Use `Finsupp.sum_congr fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations. Rewrite using `[h d hd p]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,17 +47,17 @@ theorem sum_sum_line {P D' : Type} (σ : P →₀ ℂ) (τ : D' →₀ ℂ) (f :
   ring
 
 /- English proof (translation)
-Take `⟨ell₀, h₀⟩` from `h`. Set `ell : PolCol ch.G × PolRow ch.G → ℂ` to `if ell₀ = 0 then fun _ => 1 else ell₀`. Establish `hne : ell ≠ 0`. Distinguish the cases in `e : ell₀ = 0`. Simplify using `only [ell, e, if_true]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `h1`. Use `congrFun h1 (Classical.arbitrary _)` as an intermediate fact. Simplify using `at this`. Simplify `e` using `[ell, e]`. Establish `hline : ∀ t a, ch.S.SumOK t (ch.Phi a) → ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ M : Vol ch.G, IsTermVol t ch.S.toGridChoice (ch.Phi a) β M → ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ → ∀ d ∈ τ.support, ∀ y, ∃ κ : ℂ, ∀ P, defPer t ch.S.toGridChoice M P d (colFn ch a) (formTop ch t y) = κ * …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `t a hS β hβ M hM τ hτ d hd y`. Take `⟨κ, hκ⟩` from `h₀ t a hS β hβ M hM τ hτ d hd y`. Distinguish the cases in `e : ell₀ = 0`. Use `⟨0, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[hκ P, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `⟨κ, fun P => by simp only [ell, e, if_false]; exact hκ P⟩`. Use `⟨ell, hne, fun t a hS β hβ M hM τ hτ y => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `choose κ hκ using hline t a hS β hβ M hM τ hτ`. Set `κ' : PureDat ch.G t → ℂ` to `fun d => if hd : d ∈ τ.support then κ d hd y else 0`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨τ.sum fun d c' => c' * κ' d, fun σ => ?_⟩` and prove the remaining obligations. Use `sum_sum_line σ τ _ ell κ' fun d hd P => ?_` and prove the remaining obligations. Simplify using `only [κ', dif_pos hd]`. Conclude with `hκ d hd y P`. Take `⟨P₀, hP₀⟩` from `Function.ne_iff.1 hne`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Finsupp.single P₀ (z / ell P₀), fun hz => by simp [hz], ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (zero_mul _)]`. Conclude with `div_mul_cancel₀ z hP₀`.
+A detailed English derivation is pending.
 -/
 theorem realLine_of_periodsOnLine (ch : Choice R) (h : PeriodsOnLine ch) : RealLine ch := by
   obtain ⟨ell₀, h₀⟩ := h
@@ -93,7 +93,7 @@ theorem realLine_of_periodsOnLine (ch : Choice R) (h : PeriodsOnLine ch) : RealL
     exact div_mul_cancel₀ z hP₀
 
 /- English proof (translation)
-Take `⟨CF0, hC⟩` from `hQ`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hC ε CF hCF`. Conclude with `⟨x₀, fun D large₂ he hx' Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => h ch (hx D large₂ he hx' Γ Pl0 T A Ks R F hS ch hch hsc)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem big_mono {Q Q' : ChP} (h : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

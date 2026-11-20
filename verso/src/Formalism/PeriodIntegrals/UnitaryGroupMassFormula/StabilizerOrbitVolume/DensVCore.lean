@@ -34,11 +34,11 @@ def GramFilt : Prop :=
               H (n + 1)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν`. Take `⟨_t1, t2, t3, _t4, t5, _t6, _t7⟩` from `(hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Introduce `d b x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, hN, hd⟩` from `hF F E σ hσ M J hJ.1 hJ.2 a h1 h2 v d b x hx`. Use `⟨N, hN, fun y hy Λ0 hB _ _ hsub => ?_⟩` and prove the remaining obligations. Take `⟨Λ, H, D, h0, hΛo, hΛc, hΛa, hHo, hHc, hHb, hD, hyp⟩` from `hd y hy Λ0 hB hsub`. Substitute `h0` using the available equality. Conclude with `densCos_of_filt hP1 hP2 μv νv (gramR (Fv F v) σ J) Subtype.val Subtype.val_injective (gramH (Fv F v) σ hσ J hJ.1) (Continuous.subtype_mk t5 _) (fun _ => rfl) y Λ H hΛo hΛc hΛa hHo hHc hHb D hD hyp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem densVLat_of (hP1 : HenselCount) (hP2 : CosDens) (hT : TensAll) (hF : GramFilt) :
     DensVLat := by
@@ -63,7 +63,7 @@ theorem densVLat_of (hP1 : HenselCount) (hP2 : CosDens) (hT : TensAll) (hF : Gra
     hHo hHc hHb D hD hyp
 
 /- English proof (translation)
-The claim follows from `densV_of_lat hT (densVLat_of hP1 hP2 hT hF)`.
+A detailed English derivation is pending.
 -/
 theorem densV_of_filt (hP1 : HenselCount) (hP2 : CosDens) (hT : TensAll) (hF : GramFilt) :
     DensV :=

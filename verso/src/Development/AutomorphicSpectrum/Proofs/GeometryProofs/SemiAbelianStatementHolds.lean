@@ -18,7 +18,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.EqVol.sa`.
+A detailed English derivation is pending.
 -/
 theorem saStatement_holds : ReciprocityTheory.ChartRestriction.G.SA.SAStatement := PositivityTheory.EqVol.sa
 

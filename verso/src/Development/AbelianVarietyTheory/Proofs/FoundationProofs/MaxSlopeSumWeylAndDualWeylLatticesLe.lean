@@ -20,15 +20,15 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.TestLat
 
 /- English proof (translation)
-Introduce `K _ _ _ _ v₀ hv ι _ n lam R hR hsp G hG C _ M hM N e X hX`. Take `⟨s, hs0, hs, hlog⟩` from `GlobalTheory.T.pairing_normalising_constant_log_le_bound K ι n lam R hR hsp`. Establish `hlat` using `fun c => GlobalTheory.T.nablaDeltaOperator_lattice_preserved K ι n lam (M c) (fun τ => (hM c τ).1)`. Establish `main : ∀ T : C → Submodule (𝓞 K) (VV K lam), (∀ c, Submodule.IsLattice K (T c)) → (∀ c, T c ≤ nabK lam (M c)) → TestLatticeCondition N X (sumLat lam e T) (bound (Fintype.card ι) n R)`. Introduce `T hT hle`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hL, hN, -⟩` from `GlobalTheory.T.orthogonalSumCoefficientLattice_isLattice_and_dual K ι n lam C N e T hT`. Use `haveI : Finite C := Finite.of_injective (fun c => e.symm (c, (e ⟨0, hN⟩).2)) (fun a b h => by`. Simplify using `using h)`. Use `letI : Fintype C := Fintype.ofFinite C`. Take `⟨hval, hdef, -, hdet⟩` from `GlobalTheory.T.sumPairingGramMatrix_values_and_definite K ι n lam G hG C N e`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : sumLat lam e T ≠ ⊥`. Introduce `h`. Establish `h2` using `hL.span_eq_top`. Rewrite `h2` using `[h]`. Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `at h2`. Use `⟨hL.fg, hne, fun v => (hX v).1, le_trans ?_ hlog⟩` and prove the remaining obligations. Use `GlobalTheory.T.maxSlope_le_log_of_integral_hermitian_form K v₀ hv N (sumGram lam e G) X ⟨hdef.2.1, hX⟩ s hs0 _ hL.fg hne ?_` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite using `[hval, Finset.mul_sum, ← hs]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subring.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Establish `hmem : ∀ z ∈ sumLat lam e T, valAt lam e c z ∈ nabK lam (M c)` using `fun z hz => hle c ((Submodule.mem_iInf _).1 hz c)`. Conclude with `GlobalTheory.T.extNorm_mul_weylPairing_integral_selfDual K ι n lam G (M c) (fun τ => (hG τ).1) hdet (hM c) _ (hmem x hx) _ (hmem y hy)`. Conclude with `⟨main _ (fun c => (hlat c).1) (fun c => le_rfl), main _ (fun c => (hlat c).2) (fun c => delLeNab K ι n lam (M c))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem testLatticeCondition_sumLat_nabK_and_delK : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (v₀ : InfinitePlace K), IsConjAt v₀ → ∀ (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (R : ℝ), 1 ≤ R → SpreadLe lam R → ∀ (G : ι → Matrix (Fin n) (Fin n) K), (∀ τ, IsDefGram (G τ)) → ∀ (C : Type) [Nonempty C] (M : C → ι → Submodule (𝓞 K) (Fin n → K)), (∀ c τ, IsSelfDualK (G τ) (M c τ)) → ∀ (N : ℕ) (e : Fin N ≃ C × VVIdx lam) (X : InfinitePlace K → Matrix (Fin N) (Fin N) ℂ), IsMetric (sumGram lam e G) X → TestLatticeCondition N X (sumLat lam e fun c => nabK lam (M c)) (bound (Fintype.card ι) n R) ∧ TestLatticeCondition N X (sumLat lam e fun c => delK lam (M c)) (bound (Fintype.card ι) n R) := by
   intro K _ _ _ _ v₀ hv ι _ n lam R hR hsp G hG C _ M hM N e X hX

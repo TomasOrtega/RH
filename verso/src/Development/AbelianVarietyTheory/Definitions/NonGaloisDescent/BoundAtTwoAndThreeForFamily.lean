@@ -59,7 +59,7 @@ def BoundAtTwoAndThreeForFamily {eps : ℝ} (Fm : FamP eps) : Prop := ∃ C x0 :
     Setup (Fm.L x i) (Fm.ex x hx i).nch HW X C₂ → BoundAtTwoThree (Fm.L x i) X.ρ C
 
 /- English proof (translation)
-Take `⟨C, x0, h⟩` from `h`. Conclude with `⟨C, x0, fun x hx0 _ i _ _ _ X _ S => h x hx0 i S.sha X.r X.ρ S.canon.fam S.kill⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem BoundAtTwoAndThreeForFamily.of_all {eps : ℝ} {Fm : FamP eps} (h : BoundAtTwoThreeFamily Fm) : BoundAtTwoAndThreeForFamily Fm := by
   obtain ⟨C, x0, h⟩ := h

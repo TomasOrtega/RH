@@ -6,17 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open Polynomial Matrix UpperTheory.V UpperTheory.V.W
 
 /- English proof (translation)
-Establish `h1 : pushCh (C : R →+* R[X]) (F.eps O R) = F.eps O R[X]`. Use extensionality with `x`. Simplify using `[GFrame.eps, pushCh, Polynomial.algebraMap_apply]`. Establish `he : ∀ (h : F.G₀) (k : ℤ), (C : R →+* R[X]) ((F.eps O R h ^ k : Rˣ) : R) = ((F.eps O R[X] h ^ k : R[X]ˣ) : R[X])`. Introduce `h k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h1, pushCh, MonoidHom.comp_apply, ← map_zpow (Units.map ((C : R →+* R[X]) : R →* R[X]))]`. Both sides reduce to the same expression. Establish `hs : ∀ (S : Type) [CommRing S] [Algebra O S] (h : F.G₀) (r : S), F.star O S n (MonoidAlgebra.single h r) = MonoidAlgebra.single (F.conj h)⁻¹ (r * ((F.eps O S h ^ (1 - (n : ℤ)) : Sˣ) : S))`. Introduce `S _ _ h r`. Simplify using `[GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hadd : ∀ (S : Type) [CommRing S] [Algebra O S] (a b : MonoidAlgebra S F.G₀), F.star O S n (a + b) = F.star O S n a + F.star O S n b`. Introduce `S _ _ a b`. Simplify using `[GFrame.star]`. Establish `hsub : ∀ a b : MonoidAlgebra R[X] F.G₀, F.star O R[X] n (a - b) = F.star O R[X] n a - F.star O R[X] n b`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[GFrame.star]`. Establish `hz : ∀ (S : Type) [CommRing S] [Algebra O S], F.star O S n 0 = 0`. Introduce `S _ _`. Simplify using `[GFrame.star]`. Establish `hone : F.star O R[X] n (MonoidAlgebra.single 1 X) = MonoidAlgebra.single 1 X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Simplify using the standard rewrite rules. Establish `hmap : MonoidAlgebra.mapRingHom F.G₀ C (F.star O R n x) = F.star O R[X] n (MonoidAlgebra.mapRingHom F.G₀ C x)`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => rw [hz, map_zero, hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [hadd, map_add, ha, hb, map_add, hadd]`. Consider the case `single h r`. Rewrite using `[hs, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.mapRingHom_single, hs, map_mul, he]`. Rewrite using `[hsub, hone, hmap]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem star_single_X_sub_mapRingHom_C {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (x : MonoidAlgebra R F.G₀) :
     F.star O R[X] n (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom F.G₀ C x) = MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom F.G₀ C (F.star O R n x) := by
@@ -51,15 +51,15 @@ private theorem star_single_X_sub_mapRingHom_C {l : ℕ} [Fact l.Prime] (F : GFr
   rw [hsub, hone, hmap]
 
 /- English proof (translation)
-Introduce `l _ F O _ _ R _ _ n D`. Take `⟨D', hD'⟩` from `AlgebraTools.Det.starDet F O R n D`. Establish `hchi : ∀ y, D'.chi y = D.chi (F.star O R n y)`. Introduce `y`. Simplify using `only [GDet.chi]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD' R[X], star_single_X_sub_mapRingHom_C]`. Establish `hlam : ∀ i y, D'.lam i y = D.lam i (F.star O R n y)`. Introduce `i y`. Simplify using `only [GDet.lam, hchi]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hP i g`. Establish `hc : D.chi (F.star O R n (MonoidAlgebra.single g 1)) = D.chi (MonoidAlgebra.single g 1)`. Simplify using `only [GDet.chi]`. Rewrite using `[← star_single_X_sub_mapRingHom_C]`. Conclude with `hP R[X] _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GDet.lam, hc]`. Introduce `h`. Establish `hDD : D' = D`. Apply `CA.d_gext` to reduce the goal to its premises. Introduce `g i _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlam]`. Conclude with `h i g`. Introduce `B _ _ _ _ y`. Rewrite using `[← hD' B y, hDD]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.polarIffLam :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (D : GDet n R F.G₀), F.IsPolar O D ↔

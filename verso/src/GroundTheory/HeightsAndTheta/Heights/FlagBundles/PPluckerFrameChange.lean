@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.FlagBundles
 open Matrix Finset
 
 /- English proof (translation)
-Introduce `R _ l N V g I hI`. Establish `hmul : (V * g).submatrix id (I.orderEmbOfFin hI) = V * g.submatrix id (I.orderEmbOfFin hI)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Establish `hL : pluckerCoord (V * g) I = ∑ s : GroundTheory.PAdicHodge.KSubset N l, (V.submatrix id s.emb).det * ((g.submatrix id (I.orderEmbOfFin hI)).submatrix s.emb id).det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[pluckerCoord, dif_pos hI, hmul, GroundTheory.PAdicHodge.det_mul_eq_sum_minors]`. Rewrite using `[hL, Finset.sum_subtype (Finset.powersetCard l (Finset.univ : Finset (Fin N))) (p := fun J : Finset (Fin N) => J.card = l) (fun J => Finset.mem_powersetCard_univ)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `h2 : s.1.card = l ∧ I.card = l` using `⟨s.2, hI⟩`. Rewrite using `[pluckerCoord, dif_pos s.2, minorOn, dif_pos h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

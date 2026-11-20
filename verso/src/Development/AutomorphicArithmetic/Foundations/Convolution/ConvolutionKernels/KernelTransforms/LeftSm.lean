@@ -16,17 +16,15 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 
 /- English proof (translation)
-Rewrite using `[h.isSmoothFun_iff]`. Introduce `g`. Use `set ψ : 𝔤 → G → ℂ := fun Y w => β (g * h.expG Y * w) with hψdef`. Establish `hψ : ∀ w₀ : G, ContDiff ℝ ∞ (fun q : 𝔤 × 𝔤 => ψ q.1 (w₀ * h.expG q.2))`. Introduce `w₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Establish `hm : ContMDiff 𝓘(ℝ, 𝔤 × 𝔤) 𝓘(ℝ, 𝔤) ∞ (fun q : 𝔤 × 𝔤 => g * h.expG q.1 * (w₀ * h.expG q.2))` using `(contMDiff_const.mul (h.contMDiff_expG_comp contDiff_fst)).mul (contMDiff_const.mul (h.contMDiff_expG_comp contDiff_snd))`. Conclude with `(ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hβ hm).contDiff`. Use `set F : 𝔤 → S → ℂ := fun Y s => ψ Y (y * z s) with hFdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : (fun Y : 𝔤 => ∫ s, β (g * h.expG Y * y * z s) ∂ρ) = fun Y => ∫ s, F Y s ∂ρ`. Use function extensionality and compare the values at `Y`. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `only [hFdef, hψdef, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ContDiff ℝ ∞ (fun Y : 𝔤 => ∫ s, β (g * h.expG Y * y * z s) ∂ρ)`. Rewrite using `[e]`. Use `contDiff_integral_of_iteratedFDeriv F (fun s => ?_) (fun k => ?_) (fun Y₀ => ?_)` and prove the remaining obligations. Establish `e2 : (fun Y => F Y s) = (fun q : 𝔤 × 𝔤 => ψ q.1 ((y * z s) * h.expG q.2)) ∘ fun Y => (Y, (0 : 𝔤))`. Use function extensionality and compare the values at `Y`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, h.expG_zero, mul_one, hFdef]`. Rewrite using `[e2]`. Conclude with `(hψ _).comp (contDiff_id.prodMk contDiff_const)`. Conclude with `(h.continuous_iteratedFDeriv_param ψ hψ k).comp (continuous_fst.prodMk (continuous_const.mul (hz.comp continuous_snd)))`. Take `⟨D, hD, hDz⟩` from `hs ((fun Y => g * h.expG Y) '' Metric.closedBall Y₀ 1) ((isCompact_closedBall Y₀ 1).image (continuous_const.mul h.continuous_expG))`.
-
-Use `⟨Metric.closedBall Y₀ 1, Metric.closedBall_mem_nhds Y₀ one_pos, D, hD, fun Y hY s hsD => ?_⟩` and prove the remaining obligations. Establish `h0` using `hDz _ ⟨Y, hY, rfl⟩ s hsD`. Simplify `h0` using `only [hFdef, hψdef, mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_avg {S : Type*} [TopologicalSpace S] [T2Space S] [SecondCountableTopology S]
     [MeasurableSpace S] [OpensMeasurableSpace S] (ρ : Measure S) [IsFiniteMeasureOnCompacts ρ]
@@ -71,9 +69,9 @@ private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_avg {S : Type*} [Topolog
 end
 
 /- English proof (translation)
-Establish `hm : MeasurableEmbedding expPos` using `expPosHomeomorph.measurableEmbedding`. Establish `hi : ∀ x, (expPos x)⁻¹ = expPos (-x)` using `fun x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Real.exp_neg]`. Rewrite using `[posRealMeasure_eq_map_expPos, hm.integral_map, hm.integral_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hi]`. Conclude with `integral_neg_eq_self (fun x => f (expPos x)) volume`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_inv (f : {r : ℝ // 0 < r} → ℂ) :
     ∫ s, f s⁻¹ ∂posRealMeasure = ∫ s, f s ∂posRealMeasure := by
@@ -86,9 +84,9 @@ private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_inv (f : {r : ℝ // 0 <
   exact integral_neg_eq_self (fun x => f (expPos x)) volume
 
 /- English proof (translation)
-Use `UpperTheory.ConvolutionTheory.Tf.leftSm_avg (isExpLieAlgebra K n) posRealMeasure continuous_zInf hβ y ?_` and prove the remaining obligations. Introduce `C hC`. Establish `hD : IsCompact (detA K n '' tsupport β)` using `β.hasCompactSupport.isCompact.image continuous_detA`. Establish `hR : IsCompact (detA K n '' ((fun a => a * y) '' C))` using `(hC.image (continuous_id.mul continuous_const)).image continuous_detA`. Use `⟨(fun p : {r : ℝ // 0 < r} × {r : ℝ // 0 < r} => p.1 * p.2⁻¹) '' ((detA K n '' tsupport β) ×ˢ (detA K n '' ((fun a => a * y) '' C))), (hD.prod hR).image (continuous_fst.mul continuous_snd.inv), fun a ha s hs => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises. Use `⟨(s * detA K n (a * y), detA K n (a * y)), ⟨mem_of_kernel_ne_zero hn hne, _, ⟨a, ha, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_inv_cancel_right]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_kbar {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (β : TI K n) (hβ : SmoothT β) (y : archGroup K n) :
@@ -108,15 +106,15 @@ private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_kbar {K : Type} [Field K
   simp only [mul_inv_cancel_right]
 
 /- English proof (translation)
-Introduce `K _ _ n hn β e`. Establish `hT : ∀ (β : TI K n) (e : TF K n) x, tens β e x = tensFun β e x` using `fun β e => (UpperTheory.ConvolutionTheory.Tf.tensApply K n hn β e).1`. Use `⟨fun hβ ⟨U, hUo, hU⟩ => ⟨fun x => ?_, ?_⟩, fun β' e' hβ' he' => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun A : archGroup K n => tens β e (archP K n A * x)) = fun A => e (finPart K n (x : AdelicGLn.AdelicGL K n)) • kbar β (A * infPart K n (x : AdelicGLn.AdelicGL K n))`. Use function extensionality and compare the values at `A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hk : kbar β (A * (zInf K n (detA K n A))⁻¹ * infPart K n (x : AdelicGLn.AdelicGL K n)) = kbar β (A * infPart K n (x : AdelicGLn.AdelicGL K n))`. Rewrite using `[← map_inv, mul_assoc, zInf_mul_comm, ← mul_assoc, kbar_mul_zInf]`. Rewrite using `[hT, tensFun, Subgroup.coe_mul, map_mul, map_mul, infPart_archP, finPart_archP, one_mul, hk, smul_eq_mul, mul_comm]`. Rewrite using `[e1]`. Conclude with `((isExpLieAlgebra K n).smoothFuns (F := ℂ)).smul_mem _ (UpperTheory.ConvolutionTheory.Tf.leftSm_kbar hn β hβ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U.comap (AdelicGLn.integralFiniteGL K n).subtype, hUo.preimage continuous_subtype_val, fun u hu x => ?_⟩` and prove the remaining obligations. Rewrite using `[hT, hT, tensFun, tensFun, Subgroup.coe_mul, coe_finOne, map_mul, map_mul, infPart_finEmb, finPart_finEmb, one_mul, hU (u : AdelicGLn.FiniteAdelicGL K n) hu]`. Establish `zInf_inv_comm : ∀ (s : {r : ℝ // 0 < r}) (a : archGroup K n), (zInf K n s)⁻¹ * a = a * (zInf K n s)⁻¹`. Introduce `s a`. Rewrite using `[← map_inv, zInf_mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : ∀ a, kbar β' a = conj (kbar β a⁻¹)`. Introduce `a`. Unfold `kbar`. Rewrite using `[← integral_conj, ← UpperTheory.ConvolutionTheory.Tf.leftSm_inv (fun s => conj (β (a⁻¹ * zInf K n s)))]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[hβ', map_inv (zInf K n) s, mul_inv_rev, zInf_inv_comm]`. Use extensionality with `g`. Rewrite using `[CuspidalProjection.ccStar_apply, hT, hT, tensFun, tensFun, map_mul, he', hk, Subgroup.coe_inv, map_inv, map_inv]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.leftSm :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (β : TI K n) (e : TF K n),

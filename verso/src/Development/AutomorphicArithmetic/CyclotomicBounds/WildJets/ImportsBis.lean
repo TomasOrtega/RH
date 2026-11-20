@@ -16,9 +16,9 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D T L sc G W U₀ N Z μ₀ hL t p hp`. Consider the cases of `p with`. Consider the case `chi i j`. Take `⟨hi, hj⟩` from `hp`. Substitute `hj` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Conclude with `UpperTheory.WildA.moveRow Z hL t i (by omega)`. Consider the case `mu t' i j => exact hp.elim`. Consider the case `core i => exact hp.elim`. Consider the case `top t' j => exact UpperTheory.WildA.moveTop Z hL t t' j hp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.move :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil} {U₀ : Set T} {N : Std G U₀} (Z : Normal W N) {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (p : GlobalTheory.ChiGrid.Pair T), DefPair D.R.m p →

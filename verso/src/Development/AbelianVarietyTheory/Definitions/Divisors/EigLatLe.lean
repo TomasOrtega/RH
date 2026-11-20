@@ -100,7 +100,7 @@ def FreePt {G : Type} [Group G] (lev : G → (Dw.La →ₗ[𝓞 E] Dw.La) × (Dw
   ∀ (g : G) (k : Type) [Field k] [Algebra c.F k] (y y' : FrPt Xo c k), levR (lev g) y y' → y'.x = y.x → g = 1
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (lev : Unit → (Dw.La →ₗ[𝓞 E] Dw.La) × (Dw.La →ₗ[𝓞 E] Dw.La)) :
     FreePt Xo c (G := Multiplicative Unit) lev := fun _ _ _ _ _ _ _ _ => rfl
@@ -122,7 +122,7 @@ def eigLat (W : WTZ D.host.E) : Submodule (𝓞 c.F) (cuspW Xo c U W) :=
   latW U W ⊓ ((eigSub lev χ).comap (cuspW Xo c U W).subtype).restrictScalars (𝓞 c.F)
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem eigLat_le (W : WTZ D.host.E) : eigLat U lev χ W ≤ latW U W := inf_le_left
 

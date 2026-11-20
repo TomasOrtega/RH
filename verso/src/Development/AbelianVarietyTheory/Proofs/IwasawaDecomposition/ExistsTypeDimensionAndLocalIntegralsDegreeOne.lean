@@ -19,7 +19,7 @@ section Gen
 variable {F : Type} [Field F] {r c : ℕ}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p q hp hq).1`.
+A detailed English derivation is pending.
 -/
 theorem bDA_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0)
     (hq : bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
@@ -27,7 +27,7 @@ theorem bDA_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (
   (GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p q hp hq).1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p q hp hq).2.1`.
+A detailed English derivation is pending.
 -/
 theorem bAA_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0)
     (hq : bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
@@ -36,7 +36,7 @@ theorem bAA_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (
   (GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p q hp hq).2.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p q hp hq).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem bDD_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0)
     (hq : bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
@@ -45,7 +45,7 @@ theorem bDD_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (
   (GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p q hp hq).2.2.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p p hp hp).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem det_blocks {p : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
     (p : Matrix (Fin (r + c)) (Fin (r + c)) F).det =
@@ -53,28 +53,28 @@ theorem det_blocks {p : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) 
   (GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p p hp hp).2.2.2.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p p hp hp).2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem bDA_inv {p : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
     bDA ((p⁻¹ : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0 :=
   (GlobalTheory.T.blockUpperTriangular_GL_mul_det_inv F r c p p hp hp).2.2.2.2
 
 /- English proof (translation)
-Introduce `h` and use `p.det_ne_zero (by rw [det_blocks hp, h, zero_mul])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem detA_ne {p : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
     (bAA (p : Matrix (Fin (r + c)) (Fin (r + c)) F)).det ≠ 0 := fun h =>
   p.det_ne_zero (by rw [det_blocks hp, h, zero_mul])
 
 /- English proof (translation)
-Introduce `h` and use `p.det_ne_zero (by rw [det_blocks hp, h, mul_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem detD_ne {p : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
     (bDD (p : Matrix (Fin (r + c)) (Fin (r + c)) F)).det ≠ 0 := fun h =>
   p.det_ne_zero (by rw [det_blocks hp, h, mul_zero])
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bDA, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bDA_one : bDA ((1 : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0 := by
   ext i j
@@ -90,21 +90,21 @@ def levD (p : GL (Fin (r + c)) F) : GL (Fin c) F :=
   if h : (bDD (p : Matrix (Fin (r + c)) (Fin (r + c)) F)).det ≠ 0 then GeneralLinearGroup.mkOfDetNeZero _ h else 1
 
 /- English proof (translation)
-Rewrite using `[levA, dif_pos (detA_ne hp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levA_val {p : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
     (levA p : Matrix (Fin r) (Fin r) F) = bAA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) := by
   rw [levA, dif_pos (detA_ne hp)]; rfl
 
 /- English proof (translation)
-Rewrite using `[levD, dif_pos (detD_ne hp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levD_val {p : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
     (levD p : Matrix (Fin c) (Fin c) F) = bDD (p : Matrix (Fin (r + c)) (Fin (r + c)) F) := by
   rw [levD, dif_pos (detD_ne hp)]; rfl
 
 /- English proof (translation)
-Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Simplify using `only [Prod.fst_mul, Units.val_mul]`. Rewrite using `[levA_val (bDA_mul hp hq), levA_val hp, levA_val hq, bAA_mul hp hq]`. Simplify using `only [Prod.snd_mul, Units.val_mul]`. Rewrite using `[levD_val (bDA_mul hp hq), levD_val hp, levD_val hq, bDD_mul hp hq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0)
     (hq : bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
@@ -116,9 +116,9 @@ theorem lev_mul {p q : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (
     rw [levD_val (bDA_mul hp hq), levD_val hp, levD_val hq, bDD_mul hp hq]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[chi0, hx]`. Distinguish the cases in `hy : y = 0`. Simplify using `[chi0, hy]`. Establish `hxy : x * y ≠ 0` using `mul_ne_zero hx hy`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [chi0, dif_neg hx, dif_neg hy, dif_neg hxy]`. Rewrite using `[← Units.val_mul, ← map_mul]`. Use `congr 3`. Use `ext`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem unitCharExtendedByZero_mul (δ : Fˣ →* ℂˣ) (x y : F) : chi0 δ (x * y) = chi0 δ x * chi0 δ y := by
   by_cases hx : x = 0
@@ -137,7 +137,7 @@ def chiP (nrm : AbsoluteValue F ℝ) (δ : Fˣ →* ℂˣ) (p : GL (Fin (r + c))
     chi0 δ (bDD (p : Matrix (Fin (r + c)) (Fin (r + c)) F)).det
 
 /- English proof (translation)
-Unfold `chiP`. Rewrite using `[bAA_mul hp hq, bDD_mul hp hq, det_mul, det_mul, map_mul, map_mul, unitCharExtendedByZero_mul, Real.mul_rpow (nrm.nonneg _) (nrm.nonneg _), Real.mul_rpow (nrm.nonneg _) (nrm.nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiP_mul (nrm : AbsoluteValue F ℝ) (δ : Fˣ →* ℂˣ) {p q : GL (Fin (r + c)) F}
     (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0)
@@ -169,11 +169,11 @@ def fvec (g : GL (Fin (r + c)) F) : V :=
 variable {O ϖ nrm δ ρ v₀}
 
 /- English proof (translation)
-Take `⟨q, rfl⟩ : ∃ q, p = p' * q` from `⟨p'⁻¹ * p, by simp⟩`. Establish `hq : bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0`. Use `bDA_mul (bDA_inv hp') hp` as an intermediate fact. Simplify using `using this`. Establish `hkq : k' = q * k` using `(mul_left_cancel (a := p') (by rw [← mul_assoc]; exact e)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hqJ : q ∈ parJ O ϖ r c`. Establish `: q = k' * k⁻¹` using `by rw [hkq]; simp`. Rewrite using `[this]`. Conclude with `(hgrp _ _ hk' (hgrp _ _ hk hk).2).1`. Take `⟨h1, h2⟩` from `hfix q hqJ hq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chiP_mul nrm δ hp' hq, lev_mul hp' hq, hkq, hlam _ _ hqJ hk, map_mul]`. Use `show (chiP nrm δ p' * chiP nrm δ q * lamJ δ k) • (ρ (levA p', levD p')) ((ρ (levA q, levD q)) v₀) = _`. Rewrite using `[h1, h2, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cons (hgrp : ∀ k k' : GL (Fin (r + c)) F, k ∈ parJ O ϖ r c → k' ∈ parJ O ϖ r c →
       k * k' ∈ parJ O ϖ r c ∧ k⁻¹ ∈ parJ O ϖ r c)
@@ -215,7 +215,7 @@ variable {F : Type} [Field F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F �
 
 include hgrp hlam hfix in
 /- English proof (translation)
-Establish `h : p * k ∈ PJset O ϖ r c` using `⟨p, hp, k, hk, rfl⟩`. Rewrite using `[fvec, dif_pos h]`. Establish `h2` using `h.choose_spec.2.choose_spec.1`. Establish `h3` using `h.choose_spec.2.choose_spec.2`. Conclude with `cons hgrp hlam hfix h.choose_spec.1 hp h2 hk h3.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fvec_eq {p k : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0)
     (hk : k ∈ parJ O ϖ r c) :
@@ -228,16 +228,16 @@ theorem fvec_eq {p k : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (
 
 include hgrp in
 /- English proof (translation)
-Rewrite using `[fvec, dif_neg hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fvec_out {g : GL (Fin (r + c)) F} (hg : g ∉ PJset O ϖ r c) : fvec O ϖ nrm δ ρ v₀ g = 0 := by
   rw [fvec, dif_neg hg]
 
 include hgrp in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p₁, hp₁, k₁, hk₁, e⟩`. Use `⟨p⁻¹ * p₁, bDA_mul (bDA_inv hp) hp₁, k₁, hk₁, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← e]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨p₁, hp₁, k₁, hk₁, rfl⟩`. Conclude with `⟨p * p₁, bDA_mul hp hp₁, k₁, hk₁, by rw [mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mul_mem_PJ_iff {p g : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
     p * g ∈ PJset O ϖ r c ↔ g ∈ PJset O ϖ r c := by
@@ -250,9 +250,9 @@ theorem mul_mem_PJ_iff {p g : GL (Fin (r + c)) F} (hp : bDA (p : Matrix (Fin (r 
 
 include hgrp in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p₁, hp₁, k₁, hk₁, e⟩`. Use `⟨p₁, hp₁, k₁ * k⁻¹, (hgrp _ _ hk₁ (hgrp _ _ hk hk).2).1, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨p₁, hp₁, k₁, hk₁, rfl⟩`. Conclude with `⟨p₁, hp₁, k₁ * k, (hgrp _ _ hk₁ hk).1, by rw [mul_assoc]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mul_mem_PJ_iff' {k g : GL (Fin (r + c)) F} (hk : k ∈ parJ O ϖ r c) :
     g * k ∈ PJset O ϖ r c ↔ g ∈ PJset O ϖ r c := by
@@ -264,7 +264,7 @@ theorem mul_mem_PJ_iff' {k g : GL (Fin (r + c)) F} (hk : k ∈ parJ O ϖ r c) :
     exact ⟨p₁, hp₁, k₁ * k, (hgrp _ _ hk₁ hk).1, by rw [mul_assoc]⟩
 
 /- English proof (translation)
-Establish `h : (m : Matrix (Fin c) (Fin c) F).det ≠ 0` using `m.det_ne_zero`. Rewrite using `[chi0, dif_neg h]`. Use `congr 2`. Conclude with `Units.ext (by simp [Matrix.GeneralLinearGroup.val_det_apply])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem unitCharExtendedByZero_det_eq_char_det (m : GL (Fin c) F) :
     chi0 δ (m : Matrix (Fin c) (Fin c) F).det = ((δ (Matrix.GeneralLinearGroup.det m) : ℂˣ) : ℂ) := by
@@ -275,13 +275,13 @@ theorem unitCharExtendedByZero_det_eq_char_det (m : GL (Fin c) F) :
 
 include hgrp hlam hfix in
 /- English proof (translation)
-Use `⟨fun p m₁ m₂ hp h1 h2 g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Establish `e1 : m₁ = levA p` using `Units.ext ((levA_val hp).trans h1).symm`. Establish `e2 : m₂ = levD p` using `Units.ext ((levD_val hp).trans h2).symm`. Establish `hs : (((nrm (m₁ : Matrix (Fin r) (Fin r) F).det ^ ((c : ℝ) / 2) * nrm (m₂ : Matrix (Fin c) (Fin c) F).det ^ (-(r : ℝ) / 2) : ℝ) : ℂ) * ((δ (Matrix.GeneralLinearGroup.det m₂) : ℂˣ) : ℂ)) = chiP nrm δ p`. Rewrite using `[chiP, ← unitCharExtendedByZero_det_eq_char_det, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, e1, e2]`. Distinguish the cases in `hg : g ∈ PJset O ϖ r c`. Take `⟨p₀, hp₀, k₀, hk₀, rfl⟩` from `hg`. Rewrite using `[← mul_assoc, fvec_eq hgrp hlam hfix (bDA_mul hp hp₀) hk₀, fvec_eq hgrp hlam hfix hp₀ hk₀, chiP_mul nrm δ hp hp₀, lev_mul hp hp₀, map_mul, map_smul, smul_smul]`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[fvec_out hgrp hg, fvec_out hgrp (fun h => hg ((mul_mem_PJ_iff hgrp hp).1 h)), map_zero, smul_zero]`. Distinguish the cases in `hg : g ∈ PJset O ϖ r c`. Take `⟨p₀, hp₀, k₀, hk₀, rfl⟩` from `hg`. Rewrite using `[mul_assoc, fvec_eq hgrp hlam hfix hp₀ (hgrp _ _ hk₀ hk).1, fvec_eq hgrp hlam hfix hp₀ hk₀, smul_smul, hlam _ _ hk₀ hk]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[fvec_out hgrp hg, fvec_out hgrp (fun h => hg ((mul_mem_PJ_iff' hgrp hk).1 h)), smul_zero]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem fvec_mem : fvec O ϖ nrm δ ρ v₀ ∈ typeSp O ϖ nrm δ r c ρ := by
   refine ⟨fun p m₁ m₂ hp h1 h2 g => ?_, fun k hk g => ?_⟩
@@ -312,7 +312,7 @@ end Mem
 section Adic
 
 /- English proof (translation)
-Set `M' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨M i j, h i j⟩`. Establish `e : M = O.subtype.mapMatrix M'` using `rfl`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `(M'.det).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_of_int {F : Type} [Field F] {O : Subring F} {n : ℕ} {M : Matrix (Fin n) (Fin n) F}
     (h : ∀ a b, M a b ∈ O) : M.det ∈ O := by
@@ -322,7 +322,7 @@ theorem det_mem_of_int {F : Type} [Field F] {O : Subring F} {n : ℕ} {M : Matri
   exact (M'.det).2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bAA, Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bAA_one {F : Type} [Field F] {r c : ℕ} :
     bAA ((1 : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1 := by
@@ -330,7 +330,7 @@ theorem bAA_one {F : Type} [Field F] {r c : ℕ} :
   simp [bAA, Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bDD, Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bDD_one {F : Type} [Field F] {r c : ℕ} :
     bDD ((1 : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1 := by
@@ -338,7 +338,7 @@ theorem bDD_one {F : Type} [Field F] {r c : ℕ} :
   simp [bDD, Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Establish `h` using `lev_mul hq (bDA_inv hq)`. Establish `hA : levA (q * q⁻¹) = 1` using `Units.ext (by rw [mul_inv_cancel, levA_val bDA_one, bAA_one]; rfl)`. Establish `hD : levD (q * q⁻¹) = 1` using `Units.ext (by rw [mul_inv_cancel, levD_val bDA_one, bDD_one]; rfl)`. Rewrite `h` using `[hA, hD]`. Conclude with `⟨(eq_inv_of_mul_eq_one_right (congrArg Prod.fst h).symm).symm, (eq_inv_of_mul_eq_one_right (congrArg Prod.snd h).symm).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lev_inv {F : Type} [Field F] {r c : ℕ} {q : GL (Fin (r + c)) F}
     (hq : bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) :
@@ -351,11 +351,9 @@ theorem lev_inv {F : Type} [Field F] {r c : ℕ} {q : GL (Fin (r + c)) F}
     (eq_inv_of_mul_eq_one_right (congrArg Prod.snd h).symm).symm⟩
 
 /- English proof (translation)
-Establish `hK' : q⁻¹ ∈ GLint O (r + c)` using `inv_mem hK`. Take `⟨e1, e2⟩` from `lev_inv hq`. Use `⟨⟨fun a b => ?_, fun a b => ?_⟩, ⟨fun a b => ?_, fun a b => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[levA_val hq]`. Conclude with `hK.1 _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, levA_val (bDA_inv hq)]`. Conclude with `hK'.1 _ _`. Rewrite using `[levD_val hq]`. Conclude with `hK.1 _ _`. Rewrite using `[e2, levD_val (bDA_inv hq)]`.
-
-Conclude with `hK'.1 _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_mem_GLint {F : Type} [Field F] {O : Subring F} {r c : ℕ} {q : GL (Fin (r + c)) F}
     (hq : bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0) (hK : q ∈ GLint O (r + c)) :
@@ -371,11 +369,11 @@ theorem lev_mem_GLint {F : Type} [Field F] {O : Subring F} {r c : ℕ} {q : GL (
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `h1 : Valued.v (m : Matrix (Fin n) (Fin n) (P.adicCompletion L)).det ≤ 1` using `det_mem_of_int hm.1`. Establish `h2 : Valued.v ((m⁻¹ : GL (Fin n) (P.adicCompletion L)) : Matrix (Fin n) (Fin n) (P.adicCompletion L)).det ≤ 1` using `det_mem_of_int hm.2`. Establish `e : ((m⁻¹ : GL (Fin n) (P.adicCompletion L)) : Matrix (Fin n) (Fin n) (P.adicCompletion L)).det = ((m : Matrix (Fin n) (Fin n) (P.adicCompletion L)).det)⁻¹`. Rewrite using `[Matrix.coe_units_inv, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Rewrite `h2` using `[e, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : Valued.v (m : Matrix (Fin n) (Fin n) (P.adicCompletion L)).det ≠ 0`. Simplify using `[m.det_ne_zero]`. Establish `hv : Valued.v (m : Matrix (Fin n) (Fin n) (P.adicCompletion L)).det = 1` using `le_antisymm h1 (by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `one_lt_inv_iff₀.2 ⟨zero_lt_iff.2 h0, hc⟩` as an intermediate fact. Conclude with `absurd h2 (not_le.2 this))`. Conclude with `(hn (Units.mk0 _ m.det_ne_zero)).1 hv`.
+A detailed English derivation is pending.
 -/
 theorem nrm_det_GLint {P : HeightOneSpectrum (𝓞 L)} {nrm : AbsoluteValue (P.adicCompletion L) ℝ} (hn : IsNrm P nrm)
     {n : ℕ} {m : GL (Fin n) (P.adicCompletion L)} (hm : m ∈ GLint (OP P) n) :
@@ -404,7 +402,7 @@ section Final
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Rewrite using `[chi0, dif_neg hx]`. Conclude with `hδ.unitary _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_unitCharExtendedByZero_eq_one {P : HeightOneSpectrum (𝓞 L)} {δ : (P.adicCompletion L)ˣ →* ℂˣ} (hδ : IsDel P δ)
     {x : P.adicCompletion L} (hx : x ≠ 0) : ‖chi0 δ x‖ = 1 := by
@@ -412,7 +410,7 @@ theorem norm_unitCharExtendedByZero_eq_one {P : HeightOneSpectrum (𝓞 L)} {δ 
   exact hδ.unitary _
 
 /- English proof (translation)
-Use `show Valued.v (piP P : P.adicCompletion L) ≤ 1`. Establish `h : Valued.v (piP P : P.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec P`. Rewrite using `[h, ← WithZero.exp_zero]`. Conclude with `WithZero.exp_le_exp.2 (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piP_mem (P : HeightOneSpectrum (𝓞 L)) : (piP P : P.adicCompletion L) ∈ OP P := by
   show Valued.v (piP P : P.adicCompletion L) ≤ 1
@@ -421,25 +419,23 @@ theorem piP_mem (P : HeightOneSpectrum (𝓞 L)) : (piP P : P.adicCompletion L) 
   exact WithZero.exp_le_exp.2 (by norm_num)
 
 /- English proof (translation)
-Establish `hgrp` using `GlobalTheory.T.parahoricTypeRC_mul_inv_mem (P.adicCompletion L) (OP P) (piP P : P.adicCompletion L) (piP_mem P) r c`. Establish `hlam` using `GlobalTheory.T.parahoricCharacter_mul_of_tame L P δ hδ r c`. Establish `hfix : ∀ q : GL (Fin (r + c)) (P.adicCompletion L), q ∈ parJ (OP P) (piP P : P.adicCompletion L) r c → bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L)) = 0 → ρ (levA q, levD q) v₀ = v₀ ∧ chiP nrm δ q = lamJ δ q`. Introduce `q hq h0`. Take `⟨h1, h2⟩` from `lev_mem_GLint h0 hq.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨hfix₀ _ h1 _ h2, ?_⟩` and prove the remaining obligations. Rewrite using `[chiP, lamJ, ← levA_val h0, ← levD_val h0, nrm_det_GLint hn h1, nrm_det_GLint hn h2]`. Simplify using the standard rewrite rules. Establish `hlam1 : lamJ δ (1 : GL (Fin (r + c)) (P.adicCompletion L)) = 1`. Rewrite using `[lamJ, bDD_one, det_one, chi0, dif_neg one_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Units.mk0 (1 : P.adicCompletion L) one_ne_zero = 1` using `Units.ext rfl`. Rewrite using `[this, map_one, Units.val_one]`. Use `⟨fvec (OP P) (piP P : P.adicCompletion L) nrm δ ρ v₀, fvec_mem hgrp hlam hfix, PJset (OP P) (piP P : P.adicCompletion L) r c, ?_, fun k hk => ⟨1, bDA_one, k, hk, (one_mul k).symm⟩, fun k hk => ?_⟩` and prove the remaining obligations. Establish `ho` using `(GlobalTheory.T.isOpen_isCompact_parahoric_GL_completion L P r c).1`. Establish `e : PJset (OP P) (piP P : P.adicCompletion L) r c = ⋃ p : {p : GL (Fin (r + c)) (P.adicCompletion L) // bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L)) = 0}, (fun g => p.1 * g) '' parJ (OP P) (piP P : P.adicCompletion L) r c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, k, hk, rfl⟩`. Conclude with `⟨⟨p, hp⟩, k, hk, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨p, hp⟩, k, hk, rfl⟩`. Conclude with `⟨p, hp, k, hk, rfl⟩`. Rewrite using `[e]`. Conclude with `isOpen_iUnion fun p => (Homeomorph.mulLeft p.1).isOpenMap _ ho`. Distinguish the cases in `hg : k ∈ PJset (OP P) (piP P : P.adicCompletion L) r c`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hg, Pi.one_apply]`. Take `⟨p, hp, k₀, hk₀, rfl⟩` from `hg`. Rewrite using `[fvec_eq hgrp hlam hfix hp hk₀, norm_smul, LinearIsometryEquiv.norm_map, hv, mul_one, norm_mul]`. Establish `hpK : p ∈ GLint (OP P) (r + c)`. Establish `: p = p * k₀ * k₀⁻¹` using `by simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem hk (inv_mem hk₀.1)`. Take `⟨h1, h2⟩` from `lev_mem_GLint hp hpK`. Establish `hc : ‖chiP nrm δ p‖ = 1`. Rewrite using `[chiP, ← levA_val hp, ← levD_val hp, nrm_det_GLint hn h1, nrm_det_GLint hn h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Real.one_rpow, mul_one, Complex.ofReal_one, one_mul]`. Conclude with `norm_unitCharExtendedByZero_eq_one hδ (levD p).det_ne_zero`. Establish `hl : ‖lamJ δ k₀‖ = 1`. Establish `e` using `hlam _ _ hk₀ (hgrp _ _ hk₀ hk₀).2`. Rewrite `e` using `[mul_inv_cancel, hlam1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hne : (bDD (k₀ : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L))).det ≠ 0`. Introduce `h0`. Simplify using `only [lamJ] at e`. Rewrite `e` using `[h0]`. Simplify using `[chi0] at e`.
-
-Conclude with `norm_unitCharExtendedByZero_eq_one hδ hne`. Rewrite using `[hc, hl, mul_one]`. Rewrite using `[Set.indicator_of_notMem hg, fvec_out hgrp hg, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_typeVec (P : HeightOneSpectrum (𝓞 L)) (δ : (P.adicCompletion L)ˣ →* ℂˣ) (hδ : IsDel P δ)
     (nrm : AbsoluteValue (P.adicCompletion L) ℝ) (hn : IsNrm P nrm) (r c : ℕ)
@@ -508,7 +504,7 @@ section Haar
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Use `⟨one_mem _, fun i j => ⟨0, (OP P).zero_mem, ?_⟩⟩` and prove the remaining obligations. Simplify using `[bDA, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_mem_parJ (P : HeightOneSpectrum (𝓞 L)) (r c : ℕ) :
     (1 : GL (Fin (r + c)) (P.adicCompletion L)) ∈ parJ (OP P) (piP P : P.adicCompletion L) r c := by
@@ -516,9 +512,9 @@ theorem one_mem_parJ (P : HeightOneSpectrum (𝓞 L)) (r c : ℕ) :
   simp [bDA, Matrix.one_apply, Fin.ext_iff]
   omega
 /- English proof (translation)
-Use `letI := GlobalTheory.LocalData.complRel P`. Use `haveI := GlobalTheory.LocalData.isLocalField P`. Use `haveI : (Valued.v : Valuation (P.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (P.adicCompletion L)) (Valued.v : Valuation (P.adicCompletion L) (WithZero (Multiplicative ℤ)))`. Use extensionality with `g`.
+Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Simplify using `only [he.le_one_iff_le_one, Valuation.mem_integer_iff]`. Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem KO_eq_GLint (P : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
     letI := GlobalTheory.LocalData.complRel P
@@ -535,7 +531,7 @@ theorem KO_eq_GLint (P : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
   exact Iff.rfl
 
 /- English proof (translation)
-Use `letI := GlobalTheory.LocalData.complRel P`. Use `haveI := GlobalTheory.LocalData.isLocalField P`. Rewrite using `[← KO_eq_GLint]`. Conclude with `GlobalTheory.SplitFlip.isCompact_KO`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_GLint (P : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
     IsCompact (GLint (OP P) n : Set (GL (Fin n) (P.adicCompletion L))) := by
@@ -545,7 +541,7 @@ theorem isCompact_GLint (P : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
   exact GlobalTheory.SplitFlip.isCompact_KO
 
 /- English proof (translation)
-Use `letI := GlobalTheory.LocalData.complRel P`. Use `haveI := GlobalTheory.LocalData.isLocalField P`. Rewrite using `[← KO_eq_GLint]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_GLint (P : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
     IsOpen (GLint (OP P) n : Set (GL (Fin n) (P.adicCompletion L))) := by
@@ -555,9 +551,9 @@ theorem isOpen_GLint (P : HeightOneSpectrum (𝓞 L)) (n : ℕ) :
   exact GlobalTheory.SplitFlip.isOpen_KO
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (P.adicCompletion L) := borel _`. Use `letI := GlobalTheory.LocalData.complRel P`. Use `haveI := GlobalTheory.LocalData.isLocalField P`. Take `⟨ho, hc⟩` from `GlobalTheory.T.isOpen_isCompact_parahoric_GL_completion L P r c`. Set `K₀ : TopologicalSpace.PositiveCompacts (GL (Fin (r + c)) (P.adicCompletion L))` to `⟨⟨_, hc⟩, by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ho.interior_eq]`. Conclude with `⟨1, one_mem_parJ P r c⟩⟩`. Use `⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self, ?_⟩` and prove the remaining obligations. Conclude with `(isCompact_GLint P _).measure_lt_top`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_haar_parJ (P : HeightOneSpectrum (𝓞 L)) (r c : ℕ) :
     letI : MeasurableSpace (P.adicCompletion L) := borel _
@@ -577,19 +573,17 @@ theorem exists_haar_parJ (P : HeightOneSpectrum (𝓞 L)) (r c : ℕ) :
 end Haar
 
 /- English proof (translation)
-Introduce `L _ _ P _ δ ν hδ hν r t j ht`. Take `⟨nrm, hn⟩` from `GlobalTheory.Mem.NrmCompl.exists_isNrm L P`. Take `⟨V, i1, i2, ρ, hρ⟩` from `GlobalTheory.SphCyclic.exists_isUnrM L P nrm hn ν hν r t j ht`. Use `⟨⟨_, nrm, hn, V, i1, i2, ρ, hρ, rfl⟩, ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace (P.adicCompletion L) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Take `⟨v₀, hv, hfix, -⟩` from `hρ.sph`. Take `⟨f, hf, U, hU, hJU, hfn⟩` from `exists_typeVec P δ hδ nrm hn r (j * t) ρ v₀ hv hfix`. Take `⟨μ, hμ, hμ1, hμK⟩` from `exists_haar_parJ P r (j * t)`. Take `⟨dx, hdx, -, hdx1⟩` from `GlobalTheory.HaarMat.exists_haar_intMat L P (r + (j + 1) * t) (r + j * t)`. Use `set K : Set (GL (Fin (r + j * t)) (P.adicCompletion L)) := ((GLint (OP P) (r + j * t) : Subgroup _) : Set (GL (Fin (r + j * t)) (P.adicCompletion L)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hUm : MeasurableSet U` using `hU.measurableSet`. Establish `hsub : parJ (OP P) (piP P : P.adicCompletion L) r (j * t) ⊆ K ∩ U` using `fun x hx => ⟨hx.1, hJU hx⟩`. Establish `hc1 : 1 ≤ μ (K ∩ U)` using `hμ1 ▸ measure_mono hsub`. Establish `hcT : μ (K ∩ U) < ⊤` using `(measure_mono Set.inter_subset_left).trans_lt hμK`. Use `set c : ℝ := μ.real (K ∩ U)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpos : 0 < c` using `ENNReal.toReal_pos (by positivity) hcT.ne`. Establish `key : ∀ (g : GL (Fin (r + j * t)) (P.adicCompletion L) → V) (a : ℝ), (∀ k ∈ K, ‖g k‖ = a * U.indicator 1 k) → mcoef (OP P) μ g 1 = ((a ^ 2 * c : ℝ) : ℂ)`. Introduce `g a hg`. Unfold `mcoef`. Establish `e : ∀ k ∈ K, inner ℂ (g k) (g (k * 1)) = ((U.indicator (fun _ => a ^ 2) k : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite using `[mul_one, inner_self_eq_norm_sq_to_K, hg k hk]`. Apply the tactic sequence `by_cases h : k ∈ U <;> simp [h]`. Rewrite using `[setIntegral_congr_fun (isOpen_GLint P _).measurableSet e, integral_complex_ofReal, setIntegral_indicator hUm, setIntegral_const, smul_eq_mul, mul_comm]`. Use `⟨_, nrm, hn, V, i1, i2, ρ, hρ, ((c ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) • f, Submodule.smul_mem _ _ hf, μ, dx, hμ, hμ1, ?_, hdx, hdx1, rfl⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key _ (c ^ (-(1 / 2 : ℝ))) (fun k hk => ?_)]`. Establish `h2 : (c ^ (-(1 / 2 : ℝ))) ^ 2 = c⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hcpos.le]`. Evaluate the numerical expressions. Conclude with `Real.rpow_neg_one c`.
-
-Rewrite using `[h2, inv_mul_cancel₀ hcpos.ne', Complex.ofReal_one]`. Rewrite using `[Pi.smul_apply, norm_smul, hfn k hk, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hcpos.le _)]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_typeDim_step : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)), Deg1 P → ∀ (δ : (P.adicCompletion L)ˣ →* ℂˣ) (ν : ℕ → (P.adicCompletion L)ˣ →* ℂˣ), IsDel P δ → (∀ i, IsNu P (ν i)) → ∀ r t j : ℕ, 1 ≤ t → (∃ n, TypeDimAt P δ ν r t j n) ∧ ∃ z, StepAt P δ ν r t j z := by
   intro L _ _ P _ δ ν hδ hν r t j ht

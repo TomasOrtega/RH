@@ -17,9 +17,7 @@ def Nv (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) (m : Fin (r - X.p0)) : ℂ 
 def Pv (v : Fin r → ℂ) (a : Fin X.p0) : ℂ := v (Fin.castLE X.p0_le a)
 
 /- English proof (translation)
-Set `e : Fin X.p0 ↪ Fin r` to `⟨Fin.castLE X.p0_le, Fin.castLE_injective X.p0_le⟩`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => hf j ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hj (Finset.mem_map.mpr ⟨⟨j, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
-
-Use `_ = ∑ c, f (e c) := Finset.sum_map _ _ _`. Use `_ = ∑ c : Fin X.p0, f (Fin.castLE X.p0_le c) := rfl`.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private lemma sum_eq_sum_castLE_p0_of_vanish_above (f : Fin r → ℂ) (hf : ∀ j : Fin r, X.p0 ≤ (j : ℕ) → f j = 0) :
     ∑ j, f j = ∑ c : Fin X.p0, f (Fin.castLE X.p0_le c) := by
@@ -32,7 +30,7 @@ private lemma sum_eq_sum_castLE_p0_of_vanish_above (f : Fin r → ℂ) (hf : ∀
     _ = ∑ c : Fin X.p0, f (Fin.castLE X.p0_le c) := rfl
 
 /- English proof (translation)
-Establish `hr : X.p0 + (r - X.p0) = r` using `Nat.add_sub_cancel' X.p0_le`. Rewrite using `[← Fintype.sum_equiv (finCongr hr) (fun i => g (finCongr hr i)) g (fun _ => rfl), Fin.sum_univ_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma sum_eq_sum_castLE_p0_add_sum_nI (g : Fin r → ℂ) :
     ∑ c, g c = ∑ a : Fin X.p0, g (Fin.castLE X.p0_le a) + ∑ m, g (nI X m) := by
@@ -42,7 +40,7 @@ private lemma sum_eq_sum_castLE_p0_add_sum_nI (g : Fin r → ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `hL : ∀ j, X.lowBlock Z τ (Fin.castLE X.p0_le a) j = if Fin.castLE X.p0_le a = j then 1 else 0`. Introduce `j`. Simplify using `only [Data.lowBlock, Matrix.of_apply]`. Rewrite using `[dif_neg (fun hh => absurd hh.1 (not_le.mpr (by simp))), add_zero]`. Simplify using `only [hL, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Lv_p (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) (a : Fin X.p0) :
     ∑ j, X.lowBlock Z τ (Fin.castLE X.p0_le a) j * v j = v (Fin.castLE X.p0_le a) := by
@@ -54,13 +52,13 @@ lemma Lv_p (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) (a : Fin X.p0) :
   simp only [hL, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hL : ∀ j : Fin r, X.lowBlock Z τ (nI X m) j = (if nI X m = j then 1 else 0) + (if h : (j : ℕ) < X.p0 then Z τ m ⟨j, h⟩ else 0)`. Introduce `j`. Simplify using `only [Data.lowBlock, Matrix.of_apply]`. Use `congr 1`. Distinguish the cases in `h : (j : ℕ) < X.p0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos ⟨(by simp [nI] : X.p0 ≤ ((nI X m : Fin r) : ℕ)), h⟩, dif_pos h]`. Conclude with `congrFun (congrArg (Z τ) (Fin.ext (by simp [nI]))) _`. Rewrite using `[dif_neg (fun hh => h hh.2), dif_neg h]`. Simplify using `only [hL, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Simplify using `only [Nv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[sum_eq_sum_castLE_p0_of_vanish_above X]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by simp)]`. Apply the tactic sequence `first | rfl | (congr 2) | simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Rewrite using `[dif_neg (not_lt.mpr hj), zero_mul]`.
+A detailed English derivation is pending.
 -/
 lemma Lv_n (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) (m : Fin (r - X.p0)) :
     ∑ j, X.lowBlock Z τ (nI X m) j * v j = Nv X Z τ v m := by
@@ -85,17 +83,15 @@ lemma Lv_n (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) (m : Fin (r - X.p0)) :
     rw [dif_neg (not_lt.mpr hj), zero_mul]
 
 /- English proof (translation)
-Establish `hG : ∀ a b, Gp X Z τ a b = ∑ c : Fin r, X.lowBlock Z τ c a * ((sgn X.p0 (c : ℕ) : ℝ) : ℂ) * conj (X.lowBlock Z τ c b)`. Introduce `a b`. Simplify using `[Gp, Matrix.mul_apply, Matrix.diagonal_apply]`. Establish `h1 : Bf X Z τ v w = ∑ c : Fin r, ((sgn X.p0 (c : ℕ) : ℝ) : ℂ) * (∑ a, X.lowBlock Z τ c a * v a) * conj (∑ b, X.lowBlock Z τ c b * w b)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Unfold `Bf`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hG, Finset.mul_sum, Finset.sum_mul]`. Use `_ = ∑ a, ∑ c : Fin r, ∑ b, v a * (X.lowBlock Z τ c a * ((sgn X.p0 (c : ℕ) : ℝ) : ℂ) * conj (X.lowBlock Z τ c b)) * conj (w b) := Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Use `_ = ∑ c : Fin r, ∑ a, ∑ b, v a * (X.lowBlock Z τ c a * ((sgn X.p0 (c : ℕ) : ℝ) : ℂ) * conj (X.lowBlock Z τ c b)) * conj (w b) := Finset.sum_comm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, mul_assoc, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, sum_eq_sum_castLE_p0_add_sum_nI X, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Lv_p X, Lv_p X]`. Simplify using `[sgn, Pv]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Lv_n X, Lv_n X]`.
-
-Simplify using `[sgn, nI]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Bf_coord (Z : X.Coord) (τ : X.Ψ) (v w : Fin r → ℂ) :
     Bf X Z τ v w = ∑ a, Pv X v a * conj (Pv X w a) - ∑ m, Nv X Z τ v m * conj (Nv X Z τ w m) := by
@@ -133,21 +129,21 @@ lemma Bf_coord (Z : X.Coord) (τ : X.Ψ) (v w : Fin r → ℂ) :
     simp [sgn, nI]
 
 /- English proof (translation)
-Simplify using `only [Bf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Bf_sub_left (Z : X.Coord) (τ : X.Ψ) (v t w : Fin r → ℂ) :
     Bf X Z τ (v - t) w = Bf X Z τ v w - Bf X Z τ t w := by
   simp only [Bf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [Bf, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Bf_sub_right (Z : X.Coord) (τ : X.Ψ) (v t w : Fin r → ℂ) :
     Bf X Z τ w (v - t) = Bf X Z τ w v - Bf X Z τ w t := by
   simp only [Bf, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Rewrite using `[Bf_coord X, Bf_coord X]`. Simplify using `only [map_sub, map_sum, map_mul, starRingEnd_self_apply]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Bf_conj (Z : X.Coord) (τ : X.Ψ) (v w : Fin r → ℂ) : Bf X Z τ w v = conj (Bf X Z τ v w) := by
   rw [Bf_coord X, Bf_coord X]
@@ -155,13 +151,11 @@ lemma Bf_conj (Z : X.Coord) (τ : X.Ψ) (v w : Fin r → ℂ) : Bf X Z τ w v = 
   congr 1 <;> exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
 /- English proof (translation)
-Set `e : Fin k ↪ Fin n` to `⟨Fin.castLE k.isLt.le, Fin.castLE_injective _⟩`. Establish `hk : k ∉ Finset.univ.map e`. Introduce `h`. Take `⟨c, _, hc⟩` from `Finset.mem_map.mp h`. Establish `h1` using `congrArg Fin.val hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `c.isLt`. Simplify using `only [e, Function.Embedding.coeFn_mk, Fin.coe_castLE] at h1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => hf j ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Break down `lt_or_eq_of_le hle with hlt | heq` into its components or cases. Conclude with `hj (Finset.mem_insert_of_mem (Finset.mem_map.mpr ⟨⟨(j : ℕ), hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩))`. Conclude with `hj (by rw [heq]; exact Finset.mem_insert_self _ _)`.
-
-Use `_ = f k + ∑ j ∈ Finset.univ.map e, f j := Finset.sum_insert hk`. Use `_ = f k + ∑ c, f (e c) := by rw [Finset.sum_map]`. Use `_ = f k + ∑ c : Fin k, f (Fin.castLE k.isLt.le c) := rfl`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma sum_eq_add_sum_castLE_of_vanish_above {n : ℕ} (k : Fin n) (f : Fin n → ℂ) (hf : ∀ j : Fin n, k < j → f j = 0) :
     ∑ j, f j = f k + ∑ c : Fin k, f (Fin.castLE k.isLt.le c) := by
@@ -186,19 +180,17 @@ private lemma sum_eq_add_sum_castLE_of_vanish_above {n : ℕ} (k : Fin n) (f : F
     _ = f k + ∑ c : Fin k, f (Fin.castLE k.isLt.le c) := rfl
 
 /- English proof (translation)
-Establish `hB : IsUnit (blk (Gp X Z τ) k).det` using `isUnit_iff_ne_zero.mpr (hdet k)`. Establish `hw : Matrix.vecMul (Matrix.vecMul (rowc (Gp X Z τ) k) (blk (Gp X Z τ) k)⁻¹) (blk (Gp X Z τ) k) = rowc (Gp X Z τ) k`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hB, Matrix.vecMul_one]`. Use `show ∑ a, ∑ b, uMat (Gp X Z τ) a k * Gp X Z τ a b * conj (t b) = 0`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Distinguish the cases in `hb : k ≤ b`. Simplify using `[ht b hb]`. Use `push_neg at hb`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul]`. Establish `hcol : ∑ c : Fin k, (Matrix.vecMul (rowc (Gp X Z τ) k) (blk (Gp X Z τ) k)⁻¹) c * Gp X Z τ (Fin.castLE k.isLt.le c) b = Gp X Z τ k b` using `congrFun hw ⟨(b : ℕ), hb⟩`. Establish `hu : ∀ c : Fin k, uMat (Gp X Z τ) (Fin.castLE k.isLt.le c) k = -(Matrix.vecMul (rowc (Gp X Z τ) k) (blk (Gp X Z τ) k)⁻¹) c`. Introduce `c`. Establish `hne : Fin.castLE k.isLt.le c ≠ k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `congrArg Fin.val h`. Establish `h2` using `c.isLt`. Simplify using `only [Fin.coe_castLE] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlt : Fin.castLE k.isLt.le c < k` using `Fin.lt_iff_val_lt_val.mpr (by simp)`. Simplify using `only [uMat, Matrix.of_apply, if_neg hne, dif_pos hlt]`. Apply the tactic sequence `try rfl`. Establish `hsum : ∑ a, uMat (Gp X Z τ) a k * Gp X Z τ a b = 0`. Rewrite using `[sum_eq_add_sum_castLE_of_vanish_above k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show uMat (Gp X Z τ) k k = 1 by simp [uMat]]`. Simplify using `only [hu, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[hcol]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j hj`.
-
-Simplify using `only [uMat, Matrix.of_apply, if_neg (ne_of_gt hj), dif_neg (not_lt.mpr hj.le), zero_mul]`. Rewrite using `[hsum, zero_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Bf_gv_zero (Z : X.Coord) (τ : X.Ψ) (hdet : ∀ c : Fin r, (blk (Gp X Z τ) c).det ≠ 0) (k : Fin r)
     (t : Fin r → ℂ) (ht : ∀ b, k ≤ b → t b = 0) :
@@ -240,7 +232,7 @@ lemma Bf_gv_zero (Z : X.Coord) (τ : X.Ψ) (hdet : ∀ c : Fin r, (blk (Gp X Z �
     rw [hsum, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[Bf_coord X]`. Simplify using `only [Complex.sub_re, Complex.re_sum, nsq]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun a _ => ?_ <;>`. Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 lemma Bf_self_re (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) :
     (Bf X Z τ v v).re = nsq (Pv X v) - nsq (Nv X Z τ v) := by
@@ -250,11 +242,11 @@ lemma Bf_self_re (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) :
     rw [Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Rewrite using `[Bf_self_re X]`. Establish `hN : Nv X Z τ v = (Matrix.of (Z τ)).mulVec (Pv X v)`. Use function extensionality and compare the values at `m`. Simplify using `only [Nv, hv m, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h1` using `nsq_mulVec_le_opN (Matrix.of (Z τ)) (Pv X v)`. Establish `h2` using `opN_le_zN X Z τ`. Establish `h3` using `opN_nonneg (Matrix.of (Z τ))`. Establish `h4` using `nsq_nonneg (Pv X v)`. Rewrite `h1` using `[← hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : Data.opN (Matrix.of (Z τ)) ^ 2 ≤ X.zN Z ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h5 h4]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma Bf_pos_ge (Z : X.Coord) (τ : X.Ψ) (v : Fin r → ℂ) (hv : ∀ m, v (nI X m) = 0) :
     (1 - X.zN Z ^ 2) * nsq (Pv X v) ≤ (Bf X Z τ v v).re := by

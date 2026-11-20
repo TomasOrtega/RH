@@ -17,9 +17,7 @@ def dimLocus {X S : Scheme.{0}} (p : X ⟶ S) (g : ℕ) : X.Opens :=
   ⨆ U : {U : X.Opens // SmoothOfRelativeDimension g (U.ι ≫ p)}, U.1
 
 /- English proof (translation)
-Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension g)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension g) (fun U : {U : X.Opens // SmoothOfRelativeDimension g (U.ι ≫ p)} => pullback.fst p b ⁻¹ᵁ U.1) (top_le_iff.1 fun y _ => ?_) fun U => ?_` and prove the remaining obligations. Establish `hy : pullback.fst p b y ∈ dimLocus p g` using `h.ge (Set.mem_univ y)`. Take `⟨U, hU⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨U, hU⟩`.
-
-Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback ((isPullback_morphismRestrict _ U.1).paste_vert (IsPullback.of_hasPullback _ _)) U.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_snd {X S T : Scheme.{0}} (p : X ⟶ S) (b : T ⟶ S) (g : ℕ)
     (h : pullback.fst p b ⁻¹ᵁ dimLocus p g = ⊤) : SmoothOfRelativeDimension g (pullback.snd p b) := by
@@ -35,7 +33,7 @@ theorem smoothOfRelativeDimension_snd {X S T : Scheme.{0}} (p : X ⟶ S) (b : T 
       ((isPullback_morphismRestrict _ U.1).paste_vert (IsPullback.of_hasPullback _ _)) U.2
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨n, W, hW, d⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_dim p (pullback.fst p b y)`. Take `rfl : n = g` from `ReciprocityTheory.ChartRestriction.G.H1.dim_base (IsPullback.of_hasPullback p b) d h y hW`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨W, d⟩, hW⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem preimage_dimLocus_eq_top {X S T : Scheme.{0}} (p : X ⟶ S) [Smooth p] (b : T ⟶ S) (g : ℕ)
     (h : SmoothOfRelativeDimension g (pullback.snd p b)) :
@@ -48,9 +46,9 @@ theorem preimage_dimLocus_eq_top {X S T : Scheme.{0}} (p : X ⟶ S) [Smooth p] (
 open GlobalTheory.Spread in
 
 /- English proof (translation)
-Introduce `k V _ _ _ _ X p g hs hq h`. Set `s : (Finset V)ᵒᵖ` to `.op ∅`. Set `π : (bcDiagram p V).obj s ⟶ X` to `pullback.fst p _`. Establish `hπ : (bcCone p V).π.app s ≫ π = pullback.fst p _` using `bcMap_fst _ _`. Take `⟨j, f, hj⟩` from `exists_map_eq_top (bcDiagram p V) (bcCone p V) (isLimitBcCone p V) (π ⁻¹ᵁ dimLocus p g) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, hπ]`. Conclude with `preimage_dimLocus_eq_top p _ g h)`. Use `⟨Algebra.adjoin k (j.unop : Set V), Subalgebra.fg_adjoin_finset _, smoothOfRelativeDimension_snd p _ g ?_⟩` and prove the remaining obligations. Establish `e : (bcDiagram p V).map f ≫ π = pullback.fst p _` using `bcMap_fst _ _`. Rewrite `hj` using `[← Scheme.Hom.comp_preimage, e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_fg_smoothOfRelativeDimension : ∀ (k V : Type) [CommRing k] [IsNoetherianRing k]
     [CommRing V] [Algebra k V] (X : Scheme.{0}) (p : X ⟶ Sp k) (g : ℕ), Smooth p → QuasiCompact p →

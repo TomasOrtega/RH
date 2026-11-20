@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.TubeCut.LocBasePf
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_isLimit (c := PullbackCone.mk fst snd w) (evaluationJointlyReflectsLimits _ fun k => (isLimitMapConePullbackConeEquiv ((evaluation K C).obj k) w).symm (h k).isLimit)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_of_app {K C : Type*} [Category K] [Category C] [HasPullbacks C] {P X Y Z : K ⥤ C}
     {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z} (w : fst ≫ f = snd ≫ g)
@@ -22,7 +22,7 @@ variable {J : Type} [Preorder J] (D : J ⥤ Scheme.{0}) {X : Scheme.{0}} (c : �
 
 include hc in
 /- English proof (translation)
-The claim follows from `yoneda.map_injective (by simpa using hc j k f)`.
+A detailed English derivation is pending.
 -/
 theorem cw {j k : J} (f : j ⟶ k) : D.map f ≫ c k = c j :=
   yoneda.map_injective (by simpa using hc j k f)
@@ -38,7 +38,7 @@ def D' : J ⥤ Scheme.{0} where
 def c' (j : J) : (D' D c hc g).obj j ⟶ Y := pullback.snd (c j) g
 
 /- English proof (translation)
-Introduce `j k f`. Rewrite using `[Functor.comp_map, ← yoneda.map_comp]`. Use `congr 1`. Conclude with `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hc' : Coc (D' D c hc g ⋙ yoneda) fun j => yoneda.map (c' D c hc g j) := by
   intro j k f
@@ -53,7 +53,7 @@ def α : D' D c hc g ⋙ yoneda ⟶ D ⋙ yoneda where
     exact (yoneda.map_comp _ _).symm.trans ((congrArg yoneda.map e).trans (yoneda.map_comp _ _))
 
 /- English proof (translation)
-Use extensionality with `n U x`. Establish `key : ∀ j (a : unop U ⟶ pullback (c j) g), (a ≫ pullback.fst (c j) g) ≫ c j = (a ≫ pullback.snd (c j) g) ≫ g` using `fun j a => by rw [Category.assoc, Category.assoc, pullback.condition]`. Conclude with `key _ _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sq : (hocF J).map (α D c hc g) ≫ aug _ hc = aug _ (hc' D c hc g) ≫ sch.map g := by
   ext n U x
@@ -62,7 +62,7 @@ theorem sq : (hocF J).map (α D c hc g) ≫ aug _ hc = aug _ (hc' D c hc g) ≫ 
   exact key _ _
 
 /- English proof (translation)
-Rewrite using `[Category.assoc]`. Use `congr 1`. Conclude with `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem snd_map {j k : J} (f : j ⟶ k) {V : Scheme.{0}} (a : V ⟶ (D' D c hc g).obj j) :
     (a ≫ (D' D c hc g).map f) ≫ c' D c hc g k = a ≫ c' D c hc g j := by
@@ -71,7 +71,7 @@ theorem snd_map {j k : J} (f : j ⟶ k) {V : Scheme.{0}} (a : V ⟶ (D' D c hc g
   exact (pullback.lift_snd _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-Establish `m` using `(z.map (homOfLE (Fin.zero_le i))).2`. Rewrite using `[← m]`. Conclude with `snd_map D c hc g _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_chain {n : ℕ} {U : Scheme.{0}ᵒᵖ} (z : Fin (n + 1) ⥤ ((D' D c hc g ⋙ yoneda).flip.obj U).Elements)
     (i : Fin (n + 1)) : (z.obj i).2 ≫ c' D c hc g (z.obj i).1 = (z.obj 0).2 ≫ c' D c hc g (z.obj 0).1 := by
@@ -81,7 +81,7 @@ theorem snd_chain {n : ℕ} {U : Scheme.{0}ᵒᵖ} (z : Fin (n + 1) ⥤ ((D' D c
 
 include hc in
 /- English proof (translation)
-Establish `m` using `(z.map (homOfLE (Fin.zero_le i))).2`. Rewrite using `[← m]`. Express the relevant statement in the definitionally equal form `((z.obj 0).2 ≫ D.map _) ≫ _ = _`. Rewrite using `[Category.assoc, cw D c hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem c_chain {n : ℕ} {U : Scheme.{0}ᵒᵖ} (z : Fin (n + 1) ⥤ ((D ⋙ yoneda).flip.obj U).Elements)
     (i : Fin (n + 1)) : (z.obj i).2 ≫ c (z.obj i).1 = (z.obj 0).2 ≫ c (z.obj 0).1 := by
@@ -91,9 +91,9 @@ theorem c_chain {n : ℕ} {U : Scheme.{0}ᵒᵖ} (z : Fin (n + 1) ⥤ ((D ⋙ yo
   rw [Category.assoc, cw D c hc]
 
 /- English proof (translation)
-Take `⟨j, a⟩` from `p`. Take `⟨k, b⟩` from `q`. Simplify using `only [Sigma.mk.injEq] at h1`. Take `⟨rfl, h⟩` from `h1`. Establish `h'` using `eq_of_heq h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `pullback.hom_ext h' h2`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pt_ext {U : Scheme.{0}ᵒᵖ} (p q : Σ j, unop U ⟶ pullback (c j) g)
     (h1 : (⟨p.1, p.2 ≫ pullback.fst (c p.1) g⟩ : Σ j, unop U ⟶ D.obj j) = ⟨q.1, q.2 ≫ pullback.fst (c q.1) g⟩)
@@ -108,7 +108,7 @@ theorem pt_ext {U : Scheme.{0}ᵒᵖ} (p q : Σ j, unop U ⟶ pullback (c j) g)
 
 include hc in
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> simp only [Category.assoc, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp, Functor.map_comp, Functor.map_id, D', hab]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_map {j k : J} (f : j ⟶ k) {V : Scheme.{0}} (a : V ⟶ D.obj j) (b : V ⟶ D.obj k) (y : V ⟶ Y)
     (ha : a ≫ c j = y ≫ g) (hb : b ≫ c k = y ≫ g) (hab : a ≫ D.map f = b) :
@@ -116,15 +116,13 @@ theorem lift_map {j k : J} (f : j ⟶ k) {V : Scheme.{0}} (a : V ⟶ D.obj j) (b
   apply pullback.hom_ext <;> simp only [Category.assoc, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp, Functor.map_comp, Functor.map_id, D', hab]
 
 /- English proof (translation)
-Use `isPullback_of_app (sq D c hc g) fun n => isPullback_of_app ?_ fun U => ?_` and prove the remaining obligations. Conclude with `NatTrans.congr_app (sq D c hc g) n`. Use `(Types.isPullback_iff _ _ _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `NatTrans.congr_app (NatTrans.congr_app (sq D c hc g) n) U`. Introduce and unpack `x y ⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `chn x = chn y`. Use `CategoryTheory.Functor.ext ?_ (fun _ _ _ => Subtype.ext (Subsingleton.elim _ _))` and prove the remaining obligations. Introduce `i`. Use `pt_ext D c g _ _ ?_ ?_` and prove the remaining obligations. Conclude with `congrArg (fun z => (chn z).obj i) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(snd_chain D c hc g (chn x) i).trans (h2.trans (snd_chain D c hc g (chn y) i).symm)`. Introduce `x₂ x₃ h`. Establish `e : ∀ i, ((chn x₂).obj i).2 ≫ c ((chn x₂).obj i).1 = x₃ ≫ g` using `fun i => (c_chain D c hc (chn x₂) i).trans h`. Use `⟨mkChn (F := (D' D c hc g ⋙ yoneda).flip.obj U) (chn x₂ ⋙ CategoryOfElements.π _) (fun i => pullback.lift ((chn x₂).obj i).2 x₃ (e i)) (fun i k f => ?_), ?_, ?_⟩` and prove the remaining obligations. Conclude with `lift_map D c hc g _ _ _ x₃ _ _ ((chn x₂).map f).2`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `chn _ = chn x₂`. Use `CategoryTheory.Functor.ext ?_ (fun _ _ _ => Subtype.ext (Subsingleton.elim _ _))` and prove the remaining obligations. Introduce `i`. Use `Sigma.ext rfl (heq_of_eq ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pullback.lift _ _ _ ≫ pullback.fst (c ((chn x₂).obj i).1) g = _`.
-
-Conclude with `pullback.lift_fst _ _ _`. Express the relevant statement in the definitionally equal form `pullback.lift _ _ _ ≫ pullback.snd _ _ = x₃`. Conclude with `pullback.lift_snd _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem pb : IsPullback ((hocF J).map (α D c hc g)) (aug _ (hc' D c hc g)) (aug _ hc) (sch.map g) := by
   refine isPullback_of_app (sq D c hc g) fun n => isPullback_of_app ?_ fun U => ?_
@@ -156,7 +154,7 @@ theorem pb : IsPullback ((hocF J).map (α D c hc g)) (aug _ (hc' D c hc g)) (aug
 end
 
 /- English proof (translation)
-Use `ho j` as an intermediate fact. Express the relevant statement in the definitionally equal form `y ∈ Set.range (pullback.snd (c j) g) ↔ _`. Rewrite using `[IsOpenImmersion.range_pullbackSnd]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hr {J : Type} [Preorder J] (D : J ⥤ Scheme.{0}) {X : Scheme.{0}} (c : ∀ j, D.obj j ⟶ X)
     (ho : ∀ j, IsOpenImmersion (c j)) (hc : Coc (D ⋙ yoneda) fun j => yoneda.map (c j)) {Y : Scheme.{0}} (g : Y ⟶ X)
@@ -172,11 +170,11 @@ namespace LateralTheory.CohomologicalPurity.TubeCut
 open LocBasePf
 
 /- English proof (translation)
-Introduce `J _ D X c ho hcov hdir hc Y g`. Use `⟨D' D c hc g, c' D c hc g, ?_, ?_, ?_, hc' D c hc g, ⟨?_⟩⟩` and prove the remaining obligations. Introduce `j`. Use `ho j` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsOpenImmersion (pullback.snd (c j) g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Introduce `y`. Take `⟨j, hj⟩` from `hcov (g y)`. Conclude with `⟨j, (hr D c ho hc g j y).2 hj⟩`. Introduce `y j k h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl1, hl2, hl⟩` from `hdir (g y) j k ((hr D c ho hc g j y).1 h1) ((hr D c ho hc g k y).1 h2)`. Conclude with `⟨l, hl1, hl2, (hr D c ho hc g l y).2 hl⟩`. Conclude with `Arrow.isoMk (pb D c hc g).isoPullback.symm (Iso.refl _) ((IsPullback.isoPullback_inv_snd _).trans (Category.comp_id _).symm)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafLocBase_of : EtaleLocBase := by
   intro J _ D X c ho hcov hdir hc Y g

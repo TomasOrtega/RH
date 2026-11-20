@@ -39,7 +39,7 @@ def StabOrthC : Prop :=
       ∀ x ∈ orth (VS D) (Xsp (lf D (X.Fu u'))), σ x - x ∈ Xsp (lf D (X.Fu u'))
 
 /- English proof (translation)
-Introduce `D X Y u u' hH ρ' s σ hs hσ hS hk`. Conclude with `⟨⟨hσ, hL D X Y u u' hH ρ' s σ hs hσ hS hk⟩, hF D X Y u u' hH s σ hs hσ hS, hO D X Y u u' hH ρ' s σ hs hσ hS hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stabNC_of (hL : StabLatC) (hF : StabFlagC) (hO : StabOrthC) : StabNC := by
   intro D X Y u u' hH ρ' s σ hs hσ hS hk
@@ -47,15 +47,13 @@ theorem stabNC_of (hL : StabLatC) (hF : StabFlagC) (hO : StabOrthC) : StabNC := 
     hO D X Y u u' hH ρ' s σ hs hσ hS hk⟩
 
 /- English proof (translation)
-Introduce `D X Y u u' hH ρ' s σ hs hσ hS hk`. Take `⟨M, -, -, h2, h3⟩` from `hs`. Use `set a : X.B.I.Gf := ((Y.cs u').h ρ' : X.B.I.Gf) * X.xu u' with ha`. Establish `hkK : a⁻¹ * s.2 * a ∈ X.B.I.Kset` using `hH.1.2.1 _ hk`. Establish `hfm : ∀ x y : X.B.I.Gf, X.B.I.fmat (x * y) = X.B.I.fmat x * X.B.I.fmat y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`. Establish `key : ∀ y : (VS D).V, σ y ∈ (Y.cs u').lamOf ρ' ↔ y ∈ (Y.cs u').lamOf ρ'`. Introduce `y`. Rewrite using `[(Y.cs u').lat_eq, (Y.cs u').lat_eq, h3, ← Formalism.L2.SG.Pf.Level.incl_mulVec X, ← h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : X.B.I.fmat a⁻¹ *ᵥ (X.B.I.fmat s.2 *ᵥ Formalism.L2.SG.HidaSetting.incl X.B.I (X.crd y)) = X.B.I.fmat (a⁻¹ * s.2 * a) *ᵥ (X.B.I.fmat a⁻¹ *ᵥ Formalism.L2.SG.HidaSetting.incl X.B.I (X.crd y))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hfm, ← hfm]`. Use `congr 2`. Use `group`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `(hkK _).symm`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(key x).2 hx`.
-
-Introduce `hy`. Use `Submodule.mem_map.2 ⟨σ.symm y, (key _).1 (by simpa using hy), by simp⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lattice_stabilizer_holds : StabLatC := by
   intro D X Y u u' hH ρ' s σ hs hσ hS hk
@@ -87,15 +85,13 @@ def StabOrthDescC : Prop :=
       ∀ x ∈ orth (VS D) (Xsp (lf D (X.Fu u'))), σ x - x ∈ Xsp (lf D (X.Fu u'))
 
 /- English proof (translation)
-Establish `hK` using `Y.hK`. Take `⟨h1, h2⟩` from `Formalism.L2.SG.PoincareInHH.Cut.sratComp_holds X u' s hS`. Take `⟨ν, η, rfl, hνr, hν1, hν2, hη⟩` from `Formalism.L2.SG.Pf.ratLevi_holds X u' _ (Subgroup.mem_inf.1 hS).1 h1 h2`. Establish `hηp` using `Subgroup.mem_prod.1 (Subgroup.mem_inf.1 hη).2`. Use `set hh : Hfin X u' := (Y.cs u').h ρ' with hhh`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : (hh : X.B.I.Gf)⁻¹ * ν.2 * hh ∈ X.NfinU u'`. Use `(Formalism.L2.SG.PoincareInHH.Cut.nfinConj_holds X u' hh⁻¹ ν.2 hν2).1` as an intermediate fact. Simplify using `using this`. Set `g2 : Hfin X u'` to `hh⁻¹ * ⟨η.2, hηp.2⟩ * hh`. Establish `hLD` using `Formalism.L2.SG.PoincareInHH.Cut.levelDec_of X u' hK (Formalism.L2.SG.Pf.ksetSplit_holds X u') (Formalism.L2.SG.Pf.unipotent_in_level X u') _ hn' g2 (by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (X.xu u')⁻¹ * ((hh : X.B.I.Gf)⁻¹ * ν.2 * hh * (g2 : X.B.I.Gf)) * X.xu u' = ((hh : X.B.I.Gf) * X.xu u')⁻¹ * (ν * η).2 * ((hh : X.B.I.Gf) * X.xu u')`. Simplify using `only [g2, Subgroup.coe_mul, Subgroup.coe_inv, Prod.snd_mul]`. Use `group`. Rewrite using `[e]`. Conclude with `hk)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hη1 : (⟨η, hη⟩ : Gam X u') = 1`. Use `hN D X Y u' hKL hh ⟨η, hη⟩ ?_` and prove the remaining obligations. Use `show (X.xu u')⁻¹ * ((hh⁻¹ * Formalism.L2.SG.PoincareInHH.PoincareSetting.iotaF X u' ⟨η, hη⟩ * hh : Hfin X u') : X.B.I.Gf) * X.xu u' ∈ X.K2`. Conclude with `hLD.1`. Establish `hη1' : η = 1` using `congrArg Subtype.val hη1`.
-
-Rewrite using `[hη1', mul_one]`. Conclude with `hν2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_nfin (hN : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word), X.LevelSubgroupNormalized →
       Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u Y.hK)
@@ -129,7 +125,7 @@ theorem stab_nfin (hN : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSettin
   exact hν2
 
 /- English proof (translation)
-Introduce `D X Y u u' hH ρ' s σ hs hσ hS hk`. Conclude with `hD D X u' s σ hs hσ (stab_nfin hN Y u' hH.1 ρ' s hS hk)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stabOrthC_of (hD : StabOrthDescC)
     (hN : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word), X.LevelSubgroupNormalized →
@@ -138,15 +134,15 @@ theorem stabOrthC_of (hD : StabOrthDescC)
   exact hD D X u' s σ hs hσ (stab_nfin hN Y u' hH.1 ρ' s hS hk)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap I.E (I.E ⊗[I.F] Af I.F)) (by`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `a b h`. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := I.F) (algebraMap I.F (Af I.F)).injective h)`. Establish `hgc : ∀ c : I.E, g (Formalism.UG.inclE (F` using `I.F) (Af I.F) c) = c := fun c => LinearMap.congr_fun hg c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgm : ∀ (r : I.E ⊗[I.F] Af I.F) (c : I.E), g (r * Formalism.UG.inclE (F` using `I.F) (Af I.F) c) = c * g r := by`. Introduce `r c`. Establish `e : r * Formalism.UG.inclE (F` using `I.F) (Af I.F) c = c • r := by`. Rewrite using `[Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul, smul_eq_mul]`. Take `⟨m, f, t, hsum⟩` from `Submodule.mem_span_set'.1 hw`. Establish `ht : ∀ i, ∃ s ∈ S, Formalism.L2.SG.HidaSetting.incl I s = (t i : Formalism.L2.SG.HidaSetting.VA I)` using `fun i => (t i).2`. Use `choose s hs hst using ht`. Establish `e : w = ∑ i, g (f i) • s i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun hsum k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ← hst] at hk ⊢`. Establish `hk2` using `congrArg g hk`. Simplify using `only [Formalism.L2.SG.HidaSetting.incl, map_sum, hgm, hgc] at hk2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hk2]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (hs i))`.
+A detailed English derivation is pending.
 -/
 theorem incl_descent (I : Formalism.MainNotions.S.AutInst) [Nontrivial (Af I.F)] (S : Set (Fin I.n → I.E)) (w : Fin I.n → I.E)
     (hw : Formalism.L2.SG.HidaSetting.incl I w ∈
@@ -177,7 +173,7 @@ theorem incl_descent (I : Formalism.MainNotions.S.AutInst) [Nontrivial (Af I.F)]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (hs i))
 
 /- English proof (translation)
-Apply `X.bas.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf] at this`. Conclude with `X.ιE.symm.injective this`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_inj' {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {y y' : (VS D).V} (h : X.crd y = X.crd y') : y = y' := by
   apply X.bas.repr.injective
@@ -187,11 +183,11 @@ theorem crd_inj' {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {y y' 
   exact X.ιE.symm.injective this
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun X.B.I.E).1 hv`. Establish `e : v = ∑ a, X.ιE (c a) • X.eX a`. Apply `crd_inj' X` to reduce the goal to its premises. Rewrite using `[← hc]`. Express the relevant statement in the definitionally equal form `_ = Formalism.L2.SG.Pf.Vanish2.crdHom X (∑ a, X.ιE (c a) • X.eX a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show _ = X.crd (X.ιE (c a) • X.eX a)`. Rewrite using `[Formalism.L2.SG.Pf.crd_smul X, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem crd_descent {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : (VS D).V)
     (hv : X.crd v ∈ Submodule.span X.B.I.E (Set.range X.eR)) :
@@ -210,15 +206,15 @@ theorem crd_descent {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v 
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Introduce `D X u' s σ hs hσ hn x hx`. Take `⟨M, -, -, h2, h3⟩` from `hs`. Establish `: Nontrivial (Af X.B.I.F)` using `Formalism.L2.SG.Pf.Level.af_ntriv X.B.I.F`. Establish `hx0 : ∀ a, Formalism.L2.SG.HidaSetting.hA X.B.I (Formalism.L2.SG.HidaSetting.incl X.B.I (X.eR a)) (Formalism.L2.SG.HidaSetting.incl X.B.I (X.crd x)) = 0`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hA_incl X]`. Establish `hmem : X.eX a ∈ Xsp (lf D (X.Fu u'))` using `by show X.eX a ∈ Submodule.span D.host.E (Set.range (X.Fu u').e)`. Rewrite using `[X.Fu_e]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Establish `h0 : (VS D).hT (X.eX a) x = 0` using `(mem_orth_iff _ _).1 hx _ hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.eR a) (X.crd x) = 0`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[map_zero, show X.eR a = X.crd (X.eX a) from rfl, Formalism.L2.SG.PoincareInHH.Cut.hform_crd X]`. Conclude with `h0`. Rewrite using `[h1, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `hn.2.2 _ hx0`. Establish `e : (X.B.I.fmat s.2 - 1) *ᵥ Formalism.L2.SG.HidaSetting.incl X.B.I (X.crd x) = Formalism.L2.SG.HidaSetting.incl X.B.I (X.crd (σ x - x))`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, h2, Formalism.L2.SG.Pf.Level.incl_mulVec X, ← h3, Formalism.L2.SG.Pf.Vanish2.crd_sub' X]`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.HidaSetting.incl]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[e]`. Establish `hd` using `incl_descent X.B.I (Set.range X.eR) _ (by rw [← Set.range_comp]; exact hmem)`. Use `show σ x - x ∈ Submodule.span D.host.E (Set.range (X.Fu u').e)`. Rewrite using `[X.Fu_e]`. Conclude with `crd_descent X _ hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonal_stabilizer_descent : StabOrthDescC := by
   intro D X u' s σ hs hσ hn x hx
@@ -251,7 +247,7 @@ theorem orthogonal_stabilizer_descent : StabOrthDescC := by
   exact crd_descent X _ hd
 
 /- English proof (translation)
-The claim follows from `stabOrthC_of orthogonal_stabilizer_descent hN`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_stabilizer_of_neat
     (hN : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Y : Full X) (u : D.what₂.Word), X.LevelSubgroupNormalized →

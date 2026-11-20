@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SymmetricFor
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.two_mul_functional_eq_sum_diag` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSymmetricFormSumOfSquares.lean&line=38#L38)
 -/

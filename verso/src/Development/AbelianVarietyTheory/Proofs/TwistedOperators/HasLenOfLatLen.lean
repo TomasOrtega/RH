@@ -16,7 +16,7 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : �
 def IsInt {ι κ : Type} (M : Matrix ι κ L) : Prop := ∀ i j, M i j ∈ intL L
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Subring.sum_mem _ fun k _ => mul_mem (hM i k) (hN k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsInt.mul {ι κ μ : Type} [Fintype κ] {M : Matrix ι κ L} {N : Matrix κ μ L} (hM : IsInt M) (hN : IsInt N) :
     IsInt (M * N) := fun i j => by
@@ -24,13 +24,13 @@ theorem IsInt.mul {ι κ μ : Type} [Fintype κ] {M : Matrix ι κ L} {N : Matri
   exact Subring.sum_mem _ fun k _ => mul_mem (hM i k) (hN k j)
 
 /- English proof (translation)
-Introduce `i j` and use `add_mem (hM i j) (hN i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsInt.add {ι κ : Type} {M N : Matrix ι κ L} (hM : IsInt M) (hN : IsInt N) : IsInt (M + N) :=
   fun i j => add_mem (hM i j) (hN i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply] split_ifs · exact one_mem _ · exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_one {ι : Type} [DecidableEq ι] : IsInt (1 : Matrix ι ι L) := fun i j => by
   rw [Matrix.one_apply]
@@ -39,12 +39,12 @@ theorem isInt_one {ι : Type} [DecidableEq ι] : IsInt (1 : Matrix ι ι L) := f
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `_ _` and use `zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_zero {ι κ : Type} : IsInt (0 : Matrix ι κ L) := fun _ _ => zero_mem _
 
 /- English proof (translation)
-The claim follows from `P.cartan_det_mem (intL L) M hM`.
+A detailed English derivation is pending.
 -/
 theorem IsInt.v_det_le {M : Matrix (Fin n) (Fin n) L} (hM : IsInt M) : Valued.v M.det ≤ 1 :=
   P.cartan_det_mem (intL L) M hM
@@ -58,7 +58,7 @@ def HasLen (g : Matrix (Fin n) (Fin n) L) (k : ℕ) : Prop :=
 def len (g : Matrix (Fin n) (Fin n) L) : ℕ := sInf {k | HasLen g k}
 
 /- English proof (translation)
-Establish `e : C' = C * (U * C' + V * (g * C'))`. Rewrite using `[← Matrix.mul_assoc V, ← Matrix.add_mul, ← Matrix.mul_assoc, mul_eq_one_comm.1 h.2.2.2.2, Matrix.one_mul]`. Rewrite using `[e, Matrix.det_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' ((h.1.mul h'.2.2.1).add (h.2.1.mul h'.2.2.2.1)).v_det_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFrac.v_det_le {g U V C U' V' C' : Matrix (Fin n) (Fin n) L} (h : IsFrac g U V C) (h' : IsFrac g U' V' C') :
     Valued.v C'.det ≤ Valued.v C.det := by
@@ -68,7 +68,7 @@ theorem IsFrac.v_det_le {g U V C U' V' C' : Matrix (Fin n) (Fin n) L} (h : IsFra
   exact mul_le_of_le_one_right' ((h.1.mul h'.2.2.1).add (h.2.1.mul h'.2.2.2.1)).v_det_le
 
 /- English proof (translation)
-Take `⟨U, V, C, h, e⟩` from `h`. Take `⟨U', V', C', h', e'⟩` from `h'`. Use `le_antisymm (h.v_det_le h') (h'.v_det_le h)` as an intermediate fact. Rewrite `this` using `[e, e', WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem HasLen.unique {g : Matrix (Fin n) (Fin n) L} {k k' : ℕ} (h : HasLen g k) (h' : HasLen g k') : k = k' := by
   obtain ⟨U, V, C, h, e⟩ := h
@@ -78,19 +78,19 @@ theorem HasLen.unique {g : Matrix (Fin n) (Fin n) L} {k k' : ℕ} (h : HasLen g 
   omega
 
 /- English proof (translation)
-The claim follows from `HasLen.unique (Nat.sInf_mem (s := {k | HasLen g k}) ⟨k, h⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem HasLen.len_eq {g : Matrix (Fin n) (Fin n) L} {k : ℕ} (h : HasLen g k) : len g = k :=
   HasLen.unique (Nat.sInf_mem (s := {k | HasLen g k}) ⟨k, h⟩) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 0, 1, ⟨isInt_one, isInt_zero, isInt_one, by simpa using hg, by simp⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasLen_of_isInt {g : Matrix (Fin n) (Fin n) L} (hg : IsInt g) : HasLen g 0 :=
   ⟨1, 0, 1, ⟨isInt_one, isInt_zero, isInt_one, by simpa using hg, by simp⟩, by simp⟩
 
 /- English proof (translation)
-Take `⟨U, hU, rfl⟩` from `P.cartan_exists_glint (intL L) a a' e ha ha'`. Conclude with `P.cartan_val_det (intL L) Valued.v (fun _ => Iff.rfl) U hU`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem v_det_eq_one {a a' : Matrix (Fin n) (Fin n) L} (ha : IsInt a) (ha' : IsInt a') (e : a * a' = 1) :
     Valued.v a.det = 1 := by
@@ -98,9 +98,9 @@ theorem v_det_eq_one {a a' : Matrix (Fin n) (Fin n) L} (ha : IsInt a) (ha' : IsI
   exact P.cartan_val_det (intL L) Valued.v (fun _ => Iff.rfl) U hU
 
 /- English proof (translation)
-Take `⟨U, V, C, ⟨h1, h2, h3, h4, h5⟩, e⟩` from `h`. Use `⟨U * b, V * a', b' * C, ⟨h1.mul hb, h2.mul ha', hb'.mul h3, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc b, eb, Matrix.one_mul, Matrix.mul_assoc]`. Conclude with `ha.mul h4`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_mul, map_mul, v_det_eq_one hb' hb (mul_eq_one_comm.1 eb), one_mul, e]`.
+A detailed English derivation is pending.
 -/
 theorem HasLen.mul_mul {g a a' b b' : Matrix (Fin n) (Fin n) L} {k : ℕ} (h : HasLen g k) (ha : IsInt a)
     (ha' : IsInt a') (hb : IsInt b) (hb' : IsInt b') (ea : a' * a = 1) (eb : b * b' = 1) : HasLen (a * g * b) k := by
@@ -113,9 +113,9 @@ theorem HasLen.mul_mul {g a a' b b' : Matrix (Fin n) (Fin n) L} {k : ℕ} (h : H
   · rw [Matrix.det_mul, map_mul, v_det_eq_one hb' hb (mul_eq_one_comm.1 eb), one_mul, e]
 
 /- English proof (translation)
-Unfold `len`. Use `congr 1`. Use extensionality with `k`. Use `⟨fun h => ?_, fun h => HasLen.mul_mul h ha ha' hb hb' ea eb⟩` and prove the remaining obligations. Use `HasLen.mul_mul h ha' ha hb' hb (mul_eq_one_comm.1 ea) (mul_eq_one_comm.1 eb)` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[show a' * (a * g * b) * b' = (a' * a) * g * (b * b') by simp only [Matrix.mul_assoc], ea, eb, Matrix.one_mul, Matrix.mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem len_mul_mul {g a a' b b' : Matrix (Fin n) (Fin n) L} (ha : IsInt a)
     (ha' : IsInt a') (hb : IsInt b) (hb' : IsInt b') (ea : a' * a = 1) (eb : b * b' = 1) : len (a * g * b) = len g := by
@@ -128,7 +128,7 @@ theorem len_mul_mul {g a a' b b' : Matrix (Fin n) (Fin n) L} (ha : IsInt a)
     Matrix.mul_one] at this
 
 /- English proof (translation)
-The claim follows from `len_mul_mul (P.fSatake_K_int ha) (P.fSatake_K_int (inv_mem ha)) (P.fSatake_K_int hb) (P.fSatake_K_int (inv_mem hb)) (mat_inv_mul a) (mat_mul_inv b)`.
+A detailed English derivation is pending.
 -/
 theorem len_mat_mul {σ : L →+* L} {a b : GU σ n} (ha : a ∈ KU σ n) (hb : b ∈ KU σ n) (g : GU σ n) :
     len (mat (a * g * b)) = len (mat g) :=
@@ -139,15 +139,15 @@ def rowLat {ι : Type} (M : Matrix ι (Fin n) L) : Submodule (intL L) (Fin n →
   Submodule.span (intL L) (Set.range fun i => M i)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨i, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem row_mem_rowLat {ι : Type} (M : Matrix ι (Fin n) L) (i : ι) : M i ∈ rowLat M :=
   Submodule.subset_span ⟨i, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[rowLat, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun i => c i, fun i => (c i).2, by rw [Matrix.vecMul_eq_sum]; rfl⟩`. Introduce and unpack `⟨ρ, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i => ⟨ρ i, h i⟩, by rw [Matrix.vecMul_eq_sum]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_rowLat {ι : Type} [Fintype ι] {M : Matrix ι (Fin n) L} {w : Fin n → L} :
     w ∈ rowLat M ↔ ∃ ρ : ι → L, (∀ i, ρ i ∈ intL L) ∧ w = ρ ᵥ* M := by
@@ -159,7 +159,7 @@ theorem mem_rowLat {ι : Type} [Fintype ι] {M : Matrix ι (Fin n) L} {w : Fin n
     exact ⟨fun i => ⟨ρ i, h i⟩, by rw [Matrix.vecMul_eq_sum]; rfl⟩
 
 /- English proof (translation)
-Rewrite using `[rowLat, Submodule.span_le, Set.range_subset_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rowLat_le {ι : Type} {M : Matrix ι (Fin n) L} {R : Submodule (intL L) (Fin n → L)} :
     rowLat M ≤ R ↔ ∀ i, M i ∈ R := by
@@ -170,13 +170,13 @@ def LatLen (R : Submodule (intL L) (Fin n → L)) (k : ℤ) : Prop :=
   ∃ M : Matrix (Fin n) (Fin n) L, Valued.v M.det = WithZero.exp k ∧ R = rowLat M
 
 /- English proof (translation)
-Take `⟨M, hM, e⟩` from `h`. Establish `h0 : M.det ≠ 0` using `fun h => by rw [h, map_zero] at hM; exact WithZero.exp_ne_zero hM.symm`. Establish `hu : IsUnit M.det` using `h0.isUnit`. Establish `h1 : ∀ i, ∃ ρ ρ' : Fin n → L, (∀ i, ρ i ∈ intL L) ∧ (∀ i, ρ' i ∈ intL L) ∧ M i = ρ + ρ' ᵥ* g` using `fun i => by`. Take `⟨x, hx, y, hy, e'⟩` from `Submodule.mem_sup.1 (e ▸ row_mem_rowLat M i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, rfl⟩` from `mem_rowLat.1 hx`. Take `⟨ρ', hρ', rfl⟩` from `mem_rowLat.1 hy`. Conclude with `⟨ρ, ρ', hρ, hρ', by rw [← e', Matrix.vecMul_one]⟩`. Use `choose U V hU hV hUV using h1`. Establish `h2 : ∀ A : Matrix (Fin n) (Fin n) L, rowLat A ≤ rowLat M → IsInt (A * M⁻¹)` using `fun A hA i j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, e'⟩` from `mem_rowLat.1 (hA (row_mem_rowLat A i))`. Establish `: (A * M⁻¹) i = ρ`. Rewrite using `[show (A * M⁻¹) i = A i ᵥ* M⁻¹ from rfl, e', Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu, Matrix.vecMul_one]`. Rewrite using `[this]`. Conclude with `hρ j`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨Matrix.of U, Matrix.of V, M⁻¹, ⟨hU, hV, by simpa using h2 1 (e ▸ le_sup_left), h2 g (e ▸ le_sup_right), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show Matrix.of U + Matrix.of V * g = M from funext fun i => (hUV i).symm, Matrix.mul_nonsing_inv _ hu]`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv, map_inv₀, hM, WithZero.exp_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLen_of_latLen {g : Matrix (Fin n) (Fin n) L} {k : ℕ}
     (h : LatLen (rowLat (1 : Matrix (Fin n) (Fin n) L) ⊔ rowLat g) k) : HasLen g k := by
@@ -206,12 +206,12 @@ def intV (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : �
 def preLat (A : Matrix (Fin n) (Fin n) L) : AddSubgroup (Fin n → L) := (intV L n).comap A.vecMulLinear.toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `[intV, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_intV {r : Fin n → L} : r ∈ intV L n ↔ ∀ i, r i ∈ intL L := by simp [intV, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-The claim follows from `mem_intV`.
+A detailed English derivation is pending.
 -/
 theorem mem_preLat {A : Matrix (Fin n) (Fin n) L} {r : Fin n → L} : r ∈ preLat A ↔ ∀ i, (r ᵥ* A) i ∈ intL L := mem_intV
 
@@ -219,14 +219,14 @@ def traceZero (σ : L →+* L) (c : L) : AddSubgroup L :=
   (intL L).toAddSubgroup.comap (AddMonoidHom.mulLeft c) ⊓ (σ.toAddMonoidHom + AddMonoidHom.id L).ker
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_traceZero {σ : L →+* L} {c x : L} : x ∈ traceZero σ c ↔ c * x ∈ intL L ∧ σ x + x = 0 := Iff.rfl
 
 /- English proof (translation)
-Take `⟨hσσ, hσ, -, -, ⟨x, hx, hx1⟩, -, -⟩` from `hU`. Establish `hx0 : σ x - x ≠ 0`. Introduce `h`. Rewrite `hx1` using `[h, map_zero]`. Conclude with `zero_ne_one hx1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ x * (σ x - x)⁻¹, mul_mem (by rw [GlobalTheory.UnitarySwap.mem_int, hσ]; exact hx) (by rw [GlobalTheory.UnitarySwap.mem_int, map_inv₀, hx1, inv_one]), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, map_sub, hσσ, ← neg_sub (σ x) x, inv_neg]`. Take the linear combination `mul_inv_cancel₀ hx0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_trace_one {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) : ∃ τ ∈ intL L, τ + σ τ = 1 := by
   obtain ⟨hσσ, hσ, -, -, ⟨x, hx, hx1⟩, -, -⟩ := hU
@@ -252,21 +252,21 @@ Both sides reduce to the same expression.
 -/
 @[simp] theorem val_mid (i : Fin N) : (mid i).val = i.val + 1 := rfl
 /- English proof (translation)
-The claim follows from `Fin.succ_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem mid_ne_zero (i : Fin N) : mid i ≠ 0 := Fin.succ_ne_zero _
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg Fin.val h; have := i.2; simp at *; omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mid_ne_last (i : Fin N) : mid i ≠ Fin.last (N + 1) := fun h => by
   have := congrArg Fin.val h; have := i.2; simp at *; omega
 /- English proof (translation)
-Introduce `i j h` and use `by have := congrArg Fin.val h; simp at this; exact Fin.ext this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mid_injective : Function.Injective (mid : Fin N → Fin (N + 2)) := fun i j h => by
   have := congrArg Fin.val h; simp at this; exact Fin.ext this
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Use `ext`. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mid_rev (i : Fin N) : mid i.rev = (mid i).rev := by
   have := i.2; ext; simp [Fin.val_rev]; omega
@@ -275,22 +275,22 @@ Simplify using the standard rewrite rules.
 -/
 theorem last_ne_zero : Fin.last (N + 1) ≠ 0 := by simp
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_zero : blk N 0 = 0 := by simp [blk]
 /- English proof (translation)
-Simplify using `[blk, mid_ne_zero, mid_ne_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_mid (i : Fin N) : blk N (mid i) = 1 := by simp [blk, mid_ne_zero, mid_ne_last]
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_last : blk N (Fin.last (N + 1)) = 2 := by simp [blk]
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact Or.inl rfl`. Consider the case `succ i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => exact Or.inr (Or.inr rfl)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i => exact Or.inr (Or.inl ⟨i, rfl⟩)`.
+Treat this case separately.
 -/
 theorem idx_cases (i : Fin (N + 2)) : i = 0 ∨ (∃ j, i = mid j) ∨ i = Fin.last (N + 1) := by
   induction i using Fin.cases with
@@ -301,7 +301,7 @@ theorem idx_cases (i : Fin (N + 2)) : i = 0 ∨ (∃ j, i = mid j) ∨ i = Fin.l
     | cast i => exact Or.inr (Or.inl ⟨i, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_castSucc, add_assoc (f 0)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_idx {M : Type} [AddCommMonoid M] (f : Fin (N + 2) → M) :
     ∑ i, f i = f 0 + ∑ j, f (mid j) + f (Fin.last (N + 1)) := by

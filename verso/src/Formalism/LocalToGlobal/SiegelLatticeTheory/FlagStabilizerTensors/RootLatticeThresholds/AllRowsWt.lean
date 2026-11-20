@@ -19,14 +19,14 @@ variable {g : ℕ} [Fact g.Prime] {N : ℕ} (kk s : ℕ) (c : ZMod g)
 def tN (a : ℕ) : ZMod g := c ^ posN kk s a
 
 /- English proof (translation)
-Unfold `tN`. Rewrite using `[h, pow_succ, inv_mul_cancel_left₀ (pow_ne_zero _ hc)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair (hc : c ≠ 0) {a b : ℕ} (h : posN kk s b = posN kk s a + 1) : (tN kk s c a)⁻¹ * tN kk s c b = c := by
   unfold tN
   rw [h, pow_succ, inv_mul_cancel_left₀ (pow_ne_zero _ hc)]
 
 /- English proof (translation)
-Unfold `entN`. Use `split_ifs with h`. Simplify using `only [mul_diagonal, diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entN_conj (u : Matrix (Fin N) (Fin N) (ZMod g)) (a b : ℕ) :
     entN (diagonal (fun i : Fin N => (tN kk s c i)⁻¹) * u * diagonal (fun i : Fin N => tN kk s c i)) a b =
@@ -38,13 +38,13 @@ theorem entN_conj (u : Matrix (Fin N) (Fin N) (ZMod g)) (a b : ℕ) :
   · simp
 
 /- English proof (translation)
-Unfold `phiJ`. Simplify using `only [entN_conj]`. Apply the tactic sequence `have h1 : ∀ i ∈ Finset.range (s - 1), (tN kk s c i)⁻¹ * tN kk s c (i + 1) = c := fun i hi => pair kk s c hc (by rw [Finset.mem_range] at hi; unfold posN; split_ifs <;> omega)`. Apply the tactic sequence `have h3 : ∀ i ∈ Finset.range (s - 1), (tN kk s c (s + kk + 1 + i))⁻¹ * tN kk s c (s + kk + 2 + i) = c := fun i hi => pair kk s c hc (by rw [Finset.mem_range] at hi; unfold posN; split_ifs <;> omega)`. Apply the tactic sequence `have h4 : ∀ a ∈ Finset.range (kk - 1), (tN kk s c (s + a))⁻¹ * tN kk s c (s + a + 1) = c := fun a ha => pair kk s c hc (by rw [Finset.mem_range] at ha; unfold posN; split_ifs <;> omega)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `s1 : ∑ i ∈ Finset.range (s - 1), (tN kk s c i)⁻¹ * tN kk s c (i + 1) * entN u i (i + 1) = c * ∑ i ∈ Finset.range (s - 1), entN u i (i + 1)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i hi => by rw [h1 i hi]`. Establish `s3 : ∑ i ∈ Finset.range (s - 1), (tN kk s c (s + kk + 1 + i))⁻¹ * tN kk s c (s + kk + 2 + i) * entN u (s + kk + 1 + i) (s + kk + 2 + i) = c * ∑ i ∈ Finset.range (s - 1), entN u (s + kk + 1 + i) (s + kk + 2 + i)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i hi => by rw [h3 i hi]`. Establish `s4 : ∑ a ∈ Finset.range (kk - 1), (tN kk s c (s + a))⁻¹ * tN kk s c (s + a + 1) * entN u (s + a) (s + a + 1) = c * ∑ a ∈ Finset.range (kk - 1), entN u (s + a) (s + a + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun a ha => by rw [h4 a ha]`. Rewrite using `[s1, s3, s4]`. Use `split_ifs with hs`. Apply the tactic sequence `rw [pair kk s c hc (a := s - 1) (b := s + kk) (by unfold posN; split_ifs <;> omega), pair kk s c hc (a := s + kk) (b := s + kk + 1) (by unfold posN; split_ifs <;> omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem phiJ_conj (hc : c ≠ 0) (u : Matrix (Fin N) (Fin N) (ZMod g)) :
     phiJ kk s (diagonal (fun i : Fin N => (tN kk s c i)⁻¹) * u * diagonal (fun i : Fin N => tN kk s c i)) =
@@ -81,7 +81,7 @@ variable {g : ℕ} [Fact g.Prime] {N : ℕ} (kk s : ℕ) (c : ZMod g) (hc : c �
 include hc
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero _ hc`.
+A detailed English derivation is pending.
 -/
 theorem tN_ne (a : ℕ) : tN kk s c a ≠ 0 := pow_ne_zero _ hc
 
@@ -103,17 +103,17 @@ def PJ (M : Matrix (Fin N) (Fin N) (ZMod g)) : Prop :=
   IsUniUp M ∧ ∀ a, s ≤ a → a < s + kk → entN M a (s + kk) = 0
 
 /- English proof (translation)
-Establish `hX : ∀ i j : Fin N, (diagonal (fun i : Fin N => (tN kk s c i)⁻¹) * u * diagonal (fun i : Fin N => tN kk s c i)) i j = (tN kk s c i)⁻¹ * tN kk s c j * u i j`. Introduce `i j`. Simplify using `only [mul_diagonal, diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∀ i j : Fin N, (tN kk s c i)⁻¹ * tN kk s c j * u i j = 0 ↔ u i j = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `[tN_ne kk s c hc]`. Establish `ho : ∀ i : Fin N, (tN kk s c i)⁻¹ * tN kk s c i * u i i = u i i`. Introduce `i`. Rewrite using `[inv_mul_cancel₀ (tN_ne kk s c hc _), one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hent : ∀ a b : ℕ, entN (diagonal (fun i : Fin N => (tN kk s c i)⁻¹) * u * diagonal (fun i : Fin N => tN kk s c i)) a b = 0 ↔ entN u a b = 0`. Introduce `a b`. Rewrite using `[entN_conj]`. Simplify using `[tN_ne kk s c hc]`. Unfold `PJ IsUniUp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [hX]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a b => ⟨fun hab => (hz a b).1 ((h1 a b).1 hab), fun hab => ?_⟩, fun a ha hb => (hent a _).1 (h2 a ha hb)⟩` and prove the remaining obligations. Substitute `hab` using the available equality.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Rewrite using `[← ho]`. Conclude with `(h1 a a).2 rfl`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a b => ⟨fun hab => (hz a b).2 ((h1 a b).1 hab), fun hab => ?_⟩, fun a ha hb => (hent a _).2 (h2 a ha hb)⟩` and prove the remaining obligations. Substitute `hab` using the available equality.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ho]`. Conclude with `(h1 a a).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem PJ_conj (u : Matrix (Fin N) (Fin N) (ZMod g)) :
     PJ kk s (diagonal (fun i : Fin N => (tN kk s c i)⁻¹) * u * diagonal (fun i : Fin N => tN kk s c i)) ↔ PJ kk s u := by
@@ -152,7 +152,7 @@ theorem PJ_conj (u : Matrix (Fin N) (Fin N) (ZMod g)) :
     exact (h1 a a).2 rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Fact.out : g.Prime).ne_zero⟩ MonoidAlgebra.single (T kk s c hc) 1 * eJ g N kk s ψ * MonoidAlgebra.single (T kk s c hc)⁻¹ 1 = eJ g N kk s (ψ.mulShift c) := by have hP : ∀ x : GL (Fin N) (ZMod g), PJ kk s (((T kk s c hc)⁻¹ * x * T kk s c hc : GL (Fin N) (ZMod g)) : Matrix (Fin N) …`.
+Supply the required witnesses or components.
 -/
 theorem eJ_conj (ψ : AddChar (ZMod g) ℂ) :
     haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
@@ -201,9 +201,9 @@ instance instNZ : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
 
 open Classical in
 /- English proof (translation)
-Unfold `eJ eDat`. Simplify using `only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single] at *`. Simplify using the standard rewrite rules. Simplify using `only [Finsupp.single_apply, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]`. Unfold `PJ`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp [div_eq_inv_mul]`. Conclude with `Or.inl (by congr)`.
+Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative.
 -/
 theorem eJ_coeff (ψ : AddChar (ZMod g) ℂ) (v : GL (Fin N) (ZMod g)) :
     (eJ g N kk s ψ).coeff v = if PJ kk s (v : Matrix (Fin N) (Fin N) (ZMod g)) then
@@ -220,7 +220,7 @@ theorem eJ_coeff (ψ : AddChar (ZMod g) ℂ) (v : GL (Fin N) (ZMod g)) :
   exact Or.inl (by congr)
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul]`. Use `⟨AllRowsOf.isUniUp_mul hu.1 hv.1, fun a ha hb => ?_⟩` and prove the remaining obligations. Rewrite using `[AllRowsOf.entN_mul_add hu.1 hv.1 hb (fun j hj1 hj2 => hv.2 j (by omega) hj2), hu.2 a ha hb, hv.2 a ha hb, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem PJ_mul_of_PJ_of_PJ (u v : GL (Fin N) (ZMod g)) (hu : PJ kk s (u : Matrix (Fin N) (Fin N) (ZMod g)))
     (hv : PJ kk s (v : Matrix (Fin N) (Fin N) (ZMod g))) :
@@ -231,9 +231,9 @@ private theorem PJ_mul_of_PJ_of_PJ (u v : GL (Fin N) (ZMod g)) (hu : PJ kk s (u 
     hv.2 a ha hb, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Units.val_one]`. Use `⟨fun a b => ⟨fun hab => ?_, fun hab => ?_⟩, fun a ha hb => AllRowsOf.entN_one_ne' (by omega)⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne (ne_of_gt hab)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hab, Matrix.one_apply_eq]`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `PJ_mul_of_PJ_of_PJ _ _ ih h`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PJ_pow (v : GL (Fin N) (ZMod g)) (h : PJ kk s (v : Matrix (Fin N) (Fin N) (ZMod g))) (n : ℕ) :
     PJ kk s ((v ^ n : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) := by
@@ -248,7 +248,7 @@ theorem PJ_pow (v : GL (Fin N) (ZMod g)) (h : PJ kk s (v : Matrix (Fin N) (Fin N
     exact PJ_mul_of_PJ_of_PJ _ _ ih h
 
 /- English proof (translation)
-Establish `hpos : 0 < Nat.card (GL (Fin N) (ZMod g))` using `Nat.card_pos`. Establish `he : v ^ (Nat.card (GL (Fin N) (ZMod g)) - 1) * v = 1`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos, pow_card_eq_one']`. Rewrite using `[← eq_inv_of_mul_eq_one_left he]`. Conclude with `PJ_pow v h _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PJ_inv (v : GL (Fin N) (ZMod g)) (h : PJ kk s (v : Matrix (Fin N) (Fin N) (ZMod g))) :
     PJ kk s ((v⁻¹ : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) := by
@@ -259,13 +259,13 @@ theorem PJ_inv (v : GL (Fin N) (ZMod g)) (h : PJ kk s (v : Matrix (Fin N) (Fin N
   exact PJ_pow v h _
 
 /- English proof (translation)
-Establish `hi` using `PJ_inv v h`. Establish `hm` using `AllRowsOf.phiJ_mul (kk := kk) (s := s) hi.1 h.1 h.2`. Rewrite `hm` using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `e : ∀ a b : ℕ, a ≠ b → entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) a b = 0` using `fun a b hab => AllRowsOf.entN_one_ne' hab`. Establish `z1 : ∑ i ∈ Finset.range (s - 1), entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) i (i + 1) = 0` using `Finset.sum_eq_zero fun i _ => e _ _ (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z2 : ∑ i ∈ Finset.range (s - 1), entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) (s + kk + 1 + i) (s + kk + 2 + i) = 0` using `Finset.sum_eq_zero fun i _ => e _ _ (by omega)`. Establish `z3 : ∑ a ∈ Finset.range (kk - 1), entN (1 : Matrix (Fin N) (Fin N) (ZMod g)) (s + a) (s + a + 1) = 0` using `Finset.sum_eq_zero fun i _ => e _ _ (by omega)`. Establish `h0 : phiJ kk s (1 : Matrix (Fin N) (Fin N) (ZMod g)) = 0`. Unfold `phiJ`. Rewrite using `[z1, z2, z3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hs`. Rewrite using `[e (s - 1) (s + kk) (by omega), e (s + kk) (s + kk + 1) (by omega)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite `hm` using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hm`.
+A detailed English derivation is pending.
 -/
 theorem phiJ_inv (v : GL (Fin N) (ZMod g)) (h : PJ kk s (v : Matrix (Fin N) (Fin N) (ZMod g))) :
     phiJ kk s ((v⁻¹ : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) =
@@ -299,9 +299,9 @@ section Wt
 variable {g : ℕ} [Fact g.Prime] {N kk s : ℕ}
 
 /- English proof (translation)
-Use `MonoidAlgebra.ext (Finsupp.ext fun w => ?_)` and prove the remaining obligations. Rewrite using `[conjA_coeff, eJ_coeff, eJ_coeff]`. Establish `hiff : PJ kk s ((w⁻¹ : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) ↔ PJ kk s (w : Matrix (Fin N) (Fin N) (ZMod g))` using `⟨fun h => by simpa using PJ_inv _ h, PJ_inv w⟩`. Establish `hs : ∀ x : ZMod g, star (ψ x) = (ψ x)⁻¹` using `fun x => by`. Rewrite using `[← AddChar.map_neg_eq_inv, AddChar.map_neg_eq_conj, starRingEnd_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : PJ kk s (w : Matrix (Fin N) (Fin N) (ZMod g))`. Rewrite using `[if_pos (hiff.2 hw), if_pos hw, phiJ_inv w hw, AddChar.map_neg_eq_inv, inv_inv, star_div₀, hs, star_natCast]`. Rewrite using `[if_neg (mt hiff.1 hw), if_neg hw, star_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eJ_selfadj (ψ : AddChar (ZMod g) ℂ) : conjA (eJ g N kk s ψ) = eJ g N kk s ψ := by
   refine MonoidAlgebra.ext (Finsupp.ext fun w => ?_)
@@ -317,9 +317,9 @@ theorem eJ_selfadj (ψ : AddChar (ZMod g) ℂ) : conjA (eJ g N kk s ψ) = eJ g N
   · rw [if_neg (mt hiff.1 hw), if_neg hw, star_zero]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ψ.mulShift` using `AddChar.to_mulShift_inj_of_isPrimitive (AddChar.IsPrimitive.of_ne_one h)`. Establish `hbij : Function.Bijective ψ.mulShift`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨hinj, by simp⟩`. Take `⟨c, hc⟩` from `hbij.2 ψ'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_, hc.symm⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `h' (by rw [← hc, AddChar.mulShift_zero])`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_shift (ψ ψ' : AddChar (ZMod g) ℂ) (h : ψ ≠ 1) (h' : ψ' ≠ 1) :
     ∃ c : ZMod g, c ≠ 0 ∧ ψ' = ψ.mulShift c := by
@@ -334,9 +334,7 @@ theorem exists_shift (ψ ψ' : AddChar (ZMod g) ℂ) (h : ψ ≠ 1) (h' : ψ' �
   exact h' (by rw [← hc, AddChar.mulShift_zero])
 
 /- English proof (translation)
-Take `⟨c, hc0, rfl⟩` from `exists_shift ψ ψ' h h'`. Rewrite using `[← eJ_conj (N := N) kk s c hc0 ψ]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_assoc _ (MonoidAlgebra.single _ 1) e, ← hc (MonoidAlgebra.single _ 1), ← mul_assoc, mul_assoc _ (eJ g N kk s ψ) e]`. Conclude with `tau_conj _ _`.
-
-Conclude with `tau_conj _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_indep (ψ ψ' : AddChar (ZMod g) ℂ) (h : ψ ≠ 1) (h' : ψ' ≠ 1) (e : MonoidAlgebra ℂ (GL (Fin N) (ZMod g)))
     (hc : ∀ y, e * y = y * e) :
@@ -350,7 +348,7 @@ theorem wt_indep (ψ ψ' : AddChar (ZMod g) ℂ) (h : ψ ≠ 1) (h' : ψ' ≠ 1)
   · exact tau_conj _ _
 
 /- English proof (translation)
-Conclude with `tau_proj _ _ (AllRowsOf.eJ_idem g N kk s ψ) (eJ_selfadj ψ) he hc hse`.
+A detailed English derivation is pending.
 -/
 theorem tau_eJ (ψ : AddChar (ZMod g) ℂ) (e : MonoidAlgebra ℂ (GL (Fin N) (ZMod g))) (he : e * e = e)
     (hc : ∀ y, e * y = y * e) (hse : conjA e = e) :

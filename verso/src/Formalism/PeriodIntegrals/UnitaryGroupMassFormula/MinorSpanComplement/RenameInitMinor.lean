@@ -14,7 +14,7 @@ namespace PI.MSC
 def phi (N n : ℕ) : Fin N × Fin n → ℕ × Fin N := fun v => ((v.2 : ℕ), v.1)
 
 /- English proof (translation)
-Introduce and unpack `⟨a, s⟩ ⟨a', s'⟩ h`. Simplify using `only [phi, Prod.mk.injEq] at h`. Use `ext`. Conclude with `congrArg Fin.val h.2`. Conclude with `h.1`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem phi_inj (N n : ℕ) : Function.Injective (phi N n) := by
   rintro ⟨a, s⟩ ⟨a', s'⟩ h
@@ -24,7 +24,7 @@ theorem phi_inj (N n : ℕ) : Function.Injective (phi N n) := by
   · exact h.1
 
 /- English proof (translation)
-Unfold `initMinor PI.minorX`. Rewrite using `[AlgHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i k`. Simplify using `[phi, Matrix.transpose_apply, rename_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_initMinor (R : Type) [CommRing R] (N n s : ℕ) (hs : s ≤ n) (I : Fin s ↪o Fin N) :
     rename (phi N n) (initMinor R (r := N) (n := n) (fun p => I p) hs) = PI.minorX R N s I := by
@@ -35,9 +35,9 @@ theorem rename_initMinor (R : Type) [CommRing R] (N n s : ℕ) (hs : s ≤ n) (I
   simp [phi, Matrix.transpose_apply, rename_X]
 
 /- English proof (translation)
-Unfold `bideterminant initMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_bidet (R : Type) [CommRing R] {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (I : ∀ k, Fin (sz k) → Fin r) :
@@ -56,9 +56,9 @@ def gen (R : Type) [CommRing R] (N : ℕ) (ν : YoungDiagram)
   bideterminant R (sz0 ν) (hsz0 ν) fun c => I c
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Unfold `PI.nablaSpan`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `I`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, AlgHom.toLinearMap_apply, gen, bideterminant, map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Conclude with `(rename_initMinor R N _ _ _ (I c)).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nablaSpan_eq (R : Type) [CommRing R] (N : ℕ) (ν : YoungDiagram) :
     PI.nablaSpan R N ν = Submodule.map (rename (phi N (ν.colLen 0))).toLinearMap
@@ -73,11 +73,11 @@ theorem nablaSpan_eq (R : Type) [CommRing R] (N : ℕ) (ν : YoungDiagram) :
   exact (rename_initMinor R N _ _ _ (I c)).symm
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `h ha` as an intermediate fact. Use `clear ha`. Proceed by induction on `this using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul z x _ hx`. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul R]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem span_map_le {σ : Type*} (R : Type) [CommRing R] {A B : Set (MvPolynomial σ ℤ)}
     (h : A ⊆ Submodule.span ℤ B) :
@@ -98,27 +98,25 @@ theorem span_map_le {σ : Type*} (R : Type) [CommRing R] {A B : Set (MvPolynomia
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `R _ N ν`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Use `⟨⊤, ?_⟩` and prove the remaining obligations. Establish `h0 : PI.nablaSpan R N ν = ⊥` using `eq_bot_iff.mpr fun x _ => (Submodule.mem_bot R).mpr (Subsingleton.elim x 0)`. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isCompl_bot_top`. Use `set n := ν.colLen 0`. Take `⟨b, ⟨_, hspan, _⟩, hb⟩` from `sSBasis ℤ N n (nuR ν)`. Establish `hZ : Submodule.span ℤ (Set.range (gen ℤ N ν)) = Submodule.span ℤ (Set.range b)`. Apply `le_antisymm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨I, rfl⟩`. Rewrite using `[SetLike.mem_coe, hspan]`. Use `bideterminantMem ℤ N n (ν.rowLen 0) (sz0 ν) (hsz0 ν) fun c => I c` as an intermediate fact. Rewrite `this` using `[shapeColumnDegree_columnSizes]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Take `⟨K, sz, hsz, I, hsh, hI, hbm⟩` from `(hb m).2.2`. Rewrite using `[SetLike.mem_coe, hbm]`. Take `⟨J, hJ, heq⟩` from `reorder ℤ ν N sz hsz I hI hsh`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `Submodule.subset_span ⟨fun c => OrderEmbedding.ofStrictMono (J c) (hJ c), rfl⟩`. Use `set c : ssIdx N n (nuR ν) → MvPolynomial (Fin N × Fin n) R := fun m => MvPolynomial.map (Int.castRingHom R) (b m) with hcdef`. Establish `hT : Submodule.span R (Set.range (gen R N ν)) = Submodule.span R (Set.range c)`. Establish `e1 : Set.range (gen R N ν) = MvPolynomial.map (Int.castRingHom R) '' Set.range (gen ℤ N ν)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `I`. Simplify using `only [Function.comp_apply, gen]`. Conclude with `(map_bidet R _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2 : Set.range c = MvPolynomial.map (Int.castRingHom R) '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `span_map_le R (by rw [← hZ]; exact Submodule.subset_span)`. Conclude with `span_map_le R (by rw [hZ]; exact Submodule.subset_span)`. Establish `hdl : ∀ m, (colLex N n).degree (c m) = m.1 ∧ (colLex N n).leadingCoeff (c m) = 1`. Introduce `m`. Take `⟨K, sz, hsz, I, _, hI, hbm⟩` from `(hb m).2.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hR` using `column_lex_bideterminant R N n K sz hsz I hI`. Establish `hZd` using `column_lex_bideterminant ℤ N n K sz hsz I hI`. Establish `hdeg` using `(hb m).1`. Rewrite `hdeg` using `[hbm]`. Simplify using `only [hcdef, hbm, map_bidet]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hR.1.trans (hZd.1.symm.trans hdeg), hR.2⟩`. Establish `hinj : Function.Injective fun m => (colLex N n).degree (c m)`. Introduce `m m' h`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `h` using `[(hdl m).1, (hdl m').1]`.
-
-Rewrite using `[nablaSpan_eq, hT]`. Conclude with `⟨_, isCompl_map_rename (colLex N n) (phi_inj N n) c hinj fun m => (hdl m).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem minorSpanCompl : PI.MinorSpanCompl := by
   intro R _ N ν

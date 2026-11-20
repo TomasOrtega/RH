@@ -11,9 +11,9 @@ open Formalism.BasicNotions Formalism.L2.Forms Formalism.L2.Host Formalism.L2.Gl
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `: Fact (D.mem u).A.T.Prime` using `⟨(D.mem u).A.T_prime⟩`. Establish `: CharP ((D.mem u).A.Fv v) (D.mem u).A.T` using `charP_of_card_eq_prime ((D.mem u).A.card_Fv v)`. Introduce `h`. Establish `h0 : A.res v (m : 𝓞 D.host.E) = 0` using `h`. Rewrite `h0` using `[map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm ((CharP.cast_eq_zero_iff _ (D.mem u).A.T m).1 h0)`.
+A detailed English derivation is pending.
 -/
 theorem nat_not_mem_Pv (A : AtTTied u) (v : (D.mem u).A.vT) (m : ℕ) (hm : ¬ (D.mem u).A.T ∣ m) :
     (m : 𝓞 D.host.E) ∉ A.Pv v := by
@@ -25,11 +25,9 @@ theorem nat_not_mem_Pv (A : AtTTied u) (v : (D.mem u).A.vT) (m : ℕ) (hm : ¬ (
   exact hm ((CharP.cast_eq_zero_iff _ (D.mem u).A.T m).1 h0)
 
 /- English proof (translation)
-Establish `hy : ∃ m : ℕ, ¬ (D.mem u).A.T ∣ m ∧ (m : D.host.E) • ((s : D.host.E) • x) ∈ L` using `⟨1, (D.mem u).A.T_prime.not_dvd_one, by rw [Nat.cast_one, one_smul]; exact hx⟩`. Take `⟨m, hm, hm'⟩` from `(hB _).1 hy`. Establish `hma` using `hm' a`. Rewrite `hma` using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc]`. Use `seen_mem A w hw hseen v _ ((m : 𝓞 D.host.E) * s) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Break down `Ideal.IsPrime.mem_or_mem (inferInstance : (A.Pv v).IsPrime) h with h | h` into its components or cases. Conclude with `nat_not_mem_Pv A v m hm h`. Conclude with `hs h`. Establish `e : (((m : 𝓞 D.host.E) * s : 𝓞 D.host.E) : D.host.E) = (m : D.host.E) * (s : D.host.E)` using `by push_cast; ring`.
-
-Rewrite using `[e]`. Conclude with `hma`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_mem (A : AtTTied u) (w : D.what₂.places.Pl) (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) (hseen : (D.fm u).seenP w = true)
     (v : (D.mem u).A.vT) {n : ℕ} {L : Set (Fin n → D.host.E)} {B : GL (Fin n) D.host.E}

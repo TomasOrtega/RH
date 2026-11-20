@@ -16,7 +16,7 @@ set_option synthInstance.maxHeartbeats 200000
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ n D w B h`. Take `⟨b, hb, rfl⟩` from `h`. Rewrite using `[Multiset.card_sum]`. Conclude with `(Finset.sum_congr rfl fun i _ => (hb i).card).trans D.sum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.satCard :
     UpperTheory.Zero.ConvolutionTheory.EB.SatCard := by

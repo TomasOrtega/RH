@@ -4,7 +4,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.EntryMu
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.CartGL.Normal.conj_mem_congK` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FCongruenceSubgroupNormalInMaximalCompact.lean&line=31#L31)
 -/

@@ -9,7 +9,7 @@ open GlobalTheory.CxForm
 open scoped ComplexConjugate ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CxForm.PullClosed.dbarAt_pull_fderiv | exact GlobalTheory.CxForm.PullClosed.dbarAt_pull_fderiv | (intros; apply GlobalTheory.CxForm.PullClosed.dbarAt_pull_fderiv <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.dbar_pullback_holomorphic_zero : ∀ {n m : ℕ} {φ : V n → V m} {U : Set (V n)}, IsOpen U → DifferentiableOn ℂ φ U → ∀ {v : V n}, v ∈ U → ∀ (θ : Alt m), dbarAt (fun x => pull (fderiv ℂ φ x) θ) v = 0 := by
   first | exact @GlobalTheory.CxForm.PullClosed.dbarAt_pull_fderiv | exact GlobalTheory.CxForm.PullClosed.dbarAt_pull_fderiv | (intros; apply GlobalTheory.CxForm.PullClosed.dbarAt_pull_fderiv <;> assumption)

@@ -13,13 +13,13 @@ namespace UpperTheory.KernelTorsionPullback
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
 /- English proof (translation)
-Set `Φ : (T ⟶ G') ≃ (Over.mk (T.hom ≫ f) ⟶ G)` to `{ toFun := fun x => Over.homMk (x.left ≫ φ) (by show _ = T.hom ≫ f`. Rewrite using `[Category.assoc, hp.1.w, ← Category.assoc, Over.w])`. Use `invFun := fun y => Over.homMk (hp.1.lift y.left T.hom (Over.w y)) (by simp)`. Use `left_inv := fun x => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hp.1.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `right_inv := fun y => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `}`. Establish `hl : ∀ x, (Φ x).left = x.left ≫ φ` using `fun x => rfl`. Establish `h1 : Φ 1 = 1`. Establish `hm` using `hp.2 T 1 1 (Φ 1) (Φ 1) (hl 1) (hl 1)`. Establish `hsq : Φ 1 * Φ 1 = Φ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hm, _root_.mul_one]`. Both sides reduce to the same expression. Conclude with `mul_left_cancel (a := Φ 1) (by rw [hsq, _root_.mul_one])`. Use `⟨Φ, hl, fun x => ⟨fun hx => Φ.injective (by rw [hx, h1]), fun hx => by rw [hx, h1]⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_equiv_points_of_isGrpPullback {S S' : Scheme} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (hp : IsGrpPullback G' G f φ) (T : Over S') :
@@ -49,17 +49,15 @@ private theorem exists_equiv_points_of_isGrpPullback {S S' : Scheme} {G' : Over 
   refine ⟨Φ, hl, fun x => ⟨fun hx => Φ.injective (by rw [hx, h1]), fun hx => by rw [hx, h1]⟩⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ x`. Take `⟨h1, h2⟩` from `h k (x ≫ f)`. Take `⟨Φ, hΦl, hΦ1⟩` from `exists_equiv_points_of_isGrpPullback m.cart (Over.mk x)`. Take `⟨Φ', hΦ'l, hΦ'1⟩` from `exists_equiv_points_of_isGrpPullback m'.cart (Over.mk x)`. Establish `hψ : ∀ g, Φ' (g ≫ ψ₁) = Φ g ≫ ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ'l, Over.comp_left, Over.comp_left, hΦl, Category.assoc, Category.assoc, e]`. Establish `hk1 : ∀ g, g ≫ ψ₁ = 1 ↔ Φ g ≫ ψ = 1`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hψ, hΦ'1]`. Establish `hkill : ∀ v g, KilledBy o₁ v g ↔ KilledBy o v (Φ g)`. Introduce `v g`. Apply `forall₂_congr` to reduce the goal to its premises. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Φ (g ≫ o₁.act.act ((algebraMap (𝓞 D.F) D.O) a)) = Φ g ≫ o.act.act ((algebraMap (𝓞 D.F) D.O) a)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦl, Over.comp_left, Over.comp_left, hΦl, Category.assoc, Category.assoc, m.act]`. Rewrite using `[← hc, hΦ1]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `g hg hex`. Rewrite using `[hkill]`. Take `⟨e0, he⟩` from `hex`. Conclude with `h1 (Φ g) ((hk1 g).mp hg) ⟨e0, (hkill _ g).mp he⟩`. Rewrite using `[← h2]`.
-
-Conclude with `Nat.card_congr (Φ.subtypeEquiv (fun g => by rw [hk1, hkill]))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isTj_of_pull {Y S : Scheme.{0}} {σ : Y ⟶ Sp R} {σ₁ : S ⟶ Sp R} {f : S ⟶ Y} {r : ℤ}
     {w : Ideal (𝓞 D.F)} {j : ℕ} {o o' : Obj b N σ} {o₁ o₁' : Obj b N σ₁}
@@ -94,7 +92,7 @@ private theorem isTj_of_pull {Y S : Scheme.{0}} {σ : Y ⟶ Sp R} {σ₁ : S ⟶
     exact Nat.card_congr (Φ.subtypeEquiv (fun g => by rw [hk1, hkill]))
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Conclude with `exists_equiv_points_of_isGrpPullback hp T`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem exists_equiv_points_mk_of_isGrpPullback {S S' : Scheme} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (hp : IsGrpPullback G' G f φ) (T : Over S')
@@ -105,13 +103,13 @@ private theorem exists_equiv_points_mk_of_isGrpPullback {S S' : Scheme} {G' : Ov
   exact exists_equiv_points_of_isGrpPullback hp T
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨Φ, hΦl, hΦ1⟩` from `exists_equiv_points_mk_of_isGrpPullback my.cart (Over.mk (𝟙 (Sp k))) y (Category.id_comp y)`. Take `⟨Φ', hΦ'l, hΦ'1⟩` from `exists_equiv_points_mk_of_isGrpPullback n.cart (Over.mk (𝟙 (Sp k))) y (Category.id_comp y)`. Establish `key` using `hK (Φ h) a (by rw [hΦl, Category.assoc, hm, ha])`. Rewrite using `[← key]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ' : Φ' (h ≫ ψ₁) = Φ h ≫ Rd.ψ`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ'l, Over.comp_left, Over.comp_left, hΦl, Category.assoc, Category.assoc, hψ]`. Establish `hk : ∀ v, KilledBy ox v h ↔ KilledBy Rd.o₀ v (Φ h)`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `forall₂_congr` to reduce the goal to its premises. Introduce `c _`. Establish `hc : Φ (h ≫ ox.act.act ((algebraMap (𝓞 D.F) D.O) c)) = Φ h ≫ Rd.o₀.act.act ((algebraMap (𝓞 D.F) D.O) c)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦl, Over.comp_left, Over.comp_left, hΦl, Category.assoc, Category.assoc, my.act]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, hΦ1]`. Rewrite using `[← hψ', hΦ'1]`. Conclude with `and_congr Iff.rfl (exists_congr fun _ => hk _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_iff {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} {o : Obj b N s}
     (Rd : RepData b N r w j c s o) (Sd : SubData w j o) {k : Type} [Field k] (y : Sp k ⟶ Rd.Y.left) {x : Sp k ⟶ S}
@@ -143,7 +141,7 @@ private theorem ker_iff {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} {S : Scheme
 end UpperTheory.KernelTorsionPullback
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Conclude with `⟨n, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem exists_objMap_same_phi_of_eq {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S S' : Scheme} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s} {f f' : S' ⟶ S}
@@ -153,15 +151,15 @@ private theorem exists_objMap_same_phi_of_eq {p : ℕ} [Fact p.Prime] {D : Datum
 
 open UpperTheory.KernelTorsionPullback in
 /- English proof (translation)
-Introduce `p _ D R _ _ b N hN hcop hp hm1 r w j c hw hu hc S _ s o Rd Sd k _ _ y₁ y₂ hy hK₁ hK₂`. Take `⟨x, hx⟩ : ∃ x, y₁ ≫ Rd.Y.hom = x` from `⟨_, rfl⟩`. Establish `hx2 : y₂ ≫ Rd.Y.hom = x` using `hy ▸ hx`. Take `⟨ox, ⟨my₁⟩⟩` from `IsogRep.exists_pull y₁ Rd.o₀ (s' := x ≫ s) (by rw [← hx, Category.assoc])`. Take `⟨o₁, ⟨n₁⟩⟩` from `IsogRep.exists_pull y₁ Rd.o' (s' := x ≫ s) (by rw [← hx, Category.assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₁, hiso₁, hsq₁⟩` from `GlobalTheory.T.isPIsogenyOfSimilitude_pullback_objects p D R b N c _ _ _ _ y₁ Rd.o₀ Rd.o' ox o₁ my₁ n₁ Rd.ψ Rd.isog`. Establish `htj₁ : IsTj r w j ox o₁ ψ₁` using `isTj_of_pull my₁ n₁ hsq₁ Rd.tj`. Take `⟨mc, hmc⟩` from `IsogRep.exists_comp my₁ Rd.m₀`. Take `⟨m, hmφ⟩` from `exists_objMap_same_phi_of_eq hx mc`. Take `⟨my₂, hmy₂⟩` from `IsogRep.exists_factor hN hcop hx2 Rd.m₀ m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o₂, ⟨n'⟩⟩` from `IsogRep.exists_pull y₂ Rd.o' (s' := x ≫ s) (by rw [← hx2, Category.assoc])`. Take `⟨ψ₂, hiso₂, hsq₂⟩` from `GlobalTheory.T.isPIsogenyOfSimilitude_pullback_objects p D R b N c _ _ _ _ y₂ Rd.o₀ Rd.o' ox o₂ my₂ n' Rd.ψ Rd.isog`. Establish `hker : ∀ h : 𝟙_ (Over (Sp k)) ⟶ ox.A, (h ≫ ψ₁ = 1 ∧ ∃ e, KilledBy ox (uIdeal D r ^ e) h) ↔ (h ≫ ψ₂ = 1 ∧ ∃ e, KilledBy ox (uIdeal D r ^ e) h)`. Introduce `h`. Set `a : Over.mk x ⟶ o.A` to `Over.homMk (h.left ≫ m.φ) (by show _ = x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w h]`. Conclude with `Category.id_comp x)`. Rewrite using `[ker_iff Rd Sd y₁ hx m my₁ (by rw [hmφ, hmc]) n₁ ψ₁ hsq₁ hK₁ h a rfl, ker_iff Rd Sd y₂ hx2 m my₂ hmy₂ n' ψ₂ hsq₂ hK₂ h a rfl]`. Establish `hgeo` using `isogeny_kernel_points_iff_of_isPIsog p D R b N hp r w c hw hu k (x ≫ s) ox o₁ o₂ ψ₁ ψ₂ hiso₁ hiso₂ hker`. Take `⟨mm, hmm⟩` from `exists_iso_of_pIsogeny_kernel_eq p D R b N hN hcop hp c (Sp k) (x ≫ s) ox o₁ o₂ ψ₁ ψ₂ hiso₁ hiso₂ hgeo`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨nc, hnc⟩` from `IsogRep.exists_comp mm n'`. Take `⟨n₂, hn₂⟩` from `exists_objMap_same_phi_of_eq (Category.id_comp y₂) nc`. Conclude with `(Rd.univ (Sp k) x ox o₁ m ψ₁ hiso₁ htj₁).unique ⟨hx, my₁, n₁, hsq₁⟩ ⟨hx2, my₂, n₂, by rw [hn₂, hnc, ← Category.assoc, hmm, hsq₂]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.subData_points_correspond_repData :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → IsUnit ((p : ℕ) : R) → D.m = 1 → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s) (Rd : RepData b N r w j c s o) (Sd : SubData w j o) (k : Type) [Field k] [IsAlgClosed k] (y₁ y₂ : Sp k ⟶ Rd.Y.left), y₁ ≫ Rd.Y.hom = y₂ ≫ Rd.Y.hom → KerGeo Rd Sd y₁ → KerGeo Rd Sd y₂ → y₁ = y₂ := by

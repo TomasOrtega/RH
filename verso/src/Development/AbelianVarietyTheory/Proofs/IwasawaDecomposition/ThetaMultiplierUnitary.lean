@@ -18,11 +18,11 @@ namespace GlobalTheory.OneMapRef.RatPt
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Set `e : AE D` to `(pairA D.host.F 1 0) ⊗ₜ[D.host.F] (1 : D.host.E)`. Establish `h1 : infPart D e = 1` using `rfl`. Establish `h0 : finPart D e = 0`. Express the relevant statement in the definitionally equal form `(0 : Af D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun i j => (1 - e) * w i j, Matrix.of fun i j => e * w i j, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `infPart D ((1 - e) * w i j) = 0`. Rewrite using `[RingHom.map_mul, RingHom.map_sub, h1, RingHom.map_one, sub_self, zero_mul]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `finPart D (e * w i j) = 0`. Rewrite using `[RingHom.map_mul, h0, zero_mul]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `w i j = (1 - e) * w i j + e * w i j`. Rewrite using `[← add_mul, sub_add_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fin_add_real (w : WO S T) :
     ∃ u v : WO S T, u.map (infPart D) = 0 ∧ v.map (finPart D) = 0 ∧ w = u + v := by
@@ -43,7 +43,7 @@ theorem exists_fin_add_real (w : WO S T) :
     rw [← add_mul, sub_add_cancel, one_mul]
 
 /- English proof (translation)
-Take `⟨u, v, hu, hv, rfl⟩` from `exists_fin_add_real w`. Establish `h` using `GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 hu (GlobalTheory.WeilVacMove.isTheta_heisO_real hψ hv hf)`. Rewrite `h` using `[GlobalTheory.WeilVacMove.heisO_heisO, (GlobalTheory.WeilVacMove.symplOH_fin_real S T u v hu hv).1, AddChar.map_zero_eq_one, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isTheta_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (w : WO S T) : IsThetaFunO ψ S T (heisO ψ S T w f) := by
@@ -53,7 +53,7 @@ theorem isTheta_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1
     one_smul] at h
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[inv_one, GlobalTheory.Ker.OmRat.mt_one', Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_one (h : GA D T) (w : WO S T) : actO S T 1 h w =
     HMul.hMul (Formalism.L2.Theta.mt T h) (w : Matrix (Fin T.rank) (Fin S.rank) (AE D)) := by
@@ -61,14 +61,14 @@ theorem actO_one (h : GA D T) (w : WO S T) : actO S T 1 h w =
   rw [inv_one, GlobalTheory.Ker.OmRat.mt_one', Matrix.mul_one]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (θ ρ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mul (θ : InfFam D) (ρ : D.what₂.Tau) {a b c : ℕ} (x : Mx D a b) (y : Mx D b c) :
     compAt θ ρ (x * y : Mx D a c) = compAt θ ρ x * compAt θ ρ y :=
   Matrix.map_mul (f := (θ ρ).comp (infPart D))
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `(hθ ρ).1 (m i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem compAt_rat {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) {a b : ℕ}
     (m : Matrix (Fin a) (Fin b) D.host.E) : compAt θ ρ (m.map (incA D)) = m.map (tauE D ρ) := by
@@ -76,19 +76,17 @@ theorem compAt_rat {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) {a b
   exact (hθ ρ).1 (m i j)
 
 /- English proof (translation)
-Introduce `D S T r g hr ψ θ X eT bas idx hS δ hδ`. Substitute `hr` using the available equality. Take `⟨hψ, hθ, -, -, hM, -, he, -⟩` from `hS`. Take `⟨ga, hga, hδ'⟩` from `id hδ`. Establish `hm : Formalism.L2.Theta.mt T δ = (ga : Matrix (Fin T.rank) (Fin T.rank) D.host.E).map (incA D)` using `(congrArg Units.val hδ').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : ∀ τ : X.Ψ, compAt θ (eT.symm τ) (Formalism.L2.Theta.mt T δ) = (ga : Matrix (Fin T.rank) (Fin T.rank) D.host.E).map τ.1` using `fun τ => by`. Rewrite using `[hm, compAt_rat hθ, ← he, Equiv.apply_symm_apply]`. Use `⟨ga, hm, ?_, fun Z => ?_, fun w => ⟨fun hw => ⟨actO S T 1 δ⁻¹ w, ?_, ?_⟩, fun τ k => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x y`. Establish `hG : X.Gm = (-T.gram)ᵀ` using `hM.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hG, GlobalTheory.Ker.Grp.herm_eq, GlobalTheory.Ker.Grp.herm_eq]`. Use `GlobalTheory.Ker.Grp.hform_mulVec _ _ _ ?_ _ _` and prove the remaining obligations. Establish `h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) ga.1 * T.gram * ga.1 = T.gram` using `hga`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, h]`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(ga : Matrix (Fin T.rank) (Fin T.rank) D.host.E).map τ.1 * Z (eT.symm τ) = compAt θ (eT.symm τ) (Formalism.L2.Theta.mt T δ) * Z (eT.symm τ)`. Rewrite using `[hc]`. Unfold `GlobalTheory.Ker.IsRealPt at hw ⊢`. Rewrite using `[GlobalTheory.KerReal.map_actO, hw, Matrix.mul_zero, Matrix.zero_mul]`. Use `GlobalTheory.Ker.OmRat.actO_inv_cancel (1 : GA D S) δ w` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_one]`. Conclude with `this.symm`. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `compAt θ (eT.symm τ) (actO S T 1 δ w) a k = _`. Rewrite using `[actO_one, compAt_mul, hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `χS χT om H f hf w`. Establish `h1` using `H.om_heis 1 δ w f hf`. Establish `h2` using `H.om_aut 1 (one_mem _) δ hδ _ (isTheta_heisO hψ hf w)`. Rewrite using `[← GlobalTheory.Ker.OmRat.heisO_at_zero ψ _ (om (1, δ) f), ← h1]`.
-
-Conclude with `h2.trans (GlobalTheory.Ker.OmRat.heisO_at_zero _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rational_points : ∀ (D : D7) (S T : HSp D) (r g : ℕ) (hr : T.rank = r) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (X : Data D.host.E r) (eT : D.what₂.Tau ≃ X.Ψ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (hS : IsSet ψ θ S T hr X eT bas), ∀ δ ∈ GQ T, ∃ ga : GL (Fin r) D.host.E, Formalism.L2.Theta.mt T δ = ((ga : Matrix (Fin r) (Fin r) D.host.E).submatrix (Fin.cast hr) (Fin.cast hr)).map (incA D) ∧ IsUn X ga ∧ (∀ Z : Fam T, lact ga (frOf hr eT Z) = frOf hr eT (mvZ θ δ Z)) ∧ (∀ w : WO S T, (GlobalTheory.Ker.IsRealPt w → ∃ w' : WO S T, GlobalTheory.Ker.IsRealPt w' ∧ w = actO S T 1 δ w') ∧ ∀ τ k, rePt θ hr eT (actO S T 1 δ w) τ k = ((ga : Matrix (Fin r) (Fin r) D.host.E).map τ.1) *ᵥ rePt θ hr eT w τ k) ∧ ∀ (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → ∀ w, om (1, δ) f (actO S T 1 δ w) = f w := by
   intro D S T r g hr ψ θ X eT bas idx hS δ hδ

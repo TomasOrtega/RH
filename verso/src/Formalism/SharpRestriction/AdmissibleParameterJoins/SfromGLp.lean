@@ -15,9 +15,9 @@ def Pat (S : Finset (Fin n × Fin n)) (A : Matrix (Fin n) (Fin n) F) : Prop :=
   ∀ i j, (i, j) ∉ S → A i j = if i = j then 1 else 0
 
 /- English proof (translation)
-Establish `ht : A.BlockTriangular id`. Introduce `i j hij`. Establish `hn : (i, j) ∉ S` using `fun hm => absurd (hS _ hm) (not_lt.mpr (le_of_lt hij))`. Establish `hij' : j < i` using `hij`. Rewrite using `[h i j hn, if_neg (ne_of_gt hij')]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_isUpperTriangular ht]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `hn : (i, i) ∉ S` using `fun hm => lt_irrefl _ (hS _ hm)`. Rewrite using `[h i i hn, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pat_det (S : Finset (Fin n × Fin n)) (hS : ∀ p ∈ S, p.1 < p.2) (A : Matrix (Fin n) (Fin n) F)
     (h : Pat S A) : A.det = 1 := by
@@ -35,7 +35,7 @@ def patMat (S : Finset (Fin n × Fin n)) (φ : S → F) : Matrix (Fin n) (Fin n)
   Matrix.of fun i j => if h : (i, j) ∈ S then φ ⟨(i, j), h⟩ else if i = j then 1 else 0
 
 /- English proof (translation)
-Introduce `i j h` and use `by simp [patMat, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem patMat_pat (S : Finset (Fin n × Fin n)) (φ : S → F) : Pat S (patMat S φ) := fun i j h => by
   simp [patMat, h]
@@ -60,7 +60,7 @@ def patEquiv (S : Finset (Fin n × Fin n)) (hS : ∀ p ∈ S, p.1 < p.2) :
     simp [patMat, h]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (patEquiv S hS), Nat.card_fun, Nat.card_eq_fintype_card (α := S), Fintype.card_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_pat [Finite F] (S : Finset (Fin n × Fin n)) (hS : ∀ p ∈ S, p.1 < p.2) :
     Nat.card {A : GL (Fin n) F // Pat S (A : Matrix (Fin n) (Fin n) F)} = Nat.card F ^ S.card := by
@@ -71,9 +71,9 @@ end Pattern
 def upS (n : ℕ) : Finset (Fin n × Fin n) := univ.filter fun p => p.1 < p.2
 
 /- English proof (translation)
-Unfold `upS`. Rewrite using `[Finset.card_filter, Fintype.sum_prod_type_right]`. Establish `: ∀ j : Fin n, (∑ i : Fin n, if i < j then 1 else 0) = (j : ℕ)`. Introduce `j`. Rewrite using `[← Finset.card_filter]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: (univ.filter fun i : Fin n => i < j) = Finset.Iio j` using `by ext; simp`. Rewrite using `[this, Fin.card_Iio]`. Simplify using `only [this]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_upS (n : ℕ) : (upS n).card = n * (n - 1) / 2 := by
   unfold upS
@@ -90,15 +90,13 @@ def rowS (k rS n : ℕ) : Finset (Fin n × Fin n) :=
   (upS n).filter fun p => ¬ (p.2.val = rS + k ∧ rS ≤ p.1.val)
 
 /- English proof (translation)
-Establish `h` using `Finset.card_filter_add_card_filter_not (s := upS n) (fun p : Fin n × Fin n => p.2.val = rS + k ∧ rS ≤ p.1.val)`. Rewrite `h` using `[card_upS]`. Establish `hk : ((upS n).filter fun p : Fin n × Fin n => p.2.val = rS + k ∧ rS ≤ p.1.val).card = k`. Establish `: ((upS n).filter fun p : Fin n × Fin n => p.2.val = rS + k ∧ rS ≤ p.1.val) = (univ : Finset (Fin k)).image fun i => ((⟨rS + i.val, by omega⟩ : Fin n), (⟨rS + k, hn⟩ : Fin n))`. Use extensionality with `⟨a, b⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [upS, mem_filter, mem_univ, true_and, mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hab, hb, ha⟩`. Establish `hab' : a.val < b.val` using `hab`. Conclude with `⟨⟨a.val - rS, by omega⟩, Fin.ext (by simp; omega), Fin.ext (by simp [hb])⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨i, rfl, rfl⟩`. Use `⟨?_, rfl, by simp⟩` and prove the remaining obligations. Use `show rS + i.val < rS + k`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Finset.card_image_of_injective, Finset.card_univ, Fintype.card_fin]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Use `congrArg (fun p : Fin n × Fin n => p.1.val) hij` as an intermediate fact. Simplify using `at this`. Conclude with `Fin.ext this`. Unfold `rowS`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_rowS (k rS n : ℕ) (hn : rS + k < n) : (rowS k rS n).card + k = n * (n - 1) / 2 := by
   have h := Finset.card_filter_add_card_filter_not (s := upS n)
@@ -126,11 +124,11 @@ theorem card_rowS (k rS n : ℕ) (hn : rS + k < n) : (rowS k rS n).card + k = n 
   omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hij`. Simplify using `only [upS, mem_filter, mem_univ, true_and, not_lt] at hij`. Break down `eq_or_lt_of_le hij with h | h` into its components or cases. Substitute `h` using the available equality.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `[h2]`. Rewrite using `[h1 i j h, if_neg (ne_of_gt h)]`. Introduce `h`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[h i j (by simp [upS, le_of_lt hij]), if_neg (ne_of_gt hij)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h i i (by simp [upS]), if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnitri_iff {n : ℕ} {F : Type} [Field F] (A : Matrix (Fin n) (Fin n) F) :
     StandardLattice.IsUnitri A ↔ Pat (upS n) A := by
@@ -146,21 +144,21 @@ theorem isUnitri_iff {n : ℕ} {F : Type} [Field F] (A : Matrix (Fin n) (Fin n) 
     · rw [h i i (by simp [upS]), if_pos rfl]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩ i j hij`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using `[h2]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg e]`. Establish `e' : i.val ≠ j.val` using `fun h => e (Fin.ext h)`. Simplify using `only [rowS, upS, mem_filter, mem_univ, true_and, not_and] at hij`. Distinguish the cases in `hlt : i < j`. Choose the witnesses or unpack the hypotheses as in `⟨hj, hi⟩ : j.val = rS + k ∧ rS ≤ i.val := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hij hlt (fun a b => hc ⟨a, b⟩)`. Establish `hlt' : i.val < j.val` using `hlt`. Apply the tactic sequence `exact h4 i j hj e (by unfold StandardLattice.blk; split_ifs <;> omega)`. Establish `hlt' : j.val < i.val`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ¬ i.val < j.val` using `hlt`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hb : StandardLattice.blk rS k j.val < StandardLattice.blk rS k i.val`. Conclude with `h1 i j hb`. Use `h3 i j ?_ hlt' revert hb` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `StandardLattice.blk`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `h`. Use `⟨fun i j hij => ?_, fun i => ?_, fun i j hb hij => ?_, fun i j hj hne hb => ?_⟩` and prove the remaining obligations. Establish `hlt : j.val < i.val` using `by revert hij`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `StandardLattice.blk`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hlt2 : ¬ i < j` using `fun hh => by`. Establish `: i.val < j.val` using `hh`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h i j (by simp [rowS, upS, hlt2]), if_neg (fun e => by subst e; omega)]`. Rewrite using `[h i i (by simp [rowS, upS]), if_pos rfl]`. Establish `hlt2 : ¬ i < j` using `not_lt.mpr (le_of_lt hij)`. Rewrite using `[h i j (by simp [rowS, upS, hlt2]), if_neg (ne_of_gt hij)]`. Establish `hi : rS ≤ i.val` using `by revert hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `StandardLattice.blk`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[h i j (by simp [rowS, hj, hi]), if_neg hne]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRowLev_iff {n : ℕ} {F : Type} [Field F] (k rS : ℕ) (A : Matrix (Fin n) (Fin n) F) :
     StandardLattice.IsRowLev k rS A ↔ Pat (rowS k rS n) A := by

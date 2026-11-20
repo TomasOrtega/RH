@@ -9,9 +9,9 @@ open GlobalTheory.CuspRep PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D1
 namespace GlobalTheory.CompanionTheory.DegAdelicProof
 
 /- English proof (translation)
-Establish `hinj : Function.Injective M.mulVec` using `Matrix.mulVec_injective_iff.2 h`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective M.mulVecLin (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h1 : LinearMap.toMatrix' (g ∘ₗ Matrix.toLin' M) = 1`. Rewrite using `[Matrix.toLin'_apply', hg, LinearMap.toMatrix'_id]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_leftInv {K : Type} [Field K] {n k : ℕ} (M : Matrix (Fin n) (Fin k) K)
     (h : LinearIndependent K Mᵀ) : ∃ L : Matrix (Fin k) (Fin n) K, L * M = 1 := by
@@ -25,9 +25,9 @@ theorem exists_leftInv {K : Type} [Field K] {n k : ℕ} (M : Matrix (Fin n) (Fin
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n k : ℕ}
 
 /- English proof (translation)
-Establish `h' : (t⁻¹ : GA E n).val * M.map (algebraMap E (Ad E)) = M.map (algebraMap E (Ad E)) * (s⁻¹ : GA E k).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, Matrix.mul_one]`. Use `_ = (t⁻¹ : GA E n).val * (t.val * M.map (algebraMap E (Ad E))) * (s⁻¹ : GA E k).val := by`. Rewrite using `[h, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = M.map (algebraMap E (Ad E)) * (s⁻¹ : GA E k).val := by`. Rewrite using `[← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Unfold `frame`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, h', Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mul (x t : GA E n) (s : GA E k) (M : Matrix (Fin n) (Fin k) E)
     (h : t.val * M.map (algebraMap E (Ad E)) = M.map (algebraMap E (Ad E)) * s.val) :
@@ -45,7 +45,7 @@ theorem frame_mul (x t : GA E n) (s : GA E k) (M : Matrix (Fin n) (Fin k) E)
   rw [_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, h', Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hd : (S.map (cV v)).det = cV v S.det` using `(RingHom.map_det (cV v) S).symm`. Establish `h0 : cV v S.det ≠ 0` using `(hS.map (cV v)).ne_zero`. Express the relevant statement in the definitionally equal form `Real.log (nI ((A * S).map (cV v))) = Real.log (nI (A.map (cV v))) + _`. Rewrite using `[Matrix.map_mul, (hI (Fin n) (Fin n) (Fin k) _).2.1, hd, Real.log_mul hA (pow_ne_zero 2 (norm_ne_zero_iff.2 h0))]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lognInf_mul (hI : MulI) (v : InfinitePlace E) (A : Matrix (Fin n) (Fin k) (Ad E))
     (S : Matrix (Fin k) (Fin k) (Ad E)) (hA : nI (A.map (cV v)) ≠ 0) (hS : IsUnit S.det) :
@@ -57,7 +57,7 @@ theorem lognInf_mul (hI : MulI) (v : InfinitePlace E) (A : Matrix (Fin n) (Fin k
     Real.log_mul hA (pow_ne_zero 2 (norm_ne_zero_iff.2 h0))]
 
 /- English proof (translation)
-Establish `hd : (S.map (cW w)).det = cW w S.det` using `(RingHom.map_det (cW w) S).symm`. Establish `h0 : cW w S.det ≠ 0` using `(hS.map (cW w)).ne_zero`. Express the relevant statement in the definitionally equal form `Real.log (nF ((A * S).map (cW w))) = Real.log (nF (A.map (cW w))) + _`. Rewrite using `[Matrix.map_mul, (hF _ (Fin n) (Fin n) (Fin k) _).2.1, hd, Real.log_mul hA (norm_ne_zero_iff.2 h0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lognFin_mul (hF : MulF) (w : HeightOneSpectrum (𝓞 E)) (A : Matrix (Fin n) (Fin k) (Ad E))
     (S : Matrix (Fin k) (Fin k) (Ad E)) (hA : nF (A.map (cW w)) ≠ 0) (hS : IsUnit S.det) :
@@ -69,7 +69,7 @@ theorem lognFin_mul (hF : MulF) (w : HeightOneSpectrum (𝓞 E)) (A : Matrix (Fi
     Real.log_mul hA (norm_ne_zero_iff.2 h0)]
 
 /- English proof (translation)
-Establish `h1` using `(hL E).2.1 u u' hu hu'`. Establish `h2` using `(hL E).2.2 1 one_ne_zero`. Rewrite `h2` using `[map_one]`. Rewrite `h1` using `[h, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem logAbs_inv (hL : LogAbsBasic) (u u' : Ad E) (hu : IsUnit u) (hu' : IsUnit u') (h : u * u' = 1) :
     logAbs u = -logAbs u' := by
@@ -80,7 +80,7 @@ theorem logAbs_inv (hL : LogAbsBasic) (u u' : Ad E) (hu : IsUnit u) (hu' : IsUni
   linarith
 
 /- English proof (translation)
-Unfold `frame`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc x.val, Units.mul_inv, Matrix.one_mul, ← Matrix.map_mul, hLM, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_leftInv (x : GA E n) (M : Matrix (Fin n) (Fin k) E) (L : Matrix (Fin k) (Fin n) E)
     (hLM : L * M = 1) :
@@ -90,13 +90,13 @@ theorem frame_leftInv (x : GA E n) (M : Matrix (Fin n) (Fin k) E) (L : Matrix (F
     ← Matrix.map_mul, hLM, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Introduce `E _ _ _ n k x t s M hM h`. Take `⟨L, hLM⟩` from `exists_leftInv M hM`. Take `⟨h1, h2, h3⟩` from `hS E (Fin n) (Fin k) (frame x M) _ (frame_leftInv x M L hLM)`. Establish `hδ : IsUnit (s⁻¹ : GA E k).val.det` using `Matrix.isUnits_det_units _`. Establish `hs : IsUnit s.val.det` using `Matrix.isUnits_det_units _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : (s⁻¹ : GA E k).val.det * s.val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.inv_mul, Matrix.det_one]`. Establish `hinv` using `logAbs_inv hL _ _ hδ hs hmul`. Establish `hfin₁ : (Function.support fun w => lognFin w (frame x M)).Finite`. Use `h3.subset fun w hw hw1 => hw ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Real.log (nF ((frame x M).map (cW w))) = 0`. Rewrite using `[show nF ((frame x M).map (cW w)) = 1 from hw1, Real.log_one]`. Establish `hfin₂` using `(hL E).1 _ hδ`. Rewrite using `[degM, degM, frame_mul x t s M h]`. Establish `e₁ : ∀ v, lognInf v (frame x M * (s⁻¹ : GA E k).val) = lognInf v (frame x M) + Real.log (‖cV v (s⁻¹ : GA E k).val.det‖ ^ 2)` using `fun v => lognInf_mul hI v _ _ (h1 v) hδ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : ∀ w, lognFin w (frame x M * (s⁻¹ : GA E k).val) = lognFin w (frame x M) + Real.log ‖cW w (s⁻¹ : GA E k).val.det‖` using `fun w => lognFin_mul hF w _ _ (h2 w) hδ`. Repeatedly rewrite using `[e₁, e₂]`. Rewrite using `[Finset.sum_add_distrib, finsum_add_distrib hfin₁ hfin₂]`. Unfold `logAbs at hinv ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem degAdelic_of (hF : MulF) (hI : MulI) (hL : LogAbsBasic) (hS : FinSupp) : DegAdelic := by
   intro E _ _ _ n k x t s M hM h

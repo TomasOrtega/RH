@@ -11,35 +11,29 @@ open scoped ContDiff
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ`. Use `haveI := hμ`. Use `haveI : LocallyCompactSpace G := h.locallyCompactSpace`. Use `haveI : SecondCountableTopology 𝔸ˣ := Units.isOpenEmbedding_val.isInducing.secondCountableTopology`. Use `haveI : SecondCountableTopology G := Topology.IsInducing.subtypeVal.secondCountableTopology`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ε, hε, hdens⟩` from `h.exists_smooth_density_prodExp_tsupport μ b`. Use `⟨ε / 2, by positivity, fun K₁ hK₁ => ?_⟩` and prove the remaining obligations. Set `β : ContDiffBump (0 : Fin d → ℝ)` to `⟨ε / 2, ε, by positivity, by linarith⟩`. Use `set K : (Fin d → ℝ) → ℂ := fun t => ((β t : ℝ) : ℂ) with hKdef`. Establish `hK : ContDiff ℝ ∞ K` using `Complex.ofRealCLM.contDiff.comp β.contDiff`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKs : tsupport K ⊆ Metric.closedBall 0 ε`. Establish `: tsupport K ⊆ tsupport β` using `tsupport_comp_subset (g := fun r : ℝ => (r : ℂ)) (by simp) _`. Rewrite `this` using `[β.tsupport_eq]`. Conclude with `this`. Take `⟨κ, hκs, hκc, -, hκint⟩` from `hdens K hK hKs`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hκcont : Continuous κ`. Use `letI := h.chartedSpace`. Conclude with `hκs.continuous`. Take `⟨M, hM⟩` from `hκc.exists_bound_of_continuous hκcont`. Establish `hK₂ : IsCompact (tsupport κ * K₁)` using `IsCompact.mul hκc hK₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B, hB⟩` from `GlobalTheory.T.haar_lintegral_mul_right_le_alt G μ hμ K₁ hK₁`. Use `⟨max M 0 * B, tsupport κ * K₁, by positivity, hK₂, fun φ hφ y hy => ?_⟩` and prove the remaining obligations. Use `set K₂ := tsupport κ * K₁ with hK₂def`. Use `set P := h.prodExp (⇑b) with hPdef`. Establish `hPc : Continuous P` using `h.continuous_prodExp _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set f : (Fin d → ℝ) → ℝ := fun t => ‖φ (P t * y)‖ with hfdef`. Establish `hfc : Continuous f` using `(hφ.comp (hPc.mul continuous_const)).norm`. Use `set ψ : G → ℂ := fun x => ((‖φ (x * y)‖ : ℝ) : ℂ) with hψdef`. Establish `hψc : Continuous ψ` using `Complex.continuous_ofReal.comp (hφ.comp (continuous_id.mul continuous_const)).norm`. Establish `h1 : ∫ t in Metric.closedBall (0 : Fin d → ℝ) (ε / 2), f t ≤ ∫ t, β t * f t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∫ t in Metric.closedBall (0 : Fin d → ℝ) (ε / 2), f t = ∫ t in Metric.closedBall (0 : Fin d → ℝ) (ε / 2), β t * f t`. Use `setIntegral_congr_fun measurableSet_closedBall fun t ht => ?_` and prove the remaining obligations. Rewrite using `[β.one_of_mem_closedBall ht, one_mul]`. Rewrite using `[e]`. Use `setIntegral_le_integral ?_ (Filter.Eventually.of_forall fun t => mul_nonneg β.nonneg (norm_nonneg _))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(β.continuous.mul hfc).integrable_of_hasCompactSupport β.hasCompactSupport.mul_right`. Establish `h2 : ∫ t, β t * f t = (∫ x, κ x * ψ x ∂μ).re`. Rewrite using `[hκint ψ hψc]`. Establish `: (fun t => K t * ψ (P t)) = fun t => (((β t * f t : ℝ)) : ℂ)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hKdef, hψdef, hfdef]`. Rewrite using `[this, integral_complex_ofReal, Complex.ofReal_re]`. Establish `h3 : (∫ x, κ x * ψ x ∂μ).re ≤ ∫ x, ‖κ x * ψ x‖ ∂μ` using `(Complex.re_le_norm _).trans (norm_integral_le_integral_norm _)`. Use `set g : G → ENNReal := K₂.indicator fun z => ‖φ z‖ₑ with hgdef`. Establish `hg : Measurable g` using `hφ.enorm.measurable.indicator hK₂.isClosed.measurableSet`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set L := ∫⁻ x in K₂, ‖φ x‖ₑ ∂μ with hLdef`. Establish `hL : L < ⊤` using `(hφ.continuousOn.integrableOn_compact hK₂).hasFiniteIntegral`. Establish `hgL : ∫⁻ x, g x ∂μ = L` using `lintegral_indicator hK₂.isClosed.measurableSet _`. Establish `hpt : ∀ x, ‖κ x * ψ x‖ₑ ≤ ENNReal.ofReal (max M 0) * g (x * y)`. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x ∈ tsupport κ`. Establish `hxy : x * y ∈ K₂` using `Set.mul_mem_mul hx hy`. Rewrite using `[hgdef, Set.indicator_of_mem hxy, enorm_mul]`. Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ENNReal.ofReal_le_ofReal ((hM x).trans (le_max_left _ _))`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Simplify using `[hψdef]`.
-
-Establish `: κ x = 0` using `image_eq_zero_of_notMem_tsupport hx`. Simplify using `[this]`. Establish `h4l : ∫⁻ x, ‖κ x * ψ x‖ₑ ∂μ ≤ ENNReal.ofReal (max M 0) * ((B : ENNReal) * L)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hgL]`.
-
-Conclude with `hB y hy g hg`. Establish `h4 : ∫ x, ‖κ x * ψ x‖ ∂μ ≤ max M 0 * B * ∫ x in K₂, ‖φ x‖ ∂μ`. Rewrite using `[integral_norm_eq_lintegral_enorm (f := fun x => κ x * ψ x) (hκcont.mul hψc).aestronglyMeasurable, integral_norm_eq_lintegral_enorm hφ.aestronglyMeasurable]`. Establish `hfin : ENNReal.ofReal (max M 0) * ((B : ENNReal) * L) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.mul_ne_top ENNReal.coe_ne_top hL.ne)`. Use `(ENNReal.toReal_mono hfin h4l).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (le_max_right _ _), ENNReal.coe_toReal, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.setIntegral_norm_prodExp_mul_le_haar : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure → ∃ ρ > 0, ∀ K₁ : Set G, IsCompact K₁ → ∃ (C : ℝ) (K₂ : Set G), 0 ≤ C ∧ IsCompact K₂ ∧ ∀ φ : G → ℂ, Continuous φ → ∀ y ∈ K₁, ∫ t in Metric.closedBall (0 : Fin d → ℝ) ρ, ‖φ (h.prodExp b t * y)‖ ≤ C * ∫ x in K₂, ‖φ x‖ ∂μ := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b _ _ μ hμ

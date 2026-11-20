@@ -23,7 +23,7 @@ def Xi (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Submodule ℂ 
   Finsupp.lsum ℂ fun p => (ei X s c' p.2 * l (wB EM φ X s p.1)) • aF σ V w0 (ei X s)
 
 /- English proof (translation)
-Simplify using `[Xi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Xi_single (w0 : H) (EM : Fin n → Fin n → Module.End ℂ M) (φ : M) (l : M →ₗ[ℂ] ℂ) (c' : Fin n)
     (X : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) (p : List (Fin n × Fin n) × Fin n) (v : V) :
@@ -32,7 +32,7 @@ theorem Xi_single (w0 : H) (EM : Fin n → Fin n → Module.End ℂ M) (φ : M) 
   simp [Xi]
 
 /- English proof (translation)
-Simplify using `only [sA, Finsupp.lsum_single, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, Finsupp.lsingle_apply]`. Use `congr 1`. Apply the tactic sequence `congr 1 split_ifs <;> rfl`. Apply the tactic sequence `split_ifs <;> rfl`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sA_single (hV : IsKStableSub ε E V) (a b : Fin n) (p : List (Fin n × Fin n) × Fin n) (v : V) :
     sA ε E V hV a b (Finsupp.single p v) =
@@ -47,9 +47,9 @@ theorem sA_single (hV : IsKStableSub ε E V) (a b : Fin n) (p : List (Fin n × F
   · split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `h` using `coef_deriv hσ hD (exp_smul_mem_UJset hX (-s)) hX w0 (v : D)`. Rewrite `h` using `[← sub_self s]`. Establish `h2` using `h.scomp s ((hasDerivAt_id s).const_sub s)`. Use `HasDerivAt.congr_deriv (h2.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)) ?_` and prove the remaining obligations. Use `show ⟪w0, σ (ei X t) _⟫_ℂ = ⟪w0, σ (_ * NormedSpace.exp (((s - t : ℝ) : ℂ) • X)) _⟫_ℂ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← exp_add_smul, show -s + (s - t) = -t by ring]; rfl`. Simplify using `[ei]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_aF (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (w0 : H)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (s : ℝ) (v : V) :
@@ -64,19 +64,17 @@ theorem deriv_aF (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (w0
   · simp [ei]
 
 /- English proof (translation)
-Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simpa using hasDerivAt_const s (0 : ℂ)`. Consider the case `add y y' h h'`. Simplify using `only [map_add, neg_add]`. Conclude with `h.add h'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `single p v`. Simplify using `only [Xi_single]`. Use `((((deriv_entries X 0 s c' p.2).1.mul (deriv_word EM φ X s p.1 l))).mul (deriv_aF hσ hD w0 hX.1 s v)).congr_deriv ?_` and prove the remaining obligations. Use `set A := aF σ V w0 (ei X s) with hA`. Use `set B := l (wB EM φ X s p.1) with hB`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `t1 : ∀ a b, Xi σ V w0 EM φ l c' X s (∑ w' ∈ (adLW a b p.1).support, adLW a b p.1 w' • Finsupp.single (w', p.2) v) = ei X s c' p.2 * l (Finsupp.linearCombination ℂ (wB EM φ X s) (adLW a b p.1)) * A v`. Introduce `a b`. Simplify using `only [map_sum, map_smul, Xi_single, Finsupp.linearCombination_apply, Finsupp.sum, smul_eq_mul, mul_sum, sum_mul]`. Conclude with `sum_congr rfl fun _ _ => by ring`. Establish `t2 : ∀ a b, X a b * Xi σ V w0 EM φ l c' X s (if h : ε a = ε b then Finsupp.single p ⟨E a b v, hV a b h v v.2⟩ else 0) = ei X s c' p.2 * B * (X a b * ⟪w0, σ (ei X s) ((E a b (v : D) : D) : H)⟫_ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Use `split_ifs with h`. Rewrite using `[Xi_single] show _ * (_ * ⟪w0, σ (ei X s) ((E a b (v : D) : D) : H)⟫_ℂ) = _`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[inK_apply_eq_zero hX h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `t3 : ∀ a b, Xi σ V w0 EM φ l c' X s (if p.2 = b then Finsupp.single (p.1, a) v else 0) = if p.2 = b then ei X s c' a * B * A v else 0`. Introduce `a b`. Use `split_ifs`. Rewrite using `[Xi_single]`. Conclude with `map_zero _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, sA_single, map_add, smul_eq_mul, mul_add, sum_add_distrib, t1, t2, t3, mul_ite, mul_zero, sum_ite_eq, mem_univ, if_true, adX, actM, Submodule.coe_sum, Submodule.coe_smul, inner_sum, inner_smul_right, Matrix.mul_a …`. Establish `u1 : ∑ a, ∑ b, X a b * (ei X s c' p.2 * l (Finsupp.linearCombination ℂ (wB EM φ X s) (adLW a b p.1)) * A v) = ei X s c' p.2 * (∑ a, ∑ b, X a b * l (Finsupp.linearCombination ℂ (wB EM φ X s) (adLW a b p.1))) * A v`. Simplify using `only [mul_sum, sum_mul]`. Conclude with `sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring`. Establish `u3 : ∑ a, X a p.2 * (ei X s c' a * B * A v) = (∑ a, ei X s c' a * X a p.2) * B * A v`.
-
-Simplify using `only [sum_mul]`. Conclude with `sum_congr rfl fun _ _ => by ring`. Rewrite using `[u1, u3]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem deriv_Xi (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (hV : IsKStableSub ε E V)
     (w0 : H) (EM : Fin n → Fin n → Module.End ℂ M) (φ : M) (l : M →ₗ[ℂ] ℂ) (c' : Fin n)
@@ -133,19 +131,15 @@ theorem deriv_Xi (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (hV
     ring
 
 /- English proof (translation)
-Introduce `x hx`. Use `set R := x.support.sup fun p => p.1.length with hR`. Set `S : Set (List (Fin n × Fin n) × Fin n)` to `{p | p.1.length ≤ R}`. Establish `hSf : S.Finite` using `((List.finite_length_le (Fin n × Fin n) R).prod Set.finite_univ).subset fun p hp => ⟨hp, trivial⟩`. Use `hSf.to_subtype` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℂ (Finsupp.supported V ℂ S)` using `Module.Finite.equiv (Finsupp.supportedEquivFinsupp (M := V) (R := ℂ) S).symm`. Establish `: FiniteDimensional ℂ (W ⊓ Finsupp.supported V ℂ S : Submodule ℂ _)` using `Submodule.finiteDimensional_of_le inf_le_right`. Establish `hS : ∀ a b, ∀ y ∈ Finsupp.supported V ℂ S, sA ε E V hV a b y ∈ Finsupp.supported V ℂ S`. Introduce `a b y hy`. Rewrite using `[← Finsupp.sum_single y, Finsupp.sum, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun p hp => ?_` and prove the remaining obligations. Establish `hpS : p.1.length ≤ R` using `hy hp`. Rewrite using `[sA_single]`. Use `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.sum_mem _ fun w' hw' => Submodule.smul_mem _ _ (Finsupp.single_mem_supported ℂ _ ?_)) ?_) ?_` and prove the remaining obligations. Use `show w'.length ≤ R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[adLW_length a b _ _ hw']`. Conclude with `hpS`. Use `split_ifs`. Conclude with `Finsupp.single_mem_supported ℂ _ hpS`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `Finsupp.single_mem_supported ℂ _ hpS`. Conclude with `Submodule.zero_mem _`. Establish `hA : ∀ y ∈ W ⊓ Finsupp.supported V ℂ S, (∑ a, ∑ b, X a b • sA ε E V hV a b) y ∈ W ⊓ Finsupp.supported V ℂ S`. Introduce `y hy`.
-
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = ε b`. Conclude with `Submodule.smul_mem _ _ ⟨hW a b h y hy.1, hS a b y hy.2⟩`. Rewrite using `[inK_apply_eq_zero hX h, zero_smul]`.
-
-Conclude with `Submodule.zero_mem _`. Establish `key` using `ode_zero ((∑ a, ∑ b, X a b • sA ε E V hV a b).restrict hA) (fun s => Xi σ V w0 EM φ l c' X s ∘ₗ (W ⊓ Finsupp.supported V ℂ S).subtype) (fun s y => deriv_Xi hσ hD hV w0 EM φ l c' hX s y) (LinearMap.ext fun y => h0 y y.2.1) s`. Conclude with `LinearMap.congr_fun key ⟨x, hx, fun p hp => Finset.le_sup (f := fun p : List (Fin n × Fin n) × Fin n => p.1.length) hp⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Xi_vanish (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) [FiniteDimensional ℂ V]
     (hV : IsKStableSub ε E V) (w0 : H) (EM : Fin n → Fin n → Module.End ℂ M) (φ : M) (l : M →ₗ[ℂ] ℂ)

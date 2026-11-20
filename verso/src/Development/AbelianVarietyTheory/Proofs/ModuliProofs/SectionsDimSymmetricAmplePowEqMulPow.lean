@@ -19,13 +19,13 @@ open GlobalTheory.ZV
 namespace GlobalTheory.SymAmpleCount
 
 /- English proof (translation)
-Establish `h₁ : ∀ i, h (e * q ^ i) = (q ^ i) ^ g * h e` using `fun i => by`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[pow_succ, ← Nat.mul_assoc, hs _ (Nat.mul_pos he (by positivity)), ih, mul_pow]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h₂ : Filter.Tendsto (fun i : ℕ => e * q ^ i) Filter.atTop Filter.atTop` using `Filter.tendsto_atTop_mono (fun i => Nat.le_mul_of_pos_left _ he) (tendsto_pow_atTop_atTop_of_one_lt hq)`. Establish `he' : (e : ℝ) ^ g ≠ 0` using `by positivity`. Establish `h₃ : ((fun e : ℕ => (h e : ℝ) / (e : ℝ) ^ g) ∘ fun i : ℕ => e * q ^ i) = fun _ => (h e : ℝ) / (e : ℝ) ^ g`. Use function extensionality and compare the values at `i`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: ((q : ℝ) ^ i) ^ g ≠ 0` using `by positivity`. Simplify using `only [Function.comp, h₁]`. Use `push_cast`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `h₄` using `ht.comp h₂`. Rewrite `h₄` using `[h₃]`. Rewrite using `[← tendsto_nhds_unique tendsto_const_nhds h₄]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem eq_of_scaling {h : ℕ → ℕ} {g q : ℕ} {v : ℝ} (hq : 2 ≤ q)
     (hs : ∀ e, 1 ≤ e → h (e * q) = q ^ g * h e)
@@ -54,7 +54,7 @@ theorem eq_of_scaling {h : ℕ → ℕ} {g q : ℕ} {v : ℝ} (hq : 2 ≤ q)
   field_simp
 
 /- English proof (translation)
-Distinguish the cases in `h : ((2 : ℕ) : K) = 0`. Use `⟨3, by norm_num, ?_⟩` and prove the remaining obligations. Rewrite using `[show (3 : ℕ) = 2 + 1 from rfl, Nat.cast_add, h]`. Simplify using the standard rewrite rules. Conclude with `⟨2, le_rfl, h⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_two_le_cast_ne_zero (K : Type) [Field K] : ∃ l : ℕ, 2 ≤ l ∧ (l : K) ≠ 0 := by
   by_cases h : ((2 : ℕ) : K) = 0
@@ -64,7 +64,7 @@ theorem exists_two_le_cast_ne_zero (K : Type) [Field K] : ∃ l : ℕ, 2 ≤ l �
   · exact ⟨2, le_rfl, h⟩
 
 /- English proof (translation)
-Use `⟨(toUnit A ≫ x)⁻¹ * 𝟙 A, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, comp_toUnit, Category.comp_id, inv_mul_cancel_left]`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, comp_toUnit, Category.comp_id, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isIso_translation {S : Scheme.{0}} (A : Over S) [GrpObj A] (x : 𝟙_ (Over S) ⟶ A) :
     IsIso ((toUnit A ≫ x) * 𝟙 A) := by
@@ -73,9 +73,9 @@ theorem isIso_translation {S : Scheme.{0}} (A : Over S) [GrpObj A] (x : 𝟙_ (O
   · rw [MonObj.comp_mul, ← Category.assoc, comp_toUnit, Category.comp_id, mul_inv_cancel_left]
 
 /- English proof (translation)
-Use `((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K _ P.A.hom _ (LB.isLB_pull hM _)).2.1 _ (GlobalTheory.isLB_lbPow hM _) (GlobalTheory.T.mulA_pullback_iso_pow_sq_symmetric_abelianVariety K P M k hM hs)).1 _ (GlobalTheory.T.sectionsHaveFiniteDimension_lbDiv_lin …` and prove the remaining obligations. Take `⟨x, hx⟩` from `GlobalTheory.T.twist_ampleBundle_translationBundle_iso_translate hL hL' K P M y hM ha`. Use `((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K _ P.A.hom _ (LB.isLB_pull hM _)).2.1 _ (LB.isLB_div hM (LB.isLB_linComb P.isLB _ _)) hx.symm).1 _ ?_` and prove the remaining obligations. Use `isIso_translation P.A x` as an intermediate fact. Establish `H` using `((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K _ P.A.hom M hM).2.2.2.2.2 _ ((Over.forget _).mapIso (asIso ((toUnit P.A ≫ x) * 𝟙 P.A))) r).1 hr`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((Over.forget _).mapIso (asIso ((toUnit P.A ≫ x) * 𝟙 P.A))).hom ≫ P.A.hom = P.A.hom` using `Over.w _`. Conclude with `(congrArg (fun q => SectionsHaveFiniteDimension q _ r) e).mp H`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sectionsDim_symmetricAmple_pow_sq (hL : Out.Laws) (hL' : Out.Laws2) (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K))
     (M : LB P.A.left) (hM : M.IsLB) (ha : Out.RelAmple P.A M) (hs : SymB M) {k : ℕ} (hk : (k : K) ≠ 0) {r : ℕ}
@@ -96,15 +96,13 @@ end GlobalTheory.SymAmpleCount
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL hL' K _ _ P M hM ha hs`. Take `⟨v, hv, h, hh, ht⟩` from `GlobalTheory.T.polarizedAbelian_ample_exists_positive_volume hL hL' K P M hM ha`. Take `⟨l, hl, hlK⟩` from `SymAmpleCount.exists_two_le_cast_ne_zero K`. Establish `B` using `GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K _ P.A.hom M hM`. Establish `sc : ∀ e, 1 ≤ e → h (e * l ^ 2) = (l ^ 2) ^ P.g * h e` using `fun e he => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMe` using `GlobalTheory.isLB_lbPow hM e`. Establish `hae : Out.RelAmple P.A (lbPow M e)` using `(GlobalTheory.relAmple_finite_pow_iso _ P.A P.A (𝟙 _) M e he P.isAb P.isAb hM (inferInstanceAs (IsFinite (𝟙 P.A.left)))).2.1.2 ha`. Establish `hse : SymB (lbPow M e)` using `LBIso.trans hMe (GlobalTheory.isLB_lbPow (LB.isLB_pull hM _) e) (LB.isLB_pull hMe _) ((B.2.1 _ (LB.isLB_pull hM _) hs).2 e) (B.2.2.2.2.1 _ _ e)`. Establish `H` using `SymAmpleCount.sectionsDim_symmetricAmple_pow_sq hL hL' K P _ hMe hae hse hlK (hh e)`. Establish `H'` using `((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K _ P.A.hom _ (GlobalTheory.isLB_lbPow hMe _)).2.1 _ (GlobalTheory.isLB_lbPow hM _) (B.2.2.1 e (l ^ 2))).1 _ H`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul]`. Conclude with `(GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K _ P.A.hom _ (GlobalTheory.isLB_lbPow hM _)).1 _ _ (hh _) H'`. Establish `key : ∀ e, 1 ≤ e → (h e : ℝ) = v * (e : ℝ) ^ P.g` using `fun e he => SymAmpleCount.eq_of_scaling (q := l ^ 2) (by nlinarith) sc ht he`. Establish `h₁ : (h 1 : ℝ) = v` using `by simpa using key 1 le_rfl`. Use `⟨h 1, ?_, ⟨h, hh, h₁ ▸ ht⟩, fun e he => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < h 1` using `h₁ ▸ hv`. Conclude with `this` after adjusting the coercions. Establish `: h e = h 1 * e ^ P.g`. Use `key e he` as an intermediate fact. Rewrite `this` using `[← h₁]`.
-
-Conclude with `this` after adjusting the coercions. Conclude with `this ▸ hh e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sectionsDim_symmetricAmple_pow_eq_mul_pow : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left), M.IsLB → Out.RelAmple P.A M → SymB M → ∃ δ : ℕ, 1 ≤ δ ∧ Vol P.A.hom M P.g δ ∧ ∀ e ≥ 1, SectionsHaveFiniteDimension P.A.hom (lbPow M e) (δ * e ^ P.g) := by
   intro hL hL' K _ _ P M hM ha hs

@@ -6,9 +6,9 @@ namespace GlobalTheory.PicCech
 variable {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem m hm n hn => exact ⟨Unit, inferInstance, fun _ => m, fun _ => n, fun _ => hm, fun _ => hn, by simp⟩`. Consider the case `add a _ b _ ha hb`. Take `⟨ι, _, x, y, hx, hy, hs⟩` from `ha`. Take `⟨κ, _, x', y', hx', hy', hs'⟩` from `hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ι ⊕ κ, inferInstance, Sum.elim x x', Sum.elim y y', ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (i | i) <;> simp [hx, hx']`. Apply the tactic sequence `rintro (i | i) <;> simp [hy, hy']`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `[hs, hs']`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_sum_of_mem_mul {M N : Submodule A B} {z : B} (hz : z ∈ M * N) :
     ∃ (ι : Type) (_ : Fintype ι) (x y : ι → B), (∀ i, x i ∈ M) ∧ (∀ i, y i ∈ N) ∧ ∑ i, x i * y i = z := by
@@ -23,7 +23,7 @@ theorem exists_sum_of_mem_mul {M N : Submodule A B} {z : B} (hz : z ∈ M * N) :
     · rw [Fintype.sum_sum_type]; simp [hs, hs']
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_one.1 hc`. Rewrite using `[← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq_one_tmul {c : B} (hc : c ∈ (1 : Submodule A B)) (q : B) :
     c ⊗ₜ[A] q = (1 : B) ⊗ₜ[A] (c * q) := by
@@ -31,7 +31,7 @@ theorem tmul_eq_one_tmul {c : B} (hc : c ∈ (1 : Submodule A B)) (q : B) :
   rw [← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_one.1 hc`. Rewrite using `[mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_eq_tmul_one {c : B} (hc : c ∈ (1 : Submodule A B)) (p : B) :
     p ⊗ₜ[A] c = (p * c) ⊗ₜ[A] (1 : B) := by
@@ -39,9 +39,9 @@ theorem tmul_eq_tmul_one {c : B} (hc : c ∈ (1 : Submodule A B)) (p : B) :
   rw [mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Repeatedly rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => tmul_eq_tmul_one (hb i) (x i)), ← TensorProduct.sum_tmul]`. Use `congr 1`. Repeatedly rewrite using `[← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul, hs, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_tmul_mul_one_tmul {ι : Type} [Fintype ι] (x y : ι → B) (hs : ∑ i, x i * y i = 1) {b : B}
     (hb : ∀ i, y i * b ∈ (1 : Submodule A B)) :
@@ -53,9 +53,9 @@ theorem sum_tmul_mul_one_tmul {ι : Type} [Fintype ι] (x y : ι → B) (hs : �
   simp_rw [← mul_assoc]; rw [← Finset.sum_mul, hs, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul_sum]`. Repeatedly rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => tmul_eq_one_tmul (hxy i j) (y i * x j)))]`. Repeatedly rewrite using `[← TensorProduct.tmul_sum]`. Rewrite using `[Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul_sum]; exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 1 := by rw [hs, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_tmul_mul_sum_tmul {ι : Type} [Fintype ι] (x y : ι → B) (hs : ∑ i, x i * y i = 1)
     (hxy : ∀ i j, x i * y j ∈ (1 : Submodule A B)) :
@@ -71,9 +71,9 @@ theorem sum_tmul_mul_sum_tmul {ι : Type} [Fintype ι] (x y : ι → B) (hs : �
     _ = 1 := by rw [hs, one_mul]
 
 /- English proof (translation)
-Simplify using `only [map_sum, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.includeLeft_apply]`. Rewrite using `[Finset.sum_mul_sum]`. Repeatedly rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => congrArg (fun t => x i ⊗ₜ[A] t) (tmul_eq_one_tmul (hyx i j) (y j))))]`. Repeatedly rewrite using `[← TensorProduct.tmul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum, hs, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem cocycle_sum {ι : Type} [Fintype ι] (x y : ι → B) (hs : ∑ i, x i * y i = 1)
     (hyx : ∀ i j, y i * x j ∈ (1 : Submodule A B)) :
@@ -91,19 +91,15 @@ theorem cocycle_sum {ι : Type} [Fintype ι] (x y : ι → B) (hs : ∑ i, x i *
   simp_rw [mul_assoc, ← Finset.mul_sum, hs, mul_one]
 
 /- English proof (translation)
-Introduce `A B _ _ _ h1 I`. Establish `hone : (1 : B) ∈ (I : Submodule A B) * ↑I⁻¹`. Rewrite using `[I.mul_inv]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Take `⟨ι, _, x, y, hx, hy, hs⟩` from `exists_sum_of_mem_mul hone`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxy : ∀ i j, x i * y j ∈ (1 : Submodule A B)` using `fun i j => by`. Rewrite using `[← I.mul_inv]`. Conclude with `Submodule.mul_mem_mul (hx i) (hy j)`. Establish `hyx : ∀ i j, y i * x j ∈ (1 : Submodule A B)` using `fun i j => by`. Rewrite using `[← I.inv_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mul_mem_mul (hy i) (hx j)`. Establish `hs' : ∑ i, y i * x i = 1` using `by simp_rw [mul_comm (y _)]; exact hs`. Establish `huv` using `sum_tmul_mul_sum_tmul x y hs hxy`. Set `u : (B ⊗[A] B)ˣ` to `⟨∑ i, x i ⊗ₜ[A] y i, ∑ j, y j ⊗ₜ[A] x j, huv, by rw [mul_comm]; exact huv⟩`. Use `⟨u, cocycle_sum x y hs hyx, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb`. Establish `hb' : (∑ i, x i ⊗ₜ[A] y i) * ((1 : B) ⊗ₜ[A] b) = b ⊗ₜ[A] (1 : B)` using `hb`. Establish `key : ∀ i, b * y i ∈ (1 : Submodule A B)`. Introduce `i`. Apply `h1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `show ((1 : (B ⊗[A] B)ˣ) : B ⊗[A] B) * ((1 : B) ⊗ₜ[A] (b * y i)) = (b * y i) ⊗ₜ[A] (1 : B)`. Establish `hv` using `sum_tmul_mul_one_tmul y x hs' (b := y i) (fun j => hxy j i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_mul_mul_comm, huv, Algebra.TensorProduct.tmul_mul_tmul, Units.val_one, one_mul, one_mul, one_mul]`. Use `_ = (b * y i) ⊗ₜ[A] (1 : B) := by rw [hb', hv, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
-
-Establish `hb2 : b = ∑ i, (b * y i) * x i`. Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum, hs', mul_one]`. Rewrite using `[hb2]`. Conclude with `Submodule.sum_mem _ fun i _ => by simpa using Submodule.mul_mem_mul (key i) (hx i)`. Introduce `b hb`.
-
-Conclude with `sum_tmul_mul_one_tmul x y hs (fun i => by rw [← I.inv_mul]; exact Submodule.mul_mem_mul (hy i) hb)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_unitCocycle_descMod_eq : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B], descMod A B 1 ≤ 1 →
     ∀ I : (Submodule A B)ˣ, ∃ u : (B ⊗[A] B)ˣ, UCoc A B u ∧ descMod A B u = (I : Submodule A B) := by

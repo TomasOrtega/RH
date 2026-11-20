@@ -19,14 +19,14 @@ namespace GlobalTheory.NoFixedFock
 open Formalism.BasicNotions.TH GlobalTheory.RealLift
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fock_action_vanishing`.
+A detailed English derivation is pending.
 -/
 theorem oneFactor : ∀ (P Q R S : ℕ) (c : ℂ) (f : Formalism.BasicNotions.TH.Pol P Q R S), S < Q → c.re < ((R : ℝ) - S) / 2 →
     (∀ Y : Formalism.BasicNotions.TH.Mat P Q, Formalism.BasicNotions.TH.IsKC Y → Y ∈ Formalism.BasicNotions.TH.upq P Q →
       Formalism.BasicNotions.TH.fockAct1 P Q R S Y f + (c * Y.trace) • f = 0) → f = 0 := GlobalTheory.T.fock_action_vanishing
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.tensor_place_action_injective`.
+A detailed English derivation is pending.
 -/
 theorem tensFactor : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : Type) [AddCommGroup V] [Module ℂ V] (J : Type)
     (L : J → Module.End ℂ V) (w₀ : ι), (∀ v : V, (∀ j, L j v = 0) → v = 0) →
@@ -35,9 +35,9 @@ theorem tensFactor : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : Type) [A
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Introduce `g hg`. Use `h (fun x => g (fun i => (x i).2)) ⟨fun x z hz => ?_, Submodule.subset_span ⟨f, g, hg, rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (fun i => (x i + z i).2) = g (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(x i).2 + (z i).2 = (x i).2`. Rewrite using `[fin_eq_zero_of_at hz, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sa_of_acts {κ : Type} [Fintype κ] {T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f f₁ : SInf F κ}
     (h : Acts (evI F) T f f₁) : SA T f f₁ := by
@@ -50,7 +50,7 @@ theorem sa_of_acts {κ : Type} [Fintype κ] {T : ((κ → AF F) → ℂ) → (κ
   rw [fin_eq_zero_of_at hz, add_zero]
 
 /- English proof (translation)
-Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, GlobalTheory.RealLift.atPl, PiTensorProduct.map_tprod, LinearMap.zero_apply]`. Conclude with `(PiTensorProduct.tprod ℂ).map_coord_zero w (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atPl_zero {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V] (w : ι) :
     GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w 0 = 0 := by
@@ -65,39 +65,33 @@ namespace GlobalTheory.NoFixedFock
 open Formalism.BasicNotions.TH GlobalTheory.RealLift
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' hq hp M₁ om₁ hM₁ hW f hf hfix`. Establish `h` using `GlobalTheory.ThK.ComplPair.isPair_compl F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' hq hp M₁ om₁ hM₁ hW`. Establish `hb` using `h.base`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (h.herm.sig w) (h.herm.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (h.skew.sig w) (h.skew.cartan w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.RealLift.FockFirst.incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W₁.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.RealLift.FockFirst.incM_map_piInf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hC w`. Establish `fr : Framed B.emb (incM F G.V.J) (incM F W₁.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Establish `hder : DerEx` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hvl : VacLine` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder`. Establish `hfe : FockEx` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hder`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsec : LieSecond` using `GlobalTheory.T.lieSecond_of_prints_derEx_fockEx_vacLine_lieScalar hKP.base hder hfe hvl (GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hKP.base hder hvl)`. Establish `hfst : LieFirst` using `GlobalTheory.RealLift.LieFirstPf.lieFirst_of_lieSecond hsec`. Establish `hpr : PolRange` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws GlobalTheory.RealLift.actsLaws hder hvl`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M₁.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `hpr F E σ _ _ _ _ _ _ G.V W₁ M₁ B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F W₁.J) M₁.co X.β (X.β / X.α) om₁` using `h.weil`. Take `⟨d, hd, hB1⟩` from `hwp.2.1`. Establish `hact` using `hfst F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M₁.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std fr hΦ hd hB1 (GlobalTheory.RealLift.FockFirst.hasExp_div B.emb hT.chars.expβ hT.chars.expα)`. Rewrite `hf` using `[← hr]`. Take `⟨T, rfl⟩` from `hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ Y : InfinitePlace F → Mat (a - G.p) G.p, (∀ w, IsKC (Y w) ∧ Y w ∈ upq (a - G.p) G.p) → sumPl (fun w => fockAct1 (a - G.p) G.p (a + a' - G.p - 1) (G.p - 1) (Y w) + ((((B.mβ w - B.mα w : ℤ) : ℂ) / 2) * (Y w).trace) • 1) T = 0`. Introduce `Y hY`. Take `⟨γ, hγ, hgen⟩` from `GlobalTheory.RealLift.exists_line_of_upq F E σ (Fin a) (a - G.p) G.p B.emb (incM F G.V.J) 1 A hb.cm hA1 Y (fun w => (hY w).2)`. Establish `hK : ∀ t : ℝ, γ (Multiplicative.ofAdd t) ∈ KInf σ G.V B.emb` using `fun t => by`. Use `⟨hγ.2 _, fun w => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨A', hAA⟩` from `(hA w).2`. Conclude with `GlobalTheory.CompactLine.commute_of_gen (A w) A' hAA _ _ (Y w) (hY w).1 t (hAθ w) (hgen t w)`. Establish `hSD` using `hact γ hγ Y hgen T`. Establish `h0 : SD (fun t => (om₁.comp (MonoidHom.inl _ _)) (γ (Multiplicative.ofAdd t))) (Φ T) 0`. Introduce `g hg l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ t : ℝ, (om₁.comp (MonoidHom.inl _ _)) (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g) = pureA F (Φ T) g` using `fun t => sa_of_acts (hfix _ (hK t)) g hg`. Establish `e0 : pureA F (⇑(0 : SInf F (Fin a × Fin d₁))) g = 0`. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`. Simplify using `only [e, e0, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hasDerivAt_const _ _`. Establish `e1` using `(GlobalTheory.RealLift.actsLaws F (Fin a × Fin d₁) (Φ T) _ 0).2.2.2.2 _ hSD h0`. Conclude with `hΦ.1 (e1.trans (map_zero Φ).symm)`. Take `⟨w₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `set c : ℂ := ((B.mβ w₀ - B.mα w₀ : ℤ) : ℂ) / 2 with hcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpa : G.p ≤ a` using `by have := (h.herm.sig w₀).1; omega`. Establish `ha' : 1 ≤ a'` using `by have := hT.geo.aBig; omega`. Establish `hk : ((a : ℝ) + a') < (B.mα w₀ : ℝ) - B.mβ w₀`. Use `hT.geo.kappa w₀` as an intermediate fact. Establish `h2 : (((a + a' : ℕ) : ℤ) : ℝ) < ((B.mα w₀ - B.mβ w₀ : ℤ) : ℝ)` using `by exact_mod_cast this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h2`. Conclude with `h2`. Establish `hR : ((a + a' - G.p - 1 : ℕ) : ℝ) = (a : ℝ) + a' - G.p - 1`. Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]; push_cast; ring`. Establish `hS : ((G.p - 1 : ℕ) : ℝ) = (G.p : ℝ) - 1` using `by rw [Nat.cast_sub hp]; simp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : c.re = ((B.mβ w₀ : ℝ) - B.mα w₀) / 2`. Establish `e : c = ((((B.mβ w₀ : ℝ) - B.mα w₀) / 2 : ℝ) : ℂ)` using `by rw [hcdef]; push_cast; ring`. Rewrite using `[e, Complex.ofReal_re]`. Establish `hT0 : T = 0`. Use `tensFactor (InfinitePlace F) (Formalism.BasicNotions.TH.Pol (a - G.p) G.p (a + a' - G.p - 1) (G.p - 1)) {Y : Mat (a - G.p) G.p // IsKC Y ∧ Y ∈ upq (a - G.p) G.p} (fun j => fockAct1 (a - G.p) G.p (a + a' - G.p - 1) (G.p - 1) j.1 + (c * j.1.trace) • 1) w₀ ?_ T ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Use `oneFactor _ _ _ _ c v (by omega) ?_ fun Y hY hY' => ?_` and prove the remaining obligations. Rewrite using `[hc, hR, hS]`. Establish `: (G.p : ℝ) ≤ a` using `by exact_mod_cast hpa`. Combine the linear equalities and inequalities to obtain the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hv ⟨Y, hY, hY'⟩` as an intermediate fact. Simplify using `using this`. Introduce `j`. Establish `hj` using `key (fun w => if w = w₀ then j.1 else 0) (fun w => by split_ifs`. Conclude with `j.2`.
-
-Conclude with `⟨fun _ _ _ => rfl, by simp [upq]⟩)`. Establish `e : sumPl (fun w => fockAct1 (a - G.p) G.p (a + a' - G.p - 1) (G.p - 1) (if w = w₀ then j.1 else 0) + ((((B.mβ w - B.mα w : ℤ) : ℂ) / 2) * (if w = w₀ then j.1 else 0).trace) • 1) = atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol (a - G.p) G.p (a + a' - G.p - 1) (G.p - 1)) w₀ (fockAct1 (a - G.p) G.p (a + a' - G.p - 1) (G.p - 1) j.1 + (c * j.1.trace) • 1) := by`. Rewrite using `[sumPl, Finset.sum_eq_single w₀]`. Simplify using `[hcdef]`. Introduce `w _ hw`.
-
-Simplify using `only [if_neg hw, map_zero, Matrix.trace_zero, mul_zero, zero_smul, add_zero]`. Conclude with `atPl_zero w`. Introduce `h0`. Conclude with `absurd (Finset.mem_univ w₀) h0`. Rewrite `hj` using `[e]`.
-
-Conclude with `hj`. Rewrite using `[hT0, map_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -16,7 +16,7 @@ instance : IsDirected (FinSub K Ω) (· ≤ ·) :=
 instance : Nonempty (FinSub K Ω) := ⟨⟨⊥, inferInstance⟩⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsCofiltered (FinSub K Ω)ᵒᵖ := inferInstance
 
@@ -34,14 +34,14 @@ abbrev yArr (A : Type) [CommRing A] [Algebra K A] : Arrow PSh :=
   Arrow.mk (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap K A))))
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ym {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) :
     yoneda.map (Spec.map g) ≫ yoneda.map (Spec.map f) = yoneda.map (Spec.map (f ≫ g)) := by
   rw [← Functor.map_comp, Spec.map_comp]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `yoneda.map _ ≫ yoneda.map _ = yoneda.map _ ≫ 𝟙 _`. Rewrite using `[Category.comp_id]`. Use `(ym _ _).trans ?_` and prove the remaining obligations. Apply the tactic sequence `congr 2 <;> (ext; rfl)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spec_comm {L L' : FinSub K Ω} (h : L ⟶ L') :
     yoneda.map (Spec.map ((ringDiag K Ω).map h)) ≫ (yArr K L.1).hom = (yArr K L'.1).hom ≫ 𝟙 _ := by

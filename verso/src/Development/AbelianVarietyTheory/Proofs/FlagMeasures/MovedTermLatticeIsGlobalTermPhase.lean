@@ -22,18 +22,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HL.MovedTermPhase
 
 /- English proof (translation)
-Introduce `D X Y u u' t`. Conclude with `t.rep.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_termFrame_admissibilityWitness : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (t : TauC Y u u'), ∃ ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E), AdmWit t.lam (gS D) (lf D (X.Fu u)) t.frame ξ := by
   intro D X Y u u' t
   exact t.rep.2.2.2.2.2.1
 
 /- English proof (translation)
-Introduce `E _ _ g x y`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hx : x / (g : E) = ((g : ℚ)⁻¹) • x`. Rewrite using `[Algebra.smul_def, div_eq_inv_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Formalism.L2.SG.PairVal.psiInf, ← Complex.exp_neg, hx, LinearMap.map_smul, smul_eq_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Formalism.L2.SG.PairVal.psiInf, map_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[← div_eq_mul_inv, ← Complex.exp_sub]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiInf_exp : ∀ {E : Type} [Field E] [NumberField E] (g : ℕ) (x y : E), Complex.exp (-(2 * Real.pi * Complex.I * ((Algebra.trace ℚ E (x / g) : ℚ) : ℂ))) = (Formalism.L2.SG.PairVal.psiInf g x)⁻¹ ∧ Formalism.L2.SG.PairVal.psiInf g (x - y) = Formalism.L2.SG.PairVal.psiInf g x * (Formalism.L2.SG.PairVal.psiInf g y)⁻¹ := by
   intro E _ _ g x y
@@ -52,29 +52,27 @@ theorem psiInf_exp : ∀ {E : Type} [Field E] [NumberField E] (g : ℕ) (x y : E
     ring
 
 /- English proof (translation)
-Introduce `D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv`. Take `⟨hg0, hcg⟩` from `GlobalTheory.T.localScalar_mul_eq_differentGen_mul_theta D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv`. Establish `hlat` using `GlobalTheory.T.movedRowLattice_term_isLattice D X Y u u' _ F00 F'0 FP G c t₀ ρ`. Establish `hU` using `hMv.2.1`. Establish `hU'` using `hMv.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : ∀ (N : G.GLV) p, ∃ m : (G.S p).GLV, (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).Ext p N m` using `fun N p => ((GlobalTheory.HL.RatExt.rational_extend (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) _ p).2.2.1 N).exists`. Establish `key : ∀ ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E), AdmWit t₀.lam (gS D) (lf D (X.Fu u)) t₀.frame ξ → ∃ N N' : G.GLV, (∀ b, N (G.f b) = ∑ a, U a b • G.f a) ∧ (∀ b, N' (G.f' b) = ∑ a, (U' * (ξ.map (algebraMap (𝓞 D.host.E) D.host.E))⁻¹) a b • G.f' a) ∧ ∀ p (m m' …`. Introduce `ξ hξ`. Establish `hξl : ∀ i j, j < i → (ξ.map (algebraMap (𝓞 D.host.E) D.host.E)) i j = 0`. Introduce `i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.map_apply, hξ.1 i j hij]`. Establish `hξd : ∀ i, (ξ.map (algebraMap (𝓞 D.host.E) D.host.E)) i i = 1`. Introduce `i`. Simplify using `[Matrix.map_apply, hξ.2.1 i]`. Take `⟨hBl, hBd, -⟩` from `GlobalTheory.T.unitriangular_mul_inv_superdiagonalSum_sub U' _ (fun i j h => (hU' i j).1 h) (fun i => (hU' i i).2 rfl) hξl hξd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨N, hN⟩, -⟩` from `GlobalTheory.T.unitriangularFrameChange_from_linearAut (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k G U (fun i j h => (hU i j).1 h) (fun i => (hU i i).2 rfl)`. Take `⟨-, ⟨N', hN'⟩⟩` from `GlobalTheory.T.unitriangularFrameChange_from_linearAut (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k G (U' * (ξ.map (algebraMap (𝓞 D.host.E) D.host.E))⁻¹) hBl hBd`. Use `⟨N, N', hN, hN', ?_⟩` and prove the remaining obligations. Introduce `p m m' hm hm'`. Take `⟨t, d, hto, hlatEq, hf, hf'⟩` from `GlobalTheory.T.movedTerm_lattice_isLocalTerm_at_place D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv p ξ hξ N N' hN hN' m m' hm hm'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, -⟩` from `GlobalTheory.T.terms_orbits_heights_amplitudes_in_coordinates (Y.M p) (Y.agree p).1 (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS D.R.k (FP p) (G.S p) (c.c p)`. Take `⟨hT, hom, -⟩` from `h1 d t hto`. Rewrite `hT`, `hom` using `[hlatEq]`. Establish `: IsNonarchimedeanLocalField ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp` using `((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).lf`. Establish `: CharZero ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).Fp` using `((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).loc p).char0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `(GlobalTheory.T.hermitian_lattice_datum_equivariant_flag_isometries ((placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).L p) D.R.rS D.R.k (G.S p)).1 _ _ hT`. Rewrite `hT`, `hom` using `[hd]`. Establish `hpsi` using `GlobalTheory.T.localTermWeight_eq_character_mul_inv (Y.M p) (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS D.R.k (FP p) (G.S p) (c.c p) d t hto m m' hf hf'`. Conclude with `⟨hT, hom ▸ hpsi⟩`. Establish `hsig : ∀ x, D.conjF x = star x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[D.conjF_eq]`. Conclude with `(Formalism.BasicNotions.bridge_star_holds _ D.host x).symm`. Establish `hprod` using `fun (n : G.GLV) (m : ∀ p, (G.S p).GLV) (hx : ∀ p, (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).Ext p n (m p)) => GlobalTheory.HL.PhaseProduct.main (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k G D.sp.cm hsig (fun p => Units.mk0 (Y.δ p) (Y.agree p).2.1) (gS D) hg0 (fun p …`. Take `⟨ξ₀, hξ₀⟩` from `exists_termFrame_admissibilityWitness D X Y u u' t₀`. Use `⟨⟨hlat, fun p => ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N, N', -, -, hloc⟩` from `key ξ₀ hξ₀`. Take `⟨m, hm⟩` from `hext N p`. Take `⟨m', hm'⟩` from `hext N' p`. Conclude with `(hloc p m m' hm hm').1`. Introduce `ξ hξ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, N', hN, hN', hloc⟩` from `key ξ hξ`. Use `choose m hm using hext N`. Use `choose m' hm' using hext N'`. Take `⟨hP, -, hfin⟩` from `hprod N m hm`. Take `⟨-, hP', hfin'⟩` from `hprod N' m' hm'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hom : G.om (G.datOf (c.lat ρ t₀.lam)) (c.lat ρ t₀.lam) = ∏ᶠ p, ((G.S p).psi (m p) * ((G.S p).psi' (m' p))⁻¹)` using `finprod_congr fun p => (hloc p (m p) (m' p) (hm p) (hm' p)).2`. Establish `hs1 : (Function.mulSupport fun p => (G.S p).psi (m p)).Finite` using `hfin.subset fun p hp => Or.inl hp`. Establish `hs2 : (Function.mulSupport fun p => ((G.S p).psi' (m' p))⁻¹).Finite` using `hfin'.subset fun p hp => Or.inr fun h => (Function.mem_mulSupport.1 hp) (by simp [h])`. Rewrite using `[hom, finprod_mul_distrib hs1 hs2, finprod_inv_distrib, hP, hP', (GlobalTheory.T.simpleRootCoef_eq_superdiagonal_sum_frames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k G U N).1 hN, (GlobalTheory.T.simpleRootCoef_eq_superdiagonal_sum_frames (placesOf (⟨Y.δ, Y.M, Y.agr …`. Establish `hξl : ∀ i j, j < i → (ξ.map (algebraMap (𝓞 D.host.E) D.host.E)) i j = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Simplify using `[Matrix.map_apply, hξ.1 i j hij]`. Establish `hξd : ∀ i, (ξ.map (algebraMap (𝓞 D.host.E) D.host.E)) i i = 1`. Introduce `i`. Simplify using `[Matrix.map_apply, hξ.2.1 i]`.
-
-Rewrite using `[(GlobalTheory.T.unitriangular_mul_inv_superdiagonalSum_sub U' _ (fun i j h => (hU' i j).1 h) (fun i => (hU' i i).2 rfl) hξl hξd).2.2, (psiInf_exp (gS D) _ _).2, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → G.IsTerm (G.datOf (c.lat ρ t₀.lam)) (c.lat ρ t₀.lam) ∧ ∀ ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E), AdmWit t₀.lam (gS D) (lf D (X.Fu u)) t₀.frame ξ → G.om (G.datOf (c.lat ρ t₀.lam)) (c.lat ρ t₀.lam) = (Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp U))⁻¹ * Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp U') * (Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp (ξ.map (algebraMap (𝓞 D.host.E) D.host.E))))⁻¹ := by
   intro D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hMv

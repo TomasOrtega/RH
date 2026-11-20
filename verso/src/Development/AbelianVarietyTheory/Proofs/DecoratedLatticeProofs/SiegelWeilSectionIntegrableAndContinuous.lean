@@ -15,13 +15,11 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, K, hK, hKc⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h.2.2]; exact ENNReal.one_lt_top⟩`. Establish `hi : ∀ x, IntegrableOn (F x) 𝓕 μ` using `fun x => GlobalTheory.MixModel.covolOne_integrableOn h _ (hc.comp (Continuous.prodMk_right x)) (hF x)`. Use `continuous_iff_continuousAt.2 fun x₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hc' : Continuous fun p : X × Mx D m n => ‖F p.1 p.2 - F x₀ p.2‖` using `(hc.sub (hc.comp (continuous_const.prodMk continuous_snd))).norm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ x in nhds x₀, ∀ a ∈ K, ‖F x a - F x₀ a‖ < ε / 2`. Use `hK.eventually_forall_of_forall_eventually fun a _ => ?_` and prove the remaining obligations. Use `hc'.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations. Simplify using `using hε`. Use `filter_upwards [hev] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dist_eq_norm, ← integral_sub (hi x) (hi x₀)]`. Establish `hb : ∀ a, ‖F x a - F x₀ a‖ ≤ ε / 2` using `fun a => by`. Take `⟨γ, hγ, ha⟩` from `hKc a`. Rewrite using `[← hF x γ hγ a, ← hF x₀ γ hγ a]`. Conclude with `(hx _ ha).le`.
-
-Use `(norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall hb)).trans_lt ?_` and prove the remaining obligations. Rewrite using `[measureReal_def, Measure.restrict_apply_univ, h.2.2, ENNReal.toReal_one, mul_one]`. Conclude with `half_lt_self hε`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_covolOne_integral {D : D7} {m n : ℕ} {X : Type} [TopologicalSpace X] {μ : Measure (Mx D m n)}
     {𝓕 : Set (Mx D m n)} (h : IsCovolOne (GlobalTheory.MixModel.ratMx D m n) μ 𝓕) (F : X → Mx D m n → ℂ)
@@ -50,7 +48,7 @@ theorem continuous_covolOne_integral {D : D7} {m n : ℕ} {X : Type} [Topologica
   exact half_lt_self hε
 
 /- English proof (translation)
-Introduce `D ψ A B χB omh hω ν 𝓕 hν φ hφ`. Use `⟨GlobalTheory.ThetaMean.integrableOn_lagr hν hφ, ?_⟩` and prove the remaining obligations. Establish `hj` using `GlobalTheory.Unf.jointCont_all D ψ _ _ _ _ omh hω φ hφ`. Conclude with `continuous_covolOne_integral hν (fun g w => omh (g, 1) φ (GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr A B w)) (hj.comp ((continuous_fst.prodMk continuous_const).prodMk (GlobalTheory.ThetaMean.continuous_lagr.comp continuous_snd))) (fun g => GlobalTheory.ThetaMean.p …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem swSec_integrable_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → ∀ φ, IsThetaFunO ψ (dblSp A) B φ → IntegrableOn (fun w => φ (GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.lagr A B w)) 𝓕 ν ∧ Continuous (swSec A B omh ν 𝓕 φ) := by
   intro D ψ A B χB omh hω ν 𝓕 hν φ hφ

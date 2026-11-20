@@ -16,7 +16,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Establish `h : ((modulus (a : F) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (by exact_mod_cast modulus_ne_zero a.ne_zero)`. Simplify using `only [mp, Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul]`. Rewrite using `[Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ← Complex.cpow_add _ _ h]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem mp_sq_half (a : Fˣ) : mp (a * a) (1 / 2) = ((modulus (a : F) : ℝ) : ℂ) := by
   have h : ((modulus (a : F) : ℝ) : ℂ) ≠ 0 :=
@@ -27,27 +27,27 @@ theorem mp_sq_half (a : Fˣ) : mp (a * a) (1 / 2) = ((modulus (a : F) : ℝ) : �
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Simplify using `[dg2, Matrix.det_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_scalar_val (a : Fˣ) : ((dg2 a a : GL (Fin 2) F).val).det = (a : F) * a := by
   simp [dg2, Matrix.det_fin_two]
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use `ext`. Simplify using `[dg2, GeneralLinearGroup.det, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_scalar (a : Fˣ) : GeneralLinearGroup.det (dg2 a a : GL (Fin 2) F) = a * a := by
   ext
   simp [dg2, GeneralLinearGroup.det, Matrix.det_fin_two]
 
 /- English proof (translation)
-Establish `ha : (a : F) ≠ 0` using `a.ne_zero`. Establish `hM : ((modulus (a : F) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (by exact_mod_cast modulus_ne_zero ha)`. Establish `e00 : one1 (dg2 a a : GL (Fin 2) F) 0 0 = (a : F)⁻¹`. Simplify using `only [one1, det_scalar_val]`. Simplify using `[dg2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e01 : one1 (dg2 a a : GL (Fin 2) F) 0 1 = 0`. Simplify using `[one1, dg2]`. Establish `e10 : one1 (dg2 a a : GL (Fin 2) F) 1 0 = 0`. Simplify using `[one1, dg2]`. Rewrite using `[piS_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only []`. Rewrite using `[rWS_zero χ (det_normalized_determinant_one _) e10, e00, e01, det_scalar_val]`. Simplify using `only [cst, det_scalar, mp_sq_half, map_mul, Units.val_mul, modulus_inv, mul_zero, zero_mul, AddChar.map_zero_eq_one, Circle.coe_one, one_mul]`. Establish `e : (((a : F)⁻¹ * x.1, (a : F)⁻¹ * x.2) * ((a : F) * a, 1) : F × F) = ((a : F) * x.1, ((a⁻¹ : Fˣ) : F) * x.2)`. Use `ext`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Prod.fst_mul]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -83,11 +83,11 @@ def torusInt (c₁ c₂ : Fˣ →* ℂˣ) (Ψ : F × F → ℂ) : ℂ :=
   ∫ u : Fˣ, Ψ ((u : F), ((u⁻¹ : Fˣ) : F)) * ((c₁ u : ℂˣ) : ℂ) * (((c₂ u)⁻¹ : ℂˣ) : ℂ) ∂multHaar F
 
 /- English proof (translation)
-Use `set f : Fˣ → ℂ := fun u => Ψ ((u : F), ((u⁻¹ : Fˣ) : F)) * ((c₁ u : ℂˣ) : ℂ) * (((c₂ u)⁻¹ : ℂˣ) : ℂ) with hf`. Rewrite using `[wcS_eq, torusInt, ← integral_mul_left_eq_self f a, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [piS_scalar, hf]`. Establish `e1 : (a : F) * (u : F) = ((a * u : Fˣ) : F)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((a⁻¹ : Fˣ) : F) * ((u⁻¹ : Fˣ) : F) = (((a * u)⁻¹ : Fˣ) : F)`. Rewrite using `[_root_.mul_inv_rev, mul_comm]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Establish `hc : ((c₁ a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ((c₂ a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hd' : ((c₂ u : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Simplify using `only [map_mul, mul_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem wcS_scalar (χ : AddChar F Circle) (c₁ c₂ : Fˣ →* ℂˣ) (a : Fˣ) (Ψ : F × F → ℂ) :
     WcS χ c₁ c₂ Ψ (dg2 a a) = ((c₁ a * c₂ a : ℂˣ) : ℂ) * torusInt c₁ c₂ Ψ := by
@@ -107,18 +107,18 @@ theorem wcS_scalar (χ : AddChar F Circle) (c₁ c₂ : Fˣ →* ℂˣ) (a : Fˣ
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_one_one_eq_identity : (dg2 1 1 : GL (Fin 2) F) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 c₁ c₂ h₁ h₂ Φ hΦ a g`. Establish `hrep` using `sPiRep F χ hχ hχ1 c₁ c₂ h₁ h₂ Φ hΦ`. Establish `h1 : WcS χ c₁ c₂ Φ (dg2 a a * g) = WcS χ c₁ c₂ (piS χ c₁ g Φ) (dg2 a a)` using `(hrep _ g).1`. Establish `h2 : WcS χ c₁ c₂ Φ g = WcS χ c₁ c₂ (piS χ c₁ g Φ) 1`. Use `(hrep 1 g).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `h3 : WcS χ c₁ c₂ (piS χ c₁ g Φ) 1 = torusInt c₁ c₂ (piS χ c₁ g Φ)`. Use `wcS_scalar χ c₁ c₂ 1 (piS χ c₁ g Φ)` as an intermediate fact. Rewrite `this` using `[diag_one_one_eq_identity]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h1, h2, h3, wcS_scalar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sCen : SCen := by
   intro F _ _ _ _ _ _ _ χ hχ hχ1 c₁ c₂ h₁ h₂ Φ hΦ a g

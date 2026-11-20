@@ -25,22 +25,22 @@ def IsHolFamily (ex : E → (Sp ℂ ⟶ X)) : Prop :=
     DifferentiableOn ℂ (fun w => valAt' (ex w) U f) {w | ⊤ ≤ ex w ⁻¹ᵁ U}
 
 /- English proof (translation)
-Conclude with `(h U 0).1.mem_nhds hz`.
+A detailed English derivation is pending.
 -/
 theorem IsHolFamily.eventually (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz : ⊤ ≤ ex z ⁻¹ᵁ U) :
     ∀ᶠ w in 𝓝 z, ⊤ ≤ ex w ⁻¹ᵁ U := by
   exact (h U 0).1.mem_nhds hz
 
 /- English proof (translation)
-Conclude with `((h U f).2 z hz).differentiableAt ((h U f).1.mem_nhds hz)`.
+A detailed English derivation is pending.
 -/
 theorem IsHolFamily.differentiableAt (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz : ⊤ ≤ ex z ⁻¹ᵁ U)
     (f : Γ(X, U)) : DifferentiableAt ℂ (fun w => valAt' (ex w) U f) z := by
   exact ((h U f).2 z hz).differentiableAt ((h U f).1.mem_nhds hz)
 /- English proof (translation)
-Establish `hx' : ⊤ ≤ x ⁻¹ᵁ U'` using `hx.trans (fun p hp => hle hp)`. Unfold `valAt'`. Rewrite using `[dif_pos hx, dif_pos hx']`. Unfold `valAt`. Establish `key : Y.presheaf.map (homOfLE hle).op ≫ x.appLE V' ⊤ hx = x.appLE U' ⊤ hx'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Scheme.Hom.map_appLE x _ _`. Rewrite using `[← key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem valAt'_resG {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {U' V' : Y.Opens} (hle : V' ≤ U')
     (hx : ⊤ ≤ x ⁻¹ᵁ V') (g : Γ(Y, U')) :
@@ -55,7 +55,7 @@ private theorem valAt'_resG {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {U' V' : Y.Opens
   rfl
 
 /- English proof (translation)
-Unfold `valAt'`. Rewrite using `[dif_pos hx]`. Unfold `valAt`. Conclude with `((hg.map (x.appLE W ⊤ hx).hom).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom).ne_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem valAt'_ne_zero_of_isUnit {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {W : Y.Opens} (hx : ⊤ ≤ x ⁻¹ᵁ W)
     {g : Γ(Y, W)} (hg : IsUnit g) : valAt' x W g ≠ 0 := by
@@ -65,7 +65,7 @@ private theorem valAt'_ne_zero_of_isUnit {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {W 
   exact ((hg.map (x.appLE W ⊤ hx).hom).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom).ne_zero
 
 /- English proof (translation)
-Unfold `valAt'`. Use `split_ifs with hx`. Unfold `valAt`. Simplify using `only [map_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem valAt'_mul' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) (f f' : Γ(Y, U)) :
     valAt' x U (f * f') = valAt' x U f * valAt' x U f' := by
@@ -76,15 +76,15 @@ private theorem valAt'_mul' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) (f
   · simp
 
 /- English proof (translation)
-Establish `pt : Sp ℂ` using `by exact IsLocalRing.closedPoint ℂ`. Establish `hxU : (ex z).base pt ∈ U` using `hz (show pt ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Establish `hxV : (ex z).base pt ∈ V` using `hV (show pt ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Take `⟨f, hfV, hfx⟩` from `hU.exists_basicOpen_le (V := V) ⟨(ex z).base pt, hxV⟩ hxU`. Use `letI := (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `hloc` using `hU.isLocalization_basicOpen f`. Take `⟨⟨a, s⟩, hq⟩` from `IsLocalization.surj (Submonoid.powers f) (X.presheaf.map (homOfLE hfV).op r)`. Establish `hsu : IsUnit (algebraMap Γ(X, U) Γ(X, X.basicOpen f) (s : Γ(X, U)))` using `IsLocalization.map_units _ s`. Establish `hzD : ⊤ ≤ ex z ⁻¹ᵁ X.basicOpen f`. Introduce `q _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq1 : q = pt` using `Subsingleton.elim _ _`. Substitute `hq1` using the available equality. Conclude with `hfx`. Establish `hSz : valAt' (ex z) U (s : Γ(X, U)) ≠ 0`. Rewrite using `[← valAt'_resG (ex z) (X.basicOpen_le f) hzD]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `valAt'_ne_zero_of_isUnit (ex z) hzD hsu`. Establish `hev : (fun w => valAt' (ex w) V r * valAt' (ex w) U (s : Γ(X, U))) =ᶠ[𝓝 z] fun w => valAt' (ex w) U a` using `by filter_upwards [h.eventually hzD] with w hw`. Rewrite using `[← valAt'_resG (ex w) hfV hw, ← valAt'_resG (ex w) (X.basicOpen_le f) hw, ← valAt'_resG (ex w) (X.basicOpen_le f) hw a, ← valAt'_mul']`. Conclude with `congrArg _ hq`. Establish `hd : fderiv ℂ (fun w => valAt' (ex w) V r * valAt' (ex w) U (s : Γ(X, U))) z ξ = fderiv ℂ (fun w => valAt' (ex w) U a) z ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hev.fderiv_eq]`. Rewrite `hd` using `[fderiv_fun_mul (h.differentiableAt hV r) (h.differentiableAt hz _)]`. Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul, h0, mul_zero, zero_add] at hd`. Conclude with `(mul_eq_zero.mp hd).resolve_left hSz`.
+A detailed English derivation is pending.
 -/
 theorem IsHolFamily.fderiv_eq_zero (h : IsHolFamily ex) {U V : X.Opens} (hU : IsAffineOpen U) {z ξ : E}
     (hz : ⊤ ≤ ex z ⁻¹ᵁ U) (hV : ⊤ ≤ ex z ⁻¹ᵁ V)
@@ -133,9 +133,9 @@ theorem IsHolFamily.der_apply (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz : �
     (f : Γ(X, U)) : h.der hz ξ f = fderiv ℂ (fun w => valAt' (ex w) U f) z ξ := rfl
 
 /- English proof (translation)
-Simplify using `only [IsHolFamily.der_apply]`. Establish `e : (fun w => valAt' (ex w) U (f * f')) = fun w => valAt' (ex w) U f * valAt' (ex w) U f'`. Use function extensionality and compare the values at `w`. Conclude with `valAt'_mul' _ _ _ _`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fderiv_fun_mul (h.differentiableAt hz f) (h.differentiableAt hz f')]`. Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsHolFamily.der_mul (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz : ⊤ ≤ ex z ⁻¹ᵁ U) (ξ : E)
     (f f' : Γ(X, U)) :
@@ -148,13 +148,11 @@ theorem IsHolFamily.der_mul (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz : ⊤
   rw [fderiv_fun_mul (h.differentiableAt hz f) (h.differentiableAt hz f')]
   simp only [_root_.add_apply, _root_.smul_apply, smul_eq_mul]
 /- English proof (translation)
-Unfold `valAt'`. Rewrite using `[dif_pos hx]`. Unfold `valAt constFn`. Establish `key : p.appLE ⊤ U (fun _ _ => trivial) ≫ x.appLE U ⊤ hx = (x ≫ p).appLE ⊤ ⊤ (by simp)`. Conclude with `Scheme.Hom.appLE_comp_appLE x p _ _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun φ => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (φ.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a))) key`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[e]`. Establish `gen : ∀ (q : Sp ℂ ⟶ Sp ℂ) (hq : q = 𝟙 _) (e' : ⊤ ≤ q ⁻¹ᵁ ⊤), (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((q.appLE ⊤ ⊤ e').hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a)) = a`. Introduce and unpack `q rfl e'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hid : Scheme.Hom.appLE (𝟙 (Sp ℂ)) ⊤ ⊤ e' = 𝟙 _`. Simplify using `[Scheme.Hom.appLE]`. Conclude with `(Sp ℂ).presheaf.map_id _`. Rewrite using `[hid]`. Simplify using the standard rewrite rules.
-
-Conclude with `gen _ hp _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem valAt'_constFn_of_section {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (p : Y ⟶ Sp ℂ) (U : Y.Opens) (a : ℂ)
     (hx : ⊤ ≤ x ⁻¹ᵁ U) (hp : x ≫ p = 𝟙 _) : valAt' x U (constFn p U a) = a := by
@@ -179,7 +177,7 @@ private theorem valAt'_constFn_of_section {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (p
   exact gen _ hp _
 
 /- English proof (translation)
-Rewrite using `[h.der_apply]`. Establish `hev : (fun w => valAt' (ex w) U (constFn p U a)) =ᶠ[𝓝 z] fun _ => a` using `by filter_upwards [h.eventually hz] with w hw`. Conclude with `valAt'_constFn_of_section (ex w) p U a hw (hp w)`. Rewrite using `[hev.fderiv_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsHolFamily.der_constFn (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz : ⊤ ≤ ex z ⁻¹ᵁ U) (ξ : E)
     (p : X ⟶ Sp ℂ) (hp : ∀ w, ex w ≫ p = 𝟙 _) (a : ℂ) : h.der hz ξ (constFn p U a) = 0 := by
@@ -191,19 +189,17 @@ theorem IsHolFamily.der_constFn (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz :
   simp
 
 /- English proof (translation)
-Establish `hθz : ∀ c', fderiv ℂ (θ c') z ξ = θ c' z * (fderiv ℂ (θ c) z ξ / θ c z)`. Introduce `c'`. Establish `hq : DifferentiableAt ℂ (fun w => θ c' w / θ c w) z`. Simplify using `only [div_eq_mul_inv]`. Conclude with `((hθ c') z).fun_mul (((hθ c) z).inv hc)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev : θ c' =ᶠ[𝓝 z] fun w => θ c' w / θ c w * θ c w` using `by filter_upwards [((hθ c).continuous.continuousAt).eventually_ne hc] with w hw`. Conclude with `(div_mul_cancel₀ _ hw).symm`. Rewrite using `[hev.fderiv_eq]`. Rewrite using `[fderiv_fun_mul hq ((hθ c) z)]`. Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul, h0 c']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Proceed by induction.
 
-Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c', rfl⟩` from `hx`. Use `⟨(hθ c') z, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hθz c']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `⟨differentiableAt_const _, ?_⟩` and prove the remaining obligations. Rewrite using `[show (0 : E → ℂ) = fun _ => (0 : ℂ) from rfl, fderiv_const_apply]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Use `⟨hx.1.add hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[fderiv_add hx.1 hy.1]`. Simplify using `only [_root_.add_apply, hx.2, hy.2, Pi.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a x _ hx`. Use `⟨hx.1.const_smul a, ?_⟩` and prove the remaining obligations. Rewrite using `[fderiv_const_smul hx.1 a]`. Simplify using `only [_root_.smul_apply, hx.2, Pi.smul_apply, smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fderiv_eq_mul_of_mem_span {κ : Type} (θ : κ → E → ℂ) (hθ : ∀ c, Differentiable ℂ (θ c)) (c : κ) {z ξ : E}
     (hc : θ c z ≠ 0) (h0 : ∀ c', fderiv ℂ (fun w => θ c' w / θ c w) z ξ = 0) (f : E → ℂ)
@@ -242,9 +238,9 @@ theorem fderiv_eq_mul_of_mem_span {κ : Type} (θ : κ → E → ℂ) (hθ : ∀
     simp only [_root_.smul_apply, hx.2, Pi.smul_apply, smul_eq_mul]
     ring
 /- English proof (translation)
-Take `⟨N, _, ν, -, hci, hsm, hrange⟩` from `GlobalTheory.ReducedSubgroup.exists_smooth_closed_subgroup ℂ X hft ⊤ Set.univ isClosed_univ (fun x => by simp)`. Establish `hsurj : Surjective ν.left` using `⟨fun y => by`. Establish `hy : y ∈ Set.range ν.left` using `by rw [hrange]; trivial`. Conclude with `hy⟩`. Establish `hiso : IsIso ν.left` using `isIso_of_isClosedImmersion_of_surjective ν.left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : X.hom = inv ν.left ≫ N.hom` using `by rw [← Over.w ν]; simp`. Rewrite using `[e]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_of_grpObj_reduced_finiteType (X : Over (Sp ℂ)) [GrpObj X] (hred : IsReduced X.left)
     (hft : LocallyOfFiniteType X.hom) : Smooth X.hom := by
@@ -261,31 +257,27 @@ private theorem smooth_of_grpObj_reduced_finiteType (X : Over (Sp ℂ)) [GrpObj 
 end Deriv
 
 /- English proof (translation)
-Introduce `H1 H2 H3 H4 H5 g τ hτ N hN X ex D hX _hmero _ hcomm`. Take `⟨hint, hprop, hsurj, _hker, hhol, hD, hcov⟩` from `hX`. Use `hint` as an intermediate fact. Use `hprop` as an intermediate fact. Establish `hsm : Smooth X.hom` using `smooth_of_grpObj_reduced_finiteType X inferInstance inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : GeometricallyConnected X.hom` using `geometricallyConnected_of_isAlgClosed X.hom`. Establish `hAb : IsAbelianScheme X` using `⟨hcomm, hsm, hprop, hgc⟩`. Use `⟨hAb, ?_⟩` and prove the remaining obligations. Establish `pt : Sp ℂ` using `by exact IsLocalRing.closedPoint ℂ`. Establish `hall : ∀ q : Sp ℂ, q = pt` using `fun q => Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: PreconnectedSpace X.left` using `inferInstance`. Take `⟨n, hn⟩` from `exists_dim_of_preconnected X.hom ((ex 0).left.base pt)`. Establish `htop : ∀ (x : Sp ℂ ⟶ X.left) (V : X.left.Opens), x.base pt ∈ V → ⊤ ≤ x ⁻¹ᵁ V`. Introduce `x V hx q _`. Rewrite using `[hall q]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hx0 : (ex 0).left.base pt ∈ ⨆ c, D c`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c₀, hc₀⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0 : ⊤ ≤ (ex 0).left ⁻¹ᵁ D c₀` using `htop _ _ hc₀`. Establish `hle : n ≤ g`. Establish `hdim` using `H1 ℂ X.left X.hom n hn (D c₀) (hD c₀).1 ⟨_, hc₀⟩`. Establish `hdle` using `(hD c₀).2.1`. Rewrite `hdle` using `[hdim]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hdle` after adjusting the coercions. Establish `hge : g ≤ n`. Assume the negation of the conclusion as `hlt'`. Establish `hlt : n < g` using `not_le.mp hlt'`. Take `⟨W, σ, U, t, hW, hW0, hσ0, hU, hσhol, hσU, hopen, hder⟩` from `H2 X n hn (ex 0)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzU : ⊤ ≤ (ex 0).left ⁻¹ᵁ U`. Rewrite using `[← hσ0]`. Conclude with `(hσU 0 hW0).1`. Establish `hF : IsHolFamily (fun w => (ex w).left)` using `fun V f => by`. Simplify using `using hhol V f`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Φ : (Fin g → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.pi (fun i => ((fderiv ℂ (fun w => valAt' (ex w).left U (t i)) 0 : (Fin g → ℂ) →L[ℂ] ℂ) : (Fin g → ℂ) →ₗ[ℂ] ℂ))`. Establish `hker : LinearMap.ker Φ ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by simpa using hlt)`. Take `⟨ξ, hξ, hξ0⟩` from `(Submodule.ne_bot_iff _).mp hker`. Establish `hξt : ∀ i, fderiv ℂ (fun w => valAt' (ex w).left U (t i)) 0 ξ = 0` using `fun i => by`. Establish `h1` using `congrFun (LinearMap.mem_ker.mp hξ) i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[Φ]`. Establish `hp : ∀ w, (ex w).left ≫ X.hom = 𝟙 _` using `fun w => by`. Simplify using `using Over.w (ex w)`. Establish `hD0` using `hder (hF.der hzU ξ) (fun a => hF.der_constFn hzU ξ X.hom hp a) (fun f f' => hF.der_mul hzU ξ f f') (fun i => by rw [hF.der_apply]; exact hξt i)`. Establish `hUzero : ∀ f : Γ(X.left, U), fderiv ℂ (fun w => valAt' (ex w).left U f) 0 ξ = 0` using `fun f => (hF.der_apply hzU ξ f).symm.trans (by simp [hD0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVzero : ∀ r' : Γ(X.left, D c₀), fderiv ℂ (fun w => valAt' (ex w).left (D c₀) r') 0 ξ = 0` using `fun r' => hF.fderiv_eq_zero hU hzU hz0 hUzero r'`. Use `set θ : (Fin g → Fin N) → (Fin g → ℂ) → ℂ := fun c z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) with hθdef`. Establish `hθd : ∀ c, Differentiable ℂ (θ c)` using `fun c => ((H3 g τ hτ N (by omega)).1 c).1`. Establish `hθ0 : θ c₀ 0 ≠ 0` using `((hD c₀).2.2.1 0).mp hz0`. Take `⟨r, hr, -⟩` from `(hD c₀).2.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hratio : ∀ c', fderiv ℂ (fun w => θ c' w / θ c₀ w) 0 ξ = 0`. Introduce `c'`. Establish `hev : (fun w => valAt' (ex w).left (D c₀) (r c')) =ᶠ[𝓝 0] fun w => θ c' w / θ c₀ w` using `by filter_upwards [((hθd c₀).continuous.continuousAt).eventually_ne hθ0] with w hw`. Conclude with `hr c' w hw`. Rewrite using `[← hev.fderiv_eq]`.
-
-Conclude with `hVzero (r c')`. Establish `hall' : ∀ f : (Fin g → ℂ) → ℂ, (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → fderiv ℂ f 0 ξ = fderiv ℂ (θ c₀) 0 ξ / θ c₀ 0 * f 0`. Introduce `f hf`. Conclude with `(fderiv_eq_mul_of_mem_span θ hθd c₀ hθ0 hratio f (H4 g τ hτ N (by omega) f hf)).2`. Conclude with `hξ0 (H5 g τ hτ N hN 0 ξ _ hall')`.
-
-Rewrite using `[← le_antisymm hle hge]`. Conclude with `hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_and_dim : (∀ (K : Type) [Field K] (X : Scheme.{0}) (p : X ⟶ Sp K) (g
     : ℕ), SmoothOfRelativeDimension g p → ∀ U : X.Opens, IsAffineOpen U → (U

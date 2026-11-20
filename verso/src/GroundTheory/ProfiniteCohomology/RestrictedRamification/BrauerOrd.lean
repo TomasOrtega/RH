@@ -28,7 +28,7 @@ def levelOf (y : ℚ̄) : FiniteSubfield :=
 instance fact_le_levelOf (y : ℚ̄) : Fact (K ≤ levelOf K y) := ⟨le_sup_left (a := K.1)⟩
 
 /- English proof (translation)
-The claim follows from `(le_sup_right (a := K.1) : IntermediateField.adjoin ℚ {y} ≤ (levelOf K y).1) (IntermediateField.mem_adjoin_simple_self ℚ y)`.
+A detailed English derivation is pending.
 -/
 theorem mem_levelOf (y : ℚ̄) : y ∈ (levelOf K y).1 :=
   (le_sup_right (a := K.1) : IntermediateField.adjoin ℚ {y} ≤ (levelOf K y).1)
@@ -38,12 +38,12 @@ def supLevel (F E : FiniteSubfield) : FiniteSubfield :=
   ⟨F.1 ⊔ E.1, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `le_sup_left (a := F.1)`.
+A detailed English derivation is pending.
 -/
 theorem le_supLevel_left (F E : FiniteSubfield) : F ≤ supLevel F E := le_sup_left (a := F.1)
 
 /- English proof (translation)
-The claim follows from `le_sup_right (a := F.1)`.
+A detailed English derivation is pending.
 -/
 theorem le_supLevel_right (F E : FiniteSubfield) : E ≤ supLevel F E := le_sup_right (a := F.1)
 
@@ -53,9 +53,7 @@ variable (S : Set (HeightOneSpectrum (𝓞 K.1))) {v : HeightOneSpectrum (𝓞 K
 section Inside
 
 /- English proof (translation)
-Establish `h : (levelOf K y).1 ≤ (maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ`. Use `sup_le (fun x hx => ?_) ?_` and prove the remaining obligations. Conclude with `(maxUnramifiedOutside K.1 ℚ̄ S).algebraMap_mem ⟨x, hx⟩`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `hy`.
-
-Conclude with `fun x hx => h hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem levelOf_subset_max {y : ℚ̄} (hy : y ∈ maxUnramifiedOutside K.1 ℚ̄ S) :
     ∀ x ∈ (levelOf K y).1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S := by
@@ -67,7 +65,7 @@ theorem levelOf_subset_max {y : ℚ̄} (hy : y ∈ maxUnramifiedOutside K.1 ℚ�
   exact fun x hx => h hx
 
 /- English proof (translation)
-Establish `h : (supLevel F E).1 ≤ (maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ` using `sup_le (fun x hx => hF x hx) (fun x hx => hE x hx)`. Conclude with `fun x hx => h hx`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supLevel_subset_max {F E : FiniteSubfield}
     (hF : ∀ x ∈ F.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
@@ -78,7 +76,7 @@ theorem supLevel_subset_max {F E : FiniteSubfield}
   exact fun x hx => h hx
 
 /- English proof (translation)
-Set `E' : IntermediateField K.1 ℚ̄` to `IntermediateField.extendScalars (show K.1 ≤ F.1 from Fact.out)`. Establish `: FiniteDimensional K.1 E'` using `(inferInstance : FiniteDimensional K.1 F.1)`. Establish `hle : E' ≤ maxUnramifiedOutside K.1 ℚ̄ S` using `fun x hx => hF x hx`. Conclude with `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hle v hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnramifiedIn_of_subset_max (hv : v ∉ S) (F : FiniteSubfield) [Fact (K ≤ F)]
     (hF : ∀ x ∈ F.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S) :
@@ -90,7 +88,7 @@ theorem isUnramifiedIn_of_subset_max (hv : v ∉ S) (F : FiniteSubfield) [Fact (
   exact (isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hle v hv
 
 /- English proof (translation)
-Establish `hU : Algebra.IsUnramifiedAt (𝓞 K.1) (placeOfEmbedding ι E).1.asIdeal` using `isUnramifiedIn_of_subset_max S hv E hE _ inferInstance (placeOfEmbedding ι E).2`. Establish `: Algebra.IsUnramifiedAt (𝓞 F.1) (placeOfEmbedding ι E).1.asIdeal` using `((isUnramifiedAt_tower_iff (F := K.1) (L := F.1) (M := E.1) _).1 hU).2`. Conclude with `valuation_algebraMap_of_isUnramifiedAt (placeOfEmbedding ι F).1 (placeOfEmbedding ι E).1 y`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_placeOfEmbedding_algebraMap (hv : v ∉ S) {F E : FiniteSubfield} [Fact (K ≤ F)]
     [Fact (K ≤ E)] [Fact (F ≤ E)] (hE : ∀ x ∈ E.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S) (y : F.1) :
@@ -103,7 +101,7 @@ theorem valuation_placeOfEmbedding_algebraMap (hv : v ∉ S) {F E : FiniteSubfie
   exact valuation_algebraMap_of_isUnramifiedAt (placeOfEmbedding ι F).1 (placeOfEmbedding ι E).1 y
 
 /- English proof (translation)
-Establish `: Algebra.IsUnramifiedAt (𝓞 K.1) (placeOfEmbedding ι E).1.asIdeal` using `isUnramifiedIn_of_subset_max S hv E hE _ inferInstance (placeOfEmbedding ι E).2`. Conclude with `valuation_algebraMap_of_isUnramifiedAt v (placeOfEmbedding ι E).1 a`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_placeOfEmbedding_algebraMap_base (hv : v ∉ S) {E : FiniteSubfield} [Fact (K ≤ E)]
     (hE : ∀ x ∈ E.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S) (a : K.1) :
@@ -119,7 +117,7 @@ section Transport
 variable {N : FiniteSubfield} [Fact (K ≤ N)]
 
 /- English proof (translation)
-Use `(eq_placeOfEmbedding _ N ((σ : AlgebraicClosure (v.adicCompletion K.1) →ₐ[v.adicCompletion K.1] AlgebraicClosure (v.adicCompletion K.1)).comp (completionEmbedding ι N)) fun x => ?_).symm` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, completionEmbedding_algebraMap]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem placeOfEmbedding_comp_algEquiv
     (σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)) :
@@ -132,9 +130,9 @@ theorem placeOfEmbedding_comp_algEquiv
   rfl
 
 /- English proof (translation)
-Use `set w₀ := placeOfEmbedding ι N`. Establish `hu : w₀.1 = g • (g⁻¹ • w₀).1` using `eq_smul_inv_smul v g w₀`. Set `j` to `(completionEmbedding ι N).comp (galEquiv v g (g⁻¹ • w₀).1 w₀.1 hu).toAlgHom`. Use `(eq_placeOfEmbedding ι' N j fun x => ?_).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `completionEmbedding ι N (galEquiv v g (g⁻¹ • w₀).1 w₀.1 hu (algebraMap N.1 _ x)) = ι' x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[galEquiv_algebraMap, completionEmbedding_algebraMap, h]`.
+A detailed English derivation is pending.
 -/
 theorem placeOfEmbedding_eq_inv_smul (g : N.1 ≃ₐ[K.1] N.1)
     (ι' : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1)) (h : ∀ x : N.1, ι' x = ι (g x)) :
@@ -147,9 +145,9 @@ theorem placeOfEmbedding_eq_inv_smul (g : N.1 ≃ₐ[K.1] N.1)
   rw [galEquiv_algebraMap, completionEmbedding_algebraMap, h]
 
 /- English proof (translation)
-Use `set w₀ := placeOfEmbedding ι N`. Establish `hu : w₀.1 = g • (g⁻¹ • w₀).1` using `eq_smul_inv_smul v g w₀`. Set `j` to `σ.symm.toAlgHom.comp ((completionEmbedding ι N).comp (galEquiv v g (g⁻¹ • w₀).1 w₀.1 hu).toAlgHom)`. Use `eq_placeOfEmbedding ι N j fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ.symm (completionEmbedding ι N (galEquiv v g (g⁻¹ • w₀).1 w₀.1 hu (algebraMap N.1 _ x))) = ι x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[galEquiv_algebraMap, completionEmbedding_algebraMap, hg, AlgEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem inv_smul_placeOfEmbedding_of_comm (g : N.1 ≃ₐ[K.1] N.1)
     (σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1))
@@ -165,7 +163,7 @@ theorem inv_smul_placeOfEmbedding_of_comm (g : N.1 ≃ₐ[K.1] N.1)
   rw [galEquiv_algebraMap, completionEmbedding_algebraMap, hg, AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `valuation_smul g (g⁻¹ • w).1 x` as an intermediate fact. Rewrite `this` using `[← coe_smul_placesOver, smul_inv_smul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_inv_smul_placesOver (g : N.1 ≃ₐ[K.1] N.1) (w : PlacesOver N.1 v) (x : N.1) :
     (g⁻¹ • w).1.valuation N.1 x = w.1.valuation N.1 (g x) := by
@@ -178,11 +176,11 @@ end Transport
 section GaloisLevel
 
 /- English proof (translation)
-Set `A : IntermediateField K.1 ℚ̄` to `IntermediateField.adjoin K.1 {y}`. Establish `: FiniteDimensional K.1 A` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral y)`. Set `N' : IntermediateField K.1 ℚ̄` to `IntermediateField.normalClosure K.1 A ℚ̄`. Establish `hN'f : FiniteDimensional K.1 N'` using `inferInstance`. Establish `hN'n : Normal K.1 N'` using `inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN'le : N' ≤ maxUnramifiedOutside K.1 ℚ̄ S` using `IntermediateField.normalClosure_le_iff_of_normal.2 ((IntermediateField.adjoin_simple_le_iff).2 hy)`. Use `K.2` as an intermediate fact. Establish `hN'q : FiniteDimensional ℚ N'` using `Module.Finite.trans K.1 N'`. Set `N : FiniteSubfield` to `⟨N'.restrictScalars ℚ, hN'q⟩`. Establish `hKN : Fact (K ≤ N)` using `⟨fun x hx => N'.algebraMap_mem ⟨x, hx⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨N, hKN, ?_, fun x hx => hN'le hx, IntermediateField.le_normalClosure A (IntermediateField.mem_adjoin_simple_self K.1 y)⟩` and prove the remaining obligations. Establish `: IsGalois K.1 N'` using `⟨⟩`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_galois_level {y : ℚ̄} (hy : y ∈ maxUnramifiedOutside K.1 ℚ̄ S) :
     ∃ (N : FiniteSubfield) (_ : Fact (K ≤ N)), IsGalois K.1 N.1 ∧
@@ -212,13 +210,11 @@ def ordEmbFun (y : ℚ̄ˣ) : ℤ :=
     ⟨(y : ℚ̄), mem_levelOf (y : ℚ̄)⟩)
 
 /- English proof (translation)
-Use `set L := levelOf K (y : ℚ̄)`. Use `set M := supLevel L F`. Establish `hL : ∀ x ∈ L.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `levelOf_subset_max S (hF _ hy)`. Establish `hM : ∀ x ∈ M.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `supLevel_subset_max S hL hF`. Establish `: Fact (L ≤ M)` using `⟨le_supLevel_left L F⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fact (F ≤ M)` using `⟨le_supLevel_right L F⟩`. Establish `: Fact (K ≤ M)` using `⟨(Fact.out : K ≤ L).trans (le_supLevel_left L F)⟩`. Establish `h1` using `valuation_placeOfEmbedding_algebraMap S ι hv (F := F) (E := M) hM ⟨y, hy⟩`. Establish `h2` using `valuation_placeOfEmbedding_algebraMap S ι hv (F := L) (E := M) hM ⟨y, mem_levelOf (y : ℚ̄)⟩`. Establish `h3 : algebraMap F.1 M.1 ⟨y, hy⟩ = algebraMap L.1 M.1 ⟨y, mem_levelOf (y : ℚ̄)⟩` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1, h3, h2]`. Establish `h0 : (placeOfEmbedding ι L).1.valuation L.1 ⟨(y : ℚ̄), mem_levelOf (y : ℚ̄)⟩ ≠ 0`. Rewrite using `[Ne, map_eq_zero]`. Introduce `h`. Conclude with `y.ne_zero (congrArg Subtype.val h)`.
-
-Rewrite using `[ordEmbFun, neg_neg, WithZero.exp_log h0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_placeOfEmbedding_eq (hv : v ∉ S) (F : FiniteSubfield) [Fact (K ≤ F)]
     (hF : ∀ x ∈ F.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S) (y : ℚ̄ˣ) (hy : (y : ℚ̄) ∈ F.1) :
@@ -284,17 +280,17 @@ theorem ordEmb_apply (hv : v ∉ S) (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ x : maxUnramifiedOutside K.1 ℚ̄ S, ι ((decompHomS (v.adicCompletion K.1) S ι σ x : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = σ (ι x)` using `fun x => decompHom_apply (Kv := v.adicCompletion K.1) (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val) σ x`. Generalize the expression as in `decompHomS (v.adicCompletion K.1) S ι σ = τ at key ⊢`. Rewrite using `[ordEmb_apply, ordEmb_apply]`. Establish `hY : ((maxUnitsToUnits S y : ℚ̄ˣ) : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `(y : maxUnramifiedOutside K.1 ℚ̄ S).2`. Take `⟨N, hKN, hNg, hN, hYN⟩` from `exists_galois_level S hY`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩ : ∃ g : N.1 ≃ₐ[K.1] N.1, ∀ x : N.1, ι (g x) = σ (ι x)` from `⟨decompHom (v.adicCompletion K.1) (embedLevel ι N) σ, fun x => decompHom_apply (Kv := v.adicCompletion K.1) (embedLevel ι N) σ x⟩`. Establish `hz : ((maxUnitsToUnits S (galUnitsHom K.1 _ τ y) : ℚ̄ˣ) : ℚ̄) = ((g ⟨_, hYN⟩ : N.1) : ℚ̄)`. Apply `ι.toRingHom.injective` to reduce the goal to its premises. Establish `h1` using `key (y : maxUnramifiedOutside K.1 ℚ̄ S)`. Establish `h2` using `hg ⟨_, hYN⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ι _ = ι _`. Rewrite using `[h2]`. Conclude with `h1`. Generalize the expression as in `maxUnitsToUnits S (galUnitsHom K.1 _ τ y) = b at hz ⊢`. Generalize the expression as in `maxUnitsToUnits S y = a at hY hYN hz ⊢`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hbN : (b : ℚ̄) ∈ N.1`. Rewrite using `[hz]`. Conclude with `(g _).2`. Establish `e1` using `valuation_placeOfEmbedding_eq S ι hv N hN b hbN`. Establish `e2` using `valuation_placeOfEmbedding_eq S ι hv N hN a hYN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `(inv_smul_placeOfEmbedding_of_comm ι g σ hg).symm`. Establish `e4` using `valuation_inv_smul_placesOver g (placeOfEmbedding ι N) ⟨a, hYN⟩`. Rewrite `e4` using `[← e3]`. Establish `e5 : (⟨(b : ℚ̄), hbN⟩ : N.1) = g ⟨a, hYN⟩` using `Subtype.ext hz`. Rewrite `e1` using `[e5, ← e4, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `WithZero.exp_injective e1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ordEmb_decompHomS (hv : v ∉ S)
     (σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1))
@@ -337,11 +333,11 @@ theorem ordEmb_decompHomS (hv : v ∉ S)
   omega
 
 /- English proof (translation)
-Use `set x := maxUnitsToUnits S (Units.map (algebraMap K.1 (maxUnramifiedOutside K.1 ℚ̄ S)).toMonoidHom a)`. Establish `hx : (x : ℚ̄) = algebraMap K.1 ℚ̄ a` using `rfl`. Establish `hxS : (x : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ S`. Rewrite using `[hx]`. Conclude with `(maxUnramifiedOutside K.1 ℚ̄ S).algebraMap_mem a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F := levelOf K (x : ℚ̄)`. Establish `hF` using `levelOf_subset_max S hxS`. Establish `e1` using `valuation_placeOfEmbedding_eq S ι hv F hF x (mem_levelOf _)`. Establish `e2` using `valuation_placeOfEmbedding_algebraMap_base S ι hv hF (a : K.1)`. Establish `e3 : (⟨(x : ℚ̄), mem_levelOf _⟩ : F.1) = algebraMap K.1 F.1 a` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite `e1` using `[e3, e2, valuation_eq_exp_neg_ordAt]`. Express the relevant statement in the definitionally equal form `ordEmbFun ι x = ordAt v a`. Use `WithZero.exp_injective e1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ordEmb_algebraMap (hv : v ∉ S) (a : K.1ˣ) :
     ordEmb S ι hv (Additive.ofMul
@@ -362,19 +358,19 @@ theorem ordEmb_algebraMap (hv : v ∉ S) (a : K.1ˣ) :
   omega
 
 /- English proof (translation)
-Rewrite using `[ordEmb_apply]`. Establish `hZ : ((maxUnitsToUnits S z : ℚ̄ˣ) : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `(z : maxUnramifiedOutside K.1 ℚ̄ S).2`. Generalize the expression as in `hzz : maxUnitsToUnits S z = a at hZ`. Use `set F := levelOf K (a : ℚ̄)`. Establish `hF` using `levelOf_subset_max S hZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `valuation_placeOfEmbedding_eq S ι hv F hF a (mem_levelOf _)`. Set `E' : IntermediateField K.1 ℚ̄` to `IntermediateField.extendScalars (show K.1 ≤ F.1 from (fact_le_levelOf (a : ℚ̄)).out)`. Establish `hle : E' ≤ maxUnramifiedOutside K.1 ℚ̄ S` using `fun x hx => hF x hx`. Set `φ : F.1 →ₐ[K.1] maxUnramifiedOutside K.1 ℚ̄ S` to `IntermediateField.inclusion hle`. Establish `hφ : Function.Injective φ` using `φ.toRingHom.injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `aF : F.1ˣ` to `Units.mk0 ⟨(a : ℚ̄), mem_levelOf _⟩ (fun h => a.ne_zero (congrArg Subtype.val h))`. Establish `hφa : φ.restrictScalars (S.integer K.1) (aF : F.1) = (z : maxUnramifiedOutside K.1 ℚ̄ S)`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(a : ℚ̄) = _`. Rewrite using `[← hzz]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hφa' : φ.restrictScalars (S.integer K.1) ((aF⁻¹ : F.1ˣ) : F.1) = ((z⁻¹ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, Units.val_inv_eq_inv_val, ← hφa]`. Establish `hmem : aF ∈ sUnitsOf S F.1`. Use `⟨(isIntegral_algHom_iff (φ.restrictScalars (S.integer K.1)) hφ).1 ?_, (isIntegral_algHom_iff (φ.restrictScalars (S.integer K.1)) hφ).1 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφa]`. Conclude with `hz.1`. Rewrite using `[hφa']`. Conclude with `hz.2`. Rewrite `hmem` using `[mem_sUnitsOf_iff_mem_unit]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : (placeOfEmbedding ι F).1 ∉ placesOver S`. Rewrite using `[mem_placesOver_iff]`. Rewrite using `[← liesOver_iff_eq_underPlace.1 (placeOfEmbedding ι F).2]`. Conclude with `hv`. Establish `h1` using `hmem _ hw`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Express the relevant statement in the definitionally equal form `(placeOfEmbedding ι F).1.valuation F.1 ⟨(a : ℚ̄), mem_levelOf _⟩ = 1 at h1`. Rewrite `e1` using `[h1, ← WithZero.exp_zero]`. Use `WithZero.exp_injective e1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ordEmb_eq_zero_of_mem (hv : v ∉ S) {z : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ}
     (hz : z ∈ sUnitsMax K.1 ℚ̄ S) : ordEmb S ι hv (Additive.ofMul z) = 0 := by
@@ -418,15 +414,15 @@ theorem ordEmb_eq_zero_of_mem (hv : v ∉ S) {z : (maxUnramifiedOutside K.1 ℚ�
   omega
 
 /- English proof (translation)
-Take `⟨ι', hι'⟩` from `exists_placeOfEmbedding_eq (K := K) (E := N) w`. Take `⟨g, rfl⟩` from `exists_eq_comp_of_normal ι ι'`. Set `gN : N.1 ≃ₐ[K.1] N.1` to `AlgEquiv.restrictNormal g N.1`. Establish `hgN : ∀ x : N.1, ((gN x : N.1) : ℚ̄) = g x` using `fun x => AlgEquiv.restrictNormal_commutes g N.1 x`. Set `τ : galUnramifiedOutside K.1 ℚ̄ S` to `AlgEquiv.restrictNormal g (maxUnramifiedOutside K.1 ℚ̄ S)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hτ : ∀ x : maxUnramifiedOutside K.1 ℚ̄ S, ((τ x : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) = g x` using `fun x => AlgEquiv.restrictNormal_commutes g (maxUnramifiedOutside K.1 ℚ̄ S) x`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Establish `hw` using `placeOfEmbedding_eq_inv_smul ι gN (ι.comp (g : ℚ̄ →ₐ[K.1] ℚ̄)) fun x => by`. Rewrite using `[AlgHom.comp_apply, hgN]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hw` using `[hι']`. Rewrite using `[hw, valuation_inv_smul_placesOver]`. Establish `hmem : ((maxUnitsToUnits S (galUnitsHom K.1 _ τ y) : ℚ̄ˣ) : ℚ̄) ∈ N.1`. Express the relevant statement in the definitionally equal form `((τ (y : maxUnramifiedOutside K.1 ℚ̄ S) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ∈ N.1`. Rewrite using `[hτ, ← hgN ⟨_, hyN⟩]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(gN _).2`. Rewrite using `[ordEmb_apply, ← valuation_placeOfEmbedding_eq S ι hv N hN _ hmem]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((gN ⟨_, hyN⟩ : N.1) : ℚ̄) = ((τ (y : maxUnramifiedOutside K.1 ℚ̄ S) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ, hgN]`.
+A detailed English derivation is pending.
 -/
 theorem exists_valuation_eq_ordEmb (hv : v ∉ S) {N : FiniteSubfield} [Fact (K ≤ N)]
     [IsGalois K.1 N.1] (hN : ∀ x ∈ N.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
@@ -460,11 +456,11 @@ theorem exists_valuation_eq_ordEmb (hv : v ∉ S) {N : FiniteSubfield} [Fact (K 
   rw [hτ, hgN]
 
 /- English proof (translation)
-Set `g : ℚ̄ ≃ₐ[K.1] ℚ̄` to `σ.liftNormal ℚ̄`. Establish `hg : ∀ x : maxUnramifiedOutside K.1 ℚ̄ S, g x = ((σ x : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)` using `fun x => AlgEquiv.liftNormal_commutes σ ℚ̄ x`. Set `gN : N.1 ≃ₐ[K.1] N.1` to `AlgEquiv.restrictNormal g N.1`. Establish `hgN : ∀ x : N.1, ((gN x : N.1) : ℚ̄) = g x` using `fun x => AlgEquiv.restrictNormal_commutes g N.1 x`. Use `⟨gN⁻¹ • placeOfEmbedding ι N, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[valuation_inv_smul_placesOver]`. Establish `hmem : ((maxUnitsToUnits S (galUnitsHom K.1 _ σ y) : ℚ̄ˣ) : ℚ̄) ∈ N.1`. Express the relevant statement in the definitionally equal form `((σ (y : maxUnramifiedOutside K.1 ℚ̄ S) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ∈ N.1`. Rewrite using `[← hg, ← hgN ⟨_, hyN⟩]`. Conclude with `(gN _).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ordEmb_apply, ← valuation_placeOfEmbedding_eq S ι hv N hN _ hmem]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((gN ⟨_, hyN⟩ : N.1) : ℚ̄) = ((σ (y : maxUnramifiedOutside K.1 ℚ̄ S) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)`. Rewrite using `[hgN, hg]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_placesOver_valuation_eq_ordEmb (hv : v ∉ S) {N : FiniteSubfield} [Fact (K ≤ N)]
     [IsGalois K.1 N.1] (hN : ∀ x ∈ N.1, x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
@@ -494,17 +490,15 @@ theorem exists_placesOver_valuation_eq_ordEmb (hv : v ∉ S) {N : FiniteSubfield
 variable (ιs : LocalEmbeddings K)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy v hv σ`. Conclude with `ordEmb_eq_zero_of_mem S (ιs.fin v) hv (galUnitsHom_mem_sUnitsOf σ hy)`. Introduce `h`. Establish `hY : ((y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `(y : maxUnramifiedOutside K.1 ℚ̄ S).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hKN, hNg, hN, hYN⟩` from `exists_galois_level S hY`. Set `E' : IntermediateField K.1 ℚ̄` to `IntermediateField.extendScalars (show K.1 ≤ N.1 from hKN.out)`. Establish `hle : E' ≤ maxUnramifiedOutside K.1 ℚ̄ S` using `fun x hx => hN x hx`. Set `φ : N.1 →ₐ[K.1] maxUnramifiedOutside K.1 ℚ̄ S` to `IntermediateField.inclusion hle`. Set `yN : N.1ˣ` to `Units.mk0 ⟨_, hYN⟩ (fun h0 => y.ne_zero (Subtype.ext (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congrArg Subtype.val h0` as an intermediate fact. Conclude with `this)))`. Establish `hφy : φ.restrictScalars (S.integer K.1) (yN : N.1) = (y : maxUnramifiedOutside K.1 ℚ̄ S)` using `Subtype.ext rfl`. Establish `hφy' : φ.restrictScalars (S.integer K.1) ((yN⁻¹ : N.1ˣ) : N.1) = ((y⁻¹ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, Units.val_inv_eq_inv_val, hφy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : yN ∈ sUnitsOf S N.1`. Rewrite using `[mem_sUnitsOf_iff_mem_unit]`. Introduce `w hw`. Establish `hvS : underPlace (F` using `K.1) w ∉ S := fun h' => hw (mem_placesOver_iff.2 h')`. Take `⟨τ, hτ⟩` from `exists_valuation_eq_ordEmb S (ιs.fin (underPlace (F := K.1) w)) hvS hN y hYN ⟨w, liesOver_underPlace w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `w.valuation N.1 ⟨_, hYN⟩ = 1`. Rewrite using `[hτ, h _ hvS τ, neg_zero, WithZero.exp_zero]`. Establish `hφ : Function.Injective φ` using `φ.toRingHom.injective`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφy]`.
-
-Conclude with `(isIntegral_algHom_iff (φ.restrictScalars (S.integer K.1)) hφ).2 hmem.1`. Rewrite using `[← hφy']`. Conclude with `(isIntegral_algHom_iff (φ.restrictScalars (S.integer K.1)) hφ).2 hmem.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sUnitsMax_iff_ordEmb (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     y ∈ sUnitsMax K.1 ℚ̄ S ↔ ∀ (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S)
@@ -545,13 +539,11 @@ theorem mem_sUnitsMax_iff_ordEmb (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
       exact (isIntegral_algHom_iff (φ.restrictScalars (S.integer K.1)) hφ).2 hmem.2
 
 /- English proof (translation)
-Establish `hY : ((y : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `(y : maxUnramifiedOutside K.1 ℚ̄ S).2`. Take `⟨N, hKN, hNg, hN, hYN⟩` from `exists_galois_level S hY`. Set `yN : N.1ˣ` to `Units.mk0 ⟨_, hYN⟩ (fun h0 => y.ne_zero (Subtype.ext (by`. Use `congrArg Subtype.val h0` as an intermediate fact. Conclude with `this)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `finite_ordAt_ne_zero yN`. Use `((hT.image (underPlace (F := K.1))).preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩ ⟨σ, hσ⟩`. Take `⟨w, hw⟩` from `exists_placesOver_valuation_eq_ordEmb S (ιs.fin v) hv hN y hYN σ`. Use `⟨w.1, ?_, (liesOver_iff_eq_underPlace.1 w.2).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h0` using `[ordAt_eq_zero_iff]`. Apply `hσ` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `w.1.valuation N.1 ⟨_, hYN⟩ = 1 at h0`. Rewrite `h0` using `[hw, ← WithZero.exp_zero]`.
-
-Conclude with `neg_eq_zero.1 (WithZero.exp_injective h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_ordEmb_ne_zero (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     {v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} | ∃ σ : galUnramifiedOutside K.1 ℚ̄ S,

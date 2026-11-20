@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 variable {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p v hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_aeval_poly_A {σ : Type*} (Y : σ → Polynomial ℂ) (f : MvPolynomial σ ℂ) (e : ℂ) :
     (aeval Y f).eval e = eval (fun v => (Y v).eval e) f := by
@@ -20,51 +20,49 @@ theorem eval_aeval_poly_A {σ : Type*} (Y : σ → Polynomial ℂ) (f : MvPolyno
   | mul_X p v hp => simp [hp]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hne : i ≠ i'`. Introduce `e`. Rewrite `hii` using `[e]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlt' : Fin.castSucc i < Fin.castSucc i'`. Rewrite using `[Fin.castSucc_lt_castSucc_iff, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Use `set νp := ν (Fin.castSucc i') with hνp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `dv : ℂ → Fin n → ℂ` to `fun e a => if a = i then e else if a = i' then -1 / e else 1`. Set `zz : ℂ → Fin (n + 1) → ℂ` to `fun e s => if s = Fin.castSucc i' then -1 / e else 1`. Set `Y : Fin (n + 1) × Fin (n + 1) → Polynomial ℂ` to `fun v => Fin.lastCases (if v.2 = Fin.castSucc i' then 0 else 1) (fun a => Fin.lastCases 0 (fun k => if a = i then (if k = i then Polynomial.X else if k = i' then 1 else 0) else if a = i' then (if k = i then 1 else 0) else (if k = a then 1 else 0)) v.2) v.1`. Establish `hpt : ∀ e : ℂ, e ≠ 0 → (fun v => (Y v).eval e) = lhwline_rowOp (Fin.castSucc i) (Fin.castSucc i') (1 / e) (lhwline_colOp (Fin.castSucc i) (Fin.castSucc i') (1 / e) (mkPtA (dv e) (zz e)))`. Introduce `e he`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `v`. Take `⟨ρ, s⟩` from `v`. Proceed by induction on `ρ using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `s using Fin.lastCases with`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `last`. Simplify using `[Y, lhwline_rowOp, lhwline_colOp, mkPtA, zz, (Fin.castSucc_lt_last i').ne', (Fin.castSucc_lt_last i).ne']`. Consider the case `cast k`. Simplify using `only [Y, lhwline_rowOp, lhwline_colOp, mkPtA, zz, Fin.lastCases_castSucc, Fin.lastCases_last, Fin.castSucc_inj, (Fin.castSucc_lt_last i').ne', if_false]`. Distinguish the cases in `hk : k = i'`.
+Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hk` using the available equality. Simplify using `[hne]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hk]`. Consider the case `cast a`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s using Fin.lastCases with`. Consider the case `last`. Simplify using `[Y, lhwline_rowOp, lhwline_colOp, mkPtA, (Fin.castSucc_lt_last i').ne']`. Consider the case `cast k`. Simplify using `only [Y, lhwline_rowOp, lhwline_colOp, mkPtA, dv, Fin.lastCases_castSucc, Fin.lastCases_last, Fin.castSucc_inj]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Establish `hai : a ≠ i'` using `hne`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hai]`. Distinguish the cases in `hk' : k = i'`. Substitute `hk'` using the available equality. Simplify using `[hai, hk, Ne.symm hai, hne, Ne.symm hne]`. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hai, hk, hk']`. Distinguish the cases in `ha' : a = i'`. Substitute `ha'` using the available equality. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `[ha, hne, Ne.symm hne]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `hk' : k = a`. Substitute `hk'` using the available equality. Simplify using `[ha, hk, hne, Ne.symm hne]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[ha, hk, hk', Ne.symm hk']`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[ha, ha', Ne.symm ha, hne, Ne.symm hne]`. Distinguish the cases in `hk' : k = i'`. Substitute `hk'` using the available equality. Simplify using `[ha, ha', hk, Ne.symm ha', Ne.symm ha]`. Apply the tactic sequence `by_cases hka : k = a <;> simp [ha, ha', hk, hk', hka, Ne.symm ha, Ne.symm ha']`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ e : ℂ, e ≠ 0 → (aeval Y f).eval e = coeff (mStarA kap ν) f * (e ^ kap i * (-1 / e) ^ νp)`. Introduce `e he`. Establish `e1` using `hR (lhwline_colOp (Fin.castSucc i) (Fin.castSucc i') (1 / e) (mkPtA (dv e) (zz e))) (Fin.castSucc i) (Fin.castSucc i') (1 / e) hlt' (by simp)`. Establish `e2` using `hC (mkPtA (dv e) (zz e)) (Fin.castSucc i) (Fin.castSucc i') (1 / e) hlt'`. Simplify using `only at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[eval_aeval_poly_A, hpt e he, e1, e2, eval_D_A kap ν f hcol hrow _ (mkPtA_D _ _), prod_mkPtA]`. Use `congr 1`. Establish `h1 : ∏ a, dv e a ^ kap a = e ^ kap i * (-1 / e) ^ kap i'`. Establish `: ∀ a, dv e a ^ kap a = (if a = i then e ^ kap i else 1) * (if a = i' then (-1 / e) ^ kap i' else 1)`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h1 : a = i`. Substitute `h1` using the available equality. Simplify using `[dv, hne]`. Distinguish the cases in `h2 : a = i'`. Substitute `h2` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[dv, h1]`. Simplify using `[dv, h1, h2]`. Rewrite using `[Finset.prod_congr rfl (fun a _ => this a), Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.prod_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _)]`. Establish `h2 : ∏ k : Fin n, zz e (Fin.castSucc k) ^ (ν (Fin.castSucc k) - kap k) = (-1 / e) ^ (νp - kap i')`. Establish `: ∀ k : Fin n, zz e (Fin.castSucc k) ^ (ν (Fin.castSucc k) - kap k) = if k = i' then (-1 / e) ^ (νp - kap i') else 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `k`. Distinguish the cases in `hk : k = i'`. Substitute `hk` using the available equality. Simplify using `[zz, hνp]`. Simplify using `[zz, hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_congr rfl (fun k _ => this k), Finset.prod_ite_eq', if_pos (Finset.mem_univ _)]`. Establish `h3 : zz e (Fin.last n) = 1`. Simplify using `[zz, (Fin.castSucc_lt_last i').ne']`. Rewrite using `[h1, h2, h3, one_pow, mul_one, mul_assoc, ← pow_add, Nat.add_sub_cancel' hle]`. Use `set p := aeval Y f with hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set q : Polynomial ℂ := p * Polynomial.X ^ νp - Polynomial.C (coeff (mStarA kap ν) f * (-1) ^ νp) * Polynomial.X ^ (kap i) with hq`. Establish `hq0 : q = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Apply `Set.Infinite.mono _ (Set.finite_singleton (0 : ℂ)).infinite_compl` to reduce the goal to its premises. Introduce `e he`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff] at he`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot, hq, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, hval e he]`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hco` using `congrArg (fun r : Polynomial ℂ => r.coeff (kap i)) hq0`. Simplify using `only [hq, Polynomial.coeff_sub, Polynomial.coeff_mul_X_pow', Polynomial.coeff_C_mul_X_pow, if_neg (not_le.mpr hlt), if_pos rfl, Polynomial.coeff_zero, zero_sub, neg_eq_zero] at hco`. Simplify using `at hco`. Break down `hco with h | h` into its components or cases. Conclude with `hc h`.
-
-It suffices to derive a contradiction. Rewrite `h` using `[← Polynomial.C_1, ← Polynomial.C_neg, ← Polynomial.C_pow, Polynomial.coeff_C_zero]`. Conclude with `pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero) h`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_A (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (f : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hcol : IsWeightedHomogeneous (colW (n + 1) (n + 1)) f ν)
@@ -203,33 +201,31 @@ theorem eps_A (kap : Fin n → ℕ) (ν : Fin (n + 1) → ℕ) (f : MvPolynomial
     exact pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero) h
 
 /- English proof (translation)
-Introduce `n N h lam mu f₁ f₂ hf₁ hf₂ hx₁ hx₂ hne`. Substitute `h` using the available equality. Take `⟨hcol₁, hR₁, hC₁, hrow₁⟩` from `props_A lam mu f₁ hf₁ hx₁`. Take `⟨hcol₂, hR₂, hC₂, hrow₂⟩` from `props_A lam mu f₂ hf₂ hx₂`. Establish `hc₂ : coeff (mStarA (kapA lam mu) lam.natW) f₂ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Conclude with `vanishA f₂ hR₂ hC₂ (fun D hD => by`. Rewrite using `[eval_D_A (kapA lam mu) lam.natW f₂ hcol₂ hrow₂ D hD, h0, zero_mul])`. Use `⟨⟨coeff (mStarA (kapA lam mu) lam.natW) f₁ / coeff (mStarA (kapA lam mu) lam.natW) f₂, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set c := coeff (mStarA (kapA lam mu) lam.natW) f₁ / coeff (mStarA (kapA lam mu) lam.natW) f₂ with hcdef`. Establish `hg : f₁ - c • f₂ = 0`. Apply `vanishA` to reduce the goal to its premises. Introduce `x a b t hab hb`. Establish `e1` using `hR₁ x a b t hab hb`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `hR₂ x a b t hab hb`. Simplify using `only at e1 e2`. Simplify using `only [map_sub, smul_eval, e1, e2]`. Introduce `x l j c' hlj`. Establish `e1` using `hC₁ x l j c' hlj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `hC₂ x l j c' hlj`. Simplify using `only at e1 e2`. Simplify using `only [map_sub, smul_eval, e1, e2]`. Introduce `D hD`. Rewrite using `[map_sub, smul_eval, eval_D_A (kapA lam mu) lam.natW f₁ hcol₁ hrow₁ D hD, eval_D_A (kapA lam mu) lam.natW f₂ hcol₂ hrow₂ D hD, hcdef]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.mp hg`. Establish `hmS : mStarA (kapA lam mu) lam.natW ∈ f₂.support` using `mem_support_iff.mpr hc₂`. Establish `hmu : ∀ a : Fin n, ((kapA lam mu a : ℕ) : ℤ) + lam.detShift = mu.w a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Establish `hrd` using `fixed_rowDeg_A lam mu f₂ hx₂ _ hmS a`. Establish `hsum : ∑ s, mStarA (kapA lam mu) lam.natW (Fin.castSucc a, s) = kapA lam mu a`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hrd` using `[hsum]`. Conclude with `hrd`. Establish `hleA : ∀ a : Fin n, kapA lam mu a ≤ lam.natW (Fin.castSucc a)`. Introduce `a`. Establish `hcs : ∑ ρ, mStarA (kapA lam mu) lam.natW (ρ, Fin.castSucc a) = lam.natW (Fin.castSucc a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← lhwline_weight_col, hcol₂ hc₂]`. Establish `hcs2 : ∑ ρ, mStarA (kapA lam mu) lam.natW (ρ, Fin.castSucc a) = kapA lam mu a + (lam.natW (Fin.castSucc a) - kapA lam mu a)`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[Finset.sum_ite_eq']`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `hcast : (⟨i.1, by omega⟩ : Fin (n + 1)) = Fin.castSucc i` using `Fin.ext rfl`. Establish `hnat` using `natW_add_A lam (Fin.castSucc i)`. Establish `h1` using `hmu i`. Establish `h2` using `hleA i`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[hcast]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hi : i.val + 1 < n`. Establish `hcast' : (⟨i.1 + 1, by omega⟩ : Fin (n + 1)) = Fin.castSucc ⟨i.val + 1, hi⟩` using `Fin.ext rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3` using `eps_A (kapA lam mu) lam.natW f₂ hcol₂ hrow₂ hR₂ hC₂ hc₂ i ⟨i.val + 1, hi⟩ rfl (hleA ⟨i.val + 1, hi⟩)`. Establish `hnat'` using `natW_add_A lam (Fin.castSucc ⟨i.val + 1, hi⟩)`. Rewrite using `[hcast']`. Use linear arithmetic over natural numbers and integers. Establish `hlast : (⟨i.1 + 1, by omega⟩ : Fin (n + 1)) = Fin.last n` using `Fin.ext (by simp; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hds : lam.w (Fin.last n) = lam.detShift`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Rewrite using `[hlast, hds]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fixedLine_proof_A : FixedLine := by
   intro n N h lam mu f₁ f₂ hf₁ hf₂ hx₁ hx₂ hne

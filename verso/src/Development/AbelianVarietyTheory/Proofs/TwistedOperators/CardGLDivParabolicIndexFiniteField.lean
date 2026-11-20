@@ -13,15 +13,15 @@ open Formalism.L2.DIV (kP Pl LevelP)
 namespace GlobalTheory.Twist.GLIndexLoc
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite κ`. Establish `hq1 : 1 ≤ Nat.card κ` using `Nat.one_le_iff_ne_zero.mpr (Nat.card_pos).ne'`. Establish `hq0 : (Nat.card κ : ℝ) ≠ 0` using `by positivity`. Rewrite using `[Matrix.card_GL_field, Nat.cast_prod, ← Nat.card_eq_fintype_card]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => ((Nat.card κ ^ n - Nat.card κ ^ i : ℕ) : ℝ)) n]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_range_reflect]`. Establish `hIoc : Finset.Ioc 0 n = (Finset.range n).map ⟨(· + 1), add_left_injective 1⟩`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ioc, Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩; exact ⟨x - 1, by omega, by omega⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hIoc, Finset.prod_map, sq, pow_mul, show ((Nat.card κ : ℝ) ^ n) ^ n = ∏ _j ∈ Finset.range n, (Nat.card κ : ℝ) ^ n by simp, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj' : j < n` using `Finset.mem_range.mp hj`. Establish `hle : Nat.card κ ^ (n - 1 - j) ≤ Nat.card κ ^ n` using `Nat.pow_le_pow_right hq1 (by omega)`. Simplify using `only [Function.Embedding.coeFn_mk]`. Rewrite using `[Nat.cast_sub hle, Nat.cast_pow, Nat.cast_pow, mul_sub, mul_one]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hsplit : (Nat.card κ : ℝ) ^ n = (Nat.card κ : ℝ) ^ (n - 1 - j) * (Nat.card κ : ℝ) ^ (j + 1)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq0), mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_GL_real_eq (κ : Type) [Field κ] [Finite κ] (n : ℕ) :
     (Nat.card (GL (Fin n) κ) : ℝ) =
@@ -52,17 +52,15 @@ theorem card_GL_real_eq (κ : Type) [Field κ] [Finite κ] (n : ℕ) :
   rw [hsplit, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq0), mul_one]
 
 /- English proof (translation)
-Introduce `κ _ _ n r t hn`. Use `haveI := Fintype.ofFinite κ`. Establish `hq2 : (2 : ℝ) ≤ Nat.card κ`. Use `Fintype.one_lt_card (α := κ)` as an intermediate fact. Rewrite `this` using `[← Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hq0 : (Nat.card κ : ℝ) ≠ 0` using `by positivity`. Establish `hP : ∏ i ∈ Finset.Ioc 0 t, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹) ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr (fun i hi => ?_)` and prove the remaining obligations. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Ioc.mp hi).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℝ) ≤ (Nat.card κ : ℝ) ^ i` using `le_trans hq2 (le_self_pow₀ (by linarith) (by omega))`. Establish `: ((Nat.card κ : ℝ) ^ i)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[card_GL_real_eq, card_GL_real_eq, ← Finset.prod_Ioc_consecutive _ (Nat.zero_le t) (show t ≤ n by omega)]`. Establish `hpow : (Nat.card κ : ℝ) ^ (n ^ 2) = (Nat.card κ : ℝ) ^ (t ^ 2) * (Nat.card κ : ℝ) ^ (r * t) * (Nat.card κ : ℝ) ^ (r ^ 2 + r * t)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← pow_add, ← pow_add]`. Use `congr 1`. Substitute `hn` using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow]`.
+Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `∏ i ∈ Finset.Ioc 0 t, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹) = P at hP ⊢`. Generalize the expression as in `∏ i ∈ Finset.Ioc t n, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹) = Q`. Establish `h1 : (Nat.card κ : ℝ) ^ (t ^ 2) ≠ 0` using `pow_ne_zero _ hq0`. Establish `h2 : (Nat.card κ : ℝ) ^ (r * t) ≠ 0` using `pow_ne_zero _ hq0`. Establish `h3 : (Nat.card κ : ℝ) ^ (r ^ 2 + r * t) ≠ 0` using `pow_ne_zero _ hq0`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem index_loc : ∀ (κ : Type) [Field κ] [Finite κ] (n r t : ℕ), n = r + t → (Nat.card (GL (Fin n) κ) : ℝ) / ((Nat.card (GL (Fin t) κ) : ℝ) * (Nat.card κ : ℝ) ^ (r * t)) * ((Nat.card κ : ℝ) ^ (r ^ 2 + r * t))⁻¹ = ∏ i ∈ Finset.Ioc t n, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹) := by
   intro κ _ _ n r t hn

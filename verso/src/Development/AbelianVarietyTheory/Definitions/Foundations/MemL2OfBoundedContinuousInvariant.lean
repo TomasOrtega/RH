@@ -28,15 +28,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 omit [NumberField F] in
 
 /- English proof (translation)
-Set `C' : Matrix (Fin V.rank) (Fin r) E` to `fun a j => if j.val < i then C a j else 0`. Establish `e : Submodule.span E ((fun k => vecOf V (Cᵀ k)) '' {j | j.val < i}) = colSpan V C'`. Use `le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `⟨j, congrArg (vecOf V) (funext fun a => if_pos hj)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Distinguish the cases in `hj : j.val < i`. Conclude with `Submodule.subset_span ⟨j, hj, congrArg (vecOf V) (funext fun a => (if_pos hj).symm)⟩`. Establish `: C'ᵀ j = 0` using `funext fun a => if_neg hj`. Simplify using `[this, vecOf]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, AutFunCompare.mem_extSub_colSpan]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨fun j => if j.val < i then a j else 0, fun j hj => if_neg (not_lt.2 hj), funext fun b => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hj : j.val < i <;> simp [C', hj]`. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨a, funext fun b => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j.val < i`. Simplify using `[C', hj]`. Rewrite using `[ha j (not_lt.1 hj), mul_zero, mul_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_extSub_span_lt {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) E} (i : ℕ) (y : Fin V.rank → R ⊗[F] E) :
     y ∈ extSub (F := F) V R (Submodule.span E ((fun k => vecOf V (Cᵀ k)) '' {j | j.val < i})) ↔
@@ -67,11 +67,9 @@ theorem mem_extSub_span_lt {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) E} (i : �
     · rw [ha j (not_lt.1 hj), mul_zero, mul_zero]
 
 /- English proof (translation)
-Set `f : (Fin V.rank → R ⊗[F] E) →ₗ[R ⊗[F] E] Fin V.rank → R ⊗[F] E` to `(HA.mat R hc.sig V.gram g).1.mulVecLin - LinearMap.id`. Express the relevant statement in the definitionally equal form `f (coordR V R x) ∈ _`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => rw [show coordR V R 0 = 0 from funext fun _ => by simp [coordR], map_zero]; exact zero_mem _`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ h1 h2`. Rewrite using `[show coordR V R (x + y) = coordR V R x + coordR V R y from funext fun _ => by simp [coordR], map_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul a x _ h1`. Rewrite using `[show coordR V R (a • x) = inclR (F := F) R a • coordR V R x from funext fun _ => by simp [coordR], map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_sub_mem_of_mem_span {S : Set V.V} {A : Submodule E V.V} {g : HA R hc.sig V.gram}
     (h : ∀ x ∈ S, act hc V g (coordR V R x) - coordR V R x ∈ extSub (F := F) V R A) {x : V.V}
@@ -118,7 +116,7 @@ abbrev PArch (w : InfinitePlace D.host.F) : Subgroup (AdelicU.GArch D.sp.cm.sig 
 abbrev NArch (w : InfinitePlace D.host.F) : Subgroup (AdelicU.GArch D.sp.cm.sig V.gram w) := 𝔉.unip D.sp.cm w.Completion
 
 /- English proof (translation)
-Establish `: Nontrivial (AF D.host.F)` using `inferInstanceAs (Nontrivial (Ainf D.host.F × Af D.host.F))`. Rewrite using `[show 𝔉.unipRat D.sp.cm = (NA 𝔉).comap (AdelicU.ratEmb D.sp.cm.sig V.gram) from Subgroup.ext fun _ => IsoFlag.diagH_mem_unip.symm, Subgroup.map_comap_eq, AdelicU.range_ratEmb, AdelicU.GQ_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_unipRat : (𝔉.unipRat D.sp.cm).map (AdelicU.ratEmb D.sp.cm.sig V.gram) = GQ V ⊓ NA 𝔉 := by
   have : Nontrivial (AF D.host.F) := inferInstanceAs (Nontrivial (Ainf D.host.F × Af D.host.F))
@@ -128,7 +126,7 @@ theorem map_unipRat : (𝔉.unipRat D.sp.cm).map (AdelicU.ratEmb D.sp.cm.sig V.g
 variable {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
 
 /- English proof (translation)
-Rewrite using `[colSpan, Submodule.span_le, Set.range_subset_iff]`. Express the relevant statement in the definitionally equal form `(∀ k, _ ∈ perp V (colSpan V C)) ↔ _`. Simplify using `only [AutFunCompare.mem_perp_colSpan D.sp.cm, repr_vecOf]`. Conclude with `⟨fun h => Matrix.ext fun a k => congrFun (h k) a, fun h k => funext fun a => congrFun (congrFun h a) k⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem colSpan_le_perp_iff : colSpan V C ≤ perp V (colSpan V C) ↔
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) C * V.gram * C = 0 := by
@@ -138,7 +136,7 @@ theorem colSpan_le_perp_iff : colSpan V C ≤ perp V (colSpan V C) ↔
   exact ⟨fun h => Matrix.ext fun a k => congrFun (h k) a, fun h k => funext fun a => congrFun (congrFun h a) k⟩
 
 /- English proof (translation)
-The claim follows from `h.map' V.frame.equivFun.symm.toLinearMap (LinearEquiv.ker _)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_vecOf (h : LinearIndependent D.host.E Cᵀ) :
     LinearIndependent D.host.E fun k => vecOf V (Cᵀ k) := h.map' V.frame.equivFun.symm.toLinearMap (LinearEquiv.ker _)
@@ -146,7 +144,7 @@ theorem linearIndependent_vecOf (h : LinearIndependent D.host.E Cᵀ) :
 def frameFlag (hC : IsIsoFrame V C) : IsoFlag V := .single ((AutFunCompare.isIsoFrame_iff V C).1 hC).2
 
 /- English proof (translation)
-The claim follows from `(IsoFlag.unip_single _ _ _).trans (AutFunCompare.NI_eq V C).symm`.
+A detailed English derivation is pending.
 -/
 theorem NA_frameFlag (hC : IsIsoFrame V C) : NA (frameFlag hC) = NI V C :=
   (IsoFlag.unip_single _ _ _).trans (AutFunCompare.NI_eq V C).symm
@@ -164,23 +162,21 @@ def constTerm (𝔉 : IsoFlag V) (φ : GA D V → ℂ) : GA D V → ℂ := const
 variable {𝔉 : IsoFlag V} {φ : GA D V → ℂ}
 
 /- English proof (translation)
-Rewrite using `[NA, IsoFlag.unip_single, AutFunCompare.GQ_eq]`. Conclude with `AutFunCompare.unipRad_cocompact D.sp.cm V W hW`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocompact_single {W : Submodule D.host.E V.V} (hW : IsIsotropic V W) : Cocompact (GQ V) (NA (.single hW)) := by
   rw [NA, IsoFlag.unip_single, AutFunCompare.GQ_eq]
   exact AutFunCompare.unipRad_cocompact D.sp.cm V W hW
 
 /- English proof (translation)
-The claim follows from `constTermOn_eq h hφ x`.
+A detailed English derivation is pending.
 -/
 theorem constTerm_eq {ν : Measure (NA 𝔉)} [ν.IsHaarMeasure] {𝓕 : Set (NA 𝔉)} (h : IsFundamentalDomain (NQ 𝔉) 𝓕 ν)
     (hφ : LeftInv (GQ V) φ) (x : GA D V) : constTerm 𝔉 φ x = (ν.real 𝓕)⁻¹ • ∫ n in 𝓕, φ (n * x) ∂ν :=
   constTermOn_eq h hφ x
 
 /- English proof (translation)
-Set `Z : Subgroup (GA D V) → Prop` to `fun N => ∀ (μ : Measure N) (𝓕 : Set N), μ.IsHaarMeasure → IsFundamentalDomain ((GQ V).subgroupOf N) 𝓕 μ → ∀ g, ∫ n in 𝓕, φ ((n : GA D V) * g) ∂μ = 0`. Establish `key : ∀ {W} (hW : IsIsotropic V W), constTerm (.single hW) φ = 0 ↔ Z (NA (.single hW))` using `fun hW => ⟨fun h μ 𝓕 _ h𝓕 g => ((cocompact_single hW).constTermOn_eq_zero_iff h𝓕 hφ g).1 (congrFun h g), fun h => funext fun g => ((cocompact_single hW).constTermOn_eq_zero_iff (isFundamentalDomain_stdDom _ Measure.haar) hφ g).2 (h _ _ inferInstance (isFundamentalDomain_stdDom _ …`. Use `⟨fun h W hW => ?_, fun h r C hC => ?_⟩` and prove the remaining obligations. Take `⟨r, C, hC, rfl⟩` from `(AutFunCompare.isIsotropic_iff V W).1 hW`. Conclude with `(key hW).2 ((congrArg Z (NA_frameFlag hC)).mpr (h r C hC))`.
-
-Conclude with `(congrArg Z (NA_frameFlag hC)).mp ((key _).1 (h _ _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCuspFun_iff (hφ : LeftInv (GQ V) φ) :
     IsCuspFun V φ ↔ ∀ (W : Submodule D.host.E V.V) (hW : IsIsotropic V W), constTerm (.single hW) φ = 0 := by
@@ -196,13 +192,13 @@ theorem isCuspFun_iff (hφ : LeftInv (GQ V) φ) :
   · exact (congrArg Z (NA_frameFlag hC)).mp ((key _).1 (h _ _))
 
 /- English proof (translation)
-The claim follows from `(isCuspFun_iff hφ).2 fun _ hW => h _ (IsoFlag.proper_single hW)`.
+A detailed English derivation is pending.
 -/
 theorem isCuspFun_of_forall_flag (hφ : LeftInv (GQ V) φ) (h : ∀ 𝔉 : IsoFlag V, 𝔉.Proper → constTerm 𝔉 φ = 0) :
     IsCuspFun V φ := (isCuspFun_iff hφ).2 fun _ hW => h _ (IsoFlag.proper_single hW)
 
 /- English proof (translation)
-Introduce `r C hC μ 𝓕 hμ h𝓕 g` and use `by simpa only [rTr, mul_assoc] using h r C hC μ 𝓕 hμ h𝓕 (g * k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCuspFun_rTr (h : IsCuspFun V φ) (k : GA D V) : IsCuspFun V (rTr V k φ) :=
   fun r C hC μ 𝓕 hμ h𝓕 g => by simpa only [rTr, mul_assoc] using h r C hC μ 𝓕 hμ h𝓕 (g * k)
@@ -223,18 +219,18 @@ def cuspCont : Submodule ℂ (GA D V → ℂ) where
     fun r C hC μ 𝓕 hμ h𝓕 g => (integral_const_mul c _).trans (by rw [h.2.2 r C hC μ 𝓕 hμ h𝓕 g, mul_zero])⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cuspCont : φ ∈ cuspCont V ↔ Continuous φ ∧ LeftInv (GQ V) φ ∧ IsCuspFun V φ := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp (continuous_mul_const k), h.2.1.mul_right k, isCuspFun_rTr h.2.2 k⟩`.
+Supply the required witnesses or components.
 -/
 theorem rTr_mem_cuspCont (h : φ ∈ cuspCont V) (k : GA D V) : rTr V k φ ∈ cuspCont V :=
   ⟨h.1.comp (continuous_mul_const k), h.2.1.mul_right k, isCuspFun_rTr h.2.2 k⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Complex.continuous_conj.comp h.1, fun γ hγ g => congrArg conj (h.2.1 γ hγ g), fun r C hC μ 𝓕 hμ h𝓕 g => integral_conj.trans (by rw [h.2.2 r C hC μ 𝓕 hμ h𝓕 g, map_zero])⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_mem_cuspCont (h : φ ∈ cuspCont V) : (fun g => conj (φ g)) ∈ cuspCont V :=
   ⟨Complex.continuous_conj.comp h.1, fun γ hγ g => congrArg conj (h.2.1 γ hγ g),
@@ -261,19 +257,19 @@ def IsCuspAE (F : DividedPowerChartLift V μ) : Prop := ∀ 𝔉 : IsoFlag V, �
 variable {V μ} {φ ψ : GA D V → ℂ}
 
 /- English proof (translation)
-The claim follows from `Submodule.le_topologicalClosure _ ⟨φ, hφ, h.lift_toL2_ae_eq⟩`.
+A detailed English derivation is pending.
 -/
 theorem toL2_mem_cuspidal [μ.IsMulLeftInvariant] (h : MemL2Quotient (GQ V) μ φ) (hφ : φ ∈ cuspCont V) : h.toL2 ∈ L2cusp V μ :=
   Submodule.le_topologicalClosure _ ⟨φ, hφ, h.lift_toL2_ae_eq⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.le_topologicalClosure _ ⟨φ, hφ, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_L2cusp_of_ae_eq [μ.IsMulLeftInvariant] {F : DividedPowerChartLift V μ} (hφ : φ ∈ cuspCont V) (e : lift (GQ V) F =ᵐ[μ] φ) :
     F ∈ L2cusp V μ := Submodule.le_topologicalClosure _ ⟨φ, hφ, e⟩
 
 /- English proof (translation)
-Use `Submodule.topologicalClosure_minimal _ ?_ hU` and prove the remaining obligations. Introduce and unpack `F ⟨φ, hφ, e⟩`. Establish `hd` using `isFundamentalDomain_stdDom (GQ V) μ`. Establish `h2 : MemL2Quotient (GQ V) μ φ` using `(memL2_iff_fundamental_domain hd).2 ⟨hφ.2.1, ((memL2_iff_fundamental_domain hd).1 (memL2_lift F)).2.ae_eq (ae_restrict_of_ae e)⟩`. Conclude with `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (h2.lift_toL2_ae_eq.trans e.symm) ▸ h φ hφ h2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem L2cusp_le [μ.IsMulLeftInvariant] {U : Submodule ℂ (DividedPowerChartLift V μ)} (hU : IsClosed (U : Set (DividedPowerChartLift V μ)))
     (h : ∀ φ ∈ cuspCont V, ∀ h : MemL2Quotient (GQ V) μ φ, h.toL2 ∈ U) : L2cusp V μ ≤ U := by
@@ -287,7 +283,7 @@ theorem L2cusp_le [μ.IsMulLeftInvariant] {U : Submodule ℂ (DividedPowerChartL
 variable (V μ) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-The claim follows from `isSubrep_topologicalClosure fun g F ⟨_, h, e⟩ => ⟨_, rTr_mem_cuspCont h g, (lift_R g F).trans ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae e)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSubrep_L2cusp : IsSubrep (RG V μ) (L2cusp V μ) :=
   isSubrep_topologicalClosure fun g F ⟨_, h, e⟩ => ⟨_, rTr_mem_cuspCont h g,
@@ -302,12 +298,12 @@ abbrev Rcusp : GA D V →* (L2cusp V μ →L[ℂ] L2cusp V μ) := (isSubrep_L2cu
 abbrev RcuspOp (f : GA D V → ℂ) : L2cusp V μ →L[ℂ] L2cusp V μ := repOp (Rcusp V μ) μ f
 
 /- English proof (translation)
-The claim follows from `(isSubrep_L2cusp V μ).isUnitaryRep (isUnitaryRep_RG V μ)`.
+A detailed English derivation is pending.
 -/
 theorem isUnitaryRep_Rcusp : IsUnitaryRep (Rcusp V μ) := (isSubrep_L2cusp V μ).isUnitaryRep (isUnitaryRep_RG V μ)
 
 /- English proof (translation)
-The claim follows from `((isSubrep_L2cusp V μ).coe_repOp_rep (isRepOp_Rop hf)).2 F`.
+A detailed English derivation is pending.
 -/
 theorem coe_RcuspOp {f : GA D V → ℂ} (hf : Integrable f μ) (F : L2cusp V μ) :
     (RcuspOp V μ f F : DividedPowerChartLift V μ) = RopG V μ f F := ((isSubrep_L2cusp V μ).coe_repOp_rep (isRepOp_Rop hf)).2 F
@@ -322,9 +318,9 @@ def IsCartanFrame (A : CptF V) : Prop :=
   ∀ τ, (A τ)ᴴ * Formalism.UG.Jpq (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 * A τ = gramAt D V τ
 
 /- English proof (translation)
-Use `choose e P h using fun τ => hV (tauE D τ)`. Use `⟨fun τ => ((P τ)⁻¹).1.submatrix id (e τ), fun τ => ?_⟩` and prove the remaining obligations. Establish `h1 : ((P τ)⁻¹).1ᴴ * (P τ).1ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one]`. Establish `h2 : ((P τ)⁻¹).1ᴴ * Formalism.UG.Jpq _ _ * ((P τ)⁻¹).1 = (gramAt D V τ).reindex (e τ) (e τ)`. Rewrite using `[← h τ, show Formalism.UG.cT (starRingEnd ℂ) (P τ).1 = (P τ).1ᴴ from rfl, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use extensionality with `i j`. Simplify `congrFun (congrFun h2 (e τ i)) (e τ j)` using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isCartanFrame (hV : V.SigOK) : ∃ A, IsCartanFrame V A := by
   choose e P h using fun τ => hV (tauE D τ)
@@ -337,7 +333,7 @@ theorem exists_isCartanFrame (hV : V.SigOK) : ∃ A, IsCartanFrame V A := by
   simpa [Matrix.mul_apply] using congrFun (congrFun h2 (e τ i)) (e τ j)
 
 /- English proof (translation)
-Introduce `i j h` and use `Matrix.mul_apply.trans <| Finset.sum_eq_zero fun k _ => by by_cases e : sameBlock i k · rw [hb k j fun e' => h (by cases i <;> cases j <;> cases k <;> simp_all [sameBlock]), mul_zero] · rw [ha i k e, zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isKC_mul {p q : ℕ} {a b : Mat p q} (ha : IsKC a) (hb : IsKC b) : IsKC (a * b) := fun i j h =>
   Matrix.mul_apply.trans <| Finset.sum_eq_zero fun k _ => by
@@ -392,28 +388,28 @@ abbrev petersson (μ : Measure (GA D V)) (φ ψ : GA D V → ℂ) : ℂ := pet (
 variable {θ V K} {A : CptF V} {φ ψ : GA D V → ℂ} {μ : Measure (GA D V)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Kinf {g : GA D V} : g ∈ Kinf θ V A ↔ IsKinf θ V A g := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Kinf_le : Kinf θ V A ≤ GinfC V := fun _ h => h.1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_autForms : φ ∈ autForms θ V K ↔ IsAutFunSm θ V φ ∧ IsKFinite K φ := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.1.1, h.2.2.2⟩, h.1.2⟩, fun h => ⟨⟨h.1.1, h.2⟩, h.1.1.cont, h.1.1.left, h.1.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_cuspForms : φ ∈ cuspForms θ V K ↔ IsCuspForm θ V φ ∧ IsKFinite K φ :=
   ⟨fun h => ⟨⟨h.1.1, h.2.2.2⟩, h.1.2⟩, fun h => ⟨⟨h.1.1, h.2⟩, h.1.1.cont, h.1.1.left, h.1.2⟩⟩
 
 /- English proof (translation)
-Use `⟨Mem.FinTranslate.isAutFunSm_rTr_fin D θ hθ V φ h.1 g hg, ?_⟩` and prove the remaining obligations. Take `⟨W, hW, e⟩` from `isKFinite_iff.1 h.2`. Use `isKFinite_iff.2 ⟨W.map (LinearMap.funLeft ℂ ℂ (· * g)), inferInstance, fun k hk => ⟨_, e k hk, funext fun x => ?_⟩⟩` and prove the remaining obligations. Establish `hc : k * g = g * k` using `AdelicU.ext_inf_fin _ _ (by simp [AdelicU.mem_finPts.1 hg]) (by simp [AdelicU.mem_infPts.1 (hK hk)])`. Conclude with `congrArg φ (by rw [mul_assoc, mul_assoc, hc])`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rTr_fin_mem_autForms (hθ : IsInfFam θ) (hK : K ≤ GinfC V) (h : φ ∈ autForms θ V K) {g : GA D V}
     (hg : g ∈ GfC V) : rTr V g φ ∈ autForms θ V K := by
@@ -425,7 +421,7 @@ theorem rTr_fin_mem_autForms (hθ : IsInfFam θ) (hK : K ≤ GinfC V) (h : φ �
   exact congrArg φ (by rw [mul_assoc, mul_assoc, hc])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rTr_fin_mem_autForms hθ hK h.1 hg, rTr_mem_cuspCont h.2 g⟩`.
+Supply the required witnesses or components.
 -/
 theorem rTr_fin_mem_cuspForms (hθ : IsInfFam θ) (hK : K ≤ GinfC V) (h : φ ∈ cuspForms θ V K) {g : GA D V}
     (hg : g ∈ GfC V) : rTr V g φ ∈ cuspForms θ V K := ⟨rTr_fin_mem_autForms hθ hK h.1 hg, rTr_mem_cuspCont h.2 g⟩
@@ -435,7 +431,7 @@ instance isFiniteMeasure_autMeasure [μ.IsHaarMeasure] : IsFiniteMeasure (autMea
     (CuspDecay.measure_lt_top Mem.VolFin.finVol V μ _ inferInstance (isFundamentalDomain_stdDom _ μ))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hl, .of_bound (aestronglyMeasurable_quotMeasure_iff_lift.2 (hl.lift_descend.symm ▸ hc.aestronglyMeasurable)) C (.of_forall fun _ => hC _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem memL2_of_bounded_continuous_invariant [μ.IsHaarMeasure] (hl : LeftInv (GQ V) φ) (hc : Continuous φ) {C : ℝ} (hC : ∀ g, ‖φ g‖ ≤ C) :
     MemL2Quotient (GQ V) μ φ :=
@@ -443,7 +439,7 @@ theorem memL2_of_bounded_continuous_invariant [μ.IsHaarMeasure] (hl : LeftInv (
     (.of_forall fun _ => hC _)⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨_, hC⟩ := CuspDecay.bounded_of_cuspForm hP hθ h.1 h.2 memL2_of_bounded_continuous_invariant h.1.left h.1.cont hC`.
+A detailed English derivation is pending.
 -/
 theorem memL2_of_cusp_form (hP : Published.CuspRapidDecay) (hθ : IsInfFam θ) [μ.IsHaarMeasure] (h : IsCuspForm θ V φ) :
     MemL2Quotient (GQ V) μ φ :=
@@ -459,14 +455,14 @@ def cuspToL2 (hP : Published.CuspRapidDecay) (hθ : IsInfFam θ) [μ.IsHaarMeasu
   map_smul' c φ := Subtype.ext (MemLp.toLp_const_smul c (memL2_of_cusp_form hP hθ (mem_cuspForms.1 φ.2).1).2)
 
 /- English proof (translation)
-The claim follows from `(memL2_of_cusp_form hP hθ (mem_cuspForms.1 φ.2).1).lift_toL2_ae_eq`.
+A detailed English derivation is pending.
 -/
 theorem lift_cusp_form_toL2 (hP : Published.CuspRapidDecay) (hθ : IsInfFam θ) [μ.IsHaarMeasure] (φ : cuspForms θ V K) :
     lift (GQ V) (cuspToL2 K μ hP hθ φ : DividedPowerChartLift V μ) =ᵐ[μ] φ :=
   (memL2_of_cusp_form hP hθ (mem_cuspForms.1 φ.2).1).lift_toL2_ae_eq
 
 /- English proof (translation)
-Introduce `φ ψ h` and use `Subtype.ext ((Continuous.ae_eq_iff_eq μ φ.2.2.1 ψ.2.2.1).1 ((lift_cusp_form_toL2 hP hθ φ).symm.trans (h ▸ lift_cusp_form_toL2 hP hθ ψ)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cusp_form_toL2_injective (hP : Published.CuspRapidDecay) (hθ : IsInfFam θ) [μ.IsHaarMeasure] :
     Function.Injective (cuspToL2 (V := V) K μ hP hθ) := fun φ ψ h =>
@@ -474,7 +470,7 @@ theorem cusp_form_toL2_injective (hP : Published.CuspRapidDecay) (hθ : IsInfFam
     ((lift_cusp_form_toL2 hP hθ φ).symm.trans (h ▸ lift_cusp_form_toL2 hP hθ ψ)))
 
 /- English proof (translation)
-The claim follows from `(Submodule.coe_inner _ _ _).trans ((memL2_of_cusp_form hP hθ (mem_cuspForms.1 φ.2).1).inner_toL2_eq_theta_pairing (memL2_of_cusp_form hP hθ (mem_cuspForms.1 ψ.2).1))`.
+A detailed English derivation is pending.
 -/
 theorem petersson_inner_eq_integral_quotient (hP : Published.CuspRapidDecay) (hθ : IsInfFam θ) [μ.IsHaarMeasure] (φ ψ : cuspForms θ V K) :
     ⟪cuspToL2 K μ hP hθ ψ, cuspToL2 K μ hP hθ φ⟫_ℂ = petersson V μ φ ψ :=
@@ -482,25 +478,25 @@ theorem petersson_inner_eq_integral_quotient (hP : Published.CuspRapidDecay) (h�
     (memL2_of_cusp_form hP hθ (mem_cuspForms.1 ψ.2).1))
 
 /- English proof (translation)
-The claim follows from `pet_eq h hφ hψ`.
+A detailed English derivation is pending.
 -/
 theorem petersson_eq [μ.IsMulLeftInvariant] {𝓕 : Set (GA D V)} (h : IsFundamentalDomain (GQ V) 𝓕 μ)
     (hφ : LeftInv (GQ V) φ) (hψ : LeftInv (GQ V) ψ) : petersson V μ φ ψ = ∫ g in 𝓕, φ g * conj (ψ g) ∂μ := pet_eq h hφ hψ
 
 /- English proof (translation)
-The claim follows from `integral_conj.symm.trans (integral_congr_ae (.of_forall fun _ => by simp [mul_comm]))`.
+A detailed English derivation is pending.
 -/
 theorem petersson_conj_symm (φ ψ : GA D V → ℂ) : conj (petersson V μ ψ φ) = petersson V μ φ ψ :=
   integral_conj.symm.trans (integral_congr_ae (.of_forall fun _ => by simp [mul_comm]))
 
 /- English proof (translation)
-The claim follows from `(integral_congr_ae (.of_forall fun _ => mul_assoc _ _ _)).trans (integral_const_mul c _)`.
+A detailed English derivation is pending.
 -/
 theorem petersson_smul_left (c : ℂ) (φ ψ : GA D V → ℂ) : petersson V μ (c • φ) ψ = c * petersson V μ φ ψ :=
   (integral_congr_ae (.of_forall fun _ => mul_assoc _ _ _)).trans (integral_const_mul c _)
 
 /- English proof (translation)
-The claim follows from `(integral_congr_ae (.of_forall fun _ => add_mul _ _ _)).trans (integral_add (h.integrable_mul_conj hψ) (h'.integrable_mul_conj hψ))`.
+A detailed English derivation is pending.
 -/
 theorem petersson_add_left {φ' : GA D V → ℂ} (h : MemL2Quotient (GQ V) μ φ) (h' : MemL2Quotient (GQ V) μ φ') (hψ : MemL2Quotient (GQ V) μ ψ) :
     petersson V μ (φ + φ') ψ = petersson V μ φ ψ + petersson V μ φ' ψ :=
@@ -508,7 +504,7 @@ theorem petersson_add_left {φ' : GA D V → ℂ} (h : MemL2Quotient (GQ V) μ �
     (integral_add (h.integrable_mul_conj hψ) (h'.integrable_mul_conj hψ))
 
 /- English proof (translation)
-Use `((h.mul_right g).inner_toL2_eq_theta_pairing (h'.mul_right g)).symm.trans (Eq.trans ?_ (h.inner_toL2_eq_theta_pairing h'))` and prove the remaining obligations. Rewrite using `[← right_translate_toL2, ← right_translate_toL2, (isUnitaryRep_RG V μ).inner_apply_left, ← mul_apply_eq_comp, ← map_mul, inv_mul_cancel, map_one, one_apply_eq_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem petersson_rTr [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (h : MemL2Quotient (GQ V) μ φ) (h' : MemL2Quotient (GQ V) μ ψ)
     (g : GA D V) : petersson V μ (rTr V g φ) (rTr V g ψ) = petersson V μ φ ψ := by
@@ -517,7 +513,7 @@ theorem petersson_rTr [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (h : MemL2Quot
     inv_mul_cancel, map_one, one_apply_eq_self]
 
 /- English proof (translation)
-Rewrite using `[petersson, ← h.inner_toL2_eq_theta_pairing h]`. Use `(re_inner_self_pos (𝕜 := ℂ)).2 fun e => h0 ((Continuous.ae_eq_iff_eq μ hc continuous_zero).1 ?_)` and prove the remaining obligations. Conclude with `h.lift_toL2_ae_eq.symm.trans (e ▸ ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem petersson_self_pos [μ.IsHaarMeasure] (h : MemL2Quotient (GQ V) μ φ) (hc : Continuous φ) (h0 : φ ≠ 0) :
     0 < (petersson V μ φ φ).re := by
@@ -530,7 +526,7 @@ end Forms
 section Witt
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun ⟨_, hC⟩ => (columnFlag hC).k_le_wittIndex⟩` and prove the remaining obligations. Take `⟨W, hW, e⟩` from `le_wittIndex_iff.1 h`. Take `⟨r, C, hC, rfl⟩` from `AutFunCompare.exists_colSpan V W`. Take `rfl : r = i` from `((finrank_span_eq_card (linearIndependent_vecOf hC)).trans (Fintype.card_fin r)).symm.trans e`. Conclude with `⟨C, hC, colSpan_le_perp_iff.1 hW⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem le_wittIndex_iff_isIsoSub {i : ℕ} :
     i ≤ wittIndex V ↔ ∃ C : Matrix (Fin V.rank) (Fin i) D.host.E, IsIsoSub V C := by
@@ -541,7 +537,7 @@ theorem le_wittIndex_iff_isIsoSub {i : ℕ} :
   exact ⟨C, hC, colSpan_le_perp_iff.1 hW⟩
 
 /- English proof (translation)
-Rewrite using `[← not_iff_not, ← Ne, ← Nat.pos_iff_ne_zero, wittIndex_pos_iff, IsAniso]`. Use `push Not`. Conclude with `⟨fun ⟨W, hW⟩ => let ⟨r, C, hC, _⟩ := (AutFunCompare.isIsotropic_iff V W).1 hW; ⟨r, C, hC⟩, fun ⟨_, C, hC⟩ => ⟨_, ((AutFunCompare.isIsoFrame_iff V C).1 hC).2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wittIndex_eq_zero_iff_isAniso : wittIndex V = 0 ↔ IsAniso V := by
   rw [← not_iff_not, ← Ne, ← Nat.pos_iff_ne_zero, wittIndex_pos_iff, IsAniso]
@@ -550,7 +546,7 @@ theorem wittIndex_eq_zero_iff_isAniso : wittIndex V = 0 ↔ IsAniso V := by
     fun ⟨_, C, hC⟩ => ⟨_, ((AutFunCompare.isIsoFrame_iff V C).1 hC).2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, ⟨_, _, _, C, hC, _⟩, _⟩ => le_wittIndex_iff_isIsoSub.2 ⟨C, hC⟩, fun h => WittLow.wittLowEx D V i (le_wittIndex_iff_isIsoSub.1 h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isWittLower_iff {i : ℕ} : (∃ V' : HSp D, IsWittLower V V' i ∧ V'.SigOK) ↔ i ≤ wittIndex V :=
   ⟨fun ⟨_, ⟨_, _, _, C, hC, _⟩, _⟩ => le_wittIndex_iff_isIsoSub.2 ⟨C, hC⟩,
@@ -561,13 +557,13 @@ variable (V) in
 def minusHyp (i : ℕ) (h : i ≤ wittIndex V) : HSp D := (exists_isWittLower_iff.2 h).choose
 
 /- English proof (translation)
-The claim follows from `(exists_isWittLower_iff.2 h).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem isWittLower_minusHyp {i : ℕ} (h : i ≤ wittIndex V) : IsWittLower V (minusHyp V i h) i :=
   (exists_isWittLower_iff.2 h).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(isWittLower_minusHyp h).1`.
+A detailed English derivation is pending.
 -/
 theorem rank_minusHyp {i : ℕ} (h : i ≤ wittIndex V) : (minusHyp V i h).rank + 2 * i = V.rank :=
   (isWittLower_minusHyp h).1
@@ -575,7 +571,7 @@ theorem rank_minusHyp {i : ℕ} (h : i ≤ wittIndex V) : (minusHyp V i h).rank 
 variable (V) in
 
 /- English proof (translation)
-The claim follows from `Nat.le_add_left _ _ |>.trans (rank_minusHyp le_rfl).le`.
+A detailed English derivation is pending.
 -/
 theorem two_mul_wittIndex_le : 2 * wittIndex V ≤ V.rank := Nat.le_add_left _ _ |>.trans (rank_minusHyp le_rfl).le
 
@@ -588,7 +584,7 @@ open CuspDecay.Model
 def planeFlag (D : D7) : IsoFlag (plane D) := frameFlag (isIsoFrame_plane D)
 
 /- English proof (translation)
-Establish `h1 : 2 * wittIndex (plane D) ≤ 2` using `two_mul_wittIndex_le (plane D)`. Establish `h2 : 1 ≤ wittIndex (plane D)` using `(planeFlag D).k_le_wittIndex`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem wittIndex_plane (D : D7) : wittIndex (plane D) = 1 := by
   have h1 : 2 * wittIndex (plane D) ≤ 2 := two_mul_wittIndex_le (plane D)
@@ -596,13 +592,13 @@ theorem wittIndex_plane (D : D7) : wittIndex (plane D) = 1 := by
   omega
 
 /- English proof (translation)
-The claim follows from `(cocompact_single ((AutFunCompare.isIsoFrame_iff _ _).1 (isIsoFrame_plane D)).2).constTermOn_const c x`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (c : ℂ) (x : GA D (plane D)) : constTerm (planeFlag D) (fun _ => c) x = c :=
   (cocompact_single ((AutFunCompare.isIsoFrame_iff _ _).1 (isIsoFrame_plane D)).2).constTermOn_const c x
 
 /- English proof (translation)
-Rewrite using `[wittIndex_eq_zero_iff_isAniso, mem_cuspForms]`. Conclude with `⟨fun h r C hC => not_isCuspFun_const V hC one_ne_zero h.1.2, fun h => ⟨⟨isAutFunSm_const θ V 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example (θ : InfF D) (K : Subgroup (GA D V)) : (fun _ => (1 : ℂ)) ∈ cuspForms θ V K ↔ wittIndex V = 0 := by
   rw [wittIndex_eq_zero_iff_isAniso, mem_cuspForms]
@@ -610,7 +606,7 @@ example (θ : InfF D) (K : Subgroup (GA D V)) : (fun _ => (1 : ℂ)) ∈ cuspFor
     fun h => ⟨⟨isAutFunSm_const θ V 1, fun r C hC => absurd hC (h r C)⟩, .of_invariant fun _ _ _ => rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← petersson_conj_symm, petersson_smul_left, map_mul, Complex.conj_I, petersson_conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (μ : Measure (GA D V)) (φ ψ : GA D V → ℂ) :
     petersson V μ φ (Complex.I • ψ) = -Complex.I * petersson V μ φ ψ := by

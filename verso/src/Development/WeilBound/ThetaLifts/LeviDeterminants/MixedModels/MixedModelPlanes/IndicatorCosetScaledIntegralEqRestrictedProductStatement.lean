@@ -7,7 +7,7 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.EvAdm
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EvAdm.indicator_coset_scaledInt_eq_finprod | exact fun _ => @GlobalTheory.EvAdm.indicator_coset_scaledInt_eq_finprod | exact GlobalTheory.EvAdm.indicator_coset_scaledInt_eq_finprod | exact @GlobalTheory.EvAdm.indicator_coset_scaledInt_eq_finprod trivia …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.Mix.T.indicator_coset_scaledIntegral_eq_restrictedProduct : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F) (r : κ → FiniteAdeleRing (𝓞 F) F), a ≠ 0 →
     ∃ φ : ∀ v : HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB (κ → Fv F v)) ∧

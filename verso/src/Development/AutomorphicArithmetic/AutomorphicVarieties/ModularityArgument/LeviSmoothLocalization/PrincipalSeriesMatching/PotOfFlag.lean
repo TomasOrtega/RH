@@ -5,13 +5,11 @@ open NumberField IsDedekindDomain Polynomial UpperTheory.V UpperTheory.V.Z.Imagi
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Sd
 
 /- English proof (translation)
-Establish `e : (x ^ a) ^ b = (y ^ a) ^ b * (c ^ a) ^ b`. Rewrite using `[← pow_mul, ← pow_mul, ← pow_mul, ← mul_pow, mul_comm a b, pow_mul x b a, h, ← pow_mul, mul_comm b a, pow_mul (y * c) a b, mul_pow]`. Rewrite `e` using `[hx, hy]`. Simplify using `only [← zpow_natCast, ← zpow_mul] at e`. Rewrite `e` using `[← zpow_add]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set m : ℤ := p * a * b - (q * a * b + a * b) with hm`. Establish `h1 : c ^ m = 1` using `by rw [hm, zpow_sub, e, mul_inv_cancel]`. Establish `hm0 : m ≠ 0`. Establish `: m = (p - q - 1) * ((a : ℤ) * b)` using `by rw [hm]; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_ne_zero (by omega) (mul_ne_zero (by exact_mod_cast ha.ne') (by exact_mod_cast hb.ne'))` and prove the remaining obligations. Apply `hinf m.natAbs (Int.natAbs_ne_zero.mpr hm0)` to reduce the goal to its premises. Break down `Int.natAbs_eq m with hn | hn` into its components or cases. Rewrite `h1` using `[hn, zpow_natCast]`. Conclude with `h1`.
-
-Rewrite `h1` using `[hn, zpow_neg, zpow_natCast, inv_eq_one]`. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flag_exp {U : Type} [CommGroup U] (x y c : U) (a b : ℕ) (p q : ℤ) (ha : 0 < a) (hb : 0 < b)
     (hpq : p ≠ q + 1) (hinf : ∀ k : ℕ, k ≠ 0 → c ^ k ≠ 1)
@@ -34,11 +32,11 @@ private theorem flag_exp {U : Type} [CommGroup U] (x y c : U) (a b : ℕ) (p q :
   · rw [hn, zpow_neg, zpow_natCast, inv_eq_one] at h1; exact h1
 
 /- English proof (translation)
-Set `ι : F →ₐ[ℚ] Ω` to `IsScalarTower.toAlgHom ℚ F Ω`. Set `f : ℕ → (F →ₐ[ℚ] Ω)` to `fun k => (((σ : Ω ≃ₐ[ℚ] Ω) ^ k : Ω ≃ₐ[ℚ] Ω) : Ω →ₐ[ℚ] Ω).comp ι`. Establish `key : ∀ i j : ℕ, i < j → f i = f j → ∃ n : ℕ, 0 < n ∧ ∀ x : F, (σ ^ n) (algebraMap F Ω x) = algebraMap F Ω x`. Introduce `i j hlt he`. Use `⟨j - i, by omega, fun x => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ((σ : Ω ≃ₐ[ℚ] Ω) ^ i) (algebraMap F Ω x) = ((σ : Ω ≃ₐ[ℚ] Ω) ^ j) (algebraMap F Ω x)` using `congrArg (fun φ : F →ₐ[ℚ] Ω => φ x) he`. Apply `((σ : Ω ≃ₐ[ℚ] Ω) ^ i).injective` to reduce the goal to its premises. Use `show ((σ : Ω ≃ₐ[ℚ] Ω) ^ i) (((σ : Ω ≃ₐ[ℚ] Ω) ^ (j - i)) (algebraMap F Ω x)) = _`. Rewrite using `[← AlgEquiv.mul_apply, ← pow_add, Nat.add_sub_cancel' hlt.le]`. Conclude with `hx.symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨i, j, hij, he⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases. Conclude with `key i j hlt he`. Conclude with `key j i hlt he.symm`.
+A detailed English derivation is pending.
 -/
 private theorem pow_fix {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [Algebra ℚ Ω] [IsScalarTower ℚ F Ω]
     (σ : G ℚ Ω) : ∃ n : ℕ, 0 < n ∧ ∀ x : F, (σ ^ n) (algebraMap F Ω x) = algebraMap F Ω x := by
@@ -60,19 +58,17 @@ private theorem pow_fix {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   · exact key j i hlt he.symm
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosure ℚ Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.trans ℚ F Ω⟩`. Establish `hl2 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hnorm : ‖((1 + l : ℕ) : ℤ_[l])‖ = 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ‖(1 : ℤ_[l])‖ ≠ ‖(l : ℤ_[l])‖`. Rewrite using `[norm_one, PadicInt.norm_p]`. Conclude with `ne_of_gt (inv_lt_one_of_one_lt₀ hl2)`. Rewrite using `[PadicInt.norm_add_eq_max_of_ne hne, norm_one, PadicInt.norm_p]`. Conclude with `max_eq_left (inv_lt_one_of_one_lt₀ hl2).le`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `u : ℤ_[l]ˣ` to `(PadicInt.isUnit_iff.mpr hnorm).unit`. Take `⟨σ, hσ, hσu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA u`. Take `⟨n, hn, hfix⟩` from `pow_fix (F := F) σ`. Set `s : G F Ω` to `AlgEquiv.ofRingEquiv (f := ((σ ^ n : G ℚ Ω) : Ω ≃ₐ[ℚ] Ω).toRingEquiv) hfix`. Establish `hσn : σ ^ n ∈ Ine (F` using `ℚ) A := Subgroup.pow_mem _ hσ n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, ⟨hσn.1, hσn.2⟩, ?_⟩` and prove the remaining obligations. Introduce `k hk h1`. Establish `hr : cycZ F Ω l s = u ^ n`. Rewrite using `[← hσu, ← map_pow]`. Use `show cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G F Ω) Ω s) = cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω (σ ^ n))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Establish `h2 : cycBar F Ω l s = Units.map (((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom : ℤ_[l] →+* Qbar l) : ℤ_[l] →* Qbar l) (u ^ n)` using `by show Units.map _ (cycZ F Ω l s) = _`. Rewrite using `[hr]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, ← map_pow, ← pow_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg Units.val h1`. Rewrite `h3` using `[Units.coe_map, Units.val_one]`. Establish `hinj : Function.Injective ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom)` using `(algebraMap ℚ_[l] (Qbar l)).injective.comp Subtype.val_injective`. Establish `h4 : ((u ^ (n * k) : ℤ_[l]ˣ) : ℤ_[l]) = 1` using `hinj (by rw [map_one]; exact h3)`. Rewrite `h4` using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec, ← Nat.cast_pow]`.
-
-Establish `h5 : (1 + l) ^ (n * k) = 1` using `by exact_mod_cast h4`. Establish `h6 : 1 < (1 + l) ^ (n * k)` using `Nat.one_lt_pow (Nat.mul_ne_zero hn.ne' hk) (by have := hl.out.one_lt; omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem cyc_inf_over (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [hl : Fact l.Prime] (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
@@ -117,9 +113,9 @@ private theorem cyc_inf_over (F Ω : Type) [Field F] [NumberField F] [Field Ω] 
   omega
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r m hm v hv H A hA`. Take `⟨κ, a, ha, hflag, hκ⟩` from `H A hA`. Use `⟨κ, hflag, fun i j b hb h => ?_⟩` and prove the remaining obligations. Establish `hAl : A.valuation (l : Ω) < 1`. Establish `h1` using `(hA ((l : ℕ) : 𝓞 F)).2 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h1`. Take `⟨s, hs, hinf⟩` from `cyc_inf_over F Ω l A hAl`. Set `t : ↥(Dec (F` to `F) A) := ⟨s, Ine_le_Dec A hs⟩`. Establish `h1 : κ i t ^ b = (κ j t * cycBar F Ω l s) ^ b` using `DFunLike.congr_fun h t`. Conclude with `flag_exp (κ i t) (κ j t) (cycBar F Ω l s) a b (m i) (m j) ha hb (hm i j) hinf (hκ i t hs) (hκ j t hs) h1`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.potOfFlag :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.PotOfFlag := by

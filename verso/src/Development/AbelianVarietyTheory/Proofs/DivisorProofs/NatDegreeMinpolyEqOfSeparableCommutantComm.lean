@@ -6,11 +6,11 @@ open scoped TensorProduct Classical ComplexOrder
 namespace GlobalTheory.RegCommutant
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K E`. Set `e` to `LinearMap.toMatrixAlgEquiv b`. Set `i0 : Fin (Module.finrank K E)` to `⟨0, by omega⟩`. Set `i1 : Fin (Module.finrank K E)` to `⟨1, by omega⟩`. Establish `hne : i0 ≠ i1` using `by simp [i0, i1, Fin.ext_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨e.symm (Matrix.single i0 i1 1), e.symm (Matrix.single i1 i0 1), ?_⟩` and prove the remaining obligations. Introduce `hc`. Establish `h2` using `congrArg e hc`. Simplify using `only [map_mul, AlgEquiv.apply_symm_apply] at h2`. Establish `h3` using `congrFun (congrFun h2 i0) i0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[Matrix.single_mul_single_same, Matrix.single_mul_single_same]`. Simplify using `[Matrix.single_apply, hne.symm] at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_not_commute_of_two_le_finrank {K E : Type} [Field K] [AddCommGroup E]
     [Module K E] [FiniteDimensional K E] (h : 2 ≤ Module.finrank K E) :
@@ -29,37 +29,31 @@ theorem exists_not_commute_of_two_le_finrank {K E : Type} [Field K] [AddCommGrou
   simp [Matrix.single_apply, hne.symm] at h3
 
 /- English proof (translation)
-Use `set f := minpoly K T with hf`. Establish `hmon : f.Monic` using `minpoly.monic (Algebra.IsIntegral.isIntegral T)`. Take `⟨hsum, -⟩` from `GlobalTheory.EigSum.finrank_eigenspaces_of_separable_minpoly K V T f hmon hs (minpoly.aeval K T) (fun g hg => minpoly.dvd K T hg)`. Establish `hcard : f.roots.toFinset.card = f.natDegree`. Rewrite using `[Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots hs)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `((IsAlgClosed.splits f).natDegree_eq_card_roots).symm`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Choose the witnesses or unpack the hypotheses as in `⟨μ, hμ, h2⟩ : ∃ μ ∈ f.roots.toFinset, 2 ≤ Module.finrank K (T.eigenspace μ) := by`. Assume the negation of the conclusion as `hno`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `push_neg at hno`. Establish `: ∑ z ∈ f.roots.toFinset, Module.finrank K (T.eigenspace z) ≤ ∑ z ∈ f.roots.toFinset, 1` using `Finset.sum_le_sum fun z hz => Nat.lt_succ_iff.mp (hno z hz)`. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one] at this`. Use linear arithmetic over natural numbers and integers. Establish `hroot : f.IsRoot μ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hμ` using `[Multiset.mem_toFinset, Polynomial.mem_roots hmon.ne_zero]`. Conclude with `hμ`. Use `set q := f /ₘ (Polynomial.X - Polynomial.C μ) with hq`. Establish `hfq : (Polynomial.X - Polynomial.C μ) * q = f` using `Polynomial.mul_divByMonic_eq_iff_isRoot.mpr hroot`. Establish `hqμ : q.eval μ ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hq' : (Polynomial.X - Polynomial.C μ) * (q /ₘ (Polynomial.X - Polynomial.C μ)) = q` using `Polynomial.mul_divByMonic_eq_iff_isRoot.mpr h0`. Take `⟨q2, hq2⟩ : ∃ q2, (Polynomial.X - Polynomial.C μ) * q2 = q` from `⟨_, hq'⟩`. Establish `hu : IsUnit (Polynomial.X - Polynomial.C μ)` using `hs.squarefree _ ⟨q2, by rw [← hfq, ← hq2]; ring⟩`. Conclude with `Polynomial.not_isUnit_X_sub_C μ hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set c := q.eval μ with hc_def`. Use `set Q := Polynomial.aeval T q with hQ`. Use `set E := T.eigenspace μ with hE`. Establish `hTQ : ∀ v, T (Q v) = μ • Q v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : Polynomial.aeval T ((Polynomial.X - Polynomial.C μ) * q) = 0`. Rewrite using `[hfq]`. Conclude with `minpoly.aeval K T`. Establish `h1` using `congrArg (fun g : Module.End K V => g v) h0`. Simplify using `only [map_mul, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply, LinearMap.zero_apply] at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp h1`. Establish `hQT : ∀ v, Q (T v) = T (Q v)`. Introduce `v`. Establish `h` using `congrArg (Polynomial.aeval T) (mul_comm q Polynomial.X)`. Simplify using `only [map_mul, Polynomial.aeval_X] at h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun g : Module.End K V => g v) h`. Establish `hQE : ∀ v, Q v ∈ E`. Introduce `v`. Rewrite using `[hE, Module.End.mem_eigenspace_iff]`. Conclude with `hTQ v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hQid : ∀ u ∈ E, Q u = c • u`. Introduce `u hu`. Distinguish the cases in `hu0 : u = 0`. Simplify using `[hu0]`. Conclude with `Module.End.aeval_apply_of_hasEigenvector ⟨hu, hu0⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `π : V →ₗ[K] E` to `Q.codRestrict E hQE`. Set `ι : E →ₗ[K] V` to `E.subtype`. Establish `hπι : ∀ x : E, π (ι x) = c • x`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[π, ι, hQid x.1 x.2]`. Establish `hπT : ∀ v, π (T v) = μ • π v`. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[π, hQT v, hTQ v]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomm : ∀ S : Module.End K E, Commute (ι ∘ₗ S ∘ₗ π) T`. Introduce `S`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `hm : T (S (π v) : V) = μ • (S (π v) : V)` using `Module.End.mem_eigenspace_iff.mp (S (π v)).2`.
-
-Simplify using `only [Module.End.mul_apply, LinearMap.comp_apply, hπT v, map_smul]`. Simplify using `[ι, hm]`. Take `⟨S₁, S₂, hS⟩` from `exists_not_commute_of_two_le_finrank h2`. Establish `hab` using `hc _ _ (hcomm S₁) (hcomm S₂)`. Apply `hS` to reduce the goal to its premises.
-
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Establish `h1` using `congrArg (fun g : Module.End K V => g (ι (c⁻¹ • c⁻¹ • w))) hab.eq`. Simplify using `only [Module.End.mul_apply, LinearMap.comp_apply, map_smul, hπι, smul_smul] at h1`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Simplify `h1` using `[ι, mul_inv_cancel₀ hqμ, inv_mul_cancel₀ hqμ, mul_assoc, mul_left_comm]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_le_natDegree_minpoly (K V : Type) [Field K] [IsAlgClosed K] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (T : Module.End K V) (hs : (minpoly K T).Separable)
@@ -145,11 +139,11 @@ theorem finrank_le_natDegree_minpoly (K V : Type) [Field K] [IsAlgClosed K] [Add
   simpa [ι, mul_inv_cancel₀ hqμ, inv_mul_cancel₀ hqμ, mul_assoc, mul_left_comm] using h1
 
 /- English proof (translation)
-Introduce `K _ _ k N hs hc`. Establish `hmin : minpoly K (Matrix.toLin' N) = minpoly K N` using `Matrix.minpoly_toLin' N`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `finrank_le_natDegree_minpoly K (Fin k → K) (Matrix.toLin' N) (hmin ▸ hs) ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify `h` using `[hmin]`. Introduce `a b ha hb`. Set `e : Matrix (Fin k) (Fin k) K ≃ₐ[K] Module.End K (Fin k → K)` to `Matrix.toLinAlgEquiv'`. Establish `hN : e.symm (Matrix.toLin' N) = N`. Rewrite using `[AlgEquiv.symm_apply_eq]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hA` using `ha.map e.symm`. Establish `hB` using `hb.map e.symm`. Rewrite `hA`, `hB` using `[hN]`. Simplify `(hc _ _ hA hB).map e` using `only [AlgEquiv.apply_symm_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natDegree_minpoly_eq_of_commutant_comm : ∀ (K : Type) [Field K] [IsAlgClosed K] (k : ℕ)
     (N : Matrix (Fin k) (Fin k) K), (minpoly K N).Separable →

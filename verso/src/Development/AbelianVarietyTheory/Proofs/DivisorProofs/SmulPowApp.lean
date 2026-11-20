@@ -14,9 +14,9 @@ namespace GlobalTheory.RedQuot
 open WithConv Coalgebra Bialgebra
 
 /- English proof (translation)
-Use `letI : Algebra R A' := ((algebraMap R₀ A').comp σ).toAlgebra`. Establish `hB : ∀ r, algebraMap R A' r = algebraMap R₀ A' (σ r)` using `fun _ => rfl`. Establish `h` using `map_pow (f.pts A' hB) (toConv (AlgHom.id R₀ A')) k`. Establish `e1 : ((f.pts A' hB) (toConv (AlgHom.id R₀ A') ^ k)).ofConv a = mulBy R₀ A' k (f a)`. Rewrite using `[SemiBialgHom.pts_apply, ← comp_mulBy_pts]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : ((f.pts A' hB (toConv (AlgHom.id R₀ A'))) ^ k).ofConv a = f (mulBy R A k a)`. Rewrite using `[← toConv_ofConv (f.pts A' hB (toConv (AlgHom.id R₀ A'))), ← comp_mulBy_pts]`. Both sides reduce to the same expression. Rewrite using `[← e1, ← e2, h]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem semi_mulBy {R R₀ A A' : Type} [CommRing R] [CommRing R₀] [CommRing A] [CommRing A'] [Bialgebra R A]
     [Bialgebra R₀ A'] [IsCocomm R A] [IsCocomm R₀ A'] {σ : R →+* R₀} (f : SemiBialgHom σ A A') (k : ℕ) (a : A) :
@@ -31,14 +31,14 @@ theorem semi_mulBy {R R₀ A A' : Type} [CommRing R] [CommRing R₀] [CommRing A
   rw [← e1, ← e2, h]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, natCast_smul_id_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_pow_app {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] (G : PDivGroup p O) (k n : ℕ) (a : G.A n) :
     Hom.app (((p : ℤ_[p]) ^ k) • 𝟙 G) n a = mulBy O (G.A n) (p ^ k) a := by
   rw [← Nat.cast_pow, natCast_smul_id_app]
 
 /- English proof (translation)
-Establish `e2 : Hom.app (ψ ≫ χ) n a = mulBy R (G.A n) (p ^ N) a` using `by rw [h2, smul_pow_app]`. Rewrite using `[← e2, comp_app]`. Express the relevant statement in the definitionally equal form `s.app n (ψ.app n (χ.app n a)) = _`. Rewrite using `[h1, smul_pow_app]`. Conclude with `semi_mulBy (s'.app n) _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ident {p : ℕ} [Fact p.Prime] {R R₀ : Type} [CommRing R] [CommRing R₀] [Algebra R R₀]
     {G' G : PDivGroup p R} {G₀ : PDivGroup p R₀} (s : SemiHom (algebraMap R R₀) G₀ G)

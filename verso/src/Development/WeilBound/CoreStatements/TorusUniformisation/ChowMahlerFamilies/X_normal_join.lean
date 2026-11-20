@@ -21,30 +21,28 @@ def intGrp (R : Subalgebra O Ω) : AddSubgroup Ω :=
   (integralClosure R Ω).toSubring.toAddSubgroup
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intGrp {R : Subalgebra O Ω} {v : Ω} : v ∈ intGrp R ↔ IsIntegral R v := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `isIntegral_algebraMap (R := R) (A := Ω) (x := ⟨a, ha⟩)`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_mem {R : Subalgebra O Ω} {a : Ω} (ha : a ∈ R) : IsIntegral R a :=
   isIntegral_algebraMap (R := R) (A := Ω) (x := ⟨a, ha⟩)
 
 /- English proof (translation)
-Take `⟨p, hp, hpv⟩` from `hv`. Use `choose m hm using fun i => h _ (p.coeff i).2`. Set `N` to `p.support.sup m`. Set `q : Polynomial Ω` to `Polynomial.C (r ^ N) * p.map (algebraMap R' Ω)`. Establish `hq : q ∈ Polynomial.lifts (algebraMap (integralClosure R Ω) Ω)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`. Use `⟨⟨q.coeff i, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show IsIntegral R (q.coeff i)`. Simplify using `only [q, Polynomial.coeff_C_mul, Polynomial.coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hi : i ∈ p.support`. Establish `hle : m i ≤ N` using `Finset.le_sup hi`. Establish `e : r ^ N * algebraMap R' Ω (p.coeff i) = r ^ (N - m i) * (r ^ m i * (p.coeff i : Ω))`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hr.pow _).mul (hm i)`. Rewrite using `[Polynomial.notMem_support_iff.1 hi, map_zero, mul_zero]`. Conclude with `isIntegral_zero`. Take `⟨Q, hQ⟩` from `(Polynomial.mem_lifts _).1 hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Polynomial.aeval v Q = 0`. Rewrite using `[← Polynomial.aeval_map_algebraMap Ω, hQ]`. Simplify using `only [q, map_mul, Polynomial.aeval_map_algebraMap]`. Rewrite using `[Polynomial.aeval_def (R := R'), hpv, mul_zero]`. Establish `h1` using `isIntegral_leadingCoeff_smul Q v h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : algebraMap (integralClosure R Ω) Ω Q.leadingCoeff = r ^ N`. Establish `hinj : Function.Injective (algebraMap (integralClosure R Ω) Ω)` using `Subtype.val_injective`. Rewrite using `[← Polynomial.leadingCoeff_map_of_injective hinj, hQ]`. Simplify using `only [q]`. Rewrite using `[(hp.map _).leadingCoeff_C_mul]`.
-
-Rewrite `h1` using `[Algebra.smul_def, h2]`. Conclude with `⟨N, isIntegral_trans (A := integralClosure R Ω) _ h1⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_isIntegral (R R' : Subalgebra O Ω) {r : Ω} (hr : IsIntegral R r)
     (h : ∀ a ∈ R', ∃ n : ℕ, IsIntegral R (r ^ n * a)) {v : Ω} (hv : IsIntegral R' v) :
@@ -82,11 +80,9 @@ theorem exists_pow_mul_isIntegral (R R' : Subalgebra O Ω) {r : Ω} (hr : IsInte
   exact ⟨N, isIntegral_trans (A := integralClosure R Ω) _ h1⟩
 
 /- English proof (translation)
-Establish `hfg : (Subalgebra.toSubmodule (integralClosure R Ω)).FG` using `Module.Finite.iff_fg.1 h`. Take `⟨S, hS⟩` from `hfg`. Use `⟨S, le_antisymm (fun v hv => ?_) (spanOver_le R (fun a ha v hv => ?_) fun e he => ?_)⟩` and prove the remaining obligations. Establish `hv' : v ∈ Submodule.span R (S : Set Ω)` using `by rw [hS]; exact hv`. Take `⟨f, hf⟩` from `(Submodule.mem_span_finset).1 hv'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hf.2]`. Conclude with `sum_mem fun e he => AddSubgroup.subset_closure ⟨f e, (f e).2, e, he, rfl⟩`. Conclude with `(isIntegral_of_mem ha).mul hv`. Establish `he' : e ∈ Submodule.span R (S : Set Ω)` using `Submodule.subset_span he`. Rewrite `he'` using `[hS]`.
-
-Conclude with `he'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_span (R : Subalgebra O Ω) [h : Module.Finite R (integralClosure R Ω)] :
     ∃ S : Finset Ω, intGrp R = spanOver R (S : Set Ω) := by
@@ -104,9 +100,9 @@ theorem exists_span (R : Subalgebra O Ω) [h : Module.Finite R (integralClosure 
     exact he'
 
 /- English proof (translation)
-Use `isIntegrallyClosedIn_iff.2 ⟨Subtype.val_injective, fun {v} hv => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_mul_isIntegral R R' hu h2 hv`. Establish `hi : u⁻¹ ∈ R'` using `by simpa using h1 1 isIntegral_one`. Establish `ha` using `mul_mem (pow_mem hi n) (h1 _ (hu.mul hn))`. Establish `e : u⁻¹ ^ n * (u⁻¹ * (u * (u ^ n * v))) = v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel_left₀ hu0, inv_pow, inv_mul_cancel_left₀ (pow_ne_zero _ hu0)]`. Rewrite `ha` using `[e]`. Conclude with `⟨⟨v, ha⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isIntegrallyClosedIn (R R' : Subalgebra O Ω) {u : Ω} (hu0 : u ≠ 0) (hu : IsIntegral R u)
     (h1 : ∀ a, IsIntegral R a → u⁻¹ * a ∈ R') (h2 : ∀ a ∈ R', ∃ n : ℕ, IsIntegral R (u ^ n * a)) :
@@ -125,7 +121,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `⟨fun s _ a ha v hv => (isIntegral_of_mem ha).mul hv, fun s t hs _ v hv => ?_⟩` and prove the remaining obligations. Use `exists_pow_mul_isIntegral _ (chartRing O (mseg x) s) (isIntegral_of_mem (div_mem_chartRing (mseg x) t s)) (fun a ha => ?_) hv` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_mul_mem_chartRing (mseg x) s t hs ha`. Conclude with `⟨n, isIntegral_of_mem hn⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fam (x : (Σ k, ι k) → Ω) : IsLatFamily O x fun c => intGrp (chartRing O (mseg x) c) := by
   refine ⟨fun s _ a ha v hv => (isIntegral_of_mem ha).mul hv, fun s t hs _ v hv => ?_⟩
@@ -138,39 +134,35 @@ end PositivityTheory.Xgn.A_normal_join
 
 open PositivityTheory.Xgn.A_normal_join PositivityTheory.Xgn.A_coherent_gens PositivityTheory.Xgn.A_chart_noeth_frac in
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x _ d hx htop`. Take `⟨hK, hx0, hinj, hT⟩` from `(PositivityTheory.Xgn.A_join_model.isModelOver_iff x d).1 hx`. Take `⟨-, hfrac, hjoin⟩` from `PositivityTheory.Xgn.t_chart_noeth_frac O Ω K ι x`. Establish `hfg : ∀ c, mseg x c ≠ 0 → ∃ S : Finset Ω, intGrp (chartRing O (mseg x) c) = spanOver (chartRing O (mseg x) c) (S : Set Ω)`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hfrac htop c hc` as an intermediate fact. Establish `: Algebra.FiniteType O (chartRing O (mseg x) c)` using `(Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩)`. Establish `: Algebra.EssFiniteType (chartRing O (mseg x) c) Ω` using `.of_isLocalization Ω (nonZeroDivisors _)`. Use `GlobalTheory.finite_integralClosure_of_injective O (chartRing O (mseg x) c) Ω hinj` as an intermediate fact. Conclude with `exists_span _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `PositivityTheory.Xgn.t_coherent_gens O Ω K ι x Ω _ (fam x) hfg`. Take `⟨M, v, hv⟩` from `ha a le_rfl`. Set `z : (Σ _ : Unit, Fin M) → Ω` to `fun p => v p.2`. Take `⟨hf, hle⟩` from `hjoin Unit (fun _ => Fin M) z`. Establish `hz : ∃ j, v j ≠ 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `choose c hc using hx0`. Establish `hc' : mseg x c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Establish `h1 : (1 : Ω) ∈ intGrp (chartRing O (mseg x) c)` using `isIntegral_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hv c hc']`. Establish `h2` using `spanOver_le (L := ⊥) (chartRing O (mseg x) c) (S := Set.range fun j => (chartMon x c a)⁻¹ • v j) (fun a _ w hw => by rw [AddSubgroup.mem_bot.1 hw, smul_zero]; exact zero_mem _) (by rintro _ ⟨j, rfl⟩; simp [hn j]) h1`. Conclude with `one_ne_zero (AddSubgroup.mem_bot.1 h2)`. Use `⟨Unit, inferInstance, inferInstance, fun _ => Fin M, inferInstance, z, ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Use `(PositivityTheory.Xgn.A_join_model.isModelOver_iff (joinCoord x z) d).2 ⟨inferInstance, ?_, hinj, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `(k | k)`. Conclude with `hx0 k`. Conclude with `hz`. Rewrite using `[hf htop, ← htop]`. Conclude with `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hc, hR⟩` from `hle c' hc'`. Establish `hj : ∀ t : ∀ k : K ⊕ Unit, Sum.elim ι (fun _ => Fin M) k, mseg (joinCoord x z) t = mseg x (restrictChart t) * v (t (.inr ()))`. Introduce `t`. Rewrite using `[mseg_join]`. Simplify using `[mseg, z]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : v (c' (.inr ())) ≠ 0`. Rewrite `hc'` using `[hj]`. Conclude with `right_ne_zero_of_mul hc'`. Establish `hm : chartMon x (restrictChart c') a ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (Finset.prod_ne_zero_iff.1 hc k (Finset.mem_univ k))`. Establish `hw : ∀ j, IsIntegral (chartRing O (mseg x) (restrictChart c')) ((chartMon x (restrictChart c') a)⁻¹ * v j)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[← mem_intGrp, hv _ hc]`. Conclude with `mem_spanOver _ ⟨j, rfl⟩`. Use `isIntegrallyClosedIn (chartRing O (mseg x) (restrictChart c')) _ (mul_ne_zero (inv_ne_zero hm) hl) (hw _) (fun b hb => ?_) (fun b hb => ?_)` and prove the remaining obligations. Rewrite `hb` using `[← mem_intGrp, hv _ hc]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `spanOver_le (L := (chartRing O (mseg (joinCoord x z)) c').toSubring.toAddSubgroup.comap (AddMonoidHom.mulLeft ((chartMon x (restrictChart c') a)⁻¹ * v (c' (.inr ())))⁻¹)) _ (fun r hr w hw => ?_) ?_ hb` and prove the remaining obligations. Use `show _ * (r * w) ∈ chartRing O (mseg (joinCoord x z)) c'`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (hR hr) hw`. Introduce and unpack `_ ⟨j, rfl⟩ show _ * (_ * v j) ∈ chartRing O (mseg (joinCoord x z)) c'`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((chartMon x (restrictChart c') a)⁻¹ * v (c' (.inr ())))⁻¹ * ((chartMon x (restrictChart c') a)⁻¹ * v j) = v j / v (c' (.inr ()))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Establish `e2` using `ratio_eq (joinCoord x z) c' hc' (.inr ()) j`. Establish `e3 : v j / v (c' (.inr ())) = mseg (joinCoord x z) (Function.update c' (.inr ()) j) / mseg (joinCoord x z) c'` using `e2.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := O) _ _ _`. Unfold `chartRing at hb`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem b hb`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `hb`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `e : ((chartMon x (restrictChart c') a)⁻¹ * v (c' (.inr ()))) ^ 1 * (mseg (joinCoord x z) t / mseg (joinCoord x z) c') = (mseg x (restrictChart t) / mseg x (restrictChart c')) * ((chartMon x (restrictChart c') a)⁻¹ * v (t (.inr ())))`. Rewrite using `[hj, hj]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only`. Rewrite using `[e]`. Conclude with `(isIntegral_of_mem (ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := O) _ _ _)).mul (hw _)`. Consider the case `algebraMap r`. Conclude with `⟨0, isIntegral_of_mem (by rw [pow_zero, one_mul]; exact Subalgebra.algebraMap_mem _ r)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add b₁ b₂ _ _ h₁ h₂`. Take `⟨n₁, h₁⟩` from `h₁`. Take `⟨n₂, h₂⟩` from `h₂`. Use `⟨n₁ + n₂, ?_⟩` and prove the remaining obligations. Establish `h` using `(((hw (c' (.inr ()))).pow n₂).mul h₁).add (((hw (c' (.inr ()))).pow n₁).mul h₂)`.
-
-Establish `e : ∀ u : Ω, u ^ (n₁ + n₂) * (b₁ + b₂) = u ^ n₂ * (u ^ n₁ * b₁) + u ^ n₁ * (u ^ n₂ * b₂)` using `fun u => by ring`. Rewrite using `[e]`. Conclude with `h`. Consider the case `mul b₁ b₂ _ _ h₁ h₂`. Take `⟨n₁, h₁⟩` from `h₁`.
-
-Take `⟨n₂, h₂⟩` from `h₂`. Use `⟨n₁ + n₂, ?_⟩` and prove the remaining obligations. Establish `e : ∀ u : Ω, u ^ (n₁ + n₂) * (b₁ * b₂) = u ^ n₁ * b₁ * (u ^ n₂ * b₂)` using `fun u => by ring`. Rewrite using `[e]`. Conclude with `h₁.mul h₂`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_normal_join : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) [CharZero O] (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → fnField O x = ⊤ → ∃ (K' : Type) (_ : Fintype K') (_ : DecidableEq K') (ι' : K' → Type) (_ : ∀ k, Fintype (ι' k)) (z : (Σ k, ι' k) → Ω), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d ∧ NormalCharts O (joinCoord x z) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x _ d hx htop

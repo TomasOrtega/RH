@@ -9,12 +9,12 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Tf.Loc Posi
 namespace GlobalTheory.CompanionTheory.DegPairingProof
 
 /- English proof (translation)
-The claim follows from `le_max_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem log_le_pos (x : ℝ) : Real.log x ≤ Real.posLog x := le_max_right _ _
 
 /- English proof (translation)
-Establish `e : (Uc - Vc * Zc)ᵀ * (D * (U - V * Z)) = Ucᵀ * D * U - (Ucᵀ * D * V) * Z - Zcᵀ * (Vcᵀ * D * U) + Zcᵀ * (Vcᵀ * D * V) * Z`. Simplify using `only [Matrix.transpose_sub, Matrix.transpose_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, h1, h2, h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_mod {K ι κ₀ κ₁ : Type} [CommRing K] [Fintype ι] [Fintype κ₀] [Fintype κ₁]
     (Vc V : Matrix ι κ₀ K) (Uc U : Matrix ι κ₁ K) (D : Matrix ι ι K) (Zc Z : Matrix κ₀ κ₁ K)
@@ -28,7 +28,7 @@ theorem pair_mod {K ι κ₀ κ₁ : Type} [CommRing K] [Fintype ι] [Fintype κ
   simp
 
 /- English proof (translation)
-Establish `e : (U - V * Z)ᴴ * (D * (U - V * Z)) = Uᴴ * D * U - (Uᴴ * D * V) * Z - Zᴴ * (Vᴴ * D * U) + Zᴴ * (Vᴴ * D * V) * Z`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, h1, h2, h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_modH {ι κ₀ κ₁ : Type} [Fintype ι] [Fintype κ₀] [Fintype κ₁]
     (V : Matrix ι κ₀ ℂ) (U : Matrix ι κ₁ ℂ) (D : Matrix ι ι ℂ) (Z : Matrix κ₀ κ₁ ℂ)
@@ -43,19 +43,17 @@ theorem pair_modH {ι κ₀ κ₁ : Type} [Fintype ι] [Fintype κ₀] [Fintype 
   simp
 
 /- English proof (translation)
-Establish `hw` using `hW (Fin n)`. Take `⟨Y, hY⟩` from `hw.quot (Fin a) V ((hw.ne_zero (Fin a) V).1 hV)`. Take `⟨e1, -, -⟩` from `hY (Fin b) U`. Establish `hU' : (1 - V * Y) * U = U - V * (Y * U)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1' : nI (fromCols V U) = nI V * nI (U - V * (Y * U))` using `by rw [← hU']; exact e1`. Use `set U' := U - V * (Y * U) with hU'def`. Establish `hpair : U'ᴴ * (D * U') = Uᴴ * D * U` using `pair_modH V U D _ h1 h2 h3`. Establish `p1` using `hP (Fin n) (Fin b) U' (D * U')`. Establish `p2` using `(hM (Fin n) (Fin n) (Fin b) U').1 D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `p1` using `[hpair]`. Simplify using `only [Fintype.card_fin] at p2`. Establish `ht0 : nI U' ≠ 0` using `fun h => hVU (by rw [e1', h, mul_zero])`. Establish `htn : 0 ≤ nI U'` using `hw.nonneg (Fin b) U'`. Establish `ht : 0 < nI U'` using `lt_of_le_of_ne htn (Ne.symm ht0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := nI U' with htdef`. Use `set S := ((n : ℝ) * n * sz D ^ 2) ^ b with hSdef`. Establish `hcpos : 0 < ‖(Uᴴ * D * U).det‖ ^ 2` using `by positivity`. Establish `hle : ‖(Uᴴ * D * U).det‖ ^ 2 ≤ t * (S * t)` using `p1.trans (mul_le_mul_of_nonneg_left p2 htn)`. Establish `hS : 0 < S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS0 : 0 ≤ S` using `by rw [hSdef]; positivity`. Use `lt_of_le_of_ne hS0 fun h => ?_` and prove the remaining obligations. Rewrite `hle` using `[← h, zero_mul, mul_zero]`. Conclude with `absurd hle (not_le.2 hcpos)`. Establish `hlog` using `Real.log_le_log hcpos hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hlog` using `[Real.log_mul ht.ne' (mul_pos hS ht).ne', Real.log_mul hS.ne' ht.ne']`. Establish `hq : Real.log t = Real.log (nI (fromCols V U)) - Real.log (nI V)`. Rewrite using `[e1', Real.log_mul hV ht0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hSl : Real.log S ≤ b * (Real.posLog ((n : ℝ) * n) + Real.posLog (sz D ^ 2))`.
-
-Rewrite using `[hSdef, Real.log_pow]`. Conclude with `mul_le_mul_of_nonneg_left ((log_le_pos _).trans Real.posLog_mul) (Nat.cast_nonneg _)`. Rewrite using `[← hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem locInf (hW : WedgeI) (hM : MulI) (hP : PairI) {n a b : ℕ} (V : Matrix (Fin n) (Fin a) ℂ)
     (U : Matrix (Fin n) (Fin b) ℂ) (D : Matrix (Fin n) (Fin n) ℂ)
@@ -99,7 +97,7 @@ theorem locInf (hW : WedgeI) (hM : MulI) (hP : PairI) {n a b : ℕ} (V : Matrix 
   linarith
 
 /- English proof (translation)
-Unfold `nF`. Use `iSup_congr fun s => ?_` and prove the remaining obligations. Establish `: ((A.map ψ).submatrix s id).det = ψ ((A.submatrix s id).det)`. Conclude with `(RingHom.map_det (ψ : K' →+* K) (A.submatrix s id)).symm`. Rewrite using `[this, hψ]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nF_map {K K' ι κ : Type} [NormedField K] [NormedField K'] [Fintype κ] [DecidableEq κ]
     (ψ : K' ≃+* K) (hψ : ∀ y, ‖ψ y‖ = ‖y‖) (A : Matrix ι κ K') :
@@ -111,27 +109,25 @@ theorem nF_map {K K' ι κ : Type} [NormedField K] [NormedField K'] [Fintype κ]
   rw [this, hψ]
 
 /- English proof (translation)
-Establish `hw` using `hW K (Fin n)`. Establish `hw'` using `hW K' (Fin n)`. Take `⟨Y, hY⟩` from `hw.quot (Fin a) V ((hw.ne_zero (Fin a) V).1 hV)`. Take `⟨e1, -, -⟩` from `hY (Fin b) U`. Take `⟨Y', hY'⟩` from `hw'.quot (Fin a) V' ((hw'.ne_zero (Fin a) V').1 hV')`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, -, -⟩` from `hY' (Fin b) U'`. Establish `hU₁ : (1 - V * Y) * U = U - V * (Y * U)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Establish `hU₂ : (1 - V' * Y') * U' = U' - V' * (Y' * U')`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1' : nF (fromCols V U) = nF V * nF (U - V * (Y * U))` using `by rw [← hU₁]; exact e1`. Establish `e2' : nF (fromCols V' U') = nF V' * nF (U' - V' * (Y' * U'))` using `by rw [← hU₂]; exact e2`. Use `set P := U - V * (Y * U) with hPdef`. Use `set Q := U' - V' * (Y' * U') with hQdef`. Establish `hQmap : Q.map ψ = U'.map ψ - V'.map ψ * (Y' * U').map ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQdef]`. Use `Matrix.map_mul (L := V') (M := Y' * U') (f := (ψ : K' →+* K))` as an intermediate fact. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun this i) j`. Simplify using `using h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpair : (Q.map ψ)ᵀ * (D * P) = (U'.map ψ)ᵀ * D * U`. Rewrite using `[hQmap]`. Conclude with `pair_mod _ V _ U D _ _ h1 h2 h3`. Establish `p1` using `hP K (Fin n) (Fin b) (Q.map ψ) (D * P)`. Establish `p2` using `(hM K (Fin n) (Fin n) (Fin b) P).1 D`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `p1` using `[hpair, nF_map ψ hψ]`. Simplify using `only [Fintype.card_fin] at p2`. Establish `ht0 : nF P ≠ 0` using `fun h => hVU (by rw [e1', h, mul_zero])`. Establish `ht : 0 < nF P` using `lt_of_le_of_ne (hw.nonneg (Fin b) P) (Ne.symm ht0)`. Establish `hs0 : nF Q ≠ 0` using `fun h => hVU' (by rw [e2', h, mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hs : 0 < nF Q` using `lt_of_le_of_ne (hw'.nonneg (Fin b) Q) (Ne.symm hs0)`. Establish `hszn : 0 ≤ sz D`. Unfold `sz`. Conclude with `Real.iSup_nonneg fun _ => norm_nonneg _`. Establish `hcpos : 0 < ‖((U'.map ψ)ᵀ * D * U).det‖` using `norm_pos_iff.2 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ‖((U'.map ψ)ᵀ * D * U).det‖ ≤ nF Q * (sz D ^ b * nF P)` using `p1.trans (mul_le_mul_of_nonneg_left p2 hs.le)`. Establish `hS : 0 < sz D ^ b`. Establish `hS0 : 0 ≤ sz D ^ b` using `by positivity`. Use `lt_of_le_of_ne hS0 fun h => ?_` and prove the remaining obligations. Rewrite `hle` using `[← h, zero_mul, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hle (not_le.2 hcpos)`. Establish `hlog` using `Real.log_le_log hcpos hle`. Rewrite `hlog` using `[Real.log_mul hs.ne' (mul_pos hS ht).ne', Real.log_mul hS.ne' ht.ne', Real.log_pow]`. Establish `hq : Real.log (nF P) = Real.log (nF (fromCols V U)) - Real.log (nF V)`. Rewrite using `[e1', Real.log_mul hV ht0]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hq' : Real.log (nF Q) = Real.log (nF (fromCols V' U')) - Real.log (nF V')`. Rewrite using `[e2', Real.log_mul hV' hs0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hSl : (b : ℝ) * Real.log (sz D) ≤ b * Real.posLog (sz D)` using `mul_le_mul_of_nonneg_left (log_le_pos _) (Nat.cast_nonneg _)`.
-
-Rewrite using `[← hq, ← hq']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem locFin (hW : WedgeF) (hM : MulF) (hP : PairF) {K K' : Type} [NormedField K] [IsUltrametricDist K]
     [NormedField K'] [IsUltrametricDist K'] (ψ : K' ≃+* K) (hψ : ∀ y, ‖ψ y‖ = ‖y‖) {n a b : ℕ}
@@ -196,9 +192,9 @@ theorem locFin (hW : WedgeF) (hM : MulF) (hP : PairF) {K K' : Type} [NormedField
   linarith
 
 /- English proof (translation)
-Establish `h0` using `hM (Fin n) (Fin n) (Fin n) (1 : Matrix (Fin n) (Fin n) ℂ)`. Establish `p` using `h0.1 g`. Rewrite `p` using `[Matrix.mul_one, h0.2.2 g, h0.2.2 1]`. Simplify using `only [Fintype.card_fin, Matrix.det_one, norm_one, one_pow, mul_one] at p`. Establish `hcpos : 0 < ‖g.det‖ ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlog` using `Real.log_le_log hcpos p`. Rewrite `hlog` using `[Real.log_pow (n := n)]`. Conclude with `hlog.trans (mul_le_mul_of_nonneg_left ((log_le_pos _).trans Real.posLog_mul) (Nat.cast_nonneg _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locDetInf (hM : MulI) {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : g.det ≠ 0) :
     Real.log (‖g.det‖ ^ 2) ≤ n * (Real.posLog ((n : ℝ) * n) + Real.posLog (sz g ^ 2)) := by
@@ -212,9 +208,9 @@ theorem locDetInf (hM : MulI) {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : g
   exact hlog.trans (mul_le_mul_of_nonneg_left ((log_le_pos _).trans Real.posLog_mul) (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Establish `h0` using `hM K (Fin n) (Fin n) (Fin n) (1 : Matrix (Fin n) (Fin n) K)`. Establish `p` using `h0.1 g`. Rewrite `p` using `[Matrix.mul_one, h0.2.2 g, h0.2.2 1]`. Simplify using `only [Fintype.card_fin, Matrix.det_one, norm_one, mul_one] at p`. Establish `hcpos : 0 < ‖g.det‖` using `norm_pos_iff.2 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlog` using `Real.log_le_log hcpos p`. Rewrite `hlog` using `[Real.log_pow]`. Conclude with `hlog.trans (mul_le_mul_of_nonneg_left (log_le_pos _) (Nat.cast_nonneg _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locDetFin (hM : MulF) {K : Type} [NormedField K] [IsUltrametricDist K] {n : ℕ}
     (g : Matrix (Fin n) (Fin n) K) (hg : g.det ≠ 0) :
@@ -229,7 +225,7 @@ theorem locDetFin (hM : MulF) {K : Type} [NormedField K] [IsUltrametricDist K] {
   exact hlog.trans (mul_le_mul_of_nonneg_left (log_le_pos _) (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin n × Fin n) with h | h` into its components or cases. Simplify using `[sz]`. Take `⟨p, hp⟩` from `exists_eq_ciSup_of_finite (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖)`. Rewrite using `[sz, ← hp]`. Conclude with `le_ciSup (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖ ^ 2) (Set.finite_range _).bddAbove p`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_sq_le {K : Type} [NormedField K] {n : ℕ} (g : Matrix (Fin n) (Fin n) K) :
     sz g ^ 2 ≤ ⨆ p : Fin n × Fin n, ‖g p.1 p.2‖ ^ 2 := by
@@ -240,13 +236,13 @@ theorem sz_sq_le {K : Type} [NormedField K] {n : ℕ} (g : Matrix (Fin n) (Fin n
     exact le_ciSup (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖ ^ 2) (Set.finite_range _).bddAbove p
 
 /- English proof (translation)
-The claim follows from `Real.iSup_nonneg fun _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sz_nonneg {K ι κ : Type} [NormedField K] (g : Matrix ι κ K) : 0 ≤ sz g :=
   Real.iSup_nonneg fun _ => norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `Real.monotoneOn_posLog (Set.mem_Ici.2 (by positivity)) (Set.mem_Ici.2 (Real.iSup_nonneg fun _ => by positivity)) (sz_sq_le g)`.
+A detailed English derivation is pending.
 -/
 theorem posLog_sz_le {K : Type} [NormedField K] {n : ℕ} (g : Matrix (Fin n) (Fin n) K) :
     Real.posLog (sz g ^ 2) ≤ Real.posLog (⨆ p : Fin n × Fin n, ‖g p.1 p.2‖ ^ 2) :=
@@ -254,23 +250,21 @@ theorem posLog_sz_le {K : Type} [NormedField K] {n : ℕ} (g : Matrix (Fin n) (F
     (Set.mem_Ici.2 (Real.iSup_nonneg fun _ => by positivity)) (sz_sq_le g)
 
 /- English proof (translation)
-Establish `pF : (Function.support fun w => Ff (π w)).Finite`. Establish `: (Function.support fun w => Ff (π w)) = π ⁻¹' Function.support Ff` using `rfl`. Rewrite using `[this]`. Conclude with `hFf.preimage π.injective.injOn`. Establish `pG : (Function.support fun w => Gf (π w)).Finite`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Function.support fun w => Gf (π w)) = π ⁻¹' Function.support Gf` using `rfl`. Rewrite using `[this]`. Conclude with `hGf.preimage π.injective.injOn`. Set `T : Finset Q` to `hcf.toFinset ∪ hSf.toFinset ∪ hFf.toFinset ∪ hGf.toFinset ∪ pF.toFinset ∪ pG.toFinset`. Establish `s1 : Function.support cf ⊆ T` using `fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Simplify using `only [T, Finset.coe_union, Set.mem_union, Set.Finite.coe_toFinset]`. The claim follows by propositional logic. Establish `s2 : Function.support Sf ⊆ T` using `fun w hw => by`. Simplify using `only [T, Finset.coe_union, Set.mem_union, Set.Finite.coe_toFinset]`. The claim follows by propositional logic.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `s3 : Function.support Ff ⊆ T` using `fun w hw => by`. Simplify using `only [T, Finset.coe_union, Set.mem_union, Set.Finite.coe_toFinset]`. The claim follows by propositional logic. Establish `s4 : Function.support Gf ⊆ T` using `fun w hw => by`. Simplify using `only [T, Finset.coe_union, Set.mem_union, Set.Finite.coe_toFinset]`.
+The claim follows by propositional logic. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-The claim follows by propositional logic. Establish `s5 : (Function.support fun w => Ff (π w)) ⊆ T` using `fun w hw => by`. Simplify using `only [T, Finset.coe_union, Set.mem_union, Set.Finite.coe_toFinset]`. The claim follows by propositional logic. Establish `s6 : (Function.support fun w => Gf (π w)) ⊆ T` using `fun w hw => by`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Simplify using `only [T, Finset.coe_union, Set.mem_union, Set.Finite.coe_toFinset]`. The claim follows by propositional logic. Establish `eF : ∑ w ∈ T, Ff (π w) = ∑ w ∈ T, Ff w`. Rewrite using `[← finsum_eq_sum_of_support_subset _ s5, ← finsum_eq_sum_of_support_subset _ s3]`. Conclude with `finsum_comp_equiv π`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `eG : ∑ w ∈ T, Gf (π w) = ∑ w ∈ T, Gf w`. Rewrite using `[← finsum_eq_sum_of_support_subset _ s6, ← finsum_eq_sum_of_support_subset _ s4]`. Conclude with `finsum_comp_equiv π`. Rewrite using `[finsum_eq_sum_of_support_subset _ s1, finsum_eq_sum_of_support_subset _ s2, finsum_eq_sum_of_support_subset _ s3, finsum_eq_sum_of_support_subset _ s4]`. Establish `a1 : ∑ v, ci v ≤ b * (Fintype.card P * L + ∑ v, Si v) + 2 * (∑ v, Fi v - ∑ v, Gi v)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum (s := Finset.univ) fun v _ => h1 v` as an intermediate fact. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at this`. Conclude with `this`. Establish `a2 : ∑ w ∈ T, cf w ≤ b * ∑ w ∈ T, Sf w + (∑ w ∈ T, Ff w - ∑ w ∈ T, Gf w) + (∑ w ∈ T, Ff w - ∑ w ∈ T, Gf w)`. Use `Finset.sum_le_sum (s := T) fun w _ => h2 w` as an intermediate fact.
-
-Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib, eF, eG] at this`. Conclude with `this`. Use polynomial arithmetic with `[a1, a2]`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sum_bound {P Q : Type} [Fintype P] (π : Equiv.Perm Q) (b L : ℝ)
     (ci Si Fi Gi : P → ℝ) (cf Sf Ff Gf : Q → ℝ)
@@ -321,9 +315,9 @@ theorem sum_bound {P Q : Type} [Fintype P] (π : Equiv.Perm Q) (b L : ℝ)
   nlinarith [a1, a2]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective M.mulVec` using `Matrix.mulVec_injective_iff.2 h`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective M.mulVecLin (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h1 : LinearMap.toMatrix' (g ∘ₗ Matrix.toLin' M) = 1`. Rewrite using `[Matrix.toLin'_apply', hg, LinearMap.toMatrix'_id]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_leftInv' {K κ : Type} [Field K] [Fintype κ] [DecidableEq κ] {n : ℕ} (M : Matrix (Fin n) κ K)
     (h : LinearIndependent K Mᵀ) : ∃ L : Matrix κ (Fin n) K, L * M = 1 := by
@@ -335,7 +329,7 @@ theorem exists_leftInv' {K κ : Type} [Field K] [Fintype κ] [DecidableEq κ] {n
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin'] at h1
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `cases j <;> rfl`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_fromCols' {R S ι κ₀ κ₁ : Type} (f : R → S) (B : Matrix ι κ₀ R) (A : Matrix ι κ₁ R) :
     (fromCols B A).map f = fromCols (B.map f) (A.map f) := by
@@ -350,7 +344,7 @@ def fr (x : GA E n) {κ : Type} (M : Matrix (Fin n) κ E) : Matrix (Fin n) κ (A
   (x⁻¹ : GA E n).val * M.map (algebraMap E (Ad E))
 
 /- English proof (translation)
-Unfold `fr`. Rewrite using `[map_fromCols', Matrix.mul_fromCols]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fr_fromCols (x : GA E n) {κ₀ κ₁ : Type} (B : Matrix (Fin n) κ₀ E) (A : Matrix (Fin n) κ₁ E) :
     fr x (fromCols B A) = fromCols (fr x B) (fr x A) := by
@@ -358,7 +352,7 @@ theorem fr_fromCols (x : GA E n) {κ₀ κ₁ : Type} (B : Matrix (Fin n) κ₀ 
   rw [map_fromCols', Matrix.mul_fromCols]
 
 /- English proof (translation)
-Unfold `fr`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc x.val, Units.mul_inv, Matrix.one_mul, ← Matrix.map_mul, hLM, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fr_leftInv (x : GA E n) {κ : Type} [Fintype κ] [DecidableEq κ] (M : Matrix (Fin n) κ E)
     (L : Matrix κ (Fin n) E) (hLM : L * M = 1) :
@@ -368,13 +362,13 @@ theorem fr_leftInv (x : GA E n) {κ : Type} [Fintype κ] [DecidableEq κ] (M : M
     ← Matrix.map_mul, hLM, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hc` using `(hC E).2.1`. Establish `h1 : (fr x M₁).map (conjAd E) = ((x⁻¹ : GA E n).val.map (conjAd E)) * (M₁.map (conjE E)).map (algebraMap E (Ad E))`. Unfold `fr`. Rewrite using `[Matrix.map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[hc]`. Establish `h2 : ((x⁻¹ : GA E n).val.map (conjAd E))ᵀ = (thetaA E n x).val` using `rfl`. Establish `h3 : (thetaA E n x) * (twConj (thetaA E n) x (ratGL E n d))⁻¹ * x⁻¹ = ratGL E n d⁻¹`. Simplify using `[twConj, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4 : (thetaA E n x).val * (twConj (thetaA E n) x (ratGL E n d))⁻¹.val * (x⁻¹ : GA E n).val = (d⁻¹).val.map (algebraMap E (Ad E))`. Rewrite using `[← Units.val_mul, ← Units.val_mul, h3]`. Both sides reduce to the same expression. Rewrite using `[h1, Matrix.transpose_mul, h2, Matrix.map_mul, Matrix.map_mul, ← h4]`. Unfold `fr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.transpose_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_eq (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ : Type} [Fintype κ₂]
     (M₁ : Matrix (Fin n) κ₁ E) (M₂ : Matrix (Fin n) κ₂ E) :
@@ -400,7 +394,7 @@ theorem pair_eq (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ :
   simp only [Matrix.mul_assoc, Matrix.transpose_map]
 
 /- English proof (translation)
-Rewrite using `[← pair_eq hC x d M₁ M₂, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pair_loc (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ : Type} [Fintype κ₂]
     (M₁ : Matrix (Fin n) κ₁ E) (M₂ : Matrix (Fin n) κ₂ E) {K : Type} [CommRing K] (φ : Ad E →+* K) :
@@ -411,7 +405,7 @@ theorem pair_loc (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← pair_loc hC x d M₁ M₂ (cV v)]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, (hC E).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pair_inf (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ : Type} [Fintype κ₂]
     (M₁ : Matrix (Fin n) κ₁ E) (M₂ : Matrix (Fin n) κ₂ E) (v : InfinitePlace E) :
@@ -424,7 +418,7 @@ theorem pair_inf (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ 
   simp [Matrix.conjTranspose_apply, (hC E).1]
 
 /- English proof (translation)
-Rewrite using `[← pair_loc hC x d M₁ M₂ (cW w)]`. Use `congr 3`. Use extensionality with `i j`. Simplify using `[hψ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pair_fin (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ : Type} [Fintype κ₂]
     (M₁ : Matrix (Fin n) κ₁ E) (M₂ : Matrix (Fin n) κ₂ E) (π : Equiv.Perm (HeightOneSpectrum (𝓞 E)))
@@ -439,15 +433,15 @@ theorem pair_fin (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) {κ₁ κ₂ 
   simp [hψ]
 
 /- English proof (translation)
-The claim follows from `add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)`.
+A detailed English derivation is pending.
 -/
 theorem logSizeM_nonneg (g : Matrix (Fin n) (Fin n) (Ad E)) : 0 ≤ logSizeM g :=
   add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)
 
 /- English proof (translation)
-Use `(hSz E (Fin n) (Fin n) g).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hle`. Use `hw ?_` and prove the remaining obligations. Establish `h1 : sz (g.map (cW w)) ≤ 1` using `not_lt.1 hle`. Establish `h0 : 0 ≤ sz (g.map (cW w))` using `sz_nonneg _`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : Real.posLog (sz (g.map (cW w))) = 0` using `(Real.posLog_eq_zero_iff _).2 (by rw [abs_of_nonneg h0]; exact h1)`. Conclude with `hz`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem supp_sz (hSz : SzFin) (g : Matrix (Fin n) (Fin n) (Ad E)) :
     (Function.support fun w : HeightOneSpectrum (𝓞 E) =>
@@ -462,13 +456,13 @@ theorem supp_sz (hSz : SzFin) (g : Matrix (Fin n) (Fin n) (Ad E)) :
   exact hz
 
 /- English proof (translation)
-Take `⟨-, -, π, ψ, -, -⟩` from `hC E`. Establish `hu : IsUnit g.val.det` using `Matrix.isUnits_det_units _`. Establish `hs` using `sum_bound π (n : ℝ) (Real.posLog ((n : ℝ) * n)) (fun v => Real.log (‖cV v g.val.det‖ ^ 2)) (fun v => Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (g.val p.1 p.2)‖ ^ 2)) (fun _ => 0) (fun _ => 0) (fun w => Real.log ‖cW w g.val.det‖) (fun w => Real.posLog (⨆ p : Fin n × Fin n, ‖cW w (g. …`. Simplify using `only [logAbs, logSizeM]`. Simplify using `using hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `v`. Establish `hd : (g.val.map (cV v)).det = cV v g.val.det` using `(RingHom.map_det (cV v) g.val).symm`. Establish `h0 : (g.val.map (cV v)).det ≠ 0` using `by rw [hd]; exact (hu.map (cV v)).ne_zero`. Establish `h` using `locDetInf hI _ h0`. Rewrite `h` using `[hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `posLog_sz_le (g.val.map (cV v))`. Establish `: (n : ℝ) * (Real.posLog ((n : ℝ) * n) + Real.posLog (sz (g.val.map (cV v)) ^ 2)) ≤ n * (Real.posLog ((n : ℝ) * n) + Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (g.val p.1 p.2)‖ ^ 2))` using `mul_le_mul_of_nonneg_left (by simpa using h') (Nat.cast_nonneg _)`. Simplify using `using h.trans this`. Introduce `w`. Establish `hd : (g.val.map (cW w)).det = cW w g.val.det` using `(RingHom.map_det (cW w) g.val).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : (g.val.map (cW w)).det ≠ 0` using `by rw [hd]; exact (hu.map (cW w)).ne_zero`. Establish `h` using `locDetFin hF _ h0`. Rewrite `h` using `[hd]`. Simplify `h` using `[sz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_bound (hF : MulF) (hI : MulI) (hSz : SzFin) (hL : LogAbsBasic) (hC : ConjPlaces) (g : GA E n) :
     logAbs g.val.det ≤ n * (Fintype.card (InfinitePlace E) * Real.posLog ((n : ℝ) * n) + logSizeM g.val) := by
@@ -500,9 +494,9 @@ theorem det_bound (hF : MulF) (hI : MulI) (hSz : SzFin) (hL : LogAbsBasic) (hC :
     simpa [sz] using h
 
 /- English proof (translation)
-Take `⟨h1, -, π, ψ, h3, h4⟩` from `hC E`. Unfold `logAbs`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[h1, RCLike.norm_conj]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ w, Real.log ‖cW w (conjAd E u)‖ = Real.log ‖cW (π w) u‖` using `fun w => by rw [h4, h3]`. Repeatedly rewrite using `[this]`. Conclude with `finsum_comp_equiv π (f := fun w => Real.log ‖cW w u‖)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logAbs_conj (hC : ConjPlaces) (u : Ad E) : logAbs (conjAd E u) = logAbs u := by
   obtain ⟨h1, -, π, ψ, h3, h4⟩ := hC E
@@ -515,11 +509,11 @@ theorem logAbs_conj (hC : ConjPlaces) (u : Ad E) : logAbs (conjAd E u) = logAbs 
     exact finsum_comp_equiv π (f := fun w => Real.log ‖cW w u‖)
 
 /- English proof (translation)
-Use `set t := (x⁻¹ : GA E n).val.det with ht`. Establish `hu : IsUnit t` using `Matrix.isUnits_det_units _`. Establish `hθ : (thetaA E n x).val.det = conjAd E t`. Express the relevant statement in the definitionally equal form `(((x⁻¹ : GA E n).val.map (conjAd E))ᵀ).det = _`. Rewrite using `[Matrix.det_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(RingHom.map_det (conjAd E) _).symm`. Establish `hd : (ratGL E n d).val.det = algebraMap E (Ad E) d.val.det` using `(RingHom.map_det (algebraMap E (Ad E)) d.val).symm`. Establish `hd0 : d.val.det ≠ 0` using `(Matrix.isUnits_det_units d).ne_zero`. Establish `hdu : IsUnit (algebraMap E (Ad E) d.val.det)` using `(isUnit_iff_ne_zero.2 hd0).map _`. Establish `hcu : IsUnit (conjAd E t)` using `hu.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (twConj (thetaA E n) x (ratGL E n d)).val.det = t * algebraMap E (Ad E) d.val.det * conjAd E t`. Simplify using `only [twConj, Units.val_mul, Matrix.det_mul, hθ, hd, ht]`. Rewrite using `[e, (hL E).2.1 _ _ (hu.mul hdu) hcu, (hL E).2.1 _ _ hu hdu, (hL E).2.2 _ hd0, logAbs_conj hC]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem logAbs_twConj (hL : LogAbsBasic) (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E) :
     logAbs (twConj (thetaA E n) x (ratGL E n d)).val.det = 2 * logAbs (x⁻¹ : GA E n).val.det := by
@@ -541,15 +535,15 @@ theorem logAbs_twConj (hL : LogAbsBasic) (hC : ConjPlaces) (x : GA E n) (d : GL 
   ring
 
 /- English proof (translation)
-Establish `hone : (1 : Matrix (Fin n) (Fin n) E)ᵀ = fun i => (Pi.basisFun E (Fin n)) i`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Establish `hli : LinearIndependent E (1 : Matrix (Fin n) (Fin n) E)ᵀ`. Rewrite using `[hone]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Pi.basisFun E (Fin n)).linearIndependent`. Establish `hsp : Submodule.span E (Set.range (1 : Matrix (Fin n) (Fin n) E)ᵀ) = ⊤`. Rewrite using `[hone]`. Conclude with `(Pi.basisFun E (Fin n)).span_eq`. Establish `h` using `hB E n (Fin n) x 1 hli`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hsp]`. Rewrite using `[← h]`. Unfold `degG logAbs`. Establish `hX : (x⁻¹ : GA E n).val * (1 : Matrix (Fin n) (Fin n) E).map (algebraMap E (Ad E)) = (x⁻¹ : GA E n).val`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hX]`. Use `congr 2`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hd : ((x⁻¹ : GA E n).val.map (cV v)).det = cV v (x⁻¹ : GA E n).val.det` using `(RingHom.map_det (cV v) _).symm`. Rewrite using `[(hI (Fin n) (Fin n) (Fin n) 1).2.2, hd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `finsum_congr fun w => ?_` and prove the remaining obligations. Establish `hd : ((x⁻¹ : GA E n).val.map (cW w)).det = cW w (x⁻¹ : GA E n).val.det` using `(RingHom.map_det (cW w) _).symm`. Rewrite using `[(hF _ (Fin n) (Fin n) (Fin n) 1).2.2, hd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_top (hF : MulF) (hI : MulI) (hB : DegBasisG) (x : GA E n) :
     deg x (⊤ : Submodule E (Fin n → E)) = -logAbs (x⁻¹ : GA E n).val.det := by
@@ -579,7 +573,7 @@ theorem deg_top (hF : MulF) (hI : MulI) (hB : DegBasisG) (x : GA E n) :
     rw [(hF _ (Fin n) (Fin n) (Fin n) 1).2.2, hd]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem zmap {K κ₁ κ₂ : Type} [CommRing K] (φ : Ad E →+* K) :
     (((0 : Matrix κ₁ κ₂ E)).map (algebraMap E (Ad E))).map φ = 0 := by
@@ -587,33 +581,29 @@ theorem zmap {K κ₁ κ₂ : Type} [CommRing K] (φ : Ad E →+* K) :
   simp
 
 /- English proof (translation)
-Take `⟨-, -, π, ψ, hψn, hψ⟩` from `hC E`. Use `set Δ := (twConj (thetaA E n) x (ratGL E n d))⁻¹.val with hΔ`. Use `set VU := fr x (fromCols B A) with hVU`. Use `set V := fr x B with hV`. Use `set U := fr x A with hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfc : VU = fromCols V U` using `fr_fromCols x B A`. Use `set G := (A.map (conjE E))ᵀ * (d⁻¹).val * A with hG`. Use `set cA := algebraMap E (Ad E) G.det with hcA`. Establish `hdet : ∀ {K : Type} [CommRing K] (φ : Ad E →+* K), ((G.map (algebraMap E (Ad E))).map φ).det = φ cA` using `fun φ => by`. Rewrite using `[hcA, RingHom.map_det (algebraMap E (Ad E)) G]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(RingHom.map_det φ _).symm`. Establish `hcu : IsUnit cA` using `(isUnit_iff_ne_zero.2 hc).map _`. Take `⟨L₁, hL₁⟩` from `exists_leftInv' _ hli`. Take `⟨L₂, hL₂⟩` from `exists_leftInv' _ hlB`. Take `⟨a1, a2, a3⟩` from `hFS E (Fin n) (Fin a ⊕ Fin b) VU _ (fr_leftInv x _ L₁ hL₁)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b1, b2, b3⟩` from `hFS E (Fin n) (Fin a) V _ (fr_leftInv x _ L₂ hL₂)`. Establish `hs` using `sum_bound π (b : ℝ) (Real.posLog ((n : ℝ) * n)) (fun v => Real.log (‖cV v cA‖ ^ 2)) (fun v => Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (Δ p.1 p.2)‖ ^ 2)) (fun v => Real.log (nI (VU.map (cV v)))) (fun v => Real.log (nI (V.map (cV v)))) (fun w => Real.log ‖cW w cA‖) (fun w => Real.p …`. Rewrite using `[show nF (VU.map (cW w)) = 1 from h, Real.log_one]))`. Use the proof step `(b3.subset fun w hw h => hw (by show Real.log (nF (V.map (cW w))) = 0`. Rewrite using `[show nF (V.map (cW w)) = 1 from h, Real.log_one])) ?_ ?_`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hz` using `(hL E).2.2 G.det hc`. Unfold `logAbs at hz`. Rewrite `hz` using `[← hcA]`. Rewrite `hs` using `[hz]`. Unfold `degG`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `logSizeM`. Establish `e1 : ∀ v, Real.log (nI (((x⁻¹ : GA E n).val * (fromCols B A).map (algebraMap E (Ad E))).map (cV v))) = Real.log (nI (VU.map (cV v)))` using `fun _ => rfl`. Express the relevant statement in the definitionally equal form `2 * (-(∑ v, Real.log (nI (VU.map (cV v))) + ∑ᶠ w, Real.log (nF (VU.map (cW w)))) - -(∑ v, Real.log (nI (V.map (cV v))) + ∑ᶠ w, Real.log (nF (V.map (cW w))))) ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `q1` using `pair_inf hC x d B B v`. Establish `q2` using `pair_inf hC x d B A v`. Establish `q3` using `pair_inf hC x d A B v`. Establish `q4` using `pair_inf hC x d A A v`. Rewrite `q1` using `[h1, zmap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `q2` using `[h2, zmap]`. Rewrite `q3` using `[h3, zmap]`. Establish `hdc : ((U.map (cV v))ᴴ * Δ.map (cV v) * U.map (cV v)).det = cV v cA`. Rewrite using `[q4]`. Conclude with `hdet (cV v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hc0 : cV v cA ≠ 0` using `(hcu.map (cV v)).ne_zero`. Establish `hmap : VU.map (cV v) = fromCols (V.map (cV v)) (U.map (cV v))`. Rewrite using `[hfc, map_fromCols']`. Establish `hnz : nI (fromCols (V.map (cV v)) (U.map (cV v))) ≠ 0` using `by rw [← hmap]; exact a1 v`. Establish `h` using `locInf hWI hMI hPI (V.map (cV v)) (U.map (cV v)) (Δ.map (cV v)) q1 q2 q3 (b1 v) hnz (by rw [hdc]; exact hc0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hdc, ← hmap]`. Establish `h'` using `posLog_sz_le (Δ.map (cV v))`. Establish `hb : (b : ℝ) * (Real.posLog ((n : ℝ) * n) + Real.posLog (sz (Δ.map (cV v)) ^ 2)) ≤ b * (Real.posLog ((n : ℝ) * n) + Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (Δ p.1 p.2)‖ ^ 2))` using `mul_le_mul_of_nonneg_left (by simpa using h') (Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `w`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `q1` using `pair_fin hC x d B B π ψ hψ w`. Establish `q2` using `pair_fin hC x d B A π ψ hψ w`. Establish `q3` using `pair_fin hC x d A B π ψ hψ w`. Establish `q4` using `pair_fin hC x d A A π ψ hψ w`. Rewrite `q1` using `[h1, zmap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `q2` using `[h2, zmap]`. Rewrite `q3` using `[h3, zmap]`. Establish `hdc : (((U.map (cW (π w))).map (ψ w))ᵀ * Δ.map (cW w) * U.map (cW w)).det = cW w cA`. Rewrite using `[q4]`. Conclude with `hdet (cW w)`.
-
-Establish `hc0 : cW w cA ≠ 0` using `(hcu.map (cW w)).ne_zero`. Establish `hmap : ∀ w', VU.map (cW w') = fromCols (V.map (cW w')) (U.map (cW w'))` using `fun w' => by`. Rewrite using `[hfc, map_fromCols']`. Establish `hnz : ∀ w', nF (fromCols (V.map (cW w')) (U.map (cW w'))) ≠ 0` using `fun w' => by`. Rewrite using `[← hmap]`.
-
-Conclude with `a2 w'`. Establish `h` using `locFin hWF hMF hPF (ψ w) (hψn w) (V.map (cW w)) (U.map (cW w)) (V.map (cW (π w))) (U.map (cW (π w))) (Δ.map (cW w)) q1 q2 q3 (b2 w) (hnz w) (b2 (π w)) (hnz (π w)) (by rw [hdc]; exact hc0)`. Rewrite `h` using `[hdc, ← hmap, ← hmap]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_pair (hWF : WedgeF) (hWI : WedgeI) (hMF : MulF) (hMI : MulI) (hPF : PairF) (hPI : PairI)
     (hSz : SzFin) (hFS : FinSupp) (hL : LogAbsBasic) (hC : ConjPlaces) (x : GA E n) (d : GL (Fin n) E)
@@ -710,7 +700,7 @@ theorem deg_pair (hWF : WedgeF) (hWI : WedgeI) (hMF : MulF) (hMI : MulI) (hPF : 
     exact h
 
 /- English proof (translation)
-Establish `h : K + S ≤ (K + 1) * (1 + S)` using `by nlinarith [mul_nonneg hK hS]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem arith_big (n K S : ℝ) (hn : 0 ≤ n) (hK : 0 ≤ K) (hS : 0 ≤ S) :
     n * (K + S) ≤ n * (K + 1) * (1 + S) := by
@@ -719,7 +709,7 @@ theorem arith_big (n K S : ℝ) (hn : 0 ≤ n) (hK : 0 ≤ K) (hS : 0 ≤ S) :
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `a` using `arith_big n K (S₁ + S₂) hn hK (add_nonneg h₁ h₂)`. Establish `c : b * (K + S₂) ≤ n * (K + (S₁ + S₂))` using `mul_le_mul hb (by linarith) (add_nonneg hK h₂) hn`. Establish `e : 0 ≤ n * (K + (S₁ + S₂))` using `mul_nonneg hn (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem arith₁ (n b K S₁ S₂ D₁ D₂ : ℝ) (hn : 0 ≤ n) (hb0 : 0 ≤ b) (hb : b ≤ n) (hK : 0 ≤ K) (h₁ : 0 ≤ S₁)
     (h₂ : 0 ≤ S₂) (key : 2 * (D₁ - D₂) ≤ b * (K + S₂)) : D₁ ≤ D₂ + n * (K + 1) * (1 + (S₁ + S₂)) := by
@@ -730,9 +720,9 @@ theorem arith₁ (n b K S₁ S₂ D₁ D₂ : ℝ) (hn : 0 ≤ n) (hb0 : 0 ≤ b
   linarith
 
 /- English proof (translation)
-Establish `a` using `arith_big n K (S₁ + S₂) hn hK (add_nonneg h₁ h₂)`. Establish `c₁ : n * (K + S₁) ≤ n * (K + (S₁ + S₂))` using `mul_le_mul_of_nonneg_left (by linarith) hn`. Establish `c₂ : n * (K + S₂) ≤ n * (K + (S₁ + S₂))` using `mul_le_mul_of_nonneg_left (by linarith) hn`. Establish `p : 0 ≤ n * (K + (S₁ + S₂))` using `mul_nonneg hn (by linarith)`. Rewrite using `[abs_neg, abs_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem arith₂ (n K S₁ S₂ t T : ℝ) (hn : 0 ≤ n) (hK : 0 ≤ K) (h₁ : 0 ≤ S₁) (h₂ : 0 ≤ S₂) (e : T = 2 * t)
     (u₁ : T ≤ n * (K + S₁)) (u₂ : -T ≤ n * (K + S₂)) : |-t| ≤ n * (K + 1) * (1 + (S₁ + S₂)) := by
@@ -744,9 +734,9 @@ theorem arith₂ (n K S₁ S₂ t T : ℝ) (hn : 0 ≤ n) (hK : 0 ≤ K) (h₁ :
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `m1 : ((fromCols B A).map σ)ᵀ = fromRows (B.map σ)ᵀ (A.map σ)ᵀ`. Rewrite using `[map_fromCols', Matrix.transpose_fromCols]`. Rewrite `hz1` using `[m1, Matrix.fromRows_mul, Matrix.fromRows_mul]`. Rewrite `hz2` using `[Matrix.mul_fromCols]`. Establish `e1` using `congrArg Matrix.toRows₁ hz1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Matrix.toRows₂ hz1`. Establish `e3` using `congrArg Matrix.toCols₂ hz2`. Simplify using `only [Matrix.toRows₁_fromRows, Matrix.toRows₂_fromRows, Matrix.toCols₂_fromCols] at e1 e2 e3`. Conclude with `⟨e1.trans (by ext; rfl), e3.trans (by ext; rfl), e2.trans (by ext; rfl)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem blocks {K : Type} [Field K] (σ : K →+* K) {n a b : ℕ} (D : Matrix (Fin n) (Fin n) K)
     (B : Matrix (Fin n) (Fin a) K) (A : Matrix (Fin n) (Fin b) K)
@@ -766,7 +756,7 @@ def cK (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) : ℝ :=
   Fintype.card (InfinitePlace E) * Real.posLog ((n : ℝ) * n)
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (Nat.cast_nonneg _) Real.posLog_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem cK_nonneg : 0 ≤ cK E n := mul_nonneg (Nat.cast_nonneg _) Real.posLog_nonneg
 
@@ -776,13 +766,13 @@ Both sides reduce to the same expression.
 theorem logSize_eq (g : GA E n) : logSize g = logSizeM g.val + logSizeM (g⁻¹ : GA E n).val := rfl
 
 /- English proof (translation)
-Take `⟨a, b, B, A, hli, hsB, hsW, hz1, hz2, hc⟩` from `hR E n d W hW`. Establish `hlB : LinearIndependent E Bᵀ`. Establish `h` using `hli.comp Sum.inl Sum.inl_injective`. Establish `e : (fromCols B A)ᵀ ∘ Sum.inl = Bᵀ`. Use function extensionality and compare the values at `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hcard : b ≤ n`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨f1, f2, f3⟩` from `blocks (conjE E) (d⁻¹).val B A hz1 hz2`. Establish `key` using `deg_pair hWF hWI hMF hMI hPF hPI hSz hFS hL hC x d B A hli hlB f1 f2 f3 hc`. Establish `g1` using `hB E n _ x (fromCols B A) hli`. Establish `g2` using `hB E n _ x B hlB`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `g1` using `[hsW]`. Rewrite `g2` using `[hsB]`. Rewrite `key` using `[g1, g2]`. Rewrite using `[logSize_eq]`. Conclude with `arith₁ n b (cK E n) _ _ _ _ (Nat.cast_nonneg _) (Nat.cast_nonneg _) (by exact_mod_cast hcard) cK_nonneg (logSizeM_nonneg _) (logSizeM_nonneg _) key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clause₁ (hWF : WedgeF) (hWI : WedgeI) (hMF : MulF) (hMI : MulI) (hPF : PairF) (hPI : PairI)
     (hSz : SzFin) (hFS : FinSupp) (hL : LogAbsBasic) (hC : ConjPlaces) (hB : DegBasisG) (hR : Radical)
@@ -812,7 +802,7 @@ theorem clause₁ (hWF : WedgeF) (hWI : WedgeI) (hMF : MulF) (hMI : MulI) (hPF :
     cK_nonneg (logSizeM_nonneg _) (logSizeM_nonneg _) key
 
 /- English proof (translation)
-The claim follows from `|deg x (⊤ : Submodule E (Fin n → E))| ≤ n * (cK E n + 1) * (1 + logSize (twConj (thetaA E n) x (ratGL E n d))) := by rw [deg_top hMF hMI hB x, logSize_eq] have e := logAbs_twConj hL hC x d generalize twConj (thetaA E n) x (ratGL E n d) = δ at e ⊢ have u1 := det_bound hMF hMI hSz …`.
+A detailed English derivation is pending.
 -/
 theorem clause₂ (hMF : MulF) (hMI : MulI) (hSz : SzFin) (hL : LogAbsBasic) (hC : ConjPlaces) (hB : DegBasisG)
     (x : GA E n) (d : GL (Fin n) E) :
@@ -839,7 +829,7 @@ theorem clause₂ (hMF : MulF) (hMI : MulI) (hSz : SzFin) (hL : LogAbsBasic) (hC
 end Global
 
 /- English proof (translation)
-Introduce `hWF hWI hMF hMI hPF hPI hSz hFS hL hC hB hR E _ _ _ n`. Conclude with `⟨n * (cK E n + 1), fun x d => ⟨clause₁ hWF hWI hMF hMI hPF hPI hSz hFS hL hC hB hR x d, clause₂ hMF hMI hSz hL hC hB x d⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem degPairing_of : WedgeF → WedgeI → MulF → MulI → PairF → PairI → SzFin → FinSupp → LogAbsBasic →
     ConjPlaces → DegBasisG → Radical → DegPairing := by

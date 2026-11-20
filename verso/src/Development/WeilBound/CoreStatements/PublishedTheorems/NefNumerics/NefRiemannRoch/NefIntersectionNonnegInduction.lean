@@ -19,13 +19,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory.KleimanDim
 
 /- English proof (translation)
-Introduce `k _ _ d H X _ hX E _ hE P hP`. Use `SheafCycle.interNum_nonneg_of_interNumRed_nonneg k X hX d E hE P (fun i => (hP i).isLB) ?_` and prove the remaining obligations. Introduce `Z hZirr hZdim`. Use `haveI := ReducedSubgroup.isReduced_subscheme_vanishingIdeal Z`. Use `letI : Algebra k Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) := ((redι Z).appTop.hom.comp (algebraMap k Γ(X, ⊤))).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hcompat : ∀ r : k, (redι Z).appTop.hom (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) r` using `fun r => rfl`. Rewrite using `[InterModel.interNumRed_eq_interNumOn k (redι Z) Z (range_redι Z) P, interNumOn_eq_interNum_pull hcompat (fun i => (hP i).isLB)]`. Establish `hYproj : IsProjOver (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Rewrite using `[← comp_strHom hcompat]`. Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion (redι Z) hX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYdim : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ≤ (d : WithBot ℕ∞)`. Establish `hmem : ∀ y, (redι Z) y ∈ (Z : Set X)` using `fun y => by`. Rewrite using `[← range_redι Z]`. Conclude with `Set.mem_range_self y`. Establish `hind` using `((redι Z).isClosedEmbedding.isInducing.codRestrict hmem).topologicalKrullDim_le`.
-
-Rewrite `hind` using `[hZdim]`. Conclude with `hind`. Establish `hsupp : suppDim (QCoh.structureModule (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) ≤ (d : WithBot ℕ∞)` using `(QCoh.suppDim_le _).trans hYdim`. Conclude with `T.intersectionNumber_nonneg_of_nef_ample_add_nef k _ hYproj (fun A N hA hN => H _ hYproj hYdim A N hA hN) d _ hsupp (fun i => (P i).pull (redι Z)) (fun i => (hP i).pull_of_isClosedImmersion (redι Z) hcompat)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem interNum_nonneg_of_ample_tens_nef : ∀ (k : Type) [Field k] [Infinite k] (d : ℕ),
     (∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) → topologicalKrullDim Y ≤ (d : ℕ) →

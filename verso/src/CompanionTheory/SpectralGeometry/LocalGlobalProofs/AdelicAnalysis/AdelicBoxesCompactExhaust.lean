@@ -16,7 +16,7 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`. Consider the case `tmul r e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem repr_map {R S : Type} [CommRing R] [CommRing S] [Algebra F R] [Algebra F S]
     (g : R →ₐ[F] S) {d : ℕ} (b : Module.Basis (Fin d) F E) (y : R ⊗[F] E) (k : Fin d) :
@@ -29,7 +29,7 @@ theorem repr_map {R S : Type} [CommRing R] [CommRing S] [Algebra F R] [Algebra F
     simp [Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Establish `h : (t ⊗ₜ[F] (1 : E)) * y = t • y`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[h, map_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_tmul_mul {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Module.Basis (Fin d) F E)
     (t : R) (y : R ⊗[F] E) (k : Fin d) :
@@ -40,7 +40,7 @@ theorem repr_tmul_mul {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Modul
   rw [h, map_smul]; simp
 
 /- English proof (translation)
-Establish `h : (N : R ⊗[F] E) = (N : R) ⊗ₜ[F] (1 : E)`. Rewrite using `[← map_natCast (algebraMap R (R ⊗[F] E)) N]`. Both sides reduce to the same expression. Rewrite using `[h, repr_tmul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_nat_mul {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Module.Basis (Fin d) F E)
     (N : ℕ) (y : R ⊗[F] E) (k : Fin d) :
@@ -58,14 +58,14 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Conclude with `IsModuleTopology.isTopologicalRing R _`.
+A detailed English derivation is pending.
 -/
 theorem topRing : IsTopologicalRing (R ⊗[F] E) := by
   haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   exact IsModuleTopology.isTopologicalRing R _
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := topRing R`. Conclude with `IsModuleTopology.continuous_of_linearMap ((Finsupp.lapply k).comp (Algebra.TensorProduct.basis R b).repr.toLinearMap)`.
+A detailed English derivation is pending.
 -/
 theorem cont_repr {d : ℕ} (b : Module.Basis (Fin d) F E) (k : Fin d) :
     Continuous fun y : R ⊗[F] E => (Algebra.TensorProduct.basis R b).repr y k := by
@@ -91,7 +91,7 @@ section Inf
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hi` using `InfinitePlace.Completion.isometry_extensionEmbedding w`. Establish `hc` using `hi.isClosedEmbedding`. Rewrite using `[← hi.preimage_closedBall]`. Conclude with `hc.isCompact_preimage (isCompact_closedBall _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ball_cpt (w : InfinitePlace F) (r : ℝ) : IsCompact (Metric.closedBall (0 : w.Completion) r) := by
   have hi := InfinitePlace.Completion.isometry_extensionEmbedding w
@@ -100,9 +100,9 @@ theorem ball_cpt (w : InfinitePlace F) (r : ℝ) : IsCompact (Metric.closedBall 
   exact hc.isCompact_preimage (isCompact_closedBall _ _)
 
 /- English proof (translation)
-Set `S : Set (Ainf F)` to `Set.pi Set.univ fun w : InfinitePlace F => Metric.closedBall (0 : w.Completion) r`. Establish `hS : IsCompact S` using `isCompact_univ_pi fun w => ball_cpt w r`. Establish `e : {y : Ainf F | ∀ w, ‖y w‖ ≤ r} = S`. Use `Set.ext fun y => ⟨fun h w _ => mem_closedBall_zero_iff.2 (h w), fun h w => ?_⟩` and prove the remaining obligations. Conclude with `mem_closedBall_zero_iff.1 (h w trivial)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hS`.
+A detailed English derivation is pending.
 -/
 theorem ainf_ball_cpt (r : ℝ) : IsCompact {y : Ainf F | ∀ w, ‖y w‖ ≤ r} := by
   let S : Set (Ainf F) := Set.pi Set.univ fun w : InfinitePlace F => Metric.closedBall (0 : w.Completion) r
@@ -114,19 +114,19 @@ theorem ainf_ball_cpt (r : ℝ) : IsCompact {y : Ainf F | ∀ w, ‖y w‖ ≤ r
   exact hS
 
 /- English proof (translation)
-The claim follows from `continuous_norm.comp (continuous_apply (A := fun w : InfinitePlace F => w.Completion) w)`.
+A detailed English derivation is pending.
 -/
 theorem cont_norm_w (w : InfinitePlace F) : Continuous fun y : Ainf F => ‖y w‖ :=
   continuous_norm.comp (continuous_apply (A := fun w : InfinitePlace F => w.Completion) w)
 
 /- English proof (translation)
-The claim follows from `(continuous_fst : Continuous (Prod.fst : Ainf F × Af F → Ainf F))`.
+A detailed English derivation is pending.
 -/
 theorem cont_fstA : Continuous (fstA F) :=
   (continuous_fst : Continuous (Prod.fst : Ainf F × Af F → Ainf F))
 
 /- English proof (translation)
-The claim follows from `(continuous_snd : Continuous (Prod.snd : Ainf F × Af F → Af F))`.
+A detailed English derivation is pending.
 -/
 theorem cont_sndA : Continuous (sndA F) :=
   (continuous_snd : Continuous (Prod.snd : Ainf F × Af F → Af F))
@@ -141,9 +141,9 @@ def intS (N : ℕ) : Set (Af F) :=
   {y | ∀ v, (N : Fv F v) * evalV F v y ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Establish `h : IsOpen {f : Af F | ∀ v, evalV F v f ∈ (v.adicCompletionIntegers F : Set (Fv F v))}` using `RestrictedProduct.isOpen_forall_mem (fun _ => Valued.isOpen_valuationSubring _)`. Establish `hc : Continuous (fun y : Af F => (N : Af F) * y)` using `continuous_const.mul continuous_id`. Establish `e : intS (F` using `F) N = (fun y : Af F => (N : Af F) * y) ⁻¹' {f : Af F | ∀ v, evalV F v f ∈ (v.adicCompletionIntegers F : Set (Fv F v))} := by`. Use extensionality with `y`. Simplify using `only [intS, Set.mem_setOf_eq, Set.mem_preimage, map_mul, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h.preimage hc`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intS_open (N : ℕ) : IsOpen (intS (F := F) N) := by
   have h : IsOpen {f : Af F | ∀ v, evalV F v f ∈ (v.adicCompletionIntegers F : Set (Fv F v))} :=
@@ -158,11 +158,9 @@ theorem intS_open (N : ℕ) : IsOpen (intS (F := F) N) := by
   exact h.preimage hc
 
 /- English proof (translation)
-Take `⟨β, hβ, h⟩` from `HeightOneSpectrum.adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v a`. Establish `hb0 : β ≠ 0` using `nonZeroDivisors.ne_zero hβ`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {β}))`. Use `⟨Ideal.absNorm (Ideal.span {β}), Nat.pos_of_ne_zero ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb0 h0`. Establish `e : ((Ideal.absNorm (Ideal.span {β}) : ℕ) : Fv F v) = algebraMap (𝓞 F) (Fv F v) c * algebraMap (𝓞 F) (Fv F v) β`. Rewrite using `[← map_mul, hc, map_natCast]`. Rewrite using `[e, mul_assoc, mul_comm (algebraMap (𝓞 F) (Fv F v) β) a]`.
-
-Conclude with `mul_mem (Formalism.UG.P.levelaf_int_mem_v v c) h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_v (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) :
     ∃ N : ℕ, 0 < N ∧ (N : Fv F v) * a ∈ v.adicCompletionIntegers F := by
@@ -180,9 +178,9 @@ theorem exists_nat_v (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) :
     exact mul_mem (Formalism.UG.P.levelaf_int_mem_v v c) h
 
 /- English proof (translation)
-Establish `hfin : {v | ¬ evalV F v y ∈ (v.adicCompletionIntegers F : Set (Fv F v))}.Finite` using `Filter.eventually_cofinite.1 y.2`. Use `choose f hf0 hf using fun v => exists_nat_v (F := F) v (evalV F v y)`. Use `⟨∏ v ∈ hfin.toFinset, f v, Finset.prod_pos fun v _ => hf0 v, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ hfin.toFinset`. Rewrite using `[← Finset.mul_prod_erase _ _ hv, Nat.cast_mul, mul_comm ((f v : Fv F v)), mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_mem (natCast_mem _ _) (hf v)`. Establish `h1 : evalV F v y ∈ v.adicCompletionIntegers F`. Assume the negation of the conclusion as `h`. Conclude with `hv (hfin.mem_toFinset.2 h)`. Conclude with `mul_mem (natCast_mem _ _) h1`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_nat_Af (y : Af F) : ∃ N : ℕ, 0 < N ∧ y ∈ intS (F := F) N := by
   classical
@@ -199,7 +197,7 @@ theorem exists_nat_Af (y : Af F) : ∃ N : ℕ, 0 < N ∧ y ∈ intS (F := F) N 
     exact mul_mem (natCast_mem _ _) h1
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Introduce `y hy v`. Use `push_cast`. Rewrite using `[mul_comm (N : Fv F v), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hy v)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intS_mono {N N' : ℕ} (h : N ∣ N') : intS (F := F) N ⊆ intS N' := by
   obtain ⟨c, rfl⟩ := h
@@ -216,7 +214,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
   {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
 
 /- English proof (translation)
-Simplify using `only [latV, Set.mem_setOf_eq, repr_nat_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lat_iff (N : ℕ) (v : HeightOneSpectrum (𝓞 F)) (Y : Fin n → Fin M → Fv F v ⊗[F] E) :
     (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v ↔
@@ -225,7 +223,7 @@ theorem mem_lat_iff (N : ℕ) (v : HeightOneSpectrum (𝓞 F)) (Y : Fin n → Fi
   simp only [latV, Set.mem_setOf_eq, repr_nat_mul]
 
 /- English proof (translation)
-Simplify using `only [projV, projFin, repr_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_v (v : HeightOneSpectrum (𝓞 F)) (X : Fin n → Fin M → AF F ⊗[F] E) (a : Fin n) (i : Fin M)
     (k : Fin d) :
@@ -234,7 +232,7 @@ theorem comp_v (v : HeightOneSpectrum (𝓞 F)) (X : Fin n → Fin M → AF F �
   simp only [projV, projFin, repr_map]
 
 /- English proof (translation)
-Simplify using `only [sizeTup, sizeInf, projInf, repr_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem size_eq (X : Fin n → Fin M → AF F ⊗[F] E) :
     sizeTup b (projInf X) = ∑ a, ∑ i, ∑ k, ∑ w : InfinitePlace F,
@@ -242,7 +240,7 @@ theorem size_eq (X : Fin n → Fin M → AF F ⊗[F] E) :
   simp only [sizeTup, sizeInf, projInf, repr_map]
 
 /- English proof (translation)
-Simplify using `only [size_eq]`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun k _ => continuous_finset_sum _ fun w _ => ?_` and prove the remaining obligations. Conclude with `(cont_norm_w w).comp (cont_fstA.comp ((cont_repr (AF F) b k).comp ((continuous_apply i).comp (continuous_apply a))))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_size : Continuous fun X : Fin n → Fin M → AF F ⊗[F] E => sizeTup b (projInf X) := by
   simp only [size_eq]
@@ -255,9 +253,9 @@ def intT (N : ℕ) : Set (Fin n → Fin M → AF F ⊗[F] E) :=
   {X | ∀ a i k, sndA F ((Algebra.TensorProduct.basis (AF F) b).repr (X a i) k) ∈ intS (F := F) N}
 
 /- English proof (translation)
-Establish `e : intT (n` using `n) (M := M) b N = ⋂ a, ⋂ i, ⋂ k, (fun X : Fin n → Fin M → AF F ⊗[F] E => sndA F ((Algebra.TensorProduct.basis (AF F) b).repr (X a i) k)) ⁻¹' intS (F := F) N := by`. Use extensionality with `X`. Simplify using `[intT]`. Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => (intS_open N).preimage ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cont_sndA.comp ((cont_repr (AF F) b k).comp ((continuous_apply i).comp (continuous_apply a)))`.
+A detailed English derivation is pending.
 -/
 theorem intT_open (N : ℕ) : IsOpen (intT (n := n) (M := M) b N) := by
   have e : intT (n := n) (M := M) b N = ⋂ a, ⋂ i, ⋂ k,
@@ -271,7 +269,7 @@ theorem intT_open (N : ℕ) : IsOpen (intT (n := n) (M := M) b N) := by
   exact cont_sndA.comp ((cont_repr (AF F) b k).comp ((continuous_apply i).comp (continuous_apply a)))
 
 /- English proof (translation)
-Simplify using `only [mem_lat_iff, comp_v, intT, intS, Set.mem_setOf_eq]`. Conclude with `⟨fun h v a i k => h a i k v, fun h a i k v => h v a i k⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_intT_iff (N : ℕ) (X : Fin n → Fin M → AF F ⊗[F] E) :
     X ∈ intT b N ↔ ∀ v, (fun a i => (N : Fv F v ⊗[F] E) * projV v (projFin X) a i) ∈ latV b v := by
@@ -279,14 +277,14 @@ theorem mem_intT_iff (N : ℕ) (X : Fin n → Fin M → AF F ⊗[F] E) :
   exact ⟨fun h v a i k => h a i k v, fun h a i k v => h v a i k⟩
 
 /- English proof (translation)
-Rewrite using `[mem_intT_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_box_iff (N : ℕ) (r : ℝ) (X : Fin n → Fin M → AF F ⊗[F] E) :
     X ∈ box b N r ↔ X ∈ intT b N ∧ sizeTup b (projInf X) ≤ r := by
   rw [mem_intT_iff]; rfl
 
 /- English proof (translation)
-Use `choose f hf0 hf using fun p : Fin n × Fin M × Fin d => exists_nat_Af (F := F) (sndA F ((Algebra.TensorProduct.basis (AF F) b).repr (X p.1 p.2.1) p.2.2))`. Use `⟨∏ p, f p, Finset.prod_pos fun p _ => hf0 p, fun a i k => ?_⟩` and prove the remaining obligations. Conclude with `intS_mono (Finset.dvd_prod_of_mem f (Finset.mem_univ (a, i, k))) (hf (a, i, k))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_intT (X : Fin n → Fin M → AF F ⊗[F] E) : ∃ N : ℕ, 0 < N ∧ X ∈ intT b N := by
   choose f hf0 hf using fun p : Fin n × Fin M × Fin d =>
@@ -295,15 +293,13 @@ theorem exists_intT (X : Fin n → Fin M → AF F ⊗[F] E) : ∃ N : ℕ, 0 < N
   exact intS_mono (Finset.dvd_prod_of_mem f (Finset.mem_univ (a, i, k))) (hf (a, i, k))
 
 /- English proof (translation)
-Introduce `_ hX a i k` and use `intS_mono h (hX a i k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intT_mono {N N' : ℕ} (h : N ∣ N') : intT (n := n) (M := M) b N ⊆ intT b N' :=
   fun _ hX a i k => intS_mono h (hX a i k)
 
 /- English proof (translation)
-Take `⟨⟨N, hN⟩, hNC⟩` from `hC.elim_directed_cover (fun N : {N : ℕ // 0 < N} => intT (n := n) (M := M) b N.1) (fun N => intT_open b N.1) (fun X _ => by`. Take `⟨N, hN, hX⟩` from `exists_intT b X`. Conclude with `Set.mem_iUnion.2 ⟨⟨N, hN⟩, hX⟩)`. Use the proof step `(fun N N' => ⟨⟨N.1 * N'.1, Nat.mul_pos N.2 N'.2⟩, intT_mono b (Nat.dvd_mul_right _ _), intT_mono b (Nat.dvd_mul_left _ _)⟩)`. Take `⟨B, hB⟩` from `(hC.image (cont_size (n := n) (M := M) b)).bddAbove`.
-
-Use `⟨N, max B 1, hN, lt_of_lt_of_le one_pos (le_max_right _ _), fun X hX => ?_⟩` and prove the remaining obligations. Conclude with `(mem_box_iff b N _ X).2 ⟨hNC hX, (hB ⟨X, hX, rfl⟩).trans (le_max_left _ _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exhaust (C : Set (Fin n → Fin M → AF F ⊗[F] E)) (hC : IsCompact C) :
     ∃ (N : ℕ) (r : ℝ), 0 < N ∧ 0 < r ∧ C ⊆ box b N r := by
@@ -320,13 +316,13 @@ theorem exhaust (C : Set (Fin n → Fin M → AF F ⊗[F] E)) (hC : IsCompact C)
   exact (mem_box_iff b N _ X).2 ⟨hNC hX, (hB ⟨X, hX, rfl⟩).trans (le_max_left _ _)⟩
 
 /- English proof (translation)
-Set `H : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ (Fin n → Fin M → Fin d → Ainf F)` to `Homeomorph.piCongrRight fun _ => Homeomorph.piCongrRight fun _ => coordH (Ainf F) b`. Set `S : Set (Fin n → Fin M → Fin d → Ainf F)` to `{c | ∑ a, ∑ i, ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖ ≤ r}`. Establish `hcl : IsClosed S`. Use `isClosed_le ?_ continuous_const` and prove the remaining obligations. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun k _ => continuous_finset_sum _ fun w _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(cont_norm_w w).comp ((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply a)))`. Establish `hB : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin M => Set.pi Set.univ fun _ : Fin d => {y : Ainf F | ∀ w, ‖y w‖ ≤ r})` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => ainf_ball_cpt r`. Establish `hS : IsCompact S`. Use `hB.of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce `c hc a _ i _ k _ w`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ hc` and prove the remaining obligations. Establish `t1 : ‖c a i k w‖ ≤ ∑ w : InfinitePlace F, ‖c a i k w‖` using `Finset.single_le_sum (f := fun w : InfinitePlace F => ‖c a i k w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)`. Establish `t2 : ∑ w : InfinitePlace F, ‖c a i k w‖ ≤ ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖` using `Finset.single_le_sum (f := fun k => ∑ w : InfinitePlace F, ‖c a i k w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ k)`. Establish `t3 : ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖ ≤ ∑ i, ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖` using `Finset.single_le_sum (f := fun i => ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Establish `t4 : ∑ i, ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖ ≤ ∑ a, ∑ i, ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖` using `Finset.single_le_sum (f := fun a => ∑ i, ∑ k, ∑ w : InfinitePlace F, ‖c a i k w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `t1.trans (t2.trans (t3.trans t4))`. Establish `e : {Y : Fin n → Fin M → Ainf F ⊗[F] E | sizeTup b Y ≤ r} = H ⁻¹' S` using `rfl`. Rewrite using `[e]`. Conclude with `H.isCompact_preimage.2 hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cinf_cpt (r : ℝ) :
     IsCompact {Y : Fin n → Fin M → Ainf F ⊗[F] E | sizeTup b Y ≤ r} := by
@@ -367,15 +363,13 @@ theorem cinf_cpt (r : ℝ) :
   exact H.isCompact_preimage.2 hS
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := topRing (Fv F v)`. Establish `hN0 : (N : Fv F v) ≠ 0`. Establish `h0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Rewrite using `[← map_natCast (algebraMap F (Fv F v)) N]`. Conclude with `(map_ne_zero (algebraMap F (Fv F v))).2 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ((N : Fv F v)⁻¹ ⊗ₜ[F] (1 : E)) * (N : Fv F v ⊗[F] E) = 1`. Establish `h : (N : Fv F v ⊗[F] E) = (N : Fv F v) ⊗ₜ[F] (1 : E)`. Rewrite using `[← map_natCast (algebraMap (Fv F v) (Fv F v ⊗[F] E)) N]`. Both sides reduce to the same expression. Rewrite using `[h, Algebra.TensorProduct.tmul_mul_tmul, inv_mul_cancel₀ hN0, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `u : Fv F v ⊗[F] E` to `(N : Fv F v)⁻¹ ⊗ₜ[F] (1 : E)`. Set `e : (Fin n → Fin M → Fv F v ⊗[F] E) ≃ₜ (Fin n → Fin M → Fv F v ⊗[F] E)` to `{ toFun := fun Y a i => (N : Fv F v ⊗[F] E) * Y a i invFun := fun Y a i => u * Y a i left_inv := fun Y => by`. Use function extensionality and compare the values at `a i`. Use `show u * ((N : Fv F v ⊗[F] E) * Y a i) = Y a i`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, hu, one_mul]`. Use `right_inv := fun Y => by`. Use function extensionality and compare the values at `a i`. Use `show (N : Fv F v ⊗[F] E) * (u * Y a i) = Y a i`. Rewrite using `[← mul_assoc, mul_comm _ u, hu, one_mul]`.
-
-Use `continuous_toFun := continuous_pi fun a => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply a))`. Use `continuous_invFun := continuous_pi fun a => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply a)) }`. Conclude with `e.isCompact_preimage.2 hL`.
+A detailed English derivation is pending.
 -/
 theorem cv_cpt (N : ℕ) (hN : 0 < N) (v : HeightOneSpectrum (𝓞 F))
     (hL : IsCompact (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))) :
@@ -409,11 +403,11 @@ theorem cv_cpt (N : ℕ) (hN : 0 < N) (v : HeightOneSpectrum (𝓞 F))
   exact e.isCompact_preimage.2 hL
 
 /- English proof (translation)
-Establish `h` using `(algebraMap F (Af F) ((N : F)⁻¹)).2`. Use `filter_upwards [h] with v hv Y hY a i k`. Establish `h1` using `(mem_lat_iff b N v Y).1 hY a i k`. Establish `hN0 : (N : Fv F v) ≠ 0`. Establish `h0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap F (Fv F v)) N]`. Conclude with `(map_ne_zero (algebraMap F (Fv F v))).2 h0`. Establish `h2 : (N : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F`. Establish `e : evalV F v (algebraMap F (Af F) ((N : F)⁻¹)) = (N : Fv F v)⁻¹`. Rewrite using `[AlgHom.commutes, map_inv₀, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `hv`. Establish `h3` using `mul_mem h2 h1`. Rewrite `h3` using `[← mul_assoc, inv_mul_cancel₀ hN0, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cv_cof (N : ℕ) (hN : 0 < N) :
     ∀ᶠ v in Filter.cofinite, ∀ Y : Fin n → Fin M → Fv F v ⊗[F] E,
@@ -441,7 +435,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `only [projFin, Pi.smul_apply, smul_eq_mul, map_mul, Algebra.TensorProduct.map_tmul]`. Establish `: sndA F (pairA F t 1) = 1` using `rfl`. Rewrite using `[this]`. Simplify using `[← Algebra.TensorProduct.one_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem projFin_scale (t : Ainf F) (X : Fin n → Fin M → AF F ⊗[F] E) :
     projFin ((pairA F t 1 ⊗ₜ[F] (1 : E)) • X) = projFin X := by
@@ -452,9 +446,9 @@ theorem projFin_scale (t : Ainf F) (X : Fin n → Fin M → AF F ⊗[F] E) :
   simp [← Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Establish `e : ∀ a i, projInf ((pairA F t 1 ⊗ₜ[F] (1 : E)) • X) a i = (t ⊗ₜ[F] (1 : E)) * projInf X a i`. Introduce `a i`. Simplify using `only [projInf, Pi.smul_apply, smul_eq_mul, map_mul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Simplify using `only [sizeTup, sizeInf, e, repr_tmul_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: (t * (Algebra.TensorProduct.basis (Ainf F) b).repr (projInf X a i) k) w = t w * (Algebra.TensorProduct.basis (Ainf F) b).repr (projInf X a i) k w` using `rfl`. Rewrite using `[this, norm_mul, ht]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem size_scale (t : Ainf F) (c : ℝ) (ht : ∀ w : InfinitePlace F, ‖t w‖ = c)
     (X : Fin n → Fin M → AF F ⊗[F] E) :
@@ -474,13 +468,13 @@ theorem size_scale (t : Ainf F) (c : ℝ) (ht : ∀ w : InfinitePlace F, ‖t w�
 end Scale
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm d b n M`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Use `⟨fun N r hN => ?_, fun C hC => exhaust b C hC, fun τ hτ N r x X => ?_⟩` and prove the remaining obligations. Establish `hc` using `(GlobalTheory.CompanionTheory.SW.Glue.glue_main F E σ hcm d b n M).2.2.2 {Y | sizeTup b Y ≤ r} (fun v => {Y | (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v}) (cinf_cpt b r) (fun v => cv_cpt b N hN v (GlobalTheory.CompanionTheory.SW.LatCpt.latV_compact_open F E σ hcm d b n M …`. Establish `e : (box b N r : Set (Fin n → Fin M → AF F ⊗[F] E)) = {X | projInf X ∈ {Y | sizeTup b Y ≤ r} ∧ ∀ v, projV v (projFin X) ∈ {Y | (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v}}`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `X`. Conclude with `And.comm`. Rewrite using `[e]`. Conclude with `hc`. Take `⟨-, θ, hθ, hτx⟩` from `hτ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hth` using `(GlobalTheory.CompanionTheory.AdelicRealLine.exists_continuous_real_embedding F hcm.1).2 θ hθ (Real.exp x)`. Establish `hw : ∀ w : InfinitePlace F, ‖θ (Real.exp x) w‖ = Real.exp x` using `fun w => by`. Rewrite using `[hth w, abs_of_pos (Real.exp_pos x)]`. Rewrite using `[hτx x]`. Establish `hp` using `projFin_scale (E := E) (θ (Real.exp x)) X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `size_scale b (θ (Real.exp x)) (Real.exp x) hw X`. Simplify using `only [box, Set.mem_setOf_eq, hp, hs]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Conclude with `⟨fun h => le_of_mul_le_mul_left h (Real.exp_pos x), fun h => mul_le_mul_of_nonneg_left h (Real.exp_pos x).le⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem box_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ), (∀ (N : ℕ) (r : ℝ), 0 < N → IsCompact (box b N r : Set (Fin n → Fin M → AF F ⊗[F] E))) ∧ (∀ C : Set (Fin n → Fin M → AF F ⊗[F] E), IsCompact C → ∃ (N : ℕ) (r : ℝ), 0 < N ∧ 0 < r ∧ C ⊆ box b N r) ∧ ∀ τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ, IsFlow τ → ∀ (N : ℕ) (r x : ℝ) (X : Fin n → Fin M → AF F ⊗[F] E), ((τ (Multiplicative.ofAdd (x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • X ∈ box b N (Real.exp x * r) ↔ X ∈ box b N r := by
   intro F E _ _ _ _ _ σ hcm d b n M

@@ -25,14 +25,14 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[sg, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sg_one_tmul (c : E ≃ₐ[F] E) (e : E) :
     sg (FiniteAdeleRing (𝓞 F) F) c ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] e) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] c e := by
   simp [sg, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [fm, Matrix.map_apply, sg_one_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fm_map_sg (c : E ≃ₐ[F] E) (A : Matrix (Fin n) (Fin n) E) :
     (fm F A).map (sg (FiniteAdeleRing (𝓞 F) F) c) = fm F (A.map c) := by
@@ -40,14 +40,14 @@ theorem fm_map_sg (c : E ≃ₐ[F] E) (A : Matrix (Fin n) (Fin n) E) :
   simp only [fm, Matrix.map_apply, sg_one_tmul]
 
 /- English proof (translation)
-Simplify using `only [hermA, dotProduct, Matrix.mulVec, fm, Matrix.map_apply, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermA_eq_dot (c : E ≃ₐ[F] E) (H : Matrix (Fin n) (Fin n) E) (x y : Fin n → RA F E) :
     hermA c H x y = x ⬝ᵥ (fm F H *ᵥ fun b => sg (FiniteAdeleRing (𝓞 F) F) c (y b)) := by
   simp only [hermA, dotProduct, Matrix.mulVec, fm, Matrix.map_apply, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hermA_eq_dot]`. Establish `h1 : (fun b => sg (FiniteAdeleRing (𝓞 F) F) c ((M *ᵥ y) b)) = M.map (sg (FiniteAdeleRing (𝓞 F) F) c) *ᵥ fun b => sg (FiniteAdeleRing (𝓞 F) F) c (y b)`. Use function extensionality and compare the values at `b`. Conclude with `RingHom.map_mulVec (sg (FiniteAdeleRing (𝓞 F) F) c).toRingHom M y b`. Rewrite using `[h1, dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermA_mulVec (c : E ≃ₐ[F] E) (H : Matrix (Fin n) (Fin n) E) (M : Matrix (Fin n) (Fin n) (RA F E))
     (x y : Fin n → RA F E) :
@@ -63,7 +63,7 @@ theorem hermA_mulVec (c : E ≃ₐ[F] E) (H : Matrix (Fin n) (Fin n) E) (M : Mat
     Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Distinguish the cases in `h : b = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sg_single (c : E ≃ₐ[F] E) (j : Fin n) :
     (fun b => sg (FiniteAdeleRing (𝓞 F) F) c ((Pi.single j (1 : RA F E) : Fin n → RA F E) b)) = Pi.single j 1 := by
@@ -73,7 +73,7 @@ theorem sg_single (c : E ≃ₐ[F] E) (j : Fin n) :
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[sg_single]`. Simplify `this` using `[Matrix.mulVec_single_one]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mat_eq_of_dot (c : E ≃ₐ[F] E) {K K' : Matrix (Fin n) (Fin n) (RA F E)}
     (h : ∀ x y : Fin n → RA F E, x ⬝ᵥ (K *ᵥ fun b => sg (FiniteAdeleRing (𝓞 F) F) c (y b)) =
@@ -84,7 +84,7 @@ theorem mat_eq_of_dot (c : E ≃ₐ[F] E) {K K' : Matrix (Fin n) (Fin n) (RA F E
   simpa [Matrix.mulVec_single_one] using this
 
 /- English proof (translation)
-Establish `h` using `mat_eq_of_dot c (K := gᵀ * fm F 1 * g.map (sg (FiniteAdeleRing (𝓞 F) F) c)) (K' := fm F 1) fun x y => by rw [← hermA_mulVec, ← hermA_eq_dot]; exact hg x y`. Rewrite `h` using `[GlobalTheory.UnRep.FullReps.fm_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gram_of_isUnA (c : E ≃ₐ[F] E) {g : Matrix (Fin n) (Fin n) (RA F E)} (hg : IsUnA c 1 g) :
     gᵀ * g.map (sg (FiniteAdeleRing (𝓞 F) F) c) = 1 := by
@@ -105,7 +105,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (sg (FiniteAdeleRing (𝓞 F) F) c).toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_sg (c : E ≃ₐ[F] E) (M N : Matrix (Fin n) (Fin n) (RA F E)) :
     (M * N).map (sg (FiniteAdeleRing (𝓞 F) F) c) =
@@ -113,26 +113,26 @@ theorem map_mul_sg (c : E ≃ₐ[F] E) (M N : Matrix (Fin n) (Fin n) (RA F E)) :
   Matrix.map_mul (f := (sg (FiniteAdeleRing (𝓞 F) F) c).toRingHom)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (c : E →+* E))`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_c (c : E ≃ₐ[F] E) (M N : Matrix (Fin n) (Fin n) E) :
     (M * N).map c = M.map c * N.map c :=
   Matrix.map_mul (f := (c : E →+* E))
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem fm_transpose (A : Matrix (Fin n) (Fin n) E) : (fm F A)ᵀ = fm F Aᵀ := by
   ext i j; rfl
 
 /- English proof (translation)
-Establish `hg'` using `gram_of_isUnA c hg`. Establish `hB : Bᵀ * B.map c = Gᵀ`. Establish `e1 : Bᵀ * B.map c = Bᵀ * (Aᵀ * Gᵀ * A.map c) * B.map c` using `by rw [h, Matrix.mul_one]`. Rewrite using `[e1, ← Matrix.transpose_transpose Gᵀ]`. Establish `e2 : (A * B).map c = A.map c * B.map c` using `map_mul_c c A B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[hAB, Matrix.map_one _ (map_zero c) (map_one c)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Gᵀᵀᵀ := by rw [hAB, ← e2, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hM : (fm F A * g * fm F B)ᵀ * fm F Gᵀ * (fm F A * g * fm F B).map (sg (FiniteAdeleRing (𝓞 F) F) c) = fm F Gᵀ`. Rewrite using `[map_mul_sg, map_mul_sg, fm_map_sg, fm_map_sg, Matrix.transpose_mul, Matrix.transpose_mul, fm_transpose, fm_transpose]`. Establish `e3 : fm F Aᵀ * fm F Gᵀ * fm F (A.map c) = 1`. Rewrite using `[← GlobalTheory.UnRep.FullReps.fm_mul, ← GlobalTheory.UnRep.FullReps.fm_mul, h, GlobalTheory.UnRep.FullReps.fm_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, Matrix.mul_one, hg', Matrix.mul_one, ← GlobalTheory.UnRep.FullReps.fm_mul, hB]`. Introduce `x y`. Rewrite using `[hermA_mulVec, hM, hermA_eq_dot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnA_conj (c : E ≃ₐ[F] E) (A B G : Matrix (Fin n) (Fin n) E) (hAB : A * B = 1)
     (h : Aᵀ * Gᵀ * A.map c = 1) {g : Matrix (Fin n) (Fin n) (RA F E)} (hg : IsUnA c 1 g) :
@@ -164,7 +164,7 @@ end General
 end GlobalTheory.UnitConjFrame
 
 /- English proof (translation)
-Introduce `D V fr g hfr hg`. Use `GlobalTheory.UnitConjFrame.isUnA_conj (GlobalTheory.Member.cF D) fr.1 (fr⁻¹).1 V.gram (Units.mul_inv fr) ?_ hg` and prove the remaining obligations. Establish `h` using `congrArg Matrix.transpose hfr`. Rewrite `h` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_one]`. Rewrite using `[← h, Formalism.UG.cT, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

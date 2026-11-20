@@ -30,15 +30,13 @@ def infIncl (F : Type) [Field F] [NumberField F] : Ainf F →ₗ[F] AF F where
     simp
 
 /- English proof (translation)
-Set `e : AF F` to `((1, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (1 - e) = 0`. Establish `: (1 - e).1 = 0` using `by show ((1 : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) - ((1, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)).1 = 0`. Simplify using the standard rewrite rules. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI, this, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hu' : u = u * e`. Use `hu (1 - e) h1` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Rewrite using `[mul_comm]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ y : AF F ⊗[F] E, e • y = (infIncl F).rTensor E (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul, LinearMap.rTensor_tmul]`. Use `congr 1`. Use `show ((1, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) * (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from a) = (((show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from a).1, 0) : Ainf F …`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `one_mul _`.
-
-Conclude with `zero_mul _`. Consider the case `add y z hy hz => rw [smul_add, hy, hz, map_add, map_add]`. Rewrite using `[hu', mul_smul, key, hx, map_zero, smul_zero]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_fst (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x : AF F ⊗[F] E) (hx : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) x = 0) (u : AF F)
@@ -76,13 +74,13 @@ namespace GlobalTheory.InfKill
 open GlobalTheory.SquareAgree
 
 /- English proof (translation)
-Introduce `D X d e J hJ g hg u hu`. Rewrite using `[mat_kapX]`. Establish `h1 : (infHom X g).val = 1` using `by rw [show infHom X g = 1 from hg]; rfl`. Establish `hM : ∀ a b, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((Formalism.L2.Theta.mt X g - 1) a b) = 0`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2` using `congrFun (congrFun h1 a) b`. Rewrite using `[Matrix.sub_apply, map_sub]`. Use `sub_eq_zero.2 ((congrArg id e2).trans ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hr : Matrix.reindex e e (Formalism.L2.Theta.mt X g) - 1 = Matrix.reindex e e (Formalism.L2.Theta.mt X g - 1)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, e.symm.injective.eq_iff]`. Rewrite using `[hr]`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.smul_apply, Matrix.zero_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `smul_eq_zero_of_fst _ _ _ (hM _ _) u hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mat_kapX_sub_one : (∀ (D : D7) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ), ∀ g ∈ GfC X, ∀ u : AF D.host.F,

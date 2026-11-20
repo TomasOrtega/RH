@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.M
 namespace GlobalTheory.Mem.Top.NodeGap
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `D.R.m_add_three_le_k show 1801 ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Introduce `τ j hj`. Take `⟨b1, hb1⟩` from `hb τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hb1 ⟨j.1 + 1, hj⟩, hb1 j]`. Establish `h2 : 16 * D.R.r ^ 19 ≤ h` using `by exact_mod_cast hh`. Establish `h3 : (16 * (D.R.r : ℚ) ^ 19) ≤ (h : ℚ)` using `by exact_mod_cast h2`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gapHyp_of_nodes (D : D7) (hm : 1801 ≤ D.R.m) (h : ℕ) (hh : 16 * (D.R.r : ℝ) ^ 19 ≤ (h : ℝ))
     (hb : ∀ τ, ∃ b1 : ℤ, ∀ j : Fin D.R.m, (D.hc τ).b j = (b1 : ℚ) + (j.1 : ℚ) * (h : ℚ)) :
@@ -28,11 +28,11 @@ theorem gapHyp_of_nodes (D : D7) (hm : 1801 ≤ D.R.m) (h : ℕ) (hh : 16 * (D.R
     linarith
 
 /- English proof (translation)
-Unfold `Ev at hp ⊢`. Take `⟨w, hw, H⟩` from `hp`. Use `⟨w, hw, fun eps C8 a b c d => ?_⟩` and prove the remaining obligations. Take `⟨K0, H1⟩` from `H eps C8 a b c d`. Use `⟨K0, fun C e f g => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c1, H2⟩` from `H1 C e f g`. Use `⟨c1, fun cD hc => ?_⟩` and prove the remaining obligations. Take `⟨c2, H3⟩` from `H2 cD hc`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, H4⟩` from `H3 ch hch`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x0, fun K k1 k2 k3 k4 k5 => h K (H4 K k1 k2 k3 k4 k5)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ev_mono_of_forall_imp {p q : Ctx → Prop} (h : ∀ K, p K → q K) (hp : Ev p) : Ev q := by
   unfold Ev at hp ⊢
@@ -48,7 +48,7 @@ private theorem ev_mono_of_forall_imp {p q : Ctx → Prop} (h : ∀ K, p K → q
   exact ⟨x0, fun K k1 k2 k3 k4 k5 => h K (H4 K k1 k2 k3 k4 k5)⟩
 
 /- English proof (translation)
-Use `ev_mono_of_forall_imp ?_ (ev_nodes 16 19 1801)` and prove the remaining obligations. Introduce `K hK X hX`. Take `⟨hm, h, hh, hb⟩` from `hK X hX`. Conclude with `gapHyp_of_nodes X.toD7 hm h hh fun τ => (hb τ).imp fun b1 hb1 j => (hb1 j).1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ev_gapHyp : Ev fun K => ∀ X : Stages, K.Over X.B.toPre → Formalism.L2.SG.ConcreteSettingExists.GapHyp X.toD7 := by
   refine ev_mono_of_forall_imp ?_ (ev_nodes 16 19 1801)

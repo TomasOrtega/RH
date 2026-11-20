@@ -16,7 +16,7 @@ namespace PositivityTheory.Rg.Sw.Glob.LocLawH
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin m))) (fun a => ε a = true)` as an intermediate fact. Simplify using `only [Finset.card_univ, Fintype.card_fin, Bool.not_eq_true] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cnt_add {m : ℕ} (ε : Fin m → Bool) : cnt ε true + cnt ε false = m := by
   have := Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin m))) (fun a => ε a = true)
@@ -24,7 +24,7 @@ theorem cnt_add {m : ℕ} (ε : Fin m → Bool) : cnt ε true + cnt ε false = m
   exact this
 
 /- English proof (translation)
-Unfold `pqOf`. Use `split_ifs`. Conclude with `cnt_add ε`. Rewrite using `[add_comm]`. Conclude with `cnt_add ε`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pqOf_add {m : ℕ} (ε : Fin m → Bool) (l : D.what₂.Tau → ℝ) (τ : D.what₂.Tau) :
     (pqOf ε l τ).1 + (pqOf ε l τ).2 = m := by
@@ -34,7 +34,7 @@ theorem pqOf_add {m : ℕ} (ε : Fin m → Bool) (l : D.what₂.Tau → ℝ) (τ
   · rw [add_comm]; exact cnt_add ε
 
 /- English proof (translation)
-Simplify using `only [npow, NNReal.coe_pow, coe_nnnorm]`. Rewrite using `[show ((m : ℂ) / 2) = (((m : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow (sq_nonneg _), ← Real.rpow_natCast ‖z‖ 2, ← Real.rpow_mul (norm_nonneg _), show ((2 : ℕ) : ℝ) * ((m : ℝ) / 2) = (m : ℝ) by push_cast; ring, Real.rpow_natCast, zpow_natCast, Complex.ofReal_pow]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem npow_sq (z : ℂ) (m : ℕ) : npow (‖z‖₊ ^ 2) ((m : ℂ) / 2) = ((‖z‖ : ℝ) : ℂ) ^ (m : ℤ) := by
   simp only [npow, NNReal.coe_pow, coe_nnnorm]
@@ -45,19 +45,19 @@ theorem npow_sq (z : ℂ) (m : ℕ) : npow (‖z‖₊ ^ 2) ((m : ℂ) / 2) = ((
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Establish `hv : (unitAt hσ τ (aOf y hy)).1 = baseColumnsAt σ τ (mR y).toBlocks₁₁` using `by rw [unitAt_val, aOf_val]`. Establish `hxv : ((Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy)) : (AE D)ˣ) : AE D) = (baseColumnsAt σ τ (mR y).toBlocks₁₁).det`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hv]`. Establish `hf : finPart D (((Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) : (AE D)ˣ) : AE D) = 1`. Rewrite using `[hxv, RingHom.map_det, RingHom.mapMatrix_apply, finite_part_adelic_point_matrix hσ, Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : ∀ τ', θ τ' (infPart D (((Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) : (AE D)ˣ) : AE D)) = (compAt θ τ' (baseColumnsAt σ τ (mR y).toBlocks₁₁)).det`. Introduce `τ'`. Rewrite using `[hxv]`. Use `show cf θ τ' (baseColumnsAt σ τ (mR y).toBlocks₁₁).det = _`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hτ : θ τ (infPart D (((Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) : (AE D)ˣ) : AE D)) = ((mR y).toBlocks₁₁).det` using `by rw [hcomp, component_adelic_point_matrix hσ]`. Establish `hne : ∀ τ', τ' ≠ τ → θ τ' (infPart D (((Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) : (AE D)ˣ) : AE D)) = 1` using `fun τ' h => by`. Rewrite using `[hcomp, component_adelic_point_ne hσ h, Matrix.det_one]`. Establish `habs : absA D (Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) = ‖((mR y).toBlocks₁₁).det‖₊ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show absA D (Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) = ‖θ τ (infPart D (((Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) : (AE D)ˣ) : AE D))‖₊ ^ 2 from GlobalTheory.StabAtPlace.absE_single hθ (Matrix.GeneralLinearGroup.det (unitAt hσ τ (aOf y hy))) τ hf …`. Rewrite using `[hk _ hf hne, hτ, habs, npow_sq]`. Establish `hZ` using `det_ne y hy`. Establish `hu1 : u1 (mR y) = (mR y).toBlocks₂₂` using `by simp only [u1, hy, smul_zero, zero_add]`. Establish `hu2 : u2 (mR y) = (mR y).toBlocks₂₂` using `by simp only [u2, hy, smul_zero, neg_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdy : (mR y).det = ((mR y).toBlocks₁₁).det * ((mR y).toBlocks₂₂).det` using `by conv_lhs => rw [fromBlocks_of y hy]`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Establish `hR : ((‖((mR y).toBlocks₁₁).det‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (norm_ne_zero_iff.2 hZ)`. Establish `hd : ((mR y).toBlocks₂₂).det = ((mR y).toBlocks₁₁).det / ((‖((mR y).toBlocks₁₁).det‖ : ℝ) : ℂ) ^ 2`. Establish `h1 : ((mR y).toBlocks₂₂).det = (star ((mR y).toBlocks₁₁).det)⁻¹` using `eq_inv_of_mul_eq_one_right (det_rel y hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((mR y).toBlocks₁₁).det * star ((mR y).toBlocks₁₁).det = ((‖((mR y).toBlocks₁₁).det‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : star ((mR y).toBlocks₁₁).det ≠ 0` using `star_ne_zero.2 hZ`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, eq_div_iff (pow_ne_zero 2 hR), ← h2]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [F0, f0, hu1, hu2, hdy, hd]`. Conclude with `alg_id _ _ hZ hR k j p q m hpq hj`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scal {χ : (AE D)ˣ →* Circle} {θ : InfFam D} (hθ : IsInfFam θ) {σ : (D.what₂.Tau → ℂ) →+ AE D}
     (hσ : GlobalTheory.FockCompare.Chart θ σ) {τ : D.what₂.Tau} {m : ℕ} (k j : ℤ)
@@ -106,7 +106,7 @@ end PositivityTheory.Rg.Sw.Glob.LocLawH
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hC.hθ`. Take `⟨k, ⟨j, hj⟩, hk⟩` from `LocLawH.chi_exp hC.hθ hC.hχ hC.hη τ`. Conclude with `⟨k - j, fun P y g hy => by`. Rewrite using `[LocLawH.glob_law hC hL hσ P y g hy, LocLawH.scal hC.hθ hσ k j hk hj _ _ (LocLawH.pqOf_add ε l τ) y hy]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lIlaw : LIlaw := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL

@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Introduce `hB K _ _ P`. Take `⟨P₀, φ, h⟩` from `exists_isPolFibre hB (algebraMap (𝓞 K) K) P`. Take `⟨v, hv⟩` from `GlobalTheory.KeyPow.exists_isLieBasis P₀.A P₀.smoothDim`. Conclude with `⟨⟨P₀, φ, h, v, hv⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GenFib.nonempty_of_baseChange :
     Out.PolBaseChangeSt → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))), Nonempty (GenFib P) := by

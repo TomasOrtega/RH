@@ -15,11 +15,11 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Use `⟨?_, hP.unitK⟩` and prove the remaining obligations. Introduce `a b c d`. Establish `g1` using `hP.gl1 a b c d`. Establish `g2` using `hP.gl2 a b c d`. Establish `h3` using `hP.comm a b c d`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hP.comm c d a b`. Establish `e : kF E1 E2 a b * kF E1 E2 c d - kF E1 E2 c d * kF E1 E2 a b = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [kF, add_mul, mul_add]`. Rewrite using `[h3, h4]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e, g1, g2]`. Apply the tactic sequence `split_ifs <;> (try simp only [kF]) <;> abel`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem uf_kF {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPair E1 E2) : UF (kF E1 E2) := by
@@ -38,11 +38,9 @@ private theorem uf_kF {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductS
   split_ifs <;> (try simp only [kF]) <;> abel
 
 /- English proof (translation)
-Introduce `n lam V _ _ E1 E2 hP hL h1 h2 ν hν`. Establish `hν' : hw (kF E1 E2) ν ≠ ⊥` using `by rwa [hwSp_eq] at hν`. Establish `hD : Dom ν` using `(irrCh n V (kF E1 E2) (uf_kF hP) hL ν hν').1`. Establish `hR` using `rearr n`. Establish `hx : StrictAnti (domC (ν - rhoV n) + rhoV n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab`. Conclude with `add_lt_add_of_le_of_lt ((hR.2.1 (ν - rhoV n)).1 hab.le) (hR.2.2.1 hab)`. Establish `hc : cf (chR n * alt (ν + rhoV n)) (domC (ν - rhoV n) + rhoV n) ≠ 0`. Rewrite using `[mSymm, aux₃ n ν hD]`. Conclude with `one_ne_zero`.
-
-Conclude with `diracCh n lam V E1 E2 hP hL h1 h2 ν _ hν hx hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.diracW :
     ∀ (n : ℕ) (lam : Fin n → ℤ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V),

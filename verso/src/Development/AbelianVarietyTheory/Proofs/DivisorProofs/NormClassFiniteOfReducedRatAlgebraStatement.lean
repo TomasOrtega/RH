@@ -4,7 +4,7 @@ import Mathlib
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.normClassFinite_of_reduced) | (exact GlobalTheory.normClassFinite_of_reduced) | (intros; apply GlobalTheory.normClassFinite_of_reduced <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.normClassFinite_of_reduced_rat_algebra : (∀ (K : Type) [Field K] [NumberField K] (τ : K ≃+* K), (∀ x, τ (τ x) = x) → ∀ S : Finset ℕ,
     ∃ M : Finset K, ∀ a : K, a ≠ 0 → τ a = a →

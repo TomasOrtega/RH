@@ -8,7 +8,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 namespace GlobalTheory.QhtUnip
 
 /- English proof (translation)
-Establish `h : (cA σ).comp (cA σ) = AlgHom.id (AF F) (AE F E)`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a e`. Simplify using `[cA, hσ]`. Conclude with `congrArg (fun f => f z) h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_cA_of_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ e, σ (σ e) = e) (z : AE F E) : cA σ (cA σ z) = z := by
@@ -19,11 +19,11 @@ theorem cA_cA_of_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   exact congrArg (fun f => f z) h
 
 /- English proof (translation)
-Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hU (Sum.inl (Sum.inr k))) (Sum.inr 0)`. Simplify using `[Matrix.mul_apply, Heisenberg₂, gI, Matrix.fromBlocks, Fintype.sum_sum_type, Matrix.one_apply] at h1`. Take the linear combination `h1`. Establish `h2` using `congrFun (congrFun hU (Sum.inr 0)) (Sum.inr 0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `[Matrix.mul_apply, Heisenberg₂, gI, Matrix.fromBlocks, Fintype.sum_sum_type] at h2`. Establish `hQ : (∑ k, (∑ j, w j * inclR (F` using `F) (AF F) (J₁ j k)) * cA σ (w k)) = ∑ j, ∑ k, w j * inclR (F := F) (AF F) (J₁ j k) * cA σ (w k) := by`. Repeatedly rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite `h2` using `[hQ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (cA σ) h2`. Simplify using `only [map_add, map_neg, map_zero, cA_cA_of_invol σ hσ] at h3`. Rewrite using `[map_add, map_mul, map_ofNat]`. Take the linear combination `h3 - h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem heis_rel_of_unit {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ e, σ (σ e) = e) {m : ℕ} (J₁ : Matrix (Fin m) (Fin m) E) (a w : Fin m → AE F E) (α : AE F E)
@@ -49,7 +49,7 @@ theorem heis_rel_of_unit {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     linear_combination h3 - h2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hA g a w α hg`. Establish `hU` using `GlobalTheory.T.coords_preserve_gram_matrix F E σ hσ B W r s hW W₁ H i₀ i₁ hA g`. Rewrite `hU` using `[hg]`. Conclude with `heis_rel_of_unit σ hσ W₁.J a w α hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heis_rel : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → ∀ (g : UA σ W.J) (a w : Fin m → AE F E) (α : AE F E), crd H g = Heisenberg₂ a w α →

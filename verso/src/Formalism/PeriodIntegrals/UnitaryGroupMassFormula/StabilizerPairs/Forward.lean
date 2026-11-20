@@ -12,7 +12,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDe
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i b`. Establish `hb` using `congrFun (h b) i`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hb`. Simplify using `only [Matrix.mul_apply, Ff, Matrix.of_apply, hb]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_of_col (z : Fin (2 * r + k + 1) → ℂ) (s : B.Mat k r) (x : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (h : ∀ b, s *ᵥ fvec k r z b = ∑ c, x c b • fvec k r z c) : s * Ff k r z = Ff k r z * x := by
@@ -26,27 +26,27 @@ def coefOf (b : Fin (r + 1)) (y : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1))
   if a = b then 1 else if h : a.val < b.val then y (eI k r ⟨a.val, by omega⟩) else 0
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ b)]`. Simplify using `only [coefOf, if_pos rfl, one_mul]`. Establish `hrest : ∀ a ∈ Finset.univ.erase b, (if a = b then (1 : ℂ) else if h : a.val < b.val then y (eI k r ⟨a.val, by omega⟩) else 0) * fvec k r z a i = if h : a.val < b.val ∧ i.val = a.val then y i else 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `hab : a ≠ b` using `Finset.ne_of_mem_erase ha`. Rewrite using `[if_neg hab]`. Distinguish the cases in `hlt : a.val < b.val`. Rewrite using `[dif_pos hlt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `har : a.val < r` using `by omega`. Establish `hf : fvec k r z a = bvec (eI k r ⟨a.val, har⟩)` using `by simp [fvec, har]`. Rewrite using `[hf]`. Distinguish the cases in `hia : i.val = a.val`. Rewrite using `[dif_pos ⟨hlt, hia⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : i = eI k r ⟨a.val, har⟩` using `Fin.ext (by simp [eI, hia])`. Substitute `hi` using the available equality. Simplify using `[bvec]`. Rewrite using `[dif_neg (fun h => hia h.2)]`. Establish `hi : i ≠ eI k r ⟨a.val, har⟩` using `fun h => hia (by rw [h]; simp [eI])`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[bvec, Pi.single_apply, hi]`. Rewrite using `[dif_neg hlt, dif_neg (fun h => hlt h.1), zero_mul]`. Rewrite using `[Finset.sum_congr rfl hrest]`. Distinguish the cases in `hib : b.val ≤ i.val`. Rewrite using `[hy i hib, Finset.sum_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a _`. Rewrite using `[dif_neg]`. Use linear arithmetic over natural numbers and integers. Establish `hir : i.val < r` using `by omega`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hfb : fvec k r z b i = 0`. Unfold `fvec`. Use `split_ifs with hbr`. Establish `hne : i ≠ eI k r ⟨b.val, hbr⟩` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[eI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[bvec, Pi.single_apply, hne]`. Conclude with `hz i (Or.inl hir)`. Rewrite using `[hfb, mul_zero, zero_add]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single ⟨i.val, by omega⟩]`. Rewrite using `[dif_pos ⟨by simp; omega, rfl⟩]`. Introduce `a _ ha`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨-, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction.
 
-Conclude with `ha (Fin.ext h2.symm)`. Introduce `ha`. It suffices to derive a contradiction. Apply `ha` to reduce the goal to its premises. Rewrite using `[Finset.mem_erase]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun h => ?_, Finset.mem_univ _⟩` and prove the remaining obligations. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem expand_of_tail (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (b : Fin (r + 1))
     (y : Fin (2 * r + k + 1) → ℂ) (hy : ∀ i : Fin (2 * r + k + 1), b.val ≤ i.val → y i = fvec k r z b i) :
@@ -109,7 +109,7 @@ theorem expand_of_tail (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (b : 
       omega
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, coefOf, if_neg hab.ne']`. Rewrite using `[dif_neg (fun h => lt_asymm h (Fin.lt_def.1 hab))]`. Simplify using `[coefOf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coefOf_UT (y : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) :
     (Matrix.of fun a b => coefOf (k := k) b (y b) a) ∈ UTset (r + 1) := by
@@ -119,25 +119,23 @@ theorem coefOf_UT (y : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) :
   · simp [coefOf]
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Establish `hGV : h * m ∈ B.GV k r` using `by show (h * m)ᴴ * Hpk k r * (h * m) = Hpk k r`. Establish `h1 : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Establish `h2 : mᴴ * Hpk k r * m = Hpk k r` using `hm.1`. Rewrite using `[Matrix.conjTranspose_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [h1, h2]`. Establish `htail : ∀ b : Fin (r + 1), ∀ i : Fin (2 * r + k + 1), b.val ≤ i.val → (m *ᵥ fvec k r z b) i = fvec k r z b i`. Introduce `b i hbi`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hbr : b.val < r`. Establish `hf : fvec k r z b = bvec (eI k r ⟨b.val, hbr⟩)` using `by simp [fvec, hbr]`. Rewrite using `[hf]`. Establish `e : (m *ᵥ bvec (eI k r ⟨b.val, hbr⟩)) i = m i (eI k r ⟨b.val, hbr⟩)`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hm.2.1 ⟨b.val, hbr⟩ i hbi]`. Simplify using `[bvec, Pi.single_apply]`. Establish `hf : fvec k r z b = z` using `by simp [fvec, hbr]`. Rewrite using `[hf]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `hik : i.val ≤ r + k`. Rewrite using `[hm.2.2 i i (by omega) hik (by omega), if_pos rfl, one_mul]`. Rewrite using `[hz.1 i (Or.inr (by omega)), mul_zero]`. Introduce `j _ hji`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj1 : r ≤ j.val`. Distinguish the cases in `hj2 : j.val ≤ r + k`. Rewrite using `[hm.2.2 i j hj1 hj2 (by omega), if_neg (Ne.symm hji), zero_mul]`. Rewrite using `[hz.1 j (Or.inr (not_le.1 hj2)), mul_zero]`. Rewrite using `[hz.1 j (Or.inl (not_le.1 hj1)), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hmX : m * Ff k r z = Ff k r z * (Matrix.of fun a b => coefOf (k` using `k) b (m *ᵥ fvec k r z b) a) := mul_of_col z m _ (fun b => expand_of_tail z hz.1 b _ (htail b))`. Establish `hhF : h * Ff k r z = Ff k r z`. Use extensionality with `i a`. Establish `e : h *ᵥ fvec k r z a = fvec k r z a`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `fvec`. Use `split_ifs`. Conclude with `(hh.2.1 _).1`. Conclude with `hh.2.2`. Establish `e2` using `congrFun e i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `e2` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, Ff]`. Establish `hsF : h * m * Ff k r z = Ff k r z * (Matrix.of fun a b => coefOf (k` using `k) b (m *ᵥ fvec k r z b) a) := by`. Rewrite using `[Matrix.mul_assoc, hmX, ← Matrix.mul_assoc, hhF]`. Establish `hu` using `uMap_eq z hz _ _ hsF`. Use `⟨hGV, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hu]`. Conclude with `hsF`. Rewrite using `[hu]`. Conclude with `coefOf_UT (fun b => m *ᵥ fvec k r z b)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sset_frame (z : Fin (2 * r + k + 1) → ℂ) (hz : StdZ k r z) (s : B.Mat k r) (hs : s ∈ Sset k r z) :
     s ∈ B.GV k r ∧ s * Ff k r z = Ff k r z * uMap k r z s ∧ uMap k r z s ∈ UTset (r + 1) := by
@@ -197,11 +195,11 @@ theorem Sset_frame (z : Fin (2 * r + k + 1) → ℂ) (hz : StdZ k r z) (s : B.Ma
     exact coefOf_UT (fun b => m *ᵥ fvec k r z b)
 
 /- English proof (translation)
-Establish `hγ' : γᴴ * Hpk k r * γ = Hpk k r` using `hγ`. Establish `hl : (Hpk k r * γᴴ * Hpk k r) * γ = 1`. Establish `e : Hpk k r * (γᴴ * Hpk k r * γ) = 1` using `by rw [hγ', hpk_mul_self]`. Simplify `e` using `only [Matrix.mul_assoc]`. Establish `hinv : γ⁻¹ = Hpk k r * γᴴ * Hpk k r` using `Matrix.inv_eq_left_inv hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : γ⁻¹ * γ = 1` using `by rw [hinv, hl]`. Substitute `h` using the available equality. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = s0 := by rw [h1, Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rho_conj (γ : B.Mat k r) (hγ : γ ∈ B.GV k r) (ρ s0 : B.Mat k r)
     (h : ρ = γ * s0 * γ⁻¹) : γ⁻¹ * ρ * γ = s0 ∧ γ * s0 = ρ * γ := by
@@ -220,15 +218,13 @@ theorem rho_conj (γ : B.Mat k r) (hγ : γ ∈ B.GV k r) (ρ s0 : B.Mat k r)
       _ = γ * s0 * γ⁻¹ * γ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp ρ hρ`. Take `⟨⟨hρS, s', hs', hρeq⟩, -⟩` from `hρ`. Take `⟨hρG, hρF, hρU⟩` from `Sset_frame z hs.2.1 ρ hρS`. Take `⟨-, hsF, hsU⟩` from `Sset_frame z' hs.2.2 s' hs'`. Take `⟨hc1, hc2⟩` from `rho_conj γ hp.1 ρ s' hρeq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hρH : ρᴴ * Hpk k r * ρ = Hpk k r` using `hρG`. Use `⟨hρU, ?_, ?_⟩` and prove the remaining obligations. Use `show uMap k r z' (γ⁻¹ * ρ * γ) ∈ UTset (r + 1)`. Rewrite using `[hc1]`. Conclude with `hsU`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `show (uMap k r z ρ)ᴴ * Zhat k r z z' γ * uMap k r z' (γ⁻¹ * ρ * γ) = Zhat k r z z' γ`. Rewrite using `[hc1, Zhat_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (ρ * Ff k r z)ᴴ * Hpk k r * (γ * s') * Ff k r z' := by`. Rewrite using `[← hρF, ← hsF]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Ff k r z)ᴴ * (ρᴴ * Hpk k r * ρ) * γ * Ff k r z' := by`. Rewrite using `[hc2, Matrix.conjTranspose_mul]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Ff k r z)ᴴ * Hpk k r * γ * Ff k r z' := by rw [hρH]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapsStep : MapsStep := by
   intro k r z z' γ hs hp ρ hρ
@@ -256,11 +252,11 @@ theorem mapsStep : MapsStep := by
       _ = (Ff k r z)ᴴ * Hpk k r * γ * Ff k r z' := by rw [hρH]
 
 /- English proof (translation)
-Establish `hE : (Matrix.of fun i j => star (gramVec k r z z' γ i j)) = (Fm k r z z' γ)ᴴ`. Use extensionality with `a b`. Simplify using `[Fm, Matrix.conjTranspose_apply]`. Establish `hcol : ∀ j, (fun p => Q p j) ∈ Uperp k r z z' γ`. Introduce `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Uperp, LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Rewrite using `[hE]`. Use function extensionality and compare the values at `a`. Establish `e` using `congrFun (congrFun hQ a) j`. Simplify `e` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `i j`. Establish `e` using `congrFun (hfix _ (hcol j)) i`. Simplify `e` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_eq_of_fix (z z' : Fin (2 * r + k + 1) → ℂ) (γ ρ : B.Mat k r)
     (hfix : ∀ v ∈ Uperp k r z z' γ, ρ *ᵥ v = v) {ι : Type*} (Q : Matrix (Fin (2 * r + k + 1)) ι ℂ)
@@ -280,9 +276,9 @@ theorem mul_eq_of_fix (z z' : Fin (2 * r + k + 1) → ℂ) (γ ρ : B.Mat k r)
   simpa [Matrix.mulVec, dotProduct, Matrix.mul_apply] using e
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp`. Take `⟨-, ⟨Q, -, hQG⟩, -, -⟩` from `h k r z z' γ hs hp`. Establish `hdet` using `congrArg Matrix.det hQG`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_neg, Matrix.det_one]`. Rewrite using `[isUnit_iff_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Rewrite `hdet` using `[h0, mul_zero, zero_mul]`. Conclude with `absurd hdet.symm (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramInv_of (h : GramIndependentSignature) : GramInv := by
   intro k r z z' γ hs hp
@@ -296,17 +292,15 @@ theorem gramInv_of (h : GramIndependentSignature) : GramInv := by
   exact absurd hdet.symm (by simp)
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp ρ hρ`. Take `⟨⟨hρS, s', hs', hρeq⟩, hfix⟩` from `hρ`. Take `⟨-, hρF, -⟩` from `Sset_frame z hs.2.1 ρ hρS`. Take `⟨-, hsF, -⟩` from `Sset_frame z' hs.2.2 s' hs'`. Take `⟨hc1, hc2⟩` from `rho_conj γ hp.1 ρ s' hρeq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hGinv : gramM k r z z' γ * (gramM k r z z' γ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (hG k r z z' γ hs hp)`. Establish `hρFm : ρ * Fm k r z z' γ = Fm k r z z' γ * Wm (uMap k r z ρ) (uMap k r z' (γ⁻¹ * ρ * γ))`. Rewrite using `[hc1, Fm_eq, Wm, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact hρF`. Consider the case `rw [← Matrix.mul_assoc, ← hc2, Matrix.mul_assoc, hsF, Matrix.mul_assoc]`. Establish `hQ : ((Fm k r z z' γ)ᴴ * Hpk k r) * (1 - Fm k r z z' γ * Km k r z z' γ) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, Km]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (Fm k r z z' γ)ᴴ * Hpk k r * (Fm k r z z' γ * ((gramM k r z z' γ)⁻¹ * (Fm k r z z' γ)ᴴ * Hpk k r)) = ((Fm k r z z' γ)ᴴ * Hpk k r * Fm k r z z' γ) * (gramM k r z z' γ)⁻¹ * ((Fm k r z z' γ)ᴴ * Hpk k r)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, ← gramM_eq, hGinv, Matrix.one_mul, sub_self]`. Establish `hfixQ` using `mul_eq_of_fix z z' γ ρ hfix _ hQ`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_add, add_sub_cancel, Matrix.mul_one]`. Use `_ = Fm k r z z' γ * Wm (uMap k r z ρ) (uMap k r z' (γ⁻¹ * ρ * γ)) * Km k r z z' γ + (1 - Fm k r z z' γ * Km k r z z' γ) := by`. Rewrite using `[hfixQ, ← Matrix.mul_assoc, hρFm]`. Use `_ = rhoOf k r z z' γ (pairMap k r z z' γ ρ).1 (pairMap k r z z' γ ρ).2 := by`. Simplify using `only [rhoOf, pairMap, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem pairFormula_of (hG : GramInv) : PairFormula := by
   intro k r z z' γ hs hp ρ hρ
@@ -343,20 +337,18 @@ theorem pairFormula_of (hG : GramInv) : PairFormula := by
         abel
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hu.1 i j hij)]`. Simplify using `[hu.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_UT {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (hu : u ∈ UTset m) : u.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => hu.1 i j hij)]
   simp [hu.2]
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp p hpS q hqS`. Take `⟨hp1, hp2, hpe⟩` from `hpS`. Take `⟨hq1, hq2, hqe⟩` from `hqS`. Establish `hZu : IsUnit (Zhat k r z z' γ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (det_Zhat_ne z z' hs γ hp))`. Establish `hU : ∀ {u : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ}, u ∈ UTset (r + 1) → IsUnit u` using `fun hu => (Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_UT hu]; exact isUnit_one)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUH : ∀ {u : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ}, u ∈ UTset (r + 1) → IsUnit uᴴ` using `fun hu => (Matrix.isUnit_iff_isUnit_det _).2 (by rw [Matrix.det_conjTranspose, det_UT hu, star_one]; exact isUnit_one)`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `e : (p.1ᴴ * Zhat k r z z' γ) * p.2 = (p.1ᴴ * Zhat k r z z' γ) * q.2`. Rewrite using `[hpe, h1, hqe]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Prod.ext h1 (((hUH hp1).mul hZu).mul_left_cancel e)`. Introduce `h2`. Establish `e : p.1ᴴ * (Zhat k r z z' γ * p.2) = q.1ᴴ * (Zhat k r z z' γ * p.2)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hpe, h2, hqe]`. Establish `h1` using `(hZu.mul (hU hp2)).mul_right_cancel e`.
-
-Conclude with `Prod.ext (Matrix.conjTranspose_inj.1 h1) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compDet : CompDet := by
   intro k r z z' γ hs hp p hpS q hqS

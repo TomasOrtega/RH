@@ -9,13 +9,13 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDeca
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p Θ f χ δ γ hχ hδ hlt`. Establish `hlt0 : δ < D.ptG (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') P.r γ` using `hlt`. Establish `hopen : IsOpen {x : B.Mat P.k P.r | δ < Gf P.k P.r p.T.base.z p.T.base.z' x}` using `isOpen_lt continuous_const (Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf p.T.base.z p.T.base.z').continuous`. Establish `hloc : ∀ g, δ < Gf P.k P.r p.T.base.z p.T.base.z' g → B.opApply Θ (D.cutF p.T.base χ f δ) g = B.opApply Θ f g`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Formalism.FourierDecayAlt.P.JCTx6.Pos.opApply_congr_open Θ hopen (fun x hx => ?_) g hg` and prove the remaining obligations. Establish `hx' : δ < Gf P.k P.r p.T.base.z p.T.base.z' x` using `hx`. Simplify using `only [D.cutF]`. Rewrite using `[hχ.2.2 _ ((one_le_div hδ).mpr hx'.le), Complex.ofReal_one, one_smul]`. Unfold `KB.Pl.V D.vecV`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h h'`. Establish `hG` using `Formalism.FourierDecayAlt.P.ptG_spec P.k P.r p.T.base.z p.T.base.z' γ h'.choose h.1 h'.choose_spec.2.1`. Establish `hlt' : δ < Gf P.k P.r p.T.base.z p.T.base.z' h'.choose` using `hG ▸ hlt0`. Establish `e` using `Formalism.FourierDecayAlt.P.JCx1.needs.orbJ_smul_of_ae p.T.base h'.choose (D.muR p.T.base h'.choose (h.1.2 ▸ D.ptPerm γ)) (B.opApply Θ (D.cutF p.T.base χ f δ)) (B.opApply Θ f) 1 (by filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS p.T.base] with q hq`. Simplify using `only [D.orbIntegrand, B.rho, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hloc _ (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs p.T.base hq]; exact hlt')])`. Rewrite using `[e, one_smul]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vec_opApply_cutF_eq : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (Θ : B.DiffOp P.k P.r Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ : ℝ → ℝ) (δ : ℝ) (γ : C.LPt), C6.IsCut0 χ → 0 < δ → δ < TBB.Gp p γ → p.V (B.opApply Θ (D.cutF p.T.base χ f δ)) γ = p.V (B.opApply Θ f) γ := by
   intro Wp Wq _ _ _ _ _ _ P p Θ f χ δ γ hχ hδ hlt

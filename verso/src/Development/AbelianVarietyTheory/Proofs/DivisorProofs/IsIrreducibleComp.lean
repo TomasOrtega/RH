@@ -33,7 +33,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Introduce `v` and use `(h v).preimage (continuous_invTranspose n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_comp {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V} (h : IsSmooth π) :
     IsSmooth (π.comp (invTranspose n) : Representation ℂ (GL (Fin n) k) V) :=
@@ -42,7 +42,7 @@ theorem isSmooth_comp {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V} (h : 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CosocleComp.isIrreducible_comp (fun g => ⟨_, invTranspose_invTranspose n g⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V} (h : π.IsIrreducible) :
     Representation.IsIrreducible (π.comp (invTranspose n) : Representation ℂ (GL (Fin n) k) V) :=
@@ -54,7 +54,7 @@ def dual (x : IrrGL k) : IrrGL k :=
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-The claim follows from `IrrGL.of_eq_of.2 ⟨compEquiv (IrrGL.equivOf π hs hi).symm (invTranspose n)⟩`.
+A detailed English derivation is pending.
 -/
 theorem dual_of {n : ℕ} (π : Representation ℂ (GL (Fin n) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) :
     dual (IrrGL.of π hs hi) = IrrGL.of (π.comp (invTranspose n)) (isSmooth_comp hs) (isIrreducible_comp hi) :=
@@ -63,7 +63,7 @@ theorem dual_of {n : ℕ} (π : Representation ℂ (GL (Fin n) k) V) (hs : IsSmo
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Use `(dual_of _ _ _).trans (Eq.trans (IrrGL.of_eq_of.2 ⟨?_⟩) (IrrGL.of_rep x))` and prove the remaining obligations. Use `Representation.Equiv.mk (LinearEquiv.refl ℂ _) fun g => ?_` and prove the remaining obligations. Use extensionality with `v`. Use `show x.rep (invTranspose x.1 (invTranspose x.1 g)) v = x.rep g v`. Rewrite using `[invTranspose_invTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_dual (x : IrrGL k) : dual (dual x) = x := by
   refine (dual_of _ _ _).trans (Eq.trans (IrrGL.of_eq_of.2 ⟨?_⟩) (IrrGL.of_rep x))
@@ -73,7 +73,7 @@ theorem dual_dual (x : IrrGL k) : dual (dual x) = x := by
   rw [invTranspose_invTranspose]
 
 /- English proof (translation)
-Take `⟨e⟩` from `GlobalTheory.T.twist_inv_transpose_det_char k x.1 _ x.rep s`. Use `Eq.trans ?_ (IrrGL.tw_of _ _ _ _ _).symm` and prove the remaining obligations. Conclude with `IrrGL.of_eq_of.2 ⟨(compEquiv (IrrGL.twEquiv x _ (isSmoothChar_absPow s)).symm (invTranspose x.1)).trans e⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dual_nu (x : IrrGL k) (s : ℂ) : dual (x.nu s) = (dual x).nu (-s) := by
   obtain ⟨e⟩ := GlobalTheory.T.twist_inv_transpose_det_char k x.1 _ x.rep s
@@ -81,13 +81,13 @@ theorem dual_nu (x : IrrGL k) (s : ℂ) : dual (x.nu s) = (dual x).nu (-s) := by
   exact IrrGL.of_eq_of.2 ⟨(compEquiv (IrrGL.twEquiv x _ (isSmoothChar_absPow s)).symm (invTranspose x.1)).trans e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, isCuspidal_of_equiv (IrrGL.equivOf _ _ _) (GlobalTheory.T.cuspidal_inv_transpose k x.1 _ x.rep h.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCusp_dual (x : IrrGL k) (h : x.IsCusp) : (dual x).IsCusp :=
   ⟨h.1, isCuspidal_of_equiv (IrrGL.equivOf _ _ _) (GlobalTheory.T.cuspidal_inv_transpose k x.1 _ x.rep h.2)⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA`. Use `⟨dual, fun x y => (GlobalTheory.T.contragredient_eq_inv_transpose_class k hA x y).trans ⟨fun ⟨_, _, h⟩ => h, fun h => ⟨_, _, h⟩⟩, dual_dual, dual_nu, isCusp_dual, fun _ => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → ∃ D : IrrGL k → IrrGL k, (∀ x y, DualCl x y ↔ y = D x) ∧ (∀ x, D (D x) = x) ∧

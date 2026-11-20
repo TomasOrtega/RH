@@ -27,12 +27,12 @@ def VeroneseGraphDeg.Statement : Prop :=
       IsFieldIntersection J ∧ J (ReciprocityTheory.ChartRestriction.G.AI.I4.fibreIdeal Sum.inr G) 0 Fin.elim0 = 1
 
 /- English proof (translation)
-The claim follows from `le_rfl`.
+A detailed English derivation is pending.
 -/
 example : (1 : ℕ) ≤ 1 := le_rfl
 
 /- English proof (translation)
-Simplify using `[Veronese.forms, pow_two]`.
+Simplify using the standard rewrite rules.
 -/
 example : Veronese.forms 1 ⟨(), ⟨(0, 0), le_rfl⟩⟩ = X ⟨(), 0⟩ ^ 2 := by
   simp [Veronese.forms, pow_two]

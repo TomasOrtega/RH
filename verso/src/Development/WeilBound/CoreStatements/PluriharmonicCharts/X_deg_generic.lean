@@ -8,9 +8,9 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.AssemblyBri
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-Introduce `hI K _ ι _ I hF D P L hP hL`. Take `⟨I₀, -, hu⟩` from `GroundTheory.Heights₂.Heights.Targets.ExistsUnique.full ℚ ι`. Establish `hQ` using `GroundTheory.Heights₂.Heights.HilbertSamuel.isProjVarF_map_of_isArithVar hP`. Establish `h1` using `hu I hF _ D (fun j => (L j).a) hQ`. Establish `h2` using `hu _ (GroundTheory.Heights₂.Heights.NumbersDVR.IntNumIsFieldIntersection.full ℚ K ι) _ D (fun j => (L j).a) hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, ← h2]`. Conclude with `GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree hI.degree K ι P D L hP hL`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_deg_generic : Inputs → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (I : IFamily ℚ ι), IsFieldIntersection I → ∀ (D : ℕ) (P : Ideal (MRing ι)) (L : Fin D → HermLine ι), IsArithVar P (D + 1) → (∀ j, IsSmoothHerm (L j)) → ptsIntegral P (pot L) (fun _ => 1) = (I (P.map (MvPolynomial.map (Int.castRingHom ℚ))) D fun j => (L j).a : ℤ) := by
   intro hI K _ ι _ I hF D P L hP hL

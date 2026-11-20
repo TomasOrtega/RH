@@ -18,7 +18,7 @@ def cE (E : M2 n) (s : ℝ) : M2 n := NormedSpace.exp (s • E)
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `open scoped Matrix.Norms.Operator in`. Establish `h1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) E (0 : ℝ)`. Use `open scoped Matrix.Norms.Operator in`. Establish `h2` using `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Simplify `h2` using `[Function.comp_def, cE]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cE_entry (E : M2 n) (a b : Fin n ⊕ Fin n) :
     HasDerivAt (fun s : ℝ => cE E s a b) (E a b) 0 := by
@@ -29,7 +29,7 @@ theorem cE_entry (E : M2 n) (a b : Fin n ⊕ Fin n) :
   simpa [Function.comp_def, cE] using h2
 
 /- English proof (translation)
-Apply the tactic sequence `have h : HasDerivAt (fun s : ℝ => (cE E s : (Fin n ⊕ Fin n) → (Fin n ⊕ Fin n) → ℂ)) (E : (Fin n ⊕ Fin n) → (Fin n ⊕ Fin n) → ℂ) 0 := hasDerivAt_pi.2 fun a => hasDerivAt_pi.2 fun b => cE_entry E a b`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cE_hasDerivAt0 (E : M2 n) : HasDerivAt (cE E) E 0 := by
   have h : HasDerivAt (fun s : ℝ => (cE E s : (Fin n ⊕ Fin n) → (Fin n ⊕ Fin n) → ℂ))
@@ -38,12 +38,12 @@ theorem cE_hasDerivAt0 (E : M2 n) : HasDerivAt (cE E) E 0 := by
   exact h
 
 /- English proof (translation)
-Simplify using `[cE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cE_zero (E : M2 n) : cE E 0 = 1 := by simp [cE]
 
 /- English proof (translation)
-Unfold `cE`. Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ ((Commute.refl E).smul_left s |>.smul_right t)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cE_add (E : M2 n) (s t : ℝ) : cE E (s + t) = cE E s * cE E t := by
   unfold cE
@@ -60,9 +60,9 @@ Both sides reduce to the same expression.
 theorem mulL_apply (A B : M2 n) : mulL A B = A * B := rfl
 
 /- English proof (translation)
-Establish `h0 : HasDerivAt (fun t : ℝ => cE E (t - s)) E s`. Establish `h : HasDerivAt (cE E) E (s - s)` using `by simpa using cE_hasDerivAt0 E`. Conclude with `HasDerivAt.comp_sub_const s s h`. Establish `h1 : HasDerivAt (fun t : ℝ => cE E s * cE E (t - s)) (cE E s * E) s` using `(mulL (cE E s)).hasFDerivAt.comp_hasDerivAt s h0`. Use `h1.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[← cE_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cE_hasDerivAt (E : M2 n) (s : ℝ) : HasDerivAt (cE E) (cE E s * E) s := by
   have h0 : HasDerivAt (fun t : ℝ => cE E (t - s)) E s := by
@@ -77,23 +77,23 @@ theorem cE_hasDerivAt (E : M2 n) (s : ℝ) : HasDerivAt (cE E) (cE E s * E) s :=
   ring
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun s => (cE_hasDerivAt E s).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem cE_continuous (E : M2 n) : Continuous (cE E) :=
   continuous_iff_continuousAt.2 fun s => (cE_hasDerivAt E s).continuousAt
 
 /- English proof (translation)
-Simplify using `[JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem JJ_conjTranspose : (JJ n)ᴴ = -JJ n := by
   simp [JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_neg]
 
 /- English proof (translation)
-Establish `hct : (cE E s)ᴴ = cE E (-s)`. Unfold `cE`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hE]`. Simplify using `[neg_smul, smul_neg]`. Establish `hinv : (cE E s)ᴴ * cE E s = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hct, ← cE_add, neg_add_cancel, cE_zero]`. Establish `hcomm : cE E s * JJ n = JJ n * cE E s`. Establish `hc : Commute (s • E) (JJ n)` using `by show s • E * JJ n = JJ n * (s • E)`. Rewrite using `[Matrix.smul_mul, hEJ, Matrix.mul_smul]`. Conclude with `(hc.exp_left).eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hinv⟩` and prove the remaining obligations. Unfold `InG`. Rewrite using `[Matrix.mul_assoc, ← hcomm, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cE_inK (E : M2 n) (hE : Eᴴ = -E) (hEJ : E * JJ n = JJ n * E) (s : ℝ) : InK (cE E s) := by
   have hct : (cE E s)ᴴ = cE E (-s) := by
@@ -112,25 +112,23 @@ theorem cE_inK (E : M2 n) (hE : Eᴴ = -E) (hEJ : E * JJ n = JJ n * E) (s : ℝ)
   rw [Matrix.mul_assoc, ← hcomm, ← Matrix.mul_assoc, hinv, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hΦc : Continuous (fun p : ℝ × Kg => cE E p.1 * ι p.2)` using `((cE_continuous E).comp continuous_fst).matrix_mul (hι.comp continuous_snd)`. Establish `hmem0 : ∀ k, ι k ∈ U` using `fun k => hKU ((hK (ι k)).2 ⟨k, rfl⟩)`. Establish `hev : ∀ᶠ s in 𝓝 (0 : ℝ), ∀ k ∈ (Set.univ : Set Kg), cE E s * ι k ∈ U`. Use `isCompact_univ.eventually_forall_of_forall_eventually fun k _ => ?_` and prove the remaining obligations. Establish `h0 : cE E 0 * ι k ∈ U` using `by rw [cE_zero, Matrix.one_mul]; exact hmem0 k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hΦc.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.1 hev`. Establish `hin : ∀ s : ℝ, |s| ≤ ε / 2 → ∀ k, cE E s * ι k ∈ U` using `fun s hs k => hball (by rw [Real.dist_eq, sub_zero]; linarith) k (Set.mem_univ _)`. Establish `hfd : ContinuousOn (fderiv ℝ F) U` using `hF.continuousOn_fderiv_of_isOpen hU le_rfl`. Use `set S : Set (ℝ × Kg) := Set.Icc (-(ε / 2)) (ε / 2) ×ˢ Set.univ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsCompact S` using `isCompact_Icc.prod isCompact_univ`. Establish `hmapS : ∀ p ∈ S, cE E p.1 * ι p.2 ∈ U` using `fun p hp => hin p.1 (abs_le.2 ⟨hp.1.1, hp.1.2⟩) p.2`. Establish `hGc : ContinuousOn (fun p : ℝ × Kg => fderiv ℝ F (cE E p.1 * ι p.2) (cE E p.1 * E * ι p.2)) S`. Use `ContinuousOn.clm_apply (hfd.comp hΦc.continuousOn hmapS) ?_` and prove the remaining obligations. Conclude with `((((cE_continuous E).comp continuous_fst).matrix_mul continuous_const).matrix_mul (hι.comp continuous_snd)).continuousOn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B, hB⟩` from `hS.exists_bound_of_continuousOn hGc`. Establish `hdiffF : ∀ y ∈ U, DifferentiableAt ℝ F y` using `fun y hy => (hF.differentiableOn one_ne_zero).differentiableAt (hU.mem_nhds hy)`. Establish `hs : Metric.ball (0 : ℝ) (ε / 2) ∈ 𝓝 (0 : ℝ)` using `Metric.ball_mem_nhds _ (by linarith)`. Establish `hsub : ∀ s ∈ Metric.ball (0 : ℝ) (ε / 2), |s| ≤ ε / 2` using `fun s hs' => by`. Rewrite `hs'` using `[Metric.mem_ball, Real.dist_eq, sub_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs'.le`. Establish `hcontF : ∀ s : ℝ, |s| ≤ ε / 2 → Continuous (fun k => F (cE E s * ι k))` using `fun s hs' => hF.continuousOn.comp_continuous (continuous_const.matrix_mul hι) fun k => hin s hs' k`. Establish `hcontF' : ∀ s : ℝ, |s| ≤ ε / 2 → Continuous (fun k => fderiv ℝ F (cE E s * ι k) (cE E s * E * ι k))` using `fun s hs' => (hfd.comp_continuous (continuous_const.matrix_mul hι) fun k => hin s hs' k).clm_apply (continuous_const.matrix_mul hι)`. Establish `h0 : |(0 : ℝ)| ≤ ε / 2` using `by rw [abs_zero]; linarith`. Establish `hint0 : Integrable (fun k => F (cE E 0 * ι k)) μ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (hcontF 0 h0).continuousOn`. Conclude with `Integrable.mono' (integrable_const C) (hcontF 0 h0).aestronglyMeasurable (Eventually.of_forall fun k => hC k (Set.mem_univ _))`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := (0 : ℝ)) (F := fun s k => F (cE E s * ι k)) (bound := fun _ => B) (F' := fun s k => fderiv ℝ F (cE E s * ι k) (cE E s * E * ι k)) hs (by filter_upwards [hs] with s hs' using (hcontF s (hsub s hs')).aestronglyMeasura …`. Establish `h1` using `cE_hasDerivAt E s`. Establish `h2 : HasDerivAt (fun t => cE E t * ι k) (cE E s * E * ι k) s` using `(mulR (ι k)).hasFDerivAt.comp_hasDerivAt s h1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hdiffF _ (hin s (hsub s hs') k)).hasFDerivAt.comp_hasDerivAt s h2)`. Establish `hconst : (fun s : ℝ => ∫ k, F (cE E s * ι k) ∂μ) = fun _ => ∫ k, F (ι k) ∂μ`. Use function extensionality and compare the values at `s`. Take `⟨κ, hκ⟩` from `(hK (cE E s)).1 (cE_inK E hE hEJ s)`. Establish `: (fun k => F (cE E s * ι k)) = fun k => (fun k' => F (ι k')) (κ * k)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `show F (cE E s * ι k) = F (ι (κ * k))`. Rewrite using `[map_mul, hκ]`. Rewrite using `[this, integral_mul_left_eq_self (fun k' => F (ι k')) κ]`. Establish `hd0 : HasDerivAt (fun s : ℝ => ∫ k, F (cE E s * ι k) ∂μ) 0 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hconst]`. Conclude with `hasDerivAt_const _ _`. Establish `huniq` using `key.2.unique hd0`. Establish `hF' : (fun k => fderiv ℝ F (cE E 0 * ι k) (cE E 0 * E * ι k)) = fun k => fderiv ℝ F (ι k) (E * ι k)`. Use function extensionality and compare the values at `k`.
-
-Simplify using `[cE_zero]`. Rewrite `key`, `huniq` using `[hF']`. Conclude with `⟨key.1, huniq⟩`.
+A detailed English derivation is pending.
 -/
 theorem core {Kg : Type} [Group Kg] [TopologicalSpace Kg] [IsTopologicalGroup Kg] [CompactSpace Kg]
     [MeasurableSpace Kg] [BorelSpace Kg] (μ : Measure Kg) [μ.IsHaarMeasure] (ι : Kg →* M2 n)
@@ -199,7 +197,7 @@ theorem core {Kg : Type} [Group Kg] [TopologicalSpace Kg] [IsTopologicalGroup Kg
   exact ⟨key.1, huniq⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [reK, conjTranspose_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.neg_apply, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reK_skew (e : M2 n) : (reK e)ᴴ = -reK e := by
   ext i j
@@ -207,7 +205,7 @@ theorem reK_skew (e : M2 n) : (reK e)ᴴ = -reK e := by
   apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [imK, conjTranspose_apply, Matrix.smul_apply, Matrix.add_apply, Matrix.neg_apply, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem imK_skew (e : M2 n) : (imK e)ᴴ = -imK e := by
   ext i j
@@ -215,7 +213,7 @@ theorem imK_skew (e : M2 n) : (imK e)ᴴ = -imK e := by
   apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Establish `h` using `congrArg conjTranspose he`. Rewrite `h` using `[conjTranspose_mul, conjTranspose_mul, JJ_conjTranspose]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, neg_inj] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_conjT {e : M2 n} (he : e * JJ n = JJ n * e) : eᴴ * JJ n = JJ n * eᴴ := by
   have h := congrArg conjTranspose he
@@ -224,23 +222,23 @@ theorem comm_conjT {e : M2 n} (he : e * JJ n = JJ n * e) : eᴴ * JJ n = JJ n * 
   exact h.symm
 
 /- English proof (translation)
-Unfold `reK`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, he, comm_conjT he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem reK_comm {e : M2 n} (he : e * JJ n = JJ n * e) : reK e * JJ n = JJ n * reK e := by
   unfold reK
   rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, he, comm_conjT he]
 
 /- English proof (translation)
-Unfold `imK`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, he, comm_conjT he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem imK_comm {e : M2 n} (he : e * JJ n = JJ n * e) : imK e * JJ n = JJ n * imK e := by
   unfold imK
   rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, he, comm_conjT he]
 
 /- English proof (translation)
-Introduce `n Kg _ _ _ _ _ _ μ _ ι hι hK F U hU hKU hF e he`. Take `⟨i1, z1⟩` from `core μ ι hι hK F U hU hKU hF (reK e) (reK_skew e) (reK_comm he)`. Take `⟨i2, z2⟩` from `core μ ι hι hK F U hU hKU hF (imK e) (imK_skew e) (imK_comm he)`. Use `⟨i1.add (i2.const_mul Complex.I), ?_⟩` and prove the remaining obligations. Unfold `dK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[integral_add i1 (i2.const_mul _), integral_const_mul, z1, z2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leftDeriv : LeftDeriv := by
   intro n Kg _ _ _ _ _ _ μ _ ι hι hK F U hU hKU hF e he

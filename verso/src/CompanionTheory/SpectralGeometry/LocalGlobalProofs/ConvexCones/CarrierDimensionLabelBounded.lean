@@ -12,7 +12,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.IntegerFinrankMultiplicativity
 
 /- English proof (translation)
-Establish `hI : Ideal.comap (algebraMap ℤ O) (Ideal.span {s}) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hs (Ideal.mem_span_singleton_self s) (Algebra.IsIntegral.isIntegral s)`. Take `⟨n, hn, hn0⟩` from `(Submodule.ne_bot_iff _).mp hI`. Take `⟨o, ho⟩` from `Ideal.mem_span_singleton'.mp (Ideal.mem_comap.mp hn)`. Conclude with `⟨n, hn0, o, by rw [ho]; exact eq_intCast (algebraMap ℤ O) n⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_int_ne_zero_eq_mul_of_ne_zero (O : Type) [CommRing O] [IsDomain O] [Module.Finite ℤ O]
     (s : O) (hs : s ≠ 0) : ∃ n : ℤ, n ≠ 0 ∧ ∃ o : O, o * s = (n : O) := by
@@ -24,19 +24,19 @@ private theorem exists_int_ne_zero_eq_mul_of_ne_zero (O : Type) [CommRing O] [Is
   exact ⟨n, hn0, o, by rw [ho]; exact eq_intCast (algebraMap ℤ O) n⟩
 
 /- English proof (translation)
-Use `IsLocalizedModule.mk ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨n, hn⟩`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hn0 : (n : O) ≠ 0` using `Int.cast_ne_zero.mpr (nonZeroDivisors.ne_zero hn)`. Establish `hu : algebraMap O (FractionRing O) (n : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hn0)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ v : LocalizedModule (nonZeroDivisors O) X, (algebraMap ℤ (Module.End ℤ (LocalizedModule (nonZeroDivisors O) X)) n) v = algebraMap O (FractionRing O) (n : O) • v`. Introduce `v`. Rewrite using `[Module.algebraMap_end_apply, algebraMap_smul, Int.cast_smul_eq_zsmul]`. Prove the components needed by the constructor for the conclusion. Introduce `a b h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[key, key]`. Establish `h2` using `congrArg (fun w => (algebraMap O (FractionRing O) (n : O))⁻¹ • w) h`. Simplify `h2` using `only [smul_smul, inv_mul_cancel₀ hu, one_smul]`. Introduce `v`. Conclude with `⟨(algebraMap O (FractionRing O) (n : O))⁻¹ • v, by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[key, smul_smul, mul_inv_cancel₀ hu, one_smul]⟩`. Introduce `y`. Use `LocalizedModule.induction_on (fun m s => ?_) y` and prove the remaining obligations. Take `⟨n, hn0, o, ho⟩` from `exists_int_ne_zero_eq_mul_of_ne_zero O s (nonZeroDivisors.ne_zero s.2)`. Use `⟨⟨o • m, ⟨n, mem_nonZeroDivisors_of_ne_zero hn0⟩⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submonoid.smul_def, LinearMap.restrictScalars_apply, LocalizedModule.mkLinearMap_apply]`. Rewrite using `[← Int.cast_smul_eq_zsmul O, LocalizedModule.smul'_mk, ← ho, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def, OneMemClass.coe_one, one_smul, mul_smul]`. Conclude with `smul_comm _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x₁ x₂ h`. Simplify using `only [LinearMap.restrictScalars_apply, LocalizedModule.mkLinearMap_apply, LocalizedModule.mk_eq] at h`. Take `⟨u, hu⟩` from `h`. Take `⟨n, hn0, o, ho⟩` from `exists_int_ne_zero_eq_mul_of_ne_zero O u (nonZeroDivisors.ne_zero u.2)`. Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero hn0⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submonoid.smul_def, OneMemClass.coe_one, one_smul] at hu ⊢`. Rewrite using `[← Int.cast_smul_eq_zsmul O, ← Int.cast_smul_eq_zsmul O, ← ho, mul_smul, mul_smul, hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isLocalizedModule_int_restrictScalars_mkLinearMap (O : Type) [CommRing O] [IsDomain O] [CharZero O]
     [Module.Finite ℤ O] (X : Type) [AddCommGroup X] [Module O X] :
@@ -80,11 +80,9 @@ private theorem isLocalizedModule_int_restrictScalars_mkLinearMap (O : Type) [Co
     rw [← Int.cast_smul_eq_zsmul O, ← Int.cast_smul_eq_zsmul O, ← ho, mul_smul, mul_smul, hu]
 
 /- English proof (translation)
-Use `haveI := isLocalizedModule_int_restrictScalars_mkLinearMap O X`. Use `haveI : CharZero (FractionRing O) := charZero_of_injective_algebraMap (IsFractionRing.injective O (FractionRing O))`. Use `letI : Module ℚ (LocalizedModule (nonZeroDivisors O) X) := Module.compHom _ (algebraMap ℚ (FractionRing O))`. Use `haveI : IsScalarTower ℚ (FractionRing O) (LocalizedModule (nonZeroDivisors O) X) := IsScalarTower.of_algebraMap_smul (fun _ _ => rfl)`. Establish `e1 : Module.finrank ℤ (LocalizedModule (nonZeroDivisors O) X) = Module.finrank ℤ X` using `IsLocalizedModule.finrank_eq (nonZeroDivisors ℤ) ((LocalizedModule.mkLinearMap (nonZeroDivisors O) X).restrictScalars ℤ) le_rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Module.finrank ℚ (LocalizedModule (nonZeroDivisors O) X) = Module.finrank ℤ (LocalizedModule (nonZeroDivisors O) X)` using `IsFractionRing.finrank_right_eq ℤ ℚ _`. Establish `e3 : Module.finrank ℚ (FractionRing O) * Module.finrank (FractionRing O) (LocalizedModule (nonZeroDivisors O) X) = Module.finrank ℚ (LocalizedModule (nonZeroDivisors O) X)` using `Module.finrank_mul_finrank ℚ (FractionRing O) _`. Use `haveI : @IsScalarTower ℤ ℚ (FractionRing O) Algebra.toSMul Algebra.toSMul Algebra.toSMul := IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)`. Establish `e4 : Module.finrank ℚ (FractionRing O) = Module.finrank ℤ O` using `IsFractionRing.finrank_eq ℤ ℚ O (FractionRing O)`. Establish `e5 : Module.finrank (FractionRing O) (LocalizedModule (nonZeroDivisors O) X) = Module.finrank O (LocalizedModule (nonZeroDivisors O) X)` using `IsFractionRing.finrank_right_eq O (FractionRing O) _`.
-
-Establish `e6 : Module.finrank O (LocalizedModule (nonZeroDivisors O) X) = Module.finrank O X` using `IsLocalizedModule.finrank_eq (nonZeroDivisors O) (LocalizedModule.mkLinearMap (nonZeroDivisors O) X) le_rfl`. Rewrite using `[← e1, ← e2, ← e3, e4, e5, e6]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finrank_int_eq_mul_finrank (O : Type) [CommRing O] [IsDomain O] [CharZero O]
     [Module.Finite ℤ O] (X : Type) [AddCommGroup X] [Module O X] :
@@ -119,7 +117,7 @@ private theorem finrank_int_eq_mul_finrank (O : Type) [CommRing O] [IsDomain O] 
   rw [← e1, ← e2, ← e3, e4, e5, e6]
 
 /- English proof (translation)
-Rewrite using `[finrank_int_eq_mul_finrank O X, IsFractionRing.finrank_eq ℤ ℚ O K]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_int_eq_fraction_mul (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.Finite ℤ O]
     (K : Type) [Field K] [CharZero K] [Algebra O K] [IsFractionRing O K]
@@ -128,7 +126,7 @@ theorem finrank_int_eq_fraction_mul (O : Type) [CommRing O] [IsDomain O] [CharZe
   rw [finrank_int_eq_mul_finrank O X, IsFractionRing.finrank_eq ℤ ℚ O K]
 
 /- English proof (translation)
-Establish `: CharZero (FractionRing O)` using `charZero_of_injective_algebraMap (IsFractionRing.injective O (FractionRing O))`. Establish `h` using `finrank_int_eq_fraction_mul O (FractionRing O) O`. Rewrite `h` using `[Module.finrank_self, mul_one]`. Rewrite using `[finrank_int_eq_fraction_mul O (FractionRing O) X, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_int_eq_finrank_mul (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.Finite ℤ O]
     (X : Type) [AddCommGroup X] [Module O X] :
@@ -140,7 +138,7 @@ theorem finrank_int_eq_finrank_mul (O : Type) [CommRing O] [IsDomain O] [CharZer
   rw [finrank_int_eq_fraction_mul O (FractionRing O) X, h]
 
 /- English proof (translation)
-The claim follows from `Module.IsTorsionFree.comap (S := O) (fun r : ℤ => (r : O)) (fun r hr => IsRegular.of_ne_zero (Int.cast_ne_zero.mpr hr.ne_zero)) (fun r m => Int.cast_smul_eq_zsmul O r m)`.
+A detailed English derivation is pending.
 -/
 private theorem isTorsionFree_int_of_isTorsionFree (O : Type) [CommRing O] [IsDomain O] [CharZero O]
     (Y : Type) [AddCommGroup Y] [Module O Y] [Module.IsTorsionFree O Y] :
@@ -150,9 +148,9 @@ private theorem isTorsionFree_int_of_isTorsionFree (O : Type) [CommRing O] [IsDo
     (fun r m => Int.cast_smul_eq_zsmul O r m)
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℤ Y := Module.Finite.trans O Y`. Take `⟨s, hs⟩` from `Module.projective_def'.mp (inferInstance : Module.Projective O Y)`. Establish `hinj : Function.Injective s` using `fun a b h => by`. Establish `ha` using `LinearMap.congr_fun hs a`. Establish `hb` using `LinearMap.congr_fun hs b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at ha hb`. Rewrite using `[← ha, ← hb, h]`. Use `haveI : Module.IsTorsionFree O Y := Function.Injective.moduleIsTorsionFree s hinj (fun r m => s.map_smul r m)`. Use `haveI : Module.IsTorsionFree ℤ Y := isTorsionFree_int_of_isTorsionFree O Y`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_int_of_projective (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.Finite ℤ O]
     {Y : Type} [AddCommGroup Y] [Module O Y] [Module.Finite O Y] [Module.Projective O Y] : Module.Free ℤ Y := by
@@ -169,11 +167,9 @@ theorem free_int_of_projective (O : Type) [CommRing O] [IsDomain O] [CharZero O]
   exact Module.free_of_finite_type_torsion_free'
 
 /- English proof (translation)
-Use `haveI : Module.IsTorsionFree ℤ O := isTorsionFree_int_of_isTorsionFree O O`. Use `haveI : Module.Free ℤ O := Module.free_of_finite_type_torsion_free'`. Use `haveI : Module.Finite ℤ X := Module.Finite.trans O X`. Use `haveI : Module.Free ℤ X := free_int_of_projective O`. Establish `hX' : Module.finrank ℤ X ≤ q * Module.finrank ℤ O`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finrank_int_eq_finrank_mul O X, mul_comm]`. Conclude with `Nat.mul_le_mul_right _ hX`. Use `show Module.finrank ℤ (Submodule.span ℤ (Set.range γ)) ≤ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Module.finrank_linearMap, Module.finrank_linearMap, Module.finrank_self, mul_one]`.
-
-Use `_ ≤ (q * Module.finrank ℤ O) ^ 2 := by`. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul hX' hX'`.
+A detailed English derivation is pending.
 -/
 theorem genRank_le_sq (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.Finite ℤ O] (q : ℕ)
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X]
@@ -197,7 +193,7 @@ theorem genRank_le_sq (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.
       exact Nat.mul_le_mul hX' hX'
 
 /- English proof (translation)
-Break down `s.eq_empty_or_nonempty with hs | ⟨k, hk⟩` into its components or cases. Rewrite using `[hs, Nat.sInf_empty]`. Conclude with `Nat.zero_le _`. Conclude with `(Nat.sInf_le hk).trans (h k hk)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nat_sInf_le_of_forall_le {s : Set ℕ} {N : ℕ} (h : ∀ k ∈ s, k ≤ N) : sInf s ≤ N := by
   rcases s.eq_empty_or_nonempty with hs | ⟨k, hk⟩
@@ -206,9 +202,9 @@ private theorem nat_sInf_le_of_forall_le {s : Set ℕ} {N : ℕ} (h : ∀ k ∈ 
   · exact (Nat.sInf_le hk).trans (h k hk)
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar _ q ψ lab hC`. Use `⟨(q * Module.finrank ℤ O) ^ 2, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX β hβ hpos`. Rewrite using `[hC X hX β hβ hpos]`. Conclude with `nat_sInf_le_of_forall_le (fun k hk => by` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, γ, -, -, rfl⟩` from `hk`. Conclude with `genRank_le_sq O q X hX γ)`.
+A detailed English derivation is pending.
 -/
 theorem carrierDim_bounded : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O),
     CMOrd O bar → ∀ (q : ℕ) (ψ lab : InvFun O), IsCarrierDim bar q ψ lab → ∃ N : ℕ, ∀ (X : Type) [AddCommGroup X]

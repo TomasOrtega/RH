@@ -15,7 +15,7 @@ namespace GlobalTheory.LevelZeroLimit
 noncomputable section
 
 /- English proof (translation)
-Introduce `w hw _`. Establish `hh : D.IsLocPt ([] : C.LPt) 0` using `⟨by simp, rfl⟩`. Rewrite using `[PBL.rr_eq_form p F 0 (Nat.zero_le _) w [] [] hh hh]`. Establish `h` using `GlobalTheory.WeightedFormPos.formPosCpt_of_xiExists hΞ hA Wp Wq P p 0 (Nat.zero_le _) w hw.1 _ (fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F 0 (Nat.zero_le _) w [] hh hF e)`. Simplify using `using (Complex.le_def.1 h).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem limPos_of_compactPositivity (hΞ : B.XiExists) (hA : P5.ThmPActualCpt) {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -29,9 +29,9 @@ theorem limPos_of_compactPositivity (hΞ : B.XiExists) (hA : P5.ThmPActualCpt) {
   simpa using (Complex.le_def.1 h).1
 
 /- English proof (translation)
-Take `⟨Cc, hCc⟩` from `GlobalTheory.GivenXi.levelForm_cutoff_tendsto hΞ Cb`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p F χ A N Y hDD hχ hF hFA hth hEv w hw hN`. Establish `hcut : ∀ ε : ℝ, 0 < ε → 0 ≤ (p.RR (D.cutF p.T.base χ F ε) 0 w [] []).re`. Introduce `ε hε`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hcpt, hlim⟩` from `hCc Wp Wq P p F χ ε A N (cutN P.k P.r) hDD hχ hε hF hFA hth (fun _ _ => rfl)`. Establish `hT` using `(Complex.continuous_re.tendsto _).comp (hlim 0 w hw.1 hN [] [])`. Conclude with `ge_of_tendsto hT (Eventually.of_forall fun n => limPos_of_compactPositivity hΞ hA p (hcpt n) Y N w hw hN)`. Conclude with `ge_of_tendsto (hEv w hw hN) (eventually_nhdsWithin_of_forall fun ε hε => hcut ε hε)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem limPos_of_limEvT_of_compactPositivity (hΞ : B.XiExists) (hA : P5.ThmPActualCpt) (Cb : ℝ) :
     ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp]
@@ -53,7 +53,7 @@ theorem limPos_of_limEvT_of_compactPositivity (hΞ : B.XiExists) (hA : P5.ThmPAc
   exact ge_of_tendsto (hEv w hw hN) (eventually_nhdsWithin_of_forall fun ε hε => hcut ε hε)
 
 /- English proof (translation)
-Introduce `hA Cb`. Take `⟨Cc, hCc⟩` from `limPos_of_limEvT_of_compactPositivity hΞ hA Cb`. Conclude with `⟨Cc, fun Wp Wq _ _ _ _ _ _ P p F χ nn A N Y hDD hχ hnn hF hFA hth hEv hBd => limE_of_partsT p nn χ F Y N hnn hEv (hCc Wp Wq P p F χ A N Y hDD hχ hF hFA hth hEv) hBd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem limE_of_limEvT_of_xiExists (hΞ : B.XiExists) :
     P5.ThmPActualCpt → ∀ Cb : ℝ, ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ nn : ℝ → ℝ) (A : ℝ) (N : ℕ) (Y : Finset ℝ), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → C6.IsCut0 χ → (∀ y, 0 ≤ nn y) → B.CkOn ⊤ (B.GV P.k P.r) F → (∀ m : ℕ, B.InCC A m F) → Cc * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A → LimEvT p χ F Y N → LimBd p nn F Y N → LimE p nn χ F Y N := by

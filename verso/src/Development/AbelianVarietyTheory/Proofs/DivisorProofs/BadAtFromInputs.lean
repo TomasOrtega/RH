@@ -35,7 +35,7 @@ noncomputable section
 namespace GlobalTheory.BadIndef
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `Module.finite_def.2 ⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.span_span_of_tower (𝓞 K) K (s : Set V)]`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_lat {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V) (hL : L.FG)
@@ -48,17 +48,17 @@ theorem finiteDimensional_of_lat {K V : Type} [Field K] [NumberField K] [AddComm
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hX hP hGD hQ hS hT hSA hGr hG hDG hSz hFD hDg hSh`. Establish `hB` using `GlobalTheory.T.level_automorphism_representation hP hG hDG`. Establish `hW` using `GlobalTheory.T.local_share_sum_bound hP hGr`. Establish `hE` using `GlobalTheory.T.covering_representation_type_frame hX hP hGD hQ hS hT hSA hG hDG hSz hFD hDg hSh`. Use `Formalism.MainNotions.Closed.imp (((hB.and hW).and hE).and hDG) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `eps Fm CH - ⟨⟨⟨⟨C1, -, x1, h1⟩, ⟨C2, -, x2, h2⟩⟩, ⟨C3, -, x3, h3⟩⟩, ⟨C4, -, x4, h4⟩⟩`. Use `⟨0, le_rfl, max (max x1 x4) (max x2 x3), fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Establish `l1 : x1 ≤ x` using `((le_max_left _ _).trans (le_max_left _ _)).trans hle`. Establish `l4 : x4 ≤ x` using `((le_max_right _ _).trans (le_max_left _ _)).trans hle`. Establish `l2 : x2 ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hle`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l3 : x3 ≤ x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hle`. Take `⟨ψ₀, hψ₀, hsh⟩` from `h2 x hx l2 ι p hp i`. Take `⟨fr, π, s, ρ, χ, Pb, lam, ψ, lamb, H, hsp, hwh, hlb, hhalf, hPb, hH, hρ, hrkT, hrkB⟩` from `h1 x hx l1 ι p hp i hi Y hY`. Establish `hemb` using `fun k => h3 x hx l3 ι p hp i hi Y hY fr π ρ χ Pb lamb H hPb hH hρ k`. Use `choose n hn1 hn2 using hemb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgd` using `(h4 x hx l4 ι p hp i hi Y hY).1`. Use `haveI : FiniteDimensional Y.d.c₂.F (Y.V (Gk p i)) := finiteDimensional_of_lat _ hgd.2.1 hgd.2.2`. Take `⟨S, hSg, hbd⟩` from `GlobalTheory.T.bad_part_dim_le_sum_local_shares_whittaker (Fm.D x ι) _ _ π s hsp ρ Pb lam ψ hwh lamb hlb H hhalf n (3 / 2) hn1 hn2 ψ₀ hψ₀`. Establish `hs` using `hsh S hSg`. Establish `e0 : (0 : ℝ) ≤ Module.finrank ℂ (eig ρ (Pb.comap π) lamb)` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : 0 ≤ Real.exp (-((Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 7)))` using `(Real.exp_pos _).le`. Establish `k1` using `mul_le_mul_of_nonneg_right hs e0`. Establish `k2` using `mul_nonneg e1 e0`. Establish `key : (Formalism.HN.rkK (CovTop.latBad p.R.toRealDat p.F.lv2 i) : ℝ) ≤ 3 * Real.exp (-((Fm.L x ι).sc.x ^ ((Fm.L x ι).sc.ez / 7))) * Formalism.HN.rkK (latType p.R.toRealDat p.F.lv2 i)`. Rewrite using `[hrkT, hrkB]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hbd.trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem bad_rows_indef : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal → Gram → DeepGood → Size → FlatDeg → Deg → Share → Covers fun _ _ _ _ p i _ _ _ => BadAt p i := by
   intro hX hP hGD hQ hS hT hSA hGr hG hDG hSz hFD hDg hSh

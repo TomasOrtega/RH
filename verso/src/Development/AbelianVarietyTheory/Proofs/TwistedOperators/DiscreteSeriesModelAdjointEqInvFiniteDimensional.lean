@@ -21,19 +21,17 @@ open Formalism.IndefR.Mult Matrix GlobalTheory.Grid
 namespace GlobalTheory.RepAdj
 
 /- English proof (translation)
-Introduce `D V S M τ _ g hg`. Establish `hfd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hJ : IsUnit (Formalism.REAL.Jm (M.ε τ))` using `IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self (M.ε τ))`. Establish `hG : IsUnit (gramAt D V τ)`. Rewrite using `[← M.fr_gram τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Matrix.isUnit_conjTranspose _).2 (M.fr_unit τ)).mul hJ |>.mul (M.fr_unit τ)`. Establish `hgi : g⁻¹ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `GlobalTheory.SmVec.inv_mem_UH hG hg`. Establish `hgu : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).1 (GlobalTheory.SmVec.isUnit_of_mem_UH hG hg)`. Use `⟨hgi, ?_⟩` and prove the remaining obligations. Establish `hU` using `(M.ds τ).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `GlobalTheory.Published.HermitianUnique.frame_mem (M.fr_unit τ) (M.fr_gram τ) (M.fr_gram τ) hg`. Establish `m2 : M.fr τ * g⁻¹ * (M.fr τ)⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `GlobalTheory.Published.HermitianUnique.frame_mem (M.fr_unit τ) (M.fr_gram τ) (M.fr_gram τ) hgi`. Establish `hprod : (M.fr τ * g⁻¹ * (M.fr τ)⁻¹) * (M.fr τ * g * (M.fr τ)⁻¹) = 1`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hfd]`. Rewrite using `[← Matrix.mul_assoc g⁻¹ g, Matrix.nonsing_inv_mul _ hgu, Matrix.one_mul, Matrix.mul_nonsing_inv _ hfd]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : ∀ x, M.rep τ g⁻¹ (M.rep τ g x) = x`. Introduce `x`. Use `hU.1.2 _ m2 _ m1` as an intermediate fact. Rewrite `this` using `[hprod, hU.1.1]`. Establish `hx` using `congrArg (fun T : M.H τ →L[ℂ] M.H τ => T x) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hx.symm` using `[DSModel.rep]`. Establish `hiso : ∀ x y, inner ℂ (M.rep τ g⁻¹ x) (M.rep τ g⁻¹ y) = inner ℂ x y`. Establish `hn : ∀ v, ‖(M.rep τ g⁻¹ : M.H τ →ₗ[ℂ] M.H τ) v‖ = ‖v‖` using `fun v => hU.2.1 _ m2 v`. Introduce `x y`. Conclude with `(LinearMap.norm_map_iff_inner_map_map (M.rep τ g⁻¹ : M.H τ →ₗ[ℂ] M.H τ)).1 hn x y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`. Use `hiso x (M.rep τ g y)` as an intermediate fact. Rewrite `this` using `[hcomp]`.
-
-Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rep_adjoint_eq_inv : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     [FiniteDimensional ℂ (M.H τ)] {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)), g⁻¹ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) ∧

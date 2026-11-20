@@ -5,9 +5,9 @@ open MvPolynomial
 namespace Formalism.E
 
 /- English proof (translation)
-Introduce `R τ _ _ f g`. Unfold `Formalism.E.fock`. Rewrite using `[star_sum]`. Establish `hf : ∀ m ∉ f.support, f.coeff m = 0` using `fun m h => by simpa using h`. Establish `hg : ∀ m ∉ g.support, g.coeff m = 0` using `fun m h => by simpa using h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∑ m ∈ f.support, star (f.coeff m * star (g.coeff m) * (Formalism.A.mfact m : R)) = ∑ m ∈ f.support ∪ g.support, star (f.coeff m * star (g.coeff m) * (Formalism.A.mfact m : R))` using `Finset.sum_subset Finset.subset_union_left (fun m _ hm => by simp [hf m hm])`. Establish `e2 : ∑ m ∈ g.support, g.coeff m * star (f.coeff m) * (Formalism.A.mfact m : R) = ∑ m ∈ f.support ∪ g.support, g.coeff m * star (f.coeff m) * (Formalism.A.mfact m : R)` using `Finset.sum_subset Finset.subset_union_right (fun m _ hm => by simp [hg m hm])`. Rewrite using `[e1, e2]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `[star_mul, mul_comm, mul_left_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fischerInnerConjSymm_holds : FockHerm := by
   intro R τ _ _ f g

@@ -8,11 +8,11 @@ open scoped Pointwise Topology
 namespace GlobalTheory.AutomorphicL2Local
 
 /- English proof (translation)
-Establish `hi : ∀ x, Integrable (fun y => f (x⁻¹ * y) * φ y) μ` using `fun x => hφ.integrable_smul_left_of_hasCompactSupport (g := fun y => f (x⁻¹ * y)) (by fun_prop) (hc.comp_homeomorph (Homeomorph.mulLeft x⁻¹))`. Use `⟨hi, continuous_iff_continuousAt.2 fun x₀ => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hx⟩` from `exists_compact_mem_nhds x₀`. Take `⟨M, hM⟩` from `hf.bounded_above_of_compact_support hc`. Establish `hK : IsCompact (U * tsupport f)` using `hU.mul hc.isCompact`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `continuousAt_of_dominated (bound := (U * tsupport f).indicator fun y => M * ‖φ y‖) (.of_forall fun x => (hi x).1) ?_ ?_ (.of_forall fun y => ?_)` and prove the remaining obligations. Use `filter_upwards [hx] with x hxU`. Use `.of_forall fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ U * tsupport f`. Rewrite using `[Set.indicator_of_mem hy, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`. Rewrite using `[Set.indicator_of_notMem hy, image_eq_zero_of_notMem_tsupport (f := f) fun h => hy ⟨x, hxU, _, h, by simp⟩]`. Simplify using the standard rewrite rules. Conclude with `(integrable_indicator_iff hK.measurableSet).2 ((hφ.integrableOn_isCompact hK).norm.const_mul M)`. Conclude with `Continuous.continuousAt (by fun_prop)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_integral_inv_mul_of_locallyIntegrable {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [SecondCountableTopology G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G]
@@ -40,7 +40,7 @@ theorem continuous_integral_inv_mul_of_locallyIntegrable {G : Type*} [Group G] [
   · exact Continuous.continuousAt (by fun_prop)
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ f hf hc F`. Establish `hφ : LocallyIntegrable (lift Γ F) μ` using `locallyIntegrable_iff.2 fun C hC => (memLp_restrict_compact G Γ μ F C hC).2`. Take `⟨h1, h2⟩` from `continuous_integral_inv_mul_of_locallyIntegrable hf hc hφ`. Use `⟨fun x => ?_, h2.congr fun x => (convR_eq f _ x).symm⟩` and prove the remaining obligations. Simplify using `using (h1 x).comp_mul_left x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_convR_lift : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [DiscreteTopology Γ] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], ∀ f : G → ℂ, Continuous f → HasCompactSupport f → ∀ F : L2 Γ μ, (∀ x, Integrable (fun y => f y * lift Γ F (x * y)) μ) ∧ Continuous (convR μ f (lift Γ F)) := by
   intro G _ _ _ _ _ _ _ _ Γ _ μ _ _ f hf hc F

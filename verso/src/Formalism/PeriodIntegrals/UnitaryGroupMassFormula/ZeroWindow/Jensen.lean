@@ -7,7 +7,7 @@ open Metric
 namespace PI.ZW
 
 /- English proof (translation)
-Establish `hR : 0 ≤ R` using `dist_nonneg.trans (Metric.mem_closedBall.1 hz)`. Use `hf.analyticOrderAt_ne_top_of_isPreconnected (convex_closedBall c R).isPreconnected (Metric.mem_closedBall_self hR) hz ?_` and prove the remaining obligations. Rewrite using `[analyticOrderAt_eq_zero.2 (Or.inr hfc)]`. Conclude with `ENat.zero_ne_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma order_ne_top_of_ball {f : ℂ → ℂ} {c z : ℂ} {R : ℝ} (hf : AnalyticOnNhd ℂ f (closedBall c R))
     (hfc : f c ≠ 0) (hz : z ∈ closedBall c R) : analyticOrderAt f z ≠ ⊤ := by
@@ -18,7 +18,7 @@ lemma order_ne_top_of_ball {f : ℂ → ℂ} {c z : ℂ} {R : ℝ} (hf : Analyti
   exact ENat.zero_ne_top
 
 /- English proof (translation)
-Establish `hzR : z ∈ closedBall c R` using `closedBall_subset_closedBall hrR hz`. Establish `hm : MeromorphicOn f (closedBall c r)` using `(hf.mono (closedBall_subset_closedBall hrR)).meromorphicOn`. Establish `hne` using `order_ne_top_of_ball hf hfc hzR`. Rewrite using `[MeromorphicOn.divisor_apply hm hz, (hf z hzR).meromorphicOrderAt_eq, ← Nat.cast_analyticOrderNatAt hne]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma divisor_eq_order {f : ℂ → ℂ} {c z : ℂ} {r R : ℝ} (hf : AnalyticOnNhd ℂ f (closedBall c R))
     (hfc : f c ≠ 0) (hrR : r ≤ R) (hz : z ∈ closedBall c r) :
@@ -30,41 +30,37 @@ lemma divisor_eq_order {f : ℂ → ℂ} {c z : ℂ} {r R : ℝ} (hf : AnalyticO
   simp
 
 /- English proof (translation)
-Introduce `f c M hf hfc hM1 hbd S hS`. Establish `hR : |(19 / 10 : ℝ)| = 19 / 10` using `abs_of_pos (by norm_num)`. Establish `hf' : AnalyticOnNhd ℂ f (closedBall c |(19 / 10 : ℝ)|)` using `by rw [hR]; exact hf`. Establish `hDnn : 0 ≤ MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|)` using `MeromorphicOn.AnalyticOnNhd.divisor_nonneg hf'`. Establish `hfin : (MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|)).support.Finite` using `(MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|)).finiteSupport (isCompact_closedBall _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSD : ∀ u ∈ S, MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|) u = (analyticOrderNatAt f u : ℤ) ∧ 1 ≤ analyticOrderNatAt f u ∧ 0 < ‖c - u‖ ∧ ‖c - u‖ ≤ 37 / 20`. Introduce `u hu`. Take `⟨hub, hfu⟩` from `hS hu`. Establish `hub' : u ∈ closedBall c (19 / 10)` using `closedBall_subset_closedBall (by norm_num) hub`. Establish `hdiv` using `divisor_eq_order hf hfc le_rfl hub'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne` using `order_ne_top_of_ball hf hfc hub'`. Use `⟨by rw [hR]; exact hdiv, ?_, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0 push_neg at h0`. Establish `h00 : analyticOrderNatAt f u = 0` using `by omega`. Establish `hord : analyticOrderAt f u = 0` using `by rw [← Nat.cast_analyticOrderNatAt hne, h00]; rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `analyticOrderAt_eq_zero.1 hord with h | h` into its components or cases. Conclude with `h (hf u hub')`. Conclude with `h hfu`. Establish `: u ≠ c` using `by rintro rfl; exact hfc hfu`. Conclude with `norm_pos_iff.2 (sub_ne_zero.2 this.symm)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_sub_rev, ← dist_eq_norm]`. Conclude with `mem_closedBall.1 hub`. Establish `hSsub : S ⊆ (MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|)).support`. Introduce `u hu`. Take `⟨h1, h2, -, -⟩` from `hSD u hu`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.mem_support, h1]`. Conclude with `(by omega : analyticOrderNatAt f u ≠ 0)` after adjusting the coercions. Establish `hSfin : S.Finite` using `hfin.subset hSsub`. Use `⟨hSfin, ?_⟩` and prove the remaining obligations. Establish `hJ` using `AnalyticOnNhd.circleAverage_log_norm (c := c) (R := 19 / 10) (by norm_num) hf' hfc`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hup : Real.circleAverage (fun x => Real.log ‖f x‖) c (19 / 10) ≤ Real.log M`. Apply `Real.circleAverage_mono_on_of_le_circle` to reduce the goal to its premises. Conclude with `MeromorphicOn.circleIntegrable_log_norm (hf'.mono sphere_subset_closedBall).meromorphicOn`. Introduce `x hx`. Rewrite `hx` using `[hR]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : f x = 0`. Rewrite using `[h0, norm_zero, Real.log_zero]`. Conclude with `Real.log_nonneg hM1`. Conclude with `Real.log_le_log (norm_pos_iff.2 h0) (hbd x hx)`. Use `set g : ℂ → ℝ := fun u => (MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|) u : ℝ) * Real.log (19 / 10 * ‖c - u‖⁻¹) with hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hgnn : ∀ u, 0 ≤ g u`. Introduce `u`. Distinguish the cases in `hu : u ∈ (MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|)).support`. Establish `hdu : (0 : ℝ) ≤ (MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|) u : ℝ)`. Conclude with `hDnn u` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hin` using `(MeromorphicOn.divisor f (closedBall c |(19 / 10 : ℝ)|)).supportWithinDomain hu`. Rewrite `hin` using `[hR]`. Establish `hcu : ‖c - u‖ ≤ 19 / 10` using `by rw [norm_sub_rev, ← dist_eq_norm]; exact mem_closedBall.1 hin`. Apply `mul_nonneg hdu` to reduce the goal to its premises. Break down `(norm_nonneg (c - u)).eq_or_lt with h0 | h0` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h0, inv_zero, mul_zero, Real.log_zero]`. Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Function.mem_support, not_not] at hu`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hg, hu]`. Establish `hgsupp : Function.support g ⊆ hfin.toFinset`. Introduce `u hu`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support]`. Introduce `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hu` to reduce the goal to its premises. Simplify using `[hg, h0]`. Establish `hfs : ∑ᶠ u, g u = ∑ u ∈ hfin.toFinset, g u` using `finsum_eq_sum_of_support_subset g hgsupp`. Establish `hsub2 : hSfin.toFinset ⊆ hfin.toFinset`. Introduce `u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Set.Finite.mem_toFinset] at hu ⊢`. Conclude with `hSsub hu`. Establish `hlow : ∑ u ∈ hSfin.toFinset, g u ≤ ∑ u ∈ hfin.toFinset, g u` using `Finset.sum_le_sum_of_subset_of_nonneg hsub2 fun u _ _ => hgnn u`. Establish `hLpos : 0 < Real.log ((19 / 10) / (37 / 20))` using `Real.log_pos (by norm_num)`. Establish `hterm : ∀ u ∈ hSfin.toFinset, (analyticOrderNatAt f u : ℝ) * Real.log ((19 / 10) / (37 / 20)) ≤ g u`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Rewrite `hu` using `[Set.Finite.mem_toFinset]`. Take `⟨h1, h2, h3, h4⟩` from `hSD u hu`. Simplify using `only [hg, h1]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `Real.log_le_log (by norm_num)` to reduce the goal to its premises. Rewrite using `[← div_eq_mul_inv]`. Conclude with `div_le_div_of_nonneg_left (by norm_num) h3 h4`. Establish `hfc0 : 0 < ‖f c‖` using `norm_pos_iff.2 hfc`.
-
-Establish `hM0 : 0 < M` using `by linarith`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hSfin, le_div_iff₀ hLpos, Finset.sum_mul, Real.log_div hM0.ne' hfc0.ne']`. Establish `hsum` using `Finset.sum_le_sum hterm`. Establish `hJ' : ∑ᶠ u, g u = Real.circleAverage (fun x => Real.log ‖f x‖) c (19 / 10) - Real.log ‖f c‖`. Rewrite using `[hJ]`.
-
-Simplify using `only [hg]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem jensenCount : JensenCount := by
   intro f c M hf hfc hM1 hbd S hS

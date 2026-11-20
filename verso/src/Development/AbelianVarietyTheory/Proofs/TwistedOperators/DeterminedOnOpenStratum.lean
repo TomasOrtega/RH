@@ -16,11 +16,11 @@ variable {F G H V W U : Type} [Field F] [Group G] [Group H] [AddCommGroup V] [Mo
   [AddCommGroup W] [Module F W] [AddCommGroup U] [Module F U]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `f.toLinearMap.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hf)`. Establish `hs' : ∀ w, f (s w) = w` using `fun w => congr($hs w)`. Establish `key : ∀ v, q (s (f v)) = q v` using `fun v => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `hq` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_sub, hs', sub_self]`. Use `⟨⟨q.toLinearMap ∘ₗ s, fun g => ?_⟩, key⟩` and prove the remaining obligations. Use extensionality with `w`. Take `⟨v, rfl⟩` from `hf w`. Use `show q (s (σ g (f v))) = τ g (q (s (f v)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← f.isIntertwining, key, key, q.isIntertwining]`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor {ρ : Representation F G V} {σ : Representation F G W} {τ : Representation F G U}
     (f : ρ.IntertwiningMap σ) (hf : Function.Surjective f) (q : ρ.IntertwiningMap τ)
@@ -48,9 +48,9 @@ def contraction (ρ : Representation F G V) (σ : Representation F H W) (l : W �
     simp
 
 /- English proof (translation)
-Set `p : S.toRepresentation.IntertwiningMap (subQuot S T)` to `⟨Submodule.mkQ _, fun g => LinearMap.ext fun v => rfl⟩`. Set `qS : S.toRepresentation.IntertwiningMap τ` to `⟨q.toLinearMap ∘ₗ S.toSubmodule.subtype, fun g => LinearMap.ext fun v => q.isIntertwining _ _ g v⟩`. Take `⟨q', hq'⟩` from `exists_factor (e.toIntertwiningMap.comp p) (e.toLinearEquiv.surjective.comp (Submodule.mkQ_surjective _)) qS (fun v hv => by`. Establish `h1 : e.toLinearEquiv (Submodule.Quotient.mk v) = 0` using `hv`. Rewrite `h1` using `[LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hq _ h1)`. Introduce `v hv`. Conclude with `(hq' ⟨v, hv⟩).symm.trans (h q' _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem step {ρ : Representation F G V} {σ : Representation F G W} {τ : Representation F G U}
     (S T : Subrepresentation ρ) (e : (subQuot S T).Equiv σ)

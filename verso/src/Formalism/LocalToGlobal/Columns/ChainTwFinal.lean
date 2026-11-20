@@ -15,7 +15,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
 
 /- English proof (translation)
-Introduce `i hi P hP hd hal h hba _ hbb _ hint hne`. Conclude with `clXQ_chrOk_holds hc hP hd (by omega) (by rw [twCst_D_Q hP]; omega) hba hbb hint hne`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem characterNonvanishing_holds {G : ChGlob X R.m} {m2 : ℕ} (hm : R.m = m2 + 2) (hc : (twCst Ch sel mu G).Ok) :
     TwChrNFQ Ch sel mu (twCst Ch sel mu G) m2 := by
@@ -23,9 +23,9 @@ theorem characterNonvanishing_holds {G : ChGlob X R.m} {m2 : ℕ} (hm : R.m = m2
   exact clXQ_chrOk_holds hc hP hd (by omega) (by rw [twCst_D_Q hP]; omega) hba hbb hint hne
 
 /- English proof (translation)
-Establish `hK` using `twCstQ_of hd hz hs hxi`. Establish `hc` using `twCst_ok hPr hCh h4 hK`. Establish `hsq : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → (twCst Ch sel mu G).sq P ≠ 0` using `fun P hP => by`. Rewrite using `[twCst_sq_Q hP]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hK.sq_sq P hP`. Rewrite `h1` using `[h0, zero_pow two_ne_zero]`. Conclude with `(show (qOf P.1 : X.K) ≠ 0 by exact_mod_cast (hd P hP).1.ne_zero) h1.symm`. Conclude with `twistedIndex_firstUnfolding_ok hX hPr hCh h4 G hT hW hval hm hQG hd hz hs hxi (doubleCoset_of_leftR1 hm hsq HL) (characterNonvanishing_holds hm hc)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twIdx_ok_left (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)

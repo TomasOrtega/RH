@@ -5,15 +5,15 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Matrixlemmas
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, ξ c ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Conclude with `hξ (funext fun i => by_contra fun hi => hcon ⟨i, hi⟩)`. Set `σ : Equiv.Perm (Fin (n + 1))` to `Equiv.swap c (Fin.last n)`. Set `U : Matrix (Fin (n + 1)) (Fin (n + 1)) k` to `(1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateRow c ξ`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU : U.det = ξ c`. Establish `hT : Uᵀ = (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateCol c ξ`. Simplify using `only [U]`. Rewrite using `[← Matrix.updateCol_transpose, Matrix.transpose_one]`. Rewrite using `[← Matrix.det_transpose, hT, ← Matrix.cramer_apply, Matrix.cramer_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `h : Matrix (Fin (n + 1)) (Fin (n + 1)) k` to `U.submatrix σ id`. Establish `hdet : IsUnit h.det`. Establish `: h.det = Equiv.Perm.sign σ * U.det` using `Matrix.det_permute σ U`. Rewrite using `[this, hU]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.mul ?_ (isUnit_iff_ne_zero.mpr hc)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]`. Establish `hrow : Matrix.vecMul (Pi.single (Fin.last n) 1) h = ξ`. Rewrite using `[Matrix.single_one_vecMul]`. Use function extensionality and compare the values at `j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[h, U, σ]`. Use `⟨(Matrix.nonsingInvUnit h hdet)⁻¹, ?_⟩` and prove the remaining obligations. Establish `hinv : h * (((Matrix.nonsingInvUnit h hdet)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = 1` using `(Matrix.nonsingInvUnit h hdet).mul_inv`. Use `conv_lhs => rw [← hrow]`. Rewrite using `[Matrix.vecMul_vecMul, hinv, Matrix.vecMul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_GL_vecMul_eq_single_last {k : Type} [Field k] (n : ℕ) (ξ : Fin (n + 1) → k) (hξ : ξ ≠ 0) :
     ∃ g : GL (Fin (n + 1)) k,

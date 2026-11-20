@@ -14,19 +14,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RatSubst
 
 /- English proof (translation)
-Set `m : G ≃ᵐ G` to `{ toEquiv := e.toEquiv measurable_toFun := he.measurable measurable_invFun := hes.measurable }`. Establish `hmp : MeasurePreserving m (μ.map e.symm) μ` using `(MeasurePreserving.symm m.symm ⟨m.symm.measurable, rfl⟩)`. Establish `hmp' : MeasurePreserving e (μ.map e.symm) μ` using `hmp`. Establish `hν : (μ.map e.symm).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map μ e.symm hes (by simpa using he)`. Establish `hF' : IsAddFundamentalDomain Γ (e ⁻¹' F) (μ.map e.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : Γ → Γ` to `fun y => ⟨e.symm y, (hΓ _).1 (by simp)⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val hab))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Conclude with `⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩`. Use `hF.preimage_of_equiv hmp'.quasiMeasurePreserving hf ?_` and prove the remaining obligations. Introduce `y x`. Simplify using `[f, AddSubgroup.vadd_def]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c : NNReal, μ.map e.symm = c • μ` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ μ⟩`. Establish `hac : μ.map e.symm ≪ μ` using `hc ▸ Measure.smul_absolutelyContinuous`. Establish `hF'' : IsAddFundamentalDomain Γ F (μ.map e.symm)` using `hF.mono hac`. Establish `h1 : (μ.map e.symm) (e ⁻¹' F) = μ F` using `hmp.measure_preimage_equiv F`. Establish `h2 : (μ.map e.symm) F = μ F` using `(hF''.measure_eq hF').trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : μ F ≠ 0` using `hF.measure_ne_zero (NeZero.ne μ)`. Establish `hc1 : (c : ENNReal) = 1`. Rewrite `h2` using `[hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `(ENNReal.mul_left_inj h0 hfin).1 (by rw [h2, one_mul])`. Establish `hc2 : c = 1` using `by exact_mod_cast hc1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[hc2, one_smul]`. Establish `h3 : ∫⁻ w in e ⁻¹' F, φ (e w) ∂(μ.map e.symm) = ∫⁻ w in F, φ w ∂μ` using `hmp.setLIntegral_comp_preimage_emb m.measurableEmbedding φ F`. Rewrite `h3`, `hF'` using `[hc]`. Rewrite using `[← h3]`. Use `hF.setLIntegral_eq hF' (fun w => φ (e w)) fun g x => ?_` and prove the remaining obligations.
-
-Use `show φ (e ((g : G) + x)) = φ (e x)`. Rewrite using `[map_add, hφ _ ((hΓ _).2 g.2)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_comp_addEquiv {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -75,7 +73,7 @@ theorem setLIntegral_comp_addEquiv {G : Type} [AddCommGroup G] [TopologicalSpace
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_add (g : GA D S) (h : GA D T) (x y : WO S T) :
     actO S T g h (x + y) = actO S T g h x + actO S T g h y := by
@@ -93,7 +91,7 @@ Both sides reduce to the same expression.
 theorem mt_one (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := rfl
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← mt_mul, inv_mul_cancel, mt_one, Matrix.one_mul, Matrix.mul_assoc, ← mt_mul, mul_inv_cancel, mt_one, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_inv_actO (g : GA D S) (h : GA D T) (x : WO S T) : actO S T g⁻¹ h⁻¹ (actO S T g h x) = x := by
   unfold actO
@@ -101,7 +99,7 @@ theorem actO_inv_actO (g : GA D S) (h : GA D T) (x : WO S T) : actO S T g⁻¹ h
     ← mt_mul, mul_inv_cancel, mt_one, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[GlobalTheory.SymplOInv.symplO_actO]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_actO (g : GA D S) (h : GA D T) (x y : WO S T) :
     symplOH S T (actO S T g h x) (actO S T g h y) = symplOH S T x y := by
@@ -109,7 +107,7 @@ theorem symplOH_actO (g : GA D S) (h : GA D T) (x y : WO S T) :
   rw [GlobalTheory.SymplOInv.symplO_actO]
 
 /- English proof (translation)
-Take `⟨γ', -, e⟩` from `h`. Conclude with `⟨γ'.1, (congrArg Units.val e).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mt_eq (V : HSp D) {γ : GA D V} (h : γ ∈ GQ V) :
     ∃ m : Matrix (Fin V.rank) (Fin V.rank) D.host.E, Formalism.L2.Theta.mt V γ = m.map (incA D) := by
@@ -117,7 +115,7 @@ theorem exists_mt_eq (V : HSp D) {γ : GA D V} (h : γ ∈ GQ V) :
   exact ⟨γ'.1, (congrArg Units.val e).symm⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_mt_eq S ((GQ S).inv_mem hγ)`. Take `⟨m', hm'⟩` from `exists_mt_eq T hγ'`. Use `⟨m' * x * m, ?_⟩` and prove the remaining obligations. Unfold `actO ratW`. Rewrite using `[hm, hm', Matrix.map_mul, Matrix.map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_actO_ratW {γ : GA D S} (hγ : γ ∈ GQ S) {γ' : GA D T} (hγ' : γ' ∈ GQ T)
     (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : ∃ y, actO S T γ γ' (ratW T S x) = ratW T S y := by
@@ -128,7 +126,7 @@ theorem exists_actO_ratW {γ : GA D S} (hγ : γ ∈ GQ S) {γ' : GA D T} (hγ' 
   rw [hm, hm', Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Take `⟨z, hz⟩` from `exists_actO_ratW hγ hγ' y`. Conclude with `⟨z, hz.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem actO_mem_ratL {γ : GA D S} (hγ : γ ∈ GQ S) {γ' : GA D T} (hγ' : γ' ∈ GQ T) {x : WO S T}
     (hx : x ∈ ratL T S) : actO S T γ γ' x ∈ ratL T S := by
@@ -137,13 +135,13 @@ theorem actO_mem_ratL {γ : GA D S} (hγ : γ ∈ GQ S) {γ' : GA D T} (hγ' : �
   exact ⟨z, hz.symm⟩
 
 /- English proof (translation)
-Set `A : WO S T →+ WO S T` to `AddMonoidHom.mk' (actO S T γ γ') (actO_add γ γ')`. Establish `hA : Continuous (actO S T γ γ')` using `GlobalTheory.LatLevel.continuous_actO S T γ γ'`. Use `⟨fun x w => ?_, ?_, hf.cont.comp hA, fun k L h1 h2 w => ?_⟩` and prove the remaining obligations. Take `⟨y, e⟩` from `exists_actO_ratW hγ hγ' x`. Rewrite using `[actO_add, ← symplOH_actO γ γ', e, hf.quasi]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨U, hU, h⟩` from `hf.level`. Use `⟨U.comap A, hU.preimage hA, fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `e` using `congrFun (h _ hu (GlobalTheory.LatLevel.actO_map_inf S T γ γ' h0)) (actO S T γ γ' w)`. Unfold `heisO at e ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← e, ← symplOH_actO γ γ' w u]`. Conclude with `congrArg (fun x => _ * f x) (actO_add γ γ' w u)`. Establish `h3 : ∀ t, (actO S T γ γ' (L t)).map (finPart D) = 0` using `fun t => by`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h2, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hf.smooth k (A.comp L) (hA.comp h1) h3 (actO S T γ γ' w)` as an intermediate fact. Simplify using `only [actO_add]`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_comp {ψ : AddChar (AF D.host.F) ℂ} {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     {γ : GA D S} (hγ : γ ∈ GQ S) {γ' : GA D T} (hγ' : γ' ∈ GQ T) :
@@ -168,15 +166,15 @@ theorem isThetaFunO_comp {ψ : AddChar (AF D.host.F) ℂ} {f : WO S T → ℂ} (
     exact this
 
 /- English proof (translation)
-Introduce `D ψ hψ S T γ hγ γ' hγ' f hf`. Establish `hi` using `(GQ S).inv_mem hγ`. Establish `hi'` using `(GQ T).inv_mem hγ'`. Use `⟨isThetaFunO_comp hf hi hi', fun w₀ => ?_, fun μ 𝓕 hμ h𝓕 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `heisO`. Use `beta_reduce`. Rewrite using `[actO_add, actO_inv_actO, ← symplOH_actO γ⁻¹ γ'⁻¹ w, actO_inv_actO]`. Take `⟨h1, h2, h3, h4, h5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Countable (ratL T S)` using `countable_of_discrete_addSubgroup _`. Establish `hinv : ∀ x, actO S T γ γ' (actO S T γ⁻¹ γ'⁻¹ x) = x` using `fun x => by`. Use `actO_inv_actO γ⁻¹ γ'⁻¹ x` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_inv]`. Then use the resulting hypothesis. Set `e : WO S T ≃+ WO S T` to `{ toFun := actO S T γ⁻¹ γ'⁻¹ invFun := actO S T γ γ' left_inv := hinv right_inv := actO_inv_actO γ γ' map_add' := actO_add _ _ }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `setLIntegral_comp_addEquiv (G := WO S T) (ratL T S) e (GlobalTheory.LatLevel.continuous_actO S T _ _) (GlobalTheory.LatLevel.continuous_actO S T _ _) (fun x => ⟨fun hx => ?_, actO_mem_ratL hi hi'⟩) μ h𝓕 (measure_addFundamentalDomain_lt_top_of_cocompact (G := WO S T) (ratL T S) hK …` and prove the remaining obligations. Rewrite using `[← hinv x]`. Conclude with `actO_mem_ratL hγ hγ' hx`. Introduce and unpack `_ ⟨y, rfl⟩ x`. Establish `h6 : f (ratW T S y + x) = _` using `hf.quasi y x`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h7 : ‖f (ratW T S y + x)‖ = ‖f x‖`. Rewrite using `[h6, norm_mul, hψ.1.2.1, one_mul]`. Use `show ‖f (ratW T S y + x)‖ₑ ^ 2 = ‖f x‖ₑ ^ 2`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, h7]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rational_substitution : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D), ∀ γ ∈ GQ S, ∀ γ' ∈ GQ T, ∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (fun w => f (actO S T γ⁻¹ γ'⁻¹ w)) ∧ (∀ w₀, (fun w => heisO ψ S T w₀ f (actO S T γ⁻¹ γ'⁻¹ w)) = heisO ψ S T (actO S T γ γ' w₀) (fun w => f (actO S T γ⁻¹ γ'⁻¹ w))) ∧ ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∫⁻ w in 𝓕, ‖f (actO S T γ⁻¹ γ'⁻¹ w)‖ₑ ^ 2 ∂μ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ := by
   intro D ψ hψ S T γ hγ γ' hγ' f hf

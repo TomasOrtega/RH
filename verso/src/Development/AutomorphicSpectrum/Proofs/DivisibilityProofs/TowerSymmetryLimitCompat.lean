@@ -8,9 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 namespace GlobalTheory.CompanionTheory.Ar.Top.PermInv
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => exact ⟨Fin.elim0, by simp⟩`. Consider the case `cons a s ih`. Take `⟨w, hw⟩` from `ih`. Rewrite using `[Multiset.card_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Fin.cons a w, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[hw, Multiset.singleton_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_word_multiset {α : Type} (s : Multiset α) :
     ∃ w : Fin (Multiset.card s) → α, ∑ k, ({w k} : Multiset α) = s := by
@@ -24,16 +24,16 @@ theorem exists_word_multiset {α : Type} (s : Multiset α) :
     simp [hw, Multiset.singleton_add]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.card_toMultiset]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem degree_eq_card {α : Type} (μ : α →₀ ℕ) : μ.degree = Multiset.card (Finsupp.toMultiset μ) := by
   rw [Finsupp.card_toMultiset]
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hc : Multiset.card (Finsupp.toMultiset μ) = μ.degree` using `(degree_eq_card μ).symm`. Take `⟨w, hw⟩` from `exists_word_multiset (Finsupp.toMultiset μ)`. Use `⟨fun k => w (Fin.cast hc.symm k), ?_⟩` and prove the remaining obligations. Establish `H : Finsupp.toMultiset (∑ k, Finsupp.single (w (Fin.cast hc.symm k)) 1) = Finsupp.toMultiset μ`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Conclude with `(Fintype.sum_equiv (finCongr hc.symm) _ _ (fun k => rfl)).trans hw`. Simplify `congrArg Multiset.toFinsupp H` using `[Finsupp.toMultiset_toFinsupp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_word {α : Type} (μ : α →₀ ℕ) (d : ℕ) (h : μ.degree = d) :
     ∃ w : Fin d → α, ∑ k, Finsupp.single (w k) 1 = μ := by
@@ -49,7 +49,7 @@ theorem exists_word {α : Type} (μ : α →₀ ℕ) (d : ℕ) (h : μ.degree = 
   simpa [Finsupp.toMultiset_toFinsupp] using congrArg Multiset.toFinsupp H
 
 /- English proof (translation)
-Rewrite using `[degree_eq_card, degree_eq_card, ← Finsupp.toMultiset_map, Multiset.card_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degree_mapDomain {α β : Type} (f : α → β) (μ : α →₀ ℕ) :
     (Finsupp.mapDomain f μ).degree = μ.degree := by
@@ -58,9 +58,9 @@ theorem degree_mapDomain {α β : Type} (f : α → β) (μ : α →₀ ℕ) :
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `e : Finsupp.mapDomain some (∑ k, Finsupp.single (w k) 1) = ∑ k, Finsupp.single (some (w k)) (1 : ℕ)`. Simplify using `[Finsupp.mapDomain_finsetSum]`. Take `⟨hdeg, -, -, hv⟩` from `GlobalTheory.T.monomial_lines_permutation II hII M.K M.ι M.P (dimFl Ψ N + 1) _ (M.line t) (fun k => some (w k)) M.arith (by rintro (_ | r); exacts [M.A_smooth, M.x_smooth t r])`. Establish `hnone : (∑ k, Finsupp.single (some (w k)) (1 : ℕ) : Option (Ψ × Fin N) →₀ ℕ) none = 0`. Simplify using `[Finsupp.finsetSum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, RootModel.arMono, if_pos hdeg, hnone, pow_zero, mul_one, hv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem arMono_word (M : RootModel Ψ N) (II : IntersectionSystem) (hII : IsIntersectionSystem II) (t : ℝ)
     (w : Fin (dimFl Ψ N + 1) → Ψ × Fin N) :
@@ -81,15 +81,13 @@ end GlobalTheory.CompanionTheory.Ar.Top.PermInv
 namespace GlobalTheory.CompanionTheory.Ar.Top.PermInv
 
 /- English proof (translation)
-Distinguish the cases in `hd : μ.degree = dimFl Ψ N + 1`. Take `⟨w, rfl⟩` from `exists_word μ _ hd`. Establish `e : Finsupp.mapDomain (fun x : Ψ × Fin N => (σ x.1, x.2)) (∑ k, Finsupp.single (w k) 1) = ∑ k, Finsupp.single (σ (w k).1, (w k).2) (1 : ℕ)`. Simplify using `[Finsupp.mapDomain_finsetSum]`. Establish `hf : (fun t => M.arMono II t (Finsupp.mapDomain some (Finsupp.mapDomain (fun x : Ψ × Fin N => (σ x.1, x.2)) (∑ k, Finsupp.single (w k) 1)))) = fun t => II _ _ M.P _ (fun j => M.x t (σ (w j).1, (w j).2)) / (M.δ : ℝ)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[e]`. Conclude with `arMono_word M II hII t (fun k => (σ (w k).1, (w k).2))`. Establish `hg : (fun t => M'.arMono II t (Finsupp.mapDomain some (∑ k, Finsupp.single (w k) 1))) = fun t => II _ _ M'.P _ (fun j => M'.x t (w j)) / (M'.δ : ℝ)`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `arMono_word M' II hII t w`. Take `⟨L1, h1⟩` from `hM (Finsupp.mapDomain some (Finsupp.mapDomain (fun x : Ψ × Fin N => (σ x.1, x.2)) (∑ k, Finsupp.single (w k) 1)))`. Take `⟨L2, h2⟩` from `hM' (Finsupp.mapDomain some (∑ k, Finsupp.single (w k) 1))`. Rewrite using `[h1.limUnder_eq, h2.limUnder_eq]`. Rewrite `h1` using `[hf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hg]`. Conclude with `sub_eq_zero.1 (tendsto_nhds_unique (h1.sub h2) (hlim w))`. Establish `h0 : ∀ (K : RootModel Ψ N) (m : Ψ × Fin N →₀ ℕ), m.degree = μ.degree → (fun t => K.arMono II t (Finsupp.mapDomain some m)) = fun _ => 0`. Introduce `K m hm`. Use function extensionality and compare the values at `t`.
-
-Rewrite using `[RootModel.arMono, if_neg (by rw [degree_mapDomain, hm]; exact hd)]`. Rewrite using `[h0 M _ (degree_mapDomain _ μ), h0 M' μ rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem limUnder_arMono_perm {Ψ : Type} [Fintype Ψ] {N : ℕ} (M M' : RootModel Ψ N) (II : IntersectionSystem)
     (hII : IsIntersectionSystem II) (hM : M.Converges II) (hM' : M'.Converges II) (σ : Equiv.Perm Ψ)
@@ -129,15 +127,15 @@ theorem limUnder_arMono_perm {Ψ : Type} [Fintype Ψ] {N : ℕ} (M M' : RootMode
     rw [h0 M _ (degree_mapDomain _ μ), h0 M' μ rfl]
 
 /- English proof (translation)
-Introduce `Ψ _ _ N T II Γ hC htr hlim hII`. Use `⟨Γ, htr, fun σ hσ B hB F => ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `hlim σ hσ B hB`. Establish `hb : ∀ (m : Option (Ψ × Fin N) →₀ ℕ) (a : ℝ), (monomial m a : RPA Ψ N) = a • (basisMonomials (Option (Ψ × Fin N)) ℝ) m`. Introduce `m a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[coe_basisMonomials, smul_monomial]`. Establish `hmono : ∀ (c : T.Comp) (μ : Ψ × Fin N →₀ ℕ) (a : ℝ), T.PPc II B c (rename (fun x : Ψ × Fin N => (σ x.1, x.2)) (monomial μ a)) = T.PPc II B (π c) (monomial μ a)`. Introduce `c μ a`. Simplify using `only [RootTower.PPc, toA, rename_monomial]`. Rewrite using `[hb, hb, map_smul, map_smul, RootModel.PP, RootModel.PP, Module.Basis.constr_basis, Module.Basis.constr_basis, limUnder_arMono_perm (T.M B c) (T.M B (π c)) II hII (hC B c) (hC B (π c)) σ (hπ c) μ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∀ (c : T.Comp) (f : RP Ψ N →ₐ[ℝ] RP Ψ N), T.PPc II B c (f F) = ∑ μ ∈ F.support, T.PPc II B c (f (monomial μ (F.coeff μ)))`. Introduce `c f`. Use `conv_lhs => rw [F.as_sum]`. Simplify using `only [RootTower.PPc, toA, map_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Unfold `RootTower.PPt`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hsum c (rename (fun x : Ψ × Fin N => (σ x.1, x.2)))]`. Conclude with `Finset.sum_congr rfl fun μ _ => hmono c μ _`. Use `_ = ∑ c, ∑ μ ∈ F.support, T.PPc II B c (monomial μ (F.coeff μ)) := Equiv.sum_comp π (fun c => ∑ μ ∈ F.support, T.PPc II B c (monomial μ (F.coeff μ)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = T.PPt II B F := by`. Unfold `RootTower.PPt`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `hsum c (AlgHom.id ℝ (RP Ψ N))` as an intermediate fact. Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem propA_of_limits : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : GlobalTheory.CompanionTheory.Ar.Top.RootTower Ψ N)
     (II : IntersectionSystem) (Γ : Subgroup (Equiv.Perm Ψ)), T.Conv II → (∀ τ τ' : Ψ, ∃ s ∈ Γ, s τ = τ') →

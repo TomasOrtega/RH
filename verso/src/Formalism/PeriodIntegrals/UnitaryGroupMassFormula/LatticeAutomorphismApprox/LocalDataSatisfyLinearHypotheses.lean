@@ -9,7 +9,7 @@ open scoped TensorProduct
 open Formalism.MainNotions.S PI.ScRefExists
 
 /- English proof (translation)
-Establish `h1 : Valued.v (((c : v.adicCompletion I.F))⁻¹) = 1` using `by rw [map_inv₀, hc, inv_one]`. Use `show ((c : v.adicCompletion I.F))⁻¹ ∈ v.adicCompletionIntegers I.F`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).2 h1.le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_val (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : ℕ)
     (hc : Valued.v ((c : v.adicCompletion I.F)) = 1) : ((c : KV I v))⁻¹ ∈ OV I v := by
@@ -18,9 +18,9 @@ theorem inv_mem_of_val (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : ℕ
   exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).2 h1.le
 
 /- English proof (translation)
-Take `⟨c, hc, hcx⟩` from `hx`. Take `⟨w, hw, hweq⟩` from `vecV_mL I v 1 _ hcx`. Establish `hval` using `Gl.val_nat I.F v c (Gl.not_mem_of_coprime v hc hv)`. Apply `PI.UnitaryGroupMassFormula.AdIndexEq.cancel_nat v hval` to reduce the goal to its premises. Establish `h1 : c • PI.FinKW.vecV I v x = w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul (RV I v), ← psiV_natCast I v c, ← vecV_smul', hweq, Nat.cast_one, one_smul]`. Rewrite using `[h1]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_of_inAt (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) {g : ℕ} (hv : (g : 𝓞 I.F) ∈ v.asIdeal)
     (x : VA I) (hx : InAt I g 1 x) :
@@ -35,17 +35,17 @@ theorem lat_of_inAt (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) {g : ℕ} (
   exact hw
 
 /- English proof (translation)
-Establish `hc0 : (c : KV I v) ≠ 0`. Introduce `h0`. Establish `h0' : ((c : v.adicCompletion I.F)) = 0` using `h0`. Rewrite `hc` using `[h0', map_zero]`. Conclude with `zero_ne_one hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ((c : KV I v))⁻¹ * (c : KV I v) = 1` using `inv_mul_cancel₀ hc0`. Establish `hci` using `inv_mem_of_val I v c hc`. Establish `hsig : ∀ m : ℕ, sigV I v (m : RV I v) = m` using `fun m => map_natCast _ m`. Establish `key : (c : RV I v) * hl I v X Z = (g : RV I v) * ((c : RV I v) * q - hl I v w Z)`. Establish `h1 : hl I v X Z = hl I v X0 Z - hl I v (X0 - X) Z` using `by rw [hl_sub_left]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : hl I v ((c : RV I v) • (X0 - X)) Z = hl I v ((g : RV I v) • w) Z` using `by rw [hD]`. Rewrite `h2` using `[hl_smul_left, hl_smul_left, hsig, hsig]`. Rewrite using `[h1, mul_sub, h2, hq]`. Expand and normalize the polynomial expressions, which then agree. Establish `key2 : (c : RV I v) * hl I v Z X = (g : RV I v) * ((c : RV I v) * sigV I v q - hl I v Z w)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : sigV I v ((c : RV I v) * hl I v X Z) = sigV I v ((g : RV I v) * ((c : RV I v) * q - hl I v w Z))` using `by rw [key]`. Simplify using `only [map_mul, map_sub, hsig] at h3`. Rewrite using `[hl_swap I v X Z, hl_swap I v w Z]`. Conclude with `h3`. Establish `hwZ` using `hl_int I v ε p1 hp w Z hw hZ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hZw` using `hl_int I v ε p1 hp Z w hZ hw`. Prove the components needed by the constructor for the conclusion. Use `⟨((c : KV I v))⁻¹ * ((c : KV I v) * p1 q - p1 (hl I v w Z)), mul_mem hci (sub_mem (mul_mem (natCast_mem _ c) hq1) hwZ), ?_⟩` and prove the remaining obligations. Establish `k1` using `congrArg p1 key`. Simplify using `only [map_mul, map_sub, map_natCast] at k1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `((c : KV I v))⁻¹ * k1 - p1 (hl I v X Z) * hinv`. Use `⟨((c : KV I v))⁻¹ * ((c : KV I v) * p1 (sigV I v q) - p1 (hl I v Z w)), mul_mem hci (sub_mem (mul_mem (natCast_mem _ c) hq2) hZw), ?_⟩` and prove the remaining obligations. Establish `k1` using `congrArg p1 key2`. Simplify using `only [map_mul, map_sub, map_natCast] at k1`. Take the linear combination `((c : KV I v))⁻¹ * k1 - p1 (hl I v Z X) * hinv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cong_pair (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v) (p1 : RV I v →+* KV I v)
     (hp : IsAdaptedFirstProjection I v ε p1) {g c : ℕ} (hc : Valued.v ((c : v.adicCompletion I.F)) = 1)
@@ -91,33 +91,31 @@ theorem cong_pair (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (ε : RV I v)
     linear_combination ((c : KV I v))⁻¹ * k1 - p1 (hl I v Z X) * hinv
 
 /- English proof (translation)
-Introduce `I g r k e f z Rf hH v hv _hsum p1 hp t ht1 htz`. Take `⟨hg, _hs, _hn, hee, hff, hef, hz, _ht, hi, hiz⟩` from `hH`. Establish `hLat : ∀ x, InAt I g 1 x → PI.FinKW.vecV I v x ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))` using `fun x hx => lat_of_inAt I v hv x hx`. Establish `hz0 : PI.FinKW.vecV I v Rf.z0 ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))` using `PI.FinKW.LocTo.mem_local_lattice_iff I _ Rf.vectorsInLattice.2.1 v`. Establish `m1 : ∀ X ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)), vec1 p1 X ∈ Lam1 I v p1` using `fun X hX => Submodule.subset_span ⟨X, hX, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2 : ∀ X ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)), vec2 p1 X ∈ Lam2 I v p1` using `fun X hX => Submodule.subset_span ⟨X, hX, rfl⟩`. Establish `hcong : ∀ (a : Fin I.n → I.E) (a0 : VA I), InAt I g g (a0 - incl I a) → ZMod' I g (hA I a0 Rf.z0) → (∃ s ∈ OV I v, p1 (hl I v (PI.FinKW.vecV I v (incl I a)) (PI.FinKW.vecV I v Rf.z0)) = (g : KV I v) * s) ∧ (∃ s ∈ OV I v, p1 (hl I v (PI.FinKW.vecV I v Rf.z0) (PI.FinKW.vecV I v (in …`. Introduce `a a0 hD hZ`. Take `⟨c, hc, hcD⟩` from `hD`. Take `⟨w, hw, hweq⟩` from `vecV_mL I v g _ hcD`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hqI, hq⟩` from `hZ`. Establish `hval` using `Gl.val_nat I.F v c (Gl.not_mem_of_coprime v hc hv)`. Establish `hD' : (c : RV I v) • (PI.FinKW.vecV I v a0 - PI.FinKW.vecV I v (incl I a)) = (g : RV I v) • w`. Rewrite using `[← hweq, vecV_smul', psiV_natCast, Gl.vecV_sub]`. Establish `hq' : hl I v (PI.FinKW.vecV I v a0) (PI.FinKW.vecV I v Rf.z0) = (g : RV I v) * PI.FinKW.psiV I v q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← psiV_hA, hq, map_mul, psiV_natCast]`. Establish `hqq` using `adaptedProjection_psiV_mem_integers_of_mem_intAf I v _ p1 hp q hqI`. Conclude with `cong_pair I v _ p1 hp hval _ _ _ w hz0 hw hD' _ hq' hqq.1 hqq.2`. Establish `hite : ∀ (P : Prop) [Decidable P], p1 (inclV I v (if P then 1 else 0)) = if P then 1 else 0`. Introduce `P _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hgK : (g : KV I v) ≠ 0`. Rewrite using `[← map_natCast (algebraMap I.F (KV I v)) g]`. Conclude with `(map_ne_zero _).2 (by exact_mod_cast (show g ≠ 0 by omega))`. Unfold `LinData LinHyp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce`. Use `⟨natCast_mem _ g, ?_, pr_int I v _ p1 hp, ?_, ?_, m1 _ (hLat _ hiz), m2 _ (hLat _ hiz), m1 _ hz0, m2 _ hz0, ?_, natCast_mem _ t, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Set `ginv : OV I v` to `⟨(g : KV I v)⁻¹, h⟩`. Establish `hunit : IsUnit (g : OV I v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isUnit_iff_exists_inv.2 ⟨ginv, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ((g : OV I v) : KV I v) * (g : KV I v)⁻¹ = 1`. Use `push_cast`. Conclude with `mul_inv_cancel₀ hgK`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (natCast_mem_max I.F v g hv) hunit`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Conclude with `⟨m1 _ (hLat _ (hi i).1), m1 _ (hLat _ (hi i).2), m2 _ (hLat _ (hi i).1), m2 _ (hLat _ (hi i).2)⟩`. Introduce `i j`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pr_rat, hee, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[pr_rat, hff, map_zero, map_zero]`. Rewrite using `[pr_rat, hef, hite]`. Rewrite using `[pr_rat, hformE_swap, hef]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Introduce `i`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pr_rat, (hz i).1, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pr_rat, (hz i).2, map_zero, map_zero]`. Rewrite using `[pr_rat, hformE_swap, (hz i).1, map_zero, map_zero, map_zero]`. Rewrite using `[pr_rat, hformE_swap, (hz i).2, map_zero, map_zero, map_zero]`. Take `⟨q, hq⟩` from `Nat.modEq_iff_dvd.1 ht1`. Use `⟨((-q : ℤ) : KV I v), intCast_mem _ _, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg (Int.cast : ℤ → KV I v) hq`. Move the coercions through the operations in `at h2 ⊢`. Take the linear combination `-h2`. Rewrite using `[pr_rat, htz]`. Simplify using `only [map_neg, map_natCast]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Take `⟨⟨s1, hs1, e1⟩, ⟨s2, hs2, e2⟩⟩` from `hcong (e i) (Rf.e0 i) (Rf.basisApprox i).1 (Rf.formsAtZero.2 i).1`. Take `⟨⟨s3, hs3, e3⟩, ⟨s4, hs4, e4⟩⟩` from `hcong (f i) (Rf.f0 i) (Rf.basisApprox i).2 (Rf.formsAtZero.2 i).2`. Conclude with `⟨⟨s1, hs1, by rw [pr_vec]; exact e1⟩, ⟨s3, hs3, by rw [pr_vec]; exact e3⟩, ⟨s2, hs2, by rw [pr_vec]; exact e2⟩, ⟨s4, hs4, by rw [pr_vec]; exact e4⟩⟩`. Take `⟨q, hqI, hq⟩` from `Rf.formsAtZero.1`.
-
-Use `⟨p1 (PI.FinKW.psiV I v q), (adaptedProjection_psiV_mem_integers_of_mem_intAf I v _ p1 hp q hqI).1, ?_⟩` and prove the remaining obligations. Rewrite using `[pr_vec, ← psiV_hA]`. Establish `h2` using `congrArg (fun y => p1 (PI.FinKW.psiV I v y)) hq`. Simplify using `only [map_add, map_one, map_mul, map_natCast] at h2`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_data_satisfy_linear_hypotheses : BridgeA := by
   intro I g r k e f z Rf hH v hv _hsum p1 hp t ht1 htz

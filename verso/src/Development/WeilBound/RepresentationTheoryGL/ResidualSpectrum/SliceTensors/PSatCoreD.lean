@@ -11,9 +11,9 @@ namespace PositivityTheory.Rg.Rs.SatakeVectors.Core
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hK` using `Final.GLintComm E w N`. Rewrite using `[heckeVec, heckeVec]`. Establish `e1` using `((LinearMap.proj (R := ℂ) (φ := fun _ : GA E N => ℂ) y).comp (Sm E N).subtype).toAddMonoidHom.map_finsum (finite_heckeVec hK hf ((finRep E N).comp (locGL E N w)) F)`. Establish `e2` using `(LinearMap.proj (R := ℂ) (φ := fun _ : GL (Fin N) (w.adicCompletion E) => ℂ) (1 : GL (Fin N) (w.adicCompletion E))).toAddMonoidHom.map_finsum (finite_heckeVec hK hf (rightReg ℂ _ ℂ) (fun g => F.1 (y * finGL E N (locGL E N w g))))`. Use `e1.trans (Eq.trans (finsum_congr fun c => ?_) e2.symm)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f c.out • F.1 (y * finGL E N (locGL E N w c.out)) = f c.out • F.1 (y * finGL E N (locGL E N w (1 * c.out)))`. Rewrite using `[one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_apply {N : ℕ} (w : HeightOneSpectrum (𝓞 E)) {F : Sm E N}
     {f : GL (Fin N) (w.adicCompletion E) → ℂ} (hf : f ∈ Hecke ℂ (KGL w N)) (y : GA E N) :
@@ -39,11 +39,11 @@ Both sides reduce to the same expression.
 @[simp] theorem evAt_apply {m : ℕ} (U : Submodule ℂ (Sm E m)) (x : GA E m) (ψ : U) : evAt U x ψ = ψ.1.1 x := rfl
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, rfl⟩` from `hx`. Conclude with `⟨PiTensorProduct.tprod ℂ φ, fun m => by rw [evT_tprod]; rfl⟩`. Consider the case `zero => exact ⟨0, fun m => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨v, hv⟩` from `hx`. Take `⟨v', hv'⟩` from `hy`. Conclude with `⟨v + v', fun m => by rw [Pi.add_apply, hv, hv', map_add]⟩`. Consider the case `smul a x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨v, hv⟩` from `hx`. Conclude with `⟨a • v, fun m => by rw [Pi.smul_apply, hv, map_smul, smul_eq_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tensor {c : ℕ} {n : Fin c → ℕ} (U : ∀ i, Submodule ℂ (Sm E (n i)))
     {Φ : (∀ i, GA E (n i)) → ℂ} (hΦ : Φ ∈ GlobalTheory.BCWords.tensorSp U) :

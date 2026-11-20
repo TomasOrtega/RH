@@ -13,15 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.LiftGrow
 
 /- English proof (translation)
-Take `⟨d, C, M, hd, h⟩` from `GlobalTheory.T.unitary_reduction_polynomial_height_bound D θ V hθ (GlobalTheory.T.orthogonalFrame_of_anisotropicFiniteLengths _ (GlobalTheory.T.anisotropicFiniteLengths_of_shortLatticeVector _ (GlobalTheory.T.shortLatticeVectorBoundedSize_of_orthogonalFrame _ (GlobalTheory.T.orth …`. Use `⟨M + 1, fun U hU => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `GlobalTheory.T.exists_finite_cosets_adelicUnitary_bounded_denominator D V U hU d hd`. Take `⟨hm, C', hC'⟩` from `GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V`. Take `⟨-, -, -, r4, r5, r6, r7, r8⟩` from `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨S, 1 + |C * C'|, by positivity, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h1, h2⟩` from `h g`. Take `⟨k, hk, a, ha, e⟩` from `r7 (γ * g)`. Establish `e' : (γ * g)⁻¹ = k⁻¹ * a⁻¹` using `by rw [e, ← r6 a ha k hk, _root_.mul_inv_rev]`. Take `⟨x, hx, h3, h4⟩` from `hS k hk fun i j => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `h1 i j` as an intermediate fact. Rewrite `this` using `[e', e, r8 _ _ ha, r8 _ _ (inv_mem ha)]`. Then use the resulting hypothesis. Use `⟨γ, hγ, x, hx, a, ha, _, h3, h4, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, r6 a ha _ h4, e, ← mul_assoc, mul_inv_cancel_left]`. Establish `h5 : normInf θ V a = normInf θ V (γ * g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `normInf`. Rewrite using `[e', e]`. Simplify using `only [r4, r5 k hk, r5 _ (inv_mem hk), one_mul]`. Establish `h6 : normInf θ V a ≤ C * C' * (height θ V g : ℝ) ^ (M + 1)`. Rewrite using `[h5]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hm γ g).trans ((mul_le_mul h2 (hC' g) (GlobalTheory.SmoothForms.normInf_nonneg g) ((GlobalTheory.SmoothForms.normInf_nonneg γ).trans h2)).trans_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h7 : (1 : ℝ) ≤ (height θ V g : ℝ) ^ (M + 1)` using `one_le_pow₀ (by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.one_le_height θ V g)`. Rewrite using `[add_mul, one_mul]`. Conclude with `add_le_add h7 (h6.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (zero_le_one.trans h7)))`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_unif {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp D) :
     ∃ M : ℕ, ∀ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) →
@@ -57,15 +57,15 @@ theorem reduction_unif {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp D) :
     exact add_le_add h7 (h6.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (zero_le_one.trans h7)))
 
 /- English proof (translation)
-Introduce `D θ hθ V W N`. Take `⟨M, hM⟩` from `reduction_unif hθ V`. Take `⟨M', hM'⟩` from `reduction_unif hθ W`. Use `⟨(M + M') * N, ?_⟩` and prove the remaining obligations. Introduce and unpack `K hL ⟨U, U', hU, hU', hR⟩ hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨S, A, hA, hS⟩` from `hM U hU`. Take `⟨S', A', hA', hS'⟩` from `hM' U' hU'`. Use `choose C hC using hG`. Use `⟨(∑ p ∈ S ×ˢ S', |C p.1 p.2|) * (A * A') ^ N, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, x, hx, a, ha, k, hk, hk2, e, hb⟩` from `hS g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, y, hy, b, hb', k', hk', hk2', e', hb2⟩` from `hS' h`. Establish `g1 : (1 : ℝ) ≤ (height θ V g : ℝ)` using `by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.one_le_height θ V g`. Establish `h1 : (1 : ℝ) ≤ (height θ W h : ℝ)` using `by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.one_le_height θ W h`. Establish `na : 0 ≤ 1 + normInf θ V a` using `add_nonneg zero_le_one (GlobalTheory.SmoothForms.normInf_nonneg a)`. Establish `nb : 0 ≤ 1 + normInf θ W b` using `add_nonneg zero_le_one (GlobalTheory.SmoothForms.normInf_nonneg b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (1 + normInf θ V a) * (1 + normInf θ W b) ≤ A * A' * ((height θ V g : ℝ) * (height θ W h : ℝ)) ^ (M + M')`. Establish `p1 : (height θ V g : ℝ) ^ M ≤ (height θ V g : ℝ) ^ (M + M')` using `pow_le_pow_right₀ g1 (Nat.le_add_right _ _)`. Establish `p2 : (height θ W h : ℝ) ^ M' ≤ (height θ W h : ℝ) ^ (M + M')` using `pow_le_pow_right₀ h1 (Nat.le_add_left _ _)`. Establish `q1` using `hb.trans (mul_le_mul_of_nonneg_left p1 hA)`. Establish `q2` using `hb2.trans (mul_le_mul_of_nonneg_left p2 hA')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_le_mul q1 q2 nb (na.trans q1)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hL γ hγ δ hδ g h, e, e', hR k hk hk2 k' hk' hk2', pow_mul, mul_assoc, ← mul_pow]`. Use `(hC x y a ha b hb').trans (mul_le_mul ((le_abs_self _).trans (Finset.single_le_sum (f := fun p : GA D V × GA D W => |C p.1 p.2|) (fun _ _ => abs_nonneg _) (Finset.mk_mem_product hx hy))) (pow_le_pow_left₀ (mul_nonneg na nb) key N) (pow_nonneg (mul_nonneg na nb) N) (Finset.sum_non …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem growth_pair : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V W : HSp D) (N : ℕ), ∃ N' : ℕ, ∀ K : GA D V → GA D W → ℂ, (∀ γ ∈ GQ V, ∀ δ ∈ GQ W, ∀ g h, K (γ * g) (δ * h) = K g h) → (∃ (U : Subgroup (GA D V)) (U' : Subgroup (GA D W)), IsOpen (U : Set (GA D V)) ∧ IsOpen (U' : Set (GA D W)) ∧ ∀ k ∈ U, k ∈ GfC V → ∀ k' ∈ U', k' ∈ GfC W → ∀ g h, K (g * k) (h * k') = K g h) → (∀ x y, ∃ C : ℝ, ∀ a ∈ GinfC V, ∀ b ∈ GinfC W, ‖K (x * a) (y * b)‖ ≤ C * ((1 + normInf θ V a) * (1 + normInf θ W b)) ^ N) → ∃ C : ℝ, ∀ g h, ‖K g h‖ ≤ C * ((height θ V g : ℝ) * (height θ W h : ℝ)) ^ N' := by
   intro D θ hθ V W N

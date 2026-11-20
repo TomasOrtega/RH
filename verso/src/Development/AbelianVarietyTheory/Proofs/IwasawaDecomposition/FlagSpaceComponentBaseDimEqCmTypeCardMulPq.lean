@@ -19,15 +19,15 @@ set_option autoImplicit false
 namespace GlobalTheory.BaseDim
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Pj.DatLin.two_card D.cmType`.
+A detailed English derivation is pending.
 -/
 theorem two_card_psi (E : Type) [Field E] [NumberField E] [IsCMField E] {r : ℕ} (D : ReciprocityTheory.ChartRestriction.G.FD.Data E r) :
     2 * D.Ψ.card = Module.finrank ℚ E := Formalism.L2.Pj.DatLin.two_card D.cmType
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := genericPoint X) trivial`. Establish `: Nonempty U` using `⟨⟨_, hxU⟩⟩`. Take `⟨α, hα⟩` from `Spec.map_surjective (hU.fromSpec ≫ f)`. Use `algebraize [α.hom]`. Establish `t₁` using `trdeg_eq_of_smoothOfRelativeDimension K X f m hm Γ(X, U) hU.fromSpec inferInstance hα.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₂` using `trdeg_eq_of_smoothOfRelativeDimension K X f n hn Γ(X, U) hU.fromSpec inferInstance hα.symm`. Conclude with `t₁.symm.trans t₂` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem eq_of_smooth_two {K : Type} [Field K] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K))
     (m n : ℕ) (hm : SmoothOfRelativeDimension m f) (hn : SmoothOfRelativeDimension n f) : m = n := by
@@ -40,11 +40,11 @@ theorem eq_of_smooth_two {K : Type} [Field K] (X : Scheme.{0}) [IsIntegral X] (f
   exact_mod_cast t₁.symm.trans t₂
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ _ Φ k X j f f₀ Eb A₀ hj hL`. Establish `hoi : IsOpenImmersion j` using `hL.1`. Establish `hs : SmoothOfRelativeDimension Dw.dim (genStr T.Z)` using `T.smooth`. Establish `hi : IsIso (spMap e.toRingHom)` using `inferInstanceAs (IsIso (Spec.map e.toCommRingCatIso.hom))`. Establish `h0 : SmoothOfRelativeDimension 0 (spMap e.toRingHom)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : SmoothOfRelativeDimension (Dw.dim + 0) (genStr T.Z ≫ spMap e.toRingHom)` using `inferInstance`. Rewrite `h2` using `[Nat.add_zero]`. Establish `h1 : SmoothOfRelativeDimension (0 + Dw.dim) (j ≫ genStr T.Z ≫ spMap e.toRingHom)` using `inferInstance`. Rewrite `h1` using `[hj, Nat.zero_add]`. Establish `hd : Dw.dim = X.dim` using `eq_of_smooth_two X.X X.str Dw.dim X.dim h1 X.smooth`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hd, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.dim, ← two_card_psi E (U.X k), Nat.mul_div_cancel_left _ two_pos]`. Simplify using `only [Fintype.card_prod, Fintype.card_fin, Fintype.card_coe, Nat.add_sub_cancel_left, Nat.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_eq_dim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p)) = X.dim := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ _ Φ k X j f f₀ Eb A₀ hj hL

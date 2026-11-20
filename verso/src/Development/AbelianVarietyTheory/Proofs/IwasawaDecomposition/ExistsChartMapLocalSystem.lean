@@ -10,13 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.LocM.ChartLift
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW Z a`. Use `GlobalTheory.ArcValuationSetting.isDiscreteValuationRing_place Z.i.c W hp.ne_zero hW` as an intermediate fact. Use `GlobalTheory.LocM.Inhab.isOpenImmersion_generic (Z.i.c.V W)` as an intermediate fact. Use `(Y Z.i).jQ_open` as an intermediate fact. Establish `hj : IsOpenImmersion (Y Z.i).j` using `by unfold Model.j; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Set.range (Z.chart a) = (Z.U a).1` using `(Z.U a).2.range_fromSpec`. Set `g` to `IsOpenImmersion.lift (Y Z.i).j (Z.chart a ≫ Z.π) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `: Z.chart a x ∈ Z.opn` using `Z.cover.le (Set.mem_iUnion.2 ⟨a, hr.le ⟨x, rfl⟩⟩)`. Rewrite using `[Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)`. Establish `hg : g ≫ (Y Z.i).j = Z.chart a ≫ Z.π` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Establish `hjs : (Y Z.i).j ≫ (Y Z.i).s = pullback.snd _ _ ≫ spMap (Z.i.c.V W).subtype`. Unfold `Model.j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, (Y Z.i).jQ_over]`. Rewrite using `[← cancel_mono (spMap (Z.i.c.V W).subtype), Category.assoc, ← hjs, reassoc_of% hg, Z.π_s, Z.alg_s]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W}

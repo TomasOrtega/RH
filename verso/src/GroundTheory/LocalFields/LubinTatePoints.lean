@@ -22,16 +22,16 @@ def psEval [TopologicalSpace M] (f : MvPowerSeries σ 𝒪[K]) (x : σ → M) : 
   ∑' d, psTerm f x d
 
 /- English proof (translation)
-Simplify using `only [psTerm, map_mul, AlgHom.commutes, Finsupp.prod, map_prod, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_psTerm (ρ : M →ₐ[K] M') (f : MvPowerSeries σ 𝒪[K]) (x : σ → M) (d : σ →₀ ℕ) :
     ρ (psTerm f x d) = psTerm f (fun i => ρ (x i)) d := by
   simp only [psTerm, map_mul, AlgHom.commutes, Finsupp.prod, map_prod, map_pow]
 
 /- English proof (translation)
-Establish `h'` using `h.map ρ.toRingHom.toAddMonoidHom hρ`. Use `(HasSum.tsum_eq ?_).symm` and prove the remaining obligations. Use `h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `d`. Conclude with `(map_psTerm ρ f x d).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem map_psEval [TopologicalSpace M] [TopologicalSpace M'] [T2Space M'] (ρ : M →ₐ[K] M')
     (hρ : Continuous ρ) {f : MvPowerSeries σ 𝒪[K]} {x : σ → M}
@@ -53,7 +53,7 @@ variable {L : Type*} [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchi
   [Algebra K L] [ValuativeExtension K L]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_integer_iff {x : 𝒪[L]} : x ∈ 𝓂[L] ↔ valuation L (x : L) < 1 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -62,9 +62,7 @@ theorem mem_maximalIdeal_integer_iff {x : 𝒪[L]} : x ∈ 𝓂[L] ↔ valuation
 variable (L) in
 
 /- English proof (translation)
-Establish `hopen : IsOpen ((𝓂[L] : Ideal 𝒪[L]) : Set 𝒪[L])`. Use `(𝓂[L]).toAddSubgroup.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Use `(EqualChar.hasBasis_nhds_zero_integer L).mem_iff.mpr ⟨1, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[SetLike.mem_coe, EqualChar.mem_ballIdeal]`. Conclude with `mem_maximalIdeal_integer_iff.mpr hx`.
-
-Conclude with `AddSubgroup.isClosed_of_isOpen (𝓂[L]).toAddSubgroup hopen`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_maximalIdeal_integer : IsClosed ((𝓂[L] : Ideal 𝒪[L]) : Set 𝒪[L]) := by
   have hopen : IsOpen ((𝓂[L] : Ideal 𝒪[L]) : Set 𝒪[L]) := by
@@ -77,7 +75,7 @@ theorem isClosed_maximalIdeal_integer : IsClosed ((𝓂[L] : Ideal 𝒪[L]) : Se
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace L]
   [IsNonarchimedeanLocalField L] in
 /- English proof (translation)
-Simplify using `[psTerm, Finsupp.prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_psTerm_integer {σ : Type*} (f : MvPowerSeries σ 𝒪[K]) (a : σ → 𝒪[L]) (d : σ →₀ ℕ) :
     ((algebraMap 𝒪[K] 𝒪[L] (coeff d f) * d.prod fun s e => a s ^ e : 𝒪[L]) : L) =
@@ -87,9 +85,9 @@ theorem coe_psTerm_integer {σ : Type*} (f : MvPowerSeries σ 𝒪[K]) (a : σ �
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Algebra K L] [ValuativeExtension K L] in
 
 /- English proof (translation)
-Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Use `(EqualChar.hasBasis_nhds_zero_integer L).tendsto_right_iff.mpr fun γ _ => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `exists_pow_lt₀ (mem_maximalIdeal_integer_iff.mp (ha i)) γ`. Use `filter_upwards [eventually_ge_atTop N] with n hn`. Rewrite using `[SetLike.mem_coe, EqualChar.mem_ballIdeal, SubmonoidClass.coe_pow, map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (pow_le_pow_of_le_one zero_le (mem_maximalIdeal_integer_iff.mp (ha i)).le hn) hN`. Rewrite using `[Filter.cofinite_eq_bot]`. Conclude with `tendsto_bot`.
+A detailed English derivation is pending.
 -/
 theorem hasEval_of_mem_maximalIdeal {σ : Type*} [Finite σ] {a : σ → 𝒪[L]} (ha : ∀ i, a i ∈ 𝓂[L]) :
     HasEval a := by
@@ -106,9 +104,9 @@ theorem hasEval_of_mem_maximalIdeal {σ : Type*} [Finite σ] {a : σ → 𝒪[L]
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Set `_ : UniformSpace L` to `IsTopologicalAddGroup.rightUniformSpace L`. Establish `_ : IsUniformAddGroup L` using `isUniformAddGroup_of_addCommGroup`. Set `_ : UniformSpace 𝒪[K]` to `⊥`. Establish `_ : DiscreteUniformity 𝒪[K]` using `⟨rfl⟩`. Establish `hφ : Continuous[(⊥ : UniformSpace 𝒪[K]).toTopologicalSpace, _] (algebraMap 𝒪[K] 𝒪[L])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[UniformSpace.toTopologicalSpace_bot]`. Conclude with `continuous_bot`. Establish `hs` using `hasSum_eval₂ hφ (hasEval_of_mem_maximalIdeal ha) f`. Establish `h2 : HasSum (fun d => ((algebraMap 𝒪[K] 𝒪[L] (coeff d f) * d.prod fun s e => a s ^ e : 𝒪[L]) : L)) ((MvPowerSeries.eval₂ (algebraMap 𝒪[K] 𝒪[L]) a f : 𝒪[L]) : L)` using `hs.map (AddSubmonoidClass.subtype 𝒪[L]) continuous_subtype_val`. Simplify `h2` using `only [coe_psTerm_integer]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasSum_psTerm_eval₂ {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (a : σ → 𝒪[L])
     (ha : ∀ i, a i ∈ 𝓂[L]) :
@@ -134,7 +132,7 @@ theorem hasSum_psTerm_eval₂ {σ : Type*} [Finite σ] (f : MvPowerSeries σ �
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-The claim follows from `(hasSum_psTerm_eval₂ f a ha).summable.hasSum`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_psEval {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (a : σ → 𝒪[L])
     (ha : ∀ i, a i ∈ 𝓂[L]) :
@@ -143,7 +141,7 @@ theorem hasSum_psEval {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (a
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-The claim follows from `have := t2Space_of_isNonarchimedeanLocalField L (hasSum_psTerm_eval₂ f a ha).tsum_eq`.
+A detailed English derivation is pending.
 -/
 theorem psEval_eq_eval₂ {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (a : σ → 𝒪[L])
     (ha : ∀ i, a i ∈ 𝓂[L]) :
@@ -157,7 +155,7 @@ theorem psEval_eq_eval₂ {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Rewrite using `[psEval_eq_eval₂ f a ha]`. Conclude with `SetLike.coe_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psEval_mem_integer {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (a : σ → 𝒪[L])
     (ha : ∀ i, a i ∈ 𝓂[L]) :
@@ -167,17 +165,15 @@ theorem psEval_mem_integer {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-Set `y : 𝒪[L]` to `⟨_, psEval_mem_integer f a ha⟩`. Express the relevant statement in the definitionally equal form `valuation L (y : L) < 1`. Use `mem_maximalIdeal_integer_iff.mp ?_` and prove the remaining obligations. Use `(isClosed_maximalIdeal_integer L).mem_of_tendsto (b := (SummationFilter.unconditional (σ →₀ ℕ)).filter) (f := fun s : Finset (σ →₀ ℕ) => ∑ d ∈ s, (⟨psTerm f (fun i => (a i : L)) d, ?_⟩ : 𝒪[L])) ?_ (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Rewrite using `[← coe_psTerm_integer]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SetLike.coe_mem _`. Establish `h` using `hasSum_psEval f a ha`. Rewrite `h` using `[HasSum]`. Rewrite using `[(Topology.IsInducing.subtypeVal).tendsto_nhds_iff]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules. Use `Ideal.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Establish `he : (⟨psTerm f (fun i => (a i : L)) d, by`. Rewrite using `[← coe_psTerm_integer]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SetLike.coe_mem _⟩ : 𝒪[L]) =`. Use `algebraMap 𝒪[K] 𝒪[L] (coeff d f) * d.prod fun s e => a s ^ e :=`. Use the proof step `Subtype.ext (coe_psTerm_integer f a d).symm`. Rewrite using `[he]`. Distinguish the cases in `hd : d = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hd` using the available equality. Simplify using `[hf]`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hd`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod]`.
-
-Use `Ideal.prod_mem _ (i := i) (Finsupp.mem_support_iff.mpr hi) ?_` and prove the remaining obligations. Conclude with `Ideal.pow_mem_of_mem _ (ha i) _ (Nat.pos_of_ne_zero hi)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valuation_psEval_lt_one {σ : Type*} [Finite σ] {f : MvPowerSeries σ 𝒪[K]}
     (hf : constantCoeff f = 0) (a : σ → 𝒪[L]) (ha : ∀ i, a i ∈ 𝓂[L]) :
@@ -215,11 +211,11 @@ theorem valuation_psEval_lt_one {σ : Type*} [Finite σ] {f : MvPowerSeries σ �
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
 /- English proof (translation)
-Set `b : σ → 𝒪[L]` to `fun s => ⟨_, psEval_mem_integer (g s) a ha⟩`. Establish `hb : ∀ s, b s ∈ 𝓂[L]` using `fun s => mem_maximalIdeal_integer_iff.mpr (valuation_psEval_lt_one (hg s) a ha)`. Express the relevant statement in the definitionally equal form `_ = psEval f fun s => (b s : L)`. Set `_ : UniformSpace L` to `IsTopologicalAddGroup.rightUniformSpace L`. Establish `_ : IsUniformAddGroup L` using `isUniformAddGroup_of_addCommGroup`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `_ : UniformSpace 𝒪[K]` to `⊥`. Establish `_ : DiscreteUniformity 𝒪[K]` using `⟨rfl⟩`. Rewrite using `[psEval_eq_eval₂ f b hb, psEval_eq_eval₂ _ a ha]`. Establish `hsub : HasSubst g` using `hasSubst_of_constantCoeff_zero hg`. Rewrite using `[eval₂_subst hsub (hasEval_of_mem_maximalIdeal ha)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(psEval_eq_eval₂ (g s) a ha).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem psEval_subst {σ τ : Type*} [Finite σ] [Finite τ] {g : σ → MvPowerSeries τ 𝒪[K]}
     (hg : ∀ s, constantCoeff (g s) = 0) (f : MvPowerSeries σ 𝒪[K]) (a : τ → 𝒪[L])
@@ -252,7 +248,7 @@ variable {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValu
 variable (Ω) in
 
 /- English proof (translation)
-Use `IsTopologicalAddGroup.t2Space_of_zero_sep fun x hx => ?_` and prove the remaining obligations. Use `⟨{z | valuation Ω z < valuation Ω x}, ?_, fun h => lt_irrefl (valuation Ω x) h⟩` and prove the remaining obligations. Conclude with `(IsValuativeTopology.hasBasis_nhds_zero Ω).mem_of_mem (i := Units.mk0 _ ((valuation Ω).ne_zero_iff.mpr hx)) trivial`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem t2Space_of_isValuativeTopology : T2Space Ω := by
   refine IsTopologicalAddGroup.t2Space_of_zero_sep fun x hx => ?_
@@ -266,7 +262,7 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Topol
   [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
 
 /- English proof (translation)
-Rewrite using `[← map_one (valuation Ω), ← (valuation Ω).vlt_iff_lt, ← map_one (valuation E), ← (valuation E).vlt_iff_lt]`. Conclude with `not_congr (by simpa using IntermediateField.coe_vle_coe_iff (1 : E) x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_coe_lt_one_iff (E : IntermediateField K Ω) (x : E) :
     valuation Ω (x : Ω) < 1 ↔ valuation E x < 1 := by
@@ -280,7 +276,7 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Valua
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] in
 
 /- English proof (translation)
-The claim follows from `have : Finite (Set.range x) := Set.finite_range x IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_adjoin_range {σ : Type*} [Finite σ] (x : σ → Ω) :
     FiniteDimensional K (IntermediateField.adjoin K (Set.range x)) :=
@@ -288,9 +284,9 @@ theorem finiteDimensional_adjoin_range {σ : Type*} [Finite σ] (x : σ → Ω) 
   IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral
 
 /- English proof (translation)
-Set `a : σ → 𝒪[E]` to `fun i => ⟨x i, ((valuation_coe_lt_one_iff E (x i)).mp (hx i)).le⟩`. Establish `ha : ∀ i, a i ∈ 𝓂[E]` using `fun i => mem_maximalIdeal_integer_iff.mpr ((valuation_coe_lt_one_iff E (x i)).mp (hx i))`. Establish `hE : HasSum (psTerm f x) (psEval f x)` using `hasSum_psEval f a ha`. Establish `h` using `hE.map E.val.toRingHom.toAddMonoidHom continuous_subtype_val`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `d`. Conclude with `(map_psTerm E.val f x d).symm`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasSum_psEval_coe (E : IntermediateField K Ω) [FiniteDimensional K E] {σ : Type*}
     [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (x : σ → E) (hx : ∀ i, valuation Ω (x i : Ω) < 1) :
@@ -306,7 +302,7 @@ theorem hasSum_psEval_coe (E : IntermediateField K Ω) [FiniteDimensional K E] {
   · rfl
 
 /- English proof (translation)
-The claim follows from `have := t2Space_of_isValuativeTopology Ω (hasSum_psEval_coe E f x hx).tsum_eq`.
+A detailed English derivation is pending.
 -/
 theorem psEval_coe (E : IntermediateField K Ω) [FiniteDimensional K E] {σ : Type*} [Finite σ]
     (f : MvPowerSeries σ 𝒪[K]) (x : σ → E) (hx : ∀ i, valuation Ω (x i : Ω) < 1) :
@@ -315,7 +311,7 @@ theorem psEval_coe (E : IntermediateField K Ω) [FiniteDimensional K E] {σ : Ty
   (hasSum_psEval_coe E f x hx).tsum_eq
 
 /- English proof (translation)
-Set `E` to `IntermediateField.adjoin K (Set.range x)`. Use `finiteDimensional_adjoin_range (K := K) x` as an intermediate fact. Set `xE : σ → E` to `fun i => ⟨x i, IntermediateField.subset_adjoin K _ ⟨i, rfl⟩⟩`. Establish `h` using `hasSum_psEval_coe E f xE hx`. Rewrite `h` using `[← psEval_coe E f xE hx]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasSum_psEval' {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (x : σ → Ω)
     (hx : ∀ i, valuation Ω (x i) < 1) :
@@ -327,7 +323,7 @@ theorem hasSum_psEval' {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (
   rwa [← psEval_coe E f xE hx] at h
 
 /- English proof (translation)
-Establish `h` using `psEval_coe E f (fun i => ⟨x i, hxE i⟩) hx`. Express the relevant statement in the definitionally equal form `psEval f x = _ at h`. Rewrite using `[h]`. Conclude with `SetLike.coe_mem _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psEval_mem {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (E : IntermediateField K Ω)
     [FiniteDimensional K E] {x : σ → Ω} (hxE : ∀ i, x i ∈ E) (hx : ∀ i, valuation Ω (x i) < 1) :
@@ -338,9 +334,9 @@ theorem psEval_mem {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K]) (E : 
   exact SetLike.coe_mem _
 
 /- English proof (translation)
-Set `E` to `IntermediateField.adjoin K (Set.range x)`. Use `finiteDimensional_adjoin_range (K := K) x` as an intermediate fact. Set `xE : σ → E` to `fun i => ⟨x i, IntermediateField.subset_adjoin K _ ⟨i, rfl⟩⟩`. Set `a : σ → 𝒪[E]` to `fun i => ⟨xE i, ((valuation_coe_lt_one_iff E (xE i)).mp (hx i)).le⟩`. Establish `ha : ∀ i, a i ∈ 𝓂[E]` using `fun i => mem_maximalIdeal_integer_iff.mpr ((valuation_coe_lt_one_iff E (xE i)).mp (hx i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `psEval_coe E f xE hx`. Express the relevant statement in the definitionally equal form `psEval f x = _ at h`. Rewrite using `[h, valuation_coe_lt_one_iff]`. Conclude with `valuation_psEval_lt_one hf a ha`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_psEval_lt_one' {σ : Type*} [Finite σ] {f : MvPowerSeries σ 𝒪[K]}
     (hf : constantCoeff f = 0) (x : σ → Ω) (hx : ∀ i, valuation Ω (x i) < 1) :
@@ -357,11 +353,11 @@ theorem valuation_psEval_lt_one' {σ : Type*} [Finite σ] {f : MvPowerSeries σ 
   exact valuation_psEval_lt_one hf a ha
 
 /- English proof (translation)
-Set `E` to `IntermediateField.adjoin K (Set.range x)`. Use `finiteDimensional_adjoin_range (K := K) x` as an intermediate fact. Set `xE : τ → E` to `fun i => ⟨x i, IntermediateField.subset_adjoin K _ ⟨i, rfl⟩⟩`. Set `a : τ → 𝒪[E]` to `fun i => ⟨xE i, ((valuation_coe_lt_one_iff E (xE i)).mp (hx i)).le⟩`. Establish `ha : ∀ i, a i ∈ 𝓂[E]` using `fun i => mem_maximalIdeal_integer_iff.mpr ((valuation_coe_lt_one_iff E (xE i)).mp (hx i))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : psEval (subst g f) x = _` using `psEval_coe E (subst g f) xE hx`. Establish `h2 : ∀ s, psEval (g s) x = _` using `fun s => psEval_coe E (g s) xE hx`. Establish `hy : ∀ s, valuation Ω ((psEval (g s) xE : E) : Ω) < 1` using `fun s => by`. Rewrite using `[valuation_coe_lt_one_iff]`. Conclude with `valuation_psEval_lt_one (hg s) a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `psEval_coe E f (fun s => psEval (g s) xE) hy`. Rewrite using `[h1, funext h2, h3, psEval_subst hg f a ha]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psEval_subst' {σ τ : Type*} [Finite σ] [Finite τ] {g : σ → MvPowerSeries τ 𝒪[K]}
     (hg : ∀ s, constantCoeff (g s) = 0) (f : MvPowerSeries σ 𝒪[K]) (x : τ → Ω)
@@ -382,7 +378,7 @@ theorem psEval_subst' {σ τ : Type*} [Finite σ] [Finite τ] {g : σ → MvPowe
   rw [h1, funext h2, h3, psEval_subst hg f a ha]
 
 /- English proof (translation)
-The claim follows from `have := t2Space_of_isValuativeTopology Ω map_psEval (τ : Ω →ₐ[K] Ω) (continuous_algEquiv_of_isAlgebraic τ) (hasSum_psEval' f x hx)`.
+A detailed English derivation is pending.
 -/
 theorem algEquiv_psEval (τ : Ω ≃ₐ[K] Ω) {σ : Type*} [Finite σ] (f : MvPowerSeries σ 𝒪[K])
     (x : σ → Ω) (hx : ∀ i, valuation Ω (x i) < 1) :
@@ -401,7 +397,7 @@ omit [T2Space M] in
 
 @[simp]
 /- English proof (translation)
-Simplify using `[psEval, psTerm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psEval_zero (x : σ → M) : psEval (0 : MvPowerSeries σ 𝒪[K]) x = 0 := by
   simp [psEval, psTerm]
@@ -410,7 +406,7 @@ omit [T2Space M] in
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[psEval, tsum_eq_single (Finsupp.single i 1)]`. Simplify using `[psTerm, coeff_X]`. Introduce `d hd`. Simplify using `[psTerm, coeff_X, hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem psEval_X (x : σ → M) (i : σ) : psEval (X i : MvPowerSeries σ 𝒪[K]) x = x i := by
   classical
@@ -438,7 +434,7 @@ namespace IdealPoint
 def val (x : IdealPoint Ω F) : Ω := Subtype.val x
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 theorem valuation_lt_one (x : IdealPoint Ω F) : valuation Ω x.val < 1 := x.2
 
@@ -446,18 +442,18 @@ def mk (x : Ω) (hx : valuation Ω x < 1) : IdealPoint Ω F := ⟨x, hx⟩
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[ext]`.
+A detailed English derivation is pending.
 -/
 theorem val_mk (x : Ω) (hx : valuation Ω x < 1) : (mk x hx : IdealPoint Ω F).val = x := rfl
 
 @[ext]
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem ext {x y : IdealPoint Ω F} (h : x.val = y.val) : x = y := Subtype.ext h
 
 /- English proof (translation)
-Introduce `_ _` and use `ext`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem val_injective : Function.Injective (val : IdealPoint Ω F → Ω) := fun _ _ => ext
 
@@ -477,7 +473,7 @@ variable [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace �
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace Ω]
   [IsValuativeTopology Ω] [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 /- English proof (translation)
-The claim follows from `IsNilpotent.eq_zero p.prop`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_point_val {σ : Type*} (p : F.Point σ) : constantCoeff p.val = 0 :=
   IsNilpotent.eq_zero p.prop
@@ -485,7 +481,7 @@ theorem constantCoeff_point_val {σ : Type*} (p : F.Point σ) : constantCoeff p.
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace Ω]
   [IsValuativeTopology Ω] [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 /- English proof (translation)
-The claim follows from `FormalGroup.constantCoeff_inv F`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_inv_mv : constantCoeff (inv F : MvPowerSeries Unit 𝒪[K]) = 0 :=
   FormalGroup.constantCoeff_inv F
@@ -493,7 +489,7 @@ theorem constantCoeff_inv_mv : constantCoeff (inv F : MvPowerSeries Unit 𝒪[K]
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace Ω]
   [IsValuativeTopology Ω] [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 /- English proof (translation)
-Introduce `i`. Use `fin_cases i`. Use `exacts [x.valuation_lt_one, y.valuation_lt_one]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fin_two_valuation_lt_one (x y : IdealPoint Ω F) :
     ∀ i, valuation Ω ((![x.val, y.val] : Fin 2 → Ω) i) < 1 := by
@@ -536,23 +532,23 @@ def pointVar {σ : Type*} (i : σ) : F.Point σ :=
   ⟨X i, by simp [PowerSeries.HasSubst]⟩
 
 /- English proof (translation)
-The claim follows from `IdealPoint.ext (psEval_X _ i)`.
+A detailed English derivation is pending.
 -/
 theorem evalPoint_pointVar {σ : Type*} [Finite σ] (x : σ → IdealPoint Ω F) (i : σ) :
     evalPoint x (pointVar i) = x i :=
   IdealPoint.ext (psEval_X _ i)
 
 /- English proof (translation)
-The claim follows from `IdealPoint.ext (psEval_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem evalPoint_zero {σ : Type*} [Finite σ] (x : σ → IdealPoint Ω F) :
     evalPoint x (0 : F.Point σ) = 0 :=
   IdealPoint.ext (psEval_zero _)
 
 /- English proof (translation)
-Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[evalPoint_val, FormalGroup.add_apply, psEval_subst' _ F.toPowerSeries _ fun i => (x i).valuation_lt_one]`. Rewrite using `[IdealPoint.val_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> rfl`. Introduce `i fin_cases i exacts [constantCoeff_point_val p, constantCoeff_point_val q]`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem evalPoint_add {σ : Type*} [Finite σ] (x : σ → IdealPoint Ω F) (p q : F.Point σ) :
     evalPoint x (p + q) = evalPoint x p + evalPoint x q := by
@@ -568,7 +564,7 @@ theorem evalPoint_add {σ : Type*} [Finite σ] (x : σ → IdealPoint Ω F) (p q
     exacts [constantCoeff_point_val p, constantCoeff_point_val q]
 
 /- English proof (translation)
-Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[evalPoint_val, FormalGroup.neg_point_val, PowerSeries.subst, psEval_subst' (fun _ => constantCoeff_point_val p) _ _ fun i => (x i).valuation_lt_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPoint_neg {σ : Type*} [Finite σ] (x : σ → IdealPoint Ω F) (p : F.Point σ) :
     evalPoint x (-p) = -evalPoint x p := by
@@ -578,7 +574,7 @@ theorem evalPoint_neg {σ : Type*} [Finite σ] (x : σ → IdealPoint Ω F) (p :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Hom.apply_val, PowerSeries.subst, psEval_subst' (fun _ => constantCoeff_point_val p) _ _ hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psEval_apply_val {σ : Type*} [Finite σ] (φ : Hom F G) (p : F.Point σ) (x : σ → Ω)
     (hx : ∀ i, valuation Ω (x i) < 1) :
@@ -610,7 +606,7 @@ instance instAddCommGroup [F.IsComm] : AddCommGroup (IdealPoint Ω F) where
     simpa [evalPoint_add, evalPoint_pointVar] using h
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst, psEval_subst' (fun _ => ha) _ _ hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psEval_powerSeries_subst {σ : Type*} [Finite σ] {a : MvPowerSeries σ 𝒪[K]}
     (ha : constantCoeff a = 0) (φ : PowerSeries 𝒪[K]) (x : σ → Ω)
@@ -646,7 +642,7 @@ theorem Hom.pointMap_val (φ : Hom F G) (x : IdealPoint Ω F) :
     (φ.pointMap x).val = psEval φ.toPowerSeries fun _ => x.val := rfl
 
 /- English proof (translation)
-Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[Hom.pointMap_val, Hom.toPowerSeries_comp, psEval_powerSeries_subst f.constantCoeff_eq_zero' _ _ fun _ => x.valuation_lt_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Hom.pointMap_comp (g : Hom G H) (f : Hom F G) (x : IdealPoint Ω F) :
     (g.comp f).pointMap x = g.pointMap (f.pointMap x) := by
@@ -656,7 +652,7 @@ theorem Hom.pointMap_comp (g : Hom G H) (f : Hom F G) (x : IdealPoint Ω F) :
   rfl
 
 /- English proof (translation)
-Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[Hom.pointMap_val, Hom.toPowerSeries_id]`. Conclude with `psEval_X _ ()`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.pointMap_id (x : IdealPoint Ω F) : (Hom.id F).pointMap x = x := by
   apply IdealPoint.ext
@@ -664,7 +660,7 @@ theorem Hom.pointMap_id (x : IdealPoint Ω F) : (Hom.id F).pointMap x = x := by
   exact psEval_X _ ()
 
 /- English proof (translation)
-Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[Hom.pointMap_val, Hom.toPowerSeries_zero]`. Conclude with `psEval_zero _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hom.pointMap_zero (x : IdealPoint Ω F) : (0 : Hom F G).pointMap x = 0 := by
   apply IdealPoint.ext
@@ -672,9 +668,9 @@ theorem Hom.pointMap_zero (x : IdealPoint Ω F) : (0 : Hom F G).pointMap x = 0 :
   exact psEval_zero _
 
 /- English proof (translation)
-Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[Hom.pointMap_val, Hom.toPowerSeries_add, psEval_subst' _ _ _ fun _ => x.valuation_lt_one]`. Rewrite using `[IdealPoint.val_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> rfl`. Introduce `i fin_cases i exacts [f.constantCoeff_eq_zero', g.constantCoeff_eq_zero']`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem Hom.pointMap_add [G.IsComm] (f g : Hom F G) (x : IdealPoint Ω F) :
     (f + g).pointMap x = f.pointMap x + g.pointMap x := by
@@ -732,7 +728,7 @@ theorem galPointMap_val (τ : Ω ≃ₐ[K] Ω) (x : IdealPoint Ω F) :
     (galPointMap τ x).val = τ x.val := rfl
 
 /- English proof (translation)
-Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[galPointMap_val, Hom.pointMap_val, algEquiv_psEval τ _ _ fun _ => x.valuation_lt_one]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem galPointMap_pointMap (τ : Ω ≃ₐ[K] Ω) (φ : Hom F G) (x : IdealPoint Ω F) :
     galPointMap τ (φ.pointMap x) = φ.pointMap (galPointMap τ x) := by
@@ -768,7 +764,7 @@ theorem lubinTate_smul_val (hf : IsLubinTateSeries π f) (a : 𝒪[K])
     (a • x).val = psEval (lubinTateHom hπ hf hf a).toPowerSeries fun _ => x.val := rfl
 
 /- English proof (translation)
-Rewrite using `[lubinTate_smul_val, lubinTateHom_self_uniformizer]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lubinTate_uniformizer_smul_val (hf : IsLubinTateSeries π f)
     (x : IdealPoint Ω (lubinTateFormalGroup hπ hf)) :
@@ -811,7 +807,7 @@ noncomputable def lubinTateTorsion (hf : IsLubinTateSeries π f) (n : ℕ) :
   Submodule.torsionBy 𝒪[K] _ (π ^ n)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_torsionBy_iff _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_lubinTateTorsion (hf : IsLubinTateSeries π f) (n : ℕ)
     (x : IdealPoint Ω (lubinTateFormalGroup hπ hf)) :

@@ -6,7 +6,7 @@ open NumberField Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.shortValAt_std_cover_eq_thValAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FStandardCoverShortValueEqThetaValue.lean&line=324#L324)
 -/

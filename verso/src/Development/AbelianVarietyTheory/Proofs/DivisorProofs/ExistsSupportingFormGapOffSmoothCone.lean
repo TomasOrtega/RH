@@ -15,7 +15,7 @@ section Bound
 variable {X : Type} [AddCommGroup X] {m : ℕ} {a : Fin m → X}
 
 /- English proof (translation)
-The claim follows from `|β x y| ≤ C * ∑ i, β (a i) (a i) := by have hx : x ∈ Submodule.span ℤ (Set.range a) := ha ▸ Submodule.mem_top have hy : y ∈ Submodule.span ℤ (Set.range a) := ha ▸ Submodule.mem_top have hl : ∀ β : LinearMap.BilinForm ℤ X, (∀ y, 0 ≤ β y y) → 0 ≤ ∑ i, β (a i) (a i) := fun β hp => F …`.
+A detailed English derivation is pending.
 -/
 theorem exists_abs_apply_le (ha : Submodule.span ℤ (Set.range a) = ⊤) (x y : X) :
     ∃ C : ℕ, ∀ β : LinearMap.BilinForm ℤ X, (∀ y z, β y z = β z y) → (∀ y, 0 ≤ β y y) →
@@ -64,7 +64,7 @@ theorem exists_abs_apply_le (ha : Submodule.span ℤ (Set.range a) = ⊤) (x y :
     exact mul_le_mul_of_nonneg_left (hC β hs hp) (abs_nonneg _)
 
 /- English proof (translation)
-The claim follows from `|lam β| ≤ C * ∑ i, β (a i) (a i) := by classical let b := Module.Free.chooseBasis ℤ X let E : _ → _ → LinearMap.BilinForm ℤ X := fun i j => (LinearMap.mul ℤ ℤ).compl₁₂ (b.coord i) (b.coord j) have hE : ∀ β : LinearMap.BilinForm ℤ X, β = ∑ i, ∑ j, β (b i) (b j) • E i j := fun β => …`.
+A detailed English derivation is pending.
 -/
 theorem exists_abs_lin_le [Module.Free ℤ X] [Module.Finite ℤ X] (ha : Submodule.span ℤ (Set.range a) = ⊤)
     (lam : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) :
@@ -96,9 +96,9 @@ variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [Add
   [Module.Finite O X]
 
 /- English proof (translation)
-Take `⟨S, hS, h⟩` from `hF.finite`. Take `⟨M, hM⟩` from `(hS.image fun β => φ.evalZ β).bddAbove`. Take `⟨N, hN⟩` from `exists_nat_ge M`. Use `⟨N, fun ρ hρ => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `h 1 _ hρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hM ⟨_, he 0, rfl⟩`. Simplify using `only [evalZ_pull φ (r := e.toLinearMap) e.surjective, Matrix.cons_val_zero] at h1`. Conclude with `h1.trans hN`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ray_bound (hF : IsPolFanOn bar φ X) :
     ∃ M : ℕ, ∀ ρ : LinearMap.BilinForm ℤ X, IsCone bar φ ![ρ] → φ.evalZ ρ ≤ M := by
@@ -112,11 +112,11 @@ theorem exists_ray_bound (hF : IsPolFanOn bar φ X) :
   exact h1.trans hN
 
 /- English proof (translation)
-Establish `hB : toReal β ∈ psdCone bar X`. Simplify using `using ConeSub.sum_smul_toReal_mem_psdCone O bar X 1 ![β] ![1] (by simp [hβ]) (by simp [hp]) (by simp)`. Take `⟨m, γ, c, hγ, hc, hsum⟩` from `hF.cover _ hB`. Take `⟨nZ, hnZ⟩` from `Cover.coeff_int hγ.mem hγ.basis hβ hsum`. Establish `hn0 : ∀ i, 0 ≤ nZ i` using `fun i => by exact_mod_cast (hnZ i) ▸ hc i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `n : Fin m → ℕ` to `fun i => (nZ i).toNat`. Establish `hn : ∀ i, ((n i : ℤ) : ℝ) = c i` using `fun i => by simp [n, Int.toNat_of_nonneg (hn0 i), hnZ i]`. Use `⟨m, γ, n, hγ, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun₂ hsum a b`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, ← hn] at h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Conclude with `h1` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cone_nat [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (hF : IsPolFanOn bar φ X)
     {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms bar X) (hp : ∀ y, 0 ≤ β y y) :
@@ -137,31 +137,27 @@ theorem exists_cone_nat [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] 
 end Fan
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar φ d X _ _ _ _ _ _ hF r m γ a hγ hS lam hlam K`. Take `⟨C, hC⟩` from `exists_abs_lin_le hS.span lam`. Take `⟨M, hM⟩` from `exists_ray_bound hF`. Use `⟨C + K.natAbs + C * d * M, fun D hD => ?_⟩` and prove the remaining obligations. Establish `hray : ∀ ρ : LinearMap.BilinForm ℤ X, IsCone bar φ ![ρ] → (∀ j, ρ ≠ γ j) → (D * d : ℝ) * φ.evalZ ρ + (K.natAbs : ℕ) ≤ (D * ∑ i, ρ (a i) (a i) + lam ρ : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `ρ hρ hne`. Establish `hm : ρ ∈ balForms bar X` using `hρ.mem 0`. Establish `hp : ∀ y, 0 ≤ ρ y y` using `hρ.nonneg 0`. Take `⟨n, hn⟩` from `hF.exists_nat hm hp`. Establish `h1` using `hS.le ρ hm hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (d : ℝ) * φ.evalZ ρ ≠ (∑ i, ρ (a i) (a i) : ℤ)` using `fun he => by`. Take `⟨k, c, hk, hc⟩` from `hS.only ρ hm hp he`. Take `⟨j, hj⟩` from `intCone_face O bar φ X hF 1 r ![ρ] γ hρ hγ ![k] c (by simp [hk]) (by simpa using hc) 0`. Conclude with `hne j hj`. Establish `h3` using `hM ρ hρ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(abs_le.1 (hC ρ hm.1 hp)).1`. Rewrite `h1`, `h2`, `h3`, the goal using `[hn]`. Generalize the expression as in `∑ i, ρ (a i) (a i) = L at *`. Establish `h1' : (d : ℤ) * n ≤ L` using `by exact_mod_cast h1`. Establish `h2' : (d : ℤ) * n ≠ L` using `by exact_mod_cast h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3' : (n : ℤ) ≤ M` using `by exact_mod_cast h3`. Establish `hD' : (C : ℤ) + (K.natAbs : ℕ) + C * d * M ≤ D` using `by exact_mod_cast hD`. Establish `h5 : 0 ≤ L - d * n - 1` using `by omega`. Establish `h6 : (C : ℤ) * d * n ≤ C * d * M` using `mul_le_mul_of_nonneg_left h3' (by positivity)`. Establish `h7 : (0 : ℤ) ≤ C * d * M` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : (0 : ℤ) ≤ (K.natAbs : ℕ)` using `by positivity`. Establish `h9 : 0 ≤ ((D : ℤ) - C) * (L - d * n - 1)` using `mul_nonneg (by linarith) h5`. Establish `: (D * d : ℤ) * n + (K.natAbs : ℕ) ≤ D * L + lam ρ` using `by nlinarith`. Establish `h10` using `(Int.cast_le (R := ℝ)).2 this`. Rewrite `h10` using `[Int.cast_add, Int.cast_mul, Int.cast_mul, Int.cast_natCast, Int.cast_natCast, Int.cast_natCast, Int.cast_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun β hβ hp => ?_, fun ρ hρ hne => le_trans ?_ (hray ρ hρ hne)⟩` and prove the remaining obligations. Take `⟨s, δ, n, hδ, rfl⟩` from `exists_cone_nat hF hβ hp`. Establish `hall : ∀ i, (D * d : ℝ) * φ.evalZ (δ i) ≤ (D * ∑ l, δ i (a l) (a l) + lam (δ i) : ℤ)`. Introduce `i`. Distinguish the cases in `h : ∃ j, δ i = γ j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `h`. Rewrite using `[hj, mul_assoc, hS.eq j]`. Use `hlam j` as an intermediate fact. Conclude with `(le_add_of_nonneg_right this)` after adjusting the coercions. Use `push_neg at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hc : IsCone bar φ ![δ i]`. Use `hF.face _ _ δ ⟨fun _ : Fin 1 => i, fun _ _ _ => Subsingleton.elim _ _⟩ hδ` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Use `fin_cases u`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Conclude with `le_trans (le_add_of_nonneg_right (Nat.cast_nonneg _)) (hray _ hc h)`. Rewrite using `[intCone_evalZ_sum hδ.linear, Finset.mul_sum]`. Establish `e : (D * ∑ l, (∑ i, n i • δ i) (a l) (a l) + lam (∑ i, n i • δ i) : ℤ) = ∑ i, (n i : ℤ) * (D * ∑ l, δ i (a l) (a l) + lam (δ i))`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_nsmul, nsmul_eq_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e, Int.cast_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Int.cast_mul, Int.cast_natCast, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hall i) (Nat.cast_nonneg _)`. Establish `: (K : ℝ) ≤ (K.natAbs : ℕ)`. Establish `h` using `(Int.cast_le (R := ℝ)).2 (Int.le_natAbs : K ≤ (K.natAbs : ℕ))`. Rewrite `h` using `[Int.cast_natCast]`. Then use the resulting hypothesis.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_gap : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (φ : InvFun O) (d : ℕ) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] [Module.Free ℤ X] [Module.Finite ℤ X], IsPolFanOn bar φ X → ∀ (r m : ℕ) (γ : Fin r → LinearMap.BilinForm ℤ X) (a : Fin m → X), IsCone bar φ γ → Supports bar φ d γ a → ∀ lam : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, (∀ j, 0 ≤ lam (γ j)) → ∀ K : ℤ, ∃ D₀ : ℕ, ∀ D, D₀ ≤ D → (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → (D * d : ℝ) * φ.evalZ β ≤ (D * ∑ i, β (a i) (a i) + lam β : ℤ)) ∧ ∀ (ρ : LinearMap.BilinForm ℤ X), IsCone bar φ ![ρ] → (∀ j, ρ ≠ γ j) → (D * d : ℝ) * φ.evalZ ρ + K ≤ (D * ∑ i, ρ (a i) (a i) + lam ρ : ℤ) := by
   intro O _ _ _ _ bar φ d X _ _ _ _ _ _ hF r m γ a hγ hS lam hlam K

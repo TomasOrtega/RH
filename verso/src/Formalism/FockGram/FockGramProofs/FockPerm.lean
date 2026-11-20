@@ -13,7 +13,7 @@ def bil (f g : MvPolynomial τ R) : R :=
   ∑ m ∈ f.support, f.coeff m * g.coeff m * (Formalism.A.mfact m : R)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_subset h (fun m _ hm => by have : f.coeff m = 0 := by simpa using hm simp [this])`.
+A detailed English derivation is pending.
 -/
 lemma bil_eq_of_subset {f g : MvPolynomial τ R} {S : Finset (τ →₀ ℕ)} (h : f.support ⊆ S) :
     bil f g = ∑ m ∈ S, f.coeff m * g.coeff m * (Formalism.A.mfact m : R) :=
@@ -22,7 +22,7 @@ lemma bil_eq_of_subset {f g : MvPolynomial τ R} {S : Finset (τ →₀ ℕ)} (h
     simp [this])
 
 /- English proof (translation)
-Rewrite using `[bil_eq_of_subset (S := f.support ∪ f'.support) support_add, bil_eq_of_subset (S := f.support ∪ f'.support) subset_union_left, bil_eq_of_subset (S := f.support ∪ f'.support) subset_union_right, ← sum_add_distrib]`. Use `sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma bil_add_left (f f' g : MvPolynomial τ R) : bil (f + f') g = bil f g + bil f' g := by
   classical
@@ -33,7 +33,7 @@ lemma bil_add_left (f f' g : MvPolynomial τ R) : bil (f + f') g = bil f g + bil
   rw [coeff_add]; ring
 
 /- English proof (translation)
-Rewrite using `[bil, bil, bil, ← sum_add_distrib]`. Use `sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma bil_add_right (f g g' : MvPolynomial τ R) : bil f (g + g') = bil f g + bil f g' := by
   rw [bil, bil, bil, ← sum_add_distrib]
@@ -41,9 +41,9 @@ lemma bil_add_right (f g g' : MvPolynomial τ R) : bil f (g + g') = bil f g + bi
   rw [coeff_add]; ring
 
 /- English proof (translation)
-Establish `hc : Multiset.card (Finsupp.toMultiset d) = 1`. Rewrite using `[Finsupp.card_toMultiset, Finsupp.sum]`. Conclude with `h`. Take `⟨k, hk⟩` from `Multiset.card_eq_one.mp hc`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma deg1 (d : τ →₀ ℕ) (h : d.degree = 1) : ∃ k, d = Finsupp.single k 1 := by
   classical
@@ -55,17 +55,15 @@ lemma deg1 (d : τ →₀ ℕ) (h : d.degree = 1) : ∃ k, d = Finsupp.single k 
     _ = _ := by rw [hk]; simp
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_C_mul, coeff_X]`. Distinguish the cases in `h0 : x.coeff n = 0`. Rewrite using `[h0]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Use `split_ifs with h`. Rewrite using `[h, h0, mul_one]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Establish `hd : n.degree = 1`. Assume the negation of the conclusion as `hd`. Conclude with `h0 (hx.coeff_eq_zero hd)`. Take `⟨k, rfl⟩` from `deg1 n hd`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction.
 
-Conclude with `hb (Finsupp.single_left_injective one_ne_zero h)`. Introduce `hk`. It suffices to derive a contradiction. Apply `hk` to reduce the goal to its premises. Rewrite using `[mem_vars]`.
-
-Conclude with `⟨Finsupp.single k 1, mem_support_iff.mpr h0, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma lin_repr (x : MvPolynomial τ R) (hx : x.IsHomogeneous 1) :
     x = ∑ k ∈ x.vars, C (x.coeff (Finsupp.single k 1)) * X k := by
@@ -93,9 +91,9 @@ lemma lin_repr (x : MvPolynomial τ R) (hx : x.IsHomogeneous 1) :
       exact ⟨Finsupp.single k 1, mem_support_iff.mpr h0, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_pderiv, coeff_C]`. Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (Ne.symm hm), hz.coeff_eq_zero, zero_mul]`. Rewrite using `[map_add, Finsupp.degree_single]`. Introduce `h`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← Finsupp.degree_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

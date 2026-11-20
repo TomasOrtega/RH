@@ -16,7 +16,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 namespace GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Use `(_root_.GlobalTheory.CovTop.Sizes.hostN_alt 3).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, -, x0, hx⟩` from `h`. Conclude with `⟨0, le_rfl, x0, fun x hx' hle ι p hp i => _root_.GlobalTheory.CovTop.cutAt_of_rows_alt p hp.1 hp.2 i _ _ (hx x hx' hle ι p hp i)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem covering_cut_of_local_traces_alt (_h : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) : _root_.GlobalTheory.CovTop.LiftTruncation := by
   refine (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 3).imp fun Fm CH _ h => ?_
@@ -29,7 +29,7 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_cut_of_local_traces_alt | exact _root_.GlobalTheory.CovTop.covering_cut_of_local_traces_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_cut_of_local_traces_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.liftTruncation_of_prints : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.LiftTruncation := by
   first | exact @_root_.GlobalTheory.CovTop.covering_cut_of_local_traces_alt | exact _root_.GlobalTheory.CovTop.covering_cut_of_local_traces_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_cut_of_local_traces_alt <;> assumption)

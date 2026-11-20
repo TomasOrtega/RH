@@ -8,11 +8,11 @@ open scoped ComplexConjugate Real
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Use `⟨∏ p : κ × ι, (a p.1 p.2).den, Finset.prod_pos fun p _ => (a p.1 p.2).den_pos, ?_⟩` and prove the remaining obligations. Introduce `k i`. Take `⟨c, hc⟩ : (a k i).den ∣ ∏ p : κ × ι, (a p.1 p.2).den` from `Finset.dvd_prod_of_mem (fun p : κ × ι => (a p.1 p.2).den) (Finset.mem_univ (k, i))`. Establish `: ((∏ p : κ × ι, (a p.1 p.2).den : ℕ) : ℚ) * a k i = algebraMap ℤ ℚ ((c : ℤ) * (a k i).num)`. Rewrite using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Rat.mul_den_eq_num (a k i)`. Simplify using `only [eq_intCast, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_algebraMap`.
+A detailed English derivation is pending.
 -/
 theorem heisS_exists_den {κ ι : Type} [Fintype κ] [Fintype ι] (a : Matrix κ ι ℚ) :
     ∃ D : ℕ, 0 < D ∧ ∀ k i, IsIntegral ℤ ((D : ℚ) * a k i) := by
@@ -31,21 +31,21 @@ theorem heisS_exists_den {κ ι : Type} [Fintype κ] [Fintype ι] (a : Matrix κ
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-Take `⟨R, hR, hs, hp⟩` from `h`. Take `⟨D, hD, ha⟩` from `heisS_exists_den a`. Establish `hn : ∀ n : ℕ, IsIntegral ℤ (n : ℚ)` using `fun n => by`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := ℚ) (x := (n : ℤ)))`. Use `⟨R * D, Nat.mul_pos hR hD, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx k i`. Establish `h1` using `hs x (left_ne_zero_of_mul hx) k i`. Establish `: (((R * D : ℕ) : ℚ) • x) k i = (D : ℚ) * ((R : ℚ) • x) k i`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Conclude with `(hn D).mul h1`. Introduce `x y hy`. Establish `e1 : x + ((R * D : ℕ) : ℚ) • y = x + (R : ℚ) • ((D : ℚ) • y)`. Rewrite using `[smul_smul, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : IntM ((D : ℚ) • y)` using `fun k i => by`. Simplify using `using (hn D).mul (hy k i)`. Establish `hint : IsIntegral ℤ (∑ k, ∑ i, (R : ℚ) * (y k i * ((D : ℚ) * a k i)))` using `IsIntegral.sum _ fun k _ => IsIntegral.sum _ fun i _ => (hn R).mul ((hy k i).mul (ha k i))`. Take `⟨n, hn'⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Establish `e2 : (∑ k, (2 * ((x + ((R * D : ℕ) : ℚ) • y) k ⬝ᵥ a k) - a k ⬝ᵥ b k) : ℚ) = (∑ k, (2 * (x k ⬝ᵥ a k) - a k ⬝ᵥ b k) : ℚ) + 2 * n`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (n : ℚ) = ∑ k, ∑ i, (R : ℚ) * (y k i * ((D : ℚ) * a k i))` using `by simpa using hn'`. Rewrite using `[this, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: (x + ((R * D : ℕ) : ℚ) • y) k ⬝ᵥ a k = x k ⬝ᵥ a k + ∑ i, (R : ℚ) * (y k i * ((D : ℚ) * a k i))`. Simplify using `only [dotProduct, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only []`. Rewrite using `[e2, e1, hp x _ hy']`. Use `congr 1`. Rewrite using `[Rat.cast_add, mul_add, Complex.exp_add]`. Establish `: (π : ℂ) * I * ((2 * n : ℚ) : ℂ) = n * (2 * π * I)` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isSB_mul_char {κ ι : Type} [Fintype κ] [Fintype ι] (a b : Matrix κ ι ℚ)
     (ψ : Matrix κ ι ℚ → ℂ) (h : IsSB ψ) :
@@ -88,25 +88,25 @@ theorem isSB_mul_char {κ ι : Type} [Fintype κ] [Fintype ι] (a b : Matrix κ 
     rw [this, Complex.exp_int_mul_two_pi_mul_I, mul_one]
 
 /- English proof (translation)
-Introduce `κ ι _ _ _ a b φ hφ`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isSB_mul_char a b _ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι φ φ hφ hφ).2.2.2.2.2.2.2 b).1`. Introduce `τ hτ ζ`. Unfold `thS`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← tsum_mul_left, ← (Equiv.addRight b).tsum_eq]`. Use `tsum_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addRight, heisS, add_sub_cancel_right]`. Rewrite using `[mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_add, ← mul_add, Rat.cast_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hq : ∀ u v : ι → ℚ, ((u ⬝ᵥ v : ℚ) : ℂ) = qv u ⬝ᵥ qv v` using `fun u v => by`. Simplify using `[dotProduct, qv]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hadd : qv ((y + b) k) = qv (y k) + qv (b k)`. Use extensionality with `i`. Simplify using `[qv]`. Establish `hsym : qv (b k) ⬝ᵥ τ *ᵥ qv (y k) = qv (y k) ⬝ᵥ τ *ᵥ qv (b k)`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hτ.1.eq, dotProduct_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Rat.cast_sub, Rat.cast_mul, hq, hq, hadd]`. Simplify using `only [add_dotProduct, dotProduct_add, mulVec_add, hsym, dotProduct_comm (qv (b k)) (qv (a k))]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `a' b'`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [heisS, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add, sub_sub]`. Use `congr 2`. Rewrite using `[← mul_add, ← mul_add, ← Rat.cast_add, ← Rat.cast_add, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [dotProduct, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.sub_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `x`. Simplify using `[heisS, dotProduct]`. Introduce `ψ hψ`. Establish `h1 : IsSB (fun x : Matrix κ ι ℚ => conj (ψ x))` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι ψ ψ hψ hψ).2.2.2.1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι φ _ hφ h1).2.2.1`. Establish `h3` using `((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ h2 h2).2.2.2.2.2.2.2 b).2`. Unfold `ip`. Use `Eq.trans ?_ h3` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [heisS, Pi.mul_apply, map_mul]`. Rewrite using `[← Complex.exp_conj, mul_mul_mul_comm, ← Complex.exp_add]`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_I, map_ratCast]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heisS_laws : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι] (a b : Matrix κ ι ℚ) (φ : Matrix κ ι ℚ → ℂ), IsSB φ → IsSB (heisS a b φ) ∧ (∀ τ ∈ Siegel ι, ∀ ζ, thS (heisS a b φ) τ ζ = cexp (π * I * ∑ k, (qv (b k) ⬝ᵥ τ *ᵥ qv (b k) + 2 * (qv (b k) ⬝ᵥ ζ k) + qv (a k) ⬝ᵥ qv (b k))) * thS φ τ (fun k => ζ k + qv (a k) + τ *ᵥ qv (b k))) ∧ (∀ a' b', heisS a b (heisS a' b' φ) = cexp (π * I * ((∑ k, (a k ⬝ᵥ b' k - a' k ⬝ᵥ b k) : ℚ) : ℂ)) • heisS (a + a') (b + b') φ) ∧ heisS 0 0 φ = φ ∧ ∀ ψ, IsSB ψ → ip (heisS a b φ) (heisS a b ψ) = ip φ ψ := by
   intro κ ι _ _ _ a b φ hφ

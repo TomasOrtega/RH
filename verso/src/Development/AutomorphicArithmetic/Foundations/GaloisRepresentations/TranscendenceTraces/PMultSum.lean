@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hPt hBC Z S p _ _ Ω _ _ x`. Establish `hpb : IsPullback (pullback.fst p x) (pullback.snd p x) p x` using `IsPullback.of_hasPullback p x`. Establish `hfin` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ hpb (IsLocalRing.closedPoint Ω)`. Establish `h1` using `hPt Ω (pullback.snd p x)`. Rewrite `h1` using `[hBC _ _ _ _ hpb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show pt x = x (IsLocalRing.closedPoint Ω) from rfl, ← hfin, ← h1]`. Simplify using `only [Wt.push, Wt.comap]`. Establish `hb` using `fib_bijOn hpb (Ω := Ω) (𝟙 _)`. Rewrite `hb` using `[Category.id_comp]`. Conclude with `(finsum_mem_eq_of_bijOn _ hb (fun _ _ => rfl)).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.multSum_of :
     MultSumPt → MultBC → MultSum := by

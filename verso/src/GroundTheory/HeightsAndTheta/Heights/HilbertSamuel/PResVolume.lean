@@ -7,7 +7,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-Introduce `K _ ι _ P J e R _ _ hP`. Take `⟨z, hzP, hzJ⟩` from `exists_mcPts_not_mem_mcPts hP R.nondeg`. Take `⟨x, -⟩` from `R.surj z hzP hzJ`. Establish `: Nonempty R.X` using `⟨x⟩`. Conclude with `ChartVolume.exists_isSmoothVolume R.A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ResVolume.proof : ResVolume.Statement := by
   intro K _ ι _ P J e R _ _ hP

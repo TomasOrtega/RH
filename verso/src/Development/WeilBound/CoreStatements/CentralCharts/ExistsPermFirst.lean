@@ -14,9 +14,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 variable {n : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover (ψ.symm t)`. Establish `h1 : AnalyticAt ℂ (A.chart j ∘ ψ.symm) t` using `(hψ j).2 t ⟨ht, hj⟩`. Establish `h2 : AnalyticAt ℂ (g ∘ (A.chart j).symm) ((A.chart j ∘ ψ.symm) t)`. Use `hg j _ ⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp, Set.mem_preimage, (A.chart j).left_inv hj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hU`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations. Use `filter_upwards [(ψ.continuousAt_symm ht).preimage_mem_nhds ((A.chart j).open_source.mem_nhds hj)] with t' ht'`. Establish `h3 : ψ.symm t' ∈ (A.chart j).source` using `ht'`. Simplify using `only [Function.comp, (A.chart j).left_inv h3]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoAt_compat {A : FinHolAtlas n X} {ψ : OpenPartialHomeomorph X (Fin n → ℂ)} (hψ : IsCompatChart A ψ)
     {U : Set X} {g : X → ℂ} (hg : A.HoloOn U g) {t : Fin n → ℂ} (ht : t ∈ ψ.target) (hU : ψ.symm t ∈ U) :
@@ -39,13 +39,13 @@ def NChart (A : FinHolAtlas n X) (U : Set X) (L : LocPot X) (s : X → X → ℂ
     (ψ.symm t ∉ bdry s → logR a t ≤ rW L s (ψ.symm t) + M)
 
 /- English proof (translation)
-Establish `hle : S.card ≤ n` using `by simpa using S.card_le_univ`. Establish `hcard : Fintype.card {i : Fin n // i ∈ S} = Fintype.card {i : Fin n // (i : ℕ) < S.card}`. Rewrite using `[Fintype.card_coe, ← Fintype.card_congr (Fin.castLEquiv hle), Fintype.card_fin]`. Establish `hcard' : Fintype.card {i : Fin n // ¬ i ∈ S} = Fintype.card {i : Fin n // ¬ (i : ℕ) < S.card}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, hcard]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e` to `Fintype.equivOfCardEq hcard`. Set `f` to `Fintype.equivOfCardEq hcard'`. Use `⟨Equiv.subtypeCongr e f, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ S`. Establish `h1 : Equiv.subtypeCongr e f i = e ⟨i, hi⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[Equiv.subtypeCongr, Equiv.sumCompl_symm_apply_of_pos hi]`. Rewrite using `[h1]`. Conclude with `⟨fun _ => (e ⟨i, hi⟩).2, fun _ => hi⟩`. Establish `h1 : Equiv.subtypeCongr e f i = f ⟨i, hi⟩`. Simplify using `[Equiv.subtypeCongr, Equiv.sumCompl_symm_apply_of_neg hi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Conclude with `⟨fun h => absurd h hi, fun h => absurd h (f ⟨i, hi⟩).2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_perm_first (S : Finset (Fin n)) :
     ∃ σ : Equiv.Perm (Fin n), ∀ i, i ∈ S ↔ ((σ i : Fin n) : ℕ) < S.card := by
@@ -88,41 +88,39 @@ theorem scalePerm_apply (δ : ℝ) (hδ : 0 < δ) (σ : Equiv.Perm (Fin n)) (t :
     scalePerm δ hδ σ t i = (δ : ℂ) * t (σ i) := rfl
 
 /- English proof (translation)
-Take `⟨φ, S, μ, v, hφ, hx0, hball2, hφ0, hsrc, hμ, hv, hv0, hsv⟩` from `GlobalTheory.T.exists_snc_adapted_chart_at_point n X A L s nb m W snc x₀`. Take `⟨hbd, M, hM⟩` from `GlobalTheory.T.snc_adapted_chart_section_form n X A L s hL hs x₀ φ S μ v hφ hball2 hsrc hμ hv hv0 hsv`. Establish `h0t : (0 : Fin n → ℂ) ∈ φ.target` using `hball2 (by simp)`. Establish `hs0 : φ.symm 0 = x₀` using `by rw [← hφ0]; exact φ.left_inv hx0`. Establish `hnhds : φ.target ∩ φ.symm ⁻¹' U ∈ 𝓝 (0 : Fin n → ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.inter_mem (φ.open_target.mem_nhds h0t) ?_` and prove the remaining obligations. Conclude with `(φ.continuousAt_symm h0t).preimage_mem_nhds (by rw [hs0]; exact hU.mem_nhds hx)`. Take `⟨δ', hδ', hδball⟩` from `Metric.mem_nhds_iff.1 hnhds`. Establish `hδ : 0 < min δ' 1` using `lt_min hδ' one_pos`. Establish `hδ1 : min δ' 1 ≤ 1` using `min_le_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδδ' : min δ' 1 ≤ δ'` using `min_le_left _ _`. Take `⟨σ, hσ⟩` from `exists_perm_first S`. Set `Lδ` to `scalePerm (min δ' 1) hδ σ`. Set `ψ` to `φ.transHomeomorph Lδ.toHomeomorph.symm`. Establish `hψs : ∀ t, ψ.symm t = φ.symm (Lδ t)` using `fun t => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ∀ x, ψ x = Lδ.symm (φ x)` using `fun x => rfl`. Establish `hψtgt : ∀ t, t ∈ ψ.target ↔ Lδ t ∈ φ.target` using `fun t => Iff.rfl`. Establish `hnorm : ∀ t : Fin n → ℂ, ‖t‖ < 1 → ‖Lδ t‖ < min δ' 1`. Introduce `t ht`. Use `(pi_norm_lt_iff hδ).2 fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[scalePerm_apply, norm_mul, Complex.norm_real, Real.norm_of_nonneg hδ.le]`. Establish `: ‖t (σ i)‖ < 1` using `(norm_le_pi_norm t (σ i)).trans_lt ht`. Use polynomial arithmetic with `[norm_nonneg (t (σ i))]`. Use `⟨ψ, S.card, M, ?_, ?_, ?_, by simpa using S.card_le_univ, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `y hy`. Establish `hy' : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' φ.source` using `hy`. Conclude with `((Lδ.symm : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)).analyticAt _).comp ((hφ j).1 y hy')`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : Lδ y ∈ φ.target ∩ φ.symm ⁻¹' (A.chart j).source` using `hy`. Conclude with `((hφ j).2 _ hy').comp ((Lδ : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)).analyticAt y)`. Conclude with `hx0`. Rewrite using `[hψ, hφ0, map_zero]`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : ‖t‖ < 1` using `by simpa using ht`. Establish `hz : ‖Lδ t‖ < min δ' 1` using `hnorm t ht1`. Establish `hzb : Lδ t ∈ ball (0 : Fin n → ℂ) δ'` using `by simpa using hz.trans_le hδδ'`. Establish `hzmem` using `hδball hzb`. Establish `hz2 : Lδ t ∈ closedBall (0 : Fin n → ℂ) 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzero : ∀ i, Lδ t i = 0 ↔ t (σ i) = 0`. Introduce `i`. Rewrite using `[scalePerm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `[hδ.ne']`. Establish `hbdry : ψ.symm t ∈ bdry s ↔ ∃ i : Fin n, (i : ℕ) < S.card ∧ t i = 0`. Rewrite using `[hψs, hbd _ hzmem.1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, h0⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨σ i, (hσ i).1 hi, (hzero i).1 h0⟩`. Introduce and unpack `⟨j, hj, h0⟩`. Conclude with `⟨σ.symm j, (hσ _).2 (by simpa using hj), (hzero _).2 (by simpa using h0)⟩`. Use `⟨(hψtgt t).2 hzmem.1, by rw [hψs]; exact hzmem.2, hbdry, ?_⟩` and prove the remaining obligations. Introduce `hnb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hall : ∀ i ∈ S, t (σ i) ≠ 0` using `fun i hi h0 => hnb (hbdry.2 ⟨σ i, (hσ i).1 hi, h0⟩)`. Establish `hrw : |rW L s (ψ.symm t) - rLoc S μ (Lδ t)| ≤ M` using `hM _ hz2 hnb`. Establish `hloc : logR S.card t ≤ rLoc S μ (Lδ t)`. Unfold `logR rLoc`. Establish `hsum : (∑ i : Fin n, if (i : ℕ) < S.card then Real.log (1 / ‖t i‖ ^ 2) else 0) = ∑ i ∈ S, Real.log (1 / ‖t (σ i)‖ ^ 2)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hi : i ∈ S`. Rewrite using `[if_pos ((hσ i).1 hi), if_pos hi]`. Rewrite using `[if_neg (fun h => hi ((hσ i).2 h)), if_neg hi]`. Use `_ = ∑ i ∈ S, Real.log (1 / ‖t (σ i)‖ ^ 2) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`. Rewrite using `[hsum]`. Use `gcongr with i hi`. Establish `hx : 0 < ‖t (σ i)‖` using `norm_pos_iff.2 (hall i hi)`. Establish `hx1 : ‖t (σ i)‖ < 1` using `(norm_le_pi_norm t (σ i)).trans_lt ht1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hLi : ‖Lδ t i‖ = min δ' 1 * ‖t (σ i)‖`. Rewrite using `[scalePerm_apply, norm_mul, Complex.norm_real, Real.norm_of_nonneg hδ.le]`. Establish `hpos : 0 < min δ' 1 * ‖t (σ i)‖` using `mul_pos hδ hx`. Establish `hA : 0 ≤ Real.log (1 / ‖t (σ i)‖ ^ 2)`. Apply `Real.log_nonneg` to reduce the goal to its premises.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB : Real.log (1 / ‖t (σ i)‖ ^ 2) ≤ Real.log (4 / ‖Lδ t i‖ ^ 2)`. Rewrite using `[hLi]`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Establish `: min δ' 1 ^ 2 ≤ 1` using `by nlinarith`. Use polynomial arithmetic with `[sq_nonneg ‖t (σ i)‖]`. Establish `hμ1 : (1 : ℝ) ≤ μ i` using `by exact_mod_cast hμ i hi`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `(abs_le.1 hrw).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_nchart (A : FinHolAtlas n X) (L : LocPot X) (s : X → X → ℂ) {nb : ℕ} {m : Fin nb → ℕ}
     {W : Fin nb → Set X} (hL : IsPotential A L) (hs : IsSection A L s) (snc : IsSNC A L s m W) (x₀ : X) (U : Set X)
@@ -225,7 +223,7 @@ theorem exists_nchart (A : FinHolAtlas n X) (L : LocPot X) (s : X → X → ℂ)
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Introduce `h`. Use `h.2 1 trivial` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_mem_top (z : (Σ k, J k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing J)) := by
   intro h
@@ -233,7 +231,7 @@ theorem not_mem_top (z : (Σ k, J k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing 
   simp at this
 
 /- English proof (translation)
-The claim follows from `analyticAt_pi_iff.2 fun q => holoAt_compat hψ (R.holo x₀ q) ht hU`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_lift {P Q : Ideal (MRing J)} (R : AnLogRes P Q n) {ψ : OpenPartialHomeomorph R.X (Fin n → ℂ)}
     (hψ : IsCompatChart R.A ψ) (x₀ : R.X) {t : Fin n → ℂ} (ht : t ∈ ψ.target) (hU : ψ.symm t ∈ R.U x₀) :

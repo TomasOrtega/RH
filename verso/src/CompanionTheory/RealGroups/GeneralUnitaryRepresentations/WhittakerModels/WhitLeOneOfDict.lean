@@ -15,19 +15,17 @@ namespace CompanionTheory.rg.gu.whit
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `n ψ V _ _ π hs hirr hψc hψ1`. Establish `hadm : GroundTheory.Automorphic.IsAdmissible π` using `(hA π).1 (CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top k n V π hs hirr)`. Establish `hc : Continuous (Circle.coeHom.compAddChar ψ)` using `continuous_subtype_val.comp hψc`. Establish `h1 : Circle.coeHom.compAddChar ψ ≠ 1`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hψ1` to reduce the goal to its premises. Use extensionality with `x`. Establish `h2 : ((ψ x : Circle) : ℂ) = ((1 : Circle) : ℂ)` using `(congrArg (fun f : AddChar k ℂ => f x) h).trans Circle.coe_one.symm`. Conclude with `h2`. Establish `: π.IsIrreducible` using `hirr`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GroundTheory.Automorphic.ContragredientTranspose.rank_whittaker_le_one (Circle.coeHom.compAddChar ψ) hc h1 π hadm`. Rewrite using `[hR]`. Establish `heq : GroundTheory.Automorphic.Whittaker.equivariantFunctionals π (fun u : unipB k (Fin n) => ((whitChar ψ n u : ℂˣ) : ℂ)) = GroundTheory.Automorphic.Whittaker.equivariantFunctionals π (fun u : GroundTheory.Automorphic.Iwasawa.unipotent k n => GroundTheory.Automorphic.Whittaker.p …`. Use extensionality with `ℓ`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h u v`. Establish `hu : (u : GL (Fin n) k) ∈ unipB k (Fin n)` using `(hU n).symm ▸ u.2`. Use `h ⟨u, hu⟩ v` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[hC]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ℓ (π u v) = GroundTheory.Automorphic.Whittaker.psiN (Circle.coeHom.compAddChar ψ) (u : GL (Fin n) k) * ℓ v`. Conclude with `this`. Introduce `h u v`. Establish `hu : (u : GL (Fin n) k) ∈ GroundTheory.Automorphic.Iwasawa.unipotent k n` using `(hU n) ▸ u.2`. Use `h ⟨u, hu⟩ v` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at this`. Use `show ℓ (π u v) = ((whitChar ψ n u : ℂˣ) : ℂ) * ℓ v`. Rewrite using `[hC]`. Conclude with `this`. Rewrite using `[heq]`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem whitLeOne_of_dict
     (hU : ∀ n : ℕ, unipB k (Fin n) = GroundTheory.Automorphic.Iwasawa.unipotent k n)

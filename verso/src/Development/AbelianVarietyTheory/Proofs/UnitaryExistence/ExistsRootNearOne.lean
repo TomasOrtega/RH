@@ -15,11 +15,11 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Introduce `D`. Establish `hP : ∀ P : Ideal (𝓞 D.host.E), P.IsMaximal → ∃ t s : 𝓞 D.host.E, (s : D.host.E) = cF D (t : D.host.E) ∧ t - s ∉ P`. Introduce `P hP`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Conclude with `⟨θ, t, ht, hθ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hc : cF D ≠ 1`. Introduce `h`. Take `⟨P, hM⟩` from `Ideal.exists_maximal (𝓞 D.host.E)`. Take `⟨t, s, hs, hts⟩` from `hP P hM`. Rewrite `hs` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: s = t` using `Subtype.ext hs`. Rewrite `hts` using `[this, sub_self]`. Conclude with `hts P.zero_mem`. Conclude with `GlobalTheory.AdLat.RootNear.exists_root_near D.host.F D.host.E (cF D) D.sp.cm.deg2 hc hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_near_one : ∀ (D : D7), ∀ W ∈ 𝓝 (1 : (AE D)ˣ), ∃ N ∈ 𝓝 (1 : (AE D)ˣ), ∀ u ∈ N, (u : AE D) * sigR (AF D.host.F) D.sp.cm.sig (u : AE D) = 1 → ∃ x ∈ W, (x : AE D) = (u : AE D) * sigR (AF D.host.F) D.sp.cm.sig (x : AE D) := by
   intro D

@@ -11,11 +11,9 @@ namespace GlobalTheory.QuotInertia
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hinj : Function.Injective ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom)` using `(algebraMap ℚ_[l] (Qbar l)).injective.comp (fun a b h => Subtype.ext h)`. Establish `hz : cycZ ℚ Ω l s = 1`. Apply `Units.map_injective (f := ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom) hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_one]`. Conclude with `hs`. Establish `hz' : cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) = 1` using `hz`. Establish `h` using `cyclotomicCharacter.spec l (n := 1) (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) ζ (by rw [pow_one]; exact hζ)`. Express the relevant statement in the definitionally equal form `s ζ = _ at h`.
-
-Rewrite using `[h, hz', Units.val_one, map_one, ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt (by rw [pow_one]; exact (Fact.out : l.Prime).one_lt), pow_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_mu [IsAlgClosure ℚ Ω] (s : G ℚ Ω) (hs : cycBar ℚ Ω l s = 1) (ζ : Ω) (hζ : ζ ^ l = 1) :
     s ζ = ζ := by
@@ -33,21 +31,19 @@ theorem fix_mu [IsAlgClosure ℚ Ω] (s : G ℚ Ω) (hs : cycBar ℚ Ω l s = 1)
   rw [h, hz', Units.val_one, map_one, ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt (by rw [pow_one]; exact (Fact.out : l.Prime).one_lt), pow_one]
 
 /- English proof (translation)
-Establish `hsq : (s β) ^ 2 = β ^ 2` using `by rw [← map_pow, hβ, map_intCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Take `⟨-, hI⟩` from `hs`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hβ1 : A.valuation β ≤ 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : 1 < A.valuation β ^ 2` using `one_lt_pow₀ hc two_ne_zero`. Rewrite `h1` using `[← map_pow, hβ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: A.valuation (N : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (intCast_mem A N)`. Conclude with `absurd h1 (not_lt.2 this)`. Establish `h2` using `hI β hβ1`. Rewrite `h2` using `[h]`. Establish `h3 : A.valuation (((4 * N : ℤ) : Ω)) < 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : ((4 * N : ℤ) : Ω) = (-β - β) ^ 2` using `by push_cast; rw [← hβ]; ring`. Rewrite using `[e, map_pow]`. Conclude with `pow_lt_one₀ zero_le' h2 two_ne_zero`. Take `⟨v, hv, hlv⟩` from `hA`. Establish `h4 : ((4 * N : ℤ) : 𝓞 ℚ) ∈ v.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hv]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_intCast, Int.cast_mul, Int.cast_ofNat, map_mul, map_ofNat, algebraMap.coe_mul, map_ratCast]`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp Fact.out`. Establish `hcop : IsCoprime (l : ℤ) (4 * N)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hp.irreducible.coprime_iff_not_dvd]`. Introduce `hd`. Break down `hp.dvd_or_dvd hd with h5 | h5` into its components or cases. Establish `h6 : l ∣ 4` using `by exact_mod_cast h5`. Establish `h7 : l ∣ 2` using `(Fact.out : l.Prime).dvd_of_dvd_pow (n := 2) (by norm_num; exact h6)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 h7)`. Conclude with `hN h5`. Take `⟨a, b, hab⟩` from `hcop.map (Int.castRingHom (𝓞 ℚ))`. Establish `hl' : (Int.castRingHom (𝓞 ℚ)) (l : ℤ) ∈ v.asIdeal` using `by simpa using hlv`. Establish `h1 : (1 : 𝓞 ℚ) ∈ v.asIdeal`.
-
-Rewrite using `[← hab]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hl') (Ideal.mul_mem_left _ _ (by simpa using h4))`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem fix_sqrt_unit (hl : l ≠ 2) {A : ValuationSubring Ω} (hA : OverL l A) {s : G ℚ Ω}
     (hs : s ∈ Ine (F := ℚ) A) (N : ℤ) (hN : ¬ (l : ℤ) ∣ N) (β : Ω) (hβ : β ^ 2 = N) : s β = β := by
@@ -91,13 +87,11 @@ theorem fix_sqrt_unit (hl : l ≠ 2) {A : ValuationSubring Ω} (hA : OverL l A) 
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω l`. Establish `hF : ringChar (ZMod l) ≠ 2` using `by rw [ZMod.ringChar_zmod_n]; exact hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψ : AddChar (ZMod l) Ω := AddChar.zmodChar l hζ.pow_eq_one with hψdef`. Establish `hψ : ψ.IsPrimitive` using `AddChar.zmodChar_primitive_of_primitive_root l hζ`. Use `set χ : MulChar (ZMod l) Ω := (quadraticChar (ZMod l)).ringHomComp (Int.castRingHom Ω) with hχdef`. Establish `hχ1 : χ ≠ 1` using `(MulChar.ringHomComp_ne_one_iff (Int.cast_injective (α := Ω))).2 (quadraticChar_ne_one hF)`. Establish `hχ2 : χ.IsQuadratic` using `(quadraticChar_isQuadratic (ZMod l)).comp _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hχa : ∀ x, χ x = ((quadraticChar (ZMod l) x : ℤ) : Ω)` using `fun x => rfl`. Use `⟨gaussSum χ ψ, quadraticChar (ZMod l) (-1), quadraticChar_sq_one (neg_ne_zero.2 one_ne_zero), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gaussSum_sq hχ1 hχ2 hψ, hχa, ZMod.card]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Rewrite using `[gaussSum, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hχa, map_intCast, hψdef, AddChar.zmodChar_apply, map_pow, hs ζ hζ.pow_eq_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_fix [IsAlgClosure ℚ Ω] (hl : l ≠ 2) (s : G ℚ Ω) (hs : ∀ ζ : Ω, ζ ^ l = 1 → s ζ = ζ) :
     ∃ (Gs : Ω) (c : ℤ), c ^ 2 = 1 ∧ Gs ^ 2 = ((c * l : ℤ) : Ω) ∧ s Gs = Gs := by
@@ -122,23 +116,21 @@ theorem gauss_fix [IsAlgClosure ℚ Ω] (hl : l ≠ 2) (s : G ℚ Ω) (hs : ∀ 
     rw [map_mul, hχa, map_intCast, hψdef, AddChar.zmodChar_apply, map_pow, hs ζ hζ.pow_eq_one]
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Introduce `N`. Proceed by induction on `hn : N.natAbs using Nat.strong_induction_on generalizing N with`. Consider the case `_ n ih`. Introduce `α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : N = 0`. Substitute `h0` using the available equality. Establish `: α = 0` using `pow_eq_zero_iff two_ne_zero |>.1 (by simpa using hα)`. Rewrite using `[this, map_zero]`. Distinguish the cases in `hd : (l : ℤ) ∣ N`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨N1, rfl⟩` from `hd`. Take `⟨Gs, c, hc, hG, hsG⟩` from `gauss_fix hl s hmu`. Establish `hc0 : (c : Ω) ≠ 0`. Introduce and unpack `h`. Establish `: c = 0` using `by exact_mod_cast h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[this]`. Evaluate the numerical expressions using `at hc`. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hG0 : Gs ≠ 0`. Introduce and unpack `h`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hG` using `[h]`. Move the coercions through the operations in `at hG`. Conclude with `mul_ne_zero hc0 hl0 (by rw [← hG]; ring)`. Establish `hc' : (c : Ω) ^ 2 = 1` using `by exact_mod_cast hc`. Establish `hβ : (α / Gs) ^ 2 = ((c * N1 : ℤ) : Ω)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[div_pow, hα, hG]`. Use `push_cast`. Rewrite using `[div_eq_iff (mul_ne_zero hc0 hl0)]`. Take the linear combination `(-(l : Ω) * N1) * hc'`. Establish `hcabs : c.natAbs = 1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (c ^ 2).natAbs = 1` using `by rw [hc]; rfl`. Rewrite `h1` using `[Int.natAbs_pow]`. Conclude with `(pow_eq_one_iff.1 h1).resolve_right two_ne_zero`. Establish `hN1 : N1 ≠ 0` using `by rintro rfl; exact h0 (mul_zero _)`. Establish `hlt : (c * N1).natAbs < n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hn, Int.natAbs_mul, Int.natAbs_mul, hcabs, one_mul, Int.natAbs_natCast]`. Use `Int.natAbs_pos.2 hN1` as an intermediate fact. Use `(Fact.out : l.Prime).one_lt` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `ih _ hlt (c * N1) rfl (α / Gs) hβ`.
-
-Establish `e : α = α / Gs * Gs` using `(div_mul_cancel₀ α hG0).symm`. Rewrite using `[e, map_mul, h1, hsG]`. Conclude with `fix_sqrt_unit hl hA hs N hd α hα`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_sqrt_int [IsAlgClosure ℚ Ω] (hl : l ≠ 2) {A : ValuationSubring Ω} (hA : OverL l A) {s : G ℚ Ω}
     (hs : s ∈ Ine (F := ℚ) A) (hmu : ∀ ζ : Ω, ζ ^ l = 1 → s ζ = ζ) :
@@ -188,11 +180,9 @@ theorem fix_sqrt_int [IsAlgClosure ℚ Ω] (hl : l ≠ 2) {A : ValuationSubring 
   · exact fix_sqrt_unit hl hA hs N hd α hα
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hden : (q.den : Ω) ≠ 0` using `Nat.cast_ne_zero.2 q.den_nz`. Establish `hq : algebraMap ℚ Ω q * (q.den : Ω) = (q.num : Ω)`. Rewrite using `[← map_natCast (algebraMap ℚ Ω), ← map_mul, Rat.mul_den_eq_num, map_intCast]`. Establish `h` using `fix_sqrt_int hl hA hs hmu (q.num * q.den) (α * q.den) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, hα]`. Use `push_cast`. Rewrite using `[← hq]`. Use the proof step `ring)`. Rewrite `h` using `[map_mul, map_natCast]`.
-
-Conclude with `mul_right_cancel₀ hden h`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_sqrt_rat [IsAlgClosure ℚ Ω] (hl : l ≠ 2) {A : ValuationSubring Ω} (hA : OverL l A) {s : G ℚ Ω}
     (hs : s ∈ Ine (F := ℚ) A) (hmu : ∀ ζ : Ω, ζ ^ l = 1 → s ζ = ζ) (α : Ω) (q : ℚ)
@@ -210,33 +200,29 @@ theorem fix_sqrt_rat [IsAlgClosure ℚ Ω] (hl : l ≠ 2) {A : ValuationSubring 
   exact mul_right_cancel₀ hden h
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hval : ∀ g, ((dt W g : (Qbar l)ˣ) : Qbar l) = ((W g : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)).det` using `fun g => Matrix.GeneralLinearGroup.val_det_apply _`. Establish `hc : Continuous fun g : G ℚ Ω => ((dt W g : (Qbar l)ˣ) : Qbar l)`. Simplify using `only [hval]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Units.continuous_val.comp hcont).matrix_det`. Establish `hcl : IsClosed ((dt W).ker : Set (G ℚ Ω))`. Establish `: ((dt W).ker : Set (G ℚ Ω)) = (fun g : G ℚ Ω => ((dt W g : (Qbar l)ˣ) : Qbar l)) ⁻¹' {1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_singleton_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `⟨fun h => by rw [h, Units.val_one], fun h => Units.ext (by rw [h, Units.val_one])⟩`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage hc`. Set `Hc : ClosedSubgroup (G ℚ Ω)` to `⟨(dt W).ker, hcl⟩`. Establish `hpm : ∀ g, dt W g = 1 ∨ dt W g = -1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g`. Establish `h2 : (dt W g) ^ 2 = 1`. Use `congrArg (fun f => f g) hdet2` as an intermediate fact. Simplify using `using this`. Establish `hv : ((dt W g : (Qbar l)ˣ) : Qbar l) * ((dt W g : (Qbar l)ˣ) : Qbar l) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Rewrite using `[← Units.val_mul, ← pow_two, h2, Units.val_one]`. Break down `mul_self_eq_one_iff.1 hv with h | h` into its components or cases. Conclude with `Or.inl (Units.ext (by rw [h, Units.val_one]))`. Conclude with `Or.inr (Units.ext (by rw [h, Units.val_neg, Units.val_one]))`. Establish `hsub : s ∈ (IntermediateField.fixedField (Hc : Subgroup (G ℚ Ω))).fixingSubgroup`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`. Establish `hsame : ∀ g1 g2 : G ℚ Ω, dt W g1 = dt W g2 → g1 x = g2 x`. Introduce `g1 g2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hm : g2⁻¹ * g1 ∈ (Hc : Subgroup (G ℚ Ω))` using `by show g2⁻¹ * g1 ∈ (dt W).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, h, inv_mul_cancel]`. Establish `h1` using `hx _ hm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `_ = g2 x := by rw [h1]`. Break down `hpm s with h1 | h1` into its components or cases. Conclude with `hx s (show s ∈ (dt W).ker from h1)`. Establish `hs2 : (s * s) x = x`. Rewrite using `[hsame (s * s) 1 (by rw [map_mul, h1, map_one]; simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hsα : s (x - s x) = -(x - s x)`. Rewrite using `[map_sub, ← AlgEquiv.mul_apply, hs2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgα : ∀ g : G ℚ Ω, (g (x - s x)) ^ 2 = (x - s x) ^ 2`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[map_sub, ← AlgEquiv.mul_apply]`. Break down `hpm g with h2 | h2` into its components or cases. Rewrite using `[hsame g 1 (by rw [h2, map_one]), hsame (g * s) s (by rw [map_mul, h2, one_mul])]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsame g s (by rw [h2, h1]), hsame (g * s) 1 (by rw [map_mul, h2, h1, map_one]; simp)] show (s x - x) ^ 2 = (x - s x) ^ 2`. Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : ℚ, (x - s x) ^ 2 = algebraMap ℚ Ω q := by`. Establish `hmem : (x - s x) ^ 2 ∈ IntermediateField.fixedField (⊥ : IntermediateField ℚ Ω).fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixedField_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `f _`. Rewrite using `[map_pow]`. Conclude with `hgα f`. Rewrite `hmem` using `[InfiniteGalois.fixedField_fixingSubgroup, IntermediateField.mem_bot]`. Take `⟨q, hq⟩` from `hmem`.
-
-Conclude with `⟨q, hq.symm⟩`. Establish `h3` using `hfix _ q hq`. Rewrite `h3` using `[hsα]`. Establish `h4 : (2 : Ω) * (x - s x) = 0` using `by linear_combination -h3`. Establish `h5` using `(mul_eq_zero.1 h4).resolve_left two_ne_zero`.
-
-Conclude with `(sub_eq_zero.1 h5).symm`. Rewrite `hsub` using `[InfiniteGalois.fixingSubgroup_fixedField Hc]`. Conclude with `hsub`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dt_eq_one [IsAlgClosure ℚ Ω] {W : R2 Ω l} (hcont : Continuous W) (hdet2 : dt W ^ 2 = 1) (s : G ℚ Ω)
     (hfix : ∀ (α : Ω) (q : ℚ), α ^ 2 = algebraMap ℚ Ω q → s α = α) : dt W s = 1 := by
@@ -317,9 +303,9 @@ end GlobalTheory.QuotInertia
 open GlobalTheory.QuotInertia in
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e S A W g hNf hSrc s hs hc`. Take `⟨-, -, χ, hχ, -, hI⟩` from `hSrc`. Establish `hmu` using `fix_mu s hc`. Establish `hχs : χ s = 1` using `hχ s hmu`. Establish `hdt` using `dt_eq_one hNf.cont hNf.det2 s (fun α q hq => fix_sqrt_rat hNf.l_odd hNf.atL hs hmu α q hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hI s hs`. Rewrite `h` using `[hc, hχs, hdt]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.quot_eq_one_of_cycBar_eq_one : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (ι : Qbar l ≃+* ℂ) (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l) (g : Newform (2 * e + 1)),

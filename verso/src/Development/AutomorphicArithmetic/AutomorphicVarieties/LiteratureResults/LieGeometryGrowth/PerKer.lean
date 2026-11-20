@@ -10,7 +10,7 @@ variable {Γ M N : Type} [Group Γ] [AddCommGroup M] [Module ℂ M] [AddCommGrou
 
 omit [Group Γ] [Module ℂ M] in
 /- English proof (translation)
-Simplify using `only [hd, List.length_cons, Finset.sum_range_succ', List.eraseIdx_cons_succ, List.eraseIdx_cons_zero, pow_succ, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib, pow_zero, one_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem hd_cons (c : List Γ → M) (g : Γ) (x : List Γ) : hd c (g :: x) = c x - hd (fun y => c (g :: y)) x := by
   simp only [hd, List.length_cons, Finset.sum_range_succ', List.eraseIdx_cons_succ, List.eraseIdx_cons_zero, pow_succ,
@@ -19,7 +19,7 @@ private theorem hd_cons (c : List Γ → M) (g : Γ) (x : List Γ) : hd c (g :: 
 
 omit [Group Γ] [Module ℂ M] in
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun i hi => by rw [h _ (by rw [List.length_eraseIdx_of_lt (Finset.mem_range.1 hi), hx]; rfl)]`.
+A detailed English derivation is pending.
 -/
 private theorem hd_congr {c c' : List Γ → M} {k : ℕ} (h : ∀ x : List Γ, x.length = k → c x = c' x) (x : List Γ)
     (hx : x.length = k + 1) : hd c x = hd c' x :=
@@ -28,23 +28,23 @@ private theorem hd_congr {c c' : List Γ → M} {k : ℕ} (h : ∀ x : List Γ, 
 
 omit [Group Γ] [Module ℂ M] in
 /- English proof (translation)
-Simplify using `only [hd, smul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hd_sub (c c' : List Γ → M) (x : List Γ) : hd (fun y => c y - c' y) x = hd c x - hd c' x := by
   simp only [hd, smul_sub, Finset.sum_sub_distrib]
 
 omit [Group Γ] in
 /- English proof (translation)
-Simplify using `only [hd, map_sum, map_zsmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hd_map (f : M →ₗ[ℂ] N) (c : List Γ → M) (x : List Γ) : hd (fun y => f (c y)) x = f (hd c x) := by
   simp only [hd, map_sum, map_zsmul]
 
 omit [Group Γ] [Module ℂ M] in
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `nil => intro c`. Simplify using `[hd]`. Consider the case `cons g x ih`. Introduce `c`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hd_cons]`. Simplify using `only [hd_cons]`. Rewrite using `[hd_sub, ih]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hd_hd (x : List Γ) : ∀ c : List Γ → M, hd (hd c) x = 0 := by
   induction x with
@@ -57,18 +57,18 @@ private theorem hd_hd (x : List Γ) : ∀ c : List Γ → M, hd (hd c) x = 0 := 
     simp
 
 /- English proof (translation)
-Introduce `γ x hx` and use `by simp only [h γ x hx, h' γ x hx, map_sub]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hequiv_sub {ρ : Representation ℂ Γ M} {k : ℕ} {c c' : List Γ → M} (h : HEquiv ρ k c) (h' : HEquiv ρ k c') :
     HEquiv ρ k fun y => c y - c' y := fun γ x hx => by
   simp only [h γ x hx, h' γ x hx, map_sub]
 
 /- English proof (translation)
-Take `⟨P, h1, h2⟩` from `hav`. Use `⟨fun x => P fun g => z (g :: x), fun γ x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Use `congrArg P (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[← h γ _ (by simp [hx])]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hd_map P (fun x g => z (g :: x)), ← h1 (z x)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use `hz (g :: x) (by simp [hx])` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[hd_cons, sub_eq_zero]`. Rewrite using `[this]`. Simplify using `[hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem contract {ρ : Representation ℂ Γ M} (hav : HasAverage ρ) {k : ℕ} {z : List Γ → M} (h : HEquiv ρ (k + 1) z)
     (hz : ∀ x : List Γ, x.length = k + 3 → hd z x = 0) :
@@ -88,9 +88,9 @@ private theorem contract {ρ : Representation ℂ Γ M} (hav : HasAverage ρ) {k
     simp [hd]
 
 /- English proof (translation)
-Use `choose! s hs using he`. Use `⟨fun x => ρ (x.headD 1) (s (x.map ((x.headD 1)⁻¹ * ·))), fun γ x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Consider the cases of `x with`. Consider the case `nil => simp at hx`. Consider the case `cons g x`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: ∀ y : Γ, (γ * g)⁻¹ * (γ * y) = g⁻¹ * y` using `fun y => by group`. Simplify using `only [List.map_cons, List.headD_cons, List.map_map, Function.comp_def, this, map_mul, Module.End.mul_apply]`. Rewrite using `[hf, hs _ (by simp [hx]), ← h _ _ (by simp [hx])]`. Simplify using `[Function.comp_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lift_ex {ρ : Representation ℂ Γ M} {σ : Representation ℂ Γ N} (f : M →ₗ[ℂ] N)
     (hf : ∀ γ m, f (ρ γ m) = σ γ (f m)) {k : ℕ} {e : List Γ → N} (h : HEquiv σ k e)
@@ -108,7 +108,7 @@ private theorem lift_ex {ρ : Representation ℂ Γ M} {σ : Representation ℂ 
     simp [Function.comp_def]
 
 /- English proof (translation)
-Introduce `γ x hx` and use `by simp only [hd, map_sum, map_zsmul, List.length_map] refine Finset.sum_congr rfl fun i hi => ?_ rw [List.eraseIdx_map, h γ _ (by rw [List.length_eraseIdx_of_lt (Finset.mem_range.1 hi), hx]; rfl)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hequiv_hd {ρ : Representation ℂ Γ M} {k : ℕ} {c : List Γ → M} (h : HEquiv ρ k c) :
     HEquiv ρ (k + 1) (hd c) := fun γ x hx => by
@@ -124,17 +124,17 @@ variable {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] [
   (G : Dr.Geo Γ V S d)
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `inclFacts Γ V S d G hc hn`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `k u hk hz`. Take `rfl : n = k` from `by omega`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hb'⟩`. Use `⟨fun x => G.incl (b x), fun γ x hx => ?_, fun x _ => a3.apply_apply_eq_zero _, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [hb γ x hx, a1]`. Rewrite using `[hd_map, hz x hx, hb' x hx]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨e, h1, h2, h3⟩`. Take `⟨b, hb, hb'⟩` from `lift_ex G.incl a1 h1 fun x hx => (a3 _).1 (h2 x hx)`. Use `⟨b, hb, fun x hx => a2 ?_⟩` and prove the remaining obligations. Rewrite using `[← hz x hx, h3 x hx, ← hd_map, hd_congr hb' x hx]`. Consider the case `succ q ih`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce and unpack `k u hk ⟨b, hb, hb', hz⟩`. Rewrite using `[ih (k + 1) (hd b) (by omega) hz]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, h1, h2, h3⟩`. Take `⟨f, hf, hf'⟩` from `contract (hav q) (hequiv_sub hb h1) fun x hx => by rw [hd_sub, h3 x hx, sub_self]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨fun x => G.dOm q (f x), fun γ x hx => ?_, fun x _ => (dExact Γ V S d G hc q).apply_apply_eq_zero _, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [hf γ x hx, dEquiv Γ V S d G]`. Rewrite using `[hd_map, ← hf' x hx, map_sub, h2 x hx, hb' x hx, sub_zero]`. Introduce and unpack `⟨e, h1, h2, h3⟩`. Take `⟨f, hf, hf'⟩` from `lift_ex (G.dOm q) (dEquiv Γ V S d G q) h1 fun x hx => (dExact Γ V S d G hc q _).1 (h2 x hx)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨fun x => b x - hd f x, hequiv_sub hb (hequiv_hd hf), fun x hx => ?_, fun x _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hb' x hx, h3 x hx, ← hd_map, hd_congr hf' x hx, sub_self]`. Rewrite using `[hd_sub, hd_hd, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem zig_pos (hc : Convex ℝ G.Y) (hn : G.Y.Nonempty) (hav : ∀ q, HasAverage (G.act q))
     (c : List Γ → S → Fin d → ℂ) (n q : ℕ) : ∀ (k : ℕ) (u : List Γ → G.Om q), n = q + k → Zig G q (k + 1) u c →
@@ -172,19 +172,17 @@ private theorem zig_pos (hc : Convex ℝ G.Y) (hn : G.Y.Nonempty) (hav : ∀ q, 
       · rw [hd_sub, hd_hd, sub_zero]
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `inclFacts Γ V S d G hc hn`. Establish `h2 : ∀ {M : Type} [AddCommGroup M] (e : List Γ → M) (g h : Γ), hd e [g, h] = e [h] - e [g]` using `fun e g h => by`. Simplify using `[hd, Finset.sum_range_succ, sub_eq_add_neg]`. Consider the cases of `q with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hz [1] rfl` as an intermediate fact. Rewrite `this` using `[h [1] rfl, map_zero]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h x hx`. Establish `h0 : w = 0` using `h`. Conclude with `a2 (by rw [← hz x hx, map_zero]; exact h0)`. Consider the case `succ q`. Take `⟨b, hb, hb', hz⟩` from `hz`.
+Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[zig_pos G hc hn hav c q q 0 (hd b) rfl hz]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, e1, e2, e3⟩`. Use `⟨b [1] - e [1], fun γ => ?_, ?_⟩` and prove the remaining obligations. Use `e3 [1, γ] rfl` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h2, h2]`. Establish `h4` using `hequiv_sub hb e1 γ [1] rfl`. Simplify using `only [List.map_cons, List.map_nil, mul_one] at h4`. Rewrite using `[← h4]`. Conclude with `sub_eq_sub_iff_sub_eq_sub.1 this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, e2 [1] rfl, hb' [1] rfl, sub_zero]`. Introduce and unpack `⟨y, y1, y2⟩`. Use `⟨fun x => b x - y, hequiv_sub hb fun γ x _ => (y1 γ).symm, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hb' x hx, y2, sub_self]`. Take `⟨g, h, rfl⟩` from `List.length_eq_two.1 hx`.
-
-Rewrite using `[h2, h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem zig_top (hc : Convex ℝ G.Y) (hn : G.Y.Nonempty) (hav : ∀ q, HasAverage (G.act q))
     (c : List Γ → S → Fin d → ℂ) (q : ℕ) (w : G.Om q) (hz : Zig G q 0 (fun _ => w) c) :
@@ -227,17 +225,17 @@ end
 end UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ a ha U hU Ξ q α c hα ⟨ho, w, hw, hz⟩`. Take `⟨W, hW⟩` from `window _ _ _ _ (geo ho U Ξ) (geoProper E a ho U Ξ hU)`. Take `⟨u, hu⟩` from `cutoff _ _ _ _ (geo ho U Ξ) W hW`. Rewrite using `[← geo_lev ho U Ξ, zig_top (geo ho U Ξ) (coneConvex E a).1 ⟨_, hOne_mem_cone⟩ (average _ _ _ _ _ u hu) c q w hz]`. Consider the cases of `q with`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `rfl : w = 0` from `h`. Conclude with `(corrUniq E a ho U Ξ 0).1 _ 0 _ hw (corr_zero U Ξ)`.
+Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `rfl : α = 0` from `h`. Conclude with `(corrUniq E a ho U Ξ 0).2 0 _ 0 hw (corr_zero U Ξ)`. Consider the case `succ q`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Treat this case separately. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨l, hl⟩` from `gauge E a ha ho U Ξ hU`. Take `⟨y', i1, i2, i3⟩` from `retract _ _ _ _ (geo ho U Ξ) (coneConvex E a).2 l hl q y hy ((corrBasic E a U Ξ _ _ _ hw).1 hα.basic)`. Take `⟨η, hη⟩` from `corrBwd E a ho U Ξ q y'`. Establish `e : dCo (smLie Ξ) η = α` using `(corrUniq E a ho U Ξ (q + 1)).1 _ _ _ (i3 ▸ corrD E a ho U Ξ q _ _ hη) hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `b` using `(corrBasic E a U Ξ _ _ _ hη).2 i2`. Take `⟨c1, c2⟩` from `corrCochain E a U Ξ q _ _ hη`. Conclude with `⟨η, ⟨c1, b, fun X => (levelVal E a U Ξ _).2 ((corrInv E a ho U Ξ q _ _ hη).2 i1 X) (c2 X) (centralOf E a _ (smLie Ξ) q η b (e ▸ hα.basic) X)⟩, e⟩`. Introduce and unpack `⟨η, hη, rfl⟩`. Establish `hv : ∀ X, LeftInv (η X) ∧ RightInv U (η X)` using `fun X => (levelVal E a U Ξ _).1 (hη.val X)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨y, hy, h0⟩` from `corrFwd E a U Ξ q η hη.equiv fun X => (hv X).2`. Set `y' : (geo ho U Ξ).Om q` to `⟨y, fun s => ⟨corrSmooth E a U Ξ q _ y hy s, h0 s⟩⟩`. Conclude with `⟨y', (corrInv E a ho U Ξ q _ y' hy).1 fun X => (hv X).1, (corrUniq E a ho U Ξ (q + 1)).2 _ _ _ (corrD E a ho U Ξ q _ y' hy) hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.perKer :
     PerKer := by

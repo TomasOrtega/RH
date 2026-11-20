@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.WeakClosed.TiltUnif
 
 /- English proof (translation)
-Establish `h : AI.εroot j ^ l ^ j = AI.ε`. Proceed by induction on `j with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ j ih`. Rewrite using `[pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih`. Rewrite using `[sub_pow_char_pow, h, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem εroot_sub_pow' {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (j : ℕ) :
     (AI.εroot j - 1) ^ l ^ j = AI.ε - 1 := by
@@ -28,7 +28,7 @@ theorem εroot_sub_pow' {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf 
   rw [sub_pow_char_pow, h, one_pow]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_mul, map_pow, PreTilt.coeff_pow_p, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coeff_pow_pow' {l : ℕ} [Fact l.Prime] (x : OCb l) (k : ℕ) :
     PreTilt.coeff k (x ^ l ^ k) = PreTilt.coeff 0 x := by
@@ -37,9 +37,9 @@ theorem coeff_pow_pow' {l : ℕ} [Fact l.Prime] (x : OCb l) (k : ℕ) :
   | succ k ih => rw [pow_succ, pow_mul, map_pow, PreTilt.coeff_pow_p, ih]
 
 /- English proof (translation)
-Establish `h0 : PreTilt.coeff 0 (AI.ε - 1) = 0`. Rewrite using `[map_sub, AI.ε_coeff, AI.ζ_zero, map_one, map_one, sub_self]`. Use `Perfection.ext fun k => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hb (l ^ s * l ^ k)`. Express the relevant statement in the definitionally equal form `PreTilt.coeff k b = PreTilt.coeff k 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hc, map_mul, pow_mul, εroot_sub_pow', coeff_pow_pow', h0, zero_mul, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_forall_dvd {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ)
     (b : OCb l) (hb : ∀ m : ℕ, (AI.εroot s - 1) ^ m ∣ b) : b = 0 := by
@@ -51,9 +51,7 @@ theorem eq_zero_of_forall_dvd {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : Lo
   rw [hc, map_mul, pow_mul, εroot_sub_pow', coeff_pow_pow', h0, zero_mul, map_zero]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1` using `(h.pow (l ^ s)).map (PreTilt.coeff 0)`. Rewrite `h1` using `[εroot_sub_pow', map_sub, AI.ε_coeff, AI.ζ_zero, map_one, map_one, sub_self]`. Use `haveI : Nontrivial (ModP (OC l) l) := CharP.nontrivial_of_char_ne_one (Fact.out : l.Prime).ne_one`. Conclude with `not_isUnit_zero h1`.
-
-Assume the negation of the conclusion as `h`. Conclude with `ha (eq_zero_of_forall_dvd AI s a fun m => (ValuationRing.dvd_total _ _).resolve_right fun h' => h ⟨m, h'⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem main {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     ¬ IsUnit (AI.εroot s - 1) ∧ ∀ a : OCb l, a ≠ 0 → ∃ m : ℕ, a ∣ (AI.εroot s - 1) ^ m := by

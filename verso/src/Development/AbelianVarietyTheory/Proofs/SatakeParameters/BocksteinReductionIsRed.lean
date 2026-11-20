@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem primRed_val {A : Type} [CommRing A] (ζ : Prim Q A) : (primRed Q q hq ζ).1 = ζ.1 ^ (Q / q) := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_pow f ζ.1 (Q / q))`.
+A detailed English derivation is pending.
 -/
 theorem primRed_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (ζ : Prim Q A) :
     Prim.map f (primRed Q q hq ζ) = primRed Q q hq (Prim.map f ζ) :=
@@ -48,7 +48,7 @@ def redFree (A : CommRingCat.{0}) : (Prim Q A →₀ ULift.{1} (ZMod Q)) →ₗ[
   Finsupp.linearCombination _ (gen Q q hq i A)
 
 /- English proof (translation)
-Rewrite using `[redFree, Finsupp.linearCombination_single]`. Use `show (Submodule.Quotient.mk (ρ Q q hq c • Finsupp.single (primRed Q q hq ζ) 1) : T i q A) = _`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redFree_single (A : CommRingCat.{0}) (ζ : Prim Q A) (c : ULift.{1} (ZMod Q)) :
     redFree Q q hq i A (Finsupp.single ζ c) = (cl i (primRed Q q hq ζ) (ρ Q q hq c) : T i q A) := by
@@ -57,21 +57,19 @@ theorem redFree_single (A : CommRingCat.{0}) (ζ : Prim Q A) (c : ULift.{1} (ZMo
   rw [Finsupp.smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Nat.div_add_mod n q, pow_add, pow_mul, hz, one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_of_mod {M : Type} [Monoid M] (z : M) (q : ℕ) (hz : z ^ q = 1) (n : ℕ) : z ^ n = z ^ (n % q) := by
   conv_lhs => rw [← Nat.div_add_mod n q, pow_add, pow_mul, hz, one_pow, one_mul]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨ζ, ξ, a, h, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, redFree_single, redFree_single]`. Express the relevant statement in the definitionally equal form `(cl i (primRed Q q hq ξ) (ρ Q q hq 1) - cl i (primRed Q q hq ζ) (ρ Q q hq (ULift.up ((a ^ i : (ZMod Q)ˣ) : ZMod Q))) : T i q A) = 0`. Rewrite using `[← Submodule.Quotient.mk_sub, Submodule.Quotient.mk_eq_zero, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `a' : (ZMod q)ˣ` to `Units.map (ZMod.castHom hq (ZMod q)).toMonoidHom a`. Use `Submodule.subset_span ⟨primRed Q q hq ζ, primRed Q q hq ξ, a', ?_, ?_⟩` and prove the remaining obligations. Establish `hz : (ζ.1 ^ (Q / q)) ^ q = 1`. Rewrite using `[← pow_mul, Nat.div_mul_cancel hq]`. Conclude with `(GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties Q A).1 ζ`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : (a' : ZMod q).val = (a : ZMod Q).val % q`. Establish `: (a' : ZMod q) = (((a : ZMod Q).val : ℕ) : ZMod q)`. Express the relevant statement in the definitionally equal form `ZMod.castHom hq (ZMod q) (a : ZMod Q) = _`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val (a : ZMod Q)]`. Rewrite using `[map_natCast]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ZMod.val_natCast]`. Rewrite using `[primRed_val, primRed_val, h, hv, ← pow_eq_of_mod _ q hz, ← pow_mul, ← pow_mul, mul_comm]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `ULift.up (ZMod.castHom hq (ZMod q) ((a ^ i : (ZMod Q)ˣ) : ZMod Q)) = ULift.up (((a' ^ i : (ZMod q)ˣ)) : ZMod q)`. Rewrite using `[show a' ^ i = Units.map (ZMod.castHom hq (ZMod q)).toMonoidHom (a ^ i) from (map_zpow _ a i).symm]`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twRel_le_ker (A : CommRingCat.{0}) : twRel Q i A ≤ LinearMap.ker (redFree Q q hq i A) := by
   refine Submodule.span_le.2 ?_
@@ -99,7 +97,7 @@ def redA (A : CommRingCat.{0}) : (twF Q i).obj A ⟶ Rq Q q hq i A :=
   ModuleCat.ofHom (Y := Rq Q q hq i A) ((twRel Q i A).liftQ (redFree Q q hq i A) (twRel_le_ker Q q hq i A))
 
 /- English proof (translation)
-The claim follows from `redFree_single Q q hq i A ζ c`.
+A detailed English derivation is pending.
 -/
 theorem redA_cl (A : CommRingCat.{0}) (ζ : Prim Q A) (c : ULift.{1} (ZMod Q)) :
     (redA Q q hq i A).hom (cl i ζ c : T i Q A) = (cl i (primRed Q q hq ζ) (ρ Q q hq c) : T i q A) :=

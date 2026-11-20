@@ -14,28 +14,28 @@ def ap (p : P ⟶ X) {U : X.Opens} {W : P.Opens} (h : W ≤ p ⁻¹ᵁ U) : Γ(X
   (p.appLE U W h).hom
 
 /- English proof (translation)
-The claim follows from `congr($(p.appLE_map h (homOfLE h').op).hom x)`.
+A detailed English derivation is pending.
 -/
 theorem rs_ap (p : P ⟶ X) {U : X.Opens} {W W' : P.Opens} (h : W ≤ p ⁻¹ᵁ U) (h' : W' ≤ W) (x : Γ(X, U)) :
     rs P h' (ap p h x) = ap p (h'.trans h) x :=
   congr($(p.appLE_map h (homOfLE h').op).hom x)
 
 /- English proof (translation)
-The claim follows from `congr($(p.map_appLE h (homOfLE h').op).hom x)`.
+A detailed English derivation is pending.
 -/
 theorem ap_rs (p : P ⟶ X) {U U' : X.Opens} {W : P.Opens} (h : W ≤ p ⁻¹ᵁ U') (h' : U' ≤ U) (x : Γ(X, U)) :
     ap p h (rs X h' x) = ap p (h.trans fun _ hy => h' hy) x :=
   congr($(p.map_appLE h (homOfLE h').op).hom x)
 
 /- English proof (translation)
-The claim follows from `Scheme.basicOpen_appLE p W U h x`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_ap (p : P ⟶ X) {U : X.Opens} {W : P.Opens} (h : W ≤ p ⁻¹ᵁ U) (x : Γ(X, U)) :
     P.basicOpen (ap p h x) = W ⊓ p ⁻¹ᵁ X.basicOpen x :=
   Scheme.basicOpen_appLE p W U h x
 
 /- English proof (translation)
-Use `(ap_rs p h le_top _).trans ?_` and prove the remaining obligations. Simplify using `only [cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ap_cst (p : P ⟶ X) (f : X ⟶ Spec (CommRingCat.of R)) {U : X.Opens} {W : P.Opens}
     (h : W ≤ p ⁻¹ᵁ U) (r : R) : ap p h (cst f U r) = cst (p ≫ f) W r := by
@@ -49,19 +49,19 @@ Both sides reduce to the same expression.
 theorem val_res {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) : (res h u).val = rs X h u.val := rfl
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨h hy, h' hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_pre (p : P ⟶ X) {U V : X.Opens} {W : P.Opens} (h : W ≤ p ⁻¹ᵁ U) (h' : W ≤ p ⁻¹ᵁ V) :
     W ≤ p ⁻¹ᵁ (U ⊓ V) := fun _ hy => ⟨h hy, h' hy⟩
 
 /- English proof (translation)
-Introduce `_ hy` and use `(h hy).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_left (p : P ⟶ X) {U V : X.Opens} {W : P.Opens} (h : W ≤ p ⁻¹ᵁ (U ⊓ V)) :
     W ≤ p ⁻¹ᵁ U := fun _ hy => (h hy).1
 
 /- English proof (translation)
-Introduce `_ hy` and use `(h hy).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_right (p : P ⟶ X) {U V : X.Opens} {W : P.Opens} (h : W ≤ p ⁻¹ᵁ (U ⊓ V)) :
     W ≤ p ⁻¹ᵁ V := fun _ hy => (h hy).2
@@ -76,7 +76,7 @@ def box (p : P ⟶ X) (q : P ⟶ Y) (H : LB X) (K : LB Y) : LB P :=
 variable (p : P ⟶ X) (q : P ⟶ Y) {H : LB X} {K : LB Y}
 
 /- English proof (translation)
-Rewrite using `[map_mul, rs_ap, rs_ap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_mul {U : X.Opens} {V : Y.Opens} {W W' : P.Opens} (h₁ : W ≤ p ⁻¹ᵁ U) (h₂ : W ≤ q ⁻¹ᵁ V)
     (h : W' ≤ W) (x : Γ(X, U)) (y : Γ(Y, V)) :
@@ -84,7 +84,7 @@ theorem rs_mul {U : X.Opens} {V : Y.Opens} {W W' : P.Opens} (h₁ : W ≤ p ⁻�
   rw [map_mul, rs_ap, rs_ap]
 
 /- English proof (translation)
-Establish `h₁` using `congrArg (fun u => ap p (pre_left p h) u.val) (hH.g_self i)`. Simplify `h₁` using `only [val_res, ap_rs, Units.val_one, map_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ap_g_self (hH : H.IsLB) (i : H.ι) {W : P.Opens} (h : W ≤ p ⁻¹ᵁ (H.U i ⊓ H.U i)) :
     ap p h (H.g i i).val = 1 := by
@@ -92,7 +92,7 @@ theorem ap_g_self (hH : H.IsLB) (i : H.ι) {W : P.Opens} (h : W ≤ p ⁻¹ᵁ (
   simpa only [val_res, ap_rs, Units.val_one, map_one] using h₁
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u => ap p (le_pre p h₁ (pre_right p h₂)) u.val) (hH.cocycle i j k)`. Simplify using `only [val_res, ap_rs, Units.val_mul, map_mul] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ap_cocycle (hH : H.IsLB) (i j k : H.ι) {W : P.Opens} (h₁ : W ≤ p ⁻¹ᵁ (H.U i ⊓ H.U j))
     (h₂ : W ≤ p ⁻¹ᵁ (H.U j ⊓ H.U k)) (h₃ : W ≤ p ⁻¹ᵁ (H.U i ⊓ H.U k)) :
@@ -102,7 +102,7 @@ theorem ap_cocycle (hH : H.IsLB) (i j k : H.ι) {W : P.Opens} (h₁ : W ≤ p �
   exact e.symm
 
 /- English proof (translation)
-Establish `e'` using `congrArg (ap p (le_pre p h₁ h₂)) e`. Simplify `e'` using `only [ap_rs, map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ap_ratio {U V : X.Opens} {x y : Γ(X, V)} {r : Γ(X, U)}
     (e : rs X (inf_le_right : U ⊓ V ≤ V) x =
@@ -113,7 +113,7 @@ theorem ap_ratio {U V : X.Opens} {x y : Γ(X, V)} {r : Γ(X, U)}
   simpa only [ap_rs, map_mul] using e'
 
 /- English proof (translation)
-Establish `e : rs X inf_le_left (s.f i) = (H.g i j).val * rs X inf_le_right (s.f j)` using `s.compat i j`. Establish `e'` using `congrArg (ap p h) e`. Simplify `e'` using `only [ap_rs, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ap_compat (s : LB.Sec H) (i j : H.ι) {W : P.Opens} (h₁ : W ≤ p ⁻¹ᵁ H.U i) (h₂ : W ≤ p ⁻¹ᵁ H.U j)
     (h : W ≤ p ⁻¹ᵁ (H.U i ⊓ H.U j)) :
@@ -123,9 +123,9 @@ theorem ap_compat (s : LB.Sec H) (i j : H.ι) {W : P.Opens} (h₁ : W ≤ p ⁻�
   simpa only [ap_rs, map_mul] using e'
 
 /- English proof (translation)
-Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show p y ∈ ⨆ i, H.U i by rw [hH.cover]; trivial)`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show q y ∈ ⨆ i, K.U i by rw [hK.cover]; trivial)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), hi, hj⟩`. Use `g_self := fun a => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext ((rs_mul p q _ _ _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[ap_g_self p hH, ap_g_self q hK, _root_.mul_one, Units.val_one]`. Use `cocycle := fun a b c => by`. Use `Units.ext ((congrArg₂ (· * ·) (rs_mul p q _ _ _ _ _) (rs_mul p q _ _ _ _ _)).trans (Eq.trans ?_ (rs_mul p q _ _ _ _ _).symm))` and prove the remaining obligations. Conclude with `(mul_mul_mul_comm _ _ _ _).trans (congrArg₂ (· * ·) (ap_cocycle p hH _ _ _ _ _ _).symm (ap_cocycle q hK _ _ _ _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isLB_box (hH : H.IsLB) (hK : K.IsLB) : (box p q H K).IsLB where
   cover := by
@@ -151,11 +151,11 @@ def boxSec (s : LB.Sec H) (t : LB.Sec K) : LB.Sec (box p q H K) where
       (mul_mul_mul_comm _ _ _ _)
 
 /- English proof (translation)
-Establish `key : ∀ a : H.ι × K.ι, P.basicOpen ((boxSec p q s t).f a) = ((p ⁻¹ᵁ H.U a.1 ⊓ q ⁻¹ᵁ K.U a.2) ⊓ p ⁻¹ᵁ X.basicOpen (s.f a.1)) ⊓ ((p ⁻¹ᵁ H.U a.1 ⊓ q ⁻¹ᵁ K.U a.2) ⊓ q ⁻¹ᵁ Y.basicOpen (t.f a.2))` using `fun a => (P.basicOpen_mul _ _).trans (congrArg₂ (· ⊓ ·) (basicOpen_ap p _ _) (basicOpen_ap q _ _))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ha` using `(key a).le ha`. Conclude with `⟨TopologicalSpace.Opens.mem_iSup.2 ⟨a.1, ha.1.2⟩, TopologicalSpace.Opens.mem_iSup.2 ⟨a.2, ha.2.2⟩⟩`. Introduce and unpack `⟨h₁, h₂⟩`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show p y ∈ ⨆ k, X.basicOpen (s.f k) from h₁)`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show q y ∈ ⨆ k, Y.basicOpen (t.f k) from h₂)`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy : y ∈ p ⁻¹ᵁ H.U i ⊓ q ⁻¹ᵁ K.U j` using `⟨X.basicOpen_le _ hi, Y.basicOpen_le _ hj⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), (key (i, j)).ge ⟨⟨hy, hi⟩, hy, hj⟩⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_boxSec (s : LB.Sec H) (t : LB.Sec K) :
     nonzeroLocus (boxSec p q s t) = p ⁻¹ᵁ nonzeroLocus s ⊓ q ⁻¹ᵁ nonzeroLocus t := by
@@ -176,9 +176,9 @@ theorem nonzeroLocus_boxSec (s : LB.Sec H) (t : LB.Sec K) :
     exact TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), (key (i, j)).ge ⟨⟨hy, hi⟩, hy, hj⟩⟩
 
 /- English proof (translation)
-Use `X.sheaf.eq_of_locally_eq' (fun k => X.basicOpen (s.f k)) (nonzeroLocus s) (fun k => homOfLE (le_iSup (fun k => X.basicOpen (s.f k)) k)) le_rfl r 1 fun k => ?_` and prove the remaining obligations. Establish `hle : X.basicOpen (s.f k) ≤ nonzeroLocus s ⊓ H.U k` using `le_inf (le_iSup (fun k => X.basicOpen (s.f k)) k) (X.basicOpen_le _)`. Establish `e` using `congrArg (rs X hle) (h k)`. Simplify using `only [map_mul, rs_rs] at e`. Establish `u : IsUnit (rs X (X.basicOpen_le (s.f k)) (s.f k))` using `X.toRingedSpace.isUnit_res_basicOpen (s.f k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e' : rs X (hle.trans inf_le_left) r = 1` using `u.mul_right_cancel (e.symm.trans (_root_.one_mul _).symm)`. Conclude with `e'.trans (map_one (rs X (hle.trans inf_le_left))).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratio_self (s : LB.Sec H) (r : Γ(X, nonzeroLocus s))
     (h : ∀ k, rs X (inf_le_right : nonzeroLocus s ⊓ H.U k ≤ H.U k) (s.f k) =
@@ -195,25 +195,23 @@ theorem ratio_self (s : LB.Sec H) (r : Γ(X, nonzeroLocus s))
   exact e'.trans (map_one (rs X (hle.trans inf_le_left))).symm
 
 /- English proof (translation)
-Take `⟨H, hH, m, s, hs, hs'⟩` from `hf`. Take `⟨K, hK, n, t, ht, ht'⟩` from `hg`. Set `e : Fin (m * n + m + n + 1) ≃ Fin (m + 1) × Fin (n + 1)` to `(finCongr (by ring)).trans finProdFinEquiv.symm`. Use `⟨box p q H K, isLB_box p q hH hK, m * n + m + n, fun a => boxSec p q (s (e a).1) (t (e a).2), ?_, fun a => ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show p y ∈ ⨆ i, nonzeroLocus (s i) by rw [hs]; trivial)`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show q y ∈ ⨆ i, nonzeroLocus (t i) by rw [ht]; trivial)`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨e.symm (i, j), ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_boxSec, e.apply_symm_apply]`. Conclude with `⟨hi, hj⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨aff₁, r₁, hr₁, sj₁⟩` from `hs' (e a).1`. Take `⟨aff₂, r₂, hr₂, sj₂⟩` from `ht' (e a).2`. Establish `loc` using `nonzeroLocus_boxSec p q (s (e a).1) (t (e a).2)`. Establish `l₁` using `loc.le.trans inf_le_left`. Establish `l₂` using `loc.le.trans inf_le_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o₁ : r₁ (e a).1 = 1` using `ratio_self _ _ (hr₁ _)`. Establish `o₂ : r₂ (e a).2 = 1` using `ratio_self _ _ (hr₂ _)`. Use `⟨?_, fun b => ap p l₁ (r₁ (e b).1) * ap q l₂ (r₂ (e b).2), fun b k => ?_, ?_⟩` and prove the remaining obligations. Establish `: IsAffine _` using `aff₁`. Establish `: IsAffine _` using `aff₂`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine _` using `isAffineOpen_top (Spec (CommRingCat.of R))`. Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE sq (US := ⊤) le_top le_top loc).isoPullback.hom`. Use `(rs_mul p q _ _ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) (rs_mul p q _ _ _ _ _) (rs_mul p q _ _ _ _ _)).symm)` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) (ap_ratio p (hr₁ (e b).1 k.1) _ _) (ap_ratio q (hr₂ (e b).2 k.2) _ _)).trans (mul_mul_mul_comm _ _ _ _)`. Establish `po` using `(isIso_pushoutSection_iff sq (US := ⊤) le_top le_top loc).1 (isIso_pushoutSection_of_isAffineOpen sq _ _ _ (isAffineOpen_top _) aff₂ aff₁)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← RingHom.range_eq_top, ← top_le_iff, ← CommRingCat.closure_range_union_range_eq_top_of_isPushout po, Subring.closure_le]`. Introduce and unpack `_ (⟨d, rfl⟩ | ⟨d, rfl⟩)`. Take `⟨F, rfl⟩` from `sj₁ d`. Express the relevant statement in the definitionally equal form `ap p l₁ _ ∈ _`. Proceed by induction on `F using MvPolynomial.induction_on with`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `C c => exact ⟨MvPolynomial.C c, by rw [MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_C, ap_cst]⟩`. Consider the case `add F G hF hG => rw [map_add, map_add]`. Conclude with `Subring.add_mem _ hF hG`. Consider the case `mul_X F i hF`. Rewrite using `[map_mul, map_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Subring.mul_mem _ hF ⟨MvPolynomial.X (e.symm (i, (e a).2)), ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval₂Hom_X', e.apply_symm_apply, o₂, map_one, _root_.mul_one]`. Take `⟨F, rfl⟩` from `sj₂ d`. Express the relevant statement in the definitionally equal form `ap q l₂ _ ∈ _`. Proceed by induction on `F using MvPolynomial.induction_on with`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `C c => exact ⟨MvPolynomial.C c, by`. Rewrite using `[MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_C, ap_cst, sq.w]⟩`. Consider the case `add F G hF hG => rw [map_add, map_add]`. Conclude with `Subring.add_mem _ hF hG`. Consider the case `mul_X F i hF`.
-
-Rewrite using `[map_mul, map_mul]`. Use `Subring.mul_mem _ hF ⟨MvPolynomial.X (e.symm ((e a).1, i)), ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval₂Hom_X', e.apply_symm_apply, o₁, map_one, _root_.one_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isProjBy_of_isPullback {f : X ⟶ Spec (CommRingCat.of R)} {g : Y ⟶ Spec (CommRingCat.of R)}
     (sq : IsPullback p q f g) (hf : IsProjBy f) (hg : IsProjBy g) : IsProjBy (p ≫ f) := by
@@ -275,7 +273,7 @@ theorem isProjBy_of_isPullback {f : X ⟶ Spec (CommRingCat.of R)} {g : Y ⟶ Sp
 end GlobalTheory.AbLaw.Segre
 
 /- English proof (translation)
-Introduce `_ _ X Y hX hY` and use `GlobalTheory.AbLaw.Segre.isProjBy_of_isPullback _ _ (IsPullback.of_hasPullback X.hom Y.hom) hX hY`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbLaw.isProjBy_tensor : ∀ (R : Type) [CommRing R] (X Y : Over (Spec (CommRingCat.of R))),
     IsProjBy X.hom → IsProjBy Y.hom → IsProjBy (X ⊗ Y).hom := fun _ _ X Y hX hY =>

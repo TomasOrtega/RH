@@ -13,13 +13,13 @@ open MvPolynomial Formalism.GradedWeylDivisibility
 namespace GlobalTheory.HighWt
 
 /- English proof (translation)
-Rewrite `hf` using `[standardMonomialSpanDomain O N N ν]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, hshape, rfl⟩` from `hx`. Introduce `m hm`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `bideterminantDominance O N N K sz hsz I m hm`. Rewrite `h` using `[hshape]`. Conclude with `h`. Consider the case `zero`. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `at hm`. Consider the case `add x y _ _ hx hy`. Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hx m h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy m h`. Consider the case `smul c x _ hx`. Introduce `m hm`. Conclude with `hx m (support_smul hm)`.
+A detailed English derivation is pending.
 -/
 theorem dualWeyl_rowDeg_dominance (O : Type) [CommRing O] [IsDomain O] (N : ℕ) (ν : Fin N → ℕ)
     (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) : ∀ m ∈ f.support,
@@ -47,9 +47,9 @@ theorem dualWeyl_rowDeg_dominance (O : Type) [CommRing O] [IsDomain O] (N : ℕ)
     exact hx m (support_smul hm)
 
 /- English proof (translation)
-Establish `h : (rename (fun v : Fin N × Fin N => (σ v.1, v.2)) : MvPolynomial (Fin N × Fin N) O →ₐ[O] _) = rowAct O (Matrix.of fun a b : Fin N => if σ a = b then (1 : O) else 0)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[rowAct]`. Rewrite using `[h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dualWeylRowStable O N N ν _ f hf`.
+A detailed English derivation is pending.
 -/
 theorem rename_rowPerm_mem (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (σ : Equiv.Perm (Fin N))
     (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) :
@@ -64,7 +64,7 @@ theorem rename_rowPerm_mem (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ
   exact dualWeylRowStable O N N ν _ f hf
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[rowW, rowDeg]`. Introduce `b _ hb`. Simplify using `[rowW, Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -84,7 +84,7 @@ namespace GlobalTheory.HighWt
 open MvPolynomial Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single_of_mem (⟨0, h⟩ : Fin N) (by simp)]`. Introduce `b hb hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Conclude with `absurd (Fin.ext (by simp; omega)) hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_fin_lt_one {N : ℕ} (h : 0 < N) (g : Fin N → ℕ) : ∑ b : Fin N with b.val < 1, g b = g ⟨0, h⟩ := by
   rw [Finset.sum_eq_single_of_mem (⟨0, h⟩ : Fin N) (by simp)]
@@ -93,9 +93,9 @@ theorem sum_fin_lt_one {N : ℕ} (h : 0 < N) (g : Fin N → ℕ) : ∑ b : Fin N
   exact absurd (Fin.ext (by simp; omega)) hne
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun b : Fin N => b.val < N - 1)]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single_of_mem (⟨N - 1, by omega⟩ : Fin N) (by simp; omega)]`. Introduce `b hb hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hb`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (Fin.ext (by simp; omega)) hne`.
+A detailed English derivation is pending.
 -/
 theorem sum_fin_split_last {N : ℕ} (h : 0 < N) (g : Fin N → ℕ) :
     ∑ b : Fin N, g b = ∑ b : Fin N with b.val < N - 1, g b + g ⟨N - 1, by omega⟩ := by
@@ -107,31 +107,29 @@ theorem sum_fin_split_last {N : ℕ} (h : 0 < N) (g : Fin N → ℕ) :
   exact absurd (Fin.ext (by simp; omega)) hne
 
 /- English proof (translation)
-Introduce `O _ _ _ _ N ι _ _ lam _ Gm _ _ w hw τ`. Take `⟨z, hz0, hz⟩` from `hw`. Take `⟨a0, ha0, -⟩` from `GlobalTheory.ExpFrame.exists_unique_isProj O N ι lam τ (w τ)`. Establish `hmem : a0 ∈ alg O N lam` using `Algebra.subset_adjoin (Or.inr ⟨τ, w τ, ha0⟩)`. Establish `hex : ∃ x : ∀ τ, dualWeyl O N N (res N (lam τ)), weightedHomogeneousComponent (rowW N N) (w τ) (x τ : MvPolynomial (Fin N × Fin N) O) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `ha0z : a0 = 0`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.zero_apply]`. Rewrite using `[ha0 x 0 (by simp [hne x])]`. Conclude with `MultilinearMap.map_coord_zero _ τ (by simp)`. Establish `h1` using `hz τ ⟨a0, hmem⟩ ha0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (⟨a0, hmem⟩ : alg O N lam) = 0` using `Subtype.ext ha0z`. Rewrite `h1` using `[h0, zero_smul]`. Conclude with `hz0 h1.symm`. Take `⟨x, hx⟩` from `hex`. Use `set f := weightedHomogeneousComponent (rowW N N) (w τ) (x τ : MvPolynomial (Fin N × Fin N) O) with hfdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfmem : f ∈ dualWeyl O N N (res N (lam τ))` using `dualWeylRowGraded O N N _ _ _ (x τ).2`. Establish `hfhom : IsWeightedHomogeneous (rowW N N) f (w τ)` using `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Take `⟨m, hm⟩` from `support_nonempty.2 hx`. Establish `hrd : ∀ a, rowDeg m a = w τ a` using `fun a => by`. Rewrite using `[← weight_rowW_eq_rowDeg, hfhom (mem_support_iff.1 hm)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ σ : Equiv.Perm (Fin N), (∀ k : ℕ, (∑ b : Fin N with b.val < k, w τ (σ.symm b)) ≤ ∑ t : Fin N with t.val < k, res N (lam τ) t) ∧ ∑ b : Fin N, w τ (σ.symm b) = ∑ t : Fin N, res N (lam τ) t`. Introduce `σ`. Set `e : Fin N × Fin N → Fin N × Fin N` to `fun v => (σ v.1, v.2)`. Establish `he : Function.Injective e`. Introduce `u v huv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e, Prod.mk.injEq] at huv`. Conclude with `Prod.ext (σ.injective huv.1) huv.2`. Establish `hm' : m.mapDomain e ∈ (rename e f).support`. Rewrite using `[mem_support_iff, coeff_rename_mapDomain e he]`. Conclude with `mem_support_iff.1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hrd' : ∀ b, rowDeg (m.mapDomain e) b = w τ (σ.symm b)`. Introduce `b`. Rewrite using `[← hrd]`. Unfold `rowDeg`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (b, s) = e (σ.symm b, s)` using `by simp [e]`. Rewrite using `[this, Finsupp.mapDomain_apply he]`. Establish `hd` using `dualWeyl_rowDeg_dominance O N _ _ (rename_rowPerm_mem O N _ σ f hfmem) _ hm'`. Simplify using `only [hrd'] at hd`. Conclude with `hd`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hres : ∀ t : Fin N, res N (lam τ) t = lam τ t` using `fun t => rfl`. Use `⟨?_, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `(key (Equiv.refl _)).2`. Simplify `h` using `[hres]`. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) a.isLt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2⟩` from `key (Equiv.swap ⟨N - 1, by omega⟩ a)`. Establish `h3` using `h1 (N - 1)`. Rewrite `h2` using `[sum_fin_split_last hN, sum_fin_split_last hN]`. Establish `h4 : w τ ((Equiv.swap ⟨N - 1, by omega⟩ a).symm ⟨N - 1, by omega⟩) = w τ a` using `by simp`. Rewrite `h2` using `[h4]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : res N (lam τ) ⟨N - 1, by omega⟩ = lam τ (N - 1)` using `rfl`. Rewrite `h2` using `[h5]`. Use linear arithmetic over natural numbers and integers. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) a.isLt`. Establish `h1` using `(key (Equiv.swap ⟨0, hN⟩ a)).1 1`.
-
-Rewrite `h1` using `[sum_fin_lt_one hN, sum_fin_lt_one hN]`. Establish `h2 : w τ a ≤ res N (lam τ) ⟨0, hN⟩` using `by simpa using h1`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem jointWt_bounds : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (N : ℕ) (ι : Type) [Fintype ι]
     [DecidableEq ι] (lam : ι → ℕ → ℕ), (∀ τ, Antitone (res N (lam τ))) → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm]

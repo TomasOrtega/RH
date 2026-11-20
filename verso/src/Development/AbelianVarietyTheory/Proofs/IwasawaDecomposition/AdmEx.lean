@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.G
 namespace GlobalTheory.ShFam.Pad
 
 /- English proof (translation)
-The claim follows from `admEx_of_htBound HTBound.htBound D A N j S κ`.
+A detailed English derivation is pending.
 -/
 theorem admEx {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) (κ : Lv A) : AdmEx S κ :=
   admEx_of_htBound HTBound.htBound D A N j S κ

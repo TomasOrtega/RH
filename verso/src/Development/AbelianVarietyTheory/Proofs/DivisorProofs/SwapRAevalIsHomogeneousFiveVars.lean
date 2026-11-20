@@ -27,13 +27,13 @@ noncomputable def swapPow (a b : ℤ) : ℕ → Polynomial (MvPolynomial (Fin 2)
 def swapR (d : ℕ) (a b : ℤ) (i : ℕ) : MvPolynomial (Fin 2) ℝ := (swapPow a b (d + 2)).coeff i
 
 /- English proof (translation)
-The claim follows from `e ▸ h`.
+A detailed English derivation is pending.
 -/
 private theorem hom_cast {σ : Type} {φ : MvPolynomial σ ℝ} {m k : ℕ} (h : φ.IsHomogeneous m) (e : m = k) :
     φ.IsHomogeneous k := e ▸ h
 
 /- English proof (translation)
-Distinguish the cases in `h : k + m = N`. Conclude with `h ▸ hp.mul hf`. Rewrite using `[hz h, mul_zero]`. Conclude with `isHomogeneous_zero _ _ _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hom_mul_of {σ : Type} {p f : MvPolynomial σ ℝ} {k m N : ℕ} (hp : p.IsHomogeneous k)
     (hf : f.IsHomogeneous m) (hz : k + m ≠ N → f = 0) : (p * f).IsHomogeneous N := by
@@ -42,13 +42,13 @@ private theorem hom_mul_of {σ : Type} {p f : MvPolynomial σ ℝ} {k m N : ℕ}
   · rw [hz h, mul_zero]; exact isHomogeneous_zero _ _ _
 
 /- English proof (translation)
-The claim follows from `(isHomogeneous_C_mul_X _ _).add (isHomogeneous_C_mul_X _ _)`.
+A detailed English derivation is pending.
 -/
 theorem linearSum_isHomogeneous (a b : ℤ) : (linearSum a b).IsHomogeneous 1 :=
   (isHomogeneous_C_mul_X _ _).add (isHomogeneous_C_mul_X _ _)
 
 /- English proof (translation)
-Establish `h0` using `isHomogeneous_X ℝ (0 : Fin 2)`. Establish `h1` using `isHomogeneous_X ℝ (1 : Fin 2)`. Use `((hom_cast ((isHomogeneous_C (Fin 2) _).mul (h0.pow 2)) (by omega)).add (hom_cast ((isHomogeneous_C (Fin 2) _).mul (h0.mul h1)) (by omega))).add (hom_cast (h1.pow 2) (by omega))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem quadraticPart_isHomogeneous (a b : ℤ) : (quadraticPart a b).IsHomogeneous 2 := by
   have h0 := isHomogeneous_X ℝ (0 : Fin 2)
@@ -57,7 +57,7 @@ theorem quadraticPart_isHomogeneous (a b : ℤ) : (quadraticPart a b).IsHomogene
     (hom_cast ((isHomogeneous_C (Fin 2) _).mul (h0.mul h1)) (by omega))).add (hom_cast (h1.pow 2) (by omega))
 
 /- English proof (translation)
-Rewrite using `[swapPow, show ∀ T : Polynomial (MvPolynomial (Fin 2) ℝ), (Polynomial.C (quadraticPart a b) + Polynomial.C (C (((a : ℝ) - b) ^ 2)) * Polynomial.X) * T = Polynomial.C (quadraticPart a b) * T + Polynomial.C (C (((a : ℝ) - b) ^ 2)) * (Polynomial.X * T) from fun T => by ring]`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_X_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem swapPow_coeff_add_two (a b : ℤ) (n i : ℕ) : (swapPow a b (n + 2)).coeff (i + 1) =
     linearSum a b * (swapPow a b (n + 1)).coeff (i + 1) - (quadraticPart a b * (swapPow a b n).coeff (i + 1) +
@@ -68,7 +68,7 @@ theorem swapPow_coeff_add_two (a b : ℤ) (n i : ℕ) : (swapPow a b (n + 2)).co
   simp only [Polynomial.coeff_sub, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_X_mul]
 
 /- English proof (translation)
-Rewrite using `[swapPow, show ∀ T : Polynomial (MvPolynomial (Fin 2) ℝ), (Polynomial.C (quadraticPart a b) + Polynomial.C (C (((a : ℝ) - b) ^ 2)) * Polynomial.X) * T = Polynomial.C (quadraticPart a b) * T + Polynomial.C (C (((a : ℝ) - b) ^ 2)) * (Polynomial.X * T) from fun T => by ring]`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_X_mul_zero, mul_zero, add_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem swapPow_coeff_zero_add_two (a b : ℤ) (n : ℕ) : (swapPow a b (n + 2)).coeff 0 =
     linearSum a b * (swapPow a b (n + 1)).coeff 0 - quadraticPart a b * (swapPow a b n).coeff 0 := by
@@ -79,15 +79,15 @@ theorem swapPow_coeff_zero_add_two (a b : ℤ) (n : ℕ) : (swapPow a b (n + 2))
     add_zero]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Break down `n with _ | _ | n` into its components or cases. Introduce `i`. Break down `i with _ | i` into its components or cases.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [swapPow, Polynomial.coeff_C_zero]`. Conclude with `⟨isHomogeneous_C _ _, fun h => absurd h (by omega)⟩`. Simplify using `only [swapPow, Polynomial.coeff_C_succ]`. Conclude with `⟨isHomogeneous_zero _ _ _, by simp⟩`. Introduce `i`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `i with _ | i` into its components or cases. Simplify using `only [swapPow, Polynomial.coeff_C_zero]`. Conclude with `⟨linearSum_isHomogeneous a b, fun h => absurd h (by omega)⟩`. Simplify using `only [swapPow, Polynomial.coeff_C_succ]`. Conclude with `⟨isHomogeneous_zero _ _ _, by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `h1` using `ih (n + 1) (by omega)`. Establish `h0` using `ih n (by omega)`. Introduce `i`. Break down `i with _ | i` into its components or cases. Rewrite using `[swapPow_coeff_zero_add_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hom_mul_of (linearSum_isHomogeneous a b) (h1 0).1 fun h => absurd h (by omega)).sub (hom_mul_of (quadraticPart_isHomogeneous a b) (h0 0).1 fun h => absurd h (by omega)), fun h => absurd h (by omega)⟩` and prove the remaining obligations. Rewrite using `[swapPow_coeff_add_two]`. Use `⟨(hom_mul_of (linearSum_isHomogeneous a b) (h1 (i + 1)).1 fun h => (h1 (i + 1)).2 (by omega)).sub ((hom_mul_of (quadraticPart_isHomogeneous a b) (h0 (i + 1)).1 fun h => (h0 (i + 1)).2 (by omega)).add (hom_mul_of (isHomogeneous_C (Fin 2) _) (h0 i).1 fun h => absurd h (by omega))), …` and prove the remaining obligations. Rewrite using `[(h1 (i + 1)).2 (by omega), (h0 (i + 1)).2 (by omega), (h0 i).2 (by omega)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem swapPow_coeff (a b : ℤ) (n : ℕ) : ∀ i, ((swapPow a b n).coeff i).IsHomogeneous (n - 2 * i) ∧
     (n < 2 * i → (swapPow a b n).coeff i = 0) := by
@@ -121,34 +121,34 @@ theorem swapPow_coeff (a b : ℤ) (n : ℕ) : ∀ i, ((swapPow a b n).coeff i).I
       simp
 
 /- English proof (translation)
-Use `Nat.lt_succ_of_le (Polynomial.natDegree_le_iff_coeff_eq_zero.2 fun N hN => ?_)` and prove the remaining obligations. Conclude with `(swapPow_coeff a b n N).2 (by omega)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem swapPow_natDegree_lt (a b : ℤ) (n : ℕ) : (swapPow a b n).natDegree < n + 1 := by
   refine Nat.lt_succ_of_le (Polynomial.natDegree_le_iff_coeff_eq_zero.2 fun N hN => ?_)
   exact (swapPow_coeff a b n N).2 (by omega)
 
 /- English proof (translation)
-The claim follows from `(swapPow_coeff a b (d + 2) i).1`.
+A detailed English derivation is pending.
 -/
 theorem swapR_isHomogeneous (d : ℕ) (a b : ℤ) (i : ℕ) : (swapR d a b i).IsHomogeneous (d + 2 - 2 * i) :=
   (swapPow_coeff a b (d + 2) i).1
 
 /- English proof (translation)
-The claim follows from `(swapPow_coeff a b (d + 2) i).2 h`.
+A detailed English derivation is pending.
 -/
 theorem swapR_eq_zero (d : ℕ) (a b : ℤ) {i : ℕ} (h : d + 2 < 2 * i) : swapR d a b i = 0 :=
   (swapPow_coeff a b (d + 2) i).2 h
 
 /- English proof (translation)
-Establish `hs : (aeval ![x 0 + x 1, x 2]).toRingHom (linearSum a b) = (algebraMap ℝ S a * x 0 + algebraMap ℝ S b * x 1 + x 2) + (algebraMap ℝ S b * x 0 + algebraMap ℝ S a * x 1 + x 2)`. Simplify using `only [linearSum, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add, map_mul, aeval_C, aeval_X, map_ofNat, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : (aeval ![x 0 + x 1, x 2]).toRingHom (quadraticPart a b) + (aeval ![x 0 + x 1, x 2]).toRingHom (C (((a : ℝ) - b) ^ 2)) * (x 0 * x 1) = (algebraMap ℝ S a * x 0 + algebraMap ℝ S b * x 1 + x 2) * (algebraMap ℝ S b * x 0 + algebraMap ℝ S a * x 1 + x 2)`. Simplify using `only [quadraticPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add, map_mul, map_pow, map_sub, aeval_C, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ n, Polynomial.eval₂ (aeval ![x 0 + x 1, x 2]).toRingHom (x 0 * x 1) (swapPow a b n) = (algebraMap ℝ S a * x 0 + algebraMap ℝ S b * x 1 + x 2) ^ n + (algebraMap ℝ S b * x 0 + algebraMap ℝ S a * x 1 + x 2) ^ n ∧ Polynomial.eval₂ (aeval ![x 0 + x 1, x 2]).toRingHom (x 0 * x …`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[swapPow, Polynomial.eval₂_C]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_C, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [swapPow, Polynomial.eval₂_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ n ih`. Use `⟨ih.2, ?_⟩` and prove the remaining obligations. Rewrite using `[swapPow]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_add, Polynomial.eval₂_C, Polynomial.eval₂_X, ih.1, ih.2]`. Rewrite using `[hs, hp]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(key n).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_swapPow {S : Type*} [CommRing S] [Algebra ℝ S] (a b : ℤ) (x : Fin 3 → S) (n : ℕ) :
     Polynomial.eval₂ (aeval ![x 0 + x 1, x 2]).toRingHom (x 0 * x 1) (swapPow a b n) =
@@ -190,9 +190,9 @@ theorem eval_swapPow {S : Type*} [CommRing S] [Algebra ℝ S] (a b : ℤ) (x : F
   exact (key n).1
 
 /- English proof (translation)
-Establish `h1` using `eval_swapPow a b x (d + 2)`. Rewrite `h1` using `[Polynomial.eval₂_eq_sum_range' _ (swapPow_natDegree_lt a b (d + 2))]`. Establish `h2 : aeval x (swapSum d a b) = (algebraMap ℝ S a * x 0 + algebraMap ℝ S b * x 1 + x 2) ^ (d + 2) + (algebraMap ℝ S b * x 0 + algebraMap ℝ S a * x 1 + x 2) ^ (d + 2)`. Simplify using `only [swapSum, lin, map_add, map_pow, map_sum, map_mul, aeval_C, aeval_X, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, map_one, one_mul]`. Rewrite using `[h2, ← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem aeval_swapSum {S : Type*} [CommRing S] [Algebra ℝ S] (d : ℕ) (a b : ℤ) (x : Fin 3 → S) :
     aeval x (swapSum d a b) =
@@ -207,7 +207,7 @@ theorem aeval_swapSum {S : Type*} [CommRing S] [Algebra ℝ S] (d : ℕ) (a b : 
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[← aeval_swapSum d a b X, aeval_X_left_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swapSum_eq (d : ℕ) (a b : ℤ) : swapSum d a b =
     ∑ i ∈ Finset.range (d + 3), (X 0 * X 1) ^ i * aeval ![X 0 + X 1, X 2] (swapR d a b i) := by
@@ -218,9 +218,9 @@ def swapP (d : ℕ) (a b : ℤ) : MvPolynomial (Fin 5) ℝ :=
     aeval ![X 3 + X 4, X 2] (swapR d a b i)
 
 /- English proof (translation)
-Establish `e1 : (X 0 + (X 3 + X 4 - X 0) : MvPolynomial (Fin 5) ℝ) = X 3 + X 4` using `by ring`. Establish `e2 : (X 4 * X 3 : MvPolynomial (Fin 5) ℝ) = X 3 * X 4` using `mul_comm _ _`. Establish `e3 : (X 4 + X 3 : MvPolynomial (Fin 5) ℝ) = X 3 + X 4` using `add_comm _ _`. Rewrite using `[onLine, onBase, aeval_swapSum, aeval_swapSum]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[swapP, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `geom_sum₂_mul (X 3 * X 4 : MvPolynomial (Fin 5) ℝ) (X 0 * (X 3 + X 4 - X 0)) i`. Take the linear combination `(aeval ![X 3 + X 4, X 2] (swapR d a b i)) * h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem onLine_sub_onBase_eq (d : ℕ) (a b : ℤ) :
     onLine d a b - onBase d a b = -((X 4 - X 0) * (X 3 - X 0)) * swapP d a b := by
@@ -236,7 +236,7 @@ theorem onLine_sub_onBase_eq (d : ℕ) (a b : ℤ) :
   linear_combination (aeval ![X 3 + X 4, X 2] (swapR d a b i)) * h
 
 /- English proof (translation)
-The claim follows from `(swapR_isHomogeneous d a b i).aeval _ (Fin.forall_fin_two.2 ⟨(isHomogeneous_X ℝ 3).add (isHomogeneous_X ℝ 4), isHomogeneous_X ℝ 2⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem swapR_aeval_isHomogeneous_five_vars (d : ℕ) (a b : ℤ) (i : ℕ) :
     (aeval ![X 3 + X 4, X 2] (swapR d a b i) : MvPolynomial (Fin 5) ℝ).IsHomogeneous (1 * (d + 2 - 2 * i)) :=
@@ -244,9 +244,9 @@ private theorem swapR_aeval_isHomogeneous_five_vars (d : ℕ) (a b : ℤ) (i : �
     isHomogeneous_X ℝ 2⟩)
 
 /- English proof (translation)
-Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Break down `i with _ | i` into its components or cases. Simplify using `only [Finset.range_zero, Finset.sum_empty, zero_mul]`. Conclude with `isHomogeneous_zero _ _ _`. Use `hom_mul_of (k := 2 * i) (IsHomogeneous.sum _ _ _ fun k hk => ?_) (swapR_aeval_isHomogeneous_five_vars d a b (i + 1)) fun h => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk` using `Finset.mem_range.1 hk`. Establish `h34` using `(isHomogeneous_X ℝ (3 : Fin 5)).mul (isHomogeneous_X ℝ (4 : Fin 5))`. Establish `hq` using `(isHomogeneous_X ℝ (0 : Fin 5)).mul (((isHomogeneous_X ℝ (3 : Fin 5)).add (isHomogeneous_X ℝ (4 : Fin 5))).sub (isHomogeneous_X ℝ (0 : Fin 5)))`. Conclude with `hom_cast ((h34.pow k).mul (hq.pow (i + 1 - 1 - k))) (by omega)`. Rewrite using `[swapR_eq_zero d a b (by omega), map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapP_isHomogeneous (d : ℕ) (a b : ℤ) : (swapP d a b).IsHomogeneous d := by
   refine IsHomogeneous.sum _ _ _ fun i _ => ?_
@@ -262,7 +262,7 @@ theorem swapP_isHomogeneous (d : ℕ) (a b : ℤ) : (swapP d a b).IsHomogeneous 
     · rw [swapR_eq_zero d a b (by omega), map_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[onLine_sub_onBase_eq]`. Establish `hne : (X 4 - X 0 : MvPolynomial (Fin 5) ℝ) ≠ 0` using `sub_ne_zero.2 fun e => absurd (X_injective e) (by decide)`. Conclude with `mul_left_cancel₀ hne (by rw [h]; ring)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_mul_eq_onLine_sub_onBase (d : ℕ) (a b : ℤ) (F : MvPolynomial (Fin 5) ℝ)
     (h : (X 4 - X 0) * F = onLine d a b - onBase d a b) : F = (X 0 - X 3) * swapP d a b := by
@@ -276,11 +276,11 @@ def fibPoly (m : ℕ) : MvPolynomial (Fin 2) ℝ :=
     ∫ t in (0 : ℝ)..1, (t * (1 - t)) ^ j * (1 - 4 * (t * (1 - t))) ^ (m - j)) * (X 0 ^ (2 * j) * X 1 ^ (m - j))
 
 /- English proof (translation)
-Establish `hI : ∀ t : ℝ, ((a * t + b * (1 - t)) * (a * (1 - t) + b * t)) ^ m = ∑ j ∈ Finset.range (m + 1), (m.choose j : ℝ) * (a + b) ^ (2 * j) * (a * b) ^ (m - j) * ((t * (1 - t)) ^ j * (1 - 4 * (t * (1 - t))) ^ (m - j))`. Introduce `t`. Rewrite using `[show (a * t + b * (1 - t)) * (a * (1 - t) + b * t) = t * (1 - t) * (a + b) ^ 2 + (1 - 4 * (t * (1 - t))) * (a * b) by ring, add_pow]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [mul_pow, ← pow_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hI]`. Rewrite using `[intervalIntegral.integral_finsetSum fun j _ => by apply Continuous.intervalIntegrable; fun_prop]`. Simplify using `only [fibPoly, map_sum, map_mul, map_pow, aeval_C, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Algebra.algebraMap_self, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[intervalIntegral.integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_fibPoly (m : ℕ) (a b : ℝ) :
     aeval ![a + b, a * b] (fibPoly m) = ∫ t in (0 : ℝ)..1, ((a * t + b * (1 - t)) * (a * (1 - t) + b * t)) ^ m := by
@@ -301,9 +301,9 @@ theorem aeval_fibPoly (m : ℕ) (a b : ℝ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [fibPoly, map_sum, map_mul, map_pow, aeval_C, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, algebraMap_eq]`. Use `IsHomogeneous.sum _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hj` using `Finset.mem_range.1 hj`. Establish `h0` using `isHomogeneous_X ℝ (0 : Fin 3)`. Establish `h1` using `isHomogeneous_X ℝ (1 : Fin 3)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hom_cast (((isHomogeneous_C _ _).mul (isHomogeneous_C _ _)).mul (((h0.add h1).pow (2 * j)).mul ((h0.mul h1).pow (m - j)))) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem fibPoly_aeval_isHomogeneous (m : ℕ) :
     (aeval ![X 0 + X 1, X 0 * X 1] (fibPoly m) : MvPolynomial (Fin 3) ℝ).IsHomogeneous (2 * m) := by
@@ -322,9 +322,9 @@ def swapG : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ
       (X 0 * X 1) ^ k * aeval ![X 0 + X 1, X 0 * X 1] (fibPoly (i - 1 - k)) * aeval ![X 0 + X 1, X 2] (swapR d a b i)
 
 /- English proof (translation)
-Introduce `D a b`. Break down `D with _ | d` into its components or cases. Conclude with `isHomogeneous_zero _ _ _`. Establish `h0` using `isHomogeneous_X ℝ (0 : Fin 3)`. Establish `h1` using `isHomogeneous_X ℝ (1 : Fin 3)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hom_cast (((isHomogeneous_C _ _).mul h0).mul (IsHomogeneous.sum _ _ d fun i _ => IsHomogeneous.sum _ _ d fun k hk => ?_)) (by omega)` and prove the remaining obligations. Establish `hk` using `Finset.mem_range.1 hk`. Establish `hR : (aeval ![X 0 + X 1, X 2] (swapR d a b i) : MvPolynomial (Fin 3) ℝ).IsHomogeneous (1 * (d + 2 - 2 * i))` using `(swapR_isHomogeneous d a b i).aeval _ (Fin.forall_fin_two.2 ⟨h0.add h1, isHomogeneous_X ℝ 2⟩)`. Use `hom_mul_of (((h0.mul h1).pow k).mul (fibPoly_aeval_isHomogeneous (i - 1 - k))) hR fun h => ?_` and prove the remaining obligations. Rewrite using `[swapR_eq_zero d a b (by omega), map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapG_homog : Homog swapG := by
   intro D a b
@@ -345,7 +345,7 @@ section Universal
 open GlobalTheory.LineForm
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aeval_aeval_two {σ S : Type} [CommRing S] [Algebra ℝ S] (f : σ → S) (u v : MvPolynomial σ ℝ)
     (p : MvPolynomial (Fin 2) ℝ) : aeval f (aeval ![u, v] p) = aeval ![aeval f u, aeval f v] p := by
@@ -355,9 +355,9 @@ private theorem aeval_aeval_two {σ S : Type} [CommRing S] [Algebra ℝ S] (f : 
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Rewrite using `[idx, Finset.sum_filter, Finset.sum_product]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi` using `Finset.mem_range.1 hi`. Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_idx {M : Type} [AddCommMonoid M] (d : ℕ) (f : ℕ × ℕ → M) :
     ∑ x ∈ idx d, f x = ∑ i ∈ Finset.range (d + 3), ∑ k ∈ Finset.range i, f (i, k) := by
@@ -371,7 +371,7 @@ theorem sum_idx {M : Type} [AddCommMonoid M] (d : ℕ) (f : ℕ × ℕ → M) :
   omega
 
 /- English proof (translation)
-Rewrite using `[upperParabolic, sum_idx, swapP]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [coefW, expo, map_mul, map_pow, aeval_aeval_two, map_add, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -385,9 +385,9 @@ theorem sum_monomial_coeffs_swap (d : ℕ) (a b : ℤ) : upperParabolic (idx d) 
   ring
 
 /- English proof (translation)
-Rewrite using `[downP, baseT, map_sum, ← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun x _ => ?_` and prove the remaining obligations. Simplify using `only [coefW, map_mul, map_pow, aeval_aeval_two, map_add, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (X 3 : MvPolynomial (Fin 4) ℝ) (X 1 * X 2) x.2`. Use `⟨-(c * aeval ![X 1 + X 2, X 3] (pm (expo x)) * aeval ![X 1 + X 2, X 0] (R x.1)), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(-(aeval ![X 1 + X 2, X 3] (pm (expo x)) * aeval ![X 1 + X 2, X 0] (R x.1))) * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dvd_downP_sub_baseT (d : ℕ) (R : ℕ → MvPolynomial (Fin 2) ℝ) :
     (X 3 - X 1 * X 2 : MvPolynomial (Fin 4) ℝ) ∣
@@ -401,11 +401,11 @@ theorem dvd_downP_sub_baseT (d : ℕ) (R : ℕ → MvPolynomial (Fin 2) ℝ) :
   linear_combination (-(aeval ![X 1 + X 2, X 3] (pm (expo x)) * aeval ![X 1 + X 2, X 0] (R x.1))) * hc
 
 /- English proof (translation)
-Rewrite using `[pm, map_sum]`. Use `IsHomogeneous.sum _ _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hj` using `Finset.mem_range.1 hj`. Establish `h0` using `isHomogeneous_X ℝ (0 : Fin 3)`. Establish `h1` using `isHomogeneous_X ℝ (1 : Fin 3)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (4 : MvPolynomial (Fin 3) ℝ).IsHomogeneous 0`. Use `isHomogeneous_C (Fin 3) (4 : ℝ)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Rewrite using `[map_mul, map_mul, aeval_C, algebraMap_eq]`. Simplify using `only [map_mul, map_pow, map_sub, map_ofNat, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hq : ((X 0 + X 1) ^ 2 - 4 * (X 0 * X 1) : MvPolynomial (Fin 3) ℝ).IsHomogeneous 2` using `(hom_cast ((h0.add h1).pow 2) (by omega)).sub (hom_cast (h4.mul (h0.mul h1)) (by omega))`. Conclude with `hom_cast (((isHomogeneous_C _ _).mul ((h0.mul h1).pow (m - j))).mul (hq.pow j)) (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pm_aeval_isHomogeneous (m : ℕ) :
     (aeval ![X 0 + X 1, X 0 * X 1] (pm m) : MvPolynomial (Fin 3) ℝ).IsHomogeneous (2 * m) := by
@@ -425,9 +425,9 @@ theorem pm_aeval_isHomogeneous (m : ℕ) :
   exact hom_cast (((isHomogeneous_C _ _).mul ((h0.mul h1).pow (m - j))).mul (hq.pow j)) (by omega)
 
 /- English proof (translation)
-Establish `h0` using `isHomogeneous_X ℝ (0 : Fin 3)`. Establish `h1` using `isHomogeneous_X ℝ (1 : Fin 3)`. Rewrite using `[baseT, map_sum]`. Use `IsHomogeneous.sum _ _ _ fun x hx => ?_` and prove the remaining obligations. Establish `hk : x.2 < x.1` using `(Finset.mem_filter.1 hx).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_pow, aeval_aeval_two, aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Establish `hR : (aeval ![X 0 + X 1, X 2] (swapR d a b x.1) : MvPolynomial (Fin 3) ℝ).IsHomogeneous (1 * (d + 2 - 2 * x.1))` using `(swapR_isHomogeneous d a b x.1).aeval _ (Fin.forall_fin_two.2 ⟨h0.add h1, isHomogeneous_X ℝ 2⟩)`. Use `hom_mul_of (((h0.mul h1).pow x.2).mul (pm_aeval_isHomogeneous (expo x))) hR fun h => ?_` and prove the remaining obligations. Rewrite `h` using `[expo]`. Rewrite using `[swapR_eq_zero d a b (by omega), map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseT_aeval_isHomogeneous (d : ℕ) (a b : ℤ) :
     (aeval ![X 0 + X 1, X 0 * X 1, X 2] (baseT d (swapR d a b)) : MvPolynomial (Fin 3) ℝ).IsHomogeneous d := by
@@ -446,9 +446,7 @@ theorem baseT_aeval_isHomogeneous (d : ℕ) (a b : ℤ) :
   rw [swapR_eq_zero d a b (by omega), map_zero]
 
 /- English proof (translation)
-Use `⟨swapR, fun d a b => ⟨fun F hF => ?_, ?_, dvd_downP_sub_baseT d _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[sum_monomial_coeffs_swap]`. Conclude with `eq_of_mul_eq_onLine_sub_onBase d a b F hF`. Rewrite using `[sum_monomial_coeffs_swap]`. Conclude with `swapP_isHomogeneous d a b`.
-
-Conclude with `hom_cast (((isHomogeneous_C _ _).mul (isHomogeneous_X ℝ (0 : Fin 3))).mul (baseT_aeval_isHomogeneous d a b)) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_swap_coefficients : ∃ R : ℕ → ℤ → ℤ → ℕ → MvPolynomial (Fin 2) ℝ, ∀ (d : ℕ) (a b : ℤ),
     (∀ F : MvPolynomial (Fin 5) ℝ, (X 4 - X 0) * F = onLine d a b - onBase d a b →

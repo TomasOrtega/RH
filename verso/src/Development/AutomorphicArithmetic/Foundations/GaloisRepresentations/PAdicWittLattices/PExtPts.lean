@@ -5,15 +5,15 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `W Z B _ p _ f g hfg hpt`. Set `X' : Over B` to `Over.mk (f ≫ p)`. Set `Y' : Over B` to `Over.mk p`. Set `f' : X' ⟶ Y'` to `Over.homMk f`. Set `g' : X' ⟶ Y'` to `Over.homMk g hfg.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsSeparated Y'.hom` using `‹_›`. Establish `hsurj : Surjective (equalizer.ι f' g').left`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Set `K` to `W.residueField x`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `Ω` to `AlgebraicClosure K`. Set `y : Spec (CommRingCat.of Ω) ⟶ W` to `Spec.map (CommRingCat.ofHom (algebraMap K Ω)) ≫ W.fromSpecResidueField x`. Establish `hy : y ≫ f = y ≫ g` using `hpt Ω y`. Set `U' : Over B` to `Over.mk (y ≫ f ≫ p)`. Set `y' : U' ⟶ X'` to `Over.homMk y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hy' : y' ≫ f' = y' ≫ g'` using `by ext1`. Conclude with `hy`. Set `pt : Spec (CommRingCat.of Ω)` to `IsLocalRing.closedPoint Ω`. Use `⟨(equalizer.lift y' hy').left pt, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, equalizer.lift_ι]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (Spec.map (CommRingCat.ofHom (algebraMap K Ω)) ≫ W.fromSpecResidueField x) pt = x`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Use `isIso_of_isClosedImmersion_of_surjective (Y := W) (equalizer.ι f' g').left` as an intermediate fact. Rewrite using `[← cancel_epi (equalizer.ι f' g').left]`. Conclude with `congr($(equalizer.condition f' g').left)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pExtPts :
     ExtPts := by

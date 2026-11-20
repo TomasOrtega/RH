@@ -20,7 +20,7 @@ namespace GlobalTheory.MBLow.TrSec
 variable {S : Scheme.{0}} (P : PolAV S)
 
 /- English proof (translation)
-The claim follows from `LB.wchart_le P.L _ j 0`.
+A detailed English derivation is pending.
 -/
 lemma chart_le (j : Fin 1 → P.L.ι) :
     (LPow P.A P.L ((1 : ℕ) : ℤ) (baseOver S)).U j ≤ (snd (baseOver S) P.A).left ⁻¹ᵁ P.L.U (j 0) :=
@@ -35,14 +35,14 @@ def thSec (s : P.L.Sec) : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) (baseOver S)) w
     rfl
 
 /- English proof (translation)
-Introduce `i h`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 lemma projectionPullbackSectionBaseProduct_isInverseImage (s : P.L.Sec) : IsPolAVSectionInverseImage P (baseOver S) s (thSec P s) := by
   intro i h
   rfl
 
 /- English proof (translation)
-Establish `e : (λ_ P.A).inv ≫ snd (baseOver S) P.A = 𝟙 P.A` using `(λ_ P.A).inv_hom_id`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma snd_inv (p : P.A.left) : (snd (baseOver S) P.A).left.base ((λ_ P.A).inv.left.base p) = p := by
   have e : (λ_ P.A).inv ≫ snd (baseOver S) P.A = 𝟙 P.A := (λ_ P.A).inv_hom_id
@@ -50,11 +50,9 @@ lemma snd_inv (p : P.A.left) : (snd (baseOver S) P.A).left.base ((λ_ P.A).inv.l
   rfl
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hp`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => k, ?_⟩` and prove the remaining obligations. Establish `hq : (snd (baseOver S) P.A).left.base ((λ_ P.A).inv.left.base p) = p` using `snd_inv P p`. Use `show _ ∈ (baseOver S ⊗ P.A).left.basicOpen (((baseOver S ⊗ P.A).left.presheaf.map (homOfLE (chart_le P (fun _ => k))).op).hom (((snd (baseOver S) P.A).left.app (P.L.U k)).hom (s.f k)))`. Rewrite using `[Scheme.basicOpen_res, ← Scheme.preimage_basicOpen]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ LB.wchart P.L _ _`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show (snd (baseOver S) P.A).left.base ((λ_ P.A).inv.left.base p) ∈ (P.L.U k : Set P.A.left)`. Rewrite using `[hq]`.
-
-Conclude with `P.A.left.basicOpen_le _ hk`. Use `show (snd (baseOver S) P.A).left.base ((λ_ P.A).inv.left.base p) ∈ P.A.left.basicOpen (s.f k)`. Rewrite using `[hq]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nonzero_thSec (s : P.L.Sec) (p : P.A.left) (hp : p ∈ nonzeroLocus s) :
     (λ_ P.A).inv.left.base p ∈ nonzeroLocus (thSec P s) := by

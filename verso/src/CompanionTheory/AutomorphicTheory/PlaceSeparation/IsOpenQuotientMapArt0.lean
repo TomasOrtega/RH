@@ -21,7 +21,7 @@ def art0 : Ideles E →* Gab E Ω :=
     ((artinMap E Ω).comp (GroundTheory.Global.IdeleClassGroup.mk E))
 
 /- English proof (translation)
-Establish `h1 : IsOpenQuotientMap (GroundTheory.Global.IdeleClassGroup.mk E)` using `QuotientGroup.isOpenQuotientMap_mk`. Establish `h2 : IsOpenQuotientMap (QuotientGroup.mk : GroundTheory.Global.IdeleClassGroup E → GroundTheory.Global.IdeleClassGroup E ⧸ Subgroup.connectedComponentOfOne (GroundTheory.Global.IdeleClassGroup E))` using `QuotientGroup.isOpenQuotientMap_mk`. Establish `h3` using `(artinQuotientEquiv (K := E) (Ω := Ω)).toHomeomorph.isOpenQuotientMap`. Establish `h4` using `(topologicalAbelianizationEquiv E Ω).symm.toHomeomorph.isOpenQuotientMap`. Conclude with `h4.comp (h3.comp (h2.comp h1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenQuotientMap_art0 : IsOpenQuotientMap (art0 E Ω) := by
   have h1 : IsOpenQuotientMap (GroundTheory.Global.IdeleClassGroup.mk E) := QuotientGroup.isOpenQuotientMap_mk
@@ -32,7 +32,7 @@ theorem isOpenQuotientMap_art0 : IsOpenQuotientMap (art0 E Ω) := by
   exact h4.comp (h3.comp (h2.comp h1))
 
 /- English proof (translation)
-Rewrite using `[← comap_connectedComponent, ← ker_artinMap (K := E) (Ω := Ω)]`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_comap, MonoidHom.mem_ker]`. Conclude with `(topologicalAbelianizationEquiv E Ω).symm.toMulEquiv.map_eq_one_iff`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_art0 : (art0 E Ω).ker = ((diagUnits E).range ⊔ infConn E).topologicalClosure := by
   rw [← comap_connectedComponent, ← ker_artinMap (K := E) (Ω := Ω)]
@@ -46,14 +46,14 @@ def res (L : IntermediateField E Ω) [IsAbelianGalois E L] : Gab E Ω →* (L �
   (restrictAb L (le_maximalAbelianExtension L)).comp (topologicalAbelianizationEquiv E Ω).toMulEquiv.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `restrictAb_topologicalAbelianizationEquiv L (le_maximalAbelianExtension L) σ`.
+A detailed English derivation is pending.
 -/
 theorem res_toAb (L : IntermediateField E Ω) [IsAbelianGalois E L] (σ : G E Ω) :
     res L (toAb E Ω σ) = AlgEquiv.restrictNormalHom L σ :=
   restrictAb_topologicalAbelianizationEquiv L (le_maximalAbelianExtension L) σ
 
 /- English proof (translation)
-The claim follows from `(continuous_restrictAb L (le_maximalAbelianExtension L)).comp (topologicalAbelianizationEquiv E Ω).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_res (L : IntermediateField E Ω) [IsAbelianGalois E L] : Continuous (res L) :=
   (continuous_restrictAb L (le_maximalAbelianExtension L)).comp (topologicalAbelianizationEquiv E Ω).continuous
@@ -65,7 +65,7 @@ theorem localIdele_eq (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)
     localIdele E v x = IdeleGroup.finiteEmbedding v x := rfl
 
 /- English proof (translation)
-Rewrite using `[← restrictAb_artinMap_finiteEmbedding L v x, localIdele_eq]`. Conclude with `congrArg (restrictAb L (le_maximalAbelianExtension L)) ((topologicalAbelianizationEquiv E Ω).apply_symm_apply _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_art0 (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelianGalois E L]
     (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ) :
@@ -76,20 +76,18 @@ theorem res_art0 (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelian
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 /- English proof (translation)
-The claim follows from `QuotientGroup.continuous_mk`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toAb : Continuous (toAb E Ω) := QuotientGroup.continuous_mk
 
 /- English proof (translation)
-Take `⟨σ, rfl⟩` from `toAb_surjective g`. Set `H' : ClosedSubgroup (Ω ≃ₐ[E] Ω)` to `⟨H.comap (toAb E Ω), hH.preimage continuous_toAb⟩`. Establish `hfix` using `InfiniteGalois.fixingSubgroup_fixedField H'`. Establish `: σ ∈ (IntermediateField.fixedField H'.1).fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `hab : y ∈ maximalAbelianExtension E Ω`. Use `IntermediateField.fixedField_le (fun τ hτ => ?_) hy` and prove the remaining obligations. Use `show toAb E Ω τ ∈ H`. Rewrite using `[show toAb E Ω τ = 1 from (QuotientGroup.eq_one_iff τ).2 hτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `H.one_mem`. Take `⟨L0, _, _, hL0⟩` from `exists_finite_abelian_mem hab`. Set `L : IntermediateField E Ω` to `L0 ⊓ IntermediateField.fixedField H'.1`. Establish `: FiniteDimensional E L` using `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : L ≤ L0)).toLinearMap (IntermediateField.inclusion (inf_le_left : L ≤ L0)).injective`. Establish `: IsAbelianGalois E L` using `IsAbelianGalois.of_algHom (IntermediateField.inclusion (inf_le_left : L ≤ L0))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `h L fun a ha => by`. Take `⟨τ, rfl⟩` from `toAb_surjective a`. Rewrite using `[MonoidHom.mem_ker, res_toAb, ← MonoidHom.mem_ker, L.restrictNormalHom_ker, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `z hz`. Conclude with `(IntermediateField.mem_fixedField_iff _ z).1 hz.2 τ ha`.
-
-Rewrite `h1` using `[res_toAb, ← MonoidHom.mem_ker, L.restrictNormalHom_ker, IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `h1 y ⟨hL0, hy⟩`. Rewrite `this` using `[hfix]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_res {H : Subgroup (Gab E Ω)} (hH : IsClosed (H : Set (Gab E Ω))) {g : Gab E Ω}
     (h : ∀ (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelianGalois E L], H ≤ (res L).ker →
@@ -123,7 +121,7 @@ theorem mem_of_forall_res {H : Subgroup (Gab E Ω)} (hH : IsClosed (H : Set (Gab
   exact this
 
 /- English proof (translation)
-The claim follows from `le_antisymm (fun _ hg => mem_of_forall_res hH' fun L _ _ hL => (h L).2 hL hg) (fun _ hg => mem_of_forall_res hH fun L _ _ hL => (h L).1 hL hg)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_forall_res {H H' : Subgroup (Gab E Ω)} (hH : IsClosed (H : Set (Gab E Ω)))
     (hH' : IsClosed (H' : Set (Gab E Ω)))
@@ -137,14 +135,14 @@ instance : T2Space (Gab E Ω) := by
   exact (topologicalAbelianizationEquiv E Ω).symm.toHomeomorph.t2Space
 
 /- English proof (translation)
-The claim follows from `(hS.isCompact.image continuous_toAb).isClosed`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_map_toAb {S : Subgroup (G E Ω)} (hS : IsClosed (S : Set (G E Ω))) :
     IsClosed ((S.map (toAb E Ω) : Subgroup (Gab E Ω)) : Set (Gab E Ω)) :=
   (hS.isCompact.image continuous_toAb).isClosed
 
 /- English proof (translation)
-The claim follows from `have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := E) L⟩`.
+A detailed English derivation is pending.
 -/
 theorem isAlgClosure_top (L : IntermediateField E Ω) : IsAlgClosure L Ω :=
   have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E
@@ -153,11 +151,9 @@ theorem isAlgClosure_top (L : IntermediateField E Ω) : IsAlgClosure L Ω :=
 variable {v : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Use `isAlgClosure_top L` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[eq_bot_iff]`. Introduce `τ hτ`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, hσ, rfl⟩` from `exists_lift_ine hw hτ`. Rewrite using `[← res_toAb]`. Conclude with `h ⟨σ, hσ, rfl⟩`. Introduce and unpack `h _ ⟨σ, hσ, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, res_toAb, ← Subgroup.mem_bot, ← h]`.
-
-Conclude with `res_mem_inertia hw hσ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ine_le_ker_iff (L : IntermediateField E Ω) [FiniteDimensional E L] [IsAbelianGalois E L]
     {w : HeightOneSpectrum (𝓞 L)} (hw : IsPlaceOver A w) :
@@ -175,13 +171,11 @@ theorem ine_le_ker_iff (L : IntermediateField E Ω) [FiniteDimensional E L] [IsA
     exact res_mem_inertia hw hσ
 
 /- English proof (translation)
-Use `eq_of_forall_res ?_ (isClosed_map_toAb (isClosed_Ine A)) fun L _ _ => ?_` and prove the remaining obligations. Conclude with `((isCompact_unitFiltrationUnits 0).image ((isOpenQuotientMap_art0 E Ω).continuous.comp (IdeleGroup.continuous_finiteEmbedding v))).isClosed`. Use `isAlgClosure_top L` as an intermediate fact. Take `⟨w, hw, hwv⟩` from `exists_place_between (L := L) hA`. Rewrite using `[ine_le_ker_iff L hw, inertia_eq_bot_iff v w]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ramificationIdx_eq_one_of_units_le_ker_localSymbol (v := v) (fun x hx => ?_) w` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, ← res_art0]`. Conclude with `h ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `h _ ⟨x, hx, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, res_art0]`. Use `units_le_ker_localSymbol L v ⟨w, hwv⟩ h ?_` and prove the remaining obligations. Establish `h1` using `mem_unitFiltrationUnits_zero_iff_valued.1 hx`. Establish `h2` using `mem_unitFiltrationUnits_zero_iff_valued.1 (Subgroup.inv_mem _ hx)`.
-
-Conclude with `(Submonoid.mem_units_iff _ _).2 ⟨h1.le, h2.le⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_units_eq (hA : IsPlaceOver A v) :
     (unitFiltrationUnits (v.adicCompletion E) 0).map ((art0 E Ω).comp (localIdele E v)) =
@@ -205,9 +199,9 @@ theorem map_units_eq (hA : IsPlaceOver A v) :
       exact (Submonoid.mem_units_iff _ _).2 ⟨h1.le, h2.le⟩
 
 /- English proof (translation)
-Use `mem_of_forall_res (isClosed_map_toAb (isClosed_Ine A)) fun L _ _ hL => ?_` and prove the remaining obligations. Use `isAlgClosure_top L` as an intermediate fact. Take `⟨w, hw, hwv⟩` from `exists_place_between (L := L) hA`. Rewrite `hL` using `[ine_le_ker_iff L hw]`. Rewrite using `[map_mul, map_inv, res_toAb, res_art0, localSymbol_eq_arithFrobAt v w ((inertia_eq_bot_iff v w).1 hL) hπ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(res_isArithFrobAt hw hσ).mul_inv_mem_inertia (IsArithFrobAt.arithFrobAt (𝓞 E) (L ≃ₐ[E] L) w.asIdeal)`. Rewrite `h` using `[hL, Subgroup.mem_bot, mul_inv_eq_one]`. Rewrite using `[h, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem unif_frob (hA : IsPlaceOver A v) {π : (v.adicCompletion E)ˣ} (hπ : ord (π : v.adicCompletion E) = 1)
     {σ : G E Ω} (hσ : IsFrob (F := E) A (normV v) σ) :
@@ -223,11 +217,11 @@ theorem unif_frob (hA : IsPlaceOver A v) {π : (v.adicCompletion E)ˣ} (hπ : or
   rw [h, inv_mul_cancel]
 
 /- English proof (translation)
-Use `eq_of_forall_res (Subgroup.isClosed_topologicalClosure _) (isClosed_map_toAb (isClosed_Dec A)) fun L _ _ => ?_` and prove the remaining obligations. Use `isAlgClosure_top L` as an intermediate fact. Take `⟨w, hw, hwv⟩` from `exists_place_between (L := L) hA`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨σ, hσ, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨x, hx⟩` from `exists_localSymbol_eq (v := v) ⟨w, hwv⟩ (res_mem_stabilizer hw hσ)`. Rewrite using `[MonoidHom.mem_ker, res_toAb, ← hx, ← res_art0]`. Conclude with `h (Subgroup.le_topologicalClosure _ ⟨x, rfl⟩)`. Introduce `h`. Establish `: T2Space (L ≃ₐ[E] L)` using `krullTopology_t2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.topologicalClosure_minimal _ ?_ (isClosed_singleton.preimage (continuous_res L))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨σ, hσ, e⟩` from `exists_lift_dec hw (localSymbol_mem_stabilizer L v ⟨w, hwv⟩ x)`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, res_art0, ← e, ← res_toAb]`. Conclude with `h ⟨σ, hσ, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_range_eq (hA : IsPlaceOver A v) :
     ((art0 E Ω).comp (localIdele E v)).range.topologicalClosure = (Dec (F := E) A).map (toAb E Ω) := by
@@ -249,7 +243,7 @@ theorem closure_range_eq (hA : IsPlaceOver A v) :
     exact h ⟨σ, hσ, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← map_units_eq hA]`. Conclude with `⟨fun ⟨x, hx, e⟩ => ⟨x, mem_unitFiltrationUnits_zero_iff_valued.2 hx, e⟩, fun ⟨x, hx, e⟩ => ⟨x, mem_unitFiltrationUnits_zero_iff_valued.1 hx, e⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem art0_unit_iff (hA : IsPlaceOver A v) (g : Gab E Ω) :
     (∃ x, IsUnitAt v x ∧ art0 E Ω (localIdele E v x) = g) ↔ g ∈ (Ine (F := E) A).map (toAb E Ω) := by
@@ -258,13 +252,13 @@ theorem art0_unit_iff (hA : IsPlaceOver A v) (g : Gab E Ω) :
     fun ⟨x, hx, e⟩ => ⟨x, mem_unitFiltrationUnits_zero_iff_valued.1 hx, e⟩⟩
 
 /- English proof (translation)
-Take `⟨π, hπ, hπv⟩` from `exists_ord_eq_one_valued v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨F, hF⟩` from `exists_isFrob hA`. Establish `hu : IsUnitAt v (π⁻¹ * x)`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hπv, hx, inv_mul_cancel₀ WithZero.exp_ne_zero]`. Take `⟨ι, hι, e⟩` from `Subgroup.mul_mem _ (unif_frob hA hπ hF) ((art0_unit_iff hA _).1 ⟨_, hu, rfl⟩)`. Use `⟨F * ι, isFrob_mul_of_mem_Ine hF hι, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e, map_mul, map_mul, map_inv, map_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Introduce and unpack `⟨σ, hσ, rfl⟩`. Take `⟨u, hu, e⟩` from `(art0_unit_iff hA _).2 (unif_frob hA hπ hσ)`. Use `⟨π * u⁻¹, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsUnifAt`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hπv, hu, inv_one, mul_one]`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, e] group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem art0_unif_iff (hA : IsPlaceOver A v) (g : Gab E Ω) :
     (∃ x, IsUnifAt v x ∧ art0 E Ω (localIdele E v x) = g) ↔
@@ -289,7 +283,7 @@ theorem art0_unif_iff (hA : IsPlaceOver A v) (g : Gab E Ω) :
       group
 
 /- English proof (translation)
-The claim follows from `(Homeomorph.inv (Gab E Ω)).isOpenQuotientMap.comp (isOpenQuotientMap_art0 E Ω) ker := by rw [← ker_art0 E Ω] ext x simp only [MonoidHom.mem_ker, MonoidHom.inv_apply, inv_eq_one] ine v A hA g := by simp only [MonoidHom.inv_apply, inv_eq_iff_eq_inv] rw [art0_unit_iff hA, Subgroup.i …`.
+A detailed English derivation is pending.
 -/
 theorem isGlobalArtin_inv : IsGlobalArtin (art0 E Ω)⁻¹ where
   quot := (Homeomorph.inv (Gab E Ω)).isOpenQuotientMap.comp (isOpenQuotientMap_art0 E Ω)
@@ -315,7 +309,7 @@ theorem isGlobalArtin_inv : IsGlobalArtin (art0 E Ω)⁻¹ where
       exact ⟨x⁻¹, by simp⟩
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _` and use `⟨(art0 E Ω)⁻¹, isGlobalArtin_inv⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem globalArtin : GlobalTheory.Published.GlobalArtinReciprocity := fun E Ω _ _ _ _ _ =>
   ⟨(art0 E Ω)⁻¹, isGlobalArtin_inv⟩

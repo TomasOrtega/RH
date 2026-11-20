@@ -26,7 +26,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.RunJoin
 
 /- English proof (translation)
-Take `⟨C0, hC0, H⟩` from `GlobalTheory.T.meanLogSupNorm_lower_bound_of_coreLaws`. Conclude with `⟨C0, hC0, fun D T h large₂ CA hP j w => H D T.toCore h.toLawsCore (GlobalTheory.RunIn.gamAt_of_lawsCore D T.toCore h.toLawsCore) large₂ hP.2.2.2.2.1 j w C0 2 le_rfl le_rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lamwAt_absolute : ∃ CL : ℝ, 0 < CL ∧ ∀ (D : D7) (T : Top D) (h : LawsP T) (large₂ : SizeData₂ D) (CA : ℝ), ParA large₂ CA → ∀ (j : ℕ) (w : WeightFamilies.Wt D j), LAMwAt large₂ (recB h.toLawsCore) j w CL 2 := by
   obtain ⟨C0, hC0, H⟩ := GlobalTheory.T.meanLogSupNorm_lower_bound_of_coreLaws

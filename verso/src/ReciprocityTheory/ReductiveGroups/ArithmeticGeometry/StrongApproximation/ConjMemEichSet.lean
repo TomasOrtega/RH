@@ -13,9 +13,9 @@ variable (hσ : ∀ x, σ (σ x) = x) (hJ : Jᵀ = J.map σ)
 include hσ hJ
 
 /- English proof (translation)
-Establish `hfe` using `hf_fe hσ hJ he hff hef`. Establish `heu : hf σ J e u = 0` using `by rw [← hf_symm hσ hJ, hue, map_zero]`. Establish `hfu : hf σ J f u = 0` using `by rw [← hf_symm hσ hJ, huf, map_zero]`. Rewrite using `[ext_iff_mulVec]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, eich_mulVec, tor_mulVec, tor_mulVec, eich_mulVec]`. Simplify using `only [hf_add_left, hf_sub_left, hf_smul_left, hf_smul_right, hσ, he, hff, hef, hfe, hue, huf, heu, hfu, mul_zero, mul_one, add_zero, sub_zero, zero_add]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(-(hf σ J x e * u i) - l * c * hf σ J x e * e i) * hml`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tor_conj_e {e f : ι → K} (he : hf σ J e e = 0) (hff : hf σ J f f = 0) (hef : hf σ J e f = 1)
     {l m c : K} {u : ι → K} (hml : m * σ l = 1) (hue : hf σ J u e = 0) (huf : hf σ J u f = 0) :
@@ -33,9 +33,9 @@ theorem tor_conj_e {e f : ι → K} (he : hf σ J e e = 0) (hff : hf σ J f f = 
   linear_combination (-(hf σ J x e * u i) - l * c * hf σ J x e * e i) * hml
 
 /- English proof (translation)
-Take `⟨u, c, hue, huf, hc, rfl⟩` from `hM`. Use `⟨_, ⟨σ l • u, l * σ l * c, ?_, ?_, ?_, rfl⟩, tor_conj_e hσ hJ he hff hef hml hue huf⟩` and prove the remaining obligations. Rewrite using `[hf_smul_left, hue, mul_zero]`. Rewrite using `[hf_smul_left, huf, mul_zero]`. Rewrite using `[hf_smul_left, hf_smul_right, map_mul, map_mul, hσ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(l * σ l) * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conj_mem_along {e f : ι → K} (he : hf σ J e e = 0) (hff : hf σ J f f = 0)
     (hef : hf σ J e f = 1) {l m : K} (hml : m * σ l = 1) {M : Matrix ι ι K}
@@ -52,9 +52,9 @@ variable {e f : ι → K} (he : hf σ J e e = 0) (hff : hf σ J f f = 0) (hef : 
 include he hff hef
 
 /- English proof (translation)
-Break down `hM with hM | hM` into its components or cases. Take `⟨M', h1, h2⟩` from `conj_mem_along hσ hJ he hff hef hml hM`. Conclude with `⟨M', Or.inl h1, h2⟩`. Establish `hfe` using `hf_fe hσ hJ he hff hef`. Establish `hlm : l * σ m = 1` using `by rw [← hσ l, ← map_mul, mul_comm, hml, map_one]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M', h1, h2⟩` from `conj_mem_along hσ hJ hff he hfe hlm hM`. Rewrite `h2` using `[← tor_swap]`. Conclude with `⟨M', Or.inr h1, h2⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem conj_mem_eichSet {l m : K} (hml : m * σ l = 1) {M : Matrix ι ι K}
     (hM : M ∈ eichSet σ J e f) :
@@ -69,9 +69,9 @@ theorem conj_mem_eichSet {l m : K} (hml : m * σ l = 1) {M : Matrix ι ι K}
     exact ⟨M', Or.inr h1, h2⟩
 
 /- English proof (translation)
-Proceed by induction on `hn using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨M', h1, h2⟩` from `conj_mem_eichSet hσ hJ he hff hef hml hx`. Conclude with `⟨M', Submonoid.subset_closure h1, h2⟩`. Consider the case `one => exact ⟨1, Submonoid.one_mem _, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨x', hx', hx2⟩` from `hx`. Take `⟨y', hy', hy2⟩` from `hy`. Use `⟨x' * y', Submonoid.mul_mem _ hx' hy', ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hx2, Matrix.mul_assoc, hy2, Matrix.mul_assoc]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_closure {l m : K} (hml : m * σ l = 1) {n : Matrix ι ι K}
     (hn : n ∈ Submonoid.closure (eichSet σ J e f)) :
@@ -88,7 +88,7 @@ theorem conj_closure {l m : K} (hml : m * σ l = 1) {n : Matrix ι ι K}
     rw [← Matrix.mul_assoc, hx2, Matrix.mul_assoc, hy2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[tor_hm, tor_hm, tor_hm, hm_mul hσ hJ he hff hef]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tor_mul (l m l' m' : K) :
     tor σ J e f l m * tor σ J e f l' m' = tor σ J e f (l * l') (m * m') := by
@@ -98,7 +98,7 @@ theorem tor_mul (l m l' m' : K) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[tor]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tor_one : tor σ J e f 1 1 = 1 := by
   simp [tor]
@@ -116,22 +116,22 @@ variable (hσ : ∀ x, σ (σ x) = x) (hJ : Jᵀ = J.map σ) {e f : ι → K} (h
 include hσ hJ he hff hef
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨n, hn, 1, 1, by rw [map_one, one_mul], by rw [tor_one hσ hJ he hff hef, Matrix.mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_of_closure {n : Matrix ι ι K} (hn : n ∈ Submonoid.closure (eichSet σ J e f)) :
     n ∈ Good σ J e f :=
   ⟨n, hn, 1, 1, by rw [map_one, one_mul], by rw [tor_one hσ hJ he hff hef, Matrix.mul_one]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Submonoid.one_mem _, l, m, hml, by rw [Matrix.one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_tor {l m : K} (hml : m * σ l = 1) : tor σ J e f l m ∈ Good σ J e f :=
   ⟨1, Submonoid.one_mem _, l, m, hml, by rw [Matrix.one_mul]⟩
 
 /- English proof (translation)
-Take `⟨n, hn, l, m, hml, rfl⟩` from `hg`. Take `⟨n', hn', l', m', hml', rfl⟩` from `hg'`. Take `⟨n'', hn'', h⟩` from `conj_closure hσ hJ he hff hef hml hn'`. Use `⟨n * n'', Submonoid.mul_mem _ hn hn'', l * l', m * m', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(m' * σ l') * hml + hml'`. Rewrite using `[← tor_mul hσ hJ he hff hef, Matrix.mul_assoc n, ← Matrix.mul_assoc (tor σ J e f l m), h]`. Simplify using `only [Matrix.mul_assoc]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem good_mul {g g' : Matrix ι ι K} (hg : g ∈ Good σ J e f) (hg' : g' ∈ Good σ J e f) :
     g * g' ∈ Good σ J e f := by
@@ -144,9 +144,9 @@ theorem good_mul {g g' : Matrix ι ι K} (hg : g ∈ Good σ J e f) (hg' : g' �
     simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨n, hn, l, m, hml, rfl⟩` from `hg`. Take `⟨ni, hni, h1, h2⟩` from `closure_inv hσ hJ he hff hn`. Establish `hlm : l * σ m = 1` using `by rw [← hσ l, ← map_mul, mul_comm, hml, map_one]`. Establish `hml' : σ l * σ (σ m) = 1` using `by rw [hσ, mul_comm, hml]`. Use `⟨tor σ J e f (σ m) (σ l) * ni, good_mul hσ hJ he hff hef (good_tor hσ hJ he hff hef hml') (good_of_closure hσ hJ he hff hef hni), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc ni, h1, Matrix.one_mul, tor_mul hσ hJ he hff hef, mul_comm (σ m), hlm, mul_comm (σ l) m, hml, tor_one hσ hJ he hff hef]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (tor σ J e f l m), tor_mul hσ hJ he hff hef, hlm, hml, tor_one hσ hJ he hff hef, Matrix.one_mul, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_inv {g : Matrix ι ι K} (hg : g ∈ Good σ J e f) :
     ∃ g' ∈ Good σ J e f, g' * g = 1 ∧ g * g' = 1 := by
@@ -162,9 +162,9 @@ theorem good_inv {g : Matrix ι ι K} (hg : g ∈ Good σ J e f) :
       hml, tor_one hσ hJ he hff hef, Matrix.one_mul, h2]
 
 /- English proof (translation)
-Take `⟨n, hn, l, m, hml, rfl⟩` from `hg`. Establish `hn1 : n.det = 1` using `(closure_sub hσ hJ he hff hn).1`. Rewrite `hdet` using `[det_mul, hn1, one_mul, tor_det hσ hJ he hff hef]`. Establish `hl : σ l = l`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨di, hdi⟩` from `hδ.exists_right_inv`. Conclude with `Submonoid.mul_mem _ hn (tor_mem_closure hσ hJ he hff hef hσδ hdi hl hdet)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_SU {δ : K} (hδ : IsUnit δ) (hσδ : σ δ = -δ) {g : Matrix ι ι K}
     (hg : g ∈ Good σ J e f) (hdet : g.det = 1) : g ∈ Submonoid.closure (eichSet σ J e f) := by

@@ -5,7 +5,7 @@ open MvPolynomial GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.G
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.trace_pow_eq_sum_smul_coeff_charpolyRev_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FTracePowEqSumSmulCoeffCharpolyRevPow.lean&line=105#L105)
 -/

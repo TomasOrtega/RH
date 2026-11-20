@@ -11,7 +11,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `μ j w _ _` and use `by rw [hI, Idx.IjIdx_of_subsingleton] jw_def := fun μ j w _ _ => by rw [hj, Idx.jwIdx_of_subsingleton]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idxDefs_zero (D : D7) (X : DivX D) [∀ j, Subsingleton (X.MjH j).V] [∀ μ j, Subsingleton (D.what₂.MtL μ j)]
     (hI : ∀ μ j w, D.what₂.Ij μ j w = 0) (hj : ∀ μ j w, D.what₂.jw μ j w = 0) : IdxDefs D X where
@@ -19,13 +19,13 @@ theorem idxDefs_zero (D : D7) (X : DivX D) [∀ j, Subsingleton (X.MjH j).V] [�
   jw_def := fun μ j w _ _ => by rw [hj, Idx.jwIdx_of_subsingleton]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ h` and use `absurd (Subsingleton.elim _ _) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lamDef_zero (D : D7) [∀ j, Subsingleton (D.what₂.Mj j)] : DV.LamDef D :=
   fun _ _ _ _ _ h => absurd (Subsingleton.elim _ _) h
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Unfold `RowSide.kapOf`. Apply the tactic sequence `split_ifs <;> simp`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kapOf_zero {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
     (S : RowSide D EE) {n : ℕ} (ty : Fin n → D.what₂.FT) (hn : n = 0) : S.kapOf ty = 1 := by
@@ -34,24 +34,24 @@ theorem kapOf_zero {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpa
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `kapOf_zero _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem kapSharp_zero (D : D7) (h : D.what₂.Drows = 0) : kapSharp D = 1 := kapOf_zero _ _ h
 
 /- English proof (translation)
-The claim follows from `hk.trans (kapSharp_zero D h).symm`.
+A detailed English derivation is pending.
 -/
 theorem kapRBase_zero {D : D7} (X : DivX D) (h : D.what₂.Drows = 0) (hk : X.kapR D.what₂.embLL = 1) : DV.KapRBase X :=
   hk.trans (kapSharp_zero D h).symm
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `⟨locLe_of_subsingleton _ _ _ _, locLe_of_subsingleton _ _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem nuUnserved_zero {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (K : G.Consts) [∀ u, Subsingleton (D.div.Nu u).V] :
     NuUnserved X K := fun _ _ _ _ => ⟨locLe_of_subsingleton _ _ _ _, locLe_of_subsingleton _ _ _ _⟩
 
 /- English proof (translation)
-Introduce `u μ` and use `⟨fun u' μ' i hi c => by rw [h u μ, ← h u' μ'] exact (D.chTw u' μ').dvd_DGam i hi c, h u μ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem dGamDef_of (D : D7) (h : ∀ u μ, (D.chTw u μ).DGam = (D.mem D.u₀).C.DGam) : DGamDef D :=
   fun u μ => ⟨fun u' μ' i hi c => by
@@ -59,7 +59,7 @@ theorem dGamDef_of (D : D7) (h : ∀ u μ, (D.chTw u μ).DGam = (D.mem D.u₀).C
     exact (D.chTw u' μ').dvd_DGam i hi c, h u μ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => by have h : ∀ z : A ⊗[R] M, z = 0 := fun z => by induction z using TensorProduct.induction_on with | zero => rfl | tmul a m => rw [Subsingleton.elim m 0, TensorProduct.tmul_zero] | add a b ha hb => rw [ha, hb, add_zero] rw [h x, h y]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tensor_subsingleton (R A M : Type*) [CommRing R] [CommRing A] [Algebra R A] [AddCommGroup M] [Module R M]
     [Subsingleton M] : Subsingleton (A ⊗[R] M) :=

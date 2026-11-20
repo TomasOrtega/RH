@@ -16,13 +16,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
 def tubeS (H : Subgroup G) (V : Set G) (S : Set H) : Set G := {g | ∃ a ∈ V, ∃ h ∈ S, g = a * (h : G)}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a', ha', h', hh', he⟩`. Establish `hmem : a⁻¹ * a' ∈ H`. Establish `: a⁻¹ * a' = (h0 : G) * (h : G) * (h' : G)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, ← he, ← mul_assoc, ← mul_assoc, inv_mul_cancel, one_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `H.mul_mem (H.mul_mem h0.2 h.2) (H.inv_mem h'.2)`. Establish `haa : a = a'` using `hV a ha a' ha' hmem`. Substitute `haa` using the available equality. Establish `: h0 * h = h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `he` as an intermediate fact. Rewrite `this` using `[mul_assoc]`. Simplify using `using mul_left_cancel this`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hh'`. Introduce `hS`. Conclude with `⟨a, ha, h0 * h, hS, by simp [mul_assoc]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_tubeS_mul_iff (H : Subgroup G) {V : Set G} (hV : ∀ a ∈ V, ∀ b ∈ V, a⁻¹ * b ∈ H → a = b)
     (S : Set H) {a : G} (ha : a ∈ V) (h0 h : H) :
@@ -47,19 +47,19 @@ theorem mem_tubeS_mul_iff (H : Subgroup G) {V : Set G} (hV : ∀ a ∈ V, ∀ b 
     exact ⟨a, ha, h0 * h, hS, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Establish `hf : Measurable ((tubeS H V S).indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hT`. Establish `hmeas2 : AEMeasurable (Function.uncurry fun (g : G) (h : H) => (tubeS H V S).indicator (1 : G → ℝ≥0∞) (g * (h : G))) (μ.prod ν)` using `(hf.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd)).measurable).aemeasurable`. Establish `e1 : ∫⁻ g, ∫⁻ h, (tubeS H V S).indicator (1 : G → ℝ≥0∞) (g * (h : G)) ∂ν ∂μ = ν univ * μ (tubeS H V S)`. Rewrite using `[lintegral_lintegral_swap hmeas2]`. Establish `: ∀ h : H, ∫⁻ g, (tubeS H V S).indicator (1 : G → ℝ≥0∞) (g * (h : G)) ∂μ = ∫⁻ g, (tubeS H V S).indicator (1 : G → ℝ≥0∞) g ∂μ` using `fun h => PI.AprimeInfA.lintegral_mul_right_of_mem μ H ν h0 hfin h hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[this]`. Rewrite using `[lintegral_const, lintegral_indicator_one hT, mul_comm]`. Establish `e2 : ∀ g, ∫⁻ h, (tubeS H V S).indicator (1 : G → ℝ≥0∞) (g * (h : G)) ∂ν = (tubeS H V univ).indicator (fun _ => ν S) g`. Introduce `g`. Distinguish the cases in `hg : g ∈ tubeS H V univ`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha, h0', -, rfl⟩` from `hg`. Establish `hm : a * (h0' : G) ∈ tubeS H V univ` using `⟨a, ha, h0', mem_univ _, rfl⟩`. Rewrite using `[indicator_of_mem hm]`. Establish `hpt : ∀ h : H, (tubeS H V S).indicator (1 : G → ℝ≥0∞) (a * (h0' : G) * (h : G)) = S.indicator (1 : H → ℝ≥0∞) (h0' * h)`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hh : h0' * h ∈ S`. Rewrite using `[indicator_of_mem ((mem_tubeS_mul_iff H hV S ha h0' h).2 hh), indicator_of_mem hh]`. Simplify using the standard rewrite rules. Rewrite using `[indicator_of_notMem (fun c => hh ((mem_tubeS_mul_iff H hV S ha h0' h).1 c)), indicator_of_notMem hh]`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[indicator_of_notMem hg]`. Establish `hz : ∀ h : H, (tubeS H V S).indicator (1 : G → ℝ≥0∞) (g * (h : G)) = 0`. Introduce `h`. Apply `indicator_of_notMem` to reduce the goal to its premises. Introduce and unpack `⟨a, ha, h', -, he⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Use `hg ⟨a, ha, h' * h⁻¹, mem_univ _, ?_⟩` and prove the remaining obligations. Establish `: g = a * (h' : G) * (h : G)⁻¹` using `by rw [← he]; group`. Rewrite using `[this]`. Simplify using `[mul_assoc]`. Simplify using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem tube_meas (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant]
     [SFinite ν] (h0 : ν univ ≠ 0) (hfin : ν univ ≠ ∞) {V : Set G}
@@ -133,45 +133,39 @@ structure TubeChart (μ : Measure G) (H : Subgroup G) (ν : Measure H) {ι η : 
   densH : ∀ s, 0 < s → s ≤ r0 → ν (χ '' ball 0 s) = ∫⁻ y in ball 0 s, ENNReal.ofReal (e y)
 
 /- English proof (translation)
-Establish `hρr : ρ ≤ r0` using `hρs.trans hsr`. Use `set A := ball (0 : EuclideanSpace ℝ ι) ρ ×ˢ ball (0 : EuclideanSpace ℝ η) s with hA`. Establish `hAm : MeasurableSet A` using `measurableSet_ball.prod measurableSet_ball`. Establish `hAn : ∀ p ∈ A, ‖p‖ < s`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.norm_def]`. Establish `h1 : ‖p.1‖ < ρ` using `mem_ball_zero_iff.1 hp.1`. Establish `h2 : ‖p.2‖ < s` using `mem_ball_zero_iff.1 hp.2`. Conclude with `max_lt (h1.trans_le hρs) h2`. Use `set Lρ := volume (ball (0 : EuclideanSpace ℝ ι) ρ) with hLρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Ls := volume (ball (0 : EuclideanSpace ℝ η) s) with hLs`. Establish `hLρ0 : 0 < Lρ` using `measure_ball_pos _ _ hρ`. Establish `hLs0 : 0 < Ls` using `measure_ball_pos _ _ hs`. Establish `hLρt : Lρ < ⊤` using `measure_ball_lt_top`. Establish `hLst : Ls < ⊤` using `measure_ball_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvA : volume A = Lρ * Ls` using `by rw [hA, Measure.volume_eq_prod, Measure.prod_prod]`. Establish `hVS_hi : μ (tubeS H (κ '' ball 0 ρ) (χ '' ball 0 s)) ≤ ENNReal.ofReal (d 0 + ε) * (Lρ * Ls)`. Rewrite using `[hC.densG ρ s hρ hρr hs hsr, ← hvA, ← setLIntegral_const]`. Use `setLIntegral_mono' hAm fun p hp => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `abs_lt.1 (hdε p (hAn p hp))` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hVS_lo : ENNReal.ofReal (d 0 - ε) * (Lρ * Ls) ≤ μ (tubeS H (κ '' ball 0 ρ) (χ '' ball 0 s))`. Rewrite using `[hC.densG ρ s hρ hρr hs hsr, ← hvA, ← setLIntegral_const]`. Use `setLIntegral_mono' hAm fun p hp => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `abs_lt.1 (hdε p (hAn p hp))` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS_hi : ν (χ '' ball 0 s) ≤ ENNReal.ofReal (e 0 + ε) * Ls`. Rewrite using `[hC.densH s hs hsr, ← setLIntegral_const]`. Use `setLIntegral_mono' measurableSet_ball fun y hy => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `abs_lt.1 (heε y (mem_ball_zero_iff.1 hy))` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS_lo : ENNReal.ofReal (e 0 - ε) * Ls ≤ ν (χ '' ball 0 s)`. Rewrite using `[hC.densH s hs hsr, ← setLIntegral_const]`. Use `setLIntegral_mono' measurableSet_ball fun y hy => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `abs_lt.1 (heε y (mem_ball_zero_iff.1 hy))` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hV : ∀ a ∈ κ '' ball (0 : EuclideanSpace ℝ ι) ρ, ∀ b ∈ κ '' ball (0 : EuclideanSpace ℝ ι) ρ, a⁻¹ * b ∈ H → a = b`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩ hm`. Rewrite using `[hC.inj x (ball_subset_ball hρr hx) y (ball_subset_ball hρr hy) hm]`. Establish `hid` using `tube_meas μ H ν hν0 hνf hV (hC.mS s hs hsr) (hC.mT ρ s hρ hρr hs hsr) (hC.mH ρ hρ hρr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := ν univ with hN`. Use `set a := μ (tubeS H (κ '' ball 0 ρ) (χ '' ball 0 s)) with ha`. Use `set b := μ (tubeS H (κ '' ball 0 ρ) univ) with hb`. Use `set c := ν (χ '' ball 0 s) with hc`. Establish `hde : 0 < d 0 - ε` using `by linarith`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hee : 0 < e 0 - ε` using `by linarith`. Establish `hat : a ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.mul_ne_top hLρt.ne hLst.ne)) hVS_hi`. Establish `ha0 : a ≠ 0`. Apply `ne_of_gt` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ hVS_lo` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ENNReal.mul_pos (ENNReal.ofReal_pos.2 hde).ne' (ENNReal.mul_pos hLρ0.ne' hLs0.ne').ne'`. Establish `hct : c ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hLst.ne) hS_hi`. Establish `hc0 : c ≠ 0`. Apply `ne_of_gt` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ hS_lo` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `ENNReal.mul_pos (ENNReal.ofReal_pos.2 hee).ne' hLs0.ne'`. Establish `hbt : b ≠ ⊤`. Introduce `hb'`. Establish `: N * a = ⊤` using `by rw [hid, hb', ENNReal.mul_top hc0]`. Conclude with `ENNReal.mul_ne_top hνf hat this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0`. Introduce `hb'`. Establish `: N * a = 0` using `by rw [hid, hb', mul_zero]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `hν0 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha0 h`. Use `⟨pos_iff_ne_zero.2 hb0, lt_top_iff_ne_top.2 hbt, ?_, ?_⟩` and prove the remaining obligations. Use `all_goals`. Establish `hidR : N.toReal * a.toReal = c.toReal * b.toReal`. Rewrite using `[← ENNReal.toReal_mul, ← ENNReal.toReal_mul, hid]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hlρ : 0 < Lρ.toReal` using `ENNReal.toReal_pos hLρ0.ne' hLρt.ne`. Establish `hls : 0 < Ls.toReal` using `ENNReal.toReal_pos hLs0.ne' hLst.ne`. Establish `hNr : 0 < N.toReal` using `ENNReal.toReal_pos hν0 hνf`. Establish `hbr : 0 < b.toReal` using `ENNReal.toReal_pos hb0 hbt`. Establish `ahi : a.toReal ≤ (d 0 + ε) * (Lρ.toReal * Ls.toReal)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.mul_ne_top hLρt.ne hLst.ne)) hVS_hi` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Establish `alo : (d 0 - ε) * (Lρ.toReal * Ls.toReal) ≤ a.toReal`. Use `ENNReal.toReal_mono hat hVS_lo` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hde.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `chi : c.toReal ≤ (e 0 + ε) * Ls.toReal`. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hLst.ne) hS_hi` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Establish `clo : (e 0 - ε) * Ls.toReal ≤ c.toReal`. Use `ENNReal.toReal_mono hct hS_lo` as an intermediate fact.
-
-Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hee.le]`. Then use the resulting hypothesis. Rewrite using `[le_div_iff₀ hlρ, div_mul_eq_mul_div, div_mul_eq_mul_div, div_le_iff₀ (by linarith)]`. Establish `h1 : N.toReal * ((d 0 - ε) * (Lρ.toReal * Ls.toReal)) ≤ b.toReal * ((e 0 + ε) * Ls.toReal)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ((d 0 - ε) * N.toReal * Lρ.toReal) * Ls.toReal ≤ (b.toReal * (e 0 + ε)) * Ls.toReal`.
-
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_of_mul_le_mul_right h2 hls`. Rewrite using `[div_le_iff₀ hlρ, div_mul_eq_mul_div, div_mul_eq_mul_div, le_div_iff₀ hee]`. Establish `h1 : b.toReal * ((e 0 - ε) * Ls.toReal) ≤ N.toReal * ((d 0 + ε) * (Lρ.toReal * Ls.toReal))`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h2 : (b.toReal * (e 0 - ε)) * Ls.toReal ≤ ((d 0 + ε) * N.toReal * Lρ.toReal) * Ls.toReal`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_of_mul_le_mul_right h2 hls`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem tube_bounds (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant]
     [SFinite ν] (hν0 : ν univ ≠ 0) (hνf : ν univ ≠ ∞) {ι η : Type} [Fintype ι] [Fintype η]
@@ -295,21 +289,21 @@ theorem tube_bounds (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (ν : M
     exact le_of_mul_le_mul_right h2 hls
 
 /- English proof (translation)
-Establish `hrad : ∀ ε > 0, ∃ s, 0 < s ∧ s ≤ r0 ∧ (∀ p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η, ‖p‖ < s → |d p - d 0| < ε) ∧ (∀ y : EuclideanSpace ℝ η, ‖y‖ < s → |e y - e 0| < ε)`. Introduce `ε hε`. Take `⟨δ1, hδ1, h1⟩` from `Metric.continuousAt_iff.1 hd ε hε`. Take `⟨δ2, hδ2, h2⟩` from `Metric.continuousAt_iff.1 he ε hε`. Use `⟨min (min δ1 δ2) r0, lt_min (lt_min hδ1 hδ2) hC.pos, min_le_right _ _, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Use `h1 (x := p) (by rw [dist_zero_right]; exact hp.trans_le ((min_le_left _ _).trans (min_le_left _ _)))` as an intermediate fact. Rewrite `this` using `[Real.dist_eq]`. Then use the resulting hypothesis. Introduce `y hy`. Use `h2 (x := y) (by rw [dist_zero_right]; exact hy.trans_le ((min_le_left _ _).trans (min_le_right _ _)))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.dist_eq]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Establish `hε : 0 < min (d 0) (e 0) / 2` using `by positivity`. Take `⟨s, hs, hsr, hdε, heε⟩` from `hrad _ hε`. Use `⟨s, hs, fun ρ hρ hρs => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm` using `min_le_left (d 0) (e 0)`. Establish `hm'` using `min_le_right (d 0) (e 0)`. Take `⟨h1, h2, -, -⟩` from `tube_bounds μ H ν hν0 hνf hC hε (by linarith) (by linarith) hs hsr hρ hρs.le hdε heε`. Conclude with `⟨hC.mH ρ hρ (hρs.le.trans hsr), h1, h2⟩`. Use `set T := d 0 / e 0 * (ν univ).toReal with hT`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.tendsto_nhdsWithin_nhds]`. Introduce `δ hδ`. Establish `hU : Tendsto (fun ε : ℝ => (d 0 + ε) / (e 0 - ε) * (ν univ).toReal) (𝓝 0) (𝓝 T)`. Establish `: ContinuousAt (fun ε : ℝ => (d 0 + ε) / (e 0 - ε) * (ν univ).toReal) 0` using `((continuousAt_const.add continuousAt_id).div (continuousAt_const.sub continuousAt_id) (by simp; exact he0.ne')).mul continuousAt_const`. Simplify `this.tendsto` using `[hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hL : Tendsto (fun ε : ℝ => (d 0 - ε) / (e 0 + ε) * (ν univ).toReal) (𝓝 0) (𝓝 T)`. Establish `: ContinuousAt (fun ε : ℝ => (d 0 - ε) / (e 0 + ε) * (ν univ).toReal) 0` using `((continuousAt_const.sub continuousAt_id).div (continuousAt_const.add continuousAt_id) (by simp; exact he0.ne')).mul continuousAt_const`. Simplify `this.tendsto` using `[hT]`. Establish `ev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ ε < d 0 ∧ ε < e 0 ∧ (d 0 + ε) / (e 0 - ε) * (ν univ).toReal < T + δ ∧ T - δ < (d 0 - ε) / (e 0 + ε) * (ν univ).toReal`. Use `Filter.Eventually.and (eventually_mem_nhdsWithin (s := Ioi (0 : ℝ)) (a := 0)) (nhdsWithin_le_nhds ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gt_mem_nhds hd0).and ((gt_mem_nhds he0).and ((hU.eventually (gt_mem_nhds (by linarith : T < T + δ))).and (hL.eventually (lt_mem_nhds (by linarith : T - δ < T)))))` and prove the remaining obligations. Take `⟨ε, hε, hεd, hεe, hεU, hεL⟩` from `ev.exists`. Take `⟨s, hs, hsr, hdε, heε⟩` from `hrad ε hε`. Use `⟨s, hs, fun {ρ} hρ hρd => ?_⟩` and prove the remaining obligations. Establish `hρ' : 0 < ρ` using `hρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρs : ρ ≤ s` using `by rw [Real.dist_eq, sub_zero, abs_of_pos hρ'] at hρd; exact hρd.le`. Take `⟨-, -, hlo, hhi⟩` from `tube_bounds μ H ν hν0 hνf hC hε hεd hεe hs hsr hρ' hρs hdε heε`. Rewrite using `[Real.dist_eq, abs_sub_lt_iff]`. Apply the tactic sequence `constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tube_ratio (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (ν : Measure H) [ν.IsMulLeftInvariant]
     [SFinite ν] (hν0 : ν univ ≠ 0) (hνf : ν univ ≠ ∞) {ι η : Type} [Fintype ι] [Fintype η]

@@ -18,9 +18,9 @@ variable {O : Type} [CommRing O] {a rk : ℕ} (wt : Fin a → (Fin rk → ℤ))
 def monoWt (m : Fin a →₀ ℕ) : Fin rk → ℤ := m.sum fun i e => (e : ℤ) • wt i
 
 /- English proof (translation)
-Unfold `monoWt`. Rewrite using `[Finsupp.sum_add_index']`. Introduce `i`. Simplify using the standard rewrite rules. Introduce `i e e'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Conclude with `add_smul _ _ _`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem monoWt_add (m m' : Fin a →₀ ℕ) : monoWt wt (m + m') = monoWt wt m + monoWt wt m' := by
   unfold monoWt
@@ -29,12 +29,12 @@ theorem monoWt_add (m m' : Fin a →₀ ℕ) : monoWt wt (m + m') = monoWt wt m 
   · intro i e e'; push_cast; exact add_smul _ _ _
 
 /- English proof (translation)
-Simplify using `[monoWt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monoWt_zero : monoWt wt (0 : Fin a →₀ ℕ) = 0 := by simp [monoWt]
 
 /- English proof (translation)
-Simplify using `[monoWt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monoWt_single (i : Fin a) : monoWt wt (Finsupp.single i 1) = wt i := by
   simp [monoWt]
@@ -54,7 +54,7 @@ def Pj (j : Fin rk → ℤ) : Submodule O (MvPowerSeries (Fin a) O) where
     exact hf m (right_ne_zero_of_mul h)
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[coeff_mul]`. Take `⟨⟨p, q⟩, hpq, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hm`. Establish `hpq' : p + q = m` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hpq`. Rewrite using `[← hpq', monoWt_add, hf p (left_ne_zero_of_mul hne), hg q (right_ne_zero_of_mul hne)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pj_mul {i j : Fin rk → ℤ} {f g : MvPowerSeries (Fin a) O} (hf : f ∈ Pj O wt i)
     (hg : g ∈ Pj O wt j) : f * g ∈ Pj O wt (i + j) := by
@@ -66,7 +66,7 @@ theorem Pj_mul {i j : Fin rk → ℤ} {f g : MvPowerSeries (Fin a) O} (hf : f �
   rw [← hpq', monoWt_add, hf p (left_ne_zero_of_mul hne), hg q (right_ne_zero_of_mul hne)]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[coeff_one]`. Use `split_ifs at hm with h`. Rewrite using `[h, monoWt_zero]`. Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_degree_zero : (1 : MvPowerSeries (Fin a) O) ∈ Pj O wt 0 := by
   classical
@@ -77,14 +77,14 @@ theorem one_mem_degree_zero : (1 : MvPowerSeries (Fin a) O) ∈ Pj O wt 0 := by
   · exact absurd rfl hm
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `(Pj O wt 0).smul_mem c (one_mem_degree_zero wt)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_degree_zero (c : O) : algebraMap O (MvPowerSeries (Fin a) O) c ∈ Pj O wt 0 := by
   rw [Algebra.algebraMap_eq_smul_one]
   exact (Pj O wt 0).smul_mem c (one_mem_degree_zero wt)
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[coeff_X]`. Use `split_ifs at hm with h`. Rewrite using `[h, monoWt_single]`. Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_mem_Pj (i : Fin a) : (X i : MvPowerSeries (Fin a) O) ∈ Pj O wt (wt i) := by
   classical
@@ -121,12 +121,12 @@ def P0sub : Subalgebra O (MvPowerSeries (Fin a) O) where
   algebraMap_mem' c := algebraMap_mem_degree_zero wt c
 
 /- English proof (translation)
-Introduce `_ hx` and use `Submodule.mem_iSup_of_mem 0 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem degree_zero_le_graded : P0sub O wt ≤ Psub O wt := fun _ hx => Submodule.mem_iSup_of_mem 0 hx
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iSup_of_mem j hx`.
+A detailed English derivation is pending.
 -/
 theorem Pj_le_P (j : Fin rk → ℤ) {x : MvPowerSeries (Fin a) O} (hx : x ∈ Pj O wt j) :
     x ∈ Psub O wt :=
@@ -158,12 +158,12 @@ def Asub : Subalgebra O (MvPowerSeries (Fin a) O ⧸ Jh) := (Psub O wt).map (mk 
 def A0sub : Subalgebra O (MvPowerSeries (Fin a) O ⧸ Jh) := (P0sub O wt).map (mk Jh)
 
 /- English proof (translation)
-The claim follows from `Subalgebra.map_mono (degree_zero_le_graded wt)`.
+A detailed English derivation is pending.
 -/
 theorem base_subalgebra_le : A0sub wt Jh ≤ Asub wt Jh := Subalgebra.map_mono (degree_zero_le_graded wt)
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `hy`. Conclude with `⟨f, Pj_le_P wt j hf, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Aj_le_A {j : Fin rk → ℤ} {y : MvPowerSeries (Fin a) O ⧸ Jh} (hy : y ∈ Aj wt Jh j) :
     y ∈ Asub wt Jh := by
@@ -171,7 +171,7 @@ theorem Aj_le_A {j : Fin rk → ℤ} {y : MvPowerSeries (Fin a) O ⧸ Jh} (hy : 
   exact ⟨f, Pj_le_P wt j hf, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X i, Pj_le_P wt (wt i) (X_mem_Pj wt i), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mkX_mem_A (i : Fin a) : mk Jh (X i) ∈ Asub wt Jh :=
   ⟨X i, Pj_le_P wt (wt i) (X_mem_Pj wt i), rfl⟩
@@ -888,7 +888,7 @@ def Conclusion5 (D : Formalism.BasicNotions.D7) (V : Formalism.BasicNotions.VDat
   RelativePresentationLiterature D V ∧ PairsWithFiniteGroup D V ∧ TorusPairsWithVariant D V ∧ FibreComplexFiniteness D V
 
 /- English proof (translation)
-Take `⟨ha, hb, hc, hs⟩` from `h`. Take `⟨⟨h1, h2, h3⟩, hC⟩` from `hs P hL`. Use `⟨ha P h1 h2 h3, fun hS => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2, c3⟩` from `hC hS`. Conclude with `⟨hb P hS c1 c2 c3, hc P hS c1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lifting_lemma_of_literature {D : Formalism.BasicNotions.D7} {V : Formalism.BasicNotions.VData D} (h : Conclusion5 D V) (P : LiftProb)
     (hL : LitG P) :

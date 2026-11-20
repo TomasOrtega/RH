@@ -8,11 +8,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 namespace GlobalTheory.AdeleApprox
 
 /- English proof (translation)
-Take `⟨C, hC, hCy⟩` from `Formalism.IndefR.Eqv.G5.adl_inf_cocompact (F := E)`. Use `⟨C, hC, fun x => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.exists_sub_mem_intAd x.2`. Take `⟨r, hr⟩` from `hCy (x.1 - algebraMap E _ u)`. Use `⟨u + r, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show x.1 - algebraMap E (InfiniteAdeleRing E) (u + r) ∈ C`. Rewrite using `[map_add, ← sub_sub]`. Conclude with `hr`. Establish `: x.2 - algebraMap E (Af E) (u + r) = (x.2 - algebraMap E _ u) - algebraMap E _ (r : E)` using `by rw [map_add, sub_sub] show ∀ v, (x.2 - algebraMap E (Af E) (u + r)) v ∈ _`. Rewrite using `[this]`.
-
-Conclude with `sub_mem hu (Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.algebraMap_mem_intAd r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_integral (E : Type) [Field E] [NumberField E] :
     ∃ C : Set (InfiniteAdeleRing E), IsCompact C ∧
@@ -33,13 +31,13 @@ theorem exists_compact_integral (E : Type) [Field E] [NumberField E] :
     exact sub_mem hu (Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.algebraMap_mem_intAd r)
 
 /- English proof (translation)
-Introduce `E _ _ _ U hU`. Take `⟨C, hC, hcov⟩` from `exists_compact_integral E`. Take `⟨N, hN, hNU⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele E U hU`. Establish `hc : Continuous (infEq E).symm`. Use `continuous_pi fun w => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Take `⟨B, hB⟩` from `isBounded_iff_forall_norm_le.1 (hC.image hc).isBounded`. Use `⟨N * max B 0, by positivity, fun x => ?_⟩` and prove the remaining obligations. Establish `hN' : (N : E) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Take `⟨a, h1, h2⟩` from `hcov (algebraMap E (Ad E) (N : E)⁻¹ * x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set k := algebraMap E (Ad E) (N : E)⁻¹ * x - algebraMap E (Ad E) a with hk`. Establish `e : x - algebraMap E (Ad E) ((N : E) * a) = N • k`. Rewrite using `[hk, nsmul_eq_mul, ← map_natCast (algebraMap E (Ad E)) N, mul_sub, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hN', map_one, one_mul, map_mul]`. Use `⟨(N : E) * a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ‖pInf E k‖ ≤ max B 0` using `(hB _ ⟨k.1, h1, rfl⟩).trans (le_max_left _ _)`. Conclude with `(norm_nsmul_le).trans (mul_le_mul_of_nonneg_left hb (Nat.cast_nonneg _))`. Rewrite using `[e, map_nsmul]`. Conclude with `hNU _ h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_rat_sub_bounded_small :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (U : Set (Af E)), U ∈ nhds (0 : Af E) →

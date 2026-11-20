@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.WeilBound.NonsplitUniqueness.Places
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.tft.places_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.places :
     UpperTheory.ConvolutionTheory.T.Places := PositivityTheory.tft.places_holds

@@ -15,7 +15,7 @@ def unitOrOne (x : Lie E a) : GL (Fin a) (Cinf E) :=
   if h : IsUnit (Matrix.of x) then h.unit else 1
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ invSet E a`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hx, unitOrOne, dif_pos (show IsUnit (Matrix.of x) from hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hx, unitOrOne, dif_neg (show ¬ IsUnit (Matrix.of x) from hx)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitOrOne_val (x : Lie E a) :
     (unitOrOne x : Matrix (Fin a) (Fin a) (Cinf E)) = (invSet E a).piecewise (fun y => Matrix.of y) (fun _ => 1) x := by
@@ -24,7 +24,7 @@ theorem unitOrOne_val (x : Lie E a) :
   · rw [Set.piecewise_eq_of_notMem _ _ _ hx, unitOrOne, dif_neg (show ¬ IsUnit (Matrix.of x) from hx)]; rfl
 
 /- English proof (translation)
-Establish `e : (fun x : Lie E a => (unitOrOne x : Matrix (Fin a) (Fin a) (Cinf E))) = (invSet E a).piecewise (fun y => Matrix.of y) (fun _ => 1)` using `funext unitOrOne_val`. Rewrite using `[e]`. Conclude with `Measurable.piecewise isOpen_invSet.measurableSet measurable_id measurable_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_unitOrOne : Measurable fun x : Lie E a => (unitOrOne x : Matrix (Fin a) (Fin a) (Cinf E)) := by
   have e : (fun x : Lie E a => (unitOrOne x : Matrix (Fin a) (Fin a) (Cinf E))) =
@@ -33,11 +33,11 @@ theorem measurable_unitOrOne : Measurable fun x : Lie E a => (unitOrOne x : Matr
   exact Measurable.piecewise isOpen_invSet.measurableSet measurable_id measurable_const
 
 /- English proof (translation)
-Establish `hev : (fun y : Lie E a => height (unitOrOne y)) =ᶠ[𝓝 x] fun y => 1 + ‖y‖ + ‖toL ((Matrix.of y)⁻¹)‖` using `by filter_upwards [isOpen_invSet.mem_nhds hx] with y hy`. Establish `h1 : ((unitOrOne y : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) = Matrix.of y`. Rewrite using `[unitOrOne, dif_pos (show IsUnit (Matrix.of y) from hy)]`. Both sides reduce to the same expression. Establish `h2 : (((unitOrOne y)⁻¹ : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) = (Matrix.of y)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.coe_units_inv, h1]`. Simplify using `only [height, h1, h2]`. Both sides reduce to the same expression. Use `ContinuousAt.congr ?_ hev.symm` and prove the remaining obligations. Establish `hinv : ContinuousAt (fun y : Matrix (Fin a) (Fin a) (Cinf E) => y⁻¹) (Matrix.of x)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of x).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hx`. Rewrite using `[← hu.unit_spec]`. Conclude with `NormedRing.inverse_continuousAt hu.unit`. Conclude with `(continuousAt_const.add continuousAt_id.norm).add (hinv.comp (f := fun y : Lie E a => Matrix.of y) continuousAt_id).norm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousAt_height_unitOrOne {x : Lie E a} (hx : x ∈ invSet E a) :
     ContinuousAt (fun y : Lie E a => height (unitOrOne y)) x := by
@@ -60,9 +60,9 @@ theorem continuousAt_height_unitOrOne {x : Lie E a} (hx : x ∈ invSet E a) :
     continuousAt_id).norm
 
 /- English proof (translation)
-Use `⟨hf.1.continuous.measurable, measurable_unitOrOne, fun N => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun x => ‖f x‖ * height (unitOrOne x) ^ N`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `hf.1.continuous.continuousAt.norm.mul ((continuousAt_height_unitOrOne (hf.2.2 hx)).pow N)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuousAt_const (y := (0 : ℝ))).congr ?_ filter_upwards [notMem_tsupport_iff_eventuallyEq.1 hx] with y hy` and prove the remaining obligations. Simplify using `[hy]`. Establish `hs : HasCompactSupport fun x => ‖f x‖ * height (unitOrOne x) ^ N` using `hf.2.1.norm.mul_right`. Conclude with `hc.integrable_of_hasCompactSupport hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsTestInf.isRapidInf {f : Lie E a → ℂ} (hf : IsTestInf f) :
     IsRapidInf (volume : Measure (Lie E a)) f unitOrOne := by
@@ -79,9 +79,9 @@ theorem IsTestInf.isRapidInf {f : Lie E a → ℂ} (hf : IsTestInf f) :
   exact hc.integrable_of_hasCompactSupport hs
 
 /- English proof (translation)
-Introduce `E _ _ _ a f hf`. Use `⟨hf.isRapidInf, fun F => funext fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [smoothInf, kerInf]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hx : IsUnit (Matrix.of x)`. Rewrite using `[chart, dif_pos hx, dif_pos hx]`. Establish `h0 : f x = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx (hf.2.2 h)`. Simplify using `[h0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isRapidInf_and_smoothInf_eq_kerInf :
     ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (f : Lie E a → ℂ), IsTestInf f →

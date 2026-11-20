@@ -7,7 +7,7 @@ namespace GlobalTheory.Corev.ThCLin
 open Formalism.L2.Ker Formalism.L2.Th1.H
 
 /- English proof (translation)
-Simplify using `only [hatS, mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hatS_mul_left {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (vol : ℝ) (SA : Finset V)
     (Φ : V → ℂ) (p : ℂ) (y : V) :
@@ -16,9 +16,9 @@ theorem hatS_mul_left {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (v
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ ι _ a b emb δ d sc AA SS N N' c p Ξ θ`. Establish `hon : onV emb δ (fun x => p * Ξ x) = fun v => p * onV emb δ Ξ v`. Use function extensionality and compare the values at `v`. Unfold `onV`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [thC, xiV, xiL, xiS, hon, hatS_mul_left, sumU, opU]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

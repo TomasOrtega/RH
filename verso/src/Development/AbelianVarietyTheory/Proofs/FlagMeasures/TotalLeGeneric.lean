@@ -25,9 +25,9 @@ variable {L : LocE F E} {r k : ℕ}
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 
 /- English proof (translation)
-Establish `h1 : IsIntM L (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E)` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨1, 1, h1, h1, fun i j h => ?_, fun i => by simp, fun i j => ⟨0, zero_mem _, by simp⟩, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply_ne h.ne']`. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_mem_cls (S : Frames L r k) (g g' : Fin (r + 1) → S.V) : (g, g') ∈ S.frameCls g g' := by
   have h1 : IsIntM L (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) := fun i j => by
@@ -44,9 +44,9 @@ theorem pair_mem_cls (S : Frames L r k) (g g' : Fin (r + 1) → S.V) : (g, g') �
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 
 /- English proof (translation)
-Unfold `Frames.sumCls`. Rewrite using `[← ENNReal.tsum_mul_right]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations. Use `split_ifs with ho`. Rewrite using `[mul_one] gcongr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h _ ho.1`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sumCls_le (S : Frames L r k) (φ : Set S.FrP → ℝ≥0∞) (c : ℝ≥0∞) (h : ∀ C, S.IsCls C → φ C ≤ c) :
     S.sumCls φ ≤ (S.sumCls fun _ => 1) * c := by
@@ -60,9 +60,9 @@ theorem sumCls_le (S : Frames L r k) (φ : Set S.FrP → ℝ≥0∞) (c : ℝ≥
   · simp
 
 /- English proof (translation)
-Establish `hq : 2 ≤ S.q` using `(GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1`. Establish `hq1 : (1 : ℝ) ≤ S.q` using `by exact_mod_cast (by omega : 1 ≤ S.q)`. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_pow (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[mul_comm, pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg he0]`. Conclude with `zpow_le_zpow_right₀ hq1 he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_pow_le (S : Frames L r k) (e : ℤ) (he0 : 0 ≤ e) (he : e ≤ S.vth + S.a + S.vD) (m : ℕ) :
     (S.q : ℝ≥0∞) ^ (m * e.toNat) ≤ ENNReal.ofReal (S.Hp ^ m) := by
@@ -77,14 +77,14 @@ theorem q_pow_le (S : Frames L r k) (e : ℤ) (he0 : 0 ≤ e) (he : e ≤ S.vth 
 
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 /- English proof (translation)
-Unfold `Frames.vth`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vth_nonneg (S : Frames L r k) : 0 ≤ S.vth := by
   unfold Frames.vth
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `hv` using `vth_nonneg S`. Conclude with `((GlobalTheory.HL.ClassCount.sumCls_le_encard L r k S).trans (GlobalTheory.IntClsCount.main L r k S hD)).trans (q_pow_le S _ (by omega) (by omega) _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem total_weight_le (S : Frames L r k) (ha : 0 ≤ S.a) (hD : 0 ≤ S.vD) :
     (S.sumCls fun _ => 1) ≤ ENNReal.ofReal (S.Hp ^ (r * (r + 1))) := by
@@ -93,11 +93,11 @@ theorem total_weight_le (S : Frames L r k) (ha : 0 ≤ S.a) (hD : 0 ≤ S.vD) :
     (q_pow_le S _ (by omega) (by omega) _)
 
 /- English proof (translation)
-Set `o' : MulAction.orbitRel.Quotient S.St (Set S.FrP)` to `Quotient.mk _ C`. Take `⟨h, hh⟩ : o'.out ∈ MulAction.orbit S.St C` from `MulAction.orbitRel_apply.1 (Quotient.mk_out (s := MulAction.orbitRel S.St (Set S.FrP)) _)`. Establish `hh' : h.1 • C = o'.out` using `hh`. Establish `ho' : S.IsIntCls o'.out` using `hh' ▸ GlobalTheory.HL.ClassCount.isIntCls_smul S h.2 hC`. Unfold `Frames.sumCls at h1 ⊢`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[tsum_eq_single o', if_pos ho', ← hh', hφ _ h.2, ((GlobalTheory.HL.volSt L r k S).2 C hC.1).2.2.2 _ h.2]`. Introduce `o hne`. Use `if_neg fun ho => ?_` and prove the remaining obligations. Establish `h2` using `(ENNReal.sum_le_tsum {o, o'}).trans h1`. Rewrite `h2` using `[Finset.sum_pair hne, if_pos ho, if_pos ho', mul_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `ENNReal.one_le_ofReal.2 ((GlobalTheory.HL.volSt L r k S).2 _ ho.1).2.2.1`. Establish `h4` using `ENNReal.one_le_ofReal.2 ((GlobalTheory.HL.volSt L r k S).2 _ ho'.1).2.2.1`. Establish `h5` using `(add_le_add h3 h4).trans h2`. Evaluate the numerical expressions using `at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 theorem sumCls_eq_single (S : Frames L r k) (h1 : (S.sumCls fun _ => 1) ≤ 1) (φ : Set S.FrP → ℝ≥0∞)
     (hφ : ∀ h ∈ S.St, ∀ C, φ (h • C) = φ C) (C : Set S.FrP) (hC : S.IsIntCls C) :
@@ -123,33 +123,31 @@ end GlobalTheory.HL.GenMass
 open GlobalTheory.HL.GenMass in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hk d₁ Λ₁ hT g hg`. Take `⟨hSD, -, hMs, -, -, -, hI, -⟩` from `GlobalTheory.HL.TermBasic.term_basic L r k S d₁ Λ₁ hT`. Take `⟨ha, hD, -, -, hH, -⟩` from `GlobalTheory.HL.Defect.exponents_and_defect L r k S d₁ Λ₁ hT`. Take `⟨κ, hκ, hU⟩` from `GlobalTheory.T.selfDualHermitianLattice_mass_of_trace L r k S (by omega) ⟨Λ₁, hSD⟩`. Establish `hv` using `vth_nonneg S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : (S.fr d₁ Λ₁, S.fr' d₁ Λ₁) ∈ S.Fr d₁ Λ₁` using `pair_mem_cls S _ _`. Establish `hsw` using `GlobalTheory.T.hermitianDataMass_eq_sum_frameClasses L r k S (fun _ _ => True) (fun _ _ _ _ _ _ => trivial)`. Establish `hnn : S.nn = S.sumCls fun C => S.sumData fun d => S.nT d C fun _ => True` using `hsw.1`. Establish `hM` using `hU _ hI.1 _ hp (S.M d₁ Λ₁) le_rfl (fun x hx => (hMs hx).2) (fun x hx y hy => (hSD.2 y).2 (hMs hy).1 x (hMs hx).1)`. Establish `hM' : ENNReal.ofReal (κ / 2) ≤ S.massSig (S.M d₁ Λ₁) ∧ S.massSig (S.M d₁ Λ₁) ≤ ENNReal.ofReal (2 * κ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hM` using `[Frames.M]`. Establish `hg' : g = ENNReal.ofReal (S.wC (S.Fr d₁ Λ₁)) * S.massSig (S.M d₁ Λ₁)`. Rewrite using `[hg, (GlobalTheory.T.hermitianFrameClass_terms_le_overlattice_masses L r k S _ hI.1 _ hp).2]`. Both sides reduce to the same expression. Establish `hw` using `ENNReal.one_le_ofReal.2 ((GlobalTheory.HL.volSt L r k S).2 _ hI.1).2.2.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hlow : ENNReal.ofReal (κ / 2) ≤ g`. Rewrite using `[hg', ← one_mul (ENNReal.ofReal (κ / 2))]`. Conclude with `mul_le_mul' hw hM'.1`. Use `⟨(ENNReal.ofReal_pos.2 (by positivity)).trans_le hlow, ?_, ?_, fun h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[hg']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hM'.2.trans_lt ENNReal.ofReal_lt_top)`. Establish `hφ : ∀ C, S.IsCls C → (S.sumData fun d => S.nT d C fun _ => True) ≤ ENNReal.ofReal (S.Hp ^ (2 * (2 * r + 2))) * ENNReal.ofReal (2 * κ)`. Introduce `C hC`. Choose the witnesses or unpack the hypotheses as in `⟨p, hpC⟩ : ∃ p, p ∈ C := by`. Take `⟨n, -, n', -, rfl⟩` from `hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, pair_mem_cls S _ _⟩`. Use `((GlobalTheory.T.hermitianFrameClass_terms_le_overlattice_masses L r k S C hC p hpC).1 fun _ => True).trans ?_` and prove the remaining obligations. Use `(ENNReal.tsum_le_tsum (g := fun _ => ENNReal.ofReal (2 * κ)) fun Mh => ?_).trans ?_` and prove the remaining obligations. Use `(hU C hC p hpC Mh.1 Mh.2.1 Mh.2.2.1 Mh.2.2.2.1).2.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `mul_le_of_le_one_right (by positivity) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_pow]`. Conclude with `Nat.cast_inv_le_one _`. Establish `hc` using `GlobalTheory.FrameOver.encard_overlattices_le L r k S C hC p hpC ha`. Establish `he : 2 * S.a.toNat * (2 * r + 2) = 2 * (2 * r + 2) * S.a.toNat` using `by ring`. Rewrite `hc` using `[he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc'` using `hc.trans (q_pow_le S _ ha (by omega) _)`. Rewrite using `[ENNReal.tsum_const]`. Use `mul_le_mul_left (le_trans (le_of_eq ?_) hc') _` and prove the remaining obligations. Simplify using `only [and_true]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hnn]`. Use `(sumCls_le S _ _ hφ).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_left (total_weight_le S ha hD) _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (mul_le_mul_right hlow _)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h2 : S.Hp ^ (r * (r + 1)) * S.Hp ^ (2 * (2 * r + 2)) ≤ S.Hp ^ (9 * (r + 1) ^ 2 + 2 * (2 * r + 2))`. Rewrite using `[← pow_add]`. Conclude with `pow_le_pow_right₀ hH (by nlinarith)`. Establish `h3 : 0 ≤ S.Hp ^ (9 * (r + 1) ^ 2 + 2 * (2 * r + 2))` using `by positivity`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 hκ.le, mul_nonneg h3 hκ.le]`. Establish `hq : 2 ≤ S.q` using `(GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1`. Establish `hB : ∀ d Λ, S.IsTerm d Λ → S.BBzero d Λ` using `fun d Λ h => by`. Assume the negation of the conclusion as `hc`. Establish `h2` using `(GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ h).2.2.2.2.2.2.2.1 hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1]`. Establish `: S.q ≤ 1` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Establish `htw` using `total_weight_le S ha hD`. Rewrite `htw` using `[h1, one_pow, ENNReal.ofReal_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[hnn, sumCls_eq_single S htw _ (fun h hh C => by simp only [hsw.2 h hh]) _ hI, hg]`. Use `congr 2`. Use function extensionality and compare the values at `d`. Unfold `Frames.nT`. Use `congr 2`.
-
-Use extensionality with `Λ`. Conclude with `⟨fun h => ⟨h.1, hB _ _ h.1, h.2.2⟩, fun h => ⟨h.1, trivial, h.2.2⟩⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.GenMass.total_le_generic : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ d₁ Λ₁, S.IsTerm d₁ Λ₁ → ∀ g : ℝ≥0∞, g = ENNReal.ofReal (S.wC (S.Fr d₁ Λ₁)) * (S.sumData fun d => S.nT d (S.Fr d₁ Λ₁) fun Λ => S.BBzero d Λ) → 0 < g ∧ g < ⊤ ∧ S.nn ≤ ENNReal.ofReal (8 * S.Hp ^ (9 * (r + 1) ^ 2 + 2 * (2 * r + 2))) * g ∧ (S.Hp = 1 → S.nn = g) := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk d₁ Λ₁ hT g hg

@@ -10,11 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh.LowBaseChange
 
 /- English proof (translation)
-Establish `hJt : m ^ (n + 1) ≠ ⊤` using `fun h => hm.ne_top (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero n)))`. Establish `: Nontrivial (R ⧸ m ^ (n + 1))` using `Ideal.Quotient.nontrivial_iff.2 hJt`. Establish `key : ∀ P : Ideal (R ⧸ m ^ (n + 1)), P.IsPrime → P = m.map (Ideal.Quotient.mk (m ^ (n + 1)))`. Introduce `P hP`. Establish `hc : (P.comap (Ideal.Quotient.mk (m ^ (n + 1)))).IsPrime` using `Ideal.comap_isPrime _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : m ≤ P.comap (Ideal.Quotient.mk (m ^ (n + 1)))`. Use `Ideal.IsPrime.le_of_pow_le (n := n + 1) fun a ha => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 ha]`. Conclude with `P.zero_mem`. Conclude with `(Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective P).symm.trans (congrArg _ (hm.eq_of_le hc.ne_top h1).symm)`.
-
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (R ⧸ m ^ (n + 1))`. Conclude with `((Ring.krullDimLE_zero_and_isLocalRing_tfae (R ⧸ m ^ (n + 1))).out 1 0 rfl rfl).mp ⟨P, hP.isPrime, fun Q hQ => (key Q hQ).trans (key P hP.isPrime).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem krullDimLE_isLocalRing_quot_pow {R : Type} [CommRing R] (m : Ideal R)
     [hm : m.IsMaximal] (n : ℕ) :
@@ -39,7 +37,7 @@ theorem krullDimLE_isLocalRing_quot_pow {R : Type} [CommRing R] (m : Ideal R)
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[← (TensorProduct.quotTensorEquivQuotSMul M I).map_eq_zero_iff, TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_tmul_eq_zero_iff {M : Type} [AddCommGroup M] [Module R M] (I : Ideal R) (x : M) :
     (1 : R ⧸ I) ⊗ₜ[R] x = 0 ↔ x ∈ I • (⊤ : Submodule R M) := by
@@ -47,30 +45,26 @@ theorem one_tmul_eq_zero_iff {M : Type} [AddCommGroup M] [Module R M] (I : Ideal
     TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.mk_eq_zero]
 
 /- English proof (translation)
-The claim follows from `TensorProduct.mk_surjective R M (R ⧸ I) Ideal.Quotient.mk_surjective t`.
+A detailed English derivation is pending.
 -/
 theorem exists_one_tmul {M : Type} [AddCommGroup M] [Module R M] (I : Ideal R)
     (t : (R ⧸ I) ⊗[R] M) : ∃ x : M, (1 : R ⧸ I) ⊗ₜ[R] x = t :=
   TensorProduct.mk_surjective R M (R ⧸ I) Ideal.Quotient.mk_surjective t
 
 /- English proof (translation)
-Use `haveI : IsNoetherian R B := isNoetherian_of_isNoetherianRing_of_finite R B`. Establish `hinjq : ∀ (m : Ideal R) [m.IsMaximal], Function.Injective ((LinearMap.range f).subtype.lTensor (R ⧸ m))`. Introduce `m _`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨_, a, rfl⟩, rfl⟩` from `exists_one_tmul m t`. Rewrite `ht` using `[LinearMap.lTensor_tmul, Submodule.subtype_apply, one_tmul_eq_zero_iff]`. Use `set N := B ⧸ (m • LinearMap.range f)`. Establish `hq : (m • LinearMap.range f).mkQ (f a) ∈ (⨅ i : ℕ, m ^ i • ⊤ : Submodule R N)`. Rewrite using `[Submodule.mem_iInf]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n`. Take `⟨y, hy, hay⟩` from `hyp m n a ht`. Establish `e : (m • LinearMap.range f).mkQ (f a) = (m • LinearMap.range f).mkQ (f y)`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `hay`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Establish `hle : m ^ (n + 1) • (⊤ : Submodule R B) ≤ (m ^ n • (⊤ : Submodule R N)).comap (m • LinearMap.range f).mkQ`. Use `Submodule.smul_le.2 fun r hr x _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_le_pow_right (Nat.le_succ n) hr) Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hle hy`. Take `⟨r, hr⟩` from `(m.mem_iInf_smul_pow_eq_bot_iff _).1 hq`. Establish `h1 : f a - (r : R) • f a ∈ m • LinearMap.range f`. Rewrite using `[← Submodule.Quotient.eq, Submodule.Quotient.mk_smul]`. Conclude with `hr.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : (⟨f a, LinearMap.mem_range_self f a⟩ : LinearMap.range f) = ⟨f a - (r : R) • f a, Submodule.sub_mem _ (LinearMap.mem_range_self f a) (Submodule.smul_mem _ _ (LinearMap.mem_range_self f a))⟩ + (r : R) • ⟨f a, LinearMap.mem_range_self f a⟩` using `by ext; simp`. Rewrite using `[hsplit, TensorProduct.tmul_add, ← TensorProduct.smul_tmul]`. Establish `h2 : (1 : R ⧸ m) ⊗ₜ[R] (⟨f a - (r : R) • f a, Submodule.sub_mem _ (LinearMap.mem_range_self f a) (Submodule.smul_mem _ _ (LinearMap.mem_range_self f a))⟩ : LinearMap.range f) = 0`. Rewrite using `[one_tmul_eq_zero_iff, Submodule.mem_smul_top_iff]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, zero_add, Algebra.smul_def, _root_.mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 r.2, TensorProduct.zero_tmul]`. Establish `hinj : ∀ (m : Ideal R) [m.IsMaximal], Function.Injective ((LinearMap.range f).subtype.lTensor m.ResidueField)`. Introduce `m _`. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Establish `hL : RingHom.ker (algebraMap R (R ⧸ m)) = m`.
-
-Rewrite using `[Ideal.Quotient.algebraMap_eq, Ideal.mk_ker]`. Use `GlobalTheory.exact_lTensor_iff_residueField m (R ⧸ m) hL (0 : PUnit →ₗ[R] LinearMap.range f) (LinearMap.range f).subtype` as an intermediate fact. Rewrite `this` using `[LinearMap.lTensor_zero, LinearMap.lTensor_zero, LinearMap.exact_zero_iff_injective, LinearMap.exact_zero_iff_injective]`. Conclude with `this.1 (hinjq m)`. Take `⟨l, hl⟩` from `GlobalTheory.split_injective_of_forall_lTensor_residueField_injective (LinearMap.range f).subtype hinj`.
-
-Establish `hex` using `(Function.Exact.split_tfae (LinearMap.exact_subtype_mkQ (LinearMap.range f)) Subtype.val_injective (Submodule.mkQ_surjective _)).out 0 1`. Take `⟨s, hs⟩` from `hex.2 ⟨l, hl⟩`. Conclude with `Module.Projective.of_split s _ hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem projective_coker_of_approx [IsNoetherianRing R] {A B : Type} [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] [Module.Finite R B] [Module.Projective R B] (f : A →ₗ[R] B)
@@ -136,19 +130,17 @@ end GlobalTheory.AbCoh.LowBaseChange
 open GlobalTheory.AbCoh.LowBaseChange in
 
 /- English proof (translation)
-Introduce `R _ _ K hK _ hL i hi`. Use `haveI := (hK (i + 1)).1`. Use `haveI := (hK (i + 1)).2`. Use `projective_coker_of_approx (K.d i (i + 1)).hom ?_` and prove the remaining obligations. Introduce `m _ n a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨h0, h1⟩` from `krullDimLE_isLocalRing_quot_pow m n`. Use `haveI := h1`. Use `haveI : IsArtinianRing (R ⧸ m ^ (n + 1)) := isArtinianRing_iff_isNoetherianRing_krullDimLE_zero.2 ⟨inferInstance, h0⟩`. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Establish `hle : m ^ (n + 1) ≤ m` using `Ideal.pow_le_self (Nat.succ_ne_zero n)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `α : (R ⧸ m ^ (n + 1)) →ₐ[R] (R ⧸ m)` to `Ideal.Quotient.factorₐ R hle`. Establish `hα : Function.Surjective α`. Introduce `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨Ideal.Quotient.mk _ x, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : dB K (R ⧸ m) i (i + 1) ((1 : R ⧸ m) ⊗ₜ[R] a) = 0`. Rewrite using `[LinearMap.baseChange_tmul, one_tmul_eq_zero_iff]`. Conclude with `ha`. Take `⟨y, b, hy, hyb⟩` from `hL i hi (R ⧸ m ^ (n + 1)) (R ⧸ m) α hα _ hz`. Take `⟨y₀, rfl⟩` from `exists_one_tmul _ y`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨b₀, rfl⟩` from `exists_one_tmul _ b`. Rewrite `hy` using `[LinearMap.baseChange_tmul, one_tmul_eq_zero_iff]`. Use `⟨y₀, hy, ?_⟩` and prove the remaining obligations. Rewrite `hyb` using `[LinearMap.baseChange_tmul, LinearMap.rTensor_tmul, AlgHom.toLinearMap_apply, map_one, ← TensorProduct.tmul_add]`. Establish `hdd : (K.d i (i + 1)).hom ((K.d (i - 1) i).hom b₀) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun g => g.hom b₀) (K.d_comp_d (i - 1) i (i + 1))` as an intermediate fact. Simplify `this` using `only [ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_zero, LinearMap.zero_apply]`. Establish `hm : a - (y₀ + (K.d (i - 1) i).hom b₀) ∈ m • (⊤ : Submodule R (K.X i))`. Rewrite using `[← one_tmul_eq_zero_iff, TensorProduct.tmul_sub, ← hyb, sub_self]`. Use `Submodule.mem_map_of_mem (f := (K.d i (i + 1)).hom) hm` as an intermediate fact.
-
-Rewrite `this` using `[Submodule.map_smul'', ← LinearMap.range_eq_map, map_sub, map_add, hdd, add_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbCoh.projective_coker_of_liftsAt :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (K : CochainComplex (ModuleCat.{0} R) ℕ),

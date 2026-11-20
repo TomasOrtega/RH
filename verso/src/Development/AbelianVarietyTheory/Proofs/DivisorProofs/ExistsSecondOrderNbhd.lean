@@ -8,13 +8,13 @@ open TopologicalSpace CategoryTheory GlobalTheory.CatCoh GlobalTheory.AnPer Glob
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Use `⟨Pi.single a e, fun c ↦ ?_, fun c d ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality. Simplify using `using he`. Simplify using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hc : c = a`. Distinguish the cases in `hd : d = a`. Substitute `hc` using the available equality. Substitute `hd` using the available equality. Simplify using `using h2`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hd]`. Simplify using `[hc]`. Rewrite using `[h, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem step_single {I : Type} [Fintype I] {g : ℕ} {W : Opens (Tot I g)} {C : Type} [CommRing C] {J : Ideal C}
     {ρ₁ ρ₂ : Hol W →+* C} (a : Fin g) (e : C) (he : e ∈ J) (h2 : e * e = 0)
@@ -34,11 +34,11 @@ theorem step_single {I : Type} [Fintype I] {g : ℕ} {W : Opens (Tot I g)} {C : 
     · simp
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F K k a b`. Take `⟨C, _, J, φ₀, φ₁, φ₂, φ₃, e₁, e₂, hJ, h1, h2, h11, h22, H1, H2, H3, H4, H5⟩` from `GlobalTheory.T.exists_secondOrderNbhd_commuting_derivations (Hol (K.W k)) (dw a) (dw b) (GlobalTheory.T.fibreCoordinatePartialDerivation_comm I g (K.W k) a b)`. Set `T : K.Obj` to `{ k := k, C := C, alg := (φ₀.comp (K.cst k)).toAlgebra, J := J, nil := hJ, ρ := φ₀, ρ_cst := fun _ ↦ rfl }`. Establish `hs : T.ρ.comp (sh (K.le_refl k)) = φ₀` using `RingHom.ext fun f ↦ congrArg φ₀ (sh_refl _ f)`. Establish `c0 : Close T.J (T.ρ.comp (sh (K.le_refl k))) φ₀` using `by rw [hs]; exact Relation.ReflTransGen.refl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : Close T.J (T.ρ.comp (sh (K.le_refl k))) φ₁` using `Relation.ReflTransGen.tail c0 (step_single a e₁ h1 h11 H1)`. Establish `c2 : Close T.J (T.ρ.comp (sh (K.le_refl k))) φ₂` using `Relation.ReflTransGen.tail c0 (step_single b e₂ h2 h22 H2)`. Establish `c3 : Close T.J (T.ρ.comp (sh (K.le_refl k))) φ₃` using `Relation.ReflTransGen.tail c1 (step_single b e₂ h2 h22 H3)`. Establish `a1 : ∀ f, φ₁ (K.cst k f) = φ₀ (K.cst k f)` using `fun f ↦ by rw [H1, dw_cst]; simp`. Establish `a2 : ∀ f, φ₂ (K.cst k f) = φ₀ (K.cst k f)` using `fun f ↦ by rw [H2, dw_cst]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : ∀ f, φ₃ (K.cst k f) = φ₀ (K.cst k f)` using `fun f ↦ by rw [H3, dw_cst, a1]; simp`. Conclude with `⟨T, fromTriv T (K.le_refl k) φ₀ (fun _ ↦ rfl) c0, fromTriv T (K.le_refl k) φ₁ a1 c1, fromTriv T (K.le_refl k) φ₂ a2 c2, fromTriv T (K.le_refl k) φ₃ a3 c3, e₁, e₂, rfl, rfl, rfl, rfl, h1, h2, h11, h22, H1, H2, H3, H4, H5⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_second_order_nbhd : ∀ (I : Type) [Fintype I] (g : ℕ) (Λ : Type) [AddCommGroup Λ] (F : Fam I g Λ) (K : Charts F) (k : K.K) (a b : Fin g), ∃ (T : K.Obj) (φ₀ φ₁ φ₂ φ₃ : K.triv k ⟶ T) (e₁ e₂ : T.C), φ₀.deg = 0 ∧ φ₁.deg = 0 ∧ φ₂.deg = 0 ∧ φ₃.deg = 0 ∧ e₁ ∈ T.J ∧ e₂ ∈ T.J ∧ e₁ * e₁ = 0 ∧ e₂ * e₂ = 0 ∧ (∀ x : Hol (K.W k), φ₁.φ x = φ₀.φ x + φ₀.φ (dw a x) * e₁) ∧ (∀ x : Hol (K.W k), φ₂.φ x = φ₀.φ x + φ₀.φ (dw b x) * e₂) ∧ (∀ x : Hol (K.W k), φ₃.φ x = φ₁.φ x + φ₁.φ (dw b x) * e₂) ∧ (∀ x : Hol (K.W k), φ₃.φ x = φ₂.φ x + φ₂.φ (dw a x) * e₁) ∧ ∀ x : Hol (K.W k), φ₀.φ x * e₁ * e₂ = 0 → x = 0 := by
   intro I _ g Λ _ F K k a b

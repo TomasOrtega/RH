@@ -14,29 +14,25 @@ variable {m : ∀ i, Measure (W i)} {L : ∀ i, Set (W i)} [∀ i, SigmaFinite (
 instance Rm_sf (S : Finset ι) : SigmaFinite (Rm m L S) := by unfold Rm; infer_instance
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ i ∉ S, m i (L i) ≠ 0 ∧ m i (L i) ≠ ∞`. Use `haveI : ∀ i : {i // i ∉ S}, IsProbabilityMeasure (Pn m L i.1) := fun i => Pn_prob m L (h i.1 i.2)`. Establish `hQ : Qm m L S = tl m L S • Measure.infinitePi (fun i : {i // i ∉ S} => Pn m L i.1)`. Unfold `Qm`. Rewrite using `[dif_pos h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set J := T.subtype (fun i => i ∉ S) with hJ`. Establish `hgP : ∀ j : J, Integrable (g j.1.1) (Pn m L j.1.1)`. Introduce `j`. Conclude with `((hg _).restrict).smul_measure (ENNReal.inv_ne_top.mpr (h _ j.1.2).1)`. Establish `hF : Integrable (fun y : (j : J) → W j.1.1 => ∏ j : J, g j.1.1 (y j)) (Measure.pi fun j : J => Pn m L j.1.1)` using `Integrable.fintype_prod_dep hgP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hmap : (Measure.infinitePi (fun i : {i // i ∉ S} => Pn m L i.1)).map J.restrict = Measure.pi fun j : J => Pn m L j.1.1` using `Measure.infinitePi_map_restrict _`. Establish `hfun : (fun z : (i : {i // i ∉ S}) → W i.1 => ∏ j ∈ J, g j.1 (z j)) = (fun y : (j : J) → W j.1.1 => ∏ j : J, g j.1.1 (y j)) ∘ J.restrict`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, Finset.restrict]`. Conclude with `(Finset.prod_coe_sort J (fun j => g j.1 (z j))).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmeas : AEMeasurable (J.restrict : ((i : {i // i ∉ S}) → W i.1) → _) (Measure.infinitePi (fun i : {i // i ∉ S} => Pn m L i.1))` using `(Finset.measurable_restrict J).aemeasurable`. Establish `hF'` using `hF`. Rewrite `hF'` using `[← hmap]`. Establish `hint : Integrable (fun z : (i : {i // i ∉ S}) → W i.1 => ∏ j ∈ J, g j.1 (z j)) (Measure.infinitePi (fun i : {i // i ∉ S} => Pn m L i.1))`. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(integrable_map_measure hF'.aestronglyMeasurable hmeas).mp hF'`. Establish `hI : ∫ z, ∏ j ∈ J, g j.1 (z j) ∂(Measure.infinitePi (fun i : {i // i ∉ S} => Pn m L i.1)) = ∫ y, ∏ j : J, g j.1.1 (y j) ∂(Measure.pi fun j : J => Pn m L j.1.1)`. Rewrite using `[hfun, ← hmap]`. Conclude with `(integral_map hmeas hF'.aestronglyMeasurable).symm`. Use `⟨by rw [hQ]; exact hint.smul_measure_nnreal, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hJprod : ∀ f : ι → ℂ, ∏ j : J, f j.1.1 = ∏ i ∈ T \ S, f i`. Introduce `f`. Rewrite using `[Finset.prod_coe_sort J (fun j => f j.1), Finset.sdiff_eq_filter, ← Finset.subtype_map]`. Conclude with `(Finset.prod_subtype_map_embedding (fun _ _ => rfl)).symm`. Establish `key : ∀ i ∈ T \ S, ((am m L i : ℝ) : ℂ) * ∫ w, g i w ∂(Pn m L i) = ∫ w, g i w ∂(mu m L S i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Establish `hiS : i ∉ S` using `(Finset.mem_sdiff.mp hi).2`. Take `⟨h0, htop⟩` from `h i hiS`. Establish `hone : ((am m L i : ℝ) : ℂ) * (((m i (L i))⁻¹).toReal : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, am, ENNReal.coe_toNNReal_eq_toReal, ← ENNReal.toReal_mul, ENNReal.mul_inv_cancel h0 htop, ENNReal.toReal_one, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[show Pn m L i = (m i (L i))⁻¹ • (m i).restrict (L i) from rfl, show mu m L S i = (m i).restrict (L i) by simp [mu, hiS], integral_smul_measure, Complex.real_smul, ← mul_assoc, hone, one_mul]`. Rewrite using `[hQ, integral_smul_nnreal_measure, hI, integral_fintype_prod_eq_prod]`. Rewrite using `[hJprod (fun i => ∫ w, g i w ∂(Pn m L i))]`. Rewrite using `[tl_split hT hST, NNReal.smul_def, Complex.real_smul, NNReal.coe_mul, NNReal.coe_prod, Complex.ofReal_mul, Complex.ofReal_prod, ← Finset.prod_congr rfl key, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hQ : Qm m L S = 0`. Unfold `Qm`. Rewrite using `[dif_neg h]`. Rewrite using `[hQ]`. Use `⟨integrable_zero_measure, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_zero_measure]`. Use `push_neg at h`. Take `⟨i, hiS, hi⟩` from `h`. Establish `h0 : m i (L i) = 0`. Assume the negation of the conclusion as `h0`.
-
-Conclude with `hfin i (hi h0)`. Distinguish the cases in `hiT : i ∈ T`. Rewrite using `[Finset.prod_eq_zero (i := i) (Finset.mem_sdiff.mpr ⟨hiT, hiS⟩)]`. Simplify using the standard rewrite rules. Establish `hz : mu m L S i = 0` using `by simp [mu, hiS, Measure.restrict_eq_zero.mpr h0]`.
-
-Rewrite using `[hz, integral_zero_measure]`. Rewrite using `[tl_zero hT hiT (by simp [am, h0])]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Qm_integral [DecidableEq ι] (hfin : ∀ i, m i (L i) ≠ ⊤) (hT : TailH m L)
     {S T : Finset ι} (hST : S ⊆ T) (g : ∀ i, W i → ℂ) (hg : ∀ i, Integrable (g i) (m i)) :
@@ -117,17 +113,17 @@ lemma Qm_integral [DecidableEq ι] (hfin : ∀ i, m i (L i) ≠ ⊤) (hT : TailH
       simp
 
 /- English proof (translation)
-Take `⟨hQi, hQe⟩` from `Qm_integral hfin hT hST g hg`. Establish `hRi : Integrable (fun p : (j : S) → W j.1 => ∏ j : S, g j.1 (p j)) (Rm m L S)`. Unfold `Rm`. Conclude with `Integrable.fintype_prod_dep (fun j => (hg j.1).restrict)`. Establish `hRe : ∫ p, ∏ j : S, g j.1 (p j) ∂(Rm m L S) = ∏ i ∈ S, ∫ w, g i w ∂(mu m L S i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Rm`. Rewrite using `[integral_fintype_prod_eq_prod, ← Finset.prod_coe_sort S]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `[mu, j.2]`. Establish `hfun : (fun x : (i : ι) → W i => ∏ i ∈ T, g i (x i)) ∘ (eS S).symm = fun z => (∏ j : S, g j.1 (z.1 j)) * ∏ j ∈ T.subtype (fun i => i ∉ S), g j.1 (z.2 j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← Finset.prod_sdiff hST]`. Use `(mul_comm _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Rewrite using `[← Finset.prod_coe_sort S]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[eS_symm_apply, dif_pos j.2]`. Rewrite using `[Finset.sdiff_eq_filter, ← Finset.subtype_map]`. Use `Finset.prod_subtype_map_embedding (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[eS_symm_apply, dif_neg j.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod` using `hRi.mul_prod hQi`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `kap`. Rewrite using `[integrable_map_equiv, hfun]`. Conclude with `hprod`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `kap`. Rewrite using `[integral_map_equiv]`. Rewrite using `[show (fun z => ∏ i ∈ T, g i ((eS S).symm z i)) = fun z => (∏ j : S, g j.1 (z.1 j)) * ∏ j ∈ T.subtype (fun i => i ∉ S), g j.1 (z.2 j) from hfun]`. Rewrite using `[integral_prod_mul (f := fun p : (j : S) → W j.1 => ∏ j : S, g j.1 (p j)) (g := fun q : (i : {i // i ∉ S}) → W i.1 => ∏ j ∈ T.subtype (fun i => i ∉ S), g j.1 (q j))]`. Rewrite using `[hRe, hQe, ← mul_assoc, mul_comm (∏ i ∈ S, _), Finset.prod_sdiff hST]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma kap_integral [DecidableEq ι] (hfin : ∀ i, m i (L i) ≠ ⊤) (hT : TailH m L)
     {S T : Finset ι} (hST : S ⊆ T) (g : ∀ i, W i → ℂ) (hg : ∀ i, Integrable (g i) (m i)) :

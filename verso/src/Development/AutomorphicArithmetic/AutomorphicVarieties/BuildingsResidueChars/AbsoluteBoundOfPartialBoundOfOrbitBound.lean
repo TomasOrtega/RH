@@ -2,15 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.H
 
 open UpperTheory.V.Af.CohB in
 /- English proof (translation)
-Introduce `hP hO Γ Y _ _ hT hB`. Take `⟨T, hT⟩` from `hT`. Use `choose cf hcf using fun t : ↥T => hO Γ Y t.1 (hB t.1)`. Use `⟨∑ t, cf t, ?_⟩` and prove the remaining obligations. Introduce `X _ p hp D hD d ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `r : MulAction.orbitRel.Quotient Γ Y → ↥T` to `fun q => ⟨Classical.choose (hT q.out) • q.out, Classical.choose_spec (hT q.out)⟩`. Set `cl : X → ↥T` to `fun x => r (Quotient.mk (MulAction.orbitRel Γ Y) (p x))`. Establish `hcl : ∀ (γ : Γ) (x : X), cl (γ • x) = cl x`. Introduce `γ x`. Simplify using `only [cl, hp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Quotient.sound ⟨γ, rfl⟩`. Use `(hP Γ X ↥T cl hcl d ξ).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_mul, Nat.cast_sum]`. Use `Finset.sum_le_sum fun t _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hsurj : ∀ x : ↥(UpperTheory.V.Af.CohB.part cl hcl t), ∃ g : Γ, g • p x.1 = t.1`. Introduce and unpack `⟨x, hx⟩`. Express the relevant statement in the definitionally equal form `cl x = t at hx`. Take `⟨h, hh⟩` from `Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel Γ Y) (p x)))`. Use `⟨Classical.choose (hT (Quotient.mk (MulAction.orbitRel Γ Y) (p x)).out) * h, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_smul]`. Simplify using `only at hh ⊢`. Rewrite using `[hh]`. Conclude with `congrArg Subtype.val hx`. Use `hcf t ↥(UpperTheory.V.Af.CohB.part cl hcl t) (fun x => p x.1) (fun γ x => hp γ x.1) hsurj D (le_trans (Cardinal.mk_le_of_injective (f := fun z : {x : ↥(UpperTheory.V.Af.CohB.part cl hcl t) // p x.1 = t.1} => (⟨z.1.1, z.2⟩ : {x // p x = t.1})) (fun a b hab => Subtype.ext (Subtype. …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.absolute_bound_of_partial_bound_of_orbit_bound :
     UpperTheory.V.Af.CohB.PartBound → UpperTheory.V.Af.CohB.OrbBound → UpperTheory.V.Af.CohB.AbsBound := by

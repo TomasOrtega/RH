@@ -9,9 +9,9 @@ open scoped BigOperators
 namespace GlobalTheory.LatticeProjection
 
 /- English proof (translation)
-Use `⟨fun s => ?_, fun v => ?_, fun {x y} h => ⟨1, by rw [Subtype.ext h]⟩⟩` and prove the remaining obligations. Conclude with `(isLocalizedModule_id (nonZeroDivisors O) V E).map_units s`. Establish `hv : v ∈ Submodule.span E (B : Set V)` using `hB ▸ Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors O) E (B : Set V) v hv`. Rewrite `ht` using `[Submodule.span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(⟨t • v, ht⟩, t), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_subtype {O E V : Type*} [CommRing O] [IsDomain O] [Field E] [Algebra O E]
     [IsFractionRing O E] [AddCommGroup V] [Module E V] [Module O V] [IsScalarTower O E V]
@@ -25,15 +25,13 @@ theorem isLocalizedModule_subtype {O E V : Type*} [CommRing O] [IsDomain O] [Fie
     exact ⟨(⟨t • v, ht⟩, t), rfl⟩
 
 /- English proof (translation)
-Use `set B := L₁ ⊔ L₃ with hBdef`. Use `haveI : Module.Finite O B := Module.Finite.iff_fg.2 (h₁.sup h₃)`. Use `haveI : Module.IsTorsionFree O V := Module.IsTorsionFree.trans_faithfulSMul O E V`. Use `haveI : Module.FinitePresentation O B := Module.finitePresentation_of_finite O B`. Use `haveI : Module.Flat O B := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : Module.Projective O B := Module.Flat.projective_of_finitePresentation`. Set `p : (L₁ × L₃) →ₗ[O] B` to `LinearMap.coprod (Submodule.inclusion le_sup_left) (Submodule.inclusion le_sup_right)`. Establish `hp : Function.Surjective p`. Introduce and unpack `⟨v, hv⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨(⟨a, ha⟩, ⟨b, hb⟩), rfl⟩`. Take `⟨s, hs⟩` from `Module.projective_lifting_property p LinearMap.id hp`. Set `f : B →ₗ[O] V` to `L₁.subtype ∘ₗ LinearMap.fst O L₁ L₃ ∘ₗ s`. Use `haveI := isLocalizedModule_subtype (E := E) B hB`. Establish `hu` using `(isLocalizedModule_id (nonZeroDivisors O) V E).map_units`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `g : V →ₗ[O] V` to `IsLocalizedModule.lift (nonZeroDivisors O) B.subtype f hu`. Use `⟨g.extendScalarsOfIsLocalization (nonZeroDivisors O) E, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hg : g v = ((s ⟨v, hv⟩).1 : V)` using `IsLocalizedModule.lift_apply (nonZeroDivisors O) B.subtype f hu ⟨v, hv⟩`. Establish `hsum : ((s ⟨v, hv⟩).1 : V) + ((s ⟨v, hv⟩).2 : V) = v` using `congrArg Subtype.val (LinearMap.congr_fun hs ⟨v, hv⟩)`. Rewrite using `[LinearMap.extendScalarsOfIsLocalization_apply', hg]`.
-
-Use `⟨(s ⟨v, hv⟩).1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_of_eq_add' hsum.symm]`. Conclude with `(s ⟨v, hv⟩).2.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_linear_projection {O E V : Type*} [CommRing O] [IsDedekindDomain O] [Field E] [Algebra O E]
     [IsFractionRing O E] [AddCommGroup V] [Module E V] [Module O V] [IsScalarTower O E V]
@@ -66,9 +64,9 @@ theorem exists_linear_projection {O E V : Type*} [CommRing O] [IsDedekindDomain 
   exact (s ⟨v, hv⟩).2.2
 
 /- English proof (translation)
-Introduce `D n L₁ L₃ h₁ h₃`. Take `⟨f₁, s₁, -⟩` from `(sd_iff D L₁).1 h₁`. Take `⟨f₃, -, -⟩` from `(sd_iff D L₃).1 h₃`. Take `⟨π, hπ⟩` from `exists_linear_projection (E := D.host.E) L₁ L₃ f₁ f₃ (top_le_iff.1 (s₁ ▸ Submodule.span_mono (fun x hx => Submodule.mem_sup_left hx)))`. Apply the tactic sequence `refine ⟨LinearMap.toMatrix' π, fun v hv => ?_, fun v hv => ?_, fun v hv => ?_⟩ <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[LinearMap.toMatrix'_mulVec]`. Conclude with `(hπ v hv).1`. Simplify using `using L₃.sub_mem hv (hπ v (Submodule.mem_sup_right hv)).2`. Conclude with `(hπ v (Submodule.mem_sup_left hv)).2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_matrix_projection : ∀ (D : D7) (n : ℕ) (L₁ L₃ : Lat D n), SD D L₁ → SD D L₃ →
     ∃ π : Matrix (Fin n) (Fin n) D.host.E, (∀ v ∈ L₁ ⊔ L₃, π.mulVec v ∈ L₁) ∧ (∀ v ∈ L₃, π.mulVec v ∈ L₃) ∧

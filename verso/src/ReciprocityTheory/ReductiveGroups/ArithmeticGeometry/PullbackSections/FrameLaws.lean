@@ -31,7 +31,7 @@ def frBC (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT 
   gen := genBC_frame y.x hS hT ψ.toRingHom y.s y.gen
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ _ => rfl, ReciprocityTheory.ChartRestriction.G.PullbackSections.bcPm ψ.toRingHom y.x, ReciprocityTheory.ChartRestriction.G.PullbackSections.bcPm_snd _ _, ReciprocityTheory.ChartRestriction.G.PullbackSections.bcPm_fst _ _, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem frMap_frBC (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) {S K : Type} [CommRing S] [Algebra c.F S] [Field K] [Algebra c.F K] (ψ : S →ₐ[c.F] K)
     (y : FrPt Xo c S) : FrMap ψ y (frBC c hS hT ψ y) :=
@@ -39,7 +39,7 @@ theorem frMap_frBC (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeA
     ReciprocityTheory.ChartRestriction.G.PullbackSections.bcPm_fst _ _, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `p y ψ`. Set `_ : Field (CAt σ)` to `inferInstanceAs (Field ℂ)`. Conclude with `⟨frBC c hS hT ψ y, frMap_frBC c hS hT ψ y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem bcEx_laws (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) (σ : c.F →+* ℂ) : BCEx Xo c σ := by
   intro p y ψ
@@ -47,14 +47,14 @@ theorem bcEx_laws (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAn
   exact ⟨frBC c hS hT ψ y, frMap_frBC c hS hT ψ y⟩
 
 /- English proof (translation)
-The claim follows from `wtField_of_bcR hW (tanAdd_holds Xo) (bcGenR hS hT c) (bcLieR c)`.
+A detailed English derivation is pending.
 -/
 theorem wtField_laws (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) :
     WtField Xo c :=
   wtField_of_bcR hW (tanAdd_holds Xo) (bcGenR hS hT c) (bcLieR c)
 
 /- English proof (translation)
-The claim follows from `rdIndep_of_wt U σ hW hAT hU (bcEx_laws c hS hT σ) (wtField_laws c hS hT hW)`.
+A detailed English derivation is pending.
 -/
 theorem rdIndep_laws (hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeAnySt) (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ : c.F →+* ℂ)
     (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (hAT : AllTest Xo c)

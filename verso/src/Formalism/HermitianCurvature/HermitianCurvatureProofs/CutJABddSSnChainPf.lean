@@ -22,7 +22,7 @@ def tnext (x : Bool × Mat k r) (t : Tm k r) : List (Tm k r) :=
   ⟨t.j + 1, Fin.cons [x] t.ws⟩ :: List.ofFn fun i : Fin t.j => (⟨t.j, Function.update t.ws i (x :: t.ws i)⟩ : Tm k r)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using hasDerivAt_const (0 : ℝ) (0 : E')`. Consider the case `cons a l ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `(h a (by simp)).add (ih fun i hi => h i (by simp [hi]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_list_sum {ι : Type} (l : List ι) (f : ι → ℝ → E') (f' : ι → E')
     (h : ∀ i ∈ l, HasDerivAt (f i) (f' i) 0) :
@@ -34,7 +34,7 @@ theorem hasDerivAt_list_sum {ι : Type} (l : List ι) (f : ι → ℝ → E') (f
     exact (h a (by simp)).add (ih fun i hi => h i (by simp [hi]))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => rw [List.flatMap_cons, List.map_append, List.sum_append, ih, List.map_cons, List.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem list_sum_flatMap {ι κ : Type} (l : List ι) (f : ι → List κ) (g : κ → E') :
     ((l.flatMap f).map g).sum = (l.map fun i => ((f i).map g).sum).sum := by
@@ -43,15 +43,15 @@ theorem list_sum_flatMap {ι κ : Type} (l : List ι) (f : ι → List κ) (g : 
   | cons a l ih => rw [List.flatMap_cons, List.map_append, List.sum_append, ih, List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-Establish `hg' : g ∈ U ∩ GV k r` using `⟨hgU, hg⟩`. Establish `hF1 : ∀ n : ℕ∞, CkOn n (U ∩ GV k r) F` using `fun n => CkOn_mono le_top hF`. Establish `hA : HasDerivAt (fun s : ℝ => iteratedFDeriv ℝ t.j Ψ (F (crv x g s))) (fderiv ℝ (iteratedFDeriv ℝ t.j Ψ) (F g) (Dx x F g)) 0`. Establish `h1` using `CkOn_diff hx (hF1 1) hg' hg`. Establish `hlt : ((t.j : ℕ) : WithTop ℕ∞) < ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_lt_coe.mpr (ENat.coe_lt_top _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasFDerivAt (iteratedFDeriv ℝ t.j Ψ) (fderiv ℝ (iteratedFDeriv ℝ t.j Ψ) (F g)) (F (crv x g 0))`. Rewrite using `[crv_zero]`. Conclude with `((hΨ.differentiable_iteratedFDeriv hlt) (F g)).hasFDerivAt`. Conclude with `h2.comp_hasDerivAt (0 : ℝ) h1`. Establish `hv : ∀ i, HasDerivAt (fun s : ℝ => Dw (t.ws i) F (crv x g s)) (Dw (x :: t.ws i) F g) 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Conclude with `CkOn_diff hx (CkOn_Dw (hws i) (hF1 _)) hg' hg`. Establish `hD` using `(hA.hasFDerivAt).continuousMultilinearMap_apply (fun i => (hv i).hasFDerivAt)`. Use `hD.hasDerivAt.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [crv_zero, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.one_apply, one_smul, ContinuousMultilinearMap.apply_apply, ContinuousMultili …`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [tnext, List.map_cons, List.sum_cons, List.map_ofFn, List.sum_ofFn]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_apply, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tval_hasDerivAt {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Ψ) {F : Mat k r → V}
     {U : Set (Mat k r)} (hF : CkOn ⊤ (U ∩ GV k r) F) {x : Bool × Mat k r} (hx : inLie k r x.2)
@@ -90,27 +90,27 @@ theorem tval_hasDerivAt {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : Wi
   · simp [Function.update_apply, h]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_`. Use `⟨[⟨0, Fin.elim0⟩], by simp, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t ht`. Simplify using `only [List.mem_singleton] at ht`. Substitute `ht` using the available equality. Conclude with `⟨le_rfl, by simp, fun i => i.elim0⟩`. Introduce `g _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[tval, Dw]`. Consider the case `cons x w ih`. Introduce `hw`. Take `⟨ts, hlen, hts, hval⟩` from `ih (fun y hy => hw y (List.mem_cons_of_mem _ hy))`. Establish `hx : inLie k r x.2` using `hw x (by simp)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨ts.flatMap (tnext x), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hl : ∀ t ∈ ts, (tnext x t).length ≤ w.length + 1`. Introduce `t ht`. Simplify using `only [tnext, List.length_cons, List.length_ofFn]`. Use `(hts t ht).1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hs : (ts.map fun t => (tnext x t).length).sum ≤ (ts.map fun _ => w.length + 1).sum` using `List.sum_le_sum hl`. Rewrite `hs` using `[List.map_const', List.sum_replicate, smul_eq_mul]`. Rewrite using `[List.length_flatMap, List.length_cons, Nat.factorial_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `t' ht'`. Take `⟨t, ht, ht'⟩` from `List.mem_flatMap.mp ht'`. Take `⟨hj, hsum, hsub⟩` from `hts t ht`. Simplify using `only [tnext, List.mem_cons, List.mem_ofFn] at ht'`. Break down `ht' with rfl | ⟨i, rfl⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨by simp only [List.length_cons]; omega, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, List.length_cons, List.length_nil, hsum]`. Use linear arithmetic over natural numbers and integers. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `using (hsub i).cons x`. Use `⟨by simp only [List.length_cons]; omega, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ∀ l, (Function.update t.ws i (x :: t.ws i) l).length = (t.ws l).length + if l = i then 1 else 0`. Introduce `l`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_apply, h]`. Simplify using `only [e, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, hsum, List.length_cons]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `l`. Distinguish the cases in `h : l = i`. Simplify `(hsub i).cons₂ x` using `[h]`. Simplify `(hsub l).cons x` using `[Function.update_apply, h]`. Introduce `g hgU hg show Dx x (Dw w (fun g => Ψ (F g))) g = _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Dx_eq]`. Establish `hev : Filter.EventuallyEq (nhds (0 : ℝ)) (fun s : ℝ => Dw w (fun g => Ψ (F g)) (crv x g s)) (fun s => (ts.map fun t => tval Ψ F t (crv x g s)).sum)` using `by filter_upwards [crv_ev (x := x) hU hgU] with s hs`. Conclude with `hval _ hs (crv_mem hx hg s)`. Rewrite using `[hev.deriv_eq, list_sum_flatMap]`. Conclude with `(hasDerivAt_list_sum ts (fun t s => tval Ψ F t (crv x g s)) (fun t => ((tnext x t).map fun t' => tval Ψ F t' g).sum) (fun t ht => tval_hasDerivAt hΨ hF hx t (fun i y hy => hw y (List.mem_cons_of_mem _ (((hts t ht).2.2 i).subset hy))) hgU hg)).deriv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Ψ) {F : Mat k r → V}
     {U : Set (Mat k r)} (hU : IsOpen U) (hF : CkOn ⊤ (U ∩ GV k r) F) :
@@ -185,47 +185,41 @@ theorem expand {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ
           (fun i y hy => hw y (List.mem_cons_of_mem _ (((hts t ht).2.2 i).subset hy))) hgU hg)).deriv
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.P.CutMP.JA.SSn.ChainBd`. Introduce `k r V E' _ _ _ _ _ Ψ hΨ F U K hU hF hKU hKG Bg hBg hyp m`. Take `⟨C0, hC0⟩` from `hyp 0`. Establish `hFb : ∀ g ∈ K, ‖F g‖ ≤ C0`. Introduce `g hg`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hC0 [] [] (by simp) (by simp) (by simp) g hg` as an intermediate fact. Simplify `this` using `[dLR, Rw]`. Establish `hΨb : ∀ j : ℕ, ∃ B, ∀ y : V, ‖y‖ ≤ C0 → ‖iteratedFDeriv ℝ j Ψ y‖ ≤ B`. Introduce `j`. Establish `hc : Continuous (fun y => iteratedFDeriv ℝ j Ψ y)` using `hΨ.continuous_iteratedFDeriv (WithTop.coe_le_coe.mpr le_top)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨B, hB⟩` from `(isCompact_closedBall (0 : V) C0).exists_bound_of_continuousOn hc.continuousOn`. Conclude with `⟨B, fun y hy => hB y (mem_closedBall_zero_iff.mpr hy)⟩`. Use `choose Bj hBj using hΨb`. Use `choose Cl hCl using hyp`. Take `⟨Bs, hBs⟩ : ∃ Bs : ℝ, Bs = ∑ j ∈ Finset.range (m + 1), |Bj j|` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Cs, hCs⟩ : ∃ Cs : ℝ, Cs = 1 + ∑ l ∈ Finset.range (m + 1), |Cl l|` from `⟨_, rfl⟩`. Establish `hBs0 : 0 ≤ Bs`. Rewrite using `[hBs]`. Conclude with `Finset.sum_nonneg fun j _ => abs_nonneg _`. Establish `hCs1 : 1 ≤ Cs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Finset.sum_nonneg (fun l (_ : l ∈ Finset.range (m + 1)) => abs_nonneg (Cl l))` as an intermediate fact. Rewrite using `[hCs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBj' : ∀ j ≤ m, Bj j ≤ Bs`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hBs]`. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun j => |Bj j|) (fun j _ => abs_nonneg _) (Finset.mem_range.mpr (by omega)))`. Establish `hCl' : ∀ l ≤ m, Cl l ≤ Cs`. Introduce `l hl`. Use `(le_abs_self (Cl l)).trans (Finset.single_le_sum (f := fun l => |Cl l|) (fun l _ => abs_nonneg _) (Finset.mem_range.mpr (by omega : l < m + 1)))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hCs]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(m + 1).factorial * Bs * Cs ^ m, ?_⟩` and prove the remaining obligations. Introduce `u v hu hv huv g hg`. Establish `hgG` using `hKG hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg1 : 1 ≤ gN g` using `gN_ge_one hgG`. Take `⟨a, ha⟩ : ∃ a : ℝ, a = gN g ^ Bg` from `⟨_, rfl⟩`. Establish `ha1 : 1 ≤ a`. Rewrite using `[ha]`. Conclude with `Real.one_le_rpow hg1 hBg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ l : ℕ, gN g ^ (Bg * l) = a ^ l`. Introduce `l`. Rewrite using `[Real.rpow_mul (by linarith), Real.rpow_natCast, ha]`. Establish `hsub : ∀ s : List (Bool × Mat k r), s.Sublist (wL u ++ wR v) → ‖Dw s F g‖ ≤ Cs * a ^ s.length`. Introduce `s hs`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `wL wR at hs`. Take `⟨r1, r2, rfl, h1, h2⟩` from `List.sublist_append_iff.mp hs`. Take `⟨u', hu', rfl⟩` from `List.sublist_map_iff.mp h1`. Take `⟨v', hv', rfl⟩` from `List.sublist_map_iff.mp h2`. Establish `hl : u'.length + v'.length ≤ m`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hu'.length_le` as an intermediate fact. Use `hv'.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e : Dw (u'.map (Prod.mk true) ++ v'.map (Prod.mk false)) F g = dLR u' v' F g`. Rewrite using `[dLR_eq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hb` using `hCl (u'.length + v'.length) u' v' (fun X hX => hu X (hu'.subset hX)) (fun X hX => hv X (hv'.subset hX)) le_rfl g hg`. Rewrite `hb` using `[hpow]`. Establish `hlen : (u'.map (Prod.mk true) ++ v'.map (Prod.mk false)).length = u'.length + v'.length` using `by simp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hlen]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dLR_eq]`. Establish `hw : ∀ y ∈ wL u ++ wR v, inLie k r y.2`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [wL, wR, List.mem_append, List.mem_map] at hy`. Break down `hy with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `(hu X hX).1`. Conclude with `(hv X hX).1`. Take `⟨ts, hlen, hts, hval⟩` from `expand hΨ hU hF (wL u ++ wR v) hw`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hval g (hKU hg) hgG]`. Establish `hL : (wL u ++ wR v).length ≤ m`. Simplify using `only [wL, wR, List.length_append, List.length_map]`. Use linear arithmetic over natural numbers and integers. Establish `hX : 0 ≤ Bs * Cs ^ m * gN g ^ (Bg * m)` using `mul_nonneg (mul_nonneg hBs0 (pow_nonneg (by linarith) _)) (Real.rpow_nonneg (by linarith) _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hterm : ∀ t ∈ ts, ‖tval Ψ F t g‖ ≤ Bs * Cs ^ m * gN g ^ (Bg * m)`. Introduce `t ht`. Take `⟨hj, hsum, hsl⟩` from `hts t ht`. Rewrite using `[hpow]`. Unfold `tval`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul ((hBj t.j (F g) (hFb g hg)).trans (hBj' _ (by omega))) (Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i _ => hsub _ (hsl i))) (Finset.prod_nonneg fun i _ => norm_nonneg _) hBs0` to reduce the goal to its premises. Use `_ = Bs * (Cs ^ t.j * a ^ (wL u ++ wR v).length) := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow_eq_pow_sum, hsum]`. Use `_ ≤ Bs * (Cs ^ m * a ^ m) := by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `mul_le_mul_of_nonneg_left _ hBs0` to reduce the goal to its premises. Conclude with `mul_le_mul (pow_le_pow_right₀ hCs1 (by omega)) (pow_le_pow_right₀ ha1 hL) (pow_nonneg (by linarith) _) (pow_nonneg (by linarith) _)`. Use `_ = Bs * Cs ^ m * a ^ m := by ring`. Establish `key : ∀ l : List (Tm k r), (∀ t ∈ l, ‖tval Ψ F t g‖ ≤ Bs * Cs ^ m * gN g ^ (Bg * m)) → ‖(l.map fun t => tval Ψ F t g).sum‖ ≤ l.length * (Bs * Cs ^ m * gN g ^ (Bg * m))`. Introduce `l`.
-
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `_`. Simplify using the standard rewrite rules. Consider the case `cons t l ih`.
-
-Introduce `hl`. Simplify using `only [List.map_cons, List.sum_cons, List.length_cons, Nat.cast_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfac : (ts.length : ℝ) ≤ ((m + 1).factorial : ℝ)`. Conclude with `hlen.trans (Nat.factorial_le (by omega))` after adjusting the coercions.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem chain_bound_holds : Formalism.FourierDecayAlt.P.CutMP.JA.SSn.ChainBd := by
   unfold Formalism.FourierDecayAlt.P.CutMP.JA.SSn.ChainBd

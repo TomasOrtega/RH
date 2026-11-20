@@ -40,7 +40,7 @@ namespace DatAt
 variable {Y : Model Xo c β} {p : ℕ} {C : SCF p} {P : PointsOfFlagModel.PtC Y C}
 
 /- English proof (translation)
-Rewrite using `[A.beta_symm, hA C P A, A.beta_symm b, A.beta_symm b']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_add_right (hA : BetaAdd Y p) (A : DatAt Y P) (a b b' : A.Ylat) :
     A.beta a (b + b') = A.beta a b + A.beta a b' := by

@@ -12,9 +12,9 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Establish `sq : IsPullback a h' h b` using `IsPullback.of_bot hH w hX`. Take `⟨t, ht⟩` from `hx`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback hX (h x) t ht.symm`. Take `⟨x', rfl, hx'⟩` from `Scheme.exists_preimage_of_isPullback sq x z hz.symm`. Take `⟨y', rfl, hy'⟩` from `Scheme.exists_preimage_of_isPullback sq y z (hxy.symm.trans hz.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hinj (hx'.trans hy'.symm)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_injective_baseChange {S S' H X H' X' : Scheme.{0}} {q : S' ⟶ S} {s : X ⟶ S} {h : H ⟶ X}
     {b : X' ⟶ X} {s' : X' ⟶ S'} {a : H' ⟶ H} {h' : H' ⟶ X'}
@@ -28,7 +28,7 @@ theorem eq_of_injective_baseChange {S S' H X H' X' : Scheme.{0}} {q : S' ⟶ S} 
   rw [hinj (hx'.trans hy'.symm)]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hz`. Take `⟨z', rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hX z t ht.symm`. Take `⟨x, rfl⟩` from `hsurj z'`. Conclude with `⟨a x, by rw [← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_range_of_surjective_baseChange {S S' H X H' X' : Scheme.{0}} {q : S' ⟶ S} {s : X ⟶ S} {h : H ⟶ X}
     {b : X' ⟶ X} {s' : X' ⟶ S'} {a : H' ⟶ H} {h' : H' ⟶ X'}
@@ -40,9 +40,9 @@ theorem mem_range_of_surjective_baseChange {S S' H X H' X' : Scheme.{0}} {q : S'
   exact ⟨a x, by rw [← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply]⟩
 
 /- English proof (translation)
-Establish `hJ : JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace s`. Rewrite using `[← Set.range_eq_univ]`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, hx'⟩` from `nonempty_inter_closedPoints (Set.nonempty_compl.mpr hne) h.isClosedEmbedding.isClosed_range.isOpen_compl.isLocallyClosed`. Take `⟨c, hc⟩` from `hs _ (pointOfClosedPoint_comp s x hx')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `a : Sp k` to `IsLocalRing.closedPoint k`. Use `hx ⟨c a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hc]`. Conclude with `pointOfClosedPoint_apply s x hx' _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_isClosedImmersion_of_points {k : Type} [Field k] [IsAlgClosed k] {H X : Scheme.{0}}
     (h : H ⟶ X) [IsClosedImmersion h] (s : X ⟶ Sp k) [LocallyOfFiniteType s]
@@ -59,9 +59,7 @@ theorem surjective_of_isClosedImmersion_of_points {k : Type} [Field k] [IsAlgClo
   exact pointOfClosedPoint_apply s x hx' _
 
 /- English proof (translation)
-Distinguish the cases in `hx : PrimeSpectrum.asIdeal x = ⊥`. Use `Or.inr ⟨(⊥ : PrimeSpectrum K), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).mp (IsFractionRing.injective T K)`. Use `Or.inl (PrimeSpectrum.ext ?_)` and prove the remaining obligations.
-
-Conclude with `IsLocalRing.eq_maximalIdeal ((PrimeSpectrum.isPrime x).isMaximal hx)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_closedPoint_or_mem_range (T K : Type) [CommRing T] [IsDomain T]
     [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (x : Sp T) :
@@ -74,17 +72,15 @@ theorem eq_closedPoint_or_mem_range (T K : Type) [CommRing T] [IsDomain T]
     exact IsLocalRing.eq_maximalIdeal ((PrimeSpectrum.isPrime x).isMaximal hx)
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Set `t` to `spMap (algebraMap T K)`. Establish `: IsOpenImmersion t` using `isOpenImmersion_spMap_of_isDiscreteValuationRing T K`. Establish `: ConnectedSpace ↥(pullback s t)` using `hK.isoPullback.hom.surjective.connectedSpace hK.isoPullback.hom.continuous`. Take `⟨hXi, hN⟩` from `isIntegral_and_isNormalScheme_of_smooth T K s`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hHi, -⟩` from `isIntegral_and_isNormalScheme_of_smooth T K (h ≫ s)`. Establish `: IsSeparated h` using `IsSeparated.of_comp h s`. Establish `: QuasiCompact h` using `QuasiCompact.of_comp h s`. Establish `: LocallyOfFiniteType h` using `locallyOfFiniteType_of_comp h s`. Set `j` to `pullback.fst (h ≫ s) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hj : IsPullback j (𝟙 _ ≫ pullback.snd (h ≫ s) t) (h ≫ s) t`. Rewrite using `[Category.id_comp]`. Conclude with `.of_hasPullback _ _`. Establish `hinj : Function.Injective h` using `fun x y hxy ↦ by`. Break down `eq_closedPoint_or_mem_range T K (s (h x)) with hx | hx` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `eq_of_injective_baseChange hX hH w hbij.1 hxy (hx ▸ hq)`. Conclude with `eq_of_injective_baseChange hK hj (Category.id_comp _).symm (fun _ _ e ↦ e) hxy hx`. Establish `hsurj : Function.Surjective h` using `fun z ↦ by`. Break down `eq_closedPoint_or_mem_range T K (s z) with hx | hx` into its components or cases. Conclude with `mem_range_of_surjective_baseChange hX w hbij.2 (hx ▸ hq)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_range_of_surjective_baseChange (h' := 𝟙 _) hK (Category.id_comp _).symm (fun e ↦ ⟨e, rfl⟩) hx`. Establish `: LocallyQuasiFinite h` using `LocallyQuasiFinite.of_injective hinj`. Establish `: IsOpenImmersion (j ≫ h)` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hK.flip ‹_›`. Establish `: IsOpenImmersion (j.opensRange.ι ≫ h)`. Rewrite using `[← j.isoOpensRange_inv_comp, Category.assoc]`.
-
-Use `infer_instance`. Establish `: IsOpenImmersion h` using `isOpenImmersion_of_quasiFinite_of_isOpenImmersion_restrict h (fun y ↦ (hN y).2) j.opensRange ⟨⟨j (Classical.arbitrary _), _, rfl⟩⟩`. Conclude with `(isIso_iff_isOpenImmersion_and_surjective h).mpr ⟨this, ⟨hsurj⟩⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_of_genericFibre_of_specialFibre (T K : Type) [CommRing T] [IsDomain T]
     [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K]
@@ -131,7 +127,7 @@ theorem isIso_of_genericFibre_of_specialFibre (T K : Type) [CommRing T] [IsDomai
   exact (isIso_iff_isOpenImmersion_and_surjective h).mpr ⟨this, ⟨hsurj⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨by rw [← Category.assoc, h.w]⟩, ⟨PullbackCone.IsLimit.mk _ (fun c ↦ h.lift (c.fst ≫ i) c.snd (by rw [Category.assoc, c.condition])) (fun c ↦ by rw [← cancel_mono i, Category.assoc, h.lift_fst]) (fun c ↦ h.lift_snd _ _ _) (fun c m h₁ h₂ ↦ h.hom_ext (by rw [h.lift_fst, ← Category …`.
+Supply the required witnesses or components.
 -/
 theorem isPullback_of_comp_mono {𝒞 : Type*} [Category 𝒞] {A G P U Z : 𝒞} {a : A ⟶ G} {i : G ⟶ P} [Mono i]
     {s : A ⟶ U} {t : P ⟶ Z} {u : U ⟶ Z} (h : IsPullback (a ≫ i) s t u) : IsPullback a s (i ≫ t) u :=
@@ -141,34 +137,32 @@ theorem isPullback_of_comp_mono {𝒞 : Type*} [Category 𝒞] {A G P U Z : 𝒞
     (fun c m h₁ h₂ ↦ h.hom_ext (by rw [h.lift_fst, ← Category.assoc, h₁]) (by rw [h.lift_snd, h₂]))⟩⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.NormIntegers.isAlgClosed_residueField (Valuation.valuationSubring.integers (Valued.v : Valuation (PadicAlgCl p) NNReal))`.
+A detailed English derivation is pending.
 -/
 theorem isAlgClosed_residueField_OO (p : ℕ) [Fact p.Prime] : IsAlgClosed (kb p) :=
   GlobalTheory.NormIntegers.isAlgClosed_residueField
     (Valuation.valuationSubring.integers (Valued.v : Valuation (PadicAlgCl p) NNReal))
 
 /- English proof (translation)
-Introduce `C hF hS p _ y τ`. Use `isAlgClosed_residueField_OO p` as an intermediate fact. Use `C.proper` as an intermediate fact. Use `τ.smooth` as an intermediate fact. Use `τ.sep` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `τ.qc` as an intermediate fact. Use `τ.j_loc` as an intermediate fact. Establish `: Smooth C.GG.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Establish `: Smooth τ.H.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Establish `: IsSeparated C.GG.hom` using `inferInstanceAs (IsSeparated (C.G.ι ≫ C.P.hom))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K` to `FractionRing τ.V`. Set `t : Sp K ⟶ Sp τ.V` to `spMap (algebraMap τ.V K)`. Set `q : Sp (kb p) ⟶ Sp τ.V` to `rPt p ≫ spMap τ.j`. Establish `hqy : q ≫ τ.y₀ = rPt p ≫ y` using `by rw [Category.assoc, τ.fac]`. Set `h : τ.H.left ⟶ pullback C.GG.hom τ.y₀` to `pullback.lift τ.f τ.H.hom τ.f_over`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h₁ : h ≫ pullback.fst _ _ = τ.f` using `pullback.lift_fst _ _ _`. Establish `h₂ : h ≫ pullback.snd _ _ = τ.H.hom` using `pullback.lift_snd _ _ _`. Establish `hA : IsPullback C.a C.A.hom C.GG.hom C.U.ι` using `isPullback_of_comp_mono C.cart`. Establish `hφ : IsPullback τ.φ (pullback.snd τ.H.hom t) C.A.hom τ.yK` using `τ.φ_cart.1`. Use `C.ab.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ConnectedSpace ↥(pullback τ.H.hom t)` using `GeometricallyConnected.geometrically_connectedSpace _ _ _ hφ`. Establish `hK : IsPullback (pullback.fst τ.H.hom t ≫ h) (pullback.snd τ.H.hom t) (pullback.snd C.GG.hom τ.y₀) t`. Use `IsPullback.of_right ?_ (by rw [Category.assoc, h₂, pullback.condition]) (IsPullback.of_hasPullback C.GG.hom τ.y₀)` and prove the remaining obligations. Use `hφ.paste_horiz hA` as an intermediate fact. Rewrite `this` using `[τ.φ_f, τ.yK_fac]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc, h₁]`. Conclude with `this`. Set `h' : pullback τ.H.hom q ⟶ pullback C.GG.hom (rPt p ≫ y)` to `pullback.lift (pullback.fst _ _ ≫ τ.f) (pullback.snd _ _) (by`. Rewrite using `[Category.assoc, τ.f_over, pullback.condition_assoc, hqy])`. Establish `h₁' : h' ≫ pullback.fst _ _ = pullback.fst _ _ ≫ τ.f` using `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂' : h' ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `: IsClosedImmersion h'` using `τ.imm h' h₁' h₂'`. Set `b : pullback C.GG.hom (rPt p ≫ y) ⟶ pullback C.GG.hom τ.y₀` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ q) (by`. Rewrite using `[Category.assoc, hqy, pullback.condition])`. Establish `b₁ : b ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₂ : b ≫ pullback.snd _ _ = pullback.snd _ _ ≫ q` using `pullback.lift_snd _ _ _`. Establish `hX : IsPullback b (pullback.snd _ _) (pullback.snd C.GG.hom τ.y₀) q`. Use `IsPullback.of_right ?_ b₂ (IsPullback.of_hasPullback C.GG.hom τ.y₀)` and prove the remaining obligations. Rewrite using `[b₁, hqy]`. Conclude with `.of_hasPullback _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective h'`. Use `surjective_of_isClosedImmersion_of_points h' (pullback.snd _ _) fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨c, hc₁, hc₂⟩` from `hF p y τ (x ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx, Category.id_comp])`. Use `⟨pullback.lift c (𝟙 _) (by rw [Category.id_comp]; exact hc₁), pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h₁', pullback.lift_fst_assoc, hc₂]`. Rewrite using `[Category.assoc, h₂', pullback.lift_snd, hx]`. Establish `hq : IsLocalRing.closedPoint τ.V ∈ Set.range q`. Use `⟨IsLocalRing.closedPoint (kb p), ?_⟩` and prove the remaining obligations. Conclude with `IsLocalRing.comap_closedPoint ((IsLocalRing.residue (OO p)).comp τ.j)`.
-
-Establish `: IsIso h` using `isIso_of_genericFibre_of_specialFibre τ.V K h (pullback.snd _ _) τ.H.hom h₂ hK hq hX (a := pullback.fst _ _) (h' := h') (by rw [h₂']; exact .of_hasPullback _ _) (pullback.hom_ext (by simp only [Category.assoc, h₁, b₁, h₁']) (by simp only [Category.assoc, h₂, b₂, reassoc_of% h₂', …`. Conclude with `IsPullback.of_iso_pullback ⟨τ.f_over⟩ (asIso h) h₁ h₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Core.testCart_of_fib :
     ∀ C : Core, C.Fib → SmoothOfRelativeDimension C.g C.GG.hom → C.TestCart := by

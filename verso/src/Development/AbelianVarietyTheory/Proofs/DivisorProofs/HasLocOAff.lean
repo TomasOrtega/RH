@@ -10,19 +10,17 @@ noncomputable section
 namespace GlobalTheory.CechDR
 
 /- English proof (translation)
-Introduce `R' _ X' s' T b`. Set `U` to `T.unop`. Set `b' : Γ(X', U.1)` to `b`. Set `V : X'.affineOpens` to `⟨X'.basicOpen b', U.2.basicOpen b'⟩`. Establish `hVU : V ≤ U` using `X'.basicOpen_le b'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `l : T ⟶ Opposite.op V` to `(homOfLE hVU).op`. Use `haveI := U.2.isLocalization_basicOpen b'`. Use `⟨Opposite.op V, l, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsLocalization.Away.algebraMap_isUnit (S := Γ(X', X'.basicOpen b')) b'`. Introduce `y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `y' : Γ(X', X'.basicOpen b')` to `y`. Take `⟨⟨x, ⟨_, n, rfl⟩⟩, e⟩` from `IsLocalization.surj (Submonoid.powers b') y'`. Use `⟨n, x, ?_⟩` and prove the remaining obligations. Use `show y' * (algebraMap Γ(X', U.1) Γ(X', X'.basicOpen b') b') ^ n = algebraMap Γ(X', U.1) Γ(X', X'.basicOpen b') x`. Rewrite using `[← map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `e`. Introduce `x hx`. Set `x' : Γ(X', U.1)` to `x`. Establish `hx : algebraMap Γ(X', U.1) Γ(X', X'.basicOpen b') x' = 0` using `hx`. Take `⟨⟨_, n, rfl⟩, e⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers b') _ x').1 hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨n, e⟩`. Introduce `S u hu`. Establish `hSU : S.unop.1 ≤ U.1` using `leOfHom u.unop`. Establish `hu' : IsUnit ((X'.presheaf.map (homOfLE hSU).op).hom b')` using `hu`. Establish `h1` using `X'.basicOpen_res b' (homOfLE hSU).op`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Scheme.basicOpen_of_isUnit _ hu']`. Establish `hSV : S.unop ≤ V`. Express the relevant statement in the definitionally equal form `S.unop.1 ≤ X'.basicOpen b'`. Rewrite using `[h1]`. Conclude with `inf_le_right`.
-
-Use `⟨(homOfLE hSV).op, Subsingleton.elim _ _, fun _ _ ↦ Subsingleton.elim _ _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasLoc_OAff : ∀ {R' : Type} [CommRing R'] {X' : Scheme.{0}} (s' : X' ⟶ Sp R'),
     Desc.HasLoc (OAff s') := by

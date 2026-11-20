@@ -15,32 +15,30 @@ namespace GlobalTheory.ThKSoSpan
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Unfold `ht`. Conclude with `one_le_heightGL F h.1` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_ht {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : UA σ J) : (1 : ℝ) ≤ (ht h : ℝ) := by
   unfold ht
   exact_mod_cast one_le_heightGL F h.1
 
 /- English proof (translation)
-Introduce `_ hU F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair Φ hΦ`. Establish `hS` using `hPair.weil.isUSplitting`. Take `⟨l, -, hlt⟩` from `GlobalTheory.T.exists_admissibleForm_adelicThetaSum F (Fin n × Fin d)`. Establish `hsch : M.So B.ψ B.τ₁ ≤ schA F (Fin n × Fin d)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Establish `h3` using `(h2.and hPair.good.std).mono fun w hw => hw.1.trans hw.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`. Establish `hlin : ∀ Ψ ∈ schA F (Fin n × Fin d), ∀ g h, theta om Ψ g h = l (om (g, h) Ψ)` using `fun Ψ hΨ g h => (hlt _ (hS.pres _ _ hΨ)).symm`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨f, φ, h1, h2, h3, rfl⟩` from `hx`. Establish `hstd` using `(h2.and hPair.good.std).mono fun w hw => hw.1.trans hw.2`. Establish `hφ : (fun y : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => evalV F v (y i)) ∈ SB (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)` using `⟨isLocallyConstant_finprod_evalV φ h1 hstd, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 hstd⟩`. Establish `hall : ∀ f' : SInf F (Fin n × Fin d), pureA F f' (fun y : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => evalV F v (y i)) ∈ M.So B.ψ B.τ₁` using `fun f' => Submodule.subset_span ⟨f', φ, h1, h2, h3, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N`. Take `⟨C, k, hC⟩` from `hU F E σ B n d X W M χX χW om r s r' s' hPair _ hφ hall N`. Conclude with `⟨C * semK (Fin n × Fin d) k f, k, fun g h => hC f g h⟩`. Consider the case `zero`. Introduce `N`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, 0, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `[theta, thetaSum]`. Consider the case `add x y hx hy ihx ihy`. Introduce `N`. Take `⟨C1, k1, h1⟩` from `ihx N`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, k2, h2⟩` from `ihy N`. Use `⟨max C1 0 + max C2 0, max k1 k2, fun g h => ?_⟩` and prove the remaining obligations. Establish `e : theta om (x + y) g h = theta om x g h + theta om y g h`. Rewrite using `[hlin _ (add_mem (hsch hx) (hsch hy)), hlin _ (hsch hx), hlin _ (hsch hy), map_add, map_add]`. Establish `hh` using `one_le_ht h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh0 : (0 : ℝ) ≤ (ht h : ℝ)` using `zero_le_one.trans hh`. Establish `q0 : (0 : ℝ) ≤ (qht g : ℝ) ^ N` using `pow_nonneg (NNReal.coe_nonneg _) N`. Establish `b1 : C1 * (ht h : ℝ) ^ k1 ≤ max C1 0 * (ht h : ℝ) ^ max k1 k2` using `(mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hh0 _)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hh (le_max_left _ _)) (le_max_right _ _))`. Establish `b2 : C2 * (ht h : ℝ) ^ k2 ≤ max C2 0 * (ht h : ℝ) ^ max k1 k2` using `(mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hh0 _)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hh (le_max_right _ _)) (le_max_right _ _))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) q0`. Use `_ ≤ C1 * (ht h : ℝ) ^ k1 + C2 * (ht h : ℝ) ^ k2 := add_le_add (h1 g h) (h2 g h)`. Use `_ ≤ max C1 0 * (ht h : ℝ) ^ max k1 k2 + max C2 0 * (ht h : ℝ) ^ max k1 k2 := add_le_add b1 b2`. Use `_ = (max C1 0 + max C2 0) * (ht h : ℝ) ^ max k1 k2 := by ring`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `smul c x hx ihx`. Introduce `N`. Take `⟨C, k, h1⟩` from `ihx N`. Use `⟨‖c‖ * C, k, fun g h => ?_⟩` and prove the remaining obligations. Establish `e : theta om (c • x) g h = c * theta om x g h`.
-
-Rewrite using `[hlin _ (Submodule.smul_mem _ c (hsch hx)), hlin _ (hsch hx), map_smul, map_smul, smul_eq_mul]`. Rewrite using `[e, norm_mul, mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h1 g h) (norm_nonneg c)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem soDecay_of_unif : GlobalTheory.FunPr.Hypotheses₂ → SoDecayUnif → SoDecay := by
   intro _ hU F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair Φ hΦ

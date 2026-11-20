@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedConstantTermSplitPlaceRegular
 
 /- English proof (translation)
-Introduce `E _ _ _ w hw μ n a b h f hf`. Conclude with `GlobalTheory.BCT.CtReg.ctMu_regAt2 E a b n h w (μ.loc w) (fun x => f w x.1) hw (fun y => hf y.1)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.regCt :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.RegCt := by

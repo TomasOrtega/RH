@@ -17,15 +17,13 @@ namespace GlobalTheory.FlatTw.Good
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Set `I : Ideal (𝓞 K)` to `∏ w ∈ S, w.asIdeal ^ B`. Establish `hI : I ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact w.ne_bot)`. Take `⟨r, hrI, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha0 : algebraMap (𝓞 K) K r ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]` and apply the resulting hypothesis. Establish `hmem : algebraMap (𝓞 K) K r ∈ (∏ w ∈ S, (((Equiv.refl (HeightOneSpectrum (𝓞 K))) w).asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ (-((fun _ => -(B : ℤ)) w)))`. Establish `e : (∏ w ∈ S, (((Equiv.refl (HeightOneSpectrum (𝓞 K))) w).asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ (-((fun _ => -(B : ℤ)) w))) = ((I : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)`. Simplify using `only [Equiv.refl_apply, neg_neg, zpow_natCast, I]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← FractionalIdeal.coeIdealHom_apply, map_prod]`. Simplify using `[FractionalIdeal.coeIdealHom_apply, FractionalIdeal.coeIdeal_pow]`. Rewrite using `[e]`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨r, hrI, rfl⟩`. Use `⟨_, ha0, fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `(GlobalTheory.Core.Int.ProdPrimePow.vAdd_ge_of_mem_prod_zpow K _ (Equiv.refl _) S (fun _ => -(B : ℤ)) _ hmem w).resolve_left ha0`. Simplify using `only [Equiv.refl_apply, neg_neg] at h`. Use `split_ifs at h`. Conclude with `le_trans (by positivity) h`. Conclude with `h`.
-
-Establish `h` using `(GlobalTheory.Core.Int.ProdPrimePow.vAdd_ge_of_mem_prod_zpow K _ (Equiv.refl _) S (fun _ => -(B : ℤ)) _ hmem w).resolve_left ha0`. Simplify using `only [Equiv.refl_apply, neg_neg, if_pos hw] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_vAdd_ge {K : Type} [Field K] [NumberField K] (S : Finset (HeightOneSpectrum (𝓞 K))) (B : ℕ) :
     ∃ a : K, a ≠ 0 ∧ (∀ w : HeightOneSpectrum (𝓞 K), 0 ≤ vAdd w a) ∧ ∀ w ∈ S, (B : ℤ) ≤ vAdd w a := by
@@ -64,17 +62,15 @@ end GlobalTheory.FlatTw.Good
 namespace GlobalTheory.FlatTw.Good
 
 /- English proof (translation)
-Set `S : Finset (HeightOneSpectrum (𝓞 c.F))` to `s.finite_lo.toFinset ∪ s.finite_hi.toFinset`. Set `B : ℕ` to `⌈∑ w ∈ S, (|s.lo w| + |s.hi w|)⌉₊`. Establish `hB : ∀ w ∈ S, |s.lo w| + |s.hi w| ≤ B` using `fun w hw => (Finset.single_le_sum (f := fun w => |s.lo w| + |s.hi w|) (fun _ _ => add_nonneg (abs_nonneg _) (abs_nonneg _)) hw).trans (Nat.le_ceil _)`. Take `⟨a, ha0, hpos, hS⟩` from `exists_vAdd_ge S B`. Use `⟨a, ha0, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : w ∈ S`. Establish `h1` using `hB w hw`. Establish `h2 : ((B : ℤ) : ℝ) ≤ (vAdd w a : ℝ)` using `by exact_mod_cast hS w hw`. Establish `h3` using `neg_abs_le (s.lo w)`. Move the coercions through the operations in `at h2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear relations using `[abs_nonneg (s.hi w)]`. Establish `: s.lo w = 0`. Assume the negation of the conclusion as `h`. Conclude with `hw (Finset.mem_union_left _ (s.finite_lo.mem_toFinset.2 h))`. Rewrite using `[this, add_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hpos w` after adjusting the coercions. Distinguish the cases in `hw : w ∈ S`. Establish `h1` using `hB w hw`. Establish `h2 : ((B : ℤ) : ℝ) ≤ (vAdd w a : ℝ)` using `by exact_mod_cast hS w hw`. Establish `h3` using `le_abs_self (s.hi w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at h2`. Combine the linear relations using `[abs_nonneg (s.lo w)]`. Establish `: s.hi w = 0`. Assume the negation of the conclusion as `h`. Conclude with `hw (Finset.mem_union_right _ (s.finite_hi.mem_toFinset.2 h))`.
-
-Rewrite using `[this]`. Conclude with `hpos w` after adjusting the coercions.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_twist_scalar {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
@@ -110,9 +106,9 @@ theorem exists_twist_scalar {E : Type} [Field E] [NumberField E] [IsCMField E] {
       rw [this]; exact_mod_cast hpos w
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.cnorm`. Establish `: ∑ i, ‖(k • u) i‖ ^ 2 = ‖k‖ ^ 2 * ∑ i, ‖u i‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cnorm_smul {ι : Type} [Fintype ι] (k : ℂ) (u : ι → ℂ) : Formalism.HermitianLatticesTheory.cnorm (k • u) = ‖k‖ * Formalism.HermitianLatticesTheory.cnorm u := by
   unfold Formalism.HermitianLatticesTheory.cnorm
@@ -131,15 +127,13 @@ variable {K : Type} [Field K] [NumberField K] {V W : Type} [AddCommGroup V] [Mod
   [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
 
 /- English proof (translation)
-Set `ψ : V →ₗ[𝓞 K] W` to `{ toFun := fun f => a⁻¹ • φ f map_add' := fun f f' => by rw [map_add, smul_add] map_smul' := fun m f => by`. Rewrite using `[RingHom.id_apply, ← algebraMap_smul K m f, map_smul, ← algebraMap_smul K m (a⁻¹ • φ f), smul_smul, smul_smul, mul_comm] }`. Establish `hle : L' ≤ L.map ψ` using `fun g hg => by`. Use `⟨a • φ.symm g, hout g hg, ?_⟩` and prove the remaining obligations. Use `show a⁻¹ • φ (a • φ.symm g) = g`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, φ.apply_symm_apply, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Establish `hFG' : L'.FG`. Use `isNoetherian_of_fg_of_noetherian _ (hFG.map ψ)` as an intermediate fact. Conclude with `isNoetherian_submodule.mp this _ hle`. Establish `hspan' : Submodule.span K (L' : Set W) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : Submodule.span K (L : Set V) ≤ (Submodule.span K (L' : Set W)).comap (φ : V →ₗ[K] W)`. Use `Submodule.span_le.2 fun f hf => Submodule.mem_comap.2 ?_` and prove the remaining obligations. Establish `h2` using `Submodule.smul_mem (Submodule.span K (L' : Set W)) a⁻¹ (Submodule.subset_span (R := K) (hin f hf))`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ ha, one_smul]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `g _`. Establish `h` using `hsub (show φ.symm g ∈ Submodule.span K (L : Set V) by rw [hspan]; trivial)`. Simplify using `using h`. Use `⟨hFG', hspan', ?_⟩` and prove the remaining obligations.
-
-Unfold `Formalism.HN.rkK`. Rewrite using `[hspan, hspan', finrank_top, finrank_top]`. Conclude with `φ.symm.finrank_eq`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_transfer (φ : V ≃ₗ[K] W) (L : Submodule (𝓞 K) V) (L' : Submodule (𝓞 K) W) (a : K) (ha : a ≠ 0)
     (hin : ∀ f ∈ L, a • φ f ∈ L') (hout : ∀ g ∈ L', a • φ.symm g ∈ L) (hFG : L.FG)
@@ -176,13 +170,11 @@ theorem lattice_transfer (φ : V ≃ₗ[K] W) (L : Submodule (𝓞 K) V) (L' : S
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] in
 
 /- English proof (translation)
-Take `⟨⟨n, ⟨b, X⟩, hX⟩⟩` from `hN`. Use `⟨⟨n, ⟨(b.map φ, fun v => ((t v.embedding : ℂ)⁻¹) • X v), fun v => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hk : ((t v.embedding : ℂ)⁻¹) ≠ 0` using `inv_ne_zero (Complex.ofReal_ne_zero.2 (ht _).ne')`. Establish `hdet` using `(hX v).1`. Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show IsUnit ((((t v.embedding : ℂ)⁻¹) • X v).det)`. Rewrite using `[Matrix.det_smul]`. Conclude with `(IsUnit.pow _ (Ne.isUnit hk)).mul hdet`. Use `show Formalism.HermitianLatticesTheory.normAt (b.map φ) (fun v => ((t v.embedding : ℂ)⁻¹) • X v) v y = N' v.embedding y`. Use `invertibleOfNonzero hk` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord, Matrix.inv_smul _ _ hdet, invOf_eq_inv]`. Establish `hvec : Formalism.HermitianLatticesTheory.vecAt (b.map φ) v y = Formalism.HermitianLatticesTheory.vecAt b v (φ.symm y)`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt, Module.Basis.map_repr]`. Rewrite using `[hvec, Matrix.smul_mulVec, cnorm_smul, ← Formalism.HermitianLatticesTheory.fcoord, ← Formalism.HermitianLatticesTheory.normAt, (hX v).2, ← φ.apply_symm_apply y, h, φ.apply_symm_apply]`.
-
-Rewrite using `[inv_inv, Complex.norm_real, Real.norm_of_nonneg (ht _).le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasGram_transfer (φ : V ≃ₗ[K] W) (N : (K →+* ℂ) → V → ℝ) (N' : (K →+* ℂ) → W → ℝ) (t : (K →+* ℂ) → ℝ)
     (ht : ∀ σ, 0 < t σ) (h : ∀ σ f, N' σ (φ f) = t σ * N σ f) (hN : HasGram N) : HasGram N' := by
@@ -210,9 +202,9 @@ end GlobalTheory.FlatTw.Good
 namespace GlobalTheory.FlatTw.Good
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x D V dict Z G₀ s G _hU hG hgood`. Take `⟨hGram, hFG, hspan⟩` from `hgood`. Take `⟨φ, hφ, -, hA, hB⟩` from `Mul.twSec_mulEquiv_integral E H Dw l Xo c r U x Z G₀ s G hG`. Take `⟨a, ha0, hlo, hhi⟩` from `exists_twist_scalar s`. Take `⟨hFG', hspan', hrk⟩` from `lattice_transfer φ (latOn U Z G) (latOn U Z (G + G₀)) a ha0 (fun f hf => hA a ha0 hlo f hf _ (Submodule.coe_smul _ _)) (fun g hg => hB a ha0 hhi g hg _ (Submodule.coe_smul _ _)) hFG hspan`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨hasGram_transfer φ _ _ s.cInf s.cInf_pos (fun σ f => ?_) hGram, hFG', hspan'⟩, hrk⟩` and prove the remaining obligations. Use `show petOn U x V dict Z (G + G₀) σ (φ f : Rul Xo c) = s.cInf σ * petOn U x V dict Z G σ (f : Rul Xo c)`. Rewrite using `[hφ, petOn, petOn, GlobalTheory.T.petersson_norm_mul_twistingSection_eq_const_mul E H Dw l Xo c r U x Z G₀ s G hG _ f.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_goodOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (D : D7) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r) (Z : Comp Xo c) (G₀ : WTZ E) (_s : TwSec U x Z G₀) (G : WTZ E), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → Even G.2 → GoodOn U x V dict Z G → GoodOn U x V dict Z (G + G₀) ∧ rankOn U Z (G + G₀) = rankOn U Z G := by
   intro E _ _ _ H Dw l Xo c r U x D V dict Z G₀ s G _hU hG hgood

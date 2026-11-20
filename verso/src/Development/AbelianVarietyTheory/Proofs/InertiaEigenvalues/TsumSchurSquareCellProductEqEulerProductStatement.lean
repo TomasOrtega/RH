@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep Glob
 open scoped ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RSCellSum.tsum_cellProd_sub_eq_eulD` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FTsumSchurSquareCellProductEqEulerProduct.lean&line=40#L40)
 -/

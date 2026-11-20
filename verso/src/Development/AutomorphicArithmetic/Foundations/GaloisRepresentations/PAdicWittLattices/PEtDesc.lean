@@ -6,11 +6,11 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `hE W Z Y B _ c _ _ _ pZ pY _ f hf hpts`. Use `haveI : Flat c := inferInstance`. Use `haveI : EffectiveEpi c := inferInstance`. Use `haveI : IsReduced (pullback c c) := GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.fst c c)`. Establish `key : pullback.fst c c ≫ f = pullback.snd c c ≫ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hE pY _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hf, ← Category.assoc, ← Category.assoc, pullback.condition]`. Introduce `Ω _ _ x`. Apply the tactic sequence `refine hpts Ω (x ≫ pullback.fst c c) (x ≫ pullback.snd c c) ?_ |>.trans ?_ <;> simp [pullback.condition]`. Use `⟨inferInstance, EffectiveEpi.desc c f (fun {T} g₁ g₂ h => ?_), EffectiveEpi.fac _ _ _⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e₁ : pullback.lift g₁ g₂ h ≫ pullback.fst c c = g₁` using `pullback.lift_fst _ _ _`. Establish `e₂ : pullback.lift g₁ g₂ h ≫ pullback.snd c c = g₂` using `pullback.lift_snd _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pEtDesc :
     ExtPts → EtDesc := by

@@ -13,7 +13,7 @@ def evGL (w : InfinitePlace E) : GL (Fin n) (Cinf E) →* GL (Fin n) ℂ :=
   GeneralLinearGroup.map (Pi.evalRingHom (fun _ => ℂ) w)
 
 /- English proof (translation)
-Use extensionality with `i j w`. Conclude with `congrArg (fun x : GL (Fin n) ℂ => x i j) (h w)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gl_ext_evGL {a b : GL (Fin n) (Cinf E)} (h : ∀ w, evGL w a = evGL w b) : a = b := by
   ext i j w
@@ -28,14 +28,14 @@ def atPlace (v : InfinitePlace E) : Cinf E →ₙ+* Cinf E where
   map_add' x y := Pi.single_add (f := fun _ : InfinitePlace E => ℂ) v (x v) (y v)
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_same (M := fun _ : InfinitePlace E => ℂ) v (x v)`.
+A detailed English derivation is pending.
 -/
 theorem atPlace_self (v : InfinitePlace E) (x : Cinf E) : atPlace v x v = x v := by
   classical
   exact Pi.single_eq_same (M := fun _ : InfinitePlace E => ℂ) v (x v)
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_of_ne (M := fun _ : InfinitePlace E => ℂ) h (x v)`.
+A detailed English derivation is pending.
 -/
 theorem atPlace_of_ne {v w : InfinitePlace E} (h : w ≠ v) (x : Cinf E) : atPlace v x w = 0 := by
   classical
@@ -44,24 +44,24 @@ theorem atPlace_of_ne {v w : InfinitePlace E} (h : w ≠ v) (x : Cinf E) : atPla
 def cutGL (v : InfinitePlace E) : GL (Fin n) (Cinf E) →* GL (Fin n) (Cinf E) := cornerGL n (atPlace v)
 
 /- English proof (translation)
-The claim follows from `map_cornerGL_of_hom _ _ _ (fun x => atPlace_self v x) y`.
+A detailed English derivation is pending.
 -/
 theorem evGL_cutGL_self (v : InfinitePlace E) (y : GL (Fin n) (Cinf E)) : evGL v (cutGL v y) = evGL v y :=
   map_cornerGL_of_hom _ _ _ (fun x => atPlace_self v x) y
 
 /- English proof (translation)
-The claim follows from `map_cornerGL_of_zero _ _ (fun x => atPlace_of_ne h x) y`.
+A detailed English derivation is pending.
 -/
 theorem evGL_cutGL_of_ne {v w : InfinitePlace E} (h : w ≠ v) (y : GL (Fin n) (Cinf E)) :
     evGL w (cutGL v y) = 1 :=
   map_cornerGL_of_zero _ _ (fun x => atPlace_of_ne h x) y
 
 /- English proof (translation)
-Establish `key : ∀ (w : InfinitePlace E) i j, ((evGL w y).valᴴ * (evGL w y).val) i j = (y.valᴴ * y.val) i j w`. Introduce `w i j`. Simplify using `[evGL, Matrix.mul_apply, Finset.sum_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Rewrite using `[key, h]`. Apply the tactic sequence `rcases eq_or_ne i j with rfl | e <;> simp [*]`. Introduce `h`. Use extensionality with `i j w`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[← key, h w]`. Apply the tactic sequence `rcases eq_or_ne i j with rfl | e <;> simp [*]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unitary_iff_evGL (y : GL (Fin n) (Cinf E)) :
     y.valᴴ * y.val = 1 ↔ ∀ w, (evGL w y).valᴴ * (evGL w y).val = 1 := by
@@ -79,11 +79,9 @@ theorem unitary_iff_evGL (y : GL (Fin n) (Cinf E)) :
     rcases eq_or_ne i j with rfl | e <;> simp [*]
 
 /- English proof (translation)
-Establish `hg : cT (conjAd E) g.1.val * 1 * g.1.val = 1` using `g.2`. Rewrite `hg` using `[mul_one]`. Establish `h1 : (cInf g).val = g.1.val.map (pInf E)` using `rfl`. Establish `h3 : (cT (conjAd E) g.1.val).map (pInf E) = (cInf g).valᴴ` using `by ext1 i j`. Rewrite using `[Matrix.conjTranspose_apply, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(infEq E).symm_apply_apply _`. Establish `h5` using `congrArg (fun m => m.map (pInf E)) hg`. Simplify using `only [Matrix.map_mul, h3, ← h1] at h5`. Rewrite using `[h5]`. Use `ext1 i j`.
-
-Apply the tactic sequence `rcases eq_or_ne i j with rfl | e <;> simp [*]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cInf_unitary (g : UA E n) : (cInf g).valᴴ * (cInf g).val = 1 := by
   have hg : cT (conjAd E) g.1.val * 1 * g.1.val = 1 := g.2
@@ -100,7 +98,7 @@ theorem cInf_unitary (g : UA E n) : (cInf g).valᴴ * (cInf g).val = 1 := by
   rcases eq_or_ne i j with rfl | e <;> simp [*]
 
 /- English proof (translation)
-Establish `h : Continuous (infEq E).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Conclude with `h.comp continuous_fst`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pInfComp : Continuous (pInf E) := by
   have h : Continuous (infEq E).symm := continuous_pi fun w =>
@@ -109,15 +107,13 @@ theorem continuous_pInfComp : Continuous (pInf E) := by
   exact h.comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map continuous_pInfComp)).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cInf : Continuous (cInf : UA E n → GL (Fin n) (Cinf E)) :=
   (Continuous.units_map _ (continuous_id.matrix_map continuous_pInfComp)).comp continuous_subtype_val
 
 /- English proof (translation)
-Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (atPlace v : Cinf E → Cinf E)` using `continuous_pi fun w => by`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Conclude with `(show Continuous fun x : Cinf E => x w from continuous_apply w).congr fun x => (atPlace_self w x).symm`.
-
-Conclude with `continuous_const.congr fun x => (atPlace_of_ne h x).symm`. Conclude with `continuous_const.sub (continuous_const) |>.add (continuous_id.matrix_map hs)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem continuous_cutGL (v : InfinitePlace E) : Continuous (cutGL v : GL (Fin n) (Cinf E) → _) := by
   refine Continuous.units_map _ ?_
@@ -131,7 +127,7 @@ theorem continuous_cutGL (v : InfinitePlace E) : Continuous (cutGL v : GL (Fin n
   exact continuous_const.sub (continuous_const) |>.add (continuous_id.matrix_map hs)
 
 /- English proof (translation)
-Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (sInf E : Cinf E → Ad E)` using `(continuous_infEq E).prodMk continuous_const`. Conclude with `continuous_const.sub (continuous_const) |>.add (continuous_id.matrix_map hs)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_infGL : Continuous (infGL E n) := by
   refine Continuous.units_map _ ?_
@@ -140,7 +136,7 @@ theorem continuous_infGL : Continuous (infGL E n) := by
   exact continuous_const.sub (continuous_const) |>.add (continuous_id.matrix_map hs)
 
 /- English proof (translation)
-Establish `h` using `InfinitePlace.mk_embedding w`. Unfold `coord`. Rewrite using `[if_pos (by rw [h]), h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_embedding (w : InfinitePlace E) : coord w.embedding = Pi.evalRingHom (fun _ => ℂ) w := by
   have h := InfinitePlace.mk_embedding w
@@ -148,9 +144,9 @@ theorem coord_embedding (w : InfinitePlace E) : coord w.embedding = Pi.evalRingH
   rw [if_pos (by rw [h]), h]
 
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Conclude with `h`. Establish `: GeneralLinearGroup.map ((starRingEnd ℂ).comp (Pi.evalRingHom (fun _ => ℂ) (InfinitePlace.mk τ))) y = GeneralLinearGroup.map (starRingEnd ℂ) (evGL (InfinitePlace.mk τ) y)`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, h, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem map_coord_of_evGL (τ : E →+* ℂ) {y : GL (Fin n) (Cinf E)} (h : evGL (InfinitePlace.mk τ) y = 1) :
     GeneralLinearGroup.map (coord τ) y = 1 := by
@@ -164,7 +160,7 @@ theorem map_coord_of_evGL (τ : E →+* ℂ) {y : GL (Fin n) (Cinf E)} (h : evGL
     rw [this, h, map_one]
 
 /- English proof (translation)
-Establish `h1 : x ∈ (cEmb (n` using `n) w.embedding).ker := Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.2 w.embedding) (by rwa [InfinitePlace.mk_embedding])`. Establish `h2 : GeneralLinearGroup.map (coord w.embedding) (cInf x) = 1` using `MonoidHom.mem_ker.1 h1`. Rewrite `h2` using `[coord_embedding]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evGL_cInf_of_mem {τ : E →+* ℂ} {x : UA E n} (hx : x ∈ embU n τ) {w : InfinitePlace E}
     (h : w ≠ InfinitePlace.mk τ) : evGL w (cInf x) = 1 := by
@@ -176,9 +172,9 @@ theorem evGL_cInf_of_mem {τ : E →+* ℂ} {x : UA E n} (hx : x ∈ embU n τ) 
 def cutGA (τ : E →+* ℂ) : UA E n →* GA E n := (infGL E n).comp ((cutGL (InfinitePlace.mk τ)).comp cInf)
 
 /- English proof (translation)
-Use `infGL_mem_UA (cutGL (InfinitePlace.mk τ) (cInf g)) ((unitary_iff_evGL _).2 fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `h : w = InfinitePlace.mk τ`. Substitute `h` using the available equality. Rewrite using `[evGL_cutGL_self]`. Conclude with `(unitary_iff_evGL _).1 (cInf_unitary g) _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evGL_cutGL_of_ne h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cutGA_mem_UA (τ : E →+* ℂ) (g : UA E n) : cutGA τ g ∈ UA E n := by
   refine infGL_mem_UA (cutGL (InfinitePlace.mk τ) (cInf g)) ((unitary_iff_evGL _).2 fun w => ?_)
@@ -190,14 +186,14 @@ theorem cutGA_mem_UA (τ : E →+* ℂ) (g : UA E n) : cutGA τ g ∈ UA E n := 
     simp
 
 /- English proof (translation)
-The claim follows from `pInf_infGL _`.
+A detailed English derivation is pending.
 -/
 theorem cInf_cutGA (τ : E →+* ℂ) (g : UA E n) :
     cInf (⟨cutGA τ g, cutGA_mem_UA τ g⟩ : UA E n) = cutGL (InfinitePlace.mk τ) (cInf g) :=
   pInf_infGL _
 
 /- English proof (translation)
-Use `⟨pFin_infGL _, Subgroup.mem_iInf.2 fun τ' => Subgroup.mem_iInf.2 fun h => MonoidHom.mem_ker.2 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (coord τ') (cInf _) = 1`. Rewrite using `[cInf_cutGA]`. Conclude with `map_coord_of_evGL τ' (evGL_cutGL_of_ne h _)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutGA_mem_embU (τ : E →+* ℂ) (g : UA E n) : (⟨cutGA τ g, cutGA_mem_UA τ g⟩ : UA E n) ∈ embU n τ := by
   refine ⟨pFin_infGL _, Subgroup.mem_iInf.2 fun τ' => Subgroup.mem_iInf.2 fun h => MonoidHom.mem_ker.2 ?_⟩
@@ -211,22 +207,22 @@ def embRet (τ : E →+* ℂ) : UA E n →* embU n τ where
   map_mul' a b := Subtype.ext (Subtype.ext (map_mul (cutGA τ) a b))
 
 /- English proof (translation)
-The claim follows from `cInf_cutGA τ g`.
+A detailed English derivation is pending.
 -/
 theorem cInf_embRet (τ : E →+* ℂ) (g : UA E n) :
     cInf (embRet τ g : UA E n) = cutGL (InfinitePlace.mk τ) (cInf g) := cInf_cutGA τ g
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (Continuous.subtype_mk (continuous_infGL.comp ((continuous_cutGL _).comp continuous_cInf)) _) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embRet (τ : E →+* ℂ) : Continuous (embRet (n := n) τ) :=
   Continuous.subtype_mk (Continuous.subtype_mk
     (continuous_infGL.comp ((continuous_cutGL _).comp continuous_cInf)) _) _
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext (ga_ext ?_ ?_))` and prove the remaining obligations. Use `(cInf_embRet τ x.1).trans (gl_ext_evGL fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `h : w = InfinitePlace.mk τ`. Substitute `h` using the available equality. Conclude with `evGL_cutGL_self _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evGL_cutGL_of_ne h]`. Conclude with `(evGL_cInf_of_mem x.2 h).symm`. Conclude with `(pFin_infGL _).trans (MonoidHom.mem_ker.1 x.2.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem embRet_apply (τ : E →+* ℂ) (x : embU n τ) : embRet τ (x : UA E n) = x := by
   refine Subtype.ext (Subtype.ext (ga_ext ?_ ?_))
@@ -239,11 +235,11 @@ theorem embRet_apply (τ : E →+* ℂ) (x : embU n τ) : embRet τ (x : UA E n)
   · exact (pFin_infGL _).trans (MonoidHom.mem_ker.1 x.2.1).symm
 
 /- English proof (translation)
-Establish `h2 : GeneralLinearGroup.map (pFin E) y.1.1 = 1` using `y.2.1`. Establish `h1 : evGL (InfinitePlace.mk τ) (cInf ((embRet τ g : UA E n)⁻¹ * g)) = 1`. Rewrite using `[map_mul, map_inv, cInf_embRet, map_mul, map_inv, evGL_cutGL_self, inv_mul_cancel]`. Generalize the expression as in `(embRet τ g : UA E n)⁻¹ * g = a at h1 ⊢`. Use `Subtype.ext (ga_ext ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `cInf (a * y.1) = cInf (y.1 * a)`. Rewrite using `[map_mul, map_mul]`. Use `gl_ext_evGL fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `h : w = InfinitePlace.mk τ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[h1, one_mul, mul_one]`. Rewrite using `[evGL_cInf_of_mem y.2 h, one_mul, mul_one]`. Simplify using `only [Subgroup.coe_mul, map_mul, h2, one_mul, mul_one]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem commute_embRet (τ : E →+* ℂ) (g : UA E n) (y : embU n τ) :
     Commute ((embRet τ g : UA E n)⁻¹ * g) (y : UA E n) := by
@@ -263,7 +259,7 @@ theorem commute_embRet (τ : E →+* ℂ) (g : UA E n) (y : embU n τ) :
   · simp only [Subgroup.coe_mul, map_mul, h2, one_mul, mul_one]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ τ` and use `⟨embRet τ, continuous_embRet τ, embRet_apply τ, commute_embRet τ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_embRet : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (τ : E →+* ℂ),
     ∃ r : UA E n →* embU n τ, Continuous r ∧ (∀ x : embU n τ, r x = x) ∧

@@ -21,7 +21,7 @@ def rD (L : E →L[ℝ] E) (u : ℝ → E → W) : ℝ → E → W := fun s y =>
 variable {U : Set E} {u : ℝ → E → W}
 
 /- English proof (translation)
-The claim follows from `hu.contDiffAt ((isOpen_univ.prod hU).mem_nhds ⟨Set.mem_univ _, hy⟩)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_F (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) (s : ℝ) {y : E} (hy : y ∈ U) :
@@ -29,7 +29,7 @@ theorem contDiffAt_F (hU : IsOpen U)
   hu.contDiffAt ((isOpen_univ.prod hU).mem_nhds ⟨Set.mem_univ _, hy⟩)
 
 /- English proof (translation)
-The claim follows from `((contDiffAt_F hU hu s hy).differentiableAt (by simp)).hasFDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_F (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) (s : ℝ) {y : E} (hy : y ∈ U) :
@@ -37,14 +37,14 @@ theorem hasFDerivAt_F (hU : IsOpen U)
   ((contDiffAt_F hU hu s hy).differentiableAt (by simp)).hasFDerivAt
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_id s).prodMk (hasDerivAt_const s y)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (y : E) (s : ℝ) :
     HasDerivAt (fun r : ℝ => ((r, y) : ℝ × E)) ((1 : ℝ), (0 : E)) s :=
   (hasDerivAt_id s).prodMk (hasDerivAt_const s y)
 
 /- English proof (translation)
-Establish `h : HasFDerivAt (Function.uncurry u) (fderiv ℝ (Function.uncurry u) (s, y)) ((fun r : ℝ => ((r, y) : ℝ × E)) s)` using `hasFDerivAt_F hU hu s hy`. Conclude with `h.comp_hasDerivAt s (hasDerivAt_line y s)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_time (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) (s : ℝ) {y : E} (hy : y ∈ U) :
@@ -55,7 +55,7 @@ theorem hasDerivAt_time (hU : IsOpen U)
   exact h.comp_hasDerivAt s (hasDerivAt_line y s)
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_time hU hu s hy).deriv`.
+A detailed English derivation is pending.
 -/
 theorem tD_eq (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) (s : ℝ) {y : E} (hy : y ∈ U) :
@@ -63,7 +63,7 @@ theorem tD_eq (hU : IsOpen U)
   (hasDerivAt_time hU hu s hy).deriv
 
 /- English proof (translation)
-Establish `h2` using `(hasFDerivAt_F hU hu s hy).comp y (hasFDerivAt_prodMk_right s y)`. Establish `h3 : fderiv ℝ (u s) y = _` using `HasFDerivAt.fderiv (f := u s) h2`. Simplify using `only [rD]`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rD_eq (L : E →L[ℝ] E) (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) (s : ℝ) {y : E} (hy : y ∈ U) :
@@ -75,7 +75,7 @@ theorem rD_eq (L : E →L[ℝ] E) (hU : IsOpen U)
   simp
 
 /- English proof (translation)
-The claim follows from `hu.fderiv_of_isOpen (isOpen_univ.prod hU) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_fderivF (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) :
@@ -83,7 +83,7 @@ theorem contDiffOn_fderivF (hU : IsOpen U)
   hu.fderiv_of_isOpen (isOpen_univ.prod hU) (by simp)
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ ∞ (fun p : ℝ × E => fderiv ℝ (Function.uncurry u) p (1, 0)) (Set.univ ×ˢ U)` using `(contDiffOn_fderivF hU hu).clm_apply contDiffOn_const`. Use `h.congr ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ ⟨-, hy⟩`. Conclude with `tD_eq hU hu s hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem contDiffOn_tD (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) :
@@ -96,13 +96,11 @@ theorem contDiffOn_tD (hU : IsOpen U)
   exact tD_eq hU hu s hy
 
 /- English proof (translation)
-Use `set F := Function.uncurry u with hF`. Establish `hD : HasFDerivAt (fderiv ℝ F) (fderiv ℝ (fderiv ℝ F) (s, y)) (s, y)` using `(((contDiffOn_fderivF hU hu).contDiffAt ((isOpen_univ.prod hU).mem_nhds ⟨Set.mem_univ _, hy⟩)).differentiableAt (by simp)).hasFDerivAt`. Establish `hL : HasDerivAt (fun r => rD L u r y) (fderiv ℝ (fderiv ℝ F) (s, y) (1, 0) (0, L y)) s`. Establish `h2 : HasDerivAt (fun r => fderiv ℝ F (r, y)) (fderiv ℝ (fderiv ℝ F) (s, y) (1, 0)) s` using `hD.comp_hasDerivAt s (hasDerivAt_line y s)`. Establish `h3` using `h2.clm_apply (hasDerivAt_const s ((0 : ℝ), L y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.map_zero, add_zero] at h3`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Conclude with `rD_eq L hU hu r hy`. Establish `hR : HasFDerivAt (tD u s) (((ContinuousLinearMap.apply ℝ W ((1 : ℝ), (0 : E))).comp (fderiv ℝ (fderiv ℝ F) (s, y))).comp (ContinuousLinearMap.inr ℝ ℝ E)) y`. Establish `h2` using `(ContinuousLinearMap.apply ℝ W ((1 : ℝ), (0 : E))).hasFDerivAt.comp y (hD.comp y (hasFDerivAt_prodMk_right s y))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `HasFDerivAt.congr_of_eventuallyEq h2 ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hy] with z hz`. Conclude with `tD_eq hU hu s hz`. Establish `hsym : IsSymmSndFDerivAt ℝ F (s, y)` using `(contDiffAt_F hU hu s hy).isSymmSndFDerivAt (by`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`.
-
-Conclude with `(WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)))`. Rewrite using `[hR.fderiv]`. Establish `e : fderiv ℝ (fderiv ℝ F) (s, y) (1, 0) (0, L y) = fderiv ℝ (fderiv ℝ F) (s, y) (0, L y) (1, 0)` using `hsym _ _`. Simplify `hL` using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tD_rD (L : E →L[ℝ] E) (hU : IsOpen U)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ U)) (s : ℝ) {y : E} (hy : y ∈ U) :
@@ -151,13 +149,13 @@ def mulR (X : Mat n) : Mat n →L[ℝ] Mat n :=
       map_smul' := fun c a => by simp }
 
 /- English proof (translation)
-The claim follows from `contDiffOn_tD isOpen_GLs hu`.
+A detailed English derivation is pending.
 -/
 theorem sm_dt {u : ℝ → Mat n → W} (hu : Sm u) : Sm (dt u) :=
   contDiffOn_tD isOpen_GLs hu
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_time isOpen_GLs hu s hy`. Rewrite `h` using `[← tD_eq isOpen_GLs hu s hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasDerivAt_dt {u : ℝ → Mat n → W} (hu : Sm u) (s : ℝ) {y : Mat n} (hy : y ∈ GLs n) :
     HasDerivAt (fun r => u r y) (dt u s y) s := by
@@ -165,7 +163,7 @@ theorem hasDerivAt_dt {u : ℝ → Mat n → W} (hu : Sm u) (s : ℝ) {y : Mat n
   rwa [← tD_eq isOpen_GLs hu s hy] at h
 
 /- English proof (translation)
-The claim follows from `tD_rD (mulR X) isOpen_GLs hu s hy`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_Rt {u : ℝ → Mat n → W} (hu : Sm u) (X : Mat n) (s : ℝ) {y : Mat n}
     (hy : y ∈ GLs n) : HasDerivAt (fun r => Rt X u r y) (Rr X (dt u s) y) s :=
@@ -178,9 +176,9 @@ end GlobalTheory.CompanionTheory.WaveSpd.DensDeriv
 open GlobalTheory.CompanionTheory.WaveSpd.DensDeriv in
 
 /- English proof (translation)
-Establish `h1` using `(hasDerivAt_dt (sm_dt hu) s hy).norm_sq`. Establish `h3` using `(hasDerivAt_dt hu s hy).norm_sq`. Establish `h2 : HasDerivAt (fun r => ∑ p : Ix n, ‖Rt (hm p) u r y‖ ^ 2) (∑ p : Ix n, 2 * ⟪Rt (hm p) u s y, Rr (hm p) (dt u s) y⟫_ℝ) s`. Use `HasDerivAt.fun_sum (u := Finset.univ) (fun (p : Ix n) _ => (hasDerivAt_Rt hu (hm p) s hy).norm_sq)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(h1.add (h2.const_mul (1 / 4 : ℝ))).add h3`. Use `(h.congr_deriv ?_)` and prove the remaining obligations. Rewrite using `[real_inner_comm (dt (dt u) s y), real_inner_comm (dt u s y) (u s y), ← Finset.mul_sum]`. Simplify using `only [real_inner_comm (Rt _ u s y)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.WaveSpd.hasDerivAt_dens {n : ℕ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℝ W] (u : ℝ → Mat n → W) (hu : Sm u) (s : ℝ) (y : Mat n)

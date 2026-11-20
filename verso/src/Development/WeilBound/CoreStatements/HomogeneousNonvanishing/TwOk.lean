@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l B _ b S s o g a`. Take `⟨hm1, hm2⟩` from `tw_mb E H l g`. Use `⟨fun x hx => o.eta_ker _ (tw_sub _ g.s D.La (a.a l.M) l.Mb hm1.le x hx), fun k _ _ x β hx => ?_⟩` and prove the remaining obligations. Take `⟨hd, I, h1, h2, h3⟩` from `o.geom k x β hx`. Take `⟨J, hJ1, hJ2⟩` from `tw_tate E H D g a k _ _ _ I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨tw_det E H D g S _ _ k x _ hd, J, by rw [hJ1]; exact h1, fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hJ2]`. Conclude with `h2 _`. Rewrite using `[hJ2]`. Conclude with `h3 _ (tw_sub _ g.s D.La (a.a l.M) _ hm2.le y hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_ok : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s) (g : HostAut H) (a : TwIso D g), TwOK o g a := by
   intro E _ _ _ H D l B _ b S s o g a

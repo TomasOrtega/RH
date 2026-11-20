@@ -13,9 +13,9 @@ namespace P_lamLevi
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `s hs`. Proceed by induction on `s, hs using Nat.le_induction with`. Consider the case `base`. Rewrite using `[div_self', Finset.prod_eq_one]`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (by simpa using hi)]`. Consider the case `succ s hbs ih`. Rewrite using `[Finset.prod_range_succ, ih, if_pos hbs, div_mul_div_cancel]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem tele {H : Type} [CommGroup H] (ν : ℕ → H) (b : ℕ) :
     ∀ s, b ≤ s → ∏ i ∈ Finset.range s, (if b ≤ i then ν i / ν (i + 1) else 1) = ν b / ν s := by
@@ -31,9 +31,9 @@ theorem tele {H : Type} [CommGroup H] (ν : ℕ → H) (b : ℕ) :
 variable {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-Set `ν : ℕ → (kˣ →* ℂˣ)` to `fun i => if h : i < G.s then G.μ ⟨i, h⟩ else 1`. Establish `h1 : ∀ a : Fin G.s, (if b ≤ a then G.μ a / G.μnext a else 1) = (fun i : ℕ => if (b : ℕ) ≤ i then ν i / ν (i + 1) else 1) a`. Introduce `a`. Establish `ha : ν a = G.μ a` using `by simp [ν, a.isLt]`. Establish `hn : ν (a + 1) = G.μnext a` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ha, hn, Fin.le_iff_val_le_val]`. Rewrite using `[Finset.prod_congr rfl (fun a _ => h1 a), Fin.prod_univ_eq_prod_range (fun i : ℕ => if (b : ℕ) ≤ i then ν i / ν (i + 1) else 1) G.s, tele ν b G.s b.isLt.le]`. Establish `hb : ν b = G.μ b` using `by simp [ν, b.isLt]`. Establish `hs : ν G.s = 1` using `by simp [ν]`. Rewrite using `[hb, hs, div_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ge (b : Fin G.s) :
     ∏ a : Fin G.s, (if b ≤ a then G.μ a / G.μnext a else 1) = G.μ b := by
@@ -52,13 +52,13 @@ theorem prod_ge (b : Fin G.s) :
   rw [hb, hs, div_one]
 
 /- English proof (translation)
-Unfold `Grp.Δ`. Use `set M' : Matrix {i : Fin n // G.bl i ≤ a} {i : Fin n // G.bl i ≤ a} k := ((p : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).submatrix Subtype.val Subtype.val with hM'`. Establish `hbt : M'.BlockTriangular (fun i => G.bl i.val)` using `fun i j h => p.2 h`. Rewrite using `[BlockTriangular.det_fintype hbt, Units.coe_prod]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hb`. Rewrite using `[GeneralLinearGroup.val_det_apply]`. Set `f : Fin (G.d b) ≃ {j : {i : Fin n // G.bl i ≤ a} // G.bl j.val = b}` to `Equiv.ofBijective (fun i => ⟨⟨G.e ⟨b, i⟩, by simp [Grp.bl, hb]⟩, by simp [Grp.bl]⟩) ⟨fun i j h => by`. Simplify using `using h, by`. Introduce and unpack `⟨⟨i, hi⟩, hib⟩`.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨c, j⟩, rfl⟩` from `G.e.surjective i`. Take `rfl : c = b` from `by simpa [Grp.bl] using hib`. Conclude with `⟨j, rfl⟩⟩`. Rewrite using `[← det_submatrix_equiv_self f]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsEmpty {j : {i : Fin n // G.bl i ≤ a} // G.bl j.val = b}` using `⟨fun j => hb (j.2 ▸ j.1.2)⟩`. Rewrite using `[det_isEmpty, Units.val_one]`.
+A detailed English derivation is pending.
 -/
 theorem Δ_parab (p : parab k G.e) (a : Fin G.s) :
     G.Δ a (p : GL (Fin n) k) =
@@ -88,13 +88,13 @@ end P_lamLevi
 
 open P_lamLevi in
 /- English proof (translation)
-Introduce `k _ _ _ _ n G p _`. Use `set D : Fin G.s → kˣ := fun b => GeneralLinearGroup.det (leviProj k G.e p b) with hD`. Establish `hΔ : ∀ a, G.Δ a (p : GL (Fin n) k) = ((∏ b, (if b ≤ a then D b else 1) : kˣ) : k)` using `fun a => Δ_parab G p a`. Establish `hchk : ∀ a, Grp.chk (G.μ a / G.μnext a) (G.Δ a (p : GL (Fin n) k)) = (((G.μ a / G.μnext a) (∏ b, (if b ≤ a then D b else 1)) : ℂˣ) : ℂ)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Grp.chk, dif_neg (by rw [hΔ a]; exact Units.ne_zero _)]`. Use `congr 3`. Use `ext`. Simplify using `[hΔ a]`. Unfold `Grp.lam`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl (fun a _ => hchk a), ← Units.coe_prod, ← Units.coe_prod]`. Use `congr 1`. Repeatedly rewrite using `[map_prod, apply_ite (G.μ _ / G.μnext _), map_one]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← prod_ge G b, MonoidHom.finsetProd_apply]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hD]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem step_lamLevi : LeviSubgroupRestriction := by
   intro k _ _ _ _ n G p _

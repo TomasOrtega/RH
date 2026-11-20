@@ -16,17 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC`. Establish `hl : ∀ τ', l τ' ≠ 0` using `fun τ' => lNe D ψ θ l hC.hψ hC.hθ hC.hl τ'`. Set `W : AddSubgroup (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))` to `{ carrier := {a | ∀ i j, a i j ∈ intAE D} add_mem' := fun ha hb i j => (intAE D).add_mem (ha i j) (hb i j) zero_mem' := fun _ _ => (intAE D).zero_mem neg_mem' := fun ha i j => (intAE D).neg_mem (ha i j) }`. Establish `hWe : (W : Set (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))) = ⋂ i, ⋂ j, (fun a : Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E) => a i j) ⁻¹' (intAE D : Set (Af D.host.F ⊗[D.host.F] D.host.E))`. Use extensionality with `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression. Establish `hWo : IsOpen (W : Set (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))`. Rewrite using `[hWe]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (GlobalTheory.SchwartzBruhatTensor.isOpen_intAE D).preimage ((continuous_apply j).comp (continuous_apply i))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWc : IsCompact (W : Set (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))` using `isCompact_pi_infinite fun _ => isCompact_pi_infinite fun _ => GlobalTheory.SchwartzBruhatTensor.isCompact_intAE D`. Set `g : (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `fun a => if (QuotientAddGroup.mk (show Matrix (Fin V.rank) (Fin n) _ from a) : _ ⧸ W) = 0 then (1 : ℂ) else 0`. Establish `hg : g ∈ GlobalTheory.WeilM.SB (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` using `GlobalTheory.SchwartzBruhatTensor.coset_mem_SB W hWo hWc 0`. Set `Ψ : Mx D V.rank n → ℂ` to `fun x => evalPoly (1 : MvPolynomial (D.what₂.Tau × Fin V.rank × Fin n × Bool) ℂ) (fun τ => compAt θ τ x) * gAway V l s τ (fun τ => compAt θ τ x) * g (fun i j => finPart D (x i j))`. Establish `hΨ : Ψ ∈ awayA θ V n l s τ` using `Submodule.subset_span ⟨1, g, hg, by simp, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Ψ, 0, awayIn D n V θ l s τ ε fr hC.hθ hC.hs hC.hfr hl Ψ hΨ, ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ τ', compAt θ τ' (0 : Mx D V.rank n) = 0` using `fun τ' => by`. Use extensionality with `i j`. Simplify using `[compAt]`. Establish `hg0 : g (fun i j => finPart D ((0 : Mx D V.rank n) i j)) = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g]`. Rewrite using `[if_pos]`. Simplify using `only [Matrix.zero_apply, map_zero]`. Conclude with `(QuotientAddGroup.eq_zero_iff (N := W) (0 : Matrix (Fin V.rank) (Fin n) _)).2 W.zero_mem`. Use `show evalPoly _ _ * gAway V l s τ _ * g _ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hg0]`. Simplify using `only [evalPoly, map_one, one_mul, mul_one, gAway, h0]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem awayNZ : AwayNZ := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC

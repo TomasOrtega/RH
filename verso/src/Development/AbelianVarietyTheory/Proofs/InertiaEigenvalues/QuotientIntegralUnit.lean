@@ -12,68 +12,68 @@ section Comm
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Take the linear combination `h1 + h2 + h3 - (x - y) * hs`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_of_comp {e₁ e₂ e₃ x y : R} (hs : e₁ + e₂ + e₃ = 1)
     (h1 : x * e₁ = y * e₁) (h2 : x * e₂ = y * e₂) (h3 : x * e₃ = y * e₃) : x = y := by
   linear_combination h1 + h2 + h3 - (x - y) * hs
 
 /- English proof (translation)
-Take the linear combination `y * hx + α * hy`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cm_mul {e x y α β : R} (hx : x * e = α * e) (hy : y * e = β * e) :
     x * y * e = α * β * e := by
   linear_combination y * hx + α * hy
 
 /- English proof (translation)
-Take the linear combination `α * h11 + β * h12 + γ * h13`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem comp1 {e₁ e₂ e₃ : R} (h11 : e₁ * e₁ = e₁) (h12 : e₁ * e₂ = 0) (h13 : e₁ * e₃ = 0)
     (α β γ : R) : (α * e₁ + β * e₂ + γ * e₃) * e₁ = α * e₁ := by
   linear_combination α * h11 + β * h12 + γ * h13
 
 /- English proof (translation)
-Take the linear combination `α * h12 + β * h22 + γ * h23`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem comp2 {e₁ e₂ e₃ : R} (h12 : e₁ * e₂ = 0) (h22 : e₂ * e₂ = e₂) (h23 : e₂ * e₃ = 0)
     (α β γ : R) : (α * e₁ + β * e₂ + γ * e₃) * e₂ = β * e₂ := by
   linear_combination α * h12 + β * h22 + γ * h23
 
 /- English proof (translation)
-Take the linear combination `α * h13 + β * h23 + γ * h33`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem comp3 {e₁ e₂ e₃ : R} (h13 : e₁ * e₃ = 0) (h23 : e₂ * e₃ = 0) (h33 : e₃ * e₃ = e₃)
     (α β γ : R) : (α * e₁ + β * e₂ + γ * e₃) * e₃ = γ * e₃ := by
   linear_combination α * h13 + β * h23 + γ * h33
 
 /- English proof (translation)
-Establish `hd3 : e₃ = p * c * a₃ * e₃` using `by linear_combination c * hc3 - e₃ * hci`. Establish `LargeParameterEstimates : (p + c ^ 2) * e₁ = ((p + u ^ 2) * 1) * e₁` using `by linear_combination (c + u) * hc1`. Establish `F12 : (p + c ^ 2) * e₂ = ((1 + p * a₂ ^ 2) * p) * e₂`. Take the linear combination `(c + p * a₂) * hc2`. Establish `InertPlaceConditions : (p + c ^ 2) * e₃ = ((1 + p ^ 3 * a₃ ^ 2) * c ^ 2) * e₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `p * (1 + p * c * a₃) * hd3`. Establish `F21 : (p + c ^ 3) * e₁ = ((p + u ^ 3) * 1) * e₁`. Take the linear combination `(c ^ 2 + c * u + u ^ 2) * hc1`. Establish `F22 : (p + c ^ 3) * e₂ = ((1 + p ^ 2 * a₂ ^ 3) * p) * e₂`. Take the linear combination `(c ^ 2 + c * p * a₂ + p ^ 2 * a₂ ^ 2) * hc2`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `F23 : (p + c ^ 3) * e₃ = ((1 + p ^ 4 * a₃ ^ 3) * c ^ 3) * e₃`. Take the linear combination `p * (1 + p * c * a₃ + (p * c * a₃) ^ 2) * hd3`. Establish `F31 : (p * c ^ 2 + b ^ 2) * e₁ = ((p * u ^ 2 + b ^ 2) * 1) * e₁`. Take the linear combination `p * (c + u) * hc1`. Establish `F32 : (p * c ^ 2 + b ^ 2) * e₂ = ((b ^ 2 + p ^ 3 * a₂ ^ 2) * 1) * e₂`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `p * (c + p * a₂) * hc2`. Establish `F33 : (p * c ^ 2 + b ^ 2) * e₃ = ((1 + p * b ^ 2 * a₃ ^ 2) * (p * c ^ 2)) * e₃`. Take the linear combination `b ^ 2 * (1 + p * c * a₃) * hd3`. Establish `F41 : (p * c ^ 3 + b ^ 3) * e₁ = ((p * u ^ 3 + b ^ 3) * 1) * e₁`. Take the linear combination `p * (c ^ 2 + c * u + u ^ 2) * hc1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `F42 : (p * c ^ 3 + b ^ 3) * e₂ = ((b ^ 3 + p ^ 4 * a₂ ^ 3) * 1) * e₂`. Take the linear combination `p * (c ^ 2 + c * p * a₂ + p ^ 2 * a₂ ^ 2) * hc2`. Establish `F43 : (p * c ^ 3 + b ^ 3) * e₃ = ((1 + p ^ 2 * b ^ 3 * a₃ ^ 3) * (p * c ^ 3)) * e₃`. Take the linear combination `b ^ 3 * (1 + p * c * a₃ + (p * c * a₃) ^ 2) * hd3`. Establish `c1` using `comp1 h11 h12 h13`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `c2` using `comp2 h12 h22 h23`. Establish `c3` using `comp3 h13 h23 h33`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `eq_of_comp hs ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[cm_mul LargeParameterEstimates (c1 _ _ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `e₁ * hk11`. Rewrite using `[cm_mul F12 (c2 _ _ _)]`. Take the linear combination `e₂ * p * pi * hk12 + e₂ * hp`. Rewrite using `[cm_mul InertPlaceConditions (c3 _ _ _)]`. Take the linear combination `e₃ * (c * ci) ^ 2 * hk13 + e₃ * (c * ci + 1) * hci`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `eq_of_comp hs ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[cm_mul F21 (c1 _ _ _)]`. Take the linear combination `e₁ * hk21`. Rewrite using `[cm_mul F22 (c2 _ _ _)]`. Take the linear combination `e₂ * p * pi * hk22 + e₂ * hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[cm_mul F23 (c3 _ _ _)]`. Take the linear combination `e₃ * (c * ci) ^ 3 * hk23 + e₃ * ((c * ci) ^ 2 + c * ci + 1) * hci`. Use `eq_of_comp hs ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[cm_mul F31 (c1 _ _ _)]`. Take the linear combination `e₁ * hk31`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[cm_mul F32 (c2 _ _ _)]`. Take the linear combination `e₂ * hk32`. Rewrite using `[cm_mul F33 (c3 _ _ _)]`. Take the linear combination `e₃ * p * pi * (c * ci) ^ 2 * hk33 + e₃ * (c * ci) ^ 2 * hp + e₃ * (c * ci + 1) * hci`. Use `eq_of_comp hs ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cm_mul F41 (c1 _ _ _)]`. Take the linear combination `e₁ * hk41`. Rewrite using `[cm_mul F42 (c2 _ _ _)]`. Take the linear combination `e₂ * hk42`. Rewrite using `[cm_mul F43 (c3 _ _ _)]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `e₃ * p * pi * (c * ci) ^ 3 * hk43 + e₃ * (c * ci) ^ 3 * hp + e₃ * ((c * ci) ^ 2 + c * ci + 1) * hci`. Use `eq_of_comp hs ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[cm_mul F41 LargeParameterEstimates, cm_mul (c1 _ _ _) (cm_mul F21 F31)]`. Take the linear combination `(-(p * u ^ 3 + b ^ 3) * (p + u ^ 2) * e₁) * ((p * u ^ 2 + b ^ 2) * k31 * hk21 + hk31)`. Rewrite using `[cm_mul F42 F12, cm_mul (c2 _ _ _) (cm_mul F22 F32)]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(b ^ 3 + p ^ 4 * a₂ ^ 3) * (1 + p * a₂ ^ 2) * p * e₂) * ((b ^ 2 + p ^ 3 * a₂ ^ 2) * k32 * hk22 + hk32)`. Rewrite using `[cm_mul F43 InertPlaceConditions, cm_mul (c3 _ _ _) (cm_mul F23 F33)]`. Take the linear combination `(-(1 + p ^ 2 * b ^ 3 * a₃ ^ 3) * (1 + p ^ 3 * a₃ ^ 2) * p * c ^ 5 * e₃) * ((1 + p * b ^ 2 * a₃ ^ 2) * k33 * hk23 + hk33)`. Use `eq_of_comp hs ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[cm_mul (c1 _ _ _) (c1 _ _ _)]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `e₁ * ((p + u ^ 3) * k21 * (p * u ^ 2 + b ^ 2) * k31 * (p + u ^ 2) * k11 * hk41 + (p + u ^ 3) * k21 * (p * u ^ 2 + b ^ 2) * k31 * hk11 + (p + u ^ 3) * k21 * hk31 + hk21)`. Rewrite using `[cm_mul (c2 _ _ _) (c2 _ _ _)]`. Take the linear combination `e₂ * ((1 + p ^ 2 * a₂ ^ 3) * k22 * (b ^ 2 + p ^ 3 * a₂ ^ 2) * k32 * (1 + p * a₂ ^ 2) * k12 * hk42 + (1 + p ^ 2 * a₂ ^ 3) * k22 * (b ^ 2 + p ^ 3 * a₂ ^ 2) * k32 * hk12 + (1 + p ^ 2 * a₂ ^ 3) * k22 * hk32 + hk22)`. Rewrite using `[cm_mul (c3 _ _ _) (c3 _ _ _)]`. Take the linear combination `e₃ * ((1 + p ^ 4 * a₃ ^ 3) * k23 * (1 + p * b ^ 2 * a₃ ^ 2) * k33 * (1 + p ^ 3 * a₃ ^ 2) * k13 * hk43 + (1 + p ^ 4 * a₃ ^ 3) * k23 * (1 + p * b ^ 2 * a₃ ^ 2) * k33 * hk13 + (1 + p ^ 4 * a₃ ^ 3) * k23 * hk33 + hk23)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem core (p pi c ci u a₂ a₃ b e₁ e₂ e₃ k11 k12 k13 k21 k22 k23 k31 k32 k33 k41 k42 k43 : R)
     (hp : p * pi = 1) (hci : c * ci = 1)
@@ -184,7 +184,7 @@ theorem eq_one_of_mul_eq_one {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (ha1 : a 
     (hab : a * b = 1) : a = 1 := by nlinarith
 
 /- English proof (translation)
-Distinguish the cases in `hd : IsUnit x.det`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hd]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_comm {E : Type} [Field E] {n : ℕ} {x N : Matrix (Fin n) (Fin n) E}
     (h : x * N = N * x) : x⁻¹ * N = N * x⁻¹ := by
@@ -195,57 +195,51 @@ theorem inv_comm {E : Type} [Field E] {n : ℕ} {x N : Matrix (Fin n) (Fin n) E}
   · rw [Matrix.nonsing_inv_apply_not_isUnit _ hd]; simp
 
 /- English proof (translation)
-Introduce `E _ _ n N c b e₁ e₂ e₃ u a₂ a₃ ϖ hϖ0 hϖ1 hcomm hcu hcN hbN hbI hbd hN hI hud h11 h22 h33 h12 h13 h23 hs hc1 hc2 hc3`. Take `⟨he₁N, he₂N, he₃N, huN, ha₂N, ha₃N⟩` from `hN`. Establish `hϖne : ϖ ≠ 0` using `norm_pos_iff.1 hϖ0`. Establish `hϖle : ‖ϖ‖ ≤ 1` using `hϖ1.le`. Use `set S := Subalgebra.centralizer E ({N} : Set (Matrix (Fin n) (Fin n) E)) with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memN : ∀ x : S, x.1 * N = N * x.1` using `fun x => ((Subalgebra.mem_centralizer_iff E).1 x.2 N rfl).symm`. Use `letI : CommRing S := { (inferInstance : Ring S) with mul_comm := fun x y => Subtype.ext (hcomm _ _ (memN x) (memN y)) }`. Establish `mem : ∀ x : Matrix (Fin n) (Fin n) E, x * N = N * x → x ∈ S` using `fun x hx => (Subalgebra.mem_centralizer_iff E).2 (fun g hg => by rw [Set.mem_singleton_iff.1 hg]; exact hx.symm)`. Establish `I_mul : ∀ x y : S, (∀ i j, ‖x.1 i j‖ ≤ 1) → (∀ i j, ‖y.1 i j‖ ≤ 1) → ∀ i j, ‖(x * y).1 i j‖ ≤ 1` using `fun x y hx hy => integ_mul hx hy`. Establish `I_add : ∀ x y : S, (∀ i j, ‖x.1 i j‖ ≤ 1) → (∀ i j, ‖y.1 i j‖ ≤ 1) → ∀ i j, ‖(x + y).1 i j‖ ≤ 1` using `fun x y hx hy => integ_add hx hy`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `I_pow : ∀ (x : S) (k : ℕ), (∀ i j, ‖x.1 i j‖ ≤ 1) → ∀ i j, ‖(x ^ k).1 i j‖ ≤ 1` using `fun x k hx => integ_pow hx k`. Establish `I_one : ∀ i j, ‖(1 : S).1 i j‖ ≤ 1` using `integ_one`. Establish `isU : ∀ x y : S, x * y = 1 → IsUnit x.1` using `fun x y h => (Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse (congrArg Subtype.val h : x.1 * y.1 = 1))`. Establish `hcd : IsUnit c.det` using `(Matrix.isUnit_iff_isUnit_det c).1 hcu`. Take `⟨hu, huiI⟩` from `isUnit_and_integ_inv_of_norm_det_eq_one E n u (fun i j => (hI i j).2.2.2.1) hud`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hb, hbiI⟩` from `isUnit_and_integ_inv_of_norm_det_eq_one E n b hbI hbd`. Take `⟨C, hCv⟩ : ∃ X : S, X.1 = c` from `⟨⟨c, mem c hcN⟩, rfl⟩`. Take `⟨Ci, hCiv⟩ : ∃ X : S, X.1 = c⁻¹` from `⟨⟨c⁻¹, mem _ (inv_comm hcN)⟩, rfl⟩`. Take `⟨U, hUv⟩ : ∃ X : S, X.1 = u` from `⟨⟨u, mem u huN⟩, rfl⟩`. Take `⟨Ui, hUiv⟩ : ∃ X : S, X.1 = u⁻¹` from `⟨⟨u⁻¹, mem _ (inv_comm huN)⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hBv⟩ : ∃ X : S, X.1 = b` from `⟨⟨b, mem b hbN⟩, rfl⟩`. Take `⟨Bi, hBiv⟩ : ∃ X : S, X.1 = b⁻¹` from `⟨⟨b⁻¹, mem _ (inv_comm hbN)⟩, rfl⟩`. Take `⟨A2, hA2v⟩ : ∃ X : S, X.1 = a₂` from `⟨⟨a₂, mem _ ha₂N⟩, rfl⟩`. Take `⟨A3, hA3v⟩ : ∃ X : S, X.1 = a₃` from `⟨⟨a₃, mem _ ha₃N⟩, rfl⟩`. Take `⟨E1, hE1v⟩ : ∃ X : S, X.1 = e₁` from `⟨⟨e₁, mem _ he₁N⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E2, hE2v⟩ : ∃ X : S, X.1 = e₂` from `⟨⟨e₂, mem _ he₂N⟩, rfl⟩`. Take `⟨E3, hE3v⟩ : ∃ X : S, X.1 = e₃` from `⟨⟨e₃, mem _ he₃N⟩, rfl⟩`. Take `⟨P, hPv⟩ : ∃ X : S, X.1 = ϖ • 1` from `⟨⟨_, mem _ (by rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one])⟩, rfl⟩`. Take `⟨Pi, hPiv⟩ : ∃ X : S, X.1 = ϖ⁻¹ • 1` from `⟨⟨_, mem _ (by rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one])⟩, rfl⟩`. Establish `IU : ∀ i j, ‖U.1 i j‖ ≤ 1` using `by rw [hUv]; exact fun i j => (hI i j).2.2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `IUi : ∀ i j, ‖Ui.1 i j‖ ≤ 1` using `by rw [hUiv]; exact huiI`. Establish `IB : ∀ i j, ‖B.1 i j‖ ≤ 1` using `by rw [hBv]; exact hbI`. Establish `IBi : ∀ i j, ‖Bi.1 i j‖ ≤ 1` using `by rw [hBiv]; exact hbiI`. Establish `IA2 : ∀ i j, ‖A2.1 i j‖ ≤ 1` using `by rw [hA2v]; exact fun i j => (hI i j).2.2.2.2.1`. Establish `NearKilling : ∀ i j, ‖A3.1 i j‖ ≤ 1` using `by rw [hA3v]; exact fun i j => (hI i j).2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `IE1 : ∀ i j, ‖E1.1 i j‖ ≤ 1` using `by rw [hE1v]; exact fun i j => (hI i j).1`. Establish `IE2 : ∀ i j, ‖E2.1 i j‖ ≤ 1` using `by rw [hE2v]; exact fun i j => (hI i j).2.1`. Establish `IE3 : ∀ i j, ‖E3.1 i j‖ ≤ 1` using `by rw [hE3v]; exact fun i j => (hI i j).2.2.1`. Establish `IP : ∀ i j, ‖P.1 i j‖ ≤ 1` using `by rw [hPv]; exact integ_smul hϖle integ_one`. Establish `hUd : ‖U.1.det‖ = 1` using `by rw [hUv]; exact hud`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBd : ‖B.1.det‖ = 1` using `by rw [hBv]; exact hbd`. Establish `hp : P * Pi = 1` using `Subtype.ext (by show P.1 * Pi.1 = 1`. Rewrite using `[hPv, hPiv, Matrix.smul_mul, Matrix.one_mul, smul_smul, mul_inv_cancel₀ hϖne, one_smul])`. Establish `hci : C * Ci = 1` using `Subtype.ext (by show C.1 * Ci.1 = 1`. Rewrite using `[hCv, hCiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.mul_nonsing_inv c hcd)`. Establish `hUi : U * Ui = 1` using `Subtype.ext (by show U.1 * Ui.1 = 1`. Rewrite using `[hUv, hUiv]`. Conclude with `Matrix.mul_nonsing_inv u ((Matrix.isUnit_iff_isUnit_det u).1 hu))`. Establish `hBi : B * Bi = 1` using `Subtype.ext (by show B.1 * Bi.1 = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hBv, hBiv]`. Conclude with `Matrix.mul_nonsing_inv b ((Matrix.isUnit_iff_isUnit_det b).1 hb))`. Establish `h11S : E1 * E1 = E1` using `Subtype.ext (by show E1.1 * E1.1 = E1.1; rw [hE1v]; exact h11)`. Establish `h22S : E2 * E2 = E2` using `Subtype.ext (by show E2.1 * E2.1 = E2.1; rw [hE2v]; exact h22)`. Establish `h33S : E3 * E3 = E3` using `Subtype.ext (by show E3.1 * E3.1 = E3.1; rw [hE3v]; exact h33)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12S : E1 * E2 = 0` using `Subtype.ext (by show E1.1 * E2.1 = 0; rw [hE1v, hE2v]; exact h12)`. Establish `h13S : E1 * E3 = 0` using `Subtype.ext (by show E1.1 * E3.1 = 0; rw [hE1v, hE3v]; exact h13)`. Establish `h23S : E2 * E3 = 0` using `Subtype.ext (by show E2.1 * E3.1 = 0; rw [hE2v, hE3v]; exact h23)`. Establish `hsS : E1 + E2 + E3 = 1` using `Subtype.ext (by show E1.1 + E2.1 + E3.1 = 1; rw [hE1v, hE2v, hE3v]; exact hs)`. Establish `hc1S : C * E1 = U * E1` using `Subtype.ext (by show C.1 * E1.1 = U.1 * E1.1; rw [hCv, hE1v, hUv]; exact hc1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc2S : C * E2 = P * (A2 * E2)` using `Subtype.ext (by show C.1 * E2.1 = P.1 * (A2.1 * E2.1)`. Rewrite using `[hCv, hE2v, hPv, hA2v, Matrix.smul_mul, Matrix.one_mul]`. Conclude with `hc2)`. Establish `hc3S : Ci * E3 = P * (A3 * E3)` using `Subtype.ext (by show Ci.1 * E3.1 = P.1 * (A3.1 * E3.1)`. Rewrite using `[hCiv, hE3v, hPv, hA3v, Matrix.smul_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc3)`. Establish `mk : ∀ g w x : S, g = w * (1 + P * x) → (∀ i j, ‖w.1 i j‖ ≤ 1) → ‖w.1.det‖ = 1 → (∀ i j, ‖x.1 i j‖ ≤ 1) → ∃ k : S, g * k = 1 ∧ ∀ i j, ‖k.1 i j‖ ≤ 1`. Introduce `g w x hg hw hwd hx`. Establish `hgv : g.1 = w.1 * (1 + ϖ • x.1)`. Rewrite using `[hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show w.1 * (1 + P.1 * x.1) = _`. Rewrite using `[hPv, Matrix.smul_mul, Matrix.one_mul]`. Establish `hgI : ∀ i j, ‖g.1 i j‖ ≤ 1`. Rewrite using `[hgv]`. Conclude with `integ_mul hw (integ_add integ_one (integ_smul hϖle hx))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgd : ‖g.1.det‖ = 1`. Rewrite using `[hgv, Matrix.det_mul, norm_mul, hwd, GlobalTheory.T.ultrametric_norm_det_one_add_smul E n x.1 ϖ hϖ1 hx, one_mul]`. Take `⟨hgu, hgiI⟩` from `isUnit_and_integ_inv_of_norm_det_eq_one E n g.1 hgI hgd`. Use `⟨⟨g.1⁻¹, mem _ (inv_comm (memN g))⟩, Subtype.ext ?_, hgiI⟩` and prove the remaining obligations. Conclude with `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hgu)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `wpow : ∀ w : S, (∀ i j, ‖w.1 i j‖ ≤ 1) → ‖w.1.det‖ = 1 → ∀ k : ℕ, (∀ i j, ‖(w ^ k).1 i j‖ ≤ 1) ∧ ‖(w ^ k).1.det‖ = 1` using `fun w hw hd k => ⟨integ_pow hw k, by show ‖(w.1 ^ k).det‖ = 1; rw [Matrix.det_pow, norm_pow, hd, one_pow]⟩`. Establish `w1 : (∀ i j, ‖(1 : S).1 i j‖ ≤ 1) ∧ ‖(1 : S).1.det‖ = 1` using `⟨integ_one, by show ‖(1 : Matrix (Fin n) (Fin n) E).det‖ = 1; simp⟩`. Take `⟨k11, hk11, Ik11⟩` from `mk (P + U ^ 2) (U ^ 2) (Ui ^ 2) (by linear_combination -P * (U * Ui + 1) * hUi) (wpow U IU hUd 2).1 (wpow U IU hUd 2).2 (I_pow _ _ IUi)`. Take `⟨k12, hk12, Ik12⟩` from `mk (1 + P * A2 ^ 2) 1 (A2 ^ 2) (by ring) w1.1 w1.2 (I_pow _ _ IA2)`. Take `⟨k13, hk13, Ik13⟩` from `mk (1 + P ^ 3 * A3 ^ 2) 1 (P ^ 2 * A3 ^ 2) (by ring) w1.1 w1.2 (I_mul _ _ (I_pow _ _ IP) (I_pow _ _ NearKilling))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k21, hk21, Ik21⟩` from `mk (P + U ^ 3) (U ^ 3) (Ui ^ 3) (by linear_combination -P * ((U * Ui) ^ 2 + U * Ui + 1) * hUi) (wpow U IU hUd 3).1 (wpow U IU hUd 3).2 (I_pow _ _ IUi)`. Take `⟨k22, hk22, Ik22⟩` from `mk (1 + P ^ 2 * A2 ^ 3) 1 (P * A2 ^ 3) (by ring) w1.1 w1.2 (I_mul _ _ IP (I_pow _ _ IA2))`. Take `⟨k23, hk23, Ik23⟩` from `mk (1 + P ^ 4 * A3 ^ 3) 1 (P ^ 3 * A3 ^ 3) (by ring) w1.1 w1.2 (I_mul _ _ (I_pow _ _ IP) (I_pow _ _ NearKilling))`. Take `⟨k31, hk31, Ik31⟩` from `mk (P * U ^ 2 + B ^ 2) (B ^ 2) (Bi ^ 2 * U ^ 2) (by linear_combination -P * U ^ 2 * (B * Bi + 1) * hBi) (wpow B IB hBd 2).1 (wpow B IB hBd 2).2 (I_mul _ _ (I_pow _ _ IBi) (I_pow _ _ IU))`. Take `⟨k32, hk32, Ik32⟩` from `mk (B ^ 2 + P ^ 3 * A2 ^ 2) (B ^ 2) (P ^ 2 * (Bi ^ 2 * A2 ^ 2)) (by linear_combination -P ^ 3 * A2 ^ 2 * (B * Bi + 1) * hBi) (wpow B IB hBd 2).1 (wpow B IB hBd 2).2 (I_mul _ _ (I_pow _ _ IP) (I_mul _ _ (I_pow _ _ IBi) (I_pow _ _ IA2)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k33, hk33, Ik33⟩` from `mk (1 + P * B ^ 2 * A3 ^ 2) 1 (B ^ 2 * A3 ^ 2) (by ring) w1.1 w1.2 (I_mul _ _ (I_pow _ _ IB) (I_pow _ _ NearKilling))`. Take `⟨k41, hk41, Ik41⟩` from `mk (P * U ^ 3 + B ^ 3) (B ^ 3) (Bi ^ 3 * U ^ 3) (by linear_combination -P * U ^ 3 * ((B * Bi) ^ 2 + B * Bi + 1) * hBi) (wpow B IB hBd 3).1 (wpow B IB hBd 3).2 (I_mul _ _ (I_pow _ _ IBi) (I_pow _ _ IU))`. Take `⟨k42, hk42, Ik42⟩` from `mk (B ^ 3 + P ^ 4 * A2 ^ 3) (B ^ 3) (P ^ 3 * (Bi ^ 3 * A2 ^ 3)) (by linear_combination -P ^ 4 * A2 ^ 3 * ((B * Bi) ^ 2 + B * Bi + 1) * hBi) (wpow B IB hBd 3).1 (wpow B IB hBd 3).2 (I_mul _ _ (I_pow _ _ IP) (I_mul _ _ (I_pow _ _ IBi) (I_pow _ _ IA2)))`. Take `⟨k43, hk43, Ik43⟩` from `mk (1 + P ^ 2 * B ^ 3 * A3 ^ 3) 1 (P * (B ^ 3 * A3 ^ 3)) (by ring) w1.1 w1.2 (I_mul _ _ IP (I_mul _ _ (I_pow _ _ IB) (I_pow _ _ NearKilling)))`. Take `⟨hX1, hX2, hX3, hX4, hQ, hYY⟩` from `core P Pi C Ci U A2 A3 B E1 E2 E3 k11 k12 k13 k21 k22 k23 k31 k32 k33 k41 k42 k43 hp hci h11S h22S h33S h12S h13S h23S hsS hc1S hc2S hc3S hk11 hk12 hk13 hk21 hk22 hk23 hk31 hk32 hk33 hk41 hk42 hk43`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y : S := ((P * U ^ 3 + B ^ 3) * (P + U ^ 2) * k21 * k31) * E1 + ((B ^ 3 + P ^ 4 * A2 ^ 3) * (1 + P * A2 ^ 2) * k22 * k32) * E2 + ((1 + P ^ 2 * B ^ 3 * A3 ^ 3) * (1 + P ^ 3 * A3 ^ 2) * k23 * k33) * E3 with hY`. Use `set Y' : S := ((P + U ^ 3) * (P * U ^ 2 + B ^ 2) * k41 * k11) * E1 + ((1 + P ^ 2 * A2 ^ 3) * (B ^ 2 + P ^ 3 * A2 ^ 2) * k42 * k12) * E2 + ((1 + P ^ 4 * A3 ^ 3) * (1 + P * B ^ 2 * A3 ^ 2) * k43 * k13) * E3 with hY'`. Establish `IY : ∀ i j, ‖Y.1 i j‖ ≤ 1`. Rewrite using `[hY]`. Conclude with `I_add _ _ (I_add _ _ (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_add _ _ (I_mul _ _ IP (I_pow _ _ IU)) (I_pow _ _ IB)) (I_add _ _ IP (I_pow _ _ IU))) Ik21) Ik31) IE1) (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_add _ _ (I_pow _ _ IB) (I_mul _ _ (I_pow _ _ IP) (I_pow _ _ IA2 …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `IY' : ∀ i j, ‖Y'.1 i j‖ ≤ 1`. Rewrite using `[hY']`. Conclude with `I_add _ _ (I_add _ _ (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_add _ _ IP (I_pow _ _ IU)) (I_add _ _ (I_mul _ _ IP (I_pow _ _ IU)) (I_pow _ _ IB))) Ik41) Ik11) IE1) (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_mul _ _ (I_add _ _ I_one (I_mul _ _ (I_pow _ _ IP) (I_pow _ _ IA2))) (I_ad …`. Establish `hX1v : (P + C ^ 2).1 = ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2` using `by show P.1 + C.1 ^ 2 = _; rw [hPv, hCv]`. Establish `hX2v : (P + C ^ 3).1 = ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3` using `by show P.1 + C.1 ^ 3 = _; rw [hPv, hCv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX3v : (P * C ^ 2 + B ^ 2).1 = ϖ • c ^ 2 + b ^ 2` using `by show P.1 * C.1 ^ 2 + B.1 ^ 2 = _; rw [hPv, hCv, hBv, Matrix.smul_mul, Matrix.one_mul]`. Establish `hX4v : (P * C ^ 3 + B ^ 3).1 = ϖ • c ^ 3 + b ^ 3` using `by show P.1 * C.1 ^ 3 + B.1 ^ 3 = _; rw [hPv, hCv, hBv, Matrix.smul_mul, Matrix.one_mul]`. Establish `u1` using `isU _ _ hX1`. Establish `u2` using `isU _ _ hX2`. Establish `u3` using `isU _ _ hX3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u4` using `isU _ _ hX4`. Rewrite `u1` using `[hX1v]`. Rewrite `u2` using `[hX2v]`. Rewrite `u3` using `[hX3v]`. Rewrite `u4` using `[hX4v]`.
-
-Establish `hdet23 : IsUnit ((P + C ^ 3).1 * (P * C ^ 2 + B ^ 2).1).det` using `(Matrix.isUnit_iff_isUnit_det _).1 ((isU _ _ hX2).mul (isU _ _ hX3))`. Establish `hQv : (P * C ^ 3 + B ^ 3).1 * (P + C ^ 2).1 = Y.1 * ((P + C ^ 3).1 * (P * C ^ 2 + B ^ 2).1)` using `congrArg Subtype.val hQ`. Establish `Qm : (ϖ • c ^ 3 + b ^ 3) * (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2) * ((ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3) * (ϖ • c ^ 2 + b ^ 2))⁻¹ = Y.1`. Rewrite using `[← hX1v, ← hX2v, ← hX3v, ← hX4v, hQv, Matrix.mul_nonsing_inv_cancel_right _ _ hdet23]`. Establish `hYYv : Y.1 * Y'.1 = 1` using `congrArg Subtype.val hYY`.
-
-Establish `hdY : ‖Y.1.det‖ = 1`. Establish `h1` using `GlobalTheory.norm_det_le_one_of_entries_le_one E n Y.1 IY`. Establish `h2` using `GlobalTheory.norm_det_le_one_of_entries_le_one E n Y'.1 IY'`. Establish `h3 : ‖Y.1.det‖ * ‖Y'.1.det‖ = 1`. Rewrite using `[← norm_mul, ← Matrix.det_mul, hYYv, Matrix.det_one, norm_one]`.
-
-Conclude with `eq_one_of_mul_eq_one (norm_nonneg _) (norm_nonneg _) h1 h2 h3`. Conclude with `⟨u1, u2, u3, u4, by rw [Qm]; exact IY, by rw [Qm]; exact hdY⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quotient_integral_unit : ∀ (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E] (n : ℕ) (N c b e₁ e₂ e₃ u a₂ a₃ : Matrix (Fin n) (Fin n) E) (ϖ : E), 0 < ‖ϖ‖ → ‖ϖ‖ < 1 → (∀ x y : Matrix (Fin n) (Fin n) E, x * N = N * x → y * N = N * y → x * y = y * x) → IsUnit c → c * N = N * c → b * N = N * b → (∀ i j, ‖b i j‖ ≤ 1) → ‖b.det‖ = 1 → (e₁ * N = N * e₁ ∧ e₂ * N = N * e₂ ∧ e₃ * N = N * e₃ ∧ u * N = N * u ∧ a₂ * N = N * a₂ ∧ a₃ * N = N * a₃) → (∀ i j, ‖e₁ i j‖ ≤ 1 ∧ ‖e₂ i j‖ ≤ 1 ∧ ‖e₃ i j‖ ≤ 1 ∧ ‖u i j‖ ≤ 1 ∧ ‖a₂ i j‖ ≤ 1 ∧ ‖a₃ i j‖ ≤ 1) → ‖u.det‖ = 1 → e₁ * e₁ = e₁ → e₂ * e₂ = e₂ → e₃ * e₃ = e₃ → e₁ * e₂ = 0 → e₁ * e₃ = 0 → e₂ * e₃ = 0 → e₁ + e₂ + e₃ = 1 → c * e₁ = u * e₁ → c * e₂ = ϖ • (a₂ * e₂) → c⁻¹ * e₃ = ϖ • (a₃ * e₃) → IsUnit (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2) ∧ IsUnit (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3) ∧ IsUnit (ϖ • c ^ 2 + b ^ 2) ∧ IsUnit (ϖ • c ^ 3 + b ^ 3) ∧ (∀ i j, ‖((ϖ • c ^ 3 + b ^ 3) * (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2) * ((ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3) * (ϖ • c ^ 2 + b ^ 2))⁻¹) i j‖ ≤ 1) ∧ ‖((ϖ • c ^ 3 + b ^ 3) * (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2) * ((ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3) * (ϖ • c ^ 2 + b ^ 2))⁻¹).det‖ = 1 := by
   intro E _ _ n N c b e₁ e₂ e₃ u a₂ a₃ ϖ hϖ0 hϖ1 hcomm hcu hcN hbN hbI hbd hN hI hud h11 h22 h33

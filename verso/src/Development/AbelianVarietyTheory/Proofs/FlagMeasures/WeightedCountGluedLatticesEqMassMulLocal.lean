@@ -20,23 +20,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GlueCount
 
 /- English proof (translation)
-Introduce `D T T' F G F' G' hG hG' g`. Establish `fwd : ∀ {f h : Fin (D.R.rS + 1) → (VS D).V}, Tri D.host.E f h → (∀ a, g (f a) = f a) → ∀ a, g (h a) = h a`. Introduce and unpack `f h ⟨A, -, hC⟩ hf a`. Rewrite using `[hC a, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, hf b]`. Establish `bwd : ∀ {f h : Fin (D.R.rS + 1) → (VS D).V}, Tri D.host.E f h → (∀ a, g (h a) = h a) → ∀ a, g (f a) = f a`. Introduce and unpack `f h ⟨A, ⟨hlow, hdiag⟩, hC⟩ hh a`. Proceed by induction on `a using WellFoundedLT.induction with`. Consider the case `_ a ih`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Establish `hsplit : h a = f a + ∑ b ∈ Finset.univ.filter (fun b => b < a), A b a • f b`. Rewrite using `[hC a, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun b => b < a)]`. Establish `hrest : ∑ b ∈ Finset.univ.filter (fun b => ¬ b < a), A b a • f b = f a`. Rewrite using `[Finset.sum_eq_single_of_mem a (by simp)]`. Rewrite using `[hdiag, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb hba`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hb`. Rewrite using `[hlow b a (lt_of_le_of_ne hb (Ne.symm hba)), zero_smul]`. Rewrite using `[hrest, add_comm]`. Establish `h1` using `hh a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hsplit, map_add, map_sum]`. Establish `h2 : ∑ b ∈ Finset.univ.filter (fun b => b < a), g (A b a • f b) = ∑ b ∈ Finset.univ.filter (fun b => b < a), A b a • f b`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Rewrite using `[map_smul, ih b hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `add_right_cancel h1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hiso, hF, hF'⟩`. Use `⟨hiso, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : Formalism.L2.SG.Pf.Cnt.UPair D G.fl G' ≤ LinearMap.ker ((g : (VS D).V →ₗ[D.host.E] (VS D).V) - LinearMap.id)`. Unfold `Formalism.L2.SG.Pf.Cnt.UPair`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨a, rfl⟩)`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, LinearEquiv.coe_coe, LinearMap.id_apply, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `fwd hG hF a`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, LinearEquiv.coe_coe, LinearMap.id_apply, sub_eq_zero]`. Conclude with `fwd hG' hF' a`. Use `hle hx` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨hiso, hU⟩`. Establish `hG1 : ∀ a, g (frame G a) = frame G a` using `fun a => hU _ (Submodule.subset_span (Or.inl ⟨a, rfl⟩))`. Establish `hG2 : ∀ a, g (frame G' a) = frame G' a` using `fun a => hU _ (Submodule.subset_span (Or.inr ⟨a, rfl⟩))`. Conclude with `⟨hiso, bwd hG hG1, bwd hG' hG2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_isometriesFixingBothFrames_iff_unitriangular : ∀ (D : D7) {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag (VS D) D.R.rS T'), Tri D.host.E (frame F) (frame G) → Tri D.host.E (frame F') (frame G') → ∀ g : GV D, g ∈ H0 F F' ↔ g ∈ Formalism.L2.SG.Pf.Cnt.isomFix (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') := by
   intro D T T' F G F' G' hG hG' g
@@ -89,15 +89,15 @@ theorem mem_isometriesFixingBothFrames_iff_unitriangular : ∀ (D : D7) {T T' : 
     exact ⟨hiso, bwd hG hG1, bwd hG' hG2⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isometryFixingSpan_preserves_gluedLattices`.
+A detailed English derivation is pending.
 -/
 theorem glue_stable : ∀ (D : D7) (U : Submodule D.host.E (VS D).V) (M : Submodule (𝓞 D.host.E) (VS D).V), ∀ g ∈ Formalism.L2.SG.Pf.Cnt.isomFix (VS D).hT U, ∀ Λ ∈ Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT U M, Formalism.HermitianLatticesTheory.gmap g Λ ∈ Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT U M :=
   GlobalTheory.T.isometryFixingSpan_preserves_gluedLattices
 
 /- English proof (translation)
-Introduce `D Z FP u u' F F' hB g hg p`. Apply the tactic sequence `obtain ⟨g', hE, hU, huniq, -, -⟩ := GlobalTheory.T.rational_isometry_extends_local_isometry D Z p g hg.1`. Use `⟨g', hE, ⟨⟨hU, fun b => ?_⟩, ⟨hU, fun b => ?_⟩⟩, fun g'' h'' => huniq g'' h''⟩` and prove the remaining obligations. Rewrite using `[(hB p).1] show g' (frFac Z.δ p b • baseChange₂ D p (frame F b)) = frFac Z.δ p b • baseChange₂ D p (frame F b)`. Rewrite using `[map_smul, hE, hg.2.1 b]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hB p).2.1] show g' (frFac Z.δ p b • baseChange₂ D p (frame F' b)) = frFac Z.δ p b • baseChange₂ D p (frame F' b)`. Rewrite using `[map_smul, hE, hg.2.2 b]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_ext : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)), Based Z FP (Tu D u) (Tu D u') F F' → ∀ g ∈ H0 F F', ∀ p, ∃ g', GlobalTheory.Unfold.Ext p g g' ∧ GlobalTheory.InnerDatumAct.InU (FP p) g' ∧ ∀ g'', GlobalTheory.Unfold.Ext p g g'' → g'' = g' := by
   intro D Z FP u u' F F' hB g hg p
@@ -111,15 +111,15 @@ theorem loc_ext : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (
     rw [map_smul, hE, hg.2.2 b]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finite_rationalStabiliser_gluedLattice_localData`.
+A detailed English derivation is pending.
 -/
 theorem stab_finite : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F G : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' G' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (P : Finset (PlF D)) (d0 : Dat Z FP), 4 * D.R.rS + 7 ≤ D.R.k → BaseOK (Tu D u) (Tu D u') F F' P d0 → StdOff Z P F G F' G' → TotPos (Gval F F') → ∀ (Λ : LV D) (y : Dat Z FP), Λ ∈ Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') (Formalism.L2.SG.Pf.Cnt.MMof D G.fl G') → Λ ∈ globSet G G' y → (stabY F F' y).Finite :=
   GlobalTheory.T.finite_rationalStabiliser_gluedLattice_localData
 
 /- English proof (translation)
-Rewrite using `[finrank_Vp]`. Establish `h1` using `D.R.r_eq`. Establish `h2 : 2 * D.R.rS + 2 = D.R.m`. Establish `hm2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_Vp' (D : D7) (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
   rw [finrank_Vp]
@@ -131,17 +131,15 @@ theorem rank_Vp' (D : D7) (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) =
   omega
 
 /- English proof (translation)
-Introduce `D Z FP u u' F G F' G' P d0 _ hB _ p`. Establish `aux : ∀ g ∈ (FP p).UW0, ∀ d d' : LocNG.Datum (FP p), LocNG.Datum.Moves g d d' → (locSet G G' p d).Nonempty → (locSet G G' p d).encard = (locSet G G' p d').encard`. Introduce `g hg d d' hmv ⟨Λ, hΛ⟩`. Take `⟨n, hn, hf, -⟩` from `hΛ.1.2.2.1`. Take `⟨n', hn', hf', -⟩` from `hΛ.1.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key` using `(GlobalTheory.T.unitaryComplement_moves_hermitianTerms (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (rank_Vp' D p) (hB.2.1 p) _ _ ⟨n, hn, hf⟩ ⟨n', hn', hf'⟩ g hg d d' hmv).2`. Establish `hset : locSet G G' p d' = LocNG.img g '' locSet G G' p d` using `key.symm`. Rewrite using `[hset]`. Use `(Set.InjOn.encard_image fun x _ y _ hxy => ?_).symm` and prove the remaining obligations. Conclude with `Submodule.map_injective_of_injective (f := (g : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p).restrictScalars (Z.M p).L.O) g.injective hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `back : ∀ g ∈ (FP p).UW0, ∀ d d' : LocNG.Datum (FP p), LocNG.Datum.Moves g d d' → LocNG.Datum.Moves g⁻¹ d' d`. Introduce `g hg d d' hmv`. Establish `hU` using `GlobalTheory.InnerDatumAct.inU_of_mem hg`. Establish `hUi` using `GlobalTheory.InnerDatumAct.inU_of_mem ((FP p).UW0.inv_mem hg)`. Establish `h1` using `GlobalTheory.InnerDatumAct.moves_act hUi d'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.InnerDatumAct.moves_comp hU hmv h1`. Rewrite `h2` using `[inv_mul_cancel]`. Establish `h3` using `GlobalTheory.InnerDatumAct.moves_unique (GlobalTheory.InnerDatumAct.inU_of_mem ((FP p).UW0.one_mem)) (GlobalTheory.InnerDatumAct.moves_one d) h2`. Rewrite using `[h3]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `d d' ⟨g, hg, hmv⟩`. Distinguish the cases in `hne : (locSet G G' p d).Nonempty`. Rewrite using `[aux g hg d d' hmv hne]`. Distinguish the cases in `hne' : (locSet G G' p d').Nonempty`. Rewrite using `[aux g⁻¹ ((FP p).UW0.inv_mem hg) d' d (back g hg d d' hmv) hne']`.
-
-Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne, Set.not_nonempty_iff_eq_empty.1 hne']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSet_encard_rel : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F G : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' G' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (P : Finset (PlF D)) (d0 : Dat Z FP), 4 * D.R.rS + 7 ≤ D.R.k → BaseOK (Tu D u) (Tu D u') F F' P d0 → StdOff Z P F G F' G' → ∀ (p : PlF D) (d d' : LocNG.Datum (FP p)), LocNG.Datum.Rel d d' → ((locSet G G' p d).encard : ℝ≥0∞) = ((locSet G G' p d').encard : ℝ≥0∞) := by
   intro D Z FP u u' F G F' G' P d0 _ hB _ p
@@ -177,7 +175,7 @@ theorem locSet_encard_rel : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, Loc
   rw [Set.not_nonempty_iff_eq_empty.1 hne, Set.not_nonempty_iff_eq_empty.1 hne']
 
 /- English proof (translation)
-Rewrite using `[MulAction.stabilizer_smul_eq_stabilizer_map_conj, Subgroup.coe_map]`. Conclude with `(MulAut.conj g).injective.injOn.encard_image`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem encard_stab_smul {Γ α : Type} [Group Γ] [MulAction Γ α] (g : Γ) (a : α) :
     ((MulAction.stabilizer Γ (g • a) : Set Γ).encard) = ((MulAction.stabilizer Γ a : Set Γ).encard) := by
@@ -189,75 +187,67 @@ end GlobalTheory.GlueCount
 namespace GlobalTheory.GlueCount
 
 /- English proof (translation)
-Introduce `D Z FP u u' F G F' G' P d0 hk hB hS hTP R V hV hM s hs`. Use `set Γ := Formalism.L2.SG.Pf.Cnt.isomFix (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') with hΓ`. Establish `hH0 : ∀ g : GV D, g ∈ H0 F F' ↔ g ∈ Γ` using `mem_isometriesFixingBothFrames_iff_unitriangular D F G F' G' hS.1 hS.2.1`. Use `letI actL : MulAction Γ (LV D) := { smul := fun g Λ => Formalism.HermitianLatticesTheory.gmap g.1 Λ one_smul := fun Λ => by show Λ.map (((1 : GV D) : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E)) = Λ`. Conclude with `Submodule.map_id Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `mul_smul := fun a b Λ => by show Λ.map (((a.1 * b.1 : GV D) : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E)) = (Λ.map (((b.1 : GV D) : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E))).map (((a.1 : GV D) : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalar …`. Rewrite using `[← Submodule.map_comp]`. Use `rfl }`. Establish `hsmulL : ∀ (g : Γ) (Λ : LV D), g • Λ = Formalism.HermitianLatticesTheory.gmap g.1 Λ` using `fun _ _ => rfl`. Use `set GS := Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') (Formalism.L2.SG.Pf.Cnt.MMof D G.fl G') with hGS`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstab : ∀ (g : Γ) (Λ : LV D), Λ ∈ GS → g • Λ ∈ GS` using `fun g Λ hΛ => glue_stable D _ _ g.1 g.2 Λ hΛ`. Use `letI actS : MulAction Γ {Λ : LV D // Λ ∈ GS} := { smul := fun g x => ⟨g • x.1, hstab g x.1 x.2⟩ one_smul := fun x => Subtype.ext (one_smul Γ x.1) mul_smul := fun a b x => Subtype.ext (mul_smul a b x.1) }`. Establish `hsmulS : ∀ (g : Γ) (x : {Λ : LV D // Λ ∈ GS}), (g • x).1 = Formalism.HermitianLatticesTheory.gmap g.1 x.1` using `fun _ _ => rfl`. Establish `hext : ∀ (g : Γ) (p : PlF D), ∃ g', GlobalTheory.Unfold.Ext p g.1 g' ∧ GlobalTheory.InnerDatumAct.InU (FP p) g' ∧ ∀ g'', GlobalTheory.Unfold.Ext p g.1 g'' → g'' = g'` using `fun g p => loc_ext D Z FP u u' F F' hB.1 g.1 ((hH0 g.1).2 g.2) p`. Set `ex : (g : Γ) → (p : PlF D) → (Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p)` to `fun g p => (hext g p).choose`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hexE : ∀ g p, GlobalTheory.Unfold.Ext p g.1 (ex g p)` using `fun g p => (hext g p).choose_spec.1`. Establish `hexU : ∀ g p, GlobalTheory.InnerDatumAct.InU (FP p) (ex g p)` using `fun g p => (hext g p).choose_spec.2.1`. Establish `hexu : ∀ g p g'', GlobalTheory.Unfold.Ext p g.1 g'' → g'' = ex g p` using `fun g p => (hext g p).choose_spec.2.2`. Set `sm : Γ → Dat Z FP → Dat Z FP` to `fun g y p => GlobalTheory.InnerDatumAct.act (hexU g p) (y p)`. Establish `keyY : ∀ (g : Γ) (y y' : Dat Z FP), RMoves g.1 y y' ↔ sm g y = y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `g y y'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `p`. Take `⟨g', hE, hMv⟩` from `h p`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Equip the data with the indicated structure.
 
-Rewrite `hMv` using `[hexu g p g' hE]`. Conclude with `GlobalTheory.InnerDatumAct.moves_unique (hexU g p) (GlobalTheory.InnerDatumAct.moves_act _ _) hMv`. Introduce and unpack `rfl p`. Conclude with `⟨_, hexE g p, GlobalTheory.InnerDatumAct.moves_act _ _⟩`. Use `letI actY : MulAction Γ (Dat Z FP) := { smul := sm one_smul := fun y => (keyY 1 y y).1 (fun p => ⟨1, fun x => rfl, GlobalTheory.InnerDatumAct.moves_one _⟩) mul_smul := fun a b y => (keyY (a * b) y (sm a (sm b y))).1 (fun p => ⟨ex a p * ex b p, fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[LinearEquiv.mul_apply, hexE b p x, hexE a p]`. Use the proof step `rfl,`. Use the proof step `GlobalTheory.InnerDatumAct.moves_comp (hexU b p) (GlobalTheory.InnerDatumAct.moves_act _ _) (GlobalTheory.InnerDatumAct.moves_act _ _)⟩) }`. Establish `hRM : ∀ (g : Γ) (y : Dat Z FP), RMoves g.1 y (sm g y)` using `fun g y => (keyY g y _).2 rfl`. Establish `hGR : ∀ y y' : Dat Z FP, GRel F F' y y' ↔ ∃ g : Γ, sm g y = y'`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `y y'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, hr⟩`. Conclude with `⟨⟨h, (hH0 h).1 hh⟩, (keyY _ _ _).1 hr⟩`. Introduce and unpack `⟨g, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨g.1, (hH0 _).2 g.2, hRM g y⟩`. Establish `hstabY : ∀ y : Dat Z FP, stabY F F' y = Subtype.val '' (MulAction.stabilizer Γ y : Set Γ)`. Introduce `y`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hh, hr⟩`. Conclude with `⟨⟨h, (hH0 h).1 hh⟩, (keyY _ _ _).1 hr, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨(hH0 _).2 g.2, (keyY g y y).2 hg⟩`. Establish `hstabYe : ∀ y : Dat Z FP, (stabY F F' y).encard = (MulAction.stabilizer Γ y : Set Γ).encard`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[hstabY]`. Conclude with `Subtype.val_injective.injOn.encard_image`. Establish `hGD` using `fun Λ => GlobalTheory.T.mem_gluedLattices_iff_existsUnique_localDatum D Z FP u u' F G F' G' P d0 hk hB hS Λ`. Set `π : {Λ : LV D // Λ ∈ GS} → Dat Z FP` to `fun x => ((hGD x.1).1.1 x.2).choose`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hπ : ∀ x : {Λ : LV D // Λ ∈ GS}, x.1 ∈ globSet G G' (π x)` using `fun x => ((hGD x.1).1.1 x.2).choose_spec`. Establish `hπu : ∀ (x : {Λ : LV D // Λ ∈ GS}) (y : Dat Z FP), x.1 ∈ globSet G G' y → π x = y` using `fun x y hy => (hGD x.1).2.1 _ _ (hπ x) hy`. Establish `hπeq : ∀ (g : Γ) (x : {Λ : LV D // Λ ∈ GS}), π (g • x) = sm g (π x)`. Introduce `g x`. Apply `hπu` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hGD x.1).2.2.2 (π x) (sm g (π x)) g.1 ((hH0 _).2 g.2) (hRM g _)).1 (hπ x)`. Establish `hfin : ∀ y : Dat Z FP, (∃ x, π x = y) → Finite (MulAction.stabilizer Γ y)`. Introduce and unpack `y ⟨x, rfl⟩`. Establish `h1` using `stab_finite D Z FP u u' F G F' G' P d0 hk hB hS hTP x.1 (π x) x.2 (hπ x)`. Rewrite `h1` using `[hstabY]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(h1.of_finite_image Subtype.val_injective.injOn).to_subtype`. Establish `horbit` using `GlobalTheory.T.tsum_inv_card_stabilizer_eq_tsum_mul_card_fiber π hπeq hfin`. Set `ι : s → {Λ : LV D // Λ ∈ GS}` to `fun a => ⟨a.1, hs.1 a.1 a.2⟩`. Establish `hcover : ∀ x : {Λ : LV D // Λ ∈ GS}, True → ∃ (a : s) (g : Γ), g • ι a = x`. Introduce `x _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Take `⟨Λ₁, ⟨hΛ₁, g, hg, he⟩, -⟩` from `hs.2.1 x.1 x.2`. Conclude with `⟨⟨Λ₁, hΛ₁⟩, ⟨g, hg⟩, Subtype.ext he⟩`. Establish `hinj : ∀ a b : s, (∃ g : Γ, g • ι a = ι b) → a = b`. Introduce and unpack `a b ⟨g, hg⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `(hs.2.1 b.1 (hs.1 b.1 b.2)).unique ⟨a.2, g.1, g.2, congrArg Subtype.val hg⟩ ⟨b.2, 1, Γ.one_mem, one_smul Γ b.1⟩`. Establish `htr` using `(GlobalTheory.tsum_transversal_eq_tsum_orbitQuotient ι (fun _ => True) (fun _ _ _ => trivial) (fun _ => trivial) hcover hinj).2 (fun x => ((MulAction.stabilizer Γ x : Set Γ).encard : ℝ≥0∞)⁻¹) (fun g x _ => by rw [encard_stab_smul])`. Simplify using `only [if_true] at htr`. Establish `hfixS : ∀ x : {Λ : LV D // Λ ∈ GS}, Formalism.L2.SG.Pf.Cnt.stabFix (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') x.1 = Subtype.val '' (MulAction.stabilizer Γ x : Set Γ)`. Introduce `x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, he⟩`. Conclude with `⟨⟨g, hg⟩, Subtype.ext he, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨g.2, congrArg Subtype.val (MulAction.mem_stabilizer_iff.1 hg)⟩`. Establish `hLHS : ENNReal.ofReal (glueSum G G' s) = ∑' a : s, ((MulAction.stabilizer Γ (ι a) : Set Γ).encard : ℝ≥0∞)⁻¹`. Unfold `glueSum`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity)]`. Rewrite using `[← Finset.tsum_subtype s]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `hfin'` using `hs.2.2 a.1 a.2`. Establish `he : (Formalism.L2.SG.Pf.Cnt.stabFix (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') a.1).encard = (MulAction.stabilizer Γ (ι a) : Set Γ).encard`. Rewrite using `[hfixS (ι a)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Subtype.val_injective.injOn.encard_image`. Rewrite using `[← he, Nat.card_coe_set_eq, ← hfin'.cast_ncard_eq]`. Establish `hpos : 0 < (Formalism.L2.SG.Pf.Cnt.stabFix (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') a.1).ncard` using `(Set.ncard_pos hfin').2 ⟨1, Γ.one_mem, one_smul Γ a.1⟩`. Rewrite using `[ENNReal.ofReal_inv_of_pos (by exact_mod_cast hpos), ENNReal.ofReal_natCast]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Set `g0 : Dat Z FP → ℝ≥0∞` to `fun y => ((MulAction.stabilizer Γ y : Set Γ).encard : ℝ≥0∞)⁻¹ * ((π ⁻¹' {y}).encard : ℝ≥0∞)`. Establish `hfib : ∀ y : Dat Z FP, (π ⁻¹' {y}).encard = (globSet G G' y).encard`. Introduce `y`. Establish `: Subtype.val '' (π ⁻¹' {y}) = globSet G G' y`. Use extensionality with `Λ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hx' : π x = y` using `hx`. Conclude with `hx' ▸ hπ x`. Introduce `hΛ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hΛG : Λ ∈ GS` using `(hGD Λ).1.2 ⟨y, hΛ⟩`. Conclude with `⟨⟨Λ, hΛG⟩, hπu ⟨Λ, hΛG⟩ y hΛ, rfl⟩`. Rewrite using `[← this]`. Conclude with `(Subtype.val_injective.injOn.encard_image).symm`. Set `φ : ∀ p, LocNG.Datum (FP p) → ℝ≥0∞` to `fun p d => ((locSet G G' p d).encard : ℝ≥0∞)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpt : ∀ y : Dat Z FP, (if (∀ p, p ∉ P → LocNG.Datum.Rel (d0 p) (y p)) ∧ {p | y p ≠ d0 p}.Finite then (((stabY F F' y).encard : ℝ≥0∞))⁻¹ * ∏ p ∈ P, φ p (y p) else 0) = g0 y`. Introduce `y`. Distinguish the cases in `hc : (∀ p, p ∉ P → LocNG.Datum.Rel (d0 p) (y p)) ∧ {p | y p ≠ d0 p}.Finite`. Rewrite using `[if_pos hc, hstabYe] show _ = _ * _`. Rewrite using `[hfib, GlobalTheory.T.globalLattices_count_eq_prod_localCounts_badPlaces D Z FP u u' F G F' G' P d0 hk hB hS y hc.1 hc.2]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg hc]`. Establish `hemp : π ⁻¹' {y} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Introduce `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc ((hGD x.1).2.2.1 y (hx ▸ hπ x))`. Use `show 0 = _ * _`. Rewrite using `[hemp, Set.encard_empty, ENat.toENNReal_zero, mul_zero]`. Establish `hcls : ∀ (g : Γ) (y : Dat Z FP), g0 (sm g y) = g0 y`. Introduce `g y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : (MulAction.stabilizer Γ (sm g y) : Set Γ).encard = (MulAction.stabilizer Γ y : Set Γ).encard` using `@encard_stab_smul Γ (Dat Z FP) _ actY g y`. Establish `h2 : π ⁻¹' {sm g y} = (fun x => g • x) '' (π ⁻¹' {y})`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `hx`. Use `⟨g⁻¹ • x, ?_, smul_inv_smul g x⟩` and prove the remaining obligations. Rewrite using `[hπeq, hx]`. Conclude with `@inv_smul_smul Γ (Dat Z FP) _ actY g y`. Introduce and unpack `⟨x', hx', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hπeq, hx']`. Use `show _ * _ = _ * _`. Rewrite using `[h1, h2, (MulAction.injective g).injOn.encard_image]`. Establish `hrel : ∀ a b : Dat Z FP, GRel (Z` using `Z) (FP := FP) F F' a b ↔ (@MulAction.orbitRel Γ (Dat Z FP) _ actY) b a := by`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[hGR, @MulAction.orbitRel_apply Γ (Dat Z FP) _ actY]`. Both sides reduce to the same expression. Establish `hφrel : ∀ p d d', LocNG.Datum.Rel d d' → φ p d = φ p d'` using `fun p d d' h => locSet_encard_rel D Z FP u u' F G F' G' P d0 hk hB hS p d d' h`. Establish `hφzero : ∀ p d, (¬ ∃ τ, LocNG.IsTermOver (FP p) d τ) → φ p d = 0`. Introduce `p d hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hemp : locSet G G' p d = ∅`. Use extensionality with `Λ`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hΛ`. Conclude with `hd ⟨_, hΛ.1⟩`.
-
-Use `show ((locSet G G' p d).encard : ℝ≥0∞) = 0`. Rewrite using `[hemp, Set.encard_empty, ENat.toENNReal_zero]`. Establish `hreg` using `GlobalTheory.T.tsum_rationalClasses_eq_prod_localSums D Z FP u u' F F' P d0 R V hV hB hM φ hφrel hφzero`. Set `e : Quot (GRel (Z` to `Z) (FP := FP) F F') ≃ @MulAction.orbitRel.Quotient Γ (Dat Z FP) _ actY := Quot.congr (Equiv.refl _) (fun a b => (hrel a b).trans ⟨fun h => (@MulAction.orbitRel Γ (Dat Z FP) _ actY).symm' h, fun h => (@MulAction.orbitRel Γ (Dat Z FP) _ actY).symm' h⟩)`. Establish `hq : ∑' o : Quot (GRel (Z` using `Z) (FP := FP) F F'), g0 o.out = ∑' o : @MulAction.orbitRel.Quotient Γ (Dat Z FP) _ actY, g0 o.out := by`.
-
-Rewrite using `[← e.tsum_eq]`. Use `congr 1`. Use function extensionality and compare the values at `o`. Establish `he : e o = Quotient.mk (@MulAction.orbitRel Γ (Dat Z FP) _ actY) o.out` using `by conv_lhs => rw [← Quot.out_eq o]`. Both sides reduce to the same expression.
-
-Establish `h2 : (@MulAction.orbitRel Γ (Dat Z FP) _ actY) (e o).out o.out`. Rewrite using `[he]`. Conclude with `Quotient.mk_out (s := @MulAction.orbitRel Γ (Dat Z FP) _ actY) o.out`. Rewrite `h2` using `[@MulAction.orbitRel_apply Γ (Dat Z FP) _ actY]`. Take `⟨g, hg⟩` from `h2`.
-
-Establish `hg' : sm g o.out = (e o).out` using `hg`. Rewrite using `[← hg', hcls]`. Use `hLHS.trans (htr.trans (horbit.trans ?_))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem glue_count : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F G : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' G' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (P : Finset (PlF D)) (d0 : Dat Z FP), 4 * D.R.rS + 7 ≤ D.R.k → BaseOK (Tu D u) (Tu D u') F F' P d0 → StdOff Z P F G F' G' → TotPos (Gval F F') → ∀ (R : ∀ p, LocNG.Reps (FP p)) (V : ℝ), 0 ≤ V → MassLaw F F' P d0 V → ∀ s : Finset (LV D), Glue G G' s → ENNReal.ofReal (glueSum G G' s) = ENNReal.ofReal V * ∏ p ∈ P, locSum G G' p (R p) (d0 p) := by
   intro D Z FP u u' F G F' G' P d0 hk hB hS hTP R V hV hM s hs

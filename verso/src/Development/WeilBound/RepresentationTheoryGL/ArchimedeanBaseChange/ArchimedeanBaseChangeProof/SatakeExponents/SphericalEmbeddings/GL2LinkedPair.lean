@@ -37,7 +37,7 @@ theorem constInd_apply (P : Subgroup (GL (Fin n) k)) (σ : Representation ℂ P 
     (constInd P σ χ hχ w0 hw).1.1 x = (detChar (Fin n) χ x : ℂ) • w0 := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show (detChar (Fin n) χ (x * g) : ℂ) • w0 = (detChar (Fin n) χ g : ℂ) • ((detChar (Fin n) χ x : ℂ) • w0)`. Rewrite using `[map_mul, Units.val_mul, smul_smul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smInd_constInd (P : Subgroup (GL (Fin n) k)) (σ : Representation ℂ P W) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ)
     (w0 : W) (hw : ∀ p : P, σ p w0 = (detChar (Fin n) χ (p : GL (Fin n) k) : ℂ) • w0) (g : GL (Fin n) k) :
@@ -59,7 +59,7 @@ abbrev sB (χs : Fin 2 → kˣ →* ℂˣ) : Representation ℂ (parab k (points
     (deltaHalf k (fun _ : Fin 2 => Unit))).comp (leviProj k (points (Fin 2)))
 
 /- English proof (translation)
-Rewrite using `[det_parab k (points (Fin 2)) p, Fin.prod_univ_two]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_dg (p : parab k (points (Fin 2))) :
     Matrix.GeneralLinearGroup.det (p : GL (Fin 2) k) = dg p 0 * dg p 1 := by
@@ -67,14 +67,14 @@ theorem det_dg (p : parab k (points (Fin 2))) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[detChar_apply, det_dg, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem detChar_two (χ : kˣ →* ℂˣ) (p : parab k (points (Fin 2))) :
     detChar (Fin 2) χ (p : GL (Fin 2) k) = χ (dg p 0) * χ (dg p 1) := by
   rw [detChar_apply, det_dg, map_mul]
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, modExp_fin _ (fun _ => by simp), modExp_fin _ (fun _ => by simp)]`. Apply the tactic sequence `congr 2 <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem deltaHalf_two (p : parab k (points (Fin 2))) :
     deltaHalf k (fun _ : Fin 2 => Unit) (leviProj k (points (Fin 2)) p) =
@@ -83,7 +83,7 @@ theorem deltaHalf_two (p : parab k (points (Fin 2))) :
   congr 2 <;> norm_num
 
 /- English proof (translation)
-Use `show ((deltaHalf k (fun _ : Fin 2 => Unit) (leviProj k (points (Fin 2)) p) : ℂˣ) : ℂ) • ofChar (torusChar χs) (dg p) z = _`. Rewrite using `[deltaHalf_two, ofChar_apply, torusChar_apply, Fin.prod_univ_two, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sB_two (χs : Fin 2 → kˣ →* ℂˣ) (p : parab k (points (Fin 2))) (z : ℂ) :
     sB χs p z = ((absPow k (1 / 2) (dg p 0) * absPow k (-1 / 2) (dg p 1) * χs 0 (dg p 0) * χs 1 (dg p 1) : ℂˣ) : ℂ) * z := by
@@ -100,7 +100,7 @@ section Linked
 variable (k)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun a => (continuous_glDet (R := k) (n := Unit)).comp (continuous_apply a)`.
+A detailed English derivation is pending.
 -/
 theorem cont_leviTorus_symm (m : ℕ) :
     Continuous ((leviTorus k (Fin m)).symm.toMonoidHom : Levi k (fun _ : Fin m => Unit) →* (Fin m → kˣ)) :=
@@ -109,15 +109,15 @@ theorem cont_leviTorus_symm (m : ℕ) :
 variable {k}
 
 /- English proof (translation)
-Introduce `v hv hlv`. Establish `hc` using `GlobalTheory.LocGL.isCompl_fixed_twKer (π := iP (k := k) α) (isSmooth_parInd _ _) (H := KO k (Fin m)) GlobalTheory.SplitFlip.isCompact_KO`. Establish `htw : ∀ x ∈ twKer (iP (k` using `k) α) (KO k (Fin m)) 1, l x = 0 := by`. Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => l x = 0) ?_ (map_zero l) (fun a b _ _ ha hb => by rw [map_add, ha, hb, add_zero]) (fun c a _ ha => by rw [map_smul, ha, smul_zero]) hx` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g, w, rfl⟩`. Use `show l ((iP (k := k) α) (g : GL (Fin m) k) w - ((1 : KO k (Fin m) →* ℂˣ) g : ℂ) • w) = 0`. Rewrite using `[map_sub, map_smul, hK g g.2 w]`. Simplify using the standard rewrite rules. Take `⟨w, hw, hlw⟩ : ∃ w ∈ fixed (iP (k` from `k) α) (KO k (Fin m)), l w ≠ 0 := by`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hl` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hc.sup_eq_top ▸ Submodule.mem_top (x := x))`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_add, h a ha, htw b hb, add_zero]`. Both sides reduce to the same expression. Establish `hw0 : w ≠ 0` using `fun h => hlw (by rw [h, map_zero])`. Establish `e` using `PositivityTheory.Rg.BcB.N3.GL2Intertwining.kline α hv hw`. Establish `e2` using `congrArg l e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[map_smul, map_smul, hlv, smul_zero, smul_eq_mul]`. Establish `hv1 : v.1.1 1 = 0` using `(mul_eq_zero.1 e2.symm).resolve_right hlw`. Rewrite `e` using `[hv1, zero_smul]`. Conclude with `(smul_eq_zero.1 e).resolve_left (PositivityTheory.Rg.BcB.N3.GL2Intertwining.one_ne_zero_of_fixed α hw hw0)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kinj_of_form {m : ℕ} (α : Fin m → ℂˣ)
     (l : IndSp (points (Fin m)) ((ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin m)).symm.toMonoidHom)
@@ -155,15 +155,15 @@ end Linked
 section LinkedMain
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [MonoidHom.mul_apply, isUnram_unrChar k b x hx, isUnram_absPow k _ x hx, one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unram_chi (b : ℂˣ) : IsUnram (unrChar k b * absPow k (1 / 2)) := fun x hx => by
   rw [MonoidHom.mul_apply, isUnram_unrChar k b x hx, isUnram_absPow k _ x hx, one_mul]
 
 /- English proof (translation)
-Rewrite using `[hL, MonoidHom.mul_apply, Units.val_mul]`. Establish `e : (absPow k 1 t : ℂ) = (absPow k (1 / 2) t : ℂ) * (absPow k (1 / 2) t : ℂ)`. Rewrite using `[← Units.val_mul, ← MonoidHom.mul_apply, ← absPow_add]`. Evaluate the numerical expressions. Establish `e2 : (absPow k (-1 / 2) t : ℂ) * (absPow k (1 / 2) t : ℂ) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← MonoidHom.mul_apply, ← absPow_add]`. Evaluate the numerical expressions. Rewrite using `[e]`. Take the linear combination `-((unrChar k b t : ℂ) * (absPow k (1 / 2) t : ℂ)) * e2`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem key_law (a b : ℂˣ) (hL : unrChar k a = unrChar k b * absPow k 1) (t : kˣ) :
     (unrChar k b t : ℂ) * (absPow k (1 / 2) t : ℂ) = (absPow k (-1 / 2) t : ℂ) * (unrChar k a t : ℂ) := by
@@ -177,41 +177,39 @@ theorem key_law (a b : ℂˣ) (hL : unrChar k a = unrChar k b * absPow k 1) (t :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `set χ : kˣ →* ℂˣ := unrChar k b * absPow k (1 / 2) with hχdef`. Establish `hχ : IsSmoothChar χ` using `isSmoothChar_of_isUnram (unram_chi b)`. Establish `hχi : IsSmoothChar χ⁻¹` using `isSmoothChar_of_isUnram fun x hx => by`. Rewrite using `[MonoidHom.inv_apply, unram_chi b x hx, inv_one]`. Establish `hw : ∀ p : parab k (points (Fin 2)), sB (fun i => unrChar k (![b, a] i)) p 1 = (detChar (Fin 2) χ (p : GL (Fin 2) k) : ℂ) • (1 : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Rewrite using `[sB_two, detChar_two, smul_eq_mul, mul_one, mul_one]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, hχdef, MonoidHom.mul_apply, Units.val_mul]`. Use `key_law a b hL (dg p 1)` as an intermediate fact. Take the linear combination `-((absPow k (1 / 2) (dg p 0) : ℂ) * (unrChar k b (dg p 0) : ℂ)) * this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Set `g : IndSp (points (Fin 2)) ((ofChar (torusChar fun i => unrChar k (![b, a] i))).comp (leviTorus k (Fin 2)).symm.toMonoidHom)` to `constInd (parab k (points (Fin 2))) (sB fun i => unrChar k (![b, a] i)) χ hχ 1 hw`. Establish `hg : ∀ h : GL (Fin 2) k, iP (k` using `k) ![b, a] h g = (detChar (Fin 2) χ h : ℂ) • g := smInd_constInd _ _ χ hχ 1 hw`. Establish `hg0 : g ≠ 0` using `fun h0 => by`. Use `congrArg (fun f : IndSp _ _ => f.1.1 1) h0` as an intermediate fact. Simplify using `[g, constInd_apply] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `ρ : Representation ℂ (Levi k fun _ : Fin 2 => Unit) ℂ` to `(ofChar (torusChar fun i => unrChar k (![a, b] i))).comp (leviTorus k (Fin 2)).symm.toMonoidHom`. Establish `hts : IsSmoothChar (torusChar fun i => unrChar k (![a, b] i))` using `GlobalTheory.TorusEigenform.isSmoothChar_torusChar fun i => isSmoothChar_of_isUnram (isUnram_unrChar k _)`. Establish `hρ : IsSmooth ρ` using `isSmooth_comp ((isSmooth_ofChar_iff _).2 hts) _ (cont_leviTorus_symm k 2)`. Establish `hρ1 : ∀ m z, ρ m z = ((torusChar fun i => unrChar k (![a, b] i)) ((leviTorus k (Fin 2)).symm m) : ℂ) * z` using `fun m z => ofChar_apply _ _ _`. Establish `hℓ : (LinearMap.id : Module.Dual ℂ ℂ) ∈ smoothPart ρ.dual`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hρ 1).mem_nhds (by simp)) fun m hm => ?_)` and prove the remaining obligations. Establish `hm' : ρ m 1 = 1` using `hm`. Rewrite `hm'` using `[hρ1, mul_one]`. Use `show ρ.dual m LinearMap.id = LinearMap.id`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Representation.dual_apply, Module.Dual.transpose_apply, LinearMap.id_comp, hρ1]`. Simplify using `only [map_inv, Units.val_inv_eq_inv_val, hm', inv_one, one_mul]`. Both sides reduce to the same expression. Set `ℓ0 : smoothPart ρ.dual` to `⟨LinearMap.id, hℓ⟩`. Set `σ' : Representation ℂ (parab k (points (Fin 2))) (smoothPart ρ.dual)` to `(twist (contra ρ) (deltaHalf k (fun _ : Fin 2 => Unit))).comp (leviProj k (points (Fin 2)))`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw' : ∀ p : parab k (points (Fin 2)), σ' p ℓ0 = (detChar (Fin 2) χ⁻¹ (p : GL (Fin 2) k) : ℂ) • ℓ0`. Introduce `p`. Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Use `show ((deltaHalf k (fun _ : Fin 2 => Unit) (leviProj k (points (Fin 2)) p) : ℂˣ) : ℂ) • (contra ρ (leviProj k (points (Fin 2)) p) ℓ0 : Module.Dual ℂ ℂ) z = (detChar (Fin 2) χ⁻¹ (p : GL (Fin 2) k) : ℂ) * z`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[contra_apply, hρ1]`. Simplify using `only [ℓ0, LinearMap.id_apply, smul_eq_mul, deltaHalf_two, detChar_two, map_inv, torusChar_apply, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, MonoidHom.inv_apply, hχdef, MonoidHom.mul_apply, Units.val_mul, Units.val_inv_eq_inv_val]`. Establish `key` using `key_law a b hL (dg p 0)`. Establish `e2 : (absPow k (-1 / 2) (dg p 1) : ℂ) * (absPow k (1 / 2) (dg p 1) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← MonoidHom.mul_apply, ← absPow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Use `push_cast`. Establish `e0 : (absPow k (-1 / 2) (dg p 0) : ℂ) * (absPow k (1 / 2) (dg p 0) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← MonoidHom.mul_apply, ← absPow_add]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : (-(1 / 2) : ℂ) = -1 / 2` using `by ring`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hneg]`. Take the linear combination `((absPow k (1 / 2) (dg p 0) : ℂ) ^ 2 * (unrChar k b (dg p 0) : ℂ) * z) * e2 + ((absPow k (1 / 2) (dg p 0) : ℂ) * z) * key + ((unrChar k a (dg p 0) : ℂ) * z) * e0`. Set `g' : IndSp (points (Fin 2)) (contra ρ)` to `constInd (parab k (points (Fin 2))) σ' χ⁻¹ hχi ℓ0 hw'`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hg' : ∀ h : GL (Fin 2) k, parInd (points (Fin 2)) (contra ρ) h g' = (detChar (Fin 2) χ⁻¹ h : ℂ) • g'` using `smInd_constInd _ _ χ⁻¹ hχi ℓ0 hw'`. Take `⟨Ψ⟩` from `InductionContragredient.nonempty_equiv (GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).2.2.2 (points (Fin 2)) hρ`. Set `l : IndSp (points (Fin 2)) ρ →ₗ[ℂ] ℂ` to `((Ψ g' : smoothPart (parInd (points (Fin 2)) ρ).dual) : Module.Dual ℂ _)`. Establish `hl : ∀ (h : GL (Fin 2) k) f, l (parInd (points (Fin 2)) ρ h f) = (detChar (Fin 2) χ h : ℂ) * l f`. Introduce `h f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `Representation.IntertwiningMap.isIntertwining _ _ Ψ.toIntertwiningMap h⁻¹ g'`. Establish `e3` using `congrArg (fun L : smoothPart (parInd (points (Fin 2)) ρ).dual => (L : Module.Dual ℂ _) f) e1`. Simplify using `only [contra_apply, inv_inv] at e3`. Establish `e4 : l (parInd (points (Fin 2)) ρ h f) = ((Ψ.toLinearEquiv (parInd (points (Fin 2)) (contra ρ) h⁻¹ g') : smoothPart _) : Module.Dual ℂ _) f` using `e3.symm`. Rewrite using `[e4, hg', LinearEquiv.map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show (detChar (Fin 2) χ⁻¹ h⁻¹ : ℂ) * l f = _`. Rewrite using `[detChar_apply, detChar_apply, MonoidHom.inv_apply]`. Simplify using `only [map_inv, Units.val_inv_eq_inv_val, inv_inv]`. Establish `hl0 : l ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `: Ψ g' = 0` using `Subtype.ext h0`. Establish `h1 : g' = 0`. Establish `h3 : Ψ.toLinearEquiv g' = 0` using `this`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `congrArg (fun f : IndSp (points (Fin 2)) (contra ρ) => ((f.1.1 1 : smoothPart ρ.dual) : Module.Dual ℂ ℂ) 1) h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[g', constInd_apply, ℓ0] at h2`. Establish `hK : ∀ kk ∈ KO k (Fin 2), ∀ f, l (iP (k` using `k) ![a, b] kk f) = l f := by`. Introduce `kk hkk f`. Use `hl kk f` as an intermediate fact. Establish `hdet : detChar (Fin 2) χ kk = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[detChar_apply]`. Conclude with `unram_chi b _ (GlobalTheory.InertSupp.Unram.valuation_det_KO hkk)`. Rewrite `this` using `[hdet, Units.val_one, one_mul]`. Conclude with `this`. Set `T0 : IndSp (points (Fin 2)) ρ →ₗ[ℂ] IndSp (points (Fin 2)) ((ofChar (torusChar fun i => unrChar k (![b, a] i))).comp (leviTorus k (Fin 2)).symm.toMonoidHom)` to `{ toFun := fun f => l f • g map_add' := fun x y => by rw [map_add, add_smul] map_smul' := fun c x => by rw [map_smul, smul_eq_mul, mul_smul, RingHom.id_apply] }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨T0, fun h => ?_⟩, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun f => ?_ show l (iP (k := k) ![a, b] h f) • g = iP (k := k) ![b, a] h (l f • g)` and prove the remaining obligations. Rewrite using `[map_smul, hg, smul_smul, show l (iP (k := k) ![a, b] h f) = _ from hl h f, mul_comm]`. Introduce `v hv hT`. Establish `hT' : l v • g = 0` using `hT`.
-
-Establish `hlv : l v = 0` using `(smul_eq_zero.1 hT').resolve_right hg0`. Conclude with `kinj_of_form ![a, b] l hK hl0 v hv hlv`.
+A detailed English derivation is pending.
 -/
 theorem linked (a b : ℂˣ) (hL : unrChar k a = unrChar k b * absPow k 1) :
     ∃ T : (iP (k := k) ![a, b]).IntertwiningMap (iP (k := k) ![b, a]), KInj k T := by

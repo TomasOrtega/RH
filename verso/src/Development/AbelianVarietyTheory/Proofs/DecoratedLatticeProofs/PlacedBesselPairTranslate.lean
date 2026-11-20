@@ -22,15 +22,15 @@ noncomputable section
 namespace GlobalTheory.CentralUnitGen
 
 /- English proof (translation)
-Establish `e2 : Mt' * Mk = (c' • (1 : Matrix (Fin n) (Fin n) R)) * Mt`. Rewrite using `[h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.smul_mul, Matrix.one_mul, smul_smul, h2, Matrix.one_mul]`. Establish `hcI : c ∈ S`. Take `⟨x', hx', ex'⟩` from `((hw 1).2).2 (one_mem _)`. Use `((hw c).1).1 ⟨Matrix.mulVec Mki x', (hki x').1 hx', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.mul_assoc, Matrix.mul_assoc, hkk, Matrix.mul_one, ← Matrix.mulVec_mulVec, ex', one_smul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `hc'I : c' ∈ S`. Take `⟨x, hx, ex⟩` from `((hw 1).1).2 (one_mem _)`. Use `((hw c').2).1 ⟨Matrix.mulVec Mk x, (hk x).1 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, e2, ← Matrix.mulVec_mulVec, ex, one_smul, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `Λ.smul_mem ⟨c, hcI⟩ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Establish `h3` using `Λ.smul_mem ⟨c', hc'I⟩ hy`. Establish `e3 : (c' * c) • y = y`. Use `congrArg (fun A => Matrix.mulVec A y) h2` as an intermediate fact. Simplify `this` using `only [Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e3, mul_smul]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem scalar_keeps {R : Type} [CommRing R] {S : Subring R} {n : ℕ} (Λ : Submodule S (Fin n → R)) (w : Fin n → R)
     (Mt Mt' Mk Mki : Matrix (Fin n) (Fin n) R) (c c' : R)
@@ -68,7 +68,7 @@ end GlobalTheory.CentralUnitGen
 namespace GlobalTheory.CentralUnitGen
 
 /- English proof (translation)
-Use `Subgroup.mem_center_iff.2 fun x => ?_` and prove the remaining obligations. Establish `e` using `congrArg (GlobalTheory.AdelicU.proj σ J v) (Subgroup.mem_center_iff.1 hg (GlobalTheory.AdelicU.emb σ J v x))`. Rewrite `e` using `[map_mul, map_mul, GlobalTheory.AdelicU.proj_emb_self]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem proj_mem_center {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {g : GlobalTheory.AdelicU.GAd σ J}
@@ -85,15 +85,15 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP hr u u' f f' B B' hPl hPl' a₀ a a₀' a' hA hA' z hzf hzc k hk he v hv hTu hTu'`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hfr` using `(GlobalTheory.Fam.sdY_frames W hP 0 hm).2`. Establish `hkS : Formalism.IndefR.Lev.finE (Yc D 0) k ∈ Formalism.L2.DIV.St ((pk W).βY 0)` using `Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hk.2)`. Establish `hkv` using `(GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D (Yc D 0) _ ((pk W).ΛY 0) hfr k).1 hkS v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkv'` using `Subgroup.inv_mem _ hkv`. Take `⟨c, hc⟩` from `GlobalTheory.T.center_localUnitaryGroup_finitePlace_scalar D (D.sp.Y 0) v _ (GlobalTheory.CentralUnitGen.proj_mem_center _ _ v hzc)`. Take `⟨c', hc'⟩` from `GlobalTheory.T.center_localUnitaryGroup_finitePlace_scalar D (D.sp.Y 0) v _ (GlobalTheory.CentralUnitGen.proj_mem_center _ _ v (Subgroup.inv_mem _ hzc))`. Take `⟨w, hw⟩` from `GlobalTheory.T.placed_bessel_pair_lattice W hP hr u u' f f' B B' hPl hPl' a₀ a a₀' a' hA hA' v hv hTu hTu'`. Establish `h2 : (c' * c) • (1 : Matrix (Fin (D.sp.Y 0).rank) (Fin (D.sp.Y 0).rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun g => (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v g)).1) (inv_mul_cancel z)`. Simplify using `only [map_mul, map_one, Units.val_mul, Units.val_one] at h`. Rewrite `h` using `[hc, hc', Matrix.smul_mul, Matrix.one_mul, smul_smul]`. Conclude with `h`. Establish `h1` using `congrArg (fun g => (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v g)).1) he`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, Units.val_mul] at h1`. Rewrite `h1` using `[hc]`. Establish `hkk : (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) D.sp.cm.sig (D.sp.Y 0).gram (GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v k)).1 * (GlobalTheory.AdelicU.matHom (Formalism.MainNotions.GlobalTheoryTheory.GenusMa …`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Use `GlobalTheory.AdelicU.mem_stabLoc.2 ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `GlobalTheory.CentralUnitGen.scalar_keeps _ w _ _ _ _ c c' h1 h2 hkk (GlobalTheory.AdelicU.mem_stabLoc.1 hkv) (GlobalTheory.AdelicU.mem_stabLoc.1 hkv') hw`.
+A detailed English derivation is pending.
 -/
 theorem centralRatio_unit_gen : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → 1 ≤ D.R.rS → ∀ u u' (f : FamCh W u) (f' : FamCh W u') (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (B' : SBes W.S.X W.Q.instEq u' W.Q.Rl.ψ (D.sp.X 0)), GlobalTheory.MiTop.PlacedP f B → GlobalTheory.MiTop.PlacedP f' B' → ∀ a₀ a a₀' a', IsAt f B a₀ a → IsAt f' B' a₀' a' → ∀ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) → ∀ k ∈ rJ W, tOf f B a₀ a = z * tOf f' B' a₀' a' * k → ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F), (∀ PP ∈ (pk W).Pg, PP.under (𝓞 D.host.F) ≠ v) → (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal → (((D.mem u').A.T : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal → GlobalTheory.AdelicU.proj D.sp.cm.sig (D.sp.Y 0).gram v z ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig (D.sp.Y 0).gram ((pk W).ΛY 0) v := by
   intro D L hT Gi Gl Kc Yd cX ex W hP hr u u' f f' B B' hPl hPl' a₀ a a₀' a' hA hA' z hzf hzc k hk he v hv hTu hTu'

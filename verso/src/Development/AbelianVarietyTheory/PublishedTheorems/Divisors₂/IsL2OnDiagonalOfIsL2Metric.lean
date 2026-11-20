@@ -73,7 +73,7 @@ def curveForm (t ρ : ℝ) : Ext (1 + 1) := fun I =>
 def rOne : ℝ := (2 * deriv riemannZeta (-1) + riemannZeta (-1)).re
 
 /- English proof (translation)
-Unfold `gdeg chInt`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_add 1 (-1) (by decide) (fun x hx => (Int.units_eq_one_or x).elim (fun h => absurd h hx.1) (fun h => absurd h hx.2))]`. Simplify using `[Weight.chernInt, Weight.chernPart, integral_const, sub_eq_add_neg]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gdeg_eq (N : HermLB p) : gdeg N 1 = ∑ᶠ σ, ∑ ε : ℤˣ, ((ε : ℤ) : ℝ) *
     (ChartGlue.glueMeas (fun c : AlgChart p σ 1 => c.e)
@@ -85,7 +85,7 @@ theorem gdeg_eq (N : HermLB p) : gdeg N 1 = ∑ᶠ σ, ∑ ε : ℤˣ, ((ε : �
   simp [Weight.chernInt, Weight.chernPart, integral_const, sub_eq_add_neg]
   rfl
 /- English proof (translation)
-Unfold `per`. Use extensionality with `i`. Simplify using `[Matrix.vecMul]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem per_zero_lemma {n : ℕ} (t : Matrix (Fin n) (Fin n) ℂ) : per t (0 : Fl n) = 0 := by
   unfold per
@@ -112,17 +112,15 @@ def IsUnifChart (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ)
     ∀ z w, ex (v, z) = ex (v, w) ↔ ∃ l ∈ stdLat g, z = w + per (τ v) l
 
 /- English proof (translation)
-Take `⟨hP, hH, hv⟩` from `H`. Use `⟨hP, hH, fun v hv' => ?_⟩` and prove the remaining obligations. Take `⟨hproj, hmul, hsurj, hzero, -⟩` from `hv v hv'`. Set `xz : ∀ z, Over.mk (c.e.symm v).1 ⟶ A` to `fun z => Over.homMk (ex (v, z)).1 (hproj z)`. Establish `hm : ∀ z w, xz z * xz w = xz (z + w)` using `fun z w => by ext1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hmul z w _ _ rfl rfl`. Establish `h1 : xz 0 = 1`. Establish `e` using `hm 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `mul_left_cancel (a := xz 0) (by rw [_root_.mul_one]; exact e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : (ex (v, 0)).1 = (c.e.symm v).1 ≫ unitSec A` using `(hzero 0).2 ⟨0, Submodule.zero_mem _, (per_zero_lemma _).symm⟩`. Use `⟨hproj, fun y hy => ?_, fun z w => ⟨fun hzw => ?_, fun ⟨l, hl, hzw⟩ => ?_⟩⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hsurj (Over.homMk y.1 hy)`. Conclude with `⟨z, Subtype.ext hz.symm⟩`. Establish `e1 : xz z = xz w` using `by ext1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val hzw`. Establish `e2 : xz (z + -w) = xz 0` using `by rw [← hm, e1, hm, add_neg_cancel]`. Establish `e3 : (ex (v, z + -w)).1 = (ex (v, 0)).1` using `congrArg (fun f => f.left) e2`. Take `⟨l, hl, hl'⟩` from `(hzero (z + -w)).1 (e3.trans hu)`. Conclude with `⟨l, hl, by rw [← hl']; abel⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : xz (per (τ v) l) = 1`. Rewrite using `[← h1]`. Use `ext1`. Conclude with `((hzero _).2 ⟨l, hl, rfl⟩).trans hu.symm`. Establish `e1 : xz z = xz w` using `by rw [hzw, ← hm, hp, _root_.mul_one]`.
-
-Conclude with `Subtype.ext (congrArg (fun f => f.left) e1)`.
+A detailed English derivation is pending.
 -/
 theorem IsPeriodChart.isUnifChart [GrpObj A] {h : VMetric p (omega A) g} {c : AlgChart p σ D}
     {τ : V D → Matrix (Fin g) (Fin g) ℂ} {ex : Pt (V D) g → CxPts (A.hom ≫ p) σ}
@@ -259,13 +257,13 @@ def BismutKoehlerTorsionWith : Prop :=
       ∀ i l : Fin n, T b {l.castAdd n, i.natAdd n} = -star (T b {i.castAdd n, l.natAdd n})
 
 /- English proof (translation)
-Introduce `E _ _ _ g n B τ M j h hD hA β`. Establish `key : ∀ b T', IsTorsionFormWith τ M j h β b (of fun i l => (0 : E → E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ) b (β i) (β l)) T' ↔ IsTorsionForm τ M j h β b T'`. Introduce `b T'`. Establish `key2 : ∀ F, IsHeatTraceWith τ M j h β b (of fun i l => (0 : E → E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ) b (β i) (β l)) F ↔ IsHeatTrace τ M j h β b F`. Introduce `F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `IsHeatTraceWith IsHeatTrace`. Simplify using `only [Matrix.of_apply, Pi.zero_apply, LinearMap.zero_apply]`. Simplify using `[baseMul]`. Unfold `IsTorsionFormWith IsTorsionForm`. Conclude with `exists_congr fun F => and_congr_left' (key2 F)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hC : IsClosedHerm B (0 : E → E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ)`. Unfold `IsClosedHerm`. Simplify using the standard rewrite rules. Use `⟨contDiffOn_const, fun b _ u v => ?_⟩` and prove the remaining obligations. Simplify using `[d10]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, hb⟩` from `H E g n B τ M j h hD hA 0 hC β`. Conclude with `⟨T, hT, fun b hb' => ⟨fun T' => (key b T').symm.trans ((hb b hb').1 T'), (hb b hb').2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BismutKoehlerTorsionWith.flat (H : BismutKoehlerTorsionWith) : BismutKoehlerTorsion := by
   intro E _ _ _ g n B τ M j h hD hA β

@@ -9,31 +9,27 @@ noncomputable section
 namespace ChartParAlgebraic
 
 /- English proof (translation)
-Introduce `F _ n e K L _ _ _ _ _ _ u t η hu hη hrel hchart j₀ hη0`. Generalize the expression as in `hz : (fun m => η m * (η j₀)⁻¹) = z`. Establish `hzm : ∀ m, z m = η m * (η j₀)⁻¹` using `fun m => by rw [← hz]`. Establish `hz0 : z j₀ = 1` using `by rw [hzm, mul_inv_cancel₀ hη0]`. Use `set A₀ := Algebra.adjoin F (Set.range z) with hA₀`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := Algebra.adjoin A₀ (Set.range fun p : Fin e × {j : Fin n // j ≠ j₀} => algebraMap K L (u (p.1, p.2.1))) with hB`. Establish `hzB : ∀ m, z m ∈ B` using `fun m => Subalgebra.algebraMap_mem B (⟨z m, Algebra.subset_adjoin ⟨m, rfl⟩⟩ : A₀)`. Establish `hwB : ∀ p : Fin e × {j : Fin n // j ≠ j₀}, algebraMap K L (u (p.1, p.2.1)) ∈ B` using `fun p => Algebra.subset_adjoin ⟨p, rfl⟩`. Establish `hFB : ∀ c : F, algebraMap F L c ∈ B` using `fun c => by`. Rewrite using `[IsScalarTower.algebraMap_apply F A₀ L]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Subalgebra.algebraMap_mem B _`. Establish `huB : ∀ p : Fin e × Fin n, algebraMap K L (u p) ∈ B`. Introduce and unpack `⟨i, j⟩`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : ∑ j, algebraMap K L (u (i, j)) * z j = 0`. Simplify using `only [hzm, ← mul_assoc, ← Finset.sum_mul, hrel i, zero_mul]`. Establish `h1` using `Finset.add_sum_erase Finset.univ (fun j => algebraMap K L (u (i, j)) * z j) (Finset.mem_univ j₀)`. Simplify using `only [hz0, mul_one] at h1`. Rewrite `h1` using `[hsum, ← eq_neg_iff_add_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `neg_mem (Subalgebra.sum_mem _ fun j' hj' => Subalgebra.mul_mem _ ?_ (hzB j'))` and prove the remaining obligations. Conclude with `hwB (i, ⟨j', Finset.ne_of_mem_erase hj'⟩)`. Conclude with `hwB (i, ⟨j, hj⟩)`. Establish `hmem : ∀ b ∈ B, IsAlgebraic B b` using `fun b hb => isAlgebraic_algebraMap (⟨b, hb⟩ : B)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη0alg : IsAlgebraic B (η j₀)`. Establish `hs : ∑ m, algebraMap F L (t m) * z m = (η j₀)⁻¹`. Simplify using `only [hzm, ← mul_assoc, ← Finset.sum_mul, hchart, one_mul]`. Establish `h2 : IsAlgebraic B (∑ m, algebraMap F L (t m) * z m)` using `hmem _ (Subalgebra.sum_mem _ fun m _ => Subalgebra.mul_mem _ (hFB (t m)) (hzB m))`. Use `h2.inv` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hs, inv_inv]`. Then use the resulting hypothesis. Establish `hηalg : ∀ m, IsAlgebraic B (η m)` using `fun m => by`. Establish `hm : η m = z m * η j₀` using `by rw [hzm, inv_mul_cancel_right₀ hη0]`. Rewrite using `[hm]`. Conclude with `(hmem _ (hzB m)).mul hη0alg`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Establish `hK : ∀ c : K, IsAlgebraic B (algebraMap K L c)` using `fun c => by`. Establish `hc : c ∈ IntermediateField.adjoin F (Set.range u)` using `by rw [hu]; trivial`. Proceed by induction on `hc using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem _ (huB p)`. Consider the case `algebraMap x`. Rewrite using `[← IsScalarTower.algebraMap_apply F K L]`. Conclude with `hmem _ (hFB x)`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Rewrite using `[map_add]`. Conclude with `hx.add hy`. Consider the case `inv x _ hx`. Rewrite using `[map_inv₀]`. Conclude with `hx.inv`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Rewrite using `[map_mul]`. Conclude with `hx.mul hy`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ IntermediateField.adjoin K (Set.range η)` using `by rw [hη]; trivial`.
-
-Proceed by induction on `hy using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨m, rfl⟩` from `hx`. Conclude with `hηalg m`. Consider the case `algebraMap x => exact hK x`.
-
-Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `inv x _ hx => exact hx.inv`. Consider the case `mul x y _ _ hx hy => exact hx.mul hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem proof : ChartParAlgebraic.Statement := by
   intro F _ n e K L _ _ _ _ _ _ u t η hu hη hrel hchart j₀ hη0

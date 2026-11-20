@@ -6,9 +6,9 @@ open scoped Real ContDiff
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
 /- English proof (translation)
-Introduce `g M hM`. Take `⟨hd, hz⟩` from `hM`. Set `b` to `Module.Free.chooseBasis ℤ M`. Set `b'` to `Module.Basis.ofZLatticeBasis ℝ M b`. Establish `hspan : Submodule.span ℤ (Set.range b') = M` using `Module.Basis.ofZLatticeBasis_span ℝ M b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨ZSpan.fundamentalDomain b', ZSpan.fundamentalDomain_measurableSet b', ZSpan.fundamentalDomain_isBounded b', ?_⟩` and prove the remaining obligations. Establish `h` using `ZSpan.isAddFundamentalDomain b' (volume : Measure (Fl g))`. Rewrite `h` using `[hspan]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fundamentalDomain_of_isLat : ∀ {g : ℕ} (M : Submodule ℤ (Fl g)), IsLat M →
     ∃ D : Set (Fl g), MeasurableSet D ∧ Bornology.IsBounded D ∧

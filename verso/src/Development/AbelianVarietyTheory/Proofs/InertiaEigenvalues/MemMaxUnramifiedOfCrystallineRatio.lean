@@ -16,17 +16,17 @@ open scoped Formalism.Per
 namespace GlobalTheory.FracAlg
 
 /- English proof (translation)
-Establish `hne : ∀ b : B, b ≠ 0 → ι b ≠ 0` using `fun b hb h => hb (hι (by rw [h, map_zero]))`. Establish `hmul : ∀ b b' : B, b ≠ 0 → b' ≠ 0 → b * b' ≠ 0` using `fun b b' hb hb' h => mul_ne_zero (hne b hb) (hne b' hb') (by rw [← map_mul, h, map_zero])`. Establish `h1 : (1 : B) ≠ 0` using `fun h => one_ne_zero (α := D) (by rw [← map_one ι, h, map_zero])`. Proceed by induction on `hy using IntermediateField.adjoin_induction with`. Consider the case `mem z hz => rw [Set.mem_singleton_iff.1 hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `hx`. Consider the case `algebraMap c`. Take `⟨b, hb⟩` from `hk c`. Conclude with `⟨b, 1, h1, by rw [hb, map_one, mul_one]⟩`. Consider the case `add z w _ _ hz hw`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hb, e⟩` from `hz`. Take `⟨a', b', hb', e'⟩` from `hw`. Use `⟨a * b' + a' * b, b * b', hmul _ _ hb hb', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `inv z _ hz`. Take `⟨a, b, hb, e⟩` from `hz`. Distinguish the cases in `h0 : z = 0`. Conclude with `⟨0, 1, h1, by simp [h0]⟩`. Establish `ho : o z ≠ 0` using `by simpa using h0`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, a, fun h => mul_ne_zero ho (hne b hb) (by rw [← e, h, map_zero]), ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← mul_assoc, ← map_mul, inv_mul_cancel₀ h0, map_one, one_mul]`. Consider the case `mul z w _ _ hz hw`. Take `⟨a, b, hb, e⟩` from `hz`. Take `⟨a', b', hb', e'⟩` from `hw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a * a', b * b', hmul _ _ hb hb', ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ratio_adjoin {k Ω B D : Type} [Field k] [Field Ω] [Algebra k Ω] [CommRing B] [CommRing D] [IsDomain D]
     (ι : B →+* D) (hι : Function.Injective ι) (o : Ω →+* D)
@@ -69,11 +69,11 @@ attribute [local irreducible] Per.Acris Per.Bcris
 open GlobalTheory.MemLoc in
 
 /- English proof (translation)
-Take `⟨r, a', ha'⟩` from `bcris_eq_acris_localization_periodT_alt l C a`. Take `⟨s, b', hb'⟩` from `bcris_eq_acris_localization_periodT_alt l C b`. Establish `hu` using `(core_t_unit_fil l C).1`. Establish `hA : algebraMap (Per.Acris l) (Per.Bcris l) (a' * C.t ^ s) = a * algebraMap (Per.Acris l) (Per.Bcris l) C.t ^ (r + s)`. Rewrite using `[map_mul, map_pow, ← ha', pow_add, mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : algebraMap (Per.Acris l) (Per.Bcris l) (b' * C.t ^ r) = b * algebraMap (Per.Acris l) (Per.Bcris l) C.t ^ (r + s)`. Rewrite using `[map_mul, map_pow, ← hb', add_comm r s, pow_add, mul_assoc]`. Use `GlobalTheory.MemLoc.GaussCore.norm_eq_zpow l C (a' * C.t ^ s) (b' * C.t ^ r) x (fun h => hb ?_) hx ?_` and prove the remaining obligations. Rewrite `hB` using `[h, map_zero]`. Conclude with `((hu.pow _).mul_left_eq_zero).1 hB.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(BdRField.bdR_isField l).2.1` to reduce the goal to its premises. Rewrite using `[map_mul (algebraMap (Per.BdRp l) (Per.BdR l)), ← C.ι_j, ← C.ι_j, hA, hB, map_mul C.ι, map_mul C.ι, e, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_of_ratio {l : ℕ} [Fact l.Prime] (C : Core l) (a b : Per.Bcris l) (x : Om l) (hb : b ≠ 0)
     (hx : x ≠ 0) (e : C.ι a = C.oD x * C.ι b) : ∃ k : ℤ, ‖x‖ = (l : ℝ) ^ k := by
@@ -97,9 +97,9 @@ theorem norm_of_ratio {l : ℕ} [Fact l.Prime] (C : Core l) (a b : Per.Bcris l) 
 end
 
 /- English proof (translation)
-Introduce `l _ P AI T a b x hb e`. Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Take `⟨hF, -, hinj, -⟩` from `GlobalTheory.Per.TiedField.tied_field l P AI T`. Establish `: IsDomain P.R.BdR` using `hF.isDomain`. Establish `hint : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.UnramValue.le_Kur_of_norm l ⟨IntermediateField.adjoin ℚ_[l] {x}, IntermediateField.adjoin.finiteDimensional hint⟩ (fun y hy hy0 => ?_) (IntermediateField.mem_adjoin_simple_self ℚ_[l] x)` and prove the remaining obligations. Take `⟨a', b', hb', e'⟩` from `ratio_adjoin (k := ℚ_[l]) (P.ιB : P.R.B →+* P.R.BdR) hinj (algebraMap (Om l) P.R.BdR) (fun c => ⟨algebraMap ℚ_[l] P.R.B c, (P.ιB.commutes c).trans (IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR c)⟩) x ⟨a, b, hb, e⟩ y hy`. Use `norm_of_ratio C (T.eB a') (T.eB b') y (fun h => hb' (T.eB.injective (h.trans (map_zero _).symm))) hy0 ?_` and prove the remaining obligations. Rewrite using `[← hC.ι, ← hC.ι, ← hC.o, ← map_mul]`. Conclude with `congrArg T.eD e'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Kur_of_ratio : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ (a b : P.R.B) (x : Om l), b ≠ 0 → P.ιB a = algebraMap (Om l) P.R.BdR x * P.ιB b → x ∈ MaximalUnramifiedExtension l := by

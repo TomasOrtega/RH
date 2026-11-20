@@ -16,11 +16,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace PositivityTheory.Xgn.LineFunctionModelRatio₂
 
 /- English proof (translation)
-Set `m : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then p else q`. Set `e` to `Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))`. Use `⟨_, fun i => (e.symm i).1, ?_⟩` and prove the remaining obligations. Establish `key : ∀ τ : E →+* ℂ, Nat.card {i // (e.symm i).1 = τ} = m τ`. Introduce `τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : {i // (e.symm i).1 = τ} ≃ Fin (m τ)` using `(e.symm.subtypeEquiv (fun _ => Iff.rfl)).trans (Equiv.sigmaSubtype τ)`. Rewrite using `[Nat.card_congr e1, Nat.card_fin]`. Introduce `τ`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[m, h]`. Rewrite using `[key]`. Simplify using `[m, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_typeFn {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (p q : ℕ) :
     ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H p q ty := by
@@ -41,9 +41,9 @@ theorem exists_typeFn {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Ho
 end PositivityTheory.Xgn.LineFunctionModelRatio₂
 
 /- English proof (translation)
-Introduce `hR hG E _ _ _ H D l Xo c O _ β Y O' _ β' Y' U Z Z' τ φ φ' hO hO' hpq hτ hZ hZ' hφ hφ'`. Take `⟨g, ty, hty⟩` from `PositivityTheory.Xgn.LineFunctionModelRatio₂.exists_typeFn H D.p D.q`. Take `⟨FU⟩` from `GlobalTheory.CompanionTheory.Ar.Top.complex_uniformisation_holds E H D l Xo ((algebraMap c.F ℂ).comp (IntermediateField.inclusion c.le).toRingHom) g ty hpq rfl hty`. Take `⟨Φ, hΦ, -⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.anUnit E H D l Xo c τ τ (algebraMap c.F ℂ) g ty FU hty hτ (fun _ => rfl)`. Take `⟨κ, hκ, h₁⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.flat_eq_const_mul_unitAn hR hG E H D l Xo c O β Y U Z τ (algebraMap c.F ℂ) Φ φ hO hpq hτ hτ hZ hΦ hφ.1 hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ', -, h₂⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.flat_eq_const_mul_unitAn hR hG E H D l Xo c O' β' Y' U Z' τ (algebraMap c.F ℂ) Φ φ' hO' hpq hτ hτ hZ' hΦ hφ'.1 hφ'`. Use `PositivityTheory.Xgn.frame_ratio_constant_rational E H D l Xo c U τ φ φ' (κ' / κ) hτ hφ.1 hφ'.1 fun y v w hf => ?_` and prove the remaining obligations. Rewrite using `[h₁ y v w hf, h₂ y v w hf]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem PositivityTheory.Xgn.line_function_model_ratio : Geo.ResK.ResKStatement → GagaSections → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (O' : Type) [CommRing O'] (β' : O' →+* c.F) (Y' : Model Xo c β') (U : Set (Xo.XF c)) (Z : CptOver Y U) (Z' : CptOver Y' U) (τ : E →+* ℂ) (φ φ' : FrameFn Xo c), FracBase β → FracBase β' → 1 ≤ D.p + D.q → τ (H.rt : E) = H.rt0 → Z.IsGeom → Z'.IsGeom → FlatOnModel Z τ φ → FlatOnModel Z' τ φ' → ∃ x : c.F, x ≠ 0 ∧ ∀ (F : Type) [Field F] (βF : c.F →+* F) y v w, IsFramed U τ βF y v w → φ' F y v w = βF x * φ F y v w := by
   intro hR hG E _ _ _ H D l Xo c O _ β Y O' _ β' Y' U Z Z' τ φ φ' hO hO' hpq hτ hZ hZ' hφ hφ'

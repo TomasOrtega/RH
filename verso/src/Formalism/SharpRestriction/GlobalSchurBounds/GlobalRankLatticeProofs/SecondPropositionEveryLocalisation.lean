@@ -13,19 +13,19 @@ open NumberField Formalism.FrobeniusOrbits Formalism.BasicNotions Formalism.Main
 namespace SlopeTestRemainingChoices
 
 /- English proof (translation)
-The claim follows from `(hostGroup e).2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ord_five (e : ℕ) : orderOf (hcl e (u5 (e + 2))) = 2 ^ e :=
   (hostGroup e).2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `(hostGroup e).2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem card_HGrp (e : ℕ) : Nat.card (HGrp e) = 2 ^ e :=
   (hostGroup e).2.2.2.2.2.2.1
 
 /- English proof (translation)
-Unfold `iotaH`. Establish `h` using `pow_mod_orderOf (hcl e (u5 (e + 2))) (i.val + j.val)`. Rewrite `h` using `[ord_five]`. Rewrite using `[ZMod.val_add, ← pow_add]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaH_add (e : ℕ) (i j : ZMod (2 ^ e)) : iotaH e (i + j) = iotaH e i * iotaH e j := by
   unfold iotaH
@@ -35,14 +35,14 @@ theorem iotaH_add (e : ℕ) (i j : ZMod (2 ^ e)) : iotaH e (i + j) = iotaH e i *
   exact h
 
 /- English proof (translation)
-Unfold `iotaH`. Rewrite using `[ZMod.val_zero, pow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaH_zero (e : ℕ) : iotaH e 0 = 1 := by
   unfold iotaH
   rw [ZMod.val_zero, pow_zero]
 
 /- English proof (translation)
-Introduce `i j hij`. Unfold `iotaH at hij`. Rewrite `hij` using `[pow_inj_mod, ord_five e, Nat.mod_eq_of_lt (ZMod.val_lt i), Nat.mod_eq_of_lt (ZMod.val_lt j)]`. Conclude with `ZMod.val_injective _ hij`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaH_injective (e : ℕ) : Function.Injective (iotaH e) := by
   intro i j hij
@@ -52,7 +52,7 @@ theorem iotaH_injective (e : ℕ) : Function.Injective (iotaH e) := by
   exact ZMod.val_injective _ hij
 
 /- English proof (translation)
-Establish `: Finite (HGrp e)` using `Nat.finite_of_card_ne_zero (by rw [card_HGrp]; positivity)`. Use `(iotaH_injective e).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[card_HGrp, Nat.card_zmod]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaH_bijective (e : ℕ) : Function.Bijective (iotaH e) := by
   have : Finite (HGrp e) := Nat.finite_of_card_ne_zero (by rw [card_HGrp]; positivity)
@@ -60,13 +60,13 @@ theorem iotaH_bijective (e : ℕ) : Function.Bijective (iotaH e) := by
   rw [card_HGrp, Nat.card_zmod]
 
 /- English proof (translation)
-The claim follows from `Function.rightInverse_invFun (iotaH_bijective e).2 x`.
+A detailed English derivation is pending.
 -/
 theorem iotaH_iotaHInv (e : ℕ) (x : HGrp e) : iotaH e (iotaHInv e x) = x :=
   Function.rightInverse_invFun (iotaH_bijective e).2 x
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, iotaH_zero, pow_zero]`. Consider the case `succ k ih`. Rewrite using `[succ_nsmul, iotaH_add, ih]`. Conclude with `(pow_succ _ _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaH_nsmul (e : ℕ) (k : ℕ) (i : ZMod (2 ^ e)) : iotaH e (k • i) = iotaH e i ^ k := by
   induction k with
@@ -79,7 +79,7 @@ def iotaHom (e : ℕ) : Multiplicative (ZMod (2 ^ e)) →* HGrp e :=
   MonoidHom.mk' (fun x => iotaH e (Multiplicative.toAdd x)) (fun _ _ => iotaH_add e _ _)
 
 /- English proof (translation)
-Establish `h` using `orderOf_injective (iotaHom e) (iotaH_injective e) (Multiplicative.ofAdd i)`. Rewrite `h` using `[orderOf_ofAdd_eq_addOrderOf]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderOf_iotaH (e : ℕ) (i : ZMod (2 ^ e)) : orderOf (iotaH e i) = addOrderOf i := by
   have h := orderOf_injective (iotaHom e) (iotaH_injective e) (Multiplicative.ofAdd i)
@@ -87,13 +87,13 @@ theorem orderOf_iotaH (e : ℕ) (i : ZMod (2 ^ e)) : orderOf (iotaH e i) = addOr
   exact h
 
 /- English proof (translation)
-Rewrite using `[ordH, ← orderOf_iotaH, iotaH_iotaHInv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordH_eq (e : ℕ) (x : HGrp e) : ordH (iotaHInv e x) = orderOf x := by
   rw [ordH, ← orderOf_iotaH, iotaH_iotaHInv]
 
 /- English proof (translation)
-The claim follows from `φ.cc_mul_cc`.
+A detailed English derivation is pending.
 -/
 theorem cc_mul_cc (φ : Formalism.HC.Frame) : φ.cc * φ.cc = 1 := φ.cc_mul_cc
 
@@ -102,25 +102,25 @@ section Emb
 variable (D : D7)
 
 /- English proof (translation)
-The claim follows from `D.host.gal.apply_symm_apply g`.
+A detailed English derivation is pending.
 -/
 theorem galE_sigmaOf (g : D.R.GG) :
     D.host.galE (D.host.sigmaOf g) = g :=
   D.host.gal.apply_symm_apply g
 
 /- English proof (translation)
-The claim follows from `D.host.gal.symm_apply_apply σ`.
+A detailed English derivation is pending.
 -/
 theorem sigmaOf_galE (σ : D.host.E ≃ₐ[ℚ] D.host.E) :
     D.host.sigmaOf (D.host.galE σ) = σ :=
   D.host.gal.symm_apply_apply σ
 
 /- English proof (translation)
-Establish `hCM` using `D.host.der.cmType`. Establish `hEmb` using `D.host.toHostRaw.hostEmb D.host.φ₀`. Take `⟨σ, rfl⟩` from `hEmb.2 φ`. Rewrite using `[hCM.2.2 D.host.φ₀ D.host.φ₀_mem σ]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, hg, hφ⟩`. Establish `: D.host.sigmaOf g = σ` using `hEmb.1 hφ`. Use `show D.host.galE σ ∈ D.R.Psi`. Rewrite using `[← this, galE_sigmaOf]`. Conclude with `hg`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hσ`. Use `⟨D.host.galE σ, hσ, ?_⟩` and prove the remaining obligations. Use `show D.host.φ₀.comp (D.host.sigmaOf _ : D.host.E →+* D.host.E) = _`. Rewrite using `[sigmaOf_galE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_PhiEmb_iff (φ : D.host.E →+* ℂ) :
     φ ∈ PhiEmb D ↔ φ ∈ D.host.cmType := by
@@ -140,13 +140,11 @@ theorem mem_PhiEmb_iff (φ : D.host.E →+* ℂ) :
     rw [sigmaOf_galE]
 
 /- English proof (translation)
-Use `set σ := D.host.sigmaOf g`. Establish `hb : σ (D.host.sqd) = D.host.sqd`. Use `(D.host.galE_mem_Psi_iff σ).1 ?_` and prove the remaining obligations. Rewrite using `[galE_sigmaOf]`. Conclude with `hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsAlgebraic ℚ (D.host.sqd)` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `hx' : x ∈ Algebra.adjoin ℚ {D.host.sqd}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint]`. Conclude with `hx`. Establish `hle : Algebra.adjoin ℚ {D.host.sqd} ≤ AlgHom.equalizer (σ : D.host.E →ₐ[ℚ] D.host.E) (AlgHom.id ℚ D.host.E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `hb`.
-
-Conclude with `hle hx'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sigmaOf_fix_K (g : D.R.GG) (hg : g ∈ D.R.Psi) (x : D.host.E) (hx : x ∈ D.host.K) :
     D.host.sigmaOf g x = x := by
@@ -175,15 +173,15 @@ end SlopeTestRemainingChoices
 open SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `hCM` using `D.host.der.cmType`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ`. Rewrite using `[mem_PhiEmb_iff, mem_PhiEmb_iff]`. Conclude with `hCM.1 φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `φ ⟨g, hg, rfl⟩ x hx show D.host.φ₀ (D.host.sigmaOf g x) = D.host.φ₀ x`. Rewrite using `[sigmaOf_fix_K D g hg x hx]`. Introduce `τ hτ`. Conclude with `D.R.toFrame.hostPartner τ hτ`. Introduce `h t`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;>`. Simplify using `only [rho, gOf, HC.Frame.tau1, HC.Frame.tau2, HC.Frame.cc, sgc0, Prod.mk_mul_mk, one_mul, HC.Frame.iota_add]`. Use `Prod.ext ?_ (mul_comm _ _)` and prove the remaining obligations. Simplify using `only`. Evaluate the decidable proposition.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `χ`. Establish `hf : ((D.R.f : ℕ) : ℂ) = (2 * D.R.ord : ℂ)`. Simplify using `only [Ranks.f, Ranks.n]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hf]`. Conclude with `D.R.toFrame.hostCharSum.1 χ`. Introduce and unpack `⟨⟨a, b⟩, h⟩`. Apply the tactic sequence `rcases Int.units_eq_one_or a with rfl | rfl <;> rcases Int.units_eq_one_or b with rfl | rfl <;>`. Apply the tactic sequence `simp [sgc0, c0, HC.Frame.chD, HC.Frame.chQ] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem second_proposition_every_localisation (D : D7) : Conclusion2 D := by
   have hCM := D.host.der.cmType

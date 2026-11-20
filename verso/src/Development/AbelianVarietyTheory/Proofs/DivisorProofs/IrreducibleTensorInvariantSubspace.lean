@@ -12,11 +12,11 @@ open GlobalTheory.RealLift GlobalTheory.KFixIrr
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Use `⟨{⟨v w, hv w⟩}, fun f g h => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.TensIrr.atPl_tprod, GlobalTheory.TensIrr.atPl_tprod, h ⟨v w, hv w⟩ (Finset.mem_singleton_self _)]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨∅, fun f g _ => by rw [map_zero, map_zero]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs⟩` from `hx`. Take `⟨t, ht⟩` from `hy`. Use `⟨s ∪ t, fun f g h => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_add, hs f g (fun m hm => h m (Finset.mem_union_left _ hm)), ht f g (fun m hm => h m (Finset.mem_union_right _ hm))]`. Consider the case `smul a x _ hx`. Take `⟨s, hs⟩` from `hx`. Conclude with `⟨s, fun f g h => by rw [map_smul, map_smul, hs f g h]⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem atPl_local_sub (H : ι → Submodule ℂ V) (w : ι) (y : ⨂[ℂ] _ : ι, V) (hy : y ∈ tensSpan H) :
     ∃ s : Finset (H w), ∀ f g : Module.End ℂ V, (∀ m ∈ s, f m = g m) →
@@ -39,33 +39,31 @@ theorem atPl_local_sub (H : ι → Submodule ℂ V) (w : ι) (y : ⨂[ℂ] _ : �
     exact ⟨s, fun f g h => by rw [map_smul, map_smul, hs f g h]⟩
 
 /- English proof (translation)
-Set `B : Z → Module.End ℂ (H w)` to `fun z => (A z).restrict (hA z)`. Establish `hBirr : ∀ M : Submodule ℂ (H w), (∀ z, ∀ y ∈ M, B z y ∈ M) → M = ⊥ ∨ M = ⊤`. Introduce `M hM`. Establish `hinj` using `Submodule.map_injective_of_injective (H w).injective_subtype`. Break down `hirr (M.map (H w).subtype) (by simp [Submodule.map_subtype_le]) (by` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `z _ ⟨x, hx, rfl⟩`. Conclude with `⟨B z x, hM z x hx, rfl⟩) with h | h`. Use `left`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_bot]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `right`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_subtype_top]`. Establish `hBsch : ∀ T : H w →ₗ[ℂ] H w, (∀ z, T ∘ₗ B z = B z ∘ₗ T) → ∃ c : ℂ, T = c • LinearMap.id`. Introduce `T hT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`. Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `hBirr (Module.End.eigenspace T c) (fun z y hy => by` into its components or cases. Rewrite `hy`, the goal using `[Module.End.mem_eigenspace_iff]`. Use `LinearMap.congr_fun (hT z) y` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, hy, map_smul]) with h | h`. Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hc)`. Use extensionality with `x`. Establish `hx : x ∈ Module.End.eigenspace T c` using `h ▸ Submodule.mem_top`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hx` using `[Module.End.mem_eigenspace_iff]`. Simplify using `[hx]`. Establish `hadj : ∀ r ∈ Algebra.adjoin ℂ (Set.range A), ∀ y ∈ N, atPl (V` using `fun _ : ι => V) w r y ∈ N := by`. Introduce `r hr`. Proceed by induction on `hr using Algebra.adjoin_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mem x hx => obtain ⟨z, rfl⟩ := hx`. Conclude with `hN z`. Consider the case `algebraMap c`. Introduce `y hy`. Rewrite using `[Algebra.algebraMap_eq_smul_one, GlobalTheory.TensIrr.atPl_smul, GlobalTheory.TensIrr.atPl_one]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `N.smul_mem c hy`. Consider the case `add x y _ _ hx hy`. Introduce `z hz`. Rewrite using `[GlobalTheory.TensIrr.atPl_add]`. Conclude with `N.add_mem (hx z hz) (hy z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mul x y _ _ hx hy`. Introduce `z hz`. Rewrite using `[GlobalTheory.TensIrr.atPl_mul]`. Conclude with `hx _ (hy z hz)`. Establish `hlift : ∀ r ∈ Algebra.adjoin ℂ (Set.range B), ∃ r' ∈ Algebra.adjoin ℂ (Set.range A), ∀ x : H w, r' x = (r x : V)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 
-Introduce `r hr`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨z, rfl⟩` from `hx`. Conclude with `⟨A z, Algebra.subset_adjoin ⟨z, rfl⟩, fun x => rfl⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap c`. Conclude with `⟨algebraMap ℂ _ c, Subalgebra.algebraMap_mem _ c, fun x => by`. Simplify using `[Algebra.algebraMap_eq_smul_one]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ha'⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hb'⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, fun t => by simp [ha', hb']⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha, ha'⟩` from `hx`. Take `⟨b, hb, hb'⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a * b, mul_mem ha hb, fun t => by`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hb', ha']⟩`. Introduce `y hy`. Take `⟨s, hs⟩` from `atPl_local_sub H w y (hle hy)`. Set `g : Module.End ℂ (H w)` to `F.restrict (fun v _ => hF v)`.
-
-Take `⟨r, hr, hrg⟩` from `GlobalTheory.IrrTensor.density B hBirr hBsch g s`. Take `⟨r', hr', hr'r⟩` from `hlift r hr`. Rewrite using `[hs F r' (fun m hm => by rw [hr'r m, ← hrg m hm]; rfl)]`. Conclude with `hadj r' hr' y hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_of_range (H : ι → Submodule ℂ V) (w : ι) [FiniteDimensional ℂ (H w)] [Nontrivial (H w)]
     {Z : Type} (A : Z → Module.End ℂ V) (hA : ∀ z, ∀ v ∈ H w, A z v ∈ H w)
@@ -146,21 +144,19 @@ theorem stable_of_range (H : ι → Submodule ℂ V) (w : ι) [FiniteDimensional
   exact hadj r' hr' y hy
 
 /- English proof (translation)
-Introduce `ι _ _ V Z _ _ A H hfd hne hA hirr N hle hN`. Distinguish the cases in `h0 : N = ⊥`. Conclude with `Or.inl h0`. Use `right`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ℓ, hℓ⟩` from `GlobalTheory.TensIrr.exists_prodForm_ne (V := fun _ : ι => V) y hy0`. Use `le_antisymm hle ?_` and prove the remaining obligations. Rewrite using `[tensSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `hst : ∀ w, ∀ x ∈ N, atPl (V` using `fun _ : ι => V) w ((ℓ w).smulRight (u w)) x ∈ N := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Use `haveI : FiniteDimensional ℂ (H w) := hfd w`. Use `haveI : Nontrivial (H w) := Submodule.nontrivial_iff_ne_bot.2 (hne w)`. Conclude with `stable_of_range H w (A w) (hA w) (hirr w) N hle (hN w) _ (fun v => by simpa using (H w).smul_mem (ℓ w v) (hu w))`. Establish `key : ∀ s : Finset ι, ∀ x ∈ N, PiTensorProduct.map (fun i => if i ∈ s then (ℓ i).smulRight (u i) else LinearMap.id) x ∈ N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro x hx`. Simplify using `using hx`. Consider the case `insert a s ha ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `e : PiTensorProduct.map (fun i => if i ∈ insert a s then (ℓ i).smulRight (u i) else LinearMap.id) = atPl (V` using `fun _ : ι => V) a ((ℓ a).smulRight (u a)) ∘ₗ PiTensorProduct.map (fun i => if i ∈ s then (ℓ i).smulRight (u i) else LinearMap.id) := by`. Unfold `atPl`. Rewrite using `[← PiTensorProduct.map_comp]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Simplify using `[ha]`. Simplify using `[Function.update_of_ne h, Finset.mem_insert, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hst a _ (ih x hx)`. Establish `h1` using `key Finset.univ y hy`. Simplify using `only [Finset.mem_univ, if_true] at h1`. Rewrite `h1` using `[GlobalTheory.TensIrr.map_rankOne]`.
-
-Establish `h2` using `N.smul_mem (GlobalTheory.TensIrr.prodForm ℓ y)⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hℓ, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tensSpan_irr : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V Z : Type) [AddCommGroup V] [Module ℂ V]
     (A : ι → Z → Module.End ℂ V) (H : ι → Submodule ℂ V), (∀ w, FiniteDimensional ℂ (H w)) → (∀ w, H w ≠ ⊥) →

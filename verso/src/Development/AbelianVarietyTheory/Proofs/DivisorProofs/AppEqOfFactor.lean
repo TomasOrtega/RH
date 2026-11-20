@@ -6,13 +6,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite
 namespace GlobalTheory.SectionsPinch
 
 /- English proof (translation)
-Establish `key : ∀ (f g : O.toScheme ⟶ Y), f = g → ∀ e e', f.appLE κ.opensRange ⊤ e = g.appLE κ.opensRange ⊤ e'`. Introduce and unpack `f g rfl e e'`. Both sides reduce to the same expression. Establish `hle' : ⊤ ≤ (O.ι ≫ j) ⁻¹ᵁ κ.opensRange` using `fun x _ ↦ (hO.ge x.2 : _)`. Rewrite using `[← cancel_mono O.topIso.inv]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `lhs : (j.app κ.opensRange ≫ X.presheaf.map (homOfLE hO.ge).op) ≫ O.topIso.inv = (O.ι ≫ j).appLE κ.opensRange ⊤ hle'` using `by show j.appLE κ.opensRange O hO.ge ≫ O.topIso.inv = _`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE O.ι j κ.opensRange O ⊤ hO.ge (fun x _ ↦ x.2)]`. Use `congr 1`. Rewrite using `[Scheme.Opens.topIso_inv]`. Conclude with `(Scheme.Opens.ι_appLE O O ⊤ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lhs, key _ _ hfac hle' (hfac ▸ hle')]`. Simplify using `only [Category.assoc]`. Rewrite using `[← Scheme.ΓSpecIso_naturality_assoc, ← Scheme.Opens.toSpecΓ_appTop]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE O.toSpecΓ (Spec.map q ≫ κ) κ.opensRange ⊤ ⊤ (fun x _ ↦ ⟨_, rfl⟩) le_top, ← Scheme.Hom.appLE_comp_appLE (Spec.map q) κ κ.opensRange ⊤ ⊤ (fun x _ ↦ ⟨x, rfl⟩) le_top, Category.assoc]`. Establish `top : ∀ {P Q : Scheme.{0}} (f : P ⟶ Q) (e : ⊤ ≤ f ⁻¹ᵁ ⊤), f.appLE ⊤ ⊤ e = f.appTop` using `fun f _ ↦ Scheme.Hom.appLE_eq_app (f := f) (U := ⊤)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← top (Spec.map q) le_top, ← top O.toSpecΓ le_top]`.
+A detailed English derivation is pending.
 -/
 theorem app_eq_of_factor {X Y : Scheme.{0}} {A : CommRingCat.{0}} (κ : Spec A ⟶ Y) [IsOpenImmersion κ]
     (j : X ⟶ Y) (O : X.Opens) (q : A ⟶ Γ(X, O)) (hO : j ⁻¹ᵁ κ.opensRange = O)

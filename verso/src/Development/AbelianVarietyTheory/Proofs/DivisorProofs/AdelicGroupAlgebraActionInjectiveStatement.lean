@@ -10,7 +10,7 @@ open scoped TensorProduct
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LKGeo.actOn_rep_afP_injective) | (exact GlobalTheory.LKGeo.actOn_rep_afP_injective) | (intros; apply GlobalTheory.LKGeo.actOn_rep_afP_injective <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adelicGroupAlgebraAction_injective : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G), Function.Injective (actOn L.rep (AfP p)) := by
   first | (exact @GlobalTheory.LKGeo.actOn_rep_afP_injective) | (exact GlobalTheory.LKGeo.actOn_rep_afP_injective) | (intros; apply GlobalTheory.LKGeo.actOn_rep_afP_injective  <;> assumption)

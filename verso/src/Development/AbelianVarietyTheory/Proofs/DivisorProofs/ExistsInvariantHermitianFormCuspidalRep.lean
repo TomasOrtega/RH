@@ -20,21 +20,19 @@ namespace GlobalTheory.GelfandKazhdanHerm
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `hB E _ _ _ a π hπ`. Set `μ : Measure (GA E a)` to `Measure.haar`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Establish `hc : ∀ φ ∈ π.V, Continuous φ.1` using `fun φ hφ => ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level`. Establish `hm : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E a) μ φ.1` using `fun φ hφ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hB.of_invariant (π.cusp φ hφ) (hπ φ hφ)`. Conclude with `(memL2_iff_isSqInt (hc φ hφ) (π.cusp φ hφ).1.left (hπ φ hφ)).2 (GlobalTheory.DiscChar.isSqInt_of_bounded (hπ φ hφ) hC)`. Set `T` to `toL2ₗ μ π.V hm`. Establish `hinj : Function.Injective T` using `toL2ₗ_injective hm hc`. Establish `hR : ∀ (g : GA E a) (x y : L2 (latticeGL E a) μ), ⟪R (latticeGL E a) μ g x, R (latticeGL E a) μ g y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun g x y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `U : L2 (latticeGL E a) μ →ₗᵢ[ℂ] L2 (latticeGL E a) μ` to `⟨(R (latticeGL E a) μ g).toLinearMap, fun v => norm_R _ v⟩`. Conclude with `U.inner_map_map x y`. Use `⟨((innerₛₗ ℂ).comp T).compl₂ T, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ ψ`. Conclude with `inner_conj_symm (T ψ) (T φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Treat this case separately.
 
-Introduce `φ h0`. Establish `hT : T φ ≠ 0` using `fun e => h0 (hinj (e.trans (map_zero T).symm))`. Express the relevant statement in the definitionally equal form `0 < (⟪T φ, T φ⟫_ℂ).re`. Use `first`. Consider the case `exact (re_inner_self_pos (𝕜 := ℂ)).2 hT`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `exact inner_self_pos.2 hT`. Consider the case `exact (RCLike.inner_self_pos).2 hT`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; norm_cast; simpa using hT)`. Introduce `k φ ψ`. Express the relevant statement in the definitionally equal form `⟪T (π.op (.fin k) φ), T (π.op (.fin k) ψ)⟫_ℂ = ⟪T φ, T ψ⟫_ℂ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hR (finGL E a k) (T φ) (T ψ)]`. Use `congr 1`. Conclude with `(R_toL2ₗ hm φ (π.stable (.fin k) _ φ.2)).symm`. Conclude with `(R_toL2ₗ hm ψ (π.stable (.fin k) _ ψ.2)).symm`. Introduce `k φ ψ`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `⟪T (π.op (.cpt k) φ), T (π.op (.cpt k) ψ)⟫_ℂ = ⟪T φ, T ψ⟫_ℂ`. Rewrite using `[← hR (infGL E a (Unitary.toUnits k)) (T φ) (T ψ)]`. Use `congr 1`. Conclude with `(R_toL2ₗ hm φ (π.stable (.cpt k) _ φ.2)).symm`. Conclude with `(R_toL2ₗ hm ψ (π.stable (.cpt k) _ ψ.2)).symm`.
-
-Introduce `X φ ψ`. Express the relevant statement in the definitionally equal form `⟪T (π.op (.lie X) φ), T ψ⟫_ℂ + ⟪T φ, T (π.op (.lie X) ψ)⟫_ℂ = 0`. Use `GlobalTheory.T.lie_skew_adjoint_matrix E a μ π.V hm π.stable (fun θ hθ => (π.cusp θ hθ).1) X φ ψ` as an intermediate fact. Rewrite `this` using `[eq_neg_iff_add_eq_zero]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_invariant_hermitian : GlobalTheory.Published.CuspFormsBoundedGL → ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a), GlobalTheory.DiscSpec.IsNormalised π → ∃ H : π.V →ₗ⋆[ℂ] π.V →ₗ[ℂ] ℂ, (∀ φ ψ, starRingEnd ℂ (H φ ψ) = H ψ φ) ∧ (∀ φ, φ ≠ 0 → 0 < (H φ φ).re) ∧ (∀ k φ ψ, H (π.op (.fin k) φ) (π.op (.fin k) ψ) = H φ ψ) ∧ (∀ k φ ψ, H (π.op (.cpt k) φ) (π.op (.cpt k) ψ) = H φ ψ) ∧ ∀ X φ ψ, H (π.op (.lie X) φ) ψ + H φ (π.op (.lie X) ψ) = 0 := by
   intro hB E _ _ _ a π hπ

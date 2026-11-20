@@ -16,11 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.SquareDict
 
 /- English proof (translation)
-Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, -, ⟨φ₁, φ₂, hloc, -⟩, -⟩, -, rfl⟩` from `hM`. Introduce `d hd`. Take `⟨P, -, hP⟩` from `Finset.mem_biUnion.mp (Finsupp.support_sum hd)`. Take `⟨d₀, hd₀, hd₁⟩` from `Finset.mem_biUnion.mp (Finsupp.support_sum hP)`. Take `rfl` from `Finset.mem_singleton.mp (Finsupp.support_single_subset hd₁)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hA, hB⟩` from `hloc d₀ hd₀`. Establish `hv₁` using `(ρ.vT_is t i j i.2.le j.2).2.theta`. Establish `hv₂` using `(ρ.vX_is i j i.2 j.2.le).2.theta`. Establish `hf₁` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is hA.2 hv₁`. Establish `hf₂` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is hB.2 hv₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨GlobalTheory.FockTheta.ptStable D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ _ _ _ P.1.2 hf₁, GlobalTheory.FockTheta.ptStable D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ _ _ _ P.2 hf₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem isThetaFunO_small_of_isMatched {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m)
@@ -42,11 +42,11 @@ theorem isThetaFunO_small_of_isMatched {D : D7} {T : Type} {L : LevCh D T} {sc :
     GlobalTheory.FockTheta.ptStable D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ _ _ _ P.2 hf₂⟩
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W t i j ωB hωB B ρ Θ Θ' hM g g₁ u`. Establish `hth` using `isThetaFunO_small_of_isMatched W B ρ t i j Θ Θ' hM`. Establish `hω` using `(GlobalTheory.Grid.isWeil_false W.ψ _ _ _ _ ωB).mp hωB`. Establish `key : ∀ d ∈ Θ'.support, W.kerA (.down t i j) d.1.2 g u * W.kerA (.right i j) d.2 u g₁ = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.xiV G i j g * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.xiV₁ G t i j g₁ * ωB (u, GlobalTheory.SquareComm.blk _ _ (g, …` using `G.V (.grid i j)) (A := G.V (.grid i (j + 1))) (B := G.V (.grid (i + 1) j)) d.1.2 (fun y => d.2 (adjM (G.V (.grid i j)) (negSp (G.V (.grid (i + 1) j))) y))) 0 := by`. Introduce `d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(GlobalTheory.SeesawSmall.seesaw_small hL W t i.2 j.2 ωB hω d.1.2 d.2 (hth d hd).1 (hth d hd).2).2 g u g₁`. Establish `hadj : GlobalTheory.SeesawSmall.adjFn (G.V (.grid i j)) (G.V (.grid (i + 1) j)) d.2 = fun y => d.2 (adjM (G.V (.grid i j)) (negSp (G.V (.grid (i + 1) j))) y)`. Use function extensionality and compare the values at `y`. Conclude with `congrArg d.2 (GlobalTheory.AdjSwap.dagger_eq_adjM (G.V (.grid i j)) (negSp (G.V (.grid (i + 1) j))) y)`. Rewrite `h` using `[hadj]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Simplify using `only [kerSmall, GlobalTheory.SquareDict.datumB, thetaKO, Finsupp.sum, map_sum, Finset.sum_apply, map_smul, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[key d hd]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kerSmall_eq_thetaKO : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (t : T) (i j : Fin D.R.m)
     (ωB : GlobalTheory.Grid.WRep (G.V (.grid ↑i ↑j)) (GlobalTheory.Doubling.hsum (G.V (.grid ↑i (↑j + 1))) (G.V (.grid (↑i + 1) ↑j)))),

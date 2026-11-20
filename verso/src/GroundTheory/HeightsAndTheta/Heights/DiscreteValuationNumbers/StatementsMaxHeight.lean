@@ -14,12 +14,12 @@ def MaximalIdealHeightFG.Statement : Prop :=
 section Examples
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra.FiniteType ℚ (MvPolynomial (Fin 2) ℚ) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsDomain (MvPolynomial (Fin 2) ℚ) := inferInstance
 

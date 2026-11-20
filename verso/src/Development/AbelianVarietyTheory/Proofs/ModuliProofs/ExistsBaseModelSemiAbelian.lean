@@ -31,7 +31,7 @@ noncomputable section
 namespace GlobalTheory.BaseModelEx
 
 /- English proof (translation)
-Use `h.map (Spec.preimage y).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_of_pt {R k : Type} [CommRing R] [Field k] (y : Sp k ⟶ Sp R) {S : ℕ} (h : IsUnit (S : R)) :
     (S : k) ≠ 0 := by
@@ -40,9 +40,9 @@ theorem natCast_ne_zero_of_pt {R k : Type} [CommRing R] [Field k] (y : Sp k ⟶ 
   exact this.ne_zero
 
 /- English proof (translation)
-Establish `h1 : (S : X.residueField x) ≠ 0` using `natCast_ne_zero_of_pt (X.fromSpecResidueField x ≫ g) h`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.fromSpecResidueField x ≫ f)`. Establish `h2 : f x = (Spec.map φ) (IsLocalRing.closedPoint _)`. Rewrite using `[hφ]`. Conclude with `(congrArg f (Scheme.fromSpecResidueField_apply x (IsLocalRing.closedPoint _))).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Introduce `hS`. Establish `h3 : φ.hom (S : R) ∈ IsLocalRing.maximalIdeal (X.residueField x)` using `hS`. Rewrite `h3` using `[map_natCast, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_ne_zero]`. Conclude with `h3 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_notMem {X : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (f : X ⟶ Sp R) (g : X ⟶ Sp R')
     {S : ℕ} (h : IsUnit (S : R')) (x : X) : (S : R) ∉ (f x).asIdeal := by
@@ -58,7 +58,7 @@ theorem natCast_notMem {X : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
   exact h3 h1
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one ⟨(S : ℂ)⁻¹, Subring.subset_closure (by simp)⟩ (Subtype.ext ?_)` and prove the remaining obligations. Establish `: (S : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hS.ne'`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_RZ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {S : ℕ} (A : ℕ) (hS : 0 < S) :
     IsUnit (S : RZ H S A) := by
@@ -67,9 +67,9 @@ theorem isUnit_RZ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E
   simp [this]
 
 /- English proof (translation)
-Use `⟨IsOpenImmersion.lift (pullback.fst s (spMap b)) (pullback.fst _ _ ≫ ρ) ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Pullback.range_fst]`. Use `natCast_notMem (pullback.fst s (spMap b) ≫ ρ ≫ s) (pullback.snd s (spMap b)) hS w` as an intermediate fact. Rewrite using `[Set.mem_preimage, hr]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_restrict {Z : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (s : Z ⟶ Sp R) (b : R →+* R') {S : ℕ}
     [IsOpenImmersion (spMap b)] (hS : IsUnit (S : R'))
@@ -83,7 +83,7 @@ theorem exists_restrict {Z : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', ← ih, pow_succ']`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem pow_hom_eq_iterate {X : Scheme.{0}} (r : Aut X) (m : ℕ) :
     (r ^ m).hom = (fun f : X ⟶ X => f ≫ r.hom)^[m] (𝟙 _) := by
@@ -92,15 +92,11 @@ theorem pow_hom_eq_iterate {X : Scheme.{0}} (r : Aut X) (m : ℕ) :
   | succ m ih => rw [Function.iterate_succ_apply', ← ih, pow_succ']; rfl
 
 /- English proof (translation)
-Set `P : Subgroup Γ` to `{ carrier := {g | x ≫ (ρ g).hom = x} one_mem' := by show x ≫ (ρ 1).hom = x`. Rewrite using `[map_one]`. Conclude with `Category.comp_id x`. Use the proof step `mul_mem' := by`. Introduce `a b ha hb`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show x ≫ (ρ (a * b)).hom = x`. Rewrite using `[map_mul]`. Use `show x ≫ (ρ b).hom ≫ (ρ a).hom = x`. Rewrite using `[← Category.assoc, show x ≫ (ρ b).hom = x from hb]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `inv_mem' := by`. Introduce `a ha`. Use `show x ≫ (ρ a⁻¹).hom = x`. Rewrite using `[map_inv]`. Use `show x ≫ (ρ a).inv = x`.
-
-Conclude with `(Iso.comp_inv_eq (ρ a : X ≅ X)).mpr (show x ≫ (ρ a).hom = x from ha).symm }`. Use `haveI : Fact n.Prime := ⟨hn⟩`. Establish `hP : IsPGroup n P` using `fun g => ⟨J, Subtype.ext (h g.1 g.2)⟩`. Take `⟨m, hm⟩` from `IsPGroup.iff_card.mp hP`. Establish `: Nat.card {g // x ≫ (ρ g).hom = x} = n ^ m` using `hm`.
-
-Rewrite using `[this, Nat.cast_pow]`. Conclude with `pow_ne_zero _ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab_ne_zero {X Y : Scheme.{0}} {Γ : Type} [Group Γ] [Finite Γ] (ρ : Γ →* Aut X) (x : Y ⟶ X) {n J : ℕ}
     (hn : n.Prime) (h : ∀ g, x ≫ (ρ g).hom = x → g ^ n ^ J = 1) {k : Type} [Field k] (hk : (n : k) ≠ 0) :
@@ -130,31 +126,29 @@ theorem card_stab_ne_zero {X Y : Scheme.{0}} {Γ : Type} [Group Γ] [Finite Γ] 
   exact pow_ne_zero _ hk
 
 /- English proof (translation)
-Introduce `hext L1 L2 L3 E _ _ _ H D Xo hD hN1 n J T l₀ hn hJ hA`. Establish `hnp : n.Prime` using `hn.1`. Establish `hM : 0 < l₀.M` using `by have := l₀.three_le; omega`. Establish `hS : 0 < n * l₀.M` using `Nat.mul_pos hnp.pos hM`. Establish `hN : 0 < n ^ J` using `pow_pos hnp.pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : n ^ J ∣ (n * l₀.M) ^ J` using `pow_dvd_pow_of_dvd (dvd_mul_right _ _) _`. Set `l₁ : Level H` to `{ l₀ with A := n ^ J, A_pos := hN }`. Establish `h₁ : l₁.A = n ^ J` using `rfl`. Establish `R₀` using `GlobalTheory.BaseRing.isDedFrac_RZ E H l₀ (n * l₀.M) 0 hS (by simp [hA])`. Rewrite `R₀` using `[hA]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨β, hβ⟩, ft₀, ded₀⟩` from `R₀`. Take `⟨⟨β₁, hβ₁⟩, ft₁, ded₁⟩` from `GlobalTheory.BaseRing.isDedFrac_RZ E H l₁ (n * l₀.M) J hS hdiv`. Take `⟨⟨b, hb⟩, hb2⟩` from `GlobalTheory.T.cmModelCoefficient_inclusions_etale_openImmersion E H (n * l₀.M) (n * l₀.M) 1 (n ^ J) J hS hN dvd_rfl (one_dvd _)`. Take `⟨bfin, -, -⟩` from `(hb2 b hb).1 rfl hdiv`. Take `⟨⟨b', hb'⟩, hb2'⟩` from `GlobalTheory.T.cmModelCoefficient_inclusions_etale_openImmersion E H n (n * l₀.M) (n ^ J) (n ^ J) J hS hN (dvd_mul_right _ _) dvd_rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨bop, brange⟩` from `(hb2' b' hb').2 rfl`. Take `⟨C₁, q, hq, qm, qfin, qj, qφ, qp⟩` from `GlobalTheory.T.exists_compactModel_above_fullLevel E H D Xo n (n ^ J) T l₁ h₁ (n * l₀.M) J β₁ b' hS (dvd_mul_right _ _) hdiv hβ₁ hb'`. Take `⟨k, r, ν, hr, hk, lev, -, -, -, -, -, rsurj⟩` from `GlobalTheory.T.exists_finite_etale_surjective_levelMap E H D Xo hN1 l₀ l₁ ⟨dvd_rfl, le_rfl, by rw [hA]; exact one_dvd _⟩`. Take `⟨Γ, _, _, ρ₀, τ₀, ν₀, inj, quot, hω⟩` from `GlobalTheory.T.moduli_level_quotient_by_finite_group L1 L2 L3 E H D Xo hD hN1 l₀ l₁ r ν k hA rfl rfl hk hr lev`. Establish `hU : IsUnit ((n * l₀.M : ℕ) : RZ H (n * l₀.M) (n ^ J))` using `isUnit_RZ H _ hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ρ, τ, mu, hact⟩` from `GlobalTheory.exists_action_model hext E H _ _ _ (Xo l₁).s (Xo l₁).univ.t β₁ C₁ _ (pullback.lift q C₁.s hq) Γ ρ₀ τ₀ ν₀ (ded₁ β₁ hβ₁) ft₁ (Xo l₁).univ.proper inferInstance (fun g => (hω g).1) (by`. Introduce `ω`. Take `⟨h1, -, -, g, σ, h4, h5, h6⟩` from `hω ω`. Take `⟨ρZ, hρZ⟩` from `T.sym l₁ h₁ (ρ₀ ω) (ν₀ ω) g σ h4 h5 (by rw [h1]; exact h6)`. Take `⟨ρ', hρ'⟩` from `exists_restrict T.s b' hU brange ρZ.hom`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ρ', ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (pullback.fst T.s (spMap b'))]`. Simplify using `only [Category.assoc, hρ', pullback.lift_fst, pullback.lift_fst_assoc]`. Rewrite using `[← Category.assoc, qj, hρZ])`. Establish `hover : ∀ (κ : Type) [Field κ] (x : Sp κ ⟶ C₁.X) (ω : Γ), x ≫ (ρ ω).hom = x → (ρ₀ ω).hom ≫ (Xo l₁).s = (Xo l₁).s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `κ _ x ω hx`. Take `⟨-, -, -, g, σ, h4, h5, -⟩` from `hω ω`. Use `GlobalTheory.galoisPart_eq_refl_of_fixes_point E H D l₁ (Xo l₁) (n * l₀.M) β₁ C₁ (ρ₀ ω) (ρ ω) σ hβ₁ hS ⟨J, hdiv⟩ (hact ω).2.1 h4 h5 κ x hx` as an intermediate fact. Substitute `this` using the available equality. Rewrite using `[h5]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ (Spec.map_id _)).trans (Category.comp_id _)`. Establish `hφ : ∀ ω, C₁.m.φ ≫ (mu ω).φ = (ν₀ ω).φ ≫ C₁.m.φ` using `fun ω => by`. Rewrite using `[(hact ω).1, (hω ω).1]`. Conclude with `(hact ω).2.2`. Establish `htriv : ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ C₁.X) (ω : Γ), x ≫ (ρ ω).hom = x → pullback.fst C₁.t.G.hom x ≫ (mu ω).φ = pullback.fst C₁.t.G.hom x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `κ _ _ x ω hx`. Conclude with `GlobalTheory.T.finiteOrderAutomorphism_fixing_level_trivial_on_fixedFibre L1 L2 L3 E H D l₁ (Xo l₁) (n * l₀.M) β₁ C₁ (ρ₀ ω) (ν₀ ω) (ρ ω) (mu ω) hβ₁ hS ⟨J, hdiv⟩ (hact ω).2.1 (hφ ω) (dvd_mul_left _ _) (hover κ x ω hx) (by rw [(hω ω).1]; exact (hω ω).2.2.1) ⟨τ ω, Nat.card Γ, Nat.ca …`. Establish `hcard : ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ C₁.X), (Nat.card {g // x ≫ (ρ g).hom = x} : κ) ≠ 0`. Introduce `κ _ _ x`. Use `card_stab_ne_zero ρ x (J := J) hnp (fun ω hx => ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨h1, -, h3, g, σ, -, -, h6⟩` from `hω ω`. Use `GlobalTheory.T.iterate_eq_id_of_trivial_on_fixed_fibre L1 L2 L3 E H D l₁ (Xo l₁) (n * l₀.M) β₁ C₁ (ρ₀ ω) (ν₀ ω) (ρ ω) (mu ω) hβ₁ hS ⟨J, hdiv⟩ (hact ω).2.1 (hφ ω) (hover κ x ω hx) (by rw [h1]; exact h3) g (by rw [h1]; exact h6) κ x hx (htriv κ x ω hx)` as an intermediate fact. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Conclude with `Iso.ext ((pow_hom_eq_iterate _ _).trans this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `natCast_ne_zero_of_pt (x ≫ C₁.s) hU` as an intermediate fact. Rewrite `this` using `[Nat.cast_mul]`. Conclude with `left_ne_zero_of_mul this`. Establish `good₁ : Good C₁.t` using `good_pullback L3.gtBaseChange E H _ _ T.t C₁.t q qm T.good`. Establish `push` using `GlobalTheory.T.pushforward_polarisationBundle_invertible_on_model L1 L2 L3 E H D l₁ _ _ _ (baseKA l₁) _ (Xo l₁).s (Xo l₁).univ (Xo l₁).s β₁ C₁ (ded₁ β₁ hβ₁) good₁.2.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hcomm : β₁.comp b = k.comp β`. Use extensionality with `x`. Conclude with `(hβ₁ (b x)).trans ((hb x).trans ((hβ x).symm.trans (hk (β x)).symm))`. Take `⟨C, good, ⟨above⟩⟩` from `GlobalTheory.T.exists_quotient_model_by_tame_finite_group E H _ _ _ (Xo l₁).s (Xo l₁).univ.t β₁ _ _ _ (Xo l₀).s (Xo l₀).univ.t β Γ C₁ b k r ν ρ₀ τ₀ ρ τ mu (ded₁ β₁ hβ₁) (ded₀ β hβ) hcomm bfin hr quot (Xo l₁).univ.proper (fun g => ⟨(hact g).1, (hact g).2.1, (hact g).2.2, (hω g).2. …`. Establish `hcop : (n ^ J).Coprime l₁.M` using `((GlobalTheory.T.exists_two_inert_odd_primes_coprime_level E H).2 n hn l₁).pow_left J`.
-
-Conclude with `⟨⟨hA, β, hβ, C, good, GlobalTheory.T.levelChange_extends_base_model hext L1 L2 L3 E H D Xo n (n ^ J) T hD l₀ l₁ h₁ _ _ β β₁ C C₁ b r ν above b' q hq (ded₀ β hβ) (ded₁ β₁ hβ₁) ft₀ bfin qfin qj hA rfl rfl hcop lev rsurj ⟨k, hk, hr, hcomm⟩, l₁, rfl, rfl, h₁, β₁, hβ₁, C₁, b, hb, r, ν …`.
+A detailed English derivation is pending.
 -/
 theorem exists_baseModel : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l), 1 ≤ D.p + D.q → ToroidalLevelCompatibility (H := H) (D := D) → ∀ (n J : ℕ) (T : Top Xo n (n ^ J)) (l₀ : Level H), AuxiliaryInertOddPrime H n → 1 ≤ J → l₀.A = 1 → Nonempty (BaseModel T l₀) := by
   intro hext L1 L2 L3 E _ _ _ H D Xo hD hN1 n J T l₀ hn hJ hA

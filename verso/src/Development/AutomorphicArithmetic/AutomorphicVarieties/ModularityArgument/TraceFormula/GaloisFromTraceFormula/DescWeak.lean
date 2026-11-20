@@ -7,12 +7,12 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison
 namespace UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
 /- English proof (translation)
-The claim follows from `runTh_of_pi Pi.piTerm_holds Pi.piFin_holds Pi.piAdm_pf Pi.twTrSum_pf Pi.growthPiJ_holds`.
+A detailed English derivation is pending.
 -/
 theorem runTh : RunTh := runTh_of_pi Pi.piTerm_holds Pi.piFin_holds Pi.piAdm_pf Pi.twTrSum_pf Pi.growthPiJ_holds
 
 /- English proof (translation)
-The claim follows from `descWeak_of_galWeak hW runTh`.
+A detailed English derivation is pending.
 -/
 theorem descWeak (hW : GalWeak 4) : UpperTheory.V.Z.Desc.DescWeak := descWeak_of_galWeak hW runTh
 

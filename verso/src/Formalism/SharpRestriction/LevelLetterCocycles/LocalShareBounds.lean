@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Arithmet
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `wtOf`. Rewrite using `[D.ntypes.eSer_zero k f hf, mul_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wtOf_off (k : Fin 2) (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k))))
     (f : (ZMod (D.host.g k))[X])
@@ -19,9 +19,9 @@ theorem wtOf_off (k : Fin 2) (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.hos
   simp
 
 /- English proof (translation)
-Establish `hsum : ∀ T : Finset (ZMod (D.host.g k))[X], ∑ f ∈ T, ((a * D.ntypes.eSer k f).coeff 1).re = ((a * ∑ f ∈ T, D.ntypes.eSer k f).coeff 1).re`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert f T hf ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hf, Finset.sum_insert hf, ih, mul_add]`. Simplify using the standard rewrite rules. Unfold `wtOf`. Rewrite using `[← Finset.sum_div, hsum, hS0, mul_one]`. Conclude with `div_self_le_one _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_wtOf_le_one (k : Fin 2) (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k))))
     (S0 : Finset (ZMod (D.host.g k))[X]) (hS0 : ∑ f ∈ S0, D.ntypes.eSer k f = 1) :
@@ -40,11 +40,11 @@ theorem sum_wtOf_le_one (k : Fin 2) (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod
   exact div_self_le_one _
 
 /- English proof (translation)
-Take `⟨L0, hL0, hsum0⟩` from `D.ntypes.eSer_sum k`. Establish `hw0 : ∀ v f, 0 ≤ wtOf D k (eV k v) f` using `fun v f => (hL k v).1 f`. Establish `hfilt : ∑ t ∈ S.filter (fun t => ∀ v, t v ∈ L0), ∏ v, wtOf D k (eV k v) (t v) = ∑ t ∈ S, ∏ v, wtOf D k (eV k v) (t v)`. Apply `Finset.sum_filter_of_ne` to reduce the goal to its premises. Introduce `t _ ht v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hv`. Apply `ht` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (Finset.mem_univ v)` to reduce the goal to its premises. Conclude with `wtOf_off k _ _ (fun h => hv ((hL0 _).2 h))`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Unfold `locShare`. Conclude with `hfilt.symm`. Use `_ ≤ ∑ t ∈ Fintype.piFinset (fun _ : D.nd.PlG k => L0), ∏ v, wtOf D k (eV k v) (t v) := Finset.sum_le_sum_of_subset_of_nonneg (fun t ht => Fintype.mem_piFinset.2 (Finset.mem_filter.1 ht).2) (fun t _ _ => Finset.prod_nonneg fun v _ => hw0 v _)`. Use `_ = ∏ v, ∑ f ∈ L0, wtOf D k (eV k v) f := (Finset.prod_univ_sum (fun _ => L0) (fun v f => wtOf D k (eV k v) f)).symm`. Use `_ ≤ 1 := Finset.prod_le_one (fun v _ => Finset.sum_nonneg fun f _ => hw0 v f) (fun v _ => sum_wtOf_le_one k _ L0 hsum0)`.
+A detailed English derivation is pending.
 -/
 theorem locShare_le_one (eV : VecAt D) (CL : ℝ) (hL : lawL D eV CL) (k : Fin 2) (S : Finset (Tup D k)) :
     locShare D eV k S ≤ 1 := by
@@ -84,7 +84,7 @@ def PropW (D : D7) : Prop :=
       ∀ S : Finset (Tup D k), (∀ t ∈ S, ¬ goodAt D k t) → locShare D eV k S ≤ Wk D CL k
 
 /- English proof (translation)
-Establish `h1` using `D.R.m_le_f`. Establish `h2` using `D.R.f_le_k`. Establish `h3` using `D.R.two_le_m`. Establish `h4` using `D.R.m_add_three_le_k`. Simplify using `only [Ranks.f, Ranks.r, Ranks.n]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -99,49 +99,45 @@ theorem ranks_facts (D : D7) : D.R.f ≤ D.R.r ∧ D.R.m ≤ D.R.r ∧ 2 ≤ D.R
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hrf` using `ranks_facts D`. Establish `hf_le : (D.R.f : ℝ) ≤ D.R.r` using `by exact_mod_cast hrf.1`. Establish `hm_le : (D.R.m : ℝ) ≤ D.R.r` using `by exact_mod_cast hrf.2.1`. Establish `hlogs : ∀ i : Fin 2, 0 ≤ Real.log (D.host.g i)` using `fun i => Real.log_nonneg (by exact_mod_cast (D.host.g_prime i).one_lt.le)`. Unfold `Wk br2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hB1 : (D.R.f : ℝ) * (D.R.r : ℝ) ^ 5 * Real.log (D.host.g k) * (D.host.g k : ℝ) ^ (-(1 / 2 : ℝ)) ≤ ∑ i : Fin 2, (D.R.f : ℝ) * (D.R.r : ℝ) ^ 5 * Real.log (D.host.g i) * (D.host.g i : ℝ) ^ (-(1 / 2 : ℝ))` using `Finset.single_le_sum (f := fun i : Fin 2 => (D.R.f : ℝ) * (D.R.r : ℝ) ^ 5 * Real.log (D.host.g i) * (D.host.g i : ℝ) ^ (-(1 / 2 : ℝ))) (fun i _ => by have := hlogs i; positivity) (Finset.mem_univ k)`. Use `set r : ℝ := (D.R.r : ℝ) with hr_def`. Use `set f : ℝ := (D.R.f : ℝ) with hf_def`. Use `set m : ℝ := (D.R.m : ℝ) with hm_def`. Use `set g : ℝ := (D.host.g k : ℝ) with hg_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set μ : ℝ := ((min D.host.q D.host.d : ℕ) : ℝ) with hμ_def`. Establish `hf0 : 0 ≤ f` using `by positivity`. Establish `hm0 : 0 ≤ m` using `by positivity`. Establish `hμ0 : 0 ≤ μ` using `by positivity`. Establish `he1` using `Real.exp_one_lt_d9`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he3 : Real.exp 1 ≤ 3` using `by linarith`. Establish `hg0 : 0 < g` using `by linarith`. Establish `hg1 : 1 ≤ g` using `by linarith`. Establish `hL8 : 1 ≤ Real.log g`. Rewrite using `[Real.le_log_iff_exp_le hg0]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set s : ℝ := g ^ (-(1 / 2 : ℝ)) with hs`. Establish `hs0 : 0 < s` using `Real.rpow_pos_of_pos hg0 _`. Establish `hsg : 1 / g ≤ s`. Rewrite using `[hs, one_div, ← Real.rpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.rpow_le_rpow_of_exponent_le hg1 (by norm_num)`. Establish `hlr : 1 ≤ Real.log r`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlr_le : Real.log r ≤ r` using `(Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Establish `hr5 : (10 : ℝ) ^ 10 ≤ r ^ 5`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 100) hr 5` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr3 : (10 : ℝ) ^ 6 ≤ r ^ 3`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 100) hr 3` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set u : ℝ := 1 + CL * r / g with hu`. Establish `hcr : CL * r / g ≤ 1 / r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_le_div_iff₀ hg0 (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcr0 : 0 ≤ CL * r / g` using `by positivity`. Establish `hu1 : 1 ≤ u` using `by linarith`. Establish `hr1 : 1 / r ≤ 1` using `by rw [div_le_one (by linarith)]; linarith`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hu2 : u ≤ 2` using `by linarith`. Establish `huf : u ^ D.R.f ≤ Real.exp 1`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h1 : f * (CL * r / g) ≤ f * (1 / r)` using `mul_le_mul_of_nonneg_left hcr hf0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : f * (1 / r) ≤ 1` using `by rw [mul_one_div, div_le_one (by linarith)]; exact hf_le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT0 : 0 ≤ f * r ^ 5 * Real.log g * s` using `by positivity`. Establish `hW1 : 3 * f / g ≤ f * r ^ 5 * Real.log g * s`. Establish `h2 : 3 * f * (1 / g) ≤ 3 * f * s` using `mul_le_mul_of_nonneg_left hsg (by positivity)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (3 : ℝ) ≤ r ^ 5 * Real.log g` using `by nlinarith`. Establish `h4 : 3 * f * s ≤ f * r ^ 5 * Real.log g * s`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 3 * f / g = 3 * f * (1 / g)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hW2 : 23 * u * f * Real.log g * s ≤ f * r ^ 5 * Real.log g * s`. Establish `hB : 0 ≤ f * Real.log g * s` using `by positivity`. Establish `h46 : 23 * u ≤ r ^ 5` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hW3a : 2 * f * m * u * (1 / (4 * μ)) ≤ f * m / μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : 0 ≤ f * m / μ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hg1' : 0 < g - 1` using `by linarith`. Establish `hW3b : 2 * f * m * u * ((1 + Real.log r) / (g - 1)) ≤ f * r ^ 5 * Real.log g * s`. Establish `h3 : 0 ≤ 1 + Real.log r` using `by linarith`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnum : 2 * f * m * u * (1 + Real.log r) ≤ 8 * f * r ^ 2`. Establish `h1 : m * u ≤ r * 2` using `mul_le_mul hm_le hu2 (by linarith) (by linarith)`. Establish `h2 : 1 + Real.log r ≤ 2 * r` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hden : 1 / (g - 1) ≤ 2 * s`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : 1 / (g - 1) ≤ 2 / g` using `by rw [div_le_div_iff₀ hg1' hg0]; linarith`. Establish `h2 : 2 / g = 2 * (1 / g)` using `by ring`. Establish `h3'` using `mul_le_mul_of_nonneg_left hsg (by norm_num : (0 : ℝ) ≤ 2)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr3L : (16 : ℝ) ≤ r ^ 3 * Real.log g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left hL8 (by positivity : (0 : ℝ) ≤ r ^ 3)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hW3 : 2 * f * m * u * (1 / (4 * μ) + (1 + Real.log r) / (g - 1)) ≤ f * m / μ + f * r ^ 5 * Real.log g * s`. Rewrite using `[mul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hW4 : r / 2 * (7 / 8 * u) ^ D.R.f ≤ 3 / 2 * (r * (7 / 8 + 0) ^ D.R.f)`. Rewrite using `[mul_pow, add_zero]`. Establish `h78 : (0 : ℝ) ≤ (7 / 8) ^ D.R.f` using `by positivity`. Establish `h1 : (7 / 8 : ℝ) ^ D.R.f * u ^ D.R.f ≤ (7 / 8) ^ D.R.f * 3` using `mul_le_mul_of_nonneg_left (huf.trans he3) h78`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hx0 : 0 ≤ 1 - 1 / (5 * Real.log r)`. Establish `: 1 / (5 * Real.log r) ≤ 1` using `by rw [div_le_one (by linarith)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : (1 - 1 / (5 * Real.log r)) ^ D.R.f ≤ Real.exp (-(1 / 5 * f / Real.log r))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hW5 : (u * (1 - 1 / (5 * Real.log r))) ^ D.R.f ≤ 3 * Real.exp (-(1 / 5 * f / Real.log r))`.
-
-Rewrite using `[mul_pow]`. Establish `h1 : 0 ≤ (1 - 1 / (5 * Real.log r)) ^ D.R.f` using `pow_nonneg hx0 _`. Combine the equalities or inequalities in the displayed calculation. Establish `hB2 : 0 ≤ f * m / μ` using `by positivity`. Establish `hB3 : 0 ≤ r * (7 / 8 + 0) ^ D.R.f` using `by positivity`.
-
-Establish `hB4 : 0 < Real.exp (-(1 / 5 * f / Real.log r))` using `Real.exp_pos _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Wk_le (D : D7) (CL : ℝ) (k : Fin 2) (hCL : 0 ≤ CL) (hr : (100 : ℝ) ≤ D.R.r)
     (hg : (2 : ℝ) ^ 12 ≤ D.host.g k) (hCLg : CL * (D.R.r : ℝ) ^ 2 ≤ D.host.g k) :
@@ -284,23 +280,23 @@ theorem Wk_le (D : D7) (CL : ℝ) (k : Fin 2) (hCL : 0 ≤ CL) (hr : (100 : ℝ)
   linarith
 
 /- English proof (translation)
-Establish `hlogs : ∀ i : Fin 2, 0 ≤ Real.log (D.host.g i)` using `fun i => Real.log_nonneg (by exact_mod_cast (D.host.g_prime i).one_lt.le)`. Establish `hbr : ∀ c : ℝ, Real.exp (-(c * D.R.f / Real.log D.R.r)) ≤ br2 D c 0`. Introduce `c`. Unfold `br2`. Establish `h1 : 0 ≤ ∑ i : Fin 2, (D.R.f : ℝ) * (D.R.r : ℝ) ^ 5 * Real.log (D.host.g i) * (D.host.g i : ℝ) ^ (-(1 / 2 : ℝ))` using `Finset.sum_nonneg fun i _ => by have := hlogs i; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) ≤ (D.R.f : ℝ) * D.R.m / ((min D.host.q D.host.d : ℕ) : ℝ)` using `by positivity`. Establish `h3 : (0 : ℝ) ≤ (D.R.r : ℝ) * (7 / 8 + 0) ^ D.R.f` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb0 : 0 ≤ br2 D (1 / 5) 0` using `le_trans (Real.exp_pos _).le (hbr (1 / 5))`. Introduce `k S hS`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hr100 : (100 : ℝ) ≤ D.R.r`. Establish `hpos : (0 : ℝ) < (CL + 1) * 2 ^ 12` using `by positivity`. Establish `h` using `hr k`. Establish `hg' : (D.R.r : ℝ) ^ 2 * ((CL + 1) * 2 ^ 12) ≤ D.host.g k`. Rewrite `h` using `[one_div, inv_mul_eq_div, le_div_iff₀ hpos]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hr2 : (1 : ℝ) ≤ (D.R.r : ℝ) ^ 2` using `by nlinarith`. Establish `hg12 : (2 : ℝ) ^ 12 ≤ D.host.g k` using `by nlinarith`. Establish `hCLg : CL * (D.R.r : ℝ) ^ 2 ≤ D.host.g k` using `by nlinarith`. Establish `h100 : 100 ≤ D.R.r` using `by exact_mod_cast hr100`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg12n : 2 ^ 12 ≤ D.host.g k` using `by exact_mod_cast hg12`. Establish `h1` using `hW eV CL hCL hL hA h100 k hg12n S hS`. Establish `h2` using `Wk_le D CL k hCL hr100 hg12 hCLg`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hr100`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrf` using `ranks_facts D`. Establish `hr6 : (6 : ℝ) ≤ D.R.r` using `by exact_mod_cast hrf.2.2.2`. Establish `hf : (D.R.f : ℝ) ≤ D.R.r` using `by exact_mod_cast hrf.1`. Establish `he1` using `Real.exp_one_lt_d9`. Establish `hlogr : 1 ≤ Real.log D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : 1 / 5 * (D.R.f : ℝ) / Real.log D.R.r ≤ 20`. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : Real.exp (-20) ≤ Real.exp (-(1 / 5 * (D.R.f : ℝ) / Real.log D.R.r))` using `Real.exp_le_exp.2 (by linarith)`. Establish `he20 : 1 ≤ (10 : ℝ) ^ 10 * Real.exp (-20)`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, le_div_iff₀ (Real.exp_pos _), one_mul]`. Establish `h1 : Real.exp 20 = Real.exp 1 ^ 20` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `hbr (1 / 5)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem provedLocal_of_law (hW : PropW D) {eV : VecAt D} {CL : ℝ} (hCL : 0 ≤ CL) (hL : lawL D eV CL)
     (hA : TieAdmG D) (hr : ∀ k, (D.R.r : ℝ) ^ 2 ≤ 1 / ((CL + 1) * 2 ^ 12) * D.host.g k) :

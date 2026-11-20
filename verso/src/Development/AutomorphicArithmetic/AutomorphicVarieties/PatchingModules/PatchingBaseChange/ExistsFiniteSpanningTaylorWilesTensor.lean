@@ -4,23 +4,21 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Module.Finite.fg_top (R := B) (M := S)`. Take `⟨t, ht⟩` from `Module.Finite.fg_top (R := Λ) (M := M)`. Set `s : Finset (S ⊗[B] M)` to `Finset.image₂ (fun x y => x ⊗ₜ[B] y) a t`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ x ∈ a, ∀ y : M, x ⊗ₜ[B] y ∈ Submodule.span θ.range (s : Set (S ⊗[B] M))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx y`. Establish `hy : y ∈ Submodule.span Λ (t : Set M)` using `ht ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image₂_of_mem hx hy))`. Consider the case `zero => rw [TensorProduct.tmul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y y' _ _ h h' => rw [TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul c y _ h`. Take `⟨w, hw⟩` from `hθ c`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl, TensorProduct.tmul_smul, ← algebraMap_smul S]`. Conclude with `Submodule.smul_mem _ (⟨algebraMap B S (lam c), w, hw⟩ : θ.range) h`. Establish `h2 : ∀ x : S, ∀ y : M, x ⊗ₜ[B] y ∈ Submodule.span θ.range (s : Set (S ⊗[B] M))`. Introduce `x`. Establish `hx : x ∈ Submodule.span B (a : Set S)` using `ha ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h1 x hx`. Consider the case `zero => intro y`. Rewrite using `[TensorProduct.zero_tmul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x x' _ _ h h' => intro y`. Rewrite using `[TensorProduct.add_tmul]`. Conclude with `Submodule.add_mem _ (h y) (h' y)`. Consider the case `smul c x _ h => intro y`. Rewrite using `[TensorProduct.smul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `h _`. Introduce `z`. Establish `hz : z ∈ Submodule.span θ.range (s : Set (S ⊗[B] M))`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `tmul x y => exact h2 x y`. Consider the case `add z z' h h' => exact Submodule.add_mem _ h h'`. Take `⟨f, -, hf⟩` from `Submodule.mem_span_finset.1 hz`. Use `choose c hc using fun g => (f g).2`. Use `⟨c, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hf]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem tens_fin {Λ B S R M : Type} [CommRing Λ] [CommRing B] [CommRing S] [CommRing R] [Algebra B S]
     [AddCommGroup M] [Module B M] [Module Λ M] [Module.Finite B S] [Module.Finite Λ M]
@@ -66,9 +64,7 @@ private theorem tens_fin {Λ B S R M : Type} [CommRing Λ] [CommRing B] [CommRin
   rfl
 
 /- English proof (translation)
-Introduce `l _ L G0 n O _ _ _ r B _ _ _ u J σ D b G h q ut N A Nq ph ta ex m`. Use `haveI : Module.Finite B (SpAt u (fun j => h.p₀ (ph j)) ut) := (UpperTheory.V.Pa.BC.sp_fin B q n _ _).1`. Use `haveI := b.fin`. Conclude with `tens_fin (Λ := abelian₂ O σ D) (fun a => b.lam a) b.smul_lam m.θ.toRingHom fun a => ⟨A.s (MvPowerSeries.C a), by`. Use `m.theta_coefficientMap_eq (MvPowerSeries.C a)` as an intermediate fact.
-
-Rewrite `this` using `[MvPowerSeries.constantCoeff_C]`. Conclude with `this⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.exists_finite_spanning_taylorWiles_tensor :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (n : ℕ) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (σ : Type) (D : ℕ) (b : TWBase u J σ D) (G : Glob l L) (h : G.Hom G0) (q : ℕ) (ut : Fin q → Fin n → O) (N : ℕ) (A : TWRing b h ut N) (Nq : Fin q → ℕ) (ph ta : Fin q → G.G₀) (ex : ℕ) (m : TWMaps Nq ph ta A ex), ∃ s : Finset (SpAt u (fun j => h.p₀ (ph j)) ut ⊗[B] b.M), ∀ z, ∃ c : _ → A.R, z = ∑ g ∈ s, m.θ (c g) • g := by

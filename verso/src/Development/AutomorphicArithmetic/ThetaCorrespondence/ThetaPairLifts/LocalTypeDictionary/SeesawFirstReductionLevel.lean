@@ -23,25 +23,23 @@ open GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 end Values
 /- English proof (translation)
-Introduce `hP hK hM`. Take `⟨e₁, e₂, s, hSB⟩` from `hK.2.1`. Use `gbig_three_is (_root_.GlobalTheory.T.quadratic_tower_step_stage_induction hP hK hM) (_root_.GlobalTheory.T.tower_stage_successor_coefficients_alt hP hK hM) (_root_.GlobalTheory.T.exists_factor_of_isStageC hP hK hM) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hL hy hd hf W S hψ hN i j p q A A' WW X lam e hX hF he`. Take `⟨B', WW₁, Y, hY, hst⟩` from `hy W S hψ hN i j p q A A' WW X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hf W S hψ hN i j p q A B' WW₁ Y hY`. Use `haveI : Nonempty T := ⟨μ₀⟩`. Use `⟨A, B', WW₁, Y, c, hY, hc.isConst, hc.1, fun t => ?_⟩` and prove the remaining obligations. Take `⟨Bs, bb, Γ, Γ₁, H, H', R, R₁, d, d₁, k, k₁, hfit, hb, hV, hp, hq, hH, hH', hd0, hd10, hk⟩` from `hd W S hψ hN i j p q A A' WW B' WW₁ X Y lam c e hX hY hst hF hc he t`. Take `⟨C₀, hC₀, hstep⟩` from `hSB D.host.F D.host.E D.sp.cm.sig Bs A.rank bb Γ Γ₁ H H' R R₁ hV hp hq hH hH'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : (A.rank - (bb + 2)) / 2 = e` using `by omega`. Establish `key : ∀ t' ∈ ({t, μ₀} : Set T), d * (((GlobalTheory.SqStep.chs G i j t').ν k / (GlobalTheory.SqStep.chs G i j μ₀).ν k : Circle) : ℂ) * lam t' * GlobalTheory.LFun.charL (GlobalTheory.SqStep.chs G i j t').ν (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) ((e + 1 : ℕ) : ℂ) * (C₀ * …`. Introduce `t' ht'`. Take `⟨⟨om, om', Rf, hm, hκ⟩, ⟨om₁, om₁', Rf₁, hm₁, hκ₁⟩⟩` from `hk t' ht'`. Take `⟨u, hu1, hu2⟩` from `hstep _ om om' Rf om₁ om₁' Rf₁ hm hm₁ _ _ hκ hκ₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu1`, `hu2` using `[hE]`. Establish `e1 : (((e : ℕ) : ℂ) + 1) = ((e + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite `hu2` using `[e1]`. Express the relevant statement in the definitionally equal form `_ * GlobalTheory.LFun.charL _ (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) _ = _ at hu2`. Rewrite using `[hu2, mul_right_comm, hu1, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `good : ∀ t' ∈ ({t, μ₀} : Set T), GlobalTheory.LFun.IsHecke D.host.F D.host.E (GlobalTheory.SqStep.chs G i j t').ν ∧ ∀ᶠ w in Filter.cofinite, GlobalTheory.LFun.UnrAt (GlobalTheory.SqStep.chs G i j t').ν w`. Introduce `t' ht'`. Take `⟨⟨om, om', Rf, hm, -⟩, -⟩` from `hk t' ht'`. Conclude with `nu_good hm.triple.chars`. Take `⟨gt, ut⟩` from `good t (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨gμ, uμ⟩` from `good μ₀ (by simp)`. Take `⟨n, hn, hv⟩` from `val_quot_pow G hL W S hN i j t`. Take `⟨𝔟, r, hr, st, sμ⟩` from `exists_stepFac_twist Bs (X := GlobalTheory.SqStep.chs G i j t) (Y := GlobalTheory.SqStep.chs G i j μ₀) ⟨gt.1.div' gμ.1, fun y => by simp only [MonoidHom.div_apply, gt.2 y, gμ.2 y, div_one]⟩ ((ut.and uμ).mono fun w hw => by rw [div_eq_mul_inv]; exact hw.1.mul hw.2.inv) hn hv e₁ e₂ …`. Establish `kt` using `key t (by simp)`. Establish `kμ` using `key μ₀ (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `kμ` using `[div_self', div_self', Circle.coe_one, mul_one, mul_one]`. Establish `ek : (((GlobalTheory.SqStep.chs G i j t).ν k / (GlobalTheory.SqStep.chs G i j μ₀).ν k : Circle) : ℂ) = (((GlobalTheory.SqStep.chs G i j t).ν (k / k₁) / (GlobalTheory.SqStep.chs G i j μ₀).ν (k / k₁) : Circle) : ℂ) * (((GlobalTheory.SqStep.chs G i j t).ν k₁ / (GlobalTheory.SqStep.c …`. Rewrite using `[← Circle.coe_mul, div_mul_div_comm, ← map_mul, ← map_mul, div_mul_cancel]`. Rewrite `kt` using `[ek]`. Establish `z₀` using `Circle.coe_ne_zero ((GlobalTheory.SqStep.chs G i j t).ν (k / k₁) / (GlobalTheory.SqStep.chs G i j μ₀).ν (k / k₁))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z₁` using `Circle.coe_ne_zero ((GlobalTheory.SqStep.chs G i j t).ν k₁ / (GlobalTheory.SqStep.chs G i j μ₀).ν k₁)`. Establish `nt` using `mul_ne_zero (mul_ne_zero hd10 z₁) (hc.1 t)`. Establish `nμ : d₁ * c μ₀ ≠ 0` using `mul_ne_zero hd10 (hc.1 μ₀)`. Rewrite `nt` using `[← kt]`. Rewrite `nμ` using `[← kμ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Bs, e₁, e₂, s, 𝔟, H'.𝔟, hfit, ?_, ?_, right_ne_zero_of_mul (left_ne_zero_of_mul nt), right_ne_zero_of_mul (left_ne_zero_of_mul nμ), ?_⟩` and prove the remaining obligations. Rewrite using `[st]`. Conclude with `mul_ne_zero (mul_ne_zero z₀ hr) (right_ne_zero_of_mul (right_ne_zero_of_mul nt))`. Rewrite using `[sμ]`. Conclude with `mul_ne_zero hr (right_ne_zero_of_mul (right_ne_zero_of_mul nμ))`.
-
-Rewrite using `[st, sμ]`. Use `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hd0 hC₀) z₁) ?_` and prove the remaining obligations. Take the linear combination `(r * c μ₀) * kt - (r * c t * (((GlobalTheory.SqStep.chs G i j t).ν k₁ / (GlobalTheory.SqStep.chs G i j μ₀).ν k₁ : Circle) : ℂ)) * kμ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem seesaw_first_reduction : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
@@ -133,7 +131,7 @@ open GlobalTheory.SqTop
 open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqStepK.seesaw_first_reduction | exact _root_.GlobalTheory.SqStepK.seesaw_first_reduction | (intros; apply _root_.GlobalTheory.SqStepK.seesaw_first_reduction <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.seesaw_first_reduction_level : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

@@ -8,19 +8,17 @@ open IsDedekindDomain
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `set σ := sg (FiniteAdeleRing (𝓞 F) F) c with hσ`. Use `set G' : Matrix (Fin r) (Fin r) (RA F E) := G.map (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) with hG'`. Establish `hM : gᵀ * G' * g.map σ = G'`. Use extensionality with `a b`. Establish `h` using `hg.2 (Pi.single a 1) (Pi.single b 1)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hermA, Matrix.mulVec_single_one] at h`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `[G', Pi.single_apply, apply_ite σ]`. Establish `hdet` using `congrArg Matrix.det hM`. Establish `hs : (g.map σ).det = σ g.det`. Rewrite using `[show g.map σ = (σ : RA F E →+* RA F E).mapMatrix g from rfl, ← RingHom.map_det]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hs]`. Establish `hG'det : G'.det = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ G.det`. Rewrite using `[hG', show G.map (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) = ((Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E) : E →+* RA F E).mapMatrix G from rfl, ← RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit G'.det`. Rewrite using `[hG'det]`. Use `IsUnit.of_mul_eq_one ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ G.det⁻¹) ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_inv_cancel₀ hG]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `IsTA`. Establish `: g.det * σ g.det * G'.det = 1 * G'.det`. Rewrite using `[one_mul]`. Use `hdet using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `hu.mul_right_cancel this`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isTA_det_of_isUA {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {r : ℕ}
     (c : E ≃ₐ[F] E) (G : Matrix (Fin r) (Fin r) E) (g : Matrix (Fin r) (Fin r) (RA F E))
@@ -56,7 +54,7 @@ theorem isTA_det_of_isUA {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
   exact hu.mul_right_cancel this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ hG hg` and use `isTA_det_of_isUA _ _ _ hG hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitary_det_isTA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (g : Matrix (Fin r) (Fin r) (RA (maximalRealSubfield E) E)), G.det ≠ 0 → IsUA (IsCMField.complexConj E) G g → IsTA (IsCMField.complexConj E) g.det :=
   fun _ _ _ _ _ _ _ hG hg => isTA_det_of_isUA _ _ _ hG hg

@@ -11,7 +11,7 @@ noncomputable def crtAlgEquiv (A : Type) [CommRing A] (ι : Type) [Fintype ι] (
     (fun x => by ext i; rfl)
 
 /- English proof (translation)
-Introduce `A Λ _ _ _ ι _ I hI hbot n he`. Set `c` to `crtAlgEquiv A ι I hI hbot`. Set `e : ∀ i, (A ⧸ I i) ⊗[A] Λ ≃ₐ[A ⧸ I i] Matrix (Fin n) (Fin n) (A ⧸ I i)` to `fun i => (he i).some`. Conclude with `⟨(Algebra.TensorProduct.rid A A Λ).symm |>.trans (Algebra.TensorProduct.congr AlgEquiv.refl c) |>.trans (Algebra.TensorProduct.piRight A A Λ (fun i => A ⧸ I i)) |>.trans (AlgEquiv.piCongrRight (fun i => (Algebra.TensorProduct.comm A Λ (A ⧸ I i)).trans ((e i).restrictScalars A))) …`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem matrix_glue_crt : ∀ (A Λ : Type) [CommRing A] [Ring Λ] [Algebra A Λ] (ι : Type) [Fintype ι] (I : ι → Ideal A), Pairwise (IsCoprime on I) → ⨅ i, I i = ⊥ → ∀ (n : ℕ), (∀ i, Nonempty ((A ⧸ I i) ⊗[A] Λ ≃ₐ[A ⧸ I i] Matrix (Fin n) (Fin n) (A ⧸ I i))) → Nonempty (Λ ≃ₐ[A] Matrix (Fin n) (Fin n) A) := by
   intro A Λ _ _ _ ι _ I hI hbot n he

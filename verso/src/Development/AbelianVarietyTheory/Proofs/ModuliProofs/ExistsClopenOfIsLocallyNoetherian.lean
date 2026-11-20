@@ -10,13 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PairingLocus
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hn.exists_left_inv`. Establish `h₀ : (∑ i ∈ Finset.range n, u ^ i) * (u - 1) = 0` using `by rw [geom_sum_mul, hu, sub_self]`. Establish `h₁ : u * (m * ∑ i ∈ Finset.range n, u ^ i) = m * ∑ i ∈ Finset.range n, u ^ i`. Take the linear combination `m * h₀`. Establish `h₂ : ∀ i : ℕ, u ^ i * (m * ∑ i ∈ Finset.range n, u ^ i) = m * ∑ i ∈ Finset.range n, u ^ i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rw [pow_zero, _root_.one_mul]`. Consider the case `succ i ih => rw [pow_succ, _root_.mul_assoc, h₁, ih]`. Use `⟨m * ∑ i ∈ Finset.range n, u ^ i, ?_, fun R' _ φ => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ * _ = _`. Rewrite using `[_root_.mul_assoc, Finset.sum_mul, Finset.sum_congr rfl fun i _ => h₂ i, Finset.sum_const, Finset.card_range, nsmul_eq_mul, ← _root_.mul_assoc, hm, _root_.one_mul]`. Use `congrArg φ hm` as an intermediate fact. Simplify using `only [map_mul, map_sum, map_pow, h, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, _root_.mul_one, map_natCast, map_one] at this ⊢`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg φ h₁` as an intermediate fact. Rewrite `this` using `[map_mul, h, _root_.mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_idempotent {R : Type} [CommRing R] {n : ℕ} (hn : IsUnit (n : R)) {u : R} (hu : u ^ n = 1) :
     ∃ e : R, IsIdempotentElem e ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), φ u = 1 ↔ φ e = 1 := by
@@ -41,11 +41,9 @@ theorem exists_idempotent {R : Type} [CommRing R] {n : ℕ} (hn : IsUnit (n : R)
     rwa [map_mul, h, _root_.mul_one] at this
 
 /- English proof (translation)
-Establish `: (X.basicOpen e : Set X) = (X.basicOpen (1 - e) : Set X)ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Establish `hx : x ∈ X.basicOpen (e * (1 - e))` using `by rw [Scheme.basicOpen_mul]; exact ⟨h, h'⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx` using `[he.mul_one_sub_self, Scheme.basicOpen_zero]`. Conclude with `hx`. Introduce `h`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (X.presheaf.germ ⊤ x trivial e) with h' | h'` into its components or cases. Conclude with `(X.mem_basicOpen e x trivial).2 h'`.
-
-Conclude with `absurd ((X.mem_basicOpen (U := ⊤) (1 - e) x trivial).2 (by rwa [map_sub, map_one])) h`. Rewrite using `[this]`. Conclude with `(X.basicOpen (1 - e)).isOpen.isClosed_compl`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_basicOpen {X : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotentElem e) :
     IsClosed (X.basicOpen e : Set X) := by
@@ -64,11 +62,11 @@ theorem isClosed_basicOpen {X : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotentE
   exact (X.basicOpen (1 - e)).isOpen.isClosed_compl
 
 /- English proof (translation)
-Establish `p : h ⁻¹ᵁ X.basicOpen e = Y.basicOpen (h.appTop.hom e)` using `Scheme.preimage_basicOpen h e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H _ ⟨y, rfl⟩`. Establish `: y ∈ h ⁻¹ᵁ X.basicOpen e`. Rewrite using `[p, H, Scheme.basicOpen_of_isUnit _ isUnit_one]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Conclude with `this`. Introduce `H`. Establish `hu : IsUnit (h.appTop.hom e)`. Use `RingedSpace.isUnit_of_isUnit_germ Y.toRingedSpace ⊤ _ fun y hy => ?_` and prove the remaining obligations.
+Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: y ∈ Y.basicOpen (h.appTop.hom e)` using `by rw [← p]; exact H ⟨y, rfl⟩`. Conclude with `(Y.mem_basicOpen _ y hy).1 this`. Conclude with `hu.mul_left_cancel ((he.map h.appTop.hom).eq.trans (_root_.mul_one _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem appTop_eq_one_iff {X Y : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotentElem e) (h : Y ⟶ X) :
     h.appTop.hom e = 1 ↔ Set.range h ⊆ X.basicOpen e := by
@@ -86,7 +84,7 @@ theorem appTop_eq_one_iff {X Y : Scheme.{0}} {e : Γ(X, ⊤)} (he : IsIdempotent
     exact hu.mul_left_cancel ((he.map h.appTop.hom).eq.trans (_root_.mul_one _).symm)
 
 /- English proof (translation)
-Establish `hu : (c * c₀⁻¹).val ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, inv_pow, hc, hc₀, inv_one, _root_.mul_one, Units.val_one]`. Take `⟨e, he, H⟩` from `exists_idempotent hn hu`. Use `⟨X.basicOpen e, isClosed_basicOpen he, fun Y h => ?_⟩` and prove the remaining obligations. Rewrite using `[← appTop_eq_one_iff he, ← H, ← mul_inv_eq_one, ← map_inv, ← map_mul, ← Units.val_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -102,9 +100,9 @@ theorem exists_clopen_eq {X : Scheme.{0}} {n : ℕ} (hn : IsUnit (n : Γ(X, ⊤)
   rfl
 
 /- English proof (translation)
-Establish `hpow : ∀ j : ℕ, WeilIs P.A P.L k (x ^ (j + 1)) y (c ^ (j + 1))`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rwa [zero_add, pow_one, pow_one]`. Consider the case `succ j ih => rw [pow_succ, pow_succ c]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `weilIs_mul_left hG S P k T _ _ _ _ _ ih hc`. Establish `h` using `hpow k`. Rewrite `h` using `[pow_succ, hx, _root_.one_mul]`. Use `CommutatorPairing.weilIs_unique hG P.isAb P.isLB h hc` as an intermediate fact. Rewrite `this` using `[pow_succ, mul_eq_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pow_eq_one (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S} {x y : T ⟶ P.A}
     (hx : x ^ k = 1) {c : Γ(T.left, ⊤)ˣ} (hc : WeilIs P.A P.L k x y c) : c ^ k = 1 := by
@@ -119,7 +117,7 @@ theorem pow_eq_one (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {
   rwa [pow_succ, mul_eq_right] at this
 
 /- English proof (translation)
-Take `⟨U, hU, H⟩` from `exists_clopen_eq hn hc (pow_eq_one hG P n hx h₀)`. Use `⟨U, hU, fun T' h => ?_⟩` and prove the remaining obligations. Establish `h₁` using `CommPairing.weilIs_pull hG P.isAb P.isLB h h₀`. Rewrite using `[← H]`. Conclude with `⟨fun h₂ => CommutatorPairing.weilIs_unique hG P.isAb P.isLB h₂ h₁, fun e => e ▸ h₁⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_clopen_of_weilIs (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S) (n : ℕ) {T : Over S}
     {x y : T ⟶ P.A} {c c₀ : Γ(T.left, ⊤)ˣ} (hn : IsUnit (n : Γ(T.left, ⊤))) (hx : x ^ n = 1) (hc : c ^ n = 1)
@@ -133,7 +131,7 @@ theorem exists_clopen_of_weilIs (hG : GlobalFnsSt) {S : Scheme.{0}} (P : PolAV S
   exact ⟨fun h₂ => CommutatorPairing.weilIs_unique hG P.isAb P.isLB h₂ h₁, fun e => e ▸ h₁⟩
 
 /- English proof (translation)
-Introduce `hG hl S P n T x y c _ hn hx hy hc`. Take `⟨c₀, h₀, -⟩` from `CommutatorPairing.existsUnique_weilIs hG hl S P n T x y hx hy`. Conclude with `exists_clopen_of_weilIs hG P n hn hx hc h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_clopen_of_lift : GlobalFnsSt → (∀ (S : Scheme.{0}) (P : PolAV S) (N : ℕ) (T : Over S) (x : T ⟶ P.A),
     x ^ N = 1 → ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧
@@ -148,7 +146,7 @@ theorem exists_clopen_of_lift : GlobalFnsSt → (∀ (S : Scheme.{0}) (P : PolAV
   exact exists_clopen_of_weilIs hG P n hn hx hc h₀
 
 /- English proof (translation)
-Take `⟨c₀, h₀, -⟩` from `(hL.weil S P n T).1 x y hx hy`. Conclude with `exists_clopen_of_weilIs hL.globalFns P n hn hx hc h₀`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_clopen_of_isLocallyNoetherian (hL : Laws) (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S)
     (n : ℕ) (T : Over S) (x y : T ⟶ P.A) (c : Γ(T.left, ⊤)ˣ) (hn : IsUnit (n : Γ(T.left, ⊤))) (hx : x ^ n = 1)

@@ -5,15 +5,15 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ B _ _ _ _`. Establish `hart : IsArtinianRing B` using `IsArtinianRing.of_finite ℚ_[l] B`. Set `g : B →ₐ[ℚ_[l]] ResidueField B` to `Ideal.Quotient.mkₐ ℚ_[l] (maximalIdeal B)`. Establish `het : Algebra.FormallyEtale ℚ_[l] (ResidueField B)` using `Algebra.FormallyEtale.of_isSeparable ℚ_[l] (ResidueField B)`. Establish `hker : RingHom.ker (g : B →+* ResidueField B) = maximalIdeal B` using `Ideal.mk_ker`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnil : IsNilpotent (RingHom.ker (g : B →+* ResidueField B))`. Rewrite using `[hker]`. Conclude with `(IsArtinianRing.isNilpotent_jacobson_bot (R := B)).imp fun n h => by`. Rewrite `h` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Then use the resulting hypothesis. Establish `hsurj : Function.Surjective g` using `Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s : ResidueField B →ₐ[ℚ_[l]] B` to `Algebra.FormallySmooth.liftOfSurjective (AlgHom.id ℚ_[l] _) g hsurj hnil`. Establish `hs : ∀ x, g (s x) = x` using `fun x => Algebra.FormallySmooth.liftOfSurjective_apply _ g hsurj hnil x`. Use `letI alg : Algebra (ResidueField B) B := s.toRingHom.toAlgebra`. Establish `tower : IsScalarTower ℚ_[l] (ResidueField B) B`. Use `IsScalarTower.of_algebraMap_eq fun r => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] B r = s (algebraMap ℚ_[l] (ResidueField B) r)`. Conclude with `(s.commutes r).symm`. Set `π : B →ₐ[ResidueField B] ResidueField B` to `{ (g : B →+* ResidueField B) with commutes' := fun x => hs x }`. Use `⟨ResidueField B, inferInstance, inferInstance, inferInstance, alg, tower, π, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : a ∈ maximalIdeal B`. Rewrite using `[← hker]`. Conclude with `ha`. Conclude with `Ring.KrullDimLE.isNilpotent_iff_mem_maximalIdeal.mpr hmem`.
+A detailed English derivation is pending.
 -/
 theorem exists_coefficientField_of_finite_local_padic : ∀ {l : ℕ} [Fact l.Prime] (B : Type) [CommRing B] [IsLocalRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B], ∃ (E : Type) (_ : Field E) (_ : Algebra ℚ_[l] E) (_ : FiniteDimensional ℚ_[l] E) (_ : Algebra E B) (_ : IsScalarTower ℚ_[l] E B) (π : B →ₐ[E] E), ∀ a, π a = 0 → IsNilpotent a := by
   intro l _ B _ _ _ _

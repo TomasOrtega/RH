@@ -6,7 +6,7 @@ noncomputable section
 namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
 /- English proof (translation)
-The claim follows from `closed_of_orthogonal_lattice D (orthLat_of' hB hG) h`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_orthogonal_basis (D : Formalism.BasicNotions.D7) (hB : OrthBasisLat) (hG : GoodLeSmall) (h : SymmetryWindowOnAdmissible D) :
     Formalism.MainNotions.flipOneThree.IntegralityFromMetricForLargeConstants D :=

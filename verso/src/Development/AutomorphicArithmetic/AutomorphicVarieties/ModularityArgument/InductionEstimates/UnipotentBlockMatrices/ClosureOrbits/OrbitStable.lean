@@ -18,7 +18,7 @@ open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheor
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Establish `: Submodule.span ℂ (Set.range fun k => ρ k v) ≤ (Submodule.span ℂ (Set.range fun k => ρ k v)).comap (ρ k)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k', rfl⟩`. Conclude with `Submodule.subset_span ⟨k * k', hm k k' v⟩`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem gen_orbit {Γ H : Type*} [Group Γ] [AddCommGroup H] [Module ℂ H] (ρ : Γ → H →ₗ[ℂ] H)
     (hm : ∀ a b x, ρ (a * b) x = ρ a (ρ b x)) (v : H) (k : Γ) :
@@ -35,7 +35,7 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) 
 noncomputable def rk (k : KG K n) : L2 μ →ₗ[ℂ] L2 μ := (rightRegularRep (Gam K n) μ (k : G1 K n)).toLinearMap
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨k⁻¹, fun x y => by have := (rightRegularRep (Gam K n) μ).inner_map_left ((k⁻¹ : KG K n) : G1 K n) x y rw [← Subgroup.coe_inv, inv_inv] at this exact this.symm⟩`.
+Supply the required witnesses or components.
 -/
 private theorem rk_adj (k : KG K n) : ∃ k', ∀ x y, ⟪x, rk μ k y⟫_ℂ = ⟪rk μ k' x, y⟫_ℂ :=
   ⟨k⁻¹, fun x y => by
@@ -44,32 +44,32 @@ private theorem rk_adj (k : KG K n) : ∃ k', ∀ x y, ⟪x, rk μ k y⟫_ℂ = 
     exact this.symm⟩
 
 /- English proof (translation)
-The claim follows from `(rightRegularRep (Gam K n) μ).map_mul_apply (k : G1 K n) (k' : G1 K n) x`.
+A detailed English derivation is pending.
 -/
 theorem rk_mul (k k' : KG K n) (x : L2 μ) : rk μ (k * k') x = rk μ k (rk μ k' x) :=
   (rightRegularRep (Gam K n) μ).map_mul_apply (k : G1 K n) (k' : G1 K n) x
 
 /- English proof (translation)
-The claim follows from `(rightRegularRep (Gam K n) μ).map_one_apply x`.
+A detailed English derivation is pending.
 -/
 private theorem rk_one (x : L2 μ) : rk μ (1 : KG K n) x = x :=
   (rightRegularRep (Gam K n) μ).map_one_apply x
 
 /- English proof (translation)
-The claim follows from `gen_orbit (rk μ) (rk_mul μ) v k`.
+A detailed English derivation is pending.
 -/
 private theorem orbit_stable (v : L2 μ) (k : KG K n) :
     ∀ x ∈ Submodule.span ℂ (Set.range fun k => rk μ k v), rk μ k x ∈ Submodule.span ℂ (Set.range fun k => rk μ k v) :=
   gen_orbit (rk μ) (rk_mul μ) v k
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, rk_one μ v⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_orbit (v : L2 μ) : v ∈ Submodule.span ℂ (Set.range fun k => rk μ k v) :=
   Submodule.subset_span ⟨1, rk_one μ v⟩
 
 /- English proof (translation)
-Rewrite using `[(clsBasic K n μ).2.2.1 φ hφ ψ _ h, RG, retractOne_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cls_tr {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n) (ψ : cuspForms K n) (k : KG K n)
     (h : ∀ x, ψ.1 x = φ.1 (x * ((k : G1 K n) : AdelicGLn.AdelicGL K n))) : clsL μ ψ = rk μ k (clsL μ φ) := by
@@ -77,13 +77,11 @@ private theorem cls_tr {φ : cuspForms K n} (hφ : φ ∈ centralCuspForms K n) 
   rfl
 
 /- English proof (translation)
-Establish `: CompactSpace (AdelicGLn.integralFiniteGL K n)` using `isCompact_iff_compactSpace.1 (AdelicGLn.isCompact_integralFiniteGL K n)`. Establish `h1 : ∀ x ∈ F, ∃ U : Subgroup (AdelicGLn.integralFiniteGL K n), IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)) ∧ ∀ u ∈ U, rightRegularRep (Gam K n) μ (finOne K n u) x = x`. Introduce `x hx`. Use `UnitaryRep.exists_isOpen_forall_eq_of_finiteDimensional ((rightRegularRep (Gam K n) μ).comapHom (finOne K n) continuous_finOne) x (Submodule.finiteDimensional_of_le (S₂ := F) (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hF ⟨finOne K n u, finEmb_mem_maxCompact u.2⟩ x hx`. Use `set b := Module.finBasis ℂ F`. Use `choose U hU hUx using fun i => h1 (b i) (b i).2`. Use `⟨⨅ i, U i, ?_, fun u hu x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isOpen_iInter_of_finite hU`. Establish `e : x = ∑ i, b.repr ⟨x, hx⟩ i • (b i : L2 μ)`. Use `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`.
-
-Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hUx i u (Subgroup.mem_iInf.1 hu i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_level (F : Submodule ℂ (L2 μ)) [FiniteDimensional ℂ F] (hF : ∀ k, ∀ x ∈ F, rk μ k x ∈ F) :
     ∃ U : Subgroup (AdelicGLn.integralFiniteGL K n), IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)) ∧
@@ -112,13 +110,11 @@ private theorem exists_level (F : Submodule ℂ (L2 μ)) [FiniteDimensional ℂ 
     rw [map_smul, hUx i u (Subgroup.mem_iInf.1 hu i)]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Use `⟨_, Submodule.span_le.2 ?_, ?_, mem_orbit μ _, orbit_stable μ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Set `ψ : cuspForms K n` to `⟨_, φ.2.1.rightTranslate_of_mem_maxCompact k.2, φ.2.2.translate _⟩`. Establish `e : clsL μ ψ = rk μ k (clsL μ φ)` using `cls_tr μ hφ.1 ψ k fun _ => rfl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨ψ, ⟨fun s x => ?_, ?_⟩, e⟩` and prove the remaining obligations. Use `show φ.1 (_ * x * _) = φ.1 (x * _)`. Rewrite using `[mul_assoc]`. Conclude with `hφ.1 s _`. Use `show clsL μ ψ ∈ V`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `hV.inv _ _ hφ.2`. Use `finiteDimensional_span_cuspRep_maxCompact μ φ` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => cuspRep μ ⟨k, maxCompact_le_normOneGL k.2⟩ (cuspToL2 μ φ))).map (cuspidalL2 μ).subtype) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Conclude with `⟨_, Submodule.subset_span ⟨⟨_, k.2⟩, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem loc_fin {V : Submodule ℂ (L2 μ)} (hV : IsSummand μ V) : ∀ w ∈ (formsIn μ V).map (clsL μ),
     ∃ S ≤ (formsIn μ V).map (clsL μ), FiniteDimensional ℂ S ∧ w ∈ S ∧ ∀ g, ∀ x ∈ S, rk μ g x ∈ S := by
@@ -143,35 +139,27 @@ private theorem loc_fin {V : Submodule ℂ (L2 μ)} (hV : IsSummand μ V) : ∀ 
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Take `⟨hs, hne, hirr, hcl⟩` from `formsIrr K n μ V hV`. Establish `hirr'` using `hs.isIrreducible_iff.2 ⟨hne, hirr⟩`. Use `set F := Submodule.span ℂ (Set.range fun k => rk μ k v) with hFdef`. Establish `hF : ∀ k, ∀ x ∈ F, rk μ k x ∈ F` using `orbit_stable μ v`. Take `⟨U₀, hU₀, hfix⟩` from `exists_level μ F hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set U := formsIn μ V with hU`. Establish `hUc : U ≤ centralCuspForms K n` using `inf_le_left`. Use `set Mx := cuspSubmodule K n U hs.ρ hs.σ hs.τ with hMx`. Take `⟨d, b, ε, hε, horth, hskew⟩` from `exists_archCartanBasis (K := K) (n := n)`. Apply the tactic sequence `have hε2 : ∀ i, ε i * ε i = 1 := fun i => by rcases hε i with e | e <;> rw [e] <;> norm_num`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK : ∀ i, ε i = -1 → ∀ t : ℝ, (isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie (b i)) ∈ archCompact K n`. Introduce `i hi t`. Use `expG_mem_archCompact_of_skew _ ?_` and prove the remaining obligations. Establish `h` using `hskew i hi`. Rewrite `h` using `[mem_archSkew]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show Matrix.conjTranspose (t • mat (b i : ArchMatrix K n)) = -(t • mat (b i : ArchMatrix K n))`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, h, smul_neg]`. Take `⟨ω, hω⟩` from `exists_casimir_eq_smul U hs.ρ hs.σ hs.τ hirr' b ε hε2 horth`. Use `set C : Module.End ℂ U := ∑ i, Mx.gk.ρ (lapZ b ε i) * Mx.gk.ρ (lapZ b ε i) with hC`. Use `set ι : U →ₗ[ℂ] L2 μ := clsL μ ∘ₗ U.subtype with hι`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : ∀ φ : U, ι φ = 0 → φ = 0` using `fun φ h => Subtype.ext ((clsBasic K n μ).1 φ.1 (hUc φ.2) h)`. Establish `hCS : ∀ S : Submodule ℂ (L2 μ), (∀ k, ∀ x ∈ S, rk μ k x ∈ S) → ∀ φ ∈ S.comap ι, C φ ∈ S.comap ι`. Introduce `S hS φ hφ`. Use `sumSq_mem_of_stable Mx.gk (lapZ b ε) (lapZ_mem b ε hε hK) (fun k ψ hψ => ?_) hφ` and prove the remaining obligations. Establish `e : ι (Mx.gk.σ k ψ) = rk μ ⟨⟨infEmb K n k, maxCompact_le_normOneGL k.2⟩, k.2⟩ (ι ψ)` using `cls_tr μ (hUc ψ.2) _ _ fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.mem_comap, e]`. Conclude with `hS _ _ hψ`. Establish `hFo` using `orth_stable (rk μ) (rk_adj μ) hF`. Establish `hq : FiniteDimensional ℂ (U ⧸ Fᗮ.comap ι)`. Establish `e : Fᗮ.comap ι = LinearMap.ker ((F.orthogonalProjection : L2 μ →ₗ[ℂ] F) ∘ₗ ι)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[Submodule.orthogonalProjection_eq_zero_iff]`. Rewrite using `[e]`. Conclude with `(LinearMap.quotKerEquivRange _).symm.finiteDimensional`. Take `⟨q, hqm, hqd, hqN⟩` from `exists_monic_aeval_mem C (Fᗮ.comap ι) (hCS _ hFo)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `set P := q.comp (Polynomial.X - Polynomial.C ω) with hP`. Establish `hPm : P.Monic` using `hqm.comp (Polynomial.monic_X_sub_C ω) (by rw [Polynomial.natDegree_X_sub_C]; exact one_ne_zero)`. Establish `hPd : 0 < P.natDegree` using `by rwa [hP, Polynomial.natDegree_comp, Polynomial.natDegree_X_sub_C, mul_one]`. Use `set E : Submodule ℂ (cuspForms K n) := U ⊓ LinearMap.ker (Polynomial.aeval (uActionCusp K n (laplacianU K n b)) P) ⊓ ⨅ u ∈ U₀, LinearMap.ker (finRepCusp K n (u : AdelicGLn.FiniteAdelicGL K n) - 1) with hE`. Establish `hEfd : FiniteDimensional ℂ E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `finiteDimensional_of_eigen b P hPm hPd 0 U₀ hU₀ E fun φ hφ => ⟨hφ.1.2, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul]`. Conclude with `ρ_centralZ_eq_zero (hUc hφ.1.1)`. Use `LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hφ.2 u) hu)` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_mem_closure_of_finite (rk μ) (rk_adj μ) _ F (E.map (clsL μ)) hF (loc_fin μ hV) ?_ (mem_orbit μ v) (by rw [hcl]; exact hv)` and prove the remaining obligations. Introduce `S hSW hS hbot x hx`. Take `⟨φ, hφ, rfl⟩` from `hSW hx`. Establish `hz : ∀ ψ : U, ι ψ ∈ S → ι ψ ∈ Fᗮ → ψ = 0` using `fun ψ h1 h2 => hinj ψ ((Submodule.mem_bot ℂ).1 (hbot ▸ (⟨h1, h2⟩ : ι ψ ∈ S ⊓ Fᗮ)))`. Use `⟨φ, ⟨⟨hφ, ?_⟩, (Submodule.mem_iInf _).2 fun u => (Submodule.mem_iInf _).2 fun hu => ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `aeval_laplacian_eq_zero U hs.ρ hs.σ hs.τ b ε hε ω hω q (φ := ⟨φ, hφ⟩) (hz _ (Polynomial.aeval_apply_smul_mem_of_le_comap (q := S.comap ι) hx q C (hCS S hS)) (hqN _))`. Use `set r := rk μ (⟨finOne K n u, finEmb_mem_maxCompact u.2⟩ : KG K n) with hr`. Establish `e : clsL μ (finRepCusp K n (u : AdelicGLn.FiniteAdelicGL K n) φ) = r (clsL μ φ)` using `cls_tr μ (hUc hφ) _ _ fun _ => rfl`. Use `set ψ : U := ⟨_, hs.τ u φ hφ⟩ - ⟨φ, hφ⟩ with hψ`. Establish `e2 : ι ψ = r (clsL μ φ) - clsL μ φ`.
-
-Rewrite using `[hψ, map_sub, ← e]`. Both sides reduce to the same expression. Establish `h1 : ι ψ ∈ S`. Rewrite using `[e2]`. Conclude with `S.sub_mem (hS _ _ hx) hx`.
-
-Establish `h2 : ι ψ ∈ Fᗮ`. Rewrite using `[e2, Submodule.mem_orthogonal]`. Introduce `f hf`. Establish `h3 : ⟪f, r (clsL μ φ)⟫_ℂ = ⟪f, clsL μ φ⟫_ℂ`. Establish `h4` using `(rightRegularRep (Gam K n) μ).inner_map_map (finOne K n u) f (clsL μ φ)`.
-
-Rewrite `h4` using `[hfix u hu f hf]`. Conclude with `h4`. Rewrite using `[inner_sub_right, h3, sub_self]`. Establish `h0` using `hz ψ h1 h2`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply]`.
-
-Conclude with `congrArg Subtype.val h0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfin {V : Submodule ℂ (L2 μ)} (hV : IsSummand μ V) {v : L2 μ} (hv : v ∈ V)
     (hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => rk μ k v))) : v ∈ (formsIn μ V).map (clsL μ) := by

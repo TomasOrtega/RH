@@ -3,7 +3,7 @@ import Mathlib
 namespace Formalism.L2.GlobalTheoryTheory.LemB
 
 /- English proof (translation)
-Set `e' : Submodule R M ≃o Submodule R' M'` to `Submodule.orderIsoMapComap e`. Unfold `Module.length`. Use `congr 1`. Conclude with `Order.krullDim_eq_of_orderIso e'`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem len_equiv_semilinear {R R' M M' : Type*} [Ring R] [Ring R'] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R' M'] {σ : R →+* R'} {σ' : R' →+* R} [RingHomInvPair σ σ'] [RingHomInvPair σ' σ]
@@ -26,11 +26,11 @@ noncomputable def quotEquivSL {R R' M M' : Type*} [Ring R] [Ring R'] [AddCommGro
     (by ext x; simp) (by ext x; simp)
 
 /- English proof (translation)
-Set `eA : A ≃ₛₗ[σ] A.map f` to `Submodule.equivMapOfInjective f hf A`. Use `len_equiv_semilinear (quotEquivSL eA _ _ ?_)` and prove the remaining obligations. Use extensionality with `⟨y, hy⟩`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨x, hxA⟩, hxB, hxy⟩`. Conclude with `⟨x, hxB, congrArg Subtype.val hxy⟩`. Introduce and unpack `⟨x, hxB, hfx⟩`. Take `⟨x', hx'A, hx'⟩` from `hy`. Establish `hxx : x = x'` using `hf (hfx.trans hx'.symm)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hxx` using the available equality. Use `⟨⟨x, hx'A⟩, hxB, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hfx`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem len_quot_semilinear {R R' M M' : Type*} [Ring R] [Ring R'] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R' M'] {σ : R →+* R'} {σ' : R' →+* R} [RingHomInvPair σ σ'] [RingHomInvPair σ' σ]
@@ -53,15 +53,15 @@ theorem len_quot_semilinear {R R' M M' : Type*} [Ring R] [Ring R'] [AddCommGroup
     exact hfx
 
 /- English proof (translation)
-Set `φ : (Submodule.pi Set.univ A) →ₗ[R] (∀ g, A g ⧸ (B g).comap (A g).subtype)` to `LinearMap.pi (fun g => ((B g).comap (A g).subtype).mkQ ∘ₗ (((LinearMap.proj g).comp (Submodule.pi Set.univ A).subtype).codRestrict (A g) (fun x => x.2 g (Set.mem_univ g))))`. Establish `hφ : Function.Surjective φ`. Introduce `y`. Use `choose x hx using fun g => Submodule.Quotient.mk_surjective _ (y g)`. Use `⟨⟨fun g => (x g : M g), fun g _ => (x g).2⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[← hx g]`. Both sides reduce to the same expression. Establish `hker : LinearMap.ker φ = (Submodule.pi Set.univ B).comap (Submodule.pi Set.univ A).subtype`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_pi, Set.mem_univ, true_implies]`. Rewrite using `[funext_iff]`. Use `forall_congr' (fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `e` to `(Submodule.quotEquivOfEq _ _ hker.symm).trans (φ.quotKerEquivOfSurjective hφ)`. Rewrite using `[len_equiv_semilinear e]`. Use `first`. Consider the case `exact Module.length_pi`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Module.length_pi_of_fintype _`. Consider the case `simp [Module.length_pi]`.
+A detailed English derivation is pending.
 -/
 theorem len_pi_sum {R : Type*} [CommRing R] {G : Type*} [Fintype G] [DecidableEq G] {M : G → Type*}
     [∀ g, AddCommGroup (M g)] [∀ g, Module R (M g)] (A B : ∀ g, Submodule R (M g)) :

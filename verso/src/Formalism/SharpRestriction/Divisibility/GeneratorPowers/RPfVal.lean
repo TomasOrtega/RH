@@ -13,7 +13,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Establish `h : (a : K) = algebraMap (𝓞 K) K a` using `rfl`. Rewrite using `[vLa, h, HeightOneSpectrum.valuation_of_algebraMap, (la.intValuation_eq_one_iff_mem_primeCompl _).2 ha]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vLa_int_not_mem {a : 𝓞 K} (ha : a ∉ la.asIdeal) : vLa la (a : K) = 0 := by
   have h : (a : K) = algebraMap (𝓞 K) K a := rfl
@@ -22,9 +22,9 @@ theorem vLa_int_not_mem {a : 𝓞 K} (ha : a ∉ la.asIdeal) : vLa la (a : K) = 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Assume the negation of the conclusion as `hne`. Establish `hl` using `resCharOf_prime la`. Establish `hnd : ¬ resCharOf la ∣ p` using `fun hd => hne ((Nat.prime_dvd_prime_iff_eq hl hp).1 hd)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `crv_not_mem la hnd hm`. Introduce `h`. Rewrite using `[← h]`. Conclude with `crv_char_mem la`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_mem_iff {p : ℕ} (hp : p.Prime) : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal ↔ resCharOf la = p := by
   constructor
@@ -39,7 +39,7 @@ theorem prime_mem_iff {p : ℕ} (hp : p.Prime) : ((p : ℕ) : 𝓞 K) ∈ la.asI
     exact crv_char_mem la
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `padicValNat_self`. Establish `: Fact p.Prime` using `⟨hp⟩`. Conclude with `padicValNat_primes h`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem padic_prime (l : ℕ) [Fact l.Prime] {p : ℕ} (hp : p.Prime) :
     padicValNat l p = if l = p then 1 else 0 := by
@@ -49,11 +49,11 @@ theorem padic_prime (l : ℕ) [Fact l.Prime] {p : ℕ} (hp : p.Prime) :
     exact padicValNat_primes h
 
 /- English proof (translation)
-Establish `hl` using `resCharOf_prime la`. Establish `: Fact (resCharOf la).Prime` using `⟨hl⟩`. Establish `h2 : (Q ^ a : ℕ) ≠ 0` using `pow_ne_zero _ hQ`. Establish `hq' : (q ^ b : ℕ) ≠ 0` using `pow_ne_zero _ hq.ne_zero`. Establish `hd' : (d ^ c : ℕ) ≠ 0` using `pow_ne_zero _ hd.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[crv_vLa_natCast la (Nat.mul_ne_zero (Nat.mul_ne_zero h2 hq') hd')]`. Use `congr 2`. Establish `e1 : padicValNat (resCharOf la) (Q ^ a) = a * padicValNat (resCharOf la) Q`. Rewrite using `[padicValNat.pow]`. Establish `e2 : padicValNat (resCharOf la) (q ^ b) = b * padicValNat (resCharOf la) q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[padicValNat.pow]`. Establish `e3 : padicValNat (resCharOf la) (d ^ c) = c * padicValNat (resCharOf la) d`. Rewrite using `[padicValNat.pow]`. Rewrite using `[padicValNat.mul (Nat.mul_ne_zero h2 hq') hd', padicValNat.mul h2 hq', e1, e2, e3, padic_prime _ hq, padic_prime _ hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vLa_pPow {Q q d : ℕ} (hQ : Q ≠ 0) (hq : q.Prime) (hd : d.Prime) (a b c : ℕ) :
     vLa la (((Q ^ a * q ^ b * d ^ c : ℕ) : ℕ) : K) =
@@ -76,9 +76,9 @@ theorem vLa_pPow {Q q d : ℕ} (hQ : Q ≠ 0) (hq : q.Prime) (hd : d.Prime) (a b
     padic_prime _ hq, padic_prime _ hd]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Assume the negation of the conclusion as `hnd`. Conclude with `crv_not_mem la hnd hm`. Introduce and unpack `⟨k, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `la.asIdeal.mul_mem_right _ (crv_char_mem la)`.
+A detailed English derivation is pending.
 -/
 theorem nat_mem_iff (n : ℕ) : ((n : ℕ) : 𝓞 K) ∈ la.asIdeal ↔ resCharOf la ∣ n := by
   constructor
@@ -92,7 +92,7 @@ theorem nat_mem_iff (n : ℕ) : ((n : ℕ) : 𝓞 K) ∈ la.asIdeal ↔ resCharO
 variable {D : D7} {j : ℕ}
 
 /- English proof (translation)
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `h` using `EX.piG_norm i`. Use `push_cast`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem piG_mul_bar (EX : ErrX D) (i : Fin 2) :
     EX.piG i * piBarO EX i = ((D.host.g i : ℕ) : 𝓞 D.host.E) := by
@@ -102,9 +102,9 @@ theorem piG_mul_bar (EX : ErrX D) (i : Fin 2) :
   exact h
 
 /- English proof (translation)
-Establish `hπ : ∀ i, iE D hinj B (EX.piG i) ∉ la.asIdeal ∧ iE D hinj B (piBarO EX i) ∉ la.asIdeal`. Introduce `i`. Establish `hn : iE D hinj B (EX.piG i) * iE D hinj B (piBarO EX i) = ((D.host.g i : ℕ) : 𝓞 B.KO)`. Rewrite using `[← map_mul, piG_mul_bar, map_natCast]`. Conclude with `⟨fun hm => hg i (hn ▸ la.asIdeal.mul_mem_right _ hm), fun hm => hg i (hn ▸ la.asIdeal.mul_mem_left _ hm)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `: nnW B hinj EX w ∈ la.asIdeal.primeCompl`. Unfold `nnW`. Conclude with `Submonoid.prod_mem _ fun i _ => Submonoid.mul_mem _ (Submonoid.pow_mem _ (hπ i).1 _) (Submonoid.pow_mem _ (hπ i).2 _)`. Conclude with `this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nnW_not_mem (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j)
     (la : HeightOneSpectrum (𝓞 B.KO)) (hg : ∀ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 B.KO) ∉ la.asIdeal) :
@@ -122,17 +122,17 @@ theorem nnW_not_mem (B : WeightFamilies.Prov D) (hinj : Function.Injective D.wha
   exact this
 
 /- English proof (translation)
-Establish `hq : D.host.q.Prime` using `D.host.hyp.1`. Establish `hd : D.host.d.Prime` using `D.host.hyp.2.1`. Establish `hq8 : D.host.q % 8 = 3` using `D.host.hyp.2.2.1`. Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Establish `hq2 : D.host.q ≠ 2` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : D.host.d ≠ 2` using `by omega`. Establish `hqd : D.host.q ≠ D.host.d` using `by omega`. Establish `hnn` using `nnW_not_mem B hinj EX w la hg`. Establish `hnn0 : ((nnW B hinj EX w : 𝓞 B.KO) : B.KO) ≠ 0` using `fun h => hnn ((NumberField.RingOfIntegers.coe_eq_zero_iff.1 h) ▸ la.asIdeal.zero_mem)`. Establish `hP : pPow D (c2 D w) (cHalf w) (cHalf w) = D.host.QS ^ c2 D w * D.host.q ^ cHalf w * D.host.d ^ cHalf w` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : ((pPow D (c2 D w) (cHalf w) (cHalf w) : ℕ) : B.KO) ≠ 0`. Rewrite using `[hP]`. Conclude with `Nat.mul_ne_zero (Nat.mul_ne_zero (pow_ne_zero _ D.host.QS_pos.ne') (pow_ne_zero _ hq.ne_zero)) (pow_ne_zero _ hd.ne_zero)` after adjusting the coercions. Establish `hc : (((nnW B hinj EX w * ((pPow D (c2 D w) (cHalf w) (cHalf w) : ℕ) : 𝓞 B.KO)) : 𝓞 B.KO) : B.KO) = ((nnW B hinj EX w : 𝓞 B.KO) : B.KO) * ((pPow D (c2 D w) (cHalf w) (cHalf w) : ℕ) : B.KO)` using `by show algebraMap (𝓞 B.KO) B.KO _ = _`. Rewrite using `[map_mul, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((vLa la _ : ℤ) : ℝ) = _`. Rewrite using `[hc, crv_vLa_mul la hnn0 hN0, vLa_int_not_mem la hnn, hP, vLa_pPow la D.host.QS_pos.ne' hq hd]`. Unfold `clOf`. Rewrite using `[show ringChar (𝓞 B.KO ⧸ la.asIdeal) = resCharOf la from rfl]`. Simplify using `only [nat_mem_iff la D.host.QS, prime_mem_iff la hq, prime_mem_iff la hd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hS : resCharOf la ∣ D.host.QS`. Establish `h1 : resCharOf la ≠ D.host.q` using `fun h => D.host.q_not_dvd_QS (h ▸ hS)`. Establish `h2 : resCharOf la ≠ D.host.d` using `fun h => D.host.d_not_dvd_QS (h ▸ hS)`. Rewrite using `[if_pos hS, if_neg h1, if_neg h2]`. Generalize the expression as in `padicValNat (resCharOf la) D.host.QS = m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `rw [if_neg hS, padicValNat.eq_zero_of_not_dvd hS] split_ifs <;> (try (exfalso; omega)) <;> (try (exfalso; tauto)) <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem vAdd_sW (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j)
     (la : HeightOneSpectrum (𝓞 B.KO)) (hg : ∀ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 B.KO) ∉ la.asIdeal) :

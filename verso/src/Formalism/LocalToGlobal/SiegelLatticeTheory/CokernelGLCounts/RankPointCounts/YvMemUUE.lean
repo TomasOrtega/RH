@@ -11,21 +11,21 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Conclude with `(Formalism.MainNotions.LatticeGluingRadicals.a_X_le (Formalism.MainNotions.LatticeGluingRadicals.a_HU Λ hΛ F F' hL.2 hL'.2)).1`.
+A detailed English derivation is pending.
 -/
 theorem X_le_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Submodule.IsLattice E Λ)
     (F : LFlag S r T) (F' : LFlag S r T') (hL : IsLift Λ F) (hL' : IsLift Λ F') : F.fl.X ≤ UUE Λ F F' := by
   exact (Formalism.MainNotions.LatticeGluingRadicals.a_X_le (Formalism.MainNotions.LatticeGluingRadicals.a_HU Λ hΛ F F' hL.2 hL'.2)).1
 
 /- English proof (translation)
-Conclude with `(Formalism.MainNotions.LatticeGluingRadicals.a_X_le (Formalism.MainNotions.LatticeGluingRadicals.a_HU Λ hΛ F F' hL.2 hL'.2)).2`.
+A detailed English derivation is pending.
 -/
 theorem X'_le_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Submodule.IsLattice E Λ)
     (F : LFlag S r T) (F' : LFlag S r T') (hL : IsLift Λ F) (hL' : IsLift Λ F') : F'.fl.X ≤ UUE Λ F F' := by
   exact (Formalism.MainNotions.LatticeGluingRadicals.a_X_le (Formalism.MainNotions.LatticeGluingRadicals.a_HU Λ hΛ F F' hL.2 hL'.2)).2
 
 /- English proof (translation)
-Rewrite using `[← hL.2]`. Conclude with `Submodule.subset_span (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem z_mem_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Submodule.IsLattice E Λ)
     (F : LFlag S r T) (F' : LFlag S r T') (hL : IsLift Λ F) (hL' : IsLift Λ F') : F.fl.z ∈ UUE Λ F F' := by
@@ -34,7 +34,7 @@ theorem z_mem_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Sub
     (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))))
 
 /- English proof (translation)
-Rewrite using `[← hL'.2]`. Conclude with `Submodule.subset_span (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem z'_mem_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Submodule.IsLattice E Λ)
     (F : LFlag S r T) (F' : LFlag S r T') (hL : IsLift Λ F) (hL' : IsLift Λ F') : F'.fl.z ∈ UUE Λ F F' := by
@@ -42,9 +42,9 @@ theorem z'_mem_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Su
   exact Submodule.subset_span (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))
 
 /- English proof (translation)
-Establish `hf : ∀ b, F'.fl.fvec b ∈ UUE Λ F F'`. Introduce `b`. Use `Fin.lastCases ?_ (fun i => ?_) b` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]`. Conclude with `z'_mem_UUE Λ hΛ F F' hL hL'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `X'_le_UUE Λ hΛ F F' hL hL' (Submodule.subset_span ⟨i, rfl⟩)`. Unfold `yv omp`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (hf b))) (Submodule.smul_mem _ _ (z_mem_UUE Λ hΛ F F' hL hL'))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem yv_mem_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Submodule.IsLattice E Λ)
     (F : LFlag S r T) (F' : LFlag S r T') (hL : IsLift Λ F) (hL' : IsLift Λ F') :
@@ -61,23 +61,23 @@ theorem yv_mem_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (hΛ : Su
     Submodule.smul_mem _ _ (hf b))) (Submodule.smul_mem _ _ (z_mem_UUE Λ hΛ F F' hL hL'))
 
 /- English proof (translation)
-Rewrite using `[hT_swap v h, Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh hv, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_Hp_UUE (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (F : LFlag S r T) (F' : LFlag S r T')
     {h v : S.V} (hh : h ∈ Hp Λ F F') (hv : v ∈ UUE Λ F F') : S.hT h v = 0 := by
   rw [hT_swap v h, Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh hv, star_zero]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh hv`.
+A detailed English derivation is pending.
 -/
 theorem hT_UUE_Hp (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (F : LFlag S r T) (F' : LFlag S r T')
     {h v : S.V} (hh : h ∈ Hp Λ F F') (hv : v ∈ UUE Λ F F') : S.hT v h = 0 :=
   Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh hv
 
 /- English proof (translation)
-Establish `hker : F.X ≤ LinearMap.ker (S.hT (yv F F'))`. Rewrite using `[Formalism.MainNotions.S.FlagG.X, Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hT_swap]`. Establish `h` using `brS_yv_e (F := F) (F' := F') a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Formalism.MainNotions.S.brS]`. Rewrite using `[h, star_zero]`. Establish `h1 : S.hT (yv F F') x = 0` using `hker hx`. Rewrite using `[hT_swap, h1, star_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_X_yv (F : FlagG S r T) (F' : FlagG S r T') {x : S.V} (hx : x ∈ F.X) : S.hT x (yv F F') = 0 := by
   have hker : F.X ≤ LinearMap.ker (S.hT (yv F F')) := by
@@ -91,14 +91,14 @@ theorem hT_X_yv (F : FlagG S r T) (F' : FlagG S r T') {x : S.V} (hx : x ∈ F.X)
   rw [hT_swap, h1, star_zero]
 
 /- English proof (translation)
-Establish `h` using `pairing_yVector_z (F := F) (F' := F')`. Rewrite `h` using `[Formalism.MainNotions.S.brS]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hT_z_yv (F : FlagG S r T) (F' : FlagG S r T') : S.hT F.z (yv F F') = 0 := by
   have h := pairing_yVector_z (F := F) (F' := F')
   rwa [Formalism.MainNotions.S.brS] at h
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.Lat.UUE Formalism.MainNotions.S.Lat.UU`. Use `congr 1`. The two sides agree by associativity and commutativity.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. The two sides agree by associativity and commutativity.
 -/
 theorem UUE_symm (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (F : LFlag S r T) (F' : LFlag S r T') :
     UUE Λ F' F = UUE Λ F F' := by
@@ -107,7 +107,7 @@ theorem UUE_symm (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (F : LFlag 
   ac_rfl
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.Lat.Hp`. Rewrite using `[UUE_symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hp_symm (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (F : LFlag S r T) (F' : LFlag S r T') :
     Hp Λ F' F = Hp Λ F F' := by
@@ -115,29 +115,25 @@ theorem Hp_symm (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (F : LFlag S
   rw [UUE_symm]
 
 /- English proof (translation)
-Use `set y1 := yv Fl.fl F1.fl with hy1`. Use `set y2 := yv Fl.fl F2.fl with hy2`. Use `set c := brS S y2 y1 / brS S y1 y1 with hc`. Establish `hG1' : Formalism.MainNotions.S.Gflag Fl.fl F1.fl ≠ 0` using `hG1`. Establish `hb1 : brS S y1 y1 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy1, brS_yv_yv Fl.fl F1.fl hTs]`. Conclude with `mul_ne_zero hT hG1'`. Establish `hb12 : brS S y2 y2 = brS S y1 y1`. Rewrite using `[hy1, hy2, brS_yv_yv Fl.fl F2.fl hTs, brS_yv_yv Fl.fl F1.fl hTs]`. Conclude with `congrArg (T * ·) hG12`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨hfin, hk1⟩` from `Formalism.L2.SG.NGCut.CorankRelation.finrank_Hp k hdim Λ hΛ Fl F1 hL hL1 hG1`. Establish `hy2H : ∀ h ∈ Hp Λ Fl F1, S.hT h y2 = 0`. Introduce `h hh`. Rewrite `hh` using `[← hTh]`. Unfold `Formalism.MainNotions.S.Lat.Th at hh`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.mp hh`. Rewrite `hp` using `[Formalism.L2.SG.NGCut.CorankRelation.mem_ThPairs]`. Take `⟨-, hp2, hpX, -⟩` from `hp`. Establish `e : p.1 = (p.1 - p.2) + p.2` using `by abel`. Simplify using `only [LinearMap.fst_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, map_add, LinearMap.add_apply, hT_X_yv Fl.fl F2.fl hpX, hT_Hp_UUE Λ Fl F2 hp2 (yv_mem_UUE Λ hΛ Fl F2 hL hL2), add_zero]`. Establish `hv : y2 - c • y1 ∈ Fl.fl.X`. Use `Formalism.L2.SG.NGCut.NormalVectorPairings.line Fl.fl hT (Hp Λ Fl F1) ?_ ?_ ?_ ?_ ?_ hb1 ?_ ?_` and prove the remaining obligations. Introduce `x hx h hh`. Conclude with `hT_UUE_Hp Λ Fl F1 hh (X_le_UUE Λ hΛ Fl F1 hL hL1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `h hh`. Conclude with `hT_UUE_Hp Λ Fl F1 hh (z_mem_UUE Λ hΛ Fl F1 hL hL1)`. Introduce `x hx hxH`. Conclude with `Formalism.L2.SG.NGCut.CorankRelation.Xsp_Hp_eq_zero Λ hΛ Fl F1 hL hL1 hG1 hx hxH`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.NGCut.NormalVectorPairings.mem_Qsp]`. Conclude with `⟨fun x hx => hT_X_yv Fl.fl F1.fl hx, hT_z_yv Fl.fl F1.fl, fun h hh => hT_Hp_UUE Λ Fl F1 hh (yv_mem_UUE Λ hΛ Fl F1 hL hL1)⟩`. Rewrite using `[Formalism.L2.SG.NGCut.NormalVectorPairings.mem_Qsp]`. Use `⟨fun x hx => ?_, ?_, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hT_X_yv Fl.fl F2.fl hx, hT_X_yv Fl.fl F1.fl hx, smul_zero, sub_zero]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, hT_z_yv, hT_z_yv, smul_zero, sub_zero]`. Rewrite using `[map_sub, map_smul, hy2H h hh, hT_Hp_UUE Λ Fl F1 hh (yv_mem_UUE Λ hΛ Fl F1 hL hL1), smul_zero, sub_zero]`. Rewrite using `[sub_eq_add_neg, ← neg_smul, brS_add_left, brS_smul_left, hc]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hv, ?_⟩` and prove the remaining obligations. Use `set x := y2 - c • y1 with hx`. Establish `hy2x : y2 = x + c • y1`. Rewrite using `[hx]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hxx : brS S x x = 0`. Rewrite using `[Formalism.MainNotions.S.brS]`. Conclude with `hT_X_X Fl.fl hv hv`. Establish `hyx : brS S y1 x = 0`. Rewrite using `[Formalism.MainNotions.S.brS]`.
-
-Conclude with `hT_X_yv Fl.fl F1.fl hv`. Establish `hxy : brS S x y1 = 0`. Rewrite using `[Formalism.MainNotions.S.brS, hT_swap, hT_X_yv Fl.fl F1.fl hv, star_zero]`. Establish `hmod : brS S y2 y2 = c * star c * brS S y1 y1`. Rewrite using `[hy2x, brS_add_left, brS_add_right, brS_add_right, brS_smul_left, brS_smul_left, brS_smul_right, brS_smul_right, hxx, hxy, hyx]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hmod` using `[hb12]`. Establish `h1 : (1 : E) * brS S y1 y1 = c * star c * brS S y1 y1` using `by rw [one_mul]; exact hmod`. Conclude with `(mul_right_cancel₀ hb1 h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem line_pair (k : ℕ) (hdim : finrank E S.V = k + 2 * r + 1) (Λ : Submodule (NumberField.RingOfIntegers E) S.V)
     (hΛ : Submodule.IsLattice E Λ) (Fl : LFlag S r T) (F1 F2 : LFlag S r T') (β : S.V ≃ₗ[E] S.V)

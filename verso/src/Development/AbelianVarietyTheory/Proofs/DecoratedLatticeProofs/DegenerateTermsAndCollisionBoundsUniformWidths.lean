@@ -55,7 +55,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Deg
 
 /- English proof (translation)
-Establish `hSM : Formalism.HermitianLatticesTheory.SiegelMassRatio` using `GlobalTheory.Mass.siegelMassRatio_holds`. Establish `hS : ∀ c : ℝ, SmallOn {c}` using `fun c => (inputs_of_subset_widths {c} Set.univ (Set.subset_univ _)).2.1 smallOn_univ_unconditional`. Establish `hP : GlobalTheory.TypeAsm.TypeP` using `GlobalTheory.rowsPos_typeP`. Use `⟨vanishingGramBound_uniformWindow_and_weightData.1 (vanishingGramBoundWindow_of_termPairTypeBound hP), fun c => ?_⟩` and prove the remaining obligations. Conclude with `collS_on hSM {c} (GlobalTheory.T.rowAmplitudeBoundsUniform_singleton_width c) (corankTwoCountBounds_of_rowCountBoundsUniform {c} (cntOn_singleton hSM c)) (hS c) (tieOn_singleton_uncond c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem degenerate_and_collisions_uncond : (∀ c : ℝ, On {c} VanishingGramTermsBound) ∧ ∀ c : ℝ, On {c} CollS := by
   have hSM : Formalism.HermitianLatticesTheory.SiegelMassRatio := GlobalTheory.Mass.siegelMassRatio_holds

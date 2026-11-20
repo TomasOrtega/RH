@@ -9,9 +9,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.Adelic.FieldCocompact
 
 /- English proof (translation)
-Introduce `F _ _`. Establish `hfin : ∀ C : Set (AdeleRing (𝓞 F) F), IsCompact C → {l : F | algebraMap F (AdeleRing (𝓞 F) F) l ∈ C}.Finite` using `fun C hC => GlobalTheory.Eis.Conv.Discr.finite_of_isCompact (algebraMap F (AdeleRing (𝓞 F) F)) (GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F) hC`. Use `⟨GlobalTheory.AdeleCocompact.exists_compact_adele F, hfin, ⟨fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hfin Set.univ h`. Simplify using `only [Set.mem_univ, Set.setOf_true] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Set.infinite_univ h1`.
+A detailed English derivation is pending.
 -/
 theorem discrete_cocompact : ∀ (F : Type) [Field F] [NumberField F],
     (∃ C : Set (AdeleRing (𝓞 F) F), IsCompact C ∧

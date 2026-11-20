@@ -10,7 +10,7 @@ def gaussBinom (q m : ℕ) : ℕ → ℕ :=
 
 open Module in
 /- English proof (translation)
-Apply the tactic sequence `cases m <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_zero_right (q m : ℕ) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom q m 0 = 1 := by
   cases m <;> rfl
@@ -28,9 +28,9 @@ theorem gaussBinom_succ_succ (q m j : ℕ) :
 
 open Module in
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `j hj`. Take `⟨j, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `j hj`. Take `⟨j, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula.gaussBinom_succ_succ, ih (j + 1) (by omega), ih j (by omega)]`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -74,7 +74,7 @@ example : gaussBinom 2 2 1 = 3 ∧ gaussBinom 2 3 1 = 7 ∧ gaussBinom 2 3 2 = 7
     gaussBinom 2 4 2 = 35 ∧ gaussBinom 3 4 2 = 130 := by decide
 
 /- English proof (translation)
-Simplify using `[Finset.sum_range_succ, Finset.prod_range_succ, gaussBinom_succ_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example (Y : ℤ) : ∑ j ∈ Finset.range (3 + 1),
     (-1 : ℤ) ^ j * ((3 : ℕ) : ℤ) ^ (j * (j - 1) / 2) * (gaussBinom 3 3 j : ℤ) * Y ^ j =

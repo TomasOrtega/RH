@@ -27,9 +27,9 @@ def BpLoc1 (Ch Cg dist dinf : ℝ) (A : ℕ) (C : ℝ) (e : ℕ) : Prop :=
 variable {D}
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `hg a b hab`. Establish `e1 : |lam a - lam' a| ≤ d` using `by rw [abs_sub_comm]; exact hd a`. Establish `e2` using `hd b`. Establish `key : |lam a - lam b| ≤ |lam a - lam' a| + |lam' a - lam' b| + |lam' b - lam b|`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gap_transfer {n : ℕ} {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {h d : ℝ} (hg : GapAtLeast ε lam h)
     (hd : ∀ s, |lam' s - lam s| ≤ d) : GapAtLeast ε lam' (h - 2 * d) := by
@@ -43,17 +43,17 @@ theorem gap_transfer {n : ℕ} {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} 
   linarith
 
 /- English proof (translation)
-Introduce `a b hab` and use `hh.trans (hg a b hab)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gap_mono {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {h h' : ℝ} (hg : GapAtLeast ε lam h) (hh : h' ≤ h) :
     GapAtLeast ε lam h' := fun a b hab => hh.trans (hg a b hab)
 
 /- English proof (translation)
-Use `set M : ℝ := ((2 * r + 2 : ℕ) : ℝ) with hM`. Establish `hM1 : 1 ≤ M` using `by rw [hM]; norm_cast; omega`. Establish `hCA0 : 0 ≤ CA`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CA * M ^ 2 < 0` using `mul_neg_of_neg_of_pos hneg (by positivity)`. Establish `h0 : (0 : ℝ) ≤ A` using `Nat.cast_nonneg A`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Real.rpow_natCast (b ^ (x * M ^ 2)) A, ← Real.rpow_mul (by linarith)]`. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : M ^ 4 ≤ M ^ e` using `pow_le_pow_right₀ hM1 he`. Establish `hxM : 0 ≤ x * M ^ 2` using `mul_nonneg hx (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pow_cost {b x CA : ℝ} {A e r : ℕ} (hb : 1 ≤ b) (hx : 0 ≤ x) (he : 4 ≤ e)
     (hA : (A : ℝ) ≤ CA * ((2 * r + 2 : ℕ) : ℝ) ^ 2) :
@@ -75,17 +75,15 @@ theorem pow_cost {b x CA : ℝ} {A e r : ℕ} (hb : 1 ≤ b) (hx : 0 ≤ x) (he 
     _ ≤ x * CA * M ^ e := mul_le_mul_of_nonneg_left h4 (mul_nonneg hx hCA0)
 
 /- English proof (translation)
-Use `set M : ℝ := ((2 * r + 2 : ℕ) : ℝ) with hM`. Establish `hM1 : 1 ≤ M` using `by rw [hM]; norm_cast; omega`. Establish `hrM : (r : ℝ) ≤ M` using `by rw [hM]; norm_cast; omega`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hX : max ka⁻¹ ka⁻¹⁻¹ ≤ b ^ Ch`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv]`. Conclude with `max_le hk2 hk1`. Establish `hX0 : 0 ≤ max ka⁻¹ ka⁻¹⁻¹` using `le_max_of_le_left (inv_nonneg.2 hka.le)`. Establish `hY : max (ka ^ r) (ka ^ r)⁻¹ ≤ b ^ (Ch * r)`. Rewrite using `[Real.rpow_mul hb0.le, Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `max_le (pow_le_pow_left₀ hka.le hk1 r) ?_` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Conclude with `pow_le_pow_left₀ (inv_nonneg.2 hka.le) hk2 r`. Establish `hY0 : 0 ≤ max (ka ^ r) (ka ^ r)⁻¹` using `le_max_of_le_left (pow_nonneg hka.le r)`. Establish `e1 : max ka⁻¹ ka⁻¹⁻¹ ^ (Cf * M ^ 2) ≤ b ^ (Ch * (Cf * M ^ 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_mul hb0.le]`. Conclude with `Real.rpow_le_rpow hX0 hX (mul_nonneg hCf (by positivity))`. Establish `e2 : max (ka ^ r) (ka ^ r)⁻¹ ^ (Cf * M) ≤ b ^ (Ch * r * (Cf * M))`. Rewrite using `[Real.rpow_mul hb0.le]`. Conclude with `Real.rpow_le_rpow hY0 hY (mul_nonneg hCf (by linarith))`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises. Establish `h2 : M ^ 2 ≤ M ^ e` using `pow_le_pow_right₀ hM1 he`. Establish `h3 : (r : ℝ) * M ≤ M ^ 2` using `by nlinarith`. Establish `hCC : 0 ≤ Ch * Cf` using `mul_nonneg hCh hCf`.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hCC, mul_le_mul_of_nonneg_left h3 hCC]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem frames_factor_le {b ka Ch Cf : ℝ} {e r : ℕ} (hb : 1 ≤ b) (hka : 0 < ka) (hk1 : ka ≤ b ^ Ch)
     (hk2 : ka⁻¹ ≤ b ^ Ch) (hCh : 0 ≤ Ch) (hCf : 0 ≤ Cf) (he : 2 ≤ e) :
@@ -122,47 +120,43 @@ theorem frames_factor_le {b ka Ch Cf : ℝ} {e r : ℕ} (hb : 1 ≤ b) (hka : 0 
         nlinarith [mul_le_mul_of_nonneg_left h2 hCC, mul_le_mul_of_nonneg_left h3 hCC]
 
 /- English proof (translation)
-Introduce `T T' b v L f μsec hP p hp`. Take `⟨⟨hLoc, hdist, hKF, hSec, hT, hT'⟩, hdinf⟩` from `hP`. Take `⟨hk1, hε, hc, hκN, hκN', hStd, hTz, hTz'⟩` from `hLoc`. Take `⟨-, -, -, hka0, hkaU, hkaL, -, -, -, -, hlamb, -, -, hAll, hGap, -, -⟩` from `id hStd`. Use `set M : ℝ := ((2 * D.R.rS + 2 : ℕ) : ℝ) with hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkne : kaRe D ≠ 0` using `hka0.ne'`. Establish `hb8 : 8 ≤ b`. Establish `hne : (⟨0, by omega⟩ : Fin (2 * D.R.rS + D.R.k + 1)) ≠ ⟨1, by omega⟩`. Simplify using `[Fin.ext_iff]`. Establish `g` using `hAll _ _ hne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a0` using `hlamb ⟨0, by omega⟩`. Establish `a1` using `hlamb ⟨1, by omega⟩`. Establish `hM2 : (2 : ℝ) ≤ M` using `by rw [hM]; norm_cast; omega`. Establish `hM8 : (8 : ℝ) ≤ M ^ 3` using `by nlinarith`. Establish `hs` using `(abs_sub _ _).trans (add_le_add a0 a1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hCh : 0 ≤ Ch`. Assume the negation of the conclusion as `hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hneg`. Establish `hlt : b ^ Ch < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by linarith) hneg`. Establish `h1 : kaRe D < 1` using `lt_of_le_of_lt hkaU hlt`. Establish `h2 : (kaRe D)⁻¹ < 1` using `lt_of_le_of_lt hkaL hlt`. Establish `h3 : kaRe D * (kaRe D)⁻¹ < 1 * 1` using `mul_lt_mul'' h1 h2 hka0.le (inv_nonneg.2 hka0.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[mul_inv_cancel₀ hkne, one_mul]`. Conclude with `lt_irrefl _ h3`. Establish `hgapL` using `gap_mono (gap_transfer hGap hdinf) hgap`. Take `⟨L₁, f₁, hε1, hlam1, hu1, hu1', hc1, hκ1, hκ1', hz1, hz1', hKF1, hrest⟩` from `hFr L f (kaRe D) (kaRe D)⁻¹ (kaRe D ^ D.R.rS) hka0 (inv_pos.2 hka0) (pow_pos hka0 _) hc hκN hκN' hε hgapL hKF`. Take `⟨μsec₁, hSec1, K₁, hK1, hJ1, hpts⟩` from `hrest μsec hSec`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hp`, the goal using `[← hT, ← hT']`. Take `⟨γ₁, -, hG1, -, hW2⟩` from `hpts p hp`. Establish `hkq : (kaRe D ^ D.R.rS) ^ 2 * (1 / kaRe D) ^ (2 * D.R.rS) = 1`. Rewrite using `[one_div, inv_pow, ← pow_mul, mul_comm D.R.rS 2, mul_inv_cancel₀ (pow_ne_zero _ hkne)]`. Establish `e1 : Tz D.R.k D.R.rS L₁.z * (1 / kaRe D) ^ (2 * D.R.rS) = Tz D.R.k D.R.rS L.z * (kaRe D / kaRe D) ^ (2 * D.R.rS)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hz1, div_self hkne, one_pow, mul_one]`. Take the linear combination `(Tz D.R.k D.R.rS L.z) * hkq`. Establish `e1' : Tz D.R.k D.R.rS L₁.z' * (1 / kaRe D) ^ (2 * D.R.rS) = Tz D.R.k D.R.rS L.z' * (kaRe D / kaRe D) ^ (2 * D.R.rS)`. Rewrite using `[hz1', div_self hkne, one_pow, mul_one]`. Take the linear combination `(Tz D.R.k D.R.rS L.z') * hkq`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hPl1 : PlaceOK1 D Ch Cg b dist dinf v L₁ f₁ μsec₁`. Use `⟨⟨hk1, hε1.trans hε, ?_, hκ1, hκ1', ?_, ?_, ?_⟩, by rw [hlam1]; exact hdist, by rw [hlam1]; exact hdinf, hKF1, hSec1⟩` and prove the remaining obligations. Rewrite using `[hc1, inv_mul_cancel₀ hkne]`. Rewrite using `[hε1, hu1, hu1', e1, e1']`. Conclude with `hStd`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_pow, mul_one, hz1]`. Establish `: (kaRe D ^ D.R.rS) ^ 2 * Tz D.R.k D.R.rS L.z = Tz D.R.k D.R.rS L.z * kaRe D ^ (2 * D.R.rS)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[one_pow, mul_one, hz1']`. Establish `: (kaRe D ^ D.R.rS) ^ 2 * Tz D.R.k D.R.rS L.z' = Tz D.R.k D.R.rS L.z' * kaRe D ^ (2 * D.R.rS)` using `by ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : 0 < (kaRe D)⁻¹ ^ (2 * D.R.rS * (D.R.rS + 1)) * (kaRe D ^ D.R.rS) ^ (4 * (D.R.rS + 1))` using `by positivity`. Establish `hG1ne : Gpt (Tz D.R.k D.R.rS L₁.z) (Tz D.R.k D.R.rS L₁.z') γ₁ ≠ 0`. Rewrite using `[hG1]`. Conclude with `mul_ne_zero hc0.ne' hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB1` using `hB b v L₁ f₁ μsec₁ hPl1 γ₁ hG1ne`. Use `set G := Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') p with hGdef`. Use `set c := (kaRe D)⁻¹ ^ (2 * D.R.rS * (D.R.rS + 1)) * (kaRe D ^ D.R.rS) ^ (4 * (D.R.rS + 1)) with hcdef`. Use `set Fr := max (kaRe D)⁻¹ (kaRe D)⁻¹⁻¹ ^ (Cf * M ^ 2) * max (kaRe D ^ D.R.rS) (kaRe D ^ D.R.rS)⁻¹ ^ (Cf * M) with hFrdef`. Establish `hFr0 : 0 ≤ Fr` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFrle : Fr ≤ b ^ (2 * Ch * Cf * M ^ e)` using `frames_factor_le hb1 hka0 hkaU hkaL hCh hCf (by omega)`. Establish `hcinv : c⁻¹ = (kaRe D)⁻¹ ^ (2 * D.R.rS * (D.R.rS + 1))`. Establish `hpow : (kaRe D ^ D.R.rS) ^ (4 * (D.R.rS + 1)) = kaRe D ^ (2 * D.R.rS * (D.R.rS + 1)) * kaRe D ^ (2 * D.R.rS * (D.R.rS + 1))`. Rewrite using `[← pow_mul, ← pow_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc' : c = kaRe D ^ (2 * D.R.rS * (D.R.rS + 1))`. Rewrite using `[hcdef, hpow, inv_pow, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hkne), one_mul]`. Rewrite using `[hc', inv_pow]`. Establish `hN : ((2 * D.R.rS * (D.R.rS + 1) : ℕ) : ℝ) ≤ M ^ 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcb : max 1 c⁻¹ ≤ b ^ (Ch * M ^ 2)`. Use `max_le (Real.one_le_rpow hb1 (mul_nonneg hCh (by positivity))) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hcinv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_mul hb0.le, Real.rpow_natCast]`. Use `_ ≤ b ^ (Ch * M ^ 2) := Real.rpow_le_rpow_of_exponent_le hb1 (mul_le_mul_of_nonneg_left hN hCh)`. Establish `hmax : max 1 (1 / (c * G)) ≤ max 1 c⁻¹ * max 1 (1 / G)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `max_le (one_le_mul_of_one_le_of_one_le (le_max_left _ _) (le_max_left _ _)) ?_` and prove the remaining obligations. Establish `hc0' : 0 ≤ c⁻¹` using `inv_nonneg.2 hc0.le`. Combine the equalities or inequalities in the displayed calculation. Establish `hpowA : max 1 (1 / (c * G)) ^ A ≤ b ^ (Ch * CA * M ^ e) * max 1 (1 / G) ^ A`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hreal : Fr * (b ^ (C * M ^ e) * max 1 (1 / (c * G)) ^ A) ≤ b ^ ((C + 2 * Ch * Cf + Ch * CA) * M ^ e) * max 1 (1 / G) ^ A`. Establish `hsplit : b ^ ((C + 2 * Ch * Cf + Ch * CA) * M ^ e) = b ^ (2 * Ch * Cf * M ^ e) * (b ^ (C * M ^ e) * b ^ (Ch * CA * M ^ e))`. Rewrite using `[← Real.rpow_add hb0, ← Real.rpow_add hb0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Establish `hbC : 0 ≤ b ^ (C * M ^ e)` using `Real.rpow_nonneg hb0.le _`. Combine the equalities or inequalities in the displayed calculation. Establish `hK1ne : ENNReal.ofReal K₁ ≠ 0` using `(ENNReal.ofReal_pos.2 hK1).ne'`. Establish `hB1'` using `hB1`.
-
-Rewrite `hB1'` using `[hG1, hJ1]`. Establish `key : ENNReal.ofReal K₁ * (ENNReal.ofReal (ptWeight D.R.k D.R.rS (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') p) * orbSq L f p) ≤ ENNReal.ofReal K₁ * (ENNReal.ofReal (b ^ ((C + 2 * Ch * Cf + Ch * CA) * M ^ e) * max 1 (1 / G) ^ A) * jNorm2 L f μsec)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul hFr0]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ _ := by gcongr`. Conclude with `(ENNReal.mul_le_mul_iff_right hK1ne ENNReal.ofReal_ne_top).1 key`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bpLocS_of_1 {Ch Cg dist dinf C CA Cgf Cf : ℝ} {A e : ℕ} (hCg : 2 ≤ Cg) (he : 4 ≤ e)
     (hA : (A : ℝ) ≤ CA * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 2) (hCf : 0 ≤ Cf)
@@ -316,9 +310,9 @@ theorem bpLocS_of_1 {Ch Cg dist dinf C CA Cgf Cf : ℝ} {A e : ℕ} (hCg : 2 ≤
 end Fr
 
 /- English proof (translation)
-Establish `hM1 : (1 : ℝ) ≤ ((2 * r + 2 : ℕ) : ℝ)` using `by norm_cast; omega`. Establish `h1 : ((2 * r + 2 : ℕ) : ℝ) ^ 3 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2)`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hM1 (by norm_num)`. Establish `a1 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by norm_cast; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : (0 : ℝ) ≤ ((3 * (r + 1) : ℕ) : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `by positivity`. Establish `a3 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ a1`. Establish `hN : (1 : ℝ) ≤ ((3 * (r + 1) : ℕ) : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + ((2 * r + k + 1 : ℕ) : ℝ) ^ 3`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gapX_ge (r k : ℕ) : ((2 * r + 2 : ℕ) : ℝ) ^ 3 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) *
     (((3 * (r + 1) : ℕ) : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + ((2 * r + k + 1 : ℕ) : ℝ) ^ 3) := by
@@ -344,13 +338,13 @@ def BesselExpansionLocalFrame : Prop :=
         BpLoc1 D Ch Cg dist' (Cinf * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3) A C2 5
 
 /- English proof (translation)
-Introduce `Aw Ch hAw`. Take `⟨C1, C2, CA, Cinf, Cgf, Cg₀, hCg₀, hOB, hB⟩` from `h Aw Ch hAw`. Use `⟨C1, C2 + 2 * Ch * 2 + Ch * CA, CA, Cinf, max (max Cg₀ 2) (Cgf + 2 * |Cinf|), le_trans (le_max_right _ _) (le_max_left _ _), fun Cg hCg D => ?_⟩` and prove the remaining obligations. Establish `hCg1 : Cg₀ ≤ Cg` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hCg`. Establish `hCg2 : 2 ≤ Cg` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hCg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCg3 : Cgf + 2 * |Cinf| ≤ Cg` using `le_trans (le_max_right _ _) hCg`. Take `⟨dist', A, hA, hQ, hB1⟩` from `hB Cg hCg1 D`. Use `⟨dist', A, hA, hQ, ?_⟩` and prove the remaining obligations. Establish `hX` using `gapX_ge D.R.rS D.R.k`. Use `set M : ℝ := ((2 * D.R.rS + 2 : ℕ) : ℝ) with hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X : ℝ := M ^ ((9 : ℝ) / 2) * (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 3) with hXdef`. Establish `hM3 : 0 ≤ M ^ 3` using `by positivity`. Establish `hX0 : 0 ≤ X` using `le_trans hM3 hX`. Establish `hgap : Cgf * M ^ ((9 : ℝ) / 2) * (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 3) ≤ Cg * M ^ ((9 : ℝ) / 2) * (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) …`. Rewrite using `[mul_assoc Cgf, mul_assoc Cg, ← hXdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Cgf + 2 * |Cinf|) * X ≤ Cg * X` using `mul_le_mul_of_nonneg_right hCg3 hX0`. Establish `h2 : Cinf * M ^ 3 ≤ |Cinf| * M ^ 3` using `mul_le_mul_of_nonneg_right (le_abs_self _) hM3`. Establish `h3 : |Cinf| * M ^ 3 ≤ |Cinf| * X` using `mul_le_mul_of_nonneg_left hX (abs_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `bpLocS_of_1 hCg2 (by norm_num) hA (by norm_num) hgap (Formalism.MainNotions.OnePlaceExpansion.frame_bound_of_bessel_torus D Cgf 2 le_rfl (hOB D)) hB1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem besselLocal_of_frame (h : BesselExpansionLocalFrame) : BesselExpansionLocal := by
   intro Aw Ch hAw
@@ -383,7 +377,7 @@ theorem besselLocal_of_frame (h : BesselExpansionLocalFrame) : BesselExpansionLo
     (Formalism.MainNotions.OnePlaceExpansion.frame_bound_of_bessel_torus D Cgf 2 le_rfl (hOB D)) hB1
 
 /- English proof (translation)
-The claim follows from `uniformTheoremB_of_local (besselLocal_of_frame h)`.
+A detailed English derivation is pending.
 -/
 theorem uniformTheoremB_of_local_frame (h : BesselExpansionLocalFrame) : WeightedBoundRotatedUniform := uniformTheoremB_of_local (besselLocal_of_frame h)
 

@@ -9,9 +9,9 @@ open Matrix Polynomial
 namespace UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Rewrite `ha`, `hb` using `[Subgroup.mem_centralizer_singleton_iff]`. Establish `hA : Commute (a : Matrix (Fin n) (Fin n) k) (γ : Matrix (Fin n) (Fin n) k)`. Simplify `congrArg Units.val ha` using `[Commute, SemiconjBy]`. Establish `hB : Commute (b : Matrix (Fin n) (Fin n) k) (γ : Matrix (Fin n) (Fin n) k)`. Simplify `congrArg Units.val hb` using `[Commute, SemiconjBy]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Units.ext (UpperTheory.V.Z.Tf.Orb.centComm k n _ _ _ hs hA hB)`.
+A detailed English derivation is pending.
 -/
 private theorem centComm_field {k : Type} [Field k] {n : ℕ} (γ a b : GL (Fin n) k)
     (hs : (γ : Matrix (Fin n) (Fin n) k).charpoly.Separable)
@@ -24,11 +24,11 @@ private theorem centComm_field {k : Type} [Field k] {n : ℕ} (γ a b : GL (Fin 
   exact Units.ext (UpperTheory.V.Z.Tf.Orb.centComm k n _ _ _ hs hA hB)
 
 /- English proof (translation)
-Introduce `γ hs`. Use `⟨?_, fun a ha b hb => centComm_field γ a b hs ha hb⟩` and prove the remaining obligations. Establish `e : {y : GL (Fin n) k | ∃ x : GL (Fin n) k, y = x⁻¹ * γ * x} = ⋂ i : ℕ, {y : GL (Fin n) k | (y : Matrix (Fin n) (Fin n) k).charpoly.coeff i = (γ : Matrix (Fin n) (Fin n) k).charpoly.coeff i}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ i`. Establish `h` using `Matrix.charpoly_units_conj x⁻¹ (γ : Matrix (Fin n) (Fin n) k)`. Rewrite `h` using `[← Matrix.coe_units_inv, inv_inv]`. Rewrite using `[Units.val_mul, Units.val_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun p => Polynomial.coeff p i) h`. Introduce `h`. Conclude with `GlobalTheory.BCT.ClsFin.conj_of_charpoly γ y hs (Polynomial.ext h).symm`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_eq ((GroundTheory.Automorphic.ContragredientTranspose.continuous_charpoly_coeff i).comp Units.continuous_val) continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem regOk_field (k : Type) [Field k] [TopologicalSpace k] [IsTopologicalRing k] [T2Space k]
     (n : ℕ) : RegOk k n := by
@@ -67,7 +67,7 @@ private theorem ev_val (i : I) (g : GL (Fin n) (∀ i, k i)) :
       (g : Matrix (Fin n) (Fin n) (∀ i, k i)).map (Pi.evalRingHom k i) := rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => funext fun i => ?_)` and prove the remaining obligations. Establish `h : ((ev i g : GL (Fin n) (k i)) : Matrix (Fin n) (Fin n) (k i)) a b = ((ev i h : GL (Fin n) (k i)) : Matrix (Fin n) (Fin n) (k i)) a b` using `by rw [e i]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ev_ext {g h : GL (Fin n) (∀ i, k i)} (e : ∀ i, ev i g = ev i h) : g = h := by
   refine Units.ext (Matrix.ext fun a b => funext fun i => ?_)
@@ -92,7 +92,7 @@ private def asm (x : ∀ i, GL (Fin n) (k i)) : GL (Fin n) (∀ i, k i) where
     by_cases hab : a = b <;> simp [Matrix.one_apply, hab]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 private theorem ev_asm (x : ∀ i, GL (Fin n) (k i)) (i : I) : ev i (asm x) = x i := by
   refine Units.ext (Matrix.ext fun a b => ?_)
@@ -101,15 +101,15 @@ private theorem ev_asm (x : ∀ i, GL (Fin n) (k i)) (i : I) : ev i (asm x) = x 
 end Pi
 
 /- English proof (translation)
-Introduce `γ hs`. Establish `hsi : ∀ i, ((ev i γ : GL (Fin n) (k i)) : Matrix (Fin n) (Fin n) (k i)).charpoly.Separable` using `fun i => by`. Rewrite using `[ev_val, Matrix.charpoly_map]`. Conclude with `hs.map`. Establish `hc : ∀ i, Continuous (ev (n` using `n) (k := k) i) := fun i => Continuous.units_map _ ((continuous_id).matrix_map (continuous_apply i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun a ha b hb => ev_ext fun i => ?_⟩` and prove the remaining obligations. Establish `e : {y : GL (Fin n) (∀ i, k i) | ∃ x : GL (Fin n) (∀ i, k i), y = x⁻¹ * γ * x} = ⋂ i, (ev i) ⁻¹' {y : GL (Fin n) (k i) | ∃ x : GL (Fin n) (k i), y = x⁻¹ * ev i γ * x}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, rfl⟩ i`. Conclude with `⟨ev i x, by simp only [map_mul, map_inv]⟩`. Introduce `h choose x hx using h`. Use `⟨asm x, ev_ext fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, ev_asm]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx i`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => ((regOk_field (k i) n (ev i γ) (hsi i)).1).preimage (hc i)`. Rewrite `ha`, `hb` using `[Subgroup.mem_centralizer_singleton_iff]`. Rewrite using `[map_mul, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `centComm_field (ev i γ) _ _ (hsi i) ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_centralizer_singleton_iff, ← map_mul, ha, map_mul]`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff, ← map_mul, hb, map_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem regOk_pi (I : Type) (k : I → Type) [∀ i, Field (k i)] [∀ i, TopologicalSpace (k i)]
     [∀ i, IsTopologicalRing (k i)] [∀ i, T2Space (k i)] (n : ℕ) : RegOk (∀ i, k i) n := by
@@ -143,7 +143,7 @@ private theorem regOk_pi (I : Type) (k : I → Type) [∀ i, Field (k i)] [∀ i
 end UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k _ _ _ _ n => UpperTheory.ConvolutionTheory.L1.regOk_field k n, fun I k _ _ _ _ n => UpperTheory.ConvolutionTheory.L1.regOk_pi I k n, fun F _ _ n => UpperTheory.ConvolutionTheory.L1.regOk_pi (NumberField.InfinitePlace F) (fun v => v.Completion) n⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.regOkPi :
     UpperTheory.ConvolutionTheory.L1.RegOkPi :=

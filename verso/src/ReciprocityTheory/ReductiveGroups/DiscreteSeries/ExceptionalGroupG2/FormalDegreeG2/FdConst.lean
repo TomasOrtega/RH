@@ -19,13 +19,13 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `e1 : ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ¬ ε a = ε b), f a b = ∏ x ∈ univ.filter (fun x : Fin n × Fin n => x.1 < x.2 ∧ ¬ ε x.1 = ε x.2), f x.1 x.2`. Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type]`. Repeatedly rewrite using `[Finset.prod_filter]`. Rewrite using `[e1, ← Finset.prod_subtype (univ.filter (fun x : Fin n × Fin n => x.2 < x.1 ∧ ε x.1 ≠ ε x.2)) (fun x => by simp) (fun x : Fin n × Fin n => f x.2 x.1)]`. Apply `Finset.prod_nbij' Prod.swap Prod.swap` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨a, b⟩ h`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.swap_prod_mk] at h ⊢`. Conclude with `⟨h.1, fun e => h.2 e.symm⟩`. Introduce and unpack `⟨a, b⟩ h`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.swap_prod_mk] at h ⊢`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h.1, fun e => h.2 e.symm⟩`. Introduce `x _`. Both sides reduce to the same expression. Introduce `x _`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `x _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem fdc_ncProd (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
     ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ¬ ε a = ε b), f a b =
@@ -48,7 +48,7 @@ theorem fdc_ncProd (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
   · intro x _; rfl
 
 /- English proof (translation)
-Rewrite using `[← fdc_ncProd ε (fun a b => μ a - μ b), ← Finset.prod_mul_distrib]`. Unfold `Vand`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not (univ.filter (fun b : Fin n => a < b)) (fun b => ε a = ε b), Finset.filter_filter, Finset.filter_filter]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fdc_vand_split (ε : Fin n → Bool) (μ : Fin n → ℝ) :
     Vand μ = (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), (μ a - μ b)) *
@@ -60,7 +60,7 @@ theorem fdc_vand_split (ε : Fin n → Bool) (μ : Fin n → ℝ) :
     Finset.filter_filter, Finset.filter_filter]
 
 /- English proof (translation)
-Unfold `PiW wab`. Simplify using `only [Pi.zero_apply, sub_zero, zero_add]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, card_PCoord]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_weight_at_zero_eq (ε : Fin n → Bool) :
     PiW ε 0 = Real.pi ^ (pOf ε * qOf ε) / ∏ ab : PCoord ε, (((ab.1.1 : ℕ) : ℝ) - ((ab.1.2 : ℕ) : ℝ)) := by
@@ -69,7 +69,7 @@ theorem pi_weight_at_zero_eq (ε : Fin n → Bool) :
   rw [Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, card_PCoord]
 
 /- English proof (translation)
-Use `Finset.prod_pos fun ab _ => sub_pos.2 ?_` and prove the remaining obligations. Conclude with `ab.2.1` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fdc_ncpos (ε : Fin n → Bool) :
     0 < ∏ ab : PCoord ε, (((ab.1.1 : ℕ) : ℝ) - ((ab.1.2 : ℕ) : ℝ)) := by
@@ -77,9 +77,9 @@ theorem fdc_ncpos (ε : Fin n → Bool) :
   exact_mod_cast ab.2.1
 
 /- English proof (translation)
-Establish `h : Tendsto (fun t : ℕ => α + (t : ℝ) * m) atTop atTop` using `tendsto_atTop_add_const_left _ α (tendsto_natCast_atTop_atTop.atTop_mul_const hm)`. Establish `h2 : Tendsto (fun t : ℕ => k / (α + (t : ℝ) * m)) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop h`. Establish `h3` using `(tendsto_const_nhds (x := (1 : ℝ))).add h2`. Rewrite `h3` using `[add_zero]`. Use `h3.congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [h.eventually_gt_atTop 0] with t ht`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fdc_tend1 (α k m : ℝ) (hm : 0 < m) :
     Tendsto (fun t : ℕ => (α + (t : ℝ) * m + k) / (α + (t : ℝ) * m)) atTop (𝓝 1) := by
@@ -94,9 +94,9 @@ theorem fdc_tend1 (α k m : ℝ) (hm : 0 < m) :
   field_simp
 
 /- English proof (translation)
-Establish `h : Tendsto (fun t : ℕ => α + (t : ℝ) * m) atTop atTop` using `tendsto_atTop_add_const_left _ α (tendsto_natCast_atTop_atTop.atTop_mul_const hm)`. Establish `h3 : Tendsto (fun t : ℕ => α / (t : ℝ)) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop`. Establish `h4` using `(tendsto_const_nhds (x := (1 : ℝ))).div (h3.add_const m) (by rw [zero_add]; exact hm.ne')`. Rewrite `h4` using `[zero_add]`. Use `h4.congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [h.eventually_gt_atTop 0, eventually_gt_atTop 0] with t ht ht0`. Establish `: (0 : ℝ) < t` using `by exact_mod_cast ht0`. Use `show (1:ℝ) / (α / (t:ℝ) + m) = (t:ℝ) / (α + (t:ℝ) * m)`. Rewrite using `[div_add' _ _ _ this.ne', one_div_div, mul_comm m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdc_tend2 (α m : ℝ) (hm : 0 < m) :
     Tendsto (fun t : ℕ => (t : ℝ) / (α + (t : ℝ) * m)) atTop (𝓝 (1 / m)) := by
@@ -113,29 +113,27 @@ theorem fdc_tend2 (α m : ℝ) (hm : 0 < m) :
   rw [div_add' _ _ _ this.ne', one_div_div, mul_comm m]
 
 /- English proof (translation)
-Establish `hV` using `vand_pos hlam.1`. Establish `hVt : ∀ t, 0 < Vand (lamT lam t)` using `fun t => vand_pos (strictAnti_lamT hlam.1 t)`. Establish `hFp : 0 < (∏ i ∈ range (pOf ε), (i.factorial : ℝ)) * ∏ i ∈ range (qOf ε), (i.factorial : ℝ)` using `mul_pos (volU_factProd_pos _) (volU_factProd_pos _)`. Establish `hP` using `fdc_ncpos ε`. Establish `hform : ∀ t : ℕ, (t : ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t).V : ℝ) / d t = Vand lam / (d 0 * ((∏ i ∈ range (pOf ε), (i.factorial : ℝ)) * ∏ i ∈ range (qOf ε), (i.factorial : ℝ))) * (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), ((lamT lam t a - lamT …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Establish `hsplit` using `fdc_vand_split ε (lamT lam t)`. Establish `hd : d t = d 0 / Vand lam * Vand (lamT lam t)`. Use `h1 t` as an intermediate fact. Rewrite `this` using `[div_eq_iff (hVt t).ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hne : Vand (lamT lam t) ≠ 0` using `(hVt t).ne'`. Rewrite `hne` using `[hsplit]`. Establish `hQ` using `left_ne_zero_of_mul hne`. Establish `hPn` using `right_ne_zero_of_mul hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, card_PCoord]`. Rewrite using `[hd, lemma7 (T t), hsplit]`. Clear the denominators using the available nonvanishing facts. Establish `hR1 : Tendsto (fun t : ℕ => ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), ((lamT lam t a - lamT lam t b + (nab ε a b : ℝ)) / (lamT lam t a - lamT lam t b))) atTop (𝓝 (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), (1 : ℝ)))`. Use `tendsto_finsetProd _ fun a _ => tendsto_finsetProd _ fun b hb => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Simplify using `only [lamT_sub]`. Use `fdc_tend1 _ _ _ (sub_pos.2 ?_)` and prove the remaining obligations. Conclude with `hb.1` after adjusting the coercions. Establish `hR2 : Tendsto (fun t : ℕ => ∏ ab : PCoord ε, ((t : ℝ) / (lamT lam t ab.1.2 - lamT lam t ab.1.1))) atTop (𝓝 (∏ ab : PCoord ε, 1 / (((ab.1.1 : ℕ) : ℝ) - ((ab.1.2 : ℕ) : ℝ))))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `tendsto_finsetProd _ fun ab _ => ?_` and prove the remaining obligations. Simplify using `only [lamT_sub]`. Use `fdc_tend2 _ _ (sub_pos.2 ?_)` and prove the remaining obligations. Conclude with `ab.2.1` after adjusting the coercions. Establish `hX` using `((tendsto_const_nhds (x := Vand lam / (d 0 * ((∏ i ∈ range (pOf ε), (i.factorial : ℝ)) * ∏ i ∈ range (qOf ε), (i.factorial : ℝ))))).mul hR1).mul hR2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hval : Vand lam / (d 0 * ((∏ i ∈ range (pOf ε), (i.factorial : ℝ)) * ∏ i ∈ range (qOf ε), (i.factorial : ℝ))) * (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b ∧ ε a = ε b), (1 : ℝ)) * (∏ ab : PCoord ε, 1 / (((ab.1.1 : ℕ) : ℝ) - ((ab.1.2 : ℕ) : ℝ))) = Vand lam / (d 0 * (( …`. Simplify using `only [Finset.prod_const_one, mul_one, Finset.prod_div_distrib]`. Rewrite `hX` using `[hval]`. Establish `hX'` using `hX.congr (fun t => (hform t).symm)`. Establish `hE` using `ENNReal.tendsto_ofReal hX'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hE.limsup_eq`. Establish `e2` using `hE.liminf_eq`. Rewrite `hup` using `[e1]`. Rewrite `hlow` using `[e2]`. Establish `hC : 0 ≤ cPQ ε * PiW ε 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[pi_weight_at_zero_eq]`. Unfold `cPQ`. Use `volU_factProd_pos n` as an intermediate fact. Use `volU_factProd_pos (pOf ε)` as an intermediate fact. Use `volU_factProd_pos (qOf ε)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hL : 0 ≤ Vand lam / (d 0 * ((∏ i ∈ range (pOf ε), (i.factorial : ℝ)) * ∏ i ∈ range (qOf ε), (i.factorial : ℝ))) * (1 / ∏ ab : PCoord ε, (((ab.1.1 : ℕ) : ℝ) - ((ab.1.2 : ℕ) : ℝ)))`. Check the signs of the components of the expression. Establish `heq` using `(ENNReal.ofReal_eq_ofReal_iff hL hC).1 (le_antisymm hup hlow)`. Rewrite `heq` using `[pi_weight_at_zero_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cPQ at heq`. Establish `hpi : 0 < Real.pi ^ (pOf ε * qOf ε)` using `pow_pos Real.pi_pos _`. Establish `hI` using `volU_factProd_pos n`. Rewrite using `[dimVlam_eq_vand hlam.1]`. Clear denominators, using `at heq` for the nonvanishing conditions.
-
-Clear the denominators using the available nonvanishing facts. Use polynomial arithmetic with `[heq]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem formal_degree_constant_eq {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : IsHCParam lam) (d : ℕ → ℝ)
     (T : ∀ t : ℕ, KType ε (lowK ε (lamT lam t)))

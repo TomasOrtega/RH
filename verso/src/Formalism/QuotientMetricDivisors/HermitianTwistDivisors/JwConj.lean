@@ -17,9 +17,9 @@ namespace ConjugateWeightLattice
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, h2 _ rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun t ht => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: t = cO K s` using `RingOfIntegers.ext ht`. Rewrite using `[this]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_iff (p : Ideal (𝓞 K)) (s : 𝓞 K) :
     (s ∉ p ∧ ∀ t : 𝓞 K, algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K s) → t ∉ p) ↔

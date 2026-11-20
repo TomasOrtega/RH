@@ -6,9 +6,9 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n P hP`. Establish `hcsr` using `GlobalTheory.CompanionTheory.EllLoc.csr_global hP`. Use `⟨fun h0 => ?_, hcsr, fun w => GlobalTheory.CompanionTheory.EllLoc.csr_at hP w⟩` and prove the remaining obligations. Rewrite `hcsr` using `[h0, map_zero, C_0, zero_mul]`. Establish `hm : (P.map (IsCMField.complexConj E).toRingEquiv.toRingHom).Monic` using `hP.1.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm.ne_zero (Polynomial.reverse_eq_zero.mp hcsr.symm)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G2.ellCsr :
     UpperTheory.ConvolutionTheory.G2.EllCsr := by

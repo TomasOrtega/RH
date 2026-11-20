@@ -16,7 +16,7 @@ section IntAtLem
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Take `⟨r, s, hs, h1⟩` from `ha`. Take `⟨r', s', hs', h2⟩` from `hb`. Use `⟨r * r', s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ia_mul {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a * b) := by
   obtain ⟨r, s, hs, h1⟩ := ha
@@ -26,30 +26,30 @@ theorem ia_mul {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a * b) := 
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨k, 1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem ia_nat (k : ℕ) : IntAt P (k : E) :=
   ⟨k, 1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), by simp⟩
 
 /- English proof (translation)
-Simplify using `using ia_nat P 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ia_zero : IntAt P (0 : E) := by simpa using ia_nat P 0
 
 /- English proof (translation)
-Simplify using `using ia_nat P 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ia_one : IntAt P (1 : E) := by simpa using ia_nat P 1
 
 /- English proof (translation)
-Take `⟨r, s, hs, h1⟩` from `ha`. Conclude with `⟨-r, s, hs, by rw [map_neg, ← h1]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ia_neg {a : E} (ha : IntAt P a) : IntAt P (-a) := by
   obtain ⟨r, s, hs, h1⟩ := ha
   exact ⟨-r, s, hs, by rw [map_neg, ← h1]; ring⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, h1⟩` from `ha`. Take `⟨r', s', hs', h2⟩` from `hb`. Use `⟨r * s' + r' * s, s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_mul, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ia_add {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a + b) := by
   obtain ⟨r, s, hs, h1⟩ := ha
@@ -59,14 +59,14 @@ theorem ia_add {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a + b) := 
   ring
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `ia_add P ha (ia_neg P hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ia_sub {a b : E} (ha : IntAt P a) (hb : IntAt P b) : IntAt P (a - b) := by
   rw [sub_eq_add_neg]
   exact ia_add P ha (ia_neg P hb)
 
 /- English proof (translation)
-Use `ia_nat P (qOf P ^ k)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem ia_qpow (k : ℕ) : IntAt P ((qOf P : E) ^ k) := by
   have := ia_nat P (qOf P ^ k)
@@ -74,7 +74,7 @@ theorem ia_qpow (k : ℕ) : IntAt P ((qOf P : E) ^ k) := by
   exact this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ia_zero P`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `ia_add P (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ia_sum {ι : Type*} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) :
     IntAt P (∑ i ∈ s, f i) := by
@@ -86,7 +86,7 @@ theorem ia_sum {ι : Type*} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, Int
     exact ia_add P (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `e : (qOf P : E) ^ D * z = (qOf P : E) ^ (D - j) * ((qOf P : E) ^ j * z)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hjD]`. Rewrite using `[e]`. Conclude with `ia_mul P (ia_qpow P _) hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ia_up {j D : ℕ} (hjD : j ≤ D) {z : E} (hz : IntAt P ((qOf P : E) ^ j * z)) :
     IntAt P ((qOf P : E) ^ D * z) := by
@@ -96,15 +96,15 @@ theorem ia_up {j D : ℕ} (hjD : j ≤ D) {z : E} (hz : IntAt P ((qOf P : E) ^ j
   exact ia_mul P (ia_qpow P _) hz
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 hp.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem qE_ne (hp : (Ideal.absNorm P.asIdeal).Prime) : (qOf P : E) ≠ 0 :=
   Nat.cast_ne_zero.2 hp.ne_zero
 
 /- English proof (translation)
-Establish `e : x / (qOf P : E) ^ b' = (qOf P : E) ^ (b - b') * (x / (qOf P : E) ^ b)`. Establish `hq` using `qE_ne P hp`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hb]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ia_mul P (ia_qpow P _) hx`.
+A detailed English derivation is pending.
 -/
 theorem ia_div_down (hp : (Ideal.absNorm P.asIdeal).Prime) {b b' : ℕ} (hb : b' ≤ b) {x : E}
     (hx : IntAt P (x / (qOf P : E) ^ b)) : IntAt P (x / (qOf P : E) ^ b') := by
@@ -116,11 +116,11 @@ theorem ia_div_down (hp : (Ideal.absNorm P.asIdeal).Prime) {b b' : ℕ} (hb : b'
   exact ia_mul P (ia_qpow P _) hx
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Conclude with `⟨0, by rw [ha, mul_zero]; exact ia_zero P⟩`. Take `⟨e, w, rfl, -, hw, -⟩` from `hN.2.2.1 E P hp hq a ha`. Use `⟨(-e).toNat, ?_⟩` and prove the remaining obligations. Establish `hq0` using `qE_ne P hp`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (qOf P : E) ^ (-e).toNat * ((qOf P : E) ^ e * w) = (qOf P : E) ^ (((-e).toNat : ℤ) + e).toNat * w`. Rewrite using `[← mul_assoc, ← zpow_natCast, ← zpow_add₀ hq0, ← zpow_natCast]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ia_mul P (ia_qpow P _) hw`.
+A detailed English derivation is pending.
 -/
 theorem ia_bound (hN : NTAll) (hp : (Ideal.absNorm P.asIdeal).Prime)
     (hq : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (a : E) :
@@ -154,18 +154,18 @@ def vq (a : E) : ℤ :=
 variable {P}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero h.1 h'.1, ia_mul P h.2.1 h'.2.1, by rw [mul_inv]; exact ia_mul P h.2.2 h'.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_mul {w w' : E} (h : UnitAt P w) (h' : UnitAt P w') : UnitAt P (w * w') :=
   ⟨mul_ne_zero h.1 h'.1, ia_mul P h.2.1 h'.2.1, by rw [mul_inv]; exact ia_mul P h.2.2 h'.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_ne_zero, ia_one P, by rw [inv_one]; exact ia_one P⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_one : UnitAt P (1 : E) := ⟨one_ne_zero, ia_one P, by rw [inv_one]; exact ia_one P⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inv_ne_zero h.1, h.2.2, by rw [inv_inv]; exact h.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_inv {w : E} (h : UnitAt P w) : UnitAt P w⁻¹ := ⟨inv_ne_zero h.1, h.2.2, by rw [inv_inv]; exact h.2.1⟩
 
@@ -174,9 +174,9 @@ variable (hN : NTAll) (hp : (Ideal.absNorm P.asIdeal).Prime)
 include hN hp hq
 
 /- English proof (translation)
-Establish `h : ∃ e : ℤ, ∃ w : E, a = (qOf P : E) ^ e * w ∧ UnitAt P w`. Take `⟨e, w, h1, h2, h3, h4⟩` from `hN.2.2.1 E P hp hq a ha`. Conclude with `⟨e, w, h1, h2, h3, h4⟩`. Unfold `vq`. Rewrite using `[dif_pos h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem vq_spec {a : E} (ha : a ≠ 0) : ∃ w : E, a = (qOf P : E) ^ vq P a * w ∧ UnitAt P w := by
   have h : ∃ e : ℤ, ∃ w : E, a = (qOf P : E) ^ e * w ∧ UnitAt P w := by
@@ -187,7 +187,7 @@ theorem vq_spec {a : E} (ha : a ≠ 0) : ∃ w : E, a = (qOf P : E) ^ vq P a * w
   exact h.choose_spec
 
 /- English proof (translation)
-Establish `ha : a ≠ 0`. Rewrite using `[h]`. Conclude with `mul_ne_zero (zpow_ne_zero _ (qE_ne P hp)) hw.1`. Take `⟨w1, h1, hw1⟩` from `vq_spec hN hp hq ha`. Conclude with `hN.2.2.2.1 E P hp hq _ _ w1 w hw1.1 hw1.2.1 hw1.2.2 hw.2.1 hw.2.2 (h1.symm.trans h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem vq_eq {a w : E} {e : ℤ} (h : a = (qOf P : E) ^ e * w) (hw : UnitAt P w) : vq P a = e := by
   have ha : a ≠ 0 := by
@@ -197,9 +197,9 @@ theorem vq_eq {a w : E} {e : ℤ} (h : a = (qOf P : E) ^ e * w) (hw : UnitAt P w
   exact hN.2.2.2.1 E P hp hq _ _ w1 w hw1.1 hw1.2.1 hw1.2.2 hw.2.1 hw.2.2 (h1.symm.trans h)
 
 /- English proof (translation)
-Take `⟨w, h1, hw⟩` from `vq_spec hN hp hq ha`. Take `⟨w', h2, hw'⟩` from `vq_spec hN hp hq hb`. Apply `vq_eq hN hp hq _ (unitAt_mul hw hw')` to reduce the goal to its premises. Rewrite using `[zpow_add₀ (qE_ne P hp)]`. Use `conv_lhs => rw [h1, h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem vq_mul {a b : E} (ha : a ≠ 0) (hb : b ≠ 0) : vq P (a * b) = vq P a + vq P b := by
   obtain ⟨w, h1, hw⟩ := vq_spec hN hp hq ha
@@ -210,12 +210,12 @@ theorem vq_mul {a b : E} (ha : a ≠ 0) (hb : b ≠ 0) : vq P (a * b) = vq P a +
   ring
 
 /- English proof (translation)
-The claim follows from `vq_eq hN hp hq (by simp) unitAt_one`.
+A detailed English derivation is pending.
 -/
 theorem vq_one : vq P (1 : E) = 0 := vq_eq hN hp hq (by simp) unitAt_one
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vq_one hN hp hq`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, vq_mul hN hp hq (hf a (Finset.mem_insert_self a s)) (Finset.prod_ne_zero_iff.2 fun i hi => hf i (Finset.mem_insert_of_mem hi)), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem vq_prod {ι : Type*} (s : Finset ι) (f : ι → E) (hf : ∀ i ∈ s, f i ≠ 0) :
     vq P (∏ i ∈ s, f i) = ∑ i ∈ s, vq P (f i) := by

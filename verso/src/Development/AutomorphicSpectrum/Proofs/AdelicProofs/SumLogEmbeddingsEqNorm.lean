@@ -6,9 +6,9 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 /- English proof (translation)
-Use `letI : Algebra ℚ A := DivisionRing.toRatAlgebra`. Establish `h1 : algebraMap ℚ A (Algebra.norm ℚ x) = ∏ σ : k →ₐ[ℚ] A, σ x` using `Algebra.norm_eq_prod_embeddings ℚ A x`. Establish `h2 : ((Algebra.norm ℚ x : ℚ) : A) = ∏ σ : k →ₐ[ℚ] A, σ x`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∏ σ : k →ₐ[ℚ] A, σ x = ∏ j : k →+* A, j x` using `Fintype.prod_equiv (RingHom.equivRatAlgHom (R := k) (S := A)).symm _ _ (fun σ => rfl)`. Rewrite using `[h2, h3, norm_prod, Real.log_prod]`. Introduce `j _`. Conclude with `norm_ne_zero_iff.mpr ((map_ne_zero j).mpr hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_log_norm_embeddings_eq_log_norm (k A : Type) [Field k] [NumberField k] [NormedField A]
     [CharZero A] [IsAlgClosed A] (x : k) (hx : x ≠ 0) :

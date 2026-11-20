@@ -14,7 +14,7 @@ variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {E : T
     [Algebra O E] [IsFractionRing O E]
 
 /- English proof (translation)
-Unfold `val`. Establish `hx' : (IsDiscreteValuationRing.maximalIdeal O).valuation E x ≠ 0` using `by simpa using hx`. Establish `hy' : (IsDiscreteValuationRing.maximalIdeal O).valuation E y ≠ 0` using `by simpa using hy`. Rewrite using `[map_mul, WithZero.log_mul hx' hy']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_mul' {x y : E} (hx : x ≠ 0) (hy : y ≠ 0) : val O (x * y) = val O x + val O y := by
   unfold val
@@ -24,12 +24,12 @@ theorem val_mul' {x y : E} (hx : x ≠ 0) (hy : y ≠ 0) : val O (x * y) = val O
   ring
 
 /- English proof (translation)
-Simplify using `[val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_one' : val O (1 : E) = 0 := by simp [val]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [val_one']`. Consider the case `succ k ih`. Rewrite using `[pow_succ, val_mul' O (pow_ne_zero _ hx) hx, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -41,7 +41,7 @@ theorem val_pow' {x : E} (hx : x ≠ 0) (k : ℕ) : val O (x ^ k) = k * val O x 
     push_cast; ring
 
 /- English proof (translation)
-Use `val_mul' O hx (inv_ne_zero hx)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hx, val_one']`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem val_inv' {x : E} (hx : x ≠ 0) : val O x⁻¹ = -val O x := by
   have := val_mul' O hx (inv_ne_zero hx)
@@ -49,9 +49,9 @@ theorem val_inv' {x : E} (hx : x ≠ 0) : val O x⁻¹ = -val O x := by
   omega
 
 /- English proof (translation)
-Establish `hx' : (IsDiscreteValuationRing.maximalIdeal O).valuation E x ≠ 0` using `by simpa using hx`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation E x = 1`. Unfold `val at h`. Rewrite using `[← WithZero.exp_log hx']`. Establish `: WithZero.log ((IsDiscreteValuationRing.maximalIdeal O).valuation E x) = 0` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, WithZero.exp_zero]`. Conclude with `IsDiscreteValuationRing.exists_lift_of_le_one h1.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_val_eq_zero {x : E} (hx : x ≠ 0) (h : val O x = 0) : ∃ a : O, algebraMap O E a = x := by
   have hx' : (IsDiscreteValuationRing.maximalIdeal O).valuation E x ≠ 0 := by simpa using hx
@@ -63,7 +63,7 @@ theorem exists_lift_of_val_eq_zero {x : E} (hx : x ≠ 0) (h : val O x = 0) : �
   exact IsDiscreteValuationRing.exists_lift_of_le_one h1.le
 
 /- English proof (translation)
-Unfold `val`. Establish `: (IsDiscreteValuationRing.maximalIdeal O).valuation E (algebraMap O E a) = 1`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal a).1 h ha`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -75,7 +75,7 @@ theorem val_algebraMap_unit (a : O) (ha : IsUnit a) : val O (algebraMap O E a) =
   rw [this]; simp
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `(IsDiscreteValuationRing.maximalIdeal O).valuation_exists_uniformizer E`. Conclude with `⟨π, by simp [val, hπ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_val_eq_one : ∃ π : E, val O π = 1 := by
   obtain ⟨π, hπ⟩ := (IsDiscreteValuationRing.maximalIdeal O).valuation_exists_uniformizer E
@@ -84,15 +84,13 @@ theorem exists_val_eq_one : ∃ π : E, val O π = 1 := by
 end Gen
 
 /- English proof (translation)
-Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_integral_basis_unramifiedInvolutionExt K K' d φ hφ hd`. Establish `hwj : ∀ j, ∃ c : K'.O, algebraMap K'.O K'.E c = w j`. Introduce `j`. Use `(hw (w j)).2 fun k => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[w.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩`. Establish `hM : ∀ i j, ∃ m : K.O, algebraMap K.O K.E m = Algebra.leftMulMatrix w (algebraMap K'.O K'.E z) i j`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul]`. Take `⟨c, hc⟩` from `hwj j`. Use `(hw _).1 ⟨z * c, ?_⟩ i` and prove the remaining obligations. Rewrite using `[map_mul, hc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose M hM using hM`. Use `⟨(Matrix.of M).det, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_eq_matrix_det w, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
-
-Simplify using `[hM]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_integral (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E) (hφ : IsUnrExt K K' d φ) (hd : 0 < d) (z : K'.O) :
     ∃ a : K.O, algebraMap K.O K.E a = @Algebra.norm K.E K'.E _ _ φ.toAlgebra (algebraMap K'.O K'.E z) := by
@@ -119,25 +117,21 @@ theorem norm_integral (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E) (hφ : IsUnrEx
   simp [hM]
 
 /- English proof (translation)
-Introduce `K K' d φ hφ hd y`. Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Establish `hfr : Module.finrank K.E K'.E = d` using `hφ.2.2.2.2`. Use `haveI : Module.Finite K.E K'.E := Module.finite_of_finrank_pos (hfr ▸ hd)`. Distinguish the cases in `hy : y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Rewrite using `[Algebra.norm_zero]`. Simplify using `[val]`. Take `⟨π, hπ⟩` from `exists_val_eq_one K.O (E := K.E)`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; simp [val] at hπ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφπ : val K'.O (φ π) = 1` using `by rw [hφ.2.2.1, hπ]`. Establish `hφπ0 : φ π ≠ 0` using `(map_ne_zero φ).2 hπ0`. Use `set n := val K'.O y with hn`. Use `set a := (-n).toNat`. Use `set b := n.toNat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hab : (b : ℤ) - a = n` using `Int.toNat_sub_toNat_neg n`. Use `set u := y * φ π ^ a * (φ π ^ b)⁻¹ with hu`. Establish `hu0 : u ≠ 0` using `mul_ne_zero (mul_ne_zero hy (pow_ne_zero _ hφπ0)) (inv_ne_zero (pow_ne_zero _ hφπ0))`. Establish `hvu : val K'.O u = 0`. Rewrite using `[hu, val_mul' _ (mul_ne_zero hy (pow_ne_zero _ hφπ0)) (inv_ne_zero (pow_ne_zero _ hφπ0)), val_mul' _ hy (pow_ne_zero _ hφπ0), val_inv' _ (pow_ne_zero _ hφπ0), val_pow' _ hφπ0, val_pow' _ hφπ0, hφπ, ← hn]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hvu' : val K'.O u⁻¹ = 0` using `by rw [val_inv' _ hu0, hvu]; rfl`. Take `⟨u₁, hu₁⟩` from `exists_lift_of_val_eq_zero K'.O hu0 hvu`. Take `⟨u₂, hu₂⟩` from `exists_lift_of_val_eq_zero K'.O (inv_ne_zero hu0) hvu'`. Take `⟨m₁, hm₁⟩` from `norm_integral K K' d φ hφ hd u₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m₂, hm₂⟩` from `norm_integral K K' d φ hφ hd u₂`. Establish `hunit : IsUnit m₁`. Establish `h12 : m₁ * m₂ = 1`. Apply `IsFractionRing.injective K.O K.E` to reduce the goal to its premises. Rewrite using `[map_mul, hm₁, hm₂, hu₁, hu₂, ← map_mul, mul_inv_cancel₀ hu0, map_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsUnit.of_mul_eq_one m₂ h12`. Establish `hNu : val K.O (Algebra.norm K.E u) = 0`. Rewrite using `[← hu₁, ← hm₁]`. Conclude with `val_algebraMap_unit K.O m₁ hunit`. Establish `hNu0 : Algebra.norm K.E u ≠ 0` using `Algebra.norm_ne_zero_iff.2 hu0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hNy0 : Algebra.norm K.E y ≠ 0` using `Algebra.norm_ne_zero_iff.2 hy`. Establish `hNφ : Algebra.norm K.E (φ π) = π ^ d`. Rewrite using `[← hfr]`. Conclude with `Algebra.norm_algebraMap π`. Establish `key : y * φ π ^ a = u * φ π ^ b`.
-
-Rewrite using `[hu, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hφπ0), mul_one]`. Establish `key2` using `congrArg (fun x => val K.O (Algebra.norm K.E x)) key`. Simplify using `only [map_mul, map_pow, hNφ] at key2`. Rewrite `key2` using `[val_mul' _ hNy0 (pow_ne_zero _ (pow_ne_zero _ hπ0)), val_mul' _ hNu0 (pow_ne_zero _ (pow_ne_zero _ hπ0)), val_pow' _ (pow_ne_zero _ hπ0), val_pow' _ (pow_ne_zero _ hπ0), val_pow' _ hπ0, hNu, hπ]`. Rewrite using `[← hab]`.
-
-Move the coercions through the operations in `at key2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem normval : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → 0 < d →
     ∀ y : K'.E, val K.O (@Algebra.norm K.E K'.E _ _ φ.toAlgebra y) = d * val K'.O y := by

@@ -12,15 +12,13 @@ namespace GlobalTheory.BlockReps
 variable {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {act : Mat p q →ₗ[ℂ] Module.End ℂ V}
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Introduce `y _ z hz h`. Simplify using `at hz`. Simplify `h` using `[hz]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert μ F hμ ih`. Introduce `y hy z hz h`. Rewrite `hz` using `[Finset.iSup_insert]`. Take `⟨z1, h1, z2, h2, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite `hF` using `[Finset.mem_insert, not_or]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `Function.ne_iff.1 hF.1`. Establish `hc : (((ν a : ℚ) : ℂ) - ((μ a : ℚ) : ℂ)) ≠ 0` using `by exact_mod_cast sub_ne_zero.2 ha`. Establish `h3 : act (Eab a a) z2 ∈ ⨆ μ ∈ F, wtSub act μ`. Establish `: (⨆ μ ∈ F, wtSub act μ) ≤ (⨆ μ ∈ F, wtSub act μ).comap (act (Eab a a))` using `iSup₂_le fun κ hκ x hx => by`. Rewrite using `[Submodule.mem_comap, mem_wt.1 hx a]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ ((le_iSup₂_of_le (f := fun μ (_ : μ ∈ F) => wtSub act μ) κ hκ le_rfl : wtSub act κ ≤ _) hx)`. Conclude with `this h2`. Use `ih hF.2 ((((ν a : ℚ) : ℂ) - ((μ a : ℚ) : ℂ)) • y) (Submodule.smul_mem _ _ hy) (act (Eab a a) z2 - ((μ a : ℚ) : ℂ) • z2) (sub_mem h3 (Submodule.smul_mem _ _ h2)) (by` as an intermediate fact. Use `W.sub_mem (hW _ (isKC_Eab (same_refl a)) _ h) (W.smul_mem ((μ a : ℚ) : ℂ) h) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add, map_add, mem_wt.1 hy, mem_wt.1 h1]`.
-
-Use the proof step `module)`. Conclude with `(W.smul_mem_iff hc).1 this`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma proj_fin {W : Submodule ℂ V} (hW : KStable act W) {ν : Ix p q → ℚ} (F : Finset (Ix p q → ℚ))
     (hF : ν ∉ F) :
@@ -54,9 +52,9 @@ lemma proj_fin {W : Submodule ℂ V} (hW : KStable act W) {ν : Ix p q → ℚ} 
     exact (W.smul_mem_iff hc).1 this
 
 /- English proof (translation)
-Introduce `ν`. Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy hz`. Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.1 hz`. Establish `hle : (⨆ i ∈ s, ⨆ (_ : i ≠ ν), wtSub act i) ≤ ⨆ i ∈ s.erase ν, wtSub act i` using `iSup₂_le fun i hi => iSup_le fun hne => le_iSup₂_of_le (f := fun μ (_ : μ ∈ s.erase ν) => wtSub act μ) i (Finset.mem_erase.2 ⟨hne, hi⟩) le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : KStable act (⊥ : Submodule ℂ V)`. Introduce `Z _ w hw`. Rewrite `hw`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hw, map_zero]`. Conclude with `proj_fin hb (s.erase ν) (by simp) y hy (-y) (neg_mem (hle hs)) (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wt_indep : iSupIndep (wtSub act) := by
   classical
@@ -75,11 +73,9 @@ lemma wt_indep : iSupIndep (wtSub act) := by
   exact proj_fin hb (s.erase ν) (by simp) y hy (-y) (neg_mem (hle hs)) (by simp)
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `Submodule.mem_iSup_iff_exists_finset.1 h`. Use `clear h`. Proceed by induction on `F using Finset.induction_on generalizing x with`. Consider the case `empty`. Simplify using `at hF`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hF]`. Consider the case `insert μ F hμ ih`. Rewrite `hF` using `[Finset.iSup_insert]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hF`. Establish `hyW` using `proj_fin hW F hμ y hy z hz hx`.
-
-Conclude with `add_mem (Submodule.mem_iSup_of_mem μ ⟨hyW, hy⟩) (ih ((W.add_mem_iff_right hyW).1 hx) hz)`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma decomp {W : Submodule ℂ V} (hW : KStable act W) {x : V} (hx : x ∈ W)
     (h : x ∈ ⨆ μ, wtSub act μ) : x ∈ ⨆ μ, W ⊓ wtSub act μ := by
@@ -97,9 +93,9 @@ lemma decomp {W : Submodule ℂ V} (hW : KStable act W) {x : V} (hx : x ∈ W)
     exact add_mem (Submodule.mem_iSup_of_mem μ ⟨hyW, hy⟩) (ih ((W.add_mem_iff_right hyW).1 hx) hz)
 
 /- English proof (translation)
-Establish `hi : iSupIndep fun μ => (wtSub act μ).comap W.subtype`. Introduce `ν`. Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy hz`. Establish `hle : (⨆ j, ⨆ (_ : j ≠ ν), (wtSub act j).comap W.subtype) ≤ (⨆ j, ⨆ (_ : j ≠ ν), wtSub act j).comap W.subtype` using `iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂_of_le (f := fun j (_ : j ≠ ν) => wtSub act j) j hj le_rfl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Submodule.disjoint_def.1 (wt_indep (act := act) ν) (y : V) hy (hle hz))`. Use `(WellFoundedGT.finite_ne_bot_of_iSupIndep hi).subset fun μ hμ => ?_` and prove the remaining obligations. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 hμ`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨⟨x, hx.1⟩, hx.2, fun h => h0 (congrArg Subtype.val h)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma finite_wts (W : Submodule ℂ V) [FiniteDimensional ℂ W] :
     {μ | W ⊓ wtSub act μ ≠ ⊥}.Finite := by
@@ -117,7 +113,7 @@ lemma finite_wts (W : Submodule ℂ V) [FiniteDimensional ℂ W] :
   exact (Submodule.ne_bot_iff _).2 ⟨⟨x, hx.1⟩, hx.2, fun h => h0 (congrArg Subtype.val h)⟩
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Eab]`. Simplify using `[Eab, Matrix.single_mul_single_of_ne _ _ _ _ h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Eab_mul (a b c d : Ix p q) : Eab a b * Eab c d = if b = c then Eab a d else 0 := by
   split_ifs with h
@@ -127,11 +123,11 @@ lemma Eab_mul (a b c d : Ix p q) : Eab a b * Eab c d = if b = c then Eab a d els
 def root (a b : Ix p q) : Ix p q → ℚ := fun c => (if c = a then 1 else 0) - (if c = b then 1 else 0)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_wt]`. Introduce `c`. Rewrite using `[lie_apply hL (isKC_Eab (same_refl c)) (isKC_Eab hab), hx, Eab_mul, Eab_mul, map_smul]`. Simplify using `only [Pi.add_apply, root, eq_comm (a := b) (b := c)]`. Apply the tactic sequence `by_cases h1 : c = a <;> by_cases h2 : c = b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Substitute `h1` using the available equality. Simplify using `[h2, add_smul]`.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h2` using the available equality. Simplify using `[h1, add_smul]`. Simplify using `[h1, h2]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma shift (hL : IsKLieAct act) {a b : Ix p q} (hab : sameBlock a b) {μ : Ix p q → ℚ} {x : V}
     (hx : x ∈ wtSub act μ) : act (Eab a b) x ∈ wtSub act (μ + root a b) := by
@@ -146,26 +142,26 @@ lemma shift (hL : IsKLieAct act) {a b : Ix p q} (hab : sameBlock a b) {μ : Ix p
   · simp [h1, h2]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Apply the tactic sequence `cases a <;> simp [posC] at h`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posC_ne {a b : Ix p q} (h : posC a b) : a ≠ b := by
   rintro rfl
   cases a <;> simp [posC] at h
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> cases b <;> simp_all [posC, le_of_lt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posC_asymm {a b : Ix p q} (h : posC a b) : ¬ posC b a := by
   cases a <;> cases b <;> simp_all [posC, le_of_lt]
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> cases b <;> cases c <;> simp_all only [posC] <;> exact lt_trans h h'`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posC_trans {a b c : Ix p q} (h : posC a b) (h' : posC b c) : posC a c := by
   cases a <;> cases b <;> cases c <;> simp_all only [posC] <;> exact lt_trans h h'
 
 /- English proof (translation)
-Rewrite using `[lie_apply hL (isKC_Eab (same_of_pos hab)) (isKC_Eab (same_of_pos' hab)), Eab_mul, Eab_mul, if_pos rfl, if_pos rfl, map_sub, LinearMap.sub_apply, mem_wt.1 hy, mem_wt.1 hy, sub_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma raise_lower (hL : IsKLieAct act) {a b : Ix p q} (hab : posC a b) {κ : Ix p q → ℚ} {y : V}
     (hy : y ∈ wtSub act κ) :
@@ -177,7 +173,7 @@ lemma raise_lower (hL : IsKLieAct act) {a b : Ix p q} (hab : posC a b) {κ : Ix 
 def pair (l μ : Ix p q → ℚ) : ℚ := ∑ x, l x * μ x
 
 /- English proof (translation)
-Simplify using `[pair, root, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pair_root (l μ : Ix p q → ℚ) (a b : Ix p q) :
     pair l (μ + root a b) = pair l μ + (l a - l b) := by
@@ -192,9 +188,9 @@ def rho (p q : ℕ) : Ix p q → ℚ :=
   fun x => ∑ c, ((if posC x c then 1 else 0) - (if posC c x then 1 else 0))
 
 /- English proof (translation)
-Use `Finset.sum_lt_sum (fun c _ => ?_) ⟨a, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `t1 : posC b c → posC a c` using `posC_trans h`. Establish `t2 : posC c a → posC c b` using `fun h' => posC_trans h' h`. Apply the tactic sequence `by_cases h1 : posC b c <;> by_cases h2 : posC c a <;> by_cases h3 : posC a c <;>`. Apply the tactic sequence `by_cases h4 : posC c b <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : ¬ posC a a` using `fun h => posC_ne h rfl`. Simplify using `[h, h1, posC_asymm h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma rho_lt {a b : Ix p q} (h : posC a b) : rho p q b < rho p q a := by
   refine Finset.sum_lt_sum (fun c _ => ?_) ⟨a, Finset.mem_univ _, ?_⟩
@@ -211,9 +207,9 @@ def casVal (μ : Ix p q → ℚ) : ℚ :=
   ∑ a, ∑ b, ((if a = b then μ a * μ a else 0) + (if posC a b then μ a - μ b else 0))
 
 /- English proof (translation)
-Establish `h : ∀ a b : Ix p q, (if posC a b then μ a - μ b else 0) = (if posC a b then 1 else 0) * μ a - (if posC a b then 1 else 0) * μ b`. Apply the tactic sequence `intro a b; split_ifs <;> simp`. Simplify using `only [casVal, pair, rho, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_mul, sub_mul, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm (f := fun x c => (if posC c x then (1 : ℚ) else 0) * μ x), ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `h a b` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 lemma casVal_eq (μ : Ix p q → ℚ) : casVal μ = pair μ μ + pair (rho p q) μ := by
   classical
@@ -231,11 +227,11 @@ lemma casVal_eq (μ : Ix p q → ℚ) : casVal μ = pair μ μ + pair (rho p q) 
   convert h a b
 
 /- English proof (translation)
-Use `h (μ + ν + rho p q) fun a b hab => by` as an intermediate fact. Take `⟨k, hk⟩` from `hμ a b hab`. Take `⟨l, hl⟩` from `hν a b hab`. Use `rho_lt hab` as an intermediate fact. Establish `h1 : (0 : ℚ) ≤ k` using `Nat.cast_nonneg k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℚ) ≤ l` using `Nat.cast_nonneg l`. Simplify using `only [Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[casVal_eq, casVal_eq]`. Simplify using `only [pair, Pi.add_apply, add_mul, Finset.sum_add_distrib] at this ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : ∑ x, μ x * ν x = ∑ x, ν x * μ x` using `Finset.sum_congr rfl fun x _ => mul_comm _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma casVal_lt {μ ν : Ix p q → ℚ} (hμ : ∀ a b, posC a b → ∃ k : ℕ, μ a - μ b = k)
     (hν : ∀ a b, posC a b → ∃ k : ℕ, ν a - ν b = k) (h : Below ν μ) : casVal ν < casVal μ := by
@@ -253,9 +249,9 @@ lemma casVal_lt {μ ν : Ix p q → ℚ} (hμ : ∀ a b, posC a b → ∃ k : �
   linarith
 
 /- English proof (translation)
-Establish `hf : {μ | P μ ∧ ¬ W ⊓ wtSub act μ ≤ S}.Finite` using `(finite_wts (act := act) W).subset fun μ hμ h0 => hμ.2 (h0 ▸ bot_le)`. Take `⟨μ, hμ, hmax⟩` from `Set.exists_max_image _ (pair (rho p q)) hf h`. Use `⟨μ, hμ.1, hμ.2, fun x hx a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `hmax (μ + root a b) ⟨hP μ a b hab hμ.1, fun hle => hn (hle ⟨hW _ (isKC_Eab (same_of_pos hab)) _ hx.1, shift hL (same_of_pos hab) hx.2⟩)⟩` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[pair_root]`. Combine the linear relations using `[rho_lt hab]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma exists_max (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     (S : Submodule ℂ V) (P : (Ix p q → ℚ) → Prop)
@@ -274,25 +270,23 @@ lemma exists_max (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional �
   linarith [rho_lt hab]
 
 /- English proof (translation)
-Establish `hf` using `isKC_Eab (same_of_pos' hab)`. Establish `hne` using `posC_ne hab`. Set `u : ℕ → V` to `fun k => (act (Eab b a))^[k] x`. Establish `hu : ∀ k, u (k + 1) = act (Eab b a) (u k)` using `fun k => Function.iterate_succ_apply' _ _ _`. Establish `hw : ∀ k : ℕ, u k ∈ W ⊓ wtSub act (μ + (k : ℚ) • root b a)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa [u] using hx`. Consider the case `succ k ih`. Rewrite using `[hu, Nat.cast_succ, add_smul, one_smul, ← add_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hW _ hf _ ih.1, shift hL (same_of_pos' hab) ih.2⟩`. Establish `hex : ∃ k, u k ∈ S`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `Set.infinite_of_injective_forall_mem (f := fun k : ℕ => μ + (k : ℚ) • root b a) (s := {μ | W ⊓ wtSub act μ ≠ ⊥}) (fun k l hkl => ?_) (fun k h0 => hn k ?_) (finite_wts (act := act) W)` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun hkl a` as an intermediate fact. Simplify `this` using `[root, hne]`. Use `hw k` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot]`. Rewrite using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `S.zero_mem`. Establish `hel : ∀ k : ℕ, act (Eab a b) (u (k + 1)) = act (Eab b a) (act (Eab a b) (u k)) + (((μ a : ℚ) : ℂ) - ((μ b : ℚ) : ℂ) - 2 * k) • u k`. Introduce `k`. Rewrite using `[hu, raise_lower hL hab (hw k).2]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[root, hne, hne.symm]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ k : ℕ, act (Eab a b) (u (k + 1)) - (((k : ℂ) + 1) * (((μ a : ℚ) : ℂ) - ((μ b : ℚ) : ℂ) - k)) • u k ∈ S`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => rw [hel]`. Simplify `hS _ hf _ he` using `[u]`. Consider the case `succ k ih`. Rewrite using `[hel]`. Use `hS _ hf _ ih using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[map_sub, map_smul, ← hu]`. Use `push_cast`. Use `module`. Take `⟨n, hn⟩ : ∃ n, Nat.find hex = n + 1` from `Nat.exists_eq_succ_of_ne_zero fun h0 => hxS (by have := Nat.find_spec hex; rwa [h0] at this)`. Establish `h1 : u (n + 1) ∈ S` using `hn ▸ Nat.find_spec hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : u n ∉ S` using `Nat.find_min hex (by omega)`. Establish `h3` using `(S.sub_mem_iff_right (hS _ (isKC_Eab (same_of_pos hab)) _ h1)).1 (key n)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `h2 ((S.smul_mem_iff (mul_ne_zero (Nat.cast_add_one_ne_zero n) ?_)).1 h3)` and prove the remaining obligations.
-
-Conclude with `sub_ne_zero.2 hc` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma dominant (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     {S : Submodule ℂ V} (hS : KStable act S) {μ : Ix p q → ℚ} {x : V} (hx : x ∈ W ⊓ wtSub act μ)
@@ -356,15 +350,15 @@ def casK (act : Mat p q →ₗ[ℂ] Module.End ℂ V) : Module.End ℂ V :=
   ∑ a, ∑ b, unitK act a b * unitK act b a
 
 /- English proof (translation)
-Distinguish the cases in `hcd : sameBlock c d`. Rewrite using `[unitK, if_pos hcd, ← hL _ _ (isKC_Eab hab) (isKC_Eab hcd), Eab_mul, Eab_mul, map_sub]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unitK, if_pos]`. Apply the tactic sequence `cases a <;> cases b <;> cases d <;> simp_all [sameBlock]`. Simplify using the standard rewrite rules. Use `split_ifs with h`. Substitute `h` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[unitK, if_pos]`. Apply the tactic sequence `cases c <;> cases b <;> cases d <;> simp_all [sameBlock]`. Simplify using the standard rewrite rules. Establish `h1 : (if b = c then unitK act a d else 0) = 0` using `by split_ifs with h`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[unitK, if_neg]`. Apply the tactic sequence `cases a <;> cases b <;> cases d <;> simp_all [sameBlock]`. Both sides reduce to the same expression. Establish `h2 : (if d = a then unitK act c b else 0) = 0` using `by split_ifs with h`. Substitute `h` using the available equality.
+Both sides reduce to the same expression. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[unitK, if_neg]`. Apply the tactic sequence `cases c <;> cases b <;> cases d <;> simp_all [sameBlock]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, unitK, if_neg hcd]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma unitK_comm (hL : IsKLieAct act) {a b : Ix p q} (hab : sameBlock a b) (c d : Ix p q) :
     act (Eab a b) * unitK act c d - unitK act c d * act (Eab a b) =
@@ -398,9 +392,9 @@ lemma unitK_comm (hL : IsKLieAct act) {a b : Ix p q} (hab : sameBlock a b) (c d 
     simp
 
 /- English proof (translation)
-Establish `h : ∀ c d, act (Eab a b) * (unitK act c d * unitK act d c) - unitK act c d * unitK act d c * act (Eab a b) = ((if b = c then unitK act a d * unitK act d c else 0) - (if d = a then unitK act c b * unitK act d c else 0)) + ((if b = d then unitK act c d * unitK act a c else 0) - (if …`. Introduce `c d`. Establish `e : act (Eab a b) * (unitK act c d * unitK act d c) - unitK act c d * unitK act d c * act (Eab a b) = (act (Eab a b) * unitK act c d - unitK act c d * act (Eab a b)) * unitK act d c + unitK act c d * (act (Eab a b) * unitK act d c - unitK act d c * act (Eab a b))` using `by noncomm_ring`. Rewrite using `[e, unitK_comm hL hab, unitK_comm hL hab]`. Simplify using `only [sub_mul, mul_sub, ite_mul, mul_ite, zero_mul, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Commute, SemiconjBy, ← sub_eq_zero, casK, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, h]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_ite_irrel, Finset.sum_const_zero]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma casK_comm (hL : IsKLieAct act) {a b : Ix p q} (hab : sameBlock a b) :
     Commute (act (Eab a b)) (casK act) := by
@@ -425,7 +419,7 @@ lemma casK_comm (hL : IsKLieAct act) {a b : Ix p q} (hab : sameBlock a b) :
   abel
 
 /- English proof (translation)
-Rewrite using `[unitK]`. Use `split_ifs with h`. Conclude with `hS _ (isKC_Eab h) _ hx`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma unitK_mem {S : Submodule ℂ V} (hS : KStable act S) (a b : Ix p q) {x : V} (hx : x ∈ S) :
     unitK act a b x ∈ S := by
@@ -435,14 +429,14 @@ lemma unitK_mem {S : Submodule ℂ V} (hS : KStable act S) (a b : Ix p q) {x : V
   · simp
 
 /- English proof (translation)
-Simplify using `only [casK, LinearMap.sum_apply, Module.End.mul_apply]`. Conclude with `S.sum_mem fun a _ => S.sum_mem fun b _ => unitK_mem hS _ _ (unitK_mem hS _ _ hx)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma casK_mem {S : Submodule ℂ V} (hS : KStable act S) {x : V} (hx : x ∈ S) : casK act x ∈ S := by
   simp only [casK, LinearMap.sum_apply, Module.End.mul_apply]
   exact S.sum_mem fun a _ => S.sum_mem fun b _ => unitK_mem hS _ _ (unitK_mem hS _ _ hx)
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_wt]`. Introduce `a`. Rewrite using `[← Module.End.mul_apply, (casK_comm hL (same_refl a)).eq, Module.End.mul_apply, hx, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma casK_wt (hL : IsKLieAct act) {μ : Ix p q → ℚ} {x : V} (hx : x ∈ wtSub act μ) :
     casK act x ∈ wtSub act μ := by
@@ -451,11 +445,11 @@ lemma casK_wt (hL : IsKLieAct act) {μ : Ix p q → ℚ} {x : V} (hx : x ∈ wtS
   rw [← Module.End.mul_apply, (casK_comm hL (same_refl a)).eq, Module.End.mul_apply, hx, map_smul]
 
 /- English proof (translation)
-Simplify using `only [casK, casVal, LinearMap.sum_apply, Module.End.mul_apply, Rat.cast_sum, Finset.sum_smul, ← Finset.sum_sub_distrib]`. Use `S.sum_mem fun a _ => S.sum_mem fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : sameBlock a b`. Break down `same_tri hab with rfl | h | h` into its components or cases. Establish `h1 : ¬ posC a a` using `fun h => posC_ne h rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[unitK, hab, h1, mem_wt.1 hx a, mul_smul]`. Rewrite using `[unitK, unitK, if_pos hab, if_pos (same_of_pos' h), raise_lower hL h hx, if_neg (posC_ne h), if_pos h]`. Simplify using `using hS _ (isKC_Eab (same_of_pos' h)) _ (he a b h)`. Rewrite using `[unitK, unitK, if_pos hab, if_pos (same_of_pos h), if_neg (posC_ne h).symm, if_neg (posC_asymm h)]`. Simplify using `using hS _ (isKC_Eab hab) _ (he b a h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : a ≠ b` using `by rintro rfl; exact hab (same_refl a)`. Establish `h2 : ¬ posC a b` using `fun h => hab (same_of_pos h)`. Simplify using `[unitK, hab, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma casK_mod (hL : IsKLieAct act) {S : Submodule ℂ V} (hS : KStable act S) {μ : Ix p q → ℚ} {x : V}
     (hx : x ∈ wtSub act μ) (he : ∀ a b, posC a b → act (Eab a b) x ∈ S) :
@@ -478,7 +472,7 @@ lemma casK_mod (hL : IsKLieAct act) {S : Submodule ℂ V} (hS : KStable act S) {
     simp [unitK, hab, h1, h2]
 
 /- English proof (translation)
-Introduce `Z _ w hw`. Rewrite `hw`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hw, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma stable_bot : KStable act (⊥ : Submodule ℂ V) := by
   intro Z _ w hw
@@ -486,13 +480,13 @@ lemma stable_bot : KStable act (⊥ : Submodule ℂ V) := by
   rw [hw, map_zero]
 
 /- English proof (translation)
-Introduce `Z hZ w hw` and use `⟨hA Z hZ w hw.1, hB Z hZ w hw.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma stable_inf {A B : Submodule ℂ V} (hA : KStable act A) (hB : KStable act B) :
     KStable act (A ⊓ B) := fun Z hZ w hw => ⟨hA Z hZ w hw.1, hB Z hZ w hw.2⟩
 
 /- English proof (translation)
-Introduce `Z hZ w hw`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hA Z hZ x hx) (hB Z hZ y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma stable_sup {A B : Submodule ℂ V} (hA : KStable act A) (hB : KStable act B) :
     KStable act (A ⊔ B) := by
@@ -502,7 +496,7 @@ lemma stable_sup {A B : Submodule ℂ V} (hA : KStable act A) (hB : KStable act 
   exact Submodule.add_mem_sup (hA Z hZ x hx) (hB Z hZ y hy)
 
 /- English proof (translation)
-Use `casK_mod hL stable_bot hx.1 fun a b hab => (mem_hw.1 hx).2 a b hab` as an intermediate fact. Rewrite `this` using `[Submodule.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma casK_hw (hL : IsKLieAct act) {μ : Ix p q → ℚ} {x : V} (hx : x ∈ hwSub act μ) :
     casK act x = ((casVal μ : ℚ) : ℂ) • x := by
@@ -510,7 +504,7 @@ lemma casK_hw (hL : IsKLieAct act) {μ : Ix p q → ℚ} {x : V} (hx : x ∈ hwS
   rwa [Submodule.mem_bot, sub_eq_zero] at this
 
 /- English proof (translation)
-Introduce `Z hZ w hw`. Use `kc_ind act _ w (fun a b hab => ?_) hZ` and prove the remaining obligations. Establish `: Commute (act (Eab a b)) ((casK act - c • 1) ^ n)` using `((casK_comm hL hab).sub_right ((Commute.one_right _).smul_right c)).pow_right n`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← Module.End.mul_apply, ← this.eq, Module.End.mul_apply, hw, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma stable_ker (hL : IsKLieAct act) (c : ℂ) (n : ℕ) :
     KStable act (LinearMap.ker ((casK act - c • 1) ^ n)) := by
@@ -522,9 +516,9 @@ lemma stable_ker (hL : IsKLieAct act) (c : ℂ) (n : ℕ) :
   rw [← Module.End.mul_apply, ← this.eq, Module.End.mul_apply, hw, map_zero]
 
 /- English proof (translation)
-Establish `h1 : ∀ n : ℕ, ((casK act - (c : ℂ) • 1) ^ n) w = (((casVal ν : ℚ) : ℂ) - c) ^ n • w`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_smul, pow_succ, mul_smul]`. Simplify using `[casK_hw hL hw.2, sub_smul]`. Rewrite `h` using `[LinearMap.mem_ker, h1, smul_eq_zero]`. Use `sub_eq_zero.1 (eq_zero_of_pow_eq_zero (h.resolve_right hw.1))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma casVal_of_ker (hL : IsKLieAct act) {ν : Ix p q → ℚ} {w : V} (hw : IsHW act ν w) {c : ℚ} {n : ℕ}
     (h : w ∈ LinearMap.ker ((casK act - (c : ℂ) • 1) ^ n)) : casVal ν = c := by
@@ -540,7 +534,7 @@ lemma casVal_of_ker (hL : IsKLieAct act) {ν : Ix p q → ℚ} {w : V} (hw : IsH
   exact_mod_cast this
 
 /- English proof (translation)
-The claim follows from `dominant hL hW stable_bot ⟨hv, h.2.1⟩ h.1 hab ((mem_hw.1 h.2).2 a b hab)`.
+A detailed English derivation is pending.
 -/
 lemma hw_dominant (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     {μ : Ix p q → ℚ} {v : V} (hv : v ∈ W) (h : IsHW act μ v) {a b : Ix p q} (hab : posC a b) :
@@ -548,11 +542,9 @@ lemma hw_dominant (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional 
   dominant hL hW stable_bot ⟨hv, h.2.1⟩ h.1 hab ((mem_hw.1 h.2).2 a b hab)
 
 /- English proof (translation)
-Use `mem_hw.2 ⟨mem_wt.1 hx.2, fun a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `set Y := W ⊓ LinearMap.ker ((casK act - ((casVal μ : ℚ) : ℂ) • 1) ^ n) with hY`. Establish `hYs : KStable act Y` using `stable_inf hW (stable_ker hL _ _)`. Use `haveI : FiniteDimensional ℂ Y := Submodule.finiteDimensional_of_le inf_le_left`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ν, h1, h2, h3⟩` from `exists_max hL hYs ⊥ (fun ν => Below μ ν) (fun ν c d hcd h l hl => by`. Rewrite using `[pair_root]`. Combine the linear relations using `[h l hl, hl c d hcd])`. Use the proof step `⟨μ + root a b, fun l hl => by rw [pair_root]; linarith [hl a b hab], fun hle => hne (hle ⟨hYs _ (isKC_Eab (same_of_pos hab)) _ ⟨hx.1, hk⟩, shift hL (same_of_pos hab) hx.2⟩)⟩`. Take `⟨w, hw, h0⟩` from `SetLike.not_le_iff_exists.1 h2`.
-
-Establish `hhw : IsHW act ν w` using `⟨h0, mem_hw.2 ⟨mem_wt.1 hw.2, h3 w hw⟩⟩`. Conclude with `(casVal_lt (fun c d hcd => hw_dominant hL hYs hw.1 hhw hcd) hμ h1).ne' (casVal_of_ker hL hhw hw.1.2)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma hw_of_ker (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     {μ : Ix p q → ℚ} (hμ : ∀ a b, posC a b → ∃ k : ℕ, μ a - μ b = k) {x : V}
@@ -574,19 +566,15 @@ lemma hw_of_ker (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional �
     (casVal_of_ker hL hhw hw.1.2)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨μ, -, h2, h3⟩` from `exists_max hL hW S (fun _ => True) (fun _ _ _ _ _ => trivial) (by`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `hn fun x hx => (iSup_le fun μ => hh μ trivial : (⨆ μ, W ⊓ wtSub act μ) ≤ S) (decomp hW hx (hd x hx)))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hxS⟩` from `SetLike.not_le_iff_exists.1 h2`. Establish `hμ : ∀ a b, posC a b → ∃ k : ℕ, μ a - μ b = k` using `fun a b hab => dominant hL hW hS hx hxS hab (h3 x hx a b hab)`. Use `set Y := W ⊓ wtSub act μ with hY`. Use `haveI : FiniteDimensional ℂ Y := Submodule.finiteDimensional_of_le inf_le_left`. Use `set T : Module.End ℂ V := casK act - ((casVal μ : ℚ) : ℂ) • 1 with hT`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTY : ∀ y ∈ Y, T y ∈ Y` using `fun y hy => Y.sub_mem ⟨casK_mem hW hy.1, casK_wt hL hy.2⟩ (Y.smul_mem _ hy)`. Establish `hTS : ∀ y ∈ Y, T y ∈ S` using `fun y hy => casK_mod hL hS hy.2 (h3 y hy)`. Take `⟨n, hc, hn1⟩` from `((LinearMap.eventually_codisjoint_ker_pow_range_pow (T.restrict hTY)).and (Filter.eventually_ge_atTop 1)).exists`. Establish `hm : (⟨x, hx⟩ : Y) ∈ LinearMap.ker (T.restrict hTY ^ n) ⊔ LinearMap.range (T.restrict hTY ^ n)`. Rewrite using `[codisjoint_iff.1 hc]`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨y, hy, z, ⟨t, rfl⟩, hyz⟩` from `Submodule.mem_sup.1 hm`. Establish `hz : ((T.restrict hTY ^ n) t : V) ∈ S`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le' hn1`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hTS _ (Subtype.prop _)`. Establish `hy' : (y : V) ∈ hwSub act μ`. Use `hw_of_ker hL hW hμ y.2 (n := n) ?_` and prove the remaining obligations. Rewrite `hy` using `[LinearMap.mem_ker, Module.End.pow_restrict]`. Conclude with `congrArg Subtype.val hy`.
-
-Establish `hyS : (y : V) ∈ S`. Distinguish the cases in `h0 : (y : V) = 0`. Rewrite using `[h0]`. Conclude with `S.zero_mem`. Conclude with `h μ y y.2.1 ⟨h0, hy'⟩`.
-
-Use `S.add_mem hyS hz` as an intermediate fact. Rewrite `this` using `[← Submodule.coe_add, hyz]`. Conclude with `hxS this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma le_of_hw (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     (hd : ∀ v ∈ W, v ∈ ⨆ μ, wtSub act μ) {S : Submodule ℂ V} (hS : KStable act S)
@@ -631,34 +619,30 @@ def gen (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (v : V) : Submodule ℂ V :
   sInf {N | v ∈ N ∧ KStable act N}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 lemma mem_gen (v : V) : v ∈ gen act v := Submodule.mem_sInf.2 fun _ h => h.1
 
 /- English proof (translation)
-Introduce `Z hZ w hw` and use `Submodule.mem_sInf.2 fun M hM => hM.2 Z hZ w (Submodule.mem_sInf.1 hw M hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma stable_gen (v : V) : KStable act (gen act v) := fun Z hZ w hw =>
   Submodule.mem_sInf.2 fun M hM => hM.2 Z hZ w (Submodule.mem_sInf.1 hw M hM)
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨hv, hN⟩`.
+A detailed English derivation is pending.
 -/
 lemma gen_le {v : V} {N : Submodule ℂ V} (hv : v ∈ N) (hN : KStable act N) : gen act v ≤ N :=
   sInf_le ⟨hv, hN⟩
 
 /- English proof (translation)
-Rewrite `hv` using `[mem_hw]`. Use `set S : Set (Submodule ℂ V) := {N | v ∈ N ∧ ∀ a b, posC a b → ∀ y ∈ N, act (Eab b a) y ∈ N} with hS`. Establish `hG : sInf S ∈ S`. Use `⟨Submodule.mem_sInf.2 fun M hM => hM.1, fun a b hab y hy => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_sInf.2 fun M hM => hM.2 a b hab y (Submodule.mem_sInf.1 hy M hM)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hG' : (sInf S ⊓ ⨅ (Z : Mat p q) (_ : IsKC Z), (sInf S).comap (act Z)) ∈ S`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap]`. Use `⟨hG.1, fun Z hZ => kc_ind act _ v (fun a b hab => ?_) hZ⟩` and prove the remaining obligations. Break down `same_tri hab with rfl | h | h` into its components or cases.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv.1]`. Conclude with `Submodule.smul_mem _ _ hG.1`. Rewrite using `[hv.2 a b h]`. Conclude with `Submodule.zero_mem _`. Conclude with `hG.2 b a h v hG.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab y hy`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap] at hy ⊢`. Use `⟨hG.2 a b hab y hy.1, fun Z hZ => ?_⟩` and prove the remaining obligations. Establish `hE` using `isKC_Eab (same_of_pos' hab)`. Rewrite using `[lie_apply hL hZ hE]`.
-
-Conclude with `Submodule.add_mem _ (hG.2 a b hab _ (hy.2 Z hZ)) (hy.2 _ (isKC_comm hZ hE))`. Establish `hK : KStable act (sInf S)`. Introduce `Z hZ w hw`. Use `sInf_le hG' hw` as an intermediate fact. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap] at this`.
-
-Conclude with `this.2 Z hZ`. Conclude with `(gen_le hG.1 hK).trans (sInf_le (show N ∈ S from ⟨hvN, hN⟩))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gen_le_of_lower (hL : IsKLieAct act) {μ : Ix p q → ℚ} {v : V}
     (hv : v ∈ hwSub act μ) (N : Submodule ℂ V)
@@ -691,17 +675,17 @@ lemma gen_le_of_lower (hL : IsKLieAct act) {μ : Ix p q → ℚ} {v : V}
   exact (gen_le hG.1 hK).trans (sInf_le (show N ∈ S from ⟨hvN, hN⟩))
 
 /- English proof (translation)
-Use `set Q : Submodule ℂ V := ⨆ (κ : Ix p q → ℚ) (_ : Below κ μ), wtSub act κ with hQ`. Establish `hin : ∀ κ, Below κ μ → wtSub act κ ≤ Q` using `fun κ hκ => le_iSup₂_of_le (f := fun (κ : Ix p q → ℚ) (_ : Below κ μ) => wtSub act κ) κ hκ le_rfl`. Establish `hle : gen act v ≤ (ℂ ∙ v) ⊔ Q`. Use `gen_le_of_lower hL hv.2 _ (Submodule.mem_sup_left (Submodule.mem_span_singleton_self v)) fun a b hab y hy => Submodule.mem_sup_right ?_` and prove the remaining obligations. Establish `: (ℂ ∙ v) ⊔ Q ≤ Q.comap (act (Eab b a))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le ?_ (iSup₂_le fun κ hκ x hx => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `hin _ (fun l hl => ?_) (shift hL (same_of_pos' hab) hv.2.1)` and prove the remaining obligations. Rewrite using `[pair_root]`. Combine the linear relations using `[hl a b hab]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `hin _ (fun l hl => ?_) (shift hL (same_of_pos' hab) hx)` and prove the remaining obligations. Rewrite using `[pair_root]`. Combine the linear relations using `[hl a b hab, hκ l hl]`. Conclude with `this hy`. Establish `hc : casVal ν = casVal μ`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `casVal_of_ker hL hw (n := 1) (gen_le ?_ (stable_ker hL _ _) hwv)` and prove the remaining obligations. Simplify using `[casK_hw hL hv.2]`. Establish `hnb : ¬ Below ν μ` using `fun h => (casVal_lt (fun a b hab => hw_dominant hL hW hvW hv hab) (fun a b hab => hw_dominant hL hW (gen_le hvW hW hwv) hw hab) h).ne hc`. Establish `hQle : Q ≤ ⨆ (κ : Ix p q → ℚ) (_ : κ ≠ ν), wtSub act κ` using `iSup₂_le fun κ hκ => le_iSup₂_of_le (f := fun (κ : Ix p q → ℚ) (_ : κ ≠ ν) => wtSub act κ) κ (by rintro rfl; exact hnb hκ) le_rfl`. Establish `hsp : (ℂ ∙ v) ≤ wtSub act μ` using `(Submodule.span_singleton_le_iff_mem _ _).2 hv.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hνμ : ν = μ`. Assume the negation of the conclusion as `hne`. Use `hw.1 (Submodule.disjoint_def.1 (wt_indep (act := act) ν) w hw.2.1 (sup_le ?_ hQle (hle hwv)))` and prove the remaining obligations. Conclude with `hsp.trans (le_iSup₂_of_le (f := fun (κ : Ix p q → ℚ) (_ : κ ≠ ν) => wtSub act κ) μ (Ne.symm hne) le_rfl)`. Substitute `hνμ` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hle hwv)`. Establish `: z = 0` using `Submodule.disjoint_def.1 (wt_indep (act := act) ν) z ((Submodule.add_mem_iff_right _ (hsp hy)).1 hw.2.1) (hQle hz)`. Simplify `hy` using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma hw_unique (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     {μ ν : Ix p q → ℚ} {v w : V} (hvW : v ∈ W) (hv : IsHW act μ v) (hwv : w ∈ gen act v)
@@ -743,7 +727,7 @@ lemma hw_unique (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional �
   simpa [this] using hy
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `h (le_bot_iff.1 (le_of_hw hL hW hd stable_bot fun μ v hv hh => (hn μ v hv hh).elim))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma exists_hw (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     (hd : ∀ v ∈ W, v ∈ ⨆ μ, wtSub act μ) (h : W ≠ ⊥) : ∃ μ v, v ∈ W ∧ IsHW act μ v := by
@@ -752,9 +736,9 @@ lemma exists_hw (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional �
   exact h (le_bot_iff.1 (le_of_hw hL hW hd stable_bot fun μ v hv hh => (hn μ v hv hh).elim))
 
 /- English proof (translation)
-Rewrite using `[or_iff_not_imp_left]`. Introduce `h0`. Establish `hUW : U ≤ W` using `hle.trans (gen_le hvW hW)`. Use `haveI : FiniteDimensional ℂ U := Submodule.finiteDimensional_of_le hUW`. Take `⟨ν, w, hwU, hw⟩` from `exists_hw hL hU (fun x hx => hd x (hUW hx)) h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.1 (hw_unique hL hW hvW hv (hle hwU) hw).2`. Conclude with `(U.smul_mem_iff (left_ne_zero_of_smul hw.1)).1 hwU`.
+A detailed English derivation is pending.
 -/
 lemma gen_irred (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     (hd : ∀ v ∈ W, v ∈ ⨆ μ, wtSub act μ) {μ : Ix p q → ℚ} {v : V} (hvW : v ∈ W) (hv : IsHW act μ v)
@@ -768,7 +752,7 @@ lemma gen_irred (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional �
   exact (U.smul_mem_iff (left_ne_zero_of_smul hw.1)).1 hwU
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gen act v, Submodule.finiteDimensional_of_le (gen_le hvW hW), mem_gen v, stable_gen v, fun _ _ hw hh => (hw_unique hL hW hvW hv hw hh).1⟩`.
+Supply the required witnesses or components.
 -/
 lemma ofType_hw (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     {μ : Ix p q → ℚ} {v : V} (hvW : v ∈ W) (hv : IsHW act μ v) : OfType act μ v :=
@@ -776,9 +760,9 @@ lemma ofType_hw (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional �
     fun _ _ hw hh => (hw_unique hL hW hvW hv hw hh).1⟩
 
 /- English proof (translation)
-Take `⟨A, hA, hmax⟩` from `(wellFounded_gt (α := Submodule ℂ W)).has_min {A | P (A.map W.subtype)} ⟨⊥, by simpa using h⟩`. Use `⟨A.map W.subtype, ⟨Submodule.map_subtype_le _ _, hA⟩, fun U' h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `e : (U'.comap W.subtype).map W.subtype = U'`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 h1]`. Establish `h4 : A ≤ U'.comap W.subtype` using `Submodule.map_le_iff_le_comap.1 h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `hmax (U'.comap W.subtype) (by rw [Set.mem_setOf_eq, e]; exact h3)`. Rewrite using `[← e]`. Conclude with `Submodule.map_mono (eq_of_le_of_not_lt h4 h5).ge`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_max_image_of_bddAbove_finrank (W : Submodule ℂ V) [FiniteDimensional ℂ W]
     (P : Submodule ℂ V → Prop) (h : P ⊥) :
@@ -794,9 +778,7 @@ lemma exists_max_image_of_bddAbove_finrank (W : Submodule ℂ V) [FiniteDimensio
   exact Submodule.map_mono (eq_of_le_of_not_lt h4 h5).ge
 
 /- English proof (translation)
-Take `⟨U', ⟨h1, h2, h3⟩, hmax⟩` from `exists_max_image_of_bddAbove_finrank W (fun U' => KStable act U' ∧ Disjoint U U') ⟨stable_bot, disjoint_bot_right⟩`. Use `⟨U', h2, h3.eq_bot, le_antisymm (sup_le hUW h1) (le_of_hw hL hW hd (stable_sup hU h2) fun μ v hvW hv => ?_)⟩` and prove the remaining obligations. Break down `gen_irred hL hW hd hvW hv ((U ⊔ U') ⊓ gen act v) (stable_inf (stable_sup hU h2) (stable_gen v)) inf_le_right with h | h` into its components or cases. Use `hmax (U' ⊔ gen act v) (sup_le h1 (gen_le hvW hW)) le_sup_left ⟨stable_sup h2 (stable_gen v), h3.disjoint_sup_right_of_disjoint_sup_left (disjoint_iff.2 h)⟩` as an intermediate fact. Conclude with `Submodule.mem_sup_right (this (Submodule.mem_sup_right (mem_gen v)))`.
-
-Conclude with `h.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma exists_compl (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional ℂ W] (hW : KStable act W)
     (hd : ∀ v ∈ W, v ∈ ⨆ μ, wtSub act μ) (U : Submodule ℂ V) (hUW : U ≤ W) (hU : KStable act U) :
@@ -813,9 +795,9 @@ lemma exists_compl (hL : IsKLieAct act) {W : Submodule ℂ V} [FiniteDimensional
   · exact h.1
 
 /- English proof (translation)
-Introduce `p q V _ _ act hL W _ hW hd`. Use `⟨exists_compl hL hW hd, exists_hw hL hW hd, ?_, fun μ v hvW hv => ⟨fun a b hab => hw_dominant hL hW hvW hv hab, ofType_hw hL hW hvW hv, gen_irred hL hW hd hvW hv⟩⟩` and prove the remaining obligations. Use `le_of_hw hL hW hd (fun Z hZ => ?_) fun μ v hvW hv => Submodule.mem_iSup_of_mem μ (Submodule.subset_span ⟨hvW, ofType_hw hL hW hvW hv⟩)` and prove the remaining obligations. Use `(iSup_le fun μ => Submodule.span_le.2 ?_ : (⨆ μ : Ix p q → ℚ, Submodule.span ℂ {w | w ∈ W ∧ OfType act μ w}) ≤ (⨆ μ : Ix p q → ℚ, Submodule.span ℂ {w | w ∈ W ∧ OfType act μ w}).comap (act Z))` and prove the remaining obligations. Introduce and unpack `w ⟨hwW, M, h1, h2, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.mem_iSup_of_mem μ (Submodule.subset_span ⟨hW Z hZ w hwW, M, h1, h3 Z hZ w h2, h3, h4⟩)`.
+A detailed English derivation is pending.
 -/
 theorem finite_module_structure : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V), IsKLieAct act → ∀ W : Submodule ℂ V, FiniteDimensional ℂ W → KStable act W → (∀ v ∈ W, v ∈ ⨆ μ : Ix p q → ℚ, wtSub act μ) → (∀ U : Submodule ℂ V, U ≤ W → KStable act U → ∃ U' : Submodule ℂ V, KStable act U' ∧ U ⊓ U' = ⊥ ∧ U ⊔ U' = W) ∧ (W ≠ ⊥ → ∃ μ v, v ∈ W ∧ IsHW act μ v) ∧ (∀ v ∈ W, v ∈ ⨆ μ : Ix p q → ℚ, Submodule.span ℂ {w | w ∈ W ∧ OfType act μ w}) ∧ (∀ μ v, v ∈ W → IsHW act μ v → (∀ a b, posC a b → ∃ k : ℕ, μ a - μ b = k) ∧ OfType act μ v ∧ ∀ U : Submodule ℂ V, KStable act U → U ≤ sInf {N | v ∈ N ∧ KStable act N} → U = ⊥ ∨ v ∈ U) := by
   intro p q V _ _ act hL W _ hW hd

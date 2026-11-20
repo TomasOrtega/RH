@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [evalF, LineForm.fld, Pi.mul_apply, Polynomial.map_mul, MvPolynomial.map_rename, map_mul, aeval_rename]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem evalF_rename_mul {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {α β : Type}
     (u : α → A.Pt → Ev n) (v : β → A.Pt → Ev n) (R : MvPolynomial α ℝ) (Q : MvPolynomial β ℝ) :
@@ -27,9 +27,9 @@ theorem evalF_rename_mul {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [evalF, LineForm.fld]`. Use `congr 1`. Rewrite using `[aeval_map_algebraMap, aeval_map_algebraMap, chernRoots, ← AlgHom.comp_apply, comp_aeval]`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[h x.1 x.2 p, aeval_rename, aeval_esymm_eq_multiset_esymm, aeval_esymm_eq_multiset_esymm]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalF_chernRoots {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {ι : Type} (m : ι → ℕ)
     (c : ι × ℕ → A.Pt → Ev n) (g : Root m → A.Pt → Ev n)
@@ -45,11 +45,9 @@ theorem evalF_chernRoots {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas
   rfl
 
 /- English proof (translation)
-Introduce `F _ σ X ι _ m E H hH R Q`. Set `ld : ι × ℕ → (atlas X σ).Pt → Ev X.dim` to `fun x => chernFld (atlas X σ) (fun y z => ldPart (gramAt E H x.1 y z)) x.2`. Establish `hc : ∀ i, DbarCoh (atlas X σ) (Sum.elim (chernF E H) (grF E H) i) (Sum.elim ld (grF E H) i)`. Introduce and unpack `(⟨τ, j⟩ | x)`. Conclude with `GlobalTheory.T.chernFormField_dbarCohomologous_two_connections _ _ _ _ _ _ (GlobalTheory.T.isGramConnectionPair_gram_lower_triangular_factor F σ X ι m E H hH τ) j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.fullFlagGradedLineChernForms_smooth_dbarClosed F σ X ι m E H hH x`. Establish `key` using `GlobalTheory.T.integral_realPoly_eq_of_dbarCohomologous (CxPts X.str σ) X.dim (atlas X σ) _ _ _ hc (rename Sum.inl R * rename Sum.inr Q)`. Rewrite `key` using `[evalF_rename_mul, evalF_rename_mul]`. Rewrite using `[key, evalF_chernRoots (atlas X σ) m ld (grF E H) (fun τ j p => GlobalTheory.T.chernForm_triangular_connection_eq_esymm_graded F σ X ι m E H hH τ j p) R]`. Simplify using `only [evalF, LineForm.fld, map_mul]`.
-
-Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_chernF_mul_grF : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m : ι → ℕ) (E : Fr (ratOf X) m m) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H → ∀ (R : MvPolynomial (ι × ℕ) ℝ) (Q : MvPolynomial (Root m) ℝ), (atlas X σ).integral (evalF (atlas X σ) (chernF E H) R * evalF (atlas X σ) (grF E H) Q) = (atlas X σ).integral (evalF (atlas X σ) (grF E H) (chernRoots m R * Q)) := by
   intro F _ σ X ι _ m E H hH R Q

@@ -17,7 +17,7 @@ def mu (Z : M.Mat (m + 1)) (v : Fin (m + 1) → M.R) : E :=
   ((Z.Z.map M.R.subtype)⁻¹.mulVec fun i => (v i : E)) (Fin.last m)
 
 /- English proof (translation)
-Unfold `mu`. Establish `e : (fun i => ((v + w) i : E)) = (fun i => (v i : E)) + fun i => (w i : E)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mulVec_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -30,7 +30,7 @@ theorem mu_add (Z : M.Mat (m + 1)) (v w : Fin (m + 1) → M.R) : mu M Z (v + w) 
   rfl
 
 /- English proof (translation)
-Unfold `mu`. Establish `e : (fun i => ((a • v) i : E)) = (a : E) • fun i => (v i : E)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mulVec_smul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -43,14 +43,14 @@ theorem mu_smul (Z : M.Mat (m + 1)) (a : M.R) (v : Fin (m + 1) → M.R) : mu M Z
   rfl
 
 /- English proof (translation)
-Conclude with `map_sum (AddMonoidHom.mk' (mu M Z) (mu_add M Z)) f s`.
+A detailed English derivation is pending.
 -/
 theorem mu_sum (Z : M.Mat (m + 1)) {ι : Type} (s : Finset ι) (f : ι → Fin (m + 1) → M.R) :
     mu M Z (∑ i ∈ s, f i) = ∑ i ∈ s, mu M Z (f i) := by
   exact map_sum (AddMonoidHom.mk' (mu M Z) (mu_add M Z)) f s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coe_mulVec (Z : M.Mat (m + 1)) (x : Fin (m + 1) → M.R) :
     (fun i => ((Z.Z.mulVec x) i : E)) = (Z.Z.map M.R.subtype).mulVec fun j => (x j : E) := by
@@ -58,16 +58,16 @@ theorem coe_mulVec (Z : M.Mat (m + 1)) (x : Fin (m + 1) → M.R) :
   simp [Matrix.mulVec, dotProduct, Matrix.map_apply]
 
 /- English proof (translation)
-Unfold `mu`. Rewrite using `[coe_mulVec, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ Z.unit, Matrix.one_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_Z (Z : M.Mat (m + 1)) (x : Fin (m + 1) → M.R) : mu M Z (Z.Z.mulVec x) = (x (Fin.last m) : E) := by
   unfold mu
   rw [coe_mulVec, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ Z.unit, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun v => fun i => ((v i : M.R) : E)) h`. Rewrite `h1` using `[coe_mulVec, coe_mulVec]`. Establish `h2` using `congrArg (fun v => (Z.Z.map M.R.subtype)⁻¹.mulVec v) h1`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ Z.unit, Matrix.one_mulVec] at h2`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Subtype.ext (congrFun h2 i)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_inj (Z : M.Mat (m + 1)) {x y : Fin (m + 1) → M.R} (h : Z.Z.mulVec x = Z.Z.mulVec y) : x = y := by
   have h1 := congrArg (fun v => fun i => ((v i : M.R) : E)) h
@@ -84,7 +84,7 @@ theorem lam_mk (Z : M.Mat (m + 1)) (v : Fin (m + 1) → M.R) :
     M.lam Z (Submodule.Quotient.mk v) = M.Rsub.mkQ (mu M Z v) := rfl
 
 /- English proof (translation)
-Unfold `mu`. Establish `e : (fun i => (((Pi.single (Fin.last m) (1 : M.R) : Fin (m + 1) → M.R) i : M.R) : E)) = (Pi.single (Fin.last m) (1 : E) : Fin (m + 1) → E)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i = Fin.last m <;> simp [h]`. Rewrite using `[e, Matrix.mulVec_single]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -102,7 +102,7 @@ def headK (Z : M.Mat (m + 1)) : Submodule M.R (Fin (m + 1) → M.R) :=
   (LinearMap.ker (LinearMap.proj (R := M.R) (φ := fun _ : Fin (m + 1) => M.R) (Fin.last m))).map Z.Z.mulVecLin
 
 /- English proof (translation)
-Simplify using `[headK, Submodule.mem_map, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_headK (Z : M.Mat (m + 1)) {y : Fin (m + 1) → M.R} :
     y ∈ headK M Z ↔ ∃ x, x (Fin.last m) = 0 ∧ Z.Z.mulVec x = y := by

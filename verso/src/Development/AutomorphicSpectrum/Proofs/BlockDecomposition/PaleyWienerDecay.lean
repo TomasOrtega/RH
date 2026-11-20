@@ -18,25 +18,25 @@ def ct (φ : ℝ → ℝ) (y : ℝ) : ℂ := ∫ t, (φ t : ℂ) * chj 0 t y
 def Tst (φ : ℝ → ℝ) : Prop := ContDiff ℝ ∞ φ ∧ HasCompactSupport φ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(contDiff_infty_iff_deriv.1 h.1).2, h.2.deriv⟩`.
+Supply the required witnesses or components.
 -/
 lemma Tst.deriv {φ : ℝ → ℝ} (h : Tst φ) : Tst (deriv φ) :=
   ⟨(contDiff_infty_iff_deriv.1 h.1).2, h.2.deriv⟩
 
 /- English proof (translation)
-The claim follows from `Complex.continuous_ofReal.comp h.1.continuous`.
+A detailed English derivation is pending.
 -/
 lemma Tst.cont {φ : ℝ → ℝ} (h : Tst φ) : Continuous fun t => (φ t : ℂ) :=
   Complex.continuous_ofReal.comp h.1.continuous
 
 /- English proof (translation)
-The claim follows from `h.2.comp_left Complex.ofReal_zero`.
+A detailed English derivation is pending.
 -/
 lemma Tst.cs {φ : ℝ → ℝ} (h : Tst φ) : HasCompactSupport fun t => (φ t : ℂ) :=
   h.2.comp_left Complex.ofReal_zero
 
 /- English proof (translation)
-Establish `h : (sg(y)) ^ 2 = (y : ℂ)`. Simplify using `using Complex.cpow_nat_inv_pow (y : ℂ) (n := 2) (by norm_num)`. Establish `hp : Even (j + 2) ↔ Even j` using `by simp [Nat.even_add]`. Unfold `chj`. Simplify using `only [hp, pow_add, h]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -49,19 +49,19 @@ lemma chj_add_two (j : ℕ) (t y : ℝ) : chj (j + 2) t y = (y : ℂ) * chj j t 
   ring
 
 /- English proof (translation)
-Simplify using `[chj]`.
+Simplify using the standard rewrite rules.
 -/
 lemma chj_zero (t y : ℝ) : chj 0 t y = Complex.cosh ((t : ℂ) * sg(y)) := by
   simp [chj]
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun t => (chj_hasDerivAt j t y).continuousAt`.
+A detailed English derivation is pending.
 -/
 lemma chj_cont (j : ℕ) (y : ℝ) : Continuous fun t => chj j t y :=
   continuous_iff_continuousAt.2 fun t => (chj_hasDerivAt j t y).continuousAt
 
 /- English proof (translation)
-Establish `hd : ∀ t, HasDerivAt (fun t => (φ t : ℂ)) ((deriv φ t : ℝ) : ℂ) t` using `fun t => ((h.1.differentiable (by simp)) t).hasDerivAt.ofReal_comp`. Establish `i : ∀ (ψ : ℝ → ℝ), Tst ψ → ∀ k : ℕ, Integrable ((fun t => (ψ t : ℂ)) * (fun t => chj k t y))` using `fun ψ hψ k => (hψ.cont.mul (chj_cont k y)).integrable_of_hasCompactSupport hψ.cs.mul_right`. Conclude with `integral_mul_deriv_eq_deriv_mul_of_integrable (fun t _ => hd t) (fun t _ => chj_hasDerivAt j t y) (i φ h (j + 1)) (i _ h.deriv j) (i φ h j)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ibp {φ : ℝ → ℝ} (h : Tst φ) (j : ℕ) (y : ℝ) :
     ∫ t, (φ t : ℂ) * chj (j + 1) t y = - ∫ t, ((deriv φ t : ℝ) : ℂ) * chj j t y := by
@@ -74,9 +74,9 @@ lemma ibp {φ : ℝ → ℝ} (h : Tst φ) (j : ℕ) (y : ℝ) :
     (fun t _ => chj_hasDerivAt j t y) (i φ h (j + 1)) (i _ h.deriv j) (i φ h j)
 
 /- English proof (translation)
-Unfold `ct`. Rewrite using `[← integral_const_mul]`. Establish `e : ∀ t, (y : ℂ) * ((φ t : ℂ) * chj 0 t y) = (φ t : ℂ) * chj (1 + 1) t y`. Introduce `t`. Rewrite using `[show chj (1 + 1) t y = chj (0 + 2) t y from rfl, chj_add_two 0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[ibp h 1 y, ibp h.deriv 0 y, neg_neg]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma ct_two {φ : ℝ → ℝ} (h : Tst φ) (y : ℝ) :
     (y : ℂ) * ct φ y = ct (deriv (deriv φ)) y := by
@@ -90,9 +90,9 @@ lemma ct_two {φ : ℝ → ℝ} (h : Tst φ) (y : ℝ) :
   rw [ibp h 1 y, ibp h.deriv 0 y, neg_neg]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨φ, h, fun y => by simp⟩`. Consider the case `succ m ih`. Take `⟨ψ, hψ, e⟩` from `ih`. Use `⟨deriv (deriv ψ), hψ.deriv.deriv, fun y => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ct_two hψ, ← e, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ct_pow (m : ℕ) {φ : ℝ → ℝ} (h : Tst φ) :
     ∃ ψ, Tst ψ ∧ ∀ y : ℝ, (y : ℂ) ^ m * ct φ y = ct ψ y := by
@@ -105,9 +105,9 @@ lemma ct_pow (m : ℕ) {φ : ℝ → ℝ} (h : Tst φ) :
     ring
 
 /- English proof (translation)
-Establish `hc : Continuous fun p : ℝ × ℝ => chj 0 p.2 p.1`. Simplify using `only [chj_zero]`. Conclude with `Complex.continuous_cosh.comp ((Complex.continuous_ofReal.comp continuous_snd).mul (sg_continuous.comp continuous_fst))`. Establish `hf : Continuous (Function.uncurry fun (y t : ℝ) => (φ t : ℂ) * chj 0 t y)` using `(h.cont.comp continuous_snd).mul hc`. Use `continuous_parametric_integral_of_continuous (μ := volume) hf h.2` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 2 with y` and compare the differences between its conclusion and the goal. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun t ht => ?_).symm` and prove the remaining obligations. Simplify using `[image_eq_zero_of_notMem_tsupport ht]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ct_continuous {φ : ℝ → ℝ} (h : Tst φ) : Continuous (ct φ) := by
   have hc : Continuous fun p : ℝ × ℝ => chj 0 p.2 p.1 := by
@@ -122,13 +122,13 @@ lemma ct_continuous {φ : ℝ → ℝ} (h : Tst φ) : Continuous (ct φ) := by
   simp [image_eq_zero_of_notMem_tsupport ht]
 
 /- English proof (translation)
-Use `set A := Real.sqrt (max (c + 1) 0) with hA`. Establish `hi : Integrable fun t => ‖(φ t : ℂ)‖ * Real.exp (|t| * A)` using `(h.cont.norm.mul (by fun_prop)).integrable_of_hasCompactSupport h.cs.norm.mul_right`. Use `⟨∫ t, ‖(φ t : ℂ)‖ * Real.exp (|t| * A), fun y => ?_⟩` and prove the remaining obligations. Establish `hB : 0 ≤ ∫ t, ‖(φ t : ℂ)‖ * Real.exp (|t| * A)` using `integral_nonneg fun t => by positivity`. Break down `le_or_gt (c + 1) y with hy | hy` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hB` using `[cut_eq_zero hy]`. Establish `h1 : ‖ct φ y‖ ≤ ∫ t, ‖(φ t : ℂ)‖ * Real.exp (|t| * A)`. Use `norm_integral_le_of_norm_le hi (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `hyp_le 0 t y`. Rewrite using `[chj_zero]`. Simplify using `only [Even.zero, if_true] at h2`. Use `h2.trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt (max_le_max_right _ hy.le)) (abs_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ‖(cut c y : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (cut_nonneg c y)]`. Conclude with `cut_le_one c y`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma ct_bound (c : ℝ) {φ : ℝ → ℝ} (h : Tst φ) :
     ∃ B : ℝ, ∀ y, ‖(cut c y : ℂ) * ct φ y‖ ≤ B := by
@@ -159,7 +159,7 @@ lemma ct_bound (c : ℝ) {φ : ℝ → ℝ} (h : Tst φ) :
       _ = _ := one_mul _
 
 /- English proof (translation)
-Use `⟨hb.1, HasCompactSupport.intro (isCompact_closedBall (0 : ℝ) T) fun t ht => ?_⟩` and prove the remaining obligations. Use `hb.2.2 t ?_` and prove the remaining obligations. Simplify `ht` using `[Real.norm_eq_abs]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma tst_of_bump {g : ℝ → ℝ} {T : ℝ} (hb : IsBump g T) : Tst g := by
   refine ⟨hb.1, HasCompactSupport.intro (isCompact_closedBall (0 : ℝ) T) fun t ht => ?_⟩
@@ -167,7 +167,7 @@ lemma tst_of_bump {g : ℝ → ℝ} {T : ℝ} (hb : IsBump g T) : Tst g := by
   simpa [Real.norm_eq_abs] using ht
 
 /- English proof (translation)
-Take `⟨ψ, hψ, e⟩` from `ct_pow m h`. Use `⟨ψ, hψ, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`. Use `show (y : ℂ) ^ m * ((cut c y : ℂ) * ct g y) = _`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma hg_pow {g : ℝ → ℝ} (h : Tst g) (c : ℝ) (m : ℕ) :
     ∃ ψ, Tst ψ ∧ ∀ y : ℝ, (y : ℂ) ^ m * hg c g y = (cut c y : ℂ) * ct ψ y := by
@@ -178,7 +178,7 @@ lemma hg_pow {g : ℝ → ℝ} (h : Tst g) (c : ℝ) (m : ℕ) :
   ring
 
 /- English proof (translation)
-Take `⟨ψ, hψ, e⟩` from `hg_pow h c m`. Simplify using `only [e]`. Conclude with `(Complex.continuous_ofReal.comp (cut_continuous c)).mul (ct_continuous hψ)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma hg_continuous {g : ℝ → ℝ} (h : Tst g) (c : ℝ) (m : ℕ) :
     Continuous fun y : ℝ => (y : ℂ) ^ m * hg c g y := by
@@ -187,11 +187,9 @@ lemma hg_continuous {g : ℝ → ℝ} (h : Tst g) (c : ℝ) (m : ℕ) :
   exact (Complex.continuous_ofReal.comp (cut_continuous c)).mul (ct_continuous hψ)
 
 /- English proof (translation)
-Take `⟨ψ, hψ, e⟩` from `hg_pow h c (m + 1)`. Take `⟨B, hB⟩` from `ct_bound c hψ`. Establish `hn : Tendsto (fun y : ℝ => ‖y‖) (cocompact ℝ) atTop` using `tendsto_norm_cocompact_atTop`. Use `squeeze_zero_norm' (a := fun y : ℝ => B * ‖y‖⁻¹) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hn.eventually_gt_atTop 0] with y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hy]`. Establish `h1` using `hB y`. Establish `h2 : (y : ℂ) ^ m * (y : ℂ) * hg c g y = ((y : ℂ) ^ m * hg c g y) * (y : ℂ)` using `by ring`. Rewrite `h1` using `[← e, pow_succ, h2, norm_mul, Complex.norm_real]`. Conclude with `h1`.
-
-Simplify using `using (tendsto_inv_atTop_zero.comp hn).const_mul B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma hg_tendsto {g : ℝ → ℝ} (h : Tst g) (c : ℝ) (m : ℕ) :
     Tendsto (fun y : ℝ => (y : ℂ) ^ m * hg c g y) (cocompact ℝ) (𝓝 0) := by
@@ -221,19 +219,17 @@ Both sides reduce to the same expression.
 lemma ev_apply (y : ℝ) (f : C₀(ℝ, ℂ)) : ev y f = f y := rfl
 
 /- English proof (translation)
-Introduce `c g T hb`. Establish `hT` using `tst_of_bump hb`. Use `⟨fun m => ⟨hg_continuous hT c m, hg_tendsto hT c m⟩, fun N hN => ?_⟩` and prove the remaining obligations. Use `set R : ℝ → ℂ := fun y => ((((1 + y ^ 2) ^ N)⁻¹ : ℝ) : ℂ) * hg c g y with hR`. Establish `hW : Continuous fun y : ℝ => ((((1 + y ^ 2) ^ N)⁻¹ : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (Continuous.inv₀ (by fun_prop) fun y => by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0` using `hg_continuous hT c 0`. Establish `ht0` using `hg_tendsto hT c 0`. Simplify using `only [pow_zero, one_mul] at hg0 ht0`. Establish `hRc : Continuous R` using `hW.mul hg0`. Establish `hRt : Tendsto R (cocompact ℝ) (𝓝 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `squeeze_zero_norm (a := fun y => ‖hg c g y‖) (fun y => ?_) (by simpa using ht0.norm)` and prove the remaining obligations. Rewrite using `[hR, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h1 : |((1 + y ^ 2) ^ N)⁻¹| ≤ 1`. Rewrite using `[abs_of_nonneg (by positivity)]`. Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ (by nlinarith [sq_nonneg y]))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) h1`. Establish `hF : Continuous fun t => toC0 (wv c N 0 t)` using `continuous_iff_continuousAt.2 fun t => (fcurve c N 0 (by omega) t).2.continuousAt`. Establish `hH : Integrable fun t => (g t : ℂ) • toC0 (wv c N 0 t)` using `(hT.cont.smul hF).integrable_of_hasCompactSupport hT.cs.smul_right`. Use extensionality with `y`. Rewrite using `[coe_toC0 hRc hRt, ← ev_apply y, ← (ev y).integral_comp_comm hH]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ∀ t, ev y ((g t : ℂ) • toC0 (wv c N 0 t)) = ((cut c y * ((1 + y ^ 2) ^ N)⁻¹ : ℝ) : ℂ) * ((g t : ℂ) * chj 0 t y)`. Introduce `t`. Establish `h1` using `(fcurve c N 0 (by omega) t).1`. Rewrite using `[map_smul, ev_apply, coe_toC0 h1.1 h1.2, smul_eq_mul]`. Unfold `wv`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[integral_const_mul, hR]`. Use `show _ = _ * ((cut c y : ℂ) * ct g y)`. Unfold `ct`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pwdecay : PWdecay := by
   intro c g T hb

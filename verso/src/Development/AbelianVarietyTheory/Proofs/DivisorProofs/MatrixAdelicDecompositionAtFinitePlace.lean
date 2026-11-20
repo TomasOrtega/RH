@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.LatPtDecomp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntSmulMemSubmodule.exists_int_smul_mem`. Consider the case `exact _root_.GlobalTheory.IntSmulMemSubmodule.exists_int_smul_mem`. Consider the case `(apply _root_.GlobalTheory.IntSmulMemSubmodule.exists_int_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntSmulMemSubmodule.exists_int_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntSmulMemSubmodule.exists_int_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntSmulMemSubmodule.exists_int_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_zsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     (hL : L.IsLattice E) (w : Fin n → E) : ∃ N : ℤ, N ≠ 0 ∧ N • w ∈ L := by
@@ -32,13 +32,11 @@ theorem exists_zsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Sub
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hk' : algebraMap F (Fv F v) k ≠ 0` using `(map_ne_zero _).2 hk`. Establish `hkv : Valued.v (algebraMap F (Fv F v) k) ≠ 0` using `(Valuation.ne_zero_iff _).2 hk'`. Establish `hd : DenseRange (algebraMap F (v.adicCompletion F))` using `HeightOneSpectrum.denseRange_algebraMap (K := F) v`. Establish `hN : {y : v.adicCompletion F | Valued.v (t - y) < Valued.v (algebraMap F (Fv F v) k)} ∈ nhds t`. Establish `ho` using `(Valued.isOpen_ball (v.adicCompletion F) (Valued.v.restrict (algebraMap F (Fv F v) k))).preimage (continuous_const.sub continuous_id : Continuous fun y : v.adicCompletion F => t - y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.preimage_ofPred_eq, Valuation.restrict_lt_iff] at ho`. Use `ho.mem_nhds ?_` and prove the remaining obligations. Use `show Valued.v (t - t) < _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_iff.2 hkv`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs⟩` from `hd.mem_nhds hN`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀]`. Establish `hs' : Valued.v (t - algebraMap F (Fv F v) s) < Valued.v (algebraMap F (Fv F v) k)` using `hs`. Rewrite using `[inv_mul_le_iff₀ (zero_lt_iff.2 hkv), mul_one]`.
-
-Conclude with `hs'.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem (v : Pl F) (t : Fv F v) {k : F} (hk : k ≠ 0) :
     ∃ s : F, (algebraMap F (Fv F v) k)⁻¹ * (t - algebraMap F (Fv F v) s) ∈ v.adicCompletionIntegers F := by
@@ -61,7 +59,7 @@ theorem exists_sub_mem (v : Pl F) (t : Fv F v) {k : F} (hk : k ≠ 0) :
   exact hs'.le
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [incM, Matrix.map_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_single {n d : ℕ} (i : Fin n) (j : Fin d) (y : E) :
     incM F (Matrix.single i j y) = Matrix.single i j ((1 : AF F) ⊗ₜ[F] y) := by
@@ -70,31 +68,31 @@ theorem incM_single {n d : ℕ} (i : Fin n) (j : Fin d) (y : E) :
   split_ifs <;> simp [inclR]
 
 /- English proof (translation)
-Apply the tactic sequence `ext k l; simp only [Matrix.sub_apply, Matrix.single_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_sub {A : Type} [AddGroup A] {n d : ℕ} (i : Fin n) (j : Fin d) (a b : A) :
     Matrix.single i j a - Matrix.single i j b = Matrix.single i j (a - b) := by
   ext k l; simp only [Matrix.sub_apply, Matrix.single_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, GlobalTheory.EmbChart.atPlace_mul_right, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem atPlace_one_smul_tmul (v : Pl F) (a : AF F) (x : E) :
     GlobalTheory.EmbChart.atPlace v 1 • (a ⊗ₜ[F] x) = GlobalTheory.EmbChart.atPlace v (evFin F v a) ⊗ₜ[F] x := by
   rw [TensorProduct.smul_tmul', smul_eq_mul, GlobalTheory.EmbChart.atPlace_mul_right, one_mul]
 
 /- English proof (translation)
-Take `⟨N, hN, hNx⟩` from `exists_zsmul_mem X.L hX (Pi.single i x)`. Take `⟨N', hN', hNy⟩` from `exists_zsmul_mem Y.L hY (Pi.single j 1)`. Establish `hK : ((N * N' : ℤ) : F) ≠ 0` using `Int.cast_ne_zero.2 (mul_ne_zero hN hN')`. Take `⟨s, hs⟩` from `exists_sub_mem v t hK`. Use `set r := (algebraMap F (Fv F v) ((N * N' : ℤ) : F))⁻¹ * (t - algebraMap F (Fv F v) s) with hr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.single i j (algebraMap F E s * x), ?_⟩` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨GlobalTheory.EmbChart.atPlace v r, GlobalTheory.VacAny.at_atPlace r, ?_, _, hNx, _, hNy, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.EmbChart.evFin_atPlace]`. Conclude with `hs`. Establish `hv : Matrix.vecMulVec (N • Pi.single i x) (N' • Pi.single j (1 : E)) = Matrix.single i j (((N * N' : ℤ) : F) • x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.vecMulVec_apply, Pi.smul_apply, Pi.single_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = i <;> by_cases h2 : b = j`. Substitute `h1 h2` using the available equality. Simplify using `only [if_true, and_self, smul_eq_mul, mul_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.smul_def (A := E) ((N * N' : ℤ) : F), map_intCast]`. Simplify using `only [algebraMap_int_eq, eq_intCast, zsmul_eq_mul, mul_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals simp [h1, h2, eq_comm (a := i), eq_comm (a := j)]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ c : F, evFin F v (c • (1 : AF F)) = algebraMap F (Fv F v) c` using `fun c => by`. Rewrite using `[map_smul, map_one, Algebra.algebraMap_eq_smul_one]`. Establish `hK' : algebraMap F (Fv F v) ((N * N' : ℤ) : F) ≠ 0` using `(map_ne_zero _).2 hK`. Rewrite using `[hv, incM_single, incM_single, Matrix.smul_single, Matrix.smul_single, single_sub]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← Algebra.smul_def, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, atPlace_one_smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, GlobalTheory.EmbChart.atPlace_mul_right, ← TensorProduct.sub_tmul, ← map_sub, hev, hev, hr]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem core {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (hX : X.L.IsLattice E) (hY : Y.L.IsLattice E) (v : Pl F)
     (i : Fin n) (j : Fin d) (t : Fv F v) (x : E) :
@@ -130,21 +128,19 @@ theorem core {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (hX : X.L.IsLattice E) 
     field_simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n d X Y hX hY v z hz`. Establish `hz' : z = GlobalTheory.EmbChart.atPlace v 1 • z`. Establish `h` using `hz (1 - GlobalTheory.EmbChart.atPlace v 1) (by rw [map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self])`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `P : Matrix (Fin n) (Fin d) (AE F E) → Prop` to `fun w => ∃ X₀ : Matrix (Fin n) (Fin d) E, GlobalTheory.EmbChart.atPlace v 1 • w - GlobalTheory.EmbChart.atPlace v 1 • incM F X₀ ∈ latAtV X Y v`. Establish `P0 : P 0` using `⟨0, by simp [incM]⟩`. Establish `Padd : ∀ w w', P w → P w' → P (w + w')`. Introduce and unpack `w w' ⟨A, hA⟩ ⟨B, hB⟩`. Use `⟨A + B, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: GlobalTheory.EmbChart.atPlace v 1 • (w + w') - GlobalTheory.EmbChart.atPlace v 1 • incM F (A + B) = (GlobalTheory.EmbChart.atPlace v 1 • w - GlobalTheory.EmbChart.atPlace v 1 • incM F A) + (GlobalTheory.EmbChart.atPlace v 1 • w' - GlobalTheory.EmbChart.atPlace v 1 • incM F B)`. Establish `hI : incM F (A + B) = incM F A + incM F B` using `by ext; simp [incM]`. Rewrite using `[hI, smul_add, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_mem hA hB`. Establish `Psum : ∀ {ι : Type} (s : Finset ι) (f : ι → Matrix (Fin n) (Fin d) (AE F E)), (∀ k ∈ s, P (f k)) → P (∑ k ∈ s, f k)`. Introduce `ι s f h`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using P0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert k s hk ih`. Rewrite using `[Finset.sum_insert hk]`. Conclude with `Padd _ _ (h k (Finset.mem_insert_self _ _)) (ih fun m hm => h m (Finset.mem_insert_of_mem hm))`. Establish `Psingle : ∀ (i : Fin n) (j : Fin d) (w : AE F E), P (Matrix.single i j w)`. Introduce `i j w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simpa using P0`. Consider the case `add a b ha hb => rw [Matrix.single_add]`. Conclude with `Padd _ _ ha hb`. Consider the case `tmul a x`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show P (Matrix.single i j (a ⊗ₜ[F] x)) ↔ ∃ X₀ : Matrix (Fin n) (Fin d) E, Matrix.single i j (GlobalTheory.EmbChart.atPlace v (evFin F v a) ⊗ₜ[F] x) - GlobalTheory.EmbChart.atPlace v 1 • incM F X₀ ∈ latAtV X Y v by`. Simplify using `only [P, Matrix.smul_single, atPlace_one_smul_tmul]]`. Conclude with `core X Y hX hY v i j _ x`. Choose the witnesses or unpack the hypotheses as in `⟨X₀, h⟩ : P z := by`. Rewrite using `[Matrix.matrix_eq_sum_single z]`.
-
-Conclude with `Psum _ _ fun i _ => Psum _ _ fun j _ => Psingle i j _`. Conclude with `⟨X₀, by rw [hz']; exact h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ} (X : Spc F E n)
     (Y : Spc F E d), X.L.IsLattice E → Y.L.IsLattice E → ∀ (v : Pl F) (z : Matrix (Fin n) (Fin d) (AE F E)),

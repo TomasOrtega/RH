@@ -9,9 +9,9 @@ open NumberField
 open scoped Matrix
 
 /- English proof (translation)
-Take `⟨u, hu'⟩` from `hs`. Establish `hmem : (fun k => ρ (((s : E) • z) k)) ∈ locSp W ρ L'` using `Submodule.subset_span ⟨_, hz, rfl⟩`. Establish `e : (fun k => ρ (z k)) = ((↑u⁻¹ : W)) • (fun k => ρ (((s : E) • z) k))`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← map_natCast (algebraMap W K) s, ← hu', ← map_mul, Units.inv_mul, map_one, one_mul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locSp_of_natCast_smul_mem {E : Type} [Field E] [NumberField E] (W K : Type) [CommRing W] [Field K] [Algebra W K]
     (ρ : E →+* K) {N' : ℕ} (L' : Submodule (𝓞 E) (Fin N' → E)) (z : Fin N' → E) (s : ℕ) (hs : IsUnit (s : W))
@@ -26,11 +26,9 @@ theorem mem_locSp_of_natCast_smul_mem {E : Type} [Field E] [NumberField E] (W K 
   exact Submodule.smul_mem _ _ hmem
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h : locSp W ρ L ≤ (locSp W ρ L').comap (((A.map ρ).mulVecLin).restrictScalars W)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show (A.map ρ) *ᵥ (fun k => ρ (x k)) ∈ locSp W ρ L'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : (A.map ρ) *ᵥ (fun k => ρ (x k)) = fun k => ρ ((A *ᵥ x) k)`. Use function extensionality and compare the values at `k`. Conclude with `(RingHom.map_mulVec ρ A x k).symm`. Rewrite using `[e]`. Conclude with `mem_locSp_of_natCast_smul_mem W K ρ L' _ s hs (hA x hx)`.
-
-Conclude with `h hw`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSp_maps_of_unit_smul {E : Type} [Field E] [NumberField E] (W K : Type) [CommRing W] [Field K] [Algebra W K]
     (ρ : E →+* K) {N N' : ℕ} (L : Submodule (𝓞 E) (Fin N → E)) (L' : Submodule (𝓞 E) (Fin N' → E))

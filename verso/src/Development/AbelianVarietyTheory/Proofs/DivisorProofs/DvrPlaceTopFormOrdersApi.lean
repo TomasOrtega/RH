@@ -14,9 +14,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Use `letI : Algebra k K := c.toAlgebra`. Establish `hb : IsTranscendenceBasis k x` using `hx`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap k K).injective`. Use `haveI : Algebra.IsAlgebraic (IntermediateField.adjoin k (Set.range x)) K := hb.isAlgebraic_field`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin k (Set.range x)) K := Algebra.IsAlgebraic.isSeparable_of_perfectField`.
-
-Take `⟨b, hbx⟩` from `_root_.GlobalTheory.exists_basis_kaehler_of_algebraicIndependent hb.1`. Conclude with `_root_.GlobalTheory.TopForm.isFreeGen_dForm x b (fun i => by rw [hbx i])`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldPair.isFreeGen_dForm_of_trBasis {k K : Type} [Field k] [CharZero k]
     [Field K] (c : k →+* K) {n : ℕ} {x : Fin n → K} (hx : _root_.GlobalTheory.FieldPair.TrBasis c x) :
@@ -35,9 +33,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `k K _ _ _ c n x hx`. Use `⟨_root_.GlobalTheory.FieldPair.isFreeGen_dForm_of_trBasis c hx, fun E => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `E.exists_isFreeGen hx`. Introduce `η hη`. Conclude with `E.isFormOrd_formOrd hx hη`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `η f hη hf`. Conclude with `E.formOrd_smul hx hη hf`. Introduce `η a _ h`. Conclude with `h.formOrd_eq`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldPair.formOrd_api : ∀ {k K : Type} [Field k] [CharZero k] [Field K]
     (c : k →+* K) (n : ℕ) (x : Fin n → K), _root_.GlobalTheory.FieldPair.TrBasis c x →

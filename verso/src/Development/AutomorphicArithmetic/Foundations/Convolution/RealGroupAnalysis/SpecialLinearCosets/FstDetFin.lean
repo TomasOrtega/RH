@@ -7,7 +7,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CuspRep.det_map (RingHom.fst (InfiniteAdeleRing E) (Af E)) (finGL E 2 k)`. Establish `h1 : Matrix.GeneralLinearGroup.map (RingHom.fst (InfiniteAdeleRing E) (Af E)) (finGL E 2 k) = 1` using `map_cornerGL_of_zero _ _ (fun _ => rfl) k`. Rewrite `h` using `[h1]`. Use `h.symm.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem fst_detFin {E : Type} [Field E] [NumberField E] (k : GL (Fin 2) (Af E)) :
     (((Matrix.GeneralLinearGroup.det (finGL E 2 k) : (A E)ˣ) : A E)).1 = 1 := by
@@ -19,15 +19,15 @@ private theorem fst_detFin {E : Type} [Field E] [NumberField E] (k : GL (Fin 2) 
   simp
 
 /- English proof (translation)
-Set `e : A F` to `((1, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Establish `h1 : am E e * (z : A E) = am E e`. Establish `hi1 : (am E e).1 = 1` using `map_one (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E))`. Establish `hi2 : (am E e).2 = 0` using `map_zero (AdeleBaseChange.finiteAdeleMap F E)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(am E e).1 * (z : A E).1 = (am E e).1`. Rewrite using `[hz, mul_one]`. Express the relevant statement in the definitionally equal form `(am E e).2 * (z : A E).2 = (am E e).2`. Rewrite using `[hi2, zero_mul]`. Establish `h2` using `congrArg D.co h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[D.co_am_mul, D.co_am]`. Establish `hu : e * D.co z 0 = e` using `congrFun h2 0`. Establish `ht : e * D.co z 1 = 0` using `congrFun h2 1`. Establish `hu1 : (D.co z 0).1 = 1`. Establish `h` using `congrArg Prod.fst hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing F) * (D.co z 0).1 = 1 at h`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Establish `ht1 : (D.co z 1).1 = 0`. Establish `h` using `congrArg Prod.fst ht`. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing F) * (D.co z 1).1 = 0 at h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Rewrite using `[D.coe_ideleNorm]`. Express the relevant statement in the definitionally equal form `(D.co z 0).1 ^ 2 - (rt D.δ : A F).1 * (D.co z 1).1 ^ 2 = 1`. Rewrite using `[hu1, ht1]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fst_norm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (D : Dat F E) (z : (A E)ˣ) (hz : (z : A E).1 = 1) :
@@ -59,15 +59,15 @@ private theorem fst_norm {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   simp
 
 /- English proof (translation)
-Introduce `F _ _ _ π v`. Use `⟨fun f => ?_, fun x f g => rfl, ?_⟩` and prove the remaining obligations. Establish `e : {g | π.locRep v g f = f} = locGL F 2 v ⁻¹' {k | TR.finRep F 2 k f.1 = f.1}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(π.cusp f.1 f.2).1.level.preimage (CuspSub.continuous_locGL v)`. Introduce `E _ _ _ D k f hf`. Establish `h1 : ((nu F (finGL E 2 k) : (A F)ˣ) : A F).1 = 1` using `fst_norm D _ (fst_detFin k)`. Generalize the expression as in `nu F (finGL E 2 k) = t at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hp : TR.pInf F (t : A F) = 1`. Express the relevant statement in the definitionally equal form `(TR.infEq F).symm (t : A F).1 = 1`. Rewrite using `[h1]`. Conclude with `map_one _`. Establish `hinf : Matrix.GeneralLinearGroup.map (TR.pInf F) (dM t) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM, hp]`. Establish `hd : finGL F 2 (Matrix.GeneralLinearGroup.map (pFin F) (dM t)) = dM t`. Establish `h` using `TR.infGL_mul_finGL (dM t)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h` using `[hinf, map_one, one_mul]`. Then use the resulting hypothesis. Use `⟨_, π.stable (.fin (Matrix.GeneralLinearGroup.map (pFin F) (dM t))) f hf, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `f.1 (g * finGL F 2 _) = f.1 (g * dM t)`. Rewrite using `[hd]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.locSm :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (π : TR.CuspSub F 2) (v : P F),

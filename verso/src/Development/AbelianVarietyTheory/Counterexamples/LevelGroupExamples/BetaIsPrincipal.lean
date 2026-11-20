@@ -11,14 +11,14 @@ variable (c : Coeff l)
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-The claim follows from `inf_idem _`.
+A detailed English derivation is pending.
 -/
 theorem ln_std (n : ℕ) : (⟨stdLat E n⟩ : GenLat E n).Ln = stdLat E n := inf_idem _
 
 /- English proof (translation)
-Establish `h1 : Submodule.span (𝓞 c.F) {β} = 1`. Break down `hβ with rfl | rfl` into its components or cases. Conclude with `(Submodule.one_eq_span).symm`. Rewrite using `[Submodule.one_eq_span, ← Set.neg_singleton, Submodule.span_neg]`. Apply the tactic sequence `refine ⟨by rcases hβ with rfl | rfl <;> simp, ?_, ?_⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Unfold `BetaIs`. Rewrite using `[h1, one_mul, ln_std]`. Introduce `σ`. Rewrite using `[ln_std]`. Apply the tactic sequence `rcases hβ with rfl | rfl <;> simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem std_one (n : ℕ) (β : c.F) (hβ : β = 1 ∨ β = -1) :
     β ≠ 0 ∧ BetaIs (Dw := Dw) c (⟨stdLat E n⟩ : GenLat E n) β ∧ BetaAbs (Dw := Dw) c (⟨stdLat E n⟩ : GenLat E n) β := by
@@ -34,7 +34,7 @@ theorem std_one (n : ℕ) (β : c.F) (hβ : β = 1 ∨ β = -1) :
     rcases hβ with rfl | rfl <;> simp
 
 /- English proof (translation)
-Unfold `betaH`. Establish `e` using `funext fun β => propext (h β)`. Generalize the expression as in `(fun β : c.F => β ≠ 0 ∧ BetaIs (Dw := Dw) c Λ β ∧ BetaAbs (Dw := Dw) c Λ β) = p at e ⊢`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem betaH_congr {n m : ℕ} (Λ : GenLat E n) (Λ' : GenLat E m)
     (h : ∀ β : c.F, (β ≠ 0 ∧ BetaIs (Dw := Dw) c Λ β ∧ BetaAbs (Dw := Dw) c Λ β) ↔
@@ -47,7 +47,7 @@ theorem betaH_congr {n m : ℕ} (Λ : GenLat E n) (Λ' : GenLat E m)
   rfl
 
 /- English proof (translation)
-Unfold `betaH`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem betaH_ne_zero {n : ℕ} (Λ : GenLat E n) : betaH (Dw := Dw) c Λ ≠ 0 := by
   unfold betaH
@@ -58,11 +58,11 @@ theorem betaH_ne_zero {n : ℕ} (Λ : GenLat E n) : betaH (Dw := Dw) c Λ ≠ 0 
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `key : ∀ w : Fin n → Fin n → E, Matrix.det (Matrix.of fun i j => (a • w j) i) = a ^ n * Matrix.det (Matrix.of fun i j => w j i)`. Introduce `w`. Establish `: (Matrix.of fun i j => (a • w j) i) = a • (Matrix.of fun i j => w j i)`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.det_smul, Fintype.card_fin]`. Use extensionality with `d`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩ choose w hw hw' using fun i => (h (v i)).1 (hv i)`. Use `⟨_, ⟨w, hw, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: v = fun j => a • w j` using `funext hw'`. Substitute `this` using the available equality. Conclude with `(key w).symm`. Introduce and unpack `⟨_, ⟨w, hw, rfl⟩, rfl⟩`. Conclude with `⟨fun j => a • w j, fun i => (h _).2 ⟨w i, hw i, rfl⟩, (key w).symm⟩`.
+Establish an intermediate fact. Substitute using the available equality. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detSet_scale {n : ℕ} (M M' : Submodule (𝓞 E) (Fin n → E)) (a : E)
     (h : ∀ v, v ∈ M' ↔ ∃ w ∈ M, v = a • w) : detSet M' = (fun d => a ^ n * d) '' detSet M := by
@@ -84,9 +84,9 @@ theorem detSet_scale {n : ℕ} (M M' : Submodule (𝓞 E) (Fin n → E)) (a : E)
     exact ⟨fun j => a • w j, fun i => (h _).2 ⟨w i, hw i, rfl⟩, (key w).symm⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ τ, idealAt c Λ.Ln τ = Submodule.span (𝓞 c.F) {embF c τ (a ^ n)} * idealAt c Λ.La τ`. Introduce `τ`. Unfold `idealAt`. Rewrite using `[detSet_scale Λ.La Λ.Ln a h, Submodule.span_mul_span, Set.singleton_mul, Set.image_image, Set.image_image]`. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `BetaIs`. Simplify using `only [h1, mul_pow, Finset.prod_mul_distrib, Submodule.span_pow, Set.singleton_pow]`. Rewrite using `[Submodule.prod_span_singleton]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem betaIs_principal {n : ℕ} (Λ : GenLat E n) (a : E) (h : ∀ v, v ∈ Λ.Ln ↔ ∃ w ∈ Λ.La, v = a • w) :
     BetaIs (Dw := Dw) c Λ (∏ τ : E →+* ℂ, embF c τ (a ^ n) ^ Dw.mult τ) := by
@@ -100,11 +100,11 @@ theorem betaIs_principal {n : ℕ} (Λ : GenLat E n) (a : E) (h : ∀ v, v ∈ �
   rw [Submodule.prod_span_singleton]
 
 /- English proof (translation)
-Establish `hd : ∀ τ, idealAt c (⊥ : Submodule (𝓞 E) (Fin n → E)) τ = 0`. Introduce `τ`. Unfold `idealAt`. Rewrite using `[Submodule.zero_eq_bot, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨_, ⟨v, hv, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: (Matrix.of fun i j => v j i) = 0`. Use extensionality with `i j`. Simplify using `[(Submodule.mem_bot _).1 (hv j)]`. Establish `hne : Nonempty (Fin n)` using `⟨⟨0, hn⟩⟩`. Rewrite using `[this, Matrix.det_zero, map_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : (⟨⊥⟩ : GenLat E n).Ln = ⊥` using `bot_inf_eq _`. Unfold `BetaIs`. Rewrite using `[hL]`. Establish `hz : ∏ τ : E →+* ℂ, idealAt c (⊥ : Submodule (𝓞 E) (Fin n → E)) τ ^ Dw.mult τ = 0` using `Finset.prod_eq_zero (Finset.mem_univ τ₀) (by rw [hd, zero_pow h0])`. Rewrite using `[hz, mul_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem betaIs_bot {n : ℕ} (hn : 0 < n) (τ₀ : E →+* ℂ) (h0 : Dw.mult τ₀ ≠ 0) (β : c.F) :
     BetaIs (Dw := Dw) c (⟨⊥⟩ : GenLat E n) β := by
@@ -125,9 +125,9 @@ theorem betaIs_bot {n : ℕ} (hn : 0 < n) (τ₀ : E →+* ℂ) (h0 : Dw.mult τ
   rw [hz, mul_zero]
 
 /- English proof (translation)
-Introduce `h`. Use `(h (fun _ => 1)).2 (by` as an intermediate fact. Introduce `w hw`. Rewrite using `[(Submodule.mem_bot _).1 hw]`. Use the proof step `simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrFun ((Submodule.mem_bot _).1 this) ⟨0, hn⟩`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_unimod_bot {n : ℕ} (hn : 0 < n) : ¬ (⟨⊥⟩ : GenLat E n).Unimod := by
   intro h

@@ -25,7 +25,7 @@ section Transport
 variable {k K K' : Type} [Field k] [Field K] [Field K'] {c : k →+* K} {c' : k →+* K'}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h f hf`. Conclude with `(hring f).1 (h _ ⟨f, hf, rfl⟩)`. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Conclude with `(hring f).2 (h f hf)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Place.contains_map_iff (e : K ≃+* K') (E : Place c) (E' : Place c')
     (hring : ∀ a, e a ∈ E'.ring ↔ a ∈ E.ring) (R : Subring K) :
@@ -37,9 +37,9 @@ theorem Place.contains_map_iff (e : K ≃+* K') (E : Place c) (E' : Place c')
     exact (hring f).2 (h f hf)
 
 /- English proof (translation)
-Rewrite using `[Place.IsPrimeOf, Place.IsPrimeOf, Place.contains_map_iff e E E' hring]`. Use `and_congr_right fun _ => ⟨fun h f hf => ?_, fun h f' hf' => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨a, ha, rfl⟩, _, ⟨b, hb, rfl⟩, hb0, hbo, hfb⟩` from `h (e f) ((hring f).2 hf)`. Use `⟨a, ha, b, hb, fun h0 => hb0 (by simp [h0]), (hord b).symm.trans hbo, e.injective ?_⟩` and prove the remaining obligations. Simplify using `using hfb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha, b, hb, hb0, hbo, hfb⟩` from `h (e.symm f') ((hring _).1 (by simpa using hf'))`. Use `⟨e a, ⟨a, ha, rfl⟩, e b, ⟨b, hb, rfl⟩, by simpa using hb0, (hord b).trans hbo, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfb]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Place.isPrimeOf_map_iff (e : K ≃+* K') (E : Place c) (E' : Place c')
     (hring : ∀ a, e a ∈ E'.ring ↔ a ∈ E.ring) (hord : ∀ a, E'.ord (e a) = E.ord a)
@@ -55,7 +55,7 @@ theorem Place.isPrimeOf_map_iff (e : K ≃+* K') (E : Place c) (E' : Place c')
     simp
 
 /- English proof (translation)
-Establish `h' : ∀ P : Place c, P.disc η φ = P.disc η ψ` using `fun P => by rw [Place.disc, Place.disc, h]`. Simplify using `only [AdjKlt, h', hφ, hψ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem adjKlt_congr {n : ℕ} {T : Subring K} {S : Place c} {η : Forms c n} {φ ψ : K →₀ ℚ}
     (hφ : φ 0 = 0) (hψ : ψ 0 = 0)
@@ -66,35 +66,31 @@ theorem adjKlt_congr {n : ℕ} {T : Subring K} {S : Place c} {η : Forms c n} {�
 end Transport
 
 /- English proof (translation)
-Introduce `hP L _ c n T x φ f S hT hTic hx hfT hf0 hS hSf hSd hEff hAdj`. Take `⟨Y, hY, p, e, y, hproj, hdim, hc, hy⟩` from `GlobalTheory.T.exists_projectiveVariety_of_isLocalRingOfVarietyPoint L c T n x hT hx`. Use `haveI := hY`. Use `haveI : LocallyOfFiniteType p := GlobalTheory.isProjOver_locallyOfFiniteType ℂ Y p hproj`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : ∀ a, e.symm (c a) = Cartier.constFn p a` using `fun a => by`. Rewrite using `[← hc a]`. Conclude with `e.symm_apply_apply _`. Establish `hyT : T.map e.symm.toRingHom = locRing y`. Rewrite using `[← hy]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use extensionality with `z`. Simplify using `[Subring.mem_map]`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_dvrPlace_equiv_of_ringEquiv_over_constants c (Cartier.constFn p) e.symm hc'`. Take `⟨hx', -, -, -⟩` from `GlobalTheory.T.ringEquiv_transports_varietyPair_data c (Cartier.constFn p) e.symm hc' n x T φ hx`. Establish `hψ0 : (φ + Finsupp.single f 1 : L →₀ ℚ) 0 = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hEff.apply_zero, Finsupp.single_apply, hf0]`. Take `⟨m, g, hm, hg⟩` from `GlobalTheory.T.exists_ordQ_eq_ord_div_of_rational_combination (Cartier.constFn p) (Finsupp.mapDomain e.symm (φ + Finsupp.single f 1)) (by`. Rewrite using `[← map_zero e.symm, Finsupp.mapDomain_apply e.symm.injective]`. Conclude with `hψ0)`. Establish `hkey : ∀ E : Place c, (Φ E).disc (dForm (Cartier.constFn p) (e.symm ∘ x)) (Finsupp.mapDomain e.symm (φ + Finsupp.single f 1)) = E.disc (dForm c x) (φ + Finsupp.single f 1)` using `fun E => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Place.disc, Place.disc, (hΦ E).2.2.1, (hΦ E).2.2.2 n x hx]`. Establish `hψ : ∀ E : Place c, E.disc (dForm c x) (φ + Finsupp.single f 1) = E.disc (dForm c x) φ - E.ord f` using `fun E => by`. Simplify using `only [Place.disc, map_add, Place.ordQ_single]`. Expand and normalize the polynomial expressions, which then agree. Establish `hordQ : ∀ P : Place (Cartier.constFn p), P.ordQ (Finsupp.mapDomain e.symm (φ + Finsupp.single f 1)) = P.ordQ (Finsupp.single (g : Y.functionField) (1 / (m : ℚ)))` using `fun P => by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hg, Place.ordQ_single]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdisc : ∀ D : DivOver p, discrep D (dForm (Cartier.constFn p) (e.symm ∘ x)) m g = (Φ.symm (placeEquiv p D)).disc (dForm c x) (φ + Finsupp.single f 1)` using `fun D => by`. Rewrite using `[← disc_placeEquiv, ← hkey, Φ.apply_symm_apply, Place.disc, Place.disc, hordQ]`. Set `f' : Y.functionFieldˣ` to `Units.mk0 (e.symm f) (by simpa using hf0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hord : ∀ D : DivOver p, (D.ord f' : ℚ) = (Φ.symm (placeEquiv p D)).ord f` using `fun D => by`. Rewrite using `[← ord_placeEquiv]`. Establish `h` using `(hΦ (Φ.symm (placeEquiv p D))).2.1 f`. Rewrite `h` using `[Φ.apply_symm_apply]`. Conclude with `h` after adjusting the coercions.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hstalk : IsIntegrallyClosed (Y.presheaf.stalk y)`. Set `e₁ : Y.presheaf.stalk y ≃+* locRing y` to `RingEquiv.ofBijective (algebraMap (Y.presheaf.stalk y) Y.functionField).rangeRestrict ⟨fun _ _ h => IsFractionRing.injective _ Y.functionField (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`. Establish `: IsIntegrallyClosed (locRing y)` using `IsIntegrallyClosed.of_equiv ((T.equivMapOfInjective e.symm.toRingHom e.symm.injective).trans (RingEquiv.subringCongr hyT))`. Conclude with `IsIntegrallyClosed.of_equiv e₁.symm`. Establish `hreg : RegAt y (f' : Y.functionField)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← mem_locRing, ← hyT]`. Conclude with `⟨f, hfT, rfl⟩`. Establish `hSprime : (placeEquiv p ((placeEquiv p).symm (Φ S))).IsPrimeOf (locRing y)`. Rewrite using `[Equiv.apply_symm_apply, ← hyT]`. Conclude with `(Place.isPrimeOf_map_iff e.symm S (Φ S) (hΦ S).1 (hΦ S).2.1 T).2 hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSord : ((placeEquiv p).symm (Φ S)).ord f' = 1`. Establish `h` using `hord ((placeEquiv p).symm (Φ S))`. Rewrite `h` using `[Equiv.apply_symm_apply, Φ.symm_apply_apply, hSf]`. Conclude with `h` after adjusting the coercions. Establish `hSdisc : discrep ((placeEquiv p).symm (Φ S)) (dForm (Cartier.constFn p) (e.symm ∘ x)) m g = -1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdisc, Equiv.apply_symm_apply, Φ.symm_apply_apply, hψ, hSd, hSf]`. Evaluate the numerical expressions. Establish `heff : ∀ D : DivOver p, (placeEquiv p D).IsPrimeOf (locRing y) → discrep D (dForm (Cartier.constFn p) (e.symm ∘ x)) m g ≤ 0`. Introduce `D hD`. Establish `hE : (Φ.symm (placeEquiv p D)).IsPrimeOf T`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Place.isPrimeOf_map_iff e.symm _ (Φ (Φ.symm (placeEquiv p D))) (hΦ _).1 (hΦ _).2.1 T).1 ?_` and prove the remaining obligations. Rewrite using `[Φ.apply_symm_apply, hyT]`. Conclude with `hD`. Establish `h0 : (0 : ℚ) ≤ (Φ.symm (placeEquiv p D)).ord f`. Conclude with `((Φ.symm (placeEquiv p D)).ord_nonneg_iff hf0).2 (hE.1 f hfT)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hdisc, hψ]`. Combine the linear relations using `[hEff.disc_le hE]`. Establish `hadj : AdjKlt (Cartier.constFn p) n (locRing y) (placeEquiv p ((placeEquiv p).symm (Φ S))) (dForm (Cartier.constFn p) (e.symm ∘ x)) (Finsupp.single (g : Y.functionField) (1 / (m : ℚ)))`. Rewrite using `[Equiv.apply_symm_apply, ← hyT]`. Establish `h` using `GlobalTheory.T.kltAlongPlaceNeighbours_ringEquiv c (Cartier.constFn p) e.symm hc' n x T _ S (Φ S) hx (hΦ S).1 hAdj`.
-
-Conclude with `(adjKlt_congr h.apply_zero (Finsupp.single_eq_of_ne g.ne_zero.symm) hordQ).1 h`. Establish `hmain` using `GlobalTheory.T.inversion_of_adjunction_proj_alt hP Y p n hproj hdim (e.symm ∘ x) m g f' y ((placeEquiv p).symm (Φ S)) hx' hm hstalk hreg hSprime hSord hSdisc heff hadj`. Use `⟨hEff.form_ne_zero, hEff.apply_zero, fun E hE => ?_⟩` and prove the remaining obligations. Establish `hThr : ((placeEquiv p).symm (Φ E)).Through y`. Rewrite using `[← contains_placeEquiv, Equiv.apply_symm_apply, ← hyT]`.
-
-Conclude with `(Place.contains_map_iff e.symm E (Φ E) (hΦ E).1 T).2 hE`. Establish `h` using `hmain _ hThr`. Rewrite `h` using `[hdisc, hord, Equiv.apply_symm_apply, Φ.symm_apply_apply, hψ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem klt_of_adjKlt_locModel : GlobalTheory.Published.Principalisation → ∀ {L : Type} [Field L] (c : ℂ →+* L)
     (n : ℕ) (T : Subring L) (x : Fin n → L) (φ : L →₀ ℚ) (f : L) (S : Place c), IsLocModel c T →

@@ -33,19 +33,17 @@ noncomputable def UpperTheory.Reformulated.B.WeightsCompactStabilizer.IsWeight.{
       ∀ (a : Fin n), (E a a : V → V) w = (↑(μ a) : ℂ) • w
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hG hU Q _ hS hQ`. Set `T : Fin n → Module.End ℂ Q` to `fun a => (E a a).restrict (fun v hv => hS a a rfl v hv)`. Establish `hT : ∀ a (x : Q), ((T a x : Q) : V) = E a a x` using `fun a x => rfl`. Establish `hsym : ∀ a, (T a).IsSymmetric`. Introduce `a x y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, hT, hT]`. Conclude with `hU a a rfl x y`. Establish `hcomm : Pairwise (Function.onFun Commute T)`. Introduce `a b hab`. Establish `h` using `hG a a b b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[if_neg hab, if_neg hab.symm, sub_zero, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `T a * T b = T b * T a`. Use extensionality with `x`. Use `congrArg (fun f : Module.End ℂ V => f x) h` as an intermediate fact. Simplify `this` using `[hT]`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `htop` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hsym hcomm`. Establish `hex : ∃ α : Fin n → ℂ, (⨅ j, Module.End.eigenspace (T j) (α j)) ≠ ⊥`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Rewrite `htop` using `[iSup_eq_bot.mpr hcon]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Nontrivial Q` using `Submodule.nontrivial_iff_ne_bot.mpr hQ`. Conclude with `bot_ne_top htop`. Take `⟨α, hα⟩` from `hex`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hα`. Establish `hx' : ∀ a, x ∈ Module.End.eigenspace (T a) (α a)` using `fun a => (Submodule.mem_iInf _).mp hx a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hre : ∀ a, (((α a).re : ℝ) : ℂ) = α a` using `fun a => Complex.conj_eq_iff_re.mp ((hsym a).conj_eigenvalue_eq_self (Module.End.hasEigenvalue_of_hasEigenvector ⟨hx' a, hx0⟩))`. Use `⟨fun a => (α a).re, x, x.2, fun h => hx0 (Subtype.ext h), fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (Module.End.mem_eigenspace_iff.mp (hx' a))`. Rewrite `h` using `[hT]`. Rewrite using `[hre a, h]`.
-
-Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.WeightsCompactStabilizer.exists_weight :
     ∀ {n : ℕ} {ε : Fin n → Bool} {V : Type} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℂ V]

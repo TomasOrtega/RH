@@ -5,7 +5,7 @@ noncomputable section
 namespace PositivityTheory.Rg.BcB.F.LemB
 
 /- English proof (translation)
-Introduce `_ _ _ h` and use `GlobalTheory.LGrp.bcParam_of_weylConj h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bcWeyl : BcWeyl := fun _ _ _ h => GlobalTheory.LGrp.bcParam_of_weylConj h
 

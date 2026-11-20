@@ -3,19 +3,19 @@ import Mathlib
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace
 
 /- English proof (translation)
-Introduce `R B L B' _ _ _ _ e he T hT _ _ _ _ _ _ jB hj`. Use `letI : Algebra R B' := ((algebraMap L B').comp (algebraMap R L)).toAlgebra`. Use `haveI : IsScalarTower R L B' := IsScalarTower.of_algebraMap_eq' rfl`. Use `letI : Algebra B B' := jB.toAlgebra`. Use `haveI : IsScalarTower R B B' := IsScalarTower.of_algebraMap_eq (fun r => (hj r).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hloc : IsLocalization (T ⊔ Submonoid.powers e) B'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, hy, z, ⟨n, rfl⟩, rfl⟩` from `Submonoid.mem_sup.mp hx`. Establish `h1` using `(IsLocalization.map_units L ⟨y, hy⟩).map (algebraMap L B')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `IsLocalization.map_units B' (⟨algebraMap R L e ^ n, n, rfl⟩ : Submonoid.powers (algebraMap R L e))`. Simplify using `only [IsScalarTower.algebraMap_apply R L B', map_mul, map_pow] at h1 h2 ⊢`. Conclude with `h1.mul h2`. Introduce `z`. Take `⟨⟨a, ⟨_, n, rfl⟩⟩, h1⟩` from `IsLocalization.surj (Submonoid.powers (algebraMap R L e)) z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨⟨r, t⟩, h2⟩` from `IsLocalization.surj T a`. Use `⟨⟨r, ⟨t * e ^ n, Submonoid.mul_mem_sup t.2 ⟨n, rfl⟩⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only at h1 h2 ⊢`. Rewrite using `[IsScalarTower.algebraMap_apply R L B', IsScalarTower.algebraMap_apply R L B' r, ← h2]`. Simplify using `only [map_mul, map_pow] at h1 ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(algebraMap L B' (algebraMap R L t)) * h1`. Introduce `x y hxy`. Rewrite `hxy` using `[IsScalarTower.algebraMap_apply R L B', IsScalarTower.algebraMap_apply R L B' y]`. Take `⟨⟨_, n, rfl⟩, hc⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers (algebraMap R L e)) B').mp hxy`. Simplify using `only at hc`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc` using `[← map_pow, ← map_mul, ← map_mul, IsLocalization.eq_iff_exists T L]`. Take `⟨t, ht⟩` from `hc`. Use `⟨⟨t * e ^ n, Submonoid.mul_mem_sup t.2 ⟨n, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Take the linear combination `ht`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `key` using `IsLocalization.isLocalization_of_submonoid_le B B' (Submonoid.powers e) (T ⊔ Submonoid.powers e) le_sup_right`. Use `⟨(T ⊔ Submonoid.powers e).map (algebraMap R B), ?_, key⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨y, hy, z, ⟨n, rfl⟩, rfl⟩` from `Submonoid.mem_sup.mp hx`. Conclude with `((hT y hy).mul (he.pow n)).map (algebraMap R B)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_idempotent_submonoid_isLocalization_away :
     ∀ {R B L B' : Type} [CommRing R] [CommRing B] [CommRing L] [CommRing B'] (e : R), IsIdempotentElem e →

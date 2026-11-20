@@ -16,19 +16,19 @@ namespace PositivityTheory.Rg.Rsw.L.LFixW
 variable {D : D7} {S : Finset (Pl D)} {e : AE D} {a b : ℕ}
 
 /- English proof (translation)
-Rewrite using `[he.2 v, if_pos hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_in (he : IsIdem S e) {v : Pl D} (hv : v ∈ S) : cv D v e = 1 := by rw [he.2 v, if_pos hv]
 
 /- English proof (translation)
-Rewrite using `[he.2 v, if_neg hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_out (he : IsIdem S e) {v : Pl D} (hv : v ∉ S) : cv D v e = 0 := by rw [he.2 v, if_neg hv]
 
 /- English proof (translation)
-Use `LIdemEx.ae_ext _ _ (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hz.1 w, mul_zero, map_zero]`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hz.2.1 v hv, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[idem_out he hv, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_offS (he : IsIdem S e) {z : AE D} (hz : OffS S z) : e * z = 0 := by
   refine LIdemEx.ae_ext _ _ (fun w => ?_) (fun v => ?_)
@@ -39,9 +39,9 @@ theorem idem_mul_offS (he : IsIdem S e) {z : AE D} (hz : OffS S z) : e * z = 0 :
     · rw [idem_out he hv, zero_mul]
 
 /- English proof (translation)
-Use `⟨fun w => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, RingHom.map_mul, he.1 w, one_mul, sub_self]`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, idem_in he hv, one_mul, sub_self]`. Establish `h` using `hx v hv`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, idem_out he hv, zero_mul, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem offS_sub_idem (he : IsIdem S e) {x : AE D} (hx : IntS S x) : OffS S (x - e * x) := by
   refine ⟨fun w => ?_, fun v hv => ?_, fun v hv => ?_⟩
@@ -54,19 +54,19 @@ theorem offS_sub_idem (he : IsIdem S e) {x : AE D} (hx : IntS S x) : OffS S (x -
 def OffM (S : Finset (Pl D)) (z : Mx D a b) : Prop := ∀ i j, OffS S (z i j)
 
 /- English proof (translation)
-Rewrite using `[hΦ x, if_neg hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem good_supp {Φ : Mx D a b → ℂ} (hΦ : Good S e Φ) {x : Mx D a b} (hx : ¬ IntOff S x) : Φ x = 0 := by
   rw [hΦ x, if_neg hx]
 
 /- English proof (translation)
-Establish `h1 : IntOff S (x + z) ↔ IntOff S x`. Rewrite using `[intOff_iff, intOff_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `(h i j).add (hz i j).intS.neg` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.add_apply, add_neg_cancel_right]`. Then use the resulting hypothesis. Introduce `h i j`. Rewrite using `[Matrix.add_apply]`. Conclude with `(h i j).add (hz i j).intS`. Establish `h2 : e • (x + z) = e • x`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e • z = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, idem_mul_offS he (hz i j)]`. Both sides reduce to the same expression. Rewrite using `[smul_add, this, add_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ (x + z), hΦ x, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem good_shift (he : IsIdem S e) {Φ : Mx D a b → ℂ} (hΦ : Good S e Φ) (x : Mx D a b) {z : Mx D a b}
     (hz : OffM S z) : Φ (x + z) = Φ x := by
@@ -88,9 +88,9 @@ theorem good_shift (he : IsIdem S e) {Φ : Mx D a b → ℂ} (hΦ : Good S e Φ)
   rw [hΦ (x + z), hΦ x, h1, h2]
 
 /- English proof (translation)
-Introduce `x`. Use `split_ifs with h`. Establish `hz : OffM S (x - e • x)` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `offS_sub_idem he ((intOff_iff x).1 h i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ht (e • x) (x - e • x) hz` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this`. Conclude with `hs x h`.
+A detailed English derivation is pending.
 -/
 theorem good_of (he : IsIdem S e) {Φ : Mx D a b → ℂ} (hs : ∀ x, ¬ IntOff S x → Φ x = 0)
     (ht : ∀ x z, OffM S z → Φ (x + z) = Φ x) : Good S e Φ := by
@@ -110,30 +110,28 @@ def kap {r n : ℕ} (ψ : AddChar (AF D.host.F) ℂ) (Q : Matrix (Fin r) (Fin r)
 variable {r : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {Q : Matrix (Fin r) (Fin r) D.host.E}
 
 /- English proof (translation)
-The claim follows from `map_add (Algebra.trace (AF D.host.F) (AE D)) z z'`.
+A detailed English derivation is pending.
 -/
 theorem trA_add (z z' : AE D) : trA (z + z') = trA z + trA z' := map_add (Algebra.trace (AF D.host.F) (AE D)) z z'
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[Matrix.mul_add, Matrix.mul_add, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_add_right {n : ℕ} (x y z : Mx D r n) : kap ψ Q x (y + z) = kap ψ Q x y * kap ψ Q x z := by
   unfold kap
   rw [Matrix.mul_add, Matrix.mul_add, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[adj_add, Matrix.add_mul, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_add_left {n : ℕ} (x y z : Mx D r n) : kap ψ Q (x + z) y = kap ψ Q x y * kap ψ Q z y := by
   unfold kap
   rw [adj_add, Matrix.add_mul, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Take `⟨S₁, hS₁⟩` from `exists_rat_int Q`. Take `⟨S₂, hS₂⟩` from `psi_off hψ`. Use `⟨S₁ ∪ S₂, fun S hS n x z hx hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hQ` using `hS₁ S (fun v h => hS (Finset.mem_union_left _ h))`. Establish `hx'` using `(intOff_iff x).1 hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hS₂ S (fun v h => hS (Finset.mem_union_right _ h)) _ (offS_trace ?_)).1` and prove the remaining obligations. Conclude with `offS_mul_left (adj_intS hx') (offS_mul_left hQ hz)`. Establish `hQ` using `hS₁ S (fun v h => hS (Finset.mem_union_left _ h))`. Establish `hx'` using `(intOff_iff x).1 hx`. Use `(hS₂ S (fun v h => hS (Finset.mem_union_right _ h)) _ (offS_trace ?_)).1` and prove the remaining obligations.
-
-Conclude with `offS_mul_right (adj_offS hz) (intS_mul hQ hx')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kap_one (Q : Matrix (Fin r) (Fin r) D.host.E) (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ (n : ℕ) (x z : Mx D r n), IntOff S x → OffM S z →
@@ -152,9 +150,9 @@ theorem kap_one (Q : Matrix (Fin r) (Fin r) D.host.E) (hψ : IsCharAF D.host.F �
     exact offS_mul_right (adj_offS hz) (intS_mul hQ hx')
 
 /- English proof (translation)
-Use `⟨fun w => compInf_plc w v t, fun w hw => compFin_plc_ne (by rintro rfl; exact hv hw) t, fun w _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Use `show compFin _ _ w _ ∈ _`. Rewrite using `[compFin_plc_self]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht`. Use `show compFin _ _ w _ ∈ _`. Rewrite using `[compFin_plc_ne h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem offS_plc {v : Pl D} (hv : v ∉ S) {t : Fv D.host.F v ⊗[D.host.F] D.host.E}
     (ht : t ∈ intLoc D.host.F D.host.E v) : OffS S (plc D.host.E v t) := by
@@ -166,25 +164,21 @@ theorem offS_plc {v : Pl D} (hv : v ∉ S) {t : Fv D.host.F v ⊗[D.host.F] D.ho
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨S₁, hS₁⟩` from `exists_rat_int Q⁻¹`. Take `⟨S₂, hS₂⟩` from `dual_psi hψ`. Use `⟨S₁ ∪ S₂, fun S hS n x hx => ?_⟩` and prove the remaining obligations. Establish `hQi` using `hS₁ S (fun v h => hS (Finset.mem_union_left _ h))`. Simplify using `only [IntOff, not_forall] at hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv, i, j, hij⟩` from `hx`. Establish `hv2 : v ∉ S₂` using `fun h => hv (hS (Finset.mem_union_right _ h))`. Use `set C : Mx D n r := adj x * rat Q with hCdef`. Establish `hC : ∃ a b, cv D v (C a b) ∉ intLoc D.host.F D.host.E v`. Assume the negation of the conclusion as `hno`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push Not at hno`. Apply `hij` to reduce the goal to its premises. Establish `e1 : adj x = C * rat Q⁻¹`. Rewrite using `[hCdef, Matrix.mul_assoc, ← rat_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hQ), rat_one, Matrix.mul_one]`. Establish `h2 : cv D v (adj x j i) ∈ intLoc D.host.F D.host.E v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, Matrix.mul_apply, map_sum (cv D v)]`. Conclude with `sum_mem fun k _ => by rw [RingHom.map_mul]; exact mul_mem (hno j k) (hQi k i v hv)`. Establish `h3 : x i j = cA D (adj x j i)` using `by conv_lhs => rw [← adj_adj x]`. Both sides reduce to the same expression. Rewrite using `[h3, LIdemEx.cv_cA]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `sigR_mem_intLoc _ h2`. Take `⟨a, b, hab⟩` from `hC`. Establish `ht : ∃ t ∈ intLoc D.host.F D.host.E v, psiV D.host.F ψ v (Algebra.trace (Fv D.host.F v) (Fv D.host.F v ⊗[D.host.F] D.host.E) (cv D v (C a b) * t)) ≠ 1`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hab (hS₂ v hv2 _ h)`. Take `⟨t, ht, hψt⟩` from `ht`. Set `z : Mx D r n` to `fun k l => if k = b then (if l = a then plc D.host.E v t else 0) else 0`. Establish `hz : OffM S z` using `fun k l => by`. Simplify using `only [z]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `offS_plc hv ht`. Conclude with `offS_zero`. Conclude with `offS_zero`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `htr : Matrix.trace (adj x * (rat Q * z)) = C a b * plc D.host.E v t`. Rewrite using `[← Matrix.mul_assoc, ← hCdef, Matrix.trace, Finset.sum_eq_single a]`. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply, Finset.sum_eq_single b]`. Simplify using `[z]`. Introduce `l _ hl`.
-
-Simplify using `[z, hl]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun l _ => by simp [z, hk]`.
-
-Simplify using the standard rewrite rules. Unfold `kap`. Rewrite using `[htr, mul_plc, trA_plc]`. Conclude with `hψt`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_supp (Q : Matrix (Fin r) (Fin r) D.host.E) (hQ : Q.det ≠ 0) (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ (n : ℕ) (x : Mx D r n), ¬ IntOff S x →
@@ -242,15 +236,15 @@ theorem kap_supp (Q : Matrix (Fin r) (Fin r) D.host.E) (hQ : Q.det ≠ 0) (hψ :
   exact hψt
 
 /- English proof (translation)
-Take `⟨S₁, hS₁⟩` from `kap_one Q hψ`. Take `⟨S₂, hS₂⟩` from `kap_supp Q hQ hψ`. Use `⟨S₁ ∪ S₂, fun S hS e he n μ hμ Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨i1, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D r n`. Establish `: BorelSpace (Mx D r n)` using `⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: MeasurableAdd (Mx D r n)` using `inferInstance`. Establish `: μ.IsAddRightInvariant` using `inferInstance`. Establish `h1` using `hS₁ S (fun v h => hS (Finset.mem_union_left _ h)) n`. Establish `h2` using `hS₂ S (fun v h => hS (Finset.mem_union_right _ h)) n`. Express the relevant statement in the definitionally equal form `Good S e (fun x => ∫ y, Φ y * kap ψ Q x y ∂μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `good_of he (fun x hx => ?_) (fun x z hz => ?_)` and prove the remaining obligations. Take `⟨z, hz, hk⟩` from `h2 x hx`. Establish `e1 : ∫ y, Φ y * kap ψ Q x y ∂μ = (∫ y, Φ y * kap ψ Q x y ∂μ) * kap ψ Q x z`. Rewrite using `[← integral_mul_const, ← integral_add_right_eq_self (fun y => Φ y * kap ψ Q x y) z]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[good_shift he hΦ y hz, kap_add_right, mul_assoc]`. Establish `e2 : (∫ y, Φ y * kap ψ Q x y ∂μ) * (kap ψ Q x z - 1) = 0`. Rewrite using `[mul_sub, mul_one, ← e1, sub_self]`. Conclude with `(mul_eq_zero.1 e2).resolve_right (sub_ne_zero.2 hk)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Distinguish the cases in `hy : IntOff S y`. Rewrite using `[kap_add_left, (h1 y z hy hz).2, mul_one]`. Rewrite using `[good_supp hΦ hy, zero_mul, zero_mul]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ft_good (Q : Matrix (Fin r) (Fin r) D.host.E) (hQ : Q.det ≠ 0) (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ e, IsIdem S e → ∀ (n : ℕ) (μ : Measure (Mx D r n)), μ.IsAddHaarMeasure →
@@ -284,7 +278,7 @@ theorem ft_good (Q : Matrix (Fin r) (Fin r) D.host.E) (hQ : Q.det ≠ 0) (hψ : 
     · rw [good_supp hΦ hy, zero_mul, zero_mul]
 
 /- English proof (translation)
-Take `⟨S₀, hS₀⟩` from `ft_good Q hQ hψ`. Conclude with `⟨S₀, fun S hS e he n μ hμ Φ hΦ x hx => good_supp (hS₀ S hS e he n μ hμ Φ hΦ) hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ft_supp (Q : Matrix (Fin r) (Fin r) D.host.E) (hQ : Q.det ≠ 0) (hψ : IsCharAF D.host.F ψ) :
     ∃ S₀ : Finset (Pl D), ∀ S, S₀ ⊆ S → ∀ e, IsIdem S e → ∀ (n : ℕ) (μ : Measure (Mx D r n)), μ.IsAddHaarMeasure →

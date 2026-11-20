@@ -20,13 +20,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RawChartBaseChange
 
 /- English proof (translation)
-Use `letI : Algebra S S' := ψ.toAlgebra`. Establish `H : B.IsCanonGauge S' (MvPowerSeries.map ψ h)` using `GaugeBaseChange.isCanonGauge_map B (Algebra.ofId S S') hh`. Establish `hK : ∀ {n : ℕ} (f : Germ.PS S n d), Germ.FB.toK S' (MvPowerSeries.map ψ f : Germ.PS S' n d) = Germ.FB.toK S' f`. Introduce `n f`. Use extensionality with `m`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hF : (FBMap.mapFB ψ B).FK S' = B.FK S'` using `funext fun i => hK (B.G.F i)`. Establish `hA : ∀ a, (FBMap.mapFB ψ B).actK S' a = B.actK S' a` using `fun a => funext fun i => hK (B.A.act a i)`. Use `⟨H.ax0, H.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hK B.ph1).trans H.ph1`. Rewrite using `[hF]`. Conclude with `(hK B.ph2).trans H.ph2`. Conclude with `(hK B.sy).trans H.sy`. Rewrite using `[hA, hA]`.
-
-Conclude with `(hK (B.ad a)).trans (H.ad a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCanonGauge_mapFB {S S' : Type} [CommRing S] [Algebra ℚ S] [CommRing S'] [Algebra ℚ S']
     (ψ : S →+* S') {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : Germ.FB S d O)
@@ -54,9 +52,7 @@ end GlobalTheory.RawChartBaseChange
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ S S' _ _ _ _ _ _ ψ x0 u C`. Take `⟨e', hg, hc, -⟩` from `GlobalTheory.T.exists_rawChart_frames_baseChange E H Dw l Xo S S' (ψ : S →+* S') x0 C.d C.B.G.F C.B.A.act C.x (fun m => rjBC (ψ : S →+* S') x0 C.d m 1 ≫ C.x m) (fun _ => rfl) C.e C.frame.gen`. Establish `hG` using `GlobalTheory.T.rawChart_baseChange_rig_germ_alt E H Dw l Xo S S' (ψ : S →+* S') x0 C.d C.B.G.F C.B.A.act C.x (fun m => rjBC (ψ : S →+* S') x0 C.d m 1 ≫ C.x m) (fun _ => rfl) C.e e' C.frame.gen hg hc C.wP C.prim.1`. Use `⟨FBMap.mapFB (ψ : S →+* S') C.B, fun m => rjBC (ψ : S →+* S') x0 C.d m 1 ≫ C.x m, e', fun _ => rfl, fun _ => rfl, fun _ _ => rfl, rfl, rfl, rfl, fun _ => rfl, ?_, ?_, RawChartBaseChange.isCanonGauge_mapFB _ C.B C.h C.gauge, hG.1 C.rig0, hG.2⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.isRawChart_baseChange_jetPoints E H Dw l Xo S S' (ψ : S →+* S') x0 C.d C.B.G.F C.B.A.act C.x (fun m => rjBC (ψ : S →+* S') x0 C.d m 1 ≫ C.x m) (fun _ => rfl) u C.uvec C.chart`.
-
-Conclude with `GlobalTheory.T.isFrame_rawChart_baseChange E H Dw l Xo S S' (ψ : S →+* S') x0 C.d C.B.G.F C.B.A.act C.x (fun m => rjBC (ψ : S →+* S') x0 C.d m 1 ≫ C.x m) (fun _ => rfl) C.e e' C.frame.gen hg hc _ _ _ _ C.frame`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rawChart_baseChange : RawBCSt := by
   intro E _ _ _ H Dw l Xo c _ S S' _ _ _ _ _ _ ψ x0 u C

@@ -7,7 +7,7 @@ open GlobalTheory.CompanionTheory.MirPair
 namespace GlobalTheory.CompanionTheory.MirPair
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow, GlobalTheory.BZMir.eLast, dotProduct_single, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_one_add_eLast {k : Type} [Field k] {n : ℕ} (b : Fin (n + 1) → k) :
     (1 + vecMulVec (eLast k n) b).det = 1 + b (Fin.last n) := by
@@ -15,11 +15,11 @@ theorem det_one_add_eLast {k : Type} [Field k] {n : ℕ} (b : Fin (n + 1) → k)
     GlobalTheory.BZMir.eLast, dotProduct_single, mul_one]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n b hb`. Establish `hv : valuation k (1 + b (Fin.last n)) = 1` using `Valuation.map_one_add_of_lt _ hb`. Establish `hdet` using `GlobalTheory.CompanionTheory.MirPair.det_one_add_eLast b`. Establish `hunit : IsUnit (1 + vecMulVec (GlobalTheory.BZMir.eLast k n) b)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, hdet, isUnit_iff_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `hv` using `[h, map_zero]`. Conclude with `zero_ne_one hv`. Establish `hcoe : ((GlobalTheory.CompanionTheory.MirPair.shearGL n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = 1 + vecMulVec (GlobalTheory.BZMir.eLast k n) b`. Simplify using `only [GlobalTheory.CompanionTheory.MirPair.shearGL, dif_pos hunit, IsUnit.unit_spec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.vecMulVec_mulVec, op_smul_eq_smul]`. Apply `GlobalTheory.SplitWeil.nabs_eq_one_of_valuation_eq_one` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hcoe, hdet, hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shearGL_mulVec_and_nabs_det : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (b : Fin (n + 1) → k), valuation k (b (Fin.last n)) < 1 → (∀ x : Fin (n + 1) → k, ((shearGL n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x = x + (b ⬝ᵥ x) • eLast k n) ∧ nabs k (Matrix.GeneralLinearGroup.det (shearGL n b)) = 1 := by
   intro k _ _ _ _ n b hb

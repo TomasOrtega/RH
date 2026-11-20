@@ -20,14 +20,14 @@ theorem infEq_apply (x : Cinf E) (w : InfinitePlace E) :
 
 variable {E} in
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.ringEquivComplexOfIsComplex w.2).apply_symm_apply (x w.1)`.
+A detailed English derivation is pending.
 -/
 theorem mixRing_snd (x : Cinf E) (w : {w : InfinitePlace E // w.IsComplex}) : (mixRing E x).2 w = x w.1 :=
   (InfinitePlace.Completion.ringEquivComplexOfIsComplex w.2).apply_symm_apply (x w.1)
 
 variable {E} in
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun w => absurd w.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1))) (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem mixed_ext {x y : mixedSpace E} (h : ∀ w, x.2 w = y.2 w) : x = y :=
   Prod.ext (funext fun w => absurd w.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1)))
@@ -70,12 +70,12 @@ Both sides reduce to the same expression.
     (((grpEq E a y : archGroup E a) : (ArchMatrix E a)ˣ) : ArchMatrix E a) = matEq E a y.val := rfl
 
 /- English proof (translation)
-The claim follows from `map_one (matEq E a)`.
+A detailed English derivation is pending.
 -/
 theorem lieEq_oneL : (lieEq E a (oneL E a) : ArchMatrix E a) = 1 := map_one (matEq E a)
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `matEq E a (X * Y - Y * X) = _`. Rewrite using `[map_sub, map_mul, map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lieEq_lie (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     lieEq E a (toL (X * Y - Y * X)) = ⁅lieEq E a (toL X), lieEq E a (toL Y)⁆ := by
@@ -85,14 +85,14 @@ theorem lieEq_lie (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `((infEq E).apply_symm_apply _).symm.trans (congrArg (fun g : GL (Fin a) (Cinf E) => infEq E (g.val i j)) (pInf_infGL y))`.
+A detailed English derivation is pending.
 -/
 theorem infGL_entry (y : GL (Fin a) (Cinf E)) (i j : Fin a) : ((infGL E a y).val i j).1 = infEq E (y.val i j) :=
   ((infEq E).apply_symm_apply _).symm.trans
     (congrArg (fun g : GL (Fin a) (Cinf E) => infEq E (g.val i j)) (pInf_infGL y))
 
 /- English proof (translation)
-Use `(AdelicGLn.prodEquiv E a).injective ?_` and prove the remaining obligations. Rewrite using `[prodEquiv_infEmb]`. Use `Prod.ext ?_ (pFin_infGL y).symm` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `exact ((InfiniteAdeleRing.ringEquiv_mixedSpace E).symm_apply_apply (infEq E (y.val i j))).trans (infGL_entry y i j).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem infEmb_grpEq (y : GL (Fin a) (Cinf E)) : infEmb E a (grpEq E a y) = infGL E a y := by
   refine (AdelicGLn.prodEquiv E a).injective ?_

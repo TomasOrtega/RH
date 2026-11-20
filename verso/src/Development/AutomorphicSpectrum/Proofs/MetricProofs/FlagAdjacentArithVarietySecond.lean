@@ -13,33 +13,29 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM d τ a b k₀ ca cb hb hj hblk hca hcb hy l b' hb' z hz ho`. Take `⟨g1, g2, g3, g4⟩` from `FC.bvec_good K ι Φ y Ψ N j M n BM l b' hb'`. Use `set β := FC.bvec BM l b' with hβ`. Take `⟨c, hc, ec⟩ : SameOrbit (basePart M.blk (fstPt k₀ z)) β` from `orbit_trans ho (orbit_symm g4)`. Set `t : Option K → ℂ` to `fun o => match o with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `some k => if hk : ∀ p, M.blk p ≠ some k then (c ⟨k, hk⟩)⁻¹ else 1`. Consider the case `none => 1`. Establish `ht : ∀ o, t o ≠ 0` using `fun o => by`. Consider the cases of `o with`. Consider the case `none => exact one_ne_zero`.
+Treat this case separately. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `some k`. Distinguish the cases in `hk : ∀ p, M.blk p ≠ some k`. Simplify using `only [t, dif_pos hk]`. Conclude with `inv_ne_zero (hc _)`. Simplify using `only [t, dif_neg hk]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Set `z₁ : (Σ o : Option K, ι (o.getD k₀)) → ℂ` to `fun p => t p.1 * z p`. Establish `o2 : SameOrbit z₁ z` using `⟨t, ht, rfl⟩`. Establish `hz₁ : z₁ ∈ mcPts (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X))` using `mem_mcPts_of_sameOrbit (CoordinateConeArithVar.isMultiHomogIdeal _) o2 hz`. Establish `eb : basePart M.blk (fstPt k₀ z₁) = β`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Take `⟨⟨k, hk⟩, m⟩` from `q`. Establish `e : z ⟨some k, m⟩ = c ⟨k, hk⟩ * β ⟨⟨k, hk⟩, m⟩` using `congrFun ec ⟨⟨k, hk⟩, m⟩`. Use `show t (some k) * z ⟨some k, m⟩ = β _`. Simplify using `only [t, dif_pos hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, inv_mul_cancel_left₀ (hc _)]`. Establish `P` using `GlobalTheory.T.log_period_statement K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hj hblk hca hcb hy (BM.F l) z₁ (BM.isFrame l) (by rw [eb]; exact g1) (by rw [eb]; exact g2) (by rw [eb]; exact g3)`. Take `⟨h, s, f1, f2⟩` from `P.1 hz₁`. Use `⟨h, s, f1.2.1, orbit_trans (orbit_symm o2) ?_⟩` and prove the remaining obligations. Establish `eb2 : basePart M.blk (sndPt k₀ z₁) = β`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Take `⟨⟨k, hk⟩, m⟩` from `q`. Establish `hne : k ≠ k₀` using `fun e => hk (τ, a) (by rw [hblk, e])`. Establish `e1 : sndPt k₀ z₁ ⟨k, m⟩ = fstPt k₀ z₁ ⟨k, m⟩` using `by show z₁ (v₁ k₀ ⟨k, m⟩) = z₁ (v₀ k₀ ⟨k, m⟩)`. Rewrite using `[v₁_ne hne]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Both sides reduce to the same expression. Conclude with `e1.trans (congrFun eb ⟨⟨k, hk⟩, m⟩)`. Establish `key : ∀ o : Option K, ∃ e : ℂ, e ≠ 0 ∧ ∀ m : ι (o.getD k₀), z₁ ⟨o, m⟩ = e * FC.wVec M (BM.F l) β h τ a k₀ ca cb s ⟨o, m⟩` using `fun o => by`. Consider the cases of `o with`. Consider the case `none`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e, he, w⟩` from `f2.2.2 (τ, a) k₀ hblk`. Use `⟨e, he, fun m => ?_⟩` and prove the remaining obligations. Establish `w'` using `w m`. Rewrite `w'` using `[eb2]`. Simplify using `only [Function.update_self] at w'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Establish `e1 : sndPt k₀ z₁ ⟨k₀, m⟩ = z₁ ⟨none, m⟩` using `by show z₁ (v₁ k₀ ⟨k₀, m⟩) = _`. Rewrite using `[v₁_self]`. Rewrite using `[← e1, w']`. Both sides reduce to the same expression. Consider the case `some k`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hk : ∀ p, M.blk p ≠ some k`. Use `⟨1, one_ne_zero, fun m => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrFun eb ⟨⟨k, hk⟩, m⟩`. Establish `e2` using `congrFun (FC.basePart_flagPt M (BM.F l) β h) ⟨⟨k, hk⟩, m⟩`. Use `show z₁ ⟨some k, m⟩ = 1 * FC.flagPt M (BM.F l) β h ⟨k, m⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[one_mul]`. Conclude with `e1.trans e2.symm`. Use `push_neg at hk`. Take `⟨p, hp⟩` from `hk`. Take `⟨e, he, w⟩` from `f1.2.2 p k hp`.
-
-Use `⟨e, he, fun m => ?_⟩` and prove the remaining obligations. Establish `w'` using `w m`. Rewrite `w'` using `[eb]`. Use `show z₁ ⟨some k, m⟩ = e * FC.flagPt M (BM.F l) β h ⟨k, m⟩`. Rewrite using `[FC.flagPt_step M (BM.F l) β h hp m]`.
-
-Conclude with `w'`. Use `choose e he hm using key`. Conclude with `⟨e, he, funext fun q => hm q.1 q.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_flags_of_point : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (d : ℕ) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsArithVar (mCoordIdeal y) (d + 2) → ∀ (l : Fin BM.q), ∀ b' ∈ BM.O l, ∀ z ∈ mcPts (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)), SameOrbit (basePart M.blk (fstPt k₀ z)) (BM.Rb.lift b' b') → ∃ (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (t : ℂ), (∀ τ', IsBlockDiag j (h τ') ∧ (h τ').det ≠ 0) ∧ SameOrbit z (FC.wVec M (BM.F l) (FC.bvec BM l b') h τ a k₀ ca cb t) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM d τ a b k₀ ca cb hb hj hblk hca hcb hy l b' hb' z hz ho

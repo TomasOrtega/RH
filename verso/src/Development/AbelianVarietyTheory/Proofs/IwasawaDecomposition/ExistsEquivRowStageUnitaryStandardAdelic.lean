@@ -37,7 +37,7 @@ theorem ptHom_val (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI
     (ptHom X I hI h).1 = ptE X h := rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `congrArg Subtype.val hab`. Simplify using `only [ptHom_val, ptE_eq_castGL] at h1`. Establish `h2` using `(castGL (rank_X' X)).injective h1`. Conclude with `Subtype.ext (StdGroups.bc_injective _ (Algebra.TensorProduct.comm _ _ _).injective h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ptHom_injective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI : I.Ok) :
     Function.Injective (ptHom X I hI) := by
@@ -48,9 +48,9 @@ theorem ptHom_injective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B p
   exact Subtype.ext (StdGroups.bc_injective _ (Algebra.TensorProduct.comm _ _ _).injective h2)
 
 /- English proof (translation)
-Introduce `x`. Establish `hy : castGL (rank_X' X).symm x.1 ∈ Formalism.L2.DIV.UA X.toD7.sp.cm X.toD7.sp.X'.gram`. Rewrite using `[gram_X'_eq_one X I hI]`. Conclude with `castGL_mem_UA_std _ _ _ x.2`. Use `⟨⟨finHom X.toD7.sp.X' (GlobalTheory.StdFrameExist.liftF X.toD7.sp.X' _ hy), _, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptHom_val, ptE_eq_castGL]`. Establish `e` using `GlobalTheory.StdFrameExist.finE_liftF X.toD7.sp.X' _ hy`. Express the relevant statement in the definitionally equal form `castGL (rank_X' X) (finE X.toD7.sp.X' (GlobalTheory.StdFrameExist.liftF X.toD7.sp.X' _ hy)) = _`. Rewrite using `[e, StdGroups.castGL_symm_castGL']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptHom_surjective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI : I.Ok) :
     Function.Surjective (ptHom X I hI) := by
@@ -65,7 +65,7 @@ theorem ptHom_surjective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B 
   rw [e, StdGroups.castGL_symm_castGL']
 
 /- English proof (translation)
-Introduce `X px I hI`. Set `e0` to `MulEquiv.ofBijective (ptHom X I hI) ⟨ptHom_injective X I hI, ptHom_surjective X I hI⟩`. Use `⟨e0.symm, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `e0.apply_symm_apply x`. Conclude with `congrArg Subtype.val h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ptE_equiv : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), I.Ok →
     ∃ e : Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ≃* Bridge.Gf X.toD7.sp.X',

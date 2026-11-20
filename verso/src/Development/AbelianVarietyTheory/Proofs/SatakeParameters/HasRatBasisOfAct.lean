@@ -16,7 +16,7 @@ def coordMap (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[F] K) (v 
   ∑ i, φ (b.repr v i) • b i
 
 /- English proof (translation)
-Unfold `coordMap`. Rewrite using `[b.repr_sum_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_coordMap (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[F] K) (v : V) (i : ι) :
     b.repr (coordMap F b φ v) i = φ (b.repr v i) := by
@@ -24,9 +24,9 @@ theorem repr_coordMap (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[
   rw [b.repr_sum_self]
 
 /- English proof (translation)
-Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[repr_coordMap]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `φ.map_smul (⟨b.repr (w a) i, hw a i⟩ : F) (x a)`. Simplify using `only [Subfield.smul_def, smul_eq_mul] at h`. Rewrite using `[mul_comm (x a), h, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordMap_sum (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[F] K) {α : Type} [Fintype α]
     (x : α → K) (w : α → V) (hw : ∀ a i, b.repr (w a) i ∈ F) :
@@ -41,7 +41,7 @@ theorem coordMap_sum (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[F
   rw [mul_comm (x a), h, mul_comm]
 
 /- English proof (translation)
-Establish `h1 : g v = ∑ j, b.repr v j • g (b j)` using `by conv_lhs => rw [← b.sum_repr v]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[h1, coordMap_sum F b φ _ _ (fun a i => hg i a)]`. Simplify using `only [coordMap, map_sum, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_coordMap (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[F] K) (g : V →ₗ[K] V)
     (hg : ∀ i j, b.repr (g (b j)) i ∈ F) (v : V) :
@@ -53,9 +53,9 @@ theorem map_coordMap (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[F
   simp only [coordMap, map_sum, map_smul]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F K) (LinearMap.ker_eq_bot.2 (algebraMap F K).injective)`. Use `⟨(Algebra.linearMap F K).comp g, fun x => (g x).2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun hg ⟨x, hx⟩`. Establish `h' : g x = ⟨x, hx⟩` using `h`. Use `show ((g x : F) : K) = x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h']`.
+A detailed English derivation is pending.
 -/
 theorem exists_retraction (F : Subfield K) :
     ∃ φ : K →ₗ[F] K, (∀ x, φ x ∈ F) ∧ ∀ x ∈ F, φ x = x := by
@@ -72,17 +72,15 @@ end General
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K)
 
 /- English proof (translation)
-Use `haveI : Module.Finite (cmMax K) K := Module.Finite.of_restrictScalars_finite ℚ (cmMax K) K`. Set `e` to `Module.finBasis (cmMax K) K`. Set `s : Set S.Forms` to `{f | S.IsRat (f : S.Cl → S.V)}`. Establish `hs : ⊤ ≤ Submodule.span K s`. Introduce `f _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `φ : Fin (Module.finrank (cmMax K) K) → (K →ₗ[cmMax K] K)` to `fun k => (Algebra.linearMap (cmMax K) K).comp (e.coord k)`. Set `g : Fin (Module.finrank (cmMax K) K) → S.Forms` to `fun k => ⟨fun c => coordMap (cmMax K) S.bV (φ k) ((f : S.Cl → S.V) c), fun c γ => by`. Rewrite using `[map_coordMap (cmMax K) S.bV (φ k) (S.ρ c γ) (h c γ), f.2 c γ]⟩`. Establish `hf : f = ∑ k, e k • g k`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c`. Apply `S.bV.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, Finsupp.coe_finset_sum, Finsupp.smul_apply, smul_eq_mul, g, repr_coordMap]`. Use `conv_lhs => rw [← e.sum_repr (S.bV.repr ((f : S.Cl → S.V) c) i)]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Rewrite using `[hf]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c i`. Use `show S.bV.repr (coordMap (cmMax K) S.bV (φ k) ((f : S.Cl → S.V) c)) i ∈ cmMax K`. Rewrite using `[repr_coordMap]`. Conclude with `(e.coord k _).2`. Set `b` to `Module.Basis.ofSpan hs`.
-
-Use `⟨b.reindex (b.indexEquiv (Module.finBasis K S.Forms)), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply]`. Conclude with `Module.Basis.ofSpan_subset hs ⟨_, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasRatBasis_of_act
     (h : ∀ c (γ : S.Gam c) i j, S.bV.repr (S.ρ c γ (S.bV j)) i ∈ cmMax K) : S.HasRatBasis := by
@@ -120,15 +118,13 @@ theorem hasRatBasis_of_act
   exact Module.Basis.ofSpan_subset hs ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `hb : ∀ i, S.IsRat (S.basis i : S.Cl → S.V)`. Establish `: S.basis = h.choose`. Unfold `CSD.basis`. Conclude with `dif_pos h`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h.choose_spec`. Take `⟨φ, h1, h2⟩` from `exists_retraction (cmMax K)`. Establish `key : f = ∑ a, φ (S.basis.repr f a) • S.basis a`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (f : S.Cl → S.V) c = ∑ a, S.basis.repr f a • (S.basis a : S.Cl → S.V) c` using `by conv_lhs => rw [← S.basis.sum_repr f]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Establish `e2 : coordMap (cmMax K) S.bV φ ((f : S.Cl → S.V) c) = (f : S.Cl → S.V) c`. Apply `S.bV.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repr_coordMap, h2 _ (hf c i)]`. Rewrite using `[← e2, e1, coordMap_sum (cmMax K) S.bV φ _ _ (fun a i => hb a c i)]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Establish `: S.basis.repr f a = φ (S.basis.repr f a)` using `by conv_lhs => rw [key]`. Rewrite using `[S.basis.repr_sum_self]`.
-
-Rewrite using `[this]`. Conclude with `h1 _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mem_of_isRat (h : S.HasRatBasis) (f : S.Forms) (hf : S.IsRat (f : S.Cl → S.V)) (a : Fin S.dim) :
     S.basis.repr f a ∈ cmMax K := by
@@ -162,9 +158,9 @@ end GlobalTheory.FormsDescent
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _ S`. Use `⟨FormsDescent.hasRatBasis_of_act S, fun T h hT a b => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix_apply]`. Use `FormsDescent.repr_mem_of_isRat S h _ (hT _ ?_) a` and prove the remaining obligations. Establish `: S.basis = h.choose`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `CSD.basis`. Conclude with `dif_pos h`. Rewrite using `[this]`. Conclude with `h.choose_spec b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forms_rat : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K), ((∀ c (γ : S.Gam c) i j, S.bV.repr (S.ρ c γ (S.bV j)) i ∈ cmMax K) → S.HasRatBasis) ∧ ∀ T : Module.End K S.Forms, S.HasRatBasis → (∀ f : S.Forms, S.IsRat (f : S.Cl → S.V) → S.IsRat ((T f : S.Forms) : S.Cl → S.V)) → ∀ a b, LinearMap.toMatrix S.basis S.basis T a b ∈ cmMax K := by
   intro K _ _ _ S

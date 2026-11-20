@@ -11,17 +11,17 @@ namespace OnePair
 open CategoryTheory TensorProduct MvPowerSeries in
 
 /- English proof (translation)
-Apply the tactic sequence `have hsub : HasSubst (fun s => if p s then (X s : MvPowerSeries σ R) else 0) := hasSubst_of_constantCoeff_zero fun s => by split_ifs <;> simp`. Establish `key : ∀ d : σ →₀ ℕ, coeff γ (d.prod fun s e => (if p s then (X s : MvPowerSeries σ R) else 0) ^ e) = if d = γ ∧ ∀ s, ¬ p s → γ s = 0 then 1 else 0`. Introduce `d`. Distinguish the cases in `hd : ∀ s, ¬ p s → d s = 0`. Establish `hprod : (d.prod fun s e => (if p s then (X s : MvPowerSeries σ R) else 0) ^ e) = monomial d 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[monomial_one_eq]`. Use `Finsupp.prod_congr fun s hs => ?_` and prove the remaining obligations. Establish `hps : p s`. Assume the negation of the conclusion as `h`. Conclude with `(Finsupp.mem_support_iff.mp hs) (hd s h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hps]`. Rewrite using `[hprod, coeff_monomial]`. Distinguish the cases in `hγ : γ = d`. Substitute `hγ` using the available equality. Rewrite using `[if_pos rfl, if_pos ⟨rfl, hd⟩]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hγ, if_neg fun h => hγ h.1.symm]`. Use `push_neg at hd`. Take `⟨s, hps, hds⟩` from `hd`. Establish `hprod : (d.prod fun s e => (if p s then (X s : MvPowerSeries σ R) else 0) ^ e) = 0`. Rewrite using `[Finsupp.prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hds) (by rw [if_neg hps, zero_pow hds])`. Rewrite using `[hprod, map_zero, if_neg]`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `hds (h s hps)`. Rewrite using `[coeff_subst hsub, finsum_eq_single _ γ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Apply the tactic sequence `by_cases h : ∀ s, ¬ p s → γ s = 0 <;> simp [h]`. Introduce `d hd`. Rewrite using `[key, if_neg fun h => hd h.1, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.OnePair.coeff_subst_kill {σ R : Type} [CommRing R] [Finite σ] (p : σ → Prop)
     [DecidablePred p] (c : MvPowerSeries σ R) (γ : σ →₀ ℕ) [Decidable (∀ s, ¬ p s → γ s = 0)] :
@@ -67,13 +67,13 @@ end OnePair
 open CategoryTheory TensorProduct MvPowerSeries in
 
 /- English proof (translation)
-Establish `hfun : Sum.elim (Pi.single m (X (Sum.inl m) : MvPowerSeries (Fin d ⊕ Fin d) R)) (Pi.single m (X (Sum.inr m))) = fun s => if (s = Sum.inl m ∨ s = Sum.inr m) then (X s : MvPowerSeries (Fin d ⊕ Fin d) R) else 0`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with i | i <;> by_cases h : i = m <;> simp [h, Pi.single_apply]`. Establish `hiff : (∀ s, ¬ (s = Sum.inl m ∨ s = Sum.inr m) → γ s = 0) ↔ γ = Finsupp.single (Sum.inl m) (γ (Sum.inl m)) + Finsupp.single (Sum.inr m) (γ (Sum.inr m))`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use extensionality with `s`. Distinguish the cases in `hs : s = Sum.inl m ∨ s = Sum.inr m`. Apply the tactic sequence `rcases hs with rfl | rfl <;> simp [Finsupp.single_apply]`. Use `push_neg at hs`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h s (not_or.mpr hs)]`. Simplify using `[Finsupp.single_apply, Ne.symm hs.1, Ne.symm hs.2]`. Introduce `h s hs push_neg at hs`. Rewrite using `[h]`. Simplify using `[Finsupp.single_apply, Ne.symm hs.1, Ne.symm hs.2]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.Katz.at2`. Rewrite using `[hfun, _root_.GlobalTheory.OnePair.coeff_subst_kill]`. Distinguish the cases in `hγ : γ = Finsupp.single (Sum.inl m) (γ (Sum.inl m)) + Finsupp.single (Sum.inr m) (γ (Sum.inr m))`. Rewrite using `[if_pos hγ, if_pos (hiff.mpr hγ)]`. Rewrite using `[if_neg hγ, if_neg fun h => hγ (hiff.mp h)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.coeff_at2_single_X_inl_inr (R : Type) [CommRing R] (d : ℕ)
     (c : MvPowerSeries (Fin d ⊕ Fin d) R) (m : Fin d) (γ : Fin d ⊕ Fin d →₀ ℕ) :

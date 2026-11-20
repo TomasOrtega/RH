@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.ValCmp.Invol
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (colW r n) d = ν` using `hf (mem_support_iff.mp hd)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ i, ν i = ∑ v, d v`. Rewrite using `[← hw, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, colW, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.mul_sum]`. Simplify using `[Pi.single_apply]`. Rewrite using `[aeval_monomial, aeval_monomial, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp), hs]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_scale {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {r n : ℕ} (ν : Fin n → ℕ)
     (f : MvPolynomial (Fin r × Fin n) R) (hf : IsWeightedHomogeneous (colW r n) f ν) (c : S)
@@ -41,7 +41,7 @@ def cofM (R : Type) [CommRing R] (n : ℕ) : Matrix (Fin n) (Fin n) (MP R n) :=
   (genM R n).adjugate.transpose.submatrix id Fin.revPerm
 
 /- English proof (translation)
-Use `ext1 a s`. Simplify using `[cofAct, genM, cofM]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_genM (R : Type) [CommRing R] (n : ℕ) :
     (cofAct R n).mapMatrix (genM R n) = cofM R n := by
@@ -49,7 +49,7 @@ theorem map_genM (R : Type) [CommRing R] (n : ℕ) :
   simp [cofAct, genM, cofM]
 
 /- English proof (translation)
-Rewrite using `[cofM, Matrix.det_permute', Matrix.det_transpose, Matrix.det_adjugate]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_cofM (R : Type) [CommRing R] (m : ℕ) :
     (cofM R (m + 1)).det = ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (m + 1))) : ℤ) : MP R (m + 1)) *
@@ -58,18 +58,18 @@ theorem det_cofM (R : Type) [CommRing R] (m : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[AlgHom.map_det, map_genM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cofAct_det (R : Type) [CommRing R] (n : ℕ) :
     cofAct R n (genM R n).det = (cofM R n).det := by
   rw [AlgHom.map_det, map_genM]
 
 /- English proof (translation)
-Establish `h1 : cofM R n * (genM R n).transpose.submatrix Fin.revPerm id = (genM R n).det • (1 : Matrix _ _ _)`. Rewrite using `[cofM, Matrix.submatrix_mul_equiv, ← Matrix.transpose_mul, Matrix.mul_adjugate]`. Simplify using the standard rewrite rules. Establish `h2 : (cofM R n).det • (genM R n).transpose.submatrix Fin.revPerm id = (genM R n).det • (cofM R n).adjugate`. Use `congrArg (fun M => (cofM R n).adjugate * M) h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[← Matrix.mul_assoc, Matrix.adjugate_mul]`. Establish `h3 : cofAct R n (cofAct R n (X v)) = (cofM R n).adjugate v.2.rev v.1`. Rewrite using `[← map_genM, ← AlgHom.map_adjugate]`. Simplify using `[cofAct]`. Establish `h4` using `congrFun (congrFun h2 v.2.rev) v.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Simplify `h4.symm` using `[genM]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_mul_cofAct_cofAct_X (R : Type) [CommRing R] (n : ℕ) (v : Fin n × Fin n) :
     (genM R n).det * cofAct R n (cofAct R n (X v)) = (cofM R n).det * X v := by
@@ -88,9 +88,9 @@ theorem det_mul_cofAct_cofAct_X (R : Type) [CommRing R] (n : ℕ) (v : Fin n × 
   simpa [genM] using h4.symm
 
 /- English proof (translation)
-Establish `h1 : cofAct R n (cofAct R n f) = aeval (fun v => cofAct R n (cofAct R n (X v))) f`. Establish `: (cofAct R n).comp (cofAct R n) = aeval (fun v => cofAct R n (cofAct R n (X v)))` using `by ext1 v; simp`. Conclude with `DFunLike.congr_fun this f`. Rewrite using `[h1, ← aeval_scale ν f hf]`. Simplify using `only [det_mul_cofAct_cofAct_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_scale ν f hf, aeval_X_left_apply]`.
+A detailed English derivation is pending.
 -/
 theorem cofAct_cofAct (R : Type) [CommRing R] (n : ℕ) (ν : Fin n → ℕ) (f : MP R n)
     (hf : IsWeightedHomogeneous (colW n n) f ν) :
@@ -104,19 +104,19 @@ theorem cofAct_cofAct (R : Type) [CommRing R] (n : ℕ) (ν : Fin n → ℕ) (f 
   rw [aeval_scale ν f hf, aeval_X_left_apply]
 
 /- English proof (translation)
-Use `⟨Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (m + 1))) ^ ν 0, fun f hf g hg => ?_⟩` and prove the remaining obligations. Establish `hD : (genM R (m + 1)).det ≠ 0` using `Matrix.det_mvPolynomialX_ne_zero (Fin (m + 1)) R`. Establish `hδ : ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (m + 1))) : ℤ) : MP R (m + 1)) ≠ 0`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (m + 1)))) with h | h <;> simp [h]`. Establish `hC : (cofM R (m + 1)).det ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[det_cofM]`. Conclude with `mul_ne_zero hδ (pow_ne_zero _ hD)`. Establish `hle : ν 0 ≤ ∑ i, ν i` using `Finset.single_le_sum (fun i _ => Nat.zero_le (ν i)) (Finset.mem_univ _)`. Establish `hd0 : nuDual ν 0 = ν 0` using `by simp [nuDual, h0]`. Establish `hle' : nuDual ν 0 ≤ ∑ i, nuDual ν i` using `Finset.single_le_sum (fun i _ => Nat.zero_le (nuDual ν i)) (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ i, nuDual ν i + ∑ i, ν i = (m + 1) * ν 0`. Rewrite using `[← Equiv.sum_comp Fin.revPerm ν, ← Finset.sum_add_distrib]`. Establish `: ∀ i : Fin (m + 1), nuDual ν i + ν (Fin.revPerm i) = ν 0` using `fun i => Nat.sub_add_cancel (hν (Fin.zero_le i.rev))`. Simplify using `only [this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hexp : ∑ i, ν i + (∑ i, nuDual ν i - nuDual ν 0) = m * ν 0`. Rewrite `hsum` using `[add_mul]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `cofAct_cofAct R (m + 1) ν f hf.1`. Unfold `CofRel at hg ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hg, map_mul, map_pow, cofAct_det]`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hle`. Establish `he' : ∑ i, ν i - ν 0 = e` using `by omega`. Rewrite `h1` using `[he']`. Establish `h2 : (genM R (m + 1)).det ^ (∑ i, ν i) * cofAct R (m + 1) g = (cofM R (m + 1)).det ^ ν 0 * f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ (pow_ne_zero e hC)` to reduce the goal to its premises. Rewrite using `[mul_left_comm, h1, he]`. Expand and normalize the polynomial expressions, which then agree. Apply `mul_left_cancel₀ (pow_ne_zero (∑ i, ν i) hD)` to reduce the goal to its premises. Rewrite using `[h2, ← mul_assoc, ← pow_add, hexp, det_cofM, mul_pow, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_pow_eq_pow_val, zsmul_eq_mul, Int.cast_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cofRel_invol (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (ν : Fin (m + 1) → ℕ) (hν : Antitone ν)
     (h0 : ν (Fin.last m) = 0) :

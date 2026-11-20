@@ -9,7 +9,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 namespace GlobalTheory.LowFilt
 
 /- English proof (translation)
-Take `⟨c, i, hi, hc⟩` from `hI.exists_inv ha`. Establish `: c • (a • u) + i • u = u` using `by rw [smul_smul, ← add_smul, hc, one_smul]`. Rewrite using `[← this]`. Conclude with `add_mem (N.smul_mem c hu) (hN (Submodule.smul_mem_smul hi trivial))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_smul_mem_sup {O X : Type} [CommRing O] [AddCommGroup X] [Module O X] {I : Ideal O} (hI : I.IsMaximal)
     {N : Submodule O X} (hN : I • (⊤ : Submodule O X) ≤ N) {a : O} (ha : a ∉ I) {u : X} (hu : a • u ∈ N) : u ∈ N := by
@@ -19,7 +19,7 @@ theorem mem_of_smul_mem_sup {O X : Type} [CommRing O] [AddCommGroup X] [Module O
   exact add_mem (N.smul_mem c hu) (hN (Submodule.smul_mem_smul hi trivial))
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.range_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_range_rank_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (y : D.La →ₗ[𝓞 E] X) (Z' : Submodule (𝓞 E) D.La)
@@ -35,29 +35,25 @@ end GlobalTheory.LowFilt
 namespace GlobalTheory.LowFilt
 
 /- English proof (translation)
-Establish `hm : (0 : D.La) ∈ perp D Z ⊓ perp D Z'` using `zero_mem _`. Take `⟨ζ, hζZ, hζ, hζs, hopp⟩` from `h.exists_rank_one hm θ (fun t => by simp [hθ])`. Establish `hN : 𝔭 • (⊤ : Submodule (𝓞 E) X) ≤ img D y Z' 𝔭` using `le_sup_right`. Use `set P1 : (Z' →ₗ[𝓞 E] 𝓞 E) → Prop := fun ℓ => ℓ v ∈ 𝔭 with hP1`. Use `set P2 : (Z' →ₗ[𝓞 E] 𝓞 E) → Prop := fun ℓ => y (ζ ℓ) ∈ img D y Z' 𝔭 with hP2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P1sub : ∀ a b, P1 (a + b) → P1 b → P1 a` using `fun a b hab hb' => by`. Use `sub_mem hab hb'` as an intermediate fact. Simplify `this` using `[hP1]`. Establish `P2sub : ∀ a b, P2 (a + b) → P2 b → P2 a` using `fun a b hab hb' => by`. Use `sub_mem hab hb'` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[hP2, map_add]`. Take `⟨x, ⟨z, hz, rfl⟩, hx⟩` from `Set.not_subset.1 hZ`. Establish `hs0 : s ≠ 0` using `fun h0 => hs (h0 ▸ 𝔭.zero_mem)`. Take `⟨ℓ₂, hℓ₂⟩` from `GlobalTheory.T.exists_linearForm_factor_through_traceGenerator D Z' θ s hs0 hgen z`. Establish `hζ₂ : ζ ℓ₂ = H.bar s • z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, -, hu⟩` from `h.symm.2.2.1 (θ.comp ℓ₂.toAddMonoidHom)`. Establish `e1` using `hu ⟨ζ ℓ₂, hζZ ℓ₂⟩ fun a => by simpa using hζ ℓ₂ a`. Establish `e2` using `hu ⟨H.bar s • z, Z.smul_mem _ hz⟩ fun a => by simpa using (hℓ₂ a).symm`. Conclude with `congrArg Subtype.val (e1.trans e2.symm)`. Establish `hℓ₂P : ¬ P2 ℓ₂` using `fun hP => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hP2, hζ₂, map_smul] at hP`. Conclude with `hx (mem_of_smul_mem_sup h𝔭 hN hs' hP)`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ₁, h1, h2⟩ : ∃ ℓ₁, ¬ P1 ℓ₁ ∧ ¬ P2 ℓ₁ := by`. Distinguish the cases in `ha : P2 ℓ₀`. Distinguish the cases in `hb1 : P1 ℓ₂`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `⟨ℓ₀ + ℓ₂, fun hp => hℓ₀ (P1sub _ _ hp hb1), fun hp => hℓ₂P ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[add_comm]`. Conclude with `P2sub _ _ hp ha`. Conclude with `⟨ℓ₂, hb1, hℓ₂P⟩`. Conclude with `⟨ℓ₀, hℓ₀, ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he𝔭 : e ∉ 𝔭` using `fun hm' => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 (by`. Use `sub_mem hm' he1` as an intermediate fact. Simplify using `using this))`. Establish `hbe : H.bar e ∉ 𝔭` using `fun hm' => he𝔭 (by`. Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hm'` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hb]`. Simplify `this)` using `[bar_bar]`. Use `set ℓ := e • ℓ₁ with hℓ`. Use `⟨LinearMap.range (Z'.subtype + ℓ.smulRight (0 + ζ ℓ)), hopp ℓ, fun 𝔮 h𝔮 hn𝔮 => ?_, fun hle => ?_⟩` and prove the remaining obligations. Establish `hZ'm : Z'.map y = LinearMap.range (y ∘ₗ Z'.subtype)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Use `show Z'.map y ⊔ _ ≤ _ ⊔ _`. Rewrite using `[map_range_rank_one, hZ'm]`. Distinguish the cases in `hq : 𝔮 = 𝔭`. Substitute `hq` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(range_le_of_ker _ ℓ _ 𝔮 h𝔮 (v := v) (by simpa using hv) ?_).2` and prove the remaining obligations. Use `show e * ℓ₁ v ∉ 𝔮`. Conclude with `fun hm' => h1 ((h𝔮.isPrime.mem_or_mem hm').resolve_left he𝔭)`. Conclude with `range_le_of_mem _ ℓ _ 𝔮 fun x => by show e * ℓ₁ x ∈ 𝔮`. Conclude with `Ideal.mul_mem_right _ _ (he 𝔮 h𝔮 hn𝔮 hq)`.
-
-Establish `hZ'm : Z'.map y = LinearMap.range (y ∘ₗ Z'.subtype)`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `hmem` using `(range_le_of_ker (y ∘ₗ Z'.subtype) ℓ (y (0 + ζ ℓ)) 𝔭 h𝔭 (v := v) (by simpa using hv) (show e * ℓ₁ v ∉ 𝔭 from fun hm' => h1 ((h𝔭.isPrime.mem_or_mem hm').resolve_left he𝔭))).1`. Establish `hin : y (ζ ℓ) ∈ img D y Z' 𝔭`. Apply `hle` to reduce the goal to its premises.
-
-Use `show _ ∈ _ ⊔ _`. Rewrite using `[map_range_rank_one]`. Simplify using `using hmem`. Rewrite `hin` using `[hℓ, hζs, map_smul]`. Conclude with `h2 (mem_of_smul_mem_sup h𝔭 hN hbe hin)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_improves_of_real {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (y : D.La →ₗ[𝓞 E] X) (n : ℕ)

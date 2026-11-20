@@ -13,16 +13,16 @@ namespace GlobalTheory.LKRes.ResSplit
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Use `⟨f / Nat.gcd f r, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.mul_div_assoc f (Nat.gcd_dvd_right f r), ← Nat.mul_div_assoc r (Nat.gcd_dvd_left f r), mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_mul_div_gcd (f r : ℕ) : r ∣ f * (r / Nat.gcd f r) := by
   refine ⟨f / Nat.gcd f r, ?_⟩
   rw [← Nat.mul_div_assoc f (Nat.gcd_dvd_right f r), ← Nat.mul_div_assoc r (Nat.gcd_dvd_left f r), mul_comm]
 
 /- English proof (translation)
-Apply `UnramifiedExtensions.Kn_le (Q0 p) bot_le` to reduce the goal to its premises. Introduce `ζ hζ`. Apply `UnramifiedExtensions.mem_Kn_of_pow K` to reduce the goal to its premises. Rewrite `hζ` using `[residue_cardinality_base_field]`. Take `⟨t, ht⟩` from `dvd_mul_div_gcd f r`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : p ^ r - 1 ∣ (p ^ r) ^ t - 1` from `by simpa using Nat.sub_dvd_pow_sub_pow (p ^ r) 1 t`. Rewrite using `[hq, ← pow_mul, ht, pow_mul, hc, pow_mul, hζ, one_pow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qr_le_Kn {f : ℕ} (hq : qK p K = p ^ f) (r : ℕ) : Qr p r ≤ Kn p K (r / Nat.gcd f r) := by
   apply UnramifiedExtensions.Kn_le (Q0 p) bot_le
@@ -52,14 +52,14 @@ theorem eMap_apply {f : ℕ} (hq : qK p K = p ^ f) (r : ℕ) (x : KQ p K r) (i :
     eMap p K hq r x i = comp p K hq r i x := rfl
 
 /- English proof (translation)
-The claim follows from `IntermediateField.coe_inclusion _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_incQ {f : ℕ} (hq : qK p K = p ^ f) (r : ℕ) (b : Qr p r) :
     ((incQ p K hq r b : Kn p K (r / Nat.gcd f r)) : PadicAlgCl p) = b :=
   IntermediateField.coe_inclusion _ _
 
 /- English proof (translation)
-The claim follows from `IntermediateField.coe_inclusion _ _`.
+A detailed English derivation is pending.
 -/
 theorem coe_incK (n : ℕ) (a : K) : ((incK p K n a : Kn p K n) : PadicAlgCl p) = a :=
   IntermediateField.coe_inclusion _ _
@@ -71,7 +71,7 @@ theorem coe_frobQ (r : ℕ) (b : Qr p r) :
     ((frobQ p r b : Qr p r) : PadicAlgCl p) = frobK p (Q0 p) (b : PadicAlgCl p) := rfl
 
 /- English proof (translation)
-Proceed by induction on `i generalizing b with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, AlgHom.mul_apply, ih, pow_succ, AlgEquiv.mul_apply, coe_frobQ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_frobQ_pow (r i : ℕ) (b : Qr p r) :
     (((frobQ p r ^ i) b : Qr p r) : PadicAlgCl p) = (frobK p (Q0 p) ^ i) (b : PadicAlgCl p) := by
@@ -81,7 +81,7 @@ theorem coe_frobQ_pow (r i : ℕ) (b : Qr p r) :
     rw [pow_succ, AlgHom.mul_apply, ih, pow_succ, AlgEquiv.mul_apply, coe_frobQ]
 
 /- English proof (translation)
-Establish `h : comp p K hq r i (a ⊗ₜ[ℚ_[p]] b : K ⊗[ℚ_[p]] Qr p r) = incK p K _ a * incQ p K hq r ((frobQ p r ^ i) b)` using `Algebra.TensorProduct.productMap_apply_tmul _ _ a b`. Rewrite using `[h, MulMemClass.coe_mul, coe_incK, coe_incQ, coe_frobQ_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_tmul {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (a : K) (b : Qr p r) :
     ((comp p K hq r i (a ⊗ₜ[ℚ_[p]] b : K ⊗[ℚ_[p]] Qr p r) : Kn p K (r / Nat.gcd f r)) : PadicAlgCl p) =
@@ -92,11 +92,11 @@ theorem comp_tmul {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (a : K) (b : Qr p 
   rw [h, MulMemClass.coe_mul, coe_incK, coe_incQ, coe_frobQ_pow]
 
 /- English proof (translation)
-Establish `h : ∀ y : K ⊗[ℚ_[p]] Qr p r, comp p K hq r i (sigKQ p K r y) = comp p K hq r (i + 1) y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact (congrArg _ (map_zero _)).trans ((map_zero _).trans (map_zero _).symm)`. Consider the case `tmul a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : sigKQ p K r (a ⊗ₜ[ℚ_[p]] b : K ⊗[ℚ_[p]] Qr p r) = (a ⊗ₜ[ℚ_[p]] frobQ p r b : K ⊗[ℚ_[p]] Qr p r)` using `Algebra.TensorProduct.map_tmul _ _ a b`. Rewrite using `[h1]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[comp_tmul, comp_tmul, coe_frobQ, pow_succ, AlgEquiv.mul_apply]`. Consider the case `add y z hy hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `e1 : sigKQ p K r (y + z) = sigKQ p K r y + sigKQ p K r z` using `map_add _ _ _`. Establish `e2 : comp p K hq r (i + 1) (y + z) = comp p K hq r (i + 1) y + comp p K hq r (i + 1) z` using `map_add _ _ _`. Rewrite using `[e1, map_add, e2, hy, hz]`. Conclude with `h x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_sigKQ {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (x : KQ p K r) :
     comp p K hq r i (sigKQ p K r x) = comp p K hq r (i + 1) x := by
@@ -117,7 +117,7 @@ theorem comp_sigKQ {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (x : KQ p K r) :
   exact h x
 
 /- English proof (translation)
-Establish `h : inclK p K r a = (a ⊗ₜ[ℚ_[p]] (1 : Qr p r) : K ⊗[ℚ_[p]] Qr p r)` using `rfl`. Rewrite using `[h, comp_tmul, IntermediateField.coe_one, map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_inclK {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (a : K) :
     ((comp p K hq r i (inclK p K r a) : Kn p K (r / Nat.gcd f r)) : PadicAlgCl p) = a := by
@@ -125,7 +125,7 @@ theorem comp_inclK {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (a : K) :
   rw [h, comp_tmul, IntermediateField.coe_one, map_one, mul_one]
 
 /- English proof (translation)
-Establish `h : inclQ p K r b = ((1 : K) ⊗ₜ[ℚ_[p]] b : K ⊗[ℚ_[p]] Qr p r)` using `rfl`. Rewrite using `[h, comp_tmul, IntermediateField.coe_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_inclQ {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (b : Qr p r) :
     ((comp p K hq r i (inclQ p K r b) : Kn p K (r / Nat.gcd f r)) : PadicAlgCl p) =
@@ -134,9 +134,9 @@ theorem comp_inclQ {f : ℕ} (hq : qK p K = p ^ f) (r i : ℕ) (b : Qr p r) :
   rw [h, comp_tmul, IntermediateField.coe_one, one_mul]
 
 /- English proof (translation)
-Establish `hfd : FiniteDimensional ℚ_[p] (Q0 p)` using `inferInstance`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : (ζ ^ p ^ n) ^ N = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, (isFrob_iff hfd _).1 (isFrob_frobK hfd) _ N hN h1, residue_cardinality_base_field, ← pow_mul, pow_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_pow_root_of_unity {N : ℕ} (hN : ¬ p ∣ N) {ζ : PadicAlgCl p} (hζ : ζ ^ N = 1) (i : ℕ) :
     (frobK p (Q0 p) ^ i) ζ = ζ ^ p ^ i := by

@@ -20,13 +20,13 @@ namespace GlobalTheory.IntLetterCoord
 open Matrix GlobalTheory.BasisUniv
 
 /- English proof (translation)
-Establish `hK : ∀ i, (fun j => algebraMap A K (z j)) ᵥ* (M i).map (algebraMap A K) = algebraMap A K (ρ i) • fun j => algebraMap A K (z j)` using `fun i => by`. Establish `e : ∀ k, (fun j => algebraMap A K (U k j)) ᵥ* (M i).map (algebraMap A K) = algebraMap A K (ρ i) • fun j => algebraMap A K (U k j)` using `fun k => by`. Use function extensionality and compare the values at `j`. Use `congrArg (algebraMap A K) (congrFun (hU k i) j)` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hz, Matrix.sum_vecMul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_vecMul, e, smul_comm]`. Establish `hA : ∀ i, z ᵥ* (M i).map (RingHom.id A) = RingHom.id A (ρ i) • z` using `fun i => by`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `IsFractionRing.injective A K` to reduce the goal to its premises. Use `congrFun (hK i) j` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct]`. Establish `hfl : (algebraMap A K).Flat` using `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat K (nonZeroDivisors A))`. Take `⟨cf, hcf, -⟩` from `eig_powerSeries M ρ U hU h (RingHom.id A) (RingHom.Flat.id A) z hA`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(eig_powerSeries M ρ U hU h (algebraMap A K) hfl _ hK).unique (y₂ := fun k => algebraMap A K (cf k)) hz (by` as an intermediate fact. Use function extensionality and compare the values at `j`. Use `congrArg (algebraMap A K) (congrFun hcf j)` as an intermediate fact. Simplify `this)` using `[Finset.sum_apply, Algebra.smul_def]`. Conclude with `⟨cf k, (congrFun this k).symm⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem mem_range_of_comb {A K : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [Field K] [Algebra A K]
     [IsFractionRing A K] {I : Type} {g m : ℕ} (M : I → Matrix (Fin g) (Fin g) A) (ρ : I → A) (U : Fin m → Fin g → A)
@@ -63,25 +63,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
 /- English proof (translation)
-Establish `hG` using `hL.globalFns`. Establish `hf : Function.Injective (algebraMap A K)` using `IsFractionRing.injective _ _`. Take `⟨hW, -⟩` from `(GlobalTheory.ArcQBC.baseChanges hL hL₂ hU hL₅ E H Dw l Xo c O β Y A K b a _ hf b' hp.1).2 a' p hp`. Take `⟨W', hW'⟩` from `hW χ W`. Take `⟨m, -, hm, -⟩` from `GlobalTheory.ArcBaseChange.main hL hL₂ E H Dw l Xo c O β Y A b a χ W K b' a' _ p W' hp hW'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v₀, hv₀, hB⟩` from `hB`. Take `⟨g, s, v, M, hev, hv, hcomb, hM⟩` from `GlobalTheory.ConstLie.exists_const_basis hG E H Dw l Xo c O β Y A b a χ W`. Establish `ex` using `GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W`. Establish `ex'` using `GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y K b' a' _ W'`. Establish `lin` using `GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lin'` using `GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y K b' a' _ W'`. Establish `hsm : Smooth W.t.G.hom` using `W.t.semi.smooth`. Establish `hmon : ∀ x, IsMonHom (W.t.act.act x)` using `W.t.act.hom`. Take `⟨n, j, hy⟩` from `Chart.univChartLoc W.t.G`. Take `⟨n', j', hy'⟩` from `exists_chart_of_pullback _ m.cart`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose v' hv' using fun j => exists_lift _ m.cart (v j)`. Establish `hb' : IsLieBasis v'` using `Chart.isLieBasis_baseChange _ m.cart hv hv'`. Establish `coord : ∀ ξ ξ' w, GtTanR ξ → LieImg W ξ w → LetBC p ξ ξ' → ∃ (z : Fin g → A) (w' : epsR (PowerSeries K) ⟶ W'.t.G), IsLieComb (fun j => PowerSeries.C (R` using `A) (z j)) v w ∧ LieImg W' ξ' w' ∧ IsLieComb (fun j => PowerSeries.C (R := K) (algebraMap A K (z j))) v' w' := fun ξ ξ' w ht hw hξ => by`. Take `⟨z, hz, -⟩` from `hcomb _ ht`. Establish `h1` using `(lin g z s ξ v w (fun i => (hev i).2) hz).1 hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw'⟩` from `exists_lift _ m.cart w`. Use `⟨z, w', h1, hm _ _ w w' hξ hw hw', ?_⟩` and prove the remaining obligations. Simplify `Chart.comb_baseChange _ m.cart h1 hv' hw'` using `only [PowerSeries.map_C]`. Use `choose U u hU₀ hu hU' using fun k => coord _ _ _ (((ex (e τ k)).2 _ (hv₀ τ k)).2 ((hB τ).1 k).1) (hv₀ τ k) (he k)`. Take `⟨w, hw⟩` from `(ex ν).1.exists`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, w', -, hw', hz'⟩` from `coord _ _ _ hν hw hν₁`. Take `⟨w₂, hw₂⟩` from `(ex' e₂).1.exists`. Establish `c₂` using `(lin' _ y e₁ e₂ u w₂ hu h₂).1 hw₂`. Establish `c₁` using `(lin' _ ![x] ![e₂] ν₁ (fun _ => w₂) w' (fun i => by fin_cases i; exact hw₂) hx).1 hw'`. Establish `d₂ : IsLieComb (∑ k, PowerSeries.C (R` using `K) (y k) • fun j => PowerSeries.C (R := K) (algebraMap A K (U k j))) v' w₂ := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(Chart.isLieComb_iff (∑ k, PowerSeries.C (R := K) (y k) • fun j => PowerSeries.C (R := K) (algebraMap A K (U k j))) v' _).2 rfl`. Use `(comb_iff hy' hb' hU' hc _).2 rfl` as an intermediate fact. Rewrite `hc` using `[((Chart.isLieComb_iff _ _ _).1 this).trans ((Chart.isLieComb_iff _ _ _).1 c₂).symm]`. Then use the resulting hypothesis. Establish `d₁` using `(comb_iff hy' hb' (u := fun _ : Fin 1 => w₂) (fun _ => d₂) hz' _).1 c₁`. Establish `hMR : ∀ x i, IsLieComb ((M x).map (PowerSeries.C (R` using `A)) i) v (v i ≫ W.t.act.act x) := hM`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUe : ∀ k x, U k ᵥ* M x = ρ τ x • U k` using `fun k x => by`. Use `(eig_iff hy hv _ (hMR x) (hU₀ k) _).1 (((hB τ).1 k).2 x)` as an intermediate fact. Use function extensionality and compare the values at `j`. Use `congrArg (PowerSeries.constantCoeff (R := A)) (congrFun this j)` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mem_range_of_comb M (fun x => ρ τ x) U hUe (fun s hs => ?_) z (fun k => x * y k) ?_ k` and prove the remaining obligations. Establish `hc : IsLieComb s v (Chart.prodPts s v)` using `(Chart.isLieComb_iff _ _ _).2 rfl`. Use `(hB τ).2 _ (isTangent_of_comb hy hv.1 hc) (fun x => (eig_iff hy hv _ (hMR x) hc _).2 (hs x))` as an intermediate fact. Simplify `this` using `only [comb_iff hy hv hU₀ hc]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (PowerSeries.constantCoeff (R := K)) (congrFun d₁ i)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, Finset.mul_sum, _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_letBC (hL : Out.Laws) (hL₂ : Out.Laws2) (hU : Out.UnifBaseChangeSt) (hL₅ : Out.Laws5)
     {A K : Type} [CommRing A] [IsDomain A] [IsLocalRing A] [IsPrincipalIdealRing A]
@@ -147,11 +147,9 @@ theorem mem_range_of_letBC (hL : Out.Laws) (hL₂ : Out.Laws2) (hU : Out.UnifBas
     simpa [Finset.sum_apply, Finset.mul_sum, _root_.mul_assoc] using this
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ d Tv io Wl M Yw hN hB τ k x ⟨ν, ν₁, e₂, hν, hν₁, he₂, hx⟩ m`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible Tv.V`. Take `⟨χ₀, hχ₀, -⟩` from `hN Tv.V M.b ϖ M.aw (Or.inr ⟨inferInstance, hϖ, by`. Rewrite using `[← hϖ.maximalIdeal_eq]`. Use the proof step `infer_instance⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨W₀⟩` from `(Yw.hasArcData_iff _ _ _ _ _).1 ((hχ₀ χ₀).1 rfl).2.2.2`. Take `⟨e₁, e₂', l₁, l₂, -, hg⟩` from `M.e_tie`. Establish `hK' : InBC io (d.a.restrict (c.V d.Wp).subtype) (M.aK.restrict (c.V d.Wp).subtype) M.pK` using `⟨rfl, M.bcK.2⟩`. Take `⟨-, x₂, -⟩` from `(GlobalTheory.ArcQBC.baseChanges hK.laws hK.laws2 hK.ubc hK.laws5 E H Dw l Xo c _ _ d.Y K₁ Tv.Fr _ (d.a.restrict (c.V d.Wp).subtype) io io.injective _ hK'.1).2 (M.aK.restrict (c.V d.Wp).subtype) M.pK hK'`. Take `rfl : e₂ = e₂' τ k` from `(x₂ (d.e τ k)).unique he₂ (l₂ τ k)`.
-
-Conclude with `mem_range_of_letBC hK.laws hK.laws2 hK.ubc hK.laws5 M.bcw W₀ (hB χ₀ W₀) τ (l₁ τ) hν hν₁ (hg τ k) hx m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (Tv : CDVR) (io : K₁ →+* Tv.Fr) (Wl : ValuationSubring ℂ) (M : IntModel d Tv io Wl) (Yw : Model Xo c (c.V Wl).subtype), Yw.N4 → (∀ (χ : Sp (PowerSeries Tv.V) ⟶ Yw.X) (W : Wit Yw M.aw χ), ArcBasis W M.ρ M.ew) → ∀ (τ : E →+* ℂ) (k : Fin (Dw.mult τ)) (x : Tv.Fr), (∃ (ν : Out.GtPt M.aw.D₀ (epsR Tv.V)) (ν₁ e₂ : Out.GtPt M.aK.D₀ (epsR Tv.Fr)), GtTanR ν ∧ LetBC M.pw ν ν₁ ∧ LetBC M.pK (d.e τ k) e₂ ∧ GtComb ![x] ![e₂] ν₁) → ∀ m, x * M.g τ k m ∈ Set.range (algebraMap Tv.V Tv.Fr) := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ d Tv io Wl M Yw hN hB τ k x ⟨ν, ν₁, e₂, hν, hν₁, he₂, hx⟩ m

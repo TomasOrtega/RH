@@ -20,13 +20,13 @@ section Core
 variable {k r : ℕ} {i : Fin (r + 1)} {D : Set (Mx k r)} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Simplify using `only [ext0, dif_pos hg]`.
+Simplify using the standard rewrite rules.
 -/
 lemma extension_by_zero_apply {φ : Pt k r i D → E} {g : Mx k r} (hg : g ∈ Glev k r i ∩ D) : ext0 φ g = φ ⟨g, hg⟩ := by
   simp only [ext0, dif_pos hg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [ext0]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma matrixExtendByZero_add (φ ψ : Pt k r i D → E) : ext0 (φ + ψ) = fun h => ext0 φ h + (1 : ℂ) • ext0 ψ h := by
   funext h
@@ -34,7 +34,7 @@ lemma matrixExtendByZero_add (φ ψ : Pt k r i D → E) : ext0 (φ + ψ) = fun h
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [ext0]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma extendByZeroOffSubset_smul_apply (c : ℂ) (φ : Pt k r i D → E) : ext0 (c • φ) = fun h => (fun _ => (0 : E)) h + c • ext0 φ h := by
   funext h
@@ -42,7 +42,7 @@ lemma extendByZeroOffSubset_smul_apply (c : ℂ) (φ : Pt k r i D → E) : ext0 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [ext0]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma matrixExtendByZero_zero : ext0 (0 : Pt k r i D → E) = fun _ => 0 := by
   funext h
@@ -50,7 +50,7 @@ lemma matrixExtendByZero_zero : ext0 (0 : Pt k r i D → E) = fun _ => 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Use `⟨U ∩ D, F, hU.inter hD, ⟨hgU, hg₀.2⟩, hF.mono Set.inter_subset_left, fun g hg hgl => ?_⟩` and prove the remaining obligations. Rewrite using `[← h g ⟨hgl, hg.2⟩]`. Conclude with `hfF g hg.1 hgl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smooth_congr (hD : IsOpen D) {f f' : Mx k r → E} (h : ∀ g ∈ Glev k r i ∩ D, f g = f' g)
     (hf : SmoothLev k r i D f) : SmoothLev k r i D f' := by
@@ -61,14 +61,14 @@ lemma smooth_congr (hD : IsOpen D) {f f' : Mx k r → E} (h : ∀ g ∈ Glev k r
   exact hfF g hg.1 hgl
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma smooth_zero : SmoothLev k r i D (fun _ : Mx k r => (0 : E)) := fun _ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U1, F1, hU1, hg1, hF1, hf1⟩` from `hf g₀ hg₀`. Take `⟨U2, F2, hU2, hg2, hF2, hf2⟩` from `hf' g₀ hg₀`. Use `⟨U1 ∩ U2, fun g => F1 g + c • F2 g, hU1.inter hU2, ⟨hg1, hg2⟩, (hF1.mono Set.inter_subset_left).add ((hF2.mono Set.inter_subset_right).const_smul c), fun g hg hgl => ?_⟩` and prove the remaining obligations. Use `show f g + c • f' g = F1 g + c • F2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf1 g hg.1 hgl, hf2 g hg.2 hgl]`.
+A detailed English derivation is pending.
 -/
 lemma smooth_lin {f f' : Mx k r → E} (hf : SmoothLev k r i D f) (hf' : SmoothLev k r i D f') (c : ℂ) :
     SmoothLev k r i D (fun g => f g + c • f' g) := by
@@ -96,7 +96,7 @@ def SS : Submodule ℂ (Pt k r i D → E) where
     rw [extendByZeroOffSubset_smul_apply]; exact smooth_lin smooth_zero hφ c
 
 /- English proof (translation)
-Simplify using `[EH, EabH, RdV]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eh_zero (a b : Fin (2 * r + k + 1)) (g : Mx k r) : EH k r a b (fun _ : Mx k r => (0 : E)) g = 0 := by
   simp [EH, EabH, RdV]
@@ -105,7 +105,7 @@ def TT (a b : Fin (mdim k r i)) (φ : Pt k r i D → E) : Pt k r i D → E :=
   fun p => EH k r (posL k r i a) (posL k r i b) (ext0 φ) p.1
 
 /- English proof (translation)
-Establish `h1` using `(hP E k r 0 i D a b (ext0 φ) (ext0 φ) 0 hD hφ hφ).1`. Use `smooth_congr hD (fun g hg => ?_) h1` and prove the remaining obligations. Conclude with `(extension_by_zero_apply (φ := TT a b φ) hg).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma TT_mem (hP : EabPres) (hD : IsOpen D) {φ : Pt k r i D → E} (hφ : φ ∈ SS k r i D E) (a b : Fin (mdim k r i)) :
     TT a b φ ∈ SS k r i D E := by
@@ -114,7 +114,7 @@ lemma TT_mem (hP : EabPres) (hD : IsOpen D) {φ : Pt k r i D → E} (hφ : φ �
   exact (extension_by_zero_apply (φ := TT a b φ) hg).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h3` using `(hP E k r 0 i D a b (ext0 φ) (ext0 ψ) 1 hD hφ hψ).2.2 p.1 p.2`. Use `show EH k r (posL k r i a) (posL k r i b) (ext0 (φ + ψ)) p.1 = EH k r (posL k r i a) (posL k r i b) (ext0 φ) p.1 + EH k r (posL k r i a) (posL k r i b) (ext0 ψ) p.1`. Rewrite using `[matrixExtendByZero_add, h3, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma TT_add (hP : EabPres) (hD : IsOpen D) {φ ψ : Pt k r i D → E} (hφ : φ ∈ SS k r i D E)
     (hψ : ψ ∈ SS k r i D E) (a b : Fin (mdim k r i)) : TT a b (φ + ψ) = TT a b φ + TT a b ψ := by
@@ -125,9 +125,7 @@ lemma TT_add (hP : EabPres) (hD : IsOpen D) {φ ψ : Pt k r i D → E} (hφ : φ
   rw [matrixExtendByZero_add, h3, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h3` using `(hP E k r 0 i D a b (fun _ => (0 : E)) (ext0 φ) c hD smooth_zero hφ).2.2 p.1 p.2`. Apply the tactic sequence `try dsimp only at h3`. Use `show EH k r (posL k r i a) (posL k r i b) (ext0 (c • φ)) p.1 = c • EH k r (posL k r i a) (posL k r i b) (ext0 φ) p.1`. Rewrite using `[extendByZeroOffSubset_smul_apply]`.
-
-Apply the tactic sequence `try dsimp only`. Rewrite using `[h3, eh_zero, zero_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma TT_smul (hP : EabPres) (hD : IsOpen D) {φ : Pt k r i D → E} (hφ : φ ∈ SS k r i D E) (c : ℂ)
     (a b : Fin (mdim k r i)) : TT a b (c • φ) = c • TT a b φ := by
@@ -148,7 +146,7 @@ def EE (hP : EabPres) (hD : IsOpen D) (a b : Fin (mdim k r i)) : Module.End ℂ 
 def Rep (F : Mx k r → E) (φ : Pt k r i D → E) : Prop := ∀ g (hg : g ∈ Glev k r i ∩ D), F g = φ ⟨g, hg⟩
 
 /- English proof (translation)
-Unfold `Rep at h ⊢`. Introduce `g hg`. Use `show EH k r (posL k r i a) (posL k r i b) F g = EH k r (posL k r i a) (posL k r i b) (ext0 x.1) g`. Conclude with `hC E k r i D a b F (ext0 x.1) hD (fun g' hg' => by rw [extension_by_zero_apply hg']; exact h g' hg') g hg`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma EE_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) {F : Mx k r → E} {x : SS k r i D E}
     (h : Rep F x.1) (a b : Fin (mdim k r i)) :
@@ -159,14 +157,14 @@ lemma EE_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) {F : Mx k r → E} {
   exact hC E k r i D a b F (ext0 x.1) hD (fun g' hg' => by rw [extension_by_zero_apply hg']; exact h g' hg') g hg
 
 /- English proof (translation)
-Introduce `_ hg` and use `extension_by_zero_apply hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma rep_ext (x : SS k r i D E) : Rep (ext0 x.1) x.1 := fun _ hg => extension_by_zero_apply hg
 
 /- English proof (translation)
-Unfold `Rep at h ⊢`. Introduce `g hg`. Use `show ∑ j, c j • F j g = _`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_smul, Pi.smul_apply, h j g hg]`.
+A detailed English derivation is pending.
 -/
 lemma rep_sum {ι : Type*} [Fintype ι] (c : ι → ℂ) {F : ι → Mx k r → E} {x : ι → SS k r i D E}
     (h : ∀ j, Rep (F j) (x j).1) : Rep (fun g => ∑ j, c j • F j g) (∑ j, c j • x j).1 := by
@@ -178,7 +176,7 @@ lemma rep_sum {ι : Type*} [Fintype ι] (c : ι → ℂ) {F : ι → Mx k r → 
   rw [Submodule.coe_smul, Pi.smul_apply, h j g hg]
 
 /- English proof (translation)
-Establish `h1` using `congrArg Fin.val e`. Simplify using `only [posL, Fin.val_mk] at h1`. Conclude with `Fin.ext (by omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma posL_inj {a b : Fin (mdim k r i)} (e : posL k r i a = posL k r i b) : a = b := by
   have h1 := congrArg Fin.val e
@@ -186,9 +184,9 @@ lemma posL_inj {a b : Fin (mdim k r i)} (e : posL k r i a = posL k r i b) : a = 
   exact Fin.ext (by omega)
 
 /- English proof (translation)
-Establish `h1` using `EE_rep hC hP hD h a b`. Unfold `Rep at h h1 ⊢`. Introduce `g hg`. Distinguish the cases in `hab : a = b`. Substitute `hab first` using the available equality.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Consider the case `simp [Formalism.QuantumDeterminants.Top, Formalism.REAL.Tm, Module.algebraMap_end_apply, h g hg, h1 g hg]`. Consider the case `simp [Formalism.QuantumDeterminants.Top, Tm, Module.algebraMap_end_apply, h g hg, h1 g hg]`. Establish `hne : posL k r i a ≠ posL k r i b` using `fun e => hab (posL_inj e) first`. Consider the case `simp [Formalism.QuantumDeterminants.Top, Formalism.REAL.Tm, hab, hne, h1 g hg]`. Consider the case `simp [Formalism.QuantumDeterminants.Top, Tm, hab, hne, h1 g hg]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 -/
 lemma Tm_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) {F : Mx k r → E} {x : SS k r i D E}
     (h : Rep F x.1) (u : ℂ) (a b : Fin (mdim k r i)) :
@@ -207,9 +205,9 @@ lemma Tm_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) {F : Mx k r → E} {
       | simp [Formalism.QuantumDeterminants.Top, Tm, hab, hne, h1 g hg]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using h`. Consider the case `cons q l ih`. Simplify using `only [List.map_cons, List.foldr_cons, List.prod_cons]`. Use `first`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `rw [Module.End.mul_apply]`. Consider the case `rw [LinearMap.mul_apply]`. Conclude with `Tm_rep hC hP hD ih q.1 q.2.1 q.2.2`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma foldr_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) (l : List (ℂ × Fin (mdim k r i) × Fin (mdim k r i)))
     {F : Mx k r → E} {x : SS k r i D E} (h : Rep F x.1) :
@@ -225,7 +223,7 @@ lemma foldr_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) (l : List (ℂ ×
     exact Tm_rep hC hP hD ih q.1 q.2.1 q.2.2
 
 /- English proof (translation)
-Unfold `qminor`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, List.map_ofFn]`. Simplify using `[Function.comp_def, Int.cast_smul_eq_zsmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma qminor_apply (hP : EabPres) (hD : IsOpen D) {t : ℕ} (a b : Fin t → Fin (mdim k r i)) (u : ℂ)
     (x : SS k r i D E) :
@@ -239,9 +237,9 @@ lemma qminor_apply (hP : EabPres) (hD : IsOpen D) {t : ℕ} (a b : Fin t → Fin
   simp [Function.comp_def, Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Unfold `qdet capL`. Rewrite using `[qminor_apply]`. Unfold `qminorOp`. Establish `H` using `rep_sum (fun σ : Equiv.Perm (Fin (mdim k r i)) => (((Equiv.Perm.sign σ : ℤ) : ℂ))) (fun σ => foldr_rep hC hP hD (List.ofFn fun q : Fin (mdim k r i) => (u - ((q : ℕ) : ℂ), σ q, q)) h)`. Simplify using `only [List.map_ofFn, Function.comp_def, id] at H ⊢`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply]`. Conclude with `H g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qdet_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) (u : ℂ) {F : Mx k r → E} {x : SS k r i D E}
     (h : Rep F x.1) : Rep (capL k r i u F) (qdet (EE hP hD) u x).1 := by
@@ -257,13 +255,11 @@ lemma qdet_rep (hC : CapCongr) (hP : EabPres) (hD : IsOpen D) (u : ℂ) {F : Mx 
   exact H g hg
 
 /- English proof (translation)
-Unfold `GlRel`. Unfold `EabGlLev at hG`. Establish `loc : ∀ (a b c d : Fin (mdim k r i)) (x : SS k r i D E) (g : Mx k r) (hg : g ∈ Glev k r i ∩ D), (EE hP hD a b (EE hP hD c d x)).1 ⟨g, hg⟩ = EH k r (posL k r i a) (posL k r i b) (EH k r (posL k r i c) (posL k r i d) (ext0 x.1)) g`. Introduce `a b c d x g hg`. Use `show EH k r (posL k r i a) (posL k r i b) (ext0 (TT c d x.1)) g = _`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hC E k r i D a b (EH k r (posL k r i c) (posL k r i d) (ext0 x.1)) (ext0 (TT c d x.1)) hD (fun g' hg' => by rw [extension_by_zero_apply hg']; rfl) g hg).symm`. Introduce `a b c d`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `q`. Take `⟨g, hg⟩` from `q`. Establish `key` using `hG E k r i D a b c d (ext0 x.1) hD x.2 g hg`. Express the relevant statement in the definitionally equal form `(EE hP hD a b (EE hP hD c d x)).1 ⟨g, hg⟩ - (EE hP hD c d (EE hP hD a b x)).1 ⟨g, hg⟩ = _`. Rewrite using `[loc a b c d x g hg, loc c d a b x g hg, key]`.
-
-Apply the tactic sequence `split_ifs <;> rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma EE_gl (hC : CapCongr) (hP : EabPres) (hG : EabGlLev) (hD : IsOpen D) :
     GlRel (EE (E := E) (i := i) hP hD) := by
@@ -290,11 +286,11 @@ lemma EE_gl (hC : CapCongr) (hP : EabPres) (hG : EabGlLev) (hD : IsOpen D) :
 end Core
 
 /- English proof (translation)
-Unfold `CapTransfer`. Introduce `hC hQ hP hG`. Unfold `CapCommute`. Unfold `QdetCommute at hQ`. Introduce `E _ _ k r i D f hD hf g hg u v`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : (fun q : Pt k r i D => f q.1) ∈ SS k r i D E` using `smooth_congr hD (fun g' hg' => (extension_by_zero_apply (φ := fun q : Pt k r i D => f q.1) hg').symm) hf`. Set `x : SS k r i D E` to `⟨fun q => f q.1, hmem⟩`. Establish `hx : Rep f x.1` using `fun _ _ => rfl`. Establish `h1` using `qdet_rep hC hP hD u (qdet_rep hC hP hD v hx)`. Establish `h2` using `qdet_rep hC hP hD v (qdet_rep hC hP hD u hx)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm` using `hQ (Module.End ℂ (SS k r i D E)) (mdim k r i) (EE hP hD) (EE_gl hC hP hG hD) u v`. Rewrite using `[h1 g hg, h2 g hg]`. Use `congrArg (fun T => (T x).1 ⟨g, hg⟩) hcomm` as an intermediate fact. Simplify `this` using `only [Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem capelli_operator_transfer : CapTransfer := by
   unfold CapTransfer

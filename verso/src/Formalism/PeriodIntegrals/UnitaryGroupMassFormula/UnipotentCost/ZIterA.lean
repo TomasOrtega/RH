@@ -11,19 +11,17 @@ section quad
 variable {V W : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup W] [NormedSpace ℝ W]
 
 /- English proof (translation)
-Proceed by induction on `a using Nat.strong_induction_on with`. Consider the case `_ a ih`. Break down `a with _ | a` into its components or cases. Use `⟨1, zero_le_one, fun z _ => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_zero, one_mul, zero_add, pow_one]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_max_right _ _`. Use `choose! K hK0 hK using ih`. Use `⟨‖Bi‖ * ∑ i ∈ Finset.range (a + 1), (a.choose i : ℝ) * (K i * K (a - i)), mul_nonneg (norm_nonneg _) (Finset.sum_nonneg fun i hi => ?_), fun z hz => ?_⟩` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (hK0 i (by omega)) (hK0 (a - i) (by omega)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 1 ≤ max 1 ‖φ z‖` using `le_max_left _ _`. Establish `hm0 : 0 ≤ max 1 ‖φ z‖` using `zero_le_one.trans hm`. Establish `heq : Set.EqOn (fderiv ℝ φ) (fun y => Bi (φ y) (φ y)) U` using `fun y hy => hd y hy`. Establish `e1 : ‖iteratedFDeriv ℝ (a + 1) φ z‖ = ‖iteratedFDerivWithin ℝ a (fun y => Bi (φ y) (φ y)) U z‖`. Rewrite using `[← norm_iteratedFDeriv_fderiv, ← (iteratedFDerivWithin_of_isOpen a hU hz : iteratedFDerivWithin ℝ a (fderiv ℝ φ) U z = iteratedFDeriv ℝ a (fderiv ℝ φ) z), iteratedFDerivWithin_congr heq hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use `(Bi.norm_iteratedFDerivWithin_le_of_bilinear (hφ a) (hφ a) hU.uniqueDiffOn hz le_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc ‖Bi‖, Finset.sum_mul]`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i hi => ?_) (norm_nonneg _)` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[iteratedFDerivWithin_of_isOpen i hU hz, iteratedFDerivWithin_of_isOpen (a - i) hU hz]`. Establish `h1` using `hK i (by omega) z hz`. Establish `h2` using `hK (a - i) (by omega) z hz`. Establish `hpow : max 1 ‖φ z‖ ^ (a + 1 + 1) = max 1 ‖φ z‖ ^ (i + 1) * max 1 ‖φ z‖ ^ (a - i + 1)`. Rewrite using `[← pow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_left h1 (Nat.cast_nonneg _)) h2 (norm_nonneg _)` to reduce the goal to its premises. Conclude with `mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (hK0 i (by omega)) (pow_nonneg hm0 _))`.
-
-Use `_ = (a.choose i : ℝ) * (K i * K (a - i)) * max 1 ‖φ z‖ ^ (a + 1 + 1) := by`. Rewrite using `[hpow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem norm_iteratedFDeriv_le_of_fderiv_eq_quadratic
     (Bi : W →L[ℝ] W →L[ℝ] (V →L[ℝ] W)) {U : Set V} (hU : IsOpen U) {φ : V → W}
@@ -70,7 +68,7 @@ private theorem norm_iteratedFDeriv_le_of_fderiv_eq_quadratic
             rw [hpow]; ring
 
 /- English proof (translation)
-Use `choose K hK0 hK using norm_iteratedFDeriv_le_of_fderiv_eq_quadratic Bi hU hφ hd`. Use `⟨∑ a ∈ Finset.range (n + 1), K a, Finset.sum_nonneg fun a _ => hK0 a, fun z hz a ha => ?_⟩` and prove the remaining obligations. Use `(hK a z hz).trans (mul_le_mul_of_nonneg_right ?_ (pow_nonneg (zero_le_one.trans (le_max_left _ _)) _))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := K) (fun b _ => hK0 b) (Finset.mem_range.2 (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quad_bound (Bi : W →L[ℝ] W →L[ℝ] (V →L[ℝ] W)) {U : Set V} (hU : IsOpen U) {φ : V → W}
     (hφ : ∀ n : ℕ, ContDiffOn ℝ n φ U) (hd : ∀ z ∈ U, fderiv ℝ φ z = Bi (φ z) (φ z)) (n : ℕ) :
@@ -89,29 +87,29 @@ section words
 variable {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Fintype I]
 
 /- English proof (translation)
-Conclude with `ContinuousLinearMap.norm_smulRightL_le`.
+A detailed English derivation is pending.
 -/
 theorem norm_smulRightL_le (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] :
     ‖ContinuousLinearMap.smulRightL ℝ V E‖ ≤ 1 := by
   exact ContinuousLinearMap.norm_smulRightL_le
 
 /- English proof (translation)
-Conclude with `one_le_pow₀ hx`.
+A detailed English derivation is pending.
 -/
 private theorem one_le_pow_of_one_le_real {x : ℝ} (hx : 1 ≤ x) (n : ℕ) : 1 ≤ x ^ n := by
   exact one_le_pow₀ hx
 
 /- English proof (translation)
-Conclude with `pow_le_pow_right₀ hx h`.
+A detailed English derivation is pending.
 -/
 private theorem pow_le_pow_right_of_one_le {x : ℝ} (hx : 1 ≤ x) {m n : ℕ} (h : m ≤ n) :
     x ^ m ≤ x ^ n := by
   exact pow_le_pow_right₀ hx h
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hj`. Rewrite using `[Nat.add_sub_cancel_left]`. Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hR0 : 0 ≤ R` using `by linarith`. Establish `hlam0 : 0 ≤ lam` using `by linarith`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 ≤ Kc * M ^ (j + 1) * (R ^ k * (β * lam) * (lam * M) ^ k)` using `mul_nonneg (mul_nonneg hKc (pow_nonneg hM0 _)) (mul_nonneg (mul_nonneg (pow_nonneg hR0 _) (mul_nonneg hβ hlam0)) (pow_nonneg (mul_nonneg hlam0 hM0) _))`. Establish `hX : 1 ≤ R ^ j * lam ^ j` using `one_le_mul_of_one_le_of_one_le (one_le_pow_of_one_le_real hR j) (one_le_pow_of_one_le_real hlam j)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mul_pow_mul_le_mul_pow_succ {Kc R β lam M : ℝ} {b j : ℕ} (hj : j ≤ b) (hKc : 0 ≤ Kc)
     (hR : 1 ≤ R) (hβ : 0 ≤ β) (hlam : 1 ≤ lam) (hM : 1 ≤ M) :
@@ -134,37 +132,33 @@ private theorem mul_pow_mul_le_mul_pow_succ {Kc R β lam M : ℝ} {b j : ℕ} (h
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨R, hRdef⟩ : ∃ R : ℝ, R = ((Fintype.card I : ℝ) * Kc + 1) * 2 ^ q` from `⟨_, rfl⟩`. Establish `hNK : 0 ≤ (Fintype.card I : ℝ) * Kc` using `mul_nonneg (Nat.cast_nonneg _) hKc`. Establish `hR : 1 ≤ R`. Rewrite using `[hRdef]`. Conclude with `one_le_mul_of_one_le_of_one_le (by linarith) (one_le_pow_of_one_le_real (by norm_num) q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR0 : 0 ≤ R` using `by linarith`. Use `⟨R ^ q, one_le_pow_of_one_le_real hR q, ?_⟩` and prove the remaining obligations. Introduce `α E _ _ Cls Dop Γ U c z₀ M lam hU hz₀ hM hlam hdown hDop hsmooth hderiv hc hcb`. Establish `hM0 : (0 : ℝ) ≤ M` using `by linarith`. Establish `hlam0 : (0 : ℝ) ≤ lam` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : ∀ a b (H : α → E), a ≤ b → Cls b H → Cls a H`. Introduce `a b H hab`. Proceed by induction on `hab with`. Consider the case `refl => exact id`. Consider the case `step _ ih => exact fun h => ih (hdown _ _ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `key : ∀ b, b ≤ q → ∀ (H : α → E) (β : ℝ), Cls b H → (∀ w : List I, w.length ≤ b → ‖w.foldr Dop H (Γ z₀)‖ ≤ β * lam ^ w.length) → ‖iteratedFDeriv ℝ b (fun z => H (Γ z)) z₀‖ ≤ R ^ b * β * (lam * M) ^ b`. Introduce `b`. Proceed by induction on `b using Nat.strong_induction_on with`. Consider the case `_ b ih`. Introduce `hb H β hH hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hβ0 : ‖H (Γ z₀)‖ ≤ β` using `by simpa using hw [] (Nat.zero_le _)`. Establish `hβ : 0 ≤ β` using `(norm_nonneg _).trans hβ0`. Break down `b with _ | b` into its components or cases. Simplify using `only [norm_iteratedFDeriv_zero, pow_zero, one_mul, mul_one]`. Conclude with `hβ0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT⟩ : ∃ T : ℝ, T = Kc * R ^ b * β * (lam * M) ^ (b + 1)` from `⟨_, rfl⟩`. Establish `hG : ∀ i, ContDiffOn ℝ b (fun z => Dop i H (Γ z)) U` using `fun i z hz => (hsmooth b (Dop i H) (hDop b H i hH) z hz).contDiffWithinAt`. Establish `hf : ∀ i, ContDiffOn ℝ b (fun z => ContinuousLinearMap.smulRightL ℝ V E (c i z) (Dop i H (Γ z))) U` using `fun i => ((ContinuousLinearMap.smulRightL ℝ V E).contDiff.comp_contDiffOn (hc i b)).clm_apply (hG i)`. Establish `heq : Set.EqOn (fderiv ℝ (fun z => H (Γ z))) (∑ i, fun z => ContinuousLinearMap.smulRightL ℝ V E (c i z) (Dop i H (Γ z))) U`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.sum_apply, hderiv b H hH z hz]`. Both sides reduce to the same expression. Establish `hfi : ∀ i, ‖iteratedFDerivWithin ℝ b (fun z => ContinuousLinearMap.smulRightL ℝ V E (c i z) (Dop i H (Γ z))) U z₀‖ ≤ 2 ^ b * T`. Introduce `i`. Use `((ContinuousLinearMap.smulRightL ℝ V E).norm_iteratedFDerivWithin_le_of_bilinear (hc i b) (hG i) hU.uniqueDiffOn hz₀ le_rfl).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ j ∈ Finset.range (b + 1), (b.choose j : ℝ) * ‖iteratedFDerivWithin ℝ j (c i) U z₀‖ * ‖iteratedFDerivWithin ℝ (b - j) (fun z => Dop i H (Γ z)) U z₀‖ ≤ ∑ j ∈ Finset.range (b + 1), (b.choose j : ℝ) * T`. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations. Establish `hj'` using `Finset.mem_range.1 hj`. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcj : ‖iteratedFDerivWithin ℝ j (c i) U z₀‖ ≤ Kc * M ^ (j + 1)`. Rewrite using `[iteratedFDerivWithin_of_isOpen j hU hz₀]`. Conclude with `hcb i j (by omega)`. Establish `hGj : ‖iteratedFDerivWithin ℝ (b - j) (fun z => Dop i H (Γ z)) U z₀‖ ≤ R ^ (b - j) * (β * lam) * (lam * M) ^ (b - j)`. Rewrite using `[iteratedFDerivWithin_of_isOpen (b - j) hU hz₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ih (b - j) (by omega) (by omega) (Dop i H) (β * lam) (hmono _ _ _ (Nat.sub_le b j) (hDop b H i hH)) fun w hw' => ?_` and prove the remaining obligations. Establish `h` using `hw (w ++ [i]) (by rw [List.length_append, List.length_singleton]; omega)`. Simplify using `only [List.foldr_append, List.foldr_cons, List.foldr_nil, List.length_append, List.length_singleton] at h`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Conclude with `mul_pow_mul_le_mul_pow_succ (by omega) hKc hR hβ hlam hM`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, ← Finset.sum_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.sum_range_choose b` after adjusting the coercions. Establish `hN : (Fintype.card I : ℝ) * Kc * 2 ^ b ≤ R`. Establish `h2 : (2 : ℝ) ^ b ≤ 2 ^ q` using `pow_le_pow_right_of_one_le (by norm_num) (by omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hRdef, add_mul, one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_add_of_nonneg_right (pow_nonneg (by norm_num) q)`. Establish `hX : 0 ≤ R ^ b * β * (lam * M) ^ (b + 1)` using `mul_nonneg (mul_nonneg (pow_nonneg hR0 _) hβ) (pow_nonneg (mul_nonneg hlam0 hM0) _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← norm_iteratedFDeriv_fderiv, ← (iteratedFDerivWithin_of_isOpen b hU hz₀ : iteratedFDerivWithin ℝ b (fderiv ℝ (fun z => H (Γ z))) U z₀ = iteratedFDeriv ℝ b (fderiv ℝ (fun z => H (Γ z))) z₀), iteratedFDerivWithin_congr heq hz₀]`. Use `_ = ‖∑ i, iteratedFDerivWithin ℝ b (fun z => ContinuousLinearMap.smulRightL ℝ V E (c i z) (Dop i H (Γ z))) U z₀‖ := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[iteratedFDerivWithin_sum_apply hU.uniqueDiffOn hz₀ fun i _ => hf i z₀ hz₀]`. Use `_ ≤ ∑ i, ‖iteratedFDerivWithin ℝ b (fun z => ContinuousLinearMap.smulRightL ℝ V E (c i z) (Dop i H (Γ z))) U z₀‖ := norm_sum_le _ _`. Use `_ ≤ ∑ _i : I, 2 ^ b * T := Finset.sum_le_sum fun i _ => hfi i`. Use `_ = (Fintype.card I : ℝ) * (2 ^ b * T) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
-
-Use `_ = ((Fintype.card I : ℝ) * Kc * 2 ^ b) * (R ^ b * β * (lam * M) ^ (b + 1)) := by`. Rewrite using `[hT]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ R * (R ^ b * β * (lam * M) ^ (b + 1)) := mul_le_mul_of_nonneg_right hN hX`. Use `_ = R ^ (b + 1) * β * (lam * M) ^ (b + 1) := by ring`.
-
-Introduce `b hb H β hH hw`. Establish `h0 : ‖H (Γ z₀)‖ ≤ β` using `by simpa using hw [] (Nat.zero_le _)`. Establish `hβ : 0 ≤ β` using `(norm_nonneg _).trans h0`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem iter_words (q : ℕ) (Kc : ℝ) (hKc : 0 ≤ Kc) : ∃ C : ℝ, 1 ≤ C ∧
     ∀ {α E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (Cls : ℕ → (α → E) → Prop)

@@ -7,11 +7,11 @@ open Ad3.K Ad3.K.LC Ad3.K.LC.C GlobalTheory.CompanionTheory.GodementFE
 namespace GlobalTheory.CompanionTheory.GodementFE
 
 /- English proof (translation)
-Establish `h0 : Measurable fun z : ℂ => z / ((‖z‖ : ℝ) : ℂ)` using `by fun_prop`. Consider the cases of `n with`. Consider the case `ofNat m`. Establish `: ph (Int.ofNat m) = fun z : ℂ => (z / ((‖z‖ : ℝ) : ℂ)) ^ m`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ph]`. Rewrite using `[this]`. Conclude with `h0.pow_const m`. Consider the case `negSucc m`. Establish `: ph (Int.negSucc m) = fun z : ℂ => ((z / ((‖z‖ : ℝ) : ℂ)) ^ (m + 1))⁻¹`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [ph, zpow_negSucc]`. Rewrite using `[this]`. Conclude with `(h0.pow_const (m + 1)).inv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_ph (n : ℤ) : Measurable (ph n) := by
   have h0 : Measurable fun z : ℂ => z / ((‖z‖ : ℝ) : ℂ) := by fun_prop
@@ -30,7 +30,7 @@ theorem measurable_ph (n : ℤ) : Measurable (ph n) := by
     exact (h0.pow_const (m + 1)).inv
 
 /- English proof (translation)
-Use `Continuous.matrix_mul ?_ continuous_const` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [d2] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_diag_mul (g : Matrix (Fin 2) (Fin 2) ℂ) :
     Continuous fun a : ℂ => d2 a * g := by
@@ -39,7 +39,7 @@ theorem continuous_diag_mul (g : Matrix (Fin 2) (Fin 2) ℂ) :
   fin_cases i <;> fin_cases j <;> simp [d2] <;> fun_prop
 
 /- English proof (translation)
-Use `Continuous.mul (f.continuous.comp (Continuous.matrix_vecMul ?_ ?_)) (continuous_psiC.comp (by fun_prop))` and prove the remaining obligations. Conclude with `continuous_vec.comp (Continuous.prodMk (by fun_prop) (by fun_prop))`. Conclude with `(continuous_diag_mul g).comp (by fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_godement (f : SchwartzMap (Fin 2 → ℂ) ℂ) (g : Matrix (Fin 2) (Fin 2) ℂ) :
     Continuous fun p : (ℂ × ℂ) × ℂ =>
@@ -50,9 +50,9 @@ theorem continuous_godement (f : SchwartzMap (Fin 2 → ℂ) ℂ) (g : Matrix (F
   · exact (continuous_diag_mul g).comp (by fun_prop)
 
 /- English proof (translation)
-Establish `hF : StronglyMeasurable fun q : ℂ × ℂ => ∫ y : ℂ, f (Matrix.vecMul ![q.2, q.2 * y] (d2 q.1 * g)) * psiC (-y)` using `(continuous_godement f g).stronglyMeasurable.integral_prod_right'`. Establish `hT : StronglyMeasurable fun q : ℂ × ℂ => ph (4 * (k : ℤ) - 4) q.2` using `((measurable_ph _).comp measurable_snd).stronglyMeasurable`. Establish `hH : StronglyMeasurable fun a : ℂ => ∫ t : ℂ, ph (4 * (k : ℤ) - 4) t * ∫ y : ℂ, f (Matrix.vecMul ![t, t * y] (d2 a * g)) * psiC (-y)` using `(hT.mul hF).integral_prod_right'`. Establish `hdet : Continuous fun a : ℂ => (d2 a * g).det` using `(continuous_diag_mul g).matrix_det`. Establish `hP : StronglyMeasurable fun a : ℂ => ph (2 * (k : ℤ) - 2) (d2 a * g).det` using `((measurable_ph _).comp hdet.measurable).stronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : StronglyMeasurable fun a : ℂ => (((‖(d2 a * g).det‖ : ℝ)) : ℂ)` using `(Complex.continuous_ofReal.comp hdet.norm).stronglyMeasurable`. Conclude with `(hP.mul hN).mul hH`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stronglyMeasurable_whittakerGL2_diag (k : ℕ) (f : SchwartzMap (Fin 2 → ℂ) ℂ)
     (g : Matrix (Fin 2) (Fin 2) ℂ) :
@@ -73,7 +73,7 @@ theorem stronglyMeasurable_whittakerGL2_diag (k : ℕ) (f : SchwartzMap (Fin 2 �
   exact (hP.mul hN).mul hH
 
 /- English proof (translation)
-Introduce `k f g` and use `((stronglyMeasurable_whittakerGL2_diag k f g).comp_measurable val_measEmb.measurable).aestronglyMeasurable`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_whittakerGL2_diag : ∀ (k : ℕ) (f : SchwartzMap (Fin 2 → ℂ) ℂ) (g : Matrix (Fin 2) (Fin 2) ℂ),
     AEStronglyMeasurable (fun a : ℂˣ => W2 k f (d2 a * g)) mulC := fun k f g =>

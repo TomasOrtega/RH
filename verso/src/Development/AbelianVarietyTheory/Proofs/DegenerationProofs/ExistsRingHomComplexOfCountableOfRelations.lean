@@ -11,9 +11,9 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ]`. Proceed by induction on `c using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.eval₂Hom_C]`. Simplify using `using isAlgebraic_algebraMap (R := ℚ) (A := ℂ) (a : ℚ)`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp => rw [map_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `hp.mul (hy i)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_int_eval₂Hom_of_isAlgebraic {σ : Type} (y : σ → ℂ)
     (hy : ∀ i, IsAlgebraic ℚ (y i)) (c : MvPolynomial σ ℤ) :
@@ -27,19 +27,19 @@ theorem isAlgebraic_int_eval₂Hom_of_isAlgebraic {σ : Type} (y : σ → ℂ)
   | mul_X p i hp => rw [map_mul, MvPolynomial.eval₂Hom_X']; exact hp.mul (hy i)
 
 /- English proof (translation)
-Introduce `F _ _ _ x y hy hrel`. Use `set ey := MvPolynomial.eval₂Hom (Int.castRingHom ℂ) y with hey`. Use `set ex := MvPolynomial.eval₂Hom (Int.castRingHom F) x with hex`. Set `R` to `MvPolynomial (Fin 2) ℤ ⧸ RingHom.ker ey`. Establish `hprime : (RingHom.ker ey).IsPrime` using `RingHom.ker_isPrime ey`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsDomain R` using `Ideal.Quotient.isDomain _`. Set `em : R →+* ℂ` to `RingHom.kerLift ey`. Establish `hem : Function.Injective em` using `RingHom.kerLift_injective ey`. Set `β : R →+* F` to `Ideal.Quotient.lift _ ex fun c hc => hrel c hc`. Establish `halg : ∀ r : R, IsAlgebraic ℤ r`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `r`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Use `(isAlgebraic_algHom_iff em.toIntAlgHom hem).1 ?_` and prove the remaining obligations. Conclude with `isAlgebraic_int_eval₂Hom_of_isAlgebraic y hy c`. Establish `hβ : Function.Injective β`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `h0`. Use `Ideal.comap_ne_bot_of_algebraic_mem (R := ℤ) (I := RingHom.ker β) h0 hr (halg r) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `n hn`. Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker]`. Simplify using `using hn`. Establish `hc : Countable R` using `hβ.countable`. Set `: Algebra R F` to `β.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `: Algebra R ℂ` to `em.toAlgebra`. Establish `: FaithfulSMul R F` using `(faithfulSMul_iff_algebraMap_injective R F).2 hβ`. Establish `: FaithfulSMul R ℂ` using `(faithfulSMul_iff_algebraMap_injective R ℂ).2 hem`. Take `⟨j⟩` from `nonempty_algHom_complex_of_countable R F`. Use `⟨j.toRingHom, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `j.commutes (Ideal.Quotient.mk _ (MvPolynomial.X i))`. Establish `h1 : algebraMap R F (Ideal.Quotient.mk _ (MvPolynomial.X i)) = x i` using `MvPolynomial.eval₂Hom_X' (Int.castRingHom F) x i`. Establish `h2 : algebraMap R ℂ (Ideal.Quotient.mk _ (MvPolynomial.X i)) = y i` using `MvPolynomial.eval₂Hom_X' (Int.castRingHom ℂ) y i`. Rewrite `h` using `[h1, h2]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_complex_of_countable_of_relations :
     ∀ (F : Type) [Field F] [CharZero F] [Countable F] (x : Fin 2 → F) (y : Fin 2 → ℂ), (∀ i, IsAlgebraic ℚ (y i)) → (∀ c : MvPolynomial (Fin 2) ℤ, MvPolynomial.eval₂Hom (Int.castRingHom ℂ) y c = 0 → MvPolynomial.eval₂Hom (Int.castRingHom F) x c = 0) → ∃ f : F →+* ℂ, ∀ i, f (x i) = y i := by

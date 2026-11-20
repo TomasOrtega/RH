@@ -22,19 +22,17 @@ noncomputable section
 namespace GlobalTheory.AscFin.LatticeBidual
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M hM i hi u hu H`. Establish `sdG : ∀ j, j ≤ D.R.m → IsSelfDualC (G.V (.grid j 0)) (G.Λ (.grid j 0))`. Introduce `j hj`. Consider the cases of `j with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Take `⟨c, hc⟩` from `(hL.βY 0 (by have := D.R.two_le_m; omega) : ∃ c, _)`. Conclude with `Formalism.IndefR.Eqv.KerDiag.isSelfDualC_of_base hc`. Consider the case `succ j => exact (G.sp.V_is (j + 1) 0 (by omega) hj (by omega)).sd`. Establish `sdS` using `sdG (i + 1) hi`. Establish `sdT` using `sdG i hi.le`.
+Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sdB : IsSelfDualC (G.V (.grid i 0)) (idLat (shiftId G) (G.Λ (.grid i 0)))`. Take `⟨I', h1, h2⟩` from `GlobalTheory.T.exists_conjugate_inverse_staircase_modulus_ideal G.pl sc 0 1`. Simplify using `only [pow_zero, pow_one, inv_one, one_mul] at h1 h2`. Conclude with `GlobalTheory.T.isSelfDual_fractionalIdealSmulLattice_of_norm_one _ _ _ I' sdT h1 h2`. Establish `hO : ∀ v ∈ latRow G i, v ∈ latO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (fun _ => True)` using `fun v hv => GlobalTheory.RowLoc.mem_latO_negSp.1 hv.1`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hB : ∀ v ∈ latRow G i, v ∈ latBig G i`. Break down `Nat.eq_zero_or_pos i with rfl | hi1` into its components or cases. Conclude with `fun v hv => GlobalTheory.T.depthLatticeGridRow_zero_le_selfDualHomLattice D hq T L μ0 hL sc G W M hM hi hv`. Conclude with `fun v hv => GlobalTheory.T.depthLatticeGridRow_le_selfDualHomLatticeShift D hq T L μ0 hL sc G W M hM i hi1 hi hv`. Establish `hdep` using `GlobalTheory.T.idempotent_smul_mem_hat_lattice D hq T L μ0 hL sc G W M hM i hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `finO` using `(GlobalTheory.AscFinWit.finLat_latO sdS.1 sdT.1).fin`. Establish `finB` using `(GlobalTheory.AscFinWit.finLat_latO (LS := G.Λ (.grid (i + 1) 0)) sdS.1 sdB.1).fin`. Establish `uO : u ∈ latO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (fun _ => True)`. Use `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ W.ψ_std _ _ _ _ sdS sdT (fun _ => True) u hu).2 fun u' hu' => ?_` and prove the remaining obligations. Use `H u' (finO u' hu') fun v hv => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ W.ψ_std _ _ _ _ sdS sdT (fun _ => True) v (finO v (hO v hv))).1 (hO v hv) u' hu'`. Establish `uB : u ∈ latBig G i`. Use `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ W.ψ_std _ _ _ _ sdS sdB (fun _ => True) u hu).2 fun u' hu' => ?_` and prove the remaining obligations. Use `H u' (finB u' hu') fun v hv => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.SelfDualAt.latO_ann_at D W.ψ W.ψ_std _ _ _ _ sdS sdB (fun _ => True) v (finB v (hB v hv))).1 (hB v hv) u' hu'`.
-
-Conclude with `⟨GlobalTheory.RowLoc.mem_latO_negSp.2 uO, hdep u uO uB⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latRow_bidual : All fun {D} _ _ {sc} {G} W _ => ∀ i, i < D.R.m → ∀ u : WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)), MxAt (fun _ => True) u → (∀ u' : WO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)), MxAt (fun _ => True) u' → (∀ v ∈ latRow G i, W.ψ (symplO _ _ v u') = 1) → W.ψ (symplO _ _ u u') = 1) → u ∈ latRow G i := by
   intro D hq T L μ0 hL sc G W M hM i hi u hu H

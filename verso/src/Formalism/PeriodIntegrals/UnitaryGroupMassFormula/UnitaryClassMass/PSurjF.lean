@@ -39,14 +39,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Floc_self (v : HeightOneSpectrum (𝓞 F)) (X : Submodule (𝓞 E) V) {x : V} (hx : x ∈ X) :
     x ∈ Floc v X :=
   ⟨1, fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hx⟩
 
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hsx⟩`. Use `⟨(D : 𝓞 F) * s, fun h => (v.isPrime.mem_or_mem h).elim hD hs, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, mul_smul]`. Conclude with `hLN _ hsx`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem floc_le (v : HeightOneSpectrum (𝓞 F)) (L N : Submodule (𝓞 E) V) (D : ℤ)
     (hD : ((D : 𝓞 F)) ∉ v.asIdeal) (hLN : ∀ x ∈ L, (D : 𝓞 E) • x ∈ N) : Floc v L ⊆ Floc v N := by
@@ -56,7 +56,7 @@ theorem floc_le (v : HeightOneSpectrum (𝓞 F)) (L N : Submodule (𝓞 E) V) (D
   exact hLN _ hsx
 
 /- English proof (translation)
-The claim follows from `Set.Subset.antisymm (floc_le v L N D hD hLN) (floc_le v N L D hD hNL)`.
+A detailed English derivation is pending.
 -/
 theorem flocEq (v : HeightOneSpectrum (𝓞 F)) (L N : Submodule (𝓞 E) V) (D : ℤ)
     (hD : ((D : 𝓞 F)) ∉ v.asIdeal) (hLN : ∀ x ∈ L, (D : 𝓞 E) • x ∈ N) (hNL : ∀ x ∈ N, (D : 𝓞 E) • x ∈ L) :
@@ -65,9 +65,9 @@ theorem flocEq (v : HeightOneSpectrum (𝓞 F)) (L N : Submodule (𝓞 E) V) (D 
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `hI : Ideal.span {((D : 𝓞 F))} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hD` after adjusting the coercions. Apply `(Ideal.finite_factors hI).subset` to reduce the goal to its premises. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show v.asIdeal ∣ Ideal.span {((D : 𝓞 F))}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem finF (D : ℤ) (hD : D ≠ 0) :
     {v : HeightOneSpectrum (𝓞 F) | ((D : 𝓞 F)) ∈ v.asIdeal}.Finite := by
@@ -81,17 +81,15 @@ theorem finF (D : ℤ) (hD : D ≠ 0) :
   exact hv
 
 /- English proof (translation)
-Establish `hfull : PI.LatLocGlob.IsFullLat E N` using `⟨hN.fg, hN.span_eq_top⟩`. Set `N' : Submodule (𝓞 E) V` to `N ⊔ Submodule.span (𝓞 E) {x}`. Establish `hfull' : PI.LatLocGlob.IsFullLat E N'`. Use `⟨hN.fg.sup (Submodule.fg_span_singleton x), ?_⟩` and prove the remaining obligations. Apply `eq_top_iff.2` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hN.span_eq_top]`. Conclude with `Submodule.span_mono (fun y hy => Submodule.mem_sup_left hy)`. Establish `hloc : ∀ p : Ideal (𝓞 E), p.IsMaximal → PI.LatLocGlob.loc p N' = PI.LatLocGlob.loc p N`. Introduce `p hp`. Use `haveI := hp.isPrime`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsy⟩`. Take `⟨a, ha, z, hz, haz⟩` from `Submodule.mem_sup.1 hsy`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hz`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, htx⟩` from `hx p hp`. Use `⟨t * s, fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← haz, smul_add, smul_comm t r x]`. Conclude with `N.add_mem (N.smul_mem t ha) (N.smul_mem r htx)`. Introduce and unpack `⟨s, hs, hsy⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨s, hs, Submodule.mem_sup_left hsy⟩`. Take `⟨L, _, huniq⟩` from `latLocGlob (𝓞 E) E V N hfull (fun p => PI.LatLocGlob.loc p N) (fun p _ => ⟨N, hfull, rfl⟩) (Set.finite_empty.subset (fun p hp => hp.2 rfl))`. Establish `e1 : N = L` using `huniq N ⟨hfull, fun p _ => rfl⟩`. Establish `e2 : N' = L` using `huniq N' ⟨hfull', hloc⟩`. Establish `: x ∈ N'` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`.
-
-Rewrite `this` using `[e2, ← e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem interLocStd [FiniteDimensional E V] (N : Submodule (𝓞 E) V) (hN : Submodule.IsLattice E N) (x : V)
     (hx : ∀ p : Ideal (𝓞 E), p.IsMaximal → ∃ t : 𝓞 E, t ∉ p ∧ t • x ∈ N) : x ∈ N := by
@@ -125,9 +123,9 @@ theorem interLocStd [FiniteDimensional E V] (N : Submodule (𝓞 E) V) (hN : Sub
   rwa [e2, ← e1] at this
 
 /- English proof (translation)
-Apply `interLocStd N hN x` to reduce the goal to its premises. Introduce `p hp`. Establish `hne : p ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hp (RingOfIntegers.not_isField E)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hcb : p.comap (algebraMap (𝓞 F) (𝓞 E)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem ha0 ha (Algebra.IsIntegral.isIntegral (R := 𝓞 F) a)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hp.isPrime`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨p.comap (algebraMap (𝓞 F) (𝓞 E)), Ideal.comap_isPrime _ _, hcb⟩`. Take `⟨s, hs, hsx⟩` from `hx v`. Conclude with `⟨algebraMap (𝓞 F) (𝓞 E) s, hs, hsx⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem interLocF [FiniteDimensional E V] (N : Submodule (𝓞 E) V) (hN : Submodule.IsLattice E N) (x : V)
     (hx : ∀ v : HeightOneSpectrum (𝓞 F), x ∈ Floc v N) : x ∈ N := by
@@ -145,19 +143,17 @@ theorem interLocF [FiniteDimensional E V] (N : Submodule (𝓞 E) V) (hN : Submo
 end Cheap
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hsymm hnd hL hsig N hN`. Take `⟨D, hD0, hDL, hDN⟩` from `cofinStep E V L0 N hL hN.1`. Use `set T := (finF (F := F) D hD0).toFinset with hT`. Establish `hTm : ∀ v, v ∉ T → ((D : 𝓞 F)) ∉ v.asIdeal`. Introduce `v hv hDv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hv ((Set.Finite.mem_toFinset _).2 hDv)`. Take `⟨γ, hγ⟩` from `hS F E σ V h M b L0 hσ hθ hsymm hnd hL N hN T`. Establish `hsat : ∀ y : Fin M → E, PI.UnitaryGroupMassFormula.UJClassFin.vinc (F` using `F) y ∈ latHat F E (crdOf b L0) → y ∈ crdOf b L0 := by`. Introduce `y hy`. Rewrite using `[← hO F E σ V h M b L0 hσ hθ hτ hsymm hnd hL hsig]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show (finMat σ (gramOf h b) (1 : HA (AF F) σ (gramOf h b))⁻¹).mulVec (PI.UnitaryGroupMassFormula.UJClassFin.vinc (F := F) y) ∈ latHat F E (crdOf b L0)`. Rewrite using `[inv_one, finMat_one, Matrix.one_mulVec]`. Conclude with `hy`. Take `⟨g, hg⟩` from `hP F E σ V M (gramOf h b) b L0 hL hsat γ T`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Use extensionality with `x`. Rewrite using `[Set.mem_setOf_eq]`. Establish `hout : ∀ v, v ∉ T → Floc v L0 = Floc v N` using `fun v hv => flocEq v L0 N D (hTm v hv) hDL hDN`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `interLocF (F := F) N hN.1 x` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[← hγ v hv]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 v hv`. Rewrite using `[← hout v hv]`. Conclude with `h2 v hv`. Introduce `hx`. Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hγ v hv]`. Conclude with `mem_Floc_self v N hx`. Rewrite using `[hout v hv]`. Conclude with `mem_Floc_self v N hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjStep_of_F (hP : PatchF) (hS : SemiApprox) (hO : LSOne) : SurjStep := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hsymm hnd hL hsig N hN

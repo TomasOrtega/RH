@@ -7,7 +7,7 @@ open MeasureTheory NumberField Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `Real.pow_div_factorial_le_exp (Real.log u) (Real.log_nonneg hu) r`. Rewrite `h` using `[Real.exp_log (by linarith)]`. Use `h.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem log_pow_div_factorial_le_rpow_of_one_le {u s : ℝ} (hu : 1 ≤ u) (hs : 1 ≤ s) (r : ℕ) :
     Real.log u ^ r / (r.factorial : ℝ) ≤ u ^ s := by
@@ -18,21 +18,19 @@ theorem log_pow_div_factorial_le_rpow_of_one_le {u s : ℝ} (hu : 1 ≤ u) (hs :
     _ ≤ u ^ s := Real.rpow_le_rpow_of_exponent_le hu hs
 
 /- English proof (translation)
-Introduce `K _ _ hK s hs`. Use `set Y : ℝ := Real.sqrt |(discr K : ℝ)| with hY`. Establish `hY0 : 0 ≤ Y` using `Real.sqrt_nonneg _`. Establish `hfin : {I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (Ideal.absNorm I : ℝ) ≤ Y}.Finite`. Use `(Ideal.finite_setOfPred_absNorm_le (S := 𝓞 K) ⌊Y⌋₊).subset fun I hI => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Nat.le_floor hI.2`. Use `set T := hfin.toFinset with hT`. Establish `hmem : ∀ I, I ∈ T ↔ I ≠ ⊥ ∧ (Ideal.absNorm I : ℝ) ≤ Y` using `fun I => by`. Rewrite using `[hT, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `cls : Ideal (𝓞 K) → ClassGroup (𝓞 K)` to `fun I => if h : I ∈ nonZeroDivisors (Ideal (𝓞 K)) then ClassGroup.mk0 ⟨I, h⟩ else 1`. Set `g : Ideal (𝓞 K) → ℝ` to `fun I => Real.log (Y / Ideal.absNorm I) ^ Units.rank K / ((Units.rank K).factorial : ℝ)`. Establish `h1 : ∀ C : ClassGroup (𝓞 K), Units.regulator K ≤ ∑ I ∈ T.filter (fun I => cls I = C), g I`. Introduce `C`. Use `GlobalTheory.T.regulator_le_sum_small_ideals_in_class K hK C _ fun I => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Finset.mem_filter, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h0, hle⟩, hc⟩`. Establish `hI : I ∈ nonZeroDivisors (Ideal (𝓞 K))` using `mem_nonZeroDivisors_of_ne_zero h0`. Use `⟨hI, ?_, hle⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hc` using `only [cls, dif_pos hI]`. Introduce and unpack `⟨hI, hc, hle⟩`. Use `⟨⟨nonZeroDivisors.ne_zero hI, hle⟩, ?_⟩` and prove the remaining obligations. Simplify `hc` using `only [cls, dif_pos hI]`. Establish `h2 : ∀ I ∈ T, g I ≤ Y ^ s * (Ideal.absNorm I : ℝ) ^ (-s)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `I hI`. Take `⟨h0, hle⟩` from `(hmem I).1 hI`. Establish `hN : (0 : ℝ) < Ideal.absNorm I`. Establish `: Ideal.absNorm I ≠ 0` using `fun h => h0 (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hu : 1 ≤ Y / Ideal.absNorm I` using `(one_le_div hN).2 hle`. Use `(log_pow_div_factorial_le_rpow_of_one_le hu hs.le _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.div_rpow hY0 hN.le, Real.rpow_neg hN.le, div_eq_mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul, Finset.card_univ, classNumber]`.
-
-Use `_ ≤ ∑ C : ClassGroup (𝓞 K), ∑ I ∈ T.filter (fun I => cls I = C), g I := Finset.sum_le_sum fun C _ => h1 C`. Use `_ = ∑ I ∈ T, g I := Finset.sum_fiberwise T cls g`. Use `_ ≤ ∑ I ∈ T, Y ^ s * (Ideal.absNorm I : ℝ) ^ (-s) := Finset.sum_le_sum h2`. Use `_ = Y ^ s * ∑ I ∈ T, (Ideal.absNorm I : ℝ) ^ (-s) := (Finset.mul_sum _ _ _).symm`. Use `_ ≤ Y ^ s * (s / (s - 1)) ^ Module.finrank ℚ K := mul_le_mul_of_nonneg_left (GlobalTheory.T.sum_absNorm_rpow_neg_le_dedekindZeta_bound K s hs T fun I hI => ((hmem I).1 hI).1) (Real.rpow_nonneg hY0 s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classNumber_mul_regulator_le_sqrt_discr_rpow :
     ∀ (K : Type) [Field K] [NumberField K], IsTotallyComplex K → ∀ s : ℝ, 1 < s →

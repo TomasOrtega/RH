@@ -32,7 +32,7 @@ def PerDec0 (D : D7) (u : D.what₂.Word) : Prop :=
   ∃ (Ch : ℕ → Type) (chOf : ∀ i, (D.mem u).C.cls i → Ch i) (T : Formalism.L2.Forms.FormsTiedSym D u Ch chOf), PerDec0At T
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, C.forms u, h u⟩`.
+Supply the required witnesses or components.
 -/
 theorem perDec0_of_cols {D : D7} (C : Formalism.L2.Forms.ColsTiedSym D) (h : ∀ u, PerDec0At (C.forms u)) (u : D.what₂.Word) :
     PerDec0 D u := ⟨_, _, C.forms u, h u⟩
@@ -48,9 +48,9 @@ def PeriodTwistCompatibility (D : D7) (Dx : DivX D) (T : TwForms D) : Prop :=
   (∀ u, PerDec0 D u) ∧ ∀ u μ, μ ≠ D.what₂.mu0 → PerDecTw D Dx T u μ
 
 /- English proof (translation)
-Introduce `x hx F hF`. Take `⟨pc, hper, hint⟩` from `h`. Use `choose y hy _ using hint x hx F hF`. Use `⟨∑ c, ((Nat.card ((T.fm u μ).stabilizer₂ c) : ℕ) : D.what₂.LL)⁻¹ * y c, ?_⟩` and prove the remaining obligations. Rewrite using `[hper]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, map_inv₀, map_natCast, hy]`.
+A detailed English derivation is pending.
 -/
 theorem perTw_rat {D : D7} {Dx : DivX D} {T : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} (h : PerDecTw D Dx T u μ) :
     ∀ x ∈ (T.fm u μ).ptLat.L, ∀ F ∈ (D.what₂.Mtilde μ).carrier,
@@ -69,13 +69,13 @@ def PointPeriodConditional (D : D7) (Dx : DivX D) (T : TwForms D) : Prop :=
   WeightDegreeSizes.MemberChainIntegral D ∧ WeightDegreeSizes.TwistedChainIntegral D T ∧ (PeriodTwistCompatibility D Dx T → WeightDegreeSizes.PeriodClassSumWeyl D ∧ WeightDegreeSizes.TwistedPeriodIntegral D Dx T)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, (h.2.2 t).1, (h.2.2 t).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem point_period_of_conditional {D : D7} {Dx : DivX D} {T : TwForms D} (h : PointPeriodConditional D Dx T) (t : PeriodTwistCompatibility D Dx T) :
     aPairAt D Dx T := ⟨h.1, h.2.1, (h.2.2 t).1, (h.2.2 t).2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun _ => h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem conditional_of_point_period {D : D7} {Dx : DivX D} {T : TwForms D} (h : aPairAt D Dx T) : PointPeriodConditional D Dx T :=
   ⟨h.1, h.2.1, fun _ => h.2.2⟩
@@ -91,7 +91,7 @@ def PointPeriodConditionalFamily : Prop :=
   DIV.Ev Fm fun x hx i => PointPeriodConditional (Fm.D x i) (Fm.X x i) (Fm.ex x hx i).tw
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Take `⟨x1, hx1⟩` from `t`. Use `⟨max x0 x1, fun x hle hx i => ?_⟩` and prove the remaining obligations. Conclude with `point_period_of_conditional (hx0 x (le_trans (le_max_left _ _) hle) hx i) (hx1 x hx (le_trans (le_max_right _ _) hle) i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem point_period_eventually_of_conditional (h : PointPeriodConditionalFamily Fm) (t : TieF Fm) :
     DIV.Ev Fm fun x hx i => WeightDegreeSizes.MemberChainIntegral (Fm.D x i) ∧ WeightDegreeSizes.TwistedChainIntegral (Fm.D x i) (Fm.ex x hx i).tw ∧
@@ -110,7 +110,7 @@ def LiftErrorFamilyInClassOfChainIntegrality (𝒪 : LiftErrorLocal.ObjClass) (H
     LiftErrorLocal.AdmF Fm XF H C2h A2 CR CRd → LiftErrorLocal.OrbitValuationBound Fm XF CRd C1 C2 C3 CA CD
 
 /- English proof (translation)
-Introduce `XF hO hA` and use `h XF hO t hA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem statement_family_of_conditional_form {𝒪 : LiftErrorLocal.ObjClass} {H : WeightAlgebra.KHyp} {C2h A2 CR CRd C1 C2 C3 CA CD CH : ℝ}
     (h : LiftErrorFamilyInClassOfChainIntegrality Fm 𝒪 H C2h A2 CR CRd C1 C2 C3 CA CD CH) (t : PeriodPointCompatibilityFamily Fm) :
@@ -118,7 +118,7 @@ theorem statement_family_of_conditional_form {𝒪 : LiftErrorLocal.ObjClass} {H
   fun XF hO hA => h XF hO t hA
 
 /- English proof (translation)
-Introduce `XF hO _ hA` and use `h XF hO hA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtFT1_of_stmtF {𝒪 : LiftErrorLocal.ObjClass} {H : WeightAlgebra.KHyp} {C2h A2 CR CRd C1 C2 C3 CA CD CH : ℝ}
     (h : LiftErrorLocal.KudlaFamilyStatement 𝒪 H C2h A2 CR CRd C1 C2 C3 CA CD Fm CH) : LiftErrorFamilyInClassOfChainIntegrality Fm 𝒪 H C2h A2 CR CRd C1 C2 C3 CA CD CH :=

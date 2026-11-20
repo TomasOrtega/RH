@@ -7,29 +7,25 @@ open MeasureTheory
 namespace PositivityTheory.AdelicQuotientData.SeparatedThetaSum
 
 /- English proof (translation)
-Use `letI : MeasurableSpace X := borel X`. Use `haveI : BorelSpace X := ⟨rfl⟩`. Break down `subsingleton_or_nontrivial X with hX | hX` into its components or cases. Use `⟨0, le_rfl, fun ρ hρ P h1 _ => ?_⟩` and prove the remaining obligations. Establish `hP : P = ∅` using `Finset.eq_empty_of_forall_notMem fun p hp => by`.
+Equip the data with the indicated structure. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1 p hp` as an intermediate fact. Rewrite `this` using `[Subsingleton.elim p 0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hP]`. Use `set D := Module.finrank ℝ X with hD`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set N := D + 1 with hN`. Set `μ : Measure X` to `Measure.addHaar`. Use `set f : X → ℝ := fun x => ((1 + ‖x‖) ^ N)⁻¹ with hf`. Establish `hf0 : ∀ x, 0 ≤ f x` using `fun x => by simp only [hf]; positivity`. Establish `hfi : Integrable f μ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `integrable_one_add_norm (μ := μ) (r := (N : ℝ)) (by rw [hN]; push_cast; exact lt_add_one _)` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast]`. Use `set c := μ.real (Metric.ball (0 : X) 1) with hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : 0 < c` using `ENNReal.toReal_pos (ne_of_gt (Metric.measure_ball_pos μ 0 one_pos)) measure_ball_lt_top.ne`. Use `set I := ∫ x, f x ∂μ with hI`. Establish `hI0 : 0 ≤ I` using `integral_nonneg hf0`. Use `⟨(3 / 2) ^ N * I * 2 ^ D / c, by positivity, fun ρ hρ P h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hball : ∀ p : X, μ.real (Metric.ball p (ρ / 2)) = (ρ / 2) ^ D * c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p`. Simplify using `only [Measure.real, Measure.addHaar_ball μ p (by positivity : 0 ≤ ρ / 2), hc']`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`. Establish `hloc : ∀ p ∈ P, f p * ((ρ / 2) ^ D * c) ≤ (3 / 2) ^ N * ∫ x in Metric.ball p (ρ / 2), f x ∂μ`. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← hball p, mul_comm, ← smul_eq_mul, ← setIntegral_const, ← integral_const_mul]`. Use `setIntegral_mono_on (integrableOn_const (measure_ball_lt_top.ne)) (hfi.integrableOn.const_mul _) measurableSet_ball fun x hx => ?_` and prove the remaining obligations. Establish `hx' : ‖x‖ ≤ ‖p‖ + ρ / 2`. Use `norm_le_norm_add_norm_sub' x p` as an intermediate fact. Rewrite `hx` using `[Metric.mem_ball, dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp'` using `h1 p hp`. Establish `hle : 1 + ‖x‖ ≤ 3 / 2 * (1 + ‖p‖)` using `by linarith`. Simplify using `only [hf]`. Establish `e : ((1 + ‖p‖) ^ N)⁻¹ = (3 / 2) ^ N * ((3 / 2 * (1 + ‖p‖)) ^ N)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (by positivity), one_mul]`. Rewrite using `[e]`. Use `gcongr`. Establish `hdisj : Set.Pairwise (P : Set X) (Function.onFun Disjoint fun p => Metric.ball p (ρ / 2))`. Introduce `p hp q hq hpq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `Metric.ball_disjoint_ball (by rw [dist_eq_norm]; linarith [h2 p hp q hq hpq])`. Establish `hsum : ∑ p ∈ P, ∫ x in Metric.ball p (ρ / 2), f x ∂μ ≤ I`. Rewrite using `[← integral_biUnion_finset P (fun p _ => measurableSet_ball) hdisj (fun p _ => hfi.integrableOn)]`. Conclude with `setIntegral_le_integral hfi (Filter.Eventually.of_forall hf0)`. Establish `hpos : 0 < (ρ / 2) ^ D * c` using `by positivity`.
-
-Establish `key : (∑ p ∈ P, f p) * ((ρ / 2) ^ D * c) ≤ (3 / 2) ^ N * I`. Rewrite using `[Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ∑ p ∈ P, f p ≤ (3 / 2) ^ N * I / ((ρ / 2) ^ D * c)` using `(le_div_iff₀ hpos).2 key`. Use `h3.trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_assoc, ← mul_pow, div_mul_cancel₀ ρ two_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_sum (X : Type) [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ X] :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ ρ : ℝ, 0 < ρ → ∀ P : Finset X, (∀ p ∈ P, ρ ≤ ‖p‖) →

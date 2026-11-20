@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
 
 /- English proof (translation)
-Unfold `decoOf`. Rewrite using `[dif_pos (decorated_lattice_exists hc n ST SG x hx)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rlc_decoOf_val {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx : x ∈ UAd hc n) :
     (decoOf ST SG x).1 = decoRaw ST SG x := by
@@ -30,7 +30,7 @@ theorem rlc_smul_val (a : UF E n × H) (d : DecoSet E n ST SG) :
     (a • d).1 = d.1.act a.1.1 (a.2 : GLG E n SG) := rfl
 
 /- English proof (translation)
-Establish `hk : (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∈ J0 hc n ST` using `unipotentLevel_le_mirabolicLevel hc n ST SG H k.2`. Establish `hm : Formalism.UG.bc (iA F E) (γ : GL (Fin n) E) * (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ ∈ UAd hc n` using `(rawSm hc n ST γ ⟨k.1, hk⟩ x).2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rlc_decoOf_val hc n ST SG hm, rlc_smul_val, rlc_decoOf_val hc n ST SG x.2]`. Conclude with `decoRaw_rawSm hc ST SG γ ⟨k.1, hk⟩ x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlc_decoOf_sm (γ : URat hc n) (k : levU hc n ST SG H) (x : UAd hc n) :
     decoOf ST SG (Formalism.UG.bc (iA F E) (γ : GL (Fin n) E) * (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *
@@ -69,15 +69,13 @@ theorem adToCls_mk (x : UAd hc n) :
     adToCls hc n ST SG H (Quotient.mk'' x) = decoCls n ST SG H (decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) := rfl
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `(ratHom_bijective hc n).2 a.1`. Use `set y' : UAd hc n := ratIn hc n γ * y with hy'`. Establish `h1 : decoOf ST SG (y' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = ((ratHom hc n γ, 1) : UF E n × H) • decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Use `rlc_decoOf_sm hc n ST SG H γ 1 y` as an intermediate fact. Rewrite `this` using `[map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `congr 1`. Simplify using `[hy', ratIn_val]`. Establish `h2 : decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = ((1, a.2) : UF E n × H) • decoOf ST SG (y' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Rewrite using `[h, h1, smul_smul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Prod.mk_mul_mk, one_mul, mul_one, hγ]`. Establish `h3 : decoRaw ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = (decoRaw ST SG (y' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).act 1 (a.2 : GLG E n SG)`. Use `congrArg Subtype.val h2` as an intermediate fact. Rewrite `this` using `[rlc_decoOf_val hc n ST SG x.2, rlc_smul_val, rlc_decoOf_val hc n ST SG y'.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨hJ, hr⟩` from `mem_congruence_of_action hc ST SG x.2 y'.2 (a.2 : GLG E n SG) h3`. Establish `hkU : (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ * (y' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∈ levU hc n ST SG H` using `(mem_levU hc n ST SG H).2 ⟨hJ, by rw [hr]; exact a.2.2⟩`. Use `⟨γ, ⟨_, hkU⟩, hγ, Subtype.ext hr, ?_⟩` and prove the remaining obligations. Use `show _ = _ * _ * ((x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ * (y' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)))⁻¹`.
-
-Rewrite using `[hy', Subgroup.coe_mul, ratIn_val]`. Use `group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlc_rel_of_orbit {x y : UAd hc n} (a : UF E n × H)
     (h : decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) =
@@ -113,7 +111,7 @@ theorem rlc_rel_of_orbit {x y : UAd hc n} (a : UF E n × H)
   group
 
 /- English proof (translation)
-Use `Quotient.sound' (DoubleCoset.rel_iff.2 ⟨(Formalism.L2.DIV.ratEl γ).1, (Formalism.L2.DIV.ratEl γ).2, ⟨(k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹, levU_le_UAd hc n ST SG H (Subgroup.inv_mem _ k.2)⟩, Subgroup.mem_subgroupOf.2 (Subgroup.inv_mem _ k.2), Subtype.ext e⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem rlc_mk_eq {x y : UAd hc n} (γ : URat hc n) (k : levU hc n ST SG H)
     (e : (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = Formalism.UG.bc (iA F E) (γ : GL (Fin n) E) *
@@ -124,9 +122,9 @@ theorem rlc_mk_eq {x y : UAd hc n} (γ : URat hc n) (k : levU hc n ST SG H)
     Subgroup.mem_subgroupOf.2 (Subgroup.inv_mem _ k.2), Subtype.ext e⟩)
 
 /- English proof (translation)
-Introduce `c c'`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h x`. Proceed by induction on `c' using Quotient.inductionOn' with`. Consider the case `h y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Introduce `h`. Rewrite `h` using `[adToCls_mk, adToCls_mk]`. Take `⟨a, ha⟩` from `MulAction.orbitRel_apply.1 (Quotient.exact h)`. Take `⟨γ, k, -, -, e⟩` from `rlc_rel_of_orbit hc n ST SG H a ha.symm`. Conclude with `(rlc_mk_eq hc n ST SG H γ k e).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adToCls_injective : Function.Injective (adToCls hc n ST SG H) := by
   intro c c'
@@ -141,9 +139,9 @@ theorem adToCls_injective : Function.Injective (adToCls hc n ST SG H) := by
     exact (rlc_mk_eq hc n ST SG H γ k e).symm
 
 /- English proof (translation)
-Establish `hex : ∃ x : UAd hc n, decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d`. Take `⟨q, hq⟩` from `hS d`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x => exact ⟨x, by rw [← decoPt_mk hc n ST SG x]; exact hq⟩`. Unfold `ptOf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decoOf_ptOf (hS : DecoPtSurj hc n ST SG) (d : DecoSet E n ST SG) :
     decoOf ST SG (ptOf hc n ST SG d : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d := by
@@ -156,7 +154,7 @@ theorem decoOf_ptOf (hS : DecoPtSurj hc n ST SG) (d : DecoSet E n ST SG) :
   exact hex.choose_spec
 
 /- English proof (translation)
-Unfold `adClsOf`. Rewrite using `[adToCls_mk, decoOf_ptOf hc n ST SG hS]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adToCls_adClsOf (hS : DecoPtSurj hc n ST SG) (d : DecoSet E n ST SG) :
     adToCls hc n ST SG H (adClsOf hc n ST SG H d) = decoCls n ST SG H d := by
@@ -164,7 +162,7 @@ theorem adToCls_adClsOf (hS : DecoPtSurj hc n ST SG) (d : DecoSet E n ST SG) :
   rw [adToCls_mk, decoOf_ptOf hc n ST SG hS]
 
 /- English proof (translation)
-Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h d => exact ⟨adClsOf hc n ST SG H d, adToCls_adClsOf hc n ST SG H hS d⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 -/
 theorem adToCls_surjective (hS : DecoPtSurj hc n ST SG) : Function.Surjective (adToCls hc n ST SG H) := by
   intro c
@@ -172,15 +170,15 @@ theorem adToCls_surjective (hS : DecoPtSurj hc n ST SG) : Function.Surjective (a
   | h d => exact ⟨adClsOf hc n ST SG H d, adToCls_adClsOf hc n ST SG H hS d⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨adToCls_injective hc n ST SG H, adToCls_surjective hc n ST SG H hS⟩`.
+Supply the required witnesses or components.
 -/
 theorem adToCls_bijective (hS : DecoPtSurj hc n ST SG) : Function.Bijective (adToCls hc n ST SG H) :=
   ⟨adToCls_injective hc n ST SG H, adToCls_surjective hc n ST SG H hS⟩
 
 /- English proof (translation)
-Establish `hinv : ∀ c, adToCls hc n ST SG H (adClsOf hc n ST SG H (s c)) = c` using `fun c => by`. Rewrite using `[adToCls_adClsOf hc n ST SG H hS, hs]`. Prove the components needed by the constructor for the conclusion. Introduce `c c' h`. Establish `h' : adClsOf hc n ST SG H (s c) = adClsOf hc n ST SG H (s c')` using `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hinv c, ← hinv c', h']`. Introduce `q`. Use `⟨adToCls hc n ST SG H q, ?_⟩` and prove the remaining obligations. Conclude with `adToCls_injective hc n ST SG H (hinv _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levU_y_bij (hS : DecoPtSurj hc n ST SG) (s : DecoCl n ST SG H → DecoSet E n ST SG)
     (hs : ∀ c, decoCls n ST SG H (s c) = c) :
@@ -200,16 +198,16 @@ theorem levU_y_bij (hS : DecoPtSurj hc n ST SG) (s : DecoCl n ST SG H → DecoSe
     exact adToCls_injective hc n ST SG H (hinv _)
 
 /- English proof (translation)
-The claim follows from `(ratEquiv hc n).apply_symm_apply a.1.1`.
+A detailed English derivation is pending.
 -/
 theorem rlc_ratHom_stabRat (d : DecoSet E n ST SG) (a : MulAction.stabilizer (UF E n × H) d) :
     ratHom hc n (stabRat hc n ST SG H d a) = a.1.1 :=
   (ratEquiv hc n).apply_symm_apply a.1.1
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1 : a.1.1 = b.1.1`. Rewrite using `[← rlc_ratHom_stabRat hc n ST SG H d a, ← rlc_ratHom_stabRat hc n ST SG H d b, hab]`. Establish `ha : ((a.1.1, (a.1.2 : GLG E n SG)) : UF E n × GLG E n SG) • d = d` using `a.2`. Establish `hb : ((b.1.1, (b.1.2 : GLG E n SG)) : UF E n × GLG E n SG) • d = d` using `b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `DecoSet.stab_fst_injective d ha hb h1`. Conclude with `Subtype.ext (Prod.ext h1 (Subtype.ext (congrArg Prod.snd h2)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stabRat_injective (d : DecoSet E n ST SG) : Function.Injective (stabRat hc n ST SG H d) := by
   intro a b hab
@@ -221,15 +219,13 @@ theorem stabRat_injective (d : DecoSet E n ST SG) : Function.Injective (stabRat 
   exact Subtype.ext (Prod.ext h1 (Subtype.ext (congrArg Prod.snd h2)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Establish `ha : decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = a.1 • decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Rewrite using `[hy]`. Conclude with `a.2.symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ', k, h1, -, e⟩` from `rlc_rel_of_orbit hc n ST SG H a.1 ha`. Establish `hγ : γ' = stabRat hc n ST SG H d a` using `(ratHom_bijective hc n).1 (h1.trans (rlc_ratHom_stabRat hc n ST SG H d a).symm)`. Use `⟨k.1, k.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hγ]`. Use `show (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * k.1 * (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e' : Formalism.UG.bc (iA F E) (γ' : GL (Fin n) E) = (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * k.1 * (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹`. Conclude with `eq_mul_inv_of_mul_eq (eq_mul_inv_iff_mul_eq.1 e).symm`. Conclude with `e'.symm`. Introduce and unpack `⟨k, hk, e⟩`. Establish `e' : (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * k * (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ = Formalism.UG.bc (iA F E) (γ : GL (Fin n) E)` using `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `rlc_decoOf_sm hc n ST SG H γ ⟨k, hk⟩ y`. Establish `h2 : Formalism.UG.bc (iA F E) (γ : GL (Fin n) E) * (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * k⁻¹ = (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Rewrite using `[← e']`. Use `group`. Establish `h3 : ((ratHom hc n γ, levRed hc n ST SG H ⟨k, hk⟩) : UF E n × H) • d = d`.
-
-Establish `h1' : decoOf ST SG (Formalism.UG.bc (iA F E) (γ : GL (Fin n) E) * (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * k⁻¹) = ((ratHom hc n γ, levRed hc n ST SG H ⟨k, hk⟩) : UF E n × H) • decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))` using `h1`. Rewrite `h1'` using `[h2, hy]`. Conclude with `h1'.symm`. Use `⟨⟨_, h3⟩, ?_⟩` and prove the remaining obligations. Conclude with `(ratHom_bijective hc n).1 (rlc_ratHom_stabRat hc n ST SG H d ⟨_, h3⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stabRat_range (d : DecoSet E n ST SG) (y : UAd hc n)
     (hy : decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d) (γ : URat hc n) :
@@ -268,16 +264,16 @@ theorem stabRat_range (d : DecoSet E n ST SG) (y : UAd hc n)
     exact (ratHom_bijective hc n).1 (rlc_ratHom_stabRat hc n ST SG H d ⟨_, h3⟩)
 
 /- English proof (translation)
-Simplify using `[ratHom, Formalism.UG.glEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rlc_ratHom_apply (γ : URat hc n) (x : Fin n → E) :
     ((ratHom hc n γ : UF E n) : Sp E n ≃ₗ[E] Sp E n) x = ((γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x := by
   simp [ratHom, Formalism.UG.glEquiv]
 
 /- English proof (translation)
-Establish `h0 : a.1 • d = d` using `MulAction.mem_stabilizer_iff.1 a.2`. Establish `h1 : (a.1 • d).1.L = d.1.L` using `by rw [h0]`. Rewrite `h1` using `[rlc_smul_val, Deco.L_act]`. Rewrite using `[← rlc_ratHom_apply, rlc_ratHom_stabRat]`. Use `conv_rhs => rw [← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_gmap, LinearEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem stabRat_lat (d : DecoSet E n ST SG) (a : MulAction.stabilizer (UF E n × H) d) (x : Fin n → E) :
     x ∈ d.1.L ↔ (((stabRat hc n ST SG H d a : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x) ∈ d.1.L := by
@@ -306,9 +302,9 @@ Both sides reduce to the same expression.
 theorem base_Lsh : (Deco.base E n ST SG).Lsh = baseSh E n ST := rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Use `show (∀ x ∈ L, Formalism.UG.hform (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) x y ∈ (algebraMap (𝓞 E) E).range) ↔ y ∈ Formalism.HermitianLatticesTheory.dual (hStd E n) L`. Rewrite using `[mem_dual]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_one, hform_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rlc_dualSet (L : Submodule (𝓞 E) (Fin n → E)) :
     Formalism.BasicNotions.dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L =
@@ -322,7 +318,7 @@ theorem rlc_dualSet (L : Submodule (𝓞 E) (Fin n → E)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[rlc_dualSet, Submodule.span_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rlc_span_dualSet (L : Submodule (𝓞 E) (Fin n → E)) :
     Submodule.span (𝓞 E) (Formalism.BasicNotions.dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) L) =
@@ -330,28 +326,28 @@ theorem rlc_span_dualSet (L : Submodule (𝓞 E) (Fin n → E)) :
   rw [rlc_dualSet, Submodule.span_eq]
 
 /- English proof (translation)
-The claim follows from `rlc_span_dualSet hc n _`.
+A detailed English derivation is pending.
 -/
 theorem baseDual_eq : baseDual hc n ST = baseSh E n ST := rlc_span_dualSet hc n _
 
 /- English proof (translation)
-The claim follows from `(Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).L_lattice`.
+A detailed English derivation is pending.
 -/
 theorem baseLb_lattice : Submodule.IsLattice E (baseLb E n ST) :=
   (Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).L_lattice
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.2 (baseLb_lattice n ST).fg`.
+A detailed English derivation is pending.
 -/
 theorem baseLb_fin : Module.Finite (𝓞 E) (baseLb E n ST) := Module.Finite.iff_fg.2 (baseLb_lattice n ST).fg
 
 /- English proof (translation)
-The claim follows from `(baseLb_lattice n ST).span_eq_top`.
+A detailed English derivation is pending.
 -/
 theorem baseLb_span : Submodule.span E (baseLb E n ST : Set (Fin n → E)) = ⊤ := (baseLb_lattice n ST).span_eq_top
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[rlc_dualSet]`. Conclude with `(Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).L_le_Lsh hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseLb_int : ∀ x ∈ baseLb E n ST,
     x ∈ Formalism.BasicNotions.dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) (baseLb E n ST) := by
@@ -360,9 +356,9 @@ theorem baseLb_int : ∀ x ∈ baseLb E n ST,
   exact (Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).L_le_Lsh hx
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[rlc_dualSet]`. Establish `h` using `(Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).smul_Lsh_mem_L (pi := pi) (fun P => hpi P.1 P.2) hy`. Rewrite `h` using `[hT]`. Establish `e : ((T : 𝓞 E) • y : Fin n → E) = (T : E) • y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul E (T : 𝓞 E) y, map_natCast]`. Rewrite using `[← e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseLb_dual {T : ℕ} {pi : 𝓞 E} (hpi : ∀ P ∈ ST, pi ∈ P.asIdeal) (hT : pi * cO E pi = (T : 𝓞 E)) :
     ∀ y ∈ Formalism.BasicNotions.dualSet (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E) (baseLb E n ST),
@@ -383,7 +379,7 @@ theorem rlc_relIndex (L M : Submodule (𝓞 E) (Fin n → E)) :
     L.toAddSubgroup.relIndex M.toAddSubgroup = Nat.card (M ⧸ L.submoduleOf M) := rfl
 
 /- English proof (translation)
-Rewrite using `[rlc_span_dualSet, rlc_relIndex]`. Conclude with `(Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)).card_Lsh_quot_L hcj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseLb_index (hcj : ∀ P Q : ST, Q.1 ≠ conjPrime₂ P.1) :
     (baseLb E n ST).toAddSubgroup.relIndex
@@ -400,13 +396,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E))
 
 /- English proof (translation)
-Establish `hok` using `Deco.base_ok (E := E) (n := n) (ST := ST) (SG := ∅)`. Establish `hf : ∀ (r : Fin n → 𝓞 E), (∀ i, algebraMap (𝓞 E) E (r i) = x i) → ∀ P : ST, (Deco.base E n ST (∅ : Finset (Pl E))).f P x = Ideal.Quotient.mk P.1.asIdeal (r (lastIdx n))`. Introduce `r hr P`. Establish `hx : x ∈ stdLat E n` using `(mem_stdLat x).2 fun i => ⟨r i, hr i⟩`. Use `show (if x ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (stdLat E n) then redP P.1 (x (lastIdx n)) else 0) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (le_locP _ _ hx), ← hr, reduction_coe]`. Unfold `baseLb`. Rewrite using `[hok.mem_L]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h0⟩ choose r hr using (mem_stdLat x).1 hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, hr, fun P hP => ?_⟩` and prove the remaining obligations. Use `h0 ⟨P, hP⟩` as an intermediate fact. Rewrite `this` using `[hf r hr]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Introduce and unpack `⟨r, hr, h0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(mem_stdLat x).2 fun i => ⟨r i, hr i⟩, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[hf r hr]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (h0 P.1 P.2)`.
+A detailed English derivation is pending.
 -/
 theorem rlc_mem_baseLb (x : Fin n → E) :
     x ∈ baseLb E n ST ↔ ∃ r : Fin n → 𝓞 E, (∀ i, algebraMap (𝓞 E) E (r i) = x i) ∧ ∀ P ∈ ST, r (lastIdx n) ∈ P.asIdeal := by
@@ -435,12 +431,12 @@ theorem rlc_mem_baseLb (x : Fin n → E) :
 def rlc_I (ST : Finset (Pl E)) : Ideal (𝓞 E) := ST.inf fun P => P.asIdeal
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_finsetInf`.
+A detailed English derivation is pending.
 -/
 theorem rlc_mem_I (a : 𝓞 E) : a ∈ rlc_I ST ↔ ∀ P ∈ ST, a ∈ P.asIdeal := Submodule.mem_finsetInf
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ∏ P ∈ ST, P.asIdeal ≤ rlc_I ST` using `Ideal.prod_le_inf`. Rewrite `h1` using `[h, le_bot_iff]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun P _ => P.ne_bot) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlc_I_ne_bot : rlc_I ST ≠ ⊥ := by
   intro h
@@ -449,7 +445,7 @@ theorem rlc_I_ne_bot : rlc_I ST ≠ ⊥ := by
   exact (Finset.prod_ne_zero_iff.2 fun P _ => P.ne_bot) h1
 
 /- English proof (translation)
-Unfold `Formalism.L2.DIV.resS`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 h, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rlc_resS_of_mem {P : Pl E} {t : Formalism.L2.Herm.intAf F E} (h : t ∈ Formalism.L2.DIV.idS F P.asIdeal) :
     Formalism.L2.DIV.resS F P t = 0 := by
@@ -457,11 +453,11 @@ theorem rlc_resS_of_mem {P : Pl E} {t : Formalism.L2.Herm.intAf F E} (h : t ∈ 
   rw [RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 h, map_zero]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Formalism.L2.DIV.cmpS_surj (F := F) (rlc_I ST) (rlc_I_ne_bot ST) (Ideal.Quotient.mk _ t)`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `hq' : Ideal.Quotient.mk (Formalism.L2.DIV.idS F (rlc_I ST)) (Formalism.L2.DIV.oToS F E a) = Ideal.Quotient.mk _ t` using `hq`. Establish `hd : Formalism.L2.DIV.oToS F E a - t ∈ Formalism.L2.DIV.idS F (rlc_I ST)` using `Ideal.Quotient.eq.1 hq'`. Establish `ha : a ∈ rlc_I ST`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rlc_mem_I]`. Introduce `P hP`. Establish `hle : Formalism.L2.DIV.idS F (rlc_I ST) ≤ Formalism.L2.DIV.idS F P.asIdeal` using `Ideal.map_mono (Finset.inf_le (f := fun P : Pl E => P.asIdeal) hP)`. Establish `h1` using `rlc_resS_of_mem (hle hd)`. Rewrite `h1` using `[map_sub, h P hP, sub_zero, Formalism.L2.DIV.resS_oToS]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1`. Establish `h2 : Formalism.L2.DIV.oToS F E a ∈ Formalism.L2.DIV.idS F (rlc_I ST)` using `Ideal.mem_map_of_mem _ ha`. Establish `: t = Formalism.L2.DIV.oToS F E a - (Formalism.L2.DIV.oToS F E a - t)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ h2 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlc_mem_idS_I {t : Formalism.L2.Herm.intAf F E} (h : ∀ P ∈ ST, Formalism.L2.DIV.resS F P t = 0) :
     t ∈ Formalism.L2.DIV.idS F (rlc_I ST) := by
@@ -483,13 +479,11 @@ theorem rlc_mem_idS_I {t : Formalism.L2.Herm.intAf F E} (h : ∀ P ∈ ST, Forma
   exact Ideal.sub_mem _ h2 hd
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨Pi.single i (algebraMap (𝓞 E) E a), ?_, ?_⟩` and prove the remaining obligations. Use `(rlc_mem_baseLb n ST _).2 ⟨Pi.single i a, fun j => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hj]`. Distinguish the cases in `hj : lastIdx n = i`. Rewrite using `[hj, Pi.single_eq_same]`. Conclude with `h hj.symm P hP`. Rewrite using `[Pi.single_eq_of_ne hj]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Ideal.zero_mem _`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
-
-Simplify using `[Pi.single_eq_of_ne hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rlc_single_mem (i : Fin n) (a : 𝓞 E) (h : i = lastIdx n → ∀ P ∈ ST, a ∈ P.asIdeal) :
     (Pi.single i (iA F E (algebraMap (𝓞 E) E a)) : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈
@@ -509,9 +503,9 @@ theorem rlc_single_mem (i : Fin n) (a : 𝓞 E) (h : i = lastIdx n → ∀ P ∈
     · simp [Pi.single_eq_of_ne hj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj show _ = (c : E ⊗[F] Formalism.L2.Herm.Af F) * _` using the available equality. Simplify using the standard rewrite rules. Use `show _ = (c : E ⊗[F] Formalism.L2.Herm.Af F) * _`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hj]`.
+A detailed English derivation is pending.
 -/
 theorem rlc_single_smul (i : Fin n) (c : Formalism.L2.Herm.intAf F E) (t : E ⊗[F] Formalism.L2.Herm.Af F) :
     (Pi.single i ((c : E ⊗[F] Formalism.L2.Herm.Af F) * t) : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) = c • Pi.single i t := by
@@ -525,27 +519,23 @@ theorem rlc_single_smul (i : Fin n) (c : Formalism.L2.Herm.intAf F E) (t : E ⊗
     simp [Pi.single_eq_of_ne hj]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `Submodule.span_induction (p := fun z _ => ∃ h : ∀ i, z i ∈ Formalism.L2.Herm.intAf F E, ∀ P ∈ ST, Formalism.L2.DIV.resS F P ⟨z (lastIdx n), h _⟩ = 0) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨r, hr, h0⟩` from `(rlc_mem_baseLb n ST x).1 hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => by show iA F E (x i) ∈ _; rw [← hr]; exact iA_mem _, fun P hP => ?_⟩` and prove the remaining obligations. Establish `e : (⟨iA F E (x (lastIdx n)), by rw [← hr]; exact iA_mem _⟩ : Formalism.L2.Herm.intAf F E) = Formalism.L2.DIV.oToS F E (r (lastIdx n))` using `Subtype.ext (show iA F E (x (lastIdx n)) = iA F E (algebraMap (𝓞 E) E (r (lastIdx n))) by rw [hr])`. Use `show Formalism.L2.DIV.resS F P ⟨iA F E (x (lastIdx n)), _⟩ = 0`. Rewrite using `[e, Formalism.L2.DIV.resS_oToS]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (h0 P hP)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun _ => Subring.zero_mem _, fun P _ => map_zero (Formalism.L2.DIV.resS F P)⟩`. Introduce and unpack `a b _ _ ⟨ha, ha0⟩ ⟨hb, hb0⟩`. Use `⟨fun i => Subring.add_mem _ (ha i) (hb i), fun P hP => ?_⟩` and prove the remaining obligations. Establish `e : (⟨(a + b) (lastIdx n), Subring.add_mem _ (ha _) (hb _)⟩ : Formalism.L2.Herm.intAf F E) = ⟨a (lastIdx n), ha _⟩ + ⟨b (lastIdx n), hb _⟩` using `rfl`. Rewrite using `[e, map_add, ha0 P hP, hb0 P hP, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `c a _ ⟨ha, ha0⟩`. Use `⟨fun i => Subring.mul_mem _ c.2 (ha i), fun P hP => ?_⟩` and prove the remaining obligations. Establish `e : (⟨(c • a) (lastIdx n), Subring.mul_mem _ c.2 (ha _)⟩ : Formalism.L2.Herm.intAf F E) = c * ⟨a (lastIdx n), ha _⟩` using `rfl`. Rewrite using `[e, map_mul, ha0 P hP, mul_zero]`. Introduce and unpack `⟨h, h0⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsum : z = ∑ i, Pi.single i (z i)`. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `i _ hij`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Pi.single_eq_of_ne hij.symm _`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ _) hj`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hi : i = lastIdx n`. Substitute `hi` using the available equality. Establish `ht` using `rlc_mem_idS_I ST h0`. Establish `hmap : Formalism.L2.DIV.idS F (rlc_I ST) = Ideal.span (Formalism.L2.DIV.oToS F E '' (rlc_I ST : Set (𝓞 E)))` using `rfl`. Rewrite `ht` using `[hmap]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-It suffices to establish `key : ∀ t ∈ Ideal.span (Formalism.L2.DIV.oToS F E '' (rlc_I ST : Set (𝓞 E))), (Pi.single (lastIdx n) (t : E ⊗[F] Formalism.L2.Herm.Af F) : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ Formalism.UG.latS (F` using `F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (baseLb E n ST) from key _ ht`. Introduce `t ht'`. Use `Submodule.span_induction (p := fun (t : Formalism.L2.Herm.intAf F E) _ => (Pi.single (lastIdx n) (t : E ⊗[F] Formalism.L2.Herm.Af F) : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (baseLb E n ST)) ?_ ?_ …` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `rlc_single_mem n ST _ a fun _ => (rlc_mem_I ST a).1 ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (Pi.single (lastIdx n) (0 : E ⊗[F] Formalism.L2.Herm.Af F) : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ _`. Rewrite using `[Pi.single_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb show (Pi.single (lastIdx n) ((a : E ⊗[F] Formalism.L2.Herm.Af F) + b) : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ _`. Rewrite using `[Pi.single_add]`.
-
-Conclude with `Submodule.add_mem _ ha hb`. Introduce `c a _ ha show (Pi.single (lastIdx n) ((c : E ⊗[F] Formalism.L2.Herm.Af F) * a) : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ _`. Rewrite using `[rlc_single_smul]`. Conclude with `Submodule.smul_mem _ c ha`. Establish `h1` using `rlc_single_mem (F := F) n ST i 1 fun h' => absurd h' hi`.
-
-Establish `h2` using `Submodule.smul_mem _ (⟨z i, h i⟩ : Formalism.L2.Herm.intAf F E) h1`. Rewrite `h2` using `[← rlc_single_smul, map_one, map_one, mul_one]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlc_mem_hat_baseLb (z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
     z ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (baseLb E n ST) ↔
@@ -612,13 +602,13 @@ theorem rlc_mem_hat_baseLb (z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
       exact h2
 
 /- English proof (translation)
-Establish `hok` using `decorated_lattice_exists hc n ST SG x hx`. Use extensionality with `v`. Rewrite using `[hok.mem_L]`. Establish `hg : v ∈ Formalism.UG.CS.globLat x (baseLb E n ST) ↔ pullV x v ∈ Formalism.UG.latS (F` using `F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (baseLb E n ST) := Iff.rfl`. Rewrite using `[hg, rlc_mem_hat_baseLb]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : ∀ (h : ∀ i, pullV x v i ∈ Formalism.L2.Herm.intAf F E) (P : ST), (decoRaw ST SG x).f P v = Formalism.L2.DIV.resS F P.1 ⟨pullV x v (lastIdx n), h _⟩`. Introduce `h P`. Establish `hv : v ∈ Formalism.UG.CS.globLat x (stdLat E n)` using `(mem_globLat x v).2 h`. Use `show (if v ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.UG.CS.globLat x (stdLat E n)) then redA P.1 (pullV x v (lastIdx n)) else 0) = _`. Rewrite using `[if_pos (le_locP _ _ hv), redA_int]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, h0⟩`. Establish `h` using `(mem_globLat x v).1 hN`. Conclude with `⟨h, fun P hP => by rw [← hf h ⟨P, hP⟩]; exact h0 ⟨P, hP⟩⟩`. Introduce and unpack `⟨h, h0⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨(mem_globLat x v).2 h, fun P => by rw [hf h P]; exact h0 P.1 P.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem decoRaw_L {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx : x ∈ UAd hc n) :
     (decoRaw ST SG x).L = Formalism.UG.CS.globLat x (baseLb E n ST) := by
@@ -644,7 +634,7 @@ theorem decoRaw_L {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx : x ∈
     exact ⟨(mem_globLat x v).2 h, fun P => by rw [hf h P]; exact h0 P.1 P.2⟩
 
 /- English proof (translation)
-Rewrite using `[decoRaw_L hc n ST SG hx]`. Introduce `z`. Conclude with `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin n) (baseLb E n ST) (baseLb_fin n ST) (baseLb_span n ST) x z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem decoRaw_carries {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx : x ∈ UAd hc n) :
     Formalism.L2.Herm.Carries x (baseLb E n ST) (decoRaw ST SG x).L := by
@@ -654,7 +644,7 @@ theorem decoRaw_carries {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx :
     (baseLb_span n ST) x z
 
 /- English proof (translation)
-Establish `h` using `decoRaw_carries hc n ST SG (ptOf hc n ST SG d).2 x`. Rewrite `h` using `[← rlc_decoOf_val hc n ST SG (ptOf hc n ST SG d).2, decoOf_ptOf hc n ST SG hS]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levU_y_lat (hS : DecoPtSurj hc n ST SG) (d : DecoSet E n ST SG) (x : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
     x ∈ Formalism.UG.latS (F := F) (FiniteAdeleRing (𝓞 F) F)
@@ -675,9 +665,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
 
 /- English proof (translation)
-Establish `h` using `DecoSet.finite_orbits (ST := ST) (SG := SG) (n := n) hE ((⊤ : Subgroup (UF E n)).prod H) (fun g => ⟨Subgroup.mem_top _, Subgroup.one_mem _⟩)`. Establish `hrel : ∀ d d' : DecoSet E n ST SG, (MulAction.orbitRel ((⊤ : Subgroup (UF E n)).prod H) (DecoSet E n ST SG)) d d' → (MulAction.orbitRel (UF E n × H) (DecoSet E n ST SG)) d d'`. Introduce `d d' hdd`. Take `⟨a, ha⟩` from `MulAction.orbitRel_apply.1 hdd`. Conclude with `MulAction.orbitRel_apply.2 ⟨(a.1.1, ⟨a.1.2, a.2.2⟩), ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finite.of_surjective (Quotient.map' (s₁ := MulAction.orbitRel ((⊤ : Subgroup (UF E n)).prod H) (DecoSet E n ST SG)) (s₂ := MulAction.orbitRel (UF E n × H) (DecoSet E n ST SG)) id hrel) ?_` and prove the remaining obligations. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h d => exact ⟨Quotient.mk'' d, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem decoCl_finite (hE : PosStar E) : Finite (DecoCl n ST SG H) := by
   have h := DecoSet.finite_orbits (ST := ST) (SG := SG) (n := n) hE ((⊤ : Subgroup (UF E n)).prod H)
@@ -695,14 +685,14 @@ theorem decoCl_finite (hE : PosStar E) : Finite (DecoCl n ST SG H) := by
   | h d => exact ⟨Quotient.mk'' d, rfl⟩
 
 /- English proof (translation)
-The claim follows from `have := decoCl_finite n ST SG H hE Finite.of_injective _ (adToCls_injective hc n ST SG H)`.
+A detailed English derivation is pending.
 -/
 theorem adCl_finite (hE : PosStar E) : Finite (AdCl hc n ST SG H) :=
   have := decoCl_finite n ST SG H hE
   Finite.of_injective _ (adToCls_injective hc n ST SG H)
 
 /- English proof (translation)
-Rewrite using `[adToCls_mk]`. Conclude with `congrArg _ (decoOf_one ST SG)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adToCls_one : adToCls hc n ST SG H (Quotient.mk'' (1 : UAd hc n)) = decoCls n ST SG H (DecoSet.base E n ST SG) := by
   rw [adToCls_mk]
@@ -715,7 +705,7 @@ section AtPrimes
 variable {X : Fields} {Pr : Primes X} (hc : Formalism.BasicNotions.CMData X.F X.E) (n : ℕ) [NeZero n]
 
 /- English proof (translation)
-The claim follows from `baseLb_dual hc n (Pr.vT u) (fun _ hP => decoFin_mem_of_mem_divs hP) (hPr.piT_norm u)`.
+A detailed English derivation is pending.
 -/
 theorem colBase_dual (hPr : Pr.Ok) (u : Pr.Word) :
     ∀ y ∈ Formalism.BasicNotions.dualSet (hc.sig : X.E →+* X.E) (1 : Matrix (Fin n) (Fin n) X.E) (baseLb X.E n (Pr.vT u)),
@@ -723,7 +713,7 @@ theorem colBase_dual (hPr : Pr.Ok) (u : Pr.Word) :
   baseLb_dual hc n (Pr.vT u) (fun _ hP => decoFin_mem_of_mem_divs hP) (hPr.piT_norm u)
 
 /- English proof (translation)
-Rewrite using `[rlc_span_dualSet, rlc_relIndex]`. Conclude with `card_Lsh_quot_L_of_ok hPr u (DecoSet.base X.E n (Pr.vT u) Pr.vGs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colBase_index (hPr : Pr.Ok) (u : Pr.Word) :
     (baseLb X.E n (Pr.vT u)).toAddSubgroup.relIndex

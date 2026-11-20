@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Crv.SplitProj
 open GlobalTheory.CompanionTheory.Ar.Crv
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul c a => exact ⟨1, fun _ => c, fun _ => a, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨m, c, a, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n, d, b, rfl⟩` from `hy`. Use `⟨m + n, Fin.append c d, Fin.append a b, ?_⟩` and prove the remaining obligations. Simplify using `[Fin.sum_univ_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_sum_tmul {O k : Type} [CommRing O] [Field k] (z : TensorProduct ℤ k O) :
     ∃ (m : ℕ) (c : Fin m → k) (a : Fin m → O), z = ∑ j, c j ⊗ₜ[ℤ] a j := by
@@ -32,7 +32,7 @@ def splitMap {O k S : Type} [CommRing O] [Field k] (χ : S → (O →+* k)) :
     (Pi.algHom ℤ (fun _ : S => k) fun s => (χ s).toIntAlgHom) (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[splitMap, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem splitMap_tmul {O k S : Type} [CommRing O] [Field k] (χ : S → (O →+* k)) (c : k) (a : O)
     (t : S) : splitMap χ (c ⊗ₜ[ℤ] a) t = c * χ t a := by
@@ -46,7 +46,7 @@ def actMap {K V O k : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O]
       Algebra.commute_algebraMap_left _ _)
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actMap_tmul {K V O k : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O] [Field k]
     [Algebra k K] (ρ : O →+* Module.End K V) (c : k) (a : O) :
@@ -55,7 +55,7 @@ theorem actMap_tmul {K V O k : Type} [Field K] [AddCommGroup V] [Module K V] [Co
   exact Algebra.TensorProduct.lift_tmul _ _ _ _ _
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hL.1 i`. Use `(hb _).2 fun q => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Conclude with `mul_le_one' hc ((hb _).1 hx q)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_isBun {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V]
     [Module K V] {L : C.I → AddSubgroup V} (hL : IsBun C L) (i : C.I) {c : K}
@@ -66,31 +66,29 @@ theorem smul_mem_of_isBun {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCom
   exact mul_le_one' hc ((hb _).1 hx q)
 
 /- English proof (translation)
-Introduce `K _ C V _ _ _ L O k S _ _ _ _ _ χ hχ hk ρ hL hρ`. Establish `hinj : Function.Injective (splitMap χ)` using `hχ.1`. Establish `hsurj : Function.Surjective (splitMap χ)` using `hχ.2`. Use `choose z hz using fun s : S => hsurj (Pi.single s 1)`. Use `choose m c a hza using fun s : S => exists_sum_tmul (z s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ s, actMap (k` using `k) ρ (z s) = ∑ j, algebraMap k K (c s j) • ρ (a s j) := by`. Introduce `s`. Rewrite using `[hza s, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => actMap_tmul ρ _ _`. Establish `hcoef : ∀ s t, ∑ j, c s j * χ t (a s j) = if t = s then 1 else 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s t`. Establish `h` using `congrFun (hz s) t`. Rewrite `h` using `[hza s, map_sum, Finset.sum_apply]`. Simplify using `only [splitMap_tmul] at h`. Rewrite using `[h, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmul : ∀ s b, ρ b * actMap (k` using `k) ρ (z s) = algebraMap k K (χ s b) • actMap (k := k) ρ (z s) := by`. Introduce `s b`. Establish `h : ((1 : k) ⊗ₜ[ℤ] b) * z s = (χ s b ⊗ₜ[ℤ] (1 : O)) * z s`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hz s]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Pi.mul_apply, splitMap_tmul, Pi.single_apply]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hts]`. Establish `h'` using `congrArg (actMap (k := k) ρ) h`. Rewrite `h'` using `[map_mul, map_mul, actMap_tmul, actMap_tmul]`. Simplify using `using h'`. Establish `hsum : ∑ s, actMap (k` using `k) ρ (z s) = 1 := by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∑ s, z s = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Simplify using `only [hz]`. Use function extensionality and compare the values at `t`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[← map_sum, h, map_one]`. Use `⟨fun s => actMap (k := k) ρ (z s), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s i x hx show actMap (k := k) ρ (z s) x ∈ L i`. Rewrite using `[he s, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sum_mem fun j _ => smul_mem_of_isBun C hL i (hk i _) (hρ _ i x hx)`. Introduce `s x`. Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `b`. Establish `h` using `congrArg (fun f : Module.End K V => f x) (hmul s b)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h` using `[sub_eq_zero]`. Introduce `s x hx`. Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker] at hx`. Establish `hx' : ∀ b, ρ b x = algebraMap k K (χ s b) • x` using `fun b => by`. Simplify `hx b` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show actMap (k := k) ρ (z s) x = x`. Rewrite using `[he s, LinearMap.sum_apply]`. Establish `: ∀ j, (algebraMap k K (c s j) • ρ (a s j)) x = algebraMap k K (c s j * χ s (a s j)) • x` using `fun j => by`. Rewrite using `[LinearMap.smul_apply, hx', smul_smul, map_mul]`. Simplify using `only [this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← Finset.sum_smul, ← map_sum, hcoef s s]`. Simplify using the standard rewrite rules. Introduce `x`. Establish `h` using `congrArg (fun f : Module.End K V => f x) hsum`. Simplify `h` using `[LinearMap.sum_apply]`.
-
-Introduce `s`. Conclude with `⟨m s, c s, a s, hcoef s, he s⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem split_proj : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (L : C.I → AddSubgroup V) (O k S : Type) [CommRing O] [Field k]

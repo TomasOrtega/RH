@@ -8,11 +8,11 @@ namespace Formalism.MainNotions.N.Ln34.MLB
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct
 
 /- English proof (translation)
-Distinguish the cases in `hi : 0 ≤ i`. Establish `hsum : ∀ k ∈ Finset.range (i.toNat + 1), PowerSeries.coeff k f • serC g d (i - k) = (PowerSeries.coeff k f * PowerSeries.coeff (i.toNat - k) g) • d`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_range]`. Establish `h1 : 0 ≤ i - (k : ℤ)` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (i - (k : ℤ)).toNat = i.toNat - k` using `by omega`. Simplify using `only [serC, if_pos h1, h2, mul_smul]`. Rewrite using `[Finset.sum_congr rfl hsum, ← Finset.sum_smul]`. Simplify using `only [serC, if_pos hi]`. Rewrite using `[PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : i.toNat = 0` using `by omega`. Simplify using `only [serC, if_neg hi, h0, zero_add, Finset.range_one, Finset.sum_singleton, CharP.cast_eq_zero, sub_zero, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem serC_mul {LL V' : Type} [Field LL] [AddCommGroup V'] [Module LL V'] (f g : PowerSeries LL)
     (d : V') (i : ℤ) :
@@ -45,7 +45,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Simplify using `only [expS, map_mul, serC_mul, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expS_mul (c : ZMod n) (ζ : LL) (f : LetA O n) {m : ℕ} (a : Fin m → LetA O n)
     (y : Fin m → W.DD T) (i : ℤ) :
@@ -58,7 +58,7 @@ def GoodF (τ : K →ₐ[Qp] LL) (h' : ℕ) (F : ℤ → T.V ⊗[Qp] BdR) : Prop
   ∀ i : ℤ, F i ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ (h' - i)
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[expS_mul]`. Use `Submodule.sum_mem _ (fun k hk => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `u3upPf_FilC_anti (PD := PD) T τ (by omega) (hg (i - k))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodF_mul (c : ZMod n) (ζ : LL) (τ : K →ₐ[Qp] LL) (h' : ℕ) (f : LetA O n) {m : ℕ}
     (a : Fin m → LetA O n) (y : Fin m → W.DD T) (hg : GoodF (PD := PD) T τ h' (expS W T c ζ a y)) :

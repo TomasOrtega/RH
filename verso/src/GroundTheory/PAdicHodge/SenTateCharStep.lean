@@ -13,9 +13,9 @@ namespace SenTateChar
 open CyclNorms GroundTheory.LocalField ValuativeRel Polynomial Module
 
 /- English proof (translation)
-Apply `mul_left_cancel₀ (X_ne_zero : (X : ℤ[X]) ≠ 0)` to reduce the goal to its premises. Establish `h1 : (X : ℤ[X]) * ∑ j ∈ Finset.range n, (X + 1) ^ j = (X + 1) ^ n - 1`. Use `geom_sum_mul ((X : ℤ[X]) + 1) n` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Rewrite using `[mul_comm, this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (X + 1 : ℤ[X]) ^ n - 1 = ∑ i ∈ Finset.range n, (X : ℤ[X]) ^ (i + 1) * (n.choose (i + 1) : ℤ[X])`. Rewrite using `[add_pow, Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -59,11 +59,11 @@ omit [FiniteDimensional ℚ_[p] K] [FiniteDimensional K M'] in
 include hτp hτ1 in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Assume the negation of the conclusion as `hdvd`. Establish `hcop : Nat.Coprime m p` using `(Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hdvd))`. Establish `hg` using `Nat.gcd_eq_gcd_ab m p`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hg` using `[hcop.gcd_eq_one, Nat.cast_one]`. Establish `: τ = (τ ^ m) ^ (Nat.gcdA m p) * (τ ^ p) ^ (Nat.gcdB m p)`. Rewrite using `[← zpow_natCast, ← zpow_natCast τ p, ← zpow_mul, ← zpow_mul, ← zpow_add, ← hg, zpow_one]`. Conclude with `hτ1 (this ▸ mul_mem (zpow_mem hm _) (zpow_mem hτp _))`. Introduce and unpack `⟨c, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul]`. Conclude with `pow_mem hτp c`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_fixingSubgroup_iff (m : ℕ) : τ ^ m ∈ M'.fixingSubgroup ↔ p ∣ m := by
   constructor
@@ -86,7 +86,7 @@ variable {M M'} {hMM'}
 omit [FiniteDimensional ℚ_[p] K] [FiniteDimensional K M'] in
 include hτM in
 /- English proof (translation)
-The claim follows from `pow_mem hτM j`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_fixingSubgroup_base (j : ℕ) : τ ^ j ∈ M.fixingSubgroup := pow_mem hτM j
 
@@ -106,13 +106,11 @@ theorem stepEmb_apply (j : ℕ) (y : IntermediateField.extendScalars hMM') :
 omit [FiniteDimensional ℚ_[p] K] [FiniteDimensional K M'] in
 include hτp hτ1 in
 /- English proof (translation)
-Establish `key : ∀ {a b : ℕ}, a ≤ b → b < p → stepEmb hMM' hτM a = stepEmb hMM' hτM b → a = b`. Introduce `a b hab hb h`. Establish `hfix : τ ^ (b - a) ∈ M'.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun φ => φ (⟨y, hy⟩ : IntermediateField.extendScalars hMM')) h`. Simplify using `only [stepEmb_apply] at h1`. Establish `e : τ ^ b = τ ^ a * τ ^ (b - a)` using `by rw [← pow_add, Nat.add_sub_cancel' hab]`. Rewrite `h1` using `[e, AlgEquiv.mul_apply]`. Conclude with `((τ ^ a).injective h1).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdvd` using `(pow_mem_fixingSubgroup_iff M' hτp hτ1 (b - a)).1 hfix`. Establish `: b - a = 0` using `Nat.eq_zero_of_dvd_of_lt hdvd (by omega)`. Use linear arithmetic over natural numbers and integers. Break down `le_total i j with hij | hji` into its components or cases. Conclude with `key hij hj h`.
-
-Conclude with `(key hji hi h.symm).symm`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem stepEmb_injective {i j : ℕ} (hi : i < p) (hj : j < p)
     (h : stepEmb hMM' hτM i = stepEmb hMM' hτM j) : i = j := by
@@ -141,15 +139,15 @@ instance isAlgClosure_padicAlgCl_over (E : IntermediateField K (PadicAlgCl p)) :
 omit [FiniteDimensional ℚ_[p] K] [FiniteDimensional K M'] in
 include hτp hgen in
 /- English proof (translation)
-Use `set φ' := φ.liftNormal (PadicAlgCl p)`. Establish `hbij : Function.Bijective φ'` using `Algebra.IsAlgebraic.algHom_bijective φ'`. Set `σ : Gal(PadicAlgCl p/K)` to `(AlgEquiv.ofBijective φ' hbij).restrictScalars K`. Establish `hσ : σ ∈ M.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Express the relevant statement in the definitionally equal form `φ' (algebraMap M (PadicAlgCl p) ⟨m, hm⟩) = m`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression. Take `⟨j, hj⟩` from `hgen σ hσ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp0 : 0 < p` using `hp.out.pos`. Use `⟨j % p, Nat.mod_lt _ hp0, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[stepEmb_apply]`. Establish `h1 : φ y = φ' (y : PadicAlgCl p)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `AlgHom.liftNormal_commutes φ (PadicAlgCl p) y` as an intermediate fact. Conclude with `this.symm`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `(τ ^ (j % p)) (y : PadicAlgCl p) = σ y`. Rewrite using `[hj y y.2]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : τ ^ j = τ ^ (j % p) * (τ ^ p) ^ (j / p)`. Rewrite using `[← pow_mul, ← pow_add, Nat.mod_add_div]`. Rewrite using `[e, AlgEquiv.mul_apply]`. Use `congr 1`. Conclude with `((IntermediateField.mem_fixingSubgroup_iff _ _).1 (pow_mem hτp _) y y.2).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem stepEmb_surjective (φ : IntermediateField.extendScalars hMM' →ₐ[M] PadicAlgCl p) :
     ∃ j < p, stepEmb hMM' hτM j = φ := by
@@ -185,7 +183,7 @@ variable {M M'} {hMM'}
 
 omit [FiniteDimensional ℚ_[p] K] in
 /- English proof (translation)
-Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises. Establish `h : 0 < Module.finrank K M'` using `Module.finrank_pos`. Rewrite `h` using `[finrank_eq_mul_finrank_extendScalars hMM']`. Conclude with `Nat.pos_of_ne_zero fun h0 => by simp [h0] at h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_extendScalars_of_le :
     FiniteDimensional M (IntermediateField.extendScalars hMM') := by
@@ -198,13 +196,13 @@ include hMM' hτM hτp hτ1 hgen in
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-Use `finiteDimensional_extendScalars_of_le (M := M) (M' := M') (hMM' := hMM')` as an intermediate fact. Use `set E := IntermediateField.extendScalars hMM'`. Set `e : Fin p → (E →ₐ[M] PadicAlgCl p)` to `fun j => stepEmb hMM' hτM j.1`. Establish `he : Function.Bijective e`. Use `⟨fun i j h => Fin.ext (stepEmb_injective hτM hτp hτ1 i.2 j.2 h), fun φ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, hφ⟩` from `stepEmb_surjective hτM hτp hgen φ`. Conclude with `⟨⟨j, hj⟩, hφ⟩`. Establish `hcard : Module.finrank M E = p`. Rewrite using `[← AlgHom.card M E (PadicAlgCl p), ← Fintype.card_of_bijective he, Fintype.card_fin]`. Use `set y' : E := ⟨y, hy⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyy : y = algebraMap E (PadicAlgCl p) y'` using `rfl`. Establish `htr` using `trace_eq_sum_embeddings (K := M) (L := E) (PadicAlgCl p) (x := y')`. Establish `hsum : ∑ σ : E →ₐ[M] PadicAlgCl p, σ y' = ∑ j ∈ Finset.range p, (τ ^ j) y`. Rewrite using `[← Fintype.sum_bijective e he (fun j => e j y') (fun σ => σ y') (fun _ => rfl), ← Fin.sum_univ_eq_sum_range (fun j => (τ ^ j) y)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp0 : (p : PadicAlgCl p) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Rewrite using `[normTrace, hyy, normTraceF_eq_trace_div M E y', hcard, map_div₀, htr, hsum, map_natCast, mul_div_cancel₀ _ hp0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem natCast_mul_normTrace_eq_sum {y : PadicAlgCl p} (hy : y ∈ M') :
     (p : PadicAlgCl p) * normTrace M y = ∑ j ∈ Finset.range p, (τ ^ j) y := by
@@ -232,13 +230,13 @@ theorem natCast_mul_normTrace_eq_sum {y : PadicAlgCl p} (hy : y ∈ M') :
 omit [FiniteDimensional ℚ_[p] K] in
 
 /- English proof (translation)
-Use `set T : Module.End K (PadicAlgCl p) := τ.toLinearMap`. Use `set D := T - 1`. Establish `hT : ∀ (j : ℕ) (z : PadicAlgCl p), (T ^ j) z = (τ ^ j) z`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `zero => intro z`. Both sides reduce to the same expression. Consider the case `succ j ih`. Introduce `z`. Rewrite using `[pow_succ, Module.End.mul_apply, pow_succ, AlgEquiv.mul_apply, ih]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `key` using `congrArg (fun P => (Polynomial.aeval D P) y) (sum_range_X_add_one_pow n)`. Simplify using `only [map_sum, map_pow, map_add, aeval_X, map_one, map_mul, map_natCast] at key`. Rewrite `key` using `[LinearMap.sum_apply, LinearMap.sum_apply]`. Simplify using `only [Module.End.mul_apply, Module.End.natCast_apply, nsmul_eq_mul] at key`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[sub_add_cancel]`. Rewrite using `[← key]`. Conclude with `Finset.sum_congr rfl fun j _ => (hT j y).symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_range_pow_apply_eq (τ : Gal(PadicAlgCl p/K)) (n : ℕ) (y : PadicAlgCl p) :
     ∑ j ∈ Finset.range n, (τ ^ j) y = ∑ i ∈ Finset.range n, (n.choose (i + 1) : PadicAlgCl p) *
@@ -264,9 +262,9 @@ theorem sum_range_pow_apply_eq (τ : Gal(PadicAlgCl p/K)) (n : ℕ) (y : PadicAl
 omit [FiniteDimensional K M'] in
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using hy`. Consider the case `succ i ih => set D : Module.End K (PadicAlgCl p) := τ.toLinearMap - 1`. Establish `e : (D ^ (i + 1)) y = τ ((D ^ i) y) - (D ^ i) y`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨sub_mem (hτM' _ ih.1) ih.1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem nrm_pow_sub_one_apply_le (τ : Gal(PadicAlgCl p/K)) (hτM' : ∀ z ∈ M', τ z ∈ M') {ρ : ℝ}
     (hρ0 : 0 ≤ ρ) (hρ : ∀ z ∈ M', nrm K (τ z - z) ≤ ρ * nrm K z) {y : PadicAlgCl p} (hy : y ∈ M') (i : ℕ) :
@@ -288,15 +286,15 @@ theorem nrm_pow_sub_one_apply_le (τ : Gal(PadicAlgCl p/K)) (hτM' : ∀ z ∈ M
 include hMM' hτM hτp hτ1 hgen in
 
 /- English proof (translation)
-Establish `hsum` using `natCast_mul_normTrace_eq_sum (hMM' := hMM') hτM hτp hτ1 hgen hy`. Rewrite `hsum` using `[sum_range_pow_apply_eq]`. Rewrite using `[mul_comm, ← nrm_mul, hsum]`. Use `set C := max (nrm K (p : PadicAlgCl p)) (ρ ^ (p - 1)) * nrm K y`. Establish `hC : 0 ≤ C` using `mul_nonneg (le_trans (nrm_nonneg _) (le_max_left _ _)) (nrm_nonneg _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `nrm_sum_le hC fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Take `⟨-, hDi⟩` from `nrm_pow_sub_one_apply_le τ hτM' hρ0 hρ hy i`. Rewrite using `[nrm_mul]`. Establish `hρi : ρ ^ i ≤ 1` using `pow_le_one₀ hρ0 hρ1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_eq_of_le (Nat.lt_succ_iff.1 (show i < p - 1 + 1 by omega)) with hlt | heq` into its components or cases. Take `⟨c, hc⟩` from `hp.out.dvd_choose_self (by omega : i + 1 ≠ 0) (by omega : i + 1 < p)`. Rewrite using `[hc, Nat.cast_mul, nrm_mul]`. Establish `hc1` using `nrm_natCast_le_one (K := K) (Ω := PadicAlgCl p) c`. Establish `hp1` using `nrm_natCast_le_one (K := K) (Ω := PadicAlgCl p) p`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, mul_one]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (nrm_nonneg _)`. Establish `hi' : i + 1 = p` using `by omega`. Rewrite using `[hi', Nat.choose_self, Nat.cast_one, nrm_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hDi` using `[heq]`. Rewrite using `[heq]`. Conclude with `hDi.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (nrm_nonneg _))`.
+A detailed English derivation is pending.
 -/
 theorem nrm_normTrace_mul_le (hτM' : ∀ z ∈ M', τ z ∈ M') {ρ : ℝ} (hρ0 : 0 ≤ ρ) (hρ1 : ρ ≤ 1)
     (hρ : ∀ z ∈ M', nrm K (τ z - z) ≤ ρ * nrm K z) {y : PadicAlgCl p} (hy : y ∈ M') :

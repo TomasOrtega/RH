@@ -7,7 +7,7 @@ open scoped Classical
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-The claim follows from `|∑' v : ι × κ, u v.1 v.2 * w v.2 - A * C| ≤ A * C * (a + c + a * c) := by have hin : ∀ k, ∑' m, u m k * w k = (∑' m, u m k) * w k := fun k => tsum_mul_right have hb : ∀ k, ‖(∑' m, u m k - A) * w k‖ ≤ A * a * w k := fun k => by rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (hw0 k)] …`.
+A detailed English derivation is pending.
 -/
 theorem tsum_prod_weight_approx {ι κ : Type} (u : ι → κ → ℝ) (w : κ → ℝ) (A a C c : ℝ) (hA : 0 ≤ A) (ha : 0 ≤ a)
     (hu0 : ∀ m k, 0 ≤ u m k) (hw0 : ∀ k, 0 ≤ w k)
@@ -54,13 +54,13 @@ theorem tsum_prod_weight_approx {ι κ : Type} (u : ι → κ → ℝ) (w : κ �
   constructor <;> nlinarith
 
 /- English proof (translation)
-Introduce `α γ l θ₁ θ₂ t hα hγ ht`. Establish `h` using `tsum_prod_weight_approx (fun (m : ℤ) (k : ℤ) => Real.exp (-((α * t) * (m + (θ₁ + l * k)) ^ 2))) (fun k : ℤ => Real.exp (-((γ * t) * (k + θ₂) ^ 2))) (Real.sqrt (Real.pi / (α * t))) ((α * t) ^ 2) (Real.sqrt (Real.pi / (γ * t))) ((γ * t) ^ 2) (Real.sqrt_nonneg _) (sq_nonneg _) (fun …`. Establish `e1 : (fun v : ℤ × ℤ => Real.exp (-(t * qForm α γ l θ₁ θ₂ v))) = fun v : ℤ × ℤ => Real.exp (-((α * t) * (v.1 + (θ₁ + l * v.2)) ^ 2)) * Real.exp (-((γ * t) * (v.2 + θ₂) ^ 2))`. Use function extensionality and compare the values at `v`. Rewrite using `[← Real.exp_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `qForm`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Real.pi / Real.sqrt (α * γ) / t = Real.sqrt (Real.pi / (α * t)) * Real.sqrt (Real.pi / (γ * t))`. Establish `hp` using `Real.pi_pos`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.sqrt_mul (by positivity)]`. Use `symm`. Rewrite using `[Real.sqrt_eq_iff_mul_self_eq (by positivity) (by positivity)]`. Establish `hs : Real.sqrt (α * γ) * Real.sqrt (α * γ) = α * γ` using `Real.mul_self_sqrt (by positivity)`. Establish `hs0 : 0 < Real.sqrt (α * γ)` using `Real.sqrt_pos.mpr (by positivity)`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_div, div_mul_div_comm, div_mul_div_comm]`. Use `congr 1`. Take the linear combination `-t ^ 2 * hs`. Rewrite using `[e1, e2]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_qForm : ∀ α γ l θ₁ θ₂ t : ℝ, 0 < α → 0 < γ → 0 < t → Summable (fun v : ℤ × ℤ => Real.exp (-(t * qForm α γ l θ₁ θ₂ v))) ∧ |∑' v : ℤ × ℤ, Real.exp (-(t * qForm α γ l θ₁ θ₂ v)) - Real.pi / Real.sqrt (α * γ) / t| ≤ Real.pi / Real.sqrt (α * γ) / t * ((α * t) ^ 2 + (γ * t) ^ 2 + (α * t) ^ 2 * (γ * t) ^ 2) := by
   intro α γ l θ₁ θ₂ t hα hγ ht

@@ -12,7 +12,7 @@ open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 open ModularForm in
 variable {ι : Type} {act : ι → SL(2, ℤ) → ι} in
 /- English proof (translation)
-Rewrite using `[← SL_slash_apply, hf i γ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma isFam_apply_smul_mul_denom_zpow {w : ℤ} {f : ι → ℍ → ℂ}
     (hf : _root_.GlobalTheory.QFam.IsFam act w f) (i : ι) (γ : SL(2, ℤ)) (τ : ℍ) :
@@ -25,7 +25,7 @@ open ModularForm in
 variable {ι : Type} {act : ι → SL(2, ℤ) → ι} in
 
 /- English proof (translation)
-Introduce `i γ`. Use function extensionality and compare the values at `τ`. Simplify using `only [SL_slash_apply]`. Rewrite using `[← isFam_apply_smul_mul_denom_zpow hf i γ τ]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.QFam.IsFam.const_mul_fun {w : ℤ} {f : ι → ℍ → ℂ} (c : ℂ)
     (hf : _root_.GlobalTheory.QFam.IsFam act w f) :
@@ -41,7 +41,7 @@ open ModularForm in
 variable {ι : Type} {act : ι → SL(2, ℤ) → ι} in
 
 /- English proof (translation)
-Introduce `i γ`. Use function extensionality and compare the values at `τ`. Simplify using `only [SL_slash_apply]`. Rewrite using `[← isFam_apply_smul_mul_denom_zpow hf i γ τ, ← isFam_apply_smul_mul_denom_zpow hg i γ τ, neg_add, zpow_add₀ (UpperHalfPlane.denom_ne_zero _ _)]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.QFam.IsFam.mul_fun {w w' : ℤ} {f g : ι → ℍ → ℂ}
     (hf : _root_.GlobalTheory.QFam.IsFam act w f) (hg : _root_.GlobalTheory.QFam.IsFam act w' g) :
@@ -58,7 +58,7 @@ open ModularForm in
 variable {ι : Type} {act : ι → SL(2, ℤ) → ι} in
 
 /- English proof (translation)
-Introduce `i γ`. Use function extensionality and compare the values at `τ`. Simplify using `only [SL_slash_apply]`. Rewrite using `[← isFam_apply_smul_mul_denom_zpow hf i γ τ, mul_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, show -((k : ℤ) * w) = -w * k by ring]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.QFam.IsFam.pow_fun {w : ℤ} {f : ι → ℍ → ℂ} (k : ℕ)
     (hf : _root_.GlobalTheory.QFam.IsFam act w f) :
@@ -74,7 +74,7 @@ open ModularForm in
 variable {ι : Type} {act : ι → SL(2, ℤ) → ι} in
 
 /- English proof (translation)
-Introduce `i γ`. Use function extensionality and compare the values at `τ`. Simplify using `only [SL_slash_apply, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k hk => isFam_apply_smul_mul_denom_zpow (hf k hk) i γ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.IsFam.sum_fun {κ : Type} (t : Finset κ) {w : ℤ}
     {f : κ → ι → ℍ → ℂ} (hf : ∀ k ∈ t, _root_.GlobalTheory.QFam.IsFam act w (f k)) :
@@ -89,19 +89,19 @@ open ModularForm in
 variable {ι : Type} {act : ι → SL(2, ℤ) → ι} in
 
 /- English proof (translation)
-Introduce `ι act`. Establish `hconst : ∀ c : ℂ, _root_.GlobalTheory.QFam.IsFam act 0 fun _ _ => c`. Introduce `c i γ`. Use function extensionality and compare the values at `τ`. Simplify using `[SL_slash_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨hconst, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w f g hf hg`. Prove the components needed by the constructor for the conclusion. Introduce `i γ`. Use function extensionality and compare the values at `τ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [SL_slash_apply]`. Rewrite using `[← isFam_apply_smul_mul_denom_zpow hf i γ τ, ← isFam_apply_smul_mul_denom_zpow hg i γ τ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i γ`. Use function extensionality and compare the values at `τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [SL_slash_apply]`. Rewrite using `[← isFam_apply_smul_mul_denom_zpow hf i γ τ, ← isFam_apply_smul_mul_denom_zpow hg i γ τ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `w c f hf`. Conclude with `hf.const_mul_fun c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w w' f g hf hg`. Conclude with `hf.mul_fun hg`. Introduce `w f k hf`. Conclude with `hf.pow_fun k`. Introduce `κ t w f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `_root_.GlobalTheory.QFam.IsFam.sum_fun t hf`. Introduce `κ t w f hf classical`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hconst 1`. Consider the case `insert a s ha ih`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul` using `(hf a (Finset.mem_insert_self a s)).mul_fun (ih fun k hk => hf k (Finset.mem_insert_of_mem hk))`. Simplify `hmul` using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Introduce `κ act' φ w f hφ hf k γ show f (φ k) ∣[w] γ = f (φ (act' k γ))`. Rewrite using `[hf (φ k) γ, hφ k γ]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QFam.isFam_algebra : ∀ (ι : Type) (act : ι → SL(2, ℤ) → ι),
     (∀ c : ℂ, _root_.GlobalTheory.QFam.IsFam act 0 fun _ _ => c) ∧

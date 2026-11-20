@@ -20,7 +20,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.comap_top, Scheme.IdealSheafData.support_top]`. Introduce `hx`. Establish `hx' : x ∈ ((⊥ : TopologicalSpace.Closeds ↥A) : Set ↥A)` using `hx`. Simplify using `at hx'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem notMem_support_comap_top {A C : Scheme.{u}} (h : A ⟶ C) (x : ↥A) :
     x ∉ ((⊤ : C.IdealSheafData).comap h).support := by
@@ -30,19 +30,19 @@ private theorem notMem_support_comap_top {A C : Scheme.{u}} (h : A ⟶ C) (x : �
   simp at hx'
 
 /- English proof (translation)
-Take `⟨r, _e, _hlt, hmono, htop, hsupp, -⟩` from `h`. Establish `hgeid : ∀ i : ℕ, i ≤ s.length → i ≤ r i`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `Nat.zero_le _`. Consider the case `succ n ih`. Introduce `hn`. Establish `h1 : r n < r (n + 1)` using `hmono n (n + 1) hn (Nat.lt_succ_self n)`. Establish `h2 : n ≤ r n` using `ih (Nat.le_of_succ_le hn)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hleid : ∀ d i : ℕ, i + d = s.length → r i + d ≤ s.length`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hii : i = s.length` using `by omega`. Substitute `hii` using the available equality. Rewrite using `[htop]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `i hi`. Establish `hi1 : (i + 1) + m = s.length` using `by omega`. Establish `h2` using `ih (i + 1) hi1`. Establish `h3 : r i < r (i + 1)` using `hmono i (i + 1) (by omega) (Nat.lt_succ_self i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hrid : ∀ i : ℕ, i ≤ s.length → r i = i`. Introduce `i hi`. Establish `h1` using `hgeid i hi`. Establish `h2` using `hleid (s.length - i) i (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `i hi hc`. Take `⟨x, hx⟩` from `(hsupp i hi).mpr ⟨i, hi, hrid i hi.le⟩`. Rewrite `hx` using `[hc]`. Conclude with `notMem_support_comap_top _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem center_ne_top_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s : SequenceOfBlowups X)
     (h : IsPullbackBlowupSequence (𝟙 X) s s) :
@@ -83,7 +83,7 @@ theorem center_ne_top_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s : Se
   exact notMem_support_comap_top _ x hx
 
 /- English proof (translation)
-The claim follows from `center_ne_top_of_isPullbackSequenceOfBlowups_id (B k Y p) (hB k Y Y p p (𝟙 Y) (Category.id_comp p))`.
+A detailed English derivation is pending.
 -/
 theorem AffineResolutionRule.center_ne_top (B : AffineResolutionRule.{u}) (hB : IsCompatibleWithOpenImmersions B)
     (k : Type u) [Field k] [CharZero k] (Y : Scheme.{u})
@@ -94,17 +94,17 @@ theorem AffineResolutionRule.center_ne_top (B : AffineResolutionRule.{u}) (hB : 
   center_ne_top_of_isPullbackSequenceOfBlowups_id (B k Y p) (hB k Y Y p p (𝟙 Y) (Category.id_comp p))
 
 /- English proof (translation)
-Introduce `hoi hfe F hF k _ _ X f _ _ _ K _ _ _ _`. Take `⟨W, c, g, hWaff, hWred, hqlft, hqqc, hcet, hcsur, hYaff, hYred, hglft, hgqc, hget, hgsur, hgstruct, hgproj⟩` from `exists_etale_surjective_affine_cover_baseChange X f K`. Use `hWaff` as an intermediate fact. Use `hWred` as an intermediate fact. Use `hqlft` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hqqc` as an intermediate fact. Use `hcet` as an intermediate fact. Use `hcsur` as an intermediate fact. Use `hYaff` as an intermediate fact. Use `hYred` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hglft` as an intermediate fact. Use `hgqc` as an intermediate fact. Use `hget` as an intermediate fact. Use `hgsur` as an intermediate fact. Establish `h0 : IsStrictPullbackBlowupSeq (baseChangeProjection f K) ((F k X f).baseChange (baseChangeProjection f K)) (F k X f)` using `isStrictPullbackSequenceOfBlowups_baseChange _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : IsStrictPullbackBlowupSeq g (((F k X f).baseChange (baseChangeProjection f K)).baseChange g) ((F k X f).baseChange (baseChangeProjection f K))` using `isStrictPullbackSequenceOfBlowups_baseChange _ _`. Establish `hcomp` using `hw.comp h0`. Rewrite `hcomp` using `[hgproj]`. Establish `htW : IsStrictPullbackBlowupSeq c (B k W (c ≫ f)) (F k X f)` using `hF k X f W (c ≫ f) c rfl AlgebraicGeometry.Surjective.surj`. Establish `htK : IsStrictPullbackBlowupSeq (baseChangeProjection (c ≫ f) K) (B K (baseChange (c ≫ f) K) (baseChangeToSpec (c ≫ f) K)) (B k W (c ≫ f))` using `hfe k W (c ≫ f) K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEqw` using `hcomp.isomorphic (htK.comp htW)`. Establish `hntop` using `AffineResolutionRule.center_ne_top B hoi K (baseChange (c ≫ f) K) (baseChangeToSpec (c ≫ f) K)`. Establish `hEq` using `(SequenceOfBlowups.Isomorphic.withoutIsoBlowups hEqw).trans (SequenceOfBlowups.withoutIsoBlowups_isomorphic_self _ hntop)`. Establish `h₂ : IsStrictPullbackBlowupSeq g (B K (baseChange (c ≫ f) K) (baseChangeToSpec (c ≫ f) K)) (F K (baseChange f K) (baseChangeToSpec f K))` using `hF K (baseChange f K) (baseChangeToSpec f K) (baseChange (c ≫ f) K) (baseChangeToSpec (c ≫ f) K) g hgstruct AlgebraicGeometry.Surjective.surj`. Establish `hdesc` using `IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic hw.withoutIsoBlowups h₂ hEq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0.isPullbackSequenceOfBlowups_withoutIsoBlowups.of_isomorphic hdesc`.
+A detailed English derivation is pending.
 -/
 theorem inducedRuleCompatibleWithFieldExtension (B : AffineResolutionRule.{u}) : InducedRuleCompatibleWithFieldExtension B := by
   intro hoi hfe F hF k _ _ X f _ _ _ K _ _ _ _

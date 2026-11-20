@@ -12,7 +12,7 @@ def lowerWedgeAlt (ε : Fin n → Bool) : LfIdx ε :=
   ⟨(lfPhysModes ε).filter fun m => (finProdFinEquiv.symm m).2 < (finProdFinEquiv.symm m).1, filter_subset _ _⟩
 
 /- English proof (translation)
-Simplify using `only [lowerWedgeAlt, lfPhysModes, Finset.mem_filter, Finset.mem_univ, true_and, Equiv.symm_apply_apply, and_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lowerWedge_iff (ε : Fin n → Bool) (x : Fin n × Fin n) :
     finProdFinEquiv x ∈ (lowerWedgeAlt ε).1 ↔ ε x.1 = true ∧ ε x.2 = false ∧ x.2 < x.1 := by
@@ -20,7 +20,7 @@ theorem mem_lowerWedge_iff (ε : Fin n → Bool) (x : Fin n × Fin n) :
     and_assoc]
 
 /- English proof (translation)
-Rewrite using `[cfa_rho_coord]`. Apply the tactic sequence `cases hc : ε c <;> simp [hc, Finset.sum_boole]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lf_rhoHol_sub_rhoN (ε : Fin n → Bool) (c : Fin n) :
     (rhoHol ε - rhoN ε) c = if ε c = true then ((univ.filter fun a => ε a = false ∧ a < c).card : ℝ)
@@ -29,15 +29,15 @@ theorem lf_rhoHol_sub_rhoN (ε : Fin n → Bool) (c : Fin n) :
   cases hc : ε c <;> simp [hc, Finset.sum_boole]
 
 /- English proof (translation)
-Establish `hw : fockWt ε (lowerWedgeAlt ε).1 c = (rhoHol ε - rhoN ε) c`. Rewrite using `[cfa_rho_coord, fockWt, Finset.sum_apply]`. Establish `hS : (lowerWedgeAlt ε).1 = univ.filter fun k => ε (finProdFinEquiv.symm k).1 = true ∧ ε (finProdFinEquiv.symm k).2 = false ∧ (finProdFinEquiv.symm k).2 < (finProdFinEquiv.symm k).1`. Use extensionality with `k`. Simplify using `only [lowerWedgeAlt, lfPhysModes, Finset.mem_filter, Finset.mem_univ, true_and, and_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hS, Finset.sum_filter, ← Equiv.sum_comp finProdFinEquiv, Fintype.sum_prod_type]`. Simplify using `only [Equiv.symm_apply_apply]`. Establish `key : ∀ i b : Fin n, (if ε i = true ∧ ε b = false ∧ b < i then modeWt ε (i, b) c else 0) = (if c = i then (if ε i = true ∧ ε b = false ∧ b < i then (1 : ℝ) else 0) else 0) - (if c = b then (if ε i = true ∧ ε b = false ∧ b < i then (1 : ℝ) else 0) else 0)`. Introduce `i b`. Distinguish the cases in `h : ε i = true ∧ ε b = false ∧ b < i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos h]`. Simplify using `only [modeWt, if_pos (And.intro h.1 h.2.1), root, Pi.sub_apply, Pi.single_apply]`. Simplify using `only [if_neg h]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun b _ => key i b]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[fockBasis_wt, hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lowerWedge_weight (ε : Fin n → Bool) (c : Fin n) :
     sgE ε cpFock cmFock c c (fockBasis n (lowerWedgeAlt ε).1) =
@@ -68,21 +68,23 @@ theorem lowerWedge_weight (ε : Fin n → Bool) (c : Fin n) :
   rw [fockBasis_wt, hw]
 
 /- English proof (translation)
-Establish `hab : a ≠ b` using `(ne_of_lt hba).symm`. Unfold `sgE`. Use `split_ifs with h1 h2`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxm : ε x = false` using `(Finset.mem_filter.1 hx).2`. Rewrite using `[Module.End.mul_apply]`. Distinguish the cases in `hbx : finProdFinEquiv (b, x) ∈ (lowerWedgeAlt ε).1`. Take `⟨σ, -, hσ, -⟩` from `lf_cm_basis_of_mem (x := (b, x)) hbx dsimp only at hσ`. Rewrite using `[hσ, map_smul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hxb : x < b` using `((mem_lowerWedge_iff ε (b, x)).1 hbx).2.2`. Establish `hmem : finProdFinEquiv (a, x) ∈ (lowerWedgeAlt ε).1.erase (finProdFinEquiv (b, x))`. Rewrite using `[Finset.mem_erase]`. Conclude with `⟨fun h => hab (congrArg Prod.fst (finProdFinEquiv.injective h)), (mem_lowerWedge_iff ε (a, x)).2 ⟨h1.1, hxm, hxb.trans hba⟩⟩`. Establish `h0` using `lf_cp_basis_of_mem (x := (a, x)) hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only at h0`. Rewrite using `[h0, smul_zero]`. Establish `h0` using `lf_cm_basis_of_not_mem (x := (b, x)) hbx dsimp only at h0`. Rewrite using `[h0, map_zero]`. Rewrite using `[LinearMap.neg_apply, LinearMap.sum_apply, neg_eq_zero]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hip : ε i = true` using `(Finset.mem_filter.1 hi).2`. Rewrite using `[Module.End.mul_apply]`. Distinguish the cases in `hia : finProdFinEquiv (i, a) ∈ (lowerWedgeAlt ε).1`. Take `⟨σ, -, hσ, -⟩` from `lf_cm_basis_of_mem (x := (i, a)) hia dsimp only at hσ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hσ, map_smul]`. Establish `hai : a < i` using `((mem_lowerWedge_iff ε (i, a)).1 hia).2.2`. Establish `hmem : finProdFinEquiv (i, b) ∈ (lowerWedgeAlt ε).1.erase (finProdFinEquiv (i, a))`. Rewrite using `[Finset.mem_erase]`. Conclude with `⟨fun h => hab (congrArg Prod.snd (finProdFinEquiv.injective h)).symm, (mem_lowerWedge_iff ε (i, b)).2 ⟨hip, h2.2, hba.trans hai⟩⟩`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `lf_cp_basis_of_mem (x := (i, b)) hmem`. Simplify using `only at h0`. Rewrite using `[h0, smul_zero]`. Establish `h0` using `lf_cm_basis_of_not_mem (x := (i, a)) hia dsimp only at h0`. Rewrite using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-It suffices to derive a contradiction. Apply the tactic sequence `cases hb : ε b <;> simp_all`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Apply the first step, then apply the next step to every resulting obligation.
+
+A detailed English derivation is pending.
 -/
 theorem lowerWedge_killed_by_lowering (ε : Fin n → Bool) {a b : Fin n} (hba : b < a) (he : ε a = ε b) :
     sgE ε cpFock cmFock a b (fockBasis n (lowerWedgeAlt ε).1) = 0 := by

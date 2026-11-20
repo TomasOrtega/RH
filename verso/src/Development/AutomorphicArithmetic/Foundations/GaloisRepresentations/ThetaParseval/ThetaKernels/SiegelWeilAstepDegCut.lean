@@ -25,7 +25,7 @@ variable (H : _root_.PositivityTheory.SiegelWeilFormula.AStep.Hyps_k) {d : _root
   (hE : _root_.PositivityTheory.SiegelWeilFormula.AStep.EData_k d (d.sec0 Φ) (s0 d.m d.n) (s0 d.m d.n) U p Ê t)
 include H hmn hΦ hv hE in
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.AStep.holA_pf_k H R hmn hΦ hv hE w j hj hlow`.
+A detailed English derivation is pending.
 -/
 theorem holA_k (w : InfinitePlace F) (j : ℕ) (hj : j ≤ p.rootMultiplicity (s0 d.m d.n)) (hlow : ∀ i < j, ∀ g, iteratedDeriv i (Ê · g) (s0 d.m d.n) = 0) :
     ∃ (pp qq : ℕ) (e : ℤ), (pp = d.m ∧ qq = 0 ∨ pp = 0 ∧ qq = d.m) ∧
@@ -33,7 +33,7 @@ theorem holA_k (w : InfinitePlace F) (j : ℕ) (hj : j ≤ p.rootMultiplicity (s
   _root_.PositivityTheory.SiegelWeilFormula.AStep.holA_pf_k H R hmn hΦ hv hE w j hj hlow
 include H in
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.AStep.holCoef_pf_k H R L w hc hT A hAc hAi pp qq e hpq hA`.
+A detailed English derivation is pending.
 -/
 theorem holCoef_k (w : InfinitePlace F) {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {T : nF σ d.Y d.b}
     {T' : nF σ L.Y L.b} (hT : L.IsSub T T') (A : d.G → ℂ) (hAc : Continuous A) (hAi : ∀ γ ∈ rat2 σ d.Y, ∀ g, A (γ * g) = A g)
@@ -44,7 +44,7 @@ theorem holCoef_k (w : InfinitePlace F) {nb lam 𝓖} (hc : CoefData (σ := σ) 
   _root_.PositivityTheory.SiegelWeilFormula.AStep.holCoef_pf_k H R L w hc hT A hAc hAi pp qq e hpq hA
 include H hE in
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.AStep.avgHol_pf_k H L hE hc T hT hu x`.
+A detailed English derivation is pending.
 -/
 theorem avgHol_k {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (T : nF σ d.Y d.b) {T' : nF σ L.Y L.b}
     (hT : L.IsSub T T') {uM ν 𝓤}
@@ -55,7 +55,7 @@ theorem avgHol_k {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam �
   _root_.PositivityTheory.SiegelWeilFormula.AStep.avgHol_pf_k H L hE hc T hT hu x
 include H hIH hΦ hv in
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.AStep.cOneVal_pf_k H R L R' hIH hΦ hv hc hc' hT x`.
+A detailed English derivation is pending.
 -/
 theorem cOneVal_k {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {nb' lam' 𝓖'}
     (hc' : CoefData (σ := σ) (Y := L.Y) L.b nb' lam' 𝓖') {T : nF σ d.Y d.b} {T' : nF σ L.Y L.b} (hT : L.IsSub T T') (x : d.G) :
@@ -64,7 +64,7 @@ theorem cOneVal_k {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 
   _root_.PositivityTheory.SiegelWeilFormula.AStep.cOneVal_pf_k H R L R' hIH hΦ hv hc hc' hT x
 include H hΦ in
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.AStep.cOneLaw_pf_k H R L hΦ w hc' T' τ y hy z x`.
+A detailed English derivation is pending.
 -/
 theorem cOneLaw_k (w : InfinitePlace F) {nb' lam' 𝓖'} (hc' : CoefData (σ := σ) (Y := L.Y) L.b nb' lam' 𝓖') (T' : nF σ L.Y L.b)
     (τ : ℝ) (y : GR d.n) (hy : IsDil (Pi.single L.i₀ 1) τ y) (z : ℂ) (x : d.G) :

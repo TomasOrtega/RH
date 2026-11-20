@@ -14,17 +14,17 @@ noncomputable section
 universe u w
 
 /- English proof (translation)
-Establish `hr : Ideal.Quotient.mk p r ∈ nonZeroDivisors (R ⧸ p)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor hr`. Set `φ : (R ⧸ p) →+* (R ⧸ q)` to `Ideal.Quotient.factor hpq`. Establish `hφ : Function.Surjective φ` using `Ideal.Quotient.factor_surjective hpq`. Set `ψ : ((R ⧸ p) ⧸ Ideal.span {Ideal.Quotient.mk p r}) →+* (R ⧸ q)` to `Ideal.Quotient.lift _ φ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Establish `: φ (Ideal.Quotient.mk p r) = 0`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk q r = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hrq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, this, mul_zero])`. Establish `hψ : Function.Surjective ψ` using `Ideal.Quotient.lift_surjective_of_surjective _ _ hφ`. Establish `h2` using `ringKrullDim_le_of_surjective ψ hψ`. Establish `h3 : ringKrullDim (R ⧸ q) + 1 ≤ ((m + 1 : ℕ) : WithBot ℕ∞)` using `(add_le_add_left h2 1).trans (h1.trans h)`. Establish `h0 : (0 : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ q)` using `ringKrullDim_nonneg_of_nontrivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ringKrullDim (R ⧸ q) = a at h3 h0`. Proceed by induction on `a with`. Consider the case `bot => simp at h0`. Consider the case `coe a`. Proceed by induction on `a with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `top`. It suffices to derive a contradiction. Establish `: ((⊤ : ℕ∞) : WithBot ℕ∞) + 1 = ((⊤ : ℕ∞) : WithBot ℕ∞)` using `rfl`. Rewrite `h3` using `[this]`. Conclude with `absurd (WithBot.coe_le_coe.mp h3) (by simp)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `coe a`. Establish `h4 : ((a + 1 : ℕ) : WithBot ℕ∞) ≤ ((m + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h3`. Establish `h5 : a + 1 ≤ m + 1` using `by exact_mod_cast h4`. Establish `h6 : a ≤ m` using `by omega`. Conclude with `h6` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dim_lt {R : Type*} [CommRing R] {p q : Ideal R} [p.IsPrime] [q.IsPrime]
     (hpq : p ≤ q) {r : R} (hrq : r ∈ q) (hrp : r ∉ p) {m : ℕ}
@@ -70,9 +70,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Rewrite using `[smul_eq_mul, mul_comm q y]`. Conclude with `Submodule.mul_mem_mul hy hq`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_le.mpr fun y hy q hq => ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨q, hq, y, hy, by rw [smul_eq_mul, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem twist_sub_eq_mul (A B : SubSystem S x Ω) (I : Chart x) :
     (A.twist B).sub I = A.sub I * B.sub I := by
@@ -85,9 +85,9 @@ private theorem twist_sub_eq_mul (A B : SubSystem S x Ω) (I : Chart x) :
     exact Submodule.subset_span ⟨q, hq, y, hy, by rw [smul_eq_mul, mul_comm]⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ha`. Establish `hJ` using `F.mono I J h _ hay`. Establish `hinv : ((↑u⁻¹ : chartRing S x J) : Ω) * (a : Ω) = 1`. Use `congrArg Subtype.val (Units.inv_mul u)` as an intermediate fact. Rewrite `this` using `[hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hy : y = (↑u⁻¹ : chartRing S x J) • ((a : Ω) • y)`. Rewrite using `[chartRing_smul_def, smul_eq_mul, ← mul_assoc, hinv, one_mul]`. Rewrite using `[hy]`. Conclude with `Submodule.smul_mem _ _ hJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_unit {F : SubSystem S x Ω} {I J : Chart x} (h : I.1 ⊆ J.1)
     (a : chartRing S x I) (ha : IsUnit (chartIncl h a)) {y : Ω} (hay : (a : Ω) • y ∈ F.sub I) :
@@ -104,15 +104,15 @@ private theorem mem_of_unit {F : SubSystem S x Ω} {I J : Chart x} (h : I.1 ⊆ 
   exact Submodule.smul_mem _ _ hJ
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun y _ => ∃ a : chartRing S x I, IsUnit (chartIncl h a) ∧ (a : Ω) • y ∈ (A.toSubSystem.twist B.toSubSystem).sub I) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, z, hz, rfl⟩`. Take `⟨a₁, h₁, hq₁⟩` from `(B.mem_iff I J h q).mp hq`. Take `⟨a₂, h₂, hz₂⟩` from `(A.mem_iff I J h z).mp hz`. Use `⟨a₁ * a₂, by rw [map_mul]; exact h₁.mul h₂, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨_, hq₁, _, hz₂, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Subalgebra.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨1, by simp, by rw [smul_zero]; exact Submodule.zero_mem _⟩`. Introduce and unpack `y₁ y₂ _ _ ⟨a₁, h₁, hy₁⟩ ⟨a₂, h₂, hy₂⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨a₁ * a₂, by rw [map_mul]; exact h₁.mul h₂, ?_⟩` and prove the remaining obligations. Establish `e : ((a₁ * a₂ : chartRing S x I) : Ω) • (y₁ + y₂) = a₂ • ((a₁ : Ω) • y₁) + a₁ • ((a₂ : Ω) • y₂)`. Simplify using `only [chartRing_smul_def, smul_eq_mul, Subalgebra.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Submodule.smul_mem _ _ hy₁) (Submodule.smul_mem _ _ hy₂)`. Introduce and unpack `b z _ ⟨a₂, h₂, hz⟩`. Take `⟨a₁, h₁, hb⟩` from `exists_isUnit_mul_mem h b`. Use `⟨a₁ * a₂, by rw [map_mul]; exact h₁.mul h₂, ?_⟩` and prove the remaining obligations. Establish `e : ((a₁ * a₂ : chartRing S x I) : Ω) • (b • z) = (⟨_, hb⟩ : chartRing S x I) • ((a₂ : Ω) • z)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [chartRing_smul_def, smul_eq_mul, Subalgebra.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hz`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tens_mem (A B : LineBundle S x) (I J : Chart x) (h : I.1 ⊆ J.1) (y : Ω)
     (hy : y ∈ (A.toSubSystem.twist B.toSubSystem).sub J) :
@@ -164,7 +164,7 @@ private def tens (A B : LineBundle S x) : LineBundle S x :=
       rw [hA, hB, one_mul] }
 
 /- English proof (translation)
-Proceed by induction on `l generalizing Q₀ with`. Consider the case `nil => exact ⟨Q₀, rfl⟩`. Consider the case `cons a l ih => exact ih (tens Q₀ (L a))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem foldl_line {n : ℕ} (L : Fin n → LineBundle S x) (l : List (Fin n))
     (Q₀ : LineBundle S x) : ∃ Q : LineBundle S x, Q.toSubSystem =
@@ -174,7 +174,7 @@ private theorem foldl_line {n : ℕ} (L : Fin n → LineBundle S x) (l : List (F
   | cons a l ih => exact ih (tens Q₀ (L a))
 
 /- English proof (translation)
-The claim follows from `foldl_line L _ (twistBundle S x 0)`.
+A detailed English derivation is pending.
 -/
 private theorem tensorSub_line {n : ℕ} (L : Fin n → LineBundle S x) (T : Finset (Fin n)) :
     ∃ Q : LineBundle S x, Q.toSubSystem = tensorSub (fun i => (L i).toSubSystem) T :=
@@ -188,11 +188,11 @@ variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Proceed by induction on `h using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨j, hj, rfl⟩` from `ha`. Break down `Finset.mem_insert.mp (by exact_mod_cast hj) with rfl | hj'` into its components or cases. Conclude with `⟨1, 1, one_mem _, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨X j, 0, X_mem_monos hj', by simp⟩`. Consider the case `one => exact ⟨1, 0, one_mem _, by simp⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨a', r, ha', rfl⟩` from `ha`. Take `⟨b', r', hb', rfl⟩` from `hb`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a' * b', r + r', mul_mem ha' hb', by ring⟩`.
+Supply the required witnesses or components.
 -/
 private theorem monos_insert_factor (I : Finset (Fin (N + 1))) (i : Fin (N + 1)) {τ : Poly k N}
     (h : τ ∈ monos (S := k) (insert i I)) :
@@ -210,51 +210,47 @@ private theorem monos_insert_factor (I : Finset (Fin (N + 1))) (i : Fin (N + 1))
     exact ⟨a' * b', r + r', mul_mem ha' hb', by ring⟩
 
 /- English proof (translation)
-Take `⟨I₀, hI₀⟩` from `hnz`. Take `⟨i, hi⟩` from `I₀.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I₀.2.2 hi)`. Set `C : Chart x` to `singleChart hxi`. Establish `hCI : C.1 ⊆ I₀.1` using `Finset.singleton_subset_iff.mpr hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsC : s ∉ (Lc.twist (idealSys x pp)).sub C` using `fun h => hI₀ (SubSystem.mono _ C I₀ hCI s h)`. Establish `hsD : s ∈ Lc.sub C` using `(Submodule.mem_iInf _).mp hs C`. Take `⟨D', hD'⟩` from `Lc.invertible C`. Take `⟨e, he, hse⟩ : ∃ e ∈ D', s * e ∉ idealMod pp C` from `by by_contra! hall`. Apply `hsC` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : ∀ z ∈ Lc.sub C * D', s * z ∈ (Lc.twist (idealSys x pp)).sub C`. Introduce `z hz`. Use `Submodule.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `δ hδ e he`. Use `Submodule.subset_span ⟨s * e, hall e he, δ, hδ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b ha hb`. Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `key 1 (by rw [hD']; exact Submodule.one_le.mp le_rfl)` as an intermediate fact. Simplify using `using this`. Establish `ha1 : s * e ∈ (1 : Submodule (chartRing k x C) Ω)` using `hD' ▸ Submodule.mul_mem_mul hsD he`. Take `⟨r₀, hr₀⟩` from `Submodule.mem_one.mp ha1`. Take `⟨g, t, m, ht, hg, htm, hrv⟩` from `r₀.2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr₀' : (r₀ : Ω) = s * e` using `hr₀`. Establish `ht' : t ∈ Submonoid.closure {(X i : Poly k N)}`. Establish `: ((fun j => (X j : Poly k N)) '' (((C.1 : Finset (Fin (N + 1))) : Set (Fin (N + 1))))) = {X i}` using `by simp [C, singleChart]`. Rewrite using `[← this]`. Conclude with `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m', rfl⟩` from `Submonoid.mem_closure_singleton.mp ht'`. Establish `hmm : m = m'` using `htm.inj_right (isHomogeneous_X_pow i m') (by`. Rewrite using `[X_pow_eq_monomial, Ne, monomial_eq_zero]`. Conclude with `one_ne_zero)`. Substitute `hmm` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hgv : aeval x g = s * e * x i ^ m`. Rewrite using `[← hr₀', hrv, map_pow, aeval_X]`. Clear the denominators using the available nonvanishing facts. Establish `hchart : ∀ I : Chart x, ∃ n₀ : ℕ, ∀ n ≥ n₀, ∀ δ ∈ Lc.sub I, x i ^ n * e * δ ∈ twistMod k x (n : ℤ) I`. Introduce `I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K : Chart x` to `⟨insert i I.1, Finset.insert_nonempty _ _, Finset.insert_subset ((mem_support x).mpr hxi) I.2.2⟩`. Establish `hIK : I.1 ⊆ K.1` using `Finset.subset_insert _ _`. Establish `hCK : C.1 ⊆ K.1` using `Finset.singleton_subset_iff.mpr (Finset.mem_insert_self _ _)`. Establish `one : ∀ δ ∈ Lc.sub I, ∃ r : ℕ, ∀ n ≥ r, x i ^ n * e * δ ∈ twistMod k x (n : ℤ) I`. Introduce `δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδK` using `Lc.mono I K hIK δ hδ`. Take `⟨u, ⟨v, hv⟩, huδ⟩` from `(Lc.mem_iff C K hCK δ).mp hδK`. Establish `h1 : ((u : Ω) • δ) * e ∈ (1 : Submodule (chartRing k x C) Ω)` using `hD' ▸ Submodule.mul_mem_mul huδ he`. Take `⟨r', hr'⟩` from `Submodule.mem_one.mp h1`. Establish `hr'' : (r' : Ω) = (u : Ω) * δ * e` using `hr'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `y : chartRing k x K` to `↑v⁻¹ * chartIncl hCK r'`. Establish `hinv : ((↑v⁻¹ : chartRing k x K) : Ω) * (u : Ω) = 1`. Use `congrArg Subtype.val (Units.inv_mul v)` as an intermediate fact. Rewrite `this` using `[hv]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hy : (y : Ω) = e * δ`. Express the relevant statement in the definitionally equal form `((↑v⁻¹ : chartRing k x K) : Ω) * (r' : Ω) = e * δ`. Rewrite using `[hr'']`. Take the linear combination `(δ * e) * hinv`. Take `⟨b, τ, ε, hτ, hb, hτε, hyv⟩` from `y.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ', r, hτ', rfl⟩` from `monos_insert_factor I.1 i hτ`. Take `⟨e', he'⟩` from `monos_isHomogeneous hτ'`. Establish `hτ0 : aeval x τ' ≠ 0` using `eval_ne_zero_of_mem_monos I hτ'`. Establish `hne : τ' * X i ^ r ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eval_ne_zero_of_mem_monos K hτ` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this rfl`. Establish `hεq : ε = e' + r` using `hτε.inj_right (he'.mul (isHomogeneous_X_pow i r)) hne`. Use `⟨r, fun n hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hval : x i ^ n * e * δ = aeval x (X i ^ (n - r) * b) / aeval x τ'`. Establish `hn' : x i ^ n = x i ^ (n - r) * x i ^ r`. Rewrite using `[← pow_add, Nat.sub_add_cancel hn]`. Rewrite using `[mul_assoc, ← hy, hyv, map_mul, map_mul, map_pow, map_pow, aeval_X, hn']`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hval]`. Use `Submodule.subset_span ⟨X i ^ (n - r) * b, τ', e', n - r + ε, hτ', (isHomogeneous_X_pow i (n - r)).mul hb, he', ?_, rfl⟩` and prove the remaining obligations. Move the coercions through the operations in `[hεq, Nat.cast_sub hn]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨T, hT⟩` from `Lc.fg I`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTm : ∀ δ ∈ T, δ ∈ Lc.sub I` using `fun δ h => hT ▸ Submodule.subset_span h`. Use `choose! r hr using fun δ (h : δ ∈ T) => one δ (hTm δ h)`. Use `⟨T.sup r, fun n hn δ hδ => ?_⟩` and prove the remaining obligations. Rewrite `hδ` using `[← hT]`. Use `Submodule.span_induction (p := fun δ _ => x i ^ n * e * δ ∈ twistMod k x (n : ℤ) I) ?_ ?_ ?_ ?_ hδ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Conclude with `hr z hz n ((Finset.le_sup hz).trans hn)`. Rewrite using `[mul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`. Introduce `a z _ hz`. Use `Submodule.smul_mem _ a hz` as an intermediate fact. Rewrite `this`, the goal using `[chartRing_smul_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : x i ^ n * e * ((a : Ω) * z) = (a : Ω) * (x i ^ n * e * z)` using `by ring`. Rewrite using `[e2]`. Conclude with `this`. Use `choose n₀ hn₀ using hchart`. Take `⟨n, hnm, hn⟩ : ∃ n, m ≤ n ∧ ∀ I, n₀ I ≤ n` from `⟨Finset.univ.sup n₀ + m, by omega, fun I => (Finset.le_sup (Finset.mem_univ I)).trans (Nat.le_add_right _ _)⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hfh : (g * X i ^ (n - m)).IsHomogeneous n`. Use `hg.mul (isHomogeneous_X_pow (R := k) i (n - m))` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hnm]`. Then use the resulting hypothesis. Establish `hfv : aeval x (g * X i ^ (n - m)) = s * e * x i ^ n`. Rewrite using `[map_mul, hgv, map_pow, aeval_X, mul_assoc, ← pow_add, Nat.add_sub_cancel' hnm]`.
-
-Use `⟨g * X i ^ (n - m), Ideal.subset_span ⟨n, hfh, fun I δ hδ => ⟨x i ^ n * e * δ, hn₀ I n (hn I) δ hδ, ?_⟩⟩, fun hf => hse ?_⟩` and prove the remaining obligations. Rewrite using `[hfv]`. Expand and normalize the polynomial expressions, which then agree. Use `Submodule.subset_span ⟨g * X i ^ (n - m), X i ^ n, n, hf, pow_mem (X_mem_monos (Finset.mem_singleton_self i)) n, hfh, isHomogeneous_X_pow i n, ?_⟩` and prove the remaining obligations. Rewrite using `[hfv, map_pow, aeval_X]`.
-
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private theorem exists_form (Lc : LineBundle k x) (s : Ω) (pp : Ideal (Poly k N))
     (hs : s ∈ Lc.secs) (hnz : ∃ I, s ∉ (Lc.twist (idealSys x pp)).sub I) :
@@ -384,9 +380,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Rewrite using `[List.finRange_succ_last, List.filter_append, List.filter_map]`. Establish `h1 : List.filter (fun i => decide (i ∈ T.map Fin.castSuccEmb)) [Fin.last n] = []`. Simplify using the standard rewrite rules. Rewrite using `[h1, List.append_nil]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem filter_map_cast {n : ℕ} (T : Finset (Fin n)) :
     (List.finRange (n + 1)).filter (· ∈ T.map Fin.castSuccEmb) =
@@ -400,9 +396,9 @@ private theorem filter_map_cast {n : ℕ} (T : Finset (Fin n)) :
   simp
 
 /- English proof (translation)
-Rewrite using `[List.finRange_succ_last, List.filter_append, List.filter_map]`. Establish `h1 : List.filter (fun i => decide (i ∈ insert (Fin.last n) (T.map Fin.castSuccEmb))) [Fin.last n] = [Fin.last n]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Fin.castSucc_ne_last]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem filter_insert_cast {n : ℕ} (T : Finset (Fin n)) :
     (List.finRange (n + 1)).filter (· ∈ insert (Fin.last n) (T.map Fin.castSuccEmb)) =
@@ -417,7 +413,7 @@ private theorem filter_insert_cast {n : ℕ} (T : Finset (Fin n)) :
   simp [Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Unfold `tensorSub`. Rewrite using `[filter_map_cast, List.foldl_map]`. Simplify using `only [Fin.snoc_castSucc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tensorSub_map {n : ℕ} (L : Fin n → SubSystem S x Ω) (M : SubSystem S x Ω)
     (T : Finset (Fin n)) :
@@ -428,7 +424,7 @@ private theorem tensorSub_map {n : ℕ} (L : Fin n → SubSystem S x Ω) (M : Su
   simp only [Fin.snoc_castSucc]
 
 /- English proof (translation)
-Unfold `tensorSub`. Rewrite using `[filter_insert_cast, List.foldl_append, List.foldl_map]`. Simplify using `only [Fin.snoc_castSucc, List.foldl_cons, List.foldl_nil, Fin.snoc_last]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tensorSub_insert {n : ℕ} (L : Fin n → SubSystem S x Ω) (M : SubSystem S x Ω)
     (T : Finset (Fin n)) :
@@ -439,11 +435,9 @@ private theorem tensorSub_insert {n : ℕ} (L : Fin n → SubSystem S x Ω) (M :
   simp only [Fin.snoc_castSucc, List.foldl_cons, List.foldl_nil, Fin.snoc_last]
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_bij (fun T _ => T.map Fin.castSuccEmb) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `T _`. Conclude with `Finset.mem_powerset.mpr (Finset.map_subset_map.mpr (Finset.subset_univ _))`. Introduce `a _ b _ h`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.map_injective _ h`. Introduce `t ht`. Take `⟨u, -, rfl⟩` from `Finset.subset_map_iff.mp (Finset.mem_powerset.mp ht)`. Conclude with `⟨u, Finset.mem_univ _, rfl⟩`. Introduce `_ _`.
-
-Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem sum_powerset_map {n : ℕ} (f : Finset (Fin (n + 1)) → ℤ) :
     ∑ t ∈ ((Finset.univ : Finset (Fin n)).map Fin.castSuccEmb).powerset, f t =
@@ -461,11 +455,11 @@ private theorem sum_powerset_map {n : ℕ} (f : Finset (Fin (n + 1)) → ℤ) :
     rfl
 
 /- English proof (translation)
-Unfold `interSum`. Establish `huniv : (Finset.univ : Finset (Fin (n + 1))) = insert (Fin.last n) ((Finset.univ : Finset (Fin n)).map Fin.castSuccEmb)`. Use extensionality with `i`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) i <;> simp`. Establish `hnot : Fin.last n ∉ (Finset.univ : Finset (Fin n)).map Fin.castSuccEmb`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `[Fin.castSucc_ne_last]`. Rewrite using `[← Finset.powerset_univ, huniv, Finset.sum_powerset_insert hnot, sum_powerset_map, sum_powerset_map, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Establish `hnT : Fin.last n ∉ T.map Fin.castSuccEmb` using `by simp [Fin.castSucc_ne_last]`. Establish `hc : T.card ≤ n` using `by simpa using T.card_le_univ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_insert_of_notMem hnT, Finset.card_map, tensorSub_map, tensorSub_insert, show n + 1 - T.card = (n - T.card) + 1 by omega, show n + 1 - (T.card + 1) = n - T.card by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem interSum_snoc (pp : Ideal (Poly S N)) {n : ℕ} (L : Fin n → SubSystem S x Ω)
     (M : SubSystem S x Ω) (c : ℕ) :
@@ -498,9 +492,9 @@ section Final
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ}
 
 /- English proof (translation)
-Use `letI : GradedAlgebra (homogeneousSubmodule (Fin (N + 1)) k) := gradedAlgebra`. Establish `hh : (Ideal.span Gs).IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) k)` using `Ideal.homogeneous_span _ _ fun f hf => by`. Take `⟨c, hc⟩` from `h f hf`. Conclude with `⟨c, (mem_homogeneousSubmodule c f).mpr hc⟩`. Introduce `p hp d`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hh d hp` as an intermediate fact. Establish `e : ((DirectSum.decompose (homogeneousSubmodule (Fin (N + 1)) k) p d : homogeneousSubmodule (Fin (N + 1)) k d) : Poly k N) = homogeneousComponent d p` using `decomposition.decompose'_apply p d`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem span_homog (Gs : Set (Poly k N)) (h : ∀ f ∈ Gs, ∃ c : ℕ, f.IsHomogeneous c) :
     ∀ p ∈ Ideal.span Gs, ∀ d : ℕ, homogeneousComponent d p ∈ Ideal.span Gs := by
@@ -518,7 +512,7 @@ private theorem span_homog (Gs : Set (Poly k N)) (h : ∀ f ∈ Gs, ∃ c : ℕ,
   rwa [e] at this
 
 /- English proof (translation)
-Introduce `p hp d`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hp`. Rewrite using `[map_add]`. Conclude with `add_mem (Ideal.mem_sup_left (hA a ha d)) (Ideal.mem_sup_right (hB b hb d))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sup_homog {A B : Ideal (Poly k N)}
     (hA : ∀ p ∈ A, ∀ d : ℕ, homogeneousComponent d p ∈ A)
@@ -531,7 +525,7 @@ private theorem sup_homog {A B : Ideal (Poly k N)}
 
 open Classical in
 /- English proof (translation)
-The claim follows from `h.1.1.1 ((cutMult J qq).toNat : ℤ) * interNum qq Ls else 0 := by have hsupp : Function.support (fun qq : Ideal (Poly k N) => if h : qq ∈ J.minimalPrimes ∧ IsSubvar x qq n then haveI : qq.IsPrime := h.1.1.1 ((cutMult J qq).toNat : ℤ) * interNum qq Ls else 0) ⊆ ↑(Finset.univ.image …`.
+A detailed English derivation is pending.
 -/
 private theorem sum_eq_finsum (x : Fin (N + 1) → Ω) (n : ℕ) (J : Ideal (Poly k N))
     (Ls : Fin n → SubSystem k x Ω) (m : ℕ) (P : Fin m → Ideal (Poly k N))
@@ -575,21 +569,19 @@ private theorem sum_eq_finsum (x : Fin (N + 1) → Ω) (n : ℕ) (J : Ideal (Pol
   · rw [if_neg h, dif_neg (fun h' => h h'.2), smul_zero]
 
 /- English proof (translation)
-Introduce `hCyc hCut hMix k _ Ω _ _ N x n pp L Lc s hsub hs hnz`. Establish `hle : pp ≤ pp ⊔ zeroIdeal Lc.toSubSystem s` using `le_sup_left`. Take `⟨f, hfZ, hfp⟩` from `exists_form Lc s pp hs hnz`. Establish `hfJ : f ∈ pp ⊔ zeroIdeal Lc.toSubSystem s` using `Ideal.mem_sup_right hfZ`. Use `haveI := hsub.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJh : ∀ p ∈ pp ⊔ zeroIdeal Lc.toSubSystem s, ∀ d : ℕ, homogeneousComponent d p ∈ pp ⊔ zeroIdeal Lc.toSubSystem s` using `sup_homog hsub.homog (span_homog _ fun f ⟨c, hc, _⟩ => ⟨c, hc⟩)`. Take `⟨m, P, d, hP, hcard, hsplit⟩` from `hCyc k Ω N x ⊥ Ideal.bot_isMaximal _ hJh (hsub.le.trans hle) (by rw [Ideal.map_bot]; exact bot_le)`. Establish `hdim : ∀ q : Ideal (Poly k N), q.IsPrime → pp ⊔ zeroIdeal Lc.toSubSystem s ≤ q → ringKrullDim (Poly k N ⧸ q) ≤ ((n + 1 : ℕ) : WithBot ℕ∞)`. Introduce `q hq hJq`. Conclude with `dim_lt (hle.trans hJq) (hJq hfJ) hfp hsub.dim.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmin : ∀ j, IsSubvar x (P j) n → P j ∈ (pp ⊔ zeroIdeal Lc.toSubSystem s).minimalPrimes`. Introduce `j hj`. Use `haveI := hj.isPrime`. Take `⟨G, hG, hGP⟩` from `Ideal.exists_minimalPrimes_le (hP j).2.2`. Use `haveI : G.IsPrime := hG.1.1`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hPG : P j ≤ G`. Rewrite using `[← le_antisymm hGP hPG]` and apply the resulting hypothesis. It suffices to derive a contradiction. Take `⟨r, hr, hrG⟩` from `SetLike.not_le_iff_exists.mp hPG`. Establish `h1` using `dim_lt hGP hr hrG (hdim G hG.1.1 hG.1.2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h1` using `[hj.dim]`. Establish `h2 : n + 1 ≤ n` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Use `choose Q hQ using fun T : Finset (Fin n) => tensorSub_line L T`. Establish `E1` using `eventually_all.mpr fun T => hCut k Ω N x (n + 1) pp Lc s hsub hs hnz (Q T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `E2` using `eventually_all.mpr fun T => hsplit (tens (Q T) Lc)`. Establish `E3` using `eventually_all.mpr fun j => hMix k Ω N x n (P j) (hP j).1 (hP j).2.1 (hsub.le.trans (hle.trans (hP j).2.2)) (hdim _ (hP j).1 (hP j).2.2) L Lc (d j)`. Establish `hev : interSum pp (Fin.snoc (α` using `fun _ => SubSystem k x Ω) (fun i => (L i).toSubSystem) Lc.toSubSystem) =ᶠ[atTop] fun _ => ∑ j, (if IsSubvar x (P j) n then interNum (P j) (fun i => (L i).toSubSystem) else 0) := by filter_upwards [E1, E2, E3] with c h1 h2 h3`. Rewrite using `[interSum_snoc]`. Establish `hT : ∀ T : Finset (Fin n), restrLen pp (((tensorSub (fun i => (L i).toSubSystem) T).twist Lc.toSubSystem).twist (twistSys k x (c : ℤ))) - restrLen pp ((tensorSub (fun i => (L i).toSubSystem) T).twist (twistSys k x (c : ℤ))) = ∑ j, restrLen (P j) (((tensorSub (fun i => (L i).toSub …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `T`. Establish `a1` using `h1 T`. Establish `a2` using `h2 T`. Rewrite using `[← hQ T]`. Conclude with `a1.trans a2`.
-
-Repeatedly rewrite using `[hT, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => h3 j`. Rewrite using `[interNum, (tendsto_const_nhds.congr' hev.symm).limUnder_eq]`. Conclude with `sum_eq_finsum x n _ _ m P hcard hmin`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main : CycleSplit.Filt.Statement.{u, w} → CutRestrLenExact.Statement.{u, w} →
     MixedTwistShift.Statement.{u, w} → InterNumCut.Statement.{u, w} := by
@@ -656,7 +648,7 @@ end
 end UpperTheory.Reformulated.B.KleimanIntersectionNumberCut.SlopeTestRemainingChoices
 
 /- English proof (translation)
-Conclude with `UpperTheory.Reformulated.B.KleimanIntersectionNumberCut.SlopeTestRemainingChoices.main`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.KleimanIntersectionNumberCut.proof.{u, w} :
     GroundTheory.Heights₂.Heights.Kleiman.CycleSplit.Filt.Statement.{u, w} →

@@ -19,7 +19,7 @@ def IsField {Z : Scheme.{0}} (W₀ : Z.Opens) (d : ∀ W : Z.Opens, Γ(Z, W) →
     ∀ W W' (h : W' ≤ W), W ≤ W₀ → ∀ f, d W' (resG Z h f) = resG Z h (d W f)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isField_zero {Z : Scheme.{0}} (W₀ : Z.Opens) : IsField W₀ (fun _ _ => 0) :=
   ⟨fun _ _ _ _ => by simp, fun _ _ _ _ => by simp, fun _ _ _ _ _ => by simp⟩
@@ -45,7 +45,7 @@ def balanced {O R : Type} [CommRing R] {n : ℕ} (bar : O → O) (A : O → Matr
     ⟨by rw [Matrix.transpose_smul, h.1], fun a => by rw [Matrix.mul_smul, Matrix.smul_mul, h.2]⟩
 
 /- English proof (translation)
-Use `and_congr_right fun _ => forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_transpose, ← Matrix.ext_iff]`. Use `forall₂_congr fun i k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal, sub_mul, sub_eq_zero, mul_comm (Θ i k)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_balanced_diagonal {O R : Type} [CommRing R] {n : ℕ} (bar : O → O) (χ : Fin n → O → R)
     (Θ : Matrix (Fin n) (Fin n) R) :
@@ -64,9 +64,9 @@ def IsTranslate {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (g : Sp 
     v'.left = spMap (dualMap φ) ≫ v ∧ (g' * v').left = w
 
 /- English proof (translation)
-Establish `e : (dualMap φ).comp (algebraMap R (DualNumber R)) = (algebraMap S (DualNumber S)).comp φ`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `h2 : (spMap (dualMap φ) ≫ v) ≫ t.G.hom = (tEpsG (g ≫ t.G.hom)).hom` using `by show _ = spMap (algebraMap S (DualNumber S)) ≫ g ≫ t.G.hom`. Rewrite using `[Category.assoc, hv.1, hg, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e]`. Use `⟨_, ⟨Over.homMk (spMap (algebraMap S (DualNumber S)) ≫ g) (Category.assoc _ _ _), Over.homMk (spMap (dualMap φ) ≫ v) h2, rfl, rfl, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `w ⟨g', v', h₁, h₂, rfl⟩`. Use `congr 2`. Conclude with `Over.OverMorphism.ext h₁`. Conclude with `Over.OverMorphism.ext h₂`.
+Assume the hypotheses and unpack their components. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem existsUnique_isTranslate {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {x : Sp R ⟶ X}
     {g : Sp S ⟶ t.G.left} (hg : g ≫ t.G.hom = spMap φ ≫ x) {v : Sp (DualNumber R) ⟶ t.G.left}
@@ -101,7 +101,7 @@ def IsKS (V : X.Opens) (U : X.affineOpens) {n : ℕ} (v : Fin n → (Sp (DualNum
           (valR (w a) O f).snd
 
 /- English proof (translation)
-Use `⟨t.PP.L.ι, fun i => t.G.hom ⁻¹ᵁ (U.1 ⊓ V) ⊓ t.PP.L.U i, id, fun _ _ _ => 0, ?_, fun _ => inf_le_right, fun _ => isField_zero _, fun _ _ _ => (map_zero _).symm, fun i i' O _ f S _ φ g₀ w _ h _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← inf_iSup_eq, t.PP.isLB.cover, inf_top_eq]`. Simplify using `[valR, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isKS_zero (V : X.Opens) (U : X.affineOpens) {n : ℕ}
     (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)) : IsKS t V U v (fun _ => 0) 0 := by
@@ -123,7 +123,7 @@ def HasLogKS {K : Type} [CommRing K] (s : X ⟶ Sp K) (V : X.Opens) : Prop :=
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (Y : Model Xo c (RingHom.id c.F))
 
 /- English proof (translation)
-Establish `: IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (𝟙 _)) infer_instance`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_fst : IsIso (pullback.fst Y.s (spMap (RingHom.id c.F))) := by
   have : IsIso (spMap (RingHom.id c.F)) := by
@@ -142,7 +142,7 @@ def interior : Y.X.Opens := Y.j.opensRange
 def boundary : Y.X.IdealSheafData := Scheme.IdealSheafData.vanishingIdeal (interior Y).compl
 
 /- English proof (translation)
-Use `isIso_fst Y` as an intermediate fact. Establish `hs : Function.Surjective (pullback.fst Y.s (spMap (RingHom.id c.F)))` using `(pullback.fst Y.s (spMap (RingHom.id c.F))).surjective`. Rewrite using `[← Set.image_preimage_eq (abLocus Y.t.G) hs, Y.ab_gen, ← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_interior : (interior Y : Set Y.X) = abLocus Y.t.G := by
   have := isIso_fst Y
@@ -152,7 +152,7 @@ theorem coe_interior : (interior Y : Set Y.X) = abLocus Y.t.G := by
   rfl
 
 /- English proof (translation)
-Use `isIso_fst Y` as an intermediate fact. Establish `hs : Function.Surjective (pullback.fst Y.s (spMap (RingHom.id c.F)))` using `(pullback.fst Y.s (spMap (RingHom.id c.F))).surjective`. Conclude with `hs.denseRange.comp Y.jQ_dense (pullback.fst Y.s (spMap (RingHom.id c.F))).continuous`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dense_interior : Dense (interior Y : Set Y.X) := by
   have := isIso_fst Y

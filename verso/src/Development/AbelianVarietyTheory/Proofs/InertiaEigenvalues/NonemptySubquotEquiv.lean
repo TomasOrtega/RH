@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.LocEulerScalars
 
 /- English proof (translation)
-Use `⟨Quotient.congr (Equiv.subtypeEquivRight hZ) fun a b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(B.comap Z.subtype).quotientRel a b ↔ (B'.comap Z'.subtype).quotientRel (Equiv.subtypeEquivRight hZ a) (Equiv.subtypeEquivRight hZ b)`. Rewrite using `[Submodule.quotientRel_def, Submodule.quotientRel_def, Submodule.mem_comap, Submodule.mem_comap]`. Conclude with `hB _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_subquot_equiv {R R' X : Type*} [Ring R] [Ring R'] [AddCommGroup X] [Module R X]
     [Module R' X] (Z B : Submodule R X) (Z' B' : Submodule R' X)
@@ -23,19 +23,19 @@ theorem nonempty_subquot_equiv {R R' X : Type*} [Ring R] [Ring R'] [AddCommGroup
   exact hB _
 
 /- English proof (translation)
-Introduce `hF hE F Ω _ _ _ _ _ _ l _ Λ M _ _ _ _ _ _ A v ρ hl hA hv hc`. Set `_ : Module (ZMod (l ^ 1)) M` to `AddCommGroup.zmodModule fun m => by rw [pow_one]; exact hl m`. Set `ρ' : Representation (ZMod (l ^ 1)) (Dec (F` to `F) A) M := zmodRep (l ^ 1) ρ`. Establish `hc' : ContAction ρ'` using `hc`. Establish `hd : ∀ c : Dec (F` using `F) A → M, d1 ρ c = d1 ρ' c := fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Take `⟨g, h⟩` from `p`. Rewrite using `[d1_apply, d1_apply]`. Both sides reduce to the same expression. Establish `hZ1 : ∀ f, f ∈ Z1 ρ ↔ f ∈ Z1 ρ'` using `fun f => by`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[mem_Z1_iff_cocycle, mem_Z1_iff_cocycle]`. Conclude with `Iff.rfl`. Establish `hB1 : ∀ f, f ∈ B1 ρ ↔ f ∈ B1 ρ'` using `fun f => by`. Rewrite using `[mem_coboundaries1, mem_coboundaries1]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `hZ2 : ∀ f, f ∈ Z2 ρ ↔ f ∈ Z2 ρ'` using `fun f => by`. Rewrite using `[mem_cocycles2, mem_cocycles2]`. Conclude with `Iff.rfl`. Establish `hB2 : ∀ f, f ∈ B2 ρ ↔ f ∈ B2 ρ'` using `fun f => by`. Rewrite using `[separated_dvr_second_cohomology_mem, separated_dvr_second_cohomology_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hd]`. Take `⟨e1⟩` from `nonempty_subquot_equiv (Z1 ρ) (B1 ρ) (Z1 ρ') (B1 ρ') hZ1 hB1`. Take `⟨e2⟩` from `nonempty_subquot_equiv (Z2 ρ) (B2 ρ) (Z2 ρ') (B2 ρ') hZ2 hB2`. Establish `c1 : Nat.card (H1 ρ) = Nat.card (H1 ρ')` using `Nat.card_congr e1`. Establish `c2 : Nat.card (H2 ρ) = Nat.card (H2 ρ')` using `Nat.card_congr e2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, h1, h2, -⟩` from `hF F Ω l 1 M A ρ' v Nat.one_pos hA hc'`. Establish `hχ` using `(hE F Ω l 1 M A ρ' v Nat.one_pos hA hc').1 hv`. Use `⟨Finite.of_equiv _ e1.symm, Finite.of_equiv _ e2.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[c1, c2]`. Use `hχ using 3` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)`.
+A detailed English derivation is pending.
 -/
 theorem localEulerChar_above : LocalFiniteness → LocalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (Λ M : Type) [CommRing Λ] [AddCommGroup M] [Module Λ M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (ρ : Representation Λ (Dec (F := F) A) M), (∀ m : M, l • m = 0) → IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∈ v.asIdeal → ContAction ρ → Finite (H1 ρ) ∧ Finite (H2 ρ) ∧ Nat.card (H1 ρ) = Nat.card (H0 ρ) * Nat.card (H2 ρ) * Nat.card M ^ ReciprocityTheory.Gal.locDeg v := by
   intro hF hE F Ω _ _ _ _ _ _ l _ Λ M _ _ _ _ _ _ A v ρ hl hA hv hc

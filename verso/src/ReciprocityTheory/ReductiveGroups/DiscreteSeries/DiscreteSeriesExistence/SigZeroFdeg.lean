@@ -11,17 +11,17 @@ open scoped InnerProductSpace NNReal
 namespace ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `μG hH`. Establish `hCay` using `hP.1`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hCay.1`. Take `⟨d, hd0, hF⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS lam σ hDS`. Establish `hmap` using `Lap.haarMap k r ε P hCay`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc, hμ⟩` from `Lap.haarUniq2 k r _ _ μG (Lap.closedSubgroups k r 0).1 hmap hH`. Establish `hemb` using `Lap.SchurBAux.measEmb ε hd`. Use `⟨d / (c : ℝ), div_pos hd0 (by exact_mod_cast hc), fun v w v' w' => ?_⟩` and prove the remaining obligations. Establish `hint` using `(hF v w v' w').1`. Establish `hval` using `(hF v w v' w').2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w, σ (P * Matrix.of x * P⁻¹) v⟫_ℂ * star ⟪w', σ (P * Matrix.of x * P⁻¹) v'⟫_ℂ) ∘ (fun g : Formalism.REAL.UJ ε => ((P⁻¹ * Formalism.MainNotions.S.umat g * P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Formalis …`. Use function extensionality and compare the values at `g`. Use `show ⟪w, σ (P * (P⁻¹ * Formalism.MainNotions.S.umat g * P) * P⁻¹) v⟫_ℂ * star ⟪w', σ (P * (P⁻¹ * Formalism.MainNotions.S.umat g * P) * P⁻¹) v'⟫_ℂ = ⟪w, σ (Formalism.MainNotions.S.umat g) v⟫_ℂ * star ⟪w', σ (Formalism.MainNotions.S.umat g) v'⟫_ℂ`. Rewrite using `[Lap.SchurBAux.conj_cancel' hd]`. Establish `hI : ∫ x : Formalism.QuantumDeterminants.Mt k r, ⟪w, σ (P * Matrix.of x * P⁻¹) v⟫_ℂ * star ⟪w', σ (P * Matrix.of x * P⁻¹) v'⟫_ℂ ∂(Measure.map (β` using `Formalism.QuantumDeterminants.Mt k r) (fun g : Formalism.REAL.UJ ε => ((P⁻¹ * Formalism.MainNotions.S.umat g * P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Formalism.QuantumDeterminants.Mt k r)) (Formalism.REAL.muG ε)) = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ) := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hemb.integral_map, ← hval]`. Conclude with `congrArg (fun f => ∫ g, f g ∂(Formalism.REAL.muG ε)) hcomp`. Establish `hIi : Integrable (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w, σ (P * Matrix.of x * P⁻¹) v⟫_ℂ * star ⟪w', σ (P * Matrix.of x * P⁻¹) v'⟫_ℂ) (Measure.map (β` using `Formalism.QuantumDeterminants.Mt k r) (fun g : Formalism.REAL.UJ ε => ((P⁻¹ * Formalism.MainNotions.S.umat g * P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Formalism.QuantumDeterminants.Mt k r)) (Formalism.REAL.muG ε)) := by`. Rewrite using `[hemb.integrable_map_iff, hcomp]`. Conclude with `hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hμ]`. Use `⟨hIi.smul_measure_nnreal, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_smul_nnreal_measure]`. Conclude with `congrArg (c • ·) hI`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = _ := by`. Rewrite using `[NNReal.smul_def, Complex.real_smul]`. Use `push_cast`. Rewrite using `[div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem fdegB_of_isDS {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

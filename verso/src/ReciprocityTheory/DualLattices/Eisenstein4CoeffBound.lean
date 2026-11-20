@@ -10,9 +10,9 @@ def e4Z : PowerSeries ℤ := PowerSeries.mk fun n => if n = 0 then 1 else 240 * 
 def e6Z : PowerSeries ℤ := PowerSeries.mk fun n => if n = 0 then 1 else -504 * (σ 5 n : ℤ)
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map, e4Z, coeff_mk]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Evaluate the numerical expressions using `[E_qExpansion_coeff _ ⟨2, rfl⟩]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `[E_qExpansion_coeff _ ⟨2, rfl⟩, hn, show bernoulli 4 = -1 / 30 by decide +kernel]`.
+Evaluate the numerical expressions.
 -/
 theorem qExpansion_E₄_eq : qExpansion 1 E₄ = PowerSeries.map (Int.castRingHom ℂ) e4Z := by
   ext n
@@ -22,9 +22,9 @@ theorem qExpansion_E₄_eq : qExpansion 1 E₄ = PowerSeries.map (Int.castRingHo
   · norm_num [E_qExpansion_coeff _ ⟨2, rfl⟩, hn, show bernoulli 4 = -1 / 30 by decide +kernel]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map, e6Z, coeff_mk]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Evaluate the numerical expressions using `[E_qExpansion_coeff _ ⟨3, rfl⟩]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `[E_qExpansion_coeff _ ⟨3, rfl⟩, hn, show bernoulli 6 = 1 / 42 by decide +kernel]`.
+Evaluate the numerical expressions.
 -/
 theorem qExpansion_E₆_eq : qExpansion 1 E₆ = PowerSeries.map (Int.castRingHom ℂ) e6Z := by
   ext n

@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Axis
 
 /- English proof (translation)
-Introduce `R _ X s hs U`. Use `haveI : Smooth s := hs`. Establish `hfl : Flat s` using `inferInstance`. Establish `hT : IsAffineOpen (⊤ : (Sp R).Opens)` using `isAffineOpen_top (Sp R)`. Establish `h1` using `HasRingHomProperty.appLE @Flat s hfl ⟨⊤, hT⟩ U le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : RingHom.Flat (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` using `RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)`. Establish `h3` using `RingHom.Flat.comp h2 h1`. Conclude with `h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_sec_of_smooth : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), Smooth s →
     ∀ U : X.affineOpens, Module.Flat R (Sec s U.1) := by

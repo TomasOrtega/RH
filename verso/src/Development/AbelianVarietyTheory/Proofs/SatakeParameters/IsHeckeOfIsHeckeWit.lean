@@ -18,7 +18,7 @@ section Pull
 variable {S S' : Scheme.{0}} {f : S' ⟶ S}
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (hb.1.hom_ext h (by rw [Over.w u, Over.w v]))`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_left {B : Over S} {B' : Over S'} [GrpObj B] [GrpObj B'] {b : B'.left ⟶ B.left}
     (hb : IsGrpPullback B' B f b) {T : Over S'} {u v : T ⟶ B'} (h : u.left ≫ b = v.left ≫ b) : u = v := Over.OverMorphism.ext (hb.1.hom_ext h (by rw [Over.w u, Over.w v]))
@@ -30,7 +30,7 @@ def pullMor (ha : IsGrpPullback A' A f a) (hb : IsGrpPullback B' B f b) (ψ : A 
   Over.homMk (hb.1.lift (a ≫ ψ.left) A'.hom (by rw [Category.assoc, Over.w ψ, ha.1.w])) (hb.1.lift_snd _ _ _)
 
 /- English proof (translation)
-Simplify using `only [pullMor, Over.homMk_left]`. Conclude with `hb.1.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullMor_left (ha : IsGrpPullback A' A f a) (hb : IsGrpPullback B' B f b) (ψ : A ⟶ B) :
     (pullMor ha hb ψ).left ≫ b = a ≫ ψ.left := by
@@ -45,7 +45,7 @@ private theorem pushHom_left_satake_parameters {G : Over S} {G' : Over S'} [GrpO
   rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, pushHom_left_satake_parameters, Category.assoc, pullMor_left]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem push_pullMor (ha : IsGrpPullback A' A f a) (hb : IsGrpPullback B' B f b) (ψ : A ⟶ B) (T : Over S')
     (x : T ⟶ A') : pushHom hb T (x ≫ pullMor ha hb ψ) = pushHom ha T x ≫ ψ := by
@@ -53,9 +53,9 @@ theorem push_pullMor (ha : IsGrpPullback A' A f a) (hb : IsGrpPullback B' B f b)
   simp only [Over.comp_left, pushHom_left_satake_parameters, Category.assoc, pullMor_left]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h1` using `hg (𝟙_ C) 1 1`. Rewrite `h1` using `[_root_.mul_one]`. Establish `h2 : (1 : 𝟙_ C ⟶ G) ≫ g = 1` using `mul_left_cancel (h1.symm.trans (_root_.mul_one _).symm)`. Simplify `h2` using `[Hom.one_def, toUnit_unit]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `hg _ (fst G G) (snd G G)`. Simplify using `only [Hom.mul_def, lift_fst_snd, Category.id_comp] at h`. Rewrite using `[h]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem isMonHom_of_comp_mul {C : Type*} [Category C] [CartesianMonoidalCategory C] {G H : C} [GrpObj G] [GrpObj H]
     (g : G ⟶ H) (hg : ∀ (T : C) (x y : T ⟶ G), (x * y) ≫ g = x ≫ g * y ≫ g) : IsMonHom g := by
@@ -71,7 +71,7 @@ private theorem isMonHom_of_comp_mul {C : Type*} [Category C] [CartesianMonoidal
     ext <;> simp
 
 /- English proof (translation)
-Use `isMonHom_of_comp_mul _ fun T x y => ext_of_left hb ?_` and prove the remaining obligations. Rewrite using `[← pushHom_left_satake_parameters hb, ← pushHom_left_satake_parameters hb, push_pullMor, map_mul, map_mul, push_pullMor, push_pullMor, MonObj.mul_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMonHom_pullMor (ha : IsGrpPullback A' A f a) (hb : IsGrpPullback B' B f b) (ψ : A ⟶ B) [IsMonHom ψ] :
     IsMonHom (pullMor ha hb ψ) := by
@@ -80,9 +80,9 @@ theorem isMonHom_pullMor (ha : IsGrpPullback A' A f a) (hb : IsGrpPullback B' B 
     MonObj.mul_comp]
 
 /- English proof (translation)
-Establish `h1` using `pushHom_left_satake_parameters ha A' ((𝟙 A') ^ n)`. Rewrite `h1` using `[map_pow]`. Rewrite using `[← h1]`. Establish `h2 : pushHom ha A' (𝟙 A') ^ n = pushHom ha A' (𝟙 A') ≫ (𝟙 A) ^ n`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Simplify using `only [Over.comp_left, pushHom_left_satake_parameters, Over.id_left, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_id_left (ha : IsGrpPullback A' A f a) (n : ℕ) : ((𝟙 A') ^ n).left ≫ a = a ≫ ((𝟙 A) ^ n).left := by
   have h1 := pushHom_left_satake_parameters ha A' ((𝟙 A') ^ n)
@@ -94,7 +94,7 @@ theorem pow_id_left (ha : IsGrpPullback A' A f a) (n : ℕ) : ((𝟙 A') ^ n).le
   simp only [Over.comp_left, pushHom_left_satake_parameters, Over.id_left, Category.id_comp]
 
 /- English proof (translation)
-Apply `ext_of_left ha` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, pullMor_left hb ha ψ', ← Category.assoc, pullMor_left ha hb ψ, Category.assoc, ← Over.comp_left, h, pow_id_left ha n]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullMor_comp_eq_pow (ha : IsGrpPullback A' A f a) (hb : IsGrpPullback B' B f b) (ψ : A ⟶ B) (ψ' : B ⟶ A)
     (n : ℕ) (h : ψ ≫ ψ' = (𝟙 A) ^ n) : pullMor ha hb ψ ≫ pullMor hb ha ψ' = (𝟙 A') ^ n := by

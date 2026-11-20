@@ -19,13 +19,13 @@ Both sides reduce to the same expression.
 theorem upq_mat_one {p q : ℕ} : UpqT.mat (1 : UpqT p q) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← upq_mat_mul, inv_mul_cancel, upq_mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upq_mat_inv_mul {p q : ℕ} (a : UpqT p q) : UpqT.mat a⁻¹ * UpqT.mat a = 1 := by
   rw [← upq_mat_mul, inv_mul_cancel, upq_mat_one]
 
 /- English proof (translation)
-Rewrite using `[← upq_mat_mul, mul_inv_cancel, upq_mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upq_mat_mul_inv {p q : ℕ} (a : UpqT p q) : UpqT.mat a * UpqT.mat a⁻¹ = 1 := by
   rw [← upq_mat_mul, mul_inv_cancel, upq_mat_one]
@@ -36,13 +36,11 @@ set_option quotPrecheck false in
 local notation "ρv" v => (Formalism.L2.Host.tauPl D).symm v
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hbx⟩`. Use `⟨u⁻¹ * b * u, ?_, ?_⟩` and prove the remaining obligations. Use `show u * (u⁻¹ * b * u) * u⁻¹ ∈ B`.
+Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hb` using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [upq_mat_mul, Matrix.mul_assoc]`. Use `_ = UpqT.mat u⁻¹ * (UpqT.mat u * A₀ * X) := by rw [hbx]`. Use `_ = A₀ * X := by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, upq_mat_inv_mul, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `⟨c, hc, hcx⟩`. Use `⟨u * c * u⁻¹, hc, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [upq_mat_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (UpqT.mat u⁻¹), upq_mat_inv_mul, Matrix.one_mul]`.
-
-Use `_ = UpqT.mat u * A₀ * X := by rw [hcx, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cond_change {p q : ℕ} (A₀ A : Matrix (Fin p ⊕ Fin q) (Fin V.rank) ℂ) (u : UpqT p q)
     (hu : A = UpqT.mat u * A₀) (B : Set (UpqT p q)) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
@@ -65,35 +63,29 @@ theorem cond_change {p q : ℕ} (A₀ A : Matrix (Fin p ⊕ Fin q) (Fin V.rank) 
       _ = UpqT.mat u * A₀ * X := by rw [hcx, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨F⟩` from `MF.frA_nonempty hS`. Use `choose m0 hm0 using hex`. Use `haveI : ∀ ρ, (m0 ρ).IsHaarMeasure := fun ρ => hgH ρ _ (hm0 ρ)`. Take `⟨g1, g2, g3⟩` from `gf_facts (MF.toFrames F)`. Take `⟨h1, h2, h3, h4, h5⟩` from `ga_facts D V`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hkc, hko⟩` from `kf_isCompact_isOpen_of_levelA (MF.toFrames F) K hK`. Use `set νf : Measure (UI.instV (MF.toFrames F)).Gf := Measure.haar`. Establish `hk0 : νf (kf (MF.toFrames F) K) ≠ 0` using `(hko.measure_pos νf ⟨1, K.one_mem⟩).ne'`. Establish `hkt : νf (kf (MF.toFrames F) K) ≠ ⊤` using `hkc.measure_lt_top.ne`. Use `set μf := (νf (kf (MF.toFrames F) K))⁻¹ • νf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hμf : μf.IsHaarMeasure := by`. Conclude with `Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.mpr hkt) (ENNReal.inv_ne_top.mpr hk0)`. Use `haveI hmv : ∀ v, ((m0 (ρv v)).map (MF.phiR F v)).IsHaarMeasure := fun v => (MF.phiR F v).toMulEquiv.isHaarMeasure_map (m0 (ρv v)) (MF.phiR F v).continuous (MF.phiR F v).symm.continuous`. Use `set μi := Measure.pi fun v => (m0 (ρv v)).map (MF.phiR F v)`. Establish `hμi : μi.IsHaarMeasure` using `Measure.pi.isHaarMeasure _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsi : SFinite μi` using `inferInstance`. Establish `hsf : SFinite μf` using `inferInstance`. Establish `hmm : MeasurableMul (UI.instV (MF.toFrames F)).Gf` using `inferInstance`. Establish `hmi : MeasurableMul ((v : InfinitePlace D.host.F) → Formalism.REAL.UJ ((MF.toFrames F).ε v))` using `inferInstance`. Establish `hprod : (μi.prod μf).IsHaarMeasure` using `Measure.prod.instIsHaarMeasure μi μf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Set `μA : Measure (UI.instV (MF.toFrames F)).GA` to `μi.prod μf`. Use `haveI hμA : μA.IsHaarMeasure := hprod`. Use `⟨μA.map (UI.brg (MF.toFrames F)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(UI.brg (MF.toFrames F)).toMulEquiv.isHaarMeasure_map μA (UI.brg (MF.toFrames F)).continuous (UI.brg (MF.toFrames F)).symm.continuous`. Use `⟨⟨thetaC D, isInfFam_thetaC D⟩, fun θ hθ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_thetaC D hθ]`. Use `⟨⟨F.A, F.hA⟩, fun A hA => ?_⟩` and prove the remaining obligations. Use `⟨⟨m0, hm0⟩, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hmm : m = m0` using `funext fun ρ => huq ρ _ _ (hm0 ρ) (hm ρ)`. Substitute `hmm` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `B hB`. Use `choose u hu using fun ρ => MF.frame_change (F.e ρ) (gramAt D V ρ) (isUnit_iff_ne_zero.mpr (MF.gramAt_det ρ)) (MF.gramAt_herm ρ) (F.A ρ) (A ρ) (F.hA ρ) (hA ρ)`. Use `set B' := fun ρ => (fun c => u ρ * c * (u ρ)⁻¹) ⁻¹' B ρ`. Establish `hB' : ∀ ρ, m ρ (B' ρ) = m ρ (B ρ)`. Introduce `ρ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hc : Continuous (fun c => u ρ * c * (u ρ)⁻¹)` using `(continuous_const.mul continuous_id).mul continuous_const`. Use `show m ρ ((fun c => u ρ * c * (u ρ)⁻¹) ⁻¹' B ρ) = _`. Rewrite using `[← Measure.map_apply hc.measurable (hB ρ)]`. Use `MU.map_conj_upq (m ρ) (u ρ)⁻¹` as an intermediate fact. Simplify using `only [inv_inv] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Establish `hset : {h : GA D V | Lev.finE V h ∈ K ∧ ∀ ρ, ∃ b ∈ B ρ, UpqT.mat b * A ρ = A ρ * infMat D.sp.cm.sig V.gram (thetaC D ρ) h} = {h : GA D V | Lev.finE V h ∈ K ∧ ∀ ρ, ∃ c ∈ B' ρ, UpqT.mat c * F.A ρ = F.A ρ * infMat D.sp.cm.sig V.gram (thetaC D ρ) h}`. Use extensionality with `h`. Simplify using `only [Set.mem_setOf_eq]`. Use `and_congr Iff.rfl (forall_congr' fun ρ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cond_change (F.A ρ) (A ρ) (u ρ) (hu ρ) (B ρ) _`. Rewrite using `[hset, ← Finset.prod_congr rfl fun ρ _ => hB' ρ]`. Establish `hpre : (UI.brg (MF.toFrames F)) ⁻¹' {h : GA D V | Lev.finE V h ∈ K ∧ ∀ ρ, ∃ c ∈ B' ρ, UpqT.mat c * F.A ρ = F.A ρ * infMat D.sp.cm.sig V.gram (thetaC D ρ) h} = (Set.univ.pi fun v => MF.phiR F v '' B' (ρv v)) ×ˢ kf (MF.toFrames F) K`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_prod, Set.mem_univ_pi]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finE_brg, and_comm]`. Use `and_congr ?_ Iff.rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h v _`. Conclude with `(MF.cond_iff F x v (B' (ρv v))).mp (h (ρv v))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Introduce `h ρ`. Use `(MF.cond_iff F x (Formalism.L2.Host.tauPl D ρ) (B' (ρv (Formalism.L2.Host.tauPl D ρ)))).mpr (h (Formalism.L2.Host.tauPl D ρ) (Set.mem_univ _))` as an intermediate fact. Rewrite `this` using `[Equiv.symm_apply_apply]`. Conclude with `this`. Establish `hmap` using `(UI.brg (MF.toFrames F)).toHomeomorph.toMeasurableEquiv.map_apply (μ := μi.prod μf) {h : GA D V | Lev.finE V h ∈ K ∧ ∀ ρ, ∃ c ∈ B' ρ, UpqT.mat c * F.A ρ = F.A ρ * infMat D.sp.cm.sig V.gram (thetaC D ρ) h}`.
-
-Use `Eq.trans hmap ?_` and prove the remaining obligations. Use `Eq.trans (congrArg (μi.prod μf) hpre) ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, Measure.pi_pi]`. Establish `hf1 : μf (kf (MF.toFrames F) K) = 1` using `by show ((νf (kf (MF.toFrames F) K))⁻¹ • νf) (kf (MF.toFrames F) K) = 1`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hk0 hkt]`.
-
-Rewrite using `[hf1, mul_one]`. Establish `hv : ∀ v, ((m (ρv v)).map (MF.phiR F v)) (MF.phiR F v '' B' (ρv v)) = m (ρv v) (B' (ρv v))`. Introduce `v`. Rewrite using `[show ((m (ρv v)).map (MF.phiR F v)) = (m (ρv v)).map (MF.phiR F v).toHomeomorph.toMeasurableEquiv from rfl, MeasurableEquiv.map_apply]`. Use `congr 1`.
-
-Conclude with `Set.preimage_image_eq _ (MF.phiR F v).injective`. Simplify using `only [hv]`. Conclude with `Fintype.prod_equiv (Formalism.L2.Host.tauPl D).symm _ _ fun v => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isMeasLevW_exists
     (good : ∀ ρ : D.what₂.Tau, Measure (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) → Prop)
@@ -190,14 +182,14 @@ theorem isMeasLevW_exists
 variable (D)
 
 /- English proof (translation)
-Introduce `V hS K hK` and use `isMeasLevW_exists (V := V) (fun _ m => Lev.IsMinf m) (fun _ _ h => h.1) (fun _ => MU.isMinf_exists _ _) (fun _ _ _ h h' => MU.isMinf_unique h h') hS K hK`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem measLevExists_holds : MeasLevExists D := fun V hS K hK =>
   isMeasLevW_exists (V := V) (fun _ m => Lev.IsMinf m) (fun _ _ h => h.1) (fun _ => MU.isMinf_exists _ _)
     (fun _ _ _ h h' => MU.isMinf_unique h h') hS K hK
 
 /- English proof (translation)
-Introduce `V hS hD K hK` and use `isMeasLevW_exists (V := V) (fun _ m => m.IsHaarMeasure ∧ IsProbabilityMeasure m) (fun _ _ h => h.1) (fun ρ => by rcases hD (tauE D ρ) with h | h · haveI : CompactSpace (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) := by rw [h]; infer_instance exact MU.prob_exists · haveI : Com …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem measLevDefExists_holds : MeasLevDefExists D := fun V hS hD K hK =>
   isMeasLevW_exists (V := V) (fun _ m => m.IsHaarMeasure ∧ IsProbabilityMeasure m) (fun _ _ h => h.1)
@@ -210,7 +202,7 @@ theorem measLevDefExists_holds : MeasLevDefExists D := fun V hS hD K hK =>
     (fun _ _ _ h h' => MU.prob_unique h h') hS K hK
 
 /- English proof (translation)
-Introduce `V hS K hK` and use `by obtain ⟨μ, hμ⟩ := measLevExists_holds D V hS K hK obtain ⟨𝓕, -, h𝓕⟩ := fundDomExists_holds D V exact ⟨μ, 𝓕, hμ, h𝓕 μ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem measFDExists_holds : MeasFDExists D := fun V hS K hK => by
   obtain ⟨μ, hμ⟩ := measLevExists_holds D V hS K hK

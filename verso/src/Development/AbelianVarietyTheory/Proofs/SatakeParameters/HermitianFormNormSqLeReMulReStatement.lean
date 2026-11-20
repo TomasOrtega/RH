@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LeviRep
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.GodementJacquet MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.hermitianForm_norm_sq_le_re_mul_re` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHermitianFormNormSqLeReMulRe.lean&line=8#L8)
 -/

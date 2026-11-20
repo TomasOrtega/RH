@@ -18,7 +18,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
   (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
 
 /- English proof (translation)
-The claim follows from `eq_zero_gsTateCompactCohomology_of_coind S ιs ιr (fun h2S W _ hr' y => gsTateCompactCohomology_coind_zmodRep_two_eq_zero S ιr h2S ιs W hr' y) hr n hn hS M hM x`.
+A detailed English derivation is pending.
 -/
 theorem gsTateCompactCohomology_eq_zero {n : ℕ} (hn : n ≠ 0)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((n : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
@@ -30,7 +30,7 @@ theorem gsTateCompactCohomology_eq_zero {n : ℕ} (hn : n ≠ 0)
     hr n hn hS M hM x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => (gsTateCompactCohomology_eq_zero S ιr ιs hn hS M hM hr x).trans (gsTateCompactCohomology_eq_zero S ιr ιs hn hS M hM hr y).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_gsTateCompactCohomology {n : ℕ} (hn : n ≠ 0)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((n : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
@@ -43,7 +43,7 @@ theorem subsingleton_gsTateCompactCohomology {n : ℕ} (hn : n ≠ 0)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨ιs'⟩ : Nonempty (∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))` from `⟨fun _ => Classical.choice nonempty_algHom_of_isSepClosed⟩`. Take `⟨p, rfl⟩ : ∃ p, r = p + 1` from `⟨r - 1, by omega⟩`. Conclude with `(injective_tateGlobalToLocal_iff (gsFinFamily S ιs') (gsRealFamily S ιr) M (fun v => Rep.res (gsFinFamily S ιs' v).toMonoidHom M) (fun _ => 𝟙 _) (fun w => Rep.res (gsRealFamily S ιr w).toMonoidHom M) (fun _ => 𝟙 _) (p + 1) (fun v => subsingleton_cohomology_gsFinFamily_of_three_le …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem injective_gsRealRes_of_four_le {n : ℕ} (hn : n ≠ 0)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((n : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
@@ -66,7 +66,7 @@ theorem injective_gsRealRes_of_four_le {n : ℕ} (hn : n ≠ 0)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨ιs'⟩ : Nonempty (∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))` from `⟨fun _ => Classical.choice nonempty_algHom_of_isSepClosed⟩`. Take `⟨p, rfl⟩ : ∃ p, r = p + 1` from `⟨r - 1, by omega⟩`. Conclude with `(surjective_tateGlobalToLocal_iff (gsFinFamily S ιs') (gsRealFamily S ιr) M (fun v => Rep.res (gsFinFamily S ιs' v).toMonoidHom M) (fun _ => 𝟙 _) (fun w => Rep.res (gsRealFamily S ιr w).toMonoidHom M) (fun _ => 𝟙 _) (p + 1) (fun v => subsingleton_cohomology_gsFinFamily_of_three_l …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem surjective_gsRealRes_of_three_le {n : ℕ} (hn : n ≠ 0)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((n : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

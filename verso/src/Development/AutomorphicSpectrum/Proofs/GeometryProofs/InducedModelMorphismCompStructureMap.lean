@@ -11,9 +11,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heig
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
 
 /- English proof (translation)
-Establish `key : ∀ x : 𝓞 F, κ b (x : F) = κ b' (x : F)`. Introduce `x`. Establish `hT : IsDiscrete (Set.range fun s : F →+* ℂ => s (x : F))` using `(Set.finite_range _).isDiscrete`. Establish `hmaps : Set.MapsTo (fun c => κ c (x : F)) B (Set.range fun s : F →+* ℂ => s (x : F))` using `fun c _ => ⟨κ c, rfl⟩`. Conclude with `hpre.constant_of_mapsTo hT (hd x).continuousOn hmaps hb hb'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F))` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `key x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem embedding_const_preconnected {F : Type} [Field F] [NumberField F] {m : ℕ} {B : Set (Fin m → ℂ)} (hpre : IsPreconnected B)
     (κ : (Fin m → ℂ) → (F →+* ℂ))

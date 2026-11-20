@@ -12,9 +12,9 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal
 namespace GlobalTheory.CMVal.LUnit
 
 /- English proof (translation)
-Take `⟨n, hn, ha⟩` from `ha`. Take `⟨m, hm, hb⟩` from `hb`. Use `⟨n * m, Nat.Coprime.mul_left hn hm, ?_⟩` and prove the remaining obligations. Establish `e : ((n * m : ℕ) : ℂ) * (a * b) = (n * a) * (m * b)` using `by push_cast; ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha.mul hb`.
+A detailed English derivation is pending.
 -/
 theorem intAt_mul {l : ℕ} {a b : ℂ} (ha : IntAt l a) (hb : IntAt l b) : IntAt l (a * b) := by
   obtain ⟨n, hn, ha⟩ := ha
@@ -24,29 +24,29 @@ theorem intAt_mul {l : ℕ} {a b : ℂ} (ha : IntAt l a) (hb : IntAt l b) : IntA
   rw [e]; exact ha.mul hb
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left l, by simpa using isIntegral_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_one (l : ℕ) : IntAt l 1 := ⟨1, Nat.coprime_one_left l, by simpa using isIntegral_one⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_ne_zero, intAt_one l, by rw [inv_one]; exact intAt_one l⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_one (l : ℕ) : UnitAt l 1 := ⟨one_ne_zero, intAt_one l, by rw [inv_one]; exact intAt_one l⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, intAt_mul ha.2.1 hb.2.1, by rw [mul_inv]; exact intAt_mul ha.2.2 hb.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_mul {l : ℕ} {a b : ℂ} (ha : UnitAt l a) (hb : UnitAt l b) : UnitAt l (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, intAt_mul ha.2.1 hb.2.1, by rw [mul_inv]; exact intAt_mul ha.2.2 hb.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_inv {l : ℕ} {a : ℂ} (ha : UnitAt l a) : UnitAt l a⁻¹ :=
   ⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using unitAt_one l`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `unitAt_mul ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitAt_pow {l : ℕ} {a : ℂ} (ha : UnitAt l a) (n : ℕ) : UnitAt l (a ^ n) := by
   induction n with
@@ -54,7 +54,7 @@ theorem unitAt_pow {l : ℕ} {a : ℂ} (ha : UnitAt l a) (n : ℕ) : UnitAt l (a
   | succ n ih => rw [pow_succ]; exact unitAt_mul ih ha
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n => simpa using unitAt_pow ha n`. Consider the case `negSucc n => rw [zpow_negSucc]`. Conclude with `unitAt_inv (unitAt_pow ha _)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitAt_zpow {l : ℕ} {a : ℂ} (ha : UnitAt l a) (n : ℤ) : UnitAt l (a ^ n) := by
   cases n with
@@ -62,7 +62,7 @@ theorem unitAt_zpow {l : ℕ} {a : ℂ} (ha : UnitAt l a) (n : ℤ) : UnitAt l (
   | negSucc n => rw [zpow_negSucc]; exact unitAt_inv (unitAt_pow ha _)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using unitAt_one l`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `unitAt_mul (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_prod {l : ℕ} {ι : Type*} (s : Finset ι) (f : ι → ℂ) (h : ∀ i ∈ s, UnitAt l (f i)) :
     UnitAt l (∏ i ∈ s, f i) := by
@@ -74,7 +74,7 @@ theorem unitAt_prod {l : ℕ} {ι : Type*} (s : Finset ι) (f : ι → ℂ) (h :
     exact unitAt_mul (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `h1 : UnitAt l (-1)` using `⟨by norm_num, ⟨1, Nat.coprime_one_left l, by simpa using isIntegral_one.neg⟩, ⟨1, Nat.coprime_one_left l, by simpa using isIntegral_one.neg⟩⟩`. Simplify using `using unitAt_mul h1 ha`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitAt_neg {l : ℕ} {a : ℂ} (ha : UnitAt l a) : UnitAt l (-a) := by
   have h1 : UnitAt l (-1) := ⟨by norm_num, ⟨1, Nat.coprime_one_left l, by simpa using isIntegral_one.neg⟩,
@@ -82,9 +82,9 @@ theorem unitAt_neg {l : ℕ} {a : ℂ} (ha : UnitAt l a) : UnitAt l (-a) := by
   simpa using unitAt_mul h1 ha
 
 /- English proof (translation)
-Take `⟨n, hn, hi⟩` from `ha`. Use `⟨n, hn, IsIntegral.of_pow hh ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, h = k + 1` from `⟨h - 1, by omega⟩`. Establish `e : ((n : ℂ) * a) ^ (k + 1) = (n : ℂ) ^ k * ((n : ℂ) * a ^ (k + 1))` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((isIntegral_natCast (R := ℤ) n).pow _).mul hi`.
+A detailed English derivation is pending.
 -/
 theorem intAt_of_pow {l : ℕ} {a : ℂ} {h : ℕ} (hh : 0 < h) (ha : IntAt l (a ^ h)) : IntAt l a := by
   obtain ⟨n, hn, hi⟩ := ha
@@ -94,7 +94,7 @@ theorem intAt_of_pow {l : ℕ} {a : ℂ} {h : ℕ} (hh : 0 < h) (ha : IntAt l (a
   rw [e]; exact ((isIntegral_natCast (R := ℤ) n).pow _).mul hi
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h0 => ha.1 (by rw [h0, zero_pow hh.ne']), intAt_of_pow hh ha.2.1, intAt_of_pow hh (by rw [inv_pow]; exact ha.2.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_of_pow {l : ℕ} {a : ℂ} {h : ℕ} (hh : 0 < h) (ha : UnitAt l (a ^ h)) : UnitAt l a :=
   ⟨fun h0 => ha.1 (by rw [h0, zero_pow hh.ne']), intAt_of_pow hh ha.2.1,
@@ -103,19 +103,17 @@ theorem unitAt_of_pow {l : ℕ} {a : ℂ} {h : ℕ} (hh : 0 < h) (ha : UnitAt l 
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hal : IsAlgebraic ℤ α` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic α)`. Take `⟨d, hd0, hd⟩` from `hal.exists_integral_multiple`. Establish `hD0 : IsIntegral ℤ (((d.natAbs : ℤ)) • α)`. Break down `Int.natAbs_eq d with e | e` into its components or cases. Rewrite using `[← e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd`. Establish `: (d.natAbs : ℤ) = -d` using `by omega`. Rewrite using `[this, neg_smul]`. Conclude with `hd.neg`. Establish `hD : IsIntegral ℤ ((d.natAbs : E) * α)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((d.natAbs : ℤ) • α) = (d.natAbs : E) * α` using `by rw [zsmul_eq_mul, Int.cast_natCast]`. Rewrite using `[← this]`. Conclude with `hD0`. Take `⟨e, m, hm, hDm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Int.natAbs_ne_zero.2 hd0) l hl.one_lt.ne'`. Use `⟨m, (Nat.Prime.coprime_iff_not_dvd hl).2 hm |>.symm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E _ fun w => ?_` and prove the remaining obligations. Establish `hval_nat : ∀ k : ℕ, w.valuation E (k : E) ≤ 1` using `fun k => by`. Establish `: (k : E) = algebraMap (𝓞 E) E (k : 𝓞 E)` using `by simp`. Rewrite using `[this]`. Conclude with `w.valuation_le_one _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hw : (l : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (hval_nat m) (h w hw)).trans_eq (one_mul _)`. Establish `h1 : w.valuation E ((l : E) ^ e) = 1`. Establish `: (l : E) = algebraMap (𝓞 E) E (l : 𝓞 E)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_pow, this, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 hw, one_pow]`. Establish `h2 : w.valuation E ((d.natAbs : E) * α) ≤ 1`. Establish `: (d.natAbs : E) * α = algebraMap (𝓞 E) E ⟨_, hD⟩` using `rfl`. Rewrite using `[this]`. Conclude with `w.valuation_le_one _`.
-
-Rewrite `h2` using `[hDm]`. Move the coercions through the operations in `at h2`. Rewrite `h2` using `[mul_assoc, map_mul, h1, one_mul]`. Conclude with `h2`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coprime_mul_mem {l : ℕ} (hl : l.Prime) (α : E)
     (h : ∀ w : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ w.asIdeal → w.valuation E α ≤ 1) :
@@ -152,11 +150,11 @@ theorem exists_coprime_mul_mem {l : ℕ} (hl : l.Prime) (α : E)
     exact h2
 
 /- English proof (translation)
-Establish `key : ∀ x : E, (∀ w : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ w.asIdeal → w.valuation E x ≤ 1) → IntAt l (σ x)`. Introduce `x hx`. Take `⟨n, hn, b, hb⟩` from `exists_coprime_mul_mem hl x hx`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `: (n : ℂ) * σ x = σ.toIntAlgHom (algebraMap (𝓞 E) E b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(RingOfIntegers.isIntegral_coe b).map _`. Use `⟨by simp, key _ fun w hw => (h w hw).le, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv₀]`. Conclude with `key _ fun w hw => by rw [map_inv₀, h w hw, inv_one]`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_embed {l : ℕ} (hl : l.Prime) (α : Eˣ)
     (h : ∀ w : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ w.asIdeal → w.valuation E (α : E) = 1) (σ : E →+* ℂ) :
@@ -185,7 +183,7 @@ Both sides reduce to the same expression.
 theorem mul_coord' (z z' : Af E) (w : HeightOneSpectrum (𝓞 E)) : (z * z') w = z w * z' w := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ, pow_succ, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem pow_coord (z : Af E) (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) : (z ^ n) w = (z w) ^ n := by
   induction n with
@@ -193,11 +191,9 @@ theorem pow_coord (z : Af E) (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) : (z ^ n
   | succ n ih => rw [pow_succ, pow_succ, ← ih]; rfl
 
 /- English proof (translation)
-Establish `h1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (Conv.mem_integers_of_mem_hatO hu.1 w)`. Establish `h2` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (Conv.mem_integers_of_mem_hatO hu.2 w)`. Establish `h3 : Valued.v ((u : Af E) w) * Valued.v ((↑u⁻¹ : Af E) w) = 1`. Rewrite using `[← map_mul, ← mul_coord', Units.mul_inv]`. Conclude with `map_one _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm h1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `h4 : Valued.v ((u : Af E) w) * Valued.v ((↑u⁻¹ : Af E) w) ≤ Valued.v ((u : Af E) w) * 1` using `mul_le_mul' le_rfl h2`. Rewrite `h4` using `[h3, mul_one]`.
-
-Conclude with `absurd h4 (not_le.2 hlt)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_coord_of_mem_hatOUnits {c : Ideal (OF E)} {u : (Af E)ˣ} (hu : u ∈ hatOUnits c) (w : HeightOneSpectrum (𝓞 E)) :
     Valued.v ((u : Af E) w) = 1 := by
@@ -214,16 +210,16 @@ theorem val_coord_of_mem_hatOUnits {c : Ideal (OF E)} {u : (Af E)ˣ} (hu : u ∈
   exact absurd h4 (not_le.2 hlt)
 
 /- English proof (translation)
-Unfold `modF`. Simplify using `[val_coord_of_mem_hatOUnits hu]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem modF_of_mem_hatOUnits {c : Ideal (OF E)} {u : (Af E)ˣ} (hu : u ∈ hatOUnits c) : modF u = 1 := by
   unfold modF
   simp [val_coord_of_mem_hatOUnits hu]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Unfold `modF`. Simplify using `only [pow_zero, Units.val_one]`. Conclude with `finprod_eq_one_of_forall_eq_one fun w => by`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (1 : Af E) w = 1` using `rfl`. Rewrite using `[this, map_one]`. Simplify using the standard rewrite rules. Consider the case `succ n ih => rw [pow_succ, (GlobalTheory.CMVal.modF_mul_pos_principal E).1, ih, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem modF_pow (y : (Af E)ˣ) (n : ℕ) : modF (y ^ n) = modF y ^ n := by
   induction n with
@@ -236,9 +232,9 @@ theorem modF_pow (y : (Af E)ˣ) (n : ℕ) : modF (y ^ n) = modF y ^ n := by
   | succ n ih => rw [pow_succ, (GlobalTheory.CMVal.modF_mul_pos_principal E).1, ih, pow_succ]
 
 /- English proof (translation)
-Establish `h1 : UnitAt l (((Algebra.norm ℚ (α : E) : ℝ) : ℂ))`. Establish `e : (((Algebra.norm ℚ (α : E) : ℝ) : ℂ)) = algebraMap ℚ ℂ (Algebra.norm ℚ (α : E))` using `by simp`. Rewrite using `[e, Algebra.norm_eq_prod_embeddings ℚ ℂ]`. Conclude with `unitAt_prod _ _ fun σ _ => unitAt_embed hl α h σ.toRingHom`. Break down `abs_choice ((Algebra.norm ℚ (α : E) : ℝ)) with e | e` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h1`. Rewrite using `[e, Complex.ofReal_neg]`. Conclude with `unitAt_neg h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_norm {l : ℕ} (hl : l.Prime) (α : Eˣ)
     (h : ∀ w : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ w.asIdeal → w.valuation E (α : E) = 1) :
@@ -256,17 +252,15 @@ end GlobalTheory.CMVal.LUnit
 open GlobalTheory.CMVal.LUnit in
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ _ s κ c χ l hc hl hinf hχ y hy`. Establish `hfin` using `GlobalTheory.CMVal.PicFin.finite_picO E c hc`. Establish `hpos : 0 < Nat.card (PicO c)` using `Nat.card_pos`. Establish `hmem : y ^ Nat.card (PicO c) ∈ (princ ⊔ hatOUnits c : Subgroup (Af E)ˣ)`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_card_eq_one'`. Take `⟨p, ⟨α, rfl⟩, u, hu, hpu⟩` from `Subgroup.mem_sup.1 hmem`. Use `set h := Nat.card (PicO c)`. Establish `hval : ∀ w : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ w.asIdeal → w.valuation E (α : E) = 1`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Units.map (algebraMap E (Af E)).toMonoidHom α = y ^ h * u⁻¹` using `eq_mul_inv_of_mul_eq hpu`. Establish `e2 : Valued.v (((Units.map (algebraMap E (Af E)).toMonoidHom α : (Af E)ˣ) : Af E) w) = w.valuation E (α : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (α : E)`. Rewrite using `[← e2, e1, Units.val_mul, mul_coord', Units.val_pow_eq_pow_val, pow_coord, map_mul, map_pow, hy w hw, one_pow, one_mul, val_coord_of_mem_hatOUnits (inv_mem hu) w]`. Establish `hf : ((finPart χ y : ℂ)) ^ h = ((χ.inf α : ℂˣ) : ℂ)⁻¹`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, ← hpu, map_mul, hχ u hu, mul_one, eq_inv_of_mul_eq_one_left (finPart_mul_inf χ α), Units.val_inv_eq_inv_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : modF y ^ h = (|(Algebra.norm ℚ (α : E) : ℝ)|)⁻¹`. Rewrite using `[← modF_pow, ← hpu, (GlobalTheory.CMVal.modF_mul_pos_principal E).1, modF_of_mem_hatOUnits hu, mul_one, (GlobalTheory.CMVal.modF_mul_pos_principal E).2.2]`. Establish `hpow : ((finPart χ y : ℂ) * ((modF y ^ s : ℝ) : ℂ)) ^ h = ((χ.inf α : ℂˣ) : ℂ)⁻¹ * ((((|(Algebra.norm ℚ (α : E) : ℝ)| : ℝ) : ℂ))⁻¹) ^ s`. Rewrite using `[mul_pow, hf, ← Complex.ofReal_pow, ← pow_mul, mul_comm s h, pow_mul, hm]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `unitAt_of_pow hpos ?_` and prove the remaining obligations. Rewrite using `[hpow]`. Use `unitAt_mul (unitAt_inv ?_) (unitAt_pow (unitAt_inv (unitAt_norm hl α hval)) s)` and prove the remaining obligations. Rewrite using `[(hasInfRatio_iff χ φ _).1 hinf α]`.
-
-Use `unitAt_prod _ _ fun i _ => unitAt_zpow (unitAt_mul (unitAt_embed hl α hval (φ i)) (unitAt_inv ?_)) _` and prove the remaining obligations. Conclude with `unitAt_embed hl α hval ((starRingEnd ℂ).comp (φ i))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CMVal.value_unitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I]
     (φ : I → E →+* ℂ), IsCMType φ → ∀ (s : ℕ) (κ : I → ℕ) (c : Ideal (OF E)) (χ : HChar E) (l : ℕ), c ≠ ⊥ → l.Prime →

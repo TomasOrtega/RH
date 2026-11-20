@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.FinHeis
 variable {X M : Type} [AddCommGroup X] [AddCommGroup M] [Module ℂ M] (S : Sys X M)
 
 /- English proof (translation)
-Introduce `h`. Use `S.c_norm x y` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_ne (x y : X) : S.c x y ≠ 0 := by
   intro h
@@ -19,7 +19,7 @@ theorem c_ne (x y : X) : S.c x y ≠ 0 := by
   exact zero_ne_one this
 
 /- English proof (translation)
-Establish `h` using `S.c_self (x + y)`. Rewrite `h` using `[S.c_add_left, S.c_add_right, S.c_add_right, S.c_self, S.c_self]`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem c_swap (x y : X) : S.c x y * S.c y x = 1 := by
   have h := S.c_self (x + y)
@@ -27,7 +27,7 @@ theorem c_swap (x y : X) : S.c x y * S.c y x = 1 := by
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[S.rho_rho, S.rho_rho, smul_smul, add_comm y x]`. Use `congr 1`. Take the linear combination `(-S.c x y) * c_swap S x y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rho_comm (x y : X) (v : M) :
     S.rho x (S.rho y v) = S.c x y ^ 2 • S.rho y (S.rho x v) := by
@@ -36,7 +36,7 @@ theorem rho_comm (x y : X) (v : M) :
   linear_combination (-S.c x y) * c_swap S x y
 
 /- English proof (translation)
-Establish `ha : al γ ≠ 0`. Apply the tactic sequence `rcases hs.1 γ hγ with h | h <;> rw [h] <;> norm_num`. Rewrite using `[rho_comm, hl γ hγ, map_smul, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem eigen {al : X → ℂ} {Γ : AddSubgroup X} {φ : M} (hs : IsSemi S al Γ) (hl : Law S al Γ φ)
     {γ : X} (hγ : γ ∈ Γ) (x : X) :
@@ -48,25 +48,23 @@ theorem eigen {al : X → ℂ} {Γ : AddSubgroup X} {φ : M} (hs : IsSemi S al �
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.strongInduction with`. Consider the case `H s ih`. Introduce `a hm hne`. Establish `key : ∀ γ ∈ Γ, ∀ x₀ ∈ s, al γ • S.rho γ (∑ x ∈ s, a x • S.rho x φ) - S.c γ x₀ ^ 2 • (∑ x ∈ s, a x • S.rho x φ) = ∑ x ∈ s.erase x₀, (a x * (S.c γ x ^ 2 - S.c γ x₀ ^ 2)) • S.rho x φ`. Introduce `γ hγ x₀ _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_erase _ (by simp), map_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_comm (al γ), eigen S hs hl hγ, smul_smul, smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `h : ∃ γ ∈ Γ, ∃ x₀ ∈ s, (∑ x ∈ s.erase x₀, (a x * (S.c γ x ^ 2 - S.c γ x₀ ^ 2)) • S.rho x φ) ≠ 0`. Take `⟨γ, hγ, x₀, hx₀, h⟩` from `h`. Use `ih (s.erase x₀) (Finset.erase_ssubset hx₀) _ ?_ h` and prove the remaining obligations. Rewrite using `[← key γ hγ x₀ hx₀]`. Conclude with `N.sub_mem (N.smul_mem _ (hN _ _ hm)) (N.smul_mem _ hm)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push Not at h`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : s.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce and unpack `rfl`. Conclude with `hne (by simp)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΓ : ∀ x ∈ s, x - x₀ ∈ Γ`. Introduce `x hx`. Use `(hd _).2 fun γ hγ => ?_` and prove the remaining obligations. Establish `h1` using `key γ hγ x hx`. Establish `h2` using `key γ hγ x₀ hx₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h γ hγ x hx, sub_eq_zero]`. Rewrite `h2` using `[h γ hγ x₀ hx₀, sub_eq_zero, h1]`. Establish `h3 : S.c γ x ^ 2 = S.c γ x₀ ^ 2` using `smul_left_injective ℂ hne h2`. Establish `h4` using `S.c_add_right γ (x - x₀) x₀`. Rewrite `h4` using `[sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[h4, mul_pow]`. Conclude with `mul_right_cancel₀ (pow_ne_zero 2 (c_ne S γ x₀)) (by rw [h3, one_mul])`. Establish `hx : ∀ x ∈ s, S.rho x φ = ((S.c x₀ (x - x₀))⁻¹ * (al (x - x₀))⁻¹) • S.rho x₀ φ`. Introduce `x hx`. Establish `h1` using `S.rho_rho x₀ (x - x₀) φ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hl _ (hΓ x hx), map_smul, add_sub_cancel]`. Rewrite using `[mul_smul, h1, smul_smul, inv_mul_cancel₀ (c_ne S _ _), one_smul]`. Establish `hv : (∑ x ∈ s, a x • S.rho x φ) = (∑ x ∈ s, a x * ((S.c x₀ (x - x₀))⁻¹ * (al (x - x₀))⁻¹)) • S.rho x₀ φ`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun x hxs => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx x hxs, smul_smul]`. Rewrite `hm`, `hne` using `[hv]`. Establish `h0` using `(N.smul_mem_iff (left_ne_zero_of_smul hne)).1 hm`. Establish `h1` using `hN (-x₀) _ h0`. Rewrite `h1` using `[S.rho_rho, neg_add_cancel, S.rho_zero]`.
-
-Conclude with `(N.smul_mem_iff (c_ne S _ _)).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_sum {al : X → ℂ} {Γ : AddSubgroup X} {φ : M} (hd : SelfDual S Γ)
     (hs : IsSemi S al Γ) (hl : Law S al Γ φ) (N : Submodule ℂ M)
@@ -126,21 +124,19 @@ theorem mem_of_sum {al : X → ℂ} {Γ : AddSubgroup X} {φ : M} (hd : SelfDual
       exact (N.smul_mem_iff (c_ne S _ _)).1 h1
 
 /- English proof (translation)
-Introduce `X M _ _ _ S al Γ φ hd hs hl hc`. Establish `main : ∀ N : Submodule ℂ M, (∀ x, ∀ v ∈ N, S.rho x v ∈ N) → N = ⊥ ∨ N = ⊤`. Introduce `N hN`. Rewrite using `[or_iff_not_imp_left]`. Introduce `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Establish `hmem : v ∈ Submodule.span ℂ (Set.range fun x => S.rho x φ)`. Rewrite using `[hc]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨f, hf⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Establish `hφ : φ ∈ N`. Use `mem_of_sum S hd hs hl N hN f.support f ?_ ?_` and prove the remaining obligations. Rewrite `hv` using `[← hf]`. Conclude with `hv`. Conclude with `fun h => hv0 (hf.symm.trans h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← hc, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hN x φ hφ`. Use `⟨main, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ x, ∀ w ∈ Submodule.span ℂ (Set.range fun x => S.rho x v), S.rho x w ∈ Submodule.span ℂ (Set.range fun x => S.rho x v)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `x w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨y, rfl⟩` from `hw`. Use `show S.rho x (S.rho y v) ∈ _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[S.rho_rho]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x + y, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ ha`. Break down `main _ hinv with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: v ∈ Submodule.span ℂ (Set.range fun x => S.rho x v)` using `Submodule.subset_span ⟨0, S.rho_zero v⟩`.
-
-Rewrite `this` using `[h]`. Conclude with `hv this`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem irreducible : ∀ {X M : Type} [AddCommGroup X] [AddCommGroup M] [Module ℂ M] (S : Sys X M)
     (al : X → ℂ) (Γ : AddSubgroup X) (φ : M), SelfDual S Γ → IsSemi S al Γ → Law S al Γ φ →

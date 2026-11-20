@@ -99,9 +99,9 @@ def AntisymPerturbation.Statement : Prop :=
 section Inhabitants
 
 /- English proof (translation)
-Establish `hx' : x (τ, a) = x (τ, b)` using `hx`. Unfold `antisymDelta`. Rewrite using `[map_prod]`. Apply `Finset.prod_eq_zero (Finset.mem_univ τ)` to reduce the goal to its premises. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.prod_eq_zero (Finset.mem_univ a)` to reduce the goal to its premises. Rewrite using `[map_prod]`. Apply `Finset.prod_eq_zero (Finset.mem_Ioi.2 hab)` to reduce the goal to its premises. Simplify using `[hx']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem eval_antisymDelta_eq_zero (T : Type*) [Fintype T] [DecidableEq T] (N : ℕ) {τ : T}
     {a b : Fin N} (hab : a < b) {x : T × Fin N → ℝ} (hx : x ∈ diagHyperplane T N τ a b) :
@@ -117,7 +117,7 @@ theorem eval_antisymDelta_eq_zero (T : Type*) [Fintype T] [DecidableEq T] (N : �
   simp [hx']
 
 /- English proof (translation)
-Use `⟨Set.univ, isOpen_univ, ⟨0, Set.mem_univ _, rfl⟩, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hab : a < b` using `Fin.lt_def.2 (lt_of_lt_of_le ha hb)`. Rewrite using `[map_mul, eval_antisymDelta_eq_zero T N hab hx.2, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem antisymDelta_mul_vanishes (T : Type*) [Fintype T] [DecidableEq T] (N j : ℕ)
     (l : MvPolynomial (T × Fin N) ℝ) (τ : T) (a b : Fin N) (ha : a.val < j) (hb : j ≤ b.val) :
@@ -141,7 +141,7 @@ Evaluate the decidable proposition.
 lemma Ioi_two_fin_three : Finset.Ioi (2 : Fin 3) = ∅ := by decide
 
 /- English proof (translation)
-Rewrite using `[antisymDelta, Fin.prod_univ_one, Fin.prod_univ_three, Ioi_zero_fin_three, Ioi_one_fin_three, Ioi_two_fin_three]`. Simplify using `only [Finset.prod_pair (show (1 : Fin 3) ≠ 2 by decide), Finset.prod_singleton, Finset.prod_empty]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma antisymDelta_fin_one_three :
     antisymDelta (Fin 1) 3 = (X (0, 0) - X (0, 1)) * (X (0, 0) - X (0, 2)) * (X (0, 1) - X (0, 2)) := by
@@ -154,7 +154,7 @@ def antisymSample : MvPolynomial (Fin 1 × Fin 3) ℝ :=
   antisymDelta (Fin 1) 3 * ∑ p : Fin 1 × Fin 3, X p
 
 /- English proof (translation)
-Rewrite using `[antisymSample, antisymDelta_fin_one_three, Fintype.sum_prod_type, Fin.sum_univ_one, Fin.sum_univ_three]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma antisymSample_eq : antisymSample =
     (X (0, 0) - X (0, 1)) * (X (0, 0) - X (0, 2)) * (X (0, 1) - X (0, 2)) *
@@ -163,13 +163,13 @@ lemma antisymSample_eq : antisymSample =
     Fin.sum_univ_three]
 
 /- English proof (translation)
-Establish `hX : ∀ p q : Fin 1 × Fin 3, IsHomogeneous ((X p - X q : MvPolynomial (Fin 1 × Fin 3) ℝ)) 1` using `fun p q => (isHomogeneous_X ℝ p).sub (isHomogeneous_X ℝ q)`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_homogeneousSubmodule, antisymSample_eq]`. Establish `hdeg : antisymDegree (Fin 1) 3 + 1 = 1 + 1 + 1 + 1`. Simplify using `[antisymDegree]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hdeg]`. Conclude with `(((hX _ _).mul (hX _ _)).mul (hX _ _)).mul (((isHomogeneous_X ℝ _).add (isHomogeneous_X ℝ _)).add (isHomogeneous_X ℝ _))`. Apply the tactic sequence `rintro σ ⟨τ, a, b, hab, hblk, rfl⟩ fin_cases τ fin_cases a <;> fin_cases b <;> simp at hab hblk ⊢`. Rewrite using `[antisymSample_eq]`. Simplify using `[Equiv.swap_apply_def]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Use `congrArg (eval (fun p : Fin 1 × Fin 3 => ((p.2 : ℕ) : ℝ))) h` as an intermediate fact. Rewrite `this` using `[antisymSample_eq]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at this`.
+A detailed English derivation is pending.
 -/
 theorem antisymSample_mem : antisymSample ∈ antisymSpace (Fin 1) 3 2 ∧ antisymSample ≠ 0 := by
   have hX : ∀ p q : Fin 1 × Fin 3, IsHomogeneous ((X p - X q : MvPolynomial (Fin 1 × Fin 3) ℝ)) 1 :=

@@ -9,11 +9,11 @@ namespace GlobalTheory.QuadFieldCriterion
 open Polynomial IsLocalRing
 
 /- English proof (translation)
-Take `⟨r₀, rfl⟩` from `residue_surjective r`. Establish `hmon : (X ^ 2 - C t * X + C n : O[X]).Monic` using `by monicity!`. Establish `h0 : r₀ ^ 2 - t * r₀ + n ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff]`. Simplify using `using hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨s, hs, -⟩` from `HenselianRing.is_henselian (I := maximalIdeal O) _ hmon r₀ (by simpa using h0) (by`. Establish `h1 : IsUnit (residue O (t ^ 2 - 4 * n))` using `hd.map _`. Establish `h2 : residue O (t ^ 2 - 4 * n) = (residue O (2 * r₀ - t)) ^ 2`. Simplify using `only [map_sub, map_pow, map_mul, map_ofNat]`. Take the linear combination `(-4) * hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h1` using `[h2, isUnit_pow_iff two_ne_zero]`. Establish `h3 : eval r₀ (derivative (X ^ 2 - C t * X + C n : O[X])) = 2 * r₀ - t` using `by simp; norm_num`. Rewrite using `[h3]`. Conclude with `h1)`. Conclude with `⟨s, by simpa using hs⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_root_of_residual {O : Type*} [CommRing O] [IsLocalRing O]
     [HenselianRing O (maximalIdeal O)] (t n : O) (hd : IsUnit (t ^ 2 - 4 * n))
@@ -37,7 +37,7 @@ theorem exists_root_of_residual {O : Type*} [CommRing O] [IsLocalRing O]
   exact ⟨s, by simpa using hs⟩
 
 /- English proof (translation)
-Establish `hmon : (X ^ 2 - C t * X + C n : O[X]).Monic` using `by monicity!`. Establish `hi : IsIntegral O x` using `⟨_, hmon, by simpa using hx⟩`. Take `⟨s, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi`. Use `⟨s, IsFractionRing.injective O K ?_⟩` and prove the remaining obligations. Simplify using `using hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_root_of_fraction {O K : Type*} [CommRing O] [IsDomain O] [IsIntegrallyClosed O]
     [Field K] [Algebra O K] [IsFractionRing O K] (t n : O) (x : K)
@@ -50,17 +50,17 @@ theorem exists_root_of_fraction {O K : Type*} [CommRing O] [IsDomain O] [IsInteg
   simpa using hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `hF ⟨x, hx⟩`. Use `letI := hF.toField`. Establish `hx' : algebraMap K A x ^ 2 - algebraMap K A t * algebraMap K A x + algebraMap K A n = 0`. Simplify using `using congrArg (algebraMap K A) hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hprod : (algebraMap K A (-x) + algebraMap K A 1 * w) * (algebraMap K A (x - t) + algebraMap K A 1 * w) = 0`. Simplify using `only [map_neg, map_sub, map_one]`. Take the linear combination `hw - hx'`. Break down `mul_eq_zero.mp hprod with h | h` into its components or cases. Conclude with `one_ne_zero (hind _ _ h).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero (hind _ _ h).2`. Introduce `hno`. Use `⟨⟨1, 0, fun h => one_ne_zero (hind 1 0 (by simpa using h)).1⟩, mul_comm, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨a, b, rfl⟩` from `hspan z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : a ^ 2 + t * a * b + n * b ^ 2 ≠ 0`. Introduce `hN`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Establish `: a = 0` using `by simpa using hN`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `this` using the available equality. Simplify using `at hz`. Conclude with `hno ⟨-a / b, by field_simp; linear_combination hN⟩`. Use `⟨algebraMap K A (a ^ 2 + t * a * b + n * b ^ 2)⁻¹ * (algebraMap K A a + algebraMap K A b * (algebraMap K A t - w)), ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap K A (a ^ 2 + t * a * b + n * b ^ 2)⁻¹ * algebraMap K A (a ^ 2 + t * a * b + n * b ^ 2) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul, inv_mul_cancel₀ hN, map_one]`. Rewrite using `[← h1]`. Simplify using `only [map_add, map_mul, map_pow]`. Take the linear combination `(- algebraMap K A (a ^ 2 + t * a * b + n * b ^ 2)⁻¹ * algebraMap K A b ^ 2) * hw`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isField_iff_no_root {K A : Type*} [Field K] [CommRing A] [Algebra K A] (w : A) (t n : K)
     (hw : w ^ 2 - algebraMap K A t * w + algebraMap K A n = 0)
@@ -102,11 +102,11 @@ theorem isField_iff_no_root {K A : Type*} [Field K] [CommRing A] [Algebra K A] (
       algebraMap K A b ^ 2) * hw
 
 /- English proof (translation)
-Introduce `F _ _ v A _ _ w t n hd hw hspan hind`. Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Rewrite using `[isField_iff_no_root w _ _ hw hspan hind]`. Use `not_congr ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_root_of_fraction (K := Fv F v) t n x hx`. Conclude with `⟨residue _ s, by simpa using congrArg (residue _) hs⟩`. Introduce and unpack `⟨r, hr⟩`. Take `⟨s, hs⟩` from `exists_root_of_residual t n hd r hr`. Conclude with `⟨(s : Fv F v), by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg (algebraMap (v.adicCompletionIntegers F) (Fv F v)) hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem isField_iff_no_residual_root : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (A : Type) [CommRing A] [Algebra (Fv F v) A] (w : A) (t n : v.adicCompletionIntegers F), IsUnit (t ^ 2 - 4 * n) → w ^ 2 - algebraMap (Fv F v) A t * w + algebraMap (Fv F v) A n = 0 → (∀ z : A, ∃ a b : Fv F v, z = algebraMap (Fv F v) A a + algebraMap (Fv F v) A b * w) → (∀ a b : Fv F v, algebraMap (Fv F v) A a + algebraMap (Fv F v) A b * w = 0 → a = 0 ∧ b = 0) → (IsField A ↔ ¬ ∃ r : IsLocalRing.ResidueField (v.adicCompletionIntegers F), r ^ 2 - IsLocalRing.residue (v.adicCompletionIntegers F) t * r + IsLocalRing.residue (v.adicCompletionIntegers F) n = 0) := by
   intro F _ _ v A _ _ w t n hd hw hspan hind

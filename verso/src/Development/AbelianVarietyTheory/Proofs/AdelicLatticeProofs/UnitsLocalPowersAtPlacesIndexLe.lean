@@ -9,11 +9,11 @@ namespace GlobalTheory.CNorm
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Establish `hval : HeightOneSpectrum.valuation F v (p : F) = v.intValuation (p : 𝓞 F)`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := F)]`. Simplify using the standard rewrite rules. Establish `hne : v.intValuation (p : 𝓞 F) ≠ 0` using `v.intValuation_ne_zero _ (by exact_mod_cast hp.ne')`. Establish `hle : v.intValuation (p : 𝓞 F) ≤ 1` using `v.intValuation_le_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := v.intValuation (p : 𝓞 F) with ha`. Establish `hlog : WithZero.log a ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log hne, WithZero.exp_zero]`. Conclude with `hle`. Use `⟨(-WithZero.log a).toNat, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, Int.toNat_of_nonneg (by omega), neg_neg, WithZero.exp_log hne]`. Rewrite using `[← HeightOneSpectrum.intValuation_le_pow_iff_dvd, Int.toNat_of_nonneg (by omega), neg_neg, WithZero.exp_log hne]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_valuation_natCast_eq_exp_neg_and_dvd {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) {p : ℕ} (hp : 0 < p) :
@@ -36,11 +36,11 @@ private theorem exists_valuation_natCast_eq_exp_neg_and_dvd {F : Type} [Field F]
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[_root_.GlobalTheory.CNorm.mem_powSub, Subgroup.mem_comap]`. Unfold `_root_.GlobalTheory.CNorm.pows`. Simplify using `only [Subgroup.mem_map, Subgroup.mem_top, true_and, powMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨r, hr⟩`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Rewrite `hr` using `[zero_pow hp.ne']`. Conclude with `(map_ne_zero φ).2 x.ne_zero hr.symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 r hr0, Units.ext (by simpa using hr)⟩`. Introduce and unpack `⟨y, hy⟩`. Use `⟨(y : L), ?_⟩` and prove the remaining obligations. Use `congrArg Units.val hy` as an intermediate fact. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem powSub_eq_comap_pows_units_map {F L : Type} [Field F] [Field L] {p : ℕ} (hp : 0 < p)
     (φ : F →+* L) :
@@ -64,9 +64,9 @@ private theorem powSub_eq_comap_pows_units_map {F L : Type} [Field F] [Field L] 
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Establish `hdef : _root_.GlobalTheory.CNorm.pIdx p (⊤ : Subgroup Lˣ) = (_root_.GlobalTheory.CNorm.pows p (⊤ : Subgroup Lˣ)).index`. Unfold `_root_.GlobalTheory.CNorm.pIdx`. Conclude with `Subgroup.relIndex_top_right _`. Rewrite `h`, the goal using `[hdef]`. Rewrite using `[powSub_eq_comap_pows_units_map hp, Subgroup.index_comap]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `Subgroup.relIndex_dvd_index_of_normal (_root_.GlobalTheory.CNorm.pows p (⊤ : Subgroup Lˣ)) (Units.map φ.toMonoidHom).range`. Conclude with `⟨ne_zero_of_dvd_ne_zero h hd, Nat.le_of_dvd (Nat.pos_of_ne_zero h) hd⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem powSub_index_ne_zero_and_le_pIdx {F L : Type} [Field F] [Field L] {p : ℕ} (hp : 0 < p)
     (φ : F →+* L) (h : _root_.GlobalTheory.CNorm.pIdx p (⊤ : Subgroup Lˣ) ≠ 0) :
@@ -83,9 +83,9 @@ private theorem powSub_index_ne_zero_and_le_pIdx {F L : Type} [Field F] [Field L
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.CNorm.pTor`. Establish `hinj : Function.Injective (fun x : {x : Lˣ // x ∈ (⊤ : Subgroup Lˣ) ∧ x ^ p = 1} => (⟨(x.1 : L), by`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots hp, ← Units.val_pow_eq_pow_val, x.2.2, Units.val_one]⟩ : (Polynomial.nthRoots p (1 : L)).toFinset)) := by`. Introduce `x y hxy`. Conclude with `Subtype.ext (Units.ext (congrArg Subtype.val hxy))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem pTor_units_le {L : Type} [Field L] {p : ℕ} (hp : 0 < p) :
     _root_.GlobalTheory.CNorm.pTor p (⊤ : Subgroup Lˣ) ≤ p := by
@@ -105,11 +105,11 @@ private theorem pTor_units_le {L : Type} [Field L] {p : ℕ} (hp : 0 < p) :
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Establish `hdvd : ∏ v ∈ S, v.asIdeal ^ e v ∣ Ideal.span {(p : 𝓞 F)}`. Use `Finset.prod_dvd_of_coprime ?_ he` and prove the remaining obligations. Introduce `v _ w _ hvw`. Establish `hne : v.asIdeal ≠ w.asIdeal` using `fun h => hvw (HeightOneSpectrum.ext h)`. Conclude with `(Ideal.isCoprime_iff_sup_eq.mpr (Ideal.IsMaximal.coprime_of_ne v.isMaximal w.isMaximal hne)).pow`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : Ideal.absNorm (Ideal.span {(p : 𝓞 F)}) = p ^ Module.finrank ℚ F`. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `: (p : 𝓞 F) = algebraMap ℤ (𝓞 F) (p : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `Ideal.absNorm_dvd_absNorm_of_le (Ideal.le_of_dvd hdvd)`. Rewrite `h` using `[hnorm, map_prod]`. Simplify using `only [map_pow] at h`. Conclude with `Nat.le_of_dvd (pow_pos hp _) h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prod_absNorm_pow_le_pow_finrank {F : Type} [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) {p : ℕ} (hp : 0 < p) (e : HeightOneSpectrum (𝓞 F) → ℕ)
@@ -135,17 +135,15 @@ open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
 
 /- English proof (translation)
-Introduce `p F _ _ _ S hp`. Use `choose! e he hdiv using fun v : HeightOneSpectrum (𝓞 F) => exists_valuation_natCast_eq_exp_neg_and_dvd v hp`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), (_root_.GlobalTheory.CNorm.powSub p (algebraMap F (v.adicCompletion F))).index ≠ 0 ∧ (_root_.GlobalTheory.CNorm.powSub p (algebraMap F (v.adicCompletion F))).index ≤ p * Ideal.absNorm v.asIdeal ^ e v * p`. Introduce `v`. Take `⟨ht, hrel⟩` from `_root_.GlobalTheory.CNorm.pIdx_units_finite_extension_adicCompletion p F v (e v) (v.adicCompletion F) hp (he v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hrel` using `[Module.finrank_self, pow_one]`. Establish `hN : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `hne : _root_.GlobalTheory.CNorm.pIdx p (⊤ : Subgroup (v.adicCompletion F)ˣ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hrel]`. Conclude with `mul_ne_zero (mul_ne_zero hp.ne' (pow_ne_zero _ hN)) ht`. Take `⟨h1, h2⟩` from `powSub_index_ne_zero_and_le_pIdx hp (algebraMap F (v.adicCompletion F)) hne`. Use `⟨h1, h2.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hrel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left _ (pTor_units_le hp)`. Establish `hinf : _root_.GlobalTheory.CNorm.finPow p F S = ⨅ v : S, _root_.GlobalTheory.CNorm.powSub p (algebraMap F ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F))`. Unfold `_root_.GlobalTheory.CNorm.finPow`. Rewrite using `[iInf_subtype']`. Rewrite using `[hinf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨Subgroup.index_iInf_ne_zero fun v => (hloc v).1, (Subgroup.index_iInf_le _).trans ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_coe_sort S (fun v => p * Ideal.absNorm v.asIdeal ^ e v * p)]`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_const]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ p ^ (2 * S.card) * p ^ Module.finrank ℚ F := Nat.mul_le_mul_left _ (prod_absNorm_pow_le_pow_finrank S hp e fun v _ => hdiv v)`. Use `_ = p ^ (2 * (S.card + Fintype.card (InfinitePlace F))) := by`. Rewrite using `[IsTotallyComplex.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, ← pow_add]`. Put the polynomial expressions in normal form.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CNorm.index_finPow_le : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F]
     [IsTotallyComplex F] (S : Finset (HeightOneSpectrum (𝓞 F))), 0 < p →

@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.MPDict.Under
 open GlobalTheory.TuplePoint GlobalTheory.Points
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_preimage f, ← Spec.map_preimage g]`. Use `congr 1`. Use `ext1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spZ_ext (f g : Sp ℂ ⟶ Sp ℤ) : f = g := by
   rw [← Spec.map_preimage f, ← Spec.map_preimage g]
@@ -29,13 +29,13 @@ theorem spZ_ext (f g : Sp ℂ ⟶ Sp ℤ) : f = g := by
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-The claim follows from `ext_of_dense (𝟙 (Sp ℂ)) fun _ => h`.
+A detailed English derivation is pending.
 -/
 theorem top_ext {s s' : Γ(Sp ℂ, ⊤)} (h : valR (𝟙 (Sp ℂ)) ⊤ s = valR (𝟙 (Sp ℂ)) ⊤ s') : s = s' :=
   ext_of_dense (𝟙 (Sp ℂ)) fun _ => h
 
 /- English proof (translation)
-Use `GlobalTheory.ProjSpace.hom_ext (spZ_ext _ _) fun y => ⟨⊤, trivial, i, h₁, h₂, fun j => top_ext ?_⟩` and prove the remaining obligations. Establish `e₁` using `valR_appLE (𝟙 (Sp ℂ)) φ h₁ le_rfl (ratio ℤ N i j)`. Establish `e₂` using `valR_appLE (𝟙 (Sp ℂ)) ψ h₂ le_rfl (ratio ℤ N i j)`. Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Conclude with `e₁.trans ((h j).trans e₂.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_eq_of_val {N : ℕ} {φ ψ : Sp ℂ ⟶ PSpace ℤ N} (i : Fin (N + 1))
     (h₁ : ⊤ ≤ φ ⁻¹ᵁ chart ℤ N i) (h₂ : ⊤ ≤ ψ ⁻¹ᵁ chart ℤ N i)
@@ -51,7 +51,7 @@ variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 abbrev blockVec (z : (Σ k, Bk n k) → ℂ) (k : Fin (m + 1)) : Fin (n k + 1) → ℂ := fun i => z ⟨k, i⟩
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨i, hi⟩ := hz k exact hi (congrFun h i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockVec_ne_zero {z : (Σ k, Bk n k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : Fin (m + 1)) :
     blockVec z k ≠ 0 := fun h => by
@@ -59,7 +59,7 @@ theorem blockVec_ne_zero {z : (Σ k, Bk n k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k
   exact hi (congrFun h i)
 
 /- English proof (translation)
-Introduce `k i` and use `by refine ⟨⟨fun hy => ne_zero_of_le (h k) hy le_rfl, fun hi => le_preimage_chart (h k) hi⟩, fun j hy => ?_⟩ exact valR_pullRatio (h k) hy le_rfl j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnder_of_comp {z : (Σ k, Bk n k) → ℂ} (hz : ∀ k, blockVec z k ≠ 0) (y : CxPts (mpStr ℤ m n) σ₀)
     (h : ∀ k, y.1 ≫ prB n k = point ℤ (blockVec z k) (hz k)) : IsUnder y z := fun k i => by
@@ -67,7 +67,7 @@ theorem isUnder_of_comp {z : (Σ k, Bk n k) → ℂ} (hz : ∀ k, blockVec z k �
   exact valR_pullRatio (h k) hy le_rfl j
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hz' k`. Establish `hy : y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k i)` using `((H k i).1).2 hi`. Use `hom_eq_of_val i (le_preimage_comp y.1 _ le_rfl hy) ((le_point_preimage_iff (o := ℤ) (ht := hz k) i).2 hi) fun j => ?_` and prove the remaining obligations. Use `(valR_appLE y.1 (prB n k) le_rfl hy (ratio ℤ (n k) i j)).symm.trans ?_` and prove the remaining obligations. Conclude with `((H k i).2 j hy).trans (valR_point_ratio (t := blockVec z k) (ht := hz k) hi j).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comp_of_isUnder {z : (Σ k, Bk n k) → ℂ} (hz : ∀ k, blockVec z k ≠ 0) (hz' : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     {y : CxPts (mpStr ℤ m n) σ₀} (H : IsUnder y z) (k : Fin (m + 1)) :
@@ -80,9 +80,9 @@ theorem comp_of_isUnder {z : (Σ k, Bk n k) → ℂ} (hz : ∀ k, blockVec z k �
   exact ((H k i).2 j hy).trans (valR_point_ratio (t := blockVec z k) (ht := hz k) hi j).symm
 
 /- English proof (translation)
-Establish `ht` using `blockVec_ne_zero hz`. Set `a : ∀ k, Sp ℂ ⟶ PSpace ℤ (n k)` to `fun k => point ℤ (blockVec z k) (ht k)`. Establish `ha : ∀ k, a k ≫ toSpecBase ℤ (n k) = spMap σ₀` using `fun _ => spZ_ext _ _`. Set `y : CxPts (mpStr ℤ m n) σ₀` to `⟨lift m n (spMap σ₀) a ha, lift_mpStr m n _ a ha⟩`. Establish `hy : ∀ k, y.1 ≫ prB n k = a k` using `lift_pr m n _ a ha`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨y, isUnder_of_comp ht y hy, fun y' H => Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `GroundTheory.Arith.SchemeCoh.ProjSpace.hom_ext m n _ _ fun k => (comp_of_isUnder ht hz H k).trans (hy k).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_isUnder (m : ℕ) (n : Fin (m + 1) → ℕ) (z : (Σ k, Bk n k) → ℂ)
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : ∃! y : CxPts (mpStr ℤ m n) σ₀, IsUnder y z := by

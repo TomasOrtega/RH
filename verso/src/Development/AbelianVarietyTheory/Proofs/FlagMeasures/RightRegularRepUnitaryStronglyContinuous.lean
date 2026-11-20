@@ -12,17 +12,15 @@ open scoped InnerProductSpace
 namespace GlobalTheory.RightRegFund
 
 /- English proof (translation)
-Take `⟨hT, hL, hS, -⟩` from `GlobalTheory.T.finiteAdelicUnitary_congruenceTopology I`. Take `⟨Γ, hΓ, hc, -, hfd⟩` from `GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I`. Take `⟨hl, hrt, -⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf`. Establish `hD` using `hfd μf fund hfund`. Establish `: BorelSpace I.GA` using `inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (I.muA μf).IsMulLeftInvariant` using `⟨hl⟩`. Establish `: (I.muA μf).IsMulRightInvariant` using `⟨hrt⟩`. Establish `: IsFiniteMeasureOnCompacts (I.muA μf)`. Unfold `AutInst.muA`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hr : ∀ y, ∃ γ : Γ, I.rep fund y = (γ : I.GA) * y ∧ I.rep fund y ∈ fund`. Introduce `y`. Establish `h` using `hfund.2.1 y`. Establish `e : I.rep fund y = h.choose * y`. Unfold `AutInst.rep`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `dif_pos h`. Establish `hm : h.choose ∈ (Γ : Set I.GA)`. Establish `k` using `h.choose_spec.1`. Generalize the expression as in `h.choose = z at k ⊢`. Rewrite using `[hΓ]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `k`. Conclude with `⟨⟨h.choose, hm⟩, e, e ▸ h.choose_spec.2⟩`. Use `⟨map_one hD hfund.1 hr hR, map_mul hD hfund.1 hr hR, norm_map hD hfund.1 hr hR, continuous_map hD hfund.1 hr hR, fun F => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(ae_good hD).mono fun y hy γ hγ => ?_` and prove the remaining obligations. Establish `hm : γ ∈ (Γ : Set I.GA)` using `hΓ ▸ hγ`.
-
-Unfold `AutInst.ext`. Rewrite using `[rep_mul hr hy ⟨γ, hm⟩]`. Conclude with `aestronglyMeasurable_comp_rep hD hfund.1 hr (Lp.stronglyMeasurable F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRightReg_props (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf]
     (fund : Set I.GA) (hfund : I.IsFundDom (I.muA μf) fund)
@@ -59,7 +57,7 @@ theorem isRightReg_props (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] 
   · exact aestronglyMeasurable_comp_rep hD hfund.1 hr (Lp.stronglyMeasurable F)
 
 /- English proof (translation)
-Introduce `B` and use `isRightReg_props B.I B.μf B.fund B.fund_spec B.R B.R_spec`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rightReg_unitary_continuous : ∀ B : RowsAut, B.R 1 = 1 ∧ (∀ g h, B.R (g * h) = B.R g * B.R h) ∧ (∀ g F, ‖B.R g F‖ = ‖F‖) ∧ (∀ F, Continuous fun g => B.R g F) ∧ ∀ F : B.I.L2 B.μf B.fund, (∀ᵐ y ∂(B.I.muA B.μf), ∀ γ ∈ B.I.GFset, B.I.ext F (γ * y) = B.I.ext F y) ∧ AEStronglyMeasurable (B.I.ext F) (B.I.muA B.μf) :=
   fun B => isRightReg_props B.I B.μf B.fund B.fund_spec B.R B.R_spec

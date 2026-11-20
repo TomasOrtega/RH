@@ -14,7 +14,7 @@ variable {k F : Type u} [CommRing k] [Group F] [TopologicalSpace F] [IsTopologic
   [Fintype F]
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[cochainOf_normHomotopy, cochainOf_normHomotopy]`. Use `Finset.sum_congr rfl fun a _ => congrArg (Z.ρ a) ?_` and prove the remaining obligations. Conclude with `congrArg (fun φ : X₁ ⊗ Y₂ ⟶ Z => φ.hom ((e ⊗ₜ[k] cochainOf Y₂ y (consTuple h a⁻¹ σ) : (X₁ ⊗ Y₂ : Rep k F)))) hc`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normHomotopy_compat_left {X₁ X₂ Y₁ Y₂ Z : Rep.{u} k F} [IsDiscreteRep Y₁] [IsDiscreteRep Y₂]
     [IsDiscreteRep Z] (μ₁ : X₁ ⊗ Y₁ ⟶ Z) (μ₂ : X₂ ⊗ Y₂ ⟶ Z) (f : X₁ ⟶ X₂) (g : Y₂ ⟶ Y₁)
@@ -29,7 +29,7 @@ theorem normHomotopy_compat_left {X₁ X₂ Y₁ Y₂ Z : Rep.{u} k F} [IsDiscre
     (X₁ ⊗ Y₂ : Rep k F)))) hc
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[cochainOf_normHomotopy, cochainOf_normHomotopy]`. Use `Finset.sum_congr rfl fun a _ => congrArg (Z.ρ a) ?_` and prove the remaining obligations. Conclude with `congrArg (fun φ : X₂ ⊗ Y₁ ⟶ Z => φ.hom ((e ⊗ₜ[k] cochainOf Y₁ y (consTuple h a⁻¹ σ) : (X₂ ⊗ Y₁ : Rep k F)))) hc`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normHomotopy_compat_right {X₂ X₃ Y₁ Y₂ Z : Rep.{u} k F} [IsDiscreteRep Y₁]
     [IsDiscreteRep Y₂] [IsDiscreteRep Z] (μ₂ : X₂ ⊗ Y₂ ⟶ Z) (μ₃ : X₃ ⊗ Y₁ ⟶ Z) (f : Y₁ ⟶ Y₂)
@@ -87,33 +87,27 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 include hμ₂ hμ₂ᵣ in
 
 /- English proof (translation)
-Use `LeibnizPairing.homology_δ_add_homology_δ (SM := mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ SA SAᵥ sA SAᵣ sAr)) (SN := cochainsShortComplex SB) (tateCompactCupLeibniz φ ψ μ₂ μ₂ᵥ μ₂ᵣ hμ₂ hμ₂ᵣ) (tateCompactCupLeibniz φ ψ μ₁ μ₁ᵥ μ₁ᵣ hμ₁ hμ₁ᵣ) (tateCompactCupLeibniz φ ψ …` and prove the remaining obligations. Introduce `r s n h p y revert p`. Introduce `(p : (tateGlobalComplex SA.X₁ fun w => (SAᵣ w).X₁).X r × shiftNegOneX (tateLocalComplex (fun v => (SAᵥ v).X₁) fun w => (SAᵣ w).X₁) r)`. Take `⟨⟨x0, e⟩, b⟩` from `p`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_pairing_left μ₁ μ₂ h₁₂ h (cochainOf _ x0) (cochainOf _ y) σ`. Break down `r with _ | r` into its components or cases. Break down `s with _ | s` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `rfl : n = 0` from `by omega`. Use function extensionality and compare the values at `w`. Conclude with `congrArg (fun φ' => Rep.Hom.hom φ' ((e w ⊗ₜ[k] cochainOf SB.X₂ y (fun i => i.elim0) : ((SAᵣ w).X₁ ⊗ Rep.res (ψ w).toMonoidHom SB.X₂ : Rep k (F w))))) (h₁₂ᵣ w)`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `r with _ | r` into its components or cases. Break down `s with _ | t` into its components or cases. Take `rfl : n = 0` from `by omega`. Conclude with `Subsingleton.elim (α := PUnit) _ _`. Take `rfl : n = t + 1` from `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(0 : (tateLocalComplex Cᵥ Cᵣ).X t) + tateCupHomotopyL ψ μ₂ᵣ (Cᵥ := Cᵥ) (rfl : t + 1 = t + 1) ((piRepHom fun w => (SAᵣ w).f).hom e) y = (0 : (tateLocalComplex Cᵥ Cᵣ).X t) + tateCupHomotopyL ψ μ₁ᵣ (Cᵥ := Cᵥ) (rfl : t + 1 = t + 1) e (((cochainsMap SB.g).f (t + 1)).hom y)`. Use `erw [tateCupHomotopyL_apply, tateCupHomotopyL_apply]`. Use `congrArg _ (Prod.ext rfl (funext fun w => congrArg Neg.neg ?_))` and prove the remaining obligations. Conclude with `normHomotopy_compat_left (μ₁ᵣ w) (μ₂ᵣ w) (SAᵣ w).f _ (h₁₂ᵣ w) rfl (e w) _`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(tateLocalCup φ ψ μ₂ᵥ μ₂ᵣ).μ (show r + s = m by omega) ((tateLocalMap (fun v => (SAᵥ v).f) fun w => (SAᵣ w).f).f r |>.hom b) (((tateLocalResB φ ψ SB.X₂).f s).hom y) + 0 = (tateLocalCup φ ψ μ₁ᵥ μ₁ᵣ).μ (show r + s = m by omega) b (((tateLocalResB φ ψ SB.X₃).f s).hom (((cochainsMap …`. Rewrite using `[add_zero, add_zero]`. Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `cupCochain_pairing_left (S := SAᵥ v) (T := SB.map (Rep.resFunctor (φ v).toMonoidHom)) (μ₁ᵥ v) (μ₂ᵥ v) (h₁₂ᵥ v) (show r + s = m by omega) (cochainOf _ (b.1 v)) (fun τ => cochainOf SB.X₂ y (⇑(φ v).toMonoidHom ∘ τ)) σ`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_pairing_left (S := SAᵣ w) (T := SB.map (Rep.resFunctor (ψ w).toMonoidHom)) (μ₁ᵣ w) (μ₂ᵣ w) (h₁₂ᵣ w) (show r + s = m by omega) (cochainOf _ (b.2 w)) (fun τ => cochainOf SB.X₂ y (⇑(ψ w).toMonoidHom ∘ τ)) σ`. Introduce `r s n h p y revert p`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `(p : (tateGlobalComplex SA.X₂ fun w => (SAᵣ w).X₂).X r × shiftNegOneX (tateLocalComplex (fun v => (SAᵥ v).X₂) fun w => (SAᵣ w).X₂) r)`. Take `⟨⟨x0, e⟩, b⟩` from `p`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `cupCochain_pairing_right μ₂ μ₃ h₂₃ h (cochainOf _ x0) (cochainOf _ y) σ`. Break down `r with _ | r` into its components or cases. Break down `s with _ | s` into its components or cases. Take `rfl : n = 0` from `by omega`. Use function extensionality and compare the values at `w`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun φ' => Rep.Hom.hom φ' ((e w ⊗ₜ[k] cochainOf SB.X₁ y (fun i => i.elim0) : ((SAᵣ w).X₂ ⊗ Rep.res (ψ w).toMonoidHom SB.X₁ : Rep k (F w))))) (h₂₃ᵣ w)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Break down `r with _ | r` into its components or cases. Break down `s with _ | t` into its components or cases.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `rfl : n = 0` from `by omega`. Conclude with `Subsingleton.elim (α := PUnit) _ _`. Take `rfl : n = t + 1` from `by omega`. Express the relevant statement in the definitionally equal form `(0 : (tateLocalComplex Cᵥ Cᵣ).X t) + tateCupHomotopyL ψ μ₂ᵣ (Cᵥ := Cᵥ) (rfl : t + 1 = t + 1) e (((cochainsMap SB.f).f (t + 1)).hom y) = (0 : (tateLocalComplex Cᵥ Cᵣ).X t) + tateCupHomotopyL ψ μ₃ᵣ (Cᵥ := Cᵥ) (rfl : t + 1 = t + 1) ((piRepHom fun w => (SAᵣ w).g).hom e) y`. Use `erw [tateCupHomotopyL_apply, tateCupHomotopyL_apply]`.
-
-Use `congrArg _ (Prod.ext rfl (funext fun w => congrArg Neg.neg ?_))` and prove the remaining obligations. Conclude with `normHomotopy_compat_right (μ₂ᵣ w) (μ₃ᵣ w) ((Rep.resFunctor (ψ w).toMonoidHom).map SB.f) (SAᵣ w).g (h₂₃ᵣ w) rfl (e w) (((localRes ψ SB.X₁ (fun w => Rep.res (ψ w).toMonoidHom SB.X₁) fun _ => 𝟙 _).f (t + 1)).hom y w)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`. Express the relevant statement in the definitionally equal form `(tateLocalCup φ ψ μ₂ᵥ μ₂ᵣ).μ (show r + s = m by omega) b (((tateLocalResB φ ψ SB.X₂).f s).hom (((cochainsMap SB.f).f s).hom y)) + 0 = (tateLocalCup φ ψ μ₃ᵥ μ₃ᵣ).μ (show r + s = m by omega) ((tateLocalMap (fun v => (SAᵥ v).g) fun w => (SAᵣ w).g).f r |>.hom b) (((tateLocalResB φ ψ …`. Rewrite using `[add_zero, add_zero]`.
-
-Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_pairing_right (S := SAᵥ v) (T := SB.map (Rep.resFunctor (φ v).toMonoidHom)) (μ₂ᵥ v) (μ₃ᵥ v) (h₂₃ᵥ v) (show r + s = m by omega) (cochainOf _ (b.1 v)) (fun τ => cochainOf SB.X₁ y (⇑(φ v).toMonoidHom ∘ τ)) σ`. Apply `cochainOf_injective` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_pairing_right (S := SAᵣ w) (T := SB.map (Rep.resFunctor (ψ w).toMonoidHom)) (μ₂ᵣ w) (μ₃ᵣ w) (h₂₃ᵣ w) (show r + s = m by omega) (cochainOf _ (b.2 w)) (fun τ => cochainOf SB.X₁ y (⇑(ψ w).toMonoidHom ∘ τ)) σ`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tateCompactCup_tateCompactδ_add_tateCompactCup_δ
     (h₁₂ : (SA.f ⊗ₘ 𝟙 SB.X₂) ≫ μ₂ = (𝟙 SA.X₁ ⊗ₘ SB.g) ≫ μ₁)

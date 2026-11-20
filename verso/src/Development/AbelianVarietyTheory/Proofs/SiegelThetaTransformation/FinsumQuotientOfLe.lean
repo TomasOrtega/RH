@@ -10,13 +10,13 @@ noncomputable section
 open NumberField
 
 /- English proof (translation)
-Use `set e := AddSubgroup.quotientEquivProdOfLE h`. Use `haveI : Finite (t ⧸ s.addSubgroupOf t) := Nat.finite_of_card_ne_zero hn`. Use `haveI : Fintype (t ⧸ s.addSubgroupOf t) := Fintype.ofFinite _`. Establish `h1 : ∀ q : A ⧸ s, φ q.out = φ (e q).1.out`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : (e q).1 = (q.out : A ⧸ t)` using `by conv_lhs => rw [← QuotientAddGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `h3 : ((e q).1.out : A ⧸ t) = (q.out : A ⧸ t)`. Rewrite using `[QuotientAddGroup.out_eq', h2]`. Use `hφ (e q).1.out _ (QuotientAddGroup.eq.1 h3)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← this]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Repeatedly rewrite using `[h1]`. Rewrite using `[finsum_comp_equiv e (f := fun p => φ p.1.out), finsum_eq_sum_of_support_subset (s := hf.toFinset ×ˢ Finset.univ), finsum_eq_sum _ hf, Finset.sum_product, Finset.mul_sum]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[AddSubgroup.relIndex, AddSubgroup.index, Nat.card_eq_fintype_card]`. Introduce `p hp`. Simplify using `using hp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finsum_quotient_of_le {A : Type} [AddCommGroup A] {s t : AddSubgroup A} (h : s ≤ t)
     (hn : s.relIndex t ≠ 0) (φ : A → ℂ) (hφ : ∀ x, ∀ y ∈ t, φ (x + y) = φ x)
@@ -52,7 +52,7 @@ def incl (K κ ι : Type) [Field K] : Matrix κ ι (𝓞 K) →+ Matrix κ ι K 
 
 omit [NumberField K] [Fintype κ] [Fintype ι] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun k i => ⟨x k i, h k i⟩, rfl⟩`. Introduce and unpack `⟨y, rfl⟩ k i`. Conclude with `(y k i).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem intM_iff (x : Matrix κ ι K) : IntM x ↔ ∃ y, incl K κ ι y = x := by
   constructor
@@ -63,7 +63,7 @@ theorem intM_iff (x : Matrix κ ι K) : IntM x ↔ ∃ y, incl K κ ι y = x := 
 
 omit [NumberField K] [Fintype κ] [Fintype ι] in
 /- English proof (translation)
-Introduce `a b h` and use `by ext k i exact congrFun (congrFun h k) i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem incl_inj : Function.Injective (incl K κ ι) := fun a b h => by
   ext k i
@@ -71,9 +71,9 @@ theorem incl_inj : Function.Injective (incl K κ ι) := fun a b h => by
 
 omit [NumberField K] [Fintype κ] [Fintype ι] in
 /- English proof (translation)
-Establish `: {x | ∃ y : Matrix κ ι K, IntM y ∧ x = (R : K) • y} = (((incl K κ ι).comp (nsmulAddMonoidHom R)).range : Set (Matrix κ ι K))`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, AddMonoidHom.mem_range, AddMonoidHom.comp_apply, nsmulAddMonoidHom_apply, map_nsmul, intM_iff, Nat.cast_smul_eq_nsmul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, ⟨y, rfl⟩, rfl⟩`. Rewrite using `[perSub, this, AddSubgroup.closure_eq]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem perSub_eq_range (R : ℕ) :
     perSub K κ ι R = ((incl K κ ι).comp (nsmulAddMonoidHom R)).range := by
@@ -89,7 +89,7 @@ theorem perSub_eq_range (R : ℕ) :
 
 omit [NumberField K] [Fintype κ] [Fintype ι] in
 /- English proof (translation)
-Rewrite using `[perSub_eq_range]`. Simplify using `only [AddMonoidHom.mem_range, AddMonoidHom.comp_apply, nsmulAddMonoidHom_apply, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_perSub (R : ℕ) (x : Matrix κ ι K) :
     x ∈ perSub K κ ι R ↔ ∃ y, R • incl K κ ι y = x := by
@@ -97,7 +97,7 @@ theorem mem_perSub (R : ℕ) (x : Matrix κ ι K) :
   simp only [AddMonoidHom.mem_range, AddMonoidHom.comp_apply, nsmulAddMonoidHom_apply, map_nsmul]
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.index_range_nsmul, Module.finrank_matrix, RingOfIntegers.rank]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem index_nsmul (R : ℕ) : (nsmulAddMonoidHom R : Matrix κ ι (𝓞 K) →+ _).range.index =
     R ^ (Module.finrank ℚ K * (Fintype.card κ * Fintype.card ι)) := by
@@ -106,16 +106,16 @@ theorem index_nsmul (R : ℕ) : (nsmulAddMonoidHom R : Matrix κ ι (𝓞 K) →
 
 omit [Fintype κ] [Fintype ι] in
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul K, ← Nat.cast_smul_eq_nsmul K]`. Conclude with `(smul_right_injective _ (by exact_mod_cast hR.ne')).eq_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_cancel {R : ℕ} (hR : 0 < R) {x y : Matrix κ ι K} : R • x = R • y ↔ x = y := by
   rw [← Nat.cast_smul_eq_nsmul K, ← Nat.cast_smul_eq_nsmul K]
   exact (smul_right_injective _ (by exact_mod_cast hR.ne')).eq_iff
 
 /- English proof (translation)
-Rewrite using `[perSub_eq_range R, ← AddSubgroup.index_comap, ← index_nsmul]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [AddSubgroup.mem_comap, mem_perSub, AddMonoidHom.mem_range, AddMonoidHom.comp_apply, nsmulAddMonoidHom_apply]`. Use `exists_congr fun z => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul, map_nsmul, nsmul_cancel hR, ← map_nsmul, incl_inj.eq_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_perSub (R S : ℕ) (hR : 0 < R) :
     (perSub K κ ι (R * S)).relIndex (perSub K κ ι R) =
@@ -130,7 +130,7 @@ theorem relIndex_perSub (R S : ℕ) (hR : 0 < R) :
 
 omit [NumberField K] [Fintype κ] [Fintype ι] in
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `(mem_perSub _ _).1 hx`. Conclude with `(mem_perSub _ _).2 ⟨S • y, by rw [map_nsmul, mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perSub_le (R S : ℕ) : perSub K κ ι (R * S) ≤ perSub K κ ι R := by
   intro x hx
@@ -139,7 +139,7 @@ theorem perSub_le (R S : ℕ) : perSub K κ ι (R * S) ≤ perSub K κ ι R := b
 
 omit [NumberField K] [Fintype κ] [Fintype ι] in
 /- English proof (translation)
-Introduce `y hy`. Take `⟨z, rfl⟩` from `(mem_perSub _ _).1 hy`. Rewrite using `[← Nat.cast_smul_eq_nsmul K]`. Conclude with `h.2 x _ ((intM_iff _).2 ⟨z, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem periodic {R : ℕ} {φ : Matrix κ ι K → ℂ} (h : HasLevel R φ) (x : Matrix κ ι K) :
     ∀ y ∈ perSub K κ ι R, φ (x + y) = φ x := by
@@ -149,13 +149,13 @@ theorem periodic {R : ℕ} {φ : Matrix κ ι K → ℂ} (h : HasLevel R φ) (x 
   exact h.2 x _ ((intM_iff _).2 ⟨z, rfl⟩)
 
 /- English proof (translation)
-Establish `hK : (R : K) ≠ 0` using `by exact_mod_cast hR.ne'`. Use `set f : Matrix κ ι (𝓞 K) →+ Matrix κ ι K ⧸ perSub K κ ι R := (QuotientAddGroup.mk' (perSub K κ ι R)).comp ((DistribSMul.toAddMonoidHom (Matrix κ ι K) (R : K)⁻¹).comp (incl K κ ι)) with hf`. Establish `hfa : ∀ y, f y = (((R : K)⁻¹ • incl K κ ι y : Matrix κ ι K) : Matrix κ ι K ⧸ perSub K κ ι R)` using `fun _ => rfl`. Establish `hker : (nsmulAddMonoidHom (R * R) : Matrix κ ι (𝓞 K) →+ _).range ≤ f.ker`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidHom.mem_ker, hfa, QuotientAddGroup.eq_zero_iff, mem_perSub]`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[nsmulAddMonoidHom_apply, map_nsmul, mul_smul, ← Nat.cast_smul_eq_nsmul K R (R • _), smul_smul, inv_mul_cancel₀ hK, one_smul]`. Establish `hcard : Nat.card f.range ≠ 0`. Rewrite using `[← AddSubgroup.index_ker]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ne_zero_of_dvd_ne_zero ?_ (AddSubgroup.index_dvd_of_le hker)` and prove the remaining obligations. Rewrite using `[index_nsmul]`. Check the signs of the components of the expression. Establish `hfin : Finite f.range` using `Nat.finite_of_card_ne_zero hcard`. Use `(Set.toFinite (f.range : Set (Matrix κ ι K ⧸ perSub K κ ι R))).subset fun q hq => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `(intM_iff _).1 (h.1 _ hq)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hfa, hy, smul_smul, inv_mul_cancel₀ hK, one_smul, QuotientAddGroup.out_eq']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_support {R : ℕ} {φ : Matrix κ ι K → ℂ} (hR : 0 < R) (h : HasLevel R φ) :
     (Function.support fun q : Matrix κ ι K ⧸ perSub K κ ι R => φ q.out).Finite := by
@@ -183,7 +183,7 @@ theorem finite_support {R : ℕ} {φ : Matrix κ ι K → ℂ} (hR : 0 < R) (h :
   rw [hfa, hy, smul_smul, inv_mul_cancel₀ hK, one_smul, QuotientAddGroup.out_eq']
 
 /- English proof (translation)
-Establish `hS' : (S : ℂ) ≠ 0` using `by exact_mod_cast hS.ne'`. Establish `hR' : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Rewrite using `[haarAt, haarAt, finsum_quotient_of_le (perSub_le R S) (by rw [relIndex_perSub R S hR]; positivity) φ (periodic h) (finite_support hR h), relIndex_perSub R S hR]`. Use `push_cast`. Rewrite using `[mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -205,7 +205,7 @@ end GlobalTheory.SW.HaarLevel
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Introduce `K κ ι _ _ _ _ R φ hR h`. Use `⟨?_, HaarLevel.finite_support hR h⟩` and prove the remaining obligations. Establish `hs : IsSB φ` using `⟨R, hR, h⟩`. Rewrite using `[haar, dif_pos hs, ← HaarLevel.haarAt_mul hR h hs.choose_spec.1, ← HaarLevel.haarAt_mul hs.choose_spec.1 hs.choose_spec.2 hR, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_eq_haarAt : ∀ (K κ ι : Type) [Field K] [NumberField K] [Fintype κ] [Fintype ι] (R : ℕ) (φ : Matrix κ ι K → ℂ), 0 < R → HasLevel R φ → haar φ = haarAt R φ ∧ (Function.support fun q : Matrix κ ι K ⧸ perSub K κ ι R => φ q.out).Finite := by
   intro K κ ι _ _ _ _ R φ hR h

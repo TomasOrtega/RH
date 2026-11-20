@@ -57,9 +57,9 @@ instance isDiscreteRep_dualRep_coind_trivial :
   isDiscreteRep_dualRep _ _
 
 /- English proof (translation)
-Establish `e1` using `cupPairing_cohomologyMap (evalPairing D (Rep.coind.{u, u, u, u} (W : Subgroup Γ).subtype (Rep.trivial k (W : Subgroup Γ) V))) (𝟙 _) (coindDualHom (W : Subgroup Γ) V D) h x y`. Rewrite `e1` using `[cohomologyMap_id]`. Express the relevant statement in the definitionally equal form `cupPairing (evalPairing D (Rep.coind.{u, u, u, u} (W : Subgroup Γ).subtype (Rep.trivial k (W : Subgroup Γ) V))) h x (cohomologyMap (coindDualHom (W : Subgroup Γ) V D) s y) = _ at e1`. Rewrite using `[e1, tensorHom_coindDualHom_evalPairing, ← cohomologyMap_cupPairing, ← cohomologyCores_shapiroMap]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[cupPairing_apply, cupPairing_apply, shapiroMap_eq, shapiroMap_eq, shapiroMap_eq, ← cohomologyMapAlong_resTensorHom_cup, cohomologyMap_cohomologyMapAlong, cohomologyMapAlong_cohomologyMap, res_coindDualPairing_comp_coindEvalOne]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cupPairing_evalPairing_coindDualHom {r s m : ℕ} (h : r + s = m)
     (x : cohomology (Rep.coind.{u, u, u, u} (W : Subgroup Γ).subtype (Rep.trivial k (W : Subgroup Γ) V)) r)
@@ -117,11 +117,11 @@ def zmodH0Class (a : ZMod n) : cohomology (zmodRep.{u} H n) 0 :=
   cohomologyMap (unitHom (zmodRep.{u} H n) (ULift.up a) fun g => zmodRep_ρ_apply g _) 0 unitClass
 
 /- English proof (translation)
-Introduce `x`. Take `⟨z, rfl⟩` from `cohomologyπ_surjective _ 0 x`. Use `⟨(cochainOf _ (cocycleι _ 0 z) (fun i => i.elim0)).down, ?_⟩` and prove the remaining obligations. Rewrite using `[zmodH0Class, unitClass, cohomologyMap_cohomologyπ]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_unitCocycle]`. Use function extensionality and compare the values at `σ`. Establish `hσ : σ = fun i => i.elim0` using `Subsingleton.elim _ _`. Rewrite using `[hσ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_smul _ _`.
+A detailed English derivation is pending.
 -/
 theorem zmodH0Class_surjective : Function.Surjective (zmodH0Class (H := H) (n := n)) := by
   intro x
@@ -141,7 +141,7 @@ variable [NeZero n] (D' : Rep.{u} (ULift.{u} ℤ) H) [IsDiscreteRep D'] (hD : �
 omit [TopologicalSpace H] [IsTopologicalGroup H] [IsDiscreteRep D'] in
 
 /- English proof (translation)
-Use `Rep.hom_ext (Representation.IntertwiningMap.ext (TensorProduct.ext' fun (c : ULift.{u} ℤ) d => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(zmodMulPairing n D' hD).hom ((unitHom (zmodRep.{u} H n) (ULift.up a) fun g => zmodRep_ρ_apply g _).hom c ⊗ₜ[ULift.{u} ℤ] d) = (a.val • 𝟙 D').hom ((λ_ D').hom.hom (c ⊗ₜ[ULift.{u} ℤ] d))`. Rewrite using `[unitHom_hom_apply, ← TensorProduct.smul_tmul']`. Express the relevant statement in the definitionally equal form `(zmodMulPairing n D' hD).hom.toLinearMap (_ • _) = _`. Rewrite using `[LinearMap.map_smul, Representation.IntertwiningMap.toLinearMap_apply, zmodMulPairing_tmul, GroundTheory.GroupCoh.leftUnitor_hom_tmul, Rep.nsmul_hom, Representation.IntertwiningMap.coe_nsmul, Pi.smul_apply, ZMod.cast_eq_val, natCast_zsmul, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -162,7 +162,7 @@ theorem unitHom_tensorHom_zmodMulPairing (a : ZMod n) :
   rfl
 
 /- English proof (translation)
-Establish `e` using `cupPairing_cohomologyMap (zmodMulPairing n D' hD) (unitHom (zmodRep.{u} H n) (ULift.up a) fun g => zmodRep_ρ_apply g _) (𝟙 D') h unitClass y`. Rewrite `e` using `[cohomologyMap_id]`. Express the relevant statement in the definitionally equal form `cupPairing (zmodMulPairing n D' hD) h (zmodH0Class a) y = _ at e`. Rewrite using `[e, unitHom_tensorHom_zmodMulPairing, ← cohomologyMap_cupPairing, cupPairing_apply, cohomologyMap_leftUnitor_unitClass_cup, cohomologyMap_nsmul_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cupPairing_zmodH0Class (h : 0 + 2 = 2) (a : ZMod n) (y : cohomology D' 2) :
     cupPairing (zmodMulPairing n D' hD) h (zmodH0Class a) y = a.val • y := by
@@ -175,13 +175,13 @@ theorem cupPairing_zmodH0Class (h : 0 + 2 = 2) (a : ZMod n) (y : cohomology D' 2
   rfl
 
 /- English proof (translation)
-Take `⟨y₀, hy₀⟩` from `hT.2 1`. Establish `hF : ∀ (a : ZMod n) (y : cohomology D' 2), T.comp (bilinAddHom (cupPairing (zmodMulPairing n D' hD) h) (zmodH0Class a)) y = a.val • T y`. Introduce `a y`. Rewrite using `[AddMonoidHom.comp_apply, bilinAddHom_apply, cupPairing_zmodH0Class, map_nsmul]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x x' hxx'`. Take `⟨a, rfl⟩` from `zmodH0Class_surjective x`. Take `⟨a', rfl⟩` from `zmodH0Class_surjective x'`. Establish `key` using `DFunLike.congr_fun hxx' y₀`. Use `beta_reduce at key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hF, hF, hy₀, nsmul_eq_mul, nsmul_eq_mul, mul_one, mul_one, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Rewrite using `[key]`. Introduce `χ`. Use `⟨zmodH0Class (χ y₀), AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF]`. Establish `hy : y = (T y).val • y₀` using `hT.1 (by rw [map_nsmul, hy₀, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val])`. Use `conv_rhs => rw [hy]`. Rewrite using `[map_nsmul, nsmul_eq_mul, nsmul_eq_mul, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_zmodMulPairing_zero (T : cohomology D' 2 →+ ZMod n)
     (hT : Function.Bijective T) (h : 0 + 2 = 2) :
@@ -219,11 +219,9 @@ section Transfer
 variable {n : ℕ}
 
 /- English proof (translation)
-Set `e` to `AddEquiv.ofBijective γ hγ`. Establish `hP : Function.Bijective (fun χ : Y →+ ZMod n => χ.comp γ)`. Use `⟨fun χ χ' hχ => AddMonoidHom.ext fun y => ?_, fun ψ => ⟨ψ.comp e.symm.toAddMonoidHom, AddMonoidHom.ext fun y' => ?_⟩⟩` and prove the remaining obligations. Take `⟨y', rfl⟩` from `hγ.2 y`. Conclude with `DFunLike.congr_fun hχ y'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ψ (e.symm (γ y')) = ψ y'`. Rewrite using `[show γ y' = e y' from rfl, AddEquiv.symm_apply_apply]`. Establish `hcomp : F' = (fun χ : Y →+ ZMod n => χ.comp γ) ∘ F ∘ α`. Use function extensionality and compare the values at `fun x' => AddMonoidHom.ext fun y' => hF' x' y'`. Rewrite using `[hcomp]`.
-
-Conclude with `hP.comp (hF.comp hα)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_bijective_comp {X X' Y Y' : Type*} [AddCommGroup Y] [AddCommGroup Y']
     {F : X → (Y →+ ZMod n)} (hF : Function.Bijective F) {α : X' → X} (hα : Function.Bijective α)
@@ -249,7 +247,7 @@ section Main
 variable {k Γ : Type u} [CommRing k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨cohomologyMap g m, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← cohomologyMap_comp, hfg, cohomologyMap_id]`. Both sides reduce to the same expression. Rewrite using `[← ConcreteCategory.comp_apply, ← cohomologyMap_comp, hgf, cohomologyMap_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bijective_cohomologyMap_of_comp_eq_id {A B : Rep.{u} k Γ} [IsDiscreteRep A]
     [IsDiscreteRep B] (f : A ⟶ B) (g : B ⟶ A) (hfg : f ≫ g = 𝟙 A) (hgf : g ≫ f = 𝟙 B) (m : ℕ) :
@@ -272,7 +270,7 @@ instance finite_coind_zmodRep (W : OpenSubgroup Γ) :
 omit [IsTopologicalGroup Γ] [CompactSpace Γ] [NeZero n] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun x => nsmul_zmodRep_eq_zero (W : Subgroup Γ) n (f.1 x))`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_coind_zmodRep_eq_zero (W : OpenSubgroup Γ)
     (f : Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n)) : n • f = 0 :=
@@ -288,15 +286,15 @@ instance isDiscreteRep_dualRep_coind_zmodRep (D : Rep.{u} (ULift.{u} ℤ) Γ) [I
   isDiscreteRep_dualRep _ _
 
 /- English proof (translation)
-Establish `hD' : ∀ d : Rep.res (W : Subgroup Γ).subtype D, n • d = 0` using `nsmul_eq_zero_of_nonempty_addEquiv hD`. Establish `hΨ : Function.Bijective (cohomologyMap (coindDualInv (W : Subgroup Γ) (ULift.{u} (ZMod n)) D) s)` using `bijective_cohomologyMap_of_comp_eq_id _ _ (coindDualInv_comp_coindDualHom _ _ _) (coindDualHom_comp_coindDualInv _ _ _) s`. Establish `hsh : ∀ (B : Rep.{u} (ULift.{u} ℤ) (W : Subgroup Γ)) [IsDiscreteRep B] (m : ℕ), Function.Bijective (shapiroMap W B m)` using `fun B _ m => Function.bijective_iff_has_inverse.2 ⟨inv (shapiroMap W B m), inv_shapiroMap_apply W m, shapiroMap_inv_apply W m⟩`. Establish `he : Function.Bijective (cohomologyMap (zmodDualIso n (Rep.res (W : Subgroup Γ).subtype D) hD').hom s)` using `bijective_cohomologyMap_of_comp_eq_id _ _ (Iso.hom_inv_id _) (Iso.inv_hom_id _) s`. Set `γ : cohomology (dualRep D (Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n))) s →+ cohomology (Rep.res (W : Subgroup Γ).subtype D) s` to `((cohomologyMap (zmodDualIso n (Rep.res (W : Subgroup Γ).subtype D) hD').hom s).hom.comp ((shapiroMap W _ s).hom.comp (cohomologyMap (coindDualInv (W : Subgroup Γ) (ULift.{u} (ZMod n)) D) s).hom)).toAddMonoidHom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hγ : Function.Bijective γ` using `he.comp ((hsh _ s).comp hΨ)`. Establish `key : ∀ x y, dualityMap D h t (Rep.coind (W : Subgroup Γ).subtype (zmodRep.{u} (W : Subgroup Γ) n)) x y = t.comp (cohomologyCores W D 2).hom.toAddMonoidHom (cupPairing (zmodMulPairing n (Rep.res (W : Subgroup Γ).subtype D) hD') h (shapiroMap W _ r x) (γ y))`. Introduce `x y`. Establish `hy : cohomologyMap (coindDualHom (W : Subgroup Γ) (ULift.{u} (ZMod n)) D) s (cohomologyMap (coindDualInv (W : Subgroup Γ) (ULift.{u} (ZMod n)) D) s y) = y`. Rewrite using `[← ConcreteCategory.comp_apply, ← cohomologyMap_comp, coindDualInv_comp_coindDualHom, cohomologyMap_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[dualityMap_apply]`. Use `conv_lhs => rw [← hy]`. Rewrite using `[cupPairing_evalPairing_coindDualHom]`. Establish `e2` using `cupPairing_cohomologyMap (zmodMulPairing n (Rep.res (W : Subgroup Γ).subtype D) hD') (𝟙 _) (zmodDualIso n (Rep.res (W : Subgroup Γ).subtype D) hD').hom h (shapiroMap W _ r x) (shapiroMap W _ s (cohomologyMap (coindDualInv (W : Subgroup Γ) (ULift.{u} (ZMod n)) D) s y))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[cohomologyMap_id, tensorHom_zmodDualIso_zmodMulPairing]`. Express the relevant statement in the definitionally equal form `t (cohomologyCores W D 2 _) = t (cohomologyCores W D 2 _)`. Use `congr 2`. Conclude with `e2.symm`. Take `rfl | rfl : r = 0 ∨ r = 1` from `by omega`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : s = 2` from `by omega`. Conclude with `bijective_of_bijective_comp (bijective_zmodMulPairing_zero (Rep.res (W : Subgroup Γ).subtype D) hD' _ hT h) (hsh _ 0) hγ key`. Take `rfl : s = 1` from `by omega`. Conclude with `bijective_of_bijective_comp hP.1 (hsh _ 1) hγ key`.
+A detailed English derivation is pending.
 -/
 theorem bijective_dualityMap_coind (D : Rep.{u} (ULift.{u} ℤ) Γ) [IsDiscreteRep D]
     (hD : Nonempty (D ≃+ ZMod n)) (t : cohomology D 2 →+ ZMod n) (W : OpenSubgroup Γ)

@@ -11,13 +11,13 @@ namespace PositivityTheory.RgGu.NR
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `nuPair_of k (GlobalTheory.T.derivative_jacquet_holds k GlobalTheory.CompanionTheory.BZCuspPair.irrAdm) (jmTheta k) (derFin_of k (derEquiv k))`.
+A detailed English derivation is pending.
 -/
 theorem nuPair : GlobalTheory.BZSeg.NuPair k :=
   nuPair_of k (GlobalTheory.T.derivative_jacquet_holds k GlobalTheory.CompanionTheory.BZCuspPair.irrAdm) (jmTheta k) (derFin_of k (derEquiv k))
 
 /- English proof (translation)
-The claim follows from `cuspPairIrr_of k (nuPair k)`.
+A detailed English derivation is pending.
 -/
 theorem cuspPairIrr : GlobalTheory.BZSeg.CuspPairIrr k := cuspPairIrr_of k (nuPair k)
 

@@ -18,7 +18,7 @@ namespace GlobalTheory.AbCoh.PrimForm
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AbCoh.pull_comp_cup_id.1 R R C.left B.left C.hom B.hom (RingHom.id R) f.left (ovw f) R A.left A.hom (RingHom.id R) g.left (ovw g) (RingHom.id R) (g ≫ f).left (ovw (g ≫ f)) (Over.comp_left _ _ _ g f) (fun _ ↦ rfl)).2.2.1 a`.
+A detailed English derivation is pending.
 -/
 theorem pF_comp {A B C : Over (Sp R)} (f : B ⟶ C) (g : A ⟶ B) (a : GlobForm C.hom) :
     pF g (pF f a) = pF (g ≫ f) a :=
@@ -26,13 +26,13 @@ theorem pF_comp {A B C : Over (Sp R)} (f : B ⟶ C) (g : A ⟶ B) (a : GlobForm 
     (RingHom.id R) g.left (ovw g) (RingHom.id R) (g ≫ f).left (ovw (g ≫ f)) (Over.comp_left _ _ _ g f) (fun _ ↦ rfl)).2.2.1 a
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AbCoh.pull_comp_cup_id.2.2 R A).2.2.1 a`.
+A detailed English derivation is pending.
 -/
 theorem pF_id (A : Over (Sp R)) (a : GlobForm A.hom) : pF (𝟙 A) a = a :=
   (GlobalTheory.AbCoh.pull_comp_cup_id.2.2 R A).2.2.1 a
 
 /- English proof (translation)
-Rewrite using `[← pF_comp]`. Use `haveI := (GlobalTheory.AbCoh.Vanish.main.2 R).1`. Rewrite using `[Subsingleton.elim (pF f a) 0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pF_unit {A B : Over (Sp R)} (f : 𝟙_ (Over (Sp R)) ⟶ A) (a : GlobForm A.hom) :
     pF (toUnit B ≫ f) a = 0 := by
@@ -41,7 +41,7 @@ theorem pF_unit {A B : Over (Sp R)} (f : 𝟙_ (Over (Sp R)) ⟶ A) (a : GlobFor
   rw [Subsingleton.elim (pF f a) 0, map_zero]
 
 /- English proof (translation)
-Introduce `x`. Establish `e` using `H (pF μ[A] x - pF (fst A A) x - pF (snd A A) x) ?_ ?_`. Conclude with `(sub_eq_zero.1 ((sub_sub _ _ _).symm.trans e))`. Rewrite using `[map_sub, map_sub, pF_comp, pF_comp, pF_comp, lift_fst, lift_snd, lift_comp_one_right, pF_id, pF_unit, sub_self, sub_zero]`. Rewrite using `[map_sub, map_sub, pF_comp, pF_comp, pF_comp, lift_fst, lift_snd, lift_comp_one_left, pF_id, pF_unit, sub_zero, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_of_axes (A : Over (Sp R)) [GrpObj A]
     (H : ∀ y : GlobForm (A ⊗ A).hom, pF (lift (𝟙 A) (toUnit A ≫ η[A])) y = 0 →

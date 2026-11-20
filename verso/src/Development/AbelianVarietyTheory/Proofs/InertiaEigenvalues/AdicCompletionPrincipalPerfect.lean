@@ -7,9 +7,9 @@ section General
 variable {V : Type} [CommRing V] (x : V)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.mem_ker, ← AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton x), Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, rfl⟩`. Conclude with `⟨b, by rw [Algebra.smul_def, map_pow]⟩`. Introduce and unpack `⟨b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b, trivial, by rw [Algebra.smul_def, map_pow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem eval_eq_zero_iff (n : ℕ) (y : AdicCompletion (Ideal.span {x}) V) :
     AdicCompletion.eval (Ideal.span {x}) V n y = 0 ↔
@@ -24,7 +24,7 @@ theorem eval_eq_zero_iff (n : ℕ) (y : AdicCompletion (Ideal.span {x}) V) :
     exact ⟨b, trivial, by rw [Algebra.smul_def, map_pow]⟩
 
 /- English proof (translation)
-Establish `h` using `AdicCompletion.isAdicComplete (M := V) (Submodule.fg_span_singleton x)`. Rewrite `h` using `[← IsAdicComplete.map_algebraMap_iff (S := AdicCompletion (Ideal.span {x}) V), Ideal.map_span, Set.image_singleton]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complete :
     IsAdicComplete (Ideal.span {algebraMap V (AdicCompletion (Ideal.span {x}) V) x})
@@ -35,9 +35,9 @@ theorem complete :
   exact h
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (Ideal.span {x}) V r y)`. Establish `: AdicCompletion.eval (Ideal.span {x}) V r (y - algebraMap V _ s) = 0`. Rewrite using `[map_sub, ← hs, sub_eq_zero]`. Both sides reduce to the same expression. Take `⟨z, hz⟩` from `(eval_eq_zero_iff x r _).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, z, by rw [← hz]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem dense (y : AdicCompletion (Ideal.span {x}) V) (r : ℕ) :
     ∃ (s : V) (z : AdicCompletion (Ideal.span {x}) V),
@@ -50,7 +50,7 @@ theorem dense (y : AdicCompletion (Ideal.span {x}) V) (r : ℕ) :
   exact ⟨s, z, by rw [← hz]; ring⟩
 
 /- English proof (translation)
-Rewrite using `[← eval_eq_zero_iff]`. Establish `: AdicCompletion.eval (Ideal.span {x}) V r (algebraMap V _ s) = Submodule.Quotient.mk s` using `rfl`. Rewrite using `[this, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_iff (s : V) (r : ℕ) :
     (algebraMap V (AdicCompletion (Ideal.span {x}) V) x) ^ r ∣ algebraMap V _ s ↔ x ^ r ∣ s := by
@@ -61,7 +61,7 @@ theorem dvd_iff (s : V) (r : ℕ) :
     Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sModEq_iff {C : Type} [CommRing C] (c : C) (n : ℕ) (u v : C) :
     u ≡ v [SMOD (Ideal.span {c} ^ n • ⊤ : Submodule C C)] ↔ c ^ n ∣ u - v := by
@@ -75,14 +75,14 @@ section Perfect
 variable (l : ℕ) [Fact l.Prime] {V : Type} [CommRing V] [CharP V l] [PerfectRing V l]
 
 /- English proof (translation)
-Use `(frobeniusEquiv V l).apply_symm_apply c` as an intermediate fact. Rewrite `this` using `[frobeniusEquiv_apply, frobenius_def]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_root (c : V) : ((frobeniusEquiv V l).symm c) ^ l = c := by
   have := (frobeniusEquiv V l).apply_symm_apply c
   rwa [frobeniusEquiv_apply, frobenius_def] at this
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Use `⟨(frobeniusEquiv V l).symm c, (frobeniusEquiv V l).injective ?_⟩` and prove the remaining obligations. Rewrite using `[frobeniusEquiv_apply, frobeniusEquiv_apply, frobenius_def, frobenius_def, hc, mul_pow, pow_root, ← pow_mul, mul_comm n l]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_of_pow_dvd_pow (x s : V) (n : ℕ) (h : x ^ (l * n) ∣ s ^ l) : x ^ n ∣ s := by
   obtain ⟨c, hc⟩ := h
@@ -93,29 +93,25 @@ theorem dvd_of_pow_dvd_pow (x s : V) (n : ℕ) (h : x ^ (l * n) ∣ s ^ l) : x ^
 end Perfect
 
 /- English proof (translation)
-Introduce `l hl V _ _ _ x`. Use `set C := AdicCompletion (Ideal.span {x}) V`. Use `set X := algebraMap V C x with hX`. Establish `h0 : ((l : ℕ) : C) = 0`. Rewrite using `[← map_natCast (algebraMap V C), CharP.cast_eq_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨h0, ?_⟩` and prove the remaining obligations. Break down `subsingleton_or_nontrivial C with hC | hC` into its components or cases. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨y, Subsingleton.elim _ _⟩⟩`. Use `haveI : CharP C l := (CharP.charP_iff_prime_eq_zero hl.out).mpr h0`. Establish `hl0 : l ≠ 0` using `hl.out.ne_zero`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : ∀ n : ℕ, n ≤ l * n` using `fun n => Nat.le_mul_of_pos_left n hl.out.pos`. Use `⟨fun y z hyz => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `hw : (y - z) ^ l = 0`. Simplify using `only at hyz`. Rewrite using `[sub_pow_char, hyz, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Use `set w := y - z`. Use `AdicCompletion.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[← AdicCompletion.eval_apply, ← AdicCompletion.eval_apply, map_zero, eval_eq_zero_iff]`. Take `⟨s, t, hst⟩` from `dense x w (l * n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : X ^ (l * n) ∣ algebraMap V C (s ^ l)`. Establish `e : algebraMap V C (s ^ l) = -((X ^ (l * n)) ^ l * t ^ l)`. Rewrite using `[map_pow, eq_neg_iff_add_eq_zero, ← mul_pow, ← add_pow_char, ← hst, hw]`. Rewrite using `[e, dvd_neg]`. Conclude with `dvd_mul_of_dvd_left (dvd_pow_self _ hl0) _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[dvd_iff]`. Establish `h2` using `dvd_of_pow_dvd_pow l x s n h1`. Rewrite using `[hst]`. Use `dvd_add ?_ (dvd_mul_of_dvd_left (pow_dvd_pow X (hle n)) _)` and prove the remaining obligations. Rewrite using `[dvd_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2`. Use `choose s t hst using fun n => dense x y (l * n)`. Use `set b : ℕ → V := fun n => (frobeniusEquiv V l).symm (s n) with hb`. Establish `hbs : ∀ n, b n ^ l = s n` using `fun n => pow_root l (s n)`. Establish `hcau : ∀ {m n : ℕ}, m ≤ n → algebraMap V C (b m) ≡ algebraMap V C (b n) [SMOD (Ideal.span {X} ^ m • ⊤ : Submodule C C)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `m n hmn`. Rewrite using `[sModEq_iff, ← map_sub, dvd_iff]`. Use `dvd_of_pow_dvd_pow l x _ m ?_` and prove the remaining obligations. Rewrite using `[sub_pow_char, hbs, hbs, ← dvd_iff, map_sub]`. Establish `e : algebraMap V C (s m) - algebraMap V C (s n) = X ^ (l * n) * t n - X ^ (l * m) * t m`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hst m` as an intermediate fact. Use `hst n` as an intermediate fact. Take the linear combination `hst n - hst m`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_mul_of_dvd_left (pow_dvd_pow X (Nat.mul_le_mul_left l hmn)) _) (dvd_mul_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L, hL⟩` from `(complete x).toIsPrecomplete.prec hcau`. Use `⟨L, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← sub_eq_zero]`. Use `(complete x).toIsHausdorff.haus _ fun n => ?_` and prove the remaining obligations.
-
-Rewrite using `[sModEq_iff, sub_zero]`. Take `⟨u, hu⟩` from `(sModEq_iff _ _ _ _).1 (hL n)`. Establish `e : L ^ l - y = -((X ^ n) ^ l * u ^ l) - X ^ (l * n) * t n`. Establish `hL' : L = algebraMap V C (b n) - X ^ n * u` using `by rw [← hu]; ring`. Rewrite using `[hL', sub_pow_char, ← map_pow, hbs, mul_pow]`.
-
-Take the linear combination `-(hst n)`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_neg.2 (dvd_mul_of_dvd_left (dvd_pow_self _ hl0) _)) (dvd_mul_of_dvd_left (pow_dvd_pow X (hle n)) _)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perfect : ∀ (l : ℕ) [Fact l.Prime] (V : Type) [CommRing V] [CharP V l]
     [PerfectRing V l] (x : V), ((l : ℕ) : AdicCompletion (Ideal.span {x}) V) = 0 ∧

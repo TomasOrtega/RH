@@ -3,9 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R S _ _ _ _ _ _ hinj`. Use `haveI : FaithfulSMul R S := (faithfulSMul_iff_algebraMap_injective R S).2 hinj`. Use `haveI : (⊥ : Ideal S).LiesOver (⊥ : Ideal R) := ⟨(Ideal.comap_bot_of_injective (algebraMap R S) hinj).symm⟩`. Use `letI := Localization.AtPrime.algebraOfLiesOver (⊥ : Ideal R) (⊥ : Ideal S)`. Rewrite using `[Ideal.inertiaDeg_eq (⊥ : Ideal R) (⊥ : Ideal S)]`.
-
-Conclude with `IsFractionRing.finrank_eq R (⊥ : Ideal R).ResidueField S (⊥ : Ideal S).ResidueField`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertiaDeg_bot_eq_finrank : ∀ (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] [Algebra R S] [Module.Finite R S], Function.Injective (algebraMap R S) → (⊥ : Ideal S).inertiaDeg R = Module.finrank R S := by
   intro R S _ _ _ _ _ _ hinj

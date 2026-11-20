@@ -13,7 +13,7 @@ def toPi (i : N.Loc) :
     (TensorProduct.piScalarRight (N.O i) (N.O i) (FractionRing (N.O i)) (Fin R.r))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[toPi, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem toPi_tmul (i : N.Loc) (v : Fin R.r → N.O i) (k : FractionRing (N.O i)) :
     toPi N i (v ⊗ₜ k) = fun j => algebraMap (N.O i) (Kf N i) (v j) * k := by
@@ -21,7 +21,7 @@ theorem toPi_tmul (i : N.Loc) (v : Fin R.r → N.O i) (k : FractionRing (N.O i))
   simp [toPi, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Wp_apply (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G H.E N.Om)
     (v : Fin R.r → N.O i) :
@@ -31,11 +31,11 @@ theorem Wp_apply (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Matrix.mulVec_add]`. Consider the case `tmul v k`. Establish `h1 : Glob.WpK N i ρ g (v ⊗ₜ k) = (Glob.Wp N i ρ g v) ⊗ₜ k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[Glob.WpK, coefRep, Representation.tprod_apply]`. Rewrite using `[h1, toPi_tmul, toPi_tmul, Wp_apply]`. Establish `h2 : (fun j => algebraMap (N.O i) (Kf N i) (v j) * k) = k • (algebraMap (N.O i) (Kf N i) ∘ v)`. Use function extensionality and compare the values at `j`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, Matrix.mulVec_smul]`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts.matW, ← RingHom.map_mulVec]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem toPi_WpK (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G H.E N.Om)
     (t : TensorProduct (N.O i) (Fin R.r → N.O i) (FractionRing (N.O i))) :
@@ -55,9 +55,9 @@ theorem toPi_WpK (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G 
     rw [Pi.smul_apply, smul_eq_mul, mul_comm, GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts.matW, ← RingHom.map_mulVec]
 
 /- English proof (translation)
-Introduce `R H what₂ N i ρ Dg h`. Rewrite using `[eq_bot_iff]`. Introduce `t ht`. Rewrite using `[Submodule.mem_bot]`. Establish `ht' : ∀ g ∈ Dg, Glob.WpK N i ρ g t = t` using `fun g hg => (Representation.mem_invariants _ t).1 ht ⟨g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : toPi N i t = 0` using `h _ fun g hg => by rw [← toPi_WpK, ht' g hg]`. Conclude with `(toPi N i).map_eq_zero_iff.1 h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem H0_weight_part_eq_bot :
     ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (i : N.Loc)

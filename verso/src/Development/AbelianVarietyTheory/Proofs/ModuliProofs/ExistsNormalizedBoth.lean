@@ -17,9 +17,9 @@ section Cech
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Use `⟨⟨fun i => res (hle i) (t.s (σ i)) ^ n⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (res (inf_le_inf (hle i) (hle j))) (ht (σ i) (σ j))`. Rewrite `e` using `[map_mul, DVR.res_res', DVR.res_res']`. Rewrite using `[hg, map_zpow, map_zpow, DVR.res_res', DVR.res_res', ← mul_zpow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· ^ n) e`.
+A detailed English derivation is pending.
 -/
 theorem gen_refine {A B : LB Y} (n : ℤ) (σ : B.ι → A.ι) (hle : ∀ i, B.U i ≤ A.U (σ i))
     (hg : ∀ i j, B.g i j = res (inf_le_inf (hle i) (hle j)) (A.g (σ i) (σ j)) ^ n)
@@ -32,7 +32,7 @@ theorem gen_refine {A B : LB Y} (n : ℤ) (σ : B.ι → A.ι) (hle : ∀ i, B.U
   exact congrArg (· ^ n) e
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (DVR.res_res' _ _ _) ((map_inv _ _).trans (congrArg (·⁻¹) (DVR.res_res' _ _ _))))`.
+A detailed English derivation is pending.
 -/
 theorem div_g_res (M L : LB Y) (p q : M.ι × L.ι) {V : Y.Opens}
     (h : V ≤ (M.U p.1 ⊓ L.U p.2) ⊓ (M.U q.1 ⊓ L.U q.2)) (h₁ : V ≤ M.U p.1 ⊓ M.U q.1)
@@ -44,7 +44,7 @@ theorem div_g_res (M L : LB Y) (p q : M.ι × L.ι) {V : Y.Opens}
 variable {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Rewrite using `[DVR.linComb_g_res, DVR.linComb_g_res, DVR.linComb_g_res, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, Function.comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_g_res (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (j j' : K' ⊕ K → L.ι) {V : Y.Opens}
@@ -58,7 +58,7 @@ theorem sum_g_res (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X
   simp only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, Function.comp]
 
 /- English proof (translation)
-Use `le_antisymm (fun y hy => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k), Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)⟩) fun y hy => ?_` and prove the remaining obligations. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Break down `k with k | k` into its components or cases. Conclude with `Set.mem_iInter.1 hy.1 k`. Conclude with `Set.mem_iInter.1 hy.2 k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem wchart_sum (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K' ⊕ K → L.ι) :
     LB.wchart L (Sum.elim φ' φ) j =
@@ -71,9 +71,9 @@ theorem wchart_sum (φ : K → (Y ⟶ X)) (φ' : K' → (Y ⟶ X)) (j : K' ⊕ K
   · exact Set.mem_iInter.1 hy.2 k
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `gen_refine (A := LB.div (LB.LinComb L φ' ε') (LB.LinComb L φ ε)) 1 (fun j => (j ∘ Sum.inl, j ∘ Sum.inr)) (fun j => (wchart_sum φ φ' j).le) fun j j' => ?_` and prove the remaining obligations. Establish `a` using `(wchart_sum φ φ' j).le`. Establish `b` using `(wchart_sum φ φ' j').le`. Use `(DVR.res_refl' _).symm.trans ((sum_g_res φ ε φ' ε' j j' le_rfl (inf_le_inf (a.trans inf_le_left) (b.trans inf_le_left)) (inf_le_inf (a.trans inf_le_right) (b.trans inf_le_right))).trans (Eq.symm ?_))` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(zpow_one _).trans (div_g_res (LB.LinComb L φ' ε') (LB.LinComb L φ ε) _ _ _ _ _)`. Use `gen_refine (B := LB.div (LB.LinComb L φ' ε') (LB.LinComb L φ ε)) 1 (fun p => Sum.elim p.1 p.2) (fun p => (wchart_sum φ φ' (Sum.elim p.1 p.2)).ge) fun p q => ?_` and prove the remaining obligations. Use `(DVR.res_refl' _).symm.trans ((div_g_res (LB.LinComb L φ' ε') (LB.LinComb L φ ε) p q le_rfl (inf_le_inf inf_le_left inf_le_left) (inf_le_inf inf_le_right inf_le_right)).trans (Eq.symm ?_))` and prove the remaining obligations. Conclude with `(zpow_one _).trans (sum_g_res φ ε φ' ε' (Sum.elim p.1 p.2) (Sum.elim q.1 q.2) _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lbIso_iff_gen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) :
     Geo.Tor.LBIso (LB.LinComb L φ ε) (LB.LinComb L φ' ε') ↔
@@ -94,14 +94,14 @@ theorem lbIso_iff_gen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y �
     exact (zpow_one _).trans (sum_g_res φ ε φ' ε' (Sum.elim p.1 p.2) (Sum.elim q.1 q.2) _ _ _)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (fun _ hy => Set.mem_iInter.1 hy PUnit.unit) fun _ hy => Set.mem_iInter.2 fun _ => hy`.
+A detailed English derivation is pending.
 -/
 theorem wchart_id (L : LB X) (j : PUnit.{1} → L.ι) :
     LB.wchart L (fun _ : PUnit.{1} => 𝟙 X) j = L.U (j ⟨⟩) :=
   le_antisymm (fun _ hy => Set.mem_iInter.1 hy PUnit.unit) fun _ hy => Set.mem_iInter.2 fun _ => hy
 
 /- English proof (translation)
-Rewrite using `[DVR.linComb_g_res, Fintype.prod_unique, zpow_one, DVR.tr_def L (ψ := 𝟙 X) h']`. Conclude with `DVR.pullU_of_eq_id _ rfl _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_id_g_res (L : LB X) (j j' : PUnit.{1} → L.ι) {V : X.Opens}
     (h : V ≤ LB.wchart L (fun _ : PUnit.{1} => 𝟙 X) j ⊓ LB.wchart L (fun _ : PUnit.{1} => 𝟙 X) j')
@@ -111,11 +111,11 @@ theorem pull_id_g_res (L : LB X) (j j' : PUnit.{1} → L.ι) {V : X.Opens}
   exact DVR.pullU_of_eq_id _ rfl _ _ _ _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `gen_refine (A := LB.div M L) (B := LB.div (L.pull (𝟙 X)) M) (-1) (fun p => (p.2, p.1 ⟨⟩)) (fun p => le_inf inf_le_right (inf_le_left.trans (wchart_id L p.1).le)) fun p q => ?_` and prove the remaining obligations. Establish `a` using `(wchart_id L p.1).le`. Establish `b` using `(wchart_id L q.1).le`. Use `(DVR.res_refl' _).symm.trans ((div_g_res (L.pull (𝟙 X)) M p q le_rfl (inf_le_inf inf_le_left inf_le_left) (inf_le_inf inf_le_right inf_le_right)).trans (Eq.symm ?_))` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(zpow_neg_one _).trans ((congrArg (·⁻¹) (div_g_res M L (p.2, p.1 ⟨⟩) (q.2, q.1 ⟨⟩) _ (inf_le_inf inf_le_right inf_le_right) (inf_le_inf (inf_le_left.trans a) (inf_le_left.trans b)))).trans ?_)` and prove the remaining obligations. Use `(mul_inv_rev _ _).trans (congrArg₂ (· * ·) ((inv_inv _).trans ?_) rfl)` and prove the remaining obligations. Conclude with `(pull_id_g_res L p.1 q.1 _ _).symm`. Use `gen_refine (B := LB.div M L) (A := LB.div (L.pull (𝟙 X)) M) (-1) (fun p => (fun _ => p.2, p.1)) (fun p => le_inf (inf_le_right.trans (wchart_id L fun _ => p.2).ge) inf_le_left) fun p q => ?_` and prove the remaining obligations. Establish `a` using `(wchart_id L fun _ => p.2).ge`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `(wchart_id L fun _ => q.2).ge`. Use `(DVR.res_refl' _).symm.trans ((div_g_res M L p q le_rfl (inf_le_inf inf_le_left inf_le_left) (inf_le_inf inf_le_right inf_le_right)).trans (Eq.symm ?_))` and prove the remaining obligations. Use `(zpow_neg_one _).trans ((congrArg (·⁻¹) (div_g_res (L.pull (𝟙 X)) M (fun _ => p.2, p.1) (fun _ => q.2, q.1) _ (inf_le_inf (inf_le_right.trans a) (inf_le_right.trans b)) (inf_le_inf inf_le_left inf_le_left))).trans ?_)` and prove the remaining obligations. Use `(mul_inv_rev _ _).trans (congrArg₂ (· * ·) (inv_inv _) (congrArg (·⁻¹) ?_))` and prove the remaining obligations. Conclude with `pull_id_g_res L (fun _ => p.2) (fun _ => q.2) _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lbIso_iff_pull_id (L M : LB X) :
     Geo.Tor.LBIso L M ↔ Geo.Tor.LBIso M (L.pull (𝟙 X)) := by
@@ -146,11 +146,11 @@ theorem lbIso_iff_pull_id (L M : LB X) :
     exact pull_id_g_res L (fun _ => p.2) (fun _ => q.2) _ _
 
 /- English proof (translation)
-Establish `hu` using `DVR.mulGen_isGen_of_isGen t ht _ (DVR.invGen_isGen_of_isGen _ (DVR.pullGen_isGen_of_isGen φ ε t ht (p ≫ z₂)))`. Establish `h0' : DVR.fsum (fun k => (p ≫ z₂) ≫ φ k) ε = 0`. Use `DVR.fsum_comp (fun k => z₂ ≫ φ k) ε p` as an intermediate fact. Rewrite `this` using `[h0, Finsupp.mapDomain_zero]`. Simplify `this` using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨t', ht', hc⟩` from `DVR.gen_transport hL (φ' := φ) (ε' := ε) (by`. Rewrite using `[DVR.sameSum_iff_fsum, DVR.fsum_sumElim, DVR.fsum_neg, h0', neg_zero, add_zero]) _ hu`. Establish `key : ∀ {W : Scheme.{0}} (z : W ⟶ Y), LB.Gen.Corr L _ _ _ _ (LB.pullGen L φ ε t z) (LB.pullGen L φ ε t (z ≫ p ≫ z₂)) → LB.Gen.Corr L _ _ _ _ (LB.pullGen L φ ε t' z) (LB.oneGen L)` using `fun z h => DVR.corr_trans hL (DVR.corr_pullGen (DVR.corr_symm hc) z) (DVR.corr_trans hL (DVR.corr_pullGen_mulGen _ _ z) (DVR.corr_trans hL (DVR.corr_mulGen (DVR.corr_refl _ (DVR.pullGen_isGen_of_isGen φ ε t ht z)) (DVR.corr_pullGen_invGen _ z)) (DVR.corr_ratio_one (DVR.corr_trans …`. Use `⟨t', ht', key z₁ ?_, key z₂ (DVR.corr_pullGen_of_eq t ht _ _ h₂.symm)⟩` and prove the remaining obligations. Use `DVR.corr_trans hL hz (DVR.corr_symm ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DVR.corr_trans hL (DVR.corr_pullGen_of_eq t ht _ _ h₁) ?_` and prove the remaining obligations. Use `DVR.corr_trans hL (DVR.corr_symm (DVR.corr_pullGen_comp t z₁ s)) ?_` and prove the remaining obligations. Use `DVR.corr_trans hL (DVR.corr_pullGen hz s) (DVR.corr_one_of fun j _ => ?_)` and prove the remaining obligations. Conclude with `IndefiniteRowSideFullHecke.PrimitiveExponentPullback.Triple.res_eq_one _ (IndefiniteRowSideFullHecke.PrimitiveExponentPullback.Triple.pullU_eq_one _ _ rfl)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_normalized_both (hL : L.IsLB) {Z₁ Z₂ : Scheme.{0}} (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (z₁ : Z₁ ⟶ Y) (z₂ : Z₂ ⟶ Y) (p : Y ⟶ Z₂)
@@ -194,9 +194,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PrimitiveExponentPullback
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `(lbIso_iff_gen (L := L) (lamPt G (fst G G ≫ a) (snd G G)) lamExp (lamPt G (fst G G) (snd G G ≫ b)) lamExp).trans ⟨?_, fun ⟨t, ht, _⟩ => ⟨t, ht⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Establish `s₁` using `(DVR.sameSum_iff_fsum _ _ _ _).1 (sameSum_adj G a b (lift (pzero G G) (𝟙 G)) (Or.inl (lift_fst _ _)))`. Establish `s₂` using `(DVR.sameSum_iff_fsum _ _ _ _).1 (sameSum_adj G a b (lift (𝟙 G) (pzero G G)) (Or.inr (lift_snd _ _)))`. Rewrite `s₁`, `s₂` using `[DVR.fsum_empty]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t₁, ht₁, h₁⟩` from `DVR.exists_normalized hL (adjPt G a b) adjExp t ht (snd G G).left (lift (pzero G G) (𝟙 G)).left (by rw [← Over.comp_left, lift_snd, Over.id_left]) s₁`. Use `exists_normalized_both hL (adjPt G a b) adjExp t₁ ht₁ (lift (pzero G G) (𝟙 G)).left (lift (𝟙 G) (pzero G G)).left (fst G G).left (pzero G G).left ?_ ?_ s₂ (DVR.corr_one_of h₁)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_fst_assoc, Category.id_comp]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left, lift_fst_assoc, comp_lift, comp_lift]`. Simplify using `[pzero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adjoint_iff (L : LB G.left) (hL : L.IsLB) (a b : G ⟶ G) [IsMonHom a] [IsMonHom b] :
     Geo.Tor.LBIso (cubeLB G ![fst G G ≫ a, snd G G] L) (cubeLB G ![fst G G, snd G G ≫ b] L) ↔
@@ -218,7 +218,7 @@ theorem adjoint_iff (L : LB G.left) (hL : L.IsLB) (a b : G ⟶ G) [IsMonHom a] [
     simp [pzero]
 
 /- English proof (translation)
-Use `(lbIso_iff_pull_id _ _).trans ((lbIso_iff_gen (L := L.L) (lamPt G (𝟙 G) w) lamExp (fun _ : PUnit.{1} => 𝟙 G.left) (fun _ => 1)).trans ⟨?_, fun ⟨t, ht, _⟩ => ⟨t, ht⟩⟩)` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Conclude with `DVR.exists_normalized_to L.isLB (primPt G w) primExp t ht G.hom (eSec G) (Over.w η[G]) _ _ L.rig L.rigGen ((DVR.sameSum_iff_fsum _ _ _ _).1 (sameSum_prim G w))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem primitive_iff (L : RigLB G) (w : G ⟶ G) :
     Geo.Tor.LBIso L.L (cubeLB G ![𝟙 G, w] L.L) ↔ IsPrimitiveFor G L w := by
@@ -279,7 +279,7 @@ def tripleEquiv (H : Geo.Tor.Host E) (S : Scheme.{0}) :
   right_inv := fun _ => rfl
 
 /- English proof (translation)
-Establish `h3` using `Triple.cubeMap_tripleProduct_unique m m' h`. Consider the cases of `m`. Consider the cases of `m'`. Simplify using `only at h he h3`. Substitute `h he h3` using the available equality.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -299,9 +299,9 @@ def toPull {t' : Geo.Tor.SAB H S'} {t : Geo.Tor.SAB H S} {f : S' ⟶ S}
   bundle := ⟨m.cm, rfl, m.base, m.lin⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `m m' h`. Establish `e : m.cm = m'.cm` using `cubeMap_ext _ _ (congrArg Triple.Pull.φ h) (m.base.trans m'.base.symm)`. Consider the cases of `m`. Consider the cases of `m'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Simplify using `only at e`. Substitute `e` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨φ, h1, h2, m, rfl, h3, h4⟩`. Conclude with `⟨⟨m, h1, h3, h2, h4⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem toPull_bijective (t' : Geo.Tor.SAB H S') (t : Geo.Tor.SAB H S) (f : S' ⟶ S) :
     Function.Bijective (toPull (t' := t') (t := t) (f := f)) := by

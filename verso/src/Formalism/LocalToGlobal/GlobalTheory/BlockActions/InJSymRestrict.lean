@@ -11,7 +11,7 @@ open IsDedekindDomain
 section Gen
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `h`. Use `⟨fun x y hxy => ?_, fun x hx => ?_, fun x y hx hy => ?_, fun h => absurd h Bool.false_ne_true⟩` and prove the remaining obligations. Rewrite using `[hR]; exact h1 _ _ (by simpa only [Fin.val_castSucc] using hxy)`. Rewrite using `[hR]; exact h2 _ (by simpa only [Fin.val_castSucc] using hx)`. Rewrite using `[hR]; exact h3 _ _ (by simpa only [Fin.val_castSucc] using hx) (by simpa only [Fin.val_castSucc] using hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inJSym_restrict {κ : Type} [Field κ] {n : ℕ} {k rS t : ℕ} {zl : Bool} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) κ)
     (R : Matrix (Fin n) (Fin n) κ) (hR : ∀ x y, R x y = M x.castSucc y.castSucc) (h : InJSym k rS t zl M) :
@@ -23,17 +23,17 @@ theorem inJSym_restrict {κ : Type} [Field κ] {n : ℕ} {k rS t : ℕ} {zl : Bo
   · rw [hR]; exact h3 _ _ (by simpa only [Fin.val_castSucc] using hx) (by simpa only [Fin.val_castSucc] using hy)
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Take `⟨h1, h2⟩` from `hMm`. Establish `hRc : ∀ x y : Fin n, R x y = Mm.1 x.castSucc y.castSucc` using `fun x y => hR x y`. Use `set R' : Matrix (Fin n) (Fin n) κ := fun x y => (Mm⁻¹ : GL (Fin (n + 1)) κ).1 x.castSucc y.castSucc with hR'`. Establish `hl : ∀ (M : Matrix (Fin (n + 1)) (Fin (n + 1)) κ), InJSym k rS t true M → ∀ x : Fin n, M x.castSucc (Fin.last n) = 0`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M hM x`. Use `(hM.2.2.2 rfl x.castSucc (Fin.last n) (by simp)).1` as an intermediate fact. Simplify `this` using `[Fin.castSucc_ne_last]`. Establish `hmul : ∀ (A B : Matrix (Fin (n + 1)) (Fin (n + 1)) κ), InJSym k rS t true A → ∀ x y : Fin n, (A * B) x.castSucc y.castSucc = ∑ j : Fin n, A x.castSucc j.castSucc * B j.castSucc y.castSucc`. Introduce `A B hA x y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_apply, Fin.sum_univ_castSucc, hl A hA x, zero_mul, add_zero]`. Establish `e1 : R * R' = 1`. Use extensionality with `x y`. Use `congrFun (congrFun (Mm.mul_inv) x.castSucc) y.castSucc` as an intermediate fact. Rewrite `this` using `[hmul _ _ h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_apply]`. Simplify using `only [hRc, hR']`. Rewrite using `[this]`. Simplify using `[one_apply, Fin.castSucc_inj]`. Establish `e2 : R' * R = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x y`. Use `congrFun (congrFun (Mm.inv_mul) x.castSucc) y.castSucc` as an intermediate fact. Rewrite `this` using `[hmul _ _ h2]`. Rewrite using `[mul_apply]`. Simplify using `only [hRc, hR']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `[one_apply, Fin.castSucc_inj]`. Use `⟨⟨R, R', e1, e2⟩, ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `inJSym_restrict _ R hRc h1`. Conclude with `inJSym_restrict _ R' (fun x y => rfl) h2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jsym_of_blk {κ : Type} [Field κ] {n N : ℕ} (hN : n + 1 = N) {k rS t : ℕ} (Mm : GL (Fin N) κ)
     (hMm : Mm ∈ JSymG κ N k rS t true) (R : Matrix (Fin n) (Fin n) κ)
@@ -73,17 +73,17 @@ theorem jsym_of_blk {κ : Type} [Field κ] {n N : ℕ} (hN : n + 1 = N) {k rS t 
   · exact inJSym_restrict _ R' (fun x y => rfl) h2
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `set B : Matrix (Fin (n + 1)) (Fin (n + 1)) K := Matrix.of (fun x y : Fin (n + 1) => if h : (x : ℕ) < n ∧ (y : ℕ) < n then M' ⟨x, h.1⟩ ⟨y, h.2⟩ else if (x : ℕ) = y then 1 else 0) with hB`. Establish `hne : ∀ j : Fin n, (j : ℕ) ≠ n` using `fun j => j.is_lt.ne`. Establish `key : gm * Fm = Fm * B`. Use extensionality with `x y`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun y' => ?_) y` and prove the remaining obligations. Establish `e1 : (gm * Fm) x (Fin.last n) = w x`. Rewrite using `[← congrFun hgw x, mul_apply]`. Simplify using `only [mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl (fun j _ => by rw [hF2 j (Fin.last n) (by simp)])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, mul_apply, Fin.sum_univ_castSucc]`. Simplify using `[hB, hne, hF2 x (Fin.last n) (by simp)]`. Establish `eL : (gm * Fm) x y'.castSucc = (A * (Fp * M')) x y'`. Rewrite using `[hM', ← Matrix.mul_assoc, ← hgA, Matrix.mul_assoc, mul_apply, mul_apply]`. Conclude with `Finset.sum_congr rfl (fun j _ => by rw [hF1 j y' y'.castSucc (by simp)])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eR : (Fm * B) x y'.castSucc = ((A * Fp) * M') x y'`. Rewrite using `[mul_apply, Fin.sum_univ_castSucc, mul_apply]`. Establish `hlast : B (Fin.last n) y'.castSucc = 0`. Simplify using `[hB, (hne y').symm]`. Rewrite using `[hlast, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[hF1 x j j.castSucc (by simp)]`. Simplify using `[hB]`. Rewrite using `[eL, eR, Matrix.mul_assoc]`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : Fm' * gm * Fm = B` using `by rw [Matrix.mul_assoc, key, ← Matrix.mul_assoc, hFm, Matrix.one_mul]`. Rewrite using `[e]`. Simplify using `[hB]`.
+A detailed English derivation is pending.
 -/
 theorem blk_conj {K : Type} [CommRing K] {n N : ℕ} (hN : n + 1 = N) (gm Fm Fm' : Matrix (Fin N) (Fin N) K) (hFm : Fm' * Fm = 1)
     (A : Matrix (Fin N) (Fin n) K) (Fp gk M' : Matrix (Fin n) (Fin n) K) (hM' : Fp * M' = gk * Fp)
@@ -126,7 +126,7 @@ end Gen
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
 /- English proof (translation)
-Simplify using `only [redM, h]`. Distinguish the cases in `hY : Y a' b' ∈ v.adicCompletionIntegers F`. Rewrite using `[dif_pos (by rw [h]; exact hY), dif_pos hY]`. Rewrite using `[dif_neg (by rw [h]; exact hY), dif_neg hY]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem redM_entry {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {m m' : ℕ}
     (X : Matrix (Fin m) (Fin m) (v.adicCompletion F)) (Y : Matrix (Fin m') (Fin m') (v.adicCompletion F))
@@ -139,17 +139,15 @@ theorem redM_entry {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `set Km := (Tf.cls D.R.m le_rfl (Or.inr rfl)).lev`. Rewrite using `[Tf.glevP.mem i v h _ hlev]`. Establish `hGv : bc (prV (E` using `D.host.E) v) G ∈ Km.Uloc v := ((Km.U_eq G).1 hG).2 v`. Take `⟨Mm, hMm, hMmeq⟩` from `(Tf.glevM.mem i v h _ (Km.Uloc_lev v hGv)).1 hGv`. Take `⟨hEv1, hEv2⟩` from `isExt_prV v hE`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hF1, hF2⟩` from `Tf.frExt i v h`. Establish `hmatG : Tf.gl.mat i v h (Tf.glevM.fr i v h) (bc (prV (E` using `D.host.E) v) G) = ((Tf.glevM.fr i v h)⁻¹ : GL _ _).1 * (G.1.map (prV (E := D.host.E) v)).map (Tf.gl.phi i v h) * (Tf.glevM.fr i v h).1 := by`. Simplify using `only [GLoc.mat, Units.val_mul]`. Both sides reduce to the same expression. Establish `hmatK : Tf.gl.mat i v h (Tf.glevP.fr i v h) (bc (prV (E` using `D.host.E) v) K) = ((Tf.glevP.fr i v h)⁻¹ : GL _ _).1 * (K.1.map (prV (E := D.host.E) v)).map (Tf.gl.phi i v h) * (Tf.glevP.fr i v h).1 := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GLoc.mat, Units.val_mul]`. Both sides reduce to the same expression. Establish `hb` using `blk_conj (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) ((G.1.map (prV (E := D.host.E) v)).map (Tf.gl.phi i v h)) (Tf.glevM.fr i v h).1 ((Tf.glevM.fr i v h)⁻¹ : GL _ _).1 (by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]) ((iXm D).map ((Tf.gl.phi i v h).comp …`. Use `congrArg (fun M => M.map (Tf.gl.phi i v h)) hEv1` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_map] at this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.coe_comp]`. Conclude with `this)`. Use the proof step `(fun a => Tf.gl.phi i v h (inclE (F := D.host.F) (v.adicCompletion D.host.F) (Tf.til.z0 a)))`. Use the proof step `(by`. Use function extensionality and compare the values at `a`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RingHom.map_mulVec (Tf.gl.phi i v h) _ _ a).symm.trans (congrArg (fun w => Tf.gl.phi i v h (w a)) hEv2))`. Use `hF1 hF2`. Use `jsym_of_blk (Formalism.MainNotions.product_first_zeroth_parts.Nm_succ D.R) Mm hMm _ (fun x y => ?_)` and prove the remaining obligations. Rewrite using `[hMmeq]`. Apply the tactic sequence `refine redM_entry v _ _ _ _ _ _ ?_`.
-
-Rewrite using `[hmatK, hmatG]`. Conclude with `(hb x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem lev_bad (Tf : FormsTiedSym D u Ch chOf) (K : GL (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
@@ -196,13 +194,13 @@ theorem lev_bad (Tf : FormsTiedSym D u Ch chOf) (K : GL (Fin (D.R.N D.R.m - 1)) 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hU : K ∈ UPts (sigD D) (gramP D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `lev_unit Tf K.1 G hE hG`. Rewrite using `[Tf.clsP.lev.U_eq]`. Use `⟨hU, fun v => ?_⟩` and prove the remaining obligations. Establish `hu` using `Formalism.UG.P.base_change_mem_holds _ _ _ (sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (sigR (sigD D) (v.adicCompletion D.host.F)) (prV (E := D.host.E) v) (Formalism.UG.P.afsplit_prV_comp_sigR (sigD D) v) _ K hU`. Establish `e : ((gramP D).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))).map (prV (E := D.host.E) v) = (gramP D).map (inclE (F := D.host.F) (v.adicCompletion D.host.F)) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Rewrite `hu` using `[e]`. Establish `hlev : bc (prV (E` using `D.host.E) v) K ∈ levelVL (sigD D) (gramP D) v Tf.clsP.lev.Lb := Subgroup.mem_inf.mpr ⟨hu, fun x => lev_lat Tf K.1 G hE hG v x⟩`. Distinguish the cases in `hv : v ∈ badG D`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : Fin 2, (D.host.g i : 𝓞 D.host.F) ∈ v.asIdeal := by`. Break down `hv with h0 | h1` into its components or cases. Conclude with `⟨0, h0⟩`. Conclude with `⟨1, h1⟩`. Conclude with `lev_bad Tf K G hE hG v hlev i hi`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : ((1 : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)`. Rewrite using `[Tf.clsP.lev.Uloc_hyp v hv h1]`. Conclude with `hlev`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_mem (Tf : FormsTiedSym D u Ch chOf) (K : GL (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
     (G : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))

@@ -25,13 +25,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨hx, -⟩` from `id hm`. Set `h : ptO Xo z.x ⟶ ptO Xo y.x` to `Over.homMk (spMap ψ.toRingHom) hx.symm`. Establish `hh : h.left = spMap ψ.toRingHom` using `rfl`. Establish `hs` using `GlobalTheory.FramedBaseChange.isPullSec ψ hm h hh`. Establish `hH : P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `harmA HaO at hP`. Conclude with `hP.1`. Use `choose F' hF' using fun b => Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) (F b)`. Use `⟨F', fun b => ?_, ?_⟩` and prove the remaining obligations. Establish `hv` using `(GlobalTheory.VtBaseChange.isVtOver_isUUOver_baseChange E H Dw l Xo l.M (l.Mb ^ 2) (ptO Xo y.x) (ptO Xo z.x) h y.s z.s hs (F b) (F' b) (hF' b)).1 _ (hF b)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e : h ≫ levPt Xo y.x (x b) = levPt Xo z.x (x b)`. Unfold `levPt`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Conclude with `CartesianMonoidalCategory.toUnit_unique _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hv` using `[e]`. Then use the resulting hypothesis. Establish `hv` using `GlobalTheory.T.harmonicValue_baseChange_alt hC E H Dw l Xo c nab hnab S T ψ y z hm h hh a n P hH l.M F F' hF'`. Unfold `thExpr`. Rewrite using `[map_mul, AlgHom.commutes, hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
     {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (ψ : S →ₐ[c.F] T)
@@ -65,9 +65,9 @@ theorem exists_pull (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (
     rw [map_mul, AlgHom.commutes, hv]
 
 /- English proof (translation)
-Introduce `hL hC E _ _ _ H Dw l Xo c _ nab hnab S _ _ y a n x P hP S1 _ _ φ1 y1 F1 S2 _ _ φ2 y2 F2 hm1 hF1 hm2 hF2 T _ _ ψ1 ψ2 hψ`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algHom hL E H Dw l Xo c S T (ψ1.comp φ1) y`. Establish `hw1 : FrMap ψ1 y1 w` using `GlobalTheory.FramedBaseChange.cancel φ1 ψ1 hm1 hw`. Establish `hw2 : FrMap ψ2 y2 w` using `GlobalTheory.FramedBaseChange.cancel φ2 ψ2 hm2 (hψ ▸ hw)`. Take `⟨G1, hG1, e1⟩` from `exists_pull hC nab hnab ψ1 y1 w hw1 a n x P hP F1 hF1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G2, hG2, e2⟩` from `exists_pull hC nab hnab ψ2 y2 w hw2 a n x P hP F2 hF2`. Rewrite using `[e1, e2]`. Establish `hG : G1 = G2` using `funext fun b => vtUniq_obj hL.globalFns Xo.univ (hG1 b) (hG2 b)`. Rewrite using `[hG]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thExpr_eq_of_witnesses : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (x : Fin n → Dw.La) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmA c a n → ∀ (S1 : Type) [CommRing S1] [Algebra c.F S1] (φ1 : S →ₐ[c.F] S1) (y1 : FrPt Xo c S1) (F1 : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (ptO Xo y1.x))) (S2 : Type) [CommRing S2] [Algebra c.F S2] (φ2 : S →ₐ[c.F] S2) (y2 : FrPt Xo c S2) (F2 : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (ptO Xo y2.x))), FrMap φ1 y y1 → (∀ b, IsVtOver Xo.univ.t.G Xo.univ.t.PP l.M (KilledBy Xo (l.Mb ^ 2)) y1.s (levPt Xo y1.x (x b)) (F1 b)) → FrMap φ2 y y2 → (∀ b, IsVtOver Xo.univ.t.G Xo.univ.t.PP l.M (KilledBy Xo (l.Mb ^ 2)) y2.s (levPt Xo y2.x (x b)) (F2 b)) → ∀ (T : Type) [CommRing T] [Algebra c.F T] (ψ1 : S1 →ₐ[c.F] T) (ψ2 : S2 →ₐ[c.F] T), ψ1.comp φ1 = ψ2.comp φ2 → ψ1 (thExpr Xo c nab y1 P F1) = ψ2 (thExpr Xo c nab y2 P F2) := by
   intro hL hC E _ _ _ H Dw l Xo c _ nab hnab S _ _ y a n x P hP S1 _ _ φ1 y1 F1 S2 _ _ φ2 y2 F2 hm1 hF1 hm2 hF2 T _ _ ψ1 ψ2 hψ

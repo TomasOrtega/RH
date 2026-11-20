@@ -15,14 +15,14 @@ variable {σ R : Type} [CommRing R]
 def HomG (φ : (σ →₀ ℕ) →+ ℕ) (d : ℕ) (P : MvPolynomial σ R) : Prop := ∀ m ∈ P.support, φ m = d
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem HomG.zero (φ : (σ →₀ ℕ) →+ ℕ) (d : ℕ) : HomG φ d (0 : MvPolynomial σ R) := by
   intro m hm
   simp at hm
 
 /- English proof (translation)
-Introduce `m hm`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hP m h`. Conclude with `hQ m h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem HomG.add {φ : (σ →₀ ℕ) →+ ℕ} {d : ℕ} {P Q : MvPolynomial σ R} (hP : HomG φ d P) (hQ : HomG φ d Q) :
     HomG φ d (P + Q) := by
@@ -33,7 +33,7 @@ theorem HomG.add {φ : (σ →₀ ℕ) →+ ℕ} {d : ℕ} {P Q : MvPolynomial �
   · exact hQ m h
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by simpa using HomG.zero (R := R) φ d) ?_` and prove the remaining obligations. Introduce `i s hi ih h`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `HomG.add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomG.sum {φ : (σ →₀ ℕ) →+ ℕ} {d : ℕ} {ι : Type} (s : Finset ι) (P : ι → MvPolynomial σ R)
     (h : ∀ i ∈ s, HomG φ d (P i)) : HomG φ d (∑ i ∈ s, P i) := by
@@ -45,7 +45,7 @@ theorem HomG.sum {φ : (σ →₀ ℕ) →+ ℕ} {d : ℕ} {ι : Type} (s : Fins
   exact HomG.add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul P Q hm)`. Rewrite using `[map_add, hP a ha, hQ b hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem HomG.mul {φ : (σ →₀ ℕ) →+ ℕ} {d d' : ℕ} {P Q : MvPolynomial σ R} (hP : HomG φ d P) (hQ : HomG φ d' Q) :
     HomG φ (d + d') (P * Q) := by
@@ -55,7 +55,7 @@ theorem HomG.mul {φ : (σ →₀ ℕ) →+ ℕ} {d d' : ℕ} {P Q : MvPolynomia
   rw [map_add, hP a ha, hQ b hb]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[← MvPolynomial.C_1, MvPolynomial.C_apply]`. Rewrite using `[Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hm), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem HomG.one (φ : (σ →₀ ℕ) →+ ℕ) : HomG φ 0 (1 : MvPolynomial σ R) := by
   intro m hm
@@ -63,7 +63,7 @@ theorem HomG.one (φ : (σ →₀ ℕ) →+ ℕ) : HomG φ 0 (1 : MvPolynomial �
   rw [Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hm), map_zero]
 
 /- English proof (translation)
-Establish `hc : ((-1 : MvPolynomial σ R) ^ n) = MvPolynomial.C ((-1 : R) ^ n)` using `by simp`. Introduce `m hm`. Apply `hP m` to reduce the goal to its premises. Rewrite `hm` using `[hc, MvPolynomial.mem_support_iff, MvPolynomial.coeff_C_mul]`. Conclude with `MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomG.sign {φ : (σ →₀ ℕ) →+ ℕ} {d : ℕ} {P : MvPolynomial σ R} (hP : HomG φ d P) (n : ℕ) :
     HomG φ d ((-1) ^ n * P) := by
@@ -74,7 +74,7 @@ theorem HomG.sign {φ : (σ →₀ ℕ) →+ ℕ} {d : ℕ} {P : MvPolynomial σ
   exact MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hm)
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by simpa using HomG.one (σ := σ) (R := R) φ) ?_` and prove the remaining obligations. Introduce `a s ha ih h`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `HomG.mul (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomG.prod {φ : (σ →₀ ℕ) →+ ℕ} {κ : Type} (s : Finset κ) (d : κ → ℕ) (P : κ → MvPolynomial σ R)
     (h : ∀ a ∈ s, HomG φ (d a) (P a)) : HomG φ (∑ a ∈ s, d a) (∏ a ∈ s, P a) := by
@@ -86,7 +86,7 @@ theorem HomG.prod {φ : (σ →₀ ℕ) →+ ℕ} {κ : Type} (s : Finset κ) (d
   exact HomG.mul (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
 /- English proof (translation)
-The claim follows from `| 0, J => by show HomG φ _ (extOne J) unfold extOne split_ifs · simpa using HomG.one (R := R) φ · exact HomG.zero φ _ | t + 1, J => by have ih := KG_hom φ c hs x ω hx t rw [Finset.sum_range_succ] by_cases h : hs t = hs (t + 1) · rw [KG_eq h, if_pos h, add_zero]; exact ih J · rw [ …`.
+A detailed English derivation is pending.
 -/
 theorem KG_hom {n : ℕ} (φ : (σ →₀ ℕ) →+ ℕ) (c : ℤ) (hs : ℕ → ℕ) (x : ℕ → Fin n → MvPolynomial σ R) (ω : ℕ → ℕ)
     (hx : ∀ j b, HomG φ (ω j) (x j b)) :
@@ -118,7 +118,7 @@ section Shift
 variable {n : ℕ} {P : Type} [CommRing P]
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [KG_eq h0]; rfl | t + 1 => by show colStep c (hs (t + 1)) (hs (t + 1 + 1)) (x (t + 1)) (KG c hs x (t + 1)) = colStep c (hs (t + 1)) (hs (t + 1 + 1)) (x (t + 1)) (KG c (fun j => hs (j + 1)) (fun j => x (j + 1)) t) rw [KG_shift c hs x h0 t]`.
+A detailed English derivation is pending.
 -/
 theorem KG_shift (c : ℤ) (hs : ℕ → ℕ) (x : ℕ → Fin n → P) (h0 : hs 0 = hs 1) :
     ∀ t, KG c hs x (t + 1) = KG c (fun j => hs (j + 1)) (fun j => x (j + 1)) t
@@ -129,7 +129,7 @@ theorem KG_shift (c : ℤ) (hs : ℕ → ℕ) (x : ℕ → Fin n → P) (h0 : hs
     rw [KG_shift c hs x h0 t]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => rfl | t + 1, h1, h2 => by show colStep c (hs t) (hs (t + 1)) (x t) (KG c hs x t) = colStep c (hs' t) (hs' (t + 1)) (x' t) (KG c hs' x' t) rw [KG_congr c t (fun j hj => h1 j (by omega)) (fun j hj => h2 j (by omega)), h1 t (by omega), h1 (t + 1) le_rfl, h2 t (by omega) …`.
+A detailed English derivation is pending.
 -/
 theorem KG_congr (c : ℤ) {hs hs' : ℕ → ℕ} {x x' : ℕ → Fin n → P} :
     ∀ t, (∀ j, j ≤ t → hs j = hs' j) → (∀ j, j < t → x j = x' j) → KG c hs x t = KG c hs' x' t
@@ -140,7 +140,7 @@ theorem KG_congr (c : ℤ) {hs hs' : ℕ → ℕ} {x x' : ℕ → Fin n → P} :
       h2 t (by omega)]
 
 /- English proof (translation)
-The claim follows from `| 0 => by have : ¬ (1 ≤ c ∧ c ≤ ν 0) := by rw [h0]; omega rw [if_neg this] show extOne ∅ = _ simp [extOne] | t + 1 => by have ih := KG_one c ν h0 hm hs hhs x t have hnn : ∀ t, 0 ≤ ν t := by intro t induction t with | zero => rw [h0] | succ t iht => exact le_trans iht (hm t) rw [F …`.
+A detailed English derivation is pending.
 -/
 theorem KG_one (c : ℤ) (ν : ℕ → ℤ) (h0 : ν 0 = 0) (hm : ∀ t, ν t ≤ ν (t + 1)) (hs : ℕ → ℕ)
     (hhs : ∀ t, hs t = if c ≤ ν t then 1 else 0) (x : ℕ → Fin 1 → P) :

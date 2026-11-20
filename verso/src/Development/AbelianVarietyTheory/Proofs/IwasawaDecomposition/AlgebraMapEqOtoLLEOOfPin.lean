@@ -25,7 +25,7 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.Rea
 namespace GlobalTheory.Mem.R3.Rw
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg _hH hL Xg tr R' _hR _hmu ι _hι x`. Apply `(w'.st Z').toD7.what₂.embLL.injective` to reduce the goal to its premises. Establish `h1 : (w'.st Z').toD7.what₂.embLL (@algebraMap core'.Q.c.F (w'.st Z').toD7.what₂.LL _ _ alg' (x : core'.Q.c.F)) = ((x : core'.Q.c.F) : ℂ)` using `halg _`. Establish `h2 : (w'.st Z').toD7.what₂.embLL ((w'.st Z').toD7.what₂.OtoLL (core'.Q.eO x)) = ((x : core'.Q.c.F) : ℂ)` using `hL.pins.2.2.1 x`. Conclude with `h1.trans h2.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_eq_OtoLL_eO_of_pin : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

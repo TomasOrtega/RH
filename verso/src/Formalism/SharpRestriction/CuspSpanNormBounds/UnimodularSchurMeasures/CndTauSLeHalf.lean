@@ -9,7 +9,7 @@ open scoped InnerProductSpace ComplexOrder ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 
 /- English proof (translation)
-Establish `hn : 1 ≤ X.I.n` using `le_trans h1 hX.1.1`. Establish `hg1 : (1 : ℝ) ≤ (X.g : ℝ)` using `by exact_mod_cast hX.1.2.2.2.2.2.2.2.1`. Establish `h` using `two_mul_le_height_parameter (n := X.I.n) (f := X.I.f) hn (one_le_autInst_f X.I) (one_le_discriminant_root X.I) hg1 hX.1.2.2.1`. Establish `hnR : (1 : ℝ) ≤ (X.I.n : ℝ)` using `by exact_mod_cast hn`. Unfold `cn_Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -22,15 +22,15 @@ theorem cnd_two_le_Y (X : CData) {n₀ : ℕ} {A : ℝ} (h1 : 1 ≤ n₀) (hX : 
   linarith
 
 /- English proof (translation)
-The claim follows from `Real.rpow_pos_of_pos (by linarith) _`.
+A detailed English derivation is pending.
 -/
 theorem cnd_tauS_pos (X : CData) (C₁ : ℝ) (hY : 2 ≤ cn_Y X) : 0 < cn_tauS X C₁ :=
   Real.rpow_pos_of_pos (by linarith) _
 
 /- English proof (translation)
-Establish `hqR : (1 : ℝ) ≤ (X.qq : ℝ)` using `by exact_mod_cast hq`. Establish `h1 : (1 : ℝ) ≤ C₁ * (X.qq : ℝ)` using `by nlinarith`. Establish `h2 : cn_tauS X C₁ ≤ cn_Y X ^ (-(1 : ℝ))` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `h3 : cn_Y X ^ (-(1 : ℝ)) ≤ 1 / 2`. Rewrite using `[Real.rpow_neg_one, one_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_anti₀ (by norm_num) hY`. Conclude with `le_trans h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem cnd_tauS_le_half (X : CData) {C₁ : ℝ} (hC₁ : 1 ≤ C₁) (hq : 1 ≤ X.qq) (hY : 2 ≤ cn_Y X) :
     cn_tauS X C₁ ≤ 1 / 2 := by
@@ -44,7 +44,7 @@ theorem cnd_tauS_le_half (X : CData) {C₁ : ℝ} (hC₁ : 1 ≤ C₁) (hq : 1 �
   exact le_trans h2 h3
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) ≤ (X.qq : ℝ)` using `Nat.cast_nonneg _`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by nlinarith)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cnd_tauS_anti (X : CData) {C₁ C₁' : ℝ} (h : C₁ ≤ C₁') (hY : 2 ≤ cn_Y X) :
     cn_tauS X C₁' ≤ cn_tauS X C₁ := by
@@ -52,7 +52,7 @@ theorem cnd_tauS_anti (X : CData) {C₁ C₁' : ℝ} (h : C₁ ≤ C₁') (hY : 
   exact Real.rpow_le_rpow_of_exponent_le (by linarith) (by nlinarith)
 
 /- English proof (translation)
-Unfold `cn_tauS`. Rewrite using `[hq]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cnd_tauS_zero (X : CData) (C₁ : ℝ) (hq : X.qq = 0) : cn_tauS X C₁ = 1 := by
   unfold cn_tauS
@@ -60,7 +60,7 @@ theorem cnd_tauS_zero (X : CData) (C₁ : ℝ) (hq : X.qq = 0) : cn_tauS X C₁ 
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [CSize.Mod, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_le]`. Rewrite using `[cnd_tauS_zero X C₁ hq]`. Use `(hst.2.2.2.2.2.1 x).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cnd_Mod_zero {X : CData} (S : CSize X) (hst : S.Strata) (C₁ : ℝ) (hq : X.qq = 0) : S.Mod C₁ = ∅ := by
   ext x
@@ -77,15 +77,13 @@ def CSize.PackCount {X : CData} (S : CSize X) : Prop :=
         S.tau1 x ^ 2) ^ (2 * X.I.n ^ 2 * Fintype.card (InfinitePlace X.I.F))
 
 /- English proof (translation)
-Introduce `x hx r hr T hT`. Establish `hτ` using `hst.2.2.2.2.2.1 x`. Establish `hs : (1 : ℝ) ≤ Real.sqrt (X.I.n : ℝ)`. Rewrite using `[Real.one_le_sqrt]`. Conclude with `hn` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hP x r hr T hT`. Establish `h2` using `Formalism.HermitianLatticeCounting.Final.S7.farCount (InfinitePlace X.I.F) X.I.n r (S.tau1 x) (Real.sqrt (X.I.n : ℝ)) hτ.1 (by linarith [hτ.2]) hs hr`. Establish `hτs : 0 < cn_tauS X C₁` using `cnd_tauS_pos X C₁ hY`. Establish `hle : cn_tauS X C₁ ≤ S.tau1 x` using `hx`. Establish `hsq : cn_tauS X C₁ ^ 2 ≤ S.tau1 x ^ 2` using `pow_le_pow_left₀ hτs.le hle 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq1 : cn_tauS X C₁ ^ 2 ≤ 1`. Establish `: cn_tauS X C₁ ≤ 1` using `by linarith [hτ.2]`. Conclude with `pow_le_one₀ hτs.le this`. Establish `hbase : 3 * Real.sqrt (X.I.n : ℝ) / S.tau1 x ^ 2 ≤ 3 * Real.sqrt (X.I.n : ℝ) / cn_tauS X C₁ ^ 2` using `div_le_div_of_nonneg_left (by positivity) (by positivity) hsq`. Establish `hbase1 : 1 ≤ 3 * Real.sqrt (X.I.n : ℝ) / cn_tauS X C₁ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : (3 * Real.sqrt (X.I.n : ℝ) / S.tau1 x ^ 2) ^ (2 * X.I.n ^ 2 * Fintype.card (InfinitePlace X.I.F)) ≤ X.Acnt C₁`. Establish `e1 : (3 * Real.sqrt (X.I.n : ℝ) / S.tau1 x ^ 2) ^ (2 * X.I.n ^ 2 * Fintype.card (InfinitePlace X.I.F)) ≤ (3 * Real.sqrt (X.I.n : ℝ) / cn_tauS X C₁ ^ 2) ^ (2 * X.I.n ^ 2 * Fintype.card (InfinitePlace X.I.F))` using `pow_le_pow_left₀ (by have := hτ.1; positivity) hbase _`. Establish `e2 : (3 * Real.sqrt (X.I.n : ℝ) / cn_tauS X C₁ ^ 2) ^ (2 * X.I.n ^ 2 * Fintype.card (InfinitePlace X.I.F)) ≤ (3 * Real.sqrt (X.I.n : ℝ) / cn_tauS X C₁ ^ 2) ^ (2 * X.I.n ^ 2 * X.I.f)` using `pow_le_pow_right₀ hbase1 (Nat.mul_le_mul_left _ (card_infinite_places_le_degree X.I))`.
-
-Conclude with `le_trans e1 e2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cnd_far {X : CData} (S : CSize X) (C₁ : ℝ) (hn : 1 ≤ X.I.n) (hY : 2 ≤ cn_Y X) (hst : S.Strata)
     (hP : S.PackCount) : X.FarCount (X.Acnt C₁) (2 * (X.I.n : ℝ) ^ 2) (S.Mod C₁) := by
@@ -123,11 +121,11 @@ theorem cnd_far {X : CData} (S : CSize X) (C₁ : ℝ) (hn : 1 ≤ X.I.n) (hY : 
         mul_le_mul_of_nonneg_right hA (Real.exp_pos _).le
 
 /- English proof (translation)
-Introduce `x hx r hr T hT`. Establish `hs : (1 : ℝ) ≤ Real.sqrt (X.I.n : ℝ)`. Rewrite using `[Real.one_le_sqrt]`. Conclude with `hn` after adjusting the coercions. Establish `hc : T.card ≤ 1` using `Finset.card_le_one.2 fun a ha b hb => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN x hx a (hT a ha).1, hN x hx b (hT b hb).1]`. Establish `hA : 1 ≤ X.Acnt C₁`. Unfold `CData.Acnt`. Rewrite using `[hq]`. Apply `one_le_pow₀` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_zero, mul_zero, neg_zero, Real.rpow_zero, one_pow, div_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE : 1 ≤ Real.exp (2 * (X.I.n : ℝ) ^ 2 * ∑ v, r v)` using `Real.one_le_exp (mul_nonneg (by positivity) (Finset.sum_nonneg fun v _ => hr v))`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cnd_far_zero (X : CData) (C₁ : ℝ) (hn : 1 ≤ X.I.n) (hq : X.qq = 0) (Mod : Set X.I.GA)
     (hN : ∀ x ∈ Mod, ∀ γ : X.I.GFset, X.φ (x⁻¹ * (γ : X.I.GA) * x) ≠ 0 → γ = X.one') :
@@ -150,21 +148,17 @@ theorem cnd_far_zero (X : CData) (C₁ : ℝ) (hn : 1 ≤ X.I.n) (hq : X.qq = 0)
     _ ≤ X.Acnt C₁ * Real.exp (2 * (X.I.n : ℝ) ^ 2 * ∑ v, r v) := by nlinarith
 
 /- English proof (translation)
-Establish `hD : 0 ≤ X.Dc` using `Nat.cast_nonneg _`. Establish `hE` using `Real.exp_pos (-((X.I.n : ℝ) ^ 2 * (X.I.f : ℝ)))`. Establish `hfin : X.Dc * Real.exp (-((X.I.n : ℝ) ^ 2 * (X.I.f : ℝ))) ≤ A₁ * Real.exp (-((X.I.n : ℝ) ^ 2 * (X.I.f : ℝ))) * X.Dc`. Establish `: 0 ≤ X.Dc * Real.exp (-((X.I.n : ℝ) ^ 2 * (X.I.f : ℝ)))` using `mul_nonneg hD hE.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: IsFiniteMeasure X.μ` using `⟨by`. Unfold `CData.μ`. Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `lt_top_iff_ne_top.2 hV⟩`. Establish `hvol` using `X.vol_eq`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `CData.DeepInt`. Use `le_trans ?_ hfin` and prove the remaining obligations. Distinguish the cases in `hv0 : X.I.vol X.μf X.fund = 0`. Establish `hμ0 : X.μ.real (Modᶜ) = 0`. Establish `h1 : X.μ.real (Modᶜ) ≤ X.μ.real Set.univ` using `measureReal_mono (Set.subset_univ _)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hvol, hv0]`. Conclude with `le_antisymm h1 measureReal_nonneg`. Establish `hz : X.μ (Modᶜ) = 0`. Break down `(measureReal_eq_zero_iff (μ := X.μ) (s := Modᶜ)).1 hμ0 with h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.restrict_eq_zero.2 hz, integral_zero_measure, abs_zero]`. Conclude with `mul_nonneg hD hE.le`. Establish `hvpos : 0 < X.I.vol X.μf X.fund` using `lt_of_le_of_ne ENNReal.toReal_nonneg (Ne.symm hv0)`. Establish `hb : ∀ᵐ x ∂(X.μ.restrict Modᶜ), ‖(X.kerD x).re‖ ≤ X.Dc * Real.exp (-((X.I.n : ℝ) ^ 2 * (X.I.f : ℝ))) / X.I.vol X.μf X.fund`. Rewrite using `[ae_restrict_iff' hM.compl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [key] with x hx hxM`. Rewrite using `[le_div_iff₀ hvpos, Real.norm_eq_abs, mul_comm]`. Conclude with `hx hxM`. Establish `h1` using `norm_integral_le_of_norm_le_const hb`. Rewrite `h1` using `[Real.norm_eq_abs]`.
-
-Use `le_trans h1 ?_` and prove the remaining obligations. Establish `h2 : (X.μ.restrict Modᶜ).real Set.univ ≤ X.I.vol X.μf X.fund`. Rewrite using `[hvol, measureReal_restrict_apply_univ]`. Conclude with `measureReal_mono (Set.subset_univ _)`. Establish `h3 : 0 ≤ X.Dc * Real.exp (-((X.I.n : ℝ) ^ 2 * (X.I.f : ℝ))) / X.I.vol X.μf X.fund` using `div_nonneg (mul_nonneg hD hE.le) hvpos.le`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cnd_deep_int (X : CData) (hV : X.FinVol) {Mod : Set X.I.GA} (hM : MeasurableSet Mod)
     (key : ∀ᵐ x ∂X.μ, x ∈ Modᶜ →
@@ -214,7 +208,7 @@ theorem cnd_deep_int (X : CData) (hV : X.FinVol) {Mod : Set X.I.GA} (hM : Measur
       _ = _ := by field_simp
 
 /- English proof (translation)
-Unfold `CData.DeepInt`. Rewrite using `[Set.compl_univ, Measure.restrict_empty, integral_zero_measure, abs_zero]`. Establish `hD : 0 ≤ X.Dc` using `Nat.cast_nonneg _`. Use `Real.exp_pos (-((X.I.n : ℝ) ^ 2 * (X.I.f : ℝ)))` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem cnd_deep_zero (X : CData) {A₁ : ℝ} (hA₁ : 0 ≤ A₁) : X.DeepInt A₁ Set.univ := by
   unfold CData.DeepInt
@@ -237,11 +231,11 @@ def CSize.DeepStepsY {X : CData} (S : CSize X) (T : CDeep X) (Cd : ℝ) : Prop :
       T.Bs x ≤ cn_Y X ^ (Cd * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ)) * (1 / S.tau1 x) ^ (4 * X.I.n ^ 2 * X.I.f) * X.Dc / T.volK
 
 /- English proof (translation)
-Take `⟨C₁₀, h1, hB⟩` from `Formalism.HermitianLatticeCounting.Final.S7.deepBoundY Cd hCd`. Use `⟨C₁₀, h1, fun C₁ hC₁ X S T hq hY hV hst hS A₁ hA₁ => ?_⟩` and prove the remaining obligations. Take `⟨hvK, hvol, hae⟩` from `hS`. Establish `hD : 0 ≤ X.Dc` using `Nat.cast_nonneg _`. Establish `hτs` using `cnd_tauS_pos X C₁ hY`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `cnd_deep_int X hV (S.measurableSet_Mod hst C₁) ?_ hA₁` and prove the remaining obligations. Use `filter_upwards [hae] with x hx hxM`. Establish `hlt : S.tau1 x < cn_tauS X C₁` using `not_le.1 hxM`. Take `⟨a, b, c, d⟩` from `hx (lt_of_lt_of_le hlt (cnd_tauS_le_half X (le_trans h1 hC₁) hq hY))`. Establish `h2` using `Formalism.HermitianLatticeCounting.Final.S7.deepChainY Cd X.I.n X.qq X.I.f (cn_Y X) (S.tau1 x) (cn_tauS X C₁) (T.theta x) |(X.kerD x).re| (T.Bs x) X.Dc (X.I.vol X.μf X.fund) T.volK hCd hq hY (hst.2.2.2.2.2.1 x).1 hlt hD hvK ENNReal.toReal_nonneg a b c d hvol`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hB X.I.n X.qq X.I.f (cn_Y X) hq hY`. Establish `h4 : cn_tauS X C₁ ^ (12 * X.I.n ^ 2 * X.I.f) ≤ (cn_Y X ^ (-(C₁₀ * (X.qq : ℝ)))) ^ (12 * X.I.n ^ 2 * X.I.f)` using `pow_le_pow_left₀ hτs.le (cnd_tauS_anti X hC₁ hY) _`. Establish `hYp : 0 ≤ cn_Y X ^ ((16 * (X.qq : ℝ) * Cd + 2 * Cd + 16) * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ))` using `Real.rpow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cnd_deepY (Cd : ℝ) (hCd : 0 ≤ Cd) : ∃ C₁₀ : ℝ, 1 ≤ C₁₀ ∧ ∀ C₁ ≥ C₁₀, ∀ (X : CData) (S : CSize X) (T : CDeep X),
     1 ≤ X.qq → 2 ≤ cn_Y X → X.FinVol → S.Strata → S.DeepStepsY T Cd → ∀ A₁ : ℝ, 1 ≤ A₁ → X.DeepInt A₁ (S.Mod C₁) := by
@@ -279,17 +273,17 @@ def CSize.DeepStepsV {X : CData} (S : CSize X) (T : CDeep X) (Cd : ℝ) : Prop :
           (Cd / S.tau1 x) ^ (4 * X.I.n ^ 2 * X.I.f)
 
 /- English proof (translation)
-Take `⟨C', hC', hch⟩` from `Formalism.HermitianLatticeCounting.Final.CuspThresholdCounts.deepChainV Cd hCd`. Take `⟨C₁₀, h1, hB⟩` from `Formalism.HermitianLatticeCounting.Final.S7.deepBound C' hC'`. Use `⟨C₁₀, h1, fun C₁ hC₁ X S T n₀ A hn₀ hX hq hV hst hS A₁ hA₁ => ?_⟩` and prove the remaining obligations. Take `⟨hvK, hvol, hae⟩` from `hS`. Establish `hY` using `cnd_two_le_Y X hn₀ hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : 1 ≤ X.I.n` using `le_trans hn₀ hX.1.1`. Establish `hg1 : (1 : ℝ) ≤ (X.g : ℝ)` using `by exact_mod_cast hX.1.2.2.2.2.2.2.2.1`. Establish `hb : 2 ≤ X.b` using `hX.1.2.2.1`. Establish `hq2` using `(X.qq_spec hX).2`. Establish `hD : 0 ≤ X.Dc` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτs` using `cnd_tauS_pos X C₁ hY`. Use `cnd_deep_int X hV (S.measurableSet_Mod hst C₁) ?_ hA₁` and prove the remaining obligations. Use `filter_upwards [hae] with x hx hxM`. Establish `hlt : S.tau1 x < cn_tauS X C₁` using `not_le.1 hxM`. Take `⟨a, b, c, d⟩` from `hx (lt_of_lt_of_le hlt (cnd_tauS_le_half X (le_trans h1 hC₁) hq hY))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hch X.I.n X.qq X.I.f X.I.rd (X.g : ℝ) X.b (S.tau1 x) (cn_tauS X C₁) (T.rho x) |(X.kerD x).re| (T.Bs x) X.Dc (X.I.vol X.μf X.fund) T.volK hn hq hq2 (one_le_autInst_f X.I) (one_le_discriminant_root X.I) hg1 hb (hst.2.2.2.2.2.1 x).1 hlt hD hvK ENNReal.toReal_nonneg a b c d hvol`. Establish `h3` using `hB X.I.n X.qq X.I.f X.I.rd (X.g : ℝ) X.b hn hq hq2 (one_le_autInst_f X.I) (one_le_discriminant_root X.I) hg1 hb`. Establish `h4 : cn_tauS X C₁ ^ (12 * X.I.n ^ 2 * X.I.f) ≤ (Formalism.HermitianLatticeCounting.S7.Ydat X.I.n X.I.f X.I.rd (X.g : ℝ) X.b ^ (-(C₁₀ * (X.qq : ℝ)))) ^ (12 * X.I.n ^ 2 * X.I.f)` using `pow_le_pow_left₀ hτs.le (cnd_tauS_anti X hC₁ hY) _`. Establish `hb1 : 0 ≤ Formalism.HermitianLatticeCounting.S7.b1 X.I.n X.qq X.I.f X.b`. Unfold `Formalism.HermitianLatticeCounting.S7.b1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hrd0 : 0 ≤ X.I.rd` using `le_trans zero_le_one (one_le_discriminant_root X.I)`. Establish `hYp : 0 ≤ Formalism.HermitianLatticeCounting.S7.Ydat X.I.n X.I.f X.I.rd (X.g : ℝ) X.b ^ (C' * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ)) * (C' * (X.I.n : ℝ) ^ 4 * (X.I.f : ℝ) ^ 2 * (X.g : ℝ) * X.I.rd * Formalism.HermitianLatticeCounting.S7.b1 X.I.n X.qq X.I.f X.b) ^ (16 * X.qq * X.I.n ^ 2 * …`. Establish `h0 : 0 ≤ Formalism.HermitianLatticeCounting.S7.Ydat X.I.n X.I.f X.I.rd (X.g : ℝ) X.b`. Establish `: 2 ≤ Formalism.HermitianLatticeCounting.S7.Ydat X.I.n X.I.f X.I.rd (X.g : ℝ) X.b` using `hY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC0 : 0 ≤ C'` using `by linarith`. Conclude with `mul_nonneg (Real.rpow_nonneg h0 _) (pow_nonneg (by positivity) _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cnd_deepV (Cd : ℝ) (hCd : 1 ≤ Cd) : ∃ C₁₀ : ℝ, 1 ≤ C₁₀ ∧ ∀ C₁ ≥ C₁₀, ∀ (X : CData) (S : CSize X) (T : CDeep X)
     (n₀ : ℕ) (A : ℝ), 1 ≤ n₀ → X.HypB n₀ A → 1 ≤ X.qq → X.FinVol → S.Strata → S.DeepStepsV T Cd →
@@ -336,7 +330,7 @@ theorem cnd_deepV (Cd : ℝ) (hCd : 1 ≤ Cd) : ∃ C₁₀ : ℝ, 1 ≤ C₁₀
         mul_le_mul_of_nonneg_left (le_trans (mul_le_mul_of_nonneg_left h4 hYp) h3) hD
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.Final.CuspThresholdCounts.volLevel C X.I.n X.I.f X.I.rd (X.g : ℝ) X.b _ volK (le_trans hn₀ hX.1.1) (one_le_autInst_f X.I) (one_le_discriminant_root X.I) (by exact_mod_cast hX.1.2.2.2.2.2.2.2.1) hX.1.2.2.1 hK h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem cnd_volRatio (X : CData) {n₀ : ℕ} {A : ℝ} (hn₀ : 1 ≤ n₀) (hX : X.HypB n₀ A) (C volK : ℝ) (hK : 0 < volK)
     (h1 : X.I.vol X.μf X.fund ≤ cn_Y X ^ (C * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ)))

@@ -12,9 +12,9 @@ namespace GlobalTheory.Ord2.Kill
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hE`. Establish `hl0 : ((l : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hn : ‖(l : Qbar l) ^ k * x‖ ≤ ‖((l : ℕ) : Qbar l) ^ k‖`. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, e⟩` from `Rec.exists_eq_pow_mul_of_norm_le hk hn`. Establish `: x = w` using `mul_left_cancel₀ (pow_ne_zero k hl0) e`. Rewrite using `[this]`. Conclude with `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_memE (c : Coef l) {x : Qbar l} (hE : MemE c x) (hx : ‖x‖ ≤ 1) : x ∈ c.O := by
   obtain ⟨k, hk⟩ := hE
@@ -27,7 +27,7 @@ theorem mem_of_memE (c : Coef l) {x : Qbar l} (hE : MemE c x) (hx : ‖x‖ ≤ 
   rw [this]; exact hw
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [c.O.neg_mem, hM]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adj_mem (c : Coef l) {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : ∀ i j, M i j ∈ c.O) (i j : Fin 2) :
     M.adjugate i j ∈ c.O := by
@@ -35,7 +35,7 @@ theorem adj_mem (c : Coef l) {M : Matrix (Fin 2) (Fin 2) (Qbar l)} (hM : ∀ i j
   fin_cases i <;> fin_cases j <;> simp [c.O.neg_mem, hM]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Apply the tactic sequence `refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_) <;>`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (Rec.norm_le_one_of_mem (hA _ _)) (norm_nonneg _) (hv _)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mulVec_le (c : Coef l) {A : Matrix (Fin 2) (Fin 2) (Qbar l)} (hA : ∀ i j, A i j ∈ c.O)
     {v : Fin 2 → Qbar l} (hv : ∀ j, ‖v j‖ ≤ 1) (i : Fin 2) : ‖(A *ᵥ v) i‖ ≤ 1 := by
@@ -50,29 +50,27 @@ namespace GlobalTheory.Ord2
 open Kill in
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ W c hW ⟨g, hg⟩`. Use `set M := mat W g - 1 with hMdef`. Establish `hMO : ∀ i j, M i j ∈ c.O` using `fun i j => by`. Simplify using `only [M, Matrix.sub_apply, Matrix.one_apply]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `c.O.sub_mem (hW g i j) c.O.one_mem`. Simplify using `using hW g i j`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hlinv : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`. Establish `hlpos : (0 : ℝ) < (l : ℝ)⁻¹` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : 0 < ‖M.det‖` using `norm_pos_iff.2 hg`. Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one hd hlinv`. Use `⟨r, fun n a y ha hy h => ?_⟩` and prove the remaining obligations. Establish `hlr : ‖((l : ℕ) : Qbar l) ^ r‖ = (l : ℝ)⁻¹ ^ r` using `by rw [norm_pow, Rec.norm_natCast_l]`. Establish `hlr1 : ‖((l : ℕ) : Qbar l) ^ r‖ ≤ 1` using `by rw [hlr]; exact pow_le_one₀ hlpos.le hlinv.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hln1 : ‖((l : ℕ) : Qbar l) ^ n‖ ≤ 1`. Rewrite using `[norm_pow, Rec.norm_natCast_l]`. Conclude with `pow_le_one₀ hlpos.le hlinv.le`. Establish `hMy : ∀ j, ‖(M *ᵥ y) j‖ ≤ 1`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (M *ᵥ y) j = a g j - (a g j - (mat W g *ᵥ y - y) j)`. Simplify using `[M, Matrix.sub_mulVec]`. Rewrite using `[e]`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (Rec.norm_le_one_of_mem (ha g j)) ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[norm_neg]`. Conclude with `(h g j).trans hln1`. Establish `hdy : ∀ i, ‖M.det * y i‖ ≤ 1`. Introduce `i`. Establish `e : M.det * y i = (M.adjugate *ᵥ (M *ᵥ y)) i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `norm_mulVec_le c (adj_mem c hMO) hMy i`. Establish `hx : ∀ i, ((l : ℕ) : Qbar l) ^ r * y i ∈ c.O`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i`. Apply `mem_of_memE c` to reduce the goal to its premises. Take `⟨k, hk⟩` from `hy`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `e : (l : Qbar l) ^ k * (((l : ℕ) : Qbar l) ^ r * y i) = ((l : ℕ) : Qbar l) ^ r * ((l : Qbar l) ^ k * y i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `c.O.mul_mem (natPow_mem c r) (hk i)`. Establish `h1` using `hdy i`. Rewrite `h1`, the goal using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨fun i => ((l : ℕ) : Qbar l) ^ r * y i, hx, fun s _ i => ?_⟩` and prove the remaining obligations. Establish `e : (((l : ℕ) : Qbar l) ^ r • a s) i - (mat W s *ᵥ (fun i => ((l : ℕ) : Qbar l) ^ r * y i) - fun i => ((l : ℕ) : Qbar l) ^ r * y i) i = ((l : ℕ) : Qbar l) ^ r * (a s i - (mat W s *ᵥ y - y) i)`. Establish `: (fun i => ((l : ℕ) : Qbar l) ^ r * y i) = ((l : ℕ) : Qbar l) ^ r • y`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_smul]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Cg`.
-
-Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_cob1_of_cv_mod_pow : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : R2 Ω l) (c : Coef l),
     (∀ s i j, mat W s i j ∈ c.O) → (∃ g, (mat W g - 1).det ≠ 0) → ∃ r : ℕ, ∀ (n : ℕ) (a : G ℚ Ω → Fin 2 → Qbar l)

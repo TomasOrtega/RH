@@ -21,9 +21,9 @@ open GlobalTheory.UT
 namespace GlobalTheory.UT
 
 /- English proof (translation)
-Introduce `hL h1 h2 h3 h4 E _ _ _ H R _ _ _ I hI t P F _ _ _ k hk`. Use `letI := H.starRing`. Take `⟨f, hf⟩` from `GlobalTheory.T.uniformisation_torsion_identification_with_pairing hL R I hI P.D P.A t.G t.semi P.U F k hk`. Establish `hadj : ∀ a : NumberField.RingOfIntegers E, LBIso (cubeLB t.G ![fst t.G t.G ≫ t.act.toRingAct.act a, snd t.G t.G] P.U.LG.L) (cubeLB t.G ![fst t.G t.G, snd t.G t.G ≫ t.act.toRingAct.act (star a)] P.U.LG.L)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[P.bundle]`. Conclude with `t.adj a`. Establish `hlin` using `GlobalTheory.T.linear_uniformisation_torsion_map_isLinear hL h1 h2 h3 h4 R I hI P.D P.A t.G t.semi P.U F (NumberField.RingOfIntegers E) P.oD P.oA t.act.toRingAct P.lin hadj k hk f hf`. Conclude with `⟨f, hf.1, hf.2.1, hf.2.2.1, hf.2.2.2.1, hlin, hf.2.2.2.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torsionIso_of_pelUnif : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R), AdmBase R I → ∀ (t : SAB H (Sp R)) (P : PELUnif I t), P.TorsionIso := by
   intro hL h1 h2 h3 h4 E _ _ _ H R _ _ _ I hI t P F _ _ _ k hk

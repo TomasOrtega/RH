@@ -17,9 +17,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.TraitLocal
 
 /- English proof (translation)
-Establish `hne : Ideal.comap h (maximalIdeal V') ≠ ⊥`. Introduce `h0`. Establish `: ϖ ∈ Ideal.comap h (maximalIdeal V')` using `hϖ.not_isUnit`. Rewrite `this` using `[h0, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero (by rw [this, map_zero])`.
-
-Use `haveI : (Ideal.comap h (maximalIdeal V')).IsPrime := Ideal.comap_isPrime _ _`. Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.IsPrime.isMaximal inferInstance hne)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_maximalIdeal_of_irreducible {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] (h : V →+* V') (ϖ : V) (hϖ : Irreducible (h ϖ)) :
@@ -33,13 +31,11 @@ theorem comap_maximalIdeal_of_irreducible {V V' : Type} [CommRing V] [IsDomain V
   exact IsLocalRing.eq_maximalIdeal (Ideal.IsPrime.isMaximal inferInstance hne)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hj`. Establish `fg : (maximalIdeal O).FG` using `IsNoetherian.noetherian _`. Use `haveI hloc : IsLocalRing (AdicCompletion (maximalIdeal O) O) := AdicCompletion.isLocalRing_of_fg fg`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Introduce `r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : e.symm r ∈ maximalIdeal (AdicCompletion (maximalIdeal O) O)`. Introduce `hu`. Use `hu.map e` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `hr this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hm]`. Establish `h2` using `Ideal.mem_map_of_mem (e : AdicCompletion (maximalIdeal O) O →+* R) h1`. Rewrite `h2` using `[Ideal.map_map]`. Apply the tactic sequence `have h3 : (e : AdicCompletion (maximalIdeal O) O →+* R).comp (algebraMap O _) = j := by first | exact he | exact RingHom.ext he | exact he.symm`. Rewrite `h2` using `[h3]`.
-
-Simplify using `using h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_le_map {O R : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRing R]
     [IsLocalRing R] (j : O →+* R) (hj : IsCpl j) : maximalIdeal R ≤ Ideal.map j (maximalIdeal O) := by
@@ -64,11 +60,11 @@ theorem maximalIdeal_le_map {O R : Type} [CommRing O] [IsLocalRing O] [IsNoether
 end GlobalTheory.Poinc.TraitLocal
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ hA M x R _ _ j hj V _ _ _ ϖ V' _ _ _ h g' ξ hϖ hξ hsq`. Use `haveI : Algebra.EssFiniteType ℤ (M.Z.presheaf.stalk x) := GlobalTheory.Poinc.CompletedStalk.essFiniteType_int_stalk M x`. Use `haveI : IsNoetherianRing (M.Z.presheaf.stalk x) := Algebra.EssFiniteType.isNoetherianRing ℤ _`. Establish `h1 : spMap h (closedPoint V') = closedPoint V` using `PrimeSpectrum.ext (GlobalTheory.Poinc.TraitLocal.comap_maximalIdeal_of_irreducible h ϖ hϖ)`. Establish `h2 : (spMap h ≫ ξ) (closedPoint V') = x` using `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg ξ h1).trans hξ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← hsq]`. Establish `h3 : M.Z.fromSpecStalk x (spMap j (spMap g' (closedPoint V'))) = M.Z.fromSpecStalk x (closedPoint (M.Z.presheaf.stalk x))` using `h2.trans Scheme.fromSpecStalk_closedPoint.symm`. Establish `h4` using `(M.Z.fromSpecStalk x).isEmbedding.injective h3`. Establish `h5 : Ideal.comap j (Ideal.comap g' (maximalIdeal V')) = maximalIdeal (M.Z.presheaf.stalk x)` using `congrArg PrimeSpectrum.asIdeal h4`. Establish `h6 : maximalIdeal R ≤ Ideal.comap g' (maximalIdeal V')` using `(GlobalTheory.Poinc.TraitLocal.maximalIdeal_le_map j hj).trans (Ideal.map_le_iff_le_comap.2 h5.ge)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨fun r hr => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `h6 (show r ∈ maximalIdeal R from hn) hr`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.TraitLocal.isLocalHom_of_square : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (M : RatModel o' Ω) (x : M.Z) (R : Type) [CommRing R] [IsLocalRing R] (j : M.Z.presheaf.stalk x →+* R), IsCpl j → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V) (V' : Type) [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] (h : V →+* V') (g' : R →+* V') (ξ : Sp V ⟶ M.Z), Irreducible (h ϖ) → ξ (IsLocalRing.closedPoint V) = x → spMap g' ≫ (spMap j ≫ M.Z.fromSpecStalk x) = spMap h ≫ ξ → IsLocalHom g' := by
   intro o' Ω _ _ _ hA M x R _ _ j hj V _ _ _ ϖ V' _ _ _ h g' ξ hϖ hξ hsq

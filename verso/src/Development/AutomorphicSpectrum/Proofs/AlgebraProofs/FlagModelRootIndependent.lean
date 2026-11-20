@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagModelValueIndepe
 namespace GlobalTheory.CompanionTheory.Ar.RootIndep
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelRootIndependence.proof GlobalTheory.T.flag_model_value_independent`.
+A detailed English derivation is pending.
 -/
 theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelRootIndependence.Statement :=
   GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelRootIndependence.proof GlobalTheory.T.flag_model_value_independent

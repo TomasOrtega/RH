@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.BZSwap
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Establish `e : v = w` using `funext fun i => (hvw i).trans (congrArg w (Fin.ext rfl))`. Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem prodIrr_congr {r r' N : ℕ} (hr : r = r') (v : Fin r → IrrGL k) (w : Fin r' → IrrGL k)
     (hvw : ∀ i, v i = w (Fin.cast hr i)) (hv : ∑ a, (v a).1 = N) (hw : ∑ a, (w a).1 = N) :
@@ -26,9 +26,9 @@ theorem prodIrr_congr {r r' N : ℕ} (hr : r = r') (v : Fin r → IrrGL k) (w : 
   exact ⟨Representation.Equiv.refl _⟩
 
 /- English proof (translation)
-Establish `e : (fun c => u (ofLex (F c)).1 (ofLex (F c)).2) = x` using `funext hx`. Substitute `e` using the available equality. Establish `hS` using `GlobalTheory.SmGL.Stages.stages_equiv (k := k) s d t (fun a b => (u a b).1) (fun a => stdBlocks (fun b => (u a b).1) (hd a)) (fun a b => (u a b).2.rep.V) (fun a b => (u a b).rep) (Fin N) (stdBlocks d hN)`. Use `Exists.elim hS fun E0 hχ => ?_` and prove the remaining obligations. Set `E : (Σ c : Fin h, Fin (u (ofLex (F c)).1 (ofLex (F c)).2).1) ≃ Fin N` to `(Equiv.sigmaCongrLeft (β := fun c : Σₗ a, Fin (t a) => Fin (u (ofLex c).1 (ofLex c).2).1) F.toEquiv).trans E0`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hω` using `GlobalTheory.T.parabolicInductionProduct_block_renaming_equiv (k := k) F F.strictMono F.surjective E0 E (fun _ _ => rfl) fun c => (u (ofLex c).1 (ofLex c).2).rep`. Use `hχ.elim fun χ => hω.elim fun ω => ?_` and prove the remaining obligations. Use `(GlobalTheory.ProdReorder.multiProd_placing (k := k) E (stdBlocks (fun c => (u (ofLex (F c)).1 (ofLex (F c)).2).1) hxN) fun c => (u (ofLex (F c)).1 (ofLex (F c)).2).rep).elim fun p => ?_` and prove the remaining obligations. Conclude with `⟨(χ.trans ω).trans p⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem flatten {s h N : ℕ} (t : Fin s → ℕ) (u : ∀ a, Fin (t a) → IrrGL k) (d : Fin s → ℕ)
     (hd : ∀ a, ∑ b, (u a b).1 = d a) (hN : ∑ a, d a = N) (F : Fin h ≃o Σₗ a, Fin (t a))
@@ -54,13 +54,13 @@ def grp (h j : ℕ) : Fin 3 → ℕ := ![j, 2, h - (j + 2)]
 def off (j : ℕ) : Fin 3 → ℕ := ![0, j, j + 2]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> simp [off, grp] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem off_add_grp_le {h j : ℕ} (hj : j + 1 < h) (a : Fin 3) : off j a + grp h j a ≤ h := by
   fin_cases a <;> simp [off, grp] <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases a' <;> simp [off, grp] at haa ⊢`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem off_add_grp_le_off {h j : ℕ} (hj : j + 1 < h) {a a' : Fin 3} (haa : a < a') :
     off j a + grp h j a ≤ off j a' := by
@@ -73,11 +73,11 @@ def place {h j : ℕ} (hj : j + 1 < h) (c : Σₗ a, Fin (grp h j a)) : Fin h :=
     omega⟩
 
 /- English proof (translation)
-Introduce `c c' hc`. Take `⟨a, b⟩` from `c`. Take `⟨a', b'⟩` from `c'`. Break down `Sigma.Lex.lt_def.1 hc with hlt | ⟨e, hlt⟩` into its components or cases. Establish `h1 : off j a + grp h j a ≤ off j a'` using `off_add_grp_le_off hj hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2 : (b : ℕ) < grp h j a` using `b.2`. Use `show off j a + b < off j a' + b'`. Use linear arithmetic over natural numbers and integers. Take `rfl : a = a'` from `e`. Establish `: (b : ℕ) < b'` using `hlt`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show off j a + b < off j a + b'`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem place_strictMono {h j : ℕ} (hj : j + 1 < h) : StrictMono (place hj) := by
   intro c c' hc
@@ -94,7 +94,7 @@ theorem place_strictMono {h j : ℕ} (hj : j + 1 < h) : StrictMono (place hj) :=
     omega
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_lex, Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin, Fin.sum_univ_three]`. Use `show j + 2 + (h - (j + 2)) = h`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_lex {h j : ℕ} (hj : j + 1 < h) : Fintype.card (Σₗ a, Fin (grp h j a)) = h := by
   rw [Fintype.card_lex, Fintype.card_sigma]
@@ -103,7 +103,7 @@ theorem card_lex {h j : ℕ} (hj : j + 1 < h) : Fintype.card (Σₗ a, Fin (grp 
   omega
 
 /- English proof (translation)
-The claim follows from `(Fintype.bijective_iff_injective_and_card _).2 ⟨(place_strictMono hj).injective, by simp [card_lex hj]⟩`.
+A detailed English derivation is pending.
 -/
 theorem place_bijective {h j : ℕ} (hj : j + 1 < h) : Function.Bijective (place hj) :=
   (Fintype.bijective_iff_injective_and_card _).2 ⟨(place_strictMono hj).injective, by simp [card_lex hj]⟩
@@ -112,13 +112,13 @@ def order {h j : ℕ} (hj : j + 1 < h) : Fin h ≃o Σₗ a, Fin (grp h j a) :=
   ((place_strictMono hj).orderIsoOfSurjective _ (place_bijective hj).2).symm
 
 /- English proof (translation)
-The claim follows from `((place_strictMono hj).orderIsoOfSurjective _ (place_bijective hj).2).apply_symm_apply c`.
+A detailed English derivation is pending.
 -/
 theorem place_order {h j : ℕ} (hj : j + 1 < h) (c : Fin h) : place hj (order hj c) = c :=
   ((place_strictMono hj).orderIsoOfSurjective _ (place_bijective hj).2).apply_symm_apply c
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_sigma (fun p : Σ a, Fin (grp h j a) => g (place hj (toLex p)))]`. Conclude with `Equiv.sum_comp (toLex.trans (Equiv.ofBijective _ (place_bijective hj))) g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_place {h j : ℕ} (hj : j + 1 < h) (g : Fin h → ℕ) :
     ∑ a, ∑ b : Fin (grp h j a), g (place hj (toLex ⟨a, b⟩)) = ∑ c, g c := by
@@ -126,7 +126,7 @@ theorem sum_place {h j : ℕ} (hj : j + 1 < h) (g : Fin h → ℕ) :
   exact Equiv.sum_comp (toLex.trans (Equiv.ofBijective _ (place_bijective hj))) g
 
 /- English proof (translation)
-Use `fin_cases a`. Use `exacts [h0, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem fin_three_forall {P : Fin 3 → Prop} (h0 : P 0) (h1 : P 1) (h2 : P 2) (a : Fin 3) : P a := by
   fin_cases a
@@ -142,9 +142,9 @@ def fac' (a : Fin 3) (b : Fin (grp h j a)) : IrrGL k :=
   x (Equiv.swap ⟨j, by omega⟩ ⟨j + 1, hj⟩ (place hj (toLex ⟨a, b⟩)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Establish `hb : (b : ℕ) < j` using `b.2`. Use `congrArg x (Equiv.swap_apply_of_ne_of_ne (Fin.ne_of_val_ne ?_) (Fin.ne_of_val_ne ?_))` and prove the remaining obligations. Use `show off j 0 + b ≠ j`. Simplify using `[off]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `show off j 0 + b ≠ j + 1`. Simplify using `[off]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fac'_zero : fac' hj x 0 = fac hj x 0 := by
   funext b
@@ -156,9 +156,9 @@ theorem fac'_zero : fac' hj x 0 = fac hj x 0 := by
     simp [off]; omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Use `congrArg x (Equiv.swap_apply_of_ne_of_ne (Fin.ne_of_val_ne ?_) (Fin.ne_of_val_ne ?_))` and prove the remaining obligations. Use `show off j 2 + b ≠ j`. Simplify using `[off]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use `show off j 2 + b ≠ j + 1`. Simplify using `[off]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fac'_two : fac' hj x 2 = fac hj x 2 := by
   funext b
@@ -169,21 +169,21 @@ theorem fac'_two : fac' hj x 2 = fac hj x 2 := by
     simp [off]; omega
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by show off j 1 + 0 = j simp [off])`.
+A detailed English derivation is pending.
 -/
 theorem place_one_zero : place hj (toLex ⟨1, (0 : Fin 2)⟩) = ⟨j, by omega⟩ := Fin.ext (by
   show off j 1 + 0 = j
   simp [off])
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by show off j 1 + 1 = j + 1 simp [off])`.
+A detailed English derivation is pending.
 -/
 theorem place_one_one : place hj (toLex ⟨1, (1 : Fin 2)⟩) = ⟨j + 1, hj⟩ := Fin.ext (by
   show off j 1 + 1 = j + 1
   simp [off])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Use `fin_cases b`. Conclude with `congrArg x (place_one_zero hj)`. Conclude with `congrArg x (place_one_one hj)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fac_one : (fac hj x 1 : Fin 2 → IrrGL k) = ![x ⟨j, by omega⟩, x ⟨j + 1, hj⟩] := by
   funext b
@@ -192,9 +192,9 @@ theorem fac_one : (fac hj x 1 : Fin 2 → IrrGL k) = ![x ⟨j, by omega⟩, x �
   · exact congrArg x (place_one_one hj)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Use `fin_cases b`. Use `congrArg x ?_` and prove the remaining obligations. Use `(congrArg _ (place_one_zero hj)).trans (Equiv.swap_apply_left _ _)` and prove the remaining obligations. Use `congrArg x ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg _ (place_one_one hj)).trans (Equiv.swap_apply_right _ _)` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem fac'_one : (fac' hj x 1 : Fin 2 → IrrGL k) = ![x ⟨j + 1, hj⟩, x ⟨j, by omega⟩] := by
   funext b
@@ -207,9 +207,9 @@ theorem fac'_one : (fac' hj x 1 : Fin 2 → IrrGL k) = ![x ⟨j + 1, hj⟩, x �
 end Main
 
 /- English proof (translation)
-Establish `hJ : j < h` using `by omega`. Establish `key : ∀ c, fac' hj x (ofLex (order hj c)).1 (ofLex (order hj c)).2 = x (Equiv.swap (⟨j, hJ⟩ : Fin h) ⟨j + 1, hj⟩ c)` using `fun c => congrArg (fun y => x (Equiv.swap (⟨j, hJ⟩ : Fin h) ⟨j + 1, hj⟩ y)) (place_order hj c)`. Use `(flatten (grp h j) (fac hj x) d s₁ hN (order hj) x (fun c => congrArg x (place_order hj c)) hd).elim fun p => ?_` and prove the remaining obligations. Use `(flatten (grp h j) (fac' hj x) d s₂ hN (order hj) (fun a => x (Equiv.swap (⟨j, hJ⟩ : Fin h) ⟨j + 1, hj⟩ a)) key hd').elim fun q => ?_` and prove the remaining obligations. Set `Φ : (multiProd (stdBlocks d hN) fun a => prodIrr (fac hj x a) (s₁ a)).Equiv (multiProd (stdBlocks d hN) fun a => prodIrr (fac' hj x a) (s₂ a))` to `multiProdEquiv (stdBlocks d hN) fun a => (φ a).some`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `⟨p.symm.trans (Φ.trans q)⟩`.
+Supply the required witnesses or components.
 -/
 theorem swap_core {h N j : ℕ} (hj : j + 1 < h) (x : Fin h → IrrGL k) (d : Fin 3 → ℕ)
     (s₁ : ∀ a, ∑ b, (fac hj x a b).1 = d a) (s₂ : ∀ a, ∑ b, (fac' hj x a b).1 = d a) (hN : ∑ a, d a = N)
@@ -231,13 +231,13 @@ theorem swap_core {h N j : ℕ} (hj : j + 1 < h) (x : Fin h → IrrGL k) (d : Fi
   exact ⟨p.symm.trans (Φ.trans q)⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N x hd j hj M hd2 hd2' hd' hyp`. Establish `t₁ : ∑ b : Fin 2, ((fac hj x 1 : Fin 2 → IrrGL k) b).1 = M`. Rewrite using `[fac_one hj x]`. Conclude with `hd2`. Establish `t₂ : ∑ b : Fin 2, ((fac' hj x 1 : Fin 2 → IrrGL k) b).1 = M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fac'_one hj x]`. Conclude with `hd2'`. Set `d : Fin 3 → ℕ` to `![∑ b, (fac hj x 0 b).1, M, ∑ b, (fac hj x 2 b).1]`. Establish `s₁ : ∀ a, ∑ b, (fac hj x a b).1 = d a` using `fin_three_forall rfl t₁ rfl`. Establish `s₂ : ∀ a, ∑ b, (fac' hj x a b).1 = d a` using `fin_three_forall (by rw [fac'_zero hj x]; rfl) t₂ (by rw [fac'_two hj x]; rfl)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN : ∑ a, d a = N` using `(Finset.sum_congr rfl fun a _ => (s₁ a).symm).trans ((sum_place hj fun c => (x c).1).trans hd)`. Use `swap_core hj x d s₁ s₂ hN hd hd' (fin_three_forall ?_ ?_ ?_)` and prove the remaining obligations. Conclude with `prodIrr_congr rfl _ _ (fun i => (congrFun (fac'_zero hj x).symm i).trans (congrArg _ (Fin.ext rfl))) _ _`. Establish `e₁ : Nonempty ((prodIrr (fac hj x 1 : Fin 2 → IrrGL k) t₁).Equiv (prodIrr ![x ⟨j, by omega⟩, x ⟨j + 1, hj⟩] hd2))` using `prodIrr_congr rfl _ _ (fun i => (congrFun (fac_one hj x) i).trans (congrArg _ (Fin.ext rfl))) _ _`. Establish `e₂ : Nonempty ((prodIrr ![x ⟨j + 1, hj⟩, x ⟨j, by omega⟩] hd2').Equiv (prodIrr (fac' hj x 1 : Fin 2 → IrrGL k) t₂))` using `prodIrr_congr rfl _ _ (fun i => (congrFun (fac'_one hj x).symm i).trans (congrArg _ (Fin.ext rfl))) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a⟩` from `e₁`. Take `⟨b⟩` from `hyp`. Take `⟨c⟩` from `e₂`. Conclude with `⟨(a.trans b).trans c⟩`. Conclude with `prodIrr_congr rfl _ _ (fun i => (congrFun (fac'_two hj x).symm i).trans (congrArg _ (Fin.ext rfl))) _ _`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem swapProd : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZSeg.SwapProd k := by

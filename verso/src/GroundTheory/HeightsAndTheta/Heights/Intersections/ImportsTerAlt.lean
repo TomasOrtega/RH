@@ -9,23 +9,23 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 noncomputable section
 
 /- English proof (translation)
-Introduce `I hI D S X A hX hA hAb c`. Establish `hfam : IsIntersectionFamily (I T.YBlk S.YIdx)` using `hI T.YBlk S.YIdx`. Establish `hXs : IsSmoothHerm X` using `hX.2.1`. Take `⟨Q, hQdef⟩ : ∃ Q : Polynomial ℝ, Q = ∑ j ∈ Finset.range (D + 1 + 1), Polynomial.C (((D + 1).choose j : ℝ) * ((1 / 2 : ℝ) ^ j * I T.YBlk S.YIdx S.YY (D + 1) (mix j X A)) * ((-1) ^ j + 1)) * Polynomial.X ^ j` from `⟨_, rfl⟩`. Establish `hQc : ∀ m, Q.coeff m = ((D + 1).choose m : ℝ) * ((1 / 2 : ℝ) ^ m * I T.YBlk S.YIdx S.YY (D + 1) (mix m X A)) * ((-1) ^ m + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[hQdef]`. Simplify using `only [Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Nat.choose_eq_zero_of_lt (by simpa using hm)]`. Simplify using the standard rewrite rules. Establish `hQ : Q = tsgPoly D kappa (volPoly D fun j => (1 / 2 : ℝ) ^ j * ptsIntegral S.YY (pot (mix j X A : Fin D → HermLine S.YIdx)) (fun _ => 1))`. Use extensionality with `m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQc]`. Take `⟨k, rfl | rfl⟩` from `Nat.even_or_odd' m`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Establish `h0 : I T.YBlk S.YIdx S.YY (D + 1) (mix 0 X A) = 0`. Establish `hm : (mix 0 X A : Fin (D + 1) → HermLine S.YIdx) = fun _ => A` using `funext fun i => by simp [mix]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `hP0 I hI D S A hA hAb`. Rewrite using `[mul_zero, h0, tsgPoly_coeff_zero]`. Simplify using the standard rewrite rules. Rewrite using `[tsgPoly_volPoly_coeff_even D _ kappa k hk, (even_two_mul k).neg_one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hkD : 2 * k ≤ D + 1`. Rewrite using `[hA' I hI D S X A hX hA hAb k hk hkD]`. Take `⟨i, hi⟩ : ∃ i, 2 * k = i + 1` from `⟨2 * k - 1, by omega⟩`. Rewrite using `[hi, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.choose_eq_zero_of_lt (by omega : D + 1 < 2 * k)]`. Simplify using the standard rewrite rules. Rewrite using `[tsgPoly_coeff_odd, (odd_two_mul_add_one k).neg_one_pow]`. Simplify using the standard rewrite rules. Rewrite using `[fam_lamLine_expand hfam S.arithYY hA hXs c, fam_lamLine_expand hfam S.arithYY hA hXs (-c), ← mul_add, ← hQ, hQdef]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [Polynomial.eval_finsetSum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Int.cast_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[neg_div, neg_pow, div_eq_mul_one_div (c : ℝ) 2, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem TheoremA.proof (hP0 : ProjectivePointSetting.Statement) (hA' : PropAPrime.Statement) : TheoremA.Statement := by
   intro I hI D S X A hX hA hAb c

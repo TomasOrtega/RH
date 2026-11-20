@@ -6,7 +6,7 @@ open scoped TensorProduct
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `e : Z.toSpecΓ.appLE ⊤ ⊤ (by simp) = Z.toSpecΓ.appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Simplify using `only [secAlg, RingHom.comp_apply, e, Scheme.toSpecΓ_appTop]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem secAlg_toSpecΓ_top (Z : Scheme.{0}) :
     secAlg Γ(Z, ⊤) Z.toSpecΓ ⊤ = RingHom.id _ := by
@@ -16,7 +16,7 @@ theorem secAlg_toSpecΓ_top (Z : Scheme.{0}) :
   simp
 
 /- English proof (translation)
-Use `⟨Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom Φ), ?_⟩` and prove the remaining obligations. Rewrite using `[secAlg_comp, secAlg_toSpecΓ_top]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_hom_secAlg_top (Z : Scheme.{0}) (C : Type) [CommRing C] (Φ : C →+* Γ(Z, ⊤)) :
     ∃ h : Z ⟶ Spec (CommRingCat.of C), GlobalTheory.HilbAff.secAlg C h ⊤ = Φ := by

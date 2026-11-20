@@ -42,20 +42,20 @@ theorem twist_apply (c : ℂ) (gk : GL Y' k) (hk : GL Y k) (Φ : SB (Matrix Y Y'
 variable {D : D7} (p : Place D k)
 
 /- English proof (translation)
-Rewrite using `[show mt S g⁻¹ * mt S g = mt S (g⁻¹ * g) by simp [Formalism.L2.Theta.mt], inv_mul_cancel]`. Simplify using `[Formalism.L2.Theta.mt]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mt_inv_mul' {S : HSp D} (g : GA D S) : mt S g⁻¹ * mt S g = 1 := by
   rw [show mt S g⁻¹ * mt S g = mt S (g⁻¹ * g) by simp [Formalism.L2.Theta.mt], inv_mul_cancel]
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Establish `h1 : IsHalf p.e (actO S T g h (p.up FS FT x))` using `GlobalTheory.SplitHecke.isHalf_actO g h (Witness.up_half p FS FT x)`. Rewrite using `[← Witness.up_down p FS FT h1]`. Use `congr 1`. Use `set M := (mt S g⁻¹).map p.π with hMdef`. Establish `hM : M * (FS.β * gk.val * FS.γ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg.2, hMdef, ← Matrix.map_mul, mt_inv_mul', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e1 : FS.γ * (M * FS.β) * gk.val = 1`. Establish `: FS.γ * (M * (FS.β * gk.val * FS.γ)) * FS.β = 1` using `by rw [hM, Matrix.mul_one, FS.γβ]`. Rewrite using `[← this]`. Simplify using `only [Matrix.mul_assoc, FS.γβ, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hN : FS.γ * (M * FS.β) = (gk⁻¹).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (FS.γ * (M * FS.β)), Units.mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [e1, Matrix.one_mul]`. Establish `hu : (p.up FS FT x).map p.π = FT.β * x * FS.γ` using `Matrix.ext fun _ _ => p.π_ι _`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Place.down actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hh.2, hu, ← hMdef]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc FT.γ FT.β, FT.γβ, Matrix.one_mul, ← Matrix.mul_assoc FT.γ FT.β, FT.γβ, Matrix.one_mul, hN]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_up {S T : HSp D} (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) {g : GA D S} {gk : GL Y' k}
     {h : GA D T} {hk : GL Y k} (hg : p.IsLoc FS g gk) (hh : p.IsLoc FT h hk) (x : Matrix Y Y' k) :
@@ -86,23 +86,23 @@ end GlobalTheory.LocTwist
 namespace GlobalTheory.LocTwist
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ S T χS χT ω hW μS μT Y Y' _ _ _ _ FS FT Tm hm g gk h hk hg hh`. Use `set c : ℂ := (((μS * μT⁻¹) (Matrix.GeneralLinearGroup.det gk) : ℂˣ) : ℂ) * ((μS⁻¹ (Matrix.GeneralLinearGroup.det gk) : ℂ) * ((μS⁻¹ (Matrix.GeneralLinearGroup.det hk))⁻¹ : ℂˣ) * ((nabs k (Matrix.GeneralLinearGroup.det gk) ^ ((Fintype.card Y : ℝ) / 2) : ℝ) : ℂ) * ((nabs k (Matrix.G …`. Set `L` to `LocTwist.twist c gk hk`. Set `W₀ : Module.End ℂ (WO S T → ℂ)` to `ω (g⁻¹, h⁻¹)`. Establish `hA` using `LocTwist.actO_up p FS FT hg hh`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hback : ∀ z, actO S T g⁻¹ h⁻¹ (p.up FS FT (hk.val * z * (gk⁻¹).val)) = p.up FS FT z` using `fun z => by`. Rewrite using `[← hA, GlobalTheory.SplitHecke.actO_inv_actO]`. Use `⟨W₀ ∘ₗ Tm ∘ₗ L, ⟨fun Φ => hW.om_pres _ _ (hm.theta _), fun x Φ Φ₁ hΦ => ?_, fun y hy Φ Φ₁ hΦ => ?_⟩, fun Φ Φ' e => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ t, (L Φ₁).1 t = (L Φ).1 (t + hk.val * x * (gk⁻¹).val)` using `fun t => by`. Simplify using `only [L, LocTwist.twist_apply, hΦ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc ((hk⁻¹).val) hk.val, Units.inv_mul, Matrix.one_mul]`. Establish `h2` using `hm.trans _ (L Φ) (L Φ₁) h1`. Simplify using `only [LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Use `show ω (g⁻¹, h⁻¹) _ = _`. Rewrite using `[hW.om_heis _ _ _ _ (hm.theta _), hback]`. Use `set y' := actO S T g h y`. Establish `hy' : IsHalf (cA D p.e) y'` using `GlobalTheory.SplitHecke.isHalf_actO g h hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∀ t, (L Φ₁).1 t = ψ (symplO S T (p.up FS FT t) y') * (L Φ).1 t` using `fun t => by`. Simplify using `only [L, LocTwist.twist_apply, hΦ]`. Establish `hu : p.up FS FT ((hk⁻¹).val * t * gk.val) = actO S T g⁻¹ h⁻¹ (p.up FS FT t)`. Rewrite using `[← hback ((hk⁻¹).val * t * gk.val)]`. Use `congr 2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `hs : symplO S T (p.up FS FT ((hk⁻¹).val * t * gk.val)) y = symplO S T (p.up FS FT t) y'`. Rewrite using `[hu, ← GlobalTheory.SplitHecke.symplO_actO S T g⁻¹ h⁻¹ (p.up FS FT t) y', GlobalTheory.SplitHecke.actO_inv_actO]`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hm.modul y' hy' (L Φ) (L Φ₁) h1`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h2]`. Use `show ω (g⁻¹, h⁻¹) _ = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hW.om_heis _ _ _ _ (hm.theta _), GlobalTheory.SplitHecke.actO_inv_actO]`. Establish `: Φ' = L Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [L, LocTwist.twist_apply, Pi.smul_apply, smul_eq_mul, om, hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem conj_isModel : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : Om S T), IsWeilDatumO ψ S T χS χT ω → ∀ (μS μT : kˣ →* ℂˣ) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (Tm : SB (Matrix Y Y' k) →ₗ[ℂ] (WO S T → ℂ)), p.IsModel ψ FS FT Tm → ∀ (g : GA D S) (gk : GL Y' k) (h : GA D T) (hk : GL Y k), p.IsLoc FS g gk → p.IsLoc FT h hk → ∃ T₂ : SB (Matrix Y Y' k) →ₗ[ℂ] (WO S T → ℂ), p.IsModel ψ FS FT T₂ ∧ ∀ Φ Φ' : SB (Matrix Y Y' k), Φ'.1 = (((μS * μT⁻¹) (Matrix.GeneralLinearGroup.det gk) : ℂˣ) : ℂ) • om μS⁻¹ gk hk Φ.1 → T₂ Φ = ω (g⁻¹, h⁻¹) (Tm Φ') := by
   intro D k _ _ _ _ p ψ S T χS χT ω hW μS μT Y Y' _ _ _ _ FS FT Tm hm g gk h hk hg hh

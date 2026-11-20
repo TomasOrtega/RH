@@ -18,9 +18,9 @@ private theorem phiG_coe {L : Type} [Field L] [NumberField L] [IsCMField L] (R :
     (phiG R γ : Matrix (Fin 3) (Fin 3) L) = (γ : Matrix (Fin 3) (Fin 3) _).map fun x => R.e x := rfl
 
 /- English proof (translation)
-Establish `h : star (γ : Matrix (Fin 3) (Fin 3) (Lsq (Lp L) R.Δ)) * (γ : Matrix (Fin 3) (Fin 3) (Lsq (Lp L) R.Δ)) = 1` using `Matrix.mem_unitaryGroup_iff'.mp γ.2`. Establish `e1 : ((phiG R γ : Matrix (Fin 3) (Fin 3) L).map (IsCMField.complexConj L))ᵀ = (star (γ : Matrix (Fin 3) (Fin 3) (Lsq (Lp L) R.Δ))).map fun x => R.e x`. Use extensionality with `i j`. Simplify using `[phiG_coe, Matrix.star_apply, R.e_star]`. Rewrite using `[e1, phiG_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `congrArg (fun m => m.map (R.e : Lsq (Lp L) R.Δ →+* L)) h`. Simplify using `only [Matrix.map_mul] at e2`. Simplify using `using e2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem phiG_unitary {L : Type} [Field L] [NumberField L] [IsCMField L] (R : RingBr L) (γ : U3 R.Δ) :
     ((phiG R γ : Matrix (Fin 3) (Fin 3) L).map (IsCMField.complexConj L))ᵀ * (phiG R γ : Matrix (Fin 3) (Fin 3) L) = 1 := by
@@ -36,23 +36,23 @@ private theorem phiG_unitary {L : Type} [Field L] [NumberField L] [IsCMField L] 
   simpa using e2
 
 /- English proof (translation)
-Introduce `L _ _ _ R`. Establish `hU : ∀ γ : U3 R.Δ, ratGL L 3 (phiG R γ) ∈ UA L 3` using `fun γ => (ratFacts L 3 (phiG R γ)).1.mpr (phiG_unitary R γ)`. Set `f : U3 R.Δ →* ratU L 3` to `{ toFun := fun γ => ⟨⟨ratGL L 3 (phiG R γ), hU γ⟩, Subgroup.mem_subgroupOf.mpr ⟨phiG R γ, rfl⟩⟩ map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `}`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Introduce `a b hab`. Establish `h1 : ratGL L 3 (phiG R a) = ratGL L 3 (phiG R b)` using `congrArg Subtype.val (congrArg Subtype.val hab)`. Establish `h2` using `(ratFacts L 3 1).2.1 h1`. Establish `h3 : (phiG R a : Matrix (Fin 3) (Fin 3) L) = phiG R b` using `congrArg Units.val h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Matrix.ext fun i j => R.e.injective (congrFun (congrFun h3 i) j)`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨⟨x, hx⟩, hr⟩`. Take `⟨g, hg⟩` from `Subgroup.mem_subgroupOf.mp hr`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Express the relevant statement in the definitionally equal form `ratGL L 3 g = x at hg`. Substitute `hg` using the available equality. Establish `hc` using `(ratFacts L 3 g).1.mp hx`. Set `M : Matrix (Fin 3) (Fin 3) (Lsq (Lp L) R.Δ)` to `(g : Matrix (Fin 3) (Fin 3) L).map fun x => R.e.symm x`. Establish `hM : star M * M = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : star M = (((g : Matrix (Fin 3) (Fin 3) L).map (IsCMField.complexConj L))ᵀ).map fun x => R.e.symm x`. Use `Matrix.ext fun i j => R.e.injective ?_` and prove the remaining obligations. Simplify using `[M, Matrix.star_apply, R.e_star]`. Establish `e2` using `congrArg (fun m => m.map (R.e.symm : L →+* Lsq (Lp L) R.Δ)) hc`. Simplify using `only [Matrix.map_mul] at e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e1]`. Simplify `e2` using `[M]`. Use `⟨⟨M, Matrix.mem_unitaryGroup_iff'.mpr hM⟩, ?_⟩` and prove the remaining obligations. Establish `hp : phiG R ⟨M, Matrix.mem_unitaryGroup_iff'.mpr hM⟩ = g`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[phiG_coe, M]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (ratGL L 3) hp`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨MulEquiv.ofBijective f ⟨hinj, hsurj⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ w`. Conclude with `((ratFacts L 3 (phiG R γ)).2.2 (hU γ)).1 w`. Introduce `γ τ`. Conclude with `((ratFacts L 3 (phiG R γ)).2.2 (hU γ)).2.1 τ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.rGEx :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (R : RingBr L), ∃ r : U3 R.Δ ≃* ratU L 3, (∀ γ w, mL w (r γ : UA L 3) = (γ : Matrix (Fin 3) (Fin 3) _).map fun x => algebraMap L (Kw w) (R.e x)) ∧ ∀ γ (τ : L →+* ℂ), (cEmb τ (r γ : UA L 3) : Matrix (Fin 3) (Fin 3) ℂ) = (γ : Matrix (Fin 3) (Fin 3) _).map fun x => τ (R.e x) := by

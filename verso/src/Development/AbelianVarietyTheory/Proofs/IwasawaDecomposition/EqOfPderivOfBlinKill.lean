@@ -31,14 +31,14 @@ section Basic
 variable {K K' K'' : Type} [Fintype K'] [Fintype K'']
 
 /- English proof (translation)
-Simplify using `[blinV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_blinV (M : K → K' → ℤ) (p : K × ρ) :
     constantCoeff (blinV (S := S) (ρ := ρ) M p) = 0 := by
   simp [blinV]
 
 /- English proof (translation)
-Simplify using `[blin1V]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_blin1V (v : K' → ℤ) (r : ρ) :
     constantCoeff (blin1V (S := S) (ρ := ρ) v r) = 0 := by
@@ -47,13 +47,13 @@ theorem constantCoeff_blin1V (v : K' → ℤ) (r : ρ) :
 variable [Finite ρ]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (constantCoeff_blinV M)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_blinV [Finite K] (M : K → K' → ℤ) : HasSubst (blinV (S := S) (ρ := ρ) M) :=
   hasSubst_of_constantCoeff_zero (constantCoeff_blinV M)
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (constantCoeff_blin1V v)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_blin1V (v : K' → ℤ) : HasSubst (blin1V (S := S) (ρ := ρ) v) :=
   hasSubst_of_constantCoeff_zero (constantCoeff_blin1V v)
@@ -62,7 +62,7 @@ def blinHom [Finite K] (M : K → K' → ℤ) : MvPowerSeries (K × ρ) S →ₐ
   substAlgHom (hasSubst_blinV M)
 
 /- English proof (translation)
-Rewrite using `[blinHom, coe_substAlgHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blinHom_apply [Finite K] (M : K → K' → ℤ) (F : MvPowerSeries (K × ρ) S) :
     blinHom M F = blin M F := by
@@ -72,7 +72,7 @@ def blin1Hom (v : K' → ℤ) : MvPowerSeries ρ S →ₐ[S] MvPowerSeries (K' �
   substAlgHom (hasSubst_blin1V v)
 
 /- English proof (translation)
-Rewrite using `[blin1Hom, coe_substAlgHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blin1Hom_apply (v : K' → ℤ) (h : MvPowerSeries ρ S) : blin1Hom v h = blin1 v h := by
   rw [blin1Hom, coe_substAlgHom]; rfl
@@ -82,80 +82,80 @@ section Ring
 variable [Finite K] (M : K → K' → ℤ) (v : K' → ℤ)
 
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_add (F G : MvPowerSeries (K × ρ) S) : blin M (F + G) = blin M F + blin M G := by
   simp [← blinHom_apply]
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_sub (F G : MvPowerSeries (K × ρ) S) : blin M (F - G) = blin M F - blin M G := by
   simp [← blinHom_apply]
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_mul (F G : MvPowerSeries (K × ρ) S) : blin M (F * G) = blin M F * blin M G := by
   simp [← blinHom_apply]
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_neg (F : MvPowerSeries (K × ρ) S) : blin M (-F) = -blin M F := by
   simp [← blinHom_apply]
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_zero : blin M (0 : MvPowerSeries (K × ρ) S) = 0 := by
   simp [← blinHom_apply]
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_one : blin M (1 : MvPowerSeries (K × ρ) S) = 1 := by
   simp [← blinHom_apply]
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_zsmul (n : ℤ) (F : MvPowerSeries (K × ρ) S) : blin M (n • F) = n • blin M F := by
   simp [← blinHom_apply]
 /- English proof (translation)
-Simplify using `[← blinHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blin_sum {ι : Type} (s : Finset ι) (F : ι → MvPowerSeries (K × ρ) S) :
     blin M (∑ i ∈ s, F i) = ∑ i ∈ s, blin M (F i) := by
   simp [← blinHom_apply]
 
 /- English proof (translation)
-Simplify using `[← blin1Hom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block_substitution_add (g h : MvPowerSeries ρ S) : blin1 v (g + h) = blin1 v g + blin1 v h := by
   simp [← blin1Hom_apply]
 /- English proof (translation)
-Simplify using `[← blin1Hom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block_substitution_sub (g h : MvPowerSeries ρ S) : blin1 v (g - h) = blin1 v g - blin1 v h := by
   simp [← blin1Hom_apply]
 /- English proof (translation)
-Simplify using `[← blin1Hom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block_substitution_mul (g h : MvPowerSeries ρ S) : blin1 v (g * h) = blin1 v g * blin1 v h := by
   simp [← blin1Hom_apply]
 /- English proof (translation)
-Simplify using `[← blin1Hom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block_substitution_zero : blin1 v (0 : MvPowerSeries ρ S) = 0 := by
   simp [← blin1Hom_apply]
 /- English proof (translation)
-Simplify using `[← blin1Hom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block_substitution_one : blin1 v (1 : MvPowerSeries ρ S) = 1 := by
   simp [← blin1Hom_apply]
 /- English proof (translation)
-Simplify using `[← blin1Hom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem block_substitution_zsmul (n : ℤ) (h : MvPowerSeries ρ S) : blin1 v (n • h) = n • blin1 v h := by
   simp [← blin1Hom_apply]
 
 /- English proof (translation)
-Rewrite using `[blin, GlobalTheory.FormalCalc.constantCoeff_subst_of_zero (hasSubst_blinV M) (constantCoeff_blinV M)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem constantCoeff_blin (F : MvPowerSeries (K × ρ) S) : constantCoeff (blin M F) = constantCoeff F := by
   rw [blin, GlobalTheory.FormalCalc.constantCoeff_subst_of_zero (hasSubst_blinV M) (constantCoeff_blinV M)]
@@ -175,16 +175,16 @@ variable {S : Type} [CommRing S] {ρ : Type} [Finite ρ]
 variable {K K' K'' : Type} [Fintype K'] [Fintype K'']
 
 /- English proof (translation)
-Rewrite using `[blin, subst_X (hasSubst_blinV N)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blin_X [Finite K'] (N : K' → K'' → ℤ) (k : K') (r : ρ) :
     blin N (X (k, r) : MvPowerSeries (K' × ρ) S) = ∑ j, N k j • X (j, r) := by
   rw [blin, subst_X (hasSubst_blinV N)]; rfl
 
 /- English proof (translation)
-Rewrite using `[blin, blin, blin, subst_comp_subst_apply (hasSubst_blinV M) (hasSubst_blinV N)]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `blin N (blinV M p) = _`. Simplify using `only [blinV, blin_sum, blin_zsmul, blin_X, Finset.smul_sum, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blin_blin [Finite K] [Finite K'] (M : K → K' → ℤ) (N : K' → K'' → ℤ) (F : MvPowerSeries (K × ρ) S) :
     blin N (blin M F) = blin (fun k j => ∑ i, M k i * N i j) F := by
@@ -197,7 +197,7 @@ theorem blin_blin [Finite K] [Finite K'] (M : K → K' → ℤ) (N : K' → K'' 
   simp only [Finset.sum_smul]
 
 /- English proof (translation)
-Rewrite using `[linSub, blin]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[blinV, ite_smul, Finset.sum_ite_mem]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem linSub_eq_blin [Finite K] [DecidableEq K'] (a : K → Finset K') (F : MvPowerSeries (K × ρ) S) :
     linSub a F = blin (fun k i => if i ∈ a k then 1 else 0) F := by
@@ -216,9 +216,9 @@ variable {S : Type} [CommRing S] {ρ : Type} [Fintype ρ] [DecidableEq ρ]
 variable {K K' : Type} [Fintype K] [Fintype K'] [DecidableEq K']
 
 /- English proof (translation)
-Rewrite using `[blin, GlobalTheory.FormalCalc.pderiv_subst (hasSubst_blinV M), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single r]`. Simplify using `only [blinV, map_sum, map_zsmul, GlobalTheory.FormalCalc.pderiv_X_ite, Prod.mk.injEq]`. Simplify using `[smul_ite, Finset.sum_ite_eq', blin, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `s _ hs`. Simplify using `only [blinV, map_sum, map_zsmul, GlobalTheory.FormalCalc.pderiv_X_ite, Prod.mk.injEq]`. Simplify using `[hs]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_blin (M : K → K' → ℤ) (F : MvPowerSeries (K × ρ) S) (j : K') (r : ρ) :
     pderiv S (j, r) (blin M F) = ∑ k, M k j • blin M (pderiv S (k, r) F) := by

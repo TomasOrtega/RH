@@ -10,11 +10,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Short.Crofton.CntInv
 noncomputable section
 
 /- English proof (translation)
-Establish `h1` using `(measurePreserving_curry_matrix m n).symm (MeasurableEquiv.curry (Fin m) (Fin n) ℂ)`. Establish `h2` using `volume_measurePreserving_piCongrLeft (fun _ : Fin n × Fin m => ℂ) (Equiv.prodComm (Fin m) (Fin n))`. Establish `h3` using `measurePreserving_curry_matrix n m`. Establish `h4` using `h3.comp (h2.comp h1)`. Establish `h5 : (fun (π : Fin m → Fin n → ℂ) (j : Fin n) (i : Fin m) => π i j) = (MeasurableEquiv.curry (Fin n) (Fin m) ℂ) ∘ (MeasurableEquiv.piCongrLeft (fun _ : Fin n × Fin m => ℂ) (Equiv.prodComm (Fin m) (Fin n))) ∘ (MeasurableEquiv.curry (Fin m) (Fin n) ℂ).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `π j i`. Simplify using `only [MeasurableEquiv.coe_curry_symm, MeasurableEquiv.curry, Function.comp]`. Simplify using `only [MeasurableEquiv.coe_mk, Equiv.coe_fn_mk, Function.curry_apply, MeasurableEquiv.coe_piCongrLeft]`. Conclude with `(Equiv.piCongrLeft_apply_apply (fun _ : Fin n × Fin m => ℂ) (Equiv.prodComm (Fin m) (Fin n)) (Function.uncurry π) (i, j)).symm`. Rewrite using `[h5]`.
-
-Conclude with `h4`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_swapMat (m n : ℕ) :
     MeasurePreserving (fun (π : Fin m → Fin n → ℂ) (j : Fin n) (i : Fin m) => π i j)
@@ -39,7 +37,7 @@ theorem measurePreserving_swapMat (m n : ℕ) :
   exact h4
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `h : star A * A = 1` using `Matrix.mem_unitaryGroup_iff'.1 hA`. Establish `h2 : (star A * A)ᵀ = 1` using `by rw [h, Matrix.transpose_one]`. Rewrite `h2` using `[Matrix.transpose_mul]`. Simplify `h2` using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose, Matrix.transpose_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem transpose_mem_unitaryGroup' {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ}
     (hA : A ∈ Matrix.unitaryGroup (Fin m) ℂ) : Aᵀ ∈ Matrix.unitaryGroup (Fin m) ℂ := by
@@ -54,7 +52,7 @@ def colAct {m n : ℕ} (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] EuclideanS
   fun i j => ∑ k, unitMat V i k * π k j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `[colAct, Matrix.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colAct_eq_mul {m n : ℕ} (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m))
     (π : Fin m → Fin n → ℂ) :
@@ -63,7 +61,7 @@ theorem colAct_eq_mul {m n : ℕ} (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ]
   simp [colAct, Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `h : unitMat V.symm * unitMat V = 1` using `by simpa using unitMat_mul_symm V.symm`. Rewrite using `[colAct_eq_mul, colAct_eq_mul]`. Use `show unitMat V.symm * (unitMat V * Matrix.of π) = π`. Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colAct_symm_colAct {m n : ℕ}
     (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m)) (π : Fin m → Fin n → ℂ) :
@@ -75,7 +73,7 @@ theorem colAct_symm_colAct {m n : ℕ}
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `[colAct, Matrix.vecMul, dotProduct, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colAct_eq_swap {m n : ℕ}
     (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m)) (π : Fin m → Fin n → ℂ) :
@@ -84,7 +82,7 @@ theorem colAct_eq_swap {m n : ℕ}
   simp [colAct, Matrix.vecMul, dotProduct, mul_comm]
 
 /- English proof (translation)
-Establish `h1 : MeasurePreserving (fun (ρ : Fin n → Fin m → ℂ) (j : Fin n) => ρ j ᵥ* (unitMat V)ᵀ) volume volume` using `volume_preserving_pi fun _ => measurePreserving_vecMul (transpose_mem_unitaryGroup' (unitMat_mem V))`. Establish `h2` using `(measurePreserving_swapMat n m).comp (h1.comp (measurePreserving_swapMat m n))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `π`. Rewrite using `[colAct_eq_swap]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -111,9 +109,7 @@ def colActEquiv {m n : ℕ} (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] Eucli
   measurable_invFun := (measurePreserving_colAct V.symm).measurable
 
 /- English proof (translation)
-Simplify using `only [matGauss]`. Use `congr 3`. Rewrite using `[colAct_eq_swap, Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Conclude with `sum_norm_sq_vecMul (transpose_mem_unitaryGroup' (unitMat_mem V)) (fun k => π k j)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem matGauss_colAct {m n : ℕ}
     (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m)) (π : Fin m → Fin n → ℂ) :
@@ -126,7 +122,7 @@ theorem matGauss_colAct {m n : ℕ}
   exact sum_norm_sq_vecMul (transpose_mem_unitaryGroup' (unitMat_mem V)) (fun k => π k j)
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[unitary_apply_eq_sum]`. Simplify using `only [linProj, colAct]`. Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linProj_colAct {m n : ℕ}
     (V : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m)) (π : Fin m → Fin n → ℂ)
@@ -138,7 +134,7 @@ theorem linProj_colAct {m n : ℕ}
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [linProj, PiLp.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linProj_smul {m n : ℕ} (π : Fin m → Fin n → ℂ) (c : ℂ)
     (y : EuclideanSpace ℂ (Fin n)) : linProj π (c • y) = c • linProj π y := by
@@ -147,13 +143,13 @@ theorem linProj_smul {m n : ℕ} (π : Fin m → Fin n → ℂ) (c : ℂ)
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use `set c : ℂ := ((‖w‖ : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0`. Rewrite using `[hc]`. Conclude with `norm_ne_zero_iff.2 hw` after adjusting the coercions. Establish `himg : ptsOver S (colAct V π) (firstCoordVec (e + 1)) = (fun y => c⁻¹ • y) '' ptsOver S π w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzS, hz⟩`. Use `⟨c • z, ⟨hS z hzS c hc0, ?_⟩, by simp [smul_smul, hc0]⟩` and prove the remaining obligations. Apply `V.injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[linProj_smul, map_smul, ← linProj_colAct, hz, hV]`. Introduce and unpack `⟨y, ⟨hyS, hy⟩, rfl⟩`. Use `⟨hS y hyS _ (inv_ne_zero hc0), ?_⟩` and prove the remaining obligations. Rewrite using `[linProj_smul, linProj_colAct, hy, hV, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Establish `hinj : Set.InjOn (fun y : EuclideanSpace ℂ (Fin n) => c⁻¹ • y) (ptsOver S π w)` using `(MulAction.injective₀ (inv_ne_zero hc0)).injOn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cntOver]`. Rewrite using `[himg, hinj.encard_image]`.
+A detailed English derivation is pending.
 -/
 theorem cntOver_colAct {n e : ℕ} {S : Set (EuclideanSpace ℂ (Fin n))} (hS : IsScaleStable S)
     {w : EuclideanSpace ℂ (Fin (e + 1))} (hw : w ≠ 0)
@@ -181,9 +177,9 @@ theorem cntOver_colAct {n e : ℕ} {S : Set (EuclideanSpace ℂ (Fin n))} (hS : 
   rw [himg, hinj.encard_image]
 
 /- English proof (translation)
-Introduce `n e S hS w hw T`. Take `⟨U, -, -, hU⟩` from `exists_unitary_leadCoordPlane (n := e + 1) (m := e + 1) (by omega) le_rfl ⊤ (by simp) w trivial`. Establish `hV : U.symm w = ((‖w‖ : ℝ) : ℂ) • firstCoordVec (e + 1)`. Rewrite using `[U.symm_apply_eq, hU]`. Establish `hemb : MeasurableEmbedding (colAct (n` using `n) U.symm) := (colActEquiv U.symm).measurableEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `(measurePreserving_colAct (n := n) U.symm).lintegral_comp_emb hemb (fun π => matGauss π * T (cntOver S π (firstCoordVec (e + 1))))`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `lintegral_congr fun π => ?_` and prove the remaining obligations. Simplify using `only [matGauss_colAct, cntOver_colAct hS hw U.symm hV]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_matGauss_cntOver :
     ∀ (n e : ℕ) (S : Set (EuclideanSpace ℂ (Fin n))), IsScaleStable S →

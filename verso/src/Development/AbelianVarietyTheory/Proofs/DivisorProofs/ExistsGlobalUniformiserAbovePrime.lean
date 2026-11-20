@@ -5,21 +5,17 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p hp F _ _`. Use `set J : Ideal (𝓞 F) := (Ideal.span {(p : 𝓞 F)}).radical with hJdef`. Establish `hp0 : (p : 𝓞 F) ≠ 0`. Conclude with `(Nat.cast_ne_zero (R := 𝓞 F)).mpr hp.out.ne_zero` after adjusting the coercions. Establish `hI0 : Ideal.span {(p : 𝓞 F) ^ 2} ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `pow_ne_zero _ hp0`. Establish `hpJ : (p : 𝓞 F) ∈ J` using `Ideal.le_radical (Ideal.mem_span_singleton_self _)`. Establish `hIJ : Ideal.span {(p : 𝓞 F) ^ 2} ≤ J`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `J.pow_mem_of_mem hpJ 2 two_pos`. Take `⟨ϖ, hϖ⟩` from `IsDedekindDomain.exists_sup_span_eq hIJ hI0`. Establish `hϖJ : ϖ ∈ J` using `hϖ ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Use `⟨ϖ, ?_⟩` and prove the remaining obligations. Establish `hp' : (p : 𝓞 F) ∈ Ideal.span {(p : 𝓞 F) ^ 2} ⊔ Ideal.span {ϖ}` using `hϖ ▸ hpJ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hp'`. Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`. Use `⟨z, ?_, hϖJ, ?_⟩` and prove the remaining obligations. Establish `: ϖ * z - (p : 𝓞 F) = -a` using `by rw [← hab]; ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `neg_mem ha`. Establish `hK : Ideal.span {(p : 𝓞 F), ϖ} = J`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce `x hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `hx with rfl | hx` into its components or cases. Conclude with `hpJ`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `hϖJ`.
-
-Rewrite using `[← hϖ]`. Apply `sup_le` to reduce the goal to its premises. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_insert _ _))`.
-
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.subset_span (by simp)`. Rewrite using `[hK]`. Conclude with `(Ideal.isRadical_iff_quotient_reduced J).mp (Ideal.radical_isRadical _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_global_uniformiser_above_prime :
     ∀ (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F], ∃ ϖ z : 𝓞 F,

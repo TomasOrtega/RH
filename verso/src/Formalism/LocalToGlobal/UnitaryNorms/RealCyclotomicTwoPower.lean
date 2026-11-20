@@ -61,19 +61,19 @@ open Classical in
 def sqSign {p : ℕ} (u : (ZMod p)ˣ) : ℤˣ := if IsSquare (u : ZMod p) then 1 else -1
 
 /- English proof (translation)
-Unfold `condN`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_left q _) d`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem q_dvd_condN (e q d : ℕ) : q ∣ condN e q d := by
   unfold condN
   exact dvd_mul_of_dvd_left (dvd_mul_left q _) d
 /- English proof (translation)
-Unfold `condN`. Conclude with `dvd_mul_left d _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem d_dvd_condN (e q d : ℕ) : d ∣ condN e q d := by
   unfold condN
   exact dvd_mul_left d _
 /- English proof (translation)
-Unfold `condN`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_right _ q) d`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem two_pow_dvd_condN (e q d : ℕ) : 2 ^ (e + 2) ∣ condN e q d := by
   unfold condN

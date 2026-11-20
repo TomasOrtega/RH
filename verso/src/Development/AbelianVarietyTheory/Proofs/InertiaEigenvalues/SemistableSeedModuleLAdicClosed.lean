@@ -17,33 +17,31 @@ noncomputable section
 namespace GlobalTheory.BKLim
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ d ρ hρ s y hy _hcau z hz`. Use `beta_reduce at hy ⊢`. Take `⟨hρ0, hρ1⟩` from `bk.ρ₀_mem_Ioo_zero_one`. Establish `hX : ‖toDisc l (bk.ev X) bk.ρ₀ (bk.ev X)‖ ≤ bk.ρ₀`. Simplify using `using norm_toDisc_pow_le (l := l) (u := bk.ev X) (ρ := bk.ρ₀) 1 hρ0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set j₀ : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀ := Disc.map bk.ev hX with hj₀`. Establish `hj₀d : IsDiscMap bk.ev j₀` using `isDiscMap_map bk.ev hX`. Take `⟨ι, ⟨TB⟩⟩` from `GlobalTheory.BSP.AinfTopBasis.main l K bk`. Take `⟨cD, hc_to, hc_mul, hc_norm, -⟩` from `GlobalTheory.BSP.disc_coefficients l K bk (Ainf l) bk.ev ι TB bk.ρ₀ hρ0 hρ1 j₀ hj₀d`. Take `⟨r, hr⟩` from `GlobalTheory.BSP.pow_l_mem_span_coeff l K bk τ hτ ι TB (2 * s.N * d)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hr`. Use `set V : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀) := s.W'.det • adjugate s.W with hV`. Establish `hVW : V * s.W = bk.iA (τ ^ (2 * s.N * d)) • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))`. Establish `hd : s.W.det * s.W'.det = bk.iA (τ ^ (2 * s.N * d))`. Rewrite using `[← det_mul, s.W_mul, det_smul, det_one, mul_one, Fintype.card_fin, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hV, smul_mul, adjugate_mul, smul_smul, mul_comm, hd]`. Set `Φ : bk.DA bk.ρ₀ → bk.DS bk.ρ₀` to `fun w => ∑ i ∈ f.support, toDisc l (X : bk.S) bk.ρ₀ (f i) * cD i w`. Establish `key : ∀ (x : Fin d → bk.DS bk.ρ₀) (a : Fin d), (l : bk.DS bk.ρ₀) ^ r * x a = Φ ((V *ᵥ (s.W *ᵥ fun b => j₀ (x b))) a)`. Introduce `x a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hsm : ∀ (c : bk.DA bk.ρ₀) (v : Fin d → bk.DA bk.ρ₀), (c • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))) *ᵥ v = c • v`. Introduce `c v`. Use extensionality with `b`. Simplify using `[mulVec, dotProduct, Matrix.one_apply]`. Rewrite using `[mulVec_mulVec, hVW, hsm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ i, cD i ((bk.iA (τ ^ (2 * s.N * d)) • fun b => j₀ (x b)) a) = x a * toDisc l (X : bk.S) bk.ρ₀ (TB.c i (τ ^ (2 * s.N * d)))`. Introduce `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, hc_mul, hc_to]`. Simplify using `only [Φ, h1]`. Establish `h2` using `congrArg (toDisc l (X : bk.S) bk.ρ₀) hf`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[Finsupp.sum, map_sum, map_pow, map_natCast]`. Rewrite using `[← h2, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩ : IsUnit ((l : bk.DS bk.ρ₀) ^ r)` from `(isUnit_l_disc l (X : bk.S) bk.ρ₀).pow r`. Establish `hsol : ∀ (x : Fin d → bk.DS bk.ρ₀) (a : Fin d), x a = ↑u⁻¹ * Φ ((V *ᵥ (s.W *ᵥ fun b => j₀ (x b))) a)`. Introduce `x a`. Rewrite using `[← key, ← hu, Units.inv_mul_cancel_left]`. Establish `hcont : ∀ {F : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀}, IsDiscMap bk.ev F → Continuous F` using `fun hF => AddMonoidHomClass.continuous_of_bound _ 1 fun x => (hF.norm_le x).trans (one_mul _).ge`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcDc : ∀ i, Continuous (cD i)` using `fun i => AddMonoidHomClass.continuous_of_bound _ 1 fun x => (hc_norm i x).trans (one_mul _).ge`. Set `G : (Fin d → bk.DA bk.ρ₀) → (Fin d → bk.DA bk.ρ₀)` to `fun v => s.W *ᵥ fun a => j₀ (↑u⁻¹ * Φ ((V *ᵥ v) a))`. Establish `hGc : Continuous G`. Use `continuous_const.matrix_mulVec (continuous_pi fun a => (hcont hj₀d).comp (continuous_const.mul ?_))` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun i _ => continuous_const.mul ((hcDc i).comp ((continuous_apply a).comp (continuous_const.matrix_mulVec continuous_id)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGy : ∀ n, G (fun a => bk.iA (y n a)) = fun a => bk.iA (y n a)`. Introduce `n`. Take `⟨x, hx⟩` from `hy n`. Establish `hxe` using `hx j₀ hj₀d`. Establish `h3 : G (s.W *ᵥ fun b => j₀ (x b)) = s.W *ᵥ fun b => j₀ (x b)` using `by dsimp only [G]; congr 1; funext a; rw [← hsol x a]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[hxe]`. Then use the resulting hypothesis. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `ht : Filter.Tendsto (fun n => fun a => bk.iA (y n a)) Filter.atTop (nhds fun a => bk.iA (z a))`. Rewrite using `[tendsto_pi_nhds]`. Introduce `a`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : Filter.Tendsto (fun n => bk.iA (z a - y n a)) Filter.atTop (nhds 0)`. Use `squeeze_zero_norm (fun n => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ hl1))` and prove the remaining obligations. Take `⟨w, hw⟩` from `hz n a`. Rewrite using `[hw]`. Conclude with `norm_toDisc_natPow_mul_le _ _ n w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `(tendsto_const_nhds (x := bk.iA (z a))).sub h0`. Simplify `h4` using `only [sub_zero, map_sub, sub_sub_cancel]`. Establish `hfix : G (fun a => bk.iA (z a)) = fun a => bk.iA (z a)` using `(isClosed_eq hGc continuous_id).mem_of_tendsto ht (Filter.Eventually.of_forall hGy)`. Use `⟨fun a => ↑u⁻¹ * Φ ((V *ᵥ fun b => bk.iA (z b)) a), fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[hj.unique hj₀d]`.
-
-Conclude with `hfix`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wseed_module_lAdic_closed : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (hτ : bk.IsPer τ) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (hρ : ∀ g, IsUnit (ρ g)) (s : WSeed bk d ρ τ), ∀ y : ℕ → Fin d → Ainf l, (∀ n, (fun y : Fin d → Ainf l => ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (y a)) (y n)) → (∀ n a, (l : Ainf l) ^ n ∣ y (n + 1) a - y n a) → ∀ z : Fin d → Ainf l, (∀ n a, (l : Ainf l) ^ n ∣ z a - y n a) → (fun y : Fin d → Ainf l => ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (y a)) z := by
   intro l _ K bk τ hτ d ρ hρ s y hy _hcau z hz

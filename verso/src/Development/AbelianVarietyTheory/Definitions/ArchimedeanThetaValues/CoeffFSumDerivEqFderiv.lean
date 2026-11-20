@@ -17,7 +17,7 @@ def perFactor (w : ℂ) (la : A.La) (v : A.V) : ℂ :=
   A.ah la.l (v.2 + A.ct la.y) * (A.psi la.y * eTwoPi (v.1 la.y) * eTwoPi (w * A.q la.y))⁻¹
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (A.ah_ne_zero _ _) (inv_ne_zero (mul_ne_zero (mul_ne_zero (A.psi _).ne_zero (e_ne_zero _)) (e_ne_zero _)))`.
+A detailed English derivation is pending.
 -/
 theorem perFactor_ne_zero (w : ℂ) (la : A.La) (v : A.V) : A.perFactor w la v ≠ 0 :=
   mul_ne_zero (A.ah_ne_zero _ _)
@@ -28,19 +28,17 @@ variable {O : Type} [CommRing O] [StarRing O] (A : _root_.GlobalTheory.AnArc O) 
 open _root_.GlobalTheory.AnArc.La in
 
 /- English proof (translation)
-Use `set y := la.y with hy`. Use `set n := la.n with hn`. Use `set l := la.l with hl`. Use `set L : A.La := _root_.GlobalTheory.AnArc.La.mk 0 0 l`. Use `set M : A.La := _root_.GlobalTheory.AnArc.La.mk 0 n 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set Y : A.La := _root_.GlobalTheory.AnArc.La.mk y 0 0`. Establish `hPw : A.Pw w la = A.Pw w Y + A.P0 M + A.P0 L` using `by conv_lhs => rw [eq_add_parts la]`. Rewrite using `[map_add, map_add, _root_.GlobalTheory.AnArc.degeneratingTori_periodMap_eq_base_of_y_eq_zero _ _ (mk_y _ _ _), _root_.GlobalTheory.AnArc.degeneratingTori_periodMap_eq_base_of_y_eq_zero _ _ (mk_y _ _ _)]`. Use `set v' : A.V := v + A.P0 L + A.P0 M`. Establish `hv : v + A.Pw w la = v' + A.Pw w Y`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPw]`. Simplify using `only [v']`. Normalize the expressions using the abelian group laws. Establish `key` using `A.term_add_Pw_y j α th w μ y v'`. Rewrite `key` using `[← hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hterm : A.term j α th (μ + y) v' = (A.chi l * Complex.exp (Real.pi * A.H v.2 l + Real.pi / 2 * A.H l l)) ^ j * A.term j α th (μ + y) v`. Rewrite using `[_root_.GlobalTheory.AnArc.term_add_P0_n, _root_.GlobalTheory.AnArc.term_add_P0_l A h]`. Establish `hv1 : v'.1 y = v.1 y + (n y : ℂ) + -(A.H (A.ct y) l / (2 * Complex.I))`. Simplify using `[v', L, M, Prod.fst_add, _root_.GlobalTheory.AnArc.degeneratingTori_basePeriodMap_fst_apply, mk_y, mk_n, mk_l]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set X : ℂ := A.psi y * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.eTwoPi (v.1 y) * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.eTwoPi (w * A.q y)`. Use `set X' : ℂ := A.psi y * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.eTwoPi (v'.1 y) * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.eTwoPi (w * A.q y)`. Establish `hX' : X' = X * Complex.exp (-(Real.pi * A.H (A.ct y) l))`. Simplify using `only [X', X, hv1, _root_.GlobalTheory.AnArc.e_add, _root_.GlobalTheory.AnArc.e_intCast, _root_.GlobalTheory.AnArc.e_neg_div]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hX'0 : X' ≠ 0` using `mul_ne_zero (mul_ne_zero (Units.ne_zero _) (_root_.GlobalTheory.AnArc.e_ne_zero _)) (_root_.GlobalTheory.AnArc.e_ne_zero _)`. Establish `hfac : A.perFactor w la v = A.chi l * Complex.exp (Real.pi * A.H v.2 l + Real.pi / 2 * A.H l l) * X'⁻¹`. Rewrite using `[_root_.GlobalTheory.AnArc.perFactor, ← hy, ← hl, _root_.GlobalTheory.AnArc.ah_add, hX']`. Simplify using `only [mul_inv, ← Complex.exp_neg, neg_neg, _root_.GlobalTheory.AnArc.ah, X]`. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel_left₀ (pow_ne_zero _ hX'0)]`. Use `_ = _ := by`. Rewrite using `[key, hterm, hfac]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AnArc.term_add_period {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (w : ℂ)
     (la : A.La) (μ : A.X) (v : A.V) :
@@ -97,7 +95,7 @@ open AlgebraicGeometry CategoryTheory Limits in
 variable {O : Type} [CommRing O] [StarRing O] (A : _root_.GlobalTheory.AnArc O) in
 
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.AnArc.Sum, A.term_add_period h w la]`. Rewrite using `[tsum_mul_left]`. Use `congr 1`. Conclude with `(Equiv.addRight la.y).tsum_eq fun μ => A.term j α th μ v * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.eTwoPi (w * A.exponent j α μ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AnArc.Sum_add_period {j : ℕ} {α : A.X} {th : (Fin A.gB → ℂ) → ℂ} (h : th ∈ A.Theta j α) (w : ℂ)
     (la : A.La) (v : A.V) :
@@ -130,7 +128,7 @@ theorem coeff_FSumShift (k : ℕ) [NeZero k] (α : A.X) (th : (Fin A.gB → ℂ)
       ∑ μ ∈ A.level k (α + la.y) (n - A.be la.y α / k), A.term k α th μ (z + (k : ℂ)⁻¹ • A.P0 la) := rfl
 
 /- English proof (translation)
-Establish `h1 : (tate τ₀).ah 0 (v.2 + (tate τ₀).ct (1 : ℤ)) = 1` using `by simp [ah]`. Express the relevant statement in the definitionally equal form `(tate τ₀).ah 0 (v.2 + (tate τ₀).ct (1 : ℤ)) * ((psiInt τ₀ 1 : ℂ) * eTwoPi (v.1 (1 : ℤ)) * eTwoPi (w * ((1 : ℤ) : ℂ)))⁻¹ = _`. Rewrite using `[h1, one_mul, coe_psiInt, ← e_add, ← e_add, eTwoPi, eTwoPi, ← Complex.exp_neg]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -171,7 +169,7 @@ def IsAlgebraicIn (L : RigLB G) (y : Sp ℂ ⟶ S) (e : V → (Sp ℂ ⟶ G.left
 variable {V' : Type} [NormedAddCommGroup V'] [NormedSpace ℂ V']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j => (H.1 j).comp h.differentiable.differentiableOn fun _ hz => hz, fun j z => H.2.1 j (h z), fun j j' z => H.2.2.1 j j' (h z), fun j hj => by simp only [map_zero] at hj ⊢ exact H.2.2.2 j hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsRigFrame.comp {L : RigLB G} {y : Sp ℂ ⟶ S} {e : V → (Sp ℂ ⟶ G.left)} {fr : L.L.ι → V → ℂ}
     (H : IsRigFrame L y e fr) (h : V' →L[ℂ] V) : IsRigFrame L y (fun z => e (h z)) (fun j z => fr j (h z)) :=
@@ -183,7 +181,7 @@ theorem IsRigFrame.comp {L : RigLB G} {y : Sp ℂ ⟶ S} {e : V → (Sp ℂ ⟶ 
 omit [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V'] in
 
 /- English proof (translation)
-The claim follows from `H.imp fun _ hs j z => hs j (h z)`.
+A detailed English derivation is pending.
 -/
 theorem IsAlgebraicIn.comp {L : RigLB G} {y : Sp ℂ ⟶ S} {e : V → (Sp ℂ ⟶ G.left)} {θ : V → ℂ}
     {fr : L.L.ι → V → ℂ} (H : IsAlgebraicIn L y e θ fr) (h : V' → V) :

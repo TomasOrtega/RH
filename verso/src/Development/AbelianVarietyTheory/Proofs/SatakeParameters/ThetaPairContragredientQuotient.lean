@@ -34,11 +34,11 @@ Both sides reduce to the same expression.
     ev V π (v ⊗ₜ l) w = (l : Module.Dual ℂ W) w • v := rfl
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun t ht => ?_` and prove the remaining obligations. Set `b` to `Module.Basis.ofVectorSpace ℂ V`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_left b t`. Establish `hc : ∀ i ∈ c.support, c i = 0`. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h0 : ev V π (c.sum fun i n => b i ⊗ₜ[ℂ] n) w = 0` using `by rw [ht]; rfl`. Establish `h1 : ∑ j ∈ c.support, ((c j : Module.Dual ℂ W) w) • b j = 0`. Rewrite using `[← h0, Finsupp.sum, map_sum, LinearMap.sum_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `linearIndependent_iff'.1 b.linearIndependent c.support _ h1 i hi`. Rewrite using `[Finsupp.sum]`. Conclude with `Finset.sum_eq_zero fun i hi => by rw [hc i hi, TensorProduct.tmul_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_injective (π : Representation ℂ G W) : Function.Injective (ev V π) := by
   refine (injective_iff_map_eq_zero _).2 fun t ht => ?_
@@ -57,21 +57,19 @@ theorem ev_injective (π : Representation ℂ G W) : Function.Injective (ev V π
   exact Finset.sum_eq_zero fun i hi => by rw [hc i hi, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Set `S : Subgroup K` to `{ carrier := {k | π (k : G) w = w} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Use `conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `hS : IsOpen (S : Set K)` using `(hπ w).preimage continuous_subtype_val`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite (K ⧸ S) := Subgroup.quotient_finite_of_isOpen S hS`. Use `haveI : Fintype (K ⧸ S) := Fintype.ofFinite _`. Set `φ : K ⧸ S → W` to `fun q => Quotient.liftOn' q (fun k : K => π (k : G) w) (fun a b h => by`. Establish `h' : a⁻¹ * b ∈ S` using `QuotientGroup.leftRel_apply.1 h`. Establish `h2 : π ((a⁻¹ * b : K) : G) w = w` using `h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : π (b : G) w = π (a : G) w` using `by conv_rhs => rw [← h2]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Conclude with `h3.symm)`. Establish `hφ : ∀ (k : K) (q : K ⧸ S), φ (k • q) = π (k : G) (φ q)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H a => show π ((k * a : K) : G) w = π (k : G) (π (a : G) w)`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Establish `hcard : ((Fintype.card (K ⧸ S) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `⟨((Fintype.card (K ⧸ S) : ℕ) : ℂ)⁻¹ • ∑ q, φ q, ?_, fun T hT => ?_⟩` and prove the remaining obligations. Introduce `k`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[map_smul, map_sum]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← hφ]`. Conclude with `Equiv.sum_comp (MulAction.toPerm k) φ`. Establish `h1 : ∀ q, T (φ q) = T w`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
-
-Consider the case `H a => exact hT _ a.2 w`. Rewrite using `[map_smul, map_sum]`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed (π : Representation ℂ G W) (hπ : IsSmooth π) (K : Subgroup G)
     (hK : IsCompact (K : Set G)) (w : W) :
@@ -122,13 +120,13 @@ theorem exists_fixed (π : Representation ℂ G W) (hπ : IsSmooth π) (K : Subg
     rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ (fixed π K) := hπ.2 K hKo hKc`. Establish `hle : LinearMap.range T ≤ (fixed π K).map T`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨w', hw', h⟩` from `exists_fixed (V := V) π hπ.1 K hKc w`. Conclude with `⟨w', hw', (h T hT).symm⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional ℂ (LinearMap.range T) := Submodule.finiteDimensional_of_le hle`. Set `b` to `Module.finBasis ℂ (LinearMap.range T)`. Set `l : _ → Module.Dual ℂ W` to `fun i => b.coord i ∘ₗ T.rangeRestrict`. Establish `hl : ∀ i, l i ∈ smoothPart π.dual` using `fun i => mem_smoothPart_of_nhds (Filter.mem_of_superset (hKo.mem_nhds (one_mem K)) fun g hg => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show l i (π g⁻¹ x) = l i x`. Establish `: T.rangeRestrict (π g⁻¹ x) = T.rangeRestrict x` using `Subtype.ext (hT _ (inv_mem hg) x)`. Simplify using `only [l, LinearMap.comp_apply, this])`. Use `⟨∑ i, (b i : V) ⊗ₜ[ℂ] (⟨l i, hl i⟩ : smoothPart π.dual), LinearMap.ext fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : ((∑ i, b.repr (T.rangeRestrict w) i • b i : LinearMap.range T) : V) = T w`. Rewrite using `[b.sum_repr]`. Both sides reduce to the same expression. Rewrite `h2` using `[Submodule.coe_sum]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ev_eq (π : Representation ℂ G W) (hπ : IsAdmissible π) (K : Subgroup G)
     (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (T : W →ₗ[ℂ] V)
@@ -157,7 +155,7 @@ theorem exists_ev_eq (π : Representation ℂ G W) (hπ : IsAdmissible π) (K : 
   exact h2
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul v l => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ev_map {H : Type} [Group H] (σ : Representation ℂ H V) (π : Representation ℂ G W) (g : H) (h : G)
     (t : V ⊗[ℂ] smoothPart π.dual) (w : W) :
@@ -173,19 +171,19 @@ end GlobalTheory.ThetaGL.DualPair
 open GlobalTheory.ThetaGL.DualPair in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r n μ V _ _ W _ _ σ π hμ hπ ⟨B, hB0, hB⟩`. Take `⟨-, hmul, -, -, hop⟩` from `om_isSmoothRepresentation k (Fin r) (Fin n) μ hμ`. Establish `hone` using `(om_isSmoothRepresentation k (Fin r) (Fin n) μ hμ).1`. Establish `hmem : ∀ Φ, B Φ ∈ LinearMap.range (ev V π)`. Introduce `Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `S : Subgroup (GL (Fin n) k)` to `{ carrier := {h | om μ (1 : GL (Fin r) k) h Φ.1 = Φ.1} one_mem' := hone _ mul_mem' := fun {x y} hx hy => by show om μ (1 : GL (Fin r) k) (x * y) Φ.1 = Φ.1`. Use `hmul 1 1 x y Φ.1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[this, hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by show om μ (1 : GL (Fin r) k) x⁻¹ Φ.1 = Φ.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : om μ (1 : GL (Fin r) k) x Φ.1 = Φ.1` using `hx`. Use `conv_lhs => rw [← hx']`. Use `hmul 1 1 x⁻¹ x Φ.1` as an intermediate fact. Rewrite `this` using `[mul_one, inv_mul_cancel, hone]`. Conclude with `this.symm }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSo : IsOpen (S : Set (GL (Fin n) k))` using `(hop Φ.1 Φ.2).preimage (Continuous.prodMk continuous_const continuous_id)`. Establish `hKo : IsOpen ((S ⊓ KO k (Fin n) : Subgroup _) : Set (GL (Fin n) k))` using `hSo.inter SplitFlip.isOpen_KO`. Establish `hKc : IsCompact ((S ⊓ KO k (Fin n) : Subgroup _) : Set (GL (Fin n) k))` using `SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hKo) Set.inter_subset_right`. Take `⟨t, ht⟩` from `exists_ev_eq π hπ _ hKo hKc (B Φ) fun h hh x => by`. Use `hB 1 h Φ Φ (hh.1 : om μ (1 : GL (Fin r) k) h Φ.1 = Φ.1).symm x` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Simplify using `using this`. Conclude with `⟨t, ht⟩`. Set `e` to `LinearEquiv.ofInjective (ev V π) (ev_injective π)`. Set `f : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] V ⊗[ℂ] smoothPart π.dual` to `e.symm.toLinearMap ∘ₗ B.codRestrict _ hmem`. Establish `hf : ∀ Φ, ev V π (f Φ) = B Φ` using `fun Φ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `e.apply_symm_apply (B.codRestrict _ hmem Φ)` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Use `⟨f, fun h0 => hB0 (LinearMap.ext fun Φ => ?_), fun g h Φ Φ' hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `ev_injective π` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[ev_map, hf, hf, ← hB g h Φ Φ' hΦ (π h⁻¹ w), ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaGL.omQuot_contra_of_thetaPair : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r n : ℕ) (μ : kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin r) k) V) (π : Representation ℂ (GL (Fin n) k) W), IsSmoothChar μ → IsAdmissible π → ThetaPair μ σ π → OmQuot μ σ (contra π) := by
   intro k _ _ _ _ r n μ V _ _ W _ _ σ π hμ hπ ⟨B, hB0, hB⟩

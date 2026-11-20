@@ -41,15 +41,15 @@ def SmallComb (φ : GA D (Wc D j) → ℂ) : Prop :=
 variable {YS v₀ j}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun k => Fin.elim0 k, by rw [Finset.univ_eq_empty, Finset.sum_empty]⟩`.
+Supply the required witnesses or components.
 -/
 theorem SmallComb.zero : SmallComb YS v₀ j 0 :=
   ⟨0, Fin.elim0, Fin.elim0, fun k => Fin.elim0 k, by rw [Finset.univ_eq_empty, Finset.sum_empty]⟩
 
 /- English proof (translation)
-Take `⟨n, z, g, hz, rfl⟩` from `h1`. Take `⟨m, z', g', hz', rfl⟩` from `h2`. Use `⟨n + m, Fin.append z z', Fin.append g g', fun k => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun a => ?_) (fun a => ?_) k` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz a`. Rewrite using `[Fin.append_right]`. Conclude with `hz' a`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SmallComb.add {φ ψ : GA D (Wc D j) → ℂ} (h1 : SmallComb YS v₀ j φ) (h2 : SmallComb YS v₀ j ψ) :
     SmallComb YS v₀ j (φ + ψ) := by
@@ -63,7 +63,7 @@ theorem SmallComb.add {φ ψ : GA D (Wc D j) → ℂ} (h1 : SmallComb YS v₀ j 
     simp only [Fin.append_left, Fin.append_right]
 
 /- English proof (translation)
-Take `⟨n, z, g, hz, rfl⟩` from `h`. Use `⟨n, fun k => a * z k, g, fun k => mul_mem ha (hz k), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_smul _ _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SmallComb.smul {φ : GA D (Wc D j) → ℂ} (h : SmallComb YS v₀ j φ) {a : ℂ} (ha : a ∈ (embLL0 D).fieldRange) :
     SmallComb YS v₀ j (a • φ) := by
@@ -73,13 +73,13 @@ theorem SmallComb.smul {φ : GA D (Wc D j) → ℂ} (h : SmallComb YS v₀ j φ)
   exact Finset.sum_congr rfl fun k _ => smul_smul _ _ _
 
 /- English proof (translation)
-Establish `key : ∀ φ ∈ coefLatFn (embLL0 D) (labLL0 D) (GlobalTheory.BigOn.Exp.smallInt D) (ρ.B i j b).w.lam ((ρ.B i j b).latAt (finPt _ h)), ∃ P' ∈ (ρ.B i j b).valSpace, harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P' = φ ∧ SmallComb YS v₀ j (Φ P')`. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem _ h1`. Take `⟨F, -, rfl⟩` from `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨P', h2, h3⟩` from `honto F`. Conclude with `⟨P', h2, h3, hΦ P' h2 F h3⟩`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _, by rw [map_zero]; exact SmallComb.zero⟩`. Consider the case `add _ _ _ _ h1 h2`. Take `⟨P₁, a1, rfl, f₁⟩` from `h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨P₂, a2, rfl, f₂⟩` from `h2`. Conclude with `⟨P₁ + P₂, add_mem a1 a2, map_add _ _ _, by rw [map_add]; exact f₁.add f₂⟩`. Consider the case `smul c _ _ h1`. Take `⟨P₁, a1, rfl, f₁⟩` from `h1`. Use `⟨(c : ℂ) • P₁, Submodule.smul_mem _ _ a1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul]`. Both sides reduce to the same expression. Rewrite using `[map_smul]; exact f₁.smul (by obtain ⟨a, ha⟩ := c.2; exact ⟨_, ha⟩)`. Take `⟨P', h1, h2, h3⟩` from `key _ hP.2`. Rewrite using `[sub_eq_zero.1 (hinj (P - P') (sub_mem hP.1 h1) (by rw [map_sub, h2]; exact sub_self _))]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem smallComb_of_small {ρ : Setup D.ntw} {i : D.ntw.Tw} {b : Bool}
     (Φ : PolF D (Wc D j).rank (Vc D j).rank →ₗ[ℂ] (GA D (Wc D j) → ℂ))
@@ -114,9 +114,9 @@ theorem smallComb_of_small {ρ : Setup D.ntw} {i : D.ntw.Tw} {b : Bool}
 end Comb
 
 /- English proof (translation)
-Establish `key : (∃ n : ℕ, 0 < n ∧ (C.delAt l).OrderDvd n) ∧ (C.delAt l).ValuesIn 0 (embLL0 D)`. Unfold `Formalism.L2.Host.CharFrame.delAt`. Use `split_ifs`. Use `exacts [⟨C.isDel'.fin, hval.del'⟩, ⟨C.isDel.fin, hval.del⟩]`. Take `⟨⟨n, hn, ho⟩, hv⟩` from `key`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `GlobalTheory.Adopt.heckeCharacter_finiteOrder_values_in_field D δc _ n _ (embLL0 D) h hn ho hv x`. Conclude with `⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem delAt_mem (C : Formalism.L2.Host.CharFrame D) (hval : Formalism.L2.Host.ValLL0 D C) (l : ℕ) {δc : (AE D)ˣ →* Circle}
     (h : ChrEq δc (C.delAt l)) (x : (AE D)ˣ) : ((δc x : Circle) : ℂ) ∈ (embLL0 D).fieldRange := by
@@ -136,27 +136,23 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.w
   {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
 
 /- English proof (translation)
-Introduce `hd hPl`. Establish `hti` using `tieIn_of_fw fw`. Establish `hrd` using `readsAs_one YS fw hev hV`. Take `⟨gR, cR, cL, -, u, hu, c, ph, -, -, rfl, hsc, hrat⟩` from `hν`. Establish `hT` using `hti.laws`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB` using `hρ.base i j b`. Establish `hBo` using `baseOf_of_realPin hcore.lev hρ hpin i j b`. Use `haveI := GlobalTheory.CoverSmall.smallF_normal D hgal`. Take `⟨C, hpd, hfr, hC⟩` from `exists_goodCover_pdAt YS hRF hT hti.alg hval hray hsp (D.ntw.l i) j (κ j).n (GlobalTheory.CoverSmall.smallF D) le_rfl`. Establish `hLL : (embLL0 D).fieldRange ≤ C.σ₂.fieldRange`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfr]`. Conclude with `fun z hz => hz`. Establish `hLL' : C.σ₂.fieldRange ≤ (embLL0 D).fieldRange`. Rewrite using `[hfr]`. Conclude with `fun z hz => hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hdat` using `isLevDatum_vecBase YS hT hcore hgal hval hroots hsp hρ hpin i j b hLL (fun p => hLL (hχ p)) (fun x => hLL (delAt_mem Rl.C hval _ (hpin.delta i j b) x))`. Rewrite `hdat` using `[← hpd]`. Establish `htw : IsTwist C.d.pd C.σ₂ (Rl.C.delAt (D.ntw.l i)) (ρ.B i j b).de.chi`. Rewrite using `[hpd]`. Conclude with `isTwist_delAt Rl.C hval _ (hpin.delta i j b) hLL`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hω` using `hρ.weil_base i j b`. Establish `hω' : IsWeilDatumO Rl.ψ (Vc D j) (Wc D j) (Lift.chrTh (Lift.tup Rl.mu0 (ρ.B i j b).de.chi) Rl.eta ((j : ℕ) + 1)).1 (Lift.chrTh (Lift.tup Rl.mu0 (ρ.B i j b).de.chi) Rl.eta ((j : ℕ) + 1)).2 (ρ.om i j b 1)`. Establish `h1` using `hω`. Rewrite `h1` using `[Base.IsWeil, mul_one, Base.mu, hBo.ψ, hBo.mu0, hBo.eta]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : ∀ τ, (ρ.B i j b).w.p τ + (ρ.B i j b).w.q τ ≤ (Wc D j).rank` using `fun τ => by`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)`. Rewrite `h2` using `[← hB.sig τ]`. Conclude with `h2.le`. Establish `hinj` using `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ (ρ.B i j b).w (ρ.B i j b).F.BS hB.wt hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `smallComb_of_small ((ph * c) • (ρ.B i j b).theta (ρ.om i j b 1) h) hinj (fun G => ?_) (fun P hP G hPG => ?_) hPl` and prove the remaining obligations. Establish `h3 : coefFn (embLL0 D) (ρ.B i j b).w.lam (G : Pol ↥D.LL0 D.what₂.Tau (Vc D j).rank) ∈ (harm (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS).map (harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS)`. Rewrite using `[GlobalTheory.T.fockHarmonicValueSpace_map_eq_dualWeylModuleFunctions D _ _ _ _ hB.wt hm]`. Conclude with `Submodule.subset_span ⟨GlobalTheory.CoefModel.mapVV (embLL0 D) _ G, (Scale.coefFn_map _ _ _).symm⟩`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨G', hG', hPG'⟩ : ∃ G' : VV D.what₂.LL (FWT.lamV D j), (∀ m, D.what₂.embLL (MvPolynomial.coeff m (G' : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)) ∈ (embLL0 D).fieldRange) ∧ harmFn (Wc D j).rank (ρ.B i j b).w (ρ.B i j b).F.BS P = coefFn D.what₂.embLL (FWT.lamV D j) (G' : Pol D.wha …`. Rewrite using `[hPG]`. Establish `hlam` using `hBo.lam`. Generalize the expression as in `(ρ.B i j b).w.lam = lam at G hlam`. Substitute `hlam` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV D.LL0.val.toRingHom _ _ G.2⟩, fun m => ⟨MvPolynomial.coeff m G.1, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg D.what₂.embLL (MvPolynomial.coeff_map D.LL0.val.toRingHom G.1 m).symm`. Rewrite using `[← Scale.coefFn_map, ← Scale.coefFn_map D.what₂.embLL]`. Conclude with `congrArg _ (MvPolynomial.map_map _ _ _).symm`. Establish `hP'` using `hsc.ioP_eq hinj hP (ioP_mem_valSpace hcore hio (hti.hv₀ j _) hB hBo hu _) hPG'`.
-
-Establish `hR` using `((hrat C hC hLL h hd.fin _ hdat (cL j G') (Submodule.subset_span ⟨G', fun m => hLL (hG' m), rfl⟩)).2 _ _ htw).2 _ hω'`. Use `replace hR : IsRat T j hV C (κ j) ((ph * c) • (ρ.B i j b).theta (ρ.om i j b 1) h P) := (congrArg (IsRat T j hV C (κ j)) (hpin.phase_mul_thetaKO i b hP' ph (ρ.om i j b 1) h (ρ.B i j b).vecBase)).mp hR`. Take `⟨n, z, x, hz, e⟩` from `exists_sum_evW YS hti hnV hcore.lev hpb hrd hC hR fun k hk g => by`. Use `GlobalTheory.ExportType.theta_type hB (D.sp.V_sig _) hω (one_mem _) (lifts_one hBo hk) h P g` as an intermediate fact. Rewrite `this` using `[show (⟨1, one_mem _⟩ : (ρ.B i j b).G.P.H) = 1 from rfl, map_one, Units.val_one, one_mul]`.
-
-Conclude with `congrArg ((ph * c) * ·) this`. Conclude with `⟨n, z, x, fun k => hLL' (hz k), by rw [LinearMap.smul_apply, e, one_smul]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smallComb_of_ratScalar (hRF : GlobalTheory.NT.RayField) {F : Face D A3.A} (fw : FWTie T Rl.toRealDat κ v₀) (hev : fw.Evaluates)
     (hcore : GlobalTheory.Hk3.Core Rl.toRealDat F) (hio : IoExt Rl.toRealDat) (hpb : T.pb = Rl.C.P.pb)
@@ -250,11 +246,11 @@ section Core
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m}
 
 /- English proof (translation)
-Take `⟨h0, c, hc, n, hn, hνn⟩` from `hN`. Take `⟨-, c', hc', m, hm, hν'm⟩` from `hN'`. Take `⟨k, hk, hkk⟩` from `isScale_pow_eq Rl v₀ _ hc hc'`. Establish `e1 : ν' ^ (n * m * k) = (ν' ^ m) ^ (n * k)` using `by rw [← pow_mul]; ring_nf`. Establish `e2 : ν ^ (n * m * k) = (ν ^ n) ^ (m * k)` using `by rw [← pow_mul]; ring_nf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : c' ^ (n * m * k) = c ^ (n * m * k)`. Rewrite using `[show n * m * k = k * (n * m) by ring, pow_mul c', pow_mul c, hkk]`. Establish `e4 : ν' ^ (n * m * k) = ν ^ (n * m * k)`. Rewrite using `[e1, e2, hν'm, hνn, ← pow_mul, ← pow_mul, mul_pow, mul_pow, show m * (n * k) = n * m * k by ring, show n * (m * k) = n * m * k by ring, e3]`. Use `⟨ν' / ν, ⟨_, Nat.mul_ne_zero (Nat.mul_ne_zero hn hm) hk, ?_⟩, (div_mul_cancel₀ ν' h0).symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_pow, e4, div_self (pow_ne_zero _ h0)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_root_of_isNorm {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks)
     (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) {j : Fin D.R.m} (B : Base (Vc D j) (Wc D j)) {ν ν' : ℂ}
@@ -273,7 +269,7 @@ theorem exists_root_of_isNorm {Ks : Type} [Field Ks] [NumberField Ks] [Algebra K
   rw [div_pow, e4, div_self (pow_ne_zero _ h0)]
 
 /- English proof (translation)
-Take `⟨n, z, g, hz, e⟩` from `h`. Use `⟨n, z, fun k => (⟨(S.A ((j : ℕ) + 1)).ρ ((YS.fi j).eG.symm (w j (sg0 D A3.A))) (show ↥(S.A ((j : ℕ) + 1)).WK from g k).1, YS.rho _ (Nat.le_add_left _ _) j.2 _ _ (show ↥(S.A ((j : ℕ) + 1)).WK from g k).2⟩ : ↥(S.A ((j : ℕ) + 1)).WK), hz, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Finset.sum_congr rfl fun k _ => congrArg (z k • ·) (GlobalTheory.UnframeForms.evW_moved YS w v₀ j _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallComb_of_moved {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {Rl : RealDat3 D A3 Ks}
     {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S)
@@ -287,9 +283,9 @@ theorem smallComb_of_moved {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D
   exact Finset.sum_congr rfl fun k _ => congrArg (z k • ·) (GlobalTheory.UnframeForms.evW_moved YS w v₀ j _)
 
 /- English proof (translation)
-Take `⟨fw⟩` from `H.fw`. Distinguish the cases in `hc : T.toCore.cuspA ((j : ℕ) + 1) (wtA (κ j)) (κ j).n = ⊥`. Use `Or.inl fun x hx => ?_` and prove the remaining obligations. Take `⟨f, hf⟩` from `(fw.e j).surjective ⟨x, hx⟩`. Establish `h0 : f = 0` using `Subtype.ext ((Submodule.eq_bot_iff _).1 hc f.1 f.2)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hf` using `[h0, map_zero]`. Conclude with `(congrArg Subtype.val hf).symm`. Take `⟨ν, hN, hν⟩` from `GlobalTheory.T.exists_rationalScalar_normalised_standardFrame hA hRF hS D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O ρ hρ i j b hV hpin H hc`. Conclude with `Or.inr ⟨ν, hN, smallComb_of_ratScalar YS hRF fw (fw.evaluates_of_lUnif H.unif) H.core H.io (GlobalTheory.CoverHalf.primes_eq_of_halfIs T.toCore Rl.toRealDat H.laws.toLawsM H.core.lev (H.pins.2.tuple ()).half) H.size H.galois H.small.val H.small.ray H.small.roots hsp hρ hpin i j b …`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem core_cases (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hRF : GlobalTheory.Published.RayClassFieldSt) (hS : GlobalTheory.SerStd.SeriesRatS)
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {Rl : RealDat3 D A3 T.Q.c.F} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd}
@@ -321,7 +317,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `q`. Take `⟨g, rfl⟩` from `(ρ.eG i j b).surjective q`. Take `⟨u, rfl⟩` from `(p.R.eG.trans p.cG).surjective g`. Conclude with `(level_chi hm hρ h i j b ⟨u, (mem_level_iff hm h i j b u).1 hq⟩ hq).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chi_mem_small (hm : RecTies p) {ρ : Setup D.ntw} (hρ : ρ.Good) (h : ρ.LevelOf D.nexp) (i : D.ntw.Tw) (j : Fin D.R.m)
     (b : Bool) (q : (ρ.B i j b).G.P.H) : (((ρ.B i j b).G.P.chi q : ℂˣ) : ℂ) ∈ (Formalism.L2.Host.embLL0 D).fieldRange := by
@@ -337,15 +333,15 @@ open GlobalTheory.RealGeo GlobalTheory.Unframe GlobalTheory.UnframePt
 set_option maxHeartbeats 3200000 in
 
 /- English proof (translation)
-Take `⟨c', w, hw, hfr, B', hv⟩` from `exists_framed_half hP h0.size (GlobalTheory.Core5.of_core h0.core) (geoHalf p) h0.unif (inGeo_geoHalf hP Fm x hx i p hR hM t j h0)`. Use `letI iA : Algebra (setCE p.T c').Q.c.F (Fm.D x i).what₂.LL := p.alg`. Establish `hV' : (setCE p.T c').V ((j : ℕ) + 1) (setCE p.T c').σ₀ = Wc (Fm.D x i) j` using `B'.fw.laws.spaceW _ ⟨Nat.le_add_left _ _, j.2⟩ _ (setCE p.T c').toCore.good_σ₀`. Establish `hU' : (fullHeckeRealDatMovedReadings p.R w).toRealDat.LUnif` using `GlobalTheory.T.uniformisationLaws_centralMovedReadings p.R.toRealDat w hw h0.unif`. Establish `hG : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsGrp (F2 p)` using `⟨h0.core.grp.red_R, h0.core.grp.red_L, h0.core.grp.levels, h0.core.grp.record, h0.core.grp.chiW⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c` using `h0.core`. Establish `hF : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsFam` using `{ c.fam with }`. Establish `hMo : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsModels` using `{ c.models with }`. Establish `hCh : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsChain` using `{ c.chain with }`. Establish `hTh : (fullHeckeRealDatMovedReadings p.R w).toRealDat.IsThP` using `{ c.thP with }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : GlobalTheory.Hk3.Core (fullHeckeRealDatMovedReadings p.R w).toRealDat (F2 p)` using `⟨c.lev, hG, hF, hMo, hCh, hTh⟩`. Establish `hph : (fun k => cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) ((fullHeckeRealDatMovedReadings p.R w).phs k)) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `fun k => by show cj (twAt (Fm.D x i).what₂.embLL p.P.A3.A.v0) (p.R.phs k) = 1`. Rewrite using `[p.phsOne k, map_one]`. Establish `hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w) (F2 p) B'.κ B'.v₀ B'.O t j hV'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩, ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_, hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩` and prove the remaining obligations. Rewrite using `[hph]`. Conclude with `B'.phase j hU'`. Establish `hpin' : RealPin (fullHeckeRealDatMovedReadings p.R w) p.cG ρ` using `⟨h.psi, h.inf, h.cartT, h.onbS, h.onbT, h.latS, h.latT, h.frS, h.frT, h.vac, h.Pg, h.grp, h.mu0, h.eta, h.delta, h.deltaPl, h.ap, h.am⟩`. Establish `hsp : (Fm.D x i).host.cls (Fm.D x i).host.pde = PrimeClass.splitK ∧ (Fm.D x i).host.cls (Fm.D x i).host.pde' = PrimeClass.splitK` using `⟨(Fm.params x hx i).level_split _ (Fm.D x i).host.pde_level.1, (Fm.params x hx i).level_split _ (Fm.D x i).host.pde_level.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `core_cases (T := setCE p.T c') (Rl := fullHeckeRealDatMovedReadings p.R w) hA hRF hS (GlobalTheory.UnframeForms.movedYS p.nexp w) hρ b hpin' hRat hsp hχ`. Rewrite `H` using `[hv]`. Break down `H with H | ⟨ν, hN, H⟩` into its components or cases. Conclude with `Or.inl H`. Conclude with `Or.inr ⟨ν, hN, fun s g P hd hl => smallComb_of_moved p.nexp w p.v₀ j (H s g P hd hl)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem point_cases (hP : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hRF : GlobalTheory.Published.RayClassFieldSt)
     (hS : GlobalTheory.SerStd.SeriesRatS) {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i) (hR : p.Rows)
@@ -391,11 +387,11 @@ theorem point_cases (hP : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalThe
   · exact Or.inr ⟨ν, hN, fun s g P hd hl => smallComb_of_moved p.nexp w p.v₀ j (H s g P hd hl)⟩
 
 /- English proof (translation)
-Establish `hL` using `lowAt_holds`. Establish `hT` using `twAdm`. Unfold `LowAt at hL`. Unfold `TwAdm at hT`. Use `(AtTw.and hL hT).imp fun Fm x hx i p hp hM w _ j h => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ρ hρ ν hpin hlev hR0 s g P hd hl ν' hN`. Break down `point_cases hP hA hRF hS Fm x hx i p hp hM _ j (ratHyp0_at_point Fm x hx i p hp hM _ h.2.2.2 h.1 j) ρ hρ _ hpin (chi_mem_small hM.2.2 hρ hlev _ j _) with H | ⟨ν₁, hN₁, H⟩` into its components or cases. Establish `h0` using `GlobalTheory.SerRefPt.theta_eq_zero p.nexp p.v₀ hρ _ j _ H hR0 hd`. Conclude with `⟨1, 0, ⟨1, one_ne_zero, one_pow 1⟩, SmallComb.zero, by rw [h0, smul_zero, smul_zero]⟩`. Take `⟨ζ, hζ, e⟩` from `exists_root_of_isNorm p.R p.v₀ _ hN₁ hN`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ζ, _, hζ, H s g P hd hl, by rw [e, mul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem norm_smul_theta (hP : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hRF : GlobalTheory.Published.RayClassFieldSt)
     (hS : GlobalTheory.SerStd.SeriesRatS) : AtTw fun Fm x hx i p w j => ∀ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (ν : ℂ),
@@ -419,13 +415,11 @@ theorem norm_smul_theta (hP : GlobalTheory.Published.CuspRapidDecay) (hA : Globa
     exact ⟨ζ, _, hζ, H s g P hd hl, by rw [e, mul_smul]⟩
 
 /- English proof (translation)
-Introduce `hP hA hRF hS`. Use `(norm_smul_theta hP hA hRF hS).imp fun Fm x hx i p _ _ w _ j H => ?_` and prove the remaining obligations. Introduce `ρ hρ ν hpin hlev hN hR0 s h P hd hl τ hτ`. Take `⟨a, φ, ⟨m, hm, ha⟩, ⟨n, z, g, hz, rfl⟩, e⟩` from `H ρ hρ ν hpin hlev hR0 s h P hd hl ν hN`. Establish `ha0 : a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `ha` using `[zero_pow hm]`. Conclude with `zero_ne_one ha`. Establish `hz' : ∀ k, τ (z k) = z k` using `fun k => by`. Take `⟨y, hy⟩` from `hz k`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `hτ y`. Use `⟨τ a / a, ⟨m, hm, by rw [div_pow, ← map_pow, ha, map_one, div_one]⟩, n, fun k => a * z k, g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_smul _ _ _`.
-
-Rewrite using `[e, smul_smul, div_mul_cancel₀ _ ha0, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_mul, hz', smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_expansion : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → AtTw fun Fm x hx i p w j => ∀ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (ν : ℂ),
   RealPin p.R p.cG ρ → ρ.LevelOf (Fm.D x i).nexp →

@@ -18,7 +18,7 @@ def zq (p : ℕ) (R : Type) [CommRing R] : ZMod p →+* R ⧸ Ideal.span {(p : R
     exact Ideal.mem_span_singleton_self _)) _
 
 /- English proof (translation)
-Use `conv_lhs => rw [← ZMod.natCast_zmod_val a]`. Rewrite using `[map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zq_val (a : ZMod p) : zq p R a = Ideal.Quotient.mk _ (a.val : R) := by
   conv_lhs => rw [← ZMod.natCast_zmod_val a]
@@ -26,7 +26,7 @@ theorem zq_val (a : ZMod p) : zq p R a = Ideal.Quotient.mk _ (a.val : R) := by
 
 omit [IsAlgClosed C] [CharZero C] [Fact p.Prime] in
 /- English proof (translation)
-Use `hv.le_of_dvd (Ideal.mem_span_singleton.1 hr)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_le_of_mem (hv : v.Integers R) {r : R} (hr : r ∈ Ideal.span {(p : R)}) :
     v (algebraMap R C r) ≤ v (p : C) := by
@@ -35,9 +35,9 @@ theorem val_le_of_mem (hv : v.Integers R) {r : R} (hr : r ∈ Ideal.span {(p : R
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Use `choose r hr using hM hf.1`. Use `⟨fun i => r (Pi.single i 1), fun x => ?_⟩` and prove the remaining obligations. Use `PositivityTheory.HtPt.Rh.add_mem_pFun (Submodule.sub_mem _ hf.2 (PositivityTheory.HtPt.Rh.form_mem_lin (C := C) p fun i => r (Pi.single i 1)).2) (fun i => ?_) x (Set.mem_univ x)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f _ - algebraMap R C (∑ k, r (Pi.single k 1) * (((Pi.single i 1 : I → ZMod p) k).val : R)) ∈ _`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp), ← hr]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ZMod.val_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lin {M : Submodule R ((I → ZMod p) → C)} (hM : M ≤ intFun R _) {f : (I → ZMod p) → C}
     (hf : f ∈ afFun p M) : ∃ l : I → R, ∀ x, f x - algebraMap R C (∑ i, l i * ((x i).val : R)) ∈ pInt (C := C) R p := by
@@ -51,15 +51,13 @@ theorem exists_lin {M : Submodule R ((I → ZMod p) → C)} (hM : M ≤ intFun R
 
 omit [IsAlgClosed C] [DecidableEq I] in
 /- English proof (translation)
-Establish `hpp : p.Prime` using `Fact.out`. Establish `hζ1` using `val_root v p hpp.ne_zero hζ.pow_eq_one`. Establish `h1 : (∑ m, y m * (((ε *ᵥ z) m).val : R)) - ∑ i, (y ᵥ* Eg) i * ((z i).val : R) ∈ Ideal.span {(p : R)}`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `hE' : ∀ m m', Ideal.Quotient.mk (Ideal.span {(p : R)}) (Eg m m') = zq p R (ε m m')` using `fun m m' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zq_val, Ideal.Quotient.eq]`. Conclude with `hE m m'`. Simplify using `only [map_sum, map_mul, ← zq_val, Matrix.mulVec, Matrix.vecMul, dotProduct, hE', Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`. Establish `e : ∑ m, algebraMap R C (y m) * tl p (ζ ^ ((ε *ᵥ z) m).val) - algebraMap R C c * algebraMap R C (∑ i, (y ᵥ* Eg) i * ((z i).val : R)) = ∑ m, algebraMap R C (y m) * (tl p (ζ ^ ((ε *ᵥ z) m).val) - tl p ζ * (((ε *ᵥ z) m).val : C)) + tl p ζ * algebraMap R C ((∑ m, y m * (((ε *ᵥ z) m). …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, map_sub, map_sum (algebraMap R C) fun m => y m * _]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, map_mul, map_natCast, Finset.mul_sum]`. Establish `: ∀ m, algebraMap R C (y m) * (tl p ζ * (((ε *ᵥ z) m).val : C)) = tl p ζ * (algebraMap R C (y m) * (((ε *ᵥ z) m).val : C))` using `fun m => by ring`. Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `v.map_add_le (v.map_sum_le fun m _ => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `(mul_le_of_le_one_left zero_le (hv.map_le_one _)).trans ((val_tl_pow v p hp hζ1 _).trans_eq ?_)` and prove the remaining obligations. Rewrite using `[← val_prim v p hζ, ← pow_succ', Nat.sub_add_cancel hpp.one_le]`.
-
-Rewrite using `[map_mul, val_tl_prim v p hp hζ]`. Conclude with `mul_le_mul_right (val_le_of_mem hv h1) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tl_est (hv : v.Integers R) (hp : v (p : C) < 1) {ζ : C} (hζ : IsPrimitiveRoot ζ p) {c : R}
     (hc : algebraMap R C c = tl p ζ) (ε : Matrix I I (ZMod p)) (Eg : Matrix I I R)
@@ -95,15 +93,15 @@ theorem tl_est (hv : v.Integers R) (hp : v (p : C) < 1) {ζ : C} (hζ : IsPrimit
 
 omit [Fact p.Prime] [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Proceed by induction on `hK using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨g, hg, h, hh, rfl⟩` from `h`. Take `⟨s, hs⟩` from `hs (d ⟨h, hh⟩)`. Use `⟨s • g, M.smul_mem s hg, fun x => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `hM hg x`. Establish `e : (fun z => g x * h z) = r • h` using `by funext z; simp [Algebra.smul_def, hr]`. Use `⟨e ▸ M.smul_mem r hh, s * r, by simp [Algebra.smul_def, hr], ?_⟩` and prove the remaining obligations. Establish `: (⟨fun z => g x * h z, e ▸ M.smul_mem r hh⟩ : M) = r • ⟨h, hh⟩` using `Subtype.ext e`. Rewrite using `[this, map_smul, ← hs, Algebra.smul_def, map_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨0, M.zero_mem, fun x => ⟨M.zero_mem, 0, by simp, by rw [map_zero]; exact map_zero d⟩⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨f, hf, ha⟩` from `ha`. Take `⟨f', hf', hb⟩` from `hb`. Use `⟨f + f', M.add_mem hf hf', fun x => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, r, e1, e2⟩` from `ha x`. Take `⟨h1', r', e1', e2'⟩` from `hb x`. Conclude with `⟨M.add_mem h1 h1', r + r', by simp [e1, e1'], by rw [map_add, ← e2, ← e2', ← map_add]; rfl⟩`. Consider the case `smul a b _ hb`. Take `⟨f, hf, hb⟩` from `hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨a • f, M.smul_mem a hf, fun x => ?_⟩` and prove the remaining obligations. Take `⟨h1, r, e1, e2⟩` from `hb x`. Conclude with `⟨M.smul_mem a h1, a * r, by simp [e1, Algebra.smul_def], by rw [map_mul, ← e2, ← Algebra.smul_def, ← map_smul]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem slice {N : Type} {M : Submodule R (N → C)} (hM : M ≤ intFun R N) {Q : Type} [CommRing Q] [Algebra R Q]
     (hs : Function.Surjective (algebraMap R Q)) (d : M →ₗ[R] Q) {K : N × N → C} (hK : K ∈ tens M M) :
@@ -135,17 +133,17 @@ theorem slice {N : Type} {M : Submodule R (N → C)} (hM : M ≤ intFun R N) {Q 
 
 omit [IsAlgClosed C] [CharZero C] [Fact p.Prime] in
 /- English proof (translation)
-Establish `hEi' : Eg * Ei = 1` using `mul_eq_one_comm.1 hEi`. Establish `h1 : ((Matrix.fromRows Hm (Yyᵀ * Eg)).submatrix eqv id) * Ei * ((Matrix.fromRows Hm (Yyᵀ * Eg)).submatrix eqv id)ᵀ = (Matrix.fromRows Hm (Yyᵀ * Eg) * Ei * (Matrix.fromRows Hm (Yyᵀ * Eg))ᵀ).submatrix eqv eqv`. Generalize the expression as in `Matrix.fromRows Hm (Yyᵀ * Eg) = Φ`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : Matrix.fromRows Hm (Yyᵀ * Eg) * Ei * (Matrix.fromRows Hm (Yyᵀ * Eg))ᵀ * Matrix.fromBlocks 0 1 1 0 = Matrix.fromBlocks (-(Hm * Yy)) 0 (Yyᵀ * Eg * Ei * (Yyᵀ * Eg)ᵀ) (Hm * Yy)ᵀ`. Rewrite using `[Matrix.fromRows_mul, Matrix.transpose_fromRows, Matrix.fromRows_mul_fromCols, Matrix.fromBlocks_multiply, hiso]`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero]`. Use `congr 1`. Rewrite using `[Matrix.transpose_mul, hEt, Matrix.transpose_transpose, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, ← Matrix.mul_assoc Ei, hEi, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc Yyᵀ, hEi', Matrix.mul_one, Matrix.transpose_mul]`. Establish `h3 : IsUnit (Matrix.fromBlocks 0 1 1 0 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) R).det` using `Matrix.isUnit_det_of_left_inverse (B := Matrix.fromBlocks 0 1 1 0) (by`. Rewrite using `[Matrix.fromBlocks_multiply]`. Use the proof step `simp)`. Establish `h4 : IsUnit Ei.det` using `Matrix.isUnit_det_of_right_inverse hEi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : v (algebraMap R C (1 + s • U).det) = 1`. Rewrite using `[Matrix.det_one_add_smul, map_add (algebraMap R C), map_add (algebraMap R C), map_one, add_assoc]`. Use `v.map_one_add_of_lt (v.map_add_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hv.map_le_one _) zero_le hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, sq, map_mul, map_mul, ← mul_assoc]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (mul_le_one₀ (hv.map_le_one _) zero_le hs.le) zero_le hs`. Establish `h6 : v (algebraMap R C (Hm * Yy).det) = v (algebraMap R C c) ^ g`. Rewrite using `[hY, Matrix.det_smul, map_mul, map_mul, h5, mul_one, map_pow, map_pow, Fintype.card_fin]`. Establish `e1` using `congrArg (fun M => v (algebraMap R C M.det)) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg (fun M => v (algebraMap R C M.det)) h2`. Simplify using `only [Matrix.det_submatrix_equiv_self] at e1`. Rewrite `e2` using `[Matrix.det_mul, Matrix.det_fromBlocks_zero₁₂, Matrix.det_transpose, Matrix.det_neg, map_mul, map_mul, hv.one_of_isUnit h3, mul_one, ← e1]`. Simplify using `only [Matrix.det_mul _ Ei, Matrix.det_mul _ (Matrix.transpose _), Matrix.det_transpose, map_mul, h6, hv.one_of_isUnit h4, map_pow, map_neg, map_one, Valuation.map_neg, one_pow, one_mul, mul_one] at e2`. Conclude with `(mul_self_inj zero_le zero_le).1 e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_val (hv : v.Integers R) {g : ℕ} (eqv : I ≃ Fin g ⊕ Fin g) (Hm : Matrix (Fin g) I R) (Eg Ei : Matrix I I R)
     (hEt : Egᵀ = -Eg) (hEi : Ei * Eg = 1) (hiso : Hm * Ei * Hmᵀ = 0) (Yy : Matrix I (Fin g) R) (c s : R)
@@ -187,59 +185,53 @@ theorem det_val (hv : v.Integers R) {g : ℕ} (eqv : I ≃ Fin g ⊕ Fin g) (Hm 
   exact (mul_self_inj zero_le zero_le).1 e2
 
 /- English proof (translation)
-Establish `hpp : p.Prime` using `Fact.out`. Establish `hp3 : 1 < p - 1` using `by have := hpp.two_le; omega`. Establish `hε` using `val_tl_prim v p hp hζ`. Take `⟨c, hc⟩` from `hv.exists_of_le_one (r := tl p ζ) (hε.le.trans (val_prim_lt v p hp hζ).le)`. Establish `hvc : v (algebraMap R C c) = v (ζ - 1)` using `by rw [hc, hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc0 : v (algebraMap R C c) ≠ 0` using `by rw [hvc]; exact (val_prim_pos v p hζ).ne'`. Establish `hpc : v (algebraMap R C (p : R)) < v (algebraMap R C c)`. Rewrite using `[map_natCast, hvc, ← val_prim v p hζ]`. Conclude with `val_prim_pow_lt v p hp hζ _ hp3`. Take `⟨s, hs⟩` from `hv.dvd_of_le hpc.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs1 : v (algebraMap R C s) < 1`. Rewrite `hpc` using `[hs, map_mul, map_mul]`. Conclude with `lt_one_of_mul_lt_right hpc`. Establish `hW : ∀ w : Fin g → R ⧸ Ideal.span {(p : R)}, (p : R) • w = 0` using `fun w => funext fun k => by`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _), zero_mul, Pi.zero_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨X, hX, hgen, hsmall⟩` from `small_gen hv hp AA hA hN heq hD hW (val_prim v p hζ)`. Establish `hsl` using `fun k : Fin g => slice AA.le_int Ideal.Quotient.mk_surjective ((LinearMap.proj k) ∘ₗ Dv) hK`. Simplify using `only [Ideal.Quotient.algebraMap_eq] at hsl`. Establish `hch : ∀ m, (fun z => ζ ^ ((ε *ᵥ z) m).val) ∈ AA.carrier` using `fun m => charmem p C v R hv hp _ AA ((AddChar.zmodChar p hζ.pow_eq_one).compAddMonoidHom ((LinearMap.proj m) ∘ₗ ε.mulVecLin).toAddMonoidHom)`. Set `T : (I → R) → AA.carrier` to `fun y => ∑ m, y m • ⟨_, tl_mem_order hv p hp AA (hch m)⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT : ∀ y z, (T y).1 z = ∑ m, algebraMap R C (y m) * tl p (ζ ^ ((ε *ᵥ z) m).val)` using `fun y z => by`. Simplify using `only [T, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply]`. Simplify using `only [Algebra.smul_def]`. Establish `hDT : ∀ y, Dv (T y) = fun k => Ideal.Quotient.mk _ ((Hm *ᵥ y) k)` using `fun y => by`. Establish `: ∀ m, Dv ⟨_, tl_mem_order hv p hp AA (hch m)⟩ = fun k => Ideal.Quotient.mk _ (Hm k m)` using `fun m => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[der_tl hv hp hD hW ⟨_, hch m⟩ (by simp), hχ (Pi.single m 1) _ (fun z => by simp)]`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_eq_single m (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp)]`. Simplify using `[ZMod.val_one]`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [T, map_sum, map_smul, this, Finset.sum_apply, Pi.smul_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, map_mul, map_sum, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, mul_comm]`. Establish `hF1 : ∀ (y : I → R) (f : AA.carrier), (∀ x, f.1 x - algebraMap R C (∑ i, (y ᵥ* Eg) i * ((x i).val : R)) ∈ pInt (C` using `C) R p) → (fun k => Ideal.Quotient.mk _ ((Hm *ᵥ y) k)) = c • Dv f := fun y f hf => by`. Rewrite using `[← hDT, ← map_smul, ← sub_eq_zero, ← map_sub]`. Use `hsmall _ fun z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (T y - c • f).1 z = (∑ m, algebraMap R C (y m) * tl p (ζ ^ ((ε *ᵥ z) m).val) - algebraMap R C c * algebraMap R C (∑ i, (y ᵥ* Eg) i * ((z i).val : R))) - algebraMap R C c * (f.1 z - algebraMap R C (∑ i, (y ᵥ* Eg) i * ((z i).val : R)))`. Rewrite using `[← hT, Submodule.coe_sub, Submodule.coe_smul, Pi.sub_apply, Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `v.map_sub_le (tl_est hv hp hζ hc ε Eg hE y z) ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hvc]`. Conclude with `mul_le_mul_right ((mem_pInt_iff hv p _).1 (hf z)) _`. Establish `hyl : ∀ l : I → R, (l ᵥ* Ei) ᵥ* Eg = l` using `fun l => by rw [Matrix.vecMul_vecMul, hEi, Matrix.vecMul_one]`. Establish `C1 : ∀ k, Hm k ∈ afLat p AA.carrier` using `fun k => by`. Take `⟨f, hf, h⟩` from `hsl k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨f, hf, fun x => ?_⟩` and prove the remaining obligations. Take `⟨hx, r, e1, e2⟩` from `h x`. Rewrite `e2` using `[LinearMap.comp_apply, hχ x _ fun _ => rfl, LinearMap.proj_apply, eq_comm, Ideal.Quotient.eq]`. Rewrite using `[← e1, ← map_sub, mem_pInt_iff hv]`. Conclude with `val_le_of_mem hv e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `C3 : ∀ u : Fin g → R, ∃ (y : I → R) (u' : Fin g → R), y ᵥ* Eg ∈ afLat p AA.carrier ∧ Hm *ᵥ y = c • u + (p : R) • u'` using `fun u => by choose l hl using fun j => exists_lin AA.le_int (hX j)`. Take `⟨f, hf⟩` from `hsurj fun k => Ideal.Quotient.mk _ (u k)`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (hgen f)`. Establish `h1 : ∀ x, (∑ j, a j • X j).1 x - algebraMap R C (∑ i, (((∑ j, a j • l j) ᵥ* Ei) ᵥ* Eg) i * ((x i).val : R)) ∈ pInt (C` using `C) R p := fun x => by`. Rewrite using `[hyl]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j (_ : j ∈ Finset.univ) => Submodule.smul_mem _ (a j) (hl j x) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_sub, Finset.sum_sub_distrib, smul_eq_mul]`. Simplify using `only [Algebra.smul_def, ← map_mul, ← map_sum, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Establish `h2` using `hF1 _ _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sum]`. Simplify using `only [map_smul] at h2`. Rewrite `h2` using `[ha, hf]`. Establish `h3 : ∀ k, ∃ b, b * (p : R) = (Hm *ᵥ ((∑ j, a j • l j) ᵥ* Ei)) k - c * u k` using `fun k => by`. Rewrite using `[← Ideal.mem_span_singleton', ← Ideal.Quotient.eq, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun h2 k`. Use `choose u' hu' using h3`. Use `⟨_, u', ⟨_, (∑ j, a j • X j).2, h1⟩, funext fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `-hu' k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨c, by rw [hvc, val_prim v p hζ], fun l => ⟨_, (T (l ᵥ* Ei)).2, fun x => ?_⟩, C1, fun y hy => ?_, C3, fun u => ?_⟩` and prove the remaining obligations. Establish `h` using `tl_est hv hp hζ hc ε Eg hE (l ᵥ* Ei) x`. Rewrite `h` using `[hyl, ← hT, ← map_mul]`. Rewrite using `[mem_pInt_iff hv]`. Use `le_trans (le_of_eq ?_) (h.trans (mul_le_of_le_one_left zero_le (val_prim_lt v p hp hζ).le))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Take `⟨f, hf, h⟩` from `hy`. Establish `h2` using `hF1 y ⟨f, hf⟩ h`. Establish `h3 : ∀ k, ∃ b, (Hm *ᵥ y) k = c * b` using `fun k => by`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (Dv ⟨f, hf⟩ k)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `h4` using `congrFun h2 k`. Rewrite `h4` using `[Pi.smul_apply, ← hr, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `h4`. Conclude with `⟨r + b * s, by rw [hs] at hb; linear_combination -hb⟩`. Use `choose u hu using h3`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨u, funext hu⟩`. Use `choose y u' hy hyu using fun k : Fin g => C3 (Pi.single k 1)`. Set `eqv : I ≃ Fin g ⊕ Fin g` to `Fintype.equivOfCardEq (by simpa using hcard)`. Establish `hdet` using `det_val hv eqv Hm Eg Ei hEt hEi hiso (Matrix.of y)ᵀ c s hs1 (Matrix.of u')ᵀ (by`. Use extensionality with `i k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (hyu k) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hs] at this`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, this, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, Matrix.one_apply, Pi.single_apply]`. Use the proof step `ring)`. Rewrite `hdet` using `[Matrix.transpose_transpose]`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set Φ := (Matrix.fromRows Hm (Matrix.of y * Eg)).submatrix eqv id with hΦ`. Establish `hle : LinearMap.range Φᵀ.mulVecLin ≤ afLat p AA.carrier`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_transpose, Matrix.vecMul_eq_sum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Matrix.fromRows Hm (Matrix.of y * Eg) (eqv i) ∈ _`. Break down `eqv i with k | k` into its components or cases. Conclude with `C1 k`. Conclude with `hy k`. Establish `hl1` using `hasLen_coker_det' v R hv I Φᵀ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hl1` using `[Matrix.det_transpose, hdet]`. Take `⟨eq⟩` from `PositivityTheory.HtPt.Rh.afquot p C v R hv hp I AA`. Take `⟨h1, h2⟩` from `PositivityTheory.HtPt.Rh.len_eq C v R hv I _ _ hle _ cA (pow_ne_zero _ hc0) hl1 (hasLen_of_equiv eq.symm hA)`. Establish `h3` using `h2 (le_antisymm h1 (le_of_pow_le_pow_left₀ (n := p - 1) (by omega) zero_le (by`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hvc, val_prim v p hζ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `hcA)))`. Establish `hu : IsUnit (Φ.map (algebraMap R C)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `hdet` using `[h0, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `pow_ne_zero _ hc0 hdet.symm`. Set `b : I → R` to `fun i => Sum.elim u 0 (eqv i)`. Establish `hx : Φ.map (algebraMap R C) *ᵥ ((Φ.map (algebraMap R C))⁻¹ *ᵥ fun i => algebraMap R C (b i)) = fun i => algebraMap R C (b i)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Use `⟨(Φ.map (algebraMap R C))⁻¹ *ᵥ fun i => algebraMap R C (b i), fun l hl => ?_, funext fun k => ?_⟩` and prove the remaining obligations.
-
-Use `rotate_left`. Use `congrFun hx (eqv.symm (Sum.inl k))` as an intermediate fact. Simplify using `only [b, Equiv.apply_symm_apply, Sum.elim_inl] at this`. Rewrite using `[← this]`. Generalize the expression as in `((Φ.map (algebraMap R C))⁻¹ *ᵥ fun i => algebraMap R C (b i)) = x`.
-
-Simplify using `[Matrix.mulVec, dotProduct, hΦ]`. Rewrite `hl` using `[← h3]`. Take `⟨a, rfl⟩` from `hl`. Establish `: ∑ j, algebraMap R C (Φᵀ.mulVecLin a j) * ((Φ.map (algebraMap R C))⁻¹ *ᵥ fun i => algebraMap R C (b i)) j = algebraMap R C (a ⬝ᵥ b)`. Generalize the expression as in `((Φ.map (algebraMap R C))⁻¹ *ᵥ fun i => algebraMap R C (b i)) = x at hx ⊢`.
-
-Rewrite using `[RingHom.map_dotProduct, show (algebraMap R C ∘ b) = fun i => algebraMap R C (b i) from rfl, ← hx, Matrix.dotProduct_mulVec, Matrix.mulVecLin_apply, Matrix.mulVec_transpose]`. Simplify using `only [RingHom.map_vecMul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hv.map_le_one _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hv : v.Integers R) (hp : v (p : C) < 1) (hp2 : p ≠ 2) (AA : HopfOrder (C := C) R (I → ZMod p))
     {g : ℕ} (hcard : Fintype.card I = g + g)

@@ -10,11 +10,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Take `⟨p, hp, hpy⟩` from `hy`. Set `ψ : L →+* M` to `((f : Ω →+* Φ).comp (algebraMap L Ω)).codRestrict M (fun z => hLM ⟨z, z.2, rfl⟩)`. Establish `hψ : (algebraMap M Φ).comp ψ = (f : Ω →+* Φ).comp (algebraMap L Ω)`. Use extensionality with `z`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use `⟨p.map ψ, (Polynomial.map_ne_zero_iff ψ.injective).mpr hp, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg f hpy`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, hψ]`. Rewrite `h` using `[Polynomial.aeval_def, map_zero]`. Rewrite using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Polynomial.hom_eval₂ p (algebraMap L Ω) (f : Ω →+* Φ) y).symm`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_map_of_map_le {Ω Φ : Type*} [Field Ω] [Field Φ] [Algebra ℚ Ω] [Algebra ℚ Φ]
     (f : Ω →ₐ[ℚ] Φ) {L : IntermediateField ℚ Ω} {M : IntermediateField ℚ Φ} (hLM : L.map f ≤ M) {y : Ω}
@@ -31,45 +31,37 @@ theorem isAlgebraic_map_of_map_le {Ω Φ : Type*} [Field Ω] [Field Φ] [Algebra
   exact (Polynomial.hom_eval₂ p (algebraMap L Ω) (f : Ω →+* Φ) y).symm
 
 /- English proof (translation)
-Introduce `Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htalg hδ hδF hφb hgF hD ha`. Set `f : Ω →ₐ[ℚ] Φ` to `IsScalarTower.toAlgHom ℚ Ω Φ`. Establish `hf : ∀ z, f z = algebraMap Ω Φ z` using `fun _ => rfl`. Establish `hφe : ∀ k p, φ k (e p) = x i₀ * (b.repr (e p) 0 * g k 0 + b.repr (e p) 1 * g k 1)`. Introduce `k p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← b.sum_repr (e p)]`. Simplify using `only [map_add, map_smul, Fin.sum_univ_two, hφb, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : b.repr (e 0) 0 * b.repr (e 1) 1 - b.repr (e 1) 0 * b.repr (e 0) 1 ≠ 0`. Introduce `h0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg Matrix.det (b.toMatrix_mul_toMatrix_flip e)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one, Matrix.det_fin_two]`. Simplify using `only [Module.Basis.toMatrix_apply, h0, zero_mul] at h`. Conclude with `zero_ne_one h`. Establish `hdet : φ k₁ (e 0) * φ k₀ (e 1) - φ k₁ (e 1) * φ k₀ (e 0) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: φ k₁ (e 0) * φ k₀ (e 1) - φ k₁ (e 1) * φ k₀ (e 0) = -(x i₀ ^ 2 * (g k₀ 0 * g k₁ 1 - g k₀ 1 * g k₁ 0) * (b.repr (e 0) 0 * b.repr (e 1) 1 - b.repr (e 1) 0 * b.repr (e 0) 1))`. Rewrite using `[hφe, hφe, hφe, hφe]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `neg_ne_zero.mpr (mul_ne_zero (mul_ne_zero (pow_ne_zero 2 hx) hD) hB)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hden, hmob⟩` from `hM Ω Φ 1 (fun _ => a) (φ k₁ (e 0)) (φ k₁ (e 1)) (φ k₀ (e 0)) (φ k₀ (e 1)) (algebraicIndependent_unique_type_iff.mpr ha) hdet`. Establish `hu : lineVal e (φ k₀) a ≠ 0` using `hden 0`. Use `set r := lineVal e (φ k₁) a / lineVal e (φ k₀) a with hr`. Establish `hy : AlgebraicIndependent Ω (fun _ : Fin 1 => r)` using `hmob`. Set `σ : Fin (d + 1) ≃ Fin 1 ⊕ Fin d` to `finSumFinEquiv.symm.trans (Equiv.sumComm _ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Set `t' : Fin (d + 1) → Φ` to `Sum.elim (fun _ : Fin 1 => r) (algebraMap Ω Φ ∘ t) ∘ σ`. Establish `ht' : ∀ n, t' n = r ∨ ∃ m, t' n = f (t m)`. Introduce `n`. Break down `h : σ n with j | m` into its components or cases. Conclude with `Or.inl (by simp [t', h])`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Or.inr ⟨m, by simp [t', h, hf]⟩`. Establish `hr_mem : r ∈ Set.range t'` using `⟨σ.symm (Sum.inl 0), by simp [t']⟩`. Establish `ht_mem : ∀ m, f (t m) ∈ Set.range t'` using `fun m => ⟨σ.symm (Sum.inr m), by simp [t', hf]⟩`. Set `c : ∀ k, T.yyIdx ι ν κ k` to `fun | .base => i₀ | .det => l₀ | .line => k₀`. Use `set S := coneRatios (T.yyCoord x δ e φ a) c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set F := IntermediateField.adjoin ℚ (Set.range fun j => x j / x i₀)`. Establish `hF : ∀ z ∈ F, f z ∈ F.map f` using `fun z hz => ⟨z, hz, rfl⟩`. Use `⟨c, t', ?_, (AlgebraicIndependent.sumElim_comp ht hy).comp σ σ.injective, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | _ | _)`. Conclude with `(map_ne_zero _).mpr hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(map_ne_zero _).mpr hδ`. Conclude with `hu`. Establish `hFS : F.map f ≤ IntermediateField.adjoin ℚ S`. Rewrite using `[IntermediateField.adjoin_map]`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Use `IntermediateField.subset_adjoin _ _ ⟨⟨.base, j⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap Ω Φ (x j) / algebraMap Ω Φ (x i₀) = f (x j / x i₀)`. Rewrite using `[hf, map_div₀]`. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases ht' n with h | ⟨m, h⟩ <;> rw [h]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨.line, k₁⟩, rfl⟩`. Conclude with `hFS (hF _ (htF m))`. Use `set M := IntermediateField.adjoin ℚ (Set.range t')`. Set `A` to `(algebraicClosure M Φ).restrictScalars ℚ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMA : ∀ z ∈ M, z ∈ A` using `fun z hz => mem_algebraicClosure_iff.mpr (isAlgebraic_algebraMap (⟨z, hz⟩ : M))`. Establish `hLM : (IntermediateField.adjoin ℚ (Set.range t)).map f ≤ M`. Rewrite using `[IntermediateField.adjoin_map]`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨m, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `IntermediateField.subset_adjoin _ _ (ht_mem m)`. Establish `hFA : F.map f ≤ A`. Rewrite using `[IntermediateField.adjoin_map]`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `mem_algebraicClosure_iff.mpr (isAlgebraic_map_of_map_le f hLM (htalg j))`. Establish `hFA' : ∀ z ∈ F, f z ∈ A` using `fun z hz => hFA (hF z hz)`. Establish `hrA : r ∈ A` using `hMA r (IntermediateField.subset_adjoin _ _ hr_mem)`. Establish `key : ∀ k, lineVal e (φ k) a = f (x i₀) * (f (g k 0) * (f (b.repr (e 0) 0) + a * f (b.repr (e 1) 0)) + f (g k 1) * (f (b.repr (e 0) 1) + a * f (b.repr (e 1) 1)))`. Introduce `k`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [lineVal, hφe, map_add, map_mul, hf]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD' : f (g k₀ 0 * g k₁ 1 - g k₀ 1 * g k₁ 0) ≠ 0` using `(map_ne_zero f).mpr hD`. Establish `hline : ∀ k, lineVal e (φ k) a / lineVal e (φ k₀) a = (f (g k 0) * (f (g k₁ 1) - f (g k₀ 1) * r) + f (g k 1) * (f (g k₀ 0) * r - f (g k₁ 0))) / f (g k₀ 0 * g k₁ 1 - g k₀ 1 * g k₁ 0)`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hkey : f (g k₀ 0 * g k₁ 1 - g k₀ 1 * g k₁ 0) * lineVal e (φ k) a = f (g k 0) * (f (g k₁ 1) * lineVal e (φ k₀) a - f (g k₀ 1) * lineVal e (φ k₁) a) + f (g k 1) * (f (g k₀ 0) * lineVal e (φ k₁) a - f (g k₁ 0) * lineVal e (φ k₀) a)`. Rewrite using `[key k, key k₀, key k₁, map_sub, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr, eq_div_iff hD']`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `hkey`. Introduce `s hs`. It suffices to establish `s ∈ A from mem_algebraicClosure_iff.mp this`. Take `⟨⟨k, i⟩, rfl⟩` from `hs`. Consider the cases of `k`.
-
-Use `show algebraMap Ω Φ (x i) / algebraMap Ω Φ (x i₀) ∈ A`. Rewrite using `[← map_div₀]`. Conclude with `hFA' _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Use `show algebraMap Ω Φ (δ i) / algebraMap Ω Φ (δ l₀) ∈ A`. Rewrite using `[← map_div₀]`.
-
-Conclude with `hFA' _ (hδF i)`. Use `show lineVal e (φ i) a / lineVal e (φ k₀) a ∈ A`. Rewrite using `[hline i]`. Establish `hg : ∀ k q, f (g k q) ∈ A` using `fun k q => hFA' _ (hgF k q)`. Use `div_mem (add_mem (mul_mem (hg _ _) (sub_mem (hg _ _) (mul_mem (hg _ _) hrA))) (mul_mem (hg _ _) (sub_mem (mul_mem (hg _ _) hrA) (hg _ _)))) ?_` and prove the remaining obligations.
-
-Conclude with `hFA' _ (sub_mem (mul_mem (hgF _ _) (hgF _ _)) (mul_mem (hgF _ _) (hgF _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem YYRatioBasis.proof (hM : MobiusAlgIndep.Statement) : YYRatioBasis.Statement := by
   intro Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htalg hδ hδF hφb hgF hD ha

@@ -13,11 +13,11 @@ section Coordinates
 variable {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Establish `key : ∀ a b : WittVector p R, (∀ i < n, a.coeff i - b.coeff i ∈ J) ↔ WittVector.truncate n (WittVector.map (Ideal.Quotient.mk J) a) = WittVector.truncate n (WittVector.map (Ideal.Quotient.mk J) b)`. Introduce `a b`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `TruncatedWittVector.ext fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_truncate, coeff_truncate, map_coeff, map_coeff, Ideal.Quotient.eq]`. Conclude with `h i i.2`. Introduce `h i hi`. Use `congrArg (TruncatedWittVector.coeff ⟨i, hi⟩) h` as an intermediate fact. Simplify using `only [coeff_truncate, map_coeff] at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq.1 this`. Establish `h2` using `key (x - y) 0`. Simplify using `only [zero_coeff, sub_zero, map_sub, map_zero, sub_eq_zero] at h2`. Rewrite using `[key]`. Conclude with `h2.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WittVector.forall_lt_sub_coeff_mem_iff (J : Ideal R) (n : ℕ) (x y : WittVector p R) :
     (∀ i < n, x.coeff i - y.coeff i ∈ J) ↔ ∀ i < n, (x - y).coeff i ∈ J := by
@@ -40,7 +40,7 @@ theorem WittVector.forall_lt_sub_coeff_mem_iff (J : Ideal R) (n : ℕ) (x y : Wi
   exact h2.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `(WittVector.forall_lt_sub_coeff_mem_iff J (i + 1) x y).1 (fun j _ => h j) i i.lt_succ_self`. Introduce `h i`. Conclude with `(WittVector.forall_lt_sub_coeff_mem_iff J (i + 1) x y).2 (fun j _ => h j) i i.lt_succ_self`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem WittVector.forall_sub_coeff_mem_iff (J : Ideal R) (x y : WittVector p R) :
     (∀ i, x.coeff i - y.coeff i ∈ J) ↔ ∀ i, (x - y).coeff i ∈ J := by
@@ -53,7 +53,7 @@ theorem WittVector.forall_sub_coeff_mem_iff (J : Ideal R) (x y : WittVector p R)
 variable [CharP R p]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(WittVector.mem_span_teichmuller_iff b y).1 hy i`. Rewrite using `[hc]`. Conclude with `J.mul_mem_right c (J.pow_mem_of_mem hb _ (pow_pos hp.out.pos i))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem WittVector.coeff_mem_of_mem_span_teichmuller {b : R} {J : Ideal R} (hb : b ∈ J)
     {y : WittVector p R} (hy : y ∈ Ideal.span {teichmuller p b}) (i : ℕ) : y.coeff i ∈ J := by
@@ -64,7 +64,7 @@ theorem WittVector.coeff_mem_of_mem_span_teichmuller {b : R} {J : Ideal R} (hb :
 end Coordinates
 
 /- English proof (translation)
-Rewrite using `[le_iff_nhds]`. Introduce `x`. Rewrite using `[(J.hasBasis_nhds_adic x).ge_iff]`. Introduce `n _`. Conclude with `(I.hasBasis_nhds_adic x).mem_iff.2 ⟨n, trivial, Set.image_mono (Ideal.pow_right_mono h n)⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ideal.adicTopology_mono {A : Type*} [CommRing A] {I J : Ideal A} (h : I ≤ J) :
     I.adicTopology ≤ J.adicTopology := by
@@ -98,14 +98,14 @@ def weakTopology : TopologicalSpace (AInf K p) :=
   TopologicalSpace.induced (fun x : AInf K p => x.coeff) inferInstance
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton, preTilt_dvd_iff_norm_le, norm_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_pow_iff_norm_le (ϖ x : 𝒪♭) (k : ℕ) :
     x ∈ Ideal.span {ϖ ^ k} ↔ ‖x‖ ≤ ‖ϖ‖ ^ k := by
   rw [Ideal.mem_span_singleton, preTilt_dvd_iff_norm_le, norm_pow]
 
 /- English proof (translation)
-Repeatedly rewrite using `[← mem_span_pow_iff_norm_le]`. Conclude with `WittVector.forall_lt_sub_coeff_mem_iff _ n x y`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_sub_le_iff (ϖ : 𝒪♭) (k n : ℕ) (x y : AInf K p) :
     (∀ i < n, ‖x.coeff i - y.coeff i‖ ≤ ‖ϖ‖ ^ k) ↔ ∀ i < n, ‖(x - y).coeff i‖ ≤ ‖ϖ‖ ^ k := by
@@ -113,7 +113,7 @@ theorem norm_coeff_sub_le_iff (ϖ : 𝒪♭) (k n : ℕ) (x y : AInf K p) :
   exact WittVector.forall_lt_sub_coeff_mem_iff _ n x y
 
 /- English proof (translation)
-Repeatedly rewrite using `[← mem_span_pow_iff_norm_le]`. Conclude with `WittVector.forall_sub_coeff_mem_iff _ x y`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_sub_le_iff' (ϖ : 𝒪♭) (k : ℕ) (x y : AInf K p) :
     (∀ i, ‖x.coeff i - y.coeff i‖ ≤ ‖ϖ‖ ^ k) ↔ ∀ i, ‖(x - y).coeff i‖ ≤ ‖ϖ‖ ^ k := by
@@ -121,7 +121,7 @@ theorem norm_coeff_sub_le_iff' (ϖ : 𝒪♭) (k : ℕ) (x y : AInf K p) :
   exact WittVector.forall_sub_coeff_mem_iff _ x y
 
 /- English proof (translation)
-Rewrite using `[WittVector.mem_span_teichmuller_pow_iff]`. Repeatedly rewrite using `[preTilt_dvd_iff_norm_le, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem mem_span_teichmuller_pow_iff_norm_le (ϖ : 𝒪♭) (n : ℕ) (d : AInf K p) :
     d ∈ Ideal.span {teichmuller p ϖ} ^ n ↔ ∀ i, ‖d.coeff i‖ ≤ ‖ϖ‖ ^ (n * p ^ i) := by
@@ -129,15 +129,15 @@ theorem mem_span_teichmuller_pow_iff_norm_le (ϖ : 𝒪♭) (n : ℕ) (d : AInf 
   simp_rw [preTilt_dvd_iff_norm_le, norm_pow]
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Use `set c : ℕ → 𝒪♭ := fun i => ((_root_.frobeniusEquiv 𝒪♭ p).symm ^ i) (d.coeff i) with hc`. Establish `hexp` using `WittVector.dvd_sub_sum_teichmullerSeries (p := p) c n`. Rewrite `hexp` using `[hc, WittVector.teichmullerSeries_coeff_eq, ← hc]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hexp`. Establish `hd : d = ∑ i ∈ Finset.Iic n, teichmuller p (c i) * (p : AInf K p) ^ i + (p : AInf K p) ^ (n + 1) * z`. Rewrite using `[← hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpJ : (p : AInf K p) ∈ Ideal.span {(p : AInf K p), teichmuller p ϖ}` using `Ideal.subset_span (by simp)`. Establish `hϖJ : teichmuller p ϖ ∈ Ideal.span {(p : AInf K p), teichmuller p ϖ}` using `Ideal.subset_span (by simp)`. Use `add_mem (Ideal.sum_mem _ fun i hi => ?_) (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hpJ _))` and prove the remaining obligations. Establish `hin : i < n + 1` using `Nat.lt_succ_of_le (Finset.mem_Iic.1 hi)`. Establish `hci : ϖ ^ (n + 1) ∣ c i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[preTilt_dvd_iff_norm_le, norm_pow]`. Establish `h1 : ‖c i‖ ^ p ^ i = ‖d.coeff i‖`. Rewrite using `[← norm_pow, hc, frobeniusEquiv_symm_pow_apply_pow]`. Establish `h2 : ‖ϖ‖ ^ ((n + 1) * p ^ (n + 1)) ≤ (‖ϖ‖ ^ (n + 1)) ^ p ^ i`. Rewrite using `[← pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `pow_le_pow_of_le_one (norm_nonneg _) (preTilt_norm_le_one ϖ) (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right hp.out.pos hin.le))`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) (pow_ne_zero _ hp.out.ne_zero)).1 (h1 ▸ (h i hin).trans h2)`. Take `⟨e, he⟩` from `hci`. Rewrite using `[he, map_mul, map_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hϖJ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_pow_of_norm_coeff_le (ϖ : 𝒪♭) (n : ℕ) (d : AInf K p)
     (h : ∀ i < n, ‖d.coeff i‖ ≤ ‖ϖ‖ ^ (n * p ^ n)) :
@@ -173,9 +173,9 @@ theorem mem_span_pow_of_norm_coeff_le (ϖ : 𝒪♭) (n : ℕ) (d : AInf K p)
   exact Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hϖJ _))
 
 /- English proof (translation)
-Rewrite `hd` using `[Ideal.span_insert]`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (Ideal.sup_pow_add_le_pow_sup_pow hd)`. Rewrite `ha` using `[Ideal.span_singleton_pow, mem_span_p_pow_iff_le_coeff_eq_zero]`. Rewrite `hb` using `[WittVector.span_teichmuller_pow]`. Establish `hb'` using `WittVector.coeff_mem_of_mem_span_teichmuller (Ideal.mem_span_singleton_self (ϖ ^ N)) hb`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hab` using `(WittVector.forall_lt_sub_coeff_mem_iff (Ideal.span {ϖ ^ N}) N (a + b) b).2 (fun i hi => by rw [add_sub_cancel_right, ha i hi]; exact Ideal.zero_mem _)`. Introduce `i hi`. Rewrite using `[← mem_span_pow_iff_norm_le]`. Use `add_mem (hab i hi) (hb' i)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_coeff_le_of_mem_span_pow (ϖ : 𝒪♭) (N : ℕ) (d : AInf K p)
     (hd : d ∈ Ideal.span {(p : AInf K p), teichmuller p ϖ} ^ (N + N)) :
@@ -194,7 +194,7 @@ theorem norm_coeff_le_of_mem_span_pow (ϖ : 𝒪♭) (N : ℕ) (d : AInf K p)
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-The claim follows from `(norm_coeff_sub_le_iff ϖ N N x y).2 (norm_coeff_le_of_mem_span_pow ϖ N _ hd)`.
+A detailed English derivation is pending.
 -/
 theorem norm_coeff_sub_le_of_mem_span_pow (ϖ : 𝒪♭) (N : ℕ) (x y : AInf K p)
     (hd : x - y ∈ Ideal.span {(p : AInf K p), teichmuller p ϖ} ^ (N + N)) :
@@ -202,7 +202,7 @@ theorem norm_coeff_sub_le_of_mem_span_pow (ϖ : 𝒪♭) (N : ℕ) (x y : AInf K
   (norm_coeff_sub_le_iff ϖ N N x y).2 (norm_coeff_le_of_mem_span_pow ϖ N _ hd)
 
 /- English proof (translation)
-Set `` to `weakTopology K p`. Conclude with `(continuous_apply i).comp continuous_induced_dom`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem continuous_coeff (i : ℕ) :
     @Continuous (AInf K p) 𝒪♭ (weakTopology K p) _ fun y => y.coeff i := by
@@ -210,25 +210,23 @@ theorem continuous_coeff (i : ℕ) :
   exact (continuous_apply i).comp continuous_induced_dom
 
 /- English proof (translation)
-Use `set J := Ideal.span {(p : AInf K p), teichmuller p ϖ}`. Establish `hr : 0 < ‖ϖ‖` using `norm_pos_iff.2 hϖ0`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[le_iff_nhds]`. Introduce `x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(J.hasBasis_nhds_adic x).ge_iff]`. Introduce `n _`. Set `` to `weakTopology K p`. Use `set N := n * p ^ n`. Establish `hnN : n ≤ N` using `Nat.le_mul_of_pos_right n (pow_pos hp.out.pos n)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : {y : AInf K p | ∀ i ∈ Finset.range N, ‖y.coeff i - x.coeff i‖ ≤ ‖ϖ‖ ^ N} ∈ @nhds _ (weakTopology K p) x`. Establish `: {y : AInf K p | ∀ i ∈ Finset.range N, ‖y.coeff i - x.coeff i‖ ≤ ‖ϖ‖ ^ N} = ⋂ i ∈ Finset.range N, {y : AInf K p | ‖y.coeff i - x.coeff i‖ ≤ ‖ϖ‖ ^ N}`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[this, @Filter.biInter_finset_mem]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i _`. Establish `hb : Metric.closedBall (x.coeff i) (‖ϖ‖ ^ N) ∈ 𝓝 (x.coeff i)` using `Metric.closedBall_mem_nhds _ (pow_pos hr N)`. Use `(continuous_coeff (K := K) (p := p) i).continuousAt (x := x) |>.preimage_mem_nhds hb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Metric.mem_closedBall, dist_eq_norm]`. Use `Filter.mem_of_superset hmem fun y hy => ⟨y - x, ?_, by simp⟩` and prove the remaining obligations. Apply `mem_span_pow_of_norm_coeff_le ϖ n` to reduce the goal to its premises. Introduce `i hi`. Conclude with `(norm_coeff_sub_le_iff ϖ N N y x).1 (fun j hj => hy j (Finset.mem_range.2 hj)) i (hi.trans_le hnN)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_iff_nhds]`. Introduce `x s hs`. Rewrite using `[(J.hasBasis_nhds_adic x).mem_iff]`. Rewrite `hs` using `[weakTopology, nhds_induced, Filter.mem_comap]`. Take `⟨t, ht, hts⟩` from `hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `ht` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, u, hu, hIu⟩` from `ht`. Establish `hk : ∀ i, ∃ k : ℕ, ∀ z, ‖z - x.coeff i‖ ≤ ‖ϖ‖ ^ k → z ∈ u i`. Introduce `i`. Take `⟨ε, hε, hεu⟩` from `Metric.mem_nhds_iff.1 (hu i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε hϖ1`. Conclude with `⟨k, fun z hz => hεu (by rw [Metric.mem_ball, dist_eq_norm]; exact hz.trans_lt hk)⟩`. Use `choose k hk using hk`. Use `set N := max (I.sup id + 1) (I.sup k)`. Use `⟨N + N, trivial, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨d, hd, rfl⟩`. Apply `hts` to reduce the goal to its premises. Apply `hIu` to reduce the goal to its premises. Introduce `i hi`. Establish `hiN : i < N` using `lt_of_lt_of_le (Nat.lt_succ_of_le (Finset.le_sup (f := id) hi)) (le_max_left _ _)`.
-
-Establish `hkN : k i ≤ N` using `(Finset.le_sup (f := k) hi).trans (le_max_right _ _)`. Apply `hk i` to reduce the goal to its premises. Establish `h1` using `norm_coeff_sub_le_of_mem_span_pow ϖ N (x + d) x (by rwa [add_sub_cancel_left]) i hiN`. Conclude with `h1.trans (pow_le_pow_of_le_one (norm_nonneg _) (preTilt_norm_le_one _) hkN)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weakTopology_eq_adicTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     weakTopology K p = (Ideal.span {(p : AInf K p), teichmuller p ϖ}).adicTopology := by
@@ -287,7 +285,7 @@ theorem weakTopology_eq_adicTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : �
     exact h1.trans (pow_le_pow_of_le_one (norm_nonneg _) (preTilt_norm_le_one _) hkN)
 
 /- English proof (translation)
-Rewrite using `[← weakTopology_eq_adicTopology ϖ hϖ0 hϖ1, ← weakTopology_eq_adicTopology ϖ' hϖ0' hϖ1']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adicTopology_eq (ϖ ϖ' : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) (hϖ0' : ϖ' ≠ 0)
     (hϖ1' : ‖ϖ'‖ < 1) :
@@ -296,7 +294,7 @@ theorem adicTopology_eq (ϖ ϖ' : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 
   rw [← weakTopology_eq_adicTopology ϖ hϖ0 hϖ1, ← weakTopology_eq_adicTopology ϖ' hϖ0' hϖ1']
 
 /- English proof (translation)
-Rewrite using `[WittVector.span_teichmuller_pow, WittVector.span_teichmuller_pow, Ideal.span_singleton_le_span_singleton]`. Use `map_dvd (teichmuller p) ?_` and prove the remaining obligations. Rewrite using `[preTilt_dvd_iff_norm_le, norm_pow, norm_pow]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_teichmuller_pow_le {ϖ ϖ' : 𝒪♭} {m n : ℕ} (h : ‖ϖ‖ ^ m ≤ ‖ϖ'‖ ^ n) :
     Ideal.span {teichmuller p ϖ} ^ m ≤ Ideal.span {(teichmuller p ϖ' : AInf K p)} ^ n := by
@@ -307,9 +305,9 @@ theorem span_teichmuller_pow_le {ϖ ϖ' : 𝒪♭} {m n : ℕ} (h : ‖ϖ‖ ^ m
   exact h
 
 /- English proof (translation)
-Rewrite using `[teichmullerAdicTopology, teichmullerAdicTopology, le_iff_nhds]`. Introduce `x`. Rewrite using `[((Ideal.span {teichmuller p ϖ'}).hasBasis_nhds_adic x).ge_iff]`. Introduce `n _`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (pow_pos (norm_pos_iff.2 hϖ0') n) hϖ1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `((Ideal.span {teichmuller p ϖ}).hasBasis_nhds_adic x).mem_iff.2 ⟨m, trivial, Set.image_mono (span_teichmuller_pow_le hm.le)⟩`.
+A detailed English derivation is pending.
 -/
 theorem teichmullerAdicTopology_le (ϖ ϖ' : 𝒪♭) (hϖ1 : ‖ϖ‖ < 1) (hϖ0' : ϖ' ≠ 0) :
     teichmullerAdicTopology (K := K) ϖ ≤ teichmullerAdicTopology ϖ' := by
@@ -322,7 +320,7 @@ theorem teichmullerAdicTopology_le (ϖ ϖ' : 𝒪♭) (hϖ1 : ‖ϖ‖ < 1) (hϖ
     ⟨m, trivial, Set.image_mono (span_teichmuller_pow_le hm.le)⟩
 
 /- English proof (translation)
-The claim follows from `le_antisymm (teichmullerAdicTopology_le ϖ ϖ' hϖ1 hϖ0') (teichmullerAdicTopology_le ϖ' ϖ hϖ1' hϖ0)`.
+A detailed English derivation is pending.
 -/
 theorem teichmullerAdicTopology_eq (ϖ ϖ' : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) (hϖ0' : ϖ' ≠ 0)
     (hϖ1' : ‖ϖ'‖ < 1) :
@@ -330,7 +328,7 @@ theorem teichmullerAdicTopology_eq (ϖ ϖ' : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : 
   le_antisymm (teichmullerAdicTopology_le ϖ ϖ' hϖ1 hϖ0') (teichmullerAdicTopology_le ϖ' ϖ hϖ1' hϖ0)
 
 /- English proof (translation)
-Rewrite using `[weakTopology_eq_adicTopology ϖ hϖ0 hϖ1, pAdicTopology]`. Conclude with `Ideal.adicTopology_mono (Ideal.span_mono (by simp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pAdicTopology_le_weakTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     pAdicTopology K p ≤ weakTopology K p := by
@@ -338,7 +336,7 @@ theorem pAdicTopology_le_weakTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : �
   exact Ideal.adicTopology_mono (Ideal.span_mono (by simp))
 
 /- English proof (translation)
-Rewrite using `[weakTopology_eq_adicTopology ϖ hϖ0 hϖ1, teichmullerAdicTopology]`. Conclude with `Ideal.adicTopology_mono (Ideal.span_mono (by simp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teichmullerAdicTopology_le_weakTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     teichmullerAdicTopology ϖ ≤ weakTopology K p := by
@@ -346,7 +344,7 @@ theorem teichmullerAdicTopology_le_weakTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0)
   exact Ideal.adicTopology_mono (Ideal.span_mono (by simp))
 
 /- English proof (translation)
-Rewrite using `[weakTopology_eq_adicTopology ϖ hϖ0 hϖ1]`. Conclude with `(Ideal.span {(p : AInf K p), teichmuller p ϖ}).ringFilterBasis.isTopologicalRing`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTopologicalRing_weakTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     @IsTopologicalRing (AInf K p) (weakTopology K p) _ := by
@@ -356,34 +354,32 @@ theorem isTopologicalRing_weakTopology (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : 
 omit hp [IsPerfectoidField K p] in
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_pow_iff {A : Type*} [CommRing A] (I : Ideal A) (n : ℕ) (x y : A) :
     x ≡ y [SMOD (I ^ n • ⊤ : Submodule A A)] ↔ x - y ∈ I ^ n := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_p : IsAdicComplete (Ideal.span {(p : AInf K p)}) (AInf K p) :=
   inferInstance
 
 /- English proof (translation)
-Use `set J := Ideal.span {(p : AInf K p), teichmuller p ϖ}`. Establish `hr : 0 < ‖ϖ‖` using `norm_pos_iff.2 hϖ0`. Establish `ht` using `tendsto_pow_atTop_nhds_zero_of_lt_one hr.le hϖ1`. Use `{ haus' := fun x hx => ?_, prec' := fun f hf => ?_ }` and prove the remaining obligations. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_coeff, ← norm_le_zero_iff]`. Use `ge_of_tendsto ht (eventually_atTop.2 ⟨i + 1, fun N hN => ?_⟩)` and prove the remaining obligations. Use `(smodEq_pow_iff J (N + N) x 0).1 (hx (N + N))` as an intermediate fact. Rewrite `this` using `[sub_zero]`. Conclude with `norm_coeff_le_of_mem_span_pow ϖ N x this i hN`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : ∀ m n, m ≤ n → f m - f n ∈ J ^ m` using `fun m n h => (smodEq_pow_iff J m _ _).1 (hf h)`. Establish `hcauchy : ∀ i, CauchySeq fun m => (f m).coeff i`. Introduce `i`. Rewrite using `[Metric.cauchySeq_iff']`. Introduce `ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one hε hϖ1`. Use `⟨(M + i + 1) + (M + i + 1), fun m hm => ?_⟩` and prove the remaining obligations. Establish `h1` using `norm_coeff_sub_le_of_mem_span_pow ϖ (M + i + 1) _ _ (hf' _ m hm) i (by omega)`. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Conclude with `h1.trans_lt ((pow_le_pow_of_le_one (norm_nonneg _) hϖ1.le (by omega)).trans_lt hM)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose c hc using fun i => cauchySeq_tendsto_of_complete (hcauchy i)`. Use `⟨WittVector.mk p c, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[smodEq_pow_iff]`. Use `set N := n * p ^ n`. Establish `hev : ∀ᶠ m in atTop, ∀ i ∈ Finset.range N, ‖(f m).coeff i - c i‖ ≤ ‖ϖ‖ ^ N`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Filter.eventually_all_finset]`. Introduce `i _`. Use `filter_upwards [(hc i).eventually (Metric.closedBall_mem_nhds (c i) (pow_pos hr N))] with m hm`. Rewrite `hm` using `[dist_eq_norm]`. Then use the resulting hypothesis. Take `⟨m, hm, hmn⟩` from `(hev.and (eventually_ge_atTop n)).exists`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : f m - WittVector.mk p c ∈ J ^ n`. Apply `mem_span_pow_of_norm_coeff_le ϖ n` to reduce the goal to its premises. Introduce `i hi`. Use `(norm_coeff_sub_le_iff ϖ N N (f m) (WittVector.mk p c)).1 (fun j hj => ?_) i (hi.trans_le (Nat.le_mul_of_pos_right n (pow_pos hp.out.pos n)))` and prove the remaining obligations. Rewrite using `[coeff_mk]`.
-
-Conclude with `hm j (Finset.mem_range.2 hj)`. Use `add_mem (hf' n m hmn) h2` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_weak (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     IsAdicComplete (Ideal.span {(p : AInf K p), teichmuller p ϖ}) (AInf K p) := by
@@ -428,21 +424,19 @@ theorem isAdicComplete_weak (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 
     rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Use `set I := Ideal.span {(teichmuller p ϖ : AInf K p)}`. Establish `hr : 0 < ‖ϖ‖` using `norm_pos_iff.2 hϖ0`. Establish `ht` using `tendsto_pow_atTop_nhds_zero_of_lt_one hr.le hϖ1`. Establish `hle : ∀ (n : ℕ) (d : AInf K p), d ∈ I ^ n → ∀ i, ‖d.coeff i‖ ≤ ‖ϖ‖ ^ n`. Introduce `n d hd i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `((mem_span_teichmuller_pow_iff_norm_le ϖ n d).1 hd i).trans ?_` and prove the remaining obligations. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hϖ1.le (Nat.le_mul_of_pos_right n (pow_pos hp.out.pos i))`. Use `{ haus' := fun x hx => ?_, prec' := fun f hf => ?_ }` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[zero_coeff, ← norm_le_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ge_of_tendsto ht (Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Use `(smodEq_pow_iff I n x 0).1 (hx n)` as an intermediate fact. Rewrite `this` using `[sub_zero]`. Conclude with `hle n x this i`. Establish `hf' : ∀ m n, m ≤ n → ∀ i, ‖(f m).coeff i - (f n).coeff i‖ ≤ ‖ϖ‖ ^ m` using `fun m n h => (norm_coeff_sub_le_iff' ϖ m _ _).2 (hle m _ ((smodEq_pow_iff I m _ _).1 (hf h)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcauchy : ∀ i, CauchySeq fun m => (f m).coeff i`. Introduce `i`. Rewrite using `[Metric.cauchySeq_iff']`. Introduce `ε hε`. Take `⟨M, hM⟩` from `exists_pow_lt_of_lt_one hε hϖ1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨M, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Conclude with `(hf' M m hm i).trans_lt hM`. Use `choose c hc using fun i => cauchySeq_tendsto_of_complete (hcauchy i)`. Establish `hlim : ∀ m i, ‖(f m).coeff i - c i‖ ≤ ‖ϖ‖ ^ m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m i`. Conclude with `le_of_tendsto (((hc i).const_sub ((f m).coeff i)).norm) (eventually_atTop.2 ⟨m, fun n hn => hf' m n hn i⟩)`. Use `⟨WittVector.mk p c, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[smodEq_pow_iff, mem_span_teichmuller_pow_iff_norm_le]`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `set M := n * p ^ i`. Establish `hnM : n ≤ M` using `Nat.le_mul_of_pos_right n (pow_pos hp.out.pos i)`. Establish `hd : ‖(f n - f M).coeff i‖ ≤ ‖ϖ‖ ^ M` using `(mem_span_teichmuller_pow_iff_norm_le ϖ n _).1 ((smodEq_pow_iff I n _ _).1 (hf hnM)) i`. Establish `he : ∀ j, ‖(f M - WittVector.mk p c).coeff j‖ ≤ ‖ϖ‖ ^ M` using `(norm_coeff_sub_le_iff' ϖ M _ _).1 fun j => by rw [coeff_mk]; exact hlim M j`. Establish `hde` using `(norm_coeff_sub_le_iff' ϖ M ((f n - f M) + (f M - WittVector.mk p c)) (f n - f M)).2 (fun j => by rw [add_sub_cancel_left]; exact he j) i`.
-
-Rewrite `hde` using `[sub_add_sub_cancel]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_add_cancel]`. Use `_ ≤ max ‖(f n - WittVector.mk p c).coeff i - (f n - f M).coeff i‖ ‖(f n - f M).coeff i‖ := IsUltrametricDist.norm_add_le_max _ _`. Use `_ ≤ ‖ϖ‖ ^ M := max_le hde hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_teichmuller (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     IsAdicComplete (Ideal.span {(teichmuller p ϖ : AInf K p)}) (AInf K p) := by
@@ -497,15 +491,13 @@ theorem isAdicComplete_teichmuller (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖�
       _ ≤ ‖ϖ‖ ^ M := max_le hde hd
 
 /- English proof (translation)
-Set `` to `pAdicTopology K p`. Use `set I := Ideal.span {(p : AInf K p)}`. Express the relevant statement in the definitionally equal form `Tendsto _ atTop _`. Rewrite using `[(I.hasBasis_nhds_adic _).tendsto_right_iff]`. Introduce `n _`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `n with _ | n` into its components or cases. Conclude with `Eventually.of_forall fun s => ⟨(∑ i ∈ s, teichmuller p (a i) * (p : AInf K p) ^ i) - WittVector.teichmullerSeries a, by simp, by simp⟩`. Use `filter_upwards [eventually_ge_atTop (Finset.Iic n)] with s hs`. Use `⟨(∑ i ∈ s, teichmuller p (a i) * (p : AInf K p) ^ i) - WittVector.teichmullerSeries a, ?_, by simp⟩` and prove the remaining obligations. Establish `h1 : WittVector.teichmullerSeries a - ∑ i ∈ Finset.Iic n, teichmuller p (a i) * (p : AInf K p) ^ i ∈ I ^ (n + 1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `WittVector.dvd_sub_sum_teichmullerSeries a n`. Establish `h2 : ∑ i ∈ s \ Finset.Iic n, teichmuller p (a i) * (p : AInf K p) ^ i ∈ I ^ (n + 1)`. Use `Ideal.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Establish `hi' : n + 1 ≤ i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.mem_sdiff.1 hi).2` as an intermediate fact. Rewrite `this` using `[Finset.mem_Iic, not_le]`. Conclude with `this`. Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton.2 (pow_dvd_pow _ hi'))`.
-
-Rewrite using `[SetLike.mem_coe, ← Finset.sum_sdiff hs]`. Establish `e : ∑ i ∈ s \ Finset.Iic n, teichmuller p (a i) * (p : AInf K p) ^ i + ∑ i ∈ Finset.Iic n, teichmuller p (a i) * (p : AInf K p) ^ i - WittVector.teichmullerSeries a = ∑ i ∈ s \ Finset.Iic n, teichmuller p (a i) * (p : AInf K p) ^ i - (WittVector.teichmullerSeries a - ∑ i ∈ Finset …` using `by ring`. Rewrite using `[e]`. Conclude with `sub_mem h2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_teichmullerSeries (a : ℕ → 𝒪♭) :
     @HasSum (AInf K p) ℕ _ (pAdicTopology K p) (fun n => teichmuller p (a n) * (p : AInf K p) ^ n)
@@ -546,7 +538,7 @@ theorem hasSum_teichmullerSeries (a : ℕ → 𝒪♭) :
   exact sub_mem h2 h1
 
 /- English proof (translation)
-Use `hasSum_teichmullerSeries (K := K) (fun n => ((_root_.frobeniusEquiv 𝒪♭ p).symm ^ n) (x.coeff n))` as an intermediate fact. Rewrite `this` using `[WittVector.teichmullerSeries_coeff_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasSum_teichmuller_coeff (x : AInf K p) :
     @HasSum (AInf K p) ℕ _ (pAdicTopology K p)
@@ -559,11 +551,9 @@ theorem hasSum_teichmuller_coeff (x : AInf K p) :
 omit hp [IsPerfectoidField K p] in
 
 /- English proof (translation)
-Use `(@continuous_iff_continuousAt A B I.adicTopology J.adicTopology f).2 fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Tendsto f (@nhds A I.adicTopology x) (@nhds B J.adicTopology (f x))`. Rewrite using `[(I.hasBasis_nhds_adic x).tendsto_iff (J.hasBasis_nhds_adic (f x))]`. Introduce `n _`. Use `⟨n, trivial, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨d, hd, rfl⟩`. Use `⟨f d, ?_, (map_add f x d).symm⟩` and prove the remaining obligations. Establish `: f d ∈ (I.map f) ^ n`. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem f hd`.
-
-Conclude with `Ideal.pow_right_mono h n this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.Ideal.continuous_of_map_le {A B F : Type*} [CommRing A] [CommRing B] [FunLike F A B]
     [RingHomClass F A B] (f : F) {I : Ideal A} {J : Ideal B} (h : I.map f ≤ J) :
@@ -583,21 +573,21 @@ theorem _root_.Ideal.continuous_of_map_le {A B F : Type*} [CommRing A] [CommRing
 local notation "φ" => WittVector.frobeniusEquiv p (PreTilt (normInteger K) p)
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_span_p :
     Ideal.map (φ) (Ideal.span {(p : AInf K p)}) = Ideal.span {(p : AInf K p)} := by
   rw [Ideal.map_span, Set.image_singleton, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_symm_span_p :
     Ideal.map (φ).symm (Ideal.span {(p : AInf K p)}) = Ideal.span {(p : AInf K p)} := by
   rw [Ideal.map_span, Set.image_singleton, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton, WittVector.frobeniusEquiv_teichmuller]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_span_teichmuller (ϖ : 𝒪♭) :
     Ideal.map (φ) (Ideal.span {(teichmuller p ϖ : AInf K p)}) =
@@ -605,7 +595,7 @@ theorem map_frobeniusEquiv_span_teichmuller (ϖ : 𝒪♭) :
   rw [Ideal.map_span, Set.image_singleton, WittVector.frobeniusEquiv_teichmuller]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton, ← WittVector.frobeniusEquiv_teichmuller, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_symm_span_teichmuller_pow (ϖ : 𝒪♭) :
     Ideal.map (φ).symm (Ideal.span {(teichmuller p (ϖ ^ p) : AInf K p)}) =
@@ -614,7 +604,7 @@ theorem map_frobeniusEquiv_symm_span_teichmuller_pow (ϖ : 𝒪♭) :
     RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_pair, map_natCast, WittVector.frobeniusEquiv_teichmuller]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_span_p_teichmuller (ϖ : 𝒪♭) :
     Ideal.map (φ) (Ideal.span {(p : AInf K p), teichmuller p ϖ}) =
@@ -622,7 +612,7 @@ theorem map_frobeniusEquiv_span_p_teichmuller (ϖ : 𝒪♭) :
   rw [Ideal.map_span, Set.image_pair, map_natCast, WittVector.frobeniusEquiv_teichmuller]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_pair, map_natCast, ← WittVector.frobeniusEquiv_teichmuller, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_symm_span_p_teichmuller_pow (ϖ : 𝒪♭) :
     Ideal.map (φ).symm (Ideal.span {(p : AInf K p), teichmuller p (ϖ ^ p)}) =
@@ -631,35 +621,35 @@ theorem map_frobeniusEquiv_symm_span_p_teichmuller_pow (ϖ : 𝒪♭) :
     RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `Ideal.continuous_of_map_le (φ) map_frobeniusEquiv_span_p.le`.
+A detailed English derivation is pending.
 -/
 theorem continuous_frobeniusEquiv_pAdic :
     @Continuous (AInf K p) (AInf K p) (pAdicTopology K p) (pAdicTopology K p) (φ) :=
   Ideal.continuous_of_map_le (φ) map_frobeniusEquiv_span_p.le
 
 /- English proof (translation)
-The claim follows from `Ideal.continuous_of_map_le (φ).symm map_frobeniusEquiv_symm_span_p.le`.
+A detailed English derivation is pending.
 -/
 theorem continuous_frobeniusEquiv_symm_pAdic :
     @Continuous (AInf K p) (AInf K p) (pAdicTopology K p) (pAdicTopology K p) (φ).symm :=
   Ideal.continuous_of_map_le (φ).symm map_frobeniusEquiv_symm_span_p.le
 
 /- English proof (translation)
-Rewrite using `[← norm_pos_iff, norm_pow]`. Conclude with `pow_pos (norm_pos_iff.2 hϖ0) p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_ne_zero_of_norm (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) : ϖ ^ p ≠ 0 := by
   rw [← norm_pos_iff, norm_pow]
   exact pow_pos (norm_pos_iff.2 hϖ0) p
 
 /- English proof (translation)
-Rewrite using `[norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hϖ1 hp.out.ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_p_lt_one (ϖ : 𝒪♭) (hϖ1 : ‖ϖ‖ < 1) : ‖ϖ ^ p‖ < 1 := by
   rw [norm_pow]
   exact pow_lt_one₀ (norm_nonneg _) hϖ1 hp.out.ne_zero
 
 /- English proof (translation)
-Use `Ideal.continuous_of_map_le (φ) ?_` and prove the remaining obligations. Rewrite using `[map_frobeniusEquiv_span_teichmuller, Ideal.span_singleton_le_span_singleton]`. Conclude with `map_dvd (teichmuller p) (dvd_pow_self ϖ hp.out.ne_zero)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_frobeniusEquiv_teichmullerAdic (ϖ : 𝒪♭) :
     @Continuous (AInf K p) (AInf K p) (teichmullerAdicTopology ϖ) (teichmullerAdicTopology ϖ) (φ) := by
@@ -668,7 +658,7 @@ theorem continuous_frobeniusEquiv_teichmullerAdic (ϖ : 𝒪♭) :
   exact map_dvd (teichmuller p) (dvd_pow_self ϖ hp.out.ne_zero)
 
 /- English proof (translation)
-Establish `h` using `Ideal.continuous_of_map_le (φ).symm (map_frobeniusEquiv_symm_span_teichmuller_pow ϖ).le`. Rewrite `h` using `[← teichmullerAdicTopology, ← teichmullerAdicTopology, teichmullerAdicTopology_eq (ϖ ^ p) ϖ (pow_ne_zero_of_norm ϖ hϖ0) (norm_pow_p_lt_one ϖ hϖ1) hϖ0 hϖ1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_frobeniusEquiv_symm_teichmullerAdic (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     @Continuous (AInf K p) (AInf K p) (teichmullerAdicTopology ϖ) (teichmullerAdicTopology ϖ)
@@ -679,7 +669,7 @@ theorem continuous_frobeniusEquiv_symm_teichmullerAdic (ϖ : 𝒪♭) (hϖ0 : ϖ
       hϖ0 hϖ1] at h
 
 /- English proof (translation)
-Establish `h` using `Ideal.continuous_of_map_le (φ) (map_frobeniusEquiv_span_p_teichmuller ϖ).le`. Rewrite `h` using `[← weakTopology_eq_adicTopology ϖ hϖ0 hϖ1, ← weakTopology_eq_adicTopology (ϖ ^ p) (pow_ne_zero_of_norm ϖ hϖ0) (norm_pow_p_lt_one ϖ hϖ1)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_frobeniusEquiv_weak (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     @Continuous (AInf K p) (AInf K p) (weakTopology K p) (weakTopology K p) (φ) := by
@@ -689,7 +679,7 @@ theorem continuous_frobeniusEquiv_weak (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : 
       (norm_pow_p_lt_one ϖ hϖ1)] at h
 
 /- English proof (translation)
-Establish `h` using `Ideal.continuous_of_map_le (φ).symm (map_frobeniusEquiv_symm_span_p_teichmuller_pow ϖ).le`. Rewrite `h` using `[← weakTopology_eq_adicTopology ϖ hϖ0 hϖ1, ← weakTopology_eq_adicTopology (ϖ ^ p) (pow_ne_zero_of_norm ϖ hϖ0) (norm_pow_p_lt_one ϖ hϖ1)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_frobeniusEquiv_symm_weak (ϖ : 𝒪♭) (hϖ0 : ϖ ≠ 0) (hϖ1 : ‖ϖ‖ < 1) :
     @Continuous (AInf K p) (AInf K p) (weakTopology K p) (weakTopology K p) (φ).symm := by

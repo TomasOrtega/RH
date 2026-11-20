@@ -18,7 +18,7 @@ section Helpers
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Use `Submodule.mem_pi.2 fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : d = c`. Substitute `h` using the available equality. Simplify using `using hx`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem tpsc_single_mem {S : Submodule ℂ M} {x : M} (hx : x ∈ S) (c : Fin n) :
     (Pi.single c x : Fin n → M) ∈ tensSub S := by
@@ -28,13 +28,13 @@ theorem tpsc_single_mem {S : Submodule ℂ M} {x : M} (hx : x ∈ S) (c : Fin n)
   · simp [h]
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_pi.1 hf c (Set.mem_univ _)`.
+A detailed English derivation is pending.
 -/
 theorem tpsc_coord_mem {S : Submodule ℂ M} {f : Fin n → M} (hf : f ∈ tensSub S) (c : Fin n) : f c ∈ S :=
   Submodule.mem_pi.1 hf c (Set.mem_univ _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Rewrite using `[tensV_coord]`. Apply the tactic sequence `by_cases hdc : d = c <;> by_cases hda : d = a <;> by_cases hbc : b = c <;>`. Apply the tactic sequence `simp [Pi.single_apply, hdc, hda, hbc] <;> split_ifs <;> simp_all`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tpsc_tensV_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : Fin n) (x : M) :
     tensV E a b (Pi.single c x) = Pi.single c (E a b x) + if b = c then Pi.single a x else 0 := by
@@ -44,7 +44,7 @@ theorem tpsc_tensV_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : Fi
     simp [Pi.single_apply, hdc, hda, hbc] <;> split_ifs <;> simp_all
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Rewrite using `[tensVd_coord]`. Apply the tactic sequence `by_cases hdc : d = c <;> by_cases hdb : d = b <;> by_cases hac : a = c <;>`. Apply the tactic sequence `simp [Pi.single_apply, hdc, hdb, hac] <;> split_ifs <;> simp_all`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tpsc_tensVd_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : Fin n) (x : M) :
     tensVd E a b (Pi.single c x) = Pi.single c (E a b x) - if a = c then Pi.single b x else 0 := by
@@ -58,11 +58,11 @@ end Helpers
 def tpscK (dual : Bool) (k : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n) : ℂ := cond dual (star (k c d)) (k c d)
 
 /- English proof (translation)
-Establish `hu : k * star k = 1` using `Matrix.mem_unitaryGroup_iff.1 hk`. Consider the cases of `dual`. Use `congrFun (congrFun hu c') c` as an intermediate fact. Simplify `this` using `[tpscK, Matrix.mul_apply, Matrix.one_apply]`. Use `congrFun (congrFun hu c) c'` as an intermediate fact.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.one_apply, Matrix.star_apply] at this`. Simplify using `only [tpscK, cond_true, star_star]`. Rewrite using `[show (∑ d, star (k c' d) * k c d) = ∑ d, k c d * star (k c' d) from Finset.sum_congr rfl fun d _ => mul_comm _ _, this]`. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tpscK_rows {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (dual : Bool)
     (c c' : Fin n) : ∑ d, tpscK dual k c' d * star (tpscK dual k c d) = if c' = c then 1 else 0 := by
@@ -80,11 +80,11 @@ theorem tpscK_rows {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGr
     · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `hu : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk`. Consider the cases of `dual`. Use `congrFun (congrFun hu e) d` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, Matrix.star_apply] at this`. Simplify using `only [tpscK, cond_false]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (∑ c, k c d * star (k c e)) = ∑ c, star (k c e) * k c d from Finset.sum_congr rfl fun c _ => mul_comm _ _, this]`. Use `congrFun (congrFun hu d) e` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, Matrix.star_apply] at this`. Simplify using `only [tpscK, cond_true, star_star]`. Rewrite using `[this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : e = d`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tpscK_cols {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (dual : Bool)
     (e d : Fin n) : ∑ c, tpscK dual k c d * star (tpscK dual k c e) = if e = d then 1 else 0 := by
@@ -109,7 +109,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {V : Submodule ℂ D} {A : Module.End ℂ (Fin n → D)}
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[ptr_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => tpsc_coord_mem (hA.1 _ (tpsc_single_mem hx c)) c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptr_mem {dual : Bool} (hA : IsGKEndo dual ε σ E (genSub E V) A) :
     ∀ x ∈ genSub E V, ptr A x ∈ genSub E V := by
@@ -118,15 +118,15 @@ theorem ptr_mem {dual : Bool} (hA : IsGKEndo dual ε σ E (genSub E V) A) :
   exact Submodule.sum_mem _ fun c _ => tpsc_coord_mem (hA.1 _ (tpsc_single_mem hx c)) c
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hs : ∀ c, (Pi.single c x : Fin n → D) ∈ tensSub (genSub E V)` using `fun c => tpsc_single_mem hx c`. Rewrite using `[ptr_apply, ptr_apply, map_sum]`. Consider the cases of `dual`. Establish `key : ∀ c, A (Pi.single c (E a b x)) c = E a b (A (Pi.single c x) c) + (if c = a then A (Pi.single c x) b else 0) - (if b = c then A (Pi.single a x) c else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Introduce `c`. Establish `h1 : (Pi.single c (E a b x) : Fin n → D) = tensV E a b (Pi.single c x) - (if b = c then Pi.single a x else 0)`. Rewrite using `[tpsc_tensV_single]`. Normalize the expressions using the abelian group laws. Establish `h2` using `hA.2.1 a b _ (hs c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [tensF, cond_false] at h2`. Rewrite using `[h1, map_sub, h2, Pi.sub_apply, tensV_coord]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [key, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, add_sub_cancel_right]`. Establish `key : ∀ c, A (Pi.single c (E a b x)) c = E a b (A (Pi.single c x) c) - (if c = b then A (Pi.single c x) a else 0) + (if a = c then A (Pi.single b x) c else 0)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c`. Establish `h1 : (Pi.single c (E a b x) : Fin n → D) = tensVd E a b (Pi.single c x) + (if a = c then Pi.single b x else 0)`. Rewrite using `[tpsc_tensVd_single]`. Normalize the expressions using the abelian group laws. Establish `h2` using `hA.2.1 a b _ (hs c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [tensF, cond_true] at h2`. Rewrite using `[h1, map_add, h2, Pi.add_apply, tensVd_coord]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [key, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_add_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem ptr_comm {dual : Bool} (hE : IsGlRep E) (hA : IsGKEndo dual ε σ E (genSub E V) A) (a b : Fin n) :
     ∀ x ∈ genSub E V, ptr A (E a b x) = E a b (ptr A x) := by
@@ -166,17 +166,17 @@ theorem tpsc_kDiag (dual : Bool) (k : Matrix (Fin n) (Fin n) ℂ) (f : Fin n →
     kDiag dual σ k f c = ∑ d, tpscK dual k c d • σ k (f d) := rfl
 
 /- English proof (translation)
-Introduce `k hk x hx y hy hxy`. Establish `hku` using `hk.1`. Set `g : Fin n → Fin n → D` to `fun c d => star (tpscK dual k c d) • x`. Establish `hg : ∀ c, g c ∈ tensSub (genSub E V)` using `fun c => Submodule.mem_pi.2 fun d _ => Submodule.smul_mem _ _ hx`. Establish `hgs : ∀ c, g c = ∑ e, star (tpscK dual k c e) • (Pi.single e x : Fin n → D)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Use function extensionality and compare the values at `d`. Simplify using `[g, Finset.sum_apply, Pi.single_apply]`. Establish `hf' : ∀ c, (fun c' => (((Pi.single c y : Fin n → D) c' : D) : H)) = kDiag dual σ k (fun d => ((g c d : D) : H))`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `c'`. Rewrite using `[tpsc_kDiag]`. Simplify using `only [g, Submodule.coe_smul, map_smul, smul_smul]`. Rewrite using `[← Finset.sum_smul, tpscK_rows hku dual c c', ← hxy]`. Distinguish the cases in `h : c' = c`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hAf : ∀ c c', ((A (Pi.single c y) c' : D) : H) = ∑ d, tpscK dual k c' d • σ k (∑ e, star (tpscK dual k c e) • ((A (Pi.single e x) d : D) : H))`. Introduce `c c'`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (hA.2.2 k hk _ (hg c) _ (tpsc_single_mem hy c) (hf' c)) c'` as an intermediate fact. Rewrite using `[this, tpsc_kDiag, hgs c]`. Simplify using `[map_sum, map_smul, Finset.sum_apply]`. Rewrite using `[ptr_apply, ptr_apply, Submodule.coe_sum, Submodule.coe_sum, map_sum]`. Simplify using `only [hAf, map_sum, map_smul, Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, tpscK_cols hku dual]`. Simplify using `[ite_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ptr_kcomm {dual : Bool} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hA : IsGKEndo dual ε σ E (genSub E V) A) :
@@ -216,7 +216,7 @@ theorem ptr_kcomm {dual : Bool} (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn
 end
 
 /- English proof (translation)
-The claim follows from `data_end_scalar hgap hσ hD hV hc hVK (ptr A) (ptr_mem hA) (fun a b => ptr_comm hD.glRep hA a b) (ptr_kcomm hσ hD hA)`.
+A detailed English derivation is pending.
 -/
 theorem ptr_scalar (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

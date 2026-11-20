@@ -8,11 +8,11 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `hw : 0 < w.im`. Establish `hw' : 0 < (w + M).im` using `by simpa using hw`. Simplify using `only [Function.comp_apply, ofComplex_apply_of_im_pos hw', ofComplex_apply_of_im_pos hw]`. Rewrite using `[← hper ⟨w, hw⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using `[coe_vadd, add_comm]`. Use `push_neg at hw`. Establish `hw' : (w + M).im ≤ 0` using `by simpa using hw`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ofComplex_apply_of_im_nonpos hw', ofComplex_apply_of_im_nonpos hw]`.
+A detailed English derivation is pending.
 -/
 theorem periodic_comp_ofComplex_of_vadd' {f : ℍ → ℂ} {M : ℝ} (hper : ∀ τ : ℍ, f (M +ᵥ τ) = f τ) :
     Function.Periodic (f ∘ ofComplex) M := by
@@ -29,7 +29,7 @@ theorem periodic_comp_ofComplex_of_vadd' {f : ℍ → ℂ} {M : ℝ} (hper : ∀
     simp [ofComplex_apply_of_im_nonpos hw', ofComplex_apply_of_im_nonpos hw]
 
 /- English proof (translation)
-Unfold `Function.Periodic.qParam`. Establish `hM' : (M : ℂ) ≠ 0` using `by exact_mod_cast hM`. Rewrite using `[show 2 * π * Complex.I * (z + M) / M = 2 * π * Complex.I * z / M + 2 * π * Complex.I by field_simp, Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem qParam_add_period {M : ℝ} (hM : M ≠ 0) (z : ℂ) :
     Function.Periodic.qParam M (z + M) = Function.Periodic.qParam M z := by
@@ -39,29 +39,27 @@ theorem qParam_add_period {M : ℝ} (hM : M ≠ 0) (z : ℂ) :
     Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]
 
 /- English proof (translation)
-Introduce `f h C A hh hf hper hbd`. Use `set M : ℝ := (h : ℝ) with hMdef`. Establish `hM : 0 < M` using `by simp [hMdef, hh]`. Establish `hperF : Function.Periodic (f ∘ ofComplex) M` using `periodic_comp_ofComplex_of_vadd' hper`. Establish `hbd' : ∀ τ : ℍ, 1 ≤ τ.im → ‖f τ‖ ≤ C * τ.im ^ A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ hτ`. Use `set n : ℤ := ⌊τ.re / M⌋`. Establish `h1 : (n : ℝ) ≤ τ.re / M` using `Int.floor_le _`. Establish `h2 : τ.re / M < n + 1` using `Int.lt_floor_add_one _`. Establish `hw : 0 < ((τ : ℂ) - n * M).im` using `by simpa using τ.im_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set σ : ℍ := ⟨(τ : ℂ) - n * M, hw⟩`. Establish `hσ : f σ = f τ`. Use `hperF.sub_int_mul_eq (x := (τ : ℂ)) n` as an intermediate fact. Simplify using `only [Function.comp_apply, ofComplex_apply] at this`. Rewrite using `[← this, ofComplex_apply_of_im_pos hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `hσim : σ.im = τ.im`. Express the relevant statement in the definitionally equal form `((τ : ℂ) - (n : ℂ) * (M : ℂ)).im = τ.im`. Simplify using the standard rewrite rules. Establish `hσre : σ.re = τ.re - n * M`. Express the relevant statement in the definitionally equal form `((τ : ℂ) - (n : ℂ) * (M : ℂ)).re = τ.re - n * M`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hre1 : n * M ≤ τ.re` using `by rwa [le_div_iff₀ hM] at h1`. Establish `hre2 : τ.re < (n + 1) * M` using `by rwa [div_lt_iff₀ hM] at h2`. Establish `habs : |σ.re| ≤ h`. Rewrite using `[hσre, abs_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> nlinarith`. Rewrite using `[← hσ, ← hσim]`. Conclude with `hbd σ (hσim ▸ hτ) habs`. Use `set g : ℍ → ℂ := fun τ ↦ f τ * Function.Periodic.qParam M τ with hg`. Establish `hnormg : ∀ τ : ℍ, ‖g τ‖ = ‖f τ‖ * Real.exp (-2 * π * τ.im / M)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Simplify using `[hg, norm_mul, Function.Periodic.norm_qParam]`. Establish `hgdiff : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) g` using `hf.mul ((Function.Periodic.differentiable_qParam (h := M)).comp_mdifferentiable UpperHalfPlane.mdifferentiable_coe)`. Establish `hgper : ∀ τ : ℍ, g (M +ᵥ τ) = g τ`. Introduce `τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hg, hper, coe_vadd]`. Rewrite using `[add_comm, qParam_add_period hM.ne']`. Establish `hgzero : IsZeroAtImInfty g` using `by set c : ℝ := 2 * π / M with hc`. Establish `hcpos : 0 < c` using `by positivity`. Establish `hT : Tendsto (fun y : ℝ ↦ C * (c⁻¹) ^ A * ((c * y) ^ A * Real.exp (-(c * y)))) atTop (𝓝 0)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using ((Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero A).comp (tendsto_id.const_mul_atTop hcpos)).const_mul (C * (c⁻¹) ^ A)`. Establish `heq : ∀ y : ℝ, C * (c⁻¹) ^ A * ((c * y) ^ A * Real.exp (-(c * y))) = C * y ^ A * Real.exp (-2 * π * y / M)`. Introduce `y`. Establish `: -(c * y) = -2 * π * y / M` using `by rw [hc]; ring`. Rewrite using `[this, mul_pow, ← mul_assoc, ← mul_assoc, mul_assoc C, ← mul_pow, inv_mul_cancel₀ hcpos.ne', one_pow, mul_one]`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hT` using `[heq]`. Establish `hT' : Tendsto (fun τ : ℍ ↦ C * τ.im ^ A * Real.exp (-2 * π * τ.im / M)) atImInfty (𝓝 0)` using `hT.comp tendsto_comap`. Use `squeeze_zero_norm' ?_ hT'` and prove the remaining obligations. Use `(atImInfty_mem _).2 ⟨1, fun τ hτ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, hnormg]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_right (hbd' τ hτ) (Real.exp_pos _).le`. Establish `hgbdd : IsBoundedAtImInfty g` using `hgzero.boundedAtFilter`. Establish `hdecay` using `hgzero.exp_decay_atImInfty hM (periodic_comp_ofComplex_of_vadd' hgper) hgdiff hgbdd`. Take `⟨K, hK⟩` from `hdecay.bound`. Take `⟨B, hB⟩` from `(atImInfty_mem _).1 hK`.
-
-Use `isBoundedAtImInfty_iff.2 ⟨K, B, fun τ hτ ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `hB τ hτ`. Simplify using `only [Set.mem_setOf_eq, hnormg, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)] at h1`. Conclude with `le_of_mul_le_mul_right h1 (Real.exp_pos _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isBoundedAtImInfty_of_periodic_of_polyBound :
     ∀ (f : ℍ → ℂ) (h : ℕ) (C : ℝ) (A : ℕ), 0 < h → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f →

@@ -16,14 +16,14 @@ section One
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ψ₀, hψ, h⟩` from `hJ.level`. Conclude with `⟨ψ₀, hψ, fun k v => Or.inr (h k v)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tieVecW_of_join {A : AllRows D} (hJ : AllJoinA A) : TieVecW A := by
   obtain ⟨ψ₀, hψ, h⟩ := hJ.level
   exact ⟨ψ₀, hψ, fun k v => Or.inr (h k v)⟩
 
 /- English proof (translation)
-The claim follows from `weightAllRows_of A hL hA hR (tieVecW_of_join hJ)`.
+A detailed English derivation is pending.
 -/
 theorem weight_of_join {A : AllRows D} (hL : admLq D) (hA : TieAdmG D) (hR : RangeW D) (hJ : AllJoinA A) :
     WeightAllRows A :=

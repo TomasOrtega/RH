@@ -21,21 +21,17 @@ noncomputable section
 namespace GlobalTheory.TorusPart
 
 /- English proof (translation)
-Introduce `O _ _ c K Ω _ _ _ _ B _ hB j₀ P j ψ hpull hros`. Use `haveI := hB.comm`. Use `haveI := hB.proper`. Use `haveI := P.isAb.comm`. Take `⟨F, hF, H⟩` from `GlobalTheory.LBDescent.exists_finite_subextension_cls K Ω B.left P.A.left B.hom P.A.hom ψ hpull.1.1 P.L P.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Sp F ⟶ Sp K` to `spMap (algebraMap K F)`. Set `A₁` to `(Over.pullback f).obj B`. Establish `hA₁ : IsAbelianScheme A₁` using `isAbelianScheme_pullback_obj f B hB`. Use `haveI := hA₁.comm`. Use `haveI := hA₁.smooth`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `haveI := hA₁.proper`. Establish `hψ₁ : IsActPull (OAct.pullback f B j₀) j₀ f (pullback.fst B.hom f)` using `exists_isActPull f j₀`. Establish `hcomp : spMap (algebraMap F Ω) ≫ f = spMap (algebraMap K Ω)`. Simplify using `only [f, spMap]`. Rewrite using `[← Spec.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Establish `w : ψ ≫ B.hom = (P.A.hom ≫ spMap (algebraMap F Ω)) ≫ f`. Rewrite using `[Category.assoc, hcomp]`. Conclude with `hpull.1.1.w`. Set `jm : P.A.left ⟶ A₁.left` to `pullback.lift ψ (P.A.hom ≫ spMap (algebraMap F Ω)) w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjf : jm ≫ pullback.fst B.hom f = ψ` using `pullback.lift_fst _ _ _`. Establish `hjs : jm ≫ A₁.hom = P.A.hom ≫ spMap (algebraMap F Ω)` using `pullback.lift_snd _ _ _`. Establish `hj : IsGrpPullback P.A A₁ (spMap (algebraMap F Ω)) jm` using `IsGrpPullback.cancel hψ₁.1 (hpull.1.congr hcomp.symm hjf.symm) hjs`. Take `⟨x, hx⟩` from `H A₁.left A₁.hom (pullback.fst B.hom f) (IsPullback.of_hasPullback _ _) jm hjf hjs`. Take `⟨L₁, hL₁, rfl⟩` from `CechPic.cls_surj x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : LBIso P.L (L₁.pull jm)`. Rewrite using `[← CechPic.cls_eq_iff P.isLB (pull_isLB hL₁ jm), CechPic.cls_pull hL₁ jm (pull_isLB hL₁ jm)]`. Conclude with `hx.symm`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim F A₁ hA₁`. Establish `hd` using `GlobalTheory.PolDescent.rigidified_sym_kTriv_descend F Ω (algebraMap F Ω) A₁ P.A jm L₁ P.L hA₁ hj hL₁ P.isLB hw`.
-
-Establish `ha` using `GlobalTheory.AmpleDescent.proper_relAmple_kTriv_of_fieldExtension F Ω (algebraMap F Ω) A₁ P.A jm hj L₁ P.L hL₁ P.isLB hw P.isAb.proper P.ample P.ktriv`. Set `P₁ : Out.PolAV (Sp F)` to `{ A := A₁, isAb := hA₁, g := g, smoothDim := hg, L := L₁, isLB := hL₁, rigid := hd.1 P.rigid, sym := hd.2.1 P.sym, ample := ha.2.1, ktriv := ha.2.2 }`. Establish `comm : ∀ b, (j.act b).left ≫ jm = jm ≫ ((OAct.pullback f B j₀).act b).left` using `fun b => by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hjf, hψ₁.2 b, ← Category.assoc, hjf, hpull.2 b]`.
-
-Use `show (j.act b).left ≫ jm ≫ A₁.hom = jm ≫ ((OAct.pullback f B j₀).act b).left ≫ A₁.hom`. Rewrite using `[Over.w ((OAct.pullback f B j₀).act b), hjs, ← Category.assoc, Over.w (j.act b)]`. Conclude with `⟨F, hF, P₁, OAct.pullback f B j₀, pullback.fst B.hom f, hψ₁, fun a => GlobalTheory.RosatiDescent.rosatiAdj_descend (algebraMap F Ω) hA₁ hj hL₁ P.isLB hw (comm a) (comm (c a)) (hros a)⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_polDescent : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (c : O →+* O) (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ (j₀ : OAct O B) (P : Out.PolAV (Sp Ω))

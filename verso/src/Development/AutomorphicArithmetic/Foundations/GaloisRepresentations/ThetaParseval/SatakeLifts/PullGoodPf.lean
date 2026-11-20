@@ -4,9 +4,9 @@ open NumberField IsDedekindDomain ValuativeRel Formalism.MainNotions.GlobalTheor
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `g`. Set `e : k ≃+* k'` to `RingEquiv.ofBijective c ⟨c.injective, hs⟩`. Use `⟨Matrix.GeneralLinearGroup.map (n := Fin n) (e.symm : k' →+* k) g, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `: c (e.symm ((g : Matrix (Fin n) (Fin n) k') i j)) = (g : Matrix (Fin n) (Fin n) k') i j` using `e.apply_symm_apply _`. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem map_surj {k k' : Type} [Field k] [Field k'] (c : k →+* k') (hs : Function.Surjective c) (n : ℕ) :
     Function.Surjective (Matrix.GeneralLinearGroup.map (n := Fin n) c) := by
@@ -20,7 +20,7 @@ private theorem map_surj {k k' : Type} [Field k] [Field k'] (c : k →+* k') (hs
   simpa using this
 
 /- English proof (translation)
-Establish `h : Continuous (RingHom.mapMatrix (m` using `Fin n) c : Matrix (Fin n) (Fin n) k →+* Matrix (Fin n) (Fin n) k') := Continuous.matrix_map continuous_id hc`. Conclude with `Continuous.units_map (RingHom.mapMatrix (m := Fin n) c : Matrix (Fin n) (Fin n) k →+* Matrix (Fin n) (Fin n) k').toMonoidHom h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem map_cont {k k' : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] [Field k']
     [TopologicalSpace k'] [IsTopologicalRing k'] (c : k →+* k') (hc : Continuous c) (n : ℕ) :
@@ -30,7 +30,7 @@ private theorem map_cont {k k' : Type} [Field k] [TopologicalSpace k] [IsTopolog
   exact Continuous.units_map (RingHom.mapMatrix (m := Fin n) c : Matrix (Fin n) (Fin n) k →+* Matrix (Fin n) (Fin n) k').toMonoidHom h
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 h`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun W hW => h1 W fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨g', rfl⟩` from `hφ g`. Conclude with `hW g' v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem irr_comp {H H' X : Type} [Group H] [Group H'] [AddCommGroup X] [Module ℂ X]
     (ρ : Representation ℂ H X) (φ : H' →* H) (hφ : Function.Surjective φ) (h : ρ.IsIrreducible) :
@@ -41,7 +41,7 @@ private theorem irr_comp {H H' X : Type} [Group H] [Group H'] [AddCommGroup X] [
   exact hW g' v hv
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ _ c hc hs n V _ _ ρ`. Use `⟨fun h => isSmooth_comp h _ (map_cont c hc n), fun h => irr_comp ρ _ (map_surj c hs n) h, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨B, h1, h2, h3⟩`. Conclude with `⟨B, h1, h2, fun g v w => h3 _ v w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.TP.Loc.pullGood :
     UpperTheory.Gal.TP.Loc.PullGood := by

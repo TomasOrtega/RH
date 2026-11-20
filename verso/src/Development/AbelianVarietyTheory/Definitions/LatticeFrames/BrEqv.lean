@@ -18,7 +18,7 @@ def BrEqv (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → 
         ∀ z z', IsTr k z z' → T Φ' z = T Φ z'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => Submodule.zero_mem _, fun _ _ _ _ _ _ _ _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight N)
     (sg : ι → DomWeight n) : BrEqv hN G G' lam sg 0 :=

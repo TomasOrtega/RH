@@ -7,13 +7,13 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, q⟩ ⟨h', q'⟩ e`. Simplify using `only at e`. Establish `hq : q = q'`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h⁻¹ * h', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Substitute `hq` using the available equality. Rewrite using `[hφ (mul_right_cancel e)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Establish `: ((g⁻¹ : G) : G ⧸ φ.range).out⁻¹ * g⁻¹ ∈ φ.range`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Take `⟨h, hh⟩` from `this`. Use `⟨(h⁻¹, ((g⁻¹ : G) : G ⧸ φ.range)), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_inv, hh]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bijective_mul_out_inv {H G : Type} [Group H] [Group G] (φ : H →* G)
     (hφ : Function.Injective φ) :
@@ -39,13 +39,13 @@ theorem bijective_mul_out_inv {H G : Type} [Group H] [Group G] (φ : H →* G)
     group
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hx`. Use `haveI : FiniteDimensional M E := Module.Finite.of_restrictScalars_finite F M E`. Use `haveI : IsGalois M E := IsGalois.tower_top_of_isGalois F M E`. Set `π : K ⊗[F] E →ₐ[K] K ⊗[M] E` to `Algebra.TensorProduct.mapOfCompatibleSMul M F K K E`. Set `φ : (E ≃ₐ[M] E) →* (E ≃ₐ[F] E)` to `{ toFun := fun h => h.restrictScalars F, map_one' := rfl, map_mul' := fun _ _ => rfl }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : Function.Injective φ` using `AlgEquiv.restrictScalars_injective F`. Use `haveI : Fintype ((E ≃ₐ[F] E) ⧸ φ.range) := Fintype.ofFinite _`. Establish `key : ∀ (h : E ≃ₐ[M] E) (g : E ≃ₐ[F] E) (z : K ⊗[F] E), Algebra.TensorProduct.map (AlgHom.id K K) (h : E →ₐ[M] E) (π (Algebra.TensorProduct.map (AlgHom.id K K) (g : E →ₐ[F] E) z)) = π (Algebra.TensorProduct.map (AlgHom.id K K) ((φ h * g : E ≃ₐ[F] E) : E →ₐ[F] E) z)`. Introduce `h g z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Use `⟨π (∏ q : (E ≃ₐ[F] E) ⧸ φ.range, Algebra.TensorProduct.map (AlgHom.id K K) (((q.out)⁻¹ : E ≃ₐ[F] E) : E →ₐ[F] E) y), ?_⟩` and prove the remaining obligations. Apply `(algebraMap K (K ⊗[M] E)).injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.algebraMap_norm_tensor_eq_prod_galois_conjugates M E K, ← IsScalarTower.algebraMap_apply F M K x, ← hy, ← π.commutes, GlobalTheory.T.algebraMap_norm_tensor_eq_prod_galois_conjugates F E K, map_prod π, map_prod π, ← (bijective_mul_out_inv φ hφ).prod_comp (fun g : E …`. Use `Finset.prod_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun q _ => key h _ y`.
+A detailed English derivation is pending.
 -/
 theorem TNorm.of_tower (F M E K : Type) [Field F] [Field M] [Field E] [Algebra F M] [Algebra M E]
     [Algebra F E] [IsScalarTower F M E] [FiniteDimensional F E] [IsGalois F E] [Field K]

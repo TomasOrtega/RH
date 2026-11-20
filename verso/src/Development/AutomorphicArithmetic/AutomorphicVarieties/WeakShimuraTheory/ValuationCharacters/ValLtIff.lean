@@ -7,34 +7,32 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Pointwise
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', h, ← map_inv₀, h, map_eq_zero_iff g g.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_lt_iff {Ω : Type} [Field Ω] {A B : ValuationSubring Ω} (g : Ω ≃+* Ω)
     (h : ∀ x, g x ∈ A ↔ x ∈ B) (y : Ω) : A.valuation (g y) < 1 ↔ B.valuation y < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', h, ← map_inv₀, h, map_eq_zero_iff g g.injective]
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `hl.out`. Establish `hplace : ∀ v, ∃ w : HeightOneSpectrum (𝓞 F), IsPlaceOver (pl v) w` using `fun v => by`. Distinguish the cases in `htop : pl v = ⊤`. Conclude with `absurd (ovl v) ((places F Ω l (pl v)).2.1 htop).2`. Conclude with `(places F Ω l (pl v)).1 htop`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose w hw using hplace`. Establish `huniq : ∀ {A : ValuationSubring Ω} {w₁ w₂ : HeightOneSpectrum (𝓞 F)}, IsPlaceOver A w₁ → IsPlaceOver A w₂ → w₁ = w₂`. Introduce `A w₁ w₂ h₁ h₂`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h₁ x, ← h₂ x]`. Establish `htrans : ∀ {A B : ValuationSubring Ω} (g : G F Ω), (∀ x, g x ∈ A ↔ x ∈ B) → ∀ u : HeightOneSpectrum (𝓞 F), IsPlaceOver A u → IsPlaceOver B u`. Introduce `A B g hg u hA x`. Rewrite using `[← hA x, ← val_lt_iff g.toRingEquiv hg]`. Simplify using `only [AlgEquiv.coe_ringEquiv, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective w`. Introduce `v₁ v₂ he`. Establish `h2 : IsPlaceOver (pl v₂) (w v₁)` using `by rw [he]; exact hw v₂`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (hw v₁) h2`. Take `⟨v, -, hv⟩` from `cover (pl v₂) (ovl v₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `hv v₁ ⟨σ, fun x => by rw [← hσ]; exact ValuationSubring.smul_mem_pointwise_smul_iff⟩`. Establish `e2` using `hv v₂ ⟨1, fun x => by simp⟩`. Rewrite using `[e1, e2]`. Establish `hinj' : Function.Injective (fun v => (w v).asIdeal)` using `fun a b h => hinj (HeightOneSpectrum.ext h)`. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hlp).irreducible`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `habove : ∀ (A : ValuationSubring Ω) (u : HeightOneSpectrum (𝓞 F)), IsPlaceOver A u → (A.valuation (l : Ω) < 1 ↔ (l : 𝓞 F) ∈ u.asIdeal)`. Introduce `A u hu`. Rewrite using `[(places F Ω l A).2.2.1 u hu]`. Both sides reduce to the same expression. Rewrite using `[← Nat.card_range_of_injective hinj', _root_.Nat.card_coe_set_eq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `P`. Simplify using `only [Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(w v).isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hl' : (l : 𝓞 F) ∈ (w v).asIdeal` using `(habove _ _ (hw v)).1 (ovl v)`. Establish `hle : Ideal.span {(l : ℤ)} ≤ (w v).asIdeal.under ℤ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Simplify `hl'` using `[Ideal.under]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmax.eq_of_le (Ideal.IsPrime.under ℤ (w v).asIdeal).ne_top hle`. Introduce and unpack `⟨hP, hlies⟩`. Establish `hl' : (l : 𝓞 F) ∈ P`. Establish `: (l : ℤ) ∈ P.under ℤ` using `by rw [← hlies.over]; exact Ideal.mem_span_singleton_self _`. Simplify `this` using `[Ideal.under]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hne : P ≠ ⊥`. Introduce `hb`. Rewrite `hl'` using `[hb, Ideal.mem_bot]`. Conclude with `hlp.ne_zero (by exact_mod_cast hl')`. Set `u : HeightOneSpectrum (𝓞 F)` to `⟨P, hP, hne⟩`.
-
-Take `⟨A, hA⟩` from `exists_isPlaceOver (F := F) Ω u`. Establish `hAl : A.valuation (l : Ω) < 1` using `(habove A u hA).2 hl'`. Take `⟨v, ⟨g, hg⟩, -⟩` from `cover A hAl`. Conclude with `⟨v, congrArg HeightOneSpectrum.asIdeal (huniq (hw v) (htrans g hg u hA))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem card_eq {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [hl : Fact l.Prime] {ι : Type} (pl : ι → ValuationSubring Ω) (ovl : ∀ v, (pl v).valuation (l : Ω) < 1)
@@ -102,9 +100,7 @@ private theorem card_eq {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
     exact ⟨v, congrArg HeightOneSpectrum.asIdeal (huniq (hw v) (htrans g hg u hA))⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D T`. Use `haveI : IsAlgClosure T.F Ω := { isAlgClosed := IsAlgClosure.isAlgClosed ℚ isAlgebraic := haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic Algebra.IsAlgebraic.tower_top (K := ℚ) T.F }`. Use `haveI hmax : (Ideal.span {(l : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime l`. Establish `h` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (Ideal.span {(l : ℤ)}) (𝓞 T.F) (T.F ≃ₐ[ℚ] T.F)`. Rewrite `h` using `[IsGalois.card_aut_eq_finrank, ← card_eq l T.pl T.ovl T.cover]`.
-
-Conclude with `⟨_, (mul_comm _ _).trans h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.chDv :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), ∃ dv : ℕ, dv * Nat.card T.ι = T.d := by

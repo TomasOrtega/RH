@@ -10,9 +10,9 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 namespace GlobalTheory.WpFam.DerivExpansion
 
 /- English proof (translation)
-Establish `h : ∑' m : ℤ, 1 / (m : ℂ) ^ 3 = -∑' m : ℤ, 1 / (m : ℂ) ^ 3` using `by conv_lhs => rw [← (Equiv.neg ℤ).tsum_eq]`. Rewrite using `[← tsum_neg]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Simplify using `only [Equiv.neg_apply, Int.cast_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Take the linear combination `h / 2`.
+Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tsum_inv_cube : ∑' m : ℤ, 1 / (m : ℂ) ^ 3 = 0 := by
   have h : ∑' m : ℤ, 1 / (m : ℂ) ^ 3 = -∑' m : ℤ, 1 / (m : ℂ) ^ 3 := by
@@ -25,17 +25,15 @@ theorem tsum_inv_cube : ∑' m : ℤ, 1 / (m : ℂ) ^ 3 = 0 := by
   linear_combination h / 2
 
 /- English proof (translation)
-Break down `eq_or_ne j 0 with rfl | hj` into its components or cases. Establish `hc : ch N 0 = 1` using `by simp [ch]`. Simplify using `only [ZMod.val_zero, Nat.cast_zero, zero_div, zero_add, hc, sub_self]`. Rewrite using `[tsum_inv_cube]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set w : ℂ := ((j.val : ℂ)) / N with hw`. Establish `hN : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (NeZero.ne N)`. Establish `him : w.im = 0` using `by simp [hw, -ZMod.natCast_val]`. Establish `hnot : ∀ n : ℤ, w ≠ n`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[hw, div_eq_iff hN]`. Establish `hz : (j.val : ℤ) = n * N` using `by exact_mod_cast hn`. Establish `h1 : 0 < j.val` using `Nat.pos_of_ne_zero (fun h => hj ((ZMod.val_eq_zero j).mp h))`. Establish `h2 : j.val < N` using `ZMod.val_lt j`. Establish `h1' : (0 : ℤ) < j.val` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : (j.val : ℤ) < N` using `by exact_mod_cast h2`. Break down `le_or_gt n 0 with h | h` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hc : ch N j = Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * w)`.
+Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Unfold `ch`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`.
-
-Conclude with `(GlobalTheory.T.rowSums_two_three_closedForm_real_nonInteger w him hnot).2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_eq (N : ℕ) [NeZero N] (j : ZMod N) :
     ∑' m : ℤ, 1 / (((j.val : ℂ)) / N + m) ^ 3 =
@@ -68,19 +66,19 @@ theorem row_eq (N : ℕ) [NeZero N] (j : ZMod N) :
     exact (GlobalTheory.T.rowSums_two_three_closedForm_real_nonInteger w him hnot).2
 
 /- English proof (translation)
-Introduce `N _ x`. Unfold `HasQ`. Introduce `τ`. Establish `hπ : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨T, hT, hS⟩` from `GlobalTheory.T.torsionPoint_rows_sum_eq_divisor_series N 2 τ x _ (by norm_num) (GlobalTheory.T.hasSum_rows_inv_cube_derivWeierstrassP τ (tors N τ x))`. Use `set q := Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) with hq`. Use `set c0 : ℂ := if x 0 = 0 then ch N (x 1) * (1 + ch N (x 1)) / (1 - ch N (x 1)) ^ 3 else 0 with hc0`. Establish `h0 : cSum N 2 (-1) x 0 = 0` using `by simp [cSum]`. Establish `hT' : HasSum (fun k : ℕ => cSum N 2 (-1) x k * q ^ k) T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e1 : ((-1 : ℂ)) ^ (2 + 1) = -1` using `by norm_num`. Simplify `hT` using `only [e1]`. Establish `hsum : HasSum (fun n : ℕ => cD N x n * Complex.exp (2 * Real.pi * Complex.I * n * τ / N)) (c0 + T)`. Establish `hA : HasSum (fun n : ℕ => if n = 0 then c0 else 0) c0` using `hasSum_ite_eq 0 c0`. Use `hA.add hT' using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `n`. Establish `hexp : Complex.exp (2 * Real.pi * Complex.I * n * τ / N) = q ^ n`. Rewrite using `[hq, ← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hexp]`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[cD, h0, hc0]`. Simplify using `[cD, hn]`. Use `hsum using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrow : (if x 0 = 0 then ∑' m : ℤ, 1 / ((((x 1).val : ℂ)) / N + m) ^ (2 + 1) else 0) = -(1 / 2) * (2 * (Real.pi : ℂ) * Complex.I) ^ 3 * c0`. Rewrite using `[hc0]`. Use `split_ifs`. Conclude with `row_eq N (x 1)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : ((Nat.factorial 2 : ℕ) : ℂ) = 2` using `by norm_num [Nat.factorial]`. Rewrite `hS` using `[hrow, hf]`. Simplify using `only [wpd]`. Rewrite using `[div_eq_iff (pow_ne_zero 3 hπ)]`. Take the linear combination `(-2) * hS`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ∀ (N : ℕ) [NeZero N] (x : Fin 2 → ZMod N), HasQ N (wpd N x) (cD N x) := by
   intro N _ x

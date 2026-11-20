@@ -17,7 +17,7 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1
 namespace GlobalTheory.ChartCmp.FrameRatio
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨U, hU⟩` from `GaugeR.ratio_of_gen L hL φ ε g' g hg' hg`. Use `⟨U, fun j j' _ _ hx => ?_⟩` and prove the remaining obligations. Take `rfl : j = j'` from `funext fun k => hx k k rfl`. Rewrite using `[hU j]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_corr_scaled {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fintype K]
     (φ φ' : K → (Y ⟶ X)) (h : φ = φ') (ε : K → ℤ) (g : LB.Gen (LB.LinComb L φ ε))
@@ -31,9 +31,9 @@ theorem exists_corr_scaled {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type
   rw [hU j]
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `((List.finRange n).filter (· ∈ I)) with`. Consider the case `nil => simp [pzero]`. Consider the case `cons a l ih`. Simplify using `only [List.foldr_cons, padd]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, comp_lift]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem comp_psum' {S : Scheme.{0}} (G : Over S) [GrpObj G] {T T' : Over S} (f : T' ⟶ T) {n : ℕ}
     (x : Fin n → (T ⟶ G)) (I : Finset (Fin n)) : f ≫ psum G x I = psum G (fun k => f ≫ x k) I := by
@@ -46,14 +46,14 @@ theorem comp_psum' {S : Scheme.{0}} (G : Over S) [GrpObj G] {T T' : Over S} (f :
     congr 2
 
 /- English proof (translation)
-Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom.toMonoidHom U, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[unitΓ, toΓ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem unitΓ_surj {A : Type} [CommRing A] (U : Γ(Sp A, ⊤)ˣ) : ∃ u : Aˣ, unitΓ u = U := by
   refine ⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom.toMonoidHom U, Units.ext ?_⟩
   simp [unitΓ, toΓ]
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `⟨(p : MvPowerSeries κ R), GaugeR.psJet_eq_mk m _ p fun e _ => (MvPolynomial.coeff_coe p e).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem psJet_surj {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ) (a : Jet R κ m) :
     ∃ f : MvPowerSeries κ R, psJet m f = a := by
@@ -61,11 +61,11 @@ theorem psJet_surj {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m :
   exact ⟨(p : MvPowerSeries κ R), GaugeR.psJet_eq_mk m _ p fun e _ => (MvPolynomial.coeff_coe p e).symm⟩
 
 /- English proof (translation)
-Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i0, j⟩`. Simplify using `only [AlgHom.comp_apply, jetCopy, jetSubstP, GaugeR.jetMap_mk, MvPolynomial.aeval_X, hψ, psIn, MvPolynomial.constantCoeff_rename, map_sub, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`. Use `congr 2`. Generalize the expression as in `psTrunc m (φ j) = P`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`. Consider the case `mul_X p k hp`. Rewrite using `[map_mul, map_mul, hp, MvPolynomial.rename_X, MvPolynomial.aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b⟩` from `k`. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem copy_subst {V : Type} [CommRing V] (d m : ℕ) (φ : Fin d → MvPowerSeries (Fin 1 × Fin d) V)
     (ψ : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) V) (i : Fin 2)
@@ -88,13 +88,13 @@ theorem copy_subst {V : Type} [CommRing V] (d m : ℕ) (φ : Fin d → MvPowerSe
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ t d x x' e e' φ _ hc he he' m`. Set `ψ : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fin d) V` to `![fun j => psIn d m ![0] (φ j), fun j => psIn d m ![1] (φ j)]`. Establish `hpt : ∀ i : Fin 2, (∀ j, ψ i j = psIn d m ![i] (φ j)) → jptG t (𝟙 (Sp V)) d x' m i = Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetSubstP m fun p : Fin 2 × Fin d => ψ p.1 p.2) ≫ jptG t (𝟙 (Sp V)) d x m i`. Introduce `i hi`. Rewrite using `[jptG, jptG, hc m, ← Category.assoc, ← Category.assoc, GermD.homAt_comp, GermD.homAt_comp, copy_subst d m φ ψ i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfam : cφG t ![jptG t (𝟙 (Sp V)) d x' m (0 : Fin 2), jptG t (𝟙 (Sp V)) d x' m (1 : Fin 2)] = fun I => (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetSubstP m fun p : Fin 2 × Fin d => ψ p.1 p.2)).left ≫ cφG t ![jptG t (𝟙 (Sp V)) d x m (0 : Fin 2), jptG t (𝟙 (Sp V)) d x m (1 : Fin 2)] I`. Use function extensionality and compare the values at `I`. Rewrite using `[cφG, cφG, ← Over.comp_left, comp_psum']`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases k`. Conclude with `hpt 0 fun _ => rfl`. Conclude with `hpt 1 fun _ => rfl`. Take `⟨U, hU⟩` from `exists_corr_scaled t.PP.L t.PP.isLB _ _ hfam (cε 2) (e' m) (peG t (𝟙 (Sp V)) d x e m ψ) (he' m) (DVR.pullGen_isGen _ _ _ _ (he m) _)`. Take `⟨u, rfl⟩` from `unitΓ_surj U`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ε, hε⟩` from `psJet_surj m (u : Jet V (Fin 2 × Fin d) m)`. Use `⟨ε, ?_, u, hε.symm, hU⟩` and prove the remaining obligations. Rewrite using `[← GaugeR.jetAug_psJet m ε, hε]`. Conclude with `u.isUnit.map _`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] (t : SAB H (Sp V)) (d : ℕ) (x x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m) (e' : ∀ m, FrTyG t (𝟙 (Sp V)) d x' m) (φ : Pt V 1 d), (∀ i, MvPowerSeries.constantCoeff (φ i) = 0) → CoordRel x x' φ → (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → ∀ m, ∃ ε : PS V 2 d, IsUnit (MvPowerSeries.constantCoeff ε) ∧ FrRel t x x' e e' φ m ε := by
   intro E _ _ _ H V _ t d x x' e e' φ _ hc he he' m

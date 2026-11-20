@@ -23,9 +23,9 @@ open GlobalTheory.BotClassDict GlobalTheory.BotFormula
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, s, hs, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, s * y, mul_mem hs hy, by ring⟩`. Consider the case `zero => rw [zero_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [add_mul]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [neg_mul]`. Conclude with `neg_mem hu`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hatId_mul {I : Ideal (𝓞 D.host.E)} {x y : Formalism.MainNotions.StandardLatticesGL3.AE D} (hx : x ∈ hatId D I) (hy : y ∈ OhE D) :
     x * y ∈ hatId D I := by
@@ -40,7 +40,7 @@ theorem hatId_mul {I : Ideal (𝓞 D.host.E)} {x y : Formalism.MainNotions.Stand
 def rho (D : D7) : Formalism.MainNotions.StandardLatticesGL3.AE D →+* Lev.EAf D := (Lev.swapAE D).comp (toAfE D).toRingHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Lev.swapAE D (toAfE D (finQ D z)) = _`. Rewrite using `[toAfE_finQ]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_finQ (z : Formalism.L2.Theta.AE D) : rho D (finQ D z) = toEAf D z := by
   change Lev.swapAE D (toAfE D (finQ D z)) = _
@@ -48,18 +48,18 @@ theorem rho_finQ (z : Formalism.L2.Theta.AE D) : rho D (finQ D z) = toEAf D z :=
   rfl
 
 /- English proof (translation)
-The claim follows from `toAfE_int_iff y`.
+A detailed English derivation is pending.
 -/
 theorem rho_int (y : Formalism.MainNotions.StandardLatticesGL3.AE D) : rho D y ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ y ∈ OhE D := toAfE_int_iff y
 
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).bijective.comp (toAfE D).bijective`.
+A detailed English derivation is pending.
 -/
 theorem rho_bij : Function.Bijective (rho D) :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).bijective.comp (toAfE D).bijective
 
 /- English proof (translation)
-Rewrite using `[← finQ_inclR, rho_finQ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_inc (b : 𝓞 D.host.E) :
     rho D (inc D (b : D.host.E)) = (Formalism.L2.DIV.oToS D.host.F D.host.E b : Lev.EAf D) := by
@@ -67,25 +67,25 @@ theorem rho_inc (b : 𝓞 D.host.E) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hI⟩`. Establish `key : ∀ s ∈ I.map ι', ∀ u ∈ O, ∀ y, ρ y = s.1 → y * u ∈ AddSubgroup.closure {y | ∃ b ∈ I, ∃ s ∈ O, y = ι b * s}`. Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem s hs`. Take `⟨b, hb, rfl⟩` from `hs`. Introduce `u hu y hy`. Rewrite `hy` using `[← hι]`. Rewrite using `[hρ.1 hy]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.subset_closure ⟨b, hb, u, hu, rfl⟩`. Consider the case `zero`. Introduce `u _ y hy`. Rewrite using `[hρ.1 (hy.trans (map_zero ρ).symm), zero_mul]`. Conclude with `zero_mem _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add s t _ _ hs ht`. Introduce `w hw y hy`. Take `⟨u, hu⟩` from `hρ.2 s.1`. Take `⟨v, hv⟩` from `hρ.2 t.1`. Establish `: y = u + v` using `hρ.1 (by rw [hy, map_add, hu, hv]; rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this, add_mul]`. Conclude with `add_mem (hs w hw u hu) (ht w hw v hv)`. Consider the case `smul a t _ ht`. Introduce `w hw y hy`. Take `⟨u, hu⟩` from `hρ.2 a.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `hρ.2 t.1`. Establish `: y = v * u` using `hρ.1 (by rw [hy, map_mul, hu, hv, mul_comm]; rfl)`. Rewrite using `[this, mul_assoc]`. Conclude with `ht _ (mul_mem ((hO u).1 (hu ▸ a.2)) hw) v hv`. Use `key _ hI 1 (one_mem _) y rfl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Introduce `hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, s, hs, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Establish `h1 : ι' b * ⟨ρ s, (hO s).2 hs⟩ ∈ I.map ι'` using `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hb)`. Rewrite using `[map_mul, hι]`. Conclude with `⟨(ι' b * ⟨ρ s, (hO s).2 hs⟩).2, h1⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `⟨zero_mem _, zero_mem _⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add u v _ _ hu hv`. Take `⟨h1, h2⟩` from `hu`. Take `⟨h3, h4⟩` from `hv`. Rewrite using `[map_add]`. Conclude with `⟨add_mem h1 h3, add_mem h2 h4⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `neg u _ hu`. Take `⟨h1, h2⟩` from `hu`. Rewrite using `[map_neg]`. Conclude with `⟨neg_mem h1, neg_mem h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_iff {A R S : Type} [CommRing A] [CommRing R] [CommRing S] (ρ : R →+* S) (hρ : Function.Bijective ρ)
     (O : Subring R) (O' : Subring S) (hO : ∀ y, ρ y ∈ O' ↔ y ∈ O) (ι : A → R) (ι' : A →+* O') (hι : ∀ b, ρ (ι b) = ι' b)
@@ -142,7 +142,7 @@ theorem mem_map_iff {A R S : Type} [CommRing A] [CommRing R] [CommRing S] (ρ : 
       exact ⟨neg_mem h1, neg_mem h2⟩
 
 /- English proof (translation)
-The claim follows from `mem_map_iff (rho D) rho_bij (OhE D) (Formalism.L2.Herm.intAf D.host.F D.host.E) rho_int (fun b : 𝓞 D.host.E => inc D (b : D.host.E)) (Formalism.L2.DIV.oToS D.host.F D.host.E) rho_inc I y`.
+A detailed English derivation is pending.
 -/
 theorem inId_rho (I : Ideal (𝓞 D.host.E)) (y : Formalism.MainNotions.StandardLatticesGL3.AE D) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (rho D y) ↔ y ∈ hatId D I :=
@@ -150,18 +150,16 @@ theorem inId_rho (I : Ideal (𝓞 D.host.E)) (y : Formalism.MainNotions.Standard
     (Formalism.L2.DIV.oToS D.host.F D.host.E) rho_inc I y
 
 /- English proof (translation)
-Rewrite using `[← rho_finQ, inId_rho]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inId_iff (I : Ideal (𝓞 D.host.E)) (z : Formalism.L2.Theta.AE D) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (toEAf D z) ↔ finQ D z ∈ hatId D I := by
   rw [← rho_finQ, inId_rho]
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, s, hs, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨D.host.conj • b, Ideal.smul_mem_pointwise_smul _ _ _ hb, sgA D s, Formalism.UG.P.csDual_sig_mem _ hs, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [map_add]`. Conclude with `add_mem hu hv`.
-
-Consider the case `neg u _ hu => rw [map_neg]`. Conclude with `neg_mem hu`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sgA_hatId {I : Ideal (𝓞 D.host.E)} {x : Formalism.MainNotions.StandardLatticesGL3.AE D} (hx : x ∈ hatId D I) :
     sgA D x ∈ hatId D (D.host.conj • I) := by
@@ -176,11 +174,11 @@ theorem sgA_hatId {I : Ideal (𝓞 D.host.E)} {x : Formalism.MainNotions.Standar
   | neg u _ hu => rw [map_neg]; exact neg_mem hu
 
 /- English proof (translation)
-Take `⟨-, h1, t, ht, h2⟩` from `GlobalTheory.IdemSumIdeal.isIdemSum_props e P c he`. Establish `hc : finQ D (cA D e) = sgA D (finQ D e)` using `finQ_sigR e`. Establish `h3 : finQ D e ∈ OhE D`. Rewrite using `[← rho_int, rho_finQ]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : finQ D (1 - e) ∈ hatId D (modul P c)`. Rewrite using `[← inId_iff, RingHom.map_sub, RingHom.map_one, ← h2]`. Conclude with `⟨t.2, ht⟩`. Rewrite using `[hc]`. Use `⟨Formalism.UG.P.csDual_sig_mem _ h3, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5` using `sgA_hatId h4`. Rewrite `h5` using `[map_sub, map_one, map_sub, map_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem conj_idem {e : Formalism.L2.Theta.AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (c : Formalism.L2.DIV.Pl D.host.E → ℕ)
     (he : IsIdemSum e P) : finQ D (cA D e) ∈ OhE D ∧ 1 - finQ D (cA D e) ∈ hatId D (D.host.conj • modul P c) := by
@@ -198,21 +196,17 @@ theorem conj_idem {e : Formalism.L2.Theta.AE D} {P : Finset (Formalism.L2.DIV.Pl
   rwa [map_sub, map_one, map_sub, map_one] at h5
 
 /- English proof (translation)
-Set `X : Matrix (Fin d) (Fin n) R` to `Matrix.of fun i j => if i.1 = o + j.1 then a else 0`. Establish `hX : ∀ i j, X i j ∈ O` using `fun i j => by`. Express the relevant statement in the definitionally equal form `(if i.1 = o + j.1 then a else 0) ∈ O`. Use `split_ifs`. Use `exacts [haO, zero_mem _]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH1 : ∀ i j, (H - 1) i j ∈ O` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Use `sub_mem (hH i j) ?_` and prove the remaining obligations. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `e : Y * H - X = (Y - X) * H + X * (H - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `h1 : ∀ i j, ((Y - X) * H) i j ∈ J` using `fun i j => by`. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sum_mem fun l _ => hJ _ (hY i l) _ (hH l j)`. Establish `h2 : ∀ i j, ((Y * H) i j - (if i.1 = o + j.1 then a else 0) ∈ J) ↔ (X * (H - 1) : Matrix (Fin d) (Fin n) R) i j ∈ J` using `fun i j => by`. Express the relevant statement in the definitionally equal form `(Y * H - X) i j ∈ J ↔ _`. Rewrite using `[e, Matrix.add_apply]`. Conclude with `AddSubgroup.add_mem_cancel_left _ (h1 i j)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h3` using `h ⟨o + i.1, by omega⟩ j`. Rewrite `h3` using `[Matrix.mul_apply, Finset.sum_eq_single i]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4 : X ⟨o + i.1, by omega⟩ i = a` using `if_pos rfl`. Rewrite `h3` using `[h4]`. Establish `h5 : (H - 1) i j = (1 - a) * (H - 1) i j + a * (H - 1) i j` using `by ring`. Rewrite using `[h5]`. Conclude with `add_mem (hJ _ ha _ (hH1 i j)) h3`.
-
-Introduce `l _ hl`. Establish `h4 : X ⟨o + i.1, by omega⟩ l = 0` using `if_neg fun h' => hl (Fin.ext (by simp only at h'; omega))`. Rewrite using `[h4, zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ i) h'`.
-
-Introduce `h i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => by rw [mul_comm]; exact hJ _ (h l j) _ (hX i l)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {R : Type} [CommRing R] (O : Subring R) (J : AddSubgroup R) (hJ : ∀ x ∈ J, ∀ y ∈ O, x * y ∈ J)
     {n d o : ℕ} (ho : o + n = d) {a : R} (haO : a ∈ O) (ha : 1 - a ∈ J) (Y : Matrix (Fin d) (Fin n) R)
@@ -259,9 +253,9 @@ theorem core {R : Type} [CommRing R] (O : Subring R) (J : AddSubgroup R) (hJ : �
     exact sum_mem fun l _ => by rw [mul_comm]; exact hJ _ (h l j) _ (hX i l)
 
 /- English proof (translation)
-Introduce `i j`. Establish `e : (k⁻¹).1.1 - 1 = -((k.1.1 - 1) * (k⁻¹).1.1)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, neg_sub, ← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((k⁻¹).1.1 - 1) i j ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, Matrix.neg_apply, Matrix.mul_apply]`. Conclude with `neg_mem (sum_mem fun l _ => hatId_mul (h i l) ((GlobalTheory.NormSum.mem_intG _).1 (inv_mem hk) l j).1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congOne_inv {I : Ideal (𝓞 D.host.E)} {N : ℕ} {k : Formalism.MainNotions.StandardLatticesGL3.GA D N} (hk : k ∈ GlobalTheory.NormSum.intG D N)
     (h : CongOne D I k) : CongOne D I k⁻¹ := by
@@ -274,9 +268,9 @@ theorem congOne_inv {I : Ideal (𝓞 D.host.E)} {N : ℕ} {k : Formalism.MainNot
   exact neg_mem (sum_mem fun l _ => hatId_mul (h i l) ((GlobalTheory.NormSum.mem_intG _).1 (inv_mem hk) l j).1)
 
 /- English proof (translation)
-Establish `: ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (toEAf D (y i j - unitPt S T a o i j)) ↔ (y.map (finQ D)) i j - (if i.1 = o + j.1 then finQ D a else 0) ∈ hatId D I` using `fun i j => by`. Rewrite using `[inId_iff, map_sub, unitPt, apply_ite (finQ D), map_zero]`. Both sides reduce to the same expression. Unfold `cosetFn`. Simplify using `only [this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Conclude with `iff_of_true one_ne_zero h`. Conclude with `iff_of_false (fun h' => h' rfl) h`.
+A detailed English derivation is pending.
 -/
 theorem cosetFn_ne_zero {S T : HSp D} (a : Formalism.L2.Theta.AE D) (I : Ideal (𝓞 D.host.E)) (o : ℕ) (y : WO S T) :
     cosetFn a I (unitPt S T a o) y ≠ 0 ↔ IsHalf a y ∧
@@ -292,7 +286,7 @@ theorem cosetFn_ne_zero {S T : HSp D} (a : Formalism.L2.Theta.AE D) (I : Ideal (
   · exact iff_of_false (fun h' => h' rfl) h
 
 /- English proof (translation)
-Unfold `actO Formalism.L2.Theta.mt`. Rewrite using `[inv_inv, inv_inv, Matrix.mul_assoc _ (matHom S g).1, ← Units.val_mul, ← map_mul, mul_inv_cancel_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_inv_one (S T : HSp D) (g g' : Formalism.L2.Theta.GA D S) (y : WO S T) :
     actO S T g'⁻¹ 1 y = HMul.hMul (actO S T g⁻¹ 1 y : Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.Theta.AE D)) (Formalism.L2.Theta.mt S (g⁻¹ * g')) := by
@@ -300,15 +294,15 @@ theorem actO_inv_one (S T : HSp D) (g g' : Formalism.L2.Theta.GA D S) (y : WO S 
   rw [inv_inv, inv_inv, Matrix.mul_assoc _ (matHom S g).1, ← Units.val_mul, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `D S T hG e P c he o ho k hk k' hk' g g' hg hg' y hy`. Take `⟨h1, h2⟩` from `conj_idem c he`. Establish `hkk` using `mul_mem (inv_mem hk) hk'`. Establish `hfin : finStd S hG (g⁻¹ * g') = k⁻¹ * k'`. Rewrite using `[map_mul, map_inv, finStd_of_isFinPt S hG hg, finStd_of_isFinPt S hG hg']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : (Formalism.L2.Theta.mt S (g⁻¹ * g')).map (finQ D) = (k⁻¹ * k').1.1`. Rewrite using `[← hfin]`. Both sides reduce to the same expression. Establish `hc : CongOne D (D.host.conj • modul P c) (k'⁻¹ * k) ↔ CongOne D (D.host.conj • modul P c) (k⁻¹ * k')`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `congOne_inv (mul_mem (inv_mem hk') hk) h` as an intermediate fact. Rewrite `this` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Introduce `h`. Use `congOne_inv hkk h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Rewrite `hy` using `[cosetFn_ne_zero]`. Rewrite using `[hc, cosetFn_ne_zero, actO_inv_one S T g g' y, Matrix.map_mul, hM, core (OhE D) (hatId D (D.host.conj • modul P c)) (fun x hx y hy => hatId_mul hx hy) ho h1 h2 _ _ (fun i j => ((GlobalTheory.NormSum.mem_intG _).1 hkk i j).1) hy.2]`. Use `and_iff_right fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, hy.1 i l]`.
+A detailed English derivation is pending.
 -/
 theorem coset_iff_congOne : ∀ {D : D7} (S T : HSp D), S.gram = 1 →
     ∀ (e : Formalism.L2.Theta.AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (c : Formalism.L2.DIV.Pl D.host.E → ℕ), IsIdemSum e P →

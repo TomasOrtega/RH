@@ -19,18 +19,18 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Rewrite using `[← Submodule.orthogonal_orthogonal T]`. Conclude with `(Submodule.mem_orthogonal' _ _).2 fun y hy => by rw [← inner_conj_symm, h y hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_orthogonalComplement_inner_eq_zero (T : Submodule ℂ H) [FiniteDimensional ℂ T] {x : H} (h : ∀ y ∈ Tᗮ, ⟪y, x⟫_ℂ = 0) : x ∈ T := by
   rw [← Submodule.orthogonal_orthogonal T]
   exact (Submodule.mem_orthogonal' _ _).2 fun y hy => by rw [← inner_conj_symm, h y hy, map_zero]
 
 /- English proof (translation)
-Take `⟨S, hSf, hvS, hSK⟩` from `hv`. Set `S' : Submodule ℂ (smD ε σ)` to `S.comap (smD ε σ).subtype`. Establish `hmap : S'.map (smD ε σ).subtype ≤ S` using `Submodule.map_comap_le _ _`. Establish `hS'f : FiniteDimensional ℂ S'`. Establish `e` using `Submodule.equivMapOfInjective (smD ε σ).subtype Subtype.val_injective S'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℂ (S'.map (smD ε σ).subtype)` using `Submodule.finiteDimensional_of_le hmap`. Conclude with `LinearEquiv.finiteDimensional e.symm`. Establish `hKF : (S' : Set (smD ε σ)) ⊆ KF ε σ` using `fun w hw => ⟨S, hSf, hw, hSK⟩`. Establish `hS'K : ∀ k ∈ Kset ε, ∀ w ∈ S', ∃ w' ∈ S', (w' : H) = σ k w`. Introduce `k hk w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : σ k w ∈ S` using `hSK k hk w hw`. Establish `h2 : σ k w ∈ smD ε σ` using `(hK _ ε H σ hσ hirr).1 _ ⟨S, hSf, h1, hSK⟩`. Conclude with `⟨⟨_, h2⟩, h1, rfl⟩`. Conclude with `⟨S', hS'f, hvS, hKF, isKStableSub_of_kStable hσ (isDerivedOn_smE hσ) S' hS'f hS'K, hS'K⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sub_B (hK : KFSm) (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) {v : smD ε σ} (hv : v ∈ KF ε σ) :
@@ -52,7 +52,7 @@ theorem exists_sub_B (hK : KFSm) (hσ : Formalism.MainNotions.S.IsURepOn (Formal
   exact ⟨S', hS'f, hvS, hKF, isKStableSub_of_kStable hσ (isDerivedOn_smE hσ) S' hS'f hS'K, hS'K⟩
 
 /- English proof (translation)
-Use `mem_of_forall_orthogonalComplement_inner_eq_zero T fun y hy => ?_` and prove the remaining obligations. Rewrite using `[show Formalism.MainNotions.BridgeCPX.kavg hσ he x = _ from Formalism.MainNotions.BridgeCPX.kavg_apply hσ he x, ← integral_inner (Formalism.MainNotions.BridgeCPX.kavg_integrable hσ he x)]`. Use `MeasureTheory.integral_eq_zero_of_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [inner_smul_right, Pi.zero_apply]`. Rewrite using `[Submodule.inner_left_of_mem_orthogonal (hx k) hy, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem kavg_mem_B (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {e : Formalism.REAL.KG ε → ℂ} (he : Continuous e)
     (T : Submodule ℂ H) [FiniteDimensional ℂ T] {x : H} (hx : ∀ k : Formalism.REAL.KG ε, σ (Formalism.REAL.toMK k) x ∈ T) :
@@ -66,27 +66,25 @@ theorem kavg_mem_B (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotion
 end
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hσ hirr N hNK hNst`. Establish `hD` using `isDerivedOn_smE hσ`. Take `⟨c, hc⟩` from `hC n ε H σ hσ hirr`. Distinguish the cases in `hN : N = ⊥`. Conclude with `Or.inl hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `right`. Take `⟨v, hvN, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN`. Take `⟨S, hSf, hvS, -, hSst, -⟩` from `exists_sub_B hK hσ hirr (hNK hvN)`. Set `V` to `N ⊓ S`. Establish `hVf : FiniteDimensional ℂ V` using `Submodule.finiteDimensional_of_le inf_le_right`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVK : IsKStableSub ε (smE ε σ) V` using `fun a b hab w hw => ⟨hNst a b w hw.1, hSst a b hab w hw.2⟩`. Establish `hgen : genSub (smE ε σ) V ≤ N` using `sInf_le ⟨inf_le_left, fun a b w hw => hNst a b w hw⟩`. Use `set C := ((genSub (smE ε σ) V).map (smD ε σ).subtype).topologicalClosure with hCdef`. Establish `hvC : (v : H) ∈ C` using `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem (Submodule.mem_sInf.2 fun T hT => hT.1 ⟨hvN, hvS⟩))`. Establish `hCtop : C = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `hirr C (Submodule.isClosed_topologicalClosure _) (closure_genSub_stable hσ hD hVf hVK fun w _ => hc w) with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `hvC` using `[h, Submodule.mem_bot]`. Conclude with `hv0 (Subtype.ext hvC)`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Set.Subset.antisymm hNK fun u hu => ?_` and prove the remaining obligations. Take `⟨e, T, he, hTf, hrange, hfix⟩` from `Formalism.MainNotions.BridgeCPX.HCAdm_of_mult CompanionTheory.HCMult.harish_chandra_multiplicity n ε H σ hσ hirr (u : H) hu`. Use `set P := Formalism.MainNotions.BridgeCPX.kavg hσ he`. Set `NT : Submodule ℂ H` to `N.map (smD ε σ).subtype ⊓ T`. Establish `: FiniteDimensional ℂ NT` using `Submodule.finiteDimensional_of_le inf_le_right`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hPN : ∀ w ∈ N, P w ∈ NT`. Introduce `w hw`. Take `⟨S₁, hS₁f, hwS₁, -, hS₁st, -⟩` from `exists_sub_B hK hσ hirr (hNK hw)`. Set `V₁` to `N ⊓ S₁`. Establish `hV₁f : FiniteDimensional ℂ V₁` using `Submodule.finiteDimensional_of_le inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV₁K : IsKStableSub ε (smE ε σ) V₁` using `fun a b hab x hx => ⟨hNst a b x hx.1, hS₁st a b hab x hx.2⟩`. Establish `hKst` using `kStable_of_isKStableSub hσ hD V₁ hV₁f hV₁K`. Set `W₁ : Submodule ℂ H` to `V₁.map (smD ε σ).subtype`. Establish `: FiniteDimensional ℂ W₁` using `Module.Finite.map V₁ _`. Establish `h1 : P w ∈ W₁` using `kavg_mem_B hσ he W₁ fun k => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx, hxe⟩` from `hKst _ k.2 w ⟨hw, hwS₁⟩`. Conclude with `⟨x, hx, hxe⟩`. Take `⟨x, hx, hxe⟩` from `Submodule.mem_map.1 h1`. Use `⟨Submodule.mem_map.2 ⟨x, hx.1, hxe⟩, ?_⟩` and prove the remaining obligations. Conclude with `hrange w`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `hclosed : IsClosed (NT : Set H)` using `Submodule.closed_of_finiteDimensional NT`. Establish `hsub : (P '' ((genSub (smE ε σ) V).map (smD ε σ).subtype : Set H)) ⊆ NT`. Introduce and unpack `_ ⟨_, ⟨w, hw, rfl⟩, rfl⟩`. Conclude with `hPN w (hgen hw)`. Establish `huC : (u : H) ∈ closure ((genSub (smE ε σ) V).map (smD ε σ).subtype : Set H)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.topologicalClosure_coe, ← hCdef, hCtop]`. Discharge the goal by the elementary cases of `trivial`. Establish `h1 : P u ∈ NT` using `(hclosed.closure_subset_iff.2 hsub) (image_closure_subset_closure_image P.continuous ⟨_, huC, rfl⟩)`. Establish `hPu : P u = u` using `hfix`. Rewrite `h1` using `[hPu]`.
-
-Take `⟨x, hx, hxe⟩` from `Submodule.mem_map.1 h1.1`. Establish `: x = u` using `Subtype.ext hxe`. Conclude with `this ▸ hx`.
+A detailed English derivation is pending.
 -/
 theorem uIrr_of (hK : KFSm) (hC : CasScal) : UIrr := by
   intro n ε H _ _ _ σ hσ hirr N hNK hNst

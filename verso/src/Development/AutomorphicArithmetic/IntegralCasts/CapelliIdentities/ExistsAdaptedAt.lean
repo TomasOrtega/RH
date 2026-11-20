@@ -16,21 +16,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `IsFractionRing.lift_algebraMap (intEmb_injective s) a`.
+A detailed English derivation is pending.
 -/
 private theorem embOf_coe (s : 𝓞 E →+* ℂ) (a : 𝓞 E) : embOf s (a : E) = s a :=
   IsFractionRing.lift_algebraMap (intEmb_injective s) a
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => embOf_coe s a`.
+A detailed English derivation is pending.
 -/
 private theorem embOf_comp (s : 𝓞 E →+* ℂ) : (embOf s).comp (algebraMap (𝓞 E) E) = s :=
   RingHom.ext fun a => embOf_coe s a
 
 omit [IsCMField E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `(embOf_comp s).symm`. Introduce and unpack `rfl`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (embOf_comp _)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem embOf_eq_iff (s : 𝓞 E →+* ℂ) (t : E →+* ℂ) :
     embOf s = t ↔ s = t.comp (algebraMap (𝓞 E) E) := by
@@ -41,9 +41,9 @@ private theorem embOf_eq_iff (s : 𝓞 E →+* ℂ) (t : E →+* ℂ) :
     exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (embOf_comp _)
 
 /- English proof (translation)
-Use `UpperTheory.trace_eq_sum_re_cm_type (fun τ => embOf (F.σ τ)) ?_ ?_ x` and prove the remaining obligations. Introduce `a b hab`. Apply `F.cm.1` to reduce the goal to its premises. Rewrite using `[← embOf_comp (F.σ a), ← embOf_comp (F.σ b)]`. Conclude with `congrArg (fun t : E →+* ℂ => t.comp (algebraMap (𝓞 E) E)) hab`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Simplify using `only [embOf_eq_iff, RingHom.comp_assoc]`. Conclude with `F.cm.2 _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trace_sum (F : UnivFam E Ψ j j' n g Λ) (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ τ, 2 * (embOf (F.σ τ) x).re := by
@@ -57,16 +57,16 @@ private theorem trace_sum (F : UnivFam E Ψ j j' n g Λ) (x : E) :
     exact F.cm.2 _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Conclude with `C.bas_eq k τ i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem vec_bas (C : LatEmb F) (k : Fin (2 * g)) : C.bas k = C.vec (C.lam k) := by
   funext τ i
   exact C.bas_eq k τ i
 
 /- English proof (translation)
-Set `v : Λ →+ (Ψ → Fin (j + j') → ℂ)` to `{ toFun := C.vec map_zero' := by funext τ i; simp [LatEmb.vec] map_add' := fun a b => by funext τ i; simp [LatEmb.vec] }`. Establish `key : ((C.perExt R).toAddMonoidHom.comp v).toIntLinearMap = R.P.toIntLinearMap`. Use `C.lam.ext fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C.perExt R (C.vec (C.lam k)) = R.P (C.lam k)`. Rewrite using `[← vec_bas, LatEmb.perExt, Module.Basis.constr_basis]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.congr_fun key x`.
+A detailed English derivation is pending.
 -/
 private theorem per_vec (C : LatEmb F) (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.vec x) = R.P x := by
   let v : Λ →+ (Ψ → Fin (j + j') → ℂ) :=
@@ -80,9 +80,9 @@ private theorem per_vec (C : LatEmb F) (R : RiemLat E g Λ) (x : Λ) : C.perExt 
   exact LinearMap.congr_fun key x
 
 /- English proof (translation)
-Set `D : (Ψ → Fin (j + j') → ℂ) →ₗ[ℝ] (Ψ → Fin (j + j') → ℂ)` to `{ toFun := fun y τ => F.σ τ a • y τ map_add' := fun y y' => by funext τ; simp map_smul' := fun r y => by funext τ; simp [smul_comm r] }`. Establish `key : (C.perExt R).comp D = ((R.B a).restrictScalars ℝ).comp (C.perExt R)`. Use `C.bas.ext fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C.perExt R (fun τ => F.σ τ a • C.bas k τ) = R.B a (C.perExt R (C.bas k))`. Rewrite using `[vec_bas, per_vec, ← R.act, ← per_vec C]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ i`. Simplify using `[LatEmb.vec, C.e_smul, embOf_coe]`. Conclude with `LinearMap.congr_fun key y`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem per_act (C : LatEmb F) (R : RiemLat E g Λ) (a : 𝓞 E) (y : Ψ → Fin (j + j') → ℂ) :
     C.perExt R (fun τ => F.σ τ a • y τ) = R.B a (C.perExt R y) := by
@@ -100,7 +100,7 @@ private theorem per_act (C : LatEmb F) (R : RiemLat E g Λ) (a : 𝓞 E) (y : Ψ
   exact LinearMap.congr_fun key y
 
 /- English proof (translation)
-Rewrite using `[sesq_eq_sum C.h.toSesq (Pi.basisFun E (Fin (j + j')))]`. Simplify using `only [map_sum, map_mul, embedding_conj, Pi.basisFun_repr, dotProduct, mulVec, Finset.mul_sum, LatEmb.gr, LatEmb.vec, Matrix.map_apply, Pi.star_apply, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem sesq_emb (C : LatEmb F) (τ : Ψ) (x y : Λ) :
     embOf (F.σ τ) (C.h.toSesq (C.e y) (C.e x)) = star (C.vec y τ) ⬝ᵥ (C.gr τ *ᵥ C.vec x τ) := by
@@ -110,13 +110,11 @@ private theorem sesq_emb (C : LatEmb F) (τ : Ψ) (x y : Λ) :
   rfl
 
 /- English proof (translation)
-Set `b₁ : (Ψ → Fin (j + j') → ℂ) →ₗ[ℝ] (Ψ → Fin (j + j') → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun y y' => (C.perExt R y ⬝ᵥ R.Hm *ᵥ star (C.perExt R y')).im) (fun a b c => by simp [add_dotProduct]) (fun r a c => by simp [smul_dotProduct]) (fun a b c => by simp [mulVec_add, dotProduct_add]) (fun r a c => by simp [star_smul, mulVec_smul, dotProduct_smul])`. Set `b₂ : (Ψ → Fin (j + j') → ℂ) →ₗ[ℝ] (Ψ → Fin (j + j') → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun y y' => C.Fm y y') (fun a b c => by`. Simplify using `only [LatEmb.Fm, Pi.add_apply, mulVec_add, dotProduct_add, mul_add, Complex.add_re, Finset.sum_add_distrib])`. Use the proof step `(fun r a c => by`. Simplify using `only [LatEmb.Fm, Pi.smul_apply, mulVec_smul, dotProduct_smul, mul_smul_comm, Complex.smul_re, Finset.smul_sum])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun a b c => by`. Simplify using `only [LatEmb.Fm, Pi.add_apply, star_add, add_dotProduct, mul_add, Complex.add_re, Finset.sum_add_distrib])`. Use the proof step `(fun r a c => by`. Simplify using `only [LatEmb.Fm, Pi.smul_apply, star_smul, star_trivial, smul_dotProduct, mul_smul_comm, Complex.smul_re, Finset.smul_sum])`. Establish `key : b₁ = b₂`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext_basis C.bas C.bas fun k l => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(C.perExt R (C.bas k) ⬝ᵥ R.Hm *ᵥ star (C.perExt R (C.bas l))).im = C.Fm (C.bas k) (C.bas l)`. Rewrite using `[vec_bas, vec_bas, per_vec, per_vec, R.im, hR]`. Establish `h1` using `congrArg (fun q : ℚ => (q : ℝ)) (C.form_eq (C.lam k) (C.lam l))`. Simplify using `only [Rat.cast_intCast] at h1`.
-
-Rewrite using `[h1, trace_sum F]`. Simplify using `only [LatEmb.Fm, map_mul, sesq_emb]`. Conclude with `LinearMap.congr_fun₂ key y y'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem per_im (C : LatEmb F) (R : RiemLat E g Λ) (hR : R.form = F.form)
     (y y' : Ψ → Fin (j + j') → ℂ) :
@@ -152,9 +150,9 @@ private theorem per_im (C : LatEmb F) (R : RiemLat E g Λ) (hR : R.form = F.form
   exact LinearMap.congr_fun₂ key y y'
 
 /- English proof (translation)
-Establish `h` using `isHermitianFor_gram C.h (Pi.basisFun E (Fin (j + j')))`. Use extensionality with `a b`. Establish `h1` using `congrArg (embOf (F.σ τ)) (congrFun (congrFun h a) b)`. Simplify using `only [transpose_apply, Matrix.map_apply] at h1`. Simplify using `only [conjTranspose_apply, LatEmb.gr, Matrix.map_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1]`. Conclude with `(embedding_conj (embOf (F.σ τ)) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gr_herm (C : LatEmb F) (τ : Ψ) : (C.gr τ).IsHermitian := by
   have h := isHermitianFor_gram C.h (Pi.basisFun E (Fin (j + j')))
@@ -166,7 +164,7 @@ private theorem gr_herm (C : LatEmb F) (τ : Ψ) : (C.gr τ).IsHermitian := by
   exact (embedding_conj (embOf (F.σ τ)) _).symm
 
 /- English proof (translation)
-Unfold `LatEmb.sgr Matrix.IsHermitian`. Rewrite using `[conjTranspose_smul, (gr_herm C τ).eq]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sgr_herm (C : LatEmb F) (τ : Ψ) : (C.sgr τ).IsHermitian := by
   unfold LatEmb.sgr Matrix.IsHermitian
@@ -174,9 +172,9 @@ private theorem sgr_herm (C : LatEmb F) (τ : Ψ) : (C.sgr τ).IsHermitian := by
   simp
 
 /- English proof (translation)
-Establish `h` using `(isUnit_det_gram C.h (Pi.basisFun E (Fin (j + j')))).map (embOf (F.σ τ))`. Rewrite `h` using `[RingHom.map_det]`. Establish `he : C.eps τ ≠ 0`. Introduce `h0`. Use `C.eps_sq τ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Evaluate the numerical expressions using `at this`. Rewrite using `[LatEmb.sgr, det_smul]`. Conclude with `(IsUnit.mk0 _ (pow_ne_zero _ (Complex.ofReal_ne_zero.2 he))).mul h`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sgr_unit (C : LatEmb F) (τ : Ψ) : IsUnit (C.sgr τ).det := by
   have h := (isUnit_det_gram C.h (Pi.basisFun E (Fin (j + j')))).map (embOf (F.σ τ))
@@ -191,9 +189,9 @@ private theorem sgr_unit (C : LatEmb F) (τ : Ψ) : IsUnit (C.sgr τ).det := by
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[← per_act, ← map_smul, ← map_smul, ← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.single_eq_same, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im (F.σ τ' a)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem per_single (C : LatEmb F) (R : RiemLat E g Λ) (τ : Ψ) (a : 𝓞 E) (y : Fin (j + j') → ℂ) :
     R.B a (C.perExt R (Pi.single τ y)) =
@@ -214,21 +212,19 @@ end UpperTheory.Reformulated.B.Gwb8
 
 open UpperTheory.Reformulated.B.Gwb8 Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GlobalTheory.CompanionTheory.Ar.Cusp.Dict in
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C R hR hs τ`. Set `p : (Fin (j + j') → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `(C.perExt R).comp (LinearMap.single ℝ (fun _ : Ψ => Fin (j + j') → ℂ) τ)`. Establish `hp : ∀ y, p y = C.perExt R (Pi.single τ y)` using `fun _ => rfl`. Establish `hB : ∀ a y, R.B a (p y) = ((F.σ τ a).re : ℂ) • p y + ((F.σ τ a).im : ℂ) • p (Complex.I • y)` using `fun a y => per_single C R τ a y`. Establish `hI : ∀ y : Fin (j + j') → ℂ, p (Complex.I • Complex.I • y) = -p y` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul, map_neg]`. Take `⟨K, K', h1, h2, h3, h4, h5, h6, h7⟩` from `UpperTheory.hermitian_positive_symplectic p R.Hm (C.sgr τ) C.c (eigSp R.B (F.σ τ)) (eigSp R.B ((starRingEnd ℂ).comp (F.σ τ))) R.pos (sgr_unit C τ) C.c_pos (fun y y' => by`. Rewrite using `[hp, hp, per_im C R hR, LatEmb.Fm, Finset.sum_eq_single τ]`. Simplify using `only [Pi.single_eq_same, C.xi_eq, LatEmb.sgr, smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.ofReal_mul, mul_assoc]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_eq_of_ne hb]`. Use the proof step `simp)`. Use the proof step `(hs τ).1 (hs τ).2`. Use the proof step `(fun y => by`. Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_sub, map_smul, hB, hI]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `a`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, Pi.zero_apply, smul_eq_mul]`. Establish `e` using `Complex.re_add_im (F.σ τ a)`. Take the linear combination `(p y i - Complex.I * p (Complex.I • y) i) * e + (((F.σ τ a).im : ℂ) * p (Complex.I • y) i) * Complex.I_mul_I)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `(fun y => by`. Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, map_add, map_smul, hB, hI]`. Introduce `a`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, Pi.zero_apply, smul_eq_mul, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `e : ((F.σ τ a).re : ℂ) - ((F.σ τ a).im : ℂ) * Complex.I = starRingEnd ℂ (F.σ τ a)`. Apply the tactic sequence `apply Complex.ext <;> simp`. Take the linear combination `(p y i + Complex.I * p (Complex.I • y) i) * e + (((F.σ τ a).im : ℂ) * p (Complex.I • y) i) * Complex.I_mul_I)`. Take `⟨A, hA, hK, hK'⟩` from `UpperTheory.signature_block_diagonal (C.sgr τ) K K' (sgr_herm C τ) h1 h2 h5 h6 h7`. Use `⟨A, hA, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 _ (hK v)` as an intermediate fact. Rewrite `this` using `[hp, hp]`. Rewrite using `[LatEmb.pPart]`. Use `smul_zero (1 / 2 : ℂ)` and compare the differences between its conclusion and the goal. Use `h4 _ (hK' v)` as an intermediate fact.
-
-Rewrite `this` using `[hp, hp]`. Rewrite using `[LatEmb.pBar]`. Use `smul_zero (1 / 2 : ℂ)` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gwb8.exists_adapted_at :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {Ψ : Type}

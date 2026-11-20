@@ -6,15 +6,13 @@ open Finset Matrix PositivityTheory.RgHe.Frame
 namespace GlobalTheory.CompanionTheory.RgHeFrame
 
 /- English proof (translation)
-Use `set D : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ := diagonal (fun i => ((d i : ℝ) : ℂ)) with hD`. Use `set B : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ := Matrix.reindex e e (Matrix.fromBlocks Y 0 0 0) with hB`. Establish `h1 : g * D * g⁻¹ = X`. Rewrite using `[← hX, Matrix.mul_assoc, Matrix.mul_nonsing_inv g hg, Matrix.mul_one]`. Establish `h2 : trace (D * (g⁻¹ * B * g)) = trace (X * B)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Establish `: D * (g⁻¹ * B * g) = (D * g⁻¹ * B) * g`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Establish `h3 : trace (X * B) = ∑ u, ∑ w, X (e u) (e w) * (Matrix.fromBlocks Y 0 0 0 : Matrix (Fin n ⊕ Unit) (Fin n ⊕ Unit) ℂ) w u`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply]`. Rewrite using `[← Equiv.sum_comp e]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Equiv.sum_comp e]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[hB, Matrix.reindex_apply]`. Rewrite using `[h3]`. Simplify using `only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, hb]`.
-
-Simplify using `[Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_diagonal_block_conjugate (n : ℕ) (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (d : Fin (n + 1) → ℝ) (d' : Fin n → ℝ)
     (g X : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (hg : IsUnit g.det)

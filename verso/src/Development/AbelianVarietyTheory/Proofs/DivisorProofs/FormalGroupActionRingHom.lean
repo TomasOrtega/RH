@@ -6,7 +6,7 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.OrbFinAfFixed
 
 /- English proof (translation)
-Establish `h : ∀ᶠ w in (Filter.cofinite : Filter (HeightOneSpectrum ℤ)), algebraMap ℚ (FiniteAdeleRing ℤ ℚ) q w ∈ w.adicCompletionIntegers ℚ` using `(algebraMap ℚ (FiniteAdeleRing ℤ ℚ) q).2`. Establish `h2 : ∀ᶠ w in (Filter.cofinite : Filter (HeightOneSpectrum ℤ)), algebraMap ℚ (w.adicCompletion ℚ) q ∈ w.adicCompletionIntegers ℚ` using `h.mono fun w hw => by rwa [FiniteAdeleRing.algebraMap_apply] at hw`. Conclude with `(Subtype.val_injective.tendsto_cofinite).eventually h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rat_eventually_int (p : ℕ) (q : ℚ) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)),
@@ -20,14 +20,14 @@ theorem rat_eventually_int (p : ℕ) (q : ℚ) :
   exact (Subtype.val_injective.tendsto_cofinite).eventually h2
 
 /- English proof (translation)
-Simplify using `[basV, Algebra.TensorProduct.basis_repr_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basV_repr_one_tmul (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) (c : G.C) (i) :
     (basV G v).repr ((1 : Qv v) ⊗ₜ[ℚ] c) i = algebraMap ℚ (Qv v) ((Module.finBasis ℚ G.C).repr c i) := by
   simp [basV, Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Introduce `p _ G c`. Establish `h : ∀ i, ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), algebraMap ℚ (Qv v) ((Module.finBasis ℚ G.C).repr c i) ∈ v.1.adicCompletionIntegers ℚ` using `fun i => rat_eventually_int p _`. Use `(Filter.eventually_all.2 h).mono fun v hv i => ?_` and prove the remaining obligations. Rewrite using `[basV_repr_one_tmul]`. Conclude with `hv i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntV_one_tmul_eventually : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (c : G.C),
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), IsIntV G v ((1 : Qv v) ⊗ₜ[ℚ] c) := by

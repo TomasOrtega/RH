@@ -17,7 +17,7 @@ namespace GlobalTheory.Mum.EndModel
 open ReciprocityTheory.ChartRestriction.G.Out.InhTate
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, GlobalTheory.BoxPowerProbe.rosati_tate, fun _ => (Category.comp_id _).symm, fun _ => (Category.comp_id _).symm, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.BoxPowerProbe.tauBal_tate_iff _ _).2 fun y y' => by show m * y * y' = y * (m * y'); ring`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem endData_tate (m : ℤ) :
     EndData tatePre (𝟙 _) (𝟙 _) (AddMonoidHom.mulLeft m) (AddMonoidHom.mulLeft m) := by
@@ -27,7 +27,7 @@ theorem endData_tate (m : ℤ) :
     show m * y * y' = y * (m * y'); ring
 
 /- English proof (translation)
-Introduce `h` and use `by have := (GlobalTheory.BoxPowerProbe.tauBal_tate_iff _ _).1 h.2.2.2.2.2 1 1 change (0 : ℤ) * 1 = 1 * 1 at this simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_endData_tate :
     ¬ EndData tatePre (𝟙 _) (𝟙 _) 0 (AddMonoidHom.id _) := fun h => by
@@ -36,7 +36,7 @@ theorem not_endData_tate :
   simp at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨io.onB.hom a, io.onB.hom (star a), io.onB.rosati a, io.c_lin a, io.c_lin (star a), io.tau_bal a⟩`.
+Supply the required witnesses or components.
 -/
 theorem endData_of_oAct {R : Type} [CommRing R] [IsDomain R] (O : Type) [Ring O] [StarRing O] (D : DegPre R)
     [Module O D.X] (io : D.OAct O) (a : O) :
@@ -48,23 +48,23 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I} {A
   {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.LinearUnifCheck.torusEndOf_iff _ _).2 fun χ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem torusEndOf_id {S : Scheme.{0}} (X : Type) [AddCommGroup X] :
     TorusEndOf X (AddMonoidHom.id X) (𝟙 (splitTorus S X)) :=
   (GlobalTheory.LinearUnifCheck.torusEndOf_iff _ _).2 fun χ => by simp
 
 /- English proof (translation)
-Use `⟨inferInstance, fun e => by simpa using (inferInstance : IsMonHom (𝟙 _)), fun e => by simp, fun e => by simp, fun e => ⟨𝟙 _, torusEndOf_id _, by simp⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem linEnd_id (U : UnifPre I D A G) : LinEnd U (𝟙 _) (AddMonoidHom.id _) (𝟙 G) := by
   refine ⟨inferInstance, fun e => by simpa using (inferInstance : IsMonHom (𝟙 _)), fun e => by simp,
     fun e => by simp, fun e => ⟨𝟙 _, torusEndOf_id _, by simp⟩⟩
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [thickMap, pullback.map, Category.assoc] erw [pullback.lift_fst, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst_assoc]`. Both sides reduce to the same expression. Simplify using `only [thickMap, pullback.map, Category.assoc] erw [pullback.lift_snd, pullback.lift_snd, pullback.lift_snd]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `erw [pullback.lift_snd_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_map {G H : Over (Sp R)} (b : G ⟶ H) (e : ℕ) :
     thickMap R I e G ≫ ((Over.pullback (thick R I (e + 1))).map b).left =
@@ -79,7 +79,7 @@ theorem thickMap_map {G H : Over (Sp R)} (b : G ⟶ H) (e : ℕ) :
     erw [pullback.lift_snd_assoc]
 
 /- English proof (translation)
-Use `ιG.hom a` as an intermediate fact. Use `⟨this, fun e => inferInstance, fun e => thickMap_map _ e, fun e => hl.q_lin e a, fun e => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, hi⟩` from `hl.i_lin e a`. Conclude with `⟨t, ht, hi⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem linEnd_of_oLinear (U : UnifPre I D A G) (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X]
     (ιD : D.OAct O) (ιA : A.OAct O) (ιG : RingAct G O) (hl : U.OLinear O ιD ιA ιG) (a : O) :
@@ -90,7 +90,7 @@ theorem linEnd_of_oLinear (U : UnifPre I D A G) (O : Type) [Ring O] [StarRing O]
   exact ⟨t, ht, hi⟩
 
 /- English proof (translation)
-Use `⟨LB.isLB_linComb hL _ _, fun κ₂ hκ => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.LamPull.lbIso_lam_pull (isGrpPullback_pullback G (jK R)) hL (pull_isLB hL _) ⟨idIso _, idIso_isGen (pull_isLB hL _)⟩ hκ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem extLam_lam (L : LB G.left) (hL : L.IsLB) :
     ExtLam G (L.pull (pullback.fst G.hom (jK R))) (abelian₂ G L) := by
@@ -99,7 +99,7 @@ theorem extLam_lam (L : LB G.left) (hL : L.IsLB) :
     ⟨idIso _, idIso_isGen (pull_isLB hL _)⟩ hκ
 
 /- English proof (translation)
-Take `⟨A, G, _, _, D, U, -, -, hX, -⟩` from `GlobalTheory.TateUnif.exists_unif_rank_one`. Conclude with `⟨A, G, _, _, D, U, linEnd_id _, hX, extLam_lam _ U.LG.isLB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model : ∃ (A : PolAV (Sp (FractionRing (PowerSeries ℚ)))) (G : Over (Sp (PowerSeries ℚ))) (_ : GrpObj G)
     (_ : IsCommMonObj G) (D : DegData (PowerSeries ℚ) (maximalIdeal (PowerSeries ℚ)))

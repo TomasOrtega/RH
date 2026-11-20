@@ -17,9 +17,9 @@ namespace PositivityTheory.Rg.Sw.Glob.AwayPf
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Unfold `evalPoly`. Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂ (RingHom.id ℂ) _ p = MvPolynomial.eval₂ (RingHom.id ℂ) _ p`. Apply `MvPolynomial.eval₂_congr` to reduce the goal to its premises. Introduce `i c hi hc`. Establish `hv : i ∈ p.vars` using `(MvPolynomial.mem_vars i).2 ⟨c, (MvPolynomial.mem_support_iff).2 hc, hi⟩`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `h i.1 (hp i hv)`. Simplify using `only [e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem evalPoly_congr {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) (τ : D.what₂.Tau)
     (hp : ∀ v ∈ p.vars, v.1 ≠ τ) (z z' : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) (h : ∀ τ', τ' ≠ τ → z τ' = z' τ') :
@@ -33,7 +33,7 @@ theorem evalPoly_congr {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fi
   simp only [e]
 
 /- English proof (translation)
-Unfold `gAway`. Use `congr 2`. Use `Finset.sum_congr rfl (fun τ' hτ' => ?_)` and prove the remaining obligations. Rewrite using `[h τ' (Finset.mem_filter.1 hτ').2]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gAway_congr (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) (z z' : D.what₂.Tau → Matrix (Fin V.rank) (Fin n) ℂ) (h : ∀ τ', τ' ≠ τ → z τ' = z' τ') :
@@ -45,9 +45,9 @@ theorem gAway_congr (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau �
   rw [h τ' (Finset.mem_filter.1 hτ').2]
 
 /- English proof (translation)
-Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨p, g, _, hp, rfl⟩` from `hφ`. Simplify using `only`. Establish `hf' : (fun i j => finPart D (x i j)) = (fun i j => finPart D (x' i j))` using `hf`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[evalPoly_congr p τ hp _ _ hx, gAway_congr V l s τ _ _ hx, hf']`. Consider the case `zero => rfl`. Consider the case `add a b _ _ ha hb => simp only [Pi.add_apply, ha, hb]`. Consider the case `smul c a _ ha => simp only [Pi.smul_apply, ha]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem dep (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) {Ψ : Mx D V.rank n → ℂ} (hΨ : Ψ ∈ awayA θ V n l s τ) (x x' : Mx D V.rank n)

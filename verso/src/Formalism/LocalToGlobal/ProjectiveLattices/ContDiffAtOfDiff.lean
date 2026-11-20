@@ -14,9 +14,9 @@ section Deriv
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Unfold `polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hL : (((Finsupp.toMultiset m).toList.map u : List V) : Multiset V) = (Finsupp.toMultiset m).map u`. Rewrite using `[← Multiset.map_coe, Multiset.coe_toList]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hL, mD_coe hθ, lD_eq θ x _ (n := Multiset.card (Finsupp.toMultiset m)) (by rw [List.length_map, Multiset.length_toList])]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[List.get_eq_getElem]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem polyDeriv_eq_mD' {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x) {ι : Type} (P : MvPolynomial ι ℂ)
     (u : ι → V) :
@@ -34,7 +34,7 @@ theorem polyDeriv_eq_mD' {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x)
   simp [List.get_eq_getElem]
 
 /- English proof (translation)
-Rewrite using `[polyDeriv_eq_mD' hθ, polyDeriv_eq_mD' hθ, MvPolynomial.support_rename_of_injective hρ, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hρ h)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_rename_mapDomain ρ hρ, ← Finsupp.toMultiset_map, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_rename {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x) {ι κ : Type} (ρ : ι → κ)
     (hρ : Function.Injective ρ) (P : MvPolynomial ι ℂ) (v : κ → V) :
@@ -46,9 +46,9 @@ theorem polyDeriv_rename {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x)
   rw [MvPolynomial.coeff_rename_mapDomain ρ hρ, ← Finsupp.toMultiset_map, Multiset.map_map]
 
 /- English proof (translation)
-Set `e : W ≃L[ℂ] (Fin (Module.finrank ℂ W) → ℂ)` to `(Module.finBasis ℂ W).equivFun.toContinuousLinearEquiv`. Establish `h1 : Differentiable ℂ (F ∘ e.symm)` using `hF.comp e.symm.differentiable`. Establish `h2 : AnalyticOnNhd ℂ (F ∘ e.symm) Set.univ` using `ReciprocityTheory.AnForm.Osgood.osgood _ _ _ isOpen_univ h1.differentiableOn`. Establish `h3 : ContDiff ℂ ω (F ∘ e.symm)`. Rewrite using `[← contDiffOn_univ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.contDiffOn uniqueDiffOn_univ`. Establish `: F = (F ∘ e.symm) ∘ e` using `by ext y; simp`. Rewrite using `[this]`. Conclude with `(h3.comp e.contDiff).contDiffAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffAt_of_diff {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
     {F : W → ℂ} (hF : Differentiable ℂ F) (x : W) : ContDiffAt ℂ ω F x := by
@@ -71,9 +71,9 @@ section Pi
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `X.eps_add 0 (zero_mem _) 0 (zero_mem _)`. Simplify using `only [add_zero] at h`. Break down `X.eps_pm 0 (zero_mem _) with h1 | h1` into its components or cases. Conclude with `h1`. Rewrite `h` using `[h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `[Hf] at h`.
+A detailed English derivation is pending.
 -/
 theorem eps_zero (X : PT E) : X.eps 0 = 1 := by
   have h := X.eps_add 0 (zero_mem _) 0 (zero_mem _)
@@ -84,11 +84,11 @@ theorem eps_zero (X : PT E) : X.eps 0 = 1 := by
     norm_num [Hf] at h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [eps_zero]`. Consider the case `succ k ih`. Establish `hkx : (k : ℂ) • x ∈ X.L`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nsmul_mem hx k`. Establish `h` using `X.eps_add _ hkx x hx`. Establish `him : (Hf ((k : ℂ) • x) x).im = 0`. Unfold `Hf`. Rewrite using `[Complex.im_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Simplify using `[PiLp.smul_apply, mul_assoc, Complex.mul_conj]`. Rewrite using `[show ((k + 1 : ℕ) : ℂ) • x = (k : ℂ) • x + x by push_cast; rw [add_smul, one_smul], h, ih, him]`. Simplify using `[pow_succ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eps_natSmul (X : PT E) {x : Vsp X.dim} (hx : x ∈ X.L) (k : ℕ) :
     (X.eps ((k : ℂ) • x) : ℝ) = (X.eps x : ℝ) ^ k := by
@@ -107,15 +107,15 @@ theorem eps_natSmul (X : PT E) {x : Vsp X.dim} (hx : x ∈ X.L) (k : ℕ) :
     simp [pow_succ]
 
 /- English proof (translation)
-Use `⟨fun α v => ?_, fun x hx => ?_, fun v w => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Use extensionality with `i`. Simplify using `[act]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hx M`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Unfold `Hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `eps_natSmul X hx M`. Establish `h2 : (X.eps x : ℝ) ^ M = (X.eps x : ℝ) ^ (M ^ 2)`. Break down `X.eps_pm x hx with h1 | h1` into its components or cases. Simplify using `[h1]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[sq, pow_mul]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℝ M with h3 | h3 <;> simp [h3]`. Conclude with `h.trans h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isPi_nat (X : PT E) (M : ℕ) : IsPi X (M ^ 2) ((M : ℂ) • LinearMap.id) := by
   refine ⟨fun α v => ?_, fun x hx => ?_, fun v w => ?_, fun x hx => ?_⟩
@@ -144,11 +144,11 @@ theorem isPi_nat (X : PT E) (M : ℕ) : IsPi X (M ^ 2) ((M : ℂ) • LinearMap.
     exact_mod_cast h.trans h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `h0 : n = 0` using `by omega`. Substitute `h0` using the available equality. Establish `: DF bs = 0`. Unfold `DF`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: (bs j).i = 0`. Assume the negation of the conclusion as `hi`. Conclude with `Fin.elim0 ((bs j).col ⟨0, by omega⟩)`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem one_le_n_of_DF {n nb : ℕ} {dim : (E →+* ℂ) → ℕ} (bs : Fin nb → Block E n dim) (h : 1 ≤ DF bs) :
     1 ≤ n := by
@@ -171,9 +171,9 @@ section Log
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Unfold `dstar`. Establish `h1` using `P.hfr`. Establish `h2` using `P.hm1`. Establish `hf : 0 < PT.f E`. Break down `Nat.eq_zero_or_pos (PT.f E) with h | h` into its components or cases.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[h]`. Simplify using `at h1`. Conclude with `h`. Conclude with `Nat.mul_pos (Nat.mul_pos two_pos hf) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dstar_pos (X : PT E) {dg : ℕ} (P : Par X dg) : 0 < dstar (E := E) P.m := by
   unfold dstar
@@ -186,9 +186,9 @@ theorem dstar_pos (X : PT E) {dg : ℕ} (P : Par X dg) : 0 < dstar (E := E) P.m 
   exact Nat.mul_pos (Nat.mul_pos two_pos hf) h2
 
 /- English proof (translation)
-Establish `hd0 : (0 : ℝ) < (dstar (E` using `E) P.m : ℝ) := by exact_mod_cast dstar_pos X P`. Establish `hd : (0 : ℝ) < 2 * (dstar (E` using `E) P.m : ℝ) := by linarith`. Establish `hB` using `Real.rpow_pos_of_pos hd ((dstar (E := E) P.m : ℝ) / 2)`. Establish `h6 : (0 : ℝ) < 6 * (2 * (dstar (E` using `E) P.m : ℝ)) ^ ((dstar (E := E) P.m : ℝ) / 2) := mul_pos (by norm_num) hB`. Unfold `Par.Jbound`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `mul_pos (mul_pos (mul_pos (pow_pos (by norm_num) _) (pow_pos (inv_pos.2 h6) _)) (pow_pos (by norm_num) _)) (Real.exp_pos _)`.
+A detailed English derivation is pending.
 -/
 theorem jbound_pos (X : PT E) {dg : ℕ} (P : Par X dg) (n : ℕ) : 0 < P.Jbound n := by
   have hd0 : (0 : ℝ) < (dstar (E := E) P.m : ℝ) := by exact_mod_cast dstar_pos X P
@@ -201,31 +201,31 @@ theorem jbound_pos (X : PT E) {dg : ℕ} (P : Par X dg) (n : ℕ) : 0 < P.Jbound
     (pow_pos (by norm_num) _)) (Real.exp_pos _)
 
 /- English proof (translation)
-Establish `hd0 : (1 : ℝ) ≤ (dstar (E` using `E) P.m : ℝ) := by exact_mod_cast dstar_pos X P`. Establish `hd : (0 : ℝ) < 2 * (dstar (E` using `E) P.m : ℝ) := by linarith`. Establish `hB` using `Real.rpow_pos_of_pos hd ((dstar (E := E) P.m : ℝ) / 2)`. Establish `h6 : (0 : ℝ) < 6 * (2 * (dstar (E` using `E) P.m : ℝ)) ^ ((dstar (E := E) P.m : ℝ) / 2) := mul_pos (by norm_num) hB`. Establish `hq1 : (1 : ℝ) ≤ P.q` using `by exact_mod_cast P.hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqpos : (0 : ℝ) < P.q` using `by linarith`. Establish `hlogM : Real.log M = Real.log P.q / 2`. Rewrite using `[hq]`. Use `push_cast`. Rewrite using `[Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hph : 0 ≤ P.ph`. Unfold `Par.ph PT.ph`. Apply the tactic sequence `split_ifs <;> positivity`. Establish `hA : (4 : ℝ)⁻¹ ^ n ≠ 0` using `by positivity`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hBn : (6 * (2 * (dstar (E` using `E) P.m : ℝ)) ^ ((dstar (E := E) P.m : ℝ) / 2))⁻¹ ^ n ≠ 0 := pow_ne_zero _ (inv_ne_zero h6.ne')`. Establish `hC : (2 : ℝ)⁻¹ ^ ((X.r + 2) * dg) ≠ 0` using `by positivity`. Establish `hJ : Real.log (P.Jbound n) = -(n * Real.log 4) - n * (Real.log 6 + (dstar (E` using `E) P.m : ℝ) / 2 * Real.log (2 * (dstar (E := E) P.m : ℝ))) - (((X.r + 2) * dg : ℕ) : ℝ) * Real.log 2 - 2 * Real.pi * n * Cchi (E := E) P.m * P.ph / P.q := by`. Unfold `Par.Jbound`. Rewrite using `[Real.log_mul (mul_ne_zero (mul_ne_zero hA hBn) hC) (Real.exp_pos _).ne', Real.log_mul (mul_ne_zero hA hBn) hC, Real.log_mul hA hBn, Real.log_exp, Real.log_pow, Real.log_pow, Real.log_pow, Real.log_inv, Real.log_inv, Real.log_inv, Real.log_mul (by norm_num) hB.ne', Real.log_rpow …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdg : (1 : ℝ) ≤ dg` using `by exact_mod_cast P.hDF`. Establish `hlogq : 0 ≤ Real.log P.q` using `Real.log_nonneg hq1`. Establish `hfr : (2 : ℝ) ≤ (PT.f E : ℝ) * X.r` using `by exact_mod_cast P.hfr`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfrn : (1 : ℝ) ≤ (PT.f E : ℝ) * X.r * n`. Use `mul_le_mul hfr hn1 (by norm_num) (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h24 : Real.log 24 = Real.log 4 + Real.log 6`. Rewrite using `[← Real.log_mul (by norm_num) (by norm_num)]; norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl2d : 0 ≤ Real.log (2 * (dstar (E` using `E) P.m : ℝ)) := Real.log_nonneg (by linarith)`. Establish `hT : 0 ≤ Real.log 24 + (dstar (E` using `E) P.m : ℝ) / 2 * Real.log (2 * (dstar (E := E) P.m : ℝ)) := by`. Establish `: 0 < Real.log 24` using `Real.log_pos (by norm_num)`. Establish `: 0 ≤ (dstar (E` using `E) P.m : ℝ) / 2 * Real.log (2 * (dstar (E := E) P.m : ℝ)) := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hRR : 0 ≤ RR (E` using `E) := by`. Unfold `RR`. Use `P.hrd` as an intermediate fact. Conclude with `pow_nonneg (by linarith) 7`. Establish `hPP0 : 0 ≤ PP` using `le_trans (by positivity) hPP`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdg2 : (1 : ℝ) ≤ (dg : ℝ) ^ 2` using `one_le_pow₀ hdg`. Establish `hk : 2 * Real.pi * n * Cchi (E` using `E) P.m ≤ 2 * (RR (E := E) * PP * (dg : ℝ) ^ 2) := by`. Unfold `Cchi`. Establish `e1 : 2 * Real.pi * n * (8100 * (P.m : ℝ) ^ 4 * (dstar (E` using `E) P.m : ℝ) ^ 4 * RR (E := E)) = RR (E := E) * (16200 * Real.pi * n * (P.m : ℝ) ^ 4 * (dstar (E := E) P.m : ℝ) ^ 4) := by ring`. Rewrite using `[e1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `mul_le_mul_of_nonneg_left hPP hRR`. Establish `e3 : 0 ≤ RR (E` using `E) * PP := mul_nonneg hRR hPP0`. Establish `e4` using `mul_nonneg e3 (by linarith : (0 : ℝ) ≤ 2 * (dg : ℝ) ^ 2 - 1)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : 2 * Real.pi * n * Cchi (E` using `E) P.m * P.ph / P.q ≤ 2 * (RR (E := E) * PP * (dg : ℝ) ^ 2 / P.q * P.ph) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show 2 * (RR (E := E) * PP * (dg : ℝ) ^ 2 / P.q * P.ph) = 2 * (RR (E := E) * PP * (dg : ℝ) ^ 2) * P.ph / P.q by ring]`. Conclude with `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hk hph) hqpos.le`. Establish `e1 : (dg : ℝ) * (Real.log P.q / 2) ≤ (1 / 2) * ((PT.f E : ℝ) * X.r * n * Real.log P.q) * dg`. Use `mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ dg) hlogq) (sub_nonneg.2 hfrn)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (1 / 2 : ℝ) * n * (Real.log 24 + (dstar (E` using `E) P.m : ℝ) / 2 * Real.log (2 * (dstar (E := E) P.m : ℝ))) ≤ (1 / 2) * (n * (Real.log 24 + (dstar (E := E) P.m : ℝ) / 2 * Real.log (2 * (dstar (E := E) P.m : ℝ)))) * dg := by`. Use `mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ n) hT) (sub_nonneg.2 hdg)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4` using `mul_le_mul_of_nonneg_right hP14 (by linarith : (0 : ℝ) ≤ dg)`. Rewrite using `[hJ, hlogM, hcc]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Rewrite `e2`, `e4` using `[h24]`. Combine the linear relations using `[e1, e2, e3, e4]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_bound (X : PT E) {dg : ℕ} (P : Par X dg) (n : ℕ) (hn : 1 ≤ n) (M : ℕ) (hq : P.q = M ^ 2)
     (tableLineDegreeFive cc PP : ℝ)

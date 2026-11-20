@@ -9,7 +9,7 @@ private lemma pt_val {n : ℕ} (θ : Fin n → UnitAddCircle) (i : Fin n) :
     ((pt θ i : ℂˣ) : ℂ) = ((AddCircle.toCircle (θ i) : Circle) : ℂ) := rfl
 
 /- English proof (translation)
-Simplify using `only [pt_val]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma pt_cont {n : ℕ} (i : Fin n) :
     Continuous fun θ : Fin n → UnitAddCircle => ((pt θ i : ℂˣ) : ℂ) := by
@@ -17,7 +17,7 @@ private lemma pt_cont {n : ℕ} (i : Fin n) :
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[pt_val]`. Conclude with `Circle.norm_coe _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pt_norm {n : ℕ} (θ : Fin n → UnitAddCircle) (i : Fin n) :
     ‖((pt θ i : ℂˣ) : ℂ)‖ = 1 := by
@@ -25,11 +25,11 @@ private lemma pt_norm {n : ℕ} (θ : Fin n → UnitAddCircle) (i : Fin n) :
   exact Circle.norm_coe _
 
 /- English proof (translation)
-Unfold `half`. Use `continuous_finset_prod _ (fun p _ => ?_)` and prove the remaining obligations. Establish `h1` using `hc p.1`. Establish `h2` using `hc p.2`. Establish `hne : ∀ x, ((u x p.2 : ℂˣ) : ℂ) ≠ 0` using `fun x => Units.ne_zero _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Continuous fun x => ((u x p.1 : ℂˣ) : ℂ) / ((u x p.2 : ℂˣ) : ℂ)` using `h1.div h2 hne`. Use `(continuous_const.sub hq).div (continuous_const.sub (continuous_const.mul hq)) (fun x => ?_)` and prove the remaining obligations. Introduce `h`. Establish `hnq : ‖((u x p.1 : ℂˣ) : ℂ) / ((u x p.2 : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[norm_div, hn, hn, div_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `congrArg norm (sub_eq_zero.mp h).symm`. Rewrite `h'` using `[norm_one, norm_mul, hnq, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ht0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma half_cont {X : Type*} [TopologicalSpace X] {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t < 1) {n : ℕ}
     (u : X → Fin n → ℂˣ) (hc : ∀ i, Continuous fun x => ((u x i : ℂˣ) : ℂ))
@@ -50,13 +50,11 @@ private lemma half_cont {X : Type*} [TopologicalSpace X] {t : ℝ} (ht0 : 0 ≤ 
   linarith
 
 /- English proof (translation)
-Introduce `n t ht0 ht1`. Establish `hinvc : ∀ i, Continuous fun θ : Fin n → UnitAddCircle => (((pt θ)⁻¹ i : ℂˣ) : ℂ)`. Introduce `i`. Simplify using `only [Pi.inv_apply, Units.val_inv_eq_inv_val]`. Conclude with `(pt_cont i).inv₀ (fun θ => Units.ne_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinvn : ∀ (θ : Fin n → UnitAddCircle) i, ‖(((pt θ)⁻¹ i : ℂˣ) : ℂ)‖ = 1`. Introduce `θ i`. Simplify using `only [Pi.inv_apply, Units.val_inv_eq_inv_val, norm_inv, pt_norm, inv_one]`. Use `⟨half_cont ht0 ht1 _ pt_cont pt_norm, ?_, ?_, pt_norm⟩` and prove the remaining obligations. Conclude with `(half_cont ht0 ht1 _ pt_cont pt_norm).mul (half_cont ht0 ht1 _ hinvc hinvn)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `only [evalAt_apply, monomialChar_apply, Units.val_zpow_eq_zpow_val]`. Unfold `Finsupp.sum`. Use `continuous_finset_sum _ (fun l _ => ?_)` and prove the remaining obligations. Use `continuous_const.mul (continuous_finset_prod _ (fun i _ => ?_))` and prove the remaining obligations.
-
-Conclude with `(pt_cont i).zpow₀ _ (fun θ => Or.inl (Units.ne_zero _))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.densCont_pf :
     UpperTheory.Gal.Gen.DensCont := by

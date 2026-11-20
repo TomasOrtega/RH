@@ -15,7 +15,7 @@ open Formalism.FourierDecayAlt.P.CutMP.Gauge Formalism.FourierDecayAlt.P.CutMP.G
 noncomputable section
 
 /- English proof (translation)
-Establish `hmem : (fun _ : MA.Qp P.r P.TT => c) ∈ MA.smSub P.r P.TT` using `(MA.smSub P.r P.TT).algebraMap_mem c`. Unfold `fnZ MA.toSm`. Rewrite using `[dif_pos hmem]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -29,7 +29,7 @@ theorem fnZ_const_mul (P : M.Par) (c : ℂ) (f : MA.SmQ P.r P.TT) : fnZ P (fun _
   simp
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun g : MA.SmQ P.r P.TT => (g : MA.Qp P.r P.TT → ℂ) q0) h`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sm_const_inj (P : M.Par) (q0 : MA.Qp P.r P.TT) {c c' : ℂ}
     (h : c • (1 : MA.SmQ P.r P.TT) = c' • (1 : MA.SmQ P.r P.TT)) : c = c' := by
@@ -37,9 +37,9 @@ theorem sm_const_inj (P : M.Par) (q0 : MA.Qp P.r P.TT) {c c' : ℂ}
   simpa using h1
 
 /- English proof (translation)
-Unfold `MA.SS`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[zero_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ss_fst_apply (P : M.Par) (l : ℕ) (τ σ : M.Ty P) (f : MA.SmQ P.r P.TT) :
     ((MA.SS P (MA.DQ P) l) τ σ).1 f =
@@ -52,9 +52,9 @@ theorem ss_fst_apply (P : M.Par) (l : ℕ) (τ σ : M.Ty P) (f : MA.SmQ P.r P.TT
     rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_apply]`. Unfold `MA.SS`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Use `show ((algebraMap ℂ (MA.DQ P).Pr _).2.unop) f = _ show (algebraMap ℂ (Module.End ℂ (MA.DQ P).R) (starRingEnd ℂ _)) f = _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Complex.conj_ofReal]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem star_ss_fst_apply (P : M.Par) (l : ℕ) (τ σ : M.Ty P) (f : MA.SmQ P.r P.TT) :
     ((star (MA.SS P (MA.DQ P) l)) τ σ).1 f =
@@ -70,99 +70,93 @@ theorem star_ss_fst_apply (P : M.Par) (l : ℕ) (τ σ : M.Ty P) (f : MA.SmQ P.r
   · simp; rfl
 
 /- English proof (translation)
-The claim follows from `map_smul x.1 c f`.
+A detailed English derivation is pending.
 -/
 theorem pr_fst_smul (P : M.Par) (x : (MA.DQ P).Pr) (c : ℂ) (f : MA.SmQ P.r P.TT) :
     x.1 (c • f) = c • x.1 f := map_smul x.1 c f
 
 /- English proof (translation)
-The claim follows from `map_smul ((MA.DQ P).dzP).1 c f`.
+A detailed English derivation is pending.
 -/
 theorem dzQ_smul (P : M.Par) (c : ℂ) (f : MA.SmQ P.r P.TT) : dzQ P (c • f) = c • dzQ P f := map_smul ((MA.DQ P).dzP).1 c f
 
 /- English proof (translation)
-The claim follows from `map_smul ((MA.DQ P).dzbP).1 c f`.
+A detailed English derivation is pending.
 -/
 theorem dzbQ_smul (P : M.Par) (c : ℂ) (f : MA.SmQ P.r P.TT) : dzbQ P (c • f) = c • dzbQ P f := map_smul ((MA.DQ P).dzbP).1 c f
 
 /- English proof (translation)
-The claim follows from `map_smul x.1 c f`.
+A detailed English derivation is pending.
 -/
 theorem mulQ_smul (P : M.Par) (x : (MA.DQ P).Pr) (c : ℂ) (f : MA.SmQ P.r P.TT) :
     mulQ P x (c • f) = c • mulQ P x f := map_smul x.1 c f
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk hn s t hL hst`. Take `⟨hpl, hk2, hcs, hLv, hSL, hRel, hQ⟩` from `hH`. Establish `hP : P.OK` using `hpl.1`. Establish `hTT : 0 < P.TT` using `mul_pos hP.T_pos hP.T'_pos`. Set `q0 : MA.Qp P.r P.TT` to `⟨((fun _ => 1), ((Real.sqrt P.TT + 1 : ℝ) : ℂ)), ⟨fun _ => one_ne_zero, ann_pt P hTT⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `CV : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' → (M.Ty P → ℂ) → Prop` to `fun Ψ c => trR P Bs e Ψ = fun σ => c σ • (1 : MA.SmQ P.r P.TT)`. Establish `cv_eq : ∀ Ψ c c', CV Ψ c → CV Ψ c' → c = c'`. Introduce `Ψ c c' h1 h2`. Use function extensionality and compare the values at `σ`. Conclude with `sm_const_inj P q0 (congrFun (h1.symm.trans h2) σ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `cv_SS : ∀ l ∈ Icc 1 (P.k - 1), ∀ Ψ c, CV Ψ c → CV ((d.SS l).1 Ψ) (fun τ => ∑ σ, s l τ σ * c σ)`. Introduce `l hl Ψ c h`. Use function extensionality and compare the values at `τ`. Rewrite using `[(hL l hl Ψ τ).1, h, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fnZ_const_mul, smul_smul]`. Establish `cv_St : ∀ l ∈ Icc 1 (P.k - 1), ∀ Ψ c, CV Ψ c → CV ((star (d.SS l)).1 Ψ) (fun τ => ∑ σ, t l τ σ * c σ)`. Introduce `l hl Ψ c h`. Use function extensionality and compare the values at `τ`. Rewrite using `[(hL l hl Ψ τ).2, h, Finset.sum_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[fnZ_const_mul, smul_smul]`. Establish `cv_K : ∀ f Ψ c, CV Ψ c → CV ((d.κ f).1 Ψ) (fun τ => f τ * c τ)`. Introduce `f Ψ c h`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk f Ψ, actA_kap, h, smul_smul]`. Use `choose U hU using fun ρ : M.Ty P => SSTr.exists_tr P Bs hpl hk2 e he (fun τ => if τ = ρ then (1 : MA.SmQ P.r P.TT) else 0)`. Establish `cvU : ∀ ρ, CV (U ρ) (fun τ => if τ = ρ then 1 else 0)`. Introduce `ρ`. Use `show trR P Bs e (U ρ) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[(hU ρ).1]`. Use function extensionality and compare the values at `τ`. Apply the tactic sequence `by_cases h : τ = ρ <;> simp [h]`. Establish `F1 : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ τ, ¬ M.Up P l ρ τ → s l τ ρ = 0`. Introduce `l hl ρ τ hnu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hr` using `hRel.2.2.2.1 l (fun σ => if σ = ρ then 1 else 0) (fun σ => if M.Up P l ρ σ then 1 else 0) (by`. Introduce `σ σ' hU'`. Distinguish the cases in `h : σ = ρ`. Substitute `h` using the available equality. Simplify using `[hU']`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ¬ M.Up P l ρ σ'` using `fun h2 => h (Formalism.FourierDecayAlt.P.Mx4.up_inj P l σ' σ ρ hU' h2)`. Simplify using `[h, this])`. Establish `c1` using `cv_K (fun σ => if M.Up P l ρ σ then 1 else 0) _ _ (cv_SS l hl _ _ (cvU ρ))`. Establish `c2` using `cv_SS l hl _ _ (cv_K (fun σ => if σ = ρ then 1 else 0) _ _ (cvU ρ))`. Establish `e12 : (d.κ fun σ => if M.Up P l ρ σ then (1 : ℂ) else 0).1 ((d.SS l).1 (U ρ)) = (d.SS l).1 ((d.κ fun σ => if σ = ρ then (1 : ℂ) else 0).1 (U ρ))` using `congrArg (fun a : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => a.1 (U ρ)) hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `c1` using `[e12]`. Establish `h` using `congrFun (cv_eq _ _ _ c1 c2) τ`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, if_neg hnu, zero_mul] at h`. Rewrite using `[← h]`. Establish `F2 : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → star (s l ρ' ρ) * s l ρ' ρ = ((M.Nrm P l ρ : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l hl ρ ρ' hU1`. Establish `hN` using `hRel.2.2.2.2.2 l hl`. Establish `c1` using `cv_St l hl _ _ (cv_SS l hl _ _ (cvU ρ))`. Establish `c2` using `cv_K (fun σ => ((M.Nrm P l σ : ℝ) : ℂ)) _ _ (cvU ρ)`. Establish `e12 : (star (d.SS l)).1 ((d.SS l).1 (U ρ)) = (d.κ fun σ => ((M.Nrm P l σ : ℝ) : ℂ)).1 (U ρ)` using `congrArg (fun a : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => a.1 (U ρ)) hN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `c1` using `[e12]`. Establish `h` using `congrFun (cv_eq _ _ _ c1 c2) ρ`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite using `[← h, Finset.sum_eq_single ρ', hst l hl ρ ρ']`. Introduce `σ _ hσ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ¬ M.Up P l ρ σ` using `fun h2 => hσ (Formalism.FourierDecayAlt.P.Mx4.up_fun P l ρ σ ρ' h2 hU1)`. Rewrite using `[F1 l hl ρ σ this, mul_zero]`. Introduce `h0`. Conclude with `absurd (Finset.mem_univ _) h0`. Establish `L1 : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρl : M.Ty P, M.Up P l ρ ρl → ∀ (g : M.Ty P → ℂ) (c : ℂ), ∑ σ, g σ * (s l σ ρ * c) = g ρl * (s l ρl ρ * c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l hl ρ ρl hU1 g c`. Rewrite using `[Finset.sum_eq_single ρl]`. Introduce `σ _ hσ`. Establish `: ¬ M.Up P l ρ σ` using `fun h2 => hσ (Formalism.FourierDecayAlt.P.Mx4.up_fun P l ρ σ ρl h2 hU1)`. Rewrite using `[F1 l hl ρ σ this, zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h0`. Conclude with `absurd (Finset.mem_univ _) h0`. Establish `hIS : Wd.IsStart d.QQ (M.qC P)`. Establish `h` using `(Formalism.FourierDecayAlt.P.actual_start Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl X).1`. Rewrite `h` using `[show X.QQ = d.QQ from funext hQ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX` using `Formalism.FourierDecayAlt.P.shift_extra P _ d hP hSL hRel hIS`. Establish `F3 : ∀ l ∈ Icc 1 (P.k - 1), ∀ j ∈ Icc 1 (P.k - 1), j ≠ l → ∀ ρ ρl ρj ρlj : M.Ty P, M.Up P l ρ ρl → M.Up P j ρ ρj → M.Up P j ρl ρlj → M.Up P l ρj ρlj → s j ρlj ρl * s l ρl ρ * ((M.rho P ρ j - M.rho P ρ l - 1 : ℝ) : ℂ) = s l ρlj ρj * s j ρj ρ * ((M.rho P ρ j - M.rho P ρ l + 1 : ℝ) …`. Introduce `l hl j hj hjl ρ ρl ρj ρlj h1 h2 h3 h4`. Establish `hc` using `((hX.2 l hl).2 j hj hjl).1`. Establish `c1` using `cv_SS j hj _ _ (cv_SS l hl _ _ (cv_K (fun σ => ((M.rho P σ j - M.rho P σ l - 1 : ℝ) : ℂ)) _ _ (cvU ρ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c2` using `cv_SS l hl _ _ (cv_SS j hj _ _ (cv_K (fun σ => ((M.rho P σ j - M.rho P σ l + 1 : ℝ) : ℂ)) _ _ (cvU ρ)))`. Establish `e12 : (d.SS j).1 ((d.SS l).1 ((d.κ fun σ => ((M.rho P σ j - M.rho P σ l - 1 : ℝ) : ℂ)).1 (U ρ))) = (d.SS l).1 ((d.SS j).1 ((d.κ fun σ => ((M.rho P σ j - M.rho P σ l + 1 : ℝ) : ℂ)).1 (U ρ)))` using `congrArg (fun a : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => a.1 (U ρ)) hc`. Rewrite `c1` using `[e12]`. Establish `h` using `congrFun (cv_eq _ _ _ c1 c2) ρlj`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[L1 l hl ρ ρl h1, L1 j hj ρ ρj h2]`. Rewrite `h` using `[← mul_assoc, ← mul_assoc]`. Conclude with `h`. Set `sq : ℕ → M.Ty P → ℂ` to `fun l ρ => ((Real.sqrt (M.Nrm P l ρ) : ℝ) : ℂ)`. Establish `hpos : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → 0 < M.Nrm P l ρ` using `fun l hl ρ ρ' hU1 => ((Formalism.FourierDecayAlt.P.nrmFacts_statement P hP l hl ρ).1 ρ' hU1).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsq0 : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → sq l ρ ≠ 0`. Introduce `l hl ρ ρ' hU1`. Use `Real.sqrt_pos.2 (hpos l hl ρ ρ' hU1)` as an intermediate fact. Use `show ((Real.sqrt (M.Nrm P l ρ) : ℝ) : ℂ) ≠ 0`. Conclude with `this.ne'` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `w : ℕ → M.Ty P → M.Ty P → ℂ` to `fun l ρ ρ' => s l ρ' ρ / sq l ρ`. Establish `hsw : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → s l ρ' ρ = w l ρ ρ' * sq l ρ`. Introduce `l hl ρ ρ' hU1`. Conclude with `(div_mul_cancel₀ _ (hsq0 l hl ρ ρ' hU1)).symm`. Establish `hnorm_s : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → ‖s l ρ' ρ‖ = Real.sqrt (M.Nrm P l ρ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `l hl ρ ρ' hU1`. Establish `h` using `F2 l hl ρ ρ' hU1`. Rewrite `h` using `[Complex.star_def, Complex.conj_mul']`. Establish `h' : ‖s l ρ' ρ‖ ^ 2 = M.Nrm P l ρ` using `by exact_mod_cast h`. Rewrite using `[← h', Real.sqrt_sq (norm_nonneg _)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw1 : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → ‖w l ρ ρ'‖ = 1`. Introduce `l hl ρ ρ' hU1`. Establish `hs` using `Real.sqrt_pos.2 (hpos l hl ρ ρ' hU1)`. Use `show ‖s l ρ' ρ / sq l ρ‖ = 1`. Rewrite using `[norm_div, hnorm_s l hl ρ ρ' hU1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sq, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs]`. Conclude with `div_self hs.ne'`. Establish `hcoc : ∀ l ∈ Icc 1 (P.k - 1), ∀ j ∈ Icc 1 (P.k - 1), j ≠ l → ∀ ρ ρl ρj ρlj : M.Ty P, M.Up P l ρ ρl → M.Up P j ρ ρj → M.Up P j ρl ρlj → M.Up P l ρj ρlj → w j ρl ρlj * w l ρ ρl = w l ρj ρlj * w j ρ ρj`. Introduce `l hl j hj hjl ρ ρl ρj ρlj h1 h2 h3 h4`. Establish `f3` using `F3 l hl j hj hjl ρ ρl ρj ρlj h1 h2 h3 h4`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite `f3` using `[hsw j hj ρl ρlj h3, hsw l hl ρ ρl h1, hsw l hl ρj ρlj h4, hsw j hj ρ ρj h2]`. Establish `cr` using `(Formalism.FourierDecayAlt.P.Mx4.corner P hP l j hl hj hjl ρ ρl ρj h1 h2).1`. Establish `cr' : sq j ρl * sq l ρ * ((M.rho P ρ j - M.rho P ρ l - 1 : ℝ) : ℂ) = sq l ρj * sq j ρ * ((M.rho P ρ j - M.rho P ρ l + 1 : ℝ) : ℂ)`. Simplify using `only [sq]`. Conclude with `cr` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `Formalism.FourierDecayAlt.P.Mx4.gap P hP l j hl hj hjl ρ ρl ρj h1 h2`. Establish `hm : ((M.rho P ρ j - M.rho P ρ l - 1 : ℝ) : ℂ) ≠ 0`. Apply the tactic sequence `have : M.rho P ρ j - M.rho P ρ l - 1 ≠ 0 := by rcases hd with h | h <;> intro h0 <;> linarith`. Conclude with `this` after adjusting the coercions. Establish `hK : sq j ρl * sq l ρ * ((M.rho P ρ j - M.rho P ρ l - 1 : ℝ) : ℂ) ≠ 0` using `mul_ne_zero (mul_ne_zero (hsq0 j hj ρl ρlj h3) (hsq0 l hl ρ ρl h1)) hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `mul_right_cancel₀ hK` to reduce the goal to its premises. Take the linear combination `f3 - w l ρj ρlj * w j ρ ρj * cr'`. Take `⟨u, hu1, hu⟩` from `phase_exists P w hw1 hcoc`. Establish `huS : ∀ ρ, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ((fun ρ (_ : ℂ) => u ρ) ρ) (Ann P) ∧ ∀ ζ ∈ Ann P, ‖(fun ρ (_ : ℂ) => u ρ) ρ ζ‖ = 1` using `fun ρ => ⟨contDiffOn_const, fun _ _ => hu1 ρ⟩`. Establish `hsu : ∀ ρ, star (u ρ) * u ρ = 1` using `fun ρ => star_mul_self_of_norm (hu1 ρ)`.
+Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `tr' : ∀ Φ ρ, trR P Bs (fun ρ ζ => u ρ • e ρ ζ) Φ ρ = star (u ρ) • trR P Bs e Φ ρ`. Introduce `Φ ρ`. Rewrite using `[trR_phase P Bs e (fun ρ _ => u ρ) huS Φ ρ]`. Conclude with `fnZ_const_mul P _ _`. Establish `tr'' : ∀ Φ ρ, trR P Bs e Φ ρ = u ρ • trR P Bs (fun ρ ζ => u ρ • e ρ ζ) Φ ρ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `Φ ρ`. Rewrite using `[tr', smul_smul, mul_comm, hsu, one_smul]`. Use `⟨fun ρ ζ => u ρ • e ρ ζ, isFrameB_phase P Bs e (fun ρ _ => u ρ) he huS, kapF_phase P Bs d e (fun ρ _ => u ρ) huS hk, ?_, ?_⟩` and prove the remaining obligations. Introduce `Φ`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `ρ`. Rewrite using `[tr', (hn Φ).1, actA_nabA, actA_nabA, tr']`. Rewrite using `[dzQ_smul, mulQ_smul, mulQ_smul, smul_add, smul_comm (star (u ρ)) ((M.aC P ρ : ℝ) : ℂ)]`. Use function extensionality and compare the values at `ρ`. Rewrite using `[tr', (hn Φ).2, actA_nabsA, actA_nabsA, tr']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[dzbQ_smul, mulQ_smul, mulQ_smul, smul_add, smul_neg, smul_comm (star (u ρ)) ((M.aC P ρ : ℝ) : ℂ)]`. Introduce `l hl Φ`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `τ`. Rewrite using `[tr', (hL l hl Φ τ).1]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ∑ σ, ((MA.SS P (MA.DQ P) l) τ σ).1 (trR P Bs (fun ρ ζ => u ρ • e ρ ζ) Φ σ)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[ss_fst_apply, fnZ_const_mul, tr'' Φ σ, smul_smul, smul_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hU1 : M.Up P l σ τ`. Rewrite using `[if_pos hU1, hsw l hl σ τ hU1, hu l hl σ τ hU1, star_mul]`. Establish `h1` using `hsu σ`. Establish `h2 : star (w l σ τ) * w l σ τ = 1` using `star_mul_self_of_norm (hw1 l hl σ τ hU1)`. Take the linear combination `(sq l σ * star (u σ) * u σ) * h2 + sq l σ * h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[if_neg hU1, F1 l hl σ τ hU1]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `τ`. Rewrite using `[tr', (hL l hl Φ τ).2]`. Use `show _ = ∑ σ, ((star (MA.SS P (MA.DQ P) l)) τ σ).1 (trR P Bs (fun ρ ζ => u ρ • e ρ ζ) Φ σ)`.
-
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[star_ss_fst_apply, fnZ_const_mul, tr'' Φ σ, smul_smul, smul_smul, hst l hl τ σ]`. Use `congr 1`. Distinguish the cases in `hU1 : M.Up P l τ σ`.
-
-Rewrite using `[if_pos hU1, hsw l hl τ σ hU1, hu l hl τ σ hU1, star_mul]`. Establish `h1` using `hsu τ`. Establish `h2 : star (w l τ σ) * w l τ σ = 1` using `star_mul_self_of_norm (hw1 l hl τ σ hU1)`. Establish `hr : star (sq l τ) = sq l τ` using `by simp [sq]`. Rewrite using `[hr]`.
-
-Take the linear combination `(sq l τ * star (u τ) * u τ) * h2 + sq l τ * h1`. Rewrite using `[if_neg hU1, F1 l hl τ σ hU1, star_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem second_shift_phase_holds : GTSSPhase := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk hn s t hL hst

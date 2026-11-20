@@ -6,13 +6,13 @@ open scoped Classical
 
 open scoped Pointwise in
 /- English proof (translation)
-Establish `key : ∀ A : ValuationSubring Ω, A.valuation x < 1 ↔ x = 0 ∨ x⁻¹ ∉ A`. Introduce `A`. Break down `eq_or_ne x 0 with h | h` into its components or cases. Simplify using `[h]`. Establish `e` using `(A.valuation).one_lt_val_iff (inv_ne_zero h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e` using `[inv_inv]`. Rewrite using `[← e, ← not_le, A.valuation_le_one_iff]`. Simplify using `[h]`. Establish `mem : x⁻¹ ∈ v • B ↔ x⁻¹ ∈ B`. Establish `hv : v x⁻¹ = x⁻¹` using `by rw [map_inv₀, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzx⟩`. Express the relevant statement in the definitionally equal form `v z = x⁻¹ at hzx`. Establish `hz' : z = x⁻¹` using `v.injective (hzx.trans hv.symm)`. Conclude with `hz' ▸ hz`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨x⁻¹, h, hv⟩`. Rewrite using `[key, key, mem]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_smul_fix {Ω : Type} [Field Ω] [CharZero Ω] (B : ValuationSubring Ω) (v : G ℚ Ω) (x : Ω)
     (hx : v x = x) : (v • B).valuation x < 1 ↔ B.valuation x < 1 := by
@@ -36,15 +36,13 @@ private theorem val_smul_fix {Ω : Type} [Field Ω] [CharZero Ω] (B : Valuation
   rw [key, key, mem]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ F _ V p n hp hV hO`. Take `⟨T, hT, hTp, hTA⟩` from `hO`. Establish `po : ∀ (w : HeightOneSpectrum (𝓞 F)) (y : 𝓞 F), (placeOf Ω w).valuation (algebraMap F Ω (y : F)) < 1 ↔ y ∈ w.asIdeal`. Introduce `w y`. Establish `h` using `isPlaceOver_placeOf Ω w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `IsPlaceOver at h`. Conclude with `h y`. Establish `fix : ∀ σ ∈ V, ∀ y : 𝓞 F, σ (algebraMap F Ω (y : F)) = algebraMap F Ω (y : F)`. Introduce `σ hσ y`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff F σ).1 (hV hσ) _ (by simp)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `open scoped Pointwise in`. Establish `hup : ∀ w ∈ plDvd F p, ∃ B ∈ T, ∃ σ ∈ V, σ • B = placeOf Ω w`. Introduce `w hw`. Apply `hTA` to reduce the goal to its premises. Establish `hw' : ((p : 𝓞 F)) ∈ w.asIdeal` using `hw`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using (po w p).2 hw'`. Use `choose! f hfT σ hσV hσ using hup`. Establish `hinj : Set.InjOn f (plDvd F p)`. Introduce `w1 h1 w2 h2 he`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
-
-Use extensionality with `y`. Rewrite using `[← po w1 y, ← po w2 y, ← hσ w1 h1, ← hσ w2 h2, val_smul_fix _ _ _ (fix _ (hσV w1 h1) y), val_smul_fix _ _ _ (fix _ (hσV w2 h2) y), he]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.ncard_placesDividing_le_of_orbitBound :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω) [NumberField F] (V : Subgroup (G ℚ Ω)) (p n : ℕ), p ≠ 0 → V ≤ F.fixingSubgroup → OrbLe V p n → (plDvd F p).ncard ≤ n := by

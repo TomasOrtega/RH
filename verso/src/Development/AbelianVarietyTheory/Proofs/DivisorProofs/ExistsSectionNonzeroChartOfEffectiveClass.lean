@@ -12,9 +12,9 @@ namespace GlobalTheory.EffBound
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Take `⟨N', hN', hc, σ, j, hj⟩` from `h`. Take `⟨w, hw⟩` from `(cls_eq_iff hN' hN).1 hc`. Set `e : LB.Sec N' ≃ₗ[Γ(X, ⊤)] LB.Sec N` to `(SecOn.topEquiv N').symm ≪≫ₗ SecOn.congr hN' hN w hw ⊤ ≪≫ₗ SecOn.topEquiv N`. Establish `hσ : σ ≠ 0` using `fun h0 => hj (by rw [h0]; rfl)`. Establish `he : e σ ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Conclude with `hσ (e.injective (h0.trans (map_zero e).symm))`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `he (HighTwist.sec_eq_zero _ (hne (e σ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_eff {X : Scheme.{0}} (N : LB X) (hN : N.IsLB) (h : Eff (cls N hN)) :
     ∃ (σ : LB.Sec N) (j : N.ι), σ.f j ≠ 0 := by

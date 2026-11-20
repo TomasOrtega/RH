@@ -13,21 +13,21 @@ namespace GlobalTheory.PolCell
 open GlobalTheory.PolFan
 
 /- English proof (translation)
-Introduce `X _ _ φ N p P hφ hcov hsym hpos`. Set `ι : Type` to `{x : Σ m : ℕ, (Fin m → LinearMap.BilinForm ℤ X) × ((X × X) →₀ ℤ) // IsCone (id : ℤ → ℤ) φ x.2.1 ∧ StrictWith (id : ℤ → ℤ) φ N (linW x.2.2) x.2.1}`. Establish `hnn : ∀ (x : ι) i, 0 ≤ linW x.1.2.2 (P i)`. Introduce `x i`. Establish `h1` using `x.2.2.2.1 (P i) (mem_balForms_int.2 (hsym i)) (hpos i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hφ.evalZ_nonneg (mem_balForms_int.2 (hsym i)) (hpos i)`. Establish `: (0 : ℝ) ≤ (linW x.1.2.2 (P i) : ℝ)` using `le_trans (mul_nonneg (Nat.cast_nonneg _) h2) h1`. Conclude with `this` after adjusting the coercions. Set `f : ι → Fin p → ℕ` to `fun x i => (linW x.1.2.2 (P i)).toNat`. Take `⟨F, hF⟩` from `GlobalTheory.T.dickson_exists_finite_subfamily_below p f`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `e` to `F.equivFin`. Set `g : Fin F.card → ι` to `fun k => (e.symm k : ι)`. Use `⟨F.card, fun k => (g k).1.1, fun k => (g k).1.2.1, fun k => (g k).1.2.2, fun k => (g k).2, ?_⟩` and prove the remaining obligations. Introduce `B hB hBp`. Take `⟨m, u, w, hc, hs, hBu⟩` from `hcov B hBp`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `i₀ : ι` to `⟨⟨m, u, w⟩, hc, hs⟩`. Take `⟨j, hjF, hj⟩` from `hF i₀`. Use `⟨e ⟨j, hjF⟩, ?_⟩` and prove the remaining obligations. Establish `hg : g (e ⟨j, hjF⟩) = j` using `by simp [g]`. Use `show B ∈ rcone (g (e ⟨j, hjF⟩)).1.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg]`. Take `⟨t, ht, rfl⟩` from `hB`. Establish `A` using `(GlobalTheory.T.strictlyConcave_polFan_cone_real_forms X φ N m u w hφ hc hs).1 _ hBu`. Establish `C` using `(GlobalTheory.T.strictlyConcave_polFan_cone_real_forms X φ N j.1.1 j.1.2.1 j.1.2.2 hφ j.2.1 j.2.2).2 _ hBp`. Apply `C.2` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : evalW j.1.2.2 (∑ i, t i • toReal (P i)) ≤ evalW w (∑ i, t i • toReal (P i))`. Rewrite using `[evalW_sum, evalW_sum]`. Use `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left ?_ (ht i)` and prove the remaining obligations. Establish `h1` using `hj i`. Establish `h2` using `hnn j i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `hnn i₀ i`. Simplify using `only [f] at h1`. Establish `: linW j.1.2.2 (P i) ≤ linW w (P i)`. Establish `h3' : 0 ≤ linW w (P i)` using `h3`. Establish `h1' : (linW j.1.2.2 (P i)).toNat ≤ (linW w (P i)).toNat` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Combine the linear relations using `[C.1]`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_cover_rcone : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (φ : InvFun ℤ) (N p : ℕ) (P : Fin p → LinearMap.BilinForm ℤ X), IsPolFanOn (id : ℤ → ℤ) φ X → (∀ B ∈ psdCone (id : ℤ → ℤ) X, ∃ (m : ℕ) (u : Fin m → LinearMap.BilinForm ℤ X) (w : (X × X) →₀ ℤ), IsCone (id : ℤ → ℤ) φ u ∧ StrictWith (id : ℤ → ℤ) φ N (linW w) u ∧ B ∈ rcone u) → (∀ i y z, P i y z = P i z y) → (∀ i y, 0 ≤ P i y y) → ∃ (s : ℕ) (m : Fin s → ℕ) (u : ∀ k, Fin (m k) → LinearMap.BilinForm ℤ X) (w : Fin s → (X × X) →₀ ℤ), (∀ k, IsCone (id : ℤ → ℤ) φ (u k) ∧ StrictWith (id : ℤ → ℤ) φ N (linW (w k)) (u k)) ∧ ∀ B ∈ rcone P, B ∈ psdCone (id : ℤ → ℤ) X → ∃ k, B ∈ rcone (u k) := by
   intro X _ _ φ N p P hφ hcov hsym hpos

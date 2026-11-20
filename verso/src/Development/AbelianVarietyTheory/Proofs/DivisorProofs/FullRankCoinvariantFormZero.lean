@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.FullRankCoinv
 
 /- English proof (translation)
-Introduce `hKP k _ _ _ _ n d ν hnd hs hu hne Bf hA hQ`. Conclude with `GlobalTheory.T.invariant_sesquilinear_unitary_char k n d ν hnd hs hu Bf hA hQ (GlobalTheory.T.invariant_sesquilinear_nontrivial_char hKP k n d ν hnd hs hu hne Bf hA hQ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem form_lact_right_invariant : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → ν ≠ 1 →

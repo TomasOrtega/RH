@@ -19,9 +19,9 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `P₀ : Algebra.Presentation R (MvPolynomial (Fin n) R) (Fin n) Empty` to `{ __ := Algebra.Generators.mvPolynomial R (Fin n) relation := Empty.elim span_range_relation_eq_ker := by`. Rewrite using `[Algebra.Generators.ker_mvPolynomial]`. Simplify using `}`. Set `P₁ : Algebra.PreSubmersivePresentation R (MvPolynomial (Fin n) R) (Fin n) Empty` to `{ __ := P₀ map := Empty.elim map_inj := fun a => a.elim }`. Set `P₂ : Algebra.SubmersivePresentation R (MvPolynomial (Fin n) R) (Fin n) Empty` to `{ __ := P₁ jacobian_isUnit := by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det]`. Simplify using `}`. Conclude with `P₂.isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isStandardSmoothOfRelativeDimension_mvPolynomial_fin (R : Type) [CommRing R] (n : ℕ) :
     Algebra.IsStandardSmoothOfRelativeDimension n R (MvPolynomial (Fin n) R) := by
@@ -43,9 +43,9 @@ theorem isStandardSmoothOfRelativeDimension_mvPolynomial_fin (R : Type) [CommRin
   exact P₂.isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])
 
 /- English proof (translation)
-Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} n` as an intermediate fact. Use `MorphismProperty.pullback_fst (P := @SmoothOfRelativeDimension n) _ _ ?_` and prove the remaining obligations. Use `isIso_of_isTerminal specULiftZIsTerminal.{0} terminalIsTerminal (terminal.from _)` as an intermediate fact. Rewrite using `[← terminal.comp_from (Spec.map (CommRingCat.ofHom MvPolynomial.C)), MorphismProperty.cancel_right_of_respectsIso (P := @SmoothOfRelativeDimension n), HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension n)]`. Use `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap n).2 (isStandardSmoothOfRelativeDimension_mvPolynomial_fin (ULift ℤ) n)`.
+A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_affineSpace_fin (S : Scheme.{0}) (n : ℕ) :
     SmoothOfRelativeDimension n (𝔸(Fin n; S) ↘ S) := by
@@ -62,33 +62,31 @@ theorem smoothOfRelativeDimension_affineSpace_fin (S : Scheme.{0}) (n : ℕ) :
 namespace ZJ
 
 /- English proof (translation)
-Take `⟨hsep, hlft, -, hint, -, -, ha, hcart, -, -, -, hdom, -⟩` from `GlobalTheory.T.abelianSchemeProperClosureData_basic_properties C`. Take `⟨W, hw, u, -, hu⟩` from `GlobalTheory.T.exists_coord_reducedFibre_closedPoint C hT hF w hc`. Establish `hqf` using `GlobalTheory.T.quasiFiniteAt_affineSpace_homOfVector_of_coord C w W hw u hc hu`. Establish `huniq` using `GlobalTheory.T.classical_point_eq_of_reduction_coords C hT hF w W hw u hu`. Establish `hint' : IsIntegral C.G.toScheme` using `hint`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty W.toScheme` using `⟨⟨w, hw⟩⟩`. Establish `: IsIntegral W.toScheme` using `isIntegral_of_isOpenImmersion W.ι`. Set `t : W.toScheme ⟶ C.Z` to `W.ι ≫ C.GG.hom`. Set `u' : Fin C.g → Γ(W.toScheme, ⊤)` to `fun i => W.topIso.inv.hom (u i)`. Set `v : W.toScheme ⟶ 𝔸(Fin C.g; C.Z)` to `AffineSpace.homOfVector t u'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hv : v ≫ 𝔸(Fin C.g; C.Z) ↘ C.Z = t` using `AffineSpace.homOfVector_over _ _`. Establish `: LocallyOfFiniteType t` using `inferInstanceAs (LocallyOfFiniteType (W.ι ≫ C.GG.hom))`. Establish `: IsSeparated t` using `inferInstanceAs (IsSeparated (W.ι ≫ C.GG.hom))`. Establish `: IsDominant W.ι` using `⟨by`. Rewrite using `[DenseRange, Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.isOpen.dense ⟨w, hw⟩⟩`. Establish `: IsDominant t` using `inferInstanceAs (IsDominant (W.ι ≫ C.GG.hom))`. Establish `hA` using `smoothOfRelativeDimension_affineSpace_fin C.Z C.g`. Establish `: Smooth (𝔸(Fin C.g; C.Z) ↘ C.Z)` using `SmoothOfRelativeDimension.smooth C.g _`. Establish `: LocallyOfFiniteType v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType (v ≫ 𝔸(Fin C.g; C.Z) ↘ C.Z)` using `by rw [hv]; infer_instance`. Conclude with `locallyOfFiniteType_of_comp v (𝔸(Fin C.g; C.Z) ↘ C.Z)`. Establish `: IsSeparated v`. Establish `: IsSeparated (v ≫ 𝔸(Fin C.g; C.Z) ↘ C.Z)` using `by rw [hv]; infer_instance`. Conclude with `IsSeparated.of_comp v (𝔸(Fin C.g; C.Z) ↘ C.Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `U' : W.toScheme.Opens` to `t ⁻¹ᵁ C.U`. Establish `hU' : (U' : Set W.toScheme).Nonempty`. Take `⟨x, hx⟩` from `t.denseRange.exists_mem_open C.U.isOpen C.ne`. Conclude with `⟨x, hx⟩`. Establish `hsm : SmoothOfRelativeDimension C.g (U'.ι ≫ t)`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `l : U'.toScheme ⟶ C.A.left` to `hcart.lift (U'.ι ≫ W.ι) (t ∣_ C.U) (by rw [morphismRestrict_ι, Category.assoc])`. Establish `h1 : l ≫ C.a = U'.ι ≫ W.ι` using `hcart.lift_fst _ _ _`. Establish `h2 : l ≫ C.A.hom = t ∣_ C.U` using `hcart.lift_snd _ _ _`. Establish `: IsOpenImmersion (l ≫ C.a)` using `by rw [h1]; infer_instance`. Establish `: IsOpenImmersion l` using `IsOpenImmersion.of_comp l C.a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : U'.ι ≫ t = l ≫ C.A.hom ≫ C.U.ι`. Rewrite using `[reassoc_of% h2, morphismRestrict_ι]`. Use `C.dim` as an intermediate fact. Establish `h4 : SmoothOfRelativeDimension (0 + (C.g + 0)) (l ≫ C.A.hom ≫ C.U.ι)` using `inferInstance`. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h4`. Establish `: IsDominant v` using `GlobalTheory.T.isDominant_homOfVector_of_quasiFiniteAt' W.toScheme C.Z t C.g U' hU' hsm u' ⟨w, hw⟩ hqf`. Use `C.flat` as an intermediate fact. Use `C.lft` as an intermediate fact. Establish `hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme 𝔸(Fin C.g; C.Z)` using `forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (𝔸(Fin C.g; C.Z) ↘ C.Z) C.normal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hc' : IsClosed ({⟨w, hw⟩} : Set W.toScheme)`. Use `hc.preimage W.ι.continuous` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Conclude with `Subtype.ext_iff`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨V, hV, hE⟩` from `exists_opens_etale_of_unique_classical_points 𝔸(Fin C.g; C.Z) (𝔸(Fin C.g; C.Z) ↘ C.Z ≫ C.π) hN W.toScheme v ⟨w, hw⟩ U' hc' hqf hU' (by`. Introduce `p _ a a' h hp hr hg _`. Use `huniq p a a' ?_ ?_ hp hr fun i => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hg ⟨z, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `a ≫ t = a' ≫ t`. Rewrite using `[← hv, reassoc_of% h]`. Establish `e : ∀ b : Sp (OO p) ⟶ W.toScheme, b.appTop.hom (u' i) = (b ≫ v).appTop.hom (AffineSpace.coord C.Z i)` using `fun b => by`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `congrArg _ (AffineSpace.homOfVector_appTop_coord t u' i).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `(e a).trans ((congrArg (fun c : Sp (OO p) ⟶ 𝔸(Fin C.g; C.Z) => c.appTop.hom (AffineSpace.coord C.Z i)) h).trans (e a').symm))`. Establish `h5 : SmoothOfRelativeDimension (0 + C.g) ((V.ι ≫ v) ≫ 𝔸(Fin C.g; C.Z) ↘ C.Z)` using `inferInstance`. Rewrite `h5` using `[Category.assoc, hv, zero_add]`. Use `⟨(V.ι ≫ W.ι).opensRange, ⟨⟨⟨w, hw⟩, hV⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h6 : SmoothOfRelativeDimension (0 + C.g) ((V.ι ≫ W.ι).isoOpensRange.inv ≫ V.ι ≫ t)` using `inferInstance`.
-
-Rewrite `h6` using `[zero_add]`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← (V.ι ≫ W.ι).isoOpensRange_inv_comp]`. Simplify using `only [Category.assoc, t]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Core.exists_opens_smoothOfRelativeDimension (C : Core) (hT : C.HasTests) (hF : C.Fib)
     (w : C.G.toScheme) (hc : IsClosed ({w} : Set C.G.toScheme)) :
@@ -171,9 +169,9 @@ theorem Core.exists_opens_smoothOfRelativeDimension (C : Core) (hT : C.HasTests)
   simp only [Category.assoc, t]
 
 /- English proof (translation)
-Introduce `C hT hF`. Take `⟨-, hlft, -⟩` from `GlobalTheory.T.abelianSchemeProperClosureData_basic_properties C`. Use `C.lft` as an intermediate fact. Use `choose V hV hs using C.exists_opens_smoothOfRelativeDimension hT hF`. Set `V' : {w : C.G.toScheme // IsClosed ({w} : Set C.G.toScheme)} → C.G.toScheme.Opens` to `fun w => V w.1 w.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `htop : iSup V' = ⊤` using `(jacobson_closedPoints_tools_int C.G.toScheme (C.GG.hom ≫ C.π)).2.2.1 _ _ fun x hx => ⟨fun _ => trivial, fun _ => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hV x hx⟩⟩`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension.{0} C.g)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension.{0} C.g) V' htop fun w => hs w.1 w.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Core.smoothOfRelativeDimension_of_hasTests :
     ∀ C : Core, C.HasTests → C.Fib → SmoothOfRelativeDimension C.g C.GG.hom := by

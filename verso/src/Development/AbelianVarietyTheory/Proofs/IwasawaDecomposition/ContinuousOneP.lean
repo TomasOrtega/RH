@@ -15,20 +15,20 @@ namespace GlobalTheory.Mem.Lift
 variable {D : D7} {θ : InfF D} {V : HSp D} {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmoothAutCheck.exp_mem_UH (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) hX t`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem (hX : X ∈ lieAt V τ) (t : ℝ) : NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) :=
   GlobalTheory.SmoothAutCheck.exp_mem_UH (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) hX t
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ (exp_mem hX t)`.
+A detailed English derivation is pending.
 -/
 theorem isAtTau_oneP (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (t : ℝ) :
     IsAtTau θ V τ (NormedSpace.exp (t • X)) (oneP θ V τ X t) :=
   GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ (exp_mem hX t)
 
 /- English proof (translation)
-Unfold `oneP`. Rewrite using `[← GlobalTheory.PointAtPlaceHom.atTau_mul hθ V τ (exp_mem hX s) (exp_mem hX t), add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneP_add (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (s t : ℝ) :
     oneP θ V τ X (s + t) = oneP θ V τ X s * oneP θ V τ X t := by
@@ -37,7 +37,7 @@ theorem oneP_add (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (s t : ℝ) :
     Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)]
 
 /- English proof (translation)
-Unfold `oneP`. Rewrite using `[zero_smul, NormedSpace.exp_zero, GlobalTheory.PointAtPlaceHom.atTau_one hθ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneP_zero (hθ : IsInfFam θ) : oneP θ V τ X 0 = 1 := by
   unfold oneP
@@ -47,7 +47,7 @@ section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X t`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).hasFDerivAt.comp_hasDerivAt t h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp_entry {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) (i j : Fin n) :
     HasDerivAt (fun s : ℝ => (NormedSpace.exp (s • X) : Matrix (Fin n) (Fin n) ℂ) i j)
@@ -59,7 +59,7 @@ theorem hasDerivAt_exp_entry {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ
 end
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V τ).comp_continuous (continuous_matrix fun i j => continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_entry X t i j).continuousAt) (exp_mem hX)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_oneP (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) : Continuous (oneP θ V τ X) :=
   (GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V τ).comp_continuous
@@ -67,7 +67,7 @@ theorem continuous_oneP (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) : Continuous
     (exp_mem hX)
 
 /- English proof (translation)
-Establish `h1` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h (g * oneP θ V τ X t))`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc, ← oneP_add hθ hX, add_sub_cancel]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hasDerivAt_oneP (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) {φ φ' : GA D V → ℂ}
     (h : ∀ g, HasDerivAt (fun t : ℝ => φ (g * oneP θ V τ X t)) (φ' g) 0) (g : GA D V) (t : ℝ) :
@@ -77,7 +77,7 @@ theorem hasDerivAt_oneP (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) {φ φ' : GA
   simp only [mul_assoc, ← oneP_add hθ hX, add_sub_cancel]
 
 /- English proof (translation)
-The claim follows from `(differentiable_oneP hφ hX g 0).hasDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_Rder {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (hX : X ∈ lieAt V τ) (g : GA D V) :
     HasDerivAt (fun t : ℝ => φ (g * oneP θ V τ X t)) (Rder θ V τ X φ g) 0 :=
@@ -86,13 +86,13 @@ theorem hasDerivAt_Rder {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (hX : X 
 attribute [local instance 100] LieRing.ofAssociativeRing in
 
 /- English proof (translation)
-Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Take `⟨P, Q, hPQ, h⟩` from `GlobalTheory.T.unitary_lie_generators_rep _ _ (R.1 τ).1 (R.1 τ).2`. Establish `hG` using `(h _ (fun X => GlobalTheory.SmoothForms.opInf R (atPlace V τ X)) (GlobalTheory.SmoothForms.opAt_add R τ) (GlobalTheory.SmoothForms.opAt_smul R τ) (GlobalTheory.SmoothForms.opAt_bracket R τ)).1`. Establish `e : SmFun θ V = GlobalTheory.SmoothForms.SmF θ V` using `Submodule.ext fun φ => GlobalTheory.SmoothForms.smooth_iff R φ`. Set `E` to `(LinearEquiv.ofEq _ _ e).conjAlgEquiv ℂ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `k : ∀ a b, E (GlobalTheory.Mem.RealTranslate.derEnd (V` using `V) hθ τ (Matrix.single a b 1)) = GlobalTheory.SmoothForms.opInf R (atPlace V τ (P a b)) + Complex.I • GlobalTheory.SmoothForms.opInf R (atPlace V τ (Q a b)) := by`. Introduce `a b`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RderC θ V τ (Matrix.single a b 1) φ.1 = _`. Rewrite using `[RderC, conjAt, ← (hPQ _ _).1, ← (hPQ _ _).2, GlobalTheory.SmoothForms.Rder_eq R, GlobalTheory.SmoothForms.Rder_eq R]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `a b c d`. Apply `E.injective` to reduce the goal to its premises. Use `hG a b c d` as an intermediate fact. Simplify using `only [← k] at this`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_mul, this, apply_ite E, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glRel_derEnd (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) : Formalism.REAL.GlRel fun a b : Fin V.rank =>
     GlobalTheory.Mem.RealTranslate.derEnd (V := V) hθ τ (Matrix.single a b 1) := by

@@ -13,7 +13,7 @@ open scoped Classical
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeilSeminorm.lintegral_thetaSum_le | exact GlobalTheory.WeilSeminorm.lintegral_thetaSum_le | (intros; apply GlobalTheory.WeilSeminorm.lintegral_thetaSum_le <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.sobolev_bound_finite_family : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G₁ : Geo σ b a')
     (X : Chars F E) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G₁ X om₁ om₁' →

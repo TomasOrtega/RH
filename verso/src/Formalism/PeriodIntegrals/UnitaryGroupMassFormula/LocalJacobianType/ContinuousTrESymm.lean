@@ -13,7 +13,7 @@ open scoped TensorProduct
 attribute [local instance] PI.VolStabSW.secondCountable_Fv PI.VolStabSW.locallyCompact_Fv
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+A detailed English derivation is pending.
 -/
 theorem finDim (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -24,25 +24,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-The claim follows from `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem oev_zero : (0 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := Submodule.zero_mem _
 
 /- English proof (translation)
-The claim follows from `Submodule.add_mem _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem oev_add {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x + y ∈ OEv (E := E) v := Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_mem _ (⟨c, hc⟩ : v.adicCompletionIntegers F) hx`.
+A detailed English derivation is pending.
 -/
 theorem oev_smul {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) {x : Fv F v ⊗[F] E}
     (hx : x ∈ OEv (E := E) v) : c • x ∈ OEv (E := E) v :=
   Submodule.smul_mem _ (⟨c, hc⟩ : v.adicCompletionIntegers F) hx
 
 /- English proof (translation)
-The claim follows from `Submodule.neg_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem oev_neg {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : -x ∈ OEv (E := E) v :=
   Submodule.neg_mem _ hx
@@ -54,23 +54,21 @@ def Osub : AddSubgroup (Fv F v ⊗[F] E) where
   neg_mem' := oev_neg v
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, trivial, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem inclR_mem (a : 𝓞 E) : inclR (F := F) (Fv F v) (a : E) ∈ OEv (E := E) v :=
   Submodule.subset_span ⟨a, trivial, rfl⟩
 
 /- English proof (translation)
-Take `⟨m, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Use `set w : Fin m → Fv F v ⊗[F] E := fun k => inclR (F := F) (Fv F v) ((s k : 𝓞 E) : E) with hw`. Use `⟨m, w, fun k => inclR_mem v _, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F` using `F) (Fv F v) (x : E)) '' Set.univ) ≤ Submodule.span (v.adicCompletionIntegers F) (Set.range w) := by`. Rewrite using `[Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, -, rfl⟩`. Establish `ha : a ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Establish `e : inclR (F` using `F) (Fv F v) (((a + b : 𝓞 E)) : E) = inclR (F := F) (Fv F v) (a : E) + inclR (F := F) (Fv F v) (b : E) := by`. Simplify using `[map_add]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `show inclR (F := F) (Fv F v) (((a + b : 𝓞 E)) : E) ∈ _`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul z a _ ha`. Establish `e : inclR (F` using `F) (Fv F v) (((z • a : 𝓞 E)) : E) = ((z : v.adicCompletionIntegers F)) • inclR (F := F) (Fv F v) (a : E) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Int.cast_smul_eq_zsmul]`. Simplify using the standard rewrite rules. Use `show inclR (F := F) (Fv F v) (((z • a : 𝓞 E)) : E) ∈ _`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ ha`.
-
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hle hx)`. Conclude with `⟨fun k => (c k : Fv F v), fun k => (c k).2, hc.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gens : ∃ (m : ℕ) (w : Fin m → Fv F v ⊗[F] E), (∀ k, w k ∈ OEv (E := E) v) ∧
     ∀ x ∈ OEv (E := E) v, ∃ c : Fin m → Fv F v, (∀ k, c k ∈ v.adicCompletionIntegers F) ∧
@@ -108,11 +106,11 @@ theorem exists_gens : ∃ (m : ℕ) (w : Fin m → Fv F v ⊗[F] E), (∀ k, w k
   exact ⟨fun k => (c k : Fv F v), fun k => (c k).2, hc.symm⟩
 
 /- English proof (translation)
-Take `⟨m, w, hw, hx⟩` from `exists_gens (E := E) v`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin m => (v.adicCompletionIntegers F : Set (Fv F v)))` using `isCompact_univ_pi fun _ => PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Establish `hcont : Continuous fun c : Fin m → Fv F v => ∑ k, c k • w k` using `continuous_finsetSum _ fun k _ => (continuous_apply k).smul continuous_const`. Establish `e : OEv (E` using `E) v = (fun c : Fin m → Fv F v => ∑ k, c k • w k) '' (Set.univ.pi fun _ : Fin m => (v.adicCompletionIntegers F : Set (Fv F v))) := by`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨c, hc, rfl⟩` from `hx x h`. Conclude with `⟨c, fun k _ => hc k, rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.sum_mem _ fun k _ => oev_smul v (hc k trivial) (hw k)`. Rewrite using `[e]`. Conclude with `hK.image hcont`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_oev : IsCompact (OEv (E := E) v) := by
   obtain ⟨m, w, hw, hx⟩ := exists_gens (E := E) v
@@ -133,9 +131,9 @@ theorem isCompact_oev : IsCompact (OEv (E := E) v) := by
   exact hK.image hcont
 
 /- English proof (translation)
-Set `b0` to `Module.finBasis F E`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image b0)`. Establish `hu : ∀ i : Fin (Module.finrank F E), IsUnit ((y : F))` using `fun _ => isUnit_iff_ne_zero.2 (by exact_mod_cast hy0)`. Use `⟨b0.isUnitSMul hu, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hy (b0 i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Module.Basis.isUnitSMul_apply]`. Establish `e : ((y : F)) • b0 i = y • b0 i`. Rewrite using `[← Int.cast_smul_eq_zsmul F y (b0 i)]`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intBasis : ∃ b : Module.Basis (Fin (Module.finrank F E)) F E,
     ∀ i, IsIntegral ℤ (b i) := by
@@ -153,7 +151,7 @@ theorem exists_intBasis : ∃ b : Module.Basis (Fin (Module.finrank F E)) F E,
   exact h
 
 /- English proof (translation)
-Establish `e : Algebra.lmul (Fv F v) (Fv F v ⊗[F] E) (inclR (F` using `F) (Fv F v) x) = (Algebra.lmul F E x).baseChange (Fv F v) := by`. Apply `TensorProduct.AlgebraTensorModule.curry_injective` to reduce the goal to its premises. Use extensionality with `a e`. Simplify using `[inclR]`. Rewrite using `[Algebra.trace_apply, e, LinearMap.trace_baseChange]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -171,7 +169,7 @@ theorem trace_inclR (x : E) :
 def ib : Module.Basis (Fin (Module.finrank F E)) F E := (exists_intBasis (F := F) (E := E)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_intBasis (F := F) (E := E)).choose_spec i`.
+A detailed English derivation is pending.
 -/
 theorem ib_int (i : Fin (Module.finrank F E)) : IsIntegral ℤ (ib (F := F) (E := E) i) :=
   (exists_intBasis (F := F) (E := E)).choose_spec i
@@ -180,30 +178,30 @@ def bas : Module.Basis (Fin (Module.finrank F E)) (Fv F v) (Fv F v ⊗[F] E) :=
   Algebra.TensorProduct.basis (Fv F v) (ib (F := F) (E := E))
 
 /- English proof (translation)
-Simplify using `[bas, Algebra.TensorProduct.basis_apply, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bas_apply (i : Fin (Module.finrank F E)) :
     bas (E := E) v i = inclR (F := F) (Fv F v) (ib (F := F) (E := E) i) := by
   simp [bas, Algebra.TensorProduct.basis_apply, inclR]
 
 /- English proof (translation)
-Rewrite using `[bas_apply]`. Conclude with `inclR_mem v ⟨_, ib_int i⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bas_mem (i : Fin (Module.finrank F E)) : bas (E := E) v i ∈ OEv (E := E) v := by
   rw [bas_apply]
   exact inclR_mem v ⟨_, ib_int i⟩
 
 /- English proof (translation)
-The claim follows from `oev_smul v hc (bas_mem v i)`.
+A detailed English derivation is pending.
 -/
 theorem smul_bas_mem {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F)
     (i : Fin (Module.finrank F E)) : c • bas (E := E) v i ∈ OEv (E := E) v :=
   oev_smul v hc (bas_mem v i)
 
 /- English proof (translation)
-Use `set e := (bas (E := E) v).equivFun`. Establish `hc : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `ho : IsOpen (e ⁻¹' (Set.univ.pi fun _ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `(isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _).preimage hc`. Use `Filter.mem_of_superset (ho.mem_nhds (by simp [zero_mem])) ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (bas (E := E) v).sum_equivFun x]`. Conclude with `Submodule.sum_mem _ fun i _ => smul_bas_mem v (hx i trivial) i`.
+A detailed English derivation is pending.
 -/
 theorem oev_mem_nhds : OEv (E := E) v ∈ 𝓝 (0 : Fv F v ⊗[F] E) := by
   set e := (bas (E := E) v).equivFun
@@ -216,7 +214,7 @@ theorem oev_mem_nhds : OEv (E := E) v ∈ 𝓝 (0 : Fv F v ⊗[F] E) := by
   exact Submodule.sum_mem _ fun i _ => smul_bas_mem v (hx i trivial) i
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.isOpen_of_mem_nhds (Osub (E := E) v) (oev_mem_nhds v)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_oev : IsOpen (OEv (E := E) v) :=
   AddSubgroup.isOpen_of_mem_nhds (Osub (E := E) v) (oev_mem_nhds v)
@@ -233,13 +231,13 @@ theorem trC_apply (y : Fv F v ⊗[F] E) (i : Fin (Module.finrank F E)) :
     trC (E := E) v y i = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (bas (E := E) v i * y) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Use `set c := (bas (E := E) v).equivFun y with hc`. Use `set M : Matrix (Fin (Module.finrank F E)) (Fin (Module.finrank F E)) (Fv F v) := (algebraMap F (Fv F v)).mapMatrix (Algebra.traceMatrix F (ib (F := F) (E := E))) with hM`. Establish `hmv : M.mulVec c = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun hy i`. Rewrite `h1` using `[trC_apply, ← (bas (E := E) v).sum_equivFun y, Finset.mul_sum]`. Simplify using `only [mul_smul_comm, map_sum, map_smul, smul_eq_mul] at h1`. Rewrite `h1` using `[Pi.zero_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.zero_apply, ← h1, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[bas_apply, bas_apply, ← map_mul, trace_inclR, mul_comm]`. Simplify using `[hM, Algebra.traceMatrix_apply, Algebra.traceForm_apply, hc]`. Establish `hdet : M.det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hM, ← RingHom.map_det, ← Algebra.discr_def]`. Conclude with `(map_ne_zero _).2 (Algebra.discr_not_zero_of_basis F _)`. Establish `h0 : c = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hdet hmv`. Rewrite using `[← (bas (E := E) v).sum_equivFun y]`. Simplify using `[← hc, h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trC_injective : Function.Injective (trC (E := E) v) := by
   classical
@@ -266,7 +264,7 @@ theorem trC_injective : Function.Injective (trC (E := E) v) := by
   simp [← hc, h0]
 
 /- English proof (translation)
-Use `⟨trC_injective v, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.injective_iff_surjective_of_finrank_eq_finrank]`. Conclude with `trC_injective v`. Rewrite using `[Module.finrank_eq_card_basis (bas (E := E) v), Module.finrank_fin_fun, Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trC_bijective : Function.Bijective (trC (E := E) v) := by
   refine ⟨trC_injective v, ?_⟩
@@ -283,13 +281,13 @@ Both sides reduce to the same expression.
 theorem trE_apply (y : Fv F v ⊗[F] E) : trE (E := E) v y = trC (E := E) v y := rfl
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (trE (E := E) v).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trE : Continuous (trE (E := E) v) :=
   IsModuleTopology.continuous_of_linearMap (trE (E := E) v).toLinearMap
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (trE (E := E) v).symm.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trE_symm : Continuous (trE (E := E) v).symm :=
   IsModuleTopology.continuous_of_linearMap (trE (E := E) v).symm.toLinearMap

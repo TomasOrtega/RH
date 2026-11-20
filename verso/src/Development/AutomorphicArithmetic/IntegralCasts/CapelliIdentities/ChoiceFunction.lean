@@ -1,19 +1,19 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k D _ P p0 hp0 W hW n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Y _ h`. Use `⟨fun _ => p0, fun _ => hp0, fun f hf _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `heq : Y ⊓ W = Y` using `Submodule.eq_of_le_of_finrank_le inf_le_left (by simpa using h)`. Rewrite `hf` using `[← heq]`. Conclude with `hf.2`. Consider the case `succ n ih`. Introduce `Y _ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hYW : Y ≤ W`. Conclude with `⟨fun _ => p0, fun _ => hp0, fun f hf _ => hYW hf⟩`. Take `⟨g, hgY, hgW⟩` from `SetLike.not_le_iff_exists.mp hYW`. Rewrite `hgW` using `[hW]`. Simplify using `only [not_forall] at hgW`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hgp⟩` from `hgW`. Set `K : Submodule k (D → k)` to `LinearMap.ker (LinearMap.proj p : (D → k) →ₗ[k] k)`. Establish `hK : ∀ f : D → k, f ∈ K ↔ f p = 0` using `fun f => LinearMap.mem_ker`. Establish `hWK : W ≤ K` using `fun f hf => (hK f).2 ((hW f).1 hf p hp)`. Use `haveI : FiniteDimensional k ↥(Y ⊓ K) := Submodule.finiteDimensional_of_le inf_le_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlt : Y ⊓ K < Y`. Use `lt_of_le_of_ne inf_le_left fun he => hgp ?_` and prove the remaining obligations. Rewrite `hgY` using `[← he]`. Conclude with `(hK g).1 hgY.2`. Establish `hrank` using `Submodule.finrank_lt_finrank_of_lt hlt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hinf : (Y ⊓ K) ⊓ W = Y ⊓ W`. Rewrite using `[inf_assoc, inf_eq_right.2 hWK]`. Take `⟨u, hu, hu'⟩` from `ih (Y ⊓ K) (by rw [hinf]; omega)`. Use `⟨Fin.cons p u, fun a => ?_, fun f hf hz => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) a` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hp`. Simplify using `using hu i`. Use `hu' f ⟨hf, (hK f).2 ?_⟩ fun a => ?_` and prove the remaining obligations. Simplify using `using hz 0`. Simplify using `using hz a.succ`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.InterpolationPointsOfFinrankBound.pick :
     ∀ {k D : Type} [inst : Field k] (P : Set D) {p0 : D},

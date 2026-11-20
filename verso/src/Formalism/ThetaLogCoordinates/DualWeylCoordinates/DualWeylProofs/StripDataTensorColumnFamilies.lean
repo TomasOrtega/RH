@@ -24,7 +24,7 @@ def qx_colFam {n : ℕ} [NeZero n] {κ : Type} [Fintype κ] [DecidableEq κ] {B 
   rank := qx_rank hd e CF
 
 /- English proof (translation)
-Introduce `n _ κ _ _ B be Str ps hd M M' e hT ⟨CF⟩`. Conclude with `⟨qx_colFam hd e hT CF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem strip_data_tensor_holds : StripDataTensorColumnFamilies := by
   intro n _ κ _ _ B be Str ps hd M M' e hT ⟨CF⟩

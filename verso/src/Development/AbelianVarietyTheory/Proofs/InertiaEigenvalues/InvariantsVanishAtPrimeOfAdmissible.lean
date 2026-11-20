@@ -17,9 +17,9 @@ namespace GlobalTheory.Cyc.InvKilled
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegerRingPowers.main`. Consider the case `exact _root_.GlobalTheory.IntegerRingPowers.main`. Consider the case `(apply _root_.GlobalTheory.IntegerRingPowers.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegerRingPowers.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegerRingPowers.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegerRingPowers.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (v : T.V) :
     ∃ n : ℕ, (l : ↥LL.1) ^ n • v ∈ T.L.T := by
@@ -32,23 +32,23 @@ theorem exists_pow_smul_mem (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥L
   | (intros; exact _root_.GlobalTheory.IntegerRingPowers.main ..)
 
 /- English proof (translation)
-Establish `hl : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hlL : (l : LL) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Use `set t : ↥T.L.T := ⟨_, hn⟩ with ht`. Establish `hy` using `H (fun a => ((l : ℚ_[l]) ^ n)⁻¹ * (b.repr t a : ℚ_[l])) (by`. Introduce `σ a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : ac σ t - t = (l : ℤ_[l]) ^ n • (⟨_, hw σ⟩ : ↥T.L.T)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hsm, Submodule.coe_sub, hac]`. Express the relevant statement in the definitionally equal form `T.ρ σ ((l : LL) ^ n • v) - (l : LL) ^ n • v = _`. Rewrite using `[map_smul, smul_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : b.repr (ac σ t) a = ∑ j, b.repr (ac σ (b j)) a * b.repr t j` using `by conv_lhs => rw [← b.sum_repr t]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, mul_comm]`. Establish `e3` using `congrArg (fun z => ((b.repr z a : ℤ_[l]) : ℚ_[l])) e1`. Simplify using `only [map_sub, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul, e2] at e3`. Move the coercions through the operations in `at e3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `e4 : ((M σ).mulVec (fun a => algebraMap ℚ_[l] (PadicComplex l) (((l : ℚ_[l]) ^ n)⁻¹ * (b.repr t a : ℚ_[l]))) - (fun a => algebraMap ℚ_[l] (PadicComplex l) (((l : ℚ_[l]) ^ n)⁻¹ * (b.repr t a : ℚ_[l])))) a = algebraMap ℚ_[l] (PadicComplex l) ((b.repr (⟨_, hw σ⟩ : ↥T.L.T) a : ℤ_[l]) …`. Establish `hb' : ∀ i j, M σ i j = zC (b.repr (ac σ (b j)) i)` using `hb σ`. Simplify using `only [Pi.sub_apply, Matrix.mulVec, dotProduct, hb', zC, ← map_mul, ← map_sum, ← map_sub]`. Use `congr 1`. Establish `hp : (l : ℚ_[l]) ^ n ≠ 0` using `pow_ne_zero _ hl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inv_mul_cancel_left₀ hp (((b.repr (⟨_, hw σ⟩ : ↥T.L.T) a : ℤ_[l]) : ℚ_[l])), ← e3, mul_sub, PadicInt.coe_sum, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [PadicInt.coe_mul]; ring`. Rewrite using `[e4, norm_algebraMap']`. Conclude with `PadicInt.norm_le_one _)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `z : Fin d → ℤ_[l]` to `fun a => ⟨_, hy a⟩`. Set `t' : ↥T.L.T` to `∑ a, z a • b a`. Establish `e5 : (l : ℤ_[l]) ^ c • t = (l : ℤ_[l]) ^ n • t'`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `a`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: b.repr t' a = z a` using `congrFun (b.repr_sum_self z) a`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, this]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hz : ((z a : ℤ_[l]) : ℚ_[l]) = (l : ℚ_[l]) ^ c * (((l : ℚ_[l]) ^ n)⁻¹ * (b.repr t a : ℚ_[l]))` using `rfl`. Rewrite using `[PadicInt.coe_mul, PadicInt.coe_mul, hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e6` using `congrArg Subtype.val e5`. Rewrite `e6` using `[hsm, hsm]`. Express the relevant statement in the definitionally equal form `(l : LL) ^ c • (l : LL) ^ n • v = _ at e6`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e6` using `[smul_comm]`. Establish `e7` using `smul_right_injective _ (pow_ne_zero n hlL) e6`. Rewrite using `[e7]`. Conclude with `t'.2`.
+A detailed English derivation is pending.
 -/
 theorem killed_of_coordinates {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [Field LL] [CharZero LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
@@ -118,7 +118,7 @@ theorem killed_of_coordinates {G : Type} [Group G] [TopologicalSpace G] {Qp LL O
   exact t'.2
 
 /- English proof (translation)
-Introduce `k t`. Express the relevant statement in the definitionally equal form `(φ ((l : ℤ_[l]) ^ k)) • (t : T.V) = _`. Rewrite using `[← algebraMap_smul LL, map_pow, map_natCast, map_pow, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_compHom {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp]
     [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
@@ -131,7 +131,7 @@ theorem pow_smul_compHom {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Ty
   rw [← algebraMap_smul LL, map_pow, map_natCast, map_pow, map_natCast]
 
 /- English proof (translation)
-Take `⟨b, hb, -⟩` from `hM`. Take `⟨n, hn⟩` from `exists_pow_smul_mem K LL T v`. Use `@killed_of_coordinates l _ _ _ _ _ _ _ _ _ _ _ _ _ _ T (zlMod LL T) ?_ (fun g => actTZ LL T g) (fun _ _ => rfl) d b (fun g => M g) hb c (fun y hy => H y fun σ hσ => hy ⟨σ, hσ⟩) v hw n hn` and prove the remaining obligations. Conclude with `pow_smul_compHom T (algebraMap ℤ_[l] ↥(OL LL))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem killed_of_coord (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) {d : ℕ}
     (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l))
@@ -149,7 +149,7 @@ theorem killed_of_coord (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 
   exact pow_smul_compHom T (algebraMap ℤ_[l] ↥(OL LL))
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, ← algebraMap_smul LL, map_pow, map_natCast]`. Conclude with `H v fun g => (Submodule.Quotient.eq _).1 (hx g)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killed_quot {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] (T : LocLat G Qp LL O)
@@ -173,7 +173,7 @@ def imBall {r d : ℕ} (P : Matrix (Fin r) (Fin d) (PadicComplex l)) :
     exact ⟨-x, fun a => by simpa using hx a, Matrix.mulVec_neg _ _⟩
 
 /- English proof (translation)
-Use `sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _` and prove the remaining obligations. Introduce `x hx`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Rewrite using `[pow_add, pow_mul, hx, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Ks_mono' (K : FinExt l) {i j : ℕ} (h : i ≤ j) : Ks K i ≤ Ks K j := by
   refine sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _
@@ -183,7 +183,7 @@ theorem Ks_mono' (K : FinExt l) {i j : ℕ} (h : i ≤ j) : Ks K i ≤ Ks K j :=
   rw [pow_add, pow_mul, hx, one_pow]
 
 /- English proof (translation)
-Use `ha.1 g (algebraMap ℚ_[l] (Om l) x)` as an intermediate fact. Rewrite `this` using `[AlgEquiv.commutes]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_algebraMap' {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
     (g : GQ l) (x : ℚ_[l]) :
@@ -193,27 +193,25 @@ theorem act_algebraMap' {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} 
   exact this
 
 /- English proof (translation)
-Introduce `D HW F h7 l _ K s LL h S E M0 h0 T τ hW hj x hx`. Establish `hell : ell S = l` using `(D.loc l).PD_p K`. Establish `hs : S.W.s = s` using `(HW l).W_s K s LL h`. Take `⟨d, M, A, hM⟩` from `(GlobalTheory.T.exists_continuous_galoisLatticeMatrix_integral l K LL T).1`. Take `⟨r, P, U, g, J, hJ, hfin, hFr, hHT, hPM, hb1, hb2, hint⟩` from `GlobalTheory.T.exists_tau_component_frame_of_lattice D HW F h7 l K s LL h T M0 h0 τ hW d M A hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hact : IsActC (D.locA l).actC` using `⟨(D.locA l).actC_ext, (D.locA l).actC_norm⟩`. Establish `hχ : IsCyc (D.loc l).χQ` using `(D.loc l).χQ_cyc`. Use `set m := mN l s (M0 + h0) with hm`. Establish `hsm : s + 1 ≤ m` using `by rw [hm, mN]; omega`. Establish `hs1` using `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLev : Lev l m` using `⟨by omega, fun _ => by omega⟩`. Establish `hG : Gj K m ≤ GK K` using `IntermediateField.fixingSubgroup_le (h.2.2.1.trans (Ks_mono' K (by omega)))`. Establish `h0J : (0 : ℤ) ∉ J` using `fun hh => hj (hJ 0 hh)`. Establish `hc0 : c0 S T τ M0 h0 = 2 + ∑ u ∈ hfin.toFinset, (m + padicValInt l u)`. Rewrite using `[c0, hell, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `finsum_mem_eq_finite_toFinset_sum (fun u => m + vZ l u) hfin`. Rewrite using `[hell]`. Use `killed_quot T l _ (killed_of_coord K LL T M A hM _ ?_) x hx` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hl1 : ‖(l : ℚ_[l])‖ ≤ 1` using `(Padic.norm_p_lt_one).le`. Break down `J.eq_empty_or_nonempty with rfl | ⟨u0, hu0⟩` into its components or cases. Take `⟨e, u, -, hu, -⟩` from `hHT`. Establish `: IsEmpty (Fin r)` using `⟨fun k => by simpa using hu k⟩`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hint y ⟨0, fun a => by simp, Subsingleton.elim _ _⟩ a` as an intermediate fact. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hl1) (norm_nonneg _) this`. Establish `key` using `GlobalTheory.T.prime_pow_smul_mem_of_twistedInvariant_mod_lattice l _ _ hact hχ K m r hLev U g hFr J hHT 0 h0J (imBall P) hb1 (by rintro _ ⟨z, hz, rfl⟩; exact hb2 z hz) (P.mulVec (fun a => algebraMap ℚ_[l] (PadicComplex l) (y a))) (by`. Introduce `σ hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨_, hy σ (hG hσ), ?_⟩` and prove the remaining obligations. Establish `e1 : (fun a => (D.locA l).actC σ (P.mulVec (fun a => algebraMap ℚ_[l] (PadicComplex l) (y a)) a)) = (P.map ((D.locA l).actC σ)).mulVec (fun a => algebraMap ℚ_[l] (PadicComplex l) (y a))`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, act_algebraMap' hact]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, hPM σ hσ, twAct, e1, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[chiC])`. Rewrite `key` using `[Finset.erase_eq_of_notMem h0J]`. Simplify using `only [sub_zero] at key`. Establish `hle1 : 1 ≤ ∑ u ∈ J, (m + padicValInt l u)` using `le_trans (by omega) (Finset.single_le_sum (f := fun u => m + padicValInt l u) (fun _ _ => Nat.zero_le _) hu0)`. Establish `hle2 : ∑ u ∈ J, (m + padicValInt l u) ≤ ∑ u ∈ hfin.toFinset, (m + padicValInt l u)` using `Finset.sum_le_sum_of_subset fun u hu => hfin.mem_toFinset.2 (hJ u hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `key` using `[max_eq_right hle1]`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle2`. Establish `hi` using `hint (fun a => (l : ℚ_[l]) ^ (2 + ∑ u ∈ J, (m + padicValInt l u)) * y a) (by`. Establish `e : (fun a => algebraMap ℚ_[l] (PadicComplex l) ((l : ℚ_[l]) ^ (2 + ∑ u ∈ J, (m + padicValInt l u)) * y a)) = (l : PadicComplex l) ^ (2 + ∑ u ∈ J, (m + padicValInt l u)) • (fun a => algebraMap ℚ_[l] (PadicComplex l) (y a))`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_mul, map_pow, map_natCast, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e, Matrix.mulVec_smul]`. Conclude with `key)`. Introduce `a`. Rewrite using `[hc0, hk, ← add_assoc, add_comm _ k, pow_add, mul_assoc, norm_mul, norm_pow]`.
-
-Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hl1) (norm_nonneg _) (hi a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariants_killed : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), adm7 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; H0at S E := by
   intro D HW F h7 l _ K s LL h S E M0 h0 T τ hW hj x hx

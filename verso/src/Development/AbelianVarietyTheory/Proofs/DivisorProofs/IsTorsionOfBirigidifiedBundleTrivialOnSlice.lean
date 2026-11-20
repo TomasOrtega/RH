@@ -13,19 +13,19 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Pdiv
 
 /- English proof (translation)
-Introduce `S A _ _ P ab hP ⟨t₁, ht₁⟩ ⟨t₂, ht₂⟩ symm ample B _ y x ⟨t, ht⟩`. Set `A'` to `(Over.pullback y).obj A`. Set `φ` to `PullbackComparison.pφ y A`. Set `φ₂` to `PullbackComparison.pφ₂ y A`. Establish `pb : IsGrpPullback A' A y φ` using `PullbackComparison.isGrpPullback y A`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `sq : IsSquare φ φ₂` using `PullbackComparison.isSquare y A`. Establish `hab : IsAbelianScheme A'` using `{ comm := inferInstance smooth := by have := ab.smooth; show Smooth (Limits.pullback.snd _ _); infer_instance proper := by have := ab.proper; show IsProper (Limits.pullback.snd _ _); infer_instance geomConnected := by`. Use `ab.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (Limits.pullback.snd _ _)`. Use `infer_instance }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P' : LB (G2 A').left` to `P.pull φ₂`. Establish `hP' : P'.IsLB` using `pull_isLB hP φ₂`. Establish `iso : LBIso P' (P.pull φ₂)` using `PullbackComparison.gen_refl _ hP'`. Establish `dg` using `SiegelPull.diag_iso sq iso`. Take `⟨B₀, A₀, _, _, ψ, ψ₂, P₀, fin, ab₀, pb₀, sq₀, hP₀, iso₀, r₁, r₂, symm₀, ample₀⟩` from `GlobalTheory.T.polarised_abelian_scheme_descends_finite_type B A' P' hab hP' (gen_chartPull (chartPullLinComb P _ _ _ _ φ (fun _ => PullbackComparison.lift_one_id y A)) t₁ ht₁) (gen_chartPull (chartPullLinComb P _ _ _ _ φ (fun _ => PullbackComparison.lift_id_one y A)) t₂ ht₂) (LB …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsNoetherianRing B₀` using `Algebra.FiniteType.isNoetherianRing ℤ B₀`. Take `⟨M, hM, hker⟩` from `GlobalTheory.T.exists_pow_eq_one_birigidifiedSymmetric_noetherian B₀ A₀ P₀ ab₀ hP₀ r₁ r₂ symm₀ ample₀`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations. Set `T : Over (Sp B)` to `Over.mk (𝟙 _)`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv pb T y (Category.id_comp _).symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x.left = (e.symm x).left ≫ φ` using `by rw [← he, e.apply_symm_apply]`. Establish `key : e.symm x ^ M = 1`. Use `GlobalTheory.HTPull.kernel_pullback pb₀ sq₀ hP₀ hP' iso₀ M hker T (e.symm x) ?_` and prove the remaining obligations. Establish `w : ((fst A' T).left ≫ φ) ≫ A.hom = (snd A' T).left ≫ y`. Rewrite using `[Category.assoc, pb.1.w, ← Category.assoc, Over.w (fst A' T), ← Over.w (snd A' T)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg (· ≫ y) (Category.comp_id _)`. Set `χ : (A' ⊗ T).left ⟶ (A ⊗ Over.mk y).left` to `pullback.lift _ _ w`. Establish `c₁ : χ ≫ (fst A (Over.mk y)).left = (fst A' T).left ≫ φ` using `pullback.lift_fst _ _ _`. Establish `c₂ : χ ≫ (snd A (Over.mk y)).left = (snd A' T).left` using `pullback.lift_snd _ _ _`. Use `gen_chartPull (chartPullLinComb P _ _ _ _ χ fun _ => ?_) t ht` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(Category.id_comp _).symm.trans (GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk ((A' ⊗ T).hom ≫ y)) (T' := A' ⊗ T) (𝟙 _) _ _ (Z := A ⊗ Over.mk y) χ _ _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Over.comp_left, Over.comp_left, Category.assoc, ← hx, ← Category.assoc χ, c₂]`. Rewrite using `[Category.id_comp, c₁]`. Rewrite using `[← e.apply_symm_apply x, ← map_pow, key, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left), IsAbelianScheme A → P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (B : Type) [CommRing B] (y : Sp B ⟶ S) (x : Over.mk y ⟶ A), (∃ t : (P.pull (lift (snd A (Over.mk y) ≫ x) (fst A (Over.mk y))).left).Gen, t.IsGen) → ∃ M : ℕ, 0 < M ∧ x ^ M = 1 := by
   intro S A _ _ P ab hP ⟨t₁, ht₁⟩ ⟨t₂, ht₂⟩ symm ample B _ y x ⟨t, ht⟩

@@ -10,17 +10,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ _ _ _ _ _ _ _ B v h0 σ hσ hσB`. Establish `hσ1 : σ ≠ 1` using `fun h ↦ hσB (h ▸ B.one_mem)`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp (lowerIndex_ne_top (K := F) (L := L) hσ1)`. Establish `hm1 : 1 ≤ m`. Establish `: (1 : ℕ∞) ≤ lowerIndex F L σ` using `one_le_lowerIndex_iff.mpr (h0 ▸ Subgroup.mem_top σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hm]`. Conclude with `this` after adjusting the coercions. Establish `hv` using `(mem_upperRamificationGroup_iff_of_lowerIndex_eq hm.symm).mp hσ`. Establish `hcast : ((m : ℝ) - 1) = ((m - 1 : ℕ) : ℝ)`. Rewrite using `[Nat.cast_sub hm1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `hv` using `[hcast]`. Take `⟨hanti, hbot⟩` from `GlobalTheory.T.wildLowerRamificationGroup_antitone_eventually_bot F L`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_initialSegment_not_inf_le_filtration (L ≃ₐ[F] L) (wild F L) ⊤ B hanti hbot`. Establish `hjs` using `GlobalTheory.T.ramificationJumpSum_eq_sum_range (L ≃ₐ[F] L) (wild F L) ⊤ B n hanti hn`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hphi` using `GlobalTheory.T.card_mul_herbrandPhi_natCast_totallyRamified F L h0 (m - 1)`. Establish `hle : m - 1 ≤ n`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hmem : σ ∈ wild F L n`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[wild, show ((n : ℤ) + 1) = ((n + 1 : ℕ) : ℤ) by push_cast; ring, mem_lowerRamificationGroup_natCast_iff_lowerIndex, ← hm]`. Conclude with `(by omega : n + 1 + 1 ≤ m)` after adjusting the coercions. Establish `: ¬ (⊤ ⊓ wild F L n ≤ B)` using `fun h ↦ hσB (h ⟨Subgroup.mem_top σ, hmem⟩)`. Conclude with `lt_irrefl n ((hn n).mpr this)`. Establish `hcard : (0 : ℝ) ≤ (Nat.card (L ≃ₐ[F] L) : ℝ)` using `Nat.cast_nonneg _`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hjs]`. Simplify using `only [top_inf_eq]`. Conclude with `Finset.sum_le_sum_of_subset ((Finset.range_subset_range.mpr hle))` after adjusting the coercions.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_mul_le_jumpSum_of_mem_upper_not_mem : ∀ (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]

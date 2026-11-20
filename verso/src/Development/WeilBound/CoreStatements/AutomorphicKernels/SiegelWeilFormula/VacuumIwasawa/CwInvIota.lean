@@ -15,9 +15,9 @@ open PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics (mkGR inFrame_m
 variable {d : SD σ}
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `hO F E σ d R w`. Take `⟨sL, ρ, p, q, e, -, hld, -, hk⟩` from `hI F E σ d R w L hL`. Establish `h1` using `(hL y _ isSchwartz_indicator_one).2 (psiW R g w) (psiW_indep R g w) Φ hΦ (hT.trans (vg_tens R g w))`. Use `⟨F0 p q e y, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hk y 1 hy, hld.kvac y hy, vg_tens R _ w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `X`. Simplify using `only [RD.tens, psiW, Pi.smul_apply, smul_eq_mul, fP_smul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iota_vg (hO : LocOpEx) (hI : LocInst) (R : RD d) (w : InfinitePlace F) (y : GR d.n) (hy : InK (mR y))
     {g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ} {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (hT : d.T Φ = vg R g) :
@@ -32,25 +32,25 @@ theorem iota_vg (hO : LocOpEx) (hI : LocInst) (R : RD d) (w : InfinitePlace F) (
   ring
 
 /- English proof (translation)
-Simplify using `[dZ, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dZ_conjT {ζ : ℂ} : (dZ d.n ζ)ᴴ = dZ d.n (star ζ) := by
   simp [dZ, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_smul]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases R.hζ with ⟨-, h⟩ | ⟨-, h⟩ <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_zeta (R : RD d) : star R.ζ = R.ζ⁻¹ := by
   rcases R.hζ with ⟨-, h⟩ | ⟨-, h⟩ <;> rw [h] <;> simp
 
 /- English proof (translation)
-Establish `hζ0` using `Krd.zeta_ne R.hζ`. Take `⟨M, hM⟩ : ∃ M, M = d.cw w (inFrame d.b k)` from `⟨_, rfl⟩`. Establish `hY` using `Krd.inG_conj R.hζ M (hM ▸ form_w d R w k)`. Establish `hMM : Mᴴ * M = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 (hM ▸ hk)`. Use `⟨mkGR _ hY, ⟨hY, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (dZ d.n R.ζ * M * dZ d.n R.ζ⁻¹)ᴴ * (dZ d.n R.ζ * M * dZ d.n R.ζ⁻¹) = 1`. Establish `hA : (dZ d.n R.ζ)ᴴ = dZ d.n R.ζ⁻¹` using `by rw [dZ_conjT, star_zeta]`. Establish `hB : (dZ d.n R.ζ⁻¹)ᴴ = dZ d.n R.ζ` using `by rw [dZ_conjT, star_inv₀, star_zeta, inv_inv]`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hA, hB]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hM]`. Establish `h` using `R.at_w w (mkGR _ hY)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Krd.dZ_inv_mul hζ0, Matrix.one_mul]`. Use `_ = dZ d.n R.ζ⁻¹ * (dZ d.n R.ζ * M * dZ d.n R.ζ⁻¹ * dZ d.n R.ζ) := by rw [h]; rfl`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = M := by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Krd.dZ_inv_mul hζ0, Matrix.mul_one, ← Matrix.mul_assoc, Krd.dZ_inv_mul hζ0, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem kdec (R : RD d) (w : InfinitePlace F) (k : d.G)
     (hk : d.cw w (inFrame d.b k) * (d.cw w (inFrame d.b k))ᴴ = 1) :
@@ -78,24 +78,22 @@ theorem kdec (R : RD d) (w : InfinitePlace F) (k : d.G)
           rw [Krd.dZ_inv_mul hζ0, Matrix.mul_one, ← Matrix.mul_assoc, Krd.dZ_inv_mul hζ0, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[inFrame_mul, cw_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cw_inv_iota (R : RD d) (w : InfinitePlace F) (y : GR d.n) (k : d.G) (w' : InfinitePlace F) :
     d.cw w' (inFrame d.b ((R.ι w y)⁻¹ * k)) = d.cw w' (inFrame d.b (R.ι w y)⁻¹) * d.cw w' (inFrame d.b k) := by
   rw [inFrame_mul, cw_mul]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `k _ h1 g hg Φ hΦ hT`. Take `⟨g', hg', H⟩` from `hA F E σ d k (fun w => h1 w (Finset.notMem_empty w)) g hg`. Conclude with `⟨g', hg', H _ (gauss_indep R) Φ hΦ hT⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `insert w S hw ih`. Introduce `k h0 h1 g hg Φ hΦ hT`. Take `⟨y, hy, hyw⟩` from `kdec R w k (h0 w (Finset.mem_insert_self w S))`. Establish `hinv : ∀ w', w' ≠ w → d.cw w' (inFrame d.b (R.ι w y)⁻¹) = 1` using `fun w' h => by`. Rewrite using `[← map_inv]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.off_w w w' y⁻¹ h`. Establish `e1 : d.cw w (inFrame d.b (R.ι w y)⁻¹) * d.cw w (inFrame d.b (R.ι w y)) = 1`. Rewrite using `[← cw_mul, ← inFrame_mul, inv_mul_cancel, inFrame_one, cw_one]`. Establish `hkw : d.cw w (inFrame d.b ((R.ι w y)⁻¹ * k)) = 1` using `by rw [cw_inv_iota, ← hyw, e1]`. Establish `hkw' : ∀ w', w' ≠ w → d.cw w' (inFrame d.b ((R.ι w y)⁻¹ * k)) = d.cw w' (inFrame d.b k)` using `fun w' h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cw_inv_iota, hinv w' h, Matrix.one_mul]`. Take `⟨g₁, hg₁, e₁⟩` from `ih ((R.ι w y)⁻¹ * k) (fun w' h => by`. Rewrite using `[hkw' w' (fun e => hw (e ▸ h))]`. Conclude with `h0 w' (Finset.mem_insert_of_mem h))`. Use the proof step `(fun w' h => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : w' = w`. Rewrite using `[e, hkw]`. Rewrite using `[hkw' w' e]`. Conclude with `h1 w' fun h' => (Finset.mem_insert.1 h').elim e h)`. Use `g hg Φ hΦ hT`.
-
-Take `⟨c, e₂⟩` from `iota_vg hO hI R w y hy (d.ok.dbl.weil.2.1.pres _ Φ hΦ) e₁`. Use `⟨c • g₁, Submodule.smul_mem _ c hg₁, ?_⟩` and prove the remaining obligations. Rewrite using `[show k = R.ι w y * ((R.ι w y)⁻¹ * k) from (mul_inv_cancel_left _ _).symm, map_mul, Module.End.mul_apply]`. Conclude with `e₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem peel (hO : LocOpEx) (hI : LocInst) (hA : FinAct) (R : RD d) (S : Finset (InfinitePlace F)) :
     ∀ k : d.G, (∀ w ∈ S, d.cw w (inFrame d.b k) * (d.cw w (inFrame d.b k))ᴴ = 1) →
@@ -132,7 +130,7 @@ theorem peel (hO : LocOpEx) (hI : LocInst) (hA : FinAct) (R : RD d) (S : Finset 
     exact e₂
 
 /- English proof (translation)
-The claim follows from `peel hO hI hA R Finset.univ k (fun w _ => ((d.ok.stdK k).1 hk).1 w) (fun w h => absurd (Finset.mem_univ w) h) g hg Φ hΦ hT`.
+A detailed English derivation is pending.
 -/
 theorem vg_K' (hO : LocOpEx) (hI : LocInst) (hA : FinAct) (R : RD d)
     {g : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ} (hg : g ∈ SB _) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (hT : d.T Φ = vg R g)
@@ -140,17 +138,15 @@ theorem vg_K' (hO : LocOpEx) (hI : LocInst) (hA : FinAct) (R : RD d)
   peel hO hI hA R Finset.univ k (fun w _ => ((d.ok.stdK k).1 hk).1 w) (fun w h => absurd (Finset.mem_univ w) h) g hg Φ hΦ hT
 
 /- English proof (translation)
-Set `S' : Submodule ℂ d.Fn` to `{ carrier := {Φ | Φ ∈ d.sch ∧ ∀ k ∈ d.K, d.T (d.om k Φ) ∈ R.vac} zero_mem' := ⟨zero_mem _, fun k _ => by`. Rewrite using `[map_zero]`. Establish `: d.T 0 = 0` using `(Tl d).map_zero`. Rewrite using `[this]`. Conclude with `zero_mem _⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `add_mem' := fun {a b} ha hb => ⟨add_mem ha.1 hb.1, fun k hk => by`. Rewrite using `[map_add]`. Establish `: d.T (d.om k a + d.om k b) = d.T (d.om k a) + d.T (d.om k b)` using `(Tl d).map_add _ _`. Rewrite using `[this]`. Conclude with `add_mem (ha.2 k hk) (hb.2 k hk)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := fun c a ha => ⟨Submodule.smul_mem _ c ha.1, fun k hk => by`. Rewrite using `[map_smul]`. Establish `: d.T (c • d.om k a) = c • d.T (d.om k a)` using `(Tl d).map_smul _ _`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c (ha.2 k hk)⟩ }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : R.vac ≤ S'.map (Tl d)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `hm : vg R g ∈ d.schM` using `(hF F E σ d R).1 (vac_le_fock R (vg_mem R hg))`. Take `⟨Φ, hΦ, e⟩` from `(hT.1 F E σ d).2.1 _ hm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ, ⟨hΦ, fun k hk => ?_⟩, e⟩` and prove the remaining obligations. Take `⟨g', hg', e'⟩` from `vg_K' hO hI hA R hg hΦ e hk`. Rewrite using `[e']`. Conclude with `vg_mem R hg'`. Introduce `Φ hΦ hv k hk`.
-
-Take `⟨Φ', hΦ', e⟩` from `hle hv`. Establish `: Φ' = Φ` using `T_inj hT.1 hΦ'.1 hΦ e`. Rewrite using `[← this]`. Conclude with `hΦ'.2 k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_K' (hT : TAll) (hF : FockMem) (hO : LocOpEx) (hI : LocInst) (hA : FinAct) (R : RD d) :
     ∀ Φ ∈ d.sch, d.T Φ ∈ R.vac → ∀ k ∈ d.K, d.T (d.om k Φ) ∈ R.vac := by

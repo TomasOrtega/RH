@@ -17,7 +17,7 @@ open GlobalTheory.UT
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨A⟩` from `A`. Use `TorusLocal.pullback_map_eq_one p X B f hf fun g hg ↦ ?_` and prove the remaining obligations. Establish `: IsProper ((Over.pullback p).obj B).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Conclude with `splitTorus_hom_proper_trivial_local A X _ g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem splitTorus_hom_pullback_local_trivial {S : Scheme.{0}} (A : CommRingCat.{0}) [IsLocalRing A]
     [IsNoetherianRing A] (p : Spec A ⟶ S) (X : Type) [AddCommGroup X] [Module.Free ℤ X]
@@ -30,9 +30,9 @@ theorem splitTorus_hom_pullback_local_trivial {S : Scheme.{0}} (A : CommRingCat.
   exact splitTorus_hom_proper_trivial_local A X _ g hg
 
 /- English proof (translation)
-Introduce `S _ X _ _ _ B _ hB f hf`. Use `hB.proper` as an intermediate fact. Use `Over.OverMorphism.ext (hom_ext_of_fromSpecStalk fun t ↦ ?_)` and prove the remaining obligations. Set `p` to `S.fromSpecStalk ((splitTorus S X).hom t)`. Establish `h : (Over.pullback p).map f = (Over.pullback p).map (toUnit _ ≫ η[B])` using `splitTorus_hom_pullback_local_trivial _ p X B f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₁ : ∀ u : splitTorus S X ⟶ B, ((Over.pullback p).map u).left ≫ pullback.fst B.hom p = pullback.fst (splitTorus S X).hom p ≫ u.left` using `fun u ↦ pullback.lift_fst _ _ _`. Establish `h₂ : pullback.fst (splitTorus S X).hom p ≫ f.left = pullback.fst (splitTorus S X).hom p ≫ (1 : splitTorus S X ⟶ B).left`. Rewrite using `[← h₁, ← h₁, h, Hom.one_def]`. Establish `h₃ : pullback.lift ((splitTorus S X).left.fromSpecStalk t) (Spec.map ((splitTorus S X).hom.stalkMap t)) (Scheme.SpecMap_stalkMap_fromSpecStalk _).symm ≫ pullback.fst (splitTorus S X).hom p = (splitTorus S X).left.fromSpecStalk t` using `pullback.lift_fst _ _ _`. Rewrite using `[← h₃, Category.assoc, Category.assoc, h₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitTorus_hom_abelian_eq_one : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over S) [GrpObj B], IsAbelianScheme B → ∀ f : splitTorus S X ⟶ B, IsMonHom f → f = 1 := by
   intro S _ X _ _ _ B _ hB f hf

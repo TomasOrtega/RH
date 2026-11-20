@@ -20,9 +20,9 @@ def locKer {B : Type} [CommRing B] (f : B) (P : Ideal B) (hP : P.IsPrime) : Idea
   GlobalTheory.LocalSaturationContraction.satAt f P (hP := hP)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `GlobalTheory.T.dedekind_power_localization B f hf P hP`. Take `⟨N', hN'⟩` from `GlobalTheory.T.dedekind_power_localization B f hf P' hP'`. Establish `hc : IsCoprime P P'` using `Ideal.isCoprime_iff_sup_eq.2 (Ideal.IsMaximal.coprime_of_ne hP hP' hne)`. Establish `hc' : IsCoprime (P ^ N) (P' ^ N')` using `hc.pow`. Rewrite `hc'`, the goal using `[Ideal.isCoprime_iff_sup_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `eq_top_iff.2 (hc' ▸ sup_le_sup (fun b hb => hN b hb) (fun b hb => hN' b hb))`.
+A detailed English derivation is pending.
 -/
 theorem locKer_coprime {B : Type} [CommRing B] [IsDedekindDomain B] (f : B) (hf : f ≠ 0) (P P' : Ideal B)
     (hP : P.IsMaximal) (hP' : P'.IsMaximal) (hne : P ≠ P') :
@@ -35,11 +35,9 @@ theorem locKer_coprime {B : Type} [CommRing B] [IsDedekindDomain B] (f : B) (hf 
   exact eq_top_iff.2 (hc' ▸ sup_le_sup (fun b hb => hN b hb) (fun b hb => hN' b hb))
 
 /- English proof (translation)
-Set `J : Ideal B` to `Submodule.comap (LinearMap.mulRight B b) (Ideal.span {f})`. Establish `hJ : J = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hJM⟩` from `Ideal.exists_le_maximal J hne`. Establish `hfJ : f ∈ J`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap, LinearMap.mulRight_apply]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f)`. Take `⟨s, hs, hsb⟩` from `h M hM (hJM hfJ)`. Conclude with `hs (hJM (by rw [Submodule.mem_comap, LinearMap.mulRight_apply]; exact hsb))`. Establish `h1 : (1 : B) ∈ J` using `hJ ▸ Submodule.mem_top`.
-
-Simplify `h1` using `[J]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_locKer {B : Type} [CommRing B] (f b : B)
     (h : ∀ P : Ideal B, P.IsMaximal → f ∈ P → ∃ s : B, s ∉ P ∧ s * b ∈ Ideal.span {f}) :
@@ -57,7 +55,7 @@ theorem mem_of_forall_locKer {B : Type} [CommRing B] (f b : B)
   simpa [J] using h1
 
 /- English proof (translation)
-Simplify using `[spMap, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -67,9 +65,9 @@ variable (q : ℕ) [NeZero q] (k B : Type) [Field k] [IsAlgClosed k] [CommRing B
   [Algebra.FiniteType k B]
 
 /- English proof (translation)
-Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map (algebraMap k B)`. Establish `hsep` using `GlobalTheory.T.residueField_atPrime_isSepClosed_of_finiteType k B P`. Take `⟨D, _, _, _, Q, hQ, hQP, hres, hy⟩` from `GlobalTheory.T.etale_neighbourhood_kills_class q B hqB P hsep m i (by omega) y`. Take `⟨g, hS, hK⟩` from `GlobalTheory.T.away_quotient_span_eq_localization B D f hf P hP hfP Q hQ hQP hres`. Use `⟨Localization.Away g, inferInstance, inferInstance, inferInstance, hS, hK, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsScalarTower.algebraMap_eq B D (Localization.Away g), spMap_comp', pull_comp, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem onePoint (hq : IsUnit (q : k)) (f : B) (hf : f ≠ 0) (m i : ℤ) (hm : 1 ≤ m) (y : Ht q (sp B) m i)
     (P : Ideal B) (hP : P.IsMaximal) (hfP : f ∈ P) :
@@ -85,19 +83,17 @@ theorem onePoint (hq : IsUnit (q : k)) (f : B) (hf : f ≠ 0) (m i : ℤ) (hm : 
   rw [IsScalarTower.algebraMap_eq B D (Localization.Away g), spMap_comp', pull_comp, hy, map_zero]
 
 /- English proof (translation)
-Introduce `q _ k B _ _ _ _ _ _ hq f hf hfu m i hm y`. Set `Pt` to `{P : Ideal B // P.IsMaximal ∧ f ∈ P}`. Use `haveI : Finite Pt := (GlobalTheory.T.finite_maximal_containing B f hf).to_subtype`. Use `letI : Fintype Pt := Fintype.ofFinite Pt`. Set `K : Pt → Ideal B` to `fun x => locKer f x.1 x.2.1.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ T : Finset Pt, T.Nonempty → ∃ (A : Type) (_ : CommRing A) (_ : Algebra B A) (_ : Algebra.Etale B A), (∀ a : A, ∃ b : B, a - algebraMap B A b ∈ Ideal.span {algebraMap B A f}) ∧ (∀ b : B, algebraMap B A b ∈ Ideal.span {algebraMap B A f} ↔ b ∈ ⨅ x ∈ T, K x) ∧ pull _ (spMap ( …`. Introduce `T hT`. Proceed by induction on `hT using Finset.Nonempty.cons_induction with`. Consider the case `singleton x`. Take `⟨A, _, _, _, hS, hK, hy⟩` from `onePoint q k B hq f hf m i hm y x.1 x.2.1 x.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨A, inferInstance, inferInstance, inferInstance, hS, fun b => by simpa [K] using hK b, hy⟩`. Consider the case `cons x T hx hT ih`. Take `⟨A₁, _, _, _, hS₁, hK₁, hy₁⟩` from `ih`. Take `⟨A₂, _, _, _, hS₂, hK₂, hy₂⟩` from `onePoint q k B hq f hf m i hm y x.1 x.2.1 x.2.2`. Establish `hcop : IsCoprime (⨅ j ∈ T, K j) (K x)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Ideal.isCoprime_biInf fun j hj => ?_).symm` and prove the remaining obligations. Use `locKer_coprime f hf x.1 j.1 x.2.1 j.2.1 fun h => hx ?_` and prove the remaining obligations. Establish `: x = j` using `Subtype.ext h`. Conclude with `this ▸ hj`. Take `⟨hS, hK, hy⟩` from `GlobalTheory.T.approximation_quotients_agree q B A₁ A₂ f _ _ m i y hcop hS₁ hK₁ hS₂ hK₂ hy₁ hy₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨A₁ × A₂, inferInstance, inferInstance, GlobalTheory.T.etale_prod_of_etale B A₁ A₂ inferInstance inferInstance, hS, fun b => ?_, hy⟩` and prove the remaining obligations. Rewrite using `[hK b, Finset.cons_eq_insert, Finset.iInf_insert, inf_comm]`. Establish `hne : (Finset.univ : Finset Pt).Nonempty`. Establish `hspan : Ideal.span {f} ≠ ⊤` using `fun h => hfu (Ideal.span_singleton_eq_top.1 h)`. Take `⟨M, hM, hfM⟩` from `Ideal.exists_le_maximal _ hspan`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨M, hM, hfM (Ideal.mem_span_singleton_self f)⟩, Finset.mem_univ _⟩`. Take `⟨A, _, _, _, hS, hK, hy⟩` from `key Finset.univ hne`. Use `⟨A, inferInstance, inferInstance, inferInstance, ⟨hS, fun b hb => ?_⟩, hy⟩` and prove the remaining obligations. Establish `hb'` using `(hK b).1 hb`. Use `mem_of_forall_locKer f b fun P hP hfP => ?_` and prove the remaining obligations.
-
-Use `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hb' ⟨P, hP, hfP⟩) (Finset.mem_univ _)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_nbhd_pull_eq_zero : ∀ (q : ℕ) [NeZero q] (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] [IsDedekindDomain B] [Algebra k B] [Algebra.FiniteType k B], IsUnit (q : k) → ∀ f : B, f ≠ 0 → ¬ IsUnit f → ∀ (m i : ℤ), 1 ≤ m → ∀ y : Ht q (sp B) m i, ∃ (A' : Type) (_ : CommRing A') (_ : Algebra B A') (_ : Algebra.Etale B A'), IsNbhd B A' f ∧ pull _ (spMap (algebraMap B A')) _ _ y = 0 := by
   intro q _ k B _ _ _ _ _ _ hq f hf hfu m i hm y

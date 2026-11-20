@@ -12,7 +12,7 @@ section Scale
 variable {k r : ℕ} {Vp : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp]
 
 /- English proof (translation)
-Unfold `rconv`. Repeatedly rewrite using `[smul_comm (e _) cc]`. Conclude with `integral_smul cc _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rconv_smul (μ : Measure (Formalism.QuantumDeterminants.Mt k r)) (e : Mat k r → ℂ) (A : Mat k r → Vp) (cc : ℂ)
     (x : Mat k r) : rconv μ e (fun g => cc • A g) x = cc • rconv μ e A x := by
@@ -21,7 +21,7 @@ lemma rconv_smul (μ : Measure (Formalism.QuantumDeterminants.Mt k r)) (e : Mat 
   exact integral_smul cc _
 
 /- English proof (translation)
-Repeatedly rewrite using `[smul_comm (e _) cc]`. Conclude with `h.smul cc`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integrable_smul_fun (μ : Measure (Formalism.QuantumDeterminants.Mt k r)) (e : Mat k r → ℂ) (A : Mat k r → Vp) (cc : ℂ)
     (x : Mat k r) (h : Integrable (fun g : Formalism.QuantumDeterminants.Mt k r => e (Matrix.of g) • A (x * Matrix.of g)) μ) :
@@ -30,7 +30,7 @@ lemma integrable_smul_fun (μ : Measure (Formalism.QuantumDeterminants.Mt k r)) 
   exact h.smul cc
 
 /- English proof (translation)
-Unfold `l2SG`. Rewrite using `[← lintegral_const_mul' _ _ (by simp)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[nnnorm_smul, ENNReal.coe_mul, mul_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 lemma l2SG_const_smul (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (A : Mat k r → Vp) (cc : ℂ) :
     l2SG ν (fun g => cc • A g) = (‖cc‖₊ : ℝ≥0∞) ^ 2 * l2SG ν A := by
@@ -41,13 +41,13 @@ lemma l2SG_const_smul (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (A :
   rw [nnnorm_smul, ENNReal.coe_mul, mul_pow]
 
 /- English proof (translation)
-Establish `hW : Wf ν A = fun g => (((Real.sqrt (l2SG ν A).toReal)⁻¹ : ℝ) : ℂ) • A g`. Use function extensionality and compare the values at `g`. Unfold `Wf`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[hW, l2SG_const_smul]`. Use `set t := (l2SG ν A).toReal with ht_def`. Establish `ht : 0 < t` using `ENNReal.toReal_pos h0 h1.ne`. Establish `hA : l2SG ν A = ENNReal.ofReal t` using `(ENNReal.ofReal_toReal h1.ne).symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (‖(((Real.sqrt t)⁻¹ : ℝ) : ℂ)‖₊ : ℝ≥0∞) ^ 2 = ENNReal.ofReal t⁻¹`. Rewrite using `[ENNReal.ofReal, ← ENNReal.coe_pow]`. Use `congr 1`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[NNReal.coe_pow, coe_nnnorm, Real.coe_toNNReal _ (inv_nonneg.mpr ht.le), Complex.norm_real, Real.norm_eq_abs, sq_abs, inv_pow, Real.sq_sqrt ht.le]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, hA, ← ENNReal.ofReal_mul (inv_nonneg.mpr ht.le), inv_mul_cancel₀ ht.ne', ENNReal.ofReal_one]`.
+A detailed English derivation is pending.
 -/
 lemma l2SG_Wf_eq_one (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (A : Mat k r → Vp) (h0 : l2SG ν A ≠ 0)
     (h1 : l2SG ν A < ⊤) : l2SG ν (Wf ν A) = 1 := by
@@ -66,7 +66,7 @@ lemma l2SG_Wf_eq_one (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (A : 
   rw [hn, hA, ← ENNReal.ofReal_mul (inv_nonneg.mpr ht.le), inv_mul_cancel₀ ht.ne', ENNReal.ofReal_one]
 
 /- English proof (translation)
-Repeatedly rewrite using `[enorm_smul, mul_assoc]`. Rewrite using `[lintegral_const_mul' _ _ enorm_ne_top]`. Conclude with `ENNReal.mul_lt_top enorm_lt_top h`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lint_smul (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (A : Mat k r → Vp) (cc : ℂ) (f : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞)
     (h : ∫⁻ x, ‖A (Matrix.of x)‖ₑ * f x ∂ν < ⊤) :
@@ -106,21 +106,19 @@ def WlocShape : Prop :=
     ∀ x, W x = cc • B0 z c σ π μW μN (σ x₀ w) ξ (σ x w)
 
 /- English proof (translation)
-Introduce `hBNV hCW k r z c u v b hS H _ _ _ σ hσ Vp _ _ _ π hπ w hw μG μS ν hG hSμ hQ`. Take `⟨μW, μN, hW, hN, hWf, hNc⟩` from `hWN k r z hS.2.2.1 hS.2.2.2.1`. Establish `hyp : Hyp k r z c u v b σ π w μG μS ν μW μN` using `⟨hS, hσ, hπ, hw, hG, hSμ, hQ, hW, hN, hWf, hNc⟩`. Take `⟨x₀, hx₀, ξ, hne⟩` from `hNz hBNV k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW`. Establish `hL'` using `hL k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set A := Af z c σ π μW μN w x₀ ξ with hA_def`. Use `set cc : ℂ := (((Real.sqrt (l2SG ν A).toReal)⁻¹ : ℝ) : ℂ) with hcc`. Establish `hW' : Wf ν A = fun g => cc • A g`. Use function extensionality and compare the values at `g`. Unfold `Wf`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[hcc]`. Use `push_cast`. Both sides reduce to the same expression. Use `⟨Wf ν A, ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, μW, μN, cc, x₀, ξ, hW, hN, hx₀, fun x => by rw [hW']; rfl⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hW']`. Conclude with `(hC k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ).const_smul cc`. Introduce `h hh m hm g hg`. Rewrite using `[hW']`. Use `hEq k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ h hh m hm g hg` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `cc • Af z c σ π μW μN w x₀ ξ (h * m * g) = psiGen k r z c m • (π h) (cc • Af z c σ π μW μN w x₀ ξ g)`. Rewrite using `[this, smul_comm cc (psiGen k r z c m), map_smul]`. Introduce `x hx`. Take `⟨hi, he⟩` from `hK k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ x hx`. Rewrite using `[hW']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨integrable_smul_fun μG _ A cc x hi, by rw [rconv_smul, he]⟩`. Rewrite using `[hW']`. Use `lint_smul ν A cc (fun _ => 1) (by simpa using hL'.1)` as an intermediate fact. Simplify using `using this`. Conclude with `l2SG_Wf_eq_one ν A hne hL'.2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hW']`. Conclude with `lint_smul ν A cc _ (hWt k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ)`. Take `⟨α, Ω, a, hΩ, h1, hΩG, hαm, hα0, hαa, hα⟩` from `hRp k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ`. Use `⟨α, Ω, a, hΩ, h1, hΩG, hαm, hα0, hαa, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hi, he⟩` from `hα x hx`.
-
-Rewrite using `[hW']`. Conclude with `⟨integrable_smul_fun μG _ A cc x hi, by rw [rconv_smul, he]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem scWlocShape_of (hWN : HaarWN) (hEq : AEquiv) (hC : ACont) (hK : AKind) (hRp : AReprod)
     (hL : WavePacketL1L2) (hWt : AWeighted) (hNz : ANonzero) (hR : Formalism.L2.SG.HCReprodM.HCReprodDSm) :
@@ -162,7 +160,7 @@ theorem scWlocShape_of (hWN : HaarWN) (hEq : AEquiv) (hC : ACont) (hK : AKind) (
     exact ⟨integrable_smul_fun μG _ A cc x hi, by rw [rconv_smul, he]⟩
 
 /- English proof (translation)
-Introduce `hBNV hCW k r z c u v b hS H _ _ _ σ hσ Vp _ _ _ π hπ w hw μG μS ν hG hSμ hQ`. Take `⟨W, hWc, _⟩` from `scWlocShape_of hWN hEq hC hK hRp hL hWt hNz hR hBNV hCW k r z c u v b hS H σ hσ Vp π hπ w hw μG μS ν hG hSμ hQ`. Conclude with `⟨W, hWc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem scWlocExists_of (hWN : HaarWN) (hEq : AEquiv) (hC : ACont) (hK : AKind) (hRp : AReprod)
     (hL : WavePacketL1L2) (hWt : AWeighted) (hNz : ANonzero) (hR : Formalism.L2.SG.HCReprodM.HCReprodDSm) :

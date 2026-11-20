@@ -10,9 +10,9 @@ namespace GlobalTheory.IntFrComp
 open AlgebraicGeometry
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y`. Use `letI := io.toAlgebra`. Set `s₀ : Sp T.Fr` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum T.Fr)`. Use `⟨⟨irreducibleComponent (GlobalTheory.AllWt.ptF y.1 s₀), irreducibleComponent_mem_irreducibleComponents _⟩, fun s => ?_⟩` and prove the remaining obligations. Take `rfl : s = s₀` from `Subsingleton.elim (α := PrimeSpectrum T.Fr) s s₀`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_irreducibleComponent`.
+A detailed English derivation is pending.
 -/
 theorem exists_liesOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), ∃ Z : Comp Xo c, (letI := io.toAlgebra; LiesOn Z y.1) := by
   intro E _ _ _ H Dw l Xo c T io y

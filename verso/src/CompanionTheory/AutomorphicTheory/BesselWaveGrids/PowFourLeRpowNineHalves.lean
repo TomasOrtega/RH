@@ -15,14 +15,14 @@ def gapY (k r : ℕ) : ℝ :=
     (((3 * (r + 1) : ℕ) : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + ((2 * r + k + 1 : ℕ) : ℝ) ^ 3)
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)) (by norm_num)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_four_le_rpow_nine_halves (r : ℕ) : ((2 * r + 2 : ℕ) : ℝ) ^ 4 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) := by
   rw [← Real.rpow_natCast]
   exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)) (by norm_num)
 
 /- English proof (translation)
-Unfold `thrX gapY`. Establish `h1 : ((r : ℝ) + 1) ^ 4 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ 4` using `pow_le_pow_left₀ (by positivity) (by push_cast; linarith [(Nat.cast_nonneg r : (0 : ℝ) ≤ r)]) 4`. Establish `e : ((2 * r + k + 1 : ℕ) : ℝ) = 2 * (r : ℝ) + k + 1` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (h1.trans (pow_four_le_rpow_nine_halves r)) (by positivity)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thrX_le_gapY (k r : ℕ) : thrX k r ≤ gapY k r := by
   unfold thrX gapY
@@ -33,29 +33,29 @@ theorem thrX_le_gapY (k r : ℕ) : thrX k r ≤ gapY k r := by
   exact mul_le_mul_of_nonneg_right (h1.trans (pow_four_le_rpow_nine_halves r)) (by positivity)
 
 /- English proof (translation)
-The claim follows from `mul_le_mul (pow_four_le_rpow_nine_halves r) (le_add_of_nonneg_left (by positivity)) (by positivity) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem mul_le_gapY (k r : ℕ) : ((2 * r + 2 : ℕ) : ℝ) ^ 4 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ gapY k r :=
   mul_le_mul (pow_four_le_rpow_nine_halves r) (le_add_of_nonneg_left (by positivity)) (by positivity) (by positivity)
 
 /- English proof (translation)
-The claim follows from `le_trans (le_mul_of_one_le_right (by positivity) (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)))) (mul_le_gapY k r)`.
+A detailed English derivation is pending.
 -/
 theorem fourth_power_le_gap (k r : ℕ) : ((2 * r + 2 : ℕ) : ℝ) ^ 4 ≤ gapY k r :=
   le_trans (le_mul_of_one_le_right (by positivity)
     (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)))) (mul_le_gapY k r)
 
 /- English proof (translation)
-The claim follows from `le_trans (le_mul_of_one_le_left (by positivity) (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)))) (mul_le_gapY k r)`.
+A detailed English derivation is pending.
 -/
 theorem cube_le_gap (k r : ℕ) : ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ gapY k r :=
   le_trans (le_mul_of_one_le_left (by positivity)
     (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)))) (mul_le_gapY k r)
 
 /- English proof (translation)
-Use `⟨hk, hlam, fun a i hi => ?_, fun a ha => ?_, fun a ha => ?_, hc, hn, hb, fun i hi => hu.u_le i (Finset.mem_Icc.1 hi).1 (Finset.mem_Icc.1 hi).2, fun a c hac _ => hg a c hac, hh, hok, h1, h2, h3⟩` and prove the remaining obligations. Take `⟨m1, e1⟩` from `hlam.2 a`. Take `⟨m2, e2⟩` from `hu.half i (Finset.mem_Icc.1 hi).1 (Finset.mem_Icc.1 hi).2`. Use `⟨m1 - m2 + r, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at e1 ⊢`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hu.inter.2 (a.cast (by ring))).1 (by simpa using ha)`. Conclude with `(hu.inter.2 (a.cast (by ring))).2 (show a.val + 2 ≤ k by omega)`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem num_of {k r : ℕ} (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ} {b bv ga h : ℝ} {q0 : ℕ}
     (hlam : IsHCParam lam) (hu : HypType k r lam u b)
@@ -76,7 +76,7 @@ theorem num_of {k r : ℕ} (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u
   · exact (hu.inter.2 (a.cast (by ring))).2 (show a.val + 2 ≤ k by omega)
 
 /- English proof (translation)
-Use `(h γ hγ hG).trans (mul_le_mul' (ENNReal.ofReal_le_ofReal ?_) le_rfl)` and prove the remaining obligations. Use `mul_le_mul (Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right hC (by positivity))) ?_ (pow_nonneg (inv_nonneg.2 hG.le) _) (Real.rpow_nonneg (by linarith) _)` and prove the remaining obligations. Conclude with `(pow_le_pow_left₀ (inv_nonneg.2 hG.le) (by rw [one_div]; exact le_max_right _ _) _).trans (pow_le_pow_right₀ (le_max_left _ _) hA)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bp_max {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -127,71 +127,67 @@ def WBp (Cb : ℝ) : Prop :=
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `C Ca hC`. Establish `hC3 : 0 ≤ C / 2 + 6` using `by positivity`. Take `⟨C₁, CA₁, H1⟩` from `hD Cb _ 0 1 hC3 le_rfl (by norm_num)`. Take `⟨C₂, CA₂, H2⟩` from `hQ _ 0 1 hC3 le_rfl (by norm_num)`. Take `⟨c₃, HW⟩` from `weighted`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `a1` using `abs_nonneg CA₁`. Establish `a2` using `abs_nonneg CA₂`. Establish `a3` using `abs_nonneg c₃`. Establish `a4` using `abs_nonneg Ca`. Establish `a5 : 0 ≤ max (max C₁ C₂) 0` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨4 * |Ca| + max (max C₁ C₂) 0 + (C + 12) * |Ca|, 10 ^ 6 + Ct + |CA₁| + |CA₂| + |c₃| + 100 * |Ca|, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Cg hCg P Wp Wq _ _ _ _ _ _ _ p f lam b bv j hj a hf hTy hTy' hcl hnd hlamb hbv hg4 hgap hok hT1 hT1' hT hT' hcase ha γ hγ hG`. Establish `hk2 : 2 ≤ P.k` using `p.hl.2.2`. Establish `hlam : IsHCParam lam`. Take `⟨-, -, -, -, -, -, -, h, -⟩` from `hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hr : (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `hkR : (2 : ℝ) ≤ P.k` using `by exact_mod_cast hk2`. Establish `hY1` using `thrX_le_gapY P.k P.r`. Establish `hY2` using `fourth_power_le_gap P.k P.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY3` using `cube_le_gap P.k P.r`. Establish `hX0` using `thrX_nonneg P.k P.r`. Establish `htn` using `ht (2 * P.r + P.k + 1) (PI.BesselPeriodGGP.eps48 P.k P.r) (by omega)`. Take `⟨m, hm⟩ : ∃ m : ℝ, m = ((2 * P.r + 2 : ℕ) : ℝ)` from `⟨_, rfl⟩`. Take `⟨n, hn⟩ : ∃ n : ℝ, n = ((2 * P.r + P.k + 1 : ℕ) : ℝ)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩ : ∃ e : ℝ, e = (((P.r + 1) * a : ℕ) : ℝ)` from `⟨_, rfl⟩`. Take `⟨Y, hY⟩ : ∃ Y : ℝ, Y = gapY P.k P.r` from `⟨_, rfl⟩`. Establish `hm' : m = 2 * ((P.r : ℝ) + 1)` using `by rw [hm]; push_cast; ring`. Establish `hn' : n = 2 * (P.r : ℝ) + P.k + 1` using `by rw [hn]; push_cast; ring`. Establish `hm2 : 2 ≤ m` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmn : m ≤ n` using `by linarith`. Establish `hm3 : 8 ≤ m ^ 3` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hm2 3)`. Establish `hm34 : m ^ 3 ≤ m ^ 4` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `hm45 : m ^ 4 ≤ m ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `hn7 : m ^ 4 ≤ n ^ 7` using `(pow_le_pow_left₀ (by linarith) hmn 4).trans (pow_le_pow_right₀ (by linarith) (by norm_num))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn17 : n ≤ n ^ 7` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `hbvb : bv ≤ b`. Establish `h1` using `(hnd ⟨P.k, by omega⟩ (by simp)).2`. Establish `h2` using `(abs_le.1 (hlamb ⟨P.k, by omega⟩)).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hY2`, `hg4`, `ha` using `[← hm]`. Rewrite `hY3`, `htn`, `hbv` using `[← hn]`. Rewrite `hY1`, `hY2`, `hY3`, `hgap`, `hok` using `[← hY]`. Establish `ha' : (a : ℝ) ≤ |Ca| * m ^ 3` using `ha.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith))`. Establish `he0 : 0 ≤ e` using `he ▸ Nat.cast_nonneg _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hem : e ≤ |Ca| * m ^ 4`. Rewrite using `[he]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `hCg6 : (10 : ℝ) ^ 6 ≤ Cg` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCn : Cg * m ^ 4 ≤ b` using `(mul_le_mul_of_nonneg_left hn7 (by linarith)).trans (hbv.trans hbvb)`. Establish `hCn' : 10 ^ 6 * n ^ 7 ≤ bv` using `(mul_le_mul_of_nonneg_right hCg6 (by linarith)).trans hbv`. Establish `hcm : (10 ^ 6 + 100 * |Ca|) * m ^ 4 ≤ Cg * m ^ 4` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `hCam : 0 ≤ |Ca| * m ^ 4` using `mul_nonneg a4 (by linarith)`. Establish `hL : HypLam P.k P.r lam ((|Ca| + 5) * m ^ 4) (Cg * m ^ 4) b` using `{ hc := hlam lam_le := hlamb c_ge := by linarith b_ge_three := by linarith b_ge_k := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right Real.exp_one_lt_d9.le (Nat.cast_nonneg P.k : (0 : ℝ) ≤ P.k)` as an intermediate fact. Combine the linear relations using `only [this, hn', hr, hkR, hn17, hCn', hbvb]`. Use `b_ge_c := by linarith`. Use `g_ge := by linarith`. Use `gap := fun s s' hs => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg4 s s' (by rw [Fin.lt_def]; omega)` as an intermediate fact. Combine the linear relations using `}`. Establish `hb3` using `hL.b_ge_three`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnb : n ≤ b` using `by linarith`. Establish `hYall : (10 ^ 6 + Ct + |CA₁| + |CA₂| + |c₃| + 100 * |Ca|) * Y ≤ Cg * Y` using `mul_le_mul_of_nonneg_right hCg (by linarith)`. Establish `htY : t _ (PI.BesselPeriodGGP.eps48 P.k P.r) ≤ Ct * Y` using `htn.trans (mul_le_mul_of_nonneg_left hY3 hCt)`. Establish `heY : e ≤ |Ca| * Y` using `hem.trans (mul_le_mul_of_nonneg_left hY2 a4)`. Establish `p1 : 0 ≤ Ct * Y` using `mul_nonneg hCt (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2 : 0 ≤ |CA₁| * Y` using `mul_nonneg a1 (by linarith)`. Establish `p3 : 0 ≤ |CA₂| * Y` using `mul_nonneg a2 (by linarith)`. Establish `p4 : 0 ≤ |c₃| * Y` using `mul_nonneg a3 (by linarith)`. Establish `p5 : 0 ≤ |Ca| * Y` using `mul_nonneg a4 (by linarith)`. Establish `q1 : CA₁ * thrX P.k P.r ≤ |CA₁| * Y` using `mul_le_mul (le_abs_self _) hY1 hX0 a1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q2 : CA₂ * thrX P.k P.r ≤ |CA₂| * Y` using `mul_le_mul (le_abs_self _) hY1 hX0 a2`. Establish `q3 : (|c₃| + 46) * thrX P.k P.r ≤ (|c₃| + 46) * Y` using `mul_le_mul_of_nonneg_left hY1 (by linarith)`. Use `set q0 : ℕ := (P.r + 1) * a + (P.r + 1) * (40 * (P.r + 1) ^ 2) + (P.r + 1) * (P.r + 2) with hq0`. Establish `hq : 100 * ((q0 : ℝ) + 1) ≤ Cg * m ^ 4`. Establish `e2 : ((P.r : ℝ) + 1) * (40 * ((P.r : ℝ) + 1) ^ 2) = 5 * m ^ 3` using `by rw [hm']; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ((P.r : ℝ) + 1) * (P.r + 2) ≤ m ^ 3`. Rewrite using `[hm']`. Use polynomial arithmetic with `only [hr, mul_nonneg hr hr, mul_nonneg hr (mul_nonneg hr hr)]`. Establish `e4 : (q0 : ℝ) = e + ((P.r : ℝ) + 1) * (40 * ((P.r : ℝ) + 1) ^ 2) + ((P.r : ℝ) + 1) * (P.r + 2)`. Rewrite using `[hq0, he]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq' : Cg * m ^ 4 ≤ Cg * Y` using `mul_le_mul_of_nonneg_left hY2 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN` using `num_of (by omega) hlam hTy hcl hnd hlamb hg4 hgap hok hq (hq.trans hq') (hn ▸ hCn')`. Establish `hN'` using `num_of (by omega) hlam hTy' hcl hnd hlamb hg4 hgap hok hq (hq.trans hq') (hn ▸ hCn')`. Choose the witnesses or unpack the hypotheses as in `⟨R, hfam⟩ : ∃ R : (Fin (2 * P.r + P.k + 1) → ℤ) → BranchingSupport.Rep P.k P.r, BranchingSupport.IsFam lam q0 R := by`. Take `⟨H₀, i1, i2, i3, σ, -, -, h1, h2, -⟩` from `hf`. Conclude with `H.1 P.k P.r lam P.u b bv _ _ q0 { H := H₀, σ := σ } hN ⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H91` using `H.2 C hC P Wp Wq p lam b bv _ _ q0 hN hN' hT hT'`. Establish `g1 : n ^ 3 + 1 < Cg * Y - 2 * e` using `by linarith only [hYall, heY, p1, p2, p3, p4, p5, hY2, hY3, hm3, hm34]`. Establish `g2 : ∀ x d : ℝ, x ≤ |CA₁| * Y + |CA₂| * Y → d ≤ 5 * m ^ 3 → t _ (PI.BesselPeriodGGP.eps48 P.k P.r) + x + 3 * d + 1 < Cg * Y - 2 * e` using `fun x d hx hd => by`. Combine the linear relations using `only [hx, hd, htY, hYall, heY, p4, p5, hY2, hm3, hm34]`. Establish `g3 : ∀ d : ℝ, d ≤ 5 * m ^ 3 → e + d ≤ (|Ca| + 5) * m ^ 4` using `fun d hd => by linarith only [hd, hem, hm34]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `g4 : t _ (PI.BesselPeriodGGP.eps48 P.k P.r) + (|c₃| + 46) * thrX P.k P.r + 3 * e + 1 < Cg * Y`. Combine the linear relations using `only [q3, htY, hYall, heY, p2, p3, p5, hY2, hm3, hm34]`. Establish `g5 : 0 ≤ (|c₃| + 46) * thrX P.k P.r` using `mul_nonneg (by linarith only [a3]) hX0`. Establish `hTT : b ^ (-(0 * ((2 * P.r + 2 : ℕ) : ℝ))) ≤ P.T * P.T'`. Rewrite using `[zero_mul, neg_zero, Real.rpow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_le_mul_of_one_le_of_one_le hT1 hT1'`. Establish `hTq : 1 ≤ TBB.Tq p`. Unfold `TBB.Tq`. Rewrite using `[p.hP.2.2.2.2.1]`. Conclude with `hT1'`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hp₀ : (((2 * (P.r + 1) : ℕ) : ℕ) : ℝ) ≤ 1 * (3 * ((P.r : ℝ) + 1)) + 1` using `by push_cast; linarith`. Establish `hd1 : (((2 * P.r + 2) * (2 * (P.r + 1)) : ℕ) : ℝ) ≤ 5 * m ^ 3`. Rewrite using `[hm']`. Use `push_cast`. Use polynomial arithmetic with `only [hr, mul_nonneg hr hr, mul_nonneg hr (mul_nonneg hr hr)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : (((2 * P.r + 2) * (2 * (P.r + 1)) + (30 * (P.r + 1) ^ 2 + 6) * (P.r + 1) : ℕ) : ℝ) ≤ 5 * m ^ 3`. Rewrite using `[hm']`. Use `push_cast`. Use polynomial arithmetic with `only [hr, mul_nonneg hr hr, mul_nonneg hr (mul_nonneg hr hr)]`. Establish `hB : ∀ ν ∈ ball _ ((P.r + 1) * a), ∀ F ∈ Wsp P.k P.r Wp Wq (PI.BesselPeriodGGP.eps48 P.k P.r) (fun s => lam s + (ν s : ℝ)), ENNReal.ofReal (TBB.Ew p (fun _ => 1) F (P.r + 1) [] γ) ≤ ENNReal.ofReal (b ^ (max (max C₁ C₂) 0 * ((2 * P.r + 2 : ℕ) : ℝ) ^ 4) * max 1 (1 / TBB.Gp p γ) ^ ( …`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ν hν F hF`. Establish `hν1 : BranchingSupport.n1 ν ≤ (P.r + 1) * a` using `sum_natAbs_le_of_mem_ball _ ν hν`. Establish `hbox : (fun s => lam s + (ν s : ℝ)) ∈ Box lam e` using `fun s => by`. Rewrite using `[he]`. Simplify using `using abs_ball hν s`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgν : PI.ZuckTensor.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) (fun s => lam s + (ν s : ℝ)) (Cg * Y - 2 * e)` using `gap_of_box hbox hgap (by linarith only)`. Establish `hDS` using `hfam ν (hν1.trans (by omega))`. Establish `hexp : ∀ a₁, a₁ ≤ 40 * (P.r + 1) ^ 2 → BigCellDerivativeExpansion p F b (C / 2 + 6) a₁` using `fun a₁ ha₁ => (H91 a₁ (R ν) F (coefOf_of_wsp hU hK hgν (hn ▸ g1) (R ν) hDS hF)).1 ν (by have := Nat.mul_le_mul_left (P.r + 1) ha₁; omega) hDS`. Break down `hcase with ⟨hlen, hDD⟩ | ⟨huu, l, hl1, hlk, hposition⟩` into its components or cases. Establish `hn₀ : 2 * (2 * (P.r + 1)) + 0 ≤ 40 * (P.r + 1) ^ 2` using `by nlinarith only [Nat.zero_le P.r]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `bp_max hb1 (le_max_of_le_left (le_max_left _ _)) hn₀ (H1 Wp Wq P p F b _ lam _ _ _ _ _ _ hF hbox (g3 _ hd1) hgν (g2 _ _ (by linarith only [q1, p3]) hd1) hL hTy hTy' hTT hTq hlen (by omega) hp₀ hDD (hexp _ hn₀)) γ hγ hG`. Establish `hn₀ : 2 * (2 * (P.r + 1)) + (30 * (P.r + 1) ^ 2 + 6) ≤ 40 * (P.r + 1) ^ 2` using `by nlinarith only [Nat.zero_le P.r]`. Conclude with `bp_max hb1 (le_max_of_le_left (le_max_right _ _)) hn₀ (H2 Wp Wq P p F b _ _ l lam _ _ _ _ _ _ hF hbox (g3 _ hd2) hgν (g2 _ _ (by linarith only [q2, p2]) hd2) hL hTy huu hTT hTq rfl hl1 hlk (by push_cast; exact hposition) (by omega) hp₀ (hexp _ hn₀)) γ hγ hG`. Take `⟨-, -, -, s4, s5, s6, s7⟩` from `hS`. Establish `hXA : (|c₃| + 46) * thrX P.k P.r ≤ (|c₃| + 46) * thrX P.k P.r + e` using `by linarith only [he0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmain` using `HW hZ hZd hK s4 s5 s6 s7 P Wp Wq p f _ lam j hj a ((|c₃| + 46) * thrX P.k P.r + e) (Cg * Y) (fun γ => ENNReal.ofReal (b ^ (max (max C₁ C₂) 0 * ((2 * P.r + 2 : ℕ) : ℝ) ^ 4) * max 1 (1 / TBB.Gp p γ) ^ (40 * (P.r + 1) ^ 2))) hf hgap (by rw [← he]; linarith only [g4, g5, he0]) (he ▸ …`. Establish `h00 : BranchingSupport.n1 (0 : Fin (2 * P.r + P.k + 1) → ℤ) ≤ q0` using `by simp [BranchingSupport.n1]`. Establish `hDS0 : (R 0).IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) lam` using `by simpa using hfam 0 h00`. Establish `hcf : BallW.CoefOf (R 0) f`. Take `⟨F₀, hF₀, hF₁⟩` from `kfin_wsp hf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Introduce `l l'`. Take `⟨s, w, x, y, X, h1, h2, h3⟩` from `coefOf_of_wsp hU hK hgap (by rw [← hn]; linarith only [g1, he0]) (R 0) hDS0 hF₀ l l'`. Conclude with `⟨s, w, x, y, X, h1, fun g hg => (hF₁ g hg).symm.trans (h2 g hg), h3⟩`. Establish `hmom` using `(H91 a (R 0) f hcf).2 j hj (by omega) hDS0`. Use `hmain.trans ((mul_le_mul' le_rfl hmom).trans ?_)` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `mul_le_mul' (ENNReal.ofReal_le_ofReal ?_) le_rfl` and prove the remaining obligations. Establish `c1 : ((2 * (2 * P.r + P.k + 1) + 1 : ℕ) : ℝ) ^ (2 * ((P.r + 1) * a)) ≤ b ^ (4 * |Ca| * m ^ 5)`. Establish `h1 : ((2 * (2 * P.r + P.k + 1) + 1 : ℕ) : ℝ) ≤ b ^ 2`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use polynomial arithmetic with `only [hn', hnb, hb3]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, ← Real.rpow_natCast, he]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := Real.rpow_le_rpow_of_exponent_le hb1 (by linarith only [hem, mul_le_mul_of_nonneg_left hm45 a4])`. Establish `c2 : b ^ (max (max C₁ C₂) 0 * m ^ 4) ≤ b ^ (max (max C₁ C₂) 0 * m ^ 5)` using `Real.rpow_le_rpow_of_exponent_le hb1 (mul_le_mul_of_nonneg_left hm45 a5)`. Establish `c3 : b ^ ((C + 12) * m ^ 2 * a) ≤ b ^ ((C + 12) * |Ca| * m ^ 5)`. Use `Real.rpow_le_rpow_of_exponent_le hb1 ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hm, add_mul _ _ (m ^ 5), add_mul _ _ (m ^ 5), Real.rpow_add hb0, Real.rpow_add hb0]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem wBp_of {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} {Ct : ℝ} (hCt : 0 ≤ Ct)
     (ht : ∀ n ε, 1 ≤ n → t n ε ≤ Ct * (n : ℝ) ^ 3) (hZ : ZuckT t) (hZd : ZuckDualT t) (hS : LimSteps)

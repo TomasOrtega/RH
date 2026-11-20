@@ -17,7 +17,7 @@ variable {R₀ : Type} [CommRing R₀] {X₀ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R
   {C D : Type} [Category.{0} C] [Category.{0} D]
 
 /- English proof (translation)
-The claim follows from `leOfHom (θ.app T).unop`.
+A detailed English derivation is pending.
 -/
 theorem opOf_le_of_natTrans (G : C ⥤ AffOp X₀) (K : D ⥤ AffOp X₀) (H : D ⥤ C) (θ : H ⋙ G ⟶ K) (T : D) :
     opOf K T ≤ opOf G (H.obj T) := leOfHom (θ.app T).unop
@@ -34,13 +34,11 @@ def natCoef (G : C ⥤ AffOp X₀) (K : D ⥤ AffOp X₀) (H : D ⥤ C) (θ : H 
     exact map_smul _ r b
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk R₁ _ _ α X₀ s₀ S L c C D _ _ G K H θ h`. Take `⟨u, hf, ho⟩` from `h`. Use `⟨fun T T' a ↦ res (opOf_le_of_natTrans G K H θ T') (u _ _ (H.map a)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.isLineBundleFrameOnBasis_restrict_finer_opens X₀ C (opOf G) (opOf_le G) L u D (opOf K) (opOf_le K) H (opOf_le_of_natTrans G K H θ) hf`. Establish `key` using `GlobalTheory.T.unitCocycleLiftObstruction_pullback_naturality R R₀ I hI π hπ hk R₁ α C (G ⋙ OAff s₀) ((ofSys S).restrict G) D (K ⋙ OAff s₀) ((ofSys S).restrict K) (natCoef (s₀ := s₀) G K H θ) (fun T ↦ mp S.F (θ.app T)) u (fun T T' a ↦ res (opOf_le_of_natTrans G K H θ T') (u _ _ ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `mp S.F (K.map a) (mp S.F (θ.app T) b) = mp S.F (θ.app T') (mp S.F ((H ⋙ G).map a) b)`. Conclude with `(mp_comp S.F _ _ b).symm.trans ((congrArg (fun f ↦ mp S.F f b) (θ.naturality a).symm).trans (mp_comp S.F _ _ b)))`. Use the proof step `(fun T T' a ↦ rfl) ho`. Establish `hc : (extMap R₁ (natCoef (s₀` using `s₀) G K H θ)).pull2 ((extMap R₁ (CoefMap.restrict (OAff s₀) G)).pull2 c) = (extMap R₁ (CoefMap.restrict (OAff s₀) K)).pull2 c := by`. Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ θ (fun T b ↦ ?_) c` and prove the remaining obligations. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
-
-Rewrite using `[← hc]`. Conclude with `key`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem obAt_refine : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀)
     (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (R₁ : Type) [CommRing R₁] [Algebra R₀ R₁] (α : Aug I π R₁)

@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 open UpperTheory.V.Cj.A
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ _ d G hc C hC q w hw hv`. Establish `h0 : ∀ s, ∀ p ∈ G.Y, extDeriv (w.1 s) p = 0` using `fun s p hp => by`. Rewrite using `[← G.dOm_apply w s hp, hw]`. Both sides reduce to the same expression. Use `choose η hη hd hz using fun s => relPoin V (Fin d → ℂ) G.Y (C s) G.isOpen hc (hC s).1 (hC s).2 q (w.1 s) (w.2 s).1 (h0 s) (hv s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun s => G.Y.indicator (η s), fun s => ⟨(hη s).congr fun p hp => Set.indicator_of_mem hp _, fun p hp => Set.indicator_of_notMem hp _⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun s => funext fun p => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ G.Y`. Rewrite using `[G.dOm_apply _ s hp, ← hd s p hp]`. Use `Filter.EventuallyEq.extDeriv_eq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [G.isOpen.mem_nhds hp] with x hx using Set.indicator_of_mem hx _`. Rewrite using `[((G.dOm q _).2 s).2 p hp, (w.2 s).2 p hp]`. Introduce `s p hp`. Conclude with `(Set.indicator_of_mem ((hC s).2 hp) _).trans (hz s p hp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.relPrim :
     RelPrim := by

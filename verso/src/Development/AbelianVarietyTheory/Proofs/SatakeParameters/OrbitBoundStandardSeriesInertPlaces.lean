@@ -14,7 +14,7 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace GlobalTheory.OrbitBoundStdRec
 
 /- English proof (translation)
-Introduce `I m` and use `(H I m).trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (Fact.out : l.Prime).one_lt.le) (neg_le_neg h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kvalGe_le {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 l : ℕ) [Fact l.Prime] (nu : Lt → YoungDiagram)
     (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) {B B' : ℝ} (h : B' ≤ B) (H : product_zeroth_first_parts.KvalGe N0 N1 l nu Th B) :
@@ -23,13 +23,13 @@ theorem kvalGe_le {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 l : ℕ) [Fac
     (by exact_mod_cast (Fact.out : l.Prime).one_lt.le) (neg_le_neg h))
 
 /- English proof (translation)
-Introduce `D L X K Ee hS hG hd1 hd2 hBe hsg`. Introduce `w h hC0 hh hX u j hj t0 ht0 Th hB`. Establish `hEv : HEv D (D.what₂.places.resChar w)`. Establish `he` using `h.even`. Unfold `nP at he`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `he` using `[if_neg (GlobalTheory.KerStd.WordFree.not_signal hC0)]`. Conclude with `he`. Take `⟨hep, hbe⟩` from `hBe w (Or.inl ⟨hC0, hEv⟩)`. Establish `hs : Ee.sg w (false, t0) = -1` using `by rw [hsg]`. Rewrite `hB` using `[hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `z0` using `GlobalTheory.T.standardOrbitSeries_valuationBound_zero (OrbitPlaces.orbLoc Ee _ h u j (false, t0) Th) _ _ hep (hbe (false, t0)) hB`. Establish `z1` using `GlobalTheory.T.kvalGe_orbitGainWithoutOperator (OrbitPlaces.orbLoc Ee _ h u j (false, t0) Th) _ _ hep (hbe (false, t0)) hB`. Establish `z2` using `GlobalTheory.KerStd.WordFree.wordFreeNumber_le_orbitBound D L X K Ee hS hG hd1 hd2 _ h hC0 hh hX u j hj t0 ht0 Th`. Break down `le_total (g0 X K (aL L) (bL L) (D.what₂.places.resChar w) (j + 1) t0) 0 with hm | hm` into its components or cases. Rewrite using `[max_eq_right hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `z0`. Rewrite using `[max_eq_left hm]`. Conclude with `kvalGe_le _ _ _ _ _ z2 z1`.
+A detailed English derivation is pending.
 -/
 theorem orbit_bound_rec : ∀ (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Ee : OrbitPlaces.Ent D), OrbitPlaces.Shape D L X Ee →
     (∀ u, ∀ i < D.R.m, ∀ t ∈ D.host.TT, Ee.row u i (false, t) 0 - Ee.row u i (false, t) 1 ≤ 2 * L.sc.a) → 5 ≤ K.dl1 → 4 ≤ K.dl2 →

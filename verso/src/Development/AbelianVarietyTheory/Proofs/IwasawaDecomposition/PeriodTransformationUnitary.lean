@@ -13,9 +13,9 @@ namespace GlobalTheory.PeriodBlock
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨n, d, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn` using `hcon n`. Establish `hd` using `hcon d`. Simplify using `only [map_div₀]`. Express the relevant statement in the definitionally equal form `σ ((n : 𝓞 E) : E) / σ ((d : 𝓞 E) : E) = σ' ((n : 𝓞 E) : E) / σ' ((d : 𝓞 E) : E)`. Rewrite using `[hn, hd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_on_integers {σ σ' : E →+* ℂ} (hne : σ ≠ σ') : ∃ a : 𝓞 E, σ (a : E) ≠ σ' (a : E) := by
   by_contra hcon
@@ -30,11 +30,11 @@ theorem exists_ne_on_integers {σ σ' : E →+* ℂ} (hne : σ ≠ σ') : ∃ a 
   rw [hn, hd]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_ne_on_integers hik`. Establish `e : (fun j => ty j (a : E) * (Pi.single k (1 : ℂ) : Fin g → ℂ) j) = ty k (a : E) • (Pi.single k (1 : ℂ) : Fin g → ℂ)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`. Establish `h1` using `congrFun (hc a (Pi.single k 1)) i`. Rewrite `h1` using `[e, map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (ty k (a : E) - ty i (a : E)) * h (Pi.single k 1) i = 0` using `by rw [sub_mul, h1]; ring`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm ha))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem entry_eq_zero {g : ℕ} {ty : Fin g → (E →+* ℂ)} (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (hc : ∀ (a : 𝓞 E) (z : Fin g → ℂ), h (fun i => ty i (a : E) * z i) = fun i => ty i (a : E) * h z i)
@@ -54,9 +54,9 @@ theorem entry_eq_zero {g : ℕ} {ty : Fin g → (E →+* ℂ)} (h : (Fin g → �
 variable [IsCMField E] {H : Host E} {Dd : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
 /- English proof (translation)
-Set `D : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := fun z i => ty i (a : E) * z i map_add' := fun x y => by funext i; simp [mul_add] map_smul' := fun c x => by funext i; simp [mul_left_comm] }`. Establish `key : (h.comp D).restrictScalars ℝ = (D.comp h).restrictScalars ℝ`. Use `LinearMap.ext_on_range hP.2.2.2.1 fun x => ?_` and prove the remaining obligations. Establish `h1 : D (P x) = P (a • x)` using `funext fun i => (hP.1 a x i).symm`. Establish `h2 : D (h (P x)) = h (P (a • x))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, ← e, map_smul]`. Conclude with `funext fun i => (hP'.1 a (gam x) i).symm`. Use `show h (D (P x)) = D (h (P x))`. Rewrite using `[h1, h2]`. Conclude with `LinearMap.congr_fun key z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutes {P P' : Dd.La →+ (Fin g → ℂ)} (hP : IsPeriod Dd ty P) (hP' : IsPeriod Dd ty P')
     (gam : Dd.La ≃ₗ[𝓞 E] Dd.La) (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (e : ∀ x, P' (gam x) = h (P x))
@@ -76,9 +76,9 @@ theorem commutes {P P' : Dd.La →+ (Fin g → ℂ)} (hP : IsPeriod Dd ty P) (hP
   exact LinearMap.congr_fun key z
 
 /- English proof (translation)
-Establish `ev : h v = ∑ k, v k • h (Pi.single k 1)` using `by conv_lhs => rw [pi_eq_sum_univ' v]`. Simplify using `[map_sum, Finset.sum_apply]`. Establish `hk : ∀ k, k ∉ Set.range ρ → v k * h (Pi.single k 1) (ρ a) = 0` using `fun k hk => by`. Establish `h₁ : ty (ρ a) = τ` using `(hτ _).2 ⟨a, rfl⟩`. Establish `h₂ : ty k ≠ τ` using `fun h₃ => hk ((hτ k).1 h₃)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb (ρ a) k (by rw [h₁]; exact h₂.symm), mul_zero]`. Rewrite using `[ev, Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `(Fintype.sum_of_injective ρ hρ _ _ hk fun b => mul_comm _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem apply_eq_sum {p : ℕ} {τ : E →+* ℂ} {ρ : Fin p → Fin g} (hρ : Function.Injective ρ)
     (hτ : ∀ i, ty i = τ ↔ i ∈ Set.range ρ) (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
@@ -99,13 +99,13 @@ end GlobalTheory.PeriodBlock
 
 open GlobalTheory.PeriodBlock in
 /- English proof (translation)
-Introduce `E _ _ _ H Dd g p ty τ ρ hρ hτ P P' hP hP' gam h e`. Establish `b₁ : ∀ i k, ty i ≠ ty k → h.toLinearMap (Pi.single k 1) i = 0` using `fun i k hik => entry_eq_zero _ (commutes hP hP' gam h.toLinearMap e) hik`. Establish `x₁` using `apply_eq_sum hρ hτ h.toLinearMap b₁`. Use `⟨Matrix.of fun a b => h.toLinearMap (Pi.single (ρ b) 1) (ρ a), ?_, fun v a => x₁ v a⟩` and prove the remaining obligations. Establish `hm : (Matrix.of fun a b => h.toLinearMap (Pi.single (ρ b) 1) (ρ a)) * (Matrix.of fun a b => h.symm.toLinearMap (Pi.single (ρ b) 1) (ρ a)) = (1 : Matrix (Fin p) (Fin p) ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `a c`. Use `x₁ (h.symm (Pi.single (ρ c) 1)) a` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply, LinearEquiv.coe_coe]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hac, Pi.single_eq_of_ne (hρ.ne hac)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse hm)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PeriodBlock.exists_block : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dd : Datum H) (g p : ℕ) (ty : Fin g → (E →+* ℂ)) (τ : E →+* ℂ) (ρ : Fin p → Fin g), Function.Injective ρ → (∀ i, ty i = τ ↔ i ∈ Set.range ρ) → ∀ (P P' : Dd.La →+ (Fin g → ℂ)), IsPeriod Dd ty P → IsPeriod Dd ty P' → ∀ (gam : Dd.La ≃ₗ[𝓞 E] Dd.La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), (∀ a, P' (gam a) = h (P a)) → ∃ Hm : Matrix (Fin p) (Fin p) ℂ, IsUnit Hm ∧ ∀ (v : Fin g → ℂ) (a : Fin p), h v (ρ a) = ∑ b, Hm a b * v (ρ b) := by
   intro E _ _ _ H Dd g p ty τ ρ hρ hτ P P' hP hP' gam h e

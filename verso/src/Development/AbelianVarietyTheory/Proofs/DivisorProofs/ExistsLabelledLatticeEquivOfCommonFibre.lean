@@ -39,7 +39,7 @@ open GlobalTheory.Poinc.Eq8
 namespace GlobalTheory.Poinc.FibLat
 
 /- English proof (translation)
-Take `⟨w', hw', pa⟩` from `GlobalTheory.SymBaseChange.exists_endo h w`. Use `⟨w', hw', ?_⟩` and prove the remaining obligations. Use `congrArg (fun z => z.left) (pa (𝟙 _))` as an intermediate fact. Simplify `this` using `[pushPt]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_endo_left {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (w : G ⟶ G) (hw : IsMonHom w) :
@@ -50,35 +50,31 @@ theorem exists_endo_left {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over 
   simpa [pushPt] using this
 
 /- English proof (translation)
-Substitute `hH` using the available equality. Use `haveI := hA.ded`. Establish `hL : 0 < S.r * S.N` using `Nat.mul_pos S.r_pos (by have := S.N_ge; omega)`. Establish `hζ1 : ζ ^ (S.r * S.N) = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, hζ, ← pow_mul, ← pow_two, S.prim.pow_eq_one]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Use `haveI : CharZero u.V := RingHom.charZero ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V)))`. Establish `hB : GlobalTheory.Mum.Base u.V` using `⟨⟨inferInstance, inferInstance, inferInstance, u.complete⟩, inferInstance⟩`. Establish `hgen` using `GlobalTheory.TauFormHom.isGrpPullback_genMap u.U`. Use `choose eA heA heA' using fun i => exists_endo_left u.cart (e i) (he i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose F hF using fun i => (GlobalTheory.Published.SemiAbelianHomExtension.fractionField_of_isGrpPullback GlobalTheory.semiAbelianHomExtension_holds u.semi u.semi hgen hgen (eA i)).exists`. Use `choose m hm using fun i => endChar_exists_of_isMonHom u.V hB u.G u.semi u.D u.A u.U (F i) (hF i).1`. Use `choose c hc using fun t : S.perp l.yy.ker => PerpTorus.exists_form S l.yy l.yy_onto t.1 t.2`. Use `⟨m, c, fun i => ⟨F i, eA i, (hF i).1, heA' i, (hF i).2, hm i⟩, hc, ?_⟩` and prove the remaining obligations. Take `⟨V', _, _, _, fV, fK, κ', iV, ξ, hfV, hfK, hκ, hiV, hiκ, hξ⟩` from `GlobalTheory.T.exists_dvr_factor_point_padicAlgClosure o Ω Y p u.V u.complete (algebraMap _ _) u.norm_le y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Set `jV` to `algebraMap V' (FractionRing V')`. Establish `hcl : ξ (closedPoint V') = y (cPt p)`. Rewrite using `[← hξ]`. Conclude with `(congrArg ξ (IsLocalRing.comap_closedPoint iV)).symm`. Establish `hg : gPt p ≫ y = spMap κ' ≫ spMap jV ≫ ξ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hξ, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp']`. Use `congr 2`. Conclude with `RingHom.ext hiκ`. Establish `hpt : (gPt p ≫ y) (closedPoint (PadicAlgCl p)) = (spMap jV ≫ ξ) (closedPoint (FractionRing V'))`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (spMap jV ≫ ξ) (Subsingleton.elim (α := PrimeSpectrum (FractionRing V')) _ _)`. Rewrite `hR` using `[hpt]`. Establish `hyK : ∀ x : S.R, (fK.comp u.yK) x = Y.val (spMap jV ≫ ξ) x` using `fun x => κ'.injective (by`. Establish `e₁` using `RatModel.val_spMap_comp κ' (spMap jV ≫ ξ) (specializes_refl _) ⟨x.1, hR x.2⟩`. Rewrite `e₁` using `[RatModel.valLoc_eq_val]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e₁, ← hg, ← hy₀]`. Conclude with `(DFunLike.congr_fun hκ (u.yK x)).trans (DFunLike.congr_fun u.fac x))`. Establish `hα` using `isGrpPullback_pullback u.A.A (spMap fK)`. Take `⟨Ψ, hΨ, hΨe, hΨp⟩` from `GlobalTheory.T.genericFibre_iso_specialises_to_fieldPoints o Ω Y hY G hG S.R ρ.P.A (isSemiAbelian_of_isAbelianScheme _ ρ.P.isAb) A₀ a' ψ ha' hψ _ _ hR _ hyK _ _ ((hα.comp u.cart).congr (spMap_comp' _ _) rfl)`. Establish `hj : spMap fK ≫ jK u.V = spMap (jV.comp fV)` using `(spMap_comp' _ _).trans (congrArg spMap (RingHom.ext hfK))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨G', _, β, β', ω, hβ, hβ', hω, hωβ, hωβ', hend⟩` from `GlobalTheory.T.exists_common_pullback_semiAbelian_dvr Y.Z G hG u.V u.G u.semi V' fV ξ _ _ Ψ ((hα.comp hgen).congr hj rfl) hΨ`. Take `⟨a, ha⟩` from `exists_spMap (ξ ≫ Y.s)`. Rewrite `hext`, the goal using `[← hcl]`. Take `⟨xx, hxx, hsurj⟩` from `LabelMap.exists_lift_points u.cart (TFK (R := u.V) (PadicAlgCl p)) ρ.pt ρ.pt_add`. Establish `hy : (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK = spMap y₀ := (spMap_comp' _ _).trans (congrArg spMap u.fac)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj'` using `hsurj (S.r * S.N) fun z hz => (ρ.pt_bij (PadicAlgCl p) _ z hz).exists.imp fun a ha => congrArg (fun w => w.left) ha`. Establish `hx : ∀ b, (xx (Multiplicative.ofAdd b)).left ≫ u.φ = spMap y₀ ≫ (ρ.pt b).left` using `fun b => by`. Rewrite using `[← hy]`. Conclude with `(hxx b _).2 rfl`. Take `⟨h1, h2, h3, h4, h5, -⟩` from `GlobalTheory.allSixLaws`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `tor` using `PerpCharacter.exists_torus_point_eStd ⟨h1, h2, h3, h4, h5⟩ uTors_closed o Ω S ρ p y₀ u l (fun b => xx (Multiplicative.ofAdd b)) hx (fun b b' => by rw [ofAdd_add, map_mul]) (fun z hz => (hsurj' z hz).imp fun _ h => h.symm)`. Use `GlobalTheory.T.lattice_of_uniformisation_eq_model_lattice o Ω Y G hG I _ f _ ζ _ hL hζ1 u.V hB u.G u.semi u.D u.A u.U F m hm V' fV hfV ξ a ha G' β β' hβ hβ' (fun i => ?_) (PadicAlgCl p) (κ'.comp jV) (κ'.injective.comp (IsFractionRing.injective V' _)) (by rw [← hκ]; ext x; simp [j …` and prove the remaining obligations. Take `⟨eK, -, heK⟩` from `exists_endo_left hα (eA i) (heA i)`. Take `⟨e₀, h₀, h₀'⟩` from `hef i`. Use `hend (F i) (f i) eK ?_ (hΨe (e i) (f i) e₀ h₀ h₀' eK ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, heK, Category.assoc, (hF i).2, Category.assoc]`. Rewrite using `[← Category.assoc, heK, Category.assoc, heA', Category.assoc]`. Take `⟨q, τ, hq, hτ, hqx, hv⟩` from `tor t.1 t.2`. Establish `hw : (xx (Multiplicative.ofAdd t.1)).left ≫ u.A.A.hom = spMap κ' ≫ spMap fK`. Rewrite using `[Over.w, spMap_comp', hκ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Set `xK : Sp (PadicAlgCl p) ⟶ ((Over.pullback (spMap fK)).obj u.A.A).left` to `pullback.lift _ _ hw`. Establish `hx₁ : xK ≫ pullback.fst u.A.A.hom (spMap fK) = (xx (Multiplicative.ofAdd t.1)).left` using `pullback.lift_fst _ _ _`. Establish `hx₂ : xK ≫ ((Over.pullback (spMap fK)).obj u.A.A).hom = spMap κ'` using `pullback.lift_snd _ _ _`. Use `⟨q, τ, _, xK ≫ ω, hq, hτ, hqx, fun χ => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `l.yy_onto (QuotientAddGroup.mk χ)`. Rewrite using `[hv b χ hb, hc t b χ hb, hy₀, hζ, ← pow_mul]`. Establish `: (gPt p ≫ y) ≫ Y.s = spMap ((κ'.comp jV).comp a)`. Rewrite using `[hg, Category.assoc, Category.assoc, ha, spMap_comp', spMap_comp']`. Conclude with `RatModel.val_algebraMap this _`.
-
-Rewrite using `[Category.assoc, hω, ← Category.assoc, hx₂, spMap_comp']`. Rewrite using `[Category.assoc, hωβ, ← Category.assoc, hx₁]`. Take `⟨v, hv'⟩` from `ExtNear.exists_valAt ξ (hext t.1 t.2)`. Take `⟨w, hw₁, hw₂, hw₃⟩` from `hγ t.1`. Establish `hv₂` using `hv'.comp (spMap (κ'.comp jV))`.
-
-Rewrite using `[Category.assoc, hωβ', hΨp (ρ.pt t.1).left (gγ t.1) w (Over.w _) hw₁ hw₂ hw₃ _ xK (spMap (κ'.comp jV) ≫ v) ?_ ?_]`. Conclude with `hv₂`. Rewrite using `[← Category.assoc, hx₁, hx, ← Category.assoc, hx₂, ← Category.assoc, spMap_comp', ← RingHom.comp_assoc, hκ, u.fac]`. Rewrite using `[← Category.assoc, hx₂, ← Category.assoc, spMap_comp']`. Conclude with `hv₂`.
+A detailed English derivation is pending.
 -/
 theorem latAt_of_uTest {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [hA : ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real)
     (Y : RatModel o Ω) (hY : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y.Z) (G : Over Y.Z) [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G)
@@ -188,25 +184,23 @@ def matAct (X : Type) [AddCommGroup X] (E : Matrix (Fin 8) (Fin 8) ℤ) : (Fin 8
     simp [smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', hsame, -, hR', y₀, hy₀, u, l, j, hjq, hyy, hmat⟩` from `hl`. Establish `hmon` using `GlobalTheory.T.isMonHom_rescaled_realisation_same_genericFibre g n F W Z i X₁ ε₁ hε c₀ hc R' fg frac hth hev ρ' ε' hsame`. Take `⟨P₀, a, a', ε₀, ha, ha', -, -, hε₀, hpts⟩` from `hsame`. Establish `key : ∀ b mu, yy b = QuotientAddGroup.mk mu ↔ l.yy b = QuotientAddGroup.mk (j.symm mu)` using `fun b mu => by`. Use `⟨fun h => ?_, fun h => by rw [hyy b _ h, j.apply_symm_apply]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨χ, hχ⟩` from `QuotientAddGroup.mk_surjective (l.yy b)`. Take `⟨v, hv⟩` from `QuotientAddGroup.eq.1 ((hyy b χ hχ.symm).symm.trans h)`. Rewrite using `[← hχ]`. Use `QuotientAddGroup.eq.2 ⟨j.symm v, j.injective ?_⟩` and prove the remaining obligations. Simplify using `only [nsmulAddMonoidHom_apply] at hv ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_nsmul, j.apply_symm_apply, hv, map_add, map_neg, j.apply_symm_apply]`. Establish `hker : l.yy.ker = H`. Rewrite using `[← hH]`. Use extensionality with `b`. Use `key b 0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[map_zero]`. Conclude with `this.symm`. Establish `ha₁ : IsGrpPullback P₀.A X₁.ρ.P.A (spMap X₁.S.R.val.toRingHom) a` using `ha`. Take `⟨E, hE, hEa⟩` from `grpPullback_iso ha₁ ha₀`. Establish `hψ' : IsGrpPullback P₀.A G Y.pt (E.hom.left ≫ ψ)` using `((isGrpPullback_of_iso E).comp hψ).congr (Category.id_comp _) rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hom : X₁.M.IsHom Y (AlgHom.id _ _) q` using `hq.trans ((Category.id_comp _).symm.trans (congrArg (· ≫ X₁.M.pt) (Spec.map_id _).symm))`. Establish `hcy : gPt p ≫ c.y = (gPt p ≫ y) ≫ q` using `by rw [Category.assoc, hy]`. Rewrite `hR'`, `hy₀` using `[hcy]`. Take `⟨m, c₁, hm, hc₁, hlat⟩` from `latAt_of_uTest (X₁.S.rechart c₀ hc R' fg frac hth hev) ρ' Y hY G hG P₀.A a' _ ha' hψ' (fun E => ε' (adj E)) (fun E => hmon _) f (fun E' => ⟨ε₀ (adj E'), (hε₀ _).2, by`. Establish `h` using `hf E' (E.inv ≫ ε₀ (adj E') ≫ E.hom) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hEa, (hε₀ _).1, ← hEa, ← Category.assoc, ← Category.assoc, ← Over.comp_left, E.inv_hom_id, Over.id_left, Category.id_comp])`. Rewrite using `[Category.assoc, ← h, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, ← Category.assoc E.hom.left, ← Over.comp_left, E.hom_inv_id, Over.id_left, Category.id_comp]⟩) gγ (fun b => by`. Take `⟨w, hw, hw'⟩` from `hpts b`. Establish `h1 : w ≫ P₀.A.hom = 𝟙 _`. Take `⟨σ, hσ⟩` from `exists_spMap (w ≫ P₀.A.hom)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₁ : σ.comp R'.val.toRingHom = R'.val.toRingHom` using `ringHom_eq_of_spMap (by`. Rewrite using `[← spMap_comp', ← hσ, Category.assoc, ← ha'.1.w, ← Category.assoc, hw', Category.assoc, Over.w]`. Conclude with `Category.comp_id _)`. Establish `e₂ : σ = RingHom.id _` using `RingHom.ext fun x => by`. Take `⟨a, ha, b, hb, rfl⟩` from `frac x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_div₀, show σ a = a from DFunLike.congr_fun e₁ ⟨a, ha⟩, show σ b = b from DFunLike.congr_fun e₁ ⟨b, hb⟩]`. Both sides reduce to the same expression. Rewrite using `[hσ, e₂]`. Conclude with `Spec.map_id _`. Use `⟨w, h1, hw', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc]`. Conclude with `hγ b _ (by rw [Category.assoc, Over.w, h1]) (by rw [Category.assoc, hEa]; exact hw))`. Use `p y (fun x hx => hom.map_mem_O (hR' hx)) y₀ (fun x => (hy₀ x).trans (hom.val_comp _ _ (hR' x.2))) u l ζ hζ H hker hext`. Use `⟨fun t => (c₁ t).comp j.symm.toAddMonoidHom, fun t b mu h => hc₁ t b _ ((key b mu).1 h), hlat.equiv j (fun E' χ => ?_) fun t χ => by simp⟩` and prove the remaining obligations. Take `⟨F', eA, h1, h2, h3, h4⟩` from `hm E'`.
-
-Conclude with `GlobalTheory.T.endomorphism_matrix_torsion_adjoint_on_characters _ _ _ ρ' p y₀ u l W X₁.posW _ c.T.β c.T.symm (Trait.beta_pos _ _ _ _ F c.T) c.sc c.scale_pos j hjq (ε' (adj E')) (adj E') E' (hadj E') (fun m pk pk' x x' => hmat m pk pk' x x' _) F' eA h1 h2 h3 _ h4 χ`.
+A detailed English derivation is pending.
 -/
 theorem latAt_of_isLab (X₁ : Setup F W i) (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A))
     (hε : IsDiagEnd F W X₁.ρ.P X₁.u ε₁) (Y : RatModel X₁.o₁ X₁.Ω₁) (hY : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y.Z)
@@ -281,7 +275,7 @@ theorem latAt_of_isLab (X₁ : Setup F W i) (ε₁ : Matrix (Fin 8) (Fin 8) ℤ 
     (ε' (adj E')) (adj E') E' (hadj E') (fun m pk pk' x x' => hmat m pk pk' x x' _) F' eA h1 h2 h3 _ h4 χ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((W + W.transpose) * E * (W + W.transpose)⁻¹).transpose, by rw [Matrix.transpose_transpose, Matrix.mul_assoc _ _ (W + W.transpose), Matrix.nonsing_inv_mul _ (by rw [hW.2]; exact isUnit_one), Matrix.mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_adj (hW : IsE8 W) (E : Matrix (Fin 8) (Fin 8) ℤ) :
     ∃ E' : Matrix (Fin 8) (Fin 8) ℤ, (W + W.transpose) * E = E'.transpose * (W + W.transpose) :=
@@ -290,7 +284,7 @@ theorem exists_adj (hW : IsE8 W) (E : Matrix (Fin 8) (Fin 8) ℤ) :
       Matrix.nonsing_inv_mul _ (by rw [hW.2]; exact isUnit_one), Matrix.mul_one]⟩
 
 /- English proof (translation)
-Use `Nat.card_congr (e.symm.trans e').toEquiv` as an intermediate fact. Simplify using `only [Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin] at this`. Conclude with `Nat.pow_right_injective hL this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_equiv_fin {A : Type} [AddCommGroup A] {L r r' : ℕ} (hL : 2 ≤ L) (e : A ≃+ (Fin r → ZMod L))
     (e' : A ≃+ (Fin r' → ZMod L)) : r = r' := by
@@ -299,31 +293,27 @@ theorem eq_of_equiv_fin {A : Type} [AddCommGroup A] {L r r' : ℕ} (hL : 2 ≤ L
   exact Nat.pow_right_injective hL this
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ h₁ h₂ h₃ h₄ hW h₆ h₇ ε₁ hε Y U₀ EE FinalForm q hO hE _ hq p _ z₁ hconn c c' y y' hy hy' yy yy' hl hl'`. Take `⟨-, hker⟩` from `isLab_onto_and_ker g n F W Z i X₁ h₁ h₂ h₃ h₄ hW h₆ h₇ ε₁ hε p z₁ c yy hl`. Take `⟨honto', hker'⟩` from `isLab_onto_and_ker g n F W Z i X₁ h₁ h₂ h₃ h₄ hW h₆ h₇ ε₁ hε p z₁ c' yy' hl'`. Use `haveI := X₁.ar.ded`. Establish `hL2 : 2 ≤ X₁.S.r * X₁.S.N` using `le_trans X₁.S.N_ge (Nat.le_mul_of_pos_left _ X₁.S.r_pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 < X₁.S.r * X₁.S.N` using `by omega`. Establish `hζp : IsPrimitiveRoot (X₁.S.ζ ^ (X₁.S.r * X₁.S.N)) (X₁.S.r * X₁.S.N)` using `X₁.S.prim.pow (pow_pos hL 2) (pow_two _)`. Set `ζ : X₁.o₁ˣ` to `(hζp.isUnit hL.ne').unit`. Establish `hζ1 : ζ ^ (X₁.S.r * X₁.S.N) = 1` using `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hζp.pow_eq_one)`. Establish `hζκ : ∀ (κ : Type) [Field κ] (a : X₁.o₁ →+* κ), IsPrimitiveRoot (a ζ) (X₁.S.r * X₁.S.N)` using `fun κ _ a => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero ((X₁.S.r * X₁.S.N : ℕ) : κ)` using `⟨by simpa using (X₁.S.unit.map a).ne_zero⟩`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic _ a]`. Conclude with `(hζp.isRoot_cyclotomic hL).map`. Take `⟨A₀, _, a₀, ψ, ha₀, hψ, hend, hpts⟩` from `GlobalTheory.T.genericFibre_semiAbelian_endo_torsion_extend _ _ X₁.S X₁.ρ Y U₀ EE FinalForm hO.ne`. Use `choose adj hadj using exists_adj hW`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose f hf hf' using fun E => hend (ε₁ (adj E)) (Sep.IsAct.isMonHom hε _)`. Use `choose gγ hγ₁ hγ₂ hγ₃ using hpts`. Establish `hHH : ∀ w, q w = z₁ → X₁.S.HH Y w = X₁.S.HH X₁.M z₁` using `fun w hw => hw ▸ GlobalTheory.T.thetaGroupOfPoint_eq_along_modelHom _ _ X₁.S X₁.M Y q hq X₁.div w`. Establish `hle : X₁.S.perp (X₁.S.HH X₁.M z₁) ≤ X₁.S.HH X₁.M z₁`. Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', -, -, -, y₀, -, u, l, j, -, hyy, -⟩` from `hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : l.yy.ker = X₁.S.HH X₁.M z₁`. Rewrite using `[← hker]`. Use extensionality with `b`. Take `⟨χ, hχ⟩` from `QuotientAddGroup.mk_surjective (l.yy b)`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker, hyy b χ hχ.symm, ← hχ, QuotientAddGroup.eq_zero_iff, QuotientAddGroup.eq_zero_iff]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Conclude with `⟨j v, by rw [← hv]; exact (map_nsmul j _ _).symm⟩`. Introduce and unpack `⟨v, hv⟩`. Conclude with `⟨j.symm v, j.injective (by rw [← hv]; exact (map_nsmul j _ _).trans (by rw [j.apply_symm_apply]; rfl))⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `l.isoFree.1`. Rewrite `h` using `[TestBasis.perp_perp, hk]`. Conclude with `h`. Establish `hext : ∀ w, q w = z₁ → ∀ t ∈ X₁.S.perp (X₁.S.HH X₁.M z₁), ExtNear (gγ t) w` using `fun w hw t ht => hγ₃ t w (by rw [hHH w hw]; exact hle ht)`. Establish `hx : q (y (cPt p)) = z₁` using `by rw [← c.cen, ← hy]; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : q (y' (cPt p)) = z₁` using `by rw [← c'.cen, ← hy']; rfl`. Take `⟨cc, hcc, hlat⟩` from `latAt_of_isLab X₁ ε₁ hε Y hO.normal q hq FinalForm.G FinalForm.semi A₀ a₀ ψ ha₀ hψ adj hadj f hf' gγ hγ₂ p c y hy yy hl ζ rfl _ hker (hext _ hx)`. Take `⟨cc', hcc', hlat'⟩` from `latAt_of_isLab X₁ ε₁ hε Y hO.normal q hq FinalForm.G FinalForm.semi A₀ a₀ ψ ha₀ hψ adj hadj f hf' gγ hγ₂ p c' y' hy' yy' hl' ζ rfl _ hker' (hext _ hx')`. Use `haveI := RatModel.noetherianSpace_of_isNoetherianRing Y`. Establish `hrk : ∀ a b, q a = z₁ → q b = z₁ → ∃ r, RkAt FinalForm.G a r ∧ RkAt FinalForm.G b r` using `fun a b ha hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr, ⟨e⟩⟩` from `GlobalTheory.T.torusRank_eq_rank_thetaGroupOfPoint_perp _ _ X₁.S X₁.ρ Y U₀ EE FinalForm X₁.big hO hE a`. Take `⟨r', hr', ⟨e'⟩⟩` from `GlobalTheory.T.torusRank_eq_rank_thetaGroupOfPoint_perp _ _ X₁.S X₁.ρ Y U₀ EE FinalForm X₁.big hO hE b`. Establish `hT : X₁.S.TT Y b = X₁.S.TT Y a` using `congrArg X₁.S.perp ((hHH b hb).trans (hHH a ha).symm)`. Use `eq_of_equiv_fin hL2 e ((AddEquiv.addSubgroupCongr hT).symm.trans e')` as an intermediate fact. Conclude with `⟨r, hr, this ▸ hr'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγ₁' : ∀ t : X₁.S.perp (X₁.S.HH X₁.M z₁), gγ t.1 ^ (X₁.S.r * X₁.S.N) = 1` using `fun t => hγ₁ t.1`. Establish `hiff` using `fun a b (hb : q b = z₁) hab r hr hr' => latAt_iff_of_specializes (f := f) (gγ := fun t : X₁.S.perp (X₁.S.HH X₁.M z₁) => gγ t.1) FinalForm.semi hL hζ1 X₁.S.unit hf hγ₁' (matAct _) cc (w := a) (w' := b) hab (r := r) hr hr' (fun t => hext b hb t.1 t.2)`. Establish `hmove` using `GlobalTheory.T.fibre_const_of_specialisation_invariant Y.Z X₁.M.Z q q.continuous z₁ hconn _ (fun a b ha hb hab => (hrk a b ha hb).elim fun r h => hiff a b hb hab r h.1 h.2) (y (cPt p)) (y' (cPt p)) hx hx' hlat`. Use `haveI := FinalForm.semi.separated`. Take `⟨θ, hθ₁, hθ₂⟩` from `LatAt.unique hL hζκ hmove hlat'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨θ, fun a mu h => ?_, fun E v => hθ₁ E v⟩` and prove the remaining obligations. Take `⟨a', ha'⟩` from `honto' (QuotientAddGroup.mk (θ mu))`. Establish `hmem : a - a' ∈ yy'.ker`. Rewrite using `[hker', ← TestBasis.perp_perp X₁.S (X₁.S.HH X₁.M z₁)]`. Introduce `t ht`.
-
-Establish `e` using `(hcc' ⟨t, ht⟩ a' _ ha').symm.trans ((hθ₂ ⟨t, ht⟩ mu).trans (hcc ⟨t, ht⟩ a mu h))`. Simplify using `only [eStd, Pi.sub_apply] at e ⊢`. Rewrite `e` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[← e]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
-
-Rewrite using `[← ha', ← sub_eq_zero, ← map_sub]`. Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_fibre : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (_ : ZHOut X₁.ρ Y U₀ EE) (q : Y.Z ⟶ X₁.M.Z), X₁.S.Over₀ Y U₀ → X₁.S.IsEE Y U₀ EE → IsProper q → Y.pt ≫ q = X₁.M.pt → ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z), _root_.IsPreconnected (q.base ⁻¹' {z₁}) → ∀ (c c' : CTrait X₁ p z₁) (y y' : Sp (OO p) ⟶ Y.Z), y ≫ q = c.y → y' ≫ q = c'.y → ∀ (yy : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c.T.D.toPre.X)) (yy' : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c'.T.D.toPre.X)), IsLab X₁ ε₁ c yy → IsLab X₁ ε₁ c' yy' → ∃ θ : (Fin 8 → c.T.D.toPre.X) ≃+ (Fin 8 → c'.T.D.toPre.X), (∀ a mu, yy a = QuotientAddGroup.mk mu → yy' a = QuotientAddGroup.mk (θ mu)) ∧ ∀ (E : Matrix (Fin 8) (Fin 8) ℤ) (v : Fin 8 → c.T.D.toPre.X), θ (fun a => ∑ b, E a b • v b) = fun a => ∑ b, E a b • θ v b := by
   intro g n F W Z i X₁ h₁ h₂ h₃ h₄ hW h₆ h₇ ε₁ hε Y U₀ EE FinalForm q hO hE _ hq p _ z₁ hconn c c' y y' hy hy' yy yy' hl hl'

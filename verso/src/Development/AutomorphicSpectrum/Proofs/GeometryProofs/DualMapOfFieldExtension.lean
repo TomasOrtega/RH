@@ -12,19 +12,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.DualExt
 
 /- English proof (translation)
-Introduce `Ω Ω' _ _ i V V' _ _ _ _ j hext hspan`. Set `b` to `Module.Basis.ofVectorSpace Ω V`. Establish `hj : ∀ e : V, j e = (b.repr e).sum fun k a => i a • j (b k)`. Introduce `e`. Use `conv_lhs => rw [← b.linearCombination_repr e]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum, Finsupp.sum]`. Conclude with `Finset.sum_congr rfl fun k _ => hext.1 _ _`. Establish `hli : LinearIndependent Ω' fun k => j (b k)`. Rewrite using `[linearIndependent_iff_finset_linearIndependent]`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hext.2 s.card (fun m => b (s.equivFin.symm m)) (b.linearIndependent.comp (fun m => (s.equivFin.symm m : _)) (Subtype.val_injective.comp s.equivFin.symm.injective))`. Establish `h2` using `h.comp s.equivFin s.equivFin.injective`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : ⊤ ≤ Submodule.span Ω' (Set.range fun k => j (b k))`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨e, rfl⟩`. Rewrite using `[hj e, Finsupp.sum]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `b'` to `Module.Basis.mk hli hsp`. Use `⟨AddMonoidHom.mk' (fun w => b'.constr Ω' fun k => i (w (b k))) fun w₁ w₂ => ?_, fun w e => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `show b'.constr Ω' (fun k => i (w (b k))) (j e) = i (w e)`. Rewrite using `[hj e, Finsupp.sum, map_sum]`. Use `conv_rhs => rw [← b.linearCombination_repr e, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, show j (b k) = b' k from (Module.Basis.mk_apply hli hsp k).symm, Module.Basis.constr_basis, map_smul, smul_eq_mul, smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_ext : ∀ (Ω Ω' : Type) [Field Ω] [Field Ω'] (i : Ω →+* Ω') (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] (j : V →+ V'), IsExtOver i j → Submodule.span Ω' (Set.range j) = ⊤ → ∃ jd : Module.Dual Ω V →+ Module.Dual Ω' V', ∀ w e, jd w (j e) = i (w e) := by
   intro Ω Ω' _ _ i V V' _ _ _ _ j hext hspan

@@ -5,7 +5,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAFFStableAdjInt
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.FFS
 
 /- English proof (translation)
-The claim follows from `adjInt_of_parts hermitian_curvature_adjoint_integral unitary_rho_holds form_adjoint_holds`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_integral_identity_holds : AdjInt := adjInt_of_parts hermitian_curvature_adjoint_integral unitary_rho_holds form_adjoint_holds
 

@@ -31,13 +31,13 @@ def IsWeights (m : ℕ) (a : ℝ) (c : Fin (m + 2) → ℝ) : Prop :=
     ∑ t, c t • f.eval ((t : ℕ) : R) = a • f.coeff 1
 
 /- English proof (translation)
-Set `W : Matrix (Fin (m + 2)) (Fin (m + 2)) ℝ` to `Matrix.vandermonde fun t => ((t : ℕ) : ℝ)`. Establish `hW : IsUnit W.det`. Rewrite using `[isUnit_iff_ne_zero]`. Conclude with `Matrix.det_vandermonde_ne_zero_iff.2 fun s t h => Fin.ext (by exact_mod_cast h)`. Set `c` to `Matrix.vecMul (Pi.single 1 a) W⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : Matrix.vecMul c W = Pi.single 1 a`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hW, Matrix.vecMul_one]`. Establish `hc' (j : Fin (m + 2)) : ∑ t, c t * ((t : ℕ) : ℝ) ^ (j : ℕ) = (Pi.single 1 a : Fin (m + 2) → ℝ) j`. Rewrite using `[← hc]`. Simplify using `[Matrix.vecMul, dotProduct, W]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun R _ _ f hf => ?_⟩` and prove the remaining obligations. Establish `e (t : Fin (m + 2)) : c t • f.eval ((t : ℕ) : R) = ∑ j : Fin (m + 2), (c t * ((t : ℕ) : ℝ) ^ (j : ℕ)) • f.coeff j`. Rewrite using `[Polynomial.eval_eq_sum_range' hf, Finset.smul_sum, Finset.sum_range]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, Algebra.smul_def (((t : ℕ) : ℝ) ^ (j : ℕ)), map_pow, map_natCast, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun t _ => e t, Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, hc']`. Rewrite using `[Finset.sum_eq_single 1 (fun j _ hj => by simp [hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isWeights (m : ℕ) (a : ℝ) : ∃ c, IsWeights m a c := by
   let W : Matrix (Fin (m + 2)) (Fin (m + 2)) ℝ := Matrix.vandermonde fun t => ((t : ℕ) : ℝ)
@@ -64,17 +64,17 @@ theorem exists_isWeights (m : ℕ) (a : ℝ) : ∃ c, IsWeights m a c := by
 variable {d : ℕ} {c : Fin (d + 2) → ℝ}
 
 /- English proof (translation)
-Simplify `hc ℝ 1 (by simp)` using `[Polynomial.coeff_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsWeights.sum {a : ℝ} (hc : IsWeights d a c) : ∑ t, c t = 0 := by
   simpa [Polynomial.coeff_one] using hc ℝ 1 (by simp)
 
 /- English proof (translation)
-Establish `h` using `hc R ((Polynomial.C N + Polynomial.X * Polynomial.C A) ^ (d + 1)) (by`. Use `Nat.lt_succ_of_le (Polynomial.natDegree_pow_le.trans ?_)` and prove the remaining obligations. Establish `: (Polynomial.C N + Polynomial.X * Polynomial.C A).natDegree ≤ 1` using `by compute_degree`. Use the proof step `nlinarith)`. Establish `h1 : ((Polynomial.C N + Polynomial.X * Polynomial.C A) ^ (d + 1)).coeff 1 = (d + 1 : ℝ) • (A * N ^ d)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd (P : Polynomial R) : P.coeff 1 = (Polynomial.derivative P).eval 0`. Rewrite using `[← Polynomial.coeff_zero_eq_eval_zero, Polynomial.coeff_derivative]`. Simplify using the standard rewrite rules. Rewrite using `[hd, Polynomial.derivative_pow, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h1, smul_smul, inv_mul_cancel₀ (by positivity), one_smul]`. Simplify `h` using `[mul_comm A]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsWeights.pow (hc : IsWeights d ((d + 1 : ℝ)⁻¹) c) {R : Type} [CommRing R] [Algebra ℝ R] (N A : R) :
     ∑ t, c t • (N + (t : ℕ) * A) ^ (d + 1) = A * N ^ d := by
@@ -93,15 +93,13 @@ theorem IsWeights.pow (hc : IsWeights d ((d + 1 : ℝ)⁻¹) c) {R : Type} [Comm
   simpa [mul_comm A] using h
 
 /- English proof (translation)
-Establish `h` using `hc ℂ (A.map Polynomial.C + (Polynomial.X : Polynomial ℂ) • M.map Polynomial.C).det (by`. Rewrite using `[add_comm (A.map _)]`. Conclude with `Nat.lt_succ_of_le ((Polynomial.natDegree_det_X_add_C_le M A).trans (by simp)))`. Establish `ev (z : ℂ) : (A.map Polynomial.C + (Polynomial.X : Polynomial ℂ) • M.map Polynomial.C).det.eval z = (A + z • M).det`. Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[mul_comm z]`. Take `⟨P, hP⟩` from `det_add_X_smul_first_variation ℂ _ A M`. Simplify using `only [ev] at h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hP]`. Simplify using `only [Polynomial.coeff_add, Polynomial.coeff_X_mul, Polynomial.coeff_C_zero, Polynomial.coeff_X_pow_mul', Polynomial.coeff_C_succ] at h`. Establish `h'` using `congrArg Complex.re h`. Simplify using `only [Complex.re_sum, Complex.real_smul, Complex.re_ofReal_mul] at h'`. Evaluate the numerical expressions using `at h'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `e : ∑ t, c t * ((d + 1).factorial / Real.pi ^ (d + 1) * (A + ((t : ℕ) : ℂ) • M).det.re) = (d + 1).factorial / Real.pi ^ (d + 1) * ∑ t, c t * (A + ((t : ℕ) : ℂ) • M).det.re`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Rewrite using `[e, h', mix, Nat.factorial_succ]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem IsWeights.det (hc : IsWeights d ((d + 1 : ℝ)⁻¹) c) (A M : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ) :
     ∑ t, c t * ((d + 1).factorial / Real.pi ^ (d + 1) * (A + ((t : ℕ) : ℂ) • M).det.re) = mix d A M := by
@@ -133,13 +131,13 @@ theorem IsWeights.det (hc : IsWeights d ((d + 1 : ℝ)⁻¹) c) (A M : Matrix (F
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-Simplify using `only [mix, Matrix.mul_sub, Matrix.trace_sub, Complex.sub_re, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mix_sub (A M M' : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ) : mix d A (M - M') = mix d A M - mix d A M' := by
   simp only [mix, Matrix.mul_sub, Matrix.trace_sub, Complex.sub_re, mul_sub]
 
 /- English proof (translation)
-The claim follows from `((chernMat_isForm k X p σ _ B φ h).isDens_mix (chernMat_isForm k X p σ _ B φ h)).congr fun c y _ => by rw [mix_self] rfl`.
+A detailed English derivation is pending.
 -/
 theorem isDens_chernDens {B : LB X} {φ : Weight p σ B} (h : φ.IsCInf) :
     IsDens fun (c : AlgChart p σ (d + 1)) y => c.chernDens φ y :=
@@ -152,9 +150,7 @@ section Dens
 variable [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)]
 
 /- English proof (translation)
-Take `⟨ν, w, _, -, -, -, h₁, h₂⟩` from `exists_refMeasure k X p σ D hR`. Use `choose g hg e using fun j => h₁ (ρ j) (h j)`. Rewrite using `[Finset.sum_congr rfl fun j _ => (h₂ _ _ (hg j) (e j)).2, ← integral_finset_sum _ fun j _ => (hg j).integrable_of_hasCompactSupport (μ := ν) (HasCompactSupport.of_compactSpace _)]`. Use `(h₂ _ _ (continuous_finset_sum _ fun j _ => hg j) fun c y hy => ?_).2` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => e j c y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem total_sum (hR : Nonempty (AnRead p σ D)) {J : Type} [Fintype J] {ρ : J → AlgChart p σ D → CxPts p σ → ℝ}
     (h : ∀ j, IsDens (ρ j)) : total (fun c y => ∑ j, ρ j c y) = ∑ j, total (ρ j) := by
@@ -167,9 +163,9 @@ theorem total_sum (hR : Nonempty (AnRead p σ D)) {J : Type} [Fintype J] {ρ : J
   exact Finset.sum_congr rfl fun j _ => e j c y hy
 
 /- English proof (translation)
-Take `⟨ν, w, _, -, -, -, h₁, h₂⟩` from `exists_refMeasure k X p σ D hR`. Take `⟨g, hg, e⟩` from `h₁ ρ h`. Take `⟨g', hg', e'⟩` from `h₁ ρ' h'`. Establish `i` using `hg.integrable_of_hasCompactSupport (μ := ν) (HasCompactSupport.of_compactSpace _)`. Establish `i'` using `hg'.integrable_of_hasCompactSupport (μ := ν) (HasCompactSupport.of_compactSpace _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(h₂ ρ g hg e).2, (h₂ ρ' g' hg' e').2, ← integral_add i i', ← integral_sub i i']`. Conclude with `⟨(h₂ _ _ (hg.add hg') fun c y hy => by rw [e c y hy, e' c y hy, Pi.add_apply, add_mul]).2, (h₂ _ _ (hg.sub hg') fun c y hy => by rw [e c y hy, e' c y hy, Pi.sub_apply, sub_mul]).2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem total_add_sub (hR : Nonempty (AnRead p σ D)) {ρ ρ' : AlgChart p σ D → CxPts p σ → ℝ} (h : IsDens ρ)
     (h' : IsDens ρ') : total (fun c y => ρ c y + ρ' c y) = total ρ + total ρ' ∧
@@ -184,19 +180,17 @@ theorem total_add_sub (hR : Nonempty (AnRead p σ D)) {ρ ρ' : AlgChart p σ D 
     (h₂ _ _ (hg.sub hg') fun c y hy => by rw [e c y hy, e' c y hy, Pi.sub_apply, sub_mul]).2⟩
 
 /- English proof (translation)
-Take `⟨ν, w, hfin, hν, -, -, hdens, hmeas⟩` from `exists_refMeasure k X p σ D hR`. Use `choose g hg hgw using fun j => hdens (κ j) (hκ j)`. Take `⟨e, he, hew⟩` from `hdens δ hδ`. Establish `p₁ j` using `(hmeas (κ j) (g j) (hg j) (hgw j)).1`. Establish `p₂ j` using `(hmeas (fun c y => -κ j c y) (fun y => -g j y) (hg j).neg fun c y hy => by rw [hgw j c y hy, neg_mul]).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `hSo.measurableSet`. Establish `hae : ∀ᵐ y ∂ν, y ∈ S` using `mem_ae_iff.2 (hν ▸ hS0 w)`. Establish `hres : ν.restrict S = ν` using `Measure.restrict_eq_self_of_ae_mem hae`. Establish `hF : Set.EqOn f (fun y => Real.log (1 - v y) / 2) S` using `fun y hy => (hSv y hy).2`. Establish `key (j)` using `CurveDens.integrableOn_and_sub_withDensity (ν := ν) (hg j).measurable hSm ((p₁ j ▸ i₁ j).congr_fun hF hSm) ((p₂ j ▸ i₂ j).congr_fun hF hSm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [IntegrableOn, hres] at key`. Establish `hG : Continuous fun y => ∑ j, a j * g j y` using `continuous_finset_sum _ fun j _ => continuous_const.mul (hg j)`. Establish `hs (y) : (∑ j, a j * g j y) * Real.log (1 - v y) = 2 * ∑ j, a j * (g j y * (Real.log (1 - v y) / 2))`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hi : Integrable (fun y => (∑ j, a j * g j y) * Real.log (1 - v y)) ν`. Simplify using `only [hs]`. Conclude with `(integrable_finset_sum _ fun j _ => (key j).1.const_mul _).const_mul _`. Establish `main` using `CurveDens.integral_log_eq_of_forall_pow (ν := ν) (v := v) (D := fun y => ∑ j, a j * g j y) (d := e) hv.measurable hG.measurable he.measurable (by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hG.continuousOn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨C, fun y => by simpa [Real.norm_eq_abs] using hC y (Set.mem_univ y)⟩)`. Use the proof step `(by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn he.continuousOn`. Conclude with `⟨C, fun y => by simpa [Real.norm_eq_abs] using hC y (Set.mem_univ y)⟩)`. Use `hv0 (hae.mono fun y hy => (hSv y hy).1) hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun n => by`. Establish `hc : Continuous fun y => v y ^ (n + 1) * (∑ j, a j * g j y) + ((n : ℝ) + 1) * v y ^ n * (1 - v y) * e y` using `by fun_prop`. Rewrite using `[← (hmeas _ _ hc fun c y hy => ?_).2]`. Conclude with `H n`. Rewrite using `[hη c y hy, hew c y hy, Finset.sum_congr rfl fun j _ => by rw [hgw j c y hy, ← mul_assoc], ← Finset.sum_mul] ring)`.
-
-Rewrite using `[(hmeas δ e he hew).2, ← main]`. Simplify using `only [hs]`. Rewrite using `[integral_const_mul, integral_finset_sum _ fun j _ => (key j).1.const_mul _]`. Use `congrArg (2 * ·) (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[integral_const_mul, ← (key j).2, p₁, p₂, setIntegral_congr_fun hSm hF, setIntegral_congr_fun hSm hF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem green_sum (hR : Nonempty (AnRead p σ D)) {J : Type} [Fintype J] (a : J → ℝ)
     {κ : J → AlgChart p σ D → CxPts p σ → ℝ} {η δ : AlgChart p σ D → CxPts p σ → ℝ} (hκ : ∀ j, IsDens (κ j))
@@ -264,7 +258,7 @@ def IsSq (d : ℕ) (N A : HermLB p) (x : ℝ) : Prop :=
 variable {N A B : HermLB p} {x y : ℝ}
 
 /- English proof (translation)
-Take `⟨Ψ, h, rfl⟩` from `h`. Take `⟨Ψ', h', rfl⟩` from `h'`. Rewrite using `[Model.isArFun_unique hX h h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsSq.unique (hX : IsArithVar p (d + 1)) (h : IsSq d N A x) (h' : IsSq d N A y) : x = y := by
   obtain ⟨Ψ, h, rfl⟩ := h
@@ -272,7 +266,7 @@ theorem IsSq.unique (hX : IsArithVar p (d + 1)) (h : IsSq d N A x) (h' : IsSq d 
   rw [Model.isArFun_unique hX h h']
 
 /- English proof (translation)
-Take `⟨Ψ, h, rfl⟩` from `h`. Use `⟨Ψ, ((hC.arIso k X p _ hX).2 _ _ Ψ h).2.1 _ fun i => ?_, rfl⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `e`. Conclude with `.refl _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsSq.congr (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) (e : A.Isometric B) (h : IsSq d N A x) :
     IsSq d N B x := by
@@ -283,7 +277,7 @@ theorem IsSq.congr (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) (e : A.Is
   · exact .refl _
 
 /- English proof (translation)
-Use `⟨_, ((hC.arIso k X p _ hX).2 _ _ Φ hΦ).2.2 (Fin 2) ![A, N] ![a, n] fun i => ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `ha`. Conclude with `hn`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSq_of_comb (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) {κ : Type} [Fintype κ] {L : κ → HermLB p}
     {Φ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun L (d + 1) Φ) {a n : κ → ℤ} (ha : (comb L a).Isometric A)
@@ -298,21 +292,21 @@ theorem isSq_of_comb (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) {κ : T
 abbrev slide (L L' N : HermLB p) (t : ℕ) : HermLB p := comb ![L, L', N] ![t, -t, 1]
 
 /- English proof (translation)
-Use `hX.isNoetherian` as an intermediate fact. Establish `e' : L.icls + Q.icls = L'.icls + Q'.icls` using `HermLB.icls_eq_iff.2 e`. Establish `eP : (L'.dual.tens Q).icls = -L'.icls + Q.icls` using `rfl`. Generalize the expression as in `L'.dual.tens Q = P at *`. Set `T : Option (Fin 3) → HermLB p` to `fun o => o.elim P ![L, L', N]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression.
 
-Take `⟨Ψ, hΨ⟩` from `((hC.arExists k X p _ hX).2 _ T).1`. Use `choose ht hht using fun t : ℕ => (hC.arExists k X p _ hX).1 (slide L L' N t)`. Establish `hmix (t : ℕ)` using `hC.arMix k X p _ hX (Fin 3) P _ Ψ hΨ ![t, -t, 1] (ht t) (hht t) r hr`. Use `⟨fun t => (hmix t).1, ?_⟩` and prove the remaining obligations. Establish `sq {A : HermLB p} {x : ℝ} (hx : IsSq d N A x) (a : ℤ) (b : Fin 3 → ℤ) (h : a • P.icls + (b 0 • L.icls + b 1 • L'.icls + b 2 • N.icls) = A.icls) : x = Ψ ((((a : ℤ) : MvPolynomial (Option (Fin 3)) ℝ) * MvPolynomial.X none + (((b 0 : ℤ) : MvPolynomial (Option (Fin 3)) ℝ) * MvPolynom …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hx.unique hX (isSq_of_comb hC hX hΨ (a := fun o => o.elim a b) (n := fun o => o.elim 0 ![0, 0, 1]) (HermLB.icls_eq_iff.1 ?_) (HermLB.icls_eq_iff.1 ?_))).trans ?_` and prove the remaining obligations. Simplify `h` using `[icls_comb, Fin.sum_univ_three, T]`. Simplify using `[icls_comb, Fin.sum_univ_three, T]`. Simplify using `[lin, Fin.sum_univ_three]`. Establish `hloc (z : X) : ∑ t, c t * (((P.div hr).mult z : ℝ) * ht t z) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : (P.div hr).mult z = 0`. Simplify using `[hz]`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`. Establish `e₀` using `HermLB.icls_eq_iff.2 (hiso Z i (CartierDiv.mem_supp_of_mult_ne_zero hz))`. Establish `e₁ (t : ℕ) : ht t (i (genericPoint Z)) = ht 0 (i (genericPoint Z))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `AdjFlag.height_eq hX (hht t) (hht 0) i (HermLB.icls_eq_iff.1 ?_)` and prove the remaining obligations. Rewrite `e₀`, the goal using `[HermLB.icls_pull, HermLB.icls_pull]`. Simplify using `[icls_comb, Fin.sum_univ_three, e₀]`. Simplify using `only [e₁, ← Finset.sum_mul, hc.sum, zero_mul]`. Establish `e₂ : ∑ t, c t * ∑ᶠ z, ((P.div hr).mult z : ℝ) * ht t z = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (Function.support fun z => ((P.div hr).mult z : ℝ)).Finite` using `(P.div hr).finite_support_mult.subset fun z hz => by simpa using hz`. Repeatedly rewrite using `[mul_finsum]`. Rewrite using `[← finsum_sum_comm _ _ fun n _ => (hfin.subset (Function.support_mul_subset_left _ _)).subset (Function.support_mul_subset_right _ _)]`. Conclude with `finsum_eq_zero_of_forall_eq_zero hloc`. Establish `e₃ : Ψ (MvPolynomial.X none * ((MvPolynomial.X (some 0) - MvPolynomial.X (some 1)) * MvPolynomial.X (some 2) ^ d)) = -∑ t, c t * (slide L L' N t).archInt P (d + 1) hr`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hc.pow, Finset.mul_sum, map_sum, ← zero_sub, ← e₂, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, ← mul_sub, ← (hmix t).2]`. Use `congr 4`. Simplify using `[lin, Fin.sum_univ_three]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← neg_neg (∑ t, _), ← e₃, sq hx 0 ![1, 0, 0] (by simp), sq hy 1 ![0, 1, 0] (by simp [eP]), sq hx' 0 ![0, 1, 0] (by simp), sq hy' 1 ![1, 0, 0] (by simp [eP, add_assoc, add_comm Q.icls, e']), ← map_add, ← map_sub, ← map_sub, ← map_neg, two_mul, ← map_add]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isSq_sub [IsLocallyNoetherian X] (hC : Published.ArCalc) (hX : IsArithVar p (d + 1))
     (hc : IsWeights d ((d + 1 : ℝ)⁻¹) c) {L Q L' Q' : HermLB p} (e : (L.tens Q).Isometric (L'.tens Q'))
@@ -387,7 +381,7 @@ open GlobalTheory.VBExt (AdaptedChart)
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-Rewrite using `[bcMat, Met.bcForm_eq hS a _ c H hy ha (Met.exists_adapted hS h₁ h₃ y).choose_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcMat_eq {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)} (hS : S.ShortExact)
     (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (a : AdaptedChart S r s) (c : AlgChart p σ D) (H : h.IsCInf)
@@ -396,9 +390,7 @@ theorem bcMat_eq {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (
   rw [bcMat, Met.bcForm_eq hS a _ c H hy ha (Met.exists_adapted hS h₁ h₃ y).choose_spec]
 
 /- English proof (translation)
-Establish `hg` using `IsoSeq.g_isoThird hS hS' e₁ e₂ he`. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ y`. Rewrite using `[bcMat_eq hS h₁ h₃ a c (H σ) hy ha, bcMat_eq hS' h₁' h₃' (IsoSeq.mapChart e₁ e₂ _ hg a) c (H' σ) hy ha, Met.bcForm, Met.bcForm]`. Use `congrArg formMat (extTrace_congr ?_)` and prove the remaining obligations. Use `filter_upwards [(ChartGlue.isOpen_over c.e (isOpen_ptsIn a.U)).mem_nhds (ChartGlue.mem_over c.e hy ha)] with v hv`.
-
-Conclude with `(IsoSeq.gram_mapChart he hg hI σ a hv.2).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bcMat_iso {S S' : ShortComplex X.Modules} {r s : ℕ} {h : VMetric p S.X₂ (r + s)}
     {h' : VMetric p S'.X₂ (r + s)} (H : h.IsCInf) (H' : h'.IsCInf) (hS : S.ShortExact) (hS' : S'.ShortExact)
@@ -418,37 +410,35 @@ theorem bcMat_iso {S S' : ShortComplex X.Modules} {r s : ℕ} {h : VMetric p S.X
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hfg' (s : Γ(A, U)) : g.app U (f.app U s) = u.app U s` using `congr(($hfg).app U s)`. Establish `hlq' (s : Γ(M, U)) : l.app U (q₀.app U s) = q₂.app U (g.app U s)` using `congr(($hlq).app U s)`. Establish `hmq' (s : Γ(B, U)) : m.app U (q₂.app U s) = q₁.app U s` using `congr(($hmq).app U s)`. Set `a₀ : AdaptedChart (ShortComplex.mk f q₀ w₀) n 1` to `⟨U, e, t, he, ht⟩`. Set `a₁ : AdaptedChart (ShortComplex.mk g q₁ w₁) (n + 1) 1` to `⟨U, (a₀.mid hS₀).e, t₁, (a₀.mid hS₀).isFrame, ht₁⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ht₃ : IsFrame fun i => m.app U (q₂.app U (t₁ i))` using `by simpa only [hmq'] using ht₁`. Set `a₃ : AdaptedChart (ShortComplex.mk l m w₃) 1 1` to `⟨U, fun i => q₀.app U (t i), fun i => q₂.app U (t₁ i), ht, ht₃⟩`. Set `t₂ : Fin (1 + 1) → Γ(B, U)` to `Sum.elim (fun i => g.app U (t i)) t₁ ∘ finSumFinEquiv.symm`. Establish `ht₂e (j : Fin 1 ⊕ Fin 1) : q₂.app U (t₂ (finSumFinEquiv j)) = a₃.frame j`. Break down `j with j | j` into its components or cases.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[t₂, a₃, AdaptedChart.frame, hlq']`. Simplify using `[t₂, a₃, AdaptedChart.frame]`. Establish `ht₂ : IsFrame fun i => q₂.app U (t₂ i)`. Establish `e₀ : (fun i => q₂.app U (t₂ i)) = (a₃.mid hS₃).e`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective i`. Rewrite using `[ht₂e]`. Simplify using `[AdaptedChart.mid]`. Rewrite using `[e₀]`. Conclude with `(a₃.mid hS₃).isFrame`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `a₂ : AdaptedChart (ShortComplex.mk u q₂ w₂) n (1 + 1)` to `⟨U, e, t₂, he, ht₂⟩`. Set `T : Fin n ⊕ (Fin 1 ⊕ Fin 1) → Γ(B, U)` to `Sum.elim (fun i => u.app U (e i)) (Sum.elim (fun i => g.app U (t i)) t₁)`. Establish `hT₀ (x : Fin n ⊕ Fin 1) : g.app U (a₀.frame x) = T (Sum.map id Sum.inl x)`. Break down `x with i | i` into its components or cases. Simplify using `[a₀, T, AdaptedChart.frame, hfg']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[a₀, T, AdaptedChart.frame]`. Establish `hT₁ (x : (Fin n ⊕ Fin 1) ⊕ Fin 1) : a₁.frame (Sum.map finSumFinEquiv id x) = T (Equiv.sumAssoc _ _ _ x)`. Break down `x with (i | i) | i` into its components or cases. Simplify using `[a₀, a₁, T, AdaptedChart.frame, AdaptedChart.mid, hfg']`. Simplify using `[a₀, a₁, T, AdaptedChart.frame, AdaptedChart.mid]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[a₁, T, AdaptedChart.frame]`. Establish `hT₂ (x : Fin n ⊕ (Fin 1 ⊕ Fin 1)) : a₂.frame (Sum.map id finSumFinEquiv x) = T x`. Break down `x with i | i | i` into its components or cases. Simplify using `[a₂, T, AdaptedChart.frame]`. Simplify using `[a₂, t₂, T, AdaptedChart.frame]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[a₂, t₂, T, AdaptedChart.frame]`. Set `K : CxPts p σ → Matrix (Fin n ⊕ (Fin 1 ⊕ Fin 1)) (Fin n ⊕ (Fin 1 ⊕ Fin 1)) ℂ` to `h.gram T`. Establish `g₀ {z : CxPts p σ} (hz : z ∈ ptsIn p σ U) : (h.restrict hg hM).gram a₀.frame z = (K z).submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl)`. Use extensionality with `i j`. Use `((h.form_restrict hg hM _ _ hz).trans ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT₀, hT₀]`. Both sides reduce to the same expression. Establish `g₁ {z : CxPts p σ} : (K z).submatrix (Equiv.sumAssoc _ _ _) (Equiv.sumAssoc _ _ _) = (h.gram a₁.frame z).submatrix (Sum.map finSumFinEquiv (Equiv.refl (Fin 1))) (Sum.map finSumFinEquiv (Equiv.refl (Fin 1)))`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `h.form (T _) (T _) z = h.form (a₁.frame _) (a₁.frame _) z`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `congrArg₂ (fun s s' => h.form s s' z) (hT₁ i).symm (hT₁ j).symm`. Establish `g₂ {z : CxPts p σ} : K z = (h.gram a₂.frame z).submatrix (Sum.map (Equiv.refl (Fin n)) finSumFinEquiv) (Sum.map (Equiv.refl (Fin n)) finSumFinEquiv)`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `h.form (T _) (T _) z = h.form (a₂.frame _) (a₂.frame _) z`. Conclude with `congrArg₂ (fun s s' => h.form s s' z) (hT₂ i).symm (hT₂ j).symm`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `g₃ {z : CxPts p σ} (hz : z ∈ ptsIn p σ U) : (Met.quot (S` using `ShortComplex.mk u q₂ w₂) (r := n) (s := 1 + 1) h hS₂ hA hV).gram a₃.frame z = quotGram (K z) := by`. Establish `e₀` using `(QuotStage.quotStages (Fin n) (Fin (1 + 1)) Unit).2 (Fin n) (Fin 1 ⊕ Fin 1) (Equiv.refl _) finSumFinEquiv (h.gram a₂.frame z)`. Use extensionality with `i j`. Rewrite using `[g₂, e₀, submatrix_apply, ← Met.quot_G h hS₂ hA hV a₂ hz, ← Met.form_frame _ a₂.quot hz]`. Conclude with `congrArg₂ (fun s s' => (Met.quot (S := ShortComplex.mk u q₂ w₂) (r := n) (s := 1 + 1) h hS₂ hA hV).form s s' z) (ht₂e i).symm (ht₂e j).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : ∀ᶠ v in 𝓝 (c.e y), c.e.symm v ∈ ptsIn p σ U` using `eventually_of_mem ((ChartGlue.isOpen_over c.e (isOpen_ptsIn U)).mem_nhds (ChartGlue.mem_over c.e hy hyU)) fun _ hv => hv.2`. Establish `d₀ : bcMat (S` using `ShortComplex.mk f q₀ w₀) (h.restrict hg hM) hS₀ hA hL c y = formMat (extTrace (fun v => (K (c.e.symm v)).submatrix (Sum.map id Sum.inl) (Sum.map id Sum.inl)) (c.e y)) := by`. Rewrite using `[bcMat_eq hS₀ hA hL a₀ c (H.restrict hg hM) hy hyU, Met.bcForm, extTrace_congr (hW.mono fun v hv => g₀ hv)]`. Establish `d₁ : bcMat (S` using `ShortComplex.mk g q₁ w₁) h hS₁ hM hQ c y = formMat (extTrace (fun v => (K (c.e.symm v)).submatrix (Equiv.sumAssoc _ _ _) (Equiv.sumAssoc _ _ _)) (c.e y)) := by`. Rewrite using `[bcMat_eq hS₁ hM hQ a₁ c H hy hyU, Met.bcForm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g₁]`. Rewrite using `[extTrace_submatrix_sumMap]`. Establish `d₂ : bcMat (S` using `ShortComplex.mk u q₂ w₂) (r := n) (s := 1 + 1) h hS₂ hA hV c y = formMat (extTrace (fun v => K (c.e.symm v)) (c.e y)) := by`. Rewrite using `[bcMat_eq hS₂ hA hV a₂ c H hy hyU, Met.bcForm]`. Simplify using `only [g₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[extTrace_submatrix_sumMap]`. Establish `d₃ : bcMat (S` using `ShortComplex.mk l m w₃) (Met.quot (S := ShortComplex.mk u q₂ w₂) (r := n) (s := 1 + 1) h hS₂ hA hV) hS₃ hL hQ c y = formMat (extTrace (fun v => quotGram (K (c.e.symm v))) (c.e y)) := by`. Rewrite using `[bcMat_eq hS₃ hL hQ a₃ c (Met.IsCInf.quot hS₂ hA hV H) hy hyU, Met.bcForm, extTrace_congr (hW.mono fun v hv => g₃ hv)]`. Establish `hK : MContDiffAt 1 (fun v => K (c.e.symm v)) (c.e y)` using `((H.gram T hyU).mContDiffAt c hy).of_le (by norm_cast)`. Establish `hp : ∀ᶠ v in 𝓝 (c.e y), (K (c.e.symm v)).PosDef` using `hW.mono fun v hv => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[g₂]`. Conclude with `(Met.posDef_gram_frame (S := ShortComplex.mk u q₂ w₂) (r := n) (s := 1 + 1) h hS₂ a₂ hv).submatrix ((Equiv.refl (Fin n)).injective.sumMap finSumFinEquiv.injective)`. Rewrite using `[d₀, d₁, d₂, d₃]`. Use extensionality with `i j`. Simplify using `only [formMat, Matrix.add_apply, of_apply, ← add_div]`.
-
-Rewrite using `[extTrace_add_extTrace (ReciprocityTheory.L2DbarEstimates.V D) (Fin n) (Fin 1) (Fin 1) (fun v => K (c.e.symm v)) (c.e y) _ _ hK hp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcMat_stage_of_frames {A M B L Q V : X.Modules} {f : A ⟶ M} {g : M ⟶ B} {u : A ⟶ B}
     {q₀ : M ⟶ L} {q₁ : B ⟶ Q} {q₂ : B ⟶ V} {w₀ : f ≫ q₀ = 0} {w₁ : g ≫ q₁ = 0} {w₂ : u ≫ q₂ = 0}
@@ -576,9 +566,9 @@ theorem bcMat_stage_of_frames {A M B L Q V : X.Modules} {f : A ⟶ M} {g : M ⟶
       (c.e y) _ _ hK hp]
 
 /- English proof (translation)
-Take `⟨b₀, hb₀⟩` from `Met.exists_adapted (p := p) (σ := σ) hS₀ hA hL y`. Take `⟨b₁, hb₁⟩` from `Met.exists_adapted hS₁ hM hQ y`. Use `bcMat_stage_of_frames hS₀ hS₁ hS₂ hS₃ hA hM hL hQ hV hg hfg hlq hmq H c hy (U := b₀.U ⊓ b₁.U) (mem_ptsIn_inf.2 ⟨hb₀, hb₁⟩) (fun i => resM A inf_le_left (b₀.e i)) (fun i => resM M inf_le_left (b₀.t i)) (fun i => resM B inf_le_right (b₁.t i)) (b₀.he.res inf_le_left) ?_ ?_` and prove the remaining obligations. Simplify using `only [app_resM]`. Conclude with `b₀.ht.res inf_le_left`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [app_resM]`. Conclude with `b₁.ht.res inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem bcMat_stage {A M B L Q V : X.Modules} {f : A ⟶ M} {g : M ⟶ B} {u : A ⟶ B}
     {q₀ : M ⟶ L} {q₁ : B ⟶ Q} {q₂ : B ⟶ V} {w₀ : f ≫ q₀ = 0} {w₁ : g ≫ q₁ = 0} {w₂ : u ≫ q₂ = 0}
@@ -613,7 +603,7 @@ def bcI (N : HermLB p) (d : ℕ) {S : ShortComplex X.Modules} {r s : ℕ} (h : V
   ∑ᶠ σ, total fun (c : AlgChart p σ (d + 1)) y => mix d (chernMat (N.φ σ) c y) (bcMat (h.met σ) hS h₁ h₃ c y)
 
 /- English proof (translation)
-The claim follows from `(chernMat_isForm k X p σ _ B φ hφ).isDens_mix (T.bott_chern_matrix_is_form k X p σ _ S r s h hS h₁ h₃ H)`.
+A detailed English derivation is pending.
 -/
 theorem isDens_bc {B : LB X} {φ : Weight p σ B} (hφ : φ.IsCInf) {S : ShortComplex X.Modules} {r s : ℕ}
     {h : Met p σ S.X₂ (r + s)} (hS : S.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (H : h.IsCInf) :
@@ -621,7 +611,7 @@ theorem isDens_bc {B : LB X} {φ : Weight p σ B} (hφ : φ.IsCInf) {S : ShortCo
   (chernMat_isForm k X p σ _ B φ hφ).isDens_mix (T.bott_chern_matrix_is_form k X p σ _ S r s h hS h₁ h₃ H)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(T.det_metric_shortExact_iso_isometric k X p S S' r s h h' H H' hS hS' h₁ h₃ h₁' h₃' e₁ e₂ he hI).1, finsum_congr fun _ => total_congr fun c _ hy => by rw [bcMat_iso H H' hS hS' h₁ h₃ h₁' h₃' e₁ e₂ he hI c hy]⟩`.
+Supply the required witnesses or components.
 -/
 theorem iso_seq (N : HermLB p) (d : ℕ) (S S' : ShortComplex X.Modules) {r s : ℕ} {h : VMetric p S.X₂ (r + s)}
     (h' : VMetric p S'.X₂ (r + s)) (H : h.IsCInf) (H' : h'.IsCInf) (hS : S.ShortExact) (hS' : S'.ShortExact)
@@ -636,9 +626,9 @@ theorem iso_seq (N : HermLB p) (d : ℕ) (S S' : ShortComplex X.Modules) {r s : 
 variable {N : HermLB p}
 
 /- English proof (translation)
-Rewrite using `[← mix_sub, ← hc.det]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `e : chernMat ((slide L L' N t).φ σ) a y = chernMat (N.φ σ) a y + ((t : ℕ) : ℂ) • (chernMat (L.φ σ) a y - chernMat (L'.φ σ) a y)`. Rewrite using `[chernMat_comb k X p σ _ _ _ _ a y hy, Fin.sum_univ_three, smul_sub]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_chernDens_slide {c : Fin (d + 2) → ℝ} (hc : IsWeights d ((d + 1 : ℝ)⁻¹) c) (L L' N : HermLB p)
     (a : AlgChart p σ (d + 1)) {y : CxPts p σ} (hy : y ∈ a.e.source) :
@@ -664,21 +654,21 @@ variable {V L Q L' Q' : X.Modules} {l : L ⟶ V} {m : V ⟶ Q} {w : l ≫ m = 0}
 variable [IsIntegral X] {h : VMetric p V (1 + 1)} (H : h.IsCInf)
 
 /- English proof (translation)
-Distinguish the cases in `hs : l' ≫ m = 0`. Take `⟨e, he⟩` from `T.iso_of_equal_sublines_shortExact X V L Q L' Q' l m w l' m' w' hS hS' hQ hQ' hs`. Take `⟨e₁, e₂⟩` from `iso_seq N d (.mk l' m' w') (.mk l m w) h H H hS' hS hL' hQ' hL hQ e (Iso.refl V) (he.trans (Category.comp_id _).symm) fun _ _ _ _ _ _ => rfl`. Apply the tactic sequence `have e₃ := T.det_metric_isometric_of_isometry k X p L' L 1 (h.restrict hl' hL') (h.restrict hl hL) (H.restrict hl' hL') (H.restrict hl hL) e (AdjFlag.isIsometry_restrict _ _ _ _ e he)`. Rewrite using `[e₂, hx.unique hA (hx'.congr hC hA e₃), hy.unique hA (hy'.congr hC hA e₁)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hA.isLocallyNoetherian` as an intermediate fact. Establish `HQ` using `VMetric.IsCInf.quot (S := .mk l m w) hS hL hQ H`. Take `⟨r, hr, hv, hn⟩` from `T.exists_ratSec_det_dual_tensor_support k X p L' Q (h.restrict hl' hL') (VMetric.quot (S := .mk l m w) h hS hL hQ) (H.restrict hl' hL') HQ (l' ≫ m) hs`. Take `⟨c, hc⟩` from `exists_isWeights d ((d + 1 : ℝ)⁻¹)`. Take `⟨i₀, e₀⟩` from `isSq_sub hC hA hc ((T.det_metric_shortExact_isometric k X p (.mk l m w) 1 1 h H hS hL hQ hl).trans (T.det_metric_shortExact_isometric k X p (.mk l' m' w') 1 1 h H hS' hL' hQ' hl').symm) hx hy hx' hy' hr fun Z i _ _ hz => T.det_metric_restriction_vanishing_locus k X p V L Q L' l m …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `(VMetric.det (H.restrict hl' hL')).dual.tens (VMetric.det HQ) = P at *`. Establish `key (σ : k →+* ℂ) : 2 * ∑ t, c t * ((slide (VMetric.det (H.restrict hl hL)) (VMetric.det (H.restrict hl' hL')) N t).φ σ).chernInt (d + 1) (offSupp p σ (P.div hr)) (logNorm (P.φ σ) r) = total (fun (c : AlgChart p σ (d + 1)) y => mix d (chernMat (N.φ σ) c y) (bcMat (S` using `.mk l m w) (h.met σ) hS hL hQ c y)) - total (fun (c : AlgChart p σ (d + 1)) y => mix d (chernMat (N.φ σ) c y) (bcMat (S := .mk l' m' w') (h.met σ) hS' hL' hQ' c y)) := by`. Use `hA.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hA.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hA.isProjOver` as an intermediate fact.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv, hv₁, hb⟩` from `T.exists_continuous_cosSq_angle_function k X p σ V L L' _ (h.met σ) l l' (H σ) hl hl' hL hL'`. Establish `d₁` using `isDens_bc (d := d) (N.cInf σ) (S := .mk l m w) hS hL hQ (H σ)`. Establish `d₂` using `isDens_bc (d := d) (N.cInf σ) (S := .mk l' m' w') hS' hL' hQ' (H σ)`. Rewrite using `[← (total_add_sub (hG σ) d₁ d₂).2]`. Simplify using `only [Weight.chernInt, (chernPart_eq _).1, (chernPart_eq _).2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `j₀ (t)` using `i₀ t σ`. Simplify using `only [Weight.ChernIntegrableOn, (chernPart_eq _).1, (chernPart_eq _).2] at j₀`. Use `green_sum (hG σ) c (fun t => isDens_chernDens (HermLB.cInf _ σ)) (fun a y hy => sum_chernDens_slide hc (VMetric.det (H.restrict hl hL)) (VMetric.det (H.restrict hl' hL')) N a hy) (d₁.sub d₂) hv₁ (fun y => (hb y).1) (isOpen_offSupp _) (fun ρ => ?_) (fun y hy => ?_) (fun t => (j₀ t …` and prove the remaining obligations. Rewrite using `[← MixDensNull.part_over_closed k X p _ hA _ (P.div hr).supp.isClosed (P.div hr).genericPoint_notMem_supp σ ρ]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `y`. Conclude with `mem_offSupp.not.trans not_not`. Take `⟨U, t, t', ht, ht', hU⟩` from `AdjFlag.exists_frames hL hL' y`. Take `⟨n₁, n₂⟩` from `hn σ y hy U t' ht' hU`. Establish `e` using `AdjFlag.div_eq_one_sub hS hL hQ hL' hl hl' (h.met σ) hv ht ht' hU`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `div_pos n₁ (AdjFlag.form_frame_pos ((h.met σ).restrict hl' hL') ht' hU)` as an intermediate fact. Use `replace this := this.trans_eq e`. Conclude with `⟨by linarith, n₂.trans (congrArg (Real.log · / 2) e)⟩`. Use `hA.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂` using `Finset.sum_congr rfl fun σ (_ : σ ∈ Finset.univ) => key σ`. Rewrite `e₂` using `[← Finset.mul_sum, Finset.sum_comm, Finset.sum_sub_distrib]`. Simplify using `only [HermLB.archInt, finsum_eq_sum_of_fintype, Finset.mul_sum Finset.univ _ (c _)] at e₀`. Rewrite using `[bcI, bcI, finsum_eq_sum_of_fintype (α := k →+* ℂ), finsum_eq_sum_of_fintype (α := k →+* ℂ)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rank_two (hC : Published.ArCalc) (hA : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1)) {x y x' y' : ℝ}
     (hx : IsSq d N (VMetric.det (H.restrict hl hL)) x)
@@ -746,7 +736,7 @@ theorem rank_two (hC : Published.ArCalc) (hA : IsArithVar p (d + 1)) (hG : GenSm
 end RankTwo
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hx`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isSq_congr [IsIntegral X] {E : X.Modules} {r : ℕ} {h h' : VMetric p E r} (e : h = h')
     {H : h.IsCInf} {H' : h'.IsCInf} {x : ℝ} (hx : IsSq d N (VMetric.det H') x) : IsSq d N (VMetric.det H) x := by
@@ -767,13 +757,13 @@ omit [IsIntegral X] in
 include H in
 
 /- English proof (translation)
-Take `⟨l, m, w₃, hS₃, e₁, e₂⟩` from `T.exists_shortExact_of_composition X A M B L Q V f g u q₀ q₁ q₂ w₀ w₁ w₂ hS₀ hS₁ hS₂ hu`. Establish `hl : IsSubbundle l` using `isSubbundle_of_shortExact hS₃ hQ`. Establish `key (σ : k →+* ℂ)` using `T.shortExact_composition_compatibility k X p σ A M B L Q V f g u q₀ q₁ q₂ w₀ w₁ w₂ hS₀ hS₁ hS₂ l m w₃ hS₃ n hA hM hL hQ hV hg (h.met σ) hu e₁ e₂ hl`. Use `⟨l, m, w₃, hS₃, hl, VMetric.ext (funext fun σ => (key σ).1), VMetric.ext (funext fun σ => (key σ).2), ?_⟩` and prove the remaining obligations. Use `hX.finite_emb` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [bcI, finsum_eq_sum_of_fintype, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `hX.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CxPts.t2Space_cxPts_of_isProjOver σ hX.isProjOver` as an intermediate fact. Establish `H₀` using `(H σ).restrict hg hM`. Establish `H₃` using `Met.IsCInf.quot (S := .mk u q₂ w₂) (r := n) (s := 1 + 1) hS₂ hA hV (H σ)`. Establish `s₁` using `(total_add_sub (hG σ) (isDens_bc (N.cInf σ) (S := .mk f q₀ w₀) hS₀ hA hL H₀) (isDens_bc (N.cInf σ) (S := .mk g q₁ w₁) hS₁ hM hQ (H σ))).1`. Establish `s₂` using `(total_add_sub (hG σ) (isDens_bc (N.cInf σ) (S := .mk u q₂ w₂) (r := n) (s := 1 + 1) hS₂ hA hV (H σ)) (isDens_bc (N.cInf σ) (S := .mk l m w₃) hS₃ hL hQ H₃)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `s₁.symm.trans ((total_congr fun c y hy => ?_).trans s₂)` and prove the remaining obligations. Conclude with `mix_add.symm.trans ((congrArg _ (bcMat_stage hS₀ hS₁ hS₂ hS₃ hA hM hL hQ hV hg hu e₁ e₂ (H σ) c hy)).trans mix_add)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem three_step (hX : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1)) (hu : f ≫ g = u) :
     ∃ (l : L ⟶ V) (m : V ⟶ Q) (w₃ : l ≫ m = 0) (hS₃ : (ShortComplex.mk l m w₃).ShortExact)
@@ -818,11 +808,9 @@ variable {M' L' Q' : X.Modules} {f' : A ⟶ M'} {g' : M' ⟶ B} {q₀' : M' ⟶ 
   (hQ' : IsVB Q' 1) (hg' : IsSubbundle g')
 
 /- English proof (translation)
-Establish `m₀ : Mono f` using `hS₀.mono_f`. Establish `m₁ : Mono g` using `hS₁.mono_f`. Establish `hS₂ : (ShortComplex.mk (f ≫ g) _ (Limits.cokernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `hV : IsVB (Limits.cokernel (f ≫ g)) (1 + 1)`. Take `⟨l, m, w₃, hS₃, -⟩` from `T.exists_shortExact_of_composition X A M B L Q _ f g _ q₀ q₁ _ w₀ w₁ _ hS₀ hS₁ hS₂ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(VBExt.isVB_and_cls_det_of_shortExact X _ 1 1 hS₃ hL hQ).1`. Take `⟨l, m, w₃, hS₃, hl, e₁, e₂, e₃⟩` from `three_step (N := N) hS₂ hA hV H hS₀ hS₁ hM hL hQ hg hX hG rfl`. Take `⟨l', m', w₃', hS₃', hl', e₁', e₂', e₃'⟩` from `three_step (N := N) hS₂ hA hV H hS₀' hS₁' hM' hL' hQ' hg' hX hG hu.symm`. Establish `HV` using `VMetric.IsCInf.quot (S := .mk (f ≫ g) _ (Limits.cokernel.condition _)) (r := n) (s := 1 + 1) hS₂ hA hV H`. Establish `aux {a a' b c c' d d' : ℝ} (e : d = b + c) (e' : d' = b + c') (k : a - c = a' - c') : a - d = a' - d'` using `by linarith`.
-
-Conclude with `aux e₃ e₃' (rank_two hS₃ hS₃' hL hQ hL' hQ' hl hl' HV hC hX hG (isSq_congr e₁ hx) (isSq_congr e₂ hy) (isSq_congr e₁' hx') (isSq_congr e₂' hy'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_steps (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1))
     (hu : f ≫ g = f' ≫ g') {x y x' y' : ℝ}
@@ -865,9 +853,9 @@ abbrev stepBc (N : HermLB p) (d : ℕ) (h : VMetric p E r) (fl : Vert.Flag E r) 
 include H in
 
 /- English proof (translation)
-Use `hX.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [bcPair, stepBc, bcI, finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hX.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hX.isProjOver` as an intermediate fact. Use `(total_congr fun c y _ => ?_).trans (total_sum (hG σ) fun i => isDens_bc (N.cInf σ) (h := (h.stepMet fl i).met σ) _ _ _ (H.restrict _ _ σ))` and prove the remaining obligations. Rewrite using `[flagDens, flagMat, mix_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcPair_eq_sum (hX : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1)) (fl : Vert.Flag E r) :
     bcPair h fl N d = ∑ i, stepBc N d h fl i := by
@@ -884,7 +872,7 @@ theorem bcPair_eq_sum (hX : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1)) (fl
   rw [flagDens, flagMat, mix_sum]
 
 /- English proof (translation)
-Take `⟨e₀, h₀⟩` from `h₀`. Take `⟨e₁, h₁⟩` from `h₁`. Use `iso_seq N d (stepSeq fl i) (stepSeq fl' i) (h := h.stepMet fl i) (h.stepMet fl' i) (H.restrict _ _) (H.restrict _ _) _ _ _ _ _ _ e₀ e₁ ?_ (AdjFlag.isIsometry_restrict _ _ _ _ e₁ h₁)` and prove the remaining obligations. Rewrite using `[← cancel_mono (fl'.ι i.succ)]`. Simplify using `only [Category.assoc, Vert.Flag.step_ι, h₀, h₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem step_eq {i : Fin r} (h₀ : fl.SameStep fl' i.castSucc) (h₁ : fl.SameStep fl' i.succ) :
     (grLB fl i H).Isometric (grLB fl' i H) ∧ stepBc N d h fl i = stepBc N d h fl' i := by
@@ -896,19 +884,17 @@ theorem step_eq {i : Fin r} (h₀ : fl.SameStep fl' i.castSucc) (h₁ : fl.SameS
   simp only [Category.assoc, Vert.Flag.step_ι, h₀, h₁]
 
 /- English proof (translation)
-Use `set i₀ : Fin r := ⟨n, by omega⟩`. Use `set i₁ : Fin r := ⟨n + 1, hn⟩`. Take `⟨e₀, h₀⟩` from `h₀`. Take `⟨e₂, h₂⟩` from `h₂`. Set `g : fl.F i₀.succ ⟶ fl.F i₁.succ` to `fl.step i₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f' : fl.F i₀.castSucc ⟶ fl'.F i₀.succ` to `e₀.hom ≫ fl'.step i₀`. Set `g' : fl'.F i₀.succ ⟶ fl.F i₁.succ` to `fl'.step i₁ ≫ e₂.inv`. Set `q' : fl.F i₁.succ ⟶ fl'.gr i₁` to `e₂.hom ≫ fl'.π i₁`. Establish `w₀' : f' ≫ fl'.π i₀ = 0`. Simplify using `only [f', Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show fl'.step i₀ ≫ fl'.π i₀ = 0 from Limits.cokernel.condition _, Limits.comp_zero]`. Establish `w₁' : g' ≫ q' = 0`. Simplify using `only [g', q', Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `Limits.cokernel.condition _`. Establish `hS₀' : (ShortComplex.mk f' _ w₀').ShortExact` using `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := stepSeq fl' i₀) e₀.symm (Iso.refl _) (Iso.refl _) (by simp [f']) (by simp)) (stepSeq_shortExact fl' i₀)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS₁' : (ShortComplex.mk g' q' w₁').ShortExact` using `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := stepSeq fl' i₁) (Iso.refl _) e₂.symm (Iso.refl _) (by simp [g']) (by simp [q'])) (stepSeq_shortExact fl' i₁)`. Establish `hg : IsSubbundle g` using `isSubbundle_of_shortExact (stepSeq_shortExact fl i₁) (fl.isVB_gr i₁)`. Establish `hg' : IsSubbundle g'` using `isSubbundle_of_shortExact hS₁' (fl'.isVB_gr i₁)`. Establish `gι : g ≫ fl.ι i₁.succ = fl.ι i₀.succ` using `fl.step_ι i₁`. Establish `gι' : g' ≫ fl.ι i₁.succ = fl'.ι i₀.succ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₂, Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `fl'.step_ι i₁`. Establish `hu : fl.step i₀ ≫ g = f' ≫ g'`. Rewrite using `[← cancel_mono (fl.ι i₁.succ), Category.assoc, Category.assoc, gι, gι', fl.step_ι, Category.assoc, fl'.step_ι, h₀]`. Establish `HB : (h.stepMet fl i₁).IsCInf` using `H.restrict _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply the tactic sequence `have res {F : X.Modules} {a : F ⟶ fl.F i₁.succ} {b : F ⟶ E} (ha : IsSubbundle a) (hb : IsSubbundle b) (hF : IsVB F (n + 1)) (e : a ≫ fl.ι i₁.succ = b) : ((h.stepMet fl i₁).restrict ha hF).IsIsometry (h.restrict hb hF) (Iso.refl F) := fun σ U s t y hy => by`. Use `((h.met σ).form_restrict hb hF _ _ hy).trans (Eq.trans ?_ ((((h.stepMet fl i₁).met σ).form_restrict ha hF s t hy).trans ((h.met σ).form_restrict (fl.isSubbundle i₁.succ) (fl.isVB i₁.succ) _ _ hy)).symm)` and prove the remaining obligations. Rewrite using `[← e]`. Both sides reduce to the same expression. Take `⟨a₁, b₁⟩` from `iso_seq N d (stepSeq fl i₀) (stepSeq fl i₀) (h.stepMet fl i₀) (HB.restrict hg (fl.isVB i₀.succ)) (H.restrict _ _) (stepSeq_shortExact fl i₀) (stepSeq_shortExact fl i₀) (fl.isVB i₀.castSucc) (fl.isVB_gr i₀) (fl.isVB i₀.castSucc) (fl.isVB_gr i₀) (Iso.refl _) (Iso.refl _) (by simp) …`.
-
-Take `⟨a₂, b₂⟩` from `iso_seq N d (.mk f' _ w₀') (stepSeq fl' i₀) (h.stepMet fl' i₀) (HB.restrict hg' (fl'.isVB i₀.succ)) (H.restrict _ _) hS₀' (stepSeq_shortExact fl' i₀) (fl.isVB i₀.castSucc) (fl'.isVB_gr i₀) (fl'.isVB i₀.castSucc) (fl'.isVB_gr i₀) e₀ (Iso.refl _) (Category.comp_id _).symm (res hg' …`. Take `⟨a₃, b₃⟩` from `iso_seq N d (.mk g' q' w₁') (stepSeq fl' i₁) (h.stepMet fl' i₁) HB (H.restrict _ _) hS₁' (stepSeq_shortExact fl' i₁) (fl'.isVB i₀.succ) (fl'.isVB_gr i₁) (fl'.isVB i₁.castSucc) (fl'.isVB_gr i₁) (Iso.refl _) e₂ (by simp [g']) (AdjFlag.isIsometry_restrict _ _ _ _ e₂ h₂)`. Establish `key` using `two_steps (fl.isVB i₀.castSucc) HB (stepSeq_shortExact fl i₀) (stepSeq_shortExact fl i₁) (fl.isVB i₀.succ) (fl.isVB_gr i₀) (fl.isVB_gr i₁) hg hS₀' hS₁' (fl'.isVB i₀.succ) (fl'.isVB_gr i₀) (fl'.isVB_gr i₁) hg' hC hX hG hu (hx.congr hC hX a₁.symm) hy (hx'.congr hC hX a₂.symm) (hy'. …`. Conclude with `(congrArg (fun t => x + y - (t + stepBc N d h fl i₁)) b₁).symm.trans (key.trans (congrArg₂ (fun s t => x' + y' - (s + t)) b₂ b₃))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mid_eq [IsIntegral X] (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1)) {n : ℕ}
     (hn : n + 1 < r) (h₀ : fl.SameStep fl' (Fin.castSucc ⟨n, by omega⟩))
@@ -977,15 +963,13 @@ theorem mid_eq [IsIntegral X] (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)
     (key.trans (congrArg₂ (fun s t => x' + y' - (s + t)) b₂ b₃))
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `ha`. Establish `same {i : Fin r} (h₀ : fl.SameStep fl' i.castSucc) (h₁ : fl.SameStep fl' i.succ) : x i - stepBc N d h fl i - (x' i - stepBc N d h fl' i) = 0`. Take `⟨e₁, e₂⟩` from `step_eq (N := N) (d := d) H h₀ h₁`. Rewrite using `[e₂, ((hx i).congr hC hX e₁).unique hX (hx' i), sub_self]`. It suffices to establish `e : ∑ i, (x i - stepBc N d h fl i - (x' i - stepBc N d h fl' i)) = 0 by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Simplify using `only [Finset.sum_sub_distrib] at e`. Rewrite using `[bcPair_eq_sum H hX hG, bcPair_eq_sum H hX hG]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `he : j = 0 ∨ j = Fin.last r`. Establish `all (i) : fl.SameStep fl' i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hi : i = j`. Conclude with `hi ▸ AdjFlag.sameStep_of_end he`. Conclude with `hj i hi`. Conclude with `Finset.sum_eq_zero fun i _ => same (all _) (all _)`. Take `⟨_ | n, hn⟩` from `j`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `absurd (.inl rfl) he`. Establish `hn' : n + 1 < r`. Establish `: n + 1 ≠ r` using `fun e => he (.inr (Fin.ext e))`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fintype.sum_eq_add (⟨n, by omega⟩ : Fin r) (⟨n + 1, hn'⟩ : Fin r) (by simp) fun i hi => same (i := i) (hj _ fun e => hi.2 (Fin.ext (congrArg Fin.val e :))) (hj _ fun e => hi.1 (Fin.ext (Nat.succ_injective (congrArg Fin.val e :))))]`.
-
-Use `mid_eq H hC hX hG hn' (hj _ (by simp [Fin.ext_iff])) (hj _ (by simp [Fin.ext_iff])) (hx _) (hx _) (hx' _) (hx' _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_eq [IsIntegral X] (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)) (hG : GenSmooth p (d + 1))
     (ha : fl.Adjacent fl') {x x' : Fin r → ℝ} (hx : ∀ i, IsSq d N (grLB fl i H) (x i))
@@ -1020,7 +1004,7 @@ theorem sum_eq [IsIntegral X] (hC : Published.ArCalc) (hX : IsArithVar p (d + 1)
 end Flags
 
 /- English proof (translation)
-Introduce `hC k _ X p _ d hX hG E r h H fl fl' ha κ _ L Φ hΦ x x' hx hx' n`. Establish `sq (j : κ) : IsSq d (comb L n) (L j) (Φ (MvPolynomial.X j ^ 2 * lin (fun j => (n j : ℝ)) ^ d))`. Use `isSq_of_comb hC hX hΦ (isometric_comb_single L j) (.refl (comb L n)) using 4` and compare the differences between its conclusion and the goal. Simplify using `[lin, Pi.single_apply, apply_ite]`. Rewrite using `[← sum_eq H hC hX hG ha (fun i => (sq _).congr hC hX (hx i)) fun i => (sq _).congr hC hX (hx' i), sub_mul, map_sub, Finset.sum_mul, Finset.sum_mul, map_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem compare_of_adjacent : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [IsIntegral X] (d : ℕ), IsArithVar p (d + 1) → GenSmooth p (d + 1) → ∀ (E : X.Modules) (r : ℕ)

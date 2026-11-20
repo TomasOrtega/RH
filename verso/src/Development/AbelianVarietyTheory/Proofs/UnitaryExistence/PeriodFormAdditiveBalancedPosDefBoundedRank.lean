@@ -24,13 +24,11 @@ open Formalism.MainNotions.DIV.Cons
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨q, hq, hqx⟩` from `hx`. Establish `hx0 : 0 < ‖x‖` using `one_pos.trans h`. Rewrite `hqx` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hq.coeff_natDegree, map_one, one_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ‖∑ i ∈ Finset.range q.natDegree, algebraMap ℤ C (q.coeff i) * x ^ i‖ < ‖x‖ ^ q.natDegree`. Break down `Finset.eq_empty_or_nonempty (Finset.range q.natDegree) with he | he` into its components or cases. Rewrite using `[he]`. Simplify using `using pow_pos hx0 _`. Take `⟨i, hi, hle⟩` from `IsUltrametricDist.exists_norm_finset_sum_le_of_nonempty he (fun i => algebraMap ℤ C (q.coeff i) * x ^ i)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hle.trans_lt ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Use `(mul_le_of_le_one_left (by positivity) (IsUltrametricDist.norm_intCast_le_one C _)).trans_lt ?_` and prove the remaining obligations. Conclude with `pow_lt_pow_right₀ h (Finset.mem_range.1 hi)`. Rewrite `h1` using `[eq_neg_of_add_eq_zero_left hqx, norm_neg, norm_pow]`.
-
-Conclude with `lt_irrefl _ h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_integral {x : C} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   by_contra h
@@ -51,9 +49,9 @@ theorem norm_le_one_of_integral {x : C} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Establish `ha' : (a : C) ≠ 0` using `fun e => ha (Subtype.ext e)`. Use `⟨⟨(b : C) / a, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(b : C) / a‖ ≤ 1`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(b : C) = a * (b / a)`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dvd_of_norm_le {a b : intO C} (ha : a ≠ 0) (h : ‖(b : C)‖ ≤ ‖(a : C)‖) : a ∣ b := by
   have ha' : (a : C) ≠ 0 := fun e => ha (Subtype.ext e)
@@ -65,9 +63,9 @@ theorem dvd_of_norm_le {a b : intO C} (ha : a ≠ 0) (h : ‖(b : C)‖ ≤ ‖(
     field_simp
 
 /- English proof (translation)
-Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Distinguish the cases in `h : ‖z‖ ≤ 1`. Conclude with `⟨⟨z, h⟩, 1, by rw [map_one, div_one]; rfl⟩`. Use `push_neg at h`. Use `⟨1, ⟨z⁻¹, ?_⟩, by rw [map_one, one_div]; exact (inv_inv z).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖z⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ h.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFractionRing_intO : IsFractionRing (intO C) C := by
   refine IsFractionRing.of_field _ _ fun z => ?_
@@ -91,17 +89,17 @@ open scoped CategoryTheory.Obj
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.Out in
 
 /- English proof (translation)
-Use `U.smooth` as an intermediate fact. Take `⟨g, v, hv⟩` from `Chart.exists_isLieBasis G U.smooth`. Take `⟨ρ, hρ⟩` from `exists_action hv aG`. Take `⟨v', ρ', hv', hρ', hM⟩` from `exists_action_pullback hv hρ ((intO F).subtype.comp f)`. Establish `hk` using `isLinearPullback_pullback aG (spMap ((intO F).subtype.comp f))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← finrank_of_lieMult hk.1 hv' hk.2 hρ' hN]`. Set `V` to `intO F`. Establish `: IsFractionRing V F` using `isFractionRing_intO`. Set `: Algebra R V` to `f.toAlgebra`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hπ1 : ‖((f π : intO F) : F)‖ < 1` using `hf π hπ.not_isUnit`. Set `τV : O →+* V` to `τ.codRestrict V fun a => norm_le_one_of_integral (map_isIntegral_int τ (Algebra.IsIntegral.isIntegral a))`. Set `b` to `Module.finBasis ℤ D.toPre.X`. Establish `: Module.Finite O D.toPre.X` using `.of_restrictScalars_finite ℤ _ _`. Take `⟨φ⟩` from `ConstBasis.nonempty_basis_eigenHom (X := D.toPre.X) (τ.comp (starRingEnd O)) (hτ.comp star_injective)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `le_finrank_eigenSub (V := V) π (fun h => ?_) (fun c hc => ?_) τV (fun a => (LinearMap.toMatrix' (ρ a))ᵀ) ρ' hM star b (fun k => (φ k).1) (φ.linearIndependent.map' (Submodule.subtype _) (Submodule.ker_subtype _)) (fun k a x => ((φ k).2 _ x).trans (congrArg (τ · * _) (star_star a)) …` and prove the remaining obligations. Take `⟨w, hw⟩` from `h.exists_right_inv`. Establish `h₁ : ‖((f π : intO F) : F)‖ * ‖(w : F)‖ = 1`. Rewrite using `[← norm_mul]`. Conclude with `(congrArg (fun z : V => ‖(z : F)‖) hw).trans norm_one`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : ‖(w : F)‖ ≤ 1` using `w.2`. Conclude with `((mul_le_of_le_one_right (norm_nonneg _) h₂).trans_lt hπ1).ne' h₁.symm`. Establish `hc' : 0 < ‖(c : F)‖` using `norm_pos_iff.2 fun e => hc (Subtype.ext e)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hc' hπ1`. Conclude with `⟨n, dvd_of_norm_le hc ((norm_pow _ n).trans_le hn.le)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, D', hCD, hC⟩` from `exists_matrix_level U hl hv hρ b n`. Use `⟨C, D', hCD, fun a k j => Ideal.mem_span_singleton.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.span_singleton_pow, ← hπ.maximalIdeal_eq]`. Conclude with `hC a k j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_of_lieMult_valued {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {D : DegData R (maximalIdeal R)} {P : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
@@ -154,21 +152,19 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Set `` to `H.starRing`. Set `F : Type` to `↥C.S`. Take `⟨b, hb⟩` from `Spec.map_surjective (P.y ≫ pullback.fst _ _ ≫ Xo.s)`. Establish `hdet` using `(Y.oF.geom F P.y b.hom hb.symm).1`. Establish `key : ∀ (τ : 𝓞 E →+* F) (n : ℕ), Function.Injective τ → LieMult Y.oF.t.act P.y τ n → Module.finrank (𝓞 E) A.U.D.toPre.X ≤ n` using `fun τ n hτ hn => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `finrank_le_of_lieMult_valued A.U.U.toUnifPre A.U.lin A.f A.f_loc hτ ?_` and prove the remaining obligations. Rewrite `hn` using `[LiePull.lieMult_pull _ _ _ _ _ _ _ _ _ Y.m.cart Y.m.act]`. Rewrite using `[LiePull.lieMult_pull _ _ _ _ _ _ _ _ _ A.m.cart A.m.act]`. Establish `e : spMap ((intO F).subtype.comp A.f) ≫ A.ι = P.y ≫ Y.jQ ≫ pullback.fst _ _`. Use `Eq.trans ?_ P.ext` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← A.fac, ← Category.assoc]`. Conclude with `congrArg (· ≫ A.ι) (Spec.map_comp (CommRingCat.ofHom A.f) (CommRingCat.ofHom (intO F).subtype))`. Rewrite using `[e]`. Conclude with `hn`. Set `τ₀ : 𝓞 E →+* F` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := F)).toRingHom.comp (algebraMap _ E)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀ : Function.Injective τ₀` using `(IsAlgClosed.lift (R := ℚ) (S := E) (M := F)).injective.comp RingOfIntegers.coe_injective`. Establish `h₁ : Function.Injective (τ₀.comp H.bar.toRingHom)` using `h₀.comp H.bar.injective`. Establish `e₁ : τ₀.comp H.bar.toRingHom H.rt = -τ₀ H.rt`. Rewrite using `[← map_neg, ← HostModel.bar_rt]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : τ₀ H.rt ^ 2 = b.hom (baseKA l).ρ ^ 2`. Rewrite using `[← map_pow, ← map_pow, H.rt_sq, (baseKA l).ρ_sq]`. Simplify using the standard rewrite rules. Establish `hne : -τ₀ H.rt ≠ τ₀ H.rt` using `fun h => by`. Establish `h2 : τ₀ H.rt ^ 2 = 0` using `by rw [neg_eq_self.1 h]; simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[← map_pow, H.rt_sq]`. Conclude with `H.d_prime.ne_zero (by simpa using h2)`. Use `⟨Module.finrank (𝓞 E) A.U.D.toPre.X, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h1` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[ToricRank.finrank_int_eq E]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases. Conclude with `⟨key _ _ h₀ ((hdet _).1 h), key _ _ h₁ ((hdet _).2 (by rw [e₁, ← h]; exact hne))⟩`.
-
-Establish `h' : -τ₀ H.rt = b.hom (baseKA l).ρ` using `by rw [h, neg_neg]`. Conclude with `⟨key _ _ h₁ ((hdet _).1 (e₁.trans h')), key _ _ h₀ ((hdet _).2 (by rw [← h']; exact hne.symm))⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rank_le_of_dvr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
@@ -213,11 +209,11 @@ theorem rank_le_of_dvr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
       exact ⟨key _ _ h₁ ((hdet _).1 (e₁.trans h')), key _ _ h₀ ((hdet _).2 (by rw [← h']; exact hne.symm))⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y p C P hp T g ιT hT hg hloc hfac A`. Take `⟨A₀, ⟨_, -⟩, -⟩` from `GlobalTheory.T.exists_degeneration_data_algebraic_point_model E H Dw l Xo c O β Y p C P hp T g ιT hT hg hloc hfac`. Take `⟨hψ₀, e, he⟩` from `GlobalTheory.T.degenerationData_coords_ne_zero_lattices_isomorphic E H Dw l Xo c O β Y p C P hp T g ιT hT hg hloc hfac A₀ A`. Take `⟨hψ, -⟩` from `GlobalTheory.T.degenerationData_coords_ne_zero_lattices_isomorphic E H Dw l Xo c O β Y p C P hp T g ιT hT hg hloc hfac A A`. Set `e' : A₀.Ylat ≃ₗ[ℤ] A.Ylat` to `e.toAddEquiv.toIntLinearEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨(BetaAdd.main A.R A.U.D _ _ p A.normal (fun a => (A.f a).2) hψ).1, PeriodBalance.betaAt_balanced E H A.R A.t A.U _ _ p A.normal (fun a => (A.f a).2) hψ, ?_, ?_⟩` and prove the remaining obligations. Take `⟨ι, _, b, hb⟩` from `PeriodFormPos.betaAt_pos A₀.R A₀.U.D _ ((intO ↥C.S).subtype.comp A₀.f) p hp.one_lt A₀.f_loc (fun a => (A₀.f a).2) hψ₀`. Use `⟨ι, inferInstance, b.map e', fun x hx => (hb x hx).trans_eq ?_⟩` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `congrArg (x i * x k * ·) (he (b i) (b k)).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e'.finrank_eq]`. Conclude with `rank_le_of_dvr A₀`.
+A detailed English derivation is pending.
 -/
 theorem period_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (p : ℕ) (C : SCF p) (P : PointsOfFlagModel.PtC Y C), p.Prime → ∀ (T : CDVR) (g : T.V →+* intO ↥C.S) (ιT : Sp T.V ⟶ Y.X), T.FinRes → Function.Injective g → (∀ a ∈ maximalIdeal T.V, ‖((g a : intO ↥C.S) : ↥C.S)‖ < 1) → spMap g ≫ ιT = P.yt → ∀ A : DatAt Y P, (∀ a a' b, A.beta (a + a') b = A.beta a b + A.beta a' b) ∧ (∀ (x : 𝓞 E) a b, A.beta (x • a) b = A.beta a (H.bar x • b)) ∧ (∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ A.Ylat), ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * A.beta (b i) (b k)) ∧ ∃ ρ : ℕ, Module.finrank ℤ A.Ylat = 2 * (Module.finrank ℚ E / 2) * ρ ∧ ρ ≤ Dw.p ∧ ρ ≤ Dw.q := by
   intro E _ _ _ H Dw l Xo c O _ β Y p C P hp T g ιT hT hg hloc hfac A

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ba
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnitaryBC.exists_conj_polyFun` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FExistsConjPolynomialDefiniteUnitaryRational.lean&line=29#L29)
 -/

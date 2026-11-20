@@ -32,20 +32,20 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAl
 variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ)
 
 /- English proof (translation)
-The claim follows from `readings_holomorphic_cuspForms siegelSpaceAlgebra_holds T.good_σ₀ (wtA u) u.n ⟨F.1, cutR_le T.C j u F.2⟩ k`.
+A detailed English derivation is pending.
 -/
 theorem reading_mem_SS (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u) (k : (T.U j T.σ₀).Comp) :
     rdR h j F k ∈ ((T.U j T.σ₀).X k).SS (laU (T.U j T.σ₀) (wtA u) u.n k) :=
   readings_holomorphic_cuspForms siegelSpaceAlgebra_holds T.good_σ₀ (wtA u) u.n ⟨F.1, cutR_le T.C j u F.2⟩ k
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => H.2, fun H => ⟨reading_mem_SS h j, H⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem tieRead_iff : TieReadSt h j ↔ ∀ u : WeightFamilies.Wt D j, JInjRd T j (wtA u) u.n :=
   ⟨fun H => H.2, fun H => ⟨reading_mem_SS h j, H⟩⟩
 
 /- English proof (translation)
-The claim follows from `(tieRead_iff h j).2 fun u => GlobalTheory.ReadingIndependence.jInjRd_of_laws T h.toLawsCore.toLawsM hj (wtA u) u.n`.
+A detailed English derivation is pending.
 -/
 theorem tieRead_holds (hj : InR D j) : TieReadSt h j :=
   (tieRead_iff h j).2 fun u =>

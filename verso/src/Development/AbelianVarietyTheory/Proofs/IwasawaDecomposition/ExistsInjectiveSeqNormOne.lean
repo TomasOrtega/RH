@@ -5,21 +5,19 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DisjointSpanP
 namespace GlobalTheory.InjectiveSeqNormOne
 
 /- English proof (translation)
-Take `⟨-, hE, -, hσ⟩` from `h`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom`. Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => τ.injective (by rw [hσ, hσ, star_star])`. Establish `hy : ∃ y, σ y ≠ y`. Assume the negation of the conclusion as `hcon`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Establish `hc : (NumberField.InfinitePlace.mk τ).IsComplex` using `hE.isComplex _`. Rewrite `hc` using `[NumberField.InfinitePlace.isComplex_mk_iff]`. Apply `hc` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `hσ τ x` as an intermediate fact. Rewrite `this` using `[hcon]`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hy`. Establish `h1 : ∀ k : ℕ, (k : E) + y ≠ 0`. Introduce `k hk`. Apply `hy` to reduce the goal to its premises. Establish `: y = -(k : E)` using `by linear_combination hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, map_neg, map_natCast]`. Establish `h2 : ∀ k : ℕ, (k : E) + σ y ≠ 0`. Introduce `k hk`. Apply `h1 k` to reduce the goal to its premises. Use `congrArg σ hk` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[map_add, map_natCast, hinv, map_zero]`. Then use the resulting hypothesis. Use `⟨fun k => ((k : E) + y) / ((k : E) + σ y), ?_, ?_⟩` and prove the remaining obligations. Introduce `k m hkm`. Establish `hkm'` using `(div_eq_div_iff (h2 k) (h2 m)).1 hkm`. Establish `h3 : ((k : E) - m) * (σ y - y) = 0` using `by linear_combination hkm'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `sub_eq_zero.1 h4` after adjusting the coercions. Conclude with `absurd (sub_eq_zero.1 h4) hy`. Introduce `k`. Establish `a1` using `h1 k`.
-
-Establish `a2` using `h2 k`. Simplify using `only [map_div₀, map_add, map_natCast, hinv]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_injective_seq_norm_one {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) :

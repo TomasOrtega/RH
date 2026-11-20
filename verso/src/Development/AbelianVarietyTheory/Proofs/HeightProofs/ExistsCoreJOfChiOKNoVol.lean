@@ -13,15 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinalJoin2
 
 /- English proof (translation)
-Introduce `D hO hZ pb hg chi₀ hchi`. Take `⟨Q, hP, hCan, hpq, hM⟩` from `GlobalTheory.Member.ParExist.exists_par_pins_canon D hO hZ pb hg`. Establish `hle : FO D ≤ Q.c.F`. Rewrite using `[FO, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨x, rfl⟩` from `Q.eO.surjective y`. Establish `h : D.what₂.phiO (Q.eO x) = ((x : Q.c.F) : ℂ)` using `hP.2.2.1 x`. Rewrite using `[h]`. Conclude with `(x : Q.c.F).2`. Establish `key : ∀ j, ∃ χ : (Q.c.F →+* ℂ) → (AE D)ˣ →* Circle, χ Q.c.F.val.toRingHom = chi₀ j ∧ (InR D j → ∀ σ, IsHeckeChar D (χ σ) ∧ (∀ a, χ σ (idF D a) = 1) ∧ MuConj Q.c.F.val.toRingHom σ (chi₀ j) (χ σ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Distinguish the cases in `hj : InR D j`. Take `⟨h1, h2, h3⟩` from `hchi j hj`. Take `⟨χ, hχ, hσ⟩` from `GlobalTheory.T.exists_galoisConjugates_heckeChar_trivialOnRealIdeles D Q (chi₀ j) h1 h2 (fun x hx => ⟨⟨_, hle (h3 x hx)⟩, rfl⟩)`. Conclude with `⟨χ, hχ, fun _ => hσ⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => chi₀ j, rfl, fun h => absurd h hj⟩`. Use `choose chiW h0 hW using key`. Take `⟨T, hJ, hC, hp, hQ, hH⟩` from `GlobalTheory.T.exists_adelicCore_without_volumeNormalisation D Q hP hpq pb hg hM chiW (fun j hj σ _ => by rw [h0 j]; exact hW j hj σ)`. Substitute `hQ` using the available equality. Use `⟨T, hJ, hC, hCan, hp, hpq, fun j => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[eq_of_heq hH]`. Conclude with `h0 j`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coreJ_of_chiOK_noVol : ∀ (D : D7), OFull D → OZeta D → ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K), (∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (pb k).asIdeal) → ∀ chi₀, ChiOK D chi₀ → ∃ J : CoreJ D, LawsJ J ∧ LawsCore J.toCore ∧ J.Q.Canon ∧ J.pb = pb ∧ (∀ j, 1 ≤ (J.Q.Dw j).p + (J.Q.Dw j).q) ∧ (∀ j, J.chiW j J.σ₀ = chi₀ j) := by
   intro D hO hZ pb hg chi₀ hchi

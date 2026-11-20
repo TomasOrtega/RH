@@ -9,13 +9,11 @@ namespace GroundTheory.Heights₂.Heights.FourB
 open IsDedekindDomain NumberField
 
 /- English proof (translation)
-Establish `hc : (P.comap (algebraMap (𝓞 F) R)).IsMaximal` using `hPv ▸ v.isMaximal`. Set `: Field (𝓞 F ⧸ P.comap (algebraMap (𝓞 F) R))` to `Ideal.Quotient.field _`. Establish `: Algebra.FiniteType (𝓞 F) (R ⧸ P)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ (𝓞 F) P) (Ideal.Quotient.mkₐ_surjective (𝓞 F) P)`. Establish `: Algebra.FiniteType (𝓞 F ⧸ P.comap (algebraMap (𝓞 F) R)) (R ⧸ P)` using `Algebra.FiniteType.of_restrictScalars_finiteType (𝓞 F) _ _`. Establish `: IsJacobsonRing (R ⧸ P)` using `isJacobsonRing_of_finiteType (A := 𝓞 F ⧸ P.comap (algebraMap (𝓞 F) R))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbot : (⊥ : Ideal (R ⧸ P)).jacobson = ⊥` using `isJacobsonRing_iff_prime_eq.1 inferInstance ⊥ Ideal.isPrime_bot`. Establish `hu' : Ideal.Quotient.mk P u ∉ (⊥ : Ideal (R ⧸ P)).jacobson`. Rewrite using `[hbot, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hu`. Rewrite `hu'` using `[Ideal.jacobson, Ideal.mem_sInf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push Not at hu'`. Take `⟨J, ⟨-, hJ⟩, huJ⟩` from `hu'`. Use `⟨J.comap (Ideal.Quotient.mk P), Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective, ?_, huJ⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 ha]`.
-
-Conclude with `J.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_maximal_of_fibre (F : Type) [Field F] [NumberField F] (R : Type) [CommRing R]
     [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R] (v : HeightOneSpectrum (𝓞 F)) (P : Ideal R)
@@ -45,17 +43,17 @@ theorem exists_maximal_of_fibre (F : Type) [Field F] [NumberField F] (R : Type) 
   exact J.zero_mem
 
 /- English proof (translation)
-Introduce `F _ _ R _ _ _ _ _ v P u g ⟨hP, hPv, hu, hg⟩`. Take `⟨M, hM, hPM, huM⟩` from `exists_maximal_of_fibre F R v P u hP hPv hu`. Establish `hMv : M.comap (algebraMap (𝓞 F) R) = v.asIdeal` using `((v.isMaximal.eq_of_le (Ideal.IsPrime.comap (algebraMap (𝓞 F) R) (hK := hM.isPrime)).ne_top (hPv ▸ Ideal.comap_mono hPM))).symm`. Take `⟨Q, hQ, hQM, hQ0, hgQ, hQalg⟩` from `h₁ F R M g ⟨hM, hg⟩`. Use `hQ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Algebra.FiniteType (𝓞 F) (R ⧸ Q)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ (𝓞 F) Q) (Ideal.Quotient.mkₐ_surjective (𝓞 F) Q)`. Use `set M' : Ideal (R ⧸ Q) := M.map (Ideal.Quotient.mk Q)`. Establish `hcomap : M'.comap (Ideal.Quotient.mk Q) = M`. Rewrite using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_eq_left.2 hQM]`. Establish `hM' : M'.IsMaximal` using `hM.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hQM)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : algebraMap (𝓞 F) (R ⧸ Q) = (Ideal.Quotient.mk Q).comp (algebraMap (𝓞 F) R)` using `rfl`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) (R ⧸ Q))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Rewrite `hx` using `[hq, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, ← Ideal.mem_comap, hQ0, Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hM'v : M'.comap (algebraMap (𝓞 F) (R ⧸ Q)) = v.asIdeal`. Rewrite using `[hq, ← Ideal.comap_comap, hcomap, hMv]`. Take `⟨L, iL, aL, fL, y, hy, hyinj, hint, hunit, hnon⟩` from `h₂ F (R ⧸ Q) v M' ⟨hinj, hQalg, hM', hM'v⟩`. Use `⟨L, iL, aL, fL, y.comp (Ideal.Quotient.mk Q), ?_, fun a => hint _, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.comp_assoc, ← hq, hy]`. Introduce `h`. Apply `hgQ` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hyinj (by rw [map_zero]; exact h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hunit _ fun h => huM ?_` and prove the remaining obligations. Rewrite using `[← hcomap]`. Conclude with `h`. Introduce `a ha`. Conclude with `hnon _ (Ideal.mem_map_of_mem _ (hPM ha))`.
+A detailed English derivation is pending.
 -/
 theorem IntegralPointThroughPrime.proof (h₁ : ClosedPointOfGenericFibre.Statement)
     (h₂ : IntegralPointOfAlgebraicDomain.Statement) : IntegralPointThroughPrime.Statement := by

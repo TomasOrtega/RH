@@ -7,19 +7,19 @@ open NumberField GroundTheory.Global.InfinitePlace
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ m hm`. Use `⟨fun hF => ?_, fun p => ?_⟩` and prove the remaining obligations. Establish `h : ∀ v : InfinitePlace F, Nonempty (E →ₐ[F] v.Completion)` using `fun v => by haveI : IsAlgClosed v.Completion := IsAlgClosed.of_ringEquiv ℂ _ (InfinitePlace.Completion.ringEquivComplexOfIsComplex (hF.isComplex v)).symm`. Conclude with `⟨IsAlgClosed.lift⟩`. Conclude with `⟨Pi.algHom F (fun v : InfinitePlace F => v.Completion) fun v => (h v).some⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨e, he, hs⟩` from `UpperTheory.ConvolutionTheory.L1.galSplit F E σ hσ m hm (InfiniteAdeleRing F) (InfiniteAdeleRing E) (tensorInfiniteAdeleRingEquiv (K := F) (L := E)) p`. Establish `hd : ∀ r i, e (infiniteAdeleRingMap (K` using `F) (L := E) r) i = r := fun r i => by`. Use `he 1 r i` as an intermediate fact. Rewrite `this` using `[tensorInfiniteAdeleRingEquiv_tmul', map_one, one_mul, map_one, map_one, one_mul]`. Then use the resulting hypothesis. Establish `hx : ∀ (x : E) i, e (algebraMap E (InfiniteAdeleRing E) x) i = p ((σ ^ (i : ℕ)) x)` using `fun x i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `he x 1 i` as an intermediate fact. Rewrite `this` using `[tensorInfiniteAdeleRingEquiv_tmul', map_one, mul_one, mul_one]`. Then use the resulting hypothesis. Use `⟨⟨e, ?_, ?_, hd, hs⟩, hx⟩` and prove the remaining obligations. Set `b` to `Module.finBasis F E`. Establish `h : ∀ y i, e y i = ∑ j, p ((σ ^ (i : ℕ)) (b j)) * adeleCoord b j y` using `fun y i => by conv_lhs => rw [← tensorInfiniteAdeleRingEquiv_sum_adeleCoord b y]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_sum, map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => he _ _ _`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Repeatedly rewrite using `[h]`. Conclude with `continuous_finsetSum _ fun j _ => continuous_const.mul (continuous_adeleCoord b j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h : ∀ a, e.symm a = ∑ i, infiniteAdeleRingMap (K` using `F) (L := E) (a i) * e.symm (Pi.single i 1) := fun a => by`. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Rewrite using `[map_sum, Finset.sum_apply, RingEquiv.apply_symm_apply]`. Repeatedly rewrite using `[map_mul, RingEquiv.apply_symm_apply, Pi.mul_apply, hd]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj.symm, mul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h' : (e.symm : _ → _) = fun a => ∑ i, infiniteAdeleRingMap (K` using `F) (L := E) (a i) * e.symm (Pi.single i 1) :=`. Use function extensionality and compare the values at `h`. Rewrite using `[h']`. Conclude with `continuous_finsetSum _ fun i _ => (continuous_infiniteAdeleRingMap.comp (continuous_apply i)).mul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.infSplit :
     UpperTheory.ConvolutionTheory.L1.InfSplit := by

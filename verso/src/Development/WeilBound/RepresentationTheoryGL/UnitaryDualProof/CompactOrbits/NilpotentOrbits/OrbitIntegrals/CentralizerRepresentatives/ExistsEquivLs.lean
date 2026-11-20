@@ -12,16 +12,16 @@ variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {M : Type} [Fintype M] {L
     [∀ m, Fintype (L m)] {R : Z → (m : M) → L m → L m → k} {o : (m : M) → L m → k}
 
 /- English proof (translation)
-Rewrite using `[← Module.finrank_eq_card_basis F.β, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Frame.card_index {N : Matrix (Fin n) (Fin n) k} {v : Fin n → k} (F : Frame Z M L R o N v) :
     Fintype.card (Σ m, L m × (Σ a : F.ι m, Fin (F.l m a))) = n := by
   rw [← Module.finrank_eq_card_basis F.β, Module.finrank_fin_fun]
 
 /- English proof (translation)
-Take `⟨p⟩` from `(inferInstance : Nonempty (L m))`. Establish `hinj : Function.Injective (fun i : Fin (F.l m a) => (⟨m, (p, ⟨a, i⟩)⟩ : Σ m, L m × (Σ a : F.ι m, Fin (F.l m a))))`. Introduce `i j h`. Establish `h1` using `sigma_mk_injective h`. Establish `h2` using `sigma_mk_injective (Prod.ext_iff.mp h1).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Use `Fintype.card_le_of_injective _ hinj` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, F.card_index]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Frame.l_le [∀ m, Nonempty (L m)] {N : Matrix (Fin n) (Fin n) k} {v : Fin n → k}
     (F : Frame Z M L R o N v) (m : M) (a : F.ι m) : F.l m a ≤ n := by
@@ -37,9 +37,9 @@ theorem Frame.l_le [∀ m, Nonempty (L m)] {N : Matrix (Fin n) (Fin n) k} {v : F
   exact this
 
 /- English proof (translation)
-Take `⟨p⟩` from `(inferInstance : Nonempty (L m))`. Establish `hinj : Function.Injective (fun a : F.ι m => (⟨m, (p, ⟨a, ⟨0, F.hl m a⟩⟩)⟩ : Σ m, L m × (Σ a : F.ι m, Fin (F.l m a))))`. Introduce `a b h`. Establish `h1` using `sigma_mk_injective h`. Establish `h2` using `(Prod.ext_iff.mp h1).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Sigma.fst h2`. Use `Fintype.card_le_of_injective _ hinj` as an intermediate fact. Rewrite `this` using `[F.card_index]`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Frame.card_le [∀ m, Nonempty (L m)] {N : Matrix (Fin n) (Fin n) k} {v : Fin n → k}
     (F : Frame Z M L R o N v) (m : M) : Nat.card (F.ι m) ≤ n := by
@@ -56,15 +56,13 @@ theorem Frame.card_le [∀ m, Nonempty (L m)] {N : Matrix (Fin n) (Fin n) k} {v 
   exact this
 
 /- English proof (translation)
-Establish `hf : ∀ c : ℕ × ℕ, Nonempty ({a : F₁.ι m // (F₁.l m a, F₁.s m a) = c} ≃ {b : F₂.ι m // (F₂.l m b, F₂.s m b) = c})`. Introduce `c`. Rewrite using `[← Finite.card_eq]`. Distinguish the cases in `hc : c.1 ≤ n ∧ c.2 ≤ n`. Establish `e1 : {a : F₁.ι m // (F₁.l m a, F₁.s m a) = c} ≃ {a : F₁.ι m // F₁.l m a = c.1 ∧ F₁.s m a = c.2}` using `Equiv.subtypeEquivRight (fun a => Prod.ext_iff)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e2 : {a : F₂.ι m // (F₂.l m a, F₂.s m a) = c} ≃ {a : F₂.ι m // F₂.l m a = c.1 ∧ F₂.s m a = c.2}` using `Equiv.subtypeEquivRight (fun a => Prod.ext_iff)`. Rewrite using `[Nat.card_congr e1, Nat.card_congr e2]`. Conclude with `h m c.1 c.2 hc.1 hc.2`. Establish `hE1 : IsEmpty {a : F₁.ι m // (F₁.l m a, F₁.s m a) = c}`. Use `⟨fun ⟨a, ha⟩ => hc ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha]`. Conclude with `⟨F₁.l_le m a, (F₁.hs m a).trans (F₁.l_le m a)⟩`. Establish `hE2 : IsEmpty {a : F₂.ι m // (F₂.l m a, F₂.s m a) = c}`. Use `⟨fun ⟨a, ha⟩ => hc ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨F₂.l_le m a, (F₂.hs m a).trans (F₂.l_le m a)⟩`. Rewrite using `[Nat.card_of_isEmpty, Nat.card_of_isEmpty]`. Set `e` to `fun c => (hf c).some`. Use `⟨Equiv.ofFiberEquiv (fun c => e c), fun a => ?_⟩` and prove the remaining obligations. Use `Equiv.ofFiberEquiv_map (f := fun a => (F₁.l m a, F₁.s m a)) (g := fun b => (F₂.l m b, F₂.s m b)) (fun c => e c) a` as an intermediate fact.
-
-Conclude with `Prod.ext_iff.mp this`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_equiv_ls [∀ m, Nonempty (L m)] {N₁ N₂ : Matrix (Fin n) (Fin n) k} {v₁ v₂ : Fin n → k}
     (F₁ : Frame Z M L R o N₁ v₁) (F₂ : Frame Z M L R o N₂ v₂)
@@ -98,27 +96,27 @@ theorem exists_equiv_ls [∀ m, Nonempty (L m)] {N₁ N₂ : Matrix (Fin n) (Fin
   exact Prod.ext_iff.mp this
 
 /- English proof (translation)
-Use `choose σ hσ using exists_equiv_ls F₁ F₂ h`. Set `ψ : ∀ m, (Σ a : F₁.ι m, Fin (F₁.l m a)) ≃ (Σ b : F₂.ι m, Fin (F₂.l m b))` to `fun m => Equiv.sigmaCongr (σ m) (fun a => finCongr (hσ m a).1.symm)`. Establish `hψ : ∀ m (a : F₁.ι m) (i : Fin (F₁.l m a)), ψ m ⟨a, i⟩ = ⟨σ m a, Fin.cast (hσ m a).1.symm i⟩`. Introduce `m a i`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `Φ : (Σ m, L m × (Σ a : F₁.ι m, Fin (F₁.l m a))) ≃ (Σ m, L m × (Σ b : F₂.ι m, Fin (F₂.l m b)))` to `Equiv.sigmaCongrRight (fun m => Equiv.prodCongr (Equiv.refl _) (ψ m))`. Establish `hΦ : ∀ m (p : L m) j, Φ ⟨m, (p, j)⟩ = ⟨m, (p, ψ m j)⟩` using `fun m p j => rfl`. Set `g : (Fin n → k) ≃ₗ[k] (Fin n → k)` to `F₁.β.equiv F₂.β Φ`. Establish `hg : ∀ j, g (F₁.β j) = F₂.β (Φ j)` using `fun j => Module.Basis.equiv_apply _ _ _ _`. Set `G : GL (Fin n) k` to `⟨LinearMap.toMatrix' (g : (Fin n → k) →ₗ[k] (Fin n → k)), LinearMap.toMatrix' (g.symm : (Fin n → k) →ₗ[k] (Fin n → k)), by rw [← LinearMap.toMatrix'_comp]; convert LinearMap.toMatrix'_id; ext x; simp, by rw [← LinearMap.toMatrix'_comp]; convert LinearMap.toMatrix'_id; ext x; simp …`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hGv : ∀ x, G.val *ᵥ x = g x` using `fun x => LinearMap.toMatrix'_mulVec _ x`. Establish `hext : ∀ X Y : Matrix (Fin n) (Fin n) k, (∀ j, X *ᵥ F₁.β j = Y *ᵥ F₁.β j) → X = Y`. Introduce `X Y hXY`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `F₁.β.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Simplify using `only [Matrix.toLin'_apply]`. Conclude with `hXY j`. Use `⟨G, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `hext` to reduce the goal to its premises. Introduce and unpack `⟨m, p, j⟩`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hGv, hg, hΦ]`. Establish `h1` using `F₂.hZ ⟨a, ha⟩ m p (ψ m j)`. Establish `h2` using `F₁.hZ ⟨a, ha⟩ m p j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at h1 h2`. Rewrite using `[h1, h2, hGv, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hg, hΦ]`. Apply `hext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨m, p, a, i⟩`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, F₁.hN]`. Simplify using `only [hGv]`. Rewrite using `[hg, hΦ, hψ, F₂.hN]`. Simplify using `only [Fin.val_cast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hi : (i : ℕ) + 1 < F₁.l m a`. Establish `hi2 : (i : ℕ) + 1 < F₂.l m (σ m a)` using `by rw [(hσ m a).1]; exact hi`. Rewrite using `[dif_pos hi, dif_pos hi2, hg, hΦ, hψ]`. Both sides reduce to the same expression. Establish `hi2 : ¬ (i : ℕ) + 1 < F₂.l m (σ m a)` using `by rw [(hσ m a).1]; exact hi`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hi, dif_neg hi2, map_zero]`. Rewrite using `[hGv, F₁.hv, F₂.hv, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, ← Equiv.sum_comp (σ m)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : F₁.s m a < F₁.l m a`. Establish `ha2 : F₂.s m (σ m a) < F₂.l m (σ m a)` using `by rw [(hσ m a).1, (hσ m a).2]; exact ha`. Rewrite using `[dif_pos ha, dif_pos ha2, map_smul, hg, hΦ, hψ]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (Fin.cast (hσ m a).1.symm ⟨F₁.s m a, ha⟩ : Fin (F₂.l m (σ m a))) = ⟨F₂.s m (σ m a), ha2⟩` using `Fin.ext (by simp [(hσ m a).2])`. Rewrite using `[hc]`. Establish `ha2 : ¬ F₂.s m (σ m a) < F₂.l m (σ m a)` using `by rw [(hσ m a).1, (hσ m a).2]; exact ha`. Rewrite using `[dif_neg ha, dif_neg ha2, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_of_frames [∀ m, Nonempty (L m)] {N₁ N₂ : Matrix (Fin n) (Fin n) k} {v₁ v₂ : Fin n → k}
     (F₁ : Frame Z M L R o N₁ v₁) (F₂ : Frame Z M L R o N₂ v₂)

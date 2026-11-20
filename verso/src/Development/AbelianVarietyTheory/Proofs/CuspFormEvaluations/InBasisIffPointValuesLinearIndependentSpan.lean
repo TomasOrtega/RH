@@ -24,23 +24,23 @@ def SameLin (K K' : Type) {V V' Q : Type} [Field K] [Field K'] [AddCommGroup V] 
       g q ∈ Submodule.span K' (Set.range fun i => g (p i)))
 
 /- English proof (translation)
-Introduce `ι _ p hp` and use `⟨(h ι p hp).1.symm, fun q hq => ((h ι p hp).2 q hq).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SameLin.symm {W : Q → Prop} {f : Q → V} {g : Q → V'} (h : SameLin K K' W f g) : SameLin K' K W g f :=
   fun ι _ p hp => ⟨(h ι p hp).1.symm, fun q hq => ((h ι p hp).2 q hq).symm⟩
 
 /- English proof (translation)
-Take `⟨κ, φ, hφ, hsp, hli⟩` from `exists_linearIndependent' K (fun i => f (b i))`. Use `haveI : Finite κ := Finite.of_injective φ hφ`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Establish `h1 : LinearIndependent K (fun i : Fin n ⊕ κ => f (Sum.elim a (b ∘ φ) i))`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Rewrite `hd` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Function.comp] at hd`. Establish `hl : ∀ i, d (Sum.inl i) = 0`. Apply `hi` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_neg_of_add_eq_zero_left hd]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨φ i, rfl⟩))`. Simplify using `only [hl, zero_smul, Finset.sum_const_zero, zero_add] at hd`. Establish `hr` using `Fintype.linearIndependent_iff.1 hli (fun i => d (Sum.inr i)) hd`. Introduce and unpack `(i | i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hl i`. Conclude with `hr i`. Establish `h2` using `(h (Fin n ⊕ κ) (Sum.elim a (b ∘ φ)) (by rintro (i | i); exacts [ha i, hb _])).1.1 h1`. Establish `h3 : Submodule.span K' (Set.range fun i => g (b i)) ≤ Submodule.span K' (Set.range fun i => g (b (φ i)))`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use `((h κ (fun i => b (φ i)) (fun i => hb _)).2 (b i) (hb i)).1 ?_` and prove the remaining obligations. Establish `: f (b i) ∈ Submodule.span K (Set.range fun i => f (b i))` using `Submodule.subset_span ⟨i, rfl⟩`. Rewrite `this` using `[← hsp]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun K').1 (h3 hc)`. Establish `h4` using `Fintype.linearIndependent_iff.1 h2 (Sum.elim c (-d)) (by`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Function.comp, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, hd, add_neg_cancel])`. Conclude with `fun i => h4 (Sum.inl i)`.
+A detailed English derivation is pending.
 -/
 theorem SameLin.indep_mod {W : Q → Prop} {f : Q → V} {g : Q → V'} (h : SameLin K K' W f g) {n : ℕ} {ι : Type}
     [Fintype ι] (a : Fin n → Q) (b : ι → Q) (ha : ∀ i, W (a i)) (hb : ∀ i, W (b i))
@@ -80,9 +80,9 @@ theorem SameLin.indep_mod {W : Q → Prop} {f : Q → V} {g : Q → V'} (h : Sam
   exact fun i => h4 (Sum.inl i)
 
 /- English proof (translation)
-Simplify using `only [Submodule.mem_span_range_iff_exists_fun, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, d, h⟩`. Conclude with `⟨Sum.elim c d, by simp [h]⟩`. Introduce and unpack `⟨c, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i => c (Sum.inl i), fun i => c (Sum.inr i), by rw [← h]; abel⟩`.
+Supply the required witnesses or components.
 -/
 theorem sub_mem_iff {n : ℕ} {ι : Type} [Fintype ι] (x : V) (a : Fin n → V) (b : ι → V) :
     (∃ c : Fin n → K, x - ∑ i, c i • a i ∈ Submodule.span K (Set.range b)) ↔
@@ -95,9 +95,9 @@ theorem sub_mem_iff {n : ℕ} {ι : Type} [Fintype ι] (x : V) (a : Fin n → V)
     exact ⟨fun i => c (Sum.inl i), fun i => c (Sum.inr i), by rw [← h]; abel⟩
 
 /- English proof (translation)
-Rewrite using `[sub_mem_iff, sub_mem_iff]`. Use `(h (Fin n ⊕ ι) (Sum.elim a b) (by rintro (i | i); exacts [ha i, hb _])).2 q hq` as an intermediate fact. Establish `e1 : (fun i => f (Sum.elim a b i)) = Sum.elim (fun i => f (a i)) (fun i => f (b i))`. Apply the tactic sequence `funext i; cases i <;> rfl`. Establish `e2 : (fun i => g (Sum.elim a b i)) = Sum.elim (fun i => g (a i)) (fun i => g (b i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `funext i; cases i <;> rfl`. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem SameLin.mem_mod {W : Q → Prop} {f : Q → V} {g : Q → V'} (h : SameLin K K' W f g) {n : ℕ} {ι : Type}
     [Fintype ι] (q : Q) (a : Fin n → Q) (b : ι → Q) (hq : W q) (ha : ∀ i, W (a i)) (hb : ∀ i, W (b i)) :
@@ -112,11 +112,11 @@ theorem SameLin.mem_mod {W : Q → Prop} {f : Q → V} {g : Q → V'} (h : SameL
   rwa [e1, e2] at this
 
 /- English proof (translation)
-Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := α) (by omega)`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Establish `h1 : α i = 1` using `by omega`. Establish `h2 : ∑ x ∈ Finset.univ.erase i, α x = 0` using `by omega`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[h1]`. Rewrite using `[Pi.single_eq_of_ne hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero_iff.1 h2 k (by simp [hk])`.
+A detailed English derivation is pending.
 -/
 theorem eq_single_of_sum_eq_one {d : ℕ} {α : Fin d → ℕ} (h : ∑ i, α i = 1) : ∃ i, α = Pi.single i 1 := by
   obtain ⟨i, -, hi⟩ := Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := α) (by omega)
@@ -131,16 +131,16 @@ theorem eq_single_of_sum_eq_one {d : ℕ} {α : Fin d → ℕ} (h : ∑ i, α i 
     exact Finset.sum_eq_zero_iff.1 h2 k (by simp [hk])
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply, pow_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_pow_single {A : Type} [CommRing A] {d : ℕ} (s : Fin d → A) (i : Fin d) :
     ∏ k, s k ^ (Pi.single i 1 : Fin d → ℕ) k = s i := by
   simp [Pi.single_apply, pow_ite]
 
 /- English proof (translation)
-Take `⟨i, rfl⟩` from `eq_single_of_sum_eq_one h`. Rewrite using `[prod_pow_single]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hf`. Rewrite using `[Finset.mul_sum]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(i, l), rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mon_mul_mem {A : Type} [CommRing A] [Algebra K A] {d n : ℕ} (s : Fin d → A) (e : Fin n → A)
     {α : Fin d → ℕ} (h : ∑ i, α i = 1) {f : A} (hf : f ∈ Submodule.span K (Set.range e)) :
@@ -162,7 +162,7 @@ def secPoly (i : Fin (WeightFamilies.dimY D j + 1)) : MvPolynomial (Idx D j N) X
   ∑ k, MvPolynomial.X (i, k) * MvPolynomial.C (X.inc wL (w k))
 
 /- English proof (translation)
-Introduce `ι _ p hp` and use `⟨(GlobalTheory.T.indep_span_rank_transfer_largeField_complex D B P j X R la N t hg u ι p hp).1, (GlobalTheory.T.indep_span_rank_transfer_largeField_complex D B P j X R la N t hg u ι p hp).2.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sameLin (hg : R.Generic t) (u : WeightFamilies.Wt D j) :
     SameLin (Kp X la N) ℂ (OfWt X u) (toRp X la N) (R.toFn t) := fun ι _ p hp =>
@@ -170,9 +170,9 @@ theorem sameLin (hg : R.Generic t) (u : WeightFamilies.Wt D j) :
 
 include R la t in
 /- English proof (translation)
-Take `⟨h1, -, -, h4, -⟩` from `GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t`. Proceed by induction on `n with`. Consider the case `zero => simpa using hq`. Consider the case `succ n ih`. Rewrite using `[pow_succ', mul_assoc, ← add_assoc, ← wadd_addL]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4 _ _ _ _ (h1 0).2.2 ih`.
+A detailed English derivation is pending.
 -/
 theorem ofWt_pow_mul (u : WeightFamilies.Wt D j) (k n : ℕ) (q : MvPolynomial (Idx D j N) X.Forms)
     (hq : OfWt X (addL u wL k) q) : OfWt X (addL u wL (k + n)) (secPoly X w 0 ^ n * q) := by
@@ -184,17 +184,17 @@ theorem ofWt_pow_mul (u : WeightFamilies.Wt D j) (k n : ℕ) (q : MvPolynomial (
     exact h4 _ _ _ _ (h1 0).2.2 ih
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, -⟩` from `GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t`. Take `⟨n, e, he⟩` from `Module.Finite.exists_fin (R := B.KO) (M := B.Cusp j (addL u wL m))`. Use `⟨n, fun p => secPoly X w p.1.succ * MvPolynomial.C (X.inc _ (e p.2)), fun p => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← wadd_addL]`. Conclude with `h4 _ _ _ _ (h1 _).2.2 (h3 _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, secPoly, (h1 _).1, (h2 _).1]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `secPow_mul_mem_Mon X la w (u := u) (a := 1) (n := m) (α := Pi.single p.1 1) (by simp) (emb_mem_Vw X la N _ (e p.2))` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[secPow, prod_pow_single (fun i => sec X la w i.succ)]`. Then use the resulting hypothesis. Use `iSup₂_le fun α hα => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `mon_mul_mem (fun i => sec X la w i.succ) (fun l => emb X la N (X.inc _ (e l))) hα ?_` and prove the remaining obligations. Rewrite `hv` using `[Vw_eq_span_image X la N _ he, ← Set.range_comp]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hv`. Simplify using `only [map_mul, secPoly, (h1 _).2.1, (h2 _).2]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨Pi.single p.1 1, R.ev (X.inc _ (e p.2)), by simp, Submodule.subset_span ⟨e p.2, trivial, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Rdg.mon, prod_pow_single (fun i => R.s w t i.succ)]`. Rewrite using `[Rdg.deep, Submodule.span_le]`. Introduce and unpack `_ ⟨α, f, hα, hf, rfl⟩`. Use `mon_mul_mem (fun i => R.s w t i.succ) (fun l => R.ev (X.inc _ (e l))) hα ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h7 _ (Set.range e)` as an intermediate fact. Rewrite `this` using `[he, Submodule.top_coe]`. Rewrite `hf` using `[this, Rdg.sp, ← Set.range_comp]`. Conclude with `hf`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_family (u : WeightFamilies.Wt D j) (m : ℕ) :
     ∃ (n : ℕ) (b : Fin (WeightFamilies.dimY D j) × Fin n → MvPolynomial (Idx D j N) X.Forms),
@@ -234,11 +234,11 @@ theorem exists_family (u : WeightFamilies.Wt D j) (m : ℕ) :
       exact hf
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t`. Take `⟨r, b, hb, e1, e2⟩` from `exists_family X R la w t u m`. Establish `hs` using `sameLin X R la t hg (addL u wL (m + 1))`. Establish `ha : ∀ i, OfWt X (addL u wL (m + 1)) (secPoly X w 0 ^ (m + 1) * MvPolynomial.C (X.inc u (θ i)))` using `fun i => by`. Use `ofWt_pow_mul X R la w t u 0 (m + 1) (MvPolynomial.C (X.inc u (θ i))) (by rw [addL_zero]; exact h3 _ _)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `i1` using `hs.indep_mod _ b ha hb`. Establish `i2` using `hs.symm.indep_mod _ b ha hb`. Rewrite `i1`, `i2` using `[e1, e2]`. Simplify using `only [map_mul, map_pow, secPoly, (h1 _).1, (h1 _).2.1, (h2 _).1, (h2 _).2] at i1 i2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mul_sum, mul_smul_comm]`. Conclude with `⟨i1, i2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem indep_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) (m : ℕ) :
     (∀ c : Fin n → Kp X la N, sec X la w 0 ^ (m + 1) * ∑ i, c i • emb X la N (X.inc u (θ i)) ∈ Mon X la w u 1 m →
@@ -259,11 +259,11 @@ theorem indep_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} 
   exact ⟨i1, i2⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t`. Take `⟨r, b, hb, e1, e2⟩` from `exists_family X R la w t u (k + m)`. Establish `hs` using `sameLin X R la t hg (addL u wL (k + m + 1))`. Establish `ha : ∀ i, OfWt X (addL u wL (k + m + 1)) (secPoly X w 0 ^ (m + 1) * (secPoly X w 0 ^ k * MvPolynomial.C (X.inc u (θ i))))` using `fun i => by`. Use `ofWt_pow_mul X R la w t u 0 k (MvPolynomial.C (X.inc u (θ i))) (by rw [addL_zero]; exact h3 _ _)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_add]`. Conclude with `ofWt_pow_mul X R la w t u k (m + 1) _ this`. Establish `i1` using `hs.mem_mod _ _ b (ofWt_pow_mul X R la w t u k (m + 1) _ hF) ha hb`. Rewrite `i1` using `[e1, e2]`. Simplify using `only [map_mul, map_pow, secPoly, (h1 _).1, (h1 _).2.1, (h2 _).1, (h2 _).2] at i1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_sub, Finset.mul_sum, mul_smul_comm]`. Conclude with `i1`.
+A detailed English derivation is pending.
 -/
 theorem mem_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) (k m : ℕ) (F : X.Forms)
     (hF : OfWt X (addL u wL k) (MvPolynomial.C F : MvPolynomial (Idx D j N) X.Forms)) :
@@ -286,13 +286,13 @@ theorem mem_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} (�
   exact i1
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Establish `key : ∀ c : Fin n → Kp X la N, ∑ i, c i • rho0 X la w u ⟨emb X la N (X.inc u (θ i)), emb_mem_Vw X la N u _⟩ = 0 ↔ ∃ m : ℕ, sec X la w 0 ^ (m + 1) * ∑ i, c i • emb X la N (X.inc u (θ i)) ∈ Mon X la w u 1 m`. Introduce `c`. Simplify using `only [← map_smul]`. Rewrite using `[← map_sum, restriction_eq_zero_iff_mem_vanishingFiltration, mem_Fil]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, k, hk, h⟩`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Conclude with `⟨m, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, h⟩`. Conclude with `⟨Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (emb_mem_Vw X la N u _), m + 1, by omega, h⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h m c hc`. Conclude with `h c ((key c).2 ⟨m, hc⟩)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h c hc`. Take `⟨m, hm⟩` from `(key c).1 hc`. Conclude with `h m c hm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem indep_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) :
     LinearIndependent (Kp X la N) (fun i => rho0 X la w u ⟨emb X la N (X.inc u (θ i)), emb_mem_Vw X la N u _⟩) ↔
@@ -320,9 +320,9 @@ theorem indep_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j
     exact h m c hm
 
 /- English proof (translation)
-Rewrite using `[← WKoneEquiv_toWK, LinearEquiv.map_eq_zero_iff, ← rhoK_apply, rhoK_eq_zero_iff, mem_Fil]`. Simplify using `only [Mon_addL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, l, hl, h⟩`. Take `⟨m, rfl⟩ : ∃ m, l = m + 1` from `⟨l - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, h⟩`. Introduce and unpack `⟨m, h⟩`. Conclude with `⟨f.2, m + 1, by omega, h⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem class_eq_zero_iff (u : WeightFamilies.Wt D j) (k : ℕ) (f : ↥(Vw X la N (addL u wL k))) :
     toA0K X la w u (toHK X la w u k f) = 0 ↔ ∃ m : ℕ, sec X la w 0 ^ (m + 1) * f ∈ Mon X la w u 1 (k + m) := by
@@ -336,7 +336,7 @@ theorem class_eq_zero_iff (u : WeightFamilies.Wt D j) (k : ℕ) (f : ↥(Vw X la
     exact ⟨f.2, m + 1, by omega, h⟩
 
 /- English proof (translation)
-Use `sec_pow_mul_mem X la w 0 u 0 k (v := g) (by rw [addL_zero]; exact g.2)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_mul_mem (u : WeightFamilies.Wt D j) (k : ℕ) (g : ↥(Vw X la N u)) :
     sec X la w 0 ^ k * g ∈ Vw X la N (addL u wL k) := by
@@ -344,9 +344,9 @@ theorem pow_mul_mem (u : WeightFamilies.Wt D j) (k : ℕ) (g : ↥(Vw X la N u))
   rwa [zero_add] at this
 
 /- English proof (translation)
-Rewrite using `[restriction_apply_eq_reduction]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_toHK, coe_toHK0, ← frac_zero]`. Use `frac_pow_mul X la w 0 k g` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem class_pow_mul (u : WeightFamilies.Wt D j) (k : ℕ) (g : ↥(Vw X la N u)) :
     toA0K X la w u (toHK X la w u k ⟨sec X la w 0 ^ k * g, pow_mul_mem X la w u k g⟩) = rho0 X la w u g := by
@@ -358,7 +358,7 @@ theorem class_pow_mul (u : WeightFamilies.Wt D j) (k : ℕ) (g : ↥(Vw X la N u
   rwa [zero_add] at this
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun, exists_comm]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Simplify using `only [← map_smul]`. Rewrite using `[← map_sum, ← class_pow_mul X la w u k, eq_comm, ← sub_eq_zero, ← map_sub, ← map_sub, class_eq_zero_iff]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem class_mem_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) (k : ℕ) (f : ↥(Vw X la N (addL u wL k))) :
     toA0K X la w u (toHK X la w u k f) ∈ Submodule.span (Kp X la N)
@@ -372,15 +372,13 @@ theorem class_mem_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cu
   simp only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_sub]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k F`. Conclude with `(class_mem_iff X la w u θ k ⟨_, emb_mem_Vw X la N _ F⟩).1 (h ▸ Submodule.mem_top)`. Introduce `h`. Rewrite using `[eq_top_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x -`. Take `⟨k, ⟨f, hf⟩, rfl⟩` from `exists_reduction_fraction_eq X la w u x`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨F, rfl⟩` from `hf`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `(class_mem_iff X la w u θ k ⟨_, emb_mem_Vw X la N _ F⟩).2 (h k F)`. Consider the case `zero`. Establish `: (⟨0, Submodule.zero_mem _⟩ : ↥(Vw X la N (addL u wL k))) = 0` using `rfl`. Use `erw [this, map_zero, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y hx hy ix iy`. Establish `: (⟨x + y, Submodule.add_mem _ hx hy⟩ : ↥(Vw X la N (addL u wL k))) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Use `erw [this, map_add, map_add]`. Conclude with `Submodule.add_mem _ ix iy`. Consider the case `smul a x hx ix`.
-
-Establish `: (⟨a • x, Submodule.smul_mem _ _ hx⟩ : ↥(Vw X la N (addL u wL k))) = a • ⟨x, hx⟩` using `rfl`. Use `erw [this, map_smul, LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ ix`.
+A detailed English derivation is pending.
 -/
 theorem span_top_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) :
     Submodule.span (Kp X la N)
@@ -413,9 +411,9 @@ theorem span_top_iff (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cus
       exact Submodule.smul_mem _ _ ix
 
 /- English proof (translation)
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨α, f, hα, -, rfl⟩` from `hg`. Take `⟨i, rfl⟩` from `eq_single_of_sum_eq_one hα`. Rewrite using `[Rdg.mon, prod_pow_single (fun i => R.s w t i.succ), Pi.mul_apply, hy, zero_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => rw [Pi.add_apply, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [Pi.smul_apply, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem deep_vanish (u : WeightFamilies.Wt D j) {y : R.Y} (hy : ∀ i : Fin (WeightFamilies.dimY D j), R.s w t i.succ y = 0)
     {g : R.Y → ℂ} (hg : g ∈ R.deep w t u 1) : g y = 0 := by
@@ -430,9 +428,9 @@ theorem deep_vanish (u : WeightFamilies.Wt D j) {y : R.Y} (hy : ∀ i : Fin (Wei
 
 include la in
 /- English proof (translation)
-Take `⟨h1, -, -, -, h5, h6, -⟩` from `GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t`. Proceed by induction on `k with`. Consider the case `zero => rw [addL_zero]`. Simplify using `using hg`. Consider the case `succ n ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[pow_succ', mul_assoc, ← wadd_addL]`. Use `h6 _ _ _ ?_ _ ih` and prove the remaining obligations. Rewrite using `[← (h1 0).2.1]`. Conclude with `(h5 _ _ (h1 0).2.2).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem s_pow_mul_mem (u : WeightFamilies.Wt D j) (k : ℕ) {g : R.Y → ℂ} (hg : g ∈ R.sp u Set.univ) :
     R.s w t 0 ^ k * g ∈ R.sp (addL u wL k) Set.univ := by
@@ -446,7 +444,7 @@ theorem s_pow_mul_mem (u : WeightFamilies.Wt D j) (k : ℕ) {g : R.Y → ℂ} (h
     exact (h5 _ _ (h1 0).2.2).2
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨θ i, trivial, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_sp (u : WeightFamilies.Wt D j) {n : ℕ} (θ : Fin n → B.Cusp j u) (c : Fin n → ℂ) :
     ∑ i, c i • R.ev (X.inc u (θ i)) ∈ R.sp u Set.univ :=
@@ -459,31 +457,31 @@ namespace GlobalTheory.Shares
 open BasisVals
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G R t T Mg δ xs hg hA _ la`. Take `⟨-, -, h3, -⟩` from `GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la G.N wL G.w t`. Establish `hI : LinearIndependent (Kp X la G.N) (tL G la) ↔ LinearIndependent ℂ (vals xs fun i => R.ev (X.inc wF (G.th' i)))`. Use `(indep_iff X la G.w wF G.th').trans ?_` and prove the remaining obligations. Simplify using `only [indep_transfer X R la G.w t hg wF G.th']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Take `⟨m, hm⟩` from `hA.vandiv 0 (∑ i, c i • R.ev (X.inc wF (G.th' i))) (by rw [addL_zero]; exact sum_mem_sp X R wF G.th' c) (fun q => by simpa [vals, Finset.sum_apply] using congrFun hc q)`. Rewrite `hm` using `[zero_add]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h m c hm`. Introduce `h m c hc`. Apply `h c` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Use `deep_vanish X R G.w t _ (hA.zero q).2 hc` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Pi.mul_apply, Pi.pow_apply, mul_eq_zero]`. Use `this.resolve_left (pow_ne_zero _ (hA.zero q).1)` as an intermediate fact. Simplify `this` using `[vals, Finset.sum_apply]`. Establish `hS : Submodule.span (Kp X la G.N) (Set.range (tL G la)) = ⊤ ↔ Submodule.span ℂ (Set.range (vals xs fun i => R.ev (X.inc wF (G.th' i)))) = ⊤`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Take `⟨f, hf, hv⟩` from `hA.interp v`. Take `rfl : v = fun q => f (xs q)` from `funext fun q => (hv q).symm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Use `clear hv`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨F, -, rfl⟩` from `hf`. Establish `hF : emb X la G.N (X.inc wF F) ∈ Vw X la G.N (addL wF wL 0)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[addL_zero]`. Conclude with `emb_mem_Vw X la G.N wF F`. Establish `htop : Submodule.span (Kp X la G.N) (Set.range fun i => rho0 X la G.w wF ⟨emb X la G.N (X.inc wF (G.th' i)), emb_mem_Vw X la G.N wF _⟩) = ⊤` using `h`. Take `⟨m, hm⟩` from `(class_mem_iff X la G.w wF G.th' 0 ⟨_, hF⟩).1 (htop ▸ Submodule.mem_top)`. Take `⟨c, hc⟩` from `(mem_transfer X R la G.w t hg wF G.th' 0 m (X.inc wF F) (by rw [addL_zero]; exact h3 _ _)).1 hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `(Submodule.mem_span_range_iff_exists_fun ℂ).2 ⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Use `deep_vanish X R G.w t _ (hA.zero q).2 hc` as an intermediate fact. Rewrite `this` using `[Pi.mul_apply, Pi.pow_apply, mul_eq_zero]`. Use `this.resolve_left (pow_ne_zero _ (hA.zero q).1)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite `this` using `[pow_zero, one_mul, Pi.sub_apply, sub_eq_zero]`. Simplify `this.symm` using `[vals, Finset.sum_apply]`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Use `(span_top_iff X la G.w wF G.th').2 fun k F => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (h ▸ Submodule.mem_top : (fun q => R.ev (X.inc _ F) (xs q) / R.s G.w t 0 (xs q) ^ k) ∈ Submodule.span ℂ (Set.range (vals xs fun i => R.ev (X.inc wF (G.th' i)))))`. Take `⟨m, hm⟩` from `hA.vandiv k (R.ev (X.inc _ F) - R.s G.w t 0 ^ k * ∑ i, c i • R.ev (X.inc wF (G.th' i))) (Submodule.sub_mem _ (Submodule.subset_span ⟨F, trivial, rfl⟩) (s_pow_mul_mem X R la G.w t wF k (sum_mem_sp X R wF G.th' c))) (fun q => by`. Establish `h1 : (∑ i, c i • R.ev (X.inc wF (G.th' i))) (xs q) = R.ev (X.inc _ F) (xs q) / R.s G.w t 0 (xs q) ^ k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify `congrFun hc q` using `[vals, Finset.sum_apply]`. Rewrite using `[Pi.sub_apply, Pi.mul_apply, Pi.pow_apply, h1, mul_div_cancel₀ _ (pow_ne_zero _ (hA.zero q).1), sub_self])`. Conclude with `⟨m, (mem_transfer X R la G.w t hg wF G.th' k m (X.inc _ F) (h3 _ _)).2 ⟨c, hm⟩⟩`. Rewrite using `[InBasis, hI, hS]`. Use `and_congr_right fun hli => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `finrank_span_eq_card hli` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli]`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inBasis_iff_vals : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData X ka wL wF) (R : Rdg X) (t : Idx D j G.N → ℂ) (T : ℕ) (Mg : Submodule B.KO (B.Cusp j ka)) (δ : ℕ) (xs : Fin δ → R.Y), R.Generic t → AnFacts R G.w t ka wF T Mg xs → addL wF wL T = ka → ∀ la, InBasis G la ↔ (LinearIndependent ℂ (vals xs fun i => R.ev (X.inc wF (G.th' i))) ∧ G.del = δ) := by
   intro D B P j X ka wL wF G R t T Mg δ xs hg hA _ la

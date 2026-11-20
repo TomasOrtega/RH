@@ -32,7 +32,7 @@ def repOver (K : Type) [CommRing K] [Algebra O K] {n : Type} [Fintype n] [Decida
     rfl
 
 /- English proof (translation)
-Establish `h : (blockSum t ρ χ g).charpoly = ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).charpoly * (Matrix.diagonal fun c : Fin t => ((χ ((c : ℕ) + 1) g : Oˣ) : O)).charpoly` using `Matrix.charpoly_fromBlocks_zero₂₁ _ _ _`. Rewrite using `[h, Matrix.charpoly_diagonal, Fin.prod_univ_eq_prod_range (fun c => X - C ((χ (c + 1) g : Oˣ) : O)) t, Finset.range_eq_Ico, Finset.prod_Ico_add' (fun c => X - C ((χ c g : Oˣ) : O)) 0 t 1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charpoly_blockSum {r : ℕ} (t : ℕ) (ρ : Γ →* GL (Fin r) O) (χ : ℕ → (Γ →* Oˣ)) (g : Γ) :
     (blockSum t ρ χ g).charpoly =
@@ -47,11 +47,11 @@ theorem charpoly_blockSum {r : ℕ} (t : ℕ) (ρ : Γ →* GL (Fin r) O) (χ : 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (Sum.inl b)).comp ((continuous_apply (Sum.inl a)).comp h)`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `(continuous_apply b).comp ((continuous_apply a).comp h)`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify `hχ ((a : ℕ) + 1)` using `[blockSum]`. Simplify `continuous_const` using `[blockSum, Matrix.diagonal_apply_ne _ hab]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_blockSum_iff [TopologicalSpace O] [TopologicalSpace Γ] {r : ℕ} (t : ℕ)
     (ρ : Γ →* GL (Fin r) O) (χ : ℕ → (Γ →* Oˣ)) (hχ : ∀ c, Continuous fun g => ((χ c g : Oˣ) : O)) :
@@ -109,9 +109,9 @@ def SplitsAs (i : N.Loc) (rπ : GE N →* GL (Fin R.nV) (N.O i)) (ρ : GE N →*
     e (repOver (KK N i) ((Units.coeHom _).comp rπ) g u) = repOver (KK N i) (sumChi N i ρ) g (e u)
 
 /- English proof (translation)
-Establish `h` using `continuous_blockSum_iff R.t ρ (N.chi i) (N.chi_cont i)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h.2 h3, h2, h1⟩`. Introduce and unpack `⟨h3, h2, h1⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, h2, h.1 h3⟩`.
+Supply the required witnesses or components.
 -/
 theorem isComplement_iff (i : N.Loc) (π : N.X i) (ρ : GE N →* GL (Fin R.r) (N.O i)) :
     IsComplement N i π ρ ↔ IsRx N i π (sumChi N i ρ) := by
@@ -123,7 +123,7 @@ theorem isComplement_iff (i : N.Loc) (π : N.X i) (ρ : GE N →* GL (Fin R.r) (
     exact ⟨h1, h2, h.1 h3⟩
 
 /- English proof (translation)
-Simplify using `only [IsRhoAt, FrobeniusMatrixCompatible, sumChi, charpoly_blockSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isRhoAt_iff (i : N.Loc) (π : N.X i) (ρ : GE N →* GL (Fin R.r) (N.O i)) :
     IsRhoAt N i π ρ ↔ ∀ w : PlE H, SplitOut N i w → ∀ (B : ValuationSubring N.Om) (σ : GE N),
@@ -133,9 +133,9 @@ theorem isRhoAt_iff (i : N.Loc) (π : N.X i) (ρ : GE N →* GL (Fin R.r) (N.O i
   simp only [IsRhoAt, FrobeniusMatrixCompatible, sumChi, charpoly_blockSum]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hs`. Introduce `w hw B σ hB hσ`. Rewrite using `[← hr w hw B σ hB hσ]`. Apply `Polynomial.map_injective (algebraMap (N.O i) (KK N i)) (IsFractionRing.injective _ _)` to reduce the goal to its premises. Rewrite using `[← Matrix.charpoly_map, ← Matrix.charpoly_map, ← Matrix.charpoly_toLin', ← Matrix.charpoly_toLin', ← LinearEquiv.charpoly_conj e]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Use `he σ (e.symm u)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRhoAt_of_splitsAs (i : N.Loc) (π : N.X i) (rπ : GE N →* GL (Fin R.nV) (N.O i))
     (ρ : GE N →* GL (Fin R.r) (N.O i)) (hr : FrobeniusMatrixCompatible N i π ((Units.coeHom _).comp rπ))
@@ -153,7 +153,7 @@ theorem isRhoAt_of_splitsAs (i : N.Loc) (π : N.X i) (rπ : GE N →* GL (Fin R.
   exact this.symm
 
 /- English proof (translation)
-Use `haveI : NeZero ((Nat.card (Multiplicative (ZMod 2)) : ℕ) : ℚ) := ⟨by simp⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 example (ρ : Multiplicative (ZMod 2) →* GL (Fin 3) ℤ) (χ : ℕ → (Multiplicative (ZMod 2) →* ℤˣ)) :
     (repOver ℚ (blockSum 5 ρ χ)).IsSemisimpleRepresentation := by

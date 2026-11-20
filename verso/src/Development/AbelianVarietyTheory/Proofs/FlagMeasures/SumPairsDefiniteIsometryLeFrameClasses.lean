@@ -21,29 +21,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TypeAsm.PerRow
 
 /- English proof (translation)
-Introduce `D large₂ X Y u hS W HW he Λ h hh Sf hSf hη`. Take `⟨hK, -⟩` from `GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hS`. Establish `hlam : ∀ p ∈ Sf, p.2.lam = Λ ∧ p.2.lam' = p.1.lam'`. Introduce `p hp`. Take `⟨hl, hl', -⟩` from `GlobalTheory.T.termsOverRow_compatible D X Y u p ⟨trivial, trivial, (hSf p hp).1.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hl.symm.trans (hSf p hp).2, hl'.symm⟩`. Establish `hL : ∑ p ∈ Sf, wRow D (X.Fu u) p.1.lam' * (omT p.1 * omT p.2) = ∑ p ∈ Sf, wRow D (X.Fu u) p.1.lam' * (clsOm Y u Λ (frCls Λ p.1) * clsOm Y u Λ (frCls Λ p.2))`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[clsOm_frCls hK Λ p.1 (hSf p hp).2, clsOm_frCls hK Λ p.2 (hlam p hp).1]`. Rewrite using `[hL]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `hT1 : Sf.image (fun p => frCls Λ p.1) = T₁`. Generalize the expression as in `hT2 : Sf.image (fun p => frCls Λ p.2) = T₂`. Use `GlobalTheory.sum_pairs_weight_mul_class_le_mul_sum (GTu Y u) _ Sf (frCls Λ) (fun t => wRow D (X.Fu u) t.lam') (clsOm Y u Λ) T₁ T₂ ?_ (clsOm_nonneg Y u Λ hK) ?_ ?_ ?_` and prove the remaining obligations. Introduce `t show 0 ≤ wRow D (X.Fu u) t.lam'`. Unfold `wRow`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Check the signs of the components of the expression. Introduce `p hp`. Substitute `hT1 hT2` using the available equality. Conclude with `⟨Finset.mem_image.2 ⟨p, hp, rfl⟩, Finset.mem_image.2 ⟨p, hp, rfl⟩⟩`. Introduce `p hp q hq h1 hc`.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrel2 : p.2 ∈ relSet Y u` using `(hSf p hp).1.2.1`. Establish `hrelq : q.2 ∈ relSet Y u` using `(hSf q hq).1.2.1`. Establish `hhe : h p.2 = h q.2`. Establish `e` using `hη p hp q hq`. Rewrite `e` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg (fun g => (h q.1)⁻¹ * g) e`. Simplify using `only [inv_mul_cancel_left] at e2`. Conclude with `inv_injective e2`. Establish `hfe` using `(frCls_eq_iff hK Λ p.2 q.2).1 hc`. Establish `hl : p.2.lam = q.2.lam` using `((hlam p hp).1).trans ((hlam q hq).1).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, -⟩` from `GlobalTheory.T.exists_adaptedNormalForm_relevantTerm D large₂ X Y u hS p.2 hrel2`. Establish `hfe' : GlobalTheory.DegAsm.FrEqv (F0 X u) p.2.lam (Ft p.2) (Ft q.2)` using `by rw [(hlam p hp).1]; exact hfe`. Apply the tactic sequence `have := GlobalTheory.T.term_determined_by_frameClass_and_isometry D large₂ X Y u hS W HW he p.2 q.2 ⟨N, hN⟩ hl hfe' (h p.2) (hh p.2 hrel2) (by rw [hhe]; exact hh q.2 hrelq)`. Conclude with `Prod.ext h1 this`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `gen : ∀ s : Finset (GTu Y u), (∀ t ∈ s, t.lam = Λ ∧ frCls Λ t = b) → ∑ a ∈ s, wRow D (X.Fu u) a.lam' ≤ 1`. Introduce `s hmem`. Break down `s.eq_empty_or_nonempty with he0 | ⟨t₀, ht₀⟩` into its components or cases. Rewrite using `[he0, Finset.sum_empty]`. Conclude with `zero_le_one`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hl0, hb0⟩` from `hmem t₀ ht₀`. Establish `hrel : ∀ t ∈ s, t₀.lam = t.lam ∧ GlobalTheory.DegAsm.FrEqv (F0 X u) t₀.lam (Ft t₀) (Ft t)`. Introduce `t ht`. Take `⟨hl, hb⟩` from `hmem t ht`. Use `⟨hl0.trans hl.symm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hl0]`. Conclude with `(frCls_eq_iff hK Λ t₀ t).1 (hb0.trans hb.symm)`. Establish `hw : ∀ t ∈ s, wRow D (X.Fu u) t.lam' = wRow D (X.Fu u) t₀.lam'`. Introduce `t ht`. Take `⟨hl, hf⟩` from `hrel t ht`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[(GlobalTheory.T.equivFramesSameSecondLatticeFiber_proof D large₂ X Y u hS t₀ t hl hf).1]`. Rewrite using `[Finset.sum_congr rfl hw, Finset.sum_const, nsmul_eq_mul]`. Conclude with `GlobalTheory.T.frameClass_termCount_le_card_aut D large₂ X Y u hS t₀ s hrel`. Use `gen _ fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_image] at ht`.
-
-Take `⟨⟨p, hp, rfl⟩, ht2⟩` from `ht`. Conclude with `⟨(hSf p hp).2, ht2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_pairs_le_classes_pf : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), Std D large₂ →
     ∀ (W : Submodule D.host.E (VS D).V) (HW : Formalism.HermitianLatticeCounting.S6.HermSpace D.host.E W),

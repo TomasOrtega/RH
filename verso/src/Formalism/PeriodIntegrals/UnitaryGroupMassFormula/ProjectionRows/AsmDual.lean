@@ -24,7 +24,7 @@ def Adapted : Prop :=
         Submodule.span K (Set.range u)
 
 /- English proof (translation)
-Establish `: u = Fin.append u z ∘ Fin.castAdd d` using `by funext i; simp`. Rewrite using `[this]`. Conclude with `h.comp _ (Fin.castAdd_injective k d)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma linInd_left {K V : Type} [Field K] [AddCommGroup V] [Module K V] {k d : ℕ} (u : Fin k → V)
     (z : Fin d → V) (h : LinearIndependent K (Fin.append u z)) : LinearIndependent K u := by
@@ -33,39 +33,33 @@ lemma linInd_left {K V : Type} [Field K] [AddCommGroup V] [Module K V] {k d : �
   exact h.comp _ (Fin.castAdd_injective k d)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ A e n h hS hP hH hC U hU`. Establish `hyp : Hyp K A e n h` using `⟨hS, hP, hH, hC⟩`. Take `⟨k, d, u, z, y, hlin, hspz, hspu, hzM, hy, hyM, hspy, hMfg, hSfg, hspM, hspS⟩` from `hAd K A e n h hyp U hU`. Establish `hfg` using `hFG K A e n h hyp U hU`. Establish `hu : LinearIndependent K u` using `linInd_left u z hlin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := cutE A e A.L with hM`. Use `set S := cutE A e A.L ⊓ U.restrictScalars (𝓞 K) with hS'`. Use `set Λ := lamSub A e h U with hΛ`. Rewrite using `[degL_eq_neg_lcv A hP.1 S hSfg u hu hspS, degL_eq_neg_lcv A hP.1 M hMfg _ hlin hspM, degL_eq_neg_lcv A hP.1 Λ hfg y hy hspy]`. Establish `hyU : ∀ i, ∀ x ∈ U, h (y i) x = 0` using `fun i => (hyM i).2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hye : ∀ i, y i ∈ LinearMap.range e` using `fun i => (hyM i).1`. Establish `harch` using `hAI K A e n h hyp U hU k d u z y hlin hspz hspu hy hye hyU`. Take `⟨c, hcinv, hc⟩` from `hCP K`. Establish `hlwc : ∀ w, lw K (c w) = lw K w` using `fun w => by unfold lw; rw [(hc w).2]`. Use `set D := (Matrix.of fun i j => h (y i) (z j)).det with hD`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set zf := Fin.append u z with hzf`. Use `set Ly := Submodule.span (𝓞 K) (Set.range y)`. Use `set Lz := Submodule.span (𝓞 K) (Set.range zf)`. Use `set Lu := Submodule.span (𝓞 K) (Set.range u)`. Establish `hloc : ∀ w, (vAdd w D : ℝ) + (Formalism.HermitianLatticesTheory.lidx (c w).asIdeal Ly Λ : ℝ) + (Formalism.HermitianLatticesTheory.lidx w.asIdeal Lz M : ℝ) - (Formalism.HermitianLatticesTheory.lidx w.asIdeal Lu S : ℝ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `w`. Use `hLP K A e n h hyp U hU k d u z y hlin hspz hspu hzM hy hyM hspy w (c w) (hc w).1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `fV` using `vAdd_support_finite (K := K) D`. Establish `fY` using `lidx_support_finite A hP.1 Λ hfg y hy hspy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fZ` using `lidx_support_finite A hP.1 M hMfg zf hlin hspM`. Establish `fU` using `lidx_support_finite A hP.1 S hSfg u hu hspS`. Use `set a : HeightOneSpectrum (𝓞 K) → ℝ := fun w => lw K w * (vAdd w D : ℝ)`. Use `set gy : HeightOneSpectrum (𝓞 K) → ℝ := fun w => lw K w * (Formalism.HermitianLatticesTheory.lidx w.asIdeal Ly Λ : ℝ)`. Use `set gz : HeightOneSpectrum (𝓞 K) → ℝ := fun w => lw K w * (Formalism.HermitianLatticesTheory.lidx w.asIdeal Lz M : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set gu : HeightOneSpectrum (𝓞 K) → ℝ := fun w => lw K w * (Formalism.HermitianLatticesTheory.lidx w.asIdeal Lu S : ℝ)`. Establish `sub : ∀ {x : HeightOneSpectrum (𝓞 K) → ℤ}, (Function.support x).Finite → (Function.support fun w => lw K w * (x w : ℝ)).Finite` using `fun hx => hx.subset (fun w hw => by`. Simplify using `only [Function.mem_support] at hw ⊢`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h0]`. Use the proof step `simp)`. Establish `fa : (Function.support a).Finite` using `sub fV`. Establish `fgy : (Function.support gy).Finite` using `sub fY`. Establish `fgz : (Function.support gz).Finite` using `sub fZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `fgu : (Function.support gu).Finite` using `sub fU`. Establish `fgyc : (Function.support fun w => gy (c w)).Finite` using `(fgy.preimage (hcinv.injective.injOn)).subset (fun w hw => hw)`. Establish `hsum0 : (∑ᶠ w, (a w + gy (c w) + gz w - gu w)) = 0`. Establish `: (fun w => a w + gy (c w) + gz w - gu w) = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [a, gy, gz, gu]`. Rewrite using `[hlwc w]`. Use `hloc w` as an intermediate fact. Take the linear combination `lw K w * this`. Rewrite using `[this, finsum_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsym : (∑ᶠ w, gy (c w)) = ∑ᶠ w, gy w`. Establish `: (fun w => gy (c w)) = fun w => gy (Function.Involutive.toPerm c hcinv w)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finsum_comp_equiv (Function.Involutive.toPerm c hcinv)`. Establish `hsplit : (∑ᶠ w, (a w + gy (c w) + gz w - gu w)) = (∑ᶠ w, a w) + (∑ᶠ w, gy (c w)) + (∑ᶠ w, gz w) - ∑ᶠ w, gu w`. Rewrite using `[finsum_sub_distrib ((fa.union fgyc).union fgz |>.subset ?_) fgu, finsum_add_distrib ((fa.union fgyc).subset (Function.support_add _ _)) fgz, finsum_add_distrib fa fgyc]`. Introduce `w hw`. Simplify using `only [Function.mem_support] at hw`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hn`. Apply `hw` to reduce the goal to its premises. Rewrite using `[hn.1.1, hn.1.2, hn.2]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `hsum0` using `[hsplit, hsym]`. Establish `hnorm : Real.log |((Algebra.norm ℚ D : ℚ) : ℝ)| / (Module.finrank ℚ K : ℝ) = ∑ᶠ w, a w`. Distinguish the cases in `hD0 : D = 0`. Simplify using `only [a]`. Rewrite using `[hD0]`.
-
-Simplify using `[vAdd]`. Conclude with `(hNF K D hD0).symm`. Unfold `lcv lcvInf`. Rewrite using `[lcvFin_eq A u, lcvFin_eq A zf, lcvFin_eq A y]`. Establish `hk` using `finrank_eq_two_nPl (K := K)`.
-
-Establish `hnpos : (0 : ℝ) < Formalism.HN.nPl K`. Unfold `Formalism.HN.nPl`. Conclude with `Fintype.card_pos` after adjusting the coercions. Rewrite `hnorm` using `[hk]`. Establish `e1 : (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Formalism.HN.gramPl A.b A.X v zf).det.re - (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Formalism.HN.gramPl A.b A.X v u).det.re = 2 * (∑ᶠ w, a w) - (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Formalism.HN.gramPl A.b A.X …`.
-
-Rewrite using `[← hnorm, ← harch]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `-((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Formalism.HN.gramPl A.b A.X v u).det.re + 2 * ∑ᶠ w, gu w) - -((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Formalism.HN.gramPl A.b A.X v zf).det.re + 2 * ∑ᶠ w, gz w) = -((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, Real.log (Formalism …`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem degDual_of (hFG : LamFG) (hAd : Adapted) (hAI : ArchIdentity) (hLP : LocalPairing)
     (hCP : ConjPrime) (hNF : NormFinsum) : DegDual := by
@@ -166,14 +160,14 @@ theorem degDual_of (hFG : LamFG) (hAd : Adapted) (hAI : ArchIdentity) (hLP : Loc
   linarith
 
 /- English proof (translation)
-The claim follows from `partB_of (degDual_of hFG hAd hAI hLP hCP hNF) (degDualBound_of hFG hCS hLG hCP hNF)`.
+A detailed English derivation is pending.
 -/
 theorem partB_of_pieces (hFG : LamFG) (hAd : Adapted) (hCS : GramCS) (hAI : ArchIdentity)
     (hLG : LocalGamma) (hLP : LocalPairing) (hCP : ConjPrime) (hNF : NormFinsum) : PartB :=
   partB_of (degDual_of hFG hAd hAI hLP hCP hNF) (degDualBound_of hFG hCS hLG hCP hNF)
 
 /- English proof (translation)
-The claim follows from `dvProjRows_of (partB_of_pieces hFG hAd hCS hAI hLG hLP hCP hNF)`.
+A detailed English derivation is pending.
 -/
 theorem dvProjRows_of_pieces (hFG : LamFG) (hAd : Adapted) (hCS : GramCS) (hAI : ArchIdentity)
     (hLG : LocalGamma) (hLP : LocalPairing) (hCP : ConjPrime) (hNF : NormFinsum) : PI.Dv.division_rows_base_level :=

@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.TriangularDiagonal
 
 /- English proof (translation)
-Introduce `p κ hκ M N hM hN i`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i ?_ ?_` and prove the remaining obligations. Introduce `k _ hk`. Break down `lt_trichotomy (κ i) (κ k) with h | h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hM i k h, zero_mul]`. Conclude with `absurd (hκ h).symm hk`. Rewrite using `[hN k i h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_diag_of_triangular :
     ∀ {p : ℕ} {κ : Fin p → ℤ}, Function.Injective κ → ∀ {M N : Matrix (Fin p) (Fin p) ℂ},

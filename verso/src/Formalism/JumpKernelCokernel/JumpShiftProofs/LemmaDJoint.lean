@@ -5,17 +5,13 @@ import Formalism.JumpKernelCokernel.JumpShiftProofs.KerCoker
 namespace Formalism.KernelCokernelLengths.QuotientLengthJointLemmas
 
 /- English proof (translation)
-Use `set K := (R' ⊔ R''.map π).comap R''.subtype with hK`. Use `set L := ((LinearMap.range j).map πB).comap (LinearMap.range j).subtype with hL`. Establish `hkerK : LinearMap.ker j ≤ K`. Rewrite using `[hker]`. Conclude with `Submodule.comap_mono le_sup_left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : ↥(LinearMap.range j) →ₗ[O] ↥R'' ⧸ K` to `(Submodule.factor hkerK).comp (j.quotKerEquivRange.symm : ↥(LinearMap.range j) →ₗ[O] ↥R'' ⧸ LinearMap.ker j)`. Establish `hψ : ∀ y : ↥R'', ψ (j.rangeRestrict y) = K.mkQ y`. Introduce `y`. Establish `e : j.quotKerEquivRange.symm (j.rangeRestrict y) = Submodule.Quotient.mk y`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (LinearMap.quotKerEquivRange_apply_mk j y).symm`. Use `show Submodule.factor hkerK (j.quotKerEquivRange.symm (j.rangeRestrict y)) = K.mkQ y`. Rewrite using `[e]`. Conclude with `Submodule.factor_mk hkerK y`. Establish `hLψ : L ≤ LinearMap.ker ψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m hm`. Take `⟨b, ⟨x, rfl⟩, hbm⟩` from `hm`. Establish `hpx : π x ∈ R''` using `hstab ⟨x, x.2, rfl⟩`. Establish `hy : j.rangeRestrict ⟨π x, hpx⟩ = m` using `Subtype.ext ((hj x hpx).trans hbm)`. Rewrite using `[LinearMap.mem_ker, ← hy, hψ, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `Submodule.mem_sup_right ⟨x, x.2, rfl⟩`. Establish `hsurj : Function.Surjective (L.liftQ ψ hLψ)`. Introduce `z`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective K z`. Conclude with `⟨L.mkQ (j.rangeRestrict y), by rw [Submodule.mkQ_apply, Submodule.liftQ_apply, hψ]⟩`.
-
-Conclude with `Module.length_le_of_surjective _ hsurj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quot_le (O : Type) [CommRing O] (R : Type) [AddCommGroup R] [Module O R]
     (π : Module.End O R) (R' R'' : Submodule O R) (B : Type) [AddCommGroup B] [Module O B]
@@ -55,7 +51,7 @@ theorem quot_le (O : Type) [CommRing O] (R : Type) [AddCommGroup R] [Module O R]
 end Formalism.KernelCokernelLengths.QuotientLengthJointLemmas
 
 /- English proof (translation)
-Introduce `O _ R _ _ π R' R'' B _ _ πB j hle hstab hB hker hj`. Establish `hN : (LinearMap.range j).map πB ≤ LinearMap.range j`. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨⟨π x, hstab ⟨x, x.2, rfl⟩⟩, hj x _⟩`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 -/
 theorem Formalism.KernelCokernelLengths.lemma_D_joint_form : Formalism.KernelCokernelLengths.LemmaDJoint := by
   intro O _ R _ _ π R' R'' B _ _ πB j hle hstab hB hker hj

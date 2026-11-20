@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.WeilDatumF
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `GlobalTheory.OrientedHeis.map_trace_hO_zero (fstA F) σ (incAF F E ξ₀) (fun a b => incAF F E (JS⁻¹ a b)) (fun c d => incAF F E (JT c d)) y z h`.
+A detailed English derivation is pending.
 -/
 theorem fst_symplOF_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {nS nT : ℕ}
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (y z : WOF F E nS nT)
@@ -20,7 +20,7 @@ theorem fst_symplOF_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [Nu
     (fun c d => incAF F E (JT c d)) y z h
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `GlobalTheory.OrientedHeis.map_trace_hO_zero (sndA F) σ (incAF F E ξ₀) (fun a b => incAF F E (JS⁻¹ a b)) (fun c d => incAF F E (JT c d)) y z h`.
+A detailed English derivation is pending.
 -/
 theorem snd_symplOF_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {nS nT : ℕ}
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (y z : WOF F E nS nT)
@@ -30,7 +30,7 @@ theorem snd_symplOF_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [Nu
     (fun c d => incAF F E (JT c d)) y z h
 
 /- English proof (translation)
-The claim follows from `Prod.ext (fst_symplOF_eq_zero σ JS JT ξ₀ y z h1) (snd_symplOF_eq_zero σ JS JT ξ₀ y z h2)`.
+A detailed English derivation is pending.
 -/
 theorem symplOF_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {nS nT : ℕ}
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (y z : WOF F E nS nT)
@@ -39,9 +39,9 @@ theorem symplOF_eq_zero {F E : Type} [Field F] [NumberField F] [Field E] [Number
   Prod.ext (fst_symplOF_eq_zero σ JS JT ξ₀ y z h1) (snd_symplOF_eq_zero σ JS JT ξ₀ y z h2)
 
 /- English proof (translation)
-Introduce `hu hx`. Establish `e1` using `symplOF_eq_zero σ JS JT ξ₀ u x (Or.inl hu) (Or.inr hx)`. Establish `e2` using `symplOF_eq_zero σ JS JT ξ₀ x u (Or.inr hu) (Or.inl hx)`. Unfold `symplOHF`. Rewrite using `[e1, e2, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem symplOHF_fin_real_orth (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (nS nT : ℕ)
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (u x : WOF F E nS nT) :

@@ -14,7 +14,7 @@ def psiC (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (Z : Mat k r) : �
   Complex.I / 2 * (LF z c Z - starRingEnd ℂ (LF z c (Hpk k r * Zᴴ * Hpk k r)))
 
 /- English proof (translation)
-Simplify using `only [LF, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, mul_sum, ← sum_add_distrib]`. Conclude with `sum_congr rfl fun p _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LF_comb (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (s t : ℂ) (X Y : Mat k r) :
     LF z c (s • (X + t • Y)) = s * (LF z c X + t * LF z c Y) := by
@@ -22,13 +22,13 @@ theorem LF_comb (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (s t : ℂ
   exact sum_congr rfl fun p _ => by ring
 
 /- English proof (translation)
-Introduce `S Y1 Y2`. Establish `hS : Hpk k r * Sᴴ * Hpk k r = Z`. Simplify using `only [S, conjTranspose_mul, conjTranspose_conjTranspose, Hpk_herm, ← Matrix.mul_assoc, Hpk_sq, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Hpk_sq, Matrix.mul_one]`. Establish `hZ : Hpk k r * Zᴴ * Hpk k r = S` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Y1, conjTranspose_smul, conjTranspose_add, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, hS, hZ]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Y2, conjTranspose_smul, conjTranspose_add, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, hS, hZ]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Simplify using `only [Y1, Y2, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(Z i j + S i j) / 2 * Complex.I_mul_I`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem parts (Z : Mat k r) :
     let S := Hpk k r * Zᴴ * Hpk k r
@@ -53,7 +53,7 @@ theorem parts (Z : Mat k r) :
     linear_combination (Z i j + S i j) / 2 * Complex.I_mul_I
 
 /- English proof (translation)
-Rewrite using `[LF_comb, LF_comb]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psiC_parts (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (Z S : Mat k r) :
     Complex.I * ((LF z c ((1 / 2 : ℂ) • (Z + (-1 : ℂ) • S))).re : ℂ) +
@@ -64,19 +64,19 @@ theorem psiC_parts (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (Z S : 
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-The claim follows from `isAdjB.mem Z h`.
+A detailed English derivation is pending.
 -/
 theorem st_mem {Z : Mat k r} (h : Z ∈ levF (levB k r) 0) : Hpk k r * Zᴴ * Hpk k r ∈ levF (levB k r) 0 :=
   isAdjB.mem Z h
 
 /- English proof (translation)
-Apply the tactic sequence `unfold nxt; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nxt_val (p : Fin r) : (nxt k r p).val = if p.val + 1 < r then p.val + 1 else r + k := by
   unfold nxt; split_ifs <;> rfl
 
 /- English proof (translation)
-Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [Matrix.single_apply]; split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem LF_single (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (a b : Fin (2 * r + k + 1)) (s : ℂ) :
     LF z c (Matrix.single a b s) =
@@ -85,9 +85,9 @@ theorem LF_single (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (a b : F
   rw [Matrix.single_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_Hpk_apply, Hpk_mul_apply, conjTranspose_apply, Matrix.single_apply, Matrix.single_apply]`. Distinguish the cases in `h : a = flipB k r j ∧ b = flipB k r i`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[flipB_flipB, sgnB_flip]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg, star_zero, mul_zero, zero_mul]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h ⟨(flipB_flipB a).symm, (flipB_flipB b).symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem st_single (a b : Fin (2 * r + k + 1)) :
     Hpk k r * (Matrix.single a b (1 : ℂ))ᴴ * Hpk k r =
@@ -105,7 +105,7 @@ def Simple (k r : ℕ) (a b : Fin (2 * r + k + 1)) : Prop :=
   levB k r b = levB k r a + 1 ∧ ¬ (r ≤ a.val ∧ a.val < r + k) ∧ ¬ (r ≤ b.val ∧ b.val < r + k)
 
 /- English proof (translation)
-Use `p.isLt` as an intermediate fact. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Simplify using `only [Fin.ext_iff, flipB_val, nxt_val, eI, Simple, levB]`. Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> split_ifs at h1 h2 ⊢ <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem simple_of {a b : Fin (2 * r + k + 1)} {p : Fin r} :
     (a = eI k r p ∧ b = nxt k r p → Simple k r a b) ∧
@@ -117,7 +117,7 @@ theorem simple_of {a b : Fin (2 * r + k + 1)} {p : Fin r} :
   constructor <;> rintro ⟨h1, h2⟩ <;> split_ifs at h1 h2 ⊢ <;> omega
 
 /- English proof (translation)
-Rewrite using `[psiC, st_single, LF_single, LF_single, sum_eq_zero fun p _ => if_neg fun hp => h (simple_of.1 hp), sum_eq_zero fun p _ => if_neg fun hp => h (simple_of.2 hp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psiC_zero (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) {a b : Fin (2 * r + k + 1)}
     (h : ¬ Simple k r a b) : psiC z c (Matrix.single a b 1) = 0 := by
@@ -126,9 +126,7 @@ theorem psiC_zero (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) {a b : F
   simp
 
 /- English proof (translation)
-Rewrite using `[LF_single, sum_eq_single p (fun q _ hq => if_neg fun h => hq (Fin.ext (by have := congrArg Fin.val h.1; exact this.symm))) (by simp), if_pos ⟨rfl, rfl⟩]`. Use `mul_ne_zero (hc p) (mul_ne_zero ?_ hs)` and prove the remaining obligations. Unfold `kap`. Use `split_ifs`. Simplify using the standard rewrite rules.
-
-Conclude with `(Real.sqrt_pos.mpr hT).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LF_single_ne {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} (hc : ∀ p, c p ≠ 0)
     (hT : 0 < Tz k r z) (p : Fin r) {s : ℂ} (hs : s ≠ 0) :
@@ -142,17 +140,17 @@ theorem LF_single_ne {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} (hc :
   · exact_mod_cast (Real.sqrt_pos.mpr hT).ne'
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hI : Complex.I / 2 ≠ 0` using `div_ne_zero Complex.I_ne_zero two_ne_zero`. Rewrite using `[psiC, st_single]`. Use `mul_ne_zero hI ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Simple levB at h`. Distinguish the cases in `h1 : a.val < r`. Establish `e1 : a = eI k r ⟨a.val, h1⟩` using `rfl`. Apply the tactic sequence `have e2 : b = nxt k r ⟨a.val, h1⟩ := Fin.ext (by rw [nxt_val]; split_ifs at h ⊢ <;> simp only at * <;> omega)`. Rewrite using `[LF_single z c (flipB k r b), sum_eq_zero fun p _ => if_neg fun hp => ?_, map_zero, sub_zero]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `LF_single_ne hc hT ⟨a.val, h1⟩ one_ne_zero` as an intermediate fact. Rewrite `this` using `[← e1, ← e2]`. Then use the resulting hypothesis. Establish `h2` using `congrArg Fin.val hp.2`. Use `p.isLt` as an intermediate fact. Rewrite `h2` using `[flipB_val, nxt_val]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `split_ifs at h2 <;> omega`. Apply the tactic sequence `have h3 : r + k ≤ a.val ∧ b.val = a.val + 1 := by split_ifs at h <;> omega`. Establish `hp : 2 * r + k - b.val < r` using `by omega`. Establish `e1 : flipB k r b = eI k r ⟨_, hp⟩` using `Fin.ext (by rw [flipB_val, if_pos (by omega)]; rfl)`. Establish `e2 : flipB k r a = nxt k r ⟨_, hp⟩` using `Fin.ext (by`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [flipB_val, nxt_val]; split_ifs <;> simp only at * <;> omega)`. Rewrite using `[LF_single z c a, sum_eq_zero fun p _ => if_neg fun hq => ?_, zero_sub, neg_ne_zero, e1, e2]`. Use `(map_ne_zero _).mpr (LF_single_ne hc hT _ ?_)` and prove the remaining obligations. Apply the tactic sequence `unfold sgnB; split_ifs <;> simp`. Establish `h2` using `congrArg Fin.val hq.1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `p.isLt` as an intermediate fact. Simplify using `only [eI] at h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem psiC_ne {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} (hc : ∀ p, c p ≠ 0) (hT : 0 < Tz k r z)
     {a b : Fin (2 * r + k + 1)} (h : Simple k r a b) : psiC z c (Matrix.single a b 1) ≠ 0 := by

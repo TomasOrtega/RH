@@ -42,7 +42,7 @@ variable {u}
 omit [TopologicalSpace X] [TopologicalSpace Y] in
 
 /- English proof (translation)
-The claim follows from `hi h.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem choose_eq (hi : Function.Injective u) {y : Y} (h : u y ∈ range u) : h.choose = y :=
   hi h.choose_spec
@@ -50,14 +50,14 @@ theorem choose_eq (hi : Function.Injective u) {y : Y} (h : u y ∈ range u) : h.
 variable (hu : IsOpenEmbedding u) (hc : IsClosed (range u)) (P : LocPot Y) (s : Y → Y → ℂ)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(if h : u y ∈ range u then u '' P.U h.choose else (range u)ᶜ) = _`. Rewrite using `[dif_pos (mem_range_self y), choose_eq hu.injective]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pot_U_up (y : Y) : (pot u hu hc P).U (u y) = u '' P.U y := by
   change (if h : u y ∈ range u then u '' P.U h.choose else (range u)ᶜ) = _
   rw [dif_pos (mem_range_self y), choose_eq hu.injective]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(if h : u y ∈ range u then (if hz : u y' ∈ range u then P.φ h.choose hz.choose else 0) else 0) = _`. Rewrite using `[dif_pos (mem_range_self y), dif_pos (mem_range_self y'), choose_eq hu.injective, choose_eq hu.injective]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pot_φ_up (y y' : Y) : (pot u hu hc P).φ (u y) (u y') = P.φ y y' := by
   change (if h : u y ∈ range u then (if hz : u y' ∈ range u then P.φ h.choose hz.choose else 0)
@@ -66,7 +66,7 @@ theorem pot_φ_up (y y' : Y) : (pot u hu hc P).φ (u y) (u y') = P.φ y y' := by
     choose_eq hu.injective]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Rewrite using `[pot_U_up]`. Conclude with `image_subset_range _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pot_U_subset {x : X} (hx : x ∈ range u) : (pot u hu hc P).U x ⊆ range u := by
   obtain ⟨y, rfl⟩ := hx
@@ -74,14 +74,14 @@ theorem pot_U_subset {x : X} (hx : x ∈ range u) : (pot u hu hc P).U x ⊆ rang
   exact image_subset_range _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(if h : x ∈ range u then u '' P.U h.choose else (range u)ᶜ) = _`. Rewrite using `[dif_neg hx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pot_U_of_not {x : X} (hx : x ∉ range u) : (pot u hu hc P).U x = (range u)ᶜ := by
   change (if h : x ∈ range u then u '' P.U h.choose else (range u)ᶜ) = _
   rw [dif_neg hx]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(if h : x ∈ range u then (if hz : z ∈ range u then P.φ h.choose hz.choose else 0) else 0) = _`. Rewrite using `[dif_neg hx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pot_φ_of_not {x : X} (hx : x ∉ range u) (z : X) : (pot u hu hc P).φ x z = 0 := by
   change (if h : x ∈ range u then (if hz : z ∈ range u then P.φ h.choose hz.choose else 0)
@@ -91,7 +91,7 @@ theorem pot_φ_of_not {x : X} (hx : x ∉ range u) (z : X) : (pot u hu hc P).φ 
 omit [TopologicalSpace X] [TopologicalSpace Y] in
 
 /- English proof (translation)
-Unfold `sec`. Rewrite using `[dif_pos (mem_range_self y), dif_pos (mem_range_self y'), choose_eq hi, choose_eq hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_up (hi : Function.Injective u) (y y' : Y) : sec u s (u y) (u y') = s y y' := by
   unfold sec
@@ -100,21 +100,21 @@ theorem sec_up (hi : Function.Injective u) (y y' : Y) : sec u s (u y) (u y') = s
 omit [TopologicalSpace X] [TopologicalSpace Y] in
 
 /- English proof (translation)
-Unfold `sec`. Rewrite using `[dif_neg hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_of_not {x : X} (hx : x ∉ range u) (z : X) : sec u s x z = 0 := by
   unfold sec
   rw [dif_neg hx]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.normSec, sec_up s hu.injective, pot_φ_up]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normSec_up (y : Y) :
     GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.normSec (pot u hu hc P) (sec u s) (u y) = GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.normSec P s y := by
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.normSec, sec_up s hu.injective, pot_φ_up]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.normSec, sec_of_not s hx, norm_zero, zero_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normSec_of_not {x : X} (hx : x ∉ range u) :
     GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.normSec (pot u hu hc P) (sec u s) x = 0 := by

@@ -110,14 +110,14 @@ section Record
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hT.out.ne_zero (by exact_mod_cast (zero_mul _).symm.trans h |>.symm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pz_ne {T : ℕ} [hT : Fact T.Prime] {z : H.E} (h : z * H.conj z = (T : H.E)) : z ≠ 0 := by
   rintro rfl
   exact hT.out.ne_zero (by exact_mod_cast (zero_mul _).symm.trans h |>.symm)
 
 /- English proof (translation)
-Establish `h1` using `pz_ne H h'`. Establish `h2 : H.conj z' ≠ 0` using `(map_ne_zero H.conj).mpr h1`. Rewrite using `[map_div₀, ← h, ← h']`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem norm_quotient_mul_conj {T T' : ℕ} [Fact T'.Prime] {z z' : H.E} (h : z * H.conj z = (T : H.E))
     (h' : z' * H.conj z' = (T' : H.E)) : z / z' * H.conj (z / z') * (T' : H.E) = (T : H.E) := by
@@ -134,7 +134,7 @@ abbrev codeLevelData (W : Type) (Dst : ℝ)
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H) kb ks tw htw
 
 /- English proof (translation)
-Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nHyp5 (W : Type) (Dst : ℝ)
     (kb : ∀ j, Tau2 R → Fin (R.sigW j).1 → ℤ) (ks : ∀ j, Tau2 R → Fin (R.sigW j).2 → ℤ)
@@ -453,7 +453,7 @@ variable {R : Ranks} (h : HCParam R) (n : ℕ)
   (hn : 0 < n) (a : Fin (R.k - 2) → Bool)
 
 /- English proof (translation)
-Unfold `hcLet`. Rewrite using `[dif_pos ⟨by simp, by simpa using hl⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hcLet_mid (l : ℕ) (hl : l < R.k - 2) :
     hcLet h n a ⟨l + 1, by omega⟩ = h.u ⟨l + 1, by omega⟩ - (if a ⟨l, hl⟩ then (n : ℚ) else 0) := by
@@ -462,7 +462,7 @@ theorem hcLet_mid (l : ℕ) (hl : l < R.k - 2) :
   rfl
 
 /- English proof (translation)
-Unfold `hcLet`. Rewrite using `[dif_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hcLet_end (i : Fin R.k) (hi : i.1 = 0 ∨ R.k - 2 ≤ i.1 - 1) : hcLet h n a i = h.u i := by
   unfold hcLet
@@ -497,7 +497,7 @@ def hcWord : HCParam R :=
       · exact ⟨z, hz⟩ }
 
 /- English proof (translation)
-Use `show hcLet h n a ⟨l + 1, _⟩ = h.v ⟨l, _⟩ - 1 / 2 - _`. Rewrite using `[hcLet_mid h n a l hl, hlet l hl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcWord_letter (l : ℕ) (hl : l < R.k - 2) :
     (hcWord h n hgap hlet hn a).u ⟨l + 1, by omega⟩ =
@@ -508,13 +508,13 @@ theorem hcWord_letter (l : ℕ) (hl : l < R.k - 2) :
 end Words
 
 /- English proof (translation)
-Simplify using `using Fintype.card_le_of_injective _ D.s.letter_inj`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_word_le (D : D7) : Fintype.card D.what₂.Word ≤ 2 ^ (D.R.k - 2) := by
   simpa using Fintype.card_le_of_injective _ D.s.letter_inj
 
 /- English proof (translation)
-Establish `h1` using `D.s.u_letter u τ l.1 l.2`. Take `⟨a, ha⟩` from `(D.hcW u τ).u_half ⟨l.1 + 1, by omega⟩`. Take `⟨b, hb⟩` from `(D.hcW u τ).v_int ⟨l.1, by omega⟩`. Rewrite `h1` using `[ha, hb, show D.s.letter u ⟨l.1, l.2⟩ = true from h, if_pos rfl]`. Conclude with `⟨b - a - 1, by push_cast; linarith⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem del_int_of_low (D : D7) (u : D.what₂.Word) (l : Fin (D.R.k - 2)) (h : D.s.letter u l = true)
     (τ : D.what₂.Tau) : ∃ z : ℤ, D.s.Del = z := by

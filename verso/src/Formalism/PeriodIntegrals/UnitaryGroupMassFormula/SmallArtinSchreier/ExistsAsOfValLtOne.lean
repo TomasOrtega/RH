@@ -13,15 +13,13 @@ variable {K : Type*} [Field K] {v : Valuation K ℝ≥0} {O : Type*} [CommRing O
 
 include hv in
 /- English proof (translation)
-Distinguish the cases in `h0 : PreTilt.coeff 0 e = 0`. Conclude with `⟨1, by rw [pow_one, h0]⟩`. Establish `hval : PreTilt.val K v O hv p e = ModP.preVal K v O p (PreTilt.coeff 0 e)`. Express the relevant statement in the definitionally equal form `PreTilt.valAux K v O p e = _`. Rewrite using `[PreTilt.valAux_eq hv h0, pow_zero, pow_one]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨E, hE⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff 0 e)`. Establish `hE0 : (Ideal.Quotient.mk (Ideal.span {(p : O)}) E : ModP O p) ≠ 0`. Rewrite using `[hE]`. Conclude with `h0`. Establish `hvE : v (algebraMap O K E) < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ModP.preVal_mk hv hE0, hE, ← hval]`. Conclude with `he`. Take `⟨N, hN⟩` from `NNReal.exists_pow_lt_of_lt_one hp hvE`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hEN : (Ideal.Quotient.mk (Ideal.span {(p : O)}) (E ^ N) : ModP O p) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `h1` using `(ModP.v_p_lt_val hv).2 h`. Rewrite `h1` using `[map_pow, v.map_pow]`. Conclude with `lt_asymm h1 hN`. Rewrite using `[← hE, ← map_pow]`.
-
-Conclude with `hEN`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_zero_nilpotent (hp : 0 < v (p : K)) (e : PreTilt O p)
     (he : PreTilt.val K v O hv p e < 1) : ∃ N : ℕ, PreTilt.coeff 0 e ^ N = 0 := by
@@ -46,7 +44,7 @@ theorem coeff_zero_nilpotent (hp : 0 < v (p : K)) (e : PreTilt O p)
 
 include hv in
 /- English proof (translation)
-Take `⟨N, hN⟩` from `coeff_zero_nilpotent hv hp e he`. Conclude with `⟨solPerf (R := ModP O p) (p := p) e hN, solPerf_spec (R := ModP O p) (p := p) e hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_as_of_val_lt_one (hp : 0 < v (p : K)) (e : PreTilt O p)
     (he : PreTilt.val K v O hv p e < 1) : ∃ w : PreTilt O p, w ^ p - w = e := by
@@ -56,9 +54,9 @@ theorem exists_as_of_val_lt_one (hp : 0 < v (p : K)) (e : PreTilt O p)
 end Gen
 
 /- English proof (translation)
-Introduce `l _ e he`. Establish `hp : 0 < (PadicComplex.valued l).v ((l : ℕ) : PadicComplex l)`. Rewrite using `[PadicComplex.valuation_p l]`. Establish `: (0 : ℝ≥0) < (l : ℝ≥0)` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Conclude with `exists_as_of_val_lt_one (PadicComplexInt.integers l) hp e he`.
+A detailed English derivation is pending.
 -/
 theorem tiltSmall : PI.ArtSch.TiltSmall := by
   intro l _ e he

@@ -28,7 +28,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.StdSphVal
 
 /- English proof (translation)
-Establish `hb` using `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.algebraMap_bijective v w h1`. Establish `e : algebraMap (Qv v) (Kv K w) (dg1 v w ξ) = algebraMap K (Kv K w) ξ` using `Function.rightInverse_invFun hb.2 _`. Rewrite using `[← e]`. Conclude with `(algebraMap_mem_integer_iff (Qv v) (Kv K w) (dg1 v w ξ)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degreeOneEmbedding_mem_integers_iff {K : Type} [Field K] [NumberField K] (v : Pl) (w : PlK K)
     [w.asIdeal.LiesOver v.asIdeal] (h1 : Module.finrank (Qv v) (Kv K w) = 1) (ξ : K) :
@@ -40,23 +40,21 @@ theorem degreeOneEmbedding_mem_integers_iff {K : Type} [Field K] [NumberField K]
   exact (algebraMap_mem_integer_iff (Qv v) (Kv K w) (dg1 v w ξ)).symm
 
 /- English proof (translation)
-Introduce `K _ _ h2 c v L hok hstd hU k hk ξ`. Establish `hψ : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Take `⟨hχc, hχ1, hχ0⟩` from `(GlobalTheory.CompanionTheory.StdAddChar.isStd_inv_and_trivial_and_nontrivial (Qv v) _ hψ).1`. Consider the cases of `L with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ => haveI := i₁ haveI := i₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Take `⟨hne, -, -⟩` from `hok`. Establish `hΦ : Φ = Set.indicator {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]} 1` using `hstd`. Substitute `hΦ` using the available equality. Take `⟨hall, d₁, d₂⟩` from `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.places_split h2 v w₁ w₂ hne`. Establish `r₁ : IsUnramifiedChar (cAt c v w₁)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₁) (localChar c w₁) (hU w₁).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix` using `GlobalTheory.CompanionTheory.SphTheta.SplitPiK.piks (GlobalTheory.CompanionTheory.SphTheta.SplitRWK.rwks GlobalTheory.CompanionTheory.SplitRep.sRep) (Qv v) _ hχc hχ1 hχ0 _ r₁ k hk`. Establish `hval : LM.val (LM.sp w₁ w₂ (Set.indicator {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]} 1)) k ξ = Set.indicator {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]} (1 : Qv v × Qv v → ℂ) (dg1 v w₁ ξ, dg1 v w₂ ξ)` using `congrFun hfix _`. Rewrite using `[hval]`. Establish `hiff : (dg1 v w₁ ξ, dg1 v w₂ ξ) ∈ {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]} ↔ ∀ w : PlK K, w.asIdeal.LiesOver v.asIdeal → algebraMap K (Kv K w) ξ ∈ 𝒪[Kv K w]`. Simplify using `only [Set.mem_setOf_eq, degreeOneEmbedding_mem_integers_iff v w₁ d₁, degreeOneEmbedding_mem_integers_iff v w₂ d₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun h w hw => ?_, fun h => ⟨h w₁ i₁, h w₂ i₂⟩⟩` and prove the remaining obligations. Break down `hall w hw with rfl | rfl` into its components or cases. Conclude with `h.1`. Conclude with `h.2`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_mem (hiff.2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (fun h' => h (hiff.1 h'))]`. Consider the case `@ns w i σ η Φ => haveI := i`. Take `⟨hu, hσ, hη, -⟩` from `hok`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hΦ : Φ = Set.indicator {x : Kv K w | x ∈ 𝒪[Kv K w]} 1` using `hstd`. Substitute `hΦ` using the available equality. Break down `GlobalTheory.CompanionTheory.QuadPlace.split_or_inert_of_unramified K h2 v (fun w _ => (hU w).2) with ⟨a, b, ha, hb, hab⟩ | ⟨w', hw', -, hf, hord⟩` into its components or cases. Conclude with `absurd ((hu a ha).trans (hu b hb).symm) hab`. Take `rfl : w' = w` from `hu w' hw'`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : residueCard (Kv K w') = residueCard (Qv v) ^ 2` using `GlobalTheory.CompanionTheory.NormGauss.card_E hf hord`. Establish `hcont : Continuous (algebraMap (Qv v) (Kv K w'))` using `continuous_adicCompletionMap v w'`. Establish `hfix` using `GlobalTheory.CompanionTheory.PiKFUnr.pikf GlobalTheory.CompanionTheory.RwKF.rwkf GlobalTheory.CompanionTheory.NormModulus.wMod GlobalTheory.CompanionTheory.UnitNormUnr.normU (Qv v) _ hχc hχ1 (Kv K w') hf hcont σ hσ η hη hχ0 hres (localChar c w') (hU w').1 k hk`. Establish `hval : LM.val (LM.ns w' σ η (Set.indicator {x : Kv K w' | x ∈ 𝒪[Kv K w']} 1)) k ξ = Set.indicator {x : Kv K w' | x ∈ 𝒪[Kv K w']} (1 : Kv K w' → ℂ) (algebraMap K (Kv K w') ξ)` using `congrFun hfix _`. Rewrite using `[hval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hiff : algebraMap K (Kv K w') ξ ∈ {x : Kv K w' | x ∈ 𝒪[Kv K w']} ↔ ∀ u : PlK K, u.asIdeal.LiesOver v.asIdeal → algebraMap K (Kv K u) ξ ∈ 𝒪[Kv K u]`. Use `⟨fun h u hv => ?_, fun h => h w' i⟩` and prove the remaining obligations. Take `rfl` from `hu u hv`. Conclude with `h`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Set.indicator_of_mem (hiff.2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (fun h' => h (hiff.1 h'))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_std : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
     ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),

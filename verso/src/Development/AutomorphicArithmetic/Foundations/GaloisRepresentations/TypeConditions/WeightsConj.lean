@@ -33,7 +33,7 @@ structure Aw (x y : WD h) : Prop where
   mono : NcW y → x.mono0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [← WD.charPol_natDegree x 1, k.pol, WD.charPol_natDegree], fun u => k.n0 (WD.unr_mono0 _ u), fun _ g _ => k.pol g, fun m => (k.n0 m.2.1) ▸ m.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem Aw.ofN {x y : WD h} (k : UpperTheory.GalN.Aw x y) : Aw x y :=
   ⟨by rw [← WD.charPol_natDegree x 1, k.pol, WD.charPol_natDegree], fun u => k.n0 (WD.unr_mono0 _ u), fun _ g _ => k.pol g,
@@ -96,7 +96,7 @@ def CarU : Prop :=
         Ab (wdAt P ι Bw h hj (r.comp (Dec (F := E) A).subtype)) (rc (algNorm σ))
 
 /- English proof (translation)
-The claim follows from `H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)`.
+A detailed English derivation is pending.
 -/
 theorem CuspU.of_isCsd (H : CuspU) {E : Type} (Ω : Type) [Field E]
     [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
@@ -106,7 +106,7 @@ theorem CuspU.of_isCsd (H : CuspU) {E : Type} (Ω : Type) [Field E]
   H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)
 
 /- English proof (translation)
-The claim follows from `rec_algNorm hrc σ ▸ H.away w hl A h rc hrc σ hσ`.
+A detailed English derivation is pending.
 -/
 theorem IsGalU.aw {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}
@@ -118,7 +118,7 @@ theorem IsGalU.aw {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : 
   rec_algNorm hrc σ ▸ H.away w hl A h rc hrc σ hσ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.cont, H.ss, fun w hl A h rc hrc σ hσ => .ofN (H.away w hl A h rc hrc σ hσ), H.weights, H.weights_conj, fun P AI T w A h O _ _ _ Bw hj => have k := H.above P AI T w A h O Bw hj ⟨fun _ => k.deRham, fun _ => k.jumps, k.crys⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsGalU.ofN {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}
@@ -129,58 +129,58 @@ theorem IsGalU.ofN {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι :
       ⟨fun _ => k.deRham, fun _ => k.jumps, k.crys⟩⟩
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp exact ⟨r, wt, HT, .ofN H⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pairOfN (h : UpperTheory.GalN.PairU) : PairU := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
   obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp
   exact ⟨r, wt, HT, .ofN H⟩
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp` and use `by obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp exact ⟨r, wt, HT, .ofN H⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspOfN (h : UpperTheory.GalN.CuspU) : CuspU := fun E Ω _ _ _ _ _ _ l _ ι a ha π χ hr hp => by
   obtain ⟨r, wt, HT, H⟩ := h E Ω l ι a ha π χ hr hp
   exact ⟨r, wt, HT, .ofN H⟩
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hr` and use `by obtain ⟨r, wt, HT, H, K⟩ := h E Ω l ι a ha π hc hr exact ⟨r, wt, HT, .ofN H, fun P AI T w hw A h O _ _ _ Bw hj σ hσ rc hrc _ => (K P AI T w hw A h O Bw hj).2 σ hσ rc hrc⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem carOfN (h : UpperTheory.GalN.CarU) : CarU := fun E Ω _ _ _ _ _ _ l _ ι a ha π hc hr => by
   obtain ⟨r, wt, HT, H, K⟩ := h E Ω l ι a ha π hc hr
   exact ⟨r, wt, HT, .ofN H, fun P AI T w hw A h O _ _ _ Bw hj σ hσ rc hrc _ => (K P AI T w hw A h O Bw hj).2 σ hσ rc hrc⟩
 
 /- English proof (translation)
-The claim follows from `pairOfN (UpperTheory.GalN.weakP h)`.
+A detailed English derivation is pending.
 -/
 theorem weakP (h : GlobalTheory.Published.GaloisRepOfPolarizedPair) : PairU := pairOfN (UpperTheory.GalN.weakP h)
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem weakP' (h : PairU) : PairU := h
 /- English proof (translation)
-The claim follows from `cuspOfN (UpperTheory.GalN.weakG h)`.
+A detailed English derivation is pending.
 -/
 theorem weakG (h : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) : CuspU := cuspOfN (UpperTheory.GalN.weakG h)
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem weakG' (h : CuspU) : CuspU := h
 /- English proof (translation)
-The claim follows from `carOfN (UpperTheory.GalN.merge hF hL hG hC)`.
+A detailed English derivation is pending.
 -/
 theorem merge (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hC : GlobalTheory.GalOfCusp.LocalGlobalAboveL) : CarU :=
   carOfN (UpperTheory.GalN.merge hF hL hG hC)
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem merge' (_ : GlobalTheory.Published.AutomorphicFormsFiniteGL) (_ : GlobalTheory.Published.LocalLanglandsGL) (_ : CuspU) (h : CarU) : CarU := h
 /- English proof (translation)
-The claim follows from `carOfN (UpperTheory.GalN.mergeP hF hL hG hC hR)`.
+A detailed English derivation is pending.
 -/
 theorem mergeP (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hC : GlobalTheory.Published.LocalGlobalAboveL)
     (hR : GlobalTheory.Published.RegularAlgebraicPurity) : CarU := carOfN (UpperTheory.GalN.mergeP hF hL hG hC hR)
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem mergeP' (_ : GlobalTheory.Published.AutomorphicFormsFiniteGL) (_ : GlobalTheory.Published.LocalLanglandsGL) (_ : CuspU) (h : CarU)
     (_ : GlobalTheory.Published.RegularAlgebraicPurity) : CarU := h

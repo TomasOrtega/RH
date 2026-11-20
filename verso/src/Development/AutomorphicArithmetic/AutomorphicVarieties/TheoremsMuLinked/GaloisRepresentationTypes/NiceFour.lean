@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.1 hl.out`. Use `haveI : (Ideal.span {(l : ℤ)}).IsPrime := (Ideal.span_singleton_prime hp.ne_zero).2 hp`. Take `⟨Q, hQ, hc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 K) (Ideal.span {(l : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot (algebraMap ℤ (𝓞 K))).1 (RingHom.injective_int _)]; exact bot_le)`. Establish `hm : ((l : ℕ) : 𝓞 K) ∈ Q`. Establish `: (l : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))` using `hc ▸ Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `⟨⟨Q, hQ, fun h => ?_⟩, hm⟩` and prove the remaining obligations. Rewrite `hm` using `[h, Ideal.mem_bot]`. Conclude with `hl.out.ne_zero (by exact_mod_cast hm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_place_above_prime_alt (K : Type) [Field K] [NumberField K] (l : ℕ) [hl : Fact l.Prime] :
     ∃ v : HeightOneSpectrum (𝓞 K), ((l : ℕ) : 𝓞 K) ∈ v.asIdeal := by
@@ -24,11 +24,11 @@ private theorem exists_place_above_prime_alt (K : Type) [Field K] [NumberField K
   exact hl.out.ne_zero (by exact_mod_cast hm)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `h1` using `Matrix.charpoly_units_conj g (W.mat r s)`. Establish `h2 : ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).BlockTriangular id` using `fun i j hij => (hg s).1 i j hij`. Establish `h3` using `Matrix.charpoly_of_upperTriangular _ h2`. Rewrite using `[← h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, Matrix.coe_units_inv] at h3`. Use `h3.trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h4` using `(hg s).2 i`. Simplify using `only [Units.val_mul, Matrix.coe_units_inv] at h4`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h4]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem charpoly_eq_prod_flag_characters {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H →* GL (Fin n) k)
     (κ : Fin n → H →* kˣ) (h : W.HasFlag r κ) (s : H) :
@@ -47,11 +47,9 @@ private theorem charpoly_eq_prod_flag_characters {H k : Type} [Group H] [CommRin
   rw [h4]
 
 /- English proof (translation)
-Introduce `f`. Establish `h : (fun g => f (a g)) = fun g => ∑ i, ∑ j, a g i j * f (Matrix.single i j 1)`. Use function extensionality and compare the values at `g`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single (a g)]`. Simplify using `only [map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← map_smul]`. Simplify using the standard rewrite rules. Establish `hc : Continuous fun g => f (a g)`. Rewrite using `[h]`.
-
-Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (ha.matrix_elem i j).mul continuous_const`. Conclude with `isClosed_singleton.preimage hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_linear_closed {G κ : Type} [TopologicalSpace G] [Field κ] [TopologicalSpace κ] [IsTopologicalRing κ] [T1Space κ] {n : ℕ}
     (a : G → Matrix (Fin n) (Fin n) κ) (ha : Continuous a) : Pr.LinClosed a := by
@@ -69,23 +67,19 @@ private theorem continuous_linear_closed {G κ : Type} [TopologicalSpace G] [Fie
   exact isClosed_singleton.preimage hc
 
 /- English proof (translation)
-Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Use `haveI hN : F.G'.Normal := MonoidHom.normal_ker _`. Establish `hm : Continuous (W.mat ρ)` using `Units.continuous_val.comp hρ`. Establish `hfa : ∀ s t, s ≠ t → ¬ IsOfFinOrder (a s / a t)` using `fun s t hst h => by`. Take `⟨m, hm0, hm1⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm1` using `[div_pow, div_eq_one]`. Conclude with `hfr s t hst m hm0 hm1`. Establish `hsep` using `Ws.charpoly_pow_separable_of_eigenvalue_ratios_not_finOrder _ 4 _ a hu hfa`. Establish `hcomm : commutator F.G₀ ≤ F.G'` using `Abelianization.commutator_subset_ker _`. Establish `hI : Th.TypeI F ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hI`. Take `⟨V, S, hV0, hV1, hNS, hS, hSi⟩` from `Ws.exists_stabilizer_index_dvd_of_not_irreducible_restriction K F.G₀ 4 (W.mat ρ) hb F.G' hcomm ⟨_, hg, by simpa using hsep 1 one_pos⟩ hI`. Take `⟨η, hη, hSη, hcp⟩` from `Ws.exists_sign_twist_charpoly_of_not_irreducible_restriction K F.G₀ twoK (W.mat ρ) hb S (hcomm.trans hNS) hSi fun h => (h V fun s hs => (hS s).1 hs).elim hV0 hV1`. Use `haveI : S.FiniteIndex := ⟨fun h => by simp [h] at hSi⟩`. Establish `hSo : IsOpen (S : Set F.G₀)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `S.isOpen_of_isClosed_of_finiteIndex ?_` and prove the remaining obligations. Establish `h1` using `Ws.isClosed_setOf_matrix_stabilizes_submodule F.G₀ K 4 _ (continuous_linear_closed _ hm) V`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s`. Conclude with `hS s`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hk` using `Ws.sign_char_eq_one_of_cyclotomic_sub_one_not_isUnit l hl F.G₀ (F.ε.comp F.η.ker.subtype) (F.ε_cont.comp continuous_subtype_val) η (Subgroup.isOpen_mono hSη hSo) (hNS.trans hSη)`. Establish `h1` using `hc (W.pushCh (Int.castRingHom (ResidueField O)) η) ?_ ?_ (Th.Det.perm4 K (ResidueField O) A F.G₀ 4 ρ j φ χ η hj hred hcp)`. Use `hη (MonoidHom.ext fun s => ?_)` and prove the remaining obligations. Break down `Int.units_eq_one_or (η s) with h | h` into its components or cases. Conclude with `h`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Units.val (DFunLike.congr_fun h1 s)`. Simplify using `only [MonoidHom.comp_apply, h] at h2`. Conclude with `absurd (by simp at h2; linear_combination -h2) two`. Use extensionality with `s`. Apply the tactic sequence `rcases Int.units_eq_one_or (η s) with h | h <;> simp [h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Establish `h2 : η s = 1` using `hk s fun h => by`. Establish `h3` using `h.map ((algebraMap O (ResidueField O)).comp (algebraMap ℤ_[l] O))`. Establish `h4 : ((algebraMap O (ResidueField O)).comp (algebraMap ℤ_[l] O)) ((F.ε.comp F.η.ker.subtype) s : ℤ_[l]) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hs)`. Rewrite `h3` using `[map_sub, h4, map_one, sub_self]`.
-
-Conclude with `not_isUnit_zero h3`. Simplify using `[MonoidHom.mem_ker, h2]`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Establish `hsp : Submodule.span K (Set.range ((W.mat ρ).comp F.G'.subtype)) = ⊤` using `KStar.Schema.span_eq_top_of_irreducible _ fun N hN => hI N fun s hs => hN ⟨s, hs⟩`. Establish `hsp' : Submodule.span K (Set.range (W.mat ρ)) = ⊤` using `KStar.Schema.span_eq_top_of_irreducible _ fun N hN => hb N fun s _ => hN s`.
-
-Establish `hnc` using `Ws.exists_noncommuting_images_in_finiteIndex_normal_subgroup K (ResidueField O) A F.G₀ (W.mat ρ) j φ χ hj hred hsp' hd F.G' _ hg hsep`. Use `Ws.exists_mem_open_inter_subgroup_of_cosetwise_finiteIndex F.G₀ F.G' (fun s => (W.mat ρ s).charpoly.Separable) fun V hV σ => ?_` and prove the remaining obligations. Conclude with `AlgebraTools.regCosetFour K F.G' twoK ((W.mat ρ).comp F.G'.subtype) (fun f => isClosed_singleton.preimage (f.continuous_eval.comp (continuous_pi fun p => (hm.comp continuous_subtype_val).matrix_elem p.1 p.2))) hsp ⟨⟨_, hg⟩, a, hu, hfa⟩ (fun N _ h2 h3 => hnc N h2 h3) V hV σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem absolute_irreducible_rank_four (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (F : W.GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     (two : (2 : ResidueField O) ≠ 0) (χ : Fin 4 → F.G₀ →* (ResidueField O)ˣ)

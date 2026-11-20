@@ -11,9 +11,7 @@ noncomputable section
 namespace GlobalTheory.BCT.FinCentComm
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add_right hq`. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`.
-
-Conclude with `(h.pow_right k).smul_right a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_aeval {R : Type} [CommRing R] {r : ℕ} {m A : Matrix (Fin r) (Fin r) R}
     (h : Commute m A) (p : R[X]) : Commute m (aeval A p) := by
@@ -24,7 +22,7 @@ theorem commute_aeval {R : Type} [CommRing R] {r : ℕ} {m A : Matrix (Fin r) (F
     exact (h.pow_right k).smul_right a
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[GlobalTheory.ClassParam.krylov, map_sum, aeval_monomial, Matrix.sum_mulVec, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.mulVec, dotProduct, Matrix.sum_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem aeval_mulVec_krylov {R : Type} [CommRing R] {r : ℕ} (A : Matrix (Fin r) (Fin r) R)
     (v c : Fin r → R) :
@@ -37,13 +35,13 @@ theorem aeval_mulVec_krylov {R : Type} [CommRing R] {r : ℕ} (A : Matrix (Fin r
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use `set K := GlobalTheory.ClassParam.krylov A v with hK`. Set `c` to `K⁻¹ *ᵥ (n *ᵥ v)`. Use `⟨∑ j : Fin r, monomial (j : ℕ) (c j), ?_⟩` and prove the remaining obligations. Use `set p := aeval A (∑ j : Fin r, monomial (j : ℕ) (c j)) with hp`. Establish `hpv : p *ᵥ v = n *ᵥ v`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp, aeval_mulVec_krylov, ← hK]`. Simplify using `only [c, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hKu, Matrix.one_mul]`. Establish `hpA : Commute p A` using `(commute_aeval (Commute.refl A) _).symm`. Establish `hcol : n * K = p * K`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ M : Matrix (Fin r) (Fin r) R, Commute M A → (M * K) i j = (A ^ (j : ℕ) *ᵥ (M *ᵥ v)) i`. Introduce `M hM`. Establish `: (M * K) i j = (M *ᵥ (A ^ (j : ℕ) *ᵥ v)) i`. Simplify using `[hK, GlobalTheory.ClassParam.krylov, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, (hM.pow_right _).eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1 n hn, e1 p hpA, hpv]`. Use `congrArg (· * K⁻¹) hcol` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hKu]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_aeval_of_cyclic {R : Type} [CommRing R] {r : ℕ} (A : Matrix (Fin r) (Fin r) R) (v : Fin r → R)
     (hKu : IsUnit (GlobalTheory.ClassParam.krylov A v).det) (n : Matrix (Fin r) (Fin r) R) (hn : Commute n A) :
@@ -69,9 +67,7 @@ theorem eq_aeval_of_cyclic {R : Type} [CommRing R] {r : ℕ} (A : Matrix (Fin r)
   simpa [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hKu] using this
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `GlobalTheory.ClassParam.exists_cyclic_field A hA`. Establish `hKu : IsUnit (GlobalTheory.ClassParam.krylov (A.map f) (f ∘ v)).det`. Rewrite using `[← GlobalTheory.ClassParam.krylov_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(isUnit_iff_ne_zero.2 hv).map f`. Take `⟨q, rfl⟩` from `eq_aeval_of_cyclic (A.map f) (f ∘ v) hKu Y hY`.
-
-Conclude with `(commute_aeval (m := X) hX q).eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem commute_of_commute_map_separable {E R : Type} [Field E] [CommRing R] (f : E →+* R) {r : ℕ}
     (A : Matrix (Fin r) (Fin r) E) (hA : A.charpoly.Separable) (X Y : Matrix (Fin r) (Fin r) R)
@@ -90,9 +86,9 @@ namespace GlobalTheory.BCT.FinCentComm
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `ha : cInf (a : UA E n) = 1` using `a.2`. Use extensionality with `i j`. Establish `h` using `congrArg (fun g : GL (Fin n) (Cinf E) => g.val i j) ha`. Express the relevant statement in the definitionally equal form `(infEq E).symm (FinPtLoc.fstA E (((a : UA E n) : GA E n).val i j)) = (1 : Matrix (Fin n) (Fin n) (Cinf E)) i j at h`. Rewrite using `[Matrix.map_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `(infEq E).symm.injective` to reduce the goal to its premises. Rewrite using `[h]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_fst_eq_one (a : finU E n) : ((a : UA E n) : GA E n).val.map (FinPtLoc.fstA E) = 1 := by
   have ha : cInf (a : UA E n) = 1 := a.2
@@ -105,7 +101,7 @@ theorem map_fst_eq_one (a : finU E n) : ((a : UA E n) : GA E n).val.map (FinPtLo
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Rewrite using `[FinPtLoc.finPt_eq]`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, FinPtLoc.snd_entry]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_snd_finPt (γ : UE E n) :
     (((finPt γ : finU E n) : UA E n) : GA E n).val.map (pFin E) = γ.1.val.map (algebraMap E (Af E)) := by
@@ -119,11 +115,11 @@ end GlobalTheory.BCT.FinCentComm
 open GlobalTheory.BCT.FinCentComm in
 
 /- English proof (translation)
-Introduce `E _ _ _ n γ hγ a ha b hb`. Establish `key : ∀ c ∈ twCent (MonoidHom.id (finU E n)) (finPt γ), (((c : UA E n) : GA E n).val.map (pFin E)) * γ.1.val.map (algebraMap E (Af E)) = γ.1.val.map (algebraMap E (Af E)) * ((c : UA E n) : GA E n).val.map (pFin E)`. Introduce `c hc`. Establish `h : c * finPt γ = finPt γ * c` using `hc`. Establish `h'` using `congrArg (fun z : finU E n => ((z : UA E n) : GA E n).val.map (pFin E)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.map_mul] at h'`. Rewrite `h'` using `[map_snd_finPt]`. Then use the resulting hypothesis. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Apply `FinPtLoc.ext_ad` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_fst_eq_one a, map_fst_eq_one b]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Conclude with `commute_of_commute_map_separable (algebraMap E (Af E)) γ.1.val hγ _ _ (key a ha) (key b hb)`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.finCent_comm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (γ : UE E n),
     γ.1.val.charpoly.Separable → ∀ a ∈ twCent (MonoidHom.id (finU E n)) (finPt γ),

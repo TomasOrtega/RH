@@ -13,9 +13,9 @@ variable {n : ℕ}
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hA' : HasDerivAt (fun τ => (A τ : Fin n → Fin n → ℂ)) (A' : Fin n → Fin n → ℂ) 0` using `hA`. Establish `hB' : HasDerivAt (fun τ => (B τ : Fin n → Fin n → ℂ)) (B' : Fin n → Fin n → ℂ) 0` using `hB`. Establish `h : HasDerivAt (fun τ => ((A τ * B τ : Matrix (Fin n) (Fin n) ℂ) : Fin n → Fin n → ℂ)) ((A' * B 0 + A 0 * B' : Matrix (Fin n) (Fin n) ℂ) : Fin n → Fin n → ℂ) 0`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `HasDerivAt.fun_sum fun k _ => ?_` and prove the remaining obligations. Conclude with `(hasDerivAt_pi.1 (hasDerivAt_pi.1 hA' i) k).mul (hasDerivAt_pi.1 (hasDerivAt_pi.1 hB' k) j)`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_matrix_mul {A B : ℂ → Matrix (Fin n) (Fin n) ℂ} {A' B' : Matrix (Fin n) (Fin n) ℂ}
     (hA : HasDerivAt A A' 0) (hB : HasDerivAt B B' 0) :
@@ -32,17 +32,17 @@ theorem hasDerivAt_matrix_mul {A B : ℂ → Matrix (Fin n) (Fin n) ℂ} {A' B' 
   exact h
 
 /- English proof (translation)
-Set `v` to `x * raiseR S`. Establish `hl` using `((hasDerivAt_id (0 : ℂ)).smul_const v).const_add x`. Establish `hg` using `(da_zOfE x h).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) hl (by simp)`. Simplify using `only [id_eq, one_smul, Function.comp_def] at hg`. Establish `hu : ∀ τ : ℂ, u1 (x + τ • v) = u1 x + τ • (u2 x * S)` using `fun τ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[line_raise, first_cayley_block_mul_block, Matrix.mul_one, Matrix.mul_smul]`. Establish `hN : ∀ τ : ℂ, Nm (x + τ • v) = Nm x + τ • (Nm' x * S)` using `fun τ => by`. Rewrite using `[line_raise, Nm_mX, Matrix.mul_one, Matrix.mul_smul]`. Establish `hc : Continuous fun τ : ℂ => (u1 x + τ • (u2 x * S)).det` using `(continuous_const.add (continuous_id.smul continuous_const)).matrix_det`. Establish `hev : ∀ᶠ τ in 𝓝 (0 : ℂ), (u1 x + τ • (u2 x * S)).det ≠ 0` using `hc.continuousAt.eventually_ne (by simpa using h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `((hasDerivAt_id (0 : ℂ)).smul_const (u2 x * S)).const_add (u1 x)`. Simplify using `only [id_eq, one_smul] at hB`. Establish `hL` using `hasDerivAt_matrix_mul hg hB`. Establish `hR` using `((hasDerivAt_id (0 : ℂ)).smul_const (Nm' x * S)).const_add (Nm x)`. Simplify using `only [id_eq, one_smul] at hR`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `heq : (fun τ : ℂ => zOfE (x + τ • v) * (u1 x + τ • (u2 x * S))) =ᶠ[𝓝 0] fun τ => Nm x + τ • (Nm' x * S)` using `by filter_upwards [hev] with τ hτ`. Rewrite using `[← hu, zOfE_eq, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (by rwa [hu])), Matrix.mul_one, hN]`. Establish `hfin` using `hL.unique (hR.congr_of_eventuallyEq heq)`. Simplify using `only [zero_smul, add_zero] at hfin`. Establish `hu1 : IsUnit (u1 x).det` using `isUnit_iff_ne_zero.2 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : fderiv ℂ zOfE x v * u1 x = WM x * S`. Use `(eq_sub_of_add_eq hfin).trans ?_` and prove the remaining obligations. Rewrite using `[WM, show (-(Complex.I • x.toBlocks₁₁) + x.toBlocks₁₂) = Nm' x from rfl, Matrix.sub_mul, Matrix.mul_assoc (zOfE x)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu1, Matrix.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = WM x * S * (u1 x)⁻¹ := congrArg (fun M => M * (u1 x)⁻¹) key`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_zOfE_raise (x : M2 n) (h : (u1 x).det ≠ 0) (S : Matrix (Fin n) (Fin n) ℂ) :
     fderiv ℂ zOfE x (x * raiseR S) = WM x * S * (u1 x)⁻¹ := by
@@ -78,7 +78,7 @@ theorem fderiv_zOfE_raise (x : M2 n) (h : (u1 x).det ≠ 0) (S : Matrix (Fin n) 
     _ = WM x * S * (u1 x)⁻¹ := congrArg (fun M => M * (u1 x)⁻¹) key
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks A, ← fromBlocks_toBlocks B, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBlocks₁₁_mul' (A B : M2 n) :
     (A * B).toBlocks₁₁ = A.toBlocks₁₁ * B.toBlocks₁₁ + A.toBlocks₁₂ * B.toBlocks₂₁ := by
@@ -86,7 +86,7 @@ theorem toBlocks₁₁_mul' (A B : M2 n) :
   simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks A, ← fromBlocks_toBlocks B, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBlocks₁₂_mul' (A B : M2 n) :
     (A * B).toBlocks₁₂ = A.toBlocks₁₁ * B.toBlocks₁₂ + A.toBlocks₁₂ * B.toBlocks₂₂ := by
@@ -94,21 +94,21 @@ theorem toBlocks₁₂_mul' (A B : M2 n) :
   simp
 
 /- English proof (translation)
-Simplify using `[toBlocks₁₁_mul', Cm, Nm, Matrix.mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_cm₁₁ (x : M2 n) : (x * Cm n).toBlocks₁₁ = Nm x := by
   simp [toBlocks₁₁_mul', Cm, Nm, Matrix.mul_smul]
 
 /- English proof (translation)
-Simplify using `[toBlocks₁₂_mul', Cm, Nm', Matrix.mul_smul, Matrix.mul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_cm₁₂ (x : M2 n) : (x * Cm n).toBlocks₁₂ = Nm' x := by
   simp [toBlocks₁₂_mul', Cm, Nm', Matrix.mul_smul, Matrix.mul_neg]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrArg Matrix.det hx`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Establish `h2 : (JJ n).det ≠ 0`. Introduce `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Matrix.det (JJ_mul_JJ (n := n))` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h3, zero_mul, Matrix.det_neg]`. Simplify using `at this`. Conclude with `h2 h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_of_inG {x : M2 n} (hx : InG x) : x.det ≠ 0 := by
   intro h0
@@ -122,7 +122,7 @@ theorem det_ne_of_inG {x : M2 n} (hx : InG x) : x.det ≠ 0 := by
   exact h2 h1.symm
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Matrix.det (cm_mul_cmi (n := n))` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_cm_ne : (Cm n).det ≠ 0 := by
   intro h
@@ -131,13 +131,13 @@ theorem det_cm_ne : (Cm n).det ≠ 0 := by
   exact zero_ne_one this
 
 /- English proof (translation)
-Introduce `hW`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hW`. Use `set w := -(((u1 x)⁻¹ * u2 x) *ᵥ v)`. Establish `hu1 : IsUnit (u1 x).det` using `isUnit_iff_ne_zero.2 h`. Establish `hM : (x * Cm n) *ᵥ Sum.elim w v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← fromBlocks_toBlocks (x * Cm n), fromBlocks_mulVec, mul_cm₁₁, mul_cm₁₂, mul_cm₂₁, mul_cm₂₂]`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr]`. Establish `e1 : Nm x *ᵥ w + Nm' x *ᵥ v = WM x *ᵥ v`. Simplify using `only [w, WM, Matrix.mulVec_neg, Matrix.mulVec_mulVec, zOfE_eq, Matrix.sub_mulVec, Matrix.mul_assoc]`. Rewrite using `[show -(Complex.I • x.toBlocks₁₁) + x.toBlocks₁₂ = Nm' x from rfl]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `e2 : u1 x *ᵥ w + u2 x *ᵥ v = 0`. Simplify using `only [w, Matrix.mulVec_neg, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu1, Matrix.one_mul, neg_add_cancel]`. Rewrite using `[e1, e2, hv]`. Apply the tactic sequence `funext i; cases i <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hdet : (x * Cm n).det ≠ 0` using `by rw [Matrix.det_mul]; exact mul_ne_zero (det_ne_of_inG hx) det_cm_ne`. Establish `h0` using `Matrix.eq_zero_of_mulVec_eq_zero hdet hM`. Conclude with `hv0 (funext fun i => by simpa using congrFun h0 (Sum.inr i))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wm_det (x : M2 n) (hx : InG x) (h : (u1 x).det ≠ 0) : (WM x).det ≠ 0 := by
   intro hW
@@ -160,7 +160,7 @@ theorem wm_det (x : M2 n) (hx : InG x) (h : (u1 x).det ≠ 0) : (WM x).det ≠ 0
   exact hv0 (funext fun i => by simpa using congrFun h0 (Sum.inr i))
 
 /- English proof (translation)
-Use `⟨fun n m e y => orbital_function_eq_weighted m e y, fun n x h0 h => ⟨da_zOfE x h, fun m e => da_F0E m e x h0 h, fun Q => ⟨fderiv_zOfE_low x h Q, fun m e => fderiv_F0E_low m e x h0 h Q⟩, fun R => ?_, fun hx => wm_det x hx h⟩⟩` and prove the remaining obligations. Rewrite using `[sig_low]`. Conclude with `fderiv_zOfE_raise x h Rᴴ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cra2 : CauchyRiemannFacts := by
   refine ⟨fun n m e y => orbital_function_eq_weighted m e y, fun n x h0 h => ⟨da_zOfE x h, fun m e => da_F0E m e x h0 h, fun Q =>

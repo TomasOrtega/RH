@@ -16,13 +16,13 @@ namespace MulEtaleDvr
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← MulUnramified.comp_mulN, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulN_eq_pow (G : Over S) [GrpObj G] (n : ℕ) : mulN G n = 𝟙 G ^ n := by
   rw [← MulUnramified.comp_mulN, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[MulUnramified.comp_mulN, one_eq_one, one_pow] mul_hom := by`. Rewrite using `[MulUnramified.comp_mulN, mul_eq_mul, comp_mul, mul_pow]`. Apply the tactic sequence `congr 1 <;> simp [MulUnramified.comp_mulN]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isMonHom_mulN (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ) : IsMonHom (mulN G n) where
   one_hom := by rw [MulUnramified.comp_mulN, one_eq_one, one_pow]
@@ -31,7 +31,7 @@ theorem isMonHom_mulN (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ) : IsMon
     congr 1 <;> simp [MulUnramified.comp_mulN]
 
 /- English proof (translation)
-Rewrite using `[mulN_eq_pow, mulN_eq_pow, ← (Over.pullback p).map_id]`. Conclude with `map_pow (Over.pullback p).homMonoidHom _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback_map_mulN {S' : Scheme.{0}} (p : S' ⟶ S) (G : Over S) [GrpObj G] (n : ℕ) :
     (Over.pullback p).map (mulN G n) = mulN ((Over.pullback p).obj G) n := by
@@ -39,7 +39,7 @@ theorem pullback_map_mulN {S' : Scheme.{0}} (p : S' ⟶ S) (G : Over S) [GrpObj 
   exact map_pow (Over.pullback p).homMonoidHom _ _
 
 /- English proof (translation)
-Establish `h` using `(IsPullback.of_hasPullback (mulN G n) (η : 𝟙_ (Over S) ⟶ G)).map (Over.forget S)`. Establish `e : (pullback.snd (mulN G n) (η : 𝟙_ (Over S) ⟶ G)).left = (torsion G n).hom` using `(Category.comp_id _).symm.trans (Over.w (pullback.snd (mulN G n) (η : 𝟙_ (Over S) ⟶ G)))`. Conclude with `e ▸ h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullback_torsion (G : Over S) [GrpObj G] (n : ℕ) :
     IsPullback (torsion.ι G n).left (torsion G n).hom (mulN G n).left η[G].left := by
@@ -49,14 +49,14 @@ theorem isPullback_torsion (G : Over S) [GrpObj G] (n : ℕ) :
   exact e ▸ h
 
 /- English proof (translation)
-Simplify using `using hn.map (Scheme.ΓSpecIso (.of R)).inv.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast_sections {R : Type} [CommRing R] {n : ℕ} (hn : IsUnit (n : R)) :
     IsUnit (n : Γ(Sp R, ⊤)) := by
   simpa using hn.map (Scheme.ΓSpecIso (.of R)).inv.hom
 
 /- English proof (translation)
-Use `flat_of_flat_fieldBaseChange k (AlgebraicClosure k) (algebraMap _ _) G G _ ?_` and prove the remaining obligations. Rewrite using `[pullback_map_mulN]`. Use `flat_of_formallyUnramified_grpEnd _ _ _ ?_ (isMonHom_mulN _ n) (formallyUnramified_mulN _ _ n (isUnit_natCast_sections ?_))` and prove the remaining obligations. Conclude with `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom _))`. Simplify using `using hn.map (algebraMap k (AlgebraicClosure k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flat_mulN_field (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G] (n : ℕ)
     (hn : IsUnit (n : k)) (hG : LocallyOfFiniteType G.hom) : Flat (mulN G n).left := by
@@ -68,7 +68,7 @@ theorem flat_mulN_field (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G] [IsCom
   · simpa using hn.map (algebraMap k (AlgebraicClosure k))
 
 /- English proof (translation)
-Rewrite using `[pullback_map_mulN]`. Use `flat_mulN_field k _ n (by simpa using hn.map σ) ?_` and prove the remaining obligations. Conclude with `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flat_pullback_mulN {T k : Type} [CommRing T] [Field k] (σ : T →+* k) (G : Over (Sp T))
     [GrpObj G] [IsCommMonObj G] (n : ℕ) (hn : IsUnit (n : T)) (hG : LocallyOfFiniteType G.hom) :
@@ -82,9 +82,9 @@ end MulEtaleDvr
 open MulEtaleDvr in
 
 /- English proof (translation)
-Introduce `T _ _ _ G _ _ n hn hf hG`. Establish `h1 : Flat (mulN G n).left` using `flat_of_flat_fibres_dvr T (FractionRing T) G G _ hf hf hG hG (flat_pullback_mulN _ G n hn hG) (flat_pullback_mulN _ G n hn hG)`. Establish `h2` using `formallyUnramified_mulN _ G n (isUnit_natCast_sections hn)`. Establish `h3 : LocallyOfFiniteType ((mulN G n).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `h4` using `locallyOfFiniteType_of_comp (mulN G n).left G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `h6 : LocallyOfFinitePresentation (mulN G n).left` using `inferInstance`. Establish `h : Etale (mulN G n).left` using `Etale.of_formallyUnramified_of_flat _`. Conclude with `⟨h, MorphismProperty.of_isPullback (P := @Etale) (isPullback_torsion G n) h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem etale_mulN_torsion_dvr :
     ∀ (T : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] (G : Over (Sp T)) [GrpObj G]

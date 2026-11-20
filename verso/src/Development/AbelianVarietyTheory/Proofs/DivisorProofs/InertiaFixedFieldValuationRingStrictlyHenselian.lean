@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.InertiaFixedSH
 
 /- English proof (translation)
-Rewrite `hn` using `[ValuationSubring.mem_nonunits_iff, not_lt]`. Establish `h1 : A.valuation x = 1` using `le_antisymm ((A.valuation_le_one_iff x).2 hx) hn`. Use `⟨fun h => by simp [h] at h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← A.valuation_le_one_iff, map_inv₀, h1, inv_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vs_inv_mem_of_not_mem_nonunits {F : Type} [Field F] (A : ValuationSubring F) {x : F} (hx : x ∈ A)
     (hn : x ∉ A.nonunits) : x ≠ 0 ∧ x⁻¹ ∈ A := by
@@ -25,45 +25,43 @@ theorem vs_inv_mem_of_not_mem_nonunits {F : Type} [Field F] (A : ValuationSubrin
   rw [← A.valuation_le_one_iff, map_inv₀, h1, inv_one]
 
 /- English proof (translation)
-Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV`. Establish `hc : ∀ r : R, algebraMap K Ω (algebraMap R K r) ∈ V` using `fun r => by`. Establish `: algebraMap R K r ∈ V.toSubring.comap (algebraMap K Ω)` using `hV ▸ ⟨r, rfl⟩`. Conclude with `this`. Establish `hinv : ∀ π : R, Irreducible π → (algebraMap K Ω (algebraMap R K π))⁻¹ ∉ V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `π hπ h`. Establish `h' : (algebraMap R K π)⁻¹ ∈ V.toSubring.comap (algebraMap K Ω)`. Express the relevant statement in the definitionally equal form `algebraMap K Ω _ ∈ V`. Rewrite using `[map_inv₀]` and apply the resulting hypothesis. Rewrite `h'` using `[hV]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `h'`. Establish `hπ0 : algebraMap R K π ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hπ.ne_zero`. Apply `hπ.not_isUnit` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `isUnit_iff_exists_inv.2 ⟨s, IsFractionRing.injective R K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hs, map_one, mul_inv_cancel₀ hπ0]`. Establish `hc0 : ∀ π : R, Irreducible π → algebraMap K Ω (algebraMap R K π) ≠ 0`. Introduce `π hπ h`. Apply `hinv π hπ` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, inv_zero]`. Conclude with `V.zero_mem`. Use `set K' := IntermediateField.fixedField (inertia K V) with hK'`. Use `set V' := V.comap (algebraMap K' Ω) with hV'`. Establish `memV' : ∀ y : K', y ∈ V' ↔ (y : Ω) ∈ V` using `fun y => ValuationSubring.mem_comap`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : R →+* V'` to `((algebraMap K K').comp (algebraMap R K)).codRestrict V' (fun r => by`. Rewrite using `[memV']`. Simplify using `using hc r)`. Establish `hf : ∀ r : R, ((f r : K') : Ω) = algebraMap K Ω (algebraMap R K r)` using `fun r => by simp [f]`. Establish `unitV' : ∀ a : V', ((a : K') : Ω) ∉ V.nonunits → IsUnit a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Take `⟨h0, hi⟩` from `vs_inv_mem_of_not_mem_nonunits V ((memV' a).1 a.2) ha`. Establish `hmem : (a : K')⁻¹ ∈ V'` using `by rw [memV']; simpa using hi`. Use `isUnit_iff_exists_inv.2 ⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, IntermediateField.coe_mul, IntermediateField.coe_inv, OneMemClass.coe_one, IntermediateField.coe_one]`. Conclude with `mul_inv_cancel₀ h0`. Establish `hfπ : ∀ π : R, Irreducible π → Irreducible (f π)`. Introduce `π hπ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `irreducible_iff.2 ⟨fun hu => hinv π hπ ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `hb' : ((f π : K') : Ω) * ((b : K') : Ω) = 1`. Use `congrArg (fun z : V' => ((z : K') : Ω)) hb` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hb'` using `[hf]`. Rewrite using `[inv_eq_of_mul_eq_one_right hb']`. Conclude with `(memV' b).1 b.2`. Assume the negation of the conclusion as `hne push_neg at hne`. Establish `ha : ((a : K') : Ω) ∈ V.nonunits` using `by_contra fun h => hne.1 (unitV' a h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb : ((b : K') : Ω) ∈ V.nonunits` using `by_contra fun h => hne.2 (unitV' b h)`. Establish `h1` using `GlobalTheory.T.inertiaFixedField_maximalIdeal_dvd_uniformizer R K Ω V hV π hπ _ (a : K').2 ha`. Establish `h2` using `GlobalTheory.T.inertiaFixedField_maximalIdeal_dvd_uniformizer R K Ω V hV π hπ _ (b : K').2 hb`. Establish `hab' : algebraMap K Ω (algebraMap R K π) = ((a : K') : Ω) * ((b : K') : Ω)`. Rewrite using `[← hf, hab]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Apply `hinv π hπ` to reduce the goal to its premises. Establish `h0` using `hc0 π hπ`. Use `mul_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_mul_div_comm, ← hab']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hdvr : IsDiscreteValuationRing V'`. Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨f π, hfπ π hπ, fun {x} hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : ((x : K') : Ω) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hex` using `GlobalTheory.T.not_mem_div_uniformizer_pow_alt R K Ω V hV π hπ _ hx0`. Establish `hn` using `Nat.find_spec hex`. Establish `hn0 : Nat.find hex ≠ 0`. Introduce `h`. Rewrite `hn` using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `hn` to reduce the goal to its premises. Simplify using `using (memV' x).1 x.2`. Take `⟨m, hm⟩ : ∃ m, Nat.find hex = m + 1` from `Nat.exists_eq_succ_of_ne_zero hn0`. Establish `hmin : ((x : K') : Ω) / algebraMap K Ω (algebraMap R K π) ^ m ∈ V`. Use `Nat.find_min hex (show m < Nat.find hex by omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using this`. Use `set y : K' := (x : K') / (algebraMap K K' (algebraMap R K π)) ^ m with hy`. Establish `hyΩ : (y : Ω) = ((x : K') : Ω) / algebraMap K Ω (algebraMap R K π) ^ m` using `by simp [y]`. Establish `hyV' : y ∈ V'` using `by rw [memV', hyΩ]; exact hmin`. Establish `hyU : (y : Ω) ∉ V.nonunits`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hyn`. Use `GlobalTheory.T.inertiaFixedField_maximalIdeal_dvd_uniformizer R K Ω V hV π hπ _ y.2 hyn` as an intermediate fact. Apply `hn` to reduce the goal to its premises. Rewrite `*` using `[hm, hyΩ]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components.
 
-Rewrite using `[pow_succ, div_div]`. Use `⟨m, (unitV' ⟨y, hyV'⟩ hyU).unit, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [IsUnit.unit_spec, MulMemClass.coe_mul, IntermediateField.coe_mul, SubmonoidClass.coe_pow, IntermediateField.coe_pow]`.
-
-Rewrite using `[hf, hyΩ]`. Clear denominators, using `[pow_ne_zero m (hc0 π hπ)]` for the nonvanishing conditions. Conclude with `⟨⟨hdvr, GlobalTheory.T.henselianLocalRing_fixedField_inertia_alt R K Ω V hV, GlobalTheory.T.residueField_inertiaFixed_isAlgClosed_alt R K Ω V hV, inferInstance⟩, f, hf, hfπ⟩`.
+A detailed English derivation is pending.
 -/
 theorem inertiaFixed_strictlyHenselian : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → GlobalTheory.SS.SH (V.comap (algebraMap (IntermediateField.fixedField (inertia K V)) Ω)) (IntermediateField.fixedField (inertia K V)) ∧ ∃ f : R →+* V.comap (algebraMap (IntermediateField.fixedField (inertia K V)) Ω), (∀ r : R, ((f r : IntermediateField.fixedField (inertia K V)) : Ω) = algebraMap K Ω (algebraMap R K r)) ∧ ∀ π : R, Irreducible π → Irreducible (f π) := by
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV

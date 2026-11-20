@@ -10,7 +10,7 @@ namespace GlobalTheory.CongW.PlaceEmb
 variable {K : Type} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (NormedField.valuation (K` using `PadicAlgCl p)).integer x := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := PadicAlgCl p))).mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_int {x : PadicAlgCl p} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h1 : IsIntegral (NormedField.valuation (K := PadicAlgCl p)).integer x := hx.tower_top
@@ -19,7 +19,7 @@ theorem norm_le_one_of_isIntegral_int {x : PadicAlgCl p} (hx : IsIntegral ℤ x)
   exact_mod_cast h3
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral_int (by convert map_isIntegral_int σ (RingOfIntegers.isIntegral_coe y) exact Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_int_le (σ : K →+* PadicAlgCl p) (y : 𝓞 K) : ‖σ (y : K)‖ ≤ 1 :=
   norm_le_one_of_isIntegral_int (by
@@ -44,16 +44,16 @@ def smallIdeal (σ : K →+* PadicAlgCl p) : Ideal (𝓞 K) where
     nlinarith [norm_nonneg (σ (c : K)), norm_nonneg (σ (a : K))]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smallIdeal (σ : K →+* PadicAlgCl p) (y : 𝓞 K) : y ∈ smallIdeal σ ↔ ‖σ (y : K)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_smallIdeal]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Rewrite `hab` using `[mem_smallIdeal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_smallIdeal, mem_smallIdeal]`. Establish `: σ ((a * b : 𝓞 K) : K) = σ (a : K) * σ (b : K)` using `by simp`. Rewrite `hab` using `[this, norm_mul]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hcon.1, hcon.2]`.
+A detailed English derivation is pending.
 -/
 theorem smallIdeal_isPrime (σ : K →+* PadicAlgCl p) : (smallIdeal σ).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -69,7 +69,7 @@ theorem smallIdeal_isPrime (σ : K →+* PadicAlgCl p) : (smallIdeal σ).IsPrime
     nlinarith [hcon.1, hcon.2]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnd`. Establish `hc : Nat.Coprime q M` using `(Nat.Prime.coprime_iff_not_dvd hq).2 hnd`. Take `⟨u, v, huv⟩ : IsCoprime (q : R) (M : R)` from `Nat.Coprime.cast hc`. Conclude with `hI ((Ideal.eq_top_iff_one _).2 (huv ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dvd_of_natCast_mem {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) {q M : ℕ} (hq : q.Prime)
     (h1 : (q : R) ∈ I) (h2 : (M : R) ∈ I) : q ∣ M := by
@@ -80,7 +80,7 @@ theorem dvd_of_natCast_mem {R : Type*} [CommRing R] (I : Ideal R) (hI : I ≠ �
     (huv ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
 /- English proof (translation)
-Establish `h : ‖algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])‖ = ‖(p : ℚ_[p])‖` using `norm_algebraMap' _ _`. Establish `h2 : ‖(p : ℚ_[p])‖ < 1` using `Padic.norm_p_lt_one`. Rewrite `h2` using `[← h, map_natCast]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_lt_one : ‖(p : PadicAlgCl p)‖ < 1 := by
   have h : ‖algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])‖ = ‖(p : ℚ_[p])‖ := norm_algebraMap' _ _
@@ -89,19 +89,17 @@ theorem norm_p_lt_one : ‖(p : PadicAlgCl p)‖ < 1 := by
   exact h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hnle : ∀ σ : K →ₐ[ℚ] PadicAlgCl p, ¬ w.asIdeal ≤ smallIdeal (σ : K →+* PadicAlgCl p)`. Introduce `σ hle`. Conclude with `hcon (σ : K →+* PadicAlgCl p) (w.isMaximal.eq_of_le (smallIdeal_isPrime _).ne_top hle)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `σ0 : K →ₐ[ℚ] PadicAlgCl p` using `IsAlgClosed.lift`. Establish `hav : ¬ ((w.asIdeal : Set (𝓞 K)) ⊆ ⋃ σ ∈ ((Finset.univ : Finset (K →ₐ[ℚ] PadicAlgCl p)) : Set (K →ₐ[ℚ] PadicAlgCl p)), (smallIdeal (σ : K →+* PadicAlgCl p) : Set (𝓞 K)))`. Rewrite using `[Ideal.subset_union_prime σ0 σ0 (fun σ _ _ _ => smallIdeal_isPrime _)]`. Introduce and unpack `⟨σ, -, hle⟩`. Conclude with `hnle σ hle`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hxw, hx⟩` from `Set.not_subset.1 hav`. Establish `hxσ : ∀ σ : K →ₐ[ℚ] PadicAlgCl p, 1 ≤ ‖σ (x : K)‖`. Introduce `σ`. Assume the negation of the conclusion as `hlt`. Conclude with `hx (Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_univ σ)) (not_le.1 hlt))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : ((Algebra.norm ℤ x).natAbs : 𝓞 K) ∈ w.asIdeal`. Establish `h1` using `Ideal.absNorm_mem (Ideal.span {x})`. Rewrite `h1` using `[Ideal.absNorm_span_singleton]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hxw h1`. Establish `hpN : p ∣ (Algebra.norm ℤ x).natAbs` using `dvd_of_natCast_mem w.asIdeal w.isPrime.ne_top Fact.out hw hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : (p : ℤ) ∣ Algebra.norm ℤ x` from `Int.natCast_dvd.2 hpN`. Establish `hprod : ((Algebra.norm ℤ x : ℤ) : PadicAlgCl p) = ∏ σ : K →ₐ[ℚ] PadicAlgCl p, σ (x : K)`. Rewrite using `[← Algebra.norm_eq_prod_embeddings ℚ (PadicAlgCl p) (x : K), ← Algebra.coe_norm_int x]`. Simplify using the standard rewrite rules. Establish `h1 : 1 ≤ ‖((Algebra.norm ℤ x : ℤ) : PadicAlgCl p)‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hprod, norm_prod]`. Conclude with `Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun σ _ => hxσ σ`. Establish `h2 : ((Algebra.norm ℤ x : ℤ) : PadicAlgCl p) = (p : PadicAlgCl p) * ((m : ℤ) : PadicAlgCl p)`. Rewrite using `[hm]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖((m : ℤ) : PadicAlgCl p)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one _ m`. Rewrite `h1` using `[h2, norm_mul]`. Establish `h4` using `norm_p_lt_one (p := p)`. Use polynomial arithmetic with `[norm_nonneg (p : PadicAlgCl p), norm_nonneg ((m : ℤ) : PadicAlgCl p)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_embedding (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈ w.asIdeal) :
     ∃ σ : K →+* PadicAlgCl p, w.asIdeal = smallIdeal σ := by

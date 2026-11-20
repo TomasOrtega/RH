@@ -14,21 +14,19 @@ set_option autoImplicit false
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ A _ hA f g hfg`. Establish `hc : IsCommMonObj A` using `hA.comm`. Introduce `D _ _`. Prove the components needed by the constructor for the conclusion. Set `k : Fn0 (A ⊗ A)` to `fun E _ _ w ↦ g E (w ≫ fst A A) (w ≫ snd A A) - g E (w ≫ snd A A) (w ≫ fst A A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression.
 
-Establish `hk : IsCob (whole (A ⊗ A)) (Fn1.zero (A ⊗ A)) k`. Introduce `E _ _ E' _ _ φ w _`. Establish `h1` using `hfg E E' φ (w ≫ fst A A) (w ≫ snd A A)`. Establish `h2` using `hfg E E' φ (w ≫ snd A A) (w ≫ fst A A)`. Rewrite `h2` using `[mul_comm (w ≫ snd A A) (w ≫ fst A A)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [k, Fn1.zero, Category.assoc, map_sub]`. Take the linear combination `h2 - h1`. Take `⟨r, hr⟩` from `GlobalTheory.T.natural_pointwiseCochain_const_of_globalSections_base R (A ⊗ A) Unit (whole (A ⊗ A)) (by simp [whole]) (GlobalTheory.globalFns_holds (Sp R) (A ⊗ A) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA)).2 k hk`. Introduce `x y`. Establish `e1` using `hr D (lift x y) (sm_whole _)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e0` using `hr D (lift 1 1) (sm_whole _)`. Simplify using `only [k, lift_fst, lift_snd, sub_self] at e0 e1`. Conclude with `sub_eq_zero.mp (e1.trans e0.symm)`. Set `k : Fn0 (A ⊗ (A ⊗ A))` to `fun E _ _ w ↦ g E (w ≫ snd _ _ ≫ fst A A) (w ≫ snd _ _ ≫ snd A A) - g E ((w ≫ fst _ _) * (w ≫ snd _ _ ≫ fst A A)) (w ≫ snd _ _ ≫ snd A A) + g E (w ≫ fst _ _) ((w ≫ snd _ _ ≫ fst A A) * (w ≫ snd _ _ ≫ snd A A)) - g E (w ≫ fst _ _) (w ≫ snd _ _ ≫ fst A A)`. Establish `hk : IsCob (whole (A ⊗ (A ⊗ A))) (Fn1.zero _) k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E _ _ E' _ _ φ w _`. Establish `h1` using `hfg E E' φ (w ≫ snd _ _ ≫ fst A A) (w ≫ snd _ _ ≫ snd A A)`. Establish `h2` using `hfg E E' φ ((w ≫ fst _ _) * (w ≫ snd _ _ ≫ fst A A)) (w ≫ snd _ _ ≫ snd A A)`. Establish `h3` using `hfg E E' φ (w ≫ fst _ _) ((w ≫ snd _ _ ≫ fst A A) * (w ≫ snd _ _ ≫ snd A A))`. Establish `h4` using `hfg E E' φ (w ≫ fst _ _) (w ≫ snd _ _ ≫ fst A A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[_root_.mul_assoc]`. Simplify using `only [MonObj.comp_mul] at h2 h3`. Simplify using `only [k, Fn1.zero, Category.assoc, map_sub, map_add, MonObj.comp_mul]`. Take the linear combination `h2 - h1 - h3 + h4`. Take `⟨r, hr⟩` from `GlobalTheory.T.natural_pointwiseCochain_const_of_globalSections_base R (A ⊗ (A ⊗ A)) Unit (whole _) (by simp [whole]) (GlobalTheory.globalFns_holds (Sp R) (A ⊗ (A ⊗ A)) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A (A ⊗ A) hA (Reciproci …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y z`. Establish `e1` using `hr D (lift x (lift y z)) (sm_whole _)`. Establish `e0` using `hr D (lift 1 (lift 1 1)) (sm_whole _)`. Simplify using `only [k, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc, _root_.mul_one, sub_self, add_sub_cancel_right, sub_add_cancel] at e0 e1`. Rewrite `e1` using `[← e0]`.
-
-Conclude with `e1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSymCoc_of_isAdd : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A →
     ∀ (f : Fn1 A) (g : Fn2 A), IsAdd f g → IsSymCoc g := by

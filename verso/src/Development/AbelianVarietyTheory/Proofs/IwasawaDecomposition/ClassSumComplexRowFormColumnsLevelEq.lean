@@ -23,9 +23,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (P : LevFam X.E X.K R.r Pr.vGs) (hX : X.Ok)
 
 /- English proof (translation)
-Establish `e : ∀ x, (fun c => (zOf W Ch sel mu P hX x).1 ((mtildeKGSD W Ch sel mu).outSec.rep c)) = ((formK W Ch sel mu P hX x).1 : _ → _)`. Introduce `x`. Use function extensionality and compare the values at `c`. Rewrite using `[zOf_val, ← GSD.resOf_apply _ (mtildeKOk W Ch sel mu hX) (mtildeKGSD W Ch sel mu).outSec]`. Use `show (((resK W Ch sel mu hX) ((resK W Ch sel mu hX).symm (formK W Ch sel mu P hX x))).1 : _ → _) c = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Unfold `ipK GSD.ip GSD.ipOf`. Rewrite using `[e, e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipK_zOf_eq (x y : Fin (dimP W Ch sel mu P hX) → X.K) :
     ipK W Ch sel mu P hX (zOf W Ch sel mu P hX x) (zOf W Ch sel mu P hX y) =
@@ -41,7 +41,7 @@ theorem ipK_zOf_eq (x y : Fin (dimP W Ch sel mu P hX) → X.K) :
   rw [e, e]
 
 /- English proof (translation)
-Establish `hP : (Nat.card P.grp : X.K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `mul_left_cancel₀ hP ?_` and prove the remaining obligations. Rewrite using `[← ipK_eq_card_mul_ipLev W Ch sel mu P hX, ipK_zOf_eq]`. Conclude with `LiftForms.csum_lvlForm _ _ _ _ x y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipLev_zOf_eq (x y : Fin (dimP W Ch sel mu P hX) → X.K) :
     ipLev W Ch sel mu P hX (zOf W Ch sel mu P hX x) (zOf W Ch sel mu P hX y) =
@@ -58,9 +58,9 @@ section TC
 variable {B : Base} {px : PreX B.toPre} (I : ColIn B px) (hX : B.fields.Ok) (a : I.ι)
 
 /- English proof (translation)
-Rewrite using `[Df.cSum_apply]`. Unfold `ipLev GSD.ip GSD.ipOf CSD.csum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `Df.cTerm`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_mul, map_inv₀, map_natCast, GSD.wt_eq]`. Use `congr 1`. Conclude with `(map_pairV_one _ _ (sig B) (fun x => B.starLL_cx x) _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cSum_toCx (x : Formalism.L2.Col.MtildeV (Pr := B.primes px) B.wts I.Ch I.sel (I.tup a) (TC.Ps I))
     (x' : Formalism.L2.Col.MtildeV (Pr := B.primes px) B.wts I.Ch I.sel (I.tup a) (TC.Ps I)) :
@@ -78,9 +78,9 @@ theorem cSum_toCx (x : Formalism.L2.Col.MtildeV (Pr := B.primes px) B.wts I.Ch I
 end TC
 
 /- English proof (translation)
-Introduce `X px I hX Xg tr a y x hx`. Take `⟨F, h, hF, rfl⟩` from `hx`. Establish `e1 : ColTie.resK (Pr` using `X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX F = ColTie.formK (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I) hX y := eq_of_heq hF`. Establish `e2 : (⟨F.1, h⟩ : Formalism.L2.Col.MtildeV (Pr` using `X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I)) = ColTie.zOf (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I) hX y := by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show F.1 = ((ColTie.resK (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX).symm (ColTie.formK (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I) hX y)).1`. Rewrite using `[← e1, LinearEquiv.symm_apply_apply]`. Rewrite using `[cSum_toCx, e2]`. Conclude with `congrArg X.B.embLL (ipLev_zOf_eq (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) (TC.Ps I) hX y y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cSum_toCx_rowForm : ∀ (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.Ok)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (a : I.ι) (y : Fin (mAU X I hX Xg tr true a).n → X.B.LL)

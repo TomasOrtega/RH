@@ -18,11 +18,11 @@ open Formalism.IndefR.DatumF
 noncomputable section
 namespace GlobalTheory.WeilUnitaryTransportF
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ h0 hσ χS χT hcS hcT rS rT ω hω JA JB ξ hA hBm κ _ co hrat om hom`. Establish `hψ` using `hω.std`. Introduce and unpack `μ hμ ⟨a, b⟩ Φ hΦ`. Take `⟨g, h, hh, hg⟩` from `_root_.GlobalTheory.T.doubled_lagrangian_intertwiner F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm a b`. Take `⟨ν, 𝓕, hν, h𝓕⟩` from `GlobalTheory.T.exists_haar_fundamentalDomain_rationalMatrices_tower F E nS nT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν', 𝓕', hν', h𝓕', heq⟩` from `_root_.GlobalTheory.T.doubled_lagrangian_theta_compatible F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat ν 𝓕 hν h𝓕`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_lintegral_sq_eq_mul_setLIntegral_thetaTransform F B.ψ hψ.1 κ μ hμ ν' hν' 𝓕' h𝓕'`. Establish `hiso : ∀ Ψ ∈ schA F κ, ∫⁻ x, ‖Ψ x‖ₑ ^ 2 ∂μ = c * ∫⁻ w in 𝓕, ‖GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Ψ w‖ₑ ^ 2 ∂ν`. Introduce `Ψ hΨ`. Rewrite using `[hc Ψ hΨ, ← heq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hth : IsThetaFunOF σ JS JT ξ₀ B.ψ (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ)` using `⟨_root_.GlobalTheory.T.doubled_lagrangian_continuous F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat Φ hΦ, _root_.GlobalTheory.T.doubled_lagrangian_unitary F E σ B hB hψ nS nT JS JT hS hT ξ₀ h0 hσ JA JB ξ hA hBm κ co hrat Φ hΦ, _root_.GlobalTheory.T.doubled_lagr …`. Establish `ht` using `hom a b g h hh hg Φ hΦ`. Rewrite using `[hiso _ ht.1, hiso _ hΦ, ht.2, hω.om_unit ν 𝓕 hν h𝓕 _ _ hth]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnitaryOn_transportF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

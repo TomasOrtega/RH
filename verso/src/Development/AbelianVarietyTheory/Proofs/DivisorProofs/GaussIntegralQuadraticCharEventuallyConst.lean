@@ -12,9 +12,9 @@ open scoped Topology Classical
 namespace GlobalTheory.KSp
 
 /- English proof (translation)
-Rewrite using `[← integral_indicator hH, ← integral_indicator hH]`. Establish `key : (Set.indicator (H : Set X) fun x => g (x + h)) = fun x => Set.indicator (H : Set X) g (x + h)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ H`. Establish `hx' : x + h ∈ H` using `H.add_mem hx hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[Set.indicator_apply, hx, hx']`. Establish `hx' : x + h ∉ H` using `fun h' => hx (by simpa using H.sub_mem h' hh)`. Simplify using `[Set.indicator_apply, hx, hx']`. Rewrite using `[key, integral_add_right_eq_self (Set.indicator (H : Set X) g) h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem setIntegral_addSubgroup_add {X : Type} [AddCommGroup X] [MeasurableSpace X]
     [MeasurableAdd X] (μ : Measure X) [μ.IsAddRightInvariant] (H : AddSubgroup X)
@@ -32,15 +32,13 @@ theorem setIntegral_addSubgroup_add {X : Type} [AddCommGroup X] [MeasurableSpace
   rw [key, integral_add_right_eq_self (Set.indicator (H : Set X) g) h]
 
 /- English proof (translation)
-Use `split_ifs with hx`. Rewrite using `[setIntegral_congr_fun hM (g := fun _ => (1 : ℂ)) (fun m hm => by`. Simplify using `only`. Rewrite using `[he.symm]`. Conclude with `hx m hm)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[setIntegral_const]`. Simplify using the standard rewrite rules. Use `push_neg at hx`. Take `⟨m₀, hm₀, hne⟩` from `hx`. Establish `h` using `setIntegral_addSubgroup_add μ M hM hm₀ (fun m => e x m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsplit : ∀ m, e x (m + m₀) = e x m * e x m₀` using `fun m => by`. Rewrite using `[he.symm x, he.add, he.symm m, he.symm m₀]`. Simplify using `only [hsplit] at h`. Rewrite `h` using `[integral_mul_const]`. Establish `hne' : e x m₀ ≠ 1` using `by rwa [he.symm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : (∫ m in (M : Set X), e x m ∂μ) * (e x m₀ - 1) = 0`. Rewrite using `[mul_sub, h]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `h3`.
-
-Conclude with `absurd (sub_eq_zero.mp h3) hne'`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem setIntegral_pair_char {X : Type} [AddCommGroup X] [TopologicalSpace X] [MeasurableSpace X]
     [MeasurableAdd X] (μ : Measure X) [μ.IsAddRightInvariant] {e : X → X → ℂ} (he : IsPair e)
@@ -67,29 +65,23 @@ theorem setIntegral_pair_char {X : Type} [AddCommGroup X] [TopologicalSpace X] [
     · exact absurd (sub_eq_zero.mp h3) hne'
 
 /- English proof (translation)
-Introduce `X _ _ _ _ hG μ _ e he f hf hf0 hfe`. Use `haveI := hG.grp`. Use `haveI := hG.t2`. Use `haveI := hG.lc`. Use `haveI := hG.sc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hMc, hMo, hMf⟩` from `hG.small {x | f x = 1} ((hf.isOpen_fiber 1).mem_nhds hf0)`. Establish `hMn : (M : Set X) ∈ 𝓝 (0 : X)` using `hMo.mem_nhds M.zero_mem`. Take `⟨K₀, hK₀c, hK₀⟩` from `he.big _ hMn`. Establish `hecont : ∀ m, Continuous (fun y => e m y)` using `fun m => (he.lc.comp_continuous (continuous_const.prodMk continuous_id)).continuous`. Use `set M' : Set X := {y | ∀ m ∈ (M : Set X), e m y = 1} with hM'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM'cl : IsClosed M'`. Establish `: M' = ⋂ m ∈ (M : Set X), {y | e m y = 1}` using `by ext; simp [M']`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun m _ => isClosed_eq (hecont m) continuous_const`. Use `⟨∫ x in M', f x ∂μ, (M : Set X) ∪ K₀, hMc.union hK₀c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `L hLc hLo hKL`. Establish `hML : (M : Set X) ⊆ L` using `Set.subset_union_left.trans hKL`. Establish `hM'L : M' ⊆ L` using `fun y hy => hKL (Or.inr (hK₀ y hy))`. Establish `hLm : MeasurableSet (L : Set X)` using `hLo.measurableSet`. Establish `hMm : MeasurableSet (M : Set X)` using `hMo.measurableSet`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hM'm : MeasurableSet M'` using `hM'cl.measurableSet`. Use `haveI : IsFiniteMeasure (μ.restrict (L : Set X)) := isFiniteMeasure_restrict.mpr hLc.measure_lt_top.ne`. Use `haveI : IsFiniteMeasure (μ.restrict (M : Set X)) := isFiniteMeasure_restrict.mpr hMc.measure_lt_top.ne`. Use `set A := ∫ x in (L : Set X), f x ∂μ with hA`. Establish `h1 : ∀ m ∈ (M : Set X), ∫ x in (L : Set X), f x * e x m ∂μ = A`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm`. Rewrite using `[hA, ← setIntegral_addSubgroup_add μ L hLm (hML hm) f]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hfe, show f m = 1 from hMf hm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hC⟩` from `hLc.exists_bound_of_continuousOn hf.continuous.continuousOn`. Establish `hint : Integrable (Function.uncurry fun m x => f x * e x m) ((μ.restrict (M : Set X)).prod (μ.restrict (L : Set X)))`. Use `Integrable.mono' (integrable_const C) ?_ ?_` and prove the remaining obligations. Conclude with `(Continuous.mul (hf.continuous.comp continuous_snd) (he.lc.continuous.comp (continuous_snd.prodMk continuous_fst))).aestronglyMeasurable`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Measure.prod_restrict]`. Use `ae_restrict_of_forall_mem (hMm.prod hLm) fun p hp => ?_` and prove the remaining obligations. Use `show ‖f p.2 * e p.2 p.1‖ ≤ C`. Rewrite using `[norm_mul, he.norm, mul_one]`. Conclude with `hC p.2 hp.2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `integral_integral_swap hint`. Rewrite `h3` using `[setIntegral_congr_fun hMm h1, setIntegral_const]`. Rewrite `h3` using `[integral_const_mul, setIntegral_pair_char μ he M hMm]`. Establish `h4 : ∫ x in (L : Set X), f x * (if ∀ m ∈ (M : Set X), e m x = 1 then ((μ.real (M : Set X) : ℝ) : ℂ) else 0) ∂μ = ((μ.real (M : Set X) : ℝ) : ℂ) * ∫ x in M', f x ∂μ`. Establish `: (fun x => f x * (if ∀ m ∈ (M : Set X), e m x = 1 then ((μ.real (M : Set X) : ℝ) : ℂ) else 0)) = Set.indicator M' (fun x => ((μ.real (M : Set X) : ℝ) : ℂ) * f x)`.
-
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ M'`. Rewrite using `[Set.indicator_of_mem hx, if_pos (show ∀ m ∈ (M : Set X), e m x = 1 from hx)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hx, if_neg (show ¬ ∀ m ∈ (M : Set X), e m x = 1 from hx)]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, integral_indicator hM'm, Measure.restrict_restrict hM'm, Set.inter_eq_left.mpr hM'L, integral_const_mul]`. Rewrite `h3` using `[h4, Complex.real_smul]`. Establish `hpos : ((μ.real (M : Set X) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, measureReal_def]`.
-
-Conclude with `ENNReal.toReal_ne_zero.mpr ⟨(hMo.measure_pos μ ⟨0, M.zero_mem⟩).ne', hMc.measure_lt_top.ne⟩`. Conclude with `mul_left_cancel₀ hpos h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_integral_eventually_const : ∀ (X : Type) [AddCommGroup X] [TopologicalSpace X] [MeasurableSpace X]
     [BorelSpace X] (_ : Good X) (μ : Measure X) [μ.IsAddHaarMeasure] (e : X → X → ℂ), IsPair e →

@@ -8,31 +8,29 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `eps he he' C hC`. Use `⟨0, fun cD hcD => ⟨0, fun ch _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨CN, x1, h1⟩` from `GlobalTheory.topCount_and_lambda_bounds eps he he'`. Take `⟨x2, h2⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 3) eps (cD + 11) 1 1 0 (by positivity) (by linarith) one_pos`. Take `⟨x3, h3⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / 4) cD 1 (1 / 2) 0 le_rfl (by positivity) (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hLa : 1 ≤ C.GK.La` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 _ (by simp [FC.cMid])`. Establish `hCD : 1 ≤ C.P.CDelG` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 _ (by simp [FC.cLast])`. Use `⟨max (max x1 x2) (max x3 (128 * C.P.CDelG)), fun D L hε hx hV => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hx1, hx2⟩, hx3, hx4⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hx1' : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hΛ : 1 ≤ L.LaG`. Rewrite using `[hV.La_eq]`. Use `le_trans ?_ ((h1 L.sc hε hx1).2.2 C.GK hLa).1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Real.one_le_rpow hx1'.le L.sc.eps_pos.le`. Establish `hp1 : 1 ≤ L.sc.x ^ cD` using `Real.one_le_rpow hx1'.le hcD`. Establish `hDel : (D.s.Del : ℝ) = (⌈L.sc.x ^ cD⌉₊ : ℝ)`. Rewrite using `[hV.Del_eq]`. Simplify using `[Delv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hD2 : (D.s.Del : ℝ) ≤ 2 * L.sc.x ^ cD`. Rewrite using `[hDel]`. Use `Nat.ceil_lt_add_one (a := L.sc.x ^ cD) (by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD1 : 1 ≤ (D.s.Del : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDel]`. Conclude with `hp1.trans (Nat.le_ceil _)`. Establish `hk0 : (0 : ℝ) < D.R.k` using `lt_of_lt_of_le (by positivity) hV.ranks.2.2.1.1`. Establish `hk : (D.R.k : ℝ) ≤ 2 * L.sc.x ^ (5 : ℕ)`. Use `hV.ranks.2.2.1.2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: L.sc.x ^ (9 / 2 + 10 * L.sc.eps) ≤ L.sc.x ^ ((5 : ℕ) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1'.le (by rw [hε]; push_cast; linarith)`. Rewrite `this` using `[Real.rpow_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : L.sc.x ^ cD * L.sc.x ^ (11 : ℕ) ≤ L.sc.b'`. Establish `h` using `h2 L.sc.x hx2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : L.sc.x ^ cD * L.sc.x ^ (11 : ℕ) = Real.exp ((cD + 11) * Real.log L.sc.x)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hx0, Real.rpow_def_of_pos hx0, mul_comm]`. Evaluate the numerical expressions. Establish `e2 : L.sc.b' = L.sc.x * Real.exp (L.sc.x ^ eps - L.sc.x ^ (eps / 3))`. Simplify using `only [Scale.b', Scale.a, Scale.b, Scale.X', Scale.L, hε, Real.exp_sub]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Establish `h5 : Real.exp ((cD + 11) * Real.log L.sc.x) ≤ Real.exp (L.sc.x ^ eps - L.sc.x ^ (eps / 3))` using `Real.exp_le_exp.2 (by simp only [pow_zero, mul_one, one_mul] at h; linarith)`. Establish `h6` using `Real.exp_pos (L.sc.x ^ eps - L.sc.x ^ (eps / 3))`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : 16 * C.P.CDelG * (D.R.k : ℝ) ^ 2 * (D.s.Del : ℝ) ≤ L.LaG * L.sc.b'`. Establish `hk2 : (D.R.k : ℝ) ^ 2 ≤ (2 * L.sc.x ^ (5 : ℕ)) ^ 2` using `by gcongr`. Establish `hb0 : 0 ≤ L.sc.b'` using `le_trans (by positivity) hb`. Combine the equalities or inequalities in the displayed calculation. Establish `hP : 0 ≤ (D.R.k : ℝ) ^ 2 * (D.s.Del : ℝ)` using `by positivity`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hk0, L.Sc_eq]`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `h3 L.sc.x hx3`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [pow_zero, mul_one, Real.rpow_zero] at h`. Establish `h7 : Real.log (D.s.Del : ℝ) ≤ Real.log (2 * L.sc.x ^ cD)` using `Real.log_le_log (by linarith) hD2`. Rewrite `h7` using `[Real.log_mul (by norm_num) (by positivity), Real.log_rpow hx0]`. Establish `h8` using `Real.log_two_lt_d9`. Rewrite using `[hε]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem szRow_cloud_le : SzRow (fun C D L => (4 * L.Sc ≤ L.LaG * L.sc.b' / D.R.k) ∧
     (4 * C.P.CDelG * (D.R.k : ℝ) ^ 2 * (D.s.Del : ℝ) ≤ L.LaG * L.sc.b') ∧

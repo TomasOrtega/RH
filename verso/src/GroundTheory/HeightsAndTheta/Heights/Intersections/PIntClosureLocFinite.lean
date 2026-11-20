@@ -9,27 +9,25 @@ noncomputable section
 namespace GroundTheory.Heights₂.Heights.Inter
 
 /- English proof (translation)
-Introduce `F L _ _ φ S hS A T hDA hloc`. Set `: Algebra A L` to `(φ.comp A.subtype).toAlgebra`. Set `D : Subring F` to `Subring.closure (T : Set F)`. Establish `: Algebra.FiniteType ℤ D` using `Algebra.FiniteType.equiv ((Subalgebra.fg_iff_finiteType _).mp (Subalgebra.fg_adjoin_finset T)) (Subring.closureEquivAdjoinInt _).symm`. Set `: Algebra D L` to `(φ.comp D.subtype).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: Algebra D A` to `(Subring.inclusion hDA).toAlgebra`. Establish `: IsScalarTower D A L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `K` to `FractionRing D`. Establish `hinj : Function.Injective (φ.comp D.subtype)` using `φ.injective.comp Subtype.val_injective`. Set `: Algebra K L` to `(IsFractionRing.lift hinj).toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower D K L` using `IsScalarTower.of_algebraMap_eq fun d => (IsFractionRing.lift_algebraMap hinj d).symm`. Establish `hKS : IntermediateField.adjoin K (S : Set L) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Subfield.closure (S : Set L)` using `hS ▸ Subfield.mem_top x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Subfield.closure_le (t := (IntermediateField.adjoin K (S : Set L)).toSubfield)).mpr (IntermediateField.subset_adjoin K _) hx`. Set `M` to `algebraicClosure K L`. Establish `: FiniteDimensional K M` using `h K L S hKS`. Establish `: IsScalarTower D M L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hfin : Module.Finite D (integralClosure D M)` using `GroundTheory.Heights₂.Heights.Model.FiniteIntegralClosure.full D K M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hfin.fg_top`. Use `⟨s.image fun g : integralClosure D M => ((g : M) : L), fun x hx => ?_⟩` and prove the remaining obligations. Set `U : Submonoid D` to `(IsUnit.submonoid A).comap (Subring.inclusion hDA)`. Establish `: IsLocalization U A`. Rewrite using `[isLocalization_iff]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => y.2, fun z => ?_, fun {d₁ d₂} hd => ⟨1, ?_⟩⟩` and prove the remaining obligations. Take `⟨b, hb, c, hc, hc0, hcA, hzc⟩` from `hloc z z.2`. Establish `hunit : IsUnit (Subring.inclusion hDA ⟨c, hc⟩)` using `IsUnit.of_mul_eq_one (⟨c⁻¹, hcA⟩ : A) (Subtype.ext (mul_inv_cancel₀ hc0))`. Conclude with `⟨(⟨b, hb⟩, ⟨⟨c, hc⟩, hunit⟩), Subtype.ext hzc⟩`. Rewrite using `[Subring.inclusion_injective hDA hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨m, hm⟩, hmx⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (Rₘ := A) U x hx`. Take `⟨y, hy⟩ : ∃ y : L, y = (⟨m, hm⟩ : U) • x` from `⟨_, rfl⟩`. Rewrite `hmx` using `[← hy]`. Establish `hyK : IsIntegral K y` using `hmx.tower_top`. Set `yM : M` to `⟨y, hyK⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyMint : IsIntegral D yM`. Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom D M L) (fun a b hab => Subtype.ext hab)]`. Conclude with `hmx`. Establish `hyspan : (⟨yM, hyMint⟩ : integralClosure D M) ∈ Submodule.span D (s : Set _)` using `hs ▸ Submodule.mem_top`. Set `f : integralClosure D M →ₗ[D] L` to `(IsScalarTower.toAlgHom D M L).toLinearMap ∘ₗ (integralClosure D M).val.toLinearMap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyD : y ∈ Submodule.span D ((s.image fun g : integralClosure D M => ((g : M) : L)) : Set L)`. Establish `hmap` using `Submodule.mem_map_of_mem (f := f) hyspan`. Rewrite `hmap` using `[Submodule.map_span]`. Rewrite using `[Finset.coe_image]`. Conclude with `hmap`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyA` using `Submodule.span_subset_span D A _ hyD`. Establish `hu : IsUnit (algebraMap D A m)` using `hm`. Establish `hyu : y = (hu.unit : A) • x`. Rewrite using `[hy, Submonoid.smul_def, IsUnit.unit_spec, algebraMap_smul]`. Establish `hx' : x = ((hu.unit⁻¹ : Aˣ) : A) • y`.
-
-Rewrite using `[hyu, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ hyA`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntClosureLocFinite.proof (h : RelAlgClosureFinite.Statement) :
     IntClosureLocFinite.Statement := by

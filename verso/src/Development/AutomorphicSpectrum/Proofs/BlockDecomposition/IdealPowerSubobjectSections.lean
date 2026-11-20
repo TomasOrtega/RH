@@ -9,9 +9,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨e.hom.app V x, by rw [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]⟩`. Introduce and unpack `⟨y, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨e.inv.app V y, ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Iso.inv_hom_id_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma range_app_iso_comp {X : Scheme.{0}} {P Q E : X.Modules} (e : P ≅ Q) (f : Q ⟶ E)
     (V : X.Opens) : Set.range ((e.hom ≫ f).app V) = Set.range (f.app V) := by
@@ -24,7 +24,7 @@ lemma range_app_iso_comp {X : Scheme.{0}} {P Q E : X.Modules} (e : P ≅ Q) (f :
     rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Rewrite using `[← range_idealPowι_app I E hV n, ← range_app_iso_comp (Subobject.underlyingIso (idealPowι I E n)) (idealPowι I E n) V]`. Unfold `secs powSub`. Rewrite using `[Subobject.underlyingIso_hom_comp_eq_mk]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem secs_powSub {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] (E : X.Modules) (hE : E.IsQuasicoherent) (n : ℕ) (V : X.Opens)

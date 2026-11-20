@@ -5,7 +5,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AlgWtF.DDHw.dd_hwAt | exact GlobalTheory.AlgWtF.DDHw.dd_hwAt | (intros; apply GlobalTheory.AlgWtF.DDHw.dd_hwAt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weightTensorDualRep_dual_highestWeight_at_embedding : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K]
     (emb : ι → L →+* K) (lam : ι → DomWeight n), GlobalTheory.AlgWtF.CMDist emb → ∀ τ₀ : ι,

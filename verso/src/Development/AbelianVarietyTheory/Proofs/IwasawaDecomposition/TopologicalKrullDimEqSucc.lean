@@ -18,21 +18,21 @@ open scoped TensorProduct
 namespace GlobalTheory.IntModel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.coe_empty, Algebra.adjoin_empty]`. Conclude with `(ringKrullDim_eq_of_ringEquiv (Algebra.botEquivOfInjective (FaithfulSMul.algebraMap_injective R S)).toRingEquiv).le`. Consider the case `insert a s _ ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ ih` and prove the remaining obligations. Use `set T := Algebra.adjoin R (s : Set S)`. Use `set T' := Algebra.adjoin R ((insert a s : Finset S) : Set S)`. Establish `hle : T ≤ T'` using `Algebra.adjoin_mono (by simp)`. Establish `ha : a ∈ T'` using `Algebra.subset_adjoin (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: Algebra.FiniteType R T` using `(Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_adjoin_finset s)`. Establish `: IsNoetherianRing T` using `Algebra.FiniteType.isNoetherianRing R T`. Set `f : T →+* T'` to `(Subalgebra.inclusion hle).toRingHom`. Establish `hf : Function.Injective f` using `Subalgebra.inclusion_injective hle`. Establish `hgen : Function.Surjective (Polynomial.eval₂RingHom f ⟨a, ha⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Introduce and unpack `⟨y, hy⟩`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `Finset.mem_insert.1 (Finset.mem_coe.1 hx) with rfl | hx` into its components or cases. Conclude with `⟨Polynomial.X, by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨Polynomial.C ⟨x, Algebra.subset_adjoin hx⟩, by simp [f]⟩`. Consider the case `algebraMap r => exact ⟨Polynomial.C (algebraMap R T r), by simp [f]; rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨p, hp⟩` from `hx`. Take `⟨q, hq⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p + q, by rw [map_add, hp, hq]; rfl⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨p, hp⟩` from `hx`. Take `⟨q, hq⟩` from `hy`. Conclude with `⟨p * q, by rw [map_mul, hp, hq]; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg0, hg⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := R) a`. Establish `hinj : Function.Injective (algebraMap R T)` using `fun x y h => FaithfulSMul.algebraMap_injective R S (congrArg Subtype.val h)`. Establish `halg : ∃ g : Polynomial T, g ≠ 0 ∧ Polynomial.eval₂ f ⟨a, ha⟩ g = 0`. Use `⟨g.map (algebraMap R T), (Polynomial.map_ne_zero_iff hinj).2 hg0, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Polynomial.hom_eval₂ g _ T'.val.toRingHom _).trans ?_` and prove the remaining obligations. Conclude with `hg`. Use `(ringKrullDim_le_iff_height_le _).2 fun q hq => ?_` and prove the remaining obligations. Establish `h` using `ReciprocityTheory.CA.height_le_height_comap_of_eval₂_surjective f hf _ hgen halg q`. Conclude with `le_trans (by exact_mod_cast h) (Ideal.height_le_ringKrullDim_of_ne_top (Ideal.comap_isPrime f q).ne_top)`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_adjoin_le {R S : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing S] [IsDomain S]
     [Algebra R S] [FaithfulSMul R S] [Algebra.IsAlgebraic R S] (s : Finset S) :
@@ -82,11 +82,11 @@ theorem ringKrullDim_adjoin_le {R S : Type} [CommRing R] [IsDomain R] [IsNoether
     exact le_trans (by exact_mod_cast h) (Ideal.height_le_ringKrullDim_of_ne_top (Ideal.comap_isPrime f q).ne_top)
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_trdeg_eq_natCast O (A := A)`. Rewrite using `[ringKrullDim_genericFibre_eq O K hd]`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis O A`. Establish `hc : Cardinal.mk s = d` using `hs.cardinalMk_eq_trdeg.trans hd`. Establish `: Finite s` using `Cardinal.lt_aleph0_iff_finite.1 (hc ▸ Cardinal.nat_lt_aleph0 d)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R` to `Algebra.adjoin O (Set.range ((↑) : s → A))`. Establish `e : MvPolynomial s O ≃+* R` using `hs.1.aevalEquiv.toRingEquiv`. Establish `: IsNoetherianRing R` using `isNoetherianRing_of_ringEquiv _ e`. Establish `: Algebra.IsAlgebraic R A` using `hs.isAlgebraic`. Establish `: Algebra.FiniteType R A` using `.of_restrictScalars_finiteType O R A`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `Algebra.FiniteType.out (R := R) (A := A)`. Establish `h` using `ringKrullDim_adjoin_le (R := R) t`. Rewrite `h` using `[ht, ringKrullDim_eq_of_ringEquiv Subalgebra.topEquiv.toRingEquiv, ← ringKrullDim_eq_of_ringEquiv e, MvPolynomial.ringKrullDim_of_isNoetherianRing, Nat.card, hc, Cardinal.toNat_natCast]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_le_add {O A : Type} (K : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [CommRing A]
     [IsDomain A] [Algebra O A] [FaithfulSMul O A] [Algebra.FiniteType O A] [Field K] [Algebra O K] [IsFractionRing O K] :
@@ -108,25 +108,23 @@ theorem ringKrullDim_le_add {O A : Type} (K : Type) [CommRing O] [IsDomain O] [I
   exact h
 
 /- English proof (translation)
-Establish `hO1 : ringKrullDim O ≤ 1` using `by exact_mod_cast Ring.krullDimLE_iff.mp (inferInstance : Ring.KrullDimLE 1 O)`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ?_` and prove the remaining obligations. Take `⟨A, _, _, i, _, a, rfl, hi⟩` from `exists_affine_chart_over p x`. Take `⟨i₀, _, -⟩` from `exists_affine_chart_of_isPullback H i hi`. Use `⟨Set.range i, i.isOpenEmbedding.isOpen_range, ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[topologicalKrullDim_eq_of_isEmbedding i.isOpenEmbedding.isEmbedding rfl]`. Establish `: Nonempty (Spec (.of A))` using `⟨a⟩`. Establish `: IsIntegral (Spec (.of A))` using `isIntegral_of_isOpenImmersion i`. Establish `: IsDomain A` using `(affine_isIntegral_iff (.of A)).1 this`. Establish `hft : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap O A)))` using `by rw [← hi]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl : Flat (Spec.map (CommRingCat.ofHom (algebraMap O A)))` using `by rw [← hi]; infer_instance`. Rewrite `hft` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Rewrite `hfl` using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Establish `: Algebra.FiniteType O A` using `RingHom.finiteType_algebraMap.mp hft`. Establish `: Module.Flat O A` using `RingHom.flat_algebraMap_iff.mp hfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FaithfulSMul O A` using `inferInstance`. Establish `h₁ : ringKrullDim (K ⊗[O] A) ≤ d` using `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _).ge.trans (i₀.isOpenEmbedding.isInducing.topologicalKrullDim_le.trans hd.le)`. Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim A).le.trans ((ringKrullDim_le_add (O := O) K).trans ?_)` and prove the remaining obligations. Use `(add_le_add hO1 h₁).trans_eq ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Conclude with `add_comm _ _`. Use `IsPreimmersion.of_isLocalization (R := O) (S := K) (nonZeroDivisors O)` as an intermediate fact. Establish `: IsPreimmersion j` using `MorphismProperty.of_isPullback H.flip this`. Establish `hj` using `j.isEmbedding`. Establish `eX : topologicalKrullDim X = Order.krullDim X` using `Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := X))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eY : topologicalKrullDim Y = Order.krullDim Y` using `Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := Y))`. Rewrite `hd` using `[eY]`. Rewrite using `[eX]`. Take `⟨l, hl⟩` from `Order.le_krullDim_iff.1 hd.ge`. Establish `hm : StrictMono (j : Y → X)` using `fun a b h => ⟨hj.isInducing.specializes_iff.2 h.1, fun h' => h.2 (hj.isInducing.specializes_iff.1 h')⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm0, hmp⟩` from `Ring.not_isField_iff_exists_prime.1 hO`. Establish `hp (y : Y) : (p (j y)).asIdeal = ⊥`. Rewrite using `[← Scheme.Hom.comp_apply, H.w, Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap O K) (q y).asIdeal = ⊥`. Rewrite using `[(Ideal.eq_bot_or_top _).resolve_right (q y).2.ne_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective O K)`. Establish `hs : p (j l.head) ⤳ (⟨m, hmp⟩ : PrimeSpectrum O)` using `(PrimeSpectrum.le_iff_specializes _ _).1 ((hp _).le.trans bot_le)`. Take `⟨x, hx, hxm⟩` from `p.isClosedMap.specializingMap hs`. Establish `hlt : x < (l.map _ hm).head`. Use `⟨hx, fun h' => hm0 ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₁ : p x ⤳ p (j l.head)` using `Specializes.map h' p.continuous`. Rewrite `h₁` using `[hxm]`. Establish `h₂ : m ≤ (p (j l.head)).asIdeal` using `(PrimeSpectrum.le_iff_specializes _ _).2 h₁`. Conclude with `le_bot_iff.1 (h₂.trans (hp _).le)`. Use `Order.le_krullDim_iff.2 ⟨(l.map _ hm).cons x hlt, ?_⟩` and prove the remaining obligations.
-
-Simplify using `[hl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq_succ {O K : Type} [CommRing O] [IsDedekindDomain O] (hO : ¬ IsField O) [Field K]
     [Algebra O K] [IsFractionRing O K] {X Y : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp O} [IsProper p] [Flat p]
@@ -184,17 +182,17 @@ theorem topologicalKrullDim_eq_succ {O K : Type} [CommRing O] [IsDedekindDomain 
     simp [hl]
 
 /- English proof (translation)
-Take `⟨W₀, s₀, i₀, hs₀, H₀⟩` from `GlobalTheory.ProjClosure.exists_isProjOver_isPullback_of_isLocalization (nonZeroDivisors O) q hq`. Take `⟨W, h, r, hW, hr, hg⟩` from `CommonModel.exists_common s₀ hs₀ i₀ P p f hp (fun i => (hf i).trans H₀.w.symm) Finset.univ`. Establish `w : h ≫ r ≫ s₀ = q ≫ spMap (algebraMap O K)` using `by rw [← Category.assoc, hr, H₀.w]`. Establish `hqp : IsProper q` using `CommonModel.isProper_of_isProjOver hq`. Establish `hsp : IsProper (r ≫ s₀)` using `CommonModel.isProper_of_isProjOver hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `IsPullback.of_hasPullback (r ≫ s₀) (spMap (algebraMap O K))`. Set `f' : Y ⟶ pullback (r ≫ s₀) (spMap (algebraMap O K))` to `pullback.lift h q w`. Establish `hf' : f' ≫ pullback.snd _ _ = q` using `pullback.lift_snd _ _ _`. Set `ρ : pullback (r ≫ s₀) (spMap (algebraMap O K)) ⟶ Y` to `H₀.lift (pullback.fst _ _ ≫ r) (pullback.snd _ _) (by rw [Category.assoc, pullback.condition])`. Establish `hρ : ρ ≫ q = pullback.snd _ _` using `H₀.lift_snd _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfρ : f' ≫ ρ = 𝟙 Y`. Apply `H₀.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, H₀.lift_fst, pullback.lift_fst_assoc, hr, Category.id_comp]`. Rewrite using `[Category.assoc, hρ, pullback.lift_snd, Category.id_comp]`. Establish `: IsSeparated (ρ ≫ q)` using `by rw [hρ]; infer_instance`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsSeparated ρ` using `IsSeparated.of_comp ρ q`. Establish `: IsClosedImmersion (f' ≫ ρ)` using `by rw [hfρ]; infer_instance`. Establish `: IsClosedImmersion f'` using `IsClosedImmersion.of_comp f' ρ`. Establish `hh : f' ≫ pullback.fst _ _ = h` using `pullback.lift_fst _ _ _`. Establish `: IsAffineHom (pullback.fst (r ≫ s₀) (spMap (algebraMap O K)))` using `MorphismProperty.of_isPullback hb.flip (isAffineHom_of_isAffine _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact h` using `by rw [← hh]; infer_instance`. Establish `: Flat (spMap (algebraMap O K))` using `flat_specMap_localization (nonZeroDivisors O) K`. Establish `: Mono (spMap (algebraMap O K))` using `mono_specMap_localization (nonZeroDivisors O) K`. Establish `hpb` using `isPullback_toImage_of_isClosedImmersion h f' _ hh`. Use `⟨h.image, h.imageι ≫ r ≫ s₀, h.toImage, inferInstance, ProjSpace.isProjOver_comp_of_isClosedImmersion _ hW, flat_image_of_over_fractionField h (r ≫ s₀) q w.symm, ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hpb.flip.paste_vert hb` as an intermediate fact. Rewrite `this` using `[hf']`. Then use the resulting hypothesis. Take `⟨g, h₁, h₂⟩` from `hg i (Finset.mem_univ i)`. Conclude with `⟨h.imageι ≫ g, by rw [← Category.assoc, h.toImage_imageι, h₁], by rw [Category.assoc, h₂]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_flat_model {O K : Type} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     {Y : Scheme.{0}} [IsIntegral Y] (q : Y ⟶ Sp K) (hq : IsProjOver q) {ι : Type} [Fintype ι]
@@ -239,11 +237,11 @@ theorem exists_flat_model {O K : Type} [CommRing O] [IsDedekindDomain O] [Field 
     exact ⟨h.imageι ≫ g, by rw [← Category.assoc, h.toImage_imageι, h₁], by rw [Category.assoc, h₂]⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_isRatSec hL`. Establish `h` using `presents_divOfRatSec hL hr`. Use `set E := divOfRatSec hL hr`. Establish `h0 : toPic (Δ - E) = 0` using `by rw [map_sub, e, h.toPic_eq, sub_self]`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff (isLB_toLB (Δ - E))).1 h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `s : (toLB (Δ - E)).Sec` to `⟨fun i => (t.s i).val, fun i j => congrArg Units.val (ht i j)⟩`. Establish `P` using `presents_toLB (Δ - E)`. Establish `hg (x : Z) : (Δ - E).GeneratesAt x (P.rat s)`. Take `⟨i, hi⟩` from `exists_chart P.isLB x`. Conclude with `⟨_, P.isEqn i x hi, (P.rat_mul s i (gen_mem hi)).symm ▸ unitAt_fnOf hi _ (t.s i)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `g : Z.functionFieldˣ` to `(Units.mk0 _ (hg (genericPoint Z)).ne_zero)⁻¹`. Establish `eg : Δ - E = CartierDiv.principal g` using `CartierDiv.ext_of_isEqn fun x => ⟨g, CartierDiv.isEqn_iff_generatesAt_inv.2 (by simpa [g] using hg x), CartierDiv.isEqn_principal g x⟩`. Use `h.add_principal g` as an intermediate fact. Rewrite `this` using `[← eg, add_sub_cancel]`. Conclude with `⟨_, this⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_presents {Z : Scheme.{0}} [IsIntegral Z] (Δ : CartierDiv Z) {L : LB Z} (hL : L.IsLB)
     (e : toPic Δ = cls L hL) : ∃ r : L.ι → Z.functionFieldˣ, Presents Δ L r := by
@@ -265,7 +263,7 @@ theorem exists_presents {Z : Scheme.{0}} [IsIntegral Z] (Δ : CartierDiv Z) {L :
   exact ⟨_, this⟩
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨X, π, j, hX, hπ, hfl, H, hg⟩ := exists_flat_model (O := O) q hq (fun i : Bool => Bool.rec P P' i) (fun i => Bool.rec p p' i) (fun i => Bool.rec f f' i) (fun i => by cases i <;> assumption) (fun i => by cases i <;> assumption)`. Conclude with `⟨X, π, j, hX, hπ, hfl, H, hg false, hg true⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem exists_flat_model_two {O K : Type} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     {Y : Scheme.{0}} [IsIntegral Y] (q : Y ⟶ Sp K) (hq : IsProjOver q) {P P' : Scheme.{0}} {p : P ⟶ Sp O}
@@ -280,7 +278,7 @@ theorem exists_flat_model_two {O K : Type} [CommRing O] [IsDedekindDomain O] [Fi
   exact ⟨X, π, j, hX, hπ, hfl, H, hg false, hg true⟩
 
 /- English proof (translation)
-Establish `hO` using `ProjSpace.O1_isLB R n`. Rewrite using `[cls_pull hO, ← pull_comp, h₁, ← cls_pull hO _ (LB.isLB_pull hO _)]`. Conclude with `(cls_eq_iff _ _).2 (ProjSpace.lbIso_pullback_O1_toProj c s hs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_cls_O1 {R : Type} [CommRing R] {X Y : Scheme.{0}} (j : Y ⟶ X) (c : Y ⟶ Sp R) {n : ℕ} {B : LB Y} (hB : B.IsLB)
     (s : Fin (n + 1) → B.Sec) (hs : ⨆ i, Out.nonzeroLocus (s i) = ⊤) (g : X ⟶ PSpace R n)
@@ -290,11 +288,11 @@ theorem pull_cls_O1 {R : Type} [CommRing R] {X Y : Scheme.{0}} (j : Y ⟶ X) (c 
   exact (cls_eq_iff _ _).2 (ProjSpace.lbIso_pullback_O1_toProj c s hs)
 
 /- English proof (translation)
-Take `⟨a, sa, hsa⟩` from `hA.exists_fin_succ`. Take `⟨b, sb, hsb⟩` from `hB.exists_fin_succ`. Set `c` to `q ≫ spMap (algebraMap O K)`. Take `⟨X, π, j, hX, hπ, hfl, H, ⟨ga, ha₁, ha₂⟩, gb, hb₁, hb₂⟩` from `exists_flat_model_two q hq ⟨a, 𝟙 _, inferInstance, Category.id_comp _⟩ ⟨b, 𝟙 _, inferInstance, Category.id_comp _⟩ (ProjSpace.toProj_str c sa hsa) (ProjSpace.toProj_str c sb hsb)`. Establish `ea` using `pull_cls_O1 j c hA.isLB sa hsa ga ha₁ (LB.isLB_pull (ProjSpace.O1_isLB O a) ga)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eb` using `pull_cls_O1 j c hB.isLB sb hsb gb hb₁ (LB.isLB_pull (ProjSpace.O1_isLB O b) gb)`. Take `⟨La, hLa⟩ : ∃ L : HermLB π, L.B = (ProjSpace.O1 O a).pull ga` from `⟨(ProjSpace.hermitianTwistingSheaf O a).pull ga ha₂, rfl⟩`. Take `⟨Lb, hLb⟩ : ∃ L : HermLB π, L.B = (ProjSpace.O1 O b).pull gb` from `⟨(ProjSpace.hermitianTwistingSheaf O b).pull gb hb₂, rfl⟩`. Use `⟨X, π, j, hX, hπ, hfl, H, La, Lb, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ea]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← eb]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem exists_model_pair {O K : Type} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     {Y : Scheme.{0}} [IsIntegral Y] (q : Y ⟶ Sp K) (hq : IsProjOver q) {A B : LB Y} (hA : IsGenerated A)
@@ -319,11 +317,11 @@ theorem exists_model_pair {O K : Type} [CommRing O] [IsDedekindDomain O] [Field 
     congr 2
 
 /- English proof (translation)
-Introduce `F _ _ Y Δ`. Take `⟨t, ht⟩` from `(AmpleDominates.eventually_isGenerated Y.str Y.isAmple_projective_O_one (isLB_toLB Δ)).exists`. Establish `hA : IsGenerated (lbPow Y.O1 t)` using `((isGenerated_O1 F Y.N).pull Y.ι).pow t`. Take `⟨X, π, j, hX, hπ, hfl, H, La, Lb, ea, eb⟩` from `exists_model_pair (O := 𝓞 F) Y.str Y.isProjOver hA ht`. Use `CommonModel.isProper_of_isProjOver hπ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZ : Flat (spMap (Int.castRingHom (𝓞 F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `(RingHom.flat_algebraMap_iff (R := ℤ) (S := 𝓞 F)).2 inferInstance`. Establish `har : IsArithVar π Y.dim` using `⟨inferInstance, inferInstance, hX, hπ, inferInstance, topologicalKrullDim_eq_succ (RingOfIntegers.not_isField F) H Y.topologicalKrullDim_eq⟩`. Use `⟨⟨X, π, har, j, H⟩, La.tens Lb.dual, exists_presents Δ (LB.isLB_pull (La.tens Lb.dual).isLB j) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : cls _ (La.tens Lb.dual).isLB = cls _ La.isLB - cls _ Lb.isLB` using `(cls_tens La.isLB Lb.dual.isLB _).trans ((congrArg _ (cls_dual Lb.isLB _)).trans (sub_eq_add_neg _ _).symm)`. Use `Eq.trans ?_ (cls_pull (La.tens Lb.dual).isLB j _).symm` and prove the remaining obligations. Rewrite using `[e, map_sub, ea, eb, cls_div hA.isLB (isLB_toLB Δ), sub_sub_cancel, toPic_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (Δ : Y.Dv), ∃ (M : TrueGeo.Model Y)
     (L : HermLB M.p) (r : (L.B.pull M.j).ι → Y.Fnˣ), Presents Δ (L.B.pull M.j) r := by

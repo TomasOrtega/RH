@@ -16,9 +16,9 @@ section Mat
 open scoped Matrix.Norms.L2Operator
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖B‖ = ‖B'‖`. Establish `h1` using `Matrix.l2_opNorm_conjTranspose_mul_self Bᴴ`. Establish `h2` using `Matrix.l2_opNorm_conjTranspose_mul_self B'ᴴ`. Rewrite `h1`, `h2` using `[Matrix.conjTranspose_conjTranspose, Matrix.l2_opNorm_conjTranspose]`. Rewrite `h1` using `[h, h2]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((mul_self_inj_of_nonneg (norm_nonneg _) (norm_nonneg _)).1 h1).symm`.
+A detailed English derivation is pending.
 -/
 theorem opNorm_eq_of_gram {n p q : Type} [Fintype n] [Fintype p] [Fintype q] [DecidableEq n] [DecidableEq p]
     [DecidableEq q] (B : Matrix n p ℂ) (B' : Matrix n q ℂ) (h : B * Bᴴ = B' * B'ᴴ) :
@@ -34,7 +34,7 @@ theorem opNorm_eq_of_gram {n p q : Type} [Fintype n] [Fintype p] [Fintype q] [De
 end Mat
 
 /- English proof (translation)
-Rewrite using `[← h, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hX, ← Matrix.conjTranspose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_gram {n : Type} [Fintype n] [DecidableEq n] (X G : Matrix n n ℂ) (hX : IsUnit X.det)
     (h : (X⁻¹)ᴴ * X⁻¹ = G) : X * Xᴴ = G⁻¹ := by
@@ -50,11 +50,11 @@ def dualMat {n a : ℕ} (vm : (Fin n → K) →ₗ[K] Module.Dual K (Fin a → K
   LinearMap.toMatrix (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin a)).dualBasis vm
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h` using `LinearMap.toMatrix_mulVec_repr (Pi.basisFun K (Fin n)) (Pi.basisFun K (Fin a)).dualBasis vm x`. Establish `hx : ⇑((Pi.basisFun K (Fin n)).repr x) = x` using `by funext i; simp`. Rewrite `h` using `[hx]`. Simplify using `only [LinearMap.mem_ker, Matrix.mulVecLin_apply, dualMat, h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `: (Pi.basisFun K (Fin a)).dualBasis.repr (vm x) = 0`. Use extensionality with `i`. Conclude with `congrFun h0 i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(LinearEquiv.map_eq_zero_iff _).1 this`. Introduce `h0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ker_dualMat {n a : ℕ} (vm : (Fin n → K) →ₗ[K] Module.Dual K (Fin a → K)) :
     LinearMap.ker (dualMat vm).mulVecLin = LinearMap.ker vm := by
@@ -71,17 +71,13 @@ theorem ker_dualMat {n a : ℕ} (vm : (Fin n → K) →ₗ[K] Module.Dual K (Fin
   · intro h0; rw [h0]; simp
 
 /- English proof (translation)
-Unfold `opNormAt`. Establish `e1 : LinearMap.toMatrix (Pi.basisFun K (Fin (Df.dQ Bs.μ0))) (Pi.basisFun K (Fin a)) (Matrix.mulVecLin vb) = vb`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply]`. Establish `e2 : LinearMap.toMatrix (Pi.basisFun K (Fin (Df.nV Bs.μ0))) (Pi.basisFun K (Fin a)).dualBasis vm = vb * Df.Pq Bs.μ0` using `hvb.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, ← hX v, Matrix.map_mul]`. Take `⟨hQ, hQG⟩` from `hW.XQ_quot Bs.μ0 v`. Take `⟨hV, hVG⟩` from `formFrame_spec (Df.HV Bs.μ0) v (hW.HV_pos Bs.μ0 v)`. Establish `gQ` using `frame_gram _ _ hQ hQG`. Establish `gV` using `frame_gram _ _ hV hVG`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G := (Df.Pq Bs.μ0).map v.embedding * ((Df.HV Bs.μ0).map v.embedding)⁻¹ * ((Df.Pq Bs.μ0).map v.embedding)ᴴ with hG`. Establish `hGu : IsUnit G.det`. Establish `h1 : IsUnit G⁻¹`. Rewrite using `[← hQG]`. Use `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_nonsing_inv_det _ hQ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((Matrix.isUnit_conjTranspose _).2 this).mul this`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_nonsing_inv_iff.1 h1)`. Rewrite `gQ` using `[Matrix.nonsing_inv_nonsing_inv _ hGu]`. Apply `opNorm_eq_of_gram` to reduce the goal to its premises. Use `set A := (X' v)⁻¹ * vb.map v.embedding`.
-
-Use `set P := (Df.Pq Bs.μ0).map v.embedding`. Use `set XV := formFrame (Df.HV Bs.μ0) v`. Use `set XQ := Df.XQ Bs.μ0 v`. Establish `e3 : (X' v)⁻¹ * (vb.map v.embedding * P) * XV = A * (P * XV)` using `by simp only [A, Matrix.mul_assoc]`. Rewrite using `[e3]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem opNormAt_quot (hW : Df.WF) {a : ℕ} {X' XM : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ} (hX : SameMetric X' XM)
     (vm : (Fin (Df.nV Bs.μ0) → K) →ₗ[K] Module.Dual K (Fin a → K))
@@ -120,9 +116,9 @@ theorem opNormAt_quot (hW : Df.WF) {a : ℕ} {X' XM : InfinitePlace K → Matrix
     _ = A * (P * XV) * (A * (P * XV))ᴴ := by simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hn : (nPl K : ℝ) ≠ 0`. Use `Formalism.HN.twist_finrank_eq K` as an intermediate fact. Establish `h0 : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Introduce `h`. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `meanInf`. Rewrite using `[Formalism.HN.twist_finrank_eq K]`. Clear the denominators using the available nonvanishing facts.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem meanInf_eq [IsTotallyComplex K] (g : InfinitePlace K → ℝ) :
     meanInf K g = (1 / (nPl K : ℝ)) * ∑ v, g v := by
@@ -135,15 +131,15 @@ theorem meanInf_eq [IsTotallyComplex K] (g : InfinitePlace K → ℝ) :
   field_simp
 
 /- English proof (translation)
-The claim follows from `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => h v) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem meanInf_mono {g g' : InfinitePlace K → ℝ} (h : ∀ v, g v ≤ g' v) : meanInf K g ≤ meanInf K g' :=
   mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => h v) (by positivity)
 
 /- English proof (translation)
-Establish `hn : (nPl K : ℝ) ≠ 0`. Use `Formalism.HN.twist_finrank_eq K` as an intermediate fact. Establish `h0 : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Introduce `h`. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[meanInf_eq, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `1 / (nPl K : ℝ) * ((nPl K : ℝ) * c) = c`. Clear the denominators using the available nonvanishing facts.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 -/
 theorem meanInf_const [IsTotallyComplex K] (c : ℝ) : meanInf K (fun _ => c) = c := by
   have hn : (nPl K : ℝ) ≠ 0 := by
@@ -155,7 +151,7 @@ theorem meanInf_const [IsTotallyComplex K] (c : ℝ) : meanInf K (fun _ => c) = 
   field_simp
 
 /- English proof (translation)
-Rewrite using `[meanInf_eq]`. Unfold `htMap logNormV_sq`. Simplify using `only [opNormAt_quot hW hX vm vb hvb]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem htMap_quot [IsTotallyComplex K] (hW : Df.WF) {a : ℕ} {X' XM : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ}
     (hX : SameMetric X' XM) (vm : (Fin (Df.nV Bs.μ0) → K) →ₗ[K] Module.Dual K (Fin a → K))
@@ -167,13 +163,13 @@ theorem htMap_quot [IsTotallyComplex K] (hW : Df.WF) {a : ℕ} {X' XM : Infinite
   simp only [opNormAt_quot hW hX vm vb hvb]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨vb, rfl⟩ x hx`. Establish `hx' : (Df.Pq Bs.μ0).mulVec x = 0` using `hx`. Simplify using `only [LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, hx', Matrix.mulVec_zero]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Take `⟨σ, hσ⟩` from `(Df.Pq Bs.μ0).mulVecLin.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 (hW.Pq_surj Bs.μ0))`. Use `⟨M * LinearMap.toMatrix' σ, ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσx : (Df.Pq Bs.μ0).mulVec (σ ((Df.Pq Bs.μ0).mulVec x)) = (Df.Pq Bs.μ0).mulVec x` using `LinearMap.congr_fun hσ _`. Establish `hm : σ ((Df.Pq Bs.μ0).mulVec x) - x ∈ Df.U Bs.μ0`. Express the relevant statement in the definitionally equal form `(Df.Pq Bs.μ0).mulVec _ = 0`. Rewrite using `[Matrix.mulVec_sub, hσx, sub_self]`. Establish `h2 : M.mulVec (σ ((Df.Pq Bs.μ0).mulVec x) - x) = 0` using `h hm`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.mulVec_sub, sub_eq_zero]`. Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_induced_iff (hW : Df.WF) {a : ℕ} (M : Matrix (Fin a) (Fin (Df.nV Bs.μ0)) K) :
     (∃ vb : Matrix (Fin a) (Fin (Df.dQ Bs.μ0)) K, vb * Df.Pq Bs.μ0 = M) ↔
@@ -200,9 +196,7 @@ theorem exists_induced_iff (hW : Df.WF) {a : ℕ} (M : Matrix (Fin a) (Fin (Df.n
     rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec, h2]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hc⟩`. Conclude with `hc.trans (meanInf_mono fun v => le_lamMin hW S v _ (hg v))`. Introduce `h`. Use `⟨lamMin hW S, fun v p hp => ?_, h⟩` and prove the remaining obligations.
-
-Conclude with `Finset.inf'_le (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v)) (by simpa [occurring] using hp)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lower_iff (hW : Df.WF) (S : IndefRows Df) (c : ℝ) :
     (∃ g : InfinitePlace K → ℝ, (∀ v p, Df.Qp Bs.μ0 p ≠ ⊥ → g v ≤ ∑ j, Real.log (S.lam j Bs.μ0 p v)) ∧
@@ -220,7 +214,7 @@ def LinTie (O : FunData K Df) (XM : InfinitePlace K → Matrix (Fin O.n) (Fin O.
   SameMetric O.X' XM ∧ O.vmu Bs.μ0 = dualMat vm
 
 /- English proof (translation)
-Unfold `TestMap LeafKer`. Rewrite using `[h.2, ker_dualMat]`. Use `and_congr_left fun _ => forall_congr' fun v => ?_` and prove the remaining obligations. Establish `h1` using `h.1 v`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det (O.X' v), ← Matrix.isUnit_nonsing_inv_iff, h1, Matrix.isUnit_nonsing_inv_iff, dualFrame, Matrix.isUnit_nonsing_inv_iff, Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem testMap_iff (O : FunData K Df) {XM : InfinitePlace K → Matrix (Fin O.n) (Fin O.n) ℂ}
     {vm : (Fin (Df.nV Bs.μ0) → K) →ₗ[K] Module.Dual K (Fin O.n → K)} (h : LinTie O XM vm) :
@@ -233,11 +227,9 @@ theorem testMap_iff (O : FunData K Df) {XM : InfinitePlace K → Matrix (Fin O.n
     dualFrame, Matrix.isUnit_nonsing_inv_iff, Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose]
 
 /- English proof (translation)
-Unfold `LeafIP`. Use `and_congr ?_ (exists_lower_iff hW S _)` and prove the remaining obligations. Rewrite using `[h.2, ← ker_dualMat, ← exists_induced_iff hW]`. Unfold `MeanNormBound FunData.bIPa`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `H ⟨vb, hvb⟩`. Rewrite using `[← htMap_quot hW h.1 vm vb hvb]`. Conclude with `H vb hvb`. Introduce `H vb hvb`. Rewrite using `[htMap_quot hW h.1 vm vb hvb]`.
-
-Conclude with `H ⟨vb, hvb⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinitePlaceBound_iff [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (O : FunData K Df)
     {XM : InfinitePlace K → Matrix (Fin O.n) (Fin O.n) ℂ}
@@ -258,9 +250,9 @@ theorem infinitePlaceBound_iff [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows 
     exact H ⟨vb, hvb⟩
 
 /- English proof (translation)
-Unfold `ScalarLowerBound`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2, h3⟩`. Conclude with `⟨by linarith, h3⟩`. Introduce and unpack `⟨h2, h3⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, by linarith, h3⟩` and prove the remaining obligations. Use `meanInf_mono (K := K) h3` as an intermediate fact. Rewrite `this` using `[meanInf_const]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem scalarLowerBound_iff [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (C f m N L La : ℝ) :
     ScalarLowerBound hW S C f m N L La ↔
@@ -282,7 +274,7 @@ def NumTie (O : FunData K Df) (E : Type) [Field E] [NumberField E]
       Set.BijOn φ O.S0 S0 ∧ ∀ q ∈ O.S0, O.qq q = Ideal.absNorm (φ q).asIdeal ∧ e (φ q) = O.ee C b q
 
 /- English proof (translation)
-Take `⟨-, -, φ, hφ, hq⟩` from `h`. Unfold `depthSum FunData.Sig0`. Use `symm`. Use `Finset.sum_nbij φ (fun q hq' => hφ.mapsTo hq') hφ.injOn hφ.surjOn fun q hq' => ?_` and prove the remaining obligations. Rewrite using `[(hq q hq').1, (hq q hq').2]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem NumTie.sig {O : FunData K Df} {E : Type} [Field E] [NumberField E]
     {S0 : Finset (HeightOneSpectrum (𝓞 (maximalRealSubfield E)))}
@@ -295,14 +287,14 @@ theorem NumTie.sig {O : FunData K Df} {E : Type} [Field E] [NumberField E]
   rw [(hq q hq').1, (hq q hq').2]
 
 /- English proof (translation)
-The claim follows from `Real.log_exp _`.
+A detailed English derivation is pending.
 -/
 theorem log_numB (x ε : ℝ) : Real.log (numB x ε) = numL x ε := Real.log_exp _
 
 /- English proof (translation)
-Unfold `MeanBounds`. Rewrite using `[← testMap_iff O hl, infinitePlaceBound_iff hW S O hl, log_numB, hn.sig, ← hn.1, ← hn.2.1]`. Express the relevant statement in the definitionally equal form `(1 ≤ x → TestMap Df XM vm → MeanNormBound Df XM vm C O.f O.m O.N _ _ _ ∧ ScalarLowerBound hW S C O.f O.m O.N _ _) ↔ _`. Use `forall_congr' fun _ => forall_congr' fun hT => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨ha, hb⟩`. Use `⟨⟨fun _ => ha, hb.2.1.trans hb.1⟩, (scalarLowerBound_iff hW S _ _ _ _ _ _).1 hb⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨ha, -⟩, hb⟩`. Conclude with `⟨ha hT.2.ge, (scalarLowerBound_iff hW S _ _ _ _ _ _).2 hb⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem meanBounds_iff [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (O : FunData K Df)
     (XM : InfinitePlace K → Matrix (Fin O.n) (Fin O.n) ℂ)
@@ -328,11 +320,11 @@ theorem meanBounds_iff [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (O :
     exact ⟨ha hT.2.ge, (scalarLowerBound_iff hW S _ _ _ _ _ _).2 hb⟩
 
 /- English proof (translation)
-Take `⟨ha, hb⟩` from `h hx ((testMap_iff O hl).2 ⟨hX, hk⟩)`. Rewrite `ha` using `[hn.sig, ← hn.1, ← hn.2.1]`. Rewrite `hb` using `[← hn.1, ← hn.2.1]`. Express the relevant statement in the definitionally equal form `MeanNormBound Df XM vm C₀ O.f O.m O.N _ _ _ at ha`. Express the relevant statement in the definitionally equal form `ScalarLowerBound hW S C₀ O.f O.m O.N _ _ at hb`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[infinitePlaceBound_iff hW S O hl, log_numB]`. Establish `hL : 0 ≤ numL x ε` using `Real.rpow_nonneg (by linarith) _`. Establish `hb0 : 0 ≤ numB x ε` using `(Real.exp_pos _).le`. Establish `hS` using `Sig0_nonneg O C (numB x ε)`. Use `⟨fun _ => le_trans ha ?_, le_trans ?_ (hb.2.1.trans hb.1)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : 0 ≤ (C - C₀) * ((O.f : ℝ) * O.m * O.N * numB x ε * numL x ε)` using `mul_nonneg (by linarith) (by positivity)`. Establish `h2 : 0 ≤ (C - C₀) * ((O.m : ℝ) ^ 2 * (O.N : ℝ) ^ 2 * O.Sig0 C (numB x ε))` using `mul_nonneg (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : 0 ≤ (C - C₀) * ((O.f : ℝ) * O.m * (O.N : ℝ) ^ 2 * numL x ε)` using `mul_nonneg (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem infinitePlaceBound_of_meanBounds [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (O : FunData K Df)
     (XM : InfinitePlace K → Matrix (Fin O.n) (Fin O.n) ℂ)
@@ -361,7 +353,7 @@ theorem infinitePlaceBound_of_meanBounds [IsTotallyComplex K] (hW : Df.WF) (S : 
     linarith
 
 /- English proof (translation)
-Rewrite using `[numLa_eq E ε hx]`. Establish `: 1 ≤ rootDiscr E`. Use `Real.one_le_rpow ?_ (by positivity)` and prove the remaining obligations. Conclude with `Int.one_le_abs (discr_ne_zero E)` after adjusting the coercions. Combine the linear relations using `[Real.log_nonneg this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem numL_add_le (E : Type) [Field E] [NumberField E] {x : ℝ} (ε : ℝ) (hx : 0 < x) :
     numL x ε + Real.log x ≤ numLa E x ε := by
@@ -372,7 +364,7 @@ theorem numL_add_le (E : Type) [Field E] [NumberField E] {x : ℝ} (ε : ℝ) (h
   linarith [Real.log_nonneg this]
 
 /- English proof (translation)
-Rewrite `h` using `[infinitePlaceBound_iff hW S O hl, log_numB]`. Use `⟨h.1 hT.2.ge, le_trans ?_ h.2⟩` and prove the remaining obligations. Establish `h1` using `numL_add_le E ε (by linarith : 0 < x)`. Establish `h2` using `Real.log_nonneg hx`. Establish `h3 : 0 ≤ (3 * C * O.f * O.m * (O.N : ℝ) ^ 2) * (numLa E x ε - numL x ε)` using `mul_nonneg (by positivity) (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -392,7 +384,7 @@ theorem mean_of_leafIP [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (O :
   linarith
 
 /- English proof (translation)
-Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [dualFrame, Matrix.transpose_nonsing_inv, Matrix.transpose_transpose, Matrix.inv_inv_inv]`. Rewrite using `[dualMat, LinearMap.toMatrix_toLin]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_of_record (O : FunData K Df) :
     LinTie O (dualFrame O.X')
@@ -445,7 +437,7 @@ def recordOf (Df : DefSide Bs) {a : ℕ} (XM : InfinitePlace K → Matrix (Fin a
   Bw := 0
 
 /- English proof (translation)
-Use `⟨⟨fun _ => rfl, ?_⟩, rfl, rfl, id, Set.bijOn_id _, fun _ _ => ⟨rfl, rfl⟩⟩` and prove the remaining obligations. Simplify using `[recordOf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tie_recordOf (Df : DefSide Bs) {a : ℕ} (XM : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ)
     (vm : (Fin (Df.nV Bs.μ0) → K) →ₗ[K] Module.Dual K (Fin a → K)) (E : Type) [Field E] [NumberField E]
@@ -459,19 +451,17 @@ theorem tie_recordOf (Df : DefSide Bs) {a : ℕ} (XM : InfinitePlace K → Matri
   simp [recordOf]
 
 /- English proof (translation)
-Establish `hf1 : (1 : ℝ) ≤ O.f`. Rewrite using `[hf]`. Conclude with `(Module.finrank_pos : 0 < finrank ℚ (maximalRealSubfield E))` after adjusting the coercions. Establish `hm1 : (1 : ℝ) ≤ O.m` using `by exact_mod_cast hm0`. Establish `hN1 : (1 : ℝ) ≤ O.N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ O.N` using `le_add_left (Nat.mul_pos hm0 (Nat.succ_pos _))`. Conclude with `this` after adjusting the coercions. Use `set A := meanInf K (logNormV_sq Df XM vm)`. Use `set B := meanInf K (lamMin hW S)`. Use `set C : ℝ := 1 + |A| + |B| with hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1 : 1 ≤ C` using `by have := abs_nonneg A; have := abs_nonneg B; linarith`. Establish `hL : numL (Real.exp 3) 0 = 1` using `Real.rpow_zero _`. Establish `hb1 : 1 ≤ numB (Real.exp 3) 0` using `Real.one_le_exp (by rw [hL]; norm_num)`. Establish `hx : 1 ≤ Real.exp 3` using `Real.one_le_exp (by norm_num)`. Establish `hP : (1 : ℝ) ≤ O.f * O.m * (O.N : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hf1 hm1) (one_le_pow₀ hN1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hCP : C ≤ C * (O.f * O.m * (O.N : ℝ) ^ 2)` using `le_mul_of_one_le_right (by linarith) hP`. Use `⟨C, Real.exp 3, 0, by linarith, hx, ?_, fun S0 e h => ?_⟩` and prove the remaining obligations. Rewrite using `[infinitePlaceBound_iff hW S O hl, log_numB, hL]`. Use `⟨fun _ => ?_, ?_⟩` and prove the remaining obligations. Establish `hQ : (1 : ℝ) ≤ O.f * O.m * O.N * numB (Real.exp 3) 0` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hf1 hm1) hN1) hb1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : C ≤ C * (O.f * O.m * O.N * numB (Real.exp 3) 0)` using `le_mul_of_one_le_right (by linarith) hQ`. Establish `hS` using `Sig0_nonneg O C (numB (Real.exp 3) 0)`. Establish `h2 : 0 ≤ C * (O.m : ℝ) ^ 2 * (O.N : ℝ) ^ 2 * O.Sig0 C (numB (Real.exp 3) 0)` using `by positivity`. Express the relevant statement in the definitionally equal form `A ≤ _`. Combine the linear relations using `[le_abs_self A, abs_nonneg B]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Combine the linear relations using `[neg_abs_le B, abs_nonneg A]`. Establish `h2` using `(h hx hT).2.2.1`. Rewrite `h2` using `[← hf, ← hm, hL]`. Express the relevant statement in the definitionally equal form `-(3 * C * O.f * O.m * (O.N : ℝ) ^ 2 * 1) ≤ -(C * O.f * O.m * (O.N : ℝ) ^ 2 * _) at h2`. Establish `h3` using `numL_add_le E 0 (Real.exp_pos 3)`.
-
-Rewrite `h3` using `[hL, Real.log_exp]`. Establish `h4 : 0 ≤ C * (O.f * O.m * (O.N : ℝ) ^ 2) * (numLa E (Real.exp 3) 0 - 4)` using `mul_nonneg (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_equiv [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (O : FunData K Df)
     (XM : InfinitePlace K → Matrix (Fin O.n) (Fin O.n) ℂ)
@@ -518,15 +508,15 @@ theorem not_equiv [IsTotallyComplex K] (hW : Df.WF) (S : IndefRows Df) (O : FunD
     linarith
 
 /- English proof (translation)
-Take `⟨ha, g, hg, hm⟩` from `h`. Take `⟨p, hp⟩` from `occurring_nonempty hW S.pos`. Use `set T : ℝ := |∑ j, Real.log (S.lam j Bs.μ0 p v₁) - c| + 1 with hT`. Use `set u : InfinitePlace K → ℝ := Pi.single v₂ T - Pi.single v₁ T with hu`. Establish `hu1 : u v₁ = -T` using `by simp [hu, hv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hus : ∑ v, u v = 0` using `by simp [hu, Finset.sum_sub_distrib]`. Establish `hsum : ∀ q v, ∑ j, Real.log (Real.exp (u v) * S.lam j Bs.μ0 q v) = (Fintype.card Bs.J : ℝ) * u v + ∑ j, Real.log (S.lam j Bs.μ0 q v)`. Introduce `q v`. Rewrite using `[Finset.sum_congr rfl fun j _ => Real.log_mul (Real.exp_pos _).ne' (S.l1c.2.2.2.1 j Bs.μ0 q v).ne', Finset.sum_add_distrib, Real.log_exp, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `⟨GlobalTheory.RowSlopeProbe.rescale S (fun v => Real.exp (u v)) fun v => Real.exp_pos _, ⟨ha, fun v => (Fintype.card Bs.J : ℝ) * u v + g v, fun v q hq => ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ≤ ∑ j, Real.log (Real.exp (u v) * S.lam j Bs.μ0 q v)`. Rewrite using `[hsum]`. Combine the linear relations using `[hg v q hq]`. Unfold `meanInf at hm ⊢`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, hus, mul_zero, zero_add]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hm`. Use `lt_of_le_of_lt (Finset.inf'_le _ hp) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ j, Real.log (Real.exp (u v₁) * S.lam j Bs.μ0 p v₁) < c`. Rewrite using `[hsum, hu1]`. Establish `hJ : (1 : ℝ) ≤ Fintype.card Bs.J` using `by exact_mod_cast Fintype.card_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hT0 : 0 ≤ T` using `by positivity`. Use `mul_le_mul_of_nonneg_right hJ hT0` as an intermediate fact. Combine the linear relations using `[le_abs_self (∑ j, Real.log (S.lam j Bs.μ0 p v₁) - c)]`.
+A detailed English derivation is pending.
 -/
 theorem pointwise_not_implied (hW : Df.WF) (S : IndefRows Df) (O : FunData K Df) (C b : ℝ) [Nonempty Bs.J]
     {v₁ v₂ : InfinitePlace K} (hv : v₁ ≠ v₂) (h : LeafIP S.toIndefData O C b) (c : ℝ) :
@@ -559,7 +549,7 @@ theorem pointwise_not_implied (hW : Df.WF) (S : IndefRows Df) (O : FunData K Df)
     linarith [le_abs_self (∑ j, Real.log (S.lam j Bs.μ0 p v₁) - c)]
 
 /- English proof (translation)
-Use `⟨fun _ => by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[← ker_dualMat, dualMat, LinearMap.toMatrix_toLin]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem testMap_proj (Df : DefSide Bs) :
     TestMap Df (fun _ => (1 : Matrix (Fin (Df.dQ Bs.μ0)) (Fin (Df.dQ Bs.μ0)) ℂ))
@@ -569,9 +559,9 @@ theorem testMap_proj (Df : DefSide Bs) :
   rfl
 
 /- English proof (translation)
-Set `S : IndefRows (Examples₂.two.df Examples₂.K3 v0)` to `Examples₂.two.what₂ (a := 3) (kap := fun _ => 2) (l := fun _ => 5) (Examples₂.pairSet_conj w) (by norm_num) (fun _ => by norm_num) (fun _ => by norm_num)`. Establish `wf` using `Examples₂.two.wf Examples₂.K3 v0 (Examples₂.conjAt v0)`. Establish `hT` using `testMap_proj (Examples₂.two.df Examples₂.K3 v0)`. Establish `ht` using `fun C b => tie_recordOf (Examples₂.two.df Examples₂.K3 v0) (fun _ => 1) (Matrix.toLin (Pi.basisFun Examples₂.K3 _) (Pi.basisFun Examples₂.K3 _).dualBasis ((Examples₂.two.df Examples₂.K3 v0).Pq (Examples₂.two.base Examples₂.K3 v0).μ0)) E {v₀} v₀ 6 1 5 7 11 13 C b`. Take `⟨C, x, ε, -, hx, h1, h2⟩` from `not_equiv wf S _ _ _ E (ht 0 0).1 rfl rfl (Fintype.card_pos_iff.2 ⟨()⟩) hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨wf, S, _, _, _, _, C, x, ε, (ht 0 0).1, (ht C (numB x ε)).2, hT, hx, h1, h2 _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem sample_not_equiv (v0 : InfinitePlace Examples₂.K3) (E : Type) [Field E] [NumberField E] [IsCMField E]
     (v₀ : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (w : HeightOneSpectrum (𝓞 Examples₂.K3)) :
@@ -591,7 +581,7 @@ theorem sample_not_equiv (v0 : InfinitePlace Examples₂.K3) (E : Type) [Field E
   exact ⟨wf, S, _, _, _, _, C, x, ε, (ht 0 0).1, (ht C (numB x ε)).2, hT, hx, h1, h2 _ _⟩
 
 /- English proof (translation)
-The claim follows from `IsCyclotomicExtension.Rat.isCMField (S := {3}) _ ⟨3, rfl, by norm_num⟩`.
+A detailed English derivation is pending.
 -/
 example : IsCMField (CyclotomicField 3 ℚ) := IsCyclotomicExtension.Rat.isCMField (S := {3}) _ ⟨3, rfl, by norm_num⟩
 

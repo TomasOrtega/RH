@@ -22,7 +22,7 @@ def matAct {X : Type} [AddCommGroup X] (M : Matrix (Fin 8) (Fin 8) ℤ) (t : Fin
   fun v => ∑ u, M v u • t u
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [matAct, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, mul_smul]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matAct_mul {X : Type} [AddCommGroup X] (N M : Matrix (Fin 8) (Fin 8) ℤ) (t : Fin 8 → X) :
     matAct N (matAct M t) = matAct (N * M) t := by
@@ -31,7 +31,7 @@ theorem matAct_mul {X : Type} [AddCommGroup X] (N M : Matrix (Fin 8) (Fin 8) ℤ
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[matAct, Matrix.one_apply, ite_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matAct_one {X : Type} [AddCommGroup X] (t : Fin 8 → X) : matAct 1 t = t := by
   funext v
@@ -53,25 +53,23 @@ end GlobalTheory.Poinc.EighthPow
 open GlobalTheory.Poinc.EighthPow in
 
 /- English proof (translation)
-Introduce `R _ _ _ hRb hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr huniv hL ϖ β hs hp hτ`. Use `haveI := hdvr`. Establish `hext : ∀ v, ∃ p : G' ⟶ G, IsMonHom p ∧ (Over.pullback (jK R)).map p ≫ U.gen.hom = U'.gen.hom ≫ pr v`. Introduce `v`. Establish `h1` using `U'.gen_hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `U.gen_hom`. Establish `: IsMonHom U.gen.symm.hom` using `by show IsMonHom U.gen.inv; infer_instance`. Use `haveI := hpr v`. Take `⟨F, ⟨hF, hFe⟩, -⟩` from `GlobalTheory.semiAbelian_hom_extends_uniquely_dvr R (FractionRing R) G' G hG' hG (U'.gen.hom ≫ pr v ≫ U.gen.symm.hom) inferInstance`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFe' : (Over.pullback (jK R)).map F = U'.gen.hom ≫ pr v ≫ U.gen.inv` using `hFe`. Rewrite using `[hFe']`. Simplify using the standard rewrite rules. Use `choose pG hpGm hpG using hext`. Establish `hc : ∀ v, ∃ ρ, TorMatch U U' (RingHom.id R) (pG v).left ρ` using `fun v => GlobalTheory.Poinc.HomTor.exists_torMatch R hRb G hG D A U G' hG' D' A' U' (pG v) (hpGm v)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose c hc using hc`. Take `⟨hbij, hmat⟩` from `GlobalTheory.T.characters_eighthPower_elementaryMatrices_alt R hRb hdvr G hG D A U G' hG' D' A' U' W hW pr hpr huniv hL pG hpGm hpG c hc`. Set `Φ : (Fin 8 → D.toPre.X) ≃+ D'.toPre.X` to `AddEquiv.ofBijective (sumHom c) hbij`. Set `Mq : (Fin 8 → D.toPre.X) ≃+ (Fin 8 → D.toPre.X)` to `matEquiv (W + W.transpose) hW.2`. Set `e : D'.toPre.X ≃+ (Fin 8 → D.toPre.X)` to `(Mq.trans Φ).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ y, Φ (Mq (e y)) = y` using `fun y => (Mq.trans Φ).apply_symm_apply y`. Establish `he' : ∀ y, ∑ v, c v (∑ u, (W + W.transpose) v u • e y u) = y` using `he`. Use `⟨e, ?_, ?_⟩` and prove the remaining obligations. Introduce `y r hr`. Establish `hlab` using `fun v => GlobalTheory.T.torsionLabels_eighthPower_projections R hRb hdvr G hG D A U G' hG' D' A' U' W hW pr hpr huniv hL pG hpGm hpG c hc e he' v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.Poinc.E8Order.main R hdvr D.toPre D'.toPre D'.tau_bimult D'.psi_even D.tau_bimult W hW ϖ β hs hp hτ c e he' ?_ y r hr` and prove the remaining obligations. Introduce `v a' b x x' hx hx'`. Conclude with `GlobalTheory.TauFormHom.main R hRb hdvr G hG D A U G' hG' D' A' U' (pG v) (hpGm v) (c v) ((Pi.evalAddMonoidHom (fun _ => D.toPre.X) v).comp e.toAddMonoidHom) (hc v) (hlab v) a' b x x' hx hx'`. Introduce `a b f f₁ m hf hf₁ hcomp hm y`. Establish `hmc` using `hmat a b f f₁ m hf hf₁ hcomp hm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : y = Φ (Mq (e y))` using `(he y).symm`. Set `t' : Fin 8 → D.toPre.X` to `fun w => if w = b then Mq (e y) a else 0`. Establish `hmy : m y = Φ t'` using `by conv_lhs => rw [hy] show m (∑ w, c w (Mq (e y) w)) = ∑ w, c w (t' w)`. Establish `hL : m (∑ w, c w (Mq (e y) w)) = c b (Mq (e y) a)`. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hmc]`. Establish `hR : ∑ w, c w (t' w) = c b (Mq (e y) a)`. Rewrite using `[Finset.sum_eq_single b (fun w _ hw => by simp only [t', if_neg hw, map_zero]) (by simp)]`. Simplify using `only [t', if_pos rfl]`. Rewrite using `[hL, hR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hkey : Mq (e (m y)) = t'` using `Φ.injective (by rw [he, hmy])`. Introduce `v`. Establish `h` using `congrFun hkey v`. Express the relevant statement in the definitionally equal form `∑ u, (W + W.transpose) v u • e (m y) u = _ at h`. Rewrite using `[h]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.EighthPow.main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → IsDiscreteValuationRing R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G') (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (pr : Fin 8 → (A'.A ⟶ A.A)), (∀ a, IsMonHom (pr a)) → (∀ (T' : Over (Sp (FractionRing R))) (y : Fin 8 → (T' ⟶ A.A)), ∃! z : T' ⟶ A'.A, ∀ a, z ≫ pr a = y a) → LBIso A'.L (LB.LinComb (abelian₂ A.A A.L) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → ∀ (ϖ : R) (β : LinearMap.BilinForm ℤ D.toPre.X), (∀ a b, β a b = β b a) → (∀ a, 0 ≤ β a a) → (∀ a b' (x : (FractionRing R)ˣ), GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsTauCoord D.toPre a b' x → ∃ u : Rˣ, (x : FractionRing R) = algebraMap R (FractionRing R) (u : R) * algebraMap R (FractionRing R) ϖ ^ (β a b')) → ∃ e : D'.toPre.X ≃+ (Fin 8 → D.toPre.X), (∀ y r, PsiCoord D'.toPre y r → 0 ≤ qW W β (e y) ∧ Associated r (ϖ ^ (qW W β (e y)).toNat)) ∧ ∀ (a b : Fin 8) (f : G' ⟶ G') (f₁ : A'.A ⟶ A'.A) (m : D'.toPre.X →+ D'.toPre.X), IsMonHom f → MatEnd pr a b f₁ → (Over.pullback (jK R)).map f ≫ U'.gen.hom = U'.gen.hom ≫ f₁ → EndChar U' f m → ∀ y, MatRel W a b (e y) (e (m y)) := by
   intro R _ _ _ hRb hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr huniv hL ϖ β hs hp hτ

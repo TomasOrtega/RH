@@ -21,13 +21,13 @@ section Basics
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ZM.Model.isIso_of_dim_zero D.P.A D.P.isAb (hg ▸ D.P.smoothDim)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_hom (D : DegPre R) (hg : D.P.g = 0) : IsIso D.P.A.hom :=
   GlobalTheory.ZM.Model.isIso_of_dim_zero D.P.A D.P.isAb (hg ▸ D.P.smoothDim)
 
 /- English proof (translation)
-Use `haveI := isIso_hom D hg`. Use `⟨fun f f' => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono D.P.A.hom, Over.w f, Over.w f']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_subsingleton (D : DegPre R) (hg : D.P.g = 0) (T : Over (Sp R)) : Subsingleton (T ⟶ D.P.A) := by
   haveI := isIso_hom D hg
@@ -35,7 +35,7 @@ theorem hom_subsingleton (D : DegPre R) (hg : D.P.g = 0) (T : Over (Sp R)) : Sub
   rw [← cancel_mono D.P.A.hom, Over.w f, Over.w f']
 
 /- English proof (translation)
-Use `haveI := hom_subsingleton D hg (TF (R := R) F)`. Conclude with `⟨fun x y => ν.eA.injective (Subsingleton.elim _ _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_A {F : Type} [Field F] [Algebra (FractionRing R) F] {D : DegPre R} {N : NumD F} (ν : NumOf D F N)
     (hg : D.P.g = 0) : Subsingleton N.A := by
@@ -43,13 +43,11 @@ theorem subsingleton_A {F : Type} [Field F] [Algebra (FractionRing R) F] {D : De
   exact ⟨fun x y => ν.eA.injective (Subsingleton.elim _ _)⟩
 
 /- English proof (translation)
-Use `haveI : IsIso D.P.A.hom := isIso_hom D hg`. Establish `he : eSec D.P.A ≫ D.P.A.hom = 𝟙 _` using `Over.w η[D.P.A]`. Establish `he' : D.P.A.hom ≫ eSec D.P.A = 𝟙 _`. Rewrite using `[← cancel_mono D.P.A.hom, Category.assoc, Category.id_comp]`. Conclude with `(congrArg _ he).trans (Category.comp_id _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `GlobalTheory.MBLow.AbKey.exists_unit_sec D.P.L (D.P.A.hom ≫ eSec D.P.A) he' (LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig D.P.A.hom) (DVR.pullGen_isGen _ _ _ _ D.rig_gen _)`. Take `⟨r, hr⟩` from `ν.th_gen s`. Establish `hu : ∀ j, IsUnit (ν.th.f j)` using `fun j => isUnit_of_mul_isUnit_right (hr j ▸ hs j)`. Introduce `h0`. Establish `h` using `ν.th_eq 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, zero_mul]`. Establish `hU : ⊤ ≤ (ν.eA 1).left ⁻¹ᵁ D.P.L.U (ν.J (ν.eA 1).left)` using `ν.good _`. Establish `hx : ⊤ ≤ (ν.eA 1).left ⁻¹ᵁ LB.wchart D.P.L (fun _ : Fin 1 => 𝟙 D.P.A.left) (fun _ => ν.J ((ν.eA 1).left ≫ 𝟙 _))` using `fun y hy => Set.mem_iInter.2 fun _ => by`. Rewrite using `[Category.comp_id]`. Conclude with `hU hy`.
-
-Unfold `sF valF at h`. Rewrite `h` using `[dif_pos hx]`. Conclude with `(((hu _).map _).map _).ne_zero h.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_one_ne_zero {F : Type} [Field F] [Algebra (FractionRing R) F] {D : DegPre R} {N : NumD F} (ν : NumOf D F N)
     (hg : D.P.g = 0) : N.th 1 ≠ 0 := by
@@ -81,13 +79,13 @@ section Classical
 variable {g : ℕ}
 
 /- English proof (translation)
-Simplify using `[dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_empty [IsEmpty (Fin g)] (u v : Fin g → ℂ) : u ⬝ᵥ v = 0 := by
   simp [dotProduct]
 
 /- English proof (translation)
-Unfold `thetaChar`. Rewrite using `[tsum_fintype, Fintype.sum_unique]`. Simplify using `[dot_empty]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaChar_empty [IsEmpty (Fin g)] (τ : Matrix (Fin g) (Fin g) ℂ) (a b z : Fin g → ℂ) :
     thetaChar τ a b z = 1 := by
@@ -96,20 +94,20 @@ theorem thetaChar_empty [IsEmpty (Fin g)] (τ : Matrix (Fin g) (Fin g) ℂ) (a b
   simp [dot_empty]
 
 /- English proof (translation)
-Simplify using `[autV, dot_empty]`.
+Simplify using the standard rewrite rules.
 -/
 theorem autV_empty [IsEmpty (Fin g)] (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (M N : Fin g → ℤ) (z : Fin g → ℂ) :
     autV τ a b M N z = 1 := by
   simp [autV, dot_empty]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by ext i; exact isEmptyElim i, fun x hx => (hx (Subsingleton.elim _ _)).elim⟩`.
+Supply the required witnesses or components.
 -/
 theorem posDef_empty [IsEmpty (Fin g)] (A : Matrix (Fin g) (Fin g) ℝ) : A.PosDef :=
   ⟨by ext i; exact isEmptyElim i, fun x hx => (hx (Subsingleton.elim _ _)).elim⟩
 
 /- English proof (translation)
-Introduce `x _` and use `((hasFDerivAt_const (f x) x).congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => congrArg f (Subsingleton.elim y x))).differentiableAt.differentiableWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiableOn_empty [IsEmpty (Fin g)] (f : (Fin g → ℂ) → ℂ) (s : Set (Fin g → ℂ)) :
     DifferentiableOn ℂ f s := fun x _ =>
@@ -162,11 +160,9 @@ def frZ (ν : NumOf D ℂ N) (i : D.P.L.ι) : ℂ :=
   valF (ν.eA 1).left (D.P.L.U i ⊓ D.P.L.U (ν.J (ν.eA 1).left)) (D.P.L.g i (ν.J (ν.eA 1).left)).val * ν.rg
 
 /- English proof (translation)
-Unfold `frZ`. Use `set x := (ν.eA 1).left`. Use `set k := ν.J x`. Establish `hk : ⊤ ≤ x ⁻¹ᵁ D.P.L.U k` using `ν.good x`. Establish `h3 : ⊤ ≤ x ⁻¹ᵁ (D.P.L.U i ⊓ D.P.L.U j ⊓ D.P.L.U k)` using `fun y hy => ⟨h hy, hk hy⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c` using `congrArg (fun u => valR x _ (Units.val u)) (D.P.isLB.cocycle i j k)`. Simplify using `only [Units.val_mul] at c`. Rewrite `c` using `[GlobalTheory.ZH.CrdCalc.valR_mul x _ h3, val_res, val_res, val_res, GlobalTheory.ZH.CrdCalc.valR_res x _ h3, GlobalTheory.ZH.CrdCalc.valR_res x _ h3, GlobalTheory.ZH.CrdCalc.valR_res x _ h3]`. Simplify using `only [valF_eq_valR]`. Rewrite using `[← c]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frZ_compat (ν : NumOf D ℂ N) (i j : D.P.L.ι) (h : ⊤ ≤ (ν.eA 1).left ⁻¹ᵁ (D.P.L.U i ⊓ D.P.L.U j)) :
     frZ ν i = valF (ν.eA 1).left (D.P.L.U i ⊓ D.P.L.U j) (D.P.L.g i j).val * frZ ν j := by
@@ -184,9 +180,9 @@ theorem frZ_compat (ν : NumOf D ℂ N) (i j : D.P.L.ι) (h : ⊤ ≤ (ν.eA 1).
   ring
 
 /- English proof (translation)
-Unfold `frZ`. Use `set x := (ν.eA 1).left`. Use `set k := ν.J x`. Establish `hk : ⊤ ≤ x ⁻¹ᵁ D.P.L.U k` using `ν.good x`. Establish `c` using `congrArg (fun u => valR x _ (Units.val u)) (D.P.isLB.g_self k)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [val_res, Units.val_one] at c`. Rewrite `c` using `[GlobalTheory.ZH.CrdCalc.valR_res x _ hk, GlobalTheory.ZH.CrdCalc.valR_eq x _ hk, map_one]`. Rewrite using `[valF_eq_valR, c, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frZ_self (ν : NumOf D ℂ N) : frZ ν (ν.J (ν.eA 1).left) = ν.rg := by
   unfold frZ
@@ -199,11 +195,11 @@ theorem frZ_self (ν : NumOf D ℂ N) : frZ ν (ν.J (ν.eA 1).left) = ν.rg := 
   rw [valF_eq_valR, c, _root_.one_mul]
 
 /- English proof (translation)
-Use `haveI := hom_subsingleton D hg (TE R ℂ)`. Introduce `U f hU`. Establish `hb : b = (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R` using `R) ℂ) ≫ ν.eA (d.ex 0) := Subsingleton.elim _ _`. Establish `hl : (lift (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R` using `R) ℂ) b).left = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ ptB ν d 0 := by`. Rewrite using `[hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : lift (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R` using `R) ℂ) ((Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R := R) ℂ) ≫ ν.eA (d.ex 0)) = (Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl : TE R ℂ ⟶ TF (R := R) ℂ) ≫ lift (𝟙 (TF (R := R) ℂ)) (ν.eA (d.ex 0)) := by`. Rewrite using `[comp_lift, Category.comp_id]`. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[hl, (GlobalTheory.ZH.CrdCalc.valR_spMap _ _ U hU).2, map_zero, TrivSqZeroExt.inr_zero, add_zero, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isD_zero (ν : NumOf D ℂ N) (hg : D.P.g = 0) (d : AB N.toNumB g) (b : TE R ℂ ⟶ D.P.A) : IsD ν d 0 b := by
   haveI := hom_subsingleton D hg (TE R ℂ)
@@ -248,7 +244,7 @@ section Main
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ}
 
 /- English proof (translation)
-Introduce `vB b MB k₀ _ _ _ hk`. Use `haveI : IsEmpty (Fin D.P.g) := hg ▸ inferInstance`. Rewrite using `[Matrix.det_isEmpty, one_pow, hc, mul_comm]`. Conclude with `⟨one_ne_zero, hk.1 hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem keyOK_zero (κ : Rule) (ν : NumOf D ℂ N) (hg : D.P.g = 0) (d : AB N.toNumB D.P.g) (hc : d.c = N.th 1) :
     KeyOK κ ν d := by
@@ -258,7 +254,7 @@ theorem keyOK_zero (κ : Rule) (ν : NumOf D ℂ N) (hg : D.P.g = 0) (d : AB N.t
   exact ⟨one_ne_zero, hk.1 hg⟩
 
 /- English proof (translation)
-Introduce `κ R _ _ _ _ D _ _ _ N ν hg`. Set `d` to `abZero N.toNumB D.P.g hg (subsingleton_A ν hg) (th_one_ne_zero ν hg)`. Conclude with `⟨d, geoZero ν hg d hg (fun _ => rfl) (fun _ => rfl), keyOK_zero κ ν hg d rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem main : ∀ κ : Rule, AllC fun {R} _ _ {D} _ {N} ν => D.P.g = 0 →
     ∃ (d : AB N.toNumB D.P.g) (_ : Geo ν d), KeyOK κ ν d := by

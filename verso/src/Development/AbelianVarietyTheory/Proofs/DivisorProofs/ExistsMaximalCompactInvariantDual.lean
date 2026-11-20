@@ -23,16 +23,16 @@ open GlobalTheory.WeilM GlobalTheory.ThK
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHecke_div {χ χ' : Chr F E} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
     GlobalTheory.LFun.IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Introduce `a`. Establish `e` using `h a`. Establish `e'` using `h' a`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e, e']`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem resEtaPow_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Subgroup Rˣ}
     {χ χ' : Aˣ →* Circle} {n m k : ℕ} (h : ResEtaPow K χ n) (h' : ResEtaPow K χ' m) (hk : k = n + m) :
@@ -48,7 +48,7 @@ theorem resEtaPow_div {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : 
     rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, isHecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα, resEtaPow_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPair_small {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (h : IsTriple B G X om om') :
@@ -57,7 +57,7 @@ theorem isPair_small {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F 
     resEtaPow_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Establish `h3` using `(h2.and hM.std).mono fun w hw => hw.1.trans hw.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem so_le_schA {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} (hM : M.IsGood ψ)
     {v : Pl F} (t : E →ₐ[F] Fv F v) : M.So ψ t ≤ schA F _ := by
@@ -74,11 +74,11 @@ namespace GlobalTheory.ThAutSmall
 open GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ γ hγ g`. Establish `hr : (toGAd hσ G.W.J hc).symm γ ∈ ratU σ G.W.J`. Establish `h1 : γ.1 ∈ HFin (AF F) σ (c • G.W.J.map σ)` using `hγ`. Take `⟨y, -, e⟩` from `Subgroup.mem_map.1 h1`. Conclude with `⟨y, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hb` using `((GlobalTheory.T.theta_basic_properties hK.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThAutSmall.isPair_small hT)).1 Φ (GlobalTheory.ThAutSmall.so_le_schA hT.geo.hM' _ (Submodule.mem_inf.1 hΦ).2)).2.1`. Simplify using `only [map_mul]`. Unfold `Model.I`. Use `congr 1`. Use function extensionality and compare the values at `g'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using hb 1 (one_mem _) _ hr g' ((toGAd hσ G.W.J hc).symm g)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem left_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
@@ -99,7 +99,7 @@ theorem left_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   simpa using hb 1 (one_mem _) _ hr g' ((toGAd hσ G.W.J hc).symm g)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ`. Take `⟨K, hK1, hK2⟩` from `GlobalTheory.T.polynomial_theta_kernel_finite_type F E σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ`. Conclude with `⟨K, hK1, ⟨left_inv F E σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ, GlobalTheory.T.open_subgroup_fixes_polynomial_datum F E σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ, GlobalTheory.T.polynomial_theta_kernel_continuous F E σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ, GlobalTheory.T. …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAut_theta_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

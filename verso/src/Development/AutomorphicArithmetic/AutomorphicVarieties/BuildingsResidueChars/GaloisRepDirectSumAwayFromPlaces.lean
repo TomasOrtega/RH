@@ -5,9 +5,9 @@ open UpperTheory.V.Af UpperTheory.V.Af.Gu
 open GlobalTheory.WeilDeligne GlobalTheory.WeilDeligne.SumParam
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι a b r r' hr hr' w hl A h x x' hx hx'`. Establish `c : Continuous fun g => ((r g : GL (Fin a) (Formalism.ConjugateSelfDual.Qbar l)) : Matrix (Fin a) (Fin a) (Formalism.ConjugateSelfDual.Qbar l))` using `Units.continuous_val.comp hr`. Establish `c' : Continuous fun g => ((r' g : GL (Fin b) (Formalism.ConjugateSelfDual.Qbar l)) : Matrix (Fin b) (Fin b) (Formalism.ConjugateSelfDual.Qbar l))` using `Units.continuous_val.comp hr'`. Establish `cs : Continuous fun g => ((Formalism.MainNotions.SumRepresentations.At.sumRep r r' g : GL (Fin (a + b)) (Formalism.ConjugateSelfDual.Qbar l)) : Matrix (Fin (a + b)) (Fin (a + b)) (Formalism.ConjugateSelfDual.Qbar l))`. Simplify using `only [coe_sumRep]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(c.matrix_fromBlocks continuous_const continuous_const c').matrix_reindex _ _`. Rewrite using `[← hx.wdOf_eq hl, ← hx'.wdOf_eq hl, ← wdOf_sumRep hl ι r r' c c']`. Conclude with `isWDOf_wdOf hl ι cs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galoisRep_direct_sum_away_from_places :
     SumAway := by

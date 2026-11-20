@@ -12,15 +12,15 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Take `⟨hH, hmul, hone, hsl, -, -⟩` from `GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties`. Establish `hup : ∀ (f : ℍ → ℂ) (z : ℂ) (hz : 0 < z.im), up f z = f ⟨z, hz⟩`. Introduce `f z hz`. Simplify using `only [up, UpperHalfPlane.ofComplex_apply_of_im_pos hz]`. Establish `hupH : ∀ (f : ℍ → ℂ) (τ : ℍ), up f τ = f τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `f τ`. Simplify using `only [up, UpperHalfPlane.ofComplex_apply]`. Establish `h4 : ∀ (g : GQ) (f : ℍ → ℂ), ∀ z ∈ Hs, up (GlobalTheory.FN.cmp g f) z = up f (mob g z)`. Introduce `g f z hz`. Rewrite using `[hup _ z hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, h4⟩` and prove the remaining obligations. Introduce `f`. Use function extensionality and compare the values at `τ`. Simplify using `only [cmp, hone, hupH]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `g h f`. Use function extensionality and compare the values at `τ`. Establish `hτ : (τ : ℂ) ∈ Hs` using `τ.im_pos`. Use `show up f (mob (g * h) τ) = up (cmp g f) (mob h τ)`. Rewrite using `[h4 g f _ (hH h _ hτ), hmul g h _ hτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ f`. Use function extensionality and compare the values at `τ`. Simplify using `only [cmp, hsl, hupH]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmp_props :
     (∀ f : ℍ → ℂ, GlobalTheory.FN.cmp 1 f = f) ∧ (∀ (g h : GQ) (f : ℍ → ℂ), GlobalTheory.FN.cmp (g * h) f = GlobalTheory.FN.cmp h (GlobalTheory.FN.cmp g f)) ∧

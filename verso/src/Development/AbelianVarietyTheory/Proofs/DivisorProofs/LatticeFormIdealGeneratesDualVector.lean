@@ -6,13 +6,13 @@ open scoped nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hanti : B x' x = - B x x'`. Establish `h1` using `hB (x + x')`. Simplify using `only [map_add, LinearMap.add_apply, hB] at h1`. Take the linear combination `h1`. Establish `hli : LinearIndependent F ![x, x']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1` using `congrArg (fun u => B u x') hst`. Establish `h2` using `congrArg (fun u => B x u) hst`. Simplify using `[hB] at h1 h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h1.resolve_right h, h2.resolve_right h⟩`. Establish `hsp : Submodule.span F (Set.range ![x, x']) = ⊤` using `hli.span_eq_top_of_card_eq_finrank (by simp [hV])`. Establish `hv : v ∈ Submodule.span F (Set.range ![x, x'])` using `by rw [hsp]; trivial`. Rewrite `hv` using `[Matrix.range_cons_cons_empty, Submodule.mem_span_pair]`. Take `⟨a, b, hab⟩` from `hv`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, hab.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_coords_of_alt_ne_zero {F V : Type} [Field F] [AddCommGroup V] [Module F V]
     (hV : Module.finrank F V = 2) (B : LinearMap.BilinForm F V) (hB : ∀ z, B z z = 0)
@@ -36,21 +36,21 @@ theorem exists_coords_of_alt_ne_zero {F V : Type} [Field F] [AddCommGroup V] [Mo
   exact ⟨a, b, hab.symm⟩
 
 /- English proof (translation)
-Introduce `F V _ _ _ _ hV B hB L h0 hadd hsmul J hJ hLJ hJL v hv`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, x', hx', hxx⟩ : ∃ x ∈ L, ∃ x' ∈ L, B x x' ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hJ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.eq_zero_iff]`. Introduce `t ht`. Establish `h1` using `hJL t ht`. Establish `h2 : Submodule.span (𝓞 F) {t | ∃ z ∈ L, ∃ w ∈ L, t = B z w} ≤ ⊥`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `s ⟨z, hz, w, hw, rfl⟩`. Simplify using `using hcon z hz w hw`. Simplify using `using h2 h1`. Take `⟨c, c', rfl⟩` from `exists_coords_of_alt_ne_zero hV B hB hxx v`. Set `M : Submodule (𝓞 F) F` to `{ carrier := {t | ∃ z ∈ L, t = B z (c • x + c' • x')} zero_mem' := ⟨0, h0, by simp⟩ add_mem' := by`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ _ ⟨z, hz, rfl⟩ ⟨w, hw, rfl⟩`. Conclude with `⟨z + w, hadd z hz w hw, by rw [map_add B, LinearMap.add_apply]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a _ ⟨z, hz, rfl⟩`. Use `⟨(a : F) • z, hsmul a z hz, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul B, LinearMap.smul_apply, Algebra.smul_def, smul_eq_mul] }`. Establish `hM : M ≤ ((FractionalIdeal.spanSingleton (𝓞 F)⁰ c * J + FractionalIdeal.spanSingleton (𝓞 F)⁰ c' * J : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F)`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[FractionalIdeal.coe_add, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) (hLJ z hz x hx)`. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) (hLJ z hz x' hx')`. Use `⟨⟨M, FractionalIdeal.isFractional_of_le hM⟩, ?_, fun t => Iff.rfl⟩` and prove the remaining obligations. Introduce `hK0`. Establish `hK` using `FractionalIdeal.eq_zero_iff.1 hK0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hK _ (show B x (c • x + c' • x') ∈ M from ⟨x, hx, rfl⟩)`. Establish `h2` using `hK _ (show B x' (c • x + c' • x') ∈ M from ⟨x', hx', rfl⟩)`. Establish `hanti : B x' x = - B x x'`. Establish `h1` using `hB (x + x')`. Simplify using `only [map_add, LinearMap.add_apply, hB] at h1`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take the linear combination `h1`. Simplify using `[hB, hanti, hxx] at h1 h2`. Apply `hv` to reduce the goal to its premises. Simplify using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_fractionalIdeal_pairing_values :
     ∀ {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V],

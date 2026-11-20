@@ -18,7 +18,7 @@ def yrotM (n : ℕ) (s : ℤˣ) (t : ℝ) : M2 n :=
     ((Real.cos t : ℂ) • 1)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;>`. Simplify using `only [yrotM, Matrix.fromBlocks_multiply, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, ← add_smul]`. Apply the tactic sequence `refine Matrix.fromBlocks_inj.2 ⟨?_, ?_, ?_, ?_⟩ <;>`. Use `congr 1`. Move the coercions through the operations in `[Real.cos_add, Real.sin_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,13 +32,13 @@ theorem yrotM_mul (n : ℕ) (s : ℤˣ) (t t' : ℝ) : yrotM n s t * yrotM n s t
       ring
 
 /- English proof (translation)
-Simplify using `[yrotM, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yrotM_zero (n : ℕ) (s : ℤˣ) : yrotM n s 0 = 1 := by
   simp [yrotM, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Simplify using `only [yrotM, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Real.cos_neg, Real.sin_neg]`. Apply the tactic sequence `refine Matrix.fromBlocks_inj.2 ⟨?_, ?_, ?_, ?_⟩ <;>`. Use `congr 1`. Simplify using `[← Complex.cos_conj, ← Complex.sin_conj, Complex.conj_ofReal]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem yrotM_ct (n : ℕ) (s : ℤˣ) (t : ℝ) : (yrotM n s t)ᴴ = yrotM n s (-t) := by
   simp only [yrotM, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_smul, Matrix.conjTranspose_one,
@@ -48,13 +48,13 @@ theorem yrotM_ct (n : ℕ) (s : ℤˣ) (t : ℝ) : (yrotM n s t)ᴴ = yrotM n s 
     simp [← Complex.cos_conj, ← Complex.sin_conj, Complex.conj_ofReal]
 
 /- English proof (translation)
-Simplify using `[JJ, yrotM, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem JJ_comm_yrotM (n : ℕ) (s : ℤˣ) (t : ℝ) : JJ n * yrotM n s t = yrotM n s t * JJ n := by
   simp [JJ, yrotM, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `h1 : (yrotM n s t)ᴴ * yrotM n s t = 1`. Rewrite using `[yrotM_ct, yrotM_mul, neg_add_cancel, yrotM_zero]`. Use `⟨?_, h1⟩` and prove the remaining obligations. Use `show (yrotM n s t)ᴴ * JJ n * yrotM n s t = JJ n`. Rewrite using `[Matrix.mul_assoc, JJ_comm_yrotM, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inK_yrotM (n : ℕ) (s : ℤˣ) (t : ℝ) : InK (yrotM n s t) := by
   have h1 : (yrotM n s t)ᴴ * yrotM n s t = 1 := by
@@ -78,7 +78,7 @@ def rot (R : RD d) (t : ℝ) : d.G :=
   (((Finset.univ : Finset (InfinitePlace F)).toList).map fun w => R.ι w (yrot d.n (R.sg w) t)).prod
 
 /- English proof (translation)
-Unfold `rot`. Use `d.K.list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `KSplitW.iota_mem_K d R w _ (by rw [mR_yrot]; exact inK_yrotM _ _ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rot_mem (R : RD d) (t : ℝ) : rot R t ∈ d.K := by
   unfold rot
@@ -87,9 +87,9 @@ theorem rot_mem (R : RD d) (t : ℝ) : rot R t ∈ d.K := by
   exact KSplitW.iota_mem_K d R w _ (by rw [mR_yrot]; exact inK_yrotM _ _ _)
 
 /- English proof (translation)
-Take `⟨s, -, hs1, hs2, -, -⟩` from `Place.exists_sec d.cm d.B.emb`. Use `⟨s (fun w => -(((R.sg w : ℤ) : ℂ) * R.ζ)) • W, ?_, fun w => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Rewrite using `[← smul_mul_assoc, hs2, zero_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [SD.cw, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hs1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_tw (R : RD d) (W : Mx F E d.m d.n) :
     ∃ W' : Mx F E d.m d.n, finOne F • W' = 0 ∧ ∀ w, d.cw w W' = (-(((R.sg w : ℤ) : ℂ) * R.ζ)) • d.cw w W := by
@@ -107,23 +107,23 @@ def vline (R : RD d) (W : Mx F E d.m d.n) (z : ℂ) : Matrix (Fin d.m) (Fin d.n 
   (realAd F z.re • W) * (incM F d.b.1.toCols₂)ᵀ + (realAd F z.im • tw R W) * (incM F d.b.1.toCols₁)ᵀ
 
 /- English proof (translation)
-Use `show (0 : InfiniteAdeleRing F) * a.1 = 0`. Conclude with `zero_mul _`.
+A detailed English derivation is pending.
 -/
 theorem finOne_mul_fst (a : AF F) : (finOne F * a).1 = 0 := by
   show (0 : InfiniteAdeleRing F) * a.1 = 0
   exact zero_mul _
 
 /- English proof (translation)
-Use `show (1 : Af F) * a.2 = a.2`. Conclude with `one_mul _`.
+A detailed English derivation is pending.
 -/
 theorem finOne_mul_snd (a : AF F) : (finOne F * a).2 = a.2 := by
   show (1 : Af F) * a.2 = a.2
   exact one_mul _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Prod.snd h` as an intermediate fact. Rewrite `this` using `[finOne_mul_snd]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `Prod.ext (finOne_mul_fst a) ((finOne_mul_snd a).trans h)`.
+A detailed English derivation is pending.
 -/
 theorem finOne_mul_eq_zero_iff (a : AF F) : finOne F * a = 0 ↔ a.2 = 0 := by
   constructor
@@ -135,11 +135,11 @@ theorem finOne_mul_eq_zero_iff (a : AF F) : finOne F * a = 0 ↔ a.2 = 0 := by
     exact Prod.ext (finOne_mul_fst a) ((finOne_mul_snd a).trans h)
 
 /- English proof (translation)
-Use `set bas := Algebra.TensorProduct.basis (AF F) d.bs`. Establish `key : ∀ z : AE F E, finOne F • z = 0 ↔ ∀ l, (bas.repr z l).2 = 0`. Introduce `z`. Rewrite using `[← bas.repr.injective.eq_iff, LinearEquiv.map_smul, LinearEquiv.map_zero]`. Simplify using `only [Finsupp.ext_iff, Finsupp.smul_apply, smul_eq_mul, Finsupp.coe_zero, Pi.zero_apply, finOne_mul_eq_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.zero_apply]`. Use `(key _).2 fun l => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrFun h (i, j, l)`. Introduce `h`. Use function extensionality and compare the values at `⟨i, j, l⟩`. Conclude with `(key (X i j)).1 (by simpa using congrFun (congrFun h i) j) l`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fin_eq_zero_iff (X : Mx F E d.m d.n) : fin d X = 0 ↔ finOne F • X = 0 := by
   set bas := Algebra.TensorProduct.basis (AF F) d.bs

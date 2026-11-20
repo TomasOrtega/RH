@@ -5,7 +5,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTSSLMat
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-Introduce `hT Wp Wq _ _ _ _ _ _ P Bs X d hG e he _`. Take `⟨hP, hk, hC, -⟩` from `id hG`. Establish `hX : ∀ (Y : ℂ) (a b : Fin 2), SliceLoc P Bs (X.t Y a b)` using `fun Y a b => second_shift_slice_derivative Wp Wq P Bs hP _ (hT Wp Wq P Bs hP hk hC X Y a b)`. Conclude with `second_shift_matrix_form Wp Wq P Bs X d hG e he (second_shift_slice_operator Wp Wq P Bs X d hG hX)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gTSSLocal_of_radT : GTCLRadT → GTSSLocal := by
   intro hT Wp Wq _ _ _ _ _ _ P Bs X d hG e he _

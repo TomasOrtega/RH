@@ -13,19 +13,13 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ K O _ _ _ _ G _ _ hK hO i ε hε`. Use `haveI := hO.ring`. Use `haveI := hO.compact`. Use `haveI := hO.t2`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_generator_H2_twist hT hK hO i hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq` using `GlobalTheory.T.every_generator_H2_twist hT hK hO i hε z hz`. Establish `hbij : ∀ (M : Type) [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul O M] [ContinuousSMul O M] [T2Space M] [Module.Finite O M], Function.Bijective (phi ε z M)`. Introduce `M _ _ _ _ _ _ _ _`. Take `⟨n, m, e, ⟨E⟩⟩` from `GlobalTheory.T.exists_equiv_dvr_fg_module_structure (O := O) M`. Use `bijective_of_retract ε z M (fun _ : Fin n => O) (fun i : Fin m => O ⧸ IsLocalRing.maximalIdeal O ^ e i) (fun j => LinearMap.proj j ∘ₗ LinearMap.fst O _ _ ∘ₗ E.toLinearMap) (fun j => E.symm.toLinearMap ∘ₗ LinearMap.inl O _ _ ∘ₗ LinearMap.single O (fun _ : Fin n => O) j) (fun i => …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.continuous_linearMap_of_finite (M := O) (M' := M) ((E.symm.toLinearMap ∘ₗ LinearMap.inr O _ _ ∘ₗ LinearMap.single O (fun i : Fin m => O ⧸ IsLocalRing.maximalIdeal O ^ e i) i) ∘ₗ (IsLocalRing.maximalIdeal O ^ e i).mkQ)` as an intermediate fact. Conclude with `(Submodule.isOpenQuotientMap_mkQ _).isQuotientMap.continuous_iff.2 this`. Introduce `x conv_rhs => rw [← E.symm_apply_apply x]`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, ← map_sum, ← map_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `ext <;> simp [Finset.univ_sum_single]`. Use `show Function.Bijective (phi ε z O)`. Rewrite using `[show ⇑(phi ε z O) = fun a : O => a • z from funext (phi_self ε z)]`. Conclude with `hz`. Use `⟨⟨fun M _ _ _ _ _ h => by haveI := h.csmul; haveI := h.t2; haveI := h.fg` and prove the remaining obligations.
-
-Conclude with `(LinearEquiv.ofBijective (phi ε z M) (hbij M)).symm, ?_⟩⟩`. Introduce `M M' _ _ _ _ _ _ _ _ _ _ h h' f hf w`. Use `haveI := h.csmul`. Use `haveI := h.t2`. Use `haveI := h.fg`.
-
-Use `haveI := h'.csmul`. Use `haveI := h'.t2`. Use `haveI := h'.fg`. Take `⟨m, rfl⟩` from `(hbij M).2 w`. Use `show (LinearEquiv.ofBijective (phi ε z M') (hbij M')).symm _ = f ((LinearEquiv.ofBijective (phi ε z M) (hbij M)).symm _)`.
-
-Rewrite using `[phi_natural ε z M M' f hf (twist_map ε f) m]`. Rewrite using `[LinearEquiv.ofBijective_symm_apply_apply, LinearEquiv.ofBijective_symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natInvIso_of_localTateDuality (hT : Formalism.GaloisCohomology.LocalTateDualityK) : NatInvIso := by
   intro p _ K O _ _ _ _ G _ _ hK hO i ε hε

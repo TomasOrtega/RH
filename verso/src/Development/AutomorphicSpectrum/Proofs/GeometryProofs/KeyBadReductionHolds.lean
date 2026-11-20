@@ -16,7 +16,7 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.Kftwo.kp`.
+A detailed English derivation is pending.
 -/
 theorem key_bad : KeyBadSt := PositivityTheory.HtPt.Kftwo.kp
 

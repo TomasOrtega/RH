@@ -7,15 +7,13 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ hinj k n ν ι b μ hb g t hg ht`. Establish `hD : IsUnit (Matrix.diagonal t).det`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun a _ => ht a)`. Establish `hgD : IsUnit (g * Matrix.diagonal t).det`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `hg.mul hD`. Establish `hDinv : (Matrix.diagonal t)⁻¹ = Matrix.diagonal (fun a => (t a)⁻¹)`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Use `Matrix.diagonal_one with a` and compare the differences between its conclusion and the goal. Conclude with `inv_mul_cancel₀ (ht a)`. Establish `hfam : (fun i => rowAct K (g * Matrix.diagonal t)⁻¹ (map (algebraMap R K) (b i))) = fun i => (∏ a, t a ^ μ i a)⁻¹ • rowAct K g⁻¹ (map (algebraMap R K) (b i))`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mul_inv_rev, ← h1 K k n g⁻¹ (Matrix.diagonal t)⁻¹, AlgHom.comp_apply, hDinv, h2 K k n _ (μ i) _ (ldlat_isWH_map _ (hb.2.2 i)), map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← Finset.prod_inv_distrib]`. Simplify using `[inv_pow]`. Take `⟨hl, hs⟩` from `h3 R K hinj k n ν b μ hb (g * Matrix.diagonal t) hgD`. Rewrite `hl`, `hs` using `[hfam]`.
-
-Conclude with `⟨hl, hs⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nablaLDiag_of (h1 : RowActMul) (h2 : RowActDiagWeight) (h3 : NablaLBasis) : NablaLDiag := by
   intro R K _ _ _ _ hinj k n ν ι b μ hb g t hg ht

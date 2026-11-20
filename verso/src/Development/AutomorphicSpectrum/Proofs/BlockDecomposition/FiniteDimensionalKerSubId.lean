@@ -5,19 +5,17 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl
 namespace GlobalTheory.CompanionTheory.CompactFix
 
 /- English proof (translation)
-Use `set K : Submodule ℂ X := LinearMap.ker ((T : X →ₗ[ℂ] X) - LinearMap.id) with hK`. Establish `hfix : ∀ x ∈ K, T x = x`. Introduce `x hx`. Establish `: (T : X →ₗ[ℂ] X) x - x = 0` using `by simpa [hK] using hx`. Simplify `this` using `[sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed (K : Set X)`. Establish `: (K : Set X) = {x | T x = x}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Conclude with `hfix x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : T x = x` using `h`. Simplify using `[hK, h']`. Rewrite using `[this]`. Conclude with `isClosed_eq T.continuous continuous_id`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hCsub⟩` from `hT`. Establish `hpre : (T ⁻¹' C) ∈ nhds (0 : X)` using `hCsub`. Take `⟨r, hr, hball⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 hpre`. Establish `hcomp : IsCompact (Metric.closedBall (0 : K) r)`. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : K → X)` using `hclosed.isClosedEmbedding_subtypeVal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hemb.isCompact_iff]`. Use `hC.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `: (Subtype.val '' Metric.closedBall (0 : K) r) = (K : Set X) ∩ Metric.closedBall 0 r`. Use extensionality with `x`. Simplify using `[Metric.mem_closedBall, dist_eq_norm, and_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hclosed.inter Metric.isClosed_closedBall`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : (x : X) ∈ Metric.closedBall (0 : X) r`. Simplify `hx` using `[Metric.mem_closedBall, dist_eq_norm]`.
-
-Use `hball hx'` as an intermediate fact. Simplify `this` using `[hfix x x.2]`. Conclude with `FiniteDimensional.of_isCompact_closedBall ℂ hr hcomp`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_ker_sub_id {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
     (T : X →L[ℂ] X) (hT : IsCompactOperator T) :

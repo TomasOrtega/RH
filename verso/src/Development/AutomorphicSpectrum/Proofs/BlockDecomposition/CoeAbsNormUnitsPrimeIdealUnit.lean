@@ -26,7 +26,7 @@ theorem coe_absNormUnits (I : (FractionalIdeal (𝓞 ℚ)⁰ ℚ)ˣ) :
       ((FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 ℚ)⁰ ℚ) : ℚ) : ℝ) := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_absNormUnits, coe_primeIdealUnit, FractionalIdeal.coeIdeal_absNorm]`. Simplify using `[pOf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_absNormUnits_primeIdealUnit (w : Pl) :
     ((absNormUnits (primeIdealUnit w) : ℝˣ) : ℝ) = (pOf w : ℝ) := by
@@ -34,9 +34,9 @@ theorem coe_absNormUnits_primeIdealUnit (w : Pl) :
   simp [pOf]
 
 /- English proof (translation)
-Establish `hsub : Function.mulSupport (fun w : Pl => primeIdealUnit w ^ (if h : w ∈ S then N ⟨w, h⟩ else 0)) ⊆ (S : Set Pl)`. Introduce `w hw`. Assume the negation of the conclusion as `h`. Apply `hw` to reduce the goal to its premises. Establish `h' : w ∉ S` using `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `[h']`. Rewrite using `[idl, finprod_eq_prod_of_mulSupport_subset _ hsub, ← Finset.prod_coe_sort S]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem idl_eq_prod (S : Finset Pl) (N : S → ℤ) :
     idl S N = ∏ v : S, primeIdealUnit v.1 ^ N v := by
@@ -52,7 +52,7 @@ theorem idl_eq_prod (S : Finset Pl) (N : S → ℤ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← coe_absNormUnits, idl_eq_prod, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val, coe_absNormUnits_primeIdealUnit]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_idl (S : Finset Pl) (N : S → ℤ) :
     ((FractionalIdeal.absNorm ((idl S N : (FractionalIdeal (𝓞 ℚ)⁰ ℚ)ˣ) :
@@ -62,9 +62,9 @@ theorem absNorm_idl (S : Finset Pl) (N : S → ℤ) :
   rw [map_zpow, Units.val_zpow_eq_zpow_val, coe_absNormUnits_primeIdealUnit]
 
 /- English proof (translation)
-Rewrite using `[finiteAdeleMeasure_idealFiniteAdeles_toReal, Rat.numberField_discr]`. Establish `hd : (NNReal.sqrt ‖(1 : ℤ)‖₊ : ℝ) = 1` using `by simp`. Rewrite using `[hd, inv_one, mul_one]`. Establish `hn` using `absNorm_idl S N`. Rewrite using `[show ((FractionalIdeal.absNorm ((idl S N : (FractionalIdeal (𝓞 ℚ)⁰ ℚ)ˣ) : FractionalIdeal (𝓞 ℚ)⁰ ℚ) : ℝ)) = _ from hn, ← Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun v _ => (_root_.zpow_neg _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleMeasure_idl_toReal (S : Finset Pl) (N : S → ℤ) :
     (finiteAdeleMeasure ℚ (idealFiniteAdeles (idl S N))).toReal =

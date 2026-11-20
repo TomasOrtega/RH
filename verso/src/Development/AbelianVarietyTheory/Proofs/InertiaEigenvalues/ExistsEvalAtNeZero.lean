@@ -13,25 +13,21 @@ noncomputable section
 namespace GlobalTheory.GlueSpan
 
 /- English proof (translation)
-Establish `hs0 : ∀ (p : TRing K) (y : pts p.R), ∃ s : Fin N → p.R, ∑ i, s i * t i p y = 1`. Introduce `p y`. Take `⟨s, hs⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 ((hunit p y).symm ▸ Submodule.mem_top (x := (1 : p.R)))`. Conclude with `⟨s, by simpa [smul_eq_mul] using hs⟩`. Use `choose s hs using hs0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc' : ∀ (p : TRing K) (y : pts p.R) i i', g i p y * t i' p y = g i' p y * t i p y` using `fun p y i i' => congrFun (congrFun (hc i i') p) y`. Establish `indep : ∀ (p : TRing K) (y : pts p.R) (s' : Fin N → p.R), ∑ i, s' i * t i p y = 1 → ∑ i, s' i * g i p y = ∑ i, s p y i * g i p y`. Introduce `p y s' h'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul_sum]; refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ i, ∑ i', s' i * s p y i' * (g i' p y * t i p y) := by simp_rw [hc']`. Use `_ = (∑ i', s p y i' * g i' p y) * (∑ i, s' i * t i p y) := by`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_comm]; refine Finset.sum_congr rfl fun i' _ => Finset.sum_congr rfl fun i _ => by ring`. Use `_ = ∑ i, s p y i * g i p y := by rw [h', mul_one]`. Set `h : Rules pts` to `fun p y => ∑ i, s p y i * g i p y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `⟨h, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `p q φ y z hyz`. Establish `e1 : ∑ i, φ (s p y i) * t i q z = 1`. Repeatedly rewrite using `[(ht _).1 p q φ y z hyz, ← map_mul, ← map_sum, hs, map_one]`. Use `show ∑ i, s q z i * g i q z = φ (∑ i, s p y i * g i p y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← indep q z _ e1, map_sum]`. Repeatedly rewrite using `[(hg _).1 p q φ y z hyz, map_mul]`. Introduce `p u y y' hyy`. Establish `hw : ∀ e : ι → ℕ, wchar e u = ((∏ i, u i ^ e i : (p.R)ˣ) : p.R)`. Introduce `e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `[wchar, Units.coe_prod]`. Establish `hadd : wchar (ea + eb) u = wchar ea u * wchar eb u`. Simplify using `only [wchar, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Use `set v : (p.R)ˣ := ∏ i, u i ^ eb i with hv`. Establish `e1 : ∑ i, (s p y i * ((v⁻¹ : (p.R)ˣ) : p.R)) * t i p y' = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[(ht _).2 p u y y' hyy, hw eb, ← hv]`. Rewrite using `[← hs p y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `show ∑ i, s p y' i * g i p y' = wchar ea u * ∑ i, s p y i * g i p y`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← indep p y' _ e1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hg _).2 p u y y' hyy, hadd, hw eb, ← hv]`. Combine the equalities or inequalities in the displayed calculation. Introduce `i`.
-
-Use function extensionality and compare the values at `p y`. Use `show (∑ i', s p y i' * g i' p y) * t i p y = g i p y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]; refine Finset.sum_congr rfl fun i' _ => by ring`. Use `_ = ∑ i', s p y i' * (g i p y * t i' p y) := by simp_rw [hc']`.
-
-Use `_ = g i p y * ∑ i', s p y i' * t i' p y := by`. Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun i' _ => by ring`. Use `_ = g i p y := by rw [hs, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_rules {K : Type} [Field K] {ι : Type} [Fintype ι]
     (pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type)
@@ -100,9 +96,9 @@ theorem glue_rules {K : Type} [Field K] {ι : Type} [Fintype ι]
       _ = g i p y := by rw [hs, mul_one]
 
 /- English proof (translation)
-Introduce `D T j a b n m N t g ht hunit hg hc`. Establish `hg' : ∀ i, g i ∈ secW (K` using `T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y') (ex (T.Q.Dw j) a n + ex (T.Q.Dw j) b m) := by`. Introduce `i`. Use `hg i` as an intermediate fact. Unfold `sec at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[ex_add]`. Then use the resulting hypothesis. Conclude with `glue_rules (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y') (ex (T.Q.Dw j) a n) (ex (T.Q.Dw j) b m) t g ht hunit hg' hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem glue_frPt : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (a b : (D.host.E →+* ℂ) × ℕ → ℕ) (n m N : ℕ)
     (t g : Fin N → Rul (T.Q.Xo j) T.Q.c), (∀ i, t i ∈ sec (T.Q.Xo j) T.Q.c b m) →
@@ -117,9 +113,9 @@ theorem glue_frPt : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (a b : (D.host.E →+* 
     (fun t y y' => FrBor t y y') (ex (T.Q.Dw j) a n) (ex (T.Q.Dw j) b m) t g ht hunit hg' hc
 
 /- English proof (translation)
-Unfold `evalAt`. Simplify using `only [dif_pos h]`. Take `⟨s, hs⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 ((hunit h.choose h.choose_spec.choose_spec.choose).symm ▸ Submodule.mem_top (x := (1 : h.choose.R)))`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun r => h.choose_spec.choose r) hs`. Simplify using `only [map_sum, map_one, smul_eq_mul, map_mul, hall, mul_zero, Finset.sum_const_zero] at h1`. Conclude with `zero_ne_one h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_evalAt_ne_zero {K : Type} [Field K] (pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type)
     (mapR : ∀ {S T : Type} [CommRing S] [Algebra K S] [CommRing T] [Algebra K T],
@@ -139,9 +135,9 @@ theorem exists_evalAt_ne_zero {K : Type} [Field K] (pts : ∀ (S : Type) [CommRi
   exact zero_ne_one h1
 
 /- English proof (translation)
-Introduce `D T hT j hj σ hσ N t hunit k x hx`. Use `haveI : Nontrivial (CAt σ) := inferInstanceAs (Nontrivial ℂ)`. Take `⟨i, hi⟩` from `exists_evalAt_ne_zero (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) t hunit _ (hT.unTest j hj σ hσ k ⟨x, hx⟩)`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `e : rdU (T.U j σ) (t i) k x = toC (evR (T.Q.Xo j) T.Q.c (t i) ((T.U j σ).un k ⟨x, hx⟩))` using `by classical`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dif_pos hx`. Rewrite using `[e]`. Conclude with `hi`.
+A detailed English derivation is pending.
 -/
 theorem exists_rdU_t_ne_zero : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ →
     ∀ (N : ℕ) (t : Fin N → Rul (T.Q.Xo j) T.Q.c),
@@ -159,39 +155,37 @@ theorem exists_rdU_t_ne_zero : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Fo
   exact hi
 
 /- English proof (translation)
-Introduce `D T hT j hj σ hσ a b n m N t ha hb ht hunit P hP hPt`. Establish `hrep : ∀ i, ∃ (L : ℕ) (cf : Fin L → ℂ) (g : Fin L → Rul (T.Q.Xo j) T.Q.c), (∀ l, g l ∈ sec (T.Q.Xo j) T.Q.c (a + b) (n + m)) ∧ ∑ l, cf l • rdU (T.U j σ) (g l) = P * rdU (T.U j σ) (t i)`. Introduce `i`. Take `⟨L, cf, g, hg⟩` from `Submodule.mem_span_set'.1 (hPt i)`. Use `choose g' hg' hg'e using fun l => (g l).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨L, cf, g', hg', by rw [← hg]; simp [hg'e]⟩`. Use `choose L cf g hg hsum using hrep`. Set `κ` to `Σ i : Fin N, Fin (L i)`. Set `A : κ → Fin N × Fin N → Rul (T.Q.Xo j) T.Q.c` to `fun q e => (if q.1 = e.1 then g q.1 q.2 * t e.2 else 0) - (if q.1 = e.2 then g q.1 q.2 * t e.1 else 0)`. Establish `hA : ∀ q e, A q e ∈ sec (T.Q.Xo j) T.Q.c (a + b + b) (n + m + m)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q e`. Establish `hm : ∀ i', g q.1 q.2 * t i' ∈ sec (T.Q.Xo j) T.Q.c (a + b + b) (n + m + m)` using `fun i' => sec_mul _ _ _ _ _ _ (hg q.1 q.2) (ht i')`. Apply the tactic sequence `refine Submodule.sub_mem _ ?_ ?_ <;> split_ifs <;> first | exact hm _ | exact Submodule.zero_mem _`. Establish `hdom : Dom (a + b + b) (n + m + m)` using `⟨fun τ => ((ha.1 τ).add (hb.1 τ)).add (hb.1 τ), (ha.2.add hb.2).add hb.2⟩`. Establish `hrow : ∀ (z : κ → ℂ) (e : Fin N × Fin N), ∑ q, z q • rdU (T.U j σ) (A q e) = (∑ l, z ⟨e.1, l⟩ • rdU (T.U j σ) (g e.1 l)) * rdU (T.U j σ) (t e.2) - (∑ l, z ⟨e.2, l⟩ • rdU (T.U j σ) (g e.2 l)) * rdU (T.U j σ) (t e.1)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z e`. Establish `h1 : ∀ q : κ, z q • rdU (T.U j σ) (A q e) = (if q.1 = e.1 then z q • (rdU (T.U j σ) (g q.1 q.2) * rdU (T.U j σ) (t e.2)) else 0) - (if q.1 = e.2 then z q • (rdU (T.U j σ) (g q.1 q.2) * rdU (T.U j σ) (t e.1)) else 0)`. Introduce `q`. Simplify using `only [A]`. Apply the tactic sequence `split_ifs <;> simp [map_sub, rdU_mul, smul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [h1, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single e.1 (fun i' _ hi' => by simp [hi']) (by simp)]`. Simplify using `[Finset.sum_mul, smul_mul_assoc]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single e.2 (fun i' _ hi' => by simp [hi']) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[Finset.sum_mul, smul_mul_assoc]`. Set `z : κ → ℂ` to `fun q => cf q.1 q.2`. Establish `hz : ∀ e, ∑ q, z q • rdU (T.U j σ) (A q e) = 0`. Introduce `e`. Rewrite using `[hrow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show (∑ l, cf e.1 l • rdU (T.U j σ) (g e.1 l)) * rdU (T.U j σ) (t e.2) - (∑ l, cf e.2 l • rdU (T.U j σ) (g e.2 l)) * rdU (T.U j σ) (t e.1) = 0`. Rewrite using `[hsum, hsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzspan` using `GlobalTheory.T.linear_relation_sections_span_eq D T j σ (GlobalTheory.rdIndep_of_lawsM D T.toCore hT.toLawsM j hj σ hσ) _ _ hdom κ (Fin N × Fin N) A hA z hz`. Set `S` to `Submodule.span ℂ (rdU (T.U j σ) '' (sec (T.Q.Xo j) T.Q.c a n : Set (Rul (T.Q.Xo j) T.Q.c)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `Z : Submodule ℂ (κ → ℂ)` to `{ carrier := {z | ∃ Q ∈ S, ∀ i, Q * rdU (T.U j σ) (t i) = ∑ l, z ⟨i, l⟩ • rdU (T.U j σ) (g i l)} zero_mem' := ⟨0, S.zero_mem, fun i => by simp⟩ add_mem' := by`. Introduce and unpack `z1 z2 ⟨Q1, hQ1, e1⟩ ⟨Q2, hQ2, e2⟩`. Conclude with `⟨Q1 + Q2, S.add_mem hQ1 hQ2, fun i => by`. Simplify using `only [add_mul, e1, e2, Pi.add_apply, add_smul, Finset.sum_add_distrib]⟩`. Use the proof step `smul_mem' := by`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `c z1 ⟨Q1, hQ1, e1⟩`. Conclude with `⟨c • Q1, S.smul_mem c hQ1, fun i => by`. Simplify using `only [smul_mul_assoc, e1, Finset.smul_sum, Pi.smul_apply, smul_eq_mul, mul_smul]⟩ }`. Establish `hle : Submodule.span ℂ ((fun c : κ → T.Q.c.F => fun k => σ (c k)) '' {c | ∀ e, ∑ k, c k • A k e = 0}) ≤ Z`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨c, hc, rfl⟩`. Set `g' : Fin N → Rul (T.Q.Xo j) T.Q.c` to `fun i => ∑ l, c ⟨i, l⟩ • g i l`. Establish `hg' : ∀ i, g' i ∈ sec (T.Q.Xo j) T.Q.c (a + b) (n + m)` using `fun i => Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (hg i l)`. Establish `hcomp : ∀ i i', g' i * t i' = g' i' * t i`. Introduce `i i'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hrowR : ∑ q, c q • A q (i, i') = g' i * t i' - g' i' * t i`. Establish `h1 : ∀ q : κ, c q • A q (i, i') = (if q.1 = i then c q • (g q.1 q.2 * t i') else 0) - (if q.1 = i' then c q • (g q.1 q.2 * t i) else 0)`. Introduce `q`. Simplify using `only [A]`. Apply the tactic sequence `split_ifs <;> simp [smul_sub]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single i (fun i'' _ hi'' => by simp [hi'']) (by simp)]`. Simplify using `[g', Finset.sum_mul, smul_mul_assoc]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single i' (fun i'' _ hi'' => by simp [hi'']) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[g', Finset.sum_mul, smul_mul_assoc]`. Use `hc (i, i')` as an intermediate fact. Rewrite `this` using `[hrowR]`. Conclude with `sub_eq_zero.1 this`. Take `⟨h, hh, hht⟩` from `glue_frPt D T j a b n m N t g' ht hunit hg' hcomp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨rdU (T.U j σ) h, Submodule.subset_span ⟨h, hh, rfl⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← rdU_mul, hht]`. Simplify using `[g', map_sum, map_smulₛₗ]`. Take `⟨Q, hQ, hQe⟩` from `hle hzspan`. Establish `hQoff : Q ∈ offZero (T.U j σ).X`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `(Submodule.span_le.2 ?_) hQ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, _, rfl⟩`. Conclude with `rdU_mem_offZero _ f`. Establish `hPQ : P = Q`. Use function extensionality and compare the values at `k x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ ((T.U j σ).X k).dom`. Take `⟨i, hi⟩` from `exists_rdU_t_ne_zero D T hT j hj σ hσ N t hunit k x hx`. Establish `e1` using `congrFun (congrFun (hQe i) k) x`. Establish `e2` using `congrFun (congrFun (hsum i) k) x`. Establish `: Q k x * rdU (T.U j σ) (t i) k x = P k x * rdU (T.U j σ) (t i) k x`.
-
-Rewrite using `[show Q k x * rdU (T.U j σ) (t i) k x = (Q * rdU (T.U j σ) (t i)) k x from rfl, e1, show P k x * rdU (T.U j σ) (t i) k x = (P * rdU (T.U j σ) (t i)) k x from rfl, ← e2]`. Conclude with `(mul_right_cancel₀ hi this).symm`. Rewrite using `[hP k x hx, hQoff k x hx]`. Rewrite using `[hPQ]`. Conclude with `hQ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_of_products : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ (a b : (D.host.E →+* ℂ) × ℕ → ℕ) (n m N : ℕ) (t : Fin N → Rul (T.Q.Xo j) T.Q.c), Dom a n → Dom b m → (∀ i, t i ∈ sec (T.Q.Xo j) T.Q.c b m) → (∀ (p : TRing T.Q.c.F) (y : FrPt (T.Q.Xo j) T.Q.c p.R), Ideal.span (Set.range fun i => t i p y) = ⊤) → ∀ P ∈ offZero (T.U j σ).X, (∀ i, P * rdU (T.U j σ) (t i) ∈ Submodule.span ℂ (rdU (T.U j σ) '' (sec (T.Q.Xo j) T.Q.c (a + b) (n + m) : Set (Rul (T.Q.Xo j) T.Q.c)))) → P ∈ Submodule.span ℂ (rdU (T.U j σ) '' (sec (T.Q.Xo j) T.Q.c a n : Set (Rul (T.Q.Xo j) T.Q.c))) := by
   intro D T hT j hj σ hσ a b n m N t ha hb ht hunit P hP hPt

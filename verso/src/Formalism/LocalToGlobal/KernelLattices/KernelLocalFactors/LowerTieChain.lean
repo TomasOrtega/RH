@@ -17,15 +17,15 @@ open Formalism.BranchingDeterminantCap
 variable {N n : ℕ} (hN : N = n + 1) (l : DomWeight N) (s : DomWeight n)
 
 /- English proof (translation)
-Set `D : MvPolynomial (Fin n × Fin n) ℂ → MvPolynomial (Fin n × Fin n) ℂ → ℂ` to `fun p q => fockF (nmJ hN l c p) (nmJ hN l c q) * fockF (extremal ℂ n s) (extremal ℂ n s) - fockF (nmJ hN l c (extremal ℂ n s)) (nmJ hN l c (extremal ℂ n s)) * fockF p q`. Establish `H : BsForm s.natW D`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p p' q`. Simplify using `only [D, map_add, fischerInner_add_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `c p q`. Simplify using `only [D, map_smul, bs_fock_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p q q'`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [D, map_add, fischerInner_add_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c p q`. Simplify using `only [D, map_smul, bs_fock_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `g p _ q _`. Simplify using `only [D]`. Rewrite using `[nmJ_rowAct, nmJ_rowAct, fockRowAdj N N, fockRowAdj n n, nmExt_conj]`. Establish `h0 : D (hw ℂ le_rfl s.natW) (hw ℂ le_rfl s.natW) = 0`. Simplify using `only [D, extremal]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e` using `H.eq_zero (natW_antitone s) h0 p hp q hq`. Simplify using `only [D] at e`. Conclude with `sub_eq_zero.mp e`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_pairing_normalized_isometry (c : Fin n → ℕ) (p q : MvPolynomial (Fin n × Fin n) ℂ) (hp : p ∈ nablaSq ℂ n s)
     (hq : q ∈ nablaSq ℂ n s) :
@@ -54,7 +54,7 @@ theorem fock_pairing_normalized_isometry (c : Fin n → ℕ) (p q : MvPolynomial
   exact sub_eq_zero.mp e
 
 /- English proof (translation)
-Rewrite using `[nm_br_fockF hN l s F v hv, fischerInner_eq_star F (raiseOne hN (nmB hN l s) v), ← nmJ_fockF hN l _ v F hF, ← fischerInner_eq_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_adj (F : MvPolynomial (Fin N × Fin N) ℂ) (hF : F ∈ nablaSq ℂ N l) (v : MvPolynomial (Fin n × Fin n) ℂ)
     (hv : v ∈ nablaSq ℂ n s) :
@@ -82,24 +82,22 @@ def tSpan {n : ℕ} (V : ι → Submodule ℂ (MvPolynomial (Fin n × Fin n) ℂ
   Submodule.span ℂ {p | ∃ f : ι → MvPolynomial (Fin n × Fin n) ℂ, (∀ τ, f τ ∈ V τ) ∧ p = Formalism.MainNotions.product_first_zeroth_parts.ten f}
 
 /- English proof (translation)
-Rewrite using `[fischerInner_eq_star, nm_fockF_zero_left, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_fockF_zero_right {σ : Type} (f : MvPolynomial σ ℂ) : fockF f 0 = 0 := by
   rw [fischerInner_eq_star, nm_fockF_zero_left, star_zero]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Geo.Def.TensorFock_holds ι (Fin n × Fin n) f g`.
+A detailed English derivation is pending.
 -/
 theorem lc_fock_ten {n : ℕ} (f g : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     fockF (Formalism.MainNotions.product_first_zeroth_parts.ten f) (Formalism.MainNotions.product_first_zeroth_parts.ten g) = ∏ τ, fockF (f τ) (g τ) :=
   Formalism.L2.Geo.Def.TensorFock_holds ι (Fin n × Fin n) f g
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨f, hf, rfl⟩` from `hp`. Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.blk_ten]`. Conclude with `Submodule.subset_span ⟨_, fun τ => hA τ _ (hf τ), rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lc_blk_mem {n n' : ℕ} (A : ι → MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin n' × Fin n') ℂ)
     (V : ι → Submodule ℂ (MvPolynomial (Fin n × Fin n) ℂ)) (W : ι → Submodule ℂ (MvPolynomial (Fin n' × Fin n') ℂ))
@@ -115,13 +113,13 @@ theorem lc_blk_mem {n n' : ℕ} (A : ι → MvPolynomial (Fin n × Fin n) ℂ �
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨f, hf, rfl⟩` from `hp`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem q hq`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨g, hg, rfl⟩` from `hq`. Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.blk_ten, Formalism.MainNotions.product_first_zeroth_parts.blk_ten, lc_fock_ten, lc_fock_ten, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => hadj τ _ (hf τ) _ (hg τ)`. Consider the case `zero => rw [map_zero, lc_fockF_zero_right, lc_fockF_zero_right, mul_zero]`. Consider the case `add y y' _ _ h1 h2 => rw [map_add, fischerInner_add_right, fischerInner_add_right, h1, h2, mul_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c y _ h1 => rw [map_smul, bs_fock_smul_right, bs_fock_smul_right, h1]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [map_zero, nm_fockF_zero_left, nm_fockF_zero_left, mul_zero]`. Consider the case `add x x' _ _ h1 h2 => rw [map_add, fischerInner_add_left, fischerInner_add_left, h1, h2, mul_add]`. Consider the case `smul c x _ h1 => rw [map_smul, bs_fock_smul_left, bs_fock_smul_left, h1]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lc_ten_adj {n n' : ℕ} (A : ι → MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin n' × Fin n') ℂ)
     (J : ι → MvPolynomial (Fin n' × Fin n') ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ)
@@ -146,13 +144,13 @@ theorem lc_ten_adj {n n' : ℕ} (A : ι → MvPolynomial (Fin n × Fin n) ℂ �
   | smul c x _ h1 => rw [map_smul, bs_fock_smul_left, bs_fock_smul_left, h1]; ring
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨f, hf, rfl⟩` from `hp`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem q hq`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨g, hg, rfl⟩` from `hq`. Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.blk_ten, Formalism.MainNotions.product_first_zeroth_parts.blk_ten, lc_fock_ten, lc_fock_ten, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => hiso τ _ (hf τ) _ (hg τ)`. Consider the case `zero => rw [map_zero, lc_fockF_zero_right, lc_fockF_zero_right, mul_zero]`. Consider the case `add y y' _ _ h1 h2 => rw [map_add, fischerInner_add_right, fischerInner_add_right, h1, h2, mul_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c y _ h1 => rw [map_smul, bs_fock_smul_right, bs_fock_smul_right, h1]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [map_zero, nm_fockF_zero_left, nm_fockF_zero_left, mul_zero]`. Consider the case `add x x' _ _ h1 h2 => rw [map_add, fischerInner_add_left, fischerInner_add_left, h1, h2, mul_add]`. Consider the case `smul c x _ h1 => rw [map_smul, bs_fock_smul_left, bs_fock_smul_left, h1]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lc_ten_iso {n n' : ℕ} (J : ι → MvPolynomial (Fin n' × Fin n') ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ)
     (W : ι → Submodule ℂ (MvPolynomial (Fin n' × Fin n') ℂ)) (b : ι → ℂ)
@@ -176,21 +174,19 @@ theorem lc_ten_iso {n n' : ℕ} (J : ι → MvPolynomial (Fin n' × Fin n') ℂ 
   | smul c x _ h1 => rw [map_smul, bs_fock_smul_left, bs_fock_smul_left, h1]; ring
 
 /- English proof (translation)
-Use `set y := Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => ⇑(A τ)) x with hy`. Establish `hyW : y ∈ tSpan W` using `lc_blk_mem A V W hA x hx`. Use `set z := Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => ⇑(J τ)) y with hz`. Establish `e1` using `lc_ten_adj A J V W (fun τ => (α τ : ℂ)) hadj x hx y hyW`. Establish `e2` using `lc_ten_iso J W (fun τ => (β τ : ℂ)) hiso y hyW y hyW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1`, `e2` using `[← hz]`. Rewrite `e1`, `e2` using `[← Complex.ofReal_prod]`. Use `set Pa := ∏ τ, α τ with hPa`. Use `set Pb := ∏ τ, β τ with hPb`. Use `set Y := (fockF y y).re with hYd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set X := (fockF x x).re with hXd`. Establish `hY0 : 0 ≤ Y` using `nm_fockF_nonneg y`. Establish `hX0 : 0 ≤ X` using `nm_fockF_nonneg x`. Establish `hPb0 : 0 ≤ Pb` using `Finset.prod_nonneg fun τ _ => hβ τ`. Establish `hprod : ∏ τ, α τ ^ 2 * β τ = Pa ^ 2 * Pb` using `by rw [Finset.prod_mul_distrib, Finset.prod_pow]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod]`. Establish `eY : fockF y y = (Y : ℂ)` using `nm_fockF_self y`. Distinguish the cases in `ha : Pa = 0`. Establish `h0 : fockF y y = 0` using `by rw [e1, ha]; simp`. Establish `: Y = 0` using `by rw [hYd, h0]; simp`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Check the signs of the components of the expression. Establish `hzv : fockF x z = ((Y / Pa : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_div, eq_div_iff (by exact_mod_cast ha), mul_comm, ← eY, e1]`. Establish `cs` using `nm_cs_real x z (Y / Pa) hzv`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzz : (fockF z z).re = Pb * Y`. Rewrite using `[e2, eY, ← Complex.ofReal_mul, Complex.ofReal_re]`. Rewrite `cs` using `[hzz]`. Establish `hpa2 : 0 < Pa ^ 2` using `lt_of_le_of_ne (sq_nonneg Pa) (Ne.symm (pow_ne_zero 2 ha))`. Establish `h3 : Y ^ 2 ≤ Pa ^ 2 * Pb * X * Y`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `h4` using `mul_le_mul_of_nonneg_left cs hpa2.le`. Establish `e : Pa ^ 2 * (Y / Pa) ^ 2 = Y ^ 2` using `by field_simp`. Combine the equalities or inequalities in the displayed calculation. Break down `eq_or_lt_of_le hY0 with h0 | hpos` into its components or cases. Rewrite using `[← h0]`.
-
-Check the signs of the components of the expression. Conclude with `le_of_mul_le_mul_right (by rw [← pow_two]; exact h3) hpos`.
+A detailed English derivation is pending.
 -/
 theorem lc_ten_le {n n' : ℕ} (A : ι → MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin n' × Fin n') ℂ)
     (J : ι → MvPolynomial (Fin n' × Fin n') ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ)
@@ -259,7 +255,7 @@ def lcB : ℝ := (fockF (nmJ hN l (nmB hN l s) (extremal ℂ n s)) (nmJ hN l (nm
   (fockF (extremal ℂ n s) (extremal ℂ n s)).re
 
 /- English proof (translation)
-Establish `: bFac (fun _ : Unit => nmB hN l s) ≠ 0`. Unfold `bFac`. Conclude with `Finset.prod_ne_zero_iff.mpr fun τ _ => Finset.prod_ne_zero_iff.mpr fun s _ => Nat.factorial_ne_zero _`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lc_bFac_ne : ((bFac (fun _ : Unit => nmB hN l s) : ℕ) : ℝ) ≠ 0 := by
   have : bFac (fun _ : Unit => nmB hN l s) ≠ 0 := by
@@ -268,9 +264,9 @@ theorem lc_bFac_ne : ((bFac (fun _ : Unit => nmB hN l s) : ℕ) : ℝ) ≠ 0 := 
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `h` using `lc_adj hN l s F hF v hv`. Establish `hb : ((bFac (fun _ : Unit => nmB hN l s) : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast lc_bFac_ne hN l s`. Establish `hk : kapBr ℂ hN l s = ((kapBr ℝ hN l s : ℝ) : ℂ)` using `(lb_map_kapBr (K := ℝ) (K' := ℂ) Complex.ofRealHom hN l s).symm`. Rewrite `h` using `[hk]`. Establish `e` using `eq_div_of_mul_eq hb h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Unfold `lcA`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lc_adjR (F : MvPolynomial (Fin N × Fin N) ℂ) (hF : F ∈ nablaSq ℂ N l) (v : MvPolynomial (Fin n × Fin n) ℂ)
     (hv : v ∈ nablaSq ℂ n s) :
@@ -287,9 +283,9 @@ theorem lc_adjR (F : MvPolynomial (Fin N × Fin N) ℂ) (hF : F ∈ nablaSq ℂ 
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `have h := fock_pairing_normalized_isometry hN l s (nmB hN l s) p q hp hq`. Establish `hs : (((fockF (extremal ℂ n s) (extremal ℂ n s)).re : ℝ) : ℂ) ≠ 0`. Conclude with `(fockPos _ _ (lm_extremal_ne (K := ℂ) s)).1.ne'` after adjusting the coercions. Rewrite `h` using `[nm_fockF_self (extremal ℂ n s), nm_fockF_self (nmJ hN l (nmB hN l s) (extremal ℂ n s))]`. Unfold `lcB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hs, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_isoR (p q : MvPolynomial (Fin n × Fin n) ℂ) (hp : p ∈ nablaSq ℂ n s) (hq : q ∈ nablaSq ℂ n s) :
     fockF (nmJ hN l (nmB hN l s) p) (nmJ hN l (nmB hN l s) q) = (lcB hN l s : ℂ) * fockF p q := by
@@ -302,23 +298,21 @@ theorem lc_isoR (p q : MvPolynomial (Fin n × Fin n) ℂ) (hp : p ∈ nablaSq �
   rw [div_mul_eq_mul_div, eq_div_iff hs, h]
 
 /- English proof (translation)
-The claim follows from `div_nonneg (nm_fockF_nonneg _) (fockPos _ _ (lm_extremal_ne (K := ℂ) s)).1.le`.
+A detailed English derivation is pending.
 -/
 theorem lcB_nonneg : 0 ≤ lcB hN l s :=
   div_nonneg (nm_fockF_nonneg _) (fockPos _ _ (lm_extremal_ne (K := ℂ) s)).1.le
 
 /- English proof (translation)
-Use `set x := (fockF (xiBr ℂ hN l s) (xiBr ℂ hN l s)).re with hx`. Use `set hs := (fockF (extremal ℂ n s) (extremal ℂ n s)).re with hhs`. Use `set hl := (fockF (extremal ℂ N l) (extremal ℂ N l)).re with hhl`. Use `set b := ((bFac (fun _ : Unit => nmB hN l s) : ℕ) : ℝ) with hb`. Use `set cR := ((cBr hN l s : ℤ) : ℝ) with hcR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set JH := (fockF (nmJ hN l (nmB hN l s) (extremal ℂ n s)) (nmJ hN l (nmB hN l s) (extremal ℂ n s))).re with hJH`. Establish `xpos : 0 < x` using `(fockPos _ _ (xiBr_ne hN l s hI hS)).1`. Establish `hspos : 0 < hs` using `(fockPos _ _ (lm_extremal_ne s)).1`. Establish `hlpos : 0 < hl` using `(fockPos _ _ (lm_extremal_ne l)).1`. Establish `bne : b ≠ 0` using `lc_bFac_ne hN l s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cne : cR ≠ 0` using `by rw [hcR]; exact_mod_cast cBr_ne_zero hN l s hI`. Establish `E4` using `congrArg (fun y => fockF y y) (nmJ_h hN l s hI hS)`. Simplify using `only [fockF_smul_smul] at E4`. Rewrite `E4` using `[nm_ioConst, ← hx, ← hhs, ← hb, ← hcR, nm_fockF_self (nmJ hN l (nmB hN l s) (extremal ℂ n s)), ← hJH, nm_fockF_self (xiBr ℂ hN l s), ← hx]`. Establish `e4 : (cR * x / (hs * b)) * (cR * x / (hs * b)) * JH = cR * cR * x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `s1 : star ((cR * x / (hs * b) : ℝ) : ℂ) = ((cR * x / (hs * b) : ℝ) : ℂ)` using `by simp`. Establish `s2 : star ((cBr hN l s : ℤ) : ℂ) = ((cBr hN l s : ℤ) : ℂ)` using `by simp`. Rewrite `E4` using `[s1, s2]`. Establish `c2 : ((cBr hN l s : ℤ) : ℂ) = ((cR : ℝ) : ℂ)` using `by rw [hcR]; push_cast; rfl`. Rewrite `E4` using `[c2]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions.
 
-Conclude with `E4` after adjusting the coercions. Establish `hJ : JH = (hs * b) ^ 2 / x`. Establish `ha : cR * x / (hs * b) ≠ 0` using `div_ne_zero (mul_ne_zero cne xpos.ne') (mul_ne_zero hspos.ne' bne)`. Clear denominators, using `at e4` for the nonvanishing conditions. Clear the denominators using the available nonvanishing facts.
-
-Use polynomial arithmetic with `[e4, sq_nonneg cR, sq_nonneg x, mul_pos xpos xpos]`. Unfold `lcA lcB`. Rewrite using `[← hcR, ← hb, ← hJH, ← hhs, hJ, nm_kapR, ← hx, ← hhl]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lc_const (hI : Br.Interlace hN l s) (hS : SameShift l s) :
     lcA hN l s ^ 2 * lcB hN l s = ((cBr hN l s : ℤ) : ℝ) ^ 2 * kapBr ℝ hN l s *
@@ -363,7 +357,7 @@ open Formalism.BranchingDeterminantCap
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N n : ℕ} (hN : N = n + 1) (l : ι → DomWeight N) (s : ι → DomWeight n)
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => nm_fockF_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_den {k : ℕ} (m : ι → DomWeight k) :
     (∏ τ, fockF (extremal ℂ k (m τ)) (extremal ℂ k (m τ))) =
@@ -372,15 +366,15 @@ theorem lc_den {k : ℕ} (m : ι → DomWeight k) :
   exact Finset.prod_congr rfl fun τ _ => nm_fockF_self _
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun τ _ => (fockPos _ _ (lm_extremal_ne (K := ℂ) (m τ))).1`.
+A detailed English derivation is pending.
 -/
 theorem lc_den_pos {k : ℕ} (m : ι → DomWeight k) : 0 < ∏ τ, (fockF (extremal ℂ k (m τ)) (extremal ℂ k (m τ))).re :=
   Finset.prod_pos fun τ _ => (fockPos _ _ (lm_extremal_ne (K := ℂ) (m τ))).1
 
 /- English proof (translation)
-Establish `hp' : p ∈ tSpan (fun τ => nablaSq ℂ N (l τ))`. Simplify `hp` using `only [tSpan, Formalism.MainNotions.product_first_zeroth_parts.CSpan, nablaSq_eq_delSq]`. Establish `key` using `lc_ten_le (fun τ => brOne ℂ hN (l τ) (s τ)) (fun τ => nmJ hN (l τ) (nmB hN (l τ) (s τ))) (fun τ => nablaSq ℂ N (l τ)) (fun τ => nablaSq ℂ n (s τ)) (fun τ => lcA hN (l τ) (s τ)) (fun τ => lcB hN (l τ) (s τ)) (fun τ F _ => brOne_mem hN (l τ) (s τ) F) (fun τ F hF v hv => lc_adjR hN …`. Rewrite `key` using `[Finset.prod_congr rfl (fun τ _ => lc_const hN (l τ) (s τ) (hI τ) (hS τ)), Finset.prod_mul_distrib, Finset.prod_div_distrib]`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.nfAll`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[lc_den s, lc_den l, Complex.div_ofReal_re, Complex.div_ofReal_re]`. Establish `hs0` using `lc_den_pos s`. Establish `hl0` using `lc_den_pos l`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem lc_brTen_le (hI : ∀ τ, Br.Interlace hN (l τ) (s τ)) (hS : ∀ τ, SameShift (l τ) (s τ))
     (p : MvPolynomial (ι × Fin N × Fin N) ℂ) (hp : p ∈ Formalism.MainNotions.product_first_zeroth_parts.CSpan l) :
@@ -412,14 +406,14 @@ section LcFrame
 variable {N n : ℕ} (hN : N = n + 1) (l : DomWeight N) (s : DomWeight n)
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.P.wlocal_rowAct_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lc_rowAct_comp {k : ℕ} (A B : Matrix (Fin k) (Fin k) ℂ) (p : MvPolynomial (Fin k × Fin k) ℂ) :
     rowAct ℂ B (rowAct ℂ A p) = rowAct ℂ (A * B) p := by
   rw [Formalism.UG.P.wlocal_rowAct_mul]; rfl
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[map_smul, smul_smul, lc_rowAct_comp, Matrix.GeneralLinearGroup.coe_mul, Matrix.transpose_mul, detPow_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_sqAct_mul {k : ℕ} (m : DomWeight k) (g h : GL (Fin k) ℂ) (f : MvPolynomial (Fin k × Fin k) ℂ) :
     sqAct ℂ k m (g * h) f = sqAct ℂ k m g (sqAct ℂ k m h f) := by
@@ -427,7 +421,7 @@ theorem lc_sqAct_mul {k : ℕ} (m : DomWeight k) (g h : GL (Fin k) ℂ) (f : MvP
   rw [map_smul, smul_smul, lc_rowAct_comp, Matrix.GeneralLinearGroup.coe_mul, Matrix.transpose_mul, detPow_mul]
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_sqAct_smul {k : ℕ} (m : DomWeight k) (g : GL (Fin k) ℂ) (c : ℂ) (f : MvPolynomial (Fin k × Fin k) ℂ) :
     sqAct ℂ k m g (c • f) = c • sqAct ℂ k m g f := by
@@ -435,7 +429,7 @@ theorem lc_sqAct_smul {k : ℕ} (m : DomWeight k) (g : GL (Fin k) ℂ) (c : ℂ)
   rw [map_smul, smul_comm]
 
 /- English proof (translation)
-Rewrite using `[lc_sqAct_mul, brOne_sqAct hN l s hS, brOne_last hN l s hI, lc_sqAct_smul, inv_smul_smul₀ (Units.ne_zero _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_frame_one (hI : Br.Interlace hN l s) (hS : SameShift l s) (g : GL (Fin n) ℂ) (a : ℂˣ)
     (f : MvPolynomial (Fin N × Fin N) ℂ) :
@@ -456,11 +450,11 @@ section LcFrameTen
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N n : ℕ} (hN : N = n + 1) (l : ι → DomWeight N) (s : ι → DomWeight n)
 
 /- English proof (translation)
-Establish `e1 : (fun τ => sqAct ℂ n (s τ) (g τ)) = fun τ => ⇑(ta_sqActL (s τ) (g τ))`. Use function extensionality and compare the values at `fun τ => (ta_sqActL_coe _ _).symm`. Establish `e2 : (fun τ => sqAct ℂ N (l τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ n N hN.symm (g τ) * Formalism.MainNotions.PrimeDegreeVariant.lastGL ℂ N a)) = fun τ => ⇑(ta_sqActL (l τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ n N hN.symm (g τ) * Formalism.MainNotions.Pr …`. Use function extensionality and compare the values at `fun τ => (ta_sqActL_coe _ _).symm`. Rewrite using `[e1, e2, ta_blk_comp, ta_blk_comp]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : ∀ τ, ta_sqActL (s τ) (g τ) ∘ₗ brOne ℂ hN (l τ) (s τ) = (((a ^ Formalism.MainNotions.PrimeDegreeVariant.degZ (l τ) (s τ) : ℂˣ) : ℂ))⁻¹ • (brOne ℂ hN (l τ) (s τ) ∘ₗ ta_sqActL (l τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ n N hN.symm (g τ) * Formalism.MainNotions.Prim …`. Introduce `τ`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, ta_sqActL_coe]`. Conclude with `lc_frame_one hN (l τ) (s τ) (hI τ) (hS τ) (g τ) a f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF]`. Rewrite using `[blk_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_frame (hI : ∀ τ, Br.Interlace hN (l τ) (s τ)) (hS : ∀ τ, SameShift (l τ) (s τ)) (g : ι → GL (Fin n) ℂ)
     (a : ℂˣ) (p : MvPolynomial (ι × Fin N × Fin N) ℂ) :
@@ -485,7 +479,7 @@ theorem lc_frame (hI : ∀ τ, Br.Interlace hN (l τ) (s τ)) (hS : ∀ τ, Same
   rw [blk_smul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.product_first_zeroth_parts.nfAll`. Rewrite using `[fockF_smul_smul, mul_div_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_nfAll_smul {k : ℕ} (m : ι → DomWeight k) (c : ℂ) (q : MvPolynomial (ι × Fin k × Fin k) ℂ) :
     Formalism.MainNotions.product_first_zeroth_parts.nfAll m (c • q) (c • q) = (c * star c) * Formalism.MainNotions.product_first_zeroth_parts.nfAll m q q := by
@@ -493,7 +487,7 @@ theorem lc_nfAll_smul {k : ℕ} (m : ι → DomWeight k) (c : ℂ) (q : MvPolyno
   rw [fockF_smul_smul, mul_div_assoc]
 
 /- English proof (translation)
-Establish `e : (fun τ => sqAct ℂ k (m τ) (g τ)) = fun τ => ⇑(ta_sqActL (m τ) (g τ))`. Use function extensionality and compare the values at `fun τ => (ta_sqActL_coe _ _).symm`. Rewrite using `[e]`. Conclude with `lc_blk_mem (fun τ => ta_sqActL (m τ) (g τ)) (fun τ => delSq ℂ k (m τ)) (fun τ => delSq ℂ k (m τ)) (fun τ F hF => by rw [ta_sqActL_coe]; exact eps_sqAct_mem k (m τ) (g τ) F hF) p hp`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_blk_sqAct_mem {k : ℕ} (m : ι → DomWeight k) (g : ι → GL (Fin k) ℂ) (p : MvPolynomial (ι × Fin k × Fin k) ℂ)
     (hp : p ∈ Formalism.MainNotions.product_first_zeroth_parts.CSpan m) : Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => sqAct ℂ k (m τ) (g τ)) p ∈ Formalism.MainNotions.product_first_zeroth_parts.CSpan m := by
@@ -504,9 +498,9 @@ theorem lc_blk_sqAct_mem {k : ℕ} (m : ι → DomWeight k) (g : ι → GL (Fin 
     (fun τ F hF => by rw [ta_sqActL_coe]; exact eps_sqAct_mem k (m τ) (g τ) F hF) p hp
 
 /- English proof (translation)
-Establish `hr : (0 : ℝ) < Real.sqrt T` using `Real.sqrt_pos.mpr hT`. Establish `e : (((Units.mk0 ((Real.sqrt T : ℝ) : ℂ) (by exact_mod_cast hr.ne') ^ d : ℂˣ) : ℂ)) = ((Real.sqrt T ^ d : ℝ) : ℂ)`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0, Complex.ofReal_zpow]`. Rewrite using `[e, ← Complex.ofReal_inv]`. Establish `hst : star (((Real.sqrt T ^ d)⁻¹ : ℝ) : ℂ) = (((Real.sqrt T ^ d)⁻¹ : ℝ) : ℂ)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hst, ← Complex.ofReal_mul]`. Use `congr 1`. Rewrite using `[← mul_inv, ← mul_zpow, Real.mul_self_sqrt hT.le, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem lc_sqrt_norm (T : ℝ) (hT : 0 < T) (d : ℤ) :
     ((((Units.mk0 ((Real.sqrt T : ℝ) : ℂ) (by exact_mod_cast (Real.sqrt_pos.mpr hT).ne') ^ d : ℂˣ) : ℂ))⁻¹) *
@@ -539,33 +533,31 @@ def valNormAt (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (φ : Fn D u 
     ((D.fm u).ipV D.R.m ((D.fm u).til c) (φ ((D.fm u).til c)) (φ ((D.fm u).til c))).re
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Simplify using `only [nfAll, lamTr, extremal_wSh]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lc_nfAll_lam : nfAll ((D.fm u).lam D.R.m) = nfAll (lamTr D u) := by
   funext p q
   simp only [nfAll, lamTr, extremal_wSh]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Simplify using `only [nfAll, sgTr, extremal_wSh]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lc_nfAll_sg : nfAll (D.fm u).sg = nfAll (sgTr D u) := by
   funext p q
   simp only [nfAll, sgTr, extremal_wSh]
 
 /- English proof (translation)
-Simplify using `only [CSpan, lamTr, delSq_wSh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_cspan_lam : CSpan ((D.fm u).lam D.R.m) = CSpan (lamTr D u) := by
   simp only [CSpan, lamTr, delSq_wSh]
 
 /- English proof (translation)
-Establish `hI' : ∀ τ, Br.Interlace (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)` using `fun τ => (interlace_iff _ _ (Nm_succ D.R)).1 (interlaceTr D u hI τ)`. Establish `hS : ∀ τ, SameShift (lamTr D u τ) (sgTr D u τ)` using `fun τ => sameShiftTr D u τ (interlaceTr D u hI τ)`. Establish `hT : (0 : ℝ) < ((D.mem u).A.T : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.pos`. Rewrite using `[lc_nfAll_sg, lc_nfAll_lam]`. Unfold `brTen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[lc_frame (Nm_succ D.R).symm (lamTr D u) (sgTr D u) hI' hS g (sqrtT D u) p, lc_nfAll_smul]`. Use `set q := blk (fun τ => sqAct ℂ _ (lamTr D u τ) (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R).symm.symm (g τ) * Formalism.MainNotions.PrimeDegreeVariant.lastGL ℂ _ (sqrtT D u))) p with hq`. Establish `hqm : q ∈ CSpan (lamTr D u)` using `lc_blk_sqAct_mem _ _ p (lc_cspan_lam (D := D) (u := u) ▸ hp)`. Establish `hc : (∏ τ, (((sqrtT D u ^ Formalism.MainNotions.PrimeDegreeVariant.degZ (lamTr D u τ) (sgTr D u τ) : ℂˣ) : ℂ))⁻¹) * star (∏ τ, (((sqrtT D u ^ Formalism.MainNotions.PrimeDegreeVariant.degZ (lamTr D u τ) (sgTr D u τ) : ℂˣ) : ℂ))⁻¹) = ((∏ τ, ((D.mem u).A.T : ℝ) ^ (-(Formalism.MainNo …`. Rewrite using `[star_prod, ← Finset.prod_mul_distrib, Complex.ofReal_prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun τ _ => lc_sqrt_norm _ hT _`. Rewrite using `[hc, Complex.re_ofReal_mul]`. Establish `key` using `lc_brTen_le (Nm_succ D.R).symm (lamTr D u) (sgTr D u) hI' hS q hqm`. Establish `hTp : 0 ≤ ∏ τ, ((D.mem u).A.T : ℝ) ^ (-(Formalism.MainNotions.PrimeDegreeVariant.degZ (lamTr D u τ) (sgTr D u τ)))` using `Finset.prod_nonneg fun τ _ => zpow_nonneg hT.le _`. Unfold `lowerNormConst`.
-
-Rewrite using `[Finset.prod_mul_distrib, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left key hTp`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_member_le (hI : (D.fm u).SgInterlace) (g : D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ)
     (p : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) (hp : p ∈ CSpan ((D.fm u).lam D.R.m)) :
@@ -598,9 +590,9 @@ theorem lc_member_le (hI : (D.fm u).SgInterlace) (g : D.what₂.Tau → GL (Fin 
   exact mul_le_mul_of_nonneg_left key hTp
 
 /- English proof (translation)
-Take `⟨hz, P, rfl, rfl, hP⟩` from `h`. Rewrite using `[P.re_petersson_self_eq_sum_coord w _ (hz φ hφ), valNormAt, Finset.mul_sum]`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Rewrite using `[P.Pt_eq w φ hφ c, P.ipV_co w c φ hφ, mul_left_comm]`. Use `mul_le_mul_of_nonneg_left ?_ (inv_nonneg.2 (Nat.cast_nonneg _))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : blk (fun τ => ⇑(P.br τ)) = brTen D u`. Unfold `brTen`. Simplify using `only [hP]`. Rewrite using `[e]`. Conclude with `lc_member_le P.interlace (P.gP w c) _ (P.coM_mem w c φ hφ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerNorm_le {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
       MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)}
@@ -633,9 +625,9 @@ open Formalism.MainNotions.product_first_zeroth_parts
 variable {D : Formalism.BasicNotions.D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `hT : (0 : ℝ) < ((D.mem u).A.T : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.pos`. Rewrite using `[Real.exp_sum]`. Unfold `lowerNormConst`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hI' : Br.Interlace (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)` using `(interlace_iff _ _ (Nm_succ D.R)).1 (interlaceTr D u hI τ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS` using `sameShiftTr D u τ (interlaceTr D u hI τ)`. Establish `hc : ((cBr (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) : ℤ) : ℝ) ≠ 0` using `by exact_mod_cast cBr_ne_zero _ _ _ hI'`. Establish `hk` using `nm_kapR_pos _ _ _ hI' hS`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_log hk, two_mul, Real.exp_add, Real.exp_log (abs_pos.mpr hc), abs_mul_abs_self, mul_comm (-(Formalism.MainNotions.PrimeDegreeVariant.degZ (lamTr D u τ) (sgTr D u τ) : ℝ)), ← Real.rpow_def_of_pos hT]`. Rewrite using `[show (-(Formalism.MainNotions.PrimeDegreeVariant.degZ (lamTr D u τ) (sgTr D u τ) : ℝ)) = ((-(Formalism.MainNotions.PrimeDegreeVariant.degZ (lamTr D u τ) (sgTr D u τ)) : ℤ) : ℝ) by push_cast; ring, Real.rpow_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -659,9 +651,9 @@ theorem lowerNormConst_eq_exp (hI : (D.fm u).SgInterlace) :
   ring
 
 /- English proof (translation)
-Establish `hI : (D.fm u).SgInterlace` using `by obtain ⟨-, P, -, -, -⟩ := h; exact P.interlace`. Establish `hle` using `lowerNorm_le h w φ hφ`. Establish `hK : 0 < lowerNormConst D u` using `by rw [lowerNormConst_eq_exp hI]; exact Real.exp_pos _`. Establish `hv : 0 < valNormAt D u φ`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : lowerNormConst D u * valNormAt D u φ ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hK.le (not_lt.mp hn)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem lowerNorm_log {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
       MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)}

@@ -16,9 +16,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThKExpand
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ hev hB hM hXW`. Take `⟨c, hc⟩` from `GlobalTheory.T.additive_homogeneous_functional_linear hKP F E σ B n d X W M hB hM hXW (fun Ψ => ∑' ξ : Fin n → E, thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) Ψ))) (GlobalTheory.T.evaluation_map_adapted_plane_injective hKP F E σ B n d d₁ X W W₁ M M₁ H' …`. Take `⟨Ψ₀, hΨ₀, hne⟩` from `GlobalTheory.T.evaluation_map_adapted_plane_intertwines hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ hev hB hM hXW`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hne (by simpa using hc Ψ₀ hΨ₀)`. Use `⟨c⁻¹, inv_ne_zero hc0, fun Ψ hΨ => ⟨GlobalTheory.T.evaluation_map_adapted_plane_equivariant hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH hM₁ e₀ hev hB hM hXW Ψ hΨ, ?_⟩⟩` and prove the remaining obligations. Use `hc Ψ hΨ` as an intermediate fact. Use `beta_reduce at this`. Rewrite using `[this, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSum_eq_mixed : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

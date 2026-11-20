@@ -4,15 +4,13 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y Y₁ Y₂ X j₁ j₂ _ _ a₁ a₂ hcov hagree y`. Establish `hinj₁` using `j₁.isClosedEmbedding.injective`. Establish `hinj₂` using `j₂.isClosedEmbedding.injective`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx₁, hx₂⟩ : ∃ x : X, (∀ w, j₁ w = y → a₁ w = x) ∧ (∀ w, j₂ w = y → a₂ w = x) := by`. Break down `hcov y with ⟨y₁, h₁⟩ | ⟨y₂, h₂⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨a₁ y₁, fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hinj₁ (hw.trans h₁.symm)]`. Conclude with `(hagree y₁ w (h₁.trans hw.symm)).symm`. Use `⟨a₂ y₂, fun w hw => hagree w y₂ (hw.trans h₂.symm), fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hinj₂ (hw.trans h₂.symm)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Use `set C : Set Y := j₁.base '' ((a₁ ⁻¹ᵁ U : Set Y₁)ᶜ) ∪ j₂.base '' ((a₂ ⁻¹ᵁ U : Set Y₂)ᶜ) with hCdef`. Establish `hC : IsClosed C` using `(j₁.isClosedEmbedding.isClosedMap _ (a₁ ⁻¹ᵁ U).isOpen.isClosed_compl).union (j₂.isClosedEmbedding.isClosedMap _ (a₂ ⁻¹ᵁ U).isOpen.isClosed_compl)`. Establish `hyC : y ∉ C`. Introduce and unpack `(⟨w, hw, hwy⟩ | ⟨w, hw, hwy⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hw (by simpa [hx₁ w hwy] using hxU)`. Conclude with `hw (by simpa [hx₂ w hwy] using hxU)`. Take `⟨W, hW, hyW, hWC⟩` from `exists_isAffineOpen_mem_and_subset (U := ⟨Cᶜ, hC.isOpen_compl⟩) (show y ∈ Cᶜ from hyC)`. Use `⟨W, ⟨U, hU⟩, hW, hyW, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
-
-Assume the negation of the conclusion as `hn`. Conclude with `hWC hw (Or.inl ⟨w, hn, rfl⟩)`. Introduce `w hw`. Assume the negation of the conclusion as `hn`. Conclude with `hWC hw (Or.inr ⟨w, hn, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem closedCover_affine_nbhd_maps_into_affine :
     ∀ (Y Y₁ Y₂ X : Scheme.{0}) (j₁ : Y₁ ⟶ Y) (j₂ : Y₂ ⟶ Y) [IsClosedImmersion j₁]

@@ -4,19 +4,17 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O C)` using `IsFractionRing.injective O C`. Establish `hd' : algebraMap O C d ≠ 0` using `fun h0 => hd (hinj (by simpa using h0))`. Establish `hε' : algebraMap O C (ε a) ≠ 0` using `fun h0 => hε (hinj (by simpa using h0))`. Use `set x : C := algebraMap O C c / algebraMap O C d with hx`. Establish `hpow : ∀ n : ℕ, d ^ n • (T ^ n) a = c ^ n • a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ' T, Module.End.mul_apply, pow_succ' d, mul_smul, ← map_smul T, ih, map_smul, smul_comm, h, ← mul_smul, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow' : ∀ n : ℕ, algebraMap O C (ε ((T ^ n) a)) = x ^ n * algebraMap O C (ε a)`. Introduce `n`. Use `congrArg (fun y => algebraMap O C (ε y)) (hpow n)` as an intermediate fact. Simplify using `only [map_smul, smul_eq_mul, map_mul, map_pow] at this`. Rewrite using `[hx, div_pow, div_mul_eq_mul_div, eq_div_iff (pow_ne_zero _ hd'), mul_comm, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpoly : ∀ p : Polynomial O, algebraMap O C (ε ((Polynomial.aeval T p) a)) = Polynomial.aeval x p * algebraMap O C (ε a)`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq, add_mul]`. Consider the case `monomial n r`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, smul_eq_mul, map_mul, hpow', mul_assoc]`. Take `⟨p, hp, hpT⟩` from `LinearMap.exists_monic_and_aeval_eq_zero O T`. Establish `hx0 : Polynomial.aeval x p = 0`. Use `hpoly p` as an intermediate fact. Rewrite `this` using `[hpT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.zero_apply, map_zero] at this`. Conclude with `(mul_eq_zero.mp this.symm).resolve_right hε'`. Establish `hint : IsIntegral O x` using `⟨p, hp, hx0⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Use `⟨y, hinj ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, hy, hx, mul_div_cancel₀ _ hd']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_smul_apply_eq_smul (O C A : Type) [CommRing O] [IsDomain O] [Field C] [Algebra O C]
     [IsFractionRing O C] [IsIntegrallyClosed O] [AddCommGroup A] [Module O A] [Module.Finite O A]

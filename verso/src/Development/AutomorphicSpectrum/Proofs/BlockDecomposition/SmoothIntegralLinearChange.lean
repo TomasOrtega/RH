@@ -22,7 +22,7 @@ def glLinearEquiv {t : ℕ} (w : GL (Fin t) k) : (Fin t → k) ≃ₗ[k] (Fin t 
       rw [← Matrix.toLin'_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.toLin'_one])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem coe_glLinearEquiv_symm {t : ℕ} (w : GL (Fin t) k) :
     ((glLinearEquiv w).symm : (Fin t → k) → (Fin t → k)) =
@@ -31,7 +31,7 @@ theorem coe_glLinearEquiv_symm {t : ℕ} (w : GL (Fin t) k) :
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[LinearEquiv.coe_det]`. Use `show LinearMap.det (Matrix.toLin' (w : Matrix (Fin t) (Fin t) k)) = _`. Rewrite using `[LinearMap.det_toLin']`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_glLinearEquiv {t : ℕ} (w : GL (Fin t) k) :
     LinearEquiv.det (glLinearEquiv w) = Matrix.GeneralLinearGroup.det w := by
@@ -44,9 +44,7 @@ theorem det_glLinearEquiv {t : ℕ} (w : GL (Fin t) k) :
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `borelize k`. Establish `hp : @BorelSpace (Fin t → k) _ MeasurableSpace.pi` using `Pi.borelSpace`. Establish `e : m = MeasurableSpace.pi` using `hb.measurable_eq.trans hp.measurable_eq.symm`. Substitute `e` using the available equality. Rewrite using `[← coe_glLinearEquiv_symm, ← det_glLinearEquiv]`.
-
-Conclude with `GlobalTheory.ChangeVarPi.map_symm_eq_smul k (Fin t) μ (glLinearEquiv w)`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_mulVec (t : ℕ) [m : MeasurableSpace (Fin t → k)] [hb : BorelSpace (Fin t → k)]
     (μ : Measure (Fin t → k)) [μ.IsAddHaarMeasure] (w : GL (Fin t) k) :
@@ -60,11 +58,11 @@ theorem map_inv_mulVec (t : ℕ) [m : MeasurableSpace (Fin t → k)] [hb : Borel
   exact GlobalTheory.ChangeVarPi.map_symm_eq_smul k (Fin t) μ (glLinearEquiv w)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ t _ _ μ _ Z _ _ w φ hl _`. Establish `hc : Continuous ((w⁻¹ : GL (Fin t) k) : Matrix (Fin t) (Fin t) k).mulVec` using `continuous_const.matrix_mulVec continuous_id`. Establish `hval : ((detChar (Fin t) (absPow k (1 : ℂ)) w : ℂˣ) : ℂ) = (((distribHaarChar k (Matrix.GeneralLinearGroup.det w) : NNReal) : ℝ) : ℂ)`. Rewrite using `[detChar_apply, val_absPow, Complex.cpow_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hval]`. Unfold `smInt`. Rewrite using `[smul_finsum]`. Use `finsum_congr fun v => ?_` and prove the remaining obligations. Establish `hlev : μ ((fun x => φ (((w⁻¹ : GL (Fin t) k) : Matrix (Fin t) (Fin t) k).mulVec x)) ⁻¹' {v}) = (distribHaarChar k (Matrix.GeneralLinearGroup.det w)) • μ (φ ⁻¹' {v})`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Measure.smul_apply, ← map_inv_mulVec t μ w]`. Conclude with `(Measure.map_apply hc.measurable (hl.isOpen_fiber v).measurableSet).symm`. Rewrite using `[hlev, ENNReal.toReal_smul, smul_smul, NNReal.smul_def, smul_eq_mul, Complex.ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smInt_comp_inv_mulVec : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure] {Z : Type} [AddCommGroup Z] [Module ℂ Z] (w : GL (Fin t) k) (φ : (Fin t → k) → Z), IsLocallyConstant φ → HasCompactSupport φ → smInt μ (fun v => φ (((w⁻¹ : GL (Fin t) k) : Matrix (Fin t) (Fin t) k).mulVec v)) = ((detChar (Fin t) (absPow k (1 : ℂ)) w : ℂˣ) : ℂ) • smInt μ φ := by
   intro k _ _ _ _ t _ _ μ _ Z _ _ w φ hl _

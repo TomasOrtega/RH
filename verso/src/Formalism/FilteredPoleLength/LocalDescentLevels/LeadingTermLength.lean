@@ -8,61 +8,57 @@ namespace Formalism.LatticeBaseChangeAlt
 open Module
 
 /- English proof (translation)
-Introduce `O A A0 _ _ _ _ _ n F ι _ _ deg δ t σ u h0 hn hF hker hsurj hdeg hu hli`. Establish `hanti : Antitone F` using `antitone_nat_of_succ_le hF`. Establish `hkill : ∀ k (x : A) (h : x ∈ F k), x ∈ F (k + 1) → σ k ⟨x, h⟩ = 0`. Introduce `k x h hx`. Establish `: (⟨x, h⟩ : ↥(F k)) ∈ LinearMap.ker (σ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hker k]`. Conclude with `hx`. Conclude with `this`. Establish `hkill' : ∀ k (x : A) (h : x ∈ F k), σ k ⟨x, h⟩ = 0 → x ∈ F (k + 1)`. Introduce `k x h hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (⟨x, h⟩ : ↥(F k)) ∈ LinearMap.ker (σ k)` using `hx`. Rewrite `this` using `[hker k]`. Conclude with `this`. Establish `hmem0 : ∀ (α : ι) (j : ℕ) (a : Fin δ → O), (deg α < j → a = 0) → ∑ i, a i • u α i ∈ F j`. Introduce `α j a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `lt_or_ge (deg α) j with h | h` into its components or cases. Rewrite using `[ha h]`. Simplify using the standard rewrite rules. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hanti h (hu α i).1)`. Establish `hval0 : ∀ (α : ι) (j : ℕ) (a : Fin δ → O) (h : ∑ i, a i • u α i ∈ F j), (deg α < j → a = 0) → ∀ β : {β : ι // deg β = j}, σ j ⟨∑ i, a i • u α i, h⟩ β = if β.1 = α then ∑ i, a i • t i else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `α j a h ha β`. Break down `lt_trichotomy (deg α) j with hlt | heq | hgt` into its components or cases. Establish `hz : (⟨∑ i, a i • u α i, h⟩ : ↥(F j)) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[ha hlt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[hz, ha hlt]`. Simplify using the standard rewrite rules. Substitute `heq` using the available equality. Establish `hz : (⟨∑ i, a i • u α i, h⟩ : ↥(F (deg α))) = ∑ i, a i • (⟨u α i, (hu α i).1⟩ : ↥(F (deg α)))`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[hz, map_sum, Finset.sum_apply]`. Establish `: ∀ i, (σ (deg α)) (a i • (⟨u α i, (hu α i).1⟩ : ↥(F (deg α)))) β = if β.1 = α then a i • t i else 0`. Introduce `i`. Rewrite using `[map_smul, (hu α i).2, Pi.smul_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hb : β.1 = α`. Establish `: β = ⟨α, rfl⟩` using `Subtype.ext hb`. Simplify using `[this]`. Establish `: β ≠ ⟨α, rfl⟩` using `fun h' => hb (congrArg Subtype.val h')`. Simplify using `[this, hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[this]`. Apply the tactic sequence `by_cases hb : β.1 = α <;> simp [hb]`. Establish `hx : ∑ i, a i • u α i ∈ F (j + 1)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hanti hgt (hu α i).1)`. Rewrite using `[hkill j _ h hx]`. Establish `hb : β.1 ≠ α`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `hb`. Use `β.2` as an intermediate fact. Rewrite `this` using `[hb]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem1 : ∀ (j : ℕ) (c : ι → Fin δ → O), (∀ α, deg α < j → c α = 0) → ∑ α, ∑ i, c α i • u α i ∈ F j` using `fun j c hc => Submodule.sum_mem _ fun α _ => hmem0 α j (c α) (hc α)`. Establish `hval1 : ∀ (j : ℕ) (c : ι → Fin δ → O) (h : ∑ α, ∑ i, c α i • u α i ∈ F j), (∀ α, deg α < j → c α = 0) → ∀ β : {β : ι // deg β = j}, σ j ⟨∑ α, ∑ i, c α i • u α i, h⟩ β = ∑ i, c β.1 i • t i`. Introduce `j c h hc β`. Establish `hz : (⟨∑ α, ∑ i, c α i • u α i, h⟩ : ↥(F j)) = ∑ α, (⟨∑ i, c α i • u α i, hmem0 α j (c α) (hc α)⟩ : ↥(F j))`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hz, map_sum, Finset.sum_apply]`. Repeatedly rewrite using `[hval0 _ j _ _ (hc _) β]`. Simplify using the standard rewrite rules. Establish `hstrict : ∀ (k : ℕ) (c : ι → Fin δ → O), ∑ α, ∑ i, c α i • u α i ∈ F k → ∀ j, j ≤ k → ∀ α, deg α < j → c α = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Introduce `k c hb j`. Proceed by induction on `j with`. Consider the case `zero => intro _ α h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ j ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `hj α hα`. Establish `ih'` using `ih (by omega)`. Break down `lt_or_eq_of_le (Nat.lt_succ_iff.mp hα) with h | h` into its components or cases. Conclude with `ih' α h`. Establish `hbj` using `hmem1 j c ih'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hval1 j c hbj ih' ⟨α, h⟩`. Rewrite `h1` using `[hkill j _ hbj (hanti hj hb)]`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp hli (c α) h1.symm i`. Use `set N : Submodule O A := Submodule.span O (Set.range fun p : ι × Fin δ => u p.1 p.2) with hN`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hNmem : ∀ x : A, x ∈ N ↔ ∃ c : ι → Fin δ → O, ∑ α, ∑ i, c α i • u α i = x`. Introduce `x`. Rewrite using `[hN, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun α i => c (α, i), by rw [Fintype.sum_prod_type]⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun p => c p.1 p.2, by rw [Fintype.sum_prod_type]⟩`. Use `set T : Submodule O A0 := Submodule.span O (Set.range t) with hT`. Establish `hgr : ∀ k, (F (k + 1) ⊔ (N ⊓ F k)).comap (F k).subtype = (Submodule.pi Set.univ fun _ : {α : ι // deg α = k} => T).comap (σ k)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_pi, Set.mem_univ, forall_true_left]`. Prove the components needed by the constructor for the conclusion. Introduce `h β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨a, ha, b, ⟨hbN, hbF⟩, rfl⟩` from `Submodule.mem_sup.mp h`. Take `⟨c, rfl⟩` from `(hNmem b).mp hbN`. Establish `hc` using `hstrict k c hbF k le_rfl`. Establish `hz : (⟨a + ∑ α, ∑ i, c α i • u α i, hx⟩ : ↥(F k)) = ⟨a, hF k ha⟩ + ⟨∑ α, ∑ i, c α i • u α i, hbF⟩` using `rfl`. Rewrite using `[hz, map_add, hkill k a _ ha, zero_add, hval1 k c hbF hc β]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `h`. Establish `hch : ∀ β : {α : ι // deg α = k}, ∃ a : Fin δ → O, ∑ i, a i • t i = σ k ⟨x, hx⟩ β` using `fun β => (Submodule.mem_span_range_iff_exists_fun O).mp (h β)`. Use `choose a ha using hch`. Set `c : ι → Fin δ → O` to `fun α => if hα : deg α = k then a ⟨α, hα⟩ else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ α, deg α < k → c α = 0`. Introduce `α hα`. Simplify using `only [c]`. Rewrite using `[dif_neg (by omega)]`. Establish `hyF` using `hmem1 k c hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyN : ∑ α, ∑ i, c α i • u α i ∈ N` using `(hNmem _).mpr ⟨c, rfl⟩`. Establish `hσ : σ k ⟨x, hx⟩ = σ k ⟨∑ α, ∑ i, c α i • u α i, hyF⟩`. Use function extensionality and compare the values at `β`. Rewrite using `[hval1 k c hyF hc β, ← ha β]`. Simplify using `only [c]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos β.2]`. Establish `hd : x - ∑ α, ∑ i, c α i • u α i ∈ F (k + 1)`. Use `hkill' k _ ((F k).sub_mem hx hyF) ?_` and prove the remaining obligations. Establish `hz : (⟨x - ∑ α, ∑ i, c α i • u α i, (F k).sub_mem hx hyF⟩ : ↥(F k)) = ⟨x, hx⟩ - ⟨∑ α, ∑ i, c α i • u α i, hyF⟩` using `rfl`. Rewrite using `[hz, map_sub, hσ, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Submodule.mem_sup.mpr ⟨_, hd, _, ⟨hyN, hyF⟩, by abel⟩` and prove the remaining obligations. Establish `hlen : ∀ k, Module.length O (↥(F k) ⧸ (F (k + 1) ⊔ (N ⊓ F k)).comap (F k).subtype) = (Fintype.card {α : ι // deg α = k} : ℕ∞) * Module.length O (A0 ⧸ T)`. Introduce `k`. Use `set P : Submodule O ({α : ι // deg α = k} → A0) := Submodule.pi Set.univ fun _ : {α : ι // deg α = k} => T with hP`. Establish `hk : LinearMap.ker (P.mkQ ∘ₗ σ k) = (F (k + 1) ⊔ (N ⊓ F k)).comap (F k).subtype`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ, hgr k]`. Establish `hs : Function.Surjective (P.mkQ ∘ₗ σ k)` using `(Submodule.mkQ_surjective P).comp (hsurj k)`. Establish `e1` using `(Submodule.quotEquivOfEq _ _ hk).symm.trans ((P.mkQ ∘ₗ σ k).quotKerEquivOfSurjective hs)`. Establish `e2` using `Submodule.quotientPi (fun _ : {α : ι // deg α = k} => T)`. Rewrite using `[e1.length_eq, e2.length_eq, Module.length_pi_of_fintype]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[filteredLength O A n F h0 hn hF N]`. Repeatedly rewrite using `[hlen]`. Rewrite using `[← Finset.sum_mul]`. Use `congr 1`.
-
-Rewrite using `[← Nat.cast_sum]`. Use `congr 1`. Use `Finset.card_eq_sum_card_fiberwise (s := (Finset.univ : Finset ι)) (t := Finset.range n) (f := deg) (fun α _ => by simpa using hdeg α)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ]`. Rewrite using `[this]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_subtype]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leadingTermLength : LeadingTermLength := by
   intro O A A0 _ _ _ _ _ n F ι _ _ deg δ t σ u h0 hn hF hker hsurj hdeg hu hli

@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.HtNefCore
 
 /- English proof (translation)
-Introduce `h2 hH D O hc hf A T H hr c Q l hl hlp`. Take `⟨V, M, hM, hA⟩` from `GlobalTheory.T.adelic_norm_nef_partial_sums h2 hH D O hc hf A T H hr c Q l hl hlp`. Use `⟨V, M, hM, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hB` using `GlobalTheory.T.adelic_norm_nef_indicators h2 hH D O hc hf A T H hr c Q l hl hlp V M hM`. Conclude with `GlobalTheory.T.nef_combination_of_partial_indicators V.ar D.what₂.Tau O.N M l (fun τ i hi => by convert hA τ i hi) (fun τ => by convert hB τ using 3) n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cover_nefOver : Hypotheses2 → HypothesesH → OnObj fun D O _ _ _ _ => ∀ (c : O.s.Comp) (Q : Finset ℕ) (l : ℕ), l ∈ Q → l.Prime → ∃ (V : Cover (O.var c)) (M : DV.Rt D.what₂.Tau O.N → HermLB V.p), (∀ x, Norms V (M x) (fun z => genAt (O.root0 c Q x).D z) (fun σ y => lnAdl (O.root0 c Q x) σ y) (fun v e y => (O.root0 c Q x).lg v e y)) ∧ ∀ n : D.what₂.Tau → Fin O.N → ℤ, (∀ τ, Antitone (n τ)) → NefOver (ArInt.comb M fun x => -n x.1 x.2) l := by
   intro h2 hH D O hc hf A T H hr c Q l hl hlp

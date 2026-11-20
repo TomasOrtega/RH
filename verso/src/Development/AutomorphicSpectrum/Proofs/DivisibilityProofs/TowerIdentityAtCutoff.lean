@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-The claim follows from `|G F| ≤ (∑ m ∈ F.support, |coeff m F|) * e := by have h1 : G F = ∑ m ∈ F.support, coeff m F * G (monomial m 1) := by conv_lhs => rw [F.as_sum] rw [map_sum] refine Finset.sum_congr rfl fun m _ => ?_ have : monomial m (coeff m F) = coeff m F • monomial m (1 : ℝ) := by rw [smul_mono …`.
+A detailed English derivation is pending.
 -/
 theorem abs_apply_le_of_monomial_bound {σ : Type} (G : MvPolynomial σ ℝ →ₗ[ℝ] ℝ) (F : MvPolynomial σ ℝ) {d : ℕ}
     (hF : F.IsHomogeneous d) {e : ℝ} (he : ∀ m : σ →₀ ℕ, m.degree = d → |G (monomial m 1)| ≤ e) :
@@ -38,13 +38,11 @@ theorem abs_apply_le_of_monomial_bound {σ : Type} (G : MvPolynomial σ ℝ →�
   exact (mem_support_iff.mp hm) (hF.coeff_eq_zero hne)
 
 /- English proof (translation)
-Substitute `ht₂` using the available equality. Establish `ha : Tendsto a atTop (𝓝 ((H₂ + r₂ + 0 / v - L₂ / v) / s₂))`. Establish `h` using `(((hR₂.const_add H₂).add (hE₂.div_const v)).sub_const (L₂ / v)).div_const s₂`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [h₂] with B hB`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hb : Tendsto b atTop (𝓝 ((H₁ - (H₂ + r₂ + 0 / v - L₂ / v) / s₂ * s₁ + r₁ + 0 / v - L₁ / v) / n))`. Establish `h` using `(((((ha.mul_const s₁).const_sub H₁).add hR₁).add (hE₁.div_const v)).sub_const (L₁ / v)).div_const n`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [h₁] with B hB`. Rewrite using `[hB]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `⟨_, _, ha, hb⟩`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tendsto_coeffs_of_tests {a b R₁ R₂ E₁ E₂ : ℕ → ℝ} {v H₁ H₂ L₁ L₂ r₁ r₂ s₁ n s₂ t₂ : ℝ}
     (hv : v ≠ 0) (hn : n ≠ 0) (hs₂ : s₂ ≠ 0) (ht₂ : t₂ = 0)
@@ -71,7 +69,7 @@ theorem tendsto_coeffs_of_tests {a b R₁ R₂ E₁ E₂ : ℕ → ℝ} {v H₁ 
   exact ⟨_, _, ha, hb⟩
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun B => v * (H - a B * s - b B * t + R B) + E B) atTop (𝓝 (v * (H - A * s - b₀ * t + r) + 0))` using `((((((ha.mul_const s).const_sub H).sub (hb.mul_const t)).add hR).const_mul v)).add hE`. Establish `h2 : Tendsto (fun B => v * (H - a B * s - b B * t + R B) + E B) atTop (𝓝 L)` using `tendsto_const_nhds.congr' (h.mono fun B hB => hB)`. Simplify using `using tendsto_nhds_unique h2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_tendsto_coeffs {a b R E : ℕ → ℝ} {v H L s t A b₀ r : ℝ}
     (ha : Tendsto a atTop (𝓝 A)) (hb : Tendsto b atTop (𝓝 b₀)) (hR : Tendsto R atTop (𝓝 r))
@@ -86,7 +84,7 @@ theorem eq_of_tendsto_coeffs {a b R E : ℕ → ℝ} {v H L s t A b₀ r : ℝ}
   simpa using tendsto_nhds_unique h2 h1
 
 /- English proof (translation)
-Establish `h` using `(Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero).comp tendsto_natCast_atTop_atTop`. Establish `h2` using `(h.const_mul C).const_mul c`. Simplify using `only [mul_zero] at h2`. Use `h2.congr fun B => ?_` and prove the remaining obligations. Simplify using `[mul_div_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tendsto_const_mul_log_div (c C : ℝ) :
     Tendsto (fun B : ℕ => c * (C * Real.log B / B)) atTop (𝓝 0) := by
@@ -101,9 +99,9 @@ section
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `hpk : (pk τ k : RP Ψ N).IsHomogeneous k` using `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow _ _`. Establish `h1 : N - 1 ≤ N * (N - 1) / 2`. Rewrite using `[Nat.le_div_iff_mul_le (by norm_num), mul_comm N]`. Conclude with `Nat.mul_le_mul_left _ hN`. Establish `h2 : N * (N - 1) / 2 ≤ dimFl Ψ N` using `Nat.le_mul_of_pos_left _ (Fintype.card_pos_iff.mpr ⟨τ⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : k + (dimFl Ψ N + 1 - k) = dimFl Ψ N + 1` using `by omega`. Simplify `hpk.mul hQ` using `[h3]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pk_mul_isHomogeneous (hN : 2 ≤ N) (τ : Ψ) {k : ℕ} (hk : k ≤ N) {Q : RP Ψ N}
     (hQ : Q.IsHomogeneous (dimFl Ψ N + 1 - k)) : (pk τ k * Q : RP Ψ N).IsHomogeneous (dimFl Ψ N + 1) := by
@@ -118,19 +116,17 @@ theorem pk_mul_isHomogeneous (hN : 2 ≤ N) (τ : Ψ) {k : ℕ} (hk : k ≤ N) {
   simpa [h3] using hpk.mul hQ
 
 /- English proof (translation)
-Establish `hN : 2 ≤ N` using `by have := T.j_pos; have := T.j_lt; omega`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.power_sum_delta_decomposition Ψ N T.j frob T.j_lt.le (by omega) hshape`. Take `⟨-, hSh, hTot, -⟩` from `GlobalTheory.T.flag_degree_linear_functionals Ψ N`. Use `choose ΦS hΦS using hSh`. Use `choose ΦT hΦT using hTot`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨C, B₁, hC⟩` from `hBA`. Use `choose! α β hαβ using hC`. Set `PL : ℕ → (RP Ψ N →ₗ[ℝ] ℝ)` to `fun B => ∑ c, ((T.M B c).PP II).comp (rename some).toLinearMap`. Establish `hPL : ∀ B F, PL B F = T.PPt II B F`. Introduce `B F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[PL, RootTower.PPt, RootTower.PPc, toA, LinearMap.sum_apply]`. Set `G : ℕ → (RP Ψ N →ₗ[ℝ] ℝ)` to `fun B => PL B - T.volT • (hh - (α B - β B) • (∑ σ, ΦS T.j σ) - β B • (∑ σ, ΦT σ))`. Establish `hG : ∀ B F, G B F = T.PPt II B F - T.volT * (hh F - (α B - β B) * ∑ σ, Sh T.j σ F - β B * ∑ σ, Tot σ F)`. Introduce `B F`. Simplify using `[G, hPL, LinearMap.sum_apply, hΦS, hΦT]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `S : ℕ → Finset ℕ` to `fun B => (Finset.Ioc B₀ B).filter (fun p => p.Prime ∧ p ∉ T.bad)`. Use `⟨fun B => α B - β B + ∑ p ∈ S B, Real.log p / ((p : ℝ) - 1), fun B => β B - ∑ p ∈ S B, κ p, fun τ k hk1 hkN Q hQ => ?_⟩` and prove the remaining obligations. Establish `hF` using `pk_mul_isHomogeneous hN τ hkN hQ`. Use `⟨fun B => G B (pk τ k * Q), ?_, ?_⟩` and prove the remaining obligations. Use `squeeze_zero_norm' ?_ (tendsto_const_mul_log_div (∑ m ∈ (pk τ k * Q : RP Ψ N).support, |coeff m (pk τ k * Q : RP Ψ N)|) C) filter_upwards [eventually_ge_atTop B₁] with B hB` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.norm_eq_abs]`. Use `abs_apply_le_of_monomial_bound (G B) _ hF fun m hm => ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `hαβ B hB m hm`. Use `filter_upwards [eventually_ge_atTop B₀] with B hB`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : T.PPt II B₀ (pk τ k * Q) = T.PPt II B (pk τ k * Q) + T.volT * ∑ p ∈ S B, deltaTerm T.j p τ (frob p τ) k Q`. Simplify using `only [RootTower.PPt, RootTower.volT, Finset.sum_mul]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun c _ => h6 B₀ B hB₀ hB c τ k hk1 hkN Q hQ`. Establish `hdelta : ∑ p ∈ S B, deltaTerm T.j p τ (frob p τ) k Q = -(∑ p ∈ S B, Real.log p / ((p : ℝ) - 1)) * ∑ σ, Sh T.j σ (pk τ k * Q) + (∑ p ∈ S B, κ p) * ∑ σ, Tot σ (pk τ k * Q) + ∑ p ∈ S B, restTerm T.j p (frob p τ) k Q`.
-
-Rewrite using `[Finset.sum_congr rfl fun p hp => hκ p τ k Q (Finset.mem_filter.mp hp).2.1.two_le hk1]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.sum_mul, Finset.sum_neg_distrib]`. Use `show T.PPt II B₀ (pk τ k * Q) = _`. Rewrite using `[hG, hsum, hdelta]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_finite_identity (II : IntersectionSystem) (T : RootTower Ψ N) (hh : RP Ψ N →ₗ[ℝ] ℝ)
     (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (hshape : FrobShape frob) (h6 : T.Prop6 II frob) (hBA : T.ThmBA II hh)
@@ -191,19 +187,19 @@ end
 end GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `II Ψ _ _ N T hh frob hprop hshape h6 hBA B₀ hB₀`. Establish `hvol : 0 < T.volT` using `Finset.sum_pos (fun c _ => hprop.1 c) Finset.univ_nonempty`. Establish `hN : 2 ≤ N` using `by have := T.j_pos; have := T.j_lt; omega`. Take `⟨a, b, hid⟩` from `exists_finite_identity II T hh frob hshape h6 hBA B₀ hB₀`. Establish `hrest : ∀ (τ : Ψ) (k : ℕ) (Q : RP Ψ N), _` using `fun τ k Q => (GlobalTheory.T.remainder_term_summable Ψ N T.j T.bad frob τ k Q).2 B₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hΨ : Nonempty Ψ`. Take `⟨τ₀⟩` from `hΨ`. Take `⟨⟨Q₁, hQ₁, hd₁⟩, Q₂, hQ₂, hd₂⟩` from `GlobalTheory.T.exists_flag_degree_one_polys Ψ N T.j τ₀ T.j_pos T.j_lt`. Establish `hQ₁' : Q₁.IsHomogeneous (dimFl Ψ N + 1 - 1)` using `by simpa using hQ₁`. Establish `hQ₂' : Q₂.IsHomogeneous (dimFl Ψ N + 1 - 2)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: dimFl Ψ N + 1 - 2 = dimFl Ψ N - 1` using `by omega`. Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨E₁, hE₁, h₁⟩` from `hid τ₀ 1 le_rfl (by omega) Q₁ hQ₁'`. Take `⟨E₂, hE₂, h₂⟩` from `hid τ₀ 2 (by omega) hN Q₂ hQ₂'`. Establish `hn : ∑ σ, Tot σ (pk τ₀ 1 * Q₁) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5` using `fun σ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N T.j τ₀ σ 1 Q₁ le_rfl).2`. Simplify using `only [h5, hd₁]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `hs₂ : ∑ σ, Sh T.j σ (pk τ₀ 2 * Q₂) ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h5` using `fun σ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N T.j τ₀ σ 2 Q₂ (by omega)).1`. Simplify using `only [h5]`. Simplify using `[hd₂]`. Establish `ht₂ : ∑ σ, Tot σ (pk τ₀ 2 * Q₂) = 0`. Establish `h5` using `fun σ => (GlobalTheory.T.flag_shift_total_power_sum Ψ N T.j τ₀ σ 2 Q₂ (by omega)).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h5]`. Take `⟨A₀, b₀, ha, hb⟩` from `tendsto_coeffs_of_tests hvol.ne' hn hs₂ ht₂ (hrest τ₀ 1 Q₁) (hrest τ₀ 2 Q₂) hE₁ hE₂ h₁ h₂`. Use `⟨A₀, b₀, fun τ k hk1 hkN Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨E, hE, h⟩` from `hid τ k hk1 hkN Q hQ`. Conclude with `eq_of_tendsto_coeffs ha hb (hrest τ k Q) hE h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, fun τ => (hΨ ⟨τ⟩).elim⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Top.exists_identAt : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
     (T : RootTower Ψ N) (hh : RP Ψ N →ₗ[ℝ] ℝ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ), T.Proportional → FrobShape frob →

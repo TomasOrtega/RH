@@ -18,7 +18,7 @@ section directSum
 variable (ρ : ∀ i, UnitaryRep G (E i))
 
 /- English proof (translation)
-Apply `memℓp_norm_iff.mp` to reduce the goal to its premises. Establish `: (fun i => ‖ρ i g (x i)‖) = fun i => ‖x i‖` using `funext fun i => norm_map _ _ _`. Rewrite using `[this]`. Conclude with `memℓp_norm_iff.mpr (lp.memℓp x)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma memℓp_map (g : G) (x : lp E 2) : Memℓp (fun i => ρ i g (x i)) 2 := by
   apply memℓp_norm_iff.mp
@@ -57,9 +57,9 @@ noncomputable def directSumHom : G →* (lp E 2 ≃ₗᵢ[ℂ] lp E 2) where
 
 omit [∀ i, InnerProductSpace ℂ (E i)] [∀ i, CompleteSpace (E i)] in
 /- English proof (translation)
-Establish `hp : 0 < (2 : ℝ≥0∞).toReal` using `by simp`. Establish `hx` using `(lp.memℓp x).summable hp`. Establish `hy` using `(lp.memℓp y).summable hp`. Simplify using `only [ENNReal.toReal_ofNat, Real.rpow_two] at hx hy`. Use `Summable.of_nonneg_of_le (fun i => mul_nonneg (norm_nonneg _) (norm_nonneg _)) (fun i => ?_) (hx.add hy)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use polynomial arithmetic with `[sq_nonneg (‖x i‖ - ‖y i‖), norm_nonneg (x i), norm_nonneg (y i)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma summable_norm_mul_norm (x y : lp E 2) : Summable fun i => ‖x i‖ * ‖y i‖ := by
   have hp : 0 < (2 : ℝ≥0∞).toReal := by simp
@@ -103,9 +103,9 @@ Both sides reduce to the same expression.
 lemma singleL_apply [DecidableEq ι] (i : ι) (a : E i) : singleL i a = lp.single 2 i a := rfl
 
 /- English proof (translation)
-Introduce `g a`. Use `lp.ext (funext fun j => ?_)` and prove the remaining obligations. Rewrite using `[singleL_apply, directSum_apply, singleL_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[lp.single_apply_ne 2 i _ h, lp.single_apply_ne 2 i _ h, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem singleL_mem_intertwiners [DecidableEq ι] (i : ι) :
     singleL i ∈ (ρ i).intertwiners (directSum ρ) := by
@@ -133,7 +133,7 @@ noncomputable def equivDirectSumOfIsHilbertSum {π : UnitaryRep G H} {V : ι →
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨equivDirectSumOfIsHilbertSum hinv hV⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEquivalent_directSum_of_isHilbertSum {π : UnitaryRep G H} {V : ι → Submodule ℂ H}
     [∀ i, CompleteSpace (V i)] (hinv : ∀ i, π.IsInvariant (V i))

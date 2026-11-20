@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.BKGal.PhiFix
 
 /- English proof (translation)
-Establish `hB : ∀ r : OB l O, frobOB l O (galOB O (sQ l g) r) = galOB O (sQ l g) (frobOB l O r)`. Introduce `r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o β`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [frobOB, galOB, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Conclude with `congrArg (fun y : Per.Bcris l => o ⊗ₜ[ℤ_[l]] y) ((GlobalTheory.MemLoc.ActLaws.act_laws l).2.2.2.2.1 _ β)`. Consider the case `add r s hr hs => rw [map_add (galOB O (sQ l g)), map_add (frobOB l O), map_add (frobOB l O), map_add (galOB O (sQ l g)), hr, hs]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul r x`. Simplify using `only [actB, TWmap, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, hB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frob_actB {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [NormedField K]
     [Algebra O K] [NormedAlgebra ℚ_[l] K] (T : LocLat (Gl l) ℚ_[l] K O) (g : Gl l) (x : TW (OB l O) T) :
@@ -43,17 +43,15 @@ theorem frob_actB {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra �
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R y hyY b hb g hg`. Take `⟨hy, m₀, σ, b₀, hm₀, -, hconn, hb₀, rfl⟩` from `hb`. Use `haveI : CompleteSpace K := GlobalTheory.T.completeSpace_of_finite_padicInt_unitBall l O K`. Take `⟨d, hd⟩` from `GlobalTheory.T.phi_sub_sub_mem_xi_of_monodromy_eq O K l e a ι η H D y hyY σ.1 hconn`. Take `⟨-, hall⟩` from `GlobalTheory.T.breuilKisin_bcris_comparison_frobenius_naturality l a e O K t ϖ ι D.toPhiMod T R.I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hφ, huniq, hfrobv, -, -⟩` from `hall R.jB R.cmp`. Establish `hσφ : D.phi σ.1 ∈ D.MMl` using `GlobalTheory.T.phi_mem_invertedLattice O K l e a ι η H D σ.1 σ.2`. Establish `hyφ : D.phi y ∈ D.MMl` using `GlobalTheory.T.phi_mem_invertedPrime_lattice_of_mem_eisensteinInvariants O K l e a ι η H D y hyY`. Establish `hv1` using `IsCrisVal.sub t ϖ (hfrobv _ _ hb₀) hb₀`. Establish `hv2` using `GlobalTheory.T.tensorBcris_value_frobenius_of_inverse_eisenstein_twist l a e O K t ϖ ι η H D T R.jB y hyY hy hyφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : phiW t ϖ D.toPhiMod (phiW t ϖ D.toPhiMod m₀) - phiW t ϖ D.toPhiMod m₀ = phiW t ϖ D.toPhiMod (toW t ϖ D.toPhiMod ⟨y, hy⟩)` using `by rw [← hm₀, map_sub]`. Rewrite `hv1` using `[hw]`. Establish `hb0` using `huniq _ _ _ hv1 hv2`. Establish `hs` using `hφ σ ⟨D.phi σ.1, hσφ⟩ rfl`. Establish `hmem : D.xi d ∈ D.MMl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hd]`. Conclude with `sub_mem (sub_mem hσφ σ.2) hyφ`. Establish `hkey : TWmap (frobOB l O) T (R.jB (toBcris t ϖ D.toPhiMod σ) - b₀) - (R.jB (toBcris t ϖ D.toPhiMod σ) - b₀) = R.jB (toBcris t ϖ D.toPhiMod ⟨D.xi d, hmem⟩)`. Establish `he : (⟨D.xi d, hmem⟩ : D.MMl) = ⟨D.phi σ.1, hσφ⟩ - σ - ⟨D.phi y, hyφ⟩` using `Subtype.ext (by`. Simplify using `only [Submodule.coe_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Conclude with `hd.symm)`. Rewrite using `[he, map_sub, map_sub, map_sub, map_sub, map_sub, ← hs, ← hb0]`. Normalize the expressions using the abelian group laws. Establish `hfix` using `R.horiz g hg d hmem`. Rewrite `hfix` using `[← hkey, map_sub]`.
-
-Rewrite using `[map_sub, frob_actB]`. Conclude with `sub_eq_sub_iff_sub_eq_sub.1 hfix`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_fixed_coboundary : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T), ∀ y ∈ D.Y, ∀ b, R.IsPotential y b → ∀ g : Gl l, sQ l g ∈ GK (ϖ.field a) → TWmap (frobOB l O) T (actB (sQ l) T g b - b) = actB (sQ l) T g b - b := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R y hyY b hb g hg

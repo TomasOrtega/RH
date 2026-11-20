@@ -8,9 +8,9 @@ private def Dz {E ι : Type} [Field E] [StarRing E] [Fintype ι] [DecidableEq ι
 
 open Matrix in
 /- English proof (translation)
-Take `⟨g, hg, D, hD⟩` from `h`. Use `⟨g.submatrix e.symm e.symm, ?_, D ∘ e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[det_submatrix_equiv_self]`. Conclude with `hg`. Establish `h1 : (g.submatrix e.symm e.symm)ᴴ * T * g.submatrix e.symm e.symm = (gᴴ * T.submatrix e e * g).submatrix e.symm e.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← submatrix_mul_equiv _ _ _ e.symm _, ← submatrix_mul_equiv _ _ _ e.symm _]`. Simplify using `[conjTranspose_submatrix]`. Rewrite using `[h1, hD]`. Use extensionality with `a b`. Simplify using `[diagonal_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Dz.of_submatrix {E ι κ : Type} [Field E] [StarRing E] [Fintype ι] [DecidableEq ι]
     [Fintype κ] [DecidableEq κ] (e : ι ≃ κ) {T : Matrix κ κ E}
@@ -28,9 +28,9 @@ private theorem Dz.of_submatrix {E ι κ : Type} [Field E] [StarRing E] [Fintype
 
 open Matrix in
 /- English proof (translation)
-Take `⟨g, hg, D, hD⟩` from `h`. Use `⟨P * g, ?_, D, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul]`. Conclude with `mul_ne_zero hP hg`. Rewrite using `[← hD, conjTranspose_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 private theorem Dz.of_congr {E ι : Type} [Field E] [StarRing E] [Fintype ι] [DecidableEq ι]
     {T P : Matrix ι ι E} (hP : P.det ≠ 0) (h : Dz (Pᴴ * T * P)) : Dz T := by
@@ -41,19 +41,19 @@ private theorem Dz.of_congr {E ι : Type} [Field E] [StarRing E] [Fintype ι] [D
 
 open Matrix in
 /- English proof (translation)
-Take `⟨X, Y, Z, W, rfl⟩ : ∃ X Y Z W, T = fromBlocks X Y Z W` from `⟨_, _, _, _, (fromBlocks_toBlocks T).symm⟩`. Rewrite `hdet` using `[toBlocks_fromBlocks₁₁]`. Take `⟨h1, h2, h3, h4⟩` from `(isHermitian_fromBlocks_iff).1 hT`. Establish `hu : IsUnit X.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `hXX : X * X⁻¹ = 1` using `mul_nonsing_inv X hu`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXi : X⁻¹ᴴ = X⁻¹` using `by rw [conjTranspose_nonsing_inv, h1.eq]`. Establish `hZ : Yᴴ = Z` using `h2`. Substitute `hZ` using the available equality. Use `set U : Matrix (A ⊕ B) (A ⊕ B) E := fromBlocks 1 (-(X⁻¹ * Y)) 0 1 with hU`. Establish `hUdet : U.det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU, det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Use `set S : Matrix B B E := W - Yᴴ * X⁻¹ * Y with hS`. Establish `hSH : S.IsHermitian`. Rewrite using `[IsHermitian, hS, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hXi, h4.eq, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Uᴴ * fromBlocks X Y Yᴴ W * U = fromBlocks X 0 0 S`. Rewrite using `[hU, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [conjTranspose_one, conjTranspose_zero, conjTranspose_neg, conjTranspose_mul, hXi, h1.eq]`. Establish `hXX' : X⁻¹ * X = 1` using `nonsing_inv_mul X hu`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hY : X * (X⁻¹ * Y) = Y` using `by rw [← Matrix.mul_assoc, hXX, Matrix.one_mul]`. Simplify using `[hY]`. Simplify using `[Matrix.mul_assoc, hXX']`. Simplify using `[Matrix.mul_assoc, hXX, hXX', hS, Matrix.add_mul, Matrix.mul_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Use `Dz.of_congr hUdet ?_` and prove the remaining obligations. Rewrite using `[key]`. Take `⟨gA, hgA, DA, hDA⟩` from `hA X h1`. Take `⟨gB, hgB, DB, hDB⟩` from `hB S hSH`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fromBlocks gA 0 0 gB, ?_, Sum.elim DA DB, ?_⟩` and prove the remaining obligations. Rewrite using `[det_fromBlocks_zero₂₁]`. Conclude with `mul_ne_zero hgA hgB`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply, ← fromBlocks_diagonal]`. Simplify using `[hDA, hDB]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Dz.sum {E A B : Type} [Field E] [StarRing E] [Fintype A] [DecidableEq A]
     [Fintype B] [DecidableEq B]
@@ -100,11 +100,11 @@ private theorem Dz.sum {E A B : Type} [Field E] [StarRing E] [Fintype A] [Decida
 
 open Matrix in
 /- English proof (translation)
-Set `e : {a // a = i} ⊕ {a // ¬ a = i} ≃ ι` to `Equiv.sumCompl _`. Use `Dz.of_submatrix e ?_` and prove the remaining obligations. Use `Dz.sum ?_ (ih _ ?_) _ (hT.submatrix e) ?_` and prove the remaining obligations. Introduce `X _`. Use `⟨1, by simp, fun a => X a a, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Establish `: a = b` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Conclude with `Fintype.card_subtype_lt (x := i) (by simp)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: Unique {a // a = i}` using `⟨⟨⟨i, rfl⟩⟩, fun a => Subtype.ext a.2⟩`. Rewrite using `[det_unique]`. Establish `hdef : (((default : {a // a = i})) : ι) = i` using `(default : {a // a = i}).2`. Simplify `hi` using `[e, toBlocks₁₁, hdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem Dz.pivot {E ι : Type} [Field E] [StarRing E] [Fintype ι] [DecidableEq ι]
     (ih : ∀ (κ : Type) [Fintype κ] [DecidableEq κ], Fintype.card κ < Fintype.card ι →
@@ -127,23 +127,19 @@ private theorem Dz.pivot {E ι : Type} [Field E] [StarRing E] [Fintype ι] [Deci
 
 open Matrix in
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n IH`. Introduce `ι _ _ hcard T hT`. Establish `ih : ∀ (κ : Type) [Fintype κ] [DecidableEq κ], Fintype.card κ < Fintype.card ι → ∀ X : Matrix κ κ E, X.IsHermitian → Dz X` using `fun κ _ _ h X hX => IH _ (hcard ▸ h) κ rfl X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hd : ∃ i, T i i ≠ 0`. Take `⟨i, hi⟩` from `hd`. Conclude with `Dz.pivot ih T hT i hi`. Use `push_neg at hd`. Distinguish the cases in `h0 : T = 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `h0` using the available equality. Conclude with `⟨1, by simp, 0, by simp⟩`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, T i j ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `h0 (by ext a b; simpa using hc a b)`. Establish `hne : j ≠ i`. Introduce and unpack `rfl`. Conclude with `hij (hd _)`. Use `set c := (T i j)⁻¹ with hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : Matrix ι ι E := 1 + single j i c with hP`. Establish `hPdet : P.det ≠ 0`. Establish `: P = transvection j i c` using `rfl`. Rewrite using `[this, det_transvection_of_ne _ _ hne]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hji : T j i = star (T i j)` using `(hT.apply j i).symm`. Establish `hval : (Pᴴ * T * P) i i = 2`. Establish `hPH : Pᴴ = 1 + single i j (star c)`. Rewrite using `[hP, conjTranspose_add, conjTranspose_one, conjTranspose_single]`. Rewrite using `[hPH, hP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.add_apply, Matrix.mul_assoc, single_mul_apply_same, mul_single_apply_same]`. Establish `h1 : T i j * c = 1` using `mul_inv_cancel₀ hij`. Establish `h2 : star c * T j i = 1`. Rewrite using `[hji, ← star_mul', mul_comm, h1, star_one]`. Rewrite using `[h1, h2, hd i, hd j]`.
-
-Evaluate the numerical expressions. Use `Dz.of_congr hPdet (Dz.pivot ?_ _ ?_ i ?_)` and prove the remaining obligations. Conclude with `ih`. Conclude with `isHermitian_conjTranspose_mul_mul P hT`. Rewrite using `[hval]`.
-
-Conclude with `two_ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem Dz.all {E : Type} [Field E] [StarRing E] [CharZero E] :
     ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι], Fintype.card ι = n →
@@ -193,21 +189,19 @@ private theorem Dz.all {E : Type} [Field E] [StarRing E] [CharZero E] :
   · rw [hval]; exact two_ne_zero
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ hσ hfix n T hT hdet`. Use `letI : StarRing E := { star := σ star_involutive := hσ star_mul := fun a b => by show σ (a * b) = σ b * σ a`. Rewrite using `[map_mul, mul_comm]`. Use `star_add := map_add σ }`. Establish `hstar : ∀ x : E, star x = σ x` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : T.IsHermitian`. Use extensionality with `i j`. Conclude with `hT i j`. Take `⟨g, hg, D, hD⟩` from `Dz.all n (Fin n) (by simp) T hH`. Establish `hct : Matrix.transpose (g.map σ) = Matrix.conjTranspose g` using `rfl`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDH : (Matrix.diagonal D).IsHermitian`. Rewrite using `[← hD]`. Use `Matrix.isHermitian_conjTranspose_mul_mul g hH` as an intermediate fact. Conclude with `this`. Establish `hfixD : ∀ i, σ (D i) = D i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Use `hDH.apply i i` as an intermediate fact. Simplify `this` using `[hstar]`. Establish `hdD : ∀ i, D i ≠ 0`. Introduce `i h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (Matrix.diagonal D).det = 0`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) h0`. Rewrite `h1` using `[← hD, Matrix.det_mul, Matrix.det_mul]`. Establish `h2 : (Matrix.conjTranspose g).det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Introduce `h3`. Conclude with `hg (by simpa using h3)`. Conclude with `mul_ne_zero (mul_ne_zero h2 hdet) hg h1`. Use `choose d hd using fun i => hfix (D i) (hfixD i)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd0 : ∀ i, d i ≠ 0`. Introduce `i h0`. Apply `hdD i` to reduce the goal to its premises. Rewrite using `[← hd, h0, map_zero]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero g hg, fun i => Units.mk0 (d i) (hd0 i), ?_⟩` and prove the remaining obligations.
-
-Establish `hcoe : ((Matrix.GeneralLinearGroup.mkOfDetNeZero g hg : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = g` using `rfl`. Rewrite using `[hcoe, hct, hD]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[hd]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_diagonalisation :
     ∀ {F E : Type} [Field F] [Field E] [Algebra F E] [CharZero E] (σ : E →ₐ[F] E), (∀ x, σ (σ x) = x) → (∀ x, σ x = x → x ∈ (algebraMap F E).range) → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E), (∀ i j, σ (T j i) = T i j) → T.det ≠ 0 → ∃ (g : GL (Fin n) E) (D : Fin n → Fˣ), Matrix.transpose ((g : Matrix (Fin n) (Fin n) E).map σ) * T * (g : Matrix (Fin n) (Fin n) E) = Matrix.diagonal fun i => algebraMap F E (D i : F) := by

@@ -5,9 +5,9 @@ open GlobalTheory.NeedB Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add hq`. Consider the case `monomial n c`. Rewrite using `[aeval_monomial]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegral.mul ?_ (hx.pow n)` and prove the remaining obligations. Establish `: algebraMap (integralClosure A₀ F) E c = algebraMap F E (c : F)` using `rfl`. Rewrite using `[this]`. Conclude with `c.2.map (IsScalarTower.toAlgHom A₀ F E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummer_aeval_mem_integralClosure {A₀ F E : Type} [CommRing A₀] [Field F] [Field E] [Algebra A₀ F]
     [Algebra F E] [Algebra A₀ E] [IsScalarTower A₀ F E] {x : E} (hx : IsIntegral A₀ x)
@@ -22,29 +22,25 @@ theorem kummer_aeval_mem_integralClosure {A₀ F E : Type} [CommRing A₀] [Fiel
     exact c.2.map (IsScalarTower.toAlgHom A₀ F E)
 
 /- English proof (translation)
-Introduce `y hy`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap K₀ F).injective`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap F E).injective`. Use `haveI : Algebra.IsSeparable F E := inferInstance`. Set `C` to `integralClosure A₀ F`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `haveI : IsFractionRing C F := IsIntegralClosure.isFractionRing_of_finite_extension A₀ K₀ F C`. Use `haveI : IsIntegrallyClosed C := integralClosure.isIntegrallyClosedOfFiniteExtension K₀`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hN`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxA : IsIntegral A₀ x`. Use `⟨X ^ N - Polynomial.C (u : A₀), monic_X_pow_sub_C _ hN0, ?_⟩` and prove the remaining obligations. Simplify using `[eval₂_sub, hx]`. Establish `hxC : IsIntegral C x` using `hxA.tower_top`. Establish `key` using `traceForm_dualSubmodule_adjoin C F hgen hxC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hymem : y ∈ (Algebra.traceForm F E).dualSubmodule (Subalgebra.toSubmodule (Algebra.adjoin C {x}))`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `z hz`. Rewrite `hz` using `[Subalgebra.mem_toSubmodule, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, rfl⟩` from `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzA : IsIntegral A₀ (aeval x p)` using `kummer_aeval_mem_integralClosure hxA p`. Rewrite using `[Algebra.traceForm_apply]`. Establish `hw : IsIntegral A₀ (Algebra.trace F E (y * aeval x p))`. Apply `hF` to reduce the goal to its premises. Introduce `c hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Algebra.trace F E (y * aeval x p) * c = Algebra.trace F E (y * (aeval x p * algebraMap F E c))`. Rewrite using `[mul_comm _ c, ← smul_eq_mul, ← LinearMap.map_smul, Algebra.smul_def]`. Put the polynomial expressions in normal form. Rewrite using `[this, Algebra.trace_trace]`. Conclude with `hy _ (hzA.mul (hc.map (IsScalarTower.toAlgHom A₀ F E)))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_one.mpr ⟨⟨_, hw⟩, rfl⟩`. Rewrite `hymem` using `[key, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨z, hz, rfl⟩` from `hymem`. Rewrite `hz` using `[Subalgebra.mem_toSubmodule, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨q, rfl⟩` from `hz`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmin : minpoly F x = map (algebraMap C F) (minpoly C x)` using `minpoly.isIntegrallyClosed_eq_field_fractions' F hxC`. Establish `hdvd : minpoly C x ∣ X ^ N - Polynomial.C (algebraMap A₀ C u)`. Apply `minpoly.isIntegrallyClosed_dvd hxC` to reduce the goal to its premises. Simplify using `[hx, ← IsScalarTower.algebraMap_apply]`. Take `⟨g, hg⟩` from `hdvd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hder` using `congrArg (fun p => aeval x (derivative p)) hg`. Simplify using `only [derivative_sub, derivative_X_pow, derivative_C, sub_zero, derivative_mul, map_add, map_mul, minpoly.aeval, zero_mul, add_zero] at hder`. Use `set d := aeval x (derivative (minpoly C x))`. Set `v : A₀ˣ` to `hN.unit * u`. Establish `hinv : (aeval x (derivative (minpoly F x)))⁻¹ = aeval x g * x * algebraMap A₀ E (↑v⁻¹ : A₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hmin, derivative_map, aeval_map_algebraMap]`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `d * _ = 1`. Establish `h1 : d * aeval x g = (N : E) * x ^ (N - 1)` using `by rw [← hder]; simp`. Establish `hv : ((v : A₀)) = (N : A₀) * u` using `by simp [v]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_assoc, h1]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap A₀ E ((v : A₀) * ↑v⁻¹) := by`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hN0), hx, map_mul, hv, map_mul, map_natCast]`.
-
-Use `_ = 1 := by simp`. Rewrite using `[smul_eq_mul, hinv]`. Use `IsIntegral.mul (IsIntegral.mul (kummer_aeval_mem_integralClosure hxA g) hxA) isIntegral_algebraMap |>.mul (kummer_aeval_mem_integralClosure hxA q)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kummer_dual_step (A₀ K₀ F E : Type) [CommRing A₀] [IsDomain A₀] [Field K₀] [Algebra A₀ K₀]
     [IsFractionRing A₀ K₀] [Field F] [Field E] [Algebra K₀ F] [Algebra F E] [Algebra K₀ E]
@@ -126,25 +122,25 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ _ _ _ s hs hadj _ y hy`. Rewrite `hs` using `[Finset.card_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hs` using the available equality. Rewrite `hadj` using `[Finset.coe_empty, IntermediateField.adjoin_empty]`. Establish `hr : Module.finrank K₀ E = 1` using `IntermediateField.bot_eq_top_iff_finrank_eq_one.mp hadj`. Establish `hyb : y ∈ (⊥ : IntermediateField K₀ E)` using `hadj ▸ IntermediateField.mem_top`. Take `⟨k, rfl⟩` from `IntermediateField.mem_bot.mp hyb`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hy 1 isIntegral_one`. Rewrite `ha` using `[mul_one, Algebra.trace_algebraMap, hr, one_smul]`. Rewrite using `[← ha, ← IsScalarTower.algebraMap_apply]`. Conclude with `isIntegral_algebraMap`. Consider the case `succ n ih`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E _ _ _ _ _ s hs hadj hu y hy`. Take `⟨x, hxs⟩ : s.Nonempty` from `Finset.card_pos.mp (by omega)`. Set `t` to `s.erase x`. Set `F` to `IntermediateField.adjoin K₀ (t : Set E)`. Set `s' : Finset F` to `t.subtype (· ∈ F)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs' : s'.card = n`. Rewrite using `[Finset.card_subtype, Finset.filter_true_of_mem (s := t) (p := (· ∈ F)) (fun y hy => IntermediateField.subset_adjoin K₀ (t : Set E) hy), Finset.card_erase_of_mem hxs, hs]`. Both sides reduce to the same expression. Establish `hadj' : IntermediateField.adjoin K₀ (s' : Set F) = ⊤`. Apply `IntermediateField.lift_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IntermediateField.lift_adjoin, IntermediateField.lift_top]`. Express the relevant statement in the definitionally equal form `_ = IntermediateField.adjoin K₀ (t : Set E)`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `Finset.mem_subtype.mp hw`. Introduce `hw`. Conclude with `⟨⟨w, IntermediateField.subset_adjoin K₀ _ hw⟩, Finset.mem_subtype.mpr hw, rfl⟩`. Establish `hu' : ∀ y ∈ s', ∃ u : A₀ˣ, y ^ N = algebraMap A₀ F u`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨u, hu⟩` from `hu y (Finset.mem_of_mem_erase (Finset.mem_subtype.mp hy))`. Conclude with `⟨u, Subtype.ext hu⟩`. Establish `hF` using `ih F s' hs' hadj' hu'`. Take `⟨u, hux⟩` from `hu x hxs`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : Algebra.adjoin F {x} = ⊤`. Establish `h1 : IntermediateField.adjoin F ({x} : Set E) = ⊤`. Apply `IntermediateField.restrictScalars_injective K₀` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_adjoin_left, IntermediateField.restrictScalars_top, ← hadj]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.union_singleton, ← Finset.coe_insert, Finset.insert_erase hxs]`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun z _ => Algebra.IsAlgebraic.isAlgebraic z), h1]`. Both sides reduce to the same expression. Use `haveI : IsScalarTower A₀ F E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Conclude with `kummer_dual_step A₀ K₀ F E N hN x u hux hgen hF y hy`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kummer_dual_induction (A₀ K₀ : Type) [CommRing A₀] [IsDomain A₀] [Field K₀] [Algebra A₀ K₀]
     [IsFractionRing A₀ K₀] [CharZero K₀] (N : ℕ) (hN : IsUnit (N : A₀)) :
@@ -213,19 +209,15 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A₀ K₀ E _ _ _ _ _ _ _ _ _ _ _ N hN s hadj hu P hP hP0 hle`. Establish `hdual` using `kummer_dual_induction A₀ K₀ N hN _ E s rfl hadj hu`. Use `haveI : IsFractionRing (integralClosure A₀ E) E := IsIntegralClosure.isFractionRing_of_finite_extension A₀ K₀ E _`. Use `haveI : IsDedekindDomain (integralClosure A₀ E) := integralClosure.isDedekindDomain A₀ K₀ E`. Use `haveI : Module.Finite A₀ (integralClosure A₀ E) := IsIntegralClosure.finite A₀ K₀ E _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective (algebraMap A₀ E)`. Rewrite using `[IsScalarTower.algebraMap_eq A₀ K₀ E]`. Conclude with `(algebraMap K₀ E).injective.comp (IsFractionRing.injective A₀ K₀)`. Use `haveI : FaithfulSMul A₀ (integralClosure A₀ E) := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b hab`. Conclude with `hinj (congrArg Subtype.val hab)`. Use `haveI : Module.IsTorsionFree A₀ (integralClosure A₀ E) := inferInstance`. Establish `hone : Submodule.traceDual A₀ K₀ (1 : Submodule (integralClosure A₀ E) E) = 1`. Use `le_antisymm ?_ Submodule.one_le_traceDual_one` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Rewrite `hy` using `[Submodule.mem_traceDual]`. Use `Submodule.mem_one.mpr ⟨⟨y, hdual y fun z hz => ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `hy z (Submodule.mem_one.mpr ⟨⟨z, hz⟩, rfl⟩)`. Establish `hdiff : differentIdeal A₀ (integralClosure A₀ E) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← FractionalIdeal.coeIdeal_eq_one (K := E), coeIdeal_differentIdeal A₀ K₀ E]`. Establish `: FractionalIdeal.dual A₀ K₀ (1 : FractionalIdeal (nonZeroDivisors (integralClosure A₀ E)) E) = 1`. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Simplify using `only [FractionalIdeal.coe_dual_one, FractionalIdeal.coe_one, hone]`. Rewrite using `[this, inv_one]`.
-
-Take `⟨b, hbP, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP0`. Establish `hp0 : P.comap (algebraMap A₀ (integralClosure A₀ E)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hb0 hbP (Algebra.IsIntegral.isIntegral b)`. Use `haveI : (P.comap (algebraMap A₀ (integralClosure A₀ E))).IsMaximal := Ideal.IsPrime.isMaximal inferInstance hp0`. Establish `h` using `pow_sub_one_dvd_differentIdeal_aux A₀ K₀ E P two_ne_zero hp0 (Ideal.dvd_iff_le.mpr hle)`. Rewrite `h` using `[hdiff, Ideal.dvd_iff_le]`.
-
-Apply `hP.ne_top` to reduce the goal to its premises. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem kummer_not_map_comap_le_sq :
     ∀ (A₀ K₀ E : Type) [CommRing A₀] [IsDedekindDomain A₀] [Field K₀] [CharZero K₀] [Algebra A₀ K₀]

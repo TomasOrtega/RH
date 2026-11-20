@@ -13,7 +13,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `hμ.1.mul hν.1`. Simplify using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hμ.2 x, hν.2 x]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit1_mul {μ ν : Fˣ →* ℂˣ} (hμ : IsUnit1 μ) (hν : IsUnit1 ν) : IsUnit1 (μ * ν) := by
   refine ⟨?_, fun x => ?_⟩
@@ -21,7 +21,7 @@ theorem isUnit1_mul {μ ν : Fˣ →* ℂˣ} (hμ : IsUnit1 μ) (hν : IsUnit1 �
   · simp [MonoidHom.mul_apply, Units.val_mul, norm_mul, hμ.2 x, hν.2 x]
 
 /- English proof (translation)
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `hμ.1.inv`. Simplify using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv, hμ.2 x]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit1_inv {μ : Fˣ →* ℂˣ} (hμ : IsUnit1 μ) : IsUnit1 μ⁻¹ := by
   refine ⟨?_, fun x => ?_⟩
@@ -29,39 +29,37 @@ theorem isUnit1_inv {μ : Fˣ →* ℂˣ} (hμ : IsUnit1 μ) : IsUnit1 μ⁻¹ :
   · simp [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv, hμ.2 x]
 
 /- English proof (translation)
-Unfold `mp`. Rewrite using `[Complex.cpow_add _ _ (Complex.ofReal_ne_zero.mpr (NNReal.coe_ne_zero.mpr (modulus_pos a.ne_zero).ne'))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_add (a : Fˣ) (s t : ℂ) : mp a s * mp a t = mp a (s + t) := by
   unfold mp
   rw [Complex.cpow_add _ _ (Complex.ofReal_ne_zero.mpr (NNReal.coe_ne_zero.mpr (modulus_pos a.ne_zero).ne'))]
 
 /- English proof (translation)
-Unfold `mp`. Simplify using `[modulus_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mp_one (s : ℂ) : mp (1 : Fˣ) s = 1 := by
   unfold mp
   simp [modulus_one]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[w0, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_weyl_GL2 : GeneralLinearGroup.det (w0 : GL (Fin 2) F) = 1 := by
   ext
   simp [w0, Matrix.det_fin_two]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[rt, pt, w0, Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rightTranslate_pureTensor_weyl (f g : F → ℂ) : rt (pt f g) (w0 : GL (Fin 2) F) = pt g (fun x => f (-x)) := by
   funext x
   simp [rt, pt, w0, Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hf.1.comp_continuous (continuous_apply 0)).mul (hg.1.comp_continuous (continuous_apply 1))`. Use `HasCompactSupport.intro ((hf.2.isCompact.prod hg.2.isCompact).image (f := fun p : F × F => ![p.1, p.2]) ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `exact continuous_pi fun i => by fin_cases i <;> simp <;> fun_prop`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises. Use `⟨(x 0, x 1), ⟨subset_tsupport _ ?_, subset_tsupport _ ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Function.mem_support.mpr fun h0 => h (by simp [pt, h0])`. Conclude with `Function.mem_support.mpr fun h1 => h (by simp [pt, h1])`.
-
-Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pt_mem {f g : F → ℂ} (hf : f ∈ schwartzBruhat F) (hg : g ∈ schwartzBruhat F) :
     pt f g ∈ GodementSectionLocal.schwartzBruhat2 F := by
@@ -79,21 +77,21 @@ theorem pt_mem {f g : F → ℂ} (hf : f ∈ schwartzBruhat F) (hg : g ∈ schwa
       · ext i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous continuous_neg, hf.2.comp_homeomorph (Homeomorph.neg F)⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_neg_mem {f : F → ℂ} (hf : f ∈ schwartzBruhat F) :
     (fun x => f (-x)) ∈ schwartzBruhat F :=
   ⟨hf.1.comp_continuous continuous_neg, hf.2.comp_homeomorph (Homeomorph.neg F)⟩
 
 /- English proof (translation)
-The claim follows from `localFourier_mem_schwartzBruhat (μ := selfDualMeasure ψ) (hψ := hψ.1) (hψ1 := hψ.2.1) hf`.
+A detailed English derivation is pending.
 -/
 theorem fourier_mem {ψ : AddChar F Circle} (hψ : IsStd ψ) {f : F → ℂ} (hf : f ∈ schwartzBruhat F) :
     localFourier (selfDualMeasure ψ) ψ f ∈ schwartzBruhat F :=
   localFourier_mem_schwartzBruhat (μ := selfDualMeasure ψ) (hψ := hψ.1) (hψ1 := hψ.2.1) hf
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem character_inverse_identity_first (μ₁ μ₂ c : Fˣ →* ℂˣ) : μ₂ * c * (μ₁⁻¹ * μ₂)⁻¹ = μ₁ * c := by
   ext x
@@ -101,7 +99,7 @@ theorem character_inverse_identity_first (μ₁ μ₂ c : Fˣ →* ℂˣ) : μ�
   field_simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem character_inverse_identity_second (μ₁ μ₂ c : Fˣ →* ℂˣ) : (μ₁ * c)⁻¹ * (μ₁⁻¹ * μ₂)⁻¹ = (μ₂ * c)⁻¹ := by
   ext x
@@ -109,9 +107,9 @@ theorem character_inverse_identity_second (μ₁ μ₂ c : Fˣ →* ℂˣ) : (μ
   field_simp
 
 /- English proof (translation)
-Take `⟨hI, hE⟩` from `hDZ F f hf (fun x => localFourier (selfDualMeasure ψ) ψ g (-x)) (comp_neg_mem (fourier_mem hψ hg)) (μ₂ * c) (μ₁⁻¹ * μ₂) (isUnit1_mul h₂ hc) (isUnit1_mul (isUnit1_inv h₁) h₂) s hs`. Use `beta_reduce at hI hE`. Establish `hfun : (fun a : Fˣ => W2 ψ μ₁ μ₂ (pt f g) (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) = fun a => (((μ₂ * c) a : ℂˣ) : ℂ) * mp a s * ∫ h : Fˣ, (((μ₁⁻¹ * μ₂) h : ℂˣ) : ℂ) * f ((h : F) * a) * localFourier (selfDualMeasure ψ) ψ g (-((h⁻¹ : Fˣ) : F)) ∂multHaar F`. Use function extensionality and compare the values at `a`. Establish `key : mp a (1 / 2) * mp a (s - 1 / 2) = mp a s` using `by rw [mp_add]; congr 1; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWd F ψ hψ μ₁ μ₂ h₁ h₂ f hf g hg a, ← key]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `⟨hI, by rw [hE, character_inverse_identity_first]⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rhs_pure (hDZ : SDZ) (hWd : SWd) {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ₂ : Fˣ →* ℂˣ}
     (h₁ : IsUnit1 μ₁) (h₂ : IsUnit1 μ₂) {f g : F → ℂ} (hf : f ∈ schwartzBruhat F)
@@ -138,13 +136,13 @@ theorem rhs_pure (hDZ : SDZ) (hWd : SWd) {ψ : AddChar F Circle} (hψ : IsStd ψ
   exact ⟨hI, by rw [hE, character_inverse_identity_first]⟩
 
 /- English proof (translation)
-Establish `hf'` using `comp_neg_mem hf`. Establish `hs' : 0 < (1 - s).re` using `by simp; linarith`. Take `⟨hI, hE⟩` from `hDZ F g hg (fun x => localFourier (selfDualMeasure ψ) ψ (fun y => f (-y)) (-x)) (comp_neg_mem (fourier_mem hψ hf')) (μ₁ * c)⁻¹ (μ₁⁻¹ * μ₂) (isUnit1_inv (isUnit1_mul h₁ hc)) (isUnit1_mul (isUnit1_inv h₁) h₂) (1 - s) hs'`. Use `beta_reduce at hI hE`. Establish `hw : ∀ a : Fˣ, W2 ψ μ₁ μ₂ (pt f g) (dg2 a 1 * w0) = W2 ψ μ₁ μ₂ (pt g (fun y => f (-y))) (dg2 a 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[(hTr F ψ hψ μ₁ μ₂ h₁ h₂ _ (pt_mem hf hg) w0).2, det_weyl_GL2, rightTranslate_pureTensor_weyl, map_one, Units.val_one, mp_one, one_mul, one_mul]`. Establish `hfun : (fun a : Fˣ => W2 ψ μ₁ μ₂ (pt f g) (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) = fun a => ((((μ₁ * c)⁻¹) a : ℂˣ) : ℂ) * mp a (1 - s) * ∫ h : Fˣ, (((μ₁⁻¹ * μ₂) h : ℂˣ) : ℂ) * g ((h : F) * a) * localFourier (selfDualMeasure ψ) ψ (fun y => f (-y)) …`. Use function extensionality and compare the values at `a`. Establish `key : mp a (1 / 2) * mp a (1 / 2 - s) = mp a (1 - s)` using `by rw [mp_add]; congr 1; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw a, hWd F ψ hψ μ₁ μ₂ h₁ h₂ g hg _ hf' a, ← key]`. Establish `h2 : ((μ₂ a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h1 : ((μ₁ a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h3 : ((c a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hsc : ((μ₂ a : ℂˣ) : ℂ) * (((μ₁ a : ℂˣ) : ℂ) * ((μ₂ a : ℂˣ) : ℂ) * ((c a : ℂˣ) : ℂ))⁻¹ = (((μ₁ a : ℂˣ) : ℂ) * ((c a : ℂˣ) : ℂ))⁻¹` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val]`. Rewrite using `[← hsc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `⟨hI, by rw [hE, character_inverse_identity_second]⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lhs_pure (hDZ : SDZ) (hWd : SWd) (hTr : STrans) {ψ : AddChar F Circle} (hψ : IsStd ψ)
     {μ₁ μ₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 μ₁) (h₂ : IsUnit1 μ₂) {f g : F → ℂ} (hf : f ∈ schwartzBruhat F)
@@ -185,9 +183,9 @@ theorem lhs_pure (hDZ : SDZ) (hWd : SWd) (hTr : STrans) {ψ : AddChar F Circle} 
   exact ⟨hI, by rw [hE, character_inverse_identity_second]⟩
 
 /- English proof (translation)
-Take `⟨hIL, hEL⟩` from `lhs_pure hDZ hWd hTr hψ h₁ h₂ hf hg hc hs1`. Take `⟨hIR, hER⟩` from `rhs_pure hDZ hWd hψ h₁ h₂ hf hg hc hs0`. Use `⟨hIL, hIR, ?_⟩` and prove the remaining obligations. Establish `hf'` using `comp_neg_mem hf`. Establish `T2` using `(hTate F ψ hψ (μ₂ * c) (isUnit1_mul h₂ hc) _ hf' s hs0 hs1).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `T1` using `(hTate F ψ hψ (μ₁ * c) (isUnit1_mul h₁ hc) g hg s hs0 hs1).2`. Rewrite using `[hEL, hER, localZeta_comp_neg (localFourier (selfDualMeasure ψ) ψ (fun y => f (-y))) (μ₂ * c)⁻¹ (1 - s), T2, localZeta_comp_neg f (μ₂ * c) s, T1, localZeta_comp_neg (localFourier (selfDualMeasure ψ) ψ g) (μ₁ * c) s]`. Establish `hu : ((((μ₂ * c)⁻¹ (-1 : Fˣ)) : ℂˣ) : ℂ) * (((μ₂ * c) (-1 : Fˣ) : ℂˣ) : ℂ) = 1`. Rewrite using `[MonoidHom.inv_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Take the linear combination `(((μ₁ * c) (-1 : Fˣ) : ℂˣ) : ℂ) * gam ψ (μ₁ * c) s * localZeta (localFourier (selfDualMeasure ψ) ψ g) (μ₁ * c) s * gam ψ (μ₂ * c) s * localZeta f (μ₂ * c) s * hu`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pure (hDZ : SDZ) (hWd : SWd) (hTr : STrans) (hTate : STate) {ψ : AddChar F Circle} (hψ : IsStd ψ)
     {μ₁ μ₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 μ₁) (h₂ : IsUnit1 μ₂) {f g : F → ℂ} (hf : f ∈ schwartzBruhat F)
@@ -215,9 +213,9 @@ theorem pure (hDZ : SDZ) (hWd : SWd) (hTr : STrans) (hTate : STate) {ψ : AddCha
     localZeta (localFourier (selfDualMeasure ψ) ψ g) (μ₁ * c) s * gam ψ (μ₂ * c) s * localZeta f (μ₂ * c) s * hu
 
 /- English proof (translation)
-Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Use `⟨by simpa using zero_mem _, ?_⟩` and prove the remaining obligations. Use `(hLin F ψ hψ μ₁ μ₂ h₁ h₂ 0 (zero_mem _) 0 (zero_mem _)).2 0` as an intermediate fact. Simplify using `using this`. Introduce `i t hi ih`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Use `⟨add_mem (pt_mem (hfg i).1 (hfg i).2) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hLin F ψ hψ μ₁ μ₂ h₁ h₂ _ (pt_mem (hfg i).1 (hfg i).2) _ ih.1).1, ih.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_pure_tensors_whittaker (hLin : SLin) {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 μ₁)
     (h₂ : IsUnit1 μ₂) {n : ℕ} {f g : Fin n → F → ℂ} (hfg : ∀ i, f i ∈ schwartzBruhat F ∧ g i ∈ schwartzBruhat F)
@@ -237,11 +235,11 @@ end Ad3.SchwartzSpaceL2.PFe
 
 open Ad3.SchwartzSpaceL2.PFe in
 /- English proof (translation)
-Introduce `hDZ hWd hPure hLin hTr hTate F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ φ hφ c hc s hs0 hs1`. Take `⟨n, f, g, hfg, rfl⟩` from `hPure F φ hφ`. Establish `hW` using `(sum_pure_tensors_whittaker hLin hψ h₁ h₂ hfg Finset.univ).2`. Establish `hP` using `fun i => pure hDZ hWd hTr hTate hψ h₁ h₂ (hfg i).1 (hfg i).2 hc hs0 hs1`. Establish `hL : (fun a : Fˣ => W2 ψ μ₁ μ₂ (∑ i, pt (f i) (g i)) (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) = fun a => ∑ i, W2 ψ μ₁ μ₂ (pt (f i) (g i)) (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[hW, Finset.sum_apply, Finset.sum_mul, Finset.sum_mul]`. Establish `hR : (fun a : Fˣ => W2 ψ μ₁ μ₂ (∑ i, pt (f i) (g i)) (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) = fun a => ∑ i, W2 ψ μ₁ μ₂ (pt (f i) (g i)) (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)`. Use function extensionality and compare the values at `a`. Rewrite using `[hW, Finset.sum_apply, Finset.sum_mul, Finset.sum_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, hR]`. Use `⟨integrable_finset_sum _ fun i _ => (hP i).1, integrable_finset_sum _ fun i _ => (hP i).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun i _ => (hP i).1, integral_finset_sum _ fun i _ => (hP i).2.1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hP i).2.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ad3.SchwartzSpaceL2.pfe : Ad3.SchwartzSpaceL2.SFe := by
   intro hDZ hWd hPure hLin hTr hTate F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ φ hφ c hc s hs0 hs1

@@ -4,7 +4,7 @@ namespace GlobalTheory.CoordScale
 open MeasureTheory
 
 /- English proof (translation)
-Establish `h : c • μ = c.toNNReal • μ`. Rewrite using `[ENNReal.smul_def, ENNReal.coe_toNNReal hc]`. Rewrite using `[h]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_smul {α : Type} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ] {c : ENNReal}
     (hc : c ≠ ⊤) : SigmaFinite (c • μ) := by
@@ -14,7 +14,7 @@ theorem sigmaFinite_smul {α : Type} [MeasurableSpace α] (μ : Measure α) [Sig
   infer_instance
 
 /- English proof (translation)
-Establish `: ∀ i, SigmaFinite (c i • μ i)` using `fun i => sigmaFinite_smul (μ i) (hc i)`. Use `Measure.pi_eq (fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Measure.smul_apply, Measure.pi_pi, smul_eq_mul, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pi_smul_ne_top {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, MeasurableSpace (α i)]
     (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (c : ι → ENNReal) (hc : ∀ i, c i ≠ ⊤) :
@@ -24,7 +24,7 @@ theorem pi_smul_ne_top {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, Measu
   simp only [Measure.smul_apply, Measure.pi_pi, smul_eq_mul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `⟨measurable_id.const_mul _, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun z : ℂ => ((r : ℂ))⁻¹ * z) = fun z => (r⁻¹ : ℝ) • z`. Use function extensionality and compare the values at `z`. Rewrite using `[Complex.real_smul, Complex.ofReal_inv]`. Rewrite using `[hfun, Measure.map_addHaar_smul volume (inv_ne_zero hr.ne'), Complex.finrank_real_complex, inv_pow, inv_inv, abs_of_pos (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem measurePreserving_inv_mul (r : ℝ) (hr : 0 < r) :
     MeasurePreserving (fun z : ℂ => ((r : ℂ))⁻¹ * z) volume
@@ -37,13 +37,13 @@ theorem measurePreserving_inv_mul (r : ℝ) (hr : 0 < r) :
     inv_pow, inv_inv, abs_of_pos (by positivity)]
 
 /- English proof (translation)
-Establish `hm : Measurable (fun (x : ι' → β) (i : ι) => h i (x (e i)))` using `measurable_pi_lambda _ (fun i => (hh i).comp (measurable_pi_apply (e i)))`. Use `symm`. Use `Measure.pi_eq (fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun (x : ι' → β) (i : ι) => h i (x (e i))) ⁻¹' Set.univ.pi s = Set.univ.pi (fun i' => h (e.symm i') ⁻¹' s (e.symm i'))`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i'`. Use `hx (e.symm i')` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `hx i`. Use `hx (e i)` as an intermediate fact. Rewrite `this` using `[Equiv.symm_apply_apply]`. Then use the resulting hypothesis. Rewrite using `[hpre, Measure.pi_pi]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.prod_congr rfl (fun i' _ => ?_)).trans (Equiv.prod_comp e.symm (fun i => ν i (s i)))` and prove the remaining obligations. Rewrite using `[← hmap (e.symm i'), Measure.map_apply (hh _) (hs _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_pi_reindex_eq_pi_of_map_eq {ι ι' β γ : Type} [Fintype ι] [Fintype ι'] [MeasurableSpace β]
     [MeasurableSpace γ] (e : ι ≃ ι') (μ : Measure β) [SigmaFinite μ] (ν : ι → Measure γ)
@@ -72,23 +72,21 @@ private theorem map_pi_reindex_eq_pi_of_map_eq {ι ι' β γ : Type} [Fintype ι
   rw [← hmap (e.symm i'), Measure.map_apply (hh _) (hs _)]
 
 /- English proof (translation)
-Introduce `ι ι' κ κ' _ _ _ _ e f ρ c d hρ hc A hA`. Establish `hρ0 : 0 < ρ` using `lt_of_lt_of_le one_pos hρ`. Use `set C : ENNReal := ENNReal.ofReal c with hCdef`. Establish `hCt : C ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `: SigmaFinite (C • (volume : Measure ℂ))` using `sigmaFinite_smul _ hCt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : κ → ENNReal := fun q => C * ENNReal.ofReal ((ρ ^ d q) ^ 2) with hwdef`. Establish `hwt : ∀ q, w q ≠ ⊤` using `fun q => ENNReal.mul_ne_top hCt ENNReal.ofReal_ne_top`. Establish `: ∀ q, SigmaFinite (w q • (volume : Measure ℂ))` using `fun q => sigmaFinite_smul _ (hwt q)`. Establish `hin : Measure.map (fun (y : κ' → ℂ) (q : κ) => ((ρ : ℂ) ^ d q)⁻¹ * y (f q)) (Measure.pi fun _ : κ' => C • (volume : Measure ℂ)) = Measure.pi fun q : κ => w q • (volume : Measure ℂ)`. Use `map_pi_reindex_eq_pi_of_map_eq f (C • (volume : Measure ℂ)) (fun q => w q • (volume : Measure ℂ)) (fun q z => ((ρ : ℂ) ^ d q)⁻¹ * z) (fun q => measurable_id.const_mul _) (fun q => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Measure.map (fun z : ℂ => ((ρ : ℂ) ^ d q)⁻¹ * z) (C • volume) = w q • volume`. Establish `hfun : (fun z : ℂ => ((ρ : ℂ) ^ d q)⁻¹ * z) = fun z => (((ρ ^ d q : ℝ) : ℂ))⁻¹ * z`. Use function extensionality and compare the values at `z`. Rewrite using `[Complex.ofReal_pow]`. Rewrite using `[Measure.map_smul, hfun, (measurePreserving_inv_mul (ρ ^ d q) (pow_pos hρ0 _)).map_eq, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set K : ENNReal := ∏ q, w q with hKdef`. Establish `hKt : K ≠ ⊤` using `ENNReal.prod_ne_top (fun q _ => hwt q)`. Establish `hin' : Measure.map (fun (y : κ' → ℂ) (q : κ) => ((ρ : ℂ) ^ d q)⁻¹ * y (f q)) (Measure.pi fun _ : κ' => C • (volume : Measure ℂ)) = K • (volume : Measure (κ → ℂ))`. Rewrite using `[hin, pi_smul_ne_top (fun _ => (volume : Measure ℂ)) w hwt]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SigmaFinite (K • (volume : Measure (κ → ℂ)))` using `sigmaFinite_smul _ hKt`. Establish `hinm : Measurable (fun (y : κ' → ℂ) (q : κ) => ((ρ : ℂ) ^ d q)⁻¹ * y (f q))` using `measurable_pi_lambda _ (fun q => (measurable_pi_apply (f q)).const_mul _)`. Establish `hout : Measure.map (fun (x : ι' → κ' → ℂ) (i : ι) (q : κ) => ((ρ : ℂ) ^ d q)⁻¹ * x (e i) (f q)) (MeasureTheory.Measure.pi fun _ : ι' => MeasureTheory.Measure.pi fun _ : κ' => ENNReal.ofReal c • (MeasureTheory.volume : MeasureTheory.Measure ℂ)) = (K ^ Fintype.card ι) • (volume : M …`. Establish `h1` using `map_pi_reindex_eq_pi_of_map_eq e (Measure.pi fun _ : κ' => C • (volume : Measure ℂ)) (fun _ : ι => K • (volume : Measure (κ → ℂ))) (fun _ (y : κ' → ℂ) (q : κ) => ((ρ : ℂ) ^ d q)⁻¹ * y (f q)) (fun _ => hinm) (fun _ => hin')`. Use `h1.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pi_smul_ne_top (fun _ : ι => (volume : Measure (κ → ℂ))) (fun _ => K) (fun _ => hKt), Finset.prod_const, Finset.card_univ]`. Both sides reduce to the same expression. Establish `hgm : Measurable (fun (x : ι' → κ' → ℂ) (i : ι) (q : κ) => ((ρ : ℂ) ^ d q)⁻¹ * x (e i) (f q))` using `measurable_pi_lambda _ (fun i => hinm.comp (measurable_pi_apply (e i)))`. Rewrite using `[← Measure.map_apply hgm hA, hout, Measure.smul_apply, smul_eq_mul, mul_comm]`. Establish `hC1 : C ≤ 1` using `ENNReal.ofReal_le_one.mpr hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hK1 : K ≤ ∏ q, ENNReal.ofReal ((ρ ^ d q) ^ 2)`. Use `Finset.prod_le_prod' (fun q _ => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : ∏ q, ENNReal.ofReal ((ρ ^ d q) ^ 2) = ENNReal.ofReal (∏ q, (ρ ^ d q) ^ 2)` using `(ENNReal.ofReal_prod_of_nonneg (fun q _ => by positivity)).symm`. Establish `hreal : (∏ q, (ρ ^ d q) ^ 2) ^ Fintype.card ι = ρ ^ (2 * Fintype.card ι * ∑ q, d q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_pow, Finset.prod_pow_eq_pow_sum, ← pow_mul, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hK2 : K ^ Fintype.card ι ≤ ENNReal.ofReal (ρ ^ (2 * Fintype.card ι * ∑ q, d q))`. Rewrite using `[← hreal, ENNReal.ofReal_pow (by positivity), ← hprod]`.
-
-Conclude with `pow_le_pow_left' hK1 _`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_preimage_reindex_scale_le : ∀ (ι ι' κ κ' : Type) [Fintype ι] [Fintype ι'] [Fintype κ] [Fintype κ'] (e : ι ≃ ι') (f : κ ≃ κ') (ρ c : ℝ) (d : κ → ℕ), 1 ≤ ρ → c ≤ 1 → ∀ A : Set (ι → κ → ℂ), MeasurableSet A → (MeasureTheory.Measure.pi fun _ : ι' => MeasureTheory.Measure.pi fun _ : κ' => ENNReal.ofReal c • (MeasureTheory.volume : MeasureTheory.Measure ℂ)) ((fun (x : ι' → κ' → ℂ) (i : ι) (q : κ) => ((ρ : ℂ) ^ d q)⁻¹ * x (e i) (f q)) ⁻¹' A) ≤ MeasureTheory.volume A * ENNReal.ofReal (ρ ^ (2 * Fintype.card ι * ∑ q, d q)) := by
   intro ι ι' κ κ' _ _ _ _ e f ρ c d hρ hc A hA

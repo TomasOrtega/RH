@@ -14,7 +14,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Establish `hc : (MvPolynomial.map (algebraMap ℚ ℂ)).comp (MvPolynomial.map (Int.castRingHom ℚ)) = (MvPolynomial.map (Int.castRingHom ℂ) : MRing ι →+* MvPolynomial (Σ k, ι k) ℂ)` using `RingHom.ext GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.map_rat_complex`. Simplify using `only [GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.extC, ReciprocityTheory.AnForm.R.extC, Ideal.map_map, hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem extC_map_rat_eq_map_complex {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι)) :
@@ -26,9 +26,9 @@ theorem extC_map_rat_eq_map_complex {K : Type} [Fintype K] {ι : K → Type} [�
   simp only [GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.extC, ReciprocityTheory.AnForm.R.extC, Ideal.map_map, hc]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e L W hP hL hW`. Establish `hW' : W ∈ (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.extC (P.map (MvPolynomial.map (Int.castRingHom ℚ)))).minimalPrimes`. Rewrite using `[extC_map_rat_eq_map_complex]`. Conclude with `hW`. Establish `hV : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.IsProjVar W e` using `GroundTheory.Heights₂.Heights.Inter.BaseChange.isProjVar_of_mem_minimalPrimes (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.isProjVarQ_of_isArithVar hP) hW'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `h₂ K ι W e hV`. Rewrite using `[h₃ K ι P e L W hP hL hW hR]`. Conclude with `h₁ K ι W e L hV hR fun j => GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.isSmoothMetric_of_isSmoothHerm W (L j) (hL j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ComponentDegree.proof (h₁ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Degrees.Statement)
     (h₂ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.ResExists.Statement) (h₃ : ComponentResInt.Statement) :

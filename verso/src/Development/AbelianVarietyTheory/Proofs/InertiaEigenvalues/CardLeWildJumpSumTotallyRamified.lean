@@ -9,21 +9,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ _ _ _ _ _ _ _ p E B hp hE h0 hord hcomm hpow hB`. Establish `hBn : B.Normal` using `⟨fun b hb σ => by`. Establish `h` using `B.mul_mem (hcomm σ b) hb`. Simplify `h⟩` using `[mul_assoc]`. Use `set M := IntermediateField.fixedField B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hker : (AlgEquiv.restrictNormalHom (F` using `F) (K₁ := L) M).ker = B := by`. Rewrite using `[IntermediateField.restrictNormalHom_ker, IntermediateField.fixingSubgroup_fixedField]`. Establish `hsurj` using `AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := M) L`. Take `⟨e, hordF, hEe, -⟩` from `GlobalTheory.T.normalizedValuationOfPrime_of_galoisExtension F L p E hord`. Establish `he : 0 < e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hM0 : upperRamificationGroup F M 0 = ⊤`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_upperRamificationGroup M 0, upperRamificationGroup_zero, h0, Subgroup.map_top_of_surjective _ hsurj]`. Establish `hMexp : ∀ s : M ≃ₐ[F] M, s ^ p = 1`. Introduce `s`. Take `⟨σ, rfl⟩` from `hsurj s`. Rewrite using `[← map_pow, ← MonoidHom.mem_ker, hker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hpow σ`. Establish `hM1` using `GlobalTheory.T.upperRamificationGroup_one_eq_top_of_exponent_prime F M p e hp he hordF hM0 hMexp`. Choose the witnesses or unpack the hypotheses as in `⟨σ₀, hσ₀⟩ : ∃ σ₀, σ₀ ∉ B := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Conclude with `hB (eq_top_iff.mpr fun x _ => h x)`. Establish `hmem : AlgEquiv.restrictNormalHom M σ₀ ∈ (upperRamificationGroup F L 1).map (AlgEquiv.restrictNormalHom M)`. Rewrite using `[map_upperRamificationGroup M 1, hM1]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨σ, hσ, hσe⟩` from `hmem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσB : σ ∉ B`. Introduce `hσB`. Apply `hσ₀` to reduce the goal to its premises. Rewrite using `[← hker, MonoidHom.mem_ker, ← hσe, ← MonoidHom.mem_ker, hker]`. Conclude with `hσB`.
-
-Use `GlobalTheory.T.card_mul_le_jumpSum_of_mem_upperRamification_not_mem F L B 1 h0 σ hσ hσB` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_jumpSum_wild_of_exponent :
     ∀ (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field L]

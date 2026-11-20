@@ -10,7 +10,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 noncomputable section
 
 /- English proof (translation)
-Take `⟨g, hg⟩ : ∃ g, g ∈ B.GV k r` from `⟨1, by simp [B.GV, Formalism.QuantumDeterminants.UH]⟩`. Establish `h1` using `h.2 [] [] (by simp) (by simp) (by simp) g hg`. Establish `h2 : 0 ≤ B.gN g ^ A * ‖B.dLR [] [] F g‖` using `mul_nonneg (Real.rpow_nonneg (gN_pos hg).le _) (norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ccleQ_nonneg {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ}
     {F : B.Mat k r → E} {b : ℝ} (h : B.CCle A m F b) : 0 ≤ b := by
@@ -21,17 +21,15 @@ theorem ccleQ_nonneg {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun u v hu hv hl g hg => (h.2 u v hu hv hl g hg).trans hb⟩`.
+Supply the required witnesses or components.
 -/
 theorem ccleQ_mono_c {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ}
     {F : B.Mat k r → E} {b b' : ℝ} (h : B.CCle A m F b) (hb : b ≤ b') : B.CCle A m F b' := ⟨h.1, fun u v hu hv hl g hg => (h.2 u v hu hv hl g hg).trans hb⟩
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro x hx`. Simplify using `at hx`. Consider the case `cons y t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `x hx`. Simplify using `only [List.foldr_cons]`. Break down `List.mem_cons.mp hx with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `le_max_left _ _`.
-
-Conclude with `le_trans (ih x h) (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem le_foldr_max_zero_of_mem : ∀ (l : List ℕ), ∀ x ∈ l, x ≤ l.foldr max 0 := by
   intro l
@@ -45,7 +43,7 @@ private theorem le_foldr_max_zero_of_mem : ∀ (l : List ℕ), ∀ x ∈ l, x �
     · exact le_trans (ih x h) (le_max_right _ _)
 
 /- English proof (translation)
-Introduce `T hT`. Unfold `B.opOrder`. Conclude with `le_foldr_max_zero_of_mem _ _ (List.mem_map_of_mem hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem word_le_opOrder {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (Θ : B.DiffOp k r Wp Wq) :
@@ -55,25 +53,23 @@ theorem word_le_opOrder {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [Inne
   exact le_foldr_max_zero_of_mem _ _ (List.mem_map_of_mem hT)
 
 /- English proof (translation)
-Establish `_hd` using `hd`. Use `set o := B.opOrder Θ with ho`. Establish `hO : IsOpen (∅ : Set (B.Mat k r))` using `isOpen_empty`. Establish `hcov : ∀ g ∈ B.GV k r, g ∈ (∅ : Set (B.Mat k r)) ∨ g ∈ B.GV k r` using `fun g hg => Or.inr hg`. Establish `hterm : ∀ T ∈ Θ, ∃ K : ℝ, 0 ≤ K ∧ ∀ (F : B.Mat k r → (Wq →L[ℂ] Wp)) (b : ℝ), B.CCle A (m + o) F b → B.CCle (A - d) m (ap T.coef (B.Rw T.word F)) (K * b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT`. Take `⟨hc1, -, hcb⟩` from `hG T hT`. Take `⟨C, hC⟩` from `hcb m`. Use `set s : ℂ := (((T.word.map nz).prod : ℝ) : ℂ) with hs`. Use `⟨2 ^ m * (|C| * ‖s‖), by positivity, fun F b hF => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : 0 ≤ b` using `ccleQ_nonneg hF`. Establish `hlen : T.word.length ≤ o` using `word_le_opOrder Θ T hT`. Establish `hF1 : B.CCle A (m + (T.word.map nrm).length) F b` using `CCle_mono_m (by simp; omega) hF`. Establish `hunit : ∀ X ∈ T.word.map nrm, unitLie k r X`. Introduce `X hX`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y, hY, rfl⟩` from `List.mem_map.mp hX`. Conclude with `nrm_unit (T.word_lie Y hY)`. Establish `hR : B.CCle A m (B.Rw T.word F) (‖s‖ * b)`. Rewrite using `[Rw_scale]`. Conclude with `CCle_smul s (CCle_Rw hunit hF1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hR' : B.CCle (A - d + d) m (B.Rw T.word F) (‖s‖ * b)` using `by rw [sub_add_cancel]; exact hR`. Establish `hP` using `prodBound hO hcov (sCkOn_mono le_top hc1) (fun u v hu hv hl g hg _ => (hC u v hu hv hl g hg).1) hR' (fun g _ hg => by simp at hg)`. Use `ccleQ_mono_c hP (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (mul_nonneg (norm_nonneg _) hb0)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hsum : ∀ L : List (B.DTerm k r Wp Wq), (∀ T ∈ L, T ∈ Θ) → ∃ K : ℝ, 0 ≤ K ∧ ∀ (F : B.Mat k r → (Wq →L[ℂ] Wp)) (b : ℝ), B.CCle A (m + o) F b → B.CCle (A - d) m (fun g => (L.map fun T => ap T.coef (B.Rw T.word F) g).sum) (K * b)`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨0, le_rfl, fun F b _ => ?_⟩` and prove the remaining obligations. Simplify using `using (CCle_zero : B.CCle (A - d) m (fun _ : B.Mat k r => (0 : Wq →L[ℂ] Wp)) 0)`. Consider the case `cons T L ih`. Introduce `hL`. Take `⟨K₁, hK₁, h₁⟩` from `hterm T (hL T (by simp))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K₂, hK₂, h₂⟩` from `ih fun S hS => hL S (by simp [hS])`. Use `⟨K₁ + K₂, add_nonneg hK₁ hK₂, fun F b hF => ?_⟩` and prove the remaining obligations. Establish `h` using `CCle_add (h₁ F b hF) (h₂ F b hF)`. Establish `e : (K₁ + K₂) * b = K₁ * b + K₂ * b` using `by ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using h`. Take `⟨K, hK, hKb⟩` from `hsum Θ fun T hT => hT`. Use `⟨K, hK, fun F b _ hF => ?_⟩` and prove the remaining obligations. Establish `hop : B.opApply Θ F = fun g => (Θ.map fun T => ap T.coef (B.Rw T.word F) g).sum` using `rfl`. Rewrite using `[hop]`.
-
-Conclude with `hKb F b hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jdCCLowerQ {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (Θ : B.DiffOp k r Wp Wq) (d A : ℝ)

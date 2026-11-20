@@ -49,7 +49,7 @@ theorem pm_inv_val (w : Equiv.Perm (Fin r)) (a c : Fin r) :
     (((pm F w)⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) a c = if c = w a then 1 else 0 := rfl
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul, Matrix.mul_apply, pm_val, pm_inv_val]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pm_conj (w' w : Equiv.Perm (Fin r)) (g : GL (Fin r) F) (a c : Fin r) :
     (((pm F w')⁻¹ * g * pm F w : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) a c =
@@ -58,9 +58,9 @@ theorem pm_conj (w' w : Equiv.Perm (Fin r)) (g : GL (Fin r) F) (a c : Fin r) :
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_blockTri]`. Introduce `i k hik`. Simplify using `only [Units.val_mul, Matrix.mul_apply, pm_val, pm_inv_val]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Substitute `h1 h2` using the available equality. Conclude with `absurd (h c) hik.ne'`. Apply the tactic sequence `all_goals simp`.
+A detailed English derivation is pending.
 -/
 theorem pm_mul_inv_mem {b : Fin r → ℕ} {w w' : Equiv.Perm (Fin r)} (h : ∀ c, b (w c) = b (w' c)) :
     pm F w * (pm F w')⁻¹ ∈ blockTri (κ := F) b := by
@@ -74,7 +74,7 @@ theorem pm_mul_inv_mem {b : Fin r → ℕ} {w w' : Equiv.Perm (Fin r)} (h : ∀ 
   all_goals simp
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[mem_blockTri]`. Introduce `i k hik`. Conclude with `unip_lower hu (hb.reflect_lt hik)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unip_le {b : Fin r → ℕ} (hb : Monotone b) : unip F r ≤ blockTri (κ := F) b := by
   intro u hu
@@ -83,11 +83,11 @@ theorem unip_le {b : Fin r → ℕ} (hb : Monotone b) : unip F r ≤ blockTri (�
   exact unip_lower hu (hb.reflect_lt hik)
 
 /- English proof (translation)
-Take `⟨⟨w, t⟩, ⟨u, hu, u', hu', e⟩, -⟩` from `GlobalTheory.FinGL.Bruhat.bruhat F r g`. Use `⟨w, u * (u⁻¹ * g * u'⁻¹ * (pm F w)⁻¹), Subgroup.mul_mem _ (unip_le hb hu) ?_, u', hu', by group⟩` and prove the remaining obligations. Establish `e1 : ((u⁻¹ * g * u'⁻¹ : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) = Matrix.of fun a c => if a = w c then (t c : F) else 0`. Rewrite using `[Units.val_mul, Units.val_mul, e]`. Simplify using `only [← Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[mem_blockTri]`. Introduce `i k hik`. Rewrite using `[Units.val_mul, e1]`. Simplify using `only [Matrix.mul_apply, pm_inv_val, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2`. Substitute `h1 h2` using the available equality. Conclude with `absurd hik (lt_irrefl _)`. Apply the tactic sequence `all_goals simp`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_pm {b : Fin r → ℕ} (hb : Monotone b) (g : GL (Fin r) F) :
     ∃ w : Equiv.Perm (Fin r), ∃ p ∈ blockTri (κ := F) b, ∃ u ∈ unip F r, g = p * pm F w * u := by
@@ -109,9 +109,9 @@ theorem exists_pm {b : Fin r → ℕ} (hb : Monotone b) (g : GL (Fin r) F) :
   all_goals simp
 
 /- English proof (translation)
-Establish `h1 : ∀ c, b (w' c) ≤ b (w c)` using `fun c => by`. Assume the negation of the conclusion as `hlt`. Establish `h2` using `pm_conj w' w p c c`. Rewrite `h2` using `[mul_assoc, e, inv_mul_cancel_left, unip_diag hu, mem_blockTri.1 hp _ _ (not_le.1 hlt)]`. Conclude with `one_ne_zero h2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∑ c, b (w' c) = ∑ c, b (w c)`. Rewrite using `[Equiv.sum_comp w' b, Equiv.sum_comp w b]`. Conclude with `(Finset.sum_eq_sum_iff_of_le fun c _ => h1 c).1 h2 c (Finset.mem_univ c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_eq_of_rel {b : Fin r → ℕ} {w w' : Equiv.Perm (Fin r)} {p u : GL (Fin r) F} (hp : p ∈ blockTri (κ := F) b)
     (hu : u ∈ unip F r) (e : p * pm F w = pm F w' * u) (c : Fin r) : b (w' c) = b (w c) := by
@@ -128,7 +128,7 @@ def key (b : Fin r → ℕ) (J : Finset ℕ) (i : Fin r) : ℕ ×ₗ ℕᵒᵈ :
   toLex (if b i ∈ J then 0 else 1, OrderDual.toDual (b i))
 
 /- English proof (translation)
-Unfold `key`. Rewrite using `[Prod.Lex.toLex_le_toLex]`. Apply the tactic sequence `by_cases h1 : b i ∈ J <;> by_cases h2 : b k ∈ J <;> simp [h1, h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem key_le_iff (b : Fin r → ℕ) (J : Finset ℕ) (i k : Fin r) :
     key b J i ≤ key b J k ↔ (b i ∈ J ∧ b k ∉ J) ∨ ((b i ∈ J ↔ b k ∈ J) ∧ b k ≤ b i) := by
@@ -137,9 +137,9 @@ theorem key_le_iff (b : Fin r → ℕ) (J : Finset ℕ) (i k : Fin r) :
   by_cases h1 : b i ∈ J <;> by_cases h2 : b k ∈ J <;> simp [h1, h2]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg (fun z => OrderDual.ofDual (ofLex z).2) h`. Introduce `h`. Unfold `key`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem key_eq_iff (b : Fin r → ℕ) (J : Finset ℕ) (i k : Fin r) : key b J i = key b J k ↔ b i = b k := by
   constructor
@@ -150,11 +150,11 @@ theorem key_eq_iff (b : Fin r → ℕ) (J : Finset ℕ) (i k : Fin r) : key b J 
     rw [h]
 
 /- English proof (translation)
-Use `set w := Tuple.sort (key b J)`. Establish `hm : Monotone fun a => if b (w a) ∈ J then 0 else 1` using `fun a c hac => by`. Use `(key_le_iff b J _ _).1 (Tuple.monotone_sort (key b J) hac)` as an intermediate fact. Simplify using `only`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | omega | tauto`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h` using `Tuple.lt_card_le_iff_apply_le_of_monotone (a := 0) (j := a) hm`. Establish `hc : (Finset.univ.filter fun i => (if b (w i) ∈ J then 0 else 1) ≤ 0).card = (Finset.univ.filter fun i => b i ∈ J).card`. Use `Finset.card_equiv w fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : b (w i) ∈ J <;> simp [h1]`. Rewrite `h` using `[hc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Apply the tactic sequence `by_cases h1 : b (w a) ∈ J <;> simp [h1]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sort_mem_iff (b : Fin r → ℕ) (J : Finset ℕ) (a : Fin r) :
     b (Tuple.sort (key b J) a) ∈ J ↔ a.val < (Finset.univ.filter fun i => b i ∈ J).card := by
@@ -173,7 +173,7 @@ theorem sort_mem_iff (b : Fin r → ℕ) (J : Finset ℕ) (a : Fin r) :
   by_cases h1 : b (w a) ∈ J <;> simp [h1]
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero => intro a`. Conclude with `a.elim0`. Consider the case `succ n => exact Fin.monotone_iff_le_succ.2 fun i => h _ _ (by simp)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem monotone_of_succ {α : Type} [Preorder α] (f : Fin r → α) (h : ∀ a c : Fin r, c.val = a.val + 1 → f a ≤ f c) :
     Monotone f := by
@@ -182,15 +182,13 @@ theorem monotone_of_succ {α : Type} [Preorder α] (f : Fin r → α) (h : ∀ a
   | succ n => exact Fin.monotone_iff_le_succ.2 fun i => h _ _ (by simp)
 
 /- English proof (translation)
-Use `set J : Finset ℕ := (Finset.univ.filter fun a : Fin r => a.val < j).image fun a => b (w a) with hJ`. Establish `hmem : ∀ c, b (w c) ∈ J ↔ c.val < j` using `fun c => by`. Simplify using `only [hJ, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, e⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `h2 a c ha (not_lt.1 hc) e`. Conclude with `fun hc => ⟨c, hc, rfl⟩`. Use `⟨J, ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, Finset.mem_powerset]`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `z hz`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ _)`. Establish `: (Finset.univ.filter fun a : Fin r => a.val < j).card = (Finset.univ.filter fun i => b i ∈ J).card` using `Finset.card_equiv w fun i => by simp [hmem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← this, Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Establish `hm : Monotone (key b J ∘ w)` using `monotone_of_succ _ fun a c hac => by show key b J (w a) ≤ key b J (w c)`. Rewrite using `[key_le_iff, hmem, hmem]`. Distinguish the cases in `h : a.val + 1 = j`.
-
-Use `left`. Use linear arithmetic over natural numbers and integers. Use the proof step `right; exact ⟨by omega, h1 a c ⟨hac, h⟩⟩`. Conclude with `(key_eq_iff b J _ _).1 (congrFun (Tuple.unique_monotone hm (Tuple.monotone_sort (key b J))) c)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_set (b : Fin r → ℕ) {j : ℕ} (hj : j ≤ r) (w : Equiv.Perm (Fin r))
     (h1 : ∀ a c : Fin r, cutEdge j a c → b (w c) ≤ b (w a))
@@ -224,11 +222,11 @@ theorem exists_set (b : Fin r → ℕ) {j : ℕ} (hj : j ≤ r) (w : Equiv.Perm 
     exact (key_eq_iff b J _ _).1 (congrFun (Tuple.unique_monotone hm (Tuple.monotone_sort (key b J))) c)
 
 /- English proof (translation)
-Unfold `edgeSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h`. Establish `h'` using `h.1`. Apply the tactic sequence `refine unip_mul_entry hu hu' (show a.val < c.val by omega) fun l h1 h2 => ?_`. Establish `h1' : a.val < l.val` using `h1`. Establish `h2' : l.val < c.val` using `h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem edgeSum_cut_mul (j : ℕ) {u u' : GL (Fin r) F} (hu : u ∈ unip F r) (hu' : u' ∈ unip F r) :
     edgeSum (cutEdge j) (u * u') = edgeSum (cutEdge j) u + edgeSum (cutEdge j) u' := by
@@ -246,7 +244,7 @@ theorem edgeSum_cut_mul (j : ℕ) {u u' : GL (Fin r) F} (hu : u ∈ unip F r) (h
   · rw [add_zero]
 
 /- English proof (translation)
-Use `edgeSum_cut_mul (F := F) (r := r) j (Subgroup.one_mem _) (Subgroup.one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem edgeSum_cut_one (j : ℕ) : edgeSum (cutEdge j) (1 : GL (Fin r) F) = 0 := by
   have := edgeSum_cut_mul (F := F) (r := r) j (Subgroup.one_mem _) (Subgroup.one_mem _)
@@ -254,25 +252,23 @@ theorem edgeSum_cut_one (j : ℕ) : edgeSum (cutEdge j) (1 : GL (Fin r) F) = 0 :
   exact left_eq_add.1 this
 
 /- English proof (translation)
-Establish `hj' : j ≤ r` using `by omega`. Use `set T := (Finset.univ.image b).powerset.filter fun J => (Finset.univ.filter fun i => b i ∈ J).card = j with hT`. Establish `hmem : ∀ J : T, ∀ a, b (Tuple.sort (key b J.1) a) ∈ J.1 ↔ a.val < j` using `fun J a => by`. Rewrite using `[sort_mem_iff, (Finset.mem_filter.1 J.2).2]`. Establish `hsub : ∀ J J' : T, (∀ c, b (Tuple.sort (key b J.1) c) = b (Tuple.sort (key b J'.1) c)) → J.1 ⊆ J'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J J' h z hz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_powerset.1 (Finset.mem_filter.1 J.2).1 hz)`. Take `⟨a, rfl⟩` from `(Tuple.sort (key b J.1)).surjective i`. Rewrite using `[h, hmem, ← hmem J]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `whCut`. Rewrite using `[GlobalTheory.T.finrank_eigen_coind_mackey_double_cosets (GL (Fin r) F) (blockTri b) (unip F r) V σ (fun g => ψ (edgeSum (cutEdge j) g)) (by simp only [edgeSum_cut_one, AddChar.map_zero_eq_one]) (fun u hu u' hu' => by simp only [edgeSum_cut_mul j hu hu', AddChar.map_add_eq_mul]) …`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => leviWh ψ b σ) fun J _ => ?_]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_coe, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hs` using `(Tuple.eq_sort_iff (f := key b J.1)).1 rfl`. Unfold `leviWh`. Rewrite using `[GlobalTheory.T.coindEigen_sorting_perm_eq_levi_whittaker F ψ r V b σ hσ j (Tuple.sort (key b J.1)) _ (pm_conj _ _)]`. Conclude with `fun a c hac e => hs.2 a c hac ((key_eq_iff b J.1 _ _).2 e)`. Introduce `a e c h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : key b J.1 _ ≤ key b J.1 _` using `hs.1 h1`. Establish `h5 : key b J.1 _ ≤ key b J.1 _` using `hs.1 h2`. Rewrite `h5` using `[← (key_eq_iff b J.1 _ _).2 h3]`. Conclude with `(key_eq_iff b J.1 _ _).1 (le_antisymm h5 h4)`. Introduce `a c hac`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hac.1`. Establish `h2` using `hac.2`. Establish `h4 : key b J.1 _ ≤ key b J.1 _` using `hs.1 (show a ≤ c from show a.val ≤ c.val by omega)`. Rewrite `h4` using `[key_le_iff, hmem, hmem]`. Break down `h4 with h4 | h4` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h4.2`. Introduce `a c ha hc e`. Use `(hmem J a).2 ha` as an intermediate fact. Rewrite `this` using `[e, hmem]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use linear arithmetic over natural numbers and integers. Introduce `g`. Take `⟨w, p, hp, u, hu, e⟩` from `exists_pm hσ.mono g`. Distinguish the cases in `h1 : ∀ a c : Fin r, cutEdge j a c → b (w c) ≤ b (w a)`. Distinguish the cases in `h2 : ∀ a c : Fin r, a.val < j → j ≤ c.val → b (w a) ≠ b (w c)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ, h⟩` from `exists_set b hj' w h1 h2`. Use `Or.inl ⟨⟨J, hJ⟩, p * (pm F w * (pm F (Tuple.sort (key b J)))⁻¹), Subgroup.mul_mem _ hp (pm_mul_inv_mem h), u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `group`. Use `push Not at h2`.
-
-Take `⟨a, c, ha, hc, h⟩` from `h2`. Conclude with `Or.inr ⟨pm F w, ⟨p, hp, u, hu, e⟩, GlobalTheory.T.coindEigen_eq_bot_of_block_cut_cuspidal F ψ r V b σ hσ j w _ (pm_conj _ _) a c ha hc h⟩`. Use `push Not at h1`. Take `⟨a, c, hac, h⟩` from `h1`. Conclude with `Or.inr ⟨pm F w, ⟨p, hp, u, hu, e⟩, GlobalTheory.T.coindEigen_eq_bot_of_root_in_unipotent_radical F ψ r V b σ hσ j w _ (pm_conj _ _) hψ a c hac h⟩`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem degenerateWhittakerDim_parabolicInduction (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) (r : ℕ) (V : Type) [AddCommGroup V]
     [Module ℂ V] [FiniteDimensional ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V)

@@ -19,7 +19,7 @@ omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZ
   [FiniteDimensional k M] in
 
 /- English proof (translation)
-The claim follows from `{ toIsGalois := inferInstance, toIsMulCommutative := inferInstance }`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianGalois_of_isGalois : IsAbelianGalois k M :=
   { toIsGalois := inferInstance, toIsMulCommutative := inferInstance }
@@ -28,7 +28,7 @@ omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZ
   [FiniteDimensional k M] in
 
 /- English proof (translation)
-The claim follows from `have := isAbelianGalois_of_isGalois (k := k) (M := M) have := isAbelianGalois_fieldRange ι le_maximalAbelianExtension ι.fieldRange ⟨z, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem apply_mem_maximalAbelianExtension {Ω : Type*} [Field Ω] [Algebra k Ω]
     [IsSepClosure k Ω] (ι : M →ₐ[k] Ω) (z : M) : ι z ∈ maximalAbelianExtension k Ω :=
@@ -37,9 +37,9 @@ theorem apply_mem_maximalAbelianExtension {Ω : Type*} [Field Ω] [Algebra k Ω]
   le_maximalAbelianExtension ι.fieldRange ⟨z, rfl⟩
 
 /- English proof (translation)
-Use `isAbelianGalois_of_isGalois (k := k) (M := M)` as an intermediate fact. Use extensionality with `x z`. Take `⟨τ, hτ⟩` from `exists_mk_eq_localReciprocityLimit (k := k) x`. Apply `(residueEmbedding k M).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `residueEmbedding k M _ = residueEmbedding k M _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[residueEmbedding_normResidueSymbol hτ, localArtinMapOfField_eq_artinOfEmbedding (residueEmbedding k M), apply_artinOfEmbedding, localArtinMap_apply, ← hτ, topologicalAbelianizationEquiv_mk_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normResidueSymbol_eq_localArtinMapOfField :
     have := isAbelianGalois_of_isGalois (k := k) (M := M)
@@ -54,7 +54,7 @@ theorem normResidueSymbol_eq_localArtinMapOfField :
     localArtinMap_apply, ← hτ, topologicalAbelianizationEquiv_mk_apply]
 
 /- English proof (translation)
-Use `isAbelianGalois_of_isGalois (k := k) (M := M)` as an intermediate fact. Rewrite using `[normResidueSymbol_eq_localArtinMapOfField, localArtinMapOfField_eq_artinOfEmbedding ι, apply_artinOfEmbedding]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem normResidueSymbol_apply_eq_localArtinMap {Ω : Type*} [Field Ω] [Algebra k Ω]
     [IsSepClosure k Ω] (ι : M →ₐ[k] Ω) (x : kˣ) (z : M) :
@@ -72,9 +72,9 @@ variable {k' : Type*} [Field k'] [ValuativeRel k'] [TopologicalSpace k']
   [FiniteDimensional k' M'] [IsGalois k' M'] [IsMulCommutative (M' ≃ₐ[k'] M')]
 
 /- English proof (translation)
-Establish `: IsSepClosure k (AlgebraicClosure k')` using `isSepClosure_of_isSeparable k k' (AlgebraicClosure k')`. Use `set ι' : M' →ₐ[k'] AlgebraicClosure k' := IsAlgClosed.lift`. Use `set ι : M →ₐ[k] AlgebraicClosure k' := (ι'.restrictScalars k).comp j`. Apply `ι'.injective` to reduce the goal to its premises. Establish `h1` using `normResidueSymbol_apply_eq_localArtinMap ι' x (j z)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `normResidueSymbol_apply_eq_localArtinMap ι (normUnits k k' x) z`. Establish `h3` using `localArtinMap_apply_of_algebra (Ω := AlgebraicClosure k') x (apply_mem_maximalAbelianExtension ι z)`. Conclude with `h1.trans (h3.trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem normResidueSymbol_norm (j : M →ₐ[k] M') (x : k'ˣ) (z : M) :
     normResidueSymbol k' M' x (j z) = j (normResidueSymbol k M (normUnits k k' x) z) := by

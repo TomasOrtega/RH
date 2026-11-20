@@ -14,7 +14,7 @@ variable {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : Or
 def lowPart {m : ℕ} (M : Mx D m m) : Mx D m m := Matrix.of fun i j => if j ≤ i then M i j else 0
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => by show Continuous fun a : Mx D m m => if j ≤ i then a i j else 0 split_ifs · exact (continuous_apply j).comp (continuous_apply i) · exact continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lowPart {m : ℕ} : Continuous (lowPart (D := D) (m := m)) :=
   continuous_pi fun i => continuous_pi fun j => by
@@ -24,13 +24,13 @@ theorem continuous_lowPart {m : ℕ} : Continuous (lowPart (D := D) (m := m)) :=
     · exact continuous_const
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `⟨fun hji => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [lowPart, Matrix.of_apply, if_pos hji.le] at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Matrix.one_apply_ne hji.ne']`. Then use the resulting hypothesis. Use `congrFun (congrFun h i) i` as an intermediate fact. Simplify using `only [lowPart, Matrix.of_apply, if_pos (le_refl i), Matrix.one_apply_eq] at this`. Conclude with `this`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [lowPart, Matrix.of_apply]`. Use `split_ifs with hji`. Break down `hji.lt_or_eq with hlt | heq` into its components or cases. Rewrite using `[(h i j).1 hlt, Matrix.one_apply_ne hlt.ne']`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `heq` using the available equality. Rewrite using `[(h j j).2, Matrix.one_apply_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lowPart_eq_iff {m : ℕ} (M : Mx D m m) :
     lowPart M = lowPart 1 ↔ ∀ i j : Fin m, (j < i → M i j = 0) ∧ M i i = 1 := by
@@ -53,7 +53,7 @@ theorem lowPart_eq_iff {m : ℕ} (M : Mx D m m) :
     · rfl
 
 /- English proof (translation)
-Introduce `j i hij`. Break down `hij.lt_or_eq with hlt | heq` into its components or cases. Rewrite using `[Matrix.sub_apply, (h j i).1 hlt, Matrix.one_apply_ne hlt.ne', sub_zero]`. Substitute `heq` using the available equality. Rewrite using `[Matrix.sub_apply, (h i i).2, Matrix.one_apply_eq, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem strictUp_sub_one {m : ℕ} {M : Mx D m m} (h : ∀ i j : Fin m, (j < i → M i j = 0) ∧ M i i = 1) :
     GlobalTheory.BesselChar.StrictUp (M - 1) := by
@@ -63,15 +63,13 @@ theorem strictUp_sub_one {m : ℕ} {M : Mx D m m} (h : ∀ i j : Fin m, (j < i �
   · subst heq; rw [Matrix.sub_apply, (h i i).2, Matrix.one_apply_eq, sub_self]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨n, hn, h, rfl⟩` from `((GlobalTheory.MixPer.flag_jacobi_structure D S S₀ ρ d).2.2.2.1 g).1 hg`. Take `⟨u, hu, b, c, rfl⟩` from `((GlobalTheory.MixPer.flag_jacobi_structure D S S₀ ρ d).1 n).1 hn`. Establish `e : mt S (d.levi u * (d.nB b * d.nC c) * d.emb0 h) ⬝ d.jX = d.jX ⬝ u.1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, GlobalTheory.MixPer.Decomp.mt_flag_jX]`. Rewrite using `[e, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, d.p0_jX, d.pY_jX, d.pX_jX, Matrix.zero_mul, Matrix.zero_mul, Matrix.one_mul]`. Conclude with `⟨rfl, rfl, fun i j => hu i j⟩`. Introduce and unpack `⟨h0, hY, hX⟩`. Take `⟨u, hu, hu1⟩` from `GlobalTheory.MixPer.Decomp.exists_unit (strictUp_sub_one hX)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hu' : u.1 = d.pX ⬝ (mt S g ⬝ d.jX)` using `by rw [hu1, add_sub_cancel]`. Establish `hgX : mt S g ⬝ d.jX = d.jX ⬝ u.1`. Rewrite using `[hu']`. Use `conv_lhs => rw [GlobalTheory.MixPer.Decomp.decomp d (mt S g ⬝ d.jX)]`. Rewrite using `[h0, hY, Matrix.mul_zero, Matrix.mul_zero, add_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hst : (d.levi u)⁻¹ * g ∈ stabX d` using `mem_fixer.2 (GlobalTheory.MixPer.Decomp.fix_of_eq (by rw [d.levi_jX, hgX]))`. Take `⟨n, hn, h, hnh⟩` from `((GlobalTheory.MixPer.flag_jacobi_structure D S S₀ ρ d).2.2.1 _).1 hst`. Establish `hn' : n ∈ flagN d` using `(Subgroup.mem_inf.1 (show n ∈ flagN d ⊓ fixer S d.jX from hn)).1`. Establish `e : g = d.levi u * n * d.emb0 h` using `by rw [mul_assoc, ← hnh, mul_inv_cancel_left]`. Rewrite using `[e]`.
-
-Conclude with `mul_mem (Subgroup.mem_sup_left (mul_mem (d.levi_mem_NFlag hu) hn')) (Subgroup.mem_sup_right ⟨h, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_jacGrp_iff_mat (g : GA D S) : g ∈ jacGrp d ↔
     (d.p0 ⬝ (mt S g ⬝ d.jX) = 0 ∧ d.pY ⬝ (mt S g ⬝ d.jX) = 0 ∧
@@ -100,9 +98,9 @@ theorem mem_jacGrp_iff_mat (g : GA D S) : g ∈ jacGrp d ↔
     exact mul_mem (Subgroup.mem_sup_left (mul_mem (d.levi_mem_NFlag hu) hn')) (Subgroup.mem_sup_right ⟨h, rfl⟩)
 
 /- English proof (translation)
-Use `haveI : T2Space (Mx D S₀.rank ρ) := (lattice_Mx D _ _).2.2.2.1`. Use `haveI : T2Space (Mx D ρ ρ) := (lattice_Mx D _ _).2.2.2.1`. Establish `hc : Continuous fun g : GA D S => mt S g ⬝ d.jX` using `(continuous_mt S).matrix_mul continuous_const`. Establish `e : (jacGrp d : Set (GA D S)) = {g | d.p0 ⬝ (mt S g ⬝ d.jX) = 0} ∩ {g | d.pY ⬝ (mt S g ⬝ d.jX) = 0} ∩ {g | lowPart (d.pX ⬝ (mt S g ⬝ d.jX)) = lowPart 1}`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [SetLike.mem_coe, mem_jacGrp_iff_mat, Set.mem_inter_iff, Set.mem_setOf_eq, lowPart_eq_iff, and_assoc]`. Rewrite using `[e]`. Conclude with `((isClosed_eq (continuous_const.matrix_mul hc) continuous_const).inter (isClosed_eq (continuous_const.matrix_mul hc) continuous_const)).inter (isClosed_eq (continuous_lowPart.comp (continuous_const.matrix_mul hc)) continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem jacGrp_closed : IsClosed (jacGrp d : Set (GA D S)) := by
   haveI : T2Space (Mx D S₀.rank ρ) := (lattice_Mx D _ _).2.2.2.1
@@ -118,7 +116,7 @@ theorem jacGrp_closed : IsClosed (jacGrp d : Set (GA D S)) := by
     (isClosed_eq (continuous_lowPart.comp (continuous_const.matrix_mul hc)) continuous_const)
 
 /- English proof (translation)
-Take `⟨u, -, b, c, rfl⟩` from `((GlobalTheory.MixPer.flag_jacobi_structure D S S₀ ρ d).1 n).1 hn`. Rewrite using `[mt_mul, mt_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[d.nC_j0, d.nB_j0, ← Matrix.mul_assoc d.p0 (mt S (d.levi u)), d.wittDecomp_projAnisotropic_levi, Matrix.mul_add, d.p0_j0, ← Matrix.mul_assoc, d.p0_jX, Matrix.zero_mul, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagUnipotent_anisotropic_projection_eq_one {n : GA D S} (hn : n ∈ flagN d) : d.p0 ⬝ (mt S n ⬝ d.j0) = 1 := by
   obtain ⟨u, -, b, c, rfl⟩ := ((GlobalTheory.MixPer.flag_jacobi_structure D S S₀ ρ d).1 n).1 hn
@@ -128,7 +126,7 @@ theorem flagUnipotent_anisotropic_projection_eq_one {n : GA D S} (hn : n ∈ fla
     ← Matrix.mul_assoc, d.p0_jX, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc (mt S n) d.j0, ← Matrix.mul_assoc d.p0, flagUnipotent_anisotropic_projection_eq_one d hn, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem witt_anisotropic_block_flag_mul_embedded {n : GA D S} (hn : n ∈ flagN d) (k : GA D S₀) :
     d.p0 ⬝ (mt S (n * d.emb0 k) ⬝ d.j0) = mt S₀ k := by
@@ -138,13 +136,13 @@ theorem witt_anisotropic_block_flag_mul_embedded {n : GA D S} (hn : n ∈ flagN 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h1 : o.pB ⬝ (mt S₀ k ⬝ o.jA) = 0`. Establish `e : adj o.jB ⬝ (gA S₀ ⬝ (mt S₀ k ⬝ o.jA)) = 0` using `by conv_lhs => rw [← hk]`. Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S₀) (mt S₀ k) o.jA, ← Matrix.mul_assoc (adj (mt S₀ k)) (gA S₀ ⬝ mt S₀ k) o.jA, mt_unitary, o.gram_BA]`. Rewrite using `[o.pB_eq, Matrix.mul_assoc, Matrix.mul_assoc, e, Matrix.mul_zero]`. Take `⟨M, hM⟩ : ∃ M : Mx D A.rank A.rank, M = o.pA ⬝ (mt S₀ k ⬝ o.jA)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hA : mt S₀ k ⬝ o.jA = o.jA ⬝ M`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : adj M * (gA A * M) = gA A`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[adj_mul, ← o.gram_AA]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = adj (mt S₀ k ⬝ o.jA) ⬝ (gA S₀ ⬝ (mt S₀ k ⬝ o.jA)) := by rw [hA]`. Use `_ = gA A := by`. Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S₀) (mt S₀ k) o.jA, ← Matrix.mul_assoc (adj (mt S₀ k)) (gA S₀ ⬝ mt S₀ k) o.jA, mt_unitary, o.gram_AA]`. Establish `key : mt S₀ k = o.jA ⬝ M ⬝ o.pA + o.jB ⬝ o.pB`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : mt S₀ k ⬝ (o.jA ⬝ o.pA + o.jB ⬝ o.pB) = mt S₀ k` using `by rw [o.sum_eq_one]; exact Matrix.mul_one _`. Rewrite `e` using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, hk]`. Conclude with `e.symm`. Conclude with `⟨ofMat A M hu, mt_injective S₀ (by rw [o.mt_emb, mt_ofMat, mt_one, Matrix.mul_one, key])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_emb_of_fix {k : GA D S₀} (hk : mt S₀ k ⬝ o.jB = o.jB) : ∃ a : GA D A, o.emb (a, 1) = k := by
   have h1 : o.pB ⬝ (mt S₀ k ⬝ o.jA) = 0 := by
@@ -183,17 +181,17 @@ def prodSub : Subgroup (GA D S) where
     rw [map_inv]; group
 
 /- English proof (translation)
-The claim follows from `sup_le (fun n hn => ⟨n, hn, 1, by simp⟩) (by rintro _ ⟨h, rfl⟩; exact ⟨1, one_mem _, h, by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem besGrp_le_prodSub : besGrp d o ≤ prodSub d o :=
   sup_le (fun n hn => ⟨n, hn, 1, by simp⟩) (by rintro _ ⟨h, rfl⟩; exact ⟨1, one_mem _, h, by simp⟩)
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨n, hn, h, rfl⟩` from `besGrp_le_prodSub d o hg`. Use `⟨mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨o.emb (h, 1), rfl⟩), ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show d.p0 ⬝ (mt S (n * d.emb0 (o.emb (h, 1))) ⬝ d.j0) ⬝ o.jB = o.jB`. Rewrite using `[witt_anisotropic_block_flag_mul_embedded d hn, o.emb_jB, mt_one, Matrix.mul_one]`. Introduce and unpack `⟨hg, he⟩`. Take `⟨n, hn, k, rfl⟩` from `((GlobalTheory.MixPer.flag_jacobi_structure D S S₀ ρ d).2.2.2.1 g).1 hg`. Establish `he' : d.p0 ⬝ (mt S (n * d.emb0 k) ⬝ d.j0) ⬝ o.jB = o.jB` using `he`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he'` using `[witt_anisotropic_block_flag_mul_embedded d hn]`. Take `⟨a, ha⟩` from `exists_emb_of_fix o he'`. Conclude with `mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨a, by rw [embA_apply, ha]⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem besGrp_eq_inter :
     (besGrp d o : Set (GA D S)) = (jacGrp d : Set (GA D S)) ∩ {g | d.p0 ⬝ (mt S g ⬝ d.j0) ⬝ o.jB = o.jB} := by
@@ -212,7 +210,7 @@ theorem besGrp_eq_inter :
     exact mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨a, by rw [embA_apply, ha]⟩)
 
 /- English proof (translation)
-Introduce `D S S₀ A L ρ d o`. Rewrite using `[besGrp_eq_inter]`. Use `haveI : T2Space (Mx D S₀.rank L.rank) := (lattice_Mx D _ _).2.2.2.1`. Conclude with `(jacGrp_closed d).inter (isClosed_eq ((continuous_const.matrix_mul ((continuous_mt S).matrix_mul continuous_const)).matrix_mul continuous_const) continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besGrp_isClosed : ∀ (D : D7) (S S₀ A L : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L),
     IsClosed (besGrp d o : Set (GA D S)) := by

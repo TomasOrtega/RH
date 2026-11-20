@@ -3,11 +3,11 @@ import Formalism.PadicSubsetSums.StableGradedCounts.TWIndexScale
 namespace Formalism.IrreducibleCountingLemmas.TW
 
 /- English proof (translation)
-Introduce `O K V _ _ _ _ _ _ _ _ _ _ _ M B N N' c e ε hM hB hN hN' hc he hle`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Rewrite `hle` using `[index_scaling O K V B N' ϖ u n hB hN' hϖ, index_scaling O K V B N ϖ u n hB hN hϖ]`. Establish `a` using `(index_additive O K V M N N' hM hN hN').2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `b` using `(index_additive O K V B N N' hB hN hN').2`. Establish `d : sIdx M N' - sIdx M N = sIdx B N' - sIdx B N` using `by omega`. Establish `d' : (sIdx M N' : ℝ) - sIdx M N = sIdx B N' - sIdx B N` using `by exact_mod_cast d`. Move the coercions through the operations in `at hle`. Rewrite `hle` using `[add_div, add_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (sIdx M N' : ℝ) / e - sIdx M N / e = sIdx B N' / e - sIdx B N / e`. Rewrite using `[← sub_div, ← sub_div, d']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem export_transfer_holds : ExportTransfer := by
   intro O K V _ _ _ _ _ _ _ _ _ _ _ M B N N' c e ε hM hB hN hN' hc he hle

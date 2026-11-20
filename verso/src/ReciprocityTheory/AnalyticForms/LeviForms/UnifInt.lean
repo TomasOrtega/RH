@@ -36,7 +36,7 @@ def UnifExpandStatement : Prop :=
             mInt A (Fin.cons L' Φ) u
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs`. Simplify using `only [integralWith, mul_neg, neg_mul, integral_neg, Finset.sum_neg_distrib]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_neg_integrand {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) (g : X → ℝ) : mInt A Φ (fun y => -g y) = -mInt A Φ g := by

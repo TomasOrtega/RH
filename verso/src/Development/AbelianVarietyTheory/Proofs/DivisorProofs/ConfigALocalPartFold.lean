@@ -12,13 +12,11 @@ noncomputable section
 namespace GlobalTheory.ThK.LemF.InfMove
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B b a' G G₁ H H' _ e _ ei ev _ X om om' om₁ om₁' hT _ g hg w f`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`. Take `⟨r, h0, hr⟩` from `exists_rest_inf F (Fin (b + 2) × Fin (b + 2 + a'))`. Establish `hA : ∀ f : SInf F (Fin (b + 2) × Fin (b + 2 + a')), ∃ f₁ : SInf F (Fin (b + 2) × Fin (b + 2 + a')), Acts (evI F) (om (g, 1)) f f₁` using `fun f => GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ (b + 2) (b + 2 + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hT.base.cm hT.base.std hT.weil g hg f`. Establish `hact : actAB (cA σ) ((g, 1) : UA σ G.V.J × UA σ G.W.J) (partInf F w) = partInf F (actAB (cA σ) ((g, 1) : UA σ G.V.J × UA σ G.W.J) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `mat g * (realAd F 1 • w) * (mat (1 : UA σ G.W.J))ᵀ = realAd F 1 • (mat g * w * (mat (1 : UA σ G.W.J))ᵀ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `set f' := locOpInf (G.M.co.rho B.ψ (partInf F w)) f`. Use `set f1 := locOpInf (om (g, 1)) f`. Establish `e1` using `(locOpInf_rho G.M.co hT.base.std w f).1 r (hr f)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `acts_locOpInf (hA f') r (hr f')`. Establish `e3` using `acts_locOpInf (hA f) r (hr f)`. Establish `e4` using `(locOpInf_rho G.M.co hT.base.std (actAB (cA σ) ((g, 1) : UA σ G.V.J × UA σ G.W.J) w) f1).1 r (hr f1)`. Establish `himpl` using `hS.impl ((g, 1) : UA σ G.V.J × UA σ G.W.J) (partInf F w) _ (hr f).2`. Rewrite `himpl` using `[hact, e1, e2, e3, e4]`.
-
-Conclude with `DFunLike.coe_injective (eq_of_tens_inf h0 (hr f).1 himpl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_moves_rho_inf : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

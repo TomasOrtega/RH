@@ -8,7 +8,7 @@ open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, ⟨_, hy⟩, rfl⟩ a ha`. Use `show (if (j : ℕ) ≤ a then y a else 0) = 0`. Use `split_ifs with h`. Conclude with `hy a (by have : (a : ℕ) ≠ j := fun e => ha (Fin.ext e); omega)`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gr_at {K : Type} [Field K] [NumberField K] {r : ℕ} (Lp : Submodule (𝓞 K) (Fin r → K))
     (j : Fin r) : ∀ x ∈ (Lp ⊓ cutSub K r (j + 1)).map (projGe K r j), IsAt j x := by
@@ -19,9 +19,9 @@ theorem gr_at {K : Type} [Field K] [NumberField K] {r : ℕ} (Lp : Submodule (�
   · rfl
 
 /- English proof (translation)
-Take `⟨a, ha, hav⟩` from `hsp (Pi.single j 1)`. Establish `hcut : a • (Pi.single j 1 : Fin r → K) ∈ cutSub K r (j + 1)`. Introduce `i hi`. Establish `: i ≠ j` using `fun e => by rw [e] at hi; omega`. Simplify using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨projGe K r j (a • Pi.single j 1), ⟨_, ⟨hav, hcut⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (if (j : ℕ) ≤ j then (a • (Pi.single j 1 : Fin r → K)) j else 0) ≠ 0`. Rewrite using `[if_pos le_rfl]`. Simplify using `using ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_at {K : Type} [Field K] [NumberField K] {r : ℕ} (Lp : Submodule (𝓞 K) (Fin r → K))
     (hsp : ∀ v : Fin r → K, ∃ a : 𝓞 K, a ≠ 0 ∧ a • v ∈ Lp) (j : Fin r) :
@@ -37,15 +37,15 @@ theorem exists_at {K : Type} [Field K] [NumberField K] {r : ℕ} (Lp : Submodule
   simpa using ha
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, ⟨hxL, hxc⟩, rfl⟩ _ ⟨y, ⟨hyL, hyc⟩, rfl⟩`. Establish `hrev` using `Fin.val_rev j`. Establish `hj'` using `j.isLt`. Establish `e1 : projGe K r j x j = x j` using `by show (if (j : ℕ) ≤ j then x j else 0) = x j`. Rewrite using `[if_pos le_rfl]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : projGe K r (Fin.rev j) y (Fin.rev j) = y (Fin.rev j)` using `by show (if ((Fin.rev j : Fin r) : ℕ) ≤ (Fin.rev j : Fin r) then y (Fin.rev j) else 0) = _`. Rewrite using `[if_pos le_rfl]`. Rewrite using `[e1, e2]`. Establish `h` using `hint x hxL y hyL`. Rewrite `h` using `[formM_witt, Finset.sum_eq_single j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[wVal_outer r m g j (Or.inl hj), wPart_outer r m j (Or.inl hj), one_mul]`. Then use the resulting hypothesis. Introduce `a _ ha`. Distinguish the cases in `hlt : (a : ℕ) < j`. Establish `hao : (a : ℕ) < m ∨ r ≤ (a : ℕ) + m` using `Or.inl (by omega)`. Rewrite using `[wPart_outer r m a hao]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: y (Fin.rev a) = 0` using `hyc _ (by rw [Fin.val_rev, Fin.val_rev]; omega)`. Rewrite using `[this, mul_zero, mul_zero]`. Establish `: x a = 0` using `hxc a (by have : (a : ℕ) ≠ j := fun e => ha (Fin.ext e); omega)`. Rewrite using `[this, map_zero, zero_mul]`. Introduce `h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h'`.
+A detailed English derivation is pending.
 -/
 theorem pair_int {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) (m : ℕ)
     (g : Fin r → K) (h2m : 2 * m ≤ r) (Lp : Submodule (𝓞 K) (Fin r → K))
@@ -79,7 +79,7 @@ theorem pair_int {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K 
     exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, ⟨_, hy⟩, rfl⟩ a ha`. Use `show (if m ≤ (a : ℕ) then y a else 0) = 0`. Use `split_ifs with h`. Conclude with `hy a (by omega)`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mid_supp {K : Type} [Field K] [NumberField K] {r : ℕ} (m : ℕ)
     (Lp : Submodule (𝓞 K) (Fin r → K)) :
@@ -92,15 +92,15 @@ theorem mid_supp {K : Type} [Field K] [NumberField K] {r : ℕ} (m : ℕ)
   · rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, ⟨hxL, hxc⟩, rfl⟩ _ ⟨y, ⟨hyL, hyc⟩, rfl⟩`. Establish `h` using `hint x hxL y hyL`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[formM_witt]`. Simplify using `only [HermForm.h, midForm, midG, Matrix.diagonal_apply, mul_ite, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ha` using `a.isLt`. Use `show (if m ≤ (a : ℕ) ∧ (a : ℕ) + m < r then S.c (if m ≤ (a : ℕ) then x a else 0) * g a * (if m ≤ (a : ℕ) then y a else 0) else 0) = _`. Distinguish the cases in `hmid : m ≤ (a : ℕ) ∧ (a : ℕ) + m < r`. Establish `ho : ¬ ((a : ℕ) < m ∨ r ≤ (a : ℕ) + m)` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos hmid, if_pos hmid.1]`. Rewrite using `[wVal_mid r m g a ho, wPart_mid r m a ho]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hmid]`. Distinguish the cases in `hlt : (a : ℕ) < m`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `ho : (a : ℕ) < m ∨ r ≤ (a : ℕ) + m` using `Or.inl hlt`. Rewrite using `[wPart_outer r m a ho]`. Establish `: y (Fin.rev a) = 0` using `hyc _ (by rw [Fin.val_rev]; omega)`. Rewrite using `[this, mul_zero, mul_zero]`. Establish `: x a = 0` using `hxc a (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mid_int {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) (m : ℕ)
     (g : Fin r → K) (hfix : ∀ a : Fin r, m ≤ (a : ℕ) → (a : ℕ) + m < r → S.c (g a) = g a)

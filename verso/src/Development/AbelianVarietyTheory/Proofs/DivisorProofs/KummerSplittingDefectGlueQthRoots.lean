@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.EtC.KumPic.DvGlue
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem unitsMap_comp_appTop {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Units.map (k ≫ g).appTop.hom.toMonoidHom u =
@@ -23,14 +23,14 @@ private theorem unitsMap_comp_appTop {W V U : Scheme.{0}} (k : W ⟶ V) (g : V �
   rfl
 
 /- English proof (translation)
-Simplify using `using h.map g.appTop.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_natCast_appTop {V U : Scheme.{0}} (g : V ⟶ U) (q : ℕ) (h : IsUnit (q : Γ(U, ⊤))) :
     IsUnit (q : Γ(V, ⊤)) := by
   simpa using h.map g.appTop.hom
 
 /- English proof (translation)
-Unfold `dv`. Rewrite using `[show ∀ a b : Sec ((res ℤ (twZ q)).X 0) U, Sec.res g (a - b) = Sec.res g a - Sec.res g b from fun a b => map_sub _ a b]`. Rewrite using `[PicSpec.sec_map_res, PicSpec.unitSec_res, SemiMap.nat, (kumT_spec q).1 V U g v hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_res (q : ℕ) (φ : Gm ⟶ (res ℤ (twZ q)).X 0) {V U : Scheme.{0}} (g : V ⟶ U) (v : (Γ(U, ⊤))ˣ)
     (hq : IsUnit (q : Γ(U, ⊤))) :
@@ -41,15 +41,15 @@ theorem dv_res (q : ℕ) (φ : Gm ⟶ (res ℤ (twZ q)).X 0) {V U : Scheme.{0}} 
   rw [PicSpec.sec_map_res, PicSpec.unitSec_res, SemiMap.nat, (kumT_spec q).1 V U g v hq]
 
 /- English proof (translation)
-Introduce `q _ φ hdv U b hq`. Set `S : Sieve U` to `{ arrows := fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = Units.map g.appTop.hom.toMonoidHom b downward_closed := by`. Introduce and unpack `V W g ⟨v, hv⟩ k`. Use `⟨Units.map k.appTop.hom.toMonoidHom v, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hv, unitsMap_comp_appTop] }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : S ∈ Scheme.etaleTopology U`. Take `⟨S₀, hS₀, hP⟩` from `(GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).2.2.2 hq b`. Conclude with `GrothendieckTopology.superset_covering _ (fun V g hg => hP V g hg) hS₀`. Set `s : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec ((res ℤ (twZ q)).X 0) V` to `fun V g hg => dv q φ V hg.choose`. Establish `hcompat : ∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V) (hg : S.arrows g), Sec.res k (s V g hg) = s W (k ≫ g) (S.downward_closed hg k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V W g k hg`. Establish `hqV : IsUnit (q : Γ(V, ⊤))` using `isUnit_natCast_appTop g q hq`. Establish `hqW : IsUnit (q : Γ(W, ⊤))` using `isUnit_natCast_appTop k q hqV`. Express the relevant statement in the definitionally equal form `Sec.res k (dv q φ V hg.choose) = dv q φ W (S.downward_closed hg k).choose`. Rewrite using `[dv_res q φ k hg.choose hqV]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hdv W hqW _ _ ?_` and prove the remaining obligations. Rewrite using `[(S.downward_closed hg k).choose_spec, ← map_pow, hg.choose_spec, unitsMap_comp_appTop]`. Take `⟨a, ha⟩` from `(GlobalTheory.T.etaleSheafSections_ext_and_glue _ _ U).2 S hS s hcompat`. Use `⟨a, fun V g v hv => ?_⟩` and prove the remaining obligations. Establish `hg : S.arrows g` using `⟨v, hv⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha V g hg]`. Conclude with `hdv V (isUnit_natCast_appTop g q hq) _ _ (hg.choose_spec.trans hv.symm)`.
+A detailed English derivation is pending.
 -/
 theorem glue : ∀ (q : ℕ) [NeZero q] (φ : Gm ⟶ (res ℤ (twZ q)).X 0), (∀ (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ v v' : (Γ(U, ⊤))ˣ, v ^ q = v' ^ q → dv q φ U v = dv q φ U v') → ∀ (U : Scheme.{0}) (b : (Γ(U, ⊤))ˣ), IsUnit (q : Γ(U, ⊤)) → ∃ η : Sec ((res ℤ (twZ q)).X 0) U, ∀ (V : Scheme.{0}) (g : V ⟶ U) (v : (Γ(V, ⊤))ˣ), v ^ q = Units.map g.appTop.hom.toMonoidHom b → Sec.res g η = dv q φ V v := by
   intro q _ φ hdv U b hq

@@ -18,23 +18,21 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {P J : Ideal (MRing ι)} {e : ℕ}
 
 /- English proof (translation)
-Introduce `j K hK hKc`. Use `LocallyIntegrableOn.integrableOn_compact_subset ?_ hK hKc` and prove the remaining obligations. Introduce `u0 hu0`. Take `⟨a, ha, hsa, -⟩` from `hs`. Use `set x0 := (R.A.chart j).symm u0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set V := (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x0 with hVdef`. Establish `hV : IsOpen V` using `(R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x0)`. Establish `hu0V : u0 ∈ V` using `⟨hu0, R.mem_U x0⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hV u0 hu0V`. Use `set B := Metric.closedBall u0 (r / 2) with hBdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBV : B ⊆ V` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hBc : IsCompact B` using `isCompact_closedBall _ _`. Establish `hBm : MeasurableSet B` using `Metric.isClosed_closedBall.measurableSet`. Use `⟨B, mem_nhdsWithin_of_mem_nhds (Metric.closedBall_mem_nhds _ (by linarith)), ?_⟩` and prove the remaining obligations. Use `set γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ := fun u => R.lift x0 ((R.A.chart j).symm u) with hγdef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ : ∀ u ∈ V, AnalyticAt ℂ γ u` using `fun u hu => analyticAt_lift_chart R x0 j hu`. Use `set f : (Fin e → ℂ) → ℂ := fun u => eval (γ u) (map (Int.castRingHom ℂ) s) with hfdef`. Establish `hf : AnalyticOnNhd ℂ f V` using `fun u hu => analyticAt_eval_poly _ fun p => analyticAt_pi_iff.mp (hγ u hu) p`. Use `set H : (Fin e → ℂ) → ℝ := fun u => A.h (γ u) with hHdef`. Establish `hblk : ∀ u ∈ V, ∀ k, ∃ i, γ u ⟨k, i⟩ ≠ 0` using `fun u hu => (R.mem x0 _ hu.2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hHc : ContinuousOn H V` using `fun u hu => ((hA.continuousOn.continuousAt (isOpen_blockNonzero.mem_nhds (hblk u hu))).comp (hγ u hu).continuousAt).continuousWithinAt`. Establish `hHpos : ∀ u ∈ V, 0 < H u` using `fun u hu => A.pos _ (hblk u hu)`. Establish `hF : ∀ u ∈ V, logNorm A s (R.lift ((R.A.chart j).symm u) ((R.A.chart j).symm u)) = Real.log (‖f u‖ / H u)`. Introduce `u hu`. Take `⟨c, hc, hzc⟩` from `R.compat _ x0 _ ⟨R.mem_U _, hu.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hzc]`. Conclude with `logNorm_bsmul A ha hsa hc (γ u)`. Establish `hDc : ContinuousOn (locDens R.A (fun i => potOf R (L i)) j) B` using `(locDensCont R.A _ (fun i => isPotential_potOf R (hL i)) j).mono (hBV.trans inter_subset_left)`. Take `⟨M, hM⟩` from `hBc.exists_bound_of_continuousOn hDc`. Establish `hlogf : IntegrableOn (fun u => Real.log ‖f u‖) B` using `(hLA e V f hV hf).integrableOn_compact_subset hBV hBc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlogH : IntegrableOn (fun u => Real.log (H u)) B` using `((hHc.mono hBV).log fun u hu => (hHpos u (hBV hu)).ne').integrableOn_compact hBc`. Establish `hfc : ContinuousOn f B` using `fun u hu => (hf u (hBV hu)).continuousAt.continuousWithinAt`. Establish `hmeas : AEStronglyMeasurable (fun u => Real.log (‖f u‖ / H u) * locDens R.A (fun i => potOf R (L i)) j u) (volume.restrict B)`. Establish `h1 : AEStronglyMeasurable (fun u => ‖f u‖ / H u) (volume.restrict B)` using `(hfc.norm.div (hHc.mono hBV) fun u hu => (hHpos u (hBV hu)).ne').aestronglyMeasurable hBm`. Conclude with `(Real.measurable_log.comp_aemeasurable h1.aemeasurable).aestronglyMeasurable.mul (hDc.aestronglyMeasurable hBm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hint : IntegrableOn (fun u => Real.log (‖f u‖ / H u) * locDens R.A (fun i => potOf R (L i)) j u) B`. Use `Integrable.mono' ((hlogf.norm.add hlogH.norm).mul_const M) hmeas ?_` and prove the remaining obligations. Use `ae_restrict_of_forall_mem hBm fun u hu => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `hb` using `abs_log_div_le (norm_nonneg (f u)) (hHpos u (hBV hu))`.
-
-Simplify using `only [Real.norm_eq_abs] at hb ⊢`. Conclude with `mul_le_mul hb (hM u hu) (abs_nonneg _) (add_nonneg (abs_nonneg _) (abs_nonneg _))`. Use `hint.congr_fun (fun u hu => ?_) hBm` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hF u (hBV hu)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brIntegrable_of (hLA : LogAbsLocIntStatement) (R : AnRes P J e)
     (L : Fin e → HermLine ι) (A : HermLine ι) (s : MRing ι) (hL : ∀ j, IsSmoothHerm (L j))

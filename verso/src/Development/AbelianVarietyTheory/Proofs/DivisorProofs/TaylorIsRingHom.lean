@@ -8,7 +8,7 @@ namespace GlobalTheory.FormalOrigin.TaylorRingHom
 open Finset
 
 /- English proof (translation)
-Unfold `iterOp`. Rewrite using `[List.finRange_succ, List.foldr_cons, List.foldr_map]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem iterOp_succ {A : Type} {n : ℕ} (ds : Fin (n+1) → A → A) (α : Fin (n+1) →₀ ℕ) (f : A) :
     iterOp ds α f = (ds 0)^[α 0] (iterOp (fun i => ds i.succ) α.tail f) := by
@@ -35,7 +35,7 @@ theorem iterHom_apply {A : Type} [CommRing A] (D : Derivation ℤ A A) (k : ℕ)
     iterHom D k x = (⇑D)^[k] x := rfl
 
 /- English proof (translation)
-The claim follows from `| 0, ds, α => ⟨AddMonoidHom.id A, fun x => by have : α = 0 := Subsingleton.elim _ _ subst this; rw [iterOp_zero]; rfl⟩ | n+1, ds, α => by obtain ⟨F, hF⟩ := exists_iterOpHom (fun i => ds i.succ) α.tail exact ⟨(iterHom (ds 0) (α 0)).comp F, fun x => by rw [iterOp_succ, AddMonoidHom …`.
+A detailed English derivation is pending.
 -/
 theorem exists_iterOpHom {A : Type} [CommRing A] : ∀ {n : ℕ} (ds : Fin n → Derivation ℤ A A) (α : Fin n →₀ ℕ),
     ∃ F : A →+ A, ∀ x, F x = iterOp (fun i => ⇑(ds i)) α x
@@ -48,15 +48,15 @@ theorem exists_iterOpHom {A : Type} [CommRing A] : ∀ {n : ℕ} (ds : Fin n →
         rw [iterOp_succ, AddMonoidHom.comp_apply, iterHom_apply, hF]⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product']`. Use `Finset.sum_nbij' (fun p => ((p.1 0, p.2 0), (p.1.tail, p.2.tail))) (fun x => (Finsupp.cons x.1.1 x.2.1, Finsupp.cons x.1.2 x.2.2)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨p1, p2⟩ h`. Simplify using `only [mem_coe, HasAntidiagonal.mem_antidiagonal] at h`. Simplify using `only [mem_coe, mem_product, HasAntidiagonal.mem_antidiagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Finsupp.tail_apply]`. Introduce and unpack `⟨⟨j, k⟩, ⟨r1, r2⟩⟩ h`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [mem_coe, mem_product, HasAntidiagonal.mem_antidiagonal] at h`. Simplify using `only [mem_coe, HasAntidiagonal.mem_antidiagonal]`. Use extensionality with `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[h.1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `DFunLike.congr_fun h.2 i` as an intermediate fact. Simplify `this` using `[Finsupp.tail_apply]`. Introduce and unpack `⟨p1, p2⟩ _`. Simplify using `[Finsupp.cons_tail]`. Introduce and unpack `⟨⟨j, k⟩, ⟨r1, r2⟩⟩ _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[Finsupp.tail_cons]`. Introduce and unpack `⟨p1, p2⟩ _`. Simplify using `[Finsupp.cons_tail]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem sum_antidiagonal_succ {M : Type} [AddCommMonoid M] {n : ℕ} (α : Fin (n+1) →₀ ℕ)
     (F : (Fin (n+1) →₀ ℕ) → (Fin (n+1) →₀ ℕ) → M) :
@@ -93,7 +93,7 @@ namespace GlobalTheory.FormalOrigin.TaylorRingHom
 open Finset
 
 /- English proof (translation)
-The claim follows from `| 0, ds, α, f, g => by have : α = 0 := Subsingleton.elim _ _ subst this simp [iterOp_zero] | n+1, ds, α, f, g => by have ih := iterOp_mul (fun i => ds i.succ) α.tail f g have hs : ∀ (β : Fin (n+1) →₀ ℕ) x, iterOp (fun i => ⇑(ds i)) β x = (⇑(ds 0))^[β 0] (iterOp (fun i => ⇑(ds i.s …`.
+A detailed English derivation is pending.
 -/
 theorem iterOp_mul {A : Type} [CommRing A] : ∀ {n : ℕ} (ds : Fin n → Derivation ℤ A A) (α : Fin n →₀ ℕ) (f g : A),
     iterOp (fun i => ⇑(ds i)) α (f * g) = ∑ p ∈ antidiagonal α,
@@ -122,7 +122,7 @@ namespace GlobalTheory.FormalOrigin.TaylorRingHom
 open Finset
 
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ k`. Rewrite using `[Function.iterate_succ_apply, D.map_one_eq_zero, ← iterHom_apply, map_zero]`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iterate_one {A : Type} [CommRing A] (D : Derivation ℤ A A) (k : ℕ) :
     (⇑D)^[k] 1 = if k = 0 then 1 else 0 := by
@@ -133,9 +133,9 @@ theorem iterate_one {A : Type} [CommRing A] (D : Derivation ℤ A A) (k : ℕ) :
     simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨rfl, by ext i; simp [Finsupp.tail_apply]⟩`. Introduce and unpack `⟨h0, ht⟩`. Use extensionality with `i`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using h0`. Use `DFunLike.congr_fun ht i` as an intermediate fact. Simplify `this` using `[Finsupp.tail_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_iff_succ {n : ℕ} (α : Fin (n+1) →₀ ℕ) : α = 0 ↔ α 0 = 0 ∧ α.tail = 0 := by
   constructor
@@ -149,7 +149,7 @@ theorem eq_zero_iff_succ {n : ℕ} (α : Fin (n+1) →₀ ℕ) : α = 0 ↔ α 0
       simpa [Finsupp.tail_apply] using this
 
 /- English proof (translation)
-The claim follows from `| 0, ds, α => by have : α = 0 := Subsingleton.elim _ _ subst this simp [iterOp_zero] | n+1, ds, α => by have ih := iterOp_one (fun i => ds i.succ) α.tail have hs : ∀ (β : Fin (n+1) →₀ ℕ) x, iterOp (fun i => ⇑(ds i)) β x = (⇑(ds 0))^[β 0] (iterOp (fun i => ⇑(ds i.succ)) β.tail x) …`.
+A detailed English derivation is pending.
 -/
 theorem iterOp_one {A : Type} [CommRing A] : ∀ {n : ℕ} (ds : Fin n → Derivation ℤ A A) (α : Fin n →₀ ℕ),
     iterOp (fun i => ⇑(ds i)) α 1 = if α = 0 then 1 else 0
@@ -169,7 +169,7 @@ theorem iterOp_one {A : Type} [CommRing A] : ∀ {n : ℕ} (ds : Fin n → Deriv
         simp [eq_zero_iff_succ α, ht]
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_iterOpHom ds α`. Rewrite using `[← hF, ← hF, ← hF, map_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterOp_add {A : Type} [CommRing A] {n : ℕ} (ds : Fin n → Derivation ℤ A A) (α : Fin n →₀ ℕ) (f g : A) :
     iterOp (fun i => ⇑(ds i)) α (f + g) = iterOp (fun i => ⇑(ds i)) α f + iterOp (fun i => ⇑(ds i)) α g := by
@@ -177,7 +177,7 @@ theorem iterOp_add {A : Type} [CommRing A] {n : ℕ} (ds : Fin n → Derivation 
   rw [← hF, ← hF, ← hF, map_add]
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_iterOpHom ds α`. Rewrite using `[← hF, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterOp_zero' {A : Type} [CommRing A] {n : ℕ} (ds : Fin n → Derivation ℤ A A) (α : Fin n →₀ ℕ) :
     iterOp (fun i => ⇑(ds i)) α 0 = 0 := by
@@ -185,13 +185,13 @@ theorem iterOp_zero' {A : Type} [CommRing A] {n : ℕ} (ds : Fin n → Derivatio
   rw [← hF, map_zero]
 
 /- English proof (translation)
-Establish `hfac : ∀ i, ((α i).choose (p.1 i) : ℚ) * (((p.1 i).factorial : ℚ) * ((p.2 i).factorial : ℚ)) = ((α i).factorial : ℚ)`. Introduce `i`. Establish `e : α i = p.1 i + p.2 i` using `by rw [← hp]; rfl`. Establish `h2 : p.2 i = α i - p.1 i` using `by omega`. Use `Nat.choose_mul_factorial_mul_factorial (n := α i) (k := p.1 i) (by omega)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← h2]`. Rewrite using `[← mul_assoc]`. Conclude with `this` after adjusting the coercions. Establish `hprod : (∏ i, ((α i).choose (p.1 i) : ℚ)) * ((∏ i, ((p.1 i).factorial : ℚ)) * ∏ i, ((p.2 i).factorial : ℚ)) = ∏ i, ((α i).factorial : ℚ)`. Rewrite using `[← prod_mul_distrib, ← prod_mul_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `prod_congr rfl fun i _ => hfac i`. Establish `h1 : (∏ i, ((p.1 i).factorial : ℚ)) ≠ 0` using `prod_ne_zero_iff.mpr fun i _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h2 : (∏ i, ((p.2 i).factorial : ℚ)) ≠ 0` using `prod_ne_zero_iff.mpr fun i _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h3 : (∏ i, ((α i).choose (p.1 i) : ℚ)) ≠ 0` using `prod_ne_zero_iff.mpr fun i _ => Nat.cast_ne_zero.mpr (Nat.choose_pos (by`. Establish `e : α i = p.1 i + p.2 i` using `by rw [← hp]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega)).ne'`. Use `push_cast`. Rewrite using `[← hprod]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem factor_identity {n : ℕ} (α : Fin n →₀ ℕ) (p : (Fin n →₀ ℕ) × (Fin n →₀ ℕ)) (hp : p.1 + p.2 = α) :
     (∏ i, ((α i).factorial : ℚ))⁻¹ * ((∏ i, (α i).choose (p.1 i) : ℕ) : ℚ) =
@@ -227,17 +227,17 @@ namespace GlobalTheory.FormalOrigin
 open Finset TaylorRingHom
 
 /- English proof (translation)
-Introduce `A B _ _ _ n ev ds`. Use `⟨{ toFun := taylor ev (fun i => ⇑(ds i)) map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun f => rfl⟩` and prove the remaining obligations. Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_apply, MvPowerSeries.coeff_one]`. Unfold `taylor`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[iterOp_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g`. Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_mul]`. Simplify using `only [MvPowerSeries.coeff_apply]`. Unfold `taylor`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iterOp_mul, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[map_nsmul, map_mul, nsmul_eq_mul, Algebra.smul_def, Algebra.smul_def, Algebra.smul_def, ← map_natCast (algebraMap ℚ B), ← mul_assoc, ← map_mul, factor_identity α p hp, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_apply, map_zero]`. Unfold `taylor`. Rewrite using `[iterOp_zero', map_zero, smul_zero]`. Introduce `f g`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_apply, map_add, MvPowerSeries.coeff_apply, MvPowerSeries.coeff_apply]`. Unfold `taylor`. Rewrite using `[iterOp_add, map_add, smul_add]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem taylor_isRingHom : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra ℚ B] (n : ℕ) (ev : A →+* B)
     (ds : Fin n → Derivation ℤ A A), ∃ T : A →+* MvPowerSeries (Fin n) B, ∀ f, T f = taylor ev (fun i => ⇑(ds i)) f := by

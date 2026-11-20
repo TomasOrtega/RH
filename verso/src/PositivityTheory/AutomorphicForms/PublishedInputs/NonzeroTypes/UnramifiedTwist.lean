@@ -12,9 +12,9 @@ namespace UpperTheory.TNZ
 namespace UnramifiedTwist
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.charpoly_sub_smul (c • (1 : Module.End ℂ V)) c`. Rewrite `h1` using `[sub_self, LinearMap.charpoly_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Polynomial.comp_assoc]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (X - C c) ^ Module.finrank ℂ V := by rw [← h1, Polynomial.X_pow_comp]`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_smul_one {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (c : ℂ) :
     (c • (1 : Module.End ℂ V)).charpoly = (X - C c) ^ Module.finrank ℂ V := by
@@ -26,7 +26,7 @@ theorem charpoly_smul_one {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDim
     _ = (X - C c) ^ Module.finrank ℂ V := by rw [← h1, Polynomial.X_pow_comp]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun v => funext fun i => by simp`.
+A detailed English derivation is pending.
 -/
 theorem diagEnd_const (c : ℂ) :
     diagEnd (fun _ : Fin 1 => c) = c • (1 : Module.End ℂ (Fin 1 → ℂ)) :=
@@ -36,9 +36,9 @@ end UnramifiedTwist
 
 open UnramifiedTwist in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h u ψ hψ hu`. Take `⟨n, a, rfl⟩` from `WD.exists_rep u`. Rewrite `hu` using `[WD.unr_mk]`. Take `⟨hN, hI⟩` from `hu`. Simplify using `only [WD.lpOfChar, WD.lpChar_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.charPol_mk, WD.lpDim_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[WDRep.tensor_N, hN, WDRep.ofChars_N]`. Simplify using the standard rewrite rules. Rewrite using `[WDRep.tensor_ρ, hI t, WDRep.ofChars_ρ, diagEnd_const, TensorProduct.map_smul_right, TensorProduct.map_one, charpoly_smul_one, Module.finrank_tensorProduct]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem step_unrTwist : UnramifiedTwistProp := by
   intro E Ω _ _ _ _ _ A w h u ψ hψ hu

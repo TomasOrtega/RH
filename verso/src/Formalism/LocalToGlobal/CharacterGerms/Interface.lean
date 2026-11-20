@@ -180,7 +180,7 @@ variable {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype 
 def Alt : Prop := Even d ∧ ∀ a : ZMod d, (X.big 0 a ↔ Even a.val)
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem d_even (h : X.Alt) : Even d := h.1
 

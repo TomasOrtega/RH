@@ -18,14 +18,14 @@ noncomputable section
 namespace GlobalTheory.SectionLattice
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_pull_chart_iff {X Y : Scheme.{0}} (L : LB X) (f : Y ⟶ X) (j : (L.pull f).ι) (y : Y) :
     y ∈ (L.pull f).U j ↔ f.base y ∈ L.U (j PUnit.unit) :=
   ⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩
 
 /- English proof (translation)
-Establish `h : e.base (IsLocalRing.closedPoint R) ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Take `⟨m, hm⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use `(IsLocalRing.closedPoint_mem_iff (R := R) (e ⁻¹ᵁ L.U m)).1 hm` as an intermediate fact. Conclude with `this.ge`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_chart_of_isLocalRing {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}}
     (L : LB X) (hL : L.IsLB) (e : Spec (CommRingCat.of R) ⟶ X) : ∃ m : L.ι, ⊤ ≤ e ⁻¹ᵁ L.U m := by
@@ -36,17 +36,15 @@ theorem exists_chart_of_isLocalRing {R : Type} [CommRing R] [IsLocalRing R] {X :
   exact this.ge
 
 /- English proof (translation)
-Introduce `W K' _ _ _ _ _ _ G σ τ hσ φ e₀ he₀ hφ ρ x hx₁ hx₂ _ M N hM hN w w₁ H`. Take `⟨m, hm⟩` from `exists_chart_of_isLocalRing M hM e₀`. Take `⟨n, hn⟩` from `exists_chart_of_isLocalRing N hN x`. Establish `hi : ⊤ ≤ e₀ ⁻¹ᵁ (M.pull φ).U (fun _ => m)`. Introduce `y _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `e₀.base y ∈ (M.pull φ).U (fun _ => m)`. Use `(mem_pull_chart_iff _ _ _ _).2 ?_` and prove the remaining obligations. Establish `h1 : φ.base (e₀.base y) = e₀.base ((spMap τ).base y)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hφ]`. Rewrite using `[h1]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm (TopologicalSpace.Opens.mem_top _)`. Establish `key : ∀ (P : LB G.left) (i : P.ι), ⊤ ≤ e₀ ⁻¹ᵁ P.U i → ⊤ ≤ x ⁻¹ᵁ (N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i))`. Introduce `P i hP y hy`. Use `⟨hn hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.base y ∈ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_pull_chart_iff _ _ _ _).2 ?_` and prove the remaining obligations. Establish `h1 : (pullback.fst G.hom (spMap (algebraMap W K'))).base (x.base y) = e₀.base ((spMap (algebraMap W K')).base y)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hx₁]`. Rewrite using `[h1]`. Conclude with `hP (TopologicalSpace.Opens.mem_top _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `key (M.pull φ) (fun _ => m) hi`. Establish `h₂` using `key M m hm`. Establish `hw` using `H n (fun _ _ => m) h₁ h₂`. Establish `hu : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE _ ⊤ h₂).hom (w.s (n, fun _ => m)).val))` using `((Units.isUnit _).map _).map _`. Take `⟨a, ha⟩` from `hσ _ hu.ne_zero`.
-
-Conclude with `⟨e₀, he₀, x, hx₁, hx₂, fun _ => m, m, n, hi, hm, h₁, h₂, a, hw.trans ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integralAtSection_of_conj : ∀ (W K' : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] (G : Over (Sp W)) (σ : K' ≃+* K') (τ : W →+* W), (∀ l : K', l ≠ 0 → ∃ a : W, σ l = algebraMap W K' a * l) → ∀ (φ : G.left ⟶ G.left) (e₀ : Sp W ⟶ G.left), e₀ ≫ G.hom = 𝟙 _ → e₀ ≫ φ = spMap τ ≫ e₀ → ∀ (ρ : pullback G.hom (spMap (algebraMap W K')) ⟶ pullback G.hom (spMap (algebraMap W K'))) (x : Sp K' ⟶ pullback G.hom (spMap (algebraMap W K'))), x ≫ pullback.fst G.hom (spMap (algebraMap W K')) = spMap (algebraMap W K') ≫ e₀ → x ≫ pullback.snd G.hom (spMap (algebraMap W K')) = 𝟙 _ → x ≫ ρ = spMap (σ : K' →+* K') ≫ x → ∀ (M : LB G.left) (N : LB (pullback G.hom (spMap (algebraMap W K')))), M.IsLB → N.IsLB → ∀ (w : LB.Iso (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))) N) (w₁ : LB.Iso ((M.pull φ).pull (pullback.fst G.hom (spMap (algebraMap W K')))) N), (∀ (n : N.ι) (i : ((M.pull φ).pull (pullback.fst G.hom (spMap (algebraMap W K')))).ι) (h : ⊤ ≤ x ⁻¹ᵁ (N.U n ⊓ ((M.pull φ).pull (pullback.fst G.hom (spMap (algebraMap W K')))).U i)) (h' : ⊤ ≤ x ⁻¹ᵁ (N.U n ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i PUnit.unit PUnit.unit))), (Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE _ ⊤ h).hom (w₁.s (n, i)).val) = σ ((Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE _ ⊤ h').hom (w.s (n, fun _ => i PUnit.unit PUnit.unit)).val))) → GlobalTheory.SectionLattice.IntegralAtSection G.hom w w₁ := by
   intro W K' _ _ _ _ _ _ G σ τ hσ φ e₀ he₀ hφ ρ x hx₁ hx₂ _ M N hM hN w w₁ H

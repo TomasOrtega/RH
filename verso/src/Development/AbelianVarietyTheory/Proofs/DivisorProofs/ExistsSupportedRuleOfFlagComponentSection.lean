@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)}
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `(opensRange_inc X).ge hy`. Use `⟨(pullback.snd X.π Y.j) w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_j_of_mem_flagOpen (X : FlagCover Y) {y : X.YY} (hy : y ∈ flagOpen X) :
     ∃ x : Xo.XF c, X.π y = Y.j x := by
@@ -33,7 +33,7 @@ theorem exists_j_of_mem_flagOpen (X : FlagCover Y) {y : X.YY} (hy : y ∈ flagOp
   rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]
 
 /- English proof (translation)
-The claim follows from `Set.ext_iff.1 (Y.j.isOpenEmbedding.isOpenMap.preimage_closure_image Y.j.isOpenEmbedding.injective Y.j.continuous _ hs) x`.
+A detailed English derivation is pending.
 -/
 theorem j_mem_closure_iff {s : Set (Xo.XF c)} (hs : IsClosed s) (x : Xo.XF c) :
     Y.j x ∈ closure (Y.j '' s) ↔ x ∈ s :=
@@ -49,7 +49,7 @@ def openOff : X.YY.Opens :=
   flagOpen X ⊓ X.π ⁻¹ᵁ ⟨(closure (Y.j '' (Z : Set (Xo.XF c))))ᶜ, isClosed_closure.isOpen_compl⟩
 
 /- English proof (translation)
-Introduce `y hy` and use `by obtain ⟨x, hx⟩ := exists_j_of_mem_flagOpen X hy by_cases hZ : x ∈ (Z : Set (Xo.XF c)) · refine Or.inl ⟨hy, ?_⟩ show X.π y ∈ barComp Y Z rw [hx]; exact (j_mem_barComp Z x).2 hZ · refine Or.inr ⟨hy, ?_⟩ show X.π y ∉ closure (Y.j '' (Z : Set (Xo.XF c))) rw [hx, j_mem_closure_iff …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem flagOpen_le_sup : flagOpen X ≤ openOn X Z ⊔ openOff X Z := fun y hy => by
   obtain ⟨x, hx⟩ := exists_j_of_mem_flagOpen X hy
@@ -63,7 +63,7 @@ theorem flagOpen_le_sup : flagOpen X ≤ openOn X Z ⊔ openOff X Z := fun y hy 
     exact hZ
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_j_of_mem_flagOpen X h₁.1`. Establish `a : X.π y ∈ barComp Y Z` using `h₁.2`. Establish `b : X.π y ∉ closure (Y.j '' (Z : Set (Xo.XF c)))` using `h₂.2`. Rewrite `a`, `b` using `[hx]`. Conclude with `b (subset_closure ⟨x, (j_mem_barComp Z x).1 a, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_openOn_openOff {y : X.YY} (h₁ : y ∈ openOn X Z) (h₂ : y ∈ openOff X Z) : False := by
   obtain ⟨x, hx⟩ := exists_j_of_mem_flagOpen X h₁.1
@@ -79,17 +79,15 @@ section Glue
 variable {X : FlagCover Y} {Z : Comp Xo c} {e : Ix Dw → ℤ}
 
 /- English proof (translation)
-Establish `hiso : IsoOver (inc₀ X Z) (openOn X Z)` using `isoOver_of_isOpenImmersion _ (by`. Rewrite using `[Scheme.Opens.opensRange_ι]`. Conclude with `inf_le_right)`. Establish `e₁ : U₀ X Z ≤ inc₀ X Z ⁻¹ᵁ openOn X Z` using `fun z hz => ⟨hz, z.2⟩`. Establish `e₂ : inc₀ X Z ⁻¹ᵁ openOn X Z ≤ U₀ X Z` using `fun z hz => hz.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, hm₁⟩` from `(hiso.bijective_pull (p := flagStr X) (X.F.isLB_LL e) e₁ e₂).2 m`. Set `W : Bool → X.YY.Opens` to `fun b => Bool.rec (openOff X Z) (openOn X Z) b`. Apply the tactic sequence `have hW : ∀ b, W b ≤ flagOpen X := fun b => by cases b <;> exact inf_le_left`. Establish `hc : flagOpen X ≤ iSup W` using `fun y hy => by`. Break down `flagOpen_le_sup X Z hy with h | h` into its components or cases.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Conclude with `Opens.mem_iSup.2 ⟨true, h⟩`. Conclude with `Opens.mem_iSup.2 ⟨false, h⟩`. Set `s : ∀ b, H0 (flagStr X) (X.LL e) (W b)` to `fun b => Bool.rec (motive := fun b => H0 (flagStr X) (X.LL e) (W b)) 0 m₁ b`. Take `⟨m', hm'⟩` from `GlobalTheory.LB.exists_mod_of_cover (F := GlobalTheory.LB.toMod (X.LL e)) W hW hc s (by`. Introduce and unpack `(_ | _) (_ | _)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `H0.ext_germ (p := flagStr X) fun y hy => (not_mem_openOn_openOff X Z hy.2 hy.1).elim`. Conclude with `H0.ext_germ (p := flagStr X) fun y hy => (not_mem_openOn_openOff X Z hy.1 hy.2).elim`. Use the proof step `rfl)`. Establish `r₁ : H0.restr (p` using `flagStr X) (hW true) m' = m₁ := hm' true`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `r₂ : H0.restr (p` using `flagStr X) (hW false) m' = 0 := hm' false`. Use `⟨m', ?_, fun S _ x k hO hk hx => ?_⟩` and prove the remaining obligations. Establish `h₃ : H0.pull (p` using `flagStr X) (inc₀ X Z) e₁ (H0.restr (p := flagStr X) (hW true) m') = H0.pull (p := flagStr X) (inc₀ X Z) le_rfl m' := H0.pull_restr _ _ _ _`. Rewrite `h₃` using `[r₁]`. Conclude with `h₃.symm.trans hm₁`.
-
-Establish `a` using `GlobalTheory.TangentOrigin.evalPt_res x (inf_le_inf_right _ (hW false)) (GlobalTheory.FlagMod.le_preimage_inf hO hk) (GlobalTheory.FlagMod.le_preimage_inf hx hk) (H0.loc (p := flagStr X) m' k)`. Use `a.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `H0.val (B := X.LL e) x k hx hk (H0.restr (p := flagStr X) (hW false) m') = 0`. Rewrite using `[r₂, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extZero (m : H0 (str₀ X Z) (LL₀ X Z e) (U₀ X Z)) :
     ∃ m' : H0 (flagStr X) (X.LL e) (flagOpen X),
@@ -130,15 +128,13 @@ theorem exists_extZero (m : H0 (str₀ X Z) (LL₀ X Z e) (U₀ X Z)) :
 end Glue
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z e m`. Take `⟨m', h₁, h₂⟩` from `exists_extZero m`. Use `⟨(secOf X e).symm m', ?_, ?_⟩` and prove the remaining obligations. Introduce `S _ _ y hy`. Establish `hv : FlagCover.val (toSecO m') y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(FlagCover.IsVal.eq_val fun S' _ _ ψ P' hP k hz Q t hQ ht => ?_).symm` and prove the remaining obligations. Establish `hO` using `FlagMod.le_preimage_map (z := X.pt P') X.inc (top_le_inc X) le_top`. Rewrite using `[map_zero, coef_toSecO _ _ _ _ hO, h₂ _ _ _ _ _ ?_, mul_zero]`. Introduce `s _`. Use `⟨hO (Set.mem_univ s), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show X.π ((X.pt P' ≫ X.inc) s) ∉ closure (Y.j '' (Z : Set (Xo.XF c)))`. Rewrite using `[FlagCover.pt_inc, ← Scheme.Hom.comp_apply, (X.lies_ptY P').1, Scheme.Hom.comp_apply, j_mem_closure_iff (TrivOrderTieCompare.isClopen_comp Z).isClosed, ← FlagMod.frX_frMap hP, Scheme.Hom.comp_apply]`. Conclude with `hy _`. Express the relevant statement in the definitionally equal form `evR Xo c (FlagCover.toRule (toSecO m')) y = 0`. Distinguish the cases in `hT : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[FlagCover.evR_toRule _ y hT, hv]`. Unfold `evR evalAt`. Rewrite using `[dif_neg hT]`. Use `show H0.pull (inc₀ X Z) le_rfl ((secOf X e) ((secOf X e).symm m')) = m`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
-
-Conclude with `h₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_suppOn_sec₀_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : FlagCover Y) (Z : Comp Xo c) (e : Ix Dw → ℤ) (m : H0 (str₀ X Z) (LL₀ X Z e) (U₀ X Z)), ∃ f : GlobalTheory.AllWt.secZ Xo c e, (f : Rul Xo c) ∈ GlobalTheory.AllWt.suppOn Z ∧ sec₀ X Z e f = m := by
   intro E _ _ _ H Dw l Xo c Y X Z e m

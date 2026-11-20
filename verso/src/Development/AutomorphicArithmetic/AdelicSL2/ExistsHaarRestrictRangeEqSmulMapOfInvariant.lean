@@ -5,25 +5,23 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperT
 open scoped Classical ENNReal NNReal
 
 /- English proof (translation)
-Introduce `G X _ _ _ _ _ _ _ _ μ _ _ _ _ e ν _ he h1 hmul hinv hν hT`. Set `H : Subgroup G` to `{ carrier := Set.range e mul_mem' := fun ha hb => hmul _ ha _ hb one_mem' := h1 inv_mem' := fun ha => hinv _ ha }`. Establish `hHo : IsOpen (H : Set G)` using `he.isOpen_range`. Establish `hemb : IsOpenEmbedding (H.subtype)` using `hHo.isOpenEmbedding_subtypeVal`. Use `haveI : LocallyCompactSpace H := hemb.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hHaar : (μ.comap H.subtype).IsHaarMeasure := Measure.IsHaarMeasure.comap (mH := inferInstance) μ hemb`. Establish `hme : MeasurableEmbedding (H.subtype)` using `hemb.measurableEmbedding`. Set `e' : X → H` to `fun x => ⟨e x, x, rfl⟩`. Establish `he'c : Continuous e'` using `he.continuous.subtype_mk _`. Establish `he'i : IsInducing e'` using `(IsInducing.of_comp_iff (g := H.subtype) IsInducing.subtypeVal).mp he.isInducing`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `he'sur : Function.Surjective e'`. Introduce and unpack `⟨_, x, rfl⟩`. Conclude with `⟨x, rfl⟩`. Establish `hval : H.subtype ∘ e' = e` using `rfl`. Establish `hlamval : (ν.map e').map H.subtype = ν.map e`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_map hme.measurable he'c.measurable, hval]`. Establish `hlam0 : ν.map e' ≠ 0`. Introduce `h0`. Apply `hν` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun m : Measure H => m Set.univ) h0` as an intermediate fact. Simplify `this` using `[Measure.map_apply he'c.measurable MeasurableSet.univ]`. Use `haveI : IsFiniteMeasureOnCompacts (ν.map e') := ⟨fun K hK => by`. Rewrite using `[Measure.map_apply he'c.measurable hK.measurableSet]`. Conclude with `(he'i.isCompact_preimage (by simp [he'sur.range_eq]) hK).measure_lt_top⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : (ν.map e').IsMulLeftInvariant := ⟨fun h => by`. Take `⟨_, x, rfl⟩` from `h`. Take `⟨T, hTm, hTe⟩` from `hT x`. Rewrite using `[Measure.map_map (measurable_const_mul _) he'c.measurable]`. Establish `hcomp : (fun y : H => (⟨e x, x, rfl⟩ : H) * y) ∘ e' = e' ∘ T`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `fun y => Subtype.ext (hTe y)`. Rewrite using `[hcomp, ← Measure.map_map he'c.measurable hTm.measurable, hTm.map_eq]⟩`. Establish `key` using `Measure.isMulLeftInvariant_eq_smul (ν.map e') (μ.comap H.subtype)`. Use `set c := Measure.haarScalarFactor (ν.map e') (μ.comap H.subtype) with hc`. Establish `hc0 : c ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Apply `hlam0` to reduce the goal to its premises. Rewrite using `[key, h0, zero_smul]`. Establish `hμH : μ.comap H.subtype = c⁻¹ • ν.map e'`. Rewrite using `[key, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `⟨c⁻¹, ?_⟩` and prove the remaining obligations. Establish `hres : μ.restrict (Set.range e) = (μ.comap H.subtype).map H.subtype`. Rewrite using `[hme.map_comap]`. Use `congr 1`. Simplify using `[H]`.
-
-Both sides reduce to the same expression. Rewrite using `[hres, hμH, Measure.map_smul, hlamval]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_haar_restrict_range_eq_smul_map_of_invariant :
     ∀ (G X : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] (e : X → G) (ν : Measure X) [IsFiniteMeasureOnCompacts ν], IsOpenEmbedding e → (1 : G) ∈ Set.range e → (∀ a ∈ Set.range e, ∀ b ∈ Set.range e, a * b ∈ Set.range e) → (∀ a ∈ Set.range e, a⁻¹ ∈ Set.range e) → ν ≠ 0 → (∀ x, ∃ T : X → X, MeasurePreserving T ν ν ∧ ∀ y, e x * e y = e (T y)) → ∃ c : ℝ≥0, μ.restrict (Set.range e) = c • ν.map e := by

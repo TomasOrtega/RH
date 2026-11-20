@@ -23,17 +23,17 @@ abbrev idxT (τ : Tup B.fields.F B.fields.E B.fields.K I.S) :
 variable {I}
 
 /- English proof (translation)
-The claim follows from `(ht.cst_eq a).symm`.
+A detailed English derivation is pending.
 -/
 theorem cstT_tup (ht : I.IsTw) (a : I.ι) : cstT I (I.tup a) = I.cst a := (ht.cst_eq a).symm
 
 /- English proof (translation)
-The claim follows from `(ht.idx_eq a).symm`.
+A detailed English derivation is pending.
 -/
 theorem idxT_tup (ht : I.IsTw) (a : I.ι) : idxT I (I.tup a) = I.idx a := (ht.idx_eq a).symm
 
 /- English proof (translation)
-Rewrite using `[← tup_ixOf I t, cstT_tup ht, idxT_tup ht]`. Conclude with `hp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_forall_ix (ht : I.IsTw) {U : Set I.ι}
     (p : ∀ τ : Tup B.fields.F B.fields.E B.fields.K I.S, LocCst B.fields (rowSG (B.primes X) I.sel τ) →
@@ -43,7 +43,7 @@ theorem of_forall_ix (ht : I.IsTw) {U : Set I.ι}
   exact hp _
 
 /- English proof (translation)
-The claim follows from `of_forall_ix ht (fun τ c L => L.Ok I.Ch I.sel τ c I.glob (B.R.m - 2)) h.idx_ok t`.
+A detailed English derivation is pending.
 -/
 theorem idxT_ok (h : I.Ok) (ht : I.IsTw) {U : Set I.ι} (t : TupU I U) :
     (idxT I t.1).Ok I.Ch I.sel t.1 (cstT I t.1) I.glob (B.R.m - 2) :=
@@ -88,7 +88,7 @@ def colRecC : ColRec3 B.fields (famC I hX U Xg tr) (lev1 I) (chr1 I) where
     (rPsymF (R := B.R) I.Ch)
 
 /- English proof (translation)
-The claim follows from `evC_bijective (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel hX (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅ (xiValOf I) tr (rPsymF (R := B.R) I.Ch) Zs t`.
+A detailed English derivation is pending.
 -/
 theorem colRecC_ev_bijective (Zs : DefSub (famC I hX U Xg tr).fam3.amb3) (t : TupU I U) :
     Function.Bijective ((colRecC h hp l Z ht hJ χ hχ hX U Xg tr).ev Zs t) :=

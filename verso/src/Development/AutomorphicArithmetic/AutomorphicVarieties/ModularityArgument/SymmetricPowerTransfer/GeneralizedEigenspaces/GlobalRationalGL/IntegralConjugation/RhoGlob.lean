@@ -7,9 +7,9 @@ open UpperTheory.V.W (Plc Lp)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L _ _ _ P v w h x`. Establish `hx : x = algebraMap (Lp L) (Lsq (Lp L) P.Δ) x.re + algebraMap (Lp L) (Lsq (Lp L) P.Δ) x.im * QuadraticAlgebra.omega`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.omega_re, QuadraticAlgebra.omega_im]`. Establish `lhs : P.rho v w h (lmap (cv v) P.Δ x) = P.φ v w h (cv v x.re) + P.φ v w h (cv v x.im) * P.rt w` using `rfl`. Rewrite using `[lhs, P.φ_alg, P.φ_alg, Pre.rt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hx]`. Rewrite using `[map_add, map_mul, P.e_alg, P.e_alg, map_add, map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.rhoGlob :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (P : Pre L), ∀ v w h (x : Lsq (Lp L) P.Δ), P.rho v w h (lmap (cv v) P.Δ x) = algebraMap L (Kw w) (P.e x) := by

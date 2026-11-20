@@ -32,7 +32,7 @@ def lin (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R) : Fin (m + 1) → (O1 R N).Se
 def dom (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R) : (PSpace R N).Opens := ⨆ i, nonzeroLocus (lin a i)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Cartier.nonzeroLocus_secPull]`. Rewrite using `[← Scheme.Hom.preimage_iSup]`. Conclude with `(dom a).ι_preimage_self`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_nonzeroLocus_secPull_lin (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R) :
     ⨆ i, nonzeroLocus (GlobalTheory.Cartier.secPull (lin a i) (dom a).ι) = ⊤ := by
@@ -53,7 +53,7 @@ def liftDom {X : Scheme.{0}} (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R) (φ : X 
     exact hx)
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftDom_fac {X : Scheme.{0}} (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R) (φ : X ⟶ PSpace R N)
     (h : φ ⁻¹ᵁ dom a = ⊤) : liftDom a φ h ≫ (dom a).ι = φ :=

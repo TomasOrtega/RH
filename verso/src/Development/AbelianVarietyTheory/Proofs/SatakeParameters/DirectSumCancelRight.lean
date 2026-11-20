@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.WeilDeligne.WD
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a b c`. Proceed by induction on `a using ind with`. Consider the case `hP n a`. Proceed by induction on `b using ind with`. Consider the case `hP m b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `c using ind with`. Consider the case `hP k c`. Introduce `hab`. Rewrite `hab` using `[lpSum_mk, lpSum_mk, mk_eq_mk]`. Take `⟨e, h1, h2⟩` from `hab`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `fa : Option (Weil h) → Module.End ℂ (Fin n → ℂ)` to `fun o => o.elim a.N a.ρ`. Set `fb : Option (Weil h) → Module.End ℂ (Fin m → ℂ)` to `fun o => o.elim b.N b.ρ`. Set `fc : Option (Weil h) → Module.End ℂ (Fin k → ℂ)` to `fun o => o.elim c.N c.ρ`. Take `⟨e', he'⟩` from `GlobalTheory.T.endomorphismFamily_direct_summand_cancellation ℂ (Option (Weil h)) (Fin n → ℂ) (Fin m → ℂ) (Fin k → ℂ) fa fb fc ⟨e, fun i x => by`. Consider the cases of `i with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => exact h2 x`. Consider the case `some σ => exact h1 σ x⟩`. Conclude with `sound ⟨e', fun σ v => he' (some σ) v, fun v => he' none v⟩`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lpSum_cancel_right : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E))

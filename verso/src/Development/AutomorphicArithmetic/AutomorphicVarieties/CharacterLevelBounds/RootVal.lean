@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Establish `hS : ∑ i ∈ Finset.range n, ζ ^ i = 0`. Establish `hg` using `mul_geom_sum ζ n`. Rewrite `hg` using `[h, sub_self]`. Conclude with `(mul_eq_zero.mp hg).resolve_left (sub_ne_zero.mpr h1)`. Establish `hn : (n : O) = ∑ i ∈ Finset.range n, (1 - ζ ^ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_sub_distrib, hS, sub_zero, Finset.sum_const, Finset.card_range, nsmul_one]`. Rewrite using `[hn]`. Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce `i _`. Establish `hd` using `sub_dvd_pow_sub_pow ζ 1 i`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[one_pow]`. Rewrite using `[← neg_sub (ζ ^ i) 1]`. Conclude with `(dvd_neg).mpr hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_one_dvd {O : Type} [CommRing O] [IsDomain O] {n : ℕ} {ζ : O} (h : ζ ^ n = 1) (h1 : ζ ≠ 1) :
     ζ - 1 ∣ (n : O) := by
@@ -28,13 +28,13 @@ private theorem sub_one_dvd {O : Type} [CommRing O] [IsDomain O] {n : ℕ} {ζ :
   exact (dvd_neg).mpr hd
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ n hn`. Take `⟨hiO, -, -, -, -, -, -, hvO, hunit⟩` from `dvrFacts l O`. Establish `hp : l.Prime` using `Fact.out`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `hlO : (l : O) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hl0` to reduce the goal to its premises. Apply `hiO` to reduce the goal to its premises. Rewrite using `[map_natCast, h, map_zero]`. Establish `hval : IsDiscreteValuationRing.addVal O (n : O) = (n.factorization l : ℕ∞) * eO l O`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit ((n / l ^ n.factorization l : ℕ) : O)` using `hunit _ (Nat.not_dvd_ordCompl hp hn)`. Use `conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self n l]`. Rewrite using `[Nat.cast_mul, Nat.cast_pow, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, (IsDiscreteValuationRing.addVal_eq_zero_iff).mpr hu, add_zero, hvO, nsmul_eq_mul]`. Use `⟨hval, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ζ hζ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hval]`. Conclude with `(IsDiscreteValuationRing.addVal_le_iff_dvd).mpr (sub_one_dvd hζ h1)`. Rewrite using `[hvO]`. Conclude with `fun h => hlO ((IsDiscreteValuationRing.addVal_eq_top_iff).mp h)`. Conclude with `charZero_of_injective_algebraMap hiO`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.rootVal :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (n : ℕ), n ≠ 0 → IsDiscreteValuationRing.addVal O (n : O) = (n.factorization l : ℕ∞) * eO l O ∧

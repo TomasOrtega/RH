@@ -14,18 +14,18 @@ noncomputable section
 namespace GlobalTheory.CurveSmooth
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec C).mem_open_set_iff V.isOpen).2 ⟨z, trivial, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem genericPoint_mem {C : Scheme.{0}} [IsIntegral C] (V : C.Opens) {z : C} (hz : z ∈ V) :
     genericPoint C ∈ V :=
   ((genericPoint_spec C).mem_open_set_iff V.isOpen).2 ⟨z, trivial, hz⟩
 
 /- English proof (translation)
-Introduce `hF`. Establish `key : ∀ p : PrimeSpectrum Γ(C, U), p.asIdeal = ⊥` using `fun p => by`. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨b, hb⟩` from `hF.mul_inv_cancel h0`. Conclude with `p.2.ne_top ((Ideal.eq_top_iff_one _).2 (hb ▸ p.asIdeal.mul_mem_right b ha))`. Establish `hη` using `genericPoint_mem U hx`. Establish `e : hU.primeIdealOf ⟨x, hx⟩ = hU.primeIdealOf ⟨genericPoint C, hη⟩` using `PrimeSpectrum.ext ((key _).trans (key _).symm)`. Apply `hxη` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1` using `hU.fromSpec_primeIdealOf ⟨x, hx⟩`. Establish `h2` using `hU.fromSpec_primeIdealOf ⟨genericPoint C, hη⟩`. Rewrite `h1` using `[e]`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isField_of_mem {C : Scheme.{0}} [IsIntegral C] {U : C.Opens} (hU : IsAffineOpen U)
     {x : C} (hx : x ∈ U) (hxη : x ≠ genericPoint C) : ¬ IsField Γ(C, U) := by
@@ -46,13 +46,11 @@ theorem not_isField_of_mem {C : Scheme.{0}} [IsIntegral C] {U : C.Opens} (hU : I
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Use `haveI := h U hU ⟨⟨x, hx⟩⟩`. Establish `hnf` using `not_isField_of_mem hU hx hxη`. Set `e` to `Scheme.ΓSpecIso (CommRingCat.of K)`. Establish `hft' : ((strHom K C).appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType (strHom K C) hft ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Set `φ : K →+* Γ(C, U)` to `(e.inv ≫ (strHom K C).appLE ⊤ U le_top).hom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : φ.FiniteType` using `(RingHom.finiteType_respectsIso.cancel_left_isIso e.inv ((strHom K C).appLE ⊤ U le_top)).2 hft'`. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.FiniteType K Γ(C, U) := hφ`. Establish `hs` using `GlobalTheory.RegGenSmooth.smooth_of_regular K Γ(C, U) 1 fun m hm => by`. Establish `hne : m ≠ ⊥` using `fun h0 => hnf (Ring.isField_iff_maximal_bot.2 (h0 ▸ hm))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain Γ(C, U) hne (Localization.AtPrime m)`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[IsPrincipalIdealRing.ringKrullDim_eq_one _ (IsDiscreteValuationRing.not_isField (Localization.AtPrime m))]`. Both sides reduce to the same expression. Establish `hQ : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension 1) φ` using `HasRingHomProperty.Spec_iff.1 hs`.
-
-Conclude with `((HasRingHomProperty.isLocal_ringHomProperty (@SmoothOfRelativeDimension 1)).respectsIso.cancel_left_isIso e.inv ((strHom K C).appLE ⊤ U le_top)).1 hQ`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart_smooth (K : Type) [Field K] [PerfectField K] (C : Scheme.{0}) [IsIntegral C]
     [Algebra K Γ(C, ⊤)] (hft : LocallyOfFiniteType (strHom K C))
@@ -85,13 +83,11 @@ theorem chart_smooth (K : Type) [Field K] [PerfectField K] (C : Scheme.{0}) [IsI
     e.inv ((strHom K C).appLE ⊤ U le_top)).1 hQ
 
 /- English proof (translation)
-Introduce `K _ _ C _ _ hft hd h`. Take `⟨x₀, hx₀⟩ : ∃ x₀ : C, x₀ ≠ genericPoint C` from `by by_contra! hall haveI : Subsingleton C := ⟨fun a b => (hall a).trans (hall b).symm⟩`. Establish `h0` using `topologicalKrullDim_zero_of_discreteTopology C`. Rewrite `h0` using `[hd]`. Conclude with `absurd h0 (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasRingHomProperty.of_iSup_eq_top (P := @SmoothOfRelativeDimension 1) (fun U : {U : C.affineOpens // ∃ x ∈ U.1, x ≠ genericPoint C} => U.1) ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨U, hU, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := y) trivial`. Distinguish the cases in `hex : ∃ x ∈ U, x ≠ genericPoint C`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `Opens.mem_iSup.2 ⟨⟨⟨U, hU⟩, hex⟩, hy⟩`. Use `push_neg at hex`. Take `⟨V, hV, hx₀V, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x₀) trivial`. Rewrite using `[hex y hy]`. Conclude with `Opens.mem_iSup.2 ⟨⟨⟨V, hV⟩, x₀, hx₀V, hx₀⟩, genericPoint_mem V hx₀V⟩`.
-
-Introduce and unpack `⟨⟨U, hU⟩, x, hx, hxη⟩`. Conclude with `chart_smooth K C hft h U hU hx hxη`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_one : ∀ (K : Type) [Field K] [PerfectField K] (C : Scheme.{0})
     [IsIntegral C] [Algebra K Γ(C, ⊤)], LocallyOfFiniteType (strHom K C) →

@@ -21,23 +21,23 @@ def SafePA (l : ℕ) [Fact l.Prime] (M : ℕ) (m : Fin n → ℤ) (r : G F Ω �
   (l ∣ M ∧ PotAll r) ∨ ∀ i j, m i ≠ m j + 1
 
 /- English proof (translation)
-The claim follows from `@SafeRA`.
+A detailed English derivation is pending.
 -/
 example : type_of% @Keep.SafeU := @SafeRA
 /- English proof (translation)
-The claim follows from `@SafePA`.
+A detailed English derivation is pending.
 -/
 example : type_of% @Keep.SafeP := @SafePA
 
 variable [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {M : ℕ} {m : Fin n → ℤ} {r : G F Ω →* GL (Fin n) (Qbar l)}
 
 /- English proof (translation)
-The claim follows from `Or.inr h`.
+Prove the second alternative.
 -/
 theorem safeUGap' (_ : Level l M m r) (h : ∀ i j, m i ≠ m j + 1) : SafeRA l M m r := Or.inr h
 
 /- English proof (translation)
-The claim follows from `h.imp_left fun ⟨h1, h2⟩ => ⟨h1, fun w hw => (((flagLaws F Ω l n r).2.2.2 K).2.2 w hw).1 (h2 _ (by change algebraMap (𝓞 F) (𝓞 K) (l : 𝓞 F) ∈ w.asIdeal rwa [map_natCast]))⟩`.
+A detailed English derivation is pending.
 -/
 theorem safeRes' (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] (h : SafePA l M m r) :
     SafePA l M m (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) :=
@@ -46,7 +46,7 @@ theorem safeRes' (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K �
     rwa [map_natCast]))⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `by obtain ⟨A, hA, κ, ⟨-, -, hf, -⟩, hu⟩ := h v hv exact unlOfOne F Ω l n r v A hA κ hf hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unlAll_of (h : Th.Unl l M m r) : UnlAll r := fun v hv => by
   obtain ⟨A, hA, κ, ⟨-, -, hf, -⟩, hu⟩ := h v hv
@@ -54,7 +54,7 @@ theorem unlAll_of (h : Th.Unl l M m r) : UnlAll r := fun v hv => by
 end
 
 /- English proof (translation)
-The claim follows from `Or.inl ⟨Lev.teichDvd D hD N hN h3, unlAll_of (Th.spUnl D hD N hN h1 h2 h3 r hr)⟩`.
+Prove the first alternative.
 -/
 theorem safe4' {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (hD : D.Good)
     (N : ℕ) (hN : 1 ≤ N) (h1 : Af.KillsMu N D.ψ) (h2 : Af.KillsMu N D.ξ) (h3 : Af.KillsMu N D.om) (r : G ℚ Ω →* M4 (PadicAlgCl l))

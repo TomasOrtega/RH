@@ -13,7 +13,7 @@ def mono (σ : Fin n → Fin n) (ν : Fin n → A) : Matrix (Fin n) (Fin n) A :=
   Matrix.of fun a b => if b = σ a then ν a else 0
 
 /- English proof (translation)
-Simplify using `[mono, Matrix.mul_apply, ite_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mono_mul (σ : Fin n → Fin n) (ν : Fin n → A) (X : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     (mono σ ν * X) i j = ν i * X (σ i) j := by
@@ -23,9 +23,9 @@ variable {σ : Fin n → Fin n} (hσ : ∀ a, σ (σ a) = a) (ν : Fin n → A)
 include hσ
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (σ j)]`. Simplify using `[mono, hσ]`. Introduce `b _ hb`. Establish `hj : j ≠ σ b` using `fun h => hb (by rw [h, hσ])`. Simplify using `[mono, hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_mono (X : Matrix (Fin n) (Fin n) A) (i j : Fin n) : (X * mono σ ν) i j = X i (σ j) * ν (σ j) := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (σ j)]
@@ -37,7 +37,7 @@ theorem mul_mono (X : Matrix (Fin n) (Fin n) A) (i j : Fin n) : (X * mono σ ν)
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun h i) (σ j)`. Rewrite `e` using `[mul_mono hσ, mono_mul, hσ]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_entry {l c : Matrix (Fin n) (Fin n) A} (h : l * mono σ ν = mono σ ν * c) (i j : Fin n) :
     l i j * ν j = ν i * c (σ i) (σ j) := by
@@ -46,7 +46,7 @@ theorem fix_entry {l c : Matrix (Fin n) (Fin n) A} (h : l * mono σ ν = mono σ
   exact e
 
 /- English proof (translation)
-Apply the tactic sequence `have e := fix_entry hσ ν h i j`. Rewrite `e` using `[hc _ _ hij, mul_zero]`. Conclude with `(hν j).mul_left_eq_zero.mp e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_pat (hν : ∀ a, IsUnit (ν a)) {l c : Matrix (Fin n) (Fin n) A} (hc : ∀ i j, j < i → c i j = 0)
     (h : l * mono σ ν = mono σ ν * c) (i j : Fin n) (hij : σ j < σ i) : l i j = 0 := by
@@ -60,7 +60,7 @@ def cOf (σ : Fin n → Fin n) (ν : Fin n → A) (l : Matrix (Fin n) (Fin n) A)
   Matrix.of fun a b => Ring.inverse (ν (σ a)) * l (σ a) (σ b) * ν (σ b)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_mono hσ, mono_mul]`. Simplify using `only [cOf, Matrix.of_apply, hσ]`. Rewrite using `[← mul_assoc, ← mul_assoc, Ring.mul_inverse_cancel _ (hν i), one_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_cOf (hν : ∀ a, IsUnit (ν a)) (l : Matrix (Fin n) (Fin n) A) :
     l * mono σ ν = mono σ ν * cOf σ ν l := by
@@ -70,7 +70,7 @@ theorem fix_cOf (hν : ∀ a, IsUnit (ν a)) (l : Matrix (Fin n) (Fin n) A) :
   rw [← mul_assoc, ← mul_assoc, Ring.mul_inverse_cancel _ (hν i), one_mul]
 
 /- English proof (translation)
-Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Simplify using `only [cOf, Matrix.of_apply, hl, mul_one]`. Conclude with `Ring.inverse_mul_cancel _ (hν _)`. Simplify using `only [cOf, Matrix.of_apply]`. Rewrite using `[hpat (σ a) (σ b) (by rw [hσ, hσ]; exact hab), mul_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cOf_up (l : Matrix (Fin n) (Fin n) A) (hl : ∀ i, l i i = 1) (hpat : ∀ i j, σ j < σ i → l i j = 0)
     (hν : ∀ a, IsUnit (ν a)) : (∀ a, cOf σ ν l a a = 1) ∧ ∀ a b, b < a → cOf σ ν l a b = 0 := by

@@ -17,11 +17,11 @@ namespace GlobalTheory.RatCrit
 variable {k F : Type} [Field k] [Field F] [Algebra k F]
 
 /- English proof (translation)
-Establish `hM : (Matrix.of fun i j : Fin (n + 1) => a ^ ((i : ℕ) + j) * c (i + j)) = Matrix.diagonal (fun i : Fin (n + 1) => a ^ (i : ℕ)) * (Matrix.of fun i j : Fin (n + 1) => c (i + j)) * Matrix.diagonal (fun i : Fin (n + 1) => a ^ (i : ℕ))`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.of_apply, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `hankel`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Finset.prod_pow_eq_pow_sum]`. Establish `hs : (∑ i : Fin (n + 1), (i : ℕ)) * 2 = n * (n + 1)`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) (n + 1), Finset.sum_range_id_mul_two]`. Simplify using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hs, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hankel_pow_mul (a : F) (c : ℕ → F) (n : ℕ) :
     hankel (fun i => a ^ i * c i) n = a ^ (n * (n + 1)) * hankel c n := by
@@ -41,7 +41,7 @@ theorem hankel_pow_mul (a : F) (c : ℕ → F) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Unfold `ord`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_mul' (v : Place k F) {x y : F} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord v (x * y) = ord v x + ord v y := by
@@ -50,7 +50,7 @@ theorem ord_mul' (v : Place k F) {x y : F} (hx : x ≠ 0) (hy : y ≠ 0) :
   ring
 
 /- English proof (translation)
-Unfold `ord`. Rewrite using `[map_pow, WithZero.log_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_pow' (v : Place k F) (x : F) (m : ℕ) : ord v (x ^ m) = m * ord v x := by
   unfold ord
@@ -58,7 +58,7 @@ theorem ord_pow' (v : Place k F) (x : F) (m : ℕ) : ord v (x ^ m) = m * ord v x
   ring
 
 /- English proof (translation)
-Simplify using `[ord, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ord_of_eq_one (v : Place k F) {x : F} (h : v.1 x = 1) : ord v x = 0 := by
   simp [ord, h]
@@ -70,17 +70,17 @@ namespace GlobalTheory.RatCrit
 variable {k F : Type} [Field k] [Field F] [Algebra k F]
 
 /- English proof (translation)
-Establish `hr : ∀ f : PowerSeries F, PowerSeries.rescale u⁻¹ (PowerSeries.rescale u f) = f`. Introduce `f`. Use extensionality with `m`. Simplify using `only [PowerSeries.coeff_rescale, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ hu, one_pow, one_mul]`. Establish `h1 : PowerSeries.map v.O.subtype e * PowerSeries.rescale u⁻¹ φ = PowerSeries.map v.O.subtype ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (PowerSeries.rescale u⁻¹) heq` as an intermediate fact. Simplify `this` using `only [sc, RingHom.comp_apply, map_mul, hr]`. Take `⟨z, hz⟩` from `GlobalTheory.T.hankelDeterminant_integral_of_quotient v.O F v.O.subtype e ψ (PowerSeries.rescale u⁻¹ φ) n h1`. Establish `h2 : (fun i => PowerSeries.coeff i φ) = fun i => u ^ i * PowerSeries.coeff i (PowerSeries.rescale u⁻¹ φ)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[PowerSeries.coeff_rescale, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hu, one_pow, one_mul]`. Use `set c : F := ((PowerSeries.constantCoeff e : v.O) : F) with hc`. Use `set H := hankel (fun i => PowerSeries.coeff i φ) n with hHdef`. Use `set H0 := hankel (fun i => PowerSeries.coeff i (PowerSeries.rescale u⁻¹ φ)) n with hH0`. Establish `h3 : H = u ^ (n * (n + 1)) * H0` using `by rw [hHdef, h2, hankel_pow_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : (z : F) = c ^ (2 * (n + 1)) * H0` using `hz`. Establish `h4 : c ^ (2 * (n + 1)) * H = u ^ (n * (n + 1)) * (z : F)` using `by rw [h3, hz']; ring`. Establish `hH0 : H0 ≠ 0`. Introduce `h; exact hH (by rw [h3, h, mul_zero])`. Establish `hcne : c ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Introduce `h`. Apply `he0` to reduce the goal to its premises. Use `ext`. Simplify `h` using `[hc]`. Establish `hzne : (z : F) ≠ 0` using `by rw [hz']; exact mul_ne_zero (pow_ne_zero _ hcne) hH0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz1 : 0 ≤ ord v (z : F)` using `((GlobalTheory.T.functionFieldPlaceOrder_calculus k F v).2.2.1 _ hzne).1 ((Valuation.mem_valuationSubring_iff _ _).1 z.2)`. Establish `h5` using `congrArg (ord v) h4`. Rewrite `h5` using `[ord_mul' v (pow_ne_zero _ hcne) hH, ord_mul' v (pow_ne_zero _ hu) hzne, ord_pow', ord_pow']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ord_hankel_ge (v : Place k F) (φ : PowerSeries F) (u : F) (e ψ : PowerSeries v.O) (hu : u ≠ 0)
     (he0 : PowerSeries.constantCoeff e ≠ 0)
@@ -119,25 +119,23 @@ end GlobalTheory.RatCrit
 namespace GlobalTheory.RatCrit
 
 /- English proof (translation)
-Introduce `k F _ _ _ _ _ hFF φ u e ψ hu0 hufin hdeg he0 hefin heq`. Use `set c : Place k F → F := fun v => ((PowerSeries.constantCoeff (e v) : v.O) : F) with hc`. Establish `hcunit : ∀ v, IsUnit (PowerSeries.constantCoeff (e v)) → v.1 (c v) = 1`. Introduce `v h`. Take `⟨a, ha⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `ValuationSubring.valuation_unit v.O a`. Rewrite `h1` using `[ha]`. Conclude with `(Valuation.isEquiv_valuation_valuationSubring v.1).eq_one_iff_eq_one.2 h1`. Use `set δ := ∑ᶠ v, ord v (c v) with hδ`. Use `set D := ∑ᶠ v, ord v (u v) with hD`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Apply `GlobalTheory.T.isRat_of_hankel_eventually_eq_zero F φ ((2 * δ).toNat + 1)` to reduce the goal to its premises. Introduce `n hn`. Assume the negation of the conclusion as `hH`. Take `⟨hHfin, hHsum⟩` from `GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hFF _ hH`. Use `set H := hankel (fun i => PowerSeries.coeff i φ) n with hHdef`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the first alternative.
 
-Set `T : Finset (Place k F)` to `hufin.toFinset ∪ hefin.toFinset ∪ hHfin.toFinset`. Establish `sU : Function.support (fun v => ord v (u v)) ⊆ (T : Set (Place k F))`. Introduce `v hv`. Simplify using `only [T, Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inl (Or.inl hv)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `sC : Function.support (fun v => ord v (c v)) ⊆ (T : Set (Place k F))`. Introduce `v hv`. Simplify using `only [T, Finset.coe_union, Set.Finite.coe_toFinset]`. Use `Or.inl (Or.inr ?_)` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv (ord_of_eq_one v (hcunit v h))`. Establish `sH : Function.support (fun v => ord v H) ⊆ (T : Set (Place k F))`. Introduce `v hv`. Simplify using `only [T, Finset.coe_union, Set.Finite.coe_toFinset]`. Use `Or.inr ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Conclude with `hv (ord_of_eq_one v h)`. Rewrite `hHsum` using `[finsum_eq_sum_of_support_subset _ sH]`. Rewrite `hδ` using `[finsum_eq_sum_of_support_subset _ sC]`. Rewrite `hD` using `[finsum_eq_sum_of_support_subset _ sU]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hsum : ∑ v ∈ T, (((n * (n + 1) : ℕ) : ℤ) * ord v (u v) - ((2 * (n + 1) : ℕ) : ℤ) * ord v (c v)) ≤ ∑ v ∈ T, ord v H` using `Finset.sum_le_sum fun v _ => ord_hankel_ge v φ (u v) (e v) (ψ v) (hu0 v) (he0 v) (heq v) n hH`. Rewrite `hsum` using `[Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← hD, ← hδ, hHsum]`. Establish `hn' : 2 * δ + 1 ≤ (n : ℤ)`. Use `Int.self_le_toNat (2 * δ)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hD1 : 1 ≤ D` using `hdeg`. Move the coercions through the operations in `at hsum`. Establish `h6 : (n + 1 : ℤ) * (n * D - 2 * δ) ≤ 0` using `by linarith [hsum]`. Establish `h7 : (n : ℤ) * D - 2 * δ ≤ 0`. Assume the negation of the conclusion as `h8`.
-
-Use `push_neg at h8`. Establish `: (0 : ℤ) < (n + 1 : ℤ) * (n * D - 2 * δ)` using `mul_pos (by positivity) h8`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h9 : (n : ℤ) ≤ n * D` using `by nlinarith [(Nat.cast_nonneg n : (0 : ℤ) ≤ n)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isRat_of_adelic : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∀ (φ : PowerSeries F) (u : Place k F → F) (e ψ : ∀ v : Place k F, PowerSeries v.O), (∀ v, u v ≠ 0) → {v | ord v (u v) ≠ 0}.Finite → 0 < ∑ᶠ v, ord v (u v) → (∀ v, PowerSeries.constantCoeff (e v) ≠ 0) → {v | ¬ IsUnit (PowerSeries.constantCoeff (e v))}.Finite → (∀ v, sc v (u v) (e v) * φ = sc v (u v) (ψ v)) → IsRat φ := by

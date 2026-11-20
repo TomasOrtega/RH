@@ -16,7 +16,7 @@ open scoped Classical
 open GlobalTheory.EqHalf
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EqHalf.IsoLevel.isotropic_dualForm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLocalHeightPrimeVanishing.lean&line=419#L419)
 -/

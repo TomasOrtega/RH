@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G S T d Gc hR hT hZ`. Take `⟨la0⟩` from `Formalism.MainNotions.Gaps.EtaleWeightGaps.exists_prime B.KO`. Establish `hr : Module.finrank (Kp X la0 G.N) ↥(Submodule.span (Kp X la0 G.N) (zAll G la0 S T)) = G.rz` using `rz_eq_finrank G S T Gc la0 hT (hZ la0)`. Establish `h` using `hR la0`. Rewrite `h` using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Unfold `ShareRhoT`. Establish `h0 : (0 : ℝ) ≤ (G.rq : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem shareRho_and_shareRhoT_of_shareRhoR :
     ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j)

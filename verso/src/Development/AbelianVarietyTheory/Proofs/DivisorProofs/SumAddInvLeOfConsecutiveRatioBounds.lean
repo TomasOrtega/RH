@@ -6,17 +6,17 @@ open scoped ContDiff
 namespace GlobalTheory.RatioIneq
 
 /- English proof (translation)
-Establish `hM1 : (1:ℝ) ≤ max 1 t⁻¹` using `le_max_left _ _`. Establish `hBρ : ρ ≤ max 1 t⁻¹ * ρ` using `le_mul_of_one_le_left (by linarith) hM1`. Establish `hBt : t⁻¹ ≤ max 1 t⁻¹ * ρ` using `(le_max_right 1 t⁻¹).trans (le_mul_of_one_le_right (by linarith) hρ)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `i k h`. Establish `: i = k` using `Fin.ext (by simpa using h)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `i k h`. Establish `hk' : (i : ℕ) + n < a` using `by have := k.isLt; omega`. Take `⟨h1, h2⟩` from `ih i ⟨i + n, hk'⟩ rfl`. Establish `hkk : (k : ℕ) = ((⟨i + n, hk'⟩ : Fin a) : ℕ) + 1` using `by simp; omega`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `n1 : r ⟨i + n, hk'⟩ ≤ (max 1 t⁻¹ * ρ) * r k` using `(hhi _ k hkk).trans (mul_le_mul_of_nonneg_right hBρ (hr k).le)`. Establish `n2 : r k ≤ (max 1 t⁻¹ * ρ) * r ⟨i + n, hk'⟩`. Establish `hl` using `hlo _ k hkk`. Establish `: r k ≤ t⁻¹ * r ⟨i + n, hk'⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `this.trans (mul_le_mul_of_nonneg_right hBt (hr _).le)`. Establish `hB0 : 0 ≤ (max 1 t⁻¹ * ρ)` using `by linarith`. Establish `hBn : 0 ≤ (max 1 t⁻¹ * ρ) ^ n` using `pow_nonneg hB0 n`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem chain_bound (a : ℕ) (t ρ : ℝ) (ht : 0 < t) (hρ : 1 ≤ ρ) (r : Fin a → ℝ)
     (hr : ∀ i, 0 < r i)
@@ -58,9 +58,9 @@ theorem chain_bound (a : ℕ) (t ρ : ℝ) (ht : 0 < t) (hρ : 1 ≤ ρ) (r : Fi
         _ = (max 1 t⁻¹ * ρ) ^ (n+1) * r i := by ring
 
 /- English proof (translation)
-Establish `hB1 : 1 ≤ max 1 t⁻¹ * ρ` using `one_le_mul_of_one_le_of_one_le (le_max_left _ _) hρ`. Establish `hi` using `i.isLt`. Establish `hk` using `k.isLt`. Break down `le_total (i : ℕ) k with h | h` into its components or cases. Take `⟨h1, -⟩` from `chain_bound a t ρ ht hρ r hr hlo hhi (k - i) i k (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hB1 (by omega)) (hr k).le)`. Take `⟨-, h2⟩` from `chain_bound a t ρ ht hρ r hr hlo hhi (i - k) k i (by omega)`. Conclude with `h2.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hB1 (by omega)) (hr k).le)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pair_bound (a : ℕ) (t ρ : ℝ) (ht : 0 < t) (hρ : 1 ≤ ρ) (r : Fin a → ℝ)
     (hr : ∀ i, 0 < r i)
@@ -77,7 +77,7 @@ theorem pair_bound (a : ℕ) (t ρ : ℝ) (ht : 0 < t) (hρ : 1 ≤ ρ) (r : Fin
     exact h2.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hB1 (by omega)) (hr k).le)
 
 /- English proof (translation)
-Break down `le_total x 1 with h1 | h1` into its components or cases. Conclude with `h1.trans (le_max_left _ _)`. Conclude with `(le_self_pow₀ h1 ha).trans (h.trans (le_max_right _ _))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem le_max_one_of_pow_le {x c : ℝ} {a : ℕ} (ha : a ≠ 0) (h : x ^ a ≤ c) : x ≤ max 1 c := by
   rcases le_total x 1 with h1 | h1
@@ -89,21 +89,21 @@ end GlobalTheory.RatioIneq
 namespace GlobalTheory.RatioIneq
 
 /- English proof (translation)
-Introduce `a t c₁ c₂ ht hc₁`. Use `⟨a * (max 1 c₂ + max 1 c₁⁻¹) * (max 1 t⁻¹) ^ a, a, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (0:ℝ) ≤ max 1 c₂` using `(zero_le_one.trans (le_max_left _ _))`. Establish `h2 : (0:ℝ) ≤ max 1 c₁⁻¹` using `(zero_le_one.trans (le_max_left _ _))`. Establish `h3 : (0:ℝ) ≤ max 1 t⁻¹` using `(zero_le_one.trans (le_max_left _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Introduce `r hr hlo hP1 hP2 ρ hρ hhi`. Establish `hB1 : 1 ≤ max 1 t⁻¹ * ρ` using `one_le_mul_of_one_le_of_one_le (le_max_left _ _) hρ`. Establish `hBa : 0 < (max 1 t⁻¹ * ρ) ^ a` using `pow_pos (by linarith) a`. Establish `pb` using `pair_bound a t ρ ht hρ r hr hlo hhi`.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : ∀ i, r i ≤ max 1 c₂ * (max 1 t⁻¹ * ρ) ^ a`. Introduce `i`. Establish `ha : a ≠ 0` using `by have := i.isLt; omega`. Establish `hx : ∀ k, r i / (max 1 t⁻¹ * ρ) ^ a ≤ r k` using `fun k => by`. Rewrite using `[div_le_iff₀ hBa, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pb i k`. Establish `hprod : (r i / (max 1 t⁻¹ * ρ) ^ a) ^ a ≤ ∏ k, r k`. Use `Finset.prod_le_prod (s := Finset.univ) (f := fun _ : Fin a => r i / (max 1 t⁻¹ * ρ) ^ a) (g := r) (fun _ _ => (div_pos (hr i) hBa).le) (fun k _ => hx k)` as an intermediate fact. Rewrite `this` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Then use the resulting hypothesis. Use `le_max_one_of_pow_le ha (hprod.trans hP2)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[div_le_iff₀ hBa]`. Then use the resulting hypothesis. Establish `hdown : ∀ i, (r i)⁻¹ ≤ max 1 c₁⁻¹ * (max 1 t⁻¹ * ρ) ^ a`. Introduce `i`. Establish `ha : a ≠ 0` using `by have := i.isLt; omega`. Establish `hy : 0 < (max 1 t⁻¹ * ρ) ^ a * r i` using `mul_pos hBa (hr i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ∏ k, r k ≤ ((max 1 t⁻¹ * ρ) ^ a * r i) ^ a`. Use `Finset.prod_le_prod (s := Finset.univ) (f := r) (g := fun _ : Fin a => (max 1 t⁻¹ * ρ) ^ a * r i) (fun k _ => (hr k).le) (fun k _ => pb k i)` as an intermediate fact. Simplify `this` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hc : ((max 1 t⁻¹ * ρ) ^ a * r i)⁻¹ ^ a ≤ c₁⁻¹`. Rewrite using `[inv_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_anti₀ hc₁ (hP1.trans hprod)`. Use `le_max_one_of_pow_le ha hc` as an intermediate fact. Establish `heq : (r i)⁻¹ = (max 1 t⁻¹ * ρ) ^ a * ((max 1 t⁻¹ * ρ) ^ a * r i)⁻¹`. Rewrite using `[mul_inv, ← mul_assoc, mul_inv_cancel₀ hBa.ne', one_mul]`. Rewrite using `[heq, mul_comm (max 1 c₁⁻¹)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_mul_of_nonneg_left this hBa.le`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_add_inv_le_of_ratio_bounds :
     ∀ (a : ℕ) (t c₁ c₂ : ℝ), 0 < t → 0 < c₁ → ∃ (C : ℝ) (K : ℕ), 0 ≤ C ∧ ∀ r : Fin a → ℝ,

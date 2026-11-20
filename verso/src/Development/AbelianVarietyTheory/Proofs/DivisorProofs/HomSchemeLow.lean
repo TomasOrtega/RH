@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.UCanonHom
 
 /- English proof (translation)
-Introduce `S S' G' _ G _ f φ hφ O _ a' a ha X _ _ T x₀ hadd hlin`. Establish `hw : ∀ y, (x₀ y).left ≫ G.hom = T.hom ≫ f` using `fun y => Over.w (x₀ y)`. Set `x : X → (T ⟶ G')` to `fun y => Over.homMk (hφ.1.lift (x₀ y).left T.hom (hw y)) (hφ.1.lift_snd _ _ _)`. Establish `hx : ∀ y, (x y).left ≫ φ = (x₀ y).left` using `fun y => hφ.1.lift_fst _ _ _`. Establish `uniq : ∀ (p q : T ⟶ G'), p.left ≫ φ = q.left ≫ φ → p = q` using `fun p q h => by ext; apply hφ.1.hom_ext h; rw [Over.w p, Over.w q]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨x, hx, fun y z => uniq _ _ ?_, fun r y => uniq _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hadd, hφ.2 T (x y) (x z) (x₀ y) (x₀ z) (hx y).symm (hx z).symm]`. Rewrite using `[hx, hlin, Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullSec : ∀ {S S' : Scheme.{0}} (G' : Over S') [GrpObj G'] (G : Over S) [GrpObj G] (f : S' ⟶ S) (φ : G'.left ⟶ G.left),
     IsGrpPullback G' G f φ → ∀ (O : Type) [CommRing O] (a' : OAct O G') (a : OAct O G), (∀ r, (a'.act r).left ≫ φ = φ ≫ (a.act r).left) →
@@ -40,11 +40,11 @@ theorem pullSec : ∀ {S S' : Scheme.{0}} (G' : Over S') [GrpObj G'] (G : Over S
   · rw [hx, hlin, Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, hx]
 
 /- English proof (translation)
-Introduce `S S' G' _ G _ f φ hφ O _ a' a ha X _ _ T x hadd hlin`. Establish `hw : ∀ y, ((x y).left ≫ φ) ≫ G.hom = (Over.mk (T.hom ≫ f)).hom` using `fun y => by`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, Over.w (x y)]`. Both sides reduce to the same expression. Use `⟨fun y => Over.homMk ((x y).left ≫ φ) (hw y), fun y => rfl, fun y z => ?_, fun r y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext`. Express the relevant statement in the definitionally equal form `(x (y + z)).left ≫ φ = _`. Rewrite using `[hadd]`. Conclude with `(hφ.2 T (x y) (x z) (Over.homMk _ (hw y)) (Over.homMk _ (hw z)) rfl rfl).symm`. Use `ext`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.homMk_left, Over.comp_left, hlin, Category.assoc, ha]`.
+A detailed English derivation is pending.
 -/
 theorem pushSec : ∀ {S S' : Scheme.{0}} (G' : Over S') [GrpObj G'] (G : Over S) [GrpObj G] (f : S' ⟶ S) (φ : G'.left ⟶ G.left),
     IsGrpPullback G' G f φ → ∀ (O : Type) [CommRing O] (a' : OAct O G') (a : OAct O G), (∀ r, (a'.act r).left ≫ φ = φ ≫ (a.act r).left) →
@@ -64,7 +64,7 @@ theorem pushSec : ∀ {S S' : Scheme.{0}} (G' : Over S') [GrpObj G'] (G : Over S
     simp only [Over.homMk_left, Over.comp_left, hlin, Category.assoc, ha]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem objMap_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
     {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B} {b' : Base l B'}
@@ -73,7 +73,7 @@ theorem objMap_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   subst h; exact ⟨m, rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨o, fun _ _ h => h⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem obj_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
     {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s₁ s₂ : S ⟶ Sp B}
@@ -82,43 +82,39 @@ theorem obj_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   subst h; exact ⟨o, fun _ _ h => h⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c X _ _ _ _`. Establish `hXo : Nonempty (Moduli D' (LowDat.lowLevel l))`. Distinguish the cases in `hpq : 1 ≤ D'.p + D'.q`. Conclude with `GlobalTheory.Moduli.moduli_scheme_exists E H D' _ hpq`. Conclude with `GlobalTheory.T.nonempty_moduli_of_rank_zero H D' _ (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Xo⟩` from `hXo`. Use `set sF : Sp c.F ⟶ Sp (KA (LowDat.lowLevel l)) := lowMap c (RingHom.id c.F) with hsF`. Establish `P` using `GlobalTheory.T.shimuraObject_pullback_comp_cancel (D := D') (l := LowDat.lowLevel l)`. Take `⟨oY, ⟨mY⟩⟩` from `P.1 Xo.s Xo.univ (pullback.fst Xo.s sF) (pullback.snd Xo.s sF ≫ sF) pullback.condition.symm`. Establish `hB : IsAbelianScheme oY.t.G` using `⟨inferInstance, oY.t.semi.smooth, oY.proper, oY.t.semi.geomConnected⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg` using `GlobalTheory.T.smoothOfRelativeDimension_shimuraObject_abelianScheme D' (LowDat.lowLevel l) (pullback.snd Xo.s sF ≫ sF) oY`. Use `haveI : Module.Finite (𝓞 E) X := Module.Finite.of_restrictScalars_finite ℤ _ _`. Use `haveI : Module.Projective (𝓞 E) X := GlobalTheory.Forms.projective_of_int _ _`. Take `⟨C, _, u, -, hCsm, -, hadd, hlin, huniv⟩` from `GlobalTheory.HomScheme.exists_homObj_relDim _ oY.t.G hB _ hg oY.t.act X`. Take `⟨oC, ⟨mC⟩⟩` from `P.1 (pullback.snd Xo.s sF ≫ sF) oY C.hom ((C.hom ≫ pullback.snd Xo.s sF) ≫ sF) (Category.assoc _ _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u', hu'φ, hu'add, hu'lin⟩` from `pullSec oC.t.G oY.t.G C.hom mC.toSABMap.φ mC.cart (𝓞 E) oC.t.act oY.t.act mC.act X (𝟙_ (Over C.left)) (fun y => Over.homMk (𝟙 C.left) (by simp) ≫ u y) (fun y z => by rw [hadd, comp_mul]) (fun r y => by rw [hlin, Category.assoc])`. Establish `key : ∀ {T : Scheme.{0}} (v₁ v₂ : T ⟶ C.left), v₁ ≫ C.hom = v₂ ≫ C.hom → (∀ y, v₁ ≫ (u y).left = v₂ ≫ (u y).left) → v₁ = v₂`. Introduce `T v₁ v₂ hw hu`. Take `⟨c0, -, huq⟩` from `huniv (Over.mk (v₁ ≫ C.hom)) (fun y => Over.homMk v₁ rfl ≫ u y) (fun y z => by rw [hadd, comp_mul]) (fun r y => by rw [hlin, Category.assoc])`. Establish `e1` using `huq (Over.homMk v₁ rfl) (fun y => rfl)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2` using `huq (Over.homMk v₂ hw.symm) (fun y => by ext; simpa using (hu y).symm)`. Simplify using `using congrArg CommaMorphism.left (e1.trans e2.symm)`. Establish `hu'l : ∀ y, (u' y).left ≫ mC.toSABMap.φ = (u y).left` using `fun y => by rw [hu'φ]; simp`. Establish `key2 : ∀ (A : Type) [CommRing A], IsNilpotent (nilradical A) → ∀ (v₁ v₂ : Sp A ⟶ C.left) (s' : Sp A ⟶ Sp (KA (LowDat.lowLevel l))) (o'' : Obj D' (LowDat.lowLevel l) (baseKA (LowDat.lowLevel l)) s') (m₁ : ObjMap o'' oC v₁) (m₂ : ObjMap o'' oC v₂) (z : X → (Sp A ⟶ o''.t.G.left)), v …`. Introduce `A _ hA v₁ v₂ s' o'' m₁ m₂ z hw hz₁ hz₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k₁, hk₁⟩` from `(P.2 _ _ s' oY oC o'' C.hom v₁ mC).1 m₁`. Take `⟨k₂, hk₂⟩` from `(P.2 _ _ s' oY oC o'' C.hom v₂ mC).1 m₂`. Take `⟨k₂', hk₂'⟩` from `objMap_congr hw.symm k₂`. Establish `hφ` using `GlobalTheory.T.objMap_unique_of_nilpotent_nilradical' A hA s' _ o'' oY (v₁ ≫ C.hom) k₁ k₂'`. Use `key v₁ v₂ hw fun y => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨C.left, C.hom ≫ pullback.snd Xo.s sF, oC, u', ?_, hu'add, hu'lin, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := smoothOfRelativeDimension_isStableUnderBaseChange (n := D'.dim) haveI h1 : SmoothOfRelativeDimension D'.dim (pullback.snd Xo.s sF) := MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @SmoothOfRelativeDimension D'.dim) (IsPullback.of_hasPullback Xo.s sF) Xo.sm …`. Rewrite using `[add_comm]`. Use `infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `V _ _ bV o' x hxadd hxlin`. Take `⟨f, ⟨hf, ⟨k⟩⟩, -⟩` from `Xo.rep (Sp V) (lowMap c bV) inferInstance o'`. Establish `hlow : lowMap c bV = spMap bV ≫ sF` using `by simp only [hsF, lowMap, spMap, ← Spec.map_comp]; rfl`. Set `fY : Sp V ⟶ pullback Xo.s sF` to `pullback.lift f (spMap bV) (hf.trans hlow)`. Take `⟨k', -⟩` from `objMap_congr (pullback.lift_fst f (spMap bV) (hf.trans hlow)).symm k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, -⟩` from `(P.2 Xo.s (pullback.snd Xo.s sF ≫ sF) (lowMap c bV) Xo.univ oY o' (pullback.fst _ _) fY mY).2 k'`. Take `⟨x₀, hx₀, hx₀add, hx₀lin⟩` from `pushSec o'.t.G oY.t.G fY n.toSABMap.φ n.cart (𝓞 E) o'.t.act oY.t.act n.act X (𝟙_ (Over (Sp V))) x hxadd hxlin`. Take `⟨cc, hcc, -⟩` from `huniv (Over.mk ((𝟙_ (Over (Sp V))).hom ≫ fY)) x₀ hx₀add hx₀lin`. Establish `hccw : cc.left ≫ C.hom = fY` using `by simpa using Over.w cc`. Take `⟨n', hn'⟩` from `objMap_congr hccw.symm n`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `(P.2 _ _ (lowMap c bV) oY oC o' C.hom cc.left mC).2 n'`. Use `⟨cc.left, m, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hccw, pullback.lift_snd]`. Apply `mC.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hm, hn', Category.assoc, hu'l, ← hx₀, ← hcc y]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w (x y), Category.assoc, Over.w (u' y)]`. Simplify using the standard rewrite rules. Introduce `A _ _ v₁ v₂ hv s' o'' m₁ m₂ z hs' hz₁ hz₂`. Use `key2 A (by rw [nilradical_eq_zero]; exact IsNilpotent.zero) v₁ v₂ s' o'' m₁ m₂ z ?_ hz₁ hz₂` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨k₁, -⟩` from `(P.2 _ _ s' oY oC o'' C.hom v₁ mC).1 m₁`. Take `⟨K₁, -⟩` from `(P.2 _ _ s' Xo.univ oY o'' (pullback.fst _ _) (v₁ ≫ C.hom) mY).1 k₁`. Take `⟨k₂, -⟩` from `(P.2 _ _ s' oY oC o'' C.hom v₂ mC).1 m₂`. Take `⟨K₂, -⟩` from `(P.2 _ _ s' Xo.univ oY o'' (pullback.fst _ _) (v₂ ≫ C.hom) mY).1 k₂`. Establish `hv'` using `hv =≫ sF`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc] at hv'`. Establish `hs₁ : ((v₁ ≫ C.hom) ≫ pullback.fst Xo.s sF) ≫ Xo.s = s'`. Rewrite using `[hs']`. Simplify using `only [Category.assoc, pullback.condition]`. Establish `hs₂ : ((v₂ ≫ C.hom) ≫ pullback.fst Xo.s sF) ≫ Xo.s = s'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hs']`. Simplify using `only [Category.assoc, pullback.condition]`. Conclude with `hv'.symm`. Establish `hfst` using `(Xo.rep (Sp A) s' inferInstance o'').unique ⟨hs₁, ⟨K₁⟩⟩ ⟨hs₂, ⟨K₂⟩⟩`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify `hfst` using `only [Category.assoc]`. Simplify `hv` using `only [Category.assoc]`. Introduce `k _ v s' o'' m₁ m₂ z hs' hz₁ hz₂`. Use `key2 (DualNumber k) (IsNoetherianRing.isNilpotent_nilradical _) v (constPt v) s' o'' m₁ m₂ z ?_ hz₁ hz₂` and prove the remaining obligations. Use `haveI : FiniteDimensional ℚ c.F := c.fin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.IsAlgebraic ℚ c.F := Algebra.IsAlgebraic.of_finite ℚ c.F`. Establish `hcp : ∀ {W : Scheme.{0}} (w : C.left ⟶ W), constPt v ≫ w = constPt (v ≫ w)` using `fun w => by simp [constPt]`. Take `⟨k₁, -⟩` from `(P.2 _ _ s' oY oC o'' C.hom v mC).1 m₁`. Take `⟨K₁, -⟩` from `(P.2 _ _ s' Xo.univ oY o'' (pullback.fst _ _) (v ≫ C.hom) mY).1 k₁`. Take `⟨k₂, -⟩` from `(P.2 _ _ s' oY oC o'' C.hom (constPt v) mC).1 m₂`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take `⟨K₂, -⟩` from `(P.2 _ _ s' Xo.univ oY o'' (pullback.fst _ _) (constPt v ≫ C.hom) mY).1 k₂`. Take `⟨K₁', -⟩` from `objMap_congr (Category.assoc v C.hom (pullback.fst Xo.s sF)) K₁`. Take `⟨K₂', -⟩` from `objMap_congr (show (constPt v ≫ C.hom) ≫ pullback.fst Xo.s sF = constPt (v ≫ C.hom ≫ pullback.fst Xo.s sF) by simp [constPt]) K₂`. Establish `hs₁ : s' = (v ≫ C.hom ≫ pullback.fst Xo.s sF) ≫ Xo.s`. Rewrite using `[hs']`.
-
-Simplify using `only [Category.assoc, pullback.condition]`. Take `⟨o₂, ho₂⟩` from `obj_congr hs₁ o''`. Establish `hfst` using `Xo.unram k _ o₂ (ho₂ Xo.univ _ ⟨K₁'⟩) (ho₂ Xo.univ _ ⟨K₂'⟩)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`.
-
-Rewrite using `[hcp]`. Conclude with `hfst`. Simplify using `only [Category.assoc]`. Rewrite using `[hcp]`. Conclude with `GlobalTheory.Models.RankZero.eq_constPt_field _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homScheme_low : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D' : Datum H) {l : Geo.Tor.Level H} (c : Coeff l) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X], ∃ (Cs : Scheme.{0}) (g : Cs ⟶ Sp c.F) (oC : Obj D' (LowDat.lowLevel l) (baseKA (LowDat.lowLevel l)) (g ≫ lowMap c (RingHom.id c.F))) (u : X → (𝟙_ (Over Cs) ⟶ oC.t.G)), SmoothOfRelativeDimension (D'.dim + Module.finrank (𝓞 E) X * (Module.finrank ℚ E / 2 * (D'.p + D'.q))) g ∧ (∀ y z, u (y + z) = u y * u z) ∧ (∀ (a : 𝓞 E) y, u (a • y) = u y ≫ oC.t.act.act a) ∧ (∀ (V : Type) [CommRing V] [IsReduced V] (bV : c.F →+* V) (o' : LowObj D' c bV) (x : X → (𝟙_ (Over (Sp V)) ⟶ o'.t.G)), (∀ y z, x (y + z) = x y * x z) → (∀ (a : 𝓞 E) y, x (a • y) = x y ≫ o'.t.act.act a) → ∃ (v : Sp V ⟶ Cs) (m : ObjMap o' oC v), v ≫ g = spMap bV ∧ ∀ y, (x y).left ≫ m.toSABMap.φ = v ≫ (u y).left) ∧ (∀ (A : Type) [CommRing A] [IsReduced A] (v₁ v₂ : Sp A ⟶ Cs), v₁ ≫ g = v₂ ≫ g → ∀ (s' : Sp A ⟶ Sp (KA (LowDat.lowLevel l))) (o'' : Obj D' (LowDat.lowLevel l) (baseKA (LowDat.lowLevel l)) s') (m₁ : ObjMap o'' oC v₁) (m₂ : ObjMap o'' oC v₂) (z : X → (Sp A ⟶ o''.t.G.left)), s' = v₁ ≫ g ≫ lowMap c (RingHom.id c.F) → (∀ y, z y ≫ m₁.toSABMap.φ = v₁ ≫ (u y).left) → (∀ y, z y ≫ m₂.toSABMap.φ = v₂ ≫ (u y).left) → v₁ = v₂) ∧ (∀ (k : Type) [Field k] (v : Sp (DualNumber k) ⟶ Cs) (s' : Sp (DualNumber k) ⟶ Sp (KA (LowDat.lowLevel l))) (o'' : Obj D' (LowDat.lowLevel l) (baseKA (LowDat.lowLevel l)) s') (m₁ : ObjMap o'' oC v) (m₂ : ObjMap o'' oC (constPt v)) (z : X → (Sp (DualNumber k) ⟶ o''.t.G.left)), s' = v ≫ g ≫ lowMap c (RingHom.id c.F) → (∀ y, z y ≫ m₁.toSABMap.φ = v ≫ (u y).left) → (∀ y, z y ≫ m₂.toSABMap.φ = constPt v ≫ (u y).left) → v = constPt v) := by
   intro E _ _ _ H D' l c X _ _ _ _

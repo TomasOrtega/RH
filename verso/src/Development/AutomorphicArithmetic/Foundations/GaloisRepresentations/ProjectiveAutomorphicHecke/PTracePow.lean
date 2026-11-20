@@ -6,35 +6,31 @@ open Module
 universe u v
 
 /- English proof (translation)
-Introduce `F _ _ W _ _ _ q s hq hq0 hqs hinj j₀`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hU : ∀ x ∈ LinearMap.range q, s x ∈ LinearMap.range q`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s y, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hqs.eq y` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`. Establish `hUp : ∀ j : ℕ, ∀ x ∈ LinearMap.range q, (s ^ j) x ∈ LinearMap.range q`. Introduce `j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `j with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ n ih`. Introduce `x hx`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hU _ (ih x hx)`. Use `set t : Module.End F (LinearMap.range q) := s.restrict hU with ht`. Establish `hres : ∀ j : ℕ, (s ^ j).restrict (hUp j) = t ^ j`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `j with`. Consider the case `zero => ext x`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Use extensionality with `x`.
+Treat this case separately. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[pow_succ' t, Module.End.mul_apply, ← ih]`. Simplify using `[LinearMap.restrict_apply, pow_succ', Module.End.mul_apply, ht]`. Establish `hproj : LinearMap.IsProj (LinearMap.range q) q`. Use `⟨fun x => ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hq.eq y` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`. Use `set a : ℕ → F := fun j => LinearMap.trace F (LinearMap.range q) (t ^ j) with ha`. Establish `htr : ∀ j, LinearMap.trace F W (q * s ^ j) = a j`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.trace_mul_comm, pProjTrace_holds F W _ q (s ^ j) hproj (hUp j), hres j]`. Establish `hzero : ∀ j, j₀ ≤ j → a j = 0` using `fun j hj => by rw [← htr j]; exact hcon j hj`. Establish `htinj : Function.Injective t`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨x, y, rfl⟩ hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : s (q y) = 0`. Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[ht, LinearMap.restrict_apply]`. Conclude with `Subtype.ext (by simpa using hinj y h1)`. Use `set P := minpoly F t with hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc0 : P.coeff 0 ≠ 0` using `LinearMap.minpoly_coeff_zero_of_injective htinj`. Establish `hrec : ∀ j, ∑ k ∈ Finset.range (P.natDegree + 1), P.coeff k * a (k + j) = 0`. Introduce `j`. Establish `h0 : Polynomial.aeval t P = 0` using `minpoly.aeval F t`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `h1` using `congrArg (fun f => LinearMap.trace F (LinearMap.range q) (f * t ^ j)) h0`. Simplify using `only [Finset.sum_mul, map_sum, zero_mul, map_zero, smul_mul_assoc, map_smul, ← pow_add, smul_eq_mul] at h1`. Simplify `h1` using `[ha]`. Establish `hall : ∀ n j, j₀ ≤ j + n → a j = 0`. Introduce `n`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `n with`. Consider the case `zero => intro j hj; exact hzero j (by simpa using hj)`. Consider the case `succ n ih`. Introduce `j hj`. Establish `h` using `hrec j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Finset.sum_range_succ']`. Establish `hs : ∑ k ∈ Finset.range P.natDegree, P.coeff (k + 1) * a (k + 1 + j) = 0`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ih (k + 1 + j) (by omega), mul_zero]`. Rewrite `h` using `[hs, zero_add, zero_add]`.
-
-Conclude with `(mul_eq_zero.mp h).resolve_left hc0`. Establish `ha0 : a 0 = 0` using `hall j₀ 0 (by omega)`. Establish `hne : LinearMap.range q ≠ ⊥` using `fun h => hq0 (LinearMap.range_eq_bot.mp h)`. Establish `hpos : Module.finrank F (LinearMap.range q) ≠ 0` using `fun h => hne (Submodule.finrank_eq_zero.mp h)`. Simplify using `only [ha, pow_zero, LinearMap.trace_one] at ha0`.
-
-Conclude with `(Nat.cast_ne_zero.mpr hpos) ha0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pTracePow_holds :
     UpperTheory.Gal.CertificateRingHomMap.TracePow.{u} := by

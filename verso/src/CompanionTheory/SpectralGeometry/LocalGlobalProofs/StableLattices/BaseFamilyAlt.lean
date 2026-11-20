@@ -8,11 +8,11 @@ namespace GlobalTheory.CompanionTheory.BaseFamily
 open CompanionTheory.RgExh CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.J ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ D E hK hσ`. Use `⟨fun ξ u Y hY g hg => ?_, fun ξ => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.NilpotentRightRule n ε H σ D E hK 0 [] hσ ((ξ, []) : D × List (Fin n)) u Y hY g hg`. Establish `e : actM E Y u = ∑ a, ∑ b, Y a b • E a b u`. Simplify using `[actM, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show HasDerivAt _ (baseCoef σ D (ξ : H) (actM E Y u) g) 0`. Rewrite using `[e]`. Conclude with `h`. Take `⟨l, hl⟩` from `GlobalTheory.T.NilpotentLeftRule n ε H σ D E hK 0 [] hσ ((ξ, []) : D × List (Fin n))`. Use `⟨fun c d => (l c d).mapDomain Prod.fst, fun a b u g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hl a b u g hg`. Use `h.trans (Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by ring)]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem baseFam : CompanionTheory.RgExh.Dec.J.BaseFam := by
   intro n ε H _ _ _ σ D E hK hσ

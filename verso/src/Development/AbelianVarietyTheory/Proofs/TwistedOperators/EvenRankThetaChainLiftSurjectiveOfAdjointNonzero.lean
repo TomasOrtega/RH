@@ -30,9 +30,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.EvenOnto
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hz` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (z : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) = 0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `LinearMap.ext_on (PiTensorProduct.span_tprod_eq_top (R := ℂ) (s := fun τ => s.M.sm τ))` to reduce the goal to its premises. Introduce and unpack `w ⟨v, rfl⟩`. Simplify using `[hne v]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tprod_ne_zero_of_cc {D : D7} {c : Com D} {s : PiLocalization₂ D} (z : s.CC c) (hz : z ≠ 0) :
     ∃ v : s.M.Vec, PiTensorProduct.tprod ℂ v ≠ 0 := by
@@ -46,11 +46,11 @@ theorem exists_tprod_ne_zero_of_cc {D : D7} {c : Com D} {s : PiLocalization₂ D
   simp [hne v]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_tprod_ne_zero_of_cc z hz`. Establish `d : ipD (PiTensorProduct.tprod ℂ v) (PiTensorProduct.tprod ℂ v) = ipD' (PiTensorProduct.tprod ℂ v) (PiTensorProduct.tprod ℂ v)` using `by rw [h.pure, h'.pure]`. Establish `dne : ipD (PiTensorProduct.tprod ℂ v) (PiTensorProduct.tprod ℂ v) ≠ 0`. Introduce `h0`. Use `h.posD _ hv` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `e1` using `h.schur x y (PiTensorProduct.tprod ℂ v) (PiTensorProduct.tprod ℂ v)`. Establish `e2` using `h'.schur x y (PiTensorProduct.tprod ℂ v) (PiTensorProduct.tprod ℂ v)`. Rewrite `e2` using `[e1, ← d]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ dne e2`.
+A detailed English derivation is pending.
 -/
 theorem ip_unique {D : D7} {c : Com D} {s : PiLocalization₂ D} {ipD ipD' : SmT s.M →ₗ[ℂ] SmT s.M →ₗ⋆[ℂ] ℂ}
     {ip ip' : s.CC c →ₗ[ℂ] s.CC c →ₗ⋆[ℂ] ℂ} (h : IsMet c s ipD ip) (h' : IsMet c s ipD' ip')
@@ -69,7 +69,7 @@ theorem ip_unique {D : D7} {c : Com D} {s : PiLocalization₂ D} {ipD ipD' : SmT
   exact mul_right_cancel₀ dne e2
 
 /- English proof (translation)
-Consider the cases of `hR with`. Consider the case `zero => exact hs₀`. Consider the case `step _ hs' _ _ => exact hs'`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem reach_is {D : D7} {c : Com D} {s₀ : PiLocalization₂ D} (hs₀ : s₀.Is c 0) {k : ℕ} {s : PiLocalization₂ D} {Θ : s.CC c →ₗ[ℂ] s₀.CC c}
     (hR : Reach c s₀ k s Θ) : s.Is c k := by
@@ -78,13 +78,13 @@ theorem reach_is {D : D7} {c : Com D} {s₀ : PiLocalization₂ D} (hs₀ : s₀
   | step _ hs' _ _ => exact hs'
 
 /- English proof (translation)
-Proceed by induction on `hR with`. Consider the case `zero`. Introduce `_`. Use `⟨hs₀, fun ipD ip h => ⟨u, fun y => ?_, hu⟩⟩` and prove the remaining obligations. Conclude with `ip_unique h h₀ u hu.1 y u`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `@step k s Θ _ s' hs' p hp ih`. Introduce `hk`. Take `⟨hsk, ih⟩` from `ih (by omega)`. Use `⟨hs', fun ipD' ip' h' => ?_⟩` and prove the remaining obligations. Take `⟨ipD, ip, hm⟩` from `hMet c hc k (by omega) s hsk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxp⟩` from `ih ipD ip hm`. Take `⟨x', hx', hx'p⟩` from `hSU c hc k (by omega) s s' hsk hs' p hp ipD ip ipD' ip' hm h' x (chainPar c B k) hxp (hL k (by omega))`. Use `⟨x', fun y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx', hx]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chainPar_succ]`. Conclude with `hx'p`.
+A detailed English derivation is pending.
 -/
 theorem thetaChain_upward_induction_fixed_metric {D : D7} (hMet : MetEx D) (hSU : StepUp D) {c : Com D} (hc : c.Is)
     {s₀ : PiLocalization₂ D} (hs₀ : s₀.Is c 0) {ipD₀ ip₀} (h₀ : IsMet c s₀ ipD₀ ip₀) {u : s₀.CC c} {B : GlobalTheory.LFun.Fam D.host.E}
@@ -111,9 +111,9 @@ theorem thetaChain_upward_induction_fixed_metric {D : D7} (hMet : MetEx D) (hSU 
       exact hx'p
 
 /- English proof (translation)
-Introduce `D hMet hPB hCL hSU c hc s₀ hs₀ k hk s Θ hR`. Use `⟨reach_is hs₀ hR, fun ipD₀ ip₀ ipD ip h₀ h u B hu => ?_⟩` and prove the remaining obligations. Establish `hb` using `hPB c hc 0 (Nat.zero_le _) s₀ hs₀ u B hu`. Establish `hr : s₀.V.rank = c.n` using `by rw [hs₀.rank]; simp`. Rewrite `hb` using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(thetaChain_upward_induction_fixed_metric hMet hSU hc hs₀ h₀ hu (fun k hk => hCL c hc B hb k hk) hR hk).2 ipD ip h`.
+A detailed English derivation is pending.
 -/
 theorem chainUp_of : ∀ D : D7, MetEx D → ParBound D → ChainL D → StepUp D → ChainUp D := by
   intro D hMet hPB hCL hSU c hc s₀ hs₀ k hk s Θ hR
@@ -124,15 +124,13 @@ theorem chainUp_of : ∀ D : D7, MetEx D → ParBound D → ChainL D → StepUp 
   exact (thetaChain_upward_induction_fixed_metric hMet hSU hc hs₀ h₀ hu (fun k hk => hCL c hc B hb k hk) hR hk).2 ipD ip h
 
 /- English proof (translation)
-Introduce `D hFin hMet hEig hInd hPB hSU c hc s₀ hs₀ k hk s Θ hR`. Establish `hUp` using `chainUp_of D hMet hPB (GlobalTheory.T.evenThetaChain_LValues_ne_zero_and_params_injective D).1 hSU`. Take `⟨hs, hadj⟩` from `hUp c hc s₀ hs₀ k hk s Θ hR`. Take `⟨ipD₀, ip₀, hm₀⟩` from `hMet c hc 0 (Nat.zero_le _) s₀ hs₀`. Take `⟨ipD, ip, hm⟩` from `hMet c hc k hk s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : FiniteDimensional ℂ (s₀.CC c) := hFin c hc 0 (Nat.zero_le _) s₀ hs₀`. Set `Sab` to `GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))`. Set `R : GlobalTheory.LFun.Fam D.host.E → GlobalTheory.LFun.Fam D.host.E → Prop` to `fun B B' => ∀ w ∉ Sab, B w = B' w`. Establish `hRe : Equivalence R` using `⟨fun _ _ _ => rfl, fun h w hw => (h w hw).symm, fun h h' w hw => (h w hw).trans (h' w hw)⟩`. Establish `hlin₀` using `(GlobalTheory.T.multiplicity_vanishing_and_same_params_subspace D hMet).2 c s₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.surjective_of_adjoint_separates_labelled_parts (s₀.CC c) (s.CC c) (GlobalTheory.LFun.Fam D.host.E) (GlobalTheory.LFun.Fam D.host.E) ip₀ ip Θ (fun u B => IsPar u B) (fun x B => IsPar x B) R R (fun B => chainPar c B k) hm₀.herm hm₀.pos hm.pos hRe (hEig c hc 0 (Nat.ze …` and prove the remaining obligations. Introduce `B B' h w hw`. Conclude with `(GlobalTheory.T.evenThetaChain_LValues_ne_zero_and_params_injective D).2 c k B B' w (h w hw)`. Introduce `ι x B hx hne`. Use `hInd c hc k hk s hs ι x B hx ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i i' hii'`. Use `hne i i' hii'` as an intermediate fact. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `this hcon`.
-
-Introduce `u B hu`. Conclude with `hadj ipD₀ ip₀ ipD ip hm₀ hm u B hu`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ontoAll_of : ∀ D : D7, FinDim D → MetEx D → EigSpan D → ParIndep D → ParBound D → StepUp D → OntoAll D := by
   intro D hFin hMet hEig hInd hPB hSU c hc s₀ hs₀ k hk s Θ hR

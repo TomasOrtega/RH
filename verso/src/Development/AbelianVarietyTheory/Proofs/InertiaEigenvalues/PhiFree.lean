@@ -11,17 +11,17 @@ namespace GlobalTheory.Cyc.PhiFree
 open PowerSeries
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Establish `step : ∀ z, T z = 0 → ∃ z', T z' = 0 ∧ z = a • z'` using `fun z hz => by`. Establish `h1` using `h z`. Rewrite `h1` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, -, hu⟩` from `h1`. Take `⟨v, rfl⟩` from `hS.2 u`. Establish `h2 : z = a • (-v)` using `hS.1 (by rw [map_smul, map_neg, smul_neg, hu, hz]; simp)`. Conclude with `⟨-v, ha _ (by rw [← map_smul, ← h2, hz]), h2⟩`. Establish `all : ∀ (n : ℕ) z, T z = 0 → ∃ z', z = a ^ n • z'` using `fun n => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Proceed by induction on `n with`. Consider the case `zero => exact fun z _ => ⟨z, by simp⟩`. Consider the case `succ n ih`. Introduce `z hz`. Take `⟨z', h1, rfl⟩` from `step z hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `ih z' h1`. Conclude with `⟨w, by rw [smul_smul, pow_succ']⟩`. Introduce `z hz`. Use `IsHausdorff.haus' (I := Ideal.span {a}) z fun n => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `all n z hz`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SModEq.zero]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self a) n) trivial`. Use `surjective_of_mkQ_comp_surjective (I := Ideal.span {a}) fun G => ?_` and prove the remaining obligations. Take `⟨G, rfl⟩` from `Submodule.Quotient.mk_surjective _ G`. Take `⟨z, rfl⟩` from `hS.2 G`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, (Submodule.Quotient.eq _).2 (h z)⟩`.
+A detailed English derivation is pending.
 -/
 theorem bijective_of_congr {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] (a : R) [IsPrecomplete (Ideal.span {a}) M] [IsHausdorff (Ideal.span {a}) M]
@@ -56,11 +56,11 @@ theorem bijective_of_congr {R M N : Type} [CommRing R] [AddCommGroup M] [Module 
     exact ⟨z, (Submodule.Quotient.eq _).2 (h z)⟩
 
 /- English proof (translation)
-Establish `key : ∀ (t : B) (p : Polynomial.degreeLT A n), ∑ j : Fin n, t ^ (j : ℕ) * f (Polynomial.degreeLTEquiv A n p j) = p.1.eval₂ f t` using `fun t p => by`. Rewrite using `[Polynomial.eval₂_eq_sum, ← Polynomial.sum_fin _ (by simp) (Polynomial.mem_degreeLT.1 p.2)]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Set `e : (Fin n → A) ≃ₗ[A] (Fin n → A)` to `(Polynomial.degreeLTEquiv A n).symm.trans ((Polynomial.taylorLinearEquiv 1 n).trans (Polynomial.degreeLTEquiv A n))`. Use `h.comp e.bijective using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Take `⟨p, rfl⟩` from `(Polynomial.degreeLTEquiv A n).surjective z`. Simplify using `only [e, Function.comp, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, key]`. Express the relevant statement in the definitionally equal form `_ = (Polynomial.taylor 1 p.1).eval₂ f x`. Rewrite using `[Polynomial.taylor_apply, Polynomial.eval₂_comp]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem bijective_one_add {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : B) (n : ℕ)
     (h : Function.Bijective fun z : Fin n → A => ∑ j : Fin n, x ^ (j : ℕ) * f (z j)) :
@@ -80,11 +80,9 @@ theorem bijective_one_add {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
   simp [add_comm]
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_eq_single i]`. Rewrite using `[coeff_X_pow_mul, coeff_expand_mul]`. Introduce `j _ hj`. Rewrite using `[coeff_X_pow_mul']`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `coeff_expand_of_not_dvd _ _ _ fun hd => hj (Fin.ext ?_)` and prove the remaining obligations. Establish `h1 : (j : ℕ) ≡ n * m + i [MOD n]` using `(Nat.modEq_iff_dvd' h).2 hd`. Establish `h2 : n * m + i ≡ i [MOD n]` using `by simp [Nat.ModEq]`. Conclude with `(h1.trans h2).eq_of_lt_of_lt j.2 i.2`. Both sides reduce to the same expression.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_sum_expand {R : Type} [CommRing R] (n : ℕ) (hn : n ≠ 0) (z : Fin n → R⟦X⟧) (i : Fin n)
     (m : ℕ) : coeff (n * m + i) (∑ j : Fin n, X ^ (j : ℕ) * expand n hn (z j)) = coeff m (z i) := by
@@ -101,11 +99,11 @@ theorem coeff_sum_expand {R : Type} [CommRing R] (n : ℕ) (hn : n ≠ 0) (z : F
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `z z' h`. Use function extensionality and compare the values at `i`. Use extensionality with `m`. Rewrite using `[← coeff_sum_expand n hn z, ← coeff_sum_expand n hn z']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ h`. Introduce `y`. Use `⟨fun i => PowerSeries.mk fun m => coeff (n * m + i) y, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Establish `h` using `coeff_sum_expand n hn (fun i => PowerSeries.mk fun m => coeff (n * m + i) y) ⟨k % n, Nat.mod_lt _ (Nat.pos_of_ne_zero hn)⟩ (k / n)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Nat.div_add_mod]`.
+A detailed English derivation is pending.
 -/
 theorem bijective_expand {R : Type} [CommRing R] (n : ℕ) (hn : n ≠ 0) :
     Function.Bijective fun z : Fin n → R⟦X⟧ => ∑ j : Fin n, X ^ (j : ℕ) * expand n hn (z j) := by
@@ -125,13 +123,13 @@ theorem bijective_expand {R : Type} [CommRing R] (n : ℕ) (hn : n ≠ 0) :
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
 /- English proof (translation)
-Establish `h : (PowerSeries.map (Ideal.Quotient.mk J)).comp (phi l O : O⟦X⟧ →+* O⟦X⟧) = (PowerSeries.map (Ideal.Quotient.mk J)).comp (expand l (Fact.out : l.Prime).ne_zero : O⟦X⟧ →ₐ[O] O⟦X⟧)`. Establish `hX : PowerSeries.map (Ideal.Quotient.mk J) (phi l O X) = X ^ l`. Take `⟨r, hr⟩` from `Series.phi_X_mod l O`. Establish `h0 : ((l : ℕ) : (O ⧸ J)⟦X⟧) = 0`. Rewrite using `[← map_natCast (C (R := O ⧸ J)), ← map_natCast (Ideal.Quotient.mk J), Ideal.Quotient.eq_zero_iff_mem.2 hl, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Simplify using `[h0]`. Use `Fon.ps_hom_ext (fun r => ?_) ?_ ?_` and prove the remaining obligations. Conclude with `congrArg (PowerSeries.map (Ideal.Quotient.mk J)) (((phi l O).commutes r).trans ((expand l (Fact.out : l.Prime).ne_zero).commutes r).symm)`. Conclude with `hX.trans (by simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Fon.eq_zero_of_pow_dvd ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `constantCoeff (PowerSeries.map (Ideal.Quotient.mk J) (phi l O X)) = 0`. Rewrite using `[hX]`. Simplify using `[(Fact.out : l.Prime).ne_zero]`. Establish `h1` using `congrArg (coeff k) (RingHom.congr_fun h z)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_sub, ← Ideal.Quotient.eq]`. Simplify `h1` using `only [RingHom.comp_apply, coeff_map, RingHom.coe_coe]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_phi_sub_expand_mem (J : Ideal O) (hl : (l : O) ∈ J) (z : O⟦X⟧) (k : ℕ) :
     coeff k (phi l O z - expand l (Fact.out : l.Prime).ne_zero z) ∈ J := by
@@ -164,17 +162,17 @@ namespace GlobalTheory.Cyc
 open PhiFree CompleteBaseChange
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ hl y`. Take `⟨a, ha⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hm` using `ha.maximalIdeal_eq`. Establish `hla : (l : O) ∈ Ideal.span {a}` using `hm ▸ (IsLocalRing.mem_maximalIdeal _).2 hl`. Establish `: IsAdicComplete (Ideal.span {a}) O` using `hm ▸ ‹_›`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : (Ideal.span {a}).FG` using `Submodule.fg_span_singleton a`. Establish `: IsPrecomplete (Ideal.span {a}) (PowerSeries O)` using `isPrecomplete_pi (Unit →₀ ℕ) hJ`. Establish `: IsHausdorff (Ideal.span {a}) (PowerSeries O)` using `isHausdorff_pi (Unit →₀ ℕ) hJ`. Establish `: IsPrecomplete (Ideal.span {a}) (Fin l → PowerSeries O)` using `isPrecomplete_pi _ hJ`. Establish `: IsHausdorff (Ideal.span {a}) (Fin l → PowerSeries O)` using `isHausdorff_pi _ hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : (PowerSeries O →ₐ[O] PowerSeries O) → (Fin l → PowerSeries O) →ₗ[O] PowerSeries O` to `fun f => { toFun := fun z => ∑ j : Fin l, PowerSeries.X ^ (j : ℕ) * f (z j) map_add' := fun x y => by simp [mul_add, Finset.sum_add_distrib] map_smul' := fun c x => by simp [Finset.smul_sum] }`. Establish `hT : Function.Bijective (F (phi l O))`. Use `bijective_of_congr a (fun y hy => ?_) (F (PowerSeries.expand l (Fact.out : l.Prime).ne_zero)) _ (bijective_expand l _) fun z => ?_` and prove the remaining obligations. Use extensionality with `k`. Establish `h1` using `congrArg (PowerSeries.coeff k) hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_smul, map_zero, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left ha.ne_zero`. Express the relevant statement in the definitionally equal form `(∑ j : Fin l, _) - (∑ j : Fin l, _) ∈ _`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : phi l O (z j) - PowerSeries.expand l (Fact.out : l.Prime).ne_zero (z j) ∈ (Ideal.span {a} • ⊤ : Submodule O (PowerSeries O))` using `(mem_smul_top_pi (ι := Unit →₀ ℕ) hJ _).2 fun d => by`. Establish `h2` using `coeff_phi_sub_expand_mem l O _ hla (z j) (d ())`. Rewrite `h2` using `[PowerSeries.coeff, Finsupp.unique_single d |>.symm]`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1`, the goal using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨u, -, hu⟩` from `h1`. Conclude with `⟨PowerSeries.X ^ (j : ℕ) * u, trivial, by rw [← mul_sub, ← hu, mul_smul_comm]⟩`. Establish `h` using `(bijective_one_add (phi l O : PowerSeries O →+* PowerSeries O) PowerSeries.X l hT).existsUnique y`. Simplify `h` using `only [eq_comm (a := y), RingHom.coe_coe]`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem phi_free : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Algebra ℤ_[l] O], (l : O) ≠ 0 → ¬ IsUnit (l : O) → ∀ y : PowerSeries O, ∃! z : Fin l → PowerSeries O, y = ∑ j : Fin l, (1 + PowerSeries.X) ^ (j : ℕ) * phi l O (z j) := by
   intro l _ O _ _ _ _ _ _ hl y

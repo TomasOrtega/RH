@@ -64,27 +64,27 @@ Both sides reduce to the same expression.
     rotL g j θ H = g * (rot j θ * fromBlocks 0 H 0 0 * (rot j θ)⁻¹) := rfl
 
 /- English proof (translation)
-Rewrite using `[nU, ← fromBlocks_one, fromBlocks_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nU_eq (H : Matrix (Fin n) (Fin n) ℂ) : nU H = 1 + fromBlocks 0 H 0 0 := by
   rw [nU, ← fromBlocks_one, fromBlocks_add]; simp
 
 /- English proof (translation)
-The claim follows from `inG_mul_inv (rot_inG j θ)`.
+A detailed English derivation is pending.
 -/
 theorem rot_mul_inv (j : ℕ) (θ : ℝ) : rot (n := n) j θ * (rot j θ)⁻¹ = 1 := inG_mul_inv (rot_inG j θ)
 
 /- English proof (translation)
-Simplify using `only [nU_eq, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_assoc, rot_mul_inv, rotL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rot_nU (g : M2 n) (j : ℕ) (θ : ℝ) (H : Matrix (Fin n) (Fin n) ℂ) :
     g * rot j θ * nU H * (rot j θ)⁻¹ = g + rotL g j θ H := by
   simp only [nU_eq, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_assoc, rot_mul_inv, rotL_apply]
 
 /- English proof (translation)
-Establish `hX : rot (n` using `n) j θ * fromBlocks 0 (single r s 1) 0 0 * (rot j θ)⁻¹ = rot j θ * nU (single r s 1) * (rot j θ)⁻¹ - 1 := by`. Establish `h` using `rot_nU (1 : M2 n) j θ (single r s 1)`. Simplify using `only [Matrix.one_mul, rotL_apply] at h`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[rotL_apply, hX, ← Matrix.mul_smul, rot_conj]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rotL_single (g : M2 n) (j : ℕ) (θ : ℝ) (r s : Fin n) :
     Complex.exp (2 * θ * Complex.I) • rotL g j θ (single r s 1) =
@@ -100,11 +100,11 @@ theorem rotL_single (g : M2 n) (j : ℕ) (θ : ℝ) (r s : Fin n) :
   simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : r ∈ s ∧ u ∈ t`. Rewrite using `[if_pos h]`. Simplify using `only [matrixBlockRestriction, Matrix.single_apply]`. Distinguish the cases in `hab : r = a ∧ u = b`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `hab`. Simplify using `[h]`. Simplify using `[hab]`. Rewrite using `[if_neg h]`. Simplify using `only [matrixBlockRestriction, Matrix.single_apply, Matrix.zero_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : r = a ∧ u = b`. Take `⟨rfl, rfl⟩` from `hab`. Simplify using `[h]`. Simplify using `[hab]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem block_part_single (s t : Finset (Fin n)) (r u : Fin n) :
     matrixBlockRestriction s t (single r u (1 : ℂ)) = if r ∈ s ∧ u ∈ t then single r u 1 else 0 := by
@@ -124,7 +124,7 @@ theorem block_part_single (s t : Finset (Fin n)) (r u : Fin n) :
     · simp [hab]
 
 /- English proof (translation)
-Simplify using `[blkB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem memB {j : ℕ} {a : Fin n} : a ∈ blkB j ↔ a ∉ blkA j := by simp [blkB]
 
@@ -133,7 +133,7 @@ def topL (g : M2 n) (j : ℕ) : Matrix (Fin n) (Fin n) ℂ →L[ℂ] M2 n :=
     ((-(2 * Complex.I)⁻¹ : ℂ) • matrixBlockRestrictionLinear (blkB j) (blkB j)) ((-(2 * Complex.I)⁻¹ : ℂ) • matrixBlockRestrictionLinear (blkB j) (blkA j))
 
 /- English proof (translation)
-Simplify using `only [topL, conjL_apply, ContinuousLinearMap.smul_apply, block_part_linear_apply, block_part_single, zTop]`. Use `congr 2`. Apply the tactic sequence `by_cases hr : r ∈ blkA j <;> by_cases hs : s ∈ blkA j <;>`. Simplify using `[hr, hs, memB, fromBlocks_smul, fromBlocks_neg]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem topL_single (g : M2 n) (j : ℕ) (r s : Fin n) : topL g j (single r s 1) = g * (Cm n * zTop j r s * CmI n) := by
   simp only [topL, conjL_apply, ContinuousLinearMap.smul_apply, block_part_linear_apply, block_part_single, zTop]

@@ -8,15 +8,13 @@ open UpperTheory.ConvolutionTheory.R2
 namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `E _ _ _ D χ h`. Establish `hE : Module.finrank ℚ E = 2`. Rewrite using `[Module.finrank_eq_card_basis D.b]`. Simplify using the standard rewrite rules. Establish `hθ : D.θ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← D.b1]`. Conclude with `D.b.ne_zero 1`. Establish `hσ : D.σ ≠ 1`. Introduce `h1`. Establish `h2` using `D.conj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Establish `h3 : D.θ = -D.θ` using `by simpa using h2`. Establish `h4 : (2 : E) * D.θ = 0` using `by linear_combination h3`. Conclude with `hθ (by simpa using h4)`. Use `A.normChar_of_inv hE χ fun c z => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `GlobalTheory.AdLat.aut_eq_one_or_of_finrank_two D.σ hE hσ c with rfl | rfl` into its components or cases. Rewrite using `[one_smul]`. Establish `h1` using `h z`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Establish `h2 : Units.map (D.bar : A E →* A E) z = D.σ • z` using `Units.ext (coe_smul_idele D.σ z).symm`.
-
-Rewrite using `[← h2]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charDown : CharDown := by
   intro E _ _ _ D χ h

@@ -18,7 +18,7 @@ instance KwF_fin : FiniteDimensional ℚ_[l] (KwF (E := E) j) :=
   IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
 
 /- English proof (translation)
-Rewrite using `[← (Module.finBasis ℚ E).sum_repr x, map_sum]`. Use `IntermediateField.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, eq_ratCast (algebraMap ℚ E), map_ratCast]`. Conclude with `mul_mem (SubfieldClass.ratCast_mem _ _) (IntermediateField.subset_adjoin ℚ_[l] _ ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jE_mem (x : E) : jE j x ∈ KwF (E := E) j := by
   rw [← (Module.finBasis ℚ E).sum_repr x, map_sum]
@@ -29,11 +29,9 @@ theorem jE_mem (x : E) : jE j x ∈ KwF (E := E) j := by
 def clE : Subfield (PadicAlgCl l) := (jE (E := E) j).fieldRange.topologicalClosure
 
 /- English proof (translation)
-Establish `hcont : Continuous (algebraMap ℚ_[l] (PadicAlgCl l))` using `(AddMonoidHomClass.isometry_of_norm (algebraMap ℚ_[l] (PadicAlgCl l)) (PadicAlgCl.norm_extends l)).continuous`. Establish `hclosed : IsClosed {y : ℚ_[l] | algebraMap ℚ_[l] (PadicAlgCl l) y ∈ clE (E` using `E) j} := by`. Establish `hc : IsClosed ((clE (E` using `E) j : Subfield (PadicAlgCl l)) : Set (PadicAlgCl l)) := by first`. Consider the case `exact Subfield.isClosed_topologicalClosure _`. Consider the case `exact isClosed_closure`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Conclude with `hc.preimage hcont`. Establish `hQ : ∀ q : ℚ, algebraMap ℚ_[l] (PadicAlgCl l) (q : ℚ_[l]) ∈ clE (E` using `E) j := by`. Introduce `q`. Rewrite using `[map_ratCast]`. Conclude with `Subfield.le_topologicalClosure _ (SubfieldClass.ratCast_mem _ q)`.
-
-Conclude with `(Padic.denseRange_ratCast l).induction_on x hclosed hQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_clE (x : ℚ_[l]) : algebraMap ℚ_[l] (PadicAlgCl l) x ∈ clE (E := E) j := by
   have hcont : Continuous (algebraMap ℚ_[l] (PadicAlgCl l)) :=
@@ -52,11 +50,11 @@ theorem algebraMap_mem_clE (x : ℚ_[l]) : algebraMap ℚ_[l] (PadicAlgCl l) x �
   exact (Padic.denseRange_ratCast l).induction_on x hclosed hQ
 
 /- English proof (translation)
-Set `F : IntermediateField ℚ_[l] (PadicAlgCl l)` to `Subfield.toIntermediateField (clE (E := E) j) (algebraMap_mem_clE j)`. Establish `hle : KwF (E` using `E) j ≤ F := by`. Rewrite using `[KwF, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Subfield.le_topologicalClosure _ (RingHom.mem_fieldRange.mpr ⟨_, rfl⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `h1 : x ∈ ((clE (E` using `E) j : Subfield (PadicAlgCl l)) : Set (PadicAlgCl l)) := hle hx`. Establish `h2 : ((clE (E` using `E) j : Subfield (PadicAlgCl l)) : Set (PadicAlgCl l)) = closure (Set.range fun x : E => j (algebraMap E Ω x)) := by show closure ((jE (E := E) j).fieldRange : Set (PadicAlgCl l)) = _`. Rewrite using `[RingHom.coe_fieldRange]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem KwF_le_clE : (KwF (E := E) j : Set (PadicAlgCl l)) ⊆
     closure (Set.range fun x : E => j (algebraMap E Ω x)) := by
@@ -76,9 +74,9 @@ theorem KwF_le_clE : (KwF (E := E) j : Set (PadicAlgCl l)) ⊆
   rwa [h2] at h1
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `hle : KwF (E` using `E) j ≤ IntermediateField.fixedField (Subgroup.zpowers σ) := by`. Rewrite using `[KwF, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixedField_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Establish `hst : Subgroup.zpowers σ ≤ MulAction.stabilizer (GQ l) (jE (E` using `E) j (Module.finBasis ℚ E i)) := Subgroup.zpowers_le.mpr (MulAction.mem_stabilizer_iff.mpr (h _))`. Conclude with `MulAction.mem_stabilizer_iff.mp (hst hf)`. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).mp (hle hx) σ (Subgroup.mem_zpowers σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_GK_of_fix (σ : GQ l) (h : ∀ x : E, σ (jE j x) = jE j x) :
     σ ∈ (KwF (E := E) j).fixingSubgroup := by
@@ -96,7 +94,7 @@ theorem mem_GK_of_fix (σ : GQ l) (h : ∀ x : E, σ (jE j x) = jE j x) :
   exact (IntermediateField.mem_fixedField_iff _ _).mp (hle hx) σ (Subgroup.mem_zpowers σ)
 
 /- English proof (translation)
-Establish `h1 : ∀ y : PadicAlgCl l, ‖y‖ = spectralNorm ℚ_[l] (PadicAlgCl l) y` using `fun y => rfl`. Rewrite using `[h1, h1, ← spectralNorm_eq_of_equiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_aut (σ : GQ l) (x : PadicAlgCl l) : ‖σ x‖ = ‖x‖ := by
   have h1 : ∀ y : PadicAlgCl l, ‖y‖ = spectralNorm ℚ_[l] (PadicAlgCl l) y := fun y => rfl

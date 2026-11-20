@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J _ _ T f L hL v hv`. Take `⟨⟨hfin, _⟩, hint, hT, _, _⟩` from `hL`. Conclude with `self_dual_local F E n cm.sig J v L T hfin (fun x hx y hy => hint y hy x hx) (fun y hy => hT y hy) hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem selfDualAt_of_tLat :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), TLat cm.sig J T f L → ∀ (v : HeightOneSpectrum (𝓞 F)), (T : 𝓞 F) ∉ v.asIdeal → SelfDualAt cm.sig J v L := by

@@ -9,7 +9,7 @@ section Idem
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Establish `hba : b * a = 0` using `by rw [mul_comm]; exact hab`. Establish `hca : c * a = 0` using `by rw [mul_comm]; exact hac`. Establish `hcb : c * b = 0` using `by rw [mul_comm]; exact hbc`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, hab, hac, hbc, hba, hca, hcb, ha, hb, hc, zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem matrix_mul_orthogonal_three_idempotents_smul (a b c : R) (hab : a * b = 0) (hac : a * c = 0) (hbc : b * c = 0) (ha : a * a = a)
     (hb : b * b = b) (hc : c * c = c) (M₁ M₂ M₃ N₁ N₂ N₃ : Matrix (Fin n) (Fin n) R) :
@@ -21,25 +21,25 @@ theorem matrix_mul_orthogonal_three_idempotents_smul (a b c : R) (hab : a * b = 
     ha, hb, hc, zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul' (τ : R →+* R) (a : R) (M : Matrix (Fin n) (Fin n) R) : cT τ (a • M) = τ a • cT τ M := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' (τ : R →+* R) (M N : Matrix (Fin n) (Fin n) R) : cT τ (M + N) = cT τ M + cT τ N := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hτ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT' (τ : R →+* R) (hτ : ∀ x, τ (τ x) = x) (M : Matrix (Fin n) (Fin n) R) : cT τ (cT τ M) = M := by
   ext i j; simp [cT, hτ]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; simp [Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_idem3 (a b c : R) (X Y : Matrix (Fin n) (Fin n) R) {T : Type} [CommRing T] (f : R →+* T) :
     (a • X + b • Y + c • (1 : Matrix (Fin n) (Fin n) R)).map f
@@ -47,9 +47,9 @@ theorem map_idem3 (a b c : R) (X Y : Matrix (Fin n) (Fin n) R) {T : Type} [CommR
   ext i j; simp [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hac : a * (1 - a - b) = 0` using `by linear_combination -ha - hab`. Establish `hbc : b * (1 - a - b) = 0` using `by linear_combination -hb - hab`. Establish `hc : (1 - a - b) * (1 - a - b) = 1 - a - b` using `by linear_combination ha + hb + 2 * hab`. Rewrite using `[matrix_mul_orthogonal_three_idempotents_smul a b _ hab hac hbc ha hb hc]`. Establish `h1 : Gi * cT τ Xi * G * (Gi * cT τ X * G) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hX, h1, Matrix.mul_one, ← add_smul, ← add_smul, show a + b + (1 - a - b) = 1 by ring, one_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_split_inv (τ : R →+* R) (a b : R) (ha : a * a = a) (hb : b * b = b) (hab : a * b = 0)
     (G Gi X Xi : Matrix (Fin n) (Fin n) R) (hG : G * Gi = 1) (hGi : Gi * G = 1) (hX : X * Xi = 1) :
@@ -65,15 +65,15 @@ theorem idem_split_inv (τ : R →+* R) (a b : R) (ha : a * a = a) (hb : b * b =
   rw [hX, h1, Matrix.mul_one, ← add_smul, ← add_smul, show a + b + (1 - a - b) = 1 by ring, one_smul]
 
 /- English proof (translation)
-Establish `hac : a * (1 - a - b) = 0` using `by linear_combination -ha - hab`. Establish `hbc : b * (1 - a - b) = 0` using `by linear_combination -hb - hab`. Establish `hc : (1 - a - b) * (1 - a - b) = 1 - a - b` using `by linear_combination ha + hb + 2 * hab`. Establish `hτb : τ b = a` using `by rw [← hτa, hτ]`. Establish `hτc : τ (1 - a - b) = 1 - a - b` using `by rw [map_sub, map_sub, map_one, hτa, hτb]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : cT τ Gi * G = 1`. Establish `: cT τ Gi * cT τ G = 1` using `by rw [← cT_mul, hG, cT_one]`. Rewrite `this` using `[hGh]`. Then use the resulting hypothesis. Establish `hct : cT τ (a • X + b • (Gi * cT τ Xi * G) + (1 - a - b) • (1 : Matrix (Fin n) (Fin n) R)) = a • (G * (Xi * cT τ Gi)) + b • cT τ X + (1 - a - b) • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[cT_add', cT_add', cT_smul', cT_smul', cT_smul', hτa, hτb, hτc, cT_one, cT_mul, cT_mul, hGh, cT_cT' τ hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hGs : G = a • G + b • G + (1 - a - b) • G`. Rewrite using `[← add_smul, ← add_smul, show a + b + (1 - a - b) = 1 by ring, one_smul]`. Rewrite using `[hct, show (a • (G * (Xi * cT τ Gi)) + b • cT τ X + (1 - a - b) • (1 : Matrix (Fin n) (Fin n) R)) * G = a • (G * (Xi * cT τ Gi) * G) + b • (cT τ X * G) + (1 - a - b) • (1 * G) by`. Simplify using `only [Matrix.add_mul, Matrix.smul_mul]]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[matrix_mul_orthogonal_three_idempotents_smul a b _ hab hac hbc ha hb hc]`. Establish `e1 : G * (Xi * cT τ Gi) * G * X = G`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : cT τ X * G * (Gi * cT τ Xi * G) = G`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e1, e2, Matrix.one_mul, Matrix.mul_one, ← hGs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_split_unitary (τ : R →+* R) (hτ : ∀ x, τ (τ x) = x) (a b : R) (ha : a * a = a) (hb : b * b = b)
     (hab : a * b = 0) (hτa : τ a = b)
@@ -113,25 +113,25 @@ end GlobalTheory.LevNorm
 namespace GlobalTheory.LevNorm
 
 /- English proof (translation)
-Take `⟨x, hx1, hx2⟩` from `Z.gl_single Q (bc (Z.O Q).subtype y)`. Take `⟨X, hX⟩` from `Z.gl_int (x := x) fun R => by`. Distinguish the cases in `h : R = Q`. Substitute `h` using the available equality. Conclude with `⟨y, hx1.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨1, by rw [map_one, hx2 R h]⟩`. Establish `hcomp : ∀ R, bc (Z.O R).subtype (bc (Z.pO R) X) = bc (Z.p R) x` using `fun R => by`. Rewrite using `[← hX]`. Both sides reduce to the same expression. Establish `binj : ∀ R, Function.Injective (bc (n` using `Fin n) (Z.O R).subtype) := fun R g h e => Units.ext (Matrix.map_injective Subtype.val_injective (congrArg Units.val e))`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hXQ : bc (Z.pO Q) X = y` using `binj Q (by rw [hcomp, hx1])`. Establish `hXR : ∀ R, R ≠ Q → bc (Z.pO R) X = 1` using `fun R h => binj R (by rw [hcomp, hx2 R h, map_one])`. Set `τ : S →+* S` to `σ.restrict S S hS`. Establish `hτv : ∀ s : S, (τ s : A) = σ s` using `fun s => rfl`. Establish `hτ : ∀ s, τ (τ s) = s` using `fun s => Subtype.ext (by rw [hτv, hτv, hσ])`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : S` to `⟨Z.e Q, Z.e_mem Q⟩`. Set `b : S` to `⟨Z.e Q', Z.e_mem Q'⟩`. Establish `ha : a * a = a` using `Subtype.ext (Z.e_idem Q)`. Establish `hb : b * b = b` using `Subtype.ext (Z.e_idem Q')`. Establish `hab : a * b = 0` using `Subtype.ext (by show Z.e Q * Z.e Q' = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Z.ext _ fun R => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `h : R = Q`. Substitute `h` using the available equality. Rewrite using `[Z.e_ne Q' R hne, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Z.e_ne Q R h, zero_mul])`. Establish `hτa : τ a = b` using `Subtype.ext hQ`. Establish `hmap : ∀ M : Matrix (Fin n) (Fin n) S, (cT τ M).map S.subtype = cT σ (M.map S.subtype)` using `fun M => by`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hGh : cT τ (G : Matrix (Fin n) (Fin n) S) = G` using `Matrix.map_injective (f := (S.subtype : S → A)) S.subtype_injective ((hmap _).trans hG)`. Set `uM : Matrix (Fin n) (Fin n) S` to `a • (X : Matrix (Fin n) (Fin n) S) + b • (((G⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) * cT τ ((X⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) * G) + (1 - a - b) • (1 : Matrix (Fin n) (Fin n) S)`. Set `vM : Matrix (Fin n) (Fin n) S` to `a • ((X⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) + b • (((G⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) * cT τ (X : Matrix (Fin n) (Fin n) S) * G) + (1 - a - b) • (1 : Matrix (Fin n) (Fin n) S)`. Set `u : GL (Fin n) S` to `⟨uM, vM, idem_split_inv τ a b ha hb hab _ _ _ _ (Units.mul_inv G) (Units.inv_mul G) (Units.mul_inv X), idem_split_inv τ a b ha hb hab _ _ _ _ (Units.mul_inv G) (Units.inv_mul G) (Units.inv_mul X)⟩`. Establish `hcompU : ∀ R, ((bc (Z.pO R) u : GL (Fin n) (Z.O R)) : Matrix (Fin n) (Fin n) (Z.O R)) = Z.pO R a • (X : Matrix (Fin n) (Fin n) S).map (Z.pO R) + Z.pO R b • _ + Z.pO R (1 - a - b) • 1` using `fun R => map_idem3 _ _ _ _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨u, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show cT σ (uM.map S.subtype) * (G : Matrix (Fin n) (Fin n) S).map S.subtype * uM.map S.subtype = (G : Matrix (Fin n) (Fin n) S).map S.subtype`. Rewrite using `[← hmap, ← Matrix.map_mul, ← Matrix.map_mul, idem_split_unitary τ hτ a b ha hb hab hτa _ _ _ _ (Units.mul_inv G) (Units.inv_mul X) hGh]`. Establish `hpa : Z.pO Q a = 1` using `Subtype.ext (Z.e_self Q)`. Establish `hpb : Z.pO Q b = 0` using `Subtype.ext (Z.e_ne Q' Q hne)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hcompU, map_sub, map_sub, map_one, hpa, hpb]`. Simplify using `only [one_smul, zero_smul, add_zero, sub_self]`. Conclude with `congrArg Units.val hXQ`. Introduce `R h1 h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpa : Z.pO R a = 0` using `Subtype.ext (Z.e_ne Q R h1)`. Establish `hpb : Z.pO R b = 0` using `Subtype.ext (Z.e_ne Q' R h2)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hcompU, map_sub, map_sub, map_one, hpa, hpb]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unitary_int_of_component {A : Type} [CommRing A] {S : Subring A} {P : Type} {k : P → Type}
     [∀ Q, Field (k Q)] {r : ∀ Q, S →+* k Q} (Z : PlaceSys A S P k r) (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a)

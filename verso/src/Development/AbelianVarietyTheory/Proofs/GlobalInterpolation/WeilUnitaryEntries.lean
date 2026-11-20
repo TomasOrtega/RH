@@ -23,7 +23,7 @@ namespace GlobalTheory.Fc.RL.DefSide
 open Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory in
 
 /- English proof (translation)
-Establish `tT` using `(family_conditions_of_layer_two Fm tie).2.2`. Establish `h` using `slope_free_branch_family Fm tT freeTT_holds slopeLineT_holds Formalism.L2.GlobalTheoryTheory.LemB.second_branch_all_members`. Take `⟨hT2, hT5⟩` from `Formalism.MainNotions.Wire.family_theorems_two_and_five Fm h.1 h.2.1 (hI_tied Fm tT PI.IntegralAtBasePointLattice.integral_at_t0_lattice) (tT.mono fun D u hS ht => Formalism.L2.GlobalTheoryTheory.UnramifiedTrace.hecke_ramified_zero_all D u hS ht) h.2.2`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, cPr, _⟩` from `hCh`. Conclude with `muRank_items Fm 3 (by norm_num) hT2 hT5 hTu cPr`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem full_rank {eps : ℝ} (Fm : FamP eps) (CH : ℝ) (tie : RealPlaceSecondLayerConditions Fm) (hTu : TuSize Fm) (hCh : ChosenE Fm 3 CH) :
     NuFullF Fm ∧ J.MuRank Fm := by
@@ -35,7 +35,7 @@ theorem full_rank {eps : ℝ} (Fm : FamP eps) (CH : ℝ) (tie : RealPlaceSecondL
   exact muRank_items Fm 3 (by norm_num) hT2 hT5 hTu cPr
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hP`. Substitute `hR` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem wts_eq {X X' : Formalism.L2.Col.Fields} (h : X = X') {P : Formalism.L2.Col.Primes X} {P' : Formalism.L2.Col.Primes X'} (hP : HEq P P')
     {R R' : Ranks} (hR : R = R') : Formalism.L2.Col.Wts X P.Word R = Formalism.L2.Col.Wts X' P'.Word R' := by
@@ -50,9 +50,7 @@ def PtE : BdP Bundle := fun D O _ b =>
       GlobalTheory.ColRows.KerSizes b.R.T.ker W b.DH.1.1 b.DH.1.2 CY CT
 
 /- English proof (translation)
-Establish `hk` using `b.C.kerTie`. Establish `e : Formalism.L2.Col.Wts _ b.C.c.Pr.Word b.C.c.Rk = Formalism.L2.Col.Wts b.R.T.ker.X b.R.T.ker.Pr.Word (q.w.D q.Z).R` using `wts_eq hk.1.symm hk.2.2.1 hk.2.1`. Establish `hW : HEq (cast e b.C.c.W) q.B.wts` using `(cast_heq e _).trans w.cW.1`. Use `⟨⟨q.x.real, GlobalTheory.T.exists_symmetricColumnForms_stepZeroFiniteCharacter q.w.I q.w.ok q.w.pins q.w.l q.Z⟩, w.colPins, cast e b.C.c.W, (cast_heq e _).symm, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.kernelCompatibilities_standardKernelData_trueColumns q.w.I q.w.ok q.w.pins q.w.l q.Z _ _ _ _ _ _ _ q.O.ex b.R.T.ker _ _ _ q.x.pin.jets w.recPin.k.std hW b.DH.2.1 b.DH.2.2 (b.R.T.ker_sharp _)`.
-
-Conclude with `GlobalTheory.ColRows.kerSizes_of_stdKer q.w.I q.w.ok q.w.pins q.w.l q.Z _ _ _ _ _ _ _ q.O.ex b.R.T.ker _ _ _ w.recPin.k.std hW b.DH.2.1 b.DH.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ptE_of_wit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx} (q : WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c) (w : BWit q b) : PtE _ _ c b := by
@@ -67,7 +65,7 @@ theorem ptE_of_wit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {
       b.DH.2.1 b.DH.2.2
 
 /- English proof (translation)
-Take `⟨q, b', ⟨w⟩, e⟩` from `h`. Conclude with `Eq.mpr (congrArg (fun y : Σ (D : D7) (O : Obj D), Bundle D O c => PtE y.1 y.2.1 c y.2.2) e) (ptE_of_wit q b' w)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ptE_of_linked {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx} (β : BPt K) (c : ℝ) (b : Bundle β.D β.O c)
     (h : IsLinked p K β c b) : PtE _ _ c b := by
@@ -75,9 +73,9 @@ theorem ptE_of_linked {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL
   exact Eq.mpr (congrArg (fun y : Σ (D : D7) (O : Obj D), Bundle D O c => PtE y.1 y.2.1 c y.2.2) e) (ptE_of_wit q b' w)
 
 /- English proof (translation)
-Take `⟨C0, hC0⟩` from `GlobalTheory.T.kernel_columns_from_ties CY CT hCT`. Use `⟨C0, fun D O c b C CH hE h1 h2 h3 h4 h5 hN hF hR hc => ?_⟩` and prove the remaining obligations. Take `⟨-, hpin, W, hW, hT, hS⟩` from `hE`. Introduce `hok1 hsep hP hI lam0 c0 ce Sw C1 H NuC I _ hII u`. Establish `hZs : (Formalism.L2.RowDataTransport.pkOf (qS b) hok1 hsep C CH hP hI).Zs = b.P.Zs` using `(qS b).zs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS0 : HEq (Formalism.L2.RowDataTransport.pkOf (qS b) hok1 hsep C CH hP hI).core.base.toIndefData b.P.S0` using `(qS b).s0`. Establish `hS1 : HEq (Formalism.L2.RowDataTransport.pkOf (qS b) hok1 hsep C CH hP hI).core.cols.toIndefData b.P.S1` using `(qS b).s1`. Establish `hDc : HEq (b.C.toS.c.face (Formalism.L2.RowDataTransport.pkOf (qS b) hok1 hsep C CH hP hI).Zs) b.P.Dc` using `(congr_arg_heq b.C.toS.c.face hZs).trans (heq_of_eq b.C.toS.colTie.1)`. Establish `hw : HEq (I.wU u) u` using `((Formalism.L2.DIV.divTieDat3_heq hZs hS0 hS1 hDc hII).2.2 u).trans (b.C.wTie u)`. Conclude with `hC0 D O.L _ _ _ _ _ _ O.ex b.R.T b.P b.C.toS W _ _ hpin hW hT (hS CY CT h1 h2 h3 h4 h5) hN hF hR _ _ C CH (Formalism.L2.RowDataTransport.pkOf (qS b) hok1 hsep C CH hP hI) hZs u lam0 c0 ce c Sw C1 (H u) (I.wU u) (I.eNu u) hw hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem drs_pt (CY CT : ℝ) (hCT : 0 ≤ CT) : ∃ C0 : ℝ, ∀ (D : D7) (O : Obj D) (c : ℝ) (b : Bundle D O c) (C CH : ℝ),
     PtE D O c b → GlobalTheory.CoreHt.HtRowsS O.L CY → 8 ≤ O.L.sc.X' → 2 ≤ O.L.sc.x → (∀ u, 4 * O.L.sc.a < ((D.mem u).A.T : ℝ)) →
@@ -97,13 +95,11 @@ theorem drs_pt (CY CT : ℝ) (hCT : 0 ≤ CT) : ∃ C0 : ℝ, ∀ (D : D7) (O : 
     (Formalism.L2.RowDataTransport.pkOf (qS b) hok1 hsep C CH hP hI) hZs u lam0 c0 ce c Sw C1 (H u) (I.wU u) (I.eNu u) hw hc
 
 /- English proof (translation)
-Use `RL.At.of_row (p := p) (H := Ind.EvWC (Bd := Bundle) (fun _ => True) fun C CH D O c b => DRS D O c b C CH) ⟨fun _ => PtE, RowE.of_all fun _ _ β c b _ _ h => ptE_of_linked β c b h, fun 𝒜 σ s => ?_⟩` and prove the remaining obligations. Use `choose c0 hc0 using fun (CY CT : ℝ) => drs_pt CY (max CT 0) (le_max_right _ _)`. Use `(Formalism.MainNotions.DIV.closed_Csz_ge_fn (W3 𝒜) fun l => c0 (l.getD 6 0) (l.getD 13 0)).imp ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hC hc _`. Establish `hC' : c0 Fm.CYL Fm.CTu ≤ Fm.Csz` using `hC`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, -, -, hs⟩` from `s Fm (w3_a hc)`. Establish `tie : RealPlaceSecondLayerConditions Fm` using `⟨Fm.x1 + 1, fun x hx i => (hs x (by linarith) i).2.1⟩`. Take `⟨CH', hCh⟩` from `hc.2.1`. Take `⟨⟨a1, hF⟩, ⟨a2, hR⟩⟩` from `full_rank Fm CH' tie hc.2.2.1 hCh`. Take `⟨a3, hz⟩` from `GlobalTheory.CoreHt.famRowsSizes Fm hc.2.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, le_rfl, fun C _ => ⟨max a1 (max a2 a3), fun x hx h0 i => ?_⟩⟩` and prove the remaining obligations. Establish `e1 : a1 ≤ x` using `le_trans (le_max_left _ _) h0`. Establish `e2 : a2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h0`. Establish `e3 : a3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) h0`. Take `⟨z1, z2, z3, z4, z5⟩` from `hz x e3 i ⟨_, (σ Fm (w3_a hc) x hx i).DH.2.1⟩`.
-
-Conclude with `hc0 Fm.CYL Fm.CTu _ _ _ (σ Fm (w3_a hc) x hx i) C CH (hs x hx i).2 z1 z2 z3 z4 z5 (Fm.nprimeDef x hx i) (hF x e1 i) (hR x e2 i) hC'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem row_df {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) : RL.At p RL.DifferentialCondition := by
   refine RL.At.of_row (p := p) (H := Ind.EvWC (Bd := Bundle) (fun _ => True) fun C CH D O c b => DRS D O c b C CH)
@@ -128,7 +124,7 @@ theorem row_df {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) : RL.
 end GlobalTheory.Fc.RL.DefSide
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ N S Γ` and use `GlobalTheory.Fc.RL.DefSide.row_df (prmR N S Γ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fc.RL.at_row_df : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists →
     GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay →

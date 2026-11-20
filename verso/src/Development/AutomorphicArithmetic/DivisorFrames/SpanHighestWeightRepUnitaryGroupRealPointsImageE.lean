@@ -5,15 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnit
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.UG Formalism.BasicNotions GlobalTheory.DefU
 
 /- English proof (translation)
-Set `J : Subgroup (ι → GL (Fin n) ℂ)` to `((MonoidHom.pi fun τ => cEmb (E := E) (n := n) (emb τ)).comp (infU E n).subtype).range`. Set `Hs : ι → Subgroup (GL (Fin n) ℂ)` to `fun _ => (GlobalTheory.Branching.unitaryIncl n).range`. Establish `hle : Subgroup.pi Set.univ Hs ≤ J`. Rewrite using `[Subgroup.pi_le_iff]`. Introduce `v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, rfl⟩`. Take `⟨e, he⟩` from `GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E n (emb v)`. Set `x` to `e.symm u`. Establish `hx` using `Subgroup.mem_inf.1 x.2`. Use `⟨⟨x.1, hx.1⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Express the relevant statement in the definitionally equal form `cEmb (emb v') x.1 = _`. Rewrite using `[← he, e.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h5 : x.1 ∈ (cEmb (E` using `E) (n := n) (emb v')).ker := Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.2 (emb v')) (fun h' => h (hinj h'))`. Express the relevant statement in the definitionally equal form `cEmb (emb v') x.1 = _`. Rewrite using `[MonoidHom.mem_ker.1 h5]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨y, hy⟩ : g ∈ J` from `hle fun v _ => ⟨⟨(g v).val, hg v⟩, Units.ext rfl⟩`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.exists_infinite_unitary_lift {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {ι : Type} [Fintype ι]
     (emb : ι → (E →+* ℂ)) (hinj : Function.Injective (fun τ => InfinitePlace.mk (emb τ)))
@@ -47,9 +47,7 @@ private theorem UpperTheory.exists_infinite_unitary_lift {E : Type} [Field E] [N
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n ι _ emb hinj lam _`. Use `haveI : ∀ v, Finite (Formalism.GradedWeylDivisibility.ssIdx n n (lam v).natW) := fun _ => (Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype`. Use `haveI : FiniteDimensional ℂ (Formalism.L2.DIV.VV ℂ lam) := Module.Finite.of_basis (Formalism.L2.DIV.bVV ℂ lam)`. Conclude with `GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ _ ((GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨inferInstance, fun U hU => GlobalTheory.CoefIrred.vv_irreducible_unitary ι n lam U fun g hg x hx => by`. Take `⟨y, rfl⟩` from `UpperTheory.exists_infinite_unitary_lift emb hinj g hg`.
-
-Conclude with `hU y x hx⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.span_highestWeightRep_unitaryGroup_realPoints_image_eq_top :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ι : Type) [Fintype ι] (emb : ι → (E →+* ℂ)), Function.Injective (fun τ => InfinitePlace.mk (emb τ)) →

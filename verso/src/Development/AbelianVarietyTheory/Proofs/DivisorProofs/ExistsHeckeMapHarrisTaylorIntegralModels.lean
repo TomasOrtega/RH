@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.Hecke
 
 /- English proof (translation)
-Introduce `p _ D R _ _ b g c k N hc hk hN hNp hEF hg hck M M'`. Take `⟨o', ψ, hψ⟩` from `GlobalTheory.T.exists_primeToP_hecke_translate_harrisTaylor p D R b g c k N hc hk hN hNp hEF hg hck M'.X M'.s M'.univ`. Take `⟨π, ⟨hπ, hm⟩, -⟩` from `M.toRepFam.rep M'.X M'.s o'`. Conclude with `⟨π, hπ, o', ψ, hψ, hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isHeckeMap : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R]
     (b : Base D R) (g : D.La →ₗ[D.O] D.La) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p →

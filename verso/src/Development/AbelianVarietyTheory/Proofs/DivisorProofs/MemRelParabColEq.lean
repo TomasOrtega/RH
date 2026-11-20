@@ -32,9 +32,9 @@ def sizeFirst (u v : ℕ) : SizeMatrix (Two (Fin u) (Fin (v + 1))) (Two (Fin (u 
     · cases j <;> simp [Fintype.sum_bool, card_two_false', card_two_true'] <;> omega⟩
 
 /- English proof (translation)
-Establish `r0` using `b.2.1 false`. Establish `r1` using `b.2.1 true`. Establish `c1` using `b.2.2 true`. Simplify using `only [Fintype.sum_bool, card_two_false', card_two_true', Fintype.card_fin] at r0 r1 c1`. Use `Subtype.ext (funext fun i => funext fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `cases i <;> cases j <;> simp [sizeFirst] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_sizeFirst {u v : ℕ} (b : SizeMatrix (Two (Fin u) (Fin (v + 1))) (Two (Fin (u + v)) (Fin 1)))
     (h : b.1 false true = 0) : b = sizeFirst u v := by
@@ -59,7 +59,7 @@ def rowEq (u v : ℕ) : ∀ i, (Σ j, Fin ((sizeFirst u v).1 i j)) ≃ Two (Fin 
   (sizeFirst u v).nonempty_rows.some
 
 /- English proof (translation)
-Simplify using `only [blk, colFalse, Equiv.symm_trans_apply]`. Break down `(two (stdSum (rfl : u + v = u + v))).symm x with ⟨a, y⟩` into its components or cases. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 -/
 theorem blk_colFalse (u v : ℕ) (x : Fin (u + v)) :
     blk (colFalse u v) x = blk (two (stdSum (rfl : u + v = u + v))) x := by
@@ -70,9 +70,9 @@ theorem blk_colFalse (u v : ℕ) (x : Fin (u + v)) :
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : x false ∈ parab k (colFalse u v)` using `h false trivial`. Use `mem_parab.2 fun i j hij => mem_parab.1 h1 i j ?_` and prove the remaining obligations. Rewrite using `[blk_colFalse, blk_colFalse]` and apply the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `h j _`. Consider the cases of `j`. Use `mem_parab.2 fun i i' hij => mem_parab.1 h i i' ?_` and prove the remaining obligations. Rewrite using `[← blk_colFalse, ← blk_colFalse]` and apply the resulting hypothesis. Apply the tactic sequence `exact OneBlockCell.mem_parab_of_single _ true (fun i hi => by cases i <;> simp_all [sizeFirst]) _`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_relParab_colEq {u v : ℕ} (x : Levi k (Two (Fin (u + v)) (Fin 1))) :
     x ∈ relParab k (colEq u v) ↔ x false ∈ parab k (two (stdSum (rfl : u + v = u + v))) := by
@@ -88,7 +88,7 @@ theorem mem_relParab_colEq {u v : ℕ} (x : Levi k (Two (Fin (u + v)) (Fin 1))) 
     · exact OneBlockCell.mem_parab_of_single _ true (fun i hi => by cases i <;> simp_all [sizeFirst]) _
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem relProj_colEq_ff {u v : ℕ} (p : relParab k (colEq u v)) :
     (relProj k (colEq u v) p false false : GL (Fin u) k) =
@@ -96,7 +96,7 @@ theorem relProj_colEq_ff {u v : ℕ} (p : relParab k (colEq u v)) :
   ext a b; rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem relProj_colEq_ft {u v : ℕ} (p : relParab k (colEq u v)) :
     (relProj k (colEq u v) p false true : GL (Fin v) k) =
@@ -104,9 +104,9 @@ theorem relProj_colEq_ft {u v : ℕ} (p : relParab k (colEq u v)) :
   ext a b; rfl
 
 /- English proof (translation)
-Establish `h` using `det_parab k (colEq u v true) ⟨p.1 true, p.2 true trivial⟩`. Rewrite using `[h, Fintype.prod_bool]`. Establish `h0 : GeneralLinearGroup.det (leviProj k (colEq u v true) ⟨p.1 true, p.2 true trivial⟩ false) = 1` using `by haveI : IsEmpty (Fin ((sizeFirst u v).1 false true)) := ⟨fun x => Fin.elim0 x⟩`. Use `ext`. Simplify using `[Matrix.det_isEmpty]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_relProj_tt {u v : ℕ} (p : relParab k (colEq u v)) :
     GeneralLinearGroup.det (relProj k (colEq u v) p true true : GL (Fin 1) k) =
@@ -126,7 +126,7 @@ abbrev rhoM (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :
     (leviTwo k (Fin u) (Fin (v + 1))).symm.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.IndLineGL.CellTorus.extTensor_detRep_apply χ₁ χ₂ _ w`.
+A detailed English derivation is pending.
 -/
 theorem rhoM_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (y : Levi k (Two (Fin u) (Fin (v + 1))))
     (w : ℂ ⊗[ℂ] ℂ) :
@@ -135,9 +135,9 @@ theorem rhoM_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (y : Levi k (Two (
   GlobalTheory.IndLineGL.CellTorus.extTensor_detRep_apply χ₁ χ₂ _ w
 
 /- English proof (translation)
-Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, w, rfl⟩`. Establish `hd : ∀ i, GeneralLinearGroup.det ((n : Levi k (Two (Fin u) (Fin (v + 1)))) i) = 1` using `fun i => det_eq_one_of_mem_unipRad k (n.2 i trivial)`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, sub_eq_zero]`. Use `(rhoM_apply χ₁ χ₂ u v (n : Levi k (Two (Fin u) (Fin (v + 1)))) w).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twKer_rhoM (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :
     twKer (rhoM (k := k) χ₁ χ₂ u v) (relUnip k (rowEq u v)) 1 = ⊥ := by

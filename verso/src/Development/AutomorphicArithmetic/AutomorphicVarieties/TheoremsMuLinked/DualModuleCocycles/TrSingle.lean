@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Establish `hidem : e i * e i = e i` using `(h.idem.idem i).eq`. Establish `h1 : e i * z = z`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 private theorem corner_eq {R : Type} [CommRing R] {n : ℕ} {E : Type} [Ring E] [Algebra R E] {τ : E →ₗ[R] R}
     {e : Fin n → E} (h : IsTrGMA τ e) (i : Fin n) (z : E) (hz : e i * z * e i = z) : z = τ z • e i := by
@@ -17,7 +17,7 @@ private theorem corner_eq {R : Type} [CommRing R] {n : ℕ} {E : Type} [Ring E] 
     _ = τ z • e i := by rw [h1]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.single_mul_mul_single]`. Simplify using `[Matrix.trace_smul, pow_two, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tr_single {O : Type} [CommRing O] {n : ℕ} (o i j : Fin n) (c : O) (A : Matrix (Fin n) (Fin n) O) :
     ((c • Matrix.single o i (1 : O)) * A * (c • Matrix.single j o (1 : O))).trace = c ^ 2 * A i j := by
@@ -25,53 +25,51 @@ private theorem tr_single {O : Type} [CommRing O] {n : ℕ} (o i j : Fin n) (c :
   simp [Matrix.trace_smul, pow_two, mul_assoc]
 
 /- English proof (translation)
-Introduce `O R _ _ _ n E _ _ x ρ τ e c hn hT hρe htr hsurj`. Take `⟨o, -⟩ : ∃ o : Fin n, True` from `⟨⟨0, hn⟩, trivial⟩`. Establish `hidem : ∀ i, e i * e i = e i` using `fun i => (hT.idem.idem i).eq`. Establish `hρE : ∀ (i j : Fin n) (r : O), Matrix.single i i (1 : O) * (r • Matrix.single i j (1 : O)) * Matrix.single j j (1 : O) = r • Matrix.single i j (1 : O)`. Introduce `i j r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `u v`. Simplify using `only [Matrix.single_mul_mul_single, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp_all`. Use `choose hh hhρ using fun i : Fin n => hsurj (Matrix.single o i (1 : O))`. Use `choose kk kkρ using fun j : Fin n => hsurj (Matrix.single j o (1 : O))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩ : ∃ p : Fin n → E, ∀ i, p i = e o * hh i * e i` from `⟨_, fun _ => rfl⟩`. Take `⟨q, hq⟩ : ∃ q : Fin n → E, ∀ j, q j = e j * kk j * e o` from `⟨_, fun _ => rfl⟩`. Establish `ρp : ∀ i, ρ (p i) = c • Matrix.single o i (1 : O)`. Introduce `i`. Simplify using `only [hp, map_mul, hρe, hhρ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hρE o i c`. Establish `ρq : ∀ j, ρ (q j) = c • Matrix.single j o (1 : O)`. Introduce `j`. Simplify using `only [hq, map_mul, hρe, kkρ]`. Conclude with `hρE j o c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpl : ∀ i, e o * p i = p i`. Introduce `i`. Simplify using `only [hp, ← mul_assoc, hidem]`. Establish `hpr : ∀ i, p i * e i = p i`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hp, mul_assoc, hidem]`. Establish `hql : ∀ j, e j * q j = q j`. Introduce `j`. Simplify using `only [hq, ← mul_assoc, hidem]`. Establish `hqr : ∀ j, q j * e o = q j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Simplify using `only [hq, mul_assoc, hidem]`. Establish `hcorner : ∀ i z, e i * z * e i = z → z = τ z • e i` using `fun i z hz => corner_eq hT i z hz`. Take `⟨γ, hγ⟩ : ∃ γ : Fin n → R, ∀ j, γ j = τ (q j * p j)` from `⟨_, fun _ => rfl⟩`. Establish `hqp : ∀ j, q j * p j = γ j • e j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hγ]`. Apply `hcorner` to reduce the goal to its premises. Rewrite using `[← mul_assoc, hql, mul_assoc, hpr]`. Establish `hxγ : ∀ j, x (γ j) = c ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `j`. Rewrite using `[hγ, ← htr, map_mul, ρq, ρp]`. Establish `h` using `tr_single j o o c (1 : Matrix (Fin n) (Fin n) O)`. Rewrite `h` using `[Matrix.mul_one, Matrix.one_apply_eq, mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρs : ∀ r : R, ρ (r • e o) = Matrix.single o o (x r)`. Introduce `r`. Establish `hz : e o * (r • e o) * e o = r • e o`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hidem, hidem]`. Establish `h1 : ρ (r • e o) = Matrix.single o o ((ρ (r • e o)) o o)` using `by conv_lhs => rw [← hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, map_mul, hρe, Matrix.single_mul_mul_single, one_mul, mul_one]`. Establish `h2 : (ρ (r • e o)).trace = x r`. Rewrite using `[htr, map_smul, hT.one, smul_eq_mul, mul_one]`. Rewrite `h2`, the goal using `[h1]`. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h2` using `[Matrix.trace, Matrix.single_apply]`. Take `⟨Γj, hΓj⟩ : ∃ Γj : Fin n → R, ∀ j, Γj j = ∏ l ∈ Finset.univ.erase j, γ l` from `⟨_, fun _ => rfl⟩`. Take `⟨q', hq'⟩ : ∃ q' : Fin n → E, ∀ j, q' j = q j * (Γj j • e o)` from `⟨_, fun _ => rfl⟩`. Establish `hq'p : ∀ j, q' j * p j = (∏ l, γ l) • e j`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq', mul_smul_comm, smul_mul_assoc, hqr, hqp, smul_smul, hΓj, Finset.prod_erase_mul _ _ (Finset.mem_univ j)]`. Establish `hsum : ∑ j, q' j * p j = (∏ l, γ l) • (1 : E)`. Repeatedly rewrite using `[hq'p]`. Rewrite using `[← Finset.smul_sum, hT.idem.complete]`. Establish `hq'r : ∀ j, q' j * e o = q' j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Rewrite using `[hq', mul_assoc, smul_mul_assoc, hidem]`. Establish `hX : ∀ i j a, p i * a * q' j = τ (p i * a * q' j) • e o`. Introduce `i j a`. Apply `hcorner` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : e o * (p i * a * q' j) * e o = (e o * p i) * a * (q' j * e o)` using `by simp only [mul_assoc]`. Rewrite using `[h, hpl, hq'r]`. Establish `hτmul : ∀ i k j a b, τ (p i * a * q' k) * τ (p k * b * q' j) = τ (p i * a * q' k * (p k * b * q' j))`. Introduce `i k j a b`. Establish `hl : e o * (p k * b * q' j) = p k * b * q' j` using `by simp only [← mul_assoc, hpl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [hX i k a, smul_mul_assoc, hl, map_smul, smul_eq_mul]`. Establish `hρq' : ∀ j, ρ (q' j) = x (Γj j) • (c • Matrix.single j o (1 : O))`. Introduce `j`. Rewrite using `[hq', map_mul, ρq, hρs]`. Use extensionality with `u v`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [Matrix.smul_mul, Matrix.single_mul_single_same, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hxΓj : ∀ j, x (Γj j) = (c ^ 2) ^ (n - 1)`. Introduce `j`. Rewrite using `[hΓj, map_prod]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[hxγ]`. Rewrite using `[Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]`. Set `s : E →ₗ[R] Matrix (Fin n) (Fin n) R` to `{ toFun := fun a => Matrix.of fun i j => τ (p i * a * q' j) map_add' := by`. Introduce `a b`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.of_apply, Matrix.add_apply, mul_add, add_mul, map_add]`. Use the proof step `map_smul' := by`. Introduce `r a`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, mul_smul_comm, smul_mul_assoc, map_smul, RingHom.id_apply] }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hs : ∀ a i j, s a i j = τ (p i * a * q' j)` using `fun _ _ _ => rfl`. Use `⟨s, ∏ l, γ l, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Repeatedly rewrite using `[hxγ]`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply, hs, smul_eq_mul]`. Repeatedly rewrite using `[hs, hτmul]`. Rewrite using `[← map_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrw : ∑ k, p i * a * q' k * (p k * b * q' j) = p i * a * (∑ k, q' k * p k) * b * q' j`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by simp only [mul_assoc]`. Rewrite using `[hrw, hsum, mul_smul_comm, mul_one, smul_mul_assoc, smul_mul_assoc, map_smul, smul_eq_mul, mul_assoc (p i) a b]`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hs, Matrix.smul_apply, smul_eq_mul, ← htr, map_mul, map_mul, ρp, hρq', Matrix.mul_smul, Matrix.trace_smul, tr_single, smul_eq_mul, hxΓj, ← mul_assoc, ← pow_succ, ← pow_mul, Nat.sub_add_cancel hn]`. Introduce `a`. Establish `hc : ∀ i, τ (p i * a * q' i) = τ (a * (q' i * p i))`. Introduce `i`.
-
-Rewrite using `[mul_assoc, hT.comm, mul_assoc]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, hs, hc]`. Rewrite using `[← map_sum, ← Finset.mul_sum, hsum, mul_smul_comm, mul_one, map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.smat :
     ∀ {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {n : ℕ} {E : Type} [Ring E] [Algebra R E] (x : R →ₐ[O] O) (ρ : E →+* Matrix (Fin n) (Fin n) O) (τ : E →ₗ[R] R) (e : Fin n → E) (c : O), 1 ≤ n → IsTrGMA τ e → (∀ i, ρ (e i) = Matrix.single i i 1) → (∀ a, (ρ a).trace = x (τ a)) → (∀ Z, ∃ a, ρ a = c • Z) → ∃ (s : E →ₗ[R] Matrix (Fin n) (Fin n) R) (β : R), x β = c ^ (2 * n) ∧ (∀ a b, s a * s b = β • s (a * b)) ∧ (∀ a, (s a).map x = c ^ (2 * n) • ρ a) ∧ ∀ a, (s a).trace = β * τ a := by

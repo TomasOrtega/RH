@@ -38,19 +38,19 @@ def pr (a : Matrix (Fin n) (Fin n) D.host.E) (x : Mx D n n) : AF D.host.F :=
   halfTr (Matrix.trace (HMul.hMul (a.map (incA D)) x : Mx D n n))
 
 /- English proof (translation)
-Simplify using `only [halfTr, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfTr_add (z w : AE D) : halfTr (z + w) = halfTr z + halfTr w := by
   simp only [halfTr, map_add, mul_add]
 
 /- English proof (translation)
-Simplify using `only [halfTr, map_zero, mul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfTr_zero : halfTr (0 : AE D) = 0 := by
   simp only [halfTr, map_zero, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [pr, ← halfTr_add, ← Matrix.trace_add]`. Use `congr 2`. Conclude with `Matrix.mul_add _ _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pr_add_right (a : Matrix (Fin n) (Fin n) D.host.E) (x y : Mx D n n) :
     pr a (x + y) = pr a x + pr a y := by
@@ -59,7 +59,7 @@ theorem pr_add_right (a : Matrix (Fin n) (Fin n) D.host.E) (x y : Mx D n n) :
   exact Matrix.mul_add _ _ _
 
 /- English proof (translation)
-Simplify using `only [pr, ← halfTr_add, ← Matrix.trace_add]`. Use `congr 2`. Rewrite using `[Matrix.map_add _ (map_add _)]`. Conclude with `Matrix.add_mul _ _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_add_left (a b : Matrix (Fin n) (Fin n) D.host.E) (x : Mx D n n) :
     pr (a + b) x = pr a x + pr b x := by
@@ -69,7 +69,7 @@ theorem pr_add_left (a b : Matrix (Fin n) (Fin n) D.host.E) (x : Mx D n n) :
   exact Matrix.add_mul _ _ _
 
 /- English proof (translation)
-Establish `h` using `pr_add_left (0 : Matrix (Fin n) (Fin n) D.host.E) 0 x`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_add.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_zero_left (x : Mx D n n) : pr (0 : Matrix (Fin n) (Fin n) D.host.E) x = 0 := by
   have h := pr_add_left (0 : Matrix (Fin n) (Fin n) D.host.E) 0 x
@@ -77,7 +77,7 @@ theorem pr_zero_left (x : Mx D n n) : pr (0 : Matrix (Fin n) (Fin n) D.host.E) x
   exact left_eq_add.1 h
 
 /- English proof (translation)
-Establish `h : Continuous fun z : AE D => Algebra.trace (AF D.host.F) (AE D) z`. Simplify using `using GlobalTheory.Core.Rk.SplitPsi.continuous_trace_mul D 1`. Conclude with `continuous_const.mul h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_halfTr : Continuous (halfTr : AE D → AF D.host.F) := by
   have h : Continuous fun z : AE D => Algebra.trace (AF D.host.F) (AE D) z := by
@@ -85,15 +85,15 @@ theorem continuous_halfTr : Continuous (halfTr : AE D → AF D.host.F) := by
   exact continuous_const.mul h
 
 /- English proof (translation)
-The claim follows from `continuous_halfTr.comp (Continuous.matrix_trace (continuous_const.matrix_mul continuous_id))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pr (a : Matrix (Fin n) (Fin n) D.host.E) : Continuous (pr a : Mx D n n → AF D.host.F) :=
   continuous_halfTr.comp (Continuous.matrix_trace (continuous_const.matrix_mul continuous_id))
 
 /- English proof (translation)
-Use `haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Establish `hb : Function.Bijective (D.sp.cm.sig : D.host.E →ₐ[D.host.F] D.host.E)` using `Algebra.IsAlgebraic.algHom_bijective _`. Establish `ht : ∀ e : D.host.E, Algebra.trace D.host.F D.host.E (D.sp.cm.sig e) = Algebra.trace D.host.F D.host.E e` using `fun e => Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective _ hb) e`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a e => show Algebra.trace (AF D.host.F) (AE D) (a ⊗ₜ[D.host.F] (D.sp.cm.sig e)) = Algebra.trace (AF D.host.F) (AE D) (a ⊗ₜ[D.host.F] e)`. Rewrite using `[GlobalTheory.LatVac.trace_tmul, GlobalTheory.LatVac.trace_tmul, ht]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem trA_cA (z : AE D) : trA (cA D z) = trA z := by
   haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)
@@ -109,7 +109,7 @@ theorem trA_cA (z : AE D) : trA (cA D z) = trA z := by
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `only [halfTr, map_add, trA_cA]`. Rewrite using `[← two_mul, ← mul_assoc, ← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem halfTr_add_cA (z : AE D) : halfTr (z + cA D z) = trA z := by
   simp only [halfTr, map_add, trA_cA]
@@ -117,16 +117,16 @@ theorem halfTr_add_cA (z : AE D) : halfTr (z + cA D z) = trA z := by
   norm_num
 
 /- English proof (translation)
-Rewrite using `[adj, Matrix.trace_transpose]`. Conclude with `(AddMonoidHom.map_trace (cA D).toAddMonoidHom M).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_adj (M : Mx D n n) : Matrix.trace (adj M) = cA D (Matrix.trace M) := by
   rw [adj, Matrix.trace_transpose]
   exact (AddMonoidHom.map_trace (cA D).toAddMonoidHom M).symm
 
 /- English proof (translation)
-Establish `e1 : Matrix.trace (HMul.hMul (adj (rat γ)) x : Mx D n n) = cA D (Matrix.trace (HMul.hMul (rat γ) x : Mx D n n))`. Rewrite using `[← trace_adj, adj_mul, hx]`. Conclude with `Matrix.trace_mul_comm _ _`. Establish `e2 : (γ + γᴴ).map (incA D) = rat γ + adj (rat γ)`. Rewrite using `[Matrix.map_add _ (map_add _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (rat γ + ·) (rat_conjTranspose γ)`. Rewrite using `[pr, e2, show HMul.hMul (rat γ + adj (rat γ)) x = (HMul.hMul (rat γ) x + HMul.hMul (adj (rat γ)) x : Mx D n n) from Matrix.add_mul _ _ _, Matrix.trace_add, e1, halfTr_add_cA]`.
+A detailed English derivation is pending.
 -/
 theorem pr_sym (γ : Matrix (Fin n) (Fin n) D.host.E) {x : Mx D n n} (hx : adj x = x) :
     pr (γ + γᴴ) x = trA (Matrix.trace (HMul.hMul (rat γ) x : Mx D n n)) := by
@@ -141,9 +141,9 @@ theorem pr_sym (γ : Matrix (Fin n) (Fin n) D.host.E) {x : Mx D n n} (hx : adj x
     Matrix.trace_add, e1, halfTr_add_cA]
 
 /- English proof (translation)
-Use `show ((γ + γᴴ).map (D.sp.cm.sig : D.host.E → D.host.E)).transpose = γ + γᴴ`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.conjTranspose_apply, map_add]`. Establish `hs : ∀ e : D.host.E, D.sp.cm.sig e = star e` using `fun e => rfl`. Simplify using `only [hs, star_add, star_star]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem mem_hermSub_sym (γ : Matrix (Fin n) (Fin n) D.host.E) : γ + γᴴ ∈ hermSub D n := by
   show ((γ + γᴴ).map (D.sp.cm.sig : D.host.E → D.host.E)).transpose = γ + γᴴ
@@ -154,11 +154,11 @@ theorem mem_hermSub_sym (γ : Matrix (Fin n) (Fin n) D.host.E) : γ + γᴴ ∈ 
   rw [add_comm]
 
 /- English proof (translation)
-Use `haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Establish `hx : adj x.1 = x.1` using `x.2`. Establish `key : ∀ i j (e : D.host.E), ψ (Algebra.trace (AF D.host.F) (AE D) (incA D e * x.1 i j)) = 1`. Introduce `i j e`. Establish `h1` using `h _ (mem_hermSub_sym (Matrix.single j i e))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[pr_sym _ hx, GlobalTheory.GramAnnih.rat_single]`. Establish `h2 : Matrix.trace (HMul.hMul (Matrix.single j i (incA D e)) x.1 : Mx D n n) = incA D e * x.1 i j`. Rewrite using `[show (HMul.hMul (Matrix.single j i (incA D e)) x.1 : Mx D n n) = Matrix.single j i (incA D e) * x.1 from rfl, Matrix.trace_single_mul, smul_eq_mul]`. Rewrite `h1` using `[h2]`. Establish `h3` using `AddChar.map_neg_eq_inv ψ (trA (incA D e * x.1 i j))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h1]`. Conclude with `inv_eq_one.1 h3.symm`. Establish `hent : ∀ i j, ∃ e : D.host.E, x.1 i j = (1 : AF D.host.F) ⊗ₜ[D.host.F] e` using `fun i j => GlobalTheory.RatAnnih.tensor_rat (x.1 i j) fun e => (GlobalTheory.SWQ.Annihilator.self_annihilator D.host.F inferInstance ψ hψ).2 _ fun c => (congrArg ψ (GlobalTheory.RatAnnih.trace_mul_algebraMap (x.1 i j) e c)).trans (key i j (c • e))`. Use `choose M hM using hent`. Conclude with `⟨Matrix.of M, Matrix.ext fun i j => (hM i j).symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rat_ker {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (x : hermA D n)
     (h : ∀ a ∈ hermSub D n, ψ (-pr a x.1) = 1) : x ∈ ratHerm D n := by
@@ -183,9 +183,9 @@ theorem rat_ker {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (x
   exact ⟨Matrix.of M, Matrix.ext fun i j => (hM i j).symm⟩
 
 /- English proof (translation)
-Use `haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Take `⟨η, hη⟩` from `hx`. Establish `hη' : x.1 = rat η` using `hη.symm`. Establish `e : Matrix.trace (rat (D` using `D) (a * η)) = (1 : AF D.host.F) ⊗ₜ[D.host.F] Matrix.trace (a * η) := (AddMonoidHom.map_trace (incA D) _).symm`. Establish `e2 : -pr a x.1 = algebraMap D.host.F (AF D.host.F) (-((1 / 2) * Algebra.trace D.host.F D.host.E (Matrix.trace (a * η))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[pr, hη', show (HMul.hMul (a.map (incA D)) (rat η) : Mx D n n) = rat (a * η) from (rat_mul a η).symm, e, halfTr, trA, GlobalTheory.LatVac.trace_tmul, one_mul, map_neg, map_mul]`. Rewrite using `[e2]`. Conclude with `hψ.2.2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_of_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (x : hermA D n)
     (hx : x ∈ ratHerm D n) (a : Matrix (Fin n) (Fin n) D.host.E) : ψ (-pr a x.1) = 1 := by
@@ -202,13 +202,13 @@ theorem ker_of_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-The claim follows from `(continuous_id.matrix_map GlobalTheory.AnnihBox.continuous_cA').matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adj' : Continuous (adj : Mx D n n → Mx D n n) :=
   (continuous_id.matrix_map GlobalTheory.AnnihBox.continuous_cA').matrix_transpose
 
 /- English proof (translation)
-Take `⟨-, -, -, i4, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D n n`. Conclude with `isClosed_eq continuous_adj' continuous_id`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isClosed_hermA : IsClosed ((hermA D n : AddSubgroup (Mx D n n)) : Set (Mx D n n)) := by
   obtain ⟨-, -, -, i4, -⟩ := GlobalTheory.TowerResNonzero.lattice_ratMx D n n
@@ -217,34 +217,34 @@ theorem isClosed_hermA : IsClosed ((hermA D n : AddSubgroup (Mx D n n)) : Set (M
 def sym (y : Mx D n n) : Mx D n n := incA D 2⁻¹ • (y + adj y)
 
 /- English proof (translation)
-Use `show incA D (D.sp.cm.sig 2⁻¹) = _`. Rewrite using `[map_inv₀, map_ofNat]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_half : cA D (incA D (2⁻¹ : D.host.E)) = incA D 2⁻¹ := by
   show incA D (D.sp.cm.sig 2⁻¹) = _
   rw [map_inv₀, map_ofNat]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adj_smul' (c : AE D) (M : Mx D n n) : adj (c • M) = cA D c • adj M := by
   ext i j
   simp [adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Rewrite using `[sym, adj_smul', cA_half, adj_add, adj_adj, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_sym (y : Mx D n n) : adj (sym y) = sym y := by
   rw [sym, adj_smul', cA_half, adj_add, adj_adj, add_comm]
 
 /- English proof (translation)
-Simplify using `only [sym, adj_add]`. Rewrite using `[← smul_add, add_add_add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sym_add (x y : Mx D n n) : sym (x + y) = sym x + sym y := by
   simp only [sym, adj_add]
   rw [← smul_add, add_add_add_comm]
 
 /- English proof (translation)
-Establish `e : incA D (2⁻¹ : D.host.E) + incA D 2⁻¹ = 1`. Rewrite using `[← map_add, show (2⁻¹ : D.host.E) + 2⁻¹ = 1 by norm_num, map_one]`. Rewrite using `[sym, hx, smul_add, ← add_smul, e, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sym_herm {x : Mx D n n} (hx : adj x = x) : sym x = x := by
   have e : incA D (2⁻¹ : D.host.E) + incA D 2⁻¹ = 1 := by
@@ -252,9 +252,7 @@ theorem sym_herm {x : Mx D n n} (hx : adj x = x) : sym x = x := by
   rw [sym, hx, smul_add, ← add_smul, e, one_smul]
 
 /- English proof (translation)
-Use `⟨(2⁻¹ : D.host.E) • (η + ηᴴ), ?_⟩` and prove the remaining obligations. Use `show rat ((2⁻¹ : D.host.E) • (η + ηᴴ)) = sym (rat η)`. Rewrite using `[sym, ← rat_conjTranspose]`. Use extensionality with `i j`. Simplify using `[rat, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
-
-Conclude with `(mul_add _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sym_rat (η : Matrix (Fin n) (Fin n) D.host.E) : sym (rat η) ∈ ratMx D n n := by
   refine ⟨(2⁻¹ : D.host.E) • (η + ηᴴ), ?_⟩
@@ -265,7 +263,7 @@ theorem sym_rat (η : Matrix (Fin n) (Fin n) D.host.E) : sym (rat η) ∈ ratMx 
   exact (mul_add _ _ _).symm
 
 /- English proof (translation)
-Use `show Continuous fun y : Mx D n n => (incA D 2⁻¹ : AE D) • (y + adj y)`. Conclude with `(continuous_const : Continuous fun _ : Mx D n n => (incA D 2⁻¹ : AE D)).smul (continuous_id.add (continuous_adj' (D := D) (n := n)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sym : Continuous (sym : Mx D n n → Mx D n n) := by
   show Continuous fun y : Mx D n n => (incA D 2⁻¹ : AE D) • (y + adj y)
@@ -273,9 +271,9 @@ theorem continuous_sym : Continuous (sym : Mx D n n → Mx D n n) := by
     (continuous_id.add (continuous_adj' (D := D) (n := n)))
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, K₀, hK₀, hcov⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D n n`. Use `⟨Subtype.val ⁻¹' (sym '' K₀), (isClosed_hermA (D := D) (n := n)).isClosedEmbedding_subtypeVal.isCompact_preimage (hK₀.image continuous_sym), fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, ⟨η, hη⟩, hk⟩` from `hcov x.1`. Establish `hη' : γ = rat η` using `hη.symm`. Use `⟨⟨sym γ, adj_sym γ⟩, ?_, γ + x.1, hk, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show sym γ ∈ ratMx D n n`. Rewrite using `[hη']`. Conclude with `sym_rat η`. Rewrite using `[sym_add, sym_herm (x := x.1) x.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_compact_cover : ∃ K : Set (hermA D n), IsCompact K ∧ ∀ x, ∃ γ ∈ ratHerm D n, γ + x ∈ K := by
   obtain ⟨-, -, -, -, -, K₀, hK₀, hcov⟩ := GlobalTheory.TowerResNonzero.lattice_ratMx D n n
@@ -291,9 +289,9 @@ theorem exists_compact_cover : ∃ K : Set (hermA D n), IsCompact K ∧ ∀ x, �
     rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, -, i5, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D n n`. Set `φ : ratHerm D n → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D n n` to `fun a => ⟨a.1.1, a.2⟩`. Establish `hc : Continuous φ` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `hi : Function.Injective φ` using `fun a b h => by`. Establish `e : a.1.1 = b.1.1` using `Subtype.mk.inj h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Subtype.ext e)`. Conclude with `DiscreteTopology.of_continuous_injective hc hi`.
+A detailed English derivation is pending.
 -/
 theorem discrete_ratHerm : DiscreteTopology (ratHerm D n) := by
   obtain ⟨-, -, -, -, i5, -⟩ := GlobalTheory.TowerResNonzero.lattice_ratMx D n n
@@ -305,13 +303,13 @@ theorem discrete_ratHerm : DiscreteTopology (ratHerm D n) := by
   exact DiscreteTopology.of_continuous_injective hc hi
 
 /- English proof (translation)
-Introduce `_ _ h` and use `matHom_injective _ _ _ (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mat_injective : Function.Injective (mat : G D n → Mx D (n + n) (n + n)) :=
   fun _ _ h => matHom_injective _ _ _ (Units.ext h)
 
 /- English proof (translation)
-Apply `mat_injective` to reduce the goal to its premises. Use `show mat (nb (a + b)) = mat (nb a) * mat (nb b)`. Rewrite using `[h, h, h, submatrix_fromBlocks_mul]`. Simplify using `[add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nb_add {nb : hermA D n → G D n} (h : IsNMap nb) (a b : hermA D n) : nb (a + b) = nb a * nb b := by
   apply mat_injective
@@ -320,7 +318,7 @@ theorem nb_add {nb : hermA D n → G D n} (h : IsNMap nb) (a b : hermA D n) : nb
   simp [add_comm]
 
 /- English proof (translation)
-Apply `mat_injective` to reduce the goal to its premises. Use `show mat (nb 0) = 1`. Rewrite using `[h]`. Conclude with `block_matrix_one`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_zero {nb : hermA D n → G D n} (h : IsNMap nb) : nb 0 = 1 := by
   apply mat_injective
@@ -329,17 +327,17 @@ theorem nb_zero {nb : hermA D n → G D n} (h : IsNMap nb) : nb 0 = 1 := by
   exact block_matrix_one
 
 /- English proof (translation)
-The claim follows from `(Continuous.matrix_fromBlocks continuous_const continuous_subtype_val continuous_const continuous_const).matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_block_matrix : Continuous fun b : hermA D n => (blk4 1 b.1 0 1 : Mx D (n + n) (n + n)) :=
   (Continuous.matrix_fromBlocks continuous_const continuous_subtype_val continuous_const continuous_const).matrix_submatrix _ _
 
 /- English proof (translation)
-Rewrite using `[(isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous_iff, Units.continuous_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (Units.val ∘ (matHom (AF D.host.F) D.sp.cm.sig (Jst D n)) ∘ nb) = fun b : hermA D n => (blk4 1 b.1 0 1 : Mx D (n + n) (n + n))`. Use function extensionality and compare the values at `fun b => h b`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_block_matrix`. Establish `hinv : ∀ b, (nb b)⁻¹ = nb (-b)` using `fun b => by`. Rewrite using `[inv_eq_iff_mul_eq_one, ← nb_add h, add_neg_cancel, nb_zero h]`. Establish `e : (fun b : hermA D n => (((matHom (AF D.host.F) D.sp.cm.sig (Jst D n) ∘ nb) b)⁻¹ : GL _ _).1) = fun b : hermA D n => (blk4 1 (-b.1) 0 1 : Mx D (n + n) (n + n))` using `funext fun b => by`. Rewrite using `[Function.comp_apply, ← map_inv, hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (-b)`. Rewrite using `[e]`. Conclude with `(Continuous.matrix_fromBlocks continuous_const continuous_subtype_val.neg continuous_const continuous_const).matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nb {nb : hermA D n → G D n} (h : IsNMap nb) : Continuous nb := by
   rw [(isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous_iff, Units.continuous_iff]
@@ -359,7 +357,7 @@ theorem continuous_nb {nb : hermA D n → G D n} (h : IsNMap nb) : Continuous nb
       continuous_const).matrix_submatrix _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk4_map_alt {R S : Type} (f : R → S) (a b c d : Matrix (Fin n) (Fin n) R) :
     (blk4 a b c d).map f = blk4 (a.map f) (b.map f) (c.map f) (d.map f) := by
@@ -368,11 +366,11 @@ theorem blk4_map_alt {R S : Type} (f : R → S) (a b c d : Matrix (Fin n) (Fin n
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `hγ`. Establish `hη' : rat η = γ.1` using `hη`. Set `x : GL (Fin (n + n)) D.host.E` to `⟨blk4 1 η 0 1, blk4 1 (-η) 0 1, by simp [submatrix_fromBlocks_mul, block_matrix_one], by simp [submatrix_fromBlocks_mul, block_matrix_one]⟩`. Establish `hm : x.1.map (incA D) = blk4 1 γ.1 0 1`. Simplify using `only [x, blk4_map_alt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _)]`. Use `congr 1`. Use `⟨x, ?_, Units.ext (hm.trans (h γ).symm)⟩` and prove the remaining obligations. Apply `rat_injective (D := D)` to reduce the goal to its premises. Establish `h2 : adj (mat (nb γ)) * JR (AF D.host.F) (Jst D n) * mat (nb γ) = JR (AF D.host.F) (Jst D n)` using `(nb γ).2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h2` using `[h γ, ← hm]`. Use `erw [rat_mul, rat_mul]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_rat {nb : hermA D n → G D n} (h : IsNMap nb) (γ : hermA D n) (hγ : γ ∈ ratHerm D n) : nb γ ∈ GF D n := by
   obtain ⟨η, hη⟩ := hγ
@@ -393,17 +391,11 @@ theorem nb_rat {nb : hermA D n → G D n} (h : IsNMap nb) (γ : hermA D n) (hγ 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D n ψ hψ nb lam 𝓖 hC f hf hinv hco`. Take `⟨hnb, hlam, hFD, -⟩` from `hC`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D n n`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI : SecondCountableTopology (hermA D n) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace (hermA D n) := isClosed_hermA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : DiscreteTopology (ratHerm D n) := discrete_ratHerm`. Take `⟨K, hK, hcov⟩` from `exists_compact_cover (D := D) (n := n)`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (hermA D n) (ratHerm D n) K hK hcov (hermSub D n) (fun a x => ψ (-pr a.1 x.1)) (fun a => hψ.1.comp ((continuous_pr a.1).neg.comp continuous_subtype_val)) (fun a x y => by show ψ (-pr a.1 (x.1 + y.1)) = _`. Rewrite using `[pr_add_right, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun a b x => by show ψ (-pr (a.1 + b.1) x.1) = _`. Rewrite using `[pr_add_left, neg_add, AddChar.map_add_eq_mul])`. Use the proof step `(fun x => by show ψ (-pr 0 x.1) = 1`.
-
-Rewrite using `[pr_zero_left, neg_zero, AddChar.map_zero_eq_one])`. Use the proof step `(fun a x => hψ.2.1 _)`. Use the proof step `(fun x => ⟨fun h => rat_ker hψ x (fun a ha => h ⟨a, ha⟩), fun hx a => ker_of_rat hψ x hx a.1⟩)`. Use `lam 𝓖 hlam hFD (fun b => f (nb b * g))`. Use the proof step `(hf.comp ((continuous_nb hnb).mul continuous_const))`.
-
-Use the proof step `(fun γ hγ x => by show f (nb (γ + x) * g) = f (nb x * g)`. Rewrite using `[nb_add hnb, mul_assoc]`. Conclude with `hinv _ (nb_rat hnb γ hγ) _)`. Use the proof step `(fun a => (integral_congr_ae (.of_forall fun x => mul_comm _ _)).trans (hco ⟨a.1, a.2⟩ g))`. Establish `h0` using `congrFun key 0`.
-
-Simplify `h0` using `[nb_zero hnb]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fourierZero : PositivityTheory.PfSWUS.FourierZero := by
   intro D n ψ hψ nb lam 𝓖 hC f hf hinv hco

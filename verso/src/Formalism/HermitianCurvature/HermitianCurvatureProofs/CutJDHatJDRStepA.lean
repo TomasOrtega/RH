@@ -17,9 +17,9 @@ namespace CapelliExpansionLemmas
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hu : IsUnit (w1 k r l a).det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh (Formalism.FourierDecayAlt.P.Qx3.weyl_cell_mem_unitary l ha)`. Establish `hf` using `TemperedBoundGL3.unipotent_fixes_base_vector (k := k) l a hz`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use `conv_lhs => rw [← hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem inv_w1_mul_mulVec_of_inWb (l : Fin r) {a : ℂ} (ha : a ≠ 0) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : Mx k r) :
     (w1 k r l a * g)⁻¹ *ᵥ z = g⁻¹ *ᵥ z := by
@@ -31,9 +31,9 @@ theorem inv_w1_mul_mulVec_of_inWb (l : Fin r) {a : ℂ} (ha : a ≠ 0) {z : Fin 
   rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hu : IsUnit (wCell k r i c).det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh (Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc _).1`. Establish `hf` using `TemperedBoundGL3.wCell_fix_wb (k := k) i c hz`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use `conv_lhs => rw [← hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem cell_inverse_fixes_vector (i : Fin (r + 1)) {c : Fin r → ℂ} (hc : c ∈ OmX r) {z : Fin (2 * r + k + 1) → ℂ}
     (hz : inWb k r z) (g : Mx k r) : (wCell k r i c * g)⁻¹ *ᵥ z = g⁻¹ *ᵥ z := by
@@ -48,9 +48,9 @@ theorem cell_inverse_fixes_vector (i : Fin (r + 1)) {c : Fin r → ℂ} (hc : c 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `α f`. Use function extensionality and compare the values at `g`. Simplify using `only [NL, Pi.smul_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P5.qminorOp_smulC (fun a b => Formalism.FourierDecayAlt.P5.eH_smulC a b) _ _ u α f, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_comm _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem NL_smulC (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 1)) (u : ℂ) :
     Formalism.FourierDecayAlt.P5.SmulC (E := E) (NL k r z z' l u) := by
@@ -62,7 +62,7 @@ theorem NL_smulC (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 1)) (u : ℂ
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [NL]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[show qminorOp (EH k r) (rowsN k r l s) (rowsN k r l t) u (fun x => f (wCell k r i c * x)) x = qminorOp (EH k r) (rowsN k r l s) (rowsN k r l t) u f (wCell k r i c * x) from congrFun (Formalism.FourierDecayAlt.P.quantum_minor_left_hermitian E _ _ (Hpk k r) f _ _ u _) x, cell_inve …`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem NL_left (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin (r + 1)) (u : ℂ) (i : Fin (r + 1))
     {c : Fin r → ℂ} (hc : c ∈ OmX r) (f : Mx k r → E) :
@@ -82,14 +82,14 @@ section Idx
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `[mdim]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mdimL_eq : mdim k (r + 1) (Fin.last r).succ = k + 1 := by simp [mdim]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises. Break down `j with ⟨j, hj⟩` into its components or cases. Break down `j with _ | j` into its components or cases. Simplify using `[rowsN, posL, bE, e0]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (⟨j + 1, hj⟩ : Fin (mdim k (r + 1) (Fin.last r).succ - 1 + 1)) = Fin.succ ⟨j, by omega⟩ from rfl]`. Simplify using `only [Function.comp_apply, Qx6.bE_succ, rowsN, posL, v0, skip1, Fin.val_cast, Fin.val_succ, Fin.val_castSucc, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowsN_eq (s : Fin (mdim k (r + 1) (Fin.last r).succ))
     (h : mdim k (r + 1) (Fin.last r).succ - 1 + 1 = r + 1 - ((Fin.last r).castSucc : Fin (r + 2)).val + k) :
@@ -115,7 +115,7 @@ section Re
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[posL, wI]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem posL_last_wI (s : Fin (k + 1)) :
     posL k (r + 1) (Fin.last r).succ (Fin.cast mdimL_eq.symm s) = wI k (r + 1) s := by
@@ -124,11 +124,11 @@ theorem posL_last_wI (s : Fin (k + 1)) :
   omega
 
 /- English proof (translation)
-Establish `h : mdim k (r + 1) (Fin.last r).succ - 1 + 1 = r + 1 - ((Fin.last r).castSucc : Fin (r + 2)).val + k`. Simplify using `[mdim]`. Use linear arithmetic over natural numbers and integers. Establish `hf : fvec k (r + 1) z' (Fin.last r).succ = z'` using `Formalism.FourierDecayAlt.P.Qx5.fvec_last k (r + 1) z'`. Unfold `NL`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Fintype.sum_equiv (finCongr mdimL_eq.symm) _ _ fun s => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (finCongr mdimL_eq.symm) _ _ fun t => ?_` and prove the remaining obligations. Simplify using `only [finCongr_apply]`. Establish `hs` using `rowsN_eq (Fin.cast mdimL_eq.symm s) h`. Establish `ht` using `rowsN_eq (Fin.cast mdimL_eq.symm t) h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.cast_cast, Fin.cast_eq_self] at hs ht`. Rewrite using `[← hs, ← ht, Formalism.FourierDecayAlt.P.CutMP.top_qminor_cast]`. Use `congr 1`. Simplify using `only [xbv, hf, posL_last_wI, Fin.val_cast]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -165,37 +165,33 @@ section Core
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `set l : Fin (r + 1) := Fin.last r with hl`. Take `⟨hΦ, hD'⟩` from `TemperedBoundGL3.br1 (π := π) (π' := π') hz hz' hD hJ hc l`. Establish `hgD : g ∈ Dc1 l (Dcell D l.castSucc c) c` using `TemperedBoundGL3.cell_preimage_mem_domain l hcg`. Take `⟨hs, hle, hri, -⟩` from `hΦ`. Set `R : Rules` to `⟨Formalism.FourierDecayAlt.P.generator_gl_level, Formalism.FourierDecayAlt.P.generator_action_preserved, Formalism.FourierDecayAlt.P.quantum_minor_left_hermitian, Formalism.FourierDecayAlt.P.right_action_rule, Formalism.FourierDecayAlt.P.left_action_rule, Formalism.FourierDecayAl …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set Φ := resG k (r + 1) l.castSucc J c with hΦdef`. Use `set γ : (Fin (r + 1) → ℂ) → ℂ := fun c' => ((‖c' l‖ ^ (Mdim k (r + 1) l - 1) : ℝ) : ℂ) with hγ`. Use `set WorkedExample : (Fin (r + 1) → ℂ) → (Wq →L[ℂ] Wp) := fun c' => ((tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y 1 0 (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs)) : (sfData (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1)).V) : Fn k (r + 1) (Wq →L[ℂ] Wp)) c' g with hF10`. Use `set LargeParameterEstimates : (Fin (r + 1) → ℂ) → (Wq →L[ℂ] Wp) := fun c' => ((tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y 1 1 (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs)) : (sfData (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1)).V) : Fn k (r + 1) (Wq →L[ℂ] Wp)) c' g with hF11`. Establish `hloc : ∀ (a b : Fin 2) (c' : Fin (r + 1) → ℂ), c' ∈ OmX (r + 1) → g ∈ Dc1 l (Dcell D l.castSucc c) c' → ((tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y a b (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs)) : (sfData (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1)).V) : Fn k (r + 1) (Wq →L[ℂ] Wp)) …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b c' hc' hgD'`. Rewrite using `[stp_tB_apply (ho1 l hD'.1) z z' Y a b _ hc' hg hgD']`. Use `(Formalism.FourierDecayAlt.P.Qx2.ll_tL (open_slice (ho1 l hD'.1) hc') z z' Y a b).loc _ _ (fun x hx => ?_) g ⟨hg, hgD'⟩` and prove the remaining obligations. Rewrite using `[rho_apply R.w l hD'.1 _ hc' hx.1 hx.2, restricted_function_on_level hD'.1 hs (pt_mem R.w l hc' hx.1 hx.2)]`. Establish `hline : ∀ c'' ∈ OmX (r + 1), (∀ a : Fin (r + 1), a.val < l.val → c'' a = c a) → g ∈ Dc1 l (Dcell D l.castSucc c) c'' → FN k (r + 1) z z' Y J l.succ c'' g = -(γ c'' • WorkedExample c'') ∧ Q.QL k (r + 1) z z' l.succ Y 1 1 (Q.resG k (r + 1) l.succ J) c'' g = γ c'' • LargeParameterEs …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c'' hc'' hag hgD''`. Establish `hW : wCell k (r + 1) l.castSucc c'' = wCell k (r + 1) l.castSucc c` using `wCell_congr (fun a ha => hag a ha)`. Establish `hcg'' : wCell k (r + 1) l.succ c'' * g ∈ D`. Establish `: wCell k (r + 1) l.castSucc c * (w1 k (r + 1) l (c'' l) * g) ∈ D` using `hgD''`. Rewrite using `[wCell_succ, hW, Matrix.mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hres : Q.resG k (r + 1) l.succ J c'' = γ c'' • (fun x => Φ (w1 k (r + 1) l (c'' l) * x))`. Use function extensionality and compare the values at `x`. Rewrite using `[resG_succ]`. Simplify using `only [Res, Pi.smul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ind_resG l.castSucc J c'' hc'' c hc (fun a ha => hag a ha)]`. Establish `hT` using `residue_top_holds Wp Wq k (r + 1) z z' π π' D Y hz hz' hD J hJ c'' hc'' g hg hcg''`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show FN k (r + 1) z z' Y J (Fin.last (r + 1)) c'' g = _`. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show -(tL k (r + 1) z z' l.succ Y 1 0 (Q.resG k (r + 1) l.succ J c'') g) = _`. Rewrite using `[hres, Formalism.FourierDecayAlt.P5.tL_smulC z z' l.succ Y 1 0, Pi.smul_apply]`. Simplify using `only [hF10]`. Rewrite using `[hloc 1 0 c'' hc'' hgD'']`. Use `show tL k (r + 1) z z' l.succ Y 1 1 (Q.resG k (r + 1) l.succ J c'') g = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hres, Formalism.FourierDecayAlt.P5.tL_smulC z z' l.succ Y 1 1, Pi.smul_apply]`. Simplify using `only [hF11]`. Rewrite using `[hloc 1 1 c'' hc'' hgD'']`. Take `⟨hv10, hv11⟩` from `hline c hc (fun _ _ => rfl) hgD`. Establish `eL : FN k (r + 1) z z' Y J l.castSucc c g = γ c • NL k (r + 1) z z' l.castSucc (uC k (r + 1) l.castSucc Y) Φ (w1 k (r + 1) l (c l) * g)` using `TemperedBoundGL3.br2 l (NL k (r + 1) z z' l.castSucc (uC k (r + 1) l.castSucc Y)) (NL_smulC z z' _ _) c (NL_left z z' hz _ _ _ hc) J g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `eN : NL k (r + 1) z z' l.castSucc (uC k (r + 1) l.castSucc Y) Φ (w1 k (r + 1) l (c l) * g) = evP (ho1 l hD'.1) (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs)) c g (-(bTee (Wq →L[ℂ] Wp) l hD'.1 (uC k (r + 1) l.castSucc Y) * tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y 1 0) - mulB (W …`. Rewrite using `[← capelli_key_first_term hD'.1 z z' Y, ← capelli_key_second_identity hD'.1 z z' Y, ← Finset.sum_sub_distrib]`. Simplify using `only [← Finset.sum_sub_distrib, ← smul_sub, ← mul_sub]`. Rewrite using `[NL_re, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, stp_ev_mul (ho1 l hD'.1) (sf_aY z t) _ hc hg hgD, smul_smul, inv_w1_mul_mulVec_of_inWb l (hc l) hz g, quantum_minor_point_evaluation R hz hz' hD' hs hle hri (skip1 s) (skip1 t) _ hc hg hgD]`. Use `congr 1`. Simplify using `only [aY, yv]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show fvec k (r + 1) z (Fin.last r).succ = z from Formalism.FourierDecayAlt.P.Qx5.fvec_last k (r + 1) z]`. Establish `e1 : evP (ho1 l hD'.1) (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs)) c g (opB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) l 0 * tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y 1 0) = pOp l WorkedExample c` using `by show ((opB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) l 0 (tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y 1 0 (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs))) : (sfData (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1)).V) : Fn k (r + 1) (Wq →L[ℂ] Wp)) c g = _`. Unfold `opB`. Rewrite using `[sf_hat_apply _ (sf_good_crd _ l 0) _ hc hg hgD]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `eE : evP (ho1 l hD'.1) (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs)) c g (-(bTee (Wq →L[ℂ] Wp) l hD'.1 (uC k (r + 1) l.castSucc Y) * tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y 1 0) - mulB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) (aCi k l) * tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' …`. Rewrite using `[map_sub, map_neg, stp_ev_mul (ho1 l hD'.1) (sf_aCi l) _ hc hg hgD]`. Unfold `bTee`. Rewrite using `[add_mul, map_add, smul_mul_assoc, one_mul, map_smul, e1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnear` using `near_pt (ho1 l hD'.1) hc hgD`. Establish `htend : Tendsto (fun s : ℂ => Function.update c l s) (𝓝 (c l)) (𝓝 c)`. Establish `h` using `((continuous_const (y := c)).update l continuous_id).tendsto (c l)`. Simplify using `using h`. Establish `hev : ∀ᶠ s in 𝓝 (c l), FN k (r + 1) z z' Y J l.succ (Function.update c l s) g = (-1 : ℂ) • (γ (Function.update c l s) • WorkedExample (Function.update c l s))` using `by filter_upwards [htend.eventually hnear] with s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hline _ hs.1 (fun a ha => Function.update_of_ne (fun h => by rw [h] at ha; exact lt_irrefl _ ha) s c) hs.2).1, neg_one_smul]`. Establish `hd1 : DifferentiableAt ℝ (fun c' => FN k (r + 1) z z' Y J l.succ c' g) c`. Establish `hfam` using `fam_QL (π := π) (π' := π') Formalism.FourierDecayAlt.P.operator_preserves_fusion_forms hz hz' (dom_Dcell Formalism.FourierDecayAlt.P.restriction_mem hz hz' hD l.succ) Y 1 0 (Formalism.FourierDecayAlt.P.restriction_good_family Wp Wq k (r + 1) z z' π π' D hz hz' hD J hJ l.succ)`. Use `((fam_diff hfam hc hg hcg).neg).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [near_pt (open_Dcell hD.1 l.succ) hc hcg] with c' hc'`.
-
-Conclude with `residue_top_holds Wp Wq k (r + 1) z z' π π' D Y hz hz' hD J hJ c' hc'.1 g hg hc'.2`. Establish `hd2F : DifferentiableAt ℝ WorkedExample c` using `sf_diff (tB (Wq →L[ℂ] Wp) l.succ (ho1 l hD'.1) z z' Y 1 0 (rho (Wq →L[ℂ] Wp) R.w l hD'.1 (J0 hD'.1 hs))).2.1 hc hg hgD`. Establish `hd2 : DifferentiableAt ℝ (fun c' => γ c' • WorkedExample c') c` using `(diff_gamma l _ hc).smul hd2F`. Establish `hp : pOp l (fun c' => FN k (r + 1) z z' Y J l.succ c' g) c = (-1 : ℂ) • pOp l (fun c' => γ c' • WorkedExample c') c` using `opL_dir l 0 (-1) hd1 hd2 hev`. Establish `hp2 : pOp l (fun c' => γ c' • WorkedExample c') c = γ c • pOp l WorkedExample c + pOp l γ c • WorkedExample c` using `pOp_smul l hc (diff_gamma l _ hc) hd2F`.
-
-Establish `hp3 : pOp l γ c = (((Mdim k (r + 1) l - 1 : ℕ) : ℂ) / 2) * γ c` using `pOp_gamma l hc _`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Q.crd, ciOp]`. Rewrite using `[eL, eN, eE, hv10, hv11, hp, hp2, hp3, stp_uC l Y, stp_Mdim l]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepA_core (Wp Wq : Type) [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq]
     [NormedSpace ℂ Wq] (z z' : Fin (2 * (r + 1) + k + 1) → ℂ) (π : Mx k (r + 1) → (Wp →L[ℂ] Wp))
@@ -329,7 +325,7 @@ end Core
 end CapelliExpansionLemmas
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r hr z z' π π' D Y hz hz' hD J hJ c hc g hg hcg`. Take `⟨r, rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Conclude with `CapelliExpansionLemmas.stepA_core Wp Wq z z' π π' D Y hz hz' hD J hJ c hc g hg hcg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem residue_first_move_holds : JDRStepA := by
   intro Wp Wq _ _ _ _ k r hr z z' π π' D Y hz hz' hD J hJ c hc g hg hcg

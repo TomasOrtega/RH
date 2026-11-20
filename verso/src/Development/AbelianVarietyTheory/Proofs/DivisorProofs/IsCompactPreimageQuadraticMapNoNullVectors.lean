@@ -6,29 +6,27 @@ namespace GlobalTheory
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Use `haveI : ProperSpace (Matrix (Fin m) (Fin m) K) := FiniteDimensional.proper K _`. Take `⟨c₀, hc₀⟩` from `NormedField.exists_one_lt_norm K`. Establish `hc₀pos : 0 < ‖c₀‖` using `lt_trans one_pos hc₀`. Take `⟨R, hR⟩` from `hQ.isBounded.subset_closedBall 0`. Use `set Sh : Set (Matrix (Fin m) (Fin m) K) := (S : Set _) ∩ {w | 1 / ‖c₀‖ ≤ ‖w‖ ∧ ‖w‖ ≤ 1} with hShdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSclosed : IsClosed (S : Set (Matrix (Fin m) (Fin m) K))` using `Submodule.closed_of_finiteDimensional S`. Establish `hShc : IsCompact Sh`. Use `(isCompact_closedBall (0 : Matrix (Fin m) (Fin m) K) 1).of_isClosed_subset ?_ ?_` and prove the remaining obligations. Use `hSclosed.inter ?_` and prove the remaining obligations. Conclude with `(isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `w hw`. Simplify `hw.2.2` using `[Metric.mem_closedBall, dist_zero_right]`. Establish `hresc : ∀ w ∈ S, w ≠ 0 → ∃ d : K, d ≠ 0 ∧ d • w ∈ Sh ∧ ‖d • w‖ < 1`. Introduce `w hwS hw0`. Take `⟨d, hd0, hlt, hge, -⟩` from `rescale_to_shell hc₀ one_pos hw0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, hd0, ⟨S.smul_mem d hwS, hge, hlt.le⟩, hlt⟩`. Distinguish the cases in `hne : Sh.Nonempty`. Take `⟨w₀, hw₀, hmin⟩` from `hShc.exists_isMinOn hne (f := fun w => ‖q w‖) (continuous_norm.comp hq).continuousOn set μ := ‖q w₀‖ with hμ`. Establish `hμpos : 0 < μ`. Rewrite using `[hμ, norm_pos_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Use `hnull w₀ hw₀.1 h0` as an intermediate fact. Establish `h1` using `hw₀.2.1`. Rewrite `h1` using `[this, norm_zero]`. Conclude with `absurd h1 (not_le.mpr (by positivity))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨Metric.closedBall 0 (max 1 (R / μ)), isCompact_closedBall _ _, ?_⟩` and prove the remaining obligations. Introduce `w hwS hwQ`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Distinguish the cases in `hw0 : w = 0`. Rewrite using `[hw0, norm_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `le_trans zero_le_one (le_max_left _ _)`. Take `⟨d, hd0, hdSh, hdlt⟩` from `hresc w hwS hw0`. Establish `hqw : ‖q w‖ ≤ R`. Use `hR hwQ` as an intermediate fact. Rewrite `this` using `[Metric.mem_closedBall, dist_zero_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hmu_le : μ ≤ ‖d‖ ^ 2 * ‖q w‖`. Establish `h` using `isMinOn_iff.mp hmin _ hdSh`. Rewrite `h` using `[hhom, norm_smul, norm_mul, hstar]`. Use polynomial arithmetic with `[h]`. Establish `hdw : ‖d‖ * ‖w‖ < 1` using `by rwa [norm_smul] at hdlt`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : ‖d‖ ^ 2 * ‖w‖ ^ 2 ≤ 1`. Establish `h0 : 0 ≤ ‖d‖ * ‖w‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `key : μ * ‖w‖ ^ 2 ≤ R`. Establish `hq0 : 0 ≤ ‖q w‖` using `norm_nonneg _`.
+Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h1 : ‖w‖ ≤ 1`. Conclude with `le_trans h1 (le_max_left _ _)`. Use `push_neg at h1`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[le_div_iff₀ hμpos]`. Establish `h2 : ‖w‖ * μ ≤ ‖w‖ ^ 2 * μ`. Apply `mul_le_mul_of_nonneg_right _ hμpos.le` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `⟨{0}, isCompact_singleton, ?_⟩` and prove the remaining obligations. Introduce `w hwS _`. Assume the negation of the conclusion as `hw0`. Take `⟨d, -, hdSh, -⟩` from `hresc w hwS hw0`. Conclude with `hne ⟨_, hdSh⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quadratic_preimage_compact_on_subspace
     (K : Type) [NontriviallyNormedField K] [ProperSpace K] [StarRing K]

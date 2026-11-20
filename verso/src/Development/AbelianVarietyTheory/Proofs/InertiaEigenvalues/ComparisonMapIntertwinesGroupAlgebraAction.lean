@@ -7,7 +7,7 @@ open scoped TensorProduct
 namespace GlobalTheory.PendOf.CenKey
 
 /- English proof (translation)
-Establish `: (⨆ P ∈ s, D.naut.typeV i P) ≤ (⨆ P ∈ s, D.naut.typeV i P).comap (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c)`. Use `iSup₂_le fun P hP G hG => ?_` and prove the remaining obligations. Conclude with `le_biSup (D.naut.typeV i) hP (h i P c G hG)`. Conclude with `this hF`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stable (D : D7) (i : D.nd.Loc) (h : OnMtPreservesTypeV D) (c : MonoidAlgebra ℂ (G0g D.nd))
     (s : Set (D.naut.AV i)) (F : D.what₂.Mt (D.nd.mu i) (D.nd.j i))
@@ -20,11 +20,9 @@ theorem stable (D : D7) (i : D.nd.Loc) (h : OnMtPreservesTypeV D) (c : MonoidAlg
   exact this hF
 
 /- English proof (translation)
-Establish `hu : u ∈ ⨆ x, heckeEig (D.nd.T i) (D.nd.act i) x`. Rewrite using `[Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.EigSpan_holds D.nd i]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hu using Submodule.iSup_induction' with`. Consider the case `mem x u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `hle : typeSum D i (some x) ≤ ⨆ P ∈ {P | D.naut.ptV i P ≠ none}, D.naut.typeV i P`. Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations. Establish `hP' : D.naut.ptV i P = some x` using `hP`. Conclude with `le_biSup (D.naut.typeV i) (show P ∈ {P | D.naut.ptV i P ≠ none} from by simp [hP'])`. Conclude with `hle (S.eig x u hu)`.
-
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem phi_mem (D : D7) (i : D.nd.Loc) (S : Sec D i)
     (u : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i)) :
@@ -43,9 +41,9 @@ theorem phi_mem (D : D7) (i : D.nd.Loc) (S : Sec D i)
   | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Introduce `D i S h c x y hxy`. Establish `hd : Disjoint (⨆ P ∈ {P | D.naut.ptV i P ≠ none}, D.naut.typeV i P) (⨆ P ∈ {P | D.naut.ptV i P = none}, D.naut.typeV i P)` using `(D.naut.typeV_indep i).disjoint_biSup_biSup (Set.disjoint_left.2 fun P h1 h2 => h1 h2)`. Establish `h1` using `Submodule.sub_mem _ (phi_mem D i S (D.nd.prMt i y)) (stable D i h c _ _ (phi_mem D i S (D.nd.prMt i x)))`. Establish `h2` using `Submodule.sub_mem _ (stable D i h c {P | D.naut.ptV i P = none} _ (S.split x)) (S.split y)`. Establish `e : D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c (D.what₂.jMt _ _ x - S.Φ (D.nd.prMt i x)) - (D.what₂.jMt _ _ y - S.Φ (D.nd.prMt i y)) = S.Φ (D.nd.prMt i y) - D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c (S.Φ (D.nd.prMt i x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hxy]`. Normalize the expressions using the abelian group laws. Rewrite `h2` using `[e]`. Conclude with `sub_eq_zero.1 (Submodule.disjoint_def.1 hd _ h1 h2)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_onMt : ∀ (D : D7) (i : D.nd.Loc) (S : Sec D i), OnMtPreservesTypeV D →
     ∀ (c : MonoidAlgebra ℂ (G0g D.nd)) (x y : D.what₂.MtL (D.nd.mu i) (D.nd.j i)),

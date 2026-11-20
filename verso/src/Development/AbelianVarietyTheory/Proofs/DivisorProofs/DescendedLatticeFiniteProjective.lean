@@ -11,13 +11,11 @@ set_option autoImplicit false
 namespace GlobalTheory.LatGlue
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Set `e : A ≃+* γ.range` to `RingEquiv.ofBijective γ.rangeRestrict ⟨fun x y hxy => hγ (congrArg Subtype.val hxy), γ.rangeRestrict_surjective⟩`. Establish `he : ∀ x, ((e x : γ.range) : B) = γ x` using `fun _ => rfl`. Establish `he' : ∀ y : γ.range, γ (e.symm y) = y` using `fun y => by rw [← he, e.apply_symm_apply]`. Use `haveI := RingHomInvPair.of_ringEquiv e`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := RingHomInvPair.of_ringEquiv e.symm`. Use `haveI : RingHomInvPair (e.symm : γ.range →+* A) (e : A →+* γ.range) := RingHomInvPair.symm _ _`. Set `φ : M ≃ₛₗ[(e.symm : γ.range →+* A)] (L.comap (piMap γ ι))` to `{ toFun := fun a => ⟨fun i => e.symm (a.1 i), by`. Use `(hM a.1).1 a.2` as an intermediate fact. Rewrite using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[piMap_apply, he']⟩`. Use the proof step `map_add' := fun a b => Subtype.ext (funext fun i => by simp)`. Use the proof step `map_smul' := fun c a => Subtype.ext (funext fun i => by simp)`.
-
-Use `invFun := fun v => ⟨fun i => e (v.1 i), (hM _).2 v.2⟩`. Use `left_inv := fun a => Subtype.ext (funext fun i => by simp)`. Use `right_inv := fun v => Subtype.ext (funext fun i => by simp) }`. Conclude with `⟨Module.Finite.of_surjective φ.toLinearMap φ.surjective, Module.Projective.of_equiv φ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_projective_comap_of_range_eq {A B : Type} [CommRing A] [CommRing B] (γ : A →+* B)
     (hγ : Function.Injective γ) (R : Subring B) (hR : γ.range = R) {ι : Type} (L : Submodule B (ι → B))
@@ -47,7 +45,7 @@ theorem finite_projective_comap_of_range_eq {A B : Type} [CommRing A] [CommRing 
   exact ⟨Module.Finite.of_surjective φ.toLinearMap φ.surjective, Module.Projective.of_equiv φ⟩
 
 /- English proof (translation)
-Introduce `X _ K' U A _ γ hγ hR h L hL`. Use `haveI := hL.1`. Use `haveI := hL.2.1`. Conclude with `finite_projective_comap_of_range_eq γ hγ _ hR L (descMod K' U L) (fun _ => mem_descMod)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_projective_comap_of_isDescended : ∀ (X : Scheme.{0}) [IsIntegral X] (K' : IntermediateField X.functionField (Kbar X)) (U : AffOp X) (A : Type) [CommRing A] (γ : A →+* U.Bp), Function.Injective γ → γ.range = ringOver K' U → ∀ (h : ℕ) (L : Submodule U.Bp (Fin h → U.Bp)), IsDescended K' U L → Module.Finite A (L.comap (piMap γ (Fin h))) ∧ Module.Projective A (L.comap (piMap γ (Fin h))) := by
   intro X _ K' U A _ γ hγ hR h L hL

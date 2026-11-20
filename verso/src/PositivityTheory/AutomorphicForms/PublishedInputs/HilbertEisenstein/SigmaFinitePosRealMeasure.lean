@@ -16,26 +16,26 @@ set_option linter.unusedSectionVars false
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Simplify using `only [absD, map_mul, Positive.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absD_mul (g h : GA F 2) : absD (g * h) = absD g * absD h := by
   simp only [absD, map_mul, Positive.val_mul]
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule F _).2`.
+A detailed English derivation is pending.
 -/
 theorem absD_pos (g : GA F 2) : 0 < absD g := (IdeleGroup.ideleModule F _).2
 
 /- English proof (translation)
-Rewrite using `[ideleModule_apply]`. Establish `h2 : finiteModule (UpperTheory.V.TR.infId F d) = 1`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(((1 : Ad F) - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F (d : UpperTheory.V.TR.Rinf F) : Ad F)).2 v‖ = 1`. Express the relevant statement in the definitionally equal form `‖((1 : Af F) - 0 + 0) v‖ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, mul_one, infiniteModule]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hm : w.mult = 1`. Unfold `InfinitePlace.mult`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos (IsTotallyReal.isReal w)]`. Rewrite using `[hm, pow_one]`. Express the relevant statement in the definitionally equal form `‖(((1 : Ad F) - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F (d : UpperTheory.V.TR.Rinf F) : Ad F)).1 w‖ = _`. Express the relevant statement in the definitionally equal form `‖((1 : InfiniteAdeleRing F) - UpperTheory.V.TR.infEq F 1 + UpperTheory.V.TR.infEq F (d : UpperTheory.V.TR.Rinf F)) w‖ = _`. Rewrite using `[map_one, sub_self, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `‖(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm ((d : UpperTheory.V.TR.Rinf F) w)‖ = _`. Use `set e := InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)`. Establish `he : ∀ r, (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm r = e.symm r` using `fun _ => rfl`. Rewrite using `[he, ← dist_zero_right, ← Real.norm_eq_abs, ← dist_zero_right]`. Establish `h0 : e.symm 0 = 0`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he]`. Conclude with `map_zero _`. Rewrite using `[← h0, e.symm.dist_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleModule_infId (d : (UpperTheory.V.TR.Rinf F)ˣ) :
     (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F d) : ℝ) = ∏ v, |(d : UpperTheory.V.TR.Rinf F) v| := by
@@ -63,7 +63,7 @@ theorem ideleModule_infId (d : (UpperTheory.V.TR.Rinf F)ˣ) :
   rw [← h0, e.symm.dist_eq]
 
 /- English proof (translation)
-Rewrite using `[absD, UpperTheory.V.TR.det_infGL, ideleModule_infId]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absD_infGL (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     absD (UpperTheory.V.TR.infGL F 2 y) = ∏ v, |(Matrix.det (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F))) v| := by
@@ -71,9 +71,9 @@ theorem absD_infGL (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[absD_mul]`. Use `congr 1`. Establish `hdet : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F))) = (moduleSection (w0 F) t * (u : Ideles F)) ^ 2`. Use `ext`. Simplify using `[sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hu : IdeleGroup.ideleModule F (u : Ideles F) = 1` using `u.2`. Rewrite using `[absD, hdet, map_pow, map_mul, ideleModule_moduleSection, hu, mul_one]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absD_scalar_mul (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) (g : GA F 2) :
     absD (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * g) =
@@ -90,9 +90,9 @@ theorem absD_scalar_mul (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) (g : GA
   rfl
 
 /- English proof (translation)
-Take `⟨n, hn, hpow⟩` from `hχ.exists_pow_eq_one`. Establish `h1 : (χ.1 a) ^ n = 1`. Use `congrArg (fun ψ : HChar F => ψ.1 a) hpow` as an intermediate fact. Simplify using `using this`. Establish `h2 : ‖((χ.1 a : ℂˣ) : ℂ)‖ ^ n = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_hchar_of_finOrder {χ : HChar F} (hχ : IsOfFinOrder χ) (a : Ideles F) :
     ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1 := by
@@ -105,7 +105,7 @@ theorem norm_hchar_of_finOrder {χ : HChar F} (hχ : IsOfFinOrder χ) (a : Idele
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2
 
 /- English proof (translation)
-The claim follows from `expPosHomeomorph.measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_expPos : MeasurableEmbedding expPos :=
   expPosHomeomorph.measurableEmbedding
@@ -115,25 +115,25 @@ instance sigmaFinite_posRealMeasure : SigmaFinite posRealMeasure := by
   exact measurableEmbedding_expPos.sigmaFinite_map
 
 /- English proof (translation)
-The claim follows from `measurable_subtype_coe measurableSet_Ici`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_ge_one : MeasurableSet {t : {r : ℝ // 0 < r} | 1 ≤ (t : ℝ)} :=
   measurable_subtype_coe measurableSet_Ici
 
 /- English proof (translation)
-The claim follows from `measurable_subtype_coe measurableSet_Iio`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_lt_one : MeasurableSet {t : {r : ℝ // 0 < r} | (t : ℝ) < 1} :=
   measurable_subtype_coe measurableSet_Iio
 
 /- English proof (translation)
-Rewrite using `[posRealMeasure_eq_map_expPos, IntegrableOn, measurableEmbedding_expPos.restrict_map, measurableEmbedding_expPos.integrable_map_iff]`. Establish `hpre : expPos ⁻¹' {t : {r : ℝ // 0 < r} | 1 ≤ (t : ℝ)} = Set.Ici 0`. Use extensionality with `x`. Simplify using `[Real.one_le_exp_iff]`. Rewrite using `[hpre]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : (fun t : {r : ℝ // 0 < r} => ((t : ℝ) ^ r)⁻¹ * (t : ℝ)) ∘ expPos = fun x => Real.exp ((1 - (r : ℝ)) * x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, coe_expPos]`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_neg, ← Real.exp_add]`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Establish `hneg : (1 - (r : ℝ)) < 0`. Establish `: (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `(integrableOn_exp_mul_Ioi hneg 0).congr_set_ae Ioi_ae_eq_Ici.symm`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_ge_one {r : ℕ} (hr : 2 ≤ r) :
     IntegrableOn (fun t : {r : ℝ // 0 < r} => ((t : ℝ) ^ r)⁻¹ * (t : ℝ)) {t | 1 ≤ (t : ℝ)} posRealMeasure := by
@@ -155,13 +155,13 @@ theorem integrableOn_ge_one {r : ℕ} (hr : 2 ≤ r) :
   exact (integrableOn_exp_mul_Ioi hneg 0).congr_set_ae Ioi_ae_eq_Ici.symm
 
 /- English proof (translation)
-Rewrite using `[posRealMeasure_eq_map_expPos, IntegrableOn, measurableEmbedding_expPos.restrict_map, measurableEmbedding_expPos.integrable_map_iff]`. Establish `hpre : expPos ⁻¹' {t : {r : ℝ // 0 < r} | (t : ℝ) < 1} = Set.Iio 0`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, coe_expPos, Set.mem_Iio]`. Rewrite using `[← Real.exp_zero, Real.exp_lt_exp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpre]`. Establish `hf : (fun t : {r : ℝ // 0 < r} => (t : ℝ) ^ r * (t : ℝ)⁻¹) ∘ expPos = fun x => Real.exp (((r : ℝ) - 1) * x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, coe_expPos]`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_neg, ← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Establish `hpos : 0 < ((r : ℝ) - 1)`. Establish `: (2 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(integrableOn_exp_mul_Iic hpos 0).mono_set Set.Iio_subset_Iic_self`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integrableOn_lt_one {r : ℕ} (hr : 2 ≤ r) :
     IntegrableOn (fun t : {r : ℝ // 0 < r} => (t : ℝ) ^ r * (t : ℝ)⁻¹) {t | (t : ℝ) < 1} posRealMeasure := by

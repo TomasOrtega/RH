@@ -5,9 +5,9 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`. Establish `h0 : j ⁻¹ᵁ Z.basicOpen (a - b) = ⊥`. Rewrite using `[Scheme.preimage_basicOpen, map_sub, hab, sub_self, Scheme.basicOpen_zero]`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨z, hz⟩` from `(Opens.ne_bot_iff_nonempty _).mp hne`. Take `⟨x, hx1, ⟨y, rfl⟩⟩` from `hj.inter_open_nonempty _ (Z.basicOpen (a - b)).isOpen ⟨z, hz⟩`. Establish `: y ∈ j ⁻¹ᵁ Z.basicOpen (a - b)` using `hx1`. Rewrite `this` using `[h0]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_injective_of_dense_range {T Z : Scheme.{0}} [IsReduced Z] (j : T ⟶ Z) [IsOpenImmersion j]
     (hj : Dense (Set.range j)) (W : Z.Opens) : Function.Injective (j.app W).hom := by
@@ -23,7 +23,7 @@ theorem app_injective_of_dense_range {T Z : Scheme.{0}} [IsReduced Z] (j : T ⟶
   exact this
 
 /- English proof (translation)
-Take `rfl : i' = (Opens.map j.base).map i` from `Subsingleton.elim _ _`. Use `congrArg (fun f => f.hom a) (j.naturality i.op)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem app_res_eq {T Z : Scheme.{0}} (j : T ⟶ Z) {V W : Z.Opens} (i : V ⟶ W)
     (i' : j ⁻¹ᵁ V ⟶ j ⁻¹ᵁ W) (a : Γ(Z, W)) :
@@ -33,15 +33,13 @@ theorem app_res_eq {T Z : Scheme.{0}} (j : T ⟶ Z) {V W : Z.Opens} (i : V ⟶ W
   simpa using this
 
 /- English proof (translation)
-Introduce `T Z _ j _ hj U s hloc`. Use `choose W hWU hmem h hh using hloc`. Set `Wf : U → Z.Opens` to `fun u => W u.1 u.2`. Establish `hcover : U ≤ iSup Wf` using `fun x hx => Opens.mem_iSup.2 ⟨⟨x, hx⟩, hmem x hx⟩`. Take `⟨g, hg, -⟩` from `Z.sheaf.existsUnique_gluing' Wf U (fun u => homOfLE (hWU u.1 u.2)) hcover (fun u => h u.1 u.2) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v`. Apply `app_injective_of_dense_range j hj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `j.app _ (Z.presheaf.map _ (h u.1 u.2)) = j.app _ (Z.presheaf.map _ (h v.1 v.2))`. Rewrite using `[app_res_eq j _ (homOfLE (j.preimage_mono inf_le_left)), app_res_eq j _ (homOfLE (j.preimage_mono inf_le_right)), hh, hh]`. Simplify using `only [← ConcreteCategory.comp_apply, ← Functor.map_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use the proof step `rfl)`. Set `g' : Γ(Z, U)` to `g`. Establish `hg' : ∀ u : U, Z.presheaf.map (homOfLE (hWU u.1 u.2)).op g' = h u.1 u.2` using `hg`. Use `⟨g', ?_⟩` and prove the remaining obligations. Use `T.sheaf.eq_of_locally_eq' (fun u : U => j ⁻¹ᵁ Wf u) (j ⁻¹ᵁ U) (fun u => homOfLE (j.preimage_mono (hWU u.1 u.2))) ?_ _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `Opens.mem_iSup.2 ⟨⟨j x, hx⟩, hmem _ hx⟩`. Introduce `u`. Establish `key : T.presheaf.map (homOfLE (j.preimage_mono (hWU u.1 u.2))).op (j.app U g') = T.presheaf.map (homOfLE (j.preimage_mono (hWU u.1 u.2))).op s`. Rewrite using `[← app_res_eq j (homOfLE (hWU u.1 u.2)), hg' u, hh]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_of_dense_openImmersion : ∀ {T Z : Scheme.{0}} [IsReduced Z] (j : T ⟶ Z) [IsOpenImmersion j], Dense (Set.range j) →
     ∀ (U : Z.Opens) (s : Γ(T, j ⁻¹ᵁ U)), (∀ u ∈ U, ∃ (W : Z.Opens) (hWU : W ≤ U), u ∈ W ∧

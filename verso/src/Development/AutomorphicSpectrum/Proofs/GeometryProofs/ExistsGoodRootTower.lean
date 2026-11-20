@@ -18,13 +18,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.TopTower
 
 /- English proof (translation)
-Establish `hdom : ∀ x, IsDomain (Y.X.presheaf.stalk x)` using `fun x => (Y.normal x).1`. Establish `hcg` using `GlobalTheory.T.isCptGen_residue_field_generic Y.X hdom x hx`. Take `⟨G, hG0⟩` from `GlobalTheory.T.exists_reference_geometry_same_generic hG.2.2.2.2.1 E H D l (Xo l) c Y _ (Y.X.fromSpecResidueField x) hcg`. Take `⟨A, hinv⟩` from `GlobalTheory.T.exists_holomorphic_section_of_analytic hG hA0 hA1 E H D Xo l c Y hgl hsp hp hq G`. Set `ν : RootIx D → ℤ` to `fun r => -((r.2 : ℕ) : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hν : ∀ τ (i k : Fin (D.p + D.q)), i < k → ν (τ, k) < ν (τ, i)`. Introduce `τ i k hik`. Simplify using `only [ν, neg_lt_neg_iff]`. Conclude with `hik` after adjusting the coercions. Take `⟨k, q', s, hk, hq', hs, heff⟩` from `GlobalTheory.T.exists_effective_weight_section hG E H D Xo l c Y hgl hp hq G ⟨A⟩ ν hν`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Fx, R, o, hgen, hkA, hq'', hn, hdeg, hJ, hamp, hemb, hbij, hlam⟩` from `GlobalTheory.T.effective_scaled_weight_of_retraction E H D l (Xo l) c Y G A ν k q' s hinv hsp hk hq' hs heff`. Use `⟨A.Sys, Fx, R, o, ?_, ?_, hdeg, hJ, hamp, hemb, hbij, A.flat, hlam⟩` and prove the remaining obligations. Rewrite using `[hgen, hG0]`. Conclude with `Scheme.fromSpecResidueField_apply x _`. Introduce `r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hn r, hkA, hq'']`. Simplify using `[ν]`.
+A detailed English derivation is pending.
 -/
 theorem comp_data (hG : Top.Given) (hA0 : Flat.FlatLineGenerator) (hA1 : Flat.FlatLineGeneratorComponent)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
@@ -66,7 +66,7 @@ theorem comp_data (hG : Top.Given) (hA0 : Flat.FlatLineGenerator) (hA1 : Flat.Fl
     simp [ν]
 
 /- English proof (translation)
-Take `⟨Ω, _, _, K, _, J, _, y, bk, bx, i, 𝔐, h, Fl, xdeg, e, hbk, hy, hd, hf, hcst, hfl, hfin, hlines, hom, hsm, hR⟩` from `GlobalTheory.T.root_origin_good_primes_finite hG hW E H D l Xo c Y Sys Fx R o S hS hdisc hdeg`. Take `⟨RM, o', h1, h2, h3, h4⟩` from `GlobalTheory.T.root_origin_coords_over_field hG E H D l Xo c Y Sys Fx R o S Ω K J y bk bx i 𝔐 h Fl xdeg e hdeg hemb hbij hbk hy hd hf hcst hfl hfin hlines hom hsm`. Use `⟨RM, o', h1, fun p hp => ?_, h3, h4⟩` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `hR p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_data (hG : Top.Given) (hW : Out.WeilSt)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Tor.Level H}
@@ -87,21 +87,17 @@ theorem level_data (hG : Top.Given) (hW : Out.WeilSt)
   exact hR p hp
 
 /- English proof (translation)
-Introduce `hG hW hA0 hA1 E _ _ _ H D Xo l c Y _ hgl hsp hp hq`. Take `⟨hfin, hne⟩` from `GlobalTheory.T.generic_points_finite_nonempty hG E H D l (Xo l) c Y`. Set `Smax : Set Y.X` to `{x : Y.X | ∀ x' : Y.X, x' ⤳ x → x' = x}`. Use `haveI : Fintype Smax := Set.Finite.fintype hfin`. Use `haveI : Nonempty Smax := hne.to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Sys Fx R o hgen hnu hdeg hJ hamp hemb hbij hflat hlam using fun a : Smax => comp_data hG hA0 hA1 Xo l c Y hgl hsp hp hq a.1 a.2`. Establish `hM' : l.M' ≠ 0` using `by show Nat.lcm l.M l.A ≠ 0`. Conclude with `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Establish `hn0 : 2 * (discr E).natAbs * l.M' ≠ 0`. Conclude with `Nat.mul_ne_zero (Nat.mul_ne_zero two_ne_zero (Int.natAbs_ne_zero.mpr (NumberField.discr_ne_zero E))) hM'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `bad : Finset ℕ` to `(2 * (discr E).natAbs * l.M').primeFactors`. Establish `hbad : ∀ r : ℕ, r ∈ bad ↔ r.Prime ∧ (r : ℤ) ∣ 2 * discr E * l.M'`. Introduce `r`. Simplify using `only [bad, Nat.mem_primeFactors, Int.natCast_dvd, Int.natAbs_mul]`. Simplify using `[hn0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Set `SB : ℕ → Finset ℕ` to `fun B => (Finset.range (B + 1)).filter Nat.Prime ∪ bad`. Establish `hSB : ∀ B r, r ∈ SB B ↔ r.Prime ∧ (r ≤ B ∨ r ∈ bad)`. Introduce `B r`. Simplify using `only [SB, Finset.mem_union, Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Introduce and unpack `(⟨h1, h2⟩ | h)`. Conclude with `⟨h2, Or.inl (by omega)⟩`. Conclude with `⟨((hbad r).1 h).1, Or.inr h⟩`. Introduce and unpack `⟨h1, h2 | h2⟩`. Conclude with `Or.inl ⟨by omega, h1⟩`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inr h2`. Establish `hSBp : ∀ B, ∀ p ∈ SB B, p.Prime` using `fun B p hp => ((hSB B p).1 hp).1`. Establish `hSBd : ∀ B, ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ SB B`. Introduce `B p hp hd`. Use `(hSB B p).2 ⟨hp, Or.inr ((hbad p).2 ⟨hp, ?_⟩)⟩` and prove the remaining obligations.
-
-Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left hd 2) _`. Use `choose RM o' hom hR hJ' hsm using fun (B : ℕ) (a : Smax) => level_data hG hW Y (Fx a) (R a) (o a) (hdeg a) (hemb a) (hbij a) (SB B) (hSBp B) (hSBd B)`. Set `T : Top.RootTower (CMType H) (D.p + D.q)` to `{ j := D.p j_pos := hp j_lt := by omega Comp := Smax bad := bad two_mem := (hbad 2).2 ⟨Nat.prime_two, Dvd.dvd.mul_right (Dvd.dvd.mul_right (dvd_refl _) _) _⟩ nu := fun _ i => -((i : ℕ) : ℝ) nu_rat := fun _ i => ⟨-((i : ℕ) : ℚ), by push_cast; rfl⟩ M := RM }`. Set `tor : TowerOrigin Y T` to `{ j_eq := rfl bad_iff := hbad S := SB S_iff := hSB Sys := Sys Fx := Fx comp_inj := fun a a' h => Subtype.ext (by rw [← hgen a, ← hgen a']; exact h) comp_onto := fun x hx => ⟨⟨x, hx⟩, hgen _⟩ nu_eq := fun a r => hnu a r Or := o' }`. Set `go : Top.GoodOrigin Y T` to `{ toTowerOrigin := tor omVB := hom smooth := fun B a => ⟨hJ' B a, hsm B a⟩ flat := hflat R := R refOr := o ref_deg := hdeg ref_top := hJ ample := hamp }`.
-
-Conclude with `⟨T, go, fun a => hlam a, fun B a p hp => hR B a p hp⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good_tower : Top.Given → Out.WeilSt → Flat.FlatLineGenerator → Flat.FlatLineGeneratorComponent → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)], Top.IsGlobal Xo l c Y → SplitComps Y → 1 ≤ D.p → 1 ≤ D.q → ∃ (T : Top.RootTower (CMType H) (D.p + D.q)) (o : Top.GoodOrigin Y T), (∀ a, (∀ x : (o.Sys a).X, ∃ (U : Set (o.Sys a).X) (lam : (o.Sys a).X → Fin ((o.Fx a).m + 1) → ℂ), IsOpen U ∧ x ∈ U ∧ (∀ i, (o.Sys a).A.HoloOn U fun y => lam y i) ∧ (∀ y ∈ U, ∃ a₀ : ℂ, a₀ ≠ 0 ∧ lam y = a₀ • (o.Fx a).pt y) ∧ ∀ p, lam x p ≠ 0 → ∀ j, x ∈ ((o.Sys a).A.chart j).source → (fderiv ℂ (fun z i => lam (((o.Sys a).A.chart j).symm z) i / lam (((o.Sys a).A.chart j).symm z) p) ((o.Sys a).A.chart j x)).ker = ⊥)) ∧ ∀ B a, ∀ p ∈ o.S B, (o.Or B a).𝔐.R p = 4 := by
   intro hG hW hA0 hA1 E _ _ _ H D Xo l c Y _ hgl hsp hp hq

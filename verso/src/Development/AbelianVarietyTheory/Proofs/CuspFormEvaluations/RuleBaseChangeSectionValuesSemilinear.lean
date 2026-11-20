@@ -14,13 +14,13 @@ open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestric
 open GlobalTheory.CoefChangeCompare (ValueWD HasBC hasBC_of ruleUp_mem_sec evR_ruleUp)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c c' hle`. Establish `hS` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hWD : ValueWD Xo c` using `evalWD_fr (frChartF_of (GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c))`. Establish `hBC : HasBC Xo c` using `hasBC_of hS`. Use `⟨fun a n f hf => ⟨ruleUp_mem_sec hle hWD hBC hf, ?_⟩, fun t f g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S _ A _ h y`. Take `rfl : A = resAlg hle S` from `Algebra.algebra_ext _ _ fun x => (h x).symm`. Conclude with `evR_ruleUp hle hWD hBC hf.1 y`. Use function extensionality and compare the values at `p y`. Use `letI := resAlg hle p.R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1 : evR Xo c (t • f + g) (y.res hle (fun _ => rfl)) = algebraMap c.F p.R t * evR Xo c f (y.res hle (fun _ => rfl)) + evR Xo c g (y.res hle (fun _ => rfl))`. Unfold `evR`. Rewrite using `[evalAt_add, evalAt_smul]`. Use `h1.trans ?_` and prove the remaining obligations. Use `show _ = incF c c' hle t • rulBC hle f p y + rulBC hle g p y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rulBC_sec_val_linear : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c c' : Coeff l) (hle : c.F ≤ c'.F), (∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, rulBC hle f ∈ sec Xo c' a n ∧ ∀ (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S) (y : FrPt Xo c' S), evR Xo c' (rulBC hle f) y = evR Xo c f (y.res hle h)) ∧ (∀ (t : c.F) (f g : Rul Xo c), rulBC hle (t • f + g) = incF c c' hle t • rulBC hle f + rulBC hle g) := by
   intro E _ _ _ H Dw l Xo c c' hle

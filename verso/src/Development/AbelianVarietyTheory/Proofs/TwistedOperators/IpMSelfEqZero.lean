@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.EvalAtUnitVector
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ c, IsMultIP M μ 𝓕 T T c`. Establish `h1` using `(ipM_spec M μ 𝓕 T T h v v).2`. Establish `h2 : (∏ τ, inner ℂ (v τ : M.H τ) (v τ : M.H τ)) = 1` using `Finset.prod_eq_one fun τ _ => by`. Rewrite using `[inner_self_eq_norm_sq_to_K, hv τ]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2, mul_one, h0]`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Unfold `ipM`. Conclude with `dif_neg h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ipM_self_eq_zero {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (μ : Measure (GA D V))
     (𝓕 : Set (GA D V)) (T : MMap M) (v : M.Vec) (hv : ∀ τ, ‖(v τ : M.H τ)‖ = 1) (h0 : T v = 0) :
@@ -27,9 +27,9 @@ theorem ipM_self_eq_zero {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : 
     exact dif_neg h
 
 /- English proof (translation)
-Introduce `i σ _ x y hxy`. Establish `h0 : (R.HW i σ).e (x - y) (v₀ i σ) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 hxy`. Establish `h1` using `(he i σ).2.2 (x - y) (x - y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ipAt, ipM_self_eq_zero _ _ _ _ (v₀ i σ) (IsChosenExtremalVector.norm R (hv i σ)) h0, mul_zero]`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h1)`.
+A detailed English derivation is pending.
 -/
 theorem evInj {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D)
     [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)

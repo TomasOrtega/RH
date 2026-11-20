@@ -55,15 +55,11 @@ theorem mat_one (w : InfinitePlace L) : mat (one L N).1 w = 1 := rfl
 
 open ComplexOrder in
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_clm (b3 (L := L) (N := N))`. Establish `hm : ∀ a b Y w, mat (B a b Y) w = (2 : ℝ)⁻¹ • (mat a w * mat Y w * mat b w + mat b w * mat Y w * mat a w)` using `fun a b Y w => by rw [hB]; rfl`. Use `core B _ ?_ (fun x y => HS_ext fun w => ?_) (fun y => HS_ext fun w => ?_) o ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun Y => HS_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[hm, mat_one, Matrix.mul_one, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = mat Y w`. Use `module`. Simplify using `only [mat_add, hm, mat_one, Matrix.mul_one, Matrix.one_mul]`. Use `module`. Simplify using `only [mat_add, mat_smul, hm, mat_one, Matrix.mul_one, Matrix.one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `module`. Use `filter_upwards [(PositivityTheory.KB.WhittakerCocycle.pos_open_convex L N).1.mem_nhds (one L N).2] with x hx`. Set `g : Gp L N` to `fun w => (hx w).isUnit.unit⁻¹`. Establish `e : B x x = actL g` using `ContinuousLinearMap.ext fun Y => HS_ext fun w => by`. Establish `h1 : (((g w)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = mat x w`.
-
-Simplify using `only [g, inv_inv]`. Conclude with `IsUnit.unit_spec _`. Rewrite using `[hm, mat_actL, h1, (mat_herm x w).eq]`. Use `module`. Rewrite using `[e]`.
-
-Conclude with `ho g _ (one L N).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_one {q : ℕ} (o : Form (HS L N) q) (ho : ∀ g, FInv o g) :
     ContDiffAt ℝ ∞ o (one L N).1 ∧ extDeriv o (one L N).1 = 0 := by
@@ -88,11 +84,11 @@ theorem at_one {q : ℕ} (o : Form (HS L N) q) (ho : ∀ g, FInv o g) :
     exact ho g _ (one L N).2
 
 /- English proof (translation)
-Introduce `hS L _ _ N q o ho`. Establish `hop` using `(PositivityTheory.KB.WhittakerCocycle.pos_open_convex L N).1`. Establish `key : ∀ h ∈ Pos L N, ContDiffAt ℝ ∞ o h ∧ extDeriv o h = 0` using `fun h hh => by`. Take `⟨g, hg⟩` from `trans_pos hh`. Establish `h1` using `at_one o ho`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hg]`. Conclude with `transport (actL g) o h1.1 h1.2 (Filter.eventually_of_mem (hop.mem_nhds hh) fun x hx => ho g x hx)`. Use `⟨fun h hh => (key h hh).1.continuousAt.continuousWithinAt, funext fun y => ?_⟩` and prove the remaining obligations. Establish `h2` using `hS (HS L N) (Pos L N) hop (PositivityTheory.KB.WhittakerCocycle.pos_open_convex L N).2 q o (fun h hh => ((key h hh).1.of_le (by simp)).contDiffWithinAt) (fun j => (y j).1) fun j => (y j).2`. Use `Eq.trans h2 ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `intS`. Use `setIntegral_eq_zero_of_forall_eq_zero fun t ht => ?_` and prove the remaining obligations. Rewrite using `[(key _ (simplex_mem (fun j => (y j).2) ht)).2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem aGood : BlockInvariants.AGood := by
   intro hS L _ _ N q o ho

@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.Ba
 namespace GlobalTheory.TwBridge
 
 /- English proof (translation)
-Take `⟨e, -, he⟩` from `hg`. Establish `hb' : TwBdd (Pr` using `Pr) j P a := hb`. Establish `hi : (g⁻¹ : GL _ k).val = GlobalTheory.SymBridge.toLoc ι e e a.symm.toLinearMap`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[he, Model.toLoc_mul, LinearEquiv.comp_symm, Model.toLoc_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨fun r s => ?_, fun r s => ?_⟩` and prove the remaining obligations. Rewrite using `[hi] show ι (a.symm (Pi.single (e s) 1) (e r)) ∈ 𝒪[k]`. Rewrite using `[hc.int]`. Conclude with `twAn_bdd_inv hP hb' (Pi.single (e s) 1) (fun l => twAn_single_int (e s) l) (e r)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, Matrix.smul_apply, hc.unif] show ι ((qOf P : ℕ) : X.E) ^ j • ι (a (Pi.single (e s) 1) (e r)) ∈ 𝒪[k]`. Rewrite using `[smul_eq_mul, ← map_pow, ← map_mul, hc.int]`. Conclude with `twAn_bdd_q hP hb' (Pi.single (e s) 1) (fun l => twAn_single_int (e s) l) (e r)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGL_int_of_bdd {X : Fields} {Pr : Primes X} {R : Ranks} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (ϖ : kˣ) (P : HeightOneSpectrum (𝓞 X.E)) (hP : P ∉ Pr.vGs)

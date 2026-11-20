@@ -10,11 +10,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier Gl
 open Cardinal in
 
 /- English proof (translation)
-Set `F` to `FractionRing (MvPolynomial ℝ K)`. Set `L` to `AlgebraicClosure F`. Establish `hF : #F = 𝔠`. Establish `hK : #K ≤ 𝔠` using `Cardinal.mk_le_aleph0.trans Cardinal.aleph0_le_continuum`. Rewrite using `[Cardinal.mk_fractionRing, MvPolynomial.cardinalMk_eq_max, Cardinal.mk_real, max_eq_right hK, max_eq_left Cardinal.aleph0_le_continuum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : #L = 𝔠`. Use `le_antisymm ?_ (hF ▸ Cardinal.mk_le_of_injective (algebraMap F L).injective)` and prove the remaining obligations. Use `Algebra.IsAlgebraic.cardinalMk_le_max F L` as an intermediate fact. Rewrite `this` using `[hF, max_eq_left Cardinal.aleph0_le_continuum]`. Then use the resulting hypothesis. Set `j : K →+* L` to `(algebraMap F L).comp ((algebraMap (MvPolynomial ℝ K) F).comp MvPolynomial.C)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `: CharZero L` using `(RingHom.charZero_iff j.injective).1 inferInstance`. Take `⟨e⟩` from `IsAlgClosed.ringEquiv_of_equiv_of_charZero (K := L) (L := ℂ) (hL ▸ Cardinal.aleph0_lt_continuum) (Cardinal.eq.1 (hL.trans Cardinal.mk_complex.symm))`. Conclude with `⟨e.toRingHom.comp j⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.nonempty_embedding_complex (K : Type) [Field K] [CharZero K] [Countable K] :
     Nonempty (K →+* ℂ) := by
@@ -35,7 +35,7 @@ private theorem UpperTheory.nonempty_embedding_complex (K : Type) [Field K] [Cha
   exact ⟨e.toRingHom.comp j⟩
 
 /- English proof (translation)
-Establish `hA : Countable (Algebra.EssFiniteType.subalgebra ℤ K)`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType ℤ (Algebra.EssFiniteType.subalgebra ℤ K))`. Establish `: Countable (MvPolynomial (Fin n) ℤ)` using `Cardinal.mk_le_aleph0_iff.1 (MvPolynomial.cardinalMk_le_max.trans (by simp))`. Conclude with `hf.countable`. Conclude with `Cardinal.mk_le_aleph0_iff.1 ((IsLocalization.cardinalMk_le (Algebra.EssFiniteType.submonoid ℤ K)).trans Cardinal.mk_le_aleph0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.countable_of_essFiniteType_int (K : Type) [CommRing K] [Algebra.EssFiniteType ℤ K] :
     Countable K := by
@@ -49,9 +49,9 @@ private theorem UpperTheory.countable_of_essFiniteType_int (K : Type) [CommRing 
     ((IsLocalization.cardinalMk_le (Algebra.EssFiniteType.submonoid ℤ K)).trans Cardinal.mk_le_aleph0)
 
 /- English proof (translation)
-Introduce `k K _ _ _ ψ σ h`. Establish `: Countable K` using `UpperTheory.countable_of_essFiniteType_int K`. Establish `: Countable k` using `ψ.injective.countable`. Establish `: CharZero K` using `(RingHom.charZero_iff ψ.injective).1 inferInstance`. Take `⟨j⟩` from `UpperTheory.nonempty_embedding_complex K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `GlobalTheory.GaloisDescent.exists_complex_ringEquiv_comp_eq (j.comp ψ) σ`. Conclude with `⟨e.toRingHom.comp j, RingHom.ext fun a => he a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_complex_embedding_extension :
     ∀ (k K : Type) [Field k] [NumberField k] [Field K] (ψ : k →+* K) (σ : k →+* ℂ), Algebra.EssFiniteType ℤ K → ∃ j : K →+* ℂ, j.comp ψ = σ := by

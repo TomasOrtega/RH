@@ -8,9 +8,9 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Rewrite using `[← Real.log_prod]`. Establish `h1 : ((primorial Y : ℕ) : ℝ) ≤ (4 : ℝ) ^ Y` using `by exact_mod_cast primorial_le_four_pow Y`. Establish `h2 : ((primorial Y : ℕ) : ℝ) = ∏ p ∈ (range (Y + 1)).filter Nat.Prime, (p : ℝ)`. Simplify using `[primorial, Nat.cast_prod]`. Rewrite using `[← h2, ← Real.log_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : (0 : ℝ) < (primorial Y : ℕ)` using `by exact_mod_cast primorial_pos Y`. Conclude with `Real.log_le_log hpos h1`. Introduce `p hp`. Use `(Finset.mem_filter.mp hp).2.pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 private theorem sum_log_primes_le_mul_log_four (Y : ℕ) :
     ∑ p ∈ (range (Y + 1)).filter Nat.Prime, Real.log p ≤ Y * Real.log 4 := by
@@ -26,23 +26,21 @@ private theorem sum_log_primes_le_mul_log_four (Y : ℕ) :
     positivity
 
 /- English proof (translation)
-Use `set Y := ⌊y⌋₊ with hYdef`. Establish `hY3 : 3 ≤ Y` using `Nat.le_floor (by exact_mod_cast hy)`. Establish `hYle : (Y : ℝ) ≤ y` using `Nat.floor_le (by linarith)`. Establish `hYlt : y < (Y : ℝ) + 1` using `Nat.lt_floor_add_one y`. Establish `hY3r : (3 : ℝ) ≤ Y` using `by exact_mod_cast hY3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : 0 < y` using `by linarith`. Establish `hY0 : (0 : ℝ) < Y` using `by linarith`. Establish `hset : ((Icc 1 N).filter Nat.Prime).filter (fun p => ¬ p ≤ Y) = (Ioc Y N).filter Nat.Prime`. Use extensionality with `p`. Simplify using `only [mem_filter, mem_Icc, mem_Ioc]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨h1, h2⟩, hp⟩, h3⟩`. Conclude with `⟨⟨by omega, h2⟩, hp⟩`. Introduce and unpack `⟨⟨h1, h2⟩, hp⟩`. Conclude with `⟨⟨⟨by omega, h2⟩, hp⟩, by omega⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Establish `hterm : ∀ p ∈ (Ioc Y N).filter Nat.Prime, sP (cN y) N p ^ 2 ≤ 4 * y ^ 2 * (Real.log p ^ 2 / (p : ℝ) ^ 2)`. Introduce `p hp`. Establish `hpp` using `(mem_filter.mp hp).2`. Establish `h0` using `sP_cN_nonneg y hy0.le N p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `sP_cN_le_log_div y hy0.le N p hpp`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hpp.pos`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `htail` using `sum_log_sq_div_sq_primes_tail_le N (N - Y) Y (by omega) le_rfl`. Establish `hL : 0 < Real.log 4` using `Real.log_pos (by norm_num)`. Establish `hlogY : Real.log Y ≤ Real.log y` using `Real.log_le_log hY0 hYle`. Establish `hlog2 : Real.log 2 ≤ Real.log y` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `hq : 4 * Real.log 4 * (Real.log Y + 2 * Real.log 2) / Y ≤ 24 * Real.log 4 * Real.log y / y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ hY0 hy0]`. Establish `hly : 0 ≤ Real.log y` using `Real.log_nonneg (by linarith)`. Establish `hE : Real.log Y + 2 * Real.log 2 ≤ 3 * Real.log y` using `by linarith`. Establish `h1 : (Real.log Y + 2 * Real.log 2) * y ≤ 3 * Real.log y * y` using `mul_le_mul_of_nonneg_right hE hy0.le`. Establish `h2 : 3 * Real.log y * y ≤ 3 * Real.log y * (2 * Y)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left (h1.trans h2) (show 0 ≤ 4 * Real.log 4 by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `htail.trans hq`. Use `_ = 96 * Real.log 4 * (y * Real.log y) := by`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem sum_sP_sq_large_primes_le (y : ℝ) (hy : 3 ≤ y) (N : ℕ) :
     ∑ p ∈ ((Icc 1 N).filter Nat.Prime).filter (fun p => ¬ p ≤ ⌊y⌋₊), sP (cN y) N p ^ 2
@@ -99,33 +97,31 @@ private theorem sum_sP_sq_large_primes_le (y : ℝ) (hy : 3 ≤ y) (N : ℕ) :
         ring
 
 /- English proof (translation)
-Use `set Y := ⌊y⌋₊ with hYdef`. Use `set S := ⌊Real.sqrt y⌋₊ with hSdef`. Establish `hy0 : 0 < y` using `by linarith`. Establish `hYle : (Y : ℝ) ≤ y` using `Nat.floor_le hy0.le`. Establish `hsq0 : 0 ≤ Real.sqrt y` using `Real.sqrt_nonneg y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSle : (S : ℝ) ≤ Real.sqrt y` using `Nat.floor_le hsq0`. Establish `hSlt : Real.sqrt y < (S : ℝ) + 1` using `Nat.lt_floor_add_one _`. Establish `hsqsq : Real.sqrt y * Real.sqrt y = y` using `Real.mul_self_sqrt hy0.le`. Establish `hsq1 : 1 ≤ Real.sqrt y`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.sqrt_le_sqrt (by linarith)`. Establish `hly : 0 ≤ Real.log y` using `Real.log_nonneg (by linarith)`. Establish `hlogsq : Real.log (Real.sqrt y) = Real.log y / 2` using `Real.log_sqrt hy0.le`. Establish `hlsy : Real.log y ≤ 2 * Real.sqrt y`. Use `Real.log_le_sub_one_of_pos (show 0 < Real.sqrt y by linarith)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[hlogsq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : ((Icc 1 N).filter Nat.Prime).filter (fun p => p ≤ Y) ⊆ (range (Y + 1)).filter Nat.Prime`. Introduce `p hp`. Simplify using `only [mem_filter, mem_Icc, mem_range] at hp ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by omega, hp.1.2⟩`. Establish `step1` using `sum_le_sum_of_subset_of_nonneg hsub (f := fun p => sP (cN y) N p ^ 2) (fun p _ _ => sq_nonneg _)`. Establish `hterm : ∀ p ∈ (range (Y + 1)).filter Nat.Prime, sP (cN y) N p ^ 2 ≤ (if p ≤ S then C0 ^ 2 * Real.log y ^ 2 else 0) + 2 * C0 ^ 2 * Real.log y * Real.log p`. Introduce `p hp`. Establish `hpp` using `(mem_filter.mp hp).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hpp.one_lt.le`. Establish `hlp : 0 ≤ Real.log p` using `Real.log_nonneg hp1`. Establish `h0` using `sP_cN_nonneg y hy0.le N p`. Establish `h1` using `hb y hy N p`. Establish `hsqb : sP (cN y) N p ^ 2 ≤ C0 ^ 2 * Real.log y ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ h0 h1 2`. Establish `hx : 0 ≤ 2 * C0 ^ 2 * Real.log y * Real.log p` using `by positivity`. Use `split_ifs with hpS`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpS' : (S : ℝ) + 1 ≤ p` using `by exact_mod_cast (show S + 1 ≤ p by omega)`. Establish `hlt : Real.sqrt y < p` using `by linarith`. Establish `hlog : Real.log (Real.sqrt y) ≤ Real.log p` using `Real.log_le_log (by linarith) hlt.le`. Rewrite `hlog` using `[hlogsq]`. Establish `: C0 ^ 2 * Real.log y ^ 2 ≤ 2 * C0 ^ 2 * Real.log y * Real.log p`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : 0 ≤ C0 ^ 2 * Real.log y` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show Real.log y ≤ 2 * Real.log p by linarith) hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `step2` using `sum_le_sum hterm`. Rewrite `step2` using `[sum_add_distrib, ← mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hite : ∑ p ∈ (range (Y + 1)).filter Nat.Prime, (if p ≤ S then C0 ^ 2 * Real.log y ^ 2 else 0) ≤ ((S : ℝ) + 1) * (C0 ^ 2 * Real.log y ^ 2)`. Rewrite using `[← sum_filter]`. Establish `hsub2 : ((range (Y + 1)).filter Nat.Prime).filter (fun p => p ≤ S) ⊆ range (S + 1)`. Introduce `p hp`. Simplify using `only [mem_filter, mem_range] at hp ⊢`.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_const, card_range, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `htheta` using `sum_log_primes_le_mul_log_four Y`. Establish `hL : 0 < Real.log 4` using `Real.log_pos (by norm_num)`. Establish `hA : ((S : ℝ) + 1) * Real.log y ≤ 4 * y`. Establish `: ((S : ℝ) + 1) * Real.log y ≤ (Real.sqrt y + 1) * (2 * Real.sqrt y)` using `mul_le_mul (by linarith) hlsy hly (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : ((S : ℝ) + 1) * (C0 ^ 2 * Real.log y ^ 2) ≤ 4 * C0 ^ 2 * (y * Real.log y)`. Use `mul_le_mul_of_nonneg_right hA (show 0 ≤ C0 ^ 2 * Real.log y by positivity)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hB : 2 * C0 ^ 2 * Real.log y * ∑ p ∈ (range (Y + 1)).filter Nat.Prime, Real.log p ≤ 2 * C0 ^ 2 * Real.log 4 * (y * Real.log y)`. Establish `h1 : ∑ p ∈ (range (Y + 1)).filter Nat.Prime, Real.log p ≤ y * Real.log 4` using `htheta.trans (mul_le_mul_of_nonneg_right hYle hL.le)`.
-
-Use `mul_le_mul_of_nonneg_left h1 (show 0 ≤ 2 * C0 ^ 2 * Real.log y by positivity)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem sum_sP_sq_small_primes_le_of_bound (C0 : ℝ) (hC0 : 0 < C0)
     (hb : ∀ (y : ℝ), 3 ≤ y → ∀ (N p : ℕ), sP (cN y) N p ≤ C0 * Real.log y) (y : ℝ) (hy : 3 ≤ y) (N : ℕ) :
@@ -212,9 +208,9 @@ private theorem sum_sP_sq_small_primes_le_of_bound (C0 : ℝ) (hC0 : 0 < C0)
     _ ≤ _ := by linarith
 
 /- English proof (translation)
-Take `⟨C0, hC0, hb⟩` from `exists_primePowerSum_le_mul_log`. Establish `hl4 : 0 < Real.log 4` using `Real.log_pos (by norm_num)`. Use `⟨4 * C0 ^ 2 + 2 * C0 ^ 2 * Real.log 4 + 96 * Real.log 4, by positivity, ?_⟩` and prove the remaining obligations. Introduce `y hy N`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not _ (fun p => p ≤ ⌊y⌋₊)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `sum_sP_sq_small_primes_le_of_bound C0 hC0 hb y hy N`. Establish `h2` using `sum_sP_sq_large_primes_le y hy N`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sPsq_le :
     ∃ C : ℝ, 0 < C ∧ ∀ y : ℝ, 3 ≤ y → ∀ N : ℕ,

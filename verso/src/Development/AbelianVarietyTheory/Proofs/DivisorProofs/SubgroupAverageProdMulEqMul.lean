@@ -7,7 +7,7 @@ open scoped Classical TensorProduct
 namespace GlobalTheory.AvgProd
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (rStab u) x`. Rewrite using `[hk]`. Establish `hk' : ∀ y, u (y * (k : H)) = u y` using `k.2`. Conclude with `hk' x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma apply_out_rStab {H : Type} [Group H] (u : H → ℂ) (x : H) :
     u ((x : H ⧸ rStab u).out) = u x := by
@@ -17,25 +17,23 @@ lemma apply_out_rStab {H : Type} [Group H] (u : H → ℂ) (x : H) :
   exact hk' x
 
 /- English proof (translation)
-Introduce `H H' _ _ u v hu hv`. Use `set S : Subgroup (H × H') := (rStab u).prod (rStab v) with hS`. Establish `hle : S ≤ rStab (fun x : H × H' => u x.1 * v x.2)`. Introduce `p hp`. Rewrite `hp` using `[hS, Subgroup.mem_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : ∀ y, u (y * p.1) = u y` using `hp.1`. Establish `hb : ∀ y, v (y * p.2) = v y` using `hp.2`. Introduce `x`. Simplify using `only [Prod.fst_mul, Prod.snd_mul]`. Rewrite using `[ha x.1, hb x.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSi : S.index = (rStab u).index * (rStab v).index` using `Subgroup.index_prod _ _`. Establish `hS0 : S.index ≠ 0` using `by rw [hSi]; exact mul_ne_zero hu hv`. Rewrite using `[GlobalTheory.T.avg_eq_of_le_rightStabiliser _ _ S hle hS0]`. Use `haveI : (rStab u).FiniteIndex := ⟨hu⟩`. Use `haveI : (rStab v).FiniteIndex := ⟨hv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : S.FiniteIndex := ⟨hS0⟩`. Use `letI : Fintype (H ⧸ rStab u) := Fintype.ofFinite _`. Use `letI : Fintype (H' ⧸ rStab v) := Fintype.ofFinite _`. Use `letI : Fintype ((H × H') ⧸ S) := Fintype.ofFinite _`. Set `f : (H × H') ⧸ S → (H ⧸ rStab u) × (H' ⧸ rStab v)` to `fun q => ((q.out.1 : H ⧸ rStab u), (q.out.2 : H' ⧸ rStab v))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `q q' h`. Simplify using `only [f, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Rewrite `h1`, `h2` using `[QuotientGroup.eq]`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq]`. Conclude with `(Subgroup.mem_prod (H := rStab u) (K := rStab v)).2 ⟨by simpa using h1, by simpa using h2⟩`. Introduce and unpack `⟨a, b⟩`. Proceed by induction on `a using QuotientGroup.induction_on with | H x => ?_`.
+Proceed by induction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Proceed by induction on `b using QuotientGroup.induction_on with | H y => ?_`. Use `⟨((x, y) : (H × H') ⧸ S), ?_⟩` and prove the remaining obligations. Establish `h` using `QuotientGroup.out_eq' ((x, y) : (H × H') ⧸ S)`. Rewrite `h` using `[QuotientGroup.eq]`. Use `replace h := (Subgroup.mem_prod (H := rStab u) (K := rStab v)).1 h`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [f, Prod.mk.injEq]`. Rewrite using `[QuotientGroup.eq, QuotientGroup.eq]`. Conclude with `⟨by simpa using h.1, by simpa using h.2⟩`. Establish `hsum : ∑ᶠ q : (H × H') ⧸ S, (fun x : H × H' => u x.1 * v x.2) q.out = (∑ᶠ a : H ⧸ rStab u, u a.out) * ∑ᶠ b : H' ⧸ rStab v, v b.out`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_mul_sum, ← Fintype.sum_prod_type']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_bijective f hf _ _ ?_` and prove the remaining obligations. Introduce `q`. Simplify using `only [f, apply_out_rStab]`. Rewrite using `[hsum]`. Unfold `avg`.
-
-Rewrite using `[hSi]`. Use `push_cast`. Rewrite using `[mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem avg_prod : ∀ (H H' : Type) [Group H] [Group H'] (u : H → ℂ) (v : H' → ℂ), (rStab u).index ≠ 0 →
     (rStab v).index ≠ 0 → avg (fun x : H × H' => u x.1 * v x.2) = avg u * avg v := by

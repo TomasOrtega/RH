@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlaceTensorStep
 
 /- English proof (translation)
-Establish `h0 : idem D p * idem D q = 0` using `(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q h`. Use function extensionality and compare the values at `i j`. Use `show idem D p * (idem D q * w i j) = (0 : Mx D m n) i j`. Rewrite using `[← mul_assoc, h0, zero_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wAt_wAt_ne {D : D7} {m n : ℕ} {p q : Place D} (h : p ≠ q) (w : Mx D m n) : wAt p (wAt q w) = 0 := by
   have h0 : idem D p * idem D q = 0 := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q h
@@ -27,7 +27,7 @@ theorem wAt_wAt_ne {D : D7} {m n : ℕ} {p q : Place D} (h : p ≠ q) (w : Mx D 
   rfl
 
 /- English proof (translation)
-Establish `h1 : idem D p * idem D p = idem D p` using `(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 p`. Use function extensionality and compare the values at `i j`. Use `show idem D p * (idem D p * w i j) = idem D p * w i j`. Rewrite using `[← mul_assoc, h1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wAt_wAt_self {D : D7} {m n : ℕ} (p : Place D) (w : Mx D m n) : wAt p (wAt p w) = wAt p w := by
   have h1 : idem D p * idem D p = idem D p := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 p
@@ -36,29 +36,25 @@ theorem wAt_wAt_self {D : D7} {m n : ℕ} (p : Place D) (w : Mx D m n) : wAt p (
   rw [← mul_assoc, h1]
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x x' f q hf hxq hx' hloc`. Establish `hop : IsLocOp ψ S T μ 𝓕 f₀ q (x' q)`. Break down `q with v | τ` into its components or cases. Conclude with `GlobalTheory.T.local_factor_finite_place_heisenberg_sum_base_vector D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ v _ hloc`. Conclude with `GlobalTheory.T.localFactorRealPlace_eq_heisenbergIntegral_base D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ τ _ hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L, hL, himg, hx'L⟩` from `hop`. Establish `hfpure` using `hf`. Take `⟨hres, hfth, hprod⟩` from `hf`. Take `⟨f', hf'th, hf'⟩` from `himg f hfth`. Establish `hstd` using `GlobalTheory.PlaceTensor.base_std hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlaws` using `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hstd S T`. Establish `hthw : ∀ u, IsThetaFunO ψ S T (heisO ψ S T u f₀)` using `fun u => hlaws.1 u f₀ (GlobalTheory.PlaceTensor.base_theta hB)`. Use `⟨f', ⟨⟨?_, ?_⟩, hf'th, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `p`. Distinguish the cases in `hp : p = q`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hp` using the available equality. Conclude with `hloc`. Rewrite using `[hx' p hp]`. Conclude with `hres.1 p`. Use `(hres.2.union (Set.finite_singleton q)).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact.
 
-Introduce `p hp`. Distinguish the cases in `hpq : p = q`. Conclude with `Or.inr hpq`. Use `left`. Establish `hp' : x' p ≠ f₀` using `hp`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hp'` using `[hx' p hpq]`. Conclude with `hp'`. Introduce `w`. Establish `hfin` using `(hprod w).1`. Establish `hsupp : (Function.mulSupport fun p => ipO μ 𝓕 (x' p) (heisO ψ S T (wAt p w) f₀)).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hfin.union (Set.finite_singleton q)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Distinguish the cases in `hpq : p = q`. Conclude with `Or.inr hpq`. Use `left`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hp`, the goal using `[Function.mem_mulSupport]`. Rewrite `hp` using `[hx' p hpq]`. Conclude with `hp`. Use `⟨hsupp, ?_⟩` and prove the remaining obligations. Establish `hrest : (∏ᶠ (p) (_ : p ≠ q), ipO μ 𝓕 (x' p) (heisO ψ S T (wAt p w) f₀)) = ∏ᶠ (p) (_ : p ≠ q), ipO μ 𝓕 (x p) (heisO ψ S T (wAt p w) f₀)` using `finprod_congr fun p => finprod_congr fun hp => by rw [hx' p hp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `key : ∀ u, ipO μ 𝓕 (heisO ψ S T (wAt q u) f) (heisO ψ S T w f₀) = (∏ᶠ (p) (_ : p ≠ q), ipO μ 𝓕 (x p) (heisO ψ S T (wAt p w) f₀)) * ipO μ 𝓕 (heisO ψ S T (wAt q u) f₀) (heisO ψ S T (wAt q w) f₀)`. Introduce `u`. Take `⟨-, -, hpu⟩` from `GlobalTheory.T.heisenberg_operator_pure_tensor_place_by_place D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x f hfpure (wAt q u)`. Take `⟨hfinu, hequ⟩` from `hpu w`. Rewrite using `[hequ, ← mul_finprod_cond_ne q hfinu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hxq, wAt_wAt_self, mul_comm]`. Use `congr 1`. Conclude with `finprod_congr fun p => finprod_congr fun hp => by rw [wAt_wAt_ne hp, WeilVacMove.heisO_zero]`. Rewrite using `[← mul_finprod_cond_ne q hsupp, hrest, hf' _ (hthw w)]`.
-
-Repeatedly rewrite using `[key]`. Rewrite using `[hL, hx'L _ (hthw _), mul_comm]`. Introduce `g g' c hg hg' hcoef`. Rewrite using `[hf' g hg, hx'L g' hg']`. Repeatedly rewrite using `[hcoef]`.
-
-Conclude with `hL c _`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem change_factor : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (x x' : Place D → WO S T → ℂ) (f : WO S T → ℂ) (q : Place D), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f → x q = f₀ → (∀ p, p ≠ q → x' p = x p) → IsLocal ψ θ S T sS sT ΛS ΛT q (x' q) → ∃ f', IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x' f' ∧ ∀ (g g' : WO S T → ℂ) (c : ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → (∀ w : WO S T, ipO μ 𝓕 (heisO ψ S T (wAt q w) f) g = c * ipO μ 𝓕 (heisO ψ S T (wAt q w) f₀) g') → ipO μ 𝓕 f' g = c * ipO μ 𝓕 (x' q) g' := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x x' f q hf hxq hx' hloc

@@ -11,7 +11,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `s hs` and use `hχ s fun ζ hζ => hs ζ (by obtain ⟨k, rfl⟩ := h rw [pow_mul, hζ, one_pow])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem km_mono {Ω C : Type} [Field Ω] [CharZero Ω] [Monoid C] {m n : ℕ} (h : m ∣ n) {χ : G ℚ Ω →* C}
     (hχ : Af.KillsMu m χ) : Af.KillsMu n χ := fun s hs => hχ s fun ζ hζ => hs ζ (by
@@ -19,7 +19,7 @@ private theorem km_mono {Ω C : Type} [Field Ω] [CharZero Ω] [Monoid C] {m n :
   rw [pow_mul, hζ, one_pow])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hχ, fun s hs => hχ s fun ζ hζ => by rw [hs ζ hζ, pow_eq_pow_mod w hζ, hw, ← pow_eq_pow_mod 1 hζ, pow_one]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem split_of {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.Prime] {N w : ℕ} (hw : w ≡ 1 [MOD N])
     {χ : G ℚ Ω →* (Qbar l)ˣ} (hχ : Af.KillsMu N χ) : Sd.SplitAt N w χ :=
@@ -27,47 +27,41 @@ private theorem split_of {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} [Fact l.
     rw [hs ζ hζ, pow_eq_pow_mod w hζ, hw, ← pow_eq_pow_mod 1 hζ, pow_one]⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c _ η Ψ σ B M Hb hG`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨a, hηa, hΨa⟩` from `hG.cyc`. Take `⟨j, hj⟩` from `hG.Ψ_l`. Take `⟨D, δ, hD, -, hδ, hηδ⟩` from `hG.quad`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, iK, nK, aK, hK2, hKc, hKη⟩` from `sc_quad Ω η D δ hD hδ hηδ`. Take `⟨T, hT, hTa⟩` from `sc_teich Ω l c hG.fin`. Establish `hM : M ^ a * l ≠ 0` using `mul_ne_zero (pow_ne_zero _ hG.M_ne) hlp.ne_zero`. Take `⟨r, N, hlN, hN⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hM l hlp.one_lt.ne'`. Establish `hN0 : N ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hM (by rw [hN, mul_zero])`. Set `φ : G ℚ Ω →* (ResidueField c.O)ˣ` to `barChar c.O Ψ * (omO Ω l c.O ^ j)⁻¹`. Set `χ' : G ℚ Ω →* (Qbar l)ˣ` to `T.comp φ`. Set `η' : G ℚ Ω →* (Qbar l)ˣ` to `(Units.map (Int.castRingHom (Qbar l)).toMonoidHom).comp η`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ s, φ s = barChar c.O Ψ s * ((omO Ω l c.O) s ^ j)⁻¹` using `fun s => rfl`. Establish `hχ : ∀ s, χ' s = T (φ s)` using `fun s => rfl`. Establish `hη'ker : η'.ker = η.ker`. Use extensionality with `s`. Simplify using `only [MonoidHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `map_eq_one_iff _ (Units.map_injective (f := (Int.castRingHom (Qbar l)).toMonoidHom) Int.cast_injective)`. Establish `hφK : Af.KillsMu (M ^ a * l) φ`. Introduce `s hs`. Establish `h1 : barChar c.O Ψ s = 1` using `km_mono (dvd_mul_right _ _) hΨa s hs`. Establish `h2 : omO Ω l c.O s = 1` using `km_mono (dvd_mul_left _ _) (sc_om Ω l c.O).1 s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ, h1, h2, one_pow, inv_one, mul_one]`. Establish `hχK : Af.KillsMu (M ^ a * l) χ'`. Introduce `s hs`. Rewrite using `[hχ, hφK s hs, map_one]`. Establish `hη'K : Af.KillsMu (M ^ a * l) η'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `h1 : η s = 1` using `km_mono (dvd_mul_right _ _) hηa s hs`. Use `show Units.map _ (η s) = 1`. Rewrite using `[h1, map_one]`. Establish `hχN : Af.KillsMu N χ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `sc_strip Ω l _ χ' r N hN0 hlN (hN ▸ hχK) B hG.over_l ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite using `[MonoidHom.mem_ker, hχ, hφ, hj B hG.over_l s hs, mul_inv_cancel, map_one]`. Establish `hη'N : Af.KillsMu N η'`. Use `sc_strip Ω l _ η' r N hN0 hlN (hN ▸ hη'K) B hG.over_l ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hη'ker]`. Conclude with `hG.η_l B hG.over_l`. Establish `hT1 : T (-1) = -1`. Establish `hne : (-1 : (ResidueField c.O)ˣ) ≠ 1`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : (-1 : ResidueField c.O) = 1`. Simplify using `using congrArg (fun u : (ResidueField c.O)ˣ => (u : ResidueField c.O)) h`. Rewrite `h'` using `[neg_one_eq_one_iff, ringChar.eq (ResidueField c.O) l]`. Conclude with `hG.odd h'`. Establish `hsq : ((T (-1) : (Qbar l)ˣ) : Qbar l) * (T (-1) : Qbar l) = 1`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← map_mul, neg_one_mul, neg_neg, map_one, Units.val_one]`. Break down `mul_self_eq_one_iff.1 hsq with h | h` into its components or cases. Conclude with `absurd (hT (by rw [map_one]; exact Units.ext h)) hne`. Conclude with `Units.ext (by rw [h, Units.val_neg, Units.val_one])`. Establish `happ : ∀ s, (GlobalTheory.GalOfCusp.cycBar ℚ Ω l ^ j * χ') s = (GlobalTheory.GalOfCusp.cycBar ℚ Ω l) s ^ j * T ((Units.map ↑(residue c.O)) (Ψ s) * ((omO Ω l c.O) s ^ j)⁻¹)` using `fun s => rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hord : ¬ l ∣ orderOf χ'` using `by classical haveI := Fintype.ofFinite (ResidueField c.O)`. Establish `hpow : χ' ^ Fintype.card (ResidueField c.O)ˣ = 1` using `MonoidHom.ext fun s => by show (T (φ s)) ^ Fintype.card (ResidueField c.O)ˣ = 1`. Rewrite using `[← map_pow, pow_card_eq_one, map_one]`. Introduce `hd`. Establish `hd2` using `hd.trans (orderOf_dvd_of_pow_eq_one hpow)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, -, hcard⟩` from `FiniteField.card (ResidueField c.O) l`. Rewrite `hd2` using `[Fintype.card_units, hcard]`. Establish `hl1 : l ∣ l ^ (n : ℕ)` using `dvd_pow_self l n.ne_zero`. Establish `hpos : 1 ≤ l ^ (n : ℕ)` using `Nat.one_le_pow _ _ hlp.pos`. Establish `h3 : l ∣ (l ^ (n : ℕ) - 1) + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Nat.sub_add_cancel hpos]`. Conclude with `hl1`. Conclude with `hlp.one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_right hd2).1 h3))`. Use `⟨N, hN0, ?_⟩` and prove the remaining obligations. Introduce `L _ _ _ _ w hLab hLgal hw hwQ hLth hs0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s0, hs0L, hs0⟩` from `hs0`. Take `⟨θ, hθker, hθ1, hθl, hθw⟩` from `sc_theta Ω l w hw.prime hw.one`. Establish `hwN : ¬ w ∣ N`. Introduce `hd`. Establish `hd' : w ∣ M ^ a * l` using `hN ▸ dvd_mul_of_dvd_right hd _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `(Nat.Prime.dvd_mul hw.prime).1 hd' with h | h` into its components or cases. Conclude with `hw.cop (hw.prime.dvd_of_dvd_pow h)`. Establish `hwl` using `(Nat.prime_dvd_prime_iff_eq hw.prime hlp).1 h`. Establish `h1 : w % l = 1 % l` using `hw.one`. Rewrite `h1` using `[hwl, Nat.mod_self, Nat.mod_eq_of_lt hlp.one_lt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_ne_one h1`. Establish `hLK : galOf ℚ L Ω ≤ galOf ℚ K Ω`. Rewrite using `[hKη, hLgal]`. Conclude with `inf_le_right`. Use `⟨K, iK, nK, aK, N, w, χ', η', θ, j, ?_, ?_, hord, fun s => rfl, fun s => happ s ▸ hTa (Ψ s) j s, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hG.cc, ⟨hG.odd, Nat.pos_of_ne_zero hN0, hlN, hw.prime, hwN, hθ1, hθl, hθw⟩, hK2, hKc, hLab, hLK, by rw [hη'ker, hKη], split_of hwQ hη'N, split_of hwQ hχN, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hθker, hLgal]`. Conclude with `inf_le_left.trans hLth`. Rewrite using `[hχ, hφ, hG.even, (sc_om Ω l c.O).2 σ hG.cc, one_mul, ← inv_pow, inv_neg_one, map_pow, hT1]`. Use `⟨s0, hs0L, fun hc => hs0 ?_⟩` and prove the remaining obligations.
-
-Conclude with `sc_cong l c (Ψ s0) _ (happ s0 ▸ hTa (Ψ s0) j s0) hc`. Introduce `heq`. Apply `hG.g4` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[Subgroup.mem_inf, MonoidHom.mem_ker, MonoidHom.mem_ker]`.
-
-Establish `h1 : χ' s = 1`. Rewrite using `[hχ, hφ, hs.1, hs.2, one_pow, inv_one, mul_one, map_one]`. Rewrite `h1` using `[heq]`. Rewrite using `[← hη'ker]`. Conclude with `h1`.
-
-Conclude with `sc_disc Ω l K hK2 (fun B' hB' => hKη ▸ hG.η_l B' hB')`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.seed_cl :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) [CharP (ResidueField c.O) l] (η : G ℚ Ω →* ℤˣ) (Ψ : G ℚ Ω →* c.Oˣ) (σ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ) (Hb : Subgroup (G ℚ Ω)), Gen l η Ψ σ B M Hb → ∃ Q : ℕ, Q ≠ 0 ∧ ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] (w : ℕ), IsAbelianGalois ℚ L → galOf ℚ L Ω = upl Ω L ⊓ η.ker → FrobeniusWitnessPrime l η Ψ M w → w ≡ 1 [MOD Q] → upl Ω L ≤ Hth Ω l w → (∃ s ∈ galOf ℚ L Ω, barChar c.O Ψ s ^ 2 ≠ 1) → SeedClause c η Ψ σ L := by

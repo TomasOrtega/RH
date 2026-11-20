@@ -68,7 +68,7 @@ def smallG (i : X₀ ⟶ X) (L : LB X₀) : (Small i L)ᵒᵖ ⥤ AffOp X :=
   (Monotone.functor (f := fun p : Small i L ↦ p.1.1) fun _ _ h ↦ h).op
 
 /- English proof (translation)
-The claim follows from `_root_.le_inf (fun _ hx ↦ p.unop.2 ((show q.unop.1.1 ≤ p.unop.1.1 from leOfHom a.unop) hx)) q.unop.2`.
+A detailed English derivation is pending.
 -/
 theorem Small.le_inf {i : X₀ ⟶ X} {L : LB X₀} {p q : (Small i L)ᵒᵖ} (a : p ⟶ q) :
     i ⁻¹ᵁ q.unop.1.1.1 ≤ L.U p.unop.1.2 ⊓ L.U q.unop.1.2 :=

@@ -14,9 +14,9 @@ open MvPolynomial NumberField VerticalPartMultiplicity
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a T ha ih`. Establish `h' : ∀ a' ∈ T, (Function.support fun b => g b a').Finite` using `fun a' h'' => h a' (Finset.mem_insert_of_mem h'')`. Repeatedly rewrite using `[Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[finsum_add_distrib (h a (Finset.mem_insert_self _ _)), ih h']`. Use `(T.finite_toSet.biUnion fun a' h'' => h' a' h'').subset ?_` and prove the remaining obligations. Introduce `b hb`. Take `⟨a', ha', hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hb`. Conclude with `Set.mem_biUnion ha' hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finsum_finset_sum_comm {α β : Type*} (T : Finset α) (g : β → α → ℝ)
     (h : ∀ a ∈ T, (Function.support fun b => g b a).Finite) :
@@ -35,9 +35,9 @@ theorem finsum_finset_sum_comm {α β : Type*} (T : Finset α) (g : β → α �
     exact Set.mem_biUnion ha' hne
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)`. Rewrite `hi` using `[ReciprocityTheory.ChartRestriction.G.Geo.Xc, C_mul_X_eq_monomial]`. Establish `hm'` using `MvPolynomial.support_monomial_subset hi`. Rewrite `hm'` using `[Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hm'` using the available equality. Consider the cases of `k`. Simplify using `[Finsupp.single_apply]`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_linearForm {n : ℕ} (u : Fin n → ℤ) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (IndefiniteRowSideFullHecke.ArithBezout.linForm u) (fun _ => 1) := by
@@ -52,9 +52,7 @@ theorem isMultiHomog_linearForm {n : ℕ} (u : Fin n → ℤ) :
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Establish `hg` using `Submodule.IsPrincipal.generator_mem (W.comap (C : ℤ →+* MRing (PBlk n)))`. Take `⟨c, hc⟩ : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing (PBlk n))) ∣ ((ReciprocityTheory.ChartRestriction.G.Geo.charOf W : ℕ) : ℤ)` from `Int.dvd_natAbs.mpr dvd_rfl`. Establish `: ((ReciprocityTheory.ChartRestriction.G.Geo.charOf W : ℕ) : ℤ) ∈ W.comap (C : ℤ →+* MRing (PBlk n))`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ hg`.
-
-Conclude with `this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_charOf_mem {n : ℕ} (W : Ideal (MRing (PBlk n))) :
     (C ((ReciprocityTheory.ChartRestriction.G.Geo.charOf W : ℕ) : ℤ) : MRing (PBlk n)) ∈ W := by
@@ -67,41 +65,37 @@ theorem C_charOf_mem {n : ℕ} (W : Ideal (MRing (PBlk n))) :
   exact this
 
 /- English proof (translation)
-Introduce `n e P u hP hu`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Establish `hPh : ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal P` using `hP.2.2.1`. Use `haveI := hPp`. Establish `hJ : integralModel (genericIdeal P) ⊔ Ideal.span {linForm (fun j => ((u j : ℤ) : 𝓞 ℚ))} = (P ⊔ Ideal.span {IndefiniteRowSideFullHecke.ArithBezout.linForm u}).map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integralModel_genericIdeal P hPh, Ideal.map_sup, Ideal.map_span, Set.image_singleton, RingEquiv.coe_toRingHom, Ψ_linForm]`. Establish `hinj : Function.Injective (Ideal.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ)))`. Introduce `W₁ W₂ h`. Rewrite `h` using `[Ideal.map_comap_of_equiv, Ideal.map_comap_of_equiv]`. Conclude with `Ideal.comap_injective_of_surjective _ (Ψ n).symm.surjective h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := (ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite P (IndefiniteRowSideFullHecke.ArithBezout.linForm u)).toFinset with hD`. Establish `hDmem : ∀ W, W ∈ D ↔ W ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P (IndefiniteRowSideFullHecke.ArithBezout.linForm u)` using `fun W => Set.Finite.mem_toFinset _`. Establish `hvert : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ), vertComps (genericIdeal P) (fun j => ((u j : ℤ) : 𝓞 ℚ)) v = Ideal.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ)) '' ↑(D.filter fun W => (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))).comap (C : 𝓞 ℚ …`. Introduce `v`. Use extensionality with `W'`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [vertComps, relComps, hJ, Set.mem_setOf_eq, minimalPrimes_map_equiv, Set.mem_image, Finset.coe_filter, hDmem, ReciprocityTheory.ChartRestriction.G.Geo.divSupp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨W, hW, rfl⟩, hrel⟩, hv⟩`. Conclude with `⟨W, ⟨⟨hW, (isRelevant_map_iff W).mp hrel⟩, hv⟩, rfl⟩`. Introduce and unpack `⟨W, ⟨⟨hW, hrel⟩, hv⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨⟨⟨W, hW, rfl⟩, (isRelevant_map_iff W).mpr hrel⟩, hv⟩`. Set `G : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ) → Ideal (MRing (PBlk n)) → ℝ` to `fun v W => if (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))).comap (C : 𝓞 ℚ →+* MvPolynomial (Fin n) (𝓞 ℚ)) = v.asIdeal then (localMult ((P ⊔ Ideal.span {IndefiniteRowSideFullHecke.ArithBezout.linForm u}).map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))) ( …`. Establish `hLv : ∀ v, vertTermAt (genericIdeal P) (e + 1) (fun j => ((u j : ℤ) : 𝓞 ℚ)) v = ∑ W ∈ D, G v W`. Introduce `v`. Rewrite using `[vertTermAt, hJ, hvert v, finsum_mem_image hinj.injOn, finsum_mem_coe_finset, Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : ∀ W ∈ D, (Function.support fun v => G v W).Finite`. Introduce `W _`. Use `Set.Subsingleton.finite (s := {v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ) | v.asIdeal = (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))).comap (C : 𝓞 ℚ →+* MvPolynomial (Fin n) (𝓞 ℚ))}) ?_ |>.subset ?_` and prove the remaining obligations. Introduce `v₁ h₁ v₂ h₂`. Conclude with `IsDedekindDomain.HeightOneSpectrum.ext (h₁.trans h₂.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `v hv`. Rewrite `hv` using `[Function.mem_support]`. Assume the negation of the conclusion as `hne`. Conclude with `hv (if_neg fun h => hne h.symm)`. Establish `hL : vertTerm (genericIdeal P) (e + 1) (fun j => ((u j : ℤ) : 𝓞 ℚ)) = ∑ W ∈ D, ∑ᶠ v, G v W`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vertTerm]`. Repeatedly rewrite using `[hLv]`. Conclude with `finsum_finset_sum_comm D G hfin`. Establish `hR : IndefiniteRowSideFullHecke.ArithBezout.vertPart P e (IndefiniteRowSideFullHecke.ArithBezout.linForm u) = ∑ W ∈ D, (ReciprocityTheory.ChartRestriction.G.Geo.multAt (P ⊔ Ideal.span {IndefiniteRowSideFullHecke.ArithBezout.linForm u}) W : ℝ) * (if ReciprocityTheory.ChartRestrict …`. Rewrite using `[IndefiniteRowSideFullHecke.ArithBezout.vertPart, ← finsum_mem_coe_finset, hD, Set.Finite.coe_toFinset]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hL, hR]`. Use `Finset.sum_congr rfl fun W hW => ?_` and prove the remaining obligations. Establish `hWd` using `(hDmem W).mp hW`. Establish `hsec : ReciprocityTheory.ChartRestriction.G.Geo.IsSectionOn P (ReciprocityTheory.ChartRestriction.G.Geo.fsLine n) (IndefiniteRowSideFullHecke.ArithBezout.linForm u)` using `⟨fun _ => 1, fun _ => rfl, isMultiHomog_linearForm u, hu⟩`. Establish `hWp : W.IsPrime` using `hWd.1.1.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := hWp`. Distinguish the cases in `hor : ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal W`. Establish `h0` using `(isHorizontal_iff W).mp hor`. Rewrite using `[if_pos hor, mul_zero]`. Use `finsum_eq_zero_of_forall_eq_zero fun v => if_neg fun h => v.ne_bot ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, h0]`. Take `⟨hmpp, hcp, hdim⟩` from `(ReciprocityTheory.ChartRestriction.G.Geo.divSuppArith Unit (PBlk n) P e (ReciprocityTheory.ChartRestriction.G.Geo.fsLine n) (IndefiniteRowSideFullHecke.ArithBezout.linForm u) W hP hsec hWd).2 hor`. Rewrite `hdim` using `[Fintype.card_unit]`. Rewrite using `[if_neg hor]`. Use `haveI hWΨ : (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))).IsPrime := Ideal.map_isPrime_of_equiv _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set 𝔭 := (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))).comap (C : 𝓞 ℚ →+* MvPolynomial (Fin n) (𝓞 ℚ)) with h𝔭`. Establish `h𝔭ne : 𝔭 ≠ ⊥` using `fun h => hor ((isHorizontal_iff W).mpr h)`. Set `v₀ : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ)` to `⟨𝔭, Ideal.comap_isPrime _ _, h𝔭ne⟩`. Rewrite using `[finsum_eq_single (fun v => G v W) v₀ fun v hv => if_neg fun h => hv (IsDedekindDomain.HeightOneSpectrum.ext h.symm)]`. Simplify using `only [G]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Use `haveI : v₀.asIdeal.IsMaximal := v₀.isMaximal`. Use `set F := v₀.asIdeal.ResidueField`. Establish `hsurj : Function.Surjective (Int.castRingHom F)`. Establish `h1 : Function.Surjective (algebraMap (𝓞 ℚ) F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[IsScalarTower.algebraMap_eq (𝓞 ℚ) (𝓞 ℚ ⧸ v₀.asIdeal) F, RingHom.coe_comp]`. Conclude with `(Ideal.bijective_algebraMap_quotient_residueField v₀.asIdeal).2.comp Ideal.Quotient.mk_surjective`. Introduce `x`. Take `⟨y, rfl⟩` from `h1 x`. Use `⟨ι.symm y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (algebraMap (𝓞 ℚ) F).comp (ι : ℤ →+* 𝓞 ℚ) = Int.castRingHom F` using `RingHom.ext_int _ _`. Rewrite using `[← this, RingHom.comp_apply, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`. Establish `hp0 : (((ReciprocityTheory.ChartRestriction.G.Geo.charOf W : ℕ) : ℤ) : F) = 0`. Establish `hmem : (ι ((ReciprocityTheory.ChartRestriction.G.Geo.charOf W : ℕ) : ℤ) : 𝓞 ℚ) ∈ v₀.asIdeal` using `by show _ ∈ 𝔭`. Rewrite using `[h𝔭, Ideal.mem_comap, ← Ψ_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Ideal.mem_map_of_mem _ (C_charOf_mem W)`. Establish `: (algebraMap (𝓞 ℚ) F) (ι ((ReciprocityTheory.ChartRestriction.G.Geo.charOf W : ℕ) : ℤ)) = 0` using `Ideal.algebraMap_residueField_eq_zero.mpr hmem`. Rewrite `this` using `[ι_apply, map_intCast]`. Then use the resulting hypothesis. Establish `hcd` using `hCD n e (ReciprocityTheory.ChartRestriction.G.Geo.charOf W) W F hcp hmpp (C_charOf_mem W) hdim hsurj hp0`. Establish `hred : reduceMod v₀ (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))) = (IndefiniteRowSideFullHecke.ArithBezout.finIdeal W).map (MvPolynomial.map (Int.castRingHom F))` using `reduceMod_map v₀ W`.
-
-Establish `hnorm : Ideal.absNorm v₀.asIdeal = ReciprocityTheory.ChartRestriction.G.Geo.charOf W` using `by show Ideal.absNorm 𝔭 = _`. Rewrite using `[h𝔭, comap_C_map, absNorm_map_comap_C]`. Rewrite using `[hred, hnorm, localMult_map_eq_multAt]`. Establish `hcdR : ((chowDegree ((IndefiniteRowSideFullHecke.ArithBezout.finIdeal W).map (MvPolynomial.map (Int.castRingHom F))) (e + 1) : ℕ) : ℝ) = ((ReciprocityTheory.ChartRestriction.G.Geo.geoNum e W (fun _ _ => 1) : ℤ) : ℝ)`. Rewrite using `[← hcd]`.
-
-Use `norm_cast`. Rewrite using `[hcdR]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem VertPartEq.proof (hCD : ChowDegreeGeoNum.Statement) : VertPartEq.Statement := by
   classical

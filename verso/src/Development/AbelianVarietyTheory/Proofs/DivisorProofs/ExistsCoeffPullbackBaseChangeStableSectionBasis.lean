@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.HomFixMat.SpanPull
 
 /- English proof (translation)
-The claim follows from `congrArg (fun φ => φ.hom x) (Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂)`.
+A detailed English derivation is pending.
 -/
 theorem appLE_appLE_apply {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (U : Z.Opens) (V : Y.Opens)
     (W : X.Opens) (e₁ : V ≤ g ⁻¹ᵁ U) (e₂ : W ≤ f ⁻¹ᵁ V) (e : W ≤ (f ≫ g) ⁻¹ᵁ U) (x : Γ(Z, U)) :
@@ -19,7 +19,7 @@ theorem appLE_appLE_apply {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (U : 
   congrArg (fun φ => φ.hom x) (Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_apply_congr {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens)
     (hf : V ≤ f ⁻¹ᵁ U) (hg : V ≤ g ⁻¹ᵁ U) (x : Γ(Y, U)) :
@@ -27,7 +27,7 @@ theorem appLE_apply_congr {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U : Y.
   subst h; rfl
 
 /- English proof (translation)
-Use `show (X.presheaf.map (𝟙 (Opposite.op U))).hom ((Scheme.Hom.app (𝟙 X) U).hom x) = x`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem id_appLE_self {X : Scheme.{0}} (U : X.Opens) (h : U ≤ (𝟙 X) ⁻¹ᵁ U) (x : Γ(X, U)) :
     (Scheme.Hom.appLE (𝟙 X) U U h).hom x = x := by
@@ -36,7 +36,7 @@ theorem id_appLE_self {X : Scheme.{0}} (U : X.Opens) (h : U ≤ (𝟙 X) ⁻¹�
   rfl
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Conclude with `appLE_appLE_apply f g U V W e₁ e₂ eh x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem appLE_appLE_eq {X Y Z : Scheme.{0}} {f : X ⟶ Y} {g : Y ⟶ Z} {h : X ⟶ Z} (hfg : f ≫ g = h)
     (U : Z.Opens) (V : Y.Opens) (W : X.Opens) (e₁ : V ≤ g ⁻¹ᵁ U) (e₂ : W ≤ f ⁻¹ᵁ V) (eh : W ≤ h ⁻¹ᵁ U)
@@ -51,25 +51,23 @@ namespace GlobalTheory.HomFixMat
 open GlobalTheory.HomFixMat.SpanPull in
 
 /- English proof (translation)
-Introduce `Rg _ A _ L k mA bA hB R _ t A' φA' hpb ψA hψ s`. Set `t' : Sp R ⟶ (topS Rg).left` to `t ≫ (Sp Rg).topIso.inv`. Establish `hbt : (baseAt t').hom = t` using `by show (t ≫ (Sp Rg).topIso.inv) ≫ ((⊤ : (Sp Rg).Opens).ι ≫ 𝟙 _) = t`. Rewrite using `[Category.comp_id, ← Scheme.topIso_hom, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Establish `eH : ∀ _k : Fin 1, (homAt t' ▷ A).left ≫ (snd (topS Rg) A).left = (snd (baseAt t') A).left` using `fun _ => by rw [← Over.comp_left, whiskerRight_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `b' : Fin mA → LB.Sec (LPow A L (k : ℤ) (baseAt t'))` to `fun i => ReciprocityTheory.ChartRestriction.G.PullbackSections.pullSecLC L _ _ _ (homAt t' ▷ A).left eH (bA i)`. Establish `hb' : ∀ i, IsPullSec A L (k : ℤ) (homAt t' ▷ A) (whiskerRight_snd (homAt t') A) (bA i) (b' i)` using `fun i j => rfl`. Establish `hspan` using `(hB R t' b' hb').2`. Establish `hY : IsPullback (snd (baseAt t') A).left (fst (baseAt t') A).left A.hom t`. Rewrite using `[← hbt]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPullback.of_hasPullback _ _).flip`. Set `e` to `IsPullback.isoIsPullback _ _ hY hpb`. Establish `e1 : e.hom ≫ φA' = (snd (baseAt t') A).left` using `IsPullback.isoIsPullback_hom_fst _ _ hY hpb`. Establish `e2 : e.inv ≫ (snd (baseAt t') A).left = φA'` using `IsPullback.isoIsPullback_inv_fst _ _ hY hpb`. Establish `e3 : e.inv ≫ (fst (baseAt t') A).left = A'.hom` using `IsPullback.isoIsPullback_inv_snd _ _ hY hpb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTop : IsPullback (snd (topS Rg) A).left (fst (topS Rg) A).left A.hom (topS Rg).hom` using `(IsPullback.of_hasPullback _ _).flip`. Establish `e4 : e.inv ≫ (homAt t' ▷ A).left = ψA`. Establish `hs : (e.inv ≫ (homAt t' ▷ A).left) ≫ (snd (topS Rg) A).left = ψA ≫ (snd (topS Rg) A).left`. Rewrite using `[Category.assoc, eH 0, e2, hψ]`. Use `hTop.hom_ext hs ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Mono (topS Rg).hom := by dsimp [topS]; infer_instance`. Rewrite using `[← cancel_mono (topS Rg).hom]`. Simplify using `only [Category.assoc, ← hTop.w]`. Simplify using `only [← Category.assoc]`. Rewrite using `[hs]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `eS : ∀ _k : Fin 1, e.hom ≫ (ψA ≫ (snd (topS Rg) A).left) = (snd (baseAt t') A).left` using `fun _ => by rw [hψ, e1]`. Set `s'' : LB.Sec (LPow A L (k : ℤ) (baseAt t'))` to `ReciprocityTheory.ChartRestriction.G.PullbackSections.pullSecLC L _ _ _ e.hom eS s`. Establish `hmem : SecM.ofSec A s'' ∈ Submodule.span Γ((baseAt t').left, ⊤) (Set.range fun i => (SecM.ofSec A (b' i) : SecM A L (k : ℤ) (baseAt t')))`. Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hmem`. Use `⟨c, fun q => ?_⟩` and prove the remaining obligations. Establish `hq : s''.f q = (∑ i, liftHom A ((LPow A L (k : ℤ) (baseAt t')).U q) (c i) * (b' i).f q : Γ((baseAt t' ⊗ A).left, LB.wchart L (fun _ : Fin 1 => (snd (baseAt t') A).left) q))`. Establish `h0` using `congrArg (fun x : SecM A L (k : ℤ) (baseAt t') => (x : ∀ j, Γ((baseAt t' ⊗ A).left, (LPow A L (k : ℤ) (baseAt t')).U j)) q) hc`. Rewrite `h0` using `[Submodule.coe_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `Eq.trans h0.symm ?_` and prove the remaining obligations. Use `erw [Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hle : LB.wchart L (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) q ≤ e.inv ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => (snd (baseAt t') A).left) q` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.wchart_pull_le' L (fun _ : Fin 1 => (snd (baseAt t') A).left) (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) (fun _ => (k : ℤ)) e.inv (fun _ => by rw [e2, hψ]) q`. Establish `h1 : (e.inv.appLE _ _ hle).hom (s''.f q) = s.f q`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(appLE_appLE_eq (f := e.inv) (g := e.hom) e.inv_hom_id (LB.wchart L (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) q) (LB.wchart L (fun _ : Fin 1 => (snd (baseAt t') A).left) q) (LB.wchart L (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) q) _ hle (fun _ h => h) (s.f q)).trans ?_` and prove the remaining obligations. Conclude with `id_appLE_self _ _ _`. Establish `h2 : ∀ r : Γ((baseAt t').left, ⊤), (e.inv.appLE _ _ hle).hom (liftHom A ((LPow A L (k : ℤ) (baseAt t')).U q) r) = (A'.hom.appLE ⊤ (LB.wchart L (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) q) (fun _ _ => trivial)).hom r` using `fun r => appLE_appLE_eq (f := e.inv) (g := (fst (baseAt t') A).left) e3 ⊤ _ _ (fun _ _ => trivial) hle _ r`. Establish `h3 : ∀ i, (e.inv.appLE _ _ hle).hom ((b' i).f q) = (ψA.appLE (LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) q) (LB.wchart L (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) q) (GlobalTheory.HomFixMat.wchart_comp_le L ψA (snd (topS Rg) A).left q)).hom ((bA i).f q)` using `fun i => appLE_appLE_eq (f := e.inv) (g := (homAt t' ▷ A).left) e4 _ _ _ _ hle _ ((bA i).f q)`. Rewrite using `[← h1, hq]`.
-
-Use `erw [map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `erw [map_mul, h2, h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_coeff_of_isBCBasis : ∀ (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) [GrpObj A] (L : LB A.left) (k : ℕ) (mA : ℕ) (bA : Fin mA → LB.Sec (LPow A L (k : ℤ) (topS Rg))), IsBCBasis A L k bA → ∀ (R : Type) [CommRing R] (t : Sp R ⟶ Sp Rg) (A' : Over (Sp R)) (φA' : A'.left ⟶ A.left), IsPullback φA' A'.hom A.hom t → ∀ (ψA : A'.left ⟶ (topS Rg ⊗ A).left), ψA ≫ (snd (topS Rg) A).left = φA' → ∀ s : LB.Sec (powPull L (ψA ≫ (snd (topS Rg) A).left) (k : ℤ)), ∃ c : Fin mA → Γ(Sp R, ⊤), ∀ q : Fin 1 → L.ι, s.f q = ∑ i, (A'.hom.appLE ⊤ (LB.wchart L (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) q) (fun _ _ => trivial)).hom (c i) * (ψA.appLE (LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) q) (LB.wchart L (fun _ : Fin 1 => ψA ≫ (snd (topS Rg) A).left) q) (GlobalTheory.HomFixMat.wchart_comp_le L ψA (snd (topS Rg) A).left q)).hom ((bA i).f q) := by
   intro Rg _ A _ L k mA bA hB R _ t A' φA' hpb ψA hψ s

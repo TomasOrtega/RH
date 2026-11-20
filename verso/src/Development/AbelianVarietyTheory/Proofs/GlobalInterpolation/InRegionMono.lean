@@ -9,9 +9,9 @@ open Complex DirichletCharacter
 namespace GlobalTheory.LandauPageRegion
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `hL : 0 ≤ Real.log ((q : ℝ) * (|s.im| + 2))`. Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `: (1 : ℝ) ≤ |s.im| + 2` using `by linarith [abs_nonneg s.im]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hdiv : c / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ c' / Real.log ((q : ℝ) * (|s.im| + 2))` using `div_le_div_of_nonneg_right h hL`. Establish `hs' : 1 - c / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ s.re` using `hs`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inRegion_mono {c c' : ℝ} (h : c ≤ c') (q : ℕ) [NeZero q] {s : ℂ}
     (hs : Formalism.ZeroFreeDirichlet.InRegion c q s) : 1 - c' / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ s.re := by
@@ -26,15 +26,13 @@ theorem inRegion_mono {c c' : ℝ} (h : c ≤ c') (q : ℕ) [NeZero q] {s : ℂ}
   linarith
 
 /- English proof (translation)
-Take `⟨hne, hL⟩` from `hz`. Establish `h1 : χ ≠ 1`. Introduce and unpack `rfl`. Establish `hs1 : s ≠ 1` using `hne.resolve_left (fun h => h rfl)`. Establish `h3` using `hC q s hs1 hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `inRegion_mono hc₃ q hs`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ¬ (χ ^ 2 ≠ 1 ∨ s.im ≠ 0)`. Introduce `h`. Establish `h3` using `hA q χ s h1 hL h`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4` using `inRegion_mono hc₁ q hs`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at h2`. Take `⟨hsq, him⟩` from `h2`. Establish `hseq : s = (s.re : ℂ)` using `Complex.ext (by simp) (by simp [him])`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, hsq, him, ?_, ?_, hseq⟩` and prove the remaining obligations. Establish `h4` using `inRegion_mono hc₂ q hs`. Rewrite `h4` using `[him, abs_zero, zero_add, mul_comm]`. Conclude with `h4`. Rewrite using `[← hseq]`.
-
-Conclude with `hL`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem real_zero_of_mem_zeroFreeRegion {c₁ c₂ c₃ c : ℝ} (hc₁ : c ≤ c₁) (hc₂ : c ≤ c₂) (hc₃ : c ≤ c₃)
     (hA : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ), χ ≠ 1 → LFunction χ s = 0 →
@@ -68,13 +66,13 @@ private theorem real_zero_of_mem_zeroFreeRegion {c₁ c₂ c₃ c : ℝ} (hc₁ 
     exact hL
 
 /- English proof (translation)
-Take `⟨c₁, hc₁, hA⟩` from `GlobalTheory.ZeroFreeComplex.zero_free_region`. Take `⟨c₂, hc₂, hB⟩` from `GlobalTheory.RealZeroNearOne.main`. Take `⟨c₃, hc₃, hC⟩` from `GlobalTheory.ZeroFreePrincipal.zero_free`. Use `⟨min c₁ (min c₂ c₃), lt_min hc₁ (lt_min hc₂ hc₃), ?_⟩` and prove the remaining obligations. Introduce `q _ χ s hs hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `m₁ : min c₁ (min c₂ c₃) ≤ c₁` using `min_le_left _ _`. Establish `m₂ : min c₁ (min c₂ c₃) ≤ c₂` using `(min_le_right _ _).trans (min_le_left _ _)`. Establish `m₃ : min c₁ (min c₂ c₃) ≤ c₃` using `(min_le_right _ _).trans (min_le_right _ _)`. Take `⟨h1, hsq, him, hre, hL, hseq⟩` from `real_zero_of_mem_zeroFreeRegion m₁ m₂ m₃ hA hC hs hz`. Establish `hself` using `hB q χ χ s.re s.re h1 h1 hsq hsq hre hre hL hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hsq, h1, him, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hseq]`. Conclude with `hself.2.2`. Introduce `χ' s' hs' hz'`. Take `⟨h1', hsq', -, hre', hL', hseq'⟩` from `real_zero_of_mem_zeroFreeRegion m₁ m₂ m₃ hA hC hs' hz'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hχ, hβ, -⟩` from `hB q χ' χ s'.re s.re h1' h1 hsq' hsq hre' hre hL' hL`. Use `⟨hχ, ?_⟩` and prove the remaining obligations. Rewrite using `[hseq', hseq, hβ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : Formalism.ZeroFreeDirichlet.ZFRDirichlet := by
   obtain ⟨c₁, hc₁, hA⟩ := GlobalTheory.ZeroFreeComplex.zero_free_region

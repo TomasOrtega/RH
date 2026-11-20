@@ -17,7 +17,7 @@ open Classical
 namespace GlobalTheory.KeyEvenClosing
 
 /- English proof (translation)
-Take `⟨κ, hH, hF, -, hT, -, hU, -, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Establish `h4 : MBLow.Rule4 κ` using `⟨hH, hF, hT, hU⟩`. Conclude with `GlobalTheory.T.key_formula_even_degeneration_global_of_local_units κ hH hF (GlobalTheory.T.keyFormulaUnitOverNormalBase_of_familyUnit_of_traits κ hU (GlobalTheory.T.keyValue_unit_traits_of_uniformised_traits κ (GlobalTheory.T.keyValue_unit_uniformised_of_absValueOne κ (GlobalTheo …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem keyGlob : KeyGlob := by
   obtain ⟨κ, hH, hF, -, hT, -, hU, -, -⟩ := GlobalTheory.KeyFamClosing.keyFam_one

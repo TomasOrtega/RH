@@ -16,11 +16,11 @@ theorem h0X (i : Fin 3) : MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPow
   simp
 
 /- English proof (translation)
-Establish `H` using `hasSubst_pr (h0X (p := p) 0) (h0X 1)`. Establish `hl` using `lam_pr wq (h0X (p := p) 0) (constantCoeff_liftedThirdRoot W wq)`. Establish `hZ0` using `PI.AddIntG.Wk.constantCoeff_thirdRoot W wq`. Establish `ws : PowerSeries.subst (s3 W wq) (wser wq) = Lab wq * s3 W wq + pr (MvPowerSeries.X 0) (MvPowerSeries.X 1) (nu wq)`. Rewrite using `[s3, pr, ← psubst_comm hZ0 H, PI.AddIntG.Wk.subst_thirdRoot_wSeries h, MvPowerSeries.subst_add H, MvPowerSeries.subst_mul H]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hnu : pr (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (MvPowerSeries.X 1) (nu wq) = PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (wser wq) - Lab wq * MvPowerSeries.X 0`. Simplify using `only [nu, wv, PI.AddIntG.Xv]`. Rewrite using `[pr, MvPowerSeries.subst_sub H, MvPowerSeries.subst_mul H, psubst_comm (by simp) H, MvPowerSeries.subst_X H]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hl` using `[ws, hnu]`. Establish `key : (s3 W wq - MvPowerSeries.X 0) * (pr (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (s3 W wq) (lam wq) - Lab wq) = 0`. Take the linear combination `hl`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 key).resolve_left (liftedThirdRoot_sub_X_zero_ne_zero W wq))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lam_as {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     pr (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (s3 W wq) (lam wq) = Lab wq := by
@@ -42,7 +42,7 @@ theorem lam_as {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : Is
   exact sub_eq_zero.1 ((mul_eq_zero.1 key).resolve_left (liftedThirdRoot_sub_X_zero_ne_zero W wq))
 
 /- English proof (translation)
-Establish `Hφ` using `hasSubst_upd (2 : Fin 3) (constantCoeff_liftedThirdRoot W wq)`. Establish `e` using `congrArg (MvPowerSeries.subst (upd 2 (s3 W wq))) hμ`. Rewrite `e` using `[MvPowerSeries.subst_sub Hφ, MvPowerSeries.subst_mul Hφ, MvPowerSeries.subst_sub Hφ, Lac, Lab, pr_comp Hφ (h0X 0) (h0X 2), pr_comp Hφ (h0X 0) (h0X 1), MvPowerSeries.subst_X Hφ, MvPowerSeries.subst_X Hφ, MvPowerSeries.subst_X Hφ, upd_ne _ (by decide : (0 : Fin 3) ≠ 2), upd_ne _ (b …`. Rewrite `e` using `[← Lab, lam_as h, sub_self]`. Conclude with `(mul_eq_zero.1 e.symm).resolve_left (liftedThirdRoot_sub_X_one_ne_zero W wq)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_vanish {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq)
     {μ : MvPowerSeries (Fin 3) ℂ_[p]} (hμ : Lac wq - Lab wq = (MvPowerSeries.X 2 - MvPowerSeries.X 1) * μ) :
@@ -57,15 +57,13 @@ theorem mu_vanish {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h :
   exact (mul_eq_zero.1 e.symm).resolve_left (liftedThirdRoot_sub_X_one_ne_zero W wq)
 
 /- English proof (translation)
-Apply the tactic sequence `have hz3 : ∀ i, MvPowerSeries.constantCoeff (upd 2 t i) = 0 := fun i => by fin_cases i <;> simp [upd, Function.update, ht]`. Establish `hu : MvPowerSeries.HasSubst (upd 2 t)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hz3`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun i => by rw [hz3 i]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hz3`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply the tactic sequence `have hz2 : ∀ i, MvPowerSeries.constantCoeff (![MvPowerSeries.X 0, MvPowerSeries.X 1] i : MvPowerSeries (Fin 3) ℂ_[p]) = 0 := fun i => by fin_cases i <;> simp`. Establish `h2 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]), MvPowerSeries.X 1]` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hz2`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun i => by rw [hz2 i]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hz2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Unfold `s3 pr`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply h2 hu]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show MvPowerSeries.subst (upd 2 t) (MvPowerSeries.X 0) = MvPowerSeries.X 0`. Rewrite using `[MvPowerSeries.subst_X hu]`. Simplify using `[upd, Function.update_apply]`. Use `show MvPowerSeries.subst (upd 2 t) (MvPowerSeries.X 1) = MvPowerSeries.X 1`. Rewrite using `[MvPowerSeries.subst_X hu]`.
-
-Simplify using `[upd, Function.update_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subst_updateVar_two_liftedThirdRoot (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) (t : MvPowerSeries (Fin 3) ℂ_[p])
     (ht : MvPowerSeries.constantCoeff t = 0) : MvPowerSeries.subst (upd 2 t) (s3 W wq) = s3 W wq := by
@@ -97,7 +95,7 @@ theorem subst_updateVar_two_liftedThirdRoot (W : WeierstrassCurve ℂ_[p]) (wq :
     simp [upd, Function.update_apply]
 
 /- English proof (translation)
-The claim follows from `pr_mem (h0X 0) (h0X 1) (X_mem_SerS' S 0) (X_mem_SerS' S 1) (PI.AddIntG.Wk.thirdRoot_mem_coeffSubring h1 h2 h3 h4 h6 h)`.
+A detailed English derivation is pending.
 -/
 theorem liftedThirdRoot_mem_coeffSubring {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
     (h1 : W.a₁ ∈ S) (h2 : W.a₂ ∈ S) (h3 : W.a₃ ∈ S) (h4 : W.a₄ ∈ S) (h6 : W.a₆ ∈ S) (h : IsWq W wq) :
@@ -107,15 +105,15 @@ theorem liftedThirdRoot_mem_coeffSubring {S : Subring ℂ_[p]} {W : WeierstrassC
 def zc : Fin 3 → MvPowerSeries (Fin 3) ℂ_[p] := ![0, 0, MvPowerSeries.X 2]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> simp [zc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zc_const (i : Fin 3) : MvPowerSeries.constantCoeff (zc (p := p) i) = 0 := by
   fin_cases i <;> simp [zc]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero (fun i => zc_const i)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero (fun i => zc_const (p := p) i)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => zc_const i)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun i => by rw [zc_const i]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero (a := zc (p := p)) (by intro i; exact zc_const i)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_zc : MvPowerSeries.HasSubst (zc (p := p)) := by
   first
@@ -126,11 +124,11 @@ theorem hasSubst_zc : MvPowerSeries.HasSubst (zc (p := p)) := by
   | exact MvPowerSeries.HasSubst.of_constantCoeff_zero (a := zc (p := p)) (by intro i; exact zc_const i)
 
 /- English proof (translation)
-Unfold `pr`. Use extensionality with `e`. Apply the tactic sequence `have hz : ∀ i, MvPowerSeries.constantCoeff (![(0 : MvPowerSeries (Fin 3) ℂ_[p]), 0] i) = 0 := fun i => by fin_cases i <;> simp`. Establish `ha : MvPowerSeries.HasSubst ![(0 : MvPowerSeries (Fin 3) ℂ_[p]), 0]` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hz`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun i => by rw [hz i]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hz`. Rewrite using `[MvPowerSeries.coeff_subst ha, finsum_eq_single _ 0]`. Simplify using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg]`. Introduce `d hd`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `Finsupp.ne_iff.mp hd`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hs`. Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs)]`. Simplify using the standard rewrite rules. Apply the tactic sequence `fin_cases s <;> simp <;> exact hs`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr_zero_zero (g : MvPowerSeries (Fin 2) ℂ_[p]) (hg : MvPowerSeries.constantCoeff g = 0) :
     pr (0 : MvPowerSeries (Fin 3) ℂ_[p]) 0 g = 0 := by
@@ -153,7 +151,7 @@ theorem pr_zero_zero (g : MvPowerSeries (Fin 2) ℂ_[p]) (hg : MvPowerSeries.con
     · fin_cases s <;> simp <;> exact hs
 
 /- English proof (translation)
-Rewrite using `[s3, pr_comp (hasSubst_zc (p := p)) (h0X 0) (h0X 1), MvPowerSeries.subst_X (hasSubst_zc (p := p)), MvPowerSeries.subst_X (hasSubst_zc (p := p))]`. Conclude with `pr_zero_zero _ (PI.AddIntG.Wk.constantCoeff_thirdRoot W wq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_lastVarSubst_liftedThirdRoot (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.subst (zc (p := p)) (s3 W wq) = 0 := by
@@ -161,7 +159,7 @@ theorem subst_lastVarSubst_liftedThirdRoot (W : WeierstrassCurve ℂ_[p]) (wq : 
   exact pr_zero_zero _ (PI.AddIntG.Wk.constantCoeff_thirdRoot W wq)
 
 /- English proof (translation)
-Use `mul_left_cancel₀ ?_ h` and prove the remaining obligations. Introduce `h0`. Establish `e` using `congrArg (MvPowerSeries.coeff (Finsupp.single (2 : Fin 3) 1)) h0`. Simplify using `at e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eq_of_X_two_mul_eq {f g : MvPowerSeries (Fin 3) ℂ_[p]} (h : MvPowerSeries.X 2 * f = MvPowerSeries.X 2 * g) :
     f = g := by
@@ -171,11 +169,11 @@ theorem eq_of_X_two_mul_eq {f g : MvPowerSeries (Fin 3) ℂ_[p]} (h : MvPowerSer
   simp at e
 
 /- English proof (translation)
-Establish `Hz` using `hasSubst_zc (p := p)`. Establish `e` using `congrArg (MvPowerSeries.subst (zc (p := p))) hμ`. Rewrite `e` using `[MvPowerSeries.subst_sub Hz, MvPowerSeries.subst_mul Hz, MvPowerSeries.subst_sub Hz, Lac, Lab, pr_comp Hz (h0X 0) (h0X 2), pr_comp Hz (h0X 0) (h0X 1), MvPowerSeries.subst_X Hz, MvPowerSeries.subst_X Hz, MvPowerSeries.subst_X Hz]`. Establish `e0 : zc (p` using `p) 0 = 0 := rfl`. Establish `e1 : zc (p` using `p) 1 = 0 := rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : zc (p` using `p) 2 = MvPowerSeries.X 2 := rfl`. Rewrite `e` using `[e0, e1, e2, pr_zero_zero _ (PI.AddIntG.Wk.constantCoeff_lam wq), sub_zero, sub_zero]`. Establish `hl` using `lam_pr wq (x := (0 : MvPowerSeries (Fin 3) ℂ_[p])) (y := MvPowerSeries.X 2) (by simp) (by simp)`. Rewrite `hl` using `[PowerSeries.subst_zero_of_constantCoeff_zero (cc_wser wq), wser_X, sub_zero, sub_zero, e]`. Apply `eq_of_X_two_mul_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_of_X_two_mul_eq` to reduce the goal to its premises. Take the linear combination `hl`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem zc_mu {wq : PowerSeries ℂ_[p]} {μ : MvPowerSeries (Fin 3) ℂ_[p]}
     (hμ : Lac wq - Lab wq = (MvPowerSeries.X 2 - MvPowerSeries.X 1) * μ) :
@@ -196,9 +194,9 @@ theorem zc_mu {wq : PowerSeries ℂ_[p]} {μ : MvPowerSeries (Fin 3) ℂ_[p]}
   linear_combination hl
 
 /- English proof (translation)
-Take `⟨m, hmS, hm⟩` from `fact_div (k := 2) (constantCoeff_liftedThirdRoot W wq) (liftedThirdRoot_mem_coeffSubring h1 h2 h3 h4 h6 h) (subst_updateVar_two_liftedThirdRoot W wq) hμS (mu_vanish h hμ)`. Use `⟨m, hmS, ?_, hm⟩` and prove the remaining obligations. Establish `Hz` using `hasSubst_zc (p := p)`. Establish `e` using `congrArg (MvPowerSeries.subst (zc (p := p))) hm`. Rewrite `e` using `[zc_mu hμ, MvPowerSeries.subst_mul Hz, MvPowerSeries.subst_sub Hz, MvPowerSeries.subst_X Hz, subst_lastVarSubst_liftedThirdRoot, sub_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : zc (p` using `p) 2 = MvPowerSeries.X 2 := rfl`. Rewrite `e` using `[e2]`. Establish `e'` using `eq_of_X_two_mul_eq e`. Rewrite using `[← cc_subst_eq Hz (zc_const (p := p)) m, ← e', PowerSeries.subst_def, cc_subst_eq (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => h0X (p := p) 2)) (fun _ => h0X (p := p) 2)]`. Conclude with `PI.AddIntG.Wk.wq_const h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem m_exists {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
     (h1 : W.a₁ ∈ S) (h2 : W.a₂ ∈ S) (h3 : W.a₃ ∈ S) (h4 : W.a₄ ∈ S) (h6 : W.a₆ ∈ S) (h : IsWq W wq)

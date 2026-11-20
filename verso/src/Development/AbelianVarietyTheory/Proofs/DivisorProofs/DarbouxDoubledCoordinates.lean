@@ -18,7 +18,7 @@ namespace GlobalTheory.DblLagrNondeg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_inclR_rat (e : E) :
     Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := by
@@ -27,7 +27,7 @@ theorem trace_inclR_rat (e : E) :
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Assume the negation of the conclusion as `he`. Establish `h1` using `h e⁻¹`. Rewrite `h1` using `[inv_mul_cancel₀ he, ← map_one (algebraMap F E), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one, Nat.cast_eq_zero]`. Conclude with `(Module.finrank_pos (R := F) (M := E)).ne' h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace (e : E) (h : ∀ t : E, Algebra.trace F E (t * e) = 0) : e = 0 := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -38,9 +38,9 @@ theorem eq_zero_of_trace (e : E) (h : ∀ t : E, Algebra.trace F E (t * e) = 0) 
   exact (Module.finrank_pos (R := F) (M := E)).ne' h1
 
 /- English proof (translation)
-Establish `e1 : ∀ i j, (∑ k, ∑ l, Matrix.vecMulVec p q i j * JA i k * JB j l * σ (Matrix.vecMulVec r s k l)) = (∑ k, p i * (JA i k * σ (r k))) * (∑ l, q j * (JB j l * σ (s l)))`. Introduce `i j`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMulVec_apply, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.sum_mul_sum]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_vmv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α E) (JB : Matrix β β E)
     (p r : α → E) (q s : β → E) :
@@ -58,7 +58,7 @@ theorem sum_vmv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [Fintype β] (J
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[← sum_vmv σ]`. Simplify using `only [hTens, incM, Matrix.map_apply, GlobalTheory.MixXEvUniq.cA_inclR, ← map_mul, ← map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hTens_vmv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α E) (JB : Matrix β β E)
     (p r : α → E) (q s : β → E) :
@@ -68,7 +68,7 @@ theorem hTens_vmv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [Fintype β] 
   simp only [hTens, incM, Matrix.map_apply, GlobalTheory.MixXEvUniq.cA_inclR, ← map_mul, ← map_sum]
 
 /- English proof (translation)
-Rewrite using `[symp, hTens_vmv, neg_one_mul, map_neg, trace_inclR_rat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symp_vmv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α E) (JB : Matrix β β E)
     (p r : α → E) (q s : β → E) :
@@ -79,35 +79,33 @@ theorem symp_vmv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [Fintype β] (
   rw [symp, hTens_vmv, neg_one_mul, map_neg, trace_inclR_rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl, incM]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dbl_incM' {d : ℕ} (J : Matrix (Fin d) (Fin d) E) : dbl (incM F J) = incM F (dbl J) := by
   ext (i | i) (j | j) <;> simp [dbl, incM]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ d r' s' X X₁ W M H j₀ j₁ hH hW dd hdd u hu`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hval : ∀ (p r : Fin n → E) (q s : Fin d ⊕ Fin d → E), symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (dbl (incM F W.J)) (incM F (Matrix.vecMulVec p q)) (incM F (Matrix.vecMulVec r s)) = -algebraMap F (AF F) (Algebra.trace F E (form σ X.J p r * (q ⬝ᵥ dbl W.J *ᵥ fun l => σ (s l)))) := by`. Introduce `p r q s`. Rewrite using `[dbl_incM', symp_vmv, form]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hanti : ∀ a b, symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (dbl (incM F W.J)) a b = -symp (R := AF F) (cA σ) (-1) (incM F X.J) (dbl (incM F W.J)) b a := by`. Introduce `a b`. Rewrite using `[dd.form, dd.form]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiag : ((diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) E) *ᵥ u) = Sum.elim u u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[diagCols, Matrix.fromRows_mulVec]`. Establish `hsum : ∀ z : Fin d → E, (Sum.elim u u ⬝ᵥ dbl W.J *ᵥ fun l => σ (Sum.elim z (0 : Fin d → E) l)) = form σ W.J u z`. Introduce `z`. Establish `e : (fun l => σ (Sum.elim z (0 : Fin d → E) l)) = Sum.elim (fun l => σ (z l)) (0 : Fin d → E)`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases l <;> simp`. Rewrite using `[e]`. Simplify using `[form, dbl, Matrix.fromBlocks_mulVec]`. Establish `htr : ∀ z : Fin d → E, Algebra.trace F E (form σ X.J H.y H.x * form σ W.J u z) = 0`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `dd.form (incM F (Matrix.vecMulVec H.y ((diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) E) *ᵥ u))) (incM F (Matrix.vecMulVec H.x (Sum.elim z 0)))`. Rewrite `h1` using `[hu z, sub_self, hval, hdiag, hsum, neg_eq_zero]`. Conclude with `GlobalTheory.MixXEvUniq.alg_inj (h1.trans (map_zero _).symm)`. Establish `hf : ∀ z, form σ W.J u z = 0`. Distinguish the cases in `hc0 : form σ X.J H.y H.x = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ q s : Fin d ⊕ Fin d → E, Algebra.trace F E (q ⬝ᵥ dbl W.J *ᵥ fun l => σ (s l)) = 0`. Introduce `q s`. Establish `h1` using `hanti (incM F (Matrix.vecMulVec H.x q)) (incM F (Matrix.vecMulVec H.y s))`. Rewrite `h1` using `[hval, hval, hH.xy, hc0, one_mul, zero_mul, map_zero, map_zero, neg_zero, neg_zero, neg_eq_zero]`. Conclude with `GlobalTheory.MixXEvUniq.alg_inj (h1.trans (map_zero _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Rewrite using `[← hsum]`. Use `eq_zero_of_trace (F := F) _ fun t => ?_` and prove the remaining obligations. Establish `h2` using `key (t • Sum.elim u u) (Sum.elim z 0)`. Rewrite `h2` using `[smul_dotProduct, smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Establish `hσ : Function.Surjective σ` using `(AlgHom.bijective σ).2`. Establish `h3 : form σ X.J H.y H.x * form σ W.J u z = 0`. Use `eq_zero_of_trace (F := F) _ fun t => ?_` and prove the remaining obligations. Take `⟨t', rfl⟩` from `hσ t`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `htr (t' • z)`. Establish `e : form σ W.J u (t' • z) = σ t' * form σ W.J u z`. Simplify using `only [form, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => σ t' * σ (z i)) = σ t' • fun i => σ (z i) from rfl, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Rewrite `h2` using `[e, mul_left_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `h2`. Conclude with `(mul_eq_zero.mp h3).resolve_left hc0`. Establish `hv : u ᵥ* W.J = 0`. Use function extensionality and compare the values at `l`. Establish `h1` using `hf (Pi.single l 1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hs : (fun i => σ ((Pi.single l (1 : E) : Fin d → E) i)) = (Pi.single l (1 : E) : Fin d → E)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Simplify using `[Pi.single_apply, h]`. Simplify using `only [form] at h1`. Rewrite `h1` using `[hs, Matrix.dotProduct_mulVec, dotProduct_single, mul_one]`. Conclude with `h1`. Conclude with `Matrix.eq_zero_of_vecMul_eq_zero (GlobalTheory.LeviAdapted.det_ne_zero hW) hv`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nondeg : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ d r' s' : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (W : Spc F E d)
     (M : Model σ X W) (H : Plane E n n₁) (j₀ j₁ : ℕ), H.IsAdapted σ B X X₁ j₀ j₁ → W.IsSkew σ B r' s' →

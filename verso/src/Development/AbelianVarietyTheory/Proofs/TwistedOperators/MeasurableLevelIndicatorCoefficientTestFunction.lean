@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SepPer.CoefMeas
 
 /- English proof (translation)
-Introduce `D θ hθ V S M Λ 𝔪 hΛ h𝔪 v a`. Establish `h1` using `GlobalTheory.SepPer.CoefCont.continuous_coefR D θ hθ V S M v a`. Establish `h2` using `(congLev_open_compact V hΛ.1 h𝔪).1`. Unfold `coef`. Conclude with `Measurable.ite h2.measurableSet h1.measurable measurable_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_coef : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ (v a : ∀ τ, M.H τ), Measurable (coef θ M (congLev D.sp.cm V.gram Λ 𝔪) v a) := by
   intro D θ hθ V S M Λ 𝔪 hΛ h𝔪 v a

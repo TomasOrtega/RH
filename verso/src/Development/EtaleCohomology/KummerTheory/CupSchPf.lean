@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.KummerTheory
 
 /- English proof (translation)
-Introduce `p hp s h U y`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Conclude with `hα q s h U y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cupSch_ev_pos {R : Type} [CommRing R] {X : Scheme.{0}} {I : Cx R} {n : ℤ}
     (α : Cochain ((chains R).obj (sch.obj X)) I n)
@@ -18,7 +18,7 @@ theorem cupSch_ev_pos {R : Type} [CommRing R] {X : Scheme.{0}} {I : Cx R} {n : �
   exact hα q s h U y
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Substitute `ht` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cupSch_mul_cast {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) {n m k : ℤ}
     (f : ∀ s : ℤ, s = n → Sec (I.X s) U) (g : ∀ t : ℤ, t = m → Sec (J.X t) U)
@@ -27,13 +27,13 @@ theorem cupSch_mul_cast {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K)
   subst hs; subst ht; rfl
 
 /- English proof (translation)
-Introduce `R _ I J K μ X n m k hk x y a b hx hy`. Take `⟨α, rfl, ha, hα⟩` from `hx`. Take `⟨β, rfl, hb, hβ⟩` from `hy`. Take `⟨γ, hγ, hc⟩` from `hAW R μ (sch.obj X) hk α β`. Use `⟨γ, hc.symm, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `hγ 0 k (by simp) X (𝟙 X)`. Rewrite using `[h0, Fin.sum_univ_one]`. Simplify using `only [Fin.val_zero, Nat.cast_zero, mul_zero, Int.negOnePow_zero, one_smul]`. Rewrite using `[← ha, ← hb]`. Conclude with `cupSch_mul_cast μ X (fun s hs => ev α.1 0 s (by omega) X (𝟙 X)) (fun t ht => ev β.1 0 t (by omega) X (𝟙 X)) _ _ (by simp) (by simp) _ hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p s h U z`. Rewrite using `[hγ (p + 1) s h U z]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) = 0`. Rewrite using `[cupSch_ev_pos β.1 hβ ((p + 1) - (i : ℕ)) (by omega), map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cupSch_ev_pos α.1 hα (i : ℕ) (by omega), map_zero, LinearMap.zero_apply, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem CupSch_of (hAW : CupAW) : CupSch := by
   intro R _ I J K μ X n m k hk x y a b hx hy

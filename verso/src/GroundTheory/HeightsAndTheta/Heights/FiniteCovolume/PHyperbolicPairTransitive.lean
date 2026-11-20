@@ -16,7 +16,7 @@ namespace HyperbolicPairTransitive
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `(h.isSymm.eq x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem sesq_swap (h : HermitianForm F E W) (x y : W) :
     h.toSesq y x = conj F E (h.toSesq x y) :=
@@ -25,9 +25,9 @@ theorem sesq_swap (h : HermitianForm F E W) (x y : W) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `inj : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 fun z hz => h.nonsingular.1 ?_` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[← hf, hz, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨⟨LinearEquiv.ofInjectiveEndo f inj, fun x y => hf x y⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unitary_of_preserves (h : HermitianForm F E W) [FiniteDimensional E W]
     (f : W →ₗ[E] W) (hf : ∀ x y, h.toSesq (f x) (f y) = h.toSesq x y) :
@@ -40,11 +40,11 @@ theorem exists_unitary_of_preserves (h : HermitianForm F E W) [FiniteDimensional
   exact ⟨⟨LinearEquiv.ofInjectiveEndo f inj, fun x y => hf x y⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Establish `hβ' : conj F E β ≠ 0`. Introduce `h0`. Apply `hβ` to reduce the goal to its premises. Rewrite using `[← conj_conj (F := F) β, h0, map_zero]`. Take `⟨g, hg⟩` from `exists_unitary_of_preserves h (LinearMap.id - β⁻¹ • (h.toSesq u).smulRight u) (fun x y => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, smul_smul, map_sub, LinearMap.map_smulₛₗ, map_smul, LinearMap.smul_apply, smul_eq_mul, conjHom_apply, map_mul, map_inv₀]`. Rewrite using `[sesq_swap h x u, sesq_swap h u u, ← hs, map_add, conj_conj]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [conj_conj]`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨g, fun z => by`. Rewrite using `[hg]`. Simplify using `[smul_smul, div_eq_inv_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unitary_sub_smul (h : HermitianForm F E W) [FiniteDimensional E W] (u : W) (β : E)
     (hβ : β ≠ 0) (hs : β + conj F E β = h.toSesq u u) :
@@ -65,17 +65,17 @@ theorem exists_unitary_sub_smul (h : HermitianForm F E W) [FiniteDimensional E W
     simp [smul_smul, div_eq_inv_mul]⟩
 
 /- English proof (translation)
-Establish `hr : ∀ z, conj F E (h.toSesq z z) = h.toSesq z z` using `fun z => h.isSymm.eq z z`. Establish `two : (2 : E) ≠ 0` using `two_ne_zero`. Distinguish the cases in `hβ : h.toSesq (x - y) x = 0`. Establish `hyx : h.toSesq y x = h.toSesq x x`. Rewrite `hβ` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hβ.symm`. Take `⟨g₁, hg₁⟩` from `exists_unitary_sub_smul h (x + y) (2 * h.toSesq x x) (mul_ne_zero two hx) (by`. Simplify using `only [map_add, LinearMap.add_apply, map_mul, map_ofNat, hr]`. Rewrite using `[sesq_swap h y x, hyx, hr, ← hxy]`. Use the proof step `ring)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g₂, hg₂⟩` from `exists_unitary_sub_smul h y (h.toSesq y y / 2) (div_ne_zero (hxy ▸ hx) two) (by rw [map_div₀, map_ofNat, hr]; ring)`. Use `⟨g₂ * g₁, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g₂ : W ≃ₗ[E] W) ((g₁ : W ≃ₗ[E] W) x) = y`. Establish `e1 : (g₁ : W ≃ₗ[E] W) x = -y`. Rewrite using `[hg₁, map_add, LinearMap.add_apply, hyx, ← two_mul, div_self (mul_ne_zero two hx), one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hy : h.toSesq y y ≠ 0` using `hxy ▸ hx`. Rewrite using `[e1, hg₂, map_neg, neg_div, neg_smul, sub_neg_eq_add, show h.toSesq y y / (h.toSesq y y / 2) = 2 by field_simp, two_smul]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `(g₂ : W ≃ₗ[E] W) ((g₁ : W ≃ₗ[E] W) c) = c`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg₁, map_add, LinearMap.add_apply, hxc, hyc, add_zero, zero_div, zero_smul, sub_zero, hg₂, hyc, zero_div, zero_smul, sub_zero]`. Take `⟨g, hg⟩` from `exists_unitary_sub_smul h (x - y) (h.toSesq (x - y) x) hβ (by`. Simplify using `only [map_sub, LinearMap.sub_apply, hr]`. Rewrite using `[sesq_swap h x y, hxy, conj_conj]`. Use the proof step `ring)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, div_self hβ, one_smul, sub_sub_cancel]`. Rewrite using `[hg, map_sub, LinearMap.sub_apply, hxc, hyc, sub_zero, zero_div, zero_smul, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_carry (h : HermitianForm F E W) [FiniteDimensional E W] (x y c : W)
     (hxy : h.toSesq x x = h.toSesq y y) (hx : h.toSesq x x ≠ 0)
@@ -115,15 +115,15 @@ theorem exists_unitary_carry (h : HermitianForm F E W) [FiniteDimensional E W] (
     · rw [hg, map_sub, LinearMap.sub_apply, hxc, hyc, sub_zero, zero_div, zero_smul, sub_zero]
 
 /- English proof (translation)
-Introduce `v w v' w' ⟨hv, hw, hvw⟩ ⟨hv', hw', hvw'⟩`. Establish `hwv : h.toSesq w v = 1` using `by rw [sesq_swap h v w, hvw, map_one]`. Establish `hwv' : h.toSesq w' v' = 1` using `by rw [sesq_swap h v' w', hvw', map_one]`. Establish `ee : ∀ a b : W, h.toSesq a a = 0 → h.toSesq b b = 0 → h.toSesq a b = 1 → h.toSesq b a = 1 → h.toSesq (a + b) (a + b) = 2 ∧ h.toSesq (a - b) (a - b) = -2 ∧ h.toSesq (a - b) (a + b) = 0`. Introduce `a b ha hb hab hba`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_add, map_sub, LinearMap.add_apply, LinearMap.sub_apply, ha, hb, hab, hba]`. Evaluate the numerical expressions. Take `⟨e1, f1, fe1⟩` from `ee v w hv hw hvw hwv`. Take `⟨e2, f2, fe2⟩` from `ee v' w' hv' hw' hvw' hwv'`. Establish `two : (2 : E) ≠ 0` using `two_ne_zero`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g₁, hg₁, -⟩` from `exists_unitary_carry h (v + w) (v' + w') 0 (e1.trans e2.symm) (e1 ▸ two) (map_zero _) (map_zero _)`. Establish `hf : h.toSesq ((g₁ : W ≃ₗ[E] W) (v - w)) (v' + w') = 0`. Rewrite using `[← hg₁, g₁.2, fe1]`. Take `⟨g₂, hg₂, hc⟩` from `exists_unitary_carry h ((g₁ : W ≃ₗ[E] W) (v - w)) (v' - w') (v' + w') (by rw [g₁.2, f1, f2]) (by rw [g₁.2, f1]; exact neg_ne_zero.2 two) hf fe2`. Establish `key : ∀ z, (g₂ * g₁ : h.unitaryGroup) • z = (g₂ : W ≃ₗ[E] W) ((g₁ : W ≃ₗ[E] W) z)` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : (g₂ : W ≃ₗ[E] W) ((g₁ : W ≃ₗ[E] W) (v + w)) = v' + w'` using `by rw [hg₁, hc]`. Establish `hv2 : v = (2 : E)⁻¹ • ((v + w) + (v - w))`. Rewrite using `[add_add_sub_cancel, ← two_smul E v, smul_smul, inv_mul_cancel₀ two, one_smul]`. Establish `hw2 : w = (2 : E)⁻¹ • ((v + w) - (v - w))`. Rewrite using `[add_sub_sub_cancel, ← two_smul E w, smul_smul, inv_mul_cancel₀ two, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g₂ * g₁, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, hv2, map_smul, map_smul, map_add, map_add, hE, hg₂, add_add_sub_cancel, ← two_smul E v', smul_smul, inv_mul_cancel₀ two, one_smul]`. Rewrite using `[key, hw2, map_smul, map_smul, map_sub, map_sub, hE, hg₂, add_sub_sub_cancel, ← two_smul E w', smul_smul, inv_mul_cancel₀ two, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem proof (h : HermitianForm F E W) [FiniteDimensional E W] :
     HyperbolicPairTransitive.Statement h := by

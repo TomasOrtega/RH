@@ -9,7 +9,7 @@ open scoped ENNReal
 namespace PI.QuotMeasUniqW
 
 /- English proof (translation)
-Distinguish the cases in `h : f x ∈ s`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show x ∈ f ⁻¹' s from h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (show x ∉ f ⁻¹' s from h)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem indicator_preimage_one {α β : Type*} (f : α → β) (s : Set β) (x : α) :
     (f ⁻¹' s).indicator (1 : α → ℝ≥0∞) x = s.indicator 1 (f x) := by
@@ -23,7 +23,7 @@ def hAvg {G : Type} [Group G] [MeasurableSpace G] {H : Subgroup G} (ν : Measure
   ∫⁻ h, f (g * (h : G)) ∂ν
 
 /- English proof (translation)
-Unfold `hAvg`. Establish `hm : Measurable (fun p : G × H => f (p.1 * (p.2 : G)))` using `hf.comp (measurable_fst.mul (measurable_subtype_coe.comp measurable_snd))`. Conclude with `hm.lintegral_prod_right'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_hAvg {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
@@ -34,7 +34,7 @@ theorem measurable_hAvg {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   exact hm.lintegral_prod_right'
 
 /- English proof (translation)
-Establish `key` using `lintegral_mul_left_eq_self (μ := ν) (fun x : H => f (g * (x : G))) h0`. Simplify using `only [hAvg, Subgroup.coe_mul, mul_assoc] at key ⊢`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hAvg_mul_mem {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
     (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) (h0 : H) :
@@ -44,14 +44,14 @@ theorem hAvg_mul_mem {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
   exact key
 
 /- English proof (translation)
-Conclude with `QuotientGroup.mk_out_eq_mul H g`.
+A detailed English derivation is pending.
 -/
 private theorem exists_out_eq_mul {G : Type} [Group G] {H : Subgroup G} (g : G) :
     ∃ h : H, (g : G ⧸ H).out = g * (h : G) := by
   exact QuotientGroup.mk_out_eq_mul H g
 
 /- English proof (translation)
-Take `⟨h0, hh⟩` from `exists_out_eq_mul (H := H) g`. Rewrite using `[hh]`. Conclude with `hAvg_mul_mem ν f g h0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hAvg_out {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
     (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) :
@@ -61,7 +61,7 @@ theorem hAvg_out {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
   exact hAvg_mul_mem ν f g h0
 
 /- English proof (translation)
-Use `QuotientGroup.measurable_from_quotient.2 ?_` and prove the remaining obligations. Use `measurable_hAvg ν hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `hAvg_out ν f g`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem measurable_hAvg_out {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
@@ -73,20 +73,20 @@ theorem measurable_hAvg_out {G : Type} [Group G] [TopologicalSpace G] [IsTopolog
   exact hAvg_out ν f g
 
 /- English proof (translation)
-Conclude with `lintegral_indicator_one_le S`.
+A detailed English derivation is pending.
 -/
 private theorem lintegral_indicator_one_le' {α : Type*} [MeasurableSpace α] (μ : Measure α)
     (S : Set α) : ∫⁻ a, S.indicator 1 a ∂μ ≤ μ S := by
   exact lintegral_indicator_one_le S
 
 /- English proof (translation)
-Establish `hint_r : hAvg ν (C.indicator 1) g = ∫⁻ h, ((fun h : H => g * (h : G)) ⁻¹' C).indicator 1 h ∂ν`. Unfold `hAvg`. Conclude with `lintegral_congr fun h => (indicator_preimage_one (fun h : H => g * (h : G)) C h).symm`. Rewrite using `[hint_r]`. Use `(lintegral_indicator_one_le' ν _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `((fun h : H => g * (h : G)) ⁻¹' C).eq_empty_or_nonempty with h0 | ⟨h1, hh1⟩` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hsub : (fun h : H => g * (h : G)) ⁻¹' C ⊆ (fun h : H => h1⁻¹ * h) ⁻¹' {h : H | (h : G) ∈ K⁻¹ * K}`. Introduce `h hh`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Subgroup.coe_mul, Subgroup.coe_inv]`. Establish `a1 : d⁻¹ * (g * (h1 : G)) ∈ K` using `hC (g * (h1 : G)) hh1`. Establish `a2 : d⁻¹ * (g * (h : G)) ∈ K` using `hC (g * (h : G)) hh`. Establish `e : (h1 : G)⁻¹ * (h : G) = (d⁻¹ * (g * (h1 : G)))⁻¹ * (d⁻¹ * (g * (h : G)))` using `by group`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Set.mul_mem_mul (Set.inv_mem_inv.2 a1) a2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `measure_preimage_mul ν h1⁻¹ _`.
+A detailed English derivation is pending.
 -/
 theorem hAvg_indicator_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
     (ν : Measure H) [ν.IsMulLeftInvariant] (C K : Set G) (d g : G) (hC : ∀ x ∈ C, d⁻¹ * x ∈ K) :
@@ -119,7 +119,7 @@ def qKer {G : Type} [Group G] [MeasurableSpace G] {H : Subgroup G} (ν : Measure
   Measure.map (fun h : H => y.out * (h : G)) ν
 
 /- English proof (translation)
-Unfold `qKer hAvg`. Conclude with `lintegral_map hf ((measurable_const_mul _).comp measurable_subtype_coe)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lintegral_qKer {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] {H : Subgroup G} (ν : Measure H) {f : G → ℝ≥0∞}
@@ -128,9 +128,9 @@ theorem lintegral_qKer {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
   exact lintegral_map hf ((measurable_const_mul _).comp measurable_subtype_coe)
 
 /- English proof (translation)
-Use `Measure.measurable_of_measurable_coe _ (fun s hs => ?_)` and prove the remaining obligations. Establish `hi : Measurable (s.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hs`. Establish `e : (fun y : G ⧸ H => qKer ν y s) = fun y : G ⧸ H => hAvg ν (s.indicator 1) y.out`. Use function extensionality and compare the values at `y`. Rewrite using `[← lintegral_qKer ν hi y, lintegral_indicator_one hs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `measurable_hAvg_out ν hi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_qKer {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
@@ -149,7 +149,7 @@ def qLift {G : Type} [Group G] [MeasurableSpace G] {H : Subgroup G} (ν : Measur
   ρ.bind (qKer ν)
 
 /- English proof (translation)
-Establish `hb : ∫⁻ x, f x ∂qLift ν ρ = ∫⁻ y, ∫⁻ x, f x ∂qKer ν y ∂ρ`. Conclude with `Measure.lintegral_bind (measurable_qKer ν).aemeasurable hf.aemeasurable`. Rewrite using `[hb]`. Conclude with `lintegral_congr fun y => lintegral_qKer ν hf y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_qLift {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
@@ -161,7 +161,7 @@ theorem lintegral_qLift {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   exact lintegral_congr fun y => lintegral_qKer ν hf y
 
 /- English proof (translation)
-Use `QuotientGroup.measurable_from_quotient.2 ?_` and prove the remaining obligations. Conclude with `QuotientGroup.measurable_coe.comp (measurable_const_mul g)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_smul_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G} (g : G) :
@@ -170,15 +170,15 @@ theorem measurable_smul_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   exact QuotientGroup.measurable_coe.comp (measurable_const_mul g)
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hmap : Measure.map (fun y : G ⧸ H => g • y) ρ = ρ`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_smul_quot g) hs]`. Conclude with `hρg g s hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂Measure.map (fun x => g * x) (qLift ν ρ) = ∫⁻ x, f x ∂qLift ν ρ`. Introduce `f hf`. Establish `hfg : Measurable (fun x => f (g * x))` using `hf.comp (measurable_const_mul g)`. Establish `hF : Measurable (fun y : G ⧸ H => hAvg ν f y.out)` using `measurable_hAvg_out ν hf`. Establish `hpt : ∀ y : G ⧸ H, hAvg ν (fun x => f (g * x)) y.out = hAvg ν f (g • y).out`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `h1 : hAvg ν (fun x => f (g * x)) y.out = hAvg ν f (g * y.out)`. Simplify using `only [hAvg, mul_assoc]`. Establish `h2 : (g • y : G ⧸ H) = ((g * y.out : G) : G ⧸ H)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.out_eq']`. Use `_ = ((g * y.out : G) : G ⧸ H) := by`. Both sides reduce to the same expression. Rewrite using `[h1, h2, hAvg_out]`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `s hs`. Establish `e1` using `lintegral_indicator_one (μ := Measure.map (fun x => g * x) (qLift ν ρ)) hs`. Establish `e2` using `lintegral_indicator_one (μ := qLift ν ρ) hs`. Rewrite using `[← e1, ← e2]`. Conclude with `key _ (measurable_one.indicator hs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qLift_isMulLeftInvariant {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
@@ -222,17 +222,15 @@ theorem qLift_isMulLeftInvariant {G : Type} [Group G] [TopologicalSpace G] [IsTo
   exact key _ (measurable_one.indicator hs)
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Introduce `K hK`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hi : Measurable (K.indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hKm`. Establish `hKK : IsCompact (K⁻¹ * K)` using `hK.inv.mul hK`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsCompact {h : H | (h : G) ∈ K⁻¹ * K}`. Conclude with `hH.isClosedEmbedding_subtypeVal.isCompact_preimage hKK`. Establish `hM : ν {h : H | (h : G) ∈ K⁻¹ * K} < ⊤` using `hc.measure_lt_top`. Establish `hP : ρ (QuotientGroup.mk '' K : Set (G ⧸ H)) < ⊤`. Conclude with `hρK _ (hK.image QuotientGroup.continuous_mk)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ y : G ⧸ H, hAvg ν (K.indicator 1) y.out ≤ (QuotientGroup.mk '' K : Set (G ⧸ H)).indicator (fun _ => ν {h : H | (h : G) ∈ K⁻¹ * K}) y`. Introduce `y`. Establish `hmk : ∀ h : H, ((y.out * (h : G) : G) : G ⧸ H) = y`. Introduce `h`. Conclude with `(QuotientGroup.mk_mul_of_mem _ h.2).trans (QuotientGroup.out_eq' y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hy : y ∈ (QuotientGroup.mk '' K : Set (G ⧸ H))`. Rewrite using `[Set.indicator_of_mem hy]`. Conclude with `hAvg_indicator_le ν K K 1 y.out (fun x hx => by simpa using hx)`. Establish `hz : ∀ h : H, K.indicator (1 : G → ℝ≥0∞) (y.out * (h : G)) = 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_apply_eq_zero]`. Introduce `hmem`. Conclude with `(hy ⟨_, hmem, hmk h⟩).elim`. Establish `hfz : hAvg ν (K.indicator 1) y.out = 0`. Simplify using `only [hAvg, hz, lintegral_zero]`.
-
-Rewrite using `[hfz]`. Conclude with `zero_le`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ENNReal.mul_lt_top hM hP`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem qLift_finite {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
@@ -279,9 +277,9 @@ theorem qLift_finite {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
         exact ENNReal.mul_lt_top hM hP
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ H hH ν hν ρ hρK hρg`. Establish `: LocallyCompactSpace H` using `hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology H` using `TopologicalSpace.Subtype.secondCountableTopology (H : Set G)`. Establish `: SigmaCompactSpace H` using `inferInstance`. Establish `: SigmaFinite ν` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨qLift ν ρ, qLift_isMulLeftInvariant ν ρ hρg, qLift_finite hH ν ρ hρK, fun f hf => lintegral_qLift ν ρ hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem qmuLift : QmuLift := by
   intro G _ _ _ _ _ _ _ _ H hH ν hν ρ hρK hρg

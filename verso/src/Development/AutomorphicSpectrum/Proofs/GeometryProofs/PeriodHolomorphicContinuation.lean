@@ -11,11 +11,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun b : Fin n → ℂ => (b, x))` using `continuous_id.prodMk continuous_const`. Establish `hUo : IsOpen ((fun b : Fin n → ℂ => (b, x)) ⁻¹' W)` using `hW.preimage hcont`. Establish `hΦd : DifferentiableOn ℂ (fun b => Φ (b, x)) ((fun b : Fin n → ℂ => (b, x)) ⁻¹' W)`. Rewrite using `[differentiableOn_pi]`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hΦ j).comp (differentiable_id.prodMk (differentiable_const x)).differentiableOn (fun b hb => hb)`. Establish `hFd : DifferentiableOn ℂ (fun b => (b, Φ (b, x))) ((fun b : Fin n → ℂ => (b, x)) ⁻¹' W)` using `differentiableOn_id.prodMk hΦd`. Establish `hb₀ : b₀ ∈ (fun b : Fin n → ℂ => (b, x)) ⁻¹' W` using `hmem`. Establish `hFc : ContinuousAt (fun b => (b, Φ (b, x))) b₀` using `(hFd.differentiableAt (hUo.mem_nhds hb₀)).continuousAt`. Establish `hU' : ∀ᶠ b in 𝓝 b₀, b ∈ (fun b : Fin n → ℂ => (b, x)) ⁻¹' W` using `hUo.mem_nhds hb₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ b in 𝓝 b₀, b ∈ (fun b : Fin n → ℂ => (b, x)) ⁻¹' W ∧ AnalyticAt ℂ L (b, Φ (b, x)) ∧ Q (b, Φ (b, x))` using `hU'.and (Filter.Tendsto.eventually hFc (hL.eventually_analyticAt.and hQ))`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.mp hev`. Use `⟨ε, hε, fun b hb => ?_, fun b hb => ⟨(hball b hb).1, (hball b hb).2.2⟩⟩` and prove the remaining obligations. Conclude with `((hball b hb).2.1.differentiableAt.comp b (hFd.differentiableAt (hUo.mem_nhds (hball b hb).1))).differentiableWithinAt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem spread_slice {n g N : ℕ} {W : Set ((Fin n → ℂ) × (Fin g → ℂ))} (hW : IsOpen W)
     {Φ : (Fin n → ℂ) × (Fin g → ℂ) → (Fin N → ℂ)} (hΦ : ∀ j, DifferentiableOn ℂ (fun bz => Φ bz j) W)
@@ -46,23 +46,19 @@ theorem spread_slice {n g N : ℕ} {W : Set ((Fin n → ℂ) × (Fin g → ℂ))
     (hFd.differentiableAt (hUo.mem_nhds (hball b hb).1))).differentiableWithinAt
 
 /- English proof (translation)
-Introduce `R _ G _ _ g n M B ψ e _ b₀ hb₀ x hx`. Establish `hx1 : e.ex b₀ x = 1` using `hx`. Establish `h01 : e.ex b₀ 0 = 1`. Establish `h` using `e.add b₀ hb₀ 0 0`. Rewrite `h` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel (h.symm.trans (_root_.one_mul _).symm)`. Establish `hx0 : e.ex b₀ x = e.ex b₀ 0` using `hx1.trans h01.symm`. Take `⟨V, N, f, L, hV, hLan, hinv, huniq⟩` from `e.log b₀ hb₀`. Set `W : Set ((Fin n → ℂ) × (Fin g → ℂ))` to `{bz | bz ∈ B ×ˢ Set.univ ∧ ⊤ ≤ (TopologicalSpace.Opens.map (Over.Hom.left (e.ex bz.1 bz.2)).base).obj V}`. Establish `hWo : IsOpen W` using `(e.hol V 0).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φ : (Fin n → ℂ) × (Fin g → ℂ) → (Fin N → ℂ)` to `fun bz j => valAt' (Over.Hom.left (e.ex bz.1 bz.2)) V (f j)`. Establish `hΦ : ∀ j, DifferentiableOn ℂ (fun bz => Φ bz j) W` using `fun j => (e.hol V (f j)).2`. Establish `hmemW : (b₀, x) ∈ W`. Use `⟨⟨hb₀, Set.mem_univ _⟩, ?_⟩` and prove the remaining obligations. Use `show ⊤ ≤ (TopologicalSpace.Opens.map (Over.Hom.left (e.ex b₀ x)).base).obj V`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx0]`. Conclude with `hV`. Establish `hΦx : Φ (b₀, x) = fun j => valAt' (Over.Hom.left (e.ex b₀ 0)) V (f j)` using `by show (fun j => valAt' (Over.Hom.left (e.ex b₀ x)) V (f j)) = _`. Rewrite using `[hx0]`. Establish `hL' : AnalyticAt ℂ L (b₀, Φ (b₀, x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hΦx]`. Conclude with `hLan`. Set `Q : (Fin n → ℂ) × (Fin N → ℂ) → Prop` to `fun p => ∀ y : Over.mk (spMap (ψ p.1)) ⟶ G, ⊤ ≤ (TopologicalSpace.Opens.map (Over.Hom.left y).base).obj V → (∀ j, valAt' (Over.Hom.left y) V (f j) = p.2 j) → y = e.ex p.1 (L p)`. Establish `hQ : ∀ᶠ p in 𝓝 (b₀, Φ (b₀, x)), Q p`. Rewrite using `[hΦx]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `huniq`. Take `⟨ε, hε, hdiff, hprop⟩` from `spread_slice hWo hΦ hmemW hL' hQ`. Establish `hWmem : ∀ b ∈ ball b₀ ε, b ∈ B ∧ ⊤ ≤ (TopologicalSpace.Opens.map (Over.Hom.left (e.ex b x)).base).obj V`. Introduce `b hb`. Take `⟨⟨hbB, -⟩, hcov⟩` from `(hprop b hb).1`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hbB, hcov⟩`. Use `⟨ε, fun b => x - L (b, Φ (b, x)), hε, fun b hb => (hWmem b hb).1, (differentiableOn_const x).sub hdiff, ?_, ?_⟩` and prove the remaining obligations. Use `show x - L (b₀, Φ (b₀, x)) = x`. Establish `h0 : L (b₀, fun j => valAt' (Over.Hom.left (e.ex b₀ 0)) V (f j)) = 0` using `hinv.self_of_nhds`. Rewrite using `[hΦx, h0, sub_zero]`.
-
-Introduce `b hb`. Take `⟨hbB, hcov⟩` from `hWmem b hb`. Establish `hyx : e.ex b x = e.ex b (L (b, Φ (b, x)))` using `(hprop b hb).2 (e.ex b x) hcov (fun j => rfl)`. Use `show e.ex b (x - L (b, Φ (b, x))) = 1`. Establish `hadd` using `e.add b hbB (x - L (b, Φ (b, x))) (L (b, Φ (b, x)))`.
-
-Rewrite `hadd` using `[sub_add_cancel, hyx]`. Conclude with `mul_right_cancel (hadd.symm.trans (_root_.one_mul _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_spreads : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : FamExp G M B ψ), IsOpen B → ∀ b₀ ∈ B, ∀ x ∈ e.per b₀, ∃ (ε : ℝ) (s : (Fin n → ℂ) → (Fin g → ℂ)), 0 < ε ∧ ball b₀ ε ⊆ B ∧ DifferentiableOn ℂ s (ball b₀ ε) ∧ s b₀ = x ∧ ∀ b ∈ ball b₀ ε, s b ∈ e.per b := by
   intro R _ G _ _ g n M B ψ e _ b₀ hb₀ x hx

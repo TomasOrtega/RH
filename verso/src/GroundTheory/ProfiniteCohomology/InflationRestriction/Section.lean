@@ -15,7 +15,7 @@ def cosetSelectors (N : Subgroup G) : Set (Set G) :=
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isClosed_univ, N, inferInstance, hN, le_rfl, fun _ _ _ _ => Set.mem_univ _, fun x => ⟨x, Set.mem_univ _, rfl⟩, fun _ _ _ _ h => QuotientGroup.eq.mp h⟩`.
+Supply the required witnesses or components.
 -/
 theorem univ_mem_cosetSelectors (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     Set.univ ∈ cosetSelectors N :=
@@ -25,19 +25,15 @@ theorem univ_mem_cosetSelectors (N : Subgroup G) [N.Normal] (hN : IsClosed (N : 
 variable [CompactSpace G]
 
 /- English proof (translation)
-Establish `: Nonempty c` using `hne.to_subtype`. Use `choose K hKn hKc hKN hKmul hKex hKuniq using fun T : c => (hcS T.2).2`. Use `⟨isClosed_sInter fun T hT => (hcS hT).1, ⨅ T : c, K T, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨fun n hn g => Subgroup.mem_iInf.2 fun T => (hKn T).conj_mem _ (Subgroup.mem_iInf.1 hn T) g⟩`. Rewrite using `[Subgroup.coe_iInf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isClosed_iInter hKc`. Conclude with `(iInf_le _ (Classical.arbitrary c)).trans (hKN _)`. Introduce `t ht k hk`. Conclude with `Set.mem_sInter.2 fun T hT => hKmul ⟨T, hT⟩ t (Set.mem_sInter.1 ht T hT) k (Subgroup.mem_iInf.1 hk ⟨T, hT⟩)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsClosed (N : Set G)` using `hN`. Establish `: T2Space (G ⧸ N)` using `inferInstance`. Establish `hne' : (⋂ T : c, ((T : Set G) ∩ {t | (t : G ⧸ N) = x})).Nonempty`. Use `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `T T'`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hc.total T.2 T'.2 with h | h` into its components or cases. Conclude with `⟨T, le_rfl, Set.inter_subset_inter_left _ h⟩`. Conclude with `⟨T', Set.inter_subset_inter_left _ h, le_rfl⟩`. Introduce `T`. Take `⟨t, ht, htx⟩` from `hKex T x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, htx⟩`. Introduce `T`. Conclude with `((hcS T.2).1.inter (isClosed_eq QuotientGroup.continuous_mk continuous_const)).isCompact`. Introduce `T`. Conclude with `(hcS T.2).1.inter (isClosed_eq QuotientGroup.continuous_mk continuous_const)`.
-
-Take `⟨t, ht⟩` from `hne'`. Rewrite `ht` using `[Set.mem_iInter]`. Use `⟨t, Set.mem_sInter.2 fun T hT => (ht ⟨T, hT⟩).1, ?_⟩` and prove the remaining obligations. Conclude with `(ht (Classical.arbitrary c)).2`. Introduce `t ht t' ht' h`.
-
-Conclude with `Subgroup.mem_iInf.2 fun T => hKuniq T t (Set.mem_sInter.1 ht T T.2) t' (Set.mem_sInter.1 ht' T T.2) h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sInter_mem_cosetSelectors (N : Subgroup G) (hN : IsClosed (N : Set G))
     {c : Set (Set G)} (hcS : c ⊆ cosetSelectors N) (hc : IsChain (· ⊆ ·) c) (hne : c.Nonempty) :
@@ -80,31 +76,29 @@ theorem sInter_mem_cosetSelectors (N : Subgroup G) (hN : IsClosed (N : Set G))
 variable [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Take `⟨T, hTmin⟩` from `zorn_superset (cosetSelectors N) fun c hcS hc => by`. Break down `c.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨Set.univ, univ_mem_cosetSelectors N hN, fun s hs => absurd hs (Set.notMem_empty s)⟩`. Conclude with `⟨⋂₀ c, sInter_mem_cosetSelectors N hN hcS hc hne, fun s hs => Set.sInter_subset_of_mem hs⟩`. Take `⟨hTc, K, hKn, hKc, hKN, hKmul, hKex, hKuniq⟩` from `hTmin.prop`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-It suffices to establish `hK : ∀ x ∈ K, x = 1 by`. Use `⟨T, hTc, hKex, fun t ht t' ht' h => ?_⟩` and prove the remaining obligations. Use `hK _ (hKuniq t ht t' ht' h)` as an intermediate fact. Rewrite `this` using `[inv_mul_eq_one]`. Conclude with `this`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hxK`. Assume the negation of the conclusion as `hx1`. Establish `hxnhds : ({x}ᶜ : Set G) ∈ 𝓝 (1 : G)` using `isOpen_compl_singleton.mem_nhds (Ne.symm hx1)`. Take `⟨U, -, hU⟩` from `(OpenNormalSubgroup.hasBasis_nhds_one (G := G)).mem_iff.mp hxnhds`. Establish `hxU : x ∉ (U : Subgroup G)` using `fun h => hU h rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `W : Subgroup G` to `K ⊔ (U : Subgroup G)`. Establish `hWopen : IsOpen (W : Set G)` using `Subgroup.isOpen_mono le_sup_right U.toOpenSubgroup.isOpen`. Establish `: W.Normal` using `Subgroup.sup_normal K (U : Subgroup G)`. Establish `: DiscreteTopology (G ⧸ W)` using `QuotientGroup.discreteTopology hWopen`. Set `r : G ⧸ W → G ⧸ (U : Subgroup G)` to `fun D => ((Quotient.out D : G) : G ⧸ (U : Subgroup G))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T' : Set G` to `T ∩ {g | (g : G ⧸ (U : Subgroup G)) = r (g : G ⧸ W)}`. Establish `hT'c : IsClosed T'` using `hTc.inter (isClosed_eq QuotientGroup.continuous_mk ((continuous_of_discreteTopology (f := r)).comp QuotientGroup.continuous_mk))`. Establish `hK'n : (K ⊓ (U : Subgroup G)).Normal` using `Subgroup.normal_inf_normal _ _`. Establish `hT'mem : T' ∈ cosetSelectors N`. Use `⟨hT'c, K ⊓ (U : Subgroup G), hK'n, hKc.inter U.toOpenSubgroup.isClosed, inf_le_left.trans hKN, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `t ⟨ht, htr⟩ k ⟨hkK, hkU⟩`. Use `⟨hKmul t ht k hkK, ?_⟩` and prove the remaining obligations. Establish `h1 : ((t * k : G) : G ⧸ (U : Subgroup G)) = (t : G ⧸ (U : Subgroup G))` using `QuotientGroup.eq.mpr (by simpa using (U : Subgroup G).inv_mem hkU)`. Establish `h2 : ((t * k : G) : G ⧸ W) = (t : G ⧸ W)` using `QuotientGroup.eq.mpr (by simpa using W.inv_mem (le_sup_left (b := (U : Subgroup G)) hkK))`. Simplify using `only [Set.mem_ofPred_eq] at htr ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Conclude with `htr`. Introduce `y`. Take `⟨t, ht, hty⟩` from `hKex y`. Take `⟨w, hw⟩` from `QuotientGroup.mk_out_eq_mul W t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk, u, hu, hku⟩` from `Subgroup.mem_sup_of_normal_right.mp w.2`. Use `⟨t * k, ⟨hKmul t ht k hk, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, r]`. Establish `h2 : ((t * k : G) : G ⧸ W) = (t : G ⧸ W)` using `QuotientGroup.eq.mpr (by simpa using W.inv_mem (le_sup_left (b := (U : Subgroup G)) hk))`. Rewrite using `[h2, hw, ← hku, ← mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `QuotientGroup.eq.mpr (by convert hu using 1; group)`. Rewrite using `[← hty]`. Conclude with `QuotientGroup.eq.mpr (by simpa using hKN hk)`. Introduce and unpack `t ⟨ht, htr⟩ t' ⟨ht', ht'r⟩ h`. Establish `hK1` using `hKuniq t ht t' ht' h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨hK1, ?_⟩` and prove the remaining obligations. Establish `hW : (t : G ⧸ W) = t'` using `QuotientGroup.eq.mpr (le_sup_left (b := (U : Subgroup G)) hK1)`. Simplify using `only [Set.mem_ofPred_eq] at htr ht'r`. Establish `: (t : G ⧸ (U : Subgroup G)) = t'` using `by rw [htr, ht'r, hW]`. Conclude with `QuotientGroup.eq.mp this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTT' : T ⊆ T'` using `hTmin.2 hT'mem Set.inter_subset_left`. Take `⟨t, ht, -⟩` from `hKex 1`. Establish `htx : t * x ∈ T` using `hKmul t ht x hxK`. Take `⟨t₀, ⟨ht₀, ht₀r⟩, -⟩` from `(⟨t, hTT' ht, rfl⟩ : ∃ t₀ ∈ T', t₀ = t)`. Establish `hsame : (t : G ⧸ N) = (t * x : G)` using `QuotientGroup.eq.mpr (by simpa using hKN hxK)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem` using `(hT'mem.2.choose_spec)`. Establish `h1` using `(hTT' ht).2`. Establish `h2` using `(hTT' htx).2`. Establish `hW : (t : G ⧸ W) = (t * x : G)` using `QuotientGroup.eq.mpr (by simpa using le_sup_left (b := (U : Subgroup G)) hxK)`. Simplify using `only [Set.mem_ofPred_eq] at h1 h2`.
-
-Establish `: (t : G ⧸ (U : Subgroup G)) = (t * x : G)` using `by rw [h1, h2, hW]`. Conclude with `hxU (by simpa using QuotientGroup.eq.mp this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_closed_transversal (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     ∃ T : Set G, IsClosed T ∧ (∀ x : G, ∃ t ∈ T, (t : G ⧸ N) = x) ∧
@@ -185,13 +179,13 @@ theorem exists_closed_transversal (N : Subgroup G) [N.Normal] (hN : IsClosed (N 
   exact hxU (by simpa using QuotientGroup.eq.mp this)
 
 /- English proof (translation)
-Establish `: IsClosed (N : Set G)` using `hN`. Establish `: T2Space (G ⧸ N)` using `inferInstance`. Take `⟨T, hTc, hex, huniq⟩` from `exists_closed_transversal N hN`. Establish `: CompactSpace T` using `isCompact_iff_compactSpace.mp hTc.isCompact`. Set `f : T → G ⧸ N` to `fun t => (t : G)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : Function.Bijective f`. Use `⟨fun t t' h => Subtype.ext (huniq t t.2 t' t'.2 h), fun c => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective c`. Take `⟨t, ht, htx⟩` from `hex x`. Conclude with `⟨⟨t, ht⟩, htx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `e : T ≃ₜ G ⧸ N` to `(QuotientGroup.continuous_mk.comp continuous_subtype_val : Continuous f).homeoOfEquivCompactToT2 (f := Equiv.ofBijective f hf)`. Set `s₀ : G ⧸ N → G` to `fun c => (e.symm c : G)`. Establish `hs₀ : ∀ c, (s₀ c : G ⧸ N) = c` using `fun c => e.apply_symm_apply c`. Establish `h1 : s₀ 1 ∈ N`. Use `hs₀ 1` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← QuotientGroup.mk_one, QuotientGroup.eq]`. Simplify using `using this`. Use `⟨fun c => s₀ c * (s₀ 1)⁻¹, (continuous_subtype_val.comp e.symm.continuous).mul continuous_const, fun c => ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_inv_cancel _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_continuous_section (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     ∃ s : G ⧸ N → G, Continuous s ∧ (∀ c, (s c : G ⧸ N) = c) ∧ s 1 = 1 := by

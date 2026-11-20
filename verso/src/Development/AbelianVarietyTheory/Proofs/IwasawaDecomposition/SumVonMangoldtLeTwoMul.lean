@@ -9,17 +9,17 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.Mem.An
 
 /- English proof (translation)
-Use `decide +kernel`.
+Evaluate the decidable proposition.
 -/
 theorem lcmUpto_le_four_pow_small : ∀ n : ℕ, n ≤ 100 → Nat.lcmUpto n ≤ 4 ^ n := by
   decide +kernel
 
 /- English proof (translation)
-Rewrite using `[Chebyshev.psi_eq_psi_coe_floor, Chebyshev.psi_eq_log_lcmUpto]`. Establish `hn : ⌊y⌋₊ ≤ 100` using `Nat.floor_le_of_le (by exact_mod_cast h)`. Establish `h1 : ((Nat.lcmUpto ⌊y⌋₊ : ℕ) : ℝ) ≤ 4 ^ ⌊y⌋₊`. Conclude with `lcmUpto_le_four_pow_small _ hn` after adjusting the coercions. Establish `h2 : (0 : ℝ) < (Nat.lcmUpto ⌊y⌋₊ : ℕ)` using `by exact_mod_cast Nat.lcmUpto_pos _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Real.log_le_log h2 h1`. Rewrite `h3` using `[Real.log_pow]`. Establish `h4 : Real.log 4 ≤ 2`. Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : (⌊y⌋₊ : ℝ) ≤ y` using `Nat.floor_le h0`. Establish `h6 : (0 : ℝ) ≤ (⌊y⌋₊ : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem psi_le_two_mul_small {y : ℝ} (h0 : 0 ≤ y) (h : y ≤ 100) : Chebyshev.psi y ≤ 2 * y := by
   rw [Chebyshev.psi_eq_psi_coe_floor, Chebyshev.psi_eq_log_lcmUpto]
@@ -39,11 +39,11 @@ theorem psi_le_two_mul_small {y : ℝ} (h0 : 0 ≤ y) (h : y ≤ 100) : Chebyshe
   nlinarith
 
 /- English proof (translation)
-Establish `key : ∀ n : ℝ, 2 ≤ n → Chebyshev.psi (x ^ n⁻¹) ≤ C * √x`. Introduce `n hn`. Establish `hle : x ^ n⁻¹ ≤ √x`. Rewrite using `[Real.sqrt_eq_rpow, one_div]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx (inv_anti₀ (by norm_num) hn)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(h _ (by positivity) hle).trans (mul_le_mul_of_nonneg_left hle hC)`. Establish `h1` using `Chebyshev.psi_sub_theta_le_psi_add_psi_add_psi x`. Establish `h2` using `Chebyshev.theta_le_log4_mul_x (x := x) (by linarith)`. Establish `h4 : Real.log 4 ≤ 1.4`. Establish `: Real.log 4 = 2 * Real.log 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : Real.log 4 * x ≤ 1.4 * x` using `mul_le_mul_of_nonneg_right h4 (by linarith)`. Combine the linear relations using `[key 2 le_rfl, key 3 (by norm_num), key 5 (by norm_num)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem psi_le_of_le_sqrt {C x : ℝ} (hC : 0 ≤ C) (hx : 1 ≤ x)
     (h : ∀ y : ℝ, 0 ≤ y → y ≤ √x → Chebyshev.psi y ≤ C * y) :
@@ -65,11 +65,11 @@ theorem psi_le_of_le_sqrt {C x : ℝ} (hC : 0 ≤ C) (hx : 1 ≤ x)
   linarith [key 2 le_rfl, key 3 (by norm_num), key 5 (by norm_num)]
 
 /- English proof (translation)
-Break down `le_total y 100 with h | h` into its components or cases. Conclude with `psi_le_two_mul_small h0 h`. Establish `hs : √y * √y = y` using `Real.mul_self_sqrt h0`. Establish `h10 : 10 ≤ √y` using `Real.le_sqrt_of_sq_le (by linarith)`. Break down `le_total (√y) 100 with h' | h'` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `psi_le_of_le_sqrt (C := 2) (by norm_num) (by linarith : 1 ≤ y) (fun z hz hz' => psi_le_two_mul_small hz (hz'.trans h'))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : Real.log 4 ≤ 2`. Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `psi_le_of_le_sqrt (C := 6) (by norm_num) (by linarith : 1 ≤ y) (fun z hz _ => (Chebyshev.psi_le_const_mul_self hz).trans (mul_le_mul_of_nonneg_right (by linarith) hz))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem psi_le_two_mul {y : ℝ} (h0 : 0 ≤ y) : Chebyshev.psi y ≤ 2 * y := by
   rcases le_total y 100 with h | h
@@ -91,7 +91,7 @@ theorem psi_le_two_mul {y : ℝ} (h0 : 0 ≤ y) : Chebyshev.psi y ≤ 2 * y := b
     nlinarith
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h` using `psi_le_two_mul hy`. Rewrite `h` using `[Chebyshev.psi]`. Rewrite using `[show Icc 1 ⌊y⌋₊ = Ioc 0 ⌊y⌋₊ from Finset.Icc_add_one_left_eq_Ioc 0 _]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem sum_vonMangoldt_le_two_mul : ∀ y : ℝ, 0 ≤ y → ∑ n ∈ Icc 1 ⌊y⌋₊, Λ n ≤ 2 * y := by
   intro y hy

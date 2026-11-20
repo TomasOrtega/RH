@@ -15,15 +15,15 @@ namespace GlobalTheory.CoverForms
 open KaehlerDifferential
 
 /- English proof (translation)
-Use `letI : Algebra C B := g.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R C B := IsScalarTower.of_algebraMap_eq (fun r => (g.commutes r).symm)`. Establish `hL : ∀ β, L β = KaehlerDifferential.map R R C B β`. Introduce `β`. Establish `hβ : β ∈ Submodule.span C (Set.range (D R C))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hβ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, rfl⟩` from `hx`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, KaehlerDifferential.map_D]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `smul c x _ hx`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hx, (KaehlerDifferential.map R R C B).map_smul]`. Conclude with `algebraMap_smul B c _`. Use `haveI := KaehlerDifferential.isLocalizedModule_map R C B (Submonoid.powers f)`. Establish `h' : KaehlerDifferential.map R R C B α = KaehlerDifferential.map R R C B 0`. Rewrite using `[← hL, h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨c, hc⟩, hc0⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers f) h'`. Take `⟨m, rfl⟩` from `hc`. Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify `hc0` using `[Submonoid.smul_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_eq_zero {R C B : Type} [CommRing R] [CommRing C] [CommRing B]
     [Algebra R C] [Algebra R B] (g : C →ₐ[R] B) (f : C)
@@ -55,23 +55,21 @@ theorem exists_pow_smul_eq_zero {R C B : Type} [CommRing R] [CommRing C] [CommRi
   simpa [Submonoid.smul_def] using hc0
 
 /- English proof (translation)
-Introduce `R _ X s hX`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens => (U.1 : Set X)) (fun U => U.1.isOpen) (fun x _ => by`. Take `⟨U, hU, hxU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show x ∈ (⊤ : X.Opens) from trivial)`. Conclude with `Set.mem_iUnion.2 ⟨⟨U, hU⟩, hxU⟩)`. Use `⟨t.card, fun k => Opposite.op (t.equivFin.symm k).1, fun w hw => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcov : ∀ x : X, ∃ U ∈ t, x ∈ (U.1 : Set X)` using `fun x => by`. Simplify using `using ht (Set.mem_univ x)`. Establish `hV0 : ∀ U ∈ t, w.1 (Opposite.op U) = 0` using `fun U hU => by`. Establish `: evForm s (Opposite.op (t.equivFin.symm (t.equivFin ⟨U, hU⟩)).1) w = 0` using `hw _`. Establish `e : t.equivFin.symm (t.equivFin ⟨U, hU⟩) = ⟨U, hU⟩` using `Equiv.symm_apply_apply _ _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `W`. Take `⟨W₀⟩` from `W`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hW : IsAffineOpen W₀.1` using `W₀.2`. Set `S : Set Γ(X, W₀.1)` to `{f | ∃ U ∈ t, X.basicOpen f ≤ U.1}`. Establish `hS : Ideal.span S = ⊤`. Rewrite using `[← hW.iSup_basicOpen_eq_self_iff]`. Use `le_antisymm (iSup_le fun f => X.basicOpen_le _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨U, hU, hxU⟩` from `hcov x`. Take `⟨f, hf, hxf⟩` from `hW.exists_basicOpen_le (V := U.1) ⟨x, hxU⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, U, hU, hf⟩, hxf⟩`. Set `α : Ω[Sec s W₀.1⁄R]` to `w.1 (Opposite.op W₀)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `I : Ideal (Sec s W₀.1)` to `LinearMap.ker (LinearMap.toSpanSingleton (Sec s W₀.1) _ α)`. Establish `hrad : ∀ f ∈ S, f ∈ I.radical`. Introduce and unpack `f ⟨U, hU, hf⟩`. Set `D' : X.affineOpens` to `⟨X.basicOpen f, hW.basicOpen f⟩`. Set `φ : (Opposite.op W₀ : AffOp X) ⟶ Opposite.op D'` to `(homOfLE (X.basicOpen_le f)).op`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : (Opposite.op U : AffOp X) ⟶ Opposite.op D'` to `(homOfLE hf).op`. Establish `h0 : p1 (OAff s) φ α = 0`. Establish `e1` using `w.2 φ`. Establish `e2` using `w.2 ψ`. Rewrite `e2` using `[hV0 U hU, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `e1.symm.trans e2`. Take `⟨m, hm⟩` from `exists_pow_smul_eq_zero (mp (OAff s) φ) f (hW.isLocalization_basicOpen f) (p1 (OAff s) φ) (p1_D (OAff s) φ) (oneFormsMapOfFunctorMorphism_smul (OAff s) φ) α h0`. Conclude with `⟨m, by simpa [I] using hm⟩`. Establish `hI : I = ⊤`. Rewrite using `[← Ideal.radical_eq_top, eq_top_iff]`.
-
-Establish `h2` using `Ideal.span_le.2 hrad`. Conclude with `(show (⊤ : Ideal (Sec s W₀.1)) ≤ Ideal.span S from hS.ge).trans h2`. Establish `h1 : (1 : Sec s W₀.1) ∈ I` using `hI ▸ Submodule.mem_top`. Simplify `h1` using `[I]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cover : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), CompactSpace X → ∃ (n : ℕ) (V : Fin n → AffOp X), ∀ w : GlobForm s, (∀ k, evForm s (V k) w = 0) → w = 0 := by
   intro R _ X s hX

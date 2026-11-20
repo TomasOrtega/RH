@@ -11,21 +11,19 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `p _ D R _ b N M r w j c T hm K _ _ hp x y hxy`. Substitute `hxy` using the available equality. Set `β : R →+* K` to `(Spec.preimage (y ≫ T.s ≫ M.s)).hom`. Use `haveI : CharZero K := by`. Break down `CharP.char_is_prime_or_zero K (ringChar K) with hq | hq` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `hcast : ((ringChar K : ℕ) : K) = 0` using `ringChar.Nat.cast_ringChar`. Distinguish the cases in `hqp : ringChar K = p`. Rewrite `hcast` using `[hqp]`. Conclude with `hp hcast`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : (ringChar K).Coprime p` using `(Nat.coprime_primes hq (Fact.out)).mpr hqp`. Establish `hu` using `(b.unit _ hcop).map β`. Rewrite `hu` using `[map_natCast, hcast]`. Conclude with `not_isUnit_zero hu`. Use `haveI : CharP K 0 := ringChar.of_eq hq`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Conclude with `CharP.charP_to_charZero K`. Take `⟨-, hcard⟩` from `T.tj K y`. Rewrite `hcard` using `[hm, Nat.one_mul]`. Rewrite using `[← hcard]`. Use `symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : ∀ a : Over.mk y ⟶ T.o.A, KilledBy T.o w a ↔ KilledBy M.univ w (T.ms.ptEquiv (Over.mk y) a)`. Introduce `a`. Unfold `KilledBy`. Use `forall₂_congr (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← ObjMap.ptEquiv_act, MulEquiv.map_eq_one_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ a : Over.mk y ⟶ T.o.A, KerAt T y (T.ms.ptEquiv (Over.mk y) a).left ↔ a ≫ T.ψ = 1`. Introduce `a`. Rewrite using `[ObjMap.ptEquiv_left]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h a rfl`. Introduce `h a' ha'`. Establish `ha : a' = a`. Apply `(T.ms.ptEquiv (Over.mk y)).injective` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Rewrite using `[ObjMap.ptEquiv_left, ObjMap.ptEquiv_left, ha']`. Rewrite using `[ha]`. Conclude with `h`. Use `Nat.card_congr (Equiv.subtypeEquiv (T.ms.ptEquiv (Over.mk y)).toEquiv (fun a => ?_))` and prove the remaining obligations. Conclude with `⟨fun h => ⟨(hK a).mp h.2, (hker a).mpr h.1⟩, fun h => ⟨(hker a).mp h.2, (hK a).mpr h.1⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.secCard_of :
     SecCard := by

@@ -19,9 +19,9 @@ open UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.F.RS
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ f hf _ hL _ w hw hwZ t ht`. Establish `h` using `hkAct E a b l₁ l₂ D A S Z L hS hZ f hL w hw hwZ`. Take `⟨B₁, B₂, h1, h2, h3, h4⟩` from `sat2Ex E a b w _ _ (pairRt a b w) f t hf (fun i => (h 0 i).1.1) fun p i => ((h p i).1.2).symm.trans (congrFun (ht p) i)`. Use `⟨B₁, B₂, h1, h2, h3, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `φ ⟨i, m, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(sat2Slice E a b w _ _ _ (h4 i)).1 φ m e`. Introduce and unpack `φ ⟨i, m, e⟩`. Conclude with `(sat2Slice E a b w _ _ _ (h4 i)).2 φ m e`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.satRead₁ :
     UpperTheory.Zero.ConvolutionTheory.EB.SatRead₁ := by

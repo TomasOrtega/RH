@@ -13,9 +13,9 @@ section Lin
 variable {J : Type} [Fintype J] [DecidableEq J]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hA`. Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Conclude with `(hB v).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]`. Conclude with `(hB v).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInvMat_mul {A : Matrix J J ℚ} (hA : IsInvMat A) :
     ∃ B : Matrix J J ℚ, A * B = 1 ∧ B * A = 1 := by
@@ -31,7 +31,7 @@ theorem isInvMat_mul {A : Matrix J J ℚ} (hA : IsInvMat A) :
 variable {Ω : Type*} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matAct, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matAct_eq_mulVec (A : Matrix J J ℚ) (v : J → Ω) :
     matAct A v = (A.map (Rat.castHom Ω)).mulVec v := by
@@ -39,7 +39,7 @@ theorem matAct_eq_mulVec (A : Matrix J J ℚ) (v : J → Ω) :
   simp [matAct, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[matAct_eq_mulVec, matAct_eq_mulVec, Matrix.mulVec_mulVec, ← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matAct_matAct {A B : Matrix J J ℚ} (h : B * A = 1) (v : J → Ω) :
     matAct B (matAct A v) = v := by
@@ -52,7 +52,7 @@ Both sides reduce to the same expression.
 theorem matActC_eq (A : Matrix J J ℚ) (z : J → ℂ) : matActC A z = matAct A z := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [matAct, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matAct_smul (A : Matrix J J ℚ) (c : Ω) (v : J → Ω) :
     matAct A (c • v) = c • matAct A v := by
@@ -61,14 +61,14 @@ theorem matAct_smul (A : Matrix J J ℚ) (c : Ω) (v : J → Ω) :
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[matAct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matAct_zero (A : Matrix J J ℚ) : matAct A (0 : J → Ω) = 0 := by
   funext i
   simp [matAct]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Rewrite using `[← matAct_matAct h v, hv, matAct_zero]`. Introduce and unpack `rfl`. Conclude with `matAct_zero A`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem matAct_eq_zero_iff {A B : Matrix J J ℚ} (h : B * A = 1) (v : J → Ω) :
     matAct A v = 0 ↔ v = 0 := by
@@ -82,7 +82,7 @@ def linSub (A : Matrix J J ℚ) : MvPolynomial J ℚ →ₐ[ℚ] MvPolynomial J 
   bind₁ fun i => ∑ j, C (A i j) * X j
 
 /- English proof (translation)
-Simplify using `only [linSub, aeval_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[matAct, eq_ratCast]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem aeval_linSub (A : Matrix J J ℚ) (v : J → Ω) (g : MvPolynomial J ℚ) :
     aeval v (linSub A g) = aeval (matAct A v) g := by
@@ -92,7 +92,7 @@ theorem aeval_linSub (A : Matrix J J ℚ) (v : J → Ω) (g : MvPolynomial J ℚ
   simp [matAct, eq_ratCast]
 
 /- English proof (translation)
-Establish `h` using `hg.eval₂ (algebraMap ℚ (MvPolynomial J ℚ)) (fun i => ∑ j, C (A i j) * X j) (fun r => by rw [MvPolynomial.algebraMap_eq]; exact isHomogeneous_C _ _) (fun i => IsHomogeneous.sum _ _ _ fun j _ => isHomogeneous_C_mul_X _ _)`. Rewrite `h` using `[one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_linSub (A : Matrix J J ℚ) {g : MvPolynomial J ℚ} {n : ℕ}
     (hg : g.IsHomogeneous n) : (linSub A g).IsHomogeneous n := by
@@ -109,14 +109,14 @@ section Pts
 variable {J : Type} [Fintype J] {Ω : Type*} [Field Ω] [CharZero Ω]
 
 /- English proof (translation)
-Rewrite using `[eval_map, aeval_def, algebraMap_int_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_int_eq (z : J → ℂ) (f : MvPolynomial J ℤ) :
     eval z (map (Int.castRingHom ℂ) f) = aeval z f := by
   rw [eval_map, aeval_def, algebraMap_int_eq]
 
 /- English proof (translation)
-Use `show aeval z (map (Int.castRingHom ℚ) f) = _`. Rewrite using `[aeval_def, aeval_def, eval₂_map]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem aeval_qmap {S : Type*} [CommRing S] [Algebra ℚ S] (z : J → S) (f : MvPolynomial J ℤ) :
     aeval z (qmap f) = aeval z f := by
@@ -126,23 +126,23 @@ theorem aeval_qmap {S : Type*} [CommRing S] [Algebra ℚ S] (z : J → S) (f : M
   exact RingHom.ext_int _ _
 
 /- English proof (translation)
-Simplify using `only [pts, conePts, Set.mem_setOf_eq, coordIdeal, RingHom.mem_ker, aeval_int_eq]`. Use `and_congr_right fun _ => ⟨fun H n g hg hv => ?_, fun H f hf => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors ℤ) (g.support.image fun m => g.coeff m)`. Establish `hr' : ∀ m, ∃ r : ℤ, (r : ℚ) = ((b : ℤ) : ℚ) * g.coeff m`. Introduce `m`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hm : m ∈ g.support`. Take `⟨r, hr⟩` from `hb _ (Finset.mem_image_of_mem _ hm)`. Conclude with `⟨r, by simpa [Algebra.smul_def] using hr⟩`. Rewrite `hm` using `[mem_support_iff, not_not]`. Conclude with `⟨0, by simp [hm]⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `choose r hr using hr'`. Take `⟨f, hfdef⟩ : ∃ f : MvPolynomial J ℤ, f = ∑ m ∈ g.support, monomial m (r m)` from `⟨_, rfl⟩`. Establish `hfg : qmap f = C ((b : ℤ) : ℚ) * g`. Use extensionality with `m`. Rewrite using `[coeff_C_mul, ← hr m]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [qmap, coeff_map, hfdef, coeff_sum, MvPolynomial.coeff_monomial, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Use `split_ifs with hm`. Simplify using the standard rewrite rules. Rewrite `hm` using `[mem_support_iff, not_not]`. Rewrite using `[map_zero, hr m, hm, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfh : f.IsHomogeneous n`. Introduce `d hd`. Apply `hg` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (coeff d) hfg`. Rewrite `h1` using `[coeff_C_mul, h0, mul_zero]`. Simplify using `only [qmap, coeff_map] at h1`. Simplify using `using h1`. Establish `hvf : aeval v f = 0`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← aeval_qmap, hfg, map_mul, hv, mul_zero]`. Establish `hz` using `H f (by rw [coneMap_of_isHomogeneous (x := v) (hf := hfh), hvf, map_zero, zero_mul])`. Rewrite `hz` using `[← aeval_qmap, hfg, map_mul, aeval_C]`. Establish `hb0 : (b : ℤ) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`. Break down `mul_eq_zero.mp hz with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (by simpa using h) hb0`. Conclude with `h`. Establish `hk : ∀ k, aeval z (homogeneousComponent k f) = 0`. Introduce `k`. Establish `h1 : aeval v (homogeneousComponent k f) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_coneMap, hf, Polynomial.coeff_zero]`. Establish `h2` using `H k (qmap (homogeneousComponent k f)) ((homogeneousComponent_isHomogeneous k f).map _) (by rw [aeval_qmap, h1])`. Rewrite `h2` using `[aeval_qmap]`. Then use the resulting hypothesis. Rewrite using `[← sum_homogeneousComponent (φ := f), map_sum]`. Conclude with `Finset.sum_eq_zero fun k _ => hk k`.
+A detailed English derivation is pending.
 -/
 theorem mem_pts_iff (v : J → Ω) (z : J → ℂ) :
     z ∈ pts (coordIdeal ℤ v) ↔ z ≠ 0 ∧ ∀ (n : ℕ) (g : MvPolynomial J ℚ), g.IsHomogeneous n →
@@ -197,9 +197,9 @@ theorem mem_pts_iff (v : J → Ω) (z : J → ℂ) :
     exact Finset.sum_eq_zero fun k _ => hk k
 
 /- English proof (translation)
-Take `⟨B, -, hBA⟩` from `isInvMat_mul hA`. Establish `hne : matAct A z ≠ 0 ↔ z ≠ 0` using `not_congr (matAct_eq_zero_iff hBA z)`. Rewrite using `[mem_pts_iff, mem_pts_iff, matActC_eq, hne]`. Use `and_congr_right fun _ => ⟨fun H n g hg hx => ?_, fun H n g hg hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `H n (linSub B g) (isHomogeneous_linSub B hg) (by rw [aeval_linSub, matAct_matAct hBA, hx])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[aeval_linSub, matAct_matAct hBA]`. Then use the resulting hypothesis. Rewrite `hx`, the goal using `[← aeval_linSub]`. Conclude with `H n _ (isHomogeneous_linSub A hg) hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pts_matAct_gen (x : J → Ω) (A : Matrix J J ℚ) (hA : IsInvMat A) (z : J → ℂ) :
     matActC A z ∈ pts (coordIdeal ℤ (matAct A x)) ↔ z ∈ pts (coordIdeal ℤ x) := by

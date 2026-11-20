@@ -63,9 +63,7 @@ noncomputable def evalAt (u : ℂ) : absConv u →+* ℂ where
     ring
 
 /- English proof (translation)
-Use `haveI : Countable S := hS.to_subtype`. Use `haveI : Countable (MvPolynomial S ℤ) := (MvPolynomial.basisMonomials S ℤ).repr.injective.countable`. Set `φ : MvPolynomial S ℤ →+* A` to `MvPolynomial.eval₂Hom (Int.castRingHom A) Subtype.val`. Establish `hle : Subring.closure S ≤ φ.range` using `Subring.closure_le.2 fun s hs => ⟨MvPolynomial.X ⟨s, hs⟩, by simp [φ]⟩`. Establish `hc : (φ.range : Set A).Countable`.
-
-Rewrite using `[RingHom.coe_range]`. Conclude with `Set.countable_range _`. Conclude with `(hc.mono hle).to_subtype`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_closure {A : Type} [CommRing A] (S : Set A) (hS : S.Countable) :
     Countable (Subring.closure S) := by
@@ -80,11 +78,11 @@ theorem countable_closure {A : Type} [CommRing A] (S : Set A) (hS : S.Countable)
   exact (hc.mono hle).to_subtype
 
 /- English proof (translation)
-Use `ENNReal.le_of_forall_nnreal_lt fun r hr => ?_` and prove the remaining obligations. Distinguish the cases in `hr0 : r = 0`. Simplify using `[hr0]`. Establish `hrε : (r : ℝ) < ε`. Rewrite `hr` using `[← ENNReal.ofReal_coe_nnreal]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(ENNReal.ofReal_lt_ofReal_iff_of_nonneg r.2).1 hr`. Use `FormalMultilinearSeries.le_radius_of_summable _ ?_` and prove the remaining obligations. Establish `hs` using `h (r : ℂ) (by exact_mod_cast hr0) (by simpa using hrε)`. Use `hs.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[FormalMultilinearSeries.ofScalars_norm, norm_mul, norm_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem radius_ge (ε : ℝ) (Φ : PowerSeries ℂ)
     (h : ∀ u : ℂ, u ≠ 0 → ‖u‖ < ε → Summable fun n => ‖PowerSeries.coeff n Φ * u ^ n‖) :
@@ -106,29 +104,25 @@ end GlobalTheory.PowEval
 open GlobalTheory.PowEval in
 
 /- English proof (translation)
-Introduce `ε S hε hS h`. Use `haveI : Countable (Subring.closure S) := countable_closure S hS`. Set `p : PowerSeries ℂ → FormalMultilinearSeries ℂ ℂ ℂ` to `fun Φ => FormalMultilinearSeries.ofScalars ℂ fun n => PowerSeries.coeff n Φ`. Establish `hsum : ∀ (Φ : PowerSeries ℂ) (u : ℂ), (p Φ).sum u = ∑' n, PowerSeries.coeff n Φ * u ^ n`. Introduce `Φ u`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show FormalMultilinearSeries.ofScalarsSum _ u = _`. Rewrite using `[FormalMultilinearSeries.ofScalars_sum_eq]`. Simplify using `[smul_eq_mul]`. Establish `hcl : ∀ Φ ∈ Subring.closure S, ∀ u : ℂ, u ≠ 0 → ‖u‖ < ε → Summable fun n => ‖PowerSeries.coeff n Φ * u ^ n‖`. Introduce `Φ hΦ u hu0 hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Subring.closure S ≤ absConv u` using `Subring.closure_le.2 fun Ψ hΨ => h Ψ hΨ u hu0 hu`. Conclude with `hle hΦ`. Establish `hrad : ∀ Φ ∈ Subring.closure S, ENNReal.ofReal ε ≤ (p Φ).radius` using `fun Φ hΦ => radius_ge ε Φ (hcl Φ hΦ)`. Establish `hpos : ∀ Φ ∈ Subring.closure S, 0 < (p Φ).radius` using `fun Φ hΦ => lt_of_lt_of_le (ENNReal.ofReal_pos.2 hε) (hrad Φ hΦ)`. Establish `hball : ∀ Φ ∈ Subring.closure S, Metric.ball (0 : ℂ) ε ⊆ EMetric.ball 0 (p Φ).radius`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `Φ hΦ`. Rewrite using `[← Metric.emetric_ball]`. Conclude with `EMetric.ball_subset_ball (hrad Φ hΦ)`. Set `J` to `Option {Φ : Subring.closure S // Φ ≠ 0}`. Set `f : J → ℂ → ℂ` to `fun i => match i with`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `none => id`. Consider the case `some Φ => (p (Φ.1 : PowerSeries ℂ)).sum`. Establish `han : ∀ i, AnalyticOnNhd ℂ (f i) (Metric.ball 0 ε)`. Introduce `i`. Consider the cases of `i with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `none => exact analyticOnNhd_id`. Consider the case `some Φ`. Conclude with `((p _).hasFPowerSeriesOnBall (hpos _ Φ.1.2)).analyticOnNhd.mono (hball _ Φ.1.2)`. Establish `hnz : ∀ i, ∃ x ∈ Metric.ball (0 : ℂ) ε, f i x ≠ 0`. Introduce `i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the cases of `i with`. Consider the case `none`. Use `⟨((ε / 2 : ℝ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show ((ε / 2 : ℝ) : ℂ) ≠ 0`. Conclude with `(by linarith : ε / 2 ≠ 0)` after adjusting the coercions. Consider the case `some Φ`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hev : (p (Φ.1 : PowerSeries ℂ)).sum =ᶠ[nhds 0] 0` using `by filter_upwards [Metric.ball_mem_nhds (0 : ℂ) hε] with y hy`. Conclude with `hcon y hy`. Establish `h0` using `((p _).hasFPowerSeriesOnBall (hpos _ Φ.1.2)).hasFPowerSeriesAt.eq_zero_of_eventually hev`. Apply `Φ.2` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `n`. Use `congrArg (fun q : FormalMultilinearSeries ℂ ℂ ℂ => q n) h0` as an intermediate fact. Simplify using `using (FormalMultilinearSeries.ofScalars_eq_zero (E := ℂ) (c := fun n => PowerSeries.coeff n (Φ.1 : PowerSeries ℂ)) n).1 this`. Take `⟨u, hu, hx⟩` from `GlobalTheory.exists_forall_ne_zero_of_countable_analytic ℂ (Metric.ball 0 ε) Metric.isOpen_ball (convex_ball 0 ε).isPreconnected (Metric.nonempty_ball.2 hε) J f han hnz`. Establish `hu0 : u ≠ 0` using `hx none`.
-
-Establish `hun : ‖u‖ < ε` using `mem_ball_zero_iff.1 hu`. Establish `hle : Subring.closure S ≤ absConv u` using `Subring.closure_le.2 fun Ψ hΨ => h Ψ hΨ u hu0 hun`. Set `i : Subring.closure S →+* ℂ` to `(evalAt u).comp (Subring.inclusion hle)`. Use `⟨u, i, hu0, hun, ?_, fun Φ => rfl⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero i).2 fun Φ hΦ => ?_` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hne`. Apply `hx (some ⟨Φ, hne⟩)` to reduce the goal to its premises. Use `show (p (Φ : PowerSeries ℂ)).sum u = 0`. Rewrite using `[hsum]`. Conclude with `hΦ`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_injective_evalAt_closure : ∀ (ε : ℝ) (S : Set (PowerSeries ℂ)), 0 < ε → S.Countable → (∀ Φ ∈ S, ∀ u : ℂ, u ≠ 0 → ‖u‖ < ε → Summable fun n => ‖PowerSeries.coeff n Φ * u ^ n‖) → ∃ (u : ℂ) (i : Subring.closure S →+* ℂ), u ≠ 0 ∧ ‖u‖ < ε ∧ Function.Injective i ∧ ∀ Φ : Subring.closure S, i Φ = ∑' n, PowerSeries.coeff n (Φ : PowerSeries ℂ) * u ^ n := by
   intro ε S hε hS h

@@ -4,17 +4,15 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `choose g hg using fun b => (AlgHom.mem_range φ).1 (hr b)`. Set `gl : B →ₗ[S] A` to `{ toFun := g map_add' := by`. Introduce `b c`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_add, hg, hg, hg, smul_add]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `map_smul' := by`. Introduce `r b`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[hg, RingHom.id_apply, map_smul, hg, smul_comm] }`. Establish `h1 : φ.toLinearMap ∘ₗ gl = s • LinearMap.id`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `b`. Simplify using `[gl, hg]`. Establish `h2 : gl ∘ₗ φ.toLinearMap = s • LinearMap.id`. Use extensionality with `a`. Apply `hφ` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[gl, hg]`. Establish `h3 : Algebra.lmul S B (φ x) ∘ₗ φ.toLinearMap = φ.toLinearMap ∘ₗ Algebra.lmul S A x`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `key : s * Algebra.trace S B (φ x) = s * Algebra.trace S A x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, LinearMap.comp_smul, LinearMap.comp_id, map_smul, smul_eq_mul]`. Use `_ = LinearMap.trace S B (φ.toLinearMap ∘ₗ (Algebra.lmul S A x ∘ₗ gl)) := by`. Rewrite using `[← LinearMap.comp_assoc, h3, LinearMap.comp_assoc]`.
-
-Use `_ = LinearMap.trace S A ((Algebra.lmul S A x ∘ₗ gl) ∘ₗ φ.toLinearMap) := by`. Rewrite using `[LinearMap.trace_comp_comm']`. Use `_ = s * LinearMap.trace S A (Algebra.lmul S A x) := by`. Rewrite using `[LinearMap.comp_assoc, h2, LinearMap.comp_smul, LinearMap.comp_id, map_smul, smul_eq_mul]`. Conclude with `mul_left_cancel₀ hs key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraTrace_map_of_cokernel_killed (S A B : Type) [CommRing S] [IsDomain S] [CommRing A]
     [Algebra S A] [Module.Free S A] [Module.Finite S A] [CommRing B] [Algebra S B]
@@ -58,7 +56,7 @@ theorem algebraTrace_map_of_cokernel_killed (S A B : Type) [CommRing S] [IsDomai
   exact mul_left_cancel₀ hs key
 
 /- English proof (translation)
-The claim follows from `algebraTrace_map_of_cokernel_killed`.
+A detailed English derivation is pending.
 -/
 example : ∀ (S A B : Type) [CommRing S] [IsDomain S] [CommRing A] [Algebra S A] [Module.Free S A] [Module.Finite S A] [CommRing B] [Algebra S B] [Module.Free S B] [Module.Finite S B] (φ : A →ₐ[S] B), Function.Injective φ → ∀ s : S, s ≠ 0 → (∀ b : B, s • b ∈ φ.range) → ∀ x : A, Algebra.trace S B (φ x) = Algebra.trace S A x :=
   algebraTrace_map_of_cokernel_killed

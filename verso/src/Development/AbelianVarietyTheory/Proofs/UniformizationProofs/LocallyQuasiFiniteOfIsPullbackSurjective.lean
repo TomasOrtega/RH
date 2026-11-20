@@ -5,9 +5,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 namespace GlobalTheory.Unif
 
 /- English proof (translation)
-Introduce `X Z X' Z' φ φ' a p h hp _ hqc _`. Establish `: QuasiCompact φ'` using `MorphismProperty.of_isPullback h hqc`. Use `LocallyQuasiFinite.of_finite_preimage_singleton φ fun z => ?_` and prove the remaining obligations. Take `⟨z', rfl⟩` from `p.surjective z`. Use `((φ'.finite_preimage_singleton z').image a).subset fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw1, hw2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := φ) (g := p) x z' hx`. Use `⟨h.isoPullback.inv w, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ' (h.isoPullback.inv w) = z'`. Rewrite using `[← Scheme.Hom.comp_apply, h.isoPullback_inv_snd, hw2]`. Rewrite using `[← Scheme.Hom.comp_apply, h.isoPullback_inv_fst, hw1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem locallyQuasiFinite_of_isPullback_surjective :
     ∀ (X Z X' Z' : Scheme.{0}) (φ : X ⟶ Z) (φ' : X' ⟶ Z') (a : X' ⟶ X) (p : Z' ⟶ Z),

@@ -14,7 +14,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-The claim follows from `have h := GlobalTheory.FiniteGroupUnitary.definiteUnitary R ht hX hV ⟨GlobalTheory.FiniteGroupUnitary.isUnitaryRep_of_norm _ (GlobalTheory.T.norm_goodRows_finiteGroup_action R hE gE h0), fun i σ => GlobalTheory.FiniteGroupUnitary.isUnitaryRep_of_norm _ (GlobalTheory.T.norm_liftFo …`.
+A detailed English derivation is pending.
 -/
 theorem actsUnitarily_of_clauses (R : RealDat D A Ks) (hE : R.models_HE) (gE : R.models_gE) (h0 : R.models_ν0)
     (hW : R.models_HW) (gW : R.models_gW) (hν : R.models_νW) (ht : R.fam_tie) (hX : R.models_cX) (hV : R.models_cV) :
@@ -25,14 +25,14 @@ theorem actsUnitarily_of_clauses (R : RealDat D A Ks) (hE : R.models_HE) (gE : R
     fun t σ => h.1 t σ, fun i t σ => h.2 i t σ⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ R _ h` and use `actsUnitarily_of_clauses R h.models.HE h.models.gE h.models.ν0 h.models.HW h.models.gW h.models.νW h.fam.tie h.models.cX h.models.cV`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitaryAction : UnitaryAction := fun _ _ _ _ _ _ _ _ _ _ _ R _ h =>
   actsUnitarily_of_clauses R h.models.HE h.models.gE h.models.ν0 h.models.HW h.models.gW h.models.νW h.fam.tie
     h.models.cX h.models.cV
 
 /- English proof (translation)
-Establish `e : ∀ z, (R.FW i).j σ ((R.FW i).ρ g z) = σ (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) • R.gW i σ g ((R.FW i).j σ z)` using `fun z => (hW i σ).1 (by rw [(hU i σ).2.2, map_smul, gW])`. Establish `n : ‖σ (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (n := Fintype.card G) (by rw [← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one, map_one]) Fintype.card_ne_zero`. Rewrite using `[e, e, inner_smul_left, inner_smul_right, h.formsW, ← mul_assoc, Complex.conj_mul', n]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem geometric_unitary (R : RealDat D A Ks) (hU : R.LUnif) (hW : R.models_HW) (gW : R.models_gW) (h : ActsUnitarily R)
     (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (g : G) (x y : Fin (R.nW i) → D.what₂.LL) :
@@ -60,9 +60,9 @@ def lineDatum : CSD ℚ where
   Del := fun _ => ⊤
 
 /- English proof (translation)
-Introduce `h`. Set `f : lineDatum.Forms` to `⟨fun _ => (1 : ℚ), fun _ _ => rfl⟩`. Establish `hs : ∀ a, σ (star a) = starRingEnd ℂ (σ a)` using `fun a => by simp`. Use `(isUnitaryAt_iff lineDatum σ hs _).1 h (Units.mk0 2 two_ne_zero) f f` as an intermediate fact. Express the relevant statement in the definitionally equal form `∑ c : Unit, ((Fintype.card Unit : ℕ) : ℚ)⁻¹ * (((2 : ℚ) * 1) * ((2 : ℚ) * 1)) = ∑ c : Unit, ((Fintype.card Unit : ℕ) : ℚ)⁻¹ * ((1 : ℚ) * 1) at this`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Evaluate the numerical expressions using `at this`.
+Evaluate the numerical expressions.
 -/
 theorem not_isUnitaryAt_scalars (σ : ℚ →+* ℂ) :
     ¬ IsUnitaryAt lineDatum σ (Representation.ofDistribMulAction ℚ ℚˣ lineDatum.Forms) := by

@@ -8,9 +8,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.Height
 
 /- English proof (translation)
-Establish `h2 : B.det • M = B.det • M'`. Establish `e : ∀ N : Matrix n n R, B.det • N = B.adjugate * (B * N)` using `fun N => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Rewrite using `[e, e, h]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h3`. Establish `h4 : (M i j - M' i j) * B.det = 0` using `by rw [sub_mul, mul_comm (M i j), mul_comm (M' i j), h3, sub_self]`. Conclude with `sub_eq_zero.1 ((mem_nonZeroDivisors_iff_right.1 hB) _ h4)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mat_cancel_left {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     (B M M' : Matrix n n R) (hB : B.det ∈ nonZeroDivisors R) (h : B * M = B * M') : M = M' := by
@@ -25,15 +25,13 @@ theorem mat_cancel_left {R : Type} [CommRing R] {n : Type} [Fintype n] [Decidabl
   exact sub_eq_zero.1 ((mem_nonZeroDivisors_iff_right.1 hB) _ h4)
 
 /- English proof (translation)
-Introduce `l _ K bk d ρ τ s ht C _ F hE M M' h`. Use `set G : bk.S →+* C := F.comp (toDisc l (X : bk.S) bk.ρ₀) with hG`. Establish `hbas : ht.bas.map F = s.X.map G * ht.Z.map F`. Rewrite using `[bas, Matrix.map_mul, Matrix.map_map]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hl : IsUnit (G (l : bk.S))`. Rewrite using `[map_natCast]`. Use `(isUnit_l_disc l (X : bk.S) bk.ρ₀).map F` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hc : G ((l : bk.S) ^ s.c₂ * bk.E ^ (2 * s.N)) ∈ nonZeroDivisors C`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `Submonoid.mul_mem _ (Submonoid.pow_mem _ hl.mem_nonZeroDivisors _) (Submonoid.pow_mem _ hE _)`. Establish `hdet : (s.X.map G).det * (s.X'.map G).det = G ((l : bk.S) ^ s.c₂ * bk.E ^ (2 * s.N)) ^ d`. Rewrite using `[← Matrix.det_mul, ← Matrix.map_mul, s.X_mul, Matrix.smul_one_eq_diagonal, Matrix.diagonal_map (map_zero G), Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hX : (s.X.map G).det ∈ nonZeroDivisors C` using `(mul_mem_nonZeroDivisors.1 (hdet ▸ Submonoid.pow_mem _ hc _)).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : IsUnit (ht.Z.map F).det`. Use `ht.Z_unit.map F.mapMatrix` as an intermediate fact. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 this`. Use `mat_cancel_left _ M M' ?_ h` and prove the remaining obligations. Rewrite using `[hbas, Matrix.det_mul]`.
-
-Conclude with `Submonoid.mul_mem _ hX hZ.mem_nonZeroDivisors`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bas_map_cancel_left : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s) (C : Type) [CommRing C] (F : bk.DS bk.ρ₀ →+* C), F (toDisc l (X : bk.S) bk.ρ₀ bk.E) ∈ nonZeroDivisors C → ∀ M M' : Matrix (Fin d) (Fin d) C, ht.bas.map F * M = ht.bas.map F * M' → M = M' := by
   intro l _ K bk d ρ τ s ht C _ F hE M M' h

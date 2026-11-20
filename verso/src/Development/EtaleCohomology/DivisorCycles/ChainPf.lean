@@ -10,9 +10,7 @@ noncomputable def lin (φ : Mat C N →ₗ[C] Mat C M) (q : Fin M × Fin M) : MP
   ∑ r : Fin N × Fin N, MvPolynomial.C (φ (Matrix.single r.1 r.2 1) q.1 q.2) * X r
 
 /- English proof (translation)
-Establish `hx : x = ∑ r : Fin N × Fin N, x r.1 r.2 • Matrix.single r.1 r.2 (1 : C)`. Rewrite using `[Fintype.sum_prod_type]`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single x]`. Simplify using `[Matrix.smul_single]`. Use `conv_rhs => rw [hx]`.
-
-Simplify using `only [map_sum, map_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun r _ => mul_comm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_lin (φ : Mat C N →ₗ[C] Mat C M) (x : Mat C N) (q : Fin M × Fin M) :
     ∑ r : Fin N × Fin N, φ (Matrix.single r.1 r.2 1) q.1 q.2 * x r.1 r.2 = φ x q.1 q.2 := by
@@ -25,14 +23,14 @@ theorem sum_lin (φ : Mat C N →ₗ[C] Mat C M) (x : Mat C N) (q : Fin M × Fin
   exact Finset.sum_congr rfl fun r _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[← sum_lin φ x q]`. Simplify using `[ev, lin]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_lin (φ : Mat C N →ₗ[C] Mat C M) (x : Mat C N) (q : Fin M × Fin M) :
     ev x (lin φ q) = φ x q.1 q.2 := by
   rw [← sum_lin φ x q]; simp [ev, lin]
 
 /- English proof (translation)
-Rewrite using `[← sum_lin φ Y q]`. Simplify using `only [dAt, lin, map_sum, Derivation.leibniz, pderiv_X, pderiv_C, smul_zero, add_zero, smul_eq_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[ev, Pi.single_apply, Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dAt_lin (φ : Mat C N →ₗ[C] Mat C M) (x Y : Mat C N) (q : Fin M × Fin M) :
     dAt (lin φ q) x Y = φ Y q.1 q.2 := by
@@ -42,7 +40,7 @@ theorem dAt_lin (φ : Mat C N →ₗ[C] Mat C M) (x Y : Mat C N) (q : Fin M × F
   simp [ev, Pi.single_apply, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Use `show eval₂Hom (RingHom.id C) _ (bind₁ (lin φ) f) = eval₂Hom (RingHom.id C) _ f`. Rewrite using `[eval₂Hom_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `q`. Conclude with `ev_lin φ x q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ev_bind (φ : Mat C N →ₗ[C] Mat C M) (x : Mat C N) (f : MP C M) :
     ev x (bind₁ (lin φ) f) = ev (φ x) f := by
@@ -51,13 +49,13 @@ theorem ev_bind (φ : Mat C N →ₗ[C] Mat C M) (x : Mat C N) (f : MP C M) :
   congr 2; funext q; exact ev_lin φ x q
 
 /- English proof (translation)
-Simplify using `[dAt, ev, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dAt_add (f g : MP C N) (x Y : Mat C N) : dAt (f + g) x Y = dAt f x Y + dAt g x Y := by
   simp [dAt, ev, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [dAt, Derivation.leibniz, smul_eq_mul, ev, map_add, map_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dAt_mul (f g : MP C N) (x Y : Mat C N) :
     dAt (f * g) x Y = ev x f * dAt g x Y + ev x g * dAt f x Y := by
@@ -65,17 +63,17 @@ theorem dAt_mul (f g : MP C N) (x Y : Mat C N) :
     Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[dAt, ev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dAt_C (a : C) (x Y : Mat C N) : dAt (MvPolynomial.C a : MP C N) x Y = 0 := by
   simp [dAt, ev]
 
 /- English proof (translation)
-Introduce `C _ N M φ f`. Use `⟨bind₁ (lin φ) f, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `ev_bind φ x f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => intro x Y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[dAt_C]`. Consider the case `add f g hf hg => intro x Y`. Rewrite using `[map_add, dAt_add, dAt_add, hf, hg]`. Consider the case `mul_X f q hf`. Introduce `x Y`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, bind₁_X_right, dAt_mul, dAt_mul, hf, dAt_lin, ev_lin]`. Rewrite using `[ev_bind]`. Simplify using `[dAt, ev, pderiv_X, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chain_of : Chain := by
   intro C _ N M φ f
@@ -93,6 +91,6 @@ theorem chain_of : Chain := by
 end LateralTheory.DivDb.ChainPf
 
 /- English proof (translation)
-The claim follows from `LateralTheory.DivDb.ChainPf.chain_of`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.DivDb.Chain_of : LateralTheory.DivDb.Chain := LateralTheory.DivDb.ChainPf.chain_of

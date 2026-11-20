@@ -2,18 +2,16 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V UpperTheory.V.Fb
 
 /- English proof (translation)
-Rewrite using `[vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem back_eq {E : Type*} [NormedField E] {n : ℕ} (g : GL (Fin n) E) (z : Fin n → E) :
     z = (z ᵥ* (g : Matrix (Fin n) (Fin n) E)) ᵥ* ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) := by
   rw [vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]
 
 /- English proof (translation)
-Establish `hp` using `locHeight_pos g`. Use `set y := z ᵥ* (g : Matrix (Fin n) (Fin n) E) with hy`. Establish `h0 : 0 ≤ locHeight g * ‖y‖` using `by positivity`. Establish `hz` using `back_eq g z`. Rewrite `hz` using `[← hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Simplify using `only [vecMul, dotProduct]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg h0 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, mul_comm]`.
-
-Conclude with `mul_le_mul (norm_inv_apply_le_locHeight g i j) (norm_le_pi_norm y i) (norm_nonneg _) hp.le`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_bound {E : Type*} [NormedField E] [IsUltrametricDist E] {n : ℕ}
     (g : GL (Fin n) E) (z : Fin n → E) :
@@ -31,11 +29,11 @@ private theorem fin_bound {E : Type*} [NormedField E] [IsUltrametricDist E] {n :
   exact mul_le_mul (norm_inv_apply_le_locHeight g i j) (norm_le_pi_norm y i) (norm_nonneg _) hp.le
 
 /- English proof (translation)
-Establish `hp` using `locHeight_pos g`. Use `set y := z ᵥ* (g : Matrix (Fin n) (Fin n) E) with hy`. Establish `he` using `Reduction.euclidNorm_nonneg y`. Establish `h0 : 0 ≤ (n : ℝ) * (locHeight g * Reduction.euclidNorm y)` using `by positivity`. Establish `hz` using `back_eq g z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[← hy]`. Establish `h1 : ‖z‖ ≤ (n : ℝ) * (locHeight g * Reduction.euclidNorm y)`. Rewrite using `[hz]`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Simplify using `only [vecMul, dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (g := fun _ => locHeight g * Reduction.euclidNorm y) fun i _ => ?_).trans (by simp)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul (norm_inv_apply_le_locHeight g i j) (Reduction.norm_le_euclidNorm y i) (norm_nonneg _) hp.le`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem inf_bound {E : Type*} [NormedField E] {n : ℕ}
     (g : GL (Fin n) E) (z : Fin n → E) :
@@ -66,7 +64,7 @@ private theorem inf_bound {E : Type*} [NormedField E] {n : ℕ}
     _ = _ := by ring
 
 /- English proof (translation)
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset a (s := ((ha.union hb).union hc).toFinset) (fun v hv => by simp only [Set.Finite.coe_toFinset]; exact Or.inl (Or.inl hv)), finprod_eq_prod_of_mulSupport_subset b (s := ((ha.union hb).union hc).toFinset) (fun v hv => by simp only [Set.Finite.c …`. Conclude with `Finset.prod_le_prod (fun i _ => h0 i) fun i _ => h i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finprod_bound {ι : Type*} {a b c : ι → ℝ} (ha : (Function.mulSupport a).Finite)
     (hb : (Function.mulSupport b).Finite) (hc : (Function.mulSupport c).Finite)
@@ -83,16 +81,16 @@ private theorem finprod_bound {ι : Type*} {a b c : ι → ℝ} (ha : (Function.
   exact Finset.prod_le_prod (fun i _ => h0 i) fun i _ => h i
 
 /- English proof (translation)
-The claim follows from `(mul_le_mul hi hf hB (hA.trans hi)).trans (le_of_eq (by ring))`.
+A detailed English derivation is pending.
 -/
 private theorem combine {A B C P Q R S : ℝ} (hi : A ≤ C * P * Q) (hf : B ≤ R * S) (hA : 0 ≤ A)
     (hB : 0 ≤ B) : A * B ≤ C * (P * R) * (Q * S) :=
   (mul_le_mul hi hf hB (hA.trans hi)).trans (le_of_eq (by ring))
 
 /- English proof (translation)
-Use `combine ?_ ?_ (Finset.prod_nonneg fun _ _ => pow_nonneg (Reduction.euclidNorm_nonneg _) _) (finprod_nonneg fun _ => norm_nonneg _)` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => pow_nonneg (Reduction.euclidNorm_nonneg _) _) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, ← mul_pow, Reduction.infComp_vecMul_GL]`. Conclude with `pow_le_pow_left₀ (Reduction.euclidNorm_nonneg _) (inf_bound _ _) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finprod_bound hy.finite_mulSupport (finite_mulSupport_locHeight_finAt g) (hy.vecMul g).finite_mulSupport (fun _ => norm_nonneg _) fun v => ?_` and prove the remaining obligations. Rewrite using `[Reduction.finComp_vecMul_GL]`. Conclude with `fin_bound _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adelic_bound {K : Type} [Field K] [NumberField K] {n : ℕ}
     (g : AdelicGLn.AdelicGL K n) {y : Fin n → AdeleRing (𝓞 K) K}
@@ -113,7 +111,7 @@ private theorem adelic_bound {K : Type} [Field K] [NumberField K] {n : ℕ}
     exact fin_bound _ _
 
 /- English proof (translation)
-Introduce `K _ _ n`. Use `⟨∏ w : InfinitePlace K, (√n * n + 1 : ℝ) ^ w.mult, 1, Finset.prod_pos fun w _ => by positivity, fun g x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `(Reduction.one_le_adelicNorm_ratVec hx).trans (adelic_bound g (Reduction.hasFiniteContent_ratVec hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.adelicNorm_vecMul_ge_of_height :
     UpperTheory.V.Fb.VecLower := by

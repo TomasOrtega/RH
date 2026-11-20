@@ -10,9 +10,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.QLog.NmulSubst
 
 /- English proof (translation)
-Establish `ha : HasSubst (fun _ : σ => (0 : MvPowerSeries τ R))` using `hasSubst_of_constantCoeff_zero fun _ => map_zero _`. Use extensionality with `e`. Rewrite using `[coeff_subst ha, finsum_eq_single _ 0]`. Rewrite using `[Finsupp.prod_zero_index, coeff_one, coeff_C, coeff_zero_eq_constantCoeff_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `x hx`. Take `⟨i, hi⟩ : ∃ i, x i ≠ 0` from `by by_contra! hc`. Conclude with `hx (Finsupp.ext hc)`. Establish `: (x.prod fun _ n => (0 : MvPowerSeries τ R) ^ n) = 0` using `Finset.prod_eq_zero (i := i) (Finsupp.mem_support_iff.2 hi) (zero_pow hi)`. Rewrite using `[this, map_zero, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_zero_fun {R : Type} [CommRing R] {σ τ : Type} [Finite σ] (g : MvPowerSeries σ R) :
     subst (fun _ : σ => (0 : MvPowerSeries τ R)) g = C (constantCoeff g) := by
@@ -32,7 +32,7 @@ theorem subst_zero_fun {R : Type} [CommRing R] {σ τ : Type} [Finite σ] (g : M
     rw [this, map_zero, smul_zero]
 
 /- English proof (translation)
-Unfold `nmul`. Conclude with `Function.iterate_succ_apply' _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nmul_succ {R : Type} [CommRing R] {d : ℕ} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (k : ℕ) : nmul μ (k + 1) = op μ (nmul μ k) (fun i => X i) := by
@@ -40,11 +40,9 @@ theorem nmul_succ {R : Type} [CommRing R] {d : ℕ} (μ : Fin d → MvPowerSerie
   exact Function.iterate_succ_apply' _ _ _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro i`. Simplify using `[nmul]`. Consider the case `succ k ih`. Introduce `i`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[nmul_succ]`. Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul μ k) (fun i => (X i : MvPowerSeries (Fin d) R)) j) = 0`. Introduce and unpack `(j | j)`. Conclude with `ih j`. Conclude with `constantCoeff_X _`.
-
-Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hs) hs (hμ i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem constantCoeff_nmul {R : Type} [CommRing R] {d : ℕ}
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0) (n : ℕ) :
@@ -65,21 +63,21 @@ end GlobalTheory.QLog.NmulSubst
 open GlobalTheory.QLog.NmulSubst in
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `: nmul μ 0 = fun _ => 0` using `rfl`. Rewrite using `[this, subst_zero_fun]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Establish `hE : ∀ j, constantCoeff (Sum.elim (nmul μ k) (fun i => (X i : MvPowerSeries (Fin d) R)) j) = 0`. Introduce and unpack `(j | j)`. Conclude with `constantCoeff_nmul μ hμ k j`. Conclude with `constantCoeff_X _`.
+Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsE` using `hasSubst_of_constantCoeff_zero hE`. Establish `hμs : HasSubst μ` using `hasSubst_of_constantCoeff_zero hμ`. Establish `hX : ∀ (f : Fin d → Fin d ⊕ Fin d), HasSubst (fun i => (X (f i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `fun _ => hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Rewrite using `[nmul_succ]`. Express the relevant statement in the definitionally equal form `subst (fun i => subst (Sum.elim (nmul μ k) fun i => X i) (μ i)) g = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← subst_comp_subst_apply hμs hsE]`. Establish `hsplit : subst μ g = cob1 μ g + inL g + inR g` using `by unfold cob1; abel`. Establish `hL : subst (Sum.elim (nmul μ k) fun i => (X i : MvPowerSeries (Fin d) R)) (inL g) =`. Substitute `(nmul μ k) g := by` using the available equality. Unfold `inL`.
+Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[subst_comp_subst_apply (hX Sum.inl) hsE]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[subst_X hsE]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hR : subst (Sum.elim (nmul μ k) fun i => (X i : MvPowerSeries (Fin d) R)) (inR g) = g`. Unfold `inR`. Rewrite using `[subst_comp_subst_apply (hX Sum.inr) hsE]`. Establish `: (fun i => subst (Sum.elim (nmul μ k) fun i => (X i : MvPowerSeries (Fin d) R)) (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R)) = X`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[subst_X hsE]`. Both sides reduce to the same expression. Rewrite using `[this, subst_self]`. Both sides reduce to the same expression. Rewrite using `[hsplit, subst_add hsE, subst_add hsE, hL, hR, ih, Finset.sum_range_succ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations.
 
-Express the relevant statement in the definitionally equal form `_ = _ + _ + (_ + subst (Sum.elim (nmul μ k) fun i => X i) (cob1 μ g))`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.QLog.subst_nmul_eq (R : Type) [CommRing R] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)

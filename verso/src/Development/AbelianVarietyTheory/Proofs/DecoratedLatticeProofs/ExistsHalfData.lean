@@ -17,9 +17,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h1 : evFin F v (pairA F 0 1) = 1`. Express the relevant statement in the definitionally equal form `evalV F v (1 : Af F) = 1`. Conclude with `map_one _`. Establish `h0 : evFin F v (pairA F 1 0) = 0`. Express the relevant statement in the definitionally equal form `evalV F v (0 : Af F) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Rewrite using `[compFin, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, h1, h0, TensorProduct.zero_tmul, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem compFin_half (v : HeightOneSpectrum (𝓞 F)) (x c : E) :
     compFin F E v (pairA F 0 1 ⊗ₜ[F] x + pairA F 1 0 ⊗ₜ[F] c) = (1 : Fv F v) ⊗ₜ[F] x := by
@@ -31,9 +31,9 @@ theorem compFin_half (v : HeightOneSpectrum (𝓞 F)) (x c : E) :
     Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, h1, h0, TensorProduct.zero_tmul, add_zero]
 
 /- English proof (translation)
-Establish `h1 : evInf F w (pairA F 0 1) = 0`. Express the relevant statement in the definitionally equal form `GlobalTheory.AutFunCompare.evW w (0 : Ainf F) = 0`. Conclude with `map_zero _`. Establish `h0 : evInf F w (pairA F 1 0) = 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.AutFunCompare.evW w (1 : Ainf F) = 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one _`. Rewrite using `[compInf, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, two_mul, map_add, map_add, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, h1, h0, TensorProduct.zero_tmul, zero_add, ← TensorProduct.tmul_add, add_halves, ← Algebra.TensorProduc …`.
+A detailed English derivation is pending.
 -/
 theorem compInf_half (w : InfinitePlace F) (x : E) :
     compInf F E w (2 * (pairA F 0 1 ⊗ₜ[F] x + pairA F 1 0 ⊗ₜ[F] (1 / 2 : E))) = 1 := by
@@ -46,7 +46,7 @@ theorem compInf_half (w : InfinitePlace F) (x : E) :
     ← TensorProduct.tmul_add, add_halves, ← Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Establish `h2 : σ (1 / 2 : E) = 1 / 2` using `by rw [map_div₀, map_one, map_ofNat]`. Rewrite using `[sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_half (σ : E →ₐ[F] E) (x : E) :
     sigR (AF F) σ (pairA F 0 1 ⊗ₜ[F] x + pairA F 1 0 ⊗ₜ[F] (1 / 2 : E)) =
@@ -56,7 +56,7 @@ theorem sigR_half (σ : E →ₐ[F] E) (x : E) :
     Algebra.TensorProduct.map_tmul, AlgHom.id_apply, AlgHom.id_apply, h2]
 
 /- English proof (translation)
-Establish `hae : pairA F 0 1 + pairA F 1 0 = (1 : AF F)` using `Prod.ext (zero_add 1) (add_zero 1)`. Rewrite using `[show (pairA F 0 1 ⊗ₜ[F] x + pairA F 1 0 ⊗ₜ[F] (1 / 2 : E)) + (pairA F 0 1 ⊗ₜ[F] y + pairA F 1 0 ⊗ₜ[F] (1 / 2 : E)) = pairA F 0 1 ⊗ₜ[F] (x + y) + pairA F 1 0 ⊗ₜ[F] (1 / 2 + 1 / 2 : E) by`. Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_add]`. Use the proof step `abel,`. Use the proof step `h, add_halves, ← TensorProduct.add_tmul, hae, Algebra.TensorProduct.one_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_add (x y : E) (h : x + y = 1) :
     (pairA F 0 1 ⊗ₜ[F] x + pairA F 1 0 ⊗ₜ[F] (1 / 2 : E)) + (pairA F 0 1 ⊗ₜ[F] y + pairA F 1 0 ⊗ₜ[F] (1 / 2 : E)) =
@@ -70,9 +70,7 @@ theorem half_add (x y : E) (h : x + y = 1) :
 end General
 
 /- English proof (translation)
-Introduce `D`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.exists_integer_add_star_eq_one_of_isCMUnram D.host.E D.sp.cm.cmUnram`. Use `⟨pairA D.host.F 0 1 ⊗ₜ[D.host.F] (t₀ : D.host.E) + pairA D.host.F 1 0 ⊗ₜ[D.host.F] (1 / 2 : D.host.E), ?_, fun v => ?_, fun w => compInf_half w _⟩` and prove the remaining obligations. Conclude with `(congrArg _ (sigR_half D.sp.cm.sig _)).trans (half_add _ _ ht₀)`. Rewrite using `[compFin_half]`.
-
-Conclude with `tmul_mem_intLoc (one_mem _) t₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_halfData : ∀ D : D7, ∃ t : AE D, HalfData t := by
   intro D

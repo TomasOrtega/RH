@@ -16,7 +16,7 @@ section Diag
 variable {κ K : Type} [CommRing κ] [Field K] {N n : ℕ}
 
 /- English proof (translation)
-Take `⟨H, lam⟩` from `l`. Take `⟨H', lam'⟩` from `l'`. Take `rfl : H = H'` from `e`. Take `rfl : lam = lam'` from `MonoidHom.ext fun a => e' a.1 a.2 a.2`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem lev_ext {l l' : Lev κ K n} (e : l.H = l'.H) (e' : ∀ a h h', l.lam ⟨a, h⟩ = l'.lam ⟨a, h'⟩) : l = l' := by
   obtain ⟨H, lam⟩ := l
@@ -32,18 +32,18 @@ def levDiag (h : n ≤ N) (l : Lev κ K n) : Lev κ K N where
 variable (h : n ≤ N) (l : Lev κ K n)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levDiag (a : GL (Fin N) κ) : a ∈ (levDiag h l).H ↔ ∃ g ∈ l.H, diagEmb κ h g = a := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_map_iff_mem (diagEmb_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem diagEmb_mem_levDiag (g : GL (Fin n) κ) : diagEmb κ h g ∈ (levDiag h l).H ↔ g ∈ l.H :=
   Subgroup.mem_map_iff_mem (diagEmb_injective h)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `congrArg l.lam ((l.H.equivMapOfInjective _ (diagEmb_injective h)).symm_apply_apply ⟨g, hg⟩)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem levDiag_lam {a : GL (Fin N) κ} {g : GL (Fin n) κ} (e : a = diagEmb κ h g) (ha : a ∈ (levDiag h l).H) (hg : g ∈ l.H) :
     (levDiag h l).lam ⟨a, ha⟩ = l.lam ⟨g, hg⟩ := by
@@ -51,7 +51,7 @@ theorem levDiag_lam {a : GL (Fin N) κ} {g : GL (Fin n) κ} (e : a = diagEmb κ 
   exact congrArg l.lam ((l.H.equivMapOfInjective _ (diagEmb_injective h)).symm_apply_apply ⟨g, hg⟩)
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `diagMat_of_lt (g : Matrix (Fin n) (Fin n) κ) (i := Fin.castLE (hr.trans h) i) (j := Fin.castLE (hr.trans h) j) (lt_of_lt_of_le i.2 hr) (lt_of_lt_of_le j.2 hr)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem firstBlock_diagEmb_eq {r : ℕ} (hr : r ≤ n) (bl : List ℕ) (g : GL (Fin n) κ) (hg : g ∈ blockUT n κ r bl)
     (hg' : diagEmb κ h g ∈ blockUT N κ r bl) : blk0 N κ (hr.trans h) bl ⟨_, hg'⟩ = blk0 n κ hr bl ⟨g, hg⟩ := by
@@ -60,9 +60,9 @@ theorem firstBlock_diagEmb_eq {r : ℕ} (hr : r ≤ n) (bl : List ℕ) (g : GL (
     (lt_of_lt_of_le i.2 hr) (lt_of_lt_of_le j.2 hr)
 
 /- English proof (translation)
-Use `mem_btG.2 fun i j hij => ?_` and prove the remaining obligations. Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; omega`. Rewrite using `[diagEmb_val]`. Distinguish the cases in `hi : i.1 < n`. Distinguish the cases in `hj : j.1 < n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[diagMat_of_lt _ hi hj]`. Conclude with `mem_btG.1 hg ⟨i.1, hi⟩ ⟨j.1, hj⟩ hij`. Rewrite using `[diagMat_of_not_right _ _ hj, Matrix.one_apply_ne hne]`. Rewrite using `[diagMat_of_not_left _ _ hi, Matrix.one_apply_ne hne]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagEmb_mem_blockUT' {r : ℕ} (bl : List ℕ) {g : GL (Fin n) κ} (hg : g ∈ blockUT n κ r bl) :
     diagEmb κ h g ∈ blockUT N κ r bl := by
@@ -77,19 +77,19 @@ theorem diagEmb_mem_blockUT' {r : ℕ} (bl : List ℕ) {g : GL (Fin n) κ} (hg :
   · rw [diagMat_of_not_left _ _ hi, Matrix.one_apply_ne hne]
 
 /- English proof (translation)
-Substitute `hN hn` using the available equality. Establish `hc : ∀ i, r + m * t ≤ i → coarse r (List.replicate m t) i = m + 1` using `fun i hi => by`. Rewrite using `[coarse_of_le (by omega), blkIdx_replicate_of_le t m _ (by omega)]`. Use `lev_ext (Subgroup.ext fun M => ⟨?_, ?_⟩) ?_` and prove the remaining obligations. Introduce and unpack `⟨g, hg, rfl⟩`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, h2⟩` from `mem_HPar.1 hg`. Conclude with `⟨mem_HPar.2 ⟨diagEmb_mem_blockUT' h _ h1, by rwa [firstBlock_diagEmb_eq h hr _ g h1]⟩, diagEmb_mem_fixCol _ le_rfl g⟩`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨h3, h4⟩` from `mem_HPar.1 h1`. Take `⟨g, rfl, hge⟩` from `exists_diagEmb M h2 fun j hj => mem_btG.1 h3 _ j (by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fin.val_last, hc _ le_rfl]`. Distinguish the cases in `c : j.1 < r`. Rewrite using `[coarse_of_lt c]`. Use linear arithmetic over natural numbers and integers. Use `blkIdx_replicate_lt t m (j.1 - r) (by omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[coarse_of_le (by omega)]; omega)`. Establish `h5 : g ∈ blockUT _ κ r (List.replicate m t)` using `mem_btG.2 fun i j hij => by`. Rewrite using `[hge]`. Conclude with `mem_btG.1 h3 i.castSucc j.castSucc hij`. Conclude with `⟨g, mem_HPar.2 ⟨h5, by rwa [firstBlock_diagEmb_eq h hr _ g h5] at h4⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a ha ha'`. Take `⟨g, hg, rfl⟩` from `id ha`. Rewrite using `[levDiag_lam h _ rfl ha hg]`. Establish `h1` using `HPar_le hr _ H₀ hg`. Establish `h2` using `diagEmb_mem_blockUT' h _ h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `show lam₀ (HPar0 hr _ H₀ ⟨g, hg⟩) * detChar χ _ r _ ⟨g, h1⟩ = lam₀ (HPar0 hr' _ H₀ ⟨_, ha'.1⟩) * detChar χ _ r _ ⟨_, h2⟩`. Use `congr 1`. Conclude with `congrArg lam₀ (Subtype.ext (firstBlock_diagEmb_eq h hr _ g h1 h2).symm)`. Rewrite using `[detChar_apply, detChar_apply]`. Use `Finset.prod_congr rfl fun c hc' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[blkDet_diagEmb h _ (c + 1) (fun i hi => by`. Use `Finset.mem_range.1 hc'` as an intermediate fact. Rewrite `this` using `[List.length_replicate]`. Rewrite using `[hc i hi]`. Use the proof step `omega) g h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levDiag_HPar {r t m : ℕ} (hN : N = n + 1) (hn : n = r + m * t) (hr : r ≤ n) (hr' : r ≤ N) (H₀ : Subgroup (GL (Fin r) κ))
     (lam₀ : H₀ →* Kˣ) (χ : ℕ → κˣ →* Kˣ) :
@@ -139,9 +139,7 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {N n : �
 variable (hN : N = n + 1) (P : HeightOneSpectrum (𝓞 E)) (c : ℕ) (l : Lev (𝓞 E ⧸ P.asIdeal) K n)
 
 /- English proof (translation)
-Use `sup_le ?_ fun k hk => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Rewrite using `[mem_levRed, redGL_extI, diagEmb_mem_levDiag]`. Conclude with `hj`. Rewrite using `[mem_levRed, redGL_of_prinCong c.succ_pos hk]`.
-
-Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_prinCong_le : (levRed P l).H.map (extI hN P) ⊔ prinCong N P (c + 1) ≤ (levRed P (levDiag (by omega : n ≤ N) l)).H := by
   refine sup_le ?_ fun k hk => ?_
@@ -158,9 +156,9 @@ def levCong : LevI E K N P where
 variable {P}
 
 /- English proof (translation)
-Use `show k ∈ (((levRed P l).H.map (extI hN P) ⊔ prinCong N P (c + 1) : Subgroup _) : Set _) ↔ _`. Rewrite using `[Subgroup.mul_normal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨j, hj, rfl⟩, b, hb, rfl⟩`. Conclude with `⟨j, hj, by simpa using hb⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨j, hj, hb⟩`. Conclude with `⟨_, ⟨j, hj, rfl⟩, _, hb, mul_inv_cancel_left _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_levCong (k : GLint E N P) :
     k ∈ (levCong hN P c l).H ↔ ∃ j ∈ (levRed P l).H, (extI hN P j)⁻¹ * k ∈ prinCong N P (c + 1) := by
@@ -173,9 +171,7 @@ theorem mem_levCong (k : GLint E N P) :
     exact ⟨_, ⟨j, hj, rfl⟩, _, hb, mul_inv_cancel_left _ _⟩
 
 /- English proof (translation)
-Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Establish `e : (a⁻¹ * k).1 x - x = (a⁻¹).1 (k.1 x - a.1 x)`. Rewrite using `[map_sub]`. Conclude with `congrArg _ (LinearEquiv.symm_apply_apply a.1 x).symm`. Rewrite using `[e, ← map_smul]`.
-
-Conclude with `(a⁻¹).2 _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul_mem_prinCong (a k : GLint E N P) : a⁻¹ * k ∈ prinCong N P c ↔
     ∀ x ∈ stdAt E N P, ((qOf P : E) ^ c)⁻¹ • (k.1 x - a.1 x) ∈ stdAt E N P := by
@@ -187,7 +183,7 @@ theorem inv_mul_mem_prinCong (a k : GLint E N P) : a⁻¹ * k ∈ prinCong N P c
   exact (a⁻¹).2 _
 
 /- English proof (translation)
-Simplify using `only [mem_levCong, inv_mul_mem_prinCong, extI_val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_levCong_iff (k : GLint E N P) :
     k ∈ (levCong hN P c l).H ↔ ∃ j ∈ (levRed P l).H,
@@ -195,12 +191,12 @@ theorem mem_levCong_iff (k : GLint E N P) :
   simp only [mem_levCong, inv_mul_mem_prinCong, extI_val]
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem prinCong_le_levCong : prinCong N P (c + 1) ≤ (levCong hN P c l).H := le_sup_right
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => (mem_levCong hN c l _).2 ⟨j, h, by simpa using one_mem _⟩⟩` and prove the remaining obligations. Use `sup_prinCong_le hN P c l h` as an intermediate fact. Rewrite `this` using `[mem_levRed, redGL_extI, diagEmb_mem_levDiag]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem extI_mem_levCong (j : GLint E n P) : extI hN P j ∈ (levCong hN P c l).H ↔ j ∈ (levRed P l).H := by
   refine ⟨fun h => ?_, fun h => (mem_levCong hN c l _).2 ⟨j, h, by simpa using one_mem _⟩⟩
@@ -208,7 +204,7 @@ theorem extI_mem_levCong (j : GLint E n P) : extI hN P j ∈ (levCong hN P c l).
   rwa [mem_levRed, redGL_extI, diagEmb_mem_levDiag] at this
 
 /- English proof (translation)
-Establish `e` using `redGL_of_prinCong c.succ_pos h`. Rewrite `e` using `[map_mul, map_inv, inv_mul_eq_one, redGL_extI]`. Conclude with `levDiag_lam _ l e.symm (sup_prinCong_le hN P c l hk) hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levCong_lam {k : GLint E N P} (hk : k ∈ (levCong hN P c l).H) {j : GLint E n P} (hj : j ∈ (levRed P l).H)
     (h : (extI hN P j)⁻¹ * k ∈ prinCong N P (c + 1)) : (levCong hN P c l).lam ⟨k, hk⟩ = (levRed P l).lam ⟨j, hj⟩ := by
@@ -217,20 +213,20 @@ theorem levCong_lam {k : GLint E N P} (hk : k ∈ (levCong hN P c l).H) {j : GLi
   exact levDiag_lam _ l e.symm (sup_prinCong_le hN P c l hk) hj
 
 /- English proof (translation)
-The claim follows from `levCong_lam hN c l hk hj (by simpa using one_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem levCong_lam_extI {j : GLint E n P} (hk : extI hN P j ∈ (levCong hN P c l).H) (hj : j ∈ (levRed P l).H) :
     (levCong hN P c l).lam ⟨_, hk⟩ = (levRed P l).lam ⟨j, hj⟩ := levCong_lam hN c l hk hj (by simpa using one_mem _)
 
 /- English proof (translation)
-The claim follows from `(levCong_lam hN c l _ (one_mem _) (by simpa using h)).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem levCong_lam_prinCong {k : GLint E N P} (h : k ∈ prinCong N P (c + 1)) :
     (levCong hN P c l).lam ⟨k, prinCong_le_levCong hN c l h⟩ = 1 :=
   (levCong_lam hN c l _ (one_mem _) (by simpa using h)).trans (map_one _)
 
 /- English proof (translation)
-Take `⟨j, -, h⟩` from `(mem_levCong_iff hN c l k).1 hk`. Use `mem_stdAt.1 (h x hx) (Br.iL hN)` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, Pi.sub_apply, sumE_last, Units.val_one, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem levCong_last {k : GLint E N P} (hk : k ∈ (levCong hN P c l).H) {x : Sp E N} (hx : x ∈ stdAt E N P) :
     IntAt P (((qOf P : E) ^ (c + 1))⁻¹ * (k.1 x (Br.iL hN) - x (Br.iL hN))) := by
@@ -241,7 +237,7 @@ theorem levCong_last {k : GLint E N P} (hk : k ∈ (levCong hN P c l).H) {x : Sp
 instance levCong_finiteIndex : (levCong hN P c l).H.FiniteIndex := Subgroup.finiteIndex_of_le (prinCong_le_levCong hN c l)
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `levRed_root P (levDiag (by omega : n ≤ N) l)`. Conclude with `⟨m, hm, fun k => h _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levCong_root : ∃ m : ℕ, 0 < m ∧ ∀ k, (levCong hN P c l).lam k ^ m = 1 := by
   obtain ⟨m, hm, h⟩ := levRed_root P (levDiag (by omega : n ≤ N) l)
@@ -250,7 +246,7 @@ theorem levCong_root : ∃ m : ℕ, 0 < m ∧ ∀ k, (levCong hN P c l).lam k ^ 
 end Cong
 
 /- English proof (translation)
-Establish `h : ∃ p', Quotient.mk (MulAction.orbitRel G D) p' = Quotient.mk (MulAction.orbitRel G D) p ∧ pref p'` using `⟨p, rfl, hp⟩`. Rewrite using `[prefRep, dif_pos h]`. Conclude with `h.choose_spec.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pref_prefRep {G D : Type} [Group G] [MulAction G D] (pref : D → Prop) {p : D} (hp : pref p) :
     pref (prefRep pref (Quotient.mk (MulAction.orbitRel G D) p)) := by
@@ -265,7 +261,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (cst : LocCst X (rowSG Pr sel mu)) (P : LevFam X.E X.K R.r Pr.vGs)
 
 /- English proof (translation)
-The claim follows from `h ▸ N_m_succ R`.
+A detailed English derivation is pending.
 -/
 theorem N_succ_of_eq {j : ℕ} (h : j = R.m) : R.N j = (R.N R.m - 1) + 1 := h ▸ N_m_succ R
 
@@ -292,7 +288,7 @@ def topDep (M : ℕ) : ℕ := max (4 * R.m) (2 * R.m + 2 * M - 1)
 variable (R) in
 
 /- English proof (translation)
-Use `R.two_le_m` as an intermediate fact. Unfold `topDep`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem topDep_succ (M : ℕ) : topDep R M + 1 = max (4 * R.m + 1) (2 * R.m + 2 * M) := by
   have := R.two_le_m
@@ -302,14 +298,14 @@ theorem topDep_succ (M : ℕ) : topDep R M + 1 = max (4 * R.m + 1) (2 * R.m + 2 
 variable (R) in
 
 /- English proof (translation)
-The claim follows from `topDep_succ R M`.
+A detailed English derivation is pending.
 -/
 theorem topDep_succ_eq_default (M : ℕ) : topDep R M + 1 = (default : TopDepth R M).1 := topDep_succ R M
 
 variable (R) in
 
 /- English proof (translation)
-Use `R.two_le_m` as an intermediate fact. Unfold `topDep`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_le_topDep (M : ℕ) : 2 * M ≤ topDep R M := by
   have := R.two_le_m
@@ -319,19 +315,19 @@ theorem two_mul_le_topDep (M : ℕ) : 2 * M ≤ topDep R M := by
 def topLev : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K)) := topLevAt Ch sel mu P (topDep R cst.M)
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem topLevAt_levG_m (c : ℕ) : (topLevAt Ch sel mu P c).levG R.m = levGTop Ch P := dif_pos rfl
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem topLevAt_levQ_m (c : ℕ) : (topLevAt Ch sel mu P c).levQ R.m = levQTop R sel mu c := dif_pos rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : j = R.m`. Substitute `h` using the available equality. Rewrite using `[topLevAt_levQ_m]`. Conclude with `levCong_finiteIndex _ _ _`. Rewrite using `[show (topLevAt Ch sel mu P c).levQ j = LevQFam.top X.E X.K (R.N j) _ from dif_neg h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun e => one_ne_zero (Subgroup.index_top.symm.trans e)⟩`.
+A detailed English derivation is pending.
 -/
 theorem topLevAt_finiteIndex (c j : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) : ((topLevAt Ch sel mu P c).levQ j Q).H.FiniteIndex := by
   by_cases h : j = R.m
@@ -342,9 +338,9 @@ theorem topLevAt_finiteIndex (c j : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) : (
     exact ⟨fun e => one_ne_zero (Subgroup.index_top.symm.trans e)⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : j = R.m`. Substitute `h` using the available equality. Rewrite using `[topLevAt_levQ_m]`. Conclude with `levCong_root _ _ _`. Rewrite using `[show (topLevAt Ch sel mu P c).levQ j = LevQFam.top X.E X.K (R.N j) _ from dif_neg h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_pos, fun _ => pow_one _⟩`.
+A detailed English derivation is pending.
 -/
 theorem topLevAt_root (c j : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) :
     ∃ m : ℕ, 0 < m ∧ ∀ k, ((topLevAt Ch sel mu P c).levQ j Q).lam k ^ m = 1 := by
@@ -356,47 +352,47 @@ theorem topLevAt_root (c j : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) :
     exact ⟨1, one_pos, fun _ => pow_one _⟩
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem topLev_levG_m : (topLev Ch sel mu cst P).levG R.m = levGTop Ch P := dif_pos rfl
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem topLev_levQ_m : (topLev Ch sel mu cst P).levQ R.m = levQTop R sel mu (topDep R cst.M) := dif_pos rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h rfl, fun h _ => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem topLev_pref_m (u : Pr.Word) (p : ChPt (R := R) sel mu u R.m) :
     (topLev Ch sel mu cst P).pref u R.m p ↔ ∃ d, p = tilF sel mu u d := ⟨fun h => h rfl, fun h _ => h⟩
 
 /- English proof (translation)
-Introduce `h'` and use `absurd h' h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem topLev_pref_ne (u : Pr.Word) {j : ℕ} (h : j ≠ R.m) (p : ChPt (R := R) sel mu u j) : (topLev Ch sel mu cst P).pref u j p :=
   fun h' => absurd h' h
 
 /- English proof (translation)
-The claim follows from `topLevAt_finiteIndex Ch sel mu P _ j Q`.
+A detailed English derivation is pending.
 -/
 theorem topLev_finiteIndex (j : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) : ((topLev Ch sel mu cst P).levQ j Q).H.FiniteIndex :=
   topLevAt_finiteIndex Ch sel mu P _ j Q
 
 /- English proof (translation)
-The claim follows from `topLevAt_root Ch sel mu P _ j Q`.
+A detailed English derivation is pending.
 -/
 theorem topLev_root (j : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) :
     ∃ m : ℕ, 0 < m ∧ ∀ k, ((topLev Ch sel mu cst P).levQ j Q).lam k ^ m = 1 := topLevAt_root Ch sel mu P _ j Q
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levGTop (w : Pr.vGs) (a : GL (Fin (R.N R.m)) (𝓞 X.E ⧸ w.1.asIdeal)) :
     a ∈ (levGTop Ch P w).H ↔ ∃ g ∈ (rowTyG Ch P w).H, diagEmb _ (Nat.sub_le _ 1) g = a := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha choose g hg e using fun w => (mem_levGTop Ch P w _).1 (ha w (Set.mem_univ w))`. Conclude with `⟨g, fun w _ => hg w, funext fun w => (extGH_apply _ g w).trans (e w)⟩`. Introduce and unpack `⟨h, hh, rfl⟩ w -`. Conclude with `⟨h w, hh w (Set.mem_univ w), (extGH_apply _ h w).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_levGTop_grp (a : GLG X.E (R.N R.m) Pr.vGs) :
     a ∈ (levGTop Ch P).grp ↔ ∃ h ∈ (rowTyG Ch P).grp, extGH (N_m_succ R) h = a := by
@@ -408,7 +404,7 @@ theorem mem_levGTop_grp (a : GLG X.E (R.N R.m) Pr.vGs) :
     exact ⟨h w, hh w (Set.mem_univ w), (extGH_apply _ h w).symm⟩
 
 /- English proof (translation)
-The claim follows from `levDiag_HPar _ (N_m_succ R) (rank_X'_eq R) _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem levGTop_eq (w : Pr.vGs) : levGTop Ch P w =
     ⟨HPar (R.N R.m) _ ((r_le_X' R).trans (Nat.sub_le _ 1)) (List.replicate R.m R.t) (P w).H ⊓ fixCol _ _ (R.r + R.m * R.t),
@@ -416,7 +412,7 @@ theorem levGTop_eq (w : Pr.vGs) : levGTop Ch P w =
   levDiag_HPar _ (N_m_succ R) (rank_X'_eq R) _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `levGTop_eq Ch _ w`.
+A detailed English derivation is pending.
 -/
 theorem levGTop_PsymF (w : Pr.vGs) : levGTop Ch (rPsymF Ch) w =
     ⟨HXmsym _ (R.N R.m) R.k R.r R.t R.m R.rS ((r_le_X' R).trans (Nat.sub_le _ 1)),
@@ -425,7 +421,7 @@ theorem levGTop_PsymF (w : Pr.vGs) : levGTop Ch (rPsymF Ch) w =
 variable {sel mu} in
 
 /- English proof (translation)
-The claim follows from `mem_levCong_iff _ _ _ k`.
+A detailed English derivation is pending.
 -/
 theorem mem_levQTop (c : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) (k : GLint X.E (R.N R.m) Q.1) :
     k ∈ (levQTop R sel mu c Q).H ↔ ∃ h ∈ (levQX R sel mu Q).H, ∀ x ∈ stdAt X.E (R.N R.m) Q.1,
@@ -434,7 +430,7 @@ theorem mem_levQTop (c : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) (k : GLint X.E
 variable {sel mu} in
 
 /- English proof (translation)
-The claim follows from `levCong_lam _ c _ k.2 h.2 ((inv_mul_mem_prinCong (c + 1) (extI (N_m_succ R) Q.1 h.1) k.1).2 e)`.
+A detailed English derivation is pending.
 -/
 theorem levQTop_lam (c : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) (k : (levQTop R sel mu c Q).H) (h : (levQX R sel mu Q).H)
     (e : ∀ x ∈ stdAt X.E (R.N R.m) Q.1,
@@ -445,7 +441,7 @@ theorem levQTop_lam (c : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) (k : (levQTop 
 variable {sel mu} in
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun Q _ => extI_mem_levCong (N_m_succ R) c _ (a Q)`.
+A detailed English derivation is pending.
 -/
 theorem extQ_mem_levQTop (c : ℕ) (a : GLQ X.E (R.N R.m - 1) (QE sel (mu : Chr X.F X.E X.K))) :
     extQ X.E (N_m_succ R) _ a ∈ (levQTop R sel mu c).grp ↔ a ∈ (levQX R sel mu).grp :=
@@ -454,19 +450,19 @@ theorem extQ_mem_levQTop (c : ℕ) (a : GLQ X.E (R.N R.m - 1) (QE sel (mu : Chr 
 variable (R) in
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem levQTop_eq_topLevQ' {c c' : ℕ} (e : c + 1 = c') (hc : 0 < c') : levQTop R sel mu c = topLevQ R sel mu hc := by
   subst e
   rfl
 
 /- English proof (translation)
-The claim follows from `topLev_levG_m Ch sel mu cst P`.
+A detailed English derivation is pending.
 -/
 theorem topLev_levG_m_eq : (topLev Ch sel mu cst P).levG R.m = topLevG Ch P := topLev_levG_m Ch sel mu cst P
 
 /- English proof (translation)
-The claim follows from `(topLev_levQ_m Ch sel mu cst P).trans (levQTop_eq_topLevQ' R sel mu (topDep_succ_eq_default R cst.M) _)`.
+A detailed English derivation is pending.
 -/
 theorem topLev_levQ_m_eq : (topLev Ch sel mu cst P).levQ R.m = topLevQ R sel mu (default : TopDepth R cst.M).pos :=
   (topLev_levQ_m Ch sel mu cst P).trans (levQTop_eq_topLevQ' R sel mu (topDep_succ_eq_default R cst.M) _)
@@ -477,7 +473,7 @@ variable (hPr : Pr.Ok) (hQ : ∀ (u : Pr.Word) (Q : QE sel (mu : Chr X.F X.E X.K
 include hPr hQ
 
 /- English proof (translation)
-The claim follows from `topLevAt_finiteIndex Ch sel mu P c root j Q g := by obtain ⟨m, h, h'⟩ := topLevAt_root Ch sel mu P c j Q exact ⟨m, h, h' g⟩ levG_top a ha := by rw [topLevAt_levG_m] at ha obtain ⟨h, -, e⟩ := (mem_levGTop_grp Ch P a).1 ha exact ⟨h, e⟩ levQ_last Q k hk x hx := by rw [topLevAt_levQ_ …`.
+A detailed English derivation is pending.
 -/
 theorem topLevAt_ok (c : ℕ) : (topLevAt Ch sel mu P c).Ok where
   idx := topLevAt_finiteIndex Ch sel mu P c
@@ -514,21 +510,21 @@ theorem topLevAt_ok (c : ℕ) : (topLevAt Ch sel mu P c).Ok where
     exact ⟨d.deco, tilF_deco sel mu hPr u (hQ u) d⟩
 
 /- English proof (translation)
-The claim follows from `topLevAt_ok Ch sel mu P hPr hQ _`.
+A detailed English derivation is pending.
 -/
 theorem topLev_ok : (topLev Ch sel mu cst P).Ok := topLevAt_ok Ch sel mu P hPr hQ _
 
 end Ok
 
 /- English proof (translation)
-Rewrite using `[topLev_levG_m]`. Conclude with `(mem_levGTop_grp Ch P _).2 ⟨h.1, h.2, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extGH_mem_topLev (h : (rowTyG Ch P).grp) : extGH (N_m_succ R) h.1 ∈ ((topLev Ch sel mu cst P).levG R.m).grp := by
   rw [topLev_levG_m]
   exact (mem_levGTop_grp Ch P _).2 ⟨h.1, h.2, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[topLev_levQ_m]`. Conclude with `(extQ_mem_levQTop _ _).2 c.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extQ_mem_topLev (c : (levQX R sel mu).grp) : extQ X.E (N_m_succ R) _ c.1 ∈ ((topLev Ch sel mu cst P).levQ R.m).grp := by
   rw [topLev_levQ_m]
@@ -548,9 +544,9 @@ theorem incl_extTop (g : FrmG (rowTyG Ch P) (levQX R sel mu)) : FrmG.incl _ _ (e
     (extUH (N_m_succ R) g.1, extGH (N_m_succ R) g.2.1.1, extQ X.E (N_m_succ R) _ g.2.2.1) := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Establish `e` using `congrArg (FrmG.incl _ _) h`. Rewrite `e` using `[incl_extTop, incl_extTop, Prod.mk.injEq, Prod.mk.injEq]`. Use `Prod.ext (Subtype.ext (sumE_inj (N_m_succ R) (t := 1) ?_)) (Prod.ext (Subtype.ext (funext fun w => ?_)) (Subtype.ext (extQ_injective _ e.2.2)))` and prove the remaining obligations. Rewrite using `[← extUH_val, ← extUH_val, e.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun e.2.1 w` as an intermediate fact. Rewrite `this` using `[extGH_apply, extGH_apply]`. Conclude with `diagEmb_injective _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extTop_injective : Function.Injective (extTop Ch sel mu cst P) := by
   intro a b h
@@ -564,7 +560,7 @@ theorem extTop_injective : Function.Injective (extTop Ch sel mu cst P) := by
     exact diagEmb_injective _ this
 
 /- English proof (translation)
-Rewrite using `[LevFam.chr_apply, LevFam.chr_apply]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hg` using `g.2.1.2 w (Set.mem_univ w)`. Establish `h` using `(diagEmb_mem_levDiag (Nat.sub_le _ 1) (rowTyG Ch P w) _).2 hg`. Conclude with `(lev_lam_congr (congrFun (topLev_levG_m Ch sel mu cst P) w) (extGH_apply (N_m_succ R) g.2.1.1 w) _ h).trans (levDiag_lam _ _ rfl h hg)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chrG_extTop (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
     ((topLev Ch sel mu cst P).levG R.m).chr (extTop Ch sel mu cst P g).2.1 = (rowTyG Ch P).chr g.2.1 := by
@@ -576,7 +572,7 @@ theorem chrG_extTop (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
     (levDiag_lam _ _ rfl h hg)
 
 /- English proof (translation)
-Establish `key : ∀ (Θ : LevQFam X.E X.K (R.N R.m) (QE sel (mu : Chr X.F X.E X.K))) (_ : Θ = levQTop R sel mu (topDep R cst.M)) (h : extQ X.E (N_m_succ R) _ g.2.2.1 ∈ Θ.grp), Θ.chr ⟨_, h⟩ = (levQX R sel mu).chr g.2.2`. Introduce and unpack `_ rfl h`. Rewrite using `[levQ_chr_apply, levQ_chr_apply]`. Conclude with `Finset.prod_congr rfl fun Q _ => levCong_lam_extI _ _ _ (h Q (Set.mem_univ Q)) (g.2.2.2 Q (Set.mem_univ Q))`. Conclude with `key _ (topLev_levQ_m Ch sel mu cst P) _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chrQ_extTop (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
     ((topLev Ch sel mu cst P).levQ R.m).chr (extTop Ch sel mu cst P g).2.2 = (levQX R sel mu).chr g.2.2 := by
@@ -588,7 +584,7 @@ theorem chrQ_extTop (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
   exact key _ (topLev_levQ_m Ch sel mu cst P) _
 
 /- English proof (translation)
-Rewrite using `[chrG_extTop, chrQ_extTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chr_extTop (g : FrmG (rowTyG Ch P) (levQX R sel mu)) :
     ((topLev Ch sel mu cst P).levG R.m).chr (extTop Ch sel mu cst P g).2.1 *
@@ -602,7 +598,7 @@ variable (hPr : Pr.Ok) (u : Pr.Word) (hQ : ∀ Q : QE sel (mu : Chr X.F X.E X.K)
 include hPr hQ
 
 /- English proof (translation)
-The claim follows from `tilF_smul sel mu hPr u hQ (FrmG.incl _ _ g) p`.
+A detailed English derivation is pending.
 -/
 theorem tilF_extTop (g : FrmG (rowTyG Ch P) (levQX R sel mu)) (p : XPt Pr R sel mu) :
     tilF sel mu u (g • p) = extTop Ch sel mu cst P g • tilF sel mu u p := tilF_smul sel mu hPr u hQ (FrmG.incl _ _ g) p
@@ -612,7 +608,7 @@ end Til
 variable (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
 
 /- English proof (translation)
-Take `⟨_ | b, hb⟩` from `b`. Both sides reduce to the same expression. Conclude with `absurd (hb.1 rfl) (by omega)`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levGAt_of_le (Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K))) {j : ℕ} (h : R.m ≤ j) (b : Idx sel mu L j) :
     levGAt sel mu L Tp j b = Tp.levG j := by
@@ -621,7 +617,7 @@ theorem levGAt_of_le (Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K))) {j : �
   · exact absurd (hb.1 rfl) (by omega)
 
 /- English proof (translation)
-Take `⟨_ | b, hb⟩` from `b`. Both sides reduce to the same expression. Conclude with `absurd (hb.1 rfl) (by omega)`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levQAt_of_le (Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K))) {j : ℕ} (h : R.m ≤ j) (b : Idx sel mu L j) :
     levQAt sel mu L Tp j b = Tp.levQ j := by
@@ -630,13 +626,13 @@ theorem levQAt_of_le (Tp : TopLev X Pr R (QE sel (mu : Chr X.F X.E X.K))) {j : �
   · exact absurd (hb.1 rfl) (by omega)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (topLev_pref_m Ch sel mu cst P u _).2 ⟨DecoF.base _ _ _ _ _, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (u : Pr.Word) : ∃ p, (topLev Ch sel mu cst P).pref u R.m p :=
   ⟨_, (topLev_pref_m Ch sel mu cst P u _).2 ⟨DecoF.base _ _ _ _ _, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[show (levQTop R sel mu c Q).lam ⟨_, hk⟩ = (levQX R sel mu Q).lam h from levCong_lam_extI _ _ _ hk h.2]`. Conclude with `inv_mul_cancel _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (c : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) (h : (levQX R sel mu Q).H)
     (hk : extI (N_m_succ R) Q.1 h.1 ∈ (levQTop R sel mu c Q).H) :
@@ -646,14 +642,14 @@ example (c : ℕ) (Q : QE sel (mu : Chr X.F X.E X.K)) (h : (levQX R sel mu Q).H)
   exact inv_mul_cancel _
 
 /- English proof (translation)
-Rewrite using `[topLev_levG_m, levGTop_eq]`. Conclude with `inf_le_right`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (w : Pr.vGs) : ((topLev Ch sel mu cst P).levG R.m w).H ≤ fixCol _ _ (R.r + R.m * R.t) := by
   rw [topLev_levG_m, levGTop_eq]
   exact inf_le_right
 
 /- English proof (translation)
-Rewrite `hk` using `[topLev_levQ_m]`. Rewrite using `[← topDep_succ]`. Conclude with `levCong_last _ _ _ hk hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (Q : QE sel (mu : Chr X.F X.E X.K)) (k : GLint X.E (R.N R.m) Q.1) (hk : k ∈ ((topLev Ch sel mu cst P).levQ R.m Q).H)
     (x : Sp X.E (R.N R.m)) (hx : x ∈ stdAt X.E (R.N R.m) Q.1) :
@@ -663,14 +659,14 @@ example (Q : QE sel (mu : Chr X.F X.E X.K)) (k : GLint X.E (R.N R.m) Q.1) (hk : 
   exact levCong_last _ _ _ hk hx
 
 /- English proof (translation)
-Rewrite using `[topDep_succ, topDep_succ, h]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example (h : R.m = 2) : topDep R 1 + 1 = 9 ∧ topDep R 5 + 1 = 14 := by
   rw [topDep_succ, topDep_succ, h]
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `topLev_ok Ch sel _ cst P hPr fun u Q => by obtain ⟨Q, hQ⟩ := Q rw [twistPrimes_trivialTuple_empty] at hQ simp at hQ`.
+A detailed English derivation is pending.
 -/
 example (hPr : Pr.Ok) (cst : LocCst X (rowSG Pr sel (mu0 X.F X.E X.K S))) : (topLev Ch sel (mu0 X.F X.E X.K S) cst P).Ok :=
   topLev_ok Ch sel _ cst P hPr fun u Q => by

@@ -28,7 +28,7 @@ private def famSmul {Z S : Scheme.{0}} {p : Z ⟶ S} {R' R : Type} [CommRing R']
     exact map_zsmul _ _ _
 
 /- English proof (translation)
-The claim follows from `A.pb.isIso_snd_of_isIso`.
+A detailed English derivation is pending.
 -/
 private theorem isIso_r {S : Scheme.{0}} (A : Sq (𝟙 S)) : IsIso A.r := A.pb.isIso_snd_of_isIso
 
@@ -58,25 +58,23 @@ private def famId (S : Scheme.{0}) {R : Type} [CommRing R] (I : Cx R) (d : ℤ) 
       map_res]
 
 /- English proof (translation)
-Introduce `hF q i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z S p _ w w' τ τ' hτ hτ'`. Use `⟨famAdd τ τ', fun A a => ?_, fun n A a => rfl⟩` and prove the remaining obligations. Take `⟨b, hb, hs⟩` from `hτ A a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb', hs'⟩` from `hτ' A a`. Use `⟨b + b', ?_, fun Ω _ _ x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(τ.deg 0).app A _ + (τ'.deg 0).app A _ = _`. Rewrite using `[hb, hb']`. Conclude with `(map_add _ _ _).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := Sq.finite A`. Establish `hfin` using `hF A.r Ω x`. Rewrite using `[show Sec.res x (b + b') = Sec.res x b + Sec.res x b' from map_add _ _ _, hs Ω x, hs' Ω x, ← finsum_mem_add_distrib hfin]`. Use `finsum_mem_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Wt.add, add_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Z S p _ d w τ hτ`. Use `⟨famSmul d τ, fun A a => ?_, fun n A a => rfl⟩` and prove the remaining obligations. Take `⟨b, hb, hs⟩` from `hτ A a`. Use `⟨d • b, ?_, fun Ω _ _ x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d • (τ.deg 0).app A _ = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Conclude with `(map_zsmul _ _ _).symm`. Use `haveI := Sq.finite A`. Establish `hfin` using `hF A.r Ω x`. Rewrite using `[show Sec.res x (d • b) = d • Sec.res x b from map_zsmul _ _ _, hs Ω x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(zsmulAddGroupHom (α := Sec (tw q i) (gp Ω)) d).map_finsum_mem (fun z => w Ω (z ≫ A.v) • Sec.res z a) hfin` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `finsum_mem_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Wt.smul, mul_smul, zsmulAddGroupHom_apply]`. Introduce `S d`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨famId S _ d, fun A a => ?_, fun n a => ?_⟩` and prove the remaining obligations. Use `haveI := isIso_r A`. Use `⟨d • Sec.res (inv A.r) a, ?_, fun Ω _ _ x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d • resInv ((res _ (tw q i)).X 0) A (Sec.map (resι _ (tw q i)) a) = _`. Rewrite using `[resInv_apply, ← map_res]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_zsmul _ _ _).symm`. Establish `hf : fib A.r x = {x ≫ inv A.r}`. Use extensionality with `z`. Simplify using `only [fib, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Rewrite using `[IsIso.eq_comp_inv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, finsum_mem_singleton]`. Rewrite using `[show Sec.res x (d • Sec.res (inv A.r) a) = d • Sec.res x (Sec.res (inv A.r) a) from map_zsmul _ _ _, res_res]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `d • resInv ((res _ (tw q i)).X n) (Sq.self (𝟙 S)) a = _ haveI := isIso_r (Sq.self (𝟙 S))`. Rewrite using `[resInv_apply]`.
-
-Establish `e : inv (Sq.self (𝟙 S)).r = 𝟙 _` using `IsIso.inv_id`. Rewrite using `[e]`. Conclude with `congrArg (d • ·) (res_id a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.famLin_of :
     FibFin → FamLin := by

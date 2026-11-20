@@ -105,7 +105,7 @@ def ContrTensorModels : Prop :=
       ((∀ τ, Itl τ ≠ 0) → It ≠ 0)
 
 /- English proof (translation)
-Introduce `D V W _ _ M M' Itl` and use `h D.what₂.Tau (fun _ => Fin W.rank × Fin V.rank) _ (Equiv.sigmaEquivProd _ _) (fun τ => M'.sm τ) (fun τ => M.sm τ) Itl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem contrTensorModels_of (h : ContrTensor) : ContrTensorModels := fun D V W _ _ M M' Itl =>
   h D.what₂.Tau (fun _ => Fin W.rank × Fin V.rank) _ (Equiv.sigmaEquivProd _ _) (fun τ => M'.sm τ)
@@ -114,13 +114,13 @@ theorem contrTensorModels_of (h : ContrTensor) : ContrTensorModels := fun D V W 
 end Models
 
 /- English proof (translation)
-Simplify using `only [LinearMap.mul_apply']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example (a b x y : ℂ) : LinearMap.mul ℂ ℂ (a * x) (b * y) = (a * b) * LinearMap.mul ℂ ℂ x y := by
   simp only [LinearMap.mul_apply']; ring
 
 /- English proof (translation)
-Use `h φ y 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 example (It : ℂ →ₗ[ℂ] ℂ →ₛₗ[starRingEnd ℂ] ℂ) (h : IsContr (LinearMap.mul ℂ ℂ) It) (φ y : ℂ) :
     It φ y = φ * starRingEnd ℂ y := by
@@ -128,37 +128,37 @@ example (It : ℂ →ₗ[ℂ] ℂ →ₛₗ[starRingEnd ℂ] ℂ) (h : IsContr (
   simpa using this
 
 /- English proof (translation)
-Establish `hn : ∀ x y, ‖Tm x y‖ = ‖x‖ * ‖y‖`. Introduce `x y`. Establish `h` using `hI x x y y`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, ← mul_pow]`. Establish `h2 : ‖Tm x y‖ ^ 2 = (‖x‖ * ‖y‖) ^ 2` using `by exact_mod_cast h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h2`. Establish `hb : ∀ φ y, ‖It φ y‖ ≤ ‖φ‖ * ‖y‖`. Introduce `φ y`. Establish `h` using `hC φ y (It φ y)`. Establish `h1 : ‖It φ y‖ * ‖It φ y‖ ≤ ‖It φ y‖ * (‖φ‖ * ‖y‖)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_inner_le_norm (𝕜 := ℂ) (Tm (It φ y) y) φ` as an intermediate fact. Rewrite `this` using `[← h, hn, inner_self_eq_norm_sq_to_K]`. Simplify using `at this`. Use the polynomial consequences of the given equalities and inequalities. Break down `(norm_nonneg (It φ y)).eq_or_lt with h0 | h0` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0]`. Check the signs of the components of the expression. Conclude with `le_of_mul_le_mul_left h1 h0`. Establish `hall : ∀ g h φ y, It (ρ (g, h) φ) (π₂ h y) = π₁ g (It φ y)`. Introduce `g h φ y`.
+Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Take `⟨x, rfl⟩` from `(π₁ g).surjective x`. Rewrite using `[hC, hE, LinearIsometryEquiv.inner_map_map, LinearIsometryEquiv.inner_map_map, hC]`. Establish `he : ∀ g φ y, It (ρ (g, 1) φ) y = π₁ g (It φ y)` using `fun g φ y => by simpa using hall g 1 φ y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi : ∀ h φ y, It (ρ (1, h) φ) (π₂ h y) = It φ y` using `fun h φ y => by simpa using hall 1 h φ y`. Use `⟨hb, he, hi, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c φ φ' y hd`. Set `L : FF →L[ℂ] H₁` to `(It.flip y).mkContinuous ‖y‖ fun φ => by simpa [mul_comm] using hb φ y`. Use `((L.restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) hd` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[L, Function.comp_def, he]`. Introduce `c φ φ' y hd w`. Simplify `hd (Tm w y)` using `only [← he, hC _ _ _]`. Introduce `c φ φ' y y' hd hd'`. Apply `ext_inner_left ℂ` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `x`. Set `ℓ : H₂ →L[ℂ] ℂ` to `((innerₛₗ ℂ φ) ∘ₗ Tm x).mkContinuous (‖φ‖ * ‖x‖) fun y => by`. Simplify `norm_inner_le_norm (𝕜 := ℂ) φ (Tm x y)` using `[hn, mul_assoc]`. Take `⟨w, hw⟩` from `(InnerProductSpace.toDual ℂ H₂).surjective ℓ`. Establish `hw' : ∀ z, ⟪w, z⟫_ℂ = ⟪φ, Tm x z⟫_ℂ` using `fun z => by`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun f : H₂ →L[ℂ] ℂ => f z) hw` as an intermediate fact. Simplify `this` using `[ℓ]`. Establish `h1` using `hd (Tm x y)`. Establish `h2` using `((hd' w).scomp_of_eq (0 : ℝ) (hasDerivAt_neg (0 : ℝ)) (by simp)).star`. Establish `h3 : (fun t : ℝ => ⟪Tm x y, ρ (1, c (Multiplicative.ofAdd t)) φ⟫_ℂ) = fun t : ℝ => star (((fun t : ℝ => ⟪w, π₂ (c (Multiplicative.ofAdd t)) y⟫_ℂ) ∘ Neg.neg) t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Establish `hy : y = π₂ (c (Multiplicative.ofAdd t)) (π₂ (c (Multiplicative.ofAdd (-t))) y)`. Express the relevant statement in the definitionally equal form `y = (π₂ _ * π₂ _) y`. Rewrite using `[← map_mul, ← map_mul, ← ofAdd_add]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp, hw']`. Rewrite using `[← hC, Complex.star_def, inner_conj_symm, ← hC]`. Use `conv_lhs => rw [hy, hi]`. Rewrite `h1` using `[h3]`. Establish `h4` using `h1.unique h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inner_add_right, hC, hC, h4, hw']`. Simplify using the standard rewrite rules. Introduce `φ hφ Y hY`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hφ` to reduce the goal to its premises. Set `L : H₂ →SL[starRingEnd ℂ] H₁` to `(It φ).mkContinuous ‖φ‖ (hb φ)`. Establish `h0 : ∀ y, It φ y = 0` using `fun y => congrFun (Continuous.ext_on hY L.continuous (continuous_const (y := (0 : H₁))) hcon) y`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu => obtain ⟨p, rfl⟩ := hu`. Simplify using `[← hC φ, h0]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [inner_add_left, ha, hb]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Consider the case `smul a b _ hb => simp [inner_smul_left, hb]`. Introduce `K φ y hf`. Unfold `IsFiniteVec at *`. Establish `: (Set.range fun k : K => π₁ k (It φ y)) = It.flip y '' Set.range fun k : K => ρ (k, 1) φ`. Rewrite using `[← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[he]`. Rewrite using `[this, ← Submodule.map_span]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem contrProps_of {H₁ H₂ FF : Type}
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]

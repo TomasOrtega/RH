@@ -7,16 +7,16 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-Rewrite using `[map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem rep_mul {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
     (a b : G) (w : V) : π (a * b) w = π a (π b w) := by
   rw [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Take `⟨u, hu, d, hd, c, hc, rfl⟩` from `hK.fact g hg`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ x : K, π x v = ((1 : K →* ℂˣ) x : ℂ) • v` using `hv`. Establish `hfix : ∀ h ∈ K, π h v = v` using `fun h hh => by simpa using h1 ⟨h, hh⟩`. Establish `hc'` using `hK.low t ht c hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : diagT k (Fin n) d * diagT k (Fin n) t = diagT k (Fin n) t * diagT k (Fin n) d`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `key : u * diagT k (Fin n) d * c * diagT k (Fin n) t = u * diagT k (Fin n) t * (diagT k (Fin n) d * ((diagT k (Fin n) t)⁻¹ * c * diagT k (Fin n) t))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← rep_mul π (u * diagT k (Fin n) d * c), key, rep_mul π (u * diagT k (Fin n) t), rep_mul π (diagT k (Fin n) d), hfix _ hc', hfix _ hd, rep_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem exists_unipotent_eq_of_mem_iwLev_of_fixed {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] {n : ℕ}
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V)
@@ -44,13 +44,13 @@ private theorem exists_unipotent_eq_of_mem_iwLev_of_fixed {k : Type} [Field k] [
     rep_mul π (diagT k (Fin n) d), hfix _ hc', hfix _ hd, rep_mul]
 
 /- English proof (translation)
-Unfold `UpperTheory.Gal.Join.HeckeMul UpperTheory.Gal.Join.ForRep`. Introduce `k _ _ _ _ n V _ _ π K hK e he t ht v hv`. Establish `hN : ∀ u ∈ K ⊓ unipB k (Fin n), ∀ w : V, (twKer π (unipB k (Fin n)) 1).mkQ (π u w) = (twKer π (unipB k (Fin n)) 1).mkQ w`. Introduce `u hu w`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨⟨u, (Subgroup.mem_inf.mp hu).2⟩, w, by simp⟩`. Use `⟨fun s hs => ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `he.lin V (e.comp (π (diagT k (Fin n) s))) (π (diagT k (Fin n) t) v) ?_`. Simplify using `only [LinearMap.comp_apply] at h2`. Rewrite using `[h2, map_mul, rep_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Take `⟨u, hu, hgu⟩` from `exists_unipotent_eq_of_mem_iwLev_of_fixed π K hK t ht v hv g hg`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hgu, ← rep_mul π (diagT k (Fin n) s) u, show diagT k (Fin n) s * u = (diagT k (Fin n) s * u * (diagT k (Fin n) s)⁻¹) * diagT k (Fin n) s by group, rep_mul π (diagT k (Fin n) s * u * (diagT k (Fin n) s)⁻¹), he.inv _ (hK.up s hs u hu)]`. Establish `h3` using `he.lin _ (twKer π (unipB k (Fin n)) 1).mkQ (π (diagT k (Fin n) t) v) ?_`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h3.trans rfl`. Introduce `g hg`. Take `⟨u, hu, hgu⟩` from `exists_unipotent_eq_of_mem_iwLev_of_fixed π K hK t ht v hv g hg`. Rewrite using `[hgu, hN u hu]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.heckeMul :
     UpperTheory.Gal.Join.HeckeMul := by

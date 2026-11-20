@@ -3,11 +3,11 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hy : genericPoint Y ∈ V` using `((genericPoint_spec Y).mem_open_set_iff V.isOpen).mpr (by simpa using hV)`. Establish `hxU : π (genericPoint Y) ∈ U` using `h hy`. Establish `hF : IsField (X.presheaf.stalk (π (genericPoint Y)))` using `isField_stalk_of_closure_mem_irreducibleComponents X _ (by rw [hπ]; simp [irreducibleComponents_eq_singleton])`. Use `letI := hF.toField`. Establish `key : ∀ s, (π.stalkMap (genericPoint Y)).hom (X.presheaf.germ U _ hxU s) = Y.presheaf.germ V (genericPoint Y) hy ((π.appLE U V h).hom s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Simplify using `[Scheme.Hom.appLE, TopCat.Presheaf.germ_res_apply]`. Introduce `s t hst`. Apply `germ_injective_of_isIntegral X _ hxU` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(π.stalkMap (genericPoint Y)).hom.injective` to reduce the goal to its premises. Rewrite using `[key, key, hst]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_injective_of_genericPoint_map {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
     (π : Y ⟶ X) (hπ : π (genericPoint Y) = genericPoint X) {U : X.Opens} {V : Y.Opens}

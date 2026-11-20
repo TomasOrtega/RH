@@ -13,9 +13,9 @@ section Transport
 variable {p q : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `hv`. Use `⟨fun h' => h0 (e.map_eq_zero_iff.mp h'), ?_⟩` and prove the remaining obligations. Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at h1 ⊢`. Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, ← map_smul, ← map_sub, h1.1 i, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, h1.2 i j hij, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isHW_equiv (e : V ≃ₗ[ℂ] W) (a : Mat p q →ₗ[ℂ] Module.End ℂ V)
     (b : Mat p q →ₗ[ℂ] Module.End ℂ W) (h : ∀ Z v, e (a Z v) = b Z (e v))
@@ -29,7 +29,7 @@ theorem isHW_equiv (e : V ≃ₗ[ℂ] W) (a : Mat p q →ₗ[ℂ] Module.End ℂ
   · rw [← h, h1.2 i j hij, map_zero]
 
 /- English proof (translation)
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[h, e.apply_symm_apply, e.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_equivariant (e : V ≃ₗ[ℂ] W) (a : Mat p q →ₗ[ℂ] Module.End ℂ V)
     (b : Mat p q →ₗ[ℂ] Module.End ℂ W) (h : ∀ Z v, e (a Z v) = b Z (e v)) (Z : Mat p q) (w : W) :
@@ -38,9 +38,9 @@ theorem symm_equivariant (e : V ≃ₗ[ℂ] W) (a : Mat p q →ₗ[ℂ] Module.E
   rw [h, e.apply_symm_apply, e.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨U, hf, hvU, hst, hw⟩` from `hv`. Use `⟨U.map (e : V →ₗ[ℂ] W), inferInstance, ⟨v, hvU, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `X hX _ ⟨u, hu, rfl⟩`. Conclude with `⟨a X u, hst X hX u hu, h X u⟩`. Introduce and unpack `ν _ ⟨u, hu, rfl⟩ hν`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `hw ν u hu ?_` and prove the remaining obligations. Use `isHW_equiv e.symm b a (symm_equivariant e a b h) ν _ hν` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ofType_equiv (e : V ≃ₗ[ℂ] W) (a : Mat p q →ₗ[ℂ] Module.End ℂ V)
     (b : Mat p q →ₗ[ℂ] Module.End ℂ W) (h : ∀ Z v, e (a Z v) = b Z (e v))
@@ -55,7 +55,7 @@ theorem ofType_equiv (e : V ≃ₗ[ℂ] W) (a : Mat p q →ₗ[ℂ] Module.End �
     simpa using this
 
 /- English proof (translation)
-Simplify using `only [genSub, Submodule.mem_sInf, Set.mem_ofPred_eq] at hv ⊢`. Introduce `N hN`. Use `hv (N.comap e) ⟨fun x hx => hN.1 (hST x hx), fun Z y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, h]`. Conclude with `hN.2 Z _ hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genSub_map (e : V →ₗ[ℂ] W) (a : Mat p q →ₗ[ℂ] Module.End ℂ V)
     (b : Mat p q →ₗ[ℂ] Module.End ℂ W) (h : ∀ Z v, e (a Z v) = b Z (e v))
@@ -77,23 +77,21 @@ end GlobalTheory.FockAlg.MinSecond
 open GlobalTheory.FockAlg.MinSecond in
 
 /- English proof (translation)
-Introduce `p q r s M1 M2 f hirr hadm hf hf0 μ' hμ hmin`. Apply the tactic sequence `obtain ⟨s1, s2, s3⟩ := GlobalTheory.T.fock_dualPair_swap_symmetry r s p q`. Use `set e := swapPol r s p q with he`. Establish `h1 : ∀ Z v, e (fockAct1 r s p q Z v) = fockAct2 p q r s Z (e v)` using `s1`. Establish `h2 : ∀ Z v, e (fockAct2 r s p q Z v) = fockAct1 p q r s Z (e v)` using `s2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : ∀ P, P ∈ jointHarm r s p q → e P ∈ jointHarm p q r s` using `fun P hP => ⟨(s3 P).1.mp hP.2, (s3 P).2.mp hP.1⟩`. Use `set c := TensorProduct.comm ℂ M1.V M2.V with hc`. Set `g : Pol r s p q →ₗ[ℂ] TensorProduct ℂ M2.V M1.V` to `(c : _ →ₗ[ℂ] _) ∘ₗ f ∘ₗ (e : _ →ₗ[ℂ] _)`. Establish `hg : ∀ P, g P = c (f (e P))` using `fun _ => rfl`. Establish `hcm : ∀ (A : Module.End ℂ M1.V) (B : Module.End ℂ M2.V) x, c (TensorProduct.map A B x) = TensorProduct.map B A (c x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `A B x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [hc]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgI : Intw M2 M1 g`. Use `⟨fun X => LinearMap.ext fun P => ?_, fun X => LinearMap.ext fun P => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (hf.2 X) (e P)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this ⊢`. Rewrite using `[hg, hg, h1, this, hcm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun (hf.1 X) (e P)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this ⊢`. Rewrite using `[hg, hg, h2, this, hcm]`. Establish `hg0 : g ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h (e.symm P)` as an intermediate fact. Rewrite `this` using `[hg, e.apply_symm_apply, LinearMap.zero_apply]`. Conclude with `c.map_eq_zero_iff.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨μ, P, hP, hP1, hP2, hP0⟩, hB⟩` from `GlobalTheory.T.exists_jointHarm_highestWeight_and_map_mem_genSub r s p q M2 M1 g hirr hadm hgI hg0 μ' hμ hmin`. Use `⟨⟨μ, e P, hJ P hP, isHW_equiv e _ _ h2 _ _ hP2, isHW_equiv e _ _ h1 _ _ hP1, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[hg, h, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `R hR`. Take `⟨Q, hQ, hQe⟩` from `hB (e.symm R) (ofType_equiv e.symm _ _ (symm_equivariant e _ _ h1) _ _ hR)`. Use `⟨e Q, ?_, ?_⟩` and prove the remaining obligations. Conclude with `genSub_map e.toLinearMap (fockAct2 r s p q) (fockAct1 p q r s) h2 _ {Q | Q ∈ jointHarm p q r s ∧ OfType (fockAct2 p q r s) μ' Q} (fun v hv => ⟨hJ v hv.1, ofType_equiv e _ _ h1 _ _ hv.2⟩) Q hQ`. Rewrite `hQe` using `[hg, hg, e.apply_symm_apply]`.
-
-Conclude with `c.injective hQe`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FockAlg.min_second : ∀ (p q r s : ℕ) (M1 : GKMod p q) (M2 : GKMod r s) (f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ M1.V M2.V), IrrGK M2 → AdmGK M2 → Intw M1 M2 f → f ≠ 0 → ∀ (μ' : Ix r s → ℚ), (∃ v, IsHW M2.act μ' v) → (∀ ν w, IsHW M2.act ν w → degW (cPair p q) μ' ≤ degW (cPair p q) ν) → (∃ (μ : Ix p q → ℚ) (P : Pol p q r s), P ∈ jointHarm p q r s ∧ IsHW (fockAct1 p q r s) μ P ∧ IsHW (fockAct2 p q r s) μ' P ∧ f P ≠ 0) ∧ ∀ P, OfType (fockAct2 p q r s) μ' P → f P ∈ Submodule.map f (genSub (fockAct1 p q r s) {Q | Q ∈ jointHarm p q r s ∧ OfType (fockAct2 p q r s) μ' Q}) := by
   intro p q r s M1 M2 f hirr hadm hf hf0 μ' hμ hmin

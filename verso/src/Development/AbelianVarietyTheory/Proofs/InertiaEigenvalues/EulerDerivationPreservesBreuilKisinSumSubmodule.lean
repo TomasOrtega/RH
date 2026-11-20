@@ -5,9 +5,9 @@ open PowerSeries GlobalTheory.BK
 namespace GlobalTheory.CokerL.Tconn
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_N, ← pow_mul, ← map_natCast (C (R := K)), coeff_C_mul, coeff_X_pow]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem N_vpow {K : Type} [NormedField K] (e A' : ℕ) :
     N K (((X : K⟦X⟧) ^ e) ^ A') = ((e * A' : ℕ) : K⟦X⟧) * ((X : K⟦X⟧) ^ e) ^ A' := by
@@ -18,13 +18,13 @@ theorem N_vpow {K : Type} [NormedField K] (e A' : ℕ) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow]`. Conclude with `Derivation.map_natCast _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem N_lpow {K : Type} [NormedField K] (l b : ℕ) : N K ((l : K⟦X⟧) ^ b) = 0 := by
   rw [← Nat.cast_pow]; exact Derivation.map_natCast _ _
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.part]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem part_top {K O κ : Type} {a : ℕ} [NormedField K] [CommRing O] [Algebra O K]
     (V : Submodule O (Vec K a κ)) : GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.part ⊤ V = V := by
@@ -33,23 +33,21 @@ theorem part_top {K O κ : Type} {a : ℕ} [NormedField K] [CommRing O] [Algebra
 end GlobalTheory.CokerL.Tconn
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ η H D₁ D₂ F A' b hred x hx`. Establish `hIS` using `(hred.2.2 ι κ η H D₁ D₂ F).2.1`. Establish `hMH` using `(hred.2.1 κ η H D₂).1`. Establish `hvS : ((X : K⟦X⟧) ^ e) ^ A' ∈ S O K e` using `pow_mem (pow_mem HasU.X_mem e) A'`. Establish `hHigh : ∀ (f : K⟦X⟧), f ∈ S O K e → ∀ q ∈ GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.MMHigh D₂.toPhiMod, f • q ∈ GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.MMHigh D₂.toPhiMod` using `fun f hf q hq => (GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.SHigh O K l e • D₂.MM).smul_mem (⟨f, hf⟩ : S O K e) hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnat : ∀ (n : ℕ) (q : Vec K a κ) (V : Submodule O (Vec K a κ)), q ∈ V → ((n : K⟦X⟧)) • q ∈ V` using `fun n q V hq => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `V.nsmul_mem hq n`. Take `⟨x12, h12, x3, h3, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨x1, h1, x2, h2, rfl⟩` from `Submodule.mem_sup.1 h12`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add]`. Use `add_mem (add_mem ?_ ?_) ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `h1`. Express the relevant statement in the definitionally equal form `D₂.toPhiMod.conn (((X : K⟦X⟧) ^ e) ^ A' • y) ∈ _`. Rewrite using `[PhiMod.conn_smul, GlobalTheory.CokerL.Tconn.N_vpow, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem ?_ ?_` and prove the remaining obligations. Establish `: ((e * A' : ℕ) : K⟦X⟧) • y ∈ (F.imL.restrictScalars O)` using `hnat _ _ _ hy`. Rewrite using `[smul_comm]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left ⟨_, this, rfl⟩)`. Establish `hc` using `hIS y (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[GlobalTheory.CokerL.Tconn.part_top, GlobalTheory.CokerL.Tconn.part_top]`. Conclude with `Submodule.mem_sup_left hy)`. Rewrite `hc` using `[GlobalTheory.CokerL.Tconn.part_top, GlobalTheory.CokerL.Tconn.part_top]`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 hc`. Rewrite using `[← hpq, smul_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Submodule.mem_sup_left (Submodule.mem_sup_left ⟨p, hp, rfl⟩)) (Submodule.mem_sup_right (hHigh _ hvS q hq))`. Take `⟨z, hz, rfl⟩` from `h2`. Express the relevant statement in the definitionally equal form `D₂.toPhiMod.conn (((l : K⟦X⟧) ^ b) • z) ∈ _`. Rewrite using `[PhiMod.conn_smul, GlobalTheory.CokerL.Tconn.N_lpow, zero_smul, zero_add]`. Establish `hzM : z ∈ D₂.MM` using `PhiMod.ext_mono _ (A_le_S l e) hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc : D₂.conn z ∈ GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.part ⊤ (D₂.MM.restrictScalars O)`. Rewrite using `[GlobalTheory.CokerL.Tconn.part_top]`. Conclude with `BKDat.conn_mem_MM D₂ hzM`. Rewrite `hc` using `[hMH.MM_eq, GlobalTheory.CokerL.Tconn.part_top, GlobalTheory.CokerL.Tconn.part_top]`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 hc`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(l : K⟦X⟧) ^ b • D₂.toPhiMod.conn z ∈ _`. Rewrite using `[← hpq, smul_add]`. Use `add_mem (Submodule.mem_sup_left (Submodule.mem_sup_right ⟨p, hp, rfl⟩)) ?_` and prove the remaining obligations. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow]`.
-
-Conclude with `hnat _ _ _ hq`. Use `hMH.conn_high x3 (by rw [GlobalTheory.CokerL.Tconn.part_top]; exact h3)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CokerL.Tconn.part_top]`. Conclude with `Submodule.mem_sup_right this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CokerL.Tsub_conn : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (κ : Type) [Fintype κ] [DecidableEq κ] (η H : ℕ) (D₁ : BKDat O K l e a ι η H) (D₂ : BKDat O K l e a κ η H) (F : BKHom D₁ D₂) (A' b : ℕ), GlobalTheory.IndefiniteRowSideFullHecke.ImageStableDegreeBounds.Reduction O K l e a → ∀ x ∈ GlobalTheory.CokerL.Tsub F A' b, D₂.conn x ∈ GlobalTheory.CokerL.Tsub F A' b := by
   intro O K _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ η H D₁ D₂ F A' b hred x hx

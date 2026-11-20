@@ -17,13 +17,13 @@ def errSupp (D : D7) (sc : Scale) : Finset D.what₂.places.Pl :=
   (finite_resChar_le D (sc.X'' D.R.n)).toFinset ∪ (finite_resChar_mem D (errPrimes D)).toFinset
 
 /- English proof (translation)
-Set `_` to `D.wordFin`. Rewrite `hw` using `[errSupp, Finset.mem_union, not_or, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset]`. Establish `h1 : ¬ ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ L.sc.X'' D.R.n` using `hw.1`. Establish `h2 : D.what₂.places.resChar w ∉ errPrimes D` using `hw.2`. Use `Eval_above L X K c u j w (not_le.1 h1) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Conclude with `h2 (Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨u, Finset.mem_univ _, h.symm⟩)))`. Introduce `h`. Use `h2 (Finset.mem_union_left _ (Finset.mem_union_left _ ?_))` and prove the remaining obligations. Rewrite `h` using `[Finset.mem_insert, Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases h with h | h <;> simp [h]`. Introduce `h`. Use `h2 (Finset.mem_union_left _ (Finset.mem_union_left _ ?_))` and prove the remaining obligations. Simplify using `[h]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2 (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨u, Finset.mem_univ _, ?_⟩))` and prove the remaining obligations. Conclude with `Nat.mem_primeFactors.2 ⟨D.what₂.places.resChar_prime w, h, (D.mem u).C.DGam_pos.ne'⟩`.
+A detailed English derivation is pending.
 -/
 theorem Eval_off {D : D7} (L : SizeData₂ D) (X : ErrX D) (K : G.Consts) (c : ErrC) (u : D.what₂.Word) (j : ℕ)
     (w : D.what₂.places.Pl) (hw : w ∉ errSupp D L.sc) : Eval L X K c u j w = 0 := by
@@ -62,16 +62,16 @@ def baseE (h : LedHyp D sc aT bT η Cc Ct CGam j0) (Nu : ∀ u, Submodule (𝓞 
 open Classical in
 
 /- English proof (translation)
-Introduce `_ hw` and use `Finset.mem_union_right _ hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subset_supp_baseE (h : LedHyp D sc aT bT η Cc Ct CGam j0) (Nu : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V)
     (S1 : Finset D.what₂.places.Pl) (X : ErrX D) (K : G.Consts) (c : ErrC) : S1 ⊆ (baseE h Nu S1 X K c).supp :=
   fun _ hw => Finset.mem_union_right _ hw
 
 /- English proof (translation)
-Introduce `u j _ w`. Rewrite using `[h4]`. Use `show Eval (baseZ h Nu) X K c u j w = Eval L X K c u j w`. Unfold `Eval EatG EatC EatI EatX`. Rewrite using `[h1, h2, h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem edef_of_keeps (h : LedHyp D sc aT bT η Cc Ct CGam j0) (Nu : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V)
     (S1 : Finset D.what₂.places.Pl) (X : ErrX D) (K : G.Consts) (c : ErrC) (L : SizeData₂ D) (h1 : L.sc = (baseE h Nu S1 X K c).sc)

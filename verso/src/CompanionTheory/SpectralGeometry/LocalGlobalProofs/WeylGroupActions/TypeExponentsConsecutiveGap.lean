@@ -9,9 +9,9 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 namespace GlobalTheory.CompanionTheory.TypeGaps
 
 /- English proof (translation)
-Introduce `Wq _ _ _ k r z π u hz hT hty hdec i hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Take `⟨N, hN⟩` from `GlobalTheory.T.type_exponents_differ_by_integers Wq k r z π u hz hT hty i (Finset.mem_Icc.2 ⟨hi.1, by omega⟩) (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`. Establish `h1` using `hdec i (Finset.mem_Ico.2 ⟨hi.1, by omega⟩)`. Establish `h2 : (1 : ℝ) ≤ (N : ℝ)` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (1 : ℤ) ≤ N` using `by exact_mod_cast h2`. Use `⟨(N - 1).toNat, ?_⟩` and prove the remaining obligations. Establish `h4 : (((N - 1).toNat : ℕ) : ℤ) = N - 1` using `Int.toNat_of_nonneg (by omega)`. Establish `h5 : (((N - 1).toNat : ℕ) : ℝ) = (N : ℝ) - 1` using `by exact_mod_cast h4`. Rewrite using `[hN, h5]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

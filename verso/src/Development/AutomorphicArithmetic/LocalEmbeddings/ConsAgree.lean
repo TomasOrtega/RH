@@ -22,7 +22,7 @@ def DvrAgree {X₁ X₂ : Scheme.{0}} [IsIntegral X₁] [IsIntegral X₂] (θ : 
       D₂.IsEqn (b (closedPoint R)) g₂ → R.valuation g₁ = R.valuation (θ g₂)
 
 /- English proof (translation)
-Introduce `R hR a b ha hb g₁ g₂ h₁ h₂`. Use `h R hR a b ha hb g₁⁻¹ g₂⁻¹ (by simpa using h₁.neg) (by simpa using h₂.neg)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem DvrAgree.neg {X₁ X₂ : Scheme.{0}} [IsIntegral X₁] [IsIntegral X₂] {θ : X₂.functionField →+* X₁.functionField}
     {D₁ : CartierDiv X₁} {D₂ : CartierDiv X₂} (h : DvrAgree θ D₁ D₂) : DvrAgree θ (-D₁) (-D₂) := by

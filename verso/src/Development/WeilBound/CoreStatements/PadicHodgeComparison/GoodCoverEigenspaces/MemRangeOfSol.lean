@@ -7,11 +7,11 @@ namespace PositivityTheory.AutomorphicGaloisHodgeTate.G8
 variable {k C : Type*} [Field k] [Field C] [Algebra k C]
 
 /- English proof (translation)
-Set `e` to `Module.Basis.ofVectorSpace k C`. Establish `h1 : ∀ α j, M j *ᵥ (fun p => e.repr (x p) α) = 0` using `fun α j => funext fun p => by`. Use `congrArg (fun t => e.repr t α) (congrFun (hx j) p)` as an intermediate fact. Simplify `this` using `[mulVec, dotProduct, ← Algebra.smul_def, map_sum, Finsupp.finset_sum_apply]`. Use `choose w hw using fun α => hB _ (h1 α)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `S` to `Finset.univ.biUnion fun p => (e.repr (x p)).support`. Use `⟨fun q => ∑ α ∈ S, w α q • e α, funext fun p => ?_⟩` and prove the remaining obligations. Establish `h2 : ∑ α ∈ S, e.repr (x p) α • e α = x p` using `by conv_rhs => rw [← e.linearCombination_repr (x p), Finsupp.linearCombination_apply]`. Conclude with `(Finsupp.sum_of_support_subset _ (Finset.subset_biUnion_of_mem (fun p => (e.repr (x p)).support) (Finset.mem_univ p)) (fun α c => c • e α) fun α _ => zero_smul _ _).symm`. Rewrite using `[← h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mulVec, dotProduct, map_apply, ← Algebra.smul_def, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Conclude with `congrArg (· • e α) (congrFun (hw α) p)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_of_sol {m d J : Type*} [Fintype m] [Fintype d] (M : J → Matrix m m k) (B : Matrix m d k)
     (hB : ∀ v : m → k, (∀ j, M j *ᵥ v = 0) → ∃ w, B *ᵥ w = v) (x : m → C)
@@ -36,9 +36,9 @@ theorem mem_range_of_sol {m d J : Type*} [Fintype m] [Fintype d] (M : J → Matr
   exact congrArg (· • e α) (congrFun (hw α) p)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' B) (LinearMap.ker_eq_bot.2 h)`. Establish `h1 : LinearMap.toMatrix' g * B = 1`. Rewrite using `[← LinearMap.toMatrix'_toLin' B, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`. Introduce `x y hxy`. Use `congrArg (((LinearMap.toMatrix' g).map (algebraMap k C)) *ᵥ ·) hxy` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `only [mulVec_mulVec, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _), one_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_injective {m d : Type*} [Fintype m] [Fintype d] (B : Matrix m d k) (h : Function.Injective B.mulVec) :
     Function.Injective (B.map (algebraMap k C)).mulVec := by

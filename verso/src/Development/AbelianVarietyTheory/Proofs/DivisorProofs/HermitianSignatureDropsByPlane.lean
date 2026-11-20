@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ hB _ _ _ _ _ _ _ _ _ hX hH` and use `GlobalTheory.HermPlaneCompl.isHerm_compl hB hX hH`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHerm_plane_complement : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n n₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ r s : ℕ),

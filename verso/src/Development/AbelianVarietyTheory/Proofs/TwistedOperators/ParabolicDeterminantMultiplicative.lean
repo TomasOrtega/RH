@@ -30,7 +30,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 namespace DetUMul
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `hR R hc.sig V.gram _ _ = inclR R (V.hT _ _)`. Rewrite using `[IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord]`. Simplify using `[hR, Formalism.UG.hform, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR, JR, inclR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, CMData.sig, TensorProduct.tmul_sum, starRingEnd_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hLin_coordR (x y : V.V) :
     hLin hc.sig V.gram R (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R x) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R y) = inclR R (V.hD x y) := by
@@ -40,15 +40,15 @@ theorem hLin_coordR (x y : V.V) :
     TensorProduct.tmul_sum, starRingEnd_apply]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hk` using `k.2`. Simplify using `only [bas, dbas]`. Apply the tactic sequence `by_cases ei : u i.1 = -1 <;> by_cases ek : u k.1 = -1`. Rewrite using `[if_pos ei, if_pos ek]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `V.herm.eq (Φ.f i.1) (Φ.e k.1)`. Establish `h2` using `Φ.ef k.1 i.1`. Simplify using `only [HSpace.hD] at h2 ⊢`. Rewrite using `[← h1, h2]`. Distinguish the cases in `e : i = k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => e (Subtype.ext h.symm)), if_neg e]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos ei, if_neg ek, Φ.ff, if_neg]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `ek ei`. Rewrite using `[if_neg ei, if_pos ek, Φ.ee, if_neg]`. Introduce and unpack `rfl`. Conclude with `ei ek`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg ei, if_neg ek, Φ.ef]`. Distinguish the cases in `e : i = k`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => e (Subtype.ext h)), if_neg e]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hD_bas_dbas (u : SV (wittIndex V)) (i k : Supp u) :
     V.hD (bas Φ u i.1) (dbas Φ u k.1) = if i = k then 1 else 0 := by
@@ -74,20 +74,20 @@ theorem hD_bas_dbas (u : SV (wittIndex V)) (i k : Supp u) :
     · rw [if_neg (fun h => e (Subtype.ext h)), if_neg e]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordR_zero : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V R (0 : V.V) = (0 : Fin V.rank → R ⊗[F] E) := by
   funext j; simp [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordR_add (x y : V.V) : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V R (x + y) =
     GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R x + GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R y := by
   funext j; simp [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordR_smul (c : E) (x : V.V) : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V R (c • x) =
     inclR (F := F) R c • GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := F) V R x := by
@@ -103,17 +103,15 @@ def projU (u : SV (wittIndex V)) : (Fin V.rank → R ⊗[F] E) →ₗ[R ⊗[F] E
     (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R (bas Φ u k.1))
 
 /- English proof (translation)
-It suffices to establish `h : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.extSub (F` using `F) V R (Φ.sub u) ≤ LinearMap.eqLocus LinearMap.id (projU Φ hc R u) by`. Use `h hy` as an intermediate fact. Simplify `this` using `[projU, hLinL, LinearMap.sum_apply]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `key : ∀ i : Supp u, x = bas Φ u i.1 → GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F` using `F) V R x ∈ LinearMap.eqLocus LinearMap.id (projU Φ hc R u) := by`. Introduce and unpack `i rfl`. Use `show _ = _`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.id_apply, projU, LinearMap.sum_apply, LinearMap.smulRight_apply, hLinL, LinearMap.coe_mk, AddHom.coe_mk, hLin_coordR, hD_bas_dbas, apply_ite (inclR R), map_one, map_zero, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Break down `hx with ⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩` into its components or cases. Use `key ⟨i, by rw [show u i = 1 from hi]; decide⟩ ?_` and prove the remaining obligations. Simplify using `only [bas]`. Rewrite using `[if_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show u i = 1 from hi]`. Evaluate the decidable proposition. Use `key ⟨i, by rw [show u i = -1 from hi]; decide⟩ ?_` and prove the remaining obligations. Simplify using `only [bas]`. Rewrite using `[if_pos (show u i = -1 from hi)]`.
+Evaluate the decidable proposition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [coordR_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [coordR_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [coordR_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem expand (u : SV (wittIndex V)) {y : Fin V.rank → R ⊗[F] E}
     (hy : y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.extSub (F := F) V R (Φ.sub u)) :
@@ -143,13 +141,11 @@ theorem expand (u : SV (wittIndex V)) {y : Fin V.rank → R ⊗[F] E}
   | smul c x _ hx => rw [coordR_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hb : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F` using `F) V R (bas Φ u j.1) ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.extSub (F := F) V R (Φ.sub u) := by`. Use `GlobalTheory.Cusp.coordR_mem V R (Submodule.subset_span ?_)` and prove the remaining obligations. Distinguish the cases in `h : u j.1 = -1`. Use the proof step `right; exact ⟨j.1, h, by simp [bas, h]⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1 : u j.1 = 1`. Use `j.2` as an intermediate fact. Apply the tactic sequence `revert h this; cases u j.1 <;> decide`. Use the proof step `left; exact ⟨j.1, h1, by simp [bas, h]⟩`. Establish `key : ∀ y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.extSub (F` using `F) V R (Φ.sub u), hLin hc.sig V.gram R (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act hc V g y) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R (dbas Φ u i.1)) = ∑ k : Supp u, hLin hc.sig V.gram R (GlobalTheory.IndefiniteRowSideFullHecke. …`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Use `conv_lhs => rw [expand Φ hc R u hy]`. Establish `e1 : ∀ z : Fin V.rank → R ⊗[F] E, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act hc V g z = Matrix.mulVecLin ((HA.mat R hc.sig V.gram g : GL (Fin V.rank) (R ⊗[F] E)) : Matrix (Fin V.rank) (Fin V.rank) (R ⊗[F] E)) z` using `fun _ => rfl`. Establish `e2 : ∀ z x : Fin V.rank → R ⊗[F] E, hLin hc.sig V.gram R z x = hLinL hc R x z` using `fun _ _ => rfl`. Simplify using `only [e1, e2, map_sum, map_smul, smul_eq_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Simplify using `only [detMat, Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul, key _ (GlobalTheory.Cusp.mem_parab_iff_maps.1 hg' _ hb)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detMat_mul (u : SV (wittIndex V)) (g g' : HA R hc.sig V.gram)
     (hg' : g' ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab hc V R (Φ.sub u)) :
@@ -184,7 +180,7 @@ end DetUMul
 open DetUMul in
 
 /- English proof (translation)
-Rewrite using `[detU, detMat_mul Φ hc R u g g' hg', Matrix.det_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem detU_mul (u : SV (wittIndex V)) (g g' : HA R hc.sig V.gram)
     (_hg : g ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab hc V R (Φ.sub u)) (hg' : g' ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab hc V R (Φ.sub u)) :

@@ -33,13 +33,13 @@ Both sides reduce to the same expression.
 theorem actHom_apply (γ : Gm L N) (h : HS L N) : actHom L N γ h = actL (emb L N γ) h := rfl
 
 /- English proof (translation)
-Rewrite using `[actHom_apply, map_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actHom_inv (γ : Gm L N) (h : HS L N) : actHom L N γ⁻¹ h = actL (emb L N γ)⁻¹ h := by
   rw [actHom_apply, map_inv]
 
 /- English proof (translation)
-The claim follows from `(pos_open_convex L N).1 convex := (pos_open_convex L N).2 mapsTo g _ hh := actL_pos (emb L N g) hh smooth := P.smooth locFin := by have e : (fun γ : Gm L N => {h : Pos L N | P.φ (actHom L N γ⁻¹ h) ≠ 0}) = fun γ => {h : Pos L N | P.φ (actL (emb L N γ)⁻¹ h.1) ≠ 0} := by funext γ si …`.
+A detailed English derivation is pending.
 -/
 theorem hyp_of {Ht : Gp L N → ℝ} (P : PU L N Ht) : Hyp (Pos L N) (actHom L N) P.φ where
   isOpen := (pos_open_convex L N).1
@@ -58,7 +58,7 @@ theorem hyp_of {Ht : Gp L N → ℝ} (P : PU L N Ht) : Hyp (Pos L N) (actHom L N
     exact P.sum_one h hh
 
 /- English proof (translation)
-Unfold `intS`. Simplify using `only [Pi.smul_apply, ContinuousAlternatingMap.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intS_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {q : ℕ} (s : ℝ) (ω : Form V q)
     (y : Fin (q + 1) → V) : intS (s • ω) y = s * intS ω y := by
@@ -67,7 +67,7 @@ theorem intS_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {q : ℕ
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_comp {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {q : ℕ} (s : ℝ)
     (f : V [⋀^Fin q]→L[ℝ] ℝ) (T : V →L[ℝ] V) :
@@ -76,7 +76,7 @@ theorem smul_comp {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {q : ℕ
   simp
 
 /- English proof (translation)
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_comp, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finv_of {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {q : ℕ} (s : ℝ)
     (ω : V → V [⋀^Fin q]→L[ℝ] ℝ) (T : V →L[ℝ] V) (h : V)
@@ -91,7 +91,7 @@ theorem intS_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {q : ℕ} 
     (y : Fin (q + 1) → V) : intS ω y = intS' ω y := rfl
 
 /- English proof (translation)
-The claim follows from `((diffAt_of H.isOpen H.smooth hp).hasFDerivAt.comp p (A γ⁻¹).hasFDerivAt).fderiv`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_psi' {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {Γ : Type} [Group Γ]
     {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (H : Hyp U A φ) (γ : Γ) {p : V} (hp : A γ⁻¹ p ∈ U) :
@@ -103,39 +103,35 @@ end WhittakerCocycle
 open WhittakerCocycle
 
 /- English proof (translation)
-Introduce `L _ _ N k Ht P hHt hHt0 c hc hdc`. Establish `H` using `hyp_of P`. Establish `hoc : Coc c` using `⟨fun g y => by simpa using hc g y, fun y => by simpa [dC] using congrFun hdc y⟩`. Establish `hL` using `pLoc (Pos L N) (actHom L N) P.φ`. Establish `hSm` using `pSmooth _ _ _ hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCl` using `pClosed _ _ _ hSm`. Establish `hD` using `pDep (actHom L N) P.φ`. Establish `hH` using `pHom _ _ _ hL`. Establish `hC` using `pCoc _ _ _ hH hSm hCl`. Establish `hE` using `pEquiv _ _ _ hL hSm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hStk : Stk (Pos L N)` using `fun q ω hω y hy => hSt (HS L N) (Pos L N) H.isOpen H.convex q ω hω y hy`. Take `⟨s, hs, b, hbi, hcb⟩` from `pComp hH hSm hD hC hE H hStk k c hoc (one L N).1 (one L N).2`. Apply the tactic sequence `have hs1 : ‖s‖ = 1 := by rcases hs with rfl | rfl <;> simp`. Establish `hη : ContDiffOn ℝ (⊤ : ℕ∞) (eta (actHom L N) P.φ c (k + 1) fun _ => 1) (Pos L N)` using `(hSm H k c (k + 1) _).1`. Use `⟨s • eta (actHom L N) P.φ c (k + 1) (fun _ => 1), ⟨hη.continuousOn.const_smul s, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Use `show dC (intS (s • eta (actHom L N) P.φ c (k + 1) fun _ => 1)) (fun j => (y j).1) = 0`. Establish `hcd : ContDiffOn ℝ 1 (s • eta (actHom L N) P.φ c (k + 1) fun _ => 1) (Pos L N)` using `(hη.const_smul s).of_le (by exact_mod_cast le_top)`. Rewrite using `[hSt (HS L N) (Pos L N) H.isOpen H.convex (k + 1) (s • eta (actHom L N) P.φ c (k + 1) fun _ => 1) hcd _ (fun j => (y j).2)]`. Establish `e : intS (extDeriv (s • eta (actHom L N) P.φ c (k + 1) fun _ => 1)) (fun j => (y j).1) = intS' (fun _ => 0) (fun j => (y j).1)` using `intS'_congr H.convex (fun x hx => by show extDeriv (s • eta (actHom L N) P.φ c (k + 1) fun _ => 1) x = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extDeriv_smul, hCl H k c (k + 1) _ x hx, smul_zero]) (fun j => (y j).2)`. Rewrite using `[e]`. Simplify using `[intS']`. Introduce `γ h hh`. Establish `e1` using `(hE H k c hoc.inv (actHom L N γ) γ⁻¹ (fun h hh => H.mapsTo γ h hh) (fun γ' h _ => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [WhittakerCocycle.psi, _root_.mul_inv_rev, inv_inv, map_mul, ContinuousLinearMap.mul_apply]) (k + 1)`. Use the proof step `(fun _ => 1) h hh).1`. Establish `e2` using `eta_top H hD hC c hoc (fun _ => γ⁻¹ * 1) (fun _ => 1) h hh`. Conclude with `finv_of s _ (actHom L N γ) h (e1.trans e2)`. Introduce `s' hs' h hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨r, hr, hrh⟩` from `actL_scal (N := N) s' hs'`. Establish `e1` using `(hE H k c hoc.inv (actL (scal L N s')) 1 (fun h hh => actL_pos _ hh) (fun γ h hh => by`. Simplify using `only [WhittakerCocycle.psi, one_mul]`. Rewrite using `[hrh, map_smul]`. Conclude with `P.homog r hr _ (H.mapsTo _ _ hh)) (k + 1) (fun _ => 1) h hh).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_one] at e1`. Conclude with `finv_of s _ (actL (scal L N s')) h e1`. Introduce `z hz`. Establish `hbInv : Inv (MonoidHom.id (Gm L N)) b` using `fun g y => by simpa using hbi g y`. Establish `key : ev (MonoidHom.id (Gm L N)) c 1 z = ev (MonoidHom.id (Gm L N)) (fun g => s * intS' (eta (actHom L N) P.φ c (k + 1) fun _ => 1) (fun l => actHom L N (g l) (one L N).1)) 1 z + ev (MonoidHom.id (Gm L N)) (dC b) 1 z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `ev`. Rewrite using `[← Finsupp.sum_add]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hcb, mul_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, pEv b hbInv z hz, add_zero]`. Unfold `ev`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show intS (s • eta (actHom L N) P.φ c (k + 1) fun _ => 1) _ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[intS_smul]`. Use `beta_reduce`. Rewrite using `[intS_eq]`. Use `congr 2`. Use function extensionality and compare the values at `l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MonoidHom.id_apply, smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Take `⟨Cφ, hCφ⟩` from `P.deriv`. Take `⟨C0, hC0⟩` from `pBound _ _ _ hL hSm hCl hC hD H _ P.overlap (fun γ h hh hm hh' => ⟨h, hh, by`. Establish `e : (emb L N γ)⁻¹ • h = ⟨actHom L N γ⁻¹ h, hm⟩` using `Subtype.ext (actHom_inv γ h).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hh'⟩) P.bdd k c hoc`. Use `⟨C0 * max Cφ 0 ^ (k + 1), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : actL x (one L N).1 ∈ Pos L N` using `actL_pos x (one L N).2`. Establish `hM : 0 ≤ max Cφ 0 * Ht x` using `mul_nonneg (le_max_right _ _) (hHt0 x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hder : ∀ γ, ‖(fderiv ℝ (WhittakerCocycle.psi (actHom L N) P.φ γ) (actL x (one L N).1)).comp (actL x)‖ ≤ max Cφ 0 * Ht x`. Introduce `γ`. Establish `hBp : actHom L N γ⁻¹ (actL x (one L N).1) ∈ Pos L N` using `H.mapsTo _ _ hx`. Rewrite using `[fderiv_psi' H γ hBp, ContinuousLinearMap.comp_assoc]`. Establish `e1 : actHom L N γ⁻¹ (actL x (one L N).1) = actL (emb L N γ⁻¹ * x) (one L N).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[actL_mul]`. Both sides reduce to the same expression. Establish `e2 : (actHom L N γ⁻¹).comp (actL x) = actL (emb L N γ⁻¹ * x)`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[actL_mul]`.
-
-Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `hC0 _ hx (actL x) _ hM hder`. Combine the equalities or inequalities in the displayed calculation.
-
-Unfold `fr`. Rewrite using `[Pi.smul_apply, smul_comp, norm_smul, hs1, one_mul]`. Use `_ ≤ C0 * (max Cφ 0 * Ht x) ^ (k + 1) := hb`. Use `_ = C0 * max Cφ 0 ^ (k + 1) * Ht x ^ (k + 1) := by ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sWhit_of (_hEv : SEv) (hSt : SStokes) : SWhit := by
   intro L _ _ N k Ht P hHt hHt0 c hc hdc

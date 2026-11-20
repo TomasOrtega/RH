@@ -10,9 +10,7 @@ open Matrix
 namespace GlobalTheory.Hk3.HoweG
 
 /- English proof (translation)
-Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `g.inv_mul`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_GLint_of_entries' {L : Type} [Field L] {n : ℕ} (O : Subring L) (g : GL (Fin n) L)
     (h1 : ∀ i j, (g : Matrix (Fin n) (Fin n) L) i j ∈ O)
@@ -31,21 +29,19 @@ def cTGL {L : Type} [Field L] (σ : L →+* L) {n : ℕ} (a : GL (Fin n) L) : GL
     by rw [← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one]⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n JS hU _hq hJS hJh a ha`. Establish `hσ : ∀ x, σ (σ x) = x` using `hU.1`. Establish `cTcT : ∀ M : Matrix (Fin n) (Fin n) L, Formalism.UG.cT σ (Formalism.UG.cT σ M) = M`. Introduce `M`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[Formalism.UG.cT, hσ]`. Establish `hJc : Formalism.UG.cT σ (JS : Matrix (Fin n) (Fin n) L) = JS`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hJh]`. Use `set G : GL (Fin n) L := cTGL σ a * JS * a with hGdef`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hGv : (G : Matrix (Fin n) (Fin n) L) = Formalism.UG.cT σ (a : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)` using `rfl`. Establish `hGi : ((G⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Rewrite using `[hGdef, _root_.mul_inv_rev, _root_.mul_inv_rev, ← _root_.mul_assoc]`. Both sides reduce to the same expression. Establish `hGint : G ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)` using `mem_GLint_of_entries' _ G (fun i j => by rw [hGv]; exact ha.1 i j) (fun i j => by rw [hGi]; exact ha.2 i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : Formalism.UG.cT σ (G : Matrix (Fin n) (Fin n) L) = G`. Rewrite using `[hGv, Formalism.UG.cT_mul, Formalism.UG.cT_mul, cTcT, hJc, Matrix.mul_assoc]`. Establish `hGh : ∀ i j, σ ((G : Matrix (Fin n) (Fin n) L) i j) = (G : Matrix (Fin n) (Fin n) L) j i`. Introduce `i j`. Use `congrFun (congrFun hGc j) i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Formalism.UG.cT]`. Take `⟨P, hP, eP⟩` from `GlobalTheory.NormalHyp.frame hU hGint hGh`. Take `⟨Q, hQ, eQ⟩` from `GlobalTheory.NormalHyp.frame hU hJS hJh`. Establish `hU' : a * P * Q⁻¹ ∈ Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L)` using `by show Formalism.UG.cT σ ((a * P * Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) * ((a * P * Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = JS`. Establish `e1 : Formalism.UG.cT σ ((Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ (Q : Matrix (Fin n) (Fin n) L) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one]`. Establish `e2 : (Q : Matrix (Fin n) (Fin n) L) * ((Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1` using `Units.mul_inv Q`. Rewrite `eP` using `[hGv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, Formalism.UG.cT_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ = Formalism.UG.cT σ ((Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (Formalism.UG.cT σ (Q : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) * (Q : Matrix (Fin n) (Fin n) L)) * ((Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) := by rw [eP, eQ]`. Use `_ = (Formalism.UG.cT σ ((Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ (Q : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((Q : Matrix (Fin n) (Fin n) L) * ((Q⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = JS := by rw [e1, e2, Matrix.one_mul, Matrix.mul_one]`. Use `⟨⟨a * P * Q⁻¹, hU'⟩, Q * P⁻¹, mul_mem hQ (inv_mem hP), ?_⟩` and prove the remaining obligations.
-
-Use `show a = a * P * Q⁻¹ * (Q * P⁻¹)`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem selfDual_eq_unitary_mul_int : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ) (JS : GL (Fin n) L),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → JS ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) →

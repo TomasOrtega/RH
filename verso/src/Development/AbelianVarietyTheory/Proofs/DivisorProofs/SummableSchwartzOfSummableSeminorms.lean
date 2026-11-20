@@ -6,7 +6,7 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory.ConvSeries
 
 /- English proof (translation)
-Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a u ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(map_add_le_add p _ _).trans (by gcongr)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seminorm_finset_sum_le {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (p : Seminorm ℂ (SchwartzMap E ℂ)) (u : Finset ℕ) (t : ℕ → SchwartzMap E ℂ) :
@@ -19,11 +19,9 @@ theorem seminorm_finset_sum_le {E : Type} [NormedAddCommGroup E] [NormedSpace �
     exact (map_add_le_add p _ _).trans (by gcongr)
 
 /- English proof (translation)
-Rewrite using `[summable_iff_vanishing]`. Introduce `U hU`. Take `⟨s, r, hr, hsub⟩` from `(schwartz_withSeminorms ℂ E ℂ).mem_nhds_iff 0 U |>.1 hU`. Establish `hr' : 0 < r / 2` using `half_pos hr`. Establish `hS : ∀ i : ℕ × ℕ, ∃ S : Finset ℕ, ∀ u : Finset ℕ, Disjoint u S → ∑ j ∈ u, SchwartzMap.seminorm ℂ i.1 i.2 (t j) ∈ Set.Iio (r / 2)` using `fun i => summable_iff_vanishing.1 (h i.1 i.2) _ (Iio_mem_nhds (by simpa using hr'))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose S hS using hS`. Use `⟨s.biUnion S, fun u hu => hsub ?_⟩` and prove the remaining obligations. Rewrite using `[Seminorm.mem_ball_zero]`. Use `lt_of_le_of_lt (Seminorm.finset_sup_apply_le hr'.le fun i hi => ?_) (half_lt_self hr)` and prove the remaining obligations. Use `(seminorm_finset_sum_le _ u t).trans ?_` and prove the remaining obligations.
-
-Conclude with `(hS i u (Finset.disjoint_of_subset_right (Finset.subset_biUnion_of_mem S hi) hu)).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem summable_of_summable_seminorm (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E]
     (t : ℕ → SchwartzMap E ℂ)

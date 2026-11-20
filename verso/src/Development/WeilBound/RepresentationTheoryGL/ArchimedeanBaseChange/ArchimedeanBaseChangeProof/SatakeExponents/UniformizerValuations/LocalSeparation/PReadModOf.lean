@@ -30,7 +30,7 @@ Both sides reduce to the same expression.
     prodT A B (u ⊗ₜ v) = fun x => u.1.1 x.1 * v.1.1 x.2 := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[map_sum, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem prodT_sum (A : Submodule ℂ P1) (B : Submodule ℂ P2) {κ : Type} (s : Finset κ) (x : κ → A) (y : κ → B) :
     prodT A B (∑ k ∈ s, x k ⊗ₜ y k) = fun z => ∑ k ∈ s, (x k).1.1 z.1 * (y k).1.1 z.2 := by
@@ -38,7 +38,7 @@ theorem prodT_sum (A : Submodule ℂ P1) (B : Submodule ℂ P2) {κ : Type} (s :
   simp [map_sum, Finset.sum_apply]
 
 /- English proof (translation)
-The claim follows from `b.linearIndependent.map' (P.subtype ∘ₗ A.subtype) (LinearMap.ker_eq_bot.2 fun _ _ h => Subtype.ext (Subtype.ext h))`.
+A detailed English derivation is pending.
 -/
 theorem linInd {Y : Type} {P : Submodule ℂ (Y → ℂ)} {A : Submodule ℂ P} {κ : Type} (b : Module.Basis κ ℂ A) :
     LinearIndependent ℂ (fun k => (b k).1.1) :=
@@ -46,7 +46,7 @@ theorem linInd {Y : Type} {P : Submodule ℂ (Y → ℂ)} {A : Submodule ℂ P} 
     (LinearMap.ker_eq_bot.2 fun _ _ h => Subtype.ext (Subtype.ext h))
 
 /- English proof (translation)
-Introduce `k hk`. Use function extensionality and compare the values at `y1`. Conclude with `linearIndependent_iff'.1 hb s (fun k => c k y1) (by funext y2; simpa [Finset.sum_apply] using h y1 y2) k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coeff_zero {κ : Type} (b : κ → Y2 → ℂ) (hb : LinearIndependent ℂ b) (s : Finset κ) (c : κ → Y1 → ℂ)
     (h : ∀ y1 y2, ∑ k ∈ s, c k y1 * b k y2 = 0) : ∀ k ∈ s, c k = 0 := by
@@ -56,7 +56,7 @@ theorem coeff_zero {κ : Type} (b : κ → Y2 → ℂ) (hb : LinearIndependent �
     (by funext y2; simpa [Finset.sum_apply] using h y1 y2) k hk
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (TensorProduct.equivFinsuppOfBasisRight b).symm_apply_apply t]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum, prodT_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expR (A : Submodule ℂ P1) (B : Submodule ℂ P2) {κ : Type} [DecidableEq κ] (b : Module.Basis κ ℂ B)
     (t : A ⊗[ℂ] B) :
@@ -66,7 +66,7 @@ theorem expR (A : Submodule ℂ P1) (B : Submodule ℂ P2) {κ : Type} [Decidabl
   rw [TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum, prodT_sum]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (TensorProduct.equivFinsuppOfBasisLeft b).symm_apply_apply t]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum, prodT_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expL (A : Submodule ℂ P1) (B : Submodule ℂ P2) {κ : Type} [DecidableEq κ] (b : Module.Basis κ ℂ A)
     (t : A ⊗[ℂ] B) :
@@ -83,7 +83,7 @@ variable {G1 G2 Y1 Y2 : Type} [Group G1] [Group G2] [Monoid Y1] [Monoid Y2]
   {P1 : Submodule ℂ (Y1 → ℂ)} {P2 : Submodule ℂ (Y2 → ℂ)}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Simplify using `using h ⟨u, hu⟩`. Introduce `h u`. Simplify using `using h u.1 u.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (U : Subgroup G)
     (v : V) : v ∈ fixed ρ U ↔ ∀ u ∈ U, ρ u v = v := by
@@ -94,23 +94,21 @@ theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ
     simpa using h u.1 u.2
 
 /- English proof (translation)
-Use `set b2 := Module.Basis.ofVectorSpace ℂ S2`. Use `set m := TensorProduct.equivFinsuppOfBasisRight b2 t`. Establish `hx` using `expR S1 S2 b2 t`. Establish `hfix : ∀ k, (m k).1 ∈ fixed ρ1 U1`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_fixed_iff]`. Introduce `u hu`. Distinguish the cases in `hk : k ∈ m.support`. Use `coeff_zero (fun k => (b2 k).1.1) (linInd b2) m.support (fun k y1 => (m k).1.1 (y1 * e1 u) - (m k).1.1 y1) (fun y1 y2 => by` as an intermediate fact. Establish `h` using `hU1 u hu (y1, y2)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hx]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Conclude with `sub_eq_zero.2 h) k hk`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hρ1]`. Conclude with `sub_eq_zero.1 (congrFun this y)`. Rewrite using `[Finsupp.notMem_support_iff.1 hk]`. Simplify using the standard rewrite rules. Use `set A1 : Submodule ℂ P1 := S1 ⊓ fixed ρ1 U1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `t' : A1 ⊗[ℂ] S2` to `∑ k ∈ m.support, (⟨(m k).1, Submodule.mem_inf.2 ⟨(m k).2, hfix k⟩⟩ : A1) ⊗ₜ b2 k`. Establish `ht' : prodT A1 S2 t' = prodT S1 S2 t`. Rewrite using `[hx, prodT_sum]`. Use `set b1 := Module.Basis.ofVectorSpace ℂ A1`. Use `set n := TensorProduct.equivFinsuppOfBasisLeft b1 t'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hy` using `expL A1 S2 b1 t'`. Rewrite `hy` using `[ht']`. Use `⟨_, n.support, fun l => ⟨(b1 l).1, (Submodule.mem_inf.1 (b1 l).2).1⟩, n, fun l => (Submodule.mem_inf.1 (b1 l).2).2, ?_, linInd b1, hy⟩` and prove the remaining obligations. Introduce `l`. Rewrite using `[mem_fixed_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Distinguish the cases in `hl : l ∈ n.support`. Use `coeff_zero (fun l => (b1 l).1.1) (linInd b1) n.support (fun l y2 => (n l).1.1 (y2 * e2 u) - (n l).1.1 y2) (fun y2 y1 => by` as an intermediate fact. Establish `h` using `hU2 u hu (y1, y2)`. Rewrite `h` using `[hy]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Use `sub_eq_zero.2 ?_` and prove the remaining obligations. Simplify `h) l hl` using `only [mul_comm]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
-
-Rewrite using `[hρ2]`. Conclude with `sub_eq_zero.1 (congrFun this y)`. Rewrite using `[Finsupp.notMem_support_iff.1 hl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decomp (e1 : G1 →* Y1) (e2 : G2 →* Y2) (ρ1 : Representation ℂ G1 P1) (ρ2 : Representation ℂ G2 P2)
     (hρ1 : ∀ g v y, (ρ1 g v).1 y = v.1 (y * e1 g)) (hρ2 : ∀ g v y, (ρ2 g v).1 y = v.1 (y * e2 g))
@@ -177,41 +175,37 @@ variable {G1 G2 Y1 Y2 : Type} [Group G1] [Group G2] [Monoid Y1] [Monoid Y2]
   {P1 : Submodule ℂ (Y1 → ℂ)} {P2 : Submodule ℂ (Y2 → ℂ)}
 
 /- English proof (translation)
-Take `⟨hs1, J1, L1, heq1, hsep1⟩` from `h1`. Take `⟨hs2, J2, L2, heq2, hsep2⟩` from `h2`. Establish `hR : Submodule.span ℂ {F | ∃ φ₁ ∈ S1, ∃ φ₂ ∈ S2, F = fun x => φ₁.1 x.1 * φ₂.1 x.2} = LinearMap.range (prodT S1 S2)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `F ⟨φ₁, h₁, φ₂, h₂, rfl⟩`. Conclude with `⟨(⟨φ₁, h₁⟩ : S1) ⊗ₜ (⟨φ₂, h₂⟩ : S2), rfl⟩`. Introduce and unpack `F ⟨t, rfl⟩`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul u v => exact Submodule.subset_span ⟨u.1, u.2, v.1, v.2, rfl⟩`. Consider the case `add t t' ht ht' => rw [map_add]`. Conclude with `add_mem ht ht'`. Rewrite using `[hR]`. Use `set Ψ := prodT S1 S2`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `t ht`. Rewrite `ht` using `[LinearMap.mem_ker]`. Use `set b2 := Module.Basis.ofVectorSpace ℂ S2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set m := TensorProduct.equivFinsuppOfBasisRight b2 t`. Establish `hx` using `expR S1 S2 b2 t`. Rewrite `hx` using `[ht]`. Establish `hz` using `coeff_zero (fun k => (b2 k).1.1) (linInd b2) m.support (fun k => (m k).1.1) (fun y1 y2 => (congrFun hx (y1, y2)).symm)`. Establish `hm : m = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k : 1`. Distinguish the cases in `hk : k ∈ m.support`. Conclude with `Subtype.ext (Subtype.ext (hz k hk))`. Conclude with `Finsupp.notMem_support_iff.1 hk`. Establish `: t = (TensorProduct.equivFinsuppOfBasisRight b2).symm m` using `by simp [m]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this, hm, map_zero]`. Use `set e := LinearEquiv.ofInjective Ψ hinj`. Establish `hL : ∀ j : J1 × J2, ∃ g : (Y1 × Y2 → ℂ) →ₗ[ℂ] X1 ⊗[ℂ] X2, g ∘ₗ (LinearMap.range Ψ).subtype = (TensorProduct.map (L1 j.1 ∘ₗ S1.subtype) (L2 j.2 ∘ₗ S2.subtype)) ∘ₗ e.symm.toLinearMap` using `fun j => LinearMap.exists_extend _`. Use `choose L hLs using hL`. Establish `spec : ∀ j t, L j (Ψ t) = TensorProduct.map (L1 j.1 ∘ₗ S1.subtype) (L2 j.2 ∘ₗ S2.subtype) t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j t`. Establish `h` using `LinearMap.congr_fun (hLs j) (e t)`. Simplify `h` using `[e]`. Establish `specS : ∀ j {κ : Type} (s : Finset κ) (x : κ → S1) (y : κ → S2), L j (fun z => ∑ k ∈ s, (x k).1.1 z.1 * (y k).1.1 z.2) = ∑ k ∈ s, L1 j.1 (x k).1 ⊗ₜ L2 j.2 (y k).1`. Introduce `j κ s x y`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← prodT_sum, spec]`. Simplify using `[map_sum]`. Establish `hdec : ∀ G ∈ LinearMap.range Ψ, SmVec ρ G → ∃ (U1 : Subgroup G1) (U2 : Subgroup G2) (κ : Type) (s : Finset κ) (x : κ → S1) (y : κ → S2), IsOpen (U1 : Set G1) ∧ IsOpen (U2 : Set G2) ∧ (∀ k, (x k).1 ∈ fixed ρ1 U1) ∧ (∀ k, (y k).1 ∈ fixed ρ2 U2) ∧ LinearIndependent ℂ (fun k => (x k) …`. Introduce and unpack `G ⟨t, rfl⟩ ⟨U, hUo, hU⟩`. Rewrite `hU` using `[mem_fixed_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨κ, s, x, y, hx, hy, hli, hG⟩` from `decomp e1 e2 ρ1 ρ2 hρ1 hρ2 S1 S2 (U.comap (MonoidHom.inl G1 G2)) (U.comap (MonoidHom.inr G1 G2)) t (fun u hu z => by simpa [hρ] using congrFun (hU (u, 1) hu) z) (fun u hu z => by simpa [hρ] using congrFun (hU (1, u) hu) z)`. Conclude with `⟨_, _, κ, s, x, y, hUo.preimage (continuous_id.prodMk continuous_const), hUo.preimage (continuous_const.prodMk continuous_id), hx, hy, hli, hG⟩`. Use `⟨?_, J1 × J2, L, ?_, ?_⟩` and prove the remaining obligations. Introduce `g G hG`. Take `⟨t, rfl⟩` from `hG`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u v`. Use `⟨(⟨ρ1 g.1 u.1, hs1 g.1 u.1 u.2⟩ : S1) ⊗ₜ (⟨ρ2 g.2 v.1, hs2 g.2 v.1 v.2⟩ : S2), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ψ, hρ, hρ1, hρ2]`. Consider the case `add t t' ht ht' => rw [map_add, map_add]`. Conclude with `add_mem ht ht'`. Introduce `j g G hG hsm`. Take `⟨U1, U2, κ, s, x, y, hU1o, hU2o, hx, hy, -, rfl⟩` from `hdec G hG hsm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG' : ρ g (fun z => ∑ k ∈ s, (x k).1.1 z.1 * (y k).1.1 z.2) = fun z => ∑ k ∈ s, ((⟨ρ1 g.1 (x k).1, hs1 g.1 _ (x k).2⟩ : S1)).1.1 z.1 * ((⟨ρ2 g.2 (y k).1, hs2 g.2 _ (y k).2⟩ : S2)).1.1 z.2`. Use function extensionality and compare the values at `z`. Simplify using `[hρ, hρ1, hρ2]`. Rewrite using `[hG', specS, specS, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[heq1 j.1 g.1 _ (x k).2 ⟨U1, hU1o, hx k⟩, heq2 j.2 g.2 _ (y k).2 ⟨U2, hU2o, hy k⟩, GlobalTheory.SmGL.extTensor_tmul]`. Introduce `G hG hsm h0`. Take `⟨U1, U2, κ, s, x, y, hU1o, hU2o, hx, hy, hli, rfl⟩` from `hdec G hG hsm`. Establish `hy0 : ∀ k ∈ s, y k = 0`. Introduce `k hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `hsep2 _ (y k).2 ⟨U2, hU2o, hy k⟩ fun j2 => ?_` and prove the remaining obligations. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `β`. Use `set c : κ → ℂ := fun k => β (L2 j2 (y k).1) with hc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : ∑ k ∈ s, c k • (x k).1 = 0`. Use `hsep1 _ (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (x k).2) ⟨U1, hU1o, Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hx k)⟩ fun j1 => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun u => TensorProduct.rid ℂ X1 (LinearMap.lTensor X1 β u)) (h0 (j1, j2))`. Simplify using `only [specS, map_sum, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, map_zero] at h`. Simplify `h` using `[map_sum, hc]`.
-
-Conclude with `linearIndependent_iff'.1 hli s c (by`. Use `congrArg (fun v : P1 => v.1) hw` as an intermediate fact. Simplify using `using this) k hk`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.zero_apply]`.
-
-Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Rewrite using `[hy0 k hk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sep_pair [TopologicalSpace G1] [TopologicalSpace G2] {X1 X2 : Type} [AddCommGroup X1] [Module ℂ X1]
     [AddCommGroup X2] [Module ℂ X2] (e1 : G1 →* Y1) (e2 : G2 →* Y2) (ρ1 : Representation ℂ G1 P1)
@@ -328,7 +322,7 @@ theorem sep_pair [TopologicalSpace G1] [TopologicalSpace G2] {X1 X2 : Type} [Add
 end ReadingModuleProducts
 
 /- English proof (translation)
-Introduce `hT E _ _ _ a b s₁ s₂ Pa Pb w g₁ g₂ u₁ u₂ t₁ t₂`. Conclude with `ReadingModuleProducts.sep_pair (embW a w) (embW b w) ((finRep E a).comp (locGL E a w)) ((finRep E b).comp (locGL E b w)) (fun _ _ _ => rfl) (fun _ _ _ => rfl) (pairRt a b w) (fun _ _ _ => rfl) s₁.space s₂.space _ _ (hT E a s₁ Pa w g₁ u₁ t₁) (hT E b s₂ Pb w g₂ u₂ t₂)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem readModOf_holds : ReadModOf := by
   intro hT E _ _ _ a b s₁ s₂ Pa Pb w g₁ g₂ u₁ u₂ t₁ t₂

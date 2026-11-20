@@ -24,7 +24,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`. Simplify using `[ιV, actVB, actVdR, AlgebraTensorModule.map_tmul, PD.ι_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem ιV_act (g : G) (w : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (actVB PD ρ g w) = actVdR PD ρ g (ιV PD (LL := LL) (V := V) w) := by
@@ -35,7 +35,7 @@ theorem ιV_act (g : G) (w : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `only [Dcris, DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hw ⊢`. Introduce `g`. Rewrite using `[← ιV_act, hw g]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιV_mem_DdR {w : V ⊗[Qp] B} (hw : w ∈ Dcris PD ρ) :
     ιV PD (LL := LL) (V := V) w ∈ DdR PD ρ := by
@@ -45,7 +45,7 @@ theorem ιV_mem_DdR {w : V ⊗[Qp] B} (hw : w ∈ Dcris PD ρ) :
   rw [← ιV_act, hw g]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`. Simplify using `[ιV, mulVB, mulVdR, AlgebraTensorModule.map_tmul, ← IsScalarTower.algebraMap_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem ιV_mul (a : K₀) (w : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (mulVB (B := B) (V := V) (LL := LL) a w) =
@@ -57,9 +57,9 @@ theorem ιV_mul (a : K₀) (w : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Unfold `DcrisL at hw`. Unfold `DdRE`. Rewrite `hw`, the goal using `[Submodule.mem_inf]`. Use `⟨ιV_mem_DdR PD ρ hw.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hw.2`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h2 ⊢`. Introduce `c`. Take `⟨a, rfl⟩` from `hs c`. Rewrite using `[← ιV_mul, h2 a, map_smul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ιV_mem_DdRE (hs : Function.Surjective (algebraMap K₀ K)) (τ : K →ₐ[Qp] LL)
     {w : V ⊗[Qp] B} (hw : w ∈ DcrisL PD ρ (τ.comp (IsScalarTower.toAlgHom Qp K₀ K))) :
@@ -77,9 +77,9 @@ theorem ιV_mem_DdRE (hs : Function.Surjective (algebraMap K₀ K)) (τ : K →�
   simp
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v s`. Conclude with `⟨v ⊗ₜ ⟨(s : BdR), PD.Fil_anti a s.2⟩, by simp [AlgebraTensorModule.map_tmul]⟩`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem FilV_succ_le (a : ℤ) :
     FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
@@ -91,7 +91,7 @@ theorem FilV_succ_le (a : ℤ) :
   | add x y hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-The claim follows from `antitone_int_of_succ_le (FilV_succ_le PD)`.
+A detailed English derivation is pending.
 -/
 theorem FilV_anti : Antitone fun a : ℤ => FilV PD (LL := LL) (V := V) a :=
   antitone_int_of_succ_le (FilV_succ_le PD)
@@ -103,15 +103,13 @@ end GlobalTheory.Per.CharJumps
 namespace GlobalTheory.Per.CharJumps
 
 /- English proof (translation)
-Establish `hx0 : x ≠ 0` using `fun h => h2 (h ▸ (F (d + 1)).zero_mem)`. Establish `hspan : ∀ y ∈ D, ∃ c : LL, c • x = y`. Introduce `y hy`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨x, hx⟩ : ↥D) (fun h => hx0 (congrArg Subtype.val h))).1 hD ⟨y, hy⟩`. Conclude with `⟨c, congrArg Subtype.val hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `split_ifs with hb`. Use `inf_eq_left.2 fun y hy => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hspan y hy`. Conclude with `(F b).smul_mem c (hF hb h1)`. Rewrite using `[eq_bot_iff]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[Submodule.mem_inf]`. Take `⟨c, rfl⟩` from `hspan _ hy.1`. Rewrite using `[Submodule.mem_bot]`. Distinguish the cases in `hc : c = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Simplify using `[hc]`. It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Establish `hxe : x = c⁻¹ • (c • x)` using `by rw [smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[hxe]`.
-
-Conclude with `hF (by omega) ((F b).smul_mem _ hy.2)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_of_line {LL M : Type} [Field LL] [AddCommGroup M] [Module LL M] (D : Submodule LL M)
     (hD : finrank LL ↥D = 1) (F : ℤ → Submodule LL M) (hF : Antitone F) {x : M} (hx : x ∈ D)
@@ -141,17 +139,15 @@ theorem inf_of_line {LL M : Type} [Field LL] [AddCommGroup M] [Module LL M] (D :
       exact hF (by omega) ((F b).smul_mem _ hy.2)
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL hA μ hμ d hw hcrys τ b`. Use `haveI := LL.2`. Use `haveI := K.2`. Establish `hdr : IsDR (P.PD K) (charRep μ)`. Set `A : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)` to `{ V := ↥LL.1, ρ := charRep μ, cont := fun x => by show Continuous fun g => ((μ g : (↥LL.1)ˣ) : ↥LL.1) • LinearMap.id x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hμ.smul continuous_const }`. Conclude with `((GlobalTheory.Per.FontaineTied.fontCore_all_of_tied l P AI T K) ↥LL.1 ↥(OL LL) (GlobalTheory.LocalIntegers.good_integers l LL).1 A).2.2 hcrys`. Take `⟨-, -, hdim⟩` from `(GlobalTheory.Per.Components.components_finrank l P AI T K LL ↥LL.1 (charRep μ)).1 τ`. Establish `h1 : finrank ↥LL.1 ↥(DdRE (P.PD K) (charRep μ) τ) = 1`. Rewrite using `[hdim hdr, Module.finrank_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective (algebraMap ↥(K0 K) ↥K.1)` using `fun c => ⟨⟨c.1, c.2, hA.1 c.2⟩, rfl⟩`. Take `⟨w, hwD, hin, hout⟩` from `hw τ`. Establish `hx` using `ιV_mem_DdRE (P.PD K) (charRep μ) hs τ hwD`. Establish `key` using `inf_of_line _ h1 _ (FilV_anti (P.PD K)) hx (d τ) hin hout`. Establish `fk : ∀ c : ℤ, (finrank ↥LL.1 ↥(FildR (P.PD K) (charRep μ) τ c) : ℤ) = if c ≤ d τ then 1 else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `c`. Unfold `FildR`. Rewrite using `[key c]`. Distinguish the cases in `hc : c ≤ d τ`. Rewrite using `[if_pos hc, if_pos hc, h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg hc, if_neg hc, finrank_bot]`. Both sides reduce to the same expression. Unfold `multV`. Rewrite using `[fk b, fk (b + 1)]`.
-
-Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem jumps_of_exact_degree : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l), CaseA K LL → ∀ μ : ↥(GK K) →* (↥LL.1)ˣ, Continuous (fun g : ↥(GK K) => ((μ g : (↥LL.1)ˣ) : ↥LL.1)) → ∀ d : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ℤ, (∀ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, ∃ w ∈ DcrisL (P.PD K) (charRep μ) (τ.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1)), ιV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) w ∈ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) (d τ) ∧ ιV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) w ∉ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) (d τ + 1)) → IsCrys (P.PD K) (charRep μ) → ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (b : ℤ), multV (P.PD K) (charRep μ) τ b = if b = d τ then 1 else 0 := by
   intro l _ P AI T K LL hA μ hμ d hw hcrys τ b

@@ -16,7 +16,7 @@ def ExtDP (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) : Prop :
   ∃ δ' : DividedPowers (J ⊔ I.map f), IsDPMorphism δ δ' (RingHom.id B) ∧ IsDPMorphism κ δ' f
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨δ', h₁, h₂⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem ExtDP.of_eq {κ : DividedPowers I} {f : R →+* B} {δ : DividedPowers J} {J' : Ideal B}
     (δ' : DividedPowers J') (h : J' = J ⊔ I.map f) (h₁ : IsDPMorphism δ δ' (RingHom.id B))
@@ -25,11 +25,11 @@ theorem ExtDP.of_eq {κ : DividedPowers I} {f : R →+* B} {δ : DividedPowers J
   exact ⟨δ', h₁, h₂⟩
 
 /- English proof (translation)
-Establish `hS : Q.ext J = Ideal.span ((algebraMap B Q.P) '' (J : Set B) ∪ Set.range (fun m : ℕ => Q.e (m + 1)))`. Rewrite using `[Ideal.span_union]`. Both sides reduce to the same expression. Establish `h1 : Q.e 1 ∈ Q.ext J` using `Q.e_one_mem_ext J`. Use `IsDPMorphism.on_span η θ hS ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `s (⟨b, hb, rfl⟩ | ⟨m, rfl⟩)`. Rewrite using `[← RingHom.comp_apply]`. Conclude with `hF.1 (Ideal.mem_map_of_mem _ hb)`. Rewrite using `[he]`. Conclude with `θ.dpow_mem (Nat.succ_ne_zero m) hc`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `n s (⟨b, hb, rfl⟩ | ⟨m, rfl⟩)`. Rewrite using `[hQ.dp.dpow_comp b hb, ← RingHom.comp_apply, ← RingHom.comp_apply, hF.dpow_comp b hb]`. Use `show F (η.dpow n (Q.e (m + 1))) = θ.dpow n (F (Q.e (m + 1)))`. Rewrite using `[he, ← hQ.var (m + 1), η.dpow_comp (Nat.succ_ne_zero m) h1, map_mul, map_natCast, hQ.var, he, θ.dpow_comp (Nat.succ_ne_zero m) hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dp_of_std (δ : DividedPowers J) (Q : PDPoly B) (η : DividedPowers (Q.ext J)) (hQ : Q.IsStd δ η)
     {C : Type} [CommRing C] {L : Ideal C} (θ : DividedPowers L) (F : Q.P →+* C) (c : C) (hc : c ∈ L)
@@ -52,19 +52,17 @@ theorem dp_of_std (δ : DividedPowers J) (Q : PDPoly B) (η : DividedPowers (Q.e
         θ.dpow_comp (Nat.succ_ne_zero m) hc]
 
 /- English proof (translation)
-Take `⟨δ', h₁, h₂⟩` from `h`. Establish `hsub` using `Fil.fil_isSubDPIdeal δ n hn`. Take `⟨θ, hθ, huniv⟩` from `Fil.exists_quot δ (fil δ n) hsub`. Establish `hsub' : δ'.IsSubDPIdeal (fil δ n)`. Use `⟨hsub.isSubideal.trans le_sup_left, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm j hj`. Establish `hjJ : j ∈ J` using `hsub.isSubideal hj`. Establish `hj'` using `h₁.dpow_comp (n := m) j hjJ`. Simplify using `only [RingHom.id_apply] at hj'`. Rewrite using `[hj']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsub.dpow_mem m hm hj`. Take `⟨δ'', hδ'', -⟩` from `Fil.exists_quot δ' (fil δ n) hsub'`. Use `⟨B ⧸ fil δ n, inferInstance, Ideal.Quotient.mk _, _, θ, hθ, ?_, ?_, Ideal.Quotient.mk_surjective, ?_⟩` and prove the remaining obligations. Use `show fil θ n = ⊥`. Apply `eq_bot_iff.mpr` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Fil.fil_le_map_fil B J δ _ _ θ _ hθ rfl n).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_quotient_self]`. Use `ExtDP.of_eq δ'' ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_sup, Ideal.map_map]`. Apply `huniv` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc` using `IsDPMorphism.comp δ'' hδ'' h₁`. Simplify using `using hc`. Conclude with `IsDPMorphism.comp δ'' hδ'' h₂`. Introduce `C _ L η hη g hg`. Establish `hker : ∀ x ∈ fil δ n, g x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Establish `h3 : g x ∈ fil η n` using `Fil.map_fil_le δ η g hg n (Ideal.mem_map_of_mem g hx)`. Rewrite `h3` using `[show fil η n = ⊥ from hη]`. Conclude with `(Ideal.mem_bot).mp h3`. Use `⟨Ideal.Quotient.lift _ g hker, ?_, Ideal.Quotient.lift_comp_mk _ g hker⟩` and prove the remaining obligations.
-
-Apply `huniv` to reduce the goal to its premises. Rewrite using `[Ideal.Quotient.lift_comp_mk]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ring_trunc (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) (h : ExtDP κ f δ) (n : ℕ)
     (hn : 1 ≤ n) : ∃ (A : Type) (_ : CommRing A) (a : B →+* A) (JA : Ideal A) (θ : DividedPowers JA),
@@ -106,21 +104,19 @@ theorem ring_trunc (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J)
     exact hg
 
 /- English proof (translation)
-Take `⟨δ', h₁, h₂⟩` from `h`. Take `⟨η, hQ⟩` from `exists_std B J δ (stdPoly B)`. Take `⟨η', hQ'⟩` from `exists_std B _ δ' (stdPoly B)`. Establish `h1 : (stdPoly B).e 1 ∈ (stdPoly B).ext J` using `(stdPoly B).e_one_mem_ext J`. Use `⟨(stdPoly B).P, inferInstance, algebraMap B (stdPoly B).P, (stdPoly B).ext J, η, (stdPoly B).e 1, hQ.dp, ?_, h1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ExtDP.of_eq η' ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [PDPoly.ext, Ideal.map_sup, Ideal.map_map]`. Conclude with `sup_right_comm _ _ _`. Use `dp_of_std δ (stdPoly B) η hQ η' (RingHom.id _) ((stdPoly B).e 1) ((stdPoly B).e_one_mem_ext _) ?_ ?_` and prove the remaining obligations. Simplify using `using IsDPMorphism.comp η' hQ'.dp h₁`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Rewrite using `[hQ'.var m]`. Both sides reduce to the same expression. Conclude with `IsDPMorphism.comp η' hQ'.dp h₂`. Introduce `C _ L ηC g hg z hz`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨G, hG1, hG2⟩` from `Fil.exists_lift (stdPoly B) C g (fun m => ηC.dpow m z) (ηC.dpow_zero hz) (fun m k => ηC.mul_dpow hz)`. Establish `hGa : G.comp (algebraMap B (stdPoly B).P) = g` using `RingHom.ext hG1`. Use `⟨G, dp_of_std δ (stdPoly B) η hQ ηC G z hz (by rw [hGa]; exact hg) hG2, hGa, ?_⟩` and prove the remaining obligations. Rewrite using `[hG2 1]`. Conclude with `ηC.dpow_one hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `C _ G G' hGG' hm`. Use extensionality with `p`. Establish `hp : p ∈ Submodule.span B (Set.range (stdPoly B).e)`. Rewrite using `[(stdPoly B).e.span_eq]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, rfl⟩` from `hx`. Establish `hm'` using `hm m`. Rewrite `hm'` using `[hQ.var]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `smul b x _ hx`. Rewrite using `[Algebra.smul_def, map_mul, map_mul, hx]`. Use `congr 1`.
-
-Conclude with `RingHom.congr_fun hGG' b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ring_poly (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) (h : ExtDP κ f δ) :
     ∃ (A : Type) (_ : CommRing A) (a : B →+* A) (JA : Ideal A) (θ : DividedPowers JA) (y : A),
@@ -169,15 +165,15 @@ theorem ring_poly (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) 
       exact RingHom.congr_fun hGG' b
 
 /- English proof (translation)
-Take `⟨A1, _, a1, JA1, θ1, y1, ha1, hext1, hy1, huniv1, huniq1⟩` from `ring_poly κ f δ h`. Take `⟨A2, _, a2, JA2, θ2, ha2, hlev, hext2, hsurj, huniv2⟩` from `ring_trunc κ (a1.comp f) θ1 hext1 n hn`. Establish `hmem : a2 y1 ∈ JA2` using `ha2.1 (Ideal.mem_map_of_mem a2 hy1)`. Use `⟨A2, inferInstance, a2.comp a1, JA2, θ2, a2 y1, IsDPMorphism.comp θ2 ha2 ha1, hlev, ?_, hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hext2`. Introduce `C _ L η hη g hg z hz`. Take `⟨G1, hG1, hG1a, hG1y⟩` from `huniv1 C L η g hg z hz`. Take `⟨G, hG, hGa⟩` from `huniv2 C L η hη G1 hG1`. Establish `hGy : G (a2 y1) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_apply, hGa, hG1y]`. Use `⟨G, ⟨hG, ?_, hGy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, hGa, hG1a]`. Introduce and unpack `G' ⟨hG', hG'a, hG'y⟩`. Establish `e1 : ∀ (H : A2 →+* C) (m : ℕ), IsDPMorphism θ2 η H → H (a2 y1) = z → (H.comp a2) (θ1.dpow m y1) = η.dpow m z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H m hH hHy`. Rewrite using `[RingHom.comp_apply, ← ha2.2 y1 hy1, ← hH.2 _ hmem, hHy]`. Establish `key : G'.comp a2 = G.comp a2`. Apply `huniq1 C` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, hG'a, ← RingHom.comp_assoc, hGa, hG1a]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Rewrite using `[e1 G' m hG' hG'y, e1 G m hG hGy]`. Use extensionality with `x`. Take `⟨w, rfl⟩` from `hsurj x`. Conclude with `RingHom.congr_fun key w`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ring_adj (κ : DividedPowers I) (f : R →+* B) (δ : DividedPowers J) (h : ExtDP κ f δ) (n : ℕ)
     (hn : 1 ≤ n) :

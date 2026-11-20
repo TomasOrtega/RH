@@ -20,7 +20,7 @@ def red (M : Matrix (Fin 2) (Fin 2) F) : Matrix (Fin 2) (Fin 2) F :=
   !![M 0 0 / M.det, M 0 1; M 1 0 / M.det, M 1 1]
 
 /- English proof (translation)
-Establish `e : M.det = M 0 0 * M 1 1 - M 0 1 * M 1 0` using `Matrix.det_fin_two M`. Simplify using `only [red, Matrix.det_fin_two_of]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_red {M : Matrix (Fin 2) (Fin 2) F} (hM : M.det ≠ 0) : (red M).det = 1 := by
   have e : M.det = M 0 0 * M 1 1 - M 0 1 * M 1 0 := Matrix.det_fin_two M
@@ -29,14 +29,14 @@ theorem det_red {M : Matrix (Fin 2) (Fin 2) F} (hM : M.det ≠ 0) : (red M).det 
   rw [e]
 
 /- English proof (translation)
-Simplify using `only [cjA, Matrix.det_fin_two_of, Matrix.det_fin_two M]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem det_cjA {A : F} (hA : A ≠ 0) (M : Matrix (Fin 2) (Fin 2) F) : (cjA A M).det = M.det := by
   simp only [cjA, Matrix.det_fin_two_of, Matrix.det_fin_two M]
   field_simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [red, cjA, Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_mul] <;> field_simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem red_mul {M N : Matrix (Fin 2) (Fin 2) F} (hM : M.det ≠ 0) (hN : N.det ≠ 0) :
     red (M * N) = red M * cjA M.det (red N) := by
@@ -54,7 +54,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace E] [BorelSpace E] [Algebra F E]
 
 /- English proof (translation)
-Use `⟨hΦ.1.comp_continuous (continuous_mul_const _), hΦ.2.1.comp_homeomorph (Homeomorph.mulRight₀ (t : E) t.ne_zero), fun u hu x => ?_⟩` and prove the remaining obligations. Use `show Φ (x * (u : E) * (t : E)) = _ * Φ (x * (t : E))`. Rewrite using `[mul_right_comm, hΦ.2.2 u hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dil_mem {c : Eˣ →* ℂˣ} {Φ : E → ℂ} (hΦ : Φ ∈ SBc F E c) (t : Eˣ) :
     (fun y => Φ (y * (t : E))) ∈ SBc F E c := by
@@ -64,7 +64,7 @@ theorem dil_mem {c : Eˣ →* ℂˣ} {Φ : E → ℂ} (hΦ : Φ ∈ SBc F E c) (
   rw [mul_right_comm, hΦ.2.2 u hu]
 
 /- English proof (translation)
-Establish `h1 : IsLocallyConstant f` using `hf.1`. Use `⟨(IsLocallyConstant.const k).mul h1, hf.2.1.mul_left, fun u hu x => ?_⟩` and prove the remaining obligations. Use `show k * f (x * (u : E)) = _ * (k * f x)`. Rewrite using `[hf.2.2 u hu]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem const_mul_mem {c : Eˣ →* ℂˣ} {f : E → ℂ} (hf : f ∈ SBc F E c) (k : ℂ) :
     (fun y => k * f y) ∈ SBc F E c := by
@@ -77,31 +77,29 @@ theorem const_mul_mem {c : Eˣ →* ℂˣ} {f : E → ℂ} (hf : f ∈ SBc F E c
 end Dil
 
 /- English proof (translation)
-Unfold `WPiRep ForEF`. Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη c Φ hΦ g h hh`. Establish `wch` using `GlobalTheory.CompanionTheory.WeilChoice.wchoice F χ hχ hχ1 E hfr hcont σ hσ η hη`. Establish `wdg` using `GlobalTheory.CompanionTheory.WeilDilation.wDiagT F χ hχ hχ1 E hfr hcont σ hσ η hη`. Establish `wsb` using `GlobalTheory.CompanionTheory.WeilSB.wsb F χ hχ hχ1 E hfr hcont σ hσ η hη`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `wrp` using `GlobalTheory.T.weil_representation_hypothesis F χ hχ hχ1 E hfr hcont σ hσ η hη`. Use `beta_reduce at wch wdg wsb wrp`. Establish `hdet : ∀ x : GL (Fin 2) F, (x.val).det ≠ 0` using `fun x => ((Matrix.isUnit_iff_isUnit_det _).1 x.isUnit).ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨t, hnt, hpi⟩ : ∃ t : Eˣ, Algebra.norm F (t : E) = (h.val).det ∧ piE E χ σ η c h Φ = fun x => (((c t : ℂˣ) : ℂ) * (((modulus (h.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ))) * rWE E χ σ η (red h.val) (fun y => Φ (y * (t : E))) x := by`. Use `⟨hh.choose, hh.choose_spec, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `piG χ σ (muE E χ) (lamE E χ η) c h Φ x = _`. Unfold `piG`. Rewrite using `[dif_pos hh]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set k : ℂ := ((c t : ℂˣ) : ℂ) * (((modulus (h.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ)) with hk`. Use `set Ψ : E → ℂ := fun y => Φ (y * (t : E)) with hΨdef`. Establish `hΨ : Ψ ∈ SBc F E c` using `dil_mem hΦ t`. Establish `hΨE : Ψ ∈ SBE E` using `⟨hΨ.1, hΨ.2.1⟩`. Establish `hd1 : (red h.val).det = 1` using `det_red (hdet h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : piE E χ σ η c h Φ ∈ SBc F E c`. Rewrite using `[hpi]`. Conclude with `const_mul_mem ((wsb _ hd1 Ψ hΨE).2 c hΨ) k`. Use `⟨?_, hmem⟩` and prove the remaining obligations. Distinguish the cases in `hg : ∃ tg : Eˣ, Algebra.norm F (tg : E) = (g.val).det`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨tg, htg⟩` from `hg`. Establish `hdg` using `hdet g`. Establish `hgh : Algebra.norm F ((tg * t : Eˣ) : E) = ((g * h).val).det`. Rewrite using `[Units.val_mul, map_mul, htg, hnt, Units.val_mul, Matrix.det_mul]`. Rewrite using `[wch c Φ hΦ (g * h) (tg * t) hgh, wch c _ hmem g tg htg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `set f : E → ℂ := fun y => Ψ (y * (tg : E)) with hfdef`. Establish `hfE : f ∈ SBE E`. Use `dil_mem hΨ tg` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Establish `hcj : (cjA (g.val).det (red h.val)).det = 1` using `by rw [det_cjA hdg, hd1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgd : (red g.val).det = 1` using `det_red hdg`. Establish `hL : (fun y => Φ (y * ((tg * t : Eˣ) : E))) = f`. Use function extensionality and compare the values at `y`. Simplify using `only [hfdef, hΨdef, Units.val_mul, mul_assoc]`. Establish `hR : (fun y => piE E χ σ η c h Φ (y * (tg : E))) = fun y => k * rWE E χ σ η (cjA (g.val).det (red h.val)) f y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Use `congrFun (wdg (red h.val) hd1 tg Ψ hΨE) y` as an intermediate fact. Rewrite `this` using `[htg]`. Rewrite using `[hpi]`. Simplify using `only []`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `e1 : rW χ σ (muE E χ) (lamE E χ η) (((g * h).val) 0 0 / ((g * h).val).det) (((g * h).val) 0 1) (((g * h).val) 1 0 / ((g * h).val).det) (((g * h).val) 1 1) f 1 = rWE E χ σ η (red (g * h).val) f 1` using `rfl`. Establish `e2 : rW χ σ (muE E χ) (lamE E χ η) ((g.val) 0 0 / (g.val).det) ((g.val) 0 1) ((g.val) 1 0 / (g.val).det) ((g.val) 1 1) (fun y => k * rWE E χ σ η (cjA (g.val).det (red h.val)) f y) 1 = k * rWE E χ σ η (red g.val) (rWE E χ σ η (cjA (g.val).det (red h.val)) f) 1` using `GlobalTheory.CompanionTheory.WeilChoice.rW_const_mul _ _ _ _ _ _ _ _ _ _ _`. Rewrite using `[hL, hR, e1, e2, Units.val_mul, red_mul hdg (hdet h), wrp _ _ hgd hcj f hfE]`. Establish `e3 : (((modulus ((g.val * h.val).det) : ℝ) : ℂ) ^ (1 / 2 : ℂ)) = (((modulus (g.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ)) * (((modulus (h.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.det_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`. Rewrite using `[e3, map_mul, Units.val_mul, hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg' : ¬ ∃ s : Eˣ, Algebra.norm F (s : E) = ((g * h).val).det`. Introduce and unpack `⟨s, hs⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hg ⟨s * t⁻¹, ?_⟩` and prove the remaining obligations. Establish `hn : Algebra.norm F ((t⁻¹ : Eˣ) : E) * (h.val).det = 1`. Rewrite using `[← hnt, ← map_mul, Units.inv_mul, map_one]`. Rewrite using `[Units.val_mul, map_mul, hs, Units.val_mul, Matrix.det_mul, mul_assoc, mul_comm (h.val).det, hn, mul_one]`. Express the relevant statement in the definitionally equal form `Wc χ σ (muE E χ) (lamE E χ η) c Φ (g * h) = Wc χ σ (muE E χ) (lamE E χ η) c _ g`.
-
-Unfold `Wc`. Rewrite using `[dif_neg hg', dif_neg hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wPiRep : Ad3.K.GL2LocalData.WPiRep := by
   unfold WPiRep ForEF

@@ -11,11 +11,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Re
 variable {r : ℕ}
 
 /- English proof (translation)
-Establish `hN : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 fun h => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hd4 : 2 ≤ D.host.d` using `by have := D.host.qd_big.2; omega`. Establish `hd : (D.host.d : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hs2` using `Formalism.BasicNotions.Host.sqrtMinusD_sq D.host`. Establish `hs : D.host.sqrtMinusD ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hs2` using `[h0, zero_pow two_ne_zero]`. Conclude with `hd (neg_eq_zero.1 hs2.symm)`. Unfold `Host.xi0`. Rewrite using `[div_eq_div_iff (mul_ne_zero hN hs) (mul_ne_zero hN hd)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(Ideal.absNorm D.host.ccK : D.host.E)) * hs2`.
+A detailed English derivation is pending.
 -/
 theorem xi_zero_eq_host (D : D7) : D.host.xi0 =
     D.host.sqrtMinusD / ((Ideal.absNorm D.host.ccK : D.host.E) * (D.host.d : D.host.E)) := by

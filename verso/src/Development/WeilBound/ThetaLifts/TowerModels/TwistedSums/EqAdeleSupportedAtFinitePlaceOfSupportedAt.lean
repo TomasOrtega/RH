@@ -16,9 +16,9 @@ namespace Tw.VacAny
 open _root_.GlobalTheory _root_.GlobalTheory.VacAny
 
 /- English proof (translation)
-Introduce `h`. Establish `hu : GlobalTheory.AdelicU.evFin F v (1 - GlobalTheory.EmbChart.atPlace v 1) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self]`. Establish `h0 : (1 - GlobalTheory.EmbChart.atPlace v 1) • a = 0` using `h _ hu`. Rewrite `h0` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `conv_lhs => rw [h0]`. Rewrite using `[GlobalTheory.EmbChart.atPlace_mul_right, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_atPlace_of_at {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a : AF F) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) a → a = GlobalTheory.EmbChart.atPlace v (GlobalTheory.AdelicU.evFin F v a) := by

@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(GlobalTheory.LieMet.pushE m x' rfl).surjective (GlobalTheory.LieMet.tanOf h)`. Establish `e : (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv v).left ≫ m.φ = w ≫ m.φ` using `congrArg (fun z => (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv z).left) hv`. Establish `e' : (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv v).left = w` using `m.cart.1.hom_ext e ((GlobalTheory.LieMet.isTan_tv v).1.trans hw.symm)`. Conclude with `e' ▸ GlobalTheory.LieMet.isTan_tv v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem tan_of_push {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f)
     {R : Type} [CommRing R] {x' : Sp R ⟶ X'} {w : Sp (DualNumber R) ⟶ t'.G.left}
@@ -30,13 +30,11 @@ private theorem tan_of_push {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'} {f
   exact e' ▸ GlobalTheory.LieMet.isTan_tv v
 
 /- English proof (translation)
-Use `choose a₁ a₂ h1 h2 h3 h4 h5 using hv`. Take `⟨b₁, b₂, k1, k2, k3, rfl, rfl⟩` from `hu`. Take `rfl : (fun i => a₁ i ≫ Z₁.m.φ) = v₁` from `funext h4`. Take `rfl : (fun i => a₂ i ≫ Z₂.m.φ) = v₂` from `funext h5`. Establish `ta₂ : ∀ i, IsTanAtG Z₂.oF.t y (a₂ i)` using `fun i => tan_of_push Z₂.m (h2 i) (tv i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tb₂ : IsTanAtG Z₂.oF.t y b₂` using `tan_of_push Z₂.m k2 tu`. Establish `ta₁ : ∀ i, IsTanAtG Z₁.oF.t y (a₁ i)` using `fun i => tan_of_push Z₁.m0.toSABMap (h1 i) (by`. Rewrite using `[h3 i]`. Conclude with `GlobalTheory.LieMet.isTan_push Z₂.m0.toSABMap y rfl (ta₂ i))`. Establish `tb₁ : IsTanAtG Z₁.oF.t y b₁` using `tan_of_push Z₁.m0.toSABMap k1 (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[k3]`. Conclude with `GlobalTheory.LieMet.isTan_push Z₂.m0.toSABMap y rfl tb₂)`. Establish `c₂` using `(Pull.comb_push Z₂.m rfl ta₂ tb₂ cf).1 h`. Establish `c₀` using `(Pull.comb_push Z₂.m0.toSABMap rfl ta₂ tb₂ cf).2 c₂`. Rewrite `c₀` using `[← k3, ← funext h3]`.
-
-Conclude with `(Pull.comb_push Z₁.m rfl ta₁ tb₁ cf).2 ((Pull.comb_push Z₁.m0.toSABMap rfl ta₁ tb₁ cf).1 c₀)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transp_comb {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O₁ O₂ : Type} [CommRing O₁] [CommRing O₂]
     {β₁ : O₁ →+* c.F} {β₂ : O₂ →+* c.F} {Z₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β₁}
@@ -62,13 +60,13 @@ private theorem transp_comb {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O₁
   exact (Pull.comb_push Z₁.m rfl ta₁ tb₁ cf).2 ((Pull.comb_push Z₁.m0.toSABMap rfl ta₁ tb₁ cf).1 c₀)
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `(UpperTheory.flag_carries_eigenframe (Φ.C i) K q).2 f x g hg`. Take `⟨b1, b2, -⟩` from `(UpperTheory.flag_carries_eigenframe (Φ.C j) K q').2 f' x' g' hg'`. Rewrite `b1`, `b2` using `[reassoc_of% hq]`. Take `rfl : x' = x` from `b1.trans a1.symm`. Take `rfl : f' = f` from `congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) (b2.symm.trans a2))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `I : ∀ (g : EigFrame Z f' x') τ, Pull.Ind Z.t x' (g.v τ)` using `fun g τ => Pull.frame_ind (f := f') (u := g.v) ⟨fun τ i => ⟨g.tan τ i, g.eig τ i⟩, g.basis⟩ τ`. Establish `h1 : spMap (dualMap (RingHom.id K)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `choose cf c1 c2 using h`. Establish `c3 : ∀ τ i, cf τ i i ≠ 0` using `fun τ i => (Pull.Tri.diag (I g τ) (I g' τ) (fun i => ⟨_, c1 τ i, c2 τ i⟩) (c2 τ i)).1`. Establish `hc : (Φ.C i).Carries q g'` using `(a3 f' x' g').2 ⟨fun τ i => Units.mk0 _ (c3 τ i), g.tri_refl.1, rfl, fun τ i => ⟨cf τ i, rfl, c1 τ i, by simpa only [h1, Category.id_comp] using c2 τ i⟩⟩`. Set `ν : K →+* AlgebraicClosure K` to `algebraMap _ _`. Establish `hx : (spMap ν ≫ q ≫ (Φ.C i).π) ≫ genι Z = spMap ν ≫ x'` using `by rw [a1]; simp only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, hg₁⟩` from `g'.exists_isMap ν (φ' := ν.comp f') rfl hx`. Establish `hs : (spMap ν ≫ q ≫ (Φ.C i).π) ≫ genStr Z = spMap (ν.comp f')`. Rewrite using `[Category.assoc, Category.assoc, a2, ← Spec.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg Sigma.fst ((Φ.lifts _ _ _ hs g₁).unique (y₁ := ⟨i, spMap ν ≫ q⟩) (y₂ := ⟨j, spMap ν ≫ q'⟩) ⟨Category.assoc _ _ _, GlobalTheory.GalCarryBC.carries_map _ ν hc hg₁ rfl hx⟩ ⟨by rw [← hq]; exact Category.assoc _ _ _, GlobalTheory.GalCarryBC.carries_map _ ν hg' hg₁ rfl hx⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem comp_eq_of_tri {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} {σ : c.F →+* ℂ} {N : ℕ}
@@ -105,13 +103,13 @@ private theorem comp_eq_of_tri {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Take `⟨rfl, hmu⟩` from `GlobalTheory.T.transition_unique_and_points E H Dw Xo p W Y _ _ _ _ _ _ Z.le hT hT'`. Use `(Y i₀).jQ_open` as an intermediate fact. Use `mono_spMap_subtype (i₀.c.V W)` as an intermediate fact. Establish `hm : Mono (Y i₀).j`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Take `rfl : y' = y` from `(cancel_mono (Y i₀).j).1 (e1'.symm.trans e1)`. Establish `F` using `Pull.chart_frame Z hψ`. Establish `F'` using `Pull.chart_frame Z hψ'`. Take `⟨y₀, hy₀⟩` from `Pull.exists_open_lift Z hψ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3 : ∀ σ i, (Z.fr a').bc ψ' σ i ≫ mu'.φ = (Z.fr a').bc ψ' σ i ≫ mu.φ` using `fun σ i => (hmu _ y₀ _ _ _ ((F'.1 σ i).1.1.trans (by rw [hy₀]))).symm`. Use `comp_eq_of_tri Φ (y2'.symm.trans y2) cg cg' fun σ k => ?_` and prove the remaining obligations. Take `⟨cf, c1, c2⟩` from `Pull.chart_tri Z hty hψ hψ' σ k`. Use `⟨cf, c1, ?_⟩` and prove the remaining obligations. Establish `t'` using `tr' σ k`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `t'` using `[e3]`. Use `transp_comb (tr σ) t' (fun i => GlobalTheory.LieMet.isTan_push mu _ e1 (F.1 σ i).1) (GlobalTheory.LieMet.isTan_push mu _ e1 (F'.1 σ k).1) ((Pull.comb_push mu e1 (fun i => (F.1 σ i).1) (F'.1 σ k).1 cf).2 c2)` as an intermediate fact. Establish `e4 : y' ≫ T.j = q ≫ (Φ.C i).π ≫ genι T`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j, reassoc_of% y2]`. Rewrite `this` using `[e4]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem comp_eq_of_charts (Z : LocM.Mdl Y i₀) (hty : ∀ τ n, n ≤ Dw.mult τ → n ∈ Z.ty τ) {O : Type} [CommRing O]
     {β : O →+* i₀.c.F} {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {F : Type} [Field F]
@@ -151,7 +149,7 @@ private theorem comp_eq_of_charts (Z : LocM.Mdl Y i₀) (hty : ∀ τ n, n ≤ D
   rwa [e4] at this
 
 /- English proof (translation)
-Rewrite using `[Category.assoc η, hy, ← h]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sq₁ {A B C D F G M : Scheme.{0}} {η : A ⟶ B} {ι : B ⟶ C} {s : A ⟶ C} (h : η ≫ ι = s) {y : B ⟶ M}
     {j : M ⟶ G} {c : C ⟶ D} {π : D ⟶ F} {τ : F ⟶ G} (hy : y ≫ j = ι ≫ c ≫ π ≫ τ) :
@@ -159,14 +157,14 @@ private theorem sq₁ {A B C D F G M : Scheme.{0}} {η : A ⟶ B} {ι : B ⟶ C}
   rw [Category.assoc η, hy, ← h]; simp only [Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, hy, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sq₂ {A B C D M : Scheme.{0}} (η : A ⟶ B) {y : B ⟶ M} {j : M ⟶ D} {h : B ⟶ C} {π : C ⟶ D}
     (hy : y ≫ j = h ≫ π) : (η ≫ y) ≫ j = (η ≫ h) ≫ π := by
   rw [Category.assoc, hy, Category.assoc]
 
 /- English proof (translation)
-Take `⟨a, τ, mu, y, ψ, f, g, -, hT, y1, y2, hψ, tr, cg⟩` from `h`. Take `⟨a', τ', mu', y', ψ', f', g', -, hT', y1', y2', hψ', tr', cg'⟩` from `h'`. Conclude with `comp_eq_of_charts Z hty Φ hψ hψ' hT hT' (sq₁ (μ.U.fromSpecStalkOfMem_ι _ μ.mem) y1) (sq₁ (μ'.U.fromSpecStalkOfMem_ι _ μ'.mem) y1') (sq₂ _ y2) (sq₂ _ y2') tr tr' cg cg'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem link_unique (Z : LocM.Mdl Y i₀) (hty : ∀ τ n, n ≤ Dw.mult τ → n ∈ Z.ty τ)
     [IsDiscreteValuationRing (Z.i.c.V W)] (C : (nmodel Z).Comp) {O : Type} [CommRing O]
@@ -182,7 +180,7 @@ private theorem link_unique (Z : LocM.Mdl Y i₀) (hty : ∀ τ n, n ≤ Dw.mult
 end UpperTheory.ChartsTransportCombination
 
 /- English proof (translation)
-Introduce `D A N j S κ s fl _ p hp W hW z _ ε b _ _ C c c' μ μ' h h'`. Conclude with `UpperTheory.ChartsTransportCombination.link_unique z.Z z.full C fl μ μ' h h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.admissible_point_charts :
     ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (fl : s.Flag), (∀ k, (fl.C k).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N) → ∀ (p : ℕ) (hp : p.Prime) (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) [IsDiscreteValuationRing (z.Z.i.c.V W)] (ε : D.what₂.LL →+* z.Z.i.c.F) (b : 𝓞 D.what₂.LL →+* z.Z.i.c.V W), (∀ x, ((ε x : z.Z.i.c.F) : ℂ) = D.what₂.embLL x) → (∀ x : 𝓞 D.what₂.LL, ((b x : z.Z.i.c.V W) : z.Z.i.c.F) = ε (x : D.what₂.LL)) → ∀ (C : (nmodel z.Z).Comp) (c c' : s.Comp) (μ : Match (fl.C c).Y b ((nmodel z.Z).comp C)) (μ' : Match (fl.C c').Y b ((nmodel z.Z).comp C)), Link z.Z C (fl.C c) μ → Link z.Z C (fl.C c') μ' → c = c' := by

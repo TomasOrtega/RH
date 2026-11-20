@@ -25,17 +25,15 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree GlobalTheory.WeilM GlobalT
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨hb, hg, hc, -, hw⟩` from `h`. Use `choose A hA hAθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hg.hV'.sig w) (hg.hV'.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V'.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolStabInf.incM_map_piInf, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolStabInf.incM_map_piInf]`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F G.V'.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hvl` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hD`. Establish `hfe` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hD`. Establish `hsec` using `GlobalTheory.T.lieSecond_of_prints_derEx_fockEx_vacLine_lieScalar hPr hD hfe hvl (GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hPr hD hvl)`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A C hb.cm hb.std fr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws GlobalTheory.RealLift.actsLaws hD hvl F E σ _ _ _ _ _ _ G.V' G.W G.M' B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `hw`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A C Φ _ X.α B.mα hb.cm hb.std fr hΦ hwp.1 hc.expα`. Establish `hL` using `GlobalTheory.RealLift.actsLaws`. Establish `mem : ∀ T, Φ T ∈ G.M'.Pol B.ψ B.emb` using `fun T => hr ▸ LinearMap.mem_range_self Φ T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `γ hγ f hf`. Rewrite `hf` using `[← hr]`. Take `⟨T, rfl⟩` from `hf`. Take `⟨Yg, -, hY⟩` from `GlobalTheory.T.oneParamSubgroup_generators_exist F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C hb.cm hC1 γ hγ`. Establish `h2` using `(hL F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) (hW2 γ hγ Yg hY T)`.
-
-Conclude with `⟨_, mem _, h2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThKDerSmall.exists_actsD_small (hPr : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'}
     {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om') :
@@ -75,7 +73,7 @@ namespace GlobalTheory.ThKDerSmall
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.real_line_corresponds_to_line`.
+A detailed English derivation is pending.
 -/
 theorem lineA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x), IsCMExt F E σ → ∀ {d : ℕ} (W : Spc F E d) (c : E) (hc : c ≠ 0)
@@ -83,7 +81,7 @@ theorem lineA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
     ∃ γL ∈ Lines σ W, ∀ t : ℝ, (toGAd hσ W.J hc).symm (γ t) = γL (Multiplicative.ofAdd t) := GlobalTheory.T.real_line_corresponds_to_line
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hvac, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hvac.and hM.std).mono fun v hv => hv.1.trans hv.2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem polData_le {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     (hM : M.IsGood B.ψ) : GlobalTheory.ThK.PolData B M ≤ GlobalTheory.WeilM.schA F (Fin n × Fin d) := by
@@ -92,7 +90,7 @@ theorem polData_le {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M
   exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hvac.and hM.std).mono fun v hv => hv.1.trans hv.2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x z hz => GlobalTheory.ThKKernelLine.finprod_add_of_at φ x z hz, GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hvac.and hM.std).mono fun v hv => hv.1.trans hv.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem rest_pure {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {ψ : AddChar (AF F) ℂ} {M : Model σ X W}
     (hM : M.IsGood ψ) (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ)
@@ -106,7 +104,7 @@ section Triple
 variable {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 /- English proof (translation)
-Establish `hs` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil'`. Simplify using `only [theta, map_add]`. Conclude with `GlobalTheory.WeilM.thetaSum_add F (hs.pres _ _ hΦ) (hs.pres _ _ hΨ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_add (hT : IsTriple B G X om om') {Φ Ψ} (hΦ : Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a')))
     (hΨ : Ψ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a'))) (g h) :
@@ -116,30 +114,28 @@ theorem theta_add (hT : IsTriple B G X om om') {Φ Ψ} (hΦ : Φ ∈ GlobalTheor
   exact GlobalTheory.WeilM.thetaSum_add F (hs.pres _ _ hΦ) (hs.pres _ _ hΨ)
 
 /- English proof (translation)
-Simplify using `only [theta, map_smul]`. Conclude with `GlobalTheory.WeilM.thetaSum_smul F c _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_smul (c : ℂ) (Φ) (g h) : theta om' (c • Φ) g h = c * theta om' Φ g h := by
   simp only [theta, map_smul]
   exact GlobalTheory.WeilM.thetaSum_smul F c _
 
 /- English proof (translation)
-Simplify using `[theta, GlobalTheory.WeilM.thetaSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_zero (g h) : theta om' 0 g h = 0 := by
   simp [theta, GlobalTheory.WeilM.thetaSum]
 
 /- English proof (translation)
-Establish `hle` using `polData_le (B := B) hT.geo.hM'`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hSB, hvac, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f₁, hf₁, hD⟩` from `GlobalTheory.ThKDerSmall.exists_actsD_small hKP.base hT γ hγ f hf`. Use `⟨pure f₁ φ, Submodule.subset_span ⟨f₁, hf₁, φ, hSB, hvac, rfl⟩, fun x => ?_, fun g h => ?_⟩` and prove the remaining obligations. Conclude with `hD _ (rest_pure hT.geo.hM' f φ hSB hvac) x`. Conclude with `GlobalTheory.ThKKernelLine.hasDerivAt_theta_pure hKP.base G.M' B.ψ _ _ om' hT.base.cm hT.base.std hT.geo.hM' hT.weil' hγ f f₁ hD φ hSB hvac g h`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨0, zero_mem _, fun x => ?_, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `[theta_zero]`. Consider the case `add x y hx hy ihx ihy`. Take `⟨x₁, hx₁, px, ex⟩` from `ihx`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y₁, hy₁, py, ey⟩` from `ihy`. Use `⟨x₁ + y₁, add_mem hx₁ hy₁, fun z => ?_, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(px z).add (py z)`. Rewrite using `[theta_add hT (hle hx₁) (hle hy₁)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [theta_add hT (hle hx) (hle hy)]`. Conclude with `(ex g h).add (ey g h)`. Consider the case `smul c x hx ihx`. Take `⟨x₁, hx₁, px, ex⟩` from `ihx`. Use `⟨c • x₁, Submodule.smul_mem _ c hx₁, fun z => ?_, fun g h => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(px z).const_mul c`. Simplify using `only [theta_smul]`. Conclude with `(ex g h).const_mul c`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_der_pol (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {γ} (hγ : γ ∈ Lines σ G.W) :
     ∀ Φ ∈ GlobalTheory.ThK.PolData B G.M', ∃ Φ₁ ∈ GlobalTheory.ThK.PolData B G.M',
@@ -179,19 +175,17 @@ theorem exists_der_pol (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') 
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hSB, hvac, hloc, rfl⟩` from `hx`. Take `⟨c, c', h0, hlim, hacts⟩` from `GlobalTheory.WeilArchSmooth.exists_orbit hKP.base G.M' B.ψ _ _ om' hT.base.cm hT.base.std hT.weil' γ hγ f`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hR` using `rest_pure hT.geo.hM' f φ hSB hvac`. Use `⟨pure c' φ, Submodule.subset_span ⟨c', φ, hSB, hvac, hloc, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `ev : Continuous fun s : SInf F (Fin a' × Fin (a + a')) => s (fun j => evI F (x j))` using `(continuous_eval_const (F := BoundedContinuousFunction (Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F) ℂ) (fun j => evI F (x j))).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F) ℂ).continuous`. Establish `h2 : HasDerivAt (fun t : ℝ => c t (fun j => evI F (x j)) * ∏ᶠ v, φ v fun j => evFin F v (x j)) (c' (fun j => evI F (x j)) * ∏ᶠ v, φ v fun j => evFin F v (x j)) 0`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(((ev.tendsto c').comp hlim).mul_const _).congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module, h0]`. Simplify using `only [Function.comp_apply, SchwartzMap.smul_apply, SchwartzMap.sub_apply, sub_zero, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (fun t : ℝ => c t (fun j => evI F (x j)) * ∏ᶠ v, φ v fun j => evFin F v (x j)) = fun t => om' (1, γ (Multiplicative.ofAdd t)) (pure f φ) x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Use `show tens (evI F) (⇑(c t)) (fun x => ∏ᶠ v, φ v fun j => evFin F v (x j)) x = om' (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑f) (fun x => ∏ᶠ v, φ v fun j => evFin F v (x j))) x`. Rewrite using `[hacts t _ hR]`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero`. Conclude with `⟨0, zero_mem _, fun x => by simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨x₁, hx₁, px⟩` from `ihx`. Take `⟨y₁, hy₁, py⟩` from `ihy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨x₁ + y₁, add_mem hx₁ hy₁, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(px z).add (py z)`. Consider the case `smul c x hx ihx`. Take `⟨x₁, hx₁, px⟩` from `ihx`.
-
-Use `⟨c • x₁, Submodule.smul_mem _ c hx₁, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(px z).const_mul c`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_der_so (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {γ} (hγ : γ ∈ Lines σ G.W) :
     ∀ Φ ∈ G.M'.So B.ψ B.τ₁, ∃ Φ₁ ∈ G.M'.So B.ψ B.τ₁,
@@ -238,9 +232,9 @@ theorem exists_der_so (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {
     exact (px z).const_mul c
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Take `⟨hP, hS⟩` from `Submodule.mem_inf.1 hΦ`. Take `⟨Φ₁, h1, p1, d1⟩` from `exists_der_pol hKP hT hγ Φ hP`. Take `⟨Φ₁', h1', p1'⟩` from `exists_der_so hKP hT hγ Φ hS`. Establish `e : Φ₁ = Φ₁'` using `funext fun x => (p1 x).unique (p1' x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨Φ₁, Submodule.mem_inf.2 ⟨h1, e ▸ h1'⟩, d1⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_der (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {γ} (hγ : γ ∈ Lines σ G.W) :
     ∀ Φ ∈ GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∃ Φ₁ ∈ GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁,
@@ -253,9 +247,9 @@ theorem exists_der (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {γ}
   exact ⟨Φ₁, Submodule.mem_inf.2 ⟨h1, e ▸ h1'⟩, d1⟩
 
 /- English proof (translation)
-Establish `e0 : HasDerivAt (fun u : ℝ => theta om' Φ g (h * γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd u))) (theta om' Φ₁ g (h * γ (Multiplicative.ofAdd s))) (s - s)`. Rewrite using `[sub_self]`. Conclude with `hd g _`. Establish `e` using `e0.comp_sub_const s s`. Use `e.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show theta om' Φ g (h * γ (Multiplicative.ofAdd r)) = theta om' Φ g (h * γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd (r - s)))`. Rewrite using `[mul_assoc, ← map_mul, ← ofAdd_add, add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_shift {γ : Multiplicative ℝ →* UA σ G.W.J} {Φ Φ₁}
     (hd : ∀ g h, HasDerivAt (fun s : ℝ => theta om' Φ g (h * γ (Multiplicative.ofAdd s))) (theta om' Φ₁ g h) 0)
@@ -272,11 +266,11 @@ theorem hasDerivAt_shift {γ : Multiplicative ℝ →* UA σ G.W.J} {Φ Φ₁}
   rw [mul_assoc, ← map_mul, ← ofAdd_add, add_sub_cancel]
 
 /- English proof (translation)
-Introduce `Ψ hSo`. Establish `hPair` using `GlobalTheory.ThKContSmall.isPair_small hT`. Establish `hS : Ψ ∈ GlobalTheory.WeilM.schA F _` using `GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ hSo`. Establish `hB` using `(GlobalTheory.T.theta_basic_properties hKP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Ψ hS`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hKP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Ψ hSo 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `hv` using `GlobalTheory.ThKContSmall.measure_dom_lt_top hKP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM'`. Use `haveI : IsFiniteMeasure (G.M'.μ.restrict G.M'.dom) := isFiniteMeasure_restrict.2 hv.ne`. Establish `hle : ∀ g h, ‖theta om' Ψ g h‖ ≤ C * (ht h : ℝ) ^ k` using `fun g h => by`. Establish `h1` using `hC g h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[pow_zero, mul_one]`. Then use the resulting hypothesis. Establish `hint : ∀ h, Integrable (fun g => theta om' Ψ g h) (G.M'.μ.restrict G.M'.dom)` using `fun h => (integrable_const (C * (ht h : ℝ) ^ k)).mono' (hB.1.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable (Filter.Eventually.of_forall fun g => hle g h)`. Use `⟨hint, (G.M'.μ.restrict G.M'.dom).real Set.univ * C, k, fun h => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const, smul_eq_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem so_bound (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') :
     ∀ Ψ ∈ G.M'.So B.ψ B.τ₁, (∀ h, Integrable (fun g => theta om' Ψ g h) (G.M'.μ.restrict G.M'.dom)) ∧
@@ -306,7 +300,7 @@ theorem so_bound (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') :
 end Triple
 
 /- English proof (translation)
-Establish `hc : Continuous fun s : ℝ => (ht (γ (Multiplicative.ofAdd s)) : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp (continuous_subtype_val.comp (hγ.1.comp continuous_ofAdd)))`. Take `⟨C, hC⟩` from `(isCompact_Icc (a := (-1 : ℝ)) (b := 1)).exists_bound_of_continuousOn hc.continuousOn`. Conclude with `⟨C, fun s hs => (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hC s hs)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ht_line_bdd {d : ℕ} {W : Spc F E d} {γ : Multiplicative ℝ →* UA σ W.J} (hγ : γ ∈ Lines σ W) :
     ∃ Bd : ℝ, ∀ s ∈ Set.Icc (-1 : ℝ) 1, (ht (γ (Multiplicative.ofAdd s)) : ℝ) ≤ Bd := by
@@ -321,11 +315,11 @@ section Triple3
 variable {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 /- English proof (translation)
-Take `⟨c0, -⟩` from `so_bound hKP hT Φ₀ h0`. Take `⟨c1, C1, k1, b1⟩` from `so_bound hKP hT Φ₁ h1`. Take `⟨c2, C2, k2, b2⟩` from `so_bound hKP hT Φ₂ h2`. Take `⟨Bd, hBd⟩` from `ht_line_bdd hγ`. Use `set Y : ℝ := (ht h : ℝ) * Bd with hYdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hY : ∀ s ∈ Set.Icc (-1 : ℝ) 1, (ht (h * γ (Multiplicative.ofAdd s)) : ℝ) ≤ Y` using `fun s hs => by`. Establish `e` using `heightGL_mul_le F h.1 (γ (Multiplicative.ofAdd s)).1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `e` after adjusting the coercions. Use `_ ≤ Y := mul_le_mul_of_nonneg_left (hBd s hs) (NNReal.coe_nonneg _)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY0 : 0 ≤ Y` using `(NNReal.coe_nonneg _).trans (hY 0 ⟨by norm_num, by norm_num⟩)`. Establish `bnd : ∀ (C : ℝ) (k : ℕ) (Ψ : (Fin a' × Fin (a + a') → AF F) → ℂ), (∀ h', ∫ g, ‖theta om' Ψ g h'‖ ∂(G.M'.μ.restrict G.M'.dom) ≤ C * (ht h' : ℝ) ^ k) → ∀ s ∈ Set.Icc (-1 : ℝ) 1, ∫ g, ‖theta om' Ψ g (h * γ (Multiplicative.ofAdd s))‖ ∂(G.M'.μ.restrict G.M'.dom) ≤ |C| * Y ^ k` using `fun C k Ψ hb s hs => (hb _).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (NNReal.coe_nonneg _) k)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) (hY s hs) k) (abs_nonneg C)))`. Establish `key` using `GlobalTheory.hasDerivAt_integral_of_integral_bounds (G.M'.μ.restrict G.M'.dom) (fun s g => theta om' Φ₀ g (h * γ (Multiplicative.ofAdd s))) (fun s g => theta om' Φ₁ g (h * γ (Multiplicative.ofAdd s))) (fun s g => theta om' Φ₂ g (h * γ (Multiplicative.ofAdd s))) (|C1| * Y ^ k1 + | …`. Simplify `key` using `[Model.I]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_I (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {γ : Multiplicative ℝ →* UA σ G.W.J}
     (hγ : γ ∈ Lines σ G.W) {Φ₀ Φ₁ Φ₂} (h0 : Φ₀ ∈ G.M'.So B.ψ B.τ₁) (h1 : Φ₁ ∈ G.M'.So B.ψ B.τ₁)
@@ -365,9 +359,9 @@ theorem hasDerivAt_I (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {�
 end Triple3
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc _ Φ hΦ γ hγ`. Take `⟨γL, hγL, eγ⟩` from `lineA F E σ hσ hT.base.cm G.W c hc γ hγ`. Take `⟨Φ₁, h1, d1⟩` from `exists_der hKP hT hγL Φ hΦ`. Take `⟨Φ₂, h2, d2⟩` from `exists_der hKP hT hγL Φ₁ h1`. Use `⟨Φ₁, h1, funext fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun t => G.M'.I om' Φ ((toGAd hσ G.W.J hc).symm (x * γ t))) = fun t => G.M'.I om' Φ ((toGAd hσ G.W.J hc).symm x * γL (Multiplicative.ofAdd t))`. Use function extensionality and compare the values at `fun t => by rw [map_mul, eγ]`. Use `show deriv (fun t => G.M'.I om' Φ ((toGAd hσ G.W.J hc).symm (x * γ t))) 0 = _`. Rewrite using `[e]`. Conclude with `(hasDerivAt_I hKP hT hγL (Submodule.mem_inf.1 hΦ).2 (Submodule.mem_inf.1 h1).2 (Submodule.mem_inf.1 h2).2 d1 d2 _).deriv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineDer_thetaIntegral_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

@@ -18,7 +18,7 @@ namespace GlobalTheory.LineHomSec
 variable {X : Scheme.{0}} {F Q : X.Modules} {U V W : X.Opens}
 
 /- English proof (translation)
-Use `(c.isFrame.basis h).sum_repr x` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one, IsFrame.basis_apply]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_repr_smul (c : Chart F 1) (h : W ≤ c.U) (x : Γ(F, W)) :
     x = (c.isFrame.basis h).repr x 0 • resM F h (c.e 0) := by
@@ -27,7 +27,7 @@ theorem eq_repr_smul (c : Chart F 1) (h : W ≤ c.U) (x : Γ(F, W)) :
   exact this.symm
 
 /- English proof (translation)
-Rewrite `e` using `[← c.isFrame.basis_apply h]`. Use `congrArg (fun x => (c.isFrame.basis h).repr x 0) e` as an intermediate fact. Simplify `this` using `only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_cancel (c : Chart F 1) (h : W ≤ c.U) {a b : Γ(X, W)}
     (e : a • resM F h (c.e 0) = b • resM F h (c.e 0)) : a = b := by
@@ -37,9 +37,9 @@ theorem smul_cancel (c : Chart F 1) (h : W ≤ c.U) {a b : Γ(X, W)}
     smul_eq_mul, mul_one] using this
 
 /- English proof (translation)
-Establish `e : ((det F 1).g c c').val = (c.isFrame.basis (inf_le_left : c.U ⊓ c'.U ≤ c.U)).repr (resM F inf_le_right (c'.e 0)) 0`. Use `(c.isFrame.val_detUnit c'.isFrame inf_le_left inf_le_right).trans ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_one, Module.Basis.toMatrix_apply]`. Use `congrArg (resM F (le_inf h h')) (eq_repr_smul c (inf_le_left : c.U ⊓ c'.U ≤ c.U) (resM F inf_le_right (c'.e 0)))` as an intermediate fact. Rewrite `this` using `[resM_smul, resM_resM, resM_resM]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resM_frame (c c' : Chart F 1) (h : W ≤ c.U) (h' : W ≤ c'.U) :
     resM F h' (c'.e 0) = resG X (le_inf h h') ((det F 1).g c c').val • resM F h (c.e 0) := by
@@ -59,7 +59,7 @@ def coef (c' : Chart F 1) (c : Chart Q 1) : Γ(X, c'.U ⊓ c.U) :=
   (c.isFrame.basis inf_le_right).repr (resM Q inf_le_left (s.app c'.U (c'.e 0))) 0
 
 /- English proof (translation)
-Use `congrArg (resM Q (le_inf h' h)) (eq_repr_smul c (inf_le_right : c'.U ⊓ c.U ≤ c.U) (resM Q inf_le_left (s.app c'.U (c'.e 0))))` as an intermediate fact. Rewrite `this` using `[resM_smul, resM_resM, resM_resM]`. Rewrite using `[app_resM]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_frame (c' : Chart F 1) (c : Chart Q 1) (h' : W ≤ c'.U) (h : W ≤ c.U) :
     s.app W (resM F h' (c'.e 0)) = resG X (le_inf h' h) (coef s c' c) • resM Q h (c.e 0) := by
@@ -70,7 +70,7 @@ theorem app_frame (c' : Chart F 1) (c : Chart Q 1) (h' : W ≤ c'.U) (h : W ≤ 
   exact this
 
 /- English proof (translation)
-Establish `e` using `app_frame s d' d k' k`. Rewrite `e` using `[resM_frame c' d' h' k', resM_frame c d h k, Scheme.Modules.Hom.app_smul, app_frame s c' c h' h, smul_smul, smul_smul]`. Rewrite using `[smul_cancel c h e, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_trans (c' d' : Chart F 1) (c d : Chart Q 1) (h' : W ≤ c'.U) (h : W ≤ c.U)
     (k' : W ≤ d'.U) (k : W ≤ d.U) :
@@ -91,9 +91,9 @@ def sec : (CechPic.tens (CechPic.dual (det F 1)) (det Q 1)).Sec where
     exact ((res h ((det F 1).g i.1 j.1)).eq_inv_mul_iff_mul_eq.2 e).trans (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Use extensionality with `V x`. Use `choose U' e' hU' he' using hF`. Use `choose U e hU he using hQ`. Use `TopCat.Sheaf.eq_of_locally_eq' (C := Ab) ⟨Q.presheaf, Q.isSheaf⟩ (fun z : V => V ⊓ (U' z ⊓ U z)) V (fun z => homOfLE inf_le_left) (fun z hz => Opens.mem_iSup.2 ⟨⟨z, hz⟩, hz, hU' z, hU z⟩) (s.app V x) 0 fun z => ?_` and prove the remaining obligations. Establish `h' : V ⊓ (U' z ⊓ U z) ≤ U' z` using `inf_le_right.trans inf_le_left`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h : V ⊓ (U' z ⊓ U z) ≤ U z` using `inf_le_right.trans inf_le_right`. Express the relevant statement in the definitionally equal form `resM Q inf_le_left (s.app V x) = resM Q inf_le_left 0`. Rewrite using `[map_zero, ← app_resM, eq_repr_smul ⟨_, _, he' z⟩ h' (resM F _ x), Scheme.Modules.Hom.app_smul, app_frame s ⟨_, _, he' z⟩ ⟨_, _, he z⟩ h' h, H ⟨_, _, he' z⟩ ⟨_, _, he z⟩ z ⟨hU' z, hU z⟩, RingHom.map_zero, zero_smul, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_coef (hF : IsVB F 1) (hQ : IsVB Q 1)
     (H : ∀ (c' : Chart F 1) (c : Chart Q 1) (z : X), z ∈ c'.U ⊓ c.U → coef s c' c = 0) : s = 0 := by
@@ -111,9 +111,9 @@ theorem eq_zero_of_coef (hF : IsVB F 1) (hQ : IsVB Q 1)
     H ⟨_, _, he' z⟩ ⟨_, _, he z⟩ z ⟨hU' z, hU z⟩, RingHom.map_zero, zero_smul, smul_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `hs (eq_zero_of_coef s hF hQ fun c' c z hz => ?_)` and prove the remaining obligations. Establish `h` using `mt (mem_nonzeroLocus_iff (sec s) (c', c) (gen_mem hz)).2 hn`. Use `basicOpen_eq_bot_iff (coef s c' c) |>.1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hb`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨w, hw⟩` from `(Opens.ne_bot_iff_nonempty _).1 hb`. Conclude with `h (gen_mem hw)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genericPoint_mem [IsIntegral X] (hF : IsVB F 1) (hQ : IsVB Q 1) (hs : s ≠ 0) :
     genericPoint X ∈ nonzeroLocus (sec s) := by
@@ -126,13 +126,11 @@ theorem genericPoint_mem [IsIntegral X] (hF : IsVB F 1) (hQ : IsVB Q 1) (hs : s 
   exact h (gen_mem hw)
 
 /- English proof (translation)
-Introduce `U t e b hU he hb hzb`. Take `⟨U', e', hU', he'⟩` from `hF z`. Set `c' : Chart F 1` to `⟨_, _, he'⟩`. Set `c : Chart Q 1` to `⟨_, _, he⟩`. Establish `hm : z ∈ c'.U ⊓ c.U` using `⟨hU', hU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hz ((mem_nonzeroLocus_iff (sec s) (c', c) hm).2 ?_)` and prove the remaining obligations. Establish `h' : c'.U ⊓ c.U ≤ c'.U` using `inf_le_left`. Establish `h : c'.U ⊓ c.U ≤ c.U` using `inf_le_right`. Establish `e₁` using `congrArg (resM Q h) hb`. Rewrite `e₁` using `[← app_resM, eq_repr_smul c' h' (resM F _ t), Scheme.Modules.Hom.app_smul, app_frame s c' c h' h, LB.resG_self, smul_smul, resM_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂` using `smul_cancel c h e₁`. Establish `: z ∈ X.basicOpen (resG X h b)`. Use `X.basicOpen_res b (homOfLE h).op` as an intermediate fact. Conclude with `this.ge ⟨hm, hzb⟩`. Rewrite `this` using `[← e₂, Scheme.basicOpen_mul]`.
-
-Conclude with `this.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishesAt (hF : IsVB F 1) {z : X} (hz : z ∉ nonzeroLocus (sec s)) : VanishesAt s z := by
   intro U t e b hU he hb hzb
@@ -156,7 +154,7 @@ theorem vanishesAt (hF : IsVB F 1) {z : X} (hz : z ∉ nonzeroLocus (sec s)) : V
 variable {k : Type} [CommRing k] {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Establish `hW` using `mem_ptsIn_inf.2 ⟨hy', hy⟩`. Rewrite using `[← h.form_resM _ _ inf_le_left hW, ← app_resM, app_frame s c' c inf_le_left inf_le_right, LB.resG_self, h.form_smul_left, ← h.conj_form, h.form_smul_left, map_mul, h.conj_form, h.form_resM _ _ _ hW, h.form_frame c hy, ← mul_assoc, Complex.mul_conj, Complex.re_ofReal_mul, Complex. …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_app (h : Met p σ Q 1) (c' : Chart F 1) (c : Chart Q 1) {y : CxPts p σ}
     (hy' : y ∈ ptsIn p σ c'.U) (hy : y ∈ ptsIn p σ c.U) :
@@ -169,15 +167,15 @@ theorem form_app (h : Met p σ Q 1) (c' : Chart F 1) (c : Chart Q 1) {y : CxPts 
     Complex.normSq_eq_norm_sq, Matrix.det_fin_one]
 
 /- English proof (translation)
-Introduce `k _ X p _ F Q g' g H' H s hs`. Establish `hξ` using `genericPoint_mem s g'.isVB g.isVB hs`. Set `M` to `(VMetric.det H').dual.tens (VMetric.det H)`. Set `u : M.B.Sec` to `sec s`. Use `⟨ratOfSec u hξ, isRatSec_ratOfSec u hξ, fun z hz => vanishesAt s g'.isVB fun h => notMem_supp_divOfSec.2 h hz, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ y hy U t ht hU`. Establish `hy' : y ∈ ptsIn p σ (nonzeroLocus u)` using `(offSupp_divOfSec (hL := M.isLB) (hs := hξ)).le hy`. Set `c' : Chart F 1` to `⟨_, _, ht⟩`. Set `c` to `g.isVB.pick y`. Establish `hc : y ∈ ptsIn p σ c.U` using `g.isVB.mem_pick y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi : y ∈ ptsIn p σ (M.B.U (c', c))` using `mem_ptsIn_inf.2 ⟨hU, hc⟩`. Establish `h0 : ev p σ _ (coef s c' c) y ≠ 0` using `(secVal_ne_zero_iff u hi).2 hy'`. Establish `hG` using `det_re_pos ((g.met σ).posDef c y hc)`. Establish `hG'` using `det_re_pos ((g'.met σ).posDef c' y hU)`. Establish `e : ((g.met σ).form (s.app U t) (s.app U t) y).re = _` using `form_app s (g.met σ) c' c hU hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : (g'.met σ).form t t y = ((g'.met σ).G c' y).det` using `((g'.met σ).form_frame c' hU 0 0).trans (Matrix.det_fin_one _).symm`. Use `⟨e ▸ by positivity, ?_⟩` and prove the remaining obligations. Use `(logNorm_ratOfSec (s := u) (hs := hξ) (M.φ σ) hy').trans ?_` and prove the remaining obligations. Rewrite using `[(M.φ σ).nsq_eq (secVal_mem u) hi, e, e']`. Use `congr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `‖ev p σ _ (coef s c' c) y‖ ^ 2 * Real.exp (-(-(-Real.log ((g'.met σ).G c' y).det.re) + -Real.log ((g.met σ).G c y).det.re)) = _`. Rewrite using `[neg_neg, ← sub_eq_add_neg, neg_sub, Real.exp_sub, Real.exp_log hG, Real.exp_log hG', mul_div_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ratSec : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (F Q : X.Modules) (g' : VMetric p F 1) (g : VMetric p Q 1) (H' : g'.IsCInf) (H : g.IsCInf) (s : F ⟶ Q), s ≠ 0 → ∃ (r : ((VMetric.det H').dual.tens (VMetric.det H)).B.ι → X.functionFieldˣ) (hr : IsRatSec ((VMetric.det H').dual.tens (VMetric.det H)).B r), (∀ z ∈ (((VMetric.det H').dual.tens (VMetric.det H)).div hr).supp, VanishesAt s z) ∧ ∀ σ : k →+* ℂ, ∀ y ∈ offSupp p σ (((VMetric.det H').dual.tens (VMetric.det H)).div hr), ∀ (U : X.Opens) (t : Γ(F, U)), IsFrame (fun _ : Fin 1 => t) → y ∈ ptsIn p σ U → 0 < ((g.met σ).form (s.app U t) (s.app U t) y).re ∧ logNorm (((VMetric.det H').dual.tens (VMetric.det H)).φ σ) r y = Real.log (((g.met σ).form (s.app U t) (s.app U t) y).re / ((g'.met σ).form t t y).re) / 2 := by
   intro k _ X p _ F Q g' g H' H s hs

@@ -9,13 +9,13 @@ open scoped InnerProductSpace ENNReal
 namespace WlocSk.DecayR
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.WuDecay.opn`. Establish `h1 : star P * P = 1` using `by first`. Consider the case `exact Unitary.star_mul_self_of_mem hP`. Consider the case `exact unitary.star_mul_self_of_mem hP`. Establish `h2 : P * star P = 1` using `by first`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact Unitary.mul_star_self_of_mem hP`. Consider the case `exact unitary.mul_star_self_of_mem hP`. Establish `hPinv : P⁻¹ = star P` using `Matrix.inv_eq_left_inv h1`. Establish `hU1 : star (Matrix.toEuclideanCLM (𝕜` using `ℂ) P) * Matrix.toEuclideanCLM (𝕜 := ℂ) P = 1 := by`. Rewrite using `[← map_star, ← map_mul, h1, map_one]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU2 : Matrix.toEuclideanCLM (𝕜` using `ℂ) P * star (Matrix.toEuclideanCLM (𝕜 := ℂ) P) = 1 := by`. Rewrite using `[← map_star, ← map_mul, h2, map_one]`. Establish `hU : Matrix.toEuclideanCLM (𝕜` using `ℂ) P ∈ unitary (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) := ⟨hU1, hU2⟩`. Establish `hUs : star (Matrix.toEuclideanCLM (𝕜` using `ℂ) P) ∈ unitary (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[star_star]`. Conclude with `hU2`. Rewrite using `[star_star]`. Conclude with `hU1`. Rewrite using `[hPinv, map_mul, map_mul, map_star, CStarRing.norm_mul_mem_unitary _ hU, CStarRing.norm_mem_unitary_mul _ hUs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma opn_conj {n : ℕ} {P g : Matrix (Fin n) (Fin n) ℂ} (hP : P ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     Formalism.L2.SG.WuDecay.opn (P⁻¹ * g * P) = Formalism.L2.SG.WuDecay.opn g := by
@@ -48,9 +48,9 @@ lemma opn_conj {n : ℕ} {P g : Matrix (Fin n) (Fin n) ℂ} (hP : P ∈ Matrix.u
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `: SigmaFinite μG` using `hG.1`. Establish `hPJ' : P'ᴴ * PI.UpqRep.Jm ε * P' = PI.UpqRep.Hpk k r` using `hP'.1.2`. Establish `hconc : μG {x | Matrix.of x ∉ PI.UpqRep.UH (P'ᴴ * PI.UpqRep.Jm ε * P')} = 0`. Rewrite using `[hPJ']`. Conclude with `hG.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : ∀ s ∈ PI.UpqRep.UH (P'ᴴ * PI.UpqRep.Jm ε * P'), μG.map (fun x => Matrix.of.symm (s * Matrix.of x)) = μG`. Rewrite using `[hPJ']`. Introduce `s hs`. Conclude with `hG.2.2.2 s hs`. Conclude with `Port.haar_transport ε P' hP'.1.1 μG hG.2.1 hconc hinv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma transport {ε : Fin (2 * r + k + 1) → Bool} {P' : Mat k r} (hP' : IsCayleyU k r ε P')
     {μG : Measure (Formalism.QuantumDeterminants.Mt k r)} (hG : IsHaarOn (Gr k r) μG) :
@@ -65,11 +65,11 @@ lemma transport {ε : Fin (2 * r + k + 1) → Bool} {P' : Mat k r} (hP' : IsCayl
   exact Port.haar_transport ε P' hP'.1.1 μG hG.2.1 hconc hinv
 
 /- English proof (translation)
-Introduce `hCW k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp`. Take `⟨hS, hσ, _, hw, hG, _⟩` from `hyp`. Take `⟨P, hP, hDS⟩` from `hσ`. Take `⟨P', hP', hLow⟩` from `hw`. Establish `hDS'` using `OneP.isDS_cayley hP hP' hDS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _, _, hHC, _, _, hGap⟩` from `hS`. Establish `hC` using `hCW k r v b hHC hGap H (fun g => σ (P'⁻¹ * g * P')) hDS' w hLow`. Take `⟨cc, _, hctop, hμ⟩` from `transport hP' hG`. Establish `hE` using `Port.conjP_measurableEmbedding (eps48 k r) P' hP'.1.1`. Rewrite using `[hμ, hE.lintegral_map, lintegral_smul_measure]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.mul_lt_top hctop.lt_top (lt_of_eq_of_lt (lintegral_congr fun g => ?_) hC)` and prove the remaining obligations. Use `show ‖⟪w, σ (P'⁻¹ * uMat g * P') w⟫_ℂ‖ₑ * ENNReal.ofReal (Formalism.L2.SG.WuDecay.opn (P'⁻¹ * uMat g * P') ^ N1H k r) = ‖⟪w, σ (P'⁻¹ * uMat g * P') w⟫_ℂ‖ₑ * ENNReal.ofReal (‖Matrix.toEuclideanCLM (𝕜 := ℂ) (uMat g)‖ ^ (4 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 * Real.sqrt (2 * ((r + 1 : ℕ …`. Rewrite using `[opn_conj hP'.2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem decay_estimate : WlocSk.Decay := by
   intro hCW k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp
@@ -92,37 +92,31 @@ theorem decay_estimate : WlocSk.Decay := by
   rfl
 
 /- English proof (translation)
-Introduce `hR k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp`. Take `⟨_, hσ, _, hw, hG, _⟩` from `hyp`. Take `⟨P, hP, hDS⟩` from `hσ`. Take `⟨P', hP', hLow⟩` from `hw`. Establish `hDS'` using `OneP.isDS_cayley hP hP' hDS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨α', Ω', a', hΩc, hαm, hαs, hαb, hαi, hαe⟩` from `hR _ (eps48 k r) (lam48 k r v b) H (fun g => σ (P'⁻¹ * g * P')) hDS' w hLow.2`. Take `⟨cc, hc0, hctop, hμ⟩` from `transport hP' hG`. Establish `hE` using `Port.conjP_measurableEmbedding (eps48 k r) P' hP'.1.1`. Establish `hct : 0 < cc.toReal` using `ENNReal.toReal_pos hc0 hctop`. Use `set ψ := Port.conjPrime₂ (eps48 k r) P' with hψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : Formalism.REAL.UJ (eps48 k r) → ℂ := fun g => (cc.toReal⁻¹ : ℝ) • α' g with hf`. Use `set α : Mat k r → ℂ := fun y => Function.extend ψ f (fun _ => 0) (Matrix.of.symm y) with hα`. Establish `hαψ : ∀ g, α (Matrix.of (ψ g)) = f g` using `fun g => hE.injective.extend_apply _ _ g`. Establish `hcase : ∀ y : Mat k r, α y ≠ 0 → ∃ g, ψ g = Matrix.of.symm y ∧ α y = f g`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ∃ g, ψ g = Matrix.of.symm y`. Take `⟨g, hg⟩` from `h`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use `show Function.extend ψ f (fun _ => 0) (Matrix.of.symm y) = f g`. Rewrite using `[← hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hE.injective.extend_apply _ _ g`. Conclude with `absurd (Function.extend_apply' f (fun _ => (0 : ℂ)) _ h) hy`. Establish `hcont : Continuous fun g : Formalism.REAL.UJ (eps48 k r) => P'⁻¹ * uMat g * P'` using `(continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)).matrix_mul continuous_const`. Establish `hinv` using `OneP.unit_inv hP'.2`. Establish `h1` using `OneP.unit_star_mul hP'.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h2` using `OneP.unit_mul_star hP'.2`. Use `⟨α, (fun g => P'⁻¹ * uMat g * P') '' Ω', cc.toReal⁻¹ * max a' 0, hΩc.image hcont, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, _, rfl⟩`. Establish `hg : (uMat g)ᴴ * Formalism.REAL.Jm (eps48 k r) * uMat g = Formalism.REAL.Jm (eps48 k r)` using `g.2`. Use `show (P'⁻¹ * uMat g * P')ᴴ * Formalism.QuantumDeterminants.Hpk k r * (P'⁻¹ * uMat g * P') = Formalism.QuantumDeterminants.Hpk k r`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hP'.1.2, hinv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = P'ᴴ * ((uMat g)ᴴ * Formalism.REAL.Jm (eps48 k r) * uMat g) * P' := by`. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = P'ᴴ * Formalism.REAL.Jm (eps48 k r) * P' := by rw [hg]`. Establish `hfm : Measurable f` using `hαm.const_smul (cc.toReal⁻¹ : ℝ)`. Conclude with `hE.measurable_extend hfm measurable_const`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, hyg⟩` from `hcase y hy`. Establish `hg0 : α' g ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hyg, hf]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h0]`. Use `⟨g, hαs g hg0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.of.apply_symm_apply y, ← hg]`. Both sides reduce to the same expression. Introduce `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hcn : 0 ≤ cc.toReal⁻¹` using `inv_nonneg.mpr ENNReal.toReal_nonneg`. Distinguish the cases in `hy : α y = 0`. Rewrite using `[hy, norm_zero]`. Conclude with `mul_nonneg hcn (le_max_right _ _)`. Take `⟨g, _, hyg⟩` from `hcase y hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hyg, hf]`. Simplify using `only`. Rewrite using `[norm_smul, Real.norm_of_nonneg hcn]`. Conclude with `mul_le_mul_of_nonneg_left ((hαb g).trans (le_max_left _ _)) hcn`. Establish `hfun : (fun x : Formalism.QuantumDeterminants.Mt k r => α (Matrix.of x) • σ (Matrix.of x) w) ∘ ψ = fun g => (cc.toReal⁻¹ : ℝ) • (α' g • σ (P'⁻¹ * uMat g * P') w)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp]`. Rewrite using `[hαψ, hf, smul_assoc]`. Both sides reduce to the same expression. Rewrite using `[hμ, hE.integrable_map_iff, hfun]`.
-
-Conclude with `(hαi.smul_measure hctop).smul _`. Establish `hfun : (fun x : Formalism.QuantumDeterminants.Mt k r => α (Matrix.of x) • σ (Matrix.of x) w) ∘ ψ = fun g => (cc.toReal⁻¹ : ℝ) • (α' g • σ (P'⁻¹ * uMat g * P') w)`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp]`. Rewrite using `[hαψ, hf, smul_assoc]`.
-
-Both sides reduce to the same expression. Rewrite using `[hμ, hE.integral_map, integral_smul_measure]`. Establish `hpt : ∀ x, α (Matrix.of (ψ x)) • σ (Matrix.of (ψ x)) w = (cc.toReal⁻¹ : ℝ) • (α' x • σ (P'⁻¹ * uMat x * P') w)` using `fun x => congrFun hfun x`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_smul]`.
-
-Establish `he : ∫ g, α' g • σ (P'⁻¹ * uMat g * P') w ∂(PI.UpqRep.muG (eps48 k r)) = w` using `hαe`. Rewrite using `[he, smul_smul, mul_inv_cancel₀ hct.ne', one_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reproducing_formula_holds : WlocSk.ReprodG := by
   intro hR k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp

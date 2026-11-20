@@ -7,17 +7,15 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.StabFin
 
 /- English proof (translation)
-Introduce `p _ G P μ ha hM τ a`. Use `set φ : G.F →+* ℂ := τ.comp (algebraMap G.F (FM P)) with hφ`. Establish `hroot : P.pol.eval₂ φ (τ (AdjoinRoot.root P.pol)) = 0`. Rewrite using `[hφ, ← Polynomial.hom_eval₂]`. Establish `: P.pol.eval₂ (algebraMap G.F (FM P)) (AdjoinRoot.root P.pol) = 0` using `AdjoinRoot.eval₂_root P.pol`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Establish `hn` using `GlobalTheory.LKMid.MarkEll.mark_ell p G P μ ha hM φ _ hroot`. Use `set z := τ (AdjoinRoot.root P.pol) with hz`. Establish `hc0 : ((P.c : ℚ) : ℂ) ≠ 0` using `by exact_mod_cast (P.c.ne_zero)`. Establish `hzc : (starRingEnd ℂ) z * z = ((P.c : ℚ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Conclude with `hn` after adjusting the coercions. Establish `hz0 : z ≠ 0`. Introduce and unpack `h`. Rewrite `hzc` using `[h, mul_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc0 hzc.symm`. Establish `hiz : τ (iM P (AdjoinRoot.root P.pol)) * z = ((P.c : ℚ) : ℂ)`. Rewrite using `[hz, ← map_mul, iM_root_mul]`. Conclude with `eq_ratCast (τ.comp (algebraMap ℚ (FM P))) _`. Establish `h1 : τ (iM P (AdjoinRoot.root P.pol)) = (starRingEnd ℂ) z` using `mul_right_cancel₀ hz0 (hiz.trans hzc.symm)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hext : τ.comp (iM P).toRingHom = (starRingEnd ℂ).comp τ`. Apply `AdjoinRoot.ringHom_ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `τ (iM P (algebraMap G.F (FM P) x)) = (starRingEnd ℂ) (τ (algebraMap G.F (FM P) x))`.
-
-Rewrite using `[iM_algF]`. Conclude with `IsCMField.complexEmbedding_complexConj G.F φ x`. Simplify using `using h1`. Conclude with `congrArg (fun f => f a) hext`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem iM_conj : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ : ℂ), G.a = 1 → P.Mark μ →
     ∀ (τ : FM P →+* ℂ) (a : FM P), τ (iM P a) = (starRingEnd ℂ) (τ a) := by

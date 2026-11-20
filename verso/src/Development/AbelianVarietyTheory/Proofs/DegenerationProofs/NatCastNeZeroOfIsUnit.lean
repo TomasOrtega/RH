@@ -27,13 +27,13 @@ namespace GlobalTheory.FewAtTest
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Take `⟨M, hM, rfl⟩` from `cls_surj c`. Set `eK : Sp (FractionRing V) ⟶ pullback p (Out.jK V)` to `pullback.lift (Out.jK V ≫ e) (𝟙 _) (by`. Rewrite using `[Category.assoc, he, Category.id_comp]`. Conclude with `Category.comp_id _)`. Establish `heK : eK ≫ pullback.fst p (Out.jK V) = Out.jK V ≫ e` using `pullback.lift_fst _ _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(cls_eq_zero_iff (pull_isLB hM (pullback.fst p (Out.jK V) ≫ 𝟙 H))).1 (by`. Rewrite using `[cls_pull hM, pull_comp, pull_id, h₁])`. Take `⟨ρ, hρ⟩` from `(cls_eq_zero_iff (pull_isLB hM (e ≫ 𝟙 H))).1 (by`. Rewrite using `[cls_pull hM, pull_comp, pull_id, h₂])`. Take `⟨u, hu, cu⟩` from `DVR.exists_normalized_to hM _ _ t ht (pullback.snd p (Out.jK V)) eK (pullback.lift_snd _ _ _) _ _ (LB.pullGen M _ _ ρ (Out.jK V)) (DVR.pullGen_isGen _ _ _ _ hρ _) (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← Category.assoc, heK, Category.assoc])`. Take `⟨s, ⟨hs₁, -⟩, -⟩` from `GenExtend.existsUnique_gen_extend V (FractionRing V) H H p e hs hi he eK heK M hM PUnit (fun _ => 𝟙 H) (fun _ => 1) u ρ hu hρ cu`. Use `(cls_eq_zero_iff (pull_isLB hM (𝟙 H))).2 ⟨s, hs₁⟩` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[cls_pull hM, pull_id]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem pic_eq_zero_of_generic {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {H : Scheme.{0}}
     (p : H ⟶ Sp V) (e : Sp V ⟶ H) (hs : Smooth p) (hi : GeometricallyIntegral p) (he : e ≫ p = 𝟙 _) (c : Pic H)
@@ -57,9 +57,9 @@ theorem pic_eq_zero_of_generic {V : Type} [CommRing V] [IsDomain V] [IsDiscreteV
   rwa [cls_pull hM, pull_id] at this
 
 /- English proof (translation)
-Use `(cls_eq_iff L.isLB M.isLB).1 (sub_eq_zero.1 (pic_eq_zero_of_generic G.hom (eSec G) hG.smooth (forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hG.smooth hG.geomConnected) (Over.w η[G]) _ ?_ ?_))` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `(cls_eq_iff (pull_isLB L.isLB _) (pull_isLB M.isLB _)).2 h`. Establish `a` using `(cls_eq_zero_iff (pull_isLB L.isLB (eSec G))).2 ⟨L.rig, L.rigGen⟩`. Establish `b` using `(cls_eq_zero_iff (pull_isLB M.isLB (eSec G))).2 ⟨M.rig, M.rigGen⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[cls_pull L.isLB]`. Rewrite `b` using `[cls_pull M.isLB]`. Conclude with `(map_sub _ _ _).trans (sub_eq_zero.2 (a.trans b.symm))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_generic {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {G : Over (Sp V)}
     [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) (L M : RigLB G)
@@ -77,7 +77,7 @@ theorem lbIso_of_generic {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuati
     exact (map_sub _ _ _).trans (sub_eq_zero.2 (a.trans b.symm))
 
 /- English proof (translation)
-Use `(h.map x.appTop.hom).map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Conclude with `this.ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_of_isUnit {Z : Scheme.{0}} {K : Type} [Field K] (x : Sp K ⟶ Z) {n : ℕ}
     (h : IsUnit (n : Γ(Z, ⊤))) : (n : K) ≠ 0 := by
@@ -86,9 +86,9 @@ theorem natCast_ne_zero_of_isUnit {Z : Scheme.{0}} {K : Type} [Field K] (x : Sp 
   exact this.ne_zero
 
 /- English proof (translation)
-Establish `key : ∀ x : Sp (kb p), (rPt p ≫ spMap j : Sp (kb p) ⟶ Sp V) x = IsLocalRing.closedPoint V` using `fun x => by`. Establish `hx : x = IsLocalRing.closedPoint (kb p)` using `Subsingleton.elim (α := PrimeSpectrum (kb p)) _ _`. Substitute `hx` using the available equality. Conclude with `(congrArg (PrimeSpectrum.comap j) (IsLocalRing.comap_closedPoint (IsLocalRing.residue (OO p)))).trans (IsLocalRing.comap_closedPoint j)`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ key a, fun h => ⟨IsLocalRing.closedPoint (kb p), (key _).trans h.symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_rPt {p : ℕ} [Fact p.Prime] {V : Type} [CommRing V] [IsLocalRing V] (j : V →+* OO p) [IsLocalHom j] :
     Set.range (rPt p ≫ spMap j : Sp (kb p) ⟶ Sp V) = {IsLocalRing.closedPoint V} := by
@@ -107,13 +107,13 @@ namespace GlobalTheory.ZJ
 open GlobalTheory.FewAtTest
 
 /- English proof (translation)
-Introduce `hU laws laws₂ C T hA hK hs hS N n hN hn hlt p _ y τ E c`. Take `⟨-, h0, hG⟩` from `(core_basic C).2.2.2.2.2.2.2.2.2.2.2.2 p y τ`. Establish `hL` using `pull_isLB T.L.isLB τ.φ`. Establish `hi` using `PolBaseChange.lbIso_refl hL`. Take `⟨hab, hamp, hkt⟩` from `pol_pull _ _ C.A ((Over.pullback (Out.jK τ.V)).obj τ.H) τ.yK τ.φ T.L.L (T.L.L.pull τ.φ) T.L.isLB hL C.ab τ.φ_cart hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `A : Out.PolAV (Sp (FractionRing τ.V))` to `{ A := (Over.pullback (Out.jK τ.V)).obj τ.H isAb := hab g := C.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback τ.φ_cart.1 C.dim L := T.L.L.pull τ.φ isLB := hL rigid := PolBaseChange.rigidified_pull τ.φ_cart ⟨T.L.rig, T.L.rigGen⟩ sym := PolBaseCh …`. Use `hab.comm` as an intermediate fact. Establish `hS'` using `SymBaseChange.hypS_baseChange _ _ C.A ((Over.pullback (Out.jK τ.V)).obj τ.H) τ.yK τ.φ T.L.L (T.L.L.pull τ.φ) T.L.isLB hL τ.φ_cart hi hS`. Take `⟨D, U, hgen⟩` from `hU τ.V τ.complete A τ.H hG τ.split hS' (Iso.refl _) (inferInstanceAs (IsMonHom (𝟙 ((Over.pullback (Out.jK τ.V)).obj τ.H))))`. Establish `e₁ : LBIso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst τ.H.hom (Out.jK τ.V)))` using `U.ext`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e₁` using `[hgen]`. Establish `e₂ : LBIso (E.L.L.pull (pullback.fst τ.H.hom (Out.jK τ.V))) (A.L.pull (𝟙 _))` using `LBIso.trans (pull_isLB E.L.isLB _) hL (pull_isLB hL _) (LBIso.symm ⟨E.w, E.w_gen⟩) (CechPic.iso_of_chart hL (Geo.Tor.chartPullPull _ _ _ rfl)).symm`. Establish `e` using `lbIso_of_generic hG E.L U.LG (LBIso.trans (pull_isLB E.L.isLB _) (pull_isLB hL _) (pull_isLB U.LG.isLB _) e₂ e₁)`. Use `isAlgClosed_kb (p := p)` as an intermediate fact. Use `τ.j_loc` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.FewZeros.card_torsion_translate_zeros_lt laws laws₂ τ.V τ.complete D A τ.H U E.L.L E.θ E.L.isLB e E.θ_ne (kb p) (rPt p ≫ spMap τ.j) N n (range_rPt τ.j) hN (natCast_ne_zero_of_isUnit (rPt p ≫ y) hn) hlt c`.
+A detailed English derivation is pending.
 -/
 theorem theta_few : GlobalTheory.ZH.ThmUSt → Out.Laws → Out.Laws2 → ∀ (C : Core) (T : C.Theta), Out.RelAmple C.A T.L.L → Out.KTriv C.A T.L.L → T.L.IsSymmetric → GlobalTheory.ZH.HypS C.A T.L.L → ∀ N n : ℕ, 4 ≤ N → IsUnit (n : Γ(C.Z, ⊤)) → 6 * (N ^ C.g * C.g.factorial) < n ^ 2 → T.Few n := by
   intro hU laws laws₂ C T hA hK hs hS N n hN hn hlt p _ y τ E c

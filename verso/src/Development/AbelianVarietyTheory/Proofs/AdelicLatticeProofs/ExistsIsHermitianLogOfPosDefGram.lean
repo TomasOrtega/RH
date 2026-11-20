@@ -6,11 +6,11 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Introduce `ι _ _ x hx`. Establish `hu : IsUnit x` using `(Matrix.isUnit_iff_isUnit_det x).2 hx`. Establish `hp : (xᴴ * x).PosDef` using `Matrix.PosDef.conjTranspose_mul_self x (Matrix.mulVec_injective_iff_isUnit.2 hu)`. Establish `hs` using `hp.1.spectral_theorem`. Use `⟨_, (hp.1.eigenvectorUnitary : Matrix ι ι ℂ), fun i => Real.log (hp.1.eigenvalues i), ?_, rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Matrix.mem_unitaryGroup_iff).1 hp.1.eigenvectorUnitary.2`. Establish `he : (fun i => ((Real.exp (Real.log (hp.1.eigenvalues i)) : ℝ) : ℂ)) = RCLike.ofReal ∘ hp.1.eigenvalues`. Use function extensionality and compare the values at `i`. Rewrite using `[Real.exp_log (hp.eigenvalues_pos i)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLog_gram : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (x : Matrix ι ι ℂ), IsUnit x.det → ∃ H : Matrix ι ι ℂ, IsLog H (xᴴ * x) := by
   intro ι _ _ x hx

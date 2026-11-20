@@ -15,9 +15,9 @@ section Spec
 variable {n' r : ℕ} [NeZero n'] [NeZero r] {Fr : Frames n' r} {L₁ N₁ : ℕ} {J : ℕ} [NeZero J] {nL : ZMod J → ℕ}
 
 /- English proof (translation)
-Establish `hm` using `m.isLt`. Establish `hm'` using `m'.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Break down `lt_trichotomy (r - 1 - m.val) (r - 1 - m'.val) with h1 | h1 | h1` into its components or cases. Use `dg_fr_lt hV a _ _ h1 (by omega); omega` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `dg_fr_lt hV a _ _ h1 (by omega); omega` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 -/
 theorem fr_rev_inj (hV : Fr.Valid L₁ N₁) (a : ℤ) {m m' : Fin r}
     (h : Fr.fr a (r - 1 - m.val) = Fr.fr a (r - 1 - m'.val)) : m = m' := by
@@ -30,16 +30,16 @@ theorem fr_rev_inj (hV : Fr.Valid L₁ N₁) (a : ℤ) {m m' : Fin r}
   · have := dg_fr_lt hV a _ _ h1 (by omega); omega
 
 /- English proof (translation)
-The claim follows from `(dg_mem_LL.1 (dg_llPos_mem (Fr := Fr) (segZ j) l.val (by rw [← hnL j]; exact l.isLt))).1`.
+A detailed English derivation is pending.
 -/
 theorem ll_between (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (l : Fin (nL j)) :
     Fr.fr (segZ j - 1) (r - 1) < llPos Fr (segZ j) l.val ∧ llPos Fr (segZ j) l.val < Fr.fr (segZ j) 0 :=
   (dg_mem_LL.1 (dg_llPos_mem (Fr := Fr) (segZ j) l.val (by rw [← hnL j]; exact l.isLt))).1
 
 /- English proof (translation)
-Establish `h : ∃ l' : Fin (nL j), llPos Fr (segZ j) l.val = llPos Fr (segZ j) l'.val` using `⟨l, rfl⟩`. Unfold `mlOf`. Rewrite using `[dif_pos h]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(DdG.llPos_inj Fr (segZ j) (by rw [← hnL j]; exact l.isLt) (by rw [← hnL j]; exact h.choose.isLt) h.choose_spec).symm`.
+A detailed English derivation is pending.
 -/
 theorem mlOf_ll (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (l : Fin (nL j)) :
     mlOf Fr nL j (llPos Fr (segZ j) l.val) = ML.ll j l := by
@@ -52,11 +52,11 @@ theorem mlOf_ll (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (l :
     h.choose_spec).symm
 
 /- English proof (translation)
-Establish `hm` using `m.isLt`. Establish `h1 : ¬ ∃ l : Fin (nL j), Fr.fr (segZ j) (r - 1 - m.val) = llPos Fr (segZ j) l.val`. Introduce and unpack `⟨l, hl⟩`. Establish `h2` using `(ll_between hnL j l).2`. Establish `h3` using `dg_fr_le hV (segZ j) (Nat.zero_le (r - 1 - m.val)) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h : ∃ m' : Fin r, Fr.fr (segZ j) (r - 1 - m.val) = Fr.fr (segZ j) (r - 1 - m'.val)` using `⟨m, rfl⟩`. Unfold `mlOf`. Rewrite using `[dif_neg h1, dif_pos h]`. Use `congr 1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(fr_rev_inj hV _ h.choose_spec).symm`.
+A detailed English derivation is pending.
 -/
 theorem mlOf_lab (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (m : Fin r) :
     mlOf Fr nL j (Fr.fr (segZ j) (r - 1 - m.val)) = ML.lab j m := by
@@ -73,13 +73,13 @@ theorem mlOf_lab (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ 
   exact (fr_rev_inj hV _ h.choose_spec).symm
 
 /- English proof (translation)
-Establish `hm` using `m.isLt`. Establish `h0 : Fr.fr (segZ j - 1) (r - 1 - m.val) ≤ Fr.fr (segZ j - 1) (r - 1)` using `dg_fr_le hV (segZ j - 1) (by omega) (by omega)`. Establish `h1 : ¬ ∃ l : Fin (nL j), Fr.fr (segZ j - 1) (r - 1 - m.val) = llPos Fr (segZ j) l.val`. Introduce and unpack `⟨l, hl⟩`. Establish `h2` using `(ll_between hnL j l).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬ ∃ m' : Fin r, Fr.fr (segZ j - 1) (r - 1 - m.val) = Fr.fr (segZ j) (r - 1 - m'.val)`. Introduce and unpack `⟨m', hm'⟩`. Establish `h3` using `frame_end_lt_next_start hV (segZ j)`. Establish `h4` using `dg_fr_le hV (segZ j) (Nat.zero_le (r - 1 - m'.val)) (by have := m'.isLt; omega)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h : ∃ m' : Fin r, Fr.fr (segZ j - 1) (r - 1 - m.val) = Fr.fr (segZ j - 1) (r - 1 - m'.val)` using `⟨m, rfl⟩`. Unfold `mlOf`. Rewrite using `[dif_neg h1, dif_neg h2, dif_pos h]`. Use `congr 1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(fr_rev_inj hV _ h.choose_spec).symm`.
+A detailed English derivation is pending.
 -/
 theorem mlOf_wc (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (m : Fin r) :
     mlOf Fr nL j (Fr.fr (segZ j - 1) (r - 1 - m.val)) = ML.wc (j - 1) m := by
@@ -104,15 +104,15 @@ theorem mlOf_wc (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j
 end Spec
 
 /- English proof (translation)
-Introduce `n' r _ _ Fr L₁ N₁ hV J _ nL hnL j y hy`. Establish `hr : 1 ≤ r` using `NeZero.one_le`. Distinguish the cases in `hW : Fr.IsW (segZ j) y`. Establish `hy'` using `hy`. Unfold `Frames.letters at hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hy'` using `[Finset.mem_filter, Finset.mem_Icc]`. Take `⟨i', hi', hti⟩` from `dg_frame hV (segZ j - 1) y hy'.2 hy'.1.1 (r - 1) (by omega) hW`. Establish `e : r - 1 - (r - 1 - i') = i'` using `by omega`. Establish `hy2 : y = Fr.fr (segZ j - 1) (r - 1 - (⟨r - 1 - i', by omega⟩ : Fin r).val)` using `by show y = Fr.fr (segZ j - 1) (r - 1 - (r - 1 - i'))`. Rewrite using `[e, hti]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Or.inr (Or.inr ⟨⟨r - 1 - i', by omega⟩, hy2, ?_⟩)` and prove the remaining obligations. Rewrite using `[hy2]`. Conclude with `mlOf_wc hV hnL j _`. Take `⟨s, hs⟩` from `tl_surj (nL := nL) hV hnL j y hy hW`. Break down `s with l | m` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hs' : llPos Fr (segZ j) l.val = y` using `hs`. Use `Or.inl ⟨l, hs'.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs']`. Conclude with `mlOf_ll hnL j l`. Establish `hs' : Fr.fr (segZ j) (r - 1 - m.val) = y` using `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Or.inr (Or.inl ⟨m, hs'.symm, ?_⟩)` and prove the remaining obligations. Rewrite using `[← hs']`. Conclude with `mlOf_lab hV hnL j m`.
+A detailed English derivation is pending.
 -/
 theorem restSpec : RestSpec := by
   intro n' r _ _ Fr L₁ N₁ hV J _ nL hnL j y hy

@@ -6,13 +6,13 @@ open scoped TensorProduct
 namespace GlobalTheory.ThetaPRead
 
 /- English proof (translation)
-Take `⟨thP, hP, hv⟩` from `h`. Establish `key : ∀ f : ↥(LinearMap.range L ⊓ S), (LinearMap.lcomp ℂ (G' → ℂ) (PiTensorProduct.map fun ρ => (low ρ).subtype) ∘ₗ (PiTensorProduct.lift : MultilinearMap ℂ M (G' → ℂ) ≃ₗ[ℂ] _).toLinearMap ∘ₗ U ∘ₗ (LinearEquiv.ofInjective L hL).symm.toLinearMap ∘ₗ Submodule.inclusion inf_le_left) …`. Introduce `f`. Use `set x := (LinearEquiv.ofInjective L hL).symm (Submodule.inclusion inf_le_left f) with hx`. Establish `h1 : L.rangeRestrict x = Submodule.inclusion inf_le_left f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearEquiv.apply_symm_apply (LinearEquiv.ofInjective L hL) (Submodule.inclusion inf_le_left f)` as an intermediate fact. Rewrite `this` using `[← hx]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.lcomp_apply, LinearEquiv.coe_coe, PiTensorProduct.map_tprod, Submodule.coe_subtype, PiTensorProduct.lift.tprod]`. Rewrite using `[← hx, hv x v, h1]`. Use `⟨fun f e g => ?_, fun f e g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP.integ (Submodule.inclusion inf_le_left f) e g`. Rewrite using `[key f]`. Conclude with `hP.eq _ e g`.
+A detailed English derivation is pending.
 -/
 theorem isThetaP_restrict {G' H' S' Si Tau Y ι : Type} [MeasurableSpace H'] [AddCommGroup Si] [Module ℂ Si]
     [AddCommGroup Tau] [Module ℂ Tau] [AddCommGroup Y] [Module ℂ Y]
@@ -52,7 +52,7 @@ theorem isThetaP_restrict {G' H' S' Si Tau Y ι : Type} [MeasurableSpace H'] [Ad
     exact hP.eq _ e g
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F tupT hm hTop hinj h μ i`. Conclude with `isThetaP_restrict _ _ _ _ _ (h i (tupT μ))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isThetaP_toLiftReal : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : RecTie.TopMultH R) (hinj : ∀ i t, Function.Injective (R.extV i t)), R.thP_thF → ∀ μ i, Lift.IsThetaP ((RecTie.toLiftReal R F tupT hm hTop hinj).measV μ i) ((RecTie.toLiftReal R F tupT hm hTop hinj).fdV μ i) ((RecTie.toLiftReal R F tupT hm hTop hinj).thW μ i) ((RecTie.toLiftReal R F tupT hm hTop hinj).ptW μ i) ((RecTie.toLiftReal R F tupT hm hTop hinj).ioK i) ((RecTie.toLiftReal R F tupT hm hTop hinj).Amt μ i) ((RecTie.toLiftReal R F tupT hm hTop hinj).thC μ i) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F tupT hm hTop hinj h μ i

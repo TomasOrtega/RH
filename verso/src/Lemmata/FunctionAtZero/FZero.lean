@@ -3,9 +3,9 @@ import Mathlib
 namespace Bl.FunctionAtZero
 
 /- English proof (translation)
-Establish `h` using `hmul 0 0`. Rewrite `h` using `[add_zero]`. Establish `h0 : f 0 ≠ 0`. Introduce `h'`. Use `hn 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h', norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `mul_left_cancel₀ h0 (h.symm.trans (mul_one (f 0)).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma f_zero (f : Real → Complex) (hmul : ∀ s t, f (s + t) = f s * f t)
     (hn : ∀ s, ‖f s‖ = 1) : f 0 = 1 := by
@@ -19,15 +19,15 @@ private lemma f_zero (f : Real → Complex) (hmul : ∀ s t, f (s + t) = f s * f
   exact mul_left_cancel₀ h0 (h.symm.trans (mul_one (f 0)).symm)
 
 /- English proof (translation)
-Introduce `f hf hmul hn`. Establish `h0` using `f_zero f hmul hn`. Set `F : C(Real, Circle)` to `⟨fun s => ⟨f s, mem_sphere_zero_iff_norm.2 (hn s)⟩, hf.subtype_mk _⟩`. Establish `hF : ∀ s, ((F s : Circle) : Complex) = f s` using `fun s => rfl`. Take `⟨g, ⟨hg0, hgF⟩, -⟩` from `Circle.isCoveringMap_exp.existsUnique_continuousMap_lifts F 0 0 (Circle.ext (by rw [Circle.coe_exp, hF, h0]; simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ s, Complex.exp (↑(g s) * Complex.I) = f s` using `fun s => by`. Rewrite using `[← Circle.coe_exp, ← hF]`. Conclude with `congrArg (fun z : Circle => (z : Complex)) (congrFun hgF s)`. Establish `hadd : ∀ s t, g (s + t) = g s + g t`. Introduce `s t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Circle.isCoveringMap_exp.eq_of_comp_eq (g₁ := fun s => g (s + t)) (g₂ := fun s => g s + g t) (g.continuous.comp (continuous_id.add continuous_const)) (g.continuous.add continuous_const) (by` as an intermediate fact. Use function extensionality and compare the values at `x`. Apply `Circle.ext` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, Circle.coe_exp, Complex.ofReal_add, add_mul, Complex.exp_add, key, hmul]) 0 (by simp [hg0])`. Conclude with `congrFun this s`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `G : Real →+ Real` to `AddMonoidHom.mk' g hadd`. Establish `hlin : ∀ s, g s = s * g 1`. Introduce `s`. Use `map_real_smul G (by exact g.continuous) s 1` as an intermediate fact. Simplify `this` using `[G]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g 1, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← key s, hlin s, mul_comm s]`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ (f : Real → Complex),

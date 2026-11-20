@@ -8,51 +8,51 @@ noncomputable section
 namespace GlobalTheory.EtC.Stair
 
 /- English proof (translation)
-Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (s : Sec F U) :
     Sec.res (k ≫ g) s = Sec.res k (Sec.res g s) := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (φ.hom.naturality g.op)) s`.
+A detailed English derivation is pending.
 -/
 theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (s : Sec F U) :
     Sec.map φ (Sec.res g s) = Sec.res g (Sec.map φ s) :=
   LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (φ.hom.naturality g.op)) s
 
 /- English proof (translation)
-The claim follows from `map_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_nsmul' {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (n : ℕ) (s : Sec F U) :
     Sec.map φ (n • s) = n • Sec.map φ s := map_nsmul _ _ _
 
 /- English proof (translation)
-The claim follows from `map_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (n : ℕ) (s : Sec F U) :
     Sec.res g (n • s) = n • Sec.res g s := map_nsmul _ _ _
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_add' {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (s t : Sec F U) :
     Sec.map φ (s + t) = Sec.map φ s + Sec.map φ t := map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem map_zero' {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
     Sec.map φ (0 : Sec F U) = 0 := map_zero _
 
 /- English proof (translation)
-The claim follows from `map_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_sub {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (s t : Sec F U) :
     Sec.res g (s - t) = Sec.res g s - Sec.res g t := map_sub _ _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((K.d h i ≫ K.d i j).hom.app (op U)).hom w = 0`. Rewrite using `[K.d_comp_d h i j]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_d_d {R : Type} [CommRing R] (K : Cx R) (h i j : ℤ) {U : Scheme.{0}} (w : Sec (K.X h) U) :
     Sec.map (K.d i j) (Sec.map (K.d h i) w) = 0 := by
@@ -60,20 +60,20 @@ theorem map_d_d {R : Type} [CommRing R] (K : Cx R) (h i j : ℤ) {U : Scheme.{0}
   rw [K.d_comp_d h i j]; rfl
 
 /- English proof (translation)
-The claim follows from `loc_calculus.1 U P h`.
+A detailed English derivation is pending.
 -/
 theorem loc_of {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g) : Loc U P :=
   loc_calculus.1 U P h
 
 /- English proof (translation)
-The claim follows from `loc_calculus.2.1 U P Q hP h`.
+A detailed English derivation is pending.
 -/
 theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ V g, P V g → Q V g) : Loc U Q :=
   loc_calculus.2.1 U P Q hP h
 
 /- English proof (translation)
-The claim follows from `loc_calculus.2.2.2.2.1 U Q (loc_mono hP h)`.
+A detailed English derivation is pending.
 -/
 theorem loc_bind {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ V g, P V g → Loc V fun W k => Q W (k ≫ g)) : Loc U Q :=
@@ -85,13 +85,13 @@ def StairP {R : Type} [CommRing R] (K : Cx R) (r : ℕ) (i : ℤ) : Prop :=
     Loc U fun V g => ∃ (u : Sec (K.X h) V) (y : Sec (K.X i) V), Sec.res g x = Sec.map (K.d h i) u + r • y
 
 /- English proof (translation)
-Introduce `h j hh hj U x hL`. Take `rfl : h = i - 1` from `by omega`. Use `loc_bind hL fun V g hy => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hy`. Establish `hcyc : Sec.map (K.d i j) (s • Sec.res g x) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul', hy, smul_smul, mul_comm, hrs]`. Use `loc_bind (hex (i - 1) i j (by omega) hj V _ hcyc) fun W k hc => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hc`. Rewrite `hc` using `[res_nsmul]`. Establish `hP` using `ih (i - 1 - 1) i (by omega) (by omega) W c (loc_of fun W' k' => ⟨Sec.res k' (Sec.res k (Sec.res g x)), by rw [map_res, hc, res_nsmul]⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `loc_bind hP fun W' k' hw => ?_` and prove the remaining obligations. Take `⟨w, u', hw⟩` from `hw`. Establish `hz : s • (Sec.res k' (Sec.res k (Sec.res g x)) - Sec.map (K.d (i - 1) i) u') = 0`. Rewrite using `[smul_sub, ← res_nsmul, ← hc, ← map_res, hw, map_add', map_nsmul', map_d_d, zero_add, sub_self]`. Use `loc_mono (hfl i W' _ hz) fun W'' k'' hy' => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y', hy'⟩` from `hy'`. Use `⟨Sec.res k'' u', y', ?_⟩` and prove the remaining obligations. Rewrite `hy'` using `[res_sub, ← map_res, sub_eq_iff_eq_add]`. Simplify using `only [res_comp]`. Rewrite using `[hy', add_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem stair_step {R : Type} [CommRing R] (K : Cx R) (r s : ℕ)
     (hrs : ∀ (n : ℤ) (U : Scheme.{0}) (y : Sec (K.X n) U), (r * s) • y = 0)
@@ -129,15 +129,13 @@ namespace GlobalTheory.EtC
 open Stair in
 
 /- English proof (translation)
-Introduce `R _ q e K a hbd hqe hq he hex n U x hx`. Establish `hex' : ∀ (h i j : ℤ), h + 1 = i → i + 1 = j → ∀ (U : Scheme.{0}) (b : Sec (K.X i) U), Sec.map (K.d i j) b = 0 → Loc U fun V g => ∃ c : Sec (K.X h) V, Sec.map (K.d h i) c = Sec.res g b`. Introduce `h i j hh hj U b hb`. Take `rfl : h = i - 1` from `by omega`. Take `rfl : j = i + 1` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hex i U b hb`. Establish `hqe' : ∀ (n : ℤ) (U : Scheme.{0}) (y : Sec (K.X n) U), (e * q) • y = 0` using `fun n U y => by`. Rewrite using `[mul_comm]`. Conclude with `hqe n U y`. Establish `base : ∀ (r : ℕ) (i : ℤ), i < a → StairP K r i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r i hi h j _ _ U x _`. Conclude with `loc_of fun V g => ⟨0, 0, by rw [hbd i hi V (Sec.res g x), map_zero', smul_zero, add_zero]⟩`. Establish `key : ∀ k : ℕ, ∀ i : ℤ, i < a + k → StairP K q i ∧ StairP K e i`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => intro i hi; exact ⟨base q i (by simpa using hi), base e i (by simpa using hi)⟩`. Consider the case `succ k ih`. Introduce `i hi`. Take `⟨h1, h2⟩` from `ih (i - 1) (by push_cast at hi; omega)`. Conclude with `⟨stair_step K q e hqe hq hex' i h2, stair_step K e q hqe' he hex' i h1⟩`.
-
-Take `⟨k, hk⟩ : ∃ k : ℕ, n < a + k` from `⟨(n - a + 1).toNat, by omega⟩`. Conclude with `(key k n hk).1 (n - 1) (n + 1) (by omega) rfl U x hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem staircase_loc : ∀ (R : Type) [CommRing R] (q e : ℕ) (K : Cx R) (a : ℤ),
     (∀ n, n < a → ∀ (U : Scheme.{0}) (x : Sec (K.X n) U), x = 0) →

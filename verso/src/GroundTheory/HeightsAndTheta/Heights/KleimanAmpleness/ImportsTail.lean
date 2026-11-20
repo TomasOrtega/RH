@@ -11,31 +11,29 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (chartRingOver secOver GeneratesOver)
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ hy β`. Take `⟨i₀, -⟩` from `hy.1 k₀`. Establish `hcard : 0 < Fintype.card (ι k₀)` using `Fintype.card_pos_iff.mpr ⟨i₀⟩`. Take `⟨N, hN⟩ : ∃ N, Fintype.card (ι k₀) = N + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hcard).symm⟩`. Set `e : ι k₀ ≃ Fin (N + 1)` to `(Fintype.equivFin _).trans (finCongr hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `set x := IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm with hx`. Take `⟨Q, hQ⟩` from `BundleOfDeg.full F K ι Ω y k₀ N e hy β`. Take `⟨c₀, hc₀⟩` from `Kleiman.Generated.full.{0, 0} F Ω N x Q`. Use `⟨c₀, fun c hc => ?_⟩` and prove the remaining obligations. Use `set δ := β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀ with hδ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := Q.tensor (Kleiman.twistBundle F x c) with hL`. Establish `hLsys : L.toSubSystem = Q.toSubSystem.twist (Kleiman.twistSys F x c)` using `rfl`. Establish `hgen : L.toSubSystem.Generated` using `by rw [hLsys]; exact hc₀ c hc`. Establish `hsecs : L.toSubSystem.secs = secOver F y δ` using `by rw [hLsys, hQ c]`. Establish `hgam : ∀ m : ℤ, L.toSubSystem.gam m = secOver F y (δ + m • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[Kleiman.SubSystem.gam, hLsys, Kleiman.SubSystem.twist_assoc, Kleiman.twistSys_twist_twistSys, hQ (c + m), hδ, add_smul, add_assoc]`. Establish `hsub : ∀ I : Kleiman.Chart x, (L.sub I : Set Ω) = chartSecOver F y k₀ e δ I`. Introduce `I`. Use extensionality with `t`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, mem_sub_iff_gam]`. Use `exists_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[hgam]`. Establish `hfg : ∀ I : Kleiman.Chart x, ∃ G : Finset Ω, Submodule.span (Kleiman.chartRing F x I) (G : Set Ω) = L.sub I` using `fun I => L.fg I`. Use `choose G hG using hfg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfin : ∀ (I : Kleiman.Chart x) (g : Ω), ∃ T : Finset Ω, (T : Set Ω) ⊆ L.toSubSystem.secs ∧ (g ∈ L.sub I → g ∈ Submodule.span (Kleiman.chartRing F x I) (T : Set Ω))`. Introduce `I g`. Distinguish the cases in `hg : g ∈ L.sub I`. Rewrite `hg` using `[← hgen I]`. Take `⟨T, hT, hgT⟩` from `Submodule.mem_span_finite_of_mem_span hg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨T, hT, fun _ => hgT⟩`. Conclude with `⟨∅, by simp, fun h => absurd h hg⟩`. Use `choose T hTsec hTspan using hfin`. Set `U : Finset Ω` to `Finset.univ.biUnion fun I => (G I).biUnion fun g => T I g`. Establish `hU : (U : Set Ω) ⊆ L.toSubSystem.secs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Simplify using `only [U, Finset.coe_biUnion, Finset.coe_univ, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion, Finset.mem_coe] at hs`. Take `⟨I, g, -, hs⟩` from `hs`. Conclude with `hTsec I g hs`. Establish `hspanU : ∀ I : Kleiman.Chart x, Submodule.span (Kleiman.chartRing F x I) (U : Set Ω) = L.sub I`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `I`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hgen I]`. Conclude with `Submodule.span_mono hU`. Rewrite using `[← hG I, Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Introduce `g hg`. Establish `hgI : g ∈ L.sub I` using `by rw [← hG I]; exact Submodule.subset_span hg`. Use `Submodule.span_mono ?_ (hTspan I g hgI)` and prove the remaining obligations. Introduce `s hs`. Simplify using `only [U, Finset.coe_biUnion, Finset.coe_univ, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion, Finset.mem_coe]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨I, g, hg, hs⟩`. Set `η : Fin U.card → Ω` to `fun j => (U.equivFin.symm j : Ω)`. Establish `hrange : Set.range η = (U : Set Ω)`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨j, rfl⟩`. Conclude with `(U.equivFin.symm j).2`. Introduce `hs`. Conclude with `⟨U.equivFin ⟨s, hs⟩, by simp [η]⟩`. Establish `hη : ∀ j, η j ∈ secOver F y δ` using `fun j => hsecs ▸ hU (hrange ▸ Set.mem_range_self j)`.
-
-Use `⟨U.card, η, hη, ?_⟩` and prove the remaining obligations. Use `(ChartSecGen.full F K ι Ω y k₀ N e hy δ U.card η hη).mpr fun I => ?_` and prove the remaining obligations. Rewrite using `[hrange, hspanU I, hsub I]`.
+A detailed English derivation is pending.
 -/
 theorem ModelGenerated.proof : ModelGenerated.Statement := by
   classical

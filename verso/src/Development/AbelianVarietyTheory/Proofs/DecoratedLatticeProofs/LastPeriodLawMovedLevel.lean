@@ -13,13 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdForm.TopInv
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_multT]`. Introduce `k hk g`. Establish `key : ∀ T ∈ Mult θ M J χ, ∀ w, T w (g * k) = χ k * T w g`. Introduce `T hT`. Proceed by induction on `hT using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem T hT => exact fun w => hT.lev w k hk g`. Consider the case `zero => intro w`. Simplify using the standard rewrite rules. Consider the case `add T T' _ _ h h' => intro w`. Simplify using `[h, h', mul_add]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `smul c T _ h => intro w`. Simplify using `[h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨T, rfl⟩ : ∃ T, x = PiTensorProduct.lift T` from `⟨_, (PiTensorProduct.lift.apply_symm_apply x).symm⟩`. Rewrite `hx` using `[LinearEquiv.symm_apply_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r w => simp [key _ hx w]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb => simp [ha, hb, mul_add]`.
+Proceed by induction. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem multT_right {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     (θ : D.what₂.Tau → Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (M : DSModel V S) (J : Set (GA D V))
@@ -41,11 +41,11 @@ theorem multT_right {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
   | add a b ha hb => simp [ha, hb, mul_add]
 
 /- English proof (translation)
-Take `⟨γ0, hγ0, c, k0, hk0, κ0, hκ0, rfl⟩` from `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hOk hP l Z u a Ch A hA j hj b).1.dec x`. Establish `hrd` using `(GlobalTheory.AdForm.rd_charts I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ).2 b y`. Set `y' : (I.chain l u a).Y j` to `⟨fun τ => (show Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ from infM θ _ (rankN (I.rec7 l Z) j hj) k0 τ) * y.1 τ, fun τ => by`. Rewrite using `[Matrix.det_mul]`. Conclude with `(GlobalTheory.AdForm.RdVal.infM_unit θ _ (rankN (I.rec7 l Z) j hj) k0 τ).mul (y.2 τ)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : IsTr (G` using `fun _ => 1) (infM θ _ (rankN (I.rec7 l Z) j hj) k0) ⟨y.1, y.2⟩ ⟨y'.1, y'.2⟩ := fun _ => rfl`. Rewrite using `[hrd γ0 hγ0 c k0 hk0 ⟨κ0, hκ0⟩ y' hy']`. Establish `e : γ0 * (A.h j b c * k0) * κ0 * κ.1 = γ0 * (A.h j b c * k0) * ((⟨κ0, hκ0⟩ : A.U j b) * κ).1`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Rewrite using `[e, hrd γ0 hγ0 c k0 hk0 (⟨κ0, hκ0⟩ * κ) y' hy', map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rd_right {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch) (hA : A.Is)
@@ -68,17 +68,17 @@ end GlobalTheory.AdForm.TopInv
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hP l Z u G _ _ Pl0 Tt F Ks _ _ _ R g c₀ s J hX j hj hJ P t r a k tl Ch₀ A ι w hCh UT ε hT bad K eW hRd heW hbT hLev htl n hn ψ hψ f v y β x κ hκ`. Substitute `hn` using the available equality. Unfold `PinChL at hCh`. Establish `hm : (I.rec7 l Z).R.m ≤ B.R.m` using `le_rfl`. Rewrite using `[hT.eT, trc_single_apply, trc_single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hκ'` using `(hT.lev κ).1 hκ`. Take `⟨κ', hκ'm⟩` from `(hLev.1 κ).1 hκ'`. Establish `hchi` using `hLev.2 κ κ' hκ'm`. Establish `hx` using `f.2`. Simplify using `only [CXP] at hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `hr` using `multT_right _ _ _ _ _ hx v`. Establish `hf` using `hr _ hκ' (x * g.bT)`. Establish `e : x * g.bT * (g.bT⁻¹ * κ * g.bT) = x * κ * g.bT` using `by group`. Rewrite `hf` using `[e]`. Take `⟨hU, hchiU, hnorm⟩` from `(GlobalTheory.AdForm.rd_emb_evz I hOk hP l Z u a Ch₀ A hCh.is R.θ hX.inf _ hT.emb bad K hRd (ι _ β)).1 (GlobalTheory.AdForm.LevChiTop.chi_pow_of_levG K hLev) κ κ' hκ'm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hψF : ψ ∈ (I.fm l u a).Fi _` using `((hCh.ram _ hm ψ).1 hψ).1.1`. Establish `hemb : (g.oT _ rfl).emb (x * κ, 1) = (g.oT _ rfl).emb (x, 1) * ((g.oT _ rfl).emb.comp (MonoidHom.inl _ _)) κ`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.inl_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hq : ∀ z, k.rd (I.rec7 l Z).R.m β ψ y z = A.rd R.θ _ hm (ι _ β) ψ y z` using `fun z => congrFun (hCh.rdq _ hm β ψ y) z`. Establish `hr2 : A.rd R.θ _ hm (ι _ β) ψ y ((g.oT (I.rec7 l Z).R.m rfl).emb (x, 1) * ((g.oT (I.rec7 l Z).R.m rfl).emb.comp (MonoidHom.inl _ _)) κ) = ((A.chi (I.rec7 l Z).R.m (ι _ β) ⟨_, hU⟩ : ℂˣ) : ℂ) * A.rd R.θ _ hm (ι _ β) ψ y ((g.oT (I.rec7 l Z).R.m rfl).emb (x, 1))` using `rd_right I hOk hP l Z u a Ch₀ A hCh.is R.θ hX.inf _ hm ψ hψF _ y _ ⟨_, hU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((A.chi (I.rec7 l Z).R.m (ι _ β) ⟨_, hU⟩ : ℂˣ) : ℂ) = ((K.lev.chi κ' : ℂˣ) : ℂ)` using `congrArg (fun z : ℂˣ => (z : ℂ)) hchiU`. Rewrite using `[hemb, hq, hq, hr2, hc, hf, hchi]`. Establish `h1 : star ((K.lev.chi κ' : ℂˣ) : ℂ) * ((K.lev.chi κ' : ℂˣ) : ℂ) = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', hnorm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(ε * f.1 v (x * g.bT) * A.rd R.θ _ hm (ι _ β) ψ y ((g.oT (I.rec7 l Z).R.m rfl).emb (x, 1))) * h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem GlobalTheory.AdForm.TopInv.law_top : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {F : FamIn (I.rec7 l Z).what₂.LL G Pl0 T (I.rec7 l Z).R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (I.rec7 l Z).what₂.LL] (R : RealDat (I.rec7 l Z) F Ks) (g : GlobalTheory.Fam.Geo (I.rec7 l Z)) (c₀ s : ℕ → ℂ) J, PinX I l Z R.ψ R.θ g.x g.vac c₀ → ∀ j : SmT R.MX →ₗ[ℂ] (FrP (I.rec7 l Z) → ℂ), GlobalTheory.Core.Rk.Top.IsJ u R.MX j → JOf R j J → ∀ (P : LevelP R.Pg (I.rec7 l Z).R.r ℂ) (t : T) (r : RowCh R P u g t) (a : I.ι) (k : ColCh (D := (I.rec7 l Z)) u ((I.rec7 l Z).chTw u a)) (tl : ColT I l u a B.R.m → CXP R P t → ℂ) (Ch₀ : ℕ → Type) (A : TwDat I l Z u a Ch₀) (ι : ∀ j, k.Ch j → Ch₀ j) w, PinChL R g k c₀ A ι w → ∀ UT ε, PinTopL R g P (t := t) k UT ε → ∀ (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (K : ClassesAtPrimes (D := (I.rec7 l Z)) (u := u) (I.fm l u a) bad) (eW : (I.per l u a).Wrow ≃ₗ[ℂ] ((I.fm l u a).clsP → FrP (I.rec7 l Z) → ℂ)), I.ReadsP a K.lev.Lb K.lev.U K.lev.chi (fun c => (K.y c).1) K.lat (fun c s => (K.stabI c s).1) → (∀ z c (y : FrP (I.rec7 l Z)) y', y'.1 = y.1 → eW z c y = z c y') → g.bT ∈ GfC _ → LevG K g.bT (levS _ R.βX (datXP R P t)) (levChi _ R.βX (datXP R P t)) → (∀ ψ f, ∃ G', ReadsG K eW j g.bT G' f.1 ∧ tl ψ f = (I.per l u a).Ptil ψ G') → ∀ n (hn : n = (I.rec7 l Z).R.m), ∀ ψ ∈ k.Ram n, ∀ (f : CXP R P t) v y β (x : GA (I.rec7 l Z) (I.rec7 l Z).sp.X'), ∀ κ ∈ UT, trc (k.eT n hn β) (f.1 v) (x * κ) * k.rd n β ψ y ((g.oT n hn).emb (x * κ, 1)) = trc (k.eT n hn β) (f.1 v) x * k.rd n β ψ y ((g.oT n hn).emb (x, 1)) := by
   intro B X I hOk hP l Z u G _ _ Pl0 Tt F Ks _ _ _ R g c₀ s J hX j hj hJ P t r a k tl Ch₀ A ι w hCh UT ε hT bad K eW hRd heW hbT hLev htl n hn ψ hψ f v y β x κ hκ

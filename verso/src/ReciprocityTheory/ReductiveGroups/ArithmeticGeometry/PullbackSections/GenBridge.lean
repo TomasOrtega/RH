@@ -22,25 +22,25 @@ def gxLift {Z : Scheme.{0}} (a : Z ⟶ Sp S) (b : Z ⟶ Xo.univ.t.G.left) (w : b
   (lift (Over.homMk a rfl : Over.mk (a ≫ x) ⟶ Over.mk x) (Over.homMk b w : Over.mk (a ≫ x) ⟶ Xo.univ.t.G)).left
 
 /- English proof (translation)
-Apply the tactic sequence `rw [gxLift, ← Over.comp_left, lift_fst] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gxLift_fst {Z : Scheme.{0}} (a : Z ⟶ Sp S) (b : Z ⟶ Xo.univ.t.G.left) (w : b ≫ Xo.univ.t.G.hom = a ≫ x) :
     gxLift x a b w ≫ (fst (Over.mk x) Xo.univ.t.G).left = a := by
   rw [gxLift, ← Over.comp_left, lift_fst] <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rw [gxLift, ← Over.comp_left, lift_snd] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gxLift_snd {Z : Scheme.{0}} (a : Z ⟶ Sp S) (b : Z ⟶ Xo.univ.t.G.left) (w : b ≫ Xo.univ.t.G.hom = a ≫ x) :
     gxLift x a b w ≫ (snd (Over.mk x) Xo.univ.t.G).left = b := by
   rw [gxLift, ← Over.comp_left, lift_snd] <;> rfl
 
 /- English proof (translation)
-Establish `e : (Over.mk x ⊗ Xo.univ.t.G).hom = (fst (Over.mk x) Xo.univ.t.G).left ≫ x` using `(Over.w (fst (Over.mk x) Xo.univ.t.G)).symm`. Establish `hw : q ≫ (Over.mk x ⊗ Xo.univ.t.G).hom = p ≫ (Over.mk x ⊗ Xo.univ.t.G).hom`. Rewrite using `[e, ← Category.assoc, ← h1, Category.assoc]`. Set `P : Over.mk (p ≫ (Over.mk x ⊗ Xo.univ.t.G).hom) ⟶ Over.mk x ⊗ Xo.univ.t.G` to `Over.homMk p rfl`. Set `Q : Over.mk (p ≫ (Over.mk x ⊗ Xo.univ.t.G).hom) ⟶ Over.mk x ⊗ Xo.univ.t.G` to `Over.homMk q hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hPQ : P = Q`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Use `ext`. Simplify `h1` using `[P, Q]`. Use `ext`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify `h2` using `[P, Q]`. Use `congrArg (fun f => f.left) hPQ` as an intermediate fact. Simplify `this` using `[P, Q]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gx_ext {Z : Scheme.{0}} (p q : Z ⟶ Gx x)
     (h1 : p ≫ (fst (Over.mk x) Xo.univ.t.G).left = q ≫ (fst (Over.mk x) Xo.univ.t.G).left)
@@ -61,7 +61,7 @@ theorem gx_ext {Z : Scheme.{0}} (p q : Z ⟶ Gx x)
   simpa [P, Q] using this
 
 /- English proof (translation)
-Conclude with `(Over.w (snd (Over.mk x) Xo.univ.t.G)).trans (Over.w (fst (Over.mk x) Xo.univ.t.G)).symm`.
+A detailed English derivation is pending.
 -/
 theorem gx_w : (snd (Over.mk x) Xo.univ.t.G).left ≫ Xo.univ.t.G.hom = (fst (Over.mk x) Xo.univ.t.G).left ≫ x := by
   exact (Over.w (snd (Over.mk x) Xo.univ.t.G)).trans (Over.w (fst (Over.mk x) Xo.univ.t.G)).symm
@@ -72,28 +72,28 @@ def gxV : Gx x ⟶ pullback Xo.univ.t.G.hom x :=
   pullback.lift (snd (Over.mk x) Xo.univ.t.G).left (fst (Over.mk x) Xo.univ.t.G).left (gx_w x)
 
 /- English proof (translation)
-Conclude with `gxLift_fst x _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gxU_fst : gxU x ≫ (fst (Over.mk x) Xo.univ.t.G).left = pullback.snd _ _ := by
   exact gxLift_fst x _ _ _
 /- English proof (translation)
-Conclude with `gxLift_snd x _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gxU_snd : gxU x ≫ (snd (Over.mk x) Xo.univ.t.G).left = pullback.fst _ _ := by
   exact gxLift_snd x _ _ _
 /- English proof (translation)
-Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gxV_fst : gxV x ≫ pullback.fst _ _ = (snd (Over.mk x) Xo.univ.t.G).left := by
   exact pullback.lift_fst _ _ _
 /- English proof (translation)
-Conclude with `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem gxV_snd : gxV x ≫ pullback.snd _ _ = (fst (Over.mk x) Xo.univ.t.G).left := by
   exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, gxV_fst, gxU_snd, Category.id_comp]`. Rewrite using `[Category.assoc, gxV_snd, gxU_fst, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gxU_gxV : gxU x ≫ gxV x = 𝟙 _ := by
   apply pullback.hom_ext
@@ -101,7 +101,7 @@ theorem gxU_gxV : gxU x ≫ gxV x = 𝟙 _ := by
   · rw [Category.assoc, gxV_snd, gxU_fst, Category.id_comp]
 
 /- English proof (translation)
-Apply `gx_ext x` to reduce the goal to its premises. Rewrite using `[Category.assoc, gxU_fst, gxV_snd, Category.id_comp]`. Rewrite using `[Category.assoc, gxU_snd, gxV_fst, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gxV_gxU : gxV x ≫ gxU x = 𝟙 _ := by
   apply gx_ext x
@@ -109,7 +109,7 @@ theorem gxV_gxU : gxV x ≫ gxU x = 𝟙 _ := by
   · rw [Category.assoc, gxU_snd, gxV_fst, Category.id_comp]
 
 /- English proof (translation)
-Conclude with `(gs_res r z le_top hz _).trans (gs_pull r _ z ⊤ trivial _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_scal (a : S) (i : Fin 1 → Xo.univ.t.PP.L.ι) {Z : Scheme.{0}} (r : Z ⟶ Gx x) (z : Z)
     (hz : r z ∈ (PPx x).U i) :
@@ -117,9 +117,9 @@ theorem gs_scal (a : S) (i : Fin 1 → Xo.univ.t.PP.L.ι) {Z : Scheme.{0}} (r : 
   exact (gs_res r z le_top hz _).trans (gs_pull r _ z ⊤ trivial _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i y hy`. Rewrite using `[h i, gs_mul (𝟙 _) y _ hy, gs_scal x a i (𝟙 _) y hy, Category.id_comp]`. Introduce `h i`. Apply `fn_ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Rewrite using `[gs_mul (𝟙 _) y _ hy, gs_scal x a i (𝟙 _) y hy, Category.id_comp]`. Conclude with `h i y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_eq_iff (s t : LB.Sec (PPx x)) (a : S) :
     (∀ i, s.f i = scal x a i * t.f i) ↔ ∀ i, ∀ y ∈ (PPx x).U i,
@@ -140,7 +140,7 @@ section BC
 variable {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X)
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pullback.condition, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcU_w : (pullback.fst (pullback.snd Xo.univ.t.G.hom x) (spMap ψ) ≫ pullback.fst Xo.univ.t.G.hom x) ≫
     Xo.univ.t.G.hom = pullback.snd (pullback.snd Xo.univ.t.G.hom x) (spMap ψ) ≫ spMap ψ ≫ x := by
@@ -150,7 +150,7 @@ def bcU : pullback (pullback.snd Xo.univ.t.G.hom x) (spMap ψ) ⟶ Gx (spMap ψ 
   gxLift (spMap ψ ≫ x) (pullback.snd _ _) (pullback.fst _ _ ≫ pullback.fst _ _) (bcU_w ψ x)
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Category.assoc, gxV_snd, bcPm, ← Over.comp_left, whiskerRight_fst, Over.comp_left] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bcV_w : (bcPm ψ x ≫ gxV x) ≫ pullback.snd Xo.univ.t.G.hom x =
     (fst (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left ≫ spMap ψ := by
@@ -160,29 +160,29 @@ def bcV : Gx (spMap ψ ≫ x) ⟶ pullback (pullback.snd Xo.univ.t.G.hom x) (spM
   pullback.lift (bcPm ψ x ≫ gxV x) (fst (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left (bcV_w ψ x)
 
 /- English proof (translation)
-Conclude with `gxLift_fst _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcU_fst : bcU ψ x ≫ (fst (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left = pullback.snd _ _ := by
   exact gxLift_fst _ _ _ _
 /- English proof (translation)
-Conclude with `gxLift_snd _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcU_snd : bcU ψ x ≫ (snd (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left =
     pullback.fst _ _ ≫ pullback.fst Xo.univ.t.G.hom x := by
   exact gxLift_snd _ _ _ _
 /- English proof (translation)
-Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcV_fst : bcV ψ x ≫ pullback.fst _ _ = bcPm ψ x ≫ gxV x := by
   exact pullback.lift_fst _ _ _
 /- English proof (translation)
-Conclude with `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcV_snd : bcV ψ x ≫ pullback.snd _ _ = (fst (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left := by
   exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Establish `hbs : bcPm ψ x ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left`. Rewrite using `[bcPm, ← Over.comp_left, whiskerRight_snd]`. Rewrite using `[← Category.assoc, bcV_fst, Category.assoc, gxV_fst, hbs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcV_snd' : bcV ψ x ≫ pullback.fst _ _ ≫ pullback.fst Xo.univ.t.G.hom x =
     (snd (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left := by
@@ -192,7 +192,7 @@ theorem bcV_snd' : bcV ψ x ≫ pullback.fst _ _ ≫ pullback.fst Xo.univ.t.G.ho
   rw [← Category.assoc, bcV_fst, Category.assoc, gxV_fst, hbs]
 
 /- English proof (translation)
-Apply `gx_ext (spMap ψ ≫ x)` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcU_fst, bcV_snd, Category.id_comp]`. Rewrite using `[Category.assoc, bcU_snd, bcV_snd', Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcV_bcU : bcV ψ x ≫ bcU ψ x = 𝟙 _ := by
   apply gx_ext (spMap ψ ≫ x)
@@ -200,9 +200,9 @@ theorem bcV_bcU : bcV ψ x ≫ bcU ψ x = 𝟙 _ := by
   · rw [Category.assoc, bcU_snd, bcV_snd', Category.id_comp]
 
 /- English proof (translation)
-Establish `hbs : bcPm ψ x ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left`. Rewrite using `[bcPm, ← Over.comp_left, whiskerRight_snd]`. Establish `hbf : bcPm ψ x ≫ (fst (Over.mk x) Xo.univ.t.G).left = (fst (Over.mk (spMap ψ ≫ x)) Xo.univ.t.G).left ≫ spMap ψ`. Apply the tactic sequence `rw [bcPm, ← Over.comp_left, whiskerRight_fst, Over.comp_left] <;> rfl`. Apply `gx_ext x` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, hbf, ← Category.assoc, bcU_fst, Category.assoc, gxU_fst, pullback.condition]`. Rewrite using `[Category.assoc, hbs, bcU_snd, Category.assoc, gxU_snd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcU_bcPm : bcU ψ x ≫ bcPm ψ x = pullback.fst _ _ ≫ gxU x := by
   have hbs : bcPm ψ x ≫ (snd (Over.mk x) Xo.univ.t.G).left
@@ -216,7 +216,7 @@ theorem bcU_bcPm : bcU ψ x ≫ bcPm ψ x = pullback.fst _ _ ≫ gxU x := by
   · rw [Category.assoc, hbs, bcU_snd, Category.assoc, gxU_snd]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcV_fst, ← Category.assoc, bcU_bcPm, Category.assoc, gxU_gxV, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, bcV_snd, bcU_fst, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcU_bcV : bcU ψ x ≫ bcV ψ x = 𝟙 _ := by
   apply pullback.hom_ext
@@ -225,7 +225,7 @@ theorem bcU_bcV : bcU ψ x ≫ bcV ψ x = 𝟙 _ := by
   · rw [Category.assoc, bcV_snd, bcU_fst, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, bcV_fst, Category.assoc, gxV_gxU, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcV_gxU : bcV ψ x ≫ pullback.fst _ _ ≫ gxU x = bcPm ψ x := by
   rw [← Category.assoc, bcV_fst, Category.assoc, gxV_gxU, Category.comp_id]

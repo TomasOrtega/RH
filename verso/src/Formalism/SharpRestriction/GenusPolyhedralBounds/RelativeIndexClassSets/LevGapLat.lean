@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
     diagMap a x i = a i * (x i : E) := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun h i`. Simplify using `only [diagMap_apply] at h1`. Conclude with `RingOfIntegers.ext (mul_left_cancel₀ (ha i) h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagMap_injective {a : n → E} (ha : ∀ i, a i ≠ 0) : Function.Injective (diagMap a) := by
   intro x y h
@@ -39,7 +39,7 @@ theorem diagMap_injective {a : n → E} (ha : ∀ i, a i ≠ 0) : Function.Injec
 def diagLat (a : n → E) : Submodule (𝓞 E) (n → E) := LinearMap.range (diagMap a)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ i`. Conclude with `⟨c i, rfl⟩`. Introduce `h choose c hc using h`. Conclude with `⟨c, funext fun i => (hc i).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_diagLat {a : n → E} {x : n → E} :
     x ∈ diagLat a ↔ ∀ i, ∃ c : 𝓞 E, x i = a i * (c : E) := by
@@ -51,7 +51,7 @@ theorem mem_diagLat {a : n → E} {x : n → E} :
     exact ⟨c, funext fun i => (hc i).symm⟩
 
 /- English proof (translation)
-Use `mem_diagLat.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [h]⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem single_mem_diagLat (a : n → E) (i : n) : Pi.single i (a i) ∈ diagLat a := by
   refine mem_diagLat.2 fun j => ?_
@@ -61,11 +61,11 @@ theorem single_mem_diagLat (a : n → E) (i : n) : Pi.single i (a i) ∈ diagLat
   · exact ⟨0, by simp [h]⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `h : diagMap a c = ∑ i, c i • (Pi.single i (a i) : n → E)`. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.smul_def, mul_comm]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb.symm]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `single_mem_diagLat a i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem diagLat_eq_span (a : n → E) :
     diagLat a = Submodule.span (𝓞 E) (Set.range fun i => (Pi.single i (a i) : n → E)) := by
@@ -86,15 +86,15 @@ theorem diagLat_eq_span (a : n → E) :
     exact single_mem_diagLat a i
 
 /- English proof (translation)
-The claim follows from `Module.Finite.range (diagMap a)`.
+A detailed English derivation is pending.
 -/
 theorem diagLat_finite (a : n → E) : Module.Finite (𝓞 E) (diagLat a) :=
   Module.Finite.range (diagMap a)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← (Pi.basisFun E n).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h : (Pi.basisFun E n) i = (a i)⁻¹ • (Pi.single i (a i) : n → E)`. Rewrite using `[Pi.basisFun_apply, ← Pi.single_smul, smul_eq_mul, inv_mul_cancel₀ (ha i)]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_diagLat a i))`.
+A detailed English derivation is pending.
 -/
 theorem diagLat_span {a : n → E} (ha : ∀ i, a i ≠ 0) :
     Submodule.span E (diagLat a : Set (n → E)) = ⊤ := by
@@ -106,9 +106,9 @@ theorem diagLat_span {a : n → E} (ha : ∀ i, a i ≠ 0) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_diagLat a i))
 
 /- English proof (translation)
-Unfold `hform`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.one_apply_ne hj.symm]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hform_one (σ : E →+* E) (x y : n → E) : hform σ 1 x y = ∑ i, σ (x i) * y i := by
   unfold hform
@@ -123,17 +123,17 @@ theorem hform_one (σ : E →+* E) (x y : n → E) : hform σ 1 x y = ∑ i, σ 
 variable (σ : E →+* E)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RingOfIntegers.mapRingHom σ c, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_int_mem (c : 𝓞 E) : σ (c : E) ∈ (algebraMap (𝓞 E) E).range :=
   ⟨RingOfIntegers.mapRingHom σ c, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h1` using `h _ (single_mem_diagLat a i)`. Rewrite `h1` using `[hform_one, Finset.sum_eq_single i]`. Simplify using `using h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Introduce and unpack `h _ ⟨c, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform_one]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[diagMap_apply, map_mul, mul_right_comm]`. Conclude with `Subring.mul_mem _ (h i) (map_int_mem σ (c i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dualSet_diagLat {a : n → E} {y : n → E} :
     y ∈ dualSet σ 1 (diagLat a) ↔ ∀ i, σ (a i) * y i ∈ (algebraMap (𝓞 E) E).range := by
@@ -153,9 +153,9 @@ theorem mem_dualSet_diagLat {a : n → E} {y : n → E} :
     exact Subring.mul_mem _ (h i) (map_int_mem σ (c i))
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_dualSet_diagLat σ, SetLike.mem_coe, mem_diagLat]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `h0 : σ (a i) ≠ 0` using `(map_ne_zero σ).2 (ha i)`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [RingOfIntegers.coe_eq_algebraMap, hc]; field_simp⟩`. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [hc, RingOfIntegers.coe_eq_algebraMap]; field_simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem dualSet_diagLat {a : n → E} (ha : ∀ i, a i ≠ 0) :
     dualSet σ 1 (diagLat a) = (diagLat fun i => (σ (a i))⁻¹ : Set (n → E)) := by
@@ -170,13 +170,13 @@ theorem dualSet_diagLat {a : n → E} (ha : ∀ i, a i ≠ 0) :
     exact ⟨c, by rw [hc, RingOfIntegers.coe_eq_algebraMap]; field_simp⟩
 
 /- English proof (translation)
-Establish `h1 : (diagLat b).toAddSubgroup = (⊤ : AddSubgroup (n → 𝓞 E)).map (diagMap b).toAddMonoidHom`. Use extensionality with `x`. Simplify using `[diagLat, LinearMap.mem_range]`. Establish `h2 : (diagLat fun i => b i * (c i : E)).toAddSubgroup.comap (diagMap b).toAddMonoidHom = (Submodule.pi Set.univ fun i => Ideal.span {c i}).toAddSubgroup`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup, mem_diagLat, Submodule.mem_pi, Set.mem_univ, true_implies, Ideal.mem_span_singleton', LinearMap.toAddMonoidHom_coe, diagMap_apply]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Use `⟨u, RingOfIntegers.ext ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hu` using `[mul_assoc]`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_mul, mul_comm]`. Conclude with `(mul_left_cancel₀ (hb i) hu).symm`. Introduce and unpack `⟨u, hu⟩`. Conclude with `⟨u, by rw [← hu, RingOfIntegers.coe_eq_algebraMap, map_mul]; ring⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← AddSubgroup.relIndex_comap, AddSubgroup.relIndex_top_right, h2]`. Express the relevant statement in the definitionally equal form `Submodule.cardQuot _ = _`. Rewrite using `[Submodule.cardQuot_apply, Nat.card_congr (Submodule.quotientPi _).toEquiv, Nat.card_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_diagLat {b : n → E} (hb : ∀ i, b i ≠ 0) (c : n → 𝓞 E) :
     (diagLat fun i => b i * (c i : E)).toAddSubgroup.relIndex (diagLat b).toAddSubgroup =
@@ -214,18 +214,18 @@ variable {E : Type} [Field E] [NumberField E] {n : Type} [Fintype n] [DecidableE
 def vecAt (i0 : n) (z : E) : n → E := Function.update (fun _ => (1 : E)) i0 z
 
 /- English proof (translation)
-The claim follows from `Function.update_self ..`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem vecAt_same (i0 : n) (z : E) : vecAt i0 z i0 = z := Function.update_self ..
 
 /- English proof (translation)
-The claim follows from `Function.update_of_ne h ..`.
+A detailed English derivation is pending.
 -/
 theorem vecAt_ne {i0 i : n} (h : i ≠ i0) (z : E) : vecAt i0 z i = 1 :=
   Function.update_of_ne h ..
 
 /- English proof (translation)
-Distinguish the cases in `h : i = i0`. Substitute `h` using the available equality. Simplify using `using hz`. Rewrite using `[vecAt_ne h]`. Conclude with `one_ne_zero`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecAt_ne_zero {i0 : n} {z : E} (hz : z ≠ 0) (i : n) : vecAt i0 z i ≠ 0 := by
   by_cases h : i = i0
@@ -237,11 +237,11 @@ theorem vecAt_ne_zero {i0 : n} {z : E} (hz : z ≠ 0) (i : n) : vecAt i0 z i ≠
 def latT (i0 : n) (pz : 𝓞 E) : Submodule (𝓞 E) (n → E) := diagLat (vecAt i0 (pz : E))
 
 /- English proof (translation)
-Rewrite using `[latT, mem_diagLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨by simpa using h i0, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h i`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, by rw [hc, vecAt_ne hi, one_mul]⟩`. Introduce and unpack `⟨h0, h1⟩ i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Simplify using `using h0`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨c, hc⟩` from `h1 i hi`. Conclude with `⟨c, by rw [vecAt_ne hi, one_mul, ← hc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_latT {i0 : n} {pz : 𝓞 E} {x : n → E} :
     x ∈ latT i0 pz ↔ (∃ c : 𝓞 E, x i0 = (pz : E) * (c : E)) ∧
@@ -260,7 +260,7 @@ theorem mem_latT {i0 : n} {pz : 𝓞 E} {x : n → E} :
       exact ⟨c, by rw [vecAt_ne hi, one_mul, ← hc]⟩
 
 /- English proof (translation)
-The claim follows from `diagLat_eq_span _`.
+A detailed English derivation is pending.
 -/
 theorem latT_eq_span (i0 : n) (pz : 𝓞 E) :
     latT i0 pz = Submodule.span (𝓞 E)
@@ -268,14 +268,14 @@ theorem latT_eq_span (i0 : n) (pz : 𝓞 E) :
   diagLat_eq_span _
 
 /- English proof (translation)
-The claim follows from `diagLat_finite _`.
+A detailed English derivation is pending.
 -/
 theorem latT_finite (i0 : n) (pz : 𝓞 E) : Module.Finite (𝓞 E) (latT i0 pz) := diagLat_finite _
 
 variable (σ : E →+* E) {i0 : n} {pz : 𝓞 E} {T : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Rewrite `hpz` using `[h, zero_mul]`. Conclude with `hT (by exact_mod_cast hpz.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pz_ne_zero (hT : T ≠ 0) (hpz : (pz : E) * σ (pz : E) = (T : E)) : (pz : E) ≠ 0 := by
   intro h
@@ -283,15 +283,15 @@ theorem pz_ne_zero (hT : T ≠ 0) (hpz : (pz : E) * σ (pz : E) = (T : E)) : (pz
   exact hT (by exact_mod_cast hpz.symm)
 
 /- English proof (translation)
-The claim follows from `diagLat_span (vecAt_ne_zero hz)`.
+A detailed English derivation is pending.
 -/
 theorem latT_span (hz : (pz : E) ≠ 0) :
     Submodule.span E (latT i0 pz : Set (n → E)) = ⊤ := diagLat_span (vecAt_ne_zero hz)
 
 /- English proof (translation)
-Rewrite using `[latT, mem_dualSet_diagLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨by simpa using h i0, fun i hi => ?_⟩` and prove the remaining obligations. Simplify `h i` using `[vecAt_ne hi]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨h0, h1⟩ i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Simplify using `using h0`. Simplify `h1 i hi` using `[vecAt_ne hi]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_dualSet_latT {y : n → E} :
     y ∈ dualSet σ 1 (latT i0 pz) ↔ σ (pz : E) * y i0 ∈ (algebraMap (𝓞 E) E).range ∧
@@ -308,9 +308,9 @@ theorem mem_dualSet_latT {y : n → E} :
     · simpa [vecAt_ne hi] using h1 i hi
 
 /- English proof (translation)
-Rewrite using `[latT, dualSet_diagLat σ (vecAt_ne_zero hz)]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[vecAt_ne hi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dualSet_latT (hz : (pz : E) ≠ 0) :
     dualSet σ 1 (latT i0 pz) = (diagLat (vecAt i0 (σ (pz : E))⁻¹) : Set (n → E)) := by
@@ -323,14 +323,14 @@ theorem dualSet_latT (hz : (pz : E) ≠ 0) :
   · simp [vecAt_ne hi]
 
 /- English proof (translation)
-Rewrite using `[dualSet_latT σ hz, Submodule.span_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_dualSet_latT (hz : (pz : E) ≠ 0) :
     Submodule.span (𝓞 E) (dualSet σ 1 (latT i0 pz)) = diagLat (vecAt i0 (σ (pz : E))⁻¹) := by
   rw [dualSet_latT σ hz, Submodule.span_eq]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨⟨c, hc⟩, h1⟩` from `mem_latT.1 hx`. Use `(mem_dualSet_latT σ).2 ⟨⟨(T : 𝓞 E) * c, ?_⟩, h1⟩` and prove the remaining obligations. Rewrite using `[hc, map_mul, map_natCast, ← hpz]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem latT_int (hpz : (pz : E) * σ (pz : E) = (T : E)) :
     ∀ x ∈ latT i0 pz, x ∈ dualSet σ 1 (latT i0 pz) := by
@@ -341,9 +341,9 @@ theorem latT_int (hpz : (pz : E) * σ (pz : E) = (T : E)) :
   ring
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨⟨c, hc⟩, h1⟩` from `(mem_dualSet_latT σ).1 hy`. Use `mem_latT.2 ⟨⟨c, ?_⟩, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, RingOfIntegers.coe_eq_algebraMap c, hc, ← hpz]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨d, hd⟩` from `h1 i hi`. Conclude with `⟨(T : 𝓞 E) * d, by rw [Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, hd]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem latT_dual (hpz : (pz : E) * σ (pz : E) = (T : E)) :
     ∀ y ∈ dualSet σ 1 (latT i0 pz), (T : E) • y ∈ latT i0 pz := by
@@ -356,13 +356,13 @@ theorem latT_dual (hpz : (pz : E) * σ (pz : E) = (T : E)) :
     exact ⟨(T : 𝓞 E) * d, by rw [Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, hd]⟩
 
 /- English proof (translation)
-Establish `hz` using `pz_ne_zero σ hT hpz`. Establish `hs : σ (pz : E) ≠ 0` using `(map_ne_zero σ).2 hz`. Establish `h1 : latT i0 pz = diagLat fun i => vecAt i0 (σ (pz : E))⁻¹ i * ((Function.update (fun _ => (1 : 𝓞 E)) i0 (T : 𝓞 E) i : 𝓞 E) : E)`. Rewrite using `[latT]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Rewrite using `[vecAt_same, vecAt_same, Function.update_self, RingOfIntegers.coe_eq_algebraMap, RingOfIntegers.coe_eq_algebraMap, map_natCast, ← hpz]`. Clear the denominators using the available nonvanishing facts.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[vecAt_ne hi, vecAt_ne hi, Function.update_of_ne hi, RingOfIntegers.coe_eq_algebraMap, map_one, one_mul]`. Rewrite using `[span_dualSet_latT σ hz]`. Use `conv_lhs => rw [h1]`. Rewrite using `[relIndex_diagLat (vecAt_ne_zero (inv_ne_zero hs)), Finset.prod_eq_single i0]`. Rewrite using `[Function.update_self, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Rewrite using `[Function.update_of_ne hj, Ideal.span_singleton_one, Ideal.absNorm_top]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i0) hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem latT_index (hT : T ≠ 0) (hpz : (pz : E) * σ (pz : E) = (T : E)) :
     (latT i0 pz).toAddSubgroup.relIndex
@@ -400,9 +400,9 @@ open Formalism.MainNotions.Gaps.LG
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[latT_eq_span, LbOf]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Unfold `lbVec`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hi : i = ⟨0, hk⟩`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Establish `h0 : ¬ (i.1 = 0)` using `fun h => hi (Fin.ext h)`. Rewrite using `[if_neg h0, vecAt_ne hi]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem LbOf_eq_latT {k : ℕ} (hk : 0 < k) (pz : 𝓞 E) : LbOf k pz = latT (⟨0, hk⟩ : Fin k) pz := by
   rw [latT_eq_span, LbOf]
@@ -419,11 +419,9 @@ theorem LbOf_eq_latT {k : ℕ} (hk : 0 < k) (pz : 𝓞 E) : LbOf k pz = latT (�
 variable {F : Type} [Field F] [NumberField F] [Algebra F E]
 
 /- English proof (translation)
-Establish `hL : P.Lb = latT (⟨0, hk⟩ : Fin k) P.pz` using `LbOf_eq_latT hk P.pz`. Establish `hpz' : (P.pz : E) * (P.σ : E →+* E) (P.pz : E) = (P.T : E)` using `hpz`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `latT_finite _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Conclude with `latT_span (pz_ne_zero _ hT hpz')`. Rewrite using `[hL, hJ]`. Conclude with `latT_int _ hpz'`. Rewrite using `[hL, hJ]`.
-
-Conclude with `latT_dual _ hpz'`. Rewrite using `[Par.Ld, hL, hJ]`. Conclude with `latT_index _ hT hpz'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbOK_of {k : ℕ} (hk : 0 < k) (P : Par F E k) (hJ : P.J = 1) (hT : P.T ≠ 0)
     (hpz : (P.pz : E) * P.σ (P.pz : E) = (P.T : E)) : P.LbOK (Module.finrank ℚ E) := by
@@ -442,7 +440,7 @@ theorem lbOK_of {k : ℕ} (hk : 0 < k) (P : Par F E k) (hJ : P.J = 1) (hT : P.T 
     exact latT_index _ hT hpz'
 
 /- English proof (translation)
-Establish `hL : P.Lb = latT (⟨0, hk⟩ : Fin k) P.pz` using `LbOf_eq_latT hk P.pz`. Rewrite using `[hL, hJ]`. Conclude with `mem_dualSet_latT _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dualSet_Lb {k : ℕ} (hk : 0 < k) (P : Par F E k) (hJ : P.J = 1) {y : Fin k → E} :
     y ∈ dualSet (P.σ : E →+* E) P.J P.Lb ↔
@@ -453,7 +451,7 @@ theorem mem_dualSet_Lb {k : ℕ} (hk : 0 < k) (P : Par F E k) (hJ : P.J = 1) {y 
   exact mem_dualSet_latT _
 
 /- English proof (translation)
-Establish `hL : P.Lb = latT (⟨0, hk⟩ : Fin k) P.pz` using `LbOf_eq_latT hk P.pz`. Rewrite using `[Par.Ld, hL, hJ]`. Conclude with `span_dualSet_latT _ hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ld_eq {k : ℕ} (hk : 0 < k) (P : Par F E k) (hJ : P.J = 1) (hz : (P.pz : E) ≠ 0) :
     P.Ld = diagLat (vecAt (⟨0, hk⟩ : Fin k) (P.σ (P.pz : E))⁻¹) := by
@@ -468,21 +466,21 @@ section Record
 open Formalism.MainNotions.Gaps.LG
 
 /- English proof (translation)
-Rewrite using `[H.finrank_cmField, Ranks.f, Ranks.n]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_hostE_eq {R : Ranks} (H : Host R) : Module.finrank ℚ H.E = 2 * R.f := by
   rw [H.finrank_cmField, Ranks.f, Ranks.n]
   ring
 
 /- English proof (translation)
-Use `R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem k_pos (R : Ranks) : 0 < R.k := by
   have := R.m_add_three_le_k
   omega
 
 /- English proof (translation)
-Introduce `R H T pz piG h`. Rewrite using `[← finrank_hostE_eq H]`. Conclude with `lbOK_of (k_pos R) (hostPar H T pz piG) rfl h.T_prime.ne_zero h.pz_norm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factLb : FactLb := by
   intro R H T pz piG h

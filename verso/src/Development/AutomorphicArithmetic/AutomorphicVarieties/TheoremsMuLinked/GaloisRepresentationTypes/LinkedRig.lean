@@ -16,15 +16,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ex
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.HV GlobalTheory.GalOfCusp UpperTheory.V.Th
 
 /- English proof (translation)
-Introduce `hH hAd Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ C₀ k hok hbig hseed`. Establish `hP : Af.Hypotheses₂` using `hH.toClassicalTheorems`. Establish `hN` using `hP.litN`. Establish `hA : GlobalTheory.Published.GlobalArtinReciprocity` using `hN.aut.art`. Establish `hC : Pa.CohP` using `⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLoc : W.LocCFTAll` using `W.locCFT hA hC`. Establish `hB0 : W.ProModularRingExists` using `W.b0Ex (W.phiAll hC)`. Take `⟨K, _, _, _, N', w, χ', η', θ, j, hD, hne, hord, hη, hcong, hdisc⟩` from `hseed`. Establish `hker : η.ker = Base.galOf ℚ K Ω`. Rewrite using `[← hD.η_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `s`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, ← Units.val_eq_one, ← Units.val_eq_one, hη s]`. Conclude with `Iff.rfl` after adjusting the coercions. Use `haveI := hD.imag`. Take `⟨κ, hκ⟩` from `Sd.twist hP K Ω hD.quad l hok.l_odd hdisc ι σ hD.cc`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hk3, hk2⟩` from `Pr.kaOf (Sd.algCyc hP) (Sd.algRes hP) Ω l ι c N e ψ η σ g₁ B M H L Φ k`. Take `⟨ka, hk2, -⟩` from `hk2 K hker κ hκ`. Take `⟨c₁, hle, hL, hv3, hv2, f, hf⟩` from `Pr.coefEx l c L Ω _ _ hk3.alg.1 hk2.alg.1`. Use `haveI := Pr.coefIs l c₁`. Take `⟨R₂⟩` from `Pr.cRealEx hA hLoc W.levEx hB0 Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 2 ka C₀ (Or.inl rfl) hok hbig hle hf hk2 hv2`.
-
-Take `⟨R₃⟩` from `Pr.cRealEx hA hLoc W.levEx hB0 Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 3 _ C₀ (Or.inr rfl) hok hbig hle hf hk3 hv3`. Conclude with `⟨rigPtOf hA hAd Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 3 _ R₃ hL hk3, ka, hk2, rigPtOf hA hAd Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 2 ka R₂ hL hk2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.linkedRig :
     Af.HypothesesH → AdL → LinkedRig := by

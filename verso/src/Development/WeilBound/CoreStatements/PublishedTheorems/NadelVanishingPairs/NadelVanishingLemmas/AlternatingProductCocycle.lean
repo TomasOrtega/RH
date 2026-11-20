@@ -10,7 +10,7 @@ namespace GlobalTheory.DI.AltClosed
 variable {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V] {ι : Type} [LinearOrder ι]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [Dtot, delta, Pi.add_apply, smul_add, Finset.sum_add_distrib, map_add]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem dtot_add {E : Type} [AddCommGroup E] (d : E →+ E) (c c' : Finset ι → E) :
     Dtot d (c + c') = Dtot d c + Dtot d c' := by
@@ -24,13 +24,13 @@ def dtotHom {E : Type} [AddCommGroup E] (d : E →+ E) : (Finset ι → E) →+ 
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-Simplify using `[oneC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oneC_empty : (oneC : Finset ι → ExteriorAlgebra K V) ∅ = 0 := by
   simp [oneC]
 
 /- English proof (translation)
-Establish `h1` using `hd.mul 1 1`. Simplify using `only [mul_one, map_one, one_mul] at h1`. Conclude with `add_left_cancel (a := d 1) (by rw [add_zero]; exact h1.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_one (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (hd : IsOddDer d) : d 1 = 0 := by
   have h1 := hd.mul 1 1
@@ -38,25 +38,21 @@ theorem d_one (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (hd : IsOddDer 
   exact add_left_cancel (a := d 1) (by rw [add_zero]; exact h1.symm)
 
 /- English proof (translation)
-Establish `hne : x ≠ y` using `ne_of_lt h`. Simplify using `only [delta]`. Rewrite using `[Finset.sum_pair hne]`. Establish `e1 : ({x, y} : Finset ι).erase x = {y}`. Use extensionality with `z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hz' | hz'⟩`. Conclude with `absurd hz' hz`. Conclude with `hz'`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `rfl`. Conclude with `⟨hne.symm, Or.inr rfl⟩`. Establish `e2 : ({x, y} : Finset ι).erase y = {x}`. Use extensionality with `z`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hz' | hz'⟩`. Conclude with `hz'`. Conclude with `absurd hz' hz`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `⟨hne, Or.inl rfl⟩`. Establish `s1 : GlobalTheory.cubeSign ({x, y} : Finset ι) x = 1`. Unfold `GlobalTheory.cubeSign`. Establish `: ({z ∈ ({x, y} : Finset ι) | z < x}) = ∅`. Use extensionality with `z`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton, Finset.notMem_empty, iff_false, not_and]`. Introduce and unpack `(rfl | rfl) hz`. Conclude with `lt_irrefl _ hz`. Conclude with `lt_asymm h hz`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `s2 : GlobalTheory.cubeSign ({x, y} : Finset ι) y = -1`. Unfold `GlobalTheory.cubeSign`. Establish `: ({z ∈ ({x, y} : Finset ι) | z < y}) = {x}`. Use extensionality with `z`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | rfl, hz⟩`. Both sides reduce to the same expression. Conclude with `absurd hz (lt_irrefl _)`.
-
-Introduce and unpack `rfl`. Conclude with `⟨Or.inl rfl, h⟩`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, s1, s2]`.
-
-Simplify using `[oneC]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_oneC_pair {x y : ι} (h : x < y) :
     delta (oneC : Finset ι → ExteriorAlgebra K V) {x, y} = 0 := by
@@ -108,11 +104,11 @@ theorem delta_oneC_pair {x y : ι} (h : x < y) :
   simp [oneC]
 
 /- English proof (translation)
-Distinguish the cases in `h2 : t.card = 2`. Take `⟨x, y, hxy, rfl⟩` from `Finset.card_eq_two.mp h2`. Break down `lt_or_gt_of_ne hxy with hlt | hlt` into its components or cases. Conclude with `delta_oneC_pair hlt`. Rewrite using `[Finset.pair_comm]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `delta_oneC_pair hlt`. Simplify using `only [delta]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Establish `hpos` using `Finset.card_pos.mpr ⟨i, hi⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ¬ (t.erase i).card = 1`. Rewrite using `[Finset.card_erase_of_mem hi]`. Use linear arithmetic over natural numbers and integers. Simplify using `[oneC, hc]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_oneC (t : Finset ι) : delta (oneC : Finset ι → ExteriorAlgebra K V) t = 0 := by
   by_cases h2 : t.card = 2
@@ -131,7 +127,7 @@ theorem delta_oneC (t : Finset ι) : delta (oneC : Finset ι → ExteriorAlgebra
     simp [oneC, hc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [Dtot, delta_oneC, zero_add, Pi.zero_apply]`. Unfold `oneC`. Apply the tactic sequence `split_ifs <;> simp [d_one d hd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dtot_oneC (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (hd : IsOddDer d) :
     Dtot d (oneC : Finset ι → ExteriorAlgebra K V) = 0 := by
@@ -141,9 +137,9 @@ theorem dtot_oneC (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (hd : IsOdd
   split_ifs <;> simp [d_one d hd]
 
 /- English proof (translation)
-Unfold `GlobalTheory.cubeSign`. Establish `e : ({x ∈ s | x < s.min' hs}) = ∅`. Apply `Finset.filter_false_of_mem` to reduce the goal to its premises. Introduce `x hx`. Conclude with `not_lt.mpr (s.min'_le x hx)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cubeSign_min_eq_one (s : Finset ι) (hs : s.Nonempty) : GlobalTheory.cubeSign s (s.min' hs) = 1 := by
   unfold GlobalTheory.cubeSign
@@ -155,13 +151,13 @@ private theorem cubeSign_min_eq_one (s : Finset ι) (hs : s.Nonempty) : GlobalTh
   simp
 
 /- English proof (translation)
-Establish `hne : i ≠ s.min' hs` using `Finset.ne_of_mem_erase hi`. Establish `his : i ∈ s` using `Finset.mem_of_mem_erase hi`. Establish `hlt : s.min' hs < i` using `lt_of_le_of_ne (s.min'_le i his) hne.symm`. Unfold `GlobalTheory.cubeSign`. Establish `hfil : ({x ∈ s | x < i}) = insert (s.min' hs) ({x ∈ s.erase (s.min' hs) | x < i})`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxs, hxi⟩`. Distinguish the cases in `hx : x = s.min' hs`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl hx`. Conclude with `Or.inr ⟨⟨hx, hxs⟩, hxi⟩`. Introduce and unpack `(hx | ⟨⟨_, hxs⟩, hxi⟩)`. Rewrite using `[hx]`. Conclude with `⟨s.min'_mem hs, hlt⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hxs, hxi⟩`. Rewrite using `[hfil, Finset.card_insert_of_notMem (by simp), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem cubeSign_eq_neg_cubeSign_erase_min (s : Finset ι) (hs : s.Nonempty) (i : ι) (hi : i ∈ s.erase (s.min' hs)) :
     GlobalTheory.cubeSign s i = -GlobalTheory.cubeSign (s.erase (s.min' hs)) i := by
@@ -185,9 +181,9 @@ private theorem cubeSign_eq_neg_cubeSign_erase_min (s : Finset ι) (hs : s.Nonem
   ring
 
 /- English proof (translation)
-Unfold `delta`. Rewrite using `[← Finset.add_sum_erase s _ (s.min'_mem hs), cubeSign_min_eq_one s hs, one_smul, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cubeSign_eq_neg_cubeSign_erase_min s hs i hi, neg_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem delta_eq_erase_min_sub_sum_cubeSign {E : Type} [AddCommGroup E] (c : Finset ι → E) (s : Finset ι) (hs : s.Nonempty) :
     delta c s = c (s.erase (s.min' hs)) -
@@ -201,7 +197,7 @@ private theorem delta_eq_erase_min_sub_sum_cubeSign {E : Type} [AddCommGroup E] 
   rw [cubeSign_eq_neg_cubeSign_erase_min s hs i hi, neg_smul]
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Unfold `Lop`. Rewrite using `[dif_pos ht]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Lop_apply_of_min_eq (f : ι → V →+ V) (h : ι → ι → V →+ K) (v : V)
     (y : Finset ι → ExteriorAlgebra K V) (t : Finset ι) (m0 : ι) (ht : t.Nonempty) (hm : t.min' ht = m0) :
@@ -212,7 +208,7 @@ private theorem Lop_apply_of_min_eq (f : ι → V →+ V) (h : ι → ι → V �
   rw [dif_pos ht]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_erase_of_mem hi]`. Take `⟨k, hk⟩ : ∃ k, t.card = k + 1` from `⟨t.card - 1, by have := Finset.card_pos.mpr ⟨i, hi⟩; omega⟩`. Rewrite using `[hk, Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem neg_one_pow_card_erase_of_mem (t : Finset ι) (i : ι) (hi : i ∈ t) :
     (-1 : ℤ) ^ (t.erase i).card = -(-1) ^ t.card := by
@@ -222,39 +218,37 @@ private theorem neg_one_pow_card_erase_of_mem (t : Finset ι) (i : ι) (hi : i �
   ring
 
 /- English proof (translation)
-Establish `hys : ∀ s : Finset ι, d (y s) = -((-1 : ℤ) ^ s.card • delta y s)`. Introduce `s`. Establish `e0` using `congrFun hy s`. Simplify using `only [Dtot, Pi.zero_apply] at e0`. Establish `e2 : (-1 : ℤ) ^ s.card • d (y s) = -delta y s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `e0`. Establish `e1 : ((-1 : ℤ) ^ s.card * (-1) ^ s.card) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `dsm : ∀ (k : K) (x : ExteriorAlgebra K V), d (k • x) = d (algebraMap K _ k) * x + k • d x`. Introduce `k x`. Rewrite using `[Algebra.smul_def, hd.mul, AlgHom.commutes, ← Algebra.smul_def]`. Establish `dω : ∀ (i : ι) (x : ExteriorAlgebra K V), d (ExteriorAlgebra.ι K (f i v) * x) = -(ExteriorAlgebra.ι K (f i v) * d x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i x`. Rewrite using `[hd.mul, hD.closed, zero_mul, zero_add]`. Rewrite using `[show CliffordAlgebra.involute (ExteriorAlgebra.ι K (f i v)) = -ExteriorAlgebra.ι K (f i v) from CliffordAlgebra.involute_ι _, neg_mul]`. Establish `hε : ∀ (n : ℕ) (x : ExteriorAlgebra K V), (-1 : ℤ) ^ n • ((-1 : ℤ) ^ n • x) = x`. Introduce `n x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_smul, ← mul_pow]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `s`. Simplify using `only [Dtot, Pi.zero_apply]`. Distinguish the cases in `hs : s.Nonempty`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `swap`. Rewrite using `[Finset.not_nonempty_iff_eq_empty.mp hs]`. Simplify using `[delta, Lop]`. Rewrite using `[delta_eq_erase_min_sub_sum_cubeSign _ s hs]`. Establish `hdy` using `delta_eq_erase_min_sub_sum_cubeSign y s hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := s.min' hs`. Use `set s' := s.erase m`. Establish `hms : m ∈ s` using `s.min'_mem hs`. Establish `hLs` using `Lop_apply_of_min_eq f h v y s m hs rfl`. Establish `hLi : ∀ i ∈ s', Lop f h v y (s.erase i) = -((-1 : ℤ) ^ s.card • (ExteriorAlgebra.ι K (f m v) * y (s.erase i))) + (if h2 : (s'.erase i).Nonempty then h m ((s'.erase i).min' h2) v • y (s'.erase i) else 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hne : i ≠ m` using `Finset.ne_of_mem_erase hi`. Establish `his : i ∈ s` using `Finset.mem_of_mem_erase hi`. Establish `hmi : m ∈ s.erase i` using `Finset.mem_erase.mpr ⟨hne.symm, hms⟩`. Establish `hmin : (s.erase i).min' ⟨m, hmi⟩ = m` using `le_antisymm ((s.erase i).min'_le m hmi) (Finset.le_min' _ _ _ (fun z hz => s.min'_le z (Finset.mem_of_mem_erase hz)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Lop_apply_of_min_eq f h v y (s.erase i) m ⟨m, hmi⟩ hmin, neg_one_pow_card_erase_of_mem s i his, neg_smul, Finset.erase_right_comm]`. Establish `hsum : ∑ i ∈ s', GlobalTheory.cubeSign s' i • Lop f h v y (s.erase i) = -((-1 : ℤ) ^ s.card • (ExteriorAlgebra.ι K (f m v) * ∑ i ∈ s', GlobalTheory.cubeSign s' i • y (s.erase i))) + ∑ i ∈ s', GlobalTheory.cubeSign s' i • (if h2 : (s'.erase i).Nonempty then h m ((s'.erase i).min' …`. Rewrite using `[Finset.mul_sum, Finset.smul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hLi i hi, smul_add, smul_neg, mul_smul_comm, smul_comm (GlobalTheory.cubeSign s' i)]`. Establish `hX : ∑ i ∈ s', GlobalTheory.cubeSign s' i • y (s.erase i) = y s' - delta y s`. Rewrite using `[hdy]`. Normalize the expressions using the abelian group laws. Establish `hLs2 : Lop f h v y s = (-1 : ℤ) ^ s.card • (ExteriorAlgebra.ι K (f m v) * y s) + (if h2 : s'.Nonempty then h m (s'.min' h2) v • y s' else 0)` using `hLs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsum, hLs2, hX, map_add, map_zsmul, dω, hys s]`. Distinguish the cases in `h2 : s'.Nonempty`. Use `set n := s'.min' h2 with hn_eq`. Establish `hns : n ∈ s'` using `s'.min'_mem h2`. Establish `hLs' : Lop f h v y s' = (-1 : ℤ) ^ s'.card • (ExteriorAlgebra.ι K (f n v) * y s') + (if h3 : (s'.erase n).Nonempty then h n ((s'.erase n).min' h3) v • y (s'.erase n) else 0)` using `Lop_apply_of_min_eq f h v y s' n h2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (-1 : ℤ) ^ s'.card = -(-1) ^ s.card` using `neg_one_pow_card_erase_of_mem s m hms`. Establish `hSh : ∑ i ∈ s', GlobalTheory.cubeSign s' i • (if h3 : (s'.erase i).Nonempty then h m ((s'.erase i).min' h3) v • y (s'.erase i) else 0) = (if h3 : (s'.erase n).Nonempty then h n ((s'.erase n).min' h3) v • y (s'.erase n) else 0) + h m n v • delta y s'`. Rewrite using `[← sub_eq_iff_eq_add]`. Unfold `delta`. Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib, Finset.sum_eq_single n]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[show GlobalTheory.cubeSign s' n = 1 from cubeSign_min_eq_one s' h2]`. Simplify using `only [one_smul]`. Distinguish the cases in `h3 : (s'.erase n).Nonempty`. Rewrite using `[dif_pos h3, dif_pos h3, ← sub_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hD.cocycle m n ((s'.erase n).min' h3) v]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg h3, dif_neg h3, Finset.not_nonempty_iff_eq_empty.mp h3, hy0]`. Simplify using the standard rewrite rules. Introduce `b hb hbn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnb : n ∈ s'.erase b` using `Finset.mem_erase.mpr ⟨fun e => hbn e.symm, hns⟩`. Establish `hmin : (s'.erase b).min' ⟨n, hnb⟩ = n` using `le_antisymm ((s'.erase b).min'_le n hnb) (Finset.le_min' _ _ _ (fun z hz => s'.min'_le z (Finset.mem_of_mem_erase hz)))`. Rewrite using `[dif_pos ⟨n, hnb⟩, hmin, smul_comm (h m n v) (GlobalTheory.cubeSign s' b), sub_self]`. Introduce `hn`. Conclude with `absurd hns hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ x : ExteriorAlgebra K V, h m n v • ((-1 : ℤ) ^ s.card • x) = (-1 : ℤ) ^ s.card • (h m n v • x)` using `fun x => smul_comm _ _ _`. Rewrite using `[dif_pos h2, ← hn_eq, hSh, hLs', dsm, hD.dh, hys s', hc]`. Simplify using `only [neg_smul, smul_neg, neg_neg, mul_neg, mul_sub, sub_mul, smul_add, smul_sub, mul_smul_comm, hε, hcomm]`. Normalize the expressions using the abelian group laws. Establish `hs'e : s' = ∅` using `Finset.not_nonempty_iff_eq_empty.mp h2`.
-
-Establish `hdy0 : delta y s = 0`. Rewrite using `[hdy, hs'e]`. Simplify using `[hy0]`. Rewrite using `[dif_neg h2, hdy0, hs'e]`. Simplify using `[Lop, hy0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Dtot_Lop_eq_zero_of_Dtot_eq_zero_of_empty_eq_zero (p : ℕ) (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (f : ι → V →+ V)
     (h : ι → ι → V →+ K) (hd : IsOddDer d) (hD : IsDatum p d f h) (v : V)
@@ -370,9 +364,9 @@ private theorem Dtot_Lop_eq_zero_of_Dtot_eq_zero_of_empty_eq_zero (p : ℕ) (d :
       simp [Lop, hy0]
 
 /- English proof (translation)
-Proceed by induction on `vs with`. Consider the case `nil => exact ⟨dtot_oneC d hd, oneC_empty (ι := ι)⟩`. Consider the case `cons v vs ih`. Take `⟨h1, h2⟩` from `ih`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Dtot_Lop_eq_zero_of_Dtot_eq_zero_of_empty_eq_zero p d f h hd hD v _ h1 h2`. Simplify using `[prodL, Lop]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prodL_closed (p : ℕ) (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (f : ι → V →+ V)
     (h : ι → ι → V →+ K) (hd : IsOddDer d) (hD : IsDatum p d f h) (vs : List V) :
@@ -386,11 +380,11 @@ theorem prodL_closed (p : ℕ) (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V
     · simp [prodL, Lop]
 
 /- English proof (translation)
-Establish `hp` using `fun vs => prodL_closed p d f h hd hD vs`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `dtotHom d (alt f h a v) = 0`. Unfold `alt`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[map_zsmul]`. Express the relevant statement in the definitionally equal form `_ • Dtot d _ = 0`. Rewrite using `[(hp _).1, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [alt, Finset.sum_apply, Pi.smul_apply, (hp _).2, smul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem alt_closed (p : ℕ) (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (f : ι → V →+ V)
     (h : ι → ι → V →+ K) (hd : IsOddDer d) (hD : IsDatum p d f h) (a : ℕ) (v : Fin a → V) :
@@ -410,7 +404,7 @@ theorem alt_closed (p : ℕ) (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) 
 end GlobalTheory.DI.AltClosed
 
 /- English proof (translation)
-Introduce `K _ V _ _ ι _ p d f h hd hD`. Conclude with `⟨fun vs => AltClosed.prodL_closed p d f h hd hD vs, fun a v => AltClosed.alt_closed p d f h hd hD a v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.DI.prodL_alt_closed : ∀ {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V] {ι : Type} [LinearOrder ι] (p : ℕ) (d : ExteriorAlgebra K V →+ ExteriorAlgebra K V) (f : ι → V →+ V) (h : ι → ι → V →+ K), IsOddDer d → IsDatum p d f h → (∀ vs : List V, Dtot d (prodL f h vs) = 0 ∧ prodL f h vs ∅ = 0) ∧ ∀ (a : ℕ) (v : Fin a → V), Dtot d (alt f h a v) = 0 ∧ alt f h a v ∅ = 0 := by
   intro K _ V _ _ ι _ p d f h hd hD

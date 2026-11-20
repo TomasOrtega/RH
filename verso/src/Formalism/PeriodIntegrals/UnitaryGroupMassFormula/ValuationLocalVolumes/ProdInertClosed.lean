@@ -5,11 +5,11 @@ noncomputable section
 namespace PI.OmVe
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ a ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `ha`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le ha`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Rewrite using `[ih (by omega), show a + 1 + m - a + 1 = m + 1 + 1 by omega, show a + 1 + m - (a + 1) + 1 = m + 1 by omega, ← Finset.insert_Icc_add_one_left_eq_Icc (by omega : m + 1 ≤ a + 1 + m), Finset.prod_insert (by simp), mul_add_one, zpow_neg, zpow_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : x ^ (a + 1 + m) = x ^ a * x ^ (m + 1)`. Rewrite using `[← pow_add]`. Put the polynomial expressions in normal form. Rewrite using `[pow_add x ((a + 1 + m) * a) (a + 1 + m), hpow]`. Establish `hw : x ^ (m + 1) ≠ 0` using `pow_ne_zero _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -35,13 +35,13 @@ theorem prodSplit_closed (x : ℝ) (hx : x ≠ 0) (M : ℕ) : ∀ a, a ≤ M →
     field_simp
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ a ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `ha`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le ha`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Rewrite using `[ih (by omega), show a + 1 + m - a + 1 = m + 1 + 1 by omega, show a + 1 + m - (a + 1) + 1 = m + 1 by omega, ← Finset.insert_Icc_add_one_left_eq_Icc (by omega : m + 1 ≤ a + 1 + m), Finset.prod_insert (by simp), zpow_neg, zpow_natCast, show a + 1 + m - a = m + 1 by omega, show 2 * …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1 : 2 * (a + 1 + m) * a - a ^ 2 = a ^ 2 + 2 * a + 2 * a * m`. Rewrite using `[Nat.sub_eq_iff_eq_add (by nlinarith)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : 2 * (a + 1 + m) * (a + 1) - (a + 1) ^ 2 = a ^ 2 + 2 * a + 2 * a * m + (2 * m + 1)`. Rewrite using `[Nat.sub_eq_iff_eq_add (by nlinarith)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, pow_add]`. Establish `hw : x ^ (m + 1) ≠ 0` using `pow_ne_zero _ hx`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prodInert_closed (x : ℝ) (hx : x ≠ 0) (M : ℕ) : ∀ a, a ≤ M →
     ∏ j : Fin a, (x ^ (2 * (M - j) - 1) - (-1) ^ (M - j) * x ^ (M - j - 1)) =

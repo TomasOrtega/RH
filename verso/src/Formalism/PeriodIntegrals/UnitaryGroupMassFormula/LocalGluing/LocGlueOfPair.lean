@@ -32,11 +32,11 @@ def Pair : Prop :=
 
 set_option linter.deprecated false in
 /- English proof (translation)
-Unfold `PI.LocHerm.LocGlue PI.LocHerm.AllLoc`. Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H abelian₂ hLam U hU`. Use `⟨fun u hu => hP M hM V H abelian₂ hLam U (H.perp U) hU ?_ u hu, fun u hu => hP M hM V H abelian₂ hLam (H.perp U) U hU.symm ?_ u hu⟩` and prove the remaining obligations. Introduce `a ha b hb`. Establish `hb' : ∀ x ∈ U, H.h b x = 0` using `hb`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : H.h b a = 0` using `hb' a ha`. Conclude with `⟨by rw [H.h_herm b a, h1, map_zero], h1⟩`. Introduce `a ha b hb`. Establish `ha' : ∀ x ∈ U, H.h a x = 0` using `ha`. Establish `h1 : H.h a b = 0` using `ha' b hb`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h1, by rw [H.h_herm a b, h1, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem locGlue_of_pair (hP : Pair) : PI.LocHerm.LocGlue := by
   unfold PI.LocHerm.LocGlue PI.LocHerm.AllLoc

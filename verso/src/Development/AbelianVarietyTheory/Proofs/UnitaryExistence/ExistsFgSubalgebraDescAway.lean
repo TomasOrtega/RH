@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsAwaySubalg
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AwaySubalgebraEmbedding.exists_away_subalgebra_embedding`. Consider the case `exact _root_.GlobalTheory.AwaySubalgebraEmbedding.exists_away_subalgebra_embedding`. Consider the case `(apply _root_.GlobalTheory.AwaySubalgebraEmbedding.exists_away_subalgebra_embedding <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AwaySubalgebraEmbedding.exists_away_subalgebra_embedding <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AwaySubalgebraEmbedding.exists_away_subalgebra_embedding <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AwaySubalgebraEmbedding.exists_away_subalgebra_embedding ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_awayMap_subalgebra (K : Type) [Field K] (S : Type) [CommRing S] [Algebra K S]
     (S₁ : Subalgebra K S) (x : S) (hx : x ∈ S₁) :
@@ -23,17 +23,17 @@ theorem exists_awayMap_subalgebra (K : Type) [Field K] (S : Type) [CommRing S] [
   | (intros; exact _root_.GlobalTheory.AwaySubalgebraEmbedding.exists_away_subalgebra_embedding ..)
 
 /- English proof (translation)
-Introduce `K _ S _ _ S₀ hS₀ n h A _ _ hA a hspan`. Take `⟨c, hc⟩ : ∃ c : Fin n → S, ∑ i, c i * h i = 1` from `Ideal.mem_span_range_iff_exists_fun.1 (hspan ▸ Submodule.mem_top)`. Use `choose G hG using fun i => (hA i).out`. Use `choose m s hs using fun i (g : A i) => IsLocalization.Away.surj (h i) (a i g)`. Set `T : Finset S` to `Finset.univ.image h ∪ Finset.univ.image c ∪ Finset.univ.biUnion fun i => (G i).image (s i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S₁ : Subalgebra K S` to `S₀ ⊔ Algebra.adjoin K (T : Set S)`. Establish `hT : ∀ t ∈ T, t ∈ S₁` using `fun t ht => (le_sup_right : Algebra.adjoin K (T : Set S) ≤ S₁) (Algebra.subset_adjoin ht)`. Establish `hh : ∀ i, h i ∈ S₁` using `fun i => hT _ (by simp [T])`. Establish `hcm : ∀ i, c i ∈ S₁` using `fun i => hT _ (by simp [T])`. Establish `hsm : ∀ i, ∀ g ∈ G i, s i g ∈ S₁` using `fun i g hg => hT _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the second alternative.
 
-Simplify using `only [T, Finset.mem_union, Finset.mem_biUnion, Finset.mem_image]`. Conclude with `Or.inr ⟨i, Finset.mem_univ _, g, hg, rfl⟩)`. Use `⟨S₁, fun i => ⟨h i, hh i⟩, hS₀.sup ⟨T, rfl⟩, le_sup_left, fun _ => rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`. Use `Ideal.mem_span_range_iff_exists_fun.2 ⟨fun i => ⟨c i, hcm i⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hc`. Introduce `i`. Take `⟨κ, hκ, hinj, hr⟩` from `exists_awayMap_subalgebra K S S₁ (h i) (hh i)`. Establish `hmem : ∀ y : A i, a i y ∈ κ.range`. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⊤ : Subalgebra K (A i)) ≤ κ.range.comap (a i)`. Rewrite using `[← hG i, Algebra.adjoin_le_iff]`. Introduce `g hg`. Conclude with `hr _ (m i g) _ (hsm i g hg) (hs i g)`. Conclude with `this Algebra.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨κ, (AlgEquiv.ofInjective κ hinj).symm.toAlgHom.comp ((a i).codRestrict _ hmem), hκ, hinj, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Use `AlgEquiv.ofInjective_apply κ hinj ((AlgEquiv.ofInjective κ hinj).symm ⟨a i y, hmem y⟩)` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_fg_subalgebra_desc_away : ∀ (K : Type) [Field K] (S : Type) [CommRing S] [Algebra K S] (S₀ : Subalgebra K S), S₀.FG → ∀ (n : ℕ) (h : Fin n → S) (A : Fin n → Type) [∀ i, CommRing (A i)] [∀ i, Algebra K (A i)], (∀ i, Algebra.FiniteType K (A i)) → ∀ a : ∀ i, A i →ₐ[K] Localization.Away (h i), Ideal.span (Set.range h) = ⊤ → ∃ (S₁ : Subalgebra K S) (h₁ : Fin n → S₁), S₁.FG ∧ S₀ ≤ S₁ ∧ (∀ i, (h₁ i : S) = h i) ∧ Ideal.span (Set.range h₁) = ⊤ ∧ ∀ i, ∃ (κ : Localization.Away (h₁ i) →ₐ[K] Localization.Away (h i)) (a' : A i →ₐ[K] Localization.Away (h₁ i)), (∀ s : S₁, κ (algebraMap S₁ _ s) = algebraMap S _ (s : S)) ∧ Function.Injective κ ∧ κ.comp a' = a i := by
   classical

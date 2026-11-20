@@ -14,11 +14,11 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRest
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `hU : (S7.toM g)ᴴ * Jm ε * S7.toM g = Jm ε` using `g.2`. Establish `hs1 : ∀ a : Fin n, ‖(if ε a = true then (1 : ℂ) else -1)‖ = 1`. Introduce `a`. Apply the tactic sequence `split <;> simp`. Establish `h00` using `congrFun (congrFun hU ⟨0, hn⟩) ⟨0, hn⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `h00` using `[Matrix.mul_apply]`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at h00`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_star, hs1]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ j, ∑ k, ‖S7.toM g j k‖ ^ 2 := Finset.sum_le_sum fun j _ => Finset.single_le_sum (f := fun k => ‖S7.toM g j k‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ _)`. Use `_ = Formalism.REAL.hs (S7.toM g) := rfl`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem one_le_hs (hn : 0 < n) (g : S7.UJ ε) : 1 ≤ Formalism.REAL.hs (S7.toM g) := by
   have hU : (S7.toM g)ᴴ * Jm ε * S7.toM g = Jm ε := g.2
@@ -43,7 +43,7 @@ theorem one_le_hs (hn : 0 < n) (g : S7.UJ ε) : 1 ≤ Formalism.REAL.hs (S7.toM 
     _ = Formalism.REAL.hs (S7.toM g) := rfl
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.hs, Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hs_eq_re_trace_conjTranspose_mul' (X : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.hs X = (Matrix.trace (X * Xᴴ)).re := by
@@ -53,9 +53,9 @@ private theorem hs_eq_re_trace_conjTranspose_mul' (X : Matrix (Fin n) (Fin n) �
   rw [← Complex.ofReal_pow, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hk : S7.toM (k : S7.UJ ε) ∈ Kset ε` using `k.2`. Take `⟨hu, -⟩ : S7.toM (k : S7.UJ ε) ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ S7.toM (k : S7.UJ ε) * Jm ε = Jm ε * S7.toM (k : S7.UJ ε)` from `hk`. Establish `hUU : S7.toMK k * (S7.toMK k)ᴴ = 1`. Use `Matrix.mem_unitaryGroup_iff.mp hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hs_eq_re_trace_conjTranspose_mul', hs_eq_re_trace_conjTranspose_mul', Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (S7.toMK k), hUU, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_mul_K (X : Matrix (Fin n) (Fin n) ℂ) (k : S7.KG ε) : Formalism.REAL.hs (X * S7.toMK k) = Formalism.REAL.hs X := by
   have hk : S7.toM (k : S7.UJ ε) ∈ Kset ε := k.2
@@ -68,9 +68,7 @@ theorem hs_mul_K (X : Matrix (Fin n) (Fin n) ℂ) (k : S7.KG ε) : Formalism.REA
     ← Matrix.mul_assoc (S7.toMK k), hUU, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun t : ℝ => (t : ℂ) • A` using `by fun_prop`. Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℂ _`.
-
-Use `show Continuous fun t : ℝ => NormedSpace.exp ((t : ℂ) • A)`. Conclude with `NormedSpace.exp_continuous.comp h1`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_aT (A : Matrix (Fin n) (Fin n) ℂ) : Continuous (fun t : ℝ => aT A t) := by
   have h1 : Continuous fun t : ℝ => (t : ℂ) • A := by fun_prop

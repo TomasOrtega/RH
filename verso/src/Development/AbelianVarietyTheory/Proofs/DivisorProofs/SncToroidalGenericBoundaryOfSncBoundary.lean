@@ -11,13 +11,11 @@ noncomputable section
 namespace GlobalTheory.SncIso
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.mem_vanishingIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h x hxU hxZ hxs`. Rewrite `hxU` using `[← U.2.range_fromSpec]`. Take `⟨p, rfl⟩` from `hxU`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hp : p ∈ U.2.fromSpec ⁻¹ᵁ X.basicOpen s` using `hxs`. Rewrite `hp` using `[U.2.fromSpec_preimage_basicOpen]`. Conclude with `hp (h p hxZ)`. Introduce `h p hpZ`. Assume the negation of the conclusion as `hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hp : p ∈ U.2.fromSpec ⁻¹ᵁ X.basicOpen s`. Rewrite using `[U.2.fromSpec_preimage_basicOpen]`. Conclude with `hs`. Establish `hpU : U.2.fromSpec p ∈ (U.1 : Set X)`. Rewrite using `[← U.2.range_fromSpec]`.
-
-Conclude with `⟨p, rfl⟩`. Conclude with `h _ hpU hpZ hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_vanishingIdeal_ideal_iff {X : Scheme.{0}} (Z : Closeds X) (U : X.affineOpens) (s : Γ(X, U.1)) :
     s ∈ (Scheme.IdealSheafData.vanishingIdeal Z).ideal U ↔
@@ -39,11 +37,11 @@ theorem mem_vanishingIdeal_ideal_iff {X : Scheme.{0}} (Z : Closeds X) (U : X.aff
     exact h _ hpU hpZ hp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use `⟨?_, h2.trans (ringKrullDim_eq_of_ringEquiv e)⟩` and prove the remaining obligations. Establish `hr : Set.range (fun i => e (x i)) = e '' Set.range x`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hr, ← Ideal.map_span, h1]`. Use extensionality with `y`. Rewrite using `[Ideal.mem_map_of_equiv, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩ hu`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hz ((isUnit_map_iff e z).1 hu)`. Introduce `hy`. Use `⟨e.symm y, (IsLocalRing.mem_maximalIdeal _).2 fun hu => hy ?_, e.apply_symm_apply y⟩` and prove the remaining obligations. Simplify using `using (isUnit_map_iff e (e.symm y)).2 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rsp_ringEquiv {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S] (e : R ≃+* S)
     {n : ℕ} {x : Fin n → R} (h : ReciprocityTheory.AnForm.R.FinalTheorems.Rsp R n x) : ReciprocityTheory.AnForm.R.FinalTheorems.Rsp S n (fun i => e (x i)) := by
@@ -62,17 +60,17 @@ theorem rsp_ringEquiv {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [Is
     simpa using (isUnit_map_iff e (e.symm y)).2 hu
 
 /- English proof (translation)
-Introduce `a`. Take `⟨hreg, U, hU, n, g, J, hrsp, hid⟩` from `h (f a)`. Set `e : B.presheaf.stalk (f a) ≃+* A.presheaf.stalk a` to `(asIso (f.stalkMap a)).commRingCatIsoToRingEquiv`. Establish `he : ∀ t, e t = f.stalkMap a t` using `fun _ => rfl`. Set `U' : A.affineOpens` to `⟨f ⁻¹ᵁ U.1, U.2.preimage f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU' : a ∈ U'.1` using `hU`. Use `⟨IsRegularLocalRing.of_ringEquiv e, U', hU', n, fun i => f.app U.1 (g i), J, ?_, ?_⟩` and prove the remaining obligations. Establish `hg : ∀ i, A.presheaf.germ U'.1 a hU' (f.app U.1 (g i)) = e (B.presheaf.germ U.1 (f a) hU (g i))`. Introduce `i`. Rewrite using `[he, Scheme.Hom.germ_stalkMap_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hg]`. Conclude with `rsp_ringEquiv e hrsp`. Set `φ : Γ(B, U.1) ≃+* Γ(A, U'.1)` to `(asIso (f.app U.1)).commRingCatIsoToRingEquiv`. Establish `hφ : ∀ t, φ t = f.app U.1 t` using `fun _ => rfl`. Use extensionality with `t`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩ : ∃ s, φ s = t` from `φ.surjective t`. Establish `key : φ s ∈ (Scheme.IdealSheafData.vanishingIdeal Z').ideal U' ↔ s ∈ (Scheme.IdealSheafData.vanishingIdeal Z).ideal U`. Rewrite using `[mem_vanishingIdeal_ideal_iff, mem_vanishingIdeal_ideal_iff, hφ, ← Scheme.preimage_basicOpen]`. Prove the components needed by the constructor for the conclusion. Introduce `H b hbU hbZ hbs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a', rfl⟩ : ∃ a', f a' = b` from `⟨(inv f) b, by rw [← Scheme.Hom.comp_apply, IsIso.inv_hom_id]; rfl⟩`. Conclude with `H a' hbU ((hZ a').2 hbZ) hbs`. Introduce `H a' ha'U ha'Z ha's`. Conclude with `H (f a') ha'U ((hZ a').1 ha'Z) ha's`. Rewrite using `[key, hid, Ideal.mem_span_singleton, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hp : (∏ i ∈ J, f.app U.1 (g i)) = φ (∏ i ∈ J, g i)`. Rewrite using `[map_prod]`. Both sides reduce to the same expression. Rewrite using `[hp, map_dvd_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snc_vanishingIdeal_of_isIso {A B : Scheme.{0}} (f : A ⟶ B) [IsIso f] (Z : Closeds B) (Z' : Closeds A)
     (hZ : ∀ a : A, a ∈ Z' ↔ f a ∈ Z) (h : ReciprocityTheory.AnForm.R.FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal Z)) :
@@ -114,11 +112,11 @@ namespace GlobalTheory.VarFlag
 open GlobalTheory.Toroidal (gen genι genBd genBdIdeal mem_genBd)
 
 /- English proof (translation)
-Introduce `h`. Use `GlobalTheory.SncIso.snc_vanishingIdeal_of_isIso (genι Y) (GlobalTheory.LogKS.interior Y).compl (genBd Y) (fun a => ?_) h` and prove the remaining obligations. Establish `hinj : Function.Injective (genι Y)` using `(genι Y).isOpenEmbedding.injective`. Rewrite using `[mem_genBd]`. Use `show a ∉ Set.range Y.jQ ↔ genι Y a ∉ Set.range Y.j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `not_congr ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, by rw [Model.j, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨x, hx⟩`. Use `⟨x, hinj ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx, Model.j, Scheme.Hom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem snc_genBdIdeal_of_snc_boundary {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} :

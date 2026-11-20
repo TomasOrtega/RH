@@ -20,13 +20,13 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 omit [Fintype K] in
 
 /- English proof (translation)
-The claim follows from `(GroundTheory.Heights₂.Heights.Bridge.isMultiHomogIdeal_iff R.D).mp R.homog`.
+A detailed English derivation is pending.
 -/
 theorem homogD : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal R.D :=
   (GroundTheory.Heights₂.Heights.Bridge.isMultiHomogIdeal_iff R.D).mp R.homog
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => ?_, ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul (homogD R) c z' hz'.2⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz'.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_D_of_sameOrbit {z z' : (Σ k, ι k) → ℂ} (h : ReciprocityTheory.AnForm.R.SameOrbit z z')
     (hz' : z' ∈ ReciprocityTheory.AnForm.R.conePts R.D) : z ∈ ReciprocityTheory.AnForm.R.conePts R.D := by
@@ -38,7 +38,7 @@ theorem mem_D_of_sameOrbit {z z' : (Σ k, ι k) → ℂ} (h : ReciprocityTheory.
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hc q.1), one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : ReciprocityTheory.AnForm.R.SameOrbit z z') :
     ReciprocityTheory.AnForm.R.SameOrbit z' z := by
@@ -48,7 +48,7 @@ theorem sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : ReciprocityTheory.AnFo
   rw [← mul_assoc, inv_mul_cancel₀ (hc q.1), one_mul]
 
 /- English proof (translation)
-Establish `h` using `GroundTheory.Heights₂.Heights.Inter.res_compat R x y hy (R.mem_src_idx y)`. Conclude with `⟨fun hp => mem_D_of_sameOrbit R h hp, fun hl => mem_D_of_sameOrbit R (sameOrbit_symm h) hl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pt_mem_D_iff {x y : R.R.M} (hy : y ∈ R.R.src (R.idx x)) :
     R.pt y ∈ ReciprocityTheory.AnForm.R.conePts R.D ↔ R.liftAt x y ∈ ReciprocityTheory.AnForm.R.conePts R.D := by
@@ -56,7 +56,7 @@ theorem pt_mem_D_iff {x y : R.R.M} (hy : y ∈ R.R.src (R.idx x)) :
   exact ⟨fun hp => mem_D_of_sameOrbit R h hp, fun hl => mem_D_of_sameOrbit R (sameOrbit_symm h) hl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, hyc⟩` from `GroundTheory.Heights₂.Heights.Inter.res_compat R y x (R.mem_src_idx y) hy`. Use `⟨∏ k, c k, Finset.prod_ne_zero_iff.mpr fun k _ => hc k, ?_⟩` and prove the remaining obligations. Rewrite using `[show R.pt y = R.liftAt y y from rfl, hyc, segre_smul, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_pt_eq {x y : R.R.M} (hy : y ∈ R.R.src (R.idx x))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
@@ -66,7 +66,7 @@ theorem psi_pt_eq {x y : R.R.M} (hy : y ∈ R.R.src (R.idx x))
   rw [show R.pt y = R.liftAt y y from rfl, hyc, segre_smul, map_smul]
 
 /- English proof (translation)
-Take `⟨μ, hμ, hμeq⟩` from `psi_pt_eq R hy Ψ`. Use function extensionality and compare the values at `i`. Simplify using `only [resProj, hμeq, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_div_mul_left _ _ hμ`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resProj_eq_local (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {x y : R.R.M}
     (hy : y ∈ R.R.src (R.idx x)) :
@@ -77,9 +77,7 @@ theorem resProj_eq_local (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e 
   exact mul_div_mul_left _ _ hμ
 
 /- English proof (translation)
-Establish `hl` using `R.analyticAt_liftAt_pi x j hu`. Establish `hs : AnalyticAt ℂ (fun v => segre (R.liftAt x ((R.atlas.chart j).symm v))) u`. Use `analyticAt_pi_iff.mpr fun i => ?_` and prove the remaining obligations. Simplify using `only [segre]`. Conclude with `Finset.analyticAt_fun_prod _ fun k _ => analyticAt_pi_iff.mp hl _`.
-
-Conclude with `(LinearMap.toContinuousLinearMap Ψ).analyticAt _ |>.comp hs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_segre_liftAt (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (x : R.R.M)
     (j : Fin R.atlas.n) {u : Fin e → ℂ}
@@ -93,9 +91,9 @@ theorem analyticAt_segre_liftAt (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (
   exact (LinearMap.toContinuousLinearMap Ψ).analyticAt _ |>.comp hs
 
 /- English proof (translation)
-Use `set u := R.atlas.chart j x`. Establish `hsu : (R.atlas.chart j).symm u = x` using `(R.atlas.chart j).left_inv hj`. Establish `hu : u ∈ (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' R.R.src (R.idx x)` using `⟨(R.atlas.chart j).map_source hj, by rw [Set.mem_preimage, hsu]; exact R.mem_src_idx x⟩`. Establish `hH` using `analyticAt_segre_liftAt R Ψ x j hu`. Establish `hH0 : AnalyticAt ℂ (fun v => Ψ (segre (R.liftAt x ((R.atlas.chart j).symm v))) 0) u` using `analyticAt_pi_iff.mp hH 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Ψ (segre (R.liftAt x ((R.atlas.chart j).symm u))) 0 ≠ 0` using `by rw [hsu]; exact h0`. Establish `hF : AnalyticAt ℂ (fun v => fun i : Fin e => Ψ (segre (R.liftAt x ((R.atlas.chart j).symm v))) i.succ / Ψ (segre (R.liftAt x ((R.atlas.chart j).symm v))) 0) u` using `analyticAt_pi_iff.mpr fun i => (analyticAt_pi_iff.mp hH i.succ).div hH0 hne`. Use `hF.congr ?_` and prove the remaining obligations. Use `filter_upwards [((R.atlas.chart j).isOpen_inter_preimage_symm (R.R.isOpen_alt_bis (R.idx x))).mem_nhds hu, hH0.continuousAt.eventually_ne hne] with v hv hv0`. Conclude with `(resProj_eq_local R Ψ hv.2).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_resProj (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (x : R.R.M)
     (j : Fin R.atlas.n) (hj : x ∈ (R.atlas.chart j).source) (h0 : Ψ (segre (R.pt x)) 0 ≠ 0) :
@@ -118,11 +116,9 @@ theorem analyticAt_resProj (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (
   exact (resProj_eq_local R Ψ hv.2).symm
 
 /- English proof (translation)
-Use `set u := R.atlas.chart j x`. Establish `hsu : (R.atlas.chart j).symm u = x` using `(R.atlas.chart j).left_inv hj`. Use `set T := R.atlas.chart k ∘ (R.atlas.chart j).symm with hTdef`. Establish `huk : u ∈ (R.atlas.chart j).target ∩ (R.atlas.chart j).symm ⁻¹' (R.atlas.chart k).source` using `⟨(R.atlas.chart j).map_source hj, by rw [Set.mem_preimage, hsu]; exact hk⟩`. Establish `hT : AnalyticAt ℂ T u` using `R.atlas.holo j k u huk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTu : T u = R.atlas.chart k x` using `by simp only [hTdef, Function.comp_apply, hsu]`. Establish `hQk` using `analyticAt_resProj R Ψ x k hk h0`. Establish `heq : resProj R Ψ ∘ (R.atlas.chart j).symm =ᶠ[𝓝 u] (resProj R Ψ ∘ (R.atlas.chart k).symm) ∘ T` using `by filter_upwards [((R.atlas.chart j).isOpen_inter_preimage_symm (R.atlas.chart k).open_source).mem_nhds huk] with v hv`. Simplify using `only [hTdef, Function.comp_apply, (R.atlas.chart k).left_inv hv.2]`. Rewrite using `[heq.fderiv_eq, fderiv_comp u (by rw [hTu]; exact hQk.differentiableAt) hT.differentiableAt, hTu]`.
-
-Conclude with `LinearMap.det_comp _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_resProj_chart (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {x : R.R.M}
     {j k : Fin R.atlas.n} (hj : x ∈ (R.atlas.chart j).source) (hk : x ∈ (R.atlas.chart k).source)
@@ -151,7 +147,7 @@ theorem det_resProj_chart (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz.1, fun _ hf => hz.2 _ (hW.1.2 (Ideal.mem_map_of_mem _ hf))⟩`.
+Supply the required witnesses or components.
 -/
 theorem mcPts_of_conePts {P : Ideal (MRing ι)}
     (hW : W ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes) {z : (Σ k, ι k) → ℂ}
@@ -159,7 +155,7 @@ theorem mcPts_of_conePts {P : Ideal (MRing ι)}
   ⟨hz.1, fun _ hf => hz.2 _ (hW.1.2 (Ideal.mem_map_of_mem _ hf))⟩
 
 /- English proof (translation)
-The claim follows from `mcPts_of_conePts hW (GroundTheory.Heights₂.Heights.Inter.res_mem R x (R.mem_src_idx x))`.
+A detailed English derivation is pending.
 -/
 theorem pt_mem_mcPts {P : Ideal (MRing ι)}
     (hW : W ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes) (x : R.R.M) :
@@ -170,13 +166,13 @@ def resW (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (
   (Ψ (segre (R.pt x)) 0)⁻¹ • segre (R.pt x)
 
 /- English proof (translation)
-Take `⟨k0⟩` from `hK`. Set `c : K → ℂ` to `Function.update (fun _ => (1 : ℂ)) k0 (Ψ (segre (R.pt x)) 0)⁻¹`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k`. Distinguish the cases in `hk : k = k0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `[c, h0]`. Simplify using `[c, Function.update_of_ne hk]`. Establish `hpc : ∏ k, c k = (Ψ (segre (R.pt x)) 0)⁻¹`. Simplify using `[c, Finset.prod_update_of_mem (Finset.mem_univ k0)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun p => c p.1 * R.pt x p, mcPts_smul hPh c hc (pt_mem_mcPts R hW x), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul, hpc]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[resW, h0]`. Simplify using `only [resW, map_smul, Pi.smul_apply, smul_eq_mul, Fin.cons_succ, resProj]`. Rewrite using `[div_eq_inv_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem resW_mem_fibre {P : Ideal (MRing ι)}
     (hW : W ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes) (hK : Nonempty K)
@@ -200,9 +196,9 @@ theorem resW_mem_fibre {P : Ideal (MRing ι)}
       rw [div_eq_inv_mul]
 
 /- English proof (translation)
-Introduce `x hx x' hx' hw`. Use `R.R.inj (R.idx x) (R.idx x') x (R.mem_src_idx x) x' (R.mem_src_idx x') hx.1 ?_` and prove the remaining obligations. Establish `hseg : segre (R.pt x) = (Ψ (segre (R.pt x)) 0 * (Ψ (segre (R.pt x')) 0)⁻¹) • segre (R.pt x')`. Use `congrArg (fun v => Ψ (segre (R.pt x)) 0 • v) hw` as an intermediate fact. Simplify using `only [resW, smul_smul, mul_inv_cancel₀ hx.2, one_smul] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Take `⟨c, hc, h⟩` from `sameOrbit_of_segre (GroundTheory.Heights₂.Heights.Inter.res_mem R x' (R.mem_src_idx x')).1 (Ψ (segre (R.pt x)) 0 * (Ψ (segre (R.pt x')) 0)⁻¹) (by simp [hx.2, hx'.2]) hseg`. Conclude with `⟨c, hc, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resW_injOn (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
     Set.InjOn (resW R Ψ) {x | R.pt x ∉ ReciprocityTheory.AnForm.R.conePts R.D ∧ Ψ (segre (R.pt x)) 0 ≠ 0} := by
@@ -218,7 +214,7 @@ theorem resW_injOn (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) �
   exact ⟨c, hc, h⟩
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_image (f := resW R Ψ) ((fibreFinite K ι P e Ψ hP hΨ y).subset ?_) ((resW_injOn R Ψ).mono fun x hx => hx.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `resW_mem_fibre R hW hP.1 hP.2.1.2.1 Ψ hx.2.2` as an intermediate fact. Rewrite `this` using `[show resProj R Ψ x = y from hx.1]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem resFib_finite {P : Ideal (MRing ι)} (hP : IsArithVar P (e + 1))
     (hW : W ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes)

@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 namespace GlobalTheory.SmoothLift
 
 /- English proof (translation)
-Use `haveI := D.smooth`. Establish `h` using `HasRingHomProperty.appLE @Smooth D.s ‹_› ⟨⊤, isAffineOpen_top _⟩ U le_top`. Establish `h' : RingHom.Smooth ((D.s.appLE ⊤ U.1 le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of D.R)).inv.hom)` using `RingHom.Smooth.comp (RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of D.R)).symm.commRingCatIsoToRingEquiv.bijective) h`. Conclude with `RingHom.smooth_algebraMap.mp h'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Data.sec_smooth (D : Data) (U : D.X.affineOpens) : Algebra.Smooth D.R (Sec D.s U.1) := by
   haveI := D.smooth
@@ -21,7 +21,7 @@ theorem Data.sec_smooth (D : Data) (U : D.X.affineOpens) : Algebra.Smooth D.R (S
   exact RingHom.smooth_algebraMap.mp h'
 
 /- English proof (translation)
-Take `⟨s₀, hpb, -⟩` from `D.red`. Use `haveI : IsClosedImmersion (spMap (Ideal.Quotient.mk D.I)) := IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `haveI : IsClosedImmersion D.i := MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb.flip ‹_›`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Data.mono_i (D : Data) : Mono D.i := by
   obtain ⟨s₀, hpb, -⟩ := D.red
@@ -31,7 +31,7 @@ theorem Data.mono_i (D : Data) : Mono D.i := by
   infer_instance
 
 /- English proof (translation)
-Use `haveI := D.sep`. Use `haveI : IsSeparated (Limits.terminal.from D.X) := by`. Rewrite using `[← Limits.terminal.comp_from D.s]`. Use `infer_instance`. Conclude with `hU.inf hV`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Data.affine_inf (D : Data) {U V : D.X.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) :
     IsAffineOpen (U ⊓ V) := by
@@ -41,7 +41,7 @@ theorem Data.affine_inf (D : Data) {U V : D.X.Opens} (hU : IsAffineOpen U) (hV :
   exact hU.inf hV
 
 /- English proof (translation)
-The claim follows from `fun D ↦ ⟨D.sec_smooth, D.mono_i, fun _ _ hU hV ↦ D.affine_inf hU hV⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Data.smooth_mono_inf : ∀ D : Data, (∀ U : D.X.affineOpens, Algebra.Smooth D.R (Sec D.s U.1)) ∧ Mono D.i ∧
     ∀ U V : D.X.Opens, IsAffineOpen U → IsAffineOpen V → IsAffineOpen (U ⊓ V) :=

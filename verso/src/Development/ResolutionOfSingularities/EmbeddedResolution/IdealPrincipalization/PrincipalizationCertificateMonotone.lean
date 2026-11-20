@@ -8,15 +8,13 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Use `PrincipalizationCertificate.rec (motive_1 := fun W p I m Mem Z _ => ∀ Mem' : Set ↥W, Mem ⊆ Mem' → PrincipalizationCertificate W p I m Mem' Z) (motive_2 := fun W p N μ Mem Z _ => ∀ Mem' : Set ↥W, Mem ⊆ Mem' → OrderCertificate W p N μ Mem' Z) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ h` and prove the remaining obligations. Introduce `W p I m Mem Z hmem Mem' hsub`. Conclude with `PrincipalizationCertificate.memory (Set.Subset.trans hmem hsub)`. Introduce `W p I m Mem Z hm Mem' _`. Conclude with `PrincipalizationCertificate.large hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W p I m Mem Z M N μ hI hM hmu hZ _ ih Mem' hsub`. Conclude with `PrincipalizationCertificate.toOrder M N μ hI (Set.Subset.trans hM hsub) hmu hZ (ih Mem' hsub)`. Introduce `W p I m Mem Z U hU _ ih Mem' hsub`. Use `PrincipalizationCertificate.localize U hU ?_` and prove the remaining obligations. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ih z hz ((U z hz).ι.base ⁻¹' Mem') (Set.preimage_mono hsub)`. Introduce `W p N μ Mem Z hmem Mem' hsub`. Conclude with `OrderCertificate.memory (Set.Subset.trans hmem hsub)`. Introduce `W p N μ Mem Z hmu Mem' _`. Conclude with `OrderCertificate.large hmu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W p N μ Mem Z U hU _ ih Mem' hsub`. Use `OrderCertificate.localize U hU ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `ih z hz ((U z hz).ι.base ⁻¹' Mem') (Set.preimage_mono hsub)`. Introduce `W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc _ ih Mem' hsub`.
-
-Use `OrderCertificate.descend U hU H hH hNsubH hZH J hJnone hJcomp ?_ ?_` and prove the remaining obligations. Introduce `z hz Jz hJz x hx`. Conclude with `hJloc z hz Jz hJz x fun hmem => hx (hsub hmem)`. Introduce `z hz Jz hJz`. Conclude with `ih z hz Jz hJz (((H z hz).subschemeι ≫ (U z hz).ι).base ⁻¹' Mem') (Set.preimage_mono hsub)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem forall_principalizationCertificate_of_subset {k : Type u} [Field k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -55,7 +53,7 @@ private theorem forall_principalizationCertificate_of_subset {k : Type u} [Field
         (Set.preimage_mono hsub)
 
 /- English proof (translation)
-The claim follows from `forall_principalizationCertificate_of_subset h Mem' hsub`.
+A detailed English derivation is pending.
 -/
 theorem principalizationCertificate_mono_of_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
@@ -65,15 +63,11 @@ theorem principalizationCertificate_mono_of_subset {k : Type u} [Field k] {W : S
   forall_principalizationCertificate_of_subset h Mem' hsub
 
 /- English proof (translation)
-Use `@OrderCertificate.rec k ‹Field k› (fun W p I m Mem Z _ => ∀ Mem' : Set ↥W, Mem ⊆ Mem' → PrincipalizationCertificate W p I m Mem' Z) (fun W p N μ Mem Z _ => ∀ Mem' : Set ↥W, Mem ⊆ Mem' → OrderCertificate W p N μ Mem' Z) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ W p N μ Mem Z h` and prove the remaining obligations. Introduce `W p I m Mem Z hmem Mem' hs`. Conclude with `PrincipalizationCertificate.memory (Set.Subset.trans hmem hs)`. Introduce `W p I m Mem Z hm Mem' _`. Conclude with `PrincipalizationCertificate.large hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W p I m Mem Z M N μ hI hM hmu hZ _ ih Mem' hs`. Conclude with `PrincipalizationCertificate.toOrder M N μ hI (Set.Subset.trans hM hs) hmu hZ (ih Mem' hs)`. Introduce `W p I m Mem Z U hU _ ih Mem' hs`. Conclude with `PrincipalizationCertificate.localize U hU fun z hz => ih z hz ((U z hz).ι.base ⁻¹' Mem') (Set.preimage_mono hs)`. Introduce `W p N μ Mem Z hmem Mem' hs`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `OrderCertificate.memory (Set.Subset.trans hmem hs)`. Introduce `W p N μ Mem Z hmu Mem' _`. Conclude with `OrderCertificate.large hmu`. Introduce `W p N μ Mem Z U hU _ ih Mem' hs`. Conclude with `OrderCertificate.localize U hU fun z hz => ih z hz ((U z hz).ι.base ⁻¹' Mem') (Set.preimage_mono hs)`.
-
-Introduce `W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc _ ih Mem' hs`. Use `OrderCertificate.descend U hU H hH hNsubH hZH J hJnone hJcomp ?_ ?_` and prove the remaining obligations. Introduce `z hz Jz hJ x hx`. Conclude with `hJloc z hz Jz hJ x fun hm => hx (hs hm)`. Introduce `z hz Jz hJ`.
-
-Conclude with `ih z hz Jz hJ (((H z hz).subschemeι ≫ (U z hz).ι).base ⁻¹' Mem') (Set.preimage_mono hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem forall_orderCertificate_of_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
@@ -108,7 +102,7 @@ private theorem forall_orderCertificate_of_subset {k : Type u} [Field k] {W : Sc
         (Set.preimage_mono hs)
 
 /- English proof (translation)
-The claim follows from `forall_orderCertificate_of_subset h Mem' hsub`.
+A detailed English derivation is pending.
 -/
 theorem orderCertificate_mono_of_subset {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}

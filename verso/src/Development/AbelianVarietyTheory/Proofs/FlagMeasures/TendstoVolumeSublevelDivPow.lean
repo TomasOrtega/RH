@@ -5,7 +5,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : {x : Fin d → ℝ | ∑ i, x i ^ 2 ≤ s ^ 2} = (WithLp.toLp 2 : (Fin d → ℝ) → EuclideanSpace ℝ (Fin d)) ⁻¹' Metric.closedBall 0 s`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, mem_closedBall_zero_iff, EuclideanSpace.norm_eq, Real.norm_eq_abs, sq_abs]`. Rewrite using `[Real.sqrt_le_left hs]`. Rewrite using `[h1, (PiLp.volume_preserving_toLp (Fin d)).measure_preimage measurableSet_closedBall.nullMeasurableSet, Measure.addHaar_closedBall _ _ hs]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -23,27 +23,25 @@ theorem volume_sum_sq_le_sq (d : ℕ) {s : ℝ} (hs : 0 ≤ s) :
   simp
 
 /- English proof (translation)
-Use `set V := volume (Metric.ball (0 : EuclideanSpace ℝ (Fin d)) 1) with hV`. Establish `hVt : V ≠ ⊤` using `measure_ball_lt_top.ne`. Rewrite using `[tendsto_order]`. Prove the components needed by the constructor for the conclusion. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcont : Filter.Tendsto (fun t : ℝ => ENNReal.ofReal (t ^ d) * V) (nhds 1) (nhds V)`. Establish `h1 : Filter.Tendsto (fun t : ℝ => ENNReal.ofReal (t ^ d)) (nhds 1) (nhds 1)`. Establish `: Continuous (fun t : ℝ => ENNReal.ofReal (t ^ d))` using `ENNReal.continuous_ofReal.comp (continuous_pow d)`. Simplify using `using this.tendsto 1`. Simplify using `using ENNReal.Tendsto.mul_const h1 (Or.inr hVt)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ t : ℝ in nhdsWithin 1 (Set.Iio 1), a < ENNReal.ofReal (t ^ d) * V ∧ 0 < t` using `nhdsWithin_le_nhds ((hcont.eventually (lt_mem_nhds ha)).and (lt_mem_nhds one_pos))`. Take `⟨t, ⟨hta, ht0⟩, ht1⟩` from `(hev.and self_mem_nhdsWithin).exists`. Establish `ht1 : t < 1` using `ht1`. Establish `hδ : 0 < 4 * (1 - t ^ 2)` using `by nlinarith`. Establish `hN : ∀ᶠ x in nhds (0 : Fin d → ℝ), N x < 4 * (1 - t ^ 2)` using `hc.eventually (gt_mem_nhds (by rw [h0]; exact hδ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨η, hη, hball⟩` from `Metric.eventually_nhds_iff.1 hN`. Establish `hr : ∀ᶠ r : ℝ in nhdsWithin 0 (Set.Ioi 0), r < η` using `nhdsWithin_le_nhds (gt_mem_nhds hη)`. Use `filter_upwards [hr, self_mem_nhdsWithin] with r hrη hr0`. Establish `hr0 : 0 < r` using `hr0`. Use `hta.trans_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp : ENNReal.ofReal (r ^ d) ≠ 0`. Simplify using `using pow_pos hr0 d`. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl hp) (Or.inl ENNReal.ofReal_ne_top)]`. Establish `e : ENNReal.ofReal (t ^ d) * V * ENNReal.ofReal (r ^ d) = volume {x : Fin d → ℝ | ∑ i, x i ^ 2 ≤ (t * r) ^ 2}`. Rewrite using `[volume_sum_sq_le_sq d (by positivity), mul_pow, ENNReal.ofReal_mul (by positivity), ← hV]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `measure_mono fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Establish `htr : t * r < η` using `by nlinarith`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : dist x 0 < η`. Rewrite using `[dist_zero_right]`. Use `lt_of_le_of_lt ?_ htr` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Establish `: x i ^ 2 ≤ (t * r) ^ 2` using `(Finset.single_le_sum (f := fun i => x i ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)).trans hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `abs_le_of_sq_le_sq this (by positivity)`. Establish `h1` using `hball hx'`. Establish `h2` using `hu x`. Establish `h3 : 0 ≤ N x` using `(Finset.sum_nonneg fun _ _ => sq_nonneg _).trans (hl x)`. Rewrite using `[Real.sqrt_le_left hr0.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h4 : t ^ 2 * N x ≤ t ^ 2 * r ^ 2`. Use `mul_le_mul_of_nonneg_left h1.le h3` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_of_mul_le_mul_left h4 (by positivity)`. Introduce `a ha filter_upwards [self_mem_nhdsWithin] with r hr0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hr0 : 0 < r` using `hr0`. Use `lt_of_le_of_lt ?_ ha` and prove the remaining obligations. Use `ENNReal.div_le_of_le_mul ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← volume_sum_sq_le_sq d hr0.le]`. Use `measure_mono fun x hx => ?_` and prove the remaining obligations.
-
-Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Rewrite `hx` using `[Real.sqrt_le_left hr0.le]`. Conclude with `(hl x).trans hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_volume_sublevel_div_pow (d : ℕ) (N : (Fin d → ℝ) → ℝ) (hc : ContinuousAt N 0)
     (h0 : N 0 = 0) (hl : ∀ x, ∑ i, x i ^ 2 ≤ N x) (hu : ∀ x, N x ≤ ∑ i, x i ^ 2 + N x ^ 2 / 4) :

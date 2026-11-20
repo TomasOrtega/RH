@@ -11,11 +11,11 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.HalfWeight
 
 /- English proof (translation)
-Establish `h1` using `hf.exp ((1 : ℝ) +ᵥ z)`. Establish `h2` using `hf.exp z`. Use `h1.unique ?_` and prove the remaining obligations. Use `h2 using 2 with n` and compare the differences between its conclusion and the goal. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (((1 : ℝ) +ᵥ z : ℍ) : ℂ) = 1 + (z : ℂ)` using `by simp`. Rewrite using `[this, mul_add, mul_one, Complex.exp_add]`. Establish `: Complex.exp (2 * Real.pi * Complex.I * n) = 1`. Use `Complex.exp_nat_mul_two_pi_mul_I n` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_vadd {k N : ℕ} {χ : DirichletCharacter ℂ N} {f : CuspForm (Gamma1 N) (k : ℤ)} {a : ℕ → ℂ}
     (hf : IsForm k N χ f a) (z : ℍ) : f ((1 : ℝ) +ᵥ z) = f z := by
@@ -32,7 +32,7 @@ theorem form_vadd {k N : ℕ} {χ : DirichletCharacter ℂ N} {f : CuspForm (Gam
   rw [this, one_mul]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `p.2.2.exists_SL2_row 1`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hg.1`. Simplify using `using hg.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_row (L : ℕ) (p : Idx L) : ∃ g : SL(2, ℤ), g 1 0 = L * p.1.2 ∧ g 1 1 = p.1.1 := by
   obtain ⟨g, hg⟩ := p.2.2.exists_SL2_row 1
@@ -41,19 +41,15 @@ theorem exists_row (L : ℕ) (p : Idx L) : ∃ g : SL(2, ℤ), g 1 0 = L * p.1.2
   · simpa using hg.2
 
 /- English proof (translation)
-Introduce `h5 h1 h2 hB k N M ν _ _ hM h4 hk χ f a hf c hν hpar β hβ s hs`. Use `set ψ : DirichletCharacter ℂ M := c * DirichletCharacter.changeLevel hM χ⁻¹ with hψ`. Establish `hM0 : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hM4 : 4 ≤ M` using `Nat.le_of_dvd hM0 h4`. Use `haveI : Fact (1 < M) := ⟨by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 2 ≤ 4 * M ^ 2` using `by nlinarith`. Use `choose γ hγ using exists_row (4 * M ^ 2)`. Establish `hth` using `hB (fun n : ℤ => ψ⁻¹ (n : ZMod M)) ν hν (by simpa using MulChar.map_nonunit ψ⁻¹ not_isUnit_zero) (fun n => DirichletCharacter.norm_le_one _ _)`. Take `⟨hcont, hper, -, -⟩` from `hth`. Establish `hfc : Continuous (f : ℍ → ℂ)` using `f.holo'.continuous`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmeas : Measurable (FF f ψ k ν s)`. Unfold `FF`. Use `((hfc.measurable).mul ?_).mul ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_conj.comp hcont).measurable`. Conclude with `(Complex.measurable_ofReal.comp (UpperHalfPlane.continuous_im.measurable)).pow_const _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hinv : ∀ z, FF f ψ k ν s ((1 : ℝ) +ᵥ z) = FF f ψ k ν s z`. Introduce `z`. Unfold `FF`. Rewrite using `[form_vadd hf z, hper z]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨hint, hval⟩` from `h2 k N M ν (by omega) hk χ f a hf ψ hν hpar s hs`. Establish `hU` using `h1 (4 * M ^ 2) hL β hβ γ (fun p => hγ p) (FF f ψ k ν s) hmeas hinv hint`. Rewrite using `[← hval, hU]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `show (β z : ℂ) * _ = (β z : ℂ) * _`.
-
-Use `congr 1`. Unfold `Ep`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations. Use `h5 k N M ν p.1.1 hM χ f a hf c p.1.2 (γ p) z s p.2.1 hν (by rw [(hγ p).1]; push_cast; ring) (hγ p).2` as an intermediate fact.
-
-Conclude with `this.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unfolded_identity_of : T5 → U1 → U2 → B2 → S1 := by
   intro h5 h1 h2 hB k N M ν _ _ hM h4 hk χ f a hf c hν hpar β hβ s hs

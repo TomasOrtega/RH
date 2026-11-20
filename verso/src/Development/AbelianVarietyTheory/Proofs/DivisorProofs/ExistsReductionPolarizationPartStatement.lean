@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CurveRootGeometry.polPart_closedFibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsReductionPolarizationPart.lean&line=71#L71)
 -/

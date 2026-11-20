@@ -19,11 +19,11 @@ variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : ReciprocityTheory.AnFor
   (R : RegChartData A)
 
 /- English proof (translation)
-Establish `h : ∀ j, ∃ m : ℝ, ∀ x ∈ R.mid j, m ≤ R.q j (R.chart j x)`. Introduce `j`. Establish `hK : IsCompact (R.chart j '' closure (R.mid j))` using `isClosed_closure.isCompact.image_of_continuousOn ((R.chart j).continuousOn.mono (R.closure_mid j))`. Establish `hsub : R.chart j '' closure (R.mid j) ⊆ (R.chart j).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(R.chart j).map_source (R.closure_mid j hx)`. Take `⟨m, hm⟩` from `hK.bddBelow_image ((R.q_smooth j).continuousOn.mono hsub)`. Conclude with `⟨m, fun x hx => hm ⟨R.chart j x, ⟨x, subset_closure hx, rfl⟩, rfl⟩⟩`. Use `choose m hm using h`. Use `⟨∑ j, |m j|, Finset.sum_nonneg fun j _ => abs_nonneg _, fun j x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : |m j| ≤ ∑ j, |m j|` using `Finset.single_le_sum (f := fun j => |m j|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `h2` using `hm j x hx`. Combine the linear relations using `[neg_abs_le (m j)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_q_lower [CompactSpace X] :
     ∃ Q : ℝ, 0 ≤ Q ∧ ∀ j, ∀ x ∈ R.mid j, -Q ≤ R.q j (R.chart j x) := by
@@ -45,7 +45,7 @@ theorem exists_q_lower [CompactSpace X] :
   linarith [neg_abs_le (m j)]
 
 /- English proof (translation)
-Establish `hq : ContDiffAt ℝ ∞ (R.q j) y` using `(R.q_smooth j).contDiffAt ((R.chart j).open_target.mem_nhds hy)`. Establish `hph` using `contDiffAt_comp_symm_of_smoothOn (R.compat j) R.isOpen_Yo R.ph_smooth (R.symm_mem_Yo j hy hyA) ((R.chart j).map_target hy)`. Rewrite `hph` using `[(R.chart j).right_inv hy]`. Conclude with `(hq.add hph).differentiableAt (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableAt_u (j : Fin R.N) {y : Fin D → ℂ} (hy : y ∈ (R.chart j).target)
     (hyA : y ∉ coordDiv (R.S j)) : DifferentiableAt ℝ (R.u j) y := by
@@ -57,35 +57,33 @@ theorem differentiableAt_u (j : Fin R.N) {y : Fin D → ℂ} (hy : y ∈ (R.char
   exact (hq.add hph).differentiableAt (by simp)
 
 /- English proof (translation)
-Establish `hxs : x ∈ (R.chart j).source` using `R.mid_subset_source j hx`. Take `⟨z, hz⟩ : ∃ z, z = R.chart j x` from `⟨_, rfl⟩`. Rewrite `hy` using `[← hz]`. Establish `hzT : z ∈ (R.chart j).target` using `hz ▸ (R.chart j).map_source hxs`. Establish `hzA : z ∉ coordDiv (R.S j)` using `hz ▸ (R.mem_Yo j x hxs).1 hxY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzx : (R.chart j).symm z = x` using `hz ▸ (R.chart j).left_inv hxs`. Establish `hrx : R.r x = Real.exp 1 + R.f j z + ∑ i ∈ R.S j, Real.log (‖z i‖ ^ 2)⁻¹`. Use `R.r_chart j z ⟨hzT, hzA⟩` as an intermediate fact. Rewrite `this` using `[hzx]`. Then use the resulting hypothesis. Establish `hnn : ∀ w ∈ (R.chart j).target, ∀ i, 0 ≤ Real.log (‖w i‖ ^ 2)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `w hw i`. Establish `hw1 : ‖w‖ < 1` using `by simpa using R.target_subset j hw`. Rewrite using `[Real.log_inv]`. Conclude with `neg_nonneg.2 (Real.log_nonpos (by positivity) (pow_le_one₀ (norm_nonneg _) ((norm_le_pi_norm w i).trans hw1.le)))`. Establish `hsum : ∑ i ∈ R.S j, Real.log (‖z i‖ ^ 2)⁻¹ ≤ Real.log t⁻¹ + B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hB j z hzT`. Establish `h2` using `neg_abs_le (R.f j z)`. Establish `h3` using `Real.exp_pos 1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzi : ∀ i ∈ R.S j, 2 * t ≤ ‖z i‖`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hpos : 0 < ‖z i‖` using `norm_pos_iff.2 fun h0 => hzA ⟨i, hi, h0⟩`. Establish `hle : Real.log (‖z i‖ ^ 2)⁻¹ ≤ Real.log t⁻¹ + B` using `(Finset.single_le_sum (f := fun i => Real.log (‖z i‖ ^ 2)⁻¹) (fun i _ => hnn z hzT i) hi).trans hsum`. Assume the negation of the conclusion as `hlt'`. Establish `hlt` using `not_le.1 hlt'`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `Real.exp_pos (-B)`. Establish `h4 : 4 * t * t ≤ t * Real.exp (-B)` using `by nlinarith`. Establish `ha : ‖z i‖ ^ 2 < t * Real.exp (-B)` using `by nlinarith`. Establish `hlog : Real.log t⁻¹ + B < Real.log (‖z i‖ ^ 2)⁻¹`. Establish `h1 : Real.log (t * Real.exp (-B))⁻¹ = Real.log t⁻¹ + B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_inv, Real.log_mul ht.ne' hE.ne', Real.log_exp, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h1]`. Conclude with `Real.log_lt_log (by positivity) ((inv_lt_inv₀ (by positivity) (by positivity)).2 ha)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyz : ∀ i, ‖z i‖ ≤ ‖y i‖ + t`. Introduce `i`. Establish `h1 : ‖y i - z i‖ ≤ t` using `(norm_le_pi_norm (y - z) i).trans (by rw [← dist_eq_norm]; exact mem_closedBall.1 hy)`. Establish `h2` using `norm_sub_norm_le (z i) (y i)`. Rewrite `h2` using `[norm_sub_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyi : ∀ i ∈ R.S j, ‖z i‖ / 2 ≤ ‖y i‖` using `fun i hi => by linarith [hzi i hi, hyz i]`. Establish `hyA : y ∉ coordDiv (R.S j)`. Introduce and unpack `⟨i, hi, h0⟩`. Establish `h3 : ‖y i‖ = 0` using `by rw [h0, norm_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear relations using `[hyi i hi, hzi i hi]`. Use `⟨hyA, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ i ∈ R.S j, Real.log (‖y i‖ ^ 2)⁻¹ ≤ Real.log (‖z i‖ ^ 2)⁻¹ + Real.log 4`. Introduce `i hi`. Establish `hzp : 0 < ‖z i‖` using `by linarith [hzi i hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyp : 0 < ‖y i‖` using `by linarith [hyi i hi]`. Rewrite using `[Real.log_inv, Real.log_inv]`. Establish `: Real.log (‖z i‖ ^ 2) - Real.log 4 ≤ Real.log (‖y i‖ ^ 2)`. Rewrite using `[← Real.log_div (by positivity) (by norm_num)]`. Conclude with `Real.log_le_log (by positivity) (by nlinarith [hyi i hi])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS : ∑ i ∈ R.S j, Real.log (‖y i‖ ^ 2)⁻¹ ≤ ∑ i ∈ R.S j, Real.log (‖z i‖ ^ 2)⁻¹ + D * Real.log 4`. Establish `h1` using `Finset.sum_le_sum hterm`. Rewrite `h1` using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Establish `h2 : ((R.S j).card : ℝ) ≤ D`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.card_le_univ (R.S j)` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this` after adjusting the coercions. Establish `h3 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[R.r_chart j y ⟨hyT, hyA⟩]`. Establish `h1` using `hB j y hyT`. Establish `h2` using `le_abs_self (R.f j y)`. Establish `h3` using `hB j z hzT`. Establish `h4` using `neg_abs_le (R.f j z)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem near_point {t B : ℝ} (ht : 0 < t) (hB : ∀ j, ∀ y ∈ (R.chart j).target, |R.f j y| ≤ B)
     (htB : t ≤ Real.exp (-B) / 4) {j : Fin R.N} {x : X} (hx : x ∈ R.mid j) (hxY : x ∈ R.Yo)
@@ -173,43 +171,41 @@ theorem near_point {t B : ℝ} (ht : 0 < t) (hB : ∀ j, ∀ y ∈ (R.chart j).t
 end RegChartData
 
 /- English proof (translation)
-Introduce `X _ _ _ D A R ρ`. Take `⟨δ, B₀, hδ, hV⟩` from `h X D A R`. Use `choose V hVo hVt hVball hVpsh using hV`. Take `⟨Q, hQ0, hQ⟩` from `R.exists_q_lower`. Take `⟨B, hB⟩` from `R.f_bdd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B', hB'⟩ : ∃ b : ℝ, b = max B 0` from `⟨_, rfl⟩`. Establish `hB'0 : 0 ≤ B'` using `hB' ▸ le_max_right _ _`. Establish `hfB : ∀ j, ∀ y ∈ (R.chart j).target, |R.f j y| ≤ B'` using `fun j y hy => (hB j y hy).trans (hB' ▸ le_max_left _ _)`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = 2 * B' + D * Real.log 4` from `⟨_, rfl⟩`. Establish `hc0 : 0 ≤ c` using `hc ▸ add_nonneg (by linarith) (mul_nonneg (Nat.cast_nonneg _) (Real.log_nonneg (by norm_num)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG⟩ : ∃ g : ℝ, g = |R.Cgrad|` from `⟨_, rfl⟩`. Establish `hG0 : 0 ≤ G` using `hG ▸ abs_nonneg _`. Take `⟨Cl, hCl⟩ : ∃ g : ℝ, g = |R.Clog|` from `⟨_, rfl⟩`. Establish `hCl0 : 0 ≤ Cl` using `hCl ▸ abs_nonneg _`. Take `⟨C, hC⟩ : ∃ C : ℝ, C = max (G * 2 ^ G * Real.exp (c / 2)) (max G (Q + Cl))` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC1 : G * 2 ^ G * Real.exp (c / 2) ≤ C` using `hC ▸ le_max_left _ _`. Establish `hC2 : G ≤ C` using `hC ▸ (le_max_left _ _).trans (le_max_right _ _)`. Establish `hC3 : Q + Cl ≤ C` using `hC ▸ (le_max_right _ _).trans (le_max_right _ _)`. Use `⟨C, min (min δ (Real.exp (-B') / 4)) (Real.exp (-(Real.exp 1 + 2 * c))), lt_min (lt_min hδ (by positivity)) (Real.exp_pos _), ?_⟩` and prove the remaining obligations. Introduce `t ht ht₀ K hK j x hx hrx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [lt_min_iff] at ht₀`. Take `⟨⟨htδ, htB⟩, hte⟩` from `ht₀`. Take `⟨hℓc, hlogℓ⟩` from `log_inv_facts ht hc0 hte`. Establish `he1 : 1 ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hℓ1 : 1 ≤ Real.log t⁻¹` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxs : x ∈ (R.chart j).source` using `R.mid_subset_source j hx.1`. Establish `hballV : closedBall (R.chart j x) t ⊆ V j` using `(closedBall_subset_closedBall htδ.le).trans (hVball j x hx.1)`. Establish `hballT : closedBall (R.chart j x) t ⊆ (R.chart j).target` using `hballV.trans (hVt j)`. Establish `hnear` using `fun y (hy : y ∈ closedBall (R.chart j x) t) => R.near_point ht hfB htB.le hx.1 hx.2 hrx hy (hballT hy)`. Rewrite `hnear` using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩ : ∃ M : ℝ, M = G * (Real.log t⁻¹ + c) ^ G * Real.exp ((Real.log t⁻¹ + c) / 2)` from `⟨_, rfl⟩`. Establish `hM0 : 0 ≤ M` using `hM ▸ by positivity`. Establish `hgrad : ∀ y ∈ closedBall (R.chart j x) t, ‖fderiv ℝ (R.u j) y‖ ≤ M`. Introduce `y hy`. Take `⟨hyA, hry⟩` from `hnear y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyT` using `hballT hy`. Establish `h1r : 1 ≤ R.r ((R.chart j).symm y)` using `R.one_le_r _ (R.symm_mem_Yo j hyT hyA)`. Establish `hg` using `R.grad_le j y ⟨hyT, hyA⟩`. Establish `e1 : R.Cgrad * R.r ((R.chart j).symm y) ^ R.Cgrad ≤ G * R.r ((R.chart j).symm y) ^ G` using `(mul_le_mul_of_nonneg_right (hG ▸ le_abs_self _) (by positivity)).trans (mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le h1r (hG ▸ le_abs_self _)) hG0)`. Establish `e2 : R.r ((R.chart j).symm y) ^ G ≤ (Real.log t⁻¹ + c) ^ G` using `Real.rpow_le_rpow (by linarith) hry hG0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : Real.exp (R.r ((R.chart j).symm y) / 2) ≤ Real.exp ((Real.log t⁻¹ + c) / 2)` using `Real.exp_le_exp.2 (by linarith)`. Use `hg.trans ?_` and prove the remaining obligations. Rewrite using `[hM]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmv : ∀ y ∈ closedBall (R.chart j x) t, R.u j y ≤ R.u j (R.chart j x) + M * t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `h1` using `Convex.norm_image_sub_le_of_norm_fderiv_le (fun y' hy' => R.differentiableAt_u j (hballT hy') (hnear y' hy').1) hgrad (convex_closedBall _ t) (mem_closedBall_self ht.le) hy`. Establish `h2 : ‖y - R.chart j x‖ ≤ t` using `by rw [← dist_eq_norm]; exact mem_closedBall.1 hy`. Establish `h3` using `le_abs_self (R.u j y - R.u j (R.chart j x))`. Rewrite `h3` using `[← Real.norm_eq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hM0]`. Establish `huz : -K ≤ R.u j (R.chart j x)`. Establish `hu : R.u j (R.chart j x) = R.q j (R.chart j x) + R.ph x` using `by show R.q j (R.chart j x) + R.ph ((R.chart j).symm (R.chart j x)) = _`. Rewrite using `[(R.chart j).left_inv hxs]`. Establish `hr1 : 1 ≤ R.r x` using `R.one_le_r x hx.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ Real.log (R.r x)` using `Real.log_nonneg hr1`. Establish `hL : Real.log (R.r x) ≤ Real.log (Real.log t⁻¹)` using `Real.log_le_log (by linarith) hrx`. Establish `hph` using `R.ph_ge x hx.2`. Establish `e1 : R.Clog * Real.log (R.r x) ≤ Cl * Real.log (Real.log t⁻¹)` using `(mul_le_mul_of_nonneg_right (hCl ▸ le_abs_self _) hL0).trans (mul_le_mul_of_nonneg_left hL hCl0)`. Establish `e2 : Q ≤ Q * Real.log (Real.log t⁻¹)` using `le_mul_of_one_le_right hQ0 hlogℓ.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (Q + Cl) * Real.log (Real.log t⁻¹) ≤ C * Real.log (Real.log t⁻¹)` using `mul_le_mul_of_nonneg_right hC3 (by linarith)`. Establish `e4` using `hQ j x hx.1`. Establish `e5 : -R.Clog * Real.log (R.r x) = -(R.Clog * Real.log (R.r x))` using `by ring`. Establish `e6 : (Q + Cl) * Real.log (Real.log t⁻¹) = Q * Real.log (Real.log t⁻¹) + Cl * Real.log (Real.log t⁻¹)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hbound : M * t ≤ C * Real.log t⁻¹ ^ C * t ^ (1 / 2 : ℝ)`. Establish `ht' : Real.exp (Real.log t⁻¹ / 2) * t = t ^ (1 / 2 : ℝ)`. Rewrite using `[Real.rpow_def_of_pos ht, Real.log_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_log ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Real.exp (Real.log t * (1 / 2)) := by`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hMt : M * t = G * (Real.log t⁻¹ + c) ^ G * Real.exp (c / 2) * t ^ (1 / 2 : ℝ)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hM, ← ht', show (Real.log t⁻¹ + c) / 2 = Real.log t⁻¹ / 2 + c / 2 by ring, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : (Real.log t⁻¹ + c) ^ G ≤ 2 ^ G * Real.log t⁻¹ ^ G`. Rewrite using `[← Real.mul_rpow (by norm_num) (by linarith)]`. Conclude with `Real.rpow_le_rpow (by linarith) (by linarith) hG0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e5 : Real.log t⁻¹ ^ G ≤ Real.log t⁻¹ ^ C` using `Real.rpow_le_rpow_of_exponent_le hℓ1 hC2`. Establish `hs : 0 ≤ t ^ (1 / 2 : ℝ)` using `by positivity`. Rewrite using `[hMt]`. Combine the equalities or inequalities in the displayed calculation. Establish `hi : molli ρ t (R.trunc K j) (R.chart j x) ≤ polyMax (R.trunc K j) (R.chart j x) t` using `(((mollify_thm D ρ (V j) (R.trunc K j) (hVo j) (hVpsh j K).1).1 t ht).2.2.2 (R.chart j x) hballV).2`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hii : polyMax (R.trunc K j) (R.chart j x) t ≤ R.u j (R.chart j x) + M * t` using `polyMax_le' ht.le fun y hy => by`. Establish `hyA` using `(hnear y hy).1`. Simplify using `only [RegChartData.trunc, limsupExt, if_neg hyA]`. Conclude with `max_le (hmv y hy) (by nlinarith)`. Simplify using `only [RegChartData.smoothed]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem MollifiedNearSmooth.proof (h : TruncPsh.Statement) : MollifiedNearSmooth.Statement := by
   intro X _ _ _ D A R ρ

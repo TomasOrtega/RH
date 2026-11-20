@@ -65,32 +65,30 @@ open Classical in
 def toGLInf (x : Matrix (Fin n) (Fin n) (Cinf E)) : GL (Fin n) (Cinf E) := if h : IsUnit x then h.unit else 1
 
 /- English proof (translation)
-Simplify using `[toGLInf, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_toGLInf {x : Matrix (Fin n) (Fin n) (Cinf E)} (h : IsUnit x) :
     (toGLInf x : Matrix (Fin n) (Fin n) (Cinf E)) = x := by
   simp [toGLInf, h]
 
 /- English proof (translation)
-Simplify using `[onMatInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onMatInf_val (W : GL (Fin n) (Cinf E) → ℂ) (g : GL (Fin n) (Cinf E)) :
     onMatInf W (g : Matrix (Fin n) (Fin n) (Cinf E)) = W g := by
   simp [onMatInf]
 
 /- English proof (translation)
-Simplify using `[onMatInf, toGLInf, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem onMatInf_of_isUnit (W : GL (Fin n) (Cinf E) → ℂ) {x : Matrix (Fin n) (Fin n) (Cinf E)} (h : IsUnit x) :
     onMatInf W x = W (toGLInf x) := by
   simp [onMatInf, toGLInf, h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Use `⟨fun j hj => funext fun w => ?_, funext fun w => ?_⟩` and prove the remaining obligations. Conclude with `(h w i hi).1 j hj`. Conclude with `(h w i hi).2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h w i hi`. Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[compGL_apply, (h i hi).1 j hj]`. Both sides reduce to the same expression. Rewrite using `[compGL_apply, (h i hi).2]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_levSetInf {r : ℕ} {g : GL (Fin n) (Cinf E)} : g ∈ levSetInf E n r ↔
     ∀ i : Fin n, r ≤ (i : ℕ) → (∀ j, j < i → (g : Matrix (Fin n) (Fin n) (Cinf E)) i j = 0) ∧
@@ -106,7 +104,7 @@ theorem mem_levSetInf {r : ℕ} {g : GL (Fin n) (Cinf E)} : g ∈ levSetInf E n 
     · rw [compGL_apply, (h i hi).2]; rfl
 
 /- English proof (translation)
-Use `⟨Unit, inferInstance, Measure.dirac (), inferInstance, fun _ => 1, fun _ => h, fun _ => 0, ⟨measurable_const, fun _ _ => measurable_const, fun _ => measurable_const, fun _ => integrable_const _⟩, fun W _ z g => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isKerOpInf_dirac (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z] (h : GL (Fin n) (Cinf E)) :
     IsKerOpInf (fun W (_ : Z) g => W (g * h)) := by
@@ -124,7 +122,7 @@ def LevRepInf (E : Type) [Field E] [NumberField E] (n r : ℕ) (lam : (GL (Fin n
       ∀ W, IsModGrowthInf W → IsWhitInf W → ∀ y, ∀ g ∈ levSetInf E n r, T W y g = B (y, matInf g) * lam W
 
 /- English proof (translation)
-Use `⟨mem_levSetInf.2 fun i _ => ⟨fun j hj => ?_, by simp⟩, isKerOpInf_dirac ℝ 1⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply, hj.ne']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 example (r : ℕ) : (1 : GL (Fin n) (Cinf E)) ∈ levSetInf E n r ∧
     IsKerOpInf (fun W (_ : ℝ) g => W (g * (1 : GL (Fin n) (Cinf E)))) := by

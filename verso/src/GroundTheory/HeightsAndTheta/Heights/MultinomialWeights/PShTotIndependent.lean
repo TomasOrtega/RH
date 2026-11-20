@@ -15,20 +15,20 @@ def shTotForm (a b : Fin d.f → ℚ) : MvPolynomial (Idx d) ℚ :=
     C (b τ) * ∑ i : Fin d.N, X (τ, i))
 
 /- English proof (translation)
-The claim follows from `(IsHomogeneous.sum _ _ _ (fun p _ => isHomogeneous_C_mul_X (u p) p)).neg`.
+A detailed English derivation is pending.
 -/
 theorem lineClass_isHomogeneous (u : Idx d → ℚ) : (lineClass d u).IsHomogeneous 1 :=
   (IsHomogeneous.sum _ _ _ (fun p _ => isHomogeneous_C_mul_X (u p) p)).neg
 
 /- English proof (translation)
-Rewrite using `[mem_homogeneousSubmodule]`. Simplify using `using (lineClass_isHomogeneous d u).pow (d.D + 1)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lineClass_pow_mem (u : Idx d → ℚ) : lineClass d u ^ (d.D + 1) ∈ topSpace d := by
   rw [mem_homogeneousSubmodule]
   simpa using (lineClass_isHomogeneous d u).pow (d.D + 1)
 
 /- English proof (translation)
-Simplify using `only [shTotForm, map_sum, map_add, map_mul, eval_C, eval_X]`. Rewrite using `[Finset.sum_eq_single τ]`. Simplify using `[Finset.mem_filter]`. Introduce `τ' _ hne`. Simplify using `[hne]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -53,17 +53,15 @@ Both sides reduce to the same expression.
 theorem totOn_apply (τ : Fin d.f) (F : topSpace d) : totOn d τ F = totalFl d τ F := rfl
 
 /- English proof (translation)
-Take `⟨c, hc, hdeg⟩` from `hC d`. Establish `hD : ((d.D + 1 : ℕ) : ℚ) ≠ 0` using `by positivity`. Establish `hval : ∀ u : Idx d → ℚ, eval u (degPoly d * shTotForm d a b) = 0`. Introduce `u`. Establish `h1` using `LinearMap.congr_fun hab ⟨_, lineClass_pow_mem d u⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, shOn_apply, totOn_apply, hSh d, hTot d] at h1`. Rewrite using `[eval_mul, hEval, shTotForm]`. Simplify using `only [map_sum, map_add, map_mul, eval_C, eval_X]`. Establish `h2 : -((d.D + 1 : ℕ) : ℚ) * (degAt d u * ∑ τ : Fin d.f, (a τ * ∑ i ∈ univ.filter (fun i : Fin d.N => i.val < d.j), u (τ, i) + b τ * ∑ i : Fin d.N, u (τ, i))) = 0`. Rewrite using `[← h1, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun τ _ => by ring)`. Conclude with `(mul_eq_zero.mp h2).resolve_left (neg_ne_zero.mpr hD)`. Establish `hzero : degPoly d * shTotForm d a b = 0` using `MvPolynomial.funext (fun u => by rw [hval u, map_zero])`. Rewrite `hzero` using `[hdeg, mul_assoc]`. Establish `hform : shTotForm d a b = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp hzero with h | h` into its components or cases. Conclude with `absurd (C_eq_zero.mp h) hc.ne'`. Conclude with `(mul_eq_zero.mp h).resolve_left (RestTerms.Flag.blockVandermonde_ne_zero _ _)`. Establish `hb : ∀ τ, b τ = 0`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `eval_shTotForm_single d a b τ ⟨d.N - 1, by have := d.two_le_N; omega⟩`. Rewrite `h` using `[hform, map_zero, if_neg (by have := d.j_lt_N; simp; omega), zero_add]`. Conclude with `h.symm`. Use `⟨funext fun τ => ?_, funext hb⟩` and prove the remaining obligations. Establish `h` using `eval_shTotForm_single d a b τ ⟨0, by have := d.two_le_N; omega⟩`.
-
-Rewrite `h` using `[hform, map_zero, if_pos (by have := d.one_le_j; simp; omega), hb τ, add_zero]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shTot_relation_trivial (hSh : ShOfPower.Statement) (hTot : TotOfPower.Statement)
     (hEval : DegPolyEval.Statement) (hC : CFlPos.Statement) (a b : Fin d.f → ℚ)
@@ -101,13 +99,11 @@ theorem shTot_relation_trivial (hSh : ShOfPower.Statement) (hTot : TotOfPower.St
   exact h.symm
 
 /- English proof (translation)
-Introduce `d hf`. Establish `key` using `shTot_relation_trivial d hSh hTot hEval hC`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `key (fun τ => g (Sum.inl τ)) (fun τ => g (Sum.inr τ)) (by simpa [Fintype.sum_sum_type] using hg)`. Introduce and unpack `(τ | τ)`. Conclude with `congrFun h.1 τ`. Conclude with `congrFun h.2 τ`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Finset.smul_sum] at hg`. Establish `h` using `key (fun _ => g 0) (fun _ => g 1) hg`. Introduce `i`. Use `fin_cases i`.
-
-Conclude with `congrFun h.1 ⟨0, hf⟩`. Conclude with `congrFun h.2 ⟨0, hf⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ShTotIndependent.proof (hSh : ShOfPower.Statement) (hTot : TotOfPower.Statement)
     (hEval : DegPolyEval.Statement) (hC : CFlPos.Statement) : ShTotIndependent.Statement := by

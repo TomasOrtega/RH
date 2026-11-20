@@ -22,7 +22,7 @@ def toM {x : Sp S ⟶ Xo.X} {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : I
   mkT (ovT (t := Xo.univ.t) hv) (smT_zero_ovT (t := Xo.univ.t) hv)
 
 /- English proof (translation)
-Establish `e` using `isCombAtG_iff Xo.univ.t x (fun j => ovT (t := Xo.univ.t) (hv j)) cf w`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[tv_comb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_iff {x : Sp S ⟶ Xo.X} {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)}
     (hv : ∀ j, IsTanAt x (v j)) (cf : Fin m → S) (w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :
@@ -33,7 +33,7 @@ theorem comb_iff {x : Sp S ⟶ Xo.X} {m : ℕ} {v : Fin m → (Sp (DualNumber S)
   rfl
 
 /- English proof (translation)
-The claim follows from `((comb_iff hv cf w).1 h).symm.trans ((comb_iff hv cf w').1 h')`.
+A detailed English derivation is pending.
 -/
 theorem comb_unique {x : Sp S ⟶ Xo.X} {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)}
     (hv : ∀ j, IsTanAt x (v j)) {cf : Fin m → S} {w w' : Sp (DualNumber S) ⟶ Xo.univ.t.G.left}
@@ -41,9 +41,9 @@ theorem comb_unique {x : Sp S ⟶ Xo.X} {m : ℕ} {v : Fin m → (Sp (DualNumber
   ((comb_iff hv cf w).1 h).symm.trans ((comb_iff hv cf w').1 h')
 
 /- English proof (translation)
-Rewrite using `[comb_iff hv]`. Establish `: ∑ j, (Pi.single i (1 : S) : Fin m → S) j • toM (hv j) = toM (hv i)`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hj]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_single {x : Sp S ⟶ Xo.X} {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)}
     (hv : ∀ j, IsTanAt x (v j)) (i : Fin m) : IsCombAt x v (Pi.single i 1) (v i) := by
@@ -58,9 +58,9 @@ theorem comb_single {x : Sp S ⟶ Xo.X} {m : ℕ} {v : Fin m → (Sp (DualNumber
   rfl
 
 /- English proof (translation)
-Use `⟨_, (comb_iff hv cf _).2 rfl, isTanAtG_of (t := Xo.univ.t) _ (tv_zero' _), ?_⟩` and prove the remaining obligations. Use `(isEigAt_iff τ (tv (∑ i, cf i • toM (hv i)))).2 fun a => ?_` and prove the remaining obligations. Establish `hU : ∀ i, actL (x0` using `x) Xo.univ.t.act a (toM (hv i)) = algebraMap c.F S (embK c τ a) • toM (hv i) := fun i => tv_injective ((isEigAt_iff τ (ovT (t := Xo.univ.t) (hv i))).1 (he i) a)`. Establish `: actL (x0` using `x) Xo.univ.t.act a (∑ i, cf i • toM (hv i)) = algebraMap c.F S (embK c τ a) • ∑ i, cf i • toM (hv i) := by`. Rewrite using `[map_sum, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hU, smul_comm]`. Conclude with `congrArg tv this`.
+A detailed English derivation is pending.
 -/
 theorem comb_exists [Algebra c.F S] {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} (τ : E →+* ℂ)
@@ -77,11 +77,9 @@ theorem comb_exists [Algebra c.F S] {x : Sp S ⟶ Xo.X} {m : ℕ}
   exact congrArg tv this
 
 /- English proof (translation)
-Use `choose u hu ht he using fun τ i => comb_exists τ (y.tan τ) (y.eig τ) (fun j => g τ j i)`. Use `⟨⟨y.x, y.x_over, u, ht, he, fun τ w hw hw' => ?_, y.s, y.gen⟩, rfl, hu⟩` and prove the remaining obligations. Take `⟨a, ha, hua⟩` from `y.basis τ w hw hw'`. Establish `key : ∀ b w', IsCombAt y.x (u τ) b w' → IsCombAt y.x (y.u τ) ((g τ).mulVec b) w'` using `fun b w' h => GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo S y.x (y.u τ) (y.tan τ) (u τ) (g τ) b w' (hu τ) h`. Use `⟨(g τ)⁻¹.mulVec a, ?_, fun b hb => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w', h1, -, -⟩` from `comb_exists τ (ht τ) (he τ) ((g τ)⁻¹.mulVec a)`. Establish `h2` using `key _ _ h1`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hg τ), Matrix.one_mulVec]`. Use `show IsCombAt y.x (u τ) ((g τ)⁻¹.mulVec a) w`. Rewrite using `[comb_unique (y.tan τ) ha h2]`.
-
-Conclude with `h1`. Rewrite using `[← hua _ (key b w hb), Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hg τ), Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reframe [Algebra c.F S] (y : FrPt Xo c S)
     (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (hg : ∀ τ, IsUnit (g τ).det) :
@@ -101,13 +99,11 @@ theorem exists_reframe [Algebra c.F S] (y : FrPt Xo c S)
   · rw [← hua _ (key b w hb), Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hg τ), Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `ht' : ∀ τ i, IsTanAt y.x (y'.u τ i)` using `fun τ i => hx ▸ y'.tan τ i`. Establish `hb' : ∀ τ w, IsTanAt y.x w → IsEigAt c τ w → ∃! a : Fin (Dw.mult τ) → S, IsCombAt y.x (y'.u τ) a w`. Rewrite using `[← hx]`. Conclude with `y'.basis`. Use `choose a ha hua using fun τ i => y.basis τ (y'.u τ i) (ht' τ i) (y'.eig τ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose b hb _ using fun τ i => hb' τ (y.u τ i) (y.tan τ i) (y.eig τ i)`. Use `⟨fun τ => Matrix.of fun j i => a τ i j, ⟨fun τ => ?_, hx, ha⟩, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hm : (Matrix.of fun j i => a τ i j) * (Matrix.of fun j i => b τ i j) = 1`. Use extensionality with `j i`. Establish `h1` using `GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo S y.x (y.u τ) (y.tan τ) (y'.u τ) (Matrix.of fun j i => a τ i j) (b τ i) (y.u τ i) (ha τ) (hb τ i)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(y.basis τ (y.u τ i) (y.tan τ i) (y.eig τ i)).unique h1 (comb_single (y.tan τ) i)`. Establish `h3` using `congrFun h2 j`. Rewrite `h3` using `[Pi.single_apply]`. Rewrite using `[Matrix.one_apply, ← h3]`. Both sides reduce to the same expression.
-
-Conclude with `Matrix.isUnit_det_of_right_inverse hm`. Use function extensionality and compare the values at `τ`. Use extensionality with `j i`. Conclude with `congrFun (hua τ i _ (hg.2.2 τ i)) j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem existsUnique_reframe [Algebra c.F S] (y y' : FrPt Xo c S) (hx : y'.x = y.x) :
     ∃! g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S,
@@ -133,7 +129,7 @@ theorem existsUnique_reframe [Algebra c.F S] (y y' : FrPt Xo c S) (hx : y'.x = y
     exact congrFun (hua τ i _ (hg.2.2 τ i)) j
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ y` and use `⟨exists_reframe y, existsUnique_reframe y⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem reframe_exists_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), (∀ g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S, (∀ τ, IsUnit (g τ).det) → ∃ y', Reframe g y y') ∧ ∀ y' : FrPt Xo c S, y'.x = y.x → ∃! g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S, (∀ τ, IsUnit (g τ).det) ∧ Reframe g y y' :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ y => ⟨exists_reframe y, existsUnique_reframe y⟩

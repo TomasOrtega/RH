@@ -18,7 +18,7 @@ variable {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [stepPt, Matrix.add_apply, Matrix.of_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem stepPt_add_apply (x₀ : Matrix n n' k) (e δ : StepVar n c n' → k) (a : n ⊕ Fin c) (b : n' ⊕ Fin (c + 1)) :
     stepPt x₀ (e + δ) a b =
@@ -37,7 +37,7 @@ def shiftVar (j₀ : Fin (G.m - 1)) (r : ℕ) (t : k) : Vars G := fun j w =>
     w.1.2.isRight = true then t else 0
 
 /- English proof (translation)
-Unfold `shiftVar`. Use `split_ifs`. Conclude with `ht`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_shiftVar_le (j₀ : Fin (G.m - 1)) (r : ℕ) {t s₀ : k} (ht : valuation k t ≤ valuation k s₀)
     (j : Fin (G.m - 1)) (w) : valuation k (shiftVar j₀ r t j w) ≤ valuation k s₀ := by
@@ -47,7 +47,7 @@ theorem valuation_shiftVar_le (j₀ : Fin (G.m - 1)) (r : ℕ) {t s₀ : k} (ht 
   · simp
 
 /- English proof (translation)
-Unfold `ch`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, stepPt_add_apply]`. Apply the tactic sequence `split_ifs <;> simp [shiftVar]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ch_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (r : ℕ) (t : k) (j : Fin (G.m - 1)) :
     ch (stepPt (x j) ((e + shiftVar j₀ r t) j)) = ch (stepPt (x j) (e j)) := by
@@ -57,9 +57,9 @@ theorem ch_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (r : ℕ) (
   split_ifs <;> simp [shiftVar]
 
 /- English proof (translation)
-Unfold `rowVar`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun l _ => ?_ split_ifs` and prove the remaining obligations. Apply the tactic sequence `rw [Pi.add_apply, stepPt_add_apply] split_ifs <;> simp [shiftVar]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rowVar_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (r : ℕ) (t : k) (j : ℕ) (s) :
     rowVar x (e + shiftVar j₀ r t) j s = rowVar x e j s := by
@@ -73,9 +73,9 @@ theorem rowVar_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (r : �
   · rfl
 
 /- English proof (translation)
-Unfold `colVar`. Rewrite using `[Pi.add_apply, stepPt_add_apply]`. Use `congr 1`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[dif_pos (Or.inr ⟨by rw [show G.m - 2 - (j : ℕ) = 0 by omega]; exact ⟨0, rfl⟩, rfl⟩)]`. Simplify using `[shiftVar]`. Simplify using `[shiftVar, hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colVar_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (hj₀ : (j₀ : ℕ) + 2 = G.m) (r : ℕ) (t : k)
     (j : Fin (G.m - 1)) (r' : Fin (topRank G (j + 1))) :
@@ -90,13 +90,13 @@ theorem colVar_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (hj₀ 
   · simp [shiftVar, hj]
 
 /- English proof (translation)
-Unfold `phase`. Establish `key : ∀ j : Fin (G.m - 1), (ch (stepPt (x j) ((e + shiftVar j₀ r t) j)) + if Even (G.m - 2 - j) then ∑ r', rowVar x (e + shiftVar j₀ r t) (j + 1) r' * colVar x (e + shiftVar j₀ r t) j r' else 0) = (ch (stepPt (x j) (e j)) + if Even (G.m - 2 - j) then ∑ r', rowVar x e (j + 1) r' * …`. Introduce `j`. Rewrite using `[ch_shift]`. Simplify using `only [rowVar_shift, colVar_shift x e j₀ hj₀]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Establish `hev : Even (G.m - 2 - (j : ℕ))` using `by rw [show G.m - 2 - (j : ℕ) = 0 by omega]; exact ⟨0, rfl⟩`. Rewrite using `[if_pos hev, if_pos hev, if_pos rfl]`. Simplify using `only [true_and, mul_add, Finset.sum_add_distrib, add_assoc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Repeatedly rewrite using `[Fin.val_inj, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun j _ => key j, Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phase_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (hj₀ : (j₀ : ℕ) + 2 = G.m)
     (r : Fin (topRank G ((j₀ : ℕ) + 1))) (t : k) :
@@ -126,9 +126,9 @@ theorem phase_shift (x : ColArgs G) (e : Vars G) (j₀ : Fin (G.m - 1)) (hj₀ :
 variable (hs : 1 ≤ G.s)
 
 /- English proof (translation)
-Unfold `downMap`. Use `split_ifs with h1 h2`. Simplify using `only [reindex_apply, submatrix_apply, Pi.add_apply]`. Rewrite using `[stepPt_add_apply, add_sub_cancel_left]`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hδ _ _`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_downMap_sub_le (x : ColArgs G) (e δ : Vars G) {s₀ : k}
     (hδ : ∀ j w, valuation k (δ j w) ≤ valuation k s₀) (j : ℕ) (a b) :
@@ -145,9 +145,9 @@ theorem valuation_downMap_sub_le (x : ColArgs G) (e δ : Vars G) {s₀ : k}
   · simp
 
 /- English proof (translation)
-Break down `b with ⟨i, j⟩ | ⟨i, j⟩` into its components or cases. Simplify using `only [fill, Pi.sub_apply] split_ifs with h`. Simplify using `only [Matrix.sub_apply, transpose_apply, submatrix_apply]`. Conclude with `valuation_downMap_sub_le hs x e δ hδ j _ _`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [fill, Pi.sub_apply] split_ifs with h`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_fill_sub_le (x : ColArgs G) (y : RowArgs G) (e δ : Vars G) {s₀ : k}
     (hδ : ∀ j w, valuation k (δ j w) ≤ valuation k s₀) (b : Edge) (r s) :
@@ -169,21 +169,21 @@ namespace GlobalTheory.FunObj.FlatLast
 open GlobalTheory.RootEx
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ G hs ψ ν _ ϖ e T keep g hm hϖ hψ hT`. Take `⟨n, -, hper⟩` from `GlobalTheory.MovedBound.moved_bounded_locConst G ϖ e T keep g hϖ hT`. Use `⟨n, fun x y hF => ?_⟩` and prove the remaining obligations. Set `j₀ : Fin (G.m - 1)` to `⟨G.m - 2, by omega⟩`. Establish `hj₀ : (j₀ : ℕ) + 2 = G.m` using `by simp only [j₀]; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-It suffices to establish `key : ∀ r : Fin (topRank G ((j₀ : ℕ) + 1)), valuation k (x ((j₀ : ℕ) + 1) (topLast G ((j₀ : ℕ) + 1 + 1)) r) ≤ valuation k (((ϖ ^ n)⁻¹ : kˣ) : k) by`. Establish `h : G.m - 1 = (j₀ : ℕ) + 1` using `by omega`. Rewrite using `[h]`. Conclude with `key`. Introduce `r`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Establish `hu : x ((j₀ : ℕ) + 1) (topLast G ((j₀ : ℕ) + 1 + 1)) r ∉ cball (1 * (ϖ ^ n)⁻¹)`. Simplify `hlt` using `[cball]`. Take `⟨t, ht, hne⟩` from `hψ.exists_ne_one (ϖ ^ n) hu`. Use `set u := x ((j₀ : ℕ) + 1) (topLast G ((j₀ : ℕ) + 1 + 1)) r with hu_def`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrow : ∀ e' : Vars G, rowVar x e' ((j₀ : ℕ) + 1) r = u` using `fun e' => by`. Rewrite using `[rowVar, dif_neg (by omega)]`. Set `δ : Vars G` to `shiftVar j₀ r (-t)`. Establish `hδ : ∀ j w, valuation k (δ j w) ≤ valuation k ((ϖ ^ n : kˣ) : k)` using `valuation_shiftVar_le _ _ (by simpa [cball, Valuation.map_neg] using ht)`. Establish `hS : ∀ e' : Vars G, moved G keep g T (fill hs x y (e' + δ)) = moved G keep g T (fill hs x y e')` using `fun e' => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hper (fill hs x y e') (fill hs x y (e' + δ) - fill hs x y e') (fun b _ r s => valuation_fill_sub_le hs x y e' δ hδ b r s)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hI : ∀ e' : Vars G, flatIntegrand hs ψ (moved G keep g T) x y (e' + δ) = (ψ (t * u) : ℂ) * flatIntegrand hs ψ (moved G keep g T) x y e'` using `fun e' => by`. Unfold `flatIntegrand`. Rewrite using `[hS, phase_shift x e' j₀ hj₀ r (-t), hrow, show -(phase x e' + u * -t) = -phase x e' + t * u by ring, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hFeq : flatTensor hs ψ ν (moved G keep g T) x y = (ψ (t * u) : ℂ) * flatTensor hs ψ ν (moved G keep g T) x y`. Establish `: SigmaFinite ν` using `inferInstance`. Establish `: ν.IsAddRightInvariant` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: (varsVol G ν).IsAddRightInvariant` using `by unfold varsVol; infer_instance`. Unfold `flatTensor`. Combine the equalities or inequalities in the displayed calculation. Establish `hne' : (ψ (t * u) : ℂ) ≠ 1` using `fun h => hne (Circle.ext (by simpa using h))`. Establish `: (1 - (ψ (t * u) : ℂ)) * flatTensor hs ψ ν (moved G keep g T) x y = 0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[sub_mul, one_mul, ← hFeq, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `hne' (sub_eq_zero.1 h).symm`. Conclude with `hF h`.
+A detailed English derivation is pending.
 -/
 theorem flatTensor_lastRow_bounded : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (ϖ : kˣ) (e : ℕ) (T : G.Args → ℂ) (keep : Bool) (g : G.VertexGroup), 2 ≤ G.m → IsUnif ϖ → HasConductor ψ 1 → G.IsTensor ϖ e (oppositePath G.m) T → ∃ n : ℕ, ∀ (x : ColArgs G) (y : RowArgs G), flatTensor hs ψ ν (moved G keep g T) x y ≠ 0 → ∀ s, valuation k (x (G.m - 1) (topLast G (G.m - 1 + 1)) s) ≤ valuation k (((ϖ ^ n)⁻¹ : kˣ) : k) := by
   intro k _ _ _ _ _ _ G hs ψ ν _ ϖ e T keep g hm hϖ hψ hT

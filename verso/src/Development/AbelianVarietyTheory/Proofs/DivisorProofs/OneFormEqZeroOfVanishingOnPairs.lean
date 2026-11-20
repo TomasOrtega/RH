@@ -9,11 +9,9 @@ noncomputable section
 namespace GlobalTheory.CechDR
 
 /- English proof (translation)
-Set `A` to `(OAff s').obj (op W)`. Set `B` to `(OAff s').obj (op (⟨X'.basicOpen f, hU⟩ : X'.affineOpens))`. Set `ψ : A →ₐ[R'] B` to `mp (OAff s') (homOfLE hle).op`. Use `letI : Algebra A B := (ψ : A →+* B).toAlgebra`. Use `haveI : IsScalarTower R' A B := IsScalarTower.of_algebraMap_eq fun r ↦ (ψ.commutes r).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsLocalization.Away (show A from f) B := W.2.isLocalization_basicOpen f`. Establish `e` using `(semiHom_mp (OAff s') (homOfLE hle).op).oneFormMap_eq_kaehlerDifferential_map (R := R') (B := A) (B' := B) (fun b ↦ rfl) ω`. Establish `h' : KaehlerDifferential.map R' R' A B ω = 0` using `e.symm.trans h`. Take `⟨⟨c, hc⟩, hc0⟩` from `(IsLocalizedModule.eq_zero_iff (Submonoid.powers (show A from f)) (f := KaehlerDifferential.map R' R' A B)).1 h'`. Take `⟨n, rfl⟩` from `hc`.
-
-Conclude with `⟨n, hc0⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem form_pow_smul_eq_zero_of_basicOpen {R' : Type} [CommRing R'] {X' : Scheme.{0}}
     (s' : X' ⟶ Sp R') (W : X'.affineOpens) (f : Γ(X', W.1)) (hU : IsAffineOpen (X'.basicOpen f))
@@ -36,15 +34,13 @@ theorem form_pow_smul_eq_zero_of_basicOpen {R' : Type} [CommRing R'] {X' : Schem
   exact ⟨n, hc0⟩
 
 /- English proof (translation)
-Set `A` to `(OAff s').obj (op W)`. Set `J : Ideal A` to `(Submodule.span A {ω}).annihilator`. Set `I : Set Γ(X', W.1)` to `{a | (show A from a) ∈ J}`. Establish `hcov : W.1 ≤ ⨆ a : I, X'.basicOpen a.1`. Introduce `x hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, f, e, hxp⟩` from `Pair.exists_basicOpen φ W hx`. Take `⟨⟨⟨U, hU⟩, V⟩, hpV⟩` from `p`. Simplify using `only at e hxp`. Substitute `e` using the available equality. Establish `hle : (⟨X'.basicOpen f, hU⟩ : X'.affineOpens) ≤ W` using `X'.basicOpen_le f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `form_pow_smul_eq_zero_of_basicOpen s' W f hU hle ω (h ⟨(⟨X'.basicOpen f, hU⟩, V), hpV⟩ hle)`. Establish `hxn : x ∈ X'.basicOpen (f ^ n)`. Break down `n with _ | n` into its components or cases. Rewrite using `[pow_zero, X'.basicOpen_of_isUnit isUnit_one]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[X'.basicOpen_pow f n.succ_pos]` and apply the resulting hypothesis. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f ^ n, show ((show A from f) ^ n) ∈ J from (Submodule.mem_annihilator_span_singleton ω _).2 hn⟩, hxn⟩`. Establish `hI` using `(W.2.self_le_iSup_basicOpen_iff).1 hcov`. Establish `hJ : Ideal.span I ≤ J` using `Ideal.span_le.2 fun a ha ↦ ha`. Establish `h1 : (1 : A) ∈ J` using `hJ (hI ▸ Submodule.mem_top)`.
-
-Simplify using `using (Submodule.mem_annihilator_span_singleton _ _).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem form_eq_zero_of_pair {R' : Type} [CommRing R'] {X X' : Scheme.{0}} (φ : X' ⟶ X)
     (s' : X' ⟶ Sp R') (W : X'.affineOpens) (ω : Ω[(OAff s').obj (op W)⁄R'])

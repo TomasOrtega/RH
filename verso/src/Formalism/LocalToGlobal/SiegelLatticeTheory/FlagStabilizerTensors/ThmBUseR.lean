@@ -55,17 +55,15 @@ def TiesR (Ch Cg : ℝ) (T T' : ℕ) (b : ℝ) (A : ℕ) (Cb TB : ℝ) : Prop :=
     Formalism.L2.SG.ThmBUse.NormTie Bd Cw Cj Cb TB
 
 /- English proof (translation)
-Take `⟨Bd, Cw, Cj, hCw, hCj, hgap, hPt, hWt, hJ, hN⟩` from `h`. Introduce `S hS`. Establish `hPt' : ∀ γ : S, ∃ w : Point D.host.E (D.R.rS + 1), Formalism.L2.SG.RowsConc.toPts w = γ.1 ∧ Formalism.L2.SG.ThmBUse.IsRowPt D T T' w` using `fun γ => hPt γ.1 (hS γ.1 γ.2)`. Use `choose w hw hwr using hPt'`. Establish `key : ∀ γ : S, ENNReal.ofReal (Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight γ.1 * N.n γ.1 * (N.NG γ.1 * N.ND γ.1) ^ (A * (D.R.rS + 1) ^ 2) * N.jacobianSquareBound γ.1) ≤ ENNReal.ofReal (Cw * Cj) * (ENNReal.ofReal (wPt D (w γ) * ptWeightG D (rhoReal D) T T' ( …`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ`. Establish `hγ` using `hS γ.1 γ.2`. Establish `h1` using `hWt γ.1 (w γ) hγ (hw γ) (hwr γ)`. Establish `h2` using `hJ γ.1 (w γ) hγ (hw γ) (hwr γ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_mul' (hJ0 γ.1), ENNReal.ofReal_mul hCw]`. Use `_ ≤ ENNReal.ofReal Cw * ENNReal.ofReal (wPt D (w γ) * ptWeightG D (rhoReal D) T T' ((w γ)).1 * normWt D T T' (w γ) ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2)) * (ENNReal.ofReal Cj * JSqR D Bd (w γ)) := by gcongr`. Use `_ = _ := by rw [ENNReal.ofReal_mul hCw]; ring`. Establish `hinj : Function.Injective (fun γ : S => (⟨w γ, (show IsBPt D T T' (w γ) ∧ _ from hwr γ).1⟩ : {p : Point D.host.E (D.R.rS + 1) // IsBPt D T T' p}))`. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hab' : w a = w b` using `congrArg Subtype.val hab`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hw a, ← hw b, hab']`. Establish `hpart : ∑' γ : S, ENNReal.ofReal (wPt D (w γ) * ptWeightG D (rhoReal D) T T' ((w γ)).1 * normWt D T T' (w γ) ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2)) * JSqR D Bd (w γ) ≤ BSumR D Bd (fun γ => normWt D T T' γ ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2))` using `ENNReal.tsum_comp_le_tsum_of_injective hinj (fun p : {p : Point D.host.E (D.R.rS + 1) // IsBPt D T T' p} => ENNReal.ofReal (wPt D p.1 * ptWeightG D (rhoReal D) T T' (p.1).1 * normWt D T T' p.1 ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2)) * JSqR D Bd p.1)`. Establish `htot : ∑ γ : S, ENNReal.ofReal (Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight γ.1 * N.n γ.1 * (N.NG γ.1 * N.ND γ.1) ^ (A * (D.R.rS + 1) ^ 2) * N.jacobianSquareBound γ.1) ≤ ENNReal.ofReal TB`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_fintype, Finset.mul_sum]`. Use `_ ≤ ENNReal.ofReal (Cw * Cj) * BSumR D Bd (fun γ => normWt D T T' γ ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2)) := by gcongr`. Use `_ ≤ ENNReal.ofReal (Cw * Cj) * (ENNReal.ofReal (Real.exp (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * (Fintype.card D.what₂.Tau : ℝ) * Real.log b)) * jSqG D Bd) := by gcongr; exact hB3 T T' b Bd hgap`. Use `_ ≤ ENNReal.ofReal TB := hN`.
-
-Rewrite using `[← Finset.sum_coe_sort S]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pointSum_of_B3R {Ch Cg Cb : ℝ} {T T' A : ℕ} {b TB : ℝ} (hB3 : theoremBRotated D (A : ℝ) Ch Cg Cb)
     (hJ0 : ∀ γ, 0 ≤ N.jacobianSquareBound γ) (hTB : 0 ≤ TB) (h : TiesR X N Ch Cg T T' b A Cb TB) :

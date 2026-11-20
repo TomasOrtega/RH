@@ -5,7 +5,7 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.FinAlgFlat
 
 /- English proof (translation)
-Rewrite `h₁`, `h₂`, the goal using `[Algebra.isPushout_iff]`. Use `IsBaseChange.of_comp (R := R) (S := A) (T := B) (f := (IsScalarTower.toAlgHom R k T).toLinearMap) (h := (IsScalarTower.toAlgHom A T U).toLinearMap) h₁ ?_` and prove the remaining obligations. Use `h₂ using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[IsScalarTower.algebraMap_apply k T U]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isPushout_cancel (R k A B T U : Type*) [CommRing R] [CommRing k] [CommRing A] [CommRing B]
     [CommRing T] [CommRing U]
@@ -31,13 +31,11 @@ noncomputable abbrev fibreMap (R k A B : Type*) [CommRing R] [CommRing k] [CommR
   (Algebra.TensorProduct.map (AlgHom.id R k) (IsScalarTower.toAlgHom R A B)).toRingHom
 
 /- English proof (translation)
-Use `letI iTU : Algebra (k ⊗[R] A) (k ⊗[R] B) := (fibreMap R k A B).toAlgebra`. Use `letI iAT : Algebra A (k ⊗[R] A) := Algebra.TensorProduct.rightAlgebra`. Use `letI iBU : Algebra B (k ⊗[R] B) := Algebra.TensorProduct.rightAlgebra`. Use `letI iAU : Algebra A (k ⊗[R] B) := ((algebraMap B (k ⊗[R] B)).comp (algebraMap A B)).toAlgebra`. Use `haveI t1 : IsScalarTower A B (k ⊗[R] B) := .of_algebraMap_eq' rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI t2 : IsScalarTower A (k ⊗[R] A) (k ⊗[R] B) := .of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `(1 : k) ⊗ₜ[R] (algebraMap A B a) = fibreMap R k A B ((1 : k) ⊗ₜ[R] a)`. Simplify using the standard rewrite rules. Use `haveI t3 : IsScalarTower R A (k ⊗[R] B) := .of_algebraMap_eq fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply R B (k ⊗[R] B) r, IsScalarTower.algebraMap_apply R A B r]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `haveI t4 : IsScalarTower k (k ⊗[R] A) (k ⊗[R] B) := .of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[R] (1 : B) = fibreMap R k A B (a ⊗ₜ[R] (1 : A))`. Simplify using the standard rewrite rules. Establish `h` using `isPushout_cancel R k A B (k ⊗[R] A) (k ⊗[R] B) TensorProduct.isPushout' TensorProduct.isPushout'`.
-
-Conclude with `(Algebra.isLocalization_iff_isPushout M B).mpr h.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fibreMap_isLocalization (R k A B : Type*) [CommRing R] [CommRing k] [CommRing A]
     [CommRing B] [Algebra R k] [Algebra R A] [Algebra R B] [Algebra A B] [IsScalarTower R A B]
@@ -68,13 +66,13 @@ end GlobalTheory.CompanionTheory.FinAlgFlat
 namespace GlobalTheory.CompanionTheory.FinAlgFlat
 
 /- English proof (translation)
-Establish `hQA : (fibreMap R k Q An).Flat`. Establish `hl` using `fibreMap_isLocalization R k Q An N`. Use `letI := (fibreMap R k Q An).toAlgebra`. Conclude with `IsLocalization.flat (k ⊗[R] An) (N.map (Algebra.TensorProduct.includeRight : Q →ₐ[R] k ⊗[R] Q))`. Establish `e : (fibreMap R k Bp An).comp (fibreMap R k P Bp) = (fibreMap R k Q An).comp (fibreMap R k P Q)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[← IsScalarTower.algebraMap_apply]`. Establish `hPA : ((fibreMap R k Bp An).comp (fibreMap R k P Bp)).Flat`. Rewrite using `[e]`. Conclude with `h.comp hQA`. Establish `hl` using `fibreMap_isLocalization R k P Bp M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI i1 := (fibreMap R k P Bp).toAlgebra`. Use `letI i2 := (fibreMap R k Bp An).toAlgebra`. Use `letI i3 := ((fibreMap R k Bp An).comp (fibreMap R k P Bp)).toAlgebra`. Use `haveI : IsScalarTower (k ⊗[R] P) (k ⊗[R] Bp) (k ⊗[R] An) := .of_algebraMap_eq' rfl`. Conclude with `(Module.flat_iff_of_isLocalization (k ⊗[R] Bp) (M.map (Algebra.TensorProduct.includeRight : P →ₐ[R] k ⊗[R] P)) (k ⊗[R] An)).mpr hPA`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem fibreMap_flat_localize (R k P Q Bp An : Type*) [CommRing R] [CommRing k] [CommRing P]
     [CommRing Q] [CommRing Bp] [CommRing An] [Algebra R k] [Algebra R P] [Algebra R Q]
@@ -107,17 +105,11 @@ theorem fibreMap_flat_localize (R k P Q Bp An : Type*) [CommRing R] [CommRing k]
     (M.map (Algebra.TensorProduct.includeRight : P →ₐ[R] k ⊗[R] P)) (k ⊗[R] An)).mpr hPA
 
 /- English proof (translation)
-Use `haveI : Module.Finite P Q := .of_restrictScalars_finite R P Q`. Use `haveI : Algebra.IsIntegral P Q := inferInstance`. Use `haveI : Algebra.IsIntegral R P := inferInstance`. Use `haveI : IsNoetherianRing P := IsNoetherianRing.of_finite R P`. Use `haveI : IsNoetherianRing Q := IsNoetherianRing.of_finite R Q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `p : Ideal P` to `n.comap (algebraMap P Q)`. Use `haveI hp : p.IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n`. Establish `hmR : p.comap (algebraMap R P) = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal p)`. Use `letI : Algebra (Localization.AtPrime p) (Localization.AtPrime n) := (Localization.localRingHom p n (algebraMap P Q) rfl).toAlgebra`. Use `haveI tP : IsScalarTower P (Localization.AtPrime p) (Localization.AtPrime n) := .of_algebraMap_eq fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply P Q (Localization.AtPrime n) x]`. Conclude with `(Localization.localRingHom_to_map p n (algebraMap P Q) rfl x).symm`. Use `haveI tR : IsScalarTower R (Localization.AtPrime p) (Localization.AtPrime n) := .of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply R P (Localization.AtPrime p) x, ← IsScalarTower.algebraMap_apply P (Localization.AtPrime p) (Localization.AtPrime n), IsScalarTower.algebraMap_apply P Q (Localization.AtPrime n), ← IsScalarTower.algebraMap_apply R P Q, ← IsScalarTower.algebraMap_ap …`. Use `haveI : IsNoetherianRing (Localization.AtPrime p) := IsLocalization.isNoetherianRing p.primeCompl _ inferInstance`.
-
-Use `haveI : IsNoetherianRing (Localization.AtPrime n) := IsLocalization.isNoetherianRing n.primeCompl _ inferInstance`. Use `haveI : IsLocalHom (algebraMap R (Localization.AtPrime p)) := by`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`. Establish `ham : a ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal a).mpr hnu`.
-
-Rewrite `ham` using `[← hmR, Ideal.mem_comap]`. Establish `hm` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime p) p (algebraMap R P a)).mpr ham`. Rewrite `hm` using `[← IsScalarTower.algebraMap_apply R P (Localization.AtPrime p)]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hm ha`. Use `haveI : IsLocalHom (algebraMap (Localization.AtPrime p) (Localization.AtPrime n)) := Localization.isLocalHom_localRingHom p n (algebraMap P Q) rfl`.
-
-Establish `hfl : Module.Flat R (Localization.AtPrime n)` using `inferInstance`. Establish `hfib` using `fibreMap_flat_localize R (IsLocalRing.ResidueField R) P Q (Localization.AtPrime p) (Localization.AtPrime n) p.primeCompl n.primeCompl h`. Establish `hBA : Module.Flat (Localization.AtPrime p) (Localization.AtPrime n)` using `GlobalTheory.T.module_flat_of_flat_and_fibre_flat R (Localization.AtPrime p) (Localization.AtPrime n) hfl hfib`. Conclude with `(Module.flat_iff_of_isLocalization (Localization.AtPrime p) p.primeCompl (Localization.AtPrime n)).mp hBA`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_localization_of_fibre (R P Q : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [CommRing P] [CommRing Q] [Algebra R P] [Algebra R Q] [Algebra P Q] [IsScalarTower R P Q]
@@ -170,7 +162,7 @@ theorem flat_localization_of_fibre (R P Q : Type) [CommRing R] [IsLocalRing R] [
     (Localization.AtPrime n)).mp hBA
 
 /- English proof (translation)
-The claim follows from `Module.flat_of_isLocalized_maximal Q Q (fun n _ => Localization.AtPrime n) (fun n _ => Algebra.linearMap Q _) (fun n _ => flat_localization_of_fibre R P Q h n)`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_fibreMap_flat (R P Q : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [CommRing P] [CommRing Q] [Algebra R P] [Algebra R Q] [Algebra P Q] [IsScalarTower R P Q]
@@ -180,9 +172,9 @@ theorem flat_of_fibreMap_flat (R P Q : Type) [CommRing R] [IsLocalRing R] [IsNoe
     (fun n _ => Algebra.linearMap Q _) (fun n _ => flat_localization_of_fibre R P Q h n)
 
 /- English proof (translation)
-Introduce `R P Q _ _ _ _ _ _ _ _ _ _ φ h`. Use `letI : Algebra P Q := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R P Q := .of_algebraMap_eq fun x => (φ.commutes x).symm`. Establish `e : IsScalarTower.toAlgHom R P Q = φ` using `by ext; rfl`. Establish `h' : (fibreMap R (IsLocalRing.ResidueField R) P Q).Flat`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fibreMap, e]`. Conclude with `h`. Conclude with `flat_of_fibreMap_flat R P Q h'`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_flat_of_fibre_flat : ∀ (R P Q : Type) [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] [CommRing P] [CommRing Q] [Algebra R P] [Algebra R Q]

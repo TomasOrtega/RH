@@ -9,7 +9,7 @@ namespace GlobalTheory.KummerAlg
 open MvPolynomial
 
 /- English proof (translation)
-Set `T : L ⊗[B] L →ₗ[B] L` to `TensorProduct.lift ((LinearMap.lsmul B L).compl₁₂ ψ LinearMap.id)`. Establish `h` using `congrArg T (Module.Invertible.tmul_comm (R := B) (m₁ := e) (m₂ := ℓ))`. Simplify `h` using `[T]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_comm_of_invertible {B : Type} [CommRing B] {L : Type} [AddCommGroup L] [Module B L]
     [Module.Invertible B L] (ψ : L →ₗ[B] B) (e ℓ : L) : ψ e • ℓ = ψ ℓ • e := by
@@ -29,16 +29,16 @@ theorem position_apply (φ : MultilinearMap B (fun _ : Fin (q + 1) => L) B) (e �
     intersection_update_fsHerm_neg_one φ e ℓ = φ (Function.update (fun _ => e) 0 ℓ) := rfl
 
 /- English proof (translation)
-Rewrite using `[position_apply, Function.update_eq_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem position_self (φ : MultilinearMap B (fun _ : Fin (q + 1) => L) B) (e : L) :
     intersection_update_fsHerm_neg_one φ e e = φ (fun _ => e) := by
   rw [position_apply, Function.update_eq_self]
 
 /- English proof (translation)
-Establish `h1 : φ (fun i => φ (fun _ => e) • ℓ i) = φ (fun _ => e) ^ (q + 1) * φ ℓ`. Rewrite using `[MultilinearMap.map_smul_univ, Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Establish `h2 : φ (fun i => intersection_update_fsHerm_neg_one φ e (ℓ i) • e) = (∏ i, intersection_update_fsHerm_neg_one φ e (ℓ i)) * φ (fun _ => e)`. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`. Establish `h3 : (fun i => φ (fun _ => e) • ℓ i) = (fun i => intersection_update_fsHerm_neg_one φ e (ℓ i) • e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← position_self φ e]`. Conclude with `smul_comm_of_invertible (intersection_update_fsHerm_neg_one φ e) e (ℓ i)`. Rewrite using `[← h1, h3, h2, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_eq_mul_prod_position [Module.Invertible B L]
     (φ : MultilinearMap B (fun _ : Fin (q + 1) => L) B) (e : L) (ℓ : Fin (q + 1) → L) :
@@ -55,7 +55,7 @@ theorem pow_mul_eq_mul_prod_position [Module.Invertible B L]
   rw [← h1, h3, h2, mul_comm]
 
 /- English proof (translation)
-Establish `hA` using `prod_gen φ (fun _ => e)`. Establish `hB` using `prod_gen φ (Function.update (fun _ => e) 0 ℓ)`. Rewrite `hA`, `hB` using `[Fin.prod_univ_succ]`. Simplify using `only [Function.update_self, ne_eq, Fin.succ_ne_zero, not_false_eq_true, Function.update_of_ne] at hB`. Rewrite using `[position_apply, ← hB, ← hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -77,9 +77,9 @@ open MvPolynomial
 variable {B : Type} [CommRing B] {L : Type} [AddCommGroup L] [Module B L] {q : ℕ}
 
 /- English proof (translation)
-Use `Ideal.Quotient.algHom_ext B (MvPolynomial.algHom_ext fun ℓ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g₁ (gen φ ℓ) = g₂ (gen φ ℓ)`. Establish `k₁` using `congrArg g₁ (algebraMap_mul_gen φ e ℓ)`. Establish `k₂` using `congrArg g₂ (algebraMap_mul_gen φ e ℓ)`. Simplify using `only [map_mul, AlgHom.commutes] at k₁ k₂`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[k₁, k₂, h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem algHom_ext_of_isUnit (φ : MultilinearMap B (fun _ : Fin (q + 1) => L) B) (e : L)
     {R : Type} [CommRing R] [Algebra B R] (hu : IsUnit (algebraMap B R (φ (fun _ => e))))
@@ -127,7 +127,7 @@ def liftRoot [Module.Invertible B L] (φ : MultilinearMap B (fun _ : Fin (q + 1)
         _ = algebraMap B R (φ ℓ) * ↑u ^ (q + 1) := by rw [hv, mul_one, ← key]; ring
 
 /- English proof (translation)
-Establish `h0 : liftRoot φ e hu x hx (gen φ e) = MvPolynomial.aeval (fun ℓ => algebraMap B R (intersection_update_fsHerm_neg_one φ e ℓ) * ↑hu.unit⁻¹ * x) (X e)` using `rfl`. Rewrite using `[h0, aeval_X, position_self]`. Establish `: algebraMap B R (φ (fun _ => e)) * ↑hu.unit⁻¹ = 1`. Conclude with `hu.mul_val_inv`. Rewrite using `[this, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftRoot_gen [Module.Invertible B L] (φ : MultilinearMap B (fun _ : Fin (q + 1) => L) B)
     (e : L) {R : Type} [CommRing R] [Algebra B R] (hu : IsUnit (algebraMap B R (φ (fun _ => e))))
@@ -147,11 +147,11 @@ open MvPolynomial
 variable {B : Type} [CommRing B] {L : Type} [AddCommGroup L] [Module B L] {q : ℕ}
 
 /- English proof (translation)
-Use `letI : Field (B ⧸ m) := Ideal.Quotient.field m`. Set `K` to `AlgebraicClosure (B ⧸ m)`. Establish `hK : ∀ b : B, algebraMap B K b = algebraMap (B ⧸ m) K (Ideal.Quotient.mk m b)` using `fun b => IsScalarTower.algebraMap_apply B (B ⧸ m) K b`. Establish `hu : IsUnit (algebraMap B K (φ (fun _ => e)))`. Rewrite using `[hK, isUnit_iff_ne_zero, ne_eq, map_eq_zero_iff _ (algebraMap (B ⧸ m) K).injective, Ideal.Quotient.eq_zero_iff_mem]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap B K (φ (fun _ => e))) (Nat.succ_pos q)`. Set `g` to `liftRoot φ e hu x hx`. Introduce `htop`. Establish `hle : m • (⊤ : Submodule B (Alg φ)) ≤ Submodule.comap g.toLinearMap ⊥`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_le.2 fun r hr n _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, Submodule.mem_bot, AlgHom.toLinearMap_apply, map_smul, Algebra.smul_def, hK, (Ideal.Quotient.eq_zero_iff_mem).2 hr, map_zero, zero_mul]`. Establish `h1 : (1 : Alg φ) ∈ Submodule.comap g.toLinearMap ⊥` using `hle (by rw [htop]; exact Submodule.mem_top)`. Simplify using `only [Submodule.mem_comap, AlgHom.toLinearMap_apply, map_one, Submodule.mem_bot] at h1`. Conclude with `one_ne_zero h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_top_ne_top [Module.Invertible B L]
     (φ : MultilinearMap B (fun _ : Fin (q + 1) => L) B) (m : Ideal B) [hm : m.IsMaximal]
@@ -218,9 +218,7 @@ def awayEquiv [Module.Invertible B L] (φ : MultilinearMap B (fun _ : Fin (q + 1
         hf, hb, AlgHom.id_apply])
 
 /- English proof (translation)
-Use `set Bf := Localization.Away (φ (fun _ => e))`. Establish `hmon : (Polynomial.X ^ (q + 1) - Polynomial.C (algebraMap B Bf (φ (fun _ => e)))).Monic` using `Polynomial.monic_X_pow_sub_C _ (Nat.succ_ne_zero q)`. Set `pb` to `AdjoinRoot.powerBasis' hmon`. Use `haveI := Module.Free.of_basis pb.basis`. Use `haveI := Module.Finite.of_basis pb.basis`.
-
-Set `eq` to `(awayEquiv φ e).toLinearEquiv`. Conclude with `⟨Module.Finite.equiv eq.symm, Module.Projective.of_equiv eq.symm⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem away_finite_projective [Module.Invertible B L]
     (φ : MultilinearMap B (fun _ : Fin (q + 1) => L) B) (e : L) :
@@ -240,15 +238,13 @@ end GlobalTheory.KummerAlg
 namespace GlobalTheory.KummerAlg
 
 /- English proof (translation)
-Introduce `B _ L _ _ _ q φ hq hφ`. Take `⟨n, rfl⟩ : ∃ n, q = n + 1` from `⟨q - 1, by omega⟩`. Set `s : Set B` to `Set.range (fun e : L => φ (fun _ => e))`. Establish `hs : Ideal.span s = ⊤`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨m, hm, hsm⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨e, he⟩` from `hφ m hm.isPrime`. Conclude with `he (hsm (Ideal.subset_span ⟨e, rfl⟩))`. Set `F : s → Type` to `fun g => Localization.Away g.1 ⊗[B] Alg φ`. Set `ϕ : ∀ g : s, Alg φ →ₗ[B] F g` to `fun g => TensorProduct.mk B (Localization.Away g.1) (Alg φ) 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfp : ∀ g : s, Module.Finite (Localization.Away g.1) (F g) ∧ Module.Projective (Localization.Away g.1) (F g)`. Introduce and unpack `⟨_, e, rfl⟩`. Conclude with `away_finite_projective φ e`. Use `haveI (g : s) : Module.Finite (Localization.Away g.1) (F g) := (hfp g).1`. Use `haveI (g : s) : Module.Projective (Localization.Away g.1) (F g) := (hfp g).2`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI (g : s) : IsLocalizedModule (Submonoid.powers g.1) (ϕ g) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers g.1) (Localization.Away g.1) (ϕ g)).2 (TensorProduct.isBaseChange B (Alg φ) (Localization.Away g.1))`. Use `haveI (g : s) : Module.Flat B (F g) := by haveI : Module.Flat B (Localization.Away g.1) := IsLocalization.flat _ (Submonoid.powers g.1) haveI : Module.Flat (Localization.Away g.1) (F g) := Module.Flat.of_projective`. Conclude with `Module.Flat.trans B (Localization.Away g.1) (F g)`. Use `haveI : Module.FinitePresentation B (Alg φ) := Module.FinitePresentation.of_localizationSpan' s hs (Mₚ := F) (Rₚ := fun g : s => Localization.Away g.1) ϕ fun _ => Module.finitePresentation_of_projective _ _`. Use `haveI : Module.Flat B (Alg φ) := Module.flat_of_isLocalized_span B (Alg φ) s hs F ϕ fun _ => inferInstance`.
-
-Use `⟨inferInstance, Module.Flat.projective_of_finitePresentation, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `m hm`. Take `⟨e, he⟩` from `hφ m hm.isPrime`. Conclude with `smul_top_ne_top φ m e he`.
+A detailed English derivation is pending.
 -/
 theorem finite_projective_faithfullyFlat : ∀ (B : Type) [CommRing B] (L : Type) [AddCommGroup L]
     [Module B L] [Module.Invertible B L] (q : ℕ) (φ : MultilinearMap B (fun _ : Fin q => L) B),

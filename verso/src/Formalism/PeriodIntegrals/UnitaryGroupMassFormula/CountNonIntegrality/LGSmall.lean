@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.S Formalism.MainNotions.
 open Classical ValuativeRel
 
 /- English proof (translation)
-Use `first`. Consider the case `exact one_ne_zero`. Consider the case `exact FractionalIdeal.one_ne_zero`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem oneFI_ne_zero (D : Formalism.BasicNotions.D7) :
     (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) ≠ 0 := by
@@ -20,9 +20,9 @@ theorem oneFI_ne_zero (D : Formalism.BasicNotions.D7) :
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `Fp _ _ _ _ x y hy`. Distinguish the cases in `hx : valuation Fp x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hy (Units.mk0 (valuation Fp x)⁻¹ (inv_ne_zero hx))`. Establish `hn' : valuation Fp y ^ n < (valuation Fp x)⁻¹` using `by rwa [Units.val_mk0] at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Establish `hpos : 0 < valuation Fp x` using `zero_lt_iff.2 hx`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem small_powers_bound : PowSmall := by
   intro Fp _ _ _ _ x y hy
@@ -38,15 +38,13 @@ theorem small_powers_bound : PowSmall := by
       _ = 1 := inv_mul_cancel₀ hx
 
 /- English proof (translation)
-Introduce `d hd`. Establish `h1` using `coeIdeal_differentIdeal (A := ℤ) (K := ℚ) (B := 𝓞 D.host.F) (L := D.host.F)`. Establish `hdmem : algebraMap (𝓞 D.host.F) D.host.F d ∈ (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F))⁻¹`. Rewrite using `[← h1]`. Conclude with `(FractionalIdeal.mem_coeIdeal _).mpr ⟨d, hd, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htmem : t ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F)`. Rewrite using `[FractionalIdeal.mem_dual (oneFI_ne_zero D)]`. Introduce `a ha`. Take `⟨a', rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Take `⟨n, hn⟩` from `ht a'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply]`. Simplify using `using hn.symm`. Establish `hne : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ (oneFI_ne_zero D)`. Establish `hprod` using `FractionalIdeal.mul_mem_mul htmem hdmem`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hprod` using `[mul_inv_cancel₀ hne]`. Take `⟨y, hy⟩` from `(FractionalIdeal.mem_one_iff _).mp hprod`. Rewrite using `[← hy]`. Use `first`. Consider the case `exact RingOfIntegers.isIntegral_coe y`.
-
-Consider the case `exact y.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dual_mul_different_integral (D : Formalism.BasicNotions.D7) (t : D.host.F)
     (ht : ∀ a : 𝓞 D.host.F, ∃ n : ℤ, Algebra.trace ℚ D.host.F (t * a) = n) :
@@ -76,7 +74,7 @@ theorem dual_mul_different_integral (D : Formalism.BasicNotions.D7) (t : D.host.
   | exact y.2
 
 /- English proof (translation)
-Use `first`. Consider the case `exact differentIdeal_ne_bot`. Consider the case `exact differentIdeal_ne_bot (K := ℚ) (L := D.host.F)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem differentF_ne_bot (D : Formalism.BasicNotions.D7) : differentIdeal ℤ (𝓞 D.host.F) ≠ ⊥ := by
   first
@@ -84,25 +82,21 @@ theorem differentF_ne_bot (D : Formalism.BasicNotions.D7) : differentIdeal ℤ (
   | exact differentIdeal_ne_bot (K := ℚ) (L := D.host.F)
 
 /- English proof (translation)
-Introduce `D t ht m`. Establish `hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))` using `by first`. Consider the case `exact FaithfulSMul.algebraMap_injective _ _`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective _ _`. Consider the case `exact (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hne : ddS D ≠ 0`. Unfold `ddS`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective hinj]`. Conclude with `differentF_ne_bot D`. Establish `key : ∀ z ∈ Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)), (t : D.host.E) * algebraMap (𝓞 D.host.E) D.host.E z ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, hd, rfl⟩` from `hx`. Establish `hint` using `(dual_mul_different_integral D t ht d hd).map (algebraMap D.host.F D.host.E).toIntAlgHom`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.mem_one_iff]`. Use `⟨⟨_, hint⟩, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `(simp [map_mul]; done)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [RingHom.toIntAlgHom_apply, map_mul]; rfl)`. Consider the case `zero`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w₁, hw₁⟩` from `(FractionalIdeal.mem_one_iff _).mp hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w₂, hw₂⟩` from `(FractionalIdeal.mem_one_iff _).mp hy`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨w₁ + w₂, by rw [map_add, hw₁, hw₂, map_add, mul_add]⟩`. Consider the case `smul a x _ hx`. Rewrite using `[smul_eq_mul, map_mul, mul_left_comm]`. Take `⟨w, hw⟩` from `(FractionalIdeal.mem_one_iff _).mp hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨a * w, by rw [map_mul, hw]⟩`. Establish `h1 : (t : D.host.E) ∈ (ddS D)⁻¹`. Rewrite using `[FractionalIdeal.mem_inv_iff hne]`. Introduce `y hy`. Unfold `ddS at hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hy`. Conclude with `key z hz`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Proceed by induction on `m with`. Consider the case `zero`.
-
-Rewrite using `[pow_zero, pow_zero]`. Use `first`. Consider the case `exact FractionalIdeal.one_mem_one _`. Consider the case `exact FractionalIdeal.one_mem_one`. Consider the case `succ n ih`.
-
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `FractionalIdeal.mul_mem_mul ih h1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_lattice_powers : DualPow := by
   intro D t ht m

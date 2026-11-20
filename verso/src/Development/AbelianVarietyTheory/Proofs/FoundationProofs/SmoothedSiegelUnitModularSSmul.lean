@@ -8,26 +8,26 @@ open GlobalTheory.Sieg GlobalTheory.QFam
 namespace GlobalTheory.Sieg
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [act, ModularGroup.S, Fin.sum_univ_two]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_S (x : Fin 2 → ℚ) : act x ModularGroup.S = ![x 1, -x 0] := by
   funext i
   fin_cases i <;> simp [act, ModularGroup.S, Fin.sum_univ_two]
 
 /- English proof (translation)
-Introduce `c x τ h`. Take `⟨hc, hc6, hx⟩` from `h`. Use `set z : ℂ := (x 1 : ℂ) * (τ : ℂ) - (x 0 : ℂ) with hz`. Establish `hτ : (τ : ℂ) ≠ 0` using `τ.ne_zero`. Establish `h1 : pt x (ModularGroup.S • τ) = z / (τ : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pt, UpperHalfPlane.modular_S_smul, hz]`. Simplify using `only [UpperHalfPlane.coe_mk]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : pt (act x ModularGroup.S) τ = z`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[act_S, pt, hz]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hnot : ∀ m n : ℤ, (c : ℂ) * z ≠ (m : ℂ) * (τ : ℂ) + n`. Introduce `m n heq`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Establish `him` using `congrArg Complex.im heq`. Establish `hre` using `congrArg Complex.re heq`. Simplify using `[hz, mul_sub] at him hre`. Establish `hpos : 0 < τ.im` using `τ.im_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (c : ℝ) * (x 1 : ℝ) = m`. Establish `: ((c : ℝ) * (x 1 : ℝ) - m) * τ.im = 0` using `by linarith`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd h hpos.ne'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0 : (c : ℝ) * (x 0 : ℝ) = ((-n : ℤ) : ℝ)`. Rewrite `hre` using `[← mul_assoc, e1]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⟨-n, ?_⟩, ⟨m, ?_⟩⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e0.symm` after adjusting the coercions. Conclude with `e1.symm` after adjusting the coercions. Unfold `sg`. Rewrite using `[h1, h2]`. Conclude with `GlobalTheory.T.smoothedThetaQProduct_modularS_transform c τ z hc hc6 hnot`.
+A detailed English derivation is pending.
 -/
 theorem sg_S : ∀ (c : ℕ) (x : Fin 2 → ℚ) (τ : ℍ), admitted c x →
     sg c x (ModularGroup.S • τ) = sg c (act x ModularGroup.S) τ := by

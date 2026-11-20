@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.PhiOneVal
 
 /- English proof (translation)
-Rewrite using `[p.int_iff, p.sec_pr]`. Conclude with `h.2 x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_prime_iff_pr_inv_notMem {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : SplitPt D k) (P : HeightOneSpectrum (𝓞 D.host.E))
@@ -22,13 +22,13 @@ theorem mem_prime_iff_pr_inv_notMem {D : D7} {k : Type} [Field k] [ValuativeRel 
   exact h.2 x hx
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p P h a ha`. Take `⟨n, ⟨d, hd⟩, hnd | hnd⟩` from `P.exists_primeCompl_mul_eq_or_mul_eq (K := D.host.E) a`. Conclude with `⟨d, hd, n, by rw [← hnd, mul_comm]⟩`. Establish `hd' : d ∉ P.asIdeal` using `hd`. Establish `hd0 : d ≠ 0` using `fun h0 => hd' (h0 ▸ P.asIdeal.zero_mem)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd' : a * (n : D.host.E) = (d : D.host.E)` using `hnd`. Establish `hdE : (d : D.host.E) ≠ 0` using `fun h0 => hd0 (RingOfIntegers.coe_eq_zero_iff.mp h0)`. Establish `hnE : (n : D.host.E) ≠ 0` using `fun h0 => hdE (by rw [← hnd', h0, mul_zero])`. Establish `hn0 : n ≠ 0` using `fun h0 => hnE (by rw [h0]; rfl)`. Use `⟨n, fun hn => ?_, d, by rw [mul_comm]; exact hnd.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(mem_prime_iff_pr_inv_notMem p P h n hn0).1 hn`. Establish `h2` using `not_not.1 (mt (mem_prime_iff_pr_inv_notMem p P h d hd0).2 hd')`. Apply `h1` to reduce the goal to its premises. Establish `h3 : (n : D.host.E)⁻¹ = a * (d : D.host.E)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hdE, ← hnd', mul_comm a, inv_mul_cancel_left₀ hnE]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, map_mul, map_mul]`. Conclude with `mul_mem ha h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denom_notMem_of_pr_int : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k)
     (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e P → ∀ a : D.host.E, p.pr (incA D a) ∈ 𝒪[k] →

@@ -11,23 +11,21 @@ noncomputable section
 namespace GlobalTheory.TwOrbLat
 
 /- English proof (translation)
-Introduce `E _ _ _ w K e a B b L hL`. Take `⟨hfg, hspan⟩` from `hL`. Use `haveI : Module.Finite K.O L := Module.Finite.iff_fg.mpr hfg`. Use `haveI : NoZeroSMulDivisors K.O B.A := ⟨fun {r x} h => by`. Rewrite `h` using `[← algebraMap_smul K.E r x]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Break down `smul_eq_zero.mp h with h | h` into its components or cases. Use the proof step `left; exact (IsFractionRing.injective K.O K.E) (by simpa using h)`. Use `right`. Conclude with `h⟩`. Use `haveI : Module.Free K.O L := Module.free_of_finite_type_torsion_free'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `y` to `Module.Free.chooseBasis K.O L`. Set `v : Module.Free.ChooseBasisIndex K.O L → B.A` to `fun i => (y i : B.A)`. Establish `hli : LinearIndependent K.O v` using `y.linearIndependent.map' L.subtype (Submodule.ker_subtype L)`. Establish `hliE : LinearIndependent K.E v` using `(LinearIndependent.iff_fractionRing K.O K.E).mp hli`. Establish `hLv : Submodule.span K.O (Set.range v) = L`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Set.range v = L.subtype '' Set.range y`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, y.span_eq, Submodule.map_subtype_top]`. Establish `hspE : Submodule.span K.E (Set.range v) = ⊤`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.span_span_of_tower K.O K.E, hLv]`. Conclude with `hspan`. Set `c` to `Module.Basis.mk hliE hspE.ge`. Set `c'` to `c.reindex (c.indexEquiv b)`. Set `U : (Matrix (Fin a) (Fin a) K.E)ˣ` to `⟨b.toMatrix c', c'.toMatrix b, b.toMatrix_mul_toMatrix_flip c', c'.toMatrix_mul_toMatrix_flip b⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `⟨Units.map (e.toRingHom.mapMatrix : Matrix (Fin a) (Fin a) K.E →+* _).toMonoidHom U, ?_⟩` and prove the remaining obligations. Rewrite using `[latOf_eq, ← hLv]`. Establish `hcol : ∀ j, (ofCrd e b fun i => (Units.map (e.toRingHom.mapMatrix : Matrix (Fin a) (Fin a) K.E →+* _).toMonoidHom U).val i j) = c' j`. Introduce `j`. Rewrite using `[← ofCrd_crd e b (c' j)]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `congr 1`. Simplify using `only [hcol]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_range]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Use `⟨(c.indexEquiv b).symm j, ?_⟩` and prove the remaining obligations. Simplify using `[c', c, v]`. Introduce and unpack `⟨i, rfl⟩`.
-
-Use `⟨c.indexEquiv b i, ?_⟩` and prove the remaining obligations. Simplify using `[c', c, v]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lat_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ)
     (e : K.E ≃+* w.adicCompletion E) (a : ℕ) (B : GlobalTheory.UnitLemma.InvAlg K) (b : Module.Basis (Fin a) K.E B.A)

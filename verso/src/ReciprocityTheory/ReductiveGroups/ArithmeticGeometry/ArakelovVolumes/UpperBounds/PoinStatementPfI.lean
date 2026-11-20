@@ -14,7 +14,7 @@ def psiF (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (P : Frame X.Ψ r → ℂ
   ‖X.dom.indicator P y‖ₑ ^ 2 * W y / ENNReal.ofReal (kaY X x0 bb y)
 
 /- English proof (translation)
-Establish `h1 : Measurable (X.dom.indicator P)` using `ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.meas_indC (X := X) hP.1.continuousOn`. Unfold `psiF`. Conclude with `((h1.enorm.pow_const 2).mul hW.1).div (ENNReal.measurable_ofReal.comp (meas_kaY X x0 bb))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psiF_meas (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
     {W : Frame X.Ψ r → ℝ≥0∞} (hP : IsBEq X la P) (hW : IsMetricW X la W) :
@@ -25,11 +25,11 @@ theorem psiF_meas (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) {la : Wt X.Ψ r}
   exact ((h1.enorm.pow_const 2).mul hW.1).div (ENNReal.measurable_ofReal.comp (meas_kaY X x0 bb))
 
 /- English proof (translation)
-Introduce `y hy b hb`. Establish `hm : rmul y b ∈ X.dom` using `by first`. Consider the case `exact OrthogonalFrameDomain.rmul_mem_dom X hy hb`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X hy hb`. Unfold `psiF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem hy, hP.2 y hy b hb, hW.2.1 y hy b hb, kaY_rmul X hx0 hy hb bb]`. Use `congr 1`. Rewrite using `[enorm_mul, mul_pow]`. Establish `hne : ‖bchar la b‖ₑ ^ 2 ≠ 0` using `pow_ne_zero _ (enorm_ne_zero.2 (bchar_ne X la hb))`. Establish `htop : ‖bchar la b‖ₑ ^ 2 ≠ ⊤` using `ENNReal.pow_ne_top enorm_ne_top`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hof : ENNReal.ofReal (‖bchar la b‖ ^ 2) = ‖bchar la b‖ₑ ^ 2`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite using `[hof, ENNReal.div_eq_inv_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem psiF_rmul (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) (bb : ℝ) {la : Wt X.Ψ r}
     {P : Frame X.Ψ r → ℂ} {W : Frame X.Ψ r → ℝ≥0∞} (hP : IsBEq X la P) (hW : IsMetricW X la W) :
@@ -54,7 +54,7 @@ theorem psiF_rmul (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) (bb : �
     _ = ‖P y‖ₑ ^ 2 * W y := by rw [ENNReal.mul_inv_cancel hne htop, one_mul]
 
 /- English proof (translation)
-Unfold `psiF`. Rewrite using `[Set.indicator_of_mem hy, ENNReal.div_mul_cancel (ENNReal.ofReal_pos.2 (kaY_pos X x0 bb y)).ne' ENNReal.ofReal_ne_top]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiF_mul (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (P : Frame X.Ψ r → ℂ)
     (W : Frame X.Ψ r → ℝ≥0∞) {y : Frame X.Ψ r} (hy : y ∈ X.dom) :
@@ -64,7 +64,7 @@ theorem psiF_mul (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (P : Frame X.Ψ r
     ENNReal.ofReal_ne_top]
 
 /- English proof (translation)
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ExtFPf.ae_OmF] with z hz`. Establish `hyd : cpt X x0 z ∈ X.dom` using `hz`. Simplify using `only [psiF, Set.indicator_of_mem hyd, hPF z hz, kaY_cpt X hx0]`. Rewrite using `[ENNReal.ofReal_div_of_pos (by unfold kaF; exact Real.exp_pos _), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm, ENNReal.mul_div_right_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiF_int (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) (bb : ℝ) {P : Frame X.Ψ r → ℂ}
     {W : Frame X.Ψ r → ℝ≥0∞} {F : V (nd X) → ℂ} (hPF : ∀ z ∈ OmF X x0, P (cpt X x0 z) = F z) :
@@ -78,9 +78,9 @@ theorem psiF_int (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) (bb : �
     ofReal_norm, ENNReal.mul_div_right_comm]
 
 /- English proof (translation)
-Use `ENNReal.measurable_ofReal.comp ?_` and prove the remaining obligations. Unfold `densF`. Use `Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_` and prove the remaining obligations. Establish `hc : Measurable fun z : V (nd X) => ‖dmin X.Gm (cpt X x' z) τ i.castSucc‖ ^ 2` using `(((cont_dmin X τ _).comp (cont_cpt' X x')).norm.pow 2).measurable`. Establish `e : (fun z : V (nd X) => ‖dmin X.Gm (cpt X x' z) τ i.castSucc‖ ^ (-2 : ℤ)) = fun z => (‖dmin X.Gm (cpt X x' z) τ i.castSucc‖ ^ 2)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[zpow_neg, zpow_ofNat]`. Rewrite using `[e]`. Conclude with `hc.inv`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_densF' (X : Data E r) (x' : Frame X.Ψ r) :
     Measurable fun w => ENNReal.ofReal (densF X x' w) := by
@@ -95,7 +95,7 @@ theorem meas_densF' (X : Data E r) (x' : Frame X.Ψ r) :
   rw [e]; exact hc.inv
 
 /- English proof (translation)
-Unfold `kaY`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (Real.exp_pos _).le (by norm_num), ← Real.exp_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kaY_half (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (y : Frame X.Ψ r) :
     ENNReal.ofReal (kaY X x0 bb y) ^ (1 / 2 : ℝ) = ENNReal.ofReal (kaY X x0 (bb / 2) y) := by
@@ -118,35 +118,31 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Introduce `r X x0 la W bb F P H`. Take `⟨hx0, hPD, hW, -, hbb, -, hA, hP, hPF⟩` from `H`. Establish `hbb0 : 0 ≤ bb`. Establish `: 0 ≤ 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨ρ1, hρ1, hcomp⟩` from `ka_comp X hx0 hbb0`. Establish `e2 : ∀ᶠ w in 𝓝 (0 : V (nd X)), ∀ τ, ∀ i : Fin r, ‖lminor (Gw X w τ) i.castSucc‖ < 2`. Rewrite using `[Filter.eventually_all]`. Introduce `τ`. Rewrite using `[Filter.eventually_all]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Conclude with `(cont_lminor X τ _).norm.continuousAt.eventually_lt continuousAt_const (by rw [norm_lminor_zero]; norm_num)`. Take `⟨R2, hR2, hR2b⟩` from `Metric.eventually_nhds_iff_ball.1 e2`. Use `set ρ0 := min (min ρ1 R2) 1 with hρ0`. Establish `hρ0pos : 0 < ρ0` using `lt_min (lt_min hρ1 hR2) one_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb / 2` using `by linarith`. Take `⟨C2, hC2, hsum⟩` from `kaSum X hx0 hPD hs`. Use `set K := Real.exp (bb * (3 * X.Ψ.card * Real.log 2)) with hK`. Use `set cd : ℝ := ∏ _τ : X.Ψ, ∏ _i : Fin r, (1 / 4 : ℝ) with hcd`. Establish `hcd0 : 0 < cd` using `Finset.prod_pos fun _ _ => Finset.prod_pos fun _ _ => by norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Nn := ∫⁻ z, ENNReal.ofReal (‖F z‖ ^ 2 / kaF X x0 bb z) * W (cpt X x0 z) ∂muF X x0 with hNn`. Use `set c0 : ℝ≥0∞ := ENNReal.ofReal K * ENNReal.ofReal (1 / cd) * Nn with hc0`. Establish `hc0t : c0 ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top) hA.ne`. Establish `hψm` using `psiF_meas X x0 bb hP hW`. Establish `hψB` using `psiF_rmul X hx0 bb hP hW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨ρ0, hρ0pos, min_le_right _ _, c0 ^ (1 / 2 : ℝ) * C2, ENNReal.mul_lt_top (ENNReal.rpow_lt_top_of_nonneg (by norm_num) hc0t) hC2, fun x hx hxo => ?_⟩` and prove the remaining obligations. Establish `hI : ∀ γ : X.Γ, ∫⁻ w in Bset X x ρ0, ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x w)) ≤ c0 * ENNReal.ofReal (kaY X x0 bb (lact γ.1 x))`. Introduce `γ`. Use `set x' := lact γ.1 x with hx'`. Establish `hx'o : IsOrth X x'` using `PairUnfoldPf.isOrth_lact X γ.2 hxo`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcptl : ∀ w, lact γ.1 (cpt X x w) = cpt X x' w` using `fun w => (PairUnfoldPf.cpt_lact X γ.1 x w).symm`. Simplify using `only [hcptl]`. Establish `hdom : ∀ w ∈ Bset X x ρ0, cpt X x' w ∈ X.dom` using `fun w hw => by`. Rewrite using `[← hcptl]`. Conclude with `(PairUnfoldPf.lact_mem_dom_iff X γ.2 _).2 hw.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set A := ENNReal.ofReal K * ENNReal.ofReal (kaY X x0 bb x') * ENNReal.ofReal (1 / cd) with hAdef`. Establish `hpt : ∀ w ∈ Bset X x ρ0, ‖P (cpt X x' w)‖ₑ ^ 2 * W (cpt X x' w) ≤ A * (ENNReal.ofReal (densF X x' w) * psiF X x0 bb P W (cpt X x' w))`. Introduce `w hw`. Establish `hyd` using `hdom w hw`. Establish `hw1 : ‖w‖ < ρ1` using `lt_of_lt_of_le hw.1 ((min_le_left _ _).trans (min_le_left _ _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw2 : w ∈ Metric.ball (0 : V (nd X)) R2` using `mem_ball_zero_iff.2 (lt_of_lt_of_le hw.1 ((min_le_left _ _).trans (min_le_right _ _)))`. Establish `hka` using `hcomp x' hx'o w hw1`. Establish `hdens : cd ≤ densF X x' w`. Unfold `densF`. Use `Finset.prod_le_prod (fun _ _ => by positivity) fun τ _ => Finset.prod_le_prod (fun _ _ => by norm_num) fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dmin_cpt_orth X hx'o]`. Establish `h0 : 0 < ‖lminor (Gw X w τ) i.castSucc‖`. Rewrite using `[← dmin_cpt_orth X hx'o]`. Conclude with `norm_pos_iff.2 (dmin_ne X hyd τ _)`. Establish `h2` using `hR2b w hw2 τ i`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[zpow_neg, zpow_ofNat, show (1 / 4 : ℝ) = ((2 : ℝ) ^ 2)⁻¹ by norm_num]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ h0.le h2.le 2)`. Establish `hden : 1 ≤ ENNReal.ofReal (1 / cd) * ENNReal.ofReal (densF X x' w)`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_one]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[one_div_mul_eq_div, le_div_iff₀ hcd0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkk : ENNReal.ofReal (kaY X x0 bb (cpt X x' w)) ≤ ENNReal.ofReal K * ENNReal.ofReal (kaY X x0 bb x')`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le]`. Conclude with `ENNReal.ofReal_le_ofReal hka`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← psiF_mul X x0 bb P W hyd]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsub : Bset X x ρ0 ⊆ OmF X x'` using `fun w hw => hdom w hw`.
-
-Establish `hAt : A ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top) ENNReal.ofReal_ne_top`. Combine the equalities or inequalities in the displayed calculation. Establish `hm : Measurable fun w => psiF X x0 bb P W (cpt X x' w)` using `hψm.comp (cont_cpt' X x').measurable`. Rewrite using `[muF, lintegral_withDensity_eq_lintegral_mul _ (meas_densF' X x') hm]`. Both sides reduce to the same expression.
-
-Use `_ = A * Nn := by`. Rewrite using `[measInv_holds r X x' x0 hx'o hx0 _ hψm hψB, psiF_int X hx0 bb hPF]`. Use `_ = c0 * ENNReal.ofReal (kaY X x0 bb x') := by rw [hAdef, hc0]; ring`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sumBall_holds : SumBallStatement (E := E) := by
   intro r X x0 la W bb F P H

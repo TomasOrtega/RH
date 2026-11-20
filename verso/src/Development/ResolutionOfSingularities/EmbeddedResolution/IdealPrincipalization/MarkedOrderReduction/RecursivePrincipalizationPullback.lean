@@ -74,7 +74,7 @@ private def markedPullbackSquareId {T : MarkedIdealWithBoundary.{u}} {Y : Scheme
   valid := hT
 
 /- English proof (translation)
-The claim follows from `MarkedPullbackSquare.orderAt_comap_verticalMap (markedPullbackSquareId g hT) hT hbc.order A y`.
+A detailed English derivation is pending.
 -/
 theorem orderAt_comap_of_baseChangeCompatible (hinv : ComapIsoInvariance.{u}) (F : PrincipalizationAssignment.{u}) (n : ℕ)
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) {Y : Scheme.{u}} (g : Y ⟶ T.scheme)
@@ -85,9 +85,9 @@ theorem orderAt_comap_of_baseChangeCompatible (hinv : ComapIsoInvariance.{u}) (F
   MarkedPullbackSquare.orderAt_comap_verticalMap (markedPullbackSquareId g hT) hT hbc.order A y
 
 /- English proof (translation)
-Use `Set.eq_empty_of_subset_empty ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy'` using `(mem_orderAtLeastLocus_iff (T.ideal.comap g) T.mult y).1 hy`. Rewrite `hy'` using `[orderAt_comap_of_baseChangeCompatible hinv F n T hT g k' q hbc T.ideal y]`. Establish `hmem` using `(mem_orderAtLeastLocus_iff T.ideal T.mult _).2 hy'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[h]`. Simplify using `only [Set.mem_empty_iff_false] at hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orderAtLeastLocus_comap_eq_empty_of_baseChangeCompatible (hinv : ComapIsoInvariance.{u})
     (F : PrincipalizationAssignment.{u}) (n : ℕ) (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
@@ -112,7 +112,7 @@ private theorem transformAt_eq_mk (T : MarkedIdealWithBoundary.{u}) (s : T.Seque
         (s.boundary i) := rfl
 
 /- English proof (translation)
-The claim follows from `hmg.level_schemeDim_le T hT s.toMarkedSequenceOfBlowups s.length le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim (hmg : MonomialGeometryHypotheses.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
@@ -121,7 +121,7 @@ theorem MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim (hmg : Mo
   hmg.level_schemeDim_le T hT s.toMarkedSequenceOfBlowups s.length le_rfl
 
 /- English proof (translation)
-Establish `h` using `hmg.level_valid T hT s.toMarkedSequenceOfBlowups s.length le_rfl`. Rewrite `h` using `[transformAt_eq_mk T s.toMarkedSequenceOfBlowups s.length, toMarkedSequence_projectionToBase s s.length]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MonomialGeometryHypotheses.isAdmissible_tripleAtLength (hmg : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
@@ -133,7 +133,7 @@ theorem MonomialGeometryHypotheses.isAdmissible_tripleAtLength (hmg : MonomialGe
   exact h
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Substitute `hm` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isAdmissible_mk_congr {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I₁ I₂ : X.IdealSheafData} {m₁ m₂ : ℕ}
@@ -168,11 +168,11 @@ def SequenceOfBlowupsPullback.toMarkedPullbackSquare {T T' : MarkedIdealWithBoun
   valid := hval
 
 /- English proof (translation)
-Establish `hmg` using `hG.monomialInputs`. Establish `hdimS` using `MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim hmg T hT s`. Establish `hvalS` using `MonomialGeometryHypotheses.isAdmissible_tripleAtLength hmg T hT s`. Establish `hvalS'0` using `MonomialGeometryHypotheses.isAdmissible_tripleAtLength hmg T' hT' s'`. Establish `hvalS'` using `isAdmissible_mk_congr hlastIdeal hmult hvalS'0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain` using `hbc.nonMonomial (SequenceOfBlowupsPullback.toMarkedPullbackSquare g s s' c hdimS hvalS) (s'.boundary s'.length) hsameBoundary.symm hvalS'`. Establish `h0 : lastNonMonomialPart T' s' = nonMonomialPart (s'.boundary s'.length) (s'.ideal s'.length)`. Both sides reduce to the same expression. Establish `h1 : lastNonMonomialPart T s = nonMonomialPart (s.boundary s.length) (s.ideal s.length)` using `rfl`. Rewrite using `[h0, h1, hlastIdeal]`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmain`.
+A detailed English derivation is pending.
 -/
 theorem lastNonMonomialPart_eq_comap_lastMap_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -201,11 +201,11 @@ theorem lastNonMonomialPart_eq_comap_lastMap_of_pullback (hG : PrincipalizationG
   exact hmain
 
 /- English proof (translation)
-Establish `key : lastNonMonomialPart T' s' = (lastNonMonomialPart T s).comap c.lastMap` using `lastNonMonomialPart_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Establish `hvalid : (MarkedIdealWithBoundary.mk T.base (s.obj s.length) (s.toMarkedSequenceOfBlowups.projectionToSpec s.length) (s.ideal s.length) T.mult (s.boundary s.length)).IsAdmissible` using `hG.monomialInputs.level_valid T hT s.toMarkedSequenceOfBlowups s.length le_rfl`. Establish `hord : ∀ (J : (s.obj s.length).IdealSheafData) (y : ↥(s'.obj s'.length)), orderAt (J.comap c.lastMap) y = orderAt J (c.lastMap.base y)` using `hbc.order (s.obj s.length) (s.toMarkedSequenceOfBlowups.toSequenceOfBlowups.projectionToBase s.length) (s.toMarkedSequenceOfBlowups.projectionToSpec s.length) (s.ideal s.length) (s.boundary s.length) hvalid (MarkedSequenceOfBlowups.projectionToSpec_eq s.toMarkedSequenceOfBlowups …`. Establish `hmain : ∀ y : ↥(s'.obj s'.length), orderAt (lastNonMonomialPart T' s') y ≤ (maxOrderNonMonomial T s : ℕ∞)`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : orderAt (lastNonMonomialPart T' s') y = orderAt (lastNonMonomialPart T s) (c.lastMap.base y)` using `(congrArg (fun I : (s'.obj s'.length).IdealSheafData => orderAt I y) key).trans (hord (lastNonMonomialPart T s) y)`. Conclude with `le_of_eq_of_le h1 (orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s (c.lastMap.base y))`. Use `show sSup {m : ℕ | ∃ x : ↥(s'.obj s'.length), (m : ℕ∞) ≤ orderAt (lastNonMonomialPart T' s') x} ≤ maxOrderNonMonomial T s`. Use `csSup_le' ?_` and prove the remaining obligations. Introduce `m hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hm`. Establish `hcast : (m : ℕ∞) ≤ (maxOrderNonMonomial T s : ℕ∞)` using `hy.trans (hmain y)`. Conclude with `hcast` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem maxOrderNonMonomial_le_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -251,7 +251,7 @@ theorem maxOrderNonMonomial_le_of_pullback (hG : PrincipalizationGeometryHypothe
   exact_mod_cast hcast
 
 /- English proof (translation)
-Unfold `maxOrderOn`. Use `csSup_le' ?_` and prove the remaining obligations. Introduce `m hmem`. Take `⟨x, hx, hmx⟩` from `hmem`. Conclude with `h m x hx hmx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem maxOrderOn_le_of_forall {X : Scheme.{u}} (N : X.IdealSheafData) (S : Set ↥X)
     (K : ℕ) (h : ∀ m : ℕ, ∀ x ∈ S, (m : ℕ∞) ≤ orderAt N x → m ≤ K) :
@@ -263,13 +263,13 @@ private theorem maxOrderOn_le_of_forall {X : Scheme.{u}} (N : X.IdealSheafData) 
   exact h m x hx hmx
 
 /- English proof (translation)
-Establish `hmg` using `hG.monomialInputs`. Establish `hdimS` using `MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim hmg T hT s`. Establish `hvalS` using `MonomialGeometryHypotheses.isAdmissible_tripleAtLength hmg T hT s`. Establish `hordLast : ∀ (Aid : (s.obj s.length).IdealSheafData) (y : ↥(s'.obj s'.length)), orderAt (Aid.comap c.lastMap) y = orderAt Aid (c.lastMap.base y)` using `fun Aid y => MarkedPullbackSquare.orderAt_comap_verticalMap (SequenceOfBlowupsPullback.toMarkedPullbackSquare g s s' c hdimS hvalS) hT hbc.order Aid y`. Establish `hnonMon : lastNonMonomialPart T' s' = (lastNonMonomialPart T s).comap c.lastMap` using `lastNonMonomialPart_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain : maxOrderNonMonomialOnOrderLocus T' s' = maxOrderOn (lastNonMonomialPart T' s') (orderAtLeastLocus (s'.ideal s'.length) T'.mult)` using `rfl`. Rewrite using `[hmain]`. Use `maxOrderOn_le_of_forall _ _ _ ?_` and prove the remaining obligations. Introduce `m x' hx' hm`. Establish `hEq1 : orderAt (s'.ideal s'.length) x' = orderAt (s.ideal s.length) (c.lastMap.base x')` using `(congrArg (fun I => orderAt I x') hlastIdeal).trans (hordLast (s.ideal s.length) x')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hEq2 : orderAt (lastNonMonomialPart T' s') x' = orderAt (lastNonMonomialPart T s) (c.lastMap.base x')` using `(congrArg (fun I => orderAt I x') hnonMon).trans (hordLast (lastNonMonomialPart T s) x')`. Establish `h1 : ((T'.mult : ℕ) : ℕ∞) ≤ orderAt (s'.ideal s'.length) x'` using `(mem_orderAtLeastLocus_iff _ _ _).1 hx'`. Establish `hmult' : ((T.mult : ℕ) : ℕ∞) = ((T'.mult : ℕ) : ℕ∞)` using `by rw [hmult]`. Establish `h3 : ((T.mult : ℕ) : ℕ∞) ≤ orderAt (s.ideal s.length) (c.lastMap.base x')` using `hmult'.trans_le (h1.trans_eq hEq1)`. Establish `hxmem : c.lastMap.base x' ∈ orderAtLeastLocus (s.ideal s.length) T.mult` using `(mem_orderAtLeastLocus_iff _ _ _).2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT s (c.lastMap.base x') hxmem`. Establish `hfin : ((m : ℕ) : ℕ∞) ≤ ((maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞)` using `(hm.trans_eq hEq2).trans hle`. Conclude with `hfin` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maxOrderNonMonomialOnOrderLocus_le_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -317,11 +317,11 @@ theorem maxOrderNonMonomialOnOrderLocus_le_of_pullback (hG : PrincipalizationGeo
   exact_mod_cast hfin
 
 /- English proof (translation)
-Establish `hne : {m : ℕ | ∃ y : ↥X, (m : ℕ∞) ≤ orderAt N y}.Nonempty`. Use `⟨0, x₀, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hbdd : BddAbove {m : ℕ | ∃ y : ↥X, (m : ℕ∞) ≤ orderAt N y}`. Use `⟨sSup {m : ℕ | ∃ y : ↥X, (m : ℕ∞) ≤ orderAt N y}, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm`. Take `⟨y, hy⟩` from `hm`. Establish `h` using `hy.trans (hbound y)`. Conclude with `h` after adjusting the coercions. Take `⟨y, hy⟩` from `Nat.sSup_mem hne hbdd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, (mem_orderAtLeastLocus_iff N _ y).2 hy⟩`.
+A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_sSup_nonempty {X : Scheme.{u}} (N : X.IdealSheafData)
     (x₀ : ↥X)
@@ -341,9 +341,9 @@ private theorem orderAtLeastLocus_sSup_nonempty {X : Scheme.{u}} (N : X.IdealShe
   exact ⟨y, (mem_orderAtLeastLocus_iff N _ y).2 hy⟩
 
 /- English proof (translation)
-Establish `hle : maxOrderNonMonomial T' s' ≤ maxOrderNonMonomial T s` using `maxOrderNonMonomial_le_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Unfold `NonMonomialOrderReductionContinues at hcont ⊢`. Take `⟨h1, h2⟩` from `hcont`. Take `⟨x', -⟩` from `h2`. Rewrite `h1` using `[hmult]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨le_trans h1 hle, ?_⟩` and prove the remaining obligations. Establish `hbound : ∀ x : ↥(s.obj s.length), orderAt (lastNonMonomialPart T s) x ≤ ((maxOrderNonMonomial T s : ℕ) : ℕ∞)` using `fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x`. Conclude with `orderAtLeastLocus_sSup_nonempty (lastNonMonomialPart T s) (c.lastMap.base x') hbound`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonMonomialOrderReductionContinues_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -372,7 +372,7 @@ theorem nonMonomialOrderReductionContinues_of_pullback (hG : PrincipalizationGeo
   exact orderAtLeastLocus_sSup_nonempty (lastNonMonomialPart T s) (c.lastMap.base x') hbound
 
 /- English proof (translation)
-Establish `hle : maxOrderNonMonomialOnOrderLocus T' s' ≤ maxOrderNonMonomialOnOrderLocus T s` using `maxOrderNonMonomialOnOrderLocus_le_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Unfold `CompanionIdealReductionContinues at hcont ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem companionIdealReductionContinues_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -394,14 +394,14 @@ theorem companionIdealReductionContinues_of_pullback (hG : PrincipalizationGeome
   omega
 
 /- English proof (translation)
-Simplify using `only [Scheme.IdealSheafData.comap_sup, Scheme.IdealSheafData.comap_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem comap_pow_sup_pow {A B : Scheme.{u}} (f : A ⟶ B) (N J : B.IdealSheafData)
     (a b : ℕ) : (N ^ a ⊔ J ^ b).comap f = (N.comap f) ^ a ⊔ (J.comap f) ^ b := by
   simp only [Scheme.IdealSheafData.comap_sup, Scheme.IdealSheafData.comap_pow]
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Conclude with `(comap_pow_sup_pow f N₁ N₂ _ _).symm`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem pow_sup_pow_eq_comap_pow_sup_pow {A B : Scheme.{u}} (f : A ⟶ B)
     (N₁ N₂ : B.IdealSheafData) (M₁ M₂ : A.IdealSheafData) (a a' b b' : ℕ)
@@ -414,7 +414,7 @@ private theorem pow_sup_pow_eq_comap_pow_sup_pow {A B : Scheme.{u}} (f : A ⟶ B
   exact (comap_pow_sup_pow f N₁ N₂ _ _).symm
 
 /- English proof (translation)
-Establish `hnonMon` using `lastNonMonomialPart_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Unfold `companionIdeal`. Conclude with `pow_sup_pow_eq_comap_pow_sup_pow _ _ _ _ _ T'.mult T.mult (maxOrderNonMonomialOnOrderLocus T' s') (maxOrderNonMonomialOnOrderLocus T s) hnonMon hlastIdeal hmult hinveq`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem companionIdeal_eq_comap_lastMap_of_pullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -437,9 +437,9 @@ theorem companionIdeal_eq_comap_lastMap_of_pullback (hG : PrincipalizationGeomet
     hnonMon hlastIdeal hmult hinveq
 
 /- English proof (translation)
-Establish `h1 : appendRecursivePrincipalization hinv T rc s J μ = appendIfMarked hinv s J μ (rc (tripleAtLength T s J μ) hd)`. Unfold `appendRecursivePrincipalization`. Conclude with `dif_pos hd`. Rewrite using `[h1]`. Unfold `appendIfMarked`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 private theorem appendRecursivePrincipalization_eq_self_of_eq_none (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -456,9 +456,9 @@ private theorem appendRecursivePrincipalization_eq_self_of_eq_none (hinv : Comap
   rw [h]
 
 /- English proof (translation)
-Establish `h1 : appendRecursivePrincipalization hinv T rc s J μ = appendIfMarked hinv s J μ (rc (tripleAtLength T s J μ) hd)`. Unfold `appendRecursivePrincipalization`. Conclude with `dif_pos hd`. Rewrite using `[h1]`. Unfold `appendIfMarked`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 private theorem appendRecursivePrincipalization_eq_append_of_eq_some (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -501,15 +501,13 @@ private def markedPullbackSquareAtLength (T T' : MarkedIdealWithBoundary.{u}) (g
   valid := hJ
 
 /- English proof (translation)
-Distinguish the cases in `hm : (MarkedBlowupSequenceData.ofMarkedSequence σ).IsMarked (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length)`. Distinguish the cases in `hm' : (MarkedBlowupSequenceData.ofMarkedSequence σ').IsMarked (s'.proj s'.length ≫ q) (s'.ideal s'.length) m' (s'.boundary s'.length)`. Establish `he : markedDataOfSeq s J μ σ = some ((MarkedBlowupSequenceData.ofMarkedSequence σ).toMarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length) hm)`. Unfold `markedDataOfSeq`. Conclude with `dif_pos hm`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `he' : markedDataOfSeq s' K ν σ' = some ((MarkedBlowupSequenceData.ofMarkedSequence σ').toMarkedBlowupSequenceData (s'.proj s'.length ≫ q) (s'.ideal s'.length) m' (s'.boundary s'.length) hm')`. Unfold `markedDataOfSeq`. Conclude with `dif_pos hm'`. Establish `hdd` using `Option.some.inj (hrem.symm.trans he)`. Establish `hdd'` using `Option.some.inj (hrem'.symm.trans he')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hdd` using the available equality. Substitute `hdd'` using the available equality. Conclude with `⟨SequenceOfBlowupsPullback.toBlowupDataOfSeq cc⟩`. Establish `hnone : markedDataOfSeq s' K ν σ' = none`. Unfold `markedDataOfSeq`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `dif_neg hm'`. Conclude with `absurd (hrem'.symm.trans hnone) (Option.some_ne_none d')`. Establish `hnone : markedDataOfSeq s J μ σ = none`. Unfold `markedDataOfSeq`. Conclude with `dif_neg hm`.
-
-Conclude with `absurd (hrem.symm.trans hnone) (Option.some_ne_none d)`.
+A detailed English derivation is pending.
 -/
 private theorem nonempty_sequenceOfBlowupsPullback_of_markedDataOfSeq {k₁ k₂ : Type u} [Field k₁] [Field k₂]
     {X Y : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k₁)} {q : Y ⟶ Spec (CommRingCat.of k₂)}
@@ -554,15 +552,15 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_markedDataOfSeq {k₁ k₂
     exact absurd (hrem.symm.trans hnone) (Option.some_ne_none d)
 
 /- English proof (translation)
-Establish `hmg` using `hG.monomialInputs`. Establish `hdimS : krullDimSucc (s.obj s.length) ≤ T.krullDimSucc` using `MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim hmg T hT s`. Establish `hdimS'T : krullDimSucc (s'.obj s'.length) ≤ T'.krullDimSucc` using `MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim hmg T' hT' s'`. Establish `hdimS'n : krullDimSucc (s'.obj s'.length) ≤ n` using `le_trans hdimS'T hdim'`. Establish `hd : (tripleAtLength T s J μ).krullDimSucc ≤ T.krullDimSucc` using `hdimS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (tripleAtLength T' s' (J.comap c.lastMap) μ).krullDimSucc ≤ T'.krullDimSucc` using `hdimS'T`. Establish `hiff` using `hmark hd hd'`. Consider the cases of `hq : markedDataOfSeq s J μ (principalizationOfDimLe T A (tripleAtLength T s J μ) hd) with`. Consider the case `none`. Establish `hq2 : markedDataOfSeq s' (J.comap c.lastMap) μ (principalizationOfDimLe T' A (tripleAtLength T' s' (J.comap c.lastMap) μ) hd') = none` using `hiff.mp hq`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[appendRecursivePrincipalization_eq_self_of_eq_none hinv T (principalizationOfDimLe T A) s J μ hd hq, appendRecursivePrincipalization_eq_self_of_eq_none hinv T' (principalizationOfDimLe T' A) s' (J.comap c.lastMap) μ hd' hq2]`. Conclude with `⟨c⟩`. Consider the case `some d`. Consider the cases of `hq' : markedDataOfSeq s' (J.comap c.lastMap) μ (principalizationOfDimLe T' A (tripleAtLength T' s' (J.comap c.lastMap) μ) hd') with`. Consider the case `none => exact absurd (hq.symm.trans (hiff.mpr hq')) (Option.some_ne_none d)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some d'`. Establish `hrule : IsPullbackBlowupSequence c.lastMap (principalizationOfDimLe T' A (tripleAtLength T' s' (J.comap c.lastMap) μ) hd').toSequenceOfBlowups (principalizationOfDimLe T A (tripleAtLength T s J μ) hd).toSequenceOfBlowups` using `hbc.rule (markedPullbackSquareAtLength T T' g s s' c J μ hdimS hJ) hord (s'.boundary s'.length) hsameBoundary.symm hJ' hdimS'n`. Take `⟨cc⟩` from `hrule.nonempty_sequenceOfBlowupsPullback`. Take `⟨e⟩` from `nonempty_sequenceOfBlowupsPullback_of_markedDataOfSeq s s' J μ (J.comap c.lastMap) μ c.lastMap (principalizationOfDimLe T A (tripleAtLength T s J μ) hd) (principalizationOfDimLe T' A (tripleAtLength T' s' (J.comap c.lastMap) μ) hd') d d' hq hq' cc`. Rewrite using `[appendRecursivePrincipalization_eq_append_of_eq_some hinv T (principalizationOfDimLe T A) s J μ hd d hq, appendRecursivePrincipalization_eq_append_of_eq_some hinv T' (principalizationOfDimLe T' A) s' (J.comap c.lastMap) μ hd' d' hq']`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isPullbackBlowupSequence_append_of_two_fields g s d s' d' hinv c e).nonempty_sequenceOfBlowupsPullback`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_appendRecursive (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (_hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -642,11 +640,9 @@ private noncomputable def markedBlowupSequenceDataAtEndOfIsMarked {k : Type u} [
     (s.boundary s.length) hm
 
 /- English proof (translation)
-Establish `hval : ∀ l ≤ σ.toSequenceOfBlowups.length, ((tripleAtLength T s J μ).transformAt σ l).IsAdmissible`. Introduce `l hl`. Conclude with `hG.monomialInputs.level_valid (tripleAtLength T s J μ) hJ σ l hl`. Establish `hsub` using `MarkedSequenceOfBlowups.orderAtLeastLocus_subset_preimage_transitionMap (orderAtComapOffExceptionalLocus_of_monomialGeometryHypotheses hG.monomialInputs) (tripleAtLength T s J μ) σ hval μ le_rfl 0 j (Nat.zero_le j) hj`. Establish `h0 : (σ.toSequenceOfBlowups.transitionMap (Nat.zero_le j)).base z ∈ orderAtLeastLocus (σ.ideal 0) μ` using `hsub hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[σ.ideal_zero, hinv.coSupport_comap σ.toSequenceOfBlowups.isoZero J μ]`. Establish `hcomp : (σ.toSequenceOfBlowups.projectionToBase j).base z = (σ.toSequenceOfBlowups.isoZero.hom).base ((σ.toSequenceOfBlowups.transitionMap (Nat.zero_le j)).base z)`. Rewrite using `[SequenceOfBlowups.projectionToBase_def]`. Simplify using the standard rewrite rules. Rewrite using `[hcomp]`.
-
-Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem projectionToBase_mem_orderAtLeastLocus_tripleAtLength (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u})
@@ -672,19 +668,17 @@ private theorem projectionToBase_mem_orderAtLeastLocus_tripleAtLength (hG : Prin
   exact h0
 
 /- English proof (translation)
-Establish `hdl : (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm).length = σ.toSequenceOfBlowups.length` using `rfl`. Rewrite `hi` using `[MarkedBlowupSequenceData.append_length, hdl]`. Establish `hprojd : ∀ j : ℕ, (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm).proj j = σ.toSequenceOfBlowups.projectionToBase j`. Introduce `j`. Use `Eq.trans (MarkedBlowupSequenceData.projectionToBase_eq_toSequenceOfBlowups (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) j) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups σ.toSequenceOfBlowups j`. Break down `Nat.eq_or_lt_of_le hi₀ with heq | hlt` into its components or cases. Substitute `heq` using the available equality. Establish `hσ0 : 0 < σ.toSequenceOfBlowups.length` using `by omega`. Establish `hz1 : z ∈ ((s.appendToBlowupSequenceData (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm)).center s.length).support` using `hz`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz1` using `[MarkedBlowupSequenceData.appendToBlowupSequenceData_center_length s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm)]`. Establish `hz2` using `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.1 hz1`. Establish `hz3` using `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.1 hz2`. Establish `hz4 : (σ.toSequenceOfBlowups.isoZero.inv).base ((eqToHom (MarkedBlowupSequenceData.appendToBlowupSequenceData_schemeAt_of_le_length s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) (le_refl s.length))).base z) ∈ orderAtLeastLocus (σ.ideal 0) μ` using `σ.center_order 0 hσ0 hz3`. Establish `hx0` using `projectionToBase_mem_orderAtLeastLocus_tripleAtLength hG hinv T s J μ hJ σ 0 (Nat.zero_le _) _ hz4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(eqToHom (MarkedBlowupSequenceData.appendToBlowupSequenceData_schemeAt_of_le_length s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) (le_refl s.length))).base z, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx0` using `[SequenceOfBlowups.projectionToBase_zero]`. Establish `hcan : ∀ u : ↥(s.obj s.length), (σ.toSequenceOfBlowups.isoZero.hom).base ((σ.toSequenceOfBlowups.isoZero.inv).base u) = u`. Introduce `u`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hx0` using `[hcan]`. Then use the resulting hypothesis. Rewrite using `[MarkedBlowupSequenceData.append_projectionToBase, MarkedBlowupSequenceData.appendProjectionToBase_of_le_length s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) (le_refl s.length)]`. Conclude with `AlgebraicGeometry.Scheme.Hom.comp_apply _ _ z`. Establish `hkσ : i - s.length < σ.toSequenceOfBlowups.length` using `by omega`. Establish `hz1 : z ∈ ((s.appendToBlowupSequenceData (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm)).center i).support` using `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hz1` using `[MarkedBlowupSequenceData.appendToBlowupSequenceData_center_of_length_lt s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) hlt]`. Establish `hz2` using `AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap.1 hz1`. Establish `hz3 : ((eqToHom (MarkedBlowupSequenceData.appendToBlowupSequenceData_schemeAt_of_length_lt s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) hlt)).base z) ∈ orderAtLeastLocus (σ.ideal (i - s.length)) μ` using `σ.center_order (i - s.length) hkσ hz2`. Establish `hx0` using `projectionToBase_mem_orderAtLeastLocus_tripleAtLength hG hinv T s J μ hJ σ (i - s.length) (le_of_lt hkσ) _ hz3`. Use `⟨_, hx0, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[MarkedBlowupSequenceData.append_projectionToBase, MarkedBlowupSequenceData.appendProjectionToBase_of_length_lt s (markedBlowupSequenceDataAtEndOfIsMarked s J μ σ hm) hlt, hprojd]`. Conclude with `base_comp_comp_apply _ _ _ z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mem_orderAtLeastLocus_of_mem_center_append (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -743,13 +737,13 @@ private theorem exists_mem_orderAtLeastLocus_of_mem_center_append (hG : Principa
     exact base_comp_comp_apply _ _ _ z
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Take `⟨x, hx, hproj⟩` from `exists_mem_orderAtLeastLocus_of_mem_center_append hG hinv T s J μ hJ σ hm i hi₀ hi z hz`. Introduce `hcon`. Rewrite `hcon` using `[hproj]`. Establish `hsq : IsPullback c.lastMap (s'.proj s'.length) (s.proj s.length) g`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `c.isPullback_lastMap`. Rewrite `h` using `[toMarkedSequence_projectionToBase, toMarkedSequence_projectionToBase]`. Then use the resulting hypothesis. Take `⟨w, hw, -⟩` from `Scheme.exists_preimage_of_isPullback hsq x y hcon.symm`. Establish `hdimS` using `MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim hG.monomialInputs T hT s`. Establish `hvalS` using `MonomialGeometryHypotheses.isAdmissible_tripleAtLength hG.monomialInputs T hT s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : orderAt (J.comap c.lastMap) w = orderAt J (c.lastMap.base w)` using `MarkedPullbackSquare.orderAt_comap_verticalMap (SequenceOfBlowupsPullback.toMarkedPullbackSquare g s s' c hdimS hvalS) hT hbc.order J w`. Establish `hmem : w ∈ orderAtLeastLocus (J.comap c.lastMap) μ`. Rewrite using `[mem_orderAtLeastLocus_iff, hord, hw]`. Conclude with `(mem_orderAtLeastLocus_iff J μ x).1 hx`. Rewrite `hmem` using `[hempty]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_empty_iff_false] at hmem`.
+A detailed English derivation is pending.
 -/
 private theorem append_proj_center_ne_base_of_orderAtLeastLocus_empty (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u})
@@ -790,13 +784,11 @@ private theorem append_proj_center_ne_base_of_orderAtLeastLocus_empty (hG : Prin
   simp only [Set.mem_empty_iff_false] at hmem
 
 /- English proof (translation)
-Distinguish the cases in `hd : (tripleAtLength T s J μ).krullDimSucc ≤ T.krullDimSucc`. Distinguish the cases in `hm : (MarkedBlowupSequenceData.ofMarkedSequence (principalizationSeqAtEnd T (principalizationOfDimLe T A) s J μ hd)).IsMarked (s.proj s.length ≫ T.structMap) (s.ideal s.length) T.mult (s.boundary s.length)`. Conclude with `append_proj_center_ne_base_of_orderAtLeastLocus_empty hG hinv T T' g hT n A hbc s s' c J μ hJ hempty (principalizationSeqAtEnd T (principalizationOfDimLe T A) s J μ hd) hm (appendRecursivePrincipalization hinv T (principalizationOfDimLe T A) s J μ) (appendRecursivePrincipalizatio …`. It suffices to derive a contradiction. Establish `hrs : markedDataOfSeq s J μ (principalizationOfDimLe T A (tripleAtLength T s J μ) hd) = none`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `markedDataOfSeq`. Conclude with `dif_neg hm`. Establish `he : appendRecursivePrincipalization hinv T (principalizationOfDimLe T A) s J μ = s` using `appendRecursivePrincipalization_eq_self_of_eq_none hinv T (principalizationOfDimLe T A) s J μ hd hrs`. Rewrite `hi` using `[he]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `he : appendRecursivePrincipalization hinv T (principalizationOfDimLe T A) s J μ = s`. Unfold `appendRecursivePrincipalization`. Conclude with `dif_neg hd`. Rewrite `hi` using `[he]`.
-
-Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem appendRecursive_proj_center_ne_of_orderAtLeastLocus_empty (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (_hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -841,9 +833,9 @@ theorem appendRecursive_proj_center_ne_of_orderAtLeastLocus_empty (hG : Principa
     omega
 
 /- English proof (translation)
-Unfold `appendRecursivePrincipalization`. Distinguish the cases in `hd : (tripleAtLength T s J μ).krullDimSucc ≤ T.krullDimSucc`. Rewrite using `[dif_pos hd]`. Unfold `appendIfMarked`. Consider the cases of `hrem : markedDataOfSeq s J μ (rc (tripleAtLength T s J μ) hd) with`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => exact Or.inl rfl`. Consider the case `some d => exact Or.inr ⟨d, rfl⟩`. Rewrite using `[dif_neg hd]`. Conclude with `Or.inl rfl`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 -/
 private theorem appendRecursivePrincipalization_eq_self_or_append (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -863,17 +855,15 @@ private theorem appendRecursivePrincipalization_eq_self_or_append (hinv : ComapI
     exact Or.inl rfl
 
 /- English proof (translation)
-Break down `appendRecursivePrincipalization_eq_self_or_append hinv T (principalizationOfDimLe T A) s J μ with heq | ⟨t, heq⟩` into its components or cases. Rewrite using `[heq]`. Conclude with `⟨c⟩`. Establish `hmiss` using `appendRecursive_proj_center_ne_of_orderAtLeastLocus_empty hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary J μ hJ hempty`. Establish `hconcat : (s.append t hinv).toBlowupSequenceData = s.toBlowupSequenceData.append t.toBlowupSequenceData`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MarkedBlowupSequenceData.append_toBlowupSequenceData]`. Both sides reduce to the same expression. Establish `hseq : (s.append t hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups = (s.toBlowupSequenceData.append t.toBlowupSequenceData).toSequenceOfBlowups` using `congrArg (fun D : BlowupSequenceData T.scheme => D.toSequenceOfBlowups) hconcat`. Establish `h0 : ∀ i : ℕ, s.length ≤ i → i < (s.append t hinv).length → ∀ z : ↥((s.append t hinv).obj i), z ∈ ((s.append t hinv).center i).support → ∀ y : ↥T'.scheme, g.base y ≠ ((s.append t hinv).proj i).base z`. Rewrite using `[← heq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmiss`. Establish `h0' : ∀ i : ℕ, s.length ≤ i → i < s.length + t.length → ∀ z : ↥((s.append t hinv).obj i), z ∈ ((s.append t hinv).center i).support → ∀ y : ↥T'.scheme, g.base y ≠ ((s.append t hinv).proj i).base z`. Introduce `i hi0 hi`. Use `h0 i hi0 ?_` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.append_length]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi`. Establish `hproj : ∀ i : ℕ, (s.append t hinv).toBlowupSequenceData.projectionToBase i = (s.append t hinv).proj i`. Introduce `i`. Rewrite using `[MarkedBlowupSequenceData.projectionToBase_eq_toSequenceOfBlowups]`. Conclude with `(BlowupSequenceData.toSequenceOfBlowups_projectionToBase (s.append t hinv).toBlowupSequenceData i).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ i : ℕ, s.toBlowupSequenceData.length ≤ i → i < s.toBlowupSequenceData.length + t.toBlowupSequenceData.length → ∀ z : ↥((s.toBlowupSequenceData.append t.toBlowupSequenceData).obj i), z ∈ ((s.toBlowupSequenceData.append t.toBlowupSequenceData).center i).support → ∀ y : ↥T'. …`. Rewrite using `[← hconcat]`. Introduce `i hi0 hi z hz y`. Rewrite using `[hproj i]`. Conclude with `h0' i hi0 hi z hz y`.
-
-Rewrite using `[heq, hseq]`. Conclude with `SequenceOfBlowupsPullback.nonempty_append_of_disjoint_centers g s'.toBlowupSequenceData s.toBlowupSequenceData t.toBlowupSequenceData c key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_of_orderAtLeastLocus_empty (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -937,11 +927,11 @@ theorem nonempty_sequenceOfBlowupsPullback_of_orderAtLeastLocus_empty (hG : Prin
       t.toBlowupSequenceData c key
 
 /- English proof (translation)
-Establish `hnonMon : lastNonMonomialPart T' s' = (lastNonMonomialPart T s).comap c.lastMap` using `lastNonMonomialPart_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Establish `hJ : (tripleAtLength T s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT s hcont`. Establish `hJ' : (tripleAtLength T' s' (lastNonMonomialPart T' s') (maxOrderNonMonomial T' s')).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT' s' hcont'`. Rewrite `hJ'` using `[hnonMon, hinveq]`. Establish `hord : ∀ x : ↥(s.obj s.length), orderAt (lastNonMonomialPart T s) x ≤ ((maxOrderNonMonomial T s : ℕ) : ℕ∞)` using `fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `nonempty_sequenceOfBlowupsPullback_appendRecursive hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary (lastNonMonomialPart T s) (maxOrderNonMonomial T s) hJ hJ' hord hmark`. Establish `hL : extendByNonMonomialPart hinv T (principalizationOfDimLe T A) s = appendRecursivePrincipalization hinv T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)` using `rfl`. Establish `hU : extendByNonMonomialPart hinv T' (principalizationOfDimLe T' A) s' = appendRecursivePrincipalization hinv T' (principalizationOfDimLe T' A) s' (lastNonMonomialPart T' s') (maxOrderNonMonomial T' s')` using `rfl`. Rewrite `hU` using `[hnonMon, hinveq]`. Rewrite using `[hL, hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_extendByNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -993,7 +983,7 @@ theorem nonempty_sequenceOfBlowupsPullback_extendByNonMonomialPart (hG : Princip
   exact key
 
 /- English proof (translation)
-Substitute `hJK` using the available equality. Substitute `hμν` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem appendRecursivePrincipalization_congr (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
@@ -1005,7 +995,7 @@ private theorem appendRecursivePrincipalization_congr (hinv : ComapIsoInvariance
   rfl
 
 /- English proof (translation)
-Substitute `hJK` using the available equality. Substitute `hμν` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isAdmissible_tripleAtLength_congr (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -1016,11 +1006,11 @@ private theorem isAdmissible_tripleAtLength_congr (T : MarkedIdealWithBoundary.{
   exact h
 
 /- English proof (translation)
-Establish `hJideal : companionIdeal T' s' = (companionIdeal T s).comap c.lastMap` using `companionIdeal_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary hinveq`. Establish `hmu : T'.mult * maxOrderNonMonomialOnOrderLocus T' s' = T.mult * maxOrderNonMonomialOnOrderLocus T s`. Rewrite using `[hinveq, hmult]`. Establish `hJ : (tripleAtLength T s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)).IsAdmissible` using `companionTriple_isAdmissible hG hT s hcont`. Establish `hJ'0 : (tripleAtLength T' s' (companionIdeal T' s') (T'.mult * maxOrderNonMonomialOnOrderLocus T' s')).IsAdmissible` using `companionTriple_isAdmissible hG hT' s' hcont'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ' : (tripleAtLength T' s' ((companionIdeal T s).comap c.lastMap) (T.mult * maxOrderNonMonomialOnOrderLocus T s)).IsAdmissible` using `isAdmissible_tripleAtLength_congr T' s' (companionIdeal T' s') ((companionIdeal T s).comap c.lastMap) (T'.mult * maxOrderNonMonomialOnOrderLocus T' s') (T.mult * maxOrderNonMonomialOnOrderLocus T s) hJideal hmu hJ'0`. Establish `hord` using `orderAt_companionIdeal_le hG hT s hcont`. Establish `hA : extendByCompanionIdeal hinv T (principalizationOfDimLe T A) s = appendRecursivePrincipalization hinv T (principalizationOfDimLe T A) s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)` using `rfl`. Establish `hB0 : extendByCompanionIdeal hinv T' (principalizationOfDimLe T' A) s' = appendRecursivePrincipalization hinv T' (principalizationOfDimLe T' A) s' (companionIdeal T' s') (T'.mult * maxOrderNonMonomialOnOrderLocus T' s')` using `rfl`. Establish `hB : extendByCompanionIdeal hinv T' (principalizationOfDimLe T' A) s' = appendRecursivePrincipalization hinv T' (principalizationOfDimLe T' A) s' ((companionIdeal T s).comap c.lastMap) (T.mult * maxOrderNonMonomialOnOrderLocus T s)` using `hB0.trans (appendRecursivePrincipalization_congr hinv T' (principalizationOfDimLe T' A) s' (companionIdeal T' s') ((companionIdeal T s).comap c.lastMap) (T'.mult * maxOrderNonMonomialOnOrderLocus T' s') (T.mult * maxOrderNonMonomialOnOrderLocus T s) hJideal hmu)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA, hB]`. Conclude with `nonempty_sequenceOfBlowupsPullback_appendRecursive hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s) hJ hJ' hord hmark`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_sequenceOfBlowupsPullback_extendByCompanionIdeal (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -1084,9 +1074,9 @@ theorem nonempty_sequenceOfBlowupsPullback_extendByCompanionIdeal (hG : Principa
     hJ hJ' hord hmark
 
 /- English proof (translation)
-Establish `hnonMon : lastNonMonomialPart T' s' = (lastNonMonomialPart T s).comap c.lastMap` using `lastNonMonomialPart_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Use `Set.eq_empty_of_subset_empty ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy'` using `(mem_orderAtLeastLocus_iff ((lastNonMonomialPart T s).comap c.lastMap) (maxOrderNonMonomial T s) y).1 hy`. Rewrite `hy'` using `[← hnonMon]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : orderAt (lastNonMonomialPart T' s') y ≤ ((maxOrderNonMonomial T' s' : ℕ) : ℕ∞)` using `orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT' s' y`. Establish `hcast : ((maxOrderNonMonomial T s : ℕ) : ℕ∞) ≤ ((maxOrderNonMonomial T' s' : ℕ) : ℕ∞)` using `hy'.trans hle`. Establish `hnat : maxOrderNonMonomial T s ≤ maxOrderNonMonomial T' s'` using `by exact_mod_cast hcast`. Conclude with `absurd hnat (not_le.mpr hlt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_comap_lastNonMonomialPart_eq_empty_of_lt (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : PrincipalizationAssignment.{u})
@@ -1117,9 +1107,9 @@ theorem orderAtLeastLocus_comap_lastNonMonomialPart_eq_empty_of_lt (hG : Princip
   exact absurd hnat (not_le.mpr hlt)
 
 /- English proof (translation)
-Break down `eq_or_ne a ⊤ with rfl | ha` into its components or cases. Conclude with `le_top`. Take `⟨a₀, rfl⟩` from `ENat.ne_top_iff_exists.mp ha`. Establish `h' : m * p ≤ p * a₀` using `by exact_mod_cast h`. Establish `h'' : p * m ≤ p * a₀`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.mul_comm p m]`. Conclude with `h'`. Establish `hle : m ≤ a₀` using `Nat.le_of_mul_le_mul_left h'' (by omega)`. Conclude with `hle` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem natCast_le_of_natCast_mul_le_mul (m p : ℕ) (hp : 1 ≤ p) (a : ℕ∞)
     (h : ((m * p : ℕ) : ℕ∞) ≤ ((p : ℕ) : ℕ∞) * a) : ((m : ℕ) : ℕ∞) ≤ a := by
@@ -1134,19 +1124,19 @@ private theorem natCast_le_of_natCast_mul_le_mul (m p : ℕ) (hp : 1 ≤ p) (a :
     exact_mod_cast hle
 
 /- English proof (translation)
-Establish `hmg` using `hG.monomialInputs`. Establish `hvalS'` using `MonomialGeometryHypotheses.isAdmissible_tripleAtLength hmg T' hT' s'`. Establish `hchar : CharZero T'.base` using `hvalS'.charZero`. Establish `hsmooth : AlgebraicGeometry.Smooth (s'.proj s'.length ≫ T'.structMap)` using `hvalS'.smooth`. Establish `hm1 : 1 ≤ T.mult` using `hT.one_le_mult`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : 1 ≤ maxOrderNonMonomialOnOrderLocus T s` using `by omega`. Establish `hnonMon : lastNonMonomialPart T' s' = (lastNonMonomialPart T s).comap c.lastMap` using `lastNonMonomialPart_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Establish `hcompanion : (companionIdeal T s).comap c.lastMap = lastNonMonomialPart T' s' ^ T.mult ⊔ s'.ideal s'.length ^ maxOrderNonMonomialOnOrderLocus T s`. Unfold `companionIdeal`. Rewrite using `[hnonMon, hlastIdeal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comap_pow_sup_pow c.lastMap (lastNonMonomialPart T s) (s.ideal s.length) T.mult (maxOrderNonMonomialOnOrderLocus T s)`. Rewrite using `[hcompanion]`. Use `Set.eq_empty_of_subset_empty ?_` and prove the remaining obligations. Introduce `x hx`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hx0 : ((T.mult * maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) ≤ orderAt (lastNonMonomialPart T' s' ^ T.mult ⊔ s'.ideal s'.length ^ maxOrderNonMonomialOnOrderLocus T s) x` using `(mem_orderAtLeastLocus_iff _ _ _).1 hx`. Establish `hsup : orderAt (lastNonMonomialPart T' s' ^ T.mult ⊔ s'.ideal s'.length ^ maxOrderNonMonomialOnOrderLocus T s) x = min (orderAt (lastNonMonomialPart T' s' ^ T.mult) x) (orderAt (s'.ideal s'.length ^ maxOrderNonMonomialOnOrderLocus T s) x)` using `orderAt_sup _ _ x`. Establish `hmin` using `le_trans hx0 (le_of_eq hsup)`. Establish `hxN : ((T.mult * maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) ≤ orderAt (lastNonMonomialPart T' s' ^ T.mult) x` using `le_trans hmin (min_le_left _ _)`. Establish `hxI : ((T.mult * maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) ≤ orderAt (s'.ideal s'.length ^ maxOrderNonMonomialOnOrderLocus T s) x` using `le_trans hmin (min_le_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpowI : orderAt (s'.ideal s'.length ^ maxOrderNonMonomialOnOrderLocus T s) x = ((maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) * orderAt (s'.ideal s'.length) x` using `orderAt_pow T'.base (s'.proj s'.length ≫ T'.structMap) (s'.ideal s'.length) (maxOrderNonMonomialOnOrderLocus T s) x`. Establish `hpowN : orderAt (lastNonMonomialPart T' s' ^ T.mult) x = ((T.mult : ℕ) : ℕ∞) * orderAt (lastNonMonomialPart T' s') x` using `orderAt_pow T'.base (s'.proj s'.length ≫ T'.structMap) (lastNonMonomialPart T' s') T.mult x`. Establish `hA : ((T.mult : ℕ) : ℕ∞) ≤ orderAt (s'.ideal s'.length) x` using `natCast_le_of_natCast_mul_le_mul T.mult (maxOrderNonMonomialOnOrderLocus T s) hp1 (orderAt (s'.ideal s'.length) x) (le_trans hxI (le_of_eq hpowI))`. Establish `hmultE : ((T'.mult : ℕ) : ℕ∞) = ((T.mult : ℕ) : ℕ∞)` using `by rw [hmult]`. Establish `hmem : x ∈ orderAtLeastLocus (s'.ideal s'.length) T'.mult` using `(mem_orderAtLeastLocus_iff _ _ _).2 (hmultE.trans_le hA)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `orderAt_lastNonMonomialPart_le_maxOrderNonMonomialOnOrderLocus hG hT' s' x hmem`. Establish `hxN2 : ((T.mult * maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) ≤ ((T.mult : ℕ) : ℕ∞) * orderAt (lastNonMonomialPart T' s') x` using `le_trans hxN (le_of_eq hpowN)`. Establish `hxN3 : ((maxOrderNonMonomialOnOrderLocus T s * T.mult : ℕ) : ℕ∞) ≤ ((T.mult : ℕ) : ℕ∞) * orderAt (lastNonMonomialPart T' s') x`. Rewrite using `[Nat.mul_comm (maxOrderNonMonomialOnOrderLocus T s) T.mult]`. Conclude with `hxN2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ((maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) ≤ orderAt (lastNonMonomialPart T' s') x` using `natCast_le_of_natCast_mul_le_mul (maxOrderNonMonomialOnOrderLocus T s) T.mult hm1 (orderAt (lastNonMonomialPart T' s') x) hxN3`. Establish `hfin : ((maxOrderNonMonomialOnOrderLocus T s : ℕ) : ℕ∞) ≤ ((maxOrderNonMonomialOnOrderLocus T' s' : ℕ) : ℕ∞)` using `le_trans hC hb`. Establish `hnat : maxOrderNonMonomialOnOrderLocus T s ≤ maxOrderNonMonomialOnOrderLocus T' s'` using `by exact_mod_cast hfin`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_comap_companionIdeal_eq_empty_of_lt (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : PrincipalizationAssignment.{u})

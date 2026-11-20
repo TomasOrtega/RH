@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Use `IsAlgebraic.of_pow hp ?_` and prove the remaining obligations. Establish `hc' : (⟨c, hc⟩ : T) ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Use `IsAlgebraic.of_smul (y := (⟨c, hc⟩ : T)) (mem_nonZeroDivisors_of_ne_zero hc') ?_` and prove the remaining obligations. Establish `: (⟨c, hc⟩ : T) • x ^ p = algebraMap T D ⟨d, hd⟩`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[this]`. Conclude with `isAlgebraic_algebraMap _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem alg_of_rel {R D : Type} [CommRing R] [CommRing D] [IsDomain D] [Algebra R D]
     (T : Subalgebra R D) {x c d : D} {p : ℕ} (hp : 0 < p) (hc : c ∈ T) (hd : d ∈ T) (h0 : c ≠ 0)
@@ -19,17 +19,17 @@ private theorem alg_of_rel {R D : Type} [CommRing R] [CommRing D] [IsDomain D] [
   exact isAlgebraic_algebraMap _
 
 /- English proof (translation)
-Use `set T : Subalgebra R D := Algebra.adjoin R {x a} with hT`. Establish `haT : x a ∈ T` using `Algebra.subset_adjoin rfl`. Establish `hR : ∀ {y}, y ∈ Set.range (algebraMap R D) → y ∈ T`. Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `T.algebraMap_mem r`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `Int.eq_ofNat_of_zero_le ha.le`. Take `⟨q, hq⟩` from `Int.eq_ofNat_of_zero_le (neg_nonneg.2 hb.le)`. Establish `hp0 : 0 < p` using `by omega`. Establish `hq0 : 0 < q` using `by omega`. Establish `hq' : wt b = -q` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ i, IsAlgebraic T (x i)`. Introduce `i`. Break down `le_total (wt i) 0 with h | h` into its components or cases. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (neg_nonneg.2 h)`. Establish `hm' : wt i = -m` using `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `alg_of_rel T hp0 (pow_mem haT m) (hR (h0 i a p m (by rw [hm', hp]; ring))) (pow_ne_zero _ ha0) rfl`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le h`. Establish `h1` using `hR (h0 i b q m (by rw [hm, hq']; ring))`. Establish `h2` using `hR (h0 b a p q (by rw [hp, hq']; ring))`. Use `alg_of_rel T (mul_pos hq0 hp0) (pow_mem h2 m) (mul_mem (pow_mem h1 p) (pow_mem haT (q * m))) (pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ hb0) (pow_ne_zero _ ha0))) (by ring)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Establish `hall : Algebra.IsAlgebraic T D` using `⟨fun y => by`. Establish `hy : y ∈ Algebra.adjoin R (Set.range x)` using `hgen ▸ Algebra.mem_top`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `key i`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `algebraMap r => exact isAlgebraic_algebraMap (⟨_, T.algebraMap_mem r⟩ : T)`. Consider the case `add y z _ _ h1 h2 => exact h1.add h2`. Consider the case `mul y z _ _ h1 h2 => exact h1.mul h2⟩`. Simplify using `using Algebra.IsAlgebraic.trdeg_le_cardinalMk R ({x a} : Set D)`.
+A detailed English derivation is pending.
 -/
 private theorem trdeg_le_one {R D ι : Type} [CommRing R] [CommRing D] [IsDomain D] [Algebra R D]
     [FaithfulSMul R D] (x : ι → D) (wt : ι → ℤ) (hgen : Algebra.adjoin R (Set.range x) = ⊤)
@@ -65,13 +65,13 @@ private theorem trdeg_le_one {R D ι : Type} [CommRing R] [CommRing D] [IsDomain
   simpa using Algebra.IsAlgebraic.trdeg_le_cardinalMk R ({x a} : Set D)
 
 /- English proof (translation)
-Use `trdeg_le_one (fun s => Ideal.Quotient.mk η (x s)) wt ?_ ?_ ha hb (fun e => ha0 (Ideal.Quotient.eq_zero_iff_mem.1 e)) (fun e => hb0 (Ideal.Quotient.eq_zero_iff_mem.1 e))` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y hy`. Use `clear hy`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : y ∈ Algebra.adjoin R (Set.range x)` using `hgen ▸ Algebra.mem_top`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Consider the case `algebraMap r => exact Subalgebra.algebraMap_mem _ (Ideal.Quotient.mk (η.comap (algebraMap R A)) r)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`. Consider the case `mul y z _ _ h1 h2 => rw [map_mul]`. Conclude with `mul_mem h1 h2`. Introduce `i j p q h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨r, hr⟩` from `h0 i j p q h`. Use `⟨Ideal.Quotient.mk _ r, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, ← map_mul, ← hr]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem trdeg_quot_le_one {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A]
     (η : Ideal A) (hη : η.IsPrime) (x : ι → A) (wt : ι → ℤ) (hgen : Algebra.adjoin R (Set.range x) = ⊤)
@@ -97,7 +97,7 @@ private theorem trdeg_quot_le_one {R A ι : Type} [CommRing R] [CommRing A] [Alg
     rfl
 
 /- English proof (translation)
-Establish `: (i : ℕ) < j` using `h`. Unfold `w`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
   have : (i : ℕ) < j := h
@@ -105,17 +105,15 @@ private theorem w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n _ _ S η hη hoff`. Take `⟨h1, h2⟩` from `hoff`. Establish `hb : ∃ g i j, j < i ∧ S.u.r g i j ∉ η`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h1 (Ideal.span_le.2 (by rintro _ ⟨g, i, j, hij, rfl⟩; exact h g i j hij))`. Establish `ha : ∃ g i j, i < j ∧ S.u.r g i j ∉ η`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `h2 (Ideal.span_le.2 (by rintro _ ⟨g, i, j, hij, rfl⟩; exact h g i j hij))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, i, j, hij, hg⟩` from `ha`. Take `⟨g', i', j', hij', hg'⟩` from `hb`. Use `trdeg_quot_le_one (ι := F.G0 × Fin n × Fin n) η hη (fun s => S.u.r s.1 s.2.1 s.2.2) (fun s => w n s.2.1 - w n s.2.2) ?_ ?_ (a := (g, i, j)) (b := (g', i', j')) (sub_pos.2 (w_lt hij)) (sub_neg.2 (w_lt hij')) hg hg'` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨y, hy⟩ hy'`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Use `clear hy'`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Break down `hy with hy | ⟨g, i, j, rfl⟩` into its components or cases. Conclude with `Subalgebra.algebraMap_mem _ (⟨y, hy⟩ : S.B)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `Algebra.subset_adjoin ⟨(g, i, j), rfl⟩`. Consider the case `algebraMap r => exact Subalgebra.algebraMap_mem _ (algebraMap O S.B r)`. Consider the case `add y z hy hz h1 h2 => exact add_mem h1 h2`. Consider the case `mul y z hy hz h1 h2 => exact mul_mem h1 h2`. Introduce `s t p q h`.
-
-Establish `hm : S.ρ.r s.1 s.2.1 s.2.2 ^ p * S.ρ.r t.1 t.2.1 t.2.2 ^ q ∈ S.ρ.mon 0` using `⟨List.replicate p s ++ List.replicate q t, by simpa using h, by simp⟩`. Conclude with `⟨⟨_, S.mon_mem hm⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.fibre :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ η : Ideal S.A, η.IsPrime → S.u.OffTri η → S.td η ≤ 1 := by

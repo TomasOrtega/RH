@@ -12,7 +12,7 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {A : Type*} [CommRing A] [Algebra O A] {ϖ : O}
 
 /- English proof (translation)
-Use `Finset.prod_induction f (fun x => ord ϖ ζ x = 0) (fun a b ha hb => ?_) (ord_one ζ h) hf` and prove the remaining obligations. Rewrite using `[ord_mul ζ h, ha, hb, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_prod_eq_zero (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) {ι : Type*} (s : Finset ι) (f : ι → A)
     (hf : ∀ i ∈ s, ord ϖ ζ (f i) = 0) : ord ϖ ζ (∏ i ∈ s, f i) = 0 := by
@@ -20,11 +20,9 @@ theorem ord_prod_eq_zero (ζ : Pts O A) [IsDVRAt ζ] (h : IsUnif A ϖ) {ι : Typ
   rw [ord_mul ζ h, ha, hb, add_zero]
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `h.denom x`. Establish `h0 : (⟨ϖ ^ n • x, hn⟩ : ↥(As O A)) = 0`. Use `eq_zero_of_localization _ fun J hJ => ?_` and prove the remaining obligations. Establish `h1` using `hx ⟨J, hJ⟩`. Rewrite `h1` using `[ord_eq _ h hn, ordAt, WithTop.add_eq_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h1 with h1 | h1` into its components or cases. Rewrite `h1` using `[ENat.map_eq_top_iff]`. Conclude with `(vL_eq_top_iff (ζ := (⟨J, hJ⟩ : Pts O A)) _).1 h1`. Conclude with `absurd h1 (WithTop.coe_ne_top)`. Establish `h2 : ϖ ^ n • x = 0` using `congrArg Subtype.val h0`.
-
-Rewrite `h2` using `[Algebra.smul_def, map_pow]`. Conclude with `((h.isUnit.pow n).mul_right_eq_zero).1 h2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ord_top [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) {x : A} (hx : ∀ ζ : Pts O A, ord ϖ ζ x = ⊤) : x = 0 := by
   obtain ⟨n, hn⟩ := h.denom x
@@ -45,7 +43,7 @@ end Ord
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Use `isDVRAt_of_curve Q hC ζ` as an intermediate fact. Establish `hU` using `isUnif_of_curve Q hC`. Unfold `uC`. Use `ord_prod_eq_zero ζ hU _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ord_pow ζ hU, h0, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_uC_eq_zero {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (hC : Q.InCurve)
     (ζ : PtsG G la) (jj : Fin G.N) (α : Fin (WeightFamilies.dimY D j) → ℕ)
@@ -58,11 +56,11 @@ theorem ord_uC_eq_zero {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum
   rw [ord_pow ζ hU, h0, smul_zero]
 
 /- English proof (translation)
-Unfold `UBall`. Introduce `D B P j X ka wL wF G la Q S CRm T c hOk hw α b hb`. Establish `hC : Q.InCurve` using `hOk.2.1`. Establish `hU` using `isUnif_of_curve Q hC`. Establish `: ∀ ζ : PtsG G la, IsDVRAt ζ` using `fun ζ => isDVRAt_of_curve Q hC ζ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `LocalPointData.A0 at hb ⊢`. Rewrite using `[mem_ballO_iff Q.c hU hC.2.2]`. Introduce `ζ`. Take `⟨jj, hjj⟩` from `(hCol G la Q S CRm T c hOk hw ζ).2`. Establish `h1` using `(mem_ballO_iff Q.c hU hC.2.2 _).1 (hb jj) ζ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[ordV_smul Q.c ζ hU hC.2.2, ord_uC_eq_zero Q hC ζ jj α hjj, zero_add]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uBall_of_column (hCol : Column) : UBall := by
   unfold UBall

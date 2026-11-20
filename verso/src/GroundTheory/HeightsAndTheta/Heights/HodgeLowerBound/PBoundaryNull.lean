@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ D`. Conclude with `BoundaryPtsNull.proof II Ψ K ι Ω E D`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem BoundaryNull.proof : BoundaryNull.Statement := by
   intro II Ψ _ K _ ι _ Ω _ _ E _ _ D

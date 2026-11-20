@@ -35,7 +35,7 @@ theorem dxToQuot_apply [(I.subgroupOf D).Normal] (x : G)
   rfl
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[MonoidHom.mem_ker, dxToQuot_apply, QuotientGroup.eq_one_iff]`. Express the relevant statement in the definitionally equal form `x⁻¹ * ((d : H) : G) * x ∈ I ↔ _`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, mem_conj_smul_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_dxToQuot [(I.subgroupOf D).Normal] (x : G) :
     (dxToQuot H D I x).ker = ((MulAut.conj x • I : Subgroup G).subgroupOf H).subgroupOf

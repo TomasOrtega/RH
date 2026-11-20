@@ -14,19 +14,17 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-Use `set b := β x y with hb`. Use `set a := (β x x).re`. Use `set c := (β y y).re`. Establish `hc : 0 ≤ c` using `(Complex.nonneg_iff.1 (hpos y hy)).1`. Establish `ha : 0 ≤ a` using `(Complex.nonneg_iff.1 (hpos x hx)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ‖b‖ ^ 2 = Complex.normSq b` using `by rw [Complex.sq_norm]`. Establish `key : ∀ t : ℝ, 0 ≤ a - 2 * t * Complex.normSq b + t ^ 2 * Complex.normSq b * c`. Introduce `t`. Use `set μ : ℂ := -(t : ℂ) * b with hμ`. Establish `e1 : β x (x + μ • y) = β x x + conj μ * b` using `by rw [hr _ _ _ _ hx hx hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : β y (x + μ • y) = conj b + conj μ * β y y` using `by rw [hr _ _ _ _ hy hx hy, hherm]`. Establish `hz2` using `hpos (x + μ • y) (hadd _ _ hx (hsmul _ _ hy))`. Rewrite `hz2` using `[hl _ _ _ _ hx hy (hadd _ _ hx (hsmul _ _ hy)), e1, e2]`. Establish `hre` using `(Complex.nonneg_iff.1 hz2).1`. Establish `: (β x x + conj μ * b + μ * (conj b + conj μ * β y y)).re = a - 2 * t * Complex.normSq b + t ^ 2 * Complex.normSq b * c`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hμ, Complex.add_re, Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply, map_mul, map_neg, Complex.conj_ofReal, Complex.mul_im, Complex.add_im]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear relations using `[this ▸ hre]`. Rewrite using `[hB]`. Break down `hc.eq_or_lt with hc0 | hc0` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : Complex.normSq b = 0`. Assume the negation of the conclusion as `hne`. Establish `hpos' : 0 < Complex.normSq b` using `lt_of_le_of_ne (Complex.normSq_nonneg _) (Ne.symm hne)`. Use `key ((a + 1) / (2 * Complex.normSq b))` as an intermediate fact. Rewrite `this` using `[← hc0]`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear denominators, using `at this` for the nonvanishing conditions. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hb0, ← hc0]`. Simplify using the standard rewrite rules. Use `key (1 / c)` as an intermediate fact.
-
-Clear denominators, using `at this` for the nonvanishing conditions. Use polynomial arithmetic with `[Complex.normSq_nonneg b]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cs_abs {V : Type} [AddCommGroup V] [Module ℂ V] (Dv : V → Prop) (β : V → V → ℂ)
     (hadd : ∀ x y, Dv x → Dv y → Dv (x + y)) (hsmul : ∀ (c : ℂ) x, Dv x → Dv (c • x))
@@ -81,15 +79,15 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `j hj w hw x ε hε hx` and use `hFP hA Wp Wq P p j hj w hw x ε hε hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formNonneg_of (hA : P5.ThmPActual) (hFP : PBL.FormPos) (p : KB.Pl P Wp Wq) : FormNonneg p :=
   fun j hj w hw x ε hε hx => hFP hA Wp Wq P p j hj w hw x ε hε hx
 
 /- English proof (translation)
-Set `VT` to `Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)`. Establish `hadd : ∀ x y : VT, PBL.NV (p.T.bs j) ε x → PBL.NV (p.T.bs j) ε y → PBL.NV (p.T.bs j) ε (x + y)` using `fun _ _ => PBL.nv_add`. Establish `hsmul : ∀ (c : ℂ) (x : VT), PBL.NV (p.T.bs j) ε x → PBL.NV (p.T.bs j) ε (c • x)` using `fun c _ => PBL.nv_smul c`. Establish `hl : ∀ (x₁ x₂ y : VT) (c : ℂ), PBL.NV (p.T.bs j) ε x₁ → PBL.NV (p.T.bs j) ε x₂ → PBL.NV (p.T.bs j) ε y → p.form j hj w (x₁ + c • x₂) y = p.form j hj w x₁ y + c * p.form j hj w x₂ y` using `fun x₁ x₂ y c h₁ h₂ h₃ => PBL.form_sl p j hj w x₁ x₂ y c h₁ h₂ h₃`. Establish `hr : ∀ (x y₁ y₂ : VT) (c : ℂ), PBL.NV (p.T.bs j) ε x → PBL.NV (p.T.bs j) ε y₁ → PBL.NV (p.T.bs j) ε y₂ → p.form j hj w x (y₁ + c • y₂) = p.form j hj w x y₁ + conj c * p.form j hj w x y₂` using `fun x y₁ y₂ c h₁ h₂ h₃ => PBL.form_sr p j hj w x y₁ y₂ c h₁ h₂ h₃`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ x : VT, PBL.NV (p.T.bs j) ε x → 0 ≤ p.form j hj w x x` using `fun x hx => hpos j hj w hw x ε hε hx`. Use `cs_abs (PBL.NV (p.T.bs j) ε) (p.form j hj w) hadd hsmul hl hr hp x y hx hy ?_` and prove the remaining obligations. Conclude with `PBL.herm_of_nonneg (PBL.NV (p.T.bs j) ε) (p.form j hj w) PBL.nv_zero hadd hsmul hl hr hp x y hx hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_cs (p : KB.Pl P Wp Wq) (hpos : FormNonneg p) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter)
     (hw : KB.CutWord P p.l0 w) {ε : ℝ} (hε : 0 < ε)
@@ -111,7 +109,7 @@ theorem form_cs (p : KB.Pl P Wp Wq) (hpos : FormNonneg p) (j : ℕ) (hj : j ≤ 
   exact PBL.herm_of_nonneg (PBL.NV (p.T.bs j) ε) (p.form j hj w) PBL.nv_zero hadd hsmul hl hr hp x y hx hy
 
 /- English proof (translation)
-The claim follows from `(Complex.nonneg_iff.1 (hpos j hj w hw x ε hε hx)).1`.
+A detailed English derivation is pending.
 -/
 theorem form_re_nonneg (p : KB.Pl P Wp Wq) (hpos : FormNonneg p) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter)
     (hw : KB.CutWord P p.l0 w) {ε : ℝ} (hε : 0 < ε)
@@ -122,7 +120,7 @@ theorem form_re_nonneg (p : KB.Pl P Wp Wq) (hpos : FormNonneg p) (j : ℕ) (hj :
 end place
 
 /- English proof (translation)
-Proceed by induction on `ys with`. Consider the case `nil => rfl`. Consider the case `cons y ys ih => simp [KB.plusW, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem plusW_eq (ys : List ℝ) (w : List C.Letter) :
     KB.plusW ys w = ys.map (fun y => ((true, y) : C.Letter)) ++ w := by
@@ -131,7 +129,7 @@ theorem plusW_eq (ys : List ℝ) (w : List C.Letter) :
   | cons y ys ih => simp [KB.plusW, ih]
 
 /- English proof (translation)
-Proceed by induction on `ys with`. Consider the case `nil => rfl`. Consider the case `cons y ys ih => simp [KB.minusW, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem minusW_eq (ys : List ℝ) (w : List C.Letter) :
     KB.minusW ys w = ys.map (fun y => ((false, y + 1) : C.Letter)) ++ w := by
@@ -140,7 +138,7 @@ theorem minusW_eq (ys : List ℝ) (w : List C.Letter) :
   | cons y ys ih => simp [KB.minusW, ih]
 
 /- English proof (translation)
-Rewrite using `[plusW_eq]`. Simplify using `[TBB.normC, List.map_append, List.prod_append, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normC_plusW (nn : ℝ → ℝ) (ys : List ℝ) (w : List C.Letter) :
     TBB.normC nn (KB.plusW ys w) = (ys.map nn).prod * TBB.normC nn w := by
@@ -148,7 +146,7 @@ theorem normC_plusW (nn : ℝ → ℝ) (ys : List ℝ) (w : List C.Letter) :
   simp [TBB.normC, List.map_append, List.prod_append, Function.comp_def]
 
 /- English proof (translation)
-Rewrite using `[minusW_eq]`. Simplify using `[TBB.normC, List.map_append, List.prod_append, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normC_minusW (nn : ℝ → ℝ) (ys : List ℝ) (w : List C.Letter) :
     TBB.normC nn (KB.minusW ys w) = (ys.map fun y => nn (y + 1)).prod * TBB.normC nn w := by
@@ -156,7 +154,7 @@ theorem normC_minusW (nn : ℝ → ℝ) (ys : List ℝ) (w : List C.Letter) :
   simp [TBB.normC, List.map_append, List.prod_append, Function.comp_def]
 
 /- English proof (translation)
-Unfold `TBB.normC`. Conclude with `List.prod_pos fun x hx => by`. Take `⟨l, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hnn l.2`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem normC_pos (nn : ℝ → ℝ) (hnn : ∀ y, 0 < nn y) (w : List C.Letter) : 0 < TBB.normC nn w := by
   unfold TBB.normC
@@ -165,7 +163,7 @@ theorem normC_pos (nn : ℝ → ℝ) (hnn : ∀ y, 0 < nn y) (w : List C.Letter)
     exact hnn l.2
 
 /- English proof (translation)
-Conclude with `List.prod_pos fun x hx => by`. Take `⟨y, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hf y`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prod_map_pos (f : ℝ → ℝ) (hf : ∀ y, 0 < f y) (ys : List ℝ) : 0 < (ys.map f).prod := by
   exact List.prod_pos fun x hx => by
@@ -173,15 +171,15 @@ theorem prod_map_pos (f : ℝ → ℝ) (hf : ∀ y, 0 < f y) (ys : List ℝ) : 0
     exact hf y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hw.1, hN, [], by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isExt_self (P : M.Par) (l0 : ℕ) (Y : Finset ℝ) (N m : ℕ) (w : List C.Letter) (hw : TBB.AdmW P l0 Y w)
     (hN : w.length ≤ N) : TBB.IsExt P l0 Y N m w w := ⟨hw.1, hN, [], by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Use `⟨hc, ?_, ys.map (fun y => ((true, y) : C.Letter)), plusW_eq ys w, by simp [hK], ?_⟩` and prove the remaining obligations. Rewrite using `[plusW_eq, List.length_append, List.length_map]`. Use linear arithmetic over natural numbers and integers. Introduce `l hl`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hY y hy, Or.inl rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isExt_plusW (P : M.Par) (l0 : ℕ) (Y : Finset ℝ) (N K : ℕ) (w : List C.Letter) (ys : List ℝ)
     (hN : w.length + K ≤ N) (hK : ys.length = K) (hY : ∀ y ∈ ys, y ∈ Y) (hc : KB.CutWord P l0 (KB.plusW ys w)) :
@@ -194,9 +192,9 @@ theorem isExt_plusW (P : M.Par) (l0 : ℕ) (Y : Finset ℝ) (N K : ℕ) (w : Lis
     exact ⟨y, hY y hy, Or.inl rfl⟩
 
 /- English proof (translation)
-Use `⟨hc, ?_, ys.map (fun y => ((false, y + 1) : C.Letter)), minusW_eq ys w, by simp [hK], ?_⟩` and prove the remaining obligations. Rewrite using `[minusW_eq, List.length_append, List.length_map]`. Use linear arithmetic over natural numbers and integers. Introduce `l hl`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hY y hy, Or.inr rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isExt_minusW (P : M.Par) (l0 : ℕ) (Y : Finset ℝ) (N K : ℕ) (w : List C.Letter) (ys : List ℝ)
     (hN : w.length + K ≤ N) (hK : ys.length = K) (hY : ∀ y ∈ ys, y ∈ Y) (hc : KB.CutWord P l0 (KB.minusW ys w)) :
@@ -226,14 +224,14 @@ def GridOK (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (Y : Finset ℝ) (Λ : ℝ) (K
       ((ysOf grid n).map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted w) (y : ℂ)).re).prod) ≤ Λ ^ K
 
 /- English proof (translation)
-Simplify using `[ysOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ysOf_length {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (n : Fin K → Fin (d + 1)) :
     (ysOf grid n).length = K := by
   simp [ysOf]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hy`. Conclude with `hY a (n a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ysOf_mem {K d : ℕ} {Y : Finset ℝ} (grid : Fin K → Fin (d + 1) → ℝ) (hY : ∀ a i, grid a i ∈ Y)
     (n : Fin K → Fin (d + 1)) : ∀ y ∈ ysOf grid n, y ∈ Y := by
@@ -244,11 +242,11 @@ theorem ysOf_mem {K d : ℕ} {Y : Finset ℝ} (grid : Fin K → Fin (d + 1) → 
 end grid
 
 /- English proof (translation)
-Establish `hQ₁'` using `hQ₁.ne'`. Establish `hQ₂'` using `hQ₂.ne'`. Establish `hq'` using `hq.ne'`. Rewrite using `[← Real.sqrt_mul (div_nonneg (mul_pos hQ₁ hQ₂).le hq.le)]`. Establish `heq : Q₁ * Q₂ / q * ((α₁ * f₁ / Q₁) * (α₂ * f₂ / Q₂)) = α ^ 2 * (f₁ * f₂) / q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hαα]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Use `(Real.le_sqrt (mul_nonneg hα hP) (div_nonneg (mul_nonneg (sq_nonneg α) (mul_nonneg hf₁ hf₂)) hq.le)).2 ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hq]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem scal_cs (α α₁ α₂ Pp q Q₁ Q₂ f₁ f₂ : ℝ) (hα : 0 ≤ α) (hαα : α ^ 2 = α₁ * α₂) (h₁ : 0 ≤ α₁) (h₂ : 0 ≤ α₂)
     (hq : 0 < q) (hQ₁ : 0 < Q₁) (hQ₂ : 0 < Q₂) (hP : 0 ≤ Pp) (hf₁ : 0 ≤ f₁) (hf₂ : 0 ≤ f₂)
@@ -268,7 +266,7 @@ theorem scal_cs (α α₁ α₂ Pp q Q₁ Q₂ f₁ f₂ : ℝ) (hα : 0 ≤ α)
     _ ≤ α ^ 2 * (f₁ * f₂) := mul_le_mul_of_nonneg_left hcs (sq_nonneg α)
 
 /- English proof (translation)
-Establish `hm : 0 ≤ max a b` using `le_max_of_le_left ha`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem sqrt_mul_le_max (a b : ℝ) (ha : 0 ≤ a) (_hb : 0 ≤ b) : Real.sqrt (a * b) ≤ max a b := by
   have hm : 0 ≤ max a b := le_max_of_le_left ha
@@ -277,7 +275,7 @@ theorem sqrt_mul_le_max (a b : ℝ) (ha : 0 ≤ a) (_hb : 0 ≤ b) : Real.sqrt (
     _ = max a b := Real.sqrt_mul_self hm
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ (a + b) / 2` using `by linarith`. Rewrite using `[show (a + b) / 2 = Real.sqrt (((a + b) / 2) ^ 2) from (Real.sqrt_sq h0).symm]`. Conclude with `Real.sqrt_le_sqrt (by nlinarith [sq_nonneg (a - b)])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_mul_le_avg (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : Real.sqrt (a * b) ≤ (a + b) / 2 := by
   have h0 : 0 ≤ (a + b) / 2 := by linarith
@@ -285,13 +283,11 @@ theorem sqrt_mul_le_avg (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : Real.sqrt (a
   exact Real.sqrt_le_sqrt (by nlinarith [sq_nonneg (a - b)])
 
 /- English proof (translation)
-Unfold `TBB.mn`. Distinguish the cases in `hx0 : x = 0`. Use `left`. Rewrite using `[if_pos hx0, one_mul]`. Conclude with `h₁`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hx0]`. Establish `hxpos : 0 < x` using `lt_of_le_of_ne hx (Ne.symm hx0)`. Distinguish the cases in `hm : 1 ≤ (Λ / x) ^ K`. Use `left`. Rewrite using `[min_eq_left hm, one_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h₁`. Use `right push_neg at hm`. Rewrite using `[min_eq_right hm.le]`. Establish `h2` using `h₂ hxpos`. Establish `hxK : 0 < x ^ K` using `pow_pos hxpos K`.
-
-Rewrite using `[div_pow, div_mul_eq_mul_div, le_div_iff₀ hxK]`. Combine the linear relations using `[h2]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mn_pick (Λ x L E₁ E₂ : ℝ) (K : ℕ) (hx : 0 ≤ x) (h₁ : L ≤ E₁)
     (h₂ : 0 < x → x ^ K * L ≤ Λ ^ K * E₂) :
@@ -316,7 +312,7 @@ theorem mn_pick (Λ x L E₁ E₂ : ℝ) (K : ℕ) (hx : 0 ≤ x) (h₁ : L ≤ 
       linarith [h2]
 
 /- English proof (translation)
-Take `⟨n₀, -, hn₀⟩` from `Finset.exists_max_image Finset.univ g Finset.univ_nonempty`. Use `⟨n₀, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_le_max {ι : Type} [Fintype ι] [Nonempty ι] (c g : ι → ℝ) (L : ℝ) (hc : ∀ n, 0 ≤ c n)
     (hg : ∀ n, 0 ≤ g n) (hL : ∑ n, c n ≤ L) : ∃ n₀, ∑ n, c n * g n ≤ L * g n₀ := by
@@ -348,29 +344,29 @@ theorem lp_e_apply (m : Fin 1 → ℂ) : lp_e m = m 0 := rfl
 def onePointRealBasis : Module.Basis (Fin 2) ℝ (Fin 1 → ℂ) := Complex.basisOneI.map lp_e.symm
 
 /- English proof (translation)
-Rewrite using `[onePointRealBasis, Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_symm, lp_e_apply, Complex.coe_basisOneI_repr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_point_basis_repr (m : Fin 1 → ℂ) (i : Fin 2) : onePointRealBasis.repr m i = ![(m 0).re, (m 0).im] i := by
   rw [onePointRealBasis, Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_symm, lp_e_apply,
     Complex.coe_basisOneI_repr]
 
 /- English proof (translation)
-Rewrite using `[lp_e.finrank_eq, Complex.finrank_real_complex]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lp_finrank : Module.finrank ℝ (Fin 1 → ℂ) = 2 := by
   rw [lp_e.finrank_eq, Complex.finrank_real_complex]
 
 /- English proof (translation)
-Simplify using `[Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lp_im (ω₁ ω₂ : ℂ) : (conj ω₁ * ω₂).im = ω₁.re * ω₂.im - ω₁.im * ω₂.re := by
   simp [Complex.mul_im, Complex.conj_re, Complex.conj_im]
   ring
 
 /- English proof (translation)
-Establish `hre` using `congrArg Complex.re h0`. Establish `him` using `congrArg Complex.im h0`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.zero_re, Complex.add_im, Complex.mul_im, Complex.zero_im, zero_mul, sub_zero, add_zero] at hre him`. Rewrite `hω` using `[lp_im]`. Establish `hs : s * (ω₁.re * ω₂.im - ω₁.im * ω₂.re) = 0` using `by linear_combination ω₂.im * hre - ω₂.re * him`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : t * (ω₁.re * ω₂.im - ω₁.im * ω₂.re) = 0` using `by linear_combination ω₁.re * him - ω₁.im * hre`. Conclude with `⟨(mul_eq_zero.1 hs).resolve_right hω, (mul_eq_zero.1 ht).resolve_right hω⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem real_linear_independent_of_im_ne_zero (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (s t : ℝ)
     (h0 : (s : ℂ) * ω₁ + (t : ℂ) * ω₂ = 0) : s = 0 ∧ t = 0 := by
@@ -384,7 +380,7 @@ theorem real_linear_independent_of_im_ne_zero (ω₁ ω₂ : ℂ) (hω : (conj �
   exact ⟨(mul_eq_zero.1 hs).resolve_right hω, (mul_eq_zero.1 ht).resolve_right hω⟩
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Establish `h0` using `congrFun h 0`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, Complex.real_smul] at h0`. Conclude with `real_linear_independent_of_im_ne_zero ω₁ ω₂ hω s t h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lp_li (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
     LinearIndependent ℝ ![(fun _ : Fin 1 => ω₁), (fun _ : Fin 1 => ω₂)] := by
@@ -398,16 +394,16 @@ def lp_b (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) : Module.Basi
   basisOfLinearIndependentOfCardEqFinrank (lp_li ω₁ ω₂ hω) (by rw [lp_finrank]; rfl)
 
 /- English proof (translation)
-Conclude with `coe_basisOfLinearIndependentOfCardEqFinrank _ _`.
+A detailed English derivation is pending.
 -/
 theorem lp_b_apply (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
     ⇑(lp_b ω₁ ω₂ hω) = ![(fun _ : Fin 1 => ω₁), (fun _ : Fin 1 => ω₂)] := by
   exact coe_basisOfLinearIndependentOfCardEqFinrank _ _
 
 /- English proof (translation)
-Establish `hfd : ZSpan.fundamentalDomain onePointRealBasis = (MeasurableEquiv.funUnique (Fin 1) ℂ) ⁻¹' {z : ℂ | z.re ∈ Set.Ico (0 : ℝ) 1 ∧ z.im ∈ Set.Ico (0 : ℝ) 1}`. Use extensionality with `m`. Simplify using `[ZSpan.fundamentalDomain, one_point_basis_repr, Fin.forall_fin_two, MeasurableEquiv.funUnique]`. Establish `hsq : {z : ℂ | z.re ∈ Set.Ico (0 : ℝ) 1 ∧ z.im ∈ Set.Ico (0 : ℝ) 1} = Complex.measurableEquivRealProd ⁻¹' (Set.Ico (0 : ℝ) 1 ×ˢ Set.Ico (0 : ℝ) 1)`. Use extensionality with `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Complex.measurableEquivRealProd]`. Rewrite using `[hfd]`. Use `erw [(volume_preserving_funUnique (Fin 1) ℂ).measure_preimage_equiv]`. Rewrite using `[hsq, Complex.volume_preserving_equiv_real_prod.measure_preimage ((measurableSet_Ico.prod measurableSet_Ico).nullMeasurableSet), Measure.volume_eq_prod, Measure.prod_prod, Real.volume_Ico]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_point_basis_fundamental_domain_volume : (volume : Measure (Fin 1 → ℂ)) (ZSpan.fundamentalDomain onePointRealBasis) = 1 := by
   have hfd : ZSpan.fundamentalDomain onePointRealBasis =
@@ -426,7 +422,7 @@ theorem one_point_basis_fundamental_domain_volume : (volume : Measure (Fin 1 →
   simp
 
 /- English proof (translation)
-Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain _ volume (ZSpan.isAddFundamentalDomain (lp_b ω₁ ω₂ hω) volume), Measure.real, ZSpan.measure_fundamentalDomain (lp_b ω₁ ω₂ hω) volume onePointRealBasis, one_point_basis_fundamental_domain_volume, mul_one, ENNReal.toReal_ofReal (abs_n …`. Use `congr 1`. Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_two, lp_im]`. Simplify using `[Module.Basis.toMatrix_apply, one_point_basis_repr, lp_b_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lp_covol (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
     ZLattice.covolume (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))) volume = |(conj ω₁ * ω₂).im| := by
@@ -439,7 +435,7 @@ theorem lp_covol (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
   ring
 
 /- English proof (translation)
-Unfold `crystallineComparison.psi P5.fsv`. Use `congr 1`. Simplify using `only [Fin.sum_univ_one, Pi.mul_apply, map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lp_psi (τ z : Fin 1 → ℂ) : crystallineComparison.psi (τ * z) = P5.fsv (2 * Real.pi * Complex.I * τ 0) (z 0) := by
   unfold crystallineComparison.psi P5.fsv
@@ -448,11 +444,11 @@ theorem lp_psi (τ z : Fin 1 → ℂ) : crystallineComparison.psi (τ * z) = P5.
   ring
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun, lp_b_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨c 0, c 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Fin.sum_univ_two, zsmul_eq_mul]`. Introduce and unpack `⟨a, b, rfl⟩`. Use `⟨![a, b], ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Fin.sum_univ_two, zsmul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lp_mem (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (z : Fin 1 → ℂ) :
     z ∈ Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω)) ↔
@@ -470,9 +466,9 @@ theorem lp_mem (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (z : Fi
     simp [Fin.sum_univ_two, zsmul_eq_mul]
 
 /- English proof (translation)
-Unfold `crystallineComparison.dualSet TBB.InDual`. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Use `h _ ((lp_mem ω₁ ω₂ hω _).2 ⟨a, b, rfl⟩)` as an intermediate fact.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[lp_psi]`. Introduce `h z hz`. Take `⟨a, b, rfl⟩` from `(lp_mem ω₁ ω₂ hω z).1 hz`. Simplify `h a b` using `[lp_psi]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lp_dual (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (τ : Fin 1 → ℂ) :
     τ ∈ crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))) ↔
@@ -488,7 +484,7 @@ theorem lp_dual (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (τ : 
     simpa [lp_psi] using h a b
 
 /- English proof (translation)
-Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lp_ne : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
   simp [Real.pi_ne_zero, Complex.I_ne_zero]
@@ -508,9 +504,9 @@ def lp_eqv (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
     rw [mul_div_cancel_left₀ _ lp_ne]
 
 /- English proof (translation)
-Unfold `crystallineComparison.fourier`. Repeatedly rewrite using `[lp_psi]`. Establish `h` using `(volume_preserving_funUnique (Fin 1) ℂ).integral_comp' (fun c : ℂ => P5.fsv (2 * Real.pi * Complex.I * τ 0) c * (E c : ℂ))`. Rewrite using `[← h]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `z`. Simplify using `[MeasurableEquiv.funUnique, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lp_fourier (E : ℂ → ℝ) (τ : Fin 1 → ℂ) :
     crystallineComparison.fourier (fun z => E (z 0)) τ = ∫ c : ℂ, P5.fsv (2 * Real.pi * Complex.I * τ 0) c * (E c : ℂ) := by
@@ -524,9 +520,9 @@ theorem lp_fourier (E : ℂ → ℝ) (τ : Fin 1 → ℂ) :
   simp [MeasurableEquiv.funUnique, mul_comm]
 
 /- English proof (translation)
-Introduce `ab ab' h`. Establish `h0` using `congrFun h 0`. Simplify using `only at h0`. Take `⟨hs, ht⟩` from `real_linear_independent_of_im_ne_zero ω₁ ω₂ hω ((ab.1 - ab'.1 : ℤ) : ℝ) ((ab.2 - ab'.2 : ℤ) : ℝ) (by push_cast; linear_combination h0)`. Establish `h1 : ab.1 - ab'.1 = 0` using `by exact_mod_cast hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ab.2 - ab'.2 = 0` using `by exact_mod_cast ht`. Conclude with `Prod.ext (by omega) (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lp_inj (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (z₀ : ℂ) :
     Function.Injective (fun ab : ℤ × ℤ => (fun _ : Fin 1 => z₀ + (ab.1 : ℂ) * ω₁ + (ab.2 : ℂ) * ω₂)) := by
@@ -540,29 +536,27 @@ theorem lp_inj (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (z₀ :
   exact Prod.ext (by omega) (by omega)
 
 /- English proof (translation)
-Establish `hpi : 0 < Real.pi` using `Real.pi_pos`. Establish `hN0 : ∀ z : crystallineComparison.V 1, 0 ≤ (fun z : crystallineComparison.V 1 => E (z 0)) z` using `fun z => hE0 _`. Establish `hNl : LowerSemicontinuous (fun z : crystallineComparison.V 1 => E (z 0))` using `LowerSemicontinuous.comp (f := E) (g := fun z : crystallineComparison.V 1 => z 0) hEl (continuous_apply 0)`. Establish `hNi : Integrable (fun z : crystallineComparison.V 1 => E (z 0))`. Establish `h` using `(volume_preserving_funUnique (Fin 1) ℂ).integrable_comp_emb (MeasurableEquiv.measurableEmbedding _) (g := E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.2 hEi`. Establish `hPD : crystallineComparison.PDOn (crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω)))) (fun _ => (0 : ℂ))`. Introduce `S c _`. Simplify using the standard rewrite rules. Use `set J : ℂ → ℂ := fun σ => ∫ z : ℂ, P5.fsv σ z * (E z : ℂ) with hJ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hF : ∀ τ : crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))), ‖crystallineComparison.fourier (fun z : crystallineComparison.V 1 => E (z 0)) τ + (fun _ => (0 : ℂ)) (τ : crystallineComparison.V 1)‖ = (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} => ‖J σ.1‖) ((lp …`. Introduce `τ`. Simplify using `only [add_zero, hJ]`. Rewrite using `[lp_fourier]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hs : Summable (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} => ‖J σ.1‖)`. Establish `hs' : Summable (fun τ : crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))) => ‖crystallineComparison.fourier (fun z : crystallineComparison.V 1 => E (z 0)) τ + (fun _ => (0 : ℂ)) (τ : crystallineComparison.V 1)‖)`. Repeatedly rewrite using `[hF]`. Conclude with `(lp_eqv ω₁ ω₂ hω).symm.summable_iff.2 hs`. Establish `hR : ∀ T : Finset (ℤ × ℤ), |(conj ω₁ * ω₂).im| * ∑ ab ∈ T, E (z₀ + (ab.1 : ℂ) * ω₁ + (ab.2 : ℂ) * ω₂) ≤ ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ}, ‖J σ.1‖`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T`. Establish `h1` using `Formalism.FourierDecayAlt.P.latticeHerglotzBound_statement 1 (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))) (fun z : crystallineComparison.V 1 => E (z 0)) (fun _ => 0) hN0 hNl hNi hPD hs' (fun _ => z₀) (T.image (fun ab : ℤ × ℤ => (fun _ : Fin 1 => z₀ + (ab.1 : ℂ) * ω₁ + (ab.2 : ℂ …`. Introduce `z hz`. Take `⟨ab, -, rfl⟩` from `Finset.mem_image.1 hz`. Use `(lp_mem ω₁ ω₂ hω _).2 ⟨ab.1, ab.2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply]`. Use the proof step `ring)`. Rewrite `h1` using `[lp_covol, Finset.sum_image (fun x _ y _ h => lp_inj ω₁ ω₂ hω z₀ h)]`. Rewrite `h1` using `[hF]`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `h1` using `[(lp_eqv ω₁ ω₂ hω).symm.tsum_eq (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} => ‖J σ.1‖)]`. Conclude with `h1`. Establish `hrhs : ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ}, (‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ.1 z * (E z : ℂ)‖₊ : ℝ≥0∞) = ENNReal.ofReal (Real.pi⁻¹ * ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ}, ‖J σ.1‖)`. Rewrite using `[← tsum_mul_left, ENNReal.ofReal_tsum_of_nonneg (fun _ => by positivity) (hs.mul_left _)]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `σ`. Rewrite using `[← ENNReal.ofReal_coe_nnreal, coe_nnnorm, norm_mul]`. Simplify using `[hJ, abs_of_pos hpi]`. Rewrite using `[hrhs, ENNReal.tsum_eq_iSup_sum, ENNReal.mul_iSup]`. Use `iSup_le fun T => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun _ _ => hE0 _), ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[div_eq_inv_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hR T) (by positivity)`. Establish `htop : ∑' σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ}, (‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ.1 z * (E z : ℂ)‖₊ : ℝ≥0∞) = ⊤`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises. Establish `h2` using `ENNReal.tsum_coe_ne_top_iff_summable.1 hne`. Establish `h3 : Summable (fun σ : {σ : ℂ // TBB.InDual ω₁ ω₂ σ} => ‖(Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ.1 z * (E z : ℂ)‖)`. Rewrite `h2` using `[← NNReal.summable_coe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h2`. Establish `h4` using `h3.mul_left Real.pi`. Use `h4.congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Simplify using `[hJ, abs_of_pos hpi, hpi.ne']`.
-
-Rewrite using `[htop]`. Conclude with `le_top`.
+A detailed English derivation is pending.
 -/
 theorem lattice_poisson (E : ℂ → ℝ) (hE0 : ∀ z, 0 ≤ E z) (hEl : LowerSemicontinuous E) (hEi : Integrable E)
     (ω₁ ω₂ z₀ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
@@ -663,9 +657,9 @@ def LiftGrid (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (Y : Finset ℝ) (Λ : ℝ) 
     ∃ grid : Fin K → Fin (2 * (b + s - 1 - s) + s + 1) → ℝ, GridOK p nn Y Λ K w (2 * (b + s - 1 - s) + s) grid
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hx with hx | hx` into its components or cases. Conclude with `hh.1 x hx`. Simplify using `only [List.mem_singleton] at hx`. Substitute `hx` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨hs, ht⟩`. Establish `h2` using `hh.2`. Unfold `D.ptSize at h2 ⊢`. Simplify using `only [List.map_append, List.sum_append, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem li_locPt (h : C.LPt) (b s : ℕ) (t : ℂ) (hb : 1 ≤ b) (hs : 1 ≤ s) (hh : D.IsLocPt h (b - 1))
     (ht : t ≠ 0) : D.IsLocPt (h ++ [(s, t)]) (b + s - 1) := by
@@ -681,7 +675,7 @@ theorem li_locPt (h : C.LPt) (b s : ℕ) (t : ℂ) (hb : 1 ≤ b) (hs : 1 ≤ s)
     omega
 
 /- English proof (translation)
-Unfold `TBB.Ew TBB.NP`. Rewrite using `[Complex.re_ofReal_mul, PBL.rr_eq_form p F j hj w' a a ha ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem li_ew (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (j : ℕ) (hj : j ≤ P.r)
     (w' : List C.Letter) (a : C.LPt) (ha : D.IsLocPt a j) :
@@ -691,7 +685,7 @@ theorem li_ew (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq 
   rw [Complex.re_ofReal_mul, PBL.rr_eq_form p F j hj w' a a ha ha]
 
 /- English proof (translation)
-Unfold `TBB.NP`. Rewrite using `[PBL.rr_eq_form p F j hj w a a' ha ha']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem li_np (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (j : ℕ) (hj : j ≤ P.r)
     (w : List C.Letter) (a a' : C.LPt) (ha : D.IsLocPt a j) (ha' : D.IsLocPt a' j) :
@@ -702,41 +696,35 @@ theorem li_np (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq 
   rw [PBL.rr_eq_form p F j hj w a a' ha ha']
 
 /- English proof (translation)
-Introduce `b s hb hs hbs h hh w hw hN t t' ht ht'`. Use `set j := b + s - 1 with hjdef`. Establish `hj : j ≤ P.r` using `hbs`. Take `⟨grid, hinj, hY, hcut, hsum⟩` from `hgrid b s hb hs hbs w hw hN`. Simplify using `only [ysOf] at hsum hcut`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha` using `li_locPt h b s t hb hs hh ht`. Establish `ha'` using `li_locPt h b s t' hb hs hh ht'`. Use `set u := Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) (h ++ [(s, t)])) with hudef`. Use `set u' := Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) (h ++ [(s, t')])) with hu'def`. Use `set n := TBB.normC nn w with hndef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : 0 < n` using `normC_pos nn hnn w`. Establish `hu : 0 ≤ u` using `Real.sqrt_nonneg _`. Establish `hu' : 0 ≤ u'` using `Real.sqrt_nonneg _`. Establish `hα : 0 ≤ u * u' / n` using `by positivity`. Use `set x := KB.slv p.T F j hj w _ ha.2 with hxdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set x' := KB.slv p.T F j hj w _ ha'.2 with hx'def`. Establish `hNP : ‖TBB.NP p nn F j w (h ++ [(s, t)]) (h ++ [(s, t')])‖ = (u * u' / n) * ‖p.form j hj w x x'‖`. Rewrite using `[li_np p nn F j hj w _ _ ha ha', norm_mul, Complex.norm_real, Real.norm_of_nonneg hα]`. Establish `c1 : ‖TBB.NP p nn F j w (h ++ [(s, t)]) (h ++ [(s, t')])‖ ≤ (TBB.Ew p nn F j w (h ++ [(s, t)]) + TBB.Ew p nn F j w (h ++ [(s, t')])) / 2`. Take `⟨ε₁, hε₁, hx⟩` from `PBL.slv_nv p hF j hj w _ ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε₂, hε₂, hx'⟩` from `PBL.slv_nv p hF j hj w _ ha'`. Establish `hxm` using `PBL.nv_mono hx (min_le_left ε₁ ε₂)`. Establish `hx'm` using `PBL.nv_mono hx' (min_le_right ε₁ ε₂)`. Establish `hcs` using `form_cs p hpos j hj w hw.1 (lt_min hε₁ hε₂) x x' hxm hx'm`. Establish `hf` using `form_re_nonneg p hpos j hj w hw.1 hε₁ x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf'` using `form_re_nonneg p hpos j hj w hw.1 hε₂ x' hx'`. Establish `key` using `scal_cs (u * u' / n) (u * u / n) (u' * u' / n) ‖p.form j hj w x x'‖ 1 1 1 (p.form j hj w x x).re (p.form j hj w x' x').re hα (by field_simp) (by positivity) (by positivity) one_pos one_pos one_pos (norm_nonneg _) hf hf' (by rw [mul_one]; exact hcs)`. Rewrite using `[hNP, li_ew p nn F j hj w _ ha, li_ew p nn F j hj w _ ha']`. Use `key.trans ?_` and prove the remaining obligations. Simplify using `only [mul_one, div_one, Real.sqrt_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sqrt_mul_le_avg _ _ (mul_nonneg (by positivity) hf) (mul_nonneg (by positivity) hf')`. Establish `hEnn : ∀ (w' : List C.Letter) (a : C.LPt) (ha : D.IsLocPt a j), KB.CutWord P p.l0 w' → 0 ≤ TBB.Ew p nn F j w' a`. Introduce `w' a ha hw'`. Rewrite using `[li_ew p nn F j hj w' a ha]`. Take `⟨ε, hε, hxa⟩` from `PBL.slv_nv p hF j hj w' a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_nonneg (div_nonneg (mul_self_nonneg _) (normC_pos nn hnn w').le) (form_re_nonneg p hpos j hj w' hw' hε _ hxa)`. Establish `hdeg` using `hDL Wp Wq P p F j s hj w h h t t' ha ha' K grid hF hinj`. Rewrite `hdeg` using `[PBL.rr_eq_form p F j hj w _ _ ha ha']`. Establish `hper : ∀ m : Fin K → Fin (2 * (j - s) + s + 1), (u * u' / n) * ‖KB.pairJ (p.form j hj w) (List.ofFn fun a => grid a (m a)) (KB.slv p.T F j hj (KB.plusW (List.ofFn fun a => grid a (m a)) w) _ ha.2) (KB.slv p.T F j hj (KB.minusW (List.ofFn fun a => grid a (m a)) w) _ ha'.2)‖ ≤ Real …`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ys := List.ofFn fun a => grid a (m a) with hys`. Take `⟨hqpos, hSSm⟩` from `hSS hA Wp Wq P p j hj w ys (hcut m).1 (hcut m).2.1 (hcut m).2.2`. Take `⟨ε₁, hε₁, hx⟩` from `PBL.slv_nv p hF j hj (KB.plusW ys w) _ ha`. Take `⟨ε₂, hε₂, hx'⟩` from `PBL.slv_nv p hF j hj (KB.minusW ys w) _ ha'`. Establish `hxm` using `PBL.nv_mono hx (min_le_left ε₁ ε₂)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx'm` using `PBL.nv_mono hx' (min_le_right ε₁ ε₂)`. Establish `hcs` using `hSSm _ _ _ (lt_min hε₁ hε₂) hxm hx'm`. Use `set fp := (p.form j hj (KB.plusW ys w) (KB.slv p.T F j hj (KB.plusW ys w) (h ++ [(s, t)]) ha.2) (KB.slv p.T F j hj (KB.plusW ys w) (h ++ [(s, t)]) ha.2)).re with hfp`. Use `set fm := (p.form j hj (KB.minusW ys w) (KB.slv p.T F j hj (KB.minusW ys w) (h ++ [(s, t')]) ha'.2) (KB.slv p.T F j hj (KB.minusW ys w) (h ++ [(s, t')]) ha'.2)).re with hfm`. Establish `hf : 0 ≤ fp` using `form_re_nonneg p hpos j hj _ (hcut m).1 hε₁ _ hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf' : 0 ≤ fm` using `form_re_nonneg p hpos j hj _ (hcut m).2.1 hε₂ _ hx'`. Establish `hq : 0 < (ys.map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted w) (y : ℂ)).re).prod`. Use `List.prod_pos fun z hz => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hz`. Conclude with `hqpos y hy`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ₁` using `prod_map_pos nn hnn ys`. Establish `hQ₂` using `prod_map_pos (fun y => nn (y + 1)) (fun y => hnn _) ys`. Establish `key` using `scal_cs (u * u' / n) (u * u / n) (u' * u' / n) _ _ _ _ fp fm hα (by field_simp) (by positivity) (by positivity) hq hQ₁ hQ₂ (norm_nonneg _) hf hf' hcs`. Use `key.trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (Real.sqrt_nonneg _)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[li_ew p nn F j hj _ _ ha, li_ew p nn F j hj _ _ ha', normC_plusW, normC_minusW, ← hfp, ← hfm]`. Establish `e₁ : u * u / n * fp / (ys.map nn).prod = u * u / ((ys.map nn).prod * n) * fp`. Clear the denominators using the available nonvanishing facts. Establish `e₂ : u' * u' / n * fm / (ys.map fun y => nn (y + 1)).prod = u' * u' / ((ys.map fun y => nn (y + 1)).prod * n) * fm`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂]`. Conclude with `sqrt_mul_le_avg _ _ (by positivity) (by positivity)`. Use `set g : (Fin K → Fin (2 * (j - s) + s + 1)) → ℝ := fun m => (TBB.Ew p nn F j (KB.plusW (List.ofFn fun a => grid a (m a)) w) (h ++ [(s, t)]) + TBB.Ew p nn F j (KB.minusW (List.ofFn fun a => grid a (m a)) w) (h ++ [(s, t')])) / 2 with hg`. Establish `hg0 : ∀ m, 0 ≤ g m` using `fun m => div_nonneg (add_nonneg (hEnn _ _ ha (hcut m).1) (hEnn _ _ ha' (hcut m).2.1)) zero_le_two`. Take `⟨m₀, hm₀⟩` from `sum_le_max (fun m => |∏ a, F7.lagCo (grid a) (m a)| * Real.sqrt (((List.ofFn fun a => grid a (m a)).map nn).prod * ((List.ofFn fun a => grid a (m a)).map fun y => nn (y + 1)).prod / ((List.ofFn fun a => grid a (m a)).map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted w) (y : ℂ)).re) …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `c2 : ‖t⁻¹ - t'⁻¹‖ ^ K * ‖TBB.NP p nn F j w (h ++ [(s, t)]) (h ++ [(s, t')])‖ ≤ Λ ^ K * g m₀`. Establish `hn1 : ‖((-1 : ℂ) ^ (s - 1) * (t⁻¹ - t'⁻¹)) ^ K * p.form j hj w x x'‖ = ‖t⁻¹ - t'⁻¹‖ ^ K * ‖p.form j hj w x x'‖`. Rewrite using `[norm_mul, norm_pow, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Rewrite using `[hNP]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `mul_le_mul_of_nonneg_left ?_ hα` and prove the remaining obligations. Rewrite using `[hdeg]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun m _ => norm_mul _ _`. Use `_ = ∑ m : Fin K → Fin (2 * (j - s) + s + 1), |∏ a, F7.lagCo (grid a) (m a)| * (u * u' / n * ‖KB.pairJ (p.form j hj w) (List.ofFn fun a => grid a (m a)) (KB.slv p.T F j hj (KB.plusW (List.ofFn fun a => grid a (m a)) w) _ ha.2) (KB.slv p.T F j hj (KB.minusW (List.ofFn fun a => grid …`.
-
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ m : Fin K → Fin (2 * (j - s) + s + 1), |∏ a, F7.lagCo (grid a) (m a)| * (Real.sqrt (((List.ofFn fun a => grid a (m a)).map nn).prod * ((List.ofFn fun a => grid a (m a)).map fun y => nn (y + 1)).prod / ((List.ofFn fun a => grid a (m a)).map fun y : ℝ => (Wd.qw (M.qC P) (D.po …`.
-
-Use `_ = ∑ m : Fin K → Fin (2 * (j - s) + s + 1), |∏ a, F7.lagCo (grid a) (m a)| * Real.sqrt (((List.ofFn fun a => grid a (m a)).map nn).prod * ((List.ofFn fun a => grid a (m a)).map fun y => nn (y + 1)).prod / ((List.ofFn fun a => grid a (m a)).map fun y : ℝ => (Wd.qw (M.qC P) (D.pos …`. Use `_ ≤ Λ ^ K * g m₀ := hm₀`. Break down `mn_pick Λ ‖t⁻¹ - t'⁻¹‖ _ _ (g m₀) K (norm_nonneg _) c1 (fun _ => c2) with hc | hc` into its components or cases. Conclude with `⟨w, w, isExt_self P p.l0 Y N K w hw (by omega), isExt_self P p.l0 Y N K w hw (by omega), hc⟩`. Use `⟨KB.plusW (List.ofFn fun a => grid a (m₀ a)) w, KB.minusW (List.ofFn fun a => grid a (m₀ a)) w, isExt_plusW P p.l0 Y N K w _ hN (by simp) (ysOf_mem grid hY m₀) (hcut m₀).1, isExt_minusW P p.l0 Y N K w _ hN (by simp) (ysOf_mem grid hY m₀) (hcut m₀).2.1, hc⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_four_at_place_of_parts (hA : P5.ThmPActual) (hSS : KB.SizeStd) (hDL : KB.DegLift) (p : KB.Pl P Wp Wq)
     (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (Λ : ℝ) (K N : ℕ) (hpos : FormNonneg p)
@@ -905,7 +893,7 @@ def WaveGrid (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (Y : Finset ℝ) (Λ : ℝ) 
     ∃ grid : Fin K → Fin (2 * j + 1) → ℝ, GridOK p nn Y Λ K w (2 * j) grid
 
 /- English proof (translation)
-Unfold `TBB.nPt`. Conclude with `Formalism.FourierDecayAlt.P.PBD.weight_product_indep_of_real_parameter P.k P.r _ 0 (fun _ _ => 1) h 1 le_rfl (by rw [hh.2]; omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wv_nPt (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (h : C.LPt) (hh : D.IsLocPt h j) :
     TBB.nPt P.k P.r (TBB.TTp p) h = C.nAux P.k P.r 0 (fun _ _ => 1) 1 h := by
@@ -913,34 +901,34 @@ theorem wv_nPt (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (h : C.LPt) (hh : 
   exact Formalism.FourierDecayAlt.P.PBD.weight_product_indep_of_real_parameter P.k P.r _ 0 (fun _ _ => 1) h 1 le_rfl (by rw [hh.2]; omega)
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBD.lpt_value_nonneg_of_pos_of_size_le P.k P.r 0 (fun _ _ => 1) (fun _ _ => one_pos) h 1 le_rfl (by rw [hh.2]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem weighted_auxiliary_norm_nonneg (P : M.Par) (j : ℕ) (hj : j ≤ P.r) (h : C.LPt) (hh : D.IsLocPt h j) :
     0 ≤ C.nAux P.k P.r 0 (fun _ _ => 1) 1 h :=
   Formalism.FourierDecayAlt.P.PBD.lpt_value_nonneg_of_pos_of_size_le P.k P.r 0 (fun _ _ => 1) (fun _ _ => one_pos) h 1 le_rfl (by rw [hh.2]; omega)
 
 /- English proof (translation)
-Use `set A := C.nAux P.k P.r 0 (fun _ _ => 1) 1 h with hAdef`. Establish `hA : 0 ≤ A` using `weighted_auxiliary_norm_nonneg P j hj h hh`. Establish `hn : TBB.nPt P.k P.r (TBB.TTp p) (h ++ [(1, c)]) = A * C.nAux P.k P.r (D.ptGG (TBB.TTp p) (h ++ [(1, c)])) (fun _ _ => 1) (1 + j) [(1, c)]`. Unfold `TBB.nPt`. Rewrite using `[Formalism.FourierDecayAlt.P.PBD.weight_product_append, hh.2, hAdef, Formalism.FourierDecayAlt.P.PBD.weight_product_indep_of_real_parameter P.k P.r _ 0 (fun _ _ => 1) h 1 le_rfl (by rw [hh.2]; omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `TBB.NP`. Rewrite using `[hn]`. Distinguish the cases in `hjr : j = P.r`. Substitute `hjr` using the available equality. Distinguish the cases in `hc2 : Complex.normSq c ≤ Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z'`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0 : p.RR F (P.r + 1) w (h ++ [(1, c)]) (h ++ [(1, c)]) = 0` using `Formalism.FourierDecayAlt.P.PBD.rrTop_zero P p.l0 p.T p.ν' p.m₀ p.Θ p.TP (M.sgn P p.l0) F w h _ c hh.2 hc2`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `push Not at hc2`. Establish `hT : Tz P.k P.r p.T.base.z = P.T` using `p.hP.2.2.2.1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : Tz P.k P.r p.T.base.z' = P.T'` using `p.hP.2.2.2.2.1`. Establish `hlast : D.ptGG (TBB.TTp p) (h ++ [(1, c)]) = Complex.normSq c - TBB.TTp p`. Simplify using `[D.ptGG, D.ptLast]`. Establish `hTT : TBB.TTp p = P.T * P.T'`. Unfold `TBB.TTp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT, hT']`. Establish `hfac : C.nAux P.k P.r (D.ptGG (TBB.TTp p) (h ++ [(1, c)])) (fun _ _ => 1) (1 + P.r) [(1, c)] = KB.levW P (P.r + 1) c`. Rewrite using `[hlast, hTT]`. Rewrite `hc2` using `[hT, hT']`. Simplify using `only [C.nAux, KB.levW, B2.zWeight, if_pos hc2.le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos ⟨by omega, trivial⟩]`. Simplify using the standard rewrite rules. Establish `hlev : 0 ≤ KB.levW P (P.r + 1) c`. Rewrite using `[← hfac, hlast]`. Simplify using `only [C.nAux]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos ⟨by omega, trivial⟩]`. Establish `: 0 ≤ Complex.normSq c - TBB.TTp p`. Unfold `TBB.TTp`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using pow_nonneg this _`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hfac, Real.mul_self_sqrt (mul_nonneg hA hlev)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfac : C.nAux P.k P.r (D.ptGG (TBB.TTp p) (h ++ [(1, c)])) (fun _ _ => 1) (1 + j) [(1, c)] = KB.levW P (j + 1) c`. Simplify using `only [C.nAux, KB.levW]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Establish `e : 1 + j + 1 - 1 = j + 1` using `by omega`. Rewrite using `[e]`. Simplify using `only [one_mul, mul_one, Nat.cast_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlev : 0 ≤ KB.levW P (j + 1) c`. Simplify using `only [KB.levW]`. Rewrite using `[if_neg (by omega)]`. Conclude with `zpow_nonneg (norm_nonneg _) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfac, Real.mul_self_sqrt (mul_nonneg hA hlev)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem wv_np (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (j : ℕ) (hj : j ≤ P.r)
     (h : C.LPt) (hh : D.IsLocPt h j) (w : List C.Letter) (c : ℂ) :
@@ -1006,7 +994,7 @@ theorem wv_np (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq 
     ring
 
 /- English proof (translation)
-Rewrite using `[li_ew p nn F j hj w' h hh, wv_nPt p j hj h hh, Real.mul_self_sqrt (weighted_auxiliary_norm_nonneg P j hj h hh)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wv_ew (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (j : ℕ) (hj : j ≤ P.r)
     (w' : List C.Letter) (h : C.LPt) (hh : D.IsLocPt h j) :
@@ -1015,47 +1003,39 @@ theorem wv_ew (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq 
   rw [li_ew p nn F j hj w' h hh, wv_nPt p j hj h hh, Real.mul_self_sqrt (weighted_auxiliary_norm_nonneg P j hj h hh)]
 
 /- English proof (translation)
-Introduce `j hj h hh w hw hN s`. Take `⟨grid, hinj, hY, hcut, hsum⟩` from `hgrid j hj w hw hN`. Simplify using `only [ysOf] at hsum hcut`. Use `set A := C.nAux P.k P.r 0 (fun _ _ => 1) 1 h with hAdef`. Establish `hA0 : 0 ≤ A` using `weighted_auxiliary_norm_nonneg P j hj h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n := TBB.normC nn w with hndef`. Establish `hn : 0 < n` using `normC_pos nn hnn w`. Establish `hα : 0 ≤ A / n` using `div_nonneg hA0 hn.le`. Use `set x := KB.slv p.T F j hj w h hh.2 with hxdef`. Take `⟨φ, -, -, hφ, hφs⟩` from `hPS hA Wp Wq P p F j hj w h h hh hh Cb hCb hF hw.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∫ c : ℂ, P5.fsv s c * TBB.NP p nn F (j + 1) w (h ++ [(1, c)]) (h ++ [(1, c)]) = ((A / n : ℝ) : ℂ) * p.form j hj w (KB.waveG (p.T.bs j) s w x) x`. Rewrite using `[← hφs s, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBL.ae_ne_zero_complex] with c hc`. Rewrite using `[← wv_np p nn F j hj h hh w c, ← hφ c hc]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set I := ‖∫ c : ℂ, P5.fsv s c * TBB.NP p nn F (j + 1) w (h ++ [(1, c)]) (h ++ [(1, c)])‖ with hIdef`. Establish `hI : I = A / n * ‖p.form j hj w (KB.waveG (p.T.bs j) s w x) x‖`. Rewrite using `[hIdef, hint, norm_mul, Complex.norm_real, Real.norm_of_nonneg hα]`. Establish `hEnn : ∀ w' : List C.Letter, KB.CutWord P p.l0 w' → 0 ≤ TBB.Ew p nn F j w' h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `w' hw'`. Rewrite using `[wv_ew p nn F j hj w' h hh]`. Take `⟨ε, hε, hxa⟩` from `PBL.slv_nv p hF j hj w' h hh`. Conclude with `mul_nonneg (div_nonneg hA0 (normC_pos nn hnn w').le) (form_re_nonneg p hpos j hj w' hw' hε _ hxa)`. Establish `c1 : I ≤ TBB.Ew p nn F j w h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, hε, hx⟩` from `PBL.slv_nv p hF j hj w h hh`. Take `⟨hVn, hVeq⟩` from `hVI hA Wp Wq P p j hj w hw.1 s x x ε hε hx hx`. Establish `hcs` using `form_cs p hpos j hj w hw.1 hε (KB.waveG (p.T.bs j) s w x) x hVn hx`. Rewrite `hcs` using `[hVeq]`. Establish `hf` using `form_re_nonneg p hpos j hj w hw.1 hε x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key` using `scal_cs (A / n) (A / n) (A / n) ‖p.form j hj w (KB.waveG (p.T.bs j) s w x) x‖ 1 1 1 (p.form j hj w x x).re (p.form j hj w x x).re hα (by ring) hα hα one_pos one_pos one_pos (norm_nonneg _) hf hf (by rw [mul_one]; exact hcs)`. Rewrite using `[hI, wv_ew p nn F j hj w h hh]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [mul_one, div_one, Real.sqrt_one, one_mul]`. Conclude with `Real.sqrt_mul_self (mul_nonneg hα hf)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdeg` using `hDW Wp Wq P p F j hj w h h hh hh K grid s LinearMap.id (fun ε x hx => hx) hF hinj`. Simplify using `only [PBL.onOld_id] at hdeg`. Simplify using `only [LinearMap.id_coe, id] at hdeg`. Establish `hper : ∀ m : Fin K → Fin (2 * j + 1), (A / n) * ‖KB.pairJ (p.form j hj w) (List.ofFn fun a => grid a (m a)) (KB.waveG (p.T.bs j) s (KB.plusW (List.ofFn fun a => grid a (m a)) w) (KB.slv p.T F j hj (KB.plusW (List.ofFn fun a => grid a (m a)) w) h hh.2)) (KB.slv p.T F j hj (KB.minu …`. Introduce `m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ys := List.ofFn fun a => grid a (m a) with hys`. Take `⟨hqpos, hSSm⟩` from `hSS hA Wp Wq P p j hj w ys (hcut m).1 (hcut m).2.1 (hcut m).2.2`. Take `⟨ε₁, hε₁, hx⟩` from `PBL.slv_nv p hF j hj (KB.plusW ys w) h hh`. Take `⟨ε₂, hε₂, hx'⟩` from `PBL.slv_nv p hF j hj (KB.minusW ys w) h hh`. Take `⟨hVn, hVeq⟩` from `hVI hA Wp Wq P p j hj (KB.plusW ys w) (hcut m).1 s _ _ ε₁ hε₁ hx hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxm` using `PBL.nv_mono hVn (min_le_left ε₁ ε₂)`. Establish `hx'm` using `PBL.nv_mono hx' (min_le_right ε₁ ε₂)`. Establish `hcs` using `hSSm _ _ _ (lt_min hε₁ hε₂) hxm hx'm`. Rewrite `hcs` using `[hVeq]`. Use `set fp := (p.form j hj (KB.plusW ys w) (KB.slv p.T F j hj (KB.plusW ys w) h hh.2) (KB.slv p.T F j hj (KB.plusW ys w) h hh.2)).re with hfp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set fm := (p.form j hj (KB.minusW ys w) (KB.slv p.T F j hj (KB.minusW ys w) h hh.2) (KB.slv p.T F j hj (KB.minusW ys w) h hh.2)).re with hfm`. Establish `hf : 0 ≤ fp` using `form_re_nonneg p hpos j hj _ (hcut m).1 hε₁ _ hx`. Establish `hf' : 0 ≤ fm` using `form_re_nonneg p hpos j hj _ (hcut m).2.1 hε₂ _ hx'`. Establish `hq : 0 < (ys.map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted w) (y : ℂ)).re).prod`. Use `List.prod_pos fun z hz => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hz`. Conclude with `hqpos y hy`. Establish `hQ₁` using `prod_map_pos nn hnn ys`. Establish `hQ₂` using `prod_map_pos (fun y => nn (y + 1)) (fun y => hnn _) ys`. Establish `key` using `scal_cs (A / n) (A / n) (A / n) _ _ _ _ fp fm hα (by ring) hα hα hq hQ₁ hQ₂ (norm_nonneg _) hf hf' hcs`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `key.trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (Real.sqrt_nonneg _)` and prove the remaining obligations. Rewrite using `[wv_ew p nn F j hj _ h hh, wv_ew p nn F j hj _ h hh, normC_plusW, normC_minusW, ← hfp, ← hfm]`. Establish `e₁ : A / n * fp / (ys.map nn).prod = A / ((ys.map nn).prod * n) * fp`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₂ : A / n * fm / (ys.map fun y => nn (y + 1)).prod = A / ((ys.map fun y => nn (y + 1)).prod * n) * fm`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e₁, e₂]`. Conclude with `sqrt_mul_le_max _ _ (by positivity) (by positivity)`. Use `set g : (Fin K → Fin (2 * j + 1)) → ℝ := fun m => max (TBB.Ew p nn F j (KB.plusW (List.ofFn fun a => grid a (m a)) w) h) (TBB.Ew p nn F j (KB.minusW (List.ofFn fun a => grid a (m a)) w) h) with hg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hg0 : ∀ m, 0 ≤ g m` using `fun m => le_max_of_le_left (hEnn _ (hcut m).1)`. Take `⟨m₀, hm₀⟩` from `sum_le_max (fun m => |∏ a, F7.lagCo (grid a) (m a)| * Real.sqrt (((List.ofFn fun a => grid a (m a)).map nn).prod * ((List.ofFn fun a => grid a (m a)).map fun y => nn (y + 1)).prod / ((List.ofFn fun a => grid a (m a)).map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted w) (y : ℂ)).re) …`. Establish `c2 : ‖s‖ ^ K * I ≤ Λ ^ K * g m₀`. Rewrite using `[hI]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, norm_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ A / n * ∑ m : Fin K → Fin (2 * j + 1), ‖((∏ a, F7.lagCo (grid a) (m a) : ℝ) : ℂ)‖ * ‖KB.pairJ (p.form j hj w) (List.ofFn fun a => grid a (m a)) (KB.waveG (p.T.bs j) s (KB.plusW (List.ofFn fun a => grid a (m a)) w) (KB.slv p.T F j hj (KB.plusW (List.ofFn fun a => grid a (m a)) …`. Use `mul_le_mul_of_nonneg_left ?_ hα` and prove the remaining obligations. Rewrite using `[hxdef, hdeg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun m _ => norm_mul _ _`. Use `_ = ∑ m : Fin K → Fin (2 * j + 1), |∏ a, F7.lagCo (grid a) (m a)| * (A / n * ‖KB.pairJ (p.form j hj w) (List.ofFn fun a => grid a (m a)) (KB.waveG (p.T.bs j) s (KB.plusW (List.ofFn fun a => grid a (m a)) w) (KB.slv p.T F j hj (KB.plusW (List.ofFn fun a => grid a (m a)) w) h hh.2) …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ m : Fin K → Fin (2 * j + 1), |∏ a, F7.lagCo (grid a) (m a)| * (Real.sqrt (((List.ofFn fun a => grid a (m a)).map nn).prod * ((List.ofFn fun a => grid a (m a)).map fun y => nn (y + 1)).prod / ((List.ofFn fun a => grid a (m a)).map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted …`. Use `_ = ∑ m : Fin K → Fin (2 * j + 1), |∏ a, F7.lagCo (grid a) (m a)| * Real.sqrt (((List.ofFn fun a => grid a (m a)).map nn).prod * ((List.ofFn fun a => grid a (m a)).map fun y => nn (y + 1)).prod / ((List.ofFn fun a => grid a (m a)).map fun y : ℝ => (Wd.qw (M.qC P) (D.positionted w …`. Use `_ ≤ Λ ^ K * g m₀ := hm₀`.
-
-Break down `mn_pick Λ ‖s‖ I _ (g m₀) K (norm_nonneg _) c1 (fun _ => c2) with hc | hc` into its components or cases. Conclude with `⟨w, isExt_self P p.l0 Y N K w hw (by omega), hc⟩`. Break down `le_total (TBB.Ew p nn F j (KB.minusW (List.ofFn fun a => grid a (m₀ a)) w) h) (TBB.Ew p nn F j (KB.plusW (List.ofFn fun a => grid a (m₀ a)) w) h) with hle | hle` into its components or cases. Use `⟨KB.plusW (List.ofFn fun a => grid a (m₀ a)) w, isExt_plusW P p.l0 Y N K w _ hN (by simp) (ysOf_mem grid hY m₀) (hcut m₀).1, ?_⟩` and prove the remaining obligations. Establish `: g m₀ = TBB.Ew p nn F j (KB.plusW (List.ofFn fun a => grid a (m₀ a)) w) h` using `max_eq_left hle`.
-
-Rewrite using `[← this]`. Conclude with `hc`. Use `⟨KB.minusW (List.ofFn fun a => grid a (m₀ a)) w, isExt_minusW P p.l0 Y N K w _ hN (by simp) (ysOf_mem grid hY m₀) (hcut m₀).2.1, ?_⟩` and prove the remaining obligations. Establish `: g m₀ = TBB.Ew p nn F j (KB.minusW (List.ofFn fun a => grid a (m₀ a)) w) h` using `max_eq_right hle`. Rewrite using `[← this]`.
-
-Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem integral_three_at_place_of_parts (hA : P5.ThmPActual) (hPS : KB.PStd) (hVI : KB.VIso) (hSS : KB.SizeStd) (hDW : KB.DegWave)
     (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (Λ : ℝ) (K N : ℕ)
@@ -1241,9 +1221,9 @@ def GermAt (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →
         (‖TBB.NP p nn F (b + s - 2) w (h ++ [(s - 1, t)]) (h ++ [(s - 1, (t⁻¹ + σ)⁻¹)])‖₊ : ℝ≥0∞)) (𝓝[≠] 0)
 
 /- English proof (translation)
-Establish `hn : ¬ (D.IsLocPt (h ++ [(s, 0)]) i ∧ D.IsLocPt (h ++ [(s, 0)]) i)`. Introduce and unpack `⟨⟨h1, -⟩, -⟩`. Conclude with `(h1 (s, 0) (List.mem_append_right _ (List.mem_singleton_self _))).2 rfl`. Unfold `TBB.Ew TBB.NP KB.Pl.RR D.RRplace`. Rewrite using `[dif_neg hn]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem gm_ew_zero (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (i : ℕ)
     (w : List C.Letter) (h : C.LPt) (s : ℕ) : TBB.Ew p nn F i w (h ++ [(s, 0)]) = 0 := by
@@ -1255,11 +1235,11 @@ theorem gm_ew_zero (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r →
   simp
 
 /- English proof (translation)
-Introduce `b s hb hs hbs h hh w hw hN hBdd ω₁ ω₂ z₀ hω`. Take `⟨hcont, hint, htr⟩` from `hG b s hb hs hbs h hh w hw hN hBdd`. Use `set E : ℂ → ℝ := fun z => TBB.Ew p nn F (b + s - 1) w (h ++ [(s, z)]) with hEdef`. Establish `hE0 : ∀ z, 0 ≤ E z` using `fun z => hP (b + s - 1) w (h ++ [(s, z)]) hw (by omega)`. Establish `hEz : E 0 = 0` using `gm_ew_zero p nn F (b + s - 1) w h s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlsc : LowerSemicontinuous E`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hEz]`. Conclude with `Filter.Eventually.of_forall fun z' => lt_of_lt_of_le hy (hE0 z')`. Conclude with `(hcont.continuousAt (isOpen_compl_singleton.mem_nhds hz)).lowerSemicontinuousAt`. Use `⟨fun σ => (Real.pi⁻¹ : ℂ) * ∫ z : ℂ, P5.fsv σ z * (E z : ℂ), ?_, fun σ _ => htr σ⟩` and prove the remaining obligations. Conclude with `lattice_poisson E hE0 hlsc hint ω₁ ω₂ z₀ hω`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_five_at_place_of_parts (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
     (K N : ℕ) (hP : TBB.PosAt p nn F Y N) (hG : GermAt p nn F Y K N) : TBB.BlockGrowthBound p nn F Y K N := by
@@ -1311,21 +1291,21 @@ def IntegralFiveFromComponents : Prop :=
     TBB.PosAt p nn F Y N → GermAt p nn F Y K N → TBB.BlockGrowthBound p nn F Y K N
 
 /- English proof (translation)
-Introduce `hA hPS hVI hSS hDW hFP Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N Cb hCb hF hnn hgrid`. Conclude with `integral_three_at_place_of_parts hA hPS hVI hSS hDW p nn F Y Λ K N Cb hCb (formNonneg_of hA hFP p) hF hnn hgrid`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_three_of_parts_holds : CurvatureIntegralOfParts := by
   intro hA hPS hVI hSS hDW hFP Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N Cb hCb hF hnn hgrid
   exact integral_three_at_place_of_parts hA hPS hVI hSS hDW p nn F Y Λ K N Cb hCb (formNonneg_of hA hFP p) hF hnn hgrid
 
 /- English proof (translation)
-Introduce `hA hSS hDL hFP Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N hF hnn hgrid`. Conclude with `integral_four_at_place_of_parts hA hSS hDL p nn F Y Λ K N (formNonneg_of hA hFP p) hF hnn hgrid`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_four_of_parts_holds : IntegralFourFromComponents := by
   intro hA hSS hDL hFP Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N hF hnn hgrid
   exact integral_four_at_place_of_parts hA hSS hDL p nn F Y Λ K N (formNonneg_of hA hFP p) hF hnn hgrid
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p nn F Y K N hP hG`. Conclude with `integral_five_at_place_of_parts p nn F Y K N hP hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_five_of_parts_holds : IntegralFiveFromComponents := by
   intro Wp Wq _ _ _ _ _ _ P p nn F Y K N hP hG
@@ -1338,7 +1318,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-The claim follows from `TBBx5.integral_three_of_parts_holds hA hPS hVI hSS hDW hFP Wp Wq P p nn F Y Λ K N Cb hCb hF hnn hgrid`.
+A detailed English derivation is pending.
 -/
 theorem integral_three_at_place (hA : P5.ThmPActual) (hPS : KB.PStd) (hVI : KB.VIso) (hSS : KB.SizeStd)
     (hDW : KB.DegWave) (hFP : PBL.FormPos) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
@@ -1348,7 +1328,7 @@ theorem integral_three_at_place (hA : P5.ThmPActual) (hPS : KB.PStd) (hVI : KB.V
     (hgrid : TBBx5.WaveGrid p nn Y Λ K N) : Formalism.FourierDecayAlt.TBB.KernelFourierIntegralBound p nn F Y Λ K N := TBBx5.integral_three_of_parts_holds hA hPS hVI hSS hDW hFP Wp Wq P p nn F Y Λ K N Cb hCb hF hnn hgrid
 
 /- English proof (translation)
-The claim follows from `TBBx5.integral_four_of_parts_holds hA hSS hDL hFP Wp Wq P p nn F Y Λ K N hF hnn hgrid`.
+A detailed English derivation is pending.
 -/
 theorem integral_four_at_place (hA : P5.ThmPActual) (hSS : KB.SizeStd) (hDL : KB.DegLift) (hFP : PBL.FormPos)
     {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -1358,7 +1338,7 @@ theorem integral_four_at_place (hA : P5.ThmPActual) (hSS : KB.SizeStd) (hDL : KB
     Formalism.FourierDecayAlt.TBB.KernelArgumentHypothesisScalar p nn F Y Λ K N := TBBx5.integral_four_of_parts_holds hA hSS hDL hFP Wp Wq P p nn F Y Λ K N hF hnn hgrid
 
 /- English proof (translation)
-The claim follows from `TBBx5.integral_five_of_parts_holds Wp Wq P p nn F Y K N hP hG`.
+A detailed English derivation is pending.
 -/
 theorem integral_five_at_place {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par} (p : KB.Pl P Wp Wq)

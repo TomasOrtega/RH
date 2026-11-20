@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftBrg.ActQ
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[castGL]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_castGL_symm {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (m : GL (Fin b) R) :
     castGL h (castGL h.symm m) = m := by
@@ -23,7 +23,7 @@ theorem castGL_castGL_symm {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (m : 
   simp [castGL]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : castGL (rfl : a = a) m = m`. Use extensionality with `i j`. Simplify using `[castGL]`. Rewrite using `[e]` and apply the resulting hypothesis.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem castGL_mem_St_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {a b : ℕ} (h : a = b) (m : GL (Fin a) (E ⊗[F] Formalism.L2.Herm.Af F)) (hm : m ∈ Formalism.L2.DIV.St 1) :
@@ -35,27 +35,21 @@ theorem castGL_mem_St_one {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   rwa [e]
 
 /- English proof (translation)
-Introduce `X px I U L _ _ hL i t A k hF κ x`. Take `⟨-, hASt, hAU, hkU, hkSt, -⟩` from `hF`. Use `set w : Bridge.Gf (Vc X.toD7 i) → GL (Fin X.B.R.nV) (EA X) := fun g => castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) (g : GL (Fin (Vc X.toD7 i).rank) _)) with hw`. Establish `hwmul : w (x * κ) = w x * w κ`. Simplify using `only [hw, Subgroup.coe_mul, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hconj : ∀ g : GL (Fin (Vc X.toD7 i).rank) (EA X), g ∈ Formalism.L2.DIV.UA X.toD7.sp.cm (Vc X.toD7 i).gram → A⁻¹ * castGL (rkEq X i).symm g * A ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV`. Introduce `g hg`. Use `(hAU _).2 ?_` and prove the remaining obligations. Establish `e : A * (A⁻¹ * castGL (rkEq X i).symm g * A) * A⁻¹ = castGL (rkEq X i).symm g` using `by group`. Rewrite using `[e, castGL_castGL_symm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg`. Establish `hxU : Formalism.UG.bc (swapAE X.toD7) ((x : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _) ∈ Formalism.L2.DIV.UA X.toD7.sp.cm (Vc X.toD7 i).gram`. Take `⟨g, hg⟩` from `x.2`. Rewrite using `[← hg]`. Conclude with `GlobalTheory.LevFinCong.finE_mem_UA _ g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκP` using `mem_parLev_of_Q X I U L i t κ`. Establish `hκU` using `Formalism.L2.DIV.parLev_UA hκP`. Establish `hκS : Formalism.UG.bc (swapAE X.toD7) ((κ : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _) ∈ Formalism.L2.DIV.St (1 : GL (Fin (Vc X.toD7 i).rank) (EA X))`. Establish `h0` using `Formalism.L2.DIV.parLev_St hκP`. Establish `hb : L.βV i = 1` using `hL.beta.1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hb ▸ h0`. Use `set y := A⁻¹ * w x * A * k with hy`. Use `set z := (A * k)⁻¹ * w κ * (A * k) with hz`. Establish `hyU : y ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV` using `mul_mem (hconj _ hxU) hkU`. Establish `hzU : z ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : z = k⁻¹ * (A⁻¹ * w κ * A) * k` using `by rw [hz]; group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (inv_mem hkU) (hconj _ hκU)) hkU`. Establish `hzS : z ∈ Formalism.L2.DIV.St (1 : GL (Fin X.B.R.nV) (EA X))`. Establish `hwS : w κ ∈ Formalism.L2.DIV.St (1 : GL (Fin X.B.R.nV) (EA X))` using `castGL_mem_St_one _ _ hκS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hAk` using `mul_mem hASt hkSt`. Conclude with `mul_mem (mul_mem (inv_mem hAk) hwS) hAk`. Establish `hzJ : z ∈ Formalism.L2.Col.J0 X.toD7.sp.cm X.B.R.nV (∅ : Finset (Pl X.toD7.host.E))` using `⟨⟨hzU, hzS⟩, Subgroup.mem_iInf.2 fun P => Subgroup.mem_iInf.2 fun hP => absurd hP (Finset.notMem_empty _)⟩`. Establish `hyz : A⁻¹ * w (x * κ) * A * k = y * z`. Rewrite using `[hwmul, hy, hz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `group`. Establish `hyzU : y * z ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV` using `mul_mem hyU hzU`. Establish `hred : Formalism.L2.Col.redG X.toD7.sp.cm X.B.R.nV ∅ (sgL X I U t) ⟨z, hzJ⟩ = redZ X I U L i t A k κ`. Use function extensionality and compare the values at `v`. Use `show _ = Formalism.L2.DIV.redFn (1 : GL (Fin X.B.R.nV) (EA X)) v.1 z`.
-
-Unfold `Formalism.L2.DIV.redFn`. Rewrite using `[Formalism.L2.DIV.extendOne_of_mem _ hzS]`. Both sides reduce to the same expression. Establish `hraw` using `GlobalTheory.Mem.Col2.TopCh.decoRaw_mul_levelIwahori_reduction X.toD7.sp.cm ∅ (sgL X I U t) y z hzJ`. Rewrite `hraw` using `[hred]`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Formalism.L2.Col.decoOf ∅ (sgL X I U t) (A⁻¹ * w (x * κ) * A * k)).1 = (Formalism.L2.Col.decoOf ∅ (sgL X I U t) y).1.act 1 (redZ X I U L i t A k κ)⁻¹`. Rewrite using `[hyz]`. Unfold `Formalism.L2.Col.decoOf`. Rewrite using `[dif_pos (Formalism.L2.Col.decorated_lattice_exists X.toD7.sp.cm X.B.R.nV ∅ (sgL X I U t) _ hyzU), dif_pos (Formalism.L2.Col.decorated_lattice_exists X.toD7.sp.cm X.B.R.nV ∅ (sgL X I U t) _ hyU)]`.
-
-Conclude with `hraw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptS_mul_Q : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → ValsIn I → LevOf X I U L → ∀ (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (LiftBrg.EA X)), LiftBrg.FrameOK X I U i t A k →
     ∀ (κ : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) (x : Bridge.Gf (Vc X.toD7 i)),

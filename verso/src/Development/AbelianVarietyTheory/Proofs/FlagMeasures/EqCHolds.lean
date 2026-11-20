@@ -8,9 +8,9 @@ namespace GlobalTheory.TypeAsm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X Y u t₁ t₂ h1 h2 h`. Take `⟨l, m, l', m', c⟩` from `t₁`. Take `⟨l₂, m₂, l₂', m₂', c₂⟩` from `t₂`. Simplify using `only at h1 h2`. Substitute `h1 h2` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `hc : c = c₂`. Rewrite using `[← Quot.out_eq c, ← Quot.out_eq c₂]`. Conclude with `Quot.sound h`. Substitute `hc` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eqC_holds : EqC := by
   intro D X Y u t₁ t₂ h1 h2 h

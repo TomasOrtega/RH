@@ -6,13 +6,13 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Establish `hirr : Irreducible (X ^ p - C (⟨z ^ p, hzp⟩ : L))`. Apply `X_pow_sub_C_irreducible_of_prime hp.out` to reduce the goal to its premises. Introduce `b hb`. Apply `hz` to reduce the goal to its premises. Establish `hb' : (b : K) ^ p = z ^ p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg (fun t : L => (t : K)) hb` as an intermediate fact. Simplify using `using this`. Establish `h0 : ((b : K) - z) ^ p = 0`. Rewrite using `[sub_pow_char, hb', sub_self]`. Establish `: (b : K) = z` using `sub_eq_zero.mp ((pow_eq_zero_iff hp.out.ne_zero).mp h0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `b.2`. Establish `hmonic : (X ^ p - C (⟨z ^ p, hzp⟩ : L)).Monic` using `monic_X_pow_sub_C _ hp.out.ne_zero`. Establish `haeval : aeval z (X ^ p - C (⟨z ^ p, hzp⟩ : L)) = 0`. Simplify using `only [map_sub, map_pow, aeval_X, aeval_C]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_self _`. Establish `hint : IsIntegral L z` using `⟨_, hmonic, by rw [← aeval_def]; exact haeval⟩`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin.finrank hint, ← minpoly.eq_of_irreducible_of_monic hirr haeval hmonic, natDegree_X_pow_sub_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cfmax_finrank (p : ℕ) [hp : Fact p.Prime] (K : Type) [Field K] [CharP K p]
     (L : Subfield K) (z : K) (hz : z ∉ L) (hzp : z ^ p ∈ L) :
@@ -38,17 +38,15 @@ theorem cfmax_finrank (p : ℕ) [hp : Fact p.Prime] (K : Type) [Field K] [CharP 
     natDegree_X_pow_sub_C]
 
 /- English proof (translation)
-Introduce `p _ K _ _ F hF f hf`. Establish `hch : ∀ c ⊆ {L : Subfield K | F ≤ L ∧ f ∉ L}, IsChain (· ≤ ·) c → ∀ y ∈ c, ∃ ub ∈ {L : Subfield K | F ≤ L ∧ f ∉ L}, ∀ z ∈ c, z ≤ ub`. Introduce `c hc hchain y hy`. Use `⟨sSup c, ⟨(hc hy).1.trans (le_sSup hy), ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Rewrite using `[Subfield.mem_sSup_of_directedOn ⟨y, hy⟩ hchain.directedOn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨s, hs, hfs⟩`. Conclude with `(hc hs).2 hfs`. Take `⟨L, -, hmax⟩` from `zorn_le_nonempty₀ {L : Subfield K | F ≤ L ∧ f ∉ L} hch F ⟨le_rfl, hf⟩`. Use `⟨L, hmax.prop.1, hmax.prop.2, ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ y : K, y ^ p ∈ L` using `fun y => hmax.prop.1 (hF y)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Distinguish the cases in `hy : y ∈ L`. Conclude with `IntermediateField.algebraMap_mem _ (⟨y, hy⟩ : L)`. Take `⟨hiy, hdy⟩` from `cfmax_finrank p K L y hy (hpow y)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, hdf⟩` from `cfmax_finrank p K L f hmax.prop.2 (hpow f)`. Establish `hfy : f ∈ IntermediateField.adjoin L ({y} : Set K)`. Assume the negation of the conclusion as `hfy`. Establish `hLM : L ≤ (IntermediateField.adjoin L ({y} : Set K)).toSubfield` using `fun x hx => (IntermediateField.adjoin L ({y} : Set K)).algebraMap_mem (⟨x, hx⟩ : L)`. Establish `hM : (IntermediateField.adjoin L ({y} : Set K)).toSubfield ∈ {L : Subfield K | F ≤ L ∧ f ∉ L}` using `⟨hmax.prop.1.trans hLM, hfy⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hy (hmax.le_of_ge hM hLM (IntermediateField.mem_adjoin_simple_self L y))`. Establish `hle : IntermediateField.adjoin L ({f} : Set K) ≤ IntermediateField.adjoin L ({y} : Set K)` using `IntermediateField.adjoin_simple_le_iff.mpr hfy`. Use `haveI : FiniteDimensional L (IntermediateField.adjoin L ({y} : Set K)) := IntermediateField.adjoin.finiteDimensional hiy`. Establish `heq` using `IntermediateField.eq_of_le_of_finrank_eq hle (hdf.trans hdy.symm)`. Rewrite using `[heq]`.
-
-Conclude with `IntermediateField.mem_adjoin_simple_self L y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cfmax_main : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [CharP K p] (F : Subfield K), (∀ y : K, y ^ p ∈ F) → ∀ f : K, f ∉ F → ∃ L : Subfield K, F ≤ L ∧ f ∉ L ∧ IntermediateField.adjoin L ({f} : Set K) = ⊤ := by
   intro p _ K _ _ F hF f hf

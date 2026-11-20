@@ -11,19 +11,17 @@ open scoped ENNReal
 namespace PI.RhsWLim.W
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ _ Φ ν δ hΦ hdet hδ hδtop hU`. Take `⟨U, hU, hνU⟩` from `hU`. Establish `hstrict : HasStrictFDerivAt Φ ((ContinuousLinearMap.toContinuousLinearEquivOfDetNeZero (fderiv ℝ Φ 0) hdet : E ≃L[ℝ] E) : E →L[ℝ] E) 0`. Rewrite using `[ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`. Conclude with `hΦ.hasStrictFDerivAt (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsrc : (hstrict.toOpenPartialHomeomorph Φ).source ∈ 𝓝 (0 : E)` using `(hstrict.toOpenPartialHomeomorph Φ).open_source.mem_nhds hstrict.mem_toOpenPartialHomeomorph_source`. Establish `hev : ∀ᶠ y in 𝓝 (0 : E), ContDiffAt ℝ 1 Φ y` using `hΦ.eventually (by simp)`. Establish `hUpre : Φ ⁻¹' U ∈ 𝓝 (0 : E)` using `hΦ.continuousAt.preimage_mem_nhds hU`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.mp (Filter.inter_mem (Filter.inter_mem hsrc hev) hUpre)`. Establish `hcont : ContinuousAt (fun x => ENNReal.ofReal |(fderiv ℝ Φ x).det| * δ (Φ x)) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ContinuousAt (fun x => ENNReal.ofReal |(fderiv ℝ Φ x).det|) 0` using `ENNReal.continuous_ofReal.continuousAt.comp (continuous_abs.continuousAt.comp (ContinuousLinearMap.continuous_det.continuousAt.comp (hΦ.continuousAt_fderiv (by norm_num))))`. Establish `hB : ContinuousAt (fun x => δ (Φ x)) 0` using `hδ.comp hΦ.continuousAt`. Conclude with `ENNReal.Tendsto.mul hA (Or.inr hδtop) hB (Or.inr ENNReal.ofReal_ne_top)`. Establish `hntop : ENNReal.ofReal |(fderiv ℝ Φ 0).det| * δ (Φ 0) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hδtop`. Establish `heq : ∀ ρ : ℝ, 0 < ρ → ρ < ε → ν (Φ '' Metric.ball 0 ρ) = ∫⁻ x in Metric.ball 0 ρ, ENNReal.ofReal |(fderiv ℝ Φ x).det| * δ (Φ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ρ _ hρε`. Establish `hsub : Metric.ball (0 : E) ρ ⊆ Metric.ball 0 ε` using `Metric.ball_subset_ball hρε.le`. Establish `hinj : Set.InjOn Φ (Metric.ball 0 ρ)`. Rewrite using `[← hstrict.toOpenPartialHomeomorph_coe]`. Conclude with `(hstrict.toOpenPartialHomeomorph Φ).injOn.mono fun x hx => (hball (hsub hx)).1.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcd : ∀ x ∈ Metric.ball (0 : E) ρ, ContDiffAt ℝ 1 Φ x` using `fun x hx => (hball (hsub hx)).1.2`. Establish `hdiff : ∀ x ∈ Metric.ball (0 : E) ρ, HasFDerivWithinAt Φ (fderiv ℝ Φ x) (Metric.ball 0 ρ) x` using `fun x hx => ((hcd x hx).differentiableAt one_ne_zero).hasFDerivAt.hasFDerivWithinAt`. Establish `hcon : ContinuousOn Φ (Metric.ball 0 ρ)` using `fun x hx => (hcd x hx).continuousAt.continuousWithinAt`. Establish `hmeas : MeasurableSet (Φ '' Metric.ball 0 ρ)` using `Metric.isOpen_ball.measurableSet.image_of_continuousOn_injOn hcon hinj`. Establish `himg : Φ '' Metric.ball 0 ρ ⊆ U`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(hball (hsub hx)).2`. Rewrite using `[hνU _ himg hmeas]`. Conclude with `MeasureTheory.lintegral_image_eq_lintegral_abs_det_fderiv_mul volume Metric.isOpen_ball.measurableSet hdiff hinj δ`. Establish `hlim` using `chartLim E E Φ ν (fun x => ENNReal.ofReal |(fderiv ℝ Φ x).det| * δ (Φ x)) hcont hntop ⟨ε, hε, heq⟩`.
-
-Establish `h0 : (ENNReal.ofReal |(fderiv ℝ Φ 0).det| * δ (Φ 0)).toReal = (δ (Φ 0)).toReal * |(fderiv ℝ Φ 0).det|`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (abs_nonneg _), mul_comm]`. Rewrite using `[← h0]`. Conclude with `hlim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartJac : ChartJac := by
   intro E _ _ _ _ _ _ Φ ν δ hΦ hdet hδ hδtop hU

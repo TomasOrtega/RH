@@ -24,7 +24,7 @@ variable {X X' Y : Scheme.{0}} {M : LB X} {M' : LB X'} {K₁ : Type} [Fintype K�
   {K : Type} [Fintype K]
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun p => Set.mem_iInter.1 (Set.mem_iInter.1 hy p.1) p.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem flat_le (φ' : K → (Y ⟶ X')) (jN : K → K₁ → M.ι) :
     LB.wchart (LB.LinComb M pr e) φ' jN ≤
@@ -37,9 +37,9 @@ def unflatGen (φ' : K → (Y ⟶ X')) (ε : K → ℤ)
   ⟨fun jN : K → K₁ → M.ι => res (flat_le φ' jN) (t.s (fun p => jN p.1 p.2))⟩
 
 /- English proof (translation)
-Use `isGen_of_gm _ fun y jN jN' h h' => ?_` and prove the remaining obligations. Use `(gm_res (𝟙 Y) y _ h _).trans ((gen_trans ht (𝟙 Y) y (flat_le φ' jN h) (flat_le φ' jN' h')).trans (congrArg₂ (· * ·) ?_ (gm_res (𝟙 Y) y _ h' _).symm))` and prove the remaining obligations. Unfold `trF`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (· ^ ε a) (gm_linComb M pr e (𝟙 Y ≫ φ' a) y (jN a) (jN' a) (Set.mem_iInter.1 h a) (Set.mem_iInter.1 h' a))).symm` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← zpow_mul, mul_comm (e i), Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unflatGen_isGen (φ' : K → (Y ⟶ X')) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb M (fun p : K × K₁ => φ' p.1 ≫ pr p.2) (fun p => ε p.1 * e p.2))) (ht : t.IsGen) :
@@ -58,7 +58,7 @@ theorem unflatGen_isGen (φ' : K → (Y ⟶ X')) (ε : K → ℤ)
   rw [← zpow_mul, mul_comm (e i), Category.assoc]
 
 /- English proof (translation)
-Take `⟨u, hu, -⟩` from `exists_gen hM hF t ht`. Take `⟨t', ht', -⟩` from `GlobalTheory.WtTower.exists_gen_of_iso (LB.isLB_linComb (LB.isLB_linComb hM pr e) φ' ε) (LB.isLB_linComb hM' φ' ε) (isoInv (LB.linCombIso w φ' ε)) (isoInv_isGen (DVR.linCombIso_isGen w hw φ' ε)) (unflatGen φ' ε u) (unflatGen_isGen φ' ε u hu)`. Conclude with `⟨t', ht'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gen_through (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr e)) (hw : w.IsGen)
     (φ' : K → (Y ⟶ X')) (ε : K → ℤ) {K₀ : Type} [Fintype K₀] {ψ : K₀ → (Y ⟶ X)} {δ : K₀ → ℤ}
@@ -97,7 +97,7 @@ def gens (L : LB X) (Y : Scheme.{0}) : AddSubgroup (FreeAbelianGroup (Y ⟶ X)) 
     simp only [neg_smul, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Introduce `U _ h`. Use `congrArg (FreeAbelianGroup.lift (fun m => Additive.ofMul (h m))) H` as an intermediate fact. Simplify using `only [map_sum, map_zsmul, FreeAbelianGroup.lift_apply_of] at this`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify `this` using `only [ofMul_prod, ofMul_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem formEq_of_eq {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)}
     {ε' : K' → ℤ} (H : ∑ k, ε k • FreeAbelianGroup.of (φ k) = ∑ k, ε' k • FreeAbelianGroup.of (φ' k)) :
@@ -109,7 +109,7 @@ theorem formEq_of_eq {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X
   simpa only [ofMul_prod, ofMul_zpow] using this
 
 /- English proof (translation)
-Take `⟨K, _, φ, ε, t, ht, hs⟩` from `h`. Conclude with `⟨K, inferInstance, φ, ε, t, ht, formEq_of_eq hs.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem {L : LB X} {K' : Type} [Fintype K'] {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (h : ∑ k, ε' k • FreeAbelianGroup.of (φ' k) ∈ gens L Y) :
@@ -129,7 +129,7 @@ def lam {T : Over S} (a b : T ⟶ G) : FreeAbelianGroup (T.left ⟶ G.left) :=
     FreeAbelianGroup.of (1 : T ⟶ G).left
 
 /- English proof (translation)
-Use `⟨thK, inferInstance, _, _, LB.pullGen L.L (thφ G (x3 G)) thε c.t (lift a (lift a' b)).left, DVR.pullGen_isGen _ _ _ _ c.isGen _, ?_⟩` and prove the remaining obligations. Use `prod_cub a a' b (U := Multiplicative (FreeAbelianGroup (T.left ⟶ G.left))) (fun m => Multiplicative.ofAdd (FreeAbelianGroup.of m))` as an intermediate fact. Establish `e` using `congrArg Multiplicative.toAdd this`. Simplify using `only [toAdd_prod, toAdd_zpow, toAdd_mul, toAdd_inv, toAdd_ofAdd] at e`. Rewrite using `[e, lam, lam, lam]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -157,18 +157,16 @@ variable {Q : Type} [AddCommGroup Q] {r : ℕ}
 def pair (L : Fin r → Fin r → Q) (M : Matrix (Fin r) (Fin r) ℤ) : Q := ∑ k, ∑ m, M k m • L k m
 
 /- English proof (translation)
-Simplify using `only [pair, Matrix.add_apply, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pair_add (L : Fin r → Fin r → Q) (M N : Matrix (Fin r) (Fin r) ℤ) :
     pair L (M + N) = pair L M + pair L N := by
   simp only [pair, Matrix.add_apply, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ k, ∑ i, ∑ j, A i k • W i j • L k j := Finset.sum_comm`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`. Simplify using `only [Matrix.transpose_apply, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_left (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ) :
     ∑ i, ∑ j, W i j • ∑ k, A i k • L k j = pair L (A.transpose * W) := by
@@ -186,9 +184,9 @@ theorem sum_left (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ) 
         simp only [Matrix.transpose_apply, mul_smul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ k, ∑ i, ∑ j, A j k • W i j • L k i := Finset.sum_comm`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`. Simplify using `only [Matrix.transpose_apply, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_left' (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ) :
     ∑ i, ∑ j, W i j • ∑ k, A j k • L k i = pair L (A.transpose * W.transpose) := by
@@ -204,9 +202,9 @@ theorem sum_left' (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ)
         simp only [Matrix.transpose_apply, mul_smul]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_right (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ) :
     ∑ i, ∑ j, W i j • ∑ l, A j l • L i l = pair L (W * A) := by
@@ -218,9 +216,9 @@ theorem sum_right (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ)
   simp only [mul_smul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.smul_sum]`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`. Simplify using `only [Matrix.transpose_apply, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_right' (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ) :
     ∑ i, ∑ j, W i j • ∑ l, A i l • L j l = pair L (W.transpose * A) := by
@@ -235,7 +233,7 @@ theorem sum_right' (L : Fin r → Fin r → Q) (W A : Matrix (Fin r) (Fin r) ℤ
         simp only [Matrix.transpose_apply, mul_smul]
 
 /- English proof (translation)
-Simplify using `only [smul_add, Finset.sum_add_distrib]`. Rewrite using `[sum_left, sum_left', sum_right, sum_right', ← pair_add, ← pair_add, ← Matrix.mul_add, ← Matrix.add_mul, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem key_sum (L : Fin r → Fin r → Q) (W A A' : Matrix (Fin r) (Fin r) ℤ)
     (h : A.transpose * (W + W.transpose) = (W + W.transpose) * A') :
@@ -258,19 +256,19 @@ variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {T : Over S}
 def ell (a b : T ⟶ G) : FreeAbelianGroup (T.left ⟶ G.left) ⧸ H := QuotientAddGroup.mk' H (lam a b)
 
 /- English proof (translation)
-Simplify using `only [lam, mul_comm a b]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_comm (a b : T ⟶ G) : lam a b = lam b a := by
   simp only [lam, mul_comm a b]
   abel
 
 /- English proof (translation)
-Rewrite using `[ell, ell, lam_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ell_comm (a b : T ⟶ G) : ell H a b = ell H b a := by rw [ell, ell, lam_comm]
 
 /- English proof (translation)
-Establish `e : lam (1 : T ⟶ G) b = 0`. Simplify using `only [lam, _root_.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[ell, e, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem ell_one (b : T ⟶ G) : ell H 1 b = 0 := by
   have e : lam (1 : T ⟶ G) b = 0 := by
@@ -282,7 +280,7 @@ variable {H} (hc : ∀ a a' b : T ⟶ G, lam (a * a') b - lam a b - lam a' b ∈
 include hc
 
 /- English proof (translation)
-Establish `h` using `(QuotientAddGroup.eq_zero_iff _).2 (hc a a' b)`. Rewrite `h` using `[QuotientAddGroup.mk_sub, QuotientAddGroup.mk_sub, sub_sub, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_mul (a a' b : T ⟶ G) : ell H (a * a') b = ell H a b + ell H a' b := by
   have h := (QuotientAddGroup.eq_zero_iff _).2 (hc a a' b)
@@ -290,7 +288,7 @@ theorem ell_mul (a a' b : T ⟶ G) : ell H (a * a') b = ell H a b + ell H a' b :
   exact h
 
 /- English proof (translation)
-Rewrite using `[ell_comm, ell_mul hc, ell_comm H b, ell_comm H b']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ell_mul' (a b b' : T ⟶ G) : ell H a (b * b') = ell H a b + ell H a b' := by
   rw [ell_comm, ell_mul hc, ell_comm H b, ell_comm H b']
@@ -301,13 +299,13 @@ def ellHom (b : T ⟶ G) : Additive (T ⟶ G) →+ FreeAbelianGroup (T.left ⟶ 
   map_add' a a' := ell_mul hc a.toMul a'.toMul b
 
 /- English proof (translation)
-The claim follows from `map_zsmul (ellHom hc b) n (Additive.ofMul a)`.
+A detailed English derivation is pending.
 -/
 theorem ell_zpow (a b : T ⟶ G) (n : ℤ) : ell H (a ^ n) b = n • ell H a b :=
   map_zsmul (ellHom hc b) n (Additive.ofMul a)
 
 /- English proof (translation)
-Establish `e` using `map_sum (ellHom hc b) (fun k => Additive.ofMul (f k ^ n k)) Finset.univ`. Rewrite `e` using `[← ofMul_prod]`. Use `e.trans (Finset.sum_congr rfl fun k _ => ell_zpow hc _ _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ell_prod {κ : Type} [Fintype κ] (f : κ → (T ⟶ G)) (n : κ → ℤ) (b : T ⟶ G) :
     ell H (∏ k, f k ^ n k) b = ∑ k, n k • ell H (f k) b := by
@@ -316,7 +314,7 @@ theorem ell_prod {κ : Type} [Fintype κ] (f : κ → (T ⟶ G)) (n : κ → ℤ
   refine e.trans (Finset.sum_congr rfl fun k _ => ell_zpow hc _ _ _)
 
 /- English proof (translation)
-Rewrite using `[ell_comm, ell_prod hc]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [ell_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_prod' {κ : Type} [Fintype κ] (a : T ⟶ G) (f : κ → (T ⟶ G)) (n : κ → ℤ) :
     ell H a (∏ k, f k ^ n k) = ∑ k, n k • ell H a (f k) := by
@@ -324,7 +322,7 @@ theorem ell_prod' {κ : Type} [Fintype κ] (a : T ⟶ G) (f : κ → (T ⟶ G)) 
   exact Finset.sum_congr rfl fun k _ => by rw [ell_comm]
 
 /- English proof (translation)
-Simplify using `only [ell_mul hc, ell_mul' hc, smul_add, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem qf_mul {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (a b : Fin r → (T ⟶ G)) :
     ∑ i, ∑ j, W i j • ell H (a i * b i) (a j * b j) = ∑ i, ∑ j, W i j • ell H (a i) (a j) +
@@ -347,9 +345,9 @@ def qf (W : Matrix (Fin r) (Fin r) ℤ) (u : T ⟶ A') : FreeAbelianGroup (T.lef
   ∑ i, ∑ j, W i j • lam (u ≫ pr i) (u ≫ pr j)
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e0 : u.left ≫ (pr i * pr j).left = ((u ≫ pr i) * (u ≫ pr j)).left`. Rewrite using `[← Over.comp_left, MonObj.comp_mul]`. Establish `e3 : u.left ≫ (1 : A' ⟶ A).left = (1 : T ⟶ A).left`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, MonObj.comp_one]`. Rewrite using `[Fin.sum_univ_four]`. Simplify using `only [tensε, tensφ, GlobalTheory.PolDeg.lamPts, Oε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, e0, e3, mul_smul, lam, ← Over.comp_left]`. Simplify using `only [Matrix.vecHead, Matrix.vecTail, Function.comp_apply, Fin.succ_zero_eq_one, Fin.succ_one_eq_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, e3, ← Over.comp_left]`. Simplify using `only [smul_add, smul_sub, one_smul, neg_smul, smul_neg, mul_one, smul_comm (W i j) (-1 : ℤ)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -381,7 +379,7 @@ variable {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'
   {r : ℕ} (pr : Fin r → (A' ⟶ A))
 
 /- English proof (translation)
-Simplify using `only [qf, map_sum, map_zsmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mk_qf (H : AddSubgroup (FreeAbelianGroup (T.left ⟶ A.left))) (W : Matrix (Fin r) (Fin r) ℤ) (u : T ⟶ A') :
     QuotientAddGroup.mk' H (qf pr W u) = ∑ i, ∑ j, W i j • ell H (u ≫ pr i) (u ≫ pr j) := by
@@ -389,21 +387,19 @@ theorem mk_qf (H : AddSubgroup (FreeAbelianGroup (T.left ⟶ A.left))) (W : Matr
   rfl
 
 /- English proof (translation)
-Use `(QuotientAddGroup.eq_zero_iff _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `QuotientAddGroup.mk' H _ = 0`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [mul_smul, ← Finset.smul_sum, flat_eq, map_sum, map_zsmul, Fin.sum_univ_six]`. Establish `v0 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 0 = (x ≫ f) * y` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `v1 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 1 = x ≫ f` using `rfl`. Establish `v2 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 2 = y` using `rfl`. Establish `v3 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 3 = x * (y ≫ g)` using `rfl`. Establish `v4 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 4 = x` using `rfl`. Establish `v5 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 5 = y ≫ g` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[v0, v1, v2, v3, v4, v5, show rosatiε 0 = 1 from rfl, show rosatiε 1 = -1 from rfl, show rosatiε 2 = -1 from rfl, show rosatiε 3 = -1 from rfl, show rosatiε 4 = 1 from rfl, show rosatiε 5 = 1 from rfl]`. Simplify using `only [map_add, map_zsmul, one_smul, neg_smul, map_neg, mk_qf]`. Establish `hm : ∀ (a b : T ⟶ A') (i : Fin r), (a * b) ≫ pr i = (a ≫ pr i) * (b ≫ pr i)` using `fun a b i => by`. Use `hp i` as an intermediate fact. Conclude with `MonObj.mul_comp a b (pr i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hm]`. Establish `q1` using `qf_mul hc W (fun i => (x ≫ f) ≫ pr i) (fun i => y ≫ pr i)`. Establish `q2` using `qf_mul hc W (fun i => x ≫ pr i) (fun i => (y ≫ g) ≫ pr i)`. Rewrite using `[q1, q2]`. Establish `hF : ∀ i, (x ≫ f) ≫ pr i = ∏ k, (x ≫ pr k) ^ Am i k` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hf, GlobalTheory.MatrixAction.comp_finsetProd]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [GrpObj.comp_zpow]`. Establish `hG : ∀ i, (y ≫ g) ≫ pr i = ∏ k, (y ≫ pr k) ^ Am' i k` using `fun i => by`. Rewrite using `[Category.assoc, hg, GlobalTheory.MatrixAction.comp_finsetProd]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [GrpObj.comp_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∀ i j, ell H ((x ≫ f) ≫ pr i) (y ≫ pr j) = ∑ k, Am i k • ell H (x ≫ pr k) (y ≫ pr j)` using `fun i j => by`. Rewrite using `[hF, ell_prod hc]`. Establish `e2 : ∀ i j, ell H (y ≫ pr i) ((x ≫ f) ≫ pr j) = ∑ k, Am j k • ell H (x ≫ pr k) (y ≫ pr i)` using `fun i j => by`. Rewrite using `[ell_comm, e1]`. Establish `e3 : ∀ i j, ell H (x ≫ pr i) ((y ≫ g) ≫ pr j) = ∑ l, Am' j l • ell H (x ≫ pr i) (y ≫ pr l)` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG, ell_prod' hc]`. Establish `e4 : ∀ i j, ell H ((y ≫ g) ≫ pr i) (x ≫ pr j) = ∑ l, Am' i l • ell H (x ≫ pr j) (y ≫ pr l)` using `fun i j => by`. Rewrite using `[ell_comm, e3]`. Establish `hC` using `key_sum (fun k m => ell H (x ≫ pr k) (y ≫ pr m)) W Am Am' h`. Simplify using `only [e1, e2, e3, e4]`.
-
-Rewrite using `[hC]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem total_mem (hp : ∀ i, IsMonHom (pr i)) (H : AddSubgroup (FreeAbelianGroup (T.left ⟶ A.left)))
     (hc : ∀ a a' b : T ⟶ A, lam (a * a') b - lam a b - lam a' b ∈ H) (W Am Am' : Matrix (Fin r) (Fin r) ℤ)
@@ -457,9 +453,9 @@ end Total
 end GlobalTheory.TensRosati
 
 /- English proof (translation)
-Introduce `R _ _ D D' r W T A A' h`. Use `GlobalTheory.IntAct.rosatiAdj_of_points D'.P.isLB _ _ fun _ => ⟨⊤, trivial, fun Tt x y _ => ?_⟩` and prove the remaining obligations. Take `⟨K, _, ψ, δ, t, ht, hF⟩` from `GlobalTheory.TensRosati.exists_of_mem (GlobalTheory.TensRosati.total_mem T.pr T.pr_hom (GlobalTheory.TensRosati.gens D.P.L Tt.left) (fun a a' b => GlobalTheory.TensRosati.cube_mem ⟨D.P.L, D.rig, D.P.isLB, D.rig_gen⟩ D.cub a a' b) W A A' h _ _ (GlobalTheory.TensAct.matAct_pr T A) …`. Take `⟨t', ht'⟩` from `GlobalTheory.TensRosati.exists_gen_through D.P.isLB D'.P.isLB T.w T.w_gen (fun a => ((![(x ≫ GlobalTheory.TensAct.matAct T A) * y, x ≫ GlobalTheory.TensAct.matAct T A, y, x * (y ≫ GlobalTheory.TensAct.matAct T A'), x, y ≫ GlobalTheory.TensAct.matAct T A'] : Fin 6 → (Tt ⟶ D'.P.A)) …`. Use `⟨Fin 6, inferInstance, _, _, t', ht', fun V _ k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_six]`. Use `show k ((x ≫ _) * y).left ^ (1 : ℤ) * k (x ≫ _).left ^ (-1 : ℤ) * k y.left ^ (-1 : ℤ) * k (x * (y ≫ _)).left ^ (-1 : ℤ) * k x.left ^ (1 : ℤ) * k (y ≫ _).left ^ (1 : ℤ) = _`. Simplify using `only [zpow_one, zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TensAct.rosatiAdj_matAct : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ}
     (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ),

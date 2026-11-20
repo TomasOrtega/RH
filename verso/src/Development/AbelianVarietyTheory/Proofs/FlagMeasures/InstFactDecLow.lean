@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DecLowAndKFinDecayOf
 namespace GlobalTheory.DecTransport
 
 /- English proof (translation)
-The claim follows from `decLow_holds`.
+A detailed English derivation is pending.
 -/
 theorem decLow_main : Formalism.FourierDecayAlt.ThreeDimData.DecLow := decLow_holds
 

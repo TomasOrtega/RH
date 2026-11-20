@@ -11,7 +11,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.ChernDegree
 
 /- English proof (translation)
-Introduce `_ _ _ _ hL h` and use `Var.inter_eq_of_toPic_eq (fun _ => hL) fun _ => h.toPic_eq`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inter_const_eq_topSelf_of_presents :
     ∀ (Y : Var ℂ) (Δ : Y.Dv) (L : LB Y.X) (r : L.ι → Y.Fnˣ), L.IsLB → Presents Δ L r → Y.inter (fun _ => Δ) = topSelfIntersection ℂ L Y.dim :=

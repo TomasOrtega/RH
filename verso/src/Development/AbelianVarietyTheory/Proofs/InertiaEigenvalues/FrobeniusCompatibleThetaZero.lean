@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.AinfK.Sep
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Establish `hne` using `GlobalTheory.LTTilt.untilt_ne_zero h0`. Establish `hpos : 0 < ‖(((r 0).untilt : OC l) : ℂ_[l])‖` using `norm_pos_iff.2 fun h => hne (Subtype.ext h)`. Establish `hlt` using `GlobalTheory.LTTilt.norm_lt_one_of_not_isUnit c hc`. Establish `hpow : ∀ n, r 0 = r n ^ (l ^ f) ^ n` using `fun n => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [ih, hr n, ← pow_mul, pow_succ']`. Establish `hle : ∀ n, ‖(((r 0).untilt : OC l) : ℂ_[l])‖ ≤ ‖(c : ℂ_[l])‖ ^ n` using `fun n => by`. Establish `h1 : c ^ ((l ^ f) ^ n) ∣ (r 0).untilt`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpow n, map_pow]`. Conclude with `pow_dvd_pow_of_dvd (hd n) _`. Establish `h2` using `(GlobalTheory.LTTilt.mem_span_iff_norm _ _).1 (Ideal.mem_span_singleton.2 h1)`. Rewrite `h2` using `[SubmonoidClass.coe_pow, norm_pow]`. Use `h2.trans (pow_le_pow_of_le_one (norm_nonneg _) hlt.le ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(Nat.lt_pow_self (Nat.one_lt_pow hf.ne' hl.out.one_lt)).le`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos hlt`. Conclude with `absurd (hle n) (not_le.2 hn)`.
+A detailed English derivation is pending.
 -/
 theorem tilt_eq_zero_of_chain {l : ℕ} [hl : Fact l.Prime] (f : ℕ) (hf : 0 < f) (c : OC l) (hc : ¬ IsUnit c)
     (r : ℕ → OCb l) (hr : ∀ n, r n = r (n + 1) ^ (l ^ f)) (hd : ∀ n, c ∣ (r n).untilt) : r 0 = 0 := by
@@ -41,13 +41,13 @@ theorem tilt_eq_zero_of_chain {l : ℕ} [hl : Fact l.Prime] (f : ℕ) (hf : 0 < 
   exact absurd (hle n) (not_le.2 hn)
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (w : ℕ → A), (∀ n, φ (w (n + 1)) = w n) → (∀ n, θ (w n) = 0) → p ^ k ∣ w 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro w _ _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `w h1 h2`. Establish `hm : ∀ m, p ∣ w m` using `fun m => by`. Simplify using `using hd (fun n => w (m + n)) (fun n => h1 (m + n)) (fun n => h2 (m + n))`. Use `choose v hv using hm`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `ih v (fun n => ?_) (fun n => ?_)`. Rewrite using `[hv 0, pow_succ']`. Conclude with `mul_dvd_mul_left p h3`. Use `h1 n` as an intermediate fact. Rewrite `this` using `[hv (n + 1), hv n, map_mul, hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (hp _ (by linear_combination this))`. Use `h2 n` as an intermediate fact. Rewrite `this` using `[hv n, map_mul]`. Conclude with `hθ _ this`. Conclude with `GlobalTheory.Per.AinfComplete.eq_zero_of_haus p _ fun n => Ideal.mem_span_singleton.2 (key n w h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem chain_eq_zero {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* A) (θ : A →+* B) (p : A)
     [IsHausdorff (Ideal.span {p}) A] (hφ : φ p = p) (hp : ∀ x, x * p = 0 → x = 0)
@@ -75,7 +75,7 @@ theorem chain_eq_zero {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* A) (
   exact GlobalTheory.Per.AinfComplete.eq_zero_of_haus p _ fun n => Ideal.mem_span_singleton.2 (key n w h1 h2)
 
 /- English proof (translation)
-The claim follows from `tilt_eq_zero_of_chain (fK K) (NeZero.pos _) (intToOC K π) (GlobalTheory.LTTilt.not_isUnit_intToOC K hπ) (fun n => red K (w n)) (fun n => (congrArg (red K) (h1 n)).symm.trans (red_frobq (w (n + 1)))) (fun n => by have h := dvd_thetaK_sub hπ (w n) rwa [h2 n, zero_sub, dvd_neg] at h …`.
+A detailed English derivation is pending.
 -/
 theorem red_eq_zero {l : ℕ} [Fact l.Prime] (K : FinExt l) {π : ↥(OL K)} (hπ : Irreducible π) (w : ℕ → AK K)
     (h1 : ∀ n, frobq K (w (n + 1)) = w n) (h2 : ∀ n, thetaK K (w n) = 0) : red K (w 0) = 0 :=
@@ -87,7 +87,7 @@ theorem red_eq_zero {l : ℕ} [Fact l.Prime] (K : FinExt l) {π : ↥(OL K)} (h�
       rwa [h2 n, zero_sub, dvd_neg] at h)
 
 /- English proof (translation)
-Introduce `_ _ K w h1 h2` and use `(exists_unif (K := K)).elim fun π hπ => haveI := complete_pi hπ chain_eq_zero (frobq K).toRingHom (thetaK K) (inO K π) (frobq_inO K π) (eq_zero_of_mul_pi hπ) (fun _ h => (mul_eq_zero.1 h).resolve_left fun h0 => (map_ne_zero_iff _ (intToOC_injective K)).2 hπ.ne_zero ((thetaK_inO π …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (w : ℕ → AK K), (∀ n, frobq K (w (n + 1)) = w n) →
     (∀ n, thetaK K (w n) = 0) → w 0 = 0 := fun _ _ K w h1 h2 =>

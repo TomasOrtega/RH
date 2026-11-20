@@ -18,25 +18,21 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.GenericFactor
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ _ R _ _ ξ hξ`. Use `haveI := Y.jQ_open`. Take `⟨u, hu⟩` from `hξ`. Set `g₀ : Sp (FractionRing R) ⟶ Y.X` to `spMap (algebraMap R (FractionRing R)) ≫ ξ`. Set `φ : c'.V W →+* FractionRing R` to `(Spec.preimage (g₀ ≫ Y.s)).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : spMap φ = g₀ ≫ Y.s` using `Spec.map_preimage _`. Establish `hpt : ∀ q : Sp (FractionRing R), g₀ q = Y.j u`. Introduce `q`. Rewrite using `[hu]`. Use `show ξ ((spMap (algebraMap R (FractionRing R))) q) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (algebraMap R (FractionRing R)) q.asIdeal = ⊥`. Rewrite using `[@Ideal.eq_bot_of_prime _ _ q.asIdeal (PrimeSpectrum.isPrime (self := q)), ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective φ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Set `q : Sp (FractionRing R)` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h1 : ((spMap φ) q).asIdeal = RingHom.ker φ` using `by show Ideal.comap φ ⊥ = _`. Conclude with `(RingHom.ker_eq_comap_bot φ).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2 : (spMap φ) q = Y.s (Y.j u)`. Rewrite using `[hφ, ← hpt q]`. Both sides reduce to the same expression. Establish `h3 : Y.s (Y.j u) = (spMap (c'.V W).subtype) ((pullback.snd Y.s (spMap (c'.V W).subtype)) (Y.jQ u))`. Express the relevant statement in the definitionally equal form `(Y.j ≫ Y.s) u = (Y.jQ ≫ pullback.snd _ _ ≫ spMap (c'.V W).subtype) u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Model.j_s, ← Category.assoc, Y.jQ_over]`. Rewrite using `[← h1, h2, h3]`. Use `show Ideal.comap (c'.V W).subtype _ = ⊥`. Establish `hF : ∀ z : Sp c'.F, z.asIdeal = ⊥` using `fun z => @Ideal.eq_bot_of_prime _ _ z.asIdeal (PrimeSpectrum.isPrime (self := z))`. Rewrite using `[hF, ← RingHom.ker_eq_comap_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 Subtype.val_injective`. Set `ψ : c'.F →+* FractionRing R` to `IsFractionRing.lift hinj`. Establish `hψ : ψ.comp (c'.V W).subtype = φ` using `IsLocalization.lift_comp _`. Establish `hw : g₀ ≫ Y.s = spMap ψ ≫ spMap (c'.V W).subtype`. Rewrite using `[← hφ, ← spMap_comp, hψ]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `w : Sp (FractionRing R) ⟶ pullback Y.s (spMap (c'.V W).subtype)` to `pullback.lift g₀ (spMap ψ) hw`. Establish `hr : Set.range w ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[← Y.ab_gen]`. Use `show (w ≫ pullback.fst _ _) q ∈ abLocus Y.t.G`.
-
-Rewrite using `[pullback.lift_fst, hpt q]`. Establish `: Y.jQ u ∈ Set.range Y.jQ` using `⟨u, rfl⟩`. Rewrite `this` using `[← Y.ab_gen]`. Conclude with `this`. Use `⟨IsOpenImmersion.lift Y.jQ w hr, ?_⟩` and prove the remaining obligations.
-
-Use `show g₀ = _`. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l' : Level H)
     (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ),

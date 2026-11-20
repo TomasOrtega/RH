@@ -7,11 +7,11 @@ namespace PI.UnitaryGroupMassFormula.FglPtW
 open PI.FglPtW
 
 /- English proof (translation)
-Establish `hex : PowerSeries.HasSubst ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `h` using `congrArg MvPowerSeries.constantCoeff hlex`. Rewrite `h` using `[PowerSeries.constantCoeff_subst hex, finsum_eq_single _ 0]`. Establish `h'` using `h.trans PowerSeries.constantCoeff_X`. Simplify using `using h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `d hd`. Establish `: MvPowerSeries.constantCoeff (ex ^ d) = 0`. Rewrite using `[map_pow]`. Establish `h0' : MvPowerSeries.constantCoeff ex = 0` using `h0`. Rewrite using `[h0', zero_pow hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_log_eq_zero {K : Type} [CommRing K] {l ex : PowerSeries K}
     (h0 : PowerSeries.constantCoeff ex = 0) (hlex : PowerSeries.subst ex l = PowerSeries.X) :
@@ -29,7 +29,7 @@ theorem constantCoeff_log_eq_zero {K : Type} [CommRing K] {l ex : PowerSeries K}
     rw [this, smul_zero]
 
 /- English proof (translation)
-Establish `hex : PowerSeries.HasSubst ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hy' : PowerSeries.HasSubst y` using `PowerSeries.HasSubst.of_constantCoeff_zero hy`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hex hy', hlex, PowerSeries.subst_X hy']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_exp_eq {K : Type} [CommRing K] {l ex : PowerSeries K}
     (h0 : PowerSeries.constantCoeff ex = 0) (hlex : PowerSeries.subst ex l = PowerSeries.X)
@@ -40,15 +40,15 @@ theorem log_exp_eq {K : Type} [CommRing K] {l ex : PowerSeries K}
   rw [← PowerSeries.subst_comp_subst_apply hex hy', hlex, PowerSeries.subst_X hy']
 
 /- English proof (translation)
-Introduce `K _ S l ex h0 hlex hF ι _ c hc σ a ha`. Establish `hl0` using `constantCoeff_log_eq_zero h0 hlex`. Establish `cc : ∀ y : MvPowerSeries σ K, MvPowerSeries.constantCoeff y = 0 → MvPowerSeries.constantCoeff (PowerSeries.subst y l) = 0` using `fun y hy => PowerSeries.constantCoeff_subst_eq_zero hy l hl0`. Establish `csum : ∀ s : Finset ι, MvPowerSeries.constantCoeff (∑ j ∈ s, MvPowerSeries.C (c j) * PowerSeries.subst (a j) l) = 0`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, cc _ (ha j).2, mul_zero]`. It suffices to establish `H : ∀ s : Finset ι, PtOver S (PowerSeries.subst (∑ j ∈ s, MvPowerSeries.C (c j) * PowerSeries.subst (a j) l) ex) from H Finset.univ`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, PowerSeries.subst_zero_of_constantCoeff_zero h0]`. Conclude with `⟨fun n => by simp [S.zero_mem], by simp⟩`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hj]`. Establish `hx : MvPowerSeries.constantCoeff (MvPowerSeries.C (c j) * PowerSeries.subst (a j) l) = 0`. Rewrite using `[map_mul, cc _ (ha j).2, mul_zero]`. Establish `key : PowerSeries.subst (MvPowerSeries.C (c j) * PowerSeries.subst (a j) l + ∑ i ∈ s, MvPowerSeries.C (c i) * PowerSeries.subst (a i) l) ex = PowerSeries.subst (PowerSeries.subst (PowerSeries.subst (MvPowerSeries.C (c j) * PowerSeries.subst (a j) l) ex) l + PowerSeries.subst (Pow …`. Rewrite using `[log_exp_eq h0 hlex _ hx, log_exp_eq h0 hlex _ (csum s)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `hA K S l ex h0 hlex hF σ _ _ (hM K S l ex h0 hlex (c j) (hc j) σ (a j) (ha j)) ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linGen_of (hA : AddGen) (hM : MulGen) : LinGen := by
   intro K _ S l ex h0 hlex hF ι _ c hc σ a ha

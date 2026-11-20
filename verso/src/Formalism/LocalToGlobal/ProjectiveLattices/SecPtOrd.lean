@@ -13,9 +13,9 @@ variable {V F : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V F]
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Establish `hu : (u : V) ∉ (IsDiscreteValuationRing.maximalIdeal V).asIdeal` using `fun h => (IsLocalRing.mem_maximalIdeal _).mp h u.isUnit`. Use `first`. Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff _).mpr hu`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff.mpr hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact le_antisymm (IsDedekindDomain.HeightOneSpectrum.intValuation_le_one _ _) (not_lt.mp fun h => hu ((IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem _ _).mp h))`. Consider the case `simpa using hu`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem valV_unit_lemma (u : Vˣ) :
     IsDedekindDomain.HeightOneSpectrum.valuation F (IsDiscreteValuationRing.maximalIdeal V)
@@ -31,7 +31,7 @@ private theorem valV_unit_lemma (u : Vˣ) :
   | simpa using hu
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Establish `hspan : (IsDiscreteValuationRing.maximalIdeal V).asIdeal = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`. Use `first`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hspan`. Consider the case `simpa using IsDedekindDomain.HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hspan`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem valV_unif_lemma_2 {ϖ : V} (hϖ : Irreducible ϖ) :
     IsDedekindDomain.HeightOneSpectrum.valuation F (IsDiscreteValuationRing.maximalIdeal V)
@@ -44,7 +44,7 @@ private theorem valV_unif_lemma_2 {ϖ : V} (hϖ : Irreducible ϖ) :
   | simpa using IsDedekindDomain.HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hspan
 
 /- English proof (translation)
-Unfold `vV valV`. Rewrite using `[valV_unit_lemma]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma vV_unit_alg (u : Vˣ) : vV V (algebraMap V F (u : V)) = 0 := by
   unfold vV valV
@@ -52,7 +52,7 @@ lemma vV_unit_alg (u : Vˣ) : vV V (algebraMap V F (u : V)) = 0 := by
   simp
 
 /- English proof (translation)
-Unfold `vV valV`. Rewrite using `[valV_unif_lemma_2 hϖ]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma vV_unif_alg {ϖ : V} (hϖ : Irreducible ϖ) : vV V (algebraMap V F ϖ) = 1 := by
   unfold vV valV
@@ -60,9 +60,9 @@ lemma vV_unif_alg {ϖ : V} (hϖ : Irreducible ϖ) : vV V (algebraMap V F ϖ) = 1
   simp
 
 /- English proof (translation)
-Unfold `vV valV`. Rewrite using `[map_pow]`. Use `first`. Consider the case `rw [WithZero.log_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `rw [WithZero.log_pow]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `simp [WithZero.log_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma vV_pow_gen {x : F} (hx : x ≠ 0) (k : ℕ) : vV V (x ^ k) = k * vV V x := by
   unfold vV valV
@@ -73,11 +73,11 @@ lemma vV_pow_gen {x : F} (hx : x ≠ 0) (k : ℕ) : vV V (x ^ k) = k * vV V x :=
   | simp [WithZero.log_pow]
 
 /- English proof (translation)
-Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hk`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hv0 hϖ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : n = k`. Rewrite `hk` using `[IsDiscreteValuationRing.addVal_def _ u hϖ n rfl]`. Conclude with `hk` after adjusting the coercions. Substitute `hn` using the available equality. Unfold `vV valV`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_mul, map_pow, valV_unit_lemma, valV_unif_lemma_2 hϖ, one_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma vV_alg_of_addVal {v : V} {k : ℕ} (hk : IsDiscreteValuationRing.addVal V v = k) :
     vV V (algebraMap V F v) = k := by
@@ -102,11 +102,11 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {A : Type*} [CommRing A] [Algebra O A] {ϖ : O}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Use `first`. Consider the case `(rintro ⟨_, n, rfl⟩; rw [map_pow]; exact h.isUnit.pow n)`. Consider the case `(rintro _ ⟨n, rfl⟩; rw [map_pow]; exact h.isUnit.pow n)`.
+Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨n, hn⟩` from `h.denom x`. Use `⟨⟨⟨ϖ ^ n • x, hn⟩, ⟨_, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `simp [Algebra.smul_def, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(show x * (algebraMap O A ϖ) ^ n = ϖ ^ n • x`. Rewrite using `[Algebra.smul_def, map_pow, mul_comm])`. Introduce `a b hab`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[Subtype.ext hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization_unif (h : IsUnif A ϖ) :
     IsLocalization.Away (algebraMap O ↥(As O A) ϖ) A := by
@@ -138,7 +138,7 @@ def AddValPres : Prop :=
 variable {ζ ι}
 
 /- English proof (translation)
-Use `show vV V (algebraMap V F (ι (algebraMap _ (Loc ζ) a))) = k`. Conclude with `vV_alg_of_addVal (by rw [hι, ← vL_eq_addVal, hk])`.
+A detailed English derivation is pending.
 -/
 lemma vV_locMap (hι : AddValPres ζ ι) {a : ↥(As O A)} {k : ℕ} (hk : vL ζ a = k) :
     vV V (locMap ζ F ι a) = k := by
@@ -146,9 +146,9 @@ lemma vV_locMap (hι : AddValPres ζ ι) {a : ↥(As O A)} {k : ℕ} (hk : vL ζ
   exact vV_alg_of_addVal (by rw [hι, ← vL_eq_addVal, hk])
 
 /- English proof (translation)
-Introduce `h0`. Apply `ha` to reduce the goal to its premises. Establish `h1 : ι (algebraMap _ (Loc ζ) a) = 0`. Establish `h0' : algebraMap V F (ι (algebraMap _ (Loc ζ) a)) = 0` using `h0`. Conclude with `IsFractionRing.injective V F (by rw [h0', map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vL_eq_addVal, ← hι, h1, IsDiscreteValuationRing.addVal_zero]`.
+A detailed English derivation is pending.
 -/
 lemma locMap_ne_zero (hι : AddValPres ζ ι) {a : ↥(As O A)} (ha : vL ζ a ≠ ⊤) : locMap ζ F ι a ≠ 0 := by
   intro h0
@@ -159,7 +159,7 @@ lemma locMap_ne_zero (hι : AddValPres ζ ι) {a : ↥(As O A)} (ha : vL ζ a �
   rw [vL_eq_addVal, ← hι, h1, IsDiscreteValuationRing.addVal_zero]
 
 /- English proof (translation)
-Rewrite `ha` using `[vL_eq_addVal, IsDiscreteValuationRing.addVal_eq_top_iff]`. Use `show algebraMap V F (ι (algebraMap _ (Loc ζ) a)) = 0`. Rewrite using `[ha, map_zero, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma locMap_eq_zero {a : ↥(As O A)} (ha : vL ζ a = ⊤) : locMap ζ F ι a = 0 := by
   rw [vL_eq_addVal, IsDiscreteValuationRing.addVal_eq_top_iff] at ha
@@ -167,11 +167,11 @@ lemma locMap_eq_zero {a : ↥(As O A)} (ha : vL ζ a = ⊤) : locMap ζ F ι a =
   rw [ha, map_zero, map_zero]
 
 /- English proof (translation)
-Apply `locMap_ne_zero (F := F) hι` to reduce the goal to its premises. Rewrite using `[vL_eq_addVal]`. Introduce `htop`. Rewrite `htop` using `[IsDiscreteValuationRing.addVal_eq_top_iff]`. Take `⟨⟨s, hs⟩, hs0⟩` from `(IsLocalization.map_eq_zero_iff ζ.asIdeal.primeCompl (Loc ζ) _).mp htop`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hs` to reduce the goal to its premises. Establish `hs0' : (s : A) * algebraMap O A ϖ = 0`. Use `congrArg Subtype.val hs0` as an intermediate fact. Simplify using `using this`. Establish `hs1 : s = 0` using `Subtype.ext ((h.isUnit.mul_left_eq_zero).mp hs0')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hs1]`. Conclude with `Ideal.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma locMap_unif_ne (h : IsUnif A ϖ) (hι : AddValPres ζ ι) : locMap ζ F ι (algebraMap O ↥(As O A) ϖ) ≠ 0 := by
   apply locMap_ne_zero (F := F) hι
@@ -196,9 +196,9 @@ def phiAt (h : IsUnif A ϖ) (hι : AddValPres ζ ι) : A →+* F :=
 variable {ζ ι}
 
 /- English proof (translation)
-Use `letI := isLocalization_unif h`. Unfold `phiAt`. Use `first`. Consider the case `exact IsLocalization.lift_eq _ a`. Consider the case `exact IsLocalization.Away.lift_eq _ _ a`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [IsLocalization.Away.lift]`.
+A detailed English derivation is pending.
 -/
 theorem phiAt_coe (h : IsUnif A ϖ) (hι : AddValPres ζ ι) (a : ↥(As O A)) :
     phiAt ζ F ι h hι (a : A) = locMap ζ F ι a := by
@@ -210,7 +210,7 @@ theorem phiAt_coe (h : IsUnif A ϖ) (hι : AddValPres ζ ι) (a : ↥(As O A)) :
   | simp [IsLocalization.Away.lift]
 
 /- English proof (translation)
-Unfold `vV valV`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).mpr hx) ((Valuation.ne_zero_iff _).mpr hy)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem vV_mul_lemma_4 {V₁ F₁ : Type} [CommRing V₁] [IsDomain V₁] [IsDiscreteValuationRing V₁]
     [Field F₁] [Algebra V₁ F₁] [IsFractionRing V₁ F₁] {x y : F₁} (hx : x ≠ 0) (hy : y ≠ 0) :
@@ -220,23 +220,23 @@ private theorem vV_mul_lemma_4 {V₁ F₁ : Type} [CommRing V₁] [IsDomain V₁
   ring
 
 /- English proof (translation)
-Establish `hu : locMap ζ F ι (algebraMap O ↥(As O A) ϖ) ≠ 0` using `locMap_unif_ne (F := F) h hι`. Establish `hkey : locMap ζ F ι (algebraMap O ↥(As O A) ϖ) ^ m * phiAt ζ F ι h hι x = locMap ζ F ι a`. Rewrite using `[← phiAt_coe (F := F) h hι a, ha, Algebra.smul_def, map_mul]`. Simplify using `only [map_pow]`. Rewrite using `[← phiAt_coe (F := F) h hι (algebraMap O ↥(As O A) ϖ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Distinguish the cases in `hT : vL ζ a = ⊤`. Establish `h0 : phiAt ζ F ι h hι x = 0`. Establish `h1` using `hkey`. Rewrite `h1` using `[locMap_eq_zero (F := F) hT]`.
+Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp h1).resolve_left (pow_ne_zero _ hu)`. Unfold `nval`. Rewrite using `[if_pos h0]`. Unfold `ordAt`. Rewrite using `[hT]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `rfl`. Consider the case `simp [toE]`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.mp hT`. Establish `hla : locMap ζ F ι a ≠ 0` using `locMap_ne_zero (F := F) hι hT`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : phiAt ζ F ι h hι x ≠ 0`. Introduce `h0`. Apply `hla` to reduce the goal to its premises. Rewrite using `[← hkey, h0, mul_zero]`. Establish `hϖT : vL ζ (algebraMap O ↥(As O A) ϖ) ≠ ⊤` using `fun ht => hu (locMap_eq_zero (F := F) ht)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvu : vV V (locMap ζ F ι (algebraMap O ↥(As O A) ϖ)) = ((vL ζ (algebraMap O ↥(As O A) ϖ)).toNat : ℤ)` using `vV_locMap (F := F) hι (ENat.coe_toNat hϖT).symm`. Establish `hva : vV V (locMap ζ F ι a) = k` using `vV_locMap (F := F) hι hk.symm`. Establish `hv : (m : ℤ) * ((vL ζ (algebraMap O ↥(As O A) ϖ)).toNat : ℤ) + vV V (phiAt ζ F ι h hι x) = k`. Rewrite using `[← hva, ← hkey, vV_mul_lemma_4 (V₁ := V) (pow_ne_zero _ hu) hφ, vV_pow_gen (V := V) hu, hvu]`. Establish `hz : vV V (phiAt ζ F ι h hι x) = (k : ℤ) - m * (ep ϖ ζ : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Unfold `ep`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hord : ordAt ϖ ζ m a = (((k : ℤ) - m * (ep ϖ ζ : ℤ) : ℤ) : WithTop ℤ)`. Unfold `ordAt`. Rewrite using `[← hk, sub_eq_add_neg, WithTop.coe_add]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Unfold `nval`. Rewrite using `[if_neg hφ, hord, hz]`. Use `first`. Consider the case `(show ((((k : ℤ) - m * (ep ϖ ζ : ℤ) : ℤ) : ℝ) : EReal) = _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Nat.cast_one, div_one])`. Consider the case `simp [toE]`. Consider the case `rfl`.
+A detailed English derivation is pending.
 -/
 private theorem toE_ordAt_lemma_3 (h : IsUnif A ϖ) (hι : AddValPres ζ ι) (x : A) (m : ℕ) (a : ↥(As O A))
     (ha : (a : A) = ϖ ^ m • x) :
@@ -288,7 +288,7 @@ private theorem toE_ordAt_lemma_3 (h : IsUnif A ϖ) (hι : AddValPres ζ ι) (x 
     | rfl
 
 /- English proof (translation)
-Establish `hex : ∃ n : ℕ, ϖ ^ n • x ∈ As O A` using `h.denom x`. Unfold `ord`. Rewrite using `[dif_pos hex]`. Conclude with `toE_ordAt_lemma_3 (F := F) h hι x _ _ rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toE_ord_eq (h : IsUnif A ϖ) (hι : AddValPres ζ ι) (x : A) :
     toE (ord ϖ ζ x) = nval V 1 (phiAt ζ F ι h hι x) := by

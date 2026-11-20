@@ -8,7 +8,7 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Take `⟨e, hx, he⟩` from `hz x`. Conclude with `⟨e, fun y _ => congrFun he y, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (x : M) :
@@ -17,7 +17,7 @@ theorem exists_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   exact ⟨e, fun y _ => congrFun he y, hx⟩
 
 /- English proof (translation)
-Rewrite using `[he (e.map_target hy), e.right_inv hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_z_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (y : V n) (hy : y ∈ e.target) :
@@ -25,13 +25,11 @@ theorem chart_z_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   rw [he (e.map_target hy), e.right_inv hy]
 
 /- English proof (translation)
-Establish `h1 : z x = e₁ x` using `h₁ hx₁`. Establish `h2 : z x = e₂ x` using `h₂ hx₂`. Establish `t1 : ∀ᶠ y in 𝓝 (z x), e₁.symm y ∈ e₂.source`. Rewrite using `[h1]`. Use `(e₁.continuousAt_symm (e₁.map_source hx₁)).preimage_mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e₁.left_inv hx₁]`. Conclude with `e₂.open_source.mem_nhds hx₂`. Establish `t2 : ∀ᶠ y in 𝓝 (z x), y ∈ e₁.target`. Rewrite using `[h1]`. Conclude with `e₁.open_target.mem_nhds (e₁.map_source hx₁)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t3 : ∀ᶠ y in 𝓝 (z x), y ∈ e₂.target`. Rewrite using `[h2]`. Conclude with `e₂.open_target.mem_nhds (e₂.map_source hx₂)`. Use `filter_upwards [t1, t2, t3] with y hy1 hy2 hy3`. Apply `e₂.injOn hy1 (e₂.map_target hy3)` to reduce the goal to its premises.
-
-Rewrite using `[e₂.right_inv hy3, ← h₂ hy1, h₁ (e₁.map_target hy2), e₁.right_inv hy2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_symm_eventuallyEq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e₁ e₂ : OpenPartialHomeomorph M (V n)) (h₁ : IsChart n z e₁) (h₂ : IsChart n z e₂)
@@ -53,23 +51,23 @@ theorem chart_symm_eventuallyEq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : 
   rw [e₂.right_inv hy3, ← h₂ hy1, h₁ (e₁.map_target hy2), e₁.right_inv hy2]
 
 /- English proof (translation)
-Simplify using `only [wd, h.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wd_congr (n : ℕ) (j : Fin n) (g₁ g₂ : V n → ℂ) (y : V n) (h : g₁ =ᶠ[𝓝 y] g₂) :
     wd n j g₁ y = wd n j g₂ y := by
   simp only [wd, h.fderiv_eq]
 
 /- English proof (translation)
-Simplify using `only [wdb, h.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wdb_congr (n : ℕ) (j : Fin n) (g₁ g₂ : V n → ℂ) (y : V n) (h : g₁ =ᶠ[𝓝 y] g₂) :
     wdb n j g₁ y = wdb n j g₂ y := by
   simp only [wdb, h.fderiv_eq]
 
 /- English proof (translation)
-Establish `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source` using `⟨e, he, hx⟩`. Unfold `d`. Rewrite using `[dif_pos h]`. Apply `wd_congr` to reduce the goal to its premises. Use `chart_symm_eventuallyEq n z _ e (Classical.choose_spec h).1 he x (Classical.choose_spec h).2 hx` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `filter_upwards [this] with y hy`. Simplify using `only [Function.comp_apply, hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_eq_wd {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (j : Fin n) (f : M → ℂ) (x : M)
@@ -84,9 +82,9 @@ theorem d_eq_wd {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   simp only [Function.comp_apply, hy]
 
 /- English proof (translation)
-Establish `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source` using `⟨e, he, hx⟩`. Unfold `db`. Rewrite using `[dif_pos h]`. Apply `wdb_congr` to reduce the goal to its premises. Use `chart_symm_eventuallyEq n z _ e (Classical.choose_spec h).1 he x (Classical.choose_spec h).2 hx` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `filter_upwards [this] with y hy`. Simplify using `only [Function.comp_apply, hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem db_eq_wdb {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (j : Fin n) (f : M → ℂ) (x : M)
@@ -101,7 +99,7 @@ theorem db_eq_wdb {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   simp only [Function.comp_apply, hy]
 
 /- English proof (translation)
-Rewrite using `[d_eq_wd n z e he j f (e.symm y) (e.map_target hy), chart_z_symm n z e he y hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_comp_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (j : Fin n) (f : M → ℂ)
@@ -110,7 +108,7 @@ theorem d_comp_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   rw [d_eq_wd n z e he j f (e.symm y) (e.map_target hy), chart_z_symm n z e he y hy]
 
 /- English proof (translation)
-Rewrite using `[db_eq_wdb n z e he j f (e.symm y) (e.map_target hy), chart_z_symm n z e he y hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem db_comp_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (j : Fin n) (f : M → ℂ)
@@ -119,11 +117,9 @@ theorem db_comp_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   rw [db_eq_wdb n z e he j f (e.symm y) (e.map_target hy), chart_z_symm n z e he y hy]
 
 /- English proof (translation)
-Unfold `Levi leviV`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[d_eq_wd n z e he j _ x hx]`. Establish `hT : e.target ∈ 𝓝 (z x)`. Rewrite using `[he hx]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.open_target.mem_nhds (e.map_source hx)`. Establish `key : wd n j (db n z k (fun y => (ph y : ℂ)) ∘ e.symm) (z x) = wd n j (wdb n k (fun y => (ph (e.symm y) : ℂ))) (z x)`. Apply `wd_congr` to reduce the goal to its premises. Use `filter_upwards [hT] with y hy`. Conclude with `db_comp_symm n z e he k _ y hy`.
-
-Rewrite using `[key]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_eq_leviV {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (ph : M → ℝ) (x : M)
@@ -142,9 +138,9 @@ theorem levi_eq_leviV {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   rw [key]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, he, hx⟩` from `exists_chart n z hz x`. Establish `h1 : ContinuousAt (f ∘ e.symm) (e x)` using `(hf e he).continuousOn.continuousAt (e.open_target.mem_nhds (e.map_source hx))`. Use `(h1.comp (e.continuousAt hx)).congr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [e.open_source.mem_nhds hx] with y hy`. Simplify using `only [Function.comp_apply, e.left_inv hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Smooth.continuous {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (f : M → ℂ) (hf : Smooth n z f) : Continuous f := by
@@ -158,7 +154,7 @@ theorem Smooth.continuous {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → 
   simp only [Function.comp_apply, e.left_inv hy]
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `(contDiffOn_of_differentiableOn n _ _ e.open_target (hf e he)).restrict_scalars ℝ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Holo.smooth {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ)
     (hf : Holo n z f) : Smooth n z f := by
@@ -166,14 +162,14 @@ theorem Holo.smooth {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   exact (contDiffOn_of_differentiableOn n _ _ e.open_target (hf e he)).restrict_scalars ℝ
 
 /- English proof (translation)
-The claim follows from `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hg).2.clm_apply contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 private theorem contDiffOn_fderiv_apply_of_contDiffOn_infty {n : ℕ} {U : Set (V n)} (hU : IsOpen U) {g : V n → ℂ}
     (hg : ContDiffOn ℝ ∞ g U) (v : V n) : ContDiffOn ℝ ∞ (fun y => fderiv ℝ g y v) U :=
   ((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hg).2.clm_apply contDiffOn_const
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Unfold `wd`. Conclude with `((contDiffOn_fderiv_apply_of_contDiffOn_infty hU hg _).sub (contDiffOn_const.mul (contDiffOn_fderiv_apply_of_contDiffOn_infty hU hg _))).div_const 2`. Unfold `wdb`. Conclude with `((contDiffOn_fderiv_apply_of_contDiffOn_infty hU hg _).add (contDiffOn_const.mul (contDiffOn_fderiv_apply_of_contDiffOn_infty hU hg _))).div_const 2`.
+Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem contDiffOn_wd_wdb_of_contDiffOn_infty {n : ℕ} {U : Set (V n)} (hU : IsOpen U) {g : V n → ℂ}
     (hg : ContDiffOn ℝ ∞ g U) (j : Fin n) :
@@ -187,7 +183,7 @@ private theorem contDiffOn_wd_wdb_of_contDiffOn_infty {n : ℕ} {U : Set (V n)} 
       (contDiffOn_const.mul (contDiffOn_fderiv_apply_of_contDiffOn_infty hU hg _))).div_const 2
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `(contDiffOn_wd_wdb_of_contDiffOn_infty e.open_target (hf e he) j).1.congr fun y hy => d_comp_symm n z e he j f y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (hf : Smooth n z f) : Smooth n z (d n z j f) := by
@@ -195,7 +191,7 @@ theorem Smooth.d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j :
   exact (contDiffOn_wd_wdb_of_contDiffOn_infty e.open_target (hf e he) j).1.congr fun y hy => d_comp_symm n z e he j f y hy
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `(contDiffOn_wd_wdb_of_contDiffOn_infty e.open_target (hf e he) j).2.congr fun y hy => db_comp_symm n z e he j f y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.db {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (hf : Smooth n z f) : Smooth n z (db n z j f) := by
@@ -203,7 +199,7 @@ theorem Smooth.db {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j 
   exact (contDiffOn_wd_wdb_of_contDiffOn_infty e.open_target (hf e he) j).2.congr fun y hy => db_comp_symm n z e he j f y hy
 
 /- English proof (translation)
-Unfold `wdb`. Rewrite using `[hg.fderiv_restrictScalars ℝ]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.map_smul, smul_eq_mul, ← mul_assoc, Complex.I_mul_I]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem wdb_eq_zero_of_complex_differentiableAt {n : ℕ} (j : Fin n) {g : V n → ℂ} {y : V n}
     (hg : DifferentiableAt ℂ g y) : wdb n j g y = 0 := by
@@ -214,9 +210,9 @@ private theorem wdb_eq_zero_of_complex_differentiableAt {n : ℕ} (j : Fin n) {g
   ring
 
 /- English proof (translation)
-Unfold `db`. Use `split_ifs with h`. Take `⟨hc, hxc⟩` from `Classical.choose_spec h`. Apply `wdb_eq_zero_of_complex_differentiableAt` to reduce the goal to its premises. Rewrite using `[hc hxc]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(hf _ hc).differentiableAt ((Classical.choose h).open_target.mem_nhds ((Classical.choose h).map_source hxc))`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem Holo.db_eq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ)
     (hf : Holo n z f) (j : Fin n) (x : M) : db n z j f x = 0 := by
@@ -230,7 +226,7 @@ theorem Holo.db_eq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V 
   · rfl
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `contDiffOn_infty.1 (hf e he) k`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.ck {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f : M → ℂ)
     (hf : Smooth n z f) : Ck n z k f := by
@@ -238,7 +234,7 @@ theorem Smooth.ck {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k 
   exact contDiffOn_infty.1 (hf e he) k
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `contDiffOn_infty.1 (hf e he) k`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SmoothR.ckR {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (f : M → ℝ)
     (hf : SmoothR n z f) : CkR n z k f := by
@@ -246,7 +242,7 @@ theorem SmoothR.ckR {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   exact contDiffOn_infty.1 (hf e he) k
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `(hf e he).of_le (by exact_mod_cast hkl)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.mono {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k l : ℕ) (hkl : k ≤ l)
     (f : M → ℂ) (hf : Ck n z l f) : Ck n z k f := by
@@ -254,9 +250,9 @@ theorem Ck.mono {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k l 
   exact (hf e he).of_le (by exact_mod_cast hkl)
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, he, hx⟩` from `exists_chart n z hz x`. Establish `h1 : ContinuousAt (f ∘ e.symm) (e x)` using `(hf e he).continuousOn.continuousAt (e.open_target.mem_nhds (e.map_source hx))`. Use `(h1.comp (e.continuousAt hx)).congr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [e.open_source.mem_nhds hx] with y hy`. Simplify using `only [Function.comp_apply, e.left_inv hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Ck.continuous {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (k : ℕ) (f : M → ℂ) (hf : Ck n z k f) : Continuous f := by
@@ -270,9 +266,7 @@ theorem Ck.continuous {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   simp only [Function.comp_apply, e.left_inv hy]
 
 /- English proof (translation)
-Establish `hF : ∀ v : V n, ContDiffOn ℝ k (fun y => fderiv ℝ g y v) U` using `fun v => (hg.fderiv_of_isOpen hU (Nat.cast_succ k).ge).clm_apply contDiffOn_const`. Prove the components needed by the constructor for the conclusion. Unfold `wd`. Conclude with `((hF _).sub (contDiffOn_const.mul (hF _))).div_const 2`. Unfold `wdb`.
-
-Conclude with `((hF _).add (contDiffOn_const.mul (hF _))).div_const 2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem contDiffOn_wd_wdb_of_contDiffOn_succ {n : ℕ} {U : Set (V n)} (hU : IsOpen U) {g : V n → ℂ} (k : ℕ)
     (hg : ContDiffOn ℝ ((k + 1 : ℕ) : WithTop ℕ∞) g U) (j : Fin n) :
@@ -286,7 +280,7 @@ private theorem contDiffOn_wd_wdb_of_contDiffOn_succ {n : ℕ} {U : Set (V n)} (
     exact ((hF _).add (contDiffOn_const.mul (hF _))).div_const 2
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `(contDiffOn_wd_wdb_of_contDiffOn_succ e.open_target k (hf e he) j).1.congr fun y hy => d_comp_symm n z e he j f y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (j : Fin n)
     (f : M → ℂ) (hf : Ck n z (k + 1) f) : Ck n z k (d n z j f) := by
@@ -294,7 +288,7 @@ theorem Ck.d {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ
   exact (contDiffOn_wd_wdb_of_contDiffOn_succ e.open_target k (hf e he) j).1.congr fun y hy => d_comp_symm n z e he j f y hy
 
 /- English proof (translation)
-Introduce `e he`. Conclude with `(contDiffOn_wd_wdb_of_contDiffOn_succ e.open_target k (hf e he) j).2.congr fun y hy => db_comp_symm n z e he j f y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ck.db {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) (j : Fin n)
     (f : M → ℂ) (hf : Ck n z (k + 1) f) : Ck n z k (db n z j f) := by

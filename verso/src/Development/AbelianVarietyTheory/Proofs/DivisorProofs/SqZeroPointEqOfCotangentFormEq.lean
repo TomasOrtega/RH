@@ -19,19 +19,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SqZeroPt
 
 /- English proof (translation)
-Establish `step (x : B) (hx : ∀ y ∈ s, (x - ψ x) * (y - ψ y) = 0) (y : B) : (x - ψ x) * (y - ψ y) = 0`. Establish `hy : y ∈ Subring.closure s` using `hs ▸ Subring.mem_top y`. Proceed by induction on `hy using Subring.closure_induction with`. Consider the case `mem y hy => exact hx y hy`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `one => simp`. Consider the case `add a b _ _ ha hb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = 0 := by rw [ha, hb, add_zero]`. Consider the case `neg a _ ha`. Combine the equalities or inequalities in the displayed calculation. Consider the case `mul a b _ _ ha hb`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Chain the equalities or inequalities of the calculation. Treat this case separately. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hx : x ∈ Subring.closure s` using `hs ▸ Subring.mem_top x`. Use `revert y`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx => exact step x (H x hx)`. Consider the case `zero => intro y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `one => intro y`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Introduce `y`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [ha, hb, add_zero]`. Consider the case `neg a _ ha`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Introduce `y`. Combine the equalities or inequalities in the displayed calculation. Consider the case `mul a b _ _ ha hb`. Introduce `y`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sub_mul_sub_eq_zero_of_closure {B : Type*} [CommRing B] (ψ : B →+* B) (s : Set B)
     (hs : Subring.closure s = ⊤) (H : ∀ x ∈ s, ∀ y ∈ s, (x - ψ x) * (y - ψ y) = 0) (x y : B) :
@@ -79,16 +79,16 @@ variable (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] [Modul
   [IsCentralScalar O M]
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt O M))).hom).1`.
+A detailed English derivation is pending.
 -/
 theorem toTsze_injective : Function.Injective (toTsze O M) :=
   (ConcreteCategory.bijective_of_isIso
     (Scheme.ΓSpecIso (CommRingCat.of (TrivSqZeroExt O M))).hom).1
 
 /- English proof (translation)
-Introduce `t`. Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom O O M).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `ht : (t : PrimeSpectrum (TrivSqZeroExt O M)) ∈ Set.range (PrimeSpectrum.comap (TrivSqZeroExt.fstHom O O M).toRingHom)`. Rewrite using `[_root_.range_comap_of_surjective _ _ hs]`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : a.fst = 0` using `ha`. Apply the tactic sequence `have h : a * a = 0 := by ext <;> simp [ha]`. Use `(t : PrimeSpectrum (TrivSqZeroExt O M)).isPrime` as an intermediate fact. Conclude with `(this.mem_or_mem (h ▸ Ideal.zero_mem _)).elim id id`. Conclude with `ht`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_sec_zeroSec : Function.Surjective (sec (zeroSec O M)) := by
   intro t
@@ -105,13 +105,13 @@ theorem surjective_sec_zeroSec : Function.Surjective (sec (zeroSec O M)) := by
   exact ht
 
 /- English proof (translation)
-Use `letI := (isChart O M).algebra`. Use `letI := topModule O M`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `((isChart O M).augCotEquiv (sec_hom _)).surjective x`. Take `⟨y, rfl⟩` from `(RingHom.ker ((isChart O M).aug (sec_hom _))).toCotangent_surjective y`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (toTsze O M y).snd = 0`. Express the relevant statement in the definitionally equal form `(AugCot.lift _ (sndFn O M) (sndFn_der O M)) (((isChart O M).augCotEquiv (sec_hom _)).symm ((isChart O M).augCotEquiv (sec_hom _) _)) = 0 at hx`. Rewrite `hx` using `[LinearEquiv.symm_apply_apply, AugCot.lift_toCotangent]`. Conclude with `hx`. Establish `h2 : (toTsze O M y).fst = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← toO_sec]`. Establish `: (isChart O M).aug (sec_hom _) y = 0` using `y.2`. Rewrite `this` using `[IsChart.aug_apply]`. Rewrite using `[this, map_zero]`. Apply the tactic sequence `have h3 : (y : Γ((TM O M).left, ⊤)) = 0 := toTsze_injective O M (by rw [map_zero]; ext <;> simp [h1, h2])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `: y = 0` using `Subtype.ext h3`. Rewrite using `[this, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_injective : Function.Injective (kappa O M) := by
   letI := (isChart O M).algebra
@@ -147,17 +147,17 @@ abbrev preimTop (U : (Sp O).Opens) : (TM O M).left.Opens :=
   (𝟙 (TM O M).left) ⁻¹ᵁ ⊤ ⊓ (TM O M).hom ⁻¹ᵁ U
 
 /- English proof (translation)
-Take `⟨-, po⟩` from `isAffineOpen_and_isPushout (IsPullback.id_horiz (TM O M).hom) (isAffineOpen_top (Sp O)) hU (isChart O M).affine (le_top : U ≤ (𝟙 (Sp O)) ⁻¹ᵁ ⊤) le_top`. Establish `hs` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout po`. Set `ψ` to `((TM O M).hom.appLE U (preimTop M U) inf_le_right).hom.comp ((sec (zeroSec O M)).appLE (preimTop M U) U hle).hom`. Establish `hψ₁ (r : Γ(Sp O, U)) : ψ ((TM O M).hom.appLE U (preimTop M U) inf_le_right r) = (TM O M).hom.appLE U (preimTop M U) inf_le_right r`. Express the relevant statement in the definitionally equal form `(TM O M).hom.appLE U (preimTop M U) inf_le_right ((sec (zeroSec O M)).appLE (preimTop M U) U hle ((TM O M).hom.appLE U (preimTop M U) inf_le_right r)) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[appLE_base (sec_hom _) hle inf_le_right le_rfl, resG_self]`. Establish `hψ₂ (x : Γ((TM O M).left, ⊤)) : ψ (Scheme.Hom.appLE (𝟙 (TM O M).left) ⊤ (preimTop M U) inf_le_left x) = Scheme.Hom.appLE (𝟙 (TM O M).left) ⊤ (preimTop M U) inf_le_left ((TM O M).hom.appLE ⊤ ⊤ le_top ((sec (zeroSec O M)).appLE ⊤ ⊤ le_top x))`. Express the relevant statement in the definitionally equal form `(TM O M).hom.appLE U (preimTop M U) inf_le_right ((sec (zeroSec O M)).appLE (preimTop M U) U hle (resG (TM O M).left (le_top : preimTop M U ≤ ⊤) x)) = resG (TM O M).left (le_top : preimTop M U ≤ ⊤) _`. Rewrite using `[appLE_resG, ← resG_appLE (sec (zeroSec O M)) (le_top : U ≤ ⊤) le_top, appLE_resG]`. Conclude with `(resG_appLE (TM O M).hom (le_top : preimTop M U ≤ ⊤) le_top _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₀ (x y : Γ((TM O M).left, ⊤)) : (x - (TM O M).hom.appLE ⊤ ⊤ le_top ((sec (zeroSec O M)).appLE ⊤ ⊤ le_top x)) * (y - (TM O M).hom.appLE ⊤ ⊤ le_top ((sec (zeroSec O M)).appLE ⊤ ⊤ le_top y)) = 0`. Apply `toTsze_injective O M` to reduce the goal to its premises. Rewrite using `[map_mul, map_sub, map_sub, toTsze_base, toTsze_base, toO_sec, toO_sec, map_zero]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `key` using `sub_mul_sub_eq_zero_of_closure ψ _ hs (by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x (⟨x, rfl⟩ | ⟨r, rfl⟩) y (⟨y, rfl⟩ | ⟨s, rfl⟩)`. Rewrite using `[hψ₂, hψ₂, ← map_sub, ← map_sub, ← map_mul, h₀, map_zero]`. Rewrite using `[hψ₁, sub_self, mul_zero]`. Rewrite using `[hψ₁, sub_self, zero_mul]`. Rewrite using `[hψ₁, sub_self, zero_mul]) a b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha' : ψ a = 0`. Express the relevant statement in the definitionally equal form `(TM O M).hom.appLE U (preimTop M U) inf_le_right ((sec (zeroSec O M)).appLE (preimTop M U) U hle a) = 0`. Rewrite using `[ha, map_zero]`. Establish `hb' : ψ b = 0`. Express the relevant statement in the definitionally equal form `(TM O M).hom.appLE U (preimTop M U) inf_le_right ((sec (zeroSec O M)).appLE (preimTop M U) U hle b) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, map_zero]`. Rewrite `key` using `[ha', hb', sub_zero, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_appLE {U : (Sp O).Opens} (hU : IsAffineOpen U)
     (hle : U ≤ sec (zeroSec O M) ⁻¹ᵁ (preimTop M U))
@@ -204,9 +204,9 @@ theorem mul_eq_zero_of_appLE {U : (Sp O).Opens} (hU : IsAffineOpen U)
 variable {A : Over (Sp O)} [GrpObj A]
 
 /- English proof (translation)
-Introduce `t ht`. Take `⟨s, rfl⟩` from `surjective_sec_zeroSec O M t`. Establish `h₁ : s ∈ (sec (zeroSec O M) ≫ (TM O M).hom) ⁻¹ᵁ U` using `ht`. Rewrite `h₁` using `[sec_hom]`. Establish `h₂` using `hU h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h₂` using `[← show sec (zeroSec O M) ≫ z.left = unitSec A from congrArg (·.left) h]`. Conclude with `h₂`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_le_of_zeroSec (z : TM O M ⟶ A) (h : zeroSec O M ≫ z = η[A]) {U : (Sp O).Opens}
     {W : A.left.Opens} (hU : U ≤ unitSec A ⁻¹ᵁ W) : (TM O M).hom ⁻¹ᵁ U ≤ z.left ⁻¹ᵁ W := by
@@ -223,19 +223,19 @@ end GlobalTheory.SqZeroPt
 namespace GlobalTheory.SqZeroPt
 
 /- English proof (translation)
-Introduce `O _ A _ hq M _ _ _ _ z z' h h' hΦ`. Establish `hq' : (conormal (sec η[A])).IsQuasicoherent` using `hq`. Establish `hglob (w : Γ(conormal (sec η[A]), ⊤)) : (cotMap z h).app ⊤ w = (cotMap z' h').app ⊤ w` using `kappa_injective O M ((Phi_apply z h w).symm.trans ((hΦ w).trans (Phi_apply z' h' w)))`. Establish `: IsIso ((tilde.adjunction (R` using `.of O)).counit.app (conormal (sec η[A]))) := Scheme.Modules.isIso_fromTildeΓ_of_isQuasicoherent (R := .of O) (conormal (sec η[A]))`. Establish `hcot : cotMap z h = cotMap z' h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(GlobalTheory.OmegaGlobal.map_bijective_of_isIso_counit (tilde.adjunction (R := .of O)) _ _).1` to reduce the goal to its premises. Use extensionality with `s`. Conclude with `hglob s`. Establish `hz : sec (zeroSec O M) ≫ z.left = unitSec A` using `congrArg (·.left) h`. Establish `hz' : sec (zeroSec O M) ≫ z'.left = unitSec A` using `congrArg (·.left) h'`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Over.OverMorphism.ext (Scheme.hom_ext_of_forall _ _ fun t => ?_)` and prove the remaining obligations. Take `⟨U, W, hU, -, c⟩` from `exists_isChart (sec_hom η[A]) (V := ⊤) (x := (TM O M).hom t) trivial`. Establish `hT : IsAffineOpen (preimTop M U)` using `(isAffineOpen_and_isPushout (IsPullback.id_horiz (TM O M).hom) (isAffineOpen_top (Sp O)) c.affine_base (isChart O M).affine (le_top : U ≤ (𝟙 (Sp O)) ⁻¹ᵁ ⊤) le_top).1`. Establish `kz : preimTop M U ≤ z.left ⁻¹ᵁ W` using `inf_le_right.trans (preimage_le_of_zeroSec z h c.le)`. Establish `kz' : preimTop M U ≤ z'.left ⁻¹ᵁ W` using `inf_le_right.trans (preimage_le_of_zeroSec z' h' c.le)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₀ : IsChart (TM O M).hom (sec (zeroSec O M)) U (preimTop M U)` using `⟨c.affine_base, hT, fun x hx => ⟨trivial, (le_preimage_iff (π := (TM O M).hom) (sec_hom (zeroSec O M))).2 le_rfl hx⟩, inf_le_right⟩`. Establish `e : z.left.appLE W (preimTop M U) kz = z'.left.appLE W (preimTop M U) kz'`. Use extensionality with `f`. Rewrite using `[← sub_eq_zero]`. Establish `ha : (sec (zeroSec O M)).appLE (preimTop M U) U c₀.le (z.left.appLE W (preimTop M U) kz f - z'.left.appLE W (preimTop M U) kz' f) = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, appLE_appLE hz kz c₀.le c.le, appLE_appLE hz' kz' c₀.le c.le, sub_self]`. Establish `hd : d (sec_hom (zeroSec O M)) c₀.le (z.left.appLE W (preimTop M U) kz f - z'.left.appLE W (preimTop M U) kz' f) = 0`. Rewrite using `[map_sub, ← cotMap_d z h c.le c₀.le kz f, ← cotMap_d z' h' c.le c₀.le kz' f, hcot, sub_self]`. Use `letI := c₀.algebra`. Establish `h₁ : AugCot.d (c₀.aug (sec_hom _)) (z.left.appLE W (preimTop M U) kz f - z'.left.appLE W (preimTop M U) kz' f) = 0` using `(c₀.ofAugCot_bijective (sec_hom _)).1 (by rw [c₀.ofAugCot_d, map_zero]; exact hd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `(AugCot.d_eq_zero_iff _ _).1 h₁`. Rewrite `h₂` using `[show c₀.aug (sec_hom _) _ = 0 from ha, map_zero, sub_zero]`. Establish `hsq : RingHom.ker (c₀.aug (sec_hom (zeroSec O M))) ^ 2 = ⊥`. Rewrite using `[pow_two, eq_bot_iff, Ideal.mul_le]`. Introduce `a ha' b hb'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Ideal.mem_bot).2 (mul_eq_zero_of_appLE c.affine_base c₀.le a b ha' hb')`. Rewrite `h₂` using `[hsq]`. Conclude with `(Ideal.mem_bot).1 h₂`. Use `⟨preimTop M U, ⟨trivial, hU⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi hT.isoSpec.inv, ← Category.assoc, ← Category.assoc, hT.isoSpec_inv_ι, ← c.affine.SpecMap_appLE_fromSpec _ hT kz, ← c.affine.SpecMap_appLE_fromSpec _ hT kz', e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_Phi_eq : ∀ (O : Type) [CommRing O] (A : Over (Sp O)) [GrpObj A],
     (GlobalTheory.LieVB.omega A).IsQuasicoherent → (∀ (M : Type) [AddCommGroup M] [Module O M]

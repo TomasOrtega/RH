@@ -3,35 +3,33 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `f n r L' dmax mass Lq lam H dt dk dD hn hr hr1 hf hL' hlogn hdmax hlogd hmass hLq hlogLq hρ hlam`. Establish `hn8 : (8 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hr1' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr1`. Establish `hr2 : 2 * (r : ℝ) ≤ n` using `by exact_mod_cast hr`. Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnpos : (0 : ℝ) < n` using `by linarith`. Establish `hrpos : (0 : ℝ) < r` using `by linarith`. Establish `hmpos : 0 < mass` using `lt_of_lt_of_le (by positivity) hmass`. Establish `hlogmass : -((n : ℝ) * Real.log 2 + (n : ℝ) * Real.log n) ≤ Real.log mass`. Establish `h1` using `Real.log_le_log (by positivity) hmass`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[one_div, Real.log_inv, Real.log_mul (by positivity) (by positivity), Real.log_pow]`. Establish `hfac : Real.log (n.factorial : ℝ) ≤ (n : ℝ) * Real.log n`. Rewrite using `[← Real.log_pow]`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Conclude with `Nat.factorial_le_pow n` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : Real.log (3 * (r : ℝ) ^ 2 * n * (dmax + 2)) ≤ 5 * L'`. Establish `hd : (0 : ℝ) < dmax + 2` using `by linarith`. Establish `h3 : 3 * (r : ℝ) ^ 2 ≤ (n : ℝ) ^ 2` using `by nlinarith`. Establish `hle : 3 * (r : ℝ) ^ 2 * n * (dmax + 2) ≤ (n : ℝ) ^ 3 * (dmax + 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < 3 * (r : ℝ) ^ 2 * n * (dmax + 2)` using `mul_pos (mul_pos (mul_pos (by norm_num) (pow_pos hrpos 2)) hnpos) hd`. Establish `h4` using `Real.log_le_log hpos hle`. Rewrite `h4` using `[Real.log_mul (pow_pos hnpos 3).ne' hd.ne', Real.log_pow]`. Move the coercions through the operations in `at h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : (r : ℝ) ^ 2 ≤ (n : ℝ) ^ 2 / 4` using `by nlinarith`. Establish `hdD : (r : ℝ) ^ 2 * Real.log (3 * (r : ℝ) ^ 2 * n * (dmax + 2)) ≤ 5 / 4 * (n : ℝ) ^ 2 * L'`. Combine the equalities or inequalities in the displayed calculation. Establish `hfac_pos : ∀ ρ, 0 < H ρ * dt ρ * dk ρ / dD ρ` using `fun ρ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3, h4, -⟩` from `hρ ρ`. Establish `ht : 0 < dt ρ` using `by linarith`. Establish `hk : 0 < dk ρ` using `by linarith`. Conclude with `div_pos (mul_pos (mul_pos h1 ht) hk) h4`. Establish `hprodpos : 0 < ∏ ρ, (H ρ * dt ρ * dk ρ / dD ρ)` using `Finset.prod_pos (fun ρ _ => hfac_pos ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Real.log lam = Real.log mass + Real.log Lq + ∑ ρ, Real.log (H ρ * dt ρ * dk ρ / dD ρ)`. Rewrite using `[hlam, Real.log_mul (mul_pos hmpos hLq).ne' hprodpos.ne', Real.log_mul hmpos.ne' hLq.ne', Real.log_prod (fun ρ _ => (hfac_pos ρ).ne')]`. Establish `e2 : ∀ ρ, Real.log (H ρ) - (2 + 5 / 4 * (n : ℝ) ^ 2 * L') ≤ Real.log (H ρ * dt ρ * dk ρ / dD ρ)`. Introduce `ρ`. Take `⟨h1, h2, h3, h4, h5⟩` from `hρ ρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : 0 < dt ρ` using `by linarith`. Establish `hk : 0 < dk ρ` using `by linarith`. Rewrite using `[Real.log_div (mul_pos (mul_pos h1 ht) hk).ne' h4.ne', Real.log_mul (mul_pos h1 ht).ne' hk.ne', Real.log_mul h1.ne' ht.ne']`. Use `Real.log_nonneg h2` as an intermediate fact. Use `Real.log_nonneg h3` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ ρ, Real.log (H ρ) - (f : ℝ) * (2 + 5 / 4 * (n : ℝ) ^ 2 * L') ≤ ∑ ρ, Real.log (H ρ * dt ρ * dk ρ / dD ρ)`. Use `Finset.sum_le_sum (fun ρ (_ : ρ ∈ Finset.univ) => e2 ρ)` as an intermediate fact. Rewrite `this` using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hLqlow : -((f : ℝ) * r / 4) ≤ Real.log Lq`. Use `neg_abs_le (Real.log Lq)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog2 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfL : 1 ≤ (f : ℝ) * L'` using `by nlinarith`. Establish `hP1 : (n : ℝ) ≤ f * n * L'` using `by linarith [mul_le_mul_of_nonneg_left hfL hnpos.le]`. Establish `hnL : 0 ≤ (n : ℝ) * L'` using `by positivity`. Establish `hP2 : (n : ℝ) * L' ≤ f * n * L'` using `by linarith [mul_le_mul_of_nonneg_right hf1 hnL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hP3 : (f : ℝ) * r / 4 ≤ f * n * L'`. Establish `hrn : (r : ℝ) / 4 ≤ n * L'` using `by nlinarith`. Combine the linear relations using `[mul_le_mul_of_nonneg_left hrn (by linarith : (0 : ℝ) ≤ f)]`. Establish `hnL2 : (2 : ℝ) ≤ n * L'` using `by nlinarith [mul_le_mul hn8 hL' (by norm_num) hnpos.le]`. Establish `hP4 : 2 * (f : ℝ) ≤ f * n * L'` using `by linarith [mul_le_mul_of_nonneg_left hnL2 (by linarith : (0 : ℝ) ≤ f)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hbig : 8 * ((f : ℝ) * n * L') ≤ f * (n : ℝ) ^ 2 * L'`. Establish `h0 : 0 ≤ (f : ℝ) * n * L'` using `by positivity`. Combine the linear relations using `[mul_le_mul_of_nonneg_right hn8 h0]`. Establish `hm1` using `mul_le_mul_of_nonneg_left hlog2 hnpos.le`. Establish `hm2` using `mul_le_mul_of_nonneg_left hlogn hnpos.le`.
-
-Rewrite using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lamLow_numerical_end : ∀ (f n r : ℕ) (L' dmax mass Lq lam : ℝ) (H dt dk dD : Fin f → ℝ), 8 ≤ n → 2 * r ≤ n → 1 ≤ r → 1 ≤ f → (5.5 : ℝ) ≤ L' → Real.log n ≤ L' → 0 ≤ dmax → Real.log (dmax + 2) ≤ 2 * L' → 1 / ((2 : ℝ) ^ n * (n.factorial : ℝ)) ≤ mass → 0 < Lq → |Real.log Lq| ≤ f * r / 4 → (∀ ρ, 0 < H ρ ∧ 1 ≤ dt ρ ∧ 1 ≤ dk ρ ∧ 0 < dD ρ ∧ Real.log (dD ρ) ≤ 2 + (r : ℝ) ^ 2 * Real.log (3 * (r : ℝ) ^ 2 * n * (dmax + 2))) → lam = mass * Lq * ∏ ρ, (H ρ * dt ρ * dk ρ / dD ρ) → ∑ ρ, Real.log (H ρ) - 2 * f * (n : ℝ) ^ 2 * L' ≤ Real.log lam := by
   intro f n r L' dmax mass Lq lam H dt dk dD hn hr hr1 hf hL' hlogn hdmax hlogd hmass hLq hlogLq hρ hlam

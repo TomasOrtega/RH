@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OrderedCechToCa
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConjGelfValOfIsHerm
 
 /- English proof (translation)
-Introduce `_ χ σ k` and use `GlobalTheory.CompanionTheory.WaveMult.gelfVal_comp_perm χ σ k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.ModelS.gelfVal_perm :
     ∀ (n : ℕ) (χ : Fin n → ℂ) (σ : Equiv.Perm (Fin n)) (k : ℕ),

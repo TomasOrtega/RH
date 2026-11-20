@@ -8,13 +8,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Ind
 namespace GlobalTheory.CompanionTheory.CoinvExact
 
 /- English proof (translation)
-Set `f'` to `Representation.IntertwiningMap.equivLinearMapAsModule α β f`. Set `g'` to `Representation.IntertwiningMap.equivLinearMapAsModule β γ g`. Establish `hg' : Function.Surjective g'` using `hg`. Establish `hr : IsFiniteLength (MonoidAlgebra ℂ G) (LinearMap.range f')` using `IsFiniteLength.of_surjective hA f'.surjective_rangeRestrict`. Establish `hex : Function.Exact (LinearMap.range f').subtype g'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `h1 : g' y = 0 ↔ g y = 0` using `Iff.rfl`. Establish `h2 : y ∈ Set.range (LinearMap.range f').subtype ↔ y ∈ Set.range f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, ⟨a, rfl⟩⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨⟨f' a, ⟨a, rfl⟩⟩, rfl⟩`. Rewrite using `[h1, h2]`. Conclude with `hfg y`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlen` using `Module.length_eq_add_of_exact (LinearMap.range f').subtype g' (LinearMap.range f').injective_subtype hg' hex`. Rewrite using `[HasFiniteLength, ← Module.length_ne_top_iff, hlen]`. Conclude with `WithTop.add_ne_top.2 ⟨Module.length_ne_top_iff.2 hr, Module.length_ne_top_iff.2 hC⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_exact {G A B C : Type} [Group G] [AddCommGroup A] [Module ℂ A]
     [AddCommGroup B] [Module ℂ B] [AddCommGroup C] [Module ℂ C]
@@ -49,9 +49,9 @@ variable {Γ G V₁ V₂ : Type} [Group Γ] [Group G] [AddCommGroup V₁] [Modul
   [AddCommGroup V₂] [Module ℂ V₂] {τ₁ : Representation ℂ (Γ × G) V₁} {τ₂ : Representation ℂ (Γ × G) V₂}
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, v, rfl⟩`. Use `Submodule.subset_span ⟨γ, φ v, ?_⟩` and prove the remaining obligations. Establish `e : φ (τ₁ (γ, 1) v) = τ₂ (γ, 1) (φ v)` using `φ.isIntertwining _ _ _ _`. Use `show φ (τ₁ (γ, 1) v - (ψ γ : ℂ) • v) = τ₂ (γ, 1) (φ v) - (ψ γ : ℂ) • φ v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, e, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem twRel_le_comap (φ : τ₁.IntertwiningMap τ₂) (ψ : Γ →* ℂˣ) :
     twRel (τ₁.comp (MonoidHom.inl Γ G)) ψ ≤
@@ -79,9 +79,9 @@ theorem coinvMap_mk (φ : τ₁.IntertwiningMap τ₂) (ψ : Γ →* ℂˣ) (v :
     coinvMap φ ψ (Submodule.Quotient.mk v) = Submodule.Quotient.mk (φ v) := rfl
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, u, rfl⟩`. Take `⟨v, rfl⟩` from `hφ u`. Use `⟨τ₁ (γ, 1) v - (ψ γ : ℂ) • v, Submodule.subset_span ⟨γ, v, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : φ (τ₁ (γ, 1) v) = τ₂ (γ, 1) (φ v)` using `φ.isIntertwining _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show φ (τ₁ (γ, 1) v - (ψ γ : ℂ) • v) = τ₂ (γ, 1) (φ v) - (ψ γ : ℂ) • φ v`. Rewrite using `[map_sub, e, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twRel_le_map (φ : τ₁.IntertwiningMap τ₂) (hφ : Function.Surjective φ) (ψ : Γ →* ℂˣ) :
     twRel (τ₂.comp (MonoidHom.inl Γ G)) ψ ≤
@@ -95,7 +95,7 @@ theorem twRel_le_map (φ : τ₁.IntertwiningMap τ₂) (hφ : Function.Surjecti
   rw [map_sub, e, map_smul]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨v, rfl⟩` from `hφ u`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coinvMap_surjective (φ : τ₁.IntertwiningMap τ₂) (hφ : Function.Surjective φ) (ψ : Γ →* ℂˣ) :
     Function.Surjective (coinvMap φ ψ) := by
@@ -107,13 +107,13 @@ theorem coinvMap_surjective (φ : τ₁.IntertwiningMap τ₂) (hφ : Function.S
 end Coinv
 
 /- English proof (translation)
-Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hv : f v ∈ twRel (τU.comp (MonoidHom.inl Γ G)) ψ` using `(Submodule.Quotient.mk_eq_zero _).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨r, hr, hrv⟩` from `twRel_le_map f hf ψ hv`. Establish `hrv' : f r = f v` using `hrv`. Establish `hz : f (v - r) = 0` using `by rw [map_sub, hrv', sub_self]`. Take `⟨w, hw⟩` from `(hif (v - r)).1 hz`. Use `⟨Submodule.Quotient.mk w, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coinvMap_mk, hw]`. Conclude with `(Submodule.Quotient.eq _).2 (by simpa using (Submodule.neg_mem _ hr))`. Introduce and unpack `⟨y, hy⟩`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h0 : f (i w) = 0` using `(hif (i w)).2 ⟨w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy, coinvMap_mk, coinvMap_mk, h0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coinvMap_exact {Γ G W V U : Type} [Group Γ] [Group G] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
@@ -141,7 +141,7 @@ theorem coinvMap_exact {Γ G W V U : Type} [Group Γ] [Group G] [AddCommGroup W]
     rfl
 
 /- English proof (translation)
-Introduce `Γ G W V U _ _ _ _ _ _ _ _ τW τ τU i f hf hif ψ hW hU`. Conclude with `hasFiniteLength_of_exact _ _ _ (coinvMap i ψ) (coinvMap f ψ) (coinvMap_surjective f hf ψ) (coinvMap_exact i f hf hif ψ) hW hU`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (Γ G W V U : Type) [Group Γ] [Group G] [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U] (τW : Representation ℂ (Γ × G) W) (τ : Representation ℂ (Γ × G) V) (τU : Representation ℂ (Γ × G) U) (i : τW.IntertwiningMap τ) (f : τ.IntertwiningMap τU), Function.Surjective f → Function.Exact i f → ∀ ψ : Γ →* ℂˣ, HasFiniteLength (coinv τW ψ) → HasFiniteLength (coinv τU ψ) → HasFiniteLength (coinv τ ψ) := by
   intro Γ G W V U _ _ _ _ _ _ _ _ τW τ τU i f hf hif ψ hW hU

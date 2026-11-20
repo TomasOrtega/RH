@@ -36,7 +36,7 @@ namespace GlobalTheory.Core.Rk.SecPar
 open GlobalTheory.LFun
 
 /- English proof (translation)
-Use `show toCompl h (compFin _ _ q (1 ⊗ₜ x)) = _`. Simplify using `[compFin, toCompl]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cw_incA {D : D7} {q : FinPl D} {w : HeightOneSpectrum (𝓞 D.host.E)} (h : w.under (𝓞 D.host.F) = q)
     (x : D.host.E) : cw h (incA D x) = algebraMap D.host.E (w.adicCompletion D.host.E) x := by

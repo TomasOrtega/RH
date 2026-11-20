@@ -19,7 +19,7 @@ def zphi (mu : B ⟶ A) : Zob A B ⟶ Out.powObj A 8 :=
   (Out.powIsLimit A 8).lift (Fan.mk _ (zpr A B mu))
 
 /- English proof (translation)
-The claim follows from `(Out.powIsLimit A 8).fac _ ⟨k⟩`.
+A detailed English derivation is pending.
 -/
 theorem zphi_powPr (mu : B ⟶ A) (k : Fin 8) : zphi A B mu ≫ Out.powPr A k = zpr A B mu k :=
   (Out.powIsLimit A 8).fac _ ⟨k⟩

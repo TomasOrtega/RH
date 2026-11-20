@@ -10,7 +10,7 @@ open scoped TensorProduct
 namespace GlobalTheory.RgGu
 
 /- English proof (translation)
-Set `b` to `fun a => Module.Free.chooseBasis ℂ (M a)`. Establish `hs : ∀ a, Subsingleton (Module.Free.ChooseBasisIndex ℂ (M a))` using `fun a => Cardinal.le_one_iff_subsingleton.1 (by rw [(b a).mk_eq_rank'']; exact hM a)`. Rewrite using `[← (Basis.piTensorProduct b).mk_eq_rank'', Cardinal.le_one_iff_subsingleton]`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_piTensor_le_one {h : ℕ} (M : Fin h → Type) [∀ a, AddCommGroup (M a)] [∀ a, Module ℂ (M a)]
     (hM : ∀ a, Module.rank ℂ (M a) ≤ 1) : Module.rank ℂ (⨂[ℂ] a, M a) ≤ 1 := by
@@ -23,9 +23,9 @@ theorem rank_piTensor_le_one {h : ℕ} (M : Fin h → Type) [∀ a, AddCommGroup
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hW hI ψ hc h1 h N x hd`. Establish `h2 : Module.rank ℂ (⨂[ℂ] a, TwJacquet (x a).rep (unipB k (Fin (x a).1)) (whitChar ψ (x a).1)) ≤ 1` using `rank_piTensor_le_one _ fun a => hI ψ hc h1 (x a).1 (x a).2.rep.V (x a).rep (x a).2.rep.smooth (x a).2.rep.irr`. Take `⟨e⟩` from `hW ψ hc h1 h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep) (fun a => (x a).2.rep.smooth)`. Establish `h3` using `e.rank_eq`. Express the relevant statement in the definitionally equal form `Module.rank ℂ (TwJacquet (multiProd (stdBlocks (fun a => (x a).1) hd) (fun a => (x a).rep)) (unipB k (Fin N)) (whitChar ψ N)) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h3]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whitRankStd_of_heredity : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZMir.Leib.WhitHeredity k → GlobalTheory.BZSeg.WhitRankIrr k → GlobalTheory.BZSeg.WhitRankStd k := by

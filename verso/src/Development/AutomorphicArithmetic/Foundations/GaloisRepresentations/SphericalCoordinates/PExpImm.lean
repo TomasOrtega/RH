@@ -7,23 +7,21 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hcomp hpre hpb h0 X A _ g y e he z₀ w hw`. Apply `h0 X A g y e he w` to reduce the goal to its premises. Establish `hsplit : ∀ z, e z = e (-z₀) * e (z₀ + z)`. Introduce `z`. Rewrite using `[← he.1, neg_add_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hhol : IsHolTo Set.univ (fun z => Over.Hom.left (e (z₀ + z)))` using `GlobalTheory.CompanionTheory.Ar.Flat.ExpLoc.isHolTo_precomp (φ := fun z => z₀ + z) he.2.2.1 isOpen_univ (by fun_prop) (Set.mapsTo_univ _ _)`. Establish `hflat : Flat (fun z => Over.Hom.left (e (z₀ + z))) 0 w`. Establish `hd : HasFDerivAt (fun z : Fin g → ℂ => z₀ + z) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0` using `(hasFDerivAt_id 0).const_add z₀`. Use `(hpre (Fin g → ℂ) (Fin g → ℂ) A.left Set.univ (fun z => Over.Hom.left (e z)) he.2.2.1 (fun z => z₀ + z) _ 0 w hd (Set.mem_univ _)).2 ?_` and prove the remaining obligations. Simplify using `using hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hpbA : IsPullback (fst A A).left (snd A A).left A.hom A.hom` using `Over.isPullback_of_binaryFan_isLimit _ (tensorProductIsBinaryProduct A A)`. Establish `h1 : (fun z => (lift (e (-z₀)) (e (z₀ + z))).left ≫ (fst A A).left) = fun _ => (e (-z₀)).left`. Use function extensionality and compare the values at `z`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `h2 : (fun z => (lift (e (-z₀)) (e (z₀ + z))).left ≫ (snd A A).left) = fun z => (e (z₀ + z)).left`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[← Over.comp_left, lift_snd]`. Establish `hconstHol : IsHolTo Set.univ (fun _ : Fin g → ℂ => (e (-z₀)).left)`. Introduce `U f`. Use `⟨?_, differentiableOn_const _⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hU : ⊤ ≤ (e (-z₀)).left ⁻¹ᵁ U`. Simplify using `[hU]`. Simplify using `[hU]`. Establish `hconstFlat : Flat (fun _ : Fin g → ℂ => (e (-z₀)).left) 0 w`. Introduce `U f _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hs : Flat (fun z => (lift (e (-z₀)) (e (z₀ + z))).left) 0 w`. Use `hpb (Fin g → ℂ) _ A.left A.left X (fst A A).left (snd A A).left A.hom A.hom hpbA Set.univ _ 0 w isOpen_univ (Set.mem_univ _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hconstHol`. Use `beta_reduce`. Rewrite using `[h2]`. Conclude with `hhol`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `hconstFlat`. Use `beta_reduce`. Rewrite using `[h2]`. Conclude with `hflat`.
-
-Establish `hfe : (fun z => (e z).left) = fun z => (lift (e (-z₀)) (e (z₀ + z))).left ≫ (μ : A ⊗ A ⟶ A).left`. Use function extensionality and compare the values at `z`. Rewrite using `[← Over.comp_left, ← Hom.mul_def, ← hsplit]`. Rewrite using `[hfe]`. Conclude with `hcomp (Fin g → ℂ) _ A.left (μ : A ⊗ A ⟶ A).left _ 0 w hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.expImm_of :
     UpperTheory.Gal.W2.FlatComp → UpperTheory.Gal.W2.FlatPre → UpperTheory.Gal.W2.PbFlat → UpperTheory.Gal.W2.ExpImm0 → UpperTheory.Gal.W2.ExpImm := by

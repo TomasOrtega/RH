@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.StepGlob
 
 /- English proof (translation)
-Unfold `stepConst beP`. Establish `h : (n : ℝ) ^ (3 / 2 : ℝ) = n * Real.sqrt n`. Rewrite using `[Real.sqrt_eq_rpow, show (3 / 2 : ℝ) = 1 + 1 / 2 by norm_num, Real.rpow_add' (Nat.cast_nonneg n) (by norm_num), Real.rpow_one]`. Rewrite using `[h, Real.sqrt_eq_rpow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem stepConst_eq (n : ℕ) (b : ℝ) (P : ℕ) : stepConst n b P = beP n b P := by
   unfold stepConst beP
@@ -26,16 +26,16 @@ theorem stepConst_eq (n : ℕ) (b : ℝ) (P : ℕ) : stepConst n b P = beP n b P
   rw [h, Real.sqrt_eq_rpow]
 
 /- English proof (translation)
-Unfold `beP`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem beP_nonneg (n : ℕ) (b : ℝ) (P : ℕ) : 0 ≤ beP n b P := by
   unfold beP
   positivity
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℝ E`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `h1` using `congrArg (fun X : gLie ε => (((X : Matrix (Fin n) (Fin n) ℂ) * (E j : Matrix (Fin n) (Fin n) ℂ)ᴴ).trace).re) hg`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_mul, Matrix.trace_sum, smul_mul_assoc, Matrix.trace_smul, Complex.re_sum, Complex.smul_re, h.1] at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using h1`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hli h.2.ge), Fintype.card_fin]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_of_isONBasis {n m : ℕ} {ε : Fin n → Bool} {E : Fin m → gLie ε} (h : IsONBasis E) :
     Module.finrank ℝ (gLie ε) = m := by
@@ -50,11 +50,11 @@ theorem finrank_of_isONBasis {n m : ℕ} {ε : Fin n → Bool} {E : Fin m → gL
   rw [Module.finrank_eq_card_basis (Module.Basis.mk hli h.2.ge), Fintype.card_fin]
 
 /- English proof (translation)
-Take `⟨F, h1, h2, h3⟩` from `GlobalTheory.LieONB.exists_orthonormal_basis n ε`. Establish `hF : IsONBasis (fun i => (⟨F i, (h1 i).1⟩ : gLie ε))`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨X, hX⟩ -`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun i => ((X * (F i)ᴴ).trace).re, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Use `conv_rhs => rw [h3 X hX]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.coe_smul]`. Rewrite using `[← finrank_of_isONBasis h, finrank_of_isONBasis hF]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_of_isONBasis {n m : ℕ} {ε : Fin n → Bool} {E : Fin m → gLie ε} (h : IsONBasis E) :
     m = n ^ 2 := by
@@ -74,7 +74,7 @@ theorem card_of_isONBasis {n m : ℕ} {ε : Fin n → Bool} {E : Fin m → gLie 
 variable (B : RowsAut)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `[orbit]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem orbit_sum {k : ℕ} (E : gInf B) (y : Fin k → B.Hs) :
     orbit B E (∑ l, y l) = fun t => ∑ l, orbit B E (y l) t := by
@@ -82,9 +82,9 @@ theorem orbit_sum {k : ℕ} (E : gInf B) (y : Fin k → B.Hs) :
   simp [orbit]
 
 /- English proof (translation)
-Establish `: orbit B E (w + c • w') = fun t => orbit B E w t + c • orbit B E w' t`. Use function extensionality and compare the values at `t`. Simplify using `[orbit]`. Unfold `dAct`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hw.hasDerivAt.fun_add (hw'.hasDerivAt.fun_const_smul c)).deriv`.
+A detailed English derivation is pending.
 -/
 theorem dAct_add_smul {E : gInf B} {w w' : B.Hs} (hw : DifferentiableAt ℝ (orbit B E w) 0)
     (hw' : DifferentiableAt ℝ (orbit B E w') 0) (c : ℂ) :
@@ -97,7 +97,7 @@ theorem dAct_add_smul {E : gInf B} {w w' : B.Hs} (hw : DifferentiableAt ℝ (orb
   exact (hw.hasDerivAt.fun_add (hw'.hasDerivAt.fun_const_smul c)).deriv
 
 /- English proof (translation)
-Establish `: orbit B E 0 = fun _ => 0`. Use function extensionality and compare the values at `t`. Simplify using `[orbit]`. Unfold `dAct`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -119,7 +119,7 @@ include hU hd
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[orbit_sum]`. Use `HasDerivAt.fun_sum fun l _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.TensDer.hasDerivAt_orbit_tens B E (u l) _ (fun v => (hd v P _ (hu l v) _ (E v).2).hasDerivAt) (fun v => (hU v).1.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_orbit_sum {P k : ℕ} (E : gInf B) (u : Fin k → ∀ v, B.H v)
     (hu : ∀ l v, u l v ∈ stepSpace (B.I.ε v) (B.lam v) (B.σ v) P) :
@@ -134,11 +134,11 @@ theorem hasDerivAt_orbit_sum {P k : ℕ} (E : gInf B) (u : Fin k → ∀ v, B.H 
 open Classical in
 
 /- English proof (translation)
-Take `⟨m, hm, -⟩` from `GlobalTheory.rowsAut_tens_continuousMultilinear B`. Unfold `dAct`. Rewrite using `[(hasDerivAt_orbit_sum hU hd (atPlace B v X) u hu).deriv]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single v]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[atPlace]`. Introduce `v' _ h`. Establish `h0 : atPlace B v X v' = 0` using `by simp [atPlace, h]`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit (B.σ v') (0 : gLie (B.I.ε v')).1 (u l v') = fun _ => u l v'`. Use function extensionality and compare the values at `t`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit, (hU v').1.1]`. Rewrite using `[h0, ← hm]`. Use `m.map_coord_zero v' ?_` and prove the remaining obligations. Rewrite using `[Function.update_self, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -165,7 +165,7 @@ theorem dAct_atPlace_sum {P k : ℕ} (v : InfinitePlace B.I.F) (X : gLie (B.I.ε
 
 open Classical in
 /- English proof (translation)
-Simplify using `using dAct_atPlace_sum hU hd (k := 1) v X (fun _ => u) (fun _ => hu)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dAct_atPlace_tens {P : ℕ} (v : InfinitePlace B.I.F) (X : gLie (B.I.ε v))
     (u : ∀ v, B.H v) (hu : ∀ v, u v ∈ stepSpace (B.I.ε v) (B.lam v) (B.σ v) P) :
@@ -174,7 +174,7 @@ theorem dAct_atPlace_tens {P : ℕ} (v : InfinitePlace B.I.F) (X : gLie (B.I.ε 
   simpa using dAct_atPlace_sum hU hd (k := 1) v X (fun _ => u) (fun _ => hu)
 
 /- English proof (translation)
-Take `⟨k, u, hu, rfl⟩` from `GlobalTheory.StepTens.stepSpan_le_of_differentiable B hU hd P w hw`. Conclude with `(hasDerivAt_orbit_sum hU hd E u hu).differentiableAt`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem differentiableAt_orbit {P : ℕ} (E : gInf B) {w : B.Hs} (hw : w ∈ VP B P) :
     DifferentiableAt ℝ (orbit B E w) 0 := by
@@ -182,7 +182,7 @@ theorem differentiableAt_orbit {P : ℕ} (E : gInf B) {w : B.Hs} (hw : w ∈ VP 
   exact (hasDerivAt_orbit_sum hU hd E u hu).differentiableAt
 
 /- English proof (translation)
-Take `⟨k, u, hu, rfl⟩` from `GlobalTheory.StepTens.stepSpan_le_of_differentiable B hU hd P w hw`. Simplify using `only [dAct_atPlace_sum hU hd _ _ u hu]`. Rewrite using `[Finset.sum_comm]`. Conclude with `(hasDerivAt_orbit_sum hU hd E u hu).deriv`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dAct_eq_sum {P : ℕ} (E : gInf B) {w : B.Hs} (hw : w ∈ VP B P) :
     dAct B E w = ∑ v, dAct B (atPlace B v (E v)) w := by
@@ -192,13 +192,11 @@ theorem dAct_eq_sum {P : ℕ} (E : gInf B) {w : B.Hs} (hw : w ∈ VP B P) :
   exact (hasDerivAt_orbit_sum hU hd E u hu).deriv
 
 /- English proof (translation)
-Rewrite using `[dAct_eq_sum hU hd E hw]`. Use `Submodule.sum_mem _ fun v _ => ?_` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, u, hl, hu, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨⟨v, E v⟩ :: l, u, by simpa using hl, hu, rfl⟩`. Consider the case `zero => rw [dAct_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y hx hy ihx ihy`. Use `dAct_add_smul B (differentiableAt_orbit hU hd (atPlace B v (E v)) hx) (differentiableAt_orbit hU hd (atPlace B v (E v)) hy) 1` as an intermediate fact.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ihx ihy`. Consider the case `smul c x hx ihx`. Use `dAct_add_smul B (differentiableAt_orbit hU hd (atPlace B v (E v)) (Submodule.zero_mem (VP B P))) (differentiableAt_orbit hU hd (atPlace B v (E v)) hx) c` as an intermediate fact.
-
-Rewrite `this` using `[zero_add, dAct_zero, zero_add]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ihx`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dAct_mem {P : ℕ} (E : gInf B) {w : B.Hs} (hw : w ∈ VP B P) : dAct B E w ∈ VP B (P + 1) := by
   rw [dAct_eq_sum hU hd E hw]
@@ -223,13 +221,13 @@ theorem dAct_mem {P : ℕ} (E : gInf B) {w : B.Hs} (hw : w ∈ VP B P) : dAct B 
     exact Submodule.smul_mem _ c ihx
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨[], rfl, rfl⟩`. Consider the case `cons X l ih`. Take `⟨v, X⟩` from `X`. Take `⟨l', h1, h2⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, h3, h4⟩` from `GlobalTheory.StepTens.wordAct_tens_of_diff B hU hd u hu l`. Use `⟨⟨v, ⟨uMat (k v) * X.1 * (uMat (k v))ᴴ, GlobalTheory.StepLoc.inG_conj (hk v) X.2⟩⟩ :: l', by simp [h1], ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.σs k (dAct B (atPlace B v X) (wordAct B l (B.tens u))) = dAct B (atPlace B v _) (wordAct B l' (B.σs k (B.tens u)))`. Establish `h5 : ∀ v, B.σ v (uMat (k v)) (y v) ∈ stepSpace (B.I.ε v) (B.lam v) (B.σ v) l.length` using `fun v => (GlobalTheory.StepLoc.stepSpace_props_of_diff B.I.n (B.I.ε v) (B.H v) (B.σ v) (B.lam v) (hU v) (hd v) l.length).1 _ (hk v) _ (h3 v)`. Establish `hs : ∀ x, B.σs k (B.tens x) = B.tens fun v => B.σ v (uMat (k v)) (x v)` using `fun x => B.tens_spec.2.1 k x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h2, h4, dAct_atPlace_tens hU hd v X y h3, hs, hs, dAct_atPlace_tens hU hd v _ _ h5]`. Use `congr 1`. Use function extensionality and compare the values at `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Function.update_self]`. Conclude with `(GlobalTheory.StepLoc.dAct_conj (hU v').1 (hk v') X.2 (hd v' _ _ (h3 v') _ X.2)).symm`. Simplify using `only [Function.update_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wordAct_conj (k : B.I.Ginf) (hk : ∀ v, uMat (k v) ∈ Formalism.REAL.Kset (B.I.ε v)) (u : ∀ v, B.H v)
     (hu : ∀ v, u v ∈ lowKSub (B.I.ε v) (B.lam v) (B.σ v))
@@ -262,9 +260,9 @@ theorem wordAct_conj (k : B.I.Ginf) (hk : ∀ v, uMat (k v) ∈ Formalism.REAL.K
     · simp only [Function.update_of_ne h]
 
 /- English proof (translation)
-Establish `: VP B P ≤ (VP B P).comap (B.σs k : B.Hs →ₗ[ℂ] B.Hs)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, u, hl, hu, rfl⟩`. Take `⟨l', h1, h2⟩` from `wordAct_conj hU hd k hk u hu l`. Express the relevant statement in the definitionally equal form `B.σs k (wordAct B l (B.tens u)) ∈ VP B P`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hs : B.σs k (B.tens u) = B.tens fun v => B.σ v (uMat (k v)) (u v)` using `B.tens_spec.2.1 k u`. Rewrite using `[h2, hs]`. Conclude with `Submodule.subset_span ⟨l', _, h1.trans_le hl, fun v => GlobalTheory.StepLoc.lowKSub_stable _ _ _ _ (hk v) _ (hu v), rfl⟩`. Conclude with `this hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepSpan_stable {P : ℕ} (k : B.I.Ginf) (hk : ∀ v, uMat (k v) ∈ Formalism.REAL.Kset (B.I.ε v))
     {w : B.Hs} (hw : w ∈ VP B P) : B.σs k w ∈ VP B P := by
@@ -280,9 +278,9 @@ theorem stepSpan_stable {P : ℕ} (k : B.I.Ginf) (hk : ∀ v, uMat (k v) ∈ For
   exact this hw
 
 /- English proof (translation)
-Take `⟨m, hm, -⟩` from `GlobalTheory.rowsAut_tens_continuousMultilinear B`. Set `L` to `PiTensorProduct.lift (m.toMultilinearMap.compLinearMap fun v => (stepSpace (B.I.ε v) (B.lam v) (B.σ v) P).subtype)`. Establish `hle : VP B P ≤ LinearMap.range L`. Introduce `w hw`. Take `⟨k, u, hu, rfl⟩` from `GlobalTheory.StepTens.stepSpan_le_of_differentiable B hU hd P w hw`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Submodule.sum_mem _ fun l _ => ⟨PiTensorProduct.tprod ℂ fun v => ⟨u l v, hu l v⟩, ?_⟩` and prove the remaining obligations. Simplify using `[L, hm]`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_VP {P : ℕ}
     (hf : ∀ v, FiniteDimensional ℂ (stepSpace (B.I.ε v) (B.lam v) (B.σ v) P)) :
@@ -299,9 +297,9 @@ theorem finiteDimensional_VP {P : ℕ}
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Take `⟨k, u, hu, rfl⟩` from `GlobalTheory.StepTens.stepSpan_le_of_differentiable B hU hd P w hw`. Simplify using `only [dAct_atPlace_sum hU hd _ _ u hu]`. Set `L : Fin m → (stepSpace (B.I.ε v) (B.lam v) (B.σ v) P →ₗ[ℂ] B.H v)` to `fun i => { toFun := fun y => GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct (B.σ v) (E i).1 y map_add' := fun x y => by`. Simplify using `using GlobalTheory.StepLoc.dAct_add_smul (hd v P _ x.2 _ (E i).2) (hd v P _ y.2 _ (E i).2) 1`. Use the proof step `map_smul' := fun c x => by`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `GlobalTheory.StepLoc.dAct_add_smul (hd v P _ (Submodule.zero_mem _) _ (E i).2) (hd v P _ x.2 _ (E i).2) c }` using `[GlobalTheory.StepLoc.dAct_zero]`. Conclude with `GlobalTheory.sum_normSq_tens_update_le B v (fun v => stepSpace (B.I.ε v) (B.lam v) (B.σ v) P) m L β (fun y => hβ y y.2) k (fun l v => ⟨u l v, hu l v⟩)`.
+A detailed English derivation is pending.
 -/
 theorem sum_normSq_dAct_le {P m : ℕ} (v : InfinitePlace B.I.F) (E : Fin m → gLie (B.I.ε v)) (β : ℝ)
     (hβ : ∀ y ∈ stepSpace (B.I.ε v) (B.lam v) (B.σ v) P,
@@ -322,7 +320,7 @@ theorem sum_normSq_dAct_le {P m : ℕ} (v : InfinitePlace B.I.F) (E : Fin m → 
 end Diff
 
 /- English proof (translation)
-Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank B.I.F`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces B.I.F`. Unfold `AutInst.f`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_places_le : Fintype.card (InfinitePlace B.I.F) ≤ B.I.f := by
   have h1 := InfinitePlace.card_add_two_mul_card_eq_rank B.I.F
@@ -331,19 +329,17 @@ theorem card_places_le : Fintype.card (InfinitePlace B.I.F) ≤ B.I.f := by
   omega
 
 /- English proof (translation)
-Introduce `B b h P`. Establish `hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)` using `fun v => (h v).1`. Establish `hd : ∀ v P, ∀ w ∈ stepSpace (B.I.ε v) (B.lam v) (B.σ v) P, IsDiffVec (B.I.ε v) (B.σ v) w` using `fun v Q => ((h v).2 Q).2.1`. Establish `hb` using `beP_nonneg B.I.n b P`. Establish `hone : ∀ (v : InfinitePlace B.I.F) (X : gLie (B.I.ε v)), ∀ w ∈ VP B P, ‖dAct B (atPlace B v X) w‖ ≤ Real.sqrt (Formalism.REAL.hs X.1) * beP B.I.n b P * ‖w‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v X w hw`. Establish `h1` using `sum_normSq_dAct_le hU hd v (fun _ : Fin 1 => X) ((Real.sqrt (Formalism.REAL.hs X.1) * beP B.I.n b P) ^ 2) (fun y hy => by`. Establish `h2` using `((h v).2 P).2.2.2 X.1 X.2 y hy`. Rewrite `h2` using `[stepConst_eq]`. Rewrite using `[Fin.sum_univ_one, ← mul_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) h2 2) hw`. Rewrite `h1` using `[Fin.sum_univ_one, ← mul_pow]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h1`. Use `⟨finiteDimensional_VP hU hd fun v => ((h v).2 P).1, fun k hk w hw => stepSpan_stable hU hd k hk hw, fun E w hw => differentiableAt_orbit hU hd E hw, ?_, hone, ?_, fun E w hw => dAct_mem hU hd E hw⟩` and prove the remaining obligations. Introduce `v m E hE w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `card_of_isONBasis hE`. Use `sum_normSq_dAct_le hU hd v E _ (fun y hy => ?_) hw` and prove the remaining obligations. Rewrite using `[← stepConst_eq]`. Conclude with `((h v).2 P).2.2.1 (fun i => (E i).1) ⟨fun i => (E i).2, hE.1⟩ y hy`. Introduce `E w hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `hs0 : ∀ v, 0 ≤ Formalism.REAL.hs (E v).1` using `fun v => by`. Unfold `Formalism.REAL.hs`. Check the signs of the components of the expression. Establish `hcs : ∑ v, Real.sqrt (Formalism.REAL.hs (E v).1) ≤ Real.sqrt B.I.f * Real.sqrt (∑ v, Formalism.REAL.hs (E v).1)`. Establish `h1` using `Real.sum_sqrt_mul_sqrt_le Finset.univ (f := fun _ : InfinitePlace B.I.F => (1 : ℝ)) (g := fun v => Formalism.REAL.hs (E v).1) (fun _ => zero_le_one) hs0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Real.sqrt_one, one_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at h1`. Use `h1.trans (mul_le_mul_of_nonneg_right (Real.sqrt_le_sqrt ?_) (Real.sqrt_nonneg _))` and prove the remaining obligations. Conclude with `card_places_le B` after adjusting the coercions. Rewrite using `[dAct_eq_sum hU hd E hw]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Use `_ ≤ _ := by gcongr`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepBoundAt_of_local : ∀ (B : RowsAut) (b : ℝ), (∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v) ∧ (∀ P : ℕ, FiniteDimensional ℂ (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace (B.I.ε v) (B.lam v) (B.σ v) P) ∧ (∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace (B.I.ε v) (B.lam v) (B.σ v) P, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.IsDiffVec (B.I.ε v) (B.σ v) w) ∧ (∀ F : Fin (B.I.n ^ 2) → Matrix (Fin B.I.n) (Fin B.I.n) ℂ, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.IsONFamily (B.I.ε v) F → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace (B.I.ε v) (B.lam v) (B.σ v) P, ∑ i, ‖GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct (B.σ v) (F i) w‖ ^ 2 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst B.I.n b P ^ 2 * ‖w‖ ^ 2) ∧ ∀ X, Formalism.REAL.inG (B.I.ε v) X → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace (B.I.ε v) (B.lam v) (B.σ v) P, ‖GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct (B.σ v) X w‖ ≤ Real.sqrt (Formalism.REAL.hs X) * GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst B.I.n b P * ‖w‖)) → ∀ P : ℕ, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.StepBoundAt B b P := by
   intro B b h P

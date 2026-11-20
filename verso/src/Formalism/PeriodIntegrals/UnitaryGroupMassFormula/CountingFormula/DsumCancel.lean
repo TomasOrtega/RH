@@ -15,7 +15,7 @@ def skL (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.
   LinearMap.id + ∑ a, ∑ a', S a a' • ((VS D).hT (D.sp.hypE a')).smulRight (D.sp.hypE a)
 
 /- English proof (translation)
-Simplify using `only [skL, LinearMap.add_apply, LinearMap.id_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, smul_smul, Finset.sum_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem skL_apply (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (v : (VS D).V) :
     skL D S v = v + ∑ a, (∑ a', S a a' * (VS D).hT (D.sp.hypE a') v) • D.sp.hypE a := by
@@ -23,7 +23,7 @@ theorem skL_apply (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin 
     LinearMap.smul_apply, LinearMap.smulRight_apply, smul_smul, Finset.sum_smul]
 
 /- English proof (translation)
-Rewrite using `[skL_apply, map_add, map_sum]`. Simplify using `[D.sp.hyp_ee]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hE_skL (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (b : Fin D.R.rS)
     (v : (VS D).V) : (VS D).hT (D.sp.hypE b) (skL D S v) = (VS D).hT (D.sp.hypE b) v := by
@@ -31,9 +31,9 @@ theorem hE_skL (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R
   simp [D.sp.hyp_ee]
 
 /- English proof (translation)
-Rewrite using `[skL_apply D (-S) (skL D S v)]`. Simplify using `only [hE_skL]`. Rewrite using `[skL_apply]`. Establish `e : ∀ a, (∑ a', (-S) a a' * (VS D).hT (D.sp.hypE a') v) = -(∑ a', S a a' * (VS D).hT (D.sp.hypE a') v)` using `fun a => by`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, neg_mul]`. Repeatedly rewrite using `[e, neg_smul, Finset.sum_neg_distrib]`. Conclude with `add_neg_cancel_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skL_inv (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (v : (VS D).V) :
     skL D (-S) (skL D S v) = v := by
@@ -63,9 +63,9 @@ theorem skE_apply (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin 
     skE D S v = skL D S v := rfl
 
 /- English proof (translation)
-Establish `e : ∑ a, (∑ a', -S a' a * Y a') * X a = -∑ a, (∑ a', S a a' * X a') * Y a`. Simplify using `only [Finset.sum_mul, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dsum_cancel {K : Type} [CommRing K] {r : ℕ} (S : Matrix (Fin r) (Fin r) K) (X Y : Fin r → K) :
     ∑ a, (∑ a', S a a' * X a') * Y a + ∑ a, (∑ a', -S a' a * Y a') * X a = 0 := by
@@ -77,9 +77,9 @@ theorem dsum_cancel {K : Type} [CommRing K] {r : ℕ} (S : Matrix (Fin r) (Fin r
   rw [e, add_neg_cancel]
 
 /- English proof (translation)
-Establish `hue : ∀ b, (VS D).hT u (D.sp.hypE b) = star ((VS D).hT (D.sp.hypE b) u)` using `fun b => ((VS D).herm.eq (D.sp.hypE b) u).symm`. Establish `key` using `dsum_cancel S (fun b => (VS D).hT (D.sp.hypE b) v) (fun b => star ((VS D).hT (D.sp.hypE b) u))`. Use `beta_reduce at key`. Rewrite using `[skL_apply, skL_apply]`. Simplify using `only [map_add, map_sum, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, map_smul, D.sp.hyp_ee, hue, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, starRingEnd_apply, star_sum, star_mul', hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `key`.
+A detailed English derivation is pending.
 -/
 theorem skL_isom (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
     (hS : ∀ i j, star (S j i) = -S i j) (u v : (VS D).V) :
@@ -95,9 +95,9 @@ theorem skL_isom (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D
   linear_combination key
 
 /- English proof (translation)
-Establish `he : D.sp.hypE a ∈ Λ`. Establish `h1` using `hF.2.2.2.1 a`. Rewrite `h1` using `[hF.2.2.1]`. Then use the resulting hypothesis. Establish `hU' : Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ` using `hF.2.1`. Establish `hv' : v ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT Λ` using `by rw [hU']; exact hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply] at hv'`. Take `⟨o, ho⟩` from `Submodule.mem_one.mp (hv' _ he)`. Conclude with `⟨o, ho⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hE_int (D : Formalism.BasicNotions.D7) {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hF : FixedOK D F0 Λ) (a : Fin D.R.rS) {v : (VS D).V}
@@ -113,9 +113,9 @@ theorem hE_int (D : Formalism.BasicNotions.D7) {T : D.host.E} {F0 : FlagG (VS D)
   exact ⟨o, ho⟩
 
 /- English proof (translation)
-Rewrite using `[skL_apply]`. Use `Λ.add_mem hv (Λ.sum_mem fun a _ => ?_)` and prove the remaining obligations. Establish `he : D.sp.hypE a ∈ Λ`. Establish `h1` using `hF.2.2.2.1 a`. Rewrite `h1` using `[hF.2.2.1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hc : (∑ a', S a a' * (VS D).hT (D.sp.hypE a') v) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range` using `sum_mem fun a' _ => mul_mem (hO a a') (hE_int D hF a' hv)`. Take `⟨o, ho⟩` from `hc`. Rewrite using `[← ho, algebraMap_smul]`. Conclude with `Λ.smul_mem o he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skL_lat (D : Formalism.BasicNotions.D7) {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hF : FixedOK D F0 Λ) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
@@ -133,11 +133,11 @@ theorem skL_lat (D : Formalism.BasicNotions.D7) {T : D.host.E} {F0 : FlagG (VS D
   exact Λ.smul_mem o he
 
 /- English proof (translation)
-Establish `h0 : ∀ a', (VS D).hT (D.sp.hypE a') x = 0`. Introduce `a'`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `D.sp.hyp_ee a' b`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [map_smul, hy, smul_zero]`. Rewrite using `[skL_apply]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`.
+A detailed English derivation is pending.
 -/
 theorem skL_X (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) {x : (VS D).V}
     (hx : x ∈ Submodule.span D.host.E (Set.range D.sp.hypE)) : skL D S x = x := by
@@ -154,7 +154,7 @@ theorem skL_X (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.
   simp [h0]
 
 /- English proof (translation)
-Rewrite using `[skL_apply, add_sub_cancel_left]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skL_sub_mem (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (x : (VS D).V) :
     skL D S x - x ∈ Submodule.span D.host.E (Set.range D.sp.hypE) := by
@@ -162,21 +162,17 @@ theorem skL_sub_mem (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fi
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Establish `hFe : F0.e = D.sp.hypE` using `hF.2.2.1`. Establish `hspan : ∀ x ∈ Submodule.span D.host.E (Set.range F0.e), skE D S x = x`. Introduce `x hx`. Rewrite `hx` using `[hFe]`. Conclude with `skL_X D S hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hO' : ∀ i j, ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o = (-S) i j` using `fun i j => by`. Take `⟨o, ho⟩` from `hO i j`. Conclude with `⟨-o, by rw [map_neg, ho, Matrix.neg_apply]⟩`. Establish `hzm : ∀ a', (VS D).hT (D.sp.hypE a') D.sp.zm = 0` using `fun a' => by`. Rewrite using `[← (VS D).herm.eq D.sp.zm (D.sp.hypE a'), (D.sp.hyp_orthz a').1, map_zero]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [N0, NLam, IsAutLam, Set.mem_setOf_eq]`. Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Conclude with `skL_isom D S hS x y`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.map_le_iff_le_comap.mpr fun v hv => skL_lat D hF S hO hv`. Introduce `v hv`. Use `Submodule.mem_map.mpr ⟨skL D (-S) v, skL_lat D hF (-S) hO' hv, ?_⟩` and prove the remaining obligations. Establish `h1` using `skL_inv D (-S) v`. Rewrite `h1` using `[neg_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Introduce `j x hx`. Establish `hx' : x ∈ Submodule.span D.host.E (Set.range F0.e)` using `Submodule.span_mono (Set.image_subset_range _ _) hx`. Rewrite using `[hspan x hx', sub_self]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x _`. Establish `h1` using `skL_sub_mem D S x`. Rewrite `h1` using `[← hFe]`. Conclude with `h1`. Introduce `a`.
-
-Conclude with `hspan _ (Submodule.subset_span ⟨a, rfl⟩)`. Take `⟨c, _, hcz⟩` from `hF.2.2.2.2`. Rewrite using `[hcz, map_smul]`. Use `congr 1`. Rewrite using `[skE_apply, skL_apply]`.
-
-Simplify using `[hzm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem skE_mem (D : Formalism.BasicNotions.D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hF : FixedOK D F0 Λ) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
@@ -222,9 +218,9 @@ theorem skE_mem (D : Formalism.BasicNotions.D7) {T : D.host.E} (F0 : FlagG (VS D
     simp [hzm]
 
 /- English proof (translation)
-Establish `hf : ∀ a b, (VS D).hT (D.sp.hypF b) (D.sp.hypE a) = if a = b then 1 else 0` using `fun a b => by`. Rewrite using `[← (VS D).herm.eq (D.sp.hypE a) (D.sp.hypF b), D.sp.hyp_ef]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hz : ∀ a, (VS D).hT D.sp.zm (D.sp.hypE a) = 0` using `fun a => (D.sp.hyp_orthz a).1`. Rewrite using `[skL_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pW, map_add, map_sum, map_smul, hf, hz, D.sp.hyp_ee, smul_eq_mul, mul_zero, add_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, add_smul, Finset.sum_add_distrib, Finset.sum_const_zero, zero_smul]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pW_skL (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
     (w : (VS D).V) : pW D (skL D S w) = pW D w := by
@@ -239,9 +235,9 @@ private theorem pW_skL (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) 
   module
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Establish `hfr : fr D (act D (skE D S) x) b = skL D S (fr D x b)`. Simplify using `only [fr, act]`. Conclude with `(congrFun (Fin.comp_snoc (fun w => (skE D S) w) x.1 x.2) b).symm`. Simplify using `only [pWf]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfr, pW_skL]`.
+A detailed English derivation is pending.
 -/
 theorem pWf_skE (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
     (x : (Fin D.R.rS → (VS D).V) × (VS D).V) : pWf D (act D (skE D S) x) = pWf D x := by
@@ -253,11 +249,11 @@ theorem pWf_skE (D : Formalism.BasicNotions.D7) (S : Matrix (Fin D.R.rS) (Fin D.
   rw [hfr, pW_skL]
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `hf : ∀ c, (VS D).hT (D.sp.hypF a) (D.sp.hypE c) = if c = a then 1 else 0` using `fun c => by`. Rewrite using `[← (VS D).herm.eq (D.sp.hypE c) (D.sp.hypF a), D.sp.hyp_ef]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hZ : ∀ c', (VS D).hT (D.sp.hypE c') (fr D x b) = Z (Fin.castSucc c') b` using `fun c' => by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1` using `hx.2.1 (Fin.castSucc c') b`. Simplify using `only [Formalism.MainNotions.S.brS, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc, hF.2.2.1] at h1`. Conclude with `h1`. Establish `hfr : fr D (act D (skE D S) x) b = skL D S (fr D x b)`. Simplify using `only [fr, act]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(congrFun (Fin.comp_snoc (fun w => (skE D S) w) x.1 x.2) b).symm`. Simplify using `only [alM, Matrix.add_apply, Matrix.mul_apply, betaZ, Matrix.submatrix_apply, id]`. Rewrite using `[hfr, skL_apply, map_add, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hf, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, hZ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alM_skE (D : Formalism.BasicNotions.D7) {T : D.host.E} (T' : D.host.E) (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hF : FixedOK D F0 Λ) (Z : MatZ D)

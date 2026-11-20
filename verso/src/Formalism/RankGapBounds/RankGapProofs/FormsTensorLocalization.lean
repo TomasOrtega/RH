@@ -9,11 +9,11 @@ namespace Formalism.RankGapBounds.FormsTensorLocalization
 open Formalism.UG
 
 /- English proof (translation)
-Introduce `k _ ι _ A _ _ B l e hB y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[smul_comm]`. Use `Submodule.smul_mem _ r ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : l ^ (∑ i, e i) • PiTensorProduct.tprod k f = PiTensorProduct.tprod k (fun i => ((⟨l ^ e i • f i, hB i (f i)⟩ : B i) : A i))` using `by show _ = PiTensorProduct.tprod k (fun i => l ^ e i • f i)`. Rewrite using `[MultilinearMap.map_smul_univ, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[h1]`. Conclude with `⟨PiTensorProduct.tprod k (fun i => (⟨l ^ e i • f i, hB i (f i)⟩ : B i)), by`. Rewrite using `[PiTensorProduct.map_tprod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Consider the case `add x y hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_reduction_holds : TensorStep := by
   intro k _ ι _ A _ _ B l e hB y
@@ -33,9 +33,9 @@ theorem tensor_reduction_holds : TensorStep := by
     exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-Introduce `G _ Γ K k _ W _ _ ρK U V l e hVU f hf`. Take `⟨hf1, hf2⟩` from `Submodule.mem_inf.1 hf`. Use `Submodule.mem_inf.2 ⟨Submodule.smul_mem _ _ hf1, ?_⟩` and prove the remaining obligations. Rewrite `hf2`, the goal using `[Submodule.mem_pi]`. Introduce `g _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hVU _ (hf2 g (Set.mem_univ g))`.
+A detailed English derivation is pending.
 -/
 theorem functoriality_reduction_holds : FunctStep := by
   intro G _ Γ K k _ W _ _ ρK U V l e hVU f hf
@@ -46,7 +46,7 @@ theorem functoriality_reduction_holds : FunctStep := by
   exact hVU _ (hf2 g (Set.mem_univ g))
 
 /- English proof (translation)
-Introduce `G _ Γ K k _ W _ _ ρK U hU`. Use `⟨{ toFun := fun f => ⟨fun g => ((f : G → U) g : W), Submodule.mem_inf.2 ⟨fun γ g κ => congrArg Subtype.val (f.2 γ g κ), Submodule.mem_pi.2 fun g _ => ((f : G → U) g).2⟩⟩, invFun := fun φ => ⟨fun g => ⟨(φ : G → W) g, Submodule.mem_pi.1 (Submodule.mem_inf.1 φ.2).2 g (Set.mem_univ g …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem forms_in_equivalence_holds : FormsInEquiv := by
   intro G _ Γ K k _ W _ _ ρK U hU
@@ -62,9 +62,7 @@ theorem forms_in_equivalence_holds : FormsInEquiv := by
             right_inv := fun φ => rfl }, fun f g => rfl⟩
 
 /- English proof (translation)
-Introduce `G₁ G₂ _ _ K₁ k _ W _ _ U f φ hφ g`. Unfold `hActK`. Rewrite using `[finsum_def]`. Use `split_ifs with h`. Conclude with `Submodule.sum_mem _ fun x _ => Submodule.smul_mem _ _ (hφ _)`.
-
-Conclude with `U.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_valuation_reduction : HeckeValStep := by
   classical
@@ -76,7 +74,7 @@ theorem hecke_valuation_reduction : HeckeValStep := by
   · exact U.zero_mem
 
 /- English proof (translation)
-Introduce `T _ M _ _ S N t e h y`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h m s`. Conclude with `⟨t ^ e • m, h m, s, (LocalizedModule.smul'_mk _ _ _).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem localization_reduction_holds : LocStep := by
   intro T _ M _ _ S N t e h y
@@ -85,7 +83,7 @@ theorem localization_reduction_holds : LocStep := by
     exact ⟨t ^ e • m, h m, s, (LocalizedModule.smul'_mk _ _ _).symm⟩
 
 /- English proof (translation)
-Introduce `G _ Γ K k _ ι _ A _ _ B ρK l e hB f hf`. Use `Submodule.mem_inf.2 ⟨Submodule.smul_mem _ _ hf, Submodule.mem_pi.2 fun g _ => ?_⟩` and prove the remaining obligations. Conclude with `tensor_reduction_holds k ι A B l e hB (f g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theorem_a_of_lemma_a_holds : TheoremA_of_LemmaA := by
   intro G _ Γ K k _ ι _ A _ _ B ρK l e hB f hf
@@ -93,7 +91,7 @@ theorem theorem_a_of_lemma_a_holds : TheoremA_of_LemmaA := by
   exact tensor_reduction_holds k ι A B l e hB (f g)
 
 /- English proof (translation)
-Introduce `G _ Γ K k _ ι _ A _ _ B ρK l e T _ _ _ _ S hB y`. Use `localization_reduction_holds T (AMFK k Γ K ρK) S _ (algebraMap k T l) (∑ i, e i) (fun x => ?_) y` and prove the remaining obligations. Use `show ((algebraMap k T l ^ (∑ i, e i) • x : AMFK k Γ K ρK) : G → ⨂[k] i, A i) ∈ formsIn Γ K ρK (tensSub B)`. Rewrite using `[← map_pow, algebraMap_smul]`. Conclude with `theorem_a_of_lemma_a_holds G Γ K k ι A B ρK l e hB x x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TheoremA_loc_from_LemmaA : TheoremA_loc_of_LemmaA := by
   intro G _ Γ K k _ ι _ A _ _ B ρK l e T _ _ _ _ S hB y

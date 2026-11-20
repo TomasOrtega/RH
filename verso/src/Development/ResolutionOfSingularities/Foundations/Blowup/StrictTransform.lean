@@ -67,9 +67,9 @@ private theorem isClosedImmersion_lift_comp {X Y Z : Scheme.{u}} (f : X ⟶ Z) [
   simp
 
 /- English proof (translation)
-Establish `hu : pullback.snd f g ≫ m ≫ ι = pullback.fst f g`. Rewrite using `[← cancel_mono f]`. Simplify using `only [Category.assoc]`. Rewrite using `[hfac, pullback.condition]`. Rewrite using `[← hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (Scheme.Hom.le_ker_comp m ι) (Scheme.Hom.le_ker_comp (pullback.snd f g) (m ≫ ι))`.
+A detailed English derivation is pending.
 -/
 private theorem ker_le_ker_pullbackFst {X Y W Z : Scheme.{u}} (f : X ⟶ Y) [Mono f] (g : Z ⟶ Y)
     (ι : W ⟶ X) (m : Z ⟶ W) (hfac : m ≫ ι ≫ f = g) :
@@ -83,9 +83,9 @@ private theorem ker_le_ker_pullbackFst {X Y W Z : Scheme.{u}} (f : X ⟶ Y) [Mon
     (Scheme.Hom.le_ker_comp (pullback.snd f g) (m ≫ ι))
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι]`. Use `le_antisymm (Scheme.IdealSheafData.comap_map_le I f) ?_` and prove the remaining obligations. Establish `hle : Scheme.Hom.ker (I.subschemeι ≫ f) ≤ Scheme.Hom.ker (I.map f).subschemeι` using `le_of_eq (by`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι])`. Establish `hcomap : (I.map f).comap f = Scheme.Hom.ker (pullback.fst f (I.map f).subschemeι)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcomap]`. Use `le_trans (le_of_eq (Scheme.IdealSheafData.ker_subschemeι I).symm) ?_` and prove the remaining obligations. Conclude with `ker_le_ker_pullbackFst f (I.map f).subschemeι I.subschemeι (IsClosedImmersion.lift (I.subschemeι ≫ f) (I.map f).subschemeι hle) (isClosedImmersion_lift_comp (I.subschemeι ≫ f) (I.map f).subschemeι hle)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comap_ker_subschemeι_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsClosedImmersion f] (I : X.IdealSheafData) :
@@ -105,14 +105,14 @@ theorem comap_ker_subschemeι_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     (isClosedImmersion_lift_comp (I.subschemeι ≫ f) (I.map f).subschemeι hle)
 
 /- English proof (translation)
-The claim follows from `comap_ker_subschemeι_comp f I`.
+A detailed English derivation is pending.
 -/
 theorem comap_schemeImageIdeal {X Y : Scheme.{u}} (f : X ⟶ Y) [IsClosedImmersion f]
     (I : X.IdealSheafData) : (schemeImageIdeal f I).comap f = I :=
   comap_ker_subschemeι_comp f I
 
 /- English proof (translation)
-Rewrite using `[strictTransform_eq_ker, strictTransformImmersion_eq]`. Establish `h` using `Scheme.Hom.le_ker_comp (strictTransformOpens p Z D).ι (D.comap p).subschemeι`. Rewrite `h` using `[Scheme.IdealSheafData.ker_subschemeι]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem comap_le_strictTransform {X X₁ : Scheme.{u}} (p : X₁ ⟶ X) (Z D : X.IdealSheafData) :
     D.comap p ≤ strictTransform p Z D := by

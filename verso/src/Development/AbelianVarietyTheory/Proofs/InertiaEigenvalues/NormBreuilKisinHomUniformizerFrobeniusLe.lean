@@ -9,7 +9,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `h1 : ∀ c, ‖toDisc l u ρ c‖ = gauge l u ρ (algebraMap A (PreDisc l u ρ) c)` using `fun c => norm_ofPre l u ρ _`. Use `rewrite [h1, h1, h1, map_add]`. Conclude with `gauge_add_le_max l u ρ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_toDisc_add_le_max (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) (a b : A) :
     ‖toDisc l u ρ (a + b)‖ ≤ max ‖toDisc l u ρ a‖ ‖toDisc l u ρ b‖ := by
@@ -18,13 +18,13 @@ theorem norm_toDisc_add_le_max (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : �
   exact gauge_add_le_max l u ρ _ _
 
 /- English proof (translation)
-Introduce `l _ K bk B f g`. Take `⟨hρ0, hρ1, hlρ, hE⟩` from `GlobalTheory.T.breuilKisin_norm_eisenstein_le_radius l K bk B.A (BK.hf f)`. Establish `hd` using `(GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk B f g).2.2`. Establish `h : ‖toDisc l (BK.hf f X) bk.ρ₀ (BK.hf f X ^ 1)‖ ≤ (bk.ρ₀ : ℝ) ^ 1` using `norm_toDisc_pow_le 1 hρ0`. Establish `hX : ‖toDisc l (BK.hf f X) bk.ρ₀ (BK.hf f X)‖ ≤ bk.ρ₀` using `by simpa only [pow_one] using h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ a b : B.A, ‖toDisc l (BK.hf f X) bk.ρ₀ (a + b)‖ ≤ max ‖toDisc l (BK.hf f X) bk.ρ₀ a‖ ‖toDisc l (BK.hf f X) bk.ρ₀ b‖` using `norm_toDisc_add_le_max l (BK.hf f X) bk.ρ₀`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hd`. Establish `e : BK.hf g X = BK.hf f X + BK.hf f bk.E * w` using `eq_add_of_sub_eq' hw`. Use `rewrite [e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(key _ _).trans (max_le hX ?_)` and prove the remaining obligations. Use `rewrite [map_mul]`. Use `(norm_mul_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : B.D.φ (BK.hf f X) = BK.hf f (frobS l bk.a X)` using `(Hom.f_φ f (show bk.prism.A from X)).symm`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : B.D.φ (BK.hf f X) = BK.hf f X ^ l`. Rewrite using `[e1, frobS_X, map_pow]`. Use `(congrArg (fun y => ‖toDisc l (BK.hf f X) bk.ρ₀ y‖) e).trans_le ((norm_toDisc_pow_le l hρ0).trans ?_)` and prove the remaining obligations. Conclude with `pow_le_of_le_one (by positivity) (by exact_mod_cast hρ1.le) (Fact.out : l.Prime).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_hf_g_X_and_φ_le : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (B : Obj l ↥(OL K)) (f g : Hom bk.prism B), ‖toDisc l (BK.hf f X) bk.ρ₀ (BK.hf g X)‖ ≤ bk.ρ₀ ∧ ‖toDisc l (BK.hf f X) bk.ρ₀ (B.D.φ (BK.hf f X))‖ ≤ bk.ρ₀ := by
   intro l _ K bk B f g

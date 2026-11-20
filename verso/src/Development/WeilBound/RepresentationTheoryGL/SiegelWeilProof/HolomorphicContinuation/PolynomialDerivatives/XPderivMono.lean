@@ -13,19 +13,19 @@ open PositivityTheory.Rg.Sw G
 variable {m n : ℕ}
 
 /- English proof (translation)
-Establish `hL : ∀ k, pderiv k (f * g) = f * pderiv k g + g * pderiv k f` using `fun k => by`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Establish `hL2 : ∀ k (p q : PX m n), pderiv k (p * q) = p * pderiv k q + q * pderiv k p` using `fun k p q => by`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Unfold `Dop D1 D2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[if_pos hab, if_pos hab, if_pos hab]`. Consider the cases of `ha : ε a`. Establish `hb : ε b = false` using `by rw [← hab, ha]`. Simplify using `only [Bool.false_eq_true, if_false]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_mul, Finset.mul_sum, neg_mul, mul_neg, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hL, hL, partial_deriv_zero_second_family ε (k := (a, i, true)) (by simp [inF1, ha]) hg, partial_deriv_zero_first_family ε (k := (b, i, false)) (by simp [inF1, hb]) hf]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ε b = true` using `by rw [← hab, ha]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [if_true]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, neg_mul, mul_neg, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hL, hL, partial_deriv_zero_first_family ε (k := (a, i, true)) (by simp [inF1, ha]) hf, partial_deriv_zero_second_family ε (k := (b, i, false)) (by simp [inF1, hb]) hg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg hab, if_neg hab, if_neg hab]`. Consider the cases of `ha : ε a`. Apply the tactic sequence `have hb : ε b = true := by cases h' : ε b <;> simp_all`. Simplify using `only [Bool.false_eq_true, if_false]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, Finset.smul_sum, neg_mul, mul_neg, neg_smul, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hL, map_add, hL2 _ f, hL2 _ g, partial_deriv_zero_second_family ε (k := (a, i, true)) (by simp [inF1, ha]) hg, partial_deriv_zero_second_family ε (k := (b, i, false)) (by simp [inF1, hb]) hg]`. Simplify using `only [mul_zero, zero_add, add_zero, zero_mul, map_zero, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `have hb : ε b = false := by cases h' : ε b <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [if_true]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, Finset.smul_sum, neg_mul, mul_neg, neg_smul, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hL, partial_deriv_zero_first_family ε (k := (a, i, true)) (by simp [inF1, ha]) hf, mul_zero, add_zero, hL2 _ f, partial_deriv_zero_first_family ε (k := (b, i, false)) (by simp [inF1, hb]) hf, mul_zero, add_zero]`. Simplify using `only [smul_eq_C_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -77,7 +77,7 @@ theorem dop_split (ε : Fin m → Bool) (c : ℝ) (a b : Fin m) {f g : PX m n} (
       ring
 
 /- English proof (translation)
-Rewrite using `[pderiv_monomial, X, monomial_mul, one_mul, one_mul]`. Distinguish the cases in `h0 : v k = 0`. Simplify using `[h0]`. Rewrite using `[add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h0)), smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem X_pderiv_mono (k : Fin m × Fin n × Bool) (v : Fin m × Fin n × Bool →₀ ℕ) :
     (X k * pderiv k (monomial v (1 : ℂ)) : PX m n) = ((v k : ℕ) : ℂ) • monomial v 1 := by
@@ -88,19 +88,19 @@ theorem X_pderiv_mono (k : Fin m × Fin n × Bool) (v : Fin m × Fin n × Bool �
       mul_one]
 
 /- English proof (translation)
-Establish `hs0 : ∀ k, ¬ inF1 ε k → s k = 0` using `fun k hk => by`. Assume the negation of the conclusion as `h`. Conclude with `hk (hs k (Finsupp.mem_support_iff.mpr h))`. Establish `hu0 : ∀ k, inF1 ε k → u k = 0` using `fun k hk => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hu k (Finsupp.mem_support_iff.mpr h) hk`. Take `⟨a, ha⟩` from `Function.ne_iff.mp hr`. Rewrite using `[monomial_mul, one_mul]`. Establish `hD : Dop ε c a a (monomial (s + u) (1 : ℂ)) = ((∑ i, ((s + u) (a, i, true) : ℂ)) - ∑ i, ((s + u) (a, i, false) : ℂ)) • monomial (s + u) 1`. Unfold `Dop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos rfl]`. Simplify using `only [X_pderiv_mono, ← Finset.sum_sub_distrib, Finset.sum_smul, sub_smul]`. Establish `h0` using `hΛ a a (monomial (s + u) 1)`. Rewrite `h0` using `[hD, map_smul, smul_eq_mul]`. Use `(mul_eq_zero.mp h0).resolve_left ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rdeg, Finsupp.mapDomain_equiv_apply, pE_symm, pE_apply, Bool.not_not] at ha`. Rewrite using `[← ne_eq, sub_ne_zero]`. Simplify using `only [Finsupp.add_apply, Nat.cast_add, Finset.sum_add_distrib]`. Consider the cases of `hεa : ε a`. Establish `e1 : ∀ i, u (a, i, true) = 0` using `fun i => hu0 _ (by simp [inF1, hεa])`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ i, s (a, i, false) = 0` using `fun i => hs0 _ (by simp [inF1, hεa])`. Simplify using `only [e1, e2, Nat.cast_zero, Finset.sum_const_zero, add_zero, zero_add]`. Rewrite `ha` using `[hεa]`. Simplify using `only [Bool.not_false] at ha`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ha` to reduce the goal to its premises. Conclude with `h` after adjusting the coercions. Establish `e1 : ∀ i, u (a, i, false) = 0` using `fun i => hu0 _ (by simp [inF1, hεa])`. Establish `e2 : ∀ i, s (a, i, true) = 0` using `fun i => hs0 _ (by simp [inF1, hεa])`. Simplify using `only [e1, e2, Nat.cast_zero, Finset.sum_const_zero, add_zero, zero_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[hεa]`. Simplify using `only [Bool.not_true] at ha`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Conclude with `h.symm` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem centre (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ a b p, Λ (Dop ε c a b p) = 0)
     {s u : Fin m × Fin n × Bool →₀ ℕ} (hs : ∀ k ∈ s.support, inF1 ε k) (hu : ∀ k ∈ u.support, ¬ inF1 ε k)

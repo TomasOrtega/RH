@@ -21,7 +21,7 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.ThK.LocalOps.pure_split v f φ (Function.update φ v 0) x (hfin x) (fun w hw => Function.update_of_ne hw _ _), Function.update_self, Pi.zero_apply, zero_mul, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_update_zero (v : Pl F) (f : SInf F κ) (φ : ∀ w : Pl F, (κ → Fv F w) → ℂ)
     (hfin : ∀ x : κ → AF F, (Function.mulSupport fun w => φ w fun i => evFin F w (x i)).Finite) :
@@ -33,9 +33,9 @@ theorem pure_update_zero (v : Pl F) (f : SInf F κ) (φ : ∀ w : Pl F, (κ → 
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.ThK.LocalOps.pure_split v f φ _ x (hfin x) (fun w hw => Function.update_of_ne hw _ _), Function.update_self, Finset.sum_apply, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.ThK.LocalOps.pure_split v f φ (Function.update φ v (g m)) x (hfin x) (fun w hw => Function.update_of_ne hw _ _)`. Rewrite `h` using `[Function.update_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, h, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_update_sum (v : Pl F) (f : SInf F κ) (φ : ∀ w : Pl F, (κ → Fv F w) → ℂ)
     (hfin : ∀ x : κ → AF F, (Function.mulSupport fun w => φ w fun i => evFin F w (x i)).Finite)
@@ -55,9 +55,9 @@ end GlobalTheory.ThKSoKill
 namespace GlobalTheory.ThKSoKill
 
 /- English proof (translation)
-Introduce `u hu`. Use extensionality with `i j`. Establish `h` using `congrFun (hz u hu) j`. Simplify using `only [Pi.smul_apply, Pi.zero_apply] at h`. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_smul_comm, h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem at_vecMulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (v : Pl F) (c : Fin n → AE F E) (z : Fin d → AE F E) (hz : At (evFin F v) z) :
@@ -72,19 +72,19 @@ theorem at_vecMulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 open Classical in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Λ c hc hinv Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => exact map_zero Λ`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨f, φ, hSB, hcof, ⟨hSB1, ι, hι, hrank⟩, rfl⟩` from `hx`. Establish `hstd` using `(hcof.and hP.good.std).mono fun w hw => hw.1.trans hw.2`. Establish `hfin` using `fun x => GlobalTheory.PureFactor.mulSupport_finite φ hstd x`. Establish `hpure` using `GlobalTheory.ConeMeasV.pure_mem_schA hP.good f φ hSB hcof`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, a, w, ha1, hkill⟩` from `GlobalTheory.T.rank_deficient_schwartz_average F B.v₁ (GlobalTheory.LatVac.psiAt B.ψ B.v₁) (GlobalTheory.SchrSB.continuous_psiAt B.ψ hP.base.std.1 B.v₁) (GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hP.base.std B.v₁) n d (fun k => piW B.τ₁ (c k)) hc (ι (φ B.v₁)) (hι.bij.mapsTo hSB1) …`. Establish `hmult` using `fun m => GlobalTheory.T.pair_linear_bar_vector F E σ B n d X W M χX χW om r s r' s' hP c ι hι (w m)`. Use `choose z hzat hzpi hzmul using hmult`. Establish `hAE` using `GlobalTheory.ThK.LocalOps.actsEx hKP.base`. Establish `hex : ∀ m, ∃ φ₁, φ₁ ∈ SB (Fin n × Fin d → Fv F B.v₁) ∧ Acts (evFin F B.v₁) (M.co.rho B.ψ (Matrix.vecMulVec c (z m))) (φ B.v₁) φ₁` using `fun m => ((hAE F E σ B n d X W M χX χW om r s r' s' hP B.v₁).2.1 _ (at_vecMulVec B.v₁ c (z m) (hzat m)) _ hSB1).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose φ₁ hφ₁SB hφ₁ using hex`. Establish `hsumSB : ∑ m, a m • φ₁ m ∈ SB (Fin n × Fin d → Fv F B.v₁)` using `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (hφ₁SB m)`. Establish `hsum0 : ∑ m, a m • φ₁ m = 0`. Use `hι.bij.injOn hsumSB (Submodule.zero_mem _) ?_` and prove the remaining obligations. Rewrite using `[map_zero, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply, Pi.zero_apply]`. Establish `hY` using `hkill Y`. Rewrite `hY` using `[Finset.sum_mul]`. Rewrite using `[← hY]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, hzmul m (φ B.v₁) hSB1 (φ₁ m) (hφ₁SB m) (hφ₁ m) Y, GlobalTheory.LatVac.psiAt_apply, mul_assoc]`. Establish `hact : ∀ m, M.co.rho B.ψ (Matrix.vecMulVec c (z m)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = pure f (Function.update φ B.v₁ (φ₁ m))` using `fun m => GlobalTheory.ThK.LocalOps.acts_pure B.v₁ _ f φ (φ₁ m) hpure hfin (hφ₁ m)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hact m, hinv (z m) (hzat m) (hzpi m) _ hpure]`. Use `_ = Λ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ B.v₁ (∑ m, a m • φ₁ m))) := by`. Rewrite using `[pure_update_sum B.v₁ f φ hfin a φ₁, map_sum]`. Simplify using `only [map_smul]`. Use `_ = 0 := by rw [hsum0, pure_update_zero B.v₁ f φ hfin, map_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem so_kill : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

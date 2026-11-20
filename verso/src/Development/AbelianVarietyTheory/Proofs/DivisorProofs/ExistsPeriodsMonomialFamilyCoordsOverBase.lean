@@ -15,15 +15,13 @@ noncomputable section
 namespace GlobalTheory.UCanon.Periods
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `GlobalTheory.LocM.FJ.MultiData.exists_unit_psiCoord (GlobalTheory.TauTwist.rescale D g) y hU`. Take `⟨x, ⟨j, h, hj, rfl⟩, e⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff D y r).1 hr`. Take `⟨x', hx', e'⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff (GlobalTheory.TauTwist.rescale D g) y _).1 hv`. Establish `h₁ : GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsPsiCoord (GlobalTheory.TauTwist.rescale D g) y (g y * GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.genVal (D.psi y) j h)`. Use `⟨j, h, hj, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.genVal, GlobalTheory.TauTwist.rescale, GlobalTheory.TauTwist.withPsi, ReciprocityTheory.ChartRestriction.G.DVR.scaleGen]`. Rewrite using `[map_mul, map_mul, GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.res_res]`. Use `congr 1`. Use `ext`. Use `show (g y : FractionRing R) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom (((Sp (FractionRing R)).presheaf.map (𝟙 _)).hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (g y : FractionRing R)))`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CategoryTheory.Functor.map_id]`. Conclude with `((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv_hom_id_apply _).symm`. Take `⟨u, hu⟩` from `h₁.unique hx'`. Establish `k` using `congrArg Units.val hu`. Rewrite `k` using `[Units.val_mul, Units.val_mul, e, e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k' : (g y : FractionRing R) * algebraMap R _ r = algebraMap R _ ((u * v : Rˣ) : R)`. Rewrite using `[k, Units.val_mul, map_mul]`. Both sides reduce to the same expression. Use `⟨(u * v)⁻¹, ?_⟩` and prove the remaining obligations. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_left_comm, k', ← map_mul, Units.inv_mul, map_one]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_eq_unit_mul {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R)
     (g : D.X → (FractionRing R)ˣ) {y : D.X} {r : R} (hr : Formalism.L2.Pj.PsiCoord D y r)
@@ -53,17 +51,17 @@ theorem inv_eq_unit_mul {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D 
   rw [mul_left_comm, k', ← map_mul, Units.inv_mul, map_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ V _ _ _ hV hk C D' L θ₀ e β hβ hact hL hc N ε hε`. Use `letI := H.starRing`. Take `⟨-, hbm, hgen, o₀, ho₀, hw₀⟩` from `GlobalTheory.T.degenerationDataNsmulRescale_keeps_laws L.W L.D (𝓞 E) L.oa H.w0 l.M' L.even L.bimult L.w0 L.gen`. Use `letI : Module (𝓞 E) (mulDeg L.D l.M').X := L.mod`. Take `⟨g, hD, q, hxe, hpr, hU, qs, qa, qb, hg⟩` from `GlobalTheory.T.degData_differ_by_symmBalancedForm_of_psi_tau (H := H) θ₀ (mulDeg L.D l.M') o₀ C.P.D.toPre C.P.oD e β hbm hgen hw₀ C.P.D.tau_bimult C.P.w0 hβ (fun a => by rw [ho₀]; exact hact a) hL hc`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Establish `hM : IsUnit ((l.M' : ℕ) : V)`. Establish `h1 : IsUnit ((l.M' : ℕ) : c.F)` using `(Nat.cast_ne_zero.2 (level_pos l).ne').isUnit`. Simplify using `using h1.map C.b`. Take `⟨s, hs₁, hs₂, hs⟩` from `GlobalTheory.T.exists_unit_coords_balancedSymmetric_roots H L.D.X V hV.1.2.2.2 hk l.M' hM C.m N ε C.s C.s_ne_zero (fun a b => q (e.symm a) (e.symm b)) (fun a b => qs _ _) (fun a a' b => by simp only [map_add, qa]) (fun x a b => by simp only [map_smul, qb]) (fun y => by`. Take `⟨y, rfl⟩` from `e.surjective y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, n, hn, hco⟩` from `C.mono y`. Take `⟨v, hv⟩` from `inv_eq_unit_mul _ g hco (hU y)`. Use `⟨v * u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, e.symm_apply_apply, ← hg, hv, Units.val_mul, map_mul, map_mul, map_prod, _root_.mul_assoc]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← zpow_natCast]`. Use `congr 1`. Establish `h1` using `apply_self_eq_two_mul ((balForms_eq_levelForms H L.D.X).le (ε (.inl i)).2) (e y)`. Establish `h2` using `hn i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[LinearMap.smul_apply, LinearMap.smul_apply, hε, pull_apply, LinearEquiv.coe_coe, h1, smul_eq_mul]`. Use the proof step `linarith)`. Use `⟨s, hs₁, hs₂, g, hD, fun y => ?_, hxe, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← hs, map_smul, e.symm_apply_apply]`. Use `hact x` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hpr]`. Conclude with `this.trans (Category.assoc _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_divFrom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → IsAlgClosed (ResidueField V) → ∀ (C : MonoFam Xo c φ V) (D' : Datum H) (L : LowBase D' c) (θ₀ : L.W →+* V) (e : C.P.D.toPre.X ≃ₗ[𝓞 E] L.D.X) (β : C.P.D.toPre.P.A.left ⟶ L.D.P.A.left), IsGrpPullback C.P.D.toPre.P.A L.D.P.A (spMap θ₀) β → (letI := H.starRing; ∀ a : 𝓞 E, (C.P.oD.onB.act a).left ≫ β = β ≫ (L.oa.onB.act a).left) → LBIso C.P.D.toPre.P.L (L.D.P.L.pull β) → (∀ y, (C.P.D.toPre.c y).left ≫ β = spMap θ₀ ≫ (L.D.c (l.M' • e y)).left) → ∀ (N : ℕ) (ε : Module.Basis (Fin C.m ⊕ Fin N) ℤ (balForms H.bar L.D.X)), (∀ i, C.δ i = pull e.toLinearMap (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X)) → ∃ s : Fin C.m ⊕ Fin N → V, (∀ i, Associated (s (.inl i)) (C.s i)) ∧ (∀ j, IsUnit (s (.inr j))) ∧ DivFrom L C.P.D.toPre C.P.oD θ₀ s (fun k => (ε k : LinearMap.BilinForm ℤ L.D.X)) e := by
   intro E _ _ _ H Dw l Xo c φ V _ _ _ hV hk C D' L θ₀ e β hβ hact hL hc N ε hε

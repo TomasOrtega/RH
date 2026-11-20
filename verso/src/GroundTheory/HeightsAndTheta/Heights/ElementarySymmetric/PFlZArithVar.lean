@@ -20,9 +20,9 @@ variable {K : Type} [Fintype K] {ι ι' : K → Type} [∀ k, Fintype (ι k)] [�
 omit [Fintype K] in
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_rename_of_injective (Equiv.sigmaCongrRight e).injective, Finset.mem_image]`. Take `⟨m0, hm0, rfl⟩` from `hm`. Establish `h1 : ∀ i : ι' k, Finsupp.mapDomain (Equiv.sigmaCongrRight e) m0 ⟨k, i⟩ = m0 ⟨k, (e k).symm i⟩`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (⟨k, i⟩ : Σ k, ι' k) = Equiv.sigmaCongrRight e ⟨k, (e k).symm i⟩` using `by simp`. Rewrite using `[this, Finsupp.mapDomain_apply (Equiv.sigmaCongrRight e).injective]`. Simplify using `only [h1]`. Rewrite using `[Equiv.sum_comp (e k).symm (fun j => m0 ⟨k, j⟩)]`. Conclude with `hg m0 hm0 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename_sigma (e : ∀ k, ι k ≃ ι' k) {g : MRing ι} {a : K → ℕ}
     (hg : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog g a) :
@@ -40,19 +40,17 @@ theorem isMultiHomog_rename_sigma (e : ∀ k, ι k ≃ ι' k) {g : MRing ι} {a 
   exact hg m0 hm0 k
 
 /- English proof (translation)
-Take `⟨hne, ⟨hprime, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩` from `hP`. Set `E : MRing ι ≃+* MRing ι'` to `(renameEquiv ℤ (Equiv.sigmaCongrRight e)).toRingEquiv`. Establish `hQ : P.comap (rename (Equiv.sigmaCongrRight e) : MRing ι →ₐ[ℤ] MRing ι') = P.map E.symm`. Rewrite using `[Ideal.map_symm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hEs : ∀ g, E.symm g = rename (Equiv.sigmaCongrRight fun k => (e k).symm) g`. Introduce `g`. Use `show (renameEquiv ℤ (Equiv.sigmaCongrRight e)).symm g = _`. Rewrite using `[renameEquiv_symm, Equiv.sigmaCongrRight_symm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hne, ⟨?_, ⟨E.symm '' S, ?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.comap_isPrime _ _`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨a, ha⟩` from `hS g hg`. Conclude with `⟨a, by rw [hEs]; exact isMultiHomog_rename_sigma (fun k => (e k).symm) ha⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hQ, hPS, Ideal.map_span]`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`. Use `⟨(e k).symm i, fun hj => hi ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[Ideal.mem_comap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hj`. Establish `h : Ideal.comap (C : ℤ →+* MRing ι) (P.comap (rename (Equiv.sigmaCongrRight e) : MRing ι →ₐ[ℤ] MRing ι')) = Ideal.comap (C : ℤ →+* MRing ι') P`. Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, rename_C]`. Unfold `IsHorizontal`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hhor`. Rewrite using `[← hdim]`. Use `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ P E ?_)` and prove the remaining obligations. Use `show P = Ideal.map (E : MRing ι →+* MRing ι') (Ideal.comap (E : MRing ι →+* MRing ι') P)`.
-
-Conclude with `(Ideal.map_comap_of_surjective (E : MRing ι →+* MRing ι') E.surjective P).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isArithVar_comap_rename_sigma (e : ∀ k, ι k ≃ ι' k) {P : Ideal (MRing ι')} {d : ℕ}
     (hP : IsArithVar P d) :
@@ -116,7 +114,7 @@ theorem flZIncr_eq : flZIncr Ψ N = Equiv.sigmaCongrRight (setIncrEquiv Ψ N) :=
 omit [Fintype Ψ] [DecidableEq Ψ] in
 
 /- English proof (translation)
-Rewrite using `[flZIncr_eq]`. Use `⟨Function.injective_id, (Equiv.sigmaCongrRight _).injective, fun _ => rfl, fun q _ => ?_⟩` and prove the remaining obligations. Conclude with `(Equiv.sigmaCongrRight (setIncrEquiv Ψ N)).surjective q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flZIncr_isBlockMap : IsBlockMap id (flZIncr Ψ N) := by
   rw [flZIncr_eq]
@@ -126,9 +124,9 @@ theorem flZIncr_isBlockMap : IsBlockMap id (flZIncr Ψ N) := by
 end FlZArithVar
 
 /- English proof (translation)
-Introduce `Ψ _ _ _ N hN`. Establish `hA` using `FlagArithVar.proof Ψ N hN`. Establish `hI : IndefiniteRowSideFullHecke.LowerBoundFree.Nine.FlZIdeal Ψ N = imageZ (flZIncr Ψ N) (PFl Ψ N)`. Rewrite using `[h Ψ N, PFl]`. Conclude with `GroundTheory.Heights₂.Heights.Inter.BlockRatioAlgebraic.mCoordIdeal_comp_v (FlZArithVar.flZIncr_isBlockMap Ψ N) (yFl Ψ N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI, imageZ, FlZArithVar.flZIncr_eq]`. Conclude with `FlZArithVar.isArithVar_comap_rename_sigma (FlZArithVar.setIncrEquiv Ψ N) hA`.
+A detailed English derivation is pending.
 -/
 theorem FlZArithVar.proof (h : FlZIdealEqCoord.Statement) : FlZArithVar.Statement := by
   intro Ψ _ _ _ N hN

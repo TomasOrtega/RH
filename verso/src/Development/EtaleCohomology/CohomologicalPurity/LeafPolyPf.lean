@@ -6,7 +6,7 @@ open MvPolynomial TensorProduct
 namespace LateralTheory.CohomologicalPurity.LeafPolyPf
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_tmul_algebraMap {P S A : Type} [CommRing P] [CommRing S] [CommRing A] [Algebra P S] [Algebra P A]
     (p : P) : (1 : S) ⊗ₜ[P] algebraMap P A p = algebraMap P S p ⊗ₜ[P] (1 : A) := by
@@ -17,53 +17,49 @@ def kap (d e : ℕ) (R : Type) [CommRing R] :
   eval₂Hom (C.comp C) (Sum.elim 0 fun i => C (X i))
 
 /- English proof (translation)
-Introduce `e d R A _ _ φ I x y h`. Take `⟨hψ, hI⟩` from `h`. Use `set ψ := MvPolynomial.eval₂Hom φ (Sum.elim x y) with hψdef`. Set `P` to `MvPolynomial (Fin d ⊕ Fin e) R`. Set `S` to `MvPolynomial (Fin d) (MvPolynomial (Fin e) R)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Cc` to `MvPolynomial (Fin d) (A ⧸ I)`. Use `letI : Algebra P A := ψ.toAlgebra`. Use `letI : Algebra P S := (kap d e R).toAlgebra`. Establish `hb : (algebraMap S (S ⊗[P] A)).Etale` using `RingHom.IsStableUnderBaseChange.tensorProduct RingHom.Etale.isStableUnderBaseChange S hψ`. Establish `hx : ∀ j, x j ∈ I` using `fun j => hI ▸ Ideal.subset_span ⟨j, rfl⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψX : ∀ i, ψ (X i) = Sum.elim x y i` using `fun i => by simp [ψ]`. Set `gy : MvPolynomial (Fin e) R →+* A ⧸ I` to `eval₂Hom ((Ideal.Quotient.mk I).comp φ) fun i => Ideal.Quotient.mk I (y i)`. Set `FS : S →+* Cc` to `eval₂Hom ((C : A ⧸ I →+* Cc).comp gy) X`. Set `ρ : P →+* Cc` to `(C : A ⧸ I →+* Cc).comp ((Ideal.Quotient.mk I).comp ψ)`. Use `letI : Algebra P Cc := ρ.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hFSC : ∀ p, FS (C p) = C (gy p)` using `fun p => MvPolynomial.eval₂Hom_C _ _ _`. Establish `hFSX : ∀ j, FS (X j) = X j` using `fun j => MvPolynomial.eval₂Hom_X' _ _ _`. Establish `hgC : ∀ r, gy (C r) = Ideal.Quotient.mk I (φ r)` using `fun r => MvPolynomial.eval₂Hom_C _ _ _`. Establish `hgX : ∀ i, gy (X i) = Ideal.Quotient.mk I (y i)` using `fun i => MvPolynomial.eval₂Hom_X' _ _ _`. Establish `kC : ∀ r, kap d e R (C r) = C (C r)` using `fun r => MvPolynomial.eval₂Hom_C _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kl : ∀ j, kap d e R (X (Sum.inl j)) = 0` using `fun j => MvPolynomial.eval₂Hom_X' _ _ _`. Establish `kr : ∀ i, kap d e R (X (Sum.inr i)) = C (X i)` using `fun i => MvPolynomial.eval₂Hom_X' _ _ _`. Establish `ψC : ∀ r, ψ (C r) = φ r` using `fun r => MvPolynomial.eval₂Hom_C _ _ _`. Establish `hFS : FS.comp (kap d e R) = ρ`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r show FS (kap d e R (C r)) = C (Ideal.Quotient.mk I (ψ (C r)))`. Rewrite using `[kC, hFSC, hgC, ψC]`. Introduce and unpack `(j | i)`. Use `show FS (kap d e R (X (Sum.inl j))) = C (Ideal.Quotient.mk I (ψ (X (Sum.inl j))))`. Rewrite using `[kl, hψX, map_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr (hx j)]`. Use `show FS (kap d e R (X (Sum.inr i))) = C (Ideal.Quotient.mk I (ψ (X (Sum.inr i))))`. Rewrite using `[kr, hFSC, hgX, hψX]`. Both sides reduce to the same expression. Set `fS : S →ₐ[P] Cc` to `{ FS with commutes' := fun p => RingHom.congr_fun hFS p }`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `fA : A →ₐ[P] Cc` to `{ (C : A ⧸ I →+* Cc).comp (Ideal.Quotient.mk I) with commutes' := fun _ => rfl }`. Set `F : S ⊗[P] A →+* Cc` to `(Algebra.TensorProduct.productMap fS fA).toRingHom`. Establish `hk : I ≤ RingHom.ker (Algebra.TensorProduct.includeRight (R` using `P) (A := S) (B := A)).toRingHom := by`. Rewrite using `[hI, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : x j = algebraMap P A (X (Sum.inl j))`. Rewrite using `[RingHom.algebraMap_toAlgebra, hψX]`. Both sides reduce to the same expression. Establish `h2 : algebraMap P S (X (Sum.inl j)) = 0`. Rewrite using `[RingHom.algebraMap_toAlgebra]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `kl j`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[h1, one_tmul_algebraMap, h2, TensorProduct.zero_tmul]`. Set `G : Cc →+* S ⊗[P] A` to `eval₂Hom (Ideal.Quotient.lift I (Algebra.TensorProduct.includeRight (R := P) (A := S) (B := A)).toRingHom fun a ha => hk ha) fun j => X j ⊗ₜ[P] (1 : A)`. Establish `hF1 : ∀ s : S, F (s ⊗ₜ[P] (1 : A)) = FS s` using `fun s => by simp [F, fS, fA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hGC : ∀ a, G (C (Ideal.Quotient.mk I a)) = (1 : S) ⊗ₜ[P] a` using `fun a => by erw [MvPolynomial.eval₂Hom_C]; rfl`. Establish `hGX : ∀ j, G (X j) = X j ⊗ₜ[P] (1 : A)` using `fun j => MvPolynomial.eval₂Hom_X' _ _ _`. Establish `hFG : F.comp G = RingHom.id Cc`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Simplify using `[F, G, fS, fA]`. Introduce `j show F (G (X j)) = X j`. Rewrite using `[hGX, hF1, hFSX]`. Establish `hS : (G.comp F).comp (Algebra.TensorProduct.includeLeftRingHom (R` using `P) (A := S) (B := A)) = Algebra.TensorProduct.includeLeftRingHom := by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `MvPolynomial.ringHom_ext'` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r show G (F (C (C r) ⊗ₜ[P] (1 : A))) = C (C r) ⊗ₜ[P] (1 : A)`. Establish `e1 : φ r = algebraMap P A (C r)`. Rewrite using `[RingHom.algebraMap_toAlgebra]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(MvPolynomial.eval₂Hom_C _ _ _).symm`. Establish `e2 : algebraMap P S (C r) = C (C r)`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Conclude with `MvPolynomial.eval₂Hom_C _ _ _`. Rewrite using `[hF1, hFSC, hgC, hGC, e1, one_tmul_algebraMap, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i show G (F (C (X i) ⊗ₜ[P] (1 : A))) = C (X i) ⊗ₜ[P] (1 : A)`. Establish `e1 : y i = algebraMap P A (X (Sum.inr i))` using `by rw [RingHom.algebraMap_toAlgebra, hψX]; rfl`. Establish `e2 : algebraMap P S (X (Sum.inr i)) = C (X i)`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Conclude with `MvPolynomial.eval₂Hom_X' _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hF1, hFSC, hgX, hGC, e1, one_tmul_algebraMap, e2]`. Introduce `j show G (F (X j ⊗ₜ[P] (1 : A))) = X j ⊗ₜ[P] (1 : A)`. Rewrite using `[hF1, hFSX, hGX]`. Establish `hGF : G.comp F = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s a`. Establish `hs` using `RingHom.congr_fun hS s`. Simplify using `only [RingHom.comp_apply, Algebra.TensorProduct.includeLeftRingHom_apply] at hs`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : G (F ((1 : S) ⊗ₜ[P] a)) = (1 : S) ⊗ₜ[P] a`. Simplify using `[F, G, fS, fA]`. Use `erw [MvPolynomial.eval₂Hom_C]`. Both sides reduce to the same expression. Establish `hm : s ⊗ₜ[P] a = (s ⊗ₜ[P] (1 : A)) * ((1 : S) ⊗ₜ[P] a)` using `by simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.id_apply, RingHom.comp_apply, hm, map_mul, map_mul, hs, ha]`. Consider the case `add u v hu hv => simp only [RingHom.comp_apply, RingHom.id_apply, map_add] at hu hv ⊢`. Rewrite using `[hu, hv]`. Set `E : S ⊗[P] A ≃+* Cc` to `RingEquiv.ofRingHom F G hFG hGF`. Set `σ : P ≃+* S` to `(MvPolynomial.sumAlgEquiv R (Fin d) (Fin e)).toRingEquiv`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `s1 : ∀ r, σ (C r) = C (C r)` using `fun r => MvPolynomial.sumAlgEquiv_C_inl (R := R) (S₁ := Fin d) (S₂ := Fin e) r`. Establish `s2 : ∀ j, σ (X (Sum.inl j)) = X j` using `fun j => MvPolynomial.sumAlgEquiv_X_inl (R := R) (S₁ := Fin d) (S₂ := Fin e) j`. Establish `s3 : ∀ i, σ (X (Sum.inr i)) = C (X i)` using `fun i => MvPolynomial.sumAlgEquiv_X_inr (R := R) (S₁ := Fin d) (S₂ := Fin e) i`. Establish `key : (MvPolynomial.eval₂Hom ((MvPolynomial.C : A ⧸ I →+* MvPolynomial (Fin d) (A ⧸ I)).comp ((Ideal.Quotient.mk I).comp φ)) (Sum.elim MvPolynomial.X fun i => MvPolynomial.C (Ideal.Quotient.mk I (y i)))) = (E.toRingHom.comp (algebraMap S (S ⊗[P] A))).comp σ.toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Express the relevant statement in the definitionally equal form `_ = (E.toRingHom.comp (algebraMap S (S ⊗[P] A))) (σ (C r))`. Rewrite using `[s1]`. Simplify using `[E, F, fS]`. Use `erw [MvPolynomial.eval₂Hom_C]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[gy]`. Introduce and unpack `(j | i)`. Express the relevant statement in the definitionally equal form `_ = (E.toRingHom.comp (algebraMap S (S ⊗[P] A))) (σ (X (Sum.inl j)))`. Rewrite using `[s2]`. Simplify using `[E, F, fS]`.
-
-Use `erw [MvPolynomial.eval₂Hom_X']`. Express the relevant statement in the definitionally equal form `_ = (E.toRingHom.comp (algebraMap S (S ⊗[P] A))) (σ (X (Sum.inr i)))`. Rewrite using `[s3]`. Simplify using `[E, F, fS]`. Use `erw [MvPolynomial.eval₂Hom_C]`.
-
-Simplify using `[gy]`. Rewrite using `[key]`. Conclude with `RingHom.Etale.respectsIso.2 _ σ (RingHom.Etale.respectsIso.1 _ E hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafPoly : LateralTheory.CohomologicalPurity.ChartCut.LeafPoly := by
   intro e d R A _ _ φ I x y h
@@ -177,7 +173,7 @@ theorem leafPoly : LateralTheory.CohomologicalPurity.ChartCut.LeafPoly := by
   exact RingHom.Etale.respectsIso.2 _ σ (RingHom.Etale.respectsIso.1 _ E hb)
 
 /- English proof (translation)
-The claim follows from `leafPoly`.
+A detailed English derivation is pending.
 -/
 theorem LeafPoly_of : LateralTheory.CohomologicalPurity.ChartCut.LeafPoly := leafPoly
 

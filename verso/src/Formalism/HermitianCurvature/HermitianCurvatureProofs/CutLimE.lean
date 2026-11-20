@@ -9,17 +9,15 @@ open scoped ComplexConjugate
 noncomputable section
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [D.positionted, List.map_ofFn]`. Conclude with `List.nodup_ofFn.mpr (fun a b h => h)`. Introduce `l hl`. Simplify using `only [D.positionted, List.mem_ofFn] at hl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hl`. Simplify using `[Complex.conj_ofReal]`. Rewrite using `[D.positionted, List.pairwise_ofFn]`. Introduce `a b hab`. Establish `key : ∀ u v : ℝ, 2 < |u - v| → ((u : ℂ) - v ≠ 1 ∧ (v : ℂ) - u ≠ 1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v huv`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg Complex.re h`. Simplify using `only [Complex.sub_re, Complex.ofReal_re, Complex.one_re] at h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `huv` using `[h']`. Evaluate the numerical expressions using `at huv`. Introduce `h`. Establish `h'` using `congrArg Complex.re h`. Simplify using `only [Complex.sub_re, Complex.ofReal_re, Complex.one_re] at h'`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `huv` using `[abs_sub_comm, h']`. Evaluate the numerical expressions using `at huv`. Take `⟨k1, k2⟩` from `key _ _ (hw.2 a b (ne_of_lt hab))`. Simplify using `only [Wd.RegL]`. Use `split_ifs`.
-
-Conclude with `k1`. Conclude with `k2`.
+Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_positioned_of_cut {P : M.Par} {l0 : ℕ} {w : List C.Letter} (hw : KB.CutWord P l0 w) :
     Wd.Good (D.positionted w) := by
@@ -52,7 +50,7 @@ theorem good_positioned_of_cut {P : M.Par} {l0 : ℕ} {w : List C.Letter} (hw : 
     · exact k2
 
 /- English proof (translation)
-The claim follows from `| [], _, _, h, x, hx => h x hx | a :: L, f, f₂, h, x, hx => by simp only [List.foldr_cons] have ih := foldCV_congr s L f f₂ h exact (Formalism.FourierDecayAlt.P.Dx1.LZ.good_Tc (k := k) (r := r) (E := E) s (a.2 : ℂ)).loc _ _ (fun y hy => ih y hy.1.1) x (Formalism.FourierDecayAlt.P …`.
+A detailed English derivation is pending.
 -/
 theorem foldCV_congr {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : ℂ) :
     ∀ (L : List (Bool × ℝ)) (f f₂ : B.Mat k r → E), (∀ x ∈ B.GV k r, f x = f₂ x) →
@@ -73,9 +71,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `B.beta betaBig`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_imp_of_ae_restrict (Formalism.FourierDecayAlt.P.big_cell_orbit_set k r Wp Wq Bs)] with q hq`. Distinguish the cases in `hQ : q ∈ B.Qset Bs`. Establish `hg : bigCell k r q.1 (Bs.μsec q.2) ∈ GV k r` using `(hq hQ).1 show (bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q : ℂ) * inner ℂ (hsVec (JF Bs G (bigCell k r q.1 (Bs.μsec q.2)))) (hsVec (JF Bs F (bigCell k r q.1 (Bs.μsec q.2)))) = (bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q : ℂ) * inner ℂ (hsVec (JF Bs G₂ (bigCell k r q.1 (Bs.μsec …`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.JCx2.sq_jf_congr Bs h hg]`. Establish `hw : bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q = 0` using `le_antisymm (not_lt.1 hQ) (Formalism.FourierDecayAlt.P.JCx2.sq_bcWeight_nonneg _ _ q) show (bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q : ℂ) * _ = (bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q : ℂ) * _`. Rewrite using `[hw]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_congr_right (Bs : RealPlaceData k r Wp Wq) {F G G₂ : Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ GV k r, G g = G₂ g) : beta Bs F G = beta Bs F G₂ := by
@@ -98,7 +96,7 @@ theorem beta_congr_right (Bs : RealPlaceData k r Wp Wq) {F G G₂ : Mat k r → 
 end betaR
 
 /- English proof (translation)
-Unfold `KB.Pl.RR`. Rewrite using `[Formalism.FourierDecayAlt.P.level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hF (good_positioned_of_cut hw), Formalism.FourierDecayAlt.P.level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hF₂ (good_positioned_of_cut hw)]`. Unfold `C7.principalHermitianLattice`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx2.sq_beta_congr _ (foldCV_congr _ w F F₂ h), beta_congr_right _ h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem residual_pairing_congr_on_group {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq)
@@ -112,9 +110,9 @@ theorem residual_pairing_congr_on_group {P : M.Par} {Wp Wq : Type} [NormedAddCom
   rw [Formalism.FourierDecayAlt.P.JCx2.sq_beta_congr _ (foldCV_congr _ w F F₂ h), beta_congr_right _ h]
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [D.cutF]`. Distinguish the cases in `hF : F g = 0`. Rewrite using `[hF, smul_zero]`. Establish `h1 : 1 ≤ Gf k r Bs.z Bs.z' g / ε`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hε]`. Combine the linear relations using `[hG g hg hF]`. Rewrite using `[hχ.2.2 _ h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cutF_eq_on_gv {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) {χ : ℝ → ℝ} (hχ : C6.IsCut0 χ)
@@ -147,7 +145,7 @@ def LimBd (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L
     (p.RR F 0 w [] []).re ≤ TBB.normC nn w * (B.beta p.T.base F F).re
 
 /- English proof (translation)
-Introduce `w hw _`. Take `⟨hCk, _, δ, hδ, hG⟩` from `hF`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with ε hε`. Rewrite using `[residual_pairing_congr_on_group p (Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hχ hCk ε) hCk (cutF_eq_on_gv p.T.base hχ hG hε.1 hε.2.le) hw.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem truncated_limit_evaluation_holds (p : KB.Pl P Wp Wq) {χ : ℝ → ℝ} (hχ : C6.IsCut0 χ) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)}
     (hF : KB.CptCoef p.T.base F) (Y : Finset ℝ) (N : ℕ) : LimEv p χ F Y N := by
@@ -158,7 +156,7 @@ theorem truncated_limit_evaluation_holds (p : KB.Pl P Wp Wq) {χ : ℝ → ℝ} 
     (cutF_eq_on_gv p.T.base hχ hG hε.1 hε.2.le) hw.1]
 
 /- English proof (translation)
-Introduce `w hw _`. Establish `hh : D.IsLocPt ([] : C.LPt) 0` using `⟨by simp, rfl⟩`. Rewrite using `[PBL.rr_eq_form p F 0 (Nat.zero_le _) w [] [] hh hh]`. Take `⟨ε, hε, hnv⟩` from `PBL.slv_nv p hF 0 (Nat.zero_le _) w [] hh`. Conclude with `Formalism.FourierDecayAlt.P.TBBx5.form_re_nonneg p (Formalism.FourierDecayAlt.P.TBBx5.formNonneg_of hA (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p) 0 (Nat.zero_le _) w hw.1 hε _ hnv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem truncated_limit_positivity_holds (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)}
     (hF : KB.CptCoef p.T.base F) (Y : Finset ℝ) (N : ℕ) : LimPos p F Y N := by
@@ -170,13 +168,13 @@ theorem truncated_limit_positivity_holds (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq
     (Formalism.FourierDecayAlt.P.TBBx5.formNonneg_of hA (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p) 0 (Nat.zero_le _) w hw.1 hε _ hnv
 
 /- English proof (translation)
-Introduce `w hw hl`. Establish `hE` using `hEv w hw hl`. Establish `hP` using `hPos w hw hl`. Establish `hB` using `hBd w hw hl`. Establish `hN : 0 ≤ TBB.normC nn w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `TBB.normC`. Conclude with `List.prod_nonneg (fun x hx => by`. Take `⟨l, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hnn _)`. Distinguish the cases in `hb : 0 < (B.beta p.T.base F F).re`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(p.RR F 0 w [] []).re / (B.beta p.T.base F F).re, div_nonneg hP hb.le, (div_le_iff₀ hb).2 hB, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hb.ne']`. Use `Filter.Tendsto.congr' ?_ tendsto_const_nhds` and prove the remaining obligations. Conclude with `hE.mono fun ε h => h.symm`. Establish `hb' : (B.beta p.T.base F F).re ≤ 0` using `not_lt.1 hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hR0 : (p.RR F 0 w [] []).re = 0` using `le_antisymm (hB.trans (mul_nonpos_of_nonneg_of_nonpos hN hb')) hP`. Use `⟨0, le_refl 0, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_mul]`. Use `Filter.Tendsto.congr' ?_ tendsto_const_nhds` and prove the remaining obligations. Conclude with `hE.mono fun ε h => (h.trans hR0).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem limE_of_parts (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (Y : Finset ℝ) (N : ℕ) (hnn : ∀ y, 0 ≤ nn y) (hEv : LimEv p χ F Y N) (hPos : LimPos p F Y N)
@@ -204,7 +202,7 @@ theorem limE_of_parts (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (χ : ℝ → ℝ) 
     exact hE.mono fun ε h => (h.trans hR0).symm
 
 /- English proof (translation)
-The claim follows from `limE_of_parts p nn χ F Y N hnn (truncated_limit_evaluation_holds p hχ hF Y N) (truncated_limit_positivity_holds hA p hF Y N) hBd`.
+A detailed English derivation is pending.
 -/
 theorem truncated_limit_equality_holds (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) {χ : ℝ → ℝ} (hχ : C6.IsCut0 χ)
     (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (N : ℕ) (hnn : ∀ y, 0 ≤ nn y)
@@ -214,7 +212,7 @@ theorem truncated_limit_equality_holds (hA : P5.ThmPActual) (p : KB.Pl P Wp Wq) 
 end place
 
 /- English proof (translation)
-Take `⟨C₄, hC₄⟩` from `thmBpAt_of_leaves' hA C₃ CΛ C₀ Cκ hC₃ hCΛ hC₀`. Use `⟨C₄, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f Ap Am ApPt AmPt b Λ κ₀ n₀ p₀ χ nn Y K N Cb h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 h23 h24 h25 h26`. Conclude with `hC₄ Wp Wq P p f Ap Am ApPt AmPt b Λ κ₀ n₀ p₀ χ nn Y K N Cb h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 (truncated_limit_equality_holds hA p nn h11 _ Y N (fun y => (h12 y).le) (cptCoef_fpm_of p p₀ h14 h15) h23) (truncated_limit_equality_holds hA …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thmBpAt_of_leaves_limBd (hA : P5.ThmPActual) (C₃ CΛ C₀ Cκ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ)
     (hC₀ : 1 / 2 ≤ C₀) :

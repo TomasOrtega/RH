@@ -12,7 +12,7 @@ namespace PositivityTheory.Rg.BcB.G8
 open PositivityTheory.Rg.Tf.Loc (quotIntegral IsQuotNormaliser twConj)
 
 /- English proof (translation)
-Use `show Continuous fun x : GL (Fin n) ℂ => x⁻¹ * d * thetaR (starRingEnd ℂ) n x`. Conclude with `(continuous_inv.mul continuous_const).mul hθ`.
+A detailed English derivation is pending.
 -/
 theorem termof_twConj_cont {n : ℕ} (hθ : Continuous (thetaR (starRingEnd ℂ) n)) (d : GL (Fin n) ℂ) :
     Continuous fun x : GL (Fin n) ℂ => twConj (thetaR (starRingEnd ℂ) n) x d := by
@@ -20,9 +20,9 @@ theorem termof_twConj_cont {n : ℕ} (hθ : Continuous (thetaR (starRingEnd ℂ)
   exact (continuous_inv.mul continuous_const).mul hθ
 
 /- English proof (translation)
-Establish `hK` using `(hEP a d₁ h₁ _ (hψ.isCompact.image continuous_fst)).prod (hEP b d₂ h₂ _ (hψ.isCompact.image continuous_snd))`. Use `HasCompactSupport.intro hK fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hy` to reduce the goal to its premises. Establish `hm : (twConj (thetaR (starRingEnd ℂ) a) y.1 d₁, twConj (thetaR (starRingEnd ℂ) b) y.2 d₂) ∈ tsupport ψ` using `subset_tsupport _ hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `⟨⟨_, hm, rfl⟩, ⟨_, hm, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem termof_hcs {a b : ℕ} (hEP : EllProper) (ψ : GL (Fin a) ℂ × GL (Fin b) ℂ → ℂ) (hψ : HasCompactSupport ψ)
     (d₁ : GL (Fin a) ℂ) (d₂ : GL (Fin b) ℂ) (h₁ : EllC d₁) (h₂ : EllC d₂) :
@@ -38,45 +38,41 @@ theorem termof_hcs {a b : ℕ} (hEP : EllProper) (ψ : GL (Fin a) ℂ × GL (Fin
   exact ⟨⟨_, hm, rfl⟩, ⟨_, hm, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `hQS hHS hTopo hCI hKf hFL hFH hAE hCE hPE hEP`. Introduce `E _ _ _ hU a b _ _ _ _ _ _ _ _ μ₁ _ μ₂ _ ν₁ _ ν₂ _`. Take `⟨⟨hlcA, hscA, ht2A⟩, ⟨hlcfA, hscfA, ht2fA⟩, ⟨hlcCA, hscCA⟩, hcntA, -, hθA⟩` from `hTopo E a`. Take `⟨⟨hlcB, hscB, ht2B⟩, ⟨hlcfB, hscfB, ht2fB⟩, ⟨hlcCB, hscCB⟩, hcntB, -, hθB⟩` from `hTopo E b`. Use `letI mB : MeasurableSpace (Gf E a b) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : BorelSpace (Gf E a b) := ⟨rfl⟩`. Take `⟨e, he⟩` from `hCI E a b`. Set `e' : (GA E a × GA E b) →* (Gi E a b × Gf E a b)` to `e.toMulEquiv.toMonoidHom`. Establish `he' : ∀ x, e' x = comps x` using `he`. Establish `hνH : (ν₁.prod ν₂).IsHaarMeasure` using `inferInstance`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνS : SigmaFinite (ν₁.prod ν₂)` using `inferInstance`. Establish `hαH : (Measure.pi fun _ : InfinitePlace E => ν₁.prod ν₂).IsHaarMeasure` using `inferInstance`. Set `α : Measure (Gi E a b)` to `Measure.pi fun _ => ν₁.prod ν₂`. Take `⟨β, hβ, hmap⟩` from `hHS (GA E a × GA E b) (Gi E a b) (Gf E a b) (μ₁.prod μ₂) α e`. Use `haveI := hβ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hKo₁, hKc₁⟩` from `hKf E a`. Take `⟨hKo₂, hKc₂⟩` from `hKf E b`. Establish `hKo : IsOpen (((Kf E a).prod (Kf E b) : Subgroup (Gf E a b)) : Set (Gf E a b))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hKo₁.prod hKo₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hKc : IsCompact (((Kf E a).prod (Kf E b) : Subgroup (Gf E a b)) : Set (Gf E a b))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hKc₁.prod hKc₂`. Use `⟨(β.real (((Kf E a).prod (Kf E b) : Subgroup (Gf E a b)) : Set (Gf E a b)) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.ofReal_ne_zero, measureReal_def, ENNReal.toReal_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hKo.measure_ne_zero β ⟨1, Subgroup.one_mem _⟩, hKc.measure_lt_top.ne⟩`. Introduce `S hS u₁ u₂ hu₁ hu₂ l₁ l₂ val ψ φ₁ φ₂ hLef hφ₁ hφ₂ d₁ d₂ hd₁ hd₂`. Take `⟨hP₁, hPv₁⟩` from `hPE E a u₁ hu₁ d₁`. Take `⟨hP₂, hPv₂⟩` from `hPE E b u₂ hu₂ d₂`. Establish `hCE'` using `hCE E a b u₁ u₂ hu₁ hu₂ d₁ d₂`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : InfinitePlace E → GL (Fin a) ℂ × GL (Fin b) ℂ → ℂ` to `fun v y => ψ v (twConj (thetaR (starRingEnd ℂ) a) y.1 (GeneralLinearGroup.map v.embedding d₁), twConj (thetaR (starRingEnd ℂ) b) y.2 (GeneralLinearGroup.map v.embedding d₂))`. Set `F₁ : Gi E a b → ℂ` to `fun y => ∏ v, f v (y v)`. Set `F₂ : Gf E a b → ℂ` to `orbFn S φ₁ φ₂ (d₁ * u₁⁻¹) (d₂ * u₂⁻¹)`. Establish `hfc : ∀ v, Continuous (f v)` using `fun v => (hLef v).1.comp (((termof_twConj_cont hθA _).comp continuous_fst).prodMk ((termof_twConj_cont hθB _).comp continuous_snd))`. Establish `hfs : ∀ v, HasCompactSupport (f v)` using `fun v => termof_hcs hEP (ψ v) (hLef v).2.1 _ _ ((hPv₁ v).2 hd₁) ((hPv₂ v).2 hd₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ v, Integrable (f v) (ν₁.prod ν₂)` using `fun v => (hfc v).integrable_of_hasCompactSupport (hfs v)`. Establish `hF₁i : Integrable F₁ α` using `Integrable.fintype_prod hint`. Establish `hF₁m : Measurable F₁` using `(continuous_finset_prod _ fun v _ => (hfc v).comp (continuous_apply v)).measurable`. Use `haveI : Countable ↥((ratCent d₁).prod (ratCent d₂)) := by`. Establish `hsub : (((ratCent d₁).prod (ratCent d₂) : Subgroup (GA E a × GA E b)) : Set (GA E a × GA E b)) ⊆ Set.range (fun p : GL (Fin a) E × GL (Fin b) E => (ratGL E a p.1, ratGL E b p.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x hx`. Rewrite `hx` using `[SetLike.mem_coe, Subgroup.mem_prod]`. Take `⟨g₁, -, hg₁⟩` from `Subgroup.mem_map.1 hx.1`. Take `⟨g₂, -, hg₂⟩` from `Subgroup.mem_map.1 hx.2`. Conclude with `⟨(g₁, g₂), Prod.ext hg₁ hg₂⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `((Set.countable_range _).mono hsub).to_subtype`. Establish `hΓ : ((ratCent d₁).prod (ratCent d₂)).map ((MonoidHom.snd _ _).comp e') = gam (d₁ * u₁⁻¹) (d₂ * u₂⁻¹)`. Use extensionality with `y`. Rewrite using `[Subgroup.mem_map, hCE'.1 y]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `⟨γ, hγ, (congrArg Prod.snd (he' γ)).symm⟩`. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `⟨γ, hγ, congrArg Prod.snd (he' γ)⟩`. Establish `hinj : ∀ γ ∈ (ratCent d₁).prod (ratCent d₂), (e' γ).2 = 1 → γ = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ hγ h1`. Rewrite `h1` using `[he']`. Conclude with `(hCE'.2 γ hγ).1 h1`. Establish `hF₁inv : ∀ γ ∈ (ratCent d₁).prod (ratCent d₂), ∀ x, F₁ ((e' γ).1 * x) = F₁ x`. Introduce `γ hγ x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `(hCE'.2 γ hγ).2`. Rewrite using `[he']`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [f, Pi.mul_apply, Prod.fst_mul, Prod.snd_mul]`. Rewrite using `[PositivityTheory.Rg.Tf.Loc.twConj_mul_left _ _ (hc v).1, PositivityTheory.Rg.Tf.Loc.twConj_mul_left _ _ (hc v).2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hF₂inv : ∀ γ ∈ gam (d₁ * u₁⁻¹) (d₂ * u₂⁻¹), ∀ y, F₂ (γ * y) = F₂ y`. Introduce `γ hγ y`. Establish `h : γ * (ratF E a (d₁ * u₁⁻¹), ratF E b (d₂ * u₂⁻¹)) = (ratF E a (d₁ * u₁⁻¹), ratF E b (d₂ * u₂⁻¹)) * thP E a b γ` using `(Subgroup.mem_inf.1 hγ).2`. Simplify using `only [F₂, orbFn]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Generalize the expression as in `(ratF E a (d₁ * u₁⁻¹), ratF E b (d₂ * u₂⁻¹)) = δ at h ⊢`. Rewrite using `[(thP E a b).map_mul γ y, show (γ * y)⁻¹ * δ * (thP E a b γ * thP E a b y) = y⁻¹ * (γ⁻¹ * (δ * thP E a b γ)) * thP E a b y by group, ← h]`. Use `group`. Take `⟨U, hUo, hUinv⟩` from `hFL E hU a b S φ₁ φ₂ hφ₁ hφ₂`. Establish `hF₂U : ∀ u ∈ U, ∀ y, F₂ (y * u) = F₂ y`.
+Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu y`. Simplify using `only [F₂, orbFn]`. Rewrite using `[← hUinv u hu (y⁻¹ * (ratF E a (d₁ * u₁⁻¹), ratF E b (d₂ * u₂⁻¹)) * thP E a b y)]`. Use `congr 1`. Generalize the expression as in `(ratF E a (d₁ * u₁⁻¹), ratF E b (d₂ * u₂⁻¹)) = δ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(thP E a b).map_mul y u]`. Use `group`. Take `⟨hfin, hstab, hdc⟩` from `hFH E hU a b S hS φ₁ φ₂ hφ₁ hφ₂ (d₁ * u₁⁻¹) (d₂ * u₂⁻¹) (hP₁.1 hd₁) (hP₂.1 hd₂)`. Establish `hQ` using `hQS (GA E a × GA E b) (Gi E a b) (Gf E a b) (μ₁.prod μ₂) α β e' (map_continuous e).measurable hmap ((ratCent d₁).prod (ratCent d₂)) (gam (d₁ * u₁⁻¹) (d₂ * u₂⁻¹)) ((Kf E a).prod (Kf E b)) U hΓ hinj hKo hKc hUo F₁ F₂ hF₁m hF₁i hF₁inv hF₂inv hF₂U hfin hstab`. Establish `hEq : orbTerm2 μ₁ μ₂ (adel S u₁ u₂ ψ φ₁ φ₂) d₁ d₂ = quotIntegral (μ₁.prod μ₂) ((ratCent d₁).prod (ratCent d₂)) Measure.count (fun x => F₁ (e' x).1 * F₂ (e' x).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `orbTerm2`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hAE E a b S u₁ u₂ hu₁ hu₂ ψ φ₁ φ₂ d₁ d₂ x, he' x]`. Establish `hI : ∫ x, F₁ x ∂α = ∏ v, (val v * starRingEnd ℂ (chAt (l₁ v) ((polE (d₁ * u₁⁻¹)).map v.embedding)) * starRingEnd ℂ (chAt (l₂ v) ((polE (d₂ * u₂⁻¹)).map v.embedding)))`.
-
-Rewrite using `[integral_fintype_prod_eq_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[(hLef v).2.2 _ _ ((hPv₁ v).2 hd₁) ((hPv₂ v).2 hd₂), (hPv₁ v).1, (hPv₂ v).1]`. Rewrite using `[hEq, hQ, hI, hdc, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Simplify using `only [chW]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem termOf_holds : TermOf := by
   intro hQS hHS hTopo hCI hKf hFL hFH hAE hCE hPE hEP

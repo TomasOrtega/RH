@@ -22,21 +22,21 @@ open GlobalTheory.SplitWeil GlobalTheory.SplitFlip
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk₁, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₁_mul_left {m a a' : ℕ} (M : Matrix (Fin m) (Fin m) k) (X : Matrix (Fin m) (Fin (a + a')) k) :
     blk₁ (M * X) = M * blk₁ X := by
   ext i j; simp [blk₁, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk₂, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk₂_mul_left {m a a' : ℕ} (M : Matrix (Fin m) (Fin m) k) (X : Matrix (Fin m) (Fin (a + a')) k) :
     blk₂ (M * X) = M * blk₂ X := by
   ext i j; simp [blk₂, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `i j` and use `by have hN' : ∀ i j, valuation k (N i j) ≤ valuation k (s : k) := hN change valuation k _ ≤ valuation k (s : k) rw [Matrix.mul_apply] refine Valuation.map_sum_le _ fun l _ => ?_ rw [map_mul] exact (mul_le_mul' (hM i l) (hN' l j)).trans (by rw [one_mul])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cball_mul_left {m n : ℕ} {s : kˣ} {M : Matrix (Fin m) (Fin m) k} (hM : ∀ i j, M i j ∈ 𝒪[k])
     {N : Matrix (Fin m) (Fin n) k} (hN : ∀ i j, N i j ∈ cball s) : ∀ i j, (M * N) i j ∈ cball s := fun i j => by
@@ -48,9 +48,9 @@ theorem cball_mul_left {m n : ℕ} {s : kˣ} {M : Matrix (Fin m) (Fin m) k} (hM 
   exact (mul_le_mul' (hM i l) (hN' l j)).trans (by rw [one_mul])
 
 /- English proof (translation)
-Set `A : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨g.val i j, h.1 i j⟩`. Establish `e : (algebraMap 𝒪[k] k).mapMatrix A = g.val` using `rfl`. Establish `hu : IsUnit A.det`. Use `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.2 ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.2`. Take `⟨u, hu'⟩` from `(Matrix.isUnit_iff_isUnit_det A).2 hu`. Use `⟨u, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap 𝒪[k] k).mapMatrix u.val = g.val`. Rewrite using `[hu', e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KO_of_isGLO {n : ℕ} (g : GL (Fin n) k) (h : IsGLO g.val) : g ∈ KO k (Fin n) := by
   let A : Matrix (Fin n) (Fin n) 𝒪[k] := fun i j => ⟨g.val i j, h.1 i j⟩
@@ -64,7 +64,7 @@ theorem mem_KO_of_isGLO {n : ℕ} (g : GL (Fin n) k) (h : IsGLO g.val) : g ∈ K
   rw [hu', e]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((mem_KO_iff g).1 h).1, valuation_gdet_of_mem_KO h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGLO_of_mem_KO {n : ℕ} {g : GL (Fin n) k} (h : g ∈ KO k (Fin n)) : IsGLO g.val :=
   ⟨((mem_KO_iff g).1 h).1, valuation_gdet_of_mem_KO h⟩
@@ -74,31 +74,29 @@ end GlobalTheory.StdPairZetaB
 open GlobalTheory.StdPairZetaB in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν ϖ c a a'`. Use `⟨fun Y hY => ?_, fun Y g₂ hg₂ => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ g : GL (Fin a') k, stdB ν ϖ c a a' (g.val * Y) = 0` using `fun g => by`. Unfold `stdB`. Rewrite using `[dif_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h0, -⟩`. Apply `h0` to reduce the goal to its premises. Rewrite using `[blk₂_mul_left, Matrix.det_mul, hY, mul_zero]`. Simplify using `[smallF, h0]`. Use `set d : ℂ := (Fintype.card (Fin (a + a')) : ℂ) / 2 with hd set C : ℂ := (((ν (gdet g₂))⁻¹ : ℂˣ) : ℂ) * apow (gdet g₂) (-d) * Set.indicator {M : Matrix (Fin a') (Fin a) k | ∀ i j, M i j ∈ cball (ϖ ^ c)} 1 ((g₂⁻¹).val * blk₁ Y) with hC set S : Set (GL (Fin a') k) := (fun g => g * g …`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hSm : @MeasurableSet (GL (Fin a') k) Units.instMeasurableSpace S`. Use `letI : MeasurableSpace (GL (Fin a') k) := Units.instMeasurableSpace`. Use `haveI : BorelSpace (GL (Fin a') k) := borel_GL`. Conclude with `(isOpen_KO.preimage (continuous_mul_right _)).measurableSet`. Establish `hS1 : (haarVol (KO k (Fin a'))).real S = 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hSdef, Measure.real, measure_preimage_mul_right, haarVol_self isOpen_KO le_rfl]`. Establish `hint : ∀ g : GL (Fin a') k, stdB ν ϖ c a a' (g.val * Y) * (ν (gdet g) : ℂ) * apow (gdet g) d = S.indicator (fun _ => C) g`. Introduce `g`. Establish `hb₂ : blk₂ (g.val * Y) = g.val * blk₂ Y` using `blk₂_mul_left _ _`. Establish `hb₁ : blk₁ (g.val * Y) = g.val * blk₁ Y` using `blk₁_mul_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg]`. Establish `hκ : g * g₂ ∈ KO k (Fin a')` using `hg`. Establish `hG` using `isGLO_of_mem_KO hκ`. Establish `e₂ : blk₂ (g.val * Y) = (g * g₂).val` using `by rw [hb₂, ← hg₂, Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₁ : blk₁ (g.val * Y) = (g * g₂).val * ((g₂⁻¹).val * blk₁ Y)`. Rewrite using `[hb₁, ← Matrix.mul_assoc, Units.val_mul, Matrix.mul_assoc g.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Establish `hgd : gdet g = gdet (g * g₂) * (gdet g₂)⁻¹` using `by rw [gdet_mul]; group`. Establish `hap : apow (gdet g) d = apow (gdet g₂) (-d)`. Rewrite using `[hgd, apow_mul, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hκ), one_mul, apow_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `stdB`. Distinguish the cases in `hP : ∀ i j, ((g₂⁻¹).val * blk₁ Y) i j ∈ cball (ϖ ^ c)`. Establish `hcond : (blk₂ (g.val * Y)).det ≠ 0 ∧ IsGLO (blk₂ (g.val * Y)) ∧ ∀ i j, blk₁ (g.val * Y) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`. Rewrite using `[e₂, e₁]`. Conclude with `⟨(g * g₂).det_ne_zero, hG, cball_mul_left hG.1 hP⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hcond, hC, Set.indicator_of_mem (show ((g₂⁻¹).val * blk₁ Y) ∈ {M : Matrix (Fin a') (Fin a) k | ∀ i j, M i j ∈ cball (ϖ ^ c)} from hP), Pi.one_apply, mul_one, hap]`. Establish `hu : Units.mk0 _ hcond.1 = gdet g * gdet g₂` using `Units.ext (by`. Rewrite using `[Units.val_mk0, Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, hb₂, ← hg₂, Matrix.det_mul])`. Rewrite using `[hu, map_mul, mul_inv_rev, Units.val_mul]`. Establish `h1 : ((ν (gdet g))⁻¹ : ℂˣ) * (ν (gdet g) : ℂ) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Take the linear combination `((((ν (gdet g₂))⁻¹ : ℂˣ) : ℂ) * apow (gdet g₂) (-d)) * h1`. Establish `hcond : ¬ ((blk₂ (g.val * Y)).det ≠ 0 ∧ IsGLO (blk₂ (g.val * Y)) ∧ ∀ i j, blk₁ (g.val * Y) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c))`. Introduce and unpack `⟨-, -, h3⟩`. Apply `hP` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hinv` using `(mem_KO_iff (g * g₂)).1 hκ`. Use `cball_mul_left hinv.2 h3` as an intermediate fact. Rewrite `this` using `[e₁, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis. Rewrite using `[dif_neg hcond, hC, Set.indicator_of_notMem (show ((g₂⁻¹).val * blk₁ Y) ∉ {M : Matrix (Fin a') (Fin a) k | ∀ i j, M i j ∈ cball (ϖ ^ c)} from hP)]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hg]`. Unfold `stdB`. Rewrite using `[dif_neg, zero_mul, zero_mul]`. Introduce and unpack `⟨-, h2, -⟩`. Apply `hg` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `show g * g₂ ∈ KO k (Fin a')`. Apply `mem_KO_of_isGLO` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hg₂, ← hb₂]` and apply the resulting hypothesis. Rewrite using `[smallF, ← hd]`. Repeatedly rewrite using `[hint]`.
-
-Rewrite using `[integral_indicator_const (μ := haarVol (KO k (Fin a'))) C hSm, hS1, one_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StdPairZetaB.smallF_stdB : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : kˣ →* ℂˣ) (ϖ : kˣ) (c a a' : ℕ),

@@ -36,11 +36,11 @@ Both sides reduce to the same expression.
 theorem adj_apply (Hm : ι → Mt n) (m : ι → Mt n) (τ : ι) : adj Hm m τ = (Hm τ)⁻¹ * (m τ)ᴴ * Hm τ := rfl
 
 /- English proof (translation)
-Establish `hd : IsUnit G.det` using `hG.isUnit`. Establish `hG' : IsUnit G` using `(Matrix.isUnit_iff_isUnit_det G).2 hd`. Establish `hX' : Xᴴ * G + G * X = 0` using `hX`. Establish `h1 : (t • X)ᴴ = G * (-(t • X)) * G⁻¹`. Establish `h2 : Xᴴ = G * (-X) * G⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_neg, ← eq_neg_of_add_eq_zero_left hX', Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Rewrite using `[conjTranspose_smul, h2]`. Simplify using the standard rewrite rules. Use `show (NormedSpace.exp (t • X))ᴴ * G * NormedSpace.exp (t • X) = G`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ hG', Matrix.exp_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (NormedSpace.exp (t • X)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _)`. Rewrite using `[Matrix.mul_assoc (G * _), Matrix.nonsing_inv_mul _ hd, Matrix.mul_one, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem {G X : Mt n} (hG : G.det ≠ 0) (hX : X ∈ lieH G) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH G := by
@@ -60,7 +60,7 @@ theorem exp_mem {G X : Mt n} (hG : G.det ≠ 0) (hX : X ∈ lieH G) (t : ℝ) :
     Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `ρ` and use `by by_cases c : ρ = τ · subst c rwa [Pi.mulSingle_eq_same] · rw [Pi.mulSingle_eq_of_ne c] show (1 : Mt n)ᴴ * Hm ρ * 1 = Hm ρ simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulSingle_mem {Hm : ι → Mt n} {τ : ι} {g : Mt n} (hg : g ∈ Formalism.QuantumDeterminants.UH (Hm τ)) :
     (Pi.mulSingle τ g : ι → Mt n) ∈ UG Hm := fun ρ => by
@@ -72,7 +72,7 @@ theorem mulSingle_mem {Hm : ι → Mt n} {τ : ι} {g : Mt n} (hg : g ∈ Formal
     simp
 
 /- English proof (translation)
-Establish `h : ∀ τ, adj Hm u τ * u τ = 1` using `fun τ => by`. Establish `h1 : (u τ)ᴴ * Hm τ * u τ = Hm τ` using `hu τ`. Rewrite using `[adj_apply, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (u τ)ᴴ, h1, Matrix.nonsing_inv_mul _ (hd τ).isUnit]`. Conclude with `⟨funext h, funext fun τ => mul_eq_one_comm.1 (h τ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem adj_mul_self {Hm : ι → Mt n} (hd : ∀ τ, (Hm τ).det ≠ 0) {u : ι → Mt n} (hu : u ∈ UG Hm) :
     adj Hm u * u = 1 ∧ u * adj Hm u = 1 := by
@@ -83,11 +83,11 @@ theorem adj_mul_self {Hm : ι → Mt n} (hd : ∀ τ, (Hm τ).det ≠ 0) {u : ι
   exact ⟨funext h, funext fun τ => mul_eq_one_comm.1 (h τ)⟩
 
 /- English proof (translation)
-Rewrite using `[funext_iff]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Use `show (Hm τ)⁻¹ * (X τ)ᴴ * Hm τ = -X τ ↔ (X τ)ᴴ * Hm τ + Hm τ * X τ = 0`. Establish `h1` using `Matrix.nonsing_inv_mul _ (hd τ).isUnit`. Establish `h2` using `Matrix.mul_nonsing_inv _ (hd τ).isUnit`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: Hm τ * ((Hm τ)⁻¹ * (X τ)ᴴ * Hm τ) = Hm τ * (-X τ)` using `by rw [h]`. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, Matrix.mul_neg]`. Rewrite using `[this, neg_add_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h, Matrix.mul_neg, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_eq_neg_iff {Hm : ι → Mt n} (hd : ∀ τ, (Hm τ).det ≠ 0) (X : ι → Mt n) :
     adj Hm X = -X ↔ ∀ τ, X τ ∈ lieH (Hm τ) := by
@@ -105,11 +105,9 @@ theorem adj_eq_neg_iff {Hm : ι → Mt n} (hd : ∀ τ, (Hm τ).det ≠ 0) (X : 
     rw [Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h, Matrix.mul_neg, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨b, hb, hs, hl⟩` from `exists_linearIndependent ℝ {Y : ι → Mt n | ∃ τ X, X ∈ lieH (Hm τ) ∧ Y = Pi.single τ X}`. Establish `hf : b.Finite` using `hl.setFinite`. Establish `: Fintype b` using `hf.fintype`. Set `e` to `(Fintype.equivFin b).symm`. Use `choose τs Xs hX hY using fun i => hb (e i).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : (fun i => (Pi.single (τs i) (Xs i) : ι → Mt n)) = Subtype.val ∘ e` using `funext fun i => (hY i).symm`. Use `⟨_, τs, Xs, hX, ?_, fun X h => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `hl.comp _ e.injective`. Rewrite using `[he, Set.range_comp, e.surjective.range_eq, Set.image_univ, Subtype.range_coe, hs, ← Finset.univ_sum_single X]`.
-
-Conclude with `Submodule.sum_mem _ fun τ _ => Submodule.subset_span ⟨τ, X τ, h τ, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis (Hm : ι → Mt n) : ∃ (N : ℕ) (τs : Fin N → ι) (Xs : Fin N → Mt n),
     (∀ i, Xs i ∈ lieH (Hm (τs i))) ∧ LinearIndependent ℝ (fun i => (Pi.single (τs i) (Xs i) : ι → Mt n)) ∧
@@ -132,17 +130,15 @@ theorem exists_basis (Hm : ι → Mt n) : ∃ (N : ℕ) (τs : Fin N → ι) (Xs
 open scoped Matrix.Norms.Operator in
 
 /- English proof (translation)
-Take `⟨N, τs, Xs, hX, hl, hs⟩` from `exists_basis Hm`. Establish `h1` using `fun τ => Matrix.nonsing_inv_mul _ (hd τ).isUnit`. Establish `h2` using `fun τ => Matrix.mul_nonsing_inv _ (hd τ).isUnit`. Take `⟨s, S, K, W, hs0, hK, hW, h⟩` from `GlobalTheory.T.unitaryGroup_secondKind_coordinates_near_one (ι → Mt n) (adj Hm) N (fun i => Pi.single (τs i) (Xs i)) (fun i t => Pi.mulSingle (τs i) (NormedSpace.exp (t • Xs i))) (fun a => funext fun τ => by`. Simplify using `only [adj_apply, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, (hH τ).eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one])`. Use the proof step `(fun a b => funext fun τ => by`. Simplify using `only [adj_apply, Pi.mul_apply, conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Hm τ), h2, Matrix.one_mul])`. Use the proof step `(funext fun τ => by simp [adj_apply, h1])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `hl`. Use the proof step `(fun i => (adj_eq_neg_iff hd _).2 fun τ => by`. Distinguish the cases in `c : τ = τs i`. Substitute `c` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hX i`. Rewrite using `[Pi.single_eq_of_ne c] show (0 : Mt n)ᴴ * Hm τ + Hm τ * 0 = 0 simp)`. Use the proof step `(fun X hX' => hs X ((adj_eq_neg_iff hd _).1 hX'))`. Use the proof step `(fun i => ⟨by simp, by`. Use `hasStrictDerivAt_pi.2 fun τ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Distinguish the cases in `c : τ = τs i`. Substitute `c` using the available equality. Simplify using `only [Pi.single_eq_same, Pi.mulSingle_eq_same]`. Establish `h0` using `hasStrictDerivAt_exp_smul_const (𝕂 := ℝ) (Xs i) (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h0`.
-
-Conclude with `h0`. Simplify using `only [Pi.single_eq_of_ne c, Pi.mulSingle_eq_of_ne c]`. Conclude with `hasStrictDerivAt_const _ _,`. Use `fun t => adj_mul_self hd (mulSingle_mem (exp_mem (hd _) (hX i) t))⟩)`. Conclude with `⟨N, τs, Xs, s, S, K, W, hX, hs0, hK, hW, fun x hx hu => h x hx (adj_mul_self hd hu).1 (adj_mul_self hd hu).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart (Hm : ι → Mt n) (hH : ∀ τ, (Hm τ).IsHermitian) (hd : ∀ τ, (Hm τ).det ≠ 0) :
     ∃ (N : ℕ) (τs : Fin N → ι) (Xs : Fin N → Mt n) (s S K : ℝ) (W : Set (ι → Mt n)),
@@ -196,7 +192,7 @@ open scoped Classical
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨θ₀, h₀⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Establish `e : θ = fun ρ => θ₀ (tauE D ρ)` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).1 _ _ hθ fun ρ => h₀ _`. Substitute `e` using the available equality. Conclude with `((GlobalTheory.Member.Arch.archM_spec D V θ₀ h₀).1 _).2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem continuous_arch {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) :
     Continuous fun g => archM V (θ τ) g := by
@@ -206,9 +202,9 @@ theorem continuous_arch {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.
   exact ((GlobalTheory.Member.Arch.archM_spec D V θ₀ h₀).1 _).2.2.2.1
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun a b => ?_⟩` and prove the remaining obligations. Establish `h : Continuous fun t : ℝ => NormedSpace.exp (t • X)` using `by open scoped Matrix.Norms.Operator in`. Conclude with `continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const (𝕂 := ℝ) X t).continuousAt`. Conclude with `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V τ).comp_continuous h fun t => exp_mem hd hX t`. Rewrite using `[oneP, zero_smul, NormedSpace.exp_zero, GlobalTheory.PointAtPlaceHom.atTau_one hθ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[oneP, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left a).smul_right b), GlobalTheory.PointAtPlaceHom.atTau_mul hθ V τ (exp_mem hd hX a) (exp_mem hd hX b)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem oneP_spec {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) {τ : D.what₂.Tau} (hd : (gramAt D V τ).det ≠ 0)
     {X : Mt V.rank} (hX : X ∈ lieAt V τ) :
@@ -224,9 +220,9 @@ theorem oneP_spec {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) {τ : D.what�
     rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons p l ih`. Introduce `g`. Simplify using `only [List.foldr_cons, Rder]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, ← GlobalTheory.PointAtPlaceHom.comm_of_mem V (a := oneP θ V p.1 p.2 t) (GlobalTheory.PointAtPlaceHom.atTau_mem V _ _) hk, ← mul_assoc, ih]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_inv {θ : InfFam D} {V : HSp D} {ψ : GA D V → ℂ} {k : GA D V} (hk : k ∈ GfC V)
     (h : ∀ g, ψ (g * k) = ψ g) (l : List (D.what₂.Tau × Mt V.rank)) :
@@ -242,7 +238,7 @@ theorem foldr_inv {θ : InfFam D} {V : HSp D} {ψ : GA D V → ℂ} {k : GA D V}
       (GlobalTheory.PointAtPlaceHom.atTau_mem V _ _) hk, ← mul_assoc, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons p l ih`. Conclude with `GlobalTheory.Mem.AutSpace.Rder_mem (ih fun q hq => hl q (List.mem_cons_of_mem _ hq)) (hl p List.mem_cons_self)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem foldr_smooth {θ : InfFam D} {V : HSp D} {ψ : GA D V → ℂ} (h : ψ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V)
     (l : List (D.what₂.Tau × Mt V.rank)) (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) :
@@ -253,23 +249,21 @@ theorem foldr_smooth {θ : InfFam D} {V : HSp D} {ψ : GA D V → ℂ} (h : ψ �
     exact GlobalTheory.Mem.AutSpace.Rder_mem (ih fun q hq => hl q (List.mem_cons_of_mem _ hq)) (hl p List.mem_cons_self)
 
 /- English proof (translation)
-Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨L, -, hmul, hc, hmem, hinv, hat, hdec, hcomm, hH⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Take `⟨N, τs, Xs, s, S, K, W, hX, hs, hK, hW, h⟩` from `exists_chart (gramAt D V) (fun τ => (hH τ).1) fun τ => (hH τ).2`. Set `ar : GA D V → D.what₂.Tau → Mt V.rank` to `fun g τ => archM V (θ τ) g`. Establish `car : Continuous ar` using `continuous_pi fun τ => continuous_arch hθ V τ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ar1 : ar 1 = 1` using `funext fun τ => GlobalTheory.PointAtPlaceHom.infMat_one V (θ τ)`. Establish `L1 : L 1 = 1` using `by rw [← ar1]; exact hinv 1 (one_mem _)`. Establish `cL : Continuous fun g => g * (L (ar g))⁻¹` using `continuous_id.mul (hc.comp_continuous car hmem).inv`. Establish `hprod : ∀ l : List (D.what₂.Tau → Mt V.rank), (∀ u ∈ l, u ∈ UG (gramAt D V)) → l.prod ∈ UG (gramAt D V) ∧ L l.prod = (l.map L).prod`. Introduce `l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨fun τ => GlobalTheory.PointAtPlaceHom.one_mem_UH _, L1⟩`. Consider the case `cons u l ih`. Take `⟨i1, i2⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Establish `hu` using `hl u List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[List.prod_cons, List.map_cons, List.prod_cons, hmul _ hu _ i1, i2]`. Conclude with `⟨fun τ => GlobalTheory.PointAtPlaceHom.mul_mem_UH (hu τ) (i1 τ), rfl⟩`. Establish `hΘ : ∀ t : Fin N → ℝ, (List.ofFn fun i => (Pi.mulSingle (τs i) (NormedSpace.exp (t i • Xs i)) : D.what₂.Tau → Mt V.rank)).prod ∈ UG (gramAt D V) ∧ L (List.ofFn fun i => (Pi.mulSingle (τs i) (NormedSpace.exp (t i • Xs i)) : D.what₂.Tau → Mt V.rank)).prod = (List.ofFn fun i => oneP …`. Introduce `t`. Take `⟨i1, i2⟩` from `hprod (List.ofFn fun i => (Pi.mulSingle (τs i) (NormedSpace.exp (t i • Xs i)) : D.what₂.Tau → Mt V.rank)) (List.forall_mem_ofFn_iff.2 fun i => mulSingle_mem (exp_mem (hH _).2 (hX i) _))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨i1, ?_⟩` and prove the remaining obligations. Rewrite using `[i2, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `(hat _ _ (exp_mem (hH _).2 (hX i) _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, τs, Xs, s, S, K, ar ⁻¹' W ∩ (fun g => g * (L (ar g))⁻¹) ⁻¹' U, hX, hs, hK, Filter.inter_mem (car.continuousAt.preimage_mem_nhds (by rwa [ar1])) (cL.continuousAt.preimage_mem_nhds (hU.mem_nhds (by simp [ar1, L1]))), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf'⟩` from `h (ar x) hx.1 (hmem x)`. Take `⟨a, ha, u, hu, rfl⟩` from `hdec x`. Establish `e1 : ar (a * u) = ar u` using `funext fun τ => by show archM V (θ τ) (a * u) = archM V (θ τ) u`. Use `GlobalTheory.PointAtPlaceHom.infMat_mul V (θ τ) a u` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : archM V (θ τ) a = 1` using `GlobalTheory.Member.Arch.archM_of_one V _ ha`. Conclude with `this.trans (by`. Express the relevant statement in the definitionally equal form `archM V (θ τ) a * archM V (θ τ) u = _`. Rewrite using `[h1, Matrix.one_mul])`. Establish `e2 : L (ar (a * u)) = u` using `by rw [e1]; exact hinv u hu`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haU : a ∈ U`. Use `hx.2` as an intermediate fact. Simplify using `only [Set.mem_preimage, e2, mul_inv_cancel_right] at this`. Conclude with `this`. Use `⟨f, a, haU, ha, fun t ht => ⟨(hf t ht).1, ?_⟩, hf'⟩` and prove the remaining obligations.
-
-Rewrite using `[← (hΘ t).2, ← (hf t ht).2, hmul _ (hΘ _).1 _ (hmem _), (hΘ _).2, e2, hcomm a ha u hu, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adelic_chart {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (U : Subgroup (GA D V))
     (hU : IsOpen (U : Set (GA D V))) :
@@ -335,19 +329,19 @@ theorem exists_adelic_chart {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (U :
   rw [← (hΘ t).2, ← (hf t ht).2, hmul _ (hΘ _).1 _ (hmem _), (hΘ _).2, e2, hcomm a ha u hu, mul_assoc]
 
 /- English proof (translation)
-Introduce `D θ V hθ U hU μ hμ`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨_, _, _⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Take `⟨N, τs, Xs, s, S, K, W, hX, hs, hK, hW, h⟩` from `exists_adelic_chart hθ V U hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, -, -, -, hH⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Take `⟨B, hB, hBW, hBc⟩` from `local_compact_nhds hW`. Establish `hc` using `fun i => oneP_spec hθ V (hH (τs i)).2 (hX i)`. Establish `hΘ` using `GlobalTheory.continuous_prod_ofFn_curves N (fun i => oneP θ V (τs i) (Xs i)) fun i => (hc i).1`. Take `⟨C₁, hC₁, h₁⟩` from `GlobalTheory.T.le_mul_setIntegral_image2_of_forall_le_alt (GA D V) μ N _ (Metric.closedBall 0 S) B (K ^ N) hΘ (isCompact_closedBall _ _) hBc hB (pow_nonneg hK _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, hC₂, h₂⟩` from `GlobalTheory.T.sq_norm_le_mul_of_iterated_one_parameter_integral_le (GA D V) N (fun i => oneP θ V (τs i) (Xs i)) s hs hc`. Set `w : List (Fin N) → List (D.what₂.Tau × Mt V.rank)` to `List.map fun i => (τs i, Xs i)`. Establish `hw : ∀ l, ∀ p ∈ w l, p.2 ∈ lieAt V p.1` using `fun l p hp => by`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hp`. Conclude with `hX i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(List.finite_length_le (Fin N) N).toFinset.toList.map w, Set.image2 (fun (t : Fin N → ℝ) b => (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * b) (Metric.closedBall 0 S) B, C₂ * C₁, fun l hl => ?_, ?_, fun ψ _ hψ hcont hsm y => ?_⟩` and prove the remaining obligations. Take `⟨l', -, rfl⟩` from `List.mem_map.1 hl`. Conclude with `hw l'`. Rewrite using `[← Set.image_prod]`. Conclude with `((isCompact_closedBall _ _).prod hBc).image ((hΘ.comp continuous_fst).mul continuous_snd)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc]`. Set `F : List (Fin N) → GA D V → ℂ` to `fun l => (w l).foldr (fun p f => Rder θ V p.1 p.2 f) ψ`. Establish `hFc : ∀ l, Continuous (F l)` using `fun l => hcont _ (hw l)`. Establish `hFk : ∀ l, ∀ a ∈ U, a ∈ GfC V → ∀ g, F l (g * a) = F l g` using `fun l a haU ha => foldr_inv ha (hψ a haU ha) _`. Establish `hFd : ∀ l i x, HasDerivAt (fun t => F l (x * oneP θ V (τs i) (Xs i) t)) (F (i :: l) x) 0` using `fun l i x => (GlobalTheory.Mem.AutSpace.differentiable_oneP (foldr_smooth hsm _ (hw l)) (hX i) x 0).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h₂ F hFc hFd y _ fun l hl => ?_` and prove the remaining obligations. Establish `hF : Continuous fun g => ‖F l (y * g)‖ ^ 2` using `((hFc l).comp (continuous_const.mul continuous_id)).norm.pow 2`. Use `(h₁ (fun g => ‖F l (y * g)‖ ^ 2) _ hF (fun g => sq_nonneg _) fun x hx => ?_).trans (mul_le_mul_of_nonneg_left ?_ hC₁)` and prove the remaining obligations. Take `⟨f, a, haU, ha, hf, hf'⟩` from `h x (hBW hx) clear_value F`. Use `GlobalTheory.T.setIntegral_le_pow_mul_setIntegral_of_expanding N _ _ K f (fun t => ‖F l (y * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)‖ ^ 2) (fun t => ‖F l (y * ((List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * x))‖ ^ 2) (isCompact_univ_pi fun _ => isCompact …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(hf t ht).2, ← mul_assoc, hFk l a haU ha]`. Use `List.single_le_sum (fun r hr => ?_) _ (List.mem_map.2 ⟨w l, List.mem_map.2 ⟨l, ?_, rfl⟩, rfl⟩)` and prove the remaining obligations. Take `⟨l', -, rfl⟩` from `List.mem_map.1 hr`. Conclude with `integral_nonneg fun g => sq_nonneg _`. Simplify using `using hl`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem local_sobolev : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) → ∀ μ : Measure (GA D V), μ.IsHaarMeasure → ∃ (S : List (List (D.what₂.Tau × Mt V.rank))) (Ω : Set (GA D V)) (C : ℝ), (∀ l ∈ S, ∀ p ∈ l, p.2 ∈ lieAt V p.1) ∧ IsCompact Ω ∧ ∀ ψ : GA D V → ℂ, Continuous ψ → (∀ k ∈ U, k ∈ GfC V → ∀ g, ψ (g * k) = ψ g) → (∀ l : List (D.what₂.Tau × Mt V.rank), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → Continuous (l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ)) → (∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Mt V.rank), (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g, ContDiff ℝ ∞ fun t : Fin k → ℝ => ψ (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)) → ∀ y, ‖ψ y‖ ^ 2 ≤ C * (S.map fun l => ∫ x in Ω, ‖(l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ) (y * x)‖ ^ 2 ∂μ).sum := by
   intro D θ V hθ U hU μ hμ

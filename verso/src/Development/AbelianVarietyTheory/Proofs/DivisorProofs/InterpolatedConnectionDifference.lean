@@ -6,11 +6,11 @@ open scoped ComplexOrder ContDiff
 namespace GlobalTheory.InterpDiff
 
 /- English proof (translation)
-Establish `hs' : DifferentiableAt ℝ (fun x => (s x : ℂ)) z` using `Complex.ofRealCLM.differentiableAt.comp z hs`. Establish `hd : MContDiffAt 1 (fun x => H x + -H₀ x) z` using `h1.add h0.neg`. Establish `e` using `mdel_smul hs' hd ξ`. Rewrite `e` using `[mdel_add h1 h0.neg, mdel_neg]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Establish `e2 : (fun x => interp H₀ H s x a b) = fun x => H₀ x a b + (s x : ℂ) * ((H x + -H₀ x) a b)`. Use function extensionality and compare the values at `x`. Simplify using `only [interp, Matrix.add_apply, Matrix.smul_apply, Matrix.neg_apply, smul_eq_mul]`. Use `push_cast`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mdel_apply, e2, GlobalTheory.del_add (h0.diff a b) (hs'.fun_mul (hd.diff a b))]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mdel_interp {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n]
     {H₀ H : (ι → ℂ) → Matrix n n ℂ} {s : (ι → ℂ) → ℝ} {z : ι → ℂ}
@@ -34,7 +34,7 @@ theorem mdel_interp {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← conn_transpose_mul hu, form, form, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec v, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_conn_mulVec {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n]
     {K : (ι → ℂ) → Matrix n n ℂ} {z : ι → ℂ} (hu : IsUnit (K z).det) (ξ : ι → ℂ) (v w : n → ℂ) :
@@ -43,9 +43,9 @@ theorem form_conn_mulVec {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n]
     Matrix.dotProduct_mulVec v, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Introduce `ι n _ _ _ H₀ H s z h0 h1 hs u0 u1 u ξ v w`. Establish `e1` using `form_conn_mulVec u ξ v w`. Establish `e2` using `form_conn_mulVec u0 ξ v w`. Establish `e3` using `form_conn_mulVec u1 ξ v w`. Rewrite `e1` using `[mdel_interp h0 h1 hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [form, Matrix.sub_mulVec, sub_dotProduct, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.neg_mulVec, dotProduct_add, dotProduct_smul, dotProduct_neg, smul_eq_mul] at e1 e2 e3 ⊢`. Rewrite using `[e1]`. Simplify using `only [interp, Matrix.add_mulVec, Matrix.smul_mulVec, dotProduct_add, dotProduct_smul, smul_eq_mul]`. Use `push_cast`. Take the linear combination `(s z - 1) * e2 - (s z) * e3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem form_conn_interp_sub : ∀ {ι n : Type} [Fintype ι] [Fintype n] [DecidableEq n] {H₀ H : (ι → ℂ) → Matrix n n ℂ} {s : (ι → ℂ) → ℝ} {z : ι → ℂ}, MContDiffAt 1 H₀ z → MContDiffAt 1 H z → DifferentiableAt ℝ s z → IsUnit (H₀ z).det → IsUnit (H z).det → IsUnit (interp H₀ H s z).det → ∀ (ξ : ι → ℂ) (v w : n → ℂ), form (interp H₀ H s z) ((conn (interp H₀ H s) z ξ - conn H₀ z ξ) *ᵥ v) w = (s z : ℂ) * form (H z) ((conn H z ξ - conn H₀ z ξ) *ᵥ v) w + GlobalTheory.del (fun x => (s x : ℂ)) z ξ * (form (H z) v w - form (H₀ z) v w) := by
   intro ι n _ _ _ H₀ H s z h0 h1 hs u0 u1 u ξ v w

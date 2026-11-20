@@ -9,14 +9,14 @@ section
 variable {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
 
 /- English proof (translation)
-Simplify using `[wd]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_eq' (w : σ → Module.End ℂ E) (c : Finset σ → E) (t : Finset σ) :
     wd w c t = ∑ i ∈ t, (GlobalTheory.cubeSign t i : ℤ) • w i (c (t.erase i)) := by
   simp [wd]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.PlacewiseToOutsideS.wd_wd w hw c`.
+A detailed English derivation is pending.
 -/
 private theorem wd_wd' (w : σ → Module.End ℂ E) (hw : ∀ i j, Commute (w i) (w j))
     (c : Finset σ → E) : wd w (wd w c) = 0 :=
@@ -29,7 +29,7 @@ variable {R κ : Type} [CommRing R] [Algebra ℂ R] [LinearOrder κ]
   [AddCommGroup N'] [Module R N'] [Module ℂ N'] [IsScalarTower ℂ R N']
 
 /- English proof (translation)
-Simplify using `only [wd_eq', map_sum, map_zsmul, Algebra.lsmul_coe, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_map' (r : κ → R) (π : N →ₗ[R] N') (c : Finset κ → N) (s : Finset κ) :
     wd (fun l => (Algebra.lsmul ℂ ℂ N' : R →ₐ[ℂ] Module.End ℂ N') (r l)) (fun s => π (c s)) s =
@@ -37,7 +37,7 @@ private theorem wd_map' (r : κ → R) (π : N →ₗ[R] N') (c : Finset κ → 
   simp only [wd_eq', map_sum, map_zsmul, Algebra.lsmul_coe, map_smul]
 
 /- English proof (translation)
-Use `show c ∈ Submodule.pi Set.univ _ ↔ _`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies]`. Use `forall_congr' fun s => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (s.card : ℤ) = n <;> simp [h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem mem_C' (r : κ → R) (n : ℤ) (c : Finset κ → N) :
     c ∈ (kos (Algebra.lsmul ℂ ℂ N) ⊤ r).C n ↔ ∀ s : Finset κ, (s.card : ℤ) ≠ n → c s = 0 := by
@@ -47,9 +47,9 @@ private theorem mem_C' (r : κ → R) (n : ℤ) (c : Finset κ → N) :
   by_cases h : (s.card : ℤ) = n <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[wd_eq']`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `h1 : ((s.erase i).card : ℤ) + 1 = s.card`. Rewrite using `[← Finset.card_erase_add_one hi]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc _ (fun h => hs (by omega))]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem wd_C' (r : κ → R) (n : ℤ) (c : Finset κ → N)
     (hc : ∀ s : Finset κ, (s.card : ℤ) ≠ n → c s = 0) (s : Finset κ) (hs : (s.card : ℤ) ≠ n + 1) :
@@ -66,35 +66,31 @@ section
 variable {R κ : Type} [CommRing R] [Algebra ℂ R] [LinearOrder κ] [Fintype κ]
 
 /- English proof (translation)
-Proceed by induction on `f with`. Consider the case `nil`. Introduce `N _ _ _ _ _ _ m hm c hc`. Establish `hz : c = 0`. Use function extensionality and compare the values at `s`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(mem_C' r m c).1 hc.1 s ?_` and prove the remaining obligations. Simplify using `only [List.length_nil, Nat.cast_zero] at hm`. Establish `: (0 : ℤ) ≤ s.card` using `Int.natCast_nonneg _`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `cons g f' ih`. Introduce `N _ _ _ _ hreg hf m hm c hc`. Take `⟨hg, hreg'⟩` from `(RingTheory.Sequence.isWeaklyRegular_cons_iff N g f').1 hreg`. Establish `hstab : Stab (Algebra.lsmul ℂ ℂ N : R →ₐ[ℂ] Module.End ℂ N) ⊤ ⊤` using `fun _ _ _ _ => Submodule.mem_top`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hyc⟩` from `hH R N (Algebra.lsmul ℂ ℂ N) κ ⊤ ⊤ r hstab m c hc g (hf g List.mem_cons_self)`. Establish `hyC` using `(mem_C' r _ y).1 hy`. Establish `hyc' : ∀ s, wd (fun l => (Algebra.lsmul ℂ ℂ N : R →ₐ[ℂ] Module.End ℂ N) (r l)) y s = g • c s` using `fun s => congrFun hyc s`. Set `π : N →ₗ[R] QuotSMulTop g N` to `Submodule.mkQ _`. Establish `hπ : Function.Surjective π` using `Submodule.mkQ_surjective _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ a : N, π a = 0 → ∃ b : N, g • b = a`. Introduce `a ha`. Establish `: a ∈ g • (⊤ : Submodule R N)`. Simplify `ha` using `[π]`. Take `⟨b, -, hb⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, hb⟩`. Establish `hgπ : ∀ a : N, π (g • a) = 0`. Introduce `a`. Establish `: g • a ∈ g • (⊤ : Submodule R N)` using `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨a, Submodule.mem_top, rfl⟩`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZ : (fun s => π (y s)) ∈ (kos (Algebra.lsmul ℂ ℂ (QuotSMulTop g N)) ⊤ r).Z (m - 1)`. Use `⟨(mem_C' r _ _).2 fun s hs => by simp [hyC s hs], ?_⟩` and prove the remaining obligations. Use `show wd _ _ = 0`. Use function extensionality and compare the values at `s`. Rewrite using `[wd_map', hyc', hgπ]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨t, ht, hty⟩` from `ih (QuotSMulTop g N) hreg' (fun a ha => hf a (List.mem_cons_of_mem _ ha)) (m - 1) (by simp only [List.length_cons, Nat.cast_add, Nat.cast_one] at hm; omega) hZ`. Establish `htC` using `(mem_C' r _ t).1 ht`. Establish `hlift : ∀ s, ∃ a : N, π a = t s ∧ (t s = 0 → a = 0)`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : t s = 0`. Conclude with `⟨0, by simp [h0], fun _ => rfl⟩`. Take `⟨a, ha⟩` from `hπ (t s)`. Conclude with `⟨a, ha, fun h => absurd h h0⟩`. Use `choose y' hy'1 hy'2 using hlift`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hy'C : ∀ s : Finset κ, (s.card : ℤ) ≠ m - 1 - 1 → y' s = 0` using `fun s hs => hy'2 s (htC s hs)`. Use `set W := wd (fun l => (Algebra.lsmul ℂ ℂ N : R →ₐ[ℂ] Module.End ℂ N) (r l)) with hW`. Establish `hWy' : ∀ s, π (W y' s) = π (y s)`. Introduce `s`. Rewrite using `[hW, ← wd_map' r π y' s]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (fun s => π (y' s)) = t` using `funext hy'1`. Rewrite using `[this]`. Conclude with `congrFun hty s`. Establish `hdiv : ∀ s, ∃ b : N, g • b = y s - W y' s` using `fun s => hker _ (by rw [map_sub, hWy', sub_self])`. Use `choose y'' hy'' using hdiv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hy''C : ∀ s : Finset κ, (s.card : ℤ) ≠ m - 1 → y'' s = 0`. Introduce `s hs`. Apply `hg` to reduce the goal to its premises. Use `show g • y'' s = g • 0`. Rewrite using `[hy'', hyC s hs, smul_zero, wd_C' r (m - 1 - 1) y' hy'C s (by omega), sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨y'', (mem_C' r _ _).2 hy''C, ?_⟩` and prove the remaining obligations. Use `show W y'' = c`. Use function extensionality and compare the values at `s`. Apply `hg` to reduce the goal to its premises. Use `show g • W y'' s = g • c s`.
-
-Establish `h1 : g • W y'' s = W (fun s => g • y'' s) s`. Use `wd_map' r (LinearMap.lsmul R N g) y'' s` as an intermediate fact. Simplify using `using this.symm`. Establish `hcomm : ∀ i j, Commute ((Algebra.lsmul ℂ ℂ N : R →ₐ[ℂ] Module.End ℂ N) (r i)) ((Algebra.lsmul ℂ ℂ N : R →ₐ[ℂ] Module.End ℂ N) (r j))` using `fun i j => (Commute.all (r i) (r j)).map _`. Establish `h2 : (fun s => g • y'' s) = y - W y'` using `funext hy''`.
-
-Rewrite using `[h1, h2, map_sub, wd_wd' _ hcomm, sub_zero, hyc']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem koszulExact_weaklyRegular (hH : Htpy) (r : κ → R) (f : List R) :
     ∀ (N : Type) [AddCommGroup N] [Module R N] [Module ℂ N] [IsScalarTower ℂ R N],
@@ -184,7 +180,7 @@ private theorem koszulExact_weaklyRegular (hH : Htpy) (r : κ → R) (f : List R
 end
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.KoszulComplexHomotopy.koszulExactBelowLengthOfWeaklyRegular_of_htpy`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.koszulExactBelowLengthOfWeaklyRegular_of_htpy :
     Htpy → KoszulExactBelowLengthOfWeaklyRegular :=

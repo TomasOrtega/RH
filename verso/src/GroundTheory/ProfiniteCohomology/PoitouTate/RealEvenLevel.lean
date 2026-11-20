@@ -17,11 +17,11 @@ attribute [local instance 2000] Rep.hV2
 section Algebra
 
 /- English proof (translation)
-Establish `: Finite (A →+ ZMod n)` using `Finite.of_surjective e he`. Establish `: Finite A` using `finite_of_finite_addMonoidHom_zmod hA`. Set `ev : A → ((A →+ ZMod n) →+ ZMod n)` to `fun a => { toFun := fun χ => χ a map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hev : Function.Injective ev`. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Take `⟨χ, hχ⟩` from `zmod_exists_apply_ne_zero hA (sub_ne_zero.2 hne)`. Apply `hχ` to reduce the goal to its premises. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `DFunLike.congr_fun hab χ`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Nat.card A ≤ Nat.card ((A →+ ZMod n) →+ ZMod n)` using `Nat.card_le_card_of_injective ev hev`. Establish `h2 : Nat.card ((A →+ ZMod n) →+ ZMod n) ≤ Nat.card (A →+ ZMod n)` using `card_addMonoidHom_zmod_le (n := n) (A := A →+ ZMod n)`. Establish `h3 : Nat.card (A →+ ZMod n) ≤ Nat.card (ZMod n)` using `Nat.card_le_card_of_surjective e he`. Conclude with `hT.bijective_of_nat_card_le (h1.trans (h2.trans h3))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_of_surjective_of_surjective_dual {A : Type*} [AddCommGroup A] {n : ℕ} [NeZero n]
     (hA : ∀ a : A, n • a = 0) (T : A →+ ZMod n) (hT : Function.Surjective T)
@@ -59,7 +59,7 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [NeZero n] [IsDiscreteRep D]
   [IsDiscreteRep (dualRep D (zmodRep.{0} G n))] in
 
 /- English proof (translation)
-Rewrite using `[← tensorHom_zmodDualIso_zmodMulPairingRight D hD, ← Category.assoc, MonoidalCategory.tensorHom_comp_tensorHom, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorHom_zmodDualIso_inv_dualEvalPairing :
     ((zmodDualIso n D hD).inv ⊗ₘ 𝟙 (zmodRep.{0} G n)) ≫ dualEvalPairing D (zmodRep.{0} G n) =
@@ -70,7 +70,7 @@ theorem tensorHom_zmodDualIso_inv_dualEvalPairing :
 omit [NeZero n] in
 
 /- English proof (translation)
-Establish `e` using `compactCupRes_compactCohomologyResMap φ (dualEvalPairing D (zmodRep.{0} G n)) (zmodMulPairingRight n D hD) (zmodDualIso n D hD).inv (𝟙 _) (tensorHom_zmodDualIso_inv_dualEvalPairing hD) ((Nat.add_comm s r).trans h) y x`. Rewrite `e` using `[cohomologyMap_id, ModuleCat.hom_id, LinearMap.id_apply]`. Rewrite using `[compactZmodDualityMap_apply, compactDualityMap_apply, e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem compactZmodDualityMap_eq_compactDualityMap {m r s : ℕ}
     (T : compactCohomologyRes φ D m →+ ZMod n) (h : r + s = m) (x : cohomology (zmodRep.{0} G n) r)
@@ -85,7 +85,7 @@ theorem compactZmodDualityMap_eq_compactDualityMap {m r s : ℕ}
   rw [compactZmodDualityMap_apply, compactDualityMap_apply, e]
 
 /- English proof (translation)
-The claim follows from `bijective_of_bijective_comp hb Function.bijective_id (bijective_compactCohomologyResMap_of_comp_eq_id φ (zmodDualIso n D hD).inv (zmodDualIso n D hD).hom (Iso.inv_hom_id _) (Iso.hom_inv_id _) s) (γ := (compactCohomologyResMap φ (zmodDualIso n D hD).inv s).hom.toAddMonoidHom) fun …`.
+A detailed English derivation is pending.
 -/
 theorem bijective_compactZmodDualityMap_of_compactDualityMap {m r s : ℕ}
     (T : compactCohomologyRes φ D m →+ ZMod n) (h : r + s = m)
@@ -110,7 +110,7 @@ set_option synthInstance.maxHeartbeats 400000 in
 include hS in
 
 /- English proof (translation)
-Establish `: IsDiscreteRep (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) N)` using `isDiscreteRep_of_isTrivial _`. Establish `: IsDiscreteRep (dualRep (gsRoots S N) (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) N))` using `isDiscreteRep_dualRep _ _`. Conclude with `bijective_compactZmodDualityMap_of_compactDualityMap (gsFinFamily S ιs) (nsmul_gsRoots S N) _ h (poitouTate_duality_gs S ιs hS hK (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) N) (nsmul_zmodRep_eq_zero _ N) h)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_gs_compactZmodDualityMap_of_duality {r s : ℕ} (h : r + s = 3) :
     Function.Bijective (compactZmodDualityMap (gsFinFamily S ιs) (gsRoots S N) (nsmul_gsRoots S N)
@@ -125,7 +125,7 @@ theorem bijective_gs_compactZmodDualityMap_of_duality {r s : ℕ} (h : r + s = 3
 include hS in
 
 /- English proof (translation)
-The claim follows from `bijective_of_surjective_of_surjective_dual (nsmul_compactCohomologyRes_eq_zero (gsFinFamily S ιs) (nsmul_gsRoots S N) 3) _ (surjective_gsCompactInv S N ιs hK (subsingleton_cohomology_three_gsRoots S hS hK) fun v => (bijective_gsLocalInvRoots_of_places S ιs N (fun v hv h => hv (hS …`.
+A detailed English derivation is pending.
 -/
 theorem bijective_gsCompactInv_of_duality [Nonempty S] :
     Function.Bijective (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) :=
@@ -142,7 +142,7 @@ theorem bijective_gsCompactInv_of_duality [Nonempty S] :
 include hS in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨bijective_gsCompactInv_of_duality S ιs hS hK, fun h => bijective_gs_compactZmodDualityMap_of_duality S ιs hS hK h⟩`.
+Supply the required witnesses or components.
 -/
 theorem gsLevelBijective_gsCompactInv [Nonempty S] :
     GsLevelBijective (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) :=
@@ -159,9 +159,9 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] (S : Set (HeightOneSpectrum (�
 set_option maxHeartbeats 3200000 in
 
 /- English proof (translation)
-Establish `hTL` using `hLev.1`. Set `f` to `(gsRootsOfUnityIso S hL n).symm`. Set `eW` to `(gsMackeyCompactIso hL ιs f 3).toLinearEquiv.toAddEquiv`. Set `eY` to `(gsMackeyCompactIso hL ιs f s).toLinearEquiv.toAddEquiv`. Set `eX` to `(cohomologyIsoOfContinuousMulEquiv (gsBaseChange S hL) (zmodRepResIso (gsBaseChange S hL) n) r).toLinearEquiv.toAddEquiv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hex` using `exists_isUnit_mul_of_surjective_of_bijective τ (TL.comp eW.symm.toAddMonoidHom) hτ (hTL.comp eW.symm.bijective)`. Conclude with `hex.elim fun c hcf => hcf.elim fun hc hfc => bijective_of_transport (bilinAddHom (compactCupRes (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (zmodMulPairingRight n (gsRoots (K := L) (placesOver S) n) (nsmul_gsRoots (K := L) (placesOver S) n)) ((Nat.add_comm s r).trans …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_compactZmodDualityMap_gsOpenSubgroup_of_surjective
     (τ : compactCohomologyRes (mackeyFamily (gsOpenSubgroup S hL) (gsFinFamily S ιs))

@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.LeviBlockExponentEmbedding
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n W c hc v t B₀ g x hx`. Establish `hm : mat ((toGAd hσ W.J hc).symm (emb σ (c • W.J.map σ) v x)) = (HA.mat (AF F) σ (c • W.J.map σ) (emb σ (c • W.J.map σ) v x)).1`. Establish `h` using `toGAd_mat hσ W.J hc ((toGAd hσ W.J hc).symm (emb σ (c • W.J.map σ) v x))`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`. Conclude with `(congrArg Units.val h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Conclude with `GlobalTheory.SmallAtPlace.smul_mat_emb_sub_one σ (c • W.J.map σ) v x hu`. Establish `hx' : (matHom _ σ _ x).1.map (splitProj t) = (B₀ * g * B₀⁻¹).1` using `hx`. Rewrite using `[hm, ← hx']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp` using `matHom_proj σ (c • W.J.map σ) v (emb σ (c • W.J.map σ) v x)`. Rewrite `hp` using `[proj_emb_self]`. Rewrite using `[hp]`. Use extensionality with `r s`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem emb_mem_UAt_and_piW : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (n : ℕ) (W : Spc F E n) (c : E) (hc : c ≠ 0) (v : Pl F) (t : E →ₐ[F] Fv F v)

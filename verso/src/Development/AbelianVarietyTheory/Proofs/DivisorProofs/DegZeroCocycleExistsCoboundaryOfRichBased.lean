@@ -15,7 +15,7 @@ open CategoryTheory GlobalTheory.CatCoh GlobalTheory.AnPer GlobalTheory.AnPer.Ch
 namespace GlobalTheory.AnPer.Charts.DegZero
 
 /- English proof (translation)
-Establish `e0 : u0 = v0 + z0 - w` using `eq_sub_of_add_eq (c0.symm.trans c0')`. Establish `e1 : u1 = v1 + z1 - w` using `eq_sub_of_add_eq (c1.symm.trans c1')`. Rewrite using `[e0, e1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sub_rel {M : Type} [AddCommGroup M] {p0 p1 u0 u1 v0 v1 w z0 z1 : M}
     (c0 : p0 = u0 + w) (c0' : p0 = v0 + z0) (c1 : p1 = u1 + w) (c1' : p1 = v1 + z1) :
@@ -25,7 +25,7 @@ theorem sub_rel {M : Type} [AddCommGroup M] {p0 p1 u0 u1 v0 v1 w z0 z1 : M}
   rw [e0, e1]; abel
 
 /- English proof (translation)
-Establish `a0 : h0 = d + h1` using `eq_add_of_sub_eq e`. Establish `a1 : j1 = d + j0` using `eq_add_of_sub_eq e'`. Rewrite using `[a0, a1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sub_sub_eq_of_sub_eq_addCommGroup {M : Type} [AddCommGroup M] {h0 h1 j0 j1 d X : M}
     (e : h0 - h1 = d) (e' : j1 - j0 = d) : h0 - (X - j0) = h1 - (X - j1) := by
@@ -34,14 +34,14 @@ theorem sub_sub_eq_of_sub_eq_addCommGroup {M : Type} [AddCommGroup M] {h0 h1 j0 
   rw [a0, a1]; abel
 
 /- English proof (translation)
-The claim follows from `TrivSqZeroExt.ext hx rfl`.
+A detailed English derivation is pending.
 -/
 theorem eq_inr {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M]
     (x : TrivSqZeroExt O M) (hx : x.fst = 0) : x = TrivSqZeroExt.inr x.snd :=
   TrivSqZeroExt.ext hx rfl
 
 /- English proof (translation)
-Use `show TrivSqZeroExt.inl x + TrivSqZeroExt.inr (fun a ↦ D a x) - TrivSqZeroExt.inl x = _`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem tszeSec_sub_inl {g : ℕ} {O : Type} [CommRing O] [Algebra ℂ O] (D : Fin g → Derivation ℂ O O) (x : O) :
     tszeSec D x - TrivSqZeroExt.inl x = TrivSqZeroExt.inr fun a ↦ D a x := by
@@ -51,7 +51,7 @@ theorem tszeSec_sub_inl {g : ℕ} {O : Type} [CommRing O] [Algebra ℂ O] (D : F
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {K : Charts F}
 
 /- English proof (translation)
-The claim follows from `Hol.ext_fn fun p hp ↦ by rw [fn_sh e' _ hp, fn_sh e _ (K.maps e' p hp), fn_sh e'' _ hp] simp only [F.shift_zero]`.
+A detailed English derivation is pending.
 -/
 theorem translationChartShiftSubstitution_comp_degZero {k k' k'' : K.K} (e : K.le 0 k' k) (e' : K.le 0 k'' k') (e'' : K.le 0 k'' k)
     (f : Hol (K.W k)) : sh e' (sh e f) = sh e'' f :=
@@ -60,13 +60,13 @@ theorem translationChartShiftSubstitution_comp_degZero {k k' k'' : K.K} (e : K.l
     simp only [F.shift_zero]
 
 /- English proof (translation)
-The claim follows from `hom_ext (fun c ↦ sh_refl (K.le_refl k) c) rfl`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_refl_triv (k : K.K) : ptHom (K.triv k) (K.le_refl k) = 𝟙 (K.triv k) :=
   hom_ext (fun c ↦ sh_refl (K.le_refl k) c) rfl
 
 /- English proof (translation)
-The claim follows from `hom_ext (fun c ↦ translationChartShiftSubstitution_comp_degZero e e' e'' c) (add_zero (0 : Λ))`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_comp0 {k k' k'' : K.K} (e : K.le 0 k' k) (e' : K.le 0 k'' k') (e'' : K.le 0 k'' k) :
     ptHom (K.triv k') e ≫ ptHom (K.triv k'') e' = ptHom (K.triv k'') e'' :=
@@ -75,7 +75,7 @@ theorem ptHom_comp0 {k k' k'' : K.K} (e : K.le 0 k' k) (e' : K.le 0 k'' k') (e''
 def corr (h : C1 K.Oc) (G : C0 K.Oc) : C1 K.Oc := fun T T' φ ↦ h T T' φ - (G T' - φ.φ (G T))
 
 /- English proof (translation)
-Establish `e` using `hc T T T (𝟙 T) (𝟙 T) rfl rfl`. Rewrite `e` using `[Category.id_comp]`. Express the relevant statement in the definitionally equal form `(h T T (𝟙 T) : T.C) = h T T (𝟙 T) + h T T (𝟙 T) at e`. Conclude with `(add_eq_left.mp e.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem zero_id (h : C1 K.Oc)
     (hc : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 →
@@ -86,7 +86,7 @@ theorem zero_id (h : C1 K.Oc)
   exact (add_eq_left.mp e.symm)
 
 /- English proof (translation)
-Introduce `T T' T'' φ ψ hφ hψ`. Express the relevant statement in the definitionally equal form `(h T T'' (φ ≫ ψ) : T''.C) - (G T'' - ψ.φ (φ.φ (G T))) = ψ.φ ((h T T' φ : T'.C) - (G T' - φ.φ (G T))) + ((h T' T'' ψ : T''.C) - (G T'' - ψ.φ (G T')))`. Rewrite using `[hc T T' T'' φ ψ hφ hψ, map_sub, map_sub]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem corr_cocycle (h : C1 K.Oc) (G : C0 K.Oc)
     (hc : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 →
@@ -100,11 +100,11 @@ theorem corr_cocycle (h : C1 K.Oc) (G : C0 K.Oc)
   abel
 
 /- English proof (translation)
-Establish `hm` using `GlobalTheory.T.cochain_eq_of_same_degree_chartMorphism K h 0 (fun k T χ hχ ↦ by`. Rewrite using `[hc _ _ _ (jet0 k) χ rfl hχ, hc _ _ _ (jet1 k) χ rfl hχ, v3 k])`. Establish `v5 : ∀ (k : K.K) (T : K.Obj) (f : K.triv k ⟶ T), f.deg = 0 → h _ _ f = 0`. Introduce `k T f hd`. Establish `e : K.le 0 T.k k` using `hd ▸ Charts.Hom.le f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ c : Hol (K.W k), sh (Charts.Hom.le f) c = sh (K.le_refl T.k) (sh e c)` using `fun c ↦ by`. Rewrite using `[sh_refl]`. Conclude with `Hol.ext_fn fun p hp ↦ by rw [fn_sh (Charts.Hom.le f) c hp, fn_sh e c hp, hd]`. Establish `hcomp : ptHom T (Charts.Hom.le f) = ptHom (K.triv T.k) e ≫ ptHom T (K.le_refl T.k)` using `hom_ext (fun c ↦ congrArg T.ρ (hs c)) (hd.trans (add_zero (0 : Λ)).symm)`. Rewrite using `[hm k T f hd, hcomp, hc _ _ _ _ _ rfl rfl, v2, v1, map_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hc _ _ _ (ptHom T (K.le_refl T.k)) φ rfl hφ`. Rewrite `e` using `[v5 _ _ _ ((zero_add φ.deg).trans hφ), v1, map_zero, zero_add]`. Conclude with `e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish (h : C1 K.Oc)
     (hc : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 →
@@ -134,11 +134,11 @@ def jetDiff (h : C1 K.Oc) (k : K.K) : TrivSqZeroExt (Hol (K.W k)) (Fin g → Hol
 def trans0 (h : C1 K.Oc) (k k' : K.K) (e : K.le 0 k' k) : Hol (K.W k') := h _ _ (ptHom (K.triv k') e)
 
 /- English proof (translation)
-Take `⟨χ, hχ, h0, h1, hx⟩` from `GlobalTheory.T.exists_jet_morphism_extending_translation K e`. Establish `c0` using `hc _ _ _ (jet0 k) χ rfl hχ`. Establish `c1` using `hc _ _ _ (jet1 k) χ rfl hχ`. Rewrite `c0` using `[h0]`. Rewrite `c1` using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `sub_rel c0 (hc _ _ _ (ptHom (K.triv k') e) (jet0 k') rfl rfl) c1 (hc _ _ _ (ptHom (K.triv k') e) (jet1 k') rfl rfl)`. Establish `key' : χ.φ (jetDiff h k) = (jet0 k').φ (trans0 h k k' e) - (jet1 k').φ (trans0 h k k' e) + jetDiff h k'` using `(map_sub χ.φ _ _).trans key`. Establish `s` using `(hx (jetDiff h k)).2 i`. Rewrite `s` using `[key']`. Establish `s' : (0 : Hol (K.W k')) - (tszeSec (g` using `g) dw (trans0 h k k' e)).snd i + (jetDiff h k').snd i = sh e ((jetDiff h k).snd i) := s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `s'` using `[snd_tszeSec]`. Rewrite using `[← s']`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem jetDiff_sh (h : C1 K.Oc)
     (hc : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 →
@@ -165,17 +165,15 @@ def gauge (h : C1 K.Oc) (G₀ : ∀ k, Hol (K.W k)) : C0 K.Oc :=
   fun T ↦ (T.ρ (G₀ T.k) + (h _ _ (ptHom T (K.le_refl T.k)) : T.C) : T.C)
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F K hR hB h hc`. Establish `hcl` using `fun k ↦ GlobalTheory.T.connectionForm_degZeroCocycle_closed K h hc k (jetDiff h k) rfl`. Take `⟨G₀, hd, ha⟩` from `GlobalTheory.T.exists_primitive_cech_poincare_rich_charts K hR hB (trans0 h) (fun k ↦ (jetDiff h k).snd) (fun k k' k'' e e' e'' ↦ by`. Establish `c` using `hc _ _ _ (ptHom (K.triv k') e) (ptHom (K.triv k'') e') rfl rfl`. Rewrite `c` using `[ptHom_comp0 e e' e'']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `c)`. Use the proof step `(fun k i j ↦ (hcl k).2 i j) (jetDiff_sh h hc)`. Establish `gt : ∀ k, gauge h G₀ (K.triv k) = G₀ k` using `fun k ↦ by`. Establish `z : h _ _ (ptHom (K.triv k) (K.le_refl k)) = 0`. Rewrite using `[ptHom_refl_triv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `zero_id h hc _`. Conclude with `(congrArg (fun x : Hol (K.W k) ↦ G₀ k + x) z).trans (add_zero _)`. Use `⟨gauge h G₀, fun T T' φ hφ ↦ sub_eq_zero.mp (vanish (corr h (gauge h G₀)) (corr_cocycle h _ hc) (fun T ↦ ?_) (fun k k' e ↦ ?_) (fun k ↦ ?_) T T' φ hφ)⟩` and prove the remaining obligations. Establish `z : (ptHom T (K.le_refl T.k)).φ (gauge h G₀ (K.triv T.k)) = T.ρ (G₀ T.k)`. Rewrite using `[gt]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg T.ρ (sh_refl (K.le_refl T.k) _)`. Unfold `corr`. Rewrite using `[z]`. Conclude with `sub_eq_zero.mpr (add_sub_cancel_left (G := T.C) _ _).symm`. Unfold `corr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gt, gt]`. Conclude with `sub_eq_zero.mpr (ha k k' e)`. Unfold `corr`. Rewrite using `[gt]`. Use `sub_sub_eq_of_sub_eq_addCommGroup (d := TrivSqZeroExt.inr (jetDiff h k).snd) (eq_inr (jetDiff h k) (hcl k).1) ?_` and prove the remaining obligations.
-
-Establish `z0 : (jet0 k).φ (G₀ k) = TrivSqZeroExt.inl (G₀ k)` using `congrArg TrivSqZeroExt.inl (sh_refl (K.le_refl k) (G₀ k))`. Rewrite using `[z0]`. Conclude with `(tszeSec_sub_inl dw (G₀ k)).trans (congrArg TrivSqZeroExt.inr (funext (hd k)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_gauge : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F), K.Rich → K.Based → ∀ (h : C1 K.Oc), (∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 → h T T'' (φ ≫ ψ) = ψ.φ (h T T' φ) + h T' T'' ψ) → ∃ G : C0 K.Oc, ∀ (T T' : K.Obj) (φ : T ⟶ T'), φ.deg = 0 → h T T' φ = G T' - φ.φ (G T) := by
   intro I _ g Λ _ F K hR hB h hc

@@ -10,11 +10,11 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.GenPow
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Y BY k ρ hρ hY`. Establish `hM : (GlobalTheory.FlagMod.detOm Y).IsLB` using `GlobalTheory.CechPic.isLB_dual (GlobalTheory.PolFin.isLB_detLie_of_polOf hY.isLB)`. Take `⟨N, hN, K, s, hs, -⟩` from `hY.exists_cover`. Use `⟨N, hN, fun y => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hs.ge (Set.mem_univ (genι Y y)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, e, he, heu⟩` from `GlobalTheory.T.det_bundle_invertible_sections_local E H D l Xo c X Y ρ hρ hM y`. Take `⟨t, ht₁, ht₂⟩` from `GlobalTheory.T.exists_function_cutting_divisor (genι Y) (GlobalTheory.FlagMod.detOm Y) BY k N (s i) (ρ ⁻¹ᵁ U.1) e hM he heu`. Take `⟨B, hyB, hB'⟩` from `GlobalTheory.EffCartierData.exists_affine_le (V := ρ ⁻¹ᵁ U.1 ⊓ genι Y ⁻¹ᵁ nonzeroLocus (s i)) (x := y) ⟨hU, hi⟩`. Use `⟨U, B, hB'.trans inf_le_left, {t}, hyB, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `t' rfl A hA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `ht₁ A hA'`. Rewrite using `[Set.image_singleton]`. Conclude with `ht₂ B _ (hB'.trans inf_le_right)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_pow_ideal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (BY : GlobalTheory.EffCartierData Y.X) (k : ℕ) (ρ : gen Y ⟶ gen X),

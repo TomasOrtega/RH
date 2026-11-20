@@ -10,21 +10,19 @@ namespace Reformulated.AutPerF
 universe u
 
 /- English proof (translation)
-Use `choose! a s hs hxs using h`. Establish `hK : ∀ n, s^[n] x ∈ K`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih => rw [Function.iterate_succ_apply']`. Conclude with `hs _ ih`. Set `b : ℕ → A` to `fun n => ∑ i ∈ Finset.range n, q ^ i * a (s^[i] x)`. Establish `hb : ∀ n, x = ξ * b n + q ^ n * s^[n] x`. Introduce `n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `n with`. Consider the case `zero => simp [b]`. Consider the case `succ n ih`. Establish `h1` using `hxs _ (hK n)`. Simplify using `only [b] at ih ⊢`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.sum_range_succ, Function.iterate_succ_apply']`. Take the linear combination `ih + q ^ n * h1`. Establish `hmem : ∀ (n : ℕ) (z : A), z ∈ (span {q} ^ n • ⊤ : Ideal A) ↔ q ^ n ∣ z`. Introduce `n z`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := span {q}) (M := A) inferInstance (f := b) (by`. Introduce `m n hle`. Rewrite using `[SModEq.sub_mem, hmem]`. Proceed by induction on `n, hle using Nat.le_induction with`. Consider the case `base => simp`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n hle ih`. Simplify using `only [b] at ih ⊢`. Rewrite using `[Finset.sum_range_succ, ← sub_sub]`. Conclude with `dvd_sub ih ((pow_dvd_pow q hle).mul_right _))`. Establish `: x - ξ * L = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `IsHausdorff.haus (I := span {q}) (M := A) inferInstance _ fun n => ?_` and prove the remaining obligations. Establish `h1` using `hL n`. Rewrite `h1`, the goal using `[SModEq.sub_mem, hmem]`. Establish `: x - ξ * L - 0 = ξ * (b n - L) + q ^ n * s^[n] x` using `by linear_combination hb n`. Rewrite using `[this]`.
-
-Conclude with `dvd_add (h1.mul_left _) (dvd_mul_right _ _)`. Rewrite using `[sub_eq_zero.1 this]`. Conclude with `Ideal.mul_mem_right _ _ (mem_span_singleton_self _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_approx {A : Type*} [CommRing A] (q ξ : A) [IsAdicComplete (span {q}) A]
     (K : Set A) (h : ∀ x ∈ K, ∃ a, ∃ y ∈ K, x = ξ * a + q * y) {x : A} (hx : x ∈ K) :
@@ -68,7 +66,7 @@ theorem mem_span_of_approx {A : Type*} [CommRing A] (q ξ : A) [IsAdicComplete (
   exact Ideal.mul_mem_right _ _ (mem_span_singleton_self _)
 
 /- English proof (translation)
-Use `IsHausdorff.haus (I := span {q}) (M := A) inferInstance _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, sub_zero]`. Conclude with `h n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_pow_dvd {A : Type*} [CommRing A] (q : A) [IsHausdorff (span {q}) A]
     {x : A} (h : ∀ n : ℕ, q ^ n ∣ x) : x = 0 := by
@@ -81,7 +79,7 @@ variable {p : ℕ} [Fact p.Prime]
 variable {R : Type u} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap R (FractionRing R) a) hn`. Establish `hi : IsIntegral R z` using `IsIntegral.of_pow hn (hz ▸ isIntegral_algebraMap)`. Take `⟨b, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `⟨b, IsFractionRing.injective R (FractionRing R) (by rw [map_pow, hz])⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_eq_of_isAlgClosed {R : Type u} [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [IsAlgClosed (FractionRing R)] (a : R) {n : ℕ} (hn : 0 < n) : ∃ b : R, b ^ n = a := by
@@ -98,37 +96,37 @@ def sharpEquiv : Tilt p R ≃* Perfection R p :=
   (Perfection.quotientMulEquiv p (span {(p : R)})).symm
 
 /- English proof (translation)
-The claim follows from `Perfection.coeff_zero_symm_quotientMulEquiv x`.
+A detailed English derivation is pending.
 -/
 theorem coeff_zero_sharpEquiv (x : Tilt p R) :
     Perfection.coeffMonoidHom R p 0 (sharpEquiv p R x) = PreTilt.untilt x :=
   Perfection.coeff_zero_symm_quotientMulEquiv x
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_sharpEquiv, MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_sharpEquiv_symm (y : Perfection R p) :
     PreTilt.untilt ((sharpEquiv p R).symm y) = Perfection.coeffMonoidHom R p 0 y := by
   rw [← coeff_zero_sharpEquiv, MulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[Perfection.coeffMonoidHom_pow_p_pow_self, coeff_zero_sharpEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_sharpEquiv_pow (x : Tilt p R) (n : ℕ) :
     Perfection.coeffMonoidHom R p n (sharpEquiv p R x) ^ p ^ n = PreTilt.untilt x := by
   rw [Perfection.coeffMonoidHom_pow_p_pow_self, coeff_zero_sharpEquiv]
 
 /- English proof (translation)
-The claim follows from `Perfection.teichmuller_zero`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem untilt_zero : PreTilt.untilt (0 : Tilt p R) = 0 := Perfection.teichmuller_zero
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h.map _⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h.exists_right_inv`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `hb` using `[← map_mul, ← map_one (Ideal.Quotient.mk _), eq_comm, Ideal.Quotient.eq, mem_span_singleton]`. Take `⟨c, hc⟩` from `hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `ha`. Establish `h1 : a * b ∈ IsLocalRing.maximalIdeal R` using `Ideal.mul_mem_right _ _ ha`. Establish `h2 : (p : R) * c ∈ IsLocalRing.maximalIdeal R` using `Ideal.mul_mem_right _ _ (Fact.out : ¬IsUnit (p : R))`. Establish `: (1 : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[show (1 : R) = a * b + p * c by linear_combination hc]; exact add_mem h1 h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `this isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_iff_isUnit_coeff [IsLocalRing R] (a : R) :
     IsUnit (Ideal.Quotient.mk (span {(p : R)}) a) ↔ IsUnit a := by
@@ -149,9 +147,9 @@ theorem isUnit_iff_isUnit_coeff [IsLocalRing R] (a : R) :
 variable [IsDomain R]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h ▸ untilt_zero⟩` and prove the remaining obligations. Apply `(sharpEquiv p R).injective` to reduce the goal to its premises. Use `Perfection.extMonoid fun n => ?_` and prove the remaining obligations. Establish `h1` using `coeff_sharpEquiv_pow x n`. Establish `h2` using `coeff_sharpEquiv_pow (0 : Tilt p R) n`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h]`. Rewrite `h2` using `[untilt_zero]`. Rewrite `h1`, `h2` using `[pow_eq_zero_iff (pow_pos (Fact.out : p.Prime).pos n).ne']`. Rewrite using `[h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_eq_zero_iff (x : Tilt p R) : PreTilt.untilt x = 0 ↔ x = 0 := by
   refine ⟨fun h => ?_, fun h => h ▸ untilt_zero⟩
@@ -173,15 +171,15 @@ instance isDomain : IsDomain (Tilt p R) := by
   exact NoZeroDivisors.to_isDomain _
 
 /- English proof (translation)
-Use `⟨fun h => map_dvd _ h, fun h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite `h` using `[untilt_zero, zero_dvd_iff, untilt_eq_zero_iff]`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `(Fact.out : p.Prime).pos`. Establish `hne : ∀ n, Perfection.coeffMonoidHom R p n (sharpEquiv p R x) ≠ 0`. Introduce `n hn`. Establish `h1` using `coeff_sharpEquiv_pow x n`. Rewrite `h1` using `[hn, zero_pow (pow_pos hp n).ne', eq_comm, untilt_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx h1`. Establish `hd : ∀ n, Perfection.coeffMonoidHom R p n (sharpEquiv p R x) ∣ Perfection.coeffMonoidHom R p n (sharpEquiv p R y)`. Introduce `n`. Rewrite using `[← IsIntegrallyClosed.pow_dvd_pow_iff (pow_pos hp n).ne', coeff_sharpEquiv_pow, coeff_sharpEquiv_pow]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose c hc using hd`. Establish `hcp : ∀ n, c (n + 1) ^ p = c n`. Introduce `n`. Apply `mul_left_cancel₀ (hne n)` to reduce the goal to its premises. Rewrite using `[← hc, ← Perfection.coeffMonoidHom_pow_p' (sharpEquiv p R x) n, ← mul_pow, ← hc, Perfection.coeffMonoidHom_pow_p']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩ : ∃ z : Perfection R p, ∀ n, Perfection.coeffMonoidHom R p n z = c n` from `⟨⟨c, hcp⟩, fun _ => rfl⟩`. Use `⟨(sharpEquiv p R).symm z, (sharpEquiv p R).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, MulEquiv.apply_symm_apply]`. Use `Perfection.extMonoid fun n => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hc, hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_iff_untilt_dvd [IsIntegrallyClosed R] (x y : Tilt p R) :
     x ∣ y ↔ PreTilt.untilt x ∣ PreTilt.untilt y := by
@@ -226,21 +224,19 @@ instance valuationRing : ValuationRing (Tilt p R) :=
         exact ⟨c, Or.inr hc.symm⟩ }
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_dvd_one, isUnit_iff_dvd_one, dvd_iff_untilt_dvd, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_iff_isUnit_untilt (x : Tilt p R) : IsUnit x ↔ IsUnit (PreTilt.untilt x) := by
   rw [isUnit_iff_dvd_one, isUnit_iff_dvd_one, dvd_iff_untilt_dvd, map_one]
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_isUnit_untilt, ← PreTilt.mk_untilt_eq_coeff_zero, isUnit_iff_isUnit_coeff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_iff_isUnit_coeff_zero (x : Tilt p R) : IsUnit x ↔ IsUnit (PreTilt.coeff 0 x) := by
   rw [isUnit_iff_isUnit_untilt, ← PreTilt.mk_untilt_eq_coeff_zero, isUnit_iff_isUnit_coeff]
 
 /- English proof (translation)
-Introduce `a`. Use `choose r hr using fun b : R => exists_pow_eq_of_isAlgClosed b (Fact.out : p.Prime).pos`. Use `⟨(sharpEquiv p R).symm ⟨fun n => r^[n] a, fun n => ?_⟩, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Function.iterate_succ_apply', hr]`.
-
-Conclude with `(untilt_sharpEquiv_symm _).trans rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untilt_surjective [IsAlgClosed (FractionRing R)] :
     Function.Surjective (PreTilt.untilt : Tilt p R → R) := by
@@ -263,14 +259,14 @@ namespace Ainf
 def xi (ϖ : PFlat p R) : Ainf p R := (p : Ainf p R) - teich p ϖ.1
 
 /- English proof (translation)
-Simplify using `[xi, ϖ.2]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem theta_xi (ϖ : PFlat p R) : theta p R (xi ϖ) = 0 := by
   simp [xi, ϖ.2]
 
 omit [IsAdicComplete (span {(p : R)}) R] in
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem p_dvd_iff (x : Ainf p R) : (p : Ainf p R) ∣ x ↔ x.coeff 0 = 0 := by
   rw [← Ideal.mem_span_singleton, ← WittVector.ker_constantCoeff, RingHom.mem_ker]
@@ -278,7 +274,7 @@ theorem p_dvd_iff (x : Ainf p R) : (p : Ainf p R) ∣ x ↔ x.coeff 0 = 0 := by
 
 omit [IsAdicComplete (span {(p : R)}) R] in
 /- English proof (translation)
-Rewrite using `[p_dvd_iff]`. Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (x - teich p (x.coeff 0)) = 0`. Rewrite using `[map_sub]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem p_dvd_sub_teich (x : Ainf p R) : (p : Ainf p R) ∣ x - teich p (x.coeff 0) := by
   rw [p_dvd_iff]
@@ -287,7 +283,7 @@ theorem p_dvd_sub_teich (x : Ainf p R) : (p : Ainf p R) ∣ x - teich p (x.coeff
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (xi ϖ) = _`. Rewrite using `[xi, map_sub, map_natCast]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_zero_xi (ϖ : PFlat p R) : (xi ϖ).coeff 0 = -ϖ.1 := by
   change WittVector.constantCoeff (xi ϖ) = _
@@ -297,9 +293,9 @@ theorem coeff_zero_xi (ϖ : PFlat p R) : (xi ϖ).coeff 0 = -ϖ.1 := by
 omit [IsAdicComplete (span {(p : R)}) R] in
 
 /- English proof (translation)
-Use `⟨fun h => h.map WittVector.constantCoeff, fun h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `p_dvd_sub_teich x`. Take `⟨t, ht⟩` from `h.map (teich p)`. Establish `hj` using `IsAdicComplete.le_jacobson_bot (span {(p : Ainf p R)}) (mem_span_singleton_self (p : Ainf p R))`. Use `Ideal.mem_jacobson_bot.1 hj (c * ↑t⁻¹)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : x = ((p : Ainf p R) * (c * ↑t⁻¹) + 1) * t`. Rewrite using `[add_mul, mul_assoc, mul_assoc, Units.inv_mul, mul_one, one_mul, ← hc, ht, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `this.mul t.isUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_isUnit_coeff (x : Ainf p R) : IsUnit x ↔ IsUnit (x.coeff 0) := by
   refine ⟨fun h => h.map WittVector.constantCoeff, fun h => ?_⟩
@@ -314,7 +310,7 @@ theorem isUnit_iff_isUnit_coeff (x : Ainf p R) : IsUnit x ↔ IsUnit (x.coeff 0)
   exact this.mul t.isUnit
 
 /- English proof (translation)
-Rewrite using `[PreTilt.mk_untilt_eq_coeff_zero]`. Conclude with `WittVector.mk_fontaineTheta x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_theta (x : Ainf p R) : Ideal.Quotient.mk (span {(p : R)}) (theta p R x) =
     Ideal.Quotient.mk _ (PreTilt.untilt (x.coeff 0)) := by
@@ -327,14 +323,14 @@ instance isDomain : IsDomain (Ainf p R) := inferInstanceAs (IsDomain (WittVector
 instance charZero_of_charZero [CharZero R] : CharZero (Ainf p R) := (theta p R).charZero
 
 /- English proof (translation)
-The claim follows from `WittVector.p_nonzero p _`.
+A detailed English derivation is pending.
 -/
 theorem p_ne_zero : (p : Ainf p R) ≠ 0 := WittVector.p_nonzero p _
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `coeff_zero_xi ϖ`. Rewrite `h1` using `[h, WittVector.zero_coeff, eq_comm, neg_eq_zero]`. Establish `h2` using `ϖ.2`. Rewrite `h2` using `[h1, Tilt.untilt_zero, eq_comm, Nat.cast_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Fact.out : p.Prime).ne_zero h2`.
+A detailed English derivation is pending.
 -/
 theorem xi_ne_zero [CharZero R] (ϖ : PFlat p R) : xi ϖ ≠ 0 := by
   intro h
@@ -347,14 +343,14 @@ theorem xi_ne_zero [CharZero R] (ϖ : PFlat p R) : xi ϖ ≠ 0 := by
 variable [ValuationRing R]
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_isUnit_coeff, Tilt.isUnit_iff_isUnit_untilt, ← Tilt.isUnit_iff_isUnit_coeff (p := p), ← mk_theta, Tilt.isUnit_iff_isUnit_coeff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_iff_isUnit_theta (x : Ainf p R) : IsUnit x ↔ IsUnit (theta p R x) := by
   rw [isUnit_iff_isUnit_coeff, Tilt.isUnit_iff_isUnit_untilt, ← Tilt.isUnit_iff_isUnit_coeff (p := p),
     ← mk_theta, Tilt.isUnit_iff_isUnit_coeff]
 
 /- English proof (translation)
-Introduce `a`. Take `⟨x, hx⟩` from `Tilt.untilt_surjective (p := p) a`. Conclude with `⟨teich p x, by rw [theta_teich, hx]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theta_surjective [IsAlgClosed (FractionRing R)] : Function.Surjective (theta p R) := by
   intro a
@@ -362,7 +358,7 @@ theorem theta_surjective [IsAlgClosed (FractionRing R)] : Function.Surjective (t
   exact ⟨teich p x, by rw [theta_teich, hx]⟩
 
 /- English proof (translation)
-Rewrite `hx` using `[← mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, mk_theta, Ideal.Quotient.eq_zero_iff_mem, mem_span_singleton]`. Take `⟨c, hc⟩` from `(Tilt.dvd_iff_untilt_dvd ϖ.1 (x.coeff 0)).2 (by rw [ϖ.2]; exact hx)`. Take `⟨d, hd⟩` from `p_dvd_sub_teich x`. Rewrite `hd` using `[hc, map_mul]`. Conclude with `⟨-teich p c, d + teich p c, by rw [xi]; linear_combination hd⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_eq_xi_mul_add (ϖ : PFlat p R) {x : Ainf p R} (hx : (p : R) ∣ theta p R x) :
     ∃ a y, x = xi ϖ * a + p * y := by
@@ -376,9 +372,9 @@ theorem exists_eq_xi_mul_add (ϖ : PFlat p R) {x : Ainf p R} (hx : (p : R) ∣ t
 variable [CharZero R]
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx => ?_) ?_` and prove the remaining obligations. Use `mem_span_of_approx (p : Ainf p R) (xi ϖ) (RingHom.ker (theta p R)) ?_ hx` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : theta p R x = 0` using `hx`. Take `⟨a, y, h⟩` from `exists_eq_xi_mul_add ϖ (x := x) (by rw [hx']; exact dvd_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨a, y, ?_, h⟩` and prove the remaining obligations. Rewrite `hx'` using `[h]`. Simplify `hx'` using `[(Fact.out : p.Prime).ne_zero]`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `theta_xi ϖ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_theta (ϖ : PFlat p R) : RingHom.ker (theta p R) = span {xi ϖ} := by
   refine le_antisymm (fun x hx => ?_) ?_
@@ -393,13 +389,13 @@ theorem ker_theta (ϖ : PFlat p R) : RingHom.ker (theta p R) = span {xi ϖ} := b
     exact theta_xi ϖ
 
 /- English proof (translation)
-Rewrite using `[← mem_span_singleton, ← ker_theta, RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_eq_zero_iff (ϖ : PFlat p R) (x : Ainf p R) : theta p R x = 0 ↔ xi ϖ ∣ x := by
   rw [← mem_span_singleton, ← ker_theta, RingHom.mem_ker]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← theta_eq_zero_iff]`. Simplify `h` using `[(Fact.out : p.Prime).ne_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xi_dvd_of_dvd_p_pow_mul (ϖ : PFlat p R) {x : Ainf p R} {k : ℕ}
     (h : xi ϖ ∣ (p : Ainf p R) ^ k * x) : xi ϖ ∣ x := by
@@ -407,9 +403,9 @@ theorem xi_dvd_of_dvd_p_pow_mul (ϖ : PFlat p R) {x : Ainf p R} {k : ℕ}
   simpa [(Fact.out : p.Prime).ne_zero] using h
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Take `⟨y, rfl⟩` from `xi_dvd_of_dvd_p_pow_mul ϖ ((dvd_pow_self _ n.succ_ne_zero).trans h)`. Rewrite `h` using `[pow_succ', mul_left_comm, mul_dvd_mul_iff_left (xi_ne_zero ϖ)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_pow_dvd_of_dvd_p_pow_mul (ϖ : PFlat p R) {n k : ℕ} {x : Ainf p R}
     (h : xi ϖ ^ n ∣ (p : Ainf p R) ^ k * x) : xi ϖ ^ n ∣ x := by
@@ -422,11 +418,11 @@ theorem xi_pow_dvd_of_dvd_p_pow_mul (ϖ : PFlat p R) {n k : ℕ} {x : Ainf p R}
     exact mul_dvd_mul_left _ (ih h)
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h0 : theta p R x = 0` using `eq_zero_of_forall_pow_dvd (p : R) fun k => by`. Take `⟨a, b, e⟩` from `h k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨theta p R a, by rw [e]; simp⟩`. Take `⟨y, rfl⟩` from `(theta_eq_zero_iff ϖ x).1 h0`. Rewrite using `[pow_succ']`. Use `mul_dvd_mul_left _ (ih fun k => ?_)` and prove the remaining obligations. Take `⟨a, b, e⟩` from `h k`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a', rfl⟩ : xi ϖ ∣ a` from `xi_dvd_of_dvd_p_pow_mul ϖ (k := k) ⟨y - xi ϖ ^ n * b, by linear_combination -e⟩`. Conclude with `⟨a', b, mul_left_cancel₀ (xi_ne_zero ϖ) (by linear_combination e)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem xi_pow_dvd_of_forall (ϖ : PFlat p R) {n : ℕ} {x : Ainf p R}
     (h : ∀ k : ℕ, ∃ a b, x = (p : Ainf p R) ^ k * a + xi ϖ ^ n * b) : xi ϖ ^ n ∣ x := by
@@ -445,9 +441,9 @@ theorem xi_pow_dvd_of_forall (ϖ : PFlat p R) {n : ℕ} {x : Ainf p R}
     exact ⟨a', b, mul_left_cancel₀ (xi_ne_zero ϖ) (by linear_combination e)⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, mem_span_singleton]`. Use `xi_pow_dvd_of_forall ϖ fun k => ?_` and prove the remaining obligations. Use `h k` as an intermediate fact. Rewrite `this` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow, ← Ideal.span_insert, Ideal.mem_span_pair]`. Take `⟨a, b, e⟩` from `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, by linear_combination -e⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_span_xi_pow_of_forall (ϖ : PFlat p R) {n : ℕ} {x : Ainf p R}
     (h : ∀ k : ℕ, x ∈ span {(p : Ainf p R)} ^ k ⊔ span {xi ϖ} ^ n) : x ∈ span {xi ϖ} ^ n := by
@@ -460,11 +456,11 @@ theorem mem_span_xi_pow_of_forall (ϖ : PFlat p R) {n : ℕ} {x : Ainf p R}
   exact ⟨a, b, by linear_combination -e⟩
 
 /- English proof (translation)
-Use `eq_zero_of_forall_pow_dvd (p : Ainf p R) fun k => ?_` and prove the remaining obligations. Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h0 : PreTilt.untilt (x.coeff 0) = 0` using `eq_zero_of_forall_pow_dvd (p : R) fun n => by`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : (xi ϖ).coeff 0 ^ n ∣ x.coeff 0`. Use `map_dvd (WittVector.constantCoeff (p := p) (R := Tilt p R)) (h n)` as an intermediate fact. Rewrite `this` using `[map_pow]`. Then use the resulting hypothesis. Rewrite `h1` using `[coeff_zero_xi]`. Establish `h2 : ϖ.1 ^ n ∣ x.coeff 0` using `(pow_dvd_pow_of_dvd (dvd_neg.2 dvd_rfl) n).trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `map_dvd PreTilt.untilt h2`. Rewrite `h3` using `[map_pow, ϖ.2]`. Then use the resulting hypothesis. Take `⟨y, rfl⟩` from `(p_dvd_iff x).2 ((Tilt.untilt_eq_zero_iff _).1 h0)`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih fun n => xi_pow_dvd_of_dvd_p_pow_mul ϖ (k := 1) (by simpa using h n))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_xi_pow_dvd (ϖ : PFlat p R) {x : Ainf p R}
     (h : ∀ n : ℕ, xi ϖ ^ n ∣ x) : x = 0 := by
@@ -486,7 +482,7 @@ theorem eq_zero_of_forall_xi_pow_dvd (ϖ : PFlat p R) {x : Ainf p R}
       xi_pow_dvd_of_dvd_p_pow_mul ϖ (k := 1) (by simpa using h n))
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Use `eq_zero_of_forall_xi_pow_dvd ϖ fun n => ?_` and prove the remaining obligations. Use `Ideal.mem_iInf.1 hx n` as an intermediate fact. Rewrite `this` using `[Ideal.span_singleton_pow, mem_span_singleton]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem iInf_span_xi_pow (ϖ : PFlat p R) : ⨅ n : ℕ, span {xi ϖ} ^ n = ⊥ := by
   rw [eq_bot_iff]
@@ -500,7 +496,7 @@ end Ainf
 def tateRoot (η : tateModule p R) : Tilt p R := (frobeniusEquiv (Tilt p R) p).symm η.1
 
 /- English proof (translation)
-The claim follows from `frobeniusEquiv_symm_pow_p (Tilt p R) p η.1`.
+A detailed English derivation is pending.
 -/
 theorem tateRoot_pow (η : tateModule p R) : tateRoot η ^ p = η.1 :=
   frobeniusEquiv_symm_pow_p (Tilt p R) p η.1
@@ -510,7 +506,7 @@ namespace Ainf
 def omega (ε : tateModule p R) : Ainf p R := ∑ i ∈ Finset.range p, teich p (tateRoot ε) ^ i
 
 /- English proof (translation)
-Rewrite using `[omega, geom_sum_mul, ← map_pow, tateRoot_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem omega_mul (ε : tateModule p R) :
     omega ε * (teich p (tateRoot ε) - 1) = teich p ε.1 - 1 := by
@@ -519,7 +515,7 @@ theorem omega_mul (ε : tateModule p R) :
 variable [IsDomain R]
 
 /- English proof (translation)
-Establish `h` using `congrArg (theta p R) (omega_mul ε)`. Rewrite `h` using `[map_mul, map_sub, map_sub, map_one, theta_teich, theta_teich, show PreTilt.untilt ε.1 = 1 from ε.2, sub_self, mul_eq_zero]`. Conclude with `h.resolve_right (sub_ne_zero.2 hε)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_omega {ε : tateModule p R} (hε : IsPrimitive ε) : theta p R (omega ε) = 0 := by
   have h := congrArg (theta p R) (omega_mul ε)
@@ -530,15 +526,13 @@ theorem theta_omega {ε : tateModule p R} (hε : IsPrimitive ε) : theta p R (om
 variable [ValuationRing R] [CharZero R]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(theta_eq_zero_iff ϖ _).1 (theta_omega hε)`. Set `ρ` to `IsLocalRing.residue (Tilt p R)`. Establish `hc : CharP (IsLocalRing.ResidueField (Tilt p R)) p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 (by rw [← map_natCast ρ, CharP.cast_eq_zero, map_zero])`. Establish `h1 : ρ ϖ.1 = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Tilt.isUnit_iff_isUnit_untilt, ϖ.2]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fact.out`. Establish `h2 : ρ (tateRoot ε) = 1`. Rewrite using `[← sub_eq_zero, ← map_one ρ, ← map_sub, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `h3` using `hu.pow p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[sub_pow_char, tateRoot_pow, one_pow, Tilt.isUnit_iff_isUnit_coeff_zero, map_sub, ← PreTilt.mk_untilt_eq_coeff_zero, show PreTilt.untilt ε.1 = 1 from ε.2, map_one, map_one, sub_self, ← map_zero (Ideal.Quotient.mk (span {(p : R)})), Tilt.isUnit_iff_isUnit_coeff]`. Conclude with `not_isUnit_zero h3`. Establish `h4` using `congrArg (WittVector.map (p := p) ρ) ha`. Simplify using `only [omega, xi, map_sum, map_pow, map_mul, map_sub, map_natCast, WittVector.map_teichmuller, h1, h2, map_one, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, WittVector.teichmuller_zero, sub_zero] at h4`. Establish `h5 : WittVector.map (p` using `p) ρ a = 1 := mul_left_cancel₀ (WittVector.p_nonzero p _) (h4.symm.trans (mul_one _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h6 : ρ (a.coeff 0) = 1`. Rewrite using `[← WittVector.map_coeff, h5, WittVector.one_coeff_zero]`. Establish `hu : IsUnit a`. Rewrite using `[isUnit_iff_isUnit_coeff, ← IsLocalRing.residue_ne_zero_iff_isUnit]`. Conclude with `h6 ▸ one_ne_zero`.
-
-Conclude with `⟨hu.unit, ha.symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem associated_xi_omega (ϖ : PFlat p R) {ε : tateModule p R} (hε : IsPrimitive ε) :
     Associated (xi ϖ) (omega ε) := by
@@ -574,7 +568,7 @@ theorem associated_xi_omega (ϖ : PFlat p R) {ε : tateModule p R} (hε : IsPrim
   exact ⟨hu.unit, ha.symm⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `associated_xi_omega ϖ hε`. Use `⟨u * (teich p (tateRoot ε) - 1), by rw [← mul_assoc, hu, omega_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, map_one, theta_teich]`. Conclude with `mul_ne_zero (u.isUnit.map _).ne_zero (sub_ne_zero.2 hε)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_teich_sub_one_eq (ϖ : PFlat p R) {ε : tateModule p R} (hε : IsPrimitive ε) :
     ∃ b, teich p ε.1 - 1 = xi ϖ * b ∧ theta p R b ≠ 0 := by
@@ -584,7 +578,7 @@ theorem exists_teich_sub_one_eq (ϖ : PFlat p R) {ε : tateModule p R} (hε : Is
   exact mul_ne_zero (u.isUnit.map _).ne_zero (sub_ne_zero.2 hε)
 
 /- English proof (translation)
-Take `⟨ϖ⟩ : Nonempty (PFlat p R)` from `inferInstance`. Rewrite using `[ker_theta ϖ, Ideal.span_singleton_eq_span_singleton]`. Conclude with `associated_xi_omega ϖ hε`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_theta_eq_span_omega [IsAlgClosed (FractionRing R)] {ε : tateModule p R}
     (hε : IsPrimitive ε) : RingHom.ker (theta p R) = span {omega ε} := by
@@ -598,7 +592,7 @@ namespace AinfInv
 
 omit [IsAdicComplete (span {(p : R)}) R] in
 /- English proof (translation)
-Take `⟨k, a, h⟩` from `IsLocalization.Away.surj (p : Ainf p R) x`. Conclude with `⟨k, a, by rw [← h, map_natCast, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_p_pow_mul_eq (x : AinfInv p R) :
     ∃ (k : ℕ) (a : Ainf p R), (p : AinfInv p R) ^ k * x = algebraMap _ _ a := by
@@ -608,7 +602,7 @@ theorem exists_p_pow_mul_eq (x : AinfInv p R) :
 variable [IsDomain R]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors Ainf.p_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_injective : Function.Injective (algebraMap (Ainf p R) (AinfInv p R)) :=
   IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors Ainf.p_ne_zero)
@@ -620,9 +614,9 @@ instance isDomain : IsDomain (AinfInv p R) :=
 variable [ValuationRing R]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨k, a, h⟩` from `IsLocalization.Away.surj (p : R) y`. Take `⟨b, rfl⟩` from `Ainf.theta_surjective (p := p) a`. Take `⟨u, hu⟩` from `isUnit_p (R := R) p`. Use `⟨algebraMap _ _ b * ↑(u⁻¹ ^ k), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, theta_algebraMap, ← h, map_natCast, mul_assoc, ← map_natCast (theta p R), ← map_pow, ← map_mul, ← hu]`. Simplify using `[← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem theta_surjective [IsAlgClosed (FractionRing R)] : Function.Surjective (theta p R) := by
   intro y
@@ -638,7 +632,7 @@ variable [CharZero R]
 
 omit [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R] [ValuationRing R] in
 /- English proof (translation)
-The claim follows from `IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_away_injective :
     Function.Injective (algebraMap R (Localization.Away (p : R))) :=
@@ -646,9 +640,9 @@ theorem algebraMap_away_injective :
     (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero))
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx => ?_) ?_` and prove the remaining obligations. Take `⟨k, a, h⟩` from `exists_p_pow_mul_eq x`. Establish `h1 : theta p R (algebraMap _ _ a) = 0`. Rewrite using `[← h, map_mul, show theta p R x = 0 from hx, mul_zero]`. Rewrite `h1` using `[theta_algebraMap, map_eq_zero_iff _ algebraMap_away_injective, Ainf.theta_eq_zero_iff ϖ]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_span_singleton, ← ((isUnit_p (R := R) p).pow k).dvd_mul_left, h]`. Conclude with `map_dvd _ h1`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `[RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerTheta_eq (ϖ : PFlat p R) :
     kerTheta p R = span {algebraMap (Ainf p R) (AinfInv p R) (Ainf.xi ϖ)} := by
@@ -664,7 +658,7 @@ theorem kerTheta_eq (ϖ : PFlat p R) :
     simp [RingHom.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[kerTheta_eq ϖ, Ideal.span_singleton_pow, mem_span_singleton, ← map_pow]`. Use `⟨fun ⟨y, hy⟩ => ?_, fun h => map_dvd _ h⟩` and prove the remaining obligations. Take `⟨k, a, h⟩` from `exists_p_pow_mul_eq y`. Use `Ainf.xi_pow_dvd_of_dvd_p_pow_mul ϖ (k := k) ⟨a, algebraMap_injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hy, ← h, map_pow (algebraMap (Ainf p R) (AinfInv p R)) (p : Ainf p R), map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -679,7 +673,7 @@ theorem algebraMap_mem_kerTheta_pow_iff (ϖ : PFlat p R) (n : ℕ) (x : Ainf p R
   ring
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, algebraMap_mem_kerTheta_pow_iff ϖ, Ideal.span_singleton_pow, mem_span_singleton]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_kerTheta_pow (ϖ : PFlat p R) (n : ℕ) :
     (kerTheta p R ^ n).comap (algebraMap (Ainf p R) (AinfInv p R)) = span {Ainf.xi ϖ} ^ n := by
@@ -688,7 +682,7 @@ theorem comap_kerTheta_pow (ϖ : PFlat p R) (n : ℕ) :
     mem_span_singleton]
 
 /- English proof (translation)
-Take `⟨k, a, e⟩` from `exists_p_pow_mul_eq x`. Establish `: a = 0` using `Ainf.eq_zero_of_forall_xi_pow_dvd ϖ fun n => (algebraMap_mem_kerTheta_pow_iff ϖ n a).1 (e ▸ Ideal.mul_mem_left _ _ (h n))`. Rewrite `e` using `[this, map_zero]`. Conclude with `(((isUnit_p (R := R) p).pow k).mul_right_eq_zero).1 e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_kerTheta_pow (ϖ : PFlat p R) {x : AinfInv p R}
     (h : ∀ n : ℕ, x ∈ kerTheta p R ^ n) : x = 0 := by
@@ -699,7 +693,7 @@ theorem eq_zero_of_forall_mem_kerTheta_pow (ϖ : PFlat p R) {x : AinfInv p R}
   exact (((isUnit_p (R := R) p).pow k).mul_right_eq_zero).1 e
 
 /- English proof (translation)
-Take `⟨ϖ⟩ : Nonempty (PFlat p R)` from `inferInstance`. Rewrite using `[kerTheta_eq ϖ]`. Conclude with `Submodule.fg_span_singleton _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerTheta_fg [IsAlgClosed (FractionRing R)] : (kerTheta p R).FG := by
   obtain ⟨ϖ⟩ : Nonempty (PFlat p R) := inferInstance

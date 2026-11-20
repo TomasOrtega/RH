@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.Spz
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a ha => by by_contra h have hm : a ∈ maximalIdeal W := (IsLocalRing.mem_maximalIdeal a).2 h rw [hc a hm] at ha exact not_isUnit_zero ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLocalHom_of_map_maximalIdeal {W κ : Type} [CommRing W] [IsLocalRing W] [Field κ] (c : W →+* κ)
     (hc : ∀ x ∈ maximalIdeal W, c x = 0) : IsLocalHom c :=
@@ -27,11 +27,11 @@ theorem isLocalHom_of_map_maximalIdeal {W κ : Type} [CommRing W] [IsLocalRing W
     exact not_isUnit_zero ha⟩
 
 /- English proof (translation)
-Use `letI : Algebra (ResidueField R) (ResidueField W) := (ResidueField.map ψ).toAlgebra`. Use `letI : Algebra (ResidueField R) (ResidueField V) := (ResidueField.map g).toAlgebra`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (ResidueField W ⊗[ResidueField R] ResidueField V)`. Use `letI := Ideal.Quotient.field M`. Set `q` to `Ideal.Quotient.mk M`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `⟨_ ⧸ M, inferInstance, q.comp ((Algebra.TensorProduct.includeLeftRingHom).comp (residue W)), q.comp ((Algebra.TensorProduct.includeRight.toRingHom).comp (residue V)), fun x hx => ?_, fun x hx => ?_, RingHom.ext fun r => ?_⟩` and prove the remaining obligations. Simplify using `[(IsLocalRing.residue_eq_zero_iff x).2 hx]`. Simplify using `[(IsLocalRing.residue_eq_zero_iff x).2 hx]`. Simplify using `only [RingHom.comp_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← ResidueField.map_residue ψ r, ← ResidueField.map_residue g r]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.includeLeftRingHom (algebraMap (ResidueField R) (ResidueField W) (residue R r)) = Algebra.TensorProduct.includeRight (algebraMap (ResidueField R) (ResidueField V) (residue R r))`. Rewrite using `[Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.includeRight_apply, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_common_residue {R W V : Type} [CommRing R] [IsLocalRing R] [CommRing W] [IsLocalRing W] [CommRing V]
     [IsLocalRing V] (ψ : R →+* W) [IsLocalHom ψ] (g : R →+* V) [IsLocalHom g] :
@@ -56,11 +56,11 @@ theorem exists_common_residue {R W V : Type} [CommRing R] [IsLocalRing R] [CommR
       Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Use `haveI := hψ`. Use `haveI := hg₂`. Use `haveI := hj`. Take `⟨κ, _, c, b₂, hc0, hb0, ec⟩` from `exists_common_residue ψ₀ g₂`. Establish `hcl : IsLocalHom c` using `isLocalHom_of_map_maximalIdeal c hc0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb₂` using `GlobalTheory.TorusPart.map_pow_one_eq_zero hb0`. Establish `hW` using `isGrpPullback_pullback HR (spMap ψ₀)`. Establish `hm` using `isGrpPullback_pullback ((Over.pullback (spMap ψ₀)).obj HR) (spMap c)`. Take `⟨m₂, hm₂, em₂⟩` from `GlobalTheory.SpreadTrait.pull_cancel hβ₂ (spMap b₂) ((hm.comp hW).congr ((GlobalTheory.SpreadTrait.spMap_comp' ψ₀ c).trans ((congrArg spMap ec).trans (GlobalTheory.SpreadTrait.spMap_comp' g₂ b₂).symm)) rfl)`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.TorusPart.mono_gtTorus_and_factor (U₂.gt 0) hb₂ hm₂).2 _ (GlobalTheory.TorusPart.pullTorus hm j) inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ρ, W, inferInstance, inferInstance, inferInstance, spMap ψ₀ ≫ ιB, (Over.pullback (spMap ψ₀)).obj HR, inferInstance, inferInstance, pullback.fst HR.hom (spMap ψ₀) ≫ φR, j, Ω, inferInstance, α, b₁, hb₁, GΩ, inferInstance, n, hn, n₁, hn₁, κ, inferInstance, c, b₂, hb₂, _, inferInsta …` and prove the remaining obligations. Rewrite using `[← hξ₁, ← Category.assoc, ← Category.assoc, GlobalTheory.SpreadTrait.spMap_comp', GlobalTheory.SpreadTrait.spMap_comp', eα]`. Rewrite using `[← hξ₂, ← Category.assoc, ← Category.assoc, GlobalTheory.SpreadTrait.spMap_comp', GlobalTheory.SpreadTrait.spMap_comp', ec]`. Rewrite using `[← Category.assoc, hnn, Category.assoc, eβ₁]`. Rewrite using `[← eβ₂, ← Category.assoc m₂, em₂, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spread₂_of_trait {B : Scheme.{0}} (H : Over B) [GrpObj H]
     {V₁ : Type} [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] {D₁ : DegData V₁ (maximalIdeal V₁)}
@@ -107,27 +107,25 @@ theorem spread₂_of_trait {B : Scheme.{0}} (H : Over B) [GrpObj H]
   · rw [← eβ₂, ← Category.assoc m₂, em₂, Category.assoc]
 
 /- English proof (translation)
-Introduce `B H _ _ hH V₁ _ _ _ hV₁ G₁ _ _ hG₁ D₁ A₁ U₁ ξ₁ β₁ hβ₁ V₂ _ _ _ hV₂ G₂ _ _ hG₂ D₂ A₂ U₂ ξ₂ β₂ hβ₂ hBi hBn hsp`. Use `haveI := hBi`. Use `haveI := hBn`. Set `R : Type` to `B.presheaf.stalk (ξ₂ (closedPoint V₂))`. Set `ιB : Sp R ⟶ B` to `B.fromSpecStalk (ξ₂ (closedPoint V₂))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `HR` to `(Over.pullback ιB).obj H`. Establish `hHR : IsSemiAbelian HR` using `IsSemiAbelian.pullback ιB H hH`. Use `haveI : IsCommMonObj HR := hHR.comm`. Establish `hR` using `isGrpPullback_pullback H ιB`. Set `g₁ : R →+* V₁` to `(B.presheaf.stalkSpecializes hsp ≫ Scheme.stalkClosedPointTo ξ₁).hom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g₂ : R →+* V₂` to `(Scheme.stalkClosedPointTo ξ₂).hom`. Establish `hg₂ : IsLocalHom g₂` using `Scheme.isLocalHom_stalkClosedPointTo' ξ₂`. Establish `hξ₁ : spMap g₁ ≫ ιB = ξ₁`. Establish `e : spMap g₁ = Spec.map (Scheme.stalkClosedPointTo ξ₁) ≫ Spec.map (B.presheaf.stalkSpecializes hsp)`. Rewrite using `[← Spec.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[e, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Establish `hξ₂ : spMap g₂ ≫ ιB = ξ₂` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₂`. Take `⟨β₁', hβ₁', eβ₁⟩` from `GlobalTheory.SpreadTrait.pull_cancel hR (spMap g₁) (hβ₁.congr hξ₁.symm rfl)`. Take `⟨β₂', hβ₂', eβ₂⟩` from `GlobalTheory.SpreadTrait.pull_cancel hR (spMap g₂) (hβ₂.congr hξ₂.symm rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `hl : IsLocalHom g₁`. Use `haveI := hl`. Set `κ₁` to `ResidueField V₁`. Establish `hC : IsLocalHom (PowerSeries.C (R` using `κ₁)) := ⟨fun a ha => by simpa using ha.map (PowerSeries.constantCoeff (R := κ₁))⟩`. Set `c₁ : V₁ →+* PowerSeries κ₁` to `(PowerSeries.C (R := κ₁)).comp (residue V₁)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcl : IsLocalHom c₁` using `RingHom.isLocalHom_comp _ _`. Set `ψ₀ : R →+* PowerSeries κ₁` to `c₁.comp g₁`. Establish `hψ : IsLocalHom ψ₀` using `RingHom.isLocalHom_comp _ _`. Set `α` to `algebraMap (PowerSeries κ₁) (FractionRing (PowerSeries κ₁))`. Establish `hα : Function.Injective α` using `IsFractionRing.injective _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `b₁ : V₁ →+* FractionRing (PowerSeries κ₁)` to `α.comp c₁`. Establish `hc0 : ∀ x ∈ maximalIdeal V₁, c₁ x = 0` using `fun x hx => by`. Simplify using `[c₁, (IsLocalRing.residue_eq_zero_iff x).2 hx]`. Establish `hc : ∀ x ∈ maximalIdeal V₁ ^ (0 + 1), c₁ x = 0` using `GlobalTheory.TorusPart.map_pow_one_eq_zero hc0`. Establish `hb : ∀ x ∈ maximalIdeal V₁ ^ (0 + 1), b₁ x = 0` using `fun x hx => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[b₁, hc x hx]`. Establish `hm₁` using `isGrpPullback_pullback HR (spMap ψ₀)`. Take `⟨mc, hmc, hmcβ⟩` from `GlobalTheory.SpreadTrait.pull_cancel hβ₁' (spMap c₁) (hm₁.congr (GlobalTheory.SpreadTrait.spMap_comp' g₁ c₁).symm rfl)`. Establish `hn` using `isGrpPullback_pullback ((Over.pullback (spMap ψ₀)).obj HR) (spMap α)`. Establish `hn' : IsGrpPullback _ G₁ (spMap b₁) _` using `(hn.comp hmc).congr (GlobalTheory.SpreadTrait.spMap_comp' c₁ α) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hnn : pullback.fst ((Over.pullback (spMap ψ₀)).obj HR).hom (spMap α) ≫ pullback.fst HR.hom (spMap ψ₀) = (pullback.fst ((Over.pullback (spMap ψ₀)).obj HR).hom (spMap α) ≫ mc) ≫ β₁'`. Rewrite using `[Category.assoc, hmcβ]`. Conclude with `spread₂_of_trait H U₁ ξ₁ β₁ U₂ ξ₂ β₂ ιB HR _ hR g₁ β₁' eβ₁ hξ₁ g₂ hg₂ β₂' hβ₂' eβ₂ hξ₂ (PowerSeries κ₁) ψ₀ hψ _ α hα b₁ hb rfl _ _ hn _ hn' hnn (GlobalTheory.TorusPart.gtTorus (U₁.gt 0) hc hmc) inferInstance (GlobalTheory.TorusPart.pullTorus_gtTorus (U₁.gt 0) hc hb hmc hn' hn rfl …`. Take `⟨W, _, _, _, ψ₀, Ω, _, αK, b₁, hψ, hb, eα, hT⟩` from `GlobalTheory.T.exists_trait_nonlocal_torusExtension' R HR hHR V₁ g₁ hl haveI := hψ`. Set `alg` to `algebraMap W (FractionRing W)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hα : Function.Injective (αK.comp alg)` using `αK.injective.comp (IsFractionRing.injective W (FractionRing W))`. Establish `hm₁` using `isGrpPullback_pullback HR (spMap ψ₀)`. Establish `hG₁' : IsSemiAbelian ((Over.pullback (spMap ψ₀)).obj HR)` using `IsSemiAbelian.pullback _ HR hHR`. Take `⟨φ₁, hφ₁, -⟩` from `GlobalTheory.SpreadTrait.pull_cancel hm₁ (spMap alg) ((isGrpPullback_pullback HR (spMap (alg.comp ψ₀))).congr (GlobalTheory.SpreadTrait.spMap_comp' ψ₀ alg).symm rfl)`. Establish `hn'` using `isGrpPullback_pullback G₁ (spMap b₁)`.
-
-Take `⟨n, hn, hnm⟩` from `GlobalTheory.SpreadTrait.pull_cancel hm₁ (spMap (αK.comp alg)) ((hn'.comp hβ₁').congr ((GlobalTheory.SpreadTrait.spMap_comp' g₁ b₁).trans ((congrArg spMap eα.symm).trans (GlobalTheory.SpreadTrait.spMap_comp' ψ₀ (αK.comp alg)).symm)) rfl)`. Establish `hb' : ∀ x ∈ maximalIdeal V₁ ^ (0 + 1), b₁ x = 0` using `GlobalTheory.TorusPart.map_pow_one_eq_zero hb`. Take `⟨j, hj, ej⟩` from `GlobalTheory.T.extend_splitTorus_hom_over_dvr W ((Over.pullback (spMap ψ₀)).obj HR) hG₁' _ φ₁ hφ₁ hT Ω αK _ n hn _ (GlobalTheory.TorusPart.gtTorus (U₁.gt 0) hb' hn') inferInstance`. Conclude with `spread₂_of_trait H U₁ ξ₁ β₁ U₂ ξ₂ β₂ ιB HR _ hR g₁ β₁' eβ₁ hξ₁ g₂ hg₂ β₂' hβ₂' eβ₂ hξ₂ W ψ₀ hψ Ω (αK.comp alg) hα b₁ hb' eα _ n hn _ hn' hnm j hj ej`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_spread₂ : ∀ (B : Scheme.{0}) (H : Over B) [GrpObj H] [IsCommMonObj H], IsSemiAbelian H → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], GlobalTheory.Mum.Base V₁ → ∀ (G₁ : Over (Sp V₁)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (D₁ : DegData V₁ (maximalIdeal V₁)) (A₁ : PolAV (Sp (FractionRing V₁))) (U₁ : Unif (maximalIdeal V₁) D₁ A₁ G₁) (ξ₁ : Sp V₁ ⟶ B) (β₁ : G₁.left ⟶ H.left), IsGrpPullback G₁ H ξ₁ β₁ → ∀ (V₂ : Type) [CommRing V₂] [IsDomain V₂] [IsLocalRing V₂], GlobalTheory.Mum.Base V₂ → ∀ (G₂ : Over (Sp V₂)) [GrpObj G₂] [IsCommMonObj G₂], IsSemiAbelian G₂ → ∀ (D₂ : DegData V₂ (maximalIdeal V₂)) (A₂ : PolAV (Sp (FractionRing V₂))) (U₂ : Unif (maximalIdeal V₂) D₂ A₂ G₂) (ξ₂ : Sp V₂ ⟶ B) (β₂ : G₂.left ⟶ H.left), IsGrpPullback G₂ H ξ₂ β₂ → IsIntegral B → IsLocallyNoetherian B → ξ₁ (closedPoint V₁) ⤳ ξ₂ (closedPoint V₂) → ∃ ρ : D₂.toPre.X →+ D₁.toPre.X, Spread₂ H U₁ ξ₁ β₁ U₂ ξ₂ β₂ ρ := by
   intro B H _ _ hH V₁ _ _ _ hV₁ G₁ _ _ hG₁ D₁ A₁ U₁ ξ₁ β₁ hβ₁ V₂ _ _ _ hV₂ G₂ _ _ hG₂ D₂ A₂ U₂ ξ₂ β₂ hβ₂ hBi hBn hsp

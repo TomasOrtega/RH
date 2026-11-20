@@ -8,9 +8,9 @@ open scoped Matrix
 namespace GlobalTheory.Ord2.GwCount
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NormBoundOfSpan.norm_le_of_mem_span`. Consider the case `exact _root_.GlobalTheory.NormBoundOfSpan.norm_le_of_mem_span`. Consider the case `(apply _root_.GlobalTheory.NormBoundOfSpan.norm_le_of_mem_span <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormBoundOfSpan.norm_le_of_mem_span <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NormBoundOfSpan.norm_le_of_mem_span <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormBoundOfSpan.norm_le_of_mem_span ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_bound_of_mem_span {K E ι : Type} [NormedField K] [AddCommGroup E] [Module K E] (φ : ι → E →ₗ[K] K)
     (f : E →ₗ[K] K) (hf : f ∈ Submodule.span K (Set.range φ)) :
@@ -24,13 +24,13 @@ theorem exists_bound_of_mem_span {K E ι : Type} [NormedField K] [AddCommGroup E
   | (intros; exact _root_.GlobalTheory.NormBoundOfSpan.norm_le_of_mem_span ..)
 
 /- English proof (translation)
-Set `φ : Γ × Fin 2 → (K × (Fin 2 → K)) →ₗ[K] K` to `fun j => (LinearMap.proj j.2).comp (((LinearMap.fst K K (Fin 2 → K)).smulRight (Y j.1)) - ((Matrix.toLin' (M j.1) - LinearMap.id).comp (LinearMap.snd K K (Fin 2 → K))))`. Establish `hφ : ∀ s i a x, φ (s, i) (a, x) = (a • Y s) i - (M s *ᵥ x - x) i`. Introduce `s i a x`. Simplify using `only [φ, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smulRight_apply, LinearMap.fst_apply, LinearMap.snd_apply, LinearMap.id_apply, Matrix.toLin'_apply, LinearMap.proj_apply, Pi.sub_apply]`. Establish `hker : ⨅ j, LinearMap.ker (φ j) ≤ LinearMap.ker (LinearMap.fst K K (Fin 2 → K))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, x⟩ h`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at h`. Simplify using `only [LinearMap.mem_ker, LinearMap.fst_apply]`. Assume the negation of the conclusion as `ha`. Use `hY ⟨a⁻¹ • x, fun s => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : a • Y s = M s *ᵥ x - x`. Use function extensionality and compare the values at `i`. Use `h (s, i)` as an intermediate fact. Rewrite `this` using `[hφ]`. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_smul, ← smul_sub, ← h1, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Take `⟨C, hC, h⟩` from `exists_bound_of_mem_span φ _ (FiniteDimensional.mem_span_of_iInf_ker_le_ker hker)`. Conclude with `⟨C, hC, fun a x r hr hb => h (a, x) r hr fun j => by rw [show j = (j.1, j.2) from rfl, hφ]; exact hb _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bound_multiplier {K Γ : Type} [NormedField K] (M : Γ → Matrix (Fin 2) (Fin 2) K) (Y : Γ → Fin 2 → K)
     (hY : ¬ ∃ x : Fin 2 → K, ∀ s, Y s = M s *ᵥ x - x) :
@@ -59,13 +59,13 @@ theorem exists_bound_multiplier {K Γ : Type} [NormedField K] (M : Γ → Matrix
   exact ⟨C, hC, fun a x r hr hb => h (a, x) r hr fun j => by rw [show j = (j.1, j.2) from rfl, hφ]; exact hb _ _⟩
 
 /- English proof (translation)
-Introduce `l hl Ω _ _ _ W c Y _ _ _ hY`. Take `⟨C, hC, h⟩` from `exists_bound_multiplier (mat W) Y (by`. Introduce and unpack `⟨x, hx⟩`. Use `hY ⟨x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hx s]`. Simplify using `[ReciprocityTheory.Gal.d0, Loc.colRep, Matrix.toLin'_apply])`. Establish `hlt : ‖((l : ℕ) : Qbar l)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (show (0 : ℝ) < (C + 1)⁻¹ by positivity) hlt`. Use `⟨k, fun n a _ ⟨x, _, hx⟩ => ?_⟩` and prove the remaining obligations. Establish `h1` using `h a x _ (norm_nonneg _) fun s i => hx s (Subgroup.mem_top s) i`. Unfold `Cg`. Rewrite using `[sub_zero, norm_mul, norm_pow _ k]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : C * ‖((l : ℕ) : Qbar l)‖ ^ k ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem closed_multiplier : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (Y : G ℚ Ω → Fin 2 → Qbar l), (∀ s i j, mat W s i j ∈ c.O) → Y ∈ Z1 (Loc.colRep W) → (∀ s i, Y s i ∈ c.O) → Y ∉ ReciprocityTheory.Gal.B1 (Loc.colRep W) → ∃ k0 : ℕ, ∀ (n : ℕ) (a : Qbar l), a ∈ c.O → Cob1 c n W ⊤ (fun s => a • Y s) → Cg n (a * ((l : ℕ) : Qbar l) ^ k0) 0 := by
   intro l hl Ω _ _ _ W c Y _ _ _ hY

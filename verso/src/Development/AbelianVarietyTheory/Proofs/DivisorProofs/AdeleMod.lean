@@ -9,13 +9,11 @@ open scoped TensorProduct
 namespace GlobalTheory.AdeleTensorModule
 
 /- English proof (translation)
-Establish `hN0 : (N : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `hNF : (N : F) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Take `⟨a, ha⟩` from `Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.AdeleIntA.exists_approx (R := 𝓞 F) (K := F) y hy (N : 𝓞 F) hN0`. Use `⟨a, algebraMap F (FiniteAdeleRing (𝓞 F) F) ((N : F)⁻¹) * (y - algebraMap F (FiniteAdeleRing (𝓞 F) F) (a : F)), fun v => ?_, ?_⟩` and prove the remaining obligations. Use `show algebraMap F (v.adicCompletion F) ((N : F)⁻¹) * (y v - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, map_inv₀, map_inv₀]`. Establish `hv : Valued.v (algebraMap F (v.adicCompletion F) (N : F)) = v.intValuation (N : 𝓞 F)`. Use `Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.AdeleIntA.val_R (K := F) v (N : 𝓞 F)` as an intermediate fact. Rewrite `this` using `[map_natCast (algebraMap (𝓞 F) F)]`. Then use the resulting hypothesis. Establish `h0 : v.intValuation (N : 𝓞 F) ≠ 0` using `v.intValuation_ne_zero _ hN0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ha v`. Use `_ = 1 := inv_mul_cancel₀ h0`. Rewrite using `[← mul_assoc, ← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)) N, ← map_mul, mul_inv_cancel₀ hNF, map_one, one_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem adele_mod (F : Type) [Field F] [NumberField F] (N : ℕ) (hN : 1 ≤ N)
     (y : FiniteAdeleRing (𝓞 F) F) (hy : y ∈ Formalism.UG.intAd F) :
@@ -44,17 +42,17 @@ theorem adele_mod (F : Type) [Field F] [NumberField F] (N : ℕ) (hN : 1 ≤ N)
     ring
 
 /- English proof (translation)
-Use `set S := Formalism.UG.tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (Formalism.UG.intOE E) (Formalism.UG.intAd F) with hS`. Use `set ι := Formalism.UG.inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F) with hι`. Establish `hl : ∀ a ∈ Formalism.UG.intOE E, ι a ∈ S` using `fun a ha => Subring.subset_closure (Or.inl ⟨⟨a, ha⟩, rfl⟩)`. Establish `hr : ∀ w ∈ Formalism.UG.intAd F, (1 : E) ⊗ₜ[F] w ∈ S` using `fun w hw => Subring.subset_closure (Or.inr ⟨⟨w, hw⟩, rfl⟩)`. Proceed by induction on `hx using Subring.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the case `mem x hx`. Break down `hx with ⟨a, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Conclude with `⟨a, a.2, 0, zero_mem _, by rw [mul_zero, add_zero]; rfl⟩`. Take `⟨a, w, hw, e⟩` from `adele_mod F N hN y y.2`. Use `⟨algebraMap F E (a : F), ⟨algebraMap (𝓞 F) (𝓞 E) a, rfl⟩, (1 : E) ⊗ₜ[F] w, hr w hw, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg (Algebra.TensorProduct.includeRight (R := F) (A := E) (B := FiniteAdeleRing (𝓞 F) F)) e`. Rewrite `e2` using `[map_add, map_mul, map_natCast, AlgHom.commutes]`. Conclude with `e2`. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by rw [map_zero, mul_zero, add_zero]⟩`. Consider the case `one => exact ⟨1, one_mem _, 0, zero_mem _, by rw [map_one, mul_zero, add_zero]⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ ihx ihy`. Take `⟨a, ha, z, hz, rfl⟩` from `ihx`. Take `⟨b, hb, w, hw, rfl⟩` from `ihy`. Conclude with `⟨a + b, add_mem ha hb, z + w, add_mem hz hw, by rw [map_add]; ring⟩`. Consider the case `neg x _ ihx`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, ha, z, hz, rfl⟩` from `ihx`. Conclude with `⟨-a, neg_mem ha, -z, neg_mem hz, by rw [map_neg]; ring⟩`. Consider the case `mul x y _ _ ihx ihy`. Take `⟨a, ha, z, hz, rfl⟩` from `ihx`. Take `⟨b, hb, w, hw, rfl⟩` from `ihy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨a * b, mul_mem ha hb, ι a * w + z * ι b + (N : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * (z * w), add_mem (add_mem (mul_mem (hl a ha) hw) (mul_mem hz (hl b hb))) (mul_mem (natCast_mem S N) (mul_mem hz hw)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tens_mod (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (N : ℕ) (hN : 1 ≤ N) (x : E ⊗[F] FiniteAdeleRing (𝓞 F) F)
@@ -97,7 +95,7 @@ theorem tens_mod (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E
     rw [map_mul]; ring
 
 /- English proof (translation)
-Introduce `{D} N hN x hx` and use `tens_mod ℚ D.host.E N hN x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {D : Formalism.BasicNotions.D7} (N : ℕ), (1 : ℕ) ≤ N → ∀ x ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D,
     ∃ a ∈ Formalism.UG.intOE ((Formalism.BasicNotions.D7.host D).E), ∃ z ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D,

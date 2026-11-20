@@ -15,11 +15,9 @@ noncomputable section
 namespace GlobalTheory.LeviConjOne
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB _ hXY hH m hm μN hμ g₀ f hf`. Establish `hX₁ : X₁.IsHerm σ B (r - 1) (s - 1)` using `GlobalTheory.HermPlaneCompl.isHerm_compl hB hXY hH`. Take `⟨hTG, hLCU, hSCU, hT2U⟩` from `GlobalTheory.LeviModulus.topUA σ X.J`. Use `haveI := hTG`. Use `haveI := hLCU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hSCU`. Use `haveI := hT2U`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Establish `hf' : Measurable fun x : UA σ X.J => f (x * m 1 g₀)` using `hf.comp (continuous_id.mul continuous_const).measurable`. Establish `key : ∫⁻ u, f (m 1 g₀ * u.1 * (m 1 g₀)⁻¹ * m 1 g₀) ∂μN = ENNReal.ofReal ((absE F E 1 : ℝ) ^ (1 - (n : ℝ))) * ∫⁻ u, f (u.1 * m 1 g₀) ∂μN` using `GlobalTheory.T.levi_unipotent_haar_modulus F E σ B n n₁ (reS X Y) X₁ r s (r - 1) (s - 1) i₀ i₁ H hB hXY hX₁ hH m hm μN hμ 1 g₀ (fun x : UA σ X.J => f (x * m 1 g₀)) hf'`.
-
-Simplify using `only [map_one, NNReal.coe_one, Real.one_rpow, ENNReal.ofReal_one, one_mul, inv_mul_cancel_right] at key`. Conclude with `key.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_levi_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X Y : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), B.IsGood σ → X.IsHerm σ B r s → (reS X Y).IsHerm σ B r s → H.IsAdapted σ B (reS X Y) X₁ i₀ i₁ → ∀ m : (AE F E)ˣ → UA σ X₁.J → UA σ X.J, (∀ l g₀, IsLevi (W₁ := X₁) H l g₀ (m l g₀)) → ∀ μN : Measure (unip σ X H), μN.IsHaarMeasure → ∀ (g₀ : UA σ X₁.J) (f : UA σ X.J → ℝ≥0∞), Measurable f → ∫⁻ u, f (u.1 * m 1 g₀) ∂μN = ∫⁻ u, f (m 1 g₀ * u.1) ∂μN := by
   intro F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB _ hXY hH m hm μN hμ g₀ f hf

@@ -14,7 +14,7 @@ namespace GlobalTheory.TrueGeo.InducedPull
 variable {X X' Z : Scheme.{0}}
 
 /- English proof (translation)
-Establish `: (B.pull a).g i i' = res l (pullU a _ (B.g (i PUnit.unit) (i' PUnit.unit)))`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`. Conclude with `(Fintype.prod_unique _).trans (zpow_one _)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_pull_g (B : LB X) (a : Z ⟶ X) (i i' : (B.pull a).ι)
     (l : (B.pull a).U i ⊓ (B.pull a).U i' ≤ a ⁻¹ᵁ (B.U (i PUnit.unit) ⊓ B.U (i' PUnit.unit))) :
@@ -26,23 +26,23 @@ theorem val_pull_g (B : LB X) (a : Z ⟶ X) (i i' : (B.pull a).ι)
   rfl
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem inf_le (B : LB X) (a : Z ⟶ X) (i i' : (B.pull a).ι) :
     (B.pull a).U i ⊓ (B.pull a).U i' ≤ a ⁻¹ᵁ (B.U (i PUnit.unit) ⊓ B.U (i' PUnit.unit)) :=
   fun _ hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (Set.mem_iInter.1 hx PUnit.unit) PUnit.unit`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_le (B : LB X) (a : X' ⟶ X) (b : Z ⟶ X') (i : ((B.pull a).pull b).ι) :
     ((B.pull a).pull b).U i ≤ (B.pull (b ≫ a)).U fun _ => i PUnit.unit PUnit.unit :=
   fun _ hx => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 (Set.mem_iInter.1 hx PUnit.unit) PUnit.unit
 
 /- English proof (translation)
-Use `⟨LB.isLB_pull (LB.isLB_pull hB a) b, fun i j h => ?_, fun i x hx => hr.isEqn _ x (chart_le B a b i hx)⟩` and prove the remaining obligations. Establish `l : ((B.pull a).pull b).U i ⊓ ((B.pull a).pull b).U j ≤ (B.pull (b ≫ a)).U (fun _ => i PUnit.unit PUnit.unit) ⊓ (B.pull (b ≫ a)).U fun _ => j PUnit.unit PUnit.unit` using `inf_le_inf (chart_le B a b i) (chart_le B a b j)`. Rewrite using `[hr.isRatSec _ _ (l h), ← fnOf_resG l h, val_pull_g _ b i j (inf_le _ b i j), val_pull_g B a _ _ (inf_le B a _ _)]`. Use `congr 2`. Use `(congrArg _ (val_pull_g B (b ≫ a) _ _ (inf_le B _ _ _))).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `(Scheme.Hom.appLE_map (b ≫ a) (inf_le B (b ≫ a) (fun _ => i PUnit.unit PUnit.unit) fun _ => j PUnit.unit PUnit.unit) (homOfLE l).op).trans (Scheme.Hom.appLE_comp_appLE b a _ _ _ (inf_le B a (i PUnit.unit) (j PUnit.unit)) (inf_le _ b i j)).symm`. Conclude with `RingHom.congr_fun (congrArg CommRingCat.Hom.hom e) (B.g (i PUnit.unit PUnit.unit) (j PUnit.unit PUnit.unit)).val`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem presents_pull_pull [IsIntegral Z] {B : LB X} (hB : B.IsLB) (a : X' ⟶ X) (b : Z ⟶ X')
     {D : CartierDiv Z} {r : (B.pull (b ≫ a)).ι → Z.functionFieldˣ} (hr : Presents D (B.pull (b ≫ a)) r) :
@@ -65,11 +65,9 @@ theorem presents_pull_pull [IsIntegral Z] {B : LB X} (hB : B.IsLB) (a : X' ⟶ X
     (B.g (i PUnit.unit PUnit.unit) (j PUnit.unit PUnit.unit)).val
 
 /- English proof (translation)
-Introduce `F _ _ C Y A M N π hπ hj L k cf h`. Take `⟨MX, Mp, Mar, Mj, Mpb⟩` from `M`. Simplify using `only at π hπ hj L`. Substitute `hj` using the available equality. Take `⟨h₀, r, hr, h₁, h₂⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨h₀, fun i => r fun _ => i PUnit.unit PUnit.unit, presents_pull_pull L.isLB π N.j hr, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ y y' i f hy hi hf`. Rewrite using `[h₁ σ y (Points.PtsOver.map π hπ _ y') (fun _ => i PUnit.unit PUnit.unit) f ((congrArg (· ≫ π) hy).trans (Category.assoc _ _ _)) (chart_le L.B π N.j i hi) hf]`. Conclude with `congrArg (fun t => _ * Real.exp (-t)) ((L.φ _).pull_φ π hπ _ y').symm`. Introduce `v e y yt i hy hi`.
-
-Conclude with `h₂ v e y (yt ≫ π) (fun _ => i PUnit.unit PUnit.unit) ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ π) hy).trans (Category.assoc _ _ _))) fun x hx => Set.mem_iInter.1 (hi hx) PUnit.unit`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem induced_pull : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y)
     (M N : TrueGeo.Model Y) (π : N.X ⟶ M.X) (hπ : π ≫ M.p = N.p), N.j ≫ π = M.j →

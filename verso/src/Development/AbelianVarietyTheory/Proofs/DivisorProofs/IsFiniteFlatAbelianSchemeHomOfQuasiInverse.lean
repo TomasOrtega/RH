@@ -17,11 +17,9 @@ namespace GlobalTheory.IsogFiniteFlat
 open GlobalTheory.UnramifiedEndFlat GlobalTheory.FiniteEndFlat
 
 /- English proof (translation)
-Establish `hs` using `strictMono_of_locallyQuasiFinite g`. Establish `h1 : genericPoint Y ⤳ f (genericPoint X)` using `genericPoint_specializes _`. Establish `h2 : g (genericPoint Y) ⤳ genericPoint X`. Rewrite using `[← h]`. Conclude with `h1.map g.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : g (genericPoint Y) = genericPoint X` using `(h2.antisymm (genericPoint_specializes _)).eq`. Assume the negation of the conclusion as `hne`. Establish `hlt : f (genericPoint X) < genericPoint Y` using `lt_of_le_not_ge h1 fun h' => hne (h1.antisymm (show f (genericPoint X) ⤳ genericPoint Y from h')).eq.symm`. Use `hs hlt` as an intermediate fact. Rewrite `this` using `[h3, h]`.
-
-Conclude with `lt_irrefl _ this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_genericPoint_of_comp {X Y : Scheme.{0}} [IrreducibleSpace X] [IrreducibleSpace Y]
     (f : X ⟶ Y) (g : Y ⟶ X) [LocallyQuasiFinite g]
@@ -40,21 +38,19 @@ theorem apply_genericPoint_of_comp {X Y : Scheme.{0}} [IrreducibleSpace X] [Irre
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Use `LocallyOfFiniteType.jacobsonSpace G.hom` as an intermediate fact. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: IsLocallyNoetherian G'.left` using `LocallyOfFiniteType.isLocallyNoetherian G'.hom`. Set `o : G.left` to `η[G].left (IsLocalRing.closedPoint K)`. Establish `hfo : (φ.left ≫ φ'.left) o = o`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: η[G] ≫ (φ ≫ φ') = η[G]` using `IsMonHom.one_hom (φ ≫ φ')`. Rewrite using `[← Over.comp_left]`. Conclude with `congr(($this).left (IsLocalRing.closedPoint K))`. Establish `hξ0` using `apply_genericPoint (φ.left ≫ φ'.left) hfo`. Establish `hξ : φ.left (genericPoint G.left) = genericPoint G'.left` using `apply_genericPoint_of_comp φ.left φ'.left (by simpa using hξ0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, H⟩` from `exists_open_flat φ.left hξ`. Take `⟨y, hy, hyc⟩` from `nonempty_inter_closedPoints hW W.2.isLocallyClosed`. Use `flat_of_closedPoints _ fun x hx => ?_` and prove the remaining obligations. Set `x' : 𝟙_ _ ⟶ G` to `Over.homMk _ ((pointEquivClosedPoint G.hom).symm ⟨x, hx⟩).2`. Set `y' : 𝟙_ _ ⟶ G` to `Over.homMk _ ((pointEquivClosedPoint G.hom).symm ⟨y, hyc⟩).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `α` to `GrpObj.mulRight (A := G) (y'⁻¹ * x')`. Set `β` to `GrpObj.mulRight (A := G') ((y'⁻¹ * x') ≫ φ)`. Establish `hαβ : α.hom ≫ φ = φ ≫ β.hom`. Simplify using `only [α, β]`. Generalize the expression as in `y'⁻¹ * x' = z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Simplify using `[comp_lift_assoc]`. Establish `hα : y' ≫ α.hom = x'`. Establish `: y' ≫ α.hom = y' * (y'⁻¹ * x')`. Simplify using `[α, comp_lift_assoc, Hom.mul_def]`. Rewrite using `[this, mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hα' : α.hom.left y = x`. Establish `h` using `congr(($hα).left (IsLocalRing.closedPoint K))`. Rewrite using `[← pointOfClosedPoint_apply G.hom x hx (IsLocalRing.closedPoint K), ← pointOfClosedPoint_apply G.hom y hyc (IsLocalRing.closedPoint K)]`. Conclude with `h`. Establish `: IsIso α.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map α.hom))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso β.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map β.hom))`. Establish `h1 : ((φ.left ≫ β.hom.left).stalkMap y).hom.Flat`. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `(Flat.stalkMap β.hom.left _).comp (H y hy)`. Rewrite `h1` using `[← Over.comp_left, ← hαβ, Over.comp_left, Scheme.Hom.stalkMap_comp]`.
-
-Rewrite using `[← hα']`. Conclude with `(RingHom.Flat.respectsIso.cancel_right_isIso (φ.left.stalkMap (α.hom.left y)) (α.hom.left.stalkMap y)).mp h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_isFinite_grpHom (K : Type) [Field K] [IsAlgClosed K]
     (G G' : Over (Spec (CommRingCat.of K))) [GrpObj G] [GrpObj G'] [IsIntegral G.left] [IsIntegral G'.left]
@@ -107,17 +103,13 @@ end GlobalTheory.IsogFiniteFlat
 namespace GlobalTheory.IsogFiniteFlat
 
 /- English proof (translation)
-Introduce `S _ A A' _ _ _ _ hA hA' ψ ψ' c hc _ _ h1 h2`. Establish `hc1 : 1 ≤ c` using `Nat.one_le_iff_ne_zero.2 hc`. Take `⟨hfA, -⟩` from `GlobalTheory.MulFiniteFlat.isFinite_and_flat_mul S A hA c hc1`. Take `⟨hfA', -⟩` from `GlobalTheory.MulFiniteFlat.isFinite_and_flat_mul S A' hA' c hc1`. Use `hA.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hA.smooth` as an intermediate fact. Use `hA'.proper` as an intermediate fact. Use `hA'.smooth` as an intermediate fact. Use `haveI : IsSeparated (ψ'.left ≫ A.hom) := by rw [Over.w]; infer_instance`. Use `haveI : IsSeparated ψ'.left := IsSeparated.of_comp _ A.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsSeparated (ψ.left ≫ A'.hom) := by rw [Over.w]; infer_instance`. Use `haveI : IsSeparated ψ.left := IsSeparated.of_comp _ A'.hom`. Use `haveI : IsFinite (ψ.left ≫ ψ'.left) := by rw [← Over.comp_left, h1]; exact hfA`. Use `haveI : IsFinite (ψ'.left ≫ ψ.left) := by rw [← Over.comp_left, h2]; exact hfA'`. Establish `hf : IsFinite ψ.left` using `IsFinite.of_comp _ ψ'.left`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : IsFinite ψ'.left` using `IsFinite.of_comp _ ψ.left`. Use `⟨hf, GlobalTheory.flat_of_isFinite_of_flat_geometric_fibres S A A' ψ inferInstance inferInstance hf fun K _ _ t => ?_⟩` and prove the remaining obligations. Establish `hB` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A hA`. Establish `hB'` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A' hA'`. Use `hB.smooth` as an intermediate fact.
-
-Use `hB'.smooth` as an intermediate fact. Use `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ ((Over.pullback t).obj A).hom hB.smooth hB.geomConnected` as an intermediate fact. Use `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ ((Over.pullback t).obj A').hom hB'.smooth hB'.geomConnected` as an intermediate fact. Establish `: IsIntegral ((Over.pullback t).obj A).left` using `GeometricallyIntegral.isIntegral_of_subsingleton ((Over.pullback t).obj A).hom`. Establish `: IsIntegral ((Over.pullback t).obj A').left` using `GeometricallyIntegral.isIntegral_of_subsingleton ((Over.pullback t).obj A').hom`.
-
-Use `haveI : IsFinite ((Over.pullback t).map ψ).left := MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t ψ) hf`. Use `haveI : IsFinite ((Over.pullback t).map ψ').left := MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t ψ') hf'`. Conclude with `flat_of_isFinite_grpHom K _ _ ((Over.pullback t).map ψ) ((Over.pullback t).map ψ')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFinite_and_flat_of_quasiInverse : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A A' : Over S) [GrpObj A]
     [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'], IsAbelianScheme A → IsAbelianScheme A' →

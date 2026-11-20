@@ -11,9 +11,7 @@ namespace GlobalTheory.Mum
 namespace ClosedInj
 
 /- English proof (translation)
-Establish `: Flat (spMap io)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Use `letI := io.toAlgebra`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`. Establish `: Surjective (spMap io)` using `⟨fun t ↦ ⟨IsLocalRing.closedPoint Ω', Subsingleton.elim _ _⟩⟩`.
-
-Conclude with `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epi_spMap_field {Ω Ω' : Type} [Field Ω] [Field Ω'] (io : Ω →+* Ω') : Epi (spMap io) := by
   have : Flat (spMap io) := by
@@ -24,13 +22,11 @@ theorem epi_spMap_field {Ω Ω' : Type} [Field Ω] [Field Ω'] (io : Ω →+* Ω
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Use `set φ : R →+* Ω := (Spec.preimage y).hom with hφ`. Establish `hyφ : y = spMap φ` using `(Spec.map_preimage y).symm`. Establish `hker : ∀ a : R, a ∈ maximalIdeal R → φ a = 0`. Introduce `a ha`. Establish `h1` using `hy (IsLocalRing.closedPoint Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hyφ]`. Establish `h2 : (PrimeSpectrum.comap φ (IsLocalRing.closedPoint Ω)).asIdeal = maximalIdeal R`. Conclude with `congrArg PrimeSpectrum.asIdeal h1`. Rewrite `ha` using `[← h2]`. Establish `: φ a ∈ maximalIdeal Ω` using `ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `: IsLocalHom φ` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Use `hker a ((IsLocalRing.mem_maximalIdeal a).2 h)` as an intermediate fact. Rewrite `ha` using `[this]`.
-
-Conclude with `not_isUnit_zero ha⟩`. Conclude with `⟨ResidueField.lift φ, by rw [ResidueField.lift_comp_residue]; exact hyφ⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_residue_factor {R Ω : Type} [CommRing R] [IsLocalRing R] [Field Ω] (y : Sp Ω ⟶ Sp R)
     (hy : ∀ t, y t = closedPoint R) : ∃ κ : ResidueField R →+* Ω, y = spMap (κ.comp (residue R)) := by
@@ -57,19 +53,17 @@ end ClosedInj
 open ClosedInj in
 
 /- English proof (translation)
-Introduce `R _ _ _ M G' _ E Ω _ p p' hcl hs hf`. Use `set s : Sp Ω ⟶ M.S := p ≫ E.H.ι ≫ G'.hom with hsdef`. Take `⟨κ, hκ⟩` from `exists_residue_factor (s ≫ M.π) (fun t => by simpa [s] using hcl t)`. Take `⟨Ω', _, io, e, l, -, hl, hlf⟩` from `E.fib Ω s κ hκ`. Set `q : Sp Ω' ⟶ pullback G'.hom (spMap io ≫ s)` to `pullback.lift (spMap io ≫ p ≫ E.H.ι) (𝟙 _) (by simp [s])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q' : Sp Ω' ⟶ pullback G'.hom (spMap io ≫ s)` to `pullback.lift (spMap io ≫ p' ≫ E.H.ι) (𝟙 _) (by simp [s, hs])`. Establish `hq : q ≫ l = spMap io ≫ p`. Rewrite using `[← cancel_mono E.H.ι]`. Simplify using `only [Category.assoc]`. Use `erw [hl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.lift_fst _ _ _`. Establish `hq' : q' ≫ l = spMap io ≫ p'`. Rewrite using `[← cancel_mono E.H.ι]`. Simplify using `only [Category.assoc]`. Use `erw [hl]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `pullback.lift_fst _ _ _`. Establish `hfst : q ≫ e.hom.left ≫ pullback.fst E.Y.hom (spMap (io.comp κ)) = q' ≫ e.hom.left ≫ pullback.fst E.Y.hom (spMap (io.comp κ))`. Use `E.imm` as an intermediate fact. Rewrite using `[← cancel_mono E.j]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hlf, ← Category.assoc q, hq, ← Category.assoc q', hq', Category.assoc, Category.assoc, hf]`. Establish `hw : e.hom.left ≫ pullback.snd E.Y.hom (spMap (io.comp κ)) = pullback.snd G'.hom (spMap io ≫ s)` using `Over.w e.hom`. Establish `hqe : q ≫ e.hom.left = q' ≫ e.hom.left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `hfst` using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[hw]`. Conclude with `(pullback.lift_snd _ _ _).trans (pullback.lift_snd _ _ _).symm`. Establish `hqq : q = q'`. Use `congrArg (· ≫ e.inv.left) hqe` as an intermediate fact.
-
-Simplify `this` using `[← Over.comp_left]`. Establish `h2 : spMap io ≫ p = spMap io ≫ p'` using `by rw [← hq, ← hq', hqq]`. Use `epi_spMap_field io` as an intermediate fact. Conclude with `(cancel_epi (spMap io)).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Emb.eq_of_closedFibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (M : Modif R) (G' : Over M.S) [GrpObj G'] (E : Emb M.π G') (Ω : Type) [Field Ω] (p p' : Sp Ω ⟶ E.H.toScheme), (∀ t, M.π (G'.hom (E.H.ι (p t))) = closedPoint R) → p ≫ E.H.ι ≫ G'.hom = p' ≫ E.H.ι ≫ G'.hom → p ≫ E.f = p' ≫ E.f → p = p' := by
   intro R _ _ _ M G' _ E Ω _ p p' hcl hs hf

@@ -6,9 +6,9 @@ namespace GeoProdPow
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Establish `hP1 : ∏ i ∈ s, u i ≤ 1` using `Finset.prod_le_one (fun i hi => h0 i (Finset.mem_insert_of_mem hi)) (fun i hi => h1 i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP` using `ih (fun i hi => h0 i (Finset.mem_insert_of_mem hi)) (fun i hi => h1 i (Finset.mem_insert_of_mem hi)) (fun i hi => ha i (Finset.mem_insert_of_mem hi))`. Establish `hu1` using `h1 j (Finset.mem_insert_self j s)`. Establish `hua` using `ha j (Finset.mem_insert_self j s)`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hu1) (sub_nonneg.2 hP1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_sub_sum_le_prod (s : Finset ℕ) (u a : ℕ → ℝ) (h0 : ∀ i ∈ s, 0 ≤ u i)
     (h1 : ∀ i ∈ s, u i ≤ 1) (ha : ∀ i ∈ s, 1 - a i ≤ u i) :
@@ -28,9 +28,9 @@ theorem one_sub_sum_le_prod (s : Finset ℕ) (u a : ℕ → ℝ) (h0 : ∀ i ∈
     nlinarith [mul_nonneg (sub_nonneg.2 hu1) (sub_nonneg.2 hP1)]
 
 /- English proof (translation)
-Establish `hg0 : (0 : ℝ) < g` using `by linarith`. Establish `hlt : g⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hg`. Establish `h` using `geom_sum_Ico_le_of_lt_one (m := 1) (n := r) (inv_nonneg.2 hg0.le) hlt`. Establish `he : g⁻¹ ^ 1 / (1 - g⁻¹) = 1 / (g - 1)`. Establish `h1 : g - 1 ≠ 0` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[he ▸ h]`.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem geom_le (g : ℝ) (hg : 1 < g) (r : ℕ) :
     ∑ i ∈ Ico 1 r, (g⁻¹) ^ i ≤ 1 / (g - 1) := by
@@ -43,13 +43,13 @@ theorem geom_le (g : ℝ) (hg : 1 < g) (r : ℕ) :
   linarith [he ▸ h]
 
 /- English proof (translation)
-Rewrite using `[inv_pow, mul_sub, mul_one, mul_inv_cancel₀ (pow_ne_zero _ hg.ne')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem factor (g : ℝ) (hg : 0 < g) (i : ℕ) : g ^ i - 1 = g ^ i * (1 - (g⁻¹) ^ i) := by
   rw [inv_pow, mul_sub, mul_one, mul_inv_cancel₀ (pow_ne_zero _ hg.ne')]
 
 /- English proof (translation)
-Break down `r with _ | r` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[← Finset.sum_range_id, Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (Nat.succ_pos r)]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gauss (r : ℕ) : ∑ i ∈ Ico 1 r, i = r * (r - 1) / 2 := by
   rcases r with _ | r
@@ -59,9 +59,9 @@ theorem gauss (r : ℕ) : ∑ i ∈ Ico 1 r, i = r * (r - 1) / 2 := by
     simp
 
 /- English proof (translation)
-Establish `e : ∀ i, (g0 ^ i - 1) * (g1 ^ i - 1) = (g0 * g1) ^ i * ((1 - (g0⁻¹) ^ i) * (1 - (g1⁻¹) ^ i))`. Introduce `i`. Rewrite using `[factor g0 h0 i, factor g1 h1 i, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp` using `Finset.prod_pow_eq_pow_sum (Ico 1 r) (fun i => i) (g0 * g1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_congr rfl (fun i _ => e i), Finset.prod_mul_distrib, hp, gauss]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_split (g0 g1 : ℝ) (h0 : 0 < g0) (h1 : 0 < g1) (r : ℕ) :
     ∏ i ∈ Ico 1 r, ((g0 ^ i - 1) * (g1 ^ i - 1)) =
@@ -76,38 +76,38 @@ theorem prod_split (g0 g1 : ℝ) (h0 : 0 < g0) (h1 : 0 < g1) (r : ℕ) :
   rw [Finset.prod_congr rfl (fun i _ => e i), Finset.prod_mul_distrib, hp, gauss]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sub_nonneg.2 (pow_le_one₀ h0 h1), by linarith [pow_nonneg h0 i]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_sub_pow_mem (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 1) (i : ℕ) :
     0 ≤ 1 - x ^ i ∧ 1 - x ^ i ≤ 1 :=
   ⟨sub_nonneg.2 (pow_le_one₀ h0 h1), by linarith [pow_nonneg h0 i]⟩
 
 /- English proof (translation)
-Introduce `f k r b g0 g1 hf hfk hb hg0 hg1`. Establish `hk : (1 : ℝ) ≤ k` using `by exact_mod_cast hf.trans hfk`. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hfk' : (f : ℝ) ≤ k` using `by exact_mod_cast hfk`. Take `⟨D, hD⟩ : ∃ D : ℝ, D = 256 * (k : ℝ) ^ 8 - 1` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk8 : (1 : ℝ) ≤ (k : ℝ) ^ 8` using `one_le_pow₀ hk`. Establish `hG : 256 * (k : ℝ) ^ 8 ≤ ((k : ℝ) * b) ^ 8`. Rewrite using `[mul_pow]`. Establish `hb8 : (2 : ℝ) ^ 8 ≤ b ^ 8` using `pow_le_pow_left₀ (by norm_num) hb 8`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hD255 : 255 ≤ D` using `by linarith`. Establish `hDpos : 0 < D` using `by linarith`. Establish `hA0 : D + 1 ≤ g0` using `by linarith`. Establish `hA1 : D + 1 ≤ g1` using `by linarith`. Establish `hg0p : 0 < g0` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1p : 0 < g1` using `by linarith`. Establish `hs0 : ∑ i ∈ Ico 1 r, (g0⁻¹) ^ i ≤ 1 / D` using `(geom_le g0 (by linarith) r).trans (one_div_le_one_div_of_le hDpos (by linarith))`. Establish `hs1 : ∑ i ∈ Ico 1 r, (g1⁻¹) ^ i ≤ 1 / D` using `(geom_le g1 (by linarith) r).trans (one_div_le_one_div_of_le hDpos (by linarith))`. Take `⟨S, hSdef⟩ : ∃ S : ℝ, S = ∑ i ∈ Ico 1 r, ((g0⁻¹) ^ i + (g1⁻¹) ^ i)` from `⟨_, rfl⟩`. Establish `hS : S ≤ 2 / D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : 2 / D = 1 / D + 1 / D` using `by ring`. Rewrite using `[hSdef, Finset.sum_add_distrib, e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2D : 2 / D ≤ 1` using `(div_le_one hDpos).2 (by linarith)`. Take `⟨P, hPdef⟩ : ∃ P : ℝ, P = ∏ i ∈ Ico 1 r, ((1 - (g0⁻¹) ^ i) * (1 - (g1⁻¹) ^ i))` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx0 : 0 ≤ g0⁻¹` using `inv_nonneg.2 hg0p.le`. Establish `hx1 : 0 ≤ g1⁻¹` using `inv_nonneg.2 hg1p.le`. Establish `hy0 : g0⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith)`. Establish `hy1 : g1⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith)`. Establish `hP : 1 - S ≤ P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hSdef, hPdef]`. Apply `one_sub_sum_le_prod` to reduce the goal to its premises. Introduce `i _`. Conclude with `mul_nonneg (one_sub_pow_mem _ hx0 hy0 i).1 (one_sub_pow_mem _ hx1 hy1 i).1`. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_one₀ (one_sub_pow_mem _ hx0 hy0 i).2 (one_sub_pow_mem _ hx1 hy1 i).1 (one_sub_pow_mem _ hx1 hy1 i).2`. Introduce `i _`. Use polynomial arithmetic with `[mul_nonneg (pow_nonneg hx0 i) (pow_nonneg hx1 i)]`. Establish `hS0 : 0 ≤ 1 - S` using `by linarith`. Establish `hB : 1 + (f : ℝ) * (-S) ≤ (1 + -S) ^ f` using `one_add_mul_le_pow (by linarith) f`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPf : (1 - S) ^ f ≤ P ^ f` using `pow_le_pow_left₀ hS0 hP f`. Establish `hf4 : (f : ℝ) ^ 4 ≤ (k : ℝ) ^ 4` using `pow_le_pow_left₀ (by linarith) hfk' 4`. Establish `hk87 : (k : ℝ) ^ 7 ≤ (k : ℝ) ^ 8` using `pow_le_pow_right₀ hk (by norm_num)`. Establish `hk7 : (1 : ℝ) ≤ (k : ℝ) ^ 7` using `one_le_pow₀ hk`. Establish `hfk3 : (f : ℝ) ^ 4 * (k : ℝ) ^ 3 ≤ (k : ℝ) ^ 7`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key : 2 * (f : ℝ) / D ≤ 1 / (4 * ((f : ℝ) * k) ^ 3)`. Rewrite using `[div_le_div_iff₀ hDpos (by positivity)]`. Establish `e : 2 * (f : ℝ) * (4 * ((f : ℝ) * k) ^ 3) = 8 * ((f : ℝ) ^ 4 * (k : ℝ) ^ 3)` using `by ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfS : (f : ℝ) * S ≤ 2 * (f : ℝ) / D`. Establish `: (f : ℝ) * S ≤ (f : ℝ) * (2 / D)` using `mul_le_mul_of_nonneg_left hS (by linarith)`. Combine the linear relations using `[show (f : ℝ) * (2 / D) = 2 * (f : ℝ) / D by ring]`. Establish `hinv : (((f : ℝ) * k) ^ 3)⁻¹ / 4 = 1 / (4 * ((f : ℝ) * k) ^ 3)` using `by ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : 1 - (((f : ℝ) * k) ^ 3)⁻¹ / 4 ≤ P ^ f`. Rewrite using `[hinv]`. Establish `: (1 + -S) = 1 - S` using `by ring`. Rewrite `hB` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[prod_split g0 g1 hg0p hg1p r, ← hPdef]`. Establish `e : ((g0 * g1) ^ (r * (r - 1) / 2) * P) ^ f = P ^ f * (g0 * g1) ^ (f * (r * (r - 1) / 2))`. Rewrite using `[mul_pow, ← pow_mul, Nat.mul_comm (r * (r - 1) / 2) f, mul_comm ((g0 * g1) ^ (f * (r * (r - 1) / 2)))]`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right hc (by positivity)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ConditionalKappaBounds.G2.GaussianProductPowerBound := by
   intro f k r b g0 g1 hf hfk hb hg0 hg1

@@ -17,7 +17,7 @@ def finSU (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : Subgro
   (Matrix.GeneralLinearGroup.det.comp (HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J).subtype).ker
 
 /- English proof (translation)
-Use `show Matrix.GeneralLinearGroup.det ((HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J).subtype k) = 1 ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_finSU {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     {k : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J} :
@@ -30,13 +30,11 @@ theorem mem_finSU {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 end Fin
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup G := e.toHomeomorph.isInducing.topologicalGroup (e : G →* A × H)`. Set `K0 : TopologicalSpace.PositiveCompacts H` to `⟨⟨K, hKc⟩, by show (interior K).Nonempty`. Rewrite using `[hKo.interior_eq]`. Conclude with `⟨1, hK1⟩⟩`. Use `haveI : (c • Measure.haarMeasure K0).IsHaarMeasure := Measure.IsHaarMeasure.smul _ hc0 hct`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `m : Measure (A × H)` to `μ₀.prod (c • Measure.haarMeasure K0)`. Use `haveI : m.IsHaarMeasure := inferInstanceAs ((μ₀.prod (c • Measure.haarMeasure K0)).IsHaarMeasure)`. Use `⟨m.map e.symm, e.symm.isHaarMeasure_map m, fun B hB t => ?_⟩` and prove the remaining obligations. Establish `hme : MeasurableEmbedding e.symm` using `e.symm.toHomeomorph.measurableEmbedding`. Rewrite using `[hme.map_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: e.symm ⁻¹' (e ⁻¹' (B ×ˢ (t • K))) = B ×ˢ (t • K)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, Measure.prod_prod, Measure.smul_apply, measure_smul, smul_eq_mul]`. Establish `h1 : Measure.haarMeasure K0 K = 1` using `Measure.haarMeasure_self`.
-
-Rewrite using `[h1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haar_prod {G A H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
     [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [LocallyCompactSpace A] [SecondCountableTopology A]

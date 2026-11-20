@@ -12,9 +12,9 @@ namespace GlobalTheory.CompanionTheory.HighestCone
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {K : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f : Module.End ℂ V => f v) (hg a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Apply the tactic sequence `have h3 : (if b = c then K a d else 0 : Module.End ℂ V) v = if b = c then K a d v else 0 := by split_ifs <;> simp`. Apply the tactic sequence `have h4 : (if d = a then K c b else 0 : Module.End ℂ V) v = if d = a then K c b v else 0 := by split_ifs <;> simp`. Rewrite `h` using `[h3, h4]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[add_sub_assoc, ← h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem letter_comm (hg : Formalism.REAL.GlRel K) (a b c d : Fin n) (v : V) :
     K a b (K c d v) = K c d (K a b v) + (if b = c then K a d v else 0)
@@ -30,15 +30,11 @@ theorem letter_comm (hg : Formalism.REAL.GlRel K) (a b c d : Fin n) (v : V) :
   abel
 
 /- English proof (translation)
-Set `S : Submodule ℂ V` to `{ carrier := {z | z ∈ Z ∧ ∀ a b, C a b → K a b z ∈ Z} add_mem' := fun {u w} hu hw => ⟨Z.add_mem hu.1 hw.1, fun a b h => by`. Rewrite using `[map_add]`. Conclude with `Z.add_mem (hu.2 a b h) (hw.2 a b h)⟩`. Use the proof step `zero_mem' := ⟨Z.zero_mem, fun a b _ => by rw [map_zero]; exact Z.zero_mem⟩`. Use the proof step `smul_mem' := fun r u hu => ⟨Z.smul_mem r hu.1, fun a b h => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul]`. Conclude with `Z.smul_mem r (hu.2 a b h)⟩ }`. Establish `hle : Z ≤ S`. Use `hmin S (fun y hy => ⟨hYZ hy, fun a b h => hY a b h y hy⟩) ?_` and prove the remaining obligations. Introduce `c d hcd v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hZ c d hcd v hv.1, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[letter_comm hg a b c d v]`. Use `Z.sub_mem (Z.add_mem (hZ c d hcd _ (hv.2 a b hab)) ?_) ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hv.2 a d ((hC a b c d hab hcd).1 h)`.
-
-Conclude with `Z.zero_mem`. Use `split_ifs with h`. Conclude with `hv.2 c b ((hC a b c d hab hcd).2 h)`. Conclude with `Z.zero_mem`. Introduce `a b hab z hz`.
-
-Conclude with `(hle hz).2 a b hab`.
+A detailed English derivation is pending.
 -/
 theorem levi_step (hg : Formalism.REAL.GlRel K) (lev : Fin n → ℕ) (C : Fin n → Fin n → Prop)
     (Y Z : Submodule ℂ V)
@@ -74,9 +70,9 @@ def shift (c : Fin n → Fin n → ℕ) (t : Fin n) : ℝ :=
   ∑ a, ∑ b, (c a b : ℝ) * ((if t = a then 1 else 0) - (if t = b then 1 else 0))
 
 /- English proof (translation)
-Unfold `shift`. Establish `: ∀ p q : Fin n, (((c p q + if p = a ∧ q = b then 1 else 0 : ℕ) : ℝ)) * ((if t = p then 1 else 0) - (if t = q then 1 else 0)) = (c p q : ℝ) * ((if t = p then 1 else 0) - (if t = q then 1 else 0)) + (if p = a then (if q = b then ((if t = p then (1:ℝ) else 0) - (if t = q then 1 els …`. Introduce `p q`. Apply the tactic sequence `by_cases hp : p = a <;> by_cases hq : q = b <;> simp [hp, hq]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [this, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem shift_add (c : Fin n → Fin n → ℕ) (a b t : Fin n) :
     shift (fun p q => c p q + if p = a ∧ q = b then 1 else 0) t =
@@ -93,11 +89,11 @@ theorem shift_add (c : Fin n → Fin n → ℕ) (a b t : Fin n) :
   simp
 
 /- English proof (translation)
-Rewrite using `[letter_comm hg t t a b y, ht, map_smul]`. Apply the tactic sequence `by_cases h1 : t = a <;> by_cases h2 : t = b`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h1` using the available equality. Establish `h2' : ¬ b = t` using `fun h => h2 h.symm`. Simplify using `[h2', h2, add_smul]`. Substitute `h2` using the available equality. Simplify using `[h1, add_smul, sub_eq_add_neg]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h2' : ¬ b = t` using `fun h => h2 h.symm`. Simplify using `[h1, h2, h2']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem weight_letter (hg : Formalism.REAL.GlRel K) (a b t : Fin n) (τ : ℂ) (y : V)
     (ht : K t t y = τ • y) :
@@ -119,15 +115,13 @@ def coneSpan (K : Fin n → Fin n → Module.End ℂ V) (lev : Fin n → ℕ) (�
     ∀ t, K t t y = (((ν t + shift c t : ℝ)) : ℂ) • y}
 
 /- English proof (translation)
-Unfold `coneSpan at hv ⊢`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, hy⟩` from `hy`. Use `Submodule.subset_span ⟨fun p q => c p q + if p = a ∧ q = b then 1 else 0, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p q hpq`. Distinguish the cases in `h : p = a ∧ q = b`. Rewrite using `[h.1, h.2]`. Conclude with `hab`. Apply `hc p q` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hpq` using `[h]`. Introduce `t`. Rewrite using `[weight_letter hg a b t _ y (hy t), shift_add]`. Use `congr 1`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add u w _ _ hu hw => rw [map_add]`. Conclude with `Submodule.add_mem _ hu hw`.
-
-Consider the case `smul r u _ hu => rw [map_smul]`. Conclude with `Submodule.smul_mem _ r hu`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coneSpan_letter (hg : Formalism.REAL.GlRel K) (lev : Fin n → ℕ) (ν : Fin n → ℝ) (a b : Fin n)
     (hab : lev b < lev a) (v : V) (hv : v ∈ coneSpan K lev ν) : K a b v ∈ coneSpan K lev ν := by
@@ -151,13 +145,13 @@ theorem coneSpan_letter (hg : Formalism.REAL.GlRel K) (lev : Fin n → ℕ) (ν 
   | smul r u _ hu => rw [map_smul]; exact Submodule.smul_mem _ r hu
 
 /- English proof (translation)
-Establish `hμ : ∀ t, μ t = ν t + shift c t`. Introduce `t`. Establish `h` using `hev t y`. Rewrite `h` using `[hy t, map_smul, smul_eq_mul]`. Use `mul_right_cancel₀ hne h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm` after adjusting the coercions. Use `⟨fun a b => c b a, fun a b h => hc b a h, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, hμ x]`. Establish `hs : shift c x = ∑ a, ∑ b, (c b a : ℝ) * ((if x = b then 1 else 0) - (if x = a then 1 else 0))`. Unfold `shift`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[hs, sub_add_cancel_left, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem inCone_of_ne (lev : Fin n → ℕ) (ev : V →ₗ[ℂ] ℂ) (μ ν : Fin n → ℝ)
     (hev : ∀ a v, ev (K a a v) = (μ a : ℂ) * ev v) (c : Fin n → Fin n → ℕ)
@@ -182,43 +176,35 @@ theorem inCone_of_ne (lev : Fin n → ℕ) (ev : V →ₗ[ℂ] ℂ) (μ ν : Fin
   ring
 
 /- English proof (translation)
-Introduce `n V _ _ K hg lev hlev ev μ ν x hx hoff hdiag ⟨T, hT, hTx⟩`. Set `Y : Submodule ℂ V` to `sInf {S | x ∈ S ∧ ∀ a b, lev b < lev a → ∀ v ∈ S, K a b v ∈ S}`. Set `Z : Submodule ℂ V` to `sInf {S | Y ≤ S ∧ ∀ a b, lev a = lev b → ∀ v ∈ S, K a b v ∈ S}`. Establish `hxY : x ∈ Y`. Use `(Submodule.mem_sInf).2 fun S hS => hS.1` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hYl : ∀ a b, lev b < lev a → ∀ v ∈ Y, K a b v ∈ Y`. Introduce `a b hab v hv`. Use `(Submodule.mem_sInf).2 fun S hS => hS.2 a b hab v ((Submodule.mem_sInf).1 hv S hS)` and prove the remaining obligations. Establish `hYmin : ∀ S : Submodule ℂ V, x ∈ S → (∀ a b, lev b < lev a → ∀ v ∈ S, K a b v ∈ S) → Y ≤ S` using `fun S h1 h2 => sInf_le ⟨h1, h2⟩`. Establish `hYZ : Y ≤ Z` using `le_sInf fun S hS => hS.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZl : ∀ a b, lev a = lev b → ∀ v ∈ Z, K a b v ∈ Z`. Introduce `a b hab v hv`. Use `(Submodule.mem_sInf).2 fun S hS => hS.2 a b hab v ((Submodule.mem_sInf).1 hv S hS)` and prove the remaining obligations. Establish `hZmin : ∀ S : Submodule ℂ V, Y ≤ S → (∀ a b, lev a = lev b → ∀ v ∈ S, K a b v ∈ S) → Z ≤ S` using `fun S h1 h2 => sInf_le ⟨h1, h2⟩`. Establish `step1 : ∀ a b, lev b < lev a → ∀ z ∈ Z, K a b z ∈ Z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `levi_step hg lev (fun a b => lev b < lev a) Y Z hZmin hZl hYZ ?_ ?_` and prove the remaining obligations. Introduce `a b c d hab hcd`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `show lev d < lev a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Use `show lev b < lev c`. Use linear arithmetic over natural numbers and integers. Introduce `a b hab y hy`.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hYZ (hYl a b hab y hy)`. Establish `step2 : ∀ a b, ∀ y ∈ Y, K a b y ∈ Z`. Set `S : Submodule ℂ V` to `{ carrier := {y | y ∈ Y ∧ ∀ a b, K a b y ∈ Z} add_mem' := fun {u w} hu hw => ⟨Y.add_mem hu.1 hw.1, fun a b => by`. Rewrite using `[map_add]`. Conclude with `Z.add_mem (hu.2 a b) (hw.2 a b)⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use the proof step `zero_mem' := ⟨Y.zero_mem, fun a b => by rw [map_zero]; exact Z.zero_mem⟩`. Use the proof step `smul_mem' := fun r u hu => ⟨Y.smul_mem r hu.1, fun a b => by`. Rewrite using `[map_smul]`. Conclude with `Z.smul_mem r (hu.2 a b)⟩ }`. Establish `hle : Y ≤ S`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `hYmin S ⟨hxY, fun a b => ?_⟩ ?_` and prove the remaining obligations. Break down `lt_trichotomy (lev a) (lev b) with h | h | h` into its components or cases. Establish `hab : a < b`. Assume the negation of the conclusion as `hn`. Use `hlev (not_lt.1 hn)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hx.2 a b hab rfl]`. Conclude with `Z.zero_mem`. Conclude with `hZl a b h x (hYZ hxY)`. Conclude with `hYZ (hYl a b h x hxY)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `c d hcd v hv`. Use `⟨hYl c d hcd v hv.1, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[letter_comm hg a b c d v]`. Use `Z.sub_mem (Z.add_mem (step1 c d hcd _ (hv.2 a b)) ?_) ?_` and prove the remaining obligations. Use `split_ifs`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hv.2 a d`. Conclude with `Z.zero_mem`. Use `split_ifs`. Conclude with `hv.2 c b`. Conclude with `Z.zero_mem`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `a b y hy`. Conclude with `(hle hy).2 a b`. Establish `step3 : ∀ a b, ∀ z ∈ Z, K a b z ∈ Z`. Introduce `a b`. Conclude with `levi_step hg lev (fun _ _ => True) Y Z hZmin hZl hYZ (fun _ _ _ _ _ _ => ⟨fun _ => trivial, fun _ => trivial⟩) (fun a b _ y hy => step2 a b y hy) a b trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hadj : ∀ T ∈ Algebra.adjoin ℂ {T : Module.End ℂ V | ∃ a b, T = K a b}, ∀ z ∈ Z, T z ∈ Z`. Introduce `T hT`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem A hA`. Take `⟨a, b, rfl⟩` from `hA`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `step3 a b`. Consider the case `algebraMap r`. Introduce `z hz`. Simplify `Z.smul_mem r hz` using `[Module.algebraMap_end_apply]`. Consider the case `add A B _ _ hA hB`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Conclude with `Z.add_mem (hA z hz) (hB z hz)`. Consider the case `mul A B _ _ hA hB`. Introduce `z hz`. Conclude with `hA _ (hB z hz)`.
-
-Assume the negation of the conclusion as `hcone`. Establish `hY0 : Y ≤ LinearMap.ker ev`. Establish `h1 : Y ≤ coneSpan K lev ν`. Use `hYmin _ (Submodule.subset_span ⟨fun _ _ => 0, by simp, fun t => ?_⟩) (fun a b hab v hv => coneSpan_letter hg lev ν a b hab v hv)` and prove the remaining obligations. Simplify `hx.1 t` using `[shift]`.
-
-Use `h1.trans ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨c, hc, hy⟩`. Assume the negation of the conclusion as `hne`. Conclude with `hcone (inCone_of_ne lev ev μ ν hdiag c hc y hy hne)`.
-
-Establish `hZ0 : Z ≤ LinearMap.ker ev`. Use `hZmin _ hY0 ?_` and prove the remaining obligations. Introduce `a b _ v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Distinguish the cases in `hab : a = b`.
-
-Substitute `hab` using the available equality. Rewrite using `[hdiag, hv, mul_zero]`. Conclude with `hoff a b v ‹_› hab`. Conclude with `hTx (hZ0 (hadj T hT x (hYZ hxY)))`.
+A detailed English derivation is pending.
 -/
 theorem inCone_of_highest : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (K : Fin n → Fin n → Module.End ℂ V), Formalism.REAL.GlRel K → ∀ lev : Fin n → ℕ, Monotone lev → ∀ (ev : V →ₗ[ℂ] ℂ) (μ ν : Fin n → ℝ) (x : V), Formalism.REAL.KHighest (fun _ => true) K ν x → (∀ a b v, lev a = lev b → a ≠ b → ev (K a b v) = 0) → (∀ a v, ev (K a a v) = (μ a : ℂ) * ev v) → (∃ T ∈ Algebra.adjoin ℂ {T : Module.End ℂ V | ∃ a b, T = K a b}, ev (T x) ≠ 0) → inCone lev (ν - μ) := by
   intro n V _ _ K hg lev hlev ev μ ν x hx hoff hdiag ⟨T, hT, hTx⟩

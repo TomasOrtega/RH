@@ -20,25 +20,23 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.Glue
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A n Λ hlat hfin`. Use `existsUnique_of_exists_of_unique ?_ ?_` and prove the remaining obligations. Establish `happ1` using `(GlobalTheory.T.strong_approximation_additive_quadratic_extension A (fun _ => 1) (Set.finite_empty.subset fun p hp => hp ⟨1, by simp⟩)).2.1`. Establish `h3 : ∀ p (y : (A.loc p).Ep), ∃ m : ℕ, m ≠ 0 ∧ (m : (A.loc p).Ep) * y ∈ (A.L p).O` using `GlobalTheory.T.exists_nat_mul_mem_integers_quadraticCompletion A (fun y hy => by`. Take `⟨x, hx⟩` from `happ1 y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, fun p => by simpa using hx p⟩)`. Take `⟨N, hN, hb⟩` from `GlobalTheory.T.exists_nat_bound_localLattices_standard_ae A n Λ hfin fun p => GlobalTheory.T.local_lattice_between_scaled_standard_lattices A p n (Λ p) (hlat p) (h3 p)`. Set `Γ : Submodule (𝓞 E) (Fin n → E)` to `{ carrier := {x | ∀ p, A.bc p x ∈ Λ p} add_mem' := by`. Introduce `x y hx hy p`. Establish `: A.bc p (x + y) = A.bc p x + A.bc p y` using `by funext i; simp [Places.bc]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(Λ p).add_mem (hx p) (hy p)`. Use the proof step `zero_mem' := by`. Introduce `p`. Establish `: A.bc p (0 : Fin n → E) = 0` using `by funext i; simp [Places.bc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `(Λ p).zero_mem`. Use the proof step `smul_mem' := by`. Introduce `a x hx p`. Establish `ha : (A.loc p).ιE (a : E) ∈ (A.L p).O` using `ιE_mem A p _ a.isIntegral_coe`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `: A.bc p (a • x) = (⟨_, ha⟩ : (A.L p).O) • A.bc p x`. Use function extensionality and compare the values at `i`. Simplify using `[Places.bc, Subring.smul_def, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Λ p).smul_mem _ (hx p) }`. Establish `hΓ : ∀ x, x ∈ Γ ↔ ∀ p, A.bc p x ∈ Λ p` using `fun x => Iff.rfl`. Establish `hL : Submodule.IsLattice E Γ`. Use `GlobalTheory.T.isLattice_of_squeezed_between_nat_multiples n Γ N hN (fun x hx p => ?_) (fun x hx i => ?_)` and prove the remaining obligations. Establish `: A.bc p ((N : E) • x) = (N : (A.loc p).Ep) • A.bc p x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Places.bc]`. Rewrite using `[this]`. Conclude with `(hb p).1 _ fun i => ιE_mem A p _ (hx i)`. Use `GlobalTheory.T.isIntegral_of_integral_all_quadraticCompletions A _ fun p => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hb p).2 _ (hx p) i` as an intermediate fact. Simplify `this` using `[Places.bc]`. Use `⟨Γ, hL, fun p => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_le.2 (by rintro _ ⟨x, hx, rfl⟩; exact hx p)`. Use `haveI := (A.loc p).char0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Use `GlobalTheory.T.localLattice_le_completion_glued_lattice A n Λ Γ N hΓ (fun q => (hb q).1) ?_ p` and prove the remaining obligations. Establish `hc : ∀ q, (N : (A.loc q).Fp) ≠ 0` using `fun q => by haveI := (A.loc q).char0; exact_mod_cast hN`. Establish `happN` using `(GlobalTheory.T.strong_approximation_additive_quadratic_extension A (fun q => Units.mk0 _ (hc q)) (by simpa using GlobalTheory.T.natCast_isUnit_quadraticCompletion_almost_all A N hN)).2.1`. Introduce `y hy`. Take `⟨x, hx⟩` from `happN y hy`.
-
-Conclude with `⟨x, fun q => by simpa using hx q⟩`. Introduce and unpack `Γ₁ Γ₂ ⟨h1, e1⟩ ⟨h2, e2⟩`. Use extensionality with `x`. Rewrite using `[(GlobalTheory.T.numberField_lattice_determined_by_local_lattices A n Γ₁ h1).1 x, (GlobalTheory.T.numberField_lattice_determined_by_local_lattices A n Γ₂ h2).1 x]`. Simplify using `only [e1, e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glue : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (n : ℕ) (Λ : ∀ p, Submodule (A.L p).O (Fin n → (A.loc p).Ep)), (∀ p, IsLat (A.L p) (Λ p)) → {p | Λ p ≠ Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : Fin n → (A.loc p).Ep))}.Finite → ∃! Γ : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E Γ ∧ ∀ p, A.lat p Γ = Λ p := by
   intro F E _ _ _ _ _ sig A n Λ hlat hfin

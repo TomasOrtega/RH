@@ -17,7 +17,7 @@ namespace HeckeCharacter
 variable (χ : HeckeCharacter K)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hχ ((forall_normOne_eq_one_iff χ).1 h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_normOne_ne_one_of_not
     (hχ : ¬ ∃ τ : ℝ, ∀ x : IdeleGroup K,
@@ -28,7 +28,7 @@ theorem exists_normOne_ne_one_of_not
   exact hχ ((forall_normOne_eq_one_iff χ).1 h)
 
 /- English proof (translation)
-The claim follows from `fun s ↦ χ.differentiable_const_mul_cpow_half (differentiable_tateZeta χ.testFunction_mem (χ.exists_normOne_ne_one_of_not hχ) s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiable_completedLFunction
     (hχ : ¬ ∃ τ : ℝ, ∀ x : IdeleGroup K,
@@ -38,7 +38,7 @@ theorem differentiable_completedLFunction
     (differentiable_tateZeta χ.testFunction_mem (χ.exists_normOne_ne_one_of_not hχ) s)
 
 /- English proof (translation)
-Establish `h1` using `χ.discrNormConductor_cpow_ne_zero (s / 2)`. Establish `h2` using `χ.gammaFactor_ne_zero (by linarith : 0 < s.re)`. Rewrite using `[χ.completedLFunction_eq hs, cpow_neg]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem LFunction_eq_mul_completedLFunction {s : ℂ} (hs : 1 < s.re) :
     χ.LFunction s = (χ.discrNormConductor : ℂ) ^ (-(s / 2)) * (χ.gammaFactor s)⁻¹ *
@@ -49,7 +49,7 @@ theorem LFunction_eq_mul_completedLFunction {s : ℂ} (hs : 1 < s.re) :
   field_simp
 
 /- English proof (translation)
-The claim follows from `((differentiable_id.div_const 2).neg.const_cpow (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne'))).mul χ.differentiable_gammaFactor_inv`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_cpow_mul_gammaFactor_inv :
     Differentiable ℂ fun s ↦ (χ.discrNormConductor : ℂ) ^ (-(s / 2)) * (χ.gammaFactor s)⁻¹ :=
@@ -57,7 +57,7 @@ theorem differentiable_cpow_mul_gammaFactor_inv :
     (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne'))).mul χ.differentiable_gammaFactor_inv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun s ↦ (χ.discrNormConductor : ℂ) ^ (-(s / 2)) * (χ.gammaFactor s)⁻¹ * χ.completedLFunction s, χ.differentiable_cpow_mul_gammaFactor_inv.mul (χ.differentiable_completedLFunction hχ), fun _ hs ↦ (χ.LFunction_eq_mul_completedLFunction hs).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_LFunction_continuation
     (hχ : ¬ ∃ τ : ℝ, ∀ x : IdeleGroup K,
@@ -68,7 +68,7 @@ theorem exists_LFunction_continuation
     fun _ hs ↦ (χ.LFunction_eq_mul_completedLFunction hs).symm⟩
 
 /- English proof (translation)
-The claim follows from `((((differentiable_const _).mul ((differentiable_id.div_const 2).const_cpow (Or.inl (ofReal_ne_zero.2 χ.discrNormConductor_pos.ne')))).continuous.tendsto c).mono_left nhdsWithin_le_nhds)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_const_mul_cpow_half (c : ℂ) :
     Tendsto (fun s : ℂ ↦ ((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.discrNormConductor : ℂ) ^ (s / 2))
@@ -84,14 +84,14 @@ variable {χ} {τ : ℝ}
 include hτ
 
 /- English proof (translation)
-The claim follows from `χ.differentiable_const_mul_cpow_half (differentiableAt_tateZeta hτ χ.testFunction_mem hs₀ hs₁)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_completedLFunction_of_forall {s : ℂ} (hs₀ : s ≠ -((τ : ℂ) * I))
     (hs₁ : s ≠ 1 - (τ : ℂ) * I) : DifferentiableAt ℂ χ.completedLFunction s :=
   χ.differentiable_const_mul_cpow_half (differentiableAt_tateZeta hτ χ.testFunction_mem hs₀ hs₁)
 
 /- English proof (translation)
-Establish `h` using `(χ.tendsto_const_mul_cpow_half (-((τ : ℂ) * I))).mul (tendsto_mul_tateZeta_neg hτ χ.testFunction_mem)`. Rewrite `h` using `[testFunction_zero_of_forall hτ]`. Use `(h.congr fun s ↦ ?_).trans (le_of_eq (congrArg 𝓝 (by ring)))` and prove the remaining obligations. Rewrite using `[completedLFunction]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_mul_completedLFunction_neg_of_forall :
     Tendsto (fun s ↦ (s + (τ : ℂ) * I) * χ.completedLFunction s) (𝓝[≠] (-((τ : ℂ) * I)))
@@ -105,7 +105,7 @@ theorem tendsto_mul_completedLFunction_neg_of_forall :
   ring
 
 /- English proof (translation)
-Rewrite using `[χ.adelicFourier_testFunction χ.toFractionalIdeal_conductorDifferentIdele, smul_zero, testFunction_zero_of_forall (χ.inv_eq_cpow_of_forall hτ), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicFourier_testFunction_zero_of_forall :
     adelicFourier K χ.testFunction 0 = χ.fourierConst χ.conductorDifferentIdele := by
@@ -113,7 +113,7 @@ theorem adelicFourier_testFunction_zero_of_forall :
     testFunction_zero_of_forall (χ.inv_eq_cpow_of_forall hτ), mul_one]
 
 /- English proof (translation)
-Establish `h` using `(χ.tendsto_const_mul_cpow_half (1 - (τ : ℂ) * I)).mul (tendsto_mul_tateZeta_one_sub hτ χ.testFunction_mem)`. Rewrite `h` using `[adelicFourier_testFunction_zero_of_forall hτ]`. Use `(h.congr fun s ↦ ?_).trans (le_of_eq (congrArg 𝓝 (by ring)))` and prove the remaining obligations. Rewrite using `[completedLFunction]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_mul_completedLFunction_one_sub_of_forall :
     Tendsto (fun s ↦ (s - (1 - (τ : ℂ) * I)) * χ.completedLFunction s) (𝓝[≠] (1 - (τ : ℂ) * I))
@@ -130,7 +130,7 @@ theorem tendsto_mul_completedLFunction_one_sub_of_forall :
 omit hτ in
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (mul_ne_zero (mul_ne_zero (ofReal_ne_zero.2 (normOneClassMeasure_univ_toReal_ne_zero K)) (inv_ne_zero pi_pow_nrComplexPlaces_ne_zero)) (χ.discrNormConductor_cpow_ne_zero _)) (χ.fourierConst_ne_zero χ.toFractionalIdeal_conductorDifferentIdele)`.
+A detailed English derivation is pending.
 -/
 theorem residue_one_sub_ne_zero :
     ((normOneClassMeasure K univ).toReal : ℂ) * ((π : ℂ) ^ nrComplexPlaces K)⁻¹ *
@@ -142,7 +142,7 @@ theorem residue_one_sub_ne_zero :
     (χ.fourierConst_ne_zero χ.toFractionalIdeal_conductorDifferentIdele)
 
 /- English proof (translation)
-Use `χ.completedLFunction_eq_rootNumber_mul fun τ' hτ' ↦ ?_` and prove the remaining obligations. Establish `h : τ' = τ`. Rewrite using `[← archExponent_eq_of_forall hτ' (Classical.arbitrary _), archExponent_eq_of_forall hτ (Classical.arbitrary _)]`. Substitute `h` using the available equality. Conclude with `⟨hs₀, hs₁⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem completedLFunction_eq_rootNumber_mul_of_forall {s : ℂ} (hs₀ : s ≠ -((τ : ℂ) * I))
     (hs₁ : s ≠ 1 - (τ : ℂ) * I) :
@@ -155,9 +155,9 @@ theorem completedLFunction_eq_rootNumber_mul_of_forall {s : ℂ} (hs₀ : s ≠ 
   exact ⟨hs₀, hs₁⟩
 
 /- English proof (translation)
-Use `Finset.prod_eq_zero (Finset.mem_univ (Classical.arbitrary (InfinitePlace K))) ?_` and prove the remaining obligations. Unfold `infiniteGamma`. Rewrite using `[infiniteTau_of_forall hτ, infiniteWeight_of_forall hτ]`. Use `split_ifs`. Rewrite using `[show -((τ : ℂ) * I) + (τ : ℂ) * I + ((0 : ℤ) : ℂ) = 0 by push_cast; ring]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Gammaℝ_eq_zero_iff.2 ⟨0, by simp⟩`. Rewrite using `[show -((τ : ℂ) * I) + (τ : ℂ) * I + (((0 : ℤ).natAbs : ℕ) : ℂ) / 2 = 0 by push_cast; ring, Gammaℂ_def, Complex.Gamma_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem gammaFactor_neg_of_forall : χ.gammaFactor (-((τ : ℂ) * I)) = 0 := by
   refine Finset.prod_eq_zero (Finset.mem_univ (Classical.arbitrary (InfinitePlace K))) ?_
@@ -170,25 +170,21 @@ theorem gammaFactor_neg_of_forall : χ.gammaFactor (-((τ : ℂ) * I)) = 0 := by
       Gammaℂ_def, Complex.Gamma_zero, mul_zero]
 
 /- English proof (translation)
-Use `set c : ℂ := -((τ : ℂ) * I) with hc`. Use `set d : ℂ := 1 - (τ : ℂ) * I with hd`. Use `set h : ℂ → ℂ := fun s ↦ (χ.discrNormConductor : ℂ) ^ (-(s / 2)) * (χ.gammaFactor s)⁻¹ with hh`. Establish `hdiff : Differentiable ℂ h` using `χ.differentiable_cpow_mul_gammaFactor_inv`. Establish `hcd : c ≠ d` using `fun h0 ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg re h0` as an intermediate fact. Simplify using `[hc, hd] at this`. Establish `hhc : h c = 0`. Simplify using `only [hh, hc, gammaFactor_neg_of_forall hτ, inv_zero, mul_zero]`. Use `set g₀ : ℂ → ℂ := fun s ↦ h s * χ.completedLFunction s with hg₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set rc : ℂ := -(((normOneClassMeasure K univ).toReal : ℂ) * ((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.discrNormConductor : ℂ) ^ (-((τ : ℂ) * I) / 2)) with hrc`. Establish `hres : Tendsto (fun s ↦ (s - c) * χ.completedLFunction s) (𝓝[≠] c) (𝓝 rc)`. Use `(tendsto_mul_completedLFunction_neg_of_forall hτ).congr fun s ↦ ?_` and prove the remaining obligations. Rewrite using `[hc, sub_neg_eq_add]`. Establish `hslope : Tendsto (fun s ↦ (s - c)⁻¹ * h s) (𝓝[≠] c) (𝓝 (deriv h c))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hasDerivAt_iff_tendsto_slope.1 (hdiff c).hasDerivAt).congr fun s ↦ ?_` and prove the remaining obligations. Rewrite using `[slope_fun_def_field, hhc]`. Use `beta_reduce`. Rewrite using `[sub_zero, div_eq_inv_mul]`. Establish `hlim : Tendsto g₀ (𝓝[≠] c) (𝓝 (deriv h c * rc))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hslope.mul hres).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Establish `hs' : s - c ≠ 0` using `sub_ne_zero.2 hs`. Simplify using `only [hg₀]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set G : ℂ → ℂ := Function.update g₀ c (deriv h c * rc) with hG`. Establish `hGeq : ∀ s, s ≠ c → G s = g₀ s` using `fun s hs ↦ Function.update_of_ne hs _ _`. Use `⟨G, ?_, fun s hs ↦ ?_, ?_⟩` and prove the remaining obligations. Establish `hnhds : ({d}ᶜ : Set ℂ) ∈ 𝓝 c` using `isOpen_compl_singleton.mem_nhds hcd`. Use `(Complex.differentiableOn_compl_singleton_and_continuousAt_iff hnhds).1 ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `DifferentiableOn.congr (fun z hz ↦ ?_) fun z hz ↦ hGeq z hz.2` and prove the remaining obligations. Simplify using `only [Set.mem_sdiff, mem_compl_iff, mem_singleton_iff] at hz`. Conclude with `((hdiff z).mul (differentiableAt_completedLFunction_of_forall hτ hz.2 hz.1)).differentiableWithinAt`. Rewrite using `[hG, continuousAt_update_same]`. Conclude with `hlim`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsc : s ≠ c` using `fun h0 ↦ by`. Use `congrArg re h0` as an intermediate fact. Simplify using `[hc] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hGeq s hsc, χ.LFunction_eq_mul_completedLFunction hs]`.
-
-Use `⟨h d * (((normOneClassMeasure K univ).toReal : ℂ) * ((π : ℂ) ^ nrComplexPlaces K)⁻¹ * (χ.discrNormConductor : ℂ) ^ ((1 - (τ : ℂ) * I) / 2) * χ.fourierConst χ.conductorDifferentIdele), mul_ne_zero ?_ residue_one_sub_ne_zero, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (χ.discrNormConductor_cpow_ne_zero _) (inv_ne_zero (χ.gammaFactor_ne_zero (by simp [hd])))`. Establish `hh' : Tendsto h (𝓝[≠] d) (𝓝 (h d))` using `((hdiff d).continuousAt.tendsto).mono_left nhdsWithin_le_nhds`. Use `(hh'.mul (tendsto_mul_completedLFunction_one_sub_of_forall hτ)).congr' ?_` and prove the remaining obligations. Establish `hne : ∀ᶠ s in 𝓝[≠] d, s ≠ c` using `eventually_nhdsWithin_of_eventually_nhds (isOpen_compl_singleton.mem_nhds hcd.symm)`.
-
-Use `filter_upwards [hne] with s hs`. Rewrite using `[hGeq s hs]`. Simplify using `only [hg₀]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_LFunction_continuation_of_forall :
     ∃ g : ℂ → ℂ, DifferentiableOn ℂ g {1 - (τ : ℂ) * I}ᶜ ∧

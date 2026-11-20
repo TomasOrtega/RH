@@ -5,17 +5,15 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES GlobalTheory.IwLevel UpperTheory.QO
 
 /- English proof (translation)
-Introduce `S Y hfin het W hWo hWc hex huniq`. Set `U : Y.left.Opens` to `⟨W, hWo⟩`. Establish `hrange : Set.range U.ι.base = W` using `U.range_ι`. Use `haveI : IsClosedImmersion U.ι := IsClosedImmersion.of_isPreimmersion _ (by rw [hrange]; exact hWc)`. Use `haveI : IsFinite (U.ι ≫ Y.hom) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Etale (U.ι ≫ Y.hom) := inferInstance`. Establish `hiso : IsIso (U.ι ≫ Y.hom)`. Rewrite using `[GlobalTheory.FinEt.isIso_iff_bijective_algClosed]`. Introduce `k _ _`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z₁ z₂ h`. Apply `(cancel_mono U.ι).mp` to reduce the goal to its premises. Apply `huniq k (z₁ ≫ U.ι) (z₂ ≫ U.ι)` to reduce the goal to its premises. Simplify `h` using `[Category.assoc]`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, hrange.symm]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.image_subset_range _ _`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, hrange.symm]`. Conclude with `Set.image_subset_range _ _`. Introduce `x`. Take `⟨y, hy, hyW⟩` from `hex k x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨IsOpenImmersion.lift U.ι y (by rw [hrange]; exact hyW), ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, hy]`. Use `⟨inv (U.ι ≫ Y.hom) ≫ U.ι, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, IsIso.inv_hom_id]`.
-
-Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, ← hrange]`. Conclude with `Set.image_subset_range _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_section_of_etale_clopen_geomPoint_unique :
     ∀ (S : Scheme.{0}) (Y : Over S), IsFinite Y.hom → Etale Y.hom → ∀ (W : Set Y.left), IsOpen W → IsClosed W → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S), ∃ y : Sp k ⟶ Y.left, y ≫ Y.hom = x ∧ Set.range y.base ⊆ W) → (∀ (k : Type) [Field k] [IsAlgClosed k] (y₁ y₂ : Sp k ⟶ Y.left), y₁ ≫ Y.hom = y₂ ≫ Y.hom → Set.range y₁.base ⊆ W → Set.range y₂.base ⊆ W → y₁ = y₂) → ∃ σ : S ⟶ Y.left, σ ≫ Y.hom = 𝟙 S ∧ Set.range σ.base ⊆ W := by

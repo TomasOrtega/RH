@@ -6,11 +6,11 @@ noncomputable def UpperTheory.Reformulated.B.Qj9.Stable :
       ∀ g ∈ Op, ∀ x ∈ P, (g : M → M) x ∈ P
 
 /- English proof (translation)
-Introduce `M _ _ Op P h e he`. Proceed by induction on `he using Algebra.adjoin_induction with`. Consider the case `mem g hg => exact h g hg`. Consider the case `algebraMap r`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `P.smul_mem r hx`. Consider the case `add a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[LinearMap.add_apply]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `P.add_mem (ha x hx) (hb x hx)`. Consider the case `mul a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[Module.End.mul_apply]`. Conclude with `ha _ (hb x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj9.radFin_adjoin_stable :
     ∀ {M : Type} [inst : AddCommGroup M] [inst_1 : _root_.Module ℂ M] (Op : Set (Module.End ℂ M)) (P : Submodule ℂ M),

@@ -16,11 +16,11 @@ def tprod {R : Type} [CommRing R] {m : ℕ} (u : Fin m → Rˣ) (i : Fin (m + 1)
   ∏ j : Fin m, if i.val ≤ j.val then u j else 1
 
 /- English proof (translation)
-Unfold `tprod`. Establish `h : ∀ j : Fin m, (if i.castSucc.val ≤ j.val then u j else 1) = (if j = i then u i else 1) * (if i.succ.val ≤ j.val then u j else 1)`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `: j.val ≠ i.val` using `fun h => hj (Fin.ext h)`. Simplify using `only [Fin.val_castSucc, Fin.val_succ, hj, if_false, one_mul]`. Distinguish the cases in `h1 : i.val ≤ j.val`. Rewrite using `[if_pos h1, if_pos (by omega)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg (by omega)]`. Rewrite using `[Finset.prod_congr rfl (fun j _ => h j), Finset.prod_mul_distrib, Finset.prod_ite_eq']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tprod_castSucc {R : Type} [CommRing R] {m : ℕ} (u : Fin m → Rˣ) (i : Fin m) :
     tprod u i.castSucc = u i * tprod u i.succ := by
@@ -39,7 +39,7 @@ theorem tprod_castSucc {R : Type} [CommRing R] {m : ℕ} (u : Fin m → Rˣ) (i 
   simp
 
 /- English proof (translation)
-Unfold `tprod`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `j _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem tprod_last {R : Type} [CommRing R] {m : ℕ} (u : Fin m → Rˣ) : tprod u (Fin.last m) = 1 := by
   unfold tprod
@@ -60,13 +60,13 @@ def phi (N k : ℕ) (n : SimplexCategoryᵒᵖ) :
   FunctorToTypes.prod.lift (vert N k n) (utsT N k n)
 
 /- English proof (translation)
-Establish `hobj : ∀ t : ℕ, ∀ i : Fin (m + 1), i.val + t = m → x.obj i = y.obj i`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: i = Fin.last m` using `Fin.ext (by simp; omega)`. Substitute `this` using the available equality. Conclude with `h0`. Consider the case `succ t ih`. Introduce `i hi`.
+Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlt : i.val < m` using `by omega`. Establish `e` using `ih ⟨i.val + 1, by omega⟩ (by simp; omega)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Establish `hx` using `(x.map' i.val (i.val + 1)).2 j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `(y.map' i.val (i.val + 1)).2 j`. Establish `hu'` using `hu ⟨i.val, hlt⟩`. Express the relevant statement in the definitionally equal form `(x.obj i).1 j = (y.obj i).1 j`. Use `erw [hx, hy, hu', e]`. Conclude with `ComposableArrows.ext (fun i => hobj (m - i.val) i (by omega)) (fun i hi => (Vec.hom_subsingleton N k U _ _).elim _ _)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem chain_ext {N k : ℕ} {U : Scheme.{0}} {m : ℕ} (x y : ComposableArrows (Vec N k U) m)
     (h0 : x.obj (Fin.last m) = y.obj (Fin.last m))
@@ -92,19 +92,19 @@ theorem chain_ext {N k : ℕ} {U : Scheme.{0}} {m : ℕ} (x y : ComposableArrows
     (fun i hi => (Vec.hom_subsingleton N k U _ _).elim _ _)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `[Vec.smul']`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem smul'_one {N k : ℕ} {U : Scheme.{0}} (v : Vec N k U) : Vec.smul' 1 v = v := by
   apply Subtype.ext; funext i; simp [Vec.smul']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h1` using `congrArg Prod.fst hxy`. Establish `h2` using `congrArg Prod.snd hxy`. Apply `chain_ext (U := U.unop) x y` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun z : ComposableArrows (Vec N k U.unop) 0 => z.obj 0) h1`. Introduce `i`. Conclude with `congrFun h2 i`. Introduce and unpack `⟨w, u0⟩`. Set `u : Fin n.unop.len → (Γ(U.unop, ⊤))ˣ` to `u0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `obj : Fin (n.unop.len + 1) → Vec N k U.unop` to `fun i => Vec.smul' (tprod u i) (w.obj 0)`. Set `ms : ∀ i : Fin n.unop.len, obj i.castSucc ⟶ obj i.succ` to `fun i => ⟨u i, fun j => by dsimp only [obj, Vec.smul']`. Rewrite using `[show tprod u i.castSucc = u i * tprod u i.succ from tprod_castSucc u i, Units.val_mul, mul_assoc]⟩`. Use `⟨ComposableArrows.mkOfObjOfMapSucc obj ms, ?_⟩` and prove the remaining obligations. Apply `Prod.ext` to reduce the goal to its premises.
+Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ComposableArrows.ext₀` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `obj (Fin.last _) = w.obj 0`. Conclude with `(congrArg (fun c => Vec.smul' c (w.obj 0)) (tprod_last u)).trans (smul'_one _)`. Use function extensionality and compare the values at `i`. Conclude with `congrArg Subtype.val (ComposableArrows.mkOfObjOfMapSucc_map_succ obj ms i.val i.isLt)`.
+Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem phi_bij (N k : ℕ) (n : SimplexCategoryᵒᵖ) (U : Scheme.{0}ᵒᵖ) :
     Function.Bijective ((phi N k n).app U) := by
@@ -134,9 +134,9 @@ instance isIso_phi (N k : ℕ) (n : SimplexCategoryᵒᵖ) : IsIso (phi N k n) :
   exact NatIso.isIso_of_isIso_app _
 
 /- English proof (translation)
-Introduce `d n`. Use `⟨asIso (phi (d + 1) 1 n) ≪≫ (FunctorToTypes.binaryProductIso _ _).symm, asIso (phi d 0 n) ≪≫ (FunctorToTypes.binaryProductIso _ _).symm, ?_⟩` and prove the remaining obligations. Apply `prod.hom_ext` to reduce the goal to its premises. Simplify using `only [Iso.trans_hom, asIso_hom, Iso.symm_hom, Category.assoc, prod.map_fst, reassoc_of% FunctorToTypes.binaryProductIso_inv_comp_fst, FunctorToTypes.binaryProductIso_inv_comp_fst]`. Simplify using `only [phi, reassoc_of% FunctorToTypes.prod.lift_fst, FunctorToTypes.prod.lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `((Pj.tail d).naturality _).symm`. Simplify using `only [Iso.trans_hom, asIso_hom, Iso.symm_hom, Category.assoc, prod.map_snd, Category.comp_id, FunctorToTypes.binaryProductIso_inv_comp_snd]`. Simplify using `only [phi, FunctorToTypes.prod.lift_snd]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem LeafNerveSplit_of : LeafNerveSplit := by
   intro d n

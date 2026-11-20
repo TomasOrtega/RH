@@ -10,15 +10,15 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Col
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `set N := M + diagonal (Fin.cons 0 d : Fin (n + 1) → A) with hN`. Establish `h1 : M + diagonal (Fin.cons a d : Fin (n + 1) → A) = N.updateRow 0 (N 0 + a • Pi.single 0 1)`. Use extensionality with `i j`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Distinguish the cases in `hj : j = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using `[N]`. Simplify using `[N, hj, Ne.symm hj]`. Introduce `i`. Simplify using `[N, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (N.updateRow 0 (Pi.single 0 1)).det = (M.submatrix Fin.succ Fin.succ + diagonal d).det`. Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Establish `hz : ∀ k : Fin n, (N.updateRow 0 (Pi.single 0 1)) 0 k.succ = 0`. Introduce `k`. Simplify using `[Fin.succ_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`. Simplify using `only [Matrix.updateRow_self, Pi.single_eq_same, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[N, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem det_add_diagonal_cons {A : Type*} [CommRing A] {n : ℕ}
     (M : Matrix (Fin (n + 1)) (Fin (n + 1)) A) (a : A) (d : Fin n → A) :
@@ -49,15 +49,15 @@ theorem det_add_diagonal_cons {A : Type*} [CommRing A] {n : ℕ}
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc v n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `M`. Use `⟨Fin.elim0, fun i => i.elim0, 1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.det_isEmpty]`. Consider the case `succ n ih`. Introduce `M`. Take `⟨t', ht', w', hw'⟩` from `ih (M.submatrix Fin.succ Fin.succ)`. Take `⟨t0, ht0, w, hw⟩` from `hS F E hc v _ ((M + diagonal (Fin.cons 0 (fun i => iA F E (t' i)) : Fin (n + 1) → _)).det) ⟨w', hw'⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Fin.cons t0 t', ?_, w, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Simplify using `using ht0`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using ht' i`. Establish `hf : (fun i => iA F E ((Fin.cons t0 t' : Fin (n + 1) → E) i)) = (Fin.cons (iA F E t0) (fun i => iA F E (t' i)) : Fin (n + 1) → _)`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using the standard rewrite rules. Rewrite using `[hf, det_add_diagonal_cons]`. Conclude with `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftDiag_of (hS : ShiftOne) : ShiftDiag := by
   intro F E _ _ _ _ _ _ hc v n

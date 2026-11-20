@@ -16,17 +16,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ d Φ hΦ k hk` and use `_root_.PositivityTheory.SiegelWeilFormula.KWhit.kfin_om_k d hΦ hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kFinK_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.KFinK_k := fun _ _ _ _ _ _ _ _ d Φ hΦ k hk => _root_.PositivityTheory.SiegelWeilFormula.KWhit.kfin_om_k d hΦ hk
 /- English proof (translation)
-Introduce `hT c F E _ _ _ _ _ σ d Q hQs hQK hL Φ hΦ x nb lam 𝓖 hcd ε w hw T hTnd`. Take `⟨p, t, hp, k, hk, rfl⟩` from `d.ok.hgt.iwa x`. Take `⟨n0, m0, β₀, hn, hm, rfl⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.par_decomp_k d p t hp`. Establish `key` using `hL (d.om k Φ) (hQK Φ hΦ k hk) m0 hm nb lam 𝓖 hcd ε w hw T hTnd`. Establish `e1 : (fun z => ∫ β, flat d.a (d.sec0 Φ) (s0 d.m d.n) z (w * nb β * (n0 * m0 * k)) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam) = fun z => d.B.ψ (d.tt (T.1.1 * β₀)) * ∫ β, flat d.a (d.sec0 (d.om k Φ)) (s0 d.m d.n) z (w * nb β * m0) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KWhit.int_n_k d nb lam 𝓖 hcd T w n0 m0 β₀ hn]`. Use `congr 1`. Use function extensionality and compare the values at `β`. Simplify using `only [flat]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[show w * nb β * (n0 * m0 * k) = (w * nb β * (n0 * m0)) * k by simp only [mul_assoc], _root_.PositivityTheory.SiegelWeilFormula.KWhit.a_mul_K_k d _ k hk, _root_.PositivityTheory.SiegelWeilFormula.KWhit.constantTerm_mul_right]`. Establish `e2 : d.orb T (d.om (n0 * m0 * k) Φ) = d.B.ψ (d.tt (T.1.1 * β₀)) * d.orb T (d.om m0 (d.om k Φ))`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KWhit.orb_n_k hT d T (_root_.PositivityTheory.SiegelWeilFormula.KWhit.om_mem_sch_k d _ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.om_mem_sch_k d _ (hQs Φ hΦ))) n0 β₀ hn`. Use `show HolValueAt _ _ _`.
-
-Rewrite using `[e1, e2, mul_left_comm]`. Conclude with `holValueAt_const_mul _ key`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwaRedC_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.IwaRedC_k := by
   intro hT c F E _ _ _ _ _ σ d Q hQs hQK hL Φ hΦ x nb lam 𝓖 hcd ε w hw T hTnd

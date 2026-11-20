@@ -9,9 +9,9 @@ namespace GlobalTheory.CompanionTheory.Cone
 universe w v u
 
 /- English proof (translation)
-Establish `hC : Subsingleton (CH.Cn (U.ι ⋙ F) j)` using `⟨fun f g => funext fun s => (h _).elim _ _⟩`. Establish `hZ : Subsingleton ((CH.cx (U.ι ⋙ F)).Z j)` using `⟨fun x y => Subtype.ext (hC.elim _ _)⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg _ (hZ.elim x y)`.
+A detailed English derivation is pending.
 -/
 theorem HU_subsingleton_of_obj {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
     (F : C ⥤ ModuleCat.{w} R) (U : ObjectProperty C) (j : ℕ)
@@ -26,9 +26,9 @@ theorem HU_subsingleton_of_obj {R : Type} [CommRing R] {C : Type u} [Category.{v
   exact congrArg _ (hZ.elim x y)
 
 /- English proof (translation)
-Establish `h0 : ∀ x : sqM a b T, x = 0`. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Use `Subtype.ext ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (h ▸ hy)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨fun x y => (h0 x).trans (h0 y).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem sq_obj_subsingleton {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
     {A : C ⥤ CommAlgCat.{0} R} (a b : IdF A) (T : C) (h : a.S T = b.S T) :
@@ -41,7 +41,7 @@ theorem sq_obj_subsingleton {R : Type} [CommRing R] {C : Type u} [Category.{v} C
   exact ⟨fun x y => (h0 x).trans (h0 y).symm⟩
 
 /- English proof (translation)
-Use `HU_subsingleton_of_obj _ Q j fun T => sq_obj_subsingleton _ _ T ?_` and prove the remaining obligations. Establish `e : r.toNat = (r + 1).toNat` using `by omega`. Express the relevant statement in the definitionally equal form `T.pdPow r.toNat = T.pdPow (r + 1).toNat`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem HU_gr_neg {b : Base} (L : b.Fun) (Q : ObjectProperty (Thick L)) (r : ℤ) (hr : r < 0) (j : ℕ) :
     Subsingleton (HU (gr (Φ := thP L) (thFil L) r) Q j) := by

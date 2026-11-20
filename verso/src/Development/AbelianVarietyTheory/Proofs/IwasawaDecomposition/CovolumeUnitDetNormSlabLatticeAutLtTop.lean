@@ -21,11 +21,11 @@ open GlobalTheory.FlagMeas GlobalTheory.MeanDual
 variable (E : Type) [Field E] [NumberField E] (j : ℕ)
 
 /- English proof (translation)
-Unfold `covol`. Use `le_iInf fun D' => le_iInf fun hD' => le_iInf fun hc => ?_` and prove the remaining obligations. Establish `hmeas : Measurable (fun g : MatInf E j => h * g)` using `(GlobalTheory.MeanDual.measurePreserving_mul_left E j h hh).measurable`. Use `iInf_le_of_le ((fun g => h * g) ⁻¹' D') (iInf_le_of_le (hmeas hD') (iInf_le_of_le ?_ ?_))` and prove the remaining obligations. Introduce `x hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨δ, hδ, hx'⟩` from `hc (h * x) (hAB x hx)`. Take `⟨δ₀, hδ₀, H⟩` from `hΓ δ hδ`. Use `⟨δ₀, hδ₀, ?_⟩` and prove the remaining obligations. Use `show h * (δ₀ * x) ∈ D'`. Rewrite using `[H]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx'`. Rewrite using `[← Measure.map_apply hmeas hD', GlobalTheory.OrbitTerm.map_haarGL_mul_left_eq E j h hh]`.
+A detailed English derivation is pending.
 -/
 theorem covol_le_of_mul_left (Γ Γ' : Set (MatInf E j)) (h : MatInf E j) (hh : 0 < detNorm E j h)
     (A B : Set (MatInf E j)) (hAB : ∀ x ∈ A, h * x ∈ B)
@@ -47,7 +47,7 @@ theorem covol_le_of_mul_left (Γ Γ' : Set (MatInf E j)) (h : MatInf E j) (hh : 
 def scal (r : ℝ) : MatInf E j := fun _ a b => if a = b then (r : ℂ) else 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[scal, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem of_scal (r : ℝ) (w : InfinitePlace E) :
     Matrix.of (scal E j r w) = (r : ℂ) • (1 : Matrix (Fin j) (Fin j) ℂ) := by
@@ -55,7 +55,7 @@ theorem of_scal (r : ℝ) (w : InfinitePlace E) :
   simp [scal, Matrix.one_apply]
 
 /- English proof (translation)
-Apply `matInf_ext` to reduce the goal to its premises. Introduce `w`. Simplify using `only [of_mul, of_scal, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem scal_mul_comm (r : ℝ) (δ x : MatInf E j) : scal E j r * (δ * x) = δ * (scal E j r * x) := by
   apply matInf_ext
@@ -63,7 +63,7 @@ theorem scal_mul_comm (r : ℝ) (δ x : MatInf E j) : scal E j r * (δ * x) = δ
   simp only [of_mul, of_scal, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `detNorm`. Simplify using `only [of_scal, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Rewrite using `[Finset.prod_const, Finset.card_univ]`. Use `congr 1`. Rewrite using `[norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, ← pow_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem detNorm_scal (r : ℝ) (hr : 0 < r) :
     detNorm E j (scal E j r) = (r ^ (2 * j)) ^ Fintype.card (InfinitePlace E) := by
@@ -74,7 +74,7 @@ theorem detNorm_scal (r : ℝ) (hr : 0 < r) :
   rw [norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hN : Fintype.card (InfinitePlace E) ≠ 0` using `Fintype.card_ne_zero`. Use `⟨c ^ (((2 * j * Fintype.card (InfinitePlace E) : ℕ) : ℝ))⁻¹, Real.rpow_pos_of_pos hc _, ?_⟩` and prove the remaining obligations. Rewrite using `[detNorm_scal E j _ (Real.rpow_pos_of_pos hc _), ← pow_mul]`. Conclude with `Real.rpow_inv_natCast_pow hc.le (by positivity)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scal (hj : 1 ≤ j) (c : ℝ) (hc : 0 < c) : ∃ r : ℝ, 0 < r ∧ detNorm E j (scal E j r) = c := by
   have hN : Fintype.card (InfinitePlace E) ≠ 0 := Fintype.card_ne_zero
@@ -85,9 +85,9 @@ theorem exists_scal (hj : 1 ≤ j) (c : ℝ) (hc : 0 < c) : ∃ r : ℝ, 0 < r �
 def slab (c : ℝ) : Set (MatInf E j) := {x | c ≤ detNorm E j x ∧ detNorm E j x < c * Real.exp 1}
 
 /- English proof (translation)
-Take `⟨r, hr, hd⟩` from `exists_scal E j hj c⁻¹ (inv_pos.2 hc)`. Use `covol_le_of_mul_left E j _ _ (scal E j r) (hd ▸ inv_pos.2 hc) _ _ ?_ (fun δ hδ => ⟨δ, hδ, fun x => scal_mul_comm E j r δ x⟩)` and prove the remaining obligations. Introduce and unpack `x ⟨h1, h2⟩`. Simplify using `only [Set.mem_setOf_eq, detNorm_mul, hd]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[inv_mul_eq_div, le_div_iff₀ hc, one_mul]`. Conclude with `h1`. Rewrite using `[inv_mul_eq_div, div_lt_iff₀ hc, mul_comm]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_slab_le (hj : 1 ≤ j) (Λ : Submodule (𝓞 E) (Fin j → E)) (c : ℝ) (hc : 0 < c) :
     covol (autGL E j Λ) (haarGL E j) (slab E j c) ≤
@@ -102,11 +102,11 @@ theorem covol_slab_le (hj : 1 ≤ j) (Λ : Submodule (𝓞 E) (Fin j → E)) (c 
   · rw [inv_mul_eq_div, div_lt_iff₀ hc, mul_comm]; exact h2
 
 /- English proof (translation)
-Use `covol_le_of_mul_left E j _ _ (embInf E j γ) (detNorm_embInf E j γ) _ _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `x ⟨h1, h2⟩`. Simplify using `only [slab, Set.mem_setOf_eq, detNorm_mul]`. Establish `hp` using `detNorm_embInf E j γ`. Conclude with `⟨le_mul_of_one_le_right hp.le h1, mul_lt_mul_of_pos_left h2 hp⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `x hx`. Take `⟨δ, hδ, rfl⟩` from `(mem_autGL E j).1 hx`. Use `⟨embInf E j (γ⁻¹ * δ * γ), (mem_autGL E j).2 ⟨_, (h.inv.mul hδ).mul h, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Apply `matInf_ext` to reduce the goal to its premises. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [of_mul, embInf_mul, ← Matrix.mul_assoc]`. Use `embInf_inv_mul E j γ⁻¹ w` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Rewrite using `[this, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem covol_le_of_carries {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fin j → E)} (h : Carries E j γ Λ Λ') :
     covol (autGL E j Λ) (haarGL E j) {x | 1 ≤ detNorm E j x ∧ detNorm E j x < Real.exp 1} ≤
@@ -127,11 +127,11 @@ theorem covol_le_of_carries {γ : GL (Fin j) E} {Λ Λ' : Submodule (𝓞 E) (Fi
     rw [this, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `j hj`. Proceed by induction on `j with`. Consider the case `zero => omega`. Consider the case `succ n ih`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[GlobalTheory.NormOneVol.glVol_one E hE]`. Conclude with `ENNReal.ofReal_lt_top`. Establish `h` using `ih hn`. Establish `hs` using `GlobalTheory.FlagBase.SiegelStep.glVol_step E hE (n + 1) (by omega) (by simpa using h)`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_sub_cancel] at h ⊢`. Conclude with `ENNReal.mul_lt_top h ENNReal.ofReal_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem glVol_lt_top (hE : IsTotallyComplex E) : ∀ j : ℕ, 1 ≤ j → glVol E j < ⊤ := by
   intro j hj
@@ -151,13 +151,13 @@ end GlobalTheory.SlabFinVol
 open GlobalTheory.FlagMeas GlobalTheory.MeanDual in
 
 /- English proof (translation)
-Introduce `E _ _ hE j hj Λ hΛ`. Establish `hfin` using `GlobalTheory.SlabFinVol.glVol_lt_top E hE j hj`. Set `R : {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ} → {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ} → Prop` to `fun Λ Λ' => ∃ γ : GL (Fin j) E, ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ Λ'.1 ↔ y ∈ Λ.1`. Establish `hle : _ ≤ glVol E j` using `ENNReal.le_tsum (Quot.mk R ⟨Λ, hΛ⟩)`. Establish `hrel` using `Quot.eqvGen_exact (Quot.out_eq (Quot.mk R ⟨Λ, hΛ⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ a b : {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ}, Relation.EqvGen (fun Λ Λ' : {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ} => ∃ γ : GL (Fin j) E, ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ Λ'.1 ↔ y ∈ Λ.1) a b → ∃ γ : GL (Fin j) E, Carries …`. Introduce `a b hab`. Proceed by induction on `hab with`. Consider the case `rel x y h => exact h`. Consider the case `refl x => exact ⟨1, fun y => by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `symm x y _ ih => obtain ⟨γ, h⟩ := ih`. Conclude with `⟨γ⁻¹, h.inv⟩`. Consider the case `trans x y z _ _ ih1 ih2`. Take `⟨γ, h⟩` from `ih1`. Take `⟨δ, h'⟩` from `ih2`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨δ * γ, h'.mul h⟩`. Take `⟨γ, hγ⟩` from `key _ _ hrel`. Conclude with `lt_of_le_of_lt ((covol_le_of_carries E j hγ.inv).trans (GlobalTheory.SlabFinVol.covol_slab_le E j hj _ _ (detNorm_embInf E j _))) (lt_of_le_of_lt hle hfin)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SlabFinVol.covol_unitSlab_lt_top : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, 1 ≤ j → ∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsLattice E Λ → GlobalTheory.FlagMeas.covol (GlobalTheory.FlagMeas.autGL E j Λ) (GlobalTheory.FlagMeas.haarGL E j) {x | 1 ≤ GlobalTheory.FlagMeas.detNorm E j x ∧ GlobalTheory.FlagMeas.detNorm E j x < Real.exp 1} < ⊤ := by
   intro E _ _ hE j hj Λ hΛ

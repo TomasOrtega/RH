@@ -10,33 +10,31 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `Fintype.ofFinite X` as an intermediate fact. Establish `hs' : ∀ x y : X, ∃ f : T, x ≠ y → (f : X → O) x ≠ (f : X → O) y`. Introduce `x y`. Distinguish the cases in `h : x = y`. Conclude with `⟨1, fun h' => (h' h).elim⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨f, hf, hne⟩` from `hsep x y h`. Conclude with `⟨⟨f, hf⟩, fun _ => hne⟩`. Use `choose s hs using hs'`. Set `E : X → T` to `fun x => ∏ y ∈ Finset.univ.erase x, (s x y - algebraMap O T ((s x y : X → O) y))`. Establish `hE : ∀ x z, ((E x : T) : X → O) z = ∏ y ∈ Finset.univ.erase x, ((s x y : X → O) z - (s x y : X → O) y)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x z`. Simplify using `[E, Subalgebra.coe_prod, Finset.prod_apply]`. Set `d : X → O` to `fun x => ((E x : T) : X → O) x`. Establish `hd : ∀ x, d x ≠ 0`. Introduce `x`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [d, hE]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun y hy => sub_ne_zero.mpr (hs x y (Ne.symm (Finset.ne_of_mem_erase hy)))`. Establish `hE0 : ∀ x z, z ≠ x → ((E x : T) : X → O) z = 0`. Introduce `x z hz`. Rewrite using `[hE]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_eq_zero (i := z) (Finset.mem_erase.mpr ⟨hz, Finset.mem_univ _⟩) (sub_self _)`. Establish `hmul : ∀ (g : T) x, g * E x = ((g : X → O) x) • E x`. Introduce `g x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hz : z = x`. Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hE0 x z hz]`. Set `F : X → O` to `fun x => ∏ x' ∈ Finset.univ.erase x, d x'`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `c : O` to `∏ x, d x`. Establish `hsum : ∑ x, F x • E x = algebraMap O T c`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single z]`. Simplify using `only [F, c] show (∏ x' ∈ Finset.univ.erase z, d x') * d z = _`. Rewrite using `[mul_comm, Finset.mul_prod_erase _ _ (Finset.mem_univ z)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _ hx`. Rewrite using `[hE0 x z (Ne.symm hx), mul_zero]`. Introduce `h`. Conclude with `(h (Finset.mem_univ z)).elim`. Set `K` to `FractionRing O`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : T →ₐ[O] Module.End K (TensorProduct O K M)` to `(Module.End.baseChangeHom O K M).comp act`. Establish `hψ : ∀ f, ψ f = (act f).baseChange K` using `fun f => rfl`. Establish `hmem : ∀ x (m : TensorProduct O K M), ψ (E x) m ∈ heckeEig T act x`. Introduce `x m`. Simplify using `only [heckeEig]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.mem_iInf _ |>.mpr fun f => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, ← hψ]`. Rewrite using `[show ψ f (ψ (E x) m) = (ψ f * ψ (E x)) m from rfl, ← map_mul, hmul, map_smul, LinearMap.smul_apply, algebraMap_smul]`. Establish `hc : algebraMap O K c ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective O K)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun x _ => hd x`. Use `eq_top_iff.mpr fun m _ => ?_` and prove the remaining obligations. Establish `hcm : algebraMap O K c • m = ∑ x, F x • ψ (E x) m`. Rewrite using `[algebraMap_smul]`. Use `congrArg (fun f => ψ f m) hsum` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, AlgHom.commutes] at this`. Rewrite `this` using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply] at this`. Rewrite using `[this, Module.algebraMap_end_apply]`. Establish `: m = (algebraMap O K c)⁻¹ • (algebraMap O K c • m)`.
-
-Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[this, hcm]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun x _ => ?_)` and prove the remaining obligations. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.mem_iSup_of_mem x (hmem x m))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.heckeEig_iSup_eq_top_of_sep {O X M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M] [Finite X]
     (T : Subalgebra O (X → O)) (act : T →ₐ[O] Module.End O M)
@@ -114,13 +112,13 @@ theorem _root_.GlobalTheory.heckeEig_iSup_eq_top_of_sep {O X M : Type} [CommRing
   exact Submodule.smul_of_tower_mem _ _ (Submodule.mem_iSup_of_mem x (hmem x m))
 
 /- English proof (translation)
-Introduce `i` and use `GlobalTheory.heckeEig_iSup_eq_top_of_sep (D.nd.T i) (D.nd.act i) (D.nd.T_sep i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eigSpan_of_record (D : D7) : D.nd.EigSpan :=
   fun i => GlobalTheory.heckeEig_iSup_eq_top_of_sep (D.nd.T i) (D.nd.act i) (D.nd.T_sep i)
 
 /- English proof (translation)
-Introduce `hL _`. Use `StepW.of_all fun K B f T w _ _ _ => ?_` and prove the remaining obligations. Introduce `P x l`. Conclude with `⟨fun _ => ∅, fun L _ => eigSpan_of_record _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ptSt_eigSpan : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → AllSt fun _ _ _ _ _ _ x =>
     ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => D'.nd.EigSpan := by

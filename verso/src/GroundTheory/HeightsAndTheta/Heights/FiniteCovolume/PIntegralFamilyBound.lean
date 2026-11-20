@@ -6,11 +6,11 @@ namespace GroundTheory.Heights₂.Heights.FiniteCovolume
 open NumberField Module
 
 /- English proof (translation)
-Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) = finrank ℚ E`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Set `e : Fin (finrank ℚ E) ≃ Module.Free.ChooseBasisIndex ℤ (𝓞 E)` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `a : Fin (finrank ℚ E) → 𝓞 E` to `fun i => RingOfIntegers.basis E (e i)`. Use `⟨∑ i, ∑ σ : E →+* ℂ, ‖σ (a i)‖, a, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `(integralBasis E).linearIndependent.comp e e.injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[a, integralBasis_apply]`. Introduce `i σ`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem IntegralFamilyBound.proof (E : Type*) [Field E] [NumberField E] :
     IntegralFamilyBound.Statement E := by

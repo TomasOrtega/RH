@@ -5,27 +5,25 @@ open scoped TensorProduct
 namespace GlobalTheory.FlagBasis
 
 /- English proof (translation)
-Introduce `hF hn`. Take `⟨⟨hef, hz, hb⟩, -, -, -, ⟨hidem, horth, hint, -⟩, ⟨hbw, hbwd⟩, -, hspan⟩` from `hF`. Use `⟨fun j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Unfold `flagVec split_ifs with h1 h2 h3 h4`. Conclude with `(hef _).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `I.Lf.add_mem (hb _).1 (hb _).2`. Conclude with `hz`. Conclude with `(hef _).2`. Conclude with `I.Lf.zero_mem`. Use `set R : Set (VA I) := Set.range fun j : Fin I.n => flagVec e0 f0 z0 bw bwd j.val with hR`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ j, j < I.n → flagVec e0 f0 z0 bw bwd j ∈ Submodule.span (IntAf I.F I.E) R` using `fun j hj => Submodule.subset_span ⟨⟨j, hj⟩, rfl⟩`. Establish `hsig : sigA I ew ∈ IntAf I.F I.E` using `Formalism.L2.SG.Pf.unitaryCongruence.sigA_mem I hint`. Establish `hc : ∀ l : Fin k, flagVec e0 f0 z0 bw bwd (ρ + l.val) = bw l + bwd (Fin.rev l)`. Introduce `l`. Establish `h1 : ¬ (ρ + l.val < ρ)` using `by omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ρ + l.val - ρ < k` using `by omega`. Unfold `flagVec`. Rewrite using `[dif_neg h1, dif_pos h2]`. Apply the tactic sequence `congr <;> simp`. Establish `hcl : ∀ l : Fin k, flagVec e0 f0 z0 bw bwd (ρ + l.val) ∈ Submodule.span (IntAf I.F I.E) R` using `fun l => hmem _ (by omega)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hsub : Set.range e0 ∪ Set.range f0 ∪ {z0} ∪ Set.range bw ∪ Set.range bwd ⊆ (Submodule.span (IntAf I.F I.E) R : Set (VA I))`. Introduce and unpack `v ((((⟨a, rfl⟩ | ⟨a, rfl⟩) | hv) | ⟨l, rfl⟩) | ⟨l, rfl⟩)`. Establish `h` using `hmem a.val (by omega)`. Unfold `flagVec at h`. Rewrite `h` using `[dif_pos a.isLt]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h` using `hmem (2 * ρ + k - a.val) (by omega)`. Establish `h1 : ¬ (2 * ρ + k - a.val < ρ)` using `by omega`. Establish `h2 : ¬ (2 * ρ + k - a.val - ρ < k)` using `by omega`. Establish `h3 : ¬ (2 * ρ + k - a.val = ρ + k)` using `by omega`. Establish `h4 : 2 * ρ + k - (2 * ρ + k - a.val) < ρ` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Unfold `flagVec at h`. Rewrite `h` using `[dif_neg h1, dif_neg h2, if_neg h3, dif_pos h4]`. Establish `e : (⟨2 * ρ + k - (2 * ρ + k - a.val), h4⟩ : Fin ρ) = a` using `by ext; simp; omega`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Rewrite `hv` using `[Set.mem_singleton_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Substitute `hv` using the available equality. Establish `h` using `hmem (ρ + k) (by omega)`. Establish `h1 : ¬ (ρ + k < ρ)` using `by omega`. Establish `h2 : ¬ (ρ + k - ρ < k)` using `by omega`. Unfold `flagVec at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[dif_neg h1, dif_neg h2, if_pos rfl]`. Then use the resulting hypothesis. Establish `h` using `Submodule.smul_mem _ (⟨ew, hint⟩ : IntAf I.F I.E) (hcl l)`. Rewrite `h` using `[hc l]`. Establish `e : ((⟨ew, hint⟩ : IntAf I.F I.E) • (bw l + bwd (Fin.rev l)) : VA I) = bw l` using `by show ew • (bw l + bwd (Fin.rev l)) = bw l`. Rewrite using `[smul_add, hbwd (Fin.rev l), smul_smul, horth, zero_smul, add_zero, ← hbw l]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `h` using `Submodule.smul_mem _ (⟨sigA I ew, hsig⟩ : IntAf I.F I.E) (hcl (Fin.rev l))`. Rewrite `h` using `[hc (Fin.rev l), Fin.rev_rev]`. Establish `e : ((⟨sigA I ew, hsig⟩ : IntAf I.F I.E) • (bw (Fin.rev l) + bwd l) : VA I) = bwd l` using `by show sigA I ew • (bw (Fin.rev l) + bwd l) = bwd l`. Rewrite using `[smul_add, hbw (Fin.rev l), smul_smul, mul_comm, horth, zero_smul, zero_add, hbwd l, smul_smul, ← map_mul, hidem]`.
-
-Rewrite `h` using `[e]`. Then use the resulting hypothesis. Use `hspan y hy` as an intermediate fact. Conclude with `sup_le_sup_right (Submodule.span_le.2 hsub) _ this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flagVec_mem_and_span (I : AutInst) (g : ℕ) {ρ k : ℕ} (e0 f0 : Fin ρ → VA I) (z0 : VA I)
     (bw bwd : Fin k → VA I) (ew : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) :

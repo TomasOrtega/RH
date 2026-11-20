@@ -13,7 +13,7 @@ def compPow (l : ℕ) [Fact l.Prime] (B : PowerSeries (Qbar l)) : PowerSeries (Q
     ∑ k ∈ Finset.range (n + 1), B.coeff k * ((((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l))) ^ k).coeff n
 
 /- English proof (translation)
-Establish `h` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_lt_one : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h := PadicAlgCl.norm_extends l (l : ℚ_[l])
@@ -22,7 +22,7 @@ theorem norm_l_lt_one : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
 
 /- English proof (translation)
-Establish `h` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h, Padic.norm_p]`. Conclude with `inv_pos.2 (by exact_mod_cast (Fact.out : l.Prime).pos)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_l_pos : 0 < ‖((l : ℕ) : Qbar l)‖ := by
   have h := PadicAlgCl.norm_extends l (l : ℚ_[l])
@@ -31,14 +31,14 @@ theorem norm_l_pos : 0 < ‖((l : ℕ) : Qbar l)‖ := by
   exact inv_pos.2 (by exact_mod_cast (Fact.out : l.Prime).pos)
 
 /- English proof (translation)
-Rewrite using `[norm_pow, norm_pow]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) norm_l_lt_one.le h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lpow_anti {k n : ℕ} (h : k ≤ n) : ‖((l : ℕ) : Qbar l) ^ n‖ ≤ ‖((l : ℕ) : Qbar l) ^ k‖ := by
   rw [norm_pow, norm_pow]
   exact pow_le_pow_of_le_one (norm_nonneg _) norm_l_lt_one.le h
 
 /- English proof (translation)
-Unfold `Cg at *`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem cg_trans {n : ℕ} {a b d : Qbar l} (h1 : Cg n a b) (h2 : Cg n b d) : Cg n a d := by
   unfold Cg at *
@@ -47,19 +47,19 @@ theorem cg_trans {n : ℕ} {a b d : Qbar l} (h1 : Cg n a b) (h2 : Cg n b d) : Cg
     _ ≤ _ := max_le h1 h2
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem cg_symm {n : ℕ} {a b : Qbar l} (h : Cg n a b) : Cg n b a := by
   unfold Cg at *; rwa [norm_sub_rev]
 
 /- English proof (translation)
-The claim follows from `le_trans h (norm_lpow_anti hk)`.
+A detailed English derivation is pending.
 -/
 theorem cg_mono {k n : ℕ} {a b : Qbar l} (h : Cg n a b) (hk : k ≤ n) : Cg k a b :=
   le_trans h (norm_lpow_anti hk)
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[← mul_sub, norm_mul]`. Conclude with `le_trans (mul_le_of_le_one_left (norm_nonneg _) hx) h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_mul {n : ℕ} {x a b : Qbar l} (hx : ‖x‖ ≤ 1) (h : Cg n a b) : Cg n (x * a) (x * b) := by
   unfold Cg at *
@@ -67,7 +67,7 @@ theorem cg_mul {n : ℕ} {x a b : Qbar l} (hx : ‖x‖ ≤ 1) (h : Cg n a b) : 
   exact le_trans (mul_le_of_le_one_left (norm_nonneg _) hx) h
 
 /- English proof (translation)
-Unfold `tval`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun n _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (hB n) (by positivity) (pow_le_one₀ (norm_nonneg _) hz)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tval_le (B : PowerSeries (Qbar l)) (N : ℕ) (z : Qbar l) (hB : ∀ n, ‖B.coeff n‖ ≤ 1) (hz : ‖z - 1‖ ≤ 1) :
     ‖tval B N z‖ ≤ 1 := by
@@ -77,23 +77,23 @@ theorem norm_tval_le (B : PowerSeries (Qbar l)) (N : ℕ) (z : Qbar l) (hB : ∀
   exact mul_le_one₀ (hB n) (by positivity) (pow_le_one₀ (norm_nonneg _) hz)
 
 /- English proof (translation)
-Unfold `tval`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `[sub_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tval_sub (P Q : PowerSeries (Qbar l)) (N : ℕ) (z : Qbar l) : tval (P - Q) N z = tval P N z - tval Q N z := by
   unfold tval; rw [← Finset.sum_sub_distrib]; refine Finset.sum_congr rfl fun n _ => ?_; simp [sub_mul]
 
 /- English proof (translation)
-Unfold `tval`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tval_smul (x : Qbar l) (P : PowerSeries (Qbar l)) (N : ℕ) (z : Qbar l) : tval (x • P) N z = x * tval P N z := by
   unfold tval; rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun n _ => ?_; simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])` using `(Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_iff_norm_le_one (x : Qbar l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -110,20 +110,20 @@ theorem isIntegral_iff_norm_le_one (x : Qbar l) : IsIntegral ℤ_[l] x ↔ ‖x�
     exact ⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-The claim follows from `(isIntegral_iff_norm_le_one x).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
   (isIntegral_iff_norm_le_one x).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
 
 /- English proof (translation)
-Establish `: ((n : ℤ) : Qbar l) = algebraMap ℤ_[l] (Qbar l) (n : ℤ_[l])` using `by simp`. Rewrite using `[this]`. Conclude with `c.O.algebraMap_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCast_mem (c : Coef l) (n : ℤ) : ((n : ℤ) : Qbar l) ∈ c.O := by
   have : ((n : ℤ) : Qbar l) = algebraMap ℤ_[l] (Qbar l) (n : ℤ_[l]) := by simp
   rw [this]; exact c.O.algebraMap_mem _
 
 /- English proof (translation)
-Use `⟨((((Polynomial.X + 1) ^ l - 1 : Polynomial ℤ)) ^ k).coeff n, ?_⟩` and prove the remaining obligations. Establish `: (((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l))) ^ k = Polynomial.map (Int.castRingHom (Qbar l)) ((((Polynomial.X + 1) ^ l - 1 : Polynomial ℤ)) ^ k)`. Simplify using `[Polynomial.map_pow, Polynomial.map_sub]`. Rewrite using `[this, Polynomial.coeff_map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polyPow_coeff_int (k n : ℕ) : ∃ t : ℤ,
     ((((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l))) ^ k).coeff n = (t : Qbar l) := by
@@ -134,9 +134,9 @@ theorem polyPow_coeff_int (k n : ℕ) : ∃ t : ℤ,
   rw [this, Polynomial.coeff_map]; rfl
 
 /- English proof (translation)
-Unfold `compPow`. Rewrite using `[PowerSeries.coeff_mk]`. Use `sum_mem fun k _ => mul_mem (hB k) ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `polyPow_coeff_int (l := l) k n`. Rewrite using `[ht]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intCast_mem c t`.
+A detailed English derivation is pending.
 -/
 theorem compPow_coeff_mem (c : Coef l) (B : PowerSeries (Qbar l)) (hB : ∀ n, B.coeff n ∈ c.O) (n : ℕ) :
     (compPow l B).coeff n ∈ c.O := by

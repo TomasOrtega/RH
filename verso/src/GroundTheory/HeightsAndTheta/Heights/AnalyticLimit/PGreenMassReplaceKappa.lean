@@ -20,7 +20,7 @@ namespace GreenMassReplace
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-The claim follows from `hS.2 y x y ⟨L.mem_U y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem secNorm_eq_local {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hS : IsSection A L s) {x y : X} (hy : y ∈ L.U x) :
@@ -31,11 +31,11 @@ def logNormSqAdd (L : LocPot X) (s : X → X → ℂ) (ε : ℝ) (y : X) : ℝ :
   Real.log (secNorm L s y ^ 2 + ε)
 
 /- English proof (translation)
-Unfold `logNormSqAdd`. Rewrite using `[secNorm_eq_local hS hy]`. Establish `hP : 0 < ‖s x y‖ ^ 2 + ε * Real.exp (2 * L.φ x y)` using `by positivity`. Establish `h1 : Real.exp (-L.φ x y) ^ 2 = Real.exp (-(2 * L.φ x y))`. Rewrite using `[sq, ← Real.exp_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `h2 : Real.exp (2 * L.φ x y) * Real.exp (-(2 * L.φ x y)) = 1`. Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Establish `h3 : (‖s x y‖ * Real.exp (-L.φ x y)) ^ 2 + ε = (‖s x y‖ ^ 2 + ε * Real.exp (2 * L.φ x y)) * Real.exp (-(2 * L.φ x y))`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, h1, add_mul, mul_assoc ε, h2, mul_one]`. Rewrite using `[h3, Real.log_mul hP.ne' (Real.exp_pos _).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logNormSqAdd_eq_local {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hS : IsSection A L s) {x y : X} (hy : y ∈ L.U x) {ε : ℝ} (hε : 0 < ε) :
@@ -57,7 +57,7 @@ theorem logNormSqAdd_eq_local {A : FinHolAtlas e X} {L : LocPot X} {s : X → X 
   ring
 
 /- English proof (translation)
-Establish `h` using `logNormSqAdd_eq_local hS hy hε`. Unfold `logNormSqAdd at h`. Use `show 2 * L.φ x y + Real.log (secNorm L s y ^ 2 + ε) = _`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kappaEp_φ_eq_local {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hS : IsSection A L s) {x y : X} (hy : y ∈ L.U x) {ε : ℝ} (hε : 0 < ε) :
@@ -69,11 +69,11 @@ theorem kappaEp_φ_eq_local {A : FinHolAtlas e X} {L : LocPot X} {s : X → X �
   ring
 
 /- English proof (translation)
-Introduce `j y hy`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hyt : y ∈ (A.chart j).target` using `hy.1`. Use `set q := (A.chart j).symm y with hq`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U q)` using `(A.chart j).isOpen_inter_preimage_symm (L.isOpen_U q)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U q` using `⟨hyt, L.mem_U q⟩`. Establish `heq : (logNormSqAdd L s ε ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun z => Real.log (‖(s q ∘ (A.chart j).symm) z‖ ^ 2 + ε * Real.exp (2 * (L.φ q ∘ (A.chart j).symm) z)) - 2 * (L.φ q ∘ (A.chart j).symm) z` using `by filter_upwards [hO.mem_nhds hyO] with z hz`. Conclude with `logNormSqAdd_eq_local hS hz.2 hε`. Use `ContDiffAt.congr_of_eventuallyEq ?_ heq` and prove the remaining obligations. Establish `hSc : ContDiffAt ℝ ∞ (s q ∘ (A.chart j).symm) y` using `((hS.1 q j y hyO).restrictScalars (𝕜 := ℝ)).contDiffAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦ : ContDiffAt ℝ ∞ (L.φ q ∘ (A.chart j).symm) y` using `ReciprocityTheory.AnForm.M.contDiffAt_of_isPotential A L hL q j hyO`. Use `((((contDiff_norm_sq ℝ).contDiffAt.comp y hSc).add (contDiffAt_const.mul (contDiffAt_const.mul hΦ).exp)).log ?_).sub (contDiffAt_const.mul hΦ)` and prove the remaining obligations. Conclude with `(by positivity : (0 : ℝ) < ‖(s q ∘ (A.chart j).symm) y‖ ^ 2 + ε * Real.exp (2 * (L.φ q ∘ (A.chart j).symm) y)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem smooth_logNormSqAdd {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hS : IsSection A L s) {ε : ℝ} (hε : 0 < ε) :
@@ -101,7 +101,7 @@ theorem smooth_logNormSqAdd {A : FinHolAtlas e X} {L : LocPot X} {s : X → X �
     ε * Real.exp (2 * (L.φ q ∘ (A.chart j).symm) y)).ne'
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.AnForm.M.isPotentialAdd A _ _ (ReciprocityTheory.AnForm.M.isPotentialRsmul A 2 L hL) (ReciprocityTheory.AnForm.M.isPotential_ofFun A _ (smooth_logNormSqAdd hL hS hε))`.
+A detailed English derivation is pending.
 -/
 theorem isPotential_kappaEp {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hS : IsSection A L s) {ε : ℝ} (hε : 0 < ε) :
@@ -110,21 +110,19 @@ theorem isPotential_kappaEp {A : FinHolAtlas e X} {L : LocPot X} {s : X → X �
     (ReciprocityTheory.AnForm.M.isPotential_ofFun A _ (smooth_logNormSqAdd hL hS hε))
 
 /- English proof (translation)
-Take `⟨M, hM0, hM⟩` from `levi_abs_le_global A isCompact_univ L Om.pot hL Om.isPot Om.pos`. Use `⟨2 * M, by positivity, fun ε hε x k y hy w => ?_⟩` and prove the remaining obligations. Establish `hyt : y ∈ (A.chart k).target` using `hy.1`. Establish `hyL : (A.chart k).symm y ∈ L.U x` using `hy.2.2.1.1`. Establish `hyΩ : (A.chart k).symm y ∈ Om.pot.U x` using `hy.2.2.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := s x ∘ (A.chart k).symm with hSdef`. Use `set Φ := L.φ x ∘ (A.chart k).symm with hΦdef`. Use `set Ψ := Om.pot.φ x ∘ (A.chart k).symm with hΨdef`. Establish `hO : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' L.U x)` using `(A.chart k).isOpen_inter_preimage_symm (L.isOpen_U x)`. Establish `hSa : AnalyticAt ℂ S y` using `hS.1 x k y ⟨hyt, hyL⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ2 : ContDiffAt ℝ 2 Φ y` using `ReciprocityTheory.AnForm.M.pot_contDiffAt_two hL x k hyt hyL`. Establish `hΨ2 : ContDiffAt ℝ 2 Ψ y` using `ReciprocityTheory.AnForm.M.pot_contDiffAt_two Om.isPot x k hyt hyΩ`. Establish `heq : (kappaEp L s ε).φ x ∘ (A.chart k).symm =ᶠ[𝓝 y] fun z => Real.log (‖S z‖ ^ 2 + ε * Real.exp (2 * Φ z))` using `by filter_upwards [hO.mem_nhds ⟨hyt, hyL⟩] with z hz`. Conclude with `kappaEp_φ_eq_local hS hz.2 hε`. Establish `hK2 : ContDiffAt ℝ 2 (fun z => Real.log (‖S z‖ ^ 2 + ε * Real.exp (2 * Φ z))) y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSc : ContDiffAt ℝ 2 S y` using `(hSa.restrictScalars (𝕜 := ℝ)).contDiffAt`. Use `(((contDiff_norm_sq ℝ).contDiffAt.comp y hSc).add (contDiffAt_const.mul (contDiffAt_const.mul hΦ2).exp)).log ?_` and prove the remaining obligations. Conclude with `(by positivity : (0 : ℝ) < ‖S y‖ ^ 2 + ε * Real.exp (2 * Φ y)).ne'`. Establish `hκ2` using `hK2.congr_of_eventuallyEq heq`. Establish `hsum : (kappaEp L s ε + Om.pot.rsmul (2 * M)).φ x ∘ (A.chart k).symm = fun z => ((kappaEp L s ε).φ x ∘ (A.chart k).symm) z + (2 * M) * Ψ z` using `rfl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hsum, levi_add_smul (2 * M) hκ2 hΨ2 w, levi_congr heq w]`. Establish `hA` using `levi_log_normSq_add_exp hSa hΦ2 hε w`. Establish `hB` using `hM x k y ⟨hyt, hyL, hyΩ⟩ w`. Establish `hΨnn : 0 ≤ levi Ψ y w`. Break down `eq_or_ne w 0 with h0 | h0` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, ReciprocityTheory.AnForm.levi_zero]`. Conclude with `(Om.pos x k y ⟨hyt, hyΩ⟩ w h0).le`. Use `set E := ε * Real.exp (2 * Φ y) with hE`. Establish `hE0 : 0 < E` using `mul_pos hε (Real.exp_pos _)`. Establish `hh : 0 < ‖S y‖ ^ 2 + E` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set c := 2 * E / (‖S y‖ ^ 2 + E) with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Establish `hc2 : c ≤ 2`. Rewrite using `[hc, div_le_iff₀ hh]`. Use polynomial arithmetic with `[sq_nonneg ‖S y‖]`.
-
-Establish `hl` using `(abs_le.mp hB).1`. Establish `hMΨ : 0 ≤ M * levi Ψ y w` using `mul_nonneg hM0 hΨnn`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem kappaEp_formNonneg [CompactSpace X] {A : FinHolAtlas e X} (Om : KaehlerForm A)
     {L : LocPot X} {s : X → X → ℂ} (hL : IsPotential A L) (hS : IsSection A L s) :
@@ -176,9 +174,9 @@ theorem kappaEp_formNonneg [CompactSpace X] {A : FinHolAtlas e X} (Om : KaehlerF
 def zeroSet (s : X → X → ℂ) : Set X := {y | s y y = 0}
 
 /- English proof (translation)
-Establish `h` using `hS.2 y x y ⟨L.mem_U y, hy⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `h` using `[h0, norm_zero, zero_mul]`. Conclude with `norm_eq_zero.mp ((mul_eq_zero.mp h.symm).resolve_right (Real.exp_pos _).ne')`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h` using `[h0, norm_zero, zero_mul]`. Conclude with `norm_eq_zero.mp ((mul_eq_zero.mp h).resolve_right (Real.exp_pos _).ne')`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_iff_local {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hS : IsSection A L s) {x y : X} (hy : y ∈ L.U x) : s y y = 0 ↔ s x y = 0 := by
@@ -192,9 +190,9 @@ theorem zero_iff_local {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ
     exact norm_eq_zero.mp ((mul_eq_zero.mp h).resolve_right (Real.exp_pos _).ne')
 
 /- English proof (translation)
-Introduce `x`. Use `⟨L.U x, L.isOpen_U x, L.mem_U x, 1, fun _ => s x, fun _ => hS.1 x, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [zeroSet, Set.mem_inter_iff, Set.mem_ofPred_eq, forall_const]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h0, hy⟩`. Conclude with `⟨hy, (zero_iff_local hS hy).1 h0⟩`. Introduce and unpack `⟨hy, h0⟩`. Conclude with `⟨(zero_iff_local hS hy).2 h0, hy⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem zeroSet_analytic {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hS : IsSection A L s) : A.IsAnalyticSubset (zeroSet s) := by
@@ -209,15 +207,13 @@ theorem zeroSet_analytic {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → �
     exact ⟨(zero_iff_local hS hy).2 h0, hy⟩
 
 /- English proof (translation)
-Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `x hx`. Take `⟨ψ, -, hxψ, hψL, σ, -, -, u, -, hu0, hprod⟩` from `hsnc x`. Establish `hOimg : IsOpen (ψ '' (ψ.source ∩ interior (zeroSet s)))` using `ψ.isOpen_image_source_inter isOpen_interior`. Establish `hne : (ψ '' (ψ.source ∩ interior (zeroSet s))).Nonempty` using `⟨ψ x, x, ⟨hxψ, hx⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ψ '' (ψ.source ∩ interior (zeroSet s)) ⊆ ⋃ i, {z : Fin e → ℂ | z i = 0}`. Introduce and unpack `_ ⟨y, ⟨hyψ, hyZ⟩, rfl⟩`. Establish `hz : y ∈ zeroSet s` using `interior_subset hyZ`. Establish `h0 : s x y = 0` using `(zero_iff_local hS (hψL hyψ)).1 hz`. Rewrite `h0` using `[hprod y hyψ]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd h (hu0 y hyψ)`. Take `⟨k, -, hk⟩` from `Finset.prod_eq_zero_iff.1 h revert hk`. Consider the cases of `hσ : σ k with`. Consider the case `none => intro hk`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Conclude with `absurd hk one_ne_zero`. Consider the case `some i => intro hk`. Conclude with `Set.mem_iUnion.2 ⟨i, eq_zero_of_pow_eq_zero hk⟩`. Establish `hpos` using `hOimg.measure_pos volume hne`. Establish `hnull : volume (⋃ i, {z : Fin e → ℂ | z i = 0}) = 0` using `measure_iUnion_null fun i => ReciprocityTheory.AnForm.M.PLAux.volume_coord_eq_zero i`.
-
-Conclude with `hpos.ne' (measure_mono_null hsub hnull)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem interior_zeroSet {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
     (hS : IsSection A L s) {r : ℕ} {m : Fin r → ℕ} {W : Fin r → Set X}
@@ -246,9 +242,9 @@ theorem interior_zeroSet {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → �
   exact hpos.ne' (measure_mono_null hsub hnull)
 
 /- English proof (translation)
-Establish `hn : 0 < secNorm L s y` using `mul_pos (norm_pos_iff.2 hy) (Real.exp_pos _)`. Establish `h1 : 1 + ε / secNorm L s y ^ 2 = (secNorm L s y ^ 2 + ε) / secNorm L s y ^ 2`. Clear the denominators using the available nonvanishing facts. Unfold `greenEp logNormSqAdd`. Rewrite using `[h1, Real.log_div (by positivity) (by positivity), Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = -2 * Real.log (secNorm L s y) + _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem greenEp_eq_off (L : LocPot X) (s : X → X → ℂ) {ε : ℝ} (hε : 0 < ε) {y : X}
     (hy : y ∉ zeroSet s) :
@@ -263,7 +259,7 @@ theorem greenEp_eq_off (L : LocPot X) (s : X → X → ℂ) {ε : ℝ} (hε : 0 
   ring
 
 /- English proof (translation)
-The claim follows from `Real.log_nonneg (le_add_of_nonneg_right (div_nonneg hε.le (sq_nonneg _)))`.
+A detailed English derivation is pending.
 -/
 theorem greenEp_nonneg (L : LocPot X) (s : X → X → ℂ) {ε : ℝ} (hε : 0 < ε) (y : X) :
     0 ≤ greenEp L s ε y :=

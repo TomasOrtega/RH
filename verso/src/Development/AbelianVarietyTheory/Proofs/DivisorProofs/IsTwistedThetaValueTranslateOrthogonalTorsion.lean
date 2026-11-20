@@ -14,23 +14,21 @@ namespace GlobalTheory.UPoinc.USum
 open GlobalTheory.ThetaCompare GlobalTheory.CommPairing in
 
 /- English proof (translation)
-Introduce `B P N m T₀ T θ z₀ τ β x h v k hk hw H`. Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Use `P.isAb.comm` as an intermediate fact. Take `⟨α, U, hα, hU, H⟩` from `H`. Use `⟨α, U, hα, hU, fun Z r z J hJ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₀ : (translT P.A k).left ≫ (snd T P.A).left = (translPt P.A k).left`. Rewrite using `[← Over.comp_left, translT, lift_snd]`. Establish `e₁ : (translT P.A k).left ≫ (snd T P.A ^ m).left = (snd T P.A ^ m).left`. Rewrite using `[← Over.comp_left, SymLiftOdd.comp_pow', translT, lift_snd, show translPt P.A k = (fst T P.A ≫ k) * snd T P.A from rfl, mul_pow, ← SymLiftOdd.comp_pow', hk, MonObj.comp_one, _root_.one_mul]`. Take `⟨d, hd, hv⟩` from `exists_gen P.isLB (K' := Fin 2) (φ' := ![(snd T P.A).left, (translPt P.A k).left]) (ε' := ![(N : ℤ), -(N : ℤ)]) (fun V _ g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, e₀, e₁, neg_neg, zpow_neg, zpow_one, _root_.mul_assoc]`. Rewrite using `[inv_inv, mul_left_comm (g (snd T P.A ^ m).left)⁻¹, inv_mul_cancel, _root_.mul_one])`. Use the proof step `(LB.mulGen P.L _ _ _ _ α (LB.invGen P.L _ _ (LB.pullGen P.L _ _ α (translT P.A k).left)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hα (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hα _)))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `D : ThetaGrp P.A P.L N T` to `⟨k, d, hd⟩`. Establish `hD : ∀ s : Z ⟶ (T ⊗ P.A).left, tval D s z J = val α s z J * (val α (s ≫ (translT P.A k).left) z J)⁻¹` using `fun s => (hv Z s z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg (val α s z J * ·) ((val_inv _ _).trans (congrArg (·⁻¹) (val_pull hJ _ _ _)))))`. Establish `hx : U.pt = x` using `hU.pt_eq`. Establish `hc : CommIsOf P.A P.L N U D 1` using `(GlobalLift.weilIs_iff_commIsOf hG P.isAb P.isLB U D 1).1 (hx ▸ hw)`. Establish `q` using `val_corr hJ hc (r ≫ (ptSecT P.A h).left)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `q₁ : val (constGen P.A P.L (1 : Γ(T.left, ⊤)ˣ)) (r ≫ (ptSecT P.A h).left) z J = 1`. Use `((gm_res _ z le_top (Set.mem_iInter.2 fun k => k.elim) _).trans (gm_pull _ (fst T P.A).left z ⊤ trivial 1)).trans (map_one _)` and prove the remaining obligations. Establish `q₂ : tval U (r ≫ (ptSecT P.A h).left) z J * tval D ((r ≫ (ptSecT P.A h).left) ≫ (translT P.A U.pt).left) z J = tval D (r ≫ (ptSecT P.A h).left) z J * tval U ((r ≫ (ptSecT P.A h).left) ≫ (translT P.A k).left) z J * 1` using `((val_mul hJ _ _ _).trans (congrArg (_ * ·) (val_pull hJ _ _ _))).symm.trans (q.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg (_ * ·) (val_pull hJ _ _ _))) q₁)))`. Simplify using `only [hD, Category.assoc, pt_translT, hx, _root_.mul_one] at q₂`. Establish `p₁ : (x * (h * k)) ^ m = (x * h) ^ m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← _root_.mul_assoc, mul_pow, hk, _root_.mul_one]`. Establish `p₂ : k * (x * h) = x * (h * k)` using `by rw [mul_comm k, _root_.mul_assoc]`. Rewrite `q₂` using `[p₂, mul_comm k h]`. Rewrite using `[p₁]`. Establish `H'` using `H Z r z J hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a₁ := val α (r ≫ (ptSecT P.A h).left) z J`. Use `set a₂ := val α (r ≫ (ptSecT P.A (h * k)).left) z J`. Use `set a₃ := val α (r ≫ (ptSecT P.A (x * h)).left) z J`. Use `set a₄ := val α (r ≫ (ptSecT P.A (x * (h * k))).left) z J`. Use `set u₁ := tval U (r ≫ (ptSecT P.A h).left) z J`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set u₂ := tval U (r ≫ (ptSecT P.A (h * k)).left) z J`. Use `set t := val τ (r ≫ β.left) z J`. Establish `f₁ : a₂ * t = (a₂ * a₁⁻¹) * (a₁ * t)`. Rewrite using `[_root_.mul_assoc, inv_mul_cancel_left]`. Establish `f₂ : u₂ * a₄ = (a₂ * a₁⁻¹) * (u₁ * a₃)`.
-
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `replace q₂ := congrArg Additive.ofMul q₂`. Simplify using `only [ofMul_mul, ofMul_inv] at q₂ ⊢`. Take the linear combination `(norm := module) -q₂`. Rewrite using `[f₁, f₂, Units.val_mul _ (a₁ * t), Units.val_mul _ (u₁ * a₃), mul_left_comm, H', _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem isTwVal_transl : ∀ {B : Scheme.{0}} (P : PolAV B) (N m : ℕ) {T₀ T : Over B} (θ : LB.Sec (LPow P.A P.L 1 T₀)) {z₀ : T₀ ⟶ P.A} (τ : LB.Gen (LB.LinComb P.L (Y := T₀.left) (K := Fin 1) (fun _ => z₀.left) (fun _ => 1))) (β : T ⟶ T₀) (x h : T ⟶ P.A) (v : Γ(T.left, ⊤)) (k : T ⟶ P.A), k ^ m = 1 → WeilIs P.A P.L N x k 1 → IsTwVal P N m θ τ β x h v → IsTwVal P N m θ τ β x (h * k) v := by
   intro B P N m T₀ T θ z₀ τ β x h v k hk hw H

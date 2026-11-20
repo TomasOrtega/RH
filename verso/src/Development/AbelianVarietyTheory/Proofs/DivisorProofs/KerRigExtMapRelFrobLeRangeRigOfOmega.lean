@@ -23,14 +23,14 @@ def evalZeroTwo : A ⊗[O] A →ₗ[O] O :=
   (TensorProduct.lid O O).toLinearMap ∘ₗ TensorProduct.map (counit (R := O)) (counit (R := O))
 
 /- English proof (translation)
-Simplify using `[evalZeroTwo]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem evalZeroTwo_tmul (a b : A) :
     evalZeroTwo O A (a ⊗ₜ b) = counit (R := O) a * counit (R := O) b := by
   simp [evalZeroTwo]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [pullbackTwo, evalZeroTwo_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem evalZeroTwo_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
     evalZeroTwo O B (pullbackTwo f c) = evalZeroTwo O A c := by
@@ -40,7 +40,7 @@ theorem evalZeroTwo_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add]
 
 /- English proof (translation)
-Establish `key : TensorProduct.map (counit (R` using `O)) (counit (R := O)) (comul (R := O) b) = LinearMap.lTensor O (counit (R := O)) (LinearMap.rTensor A (counit (R := O)) (comul b)) := by`. Rewrite using `[← LinearMap.lTensor_comp_rTensor, LinearMap.comp_apply]`. Use `show TensorProduct.lid O O (TensorProduct.map (counit (R := O)) (counit (R := O)) (comul b)) = _`. Rewrite using `[key, Coalgebra.rTensor_counit_comul, LinearMap.lTensor_tmul, TensorProduct.lid_tmul, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZeroTwo_comul (b : A) : evalZeroTwo O A (comul b) = counit (R := O) b := by
   have key : TensorProduct.map (counit (R := O)) (counit (R := O)) (comul (R := O) b) =
@@ -50,7 +50,7 @@ theorem evalZeroTwo_comul (b : A) : evalZeroTwo O A (comul b) = counit (R := O) 
   rw [key, Coalgebra.rTensor_counit_comul, LinearMap.lTensor_tmul, TensorProduct.lid_tmul, one_smul]
 
 /- English proof (translation)
-Rewrite using `[cobOne_apply, map_sub, map_sub, evalZeroTwo_comul, evalZeroTwo_tmul, evalZeroTwo_tmul, Bialgebra.counit_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem evalZeroTwo_cobOne (b : A) : evalZeroTwo O A (cobOne O A b) = - counit (R := O) b := by
   rw [cobOne_apply, map_sub, map_sub, evalZeroTwo_comul, evalZeroTwo_tmul, evalZeroTwo_tmul,
@@ -58,9 +58,9 @@ theorem evalZeroTwo_cobOne (b : A) : evalZeroTwo O A (cobOne O A b) = - counit (
   ring
 
 /- English proof (translation)
-Establish `hmem : a - algebraMap O A (counit (R` using `O) a) ∈ augIdeal O A := by`. Simplify using `[RingHom.mem_ker]`. Establish `himg` using `Ideal.mem_map_of_mem (f : A →ₐ[O] B) hmem`. Establish `e : (f : A →ₐ[O] B) (algebraMap O A (counit (R` using `O) a)) = algebraMap O B (counit (R := O) a) := AlgHom.commutes _ _`. Rewrite `himg` using `[map_sub, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, mul_one, ← AlgHom.commutes (Ideal.Quotient.mkₐ O (kerIdeal f)), Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq]`. Conclude with `himg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_kerIdeal_apply (f : A →ₐc[O] B) (a : A) :
     Ideal.Quotient.mkₐ O (kerIdeal f) (f a) = counit (R := O) a • 1 := by
@@ -75,9 +75,9 @@ theorem mk_kerIdeal_apply (f : A →ₐc[O] B) (a : A) :
   exact himg
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [pullbackTwo, TensorProduct.map_tmul, BialgHom.coe_toLinearMap, Algebra.TensorProduct.map_tmul, mk_kerIdeal_apply, evalZeroTwo_tmul, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul]`. Rewrite using `[mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, add_smul]`.
+Treat this case separately.
 -/
 theorem map_mk_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
     Algebra.TensorProduct.map (Ideal.Quotient.mkₐ O (kerIdeal f)) (Ideal.Quotient.mkₐ O (kerIdeal f))
@@ -92,7 +92,7 @@ theorem map_mk_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, add_smul]
 
 /- English proof (translation)
-Rewrite using `[hc, map_mk_pullTwo, ← evalZeroTwo_pullTwo f c, ← hc, evalZeroTwo_cobOne, hb, neg_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mk_cobOne_eq_zero (f : A →ₐc[O] B) {c : A ⊗[O] A} {b : B}
     (hb : counit (R := O) b = 0) (hc : cobOne O B b = pullbackTwo f c) :
@@ -104,14 +104,14 @@ theorem map_mk_cobOne_eq_zero (f : A →ₐc[O] B) {c : A ⊗[O] A} {b : B}
 def oneFun {p : ℕ} (G : PDivGroup p O) : G.funs := ⟨fun _ => 1, fun _ => map_one _⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun n => map_one (f.app n))`.
+A detailed English derivation is pending.
 -/
 theorem funsMap_oneFun {p : ℕ} {G H : PDivGroup p O} (f : G ⟶ H) :
     funsMap f (oneFun H) = oneFun G :=
   Subtype.ext (funext fun n => map_one (f.app n))
 
 /- English proof (translation)
-Simplify using `[dUnit]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dUnit_one : dUnit O (1 : A) = 0 := by
   simp [dUnit]
@@ -123,23 +123,19 @@ namespace GlobalTheory.PDivGroup
 open GlobalTheory.PDiv.FrobRigKer
 
 /- English proof (translation)
-Establish `: CharP K p` using `(CharP.charP_iff_prime_eq_zero (Fact.out)).2 h`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Take `⟨⟨c, w⟩, rfl⟩ : ∃ z, (frobTwist h G).rigMk z = x` from `Submodule.mkQ_surjective _ x`. Rewrite `hx` using `[rigExtMap_mk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨B, hB⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hx`. Establish `hB1 : G.cob B = cocyclesMap (relFrob h G) c` using `congrArg Prod.fst hB`. Establish `hB2 : G.dFun B = G.omegaMap _ (relFrob h G) w` using `congrArg Prod.snd hB`. Use `set t : K := counit (R := K) (B.1 1) with ht`. Use `set B₁ : G.funs := B - t • oneFun G with hB₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set c₁ : (frobTwist h G).cocycles := c - t • (frobTwist h G).cob (oneFun (frobTwist h G)) with hc₁def`. Establish `hc₁ : G.cob B₁ = cocyclesMap (relFrob h G) c₁`. Simplify using `only [hB₁, hc₁def, map_sub, map_smul, hB1, cocyclesMap_cob, funsMap_oneFun]`. Establish `hb0 : counit (R` using `K) (B₁.1 1) = 0 := by show counit (R := K) (B.1 1 - t • (1 : G.A 1)) = 0`. Rewrite using `[map_sub, map_smul, Bialgebra.counit_one, smul_eq_mul, mul_one, ht, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : dUnit K (B₁.1 1) = 0`. Establish `e1 : G.dFun B = 0` using `by rw [hB2, omegaMap_relFrob, LinearMap.zero_apply]`. Establish `e2 : G.dFun (oneFun G) = 0` using `Subtype.ext (funext fun n => dUnit_one)`. Establish `e : G.dFun B₁ = 0` using `by rw [hB₁, map_sub, map_smul, e1, e2, smul_zero, sub_zero]`. Conclude with `congrArg (fun z : G.omega => z.1 1) e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcob : cobOne K (G.A 1) (B₁.1 1) = pullbackTwo ((relFrob h G).app 1) (c₁.1 1)` using `congrArg (fun z : G.cocycles => z.1 1) hc₁`. Establish `hker` using `GlobalTheory.T.frobeniusKernelIdeal_eq_kernel_relativeFrobenius p K h G 1`. Establish `hmem : B₁.1 1 ∈ frobKerIdeal p K (G.A 1)`. Use `GlobalTheory.T.mem_frobeniusKernelIdeal_of_zero_differential p K (G.A 1) _ hb0 hbd ?_` and prove the remaining obligations. Rewrite using `[hker]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `map_mk_cobOne_eq_zero ((relFrob h G).app 1) hb0 hcob`. Rewrite `hmem` using `[hker]`. Establish `hV : (verschiebung h G).app 1 (B₁.1 1) = 0` using `GlobalTheory.T.app_one_eq_zero_of_kernel_ideal_of_comp_eq_prime_smul p K G (frobTwist h G) (relFrob h G) (verschiebung h G) (verschiebung_comp_relFrob h G) _ hmem`. Establish `hcomp : cocyclesMap (verschiebung h G) (cocyclesMap (relFrob h G) c₁) = cocyclesMap (verschiebung h G ≫ relFrob h G) c₁` using `Subtype.ext (funext fun n => (pullTwo_comp _ _ _).symm)`. Choose the witnesses or unpack the hypotheses as in `⟨B', hB'⟩ : c₁ ∈ LinearMap.range (frobTwist h G).cob := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.pDivCocycle_mem_range_cob_of_pullback_mulP (frobTwist h G) c₁ (funsMap (verschiebung h G) B₁) ?_ hV` and prove the remaining obligations. Rewrite using `[← cocyclesMap_cob, hc₁, hcomp, verschiebung_comp_relFrob]`. Use `set B₀ : (frobTwist h G).funs := B' + t • oneFun (frobTwist h G) with hB₀`. Establish `hc0 : (frobTwist h G).cob B₀ = c`. Rewrite using `[hB₀, map_add, map_smul, hB', hc₁def, sub_add_cancel]`.
-
-Use `⟨w - (frobTwist h G).dFun B₀, ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk ((0 : (frobTwist h G).cocycles), w - (frobTwist h G).dFun B₀) = Submodule.Quotient.mk (c, w)`. Use `((Submodule.Quotient.eq (LinearMap.range ((frobTwist h G).cob.prod (frobTwist h G).dFun))).2 (LinearMap.mem_range.2 ⟨B₀, Prod.ext ?_ ?_⟩)).symm` and prove the remaining obligations. Use `show (frobTwist h G).cob B₀ = c - 0`. Rewrite using `[sub_zero]`.
-
-Conclude with `hc0`. Use `show (frobTwist h G).dFun B₀ = w - (w - (frobTwist h G).dFun B₀)`. Conclude with `(sub_sub_cancel w _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_rigExtMap_relFrob_le_range_rigOfOmega (p : ℕ) [Fact p.Prime] (K : Type) [Field K]
     (h : (p : K) = 0) (G : PDivGroup p K) :

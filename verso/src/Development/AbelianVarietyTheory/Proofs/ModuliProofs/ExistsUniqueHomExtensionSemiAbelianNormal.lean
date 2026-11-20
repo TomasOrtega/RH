@@ -20,11 +20,11 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory.HomExt
 
 /- English proof (translation)
-Take `⟨ξ, hξ, hs⟩` from `exists_mem_genericPoints_specializes z`. Establish `hξ'` using `genericPoints_subset_range_of_isDominant i hξ`. Distinguish the cases in `hne : ξ = z`. Conclude with `.inl (hne ▸ hξ')`. Take `⟨O, _, _, -, a, h₀, h₁⟩` from `exists_complete_discreteValuationRing_of_specializes hs hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_lift_of_range_subset i (spMap (algebraMap O (FractionRing O)) ≫ a) (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: spMap (algebraMap O (FractionRing O)) t = (⊥ : PrimeSpectrum O)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap O (FractionRing O)) t.asIdeal = ⊥`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[@Ideal.eq_bot_of_prime _ _ t.asIdeal t.isPrime]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)`. Rewrite using `[Scheme.Hom.comp_apply, this]`. Conclude with `h₀ ▸ hξ')`. Conclude with `.inr ⟨O, inferInstance, inferInstance, inferInstance, a, c, hc, h₁⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_or_exists_dvr {W Z : Scheme.{0}} (i : W ⟶ Z) [IsPreimmersion i] [Flat i]
     [IsDominant i] [QuasiCompact i] [IsLocallyNoetherian Z] (z : Z) :
@@ -49,7 +49,7 @@ theorem mem_range_or_exists_dvr {W Z : Scheme.{0}} (i : W ⟶ Z) [IsPreimmersion
   exact .inr ⟨O, inferInstance, inferInstance, inferInstance, a, c, hc, h₁⟩
 
 /- English proof (translation)
-Use `GlobalTheory.finite_torsion_semiAbelian Ω _ (IsSemiAbelian.pullback t G hG) n hn` as an intermediate fact. Set `e` to `TorsionLift.ptsEquiv t G (𝟙_ (Over (Sp Ω))) t (Category.id_comp _)`. Use `Finite.of_injective (β := {x : 𝟙_ (Over (Sp Ω)) ⟶ (Over.pullback t).obj G // x ^ n = 1}) (fun x ↦ ⟨e.symm x.1, (map_pow e.symm x.1 n).symm.trans ((congrArg e.symm x.2).trans (map_one e.symm))⟩) fun a b h ↦ ?_` and prove the remaining obligations. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val h))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_torsion_points {X : Scheme.{0}} {G : Over X} [GrpObj G] (hG : IsSemiAbelian G)
     {Ω : Type} [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ X) {n : ℕ} (hn : 0 < n) :
@@ -63,17 +63,17 @@ theorem finite_torsion_points {X : Scheme.{0}} {G : Over X} [GrpObj G] (hG : IsS
   exact Subtype.ext (e.symm.injective (congrArg Subtype.val h))
 
 /- English proof (translation)
-Establish `: JacobsonSpace Γ.left` using `jacobsonSpace_of_locallyOfFiniteType_int (p.left ≫ G.hom ≫ z)`. Establish `: JacobsonSpace G.left` using `jacobsonSpace_of_locallyOfFiniteType_int (G.hom ≫ z)`. Use `locallyQuasiFinite_of_finite_fibres_closedPoints p.left fun w hw ↦ ?_` and prove the remaining obligations. Establish `hσ : IsClosed ({p.left w} : Set G.left)` using `p.left.closePoints_subset_preimage_closedPoints hw`. Generalize the expression as in `p.left w = σ at hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `: Finite (G.left.residueField σ)` using `(jacobson_closedPoints_tools_int G.left (G.hom ≫ z)).2.1 σ hσ`. Set `t₀ : Sp (G.left.residueField σ) ⟶ X` to `G.left.fromSpecResidueField σ ≫ G.hom`. Use `SemiAbTorsion.finite_points_over z G (G.left.residueField σ) t₀` as an intermediate fact. Set `x₀ : Over.mk t₀ ⟶ G` to `Over.homMk (G.left.fromSpecResidueField σ) rfl`. Establish `hn : 0 < Nat.card (Over.mk t₀ ⟶ G)` using `Nat.card_pos`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx₀ : x₀ ^ Nat.card (Over.mk t₀ ⟶ G) = 1` using `pow_card_eq_one'`. Generalize the expression as in `Nat.card (Over.mk t₀ ⟶ G) = n at hn hx₀`. Set `Ω` to `AlgebraicClosure (G.left.residueField σ)`. Set `r : Sp Ω ⟶ Sp (G.left.residueField σ)` to `spMap (algebraMap (G.left.residueField σ) Ω)`. Set `y : Sp Ω ⟶ G.left` to `r ≫ G.left.fromSpecResidueField σ`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hy : σ ∈ Set.range y` using `⟨default, (Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply σ _)⟩`. Set `r' : Over.mk (y ≫ G.hom) ⟶ Over.mk t₀` to `Over.homMk r (Category.assoc _ _ _).symm`. Use `finite_torsion_points hG' (y ≫ G.hom) hn` as an intermediate fact. Use `(finite_preimage_of_finite_lifts p.left y ?_).subset (Set.preimage_mono (Set.singleton_subset_iff.mpr hy))` and prove the remaining obligations. Set `l : {x : Sp Ω ⟶ Γ.left // x ≫ p.left = y} → (Over.mk (y ≫ G.hom) ⟶ Γ)` to `fun x ↦ Over.homMk x.1 (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `x.1 ≫ Γ.hom = y ≫ G.hom`. Rewrite using `[← Over.w p, ← Category.assoc, x.2])`. Establish `hl (x) : (l x ≫ q) ^ n = 1`. Establish `e : l x ≫ p = r' ≫ x₀` using `Over.OverMorphism.ext x.2`. Establish `h₁ : l x ≫ p ^ n = l x ≫ (1 : Γ ⟶ G)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[SemiAbTorsion.comp_pow_points, e, ← SemiAbTorsion.comp_pow_points, hx₀, MonObj.comp_one, MonObj.comp_one]`. Establish `h₂ : l x ≫ q ^ n = l x ≫ (1 : Γ ⟶ G')` using `Over.OverMorphism.ext (key Ω x.1 n (congrArg CommaMorphism.left h₁))`. Rewrite `h₂` using `[SemiAbTorsion.comp_pow_points, MonObj.comp_one]`. Then use the resulting hypothesis. Use `Finite.of_injective (β := {x : Over.mk (y ≫ G.hom) ⟶ G' // x ^ n = 1}) (fun x ↦ ⟨l x ≫ q, hl x⟩) fun a b h ↦ Subtype.ext (hext _ _ (a.2.trans b.2.symm) ?_)` and prove the remaining obligations. Conclude with `congrArg (fun u ↦ u.1.left) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locallyQuasiFinite_of_torsion {X : Scheme.{0}} (z : X ⟶ Sp ℤ) [LocallyOfFiniteType z]
     {G G' Γ : Over X} [GrpObj G] [GrpObj G'] [LocallyOfFiniteType G.hom] [QuasiCompact G.hom]
@@ -126,43 +126,39 @@ end GlobalTheory.HomExt
 open GlobalTheory GlobalTheory.HomExt in
 
 /- English proof (translation)
-Introduce and unpack `H X U j ⟨hX, z, _, -⟩ _ _ _ _ G G' _ _ hG hG' f hf`. Use `hG.smooth` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG'.quasiCompact` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG'.separated` as an intermediate fact. Establish `: GlobalTheory.IsNormalScheme X` using `(GlobalTheory.isNormalScheme_iff X).mpr hX`. Establish `: GlobalTheory.IsNormalScheme G.left` using `(GlobalTheory.isNormalScheme_iff _).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth G.hom hX)`. Establish `: IsSchemeTheoreticallyDominant j` using `IsSchemeTheoreticallyDominant.of_isDominant j`. Set `u : pullback G.hom j ⟶ G.left` to `pullback.fst G.hom j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : pullback G.hom j ⟶ G'.left` to `f.left ≫ pullback.fst G'.hom j`. Establish `hw : f.left ≫ pullback.snd G'.hom j = pullback.snd G.hom j` using `Over.w f`. Establish `huφ : u ≫ G.hom = φ ≫ G'.hom`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition, reassoc_of% hw]`. Establish `: IsDominant u` using `isDominant_pullback_fst_of_isOpenMap j G.hom G.hom.isOpenMap`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsPreimmersion u` using `inferInstanceAs (IsPreimmersion (pullback.fst G.hom j))`. Establish `: Flat u` using `inferInstanceAs (Flat (pullback.fst G.hom j))`. Establish `: QuasiCompact u` using `inferInstanceAs (QuasiCompact (pullback.fst G.hom j))`. Establish `hus` using `isIso_stalkMap_of_flat_of_surjectiveOnStalks u`. Establish `: GlobalTheory.IsNormalScheme (pullback G.hom j)` using `GlobalTheory.IsNormalScheme.of_isIso_stalkMap u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Γ` to `graphClosure G.hom G'.hom u φ huφ`. Set `p : Γ ⟶ G.left` to `graphClosure.fst G.hom G'.hom u φ huφ`. Set `q : Γ ⟶ G'.left` to `graphClosure.snd G.hom G'.hom u φ huφ`. Set `i : pullback G.hom j ⟶ Γ` to `graphClosure.incl G.hom G'.hom u φ huφ`. Establish `hip : i ≫ p = u` using `graphClosure.incl_fst ..`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hiq : i ≫ q = φ` using `graphClosure.incl_snd ..`. Establish `hpq : p ≫ G.hom = q ≫ G'.hom` using `graphClosure.condition ..`. Establish `hpb` using `graphClosure.isPullback_incl G.hom G'.hom u φ huφ`. Establish `: IsPreimmersion i` using `MorphismProperty.of_isPullback hpb ‹IsPreimmersion u›`. Establish `: Flat i` using `MorphismProperty.of_isPullback hpb ‹Flat u›`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact i` using `graphClosure.quasiCompact_incl ..`. Establish `: IsSchemeTheoreticallyDominant i` using `graphClosure.schemeDominant_incl ..`. Establish `: IsDominant i` using `inferInstance`. Establish `: IsReduced Γ` using `graphClosure.isReduced ..`. Establish `: LocallyOfFiniteType p` using `graphClosure.locallyOfFiniteType_fst ..`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact p` using `graphClosure.quasiCompact_fst ..`. Establish `: IsSeparated p` using `graphClosure.isSeparated_fst ..`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian (G.hom ≫ z)`. Establish `: IsLocallyNoetherian Γ` using `LocallyOfFiniteType.isLocallyNoetherian p`. Establish `: Surjective p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun σ ↦ ?_⟩` and prove the remaining obligations. Break down `mem_range_or_exists_dvr u σ with ⟨w, rfl⟩ | ⟨T, _, _, _, a, c, hc, rfl⟩` into its components or cases. Conclude with `⟨i w, by rw [← Scheme.Hom.comp_apply, hip]⟩`. Take `⟨F, s, -, -, hs₂, hs⟩` from `exists_hom_along_dvr H j hG hG' f T _ a c hc`. Use `schemeTheoreticallyDominant_fractionField T (FractionRing T)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF : F.left ≫ pullback.snd G'.hom (a ≫ G.hom) = pullback.snd G.hom (a ≫ G.hom)` using `Over.w F`. Take `⟨l, ⟨hl, -⟩, -⟩` from `graphClosure.existsUnique_lift G.hom G'.hom u φ huφ a (s ≫ F.left ≫ pullback.fst G'.hom (a ≫ G.hom)) (by rw [Category.assoc, Category.assoc, pullback.condition, reassoc_of% hF, reassoc_of% hs₂]) (spMap (algebraMap T (FractionRing T))) c hc.symm hs`. Conclude with `⟨l (IsLocalRing.closedPoint T), by rw [← hl]; rfl⟩`. Set `Γ' : Over X` to `Over.mk (p ≫ G.hom)`. Set `p' : Γ' ⟶ G` to `Over.homMk p rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q' : Γ' ⟶ G'` to `Over.homMk q hpq.symm`. Establish `: LocallyOfFiniteType p'.left` using `‹LocallyOfFiniteType p›`. Establish `: LocallyQuasiFinite p`. Use `locallyQuasiFinite_of_torsion z hG' p' q' (fun a b ↦ graphClosure.hom_ext G.hom G'.hom u φ huφ) fun k _ x n hx ↦ ?_` and prove the remaining obligations. Break down `mem_range_or_exists_dvr i (x default) with hw | ⟨T, _, _, _, a, c, hc, ha⟩` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, rfl⟩` from `exists_lift_of_range_subset i x (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[Subsingleton.elim t default])` and apply the resulting hypothesis. Conclude with `comp_pow_eq_one_of_pullback_hom j f p' q' _ c (by rw [Category.assoc]; exact congrArg (c ≫ ·) hip.symm) (by rw [Category.assoc]; exact congrArg (c ≫ ·) hiq.symm) n hx`. Take `⟨F, s, _, hs₁, hs₂, hs⟩` from `exists_hom_along_dvr H j hG hG' f T _ (a ≫ p) c (by rw [← reassoc_of% hc, hip])`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `schemeTheoreticallyDominant_fractionField T (FractionRing T)` as an intermediate fact. Establish `hF : F.left ≫ pullback.snd G'.hom ((a ≫ p) ≫ G.hom) = pullback.snd G.hom ((a ≫ p) ≫ G.hom)` using `Over.w F`. Establish `hb : s ≫ F.left ≫ pullback.fst G'.hom ((a ≫ p) ≫ G.hom) = a ≫ q`. Use `over_ext_of_schemeTheoreticallyDominant (Y := Over.mk ((a ≫ p) ≫ G.hom)) (X := G') (spMap (algebraMap T (FractionRing T))) (a := Over.homMk (s ≫ F.left ≫ pullback.fst G'.hom ((a ≫ p) ≫ G.hom)) (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `(s ≫ F.left ≫ pullback.fst G'.hom ((a ≫ p) ≫ G.hom)) ≫ G'.hom = (a ≫ p) ≫ G.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc s, Category.assoc F.left, pullback.condition, reassoc_of% hF, reassoc_of% hs₂]))`. Use the proof step `(b := Over.homMk (a ≫ q) (by`. Express the relevant statement in the definitionally equal form `(a ≫ q) ≫ G'.hom = (a ≫ p) ≫ G.hom`. Rewrite using `[Category.assoc, Category.assoc, hpq]))`. Use the proof step `(hs.trans (by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `_ = spMap (algebraMap T (FractionRing T)) ≫ a ≫ q`. Rewrite using `[← reassoc_of% hc, hiq]))`. Conclude with `congrArg CommaMorphism.left this`. Set `r : Sp (IsLocalRing.ResidueField T) ⟶ Sp T` to `spMap (IsLocalRing.residue T)`. Establish `hr : x default ∈ Set.range (r ≫ a)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨IsLocalRing.closedPoint _, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply r a _).trans ((congrArg a (IsLocalRing.comap_closedPoint (IsLocalRing.residue T))).trans ha)`. Rewrite `hx`, the goal using `[field_point_comp_eq_iff _ _ x _ ⟨default, rfl⟩, ← field_point_comp_eq_iff (Z := Γ'.left) _ _ (r ≫ a) _ hr]`. Conclude with `comp_pow_eq_one_of_pullback_hom _ F p' q' (r ≫ a) (r ≫ s) (by rw [Category.assoc, hs₁, Category.assoc]; rfl) (by rw [Category.assoc, hb, Category.assoc]; rfl) n hx`. Establish `: IsIso p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: IsPreimmersion (i ≫ p)` using `by rwa [hip]`. Establish `: Flat (i ≫ p)` using `by rwa [hip]`. Establish `: IsDominant (i ≫ p)` using `by rwa [hip]`. Establish `: QuasiCompact (i ≫ p)` using `by rwa [hip]`. Conclude with `isIso_of_densePart i p`.
-
-Take `⟨ψ, hψ, huψ⟩` from `graphClosure.exists_extension_of_isIso_fst G.hom G'.hom u φ huφ`. Set `F : G ⟶ G'` to `Over.homMk ψ hψ.symm`. Establish `hF : (Over.pullback j).map F = f` using `by ext1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(pullback.lift_fst _ _ _).trans huψ`.
-
-Conclude with `(Over.w _).trans hw.symm`. Use `⟨F, ⟨?_, hF⟩, fun F' hF' ↦ pullback_map_injective_of_flat j (hF'.2.trans hF.symm)⟩` and prove the remaining obligations. Establish `: IsMonHom ((Over.pullback j).map F)` using `hF ▸ hf`. Conclude with `isMonHom_of_pullback_of_flat j F`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.existsUnique_hom_extension_semiAbelian_normal :
     (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (X U : Scheme.{0}) (j : U ⟶ X), (ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X ∧ ∃ z : X ⟶ Sp ℤ, LocallyOfFiniteType z ∧ Flat z) → IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → ∀ (G G' : Over X) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback j).obj G ⟶ (Over.pullback j).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback j).map F = f := by

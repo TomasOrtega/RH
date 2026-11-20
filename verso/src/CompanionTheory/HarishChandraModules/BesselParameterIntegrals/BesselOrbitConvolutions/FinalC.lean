@@ -17,17 +17,15 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Formalism.
 variable {k r : ℕ}
 
 /- English proof (translation)
-Take `⟨a, ha, hac, haN⟩` from `GlobalTheory.CompanionTheory.Bes.torus_moves_character k r z (fun _ => c) hz fun _ => hc`. Take `⟨e, he, hec, heN⟩` from `GlobalTheory.CompanionTheory.Bes.torus_moves_character k r z (fun _ => cStd) hz fun _ => by simp [cStd]`. Establish `hi : (e⁻¹ * a)⁻¹ = a⁻¹ * e` using `by rw [Matrix.mul_inv_rev, inv_inv_uh he]`. Establish `he1` using `unit_of_uh he`. Use `⟨e⁻¹ * a, WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv he) ha, fun h hh => ?_, fun m hm => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: e⁻¹ * h = h * e⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, he1.1, Matrix.mul_one]`. Use `_ = h * e⁻¹ := by rw [← hec h hh, ← Matrix.mul_assoc, he1.2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hac h hh, ← Matrix.mul_assoc, this, Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, -, h3⟩` from `haN m hm`. Take `⟨-, h5, -⟩` from `heN _ h1`. Establish `e1 : e⁻¹ * a * m * (e⁻¹ * a)⁻¹ = e⁻¹ * (a * m * a⁻¹) * e`. Rewrite using `[hi]`. Simplify using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (e⁻¹ * a)⁻¹ * m * (e⁻¹ * a) = a⁻¹ * (e * m * e⁻¹) * a`. Rewrite using `[hi]`. Simplify using `only [Matrix.mul_assoc]`. Use `⟨e1 ▸ h5, e2 ▸ (haN _ (heN m hm).1).2.1, ?_⟩` and prove the remaining obligations. Establish `h6` using `(heN _ h5).2.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : e * (e⁻¹ * (a * m * a⁻¹) * e) * e⁻¹ = a * m * a⁻¹`. Rewrite using `[show e * (e⁻¹ * (a * m * a⁻¹) * e) * e⁻¹ = (e * e⁻¹) * (a * m * a⁻¹) * (e * e⁻¹) by`. Simplify using `only [Matrix.mul_assoc], he1.1, Matrix.one_mul, Matrix.mul_one]`. Rewrite `h6` using `[e3, h3]`. Rewrite using `[e1, psi_constant, psi_constant]`.
-
-Conclude with `h6.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_move {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {c : ℂ} (hc : c ≠ 0) :
     ∃ b ∈ UH (Hpk k r), (∀ h ∈ UWset k r z, b * h = h * b) ∧ ∀ m ∈ Nset k r,
@@ -74,11 +72,11 @@ def cjE {b : Mx k r} (hb : b ∈ UH (Hpk k r)) : Mt k r ≃ₜ Mt k r where
   continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hμ`. Establish `hE` using `(cjE hb).measurableEmbedding`. Use `⟨(cjE hb).toMeasurableEquiv.sigmaFinite_map, fun h0 => h2 ?_, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[Measure.map_eq_zero_iff hE.measurable.aemeasurable]`. Then use the resulting hypothesis. Rewrite using `[hE.map_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `measure_mono_null (fun x hx hx' => hx (hN _ hx').1) h3`. Establish `hl : ∀ a : Mx k r, Measurable (lmulM (k` using `k) (r := r) a) := fun a => ModEx.measurable_lmulQ a`. Establish `e : lmulM s ∘ cjE hb = cjE hb ∘ lmulM (b⁻¹ * s * b)` using `by ext1 x`. Express the relevant statement in the definitionally equal form `s * (b * Matrix.of x * b⁻¹) = b * (b⁻¹ * s * b * Matrix.of x) * b⁻¹`. Rewrite using `[show b * (b⁻¹ * s * b * Matrix.of x) * b⁻¹ = (b * b⁻¹) * (s * (b * Matrix.of x * b⁻¹)) by`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc], (unit_of_uh hb).1, Matrix.one_mul]`. Rewrite using `[Measure.map_map (hl s) hE.measurable, e, ← Measure.map_map hE.measurable (hl _), h4 _ (hN s hs).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarOn_map_cjE {b : Mx k r} (hb : b ∈ UH (Hpk k r)) {N : Set (Mx k r)}
     (hN : ∀ m ∈ N, b * m * b⁻¹ ∈ N ∧ b⁻¹ * m * b ∈ N) {μ : Measure (Mt k r)}
@@ -108,15 +106,15 @@ variable {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
   {π : Mx k r → (Wp →L[ℂ] Wp)} {μW μN μG νq : Measure (Mt k r)}
 
 /- English proof (translation)
-Take `⟨hl, hσ, hg, hok, -, hz, hT, hc, hπ, hW, hN, -⟩` from `hS`. Take `⟨b, hb, hbW, hbN⟩` from `exists_move hz hc`. Establish `hN'` using `isHaarOn_map_cjE hb (fun m hm => ⟨(hbN m hm).1, (hbN m hm).2.1⟩) hN`. Take `⟨L, hL⟩` from `CompanionTheory.FamilyDerivativeExpansion.M1.be_rank_one hok.1 hl hσ hg hok.2.1 hz hT hπ hW hN'`. Establish `hU : PI.WBL.Cv.SigU σ` using `PI.WBL.Cv.sigAll k r ε lam H σ hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun w => L (σ b w), fun w hw v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hL _ (TranslationBesselVanishing.smooth_translate hσ hw hb) _ (TranslationBesselVanishing.smooth_translate hσ hv hb)).2]`. Use `haveI := hW.1`. Use `haveI := hN.1`. Establish `hE` using `((Homeomorph.refl (Mt k r)).prodCongr (cjE hb)).measurableEmbedding`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hp : μW.prod (μN.map (cjE hb)) = (μW.prod μN).map ((Homeomorph.refl (Mt k r)).prodCongr (cjE hb))` using `by conv_lhs => rw [← Measure.map_id (μ := μW)]`. Conclude with `Measure.map_prod_map _ _ measurable_id (cjE hb).measurable`. Unfold `be`. Rewrite using `[hp, hE.integral_map]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `hW.2.2.1`. Establish `h2 : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r` using `hN.2.2.1`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae h1, Measure.quasiMeasurePreserving_snd.ae h2] with p hp1 hp2`. Express the relevant statement in the definitionally equal form `_ = (⟪σ b v, σ (Matrix.of p.1 * (b * Matrix.of p.2 * b⁻¹)) (σ b w)⟫_ℂ * star (psi k r z cStd (b * Matrix.of p.2 * b⁻¹))) • π (Matrix.of p.1)⁻¹`. Establish `hx : Matrix.of p.1 * (b * Matrix.of p.2 * b⁻¹) ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_mul hp1.1 (hbN _ hp2).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : b⁻¹ * (Matrix.of p.1 * (b * Matrix.of p.2 * b⁻¹) * b) = Matrix.of p.1 * Matrix.of p.2`. Rewrite using `[show b⁻¹ * (Matrix.of p.1 * (b * Matrix.of p.2 * b⁻¹) * b) = b⁻¹ * (Matrix.of p.1 * b) * Matrix.of p.2 * (b⁻¹ * b) by simp only [Matrix.mul_assoc], ← hbW _ hp1, ← Matrix.mul_assoc b⁻¹, (unit_of_uh hb).2, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[(hbN _ hp2).2.2, inner_sig hU hb, ← ContinuousLinearMap.comp_apply (σ _) (σ b), ← hU.2.1 _ hx _ hb, ← ContinuousLinearMap.comp_apply (σ b⁻¹), ← hU.2.1 _ (WeylGroupFacts.uh_inv hb) _ (WeylGroupFacts.uh_mul hx hb), e1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem be_rank_one_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
     ∃ L : H → Wp, ∀ w ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ,
@@ -160,11 +158,11 @@ theorem be_rank_one_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq
 end One
 
 /- English proof (translation)
-Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS ⟨x0, hx0, y0, hy0, hne⟩`. Establish `hsm` using `DDSmoothness.DD_smooth hIn.2.2.1 hS.1 hS.2.1 hS.2.2.2.2.1`. Take `⟨L, hL⟩` from `be_rank_one_scale hS`. Rewrite `hne` using `[hL x0 (hsm x0 hx0) y0 (hsm y0 hy0)]`. Establish `hLx : L x0 ≠ 0` using `fun h0 => hne (by ext ξ; simp [h0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hLy : L y0 ≠ 0` using `fun h0 => hne (by ext ξ; simp [h0])`. Establish `hn : ⟪L y0, L y0⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hLy`. Establish `hB` using `DDSmoothness.bessel_smul (beBessel hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS y0 (Or.inl hy0) (L y0)) (⟪L y0, L y0⟫_ℂ)⁻¹`. Establish `he : ∀ x ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ, (⟪L y0, L y0⟫_ℂ)⁻¹ • be z c π σ μW μN x y0 (L y0) = L x := fun x hx => by`. Rewrite using `[hL x hx y0 (hsm y0 hy0), ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, smul_smul, inv_mul_cancel₀ hn, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hB, ⟨x0, hx0, by rw [he x0 (hsm x0 hx0)]; exact hLx⟩, fun x hx v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[he x hx, he v (hsm v hv), hL x hx v (hsm v hv)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem shapeC : C.Shape := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS ⟨x0, hx0, y0, hy0, hne⟩
@@ -193,7 +191,7 @@ variable {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
   {π : Mx k r → (Wp →L[ℂ] Wp)} {μW μN μG νq : Measure (Mt k r)}
 
 /- English proof (translation)
-The claim follows from `DDSmoothness.GC.discrete_form_one_side psi_constant schur_hermitian norm_inverse_bound growth_spherical_bound growth_group_bound decDD beConv normIdSm beBessel shapeC inputs_holds k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`.
+A detailed English derivation is pending.
 -/
 theorem dDForm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
     DDForm z c π μW μN μG νq σ w0 :=
@@ -202,7 +200,7 @@ theorem dDForm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
     k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS
 
 /- English proof (translation)
-The claim follows from `DDSmoothness.GC.smooth_K_finite_form_one_side schur_hermitian beConv normIdSm beBessel shapeC kFinForm zeroCase inputs_holds k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`.
+A detailed English derivation is pending.
 -/
 theorem atForm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
     AtForm z c π μW μN μG νq σ :=
@@ -210,7 +208,7 @@ theorem atForm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
     inputs_holds k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS
 
 /- English proof (translation)
-The claim follows from `UnipotentHaarMeasurability.GC.smooth_admissible_form_one_side schur_hermitian beConv normIdSm beBessel shapeC kFinForm zeroCase zeroCaseDD inputs_holds k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`.
+A detailed English derivation is pending.
 -/
 theorem atFormAdm_scale (hS : Side k r ε lam h σ w0 z c u π μW μN μG νq) :
     AtFormAdm z c π μW μN μG νq σ w0 :=

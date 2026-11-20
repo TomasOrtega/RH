@@ -24,17 +24,17 @@ namespace GlobalTheory.ThetaMeanSquareForm
 open GlobalTheory.HeisOrtho
 
 /- English proof (translation)
-Establish `hi : ∀ f g : M, Integrable (fun x => (f : X → ℂ) x * (starRingEnd ℂ) ((g : X → ℂ) x)) ν` using `fun f g => by`. Take `⟨C, hC⟩` from `hb f f.2`. Take `⟨C', hC'⟩` from `hb g g.2`. Use `Integrable.of_bound (((hm f f.2).mul (Complex.continuous_conj.measurable.comp (hm g g.2))).aestronglyMeasurable) (C * C') (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (hC x) (hC' x) (norm_nonneg _) ((norm_nonneg _).trans (hC x))`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun f g : M => ∫ x, (f : X → ℂ) x * (starRingEnd ℂ) ((g : X → ℂ) x) ∂ν) ?_ ?_ ?_ ?_, fun _ _ => rfl, fun f => ?_⟩` and prove the remaining obligations. Introduce `f f' g`. Rewrite using `[← integral_add (hi f g) (hi f' g)]`. Simplify using `only [Submodule.coe_add, Pi.add_apply, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c f g`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Introduce `f g g'`. Rewrite using `[← integral_add (hi f g) (hi f g')]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add, mul_add]`. Introduce `c f g`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, map_mul, mul_left_comm]`. Rewrite using `[LinearMap.mk₂'ₛₗ_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Integrable (fun x => ‖(f : X → ℂ) x‖ ^ 2) ν`. Use `(hi f f).norm.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, Complex.norm_conj, sq]`. Repeatedly rewrite using `[Complex.mul_conj', ← Complex.ofReal_pow]`. Rewrite using `[integral_complex_ofReal, Complex.ofReal_re, ofReal_integral_eq_lintegral_ofReal h1 (Filter.Eventually.of_forall fun x => by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form {X : Type} [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] (M : Submodule ℂ (X → ℂ))
     (hm : ∀ f ∈ M, Measurable f) (hb : ∀ f ∈ M, ∃ C : ℝ, ∀ x, ‖f x‖ ≤ C) :
@@ -73,19 +73,15 @@ theorem exists_form {X : Type} [MeasurableSpace X] (ν : Measure X) [IsFiniteMea
     rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-Introduce `D ψ S T hψ M hM μ 𝓕 hμ h𝓕`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WO S T) (ratL T S) hK hKc μ h𝓕⟩`. Establish `hb : ∀ f ∈ M, ∃ C : ℝ, ∀ w, ‖f w‖ ≤ C` using `fun f hf => by`. Establish `hp : ∀ γ ∈ ratL T S, ∀ w, ‖f (γ + w)‖ = ‖f w‖`. Introduce and unpack `_ ⟨γ, rfl⟩ w`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg norm ((hM f hf).quasi γ w)).trans (by rw [norm_mul, hψ.2.1, one_mul])`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (hM f hf).cont.continuousOn`. Use `⟨C, fun w => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← hp γ hγ w]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hC _ h`. Take `⟨B, hB, hN⟩` from `exists_form (μ.restrict 𝓕) M (fun f hf => (hM f hf).cont.measurable) hb`. Use `⟨B, fun u f g f' g' hf hg => ?_, hN⟩` and prove the remaining obligations. Rewrite using `[hB, hB, hf, hg]`. Establish `key` using `setIntegral_add_right (G := WO S T) (ratL T S) μ 𝓕 h𝓕 (fun w => (f : WO S T → ℂ) w * (starRingEnd ℂ) ((g : WO S T → ℂ) w)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨γ, rfl⟩ w`. Establish `h0` using `mul_conj_of_norm_one (hψ.2.1 (-(symplOH S T (ratW T S γ) w)))`. Establish `h1` using `(hM f f.2).quasi γ w`. Establish `h2` using `(hM g g.2).quasi γ w`. Use `show (f : WO S T → ℂ) (ratW T S γ + w) * (starRingEnd ℂ) ((g : WO S T → ℂ) (ratW T S γ + w)) = _`.
-
-Rewrite using `[h1, h2, map_mul, mul_mul_mul_comm, h0, one_mul]) u`. Rewrite using `[← key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Establish `h0` using `mul_conj_of_norm_one (hψ.2.1 (symplOH S T w u))`. Use `show ψ (symplOH S T w u) * (f : WO S T → ℂ) (w + u) * (starRingEnd ℂ) (ψ (symplOH S T w u) * (g : WO S T → ℂ) (w + u)) = _`.
-
-Rewrite using `[map_mul, mul_mul_mul_comm, h0, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_form : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsCharAF D.host.F ψ → ∀ M : Submodule ℂ (WO S T → ℂ), (∀ f ∈ M, IsThetaFunO ψ S T f) → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∃ B : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ, (∀ (u : WO S T) (f g f' g' : M), (f' : WO S T → ℂ) = heisO ψ S T u f → (g' : WO S T → ℂ) = heisO ψ S T u g → B f' g' = B f g) ∧ ∀ f : M, ∫⁻ w in 𝓕, ‖(f : WO S T → ℂ) w‖ₑ ^ 2 ∂μ = ENNReal.ofReal (B f f).re := by
   intro D ψ S T hψ M hM μ 𝓕 hμ h𝓕

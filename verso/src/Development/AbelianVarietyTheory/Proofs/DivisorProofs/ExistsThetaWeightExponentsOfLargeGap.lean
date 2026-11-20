@@ -10,17 +10,17 @@ namespace GlobalTheory.ThetaWtGap
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Establish `h0 : ∀ x, 0 ≤ (wtOf Dw la m).1 x`. Introduce `x`. Simplify using `only [wtOf]`. Use `split_ifs with h hi h' hi`. Use `hb ⟨x.1, h⟩ ⟨x.2, by omega⟩ hi` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`. Use `hs ⟨_, h'⟩ ⟨Dw.p + (Dw.q - 1 - x.2), by omega⟩ (Nat.le_add_right _ _)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `le_rfl`. Use `⟨h0, fun τ i j hij => ?_⟩` and prove the remaining obligations. Establish `hi0` using `h0 (τ, i)`. Simplify using `only [wtOf] at hi0 ⊢`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos h] at hi0 ⊢`. Distinguish the cases in `hj : j < Dw.p`. Establish `hi : i < Dw.p` using `by omega`. Simplify using `only [dif_pos hi, dif_pos hj]`. Use `ha ⟨τ, h⟩ (show (⟨i, by omega⟩ : Fin (Dw.p + Dw.q)) ≤ ⟨j, by omega⟩ from hij)` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify `hi0` using `only [dif_neg hj]`. Establish `h'` using `AllWt.conj_mem h`. Simplify using `only [dif_neg h, dif_pos h'] at hi0 ⊢`. Distinguish the cases in `hj : j < Dw.q`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hi : i < Dw.q` using `by omega`. Simplify using `only [dif_pos hi, dif_pos hj]`. Use `ha ⟨_, h'⟩ (show (⟨Dw.p + (Dw.q - 1 - j), by omega⟩ : Fin (Dw.p + Dw.q)) ≤ ⟨Dw.p + (Dw.q - 1 - i), by omega⟩ from Fin.mk_le_mk.2 (by omega))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify `hi0` using `only [dif_neg hj]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem wtOf_nonneg_antitone (la : AllWt.Weight Dw) (m : ℤ) (ha : ∀ τ, Antitone (la τ))
     (hb : ∀ τ (k : Fin (Dw.p + Dw.q)), (k : ℕ) < Dw.p → m ≤ la τ k)
@@ -59,19 +59,17 @@ theorem wtOf_nonneg_antitone (la : AllWt.Weight Dw) (m : ℤ) (ha : ∀ τ, Anti
     · simpa only [dif_neg hj] using hi0
 
 /- English proof (translation)
-Use `set lb : AllWt.Weight Dw := la + GlobalTheory.FlatLine.parWt Dw (fun τ => 1 + (m : ℤ) - la τ ⟨Dw.p - 1, by omega⟩) with hlb`. Establish `e : ∀ τ k, lb τ k = la τ k + (1 + (m : ℤ) - la τ ⟨Dw.p - 1, by omega⟩)` using `fun _ _ => rfl`. Establish `hb : ∀ τ (k : Fin (Dw.p + Dw.q)), (k : ℕ) < Dw.p → (m : ℤ) < lb τ k`. Introduce `τ k hk`. Use `ha τ (show k ≤ (⟨Dw.p - 1, by omega⟩ : Fin (Dw.p + Dw.q)) from Fin.le_def.2 (by simp only; omega))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers. Establish `hs : ∀ τ (k : Fin (Dw.p + Dw.q)), Dw.p ≤ (k : ℕ) → lb τ k ≤ -(m : ℤ)`. Introduce `τ k hk`. Establish `hk2` using `k.2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : Dw.p - 1 + 1 < Dw.p + Dw.q` using `by omega`. Establish `h1` using `hg τ`. Rewrite `h1` using `[GlobalTheory.CompHS.gap, dif_pos hlt]`. Establish `h2` using `ha τ (show (⟨Dw.p - 1 + 1, hlt⟩ : Fin (Dw.p + Dw.q)) ≤ k from Fin.le_def.2 (by simp only; omega))`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1`. Use linear arithmetic over natural numbers and integers. Establish `hanti : ∀ τ, Antitone (lb τ)` using `fun τ i j hij => by`. Use `ha τ hij` as an intermediate fact. Rewrite using `[e, e]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨h0, h1⟩` from `wtOf_nonneg_antitone lb m hanti (fun τ k hk => (hb τ k hk).le) hs`. Establish `hm : 2 * m / 2 = m` using `by omega`. Establish `hla : GlobalTheory.CovTop.laOf Dw (fun x => ((wtOf Dw lb m).1 x).toNat) (2 * m) = lb`. Rewrite using `[GlobalTheory.CovTop.laOf, hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Int.toNat_of_nonneg (h0 _)]`. Conclude with `AllWt.weightOf_wtOf lb m`. Use `⟨fun x => ((wtOf Dw lb m).1 x).toNat, ⟨fun τ i j hij => Int.toNat_le_toNat (h1 τ hij), even_two_mul m⟩, hla, ?_⟩` and prove the remaining obligations. Introduce `τ k hk`. Rewrite using `[hla, hm]`.
-
-Conclude with `hb τ k hk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exponents (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (m : ℕ) (la : AllWt.Weight Dw) (hp : 1 ≤ Dw.p) (ha : ∀ τ, Antitone (la τ))

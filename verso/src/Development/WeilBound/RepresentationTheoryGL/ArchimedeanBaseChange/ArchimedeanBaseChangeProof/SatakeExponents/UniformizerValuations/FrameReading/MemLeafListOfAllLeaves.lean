@@ -15,7 +15,7 @@ section Leaves
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `| _, .leaf V z, h, x, hx => by simp only [Tr.leafList, List.mem_singleton] at hx subst hx exact h | _, .node t₁ t₂, h, x, hx => by simp only [Tr.leafList, List.mem_append] at hx rcases hx with hx | hx · exact mem_leafList_of_allLeaves t₁ h.1 x hx · exact mem_leafList_of_allLeaves …`.
+A detailed English derivation is pending.
 -/
 theorem mem_leafList_of_allLeaves {P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} :
     ∀ {N : ℕ} (t : Tr E N), t.AllLeaves P → ∀ x ∈ t.leafList, P x.1 x.2
@@ -30,9 +30,9 @@ theorem mem_leafList_of_allLeaves {P : ∀ M : ℕ, Submodule ℂ (Sm E M) → P
     · exact mem_leafList_of_allLeaves t₂ h.2 x hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : x ∈ t.leafList.filter fun y => 0 < y.1`. Rewrite using `[← ht]`. Conclude with `hx`. Rewrite `hx'` using `[List.mem_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨by simpa using hx'.2, mem_leafList_of_allLeaves t hl x hx'.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_parts_of_treeParts {N : ℕ} {t : Tr E N} {P : Pre E N} {Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop}
     (ht : TreeParts t P) (hl : t.AllLeaves Q) : ∀ x ∈ parts P, 0 < x.1 ∧ Q x.1 x.2 := by
@@ -60,9 +60,9 @@ def mulK (N : ℕ) (χ : HChar E) : (Kinf E N → ℂ) →ₗ[ℂ] (Kinf E N →
     ring
 
 /- English proof (translation)
-Take `⟨φ, hφV, hφ0, -, hT⟩` from `h`. Use `⟨mulChi N χ φ, Submodule.mem_map_of_mem hφV, ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `(LinearEquiv.map_ne_zero_iff (mulChi N χ)).2 hφ0`. Establish `e : (fun k : Kinf E N => ((mulChi N χ φ : Sm E N) : GA E N → ℂ) (g * infGL E N (Unitary.toUnits k))) = (chiDet N χ g : ℂ) • mulK N χ (fun k : Kinf E N => (φ : GA E N → ℂ) (g * infGL E N (Unitary.toUnits k)))`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulChi_apply, map_mul, Units.val_mul, Pi.smul_apply, smul_eq_mul, mulK, LinearMap.coe_mk, AddHom.coe_mk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_map_of_mem (hT g))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasKType_twist {N : ℕ} (χ : HChar E) {K' : Subgroup (GL (Fin N) (Af E))} {W' : Submodule ℂ (Kinf E N → ℂ)}
     {V : Submodule ℂ (Sm E N)} (h : HasType K' W' V) :
@@ -80,7 +80,7 @@ theorem hasKType_twist {N : ℕ} (χ : HChar E) {K' : Subgroup (GL (Fin N) (Af E
     exact Submodule.smul_mem _ _ (Submodule.mem_map_of_mem (hT g))
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0, hW⟩` from `hV`. Conclude with `⟨φ, hφ, h0, fun g => h (hW g)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasKType.mono {N : ℕ} {W₁ W₂ : Submodule ℂ (Kinf E N → ℂ)} {V : Submodule ℂ (Sm E N)} (h : W₁ ≤ W₂)
     (hV : HasKType W₁ V) : HasKType W₂ V := by
@@ -90,15 +90,13 @@ theorem HasKType.mono {N : ℕ} {W₁ W₂ : Submodule ℂ (Kinf E N → ℂ)} {
 end Twist
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ Ω hΩ`. Establish `: ∀ M, Finite (Ω M)` using `fun M => (hΩ M).1.to_subtype`. Set `W : ∀ N : ℕ, Submodule ℂ (Kinf E N → ℂ)` to `fun N => ⨆ p : Ω N × Fin (n + 1), (p.1 : Submodule ℂ (Kinf E N → ℂ)).map (mulK N (μ ^ (p.2 : ℕ)))`. Establish `hle : ∀ (N k : ℕ) (W' : Submodule ℂ (Kinf E N → ℂ)), W' ∈ Ω N → k ≤ n → W'.map (mulK N (μ ^ k)) ≤ W N` using `fun N k W' hW' hk => le_iSup (fun p : Ω N × Fin (n + 1) => (p.1 : Submodule ℂ (Kinf E N → ℂ)).map (mulK N (μ ^ (p.2 : ℕ)))) (⟨W', hW'⟩, ⟨k, Nat.lt_succ_of_le hk⟩)`. Use `⟨W, fun N => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∀ p : Ω N × Fin (n + 1), FiniteDimensional ℂ ((p.1 : Submodule ℂ (Kinf E N → ℂ)).map (mulK N (μ ^ (p.2 : ℕ))))` using `fun p => by`. Use `(hΩ N).2 _ p.1.2` as an intermediate fact. Use `infer_instance`. Use `infer_instance`. Introduce `a b hab s₁ s₂ Pa Pb D hc h₁ h₂ i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `key : ∀ (k : ℕ), k ≤ n → ∀ x : Σ M : ℕ, Submodule ℂ (Sm E M), (0 < x.1 ∧ (x.1 = 0 ∨ ∃ K', ∃ W' ∈ Ω x.1, HasType K' W' x.2)) → HasKType (W (twPart (μ ^ k) x).1) (twPart (μ ^ k) x).2`. Introduce and unpack `k hk ⟨M, V⟩ ⟨hM, h0 | ⟨K', W', hW', hT⟩⟩`. Conclude with `absurd h0 (Nat.pos_iff_ne_zero.1 hM)`. Conclude with `HasKType.mono (hle M k W' hW' hk) (hasKType_twist (μ ^ k) hT)`. Establish `hmem : (⟨D.N i, D.V i⟩ : Σ M : ℕ, Submodule ℂ (Sm E M)) ∈ parts D` using `List.mem_ofFn.2 ⟨i, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hj` using `hc.join`. Unfold `IsJoin at hj`. Rewrite `hmem` using `[hj, List.mem_append, List.mem_map, List.mem_map]`. Break down `hmem with ⟨x, hx, e⟩ | ⟨x, hx, e⟩` into its components or cases. Use `key b (by omega) x (mem_parts_of_treeParts hc.t₁ h₁ x hx)` as an intermediate fact.
-
-Rewrite `this` using `[e]`. Conclude with `this`. Use `key a (by omega) x (mem_parts_of_treeParts hc.t₂ h₂ x hx)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem joinType : JoinType := by
   intro E _ _ _ n μ Ω hΩ

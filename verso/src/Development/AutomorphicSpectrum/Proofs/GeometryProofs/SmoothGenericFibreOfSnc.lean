@@ -16,13 +16,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | hx` into its components or cases. Conclude with `⟨1, by simpa [hf0] using (Algebra.adjoin ℚ T).one_mem⟩`. Conclude with `⟨0, by simpa using Algebra.subset_adjoin hx⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `algebraMap r => exact ⟨0, by simpa using (Algebra.adjoin ℚ T).algebraMap_mem r⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, hn⟩` from `hx`. Take `⟨m, hm⟩` from `hy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (x + y) * f ^ (n + m) = x * f ^ n * f ^ m + y * f ^ m * f ^ n` using `by ring`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem hn (pow_mem hf m)) (mul_mem hm (pow_mem hf n))`. Consider the case `mul x y _ _ hx hy`. Take `⟨n, hn⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: x * y * f ^ (n + m) = x * f ^ n * (y * f ^ m)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem hn hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_mem (T : Set Ω) {f : Ω} (hf0 : f ≠ 0) {x : Ω}
     (hx : x ∈ Algebra.adjoin ℚ (insert f⁻¹ T)) (hf : f ∈ Algebra.adjoin ℚ T) :
@@ -49,13 +49,13 @@ theorem exists_mul_pow_mem (T : Set Ω) {f : Ω} (hf0 : f ≠ 0) {x : Ω}
     exact mul_mem hn hm
 
 /- English proof (translation)
-Use `letI := (Subalgebra.inclusion hle).toRingHom.toAlgebra`. Establish `hmap : ∀ a : A, ((algebraMap A S a : S) : Ω) = a` using `fun a => rfl`. Establish `hunit : IsUnit (algebraMap A S f)`. Use `IsUnit.of_mul_eq_one (⟨(f : Ω)⁻¹, hinv⟩ : S) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Subalgebra.coe_mul, hmap]`. Conclude with `mul_inv_cancel₀ hf0`. Use `IsLocalization.Away.mk _ hunit ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Take `⟨n, hn⟩` from `hs x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ⟨x * (f : Ω) ^ n, hn⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hmap, Subalgebra.coe_mul, Subalgebra.coe_pow, hmap]`. Introduce `a b hab`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (a : Ω) = b` using `by rw [← hmap a, ← hmap b, hab]`. Rewrite using `[Subtype.ext this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization_away (A S : Subalgebra ℚ Ω) (hle : A ≤ S) (f : A) (hf0 : (f : Ω) ≠ 0)
     (hinv : (f : Ω)⁻¹ ∈ S) (hs : ∀ x ∈ S, ∃ n : ℕ, x * (f : Ω) ^ n ∈ A) :
@@ -79,15 +79,15 @@ theorem isLocalization_away (A S : Subalgebra ℚ Ω) (hle : A ≤ S) (f : A) (h
     rw [Subtype.ext this]
 
 /- English proof (translation)
-Set `s : Set A` to `{x | (x : Ω) ≠ 0 ∧ ∃ l, (x : Ω) = f l}`. Establish `hspan : Ideal.span s = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : A) = ∑ l, (⟨a l, ha l⟩ : A) * (⟨f l, hf l⟩ : A)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Subalgebra.coe_one, ← hsum, AddSubmonoidClass.coe_finset_sum]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `Ideal.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : f l = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `: (⟨f l, hf l⟩ : A) = 0` using `Subtype.ext h0`. Rewrite using `[this, mul_zero]`. Conclude with `Ideal.zero_mem _`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨h0, l, rfl⟩)`. Rewrite using `[← RingHom.smooth_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `RingHom.OfLocalizationSpanTarget.ofIsLocalization RingHom.Smooth.ofLocalizationSpanTarget RingHom.Smooth.respectsIso _ s hspan ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx0, l, hl⟩`. Establish `hx0' : f l ≠ 0` using `hl ▸ hx0`. Use `letI alg := (Subalgebra.inclusion (hle l)).toRingHom.toAlgebra`. Establish `hloc : IsLocalization.Away x (S l)` using `isLocalization_away A (S l) (hle l) x hx0 (hl ▸ hinv l hx0') (hl ▸ hs l hx0')`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨S l, inferInstance, alg, hloc, ?_⟩` and prove the remaining obligations. Establish `hcomp : (algebraMap A (S l)).comp (algebraMap ℚ A) = algebraMap ℚ (S l)` using `Subsingleton.elim _ _`. Rewrite using `[hcomp]`. Conclude with `RingHom.smooth_algebraMap.mpr (hsm l hx0')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_of_cover (A : Subalgebra ℚ Ω) {m : ℕ} (f a : Fin m → Ω) (hf : ∀ l, f l ∈ A) (ha : ∀ l, a l ∈ A)
     (hsum : ∑ l, a l * f l = 1) (S : Fin m → Subalgebra ℚ Ω) (hle : ∀ l, A ≤ S l)
@@ -121,7 +121,7 @@ theorem smooth_of_cover (A : Subalgebra ℚ Ω) {m : ℕ} (f a : Fin m → Ω) (
   exact RingHom.smooth_algebraMap.mpr (hsm l hx0')
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨m, f, a, hf, ha, hsum, hS⟩` from `h c hc`. Conclude with `smooth_of_cover _ f a hf ha hsum (fun l => Algebra.adjoin ℚ (insert (f l)⁻¹ _)) (fun l => Algebra.adjoin_mono (Set.subset_insert _ _)) (fun l _ => Algebra.subset_adjoin (Set.mem_insert _ _)) (fun l h0 x hx => exists_mul_pow_mem _ h0 hx (hf l)) (fun l h0 => (hS l h0 _ rfl).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem smoothGenericFibreM_of_isSncModel (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type)
     [Field Ω] [Algebra ℚ Ω] (y : (Σ k, J k) → Ω) (e : ℕ) (bd : Ideal (MRing J))

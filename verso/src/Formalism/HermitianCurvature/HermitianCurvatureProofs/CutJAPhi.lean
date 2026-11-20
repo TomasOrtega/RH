@@ -14,7 +14,7 @@ open NumberField Formalism.FourierDecayAlt.P.CutMP
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ∞ (fun x : ℝ => φ (Real.exp (Real.log x))) (Set.Ioi 0)` using `(hφ : ContDiff ℝ ∞ (fun u : ℝ => φ (Real.exp u))).comp_contDiffOn (Real.contDiffOn_log.mono fun x hx => (ne_of_gt (Set.mem_Ioi.1 hx)))`. Conclude with `h1.congr fun x hx => by rw [Real.exp_log (Set.mem_Ioi.1 hx)]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothLog_contDiffOn {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) : ContDiffOn ℝ ∞ φ (Set.Ioi 0) := by
   have h1 : ContDiffOn ℝ ∞ (fun x : ℝ => φ (Real.exp (Real.log x))) (Set.Ioi 0) :=
@@ -28,17 +28,17 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨hS, hL, hR, hU⟩` from `hJ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hFJ⟩` from `hS g₀ hg₀`. Establish `hGc : Continuous (fun g : Q.Mx k r => Gf k r Bs.z Bs.z' g)` using `(Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Bs.z Bs.z').continuous`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨U ∩ {g | 0 < Gf k r Bs.z Bs.z' g}, fun g => ((φ (Gf k r Bs.z Bs.z' g) : ℝ) : ℂ) • F g, hU.inter (isOpen_lt continuous_const hGc), ⟨hgU, hD g₀ hg₀.2⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : ContDiffOn ℝ ∞ (fun g : Q.Mx k r => ((φ (Gf k r Bs.z Bs.z' g) : ℝ) : ℂ)) (U ∩ {g | 0 < Gf k r Bs.z Bs.z' g})` using `Complex.ofRealCLM.contDiff.comp_contDiffOn ((smoothLog_contDiffOn hφ).comp (Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Bs.z Bs.z').contDiffOn fun g hg => hg.2)`. Conclude with `hc.smul (hF.mono Set.inter_subset_left)`. Introduce `g hgU hgG`. Simplify using `only [hFJ g hgU.1 hgG]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg n hn`. Establish `e : Gf k r Bs.z Bs.z' (n * g) = Gf k r Bs.z Bs.z' g`. Use `gf_SgS Bs (n_mem_Sset Bs.z hn) (one_mem_Sset Bs.z') g` as an intermediate fact. Simplify using `using this`. Simplify using `only [e, hL g hg n hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_comm]`. Introduce `g hg n hn`. Establish `e : Gf k r Bs.z Bs.z' (g * n) = Gf k r Bs.z Bs.z' g`. Use `gf_SgS Bs (one_mem_Sset Bs.z) (n_mem_Sset Bs.z' hn) g` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, hR g hg n hn]`. Rewrite using `[smul_comm]`. Introduce `g hg h hh h' hh'`. Establish `e : Gf k r Bs.z Bs.z' (h * g * h') = Gf k r Bs.z Bs.z' g` using `gf_SgS Bs (h_mem_Sset Bs.z hh) (h_mem_Sset Bs.z' hh') g`. Simplify using `only [e, hU g hg h hh h' hh']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`.
+A detailed English derivation is pending.
 -/
 theorem phi_mem_FFl (Bs : B.RealPlaceData k r Wp Wq) {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ)
     {Dm : Set (Q.Mx k r)} (hD : ∀ g ∈ Dm, 0 < Gf k r Bs.z Bs.z' g) {J : Q.Mx k r → (Wq →L[ℂ] Wp)}
@@ -80,31 +80,29 @@ theorem phi_mem_FFl (Bs : B.RealPlaceData k r Wp Wq) {φ : ℝ → ℝ} (hφ : L
 end mem
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he φ hφ J hJ`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hQ : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, x ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `fun x hx => ⟨hx.1, hTT ▸ hx.2⟩`. Establish `hOm : ∀ q ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z', B.gq (T v).base q ∈ OmP S T v`. Introduce `q hq`. Establish `h` using `(Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq).2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨h.2, fun a => h.1 _ (by simp)⟩`. Establish `hJ' : J ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v)` using `hJ`. Use `⟨phi_mem_FFl (T v).base hφ (fun g hg => hg.1) hJ', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `ρ`. Use `set u : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ := fun q => ((Real.sqrt (MA.wq S.G.k q.1 (D.parOf S v).TT) : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ q.1.2)) (B.hsVec (J (B.gq (T v).base q.1))) with hu_def`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hu : u ∈ MA.smSub (D.parOf S v).r (D.parOf S v).TT` using `by show ContDiffOn ℝ MA.sm (MA.ext u) (MA.Qset _ _)`. Establish `hg : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => J (B.gq (T v).base x)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(cutTr_jgq_smooth (T v).base _ _ hJ'.1 hOm).mono hQ`. Establish `he' : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => e ρ x.2) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `(he.1 ρ).comp contDiff_snd.contDiffOn fun x hx => hx.2`. Establish `hwc : ContDiff ℝ ∞ (fun x : MA.E (D.parOf S v).r => MA.wq S.G.k x (D.parOf S v).TT)`. Establish `hn` using `cutTr_normSq_contDiff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `MA.wq`. Use `fun_prop`. Establish `hwp : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, MA.wq S.G.k x (D.parOf S v).TT ≠ 0`. Introduce `x hx`. Unfold `MA.wq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_pos (Finset.prod_pos fun l _ => pow_pos (Complex.normSq_pos.2 (hx.1 l)) _) (pow_pos (sub_pos.2 hx.2) _)).ne'`. Establish `hw : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => ((Real.sqrt (MA.wq S.G.k x (D.parOf S v).TT) : ℝ) : ℂ)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hwc.contDiffOn.sqrt hwp)`. Use `(hw.mul ((cutTr_hsVec_contDiff.comp_contDiffOn he').inner ℂ (cutTr_hsVec_contDiff.comp_contDiffOn hg))).congr ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `[MA.ext, hx, hu_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ := fun q => ((φ (MA.Gq (D.parOf S v) q) : ℝ) : ℂ) with hp_def`. Establish `hp : p ∈ MA.smSub (D.parOf S v).r (D.parOf S v).TT` using `by show ContDiffOn ℝ MA.sm (MA.ext p) (MA.Qset _ _)`. Establish `hG : ContDiff ℝ ∞ (fun x : MA.E (D.parOf S v).r => (∏ l, Complex.normSq (x.1 l)) * (Complex.normSq x.2 - (D.parOf S v).TT))`. Establish `hn` using `cutTr_normSq_contDiff`. Use `fun_prop`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hGp : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, (∏ l, Complex.normSq (x.1 l)) * (Complex.normSq x.2 - (D.parOf S v).TT) ∈ Set.Ioi (0 : ℝ)`. Introduce `x hx`. Conclude with `mul_pos (Finset.prod_pos fun l _ => Complex.normSq_pos.2 (hx.1 l)) (sub_pos.2 hx.2)`. Establish `hc : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => ((φ ((∏ l, Complex.normSq (x.1 l)) * (Complex.normSq x.2 - (D.parOf S v).TT)) : ℝ) : ℂ)) (MA.Qset (D.parOf S v).r (D.parOf S v).TT)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn ((smoothLog_contDiffOn hφ).comp hG.contDiffOn hGp)`. Use `hc.congr ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x hx`. Simplify using `[MA.ext, hx, hp_def, MA.Gq]`. Establish `hL : trJ S T v e (mulG S T v φ J) ρ = MA.toSm (D.parOf S v) (fun q => p q * u q)`. Unfold `trJ`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Simplify using `only [mulG, GfP]`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_right, cutTr_Gf_gq (T v).base q.2.1 (hTT ▸ q.2.2)]`. Simplify using `only [hu_def, hp_def, MA.Gq, hTT]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : (trJ S T v e J ρ) = ⟨u, hu⟩`. Unfold `trJ MA.toSm`. Rewrite using `[dif_pos hu]`. Establish `hP : MA.toSm (D.parOf S v) p = ⟨p, hp⟩`. Unfold `MA.toSm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dif_pos hp]`. Rewrite using `[hL, hR, hP]`. Establish `hm : (fun q => p q * u q) ∈ MA.smSub (D.parOf S v).r (D.parOf S v).TT` using `Subalgebra.mul_mem _ hp hu`. Unfold `MA.toSm`. Rewrite using `[dif_pos hm]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem phi_operator_transfer_holds : JAPhiOp := by
   refine ⟨0, ?_⟩

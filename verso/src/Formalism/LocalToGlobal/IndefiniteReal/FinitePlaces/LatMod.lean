@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 theorem jF_tmul (β : Af D.host.F) (y : D.host.E) : jF D (β ⊗ₜ[D.host.F] y) = pairA D.host.F 0 β ⊗ₜ[D.host.F] y := rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by show x.1 * 0 = 0; rw [mul_zero]) rfl`.
+A detailed English derivation is pending.
 -/
 theorem mul_pairA (x : AF D.host.F) (α : Af D.host.F) :
     x * pairA D.host.F 0 α = pairA D.host.F 0 (sndA D.host.F x * α) :=
@@ -39,7 +39,7 @@ theorem finPart_tmul (x : AF D.host.F) (z : D.host.E) : finPart D (x ⊗ₜ[D.ho
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => rw [zero_mul, map_zero, zero_mul, map_zero, zero_mul]`. Consider the case `tmul x z`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_pairA, finPart_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, jF_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Consider the case `add x y hx hy => rw [add_mul, hx, hy, map_add, add_mul, map_add, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem mul_gen (a : AE D) (α : Af D.host.F) (m : D.host.E) :
     a * (pairA D.host.F 0 α ⊗ₜ[D.host.F] m) =
@@ -52,7 +52,7 @@ theorem mul_gen (a : AE D) (α : Af D.host.F) (m : D.host.E) :
   | add x y hx hy => rw [add_mul, hx, hy, map_add, add_mul, map_add, add_mul]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨α, hα, fun _ h => absurd trivial h, c, hc, s, hs, t, ht, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) {α : Af D.host.F} (hα : α ∈ intAf D.host.F)
@@ -64,17 +64,17 @@ theorem gen_mem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨β, hβ, y, rfl⟩` from `hx`. Establish `hyc : (y : D.host.E) * c ∈ D.host.AA`. Use `Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) y hc` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Establish `hm : (Matrix.of fun i j => jF D (β ⊗ₜ[D.host.F] (y : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j)) : WO S T) = Matrix.of fun i j => pairA D.host.F 0 β ⊗ₜ[D.host.F] ((y : D.host.E) * c * t i * ∑ k, star (s k) * S.gram k j)`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, jF_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_assoc, mul_assoc, mul_assoc]`. Rewrite using `[hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gen_mem S T ΛS ΛT hβ hyc hs ht`. Consider the case `zero`. Establish `hm : (Matrix.of fun i j => jF D 0 * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j)) : WO S T) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, map_zero, zero_mul]`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hm]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `hm : (Matrix.of fun i j => jF D (x + y) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j)) : WO S T) = (Matrix.of fun i j => jF D x * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j))) + (Matrix.of fun i j => jF D y * ((1 : AF D.ho …`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.of_apply, Matrix.of_apply, Matrix.of_apply, map_add, add_mul]`. Rewrite using `[hm]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (Matrix.of fun i j => jF D (-x) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j)) : WO S T) = -(Matrix.of fun i j => jF D x * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j)))`. Use extensionality with `i j`. Rewrite using `[Matrix.neg_apply, Matrix.of_apply, Matrix.of_apply, map_neg, neg_mul]`. Rewrite using `[hm]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jF_gen_mem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) {z : Af D.host.F ⊗[D.host.F] D.host.E} (hz : z ∈ intAE D)
@@ -118,11 +118,11 @@ theorem jF_gen_mem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank �
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, -, c, hc, s, hs, t, ht, rfl⟩` from `hx`. Establish `hz : finPart D a * (α ⊗ₜ[D.host.F] (1 : D.host.E)) ∈ intAE D` using `intAE_mul ha (AddSubgroup.subset_closure ⟨α, hα, 1, by simp⟩)`. Establish `hm : a • (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j) : WO S T) = Matrix.of fun i j => jF D (finPart D a * (α ⊗ₜ[D.host.F] (1 : D.host.E))) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * S.gram k j))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.of_apply, Matrix.of_apply, smul_eq_mul, mul_gen]`. Rewrite using `[hm]`. Conclude with `jF_gen_mem S T ΛS ΛT hz hc hs ht`. Consider the case `zero => rw [smul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem latO_smul_mem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) {a : AE D} (ha : finPart D a ∈ intAE D) {u : WO S T}

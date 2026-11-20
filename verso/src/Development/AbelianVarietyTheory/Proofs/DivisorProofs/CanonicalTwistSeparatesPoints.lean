@@ -24,9 +24,9 @@ namespace GlobalTheory.NadelSep
 open GlobalTheory.Discrepancy GlobalTheory.Cartier GlobalTheory.QCoh
 
 /- English proof (translation)
-Use `h.isIntegral` as an intermediate fact. Establish `hc (U : S.Y.Opens) (hU : IsAffineOpen U) (hne : (U : Set S.Y).Nonempty) : topologicalKrullDim (U : Set S.Y) = S.D`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec]`. Conclude with `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(S.Y, U))).trans (SmoothDim.ringKrullDim_affineOpen ℂ _ S.str _ h.smooth U hU hne)`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 S.Y.isBasis_affineOpens (TopologicalSpace.Opens.mem_top x)`. Conclude with `⟨U, U.isOpen, hx, (hc U hU ⟨x, hx⟩).le⟩`. Take `⟨U, hU, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 S.Y.isBasis_affineOpens (TopologicalSpace.Opens.mem_top (genericPoint S.Y))`. Conclude with `(hc U hU ⟨_, hx⟩).ge.trans (topologicalKrullDim_subspace_le _ _)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq (S : LinSys ℂ) (h : S.IsVariety) : topologicalKrullDim S.Y = S.D := by
   have := h.isIntegral

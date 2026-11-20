@@ -29,13 +29,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Establish `hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _)` using `Y.m0.cart.1`. Establish `hq : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j` using `Y.m.cart.1`. Establish `ht : t.left ≫ Y.t.G.hom = (spMap (algebraMap A (DualNumber A)) ≫ f) ≫ Y.j`. Rewrite using `[Category.assoc]`. Conclude with `Over.w t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `u` to `hq.lift _ _ ht`. Establish `hu : u ≫ Y.oF.t.G.hom = spMap (algebraMap A (DualNumber A)) ≫ f` using `hq.lift_snd _ _ ht`. Use `⟨Over.homMk (u ≫ Y.m0.toSABMap.φ) ?_, fun χ v v' hv hv' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(u ≫ Y.m0.toSABMap.φ) ≫ Xo.univ.t.G.hom = spMap (algebraMap A (DualNumber A)) ≫ f ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, hp.w, ← Category.assoc, hu, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨spMap (dualMap χ) ≫ u, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hu, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `spec_dual_alg χ`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hv', Category.assoc]`. Use `congr 1`. Conclude with `hq.lift_fst _ _ ht`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_lift_vec (Y : Model Xo c β) {A : Type} [CommRing A] (f : Sp A ⟶ Xo.XF c)
     (t : epsAt (f ≫ Y.j) ⟶ Y.t.G) :
@@ -61,11 +61,9 @@ theorem exists_lift_vec (Y : Model Xo c β) {A : Type} [CommRing A] (f : Sp A �
     exact hq.lift_fst _ _ ht
 
 /- English proof (translation)
-Use `haveI : Smooth Y.t.G.hom := Y.t.semi.smooth`. Take `⟨EC, _, _, N, ρ, hρ, hD⟩` from `GlobalTheory.T.exists_action_complex_point E H D l Xo c O β Y y`. Establish `hex : ∀ i, ∃ w, N.pt w = v' i` using `fun i => N.onto _ (hval i).isTanAt`. Use `choose w hw using hex`. Take `⟨g, b, hb, S, hS⟩` from `h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval' : ∀ i, Z.M.ValAt (y ≫ Y.j) (e i) (N.pt (w i))` using `fun i => by rw [hw]; exact hval i`. Use `hD _ n v w hL (fun i => by rw [hw]; exact hsame i) ?_ fun i => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.lattice_frame_specializes Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) Z.V Z.M ℂ (y ≫ Y.j) h EC N g n b S e (Z.eig τ) w Z.gen hb hS hf hval'`. Establish `hmem : e i ∈ Z.eig τ ⟨centre (y ≫ Y.j), h⟩`. Rewrite using `[hf.2]`.
-
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `GlobalTheory.T.eigenvector_complex_point E H D l Xo c O β Y U Z σ y EC N ρ (tauIn c τ) (e i) (w i) hO hy hρ hmem.2 (hval' i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEigFrame_of_values {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) (σ : c.F →+* ℂ)
     (y : Sp ℂ ⟶ Xo.XF c) (τ : E →+* ℂ) (n : ℕ) (e : Fin n → Z.V) (v : Vecs y n)
@@ -92,9 +90,9 @@ theorem isEigFrame_of_values {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOve
     exact GlobalTheory.T.eigenvector_complex_point E H D l Xo c O β Y U Z σ y EC N ρ (tauIn c τ) (e i) (w i) hO hy hρ hmem.2 (hval' i)
 
 /- English proof (translation)
-Establish `h1 : spMap ((Scheme.stalkClosedPointTo z).hom.comp ψ) ≫ x = spMap f ≫ x`. Establish `e1 : spMap ((Scheme.stalkClosedPointTo z).hom.comp ψ) = spMap (Scheme.stalkClosedPointTo z).hom ≫ spMap ψ`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, Category.assoc, hψ, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `spec_centre z`. Conclude with `congrArg (fun g => g.hom) (Spec.map_injective ((cancel_mono x).1 h1))`.
+A detailed English derivation is pending.
 -/
 theorem ring_eq {X : Scheme.{0}} {R : Type} [CommRing R] (x : Sp R ⟶ X) [Mono x] (z : Sp ℂ ⟶ X)
     (ψ : R →+* X.presheaf.stalk (centre z)) (hψ : spMap ψ ≫ x = X.fromSpecStalk (centre z)) (f : R →+* ℂ)
@@ -108,17 +106,15 @@ theorem ring_eq {X : Scheme.{0}} {R : Type} [CommRing R] (x : Sp R ⟶ X) [Mono 
   exact congrArg (fun g => g.hom) (Spec.map_injective ((cancel_mono x).1 h1))
 
 /- English proof (translation)
-Establish `hs : under y ≫ Xo.s = spMap (σ.comp (IntermediateField.inclusion c.le).toRingHom)`. Express the relevant statement in the definitionally equal form `(y ≫ pullback.fst _ _) ≫ Xo.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hdet` using `(Xo.univ.geom ℂ (under y) _ hs).1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : tauIn c τ H.rt = IntermediateField.inclusion c.le (baseKA l).ρ` using `Subtype.ext hτ`. Establish `e2 : tauIn c (ComplexEmbedding.conjugate τ) H.rt = -IntermediateField.inclusion c.le (baseKA l).ρ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show starRingEnd ℂ (τ (H.rt : E)) = - H.rt0`. Rewrite using `[hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.CompanionTheory.Ar.EigRank.rt0_conj_neg_ne_zero H.d_prime.pos H.sqrt_neg_disc_sq`. Use `⟨(hdet _).1 ?_, (hdet _).2 ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, e1]`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, e2, map_neg]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h0 : σ (IntermediateField.inclusion c.le (baseKA l).ρ) = 0`. Establish `h2 : (2 : ℂ) * σ (IntermediateField.inclusion c.le (baseKA l).ρ) = 0`. Establish `: -σ (IntermediateField.inclusion c.le (baseKA l).ρ) = σ (IntermediateField.inclusion c.le (baseKA l).ρ)` using `h`. Take the linear combination `-this`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`. Establish `h1 : ((baseKA l).ρ : ℂ) = 0`. Use `(map_eq_zero σ).1 h0` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `h3 : (H.rt0 : ℂ) = 0` using `h1`.
-
-Establish `h4` using `H.sqrt_neg_disc_sq`. Rewrite `h4` using `[h3]`. Establish `h5 : ((H.d : ℕ) : ℂ) = 0` using `by simpa using h4.symm`. Conclude with `H.d_prime.ne_zero (Nat.cast_eq_zero.mp h5)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lieMult_at (y : Sp ℂ ⟶ Xo.XF c) (σ : c.F →+* ℂ) (τ : E →+* ℂ) (hy : y ≫ pullback.snd _ _ = spMap σ)
     (hτ : τ (H.rt : E) = H.rt0) :
@@ -156,37 +152,31 @@ theorem lieMult_at (y : Sp ℂ ⟶ Xo.XF c) (σ : c.F →+* ℂ) (τ : E →+* �
     exact H.d_prime.ne_zero (Nat.cast_eq_zero.mp h5)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U Z τ σ y₀ hO hτ hy₀ hr₀`. Take `⟨hv1, hv2, h3, -⟩` from `GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hO hτ`. Use `haveI : Smooth Y.t.G.hom := Y.t.semi.smooth`. Establish `hsp : ∀ y : Sp ℂ ⟶ Xo.XF c, Set.range y ⊆ U → genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)` using `fun y hy => by`. Establish `h1 : genPt Z.ξ₀ ⤳ y (IsLocalRing.closedPoint ℂ)` using `(Z.closure _).1 (hy ⟨_, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h1.map Y.j.continuous`. Simplify using `only [genPt, centre, Scheme.Hom.comp_apply]`. Conclude with `h2`. Establish `hfib : ∀ (y : Sp ℂ ⟶ Xo.XF c) (h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)), (⟨centre (y ≫ Y.j), h⟩ : Cpt (Z.ξ₀ ≫ Y.j)) ∈ Z.genFib` using `fun y h => ⟨Y.jQ (y (IsLocalRing.closedPoint ℂ)), by`. Simplify using `only [Model.j, centre, Scheme.Hom.comp_apply]⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `p₀ : Cpt (Z.ξ₀ ≫ Y.j)` to `⟨centre (y₀ ≫ Y.j), hsp y₀ hr₀⟩`. Take `⟨N₁, hp₁, c₁, hs₁, hf₁⟩` from `hv1 p₀ (hfib y₀ _)`. Take `⟨N₂, hp₂, c₂, hs₂, hf₂⟩` from `hv2 p₀ (hfib y₀ _)`. Establish `hc₁ : ∀ i, c₁ i ∈ Z.M.lat p₀` using `fun i => by`. Establish `: c₁ i ∈ Z.eig τ p₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hf₁ p₀ (hfib y₀ _) hp₁).2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `this.1`. Establish `hc₂ : ∀ i, c₂ i ∈ Z.M.lat p₀` using `fun i => by`. Establish `: c₂ i ∈ Z.eig (ComplexEmbedding.conjugate τ) p₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[(hf₂ p₀ (hfib y₀ _) hp₂).2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `this.1`. Take `⟨R, _, x, _, F, _, _, MR, e, hpx, hxN, hext⟩` from `GlobalTheory.T.local_lie_model_extends Y.X Y.t.G Z.Ω (Z.ξ₀ ≫ Y.j) Z.V Z.M p₀ (N₁ ⊓ N₂) (Fin D.p ⊕ Fin D.q) (Sum.elim c₁ c₂) ⟨hp₁, hp₂⟩ (by rintro (i | i); exacts [hc₁ i, hc₂ i])`. Set `W : (Xo.XF c).Opens` to `Y.j ⁻¹ᵁ x.opensRange`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : y₀ (IsLocalRing.closedPoint ℂ) ∈ W`. Express the relevant statement in the definitionally equal form `Y.j (y₀ (IsLocalRing.closedPoint ℂ)) ∈ x.opensRange`. Establish `: centre (y₀ ≫ Y.j) ∈ x.opensRange` using `hpx`. Simplify `this` using `only [centre, Scheme.Hom.comp_apply]`. Take `⟨_, ⟨V₀, hV₀, rfl⟩, hyV, hVW⟩` from `(Xo.XF c).isBasis_affineOpens.exists_subset_of_mem_open hW W.isOpen`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `replace hV₀ : IsAffineOpen V₀ := hV₀`. Establish `hrange : Set.range (hV₀.fromSpec ≫ Y.j) ⊆ Set.range x`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `h1 : hV₀.fromSpec t ∈ V₀`. Establish `: hV₀.fromSpec t ∈ Set.range hV₀.fromSpec` using `⟨t, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hV₀.range_fromSpec]`. Then use the resulting hypothesis. Conclude with `hVW h1`. Take `⟨a, ha⟩ : ∃ a : R →+* Γ(Xo.XF c, V₀), spMap a ≫ x = hV₀.fromSpec ≫ Y.j` from `⟨(Spec.preimage (IsOpenImmersion.lift x (hV₀.fromSpec ≫ Y.j) hrange)).hom, by`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (Spec.preimage (IsOpenImmersion.lift x _ hrange)).hom) ≫ x = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, IsOpenImmersion.lift_fac]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `t : Fin D.p ⊕ Fin D.q → (epsAt (hV₀.fromSpec ≫ Y.j) ⟶ Y.t.G)` to `fun i => epsBase a ha ≫ MR.pt (e i)`. Use `choose vR hvR using fun i => exists_lift_vec Y hV₀.fromSpec (t i)`. Use `⟨V₀, hV₀, c₁, c₂, fun i => vR (Sum.inl i), fun i => vR (Sum.inr i), ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of ℂ) y₀ hyV).ge`. Conclude with `(hf₁ p₀ (hfib y₀ _) hp₁).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hs₁`. Conclude with `(hf₂ p₀ (hfib y₀ _) hp₂).1`. Conclude with `hs₂`. Introduce `χ v w hσ hr hv hw`. Set `y : Sp ℂ ⟶ Xo.XF c` to `spMap χ ≫ hV₀.fromSpec`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h` using `hsp y hr`. Set `q : Cpt (Z.ξ₀ ≫ Y.j)` to `⟨centre (y ≫ Y.j), h⟩`. Establish `hqr : q.1 ∈ x.opensRange` using `hrange ⟨spMap χ (IsLocalRing.closedPoint ℂ), rfl⟩`. Establish `hqx : (Y.X.fromSpecStalk q.1) (IsLocalRing.closedPoint (Y.X.presheaf.stalk q.1)) ∈ x.opensRange`. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hqr`. Take `⟨ψ, hψ⟩` from `exists_lift (A := Y.X.presheaf.stalk q.1) x (Y.X.fromSpecStalk q.1) hqx`. Establish `hring : (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom.comp ψ = χ.comp a`. Use `ring_eq x (y ≫ Y.j) ψ hψ _ ?_` and prove the remaining obligations. Establish `e2 : spMap (χ.comp a) = spMap χ ≫ spMap a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e2, Category.assoc, ha, ← Category.assoc]`. Establish `hχ : spMap χ ≫ hV₀.fromSpec ≫ Y.j = y ≫ Y.j` using `(Category.assoc _ _ _).symm`. Set `T : Fin D.p ⊕ Fin D.q → (epsAt (y ≫ Y.j) ⟶ Y.t.G)` to `fun i => epsBase χ hχ ≫ t i`.
-
-Establish `hval : ∀ i, Z.M.ValAt (y ≫ Y.j) (Sum.elim c₁ c₂ i) (T i)` using `fun i => by`. Set `vq : epsAt (R` to `Y.X.presheaf.stalk q.1) (Y.X.fromSpecStalk q.1) ⟶ Y.t.G := epsBase ψ hψ ≫ MR.pt (e i)`. Use `⟨h, vq, hext q ψ hψ i vq rfl, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (dualMap χ) ≫ spMap (dualMap a) ≫ (MR.pt (e i)).left = spMap (dualMap (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom) ≫ spMap (dualMap ψ) ≫ (MR.pt (e i)).left`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_dual_comp, spMap_dual_comp, hring]`.
-
-Take `⟨hL₁, hL₂⟩` from `lieMult_at y σ τ hσ hτ`. Take `⟨g, b, hb, hS⟩` from `h3 q (hfib y h)`. Establish `hin : q.1 ∈ N₁ ⊓ N₂` using `hxN hqr`. Establish `same : ∀ (i : Fin D.p ⊕ Fin D.q) (u : epsAt (under y) ⟶ Xo.univ.t.G), u.left = spMap (dualMap χ) ≫ (vR i).left → SameVec Y y u (T i)` using `fun i u hu => hvR i χ u (T i) hu rfl`. Use `⟨⟨hσ, hr, ?_, ?_⟩, fun i => ⟨T (Sum.inl i), hval (Sum.inl i), same _ _ (hv i)⟩, fun i => ⟨T (Sum.inr i), hval (Sum.inr i), same _ _ (hw i)⟩⟩` and prove the remaining obligations.
-
-Conclude with `isEigFrame_of_values Z σ y τ D.p c₁ v (fun i => T (Sum.inl i)) h hO.2.2 hσ hL₁ ⟨g, b, hb, hS τ⟩ (hf₁ q (hfib y h) hin.1) (fun i => hval (Sum.inl i)) (fun i => same _ _ (hv i))`. Conclude with `isEigFrame_of_values Z σ y _ D.q c₂ w (fun i => T (Sum.inr i)) h hO.2.2 hσ hL₂ ⟨g, b, hb, hS _⟩ (hf₂ q (hfib y h) hin.2) (fun i => hval (Sum.inr i)) (fun i => same _ _ (hw i))`.
+A detailed English derivation is pending.
 -/
 theorem exists_local_eigenframes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (y₀ : Sp ℂ ⟶ Xo.XF c), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → τ (H.rt : E) = H.rt0 → y₀ ≫ pullback.snd _ _ = spMap σ → Set.range y₀ ⊆ U → ∃ (V₀ : (Xo.XF c).Opens) (hV₀ : IsAffineOpen V₀) (c₁ : Fin D.p → Z.V) (c₂ : Fin D.q → Z.V) (vR : Fin D.p → (epsAt (under hV₀.fromSpec) ⟶ Xo.univ.t.G)) (wR : Fin D.q → (epsAt (under hV₀.fromSpec) ⟶ Xo.univ.t.G)), ⊤ ≤ y₀ ⁻¹ᵁ V₀ ∧ LinearIndependent Z.Ω c₁ ∧ Submodule.span Z.Ω (Set.range c₁) = eigSp Z.ρ (Z.inc.comp (tauIn c τ)) ∧ LinearIndependent Z.Ω c₂ ∧ Submodule.span Z.Ω (Set.range c₂) = eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ))) ∧ ∀ (χ : Γ(Xo.XF c, V₀) →+* ℂ) (v : Vecs (spMap χ ≫ hV₀.fromSpec) D.p) (w : Vecs (spMap χ ≫ hV₀.fromSpec) D.q), (spMap χ ≫ hV₀.fromSpec) ≫ pullback.snd _ _ = spMap σ → Set.range (spMap χ ≫ hV₀.fromSpec) ⊆ U → (∀ a, (v a).left = spMap (dualMap χ) ≫ (vR a).left) → (∀ j, (w j).left = spMap (dualMap χ) ≫ (wR j).left) → IsFramed U τ σ (spMap χ ≫ hV₀.fromSpec) v w ∧ (∀ i, ∃ v', Z.M.ValAt ((spMap χ ≫ hV₀.fromSpec) ≫ Y.j) (c₁ i) v' ∧ SameVec Y (spMap χ ≫ hV₀.fromSpec) (v i) v') ∧ ∀ j, ∃ w', Z.M.ValAt ((spMap χ ≫ hV₀.fromSpec) ≫ Y.j) (c₂ j) w' ∧ SameVec Y (spMap χ ≫ hV₀.fromSpec) (w j) w' := by
   intro E _ _ _ H D l Xo c O _ β Y U Z τ σ y₀ hO hτ hy₀ hr₀

@@ -34,13 +34,13 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p hPar hPage`. Establish `hG : GlobalTheory.RunIn.GamAt T.toCore` using `GlobalTheory.RunIn.gamAt_of_lawsCore D T.toCore h.toLawsCore`. Take `⟨hA, hB, -, -⟩` from `GlobalTheory.RunWeights.weights_below D _ _ j (recPJ h j hj) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hj.1 hPage.hyp`. Establish `key : ∀ u : WeightFamilies.Wt D j, 8 * D.R.f * D.R.r + 4 ≤ u.n → u.LastPos → GlobalTheory.Shares.RdOnto h j u` using `fun u hn hl => GlobalTheory.T.cuspForm_families_complex_combination_of_readings GlobalTheory.T.harmonic_germ_value_chart_independent D T h j hj hPar.sh hG hPar.bad hPar.same u hn (ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj u hl)`. Use `⟨fun k => key _ ?_ ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hB wF (by simp)`. Establish `e : (addL wF wL k).n = wF.n + k * wL.n` using `rfl`. Use linear arithmetic over natural numbers and integers. Introduce `τ i hi`. Establish `h1` using `(hA wF (by simp)).2.2.2 τ i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (addL wF wL k).aP τ i = wF.aP τ i + k * wL.aP τ i` using `rfl`. Use linear arithmetic over natural numbers and integers. Use `GlobalTheory.T.vanishing_low_coefficient_readings_span_models D T h j hj ka 7 Tn _ (fun hlt => ?_) (key ka (hB ka (by simp)) (hA ka (by simp)).2.2.2)` and prove the remaining obligations. Take `⟨t1, t2, t3, t4, t5, t6⟩` from `hPage.tie`. Establish `ht : TieC ⟨1, 2, 1, 2, 1, 2, 1, 4, 7⟩ H 1 4 0 11 C2 A2 7` using `⟨t1, t2, t3, t4, t5, rfl, rfl, t6, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hc, -, -, -, -, h2, h11⟩` from `GlobalTheory.ExtraWeight.numbers D _ _ j (recPJ h j hj) _ _ _ _ _ large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hPage.hyp ht hPage.page hlt hj.1 (le_trans (by norm_num) hPage.df)`. Establish `hT : 0 < Tn` using `by nlinarith`. Conclude with `GlobalTheory.T.cmFamilyFunctionals_detect_lowCoefficients GlobalTheory.T.arithmeticCMKnownTheorems_proof D T.toCore h.toLawsCore j ka 7 Tn _ hG hj hlt (le_trans (by norm_num) hPage.r8) (by exact_mod_cast hT) hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem onto_of_page : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (EX : ErrX D) (p : ℕ), ParOK T EX p j → PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → (∀ k : ℕ, GlobalTheory.Shares.RdOnto h j (addL wF wL k)) ∧ GlobalTheory.Shares.MggOnto h j 7 Tn (cc D large₂ C2 A2 7 wL) ka := by
   intro D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p hPar hPage

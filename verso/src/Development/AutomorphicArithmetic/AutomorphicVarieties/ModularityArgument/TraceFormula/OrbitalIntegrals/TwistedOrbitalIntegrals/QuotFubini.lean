@@ -3,23 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory PositivityTheory.Rg.Tf.Loc
 
 /- English proof (translation)
-Introduce `hM G _ _ _ _ _ _ _ _ μG hμG H hH μ hμ hinv F hF hFH hsupp`. Take `⟨Y, C, hY, hC, hsupp⟩` from `hsupp`. Distinguish the cases in `hex : ∃ ρ, IsQuotNormaliser H μ ρ`. Use `swap`. Simplify using `only [quotIntegral, dif_neg hex, integral_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [quotIntegral, dif_pos hex]`. Establish `hρ` using `hex.choose_spec`. Generalize the expression as in `hex.choose = ρ at hρ ⊢`. Take `⟨hS, hfin⟩` from `(hM G μG hμG H hH μ hμ hinv ρ hρ).2 C hC`. Use `set S : Set G := {g | ∃ h ∈ H, ∃ c ∈ C, g = h * c} with hSdef`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hMb⟩` from `(hY.prod hC).exists_bound_of_continuousOn hF.continuousOn`. Establish `h1 : Integrable (S.indicator fun g => (ρ g).toReal) μG`. Rewrite using `[integrable_indicator_iff hS.measurableSet]`. Conclude with `integrable_toReal_of_lintegral_ne_top hρ.1.aemeasurable hfin`. Establish `h2 : Integrable (Y.indicator fun _ => M) μG`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integrable_indicator_iff hY.isClosed.measurableSet]`. Conclude with `integrableOn_const hY.measure_lt_top.ne`. Establish `hint : Integrable (Function.uncurry fun g y => F y g * ((ρ g).toReal : ℂ)) (μG.prod μG)`. Use `(h1.mul_prod h2).mono' ?_ (Filter.Eventually.of_forall ?_)` and prove the remaining obligations. Establish `a1 : Measurable fun p : G × G => F p.2 p.1` using `(hF.comp continuous_swap).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : Measurable fun p : G × G => ((ρ p.1).toReal : ℂ)` using `Complex.measurable_ofReal.comp ((hρ.1.comp measurable_fst).ennreal_toReal)`. Conclude with `(a1.mul a2).aestronglyMeasurable`. Introduce and unpack `⟨g, y⟩ show ‖F y g * ((ρ g).toReal : ℂ)‖ ≤ S.indicator (fun g => (ρ g).toReal) g * Y.indicator (fun _ => M) y`. Distinguish the cases in `h0 : F y g = 0`. Rewrite using `[h0, zero_mul, norm_zero]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hg : g ∈ S`. Distinguish the cases in `hy : y ∈ Y`. Take `⟨h, -, c, hc, -⟩` from `hg`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hMb (y, c) ⟨hy, hc⟩)`. Conclude with `mul_nonneg (Set.indicator_nonneg (fun _ _ => ENNReal.toReal_nonneg) _) (Set.indicator_nonneg (fun _ _ => hM0) _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.indicator_of_notMem hy, mul_zero]`. Rewrite using `[Set.indicator_of_notMem hg, zero_mul]`. Take `⟨hy, hg⟩` from `hsupp y g h0`. Establish `hg' : g ∈ S` using `hg`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hg', norm_mul, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg, mul_comm]`.
-
-Take `⟨h, hh, c, hc, rfl⟩` from `hg`. Use `mul_le_mul_of_nonneg_left ?_ ENNReal.toReal_nonneg` and prove the remaining obligations. Rewrite using `[hFH y h hh c]`. Conclude with `hMb (y, c) ⟨hy, hc⟩`. Rewrite using `[← integral_integral_swap hint]`.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `(integral_mul_const _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.quotFubini :
     UpperTheory.V.Z.Tf.Orb.QuotMass → UpperTheory.V.Z.Tf.Orb.QuotFubini := by

@@ -10,7 +10,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 namespace UpperTheory.Gal.Mod.BaseChangeExamples
 
 /- English proof (translation)
-Use `(h.isUnit).map ((q.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_nat {k : Type} [Field k] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of k)) (m : ℕ)
     (h : (m : k) ≠ 0) : IsUnit (m : Γ(X, ⊤)) := by
@@ -18,7 +18,7 @@ private theorem isUnit_nat {k : Type} [Field k] {X : Scheme.{0}} (q : X ⟶ Spec
   simpa using this
 
 /- English proof (translation)
-Establish `h` using `TranscendenceTraces.multBasic_holds.2.2 p`. Rewrite using `[← h]`. Conclude with `TranscendenceTraces.wtFlat_holds p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isWt_one {Z S : Scheme.{0}} (p : Z ⟶ S) [IsFinite p] [Etale p] : TranscendenceTraces.IsWt p (Wt.const Z 1) := by
   have h := TranscendenceTraces.multBasic_holds.2.2 p
@@ -26,22 +26,20 @@ private theorem isWt_one {Z S : Scheme.{0}} (p : Z ⟶ S) [IsFinite p] [Etale p]
   exact TranscendenceTraces.wtFlat_holds p
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Etale) h ‹_›`.
+A detailed English derivation is pending.
 -/
 private theorem et_of_pb {A B C D : Scheme.{0}} {u : A ⟶ B} {s : A ⟶ C} {p : B ⟶ D} {e : C ⟶ D}
     (h : IsPullback u s p e) [Etale p] : Etale s :=
   MorphismProperty.of_isPullback (P := @Etale) h ‹_›
 
 /- English proof (translation)
-Establish `hr : Set.range e ⊆ Set.range (D.basicOpen f).ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ e ⁻¹ᵁ D.basicOpen f`. Rewrite using `[Scheme.preimage_basicOpen]`. Establish `: C.basicOpen ((e.app ⊤).hom f) = ⊤` using `Scheme.basicOpen_of_isUnit _ hf`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hx`. Set `e' : C ⟶ (D.basicOpen f).toScheme` to `IsOpenImmersion.lift _ e hr`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he' : e' ≫ (D.basicOpen f).ι = e` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hq` using `isPullback_morphismRestrict p (D.basicOpen f)`. Establish `hw : (s ≫ e') ≫ (D.basicOpen f).ι = u ≫ p`. Rewrite using `[Category.assoc, he', h.w]`. Set `t` to `hq.lift (s ≫ e') u hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ht1 : t ≫ (p ∣_ D.basicOpen f) = s ≫ e'` using `hq.lift_fst _ _ _`. Establish `ht2 : t ≫ (p ⁻¹ᵁ D.basicOpen f).ι = u` using `hq.lift_snd _ _ _`. Establish `hpb : IsPullback t s (p ∣_ D.basicOpen f) e'`. Use `IsPullback.of_right (h₁₂ := (p ⁻¹ᵁ D.basicOpen f).ι) (h₂₂ := (D.basicOpen f).ι) (v₁₃ := p) ?_ ht1 hq.flip` and prove the remaining obligations. Rewrite using `[ht2, he']`.
-
-Conclude with `h`. Conclude with `et_of_pb hpb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem et_of_restrict {A B C D : Scheme.{0}} {u : A ⟶ B} {s : A ⟶ C} {p : B ⟶ D} {e : C ⟶ D}
     (h : IsPullback u s p e) (f : Γ(D, ⊤)) (hf : IsUnit (e.appTop f)) (he : Etale (p ∣_ D.basicOpen f)) : Etale s := by
@@ -71,15 +69,15 @@ end UpperTheory.Gal.Mod.BaseChangeExamples
 
 open UpperTheory.Gal.Mod.BaseChangeExamples in
 /- English proof (translation)
-Introduce `p O k Ω _ _ _ _ _ hp Y g T hg`. Set `q` to `pullback.snd g (sp (algebraMap O k))`. Set `s : geom Ω q ⟶ Y` to `pullback.fst _ _ ≫ pullback.fst _ _`. Establish `h : IsPullback (pullback.fst T.p s) (pullback.snd T.p s) T.p s` using `IsPullback.of_hasPullback T.p s`. Establish `hfin : IsFinite (pullback.snd T.p s)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `T.fin` as an intermediate fact. Use `infer_instance`. Establish `het : Etale (pullback.snd T.p s)` using `et_of_restrict h (p : Γ(Y, ⊤)) (by simpa using isUnit_nat (pullback.fst q (sp (algebraMap k Ω)) ≫ q) p hp) T.et`. Establish `c1 : (pullback.fst T.p s ≫ T.r) ≫ g = (pullback.snd T.p s ≫ pullback.fst q (sp (algebraMap k Ω)) ≫ q) ≫ sp (algebraMap O k)`. Establish `e1 : pullback.fst T.p s ≫ T.p = pullback.snd T.p s ≫ s` using `h.w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : pullback.fst g (sp (algebraMap O k)) ≫ g = q ≫ sp (algebraMap O k)` using `pullback.condition`. Rewrite using `[Category.assoc, hg, reassoc_of% e1]`. Simplify using `only [s, Category.assoc, e2]`. Set `a : pullback T.p s ⟶ pullback g (sp (algebraMap O k))` to `pullback.lift (pullback.fst T.p s ≫ T.r) (pullback.snd T.p s ≫ pullback.fst q (sp (algebraMap k Ω)) ≫ q) c1`. Establish `ha1 : a ≫ pullback.fst g (sp (algebraMap O k)) = pullback.fst T.p s ≫ T.r` using `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha2 : a ≫ q = pullback.snd T.p s ≫ pullback.fst q (sp (algebraMap k Ω)) ≫ q` using `pullback.lift_snd _ _ _`. Establish `c2 : a ≫ q = (pullback.snd T.p s ≫ pullback.snd q (sp (algebraMap k Ω))) ≫ sp (algebraMap k Ω)`. Establish `e3 : pullback.fst q (sp (algebraMap k Ω)) ≫ q = pullback.snd q (sp (algebraMap k Ω)) ≫ sp (algebraMap k Ω)` using `pullback.condition`. Rewrite using `[ha2, e3, Category.assoc]`. Set `b : pullback T.p s ⟶ geom Ω q` to `pullback.lift a (pullback.snd T.p s ≫ pullback.snd q (sp (algebraMap k Ω))) c2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb1 : b ≫ pullback.fst q (sp (algebraMap k Ω)) = a` using `pullback.lift_fst _ _ _`. Establish `hb2 : b ≫ pullback.snd q (sp (algebraMap k Ω)) = pullback.snd T.p s ≫ pullback.snd q (sp (algebraMap k Ω))` using `pullback.lift_snd _ _ _`. Use `⟨⟨pullback T.p s, pullback.snd T.p s, b, Wt.const _ 1, hfin, isWt_one _⟩, pullback.fst T.p s, h, ?_, hb2, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b ≫ pullback.fst q (sp (algebraMap k Ω)) ≫ pullback.fst g (sp (algebraMap O k)) = pullback.fst T.p s ≫ T.r`. Rewrite using `[reassoc_of% hb1, ha1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.bcEx :
     BCEx := by

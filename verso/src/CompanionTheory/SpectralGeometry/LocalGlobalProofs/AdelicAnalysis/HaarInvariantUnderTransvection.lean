@@ -7,9 +7,9 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.CompanionTheory.SW.Transv
 
 /- English proof (translation)
-Establish `h : t.toMatrix = 1 + Matrix.single t.i t.j t.c` using `rfl`. Rewrite using `[h, Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply]`. Distinguish the cases in `hk : k = t.i`. Substitute `hk` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ∀ l, (Matrix.single t.i t.j t.c) k l = 0`. Introduce `l`. Simplify using `[Matrix.single_apply, Ne.symm hk]`. Simplify using `[Matrix.mulVec, dotProduct, this, hk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem toMatrix_mulVec_apply {K ι : Type} [CommRing K] [Fintype ι] [DecidableEq ι]
     (t : Matrix.TransvectionStruct ι K) (x : ι → K) (k : ι) :
@@ -25,17 +25,15 @@ theorem toMatrix_mulVec_apply {K ι : Type} [CommRing K] [Fintype ι] [Decidable
     simp [Matrix.mulVec, dotProduct, this, hk]
 
 /- English proof (translation)
-Establish `hj : t.j ≠ t.i` using `t.hij.symm`. Set `p : ι → Prop` to `fun k => k ≠ t.i`. Set `B : Measure ({k // p k} → K)` to `Measure.pi fun _ => ν`. Set `A : Measure ({k // ¬ p k} → K)` to `Measure.pi fun _ => ν`. Establish `hmp` using `measurePreserving_piEquivPiSubtypeProd (fun _ : ι => ν) p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `MeasurableEquiv.piEquivPiSubtypeProd (fun _ : ι => K) p`. Set `g : ({k // p k} → K) → ({k // ¬ p k} → K) → ({k // ¬ p k} → K)` to `fun b a => (fun _ => t.c * b ⟨t.j, hj⟩) + a`. Establish `hgm : Measurable (Function.uncurry g)`. Use `measurable_pi_iff.2 fun k => ?_` and prove the remaining obligations. Establish `h1 : Measurable fun q : ({k // p k} → K) × ({k // ¬ p k} → K) => q.1 ⟨t.j, hj⟩` using `(measurable_pi_apply _).comp measurable_fst`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Measurable fun q : ({k // p k} → K) × ({k // ¬ p k} → K) => q.2 k` using `(measurable_pi_apply _).comp measurable_snd`. Conclude with `(h1.const_mul t.c).add h2`. Establish `hsk : MeasurePreserving (fun q : ({k // p k} → K) × ({k // ¬ p k} → K) => (id q.1, g q.1 q.2)) (B.prod A) (B.prod A)`. Use `(MeasurePreserving.id B).skew_product hgm (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Conclude with `map_add_left_eq_self A _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall` using `hmp.symm.comp (hsk.comp hmp)`. Establish `hfun : (fun x : ι → K => t.toMatrix *ᵥ x) = (MeasurableEquiv.piEquivPiSubtypeProd (fun _ : ι => K) p).symm ∘ (fun q : ({k // p k} → K) × ({k // ¬ p k} → K) => (id q.1, g q.1 q.2)) ∘ (MeasurableEquiv.piEquivPiSubtypeProd (fun _ : ι => K) p)`. Use function extensionality and compare the values at `x k`. Rewrite using `[toMatrix_mulVec_apply]`. Distinguish the cases in `hk : k = t.i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hk` using the available equality. Establish `hnp : ¬ p t.i` using `fun h => h rfl`. Simplify using `[MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, g, hnp, add_comm]`. Establish `hp : p k` using `hk`. Simplify using `[MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, hp, hk]`.
-
-Rewrite using `[hfun]`. Conclude with `hall`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_pi {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     [SecondCountableTopology K] [MeasurableSpace K] [BorelSpace K]
@@ -80,9 +78,9 @@ theorem measurePreserving_pi {K : Type} [CommRing K] [TopologicalSpace K] [IsTop
   exact hall
 
 /- English proof (translation)
-Set `ν : Measure K` to `Measure.addHaar`. Set `P : Measure (ι → K)` to `Measure.pi fun _ : ι => ν`. Use `haveI : P.IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hμ : μ = Measure.addHaarScalarFactor μ P • P` using `Measure.isAddLeftInvariant_eq_smul μ P`. Establish `hP : P.map (fun x => t.toMatrix *ᵥ x) = P` using `(measurePreserving_pi ν t).map_eq`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Measure.addHaarScalarFactor μ P = c at hμ`. Rewrite using `[hμ, Measure.map_smul, hP]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_toMatrix_mulVec (K : Type) [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     [LocallyCompactSpace K] [SecondCountableTopology K] [T2Space K] [MeasurableSpace K]
@@ -100,7 +98,7 @@ theorem map_toMatrix_mulVec (K : Type) [CommRing K] [TopologicalSpace K] [IsTopo
 end GlobalTheory.CompanionTheory.SW.Transv
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ _ _ _ ι _ _ μ _ t`. Conclude with `GlobalTheory.CompanionTheory.SW.Transv.map_toMatrix_mulVec K ι μ t`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.transvection_map_addHaar : ∀ (K : Type) [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [LocallyCompactSpace K] [SecondCountableTopology K] [T2Space K] [MeasurableSpace K] [BorelSpace K] (ι : Type) [Fintype ι] [DecidableEq ι] (μ : Measure (ι → K)) [μ.IsAddHaarMeasure] (t : Matrix.TransvectionStruct ι K), μ.map (fun x => t.toMatrix *ᵥ x) = μ := by
   intro K _ _ _ _ _ _ _ _ ι _ _ μ _ t

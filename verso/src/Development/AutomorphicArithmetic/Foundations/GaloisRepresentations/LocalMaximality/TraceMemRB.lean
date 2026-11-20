@@ -10,13 +10,13 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   [IsScalarTower ℂ F K'] {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `.of_algebraMap_eq fun r => IsScalarTower.algebraMap_apply F K K' (r : F)`.
+A detailed English derivation is pending.
 -/
 private theorem tower_rA (y : Fin (d + 1) → F) : IsScalarTower (rA ℂ y {0}) K K' :=
   .of_algebraMap_eq fun r => IsScalarTower.algebraMap_apply F K K' (r : F)
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[rB, Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`. Use `haveI := tower_rA (K := K) (K' := K') y`. Conclude with `hb.algebraMap`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_mem_rB (y : Fin (d + 1) → F) {b : K} (hb : b ∈ rB ℂ K y {0}) :
     algebraMap K K' b ∈ rB ℂ K' y {0} := by
@@ -25,7 +25,7 @@ private theorem map_mem_rB (y : Fin (d + 1) → F) {b : K} (hb : b ∈ rB ℂ K 
   exact hb.algebraMap
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[rB, Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`. Use `haveI := tower_rA (K := K) (K' := K') y`. Conclude with `Algebra.isIntegral_trace hv`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_mem_rB (y : Fin (d + 1) → F) [FiniteDimensional K K'] {v : K'}
     (hv : v ∈ rB ℂ K' y {0}) : Algebra.trace K K' v ∈ rB ℂ K y {0} := by
@@ -36,25 +36,23 @@ private theorem trace_mem_rB (y : Fin (d + 1) → F) [FiniteDimensional K K'] {v
 end
 
 /- English proof (translation)
-Introduce `F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 hY`. Use `haveI : FiniteDimensional F K' := hY.covY.fin`. Use `haveI : FiniteDimensional K K' := Module.Finite.of_restrictScalars_finite F K K'`. Establish `hred` using `hY.red`. Unfold `RedFib at hred ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `z hz`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨n, hn⟩` from `hz`. Rewrite `hn` using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_range_iff_exists_fun]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hn`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `set t : Fin d → F := fun j => xv x j.succ / xv x 0 with ht`. Establish `hcK : ∑ j, (c j : K) * algebraMap F K (t j) = (a : K) ^ n`. Use `congrArg (fun u : rB ℂ K (xv x) {0} => (u : K)) hc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `this` using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, SubmonoidClass.coe_pow]`. Set `b : rB ℂ K' (xv x) {0}` to `⟨algebraMap K K' a, map_mem_rB (xv x) a.2⟩`. Establish `hb : b ∈ Ideal.span (Set.range fun j : Fin d => (⟨algebraMap F K' (t j), tco_mem ℂ K' (xv x) j⟩ : rB ℂ K' (xv x) {0}))`. Establish `hq : IsNilpotent (Ideal.Quotient.mk (Ideal.span (Set.range fun j : Fin d => (⟨algebraMap F K' (t j), tco_mem ℂ K' (xv x) j⟩ : rB ℂ K' (xv x) {0}))) b)`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun j => ⟨algebraMap K K' (c j), map_mem_rB (xv x) (c j).2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [b, AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, SubmonoidClass.coe_pow]`. Rewrite using `[← map_pow, ← hcK, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).1 (hred.eq_zero _ hq)`. Rewrite `hb` using `[Ideal.mem_span_range_iff_exists_fun]`. Take `⟨e, he⟩` from `hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (Module.finrank K K' : K) * (a : K) = ∑ j, Algebra.trace K K' (e j : K') * algebraMap F K (t j)`. Establish `h1` using `congrArg (fun u : rB ℂ K' (xv x) {0} => Algebra.trace K K' (u : K')) he`. Simplify using `only [b, AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, map_sum, Algebra.trace_algebraMap, nsmul_eq_mul] at h1`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsScalarTower.algebraMap_apply F K K', mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Establish `hmem : ((Module.finrank K K' : rB ℂ K (xv x) {0}) * a) ∈ Ideal.span (Set.range fun j : Fin d => (⟨algebraMap F K (t j), tco_mem ℂ K (xv x) j⟩ : rB ℂ K (xv x) {0}))`. Rewrite using `[Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun j => ⟨Algebra.trace K K' (e j : K'), trace_mem_rB (xv x) (e j).2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, SubringClass.coe_natCast]`. Conclude with `key.symm`. Establish `hpos : (Module.finrank K K' : ℂ) ≠ 0`. Conclude with `(Module.finrank_pos (R := K) (M := K')).ne'` after adjusting the coercions. Establish `hA : a = algebraMap ℂ (rB ℂ K (xv x) {0}) ((Module.finrank K K' : ℂ)⁻¹) * ((Module.finrank K K' : rB ℂ K (xv x) {0}) * a)`.
-
-Rewrite using `[← mul_assoc, ← map_natCast (algebraMap ℂ (rB ℂ K (xv x) {0})), ← map_mul, inv_mul_cancel₀ hpos, map_one, one_mul]`. Rewrite using `[hA]`. Conclude with `Ideal.mul_mem_left _ _ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.redK_of :
     RedK := by

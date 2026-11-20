@@ -8,9 +8,9 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq, MvPolynomial.eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ m.support, m i = d`. Establish `h` using `hφ (MvPolynomial.mem_support_iff.mp hm)`. Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Repeatedly rewrite using `[Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bwp_eval_smul_of_isHomogeneous {σ : Type*} {φ : MvPolynomial σ ℂ} {d : ℕ}
     (hφ : φ.IsHomogeneous d) (t : ℂ) (z : σ → ℂ) :
@@ -31,7 +31,7 @@ def bwpMat {p : ℕ} (z : Fin p × Fin p → ℂ) : Matrix (Fin p) (Fin p) ℂ :
 def bwpId (p : ℕ) : Fin p × Fin p → ℂ := fun ij => if ij.1 = ij.2 then 1 else 0
 
 /- English proof (translation)
-Use `⟨(Matrix.of fun i j => Polynomial.C (z (i, j)) + Polynomial.C (v (i, j)) * Polynomial.X).det, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, bwpMat, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Polynomial.coe_evalRingHom, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,11 +48,11 @@ theorem bwp_det_line_poly {p : ℕ} (z v : Fin p × Fin p → ℂ) :
   ring
 
 /- English proof (translation)
-Take `⟨Λ, hΛ⟩` from `bwp_det_line_poly z v`. Establish `hΛ0 : Λ ≠ 0`. Introduce `h`. Apply `hz` to reduce the goal to its premises. Establish `h0` using `hΛ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h0` using `[h, Polynomial.eval_zero]`. Simplify using `using h0.symm`. Use `(bwp_finite_eval_eq_zero hΛ0).subset fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at ht ⊢`. Rewrite using `[hΛ]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem bwp_finite_det_line {p : ℕ} (z v : Fin p × Fin p → ℂ) (hz : (bwpMat z).det ≠ 0) :
     {t : ℂ | (bwpMat (z + t • v)).det = 0}.Finite := by
@@ -69,11 +69,11 @@ theorem bwp_finite_det_line {p : ℕ} (z v : Fin p × Fin p → ℂ) (hz : (bwpM
   exact ht
 
 /- English proof (translation)
-Establish `hne : (-bwpMat z).charpoly ≠ 0` using `(Matrix.charpoly_monic _).ne_zero`. Use `(bwp_finite_eval_eq_zero hne).subset fun s hs => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hs ⊢`. Rewrite using `[Matrix.charpoly, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `hs using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Matrix.charmatrix_apply, bwpMat, bwpId, Matrix.diagonal_apply]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[Matrix.charmatrix_apply, bwpMat, bwpId, Matrix.diagonal_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bwp_finite_det_id_line {p : ℕ} (z : Fin p × Fin p → ℂ) :
     {s : ℂ | (bwpMat (z + s • bwpId p)).det = 0}.Finite := by
@@ -90,7 +90,7 @@ theorem bwp_finite_det_id_line {p : ℕ} (z : Fin p × Fin p → ℂ) :
   · simp [Matrix.charmatrix_apply, bwpMat, bwpId, Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_id`. Consider the case `exact continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp (continuous_apply i)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bwp_continuous_of_matrix {p : ℕ} :
     Continuous (fun y : Fin p → Fin p → ℂ => Matrix.of y) := by
@@ -99,15 +99,13 @@ theorem bwp_continuous_of_matrix {p : ℕ} :
     | exact continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp (continuous_apply i)
 
 /- English proof (translation)
-Use `set S : Set (Fin p → Fin p → ℂ) := {y | Matrix.conjTranspose (Matrix.of y) * Matrix.of y = 1} with hS`. Establish `hcl : IsClosed S` using `isClosed_eq (bwp_continuous_of_matrix.matrix_conjTranspose.matrix_mul bwp_continuous_of_matrix) continuous_const`. Establish `hbd : Bornology.IsBounded S`. Rewrite using `[Metric.isBounded_iff_subset_closedBall 0]`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hU : Matrix.of y ∈ Matrix.unitaryGroup (Fin p) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `hy`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).mpr fun i => (pi_norm_le_iff_of_nonneg zero_le_one).mpr fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact entry_norm_bound_of_unitary hU i j`. Consider the case `exact Matrix.UnitaryGroup.entry_norm_bound hU i j`. Consider the case `exact Matrix.norm_entry_le_one_of_unitary hU i j`. Establish `hK : IsCompact S` using `Metric.isCompact_of_isClosed_isBounded hcl hbd`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsub : S ⊆ {y | (Matrix.of y).det ≠ 0}` using `fun y hy => by`. Establish `h` using `congrArg Matrix.det (show Matrix.conjTranspose (Matrix.of y) * Matrix.of y = 1 from hy)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `right_ne_zero_of_mul_eq_one h`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (DifferentiableOn.continuousOn hP |>.mono hsub)`.
-
-Use `⟨C, fun U hU => ?_⟩` and prove the remaining obligations. Establish `hU' : U ∈ S`. Rewrite `hU` using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `hU`. Conclude with `hC U hU'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwp_exists_bound_unitary {p : ℕ} (P : Matrix (Fin p) (Fin p) ℂ → ℂ) (hP : IsHoloGL P) :
     ∃ C : ℝ, ∀ U ∈ Matrix.unitaryGroup (Fin p) ℂ, ‖P U‖ ≤ C := by
@@ -141,25 +139,21 @@ theorem bwp_exists_bound_unitary {p : ℕ} (P : Matrix (Fin p) (Fin p) ℂ → �
   exact hC U hU'
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `bwp_exists_bound_unitary P hP`. Use `set M : ℝ := ∑ i, ∑ j, (‖z (i, j)‖ + ‖v (i, j)‖) with hMdef`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => by positivity`. Establish `hMj : ∀ j, ∑ i, (‖z (i, j)‖ + ‖v (i, j)‖) ≤ M` using `fun j => Finset.sum_le_sum fun i _ => Finset.single_le_sum (f := fun j' => ‖z (i, j')‖ + ‖v (i, j')‖) (fun j' _ => by positivity) (Finset.mem_univ j)`. Establish `hbound : ∀ t ∉ {t : ℂ | (bwpMat (z + t • v)).det = 0}, ‖P (bwpMat (z + t • v))‖ ≤ (C * M ^ (∑ i, a i)) * (1 + ‖t‖) ^ (∑ i, a i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `hdet : (bwpMat (z + t • v)).det ≠ 0` using `ht`. Establish `hcol : ∀ j, colNormSq (bwpMat (z + t • v)) j ≤ (M * (1 + ‖t‖)) ^ 2`. Introduce `j`. Establish `hz : ∑ i, ‖z (i, j)‖ ≤ M` using `le_trans (Finset.sum_le_sum fun i _ => le_add_of_nonneg_right (norm_nonneg _)) (hMj j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∑ i, ‖v (i, j)‖ ≤ M` using `le_trans (Finset.sum_le_sum fun i _ => le_add_of_nonneg_left (norm_nonneg _)) (hMj j)`. Use `set e : Fin p → ℝ := fun i => ‖bwpMat (z + t • v) i j‖ with he_def`. Establish `he0 : ∀ i, 0 ≤ e i` using `fun i => norm_nonneg _`. Establish `he : ∑ i, e i ≤ M * (1 + ‖t‖)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `only [he_def, bwpMat, Matrix.of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `(norm_add_le _ _).trans (by rw [norm_mul])`. Use `_ = ∑ i, ‖z (i, j)‖ + ‖t‖ * ∑ i, ‖v (i, j)‖ := by`. Rewrite using `[Finset.sum_add_distrib, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `_ ≤ M * (1 + ‖t‖) := by nlinarith [norm_nonneg t]`. Establish `hsq : ∑ i, e i ^ 2 ≤ (∑ i, e i) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hR : 0 ≤ M * (1 + ‖t‖)` using `mul_nonneg hM0 (by positivity)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `h` using `hH Unit (fun _ => p) (fun _ => a) (fun x => P (x ())) C (M * (1 + ‖t‖)) (by`. Introduce `x s b hx hb htri`. Consider the cases of `s`. Use `first`. Consider the case `simp only [Function.update_self]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `simp only [Function.update_same]`. Conclude with `hT (x ()) b (hx ()) hb htri)`. Use the proof step `(fun k hk => hC (k ()) (hk ())) hR (fun _ => bwpMat (z + t • v)) (fun _ => hdet)`. Use the proof step `(fun _ j => hcol j)`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdiff : DifferentiableOn ℂ (fun t => P (bwpMat (z + t • v))) {t : ℂ | (bwpMat (z + t • v)).det = 0}ᶜ`. Establish `hL : Differentiable ℂ (fun t : ℂ => (fun i j => (z + t • v) (i, j) : Fin p → Fin p → ℂ))`. Rewrite using `[differentiable_pi]`. Introduce `i`.
-
-Rewrite using `[differentiable_pi]`. Introduce `j`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `fun_prop`. Establish `hc : DifferentiableOn ℂ ((fun y : Fin p → Fin p → ℂ => P (Matrix.of y)) ∘ (fun t : ℂ => (fun i j => (z + t • v) (i, j) : Fin p → Fin p → ℂ))) {t : ℂ | (bwpMat (z + t • v)).det = 0}ᶜ` using `DifferentiableOn.comp hP hL.differentiableOn (fun t ht => ht)`.
-
-Conclude with `hc`. Take `⟨Q, hQdeg, hQ⟩` from `hO (fun t => P (bwpMat (z + t • v))) _ (C * M ^ (∑ i, a i)) (∑ i, a i) hB hdiff hbound`. Conclude with `⟨Q, hQdeg, fun t ht => hQ t ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bwp_line_poly (hH : LemmaHStatement) (hO : OnePolyGrowthStatement) {p : ℕ} (a : Fin p → ℕ)
     (P : Matrix (Fin p) (Fin p) ℂ → ℂ) (hP : IsHoloGL P) (hT : IsTriEquivariant a P)

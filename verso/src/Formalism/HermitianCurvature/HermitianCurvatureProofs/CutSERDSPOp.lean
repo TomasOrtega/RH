@@ -22,7 +22,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx6.Pos.rw_congr_open (isClosed_tsupport F).isOpen_compl (f₁ := F) (f₂ := 0) (fun x hx => image_eq_zero_of_notMem_tsupport hx) w g hg, Formalism.FourierDecayAlt.P.CutMP.JA.GA.rw_zero_fn]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rdsp_rw_vanish {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (F : B.Mat k r → E) (w : List (B.Mat k r)) :
     ∀ g, g ∉ tsupport F → B.Rw w F g = 0 := by
@@ -32,7 +32,7 @@ theorem rdsp_rw_vanish {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (F
   rfl
 
 /- English proof (translation)
-Apply `closure_minimal _ (isClosed_tsupport F)` to reduce the goal to its premises. Introduce `g hg`. Assume the negation of the conclusion as `hc`. Conclude with `hg (h g hc)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem rdsp_tsupport_sub {E E' : Type*} [Zero E] [Zero E'] {G : B.Mat k r → E} {F : B.Mat k r → E'}
     (h : ∀ g, g ∉ tsupport F → G g = 0) : tsupport G ⊆ tsupport F := by
@@ -44,13 +44,11 @@ theorem rdsp_tsupport_sub {E E' : Type*} [Zero E] [Zero E'] {G : B.Mat k r → E
 variable [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hz : ∀ x ∈ (tsupport F)ᶜ, F x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Conclude with `hx (subset_tsupport F (Function.mem_support.mpr hne))`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.FourierDecayAlt.B.opApply`. Establish `h0 : ∀ T ∈ Θ, T.coef g (B.Rw T.word F g) = 0`. Introduce `T _`. Rewrite using `[Formalism.FourierDecayAlt.P.Ux8.Rw_vanish (isClosed_tsupport F).isOpen_compl hz T.word g hg, map_zero]`. Use `first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `(apply List.sum_eq_zero`. Introduce `x hx`. Take `⟨T, hT, rfl⟩` from `List.mem_map.mp hx`. Conclude with `h0 T hT)`. Consider the case `(apply Multiset.sum_eq_zero`.
-
-Introduce `x hx`. Take `⟨T, hT, rfl⟩` from `Multiset.mem_map.mp hx`. Conclude with `h0 T hT)`.
+Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rdsp_opApply_vanishP (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     ∀ g, g ∉ tsupport F → B.opApply Θ F g = 0 := by
@@ -74,15 +72,13 @@ theorem rdsp_opApply_vanishP (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq �
        exact h0 T hT)
 
 /- English proof (translation)
-Establish `hz : ∀ x ∈ (tsupport F)ᶜ, F x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Conclude with `hx (subset_tsupport F (Function.mem_support.mpr hne))`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.FourierDecayAlt.B.opAdj`. Establish `h0 : ∀ T ∈ Θ, ((-1 : ℂ) ^ T.word.length) • B.Rw T.word.reverse (fun x => T.coefAdj x (F x)) g = 0`. Introduce `T _`. Establish `hz' : ∀ x ∈ (tsupport F)ᶜ, T.coefAdj x (F x) = 0`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz x hx, map_zero]`. Rewrite using `[Formalism.FourierDecayAlt.P.Ux8.Rw_vanish (isClosed_tsupport F).isOpen_compl hz' T.word.reverse g hg, smul_zero]`. Use `first`. Consider the case `(apply List.sum_eq_zero`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨T, hT, rfl⟩` from `List.mem_map.mp hx`. Conclude with `h0 T hT)`. Consider the case `(apply Multiset.sum_eq_zero`. Introduce `x hx`. Take `⟨T, hT, rfl⟩` from `Multiset.mem_map.mp hx`.
-
-Conclude with `h0 T hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rdsp_opAdj_vanishP (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     ∀ g, g ∉ tsupport F → B.opAdj Θ F g = 0 := by
@@ -111,15 +107,15 @@ theorem rdsp_opAdj_vanishP (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L
 end Help
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D Θ hS hC F hF hFc hFO`. Establish `hOP : tsupport F ⊆ B.GPos D` using `fun g hg => ⟨(hFO hg).1, (hFO hg).2.2⟩`. Establish `hsuppF : B.SuppIn (B.GPos D) F` using `(closure_mono (fun g hg => hg.2)).trans ((closure_minimal subset_closure (isClosed_tsupport F)).trans hOP)`. Establish `hA1t : tsupport (B.opApply Θ F) ⊆ tsupport F` using `rdsp_tsupport_sub (rdsp_opApply_vanishP Θ F)`. Establish `hB1t : tsupport (B.opAdj Θ F) ⊆ tsupport F` using `rdsp_tsupport_sub (rdsp_opAdj_vanishP Θ F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA1s : B.CkOn ⊤ (B.GV k r) (B.opApply Θ F)`. Use `Formalism.FourierDecayAlt.P.PBJ.ckOn_opApply_list (B.GPos D) F hF hsuppF Θ (fun T hT => (hS T hT).1) fun T _ => ?_` and prove the remaining obligations. Use `(closure_minimal (fun g hg => ?_) (isClosed_tsupport F)).trans hOP` and prove the remaining obligations. Assume the negation of the conclusion as `hgF`. Conclude with `hg.2 (rdsp_rw_vanish F T.word g hgF)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hB1s : B.CkOn ⊤ (B.GV k r) (B.opAdj Θ F)` using `Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC.ckOn_opAdj D Θ hS hF hsuppF`. Use `⟨⟨hA1s, hFc.of_isClosed_subset (isClosed_tsupport _) hA1t, hA1t⟩, ⟨hB1s, hFc.of_isClosed_subset (isClosed_tsupport _) hB1t, hB1t⟩, ?_⟩` and prove the remaining obligations. Establish `hpos : ∃ ε : ℝ, 0 < ε ∧ ∀ g ∈ tsupport F, ε ≤ Formalism.QuantumDeterminants.Gf k r D.z D.z' g`. Break down `(tsupport F).eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨g₀, hg₀, hmin⟩` from `hFc.exists_isMinOn h (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.gf_cont D.z D.z').continuousOn`. Conclude with `⟨_, (hFO hg₀).2.2, fun g hg => isMinOn_iff.mp hmin g hg⟩`. Take `⟨ε, hε, hεG⟩` from `hpos`. Establish `hCk : B.CkOn ⊤ (JF.Om k r D.z D.z') (B.JF D F)` using `(radial_orbital_niceness k r Wp Wq D F ⟨ε, hε, hF, fun A m => Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hF hFc (fun g _ hg => image_eq_zero_of_notMem_tsupport hg) A m, fun g _ hg => hεG g (subset_tsupport F hg)⟩).2`. Establish `hIn` using `Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hF hFc (fun g _ hg => image_eq_zero_of_notMem_tsupport hg) (6 * (r : ℝ) * (B.opOrder Θ : ℝ) + (r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ)) * (6 * (r : ℝ) + 1) + 1) (B.opOrder Θ)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hT1, hT2⟩` from `Formalism.FourierDecayAlt.P.CutMP.JA.LT.thetaJ_of_adjComm Formalism.FourierDecayAlt.P.CutMP.JA.FFS.adjoint_commutation_holds k r Wp Wq D Θ _ F (JF.Om k r D.z D.z') (Formalism.FourierDecayAlt.P.CutMP.JA.SA.thrW_sa k r (B.opOrder Θ)) hS hC hF hIn subset_rfl (Formalism.FourierDecayA …`. Conclude with `fun g hg => ⟨hT1 g hg, hT2 g hg⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spectral_pairing_operator : RDSPOp := by
   intro k r Wp Wq _ _ _ _ _ _ D Θ hS hC F hF hFc hFO

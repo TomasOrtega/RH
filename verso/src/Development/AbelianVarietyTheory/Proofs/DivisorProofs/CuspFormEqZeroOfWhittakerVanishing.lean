@@ -9,13 +9,11 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory
 namespace GlobalTheory.JSW
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ hW`. Establish `hc : Continuous φ.1` using `GlobalTheory.T.automorphicForm_GL_continuous E a φ hφ.1`. Establish `hcusp` using `GlobalTheory.T.isCuspidal_of_isCuspForm' E a φ hφ`. Establish `hl : GroundTheory.Automorphic.AutomorphicForm.IsLeftInvariant (K` using `E) (n := a) φ.1 := fun γ g => hφ.1.left γ g`. Set `V : Subgroup (GL (Fin a) (Af E))` to `{ carrier := {k | finRep E a k φ = φ} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hV : ∃ V : OpenSubgroup (GroundTheory.Automorphic.AdelicGLn.FiniteAdelicGL E a), ∀ g, ∀ v ∈ V, φ.1 (g * GroundTheory.Automorphic.AutomorphicForm.finEmb E a v) = φ.1 g` using `⟨⟨V, hφ.1.level⟩, fun g v hv => by`. Rewrite using `[GlobalTheory.FinConj.finEmb_eq_finGL]`. Establish `: (finRep E a v φ).1 g = φ.1 g` using `by rw [show finRep E a v φ = φ from hv]`. Conclude with `this⟩`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `GroundTheory.Automorphic.MultiplicityOne.eq_zero_of_whittaker_eq_zero hc hl hcusp hV hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_whit_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     IsCuspForm φ → (∀ g, GlobalTheory.JSW.whit φ.1 g = 0) → φ = 0 := by

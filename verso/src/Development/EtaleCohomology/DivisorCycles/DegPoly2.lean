@@ -5,15 +5,15 @@ open Matrix
 namespace LateralTheory.DivDb.DegPoly₂
 
 /- English proof (translation)
-Set `r : ι → Fin k → F` to `fun i b => v b i`. Set `V : Matrix ι (Fin k) F` to `Matrix.of r`. Establish `h1 : V.rank = k`. Rewrite using `[Matrix.rank_eq_finrank_span_cols]`. Establish `: V.col = v` using `by funext b i; rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, finrank_span_eq_card hv, Fintype.card_fin]`. Establish `h2 : Submodule.span F (Set.range r) = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Use `Matrix.rank_eq_finrank_span_row V` as an intermediate fact. Rewrite `this` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Module.finrank_fin_fun]`. Conclude with `this.symm`. Take `⟨κ, a, -, hsp, hli⟩` from `exists_linearIndependent' F r`. Rewrite `hsp` using `[h2]`. Set `bs` to `Module.Basis.mk hli (by rw [hsp])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Finite κ` using `Module.Finite.finite_basis bs`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Establish `hc : Fintype.card κ = k`. Rewrite using `[← Module.finrank_eq_card_basis bs, Module.finrank_fin_fun]`. Set `e : Fin k ≃ κ` to `(Fintype.equivFinOfCardEq hc).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨a ∘ e, ?_⟩` and prove the remaining obligations. Establish `hrows : LinearIndependent F (Matrix.of fun a' b => v b ((a ∘ e) a')).row` using `hli.comp e e.injective`. Rewrite `hrows` using `[Matrix.linearIndependent_rows_iff_isUnit, Matrix.isUnit_iff_isUnit_det]`. Conclude with `hrows.ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_minor {F ι : Type*} [Field F] [Fintype ι] {k : ℕ} (v : Fin k → ι → F)
     (hv : LinearIndependent F v) :
@@ -46,11 +46,11 @@ theorem exists_minor {F ι : Type*} [Field F] [Fintype ι] {k : ℕ} (v : Fin k 
   exact hrows.ne_zero
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h l`. Rewrite `h` using `[Fintype.not_linearIndependent_iff]`. Take `⟨g, hg, i, hi⟩` from `h`. Rewrite using `[← Matrix.exists_mulVec_eq_zero_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, fun h0 => hi (by rw [h0]; rfl), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Use `congrFun hg (l a)` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl (fun b _ => mul_comm _ _)`. Introduce `h hv`. Take `⟨l, hl⟩` from `exists_minor v hv`. Conclude with `hl (h l)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_li_iff {F ι : Type*} [Field F] [Fintype ι] {k : ℕ} (v : Fin k → ι → F) :
     ¬ LinearIndependent F v ↔ ∀ l : Fin k → ι, (Matrix.of fun a b => v b (l a)).det = 0 := by
@@ -72,23 +72,23 @@ theorem not_li_iff {F ι : Type*} [Field F] [Fintype ι] {k : ℕ} (v : Fin k �
     exact hl (h l)
 
 /- English proof (translation)
-Rewrite using `[Fintype.not_linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq0, hqd, hqx⟩`. Use `⟨fun b => q.coeff b, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : q = ∑ i ∈ Finset.range (n+1), Polynomial.monomial i (q.coeff i)` using `q.as_sum_range' (n+1) (by omega)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Polynomial.aeval x q = ∑ b : Fin (n+1), q.coeff b • x ^ (b : ℕ)` using `by conv_lhs => rw [h1]`. Rewrite using `[map_sum, ← Fin.sum_univ_eq_sum_range (fun i => Polynomial.aeval x (Polynomial.monomial i (q.coeff i)))]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_monomial, Algebra.smul_def]`. Rewrite `hqx` using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Use `congrArg (fun M : Mat F N => M p.1 p.2) hqx` as an intermediate fact. Simplify `this` using `[Matrix.sum_apply, Finset.sum_apply]`. Assume the negation of the conclusion as `hall push Not at hall`. Apply `hq0` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i`. Distinguish the cases in `hi : i < n + 1`. Simplify using `using hall ⟨i, hi⟩`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]; simp`. Introduce and unpack `⟨g, hg, i, hi⟩`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨∑ b : Fin (n+1), Polynomial.monomial (b : ℕ) (g b), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hi` to reduce the goal to its premises. Use `congrArg (fun q => Polynomial.coeff q (i : ℕ)) h0` as an intermediate fact. Simplify using `only [Polynomial.finsetSum_coeff, Polynomial.coeff_monomial, Polynomial.coeff_zero] at this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Finset.sum_eq_single i]`. Simplify using `using this`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Conclude with `fun h => hb (Fin.ext h)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using the standard rewrite rules. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `b _`. Conclude with `(Polynomial.natDegree_monomial_le _).trans (by omega)`. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `j k`. Use `congrFun hg (j, k)` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify using `only [Polynomial.aeval_monomial, Matrix.sum_apply, Matrix.zero_apply]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, Matrix.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_iff_not_li {F : Type} [Field F] {N n : ℕ} (x : Mat F N) :
     Deg n x ↔ ¬ LinearIndependent F (fun (b : Fin (n+1)) (p : Fin N × Fin N) => (x ^ (b : ℕ)) p.1 p.2) := by
@@ -145,9 +145,9 @@ noncomputable def fam (C : Type) [Field C] (N n : ℕ) : Set (MP C N) :=
     (Matrix.of fun a b : Fin (n+1) => (gen C N ^ (b : ℕ)) (l a).1 (l a).2).det
 
 /- English proof (translation)
-Use `set φ := MvPolynomial.aeval (R := C) (fun p : Fin N × Fin N => x p.1 p.2)`. Establish `hG : φ.mapMatrix (gen C N) = x`. Use extensionality with `i j`. Simplify using `[gen, φ, AlgHom.mapMatrix_apply]`. Establish `hpow : ∀ b : ℕ, φ.mapMatrix (gen C N ^ b) = x ^ b` using `fun b => by rw [map_pow, hG]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply, ← hpow b, AlgHom.mapMatrix_apply, Matrix.map_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_fam {C : Type} [Field C] {N n : ℕ} {F : Type} [Field F] [Algebra C F] (x : Mat F N)
     (l : Fin (n+1) → Fin N × Fin N) :
@@ -165,11 +165,9 @@ theorem eval_fam {C : Type} [Field C] {N n : ℕ} {F : Type} [Field F] [Algebra 
     AlgHom.mapMatrix_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Introduce `C _ N n`. Use `⟨fam C N n, ?_⟩` and prove the remaining obligations. Introduce `F _ _ x`. Rewrite using `[deg_iff_not_li, not_li_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `h f ⟨l, rfl⟩`. Rewrite using `[eval_fam]`. Conclude with `h l`. Introduce `h l`. Rewrite using `[← eval_fam (C := C)]`.
-
-Conclude with `h _ ⟨l, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DegPoly_of : DegPoly := by
   intro C _ N n

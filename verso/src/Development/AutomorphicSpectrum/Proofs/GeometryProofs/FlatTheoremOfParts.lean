@@ -19,14 +19,14 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.TopA
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(IsAlgClosed.lift (M := ℂ_[p]) (R := ℚ) (S := F)).toRingHom⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_padic_emb (F : IntermediateField ℚ ℂ) [NumberField F] (p : Nat.Primes) :
     Nonempty (F →+* ℂ_[p]) :=
   ⟨(IsAlgClosed.lift (M := ℂ_[p]) (R := ℚ) (S := F)).toRingHom⟩
 
 /- English proof (translation)
-The claim follows from `(hUi.isConnected.isPreconnected.subset_isClopen hU' ⟨u, hu, hu'⟩).antisymm (hUi'.isConnected.isPreconnected.subset_isClopen hU ⟨u, hu', hu⟩)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_clopen_irred {X : Type*} [TopologicalSpace X] {U U' : Set X} (hU : IsClopen U)
     (hUi : IsIrreducible U) (hU' : IsClopen U') (hUi' : IsIrreducible U') {u : X} (hu : u ∈ U) (hu' : u ∈ U') :
@@ -35,16 +35,16 @@ theorem eq_of_clopen_irred {X : Type*} [TopologicalSpace X] {U U' : Set X} (hU :
     (hUi'.isConnected.isPreconnected.subset_isClopen hU ⟨u, hu', hu⟩)
 
 /- English proof (translation)
-The claim follows from `((Set.finite_Iic n).preimage Subtype.val_injective.injOn).subset fun p hp => Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hp`.
+A detailed English derivation is pending.
 -/
 theorem finite_primes_dvd {n : ℕ} (hn : n ≠ 0) : {p : Nat.Primes | (p : ℕ) ∣ n}.Finite :=
   ((Set.finite_Iic n).preimage Subtype.val_injective.injOn).subset fun p hp =>
     Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hp
 
 /- English proof (translation)
-Use `⟨Subtype.val_injective, inferInstance, fun x => ?_⟩` and prove the remaining obligations. Break down `V.mem_or_inv_mem x with h | h` into its components or cases. Conclude with `⟨⟨x, h⟩, 1, by simp, by simp⟩`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, 1, by simp, by simp [hx]⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨1, ⟨x⁻¹, h⟩, by simpa using hx, by simp [hx]⟩`.
+Supply the required witnesses or components.
 -/
 theorem model_hyp {K : Type} [Field K] (V : ValuationSubring K) [IsDiscreteValuationRing V] :
     Function.Injective V.subtype ∧ IsNoetherianRing V ∧
@@ -59,9 +59,9 @@ theorem model_hyp {K : Type} [Field K] (V : ValuationSubring K) [IsDiscreteValua
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨W, hp, hW⟩` from `GlobalTheory.T.padic_embedding_valuation_subring c.F p κ`. Take `⟨V, hV, hκ, -, -⟩` from `GlobalTheory.T.padic_embedding_discrete_valuation_ring c.F p κ`. Establish `hmem : ∀ x : c.F, x ∈ c.V W ↔ ‖κ x‖ ≤ 1` using `fun x => (hW x).symm`. Establish `heq : c.V W = V` using `by ext x; rw [hmem, hκ]`. Use `⟨W, hp, ?_, fun x => (hmem x).symm⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heq]`. Conclude with `hV`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place {l : Level H} (c : Coeff l) [NumberField c.F] (p : Nat.Primes) (κ : c.F →+* ℂ_[p]) :
     ∃ W : ValuationSubring ℂ, ((p : ℕ) : ℂ) ∈ W.nonunits ∧ IsDiscreteValuationRing (c.V W) ∧
@@ -74,7 +74,7 @@ theorem exists_place {l : Level H} (c : Coeff l) [NumberField c.F] (p : Nat.Prim
   rw [heq]; exact hV
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hUi.nonempty`. Take `⟨U', Z, hu', hc, hi⟩` from `GlobalTheory.T.exists_clopen_irreducible_cpt E H D l Xo c O β Y u hβ`. Rewrite using `[eq_of_clopen_irred hU hUi hc hi hu hu']`. Conclude with `⟨Z⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_cpt {D : Datum H} {l : Level H} (Xo : Moduli D l) (c : Coeff l) {O : Type} [CommRing O]
     {β : O →+* c.F} (Y : Model Xo c β)
@@ -86,9 +86,9 @@ theorem exists_cpt {D : Datum H} {l : Level H} (Xo : Moduli D l) (c : Coeff l) {
   exact ⟨Z⟩
 
 /- English proof (translation)
-Take `⟨Z⟩` from `exists_cpt Xo c Y (model_hyp (c.V W)) hU hUi`. Establish `hG : Z.IsGeom` using `GlobalTheory.T.generic_fibre_uniformised_frame E H D l Xo c _ _ Y U Z g ty FU i hty (fun y hy hr => (hP y hy).1 hr)`. Take `⟨φ, hl, hf, -⟩` from `hA0 E H D l Xo c _ _ Y U Z τ (model_hyp (c.V W)) hpq hτ hG`. Take `⟨hinf, hfg⟩` from `hA1 E H D l Xo c _ _ Y U Z τ φ (model_hyp (c.V W)) hpq hτ hG hl hf`. Use `⟨φ, hfg g ty FU i hty (fun P y hPer hu hy => (hP y hy).2 ⟨P, hPer, hu⟩), fun s => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, -⟩` from `hinf s`. Conclude with `⟨t, ht⟩`. Use `hC E H D l Xo c _ _ Y U Z τ p κ φ hτ Subtype.val_injective (fun x => (hκ x).trans ?_) hSF hN3 hG hf hl` and prove the remaining obligations. Conclude with `⟨fun h => ⟨⟨x, h⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem local_gen (hA0 : FlatLineGenerator) (hA1 : FlatLineGeneratorComponent) (hC : FinConstAll) {D : Datum H} {l : Level H} {Xo : Moduli D l}
     {c : Coeff l} (U : Set (Xo.XF c)) (τ : E →+* ℂ) {g : ℕ} {ty : Fin g → (E →+* ℂ)}
@@ -112,9 +112,9 @@ theorem local_gen (hA0 : FlatLineGenerator) (hA1 : FlatLineGeneratorComponent) (
     exact ⟨fun h => ⟨⟨x, h⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.2⟩
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ j β y v w T tK m m' hj hjβ hfr hv hw`. Establish `h1` using `ht V K j β y v w T tK m m' hj hjβ hfr hv hw`. Establish `hja : j (β a) = κ a` using `by rw [← hjβ]; rfl`. Establish `h2 : ‖κ a‖ ≠ 0` using `norm_ne_zero_iff.mpr ((map_ne_zero κ).mpr ha)`. Establish `h3 : ‖j (φ K y v w)‖ ≠ 0` using `norm_ne_zero_iff.mpr ((map_ne_zero j).mpr (hl.ne K β y v w hfr))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[he K β y v w hfr, map_mul, hja, norm_mul, Real.log_mul h2 h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hasFinNorm_of_eq {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {U : Set (Xo.XF c)}
     {τ : E →+* ℂ} {φ φ' : FrameFn Xo c} (hl : IsLineFn U τ φ) {a : c.F} (ha : a ≠ 0)
@@ -136,21 +136,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 open GlobalTheory.CompanionTheory.Ar.Flat.TopA in
 
 /- English proof (translation)
-Introduce `hI hA0 hA1 _ E _ _ _ H D Xo l c _ U τ g ty FU i hpq hτ hg hty hU hUi hP`. Establish `hC : FinConstAll` using `GlobalTheory.T.finite_constant_all_holds`. Take `⟨-, hI'⟩` from `hI`. Take `⟨Ys, hYs, -⟩` from `hI' E H D hpq Xo`. Establish `key : ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), ∃ φ : FrameFn (Xo l) c, IsFlatGen U τ φ FU i ∧ (∀ s : c.F →+* ℂ, ∃ t, HasInfNorm U τ φ s t) ∧ ∃ t, HasFinNorm U τ φ p κ t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p κ`. Take `⟨W, hpW, hdvr, hκ⟩` from `exists_place c p κ`. Use `haveI := hdvr`. Take `⟨-, hYi⟩` from `hYs p W p.2 hpW`. Take `⟨hSF, hN3, -⟩` from `hYi ⟨l, c, hg p p.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `local_gen hA0 hA1 hC U τ FU i hpq hτ hty hU hUi hP W (Ys p W p.2 hpW ⟨l, c, hg p p.2⟩) hSF hN3 p κ hκ`. Take `⟨κ₀⟩` from `exists_padic_emb c.F ⟨2, Nat.prime_two⟩`. Take `⟨φ, hφ, hinf, -⟩` from `key _ κ₀`. Establish `hfin : ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), ∃ t, HasFinNorm U τ φ p κ t`. Introduce `p κ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', hφ', -, t, ht⟩` from `key p κ`. Take `⟨a, ha, he⟩` from `GlobalTheory.T.flat_gen_frame_complex_compat E H D l (Xo l) c U τ φ' φ g ty FU i hty hφ' hφ (fun y hy hr => (hP y hy).1 hr)`. Conclude with `⟨_, hasFinNorm_of_eq hφ.line ha he ht⟩`. Set `N : LogNorms c.F` to `⟨fun s => (hinf s).choose, fun p κ => (hfin p κ).choose - D.q * (logIdeal (κ.comp (tauIn c τ)) (differentIdeal ℤ (𝓞 E)) - Real.log ‖((H.d : ℕ) : ℂ_[p])‖)⟩`. Establish `hN : HasNorms U τ φ N` using `⟨fun s => (hinf s).choose_spec, fun p κ => by`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [N, sub_add_cancel]`. Conclude with `(hfin p κ).choose_spec⟩`. Use `⟨φ, N, hφ, hN, ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hn0⟩` from `GlobalTheory.T.finite_norm_zero_outside_denom E H D l (Xo l) c U τ φ hτ hU.isOpen hUi.nonempty hφ.line`. Establish `hS` using `GlobalTheory.T.logIdeal_support_finite E (differentIdeal ℤ (𝓞 E)) differentIdeal_ne_bot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(((finite_primes_dvd hn.ne').union (finite_primes_dvd H.d_prime.ne_zero)).union hS).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨ι₀, hι⟩`. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_exists, not_not] at hcon`. Take `⟨⟨h1, h2⟩, h3⟩` from `hcon`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, hd⟩` from `GlobalTheory.T.padic_embedding_discrete_valuation_ring c.F p ι₀`. Establish `hd' : ‖((H.d : ℕ) : ℂ_[p])‖ = 1` using `by simpa using hd H.d h2`. Establish `h0` using `hn0 p ι₀ _ h1 (hN.2 p ι₀)`. Rewrite `h0` using `[h3 (ι₀.comp (tauIn c τ)), hd', Real.log_one]`. Simplify using `only [sub_zero, mul_zero, add_zero] at h0`.
-
-Conclude with `hι h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thmFlatA_of_parts : PartI → FlatLineGenerator → FlatLineGeneratorComponent → FinConst → ThmFlatA := by
   intro hI hA0 hA1 _ E _ _ _ H D Xo l c _ U τ g ty FU i hpq hτ hg hty hU hUi hP

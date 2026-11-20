@@ -27,20 +27,20 @@ section Help
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => mul_add c (x i j) (y i j)`.
+A detailed English derivation is pending.
 -/
 theorem partAt_add (c : AE D) (x y : WO S T) :
     GlobalTheory.LiftLevel.partAt c (x + y) = GlobalTheory.LiftLevel.partAt c x + GlobalTheory.LiftLevel.partAt c y :=
   Matrix.ext fun i j => mul_add c (x i j) (y i j)
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => mul_zero c`.
+A detailed English derivation is pending.
 -/
 theorem partAt_zero (c : AE D) : GlobalTheory.LiftLevel.partAt c (0 : WO S T) = 0 :=
   Matrix.ext fun _ _ => mul_zero c
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => mul_neg c (x i j)`.
+A detailed English derivation is pending.
 -/
 theorem partAt_neg (c : AE D) (x : WO S T) : GlobalTheory.LiftLevel.partAt c (-x) = -GlobalTheory.LiftLevel.partAt c x :=
   Matrix.ext fun i j => mul_neg c (x i j)
@@ -49,29 +49,29 @@ noncomputable def gm (S T : HSp D) (γ : Af D.host.F) (y : Matrix (Fin S.rank) (
   Matrix.of fun a k => (pairA D.host.F 0 γ) ⊗ₜ[D.host.F] y k a
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun a k => TensorProduct.tmul_add _ (x k a) (y k a)`.
+A detailed English derivation is pending.
 -/
 theorem gm_add (γ : Af D.host.F) (x y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     gm S T γ (x + y) = gm S T γ x + gm S T γ y :=
   Matrix.ext fun a k => TensorProduct.tmul_add _ (x k a) (y k a)
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun a k => TensorProduct.tmul_zero _ _`.
+A detailed English derivation is pending.
 -/
 theorem gm_zero (γ : Af D.host.F) : gm S T γ 0 = 0 :=
   Matrix.ext fun a k => TensorProduct.tmul_zero _ _
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun a k => TensorProduct.tmul_neg _ (x k a)`.
+A detailed English derivation is pending.
 -/
 theorem gm_neg (γ : Af D.host.F) (x : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     gm S T γ (-x) = -gm S T γ x :=
   Matrix.ext fun a k => TensorProduct.tmul_neg _ (x k a)
 
 /- English proof (translation)
-Use `Matrix.ext fun a k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ)) * ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] y k a) = (pairA D.host.F 0 ((1 - σ) * α)) ⊗ₜ[D.host.F] y k a`. Rewrite using `[sub_mul, one_mul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← TensorProduct.sub_tmul]`. Use `congr 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(0 : Ainf D.host.F) - _ * 0 = 0`. Rewrite using `[mul_zero, sub_zero]`. Express the relevant statement in the definitionally equal form `α - σ * α = (1 - σ) * α`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem partAt_gm (σ α : Af D.host.F) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     GlobalTheory.LiftLevel.partAt (1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ)) (gm S T α y) =
@@ -91,19 +91,15 @@ theorem partAt_gm (σ α : Af D.host.F) (y : Matrix (Fin S.rank) (Fin T.rank) D.
 end Help
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Use `show IsIntegral ℤ ((Pi.single b 1 : Fin n → E) a)`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_one`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `isIntegral_zero`. Consider the case `zero => intro a`. Conclude with `isIntegral_zero`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => intro a`. Conclude with `(hx a).add (hy a)`. Consider the case `smul c x _ hx => intro a`. Conclude with `(c.2).mul (hx a)`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : v = ∑ a, (⟨v a, h a⟩ : 𝓞 E) • (Pi.single a 1 : Fin n → E)`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[Pi.smul_apply, Pi.single_eq_same]`. Express the relevant statement in the definitionally equal form `v i = v i * 1`.
-
-Rewrite using `[mul_one]`. Introduce `b _ hb`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hb), smul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
-
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdL_int {E : Type} [Field E] [NumberField E] {n : ℕ} (v : Fin n → E) :
     v ∈ stdL E n ↔ ∀ a, IsIntegral ℤ (v a) := by
@@ -134,9 +130,9 @@ theorem mem_stdL_int {E : Type} [Field E] [NumberField E] {n : ℕ} (v : Fin n �
     exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Introduce `D n v`. Rewrite using `[mem_stdL_int, mem_stdL_int]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ IsIntegral ℤ (star (v a))`. Conclude with `⟨fun h => h.map (starRingEnd D.host.E).toIntAlgHom, fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 
-Use `h.map (starRingEnd D.host.E).toIntAlgHom` as an intermediate fact. Rewrite using `[show (starRingEnd D.host.E).toIntAlgHom (star (v a)) = v a from star_star (v a)] at this⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem star_stdL : ∀ (D : D7) (n : ℕ) (v : Fin n → D.host.E), v ∈ stdL D.host.E n ↔ star v ∈ stdL D.host.E n := by
   intro D n v
@@ -148,15 +144,13 @@ theorem star_stdL : ∀ (D : D7) (n : ℕ) (v : Fin n → D.host.E), v ∈ stdL 
     rwa [show (starRingEnd D.host.E).toIntAlgHom (star (v a)) = v a from star_star (v a)] at this⟩
 
 /- English proof (translation)
-Introduce `D S T k₀ f hT hf h i j`. Set `i₀ : Fin T.rank` to `⟨0, hT⟩`. Set `x : WO S T` to `Matrix.of fun a b => if a = i₀ ∧ b = i then f else 0`. Establish `hx : IsHalf f x` using `fun a b => by`. Simplify using `only [x, Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `hf`. Conclude with `mul_zero f`. Establish `h1` using `congrFun (congrFun (h x hx) i₀) j`. Unfold `actO at h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[GlobalTheory.AdelicLatMove.mt_one, Matrix.one_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify using `only [x, Matrix.of_apply, true_and, if_true] at h1`. Rewrite using `[Matrix.sub_apply, mul_sub, h1, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Introduce `b _ hb`. Simplify using `[x, hb]`. Introduce `hi`.
-
-Conclude with `absurd (Finset.mem_univ i) hi`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowTriv : ∀ (D : D7) (S T : HSp D) (k₀ : GA D S) (f : AE D), 0 < T.rank → f * f = f → (∀ x : WO S T, IsHalf f x → actO S T k₀ 1 x = x) → ∀ i j, f * (mt S k₀⁻¹ - 1) i j = 0 := by
   intro D S T k₀ f hT hf h i j
@@ -186,33 +180,27 @@ namespace GlobalTheory.LiftLevel
 open GlobalTheory.LiftLevel.TrOff in
 
 /- English proof (translation)
-Introduce `D S T C hn ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg h2 e he a k₀ Λ' hab hmover hgen hIsMov Lv hLv u hu`. Distinguish the cases in `hT : T.rank = 0`. Establish `h0 : GlobalTheory.LiftLevel.partAt (1 - e - cA D e) u = 0` using `Matrix.ext fun i _ => absurd i.2 (by omega)`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTpos : 0 < T.rank` using `Nat.pos_of_ne_zero hT`. Take `⟨σ, hσ, hσ0, hσ1⟩` from `GlobalTheory.T.exists_finiteAdele_of_splitPlaces_idempotentSum D _ e he`. Establish `hf : 1 - e - cA D e = 1 - algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ)` using `by rw [hσ]; ring`. Establish `hgg : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ) * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ) = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ)`. Rewrite using `[hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.IdemConjSum.idemSum_add_conj_idem _ e he).1`. Establish `hff : (1 - e - cA D e) * (1 - e - cA D e) = 1 - e - cA D e`. Rewrite using `[hf]`. Take the linear combination `hgg`. Establish `hrow` using `rowTriv D S T k₀ (1 - e - cA D e) hTpos hff hmover.2.1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hrow` using `[hf]`. Establish `hstar : ∀ v, v ∈ stdL D.host.E S.rank ↔ star v ∈ stdL D.host.E S.rank` using `star_stdL D S.rank`. Rewrite using `[GlobalTheory.Ker.LatTens.latO_eq_hatA D S T C _ _ ΛT C.X.Λ hstar hAA]`. Establish `hO : ∀ (c : 𝓞 D.host.F), ∀ y ∈ tens (stdL D.host.E S.rank) C.X.Λ, (algebraMap D.host.F D.host.E (c : D.host.F)) • y ∈ tens (stdL D.host.E S.rank) C.X.Λ` using `fun c y hy => GlobalTheory.Ker.HatLat.smul_mem_tens _ _ (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c) hy`. Establish `hgen' : ∀ α ∈ intAf D.host.F, ∀ y ∈ tens Λ' (Lv.sh C.X.Λ), gm S T ((1 - σ) * α) y ∈ hatA S T (tens (stdL D.host.E S.rank) C.X.Λ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `α hα y hy`. Establish `hγ : (1 - σ) * α ∈ intAf D.host.F`. Introduce `w`. Rewrite using `[map_mul, map_sub, map_one]`. Distinguish the cases in `hw : ∃ PP ∈ Pg ∪ Q, HeightOneSpectrum.under (𝓞 D.host.F) PP = w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨PP, hPP, rfl⟩` from `hw`. Rewrite using `[hσ1 PP hPP, sub_self, zero_mul]`. Conclude with `zero_mem _`. Use `push_neg at hw`. Rewrite using `[hσ0 w hw, sub_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hα w`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨v, hv, u', hu', rfl⟩` from `hy`. Use `GlobalTheory.T.mem_completedMatrixGroup_of_local_multiplier D S T _ hO _ hγ _ fun w => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hw : ∃ PP ∈ Pg ∪ Q, HeightOneSpectrum.under (𝓞 D.host.F) PP = w`. Use `left`. Take `⟨PP, hPP, rfl⟩` from `hw`. Rewrite using `[map_mul, map_sub, map_one, hσ1 PP hPP, sub_self, zero_mul]`. Use `right push_neg at hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t₁, ht₁, h1⟩` from `GlobalTheory.T.exists_multiplier_standard_lattice_of_mover_trivial D S k₀ Λ' σ w (hσ0 w hw) hrow hIsMov v hv`. Establish `hu'' : u' ∈ idq (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q)) C.X.Λ`. Establish `: Lv.sh C.X.Λ = idq Lv.𝔪 (conjI Lv.𝔪) C.X.Λ` using `rfl`. Rewrite `hu'` using `[this, hLv]`. Conclude with `hu'`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨t₂, ht₂, h2'⟩` from `GlobalTheory.T.exists_multiplier_shifted_lattice_away_from_places D T.rank Pg Q C.X.Λ w hw u' hu''`. Use `⟨t₁ * t₂, fun hm => (w.isPrime.mem_or_mem hm).elim ht₁ ht₂, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨_, h1, _, h2', ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap D.host.F D.host.E ((t₁ * t₂ : 𝓞 D.host.F) : D.host.F) * (v i * u' j) = algebraMap D.host.F D.host.E (t₁ : D.host.F) * v i * (algebraMap D.host.F D.host.E (t₂ : D.host.F) * u' j)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[show ((t₁ * t₂ : 𝓞 D.host.F) : D.host.F) = (t₁ : D.host.F) * (t₂ : D.host.F) from rfl, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [gm_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [gm_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [gm_neg]`. Conclude with `neg_mem hx`. Rewrite using `[hf]`. Proceed by induction on `hu using AddSubgroup.closure_induction with`.
-
-Consider the case `mem w hw`. Take `⟨α, hα, y, hy, rfl⟩` from `hw`. Conclude with `(partAt_gm σ α y).symm ▸ hgen' α hα y hy`. Consider the case `zero => rw [partAt_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [partAt_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [partAt_neg]`. Conclude with `neg_mem hx`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem partAt_off_mem_latO : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∀ (a : AE D) (k₀ : GA D S) (Λ' : Lt D.host.E S.rank), (∃ b : AE D, a * b = e) → GlobalTheory.LiftLevel.IsMover S T βS βT e a k₀ → GlobalTheory.LiftLevel.IsGen C βS βT Pg Q e a → IsMov (fmtC S k₀⁻¹) Λ' (stdL D.host.E S.rank) → ∀ Lv : GlobalTheory.SW.Level C.X, Lv.𝔪 = GlobalTheory.LiftLevel.liftI Pg Q → ∀ u ∈ hatA S T (tens Λ' (Lv.sh C.X.Λ)), GlobalTheory.LiftLevel.partAt (1 - e - cA D e) u ∈ latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True := by
   intro D S T C hn ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg h2 e he a k₀ Λ' hab hmover hgen hIsMov Lv hLv u hu

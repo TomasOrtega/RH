@@ -17,31 +17,31 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Sym.So
 
 /- English proof (translation)
-Establish `hmem : ∀ u : G, u ∈ U.comap (MulAut.conj y⁻¹).toMonoidHom ↔ y⁻¹ * u * y ∈ U`. Introduce `u`. Simplify using `[MulAut.conj_apply]`. Establish `hea : (MulAut.conj y⁻¹).toMonoidHom (a : G) = a`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, ← hy, inv_mul_cancel_left]`. Establish `hbij : Function.Bijective (MulAut.conj y⁻¹).toMonoidHom` using `(MulAut.conj y⁻¹).bijective`. Establish `hM` using `dcMap G G V (MulAut.conj y⁻¹).toMonoidHom hbij U (a : G) (a : G)`. Rewrite `hM` using `[hea]`. Take `⟨-, hfinIff, -, hmap⟩` from `hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfin'` using `hfinIff.2 hfin`. Establish `hφy : ∀ u ∈ U, ∀ x : G, φ (y * (x * u)) = φ (y * x)`. Introduce `u hu x`. Rewrite using `[← mul_assoc]`. Conclude with `hφ u hu _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : ∀ z : G, dcF U (a : G) (fun x => φ (y * x)) z = dcF U (a : G) φ (y * z)`. Introduce `z`. Rewrite using `[(dcBasic G V U a hfin (fun x => φ (y * x)) hφy).2.1, (dcBasic G V U a hfin φ hφ).2.1]`. Simplify using `only [mul_assoc]`. Establish `hA : ∀ x : G, dcF (U.comap (MulAut.conj y⁻¹).toMonoidHom) (a : G) (fun h => φ (h * y)) x = dcF U (a : G) φ (x * y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `h1` using `congrFun (hmap hfin (fun x => φ (y * x)) hφy) x`. Establish `h2 : ((fun x => φ (y * x)) ∘ (MulAut.conj y⁻¹).toMonoidHom) = fun h => φ (h * y)`. Use function extensionality and compare the values at `h`. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[htr]`. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hay : (a : G) * y⁻¹ = y⁻¹ * a`. Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, ← hy, inv_mul_cancel_left]`. Establish `hc' : ∀ u ∈ U.comap (MulAut.conj y⁻¹).toMonoidHom, ∃ c ∈ U.comap (MulAut.conj y⁻¹).toMonoidHom, c * (a : G) = a * c ∧ u * c⁻¹ ∈ S ∧ c⁻¹ * u ∈ S`. Introduce `u hu`. Take `⟨c, hcU, hca, h1, h2⟩` from `hc _ ((hmem u).1 hu)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y * c * y⁻¹, (hmem _).2 (by simpa [mul_assoc] using hcU), ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `hS.conj_mem _ h1 y` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Use `hS.conj_mem _ h2 y` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[mul_assoc]`. Establish `hψG : ∀ u ∈ U.comap (MulAut.conj y⁻¹).toMonoidHom, ∀ x : G, φ (x * u * y) = φ (x * y)`. Introduce `u hu x`. Use `hφ _ ((hmem u).1 hu) (x * y)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨hfS, hDC, -, R, hR1, hR2, hR3⟩` from `dcSub G V S _ a hfin' hc' hS`. Establish `hψS : ∀ u ∈ (U.comap (MulAut.conj y⁻¹).toMonoidHom).subgroupOf S, ∀ x : S, φ (((x * u : S) : G) * y) = φ ((x : G) * y)`. Introduce `u hu x`. Rewrite `hu` using `[Subgroup.mem_subgroupOf]`. Simplify using `using hψG _ hu x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[(dcBasic S V _ a hfS (fun h : S => φ (h * y)) hψS).2.2.2.2 R hR1 hR2 g, ← hA]`. Rewrite using `[(dcBasic G V _ (a : G) hfin' (fun h => φ (h * y)) hψG).2.2.2.2 (R.map (Function.Embedding.subtype _)) ?_ ?_ g]`. Rewrite using `[Finset.sum_map]`. Simplify using the standard rewrite rules. Introduce `z hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, rfl⟩` from `Finset.mem_map.1 hz`. Conclude with `(hDC r).1 (hR1 r hr)`. Introduce `z hz`. Take `⟨r, ⟨hr, hrz⟩, huniq⟩` from `hR3 z hz`. Use `⟨(r : G), ⟨Finset.mem_map_of_mem _ hr, hrz⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `w ⟨hw, hwz⟩`. Take `⟨r', hr', rfl⟩` from `Finset.mem_map.1 hw`. Conclude with `congrArg Subtype.val (huniq r' ⟨hr', hwz⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem dc_conj {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (S U : Subgroup G) (hS : S.Normal) (a : S) (y : G)
     (hy : y * (a : G) = a * y) (hfin : AlgebraTools.FinOrb U U (a : G))
@@ -120,9 +120,7 @@ private theorem dc_conj {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (
     exact congrArg Subtype.val (huniq r' ⟨hr', hwz⟩)
 
 /- English proof (translation)
-Unfold `SA`. Use `Subgroup.normal_iInf_normal fun v => ?_` and prove the remaining obligations. Establish `hN : (SU ((cv v) Δ)).Normal`. Unfold `SU`. Conclude with `MonoidHom.normal_ker _`.
-
-Conclude with `hN.comap _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem sa_normal {F : Type} [Field F] [NumberField F] (Δ : F) : (SA Δ).Normal := by
   unfold SA
@@ -135,19 +133,19 @@ private theorem sa_normal {F : Type} [Field F] [NumberField F] (Δ : F) : (SA Δ
 end UpperTheory.V.Z.Sym.So
 
 /- English proof (translation)
-Introduce `F _ _ Δ A hA V _ _ ch C hC y hy φ hφ a ha`. Establish `hK` using `kOps F Δ A hA V ch C hC`. Establish `hφU : ∀ u ∈ A.dat.U2, ∀ g : DA Δ, φ (g * u) = φ g` using `hK.2.1 φ hφ`. Prove the components needed by the constructor for the conclusion. Introduce `γ g g' hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype]`. Rewrite using `[hg, mul_assoc]`. Conclude with `hφ.1 (γ : DX Δ) _`. Introduce `u hu g`. Unfold `SD.lvS at hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap]`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv] at hu`. Use `hφU _ hu ((g : DA Δ) * y)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `t g hdom hel`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyc : y * (g : DA Δ) = (g : DA Δ) * y`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ A.Sg`. Establish `h1` using `hy v hv`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Establish `h1` using `hel.2 v hv`. Simplify using `[h1]`. Establish `hfin` using `(dMul F Δ A hA (g : DA Δ) (SD.dS t) hel).1`. Establish `hc : ∀ u ∈ A.dat.U2, ∃ c ∈ A.dat.U2, c * (g : DA Δ) = g * c ∧ u * c⁻¹ ∈ SA Δ ∧ c⁻¹ * u ∈ SA Δ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Take `⟨c, hcU, h1, h2, h3⟩` from `torPart F Δ A hA u hu`. Conclude with `⟨c, hcU, h3 _ _ hel, h1, h2⟩`. Use function extensionality and compare the values at `h`. Rewrite using `[Pi.smul_apply]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `SD.lvS`. Rewrite using `[dc_conj (SA Δ) A.dat.U2 (sa_normal Δ) g y hyc hfin hc φ hφU h, ha t g hdom hel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.kRes :
     UpperTheory.V.Z.Sym.So.KRes := by

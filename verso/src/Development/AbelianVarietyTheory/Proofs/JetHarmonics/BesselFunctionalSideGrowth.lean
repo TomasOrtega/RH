@@ -9,7 +9,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.BesselLine
 
 /- English proof (translation)
-Introduce `k r z c g`. Unfold `Formalism.QuantumDeterminants.psi Formalism.QuantumDeterminants.ell PI.BesselMapUniq.psiGen PI.BesselMapUniq.ellA`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_const : PsiConst := by
   intro k r z c g
@@ -17,9 +17,9 @@ theorem psi_const : PsiConst := by
   rw [Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `hH k r ε mu R Wp _ _ _ _ z π u μW μN μG νq l l₁ hDS hS hl hnz hl₁`. Take `⟨w, hw, hne⟩` from `hnz`. Take `⟨hz, hT, ⟨u₀, hπ⟩, -⟩` from `hS`. Establish `hc : Formalism.QuantumDeterminants.cStd ≠ 0`. Unfold `Formalism.QuantumDeterminants.cStd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `mul_ne_zero (by norm_num) Complex.I_ne_zero`. Conclude with `Formalism.FourierDecayAlt.P.DDSmoothness.jsz_line hH.1.2.2.2 psi_const hDS.1 hDS.2 hz hT hc hπ hl hl₁ hw hne`.
+A detailed English derivation is pending.
 -/
 theorem bessel_line : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (l l₁ : R.H → Wp), R.IsDS ε mu → SideG k r z π u μW μN μG νq → IsBes R z π l → NzOn R l → IsBes R z π l₁ → ∃ c : ℂ, ∀ v ∈ R.sm, l₁ v = c • l v := by
   intro hH k r ε mu R Wp _ _ _ _ z π u μW μN μG νq l l₁ hDS hS hl hnz hl₁

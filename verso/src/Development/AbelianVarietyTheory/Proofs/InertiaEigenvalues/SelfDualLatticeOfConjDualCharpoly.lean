@@ -15,7 +15,7 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 open GlobalTheory.AntiRamConj
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Simplify using `[Matrix.trace]`. Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_of_charpoly_eq' {K : Type} [CommRing K] [Nontrivial K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K}
     (h : A.charpoly = B.charpoly) : A.trace = B.trace := by
@@ -38,13 +38,13 @@ section
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Rewrite using `[← Tgl_coe, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmat_one (i : X.Tw) (s : X.Sig i) : Tmat i s 1 = 1 := by
   rw [← Tgl_coe, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← Tgl_coe, ← Tgl_coe, ← Tgl_coe, map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmat_mul (i : X.Tw) (s : X.Sig i) (g h : Gen.GE N) : Tmat i s (g * h) = Tmat i s g * Tmat i s h := by
   rw [← Tgl_coe, ← Tgl_coe, ← Tgl_coe, map_mul, Units.val_mul]
@@ -64,11 +64,11 @@ def dualHom (i : X.Tw) (s : X.Sig i) : Gen.GE N →* Matrix (Fin D.R.r) (Fin D.R
       Matrix.mul_smul, smul_smul]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← h, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Set `u : (X.O0 i)ˣ` to `(eps0 X i g ^ D.R.t * (chiS i s g)⁻¹)⁻¹`. Establish `e : rbar X i s g = IsLocalRing.residue (X.O0 i) (u : X.O0 i) • (twistHom i s g).map (IsLocalRing.residue (X.O0 i))`. Establish `e2 : ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) = (u : X.O0 i) • twistHom i s g` using `by show _ = (u : X.O0 i) • ((((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) ^ D.R.t) • Tmat i s g)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Tmat, smul_smul, smul_smul, mul_assoc, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[rbar, e2]`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_twist (i : X.Tw) (s : X.Sig i)
     (h : Submodule.span (IsLocalRing.ResidueField (X.O0 i)) (Set.range (rbar X i s)) = ⊤) :
@@ -93,9 +93,9 @@ theorem span_twist (i : X.Tw) (s : X.Sig i)
 end
 
 /- English proof (translation)
-Introduce `D i s h2 hc`. Establish `: CharZero (FractionRing (D.ntw.O0 i))` using `charZero_of_injective_ringHom (D.ntw.emb0 i).injective`. Establish `: CharZero (D.ntw.O0 i)` using `((algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))).charZero_iff (IsFractionRing.injective _ _)).2 inferInstance`. Take `⟨U, hU⟩` from `GlobalTheory.TraceConj.exists_gl_conj_of_trace_eq (D.ntw.O0 i) (Gen.GE D.nd) D.R.r (twistHom i s).toHomUnits ((dualHom i s).comp (conjC D)).toHomUnits (span_twist i s h2.1) (fun g => trace_eq_of_charpoly_eq' (hc g (conjC D g) (conjC_apply D g)))`. Use `⟨U, fun g g' hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : g' = conjC D g` from `by ext x; rw [hg, conjC_apply]`. Use `congrArg Units.val (eq_mul_inv_of_mul_eq (hU g))` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_mul]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_of_charDual : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i), ValuationStabilityAtRing D.ntw i s → CharDual i s → SelfDual i s := by
   intro D i s h2 hc

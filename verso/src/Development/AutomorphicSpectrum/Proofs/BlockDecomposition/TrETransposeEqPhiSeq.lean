@@ -14,25 +14,23 @@ namespace GlobalTheory.CompanionTheory.WaveMult.GlTranspose
 variable {n : ℕ} {A : Type} [Ring A]
 
 /- English proof (translation)
-Rewrite using `[Epw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem epw_zero (e : Fin n → Fin n → A) (a b : Fin n) :
     Epw e 0 a b = if a = b then 1 else 0 := by
   rw [Epw]
 
 /- English proof (translation)
-Rewrite using `[Epw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem epw_succ (e : Fin n → Fin n → A) (m : ℕ) (a b : Fin n) :
     Epw e (m + 1) a b = ∑ c, e a c * Epw e m c b := by
   rw [Epw]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Simplify using `[epw_succ, epw_zero]`. Consider the case `succ m ih`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[epw_succ]`. Conclude with `sum_congr rfl fun c _ => by rw [ih]`. Use `_ = ∑ d, (∑ c, e a c * Epw e m c d) * e d b := by`. Simplify using `only [mul_sum, sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
-
-Use `_ = ∑ c, Epw e (m + 1) a c * e c b := sum_congr rfl fun d _ => by rw [epw_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epw_succ_right (e : Fin n → Fin n → A) (m : ℕ) (a b : Fin n) :
     Epw e (m + 1) a b = ∑ c, Epw e m a c * e c b := by
@@ -49,31 +47,31 @@ theorem epw_succ_right (e : Fin n → Fin n → A) (m : ℕ) (a b : Fin n) :
       _ = ∑ c, Epw e (m + 1) a c * e c b := sum_congr rfl fun d _ => by rw [epw_succ]
 
 /- English proof (translation)
-Rewrite using `[bco]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bco_zero_zero (N : A) (τ : ℕ → A) : bco N τ 0 0 = 1 := by rw [bco]
 
 /- English proof (translation)
-Rewrite using `[bco]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bco_zero_succ (N : A) (τ : ℕ → A) (j : ℕ) : bco N τ 0 (j + 1) = 0 := by rw [bco]
 
 /- English proof (translation)
-Rewrite using `[bco]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bco_succ_zero (N : A) (τ : ℕ → A) (m : ℕ) :
     bco N τ (m + 1) 0 = N * bco N τ m 0 - τ m := by rw [bco]
 
 /- English proof (translation)
-Rewrite using `[bco]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bco_succ_succ (N : A) (τ : ℕ → A) (m j : ℕ) :
     bco N τ (m + 1) (j + 1) = bco N τ m j + N * bco N τ m (j + 1) := by rw [bco]
 
 /- English proof (translation)
-Proceed by induction on `m generalizing j with`. Consider the case `zero`. Take `⟨j, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Conclude with `bco_zero_succ N τ j`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[bco_succ_succ, ih j (by omega), ih (j + 1) (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bco_eq_zero (N : A) (τ : ℕ → A) (m j : ℕ) (h : m < j) : bco N τ m j = 0 := by
   induction m generalizing j with
@@ -86,7 +84,7 @@ theorem bco_eq_zero (N : A) (τ : ℕ → A) (m j : ℕ) (h : m < j) : bco N τ 
     simp
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact bco_zero_zero N τ`. Consider the case `succ m ih`. Rewrite using `[bco_succ_succ, ih, bco_eq_zero N τ m (m + 1) (by omega)]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bco_self (N : A) (τ : ℕ → A) (m : ℕ) : bco N τ m m = 1 := by
   induction m with
@@ -96,7 +94,7 @@ theorem bco_self (N : A) (τ : ℕ → A) (m : ℕ) : bco N τ m m = 1 := by
     simp
 
 /- English proof (translation)
-Rewrite using `[phiSeq, Fin.sum_univ_eq_sum_range (fun j => bco N τ m j * phiSeq N τ j) m]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem phiSeq_eq (N : A) (τ : ℕ → A) (m : ℕ) :
     phiSeq N τ m = τ m - ∑ j ∈ range m, bco N τ m j * phiSeq N τ j := by
@@ -110,17 +108,17 @@ variable (e : Fin n → Fin n → A)
 include he
 
 /- English proof (translation)
-Proceed by induction on `m generalizing c d with`. Consider the case `zero`. Simplify using `only [epw_zero]`. Distinguish the cases in `h1 : c = d`. Substitute `h1` using the available equality.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h2 : b = c`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Establish `h3 : ¬ c = b` using `fun h => h2 h.symm`. Simplify using `[h2, h3]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : b = c`. Substitute `h2` using the available equality. Distinguish the cases in `h3 : a = d`. Substitute `h3` using the available equality. Simplify using `[h1]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h3]`. Establish `h3 : ¬ c = b` using `fun h => h2 h.symm`. Simplify using `[h1, h2, h3]`. Consider the case `succ m ih`. Establish `step : ∀ f, e a b * (e c f * Epw e m f d) - (e c f * Epw e m f d) * e a b = ((if b = c then e a f else 0) - (if a = f then e c b else 0)) * Epw e m f d + e c f * ((if b = f then Epw e m a d else 0) - (if a = d then Epw e m f b else 0))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Introduce `f`. Rewrite using `[← he a b c f, ← ih f d]`. Use `noncomm_ring`. Rewrite using `[epw_succ e m c d, mul_sum, sum_mul, ← sum_sub_distrib, sum_congr rfl (fun f _ => step f)]`. Simplify using `only [sub_mul, mul_sub, sum_add_distrib, sum_sub_distrib, ite_mul, mul_ite, zero_mul, mul_zero, sum_ite_eq, sum_ite_eq', mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : a = d <;>`. Apply the tactic sequence `simp only [h1, h2, if_true, if_false, ← epw_succ, sum_const_zero] <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem comm_epw (m : ℕ) (a b c d : Fin n) :
     e a b * Epw e m c d - Epw e m c d * e a b =
@@ -155,9 +153,9 @@ theorem comm_epw (m : ℕ) (a b c d : Fin n) :
       simp only [h1, h2, if_true, if_false, ← epw_succ, sum_const_zero] <;> abel
 
 /- English proof (translation)
-Establish `h : Epw e (m + 1) b a - ∑ c, Epw e m c a * e b c = (n : A) * Epw e m b a - (if a = b then trE e m else 0)`. Rewrite using `[epw_succ, ← sum_sub_distrib, sum_congr rfl (fun c _ => comm_epw e he m b c c a), sum_sub_distrib]`. Distinguish the cases in `h1 : a = b`. Substitute `h1` using the available equality. Simplify using `[trE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h2 : ¬ b = a` using `fun h => h1 h.symm`. Simplify using `[h1, h2]`. Rewrite using `[add_sub_assoc, ← h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem transpose_step (m : ℕ) (a b : Fin n) :
     Epw e (m + 1) b a =
@@ -174,13 +172,13 @@ theorem transpose_step (m : ℕ) (a b : Fin n) :
   abel
 
 /- English proof (translation)
-Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Simplify using `only [zero_add, range_one, sum_singleton, bco_zero_zero, one_mul, epw_zero]`. Simplify using `only [eq_comm]`. Consider the case `succ m ih => set f : Fin n → Fin n → A := fun a b => e b a with hf set N : A := (n : A) with hN set τ : ℕ → A := trE e with hτ`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `key : ∑ c, Epw e m c a * e b c = ∑ j ∈ range (m + 1), bco N τ m j * Epw f (j + 1) a b`. Simplify using `only [epw_succ_right f, mul_sum]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[ih a c, sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Establish `hn : N * Epw e m b a = ∑ j ∈ range (m + 1), N * bco N τ m (j + 1) * Epw f (j + 1) a b + N * bco N τ m 0 * Epw f 0 a b`. Rewrite using `[← sum_range_succ' (fun j => N * bco N τ m j * Epw f j a b) (m + 1), sum_range_succ _ (m + 1), bco_eq_zero N τ m (m + 1) (by omega), ih a b, mul_sum]`. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[transpose_step e he, key, hn, sum_range_succ' _ (m + 1), bco_succ_zero]`. Simplify using `only [bco_succ_succ, add_mul, sum_add_distrib, sub_mul, epw_zero f]`. Distinguish the cases in `h1 : a = b`. Apply the tactic sequence `simp [h1] try abel`. Apply the tactic sequence `simp [h1] try abel`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem transpose_poly (m : ℕ) (a b : Fin n) :
     Epw e m b a =
@@ -216,7 +214,7 @@ theorem transpose_poly (m : ℕ) (a b : Fin n) :
       try abel
 
 /- English proof (translation)
-Establish `h : trE e m = ∑ a, Epw e m a a` using `rfl`. Rewrite using `[h, sum_congr rfl (fun a _ => transpose_poly e he m a a), sum_comm]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[trE, mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trE_eq_sum (m : ℕ) :
     trE e m = ∑ j ∈ range (m + 1), bco (n : A) (trE e) m j * trE (fun a b => e b a) j := by
@@ -228,9 +226,9 @@ theorem trE_eq_sum (m : ℕ) :
 end Gl
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Establish `h` using `trE_eq_sum e he m`. Rewrite `h` using `[sum_range_succ, bco_self, one_mul]`. Establish `hs : ∑ j ∈ range m, bco (n : A) (trE e) m j * phiSeq (n : A) (trE e) j = ∑ j ∈ range m, bco (n : A) (trE e) m j * trE (fun a b => e b a) j` using `sum_congr rfl fun j hj => by rw [ih j (mem_range.mp hj)]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[phiSeq_eq, hs, h, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trE_transpose_eq_phiSeq (n : ℕ) {A : Type} [Ring A] [Algebra ℂ A]
     (e : Fin n → Fin n → A)

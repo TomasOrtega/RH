@@ -11,7 +11,7 @@ namespace GlobalTheory.FlagOverField
 open GlobalTheory.Cartier
 
 /- English proof (translation)
-Use `choose W hW a ha using fun k => (hf k).exists_fnOf`. Set `V : X.Opens` to `⟨(U : Set X) ∩ ⋂ k, (W k : Set X), U.isOpen.inter (isOpen_iInter_of_finite fun k => (W k).isOpen)⟩`. Establish `hle (k : κ) : V ≤ W k` using `fun x hx => Set.mem_iInter.1 hx.2 k`. Use `⟨V, ⟨hU, Set.mem_iInter.2 hW⟩, fun x hx => hx.1, fun k => resG X (hle k) (a k), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[fnOf_resG, ha]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fnOf_family {X : Scheme.{0}} [IsIntegral X] {y : X} {κ : Type} [Finite κ] {f : κ → X.functionField}
     (hf : ∀ k, RegAt y (f k)) {U : X.Opens} (hU : y ∈ U) :
@@ -23,15 +23,15 @@ theorem exists_fnOf_family {X : Scheme.{0}} [IsIntegral X] {y : X} {κ : Type} [
   rw [fnOf_resG, ha]
 
 /- English proof (translation)
-Introduce `a`. Take `⟨U, hy, M, hM, hAM⟩` from `hA a`. Take `⟨h₁, h₂, h₃, h₄⟩` from `hg a`. Take `⟨V, hV, hVU, s, hs⟩` from `exists_fnOf_family (y := y) (κ := Option (Fin (r a) × Fin (r a))) (f := fun k => k.elim (g a).det⁻¹ fun p => g a p.2 p.1) (fun k => by`. Consider the cases of `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `none => exact mem_O_ratOf.1 h₃`. Consider the case `some p => exact mem_O_ratOf.1 (h₁ p.2 p.1)) hy`. Set `T : Matrix (Fin (r a)) (Fin (r a)) Γ(Y.X, V)` to `Matrix.of fun i j => s (some (i, j))`. Establish `hT : T.map (fnOf V (gen_mem hV)) = (g a).transpose`. Use extensionality with `i j`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hs (some (i, j))`. Establish `hinj` using `fnOf_injective V (gen_mem hV)`. Establish `hu : T.BlockTriangular id` using `fun i j hij => hinj (by`. Rewrite using `[map_zero]`. Conclude with `(hs (some (i, j))).trans (h₄ j i j.2 hij))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : IsUnit T.det`. Use `IsUnit.of_mul_eq_one (s none) (hinj ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, RingHom.map_det, RingHom.mapMatrix_apply, hT, Matrix.det_transpose, hs none]`. Conclude with `mul_inv_cancel₀ h₂`. Use `⟨V, hV, M.map (resG Y.X hVU) * T, spans_pullCol_mul Y.str (e a) le_top (spans_pullCol_res Y.str (e a) le_top hVU hM) hu hd, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hM' : (M.map (resG Y.X hVU)).map (fnOf V (gen_mem hV)) = M.map (fnOf U (gen_mem hy))`. Use extensionality with `i j`. Conclude with `fnOf_resG hVU _ _`. Rewrite using `[Matrix.map_mul, hT, hM', Matrix.transpose_mul, Matrix.transpose_transpose, ← hAM]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adFrame_par_mul (F : Type) [Field F] (Y : Var F) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → (Sp F).Modules)
     (e : ∀ a, Fin (r a) → Γ(E a, ⊤))

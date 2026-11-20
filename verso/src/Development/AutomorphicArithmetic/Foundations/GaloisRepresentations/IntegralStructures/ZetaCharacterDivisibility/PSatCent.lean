@@ -16,15 +16,15 @@ open UpperTheory.Gal.Int.Div
 open GlobalTheory.LFun Formalism.UG Matrix in
 
 /- English proof (translation)
-Establish `hv : Valued.v ((u⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]`. Establish `m1 : (u : w.adicCompletion E) ∈ Ov E w` using `le_of_eq hu`. Establish `m2 : ((u⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ∈ Ov E w` using `le_of_eq hv`. Establish `hinj : Function.Injective fun M : Matrix (Fin a) (Fin a) (Ov E w) => M.map (Ov E w).subtype` using `Matrix.map_injective Subtype.val_injective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨Matrix.scalar (Fin a) (⟨u, m1⟩ : Ov E w), Matrix.scalar (Fin a) (⟨_, m2⟩ : Ov E w), hinj ?_, hinj ?_⟩, Units.ext ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[bc]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[bc, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem scalar_unit_mem {E : Type} [Field E] [NumberField E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (u : (w.adicCompletion E)ˣ) (hu : Valued.v (u : w.adicCompletion E) = 1) :
@@ -53,9 +53,7 @@ private theorem scalar_unit_mem {E : Type} [Field E] [NumberField E] (a : ℕ) (
 open GlobalTheory.LFun Formalism.UG Matrix in
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Establish `hc : (B.map fun b : ℂˣ => (b : ℂ)).card = B.card` using `Multiset.card_map _ _`. Rewrite using `[satEig, sub_self, mul_zero, zero_div, Complex.cpow_zero, one_mul]`. Use `conv_lhs => rw [← hc]`. Rewrite using `[Multiset.esymm, Multiset.powersetCard_self, Multiset.map_singleton, Multiset.sum_singleton]`.
-
-Conclude with `(map_multiset_prod (Units.coeHom ℂ) B).symm`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem satEig_self (q n : ℕ) (B : Multiset ℂˣ) (hB : B.card = n) :
     satEig q n B n = ((B.prod : ℂˣ) : ℂ) := by
@@ -69,13 +67,13 @@ private theorem satEig_self (q n : ℕ) (B : Multiset ℂˣ) (hB : B.card = n) :
 open GlobalTheory.LFun Formalism.UG Matrix in
 
 /- English proof (translation)
-Establish `h0 : (u : w.adicCompletion E) ≠ 0` using `u.ne_zero`. Use `set z : GL (Fin a) (w.adicCompletion E) := GlobalTheory.WeylGL.tor h0 fun _ => 1 with hz`. Establish `hzs : z = GeneralLinearGroup.scalar (Fin a) u`. Use extensionality with `i j`. Simplify using `[hz, GlobalTheory.WeylGL.tor_val, Matrix.diagonal_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcomm : ∀ g, z * g = g * z` using `GlobalTheory.WeylGL.tor_const_comm h0 1`. Establish `hT : Tj ℂ a (Ov E w) (u : w.adicCompletion E) a = dosetInd ℂ (KGL w a) z`. Rewrite using `[GlobalTheory.WeylGL.Tj_eq h0]`. Simplify using `[hz]`. Establish `h1` using `hx.2.2.2 _ hu a le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hT, heckeVec_dosetInd (R := {z}) hx.2.1, Finset.sum_singleton, satEig_self _ _ _ hx.2.2.1, hzs]`. Conclude with `h1`. Introduce `γ hγ`. Rewrite using `[Finset.mem_singleton.1 hγ]`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨1, one_mem _, 1, one_mem _, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg`. Take `⟨c, hc, d, hd, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`. Use `⟨z, ⟨Finset.mem_singleton_self _, ?_⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩` and prove the remaining obligations. Rewrite using `[← hcomm c, mul_assoc, inv_mul_cancel_left]`. Conclude with `mul_mem hc hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem scalar_unif_act {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module ℂ V] {a : ℕ}
     {w : HeightOneSpectrum (𝓞 E)} {ρ : Representation ℂ (GL (Fin a) (w.adicCompletion E)) V} {x : V}
@@ -103,7 +101,7 @@ private theorem scalar_unif_act {E V : Type} [Field E] [NumberField E] [AddCommG
     exact mul_mem hc hd
 
 /- English proof (translation)
-Introduce `E _ _ a w σ B hB`. Take `⟨x, hx⟩` from `hB.exists_vec`. Conclude with `⟨x, hx.1, fun u hu => GlobalTheory.LGrp.mem_fixed.1 hx.2.1 _ (scalar_unit_mem a w u hu), fun u hu => scalar_unif_act hx u hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.Int.Div.satCent_of :
     SatCent := by

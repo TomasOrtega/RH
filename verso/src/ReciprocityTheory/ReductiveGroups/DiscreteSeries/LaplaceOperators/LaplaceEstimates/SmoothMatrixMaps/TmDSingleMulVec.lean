@@ -24,11 +24,11 @@ def TmGood (ε : Fin (2 * r + k + 1) → Bool) (σ : Mat k r → (H →L[ℂ] H)
       ‖Formalism.REAL.Eword ε wd (coefX σ x₀ w m) g‖ ≤ C * frob g ^ (-a)
 
 /- English proof (translation)
-Establish `e : coefX σ x₀ w (m + c • m') = fun g => coefX σ x₀ w m g + c * coefX σ x₀ w m' g`. Use function extensionality and compare the values at `g`. Simplify using `[coefX, inner_add_right, inner_smul_right]`. Use `⟨?_, fun wd => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.REAL.smooth_on_group_add hm.1 (Formalism.REAL.smooth_on_group_const_mul c hm'.1)`. Take `⟨C₁, h₁⟩` from `hm.2 wd`. Take `⟨C₂, h₂⟩` from `hm'.2 wd`. Use `⟨C₁ + ‖c‖ * C₂, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[e, tmA_eword_lin hm.1 hm'.1 c wd g hg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `_ ≤ C₁ * frob g ^ (-a) + ‖c‖ * (C₂ * frob g ^ (-a)) := add_le_add (h₁ g hg) (mul_le_mul_of_nonneg_left (h₂ g hg) (norm_nonneg c))`. Use `_ = (C₁ + ‖c‖ * C₂) * frob g ^ (-a) := by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmC_good_add {x₀ : Mat k r} {w : H} {a : ℝ} {m m' : H} (hm : TmGood ε σ x₀ w a m)
     (hm' : TmGood ε σ x₀ w a m') (c : ℂ) : TmGood ε σ x₀ w a (m + c • m') := by
@@ -48,9 +48,9 @@ theorem tmC_good_add {x₀ : Mat k r} {w : H} {a : ℝ} {m m' : H} (hm : TmGood 
       _ = (C₁ + ‖c‖ * C₂) * frob g ^ (-a) := by ring
 
 /- English proof (translation)
-Establish `e : coefX σ x₀ w 0 = fun _ => (0 : ℂ)` using `by funext g; simp [coefX]`. Use `⟨?_, fun wd => ⟨0, fun g hg => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Formalism.REAL.smooth_on_group_const_fun 0`. Rewrite using `[e, tmA_eword_zero wd g hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tmC_good_zero (x₀ : Mat k r) (w : H) (a : ℝ) : TmGood ε σ x₀ w a 0 := by
   have e : coefX σ x₀ w 0 = fun _ => (0 : ℂ) := by funext g; simp [coefX]
@@ -70,9 +70,9 @@ def tmGoodSub (ε : Fin (2 * r + k + 1) → Bool) (σ : Mat k r → (H →L[ℂ]
     simpa using this
 
 /- English proof (translation)
-Establish `e : ∀ g, Formalism.REAL.inUJ ε g → Formalism.REAL.Eab ε a' b' (coefX σ x₀ w (m : H)) g = coefX σ x₀ w ((E a' b' m : D) : H) g` using `fun g hg => tmB_eab_coef hσ hD (tmA_inUJ_mul (tmA_inUJ_inv hx₀) hg) w m a' b'`. Use `⟨Formalism.REAL.smooth_on_group_congr (Formalism.REAL.smooth_lie_derivative a' b' hm.1) e, fun wd => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hm.2 (wd ++ [(a', b')])`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h3` using `eword_append_Eab ε (coefX σ x₀ w (m : H)) (a', b') wd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← tmA_eword_congr e wd g hg, h3]`. Conclude with `hC g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmC_good_E (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {x₀ : Mat k r}
     (hx₀ : x₀ ∈ UJset ε) (w : H) {a : ℝ} {m : D} (hm : TmGood ε σ x₀ w a (m : H))
@@ -88,13 +88,13 @@ theorem tmC_good_E (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {
   exact hC g hg
 
 /- English proof (translation)
-Use `set ψ : Mat k r → ℂ := fun y => ⟪ι w, S7.PsiM T μ y (ι v)⟫_ℂ with hψdef`. Establish `e : ∀ g, Formalism.REAL.inUJ ε g → coefX σ x₀ ((w : D) : H) ((v : D) : H) g = ψ (x₀⁻¹ * g)` using `fun g hg => hcoef _ (tmA_inUJ_mul (tmA_inUJ_inv hx₀) hg) v w`. Establish `hψ : Formalism.REAL.SmoothOnG ε ψ`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `S7.psiM_smooth T μ hμ g₀ hg₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Lc : (T.V →L[ℂ] T.V) →L[ℂ] ℂ := (innerSL ℂ (ι w)).comp (ContinuousLinearMap.apply ℂ T.V (ι v))`. Use `⟨U, fun z => Lc (F z), hU, hgU, (Lc.restrictScalars ℝ).contDiff.comp_contDiffOn hF, ?_⟩` and prove the remaining obligations. Introduce `g hg hgJ`. Simplify using `[hψdef, Lc, hfF g hg hgJ, innerSL_apply_apply]`. Use `⟨Formalism.REAL.smooth_on_group_congr (tmA_sm_left hψ (tmA_inUJ_inv hx₀)) (fun g hg => (e g hg).symm), fun wd => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hdec wd (ι v) (ι w)`. Take `⟨a₀⟩ : Nonempty (Fin (2 * r + k + 1))` from `⟨0⟩`. Use `⟨max C 0 * frob x₀ ^ a, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hy : x₀⁻¹ * g ∈ UJset ε` using `tmA_inUJ_mul (tmA_inUJ_inv hx₀) hg`. Rewrite using `[tmA_eword_congr (h := fun g => ψ (x₀⁻¹ * g)) e wd g hg, congrFun (tmA_eword_left x₀⁻¹ ψ wd) g]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hC _ hy`. Establish `h2` using `tmA_frob_trans hx₀ hg a₀ ha`. Establish `h3 : 0 ≤ frob (x₀⁻¹ * g) ^ (-a)` using `Real.rpow_nonneg (le_trans zero_le_one (tmA_one_le_frob hy a₀)) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tmC_good_V {lam : Fin (2 * r + k + 1) → ℝ} {V : Submodule ℂ D} {T : S7.KType ε (lowK ε lam)}
     {μ : Fin (2 * r + k + 1) → ℤ} {ι : V ≃ₗ[ℂ] T.V} (hμ : S7.IsMu lam μ)
@@ -131,7 +131,7 @@ theorem tmC_good_V {lam : Fin (2 * r + k + 1) → ℝ} {V : Submodule ℂ D} {T 
     _ = max C 0 * frob x₀ ^ a * frob g ^ (-a) := by ring
 
 /- English proof (translation)
-Establish `hle : genSub E V ≤ tmGoodSub ε σ D x₀ ((w : D) : H) a` using `sInf_le ⟨fun v hv => tmC_good_V hμ hcoef ha hdec hx₀ w ⟨v, hv⟩, fun a' b' m hm => tmC_good_E hσ hD hx₀ _ hm a' b'⟩`. Conclude with `hle hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tmC_good_genSub (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {lam : Fin (2 * r + k + 1) → ℝ}
     {V : Submodule ℂ D} {T : S7.KType ε (lowK ε lam)}
@@ -157,14 +157,14 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
 /- English proof (translation)
-Simplify using `[cJ, Formalism.QuantumDeterminants.herm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmD_cJ_lin (x₁ y y' : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mat k r) :
     cJ ε x₁ (y + c • y') g = cJ ε x₁ y g + c * cJ ε x₁ y' g := by
   simp [cJ, Formalism.QuantumDeterminants.herm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[cJ, Formalism.QuantumDeterminants.herm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmD_cJ_zero (x₁ : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) : cJ ε x₁ 0 g = 0 := by
   simp [cJ, Formalism.QuantumDeterminants.herm]
@@ -179,7 +179,7 @@ def tmD_cJL (ε : Fin (2 * r + k + 1) → Bool) (x₁ y : Fin (2 * r + k + 1) �
           Complex.real_smul] }
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [tmD_cJL, LinearMap.coe_toContinuousLinearMap']`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tmD_cJL_coe (x₁ y : Fin (2 * r + k + 1) → ℂ) : ⇑(tmD_cJL ε x₁ y) = cJ ε x₁ y := by
   ext g
@@ -187,7 +187,7 @@ theorem tmD_cJL_coe (x₁ y : Fin (2 * r + k + 1) → ℂ) : ⇑(tmD_cJL ε x₁
   rfl
 
 /- English proof (translation)
-Introduce `g₀ _`. Use `⟨Set.univ, ⇑(tmD_cJL ε x₁ y), isOpen_univ, Set.mem_univ _, (tmD_cJL ε x₁ y).contDiff.contDiffOn, fun g _ _ => by rw [tmD_cJL_coe]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem tmD_cJ_smooth (x₁ y : Fin (2 * r + k + 1) → ℂ) : Formalism.REAL.SmoothOnG ε (cJ ε x₁ y) := by
   intro g₀ _
@@ -195,7 +195,7 @@ theorem tmD_cJ_smooth (x₁ y : Fin (2 * r + k + 1) → ℂ) : Formalism.REAL.Sm
     (tmD_cJL ε x₁ y).contDiff.contDiffOn, fun g _ _ => by rw [tmD_cJL_coe]⟩
 
 /- English proof (translation)
-Rewrite using `[Formalism.REAL.right_derivative_extends _ ε (cJ ε x₁ y) (⇑(tmD_cJL ε x₁ y)) Set.univ g X isOpen_univ (Set.mem_univ g) hg (tmD_cJL ε x₁ y).contDiff.contDiffOn (fun h _ _ => by rw [tmD_cJL_coe]) hX, ContinuousLinearMap.fderiv, tmD_cJL_coe]`. Simplify using `[cJ, Formalism.QuantumDeterminants.herm, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tmD_rd_cJ (x₁ y : Fin (2 * r + k + 1) → ℂ) {X g : Mat k r} (hX : Formalism.REAL.inG ε X)
     (hg : Formalism.REAL.inUJ ε g) : Formalism.REAL.Rd X (cJ ε x₁ y) g = cJ ε x₁ (X *ᵥ y) g := by
@@ -205,7 +205,7 @@ theorem tmD_rd_cJ (x₁ y : Fin (2 * r + k + 1) → ℂ) {X g : Mat k r} (hX : F
   simp [cJ, Formalism.QuantumDeterminants.herm, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Formalism.REAL.lie_derivative_def, tmD_rd_cJ x₁ y (Formalism.REAL.real_part_single_mem ε a b) hg, tmD_rd_cJ x₁ y (Formalism.REAL.imaginary_part_single_mem ε a b) hg, ← tmD_cJ_lin]`. Use `congr 1`. Establish `hZ` using `(Formalism.REAL.complex_parts_mem_lie_algebra_holds _ ε (Matrix.single a b 1)).2.2.1`. Rewrite using `[← Matrix.smul_mulVec, ← Matrix.add_mulVec, ← hZ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmD_eab_cJ (x₁ y : Fin (2 * r + k + 1) → ℂ) (a b : Fin (2 * r + k + 1)) {g : Mat k r}
     (hg : Formalism.REAL.inUJ ε g) : Formalism.REAL.Eab ε a b (cJ ε x₁ y) g = cJ ε x₁ (Matrix.single a b 1 *ᵥ y) g := by
@@ -216,9 +216,9 @@ theorem tmD_eab_cJ (x₁ y : Fin (2 * r + k + 1) → ℂ) (a b : Fin (2 * r + k 
   rw [← Matrix.smul_mulVec, ← Matrix.add_mulVec, ← hZ]
 
 /- English proof (translation)
-Use extensionality with `i`. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, Pi.single_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, Pi.single_apply, h, Ne.symm h]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, Pi.single_apply, hc, Ne.symm hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tmD_single_mulVec (a b c : Fin (2 * r + k + 1)) :
     Matrix.single a b (1 : ℂ) *ᵥ Pi.single c 1 = if c = b then Pi.single a 1 else 0 := by
@@ -231,11 +231,11 @@ theorem tmD_single_mulVec (a b c : Fin (2 * r + k + 1)) :
   · simp [Matrix.mulVec, dotProduct, Matrix.single_apply, Pi.single_apply, hc, Ne.symm hc]
 
 /- English proof (translation)
-Unfold `cJ Formalism.QuantumDeterminants.herm`. Rewrite using `[dotProduct, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Pi.star_apply, norm_star]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Jm ε *ᵥ (g *ᵥ Pi.single c 1)) i = (if ε i then 1 else -1) * g i c`. Rewrite using `[Jm, Matrix.mulVec_diagonal]`. Use `congr 1`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[e, norm_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `tmA_entry_le_frob g i c` as an intermediate fact. Apply the tactic sequence `split_ifs <;> simpa using this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tmD_cJ_bound (x₁ : Fin (2 * r + k + 1) → ℂ) (c : Fin (2 * r + k + 1)) (g : Mat k r) :
     ‖cJ ε x₁ (Pi.single c 1) g‖ ≤ (∑ i, ‖x₁ i‖) * frob g := by

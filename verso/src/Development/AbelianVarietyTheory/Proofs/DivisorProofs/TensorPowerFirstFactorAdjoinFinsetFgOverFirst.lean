@@ -6,15 +6,15 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R A _ _ _ k F`. Use `set S := firstAndFinite R A k F with hS`. Set `g : Fin (k + 1) × F → S` to `fun p => ⟨PiTensorProduct.singleAlgHom (R := R) (A := fun _ : Fin (k + 1) => A) p.1 p.2.1, Algebra.subset_adjoin (Or.inr (Set.mem_iUnion.2 ⟨p.1, p.2.1, p.2.2, rfl⟩))⟩`. Use `⟨Finset.univ.image g, ?_⟩` and prove the remaining obligations. Apply `Subalgebra.map_injective (f := S.val) Subtype.val_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.map_adjoin, Algebra.map_top, Subalgebra.range_val]`. Use `conv_rhs => rw [hS, firstAndFinite]`. Use `congr 1`. Rewrite using `[Set.image_union]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_image, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨a, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, ⟨a, rfl⟩, rfl⟩`. Use extensionality with `x`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_image, Set.mem_range, Set.mem_iUnion, Finset.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨⟨i, a, ha⟩, rfl⟩, rfl⟩`. Conclude with `⟨i, a, ha, rfl⟩`. Introduce and unpack `⟨i, a, ha, rfl⟩`. Conclude with `⟨g (i, ⟨a, ha⟩), ⟨(i, ⟨a, ha⟩), rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem firstAndFinite_fg_over_first : ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R A] (k : ℕ) (F : Finset A), ∃ F' : Finset (firstAndFinite R A k F), Algebra.adjoin R (Set.range (firstIncl R A k F) ∪ (F' : Set (firstAndFinite R A k F))) = ⊤ := by
   intro R A _ _ _ k F

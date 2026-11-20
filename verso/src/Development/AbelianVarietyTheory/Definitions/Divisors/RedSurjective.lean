@@ -34,7 +34,7 @@ structure IsDM {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [Perfec
   V_F : ∀ x, V (F x) = p • x
 
 /- English proof (translation)
-The claim follows from `CharP.cast_eq_zero k p`.
+A detailed English derivation is pending.
 -/
 theorem p_eq_zero (p : ℕ) (k : Type) [Field k] [CharP k p] : (p : k) = 0 := CharP.cast_eq_zero k p
 
@@ -164,13 +164,13 @@ end Theory
 section Examples
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 𝟙 G, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example {p : ℕ} [Fact p.Prime] {k : Type} [Field k] (G : PDivGroup p k) : IsIsog (𝟙 G) :=
   ⟨0, 𝟙 G, by simp, by simp⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance finite := inferInstance F_V x := by change WittVector.frobenius ((p : ℕ) • (WittVector.frobeniusEquiv p k).symm x) = p • x rw [nsmul_eq_mul, nsmul_eq_mul, map_mul, map_natCast] congr 1 exact (WittVector.frobeniusEquiv p k).apply_symm_apply x V_F x := by change (p : …`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
     IsDM ((WittVector.frobenius : WittVector p k →+* WittVector p k).toSemilinearMap)
@@ -188,7 +188,7 @@ example (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k
     exact (WittVector.frobeniusEquiv p k).symm_apply_apply x
 
 /- English proof (translation)
-The claim follows from `p_eq_zero 2 (ZMod 2)`.
+A detailed English derivation is pending.
 -/
 example : ((2 : ℕ) : ZMod 2) = 0 := p_eq_zero 2 (ZMod 2)
 

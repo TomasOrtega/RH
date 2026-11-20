@@ -10,11 +10,11 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.BcB Positiv
 namespace UpperTheory.V.Z.Mult
 
 /- English proof (translation)
-Introduce `E _ _ _ hunr n hn hn4 π hreg hd σ hσ _ hae w hw τ hτ`. Take `⟨D₀, hone, -⟩` from `onePre E n hn π hreg (csdDisc E n hn π hd)`. Take `⟨hs₀, hex, hsub₀⟩` from `GlobalTheory.CompanionTheory.OnePart.oneRead E n hn π _ hone`. Take `⟨D, h1, h2, h3⟩` from `hBC E hunr n hn σ hσ`. Establish `hD₀ : {w | IsSplitAt w ∧ ¬ D₀.SplitAt σ w}.Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Set.Finite.subset (Filter.eventually_cofinite.1 hae) fun w hw hx => hw.2 ?_` and prove the remaining obligations. Take `⟨τ, B, a, c', d⟩` from `hx hw.1`. Take `⟨τ', hτ'⟩` from `hex w`. Conclude with `⟨τ, (hsub₀ w τ' hτ' τ).2 (GlobalTheory.CompanionTheory.SatComp.satComp E n π w τ τ' B c'.1 c' d hτ'), a⟩`. Establish `hD : One D π` using `onlyPre hW hunr hn hn4 π hreg hd D h1 h2 ((Rig.splitSatPre E n σ hσ D D₀ (Set.Finite.subset Set.finite_empty fun w hw => hw.2 (h3 w hw.1)) hD₀).mono fun w hw hs => (hw hs).imp fun B hB => ⟨hB.1, (hs₀ w B).2 hB.2⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨P, a, b⟩` from `h3 w hw`. Conclude with `Desc.Comp.congr b (((GlobalTheory.CompanionTheory.OnePart.oneRead E n hn π _ hD).2.2 w τ hτ P).1 a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem compOf (hBC : Desc.BCOut) (hW : GalWeak 4) : CompOf := by
   intro E _ _ _ hunr n hn hn4 π hreg hd σ hσ _ hae w hw τ hτ

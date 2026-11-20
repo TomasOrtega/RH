@@ -9,43 +9,37 @@ open Metric Filter Topology Real
 noncomputable section
 
 /- English proof (translation)
-Introduce `R ψ k M hR hψ hb`. Establish `hSo : IsOpen (ball (0 : ℂ) R \ {0})` using `isOpen_ball.sdiff isClosed_singleton`. Use `set F : ℂ → ℂ := fun x => Complex.exp (ψ x) * x ^ k with hFdef`. Establish `hFd : DifferentiableOn ℂ F (ball (0 : ℂ) R \ {0})`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0` using `hx.2`. Establish `h1 : DifferentiableAt ℂ ψ x` using `(hψ x hx).differentiableAt (hSo.mem_nhds hx)`. Conclude with `(h1.cexp.mul ((hasDerivAt_zpow k x (Or.inl hx0)).differentiableAt)).differentiableWithinAt`. Establish `hFb : BddAbove (norm ∘ F '' (ball (0 : ℂ) R \ {0}))`. Use `⟨M, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hb x hx`. Use `set G : ℂ → ℂ := Function.update F 0 (limUnder (𝓝[≠] (0 : ℂ)) F) with hGdef`. Establish `hGd : DifferentiableOn ℂ G (ball (0 : ℂ) R)` using `Complex.differentiableOn_update_limUnder_of_bddAbove (ball_mem_nhds 0 hR) hFd hFb`. Establish `hGa : AnalyticAt ℂ G 0` using `hGd.analyticAt (ball_mem_nhds 0 hR)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hGF : ∀ x : ℂ, x ≠ 0 → G x = F x` using `fun x hx => Function.update_of_ne hx _ _`. Establish `hnz : ¬ ∀ᶠ z in 𝓝 (0 : ℂ), G z = 0`. Introduce `h`. Take `⟨x, hx, hx0⟩` from `((h.filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin : {(0 : ℂ)}ᶜ ∈ 𝓝[≠] (0 : ℂ))).exists`. Establish `hx0' : x ≠ 0` using `hx0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `hx` using `[hGF x hx0', hFdef]`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) (zpow_ne_zero _ hx0') hx`. Take `⟨m, u, hua, hu0, hGu⟩` from `hGa.exists_eventuallyEq_pow_smul_nonzero_iff.mpr hnz`. Establish `hev : ∀ᶠ x in 𝓝 (0 : ℂ), AnalyticAt ℂ u x ∧ u x ≠ 0 ∧ G x = x ^ m * u x ∧ x ∈ ball (0 : ℂ) R` using `by filter_upwards [hua.eventually_analyticAt, hua.continuousAt.eventually_ne hu0, hGu, ball_mem_nhds (0 : ℂ) hR] with x h1 h2 h3 h4`. Conclude with `⟨h1, h2, by simpa using h3, h4⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ε, hε, hεs⟩` from `Metric.eventually_nhds_iff_ball.mp hev`. Use `set j : ℤ := (m : ℤ) - k with hjdef`. Establish `hkey : ∀ x ∈ ball (0 : ℂ) ε, x ≠ 0 → Complex.exp (ψ x) = x ^ j * u x`. Introduce `x hx hx0`. Take `⟨-, -, h3, -⟩` from `hεs x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[hGF x hx0, hFdef]`. Establish `hk : x ^ k ≠ 0` using `zpow_ne_zero _ hx0`. Rewrite using `[hjdef, zpow_sub₀ hx0, zpow_natCast, div_mul_eq_mul_div, ← h3, mul_div_cancel_right₀ _ hk]`. Establish `hSε : IsOpen (ball (0 : ℂ) ε \ {0})` using `isOpen_ball.sdiff isClosed_singleton`. Establish `hlog : ∀ x ∈ ball (0 : ℂ) ε, x ≠ 0 → HasDerivAt ψ (deriv ψ x) x ∧ deriv ψ x = (j : ℂ) * (x - 0)⁻¹ + deriv u x / u x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx hx0`. Take `⟨hux, hu0x, -, hxR⟩` from `hεs x hx`. Establish `hψx : HasDerivAt ψ (deriv ψ x) x` using `((hψ x ⟨hxR, hx0⟩).differentiableAt (hSo.mem_nhds ⟨hxR, hx0⟩)).hasDerivAt`. Use `⟨hψx, ?_⟩` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun y => Complex.exp (ψ y)) (Complex.exp (ψ x) * deriv ψ x) x` using `hψx.cexp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun y => y ^ j * u y) ((j : ℂ) * x ^ (j - 1) * u x + x ^ j * deriv u x) x` using `(hasDerivAt_zpow j x (Or.inl hx0)).mul hux.differentiableAt.hasDerivAt`. Establish `heq : (fun y => Complex.exp (ψ y)) =ᶠ[𝓝 x] fun y => y ^ j * u y` using `by filter_upwards [hSε.mem_nhds ⟨hx, hx0⟩] with y hy`. Conclude with `hkey y hy.1 hy.2`. Establish `h3` using `(h1.congr_of_eventuallyEq heq.symm).unique h2`. Rewrite `h3` using `[hkey x hx hx0, zpow_sub_one₀ hx0]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hxj : x ^ j ≠ 0` using `zpow_ne_zero _ hx0`. Establish `hd : deriv ψ x = ((j : ℂ) * (x ^ j * x⁻¹) * u x + x ^ j * deriv u x) / (x ^ j * u x)`. Rewrite using `[eq_div_iff (mul_ne_zero hxj hu0x)]`. Take the linear combination `h3`. Rewrite using `[hd, sub_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `set r : ℝ := ε / 2 with hrdef`. Establish `hr : 0 < r` using `half_pos hε`. Establish `hsph : ∀ z ∈ sphere (0 : ℂ) r, z ∈ ball (0 : ℂ) ε ∧ z ≠ 0`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz' : ‖z‖ = r` using `by simpa using hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, hz']`. Conclude with `half_lt_self hε`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz'` using `[h, norm_zero]`. Conclude with `hr.ne hz'`. Establish `hudiff : DifferentiableOn ℂ (fun z => deriv u z / u z) (ball (0 : ℂ) ε)`. Introduce `z hz`. Take `⟨huz, hu0z, -, -⟩` from `hεs z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(huz.deriv.differentiableAt.div huz.differentiableAt hu0z).differentiableWithinAt`. Establish `hI1 : (∮ z in C(0, r), deriv ψ z) = 0` using `circleIntegral.integral_eq_zero_of_hasDerivWithinAt hr.le fun z hz => (hlog z (hsph z hz).1 (hsph z hz).2).1.hasDerivWithinAt`. Establish `hI2 : (∮ z in C(0, r), deriv ψ z) = ∮ z in C(0, r), ((j : ℂ) * (z - 0)⁻¹ + deriv u z / u z)` using `circleIntegral.integral_congr hr.le fun z hz => (hlog z (hsph z hz).1 (hsph z hz).2).2`. Establish `hc1 : CircleIntegrable (fun z : ℂ => (j : ℂ) * (z - 0)⁻¹) 0 r`. Use `ContinuousOn.circleIntegrable hr.le ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `continuousOn_const.mul ((continuousOn_id.sub continuousOn_const).inv₀ ?_)` and prove the remaining obligations. Introduce `z hz`. Simplify using `using (hsph z hz).2`. Establish `hc2 : CircleIntegrable (fun z : ℂ => deriv u z / u z) 0 r` using `ContinuousOn.circleIntegrable hr.le (hudiff.continuousOn.mono fun z hz => (hsph z hz).1)`. Establish `hI3 : (∮ z in C(0, r), deriv u z / u z) = 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `DiffContOnCl.circleIntegral_eq_zero hr.le (DifferentiableOn.diffContOnCl ?_)` and prove the remaining obligations. Rewrite using `[closure_ball (0 : ℂ) hr.ne']`. Conclude with `hudiff.mono (closedBall_subset_ball (half_lt_self hε))`. Establish `hI4 : (∮ z in C(0, r), (j : ℂ) * (z - 0)⁻¹) = (j : ℂ) * (2 * π * Complex.I)`. Rewrite using `[circleIntegral.integral_const_mul, circleIntegral.integral_sub_center_inv 0 hr.ne']`.
-
-Rewrite `hI2` using `[circleIntegral.integral_add hc1 hc2, hI3, hI4, add_zero]`. Rewrite `hI2` using `[hI1]`. Establish `hj0 : (j : ℂ) = 0`. Break down `mul_eq_zero.mp hI2.symm with h | h` into its components or cases. Conclude with `h`.
-
-Conclude with `absurd h Complex.two_pi_I_ne_zero`. Establish `hj : j = 0` using `by exact_mod_cast hj0`. Use `⟨?_, u 0, hu0, ?_⟩` and prove the remaining obligations. Establish `: (m : ℤ) - k = 0` using `hj`. Use linear arithmetic over natural numbers and integers.
-
-Use `(hua.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' ?_ filter_upwards [inter_mem_nhdsWithin ({(0 : ℂ)}ᶜ) (ball_mem_nhds (0 : ℂ) hε)] with x hx` and prove the remaining obligations. Rewrite using `[hkey x hx.2 hx.1, hj, zpow_zero, one_mul]`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PuncturedExpOrder.proof : PuncturedExpOrder.Statement := by
   intro R ψ k M hR hψ hb

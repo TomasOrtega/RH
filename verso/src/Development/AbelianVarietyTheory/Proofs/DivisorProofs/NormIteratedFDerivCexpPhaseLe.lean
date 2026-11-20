@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : ContDiffAt ℂ (i : ℕ) Complex.exp z` using `Complex.contDiff_exp.contDiffAt`. Rewrite using `[← hc.restrictScalars_iteratedFDeriv (𝕜 := ℝ)]`. Simplify using `only [Function.comp]`. Rewrite using `[ContinuousMultilinearMap.norm_restrictScalars, norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `h` using `congrFun (iteratedDeriv_cexp_const_mul i 1) z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [one_mul, one_pow] at h`. Rewrite using `[h, Complex.norm_exp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_iteratedFDeriv_real_cexp (i : ℕ) (z : ℂ) :
     ‖iteratedFDeriv ℝ i Complex.exp z‖ = Real.exp z.re := by
@@ -23,11 +23,11 @@ theorem norm_iteratedFDeriv_real_cexp (i : ℕ) (z : ℂ) :
   rw [h, Complex.norm_exp]
 
 /- English proof (translation)
-Establish `hd : ∀ s, DifferentiableAt ℝ h s` using `fun s => (hh.differentiable (by simp)).differentiableAt`. Establish `hf : fderiv ℝ (fun t => L t + h t) = fun s => L + fderiv ℝ h s`. Use function extensionality and compare the values at `s`. Conclude with `(L.hasFDerivAt.add (hd s).hasFDerivAt).fderiv`. Rewrite using `[← norm_iteratedFDeriv_fderiv, hf, ← norm_iteratedFDeriv_fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfh : ContDiff ℝ ∞ (fderiv ℝ h)` using `hh.fderiv_right (by simp)`. Express the relevant statement in the definitionally equal form `‖iteratedFDeriv ℝ i ((fun _ => L) + fderiv ℝ h) t‖ ≤ _`. Rewrite using `[iteratedFDeriv_add_apply (contDiff_const (c := L)).contDiffAt (hfh.of_le (by exact_mod_cast le_top)).contDiffAt]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr ?_ + _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[iteratedFDeriv_const_of_ne hi.ne']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_succ_clm_add_le {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (L : E →L[ℝ] ℂ) (h : E → ℂ) (hh : ContDiff ℝ ∞ h) (i : ℕ) (t : E) :
@@ -49,17 +49,17 @@ theorem norm_iteratedFDeriv_succ_clm_add_le {E : Type} [NormedAddCommGroup E] [N
     simp
 
 /- English proof (translation)
-Introduce `V E _ _ _ _ _ _ B h hh hre n R`. Use `set F : E → ℝ := fun t => ∑ j ∈ Finset.range (n + 1), ‖iteratedFDeriv ℝ j h t‖ with hF`. Establish `hFc : Continuous F`. Use `continuous_finset_sum _ (fun j _ => ?_)` and prove the remaining obligations. Conclude with `(hh.continuous_iteratedFDeriv (by exact_mod_cast le_top)).norm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K, hK⟩` from `(isCompact_closedBall (0 : E) R).exists_bound_of_continuousOn hFc.continuousOn`. Use `⟨(n ! : ℝ) * (1 + ‖B‖ + |K|) ^ n, fun y t ht => ?_⟩` and prove the remaining obligations. Establish `htb : t ∈ Metric.closedBall (0 : E) R` using `by simpa using ht`. Establish `hKj : ∀ j, j ≤ n → ‖iteratedFDeriv ℝ j h t‖ ≤ |K|`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖iteratedFDeriv ℝ j h t‖ ≤ F t` using `Finset.single_le_sum (f := fun j => ‖iteratedFDeriv ℝ j h t‖) (fun _ _ => norm_nonneg _) (Finset.mem_range.mpr (Nat.lt_succ_of_le hj))`. Establish `h2 : F t ≤ K` using `(le_abs_self _).trans ((Real.norm_eq_abs (F t)) ▸ hK t htb)`. Conclude with `(h1.trans h2).trans (le_abs_self K)`. Use `set D : ℝ := (1 + ‖B‖ + |K|) * (1 + ‖y‖) with hD`. Establish `hy0` using `norm_nonneg y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB0` using `norm_nonneg B`. Establish `hK0` using `abs_nonneg K`. Establish `hD1 : 1 ≤ D`. Rewrite using `[hD]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hDge : ‖B‖ * ‖y‖ + |K| ≤ D`. Rewrite using `[hD]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hphi : ContDiff ℝ ∞ (fun t => B y t + h t)` using `(B y).contDiff.add hh`. Establish `hcomp : (fun t => Complex.exp (B y t + h t)) = Complex.exp ∘ (fun t => B y t + h t)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hcomp]`. Establish `key` using `norm_iteratedFDeriv_comp_le (𝕜 := ℝ) (g := Complex.exp) (f := fun t => B y t + h t) (n := n) (N := ∞) Complex.contDiff_exp hphi (by exact_mod_cast le_top) t (C := 1) (D := D) (fun i _ => by rw [norm_iteratedFDeriv_real_cexp, hre y t, Real.exp_zero]) (fun i hi1 hin => by`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_iteratedFDeriv_cexp_phase_le :
     ∀ {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]

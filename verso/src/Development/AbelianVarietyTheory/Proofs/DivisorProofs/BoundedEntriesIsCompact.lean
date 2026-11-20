@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.BoundedUnitsCompact
 
 /- English proof (translation)
-Establish `h : {A : Matrix (Fin n) (Fin n) F | ∀ i j, ‖A i j‖ ≤ M} = Set.univ.pi (fun _ => Set.univ.pi (fun _ => Metric.closedBall (0 : F) M))`. Use extensionality with `A`. Prove the components needed by the constructor for the conclusion. Introduce `hA i _ j _`. Simplify using `using hA i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hA i j`. Simplify using `using hA i trivial j trivial`. Rewrite using `[h]`. Conclude with `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundedEntries_isCompact {F : Type} [NontriviallyNormedField F] [ProperSpace F] {n : ℕ}
     (M : ℝ) : IsCompact {A : Matrix (Fin n) (Fin n) F | ∀ i j, ‖A i j‖ ≤ M} := by
@@ -21,9 +21,9 @@ theorem boundedEntries_isCompact {F : Type} [NontriviallyNormedField F] [ProperS
   exact isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall _ _))
 
 /- English proof (translation)
-Establish `hK1` using `boundedEntries_isCompact (F := F) (n := n) M`. Establish `hK : IsCompact ({A : Matrix (Fin n) (Fin n) F | ∀ i j, ‖A i j‖ ≤ M} ×ˢ (MulOpposite.op '' {A : Matrix (Fin n) (Fin n) F | ∀ i j, ‖A i j‖ ≤ M}))` using `hK1.prod (hK1.image MulOpposite.continuous_op)`. Establish `hce` using `Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) F)`. Use `hce.isCompact_preimage hK using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[Units.embedProduct, -MulOpposite.op_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isCompact_bounded_units {F : Type} [NontriviallyNormedField F] [IsUltrametricDist F]
     [CompleteSpace F] {n : ℕ} [ProperSpace F] (M : ℝ) :

@@ -16,9 +16,9 @@ def uElt {K G : Type} [Field K] [Group G] [Fintype G] (U : Subgroup G) [Fintype 
   cU U f * e + (1 - e)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a c`. Establish `ha : a = c` using `Fin.ext (by have := a.2; have := c.2; omega)`. Substitute `ha` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `only [Pi.one_apply, Units.val_one, Matrix.one_apply_eq]`. Conclude with `((Formalism.L2.NX.mem_Uup).1 hu x).2 a`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uup_eq_one_of_le_one {ι : Type} [Fintype ι] (p : ι → ℕ) (r : ℕ) (hr : r ≤ 1) (u : Formalism.L2.NX.GProd p r)
     (hu : u ∈ Formalism.L2.NX.Uup p r) : u = 1 := by
@@ -31,7 +31,7 @@ theorem uup_eq_one_of_le_one {ι : Type} [Fintype ι] (p : ι → ℕ) (r : ℕ)
   exact ((Formalism.L2.NX.mem_Uup).1 hu x).2 a
 
 /- English proof (translation)
-Simplify using `only [uElt, cU, pU, map_add, map_mul, map_sub, map_one, map_sum, MonoidAlgebra.mapRingHom_single, map_inv₀, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_uElt {E L G : Type} [Field E] [Field L] [Group G] [Fintype G] (j : E →+* L) (U : Subgroup G) [Fintype U]
     (f : U → E) (e : MonoidAlgebra E G) :
@@ -40,9 +40,9 @@ theorem map_uElt {E L G : Type} [Field E] [Field L] [Group G] [Fintype G] (j : E
     map_natCast]
 
 /- English proof (translation)
-Establish `h1 : e * uElt U f e = cU U f * e`. Simplify using `only [uElt]`. Rewrite using `[mul_add, mul_sub, mul_one, hI, sub_self, add_zero, ← mul_assoc, hC (cU U f), mul_assoc, hI]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cU, Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum_of_uElt_mul {K G : Type} [Field K] [Group G] [Fintype G] (U : Subgroup G) [Fintype U] (f : U → K)
     (e v : MonoidAlgebra K G) (hI : e * e = e) (hC : ∀ a, e * a = a * e) (hv : uElt U f e * v = 1) :

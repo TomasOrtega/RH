@@ -13,23 +13,21 @@ open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 
 /- English proof (translation)
-Introduce `X _ q σ D c W h g hg`. Break down `c.e.source.eq_empty_or_nonempty with hs | ⟨y0, hy0⟩` into its components or cases. Establish `ht : c.e.target = ∅` using `by rw [← c.e.image_source_eq_target, hs, Set.image_empty]`. Simplify using `[ht]`. Establish `sectionFrameQuotient` using `mem_ptsIn.1 (c.source_subset hy0)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI : Nonempty c.U := ⟨⟨_, sectionFrameQuotient⟩⟩`. Establish `hgU : genericPoint X ∈ c.U` using `gen_mem sectionFrameQuotient`. Use `haveI := functionField_isFractionRing_of_isAffineOpen X c.U c.affine`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := Γ(X, c.U)) (fnOf W h g)`. Establish `hal : ∀ t : Γ(X, c.U), algebraMap Γ(X, c.U) X.functionField t = fnOf c.U hgU t` using `fun _ => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hab` using `[hal, hal]`. Establish `hb0 : fnOf c.U hgU b ≠ 0` using `fun e => nonZeroDivisors.ne_zero hb ((map_eq_zero_iff _ (fnOf_injective _ _)).1 e)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hg` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hab, map_zero, zero_div]`. Establish `hrel : fnOf W h g * fnOf c.U hgU b = fnOf c.U hgU a`. Rewrite using `[← hab, div_mul_cancel₀ _ hb0]`. Establish `hI : genericPoint X ∈ W ⊓ c.U` using `⟨h, hgU⟩`. Establish `hres : resG X (inf_le_left : W ⊓ c.U ≤ W) g * resG X (inf_le_right : W ⊓ c.U ≤ c.U) b = resG X (inf_le_right : W ⊓ c.U ≤ c.U) a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `fnOf_injective _ hI` to reduce the goal to its premises. Rewrite using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG]`. Conclude with `hrel`. Take `⟨Q, hQ, r, hQr⟩` from `GlobalTheory.ChernNull.exists_poly_dvd _ c.etale a ha0`. Establish `hP : MvPolynomial.map σ Q ≠ 0` using `fun e => hQ (MvPolynomial.map_injective σ (RingHom.injective_int σ) (by rw [e, map_zero]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `measure_mono_null ?_ (GlobalTheory.ChernNull.volume_poly_zero D _ hP)` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hyW, hyz⟩`. Establish `hys : c.e.symm v ∈ c.e.source` using `c.e.map_target hv`. Establish `hyU` using `c.source_subset hys`. Establish `hyI : c.e.symm v ∈ ptsIn q σ (W ⊓ c.U)` using `mem_ptsIn_inf.2 ⟨hyW, hyU⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hay : ev q σ c.U a (c.e.symm v) = 0`. Rewrite using `[← ev_res inf_le_right hyI, ← hres, ev_mul, ev_res inf_le_left hyI, hyz, zero_mul]`. Establish `hcomp : (evHom hyU).comp (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q c.U) c.x) = MvPolynomial.eval₂Hom σ (fun i => c.e (c.e.symm v) i)`. Use `MvPolynomial.ringHom_ext (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `[← ev_eq hyU, ev_algX hyU]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[← ev_eq hyU, c.apply_eq _ hys]`. Establish `hQy` using `congrArg (fun F => F Q) hcomp`. Simplify using `only [RingHom.comp_apply] at hQy`. Use `show MvPolynomial.eval (fun i => v i) (MvPolynomial.map σ Q) = 0`. Rewrite `hQy` using `[c.e.right_inv hv]`.
-
-Rewrite using `[MvPolynomial.eval_map, ← MvPolynomial.coe_eval₂Hom, ← hQy, hQr, map_mul, ← ev_eq hyU, hay, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.MixZ.volume_chart_zeroSet_fnOf : ∀ (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp ℤ) (σ : ℤ →+* ℂ) (D : ℕ) (c : GlobalTheory.AlgChart q σ D) (W : X.Opens)
     (h : genericPoint X ∈ W) (g : Γ(X, W)), fnOf W h g ≠ 0 →

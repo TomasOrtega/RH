@@ -24,19 +24,19 @@ Both sides reduce to the same expression.
 lemma mat_one' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul', inv_mul_cancel, mat_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mat_inv_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g⁻¹ * mat g = 1 := by
   rw [← mat_mul', inv_mul_cancel, mat_one']
 
 /- English proof (translation)
-Rewrite using `[← mat_mul', mul_inv_cancel, mat_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mat_mul_inv' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g * mat g⁻¹ = 1 := by
   rw [← mat_mul', mul_inv_cancel, mat_one']
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat (g * h) - 1 = (mat g - 1) * mat h + (mat h - 1)`. Rewrite using `[mat_mul', Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 lemma uAt_mul {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} {v : Pl F} {g h : UA σ X.J}
     (hg : g ∈ UAt σ X (evFin F v)) (hh : h ∈ UAt σ X (evFin F v)) : g * h ∈ UAt σ X (evFin F v) := by
@@ -46,7 +46,7 @@ lemma uAt_mul {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} {v : Pl F} {g h : U
   rw [e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat g⁻¹ - 1 = -((mat g - 1) * mat g⁻¹)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, mat_mul_inv']`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_neg, ← Matrix.smul_mul, hg u hu, Matrix.zero_mul, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 lemma uAt_inv {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} {v : Pl F} {g : UA σ X.J}
     (hg : g ∈ UAt σ X (evFin F v)) : g⁻¹ ∈ UAt σ X (evFin F v) := by
@@ -56,15 +56,15 @@ lemma uAt_inv {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} {v : Pl F} {g : UA 
   rw [e, smul_neg, ← Matrix.smul_mul, hg u hu, Matrix.zero_mul, neg_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v p hp a hpa`. Take `⟨t, h₁, hta, htv, hh₁, hι⟩` from `GlobalTheory.T.local_stabilizer_levi_decomposition F E σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v p hp a hpa`. Take `⟨m, hL, hm⟩` from `GlobalTheory.T.local_levi_decomposition_exists F E σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v t h₁ htv hh₁`. Establish `hmx : mat m⁻¹ *ᵥ incV F H'.x = (t⁻¹ : (AE F E)ˣ).1 • incV F H'.x`. Establish `h1 : mat m⁻¹ *ᵥ ((t : AE F E) • incV F H'.x) = incV F H'.x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hL.1, Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`. Rewrite `h1` using `[Matrix.mulVec_smul]`. Establish `h3 : mat m⁻¹ *ᵥ incV F H'.x = (t⁻¹ : (AE F E)ˣ).1 • ((t : AE F E) • (mat m⁻¹ *ᵥ incV F H'.x))`. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[h3, h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmι : ∀ z, mat m⁻¹ *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ (mat h₁⁻¹ *ᵥ z)`. Introduce `z`. Establish `h2 : mat m⁻¹ * incM F H'.ι = incM F H'.ι * mat h₁⁻¹`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, mat_mul_inv', Matrix.mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = incM F H'.ι * mat h₁⁻¹ := by`. Rewrite using `[← hL.2.2]`. Simplify using `only [← Matrix.mul_assoc, mat_inv_mul', Matrix.one_mul]`. Rewrite using `[Matrix.mulVec_mulVec, h2, ← Matrix.mulVec_mulVec]`. Use `⟨p * m⁻¹, m, t, h₁, Subgroup.subset_closure ⟨?_, fun z => ?_⟩, uAt_mul hp (uAt_inv hm), hm, hh₁, hL, by group⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, hmx, Matrix.mulVec_smul, hpa, smul_smul, ← hta, Units.inv_mul, one_smul]`. Take `⟨c, hc⟩` from `hι (mat h₁⁻¹ *ᵥ z)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h4 : mat h₁ *ᵥ (mat h₁⁻¹ *ᵥ z) = z` using `by rw [Matrix.mulVec_mulVec, mat_mul_inv', Matrix.one_mulVec]`. Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, hmι, hc, h4]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parabolic_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ), B.IsGood σ →

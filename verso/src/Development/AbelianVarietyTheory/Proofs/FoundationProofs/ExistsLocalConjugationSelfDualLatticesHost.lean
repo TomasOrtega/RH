@@ -20,7 +20,7 @@ noncomputable def coordLat (V : Formalism.BasicNotions.HSpace E) (L : Submodule 
   L.map (V.frame.equivFun.restrictScalars (𝓞 E)).toLinearMap
 
 /- English proof (translation)
-Use `⟨h.fg.map _, ?_⟩` and prove the remaining obligations. Establish `: (coordLat V L : Set (Fin V.rank → E)) = V.frame.equivFun.toLinearMap '' (L : Set V.V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, h.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_coordLat (V : Formalism.BasicNotions.HSpace E) (L : Submodule (𝓞 E) V.V) (h : Submodule.IsLattice E L) :
     ReciprocityTheory.MultiplicativeHeights.IsLattice (coordLat V L) := by
@@ -29,7 +29,7 @@ theorem isLattice_coordLat (V : Formalism.BasicNotions.HSpace E) (L : Submodule 
   rw [this, ← Submodule.map_span, h.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord, herm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `V.frame.repr x j * V.gram i j * star (V.frame.repr y i) = _`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_coord (V : Formalism.BasicNotions.HSpace E) (x y : V.V) :
     herm V.gramᵀ (V.frame.equivFun x) (V.frame.equivFun y) = V.hT y x := by
@@ -39,11 +39,11 @@ theorem herm_coord (V : Formalism.BasicNotions.HSpace E) (x y : V.V) :
   ring
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `V.frame.equivFun.surjective x`. Establish `h1 : V.frame.equivFun x ∈ coordLat V L ↔ x ∈ L` using `⟨fun ⟨z, hz, e⟩ => V.frame.equivFun.injective e ▸ hz, fun hx => ⟨x, hx, rfl⟩⟩`. Establish `h2 : x ∈ L ↔ ∀ y ∈ L, V.hT y x ∈ (1 : Submodule (𝓞 E) E)` using `by conv_lhs => rw [← show Formalism.HermitianLatticesTheory.dual V.hT L = L from h]`. Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual]`. Establish `h3 : ∀ z : E, z ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral ℤ z` using `fun z => Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun hz => ⟨⟨z, hz⟩, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H _ ⟨y, hy, rfl⟩`. Use `(h3 _).1 (H y hy)` as an intermediate fact. Rewrite `this` using `[← herm_coord]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `H y hy`. Rewrite using `[h3, ← herm_coord]`. Conclude with `H _ ⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_coordLat (V : Formalism.BasicNotions.HSpace E) (L : Submodule (𝓞 E) V.V)
     (h : Formalism.HermitianLatticesTheory.IsUnimodular V.hT L) (x : Fin V.rank → E) :
@@ -66,21 +66,19 @@ theorem selfDual_coordLat (V : Formalism.BasicNotions.HSpace E) (L : Submodule (
     exact H _ ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ (a : v.adicCompletionIntegers (maximalRealSubfield E)) (b : v.adicCompletion (maximalRealSubfield E)) (z : E), a • (b ⊗ₜ[maximalRealSubfield E] z : LocAlg v) = ((a : v.adicCompletion (maximalRealSubfield E)) * b) ⊗ₜ z`. Introduce `a b z`. Rewrite using `[TensorProduct.smul_tmul']`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `Submodule.smul_mem (locLattice v (coordLat V V.L0)) (⟨a, ha⟩ : v.adicCompletionIntegers (maximalRealSubfield E)) (Submodule.subset_span ⟨_, ⟨x, hx, rfl⟩, rfl⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, locEmb_apply, key, mul_one]`. Both sides reduce to the same expression. Consider the case `zero => exact zero_mem _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`. Introduce `hy`. It suffices to establish `H : ∀ a : v.adicCompletionIntegers (maximalRealSubfield E), a • y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F` using `maximalRealSubfield E) V v by`. Simplify using `using H 1`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Simplify to obtain the desired conclusion from the available facts.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨_, ⟨x, hx, rfl⟩, rfl⟩` from `hy`. Introduce `a`. Use `AddSubgroup.subset_closure ⟨a, a.2, x, hx, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, locEmb_apply, key, mul_one]`. Both sides reduce to the same expression. Consider the case `zero => intro a`. Rewrite using `[smul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => intro a`. Rewrite using `[smul_add]`. Conclude with `add_mem (hx a) (hy a)`. Consider the case `smul c x _ hx => intro a`.
-
-Rewrite using `[smul_smul]`. Conclude with `hx _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latLoc_iff (V : Formalism.BasicNotions.HSpace E) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (y : Fin V.rank → LocAlg v) :
@@ -121,13 +119,11 @@ theorem mem_latLoc_iff (V : Formalism.BasicNotions.HSpace E) (v : HeightOneSpect
     | smul c x _ hx => intro a; rw [smul_smul]; exact hx _
 
 /- English proof (translation)
-Use `haveI : Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) := Formalism.L2.Pj.unramBridge_holds E fun P hP => by`. Take `⟨θ, t, e1, e2⟩` from `hc.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj E : E ≃+* E) θ = t` using `RingOfIntegers.ext e1.symm`. Rewrite using `[this]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hG : ∀ a b, cc (V.gramᵀ a b) = V.gramᵀ b a` using `fun a b => V.herm.eq (V.frame b) (V.frame a)`. Establish `hd : V.gramᵀ.det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero`. Take `⟨γ, hγ, hfin⟩` from `(GlobalTheory.selfDual_lattices_one_genus hG hG hd hd (isLattice_coordLat V L h1) (isLattice_coordLat V V.L0 V.standardTuple_isLattice) (Or.inl ⟨selfDual_coordLat V L h2, selfDual_coordLat V V.L0 V.baseLattice_isUnimodular⟩)).2.1 rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ v, γ v ∈ HR (Fv (maximalRealSubfield E) v) hc.sig V.gram` using `fun v => by`. Establish `h` using `congrArg Matrix.transpose (hγ v).1`. Rewrite `h` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc]`. Conclude with `h.symm`. Use `⟨fun v => ⟨γ v, hmem v⟩, hfin.subset fun v hv h => hv (Subtype.ext h), fun v y => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mem_latLoc_iff]`. Conclude with `((hγ v).2 y).trans (mem_latLoc_iff (GlobalTheory.VolRatioCompare.reLat V L h1 h2) v _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj (hc : CMData (maximalRealSubfield E) E) (V : Formalism.BasicNotions.HSpace E)
     (L : Submodule (𝓞 E) V.V) (h1 : Submodule.IsLattice E L) (h2 : Formalism.HermitianLatticesTheory.IsUnimodular V.hT L) :
@@ -161,7 +157,7 @@ theorem exists_conj (hc : CMData (maximalRealSubfield E) E) (V : Formalism.Basic
 end
 
 /- English proof (translation)
-Introduce `D V L h1 h2` and use `haveI : IsCMField D.host.E := D.host.isCMField_hostE exists_conj (E := D.host.E) D.sp.cm V L h1 h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_local_conjugation : ∀ (D : D7) (V : HSp D) (L : Submodule (𝓞 D.host.E) V.V) (h1 : Submodule.IsLattice D.host.E L) (h2 : Formalism.HermitianLatticesTheory.IsUnimodular V.hT L), ∃ γ : ∀ v : HeightOneSpectrum (𝓞 D.host.F), HA (Fv D.host.F v) D.sp.cm.sig V.gram, {v | γ v ≠ 1}.Finite ∧ ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (y : Fin V.rank → Fv D.host.F v ⊗[D.host.F] D.host.E), y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F := D.host.F) V v ↔ (HA.mat (Fv D.host.F v) D.sp.cm.sig V.gram (γ v)).1.mulVec y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F := D.host.F) (GlobalTheory.VolRatioCompare.reLat V L h1 h2) v :=
   fun D V L h1 h2 =>

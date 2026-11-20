@@ -10,17 +10,15 @@ open scoped NNReal Real Pointwise
 namespace GlobalTheory.CompanionTheory.RgEisHGood
 
 /- English proof (translation)
-Introduce `c`. Establish `hint : CircleIntegrable F c ((1 : ℝ≥0) : ℝ)` using `hc.continuousOn.circleIntegrable'`. Establish `hfp` using `hasFPowerSeriesOn_cauchy_integral hint one_pos`. Simplify using `only [NNReal.coe_one] at hfp`. Establish `heq : ∀ w ∈ ball c (1 : ℝ), ((2 * π * Complex.I : ℂ)⁻¹ • ∮ z in C(c, (1 : ℝ)), (z - w)⁻¹ • F z) = F w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w hw`. Use extensionality with `κ`. Establish `hcau` using `((hp κ).diffContOnCl (s := ball c 1)).two_pi_i_inv_smul_circleIntegral_sub_inv_smul hw`. Establish `hne : ∀ θ : ℝ, circleMap c 1 θ - w ≠ 0` using `fun θ h => by`. Establish `h1 : circleMap c 1 θ ∈ sphere c (1 : ℝ)` using `circleMap_mem_sphere c zero_le_one θ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[sub_eq_zero.1 h]`. Conclude with `(ne_of_lt (mem_ball.1 hw)) (mem_sphere.1 h1)`. Establish `hcont : Continuous (fun θ : ℝ => deriv (circleMap c 1) θ • (circleMap c 1 θ - w)⁻¹ • F (circleMap c 1 θ))`. Establish `e : deriv (circleMap c 1) = fun θ => circleMap 0 1 θ * Complex.I` using `funext (deriv_circleMap c 1)`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((continuous_circleMap 0 1).mul continuous_const).smul ((((continuous_circleMap c 1).sub continuous_const).inv₀ hne).smul (hc.comp (continuous_circleMap c 1)))`. Establish `hcomm : (∮ z in C(c, (1 : ℝ)), (z - w)⁻¹ • F z) κ = ∮ z in C(c, (1 : ℝ)), (z - w)⁻¹ • F z κ`. Establish `e2` using `(ContinuousMap.evalCLM ℂ κ : C(K, ℂ) →L[ℂ] ℂ).intervalIntegral_comp_comm (hcont.intervalIntegrable (μ := volume) 0 (2 * π))`. Simplify using `only [circleIntegral]`. Use `e2.symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ContinuousMap.evalCLM]`. Establish `hfin : ((2 * π * Complex.I : ℂ)⁻¹ • ∮ z in C(c, (1 : ℝ)), (z - w)⁻¹ • F z) κ = (2 * π * Complex.I : ℂ)⁻¹ • (∮ z in C(c, (1 : ℝ)), (z - w)⁻¹ • F z) κ` using `rfl`. Rewrite using `[hfin, hcomm]`. Conclude with `hcau`. Establish `han : AnalyticAt ℂ F c`.
-
-Establish `h1` using `hfp.analyticAt`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds c (one_pos : (0:ℝ) < 1)] with w hw using heq w hw`. Conclude with `han.differentiableAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiable_of_pointwise {K : Type} [TopologicalSpace K] [CompactSpace K] (F : ℂ → C(K, ℂ))
     (hc : Continuous F) (hp : ∀ κ, Differentiable ℂ fun z => F z κ) : Differentiable ℂ F := by
@@ -58,13 +56,11 @@ theorem differentiable_of_pointwise {K : Type} [TopologicalSpace K] [CompactSpac
   exact han.differentiableAt
 
 /- English proof (translation)
-Use `haveI : ProperSpace E := FiniteDimensional.proper_rclike ℂ E`. Use `haveI : CompleteSpace E := FiniteDimensional.complete ℂ E`. Establish `hint : ∀ f : C(K, ℂ), Integrable (fun κ => f κ • r κ) μ` using `fun f => (f.continuous.smul hr).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Set `rc : C(K, E)` to `⟨r, hr⟩`. Set `L₀ : C(K, ℂ) →ₗ[ℂ] E` to `{ toFun := fun f => ∫ κ, f κ • r κ ∂μ map_add' := fun f g => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousMap.add_apply, add_smul]`. Conclude with `integral_add (hint f) (hint g)`. Use the proof step `map_smul' := fun a f => by`. Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul, mul_smul, RingHom.id_apply]`. Conclude with `integral_smul a _ }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨L₀.mkContinuous ‖rc‖ fun f => ?_, fun f => rfl⟩` and prove the remaining obligations. Establish `hb : ∀ κ, ‖f κ • r κ‖ ≤ ‖rc‖ * ‖f‖` using `fun κ => by`. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul (rc.norm_coe_le_norm κ) (f.norm_coe_le_norm κ) (norm_nonneg _) (norm_nonneg _)`. Use `norm_integral_le_of_norm_le_const (μ := μ) (Eventually.of_forall hb)` as an intermediate fact.
-
-Express the relevant statement in the definitionally equal form `‖∫ κ, f κ • r κ ∂μ‖ ≤ _`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_integralCLM {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] (μ : Measure K) [IsProbabilityMeasure μ]
@@ -91,25 +87,23 @@ theorem exists_integralCLM {K : Type} [TopologicalSpace K] [CompactSpace K] [Mea
   simpa using this
 
 /- English proof (translation)
-Use `set B : ℝ := |a| + |b| with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Use `set c : ℝ := 3 + B with hc`. Use `⟨Real.exp (B ^ 2) * (6 * Real.exp c), by positivity, fun z h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hx : |z.re| ≤ B`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `neg_abs_le b` as an intermediate fact. Use `abs_nonneg a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_abs_self a` as an intermediate fact. Use `abs_nonneg b` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set t : ℝ := |z.im| with ht`. Establish `ht0 : 0 ≤ t` using `abs_nonneg _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ‖z‖ ≤ B + t` using `(Complex.norm_le_abs_re_add_abs_im z).trans (by linarith)`. Establish `hexp : ‖Complex.exp (z ^ 2)‖ = Real.exp (z.re ^ 2 - z.im ^ 2)`. Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Simplify using `[pow_two, Complex.mul_re]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1z : ‖z - 1‖ ≤ 1 + ‖z‖`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[add_comm]`. Establish `hs : 1 + ‖z‖ ≤ c + t ^ 2 - 1` using `by nlinarith [sq_nonneg (t - 1)]`. Establish `hn0 : 0 ≤ 1 + ‖z‖` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 ≤ c + t ^ 2` using `by positivity`. Establish `hcube : (1 + ‖z‖) ^ 3 ≤ 6 * Real.exp (c + t ^ 2)`. Establish `h3` using `Real.pow_div_factorial_le_exp (c + t ^ 2) hc0 3`. Establish `h4 : (1 + ‖z‖) ^ 3 ≤ (c + t ^ 2) ^ 3` using `pow_le_pow_left₀ hn0 (by linarith) 3`. Establish `h5 : ((3 : ℕ).factorial : ℝ) = 6` using `by norm_num [Nat.factorial]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h3` using `[h5]`. Combine the linear relations using `[(div_le_iff₀ (by norm_num : (0:ℝ) < 6)).1 h3]`. Establish `hre : z.re ^ 2 ≤ B ^ 2`. Use `sq_le_sq' (by linarith [(abs_le.1 hx).1]) (abs_le.1 hx).2` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `him : z.im ^ 2 = t ^ 2` using `by rw [ht, sq_abs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, hexp]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp (z.re ^ 2 - z.im ^ 2) * ((1 + ‖z‖) ^ 3) := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left ?_ (Real.exp_pos _).le` and prove the remaining obligations. Establish `: (1 + ‖z‖) ^ 3 = (1 + ‖z‖) * (1 + ‖z‖) ^ 2` using `by ring`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right h1z (by positivity)`. Use `_ ≤ Real.exp (z.re ^ 2 - z.im ^ 2) * (6 * Real.exp (c + t ^ 2)) := mul_le_mul_of_nonneg_left hcube (Real.exp_pos _).le`.
-
-Use `_ = Real.exp (z.re ^ 2) * (6 * Real.exp c) := by`. Rewrite using `[him, Real.exp_add, Real.exp_sub, Real.exp_add]`. Use `(Real.exp_pos (t ^ 2)).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `_ ≤ Real.exp (B ^ 2) * (6 * Real.exp c) := mul_le_mul_of_nonneg_right (Real.exp_le_exp.2 hre) (by positivity)`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gauss_bound (b a : ℝ) : ∃ M : ℝ, 0 ≤ M ∧ ∀ z : ℂ, b ≤ z.re → z.re ≤ a →
     ‖Complex.exp (z ^ 2) * (z - 1)‖ * (1 + ‖z‖) ^ 2 ≤ M := by
@@ -161,15 +155,15 @@ theorem gauss_bound (b a : ℝ) : ∃ M : ℝ, 0 ≤ M ∧ ∀ z : ℂ, b ≤ z.
         mul_le_mul_of_nonneg_right (Real.exp_le_exp.2 hre) (by positivity)
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hprob Φ hΦ`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Take `⟨L, hL⟩` from `exists_integralCLM μ (fun κ => ρ κ) hρ`. Set `Ψ₀ : C((ℂ × G) × K, ℂ)` to `⟨fun p => Φ p.1.1 (p.1.2 * p.2), hΦ.cont.comp ((continuous_fst.comp continuous_fst).prodMk ((continuous_snd.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)))⟩`. Set `Ψ : C(ℂ × G, C(K, ℂ))` to `Ψ₀.curry`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA : ∀ (z : ℂ) (g : G), avg μ ρ (fun κ => Φ z (g * κ)) = L (Ψ (z, g))`. Introduce `z g`. Rewrite using `[hL]`. Both sides reduce to the same expression. Use `⟨fun g => ?_, ?_, fun b a g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hA]`. Establish `hF : Differentiable ℂ fun z : ℂ => Ψ (z, g)` using `differentiable_of_pointwise _ (Ψ.continuous.comp (by fun_prop)) fun κ => hΦ.ent (g * κ)`. Conclude with `((Complex.differentiable_exp.comp (differentiable_id.pow 2)).mul (differentiable_id.sub_const 1)).smul (L.differentiable.comp hF)`. Simplify using `only [hA, Prod.mk.eta]`. Conclude with `(by fun_prop : Continuous fun y : ℂ × G => Complex.exp (y.1 ^ 2) * (y.1 - 1)).smul (L.continuous.comp Ψ.continuous)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hUc, hU⟩` from `exists_compact_mem_nhds g`. Take `⟨M, hM⟩` from `hΦ.strip b a (U * (K : Set G)) (hUc.mul hK)`. Take `⟨M2, hM2, hg⟩` from `gauss_bound b a`. Use `⟨U, hU, ‖L‖ * |M| * M2, fun z h1 h2 g' hg' => ?_⟩` and prove the remaining obligations. Rewrite using `[hA, norm_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hΨ : ‖Ψ (z, g')‖ ≤ |M| * (1 + ‖z‖) ^ 2`. Use `(ContinuousMap.norm_le _ (by positivity)).2 fun κ => ?_` and prove the remaining obligations. Establish `h` using `hM z h1 h2 (g' * κ) (Set.mul_mem_mul hg' κ.2)`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_abs_self M) (by positivity))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hGood : HGood := by
   intro G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hprob Φ hΦ

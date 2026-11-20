@@ -12,15 +12,13 @@ variable {V V₁ V₂ : Type*} [AddCommGroup V] [Module E V] [AddCommGroup V₁]
   [AddCommGroup V₂] [Module E V₂]
 
 /- English proof (translation)
-Use `set b := Module.finBasis E V`. Use `set G := gram B b`. Set `sx : (Fin (finrank E V) → E) → V` to `fun c => b.equivFun.symm (fun i => conj F E (c i))`. Establish `key : ∀ c j, B (sx c) (b j) = Matrix.vecMul c G j`. Introduce `c j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [sx, Basis.equivFun_symm_apply, map_sum, LinearMap.map_smulₛₗ₂, conjHom_apply, conj_conj, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, G, gram_apply]`. Establish `hinj : Function.Injective (Matrix.vecMulLinear G)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Establish `h1 : B (sx c) = 0` using `b.ext fun j => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key, LinearMap.zero_apply]`. Conclude with `congrFun hc j`. Establish `h2 : sx c = 0` using `hB (by rw [h1, map_zero])`. Use function extensionality and compare the values at `i`. Establish `h3` using `congrArg (fun v => b.equivFun v i) h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [sx, LinearEquiv.apply_symm_apply, map_zero, Pi.zero_apply] at h3`. Rewrite using `[← conj_conj (F := F) (c i), h3, map_zero, Pi.zero_apply]`. Use `⟨hB, fun f => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `LinearMap.injective_iff_surjective.1 hinj (fun j => f (b j))`. Use `⟨sx c, b.ext fun j => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[key]`. Conclude with `congrFun hc j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_injective_sesq [FiniteDimensional E V]
     (B : V →ₛₗ[conjHom F E] V →ₗ[E] E) (hB : Function.Injective B) : Function.Bijective B := by
@@ -52,18 +50,18 @@ theorem bijective_of_injective_sesq [FiniteDimensional E V]
 namespace HermitianForm
 
 /- English proof (translation)
-Rewrite using `[hv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toSesq_self_ne_zero_of_eq (h : HermitianForm F E V) {v : V} {a : Fˣ}
     (hv : h.toSesq v v = algebraMap F E a) : h.toSesq v v ≠ 0 := by
   rw [hv]; simp
 
 /- English proof (translation)
-Establish `hv0` using `h.toSesq_self_ne_zero_of_eq hv`. Establish `hne : v ≠ 0` using `by rintro rfl; simp at hv0`. Establish `hW` using `h.isOrthoCompl_span_singleton hv0`. Use `set L := Submodule.span E {v}`. Use `set K := LinearMap.ker (h.toSesq v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `iso1 : Isometric (ofUnit (E` using `E) a) (h.restrict L K hW) := by`. Use `⟨LinearEquiv.toSpanNonzeroSingleton E V v hne, fun x y => ?_⟩` and prove the remaining obligations. Use `show h.toSesq (x • v) (y • v) = conj F E x * algebraMap F E a * y`. Rewrite using `[h.toSesq_smul_left, h.toSesq_smul_right, hv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨K, h.restrict K L hW.symm, (iso1.prod (Isometric.refl _)).trans (h.isometric_prod_restrict L K hW), fun hfin => ?_⟩` and prove the remaining obligations. Use `((iso1.prod (Isometric.refl (h.restrict K L hW.symm))).trans (h.isometric_prod_restrict L K hW)).finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_prod, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_isometric_prod_ofUnit (h : HermitianForm F E V) {v : V} {a : Fˣ}
     (hv : h.toSesq v v = algebraMap F E a) :
@@ -91,14 +89,14 @@ def quasiReflection (h : HermitianForm F E V) (w : V) (c : E) : V →ₗ[E] V :=
   LinearMap.id - (c • h.toSesq w).smulRight w
 
 /- English proof (translation)
-Simplify using `[quasiReflection]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quasiReflection_apply (h : HermitianForm F E V) (w : V) (c : E) (z : V) :
     h.quasiReflection w c z = z - (c * h.toSesq w z) • w := by
   simp [quasiReflection]
 
 /- English proof (translation)
-Simplify using `only [quasiReflection_apply, map_sub, LinearMap.sub_apply, h.toSesq_smul_left, h.toSesq_smul_right, map_mul, h.conj_toSesq]`. Take the linear combination `(-(h.toSesq z w * h.toSesq w z')) * hc`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem toSesq_quasiReflection (h : HermitianForm F E V) {w : V} {c : E}
     (hc : c + conj F E c = c * conj F E c * h.toSesq w w) (z z' : V) :
@@ -125,15 +123,15 @@ theorem equivOfIsometry_apply [FiniteDimensional E V] (h : HermitianForm F E V) 
     h.equivOfIsometry f hf x = f x := rfl
 
 /- English proof (translation)
-Use `set d := h.toSesq x x - h.toSesq y x with hd_def`. Establish `hcd : conj F E d = h.toSesq x x - h.toSesq x y`. Rewrite using `[hd_def, map_sub, h.conj_toSesq_self, h.conj_toSesq]`. Establish `hcd0 : conj F E d ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hd` to reduce the goal to its premises. Rewrite using `[← conj_conj (F := F) d, h0, map_zero]`. Establish `hww : d + conj F E d = h.toSesq (x - y) (x - y)`. Rewrite using `[hcd, hd_def]`. Simplify using `only [map_sub, LinearMap.sub_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : d⁻¹ + conj F E d⁻¹ = d⁻¹ * conj F E d⁻¹ * h.toSesq (x - y) (x - y)`. Rewrite using `[map_inv₀, ← hww]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `refine ⟨h.equivOfIsometry _ (h.toSesq_quasiReflection hc), h.toSesq_quasiReflection hc, ?_⟩`. Rewrite using `[equivOfIsometry_apply, quasiReflection_apply]`. Establish `: h.toSesq (x - y) x = d` using `by rw [map_sub, LinearMap.sub_apply]`. Rewrite using `[this, inv_mul_cancel₀ hd, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_isometry_apply_eq_of_ne [FiniteDimensional E V] (h : HermitianForm F E V)
     {x y : V} (hxy : h.toSesq x x = h.toSesq y y) (hd : h.toSesq x x - h.toSesq y x ≠ 0) :
@@ -159,15 +157,13 @@ theorem exists_isometry_apply_eq_of_ne [FiniteDimensional E V] (h : HermitianFor
   abel
 
 /- English proof (translation)
-Distinguish the cases in `hd : h.toSesq x x - h.toSesq y x ≠ 0`. Conclude with `h.exists_isometry_apply_eq_of_ne hxy hd`. Use `push Not at hd`. Take `⟨l, hl, hl1⟩` from `exists_mul_conj_eq_one_ne_one (F := F) (E := E)`. Establish `hl0 : l ≠ 0` using `by rintro rfl; simp at hl`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcl : conj F E l ≠ 1`. Introduce `h1`. Apply `hl1` to reduce the goal to its premises. Rewrite using `[← conj_conj (F := F) l, h1, map_one]`. Establish `hxy' : h.toSesq x x = h.toSesq (l • y) (l • y)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h.toSesq_smul_left, h.toSesq_smul_right, ← hxy, ← mul_assoc, mul_comm (conj F E l), hl, one_mul]`. Establish `hd' : h.toSesq x x - h.toSesq (l • y) x ≠ 0`. Rewrite using `[h.toSesq_smul_left, ← sub_eq_zero.1 hd]`. Establish `: h.toSesq x x - conj F E l * h.toSesq x x = (1 - conj F E l) * h.toSesq x x` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (sub_ne_zero.2 (Ne.symm hcl)) hx`. Take `⟨g, hg, hgx⟩` from `h.exists_isometry_apply_eq_of_ne hxy' hd'`. Use `⟨g.trans (LinearEquiv.smulOfNeZero E V l⁻¹ (inv_ne_zero hl0)), fun z z' => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.smulOfNeZero_apply, h.toSesq_smul_left, h.toSesq_smul_right, hg, map_inv₀]`. Rewrite using `[← mul_assoc, ← mul_inv, mul_comm (conj F E l), hl, inv_one, one_mul]`.
-
-Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.smulOfNeZero_apply, hgx, smul_smul, inv_mul_cancel₀ hl0, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isometry_apply_eq [Algebra.IsSeparable F E] [FiniteDimensional E V]
     (h : HermitianForm F E V) {x y : V} (hxy : h.toSesq x x = h.toSesq y y)
@@ -197,29 +193,25 @@ theorem exists_isometry_apply_eq [Algebra.IsSeparable F E] [FiniteDimensional E 
       inv_mul_cancel₀ hl0, one_smul]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `H`. Use `set hT := h₂.prod (ofUnit (E := E) a)`. Use `set hS := h₁.prod (ofUnit (E := E) a)`. Establish `hTe : ∀ (p : V₂) (t : E), hT.toSesq (0, 1) (p, t) = algebraMap F E a * t`. Introduce `p t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[prod_apply, ofUnit_apply, map_zero, LinearMap.zero_apply, map_one, zero_add, one_mul]`. Establish `hSe : ∀ (p : V₁) (t : E), hS.toSesq (0, 1) (p, t) = algebraMap F E a * t`. Introduce `p t`. Rewrite using `[prod_apply, ofUnit_apply, map_zero, LinearMap.zero_apply, map_one, zero_add, one_mul]`. Establish `ha : algebraMap F E (a : F) ≠ 0` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : hT.toSesq (φ (0, 1)) (φ (0, 1)) = hT.toSesq (0, 1) (0, 1)`. Rewrite using `[hφ, hSe, hTe]`. Establish `hu0 : hT.toSesq (φ (0, 1)) (φ (0, 1)) ≠ 0` using `by rw [hu, hTe, mul_one]; exact ha`. Take `⟨τ, hτ, hτu⟩` from `hT.exists_isometry_apply_eq hu hu0`. Use `set ψ := φ.trans τ with hψ_def`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hψ : ∀ z z', hT.toSesq (ψ z) (ψ z') = hS.toSesq z z'`. Introduce `z z'`. Simplify using `only [hψ_def, LinearEquiv.trans_apply, hτ, hφ]`. Establish `hψ1 : ψ (0, 1) = (0, 1)` using `by simp only [hψ_def, LinearEquiv.trans_apply, hτu]`. Establish `hA : ∀ x : V₁, (ψ (x, 0)).2 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Establish `h1` using `hψ (0, 1) (x, 0)`. Rewrite `h1` using `[hψ1, hSe, mul_zero]`. Establish `h2 : algebraMap F E a * (ψ (x, 0)).2 = 0`. Rewrite using `[← hTe (ψ (x, 0)).1 (ψ (x, 0)).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1`. Conclude with `(mul_eq_zero.1 h2).resolve_left ha`. Establish `hB : ∀ y : V₂, (ψ.symm (y, 0)).2 = 0`. Introduce `y`. Establish `h1` using `hψ (0, 1) (ψ.symm (y, 0))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hψ1, LinearEquiv.apply_symm_apply, hTe, mul_zero]`. Establish `h2 : algebraMap F E a * (ψ.symm (y, 0)).2 = 0`. Rewrite using `[← hSe (ψ.symm (y, 0)).1 (ψ.symm (y, 0)).2]`. Conclude with `h1.symm`. Conclude with `(mul_eq_zero.1 h2).resolve_left ha`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hA' : ∀ x : V₁, ψ (x, 0) = ((ψ (x, 0)).1, 0)` using `fun x => Prod.ext rfl (hA x)`. Establish `hB' : ∀ y : V₂, ψ.symm (y, 0) = ((ψ.symm (y, 0)).1, 0)` using `fun y => Prod.ext rfl (hB y)`. Set `f : V₁ →ₗ[E] V₂` to `LinearMap.fst E V₂ E ∘ₗ (ψ : V₁ × E →ₗ[E] V₂ × E) ∘ₗ LinearMap.inl E V₁ E`. Set `g : V₂ →ₗ[E] V₁` to `LinearMap.fst E V₁ E ∘ₗ (ψ.symm : V₂ × E →ₗ[E] V₁ × E) ∘ₗ LinearMap.inl E V₂ E`. Establish `hfg : ∀ y, f (g y) = y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Simplify using `only [f, g, LinearMap.comp_apply, LinearMap.inl_apply, LinearMap.fst_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hB', LinearEquiv.apply_symm_apply]`. Establish `hgf : ∀ x, g (f x) = x`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [f, g, LinearMap.comp_apply, LinearMap.inl_apply, LinearMap.fst_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hA', LinearEquiv.symm_apply_apply]`. Use `⟨LinearEquiv.ofLinear f g (LinearMap.ext hfg) (LinearMap.ext hgf), fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.ofLinear_apply, f, LinearMap.comp_apply, LinearMap.inl_apply, LinearMap.fst_apply, LinearEquiv.coe_coe]`. Establish `h1` using `hψ (x, 0) (y, 0)`.
-
-Rewrite `h1` using `[hA' x, hA' y, prod_apply, prod_apply]`. Establish `z1 : (ofUnit (E` using `E) a).toSesq (0 : E) 0 = 0 := by`. Rewrite using `[ofUnit_apply, map_zero, zero_mul, zero_mul]`. Express the relevant statement in the definitionally equal form `h₂.toSesq _ _ + (ofUnit (E := E) a).toSesq 0 0 = h₁.toSesq x y + (ofUnit (E := E) a).toSesq 0 0 at h1`. Rewrite `h1` using `[z1, add_zero, add_zero]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometric_of_prod_ofUnit [Algebra.IsSeparable F E] [FiniteDimensional E V₂]
     (h₁ : HermitianForm F E V₁) (h₂ : HermitianForm F E V₂) (a : Fˣ)
@@ -285,17 +277,15 @@ theorem isometric_of_prod_ofUnit [Algebra.IsSeparable F E] [FiniteDimensional E 
   exact h1
 
 /- English proof (translation)
-It suffices to establish `key : ∀ n : ℕ, ∀ (U : Type _) [AddCommGroup U] [Module E U] [FiniteDimensional E U], finrank E U = n → ∀ k : HermitianForm F E U, Isometric (h₁.prod k) (h₂.prod k) → Isometric h₁ h₂ from key _ V rfl h H`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `U _ _ _ hU k Hk`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Subsingleton U` using `Module.finrank_zero_iff.1 hU`. Use `letI : Unique U := uniqueOfSubsingleton 0`. Establish `e1 : Isometric (h₁.prod k) h₁` using `⟨LinearEquiv.prodUnique, fun p q => by`. Rewrite using `[prod_apply, Subsingleton.elim p.2 0, map_zero, LinearMap.zero_apply, add_zero]`. Use the proof step `rfl⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : Isometric (h₂.prod k) h₂` using `⟨LinearEquiv.prodUnique, fun p q => by`. Rewrite using `[prod_apply, Subsingleton.elim p.2 0, map_zero, LinearMap.zero_apply, add_zero]`. Use the proof step `rfl⟩`. Conclude with `(e1.symm.trans Hk).trans e2`. Consider the case `succ n ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `U _ _ _ hU k Hk`. Establish `: Nontrivial U` using `Module.nontrivial_of_finrank_eq_succ hU`. Take `⟨v, hv⟩` from `k.exists_apply_self_ne_zero`. Take `⟨c, hc⟩` from `k.toSesq_self_mem_range v`. Establish `hc0 : c ≠ 0` using `by rintro rfl; rw [map_zero] at hc; exact hv hc.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, k₀, hk, hW⟩` from `k.exists_isometric_prod_ofUnit (a := Units.mk0 c hc0) hc.symm`. Establish `hWn : finrank E W = n` using `by have := hW inferInstance; omega`. Establish `step1 : Isometric (h₁.prod k) ((h₁.prod k₀).prod (ofUnit (E` using `E) (Units.mk0 c hc0))) := ((Isometric.refl h₁).prod (hk.symm.trans (isometric_prod_comm _ _))).trans (isometric_prod_assoc _ _ _).symm`. Establish `step2 : Isometric (h₂.prod k) ((h₂.prod k₀).prod (ofUnit (E` using `E) (Units.mk0 c hc0))) := ((Isometric.refl h₂).prod (hk.symm.trans (isometric_prod_comm _ _))).trans (isometric_prod_assoc _ _ _).symm`. Establish `H2` using `isometric_of_prod_ofUnit _ _ _ ((step1.symm.trans Hk).trans step2)`.
-
-Conclude with `ih W hWn k₀ H2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isometric_of_prod_isometric_prod [Algebra.IsSeparable F E] [FiniteDimensional E V₂]
     [FiniteDimensional E V] (h₁ : HermitianForm F E V₁) (h₂ : HermitianForm F E V₂)
@@ -338,21 +328,21 @@ def orthogonal (h : HermitianForm F E V) (U : Submodule E V) : Submodule E V whe
   smul_mem' c y hy x hx := by rw [h.toSesq_smul_right, hy x hx, mul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_orthogonal (h : HermitianForm F E V) (U : Submodule E V) (y : V) :
     y ∈ h.orthogonal U ↔ ∀ x ∈ U, h.toSesq x y = 0 := Iff.rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (h.toSesq.domRestrict₁₂ U U)`. Introduce `a b hab`. Establish `hab' : a - b = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hU _ (a - b).2` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u' hu'`. Establish `h1` using `LinearMap.congr_fun hab ⟨u', hu'⟩`. Simplify using `only [LinearMap.domRestrict₁₂_apply] at h1`. Rewrite using `[Submodule.coe_sub, map_sub, LinearMap.sub_apply, h1, sub_self]`. Conclude with `sub_eq_zero.1 hab'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbij` using `bijective_of_injective_sesq _ hinj`. Use `⟨?_, fun x hx y hy => hy x hx⟩` and prove the remaining obligations. Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[eq_bot_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨hx1, hx2⟩`. Conclude with `(Submodule.mem_bot E).2 (hU x hx1 fun u' hu' => h.toSesq_eq_zero_comm.1 (hx2 u' hu'))`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨u, hu⟩` from `hbij.2 ((h.toSesq v).domRestrict U)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mem_sup]`. Use `⟨u, u.2, v - u, fun x hx => ?_, by abel⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hu ⟨x, hx⟩`. Simplify using `only [LinearMap.domRestrict₁₂_apply, LinearMap.domRestrict_apply] at h1`. Rewrite using `[h.toSesq_eq_zero_comm, map_sub, LinearMap.sub_apply, h1, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOrthoCompl_orthogonal [FiniteDimensional E V] (h : HermitianForm F E V)
     (U : Submodule E V) (hU : ∀ u ∈ U, (∀ u' ∈ U, h.toSesq u u' = 0) → u = 0) :
@@ -385,7 +375,7 @@ theorem isOrthoCompl_orthogonal [FiniteDimensional E V] (h : HermitianForm F E V
     rw [h.toSesq_eq_zero_comm, map_sub, LinearMap.sub_apply, h1, sub_self]
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_prodEquivOfIsCompl', Submodule.coe_prodEquivOfIsCompl', map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hW.2 _ p.1.2 _ q.2.2, h.toSesq_eq_zero_comm.1 (hW.2 _ q.1.2 _ p.2.2)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem toSesq_prodEquivOfIsCompl (h : HermitianForm F E V) {W W' : Submodule E V}
     (hW : h.IsOrthoCompl W W') (p q : W × W') :
@@ -398,11 +388,11 @@ theorem toSesq_prodEquivOfIsCompl (h : HermitianForm F E V) {W W' : Submodule E 
   ring
 
 /- English proof (translation)
-Establish `I1` using `h.isometric_prod_restrict U₁ U₁' h1`. Establish `I2` using `h.isometric_prod_restrict U₂ U₂' h2`. Establish `Iφ : Isometric (h.restrict U₁ U₁' h1) (h.restrict U₂ U₂' h2)` using `⟨φ, hφ⟩`. Establish `I3 : Isometric ((h.restrict U₁' U₁ h1.symm).prod (h.restrict U₂ U₂' h2)) ((h.restrict U₂' U₂ h2.symm).prod (h.restrict U₂ U₂' h2))` using `(((Isometric.refl _).prod Iφ.symm).trans (isometric_prod_comm _ _)).trans (I1.trans (I2.symm.trans (isometric_prod_comm _ _)))`. Take `⟨ψ, hψ⟩` from `isometric_of_prod_isometric_prod _ _ _ I3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hψ' : ∀ a b : U₁', h.toSesq (ψ a : V) (ψ b) = h.toSesq a b` using `fun a b => hψ a b`. Use `set e₁ := Submodule.prodEquivOfIsCompl U₁ U₁' h1.1`. Use `set e₂ := Submodule.prodEquivOfIsCompl U₂ U₂' h2.1`. Use `⟨(e₁.symm.trans (φ.prodCongr ψ)).trans e₂, fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `e₁.surjective x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨q, rfl⟩` from `e₁.surjective y`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, LinearEquiv.prodCongr_apply]`. Rewrite using `[toSesq_prodEquivOfIsCompl h h2, toSesq_prodEquivOfIsCompl h h1, hφ, hψ']`. Simplify using `only [LinearEquiv.trans_apply, e₁, e₂, Submodule.prodEquivOfIsCompl_symm_apply_left, LinearEquiv.prodCongr_apply, map_zero, Submodule.coe_prodEquivOfIsCompl', Submodule.coe_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_isOrthoCompl [Algebra.IsSeparable F E] [FiniteDimensional E V]
     (h : HermitianForm F E V) {U₁ U₁' U₂ U₂' : Submodule E V} (h1 : h.IsOrthoCompl U₁ U₁')
@@ -431,11 +421,9 @@ theorem exists_extend_of_isOrthoCompl [Algebra.IsSeparable F E] [FiniteDimension
       Submodule.coe_zero, add_zero]
 
 /- English proof (translation)
-Establish `hU₂ : ∀ u ∈ U₂, (∀ u' ∈ U₂, h.toSesq u u' = 0) → u = 0`. Introduce `u hu H`. Establish `h1 : ((φ.symm ⟨u, hu⟩ : U₁) : V) = 0`. Apply `hU _ (φ.symm ⟨u, hu⟩).2` to reduce the goal to its premises. Introduce `u' hu'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hφ (φ.symm ⟨u, hu⟩) ⟨u', hu'⟩, LinearEquiv.apply_symm_apply]`. Conclude with `H _ (φ ⟨u', hu'⟩).2`. Establish `h2 : φ.symm ⟨u, hu⟩ = 0` using `Subtype.ext h1`. Establish `h3 : (⟨u, hu⟩ : U₂) = 0` using `by rw [← φ.apply_symm_apply ⟨u, hu⟩, h2, map_zero]`. Conclude with `congrArg Subtype.val h3`.
-
-Conclude with `h.exists_extend_of_isOrthoCompl (h.isOrthoCompl_orthogonal U₁ hU) (h.isOrthoCompl_orthogonal U₂ hU₂) φ hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_extend_of_nondegenerate [Algebra.IsSeparable F E] [FiniteDimensional E V]
     (h : HermitianForm F E V) {U₁ U₂ : Submodule E V}

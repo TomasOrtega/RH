@@ -20,7 +20,7 @@ def RegMaxHessian.Statement : Prop :=
           (Pi.single j 1)| ≤ C / η
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨inferInstance⟩, inferInstance, ⟨inferInstance⟩⟩`.
+Supply the required witnesses or components.
 -/
 example : Nonempty (Fintype (Fin 2)) ∧ Nonempty (Fin 2) ∧ Nonempty (DecidableEq (Fin 2)) :=
   ⟨⟨inferInstance⟩, inferInstance, ⟨inferInstance⟩⟩
@@ -52,11 +52,11 @@ abbrev sqZeroPair : Fin 2 → DualNumber (DualNumber ℚ) :=
   ![TrivSqZeroExt.inl DualNumber.eps, DualNumber.eps]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j fin_cases j`. Simplify using `[sqZeroPair, pow_two, ← TrivSqZeroExt.inl_mul]`. Simplify using `[sqZeroPair, pow_two]`. Rewrite using `[Fin.prod_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `h1` using `congrArg TrivSqZeroExt.snd h`. Establish `h2 : (sqZeroPair 0 * sqZeroPair 1).snd = DualNumber.eps`. Simplify using `only [sqZeroPair, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, DualNumber.fst_eps, DualNumber.snd_eps, smul_zero, add_zero, smul_eq_mul, mul_one]`. Rewrite `h1` using `[h2, TrivSqZeroExt.snd_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (congrArg TrivSqZeroExt.snd h1) (by rw [DualNumber.snd_eps, TrivSqZeroExt.snd_zero]; exact one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 example : (∀ j, sqZeroPair j ^ 2 = 0) ∧ ∏ j, sqZeroPair j ≠ 0 := by
   refine ⟨?_, ?_⟩
@@ -91,7 +91,7 @@ def TopPowerPairsVandermonde.Statement : Prop :=
     RestTerms.vandermondeOf lam = (-1) ^ N.choose 2 * (Matrix.vandermonde lam).det
 
 /- English proof (translation)
-Introduce `_ _` and use `by simp [pow_two]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ p ∈ pairsLT 2, (fun _ : Fin 2 × Fin 2 => (DualNumber.eps : DualNumber ℚ)) p ^ 2 = 0 :=
   fun _ _ => by simp [pow_two]
@@ -105,7 +105,7 @@ def PolarisationPowers.Statement : Prop :=
     ∀ p ∈ homogeneousSubmodule (Fin n) ℝ D, A p = B p
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example : ∀ lam : Fin 2 → ℝ,
     (aeval (fun _ : Fin 2 => (1 : ℝ))).toLinearMap (sum₂ lam ^ 3) =
@@ -123,7 +123,7 @@ def UniformIntegrabilityCore.Statement : Prop :=
       ∀ ε t, 0 < ε → ε ≤ ε₀ → 0 < t → t ≤ t₁ → J a ε t ≤ η
 
 /- English proof (translation)
-Establish `h : Tendsto (id : ℝ → ℝ) (𝓝[>] 0) (𝓝 0)` using `tendsto_nhdsWithin_of_tendsto_nhds tendsto_id`. Use `⟨fun ε t _ _ => by simp, h, fun _ => le_rfl, h, ?_⟩` and prove the remaining obligations. Introduce `a ε t₀ t _ _ ht`. Simplify using `only [id, Nat.cast_add, Nat.cast_one]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 example : UniformIntegrabilityCore.Hyp (fun a ε t => ε + a * t) id (fun _ => 0) id := by
   have h : Tendsto (id : ℝ → ℝ) (𝓝[>] 0) (𝓝 0) := tendsto_nhdsWithin_of_tendsto_nhds tendsto_id
@@ -146,9 +146,9 @@ def CoefficientwiseLimit.Statement : Prop :=
       ∀ lam : Fin n → ℝ, Tendsto (fun t => eval lam (F t)) (𝓝[>] 0) (𝓝 (eval lam P))
 
 /- English proof (translation)
-Use `⟨fun t _ _ => ?_, tendsto_nhdsWithin_of_tendsto_nhds tendsto_id, one_pos, ?_⟩` and prove the remaining obligations. Conclude with `(totalDegree_mul _ _).trans (by simp [totalDegree_C, totalDegree_X])`. Introduce `t t' lam ht' htt' _ hlam`. Establish `h0 : |lam 0| ≤ 1`. Use `norm_le_pi_norm lam 0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [eval_mul, eval_C, eval_X, id]`. Rewrite using `[← sub_mul, abs_mul, abs_of_nonneg (by linarith)]`. Use polynomial arithmetic with `[abs_nonneg (lam 0)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 example : CoefficientwiseLimit.Hyp 1 1 (fun t => C t * X 0) id 1 := by
   refine ⟨fun t _ _ => ?_, tendsto_nhdsWithin_of_tendsto_nhds tendsto_id, one_pos, ?_⟩
@@ -178,7 +178,7 @@ def AmplePerturbation.Statement : Prop :=
         I (fun _ => L + ε • H)
 
 /- English proof (translation)
-Use `⟨by norm_num, fun σ v => ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.mkPiAlgebra_apply, Function.comp_apply]`. Conclude with `Equiv.prod_comp σ v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : AmplePerturbation.Hyp 2 (MultilinearMap.mkPiAlgebra ℝ (Fin 2) ℝ) (1 : ℝ) := by
   refine ⟨by norm_num, fun σ v => ?_, by simp⟩

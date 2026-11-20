@@ -17,7 +17,7 @@ def tform (y y' : TensorProduct ℂ M (Fock n)) : ℂ :=
   ∑ s, inner ℂ (tco s y) (tco s y')
 
 /- English proof (translation)
-Unfold `tform`. Rewrite using `[star_sum]`. Conclude with `sum_congr rfl fun s _ => inner_conj_symm _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tform_conj (y y' : TensorProduct ℂ M (Fock n)) : star (tform y y') = tform y' y := by
   unfold tform
@@ -25,7 +25,7 @@ theorem tform_conj (y y' : TensorProduct ℂ M (Fock n)) : star (tform y y') = t
   exact sum_congr rfl fun s _ => inner_conj_symm _ _
 
 /- English proof (translation)
-Unfold `tform`. Simplify using `only [map_sum, sum_inner]`. Conclude with `sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tform_sum_left {ι : Type*} (t : Finset ι) (f : ι → TensorProduct ℂ M (Fock n))
     (y' : TensorProduct ℂ M (Fock n)) : tform (∑ i ∈ t, f i) y' = ∑ i ∈ t, tform (f i) y' := by
@@ -34,7 +34,7 @@ theorem tform_sum_left {ι : Type*} (t : Finset ι) (f : ι → TensorProduct �
   exact sum_comm
 
 /- English proof (translation)
-Unfold `tform`. Simplify using `only [map_sum, inner_sum]`. Conclude with `sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tform_sum_right {ι : Type*} (t : Finset ι) (f : ι → TensorProduct ℂ M (Fock n))
     (y : TensorProduct ℂ M (Fock n)) : tform y (∑ i ∈ t, f i) = ∑ i ∈ t, tform y (f i) := by
@@ -43,21 +43,21 @@ theorem tform_sum_right {ι : Type*} (t : Finset ι) (f : ι → TensorProduct �
   exact sum_comm
 
 /- English proof (translation)
-Unfold `tform`. Simplify using `[inner_neg_left]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tform_neg_left (y y' : TensorProduct ℂ M (Fock n)) : tform (-y) y' = -tform y y' := by
   unfold tform
   simp [inner_neg_left]
 
 /- English proof (translation)
-Unfold `tform`. Simplify using `[inner_neg_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tform_neg_right (y y' : TensorProduct ℂ M (Fock n)) : tform y (-y') = -tform y y' := by
   unfold tform
   simp [inner_neg_right]
 
 /- English proof (translation)
-Unfold `tform`. Simplify using `[sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tform_add_left (y z y' : TensorProduct ℂ M (Fock n)) :
     tform (y + z) y' = tform y y' + tform z y' := by
@@ -65,7 +65,7 @@ theorem tform_add_left (y z y' : TensorProduct ℂ M (Fock n)) :
   simp [sum_add_distrib]
 
 /- English proof (translation)
-Unfold `tform`. Simplify using `[sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tform_add_right (y y' z : TensorProduct ℂ M (Fock n)) :
     tform y (y' + z) = tform y y' + tform y z := by
@@ -73,7 +73,7 @@ theorem tform_add_right (y y' z : TensorProduct ℂ M (Fock n)) :
   simp [sum_add_distrib]
 
 /- English proof (translation)
-Unfold `tform`. Simplify using `[mul_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tform_smul_right (c : ℂ) (y y' : TensorProduct ℂ M (Fock n)) :
     tform y (c • y') = c * tform y y' := by
@@ -81,7 +81,7 @@ theorem tform_smul_right (c : ℂ) (y y' : TensorProduct ℂ M (Fock n)) :
   simp [mul_sum]
 
 /- English proof (translation)
-Unfold `tform`. Rewrite using `[Complex.re_sum]`. Use `sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem tform_self_re (y : TensorProduct ℂ M (Fock n)) : (tform y y).re = ∑ s, ‖tco s y‖ ^ 2 := by
   unfold tform
@@ -91,18 +91,16 @@ theorem tform_self_re (y : TensorProduct ℂ M (Fock n)) : (tform y y).re = ∑ 
   norm_cast
 
 /- English proof (translation)
-Rewrite using `[tform_self_re]`. Conclude with `sum_nonneg fun s _ => sq_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tform_self_re_nonneg (y : TensorProduct ℂ M (Fock n)) : 0 ≤ (tform y y).re := by
   rw [tform_self_re]
   exact sum_nonneg fun s _ => sq_nonneg _
 
 /- English proof (translation)
-Break down `(tform_self_re_nonneg y).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `h` using `[tform_self_re]`. Establish `h0 : ∀ s, tcoef ((fockBasis n).coord s) y = 0`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `hs` using `(sum_eq_zero_iff_of_nonneg (fun t _ => sq_nonneg ‖tco t y‖)).mp h.symm s (mem_univ s)`. Conclude with `norm_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp hs)`. Apply `hy` to reduce the goal to its premises. Rewrite using `[tcoef_expand y]`.
-
-Conclude with `sum_eq_zero fun s _ => by rw [h0 s, TensorProduct.zero_tmul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tform_self_re_pos {y : TensorProduct ℂ M (Fock n)} (hy : y ≠ 0) : 0 < (tform y y).re := by
   rcases (tform_self_re_nonneg y).lt_or_eq with h | h
@@ -118,14 +116,14 @@ theorem tform_self_re_pos {y : TensorProduct ℂ M (Fock n)} (hy : y ≠ 0) : 0 
   exact sum_eq_zero fun s _ => by rw [h0 s, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-The claim follows from `tcoef_map_left _ T y`.
+A detailed English derivation is pending.
 -/
 theorem tco_map_left (T : Module.End ℂ M) (s : Finset (Fin (n * n))) (y : TensorProduct ℂ M (Fock n)) :
     tco s (TensorProduct.map T LinearMap.id y) = T (tco s y) :=
   tcoef_map_left _ T y
 
 /- English proof (translation)
-Use `conv_lhs => rw [tcoef_expand y]`. Simplify using `only [map_sum, TensorProduct.map_tmul, LinearMap.id_apply, tcoef_tmul, Module.Basis.coord_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tco_lTensor (g : Module.End ℂ (Fock n)) (s : Finset (Fin (n * n))) (y : TensorProduct ℂ M (Fock n)) :
     tco s (TensorProduct.map LinearMap.id g y) =
@@ -134,7 +132,7 @@ theorem tco_lTensor (g : Module.End ℂ (Fock n)) (s : Finset (Fin (n * n))) (y 
   simp only [map_sum, TensorProduct.map_tmul, LinearMap.id_apply, tcoef_tmul, Module.Basis.coord_apply]
 
 /- English proof (translation)
-Unfold `tform eT`. Simplify using `only [tco_map_left, mul_sum]`. Conclude with `sum_congr rfl fun s _ => hU a b _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tform_eT {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M} (hU : IsInfUnitary ε E) (a b : Fin n)
     (y y' : TensorProduct ℂ M (Fock n)) :
@@ -144,9 +142,9 @@ theorem tform_eT {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M
   exact sum_congr rfl fun s _ => hU a b _ _
 
 /- English proof (translation)
-Unfold `tform cpT cmT`. Simplify using `only [tco_lTensor, sum_inner, inner_sum, inner_smul_left, inner_smul_right]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun t _ => sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `lf_repr_cp_star (i, a) t s`. Establish `h2` using `lf_repr_cm_eq (i, a) s t`. Rewrite using `[h2, starRingEnd_apply]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tform_cpT (i a : Fin n) (y y' : TensorProduct ℂ M (Fock n)) :
     tform (cpT i a y) y' = tform y (cmT i a y') := by
@@ -161,18 +159,18 @@ theorem tform_cpT (i a : Fin n) (y y' : TensorProduct ℂ M (Fock n)) :
   exact h1
 
 /- English proof (translation)
-Rewrite using `[← tform_conj y' (cmT i a y), ← tform_cpT, tform_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tform_cmT (i a : Fin n) (y y' : TensorProduct ℂ M (Fock n)) :
     tform (cmT i a y) y' = tform y (cpT i a y') := by
   rw [← tform_conj y' (cmT i a y), ← tform_cpT, tform_conj]
 
 /- English proof (translation)
-Unfold `dOp dOp'`. Simplify using `only [LinearMap.sum_apply, LinearMap.neg_apply, tform_sum_left, tform_neg_right, tform_sum_right, Module.End.mul_apply, ← sum_neg_distrib]`. Use `sum_congr rfl fun i hi => sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Simplify using `only [plusIdx, minusIdx, mem_filter, mem_univ, true_and] at hi ha`. Rewrite using `[tform_eT hU, tform_cpT]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : cmT i a (eT E i a y') = eT E i a (cmT i a y')`. Use `LinearMap.congr_fun ((eT_commutesCAR (n := n) E) i a i a).2 y'` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Conclude with `this.symm`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[adjSign, hi, ha]`.
+A detailed English derivation is pending.
 -/
 theorem tform_dOp {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M} (hU : IsInfUnitary ε E)
     (y y' : TensorProduct ℂ M (Fock n)) :
@@ -191,7 +189,7 @@ theorem tform_dOp {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ 
   simp [adjSign, hi, ha]
 
 /- English proof (translation)
-Establish `h' : tform (dOp' ε (eT E) cmT y) y' = tform y (dOp ε (eT E) cpT y')`. Rewrite using `[← tform_conj y' (dOp' ε (eT E) cmT y), ← tform_dOp hU, tform_conj]`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, tform_add_left, tform_add_right, tform_dOp hU, h', add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tform_D {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M} (hU : IsInfUnitary ε E)
     (y y' : TensorProduct ℂ M (Fock n)) :
@@ -204,7 +202,7 @@ theorem tform_D {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M}
 section Shift
 
 /- English proof (translation)
-Unfold `root`. Simplify using `only [Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ssh_root_le (a b c : Fin n) : root a b c ≤ 1 := by
   unfold root
@@ -212,7 +210,7 @@ theorem ssh_root_le (a b c : Fin n) : root a b c ≤ 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `root`. Simplify using `only [Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ssh_root_ge (a b c : Fin n) : -1 ≤ root a b c := by
   unfold root
@@ -220,13 +218,13 @@ theorem ssh_root_ge (a b c : Fin n) : -1 ≤ root a b c := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `h` using `lfD_cnt (fun c => ε c ≠ ε x) hxy`. Establish `h1 : (univ.filter fun c => c = x ∧ ε c ≠ ε x).card = 0`. Rewrite using `[lfD_single]`. Simplify using the standard rewrite rules. Establish `h2 : (univ.filter fun c => c = y ∧ ε c ≠ ε x).card = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[lfD_single]`. Simplify using `[he]`. Establish `h3 : (univ.filter fun c => x < c ∧ c < y ∧ ε c ≠ ε x).card = 0`. Rewrite using `[card_eq_zero, filter_eq_empty_iff]`. Introduce `c _ hc'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc c hc'.1 hc'.2.1`. Simplify using `only [rhoN, ← he]`. Rewrite `h` using `[h1, h2, h3]`. Establish `h'` using `congrArg (Nat.cast : ℕ → ℝ) h`. Move the coercions through the operations in `at h'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem ssh_rhoN_consec (ε : Fin n → Bool) {x y : Fin n} (hxy : x < y) (he : ε x = ε y)
     (hc : ∀ c, x < c → c < y → False) : rhoN ε x = rhoN ε y := by
@@ -246,15 +244,15 @@ theorem ssh_rhoN_consec (ε : Fin n → Bool) {x y : Fin n} (hxy : x < y) (he : 
   linarith
 
 /- English proof (translation)
-Establish `hF : Formalism.REAL.KRel ε E` using `fun a b c d _ _ => hE a b c d`. Consider the cases of `n with`. Consider the case `zero => exact fun x => x.elim0`. Consider the case `succ m`. Rewrite using `[Fin.strictAnti_iff_succ_lt]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `hxy : i.castSucc < i.succ` using `Fin.castSucc_lt_succ`. Establish `hl` using `hmono hxy`. Simplify using `only [Pi.sub_apply]`. Distinguish the cases in `he : ε i.castSucc = ε i.succ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Take `⟨N, hN⟩` from `HW.kIrrHW_int ε hF hW _ _ hxy he`. Establish `hbet : ∀ c, i.castSucc < c → c < i.succ → False`. Introduce `c h1 h2`. Rewrite `h1`, `h2` using `[Fin.lt_def]`. Simplify using `only [Fin.val_castSucc, Fin.val_succ] at h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hC` using `HW.rhoC_consec ε hxy he (fun c h1 h2 => (hbet c h1 h2).elim)`. Establish `hN'` using `ssh_rhoN_consec ε hxy he hbet`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply] at hN`. Establish `: (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg` using `hh _ _ he`. Rewrite `hg` using `[abs_of_pos (sub_pos.mpr hl)]`. Use `ssh_root_le a b i.castSucc` as an intermediate fact. Use `ssh_root_ge a b i.succ` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -290,7 +288,7 @@ theorem ssh_strictAnti {ε : Fin n → Bool} {lam : Fin n → ℝ} (hmono : Stri
       linarith
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `m f`. Simplify using `[casimir, eT, LinearMap.sum_apply, TensorProduct.sum_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem ssh_casimir_eT {N : Type*} [AddCommGroup N] [Module ℂ N] (E : Fin n → Fin n → Module.End ℂ N) :
     casimir (eT (n := n) E) = TensorProduct.map (casimir E) LinearMap.id := by
@@ -299,9 +297,9 @@ theorem ssh_casimir_eT {N : Type*} [AddCommGroup N] [Module ℂ N] (E : Fin n �
   simp [casimir, eT, LinearMap.sum_apply, TensorProduct.sum_tmul]
 
 /- English proof (translation)
-Establish `e : nsq (lam - root a b) = nsq lam - 2 * dot (root a b) lam + dot (root a b) (root a b)`. Unfold `nsq dot`. Rewrite using `[mul_sum, ← sum_sub_distrib, ← sum_add_distrib]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, dot_root_left, dot_root_left]`. Establish `ha : root a b a = 1` using `by simp [root, hab]`. Establish `hb : root a b b = -1` using `by simp [root, Ne.symm hab]`. Rewrite using `[ha, hb]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

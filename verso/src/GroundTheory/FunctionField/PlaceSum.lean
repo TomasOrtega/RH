@@ -8,19 +8,17 @@ open IsDedekindDomain IsLocalRing
 open scoped WithZero
 
 /- English proof (translation)
-Establish `disc : ∀ y : ℤᵐ⁰, y < 1 → y ≤ WithZero.exp (-1)`. Introduce `y hy`. Break down `eq_or_ne y 0 with rfl | hy0` into its components or cases. Conclude with `zero_le`. Rewrite `hy` using `[← WithZero.exp_log hy0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log hy0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hlt : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `h₁ (WithZero.exp (-1))`. Take `⟨π', hπ'⟩` from `h₂ (WithZero.exp (-1))`. Establish `hπ2 : v₂ π = WithZero.exp (-1)`. Establish `h2lt : v₂ π < 1` using `h.lt_one_iff_lt_one.1 (hπ ▸ hlt)`. Establish `h1 : v₁ π' < 1` using `h.lt_one_iff_lt_one.2 (hπ' ▸ hlt)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : v₂ π' ≤ v₂ π` using `h.le_iff_le.1 (hπ ▸ disc _ h1)`. Conclude with `le_antisymm (disc _ h2lt) (hπ' ▸ h3)`. Use extensionality with `x`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : v₁ x = WithZero.exp (WithZero.log (v₁ x))` using `(WithZero.exp_log ((Valuation.ne_zero_iff _).2 hx)).symm`. Establish `hy : v₁ (x * π ^ (WithZero.log (v₁ x))) = 1`. Rewrite using `[map_mul, map_zpow₀, hπ, hx1, WithZero.log_exp, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Rewrite using `[← WithZero.exp_zero]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hy2` using `h.eq_one_iff_eq_one.1 hy`. Rewrite `hy2` using `[map_mul, map_zpow₀, hπ2, ← WithZero.exp_zsmul]`. Rewrite using `[hx1, eq_inv_of_mul_eq_one_left hy2, ← WithZero.exp_neg]`. Use `congr 1`.
-
-Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_eq_of_isEquiv {F : Type*} [Field F] {v₁ v₂ : Valuation F ℤᵐ⁰}
     (h : v₁.IsEquiv v₂) (h₁ : Function.Surjective v₁) (h₂ : Function.Surjective v₂) : v₁ = v₂ := by
@@ -68,7 +66,7 @@ attribute [local instance low] algebraExt
 
 omit [Algebra k K'] [IsScalarTower k K K'] in
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isScalarTower_ext (v : Place k K) : IsScalarTower v.ring K K' :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
@@ -77,7 +75,7 @@ attribute [local instance] isScalarTower_ext
 
 omit [Algebra k K'] [IsScalarTower k K K'] in
 /- English proof (translation)
-The claim follows from `Module.isTorsionFree_iff_algebraMap_injective.2 ((algebraMap K K').injective.comp (IsFractionRing.injective v.ring K))`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_ext (v : Place k K) : Module.IsTorsionFree v.ring K' :=
   Module.isTorsionFree_iff_algebraMap_injective.2
@@ -91,21 +89,21 @@ variable [IsFunctionField k K] [FiniteDimensional K K'] [Algebra.IsSeparable K K
 
 omit [Algebra k K'] [IsScalarTower k K K'] in
 /- English proof (translation)
-The claim follows from `IsIntegralClosure.isDedekindDomain v.ring K K' _`.
+A detailed English derivation is pending.
 -/
 theorem isDedekindDomain_closure : IsDedekindDomain (integralClosure v.ring K') :=
   IsIntegralClosure.isDedekindDomain v.ring K K' _
 
 omit [Algebra k K'] [IsScalarTower k K K'] [IsFunctionField k K] [Algebra.IsSeparable K K'] in
 /- English proof (translation)
-The claim follows from `integralClosure.isFractionRing_of_finite_extension (A := v.ring) K K'`.
+A detailed English derivation is pending.
 -/
 theorem isFractionRing_closure : IsFractionRing (integralClosure v.ring K') K' :=
   integralClosure.isFractionRing_of_finite_extension (A := v.ring) K K'
 
 omit [Algebra k K'] [IsScalarTower k K K'] in
 /- English proof (translation)
-The claim follows from `IsIntegralClosure.finite v.ring K K' _`.
+A detailed English derivation is pending.
 -/
 theorem finite_closure : Module.Finite v.ring (integralClosure v.ring K') :=
   IsIntegralClosure.finite v.ring K K' _
@@ -113,14 +111,14 @@ theorem finite_closure : Module.Finite v.ring (integralClosure v.ring K') :=
 omit [Algebra k K'] [IsScalarTower k K K'] [IsFunctionField k K] [FiniteDimensional K K']
   [Algebra.IsSeparable K K'] in
 /- English proof (translation)
-The claim follows from `IsIntegralClosure.isTorsionFree v.ring K'`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_closure : Module.IsTorsionFree v.ring (integralClosure v.ring K') :=
   IsIntegralClosure.isTorsionFree v.ring K'
 
 omit [Algebra k K'] [IsScalarTower k K K'] in
 /- English proof (translation)
-The claim follows from `IsIntegralClosure.rank v.ring K K' _`.
+A detailed English derivation is pending.
 -/
 theorem finrank_closure :
     Module.finrank v.ring (integralClosure v.ring K') = Module.finrank K K' :=
@@ -140,7 +138,7 @@ attribute [local instance] isDedekindDomain_closure isFractionRing_closure finit
 
 omit [Algebra k K'] [IsScalarTower k K K'] [FiniteDimensional K K'] [Algebra.IsSeparable K K'] in
 /- English proof (translation)
-Introduce `h`. Establish `hinj : Function.Injective (algebraMap v.ring (integralClosure v.ring K'))` using `Module.isTorsionFree_iff_algebraMap_injective.1 (isTorsionFree_closure v)`. Apply `IsDiscreteValuationRing.not_a_field v.ring` to reduce the goal to its premises. Rewrite using `[hq.2.over, h]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_bot_of_mem_primesOver {q : Ideal (integralClosure v.ring K')}
     (hq : q ∈ (maximalIdeal v.ring).primesOver (integralClosure v.ring K')) : q ≠ ⊥ := by
@@ -158,7 +156,7 @@ noncomputable def primeHS (q : (maximalIdeal v.ring).primesOver (integralClosure
 omit [IsScalarTower k K K'] [IsFunctionField k K] [FiniteDimensional K K'] [Algebra.IsSeparable K K'] in
 
 /- English proof (translation)
-Set `` to `h.algebra`. Establish `: IsScalarTower v.ring w.ring K'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hx.tower_top (A := w.ring))`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral_of_liesOver {w : Place k K'} (h : w.LiesOver v) {x : K'}
     (hx : IsIntegral v.ring x) : x ∈ w.ring := by
@@ -189,7 +187,7 @@ noncomputable abbrev placeOfPrime (q : (maximalIdeal v.ring).primesOver (integra
       (⟨algebraMap k K' c, hc⟩ : integralClosure v.ring K')
 
 /- English proof (translation)
-The claim follows from `Subalgebra.algebraMap_mem (Localization.subalgebra.ofField K' _ (v.primeHS q).asIdeal.primeCompl_le_nonZeroDivisors) b`.
+A detailed English derivation is pending.
 -/
 theorem closure_mem_placeOfPrime (q : (maximalIdeal v.ring).primesOver (integralClosure v.ring K'))
     (b : integralClosure v.ring K') : (b : K') ∈ (v.placeOfPrime q).ring :=
@@ -197,7 +195,7 @@ theorem closure_mem_placeOfPrime (q : (maximalIdeal v.ring).primesOver (integral
     (v.primeHS q).asIdeal.primeCompl_le_nonZeroDivisors) b
 
 /- English proof (translation)
-The claim follows from `liesOver_of_le fun x hx => v.closure_mem_placeOfPrime q (algebraMap v.ring (integralClosure v.ring K') ⟨x, hx⟩)`.
+A detailed English derivation is pending.
 -/
 theorem placeOfPrime_liesOver (q : (maximalIdeal v.ring).primesOver (integralClosure v.ring K')) :
     (v.placeOfPrime q).LiesOver v :=
@@ -233,9 +231,9 @@ noncomputable def primeOfPlace {w : Place k K'} (h : w.LiesOver v) :
     exact hlo.over⟩⟩
 
 /- English proof (translation)
-Use `Place.eq_of_le fun x hx => ?_` and prove the remaining obligations. Take `⟨a, s, hs, rfl⟩` from `hx`. Establish `ha : ((a : integralClosure v.ring K') : K') ∈ w.ring` using `(v.closureHom h a).2`. Establish `hsw : ((s : integralClosure v.ring K') : K') ∈ w.ring` using `(v.closureHom h s).2`. Establish `hs' : v.closureHom h s ∉ maximalIdeal w.ring` using `hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : w.ring.valuation (s : K') = 1` using `le_antisymm (w.ring.valuation_le_one_iff _ |>.2 hsw) (not_lt.1 fun hlt => hs' ((w.ring.valuation_lt_one_iff _).2 hlt))`. Establish `hsinv : ((s : integralClosure v.ring K') : K')⁻¹ ∈ w.ring`. Rewrite using `[← w.ring.valuation_le_one_iff, map_inv₀, hs1, inv_one]`. Conclude with `mul_mem ha hsinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeOfPrime_primeOfPlace {w : Place k K'} (h : w.LiesOver v) :
     v.placeOfPrime (v.primeOfPlace h) = w := by
@@ -253,19 +251,17 @@ theorem placeOfPrime_primeOfPlace {w : Place k K'} (h : w.LiesOver v) :
 
 omit [IsFunctionField k K'] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `b`. Express the relevant statement in the definitionally equal form `v.closureHom _ b ∈ maximalIdeal (v.placeOfPrime q).ring ↔ b ∈ q.1`. Rewrite using `[ValuationSubring.valuation_lt_one_iff]`. Express the relevant statement in the definitionally equal form `(v.placeOfPrime q).ring.valuation (b : K') < 1 ↔ b ∈ q.1`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hb`. Assume the negation of the conclusion as `hbq`. Establish `hinv : ((b : integralClosure v.ring K') : K')⁻¹ ∈ (v.placeOfPrime q).ring` using `⟨1, b, hbq, by simp⟩`. Establish `hbmem` using `v.closure_mem_placeOfPrime q b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : (b : K') ≠ 0`. Introduce `h0`. Rewrite `hinv` using `[h0, inv_zero]`. Conclude with `hbq (by`. Establish `: b = 0` using `Subtype.ext h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `q.1.zero_mem)`. Establish `h1` using `(v.placeOfPrime q).ring.valuation_le_one_iff _ |>.2 hinv`. Rewrite `h1` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb0))]`. Conclude with `absurd hb (not_lt.2 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `hbq`. Assume the negation of the conclusion as `hb`. Establish `hb1 : (v.placeOfPrime q).ring.valuation (b : K') = 1` using `le_antisymm ((v.placeOfPrime q).ring.valuation_le_one_iff _ |>.2 (v.closure_mem_placeOfPrime q b)) (not_lt.1 hb)`. Establish `hb0 : (b : K') ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hb1` using `[h0, map_zero]`. Conclude with `zero_ne_one hb1`. Establish `hinv : ((b : integralClosure v.ring K') : K')⁻¹ ∈ (v.placeOfPrime q).ring`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_inv₀, hb1, inv_one]`. Establish `hle` using `HeightOneSpectrum.valuationSubringAtPrime_le_valuation (K := K') (v := v.primeHS q)`.
-
-Establish `h1 : (v.primeHS q).valuation K' (b : K')⁻¹ ≤ 1` using `hle hinv`. Establish `h2 : (v.primeHS q).valuation K' (algebraMap (integralClosure v.ring K') K' b) < 1` using `((v.primeHS q).valuation_lt_one_iff_mem (K := K') b).2 hbq`. Rewrite `h1` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb0))]`. Conclude with `absurd h2 (not_lt.2 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeOfPlace_placeOfPrime
     (q : (maximalIdeal v.ring).primesOver (integralClosure v.ring K')) :
@@ -315,13 +311,13 @@ noncomputable def primesOverEquiv :
   right_inv w := Subtype.ext (v.placeOfPrime_primeOfPlace w.2)
 
 /- English proof (translation)
-Use `symm`. Use `valuation_eq_of_isEquiv ?_ (v.placeOfPrime q).valuation_surjective (HeightOneSpectrum.valuation_surjective K' _)` and prove the remaining obligations. Use `Valuation.isEquiv_iff_val_le_one.2 fun {x} => ?_` and prove the remaining obligations. Rewrite using `[Place.valuation_le_one_iff]`. Establish `hle` using `HeightOneSpectrum.valuationSubringAtPrime_le_valuation (K := K') (v := v.primeHS q)`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `P : Place k K'` to `{ ring := ((v.primeHS q).valuation K').valuationSubring ne_top := by`. Introduce `htop`. Take `⟨π, hπ⟩` from `(v.primeHS q).valuation_exists_uniformizer K'`. Establish `hmem : π⁻¹ ∈ ((v.primeHS q).valuation K').valuationSubring` using `htop ▸ ValuationSubring.mem_top _`. Rewrite `hmem` using `[Valuation.mem_valuationSubring_iff, map_inv₀, hπ, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `algebraMap_mem := fun c => hle ((v.placeOfPrime q).algebraMap_mem c) }`. Establish `heq : v.placeOfPrime q = P` using `Place.eq_of_le hle`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hle hx`. Introduce `hx`. Establish `hxP : x ∈ P.ring` using `hx`. Rewrite `hxP` using `[← heq]`. Conclude with `hxP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_primeHS (q : (maximalIdeal v.ring).primesOver (integralClosure v.ring K')) :
     (v.primeHS q).valuation K' = (v.placeOfPrime q).valuation := by
@@ -352,9 +348,9 @@ theorem valuation_primeHS (q : (maximalIdeal v.ring).primesOver (integralClosure
     exact hxP
 
 /- English proof (translation)
-Use `q.2.1` as an intermediate fact. Use `q.2.2` as an intermediate fact. Establish `: (v.primeHS q).asIdeal.LiesOver v.heightOneSpectrum.asIdeal` using `q.2.2`. Establish `hp : maximalIdeal v.ring ≠ ⊥` using `IsDiscreteValuationRing.not_a_field v.ring`. Establish `h` using `v.placeOfPrime_liesOver q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx (maximalIdeal v.ring) q.1 hp, ← h.ramificationIdx'_eq]`. Establish `e1 : v.valuation v.uniformizer ^ (maximalIdeal v.ring).ramificationIdx' q.1 = (v.primeHS q).valuation K' (algebraMap K K' v.uniformizer)` using `HeightOneSpectrum.valuation_liesOver K' v.heightOneSpectrum (v.primeHS q) v.uniformizer`. Establish `e2` using `h.valuation_algebraMap v.uniformizer`. Rewrite `e1` using `[valuation_primeHS, ← e2, v.valuation_eq_exp_neg_ord v.uniformizer_ne_zero, v.ord_uniformizer, ← WithZero.exp_nsmul, ← WithZero.exp_nsmul, WithZero.exp_inj]`. Simplify using `using e1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ramificationIdx_primeOfPlace_eq
     (q : (maximalIdeal v.ring).primesOver (integralClosure v.ring K')) :
@@ -377,11 +373,11 @@ theorem ramificationIdx_primeOfPlace_eq
 omit [IsFunctionField k K'] in
 
 /- English proof (translation)
-Use `q.2.1` as an intermediate fact. Use `q.2.2` as an intermediate fact. Establish `hmax : q.1.IsMaximal` using `q.2.1.isMaximal (v.ne_bot_of_mem_primesOver q.2)`. Establish `h` using `v.placeOfPrime_liesOver q`. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal (maximalIdeal v.ring) q.1, ← h.finrank_residueField]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `` to `h.algebra`. Use `h.isLocalHom` as an intermediate fact. Establish `: IsLocalization.AtPrime (v.placeOfPrime q).ring q.1` using `inferInstanceAs (IsLocalization (v.primeHS q).asIdeal.primeCompl (HeightOneSpectrum.valuationSubringAtPrime K' (v.primeHS q)))`. Use `Algebra.finrank_eq_of_equiv_equiv (RingEquiv.refl _) (IsLocalization.AtPrime.equivQuotMaximalIdeal q.1 (v.placeOfPrime q).ring) ?_` and prove the remaining obligations. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem inertiaDeg_primeOfPlace_eq
     (q : (maximalIdeal v.ring).primesOver (integralClosure v.ring K')) :
@@ -403,7 +399,7 @@ theorem inertiaDeg_primeOfPlace_eq
   rfl
 
 /- English proof (translation)
-Establish `hfin : ((maximalIdeal v.ring).primesOver (integralClosure v.ring K')).Finite` using `Algebra.QuasiFinite.finite_primesOver _`. Use `hfin.to_subtype` as an intermediate fact. Conclude with `Set.finite_coe_iff.1 (Finite.of_equiv _ v.primesOverEquiv)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_liesOver : {w : Place k K' | w.LiesOver v}.Finite := by
   have hfin : ((maximalIdeal v.ring).primesOver (integralClosure v.ring K')).Finite :=
@@ -412,9 +408,9 @@ theorem finite_liesOver : {w : Place k K' | w.LiesOver v}.Finite := by
   exact Set.finite_coe_iff.1 (Finite.of_equiv _ v.primesOverEquiv)
 
 /- English proof (translation)
-Establish `hfin : ((maximalIdeal v.ring).primesOver (integralClosure v.ring K')).Finite` using `Algebra.QuasiFinite.finite_primesOver _`. Set `: Fintype ((maximalIdeal v.ring).primesOver (integralClosure v.ring K'))` to `hfin.fintype`. Set `: Fintype {w : Place k K' // w.LiesOver v}` to `Fintype.ofEquiv _ v.primesOverEquiv`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (maximalIdeal v.ring) (integralClosure v.ring K')`. Rewrite `hsum` using `[finrank_closure]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∀ w : Place k K', w ∈ (v.finite_liesOver (K'` using `K')).toFinset ↔ w.LiesOver v := fun w => Set.Finite.mem_toFinset _`. Rewrite using `[← hsum, Finset.sum_subtype _ hs]`. Use `(Fintype.sum_equiv v.primesOverEquiv _ _ fun q => ?_).symm` and prove the remaining obligations. Rewrite using `[ramificationIdx_primeOfPlace_eq, inertiaDeg_primeOfPlace_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_ramificationIdx_mul_inertiaDeg :
     ∑ w ∈ (v.finite_liesOver (K' := K')).toFinset, w.ramificationIdx v * w.inertiaDeg v =

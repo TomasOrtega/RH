@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 
 /- English proof (translation)
-The claim follows from `fun R _ A _ g hA hg ↦ GlobalTheory.AbCoh.PrimForm.prim_of_axes A (GlobalTheory.T.abelianSquare_globalOneForm_eq_zero_of_axes R A g hA hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbCoh.primF_of_isAbelianScheme : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → GlobalTheory.AbCoh.PrimF A :=

@@ -24,9 +24,9 @@ namespace GlobalTheory.LamT.LetterInt
 open GlobalTheory.IntLie
 
 /- English proof (translation)
-Set `δ : Over.mk (g ≫ T'.hom) ⟶ T'` to `Over.homMk g rfl`. Establish `h1` using `prod_push h (Over.mk (g ≫ T'.hom)) T (𝟙 _) ((Category.id_comp _).trans (hg.symm.trans (Category.assoc _ _ _).symm)) (fun j => δ ≫ a j) a₀ (fun j => (Category.assoc _ _ _).trans ((ha j).symm.trans (Category.id_comp _).symm))`. Establish `h2 : ∀ {m : ℕ} (a : Fin m → (T' ⟶ G')), (List.ofFn fun j => δ ≫ a j).prod = δ ≫ (List.ofFn a).prod`. Introduce `m a`. Proceed by induction on `m with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp [MonObj.comp_one]`. Consider the case `succ m ih => rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, MonObj.comp_mul, ih]`. Rewrite `h1` using `[h2]`. Conclude with `((Category.id_comp _).symm.trans h1.symm).trans (Category.assoc _ _ _)`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pull {S' S₀ : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S₀} [GrpObj G] {f : S' ⟶ S₀}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T' : Over S') (T : Over S₀) (g : T.left ⟶ T'.left)
@@ -46,13 +46,13 @@ theorem prod_pull {S' S₀ : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S�
   exact ((Category.id_comp _).symm.trans h1.symm).trans (Category.assoc _ _ _)
 
 /- English proof (translation)
-Take `⟨u₁, hu₁, rfl⟩` from `hw₁`. Take `⟨u₂, hu₂, rfl⟩` from `hw₂`. Set `T : Over X` to `Over.mk (spMap (algebraMap F (DualNumber F)) ≫ spMap α ≫ f₁)`. Establish `e₁ : spMap (dualMap α) ≫ spMap (algebraMap V (DualNumber V)) ≫ f₁ = spMap (algebraMap F (DualNumber F)) ≫ spMap α ≫ f₁`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp₂, spMap_comp₂, dualMap_alg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : spMap (dualMap β) ≫ spMap (algebraMap K (DualNumber K)) ≫ f₂ = spMap (algebraMap F (DualNumber F)) ≫ spMap α ≫ f₁`. Rewrite using `[hf, ← Category.assoc, ← Category.assoc, spMap_comp₂, spMap_comp₂, dualMap_alg]`. Set `Z : Fin m → (T ⟶ B)` to `fun i => Over.homMk (spMap (dualMap α) ≫ (u₁ i).left ≫ φ₁) (by show (spMap (dualMap α) ≫ (u₁ i).left ≫ φ₁) ≫ B.hom = spMap (algebraMap F (DualNumber F)) ≫ spMap α ≫ f₁`. Rewrite using `[Category.assoc, Category.assoc, h₁.1.w, ← Category.assoc (u₁ i).left, Over.w (u₁ i)]`. Conclude with `e₁)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k₁` using `prod_pull h₁ (epsR V) T (spMap (dualMap α)) e₁ u₁ Z (fun _ => rfl)`. Establish `k₂` using `prod_pull h₂ (epsR K) T (spMap (dualMap β)) e₂ u₂ Z (fun i => by show spMap (dualMap α) ≫ (u₁ i).left ≫ φ₁ = _`. Establish `a₁ : spMap (dualMap α) ≫ spMap (epsScaleR (c₁ i)) = spMap (epsMul (α (c₁ i))) ≫ spMap (dualMap α)`. Rewrite using `[spMap_comp₂, spMap_comp₂, ← dualMap_epsMul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `a₂ : spMap (dualMap β) ≫ spMap (epsScaleR (c₂ i)) = spMap (epsMul (β (c₂ i))) ≫ spMap (dualMap β)`. Rewrite using `[spMap_comp₂, spMap_comp₂, ← dualMap_epsMul]`. Both sides reduce to the same expression. Rewrite using `[hu₁ i, hu₂ i, Category.assoc, Category.assoc, reassoc_of% a₁, reassoc_of% a₂, hv i, hc i])`. Conclude with `k₁.symm.trans k₂`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_match {V K F : Type} [CommRing V] [CommRing K] [CommRing F] {X : Scheme.{0}} {B : Over X} [GrpObj B]
     {G₁ : Over (Sp V)} [GrpObj G₁] {G₂ : Over (Sp K)} [GrpObj G₂] {f₁ : Sp V ⟶ X} {f₂ : Sp K ⟶ X}
@@ -87,11 +87,11 @@ theorem comb_match {V K F : Type} [CommRing V] [CommRing K] [CommRing F] {X : Sc
   exact k₁.symm.trans k₂
 
 /- English proof (translation)
-Take `⟨h1, -, h3, -⟩` from `LieComb.lieComb_algebra K G n v hv`. Set `s' : epsR K ⟶ G` to `Over.homMk (spMap (epsMul cl) ≫ w.left) (by show (spMap (epsMul cl) ≫ w.left) ≫ G.hom = spMap (algebraMap K (DualNumber K))`. Rewrite using `[Category.assoc, Over.w w]`. Conclude with `(spMap_comp₂ _ _).trans (congrArg spMap (epsMul_alg cl)))`. Establish `a₁` using `h3 n A wK _ s hw hs`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `h3 1 (fun _ => U) (fun _ => w) (fun _ => cl) s' (fun _ => hU) ⟨fun _ => s', fun _ => rfl, by simp⟩`. Establish `e : ∑ i, Matrix.vecMul (cl • U) A⁻¹ i • A i = ∑ _i : Fin 1, cl • U`. Rewrite using `[← Matrix.vecMul_eq_sum, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (IsUnit.mk0 _ hA), Matrix.vecMul_one]`. Simplify using the standard rewrite rules. Rewrite `a₁` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(h1 _).unique a₁ a₂]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comb_eq_scale {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] [IsCommMonObj G] {n : ℕ}
     {v wK : Fin n → (epsR K ⟶ G)} (hv : ∀ i, IsTangent (v i)) {A : Matrix (Fin n) (Fin n) K} (hA : A.det ≠ 0)
@@ -113,7 +113,7 @@ theorem comb_eq_scale {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] [IsCommM
   rfl
 
 /- English proof (translation)
-Rewrite using `[spMap_comp₂, spMap_comp₂]`. Use `congr 1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [epsMul, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_comm {R : Type} [CommRing R] (a b : R) :
     spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsMul b) ≫ spMap (epsMul a) := by
@@ -124,7 +124,7 @@ theorem epsMul_comm {R : Type} [CommRing R] (a b : R) :
   ext <;> simp [epsMul, mul_left_comm]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h₁` using `congrArg TrivSqZeroExt.fst h`. Establish `h₂` using `congrArg TrivSqZeroExt.snd h`. Simplify using `[dualMap] at h₁ h₂`. Conclude with `TrivSqZeroExt.ext (hf h₁) (hf h₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualMap_inj {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (hf : Function.Injective f) :
     Function.Injective (dualMap f) := by
@@ -138,15 +138,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨N, _, _, v, ρ, hinj, htan, hcomb, -, hsm⟩` from `GlobalTheory.TanMod.exists_tangent_module E H Dw l Xo S y.x`. Use `choose β hβ using fun i => (htan _).1 (y.tan b i)`. Establish `hy : y.u b = fun i => v (β i)` using `funext fun i => (hβ i).symm`. Establish `hu' : u' = fun i => v (∑ j, g i j • β j)` using `funext fun i => (hcomb _ β _ _).1 (hy ▸ hu i)`. Establish `hw : spMap (epsMul r) ≫ y.u b j = v (r • β j)` using `by rw [hsm, hβ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : IsTanAt y.x (spMap (epsMul r) ≫ y.u b j)` using `(htan _).2 ⟨_, hw.symm⟩`. Establish `he : IsEigAt c b (spMap (epsMul r) ≫ y.u b j)` using `fun a => by`. Rewrite using `[Category.assoc, y.eig b j a, ← Category.assoc, epsMul_comm, Category.assoc]`. Establish `h1` using `(hcomb _ (fun i => ∑ j, g i j • β j) _ _).1 (hu' ▸ ha)`. Establish `h2 : IsCombAt y.x (y.u b) (Matrix.vecMul a g) (spMap (epsMul r) ≫ y.u b j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Use `(hcomb _ β _ _).2 ((hy ▸ h1).trans (congrArg v ?_))` and prove the remaining obligations. Simplify using `only [Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `h3 : IsCombAt y.x (y.u b) (Pi.single j r) (spMap (epsMul r) ≫ y.u b j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw, hy]`. Use `(hcomb _ β _ _).2 (congrArg v ?_)` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Establish `h4` using `(y.basis b _ ht he).unique h2 h3`. Establish `h5 : a = Matrix.vecMul (Pi.single j r) g⁻¹`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h4, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hg, Matrix.vecMul_one]`. Rewrite using `[h5]`. Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_eq {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (b : E →+* ℂ)
     (u' : Fin (Dw.mult b) → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (g : Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) S)
@@ -179,11 +179,11 @@ theorem coord_eq {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (b : 
   simp [Matrix.vecMul, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `a z hz`. Establish `h1 : w' ≫ (t.act.act a).left = spMap (epsMul (algebraMap V K z)) ≫ w'`. Apply `m₁.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m₁.act a, ← Category.assoc, he a, hz, Category.assoc]`. Rewrite using `[Category.assoc, Over.w, Category.assoc, ho, spMap_comp₂, epsMul_alg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom (dualMap (algebraMap V K))) (dualMap_inj _ (IsFractionRing.injective V K))` as an intermediate fact. Use `ExtUnique.hom_ext_of_dominant G.G.hom ?_ (spMap (dualMap (algebraMap V K))) ?_` and prove the remaining obligations. Rewrite using `[Over.w, Category.assoc, Over.w]`. Conclude with `((spMap_comp₂ _ _).trans (congrArg spMap (epsMul_alg z))).symm`. Establish `a₁ : spMap (dualMap (algebraMap V K)) ≫ spMap (epsMul z) = spMap (epsMul (algebraMap V K z)) ≫ spMap (dualMap (algebraMap V K))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap_comp₂, spMap_comp₂, ← dualMap_epsMul]`. Rewrite using `[Over.comp_left, ← reassoc_of% hw, ← m₂.act a, reassoc_of% h1, reassoc_of% a₁, ← hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEigV_of_generic {V K : Type} [CommRing V] [Field K] [Algebra V K] [IsFractionRing V K] [Algebra c.F K]
     {x : Sp K ⟶ Xo.X} {G : SAB H (Sp V)} [IsSeparated G.G.hom] {t : SAB H (Sp K)} (m₁ : SABMap t Xo.univ.t x)
@@ -209,33 +209,29 @@ theorem isEigV_of_generic {V K : Type} [CommRing V] [Field K] [Algebra V K] [IsF
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz p T iK M hval`. Use `letI := (iK.comp (algebraMap c.F z.K)).toAlgebra`. Introduce `φ yT y' g a hφ hmap hchg hg hint b j k cl hcl`. Take `⟨hobj, hlet, -, hx, -, hu⟩` from `hz`. Take `⟨A, hA, -⟩` from `hobj.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 p`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcint` using `LamF.letter_integral_of_isLocGen E H l c _ _ f z.obj La hobj z.letters hlet p A hA (z.e ⟨b, j⟩) cl hcl`. Take `⟨vV, hvV, hvw⟩` from `GlobalTheory.T.exists_lieBasis_local_model E H Dw l Xo c z p T iK M hval A hA`. Use `choose wK hwK hwV using hvw`. Establish `hdet : A.det ≠ 0`. Take `⟨_, _, _, _, _, _, _, _, _, _, -, -, -, h, -⟩` from `hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Use `choose cV hcV using fun m => (hval _).2 (hcint m)`. Take `⟨w, hw, hwu⟩` from `hu b j`. Take `⟨w₀, hw₀, hU⟩` from `hlet.2.2.1 (z.e ⟨b, j⟩)`. Choose the witnesses or unpack the hypotheses as in `rfl : w₀ = w := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Use `Over.OverMorphism.ext (z.m'.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Unfold `LamF.LamLetters.IsLetter at hw hw₀`. Generalize the expression as in `z.letters.src (z.e ⟨b, j⟩) = s at hw hw₀`. Break down `s with q | q` into its components or cases. Conclude with `hw₀.trans hw.symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hw₀.trans hw.symm`. Establish `hK` using `LieComb.lieComb_algebra z.K z.Φ.T.t.G _ z.Φ.v z.Φ.basis.1`. Take `⟨s, hs, -⟩` from `(LieComb.lieComb_algebra z.K z.Φ.T.t.G _ wK (fun i => hK.2.1 _ _ (hwK i))).1 (Matrix.vecMul (cl • z.U (z.e ⟨b, j⟩)) A⁻¹)`. Establish `hV` using `LieComb.lieComb_algebra T.V M.G.t.G _ vV hvV.1`. Take `⟨W, hW, -⟩` from `hV.1 cV`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWt` using `hV.2.1 _ _ hW`. Establish `hbase : spMap (algebraMap T.V T.Fr) ≫ spMap M.ρ = spMap iK ≫ spMap (algebraMap (𝓞 z.K) z.K)`. Rewrite using `[spMap_comp₂, spMap_comp₂, M.hρ]`. Establish `hmatch` using `comb_match M.n.cart z.m'.cart (algebraMap T.V T.Fr) iK hbase hwV hcV hW hs`. Establish `hsl` using `comb_eq_scale z.Φ.basis.1 hdet hwK hU cl hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : (spMap (dualMap iK) ≫ s.left) ≫ z.Φ.T.t.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ spMap iK`. Rewrite using `[Category.assoc, Over.w s]`. Conclude with `(spMap_comp₂ _ _).trans ((congrArg spMap (dualMap_alg iK)).trans (spMap_comp₂ _ _).symm)`. Set `s' : Sp (DualNumber T.Fr) ⟶ M.t'.t.G.left` to `M.n'.cart.1.lift _ _ hsq`. Establish `hs1 : s' ≫ M.n'.φ = spMap (dualMap iK) ≫ s.left` using `M.n'.cart.1.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs2 : s' ≫ M.t'.t.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))` using `M.n'.cart.1.lift_snd _ _ _`. Set `W' : epsOver T.V T.V ⟶ M.G.t.G` to `Over.homMk W.left (Over.w W)`. Establish `hm2 : s' ≫ M.m2.φ = spMap (dualMap (algebraMap T.V T.Fr)) ≫ W'.left`. Apply `M.n.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ hmatch.symm` and prove the remaining obligations. Conclude with `(congrArg (s' ≫ ·) M.h2).trans (by rw [reassoc_of% hs1])`. Rewrite using `[Category.assoc, M.m2.cart.1.w, reassoc_of% hs2, Category.assoc, Over.w W']`. Conclude with `(spMap_comp₂ _ _).trans ((congrArg spMap (dualMap_alg _).symm).trans (spMap_comp₂ _ _).symm)`. Establish `hm1 : s' ≫ M.m1.φ = spMap (epsMul (iK cl)) ≫ yT.u b j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a₁ : spMap (dualMap iK) ≫ spMap (epsMul cl) = spMap (epsMul (iK cl)) ≫ spMap (dualMap iK)`. Rewrite using `[spMap_comp₂, spMap_comp₂, ← dualMap_epsMul]`. Rewrite using `[M.h1, reassoc_of% hs1, hsl, Category.assoc, reassoc_of% a₁, hmap.2.1 b j, hφ, hwu]`. Establish `hW't : IsTan W'`. Unfold `IsTan`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hWt.trans ?_` and prove the remaining obligations. Establish `e : (1 : ptOver T.V T.V ⟶ M.G.t.G) = toUnit _ ≫ η[M.G.t.G]` using `rfl`. Rewrite using `[e, Over.comp_left]`. Establish `e2 : (toUnit (ptOver T.V T.V)).left = 𝟙 (Sp T.V)`. Use `Over.w (toUnit (ptOver T.V T.V))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((Category.comp_id _).symm.trans this).trans (Spec.map_id _)`. Rewrite using `[e2]`. Conclude with `(Category.id_comp _).symm`. Use `M.G.ab.proper` as an intermediate fact. Establish `hW'e : IsEigV c (iK.comp (algebraMap c.F z.K)) M.G.t b W'` using `isEigV_of_generic M.m1 M.m2 b W' s' hm2 hs2 (fun a => by`.
-
-Rewrite using `[hm1, Category.assoc, yT.eig b j a, ← Category.assoc, epsMul_comm, Category.assoc])`. Take `⟨ub, -, -, hb, hl⟩` from `hint`. Take `⟨aV, haV, -⟩` from `hb b W' hW't hW'e`. Use `choose u' hu1 hu2 using hl b`. Establish `hgen` using `comb_generic M.m1 M.m2 (ub b) u' hu2 W' s' hm2 aV haV`.
-
-Establish `hxT : spMap iK ≫ z.x = yT.x` using `by rw [hmap.1, hφ, hx]`. Rewrite `hgen` using `[hm1, funext hu1]`. Establish `hgen' : IsCombAt yT.x (y'.u b) (fun j => algebraMap T.V T.Fr (aV j)) (spMap (epsMul (iK cl)) ≫ yT.u b j)` using `hxT ▸ hgen`. Conclude with `⟨aV k, (coord_eq yT b (y'.u b) (g b) (hg b) (hchg.2.1 b) (iK cl) j _ hgen' k).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem letter_integral_in_eigenbasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La → ∀ (p : HeightOneSpectrum (𝓞 z.K)) (T : CDVR) (iK : z.K →+* T.Fr) (M : LocMod z T iK), (∀ y : z.K, iK y ∈ Set.range (algebraMap T.V T.Fr) ↔ p.valuation z.K y ≤ 1) → letI := (iK.comp (algebraMap c.F z.K)).toAlgebra; ∀ (φ : z.K →ₐ[c.F] T.Fr) (yT y' : FrPt Xo c T.Fr) (g : (∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) T.Fr)) (a : T.Fr), φ.toRingHom = iK → FrMap φ z.y yT → FrChg g a yT y' → (∀ b, IsUnit (g b).det) → LieInt T (iK.comp (algebraMap c.F z.K)) M.m1 M.m2 y'.u → ∀ (b : E →+* ℂ) (j k : Fin (Dw.mult b)) (cl : z.K), IsLocGen p cl (z.ℓ (z.e ⟨b, j⟩)).I → iK cl * (g b)⁻¹ j k ∈ Set.range (algebraMap T.V T.Fr) := by
   intro E _ _ _ H Dw l Xo c _ z f La hz p T iK M hval

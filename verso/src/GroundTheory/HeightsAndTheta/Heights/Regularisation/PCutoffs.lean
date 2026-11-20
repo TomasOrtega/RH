@@ -16,9 +16,9 @@ open ReciprocityTheory.AnForm.M.PLAux (chartPush chartPush_eq_zero isCompact_sym
 noncomputable section
 
 /- English proof (translation)
-Take `⟨W, hWo, hKW, hWV, hWc⟩` from `exists_open_between_and_isCompact_closure hK hV hKV`. Establish `hd : Disjoint Wᶜ K` using `Set.disjoint_compl_left_iff_subset.2 hKW`. Take `⟨f, hf, hrange, h0, h1⟩` from `exists_contMDiff_zero_iff_one_iff_of_isClosed (I := 𝓘(ℝ, E)) (n := ⊤) hWo.isClosed_compl hK.isClosed hd`. Establish `hsupp : tsupport f ⊆ closure W`. Use `closure_mono fun y hy => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hyW`. Conclude with `hy ((h0 y).1 hyW)`. Use `⟨f, contMDiff_iff_contDiff.1 hf, fun y => hrange ⟨y, rfl⟩, fun y hy => (h1 y).1 hy, hWc.of_isClosed_subset (isClosed_tsupport f) hsupp, hsupp.trans hWV⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_smooth_bump_of_isCompact {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {K V : Set E} (hK : IsCompact K) (hV : IsOpen V) (hKV : K ⊆ V) :
@@ -36,15 +36,15 @@ theorem exists_smooth_bump_of_isCompact {E : Type*} [NormedAddCommGroup E] [Norm
     hWc.of_isClosed_subset (isClosed_tsupport f) hsupp, hsupp.trans hWV⟩
 
 /- English proof (translation)
-Establish `hS : IsCompact (K ×ˢ sphere (0 : Fin D → ℂ) 1)` using `hK.prod (isCompact_sphere 0 1)`. Establish `hc : ContinuousOn (fun p : (Fin D → ℂ) × (Fin D → ℂ) => levi f p.1 p.2) (K ×ˢ sphere (0 : Fin D → ℂ) 1)` using `(ReciprocityTheory.AnForm.continuousOn_levi hU hf).mono (prod_mono hKU (subset_univ _))`. Take `⟨C, hC⟩` from `hS.exists_bound_of_continuousOn hc`. Use `⟨max C 0, le_max_right _ _, fun y hy w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using `[ReciprocityTheory.AnForm.levi_zero]`. Establish `hn : 0 < ‖w‖` using `norm_pos_iff.2 hw`. Establish `hu : ‖‖w‖⁻¹ • w‖ = 1`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hn.ne']`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `hC (y, ‖w‖⁻¹ • w) ⟨hy, by simpa using hu⟩`. Establish `hb' : -max C 0 ≤ levi f y (‖w‖⁻¹ • w)`. Use `(abs_le.1 (Real.norm_eq_abs _ ▸ hb)).1` as an intermediate fact. Combine the linear relations using `[le_max_left C 0]`. Establish `hw' : w = ‖w‖ • (‖w‖⁻¹ • w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`. Rewrite using `[hw', ReciprocityTheory.AnForm.levi_smul_dir]`. Establish `h2 : 0 ≤ ‖w‖ ^ 2` using `by positivity`. Use `mul_le_mul_of_nonneg_left hb' h2` as an intermediate fact. Establish `hnn : ‖‖w‖ • (‖w‖⁻¹ • w)‖ = ‖w‖` using `by rw [← hw']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hnn]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem levi_lower_bound_of_isCompact {D : ℕ} {f : (Fin D → ℂ) → ℝ} {U K : Set (Fin D → ℂ)}
     (hU : IsOpen U) (hf : ContDiffOn ℝ 2 f U) (hK : IsCompact K) (hKU : K ⊆ U) :
@@ -75,27 +75,23 @@ theorem levi_lower_bound_of_isCompact {D : ℕ} {f : (Fin D → ℂ) → ℝ} {U
   linarith
 
 /- English proof (translation)
-Introduce `X _ _ _ D A P`. Establish `hb : ∀ j, ∃ g : (Fin D → ℂ) → ℝ, ContDiff ℝ ∞ g ∧ (∀ y, 0 ≤ g y ∧ g y ≤ 1) ∧ (∀ y ∈ P.chart j '' closure (P.inner j), g y = 1) ∧ IsCompact (tsupport g) ∧ tsupport g ⊆ P.chartMid j`. Introduce `j`. Establish `hcl : closure (P.inner j) ⊆ (P.chart j).source` using `(P.closure_inner j).trans (P.mid_subset_source j)`. Use `exists_smooth_bump_of_isCompact (isClosed_closure.isCompact.image_of_continuousOn ((P.chart j).continuousOn.mono hcl)) ((P.chart j).continuousOn_symm.isOpen_inter_preimage (P.chart j).open_target (P.isOpen_mid j)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨(P.chart j).map_source (hcl hx), by`. Rewrite using `[mem_preimage, (P.chart j).left_inv (hcl hx)]`. Conclude with `P.closure_inner j hx⟩`. Use `choose g hgs hg01 hg1 hgc hgt using hb`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgt' : ∀ j, tsupport (g j) ⊆ (P.chart j).target` using `fun j => (hgt j).trans inter_subset_left`. Establish `hcp : ∀ j x, 0 ≤ chartPush (P.chart j) (g j) x ∧ chartPush (P.chart j) (g j) x ≤ 1`. Introduce `j x`. Unfold `chartPush`. Distinguish the cases in `hx : x ∈ (P.chart j).source`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_mem hx]`. Conclude with `hg01 j _`. Rewrite using `[indicator_of_notMem hx]`. Conclude with `⟨le_rfl, zero_le_one⟩`. Establish `hsm : ∀ j, A.Smooth (fun x => chartPush (P.chart j) (g j) x - 1)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j a`. Conclude with `ContDiffOn.sub (f := chartPush (P.chart j) (g j) ∘ (A.chart a).symm) (smooth_chartPush (P.compat j) (hgs j) (hgc j) (hgt' j) a) contDiffOn_const`. Establish `hC : ∀ j k, ∃ C : ℝ, 0 ≤ C ∧ ∀ y ∈ P.chart k '' closure (P.mid k), ∀ w, -C * ‖w‖ ^ 2 ≤ levi ((fun x => chartPush (P.chart j) (g j) x - 1) ∘ (P.chart k).symm) y w`. Introduce `j k`. Establish `h` using `contDiffOn_compat (P.compat k) isOpen_univ (hsm j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[preimage_univ, inter_univ]`. Use `levi_lower_bound_of_isCompact (P.chart k).open_target (h.of_le (WithTop.coe_le_coe.2 le_top)) (isClosed_closure.isCompact.image_of_continuousOn ((P.chart k).continuousOn.mono (P.closure_mid k))) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(P.chart k).map_source (P.closure_mid k hx)`. Use `choose C hC0 hC using hC`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun j x => chartPush (P.chart j) (g j) x - 1, ∑ j, ∑ k, C j k, ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `j a`. Conclude with `(hsm j a).mono (inter_subset_inter_right _ (preimage_mono (subset_univ _)))`. Introduce `j x _`. Apply the tactic sequence `constructor <;> linarith [hcp j x]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j x hx`. Establish `hs : x ∈ (P.chart j).source` using `P.mid_subset_source j (P.inner_subset_mid j hx)`. Establish `h1 : chartPush (P.chart j) (g j) x = 1`. Unfold `chartPush`. Rewrite using `[indicator_of_mem hs]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg1 j _ ⟨x, subset_closure hx, rfl⟩`. Simplify using `[h1]`. Introduce `j`. Use `⟨(P.chart j).symm '' tsupport (g j), (isCompact_symm_image (hgc j) (hgt' j)).isClosed, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Conclude with `(hgt j hy).2`. Introduce `x hx`. Simplify using `[chartPush_eq_zero (P.chart j) hx.2]`. Introduce `j k x hx w`. Establish `h` using `hC j k (P.chart k x) ⟨x, subset_closure hx.2, rfl⟩ w`.
-
-Establish `hle : C j k ≤ ∑ j, ∑ k, C j k` using `(Finset.single_le_sum (fun k _ => hC0 j k) (Finset.mem_univ k)).trans (Finset.single_le_sum (f := fun j => ∑ k, C j k) (fun j _ => Finset.sum_nonneg fun k _ => hC0 j k) (Finset.mem_univ j))`. Establish `h2 : 0 ≤ ‖w‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem CutoffsExist.proof : CutoffsExist.Statement := by
   intro X _ _ _ D A P

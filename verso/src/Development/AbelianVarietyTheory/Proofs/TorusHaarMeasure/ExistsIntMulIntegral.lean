@@ -12,7 +12,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `h : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨k, hk, hi⟩` from `h.exists_integral_multiple`. Conclude with `⟨k, hk, by simpa [zsmul_eq_mul] using hi⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_mul_integral (x : E) : ∃ k : ℤ, k ≠ 0 ∧ IsIntegral ℤ ((k : E) * x) := by
   have h : IsAlgebraic ℤ x :=
@@ -23,11 +23,11 @@ theorem exists_int_mul_integral (x : E) : ∃ k : ℤ, k ≠ 0 ∧ IsIntegral �
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le E ℂ (‖(k : ℂ)‖ * R)`. Establish `hk' : (k : E) ≠ 0` using `Int.cast_ne_zero.2 hk`. Use `Set.Finite.of_finite_image (f := fun x => (k : E) * x) (hfin.subset ?_) (fun x _ y _ h => mul_left_cancel₀ hk' h)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨hi, hb⟩, rfl⟩`. Use `⟨hi, fun φ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ‖φ x‖ ≤ R`. Distinguish the cases in `hφ : φ ∈ Ψ`. Conclude with `hb ⟨φ, hφ⟩`. Establish `h2 : ComplexEmbedding.conjugate φ ∈ Ψ`. Assume the negation of the conclusion as `h3`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hφ ((hΨ φ).2 h3)`. Use `hb ⟨_, h2⟩` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify using `only [map_mul, map_intCast, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left this (norm_nonneg _)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_bounded (Ψ : Finset (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) (k : ℤ) (hk : k ≠ 0) (R : ℝ) :
@@ -52,15 +52,15 @@ theorem finite_bounded (Ψ : Finset (E →+* ℂ))
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hΛ`. Use `choose d hd hdi using (exists_int_mul_integral (E := E))`. Use `⟨∏ p ∈ S ×ˢ (Finset.univ : Finset (Fin r)), d (p.1 p.2), Finset.prod_ne_zero_iff.2 fun p _ => hd _, fun v hv => ?_⟩` and prove the remaining obligations. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `hm : (v, a) ∈ S ×ˢ (Finset.univ : Finset (Fin r))` using `Finset.mem_product.2 ⟨hv, Finset.mem_univ _⟩`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun p : (Fin r → E) × Fin r => d (p.1 p.2)) hm`. Rewrite using `[hc]`. Use `(hdi (v a)).mul (isIntegral_algebraMap (R := ℤ) (A := E) (x := c))` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((d (v a) * c : ℤ) : E) * v a = (d (v a) : E) * v a * algebraMap ℤ E c`. Simplify using `only [Int.cast_mul, eq_intCast]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e ▸ this`. Consider the case `zero => intro a`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using isIntegral_zero`. Consider the case `add x y _ _ hx hy`. Introduce `a`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `(hx a).add (hy a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx`. Introduce `a`. Use `(hx a).mul (RingOfIntegers.isIntegral_coe c)` as an intermediate fact. Rewrite using `[Pi.smul_apply, Algebra.smul_def, mul_left_comm, mul_comm]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_den {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Λ.FG) :
     ∃ k : ℤ, k ≠ 0 ∧ ∀ v ∈ Λ, ∀ a, IsIntegral ℤ ((k : E) * v a) := by
@@ -95,9 +95,9 @@ theorem exists_common_den {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ
 omit [IsCMField E] in
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralMultiples.main`. Consider the case `exact _root_.GlobalTheory.IntegralMultiples.main`. Consider the case `(apply _root_.GlobalTheory.IntegralMultiples.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralMultiples.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralMultiples.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralMultiples.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E))
     (hΛ : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) (v : Fin r → E) :
@@ -111,7 +111,7 @@ theorem exists_int_smul_mem {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E))
   | (intros; exact _root_.GlobalTheory.IntegralMultiples.main ..)
 
 /- English proof (translation)
-Take `⟨k, hk, hi⟩` from `exists_common_den X.Λ X.Λ_fg`. Use `(Set.Finite.pi' fun _ : Fin r => finite_bounded X.Ψ X.cmType k hk R).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hb⟩ a`. Conclude with `⟨hi v hv a, fun τ => hb τ a⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_vectors (r : ℕ) (X : Data E r) (R : ℝ) :
     {v : Fin r → E | v ∈ X.Λ ∧ ∀ (τ : X.Ψ) (a : Fin r), ‖τ.1 (v a)‖ ≤ R}.Finite := by
@@ -121,9 +121,9 @@ theorem finite_vectors (r : ℕ) (X : Data E r) (R : ℝ) :
   exact ⟨hi v hv a, fun τ => hb τ a⟩
 
 /- English proof (translation)
-Take `⟨k, hk, hi⟩` from `exists_common_den X.Λ X.Λ_fg`. Use `choose l hl hm using fun b : Fin r => exists_int_smul_mem X.Λ X.Λ_span (Pi.single b 1)`. Establish `hfin` using `Set.Finite.pi' fun _ : Fin r => Set.Finite.pi' fun b : Fin r => finite_bounded X.Ψ X.cmType (k * l b) (mul_ne_zero hk (hl b)) R`. Use `Set.Finite.of_finite_image (f := fun γ : GL (Fin r) E => fun a b => (γ : Matrix (Fin r) (Fin r) E) a b) (hfin.subset ?_) (fun x _ y _ h => Units.ext h)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, ⟨hγ, hb⟩, rfl⟩ a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun τ => hb τ a b⟩` and prove the remaining obligations. Use `hi _ ((hγ.2 _).1 (hm b)) a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Simplify `this` using `[mul_assoc, Matrix.col]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_automorphisms (r : ℕ) (X : Data E r) (R : ℝ) :
     {γ : GL (Fin r) E | IsUStab X.Gm X.Λ γ ∧ ∀ (τ : X.Ψ) (a b : Fin r),
@@ -142,7 +142,7 @@ theorem finite_automorphisms (r : ℕ) (X : Data E r) (R : ℝ) :
   simpa [mul_assoc, Matrix.col] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨finite_vectors, finite_automorphisms⟩`.
+Supply the required witnesses or components.
 -/
 theorem latFin : ((∀ (r : ℕ) (X : Data E r) (R : ℝ), {v : Fin r → E | v ∈ X.Λ ∧ ∀ (τ : X.Ψ) (a : Fin r), ‖τ.1 (v a)‖ ≤ R}.Finite) ∧ (∀ (r : ℕ) (X : Data E r) (R : ℝ), {γ : GL (Fin r) E | IsUStab X.Gm X.Λ γ ∧ ∀ (τ : X.Ψ) (a b : Fin r), ‖τ.1 ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ R}.Finite)) :=
   ⟨finite_vectors, finite_automorphisms⟩

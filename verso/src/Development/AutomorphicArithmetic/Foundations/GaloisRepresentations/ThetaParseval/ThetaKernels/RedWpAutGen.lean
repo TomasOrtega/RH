@@ -18,12 +18,12 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.InfiniteNormOneField.infinite_norm_one_k C`.
+A detailed English derivation is pending.
 -/
 theorem infinite_norm_one_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) : {t : E | t * σ t = 1}.Infinite :=
   _root_.UpperTheory.Reformulated.B.InfiniteNormOneField.infinite_norm_one_k C
 /- English proof (translation)
-Establish `hu : IsUnit JS.det` using `isUnit_iff_ne_zero.2 C.hS.2`. Establish `hP : (JT ⊗ₖ JS⁻¹ᵀ).det ≠ 0`. Rewrite using `[det_kronecker, det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ C.hT.2) (pow_ne_zero _ (Matrix.isUnit_nonsing_inv_det JS hu).ne_zero)`. Conclude with `GenA.det_unit_sig σ hP (GenA.kron_unit_sig σ hu ha.unitary hb.unitary)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_kron_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) {g : GAF σ JS} {h : GAF σ JT} {a b}
     (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b) :
@@ -36,7 +36,7 @@ theorem det_kron_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ �
   exact GenA.det_unit_sig σ hP (GenA.kron_unit_sig σ hu ha.unitary hb.unitary)
 namespace GenR
 /- English proof (translation)
-Rewrite using `[show mtF σ J g = _ from h]`. Use extensionality with `i j`. Use `show θ w (infPartF F E (incAF F E (a i j))) = tauB B w (a i j)`. Rewrite using `[GenA.infPart_incAF]`. Conclude with `(C.inf w).1 (a i j)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_rat_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g : GAF σ J} {a}
     (h : IsRatF σ J g a) (w : InfinitePlace F) : compAtF θ w (mtF σ J g) = a.map (tauB B w) := by
@@ -46,13 +46,11 @@ theorem compAt_rat_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ
   rw [GenA.infPart_incAF]
   exact (C.inf w).1 (a i j)
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RealWeil.blk_mul]`. Simplify using `only [fun w => (hS w).1, fun w => (hT w).1]`. Conclude with `GlobalTheory.RealWeil.blk_one`. Use `pos := by`. Unfold `HMF`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.RealWeil.blk_mul]`. Use `GlobalTheory.RealWeil.blk_posDef (fun w => (hT w).2.2) fun w => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.RealSymplForm.cartan_inv_mul (hS w)]`. Conclude with `(hS w).2.2.inv`. Use `cen := fun k t hk => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mMF_apply]`. Use `GenA.blk_comm (fun w => ?_) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.ThKW.GenR.compAt_rat_k C hk]`. Establish `e : (t • (1 : Matrix (Fin nT) (Fin nT) E)).map (tauB B w) = tauB B w t • 1`. Use extensionality with `i j`.
-
-Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[inv_one, compAt_one, Matrix.one_mul, Matrix.mul_one]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cart_blk_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) {sS : InfinitePlace F → Matrix (Fin nS) (Fin nS) ℂ}
     {sT : InfinitePlace F → Matrix (Fin nT) (Fin nT) ℂ}
@@ -80,23 +78,21 @@ theorem cart_blk_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ �
     · rw [inv_one, compAt_one, Matrix.one_mul, Matrix.mul_one]
 end GenR
 /- English proof (translation)
-Establish `hcm` using `C.good.cm`. Establish `hσ` using `GlobalTheory.SplitDetCharF.sig_invol hcm`. Take `⟨c, hc⟩ : ∃ c : E ≃ₐ[F] E, (c : E →ₐ[F] E) = σ` from `⟨AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ), rfl⟩`. Substitute `hc` using the available equality. Establish `hr : ∀ w, (2 * (tauB B w ξ₀).im : ℝ) ≠ 0` using `fun w => mul_ne_zero two_ne_zero (GenA.im_ne hcm C.h0 C.hξ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hcS : ∀ w, ∃ s, Formalism.IndefR.Datum.IsCartanInv (JS.map (tauB B w)) s` using `fun w => by`. Simplify using `using GenA.cart_exists _ (GenA.herm_map hcm C.hS (tauB B w)) (GenA.det_map_ne C.hS (tauB B w)) 1 one_ne_zero`. Establish `hcT : ∀ w, ∃ s, Formalism.IndefR.Datum.IsCartanInv (((2 * (tauB B w ξ₀).im : ℝ) : ℂ) • JT.map (tauB B w)) s` using `fun w => GenA.cart_exists _ (GenA.herm_map hcm C.hT (tauB B w)) (GenA.det_map_ne C.hT (tauB B w)) _ (hr w)`. Use `choose sS0 hS0 using hcS`. Use `choose sT0 hT0 using hcT`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `Q11 : Q (1, 1)` using `hs (1, 1) (GlobalTheory.RealWeil.blk sT0 sS0) (one_mem _) (one_mem _) (_root_.PositivityTheory.ThKW.GenR.cart_blk_k C hS0 hT0) (by show _ * mMF _ JS JT θ 1 = mMF _ JS JT θ 1 * _`. Rewrite using `[map_one, Matrix.mul_one, Matrix.one_mul])`. Establish `hT : ∀ h ∈ GQF (c : E →ₐ[F] E) JT, Q (1, h)`. Use `GenR.rat_ind c hcm C.hT (fun h => Q (1, h)) Q11 (fun g hg g' hg' a b => ?_) (fun g x u hx hg => ?_)` and prove the remaining obligations. Use `hm (1, g) (1, g') (one_mem _) hg (one_mem _) hg' a b` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[Prod.mk_mul_mk, mul_one]`. Then use the resulting hypothesis. Use `fun w => GenA.cart_refl (JT.map (tauB B w)) (GenA.herm_map hcm C.hT (tauB B w)) (GenA.det_map_ne C.hT (tauB B w)) _ (hr w) (tauB B w ∘ x) (by rw [GenA.quad_map hcm c rfl]; exact (map_ne_zero _).2 hx) (tauB B w ((u - 1) / GlobalTheory.UnRep.hermE c JTᵀ x x)) choose sT hT1 hT2 usin …` as an intermediate fact. Use `hs (1, g) (GlobalTheory.RealWeil.blk sT sS0) (one_mem _) hg.mem (_root_.PositivityTheory.ThKW.GenR.cart_blk_k C hS0 hT1) ?_` and prove the remaining obligations. Rewrite using `[mMF_apply]`. Use `GenA.blk_comm (fun w => ?_) (fun w => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.PositivityTheory.ThKW.GenR.compAt_rat_k C hg, GenA.refl_map hcm c rfl]`. Conclude with `hT2 w`. Rewrite using `[inv_one, GenR.compAt_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hS : ∀ g ∈ GQF (c : E →ₐ[F] E) JS, Q (g⁻¹, 1)`. Use `GenR.rat_ind c hcm C.hS (fun g => Q (g⁻¹, 1)) (by rw [inv_one]; exact Q11) (fun g hg g' hg' a b => ?_) (fun g x u hx hg => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hm (g'⁻¹, 1) (g⁻¹, 1) (inv_mem hg') (one_mem _) (inv_mem hg) (one_mem _) b a` as an intermediate fact. Rewrite `this` using `[Prod.mk_mul_mk, mul_one, ← _root_.mul_inv_rev]`. Then use the resulting hypothesis. Use `fun w => GenA.cart_refl (JS.map (tauB B w)) (GenA.herm_map hcm C.hS (tauB B w)) (GenA.det_map_ne C.hS (tauB B w)) 1 one_ne_zero (tauB B w ∘ x) (by rw [GenA.quad_map hcm c rfl]; exact (map_ne_zero _).2 hx) (tauB B w ((u - 1) / GlobalTheory.UnRep.hermE c JSᵀ x x)) choose sS hS1 hS2 …` as an intermediate fact. Establish `hS1' : ∀ w, Formalism.IndefR.Datum.IsCartanInv (JS.map (tauB B w)) (sS w)` using `fun w => by simpa using hS1 w`. Use `hs (g⁻¹, 1) (GlobalTheory.RealWeil.blk sT0 sS) (inv_mem hg.mem) (one_mem _) (_root_.PositivityTheory.ThKW.GenR.cart_blk_k C hS1' hT0) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mMF_apply, inv_inv]`. Use `GenA.blk_comm (fun w => ?_) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[GenR.compAt_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[_root_.PositivityTheory.ThKW.GenR.compAt_rat_k C hg, GenA.refl_map hcm c rfl]`. Conclude with `(hS2 w).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p h1 h2`. Establish `e : p = (p.1, 1) * (1, p.2)`. Rewrite using `[Prod.mk_mul_mk, mul_one, one_mul]`. Establish `a1 : Q (p.1, 1)`. Use `hS _ (inv_mem h1)` as an intermediate fact.
-
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Rewrite using `[e]`. Conclude with `hm _ _ h1 (one_mem _) (one_mem _) h2 a1 (hT _ h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_gen_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (Q : GAF σ JS × GAF σ JT → Prop)
     (hm : ∀ p q, p.1 ∈ GQF σ JS → p.2 ∈ GQF σ JT → q.1 ∈ GQF σ JS → q.2 ∈ GQF σ JT → Q p → Q q → Q (p * q))

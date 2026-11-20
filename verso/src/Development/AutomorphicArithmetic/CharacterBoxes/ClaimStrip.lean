@@ -24,7 +24,7 @@ theorem factor_ne_zero {M : ℕ} (ψ : DirichletCharacter ℂ M) {s : ℂ} (hs :
   exact lt_irrefl _ hn
 
 /- English proof (authored)
-The change-of-level formula expresses the original L-value as the primitive L-value times a product of Euler factors. Here s is distinct from 1 because Re(s) < 1. Each Euler factor is nonzero by `factor_ne_zero`, since Re(s) > 0. The product can therefore vanish only through the primitive L-value.
+The change-of-level formula expresses the original L-value as the primitive L-value times a product of Euler factors. Here s is distinct from 1 because Re(s) < 1. Each Euler factor is nonzero since Re(s) > 0 makes the term subtracted from 1 have absolute value less than 1. The product can therefore vanish only through the primitive L-value.
 -/
 theorem prim_zero {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) [NeZero χ.conductor] {s : ℂ}
     (hs0 : 0 < s.re) (hs1 : s.re < 1) (h : DirichletCharacter.LFunction χ s = 0) :
@@ -88,7 +88,7 @@ theorem strip (h : HalfPlane) : Strip := by
   · exact absurd hz (h N χ s hgt (Or.inr hs))
 
 /- English proof (authored)
-A zero with real part at least 1 contradicts the usual zeta nonvanishing theorem. When the real part lies strictly between 0 and 1, view zeta as the L-function of the character of modulus 1 and apply `strip`.
+A zero with real part at least 1 contradicts the usual zeta nonvanishing theorem. When the real part lies strictly between 0 and 1, view zeta as the L-function of the character of modulus 1 and apply the Dirichlet critical-strip result.
 
 It remains to consider Re(s) ≤ 0. The value at zero is nonzero. The exclusions on s also ensure Γℝ(s) is nonzero, since its other zeros are the negative even integers. Thus the completed zeta function vanishes at s. Its functional equation transfers the zero to 1 − s, where the ordinary zeta function would then vanish with real part at least 1. This is impossible.
 -/
@@ -120,7 +120,7 @@ theorem zeta (h : HalfPlane) : Zeta := by
     exact riemannZeta_ne_zero_of_one_le_re (by rw [Complex.sub_re, Complex.one_re]; linarith) hz'
 
 /- English proof (authored)
-Unfold `Zeta` and `RiemannHypothesis`. They are definitionally equal, so the equivalence is reflexive.
+Both statements say that every zero of the zeta function other than 1 and the negative even integers has real part 1/2. Each direction follows by using the same hypothesis on those zeros.
 -/
 theorem zeta_iff : Zeta ↔ RiemannHypothesis := Iff.rfl
 

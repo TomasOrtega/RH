@@ -11,9 +11,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo MeasureTheory GlobalT
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `⟨fun k => hu.1 (some k), fun f hf => ?_⟩` and prove the remaining obligations. Establish `hg : glue (basePart₂ u) (fun j => u ⟨none, j⟩) = u`. Use function extensionality and compare the values at `⟨o, i⟩`. Apply the tactic sequence `cases o <;> rfl`. Establish `h1` using `hu.2 (inc f) (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h2` using `eval_inc (basePart₂ u) (fun j => u ⟨none, j⟩) f`. Rewrite `h2` using `[hg]`. Rewrite using `[← h2]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oldPart_mem_mcPts {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → ℂ}
     (hu : u ∈ mcPts (twist p Q)) : basePart₂ u ∈ mcPts Q := by
@@ -28,11 +28,11 @@ theorem oldPart_mem_mcPts {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) 
   exact h1
 
 /- English proof (translation)
-Take `⟨k0⟩` from `‹Nonempty K›`. Apply the tactic sequence `refine ⟨_, mcPts_smul hQ (fun k => if k = k0 then c else 1) (fun k => by by_cases h : k = k0 <;> simp [h, hc]) (oldPart_mem_mcPts hu), ?_⟩`. Use function extensionality and compare the values at `J`. Use `show ∏ o, u ⟨o, J o⟩ = (∏ k, (if k = k0 then c else 1) * basePart₂ u ⟨k, J (some k)⟩) * v (J none)`. Rewrite using `[Fintype.prod_option, Finset.prod_mul_distrib, Finset.prod_ite_eq' Finset.univ k0]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : u ⟨none, J none⟩ = c * v (J none)` using `hv (J none)`. Rewrite using `[h1]`. Simplify using `only [Finset.mem_univ, if_true]`. Establish `h2 : ∀ k, basePart₂ u ⟨k, J (some k)⟩ = u ⟨some k, J (some k)⟩` using `fun _ => rfl`. Simplify using `only [h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_segre_eq_embL [Nonempty K] {p : ℕ} {Q : Ideal (MRing ι)} (hQ : IsMultiHomogIdeal Q)
     {u : (Σ o, Tb ι o) → ℂ} (hu : u ∈ mcPts (twist p Q)) {v : Fin 2 → ℂ} {c : ℂ} (hc : c ≠ 0)
@@ -54,17 +54,15 @@ theorem exists_segre_eq_embL [Nonempty K] {p : ℕ} {Q : Ideal (MRing ι)} (hQ :
   ring
 
 /- English proof (translation)
-Establish `hq : u ⟨none, (0 : Fin 2)⟩ ^ 2 + (p : ℂ) * u ⟨none, (1 : Fin 2)⟩ ^ 2 = 0`. Rewrite using `[← eval_quad]`. Conclude with `hu.2 _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hy : u ⟨none, (1 : Fin 2)⟩ ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[h0]`. Establish `hx : u ⟨none, (0 : Fin 2)⟩ = 0` using `by simpa using hq`. Take `⟨i, hi⟩` from `hu.1 none`. Establish `hall : ∀ j : Fin 2, u ⟨none, j⟩ = 0`. Introduce `j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases j`. Conclude with `hx`. Conclude with `h0`. Conclude with `hi (hall i)`. Use `⟨u ⟨none, (1 : Fin 2)⟩, hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hf : (u ⟨none, (0 : Fin 2)⟩ - u ⟨none, (1 : Fin 2)⟩ * cRoot p) * (u ⟨none, (0 : Fin 2)⟩ + u ⟨none, (1 : Fin 2)⟩ * cRoot p) = 0`. Establish `: (u ⟨none, (0 : Fin 2)⟩ - u ⟨none, (1 : Fin 2)⟩ * cRoot p) * (u ⟨none, (0 : Fin 2)⟩ + u ⟨none, (1 : Fin 2)⟩ * cRoot p) = u ⟨none, (0 : Fin 2)⟩ ^ 2 - u ⟨none, (1 : Fin 2)⟩ ^ 2 * cRoot p ^ 2` using `by ring`. Rewrite using `[this, cRoot_sq, ← hq]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp hf with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `left`. Introduce `j`. Use `fin_cases j`. Simplify `sub_eq_zero.mp h` using `[vPlus]`. Simplify using `[vPlus]`.
-
-Use `right`. Introduce `j`. Use `fin_cases j`. Simplify `eq_neg_of_add_eq_zero_left h` using `[vMinus]`. Simplify using `[vMinus]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem new_coords {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → ℂ}
     (hu : u ∈ mcPts (twist p Q)) :
@@ -105,7 +103,7 @@ theorem new_coords {p : ℕ} {Q : Ideal (MRing ι)} {u : (Σ o, Tb ι o) → ℂ
     · simp [vMinus]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨w, ⟨z, hz, rfl, hΨ⟩, rfl⟩`. Conclude with `⟨glue z v, glue_mem_mcPts hz hv hv1, segre_glue z v, hΨ⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem embL_image_subset {e : ℕ} {p : ℕ} {Q : Ideal (MRing ι)}
     {Ψ : (((o : Option K) → Tb ι o) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {y : Fin e → ℂ} {v : Fin 2 → ℂ}
@@ -115,11 +113,11 @@ theorem embL_image_subset {e : ℕ} {p : ℕ} {Q : Ideal (MRing ι)}
   exact ⟨glue z v, glue_mem_mcPts hz hv hv1, segre_glue z v, hΨ⟩
 
 /- English proof (translation)
-Introduce `K _ ι _ p Q e Ψ y _ hK hQ`. Use `Set.Subset.antisymm ?_ (Set.union_subset (embL_image_subset (vPlus_root p) (by simp [vPlus])) (embL_image_subset (vMinus_root p) (by simp [vMinus])))` and prove the remaining obligations. Introduce and unpack `w ⟨u, hu, rfl, hΨ⟩`. Take `⟨c, hc, h | h⟩` from `new_coords hu`. Take `⟨z, hz, hs⟩` from `exists_segre_eq_embL hQ hu hc h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Or.inl ⟨segre z, ⟨z, hz, rfl, ?_⟩, hs.symm⟩` and prove the remaining obligations. Use `show Ψ (embL (vPlus p) (segre z)) = _`. Rewrite using `[← hs]`. Conclude with `hΨ`. Take `⟨z, hz, hs⟩` from `exists_segre_eq_embL hQ hu hc h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Or.inr ⟨segre z, ⟨z, hz, rfl, ?_⟩, hs.symm⟩` and prove the remaining obligations. Use `show Ψ (embL (vMinus p) (segre z)) = _`. Rewrite using `[← hs]`. Conclude with `hΨ`.
+A detailed English derivation is pending.
 -/
 theorem fibre_twist : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (p : ℕ)
     (Q : Ideal (MRing ι)) (e : ℕ)

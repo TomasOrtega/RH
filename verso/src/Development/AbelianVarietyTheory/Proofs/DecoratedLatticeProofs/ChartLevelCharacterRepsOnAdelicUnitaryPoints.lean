@@ -33,7 +33,7 @@ noncomputable section
 namespace GlobalTheory.ChartLevRead
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨a, ha, e⟩` from `GlobalTheory.DefFree.AdelCls.exists_fin V ⟨y.1, y.2⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `e2 : (Lev.finE V a : GL _ _) = y.1` using `congrArg Subtype.val e`. Rewrite using `[← e2]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -49,11 +49,11 @@ theorem exists_finM_GfC {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n)
   rfl
 
 /- English proof (translation)
-Introduce `B X I l Z i hi T bad cl stab _ lat K`. Use `⟨GfC _ ⊓ GlobalTheory.ClassSumLevel.levG _ (rankN (I.rec7 l Z) i hi) K.lev, ?_⟩` and prove the remaining obligations. Establish `huniq : ∀ κ κ' : K.lev.U, κ.1.1 = κ'.1.1 → κ = κ'` using `fun κ κ' h => Subtype.ext (Units.ext h)`. Set `φ : (GfC _ ⊓ GlobalTheory.ClassSumLevel.levG _ (rankN (I.rec7 l Z) i hi) K.lev : Subgroup _) → K.lev.U` to `fun g => (Subgroup.mem_inf.1 g.2).2.choose`. Establish `hφ : ∀ g, (φ g).1.1 = finM _ (rankN (I.rec7 l Z) i hi) g.1` using `fun g => (Subgroup.mem_inf.1 g.2).2.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : (GfC _ ⊓ GlobalTheory.ClassSumLevel.levG _ (rankN (I.rec7 l Z) i hi) K.lev : Subgroup _) →* K.lev.U` to `MonoidHom.mk' φ (fun a b => huniq _ _ (by show (φ (a * b)).1.1 = (φ a).1.1 * (φ b).1.1`. Rewrite using `[hφ, hφ, hφ]`. Conclude with `StabMove.finM_mul _ _ a.1 b.1))`. Use `choose h hG hh using fun c => exists_finM_GfC _ (rankN (I.rec7 l Z) i hi) (K.y c)`. Use `⟨K.lev.chi.comp Φ, h, fun g => ?_, fun g κ hκ => ?_, fun c => ⟨hG c, hh c⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Subgroup.mem_inf]`. Both sides reduce to the same expression. Use `show K.lev.chi (φ g) = K.lev.chi κ`. Conclude with `congrArg K.lev.chi (huniq (φ g) κ ((hφ g).trans hκ.symm))`.
+A detailed English derivation is pending.
 -/
 theorem levData : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (i : ℕ) (hi : i ≤ B.R.m) {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {cl : Type} {stab : cl → Type} [∀ c, Group (stab c)] {lat : cl → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)} (K : LevelChart (I.rec7 l Z) T bad i hi stab lat), ∃ (U : Subgroup (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X i))) (chi : U →* ℂˣ) (h : cl → GA (I.rec7 l Z) ((I.rec7 l Z).sp.X i)), (∀ g, g ∈ U ↔ g ∈ GfC _ ∧ ∃ κ : K.lev.U, κ.1.1 = finM _ (rankN (I.rec7 l Z) i hi) g) ∧ (∀ (g : U) (κ : K.lev.U), κ.1.1 = finM _ (rankN (I.rec7 l Z) i hi) g.1 → chi g = K.lev.chi κ) ∧ (∀ c, h c ∈ GfC _ ∧ finM _ (rankN (I.rec7 l Z) i hi) (h c) = (K.y c).1.1) := by
   intro B X I l Z i hi T bad cl stab _ lat K

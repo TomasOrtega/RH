@@ -18,9 +18,9 @@ open GlobalTheory.IntegralityCompare
 namespace GlobalTheory.IntegralityCompare
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u μ i hi`. Take `⟨n, h1, h2, -, -⟩` from `GlobalTheory.KerWtStep.trueWt_step (I.rec7 l Z) u _ _ _ (I.fm l u μ) i hi`. Use `⟨n, fun τ => ?_, fun τ r => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 τ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1 τ r]`. Unfold `lamTG`. Rewrite using `[natW_shW]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weight_arith_step : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (μ : I.ι) (i : ℕ), i < B.R.m →

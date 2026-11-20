@@ -9,11 +9,11 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `h1 : (Polynomial.derivative (P.scaleRoots s)).natDegree < P.natDegree - 1 + 1`. Use `Polynomial.natDegree_derivative_le (P.scaleRoots s)` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_scaleRoots]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (Polynomial.derivative P).natDegree < P.natDegree - 1 + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Polynomial.natDegree_derivative_le P` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Polynomial.eval_eq_sum_range' h1, Polynomial.eval_eq_sum_range' h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ P.natDegree - 1` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.coeff_derivative, Polynomial.coeff_derivative, Polynomial.coeff_scaleRoots]`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hi'`. Establish `h3 : P.natDegree - (i + 1) = k` using `by omega`. Rewrite using `[h3, hk]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_derivative_scaleRoots_mul {R : Type*} [CommRing R] (P : Polynomial R) (s x : R) :
     (Polynomial.derivative (P.scaleRoots s)).eval (s * x) =
@@ -35,19 +35,17 @@ theorem eval_derivative_scaleRoots_mul {R : Type*} [CommRing R] (P : Polynomial 
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, x, by simp, by simp⟩`. Consider the case `succ n ih`. Take `⟨m, q, ⟨z, hz⟩, ⟨w, hw⟩⟩` from `ih`. Take `⟨e, he⟩ : ∃ e, P.natDegree = e + 1` from `⟨P.natDegree - 1, by omega⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `hb`. Use `set E := P.eval x with hE`. Use `set s := t ^ m with hs`. Use `set r := t ^ c * s ^ e with hr`. Establish `hsr : t ^ (m + (c + m * e)) = s * r` using `by rw [hr, hs]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set h := -(b * (P.scaleRoots s).eval q) with hh`. Use `⟨m + (c + m * e), r * q + h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsr]`. Use `⟨r * z - b * E ^ n * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hh, hw]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `r * hz`. Rewrite using `[hsr]`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion (P.scaleRoots (s * r)) (r * q) h`. Establish `h0 : (P.scaleRoots (s * r)).eval (r * q) = r ^ (e + 1) * (P.scaleRoots s).eval q`. Rewrite using `[Polynomial.scaleRoots_mul, Polynomial.scaleRoots_eval_mul, Polynomial.natDegree_scaleRoots, he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `eval_derivative_scaleRoots_mul P (s * r) x`. Rewrite `h1` using `[he, Nat.add_sub_cancel]`. Take `⟨y, hy⟩` from `Polynomial.sub_dvd_eval_sub (r * q) (s * r * x) (Polynomial.derivative (P.scaleRoots (s * r)))`. Establish `h2 : (Polynomial.derivative (P.scaleRoots (s * r))).eval (r * q) = (s * r) ^ e * (Polynomial.derivative P).eval x + E * (r * z * y)`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `hy + r * y * hz`. Rewrite using `[hk, h0, h2, hh, hw]`. Use `⟨-((s * r) ^ e * v * w) - b * w * (r * z * y) + k * b ^ 2 * w ^ 2 * E ^ n, ?_⟩` and prove the remaining obligations. Establish `h3 : r ^ (e + 1) = (s * r) ^ e * t ^ c`. Rewrite using `[pow_succ, mul_pow]`.
-
-Use `nth_rewrite 2 [hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Take the linear combination `(-((s * r) ^ e * E ^ (n + 1) * w)) * hv`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_approx_root_scaleRoots {R : Type*} [CommRing R] (P : Polynomial R) (hP : 0 < P.natDegree)
     (t x b : R) (c : ℕ) (hb : P.eval x ∣ b * (Polynomial.derivative P).eval x - t ^ c) (n : ℕ) :
@@ -88,13 +86,11 @@ theorem exists_approx_root_scaleRoots {R : Type*} [CommRing R] (P : Polynomial R
       linear_combination (-((s * r) ^ e * E ^ (n + 1) * w)) * hv
 
 /- English proof (translation)
-Introduce `l _ K bk n`. Take `⟨c, a, b, hab⟩` from `GlobalTheory.T.bezout_eisenstein_derivative_prime_pow l K bk`. Establish `hcoe : ∀ p : Polynomial (Wq l bk.a), (p.map (PowerSeries.C : Wq l bk.a →+* bk.S)).eval (X : bk.S) = (p : bk.S)` using `fun p => by`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_C_X_eq_coe]`. Establish `hdeg : (bk.Ep.map (PowerSeries.C : Wq l bk.a →+* bk.S)).natDegree = bk.Ep.natDegree` using `bk.monic.natDegree_map _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : (bk.Ep.map (PowerSeries.C : Wq l bk.a →+* bk.S)).eval (X : bk.S) ∣ (b : bk.S) * (Polynomial.derivative (bk.Ep.map (PowerSeries.C : Wq l bk.a →+* bk.S))).eval X - (l : bk.S) ^ c`. Rewrite using `[Polynomial.derivative_map, hcoe, hcoe]`. Establish `h` using `congrArg (fun p : Polynomial (Wq l bk.a) => (p : bk.S)) hab`. Use `beta_reduce at h`. Rewrite `h` using `[Polynomial.coe_add, Polynomial.coe_mul, Polynomial.coe_mul, Polynomial.coe_C, map_pow, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨-(a : bk.S), by linear_combination h⟩`. Take `⟨m, q, h1, h2⟩` from `exists_approx_root_scaleRoots _ (hdeg ▸ bk.deg_pos) (l : bk.S) X b c hb n`. Rewrite `h1`, `h2` using `[hcoe]`. Use `⟨m, q, h1, (pow_dvd_pow _ n.le_succ).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, Polynomial.map_scaleRoots _ _ _ (by rw [bk.monic.leadingCoeff, map_one]; exact one_ne_zero), map_pow, map_natCast]`.
-
-Conclude with `h2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BK.exists_approx_root : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (n : ℕ),
     ∃ (m : ℕ) (q : bk.S), bk.E ∣ q - (l : bk.S) ^ m * X ∧

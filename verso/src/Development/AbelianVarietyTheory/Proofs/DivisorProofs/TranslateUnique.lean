@@ -26,7 +26,7 @@ namespace GlobalTheory.LogKSLin
 open GlobalTheory.Points (valR_eq valMap valR_add valR_mul valR_res valR_appLE le_preimage_mono le_preimage_comp)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GlobalTheory.CechKS.exists_sec_of_isNat ℤ Z (specZIsTerminal.from Z) Unit (fun _ => O) O (fun _ => le_rfl) (le_iSup (fun _ : Unit => O) ()) (fun P => F P.B P.x) (fun _ P Q φ hP => by`. Use `hF P.B Q.B φ.ρ P.x hP` as an intermediate fact. Rewrite `this` using `[φ.pt]`. Conclude with `this)`. Conclude with `⟨f, fun S _ x hx => (hf () ⟨S, x, specZIsTerminal.hom_ext _ _⟩ hx).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sec {Z : Scheme.{0}} (O : Z.Opens) (F : ∀ (S : Type) [CommRing S], (Sp S ⟶ Z) → S)
     (hF : ∀ (S S' : Type) [CommRing S] [CommRing S'] (ρ : S →+* S') (x : Sp S ⟶ Z), ⊤ ≤ x ⁻¹ᵁ O →
@@ -40,14 +40,14 @@ theorem exists_sec {Z : Scheme.{0}} (O : Z.Opens) (F : ∀ (S : Type) [CommRing 
   exact ⟨f, fun S _ x hx => (hf () ⟨S, x, specZIsTerminal.hom_ext _ _⟩ hx).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun O hO => hd.1 O (hO.trans h), fun O hO => hd.2.1 O (hO.trans h), fun O O' e hO => hd.2.2 O O' e (hO.trans h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isField_mono {Z : Scheme.{0}} {W W' : Z.Opens} (h : W' ≤ W) {d : Fld Z} (hd : IsField W d) :
     IsField W' d :=
   ⟨fun O hO => hd.1 O (hO.trans h), fun O hO => hd.2.1 O (hO.trans h), fun O O' e hO => hd.2.2 O O' e (hO.trans h)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun O hO f f' => by simp only [hd.1 O hO, hd'.1 O hO]; ring, fun O hO f f' => by simp only [hd.2.1 O hO, hd'.2.1 O hO]; ring, fun O O' e hO f => by simp only [hd.2.2 O O' e hO, hd'.2.2 O O' e hO, map_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isField_add {Z : Scheme.{0}} {W : Z.Opens} {d d' : Fld Z} (hd : IsField W d) (hd' : IsField W d') :
     IsField W (fun O f => d O f + d' O f) :=
@@ -56,7 +56,7 @@ theorem isField_add {Z : Scheme.{0}} {W : Z.Opens} {d d' : Fld Z} (hd : IsField 
     fun O O' e hO f => by simp only [hd.2.2 O O' e hO, hd'.2.2 O O' e hO, map_add]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun O hO f f' => by simp only [fun a => (hd a).1 O hO, Finset.sum_add_distrib], fun O hO f f' => by simp only [fun a => (hd a).2.1 O hO, Finset.sum_add_distrib, Finset.mul_sum], fun O O' e hO f => by simp only [fun a => (hd a).2.2 O O' e hO, map_sum]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isField_sum {Z : Scheme.{0}} {W : Z.Opens} {I : Type} [Fintype I] {d : I → Fld Z}
     (hd : ∀ a, IsField W (d a)) : IsField W (fun O f => ∑ a, d a O f) :=
@@ -70,15 +70,15 @@ def smulFld {Z : Scheme.{0}} {W : Z.Opens} (c : Γ(Z, W)) (d : Fld Z) : Fld Z :=
   fun O f => if h : O ≤ W then resG Z h c * d O f else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem smulFld_of_le {Z : Scheme.{0}} {W O : Z.Opens} (h : O ≤ W) (c : Γ(Z, W)) (d : Fld Z) (f : Γ(Z, O)) :
     smulFld c d O f = resG Z h c * d O f := dif_pos h
 
 /- English proof (translation)
-Use `⟨fun O hO f f' => ?_, fun O hO f f' => ?_, fun O O' e hO f => ?_⟩` and prove the remaining obligations. Simplify using `only [smulFld_of_le hO, hd.1 O hO]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [smulFld_of_le hO, hd.2.1 O hO]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[smulFld_of_le hO, smulFld_of_le (e.trans hO), hd.2.2 O O' e hO, map_mul]`. Use `congr 1`. Conclude with `congrArg (fun k => k.hom c) (Z.presheaf.map_comp (homOfLE hO).op (homOfLE e).op)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isField_smul {Z : Scheme.{0}} {W : Z.Opens} (c : Γ(Z, W)) {d : Fld Z} (hd : IsField W d) :
     IsField W (smulFld c d) := by
@@ -97,7 +97,7 @@ variable {R S : Type} [CommRing R] [CommRing S] {φ : R →+* S} {g : Sp S ⟶ t
   {v : Sp (DualNumber R) ⟶ t.G.left} {w : Sp (DualNumber S) ⟶ t.G.left}
 
 /- English proof (translation)
-Take `⟨g', v', -, -, rfl⟩` from `h`. Conclude with `Over.w (g' * v')`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem translate_over (h : IsTranslate t φ g v w) :
     w ≫ t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ g ≫ t.G.hom := by
@@ -105,13 +105,13 @@ theorem translate_over (h : IsTranslate t φ g v w) :
   exact Over.w (g' * v')
 
 /- English proof (translation)
-Take `⟨g', v', h₁, h₂, rfl⟩` from `h`. Establish `e : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Rewrite using `[GlobalTheory.LogKSLoc.spMap_comp', ← Spec.map_id]`. Use `congr 1`. Set `s : Over.mk (g ≫ t.G.hom) ⟶ tEpsG (g ≫ t.G.hom)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ _ = g ≫ t.G.hom`. Rewrite using `[← Category.assoc, e, Category.id_comp])`. Set `k : Over.mk (g ≫ t.G.hom) ⟶ Over.mk x` to `Over.homMk (spMap φ) hg.symm`. Establish `h1 : s ≫ v' = 1`. Rewrite using `[← MonObj.comp_one k]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ ≫ v'.left = spMap φ ≫ (1 : Over.mk x ⟶ t.G).left`. Rewrite using `[h₂, ← hv.2, ← Category.assoc, ← Category.assoc, GlobalTheory.LogKSLoc.spMap_comp', GlobalTheory.LogKSLoc.spMap_comp']`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Express the relevant statement in the definitionally equal form `(s ≫ (g' * v')).left = g`. Rewrite using `[MonObj.comp_mul, h1, _root_.mul_one]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ g'.left = g`. Rewrite using `[h₁, ← Category.assoc, e, Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_red {x : Sp R ⟶ X} (hv : IsTanAtG t x v) (hg : g ≫ t.G.hom = spMap φ ≫ x)
     (h : IsTranslate t φ g v w) : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w = g := by
@@ -137,11 +137,11 @@ theorem translate_red {x : Sp R ⟶ X} (hv : IsTanAtG t x v) (hg : g ≫ t.G.hom
   rw [h₁, ← Category.assoc, e, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨g', v', h₁, h₂, rfl⟩` from `h`. Establish `e : spMap (dualMap ρ) ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap S' (DualNumber S')) ≫ spMap ρ`. Rewrite using `[GlobalTheory.LogKSLoc.spMap_comp', GlobalTheory.LogKSLoc.spMap_comp']`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `k : tEpsG ((spMap ρ ≫ g) ≫ t.G.hom) ⟶ tEpsG (g ≫ t.G.hom)` to `Over.homMk (spMap (dualMap ρ)) (by`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ _ = _ ≫ (_ ≫ _) ≫ _`. Rewrite using `[← Category.assoc, e]`. Simplify using `only [Category.assoc])`. Use `⟨k ≫ g', k ≫ v', ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `spMap _ ≫ g'.left = _`. Rewrite using `[h₁, ← Category.assoc, e, Category.assoc]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ v'.left = _`. Rewrite using `[h₂, ← Category.assoc, GlobalTheory.LogKSLoc.spMap_comp', GlobalTheory.LogKSLoc.dualMap_comp']`. Rewrite using `[← MonObj.comp_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -168,7 +168,7 @@ theorem translate_map (h : IsTranslate t φ g v w) {S' : Type} [CommRing S'] (ρ
 end Translate
 
 /- English proof (translation)
-Rewrite using `[valR_appLE g _ h hO, hg]`. Conclude with `(valR_eq _ _ (GlobalTheory.Points.le_preimage_specMap_fromSpec U.2 (CommRingCat.ofHom φ)) r).trans (congrArg (fun k => k.hom r) (GlobalTheory.Points.valMap_specMap_fromSpec U.2 (CommRingCat.ofHom φ) _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_base (U : X.affineOpens) {O : t.G.left.Opens} (h : O ≤ t.G.hom ⁻¹ᵁ U.1) {S : Type} [CommRing S]
     {φ : Γ(X, U.1) →+* S} {g : Sp S ⟶ t.G.left} (hg : g ≫ t.G.hom = spMap φ ≫ chart U) (hO : ⊤ ≤ g ⁻¹ᵁ O)
@@ -178,7 +178,7 @@ theorem valR_base (U : X.affineOpens) {O : t.G.left.Opens} (h : O ≤ t.G.hom �
     (congrArg (fun k => k.hom r) (GlobalTheory.Points.valMap_specMap_fromSpec U.2 (CommRingCat.ofHom φ) _))
 
 /- English proof (translation)
-Establish `hg : g ≫ t.G.hom = spMap (valMap (g ≫ t.G.hom) U.1 h).hom ≫ chart U` using `(GlobalTheory.Points.specMap_valMap_fromSpec U.2 (g ≫ t.G.hom) h).symm`. Take `⟨w, hw, -⟩` from `existsUnique_isTranslate t _ hg hv`. Conclude with `⟨_, w, hg, hw⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_translate (U : X.affineOpens) {v : Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left}
     (hv : IsTanAtG t (chart U) v) {S : Type} [CommRing S] (g : Sp S ⟶ t.G.left) (h : ⊤ ≤ g ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U.1)) :
@@ -190,9 +190,7 @@ theorem exists_translate (U : X.affineOpens) {v : Sp (DualNumber Γ(X, U.1)) ⟶
   exact ⟨_, w, hg, hw⟩
 
 /- English proof (translation)
-Establish `hO : ⊤ ≤ g ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U.1)`. Express the relevant statement in the definitionally equal form `⊤ ≤ (g ≫ t.G.hom) ⁻¹ᵁ U.1`. Rewrite using `[hg]`. Conclude with `GlobalTheory.Points.le_preimage_specMap_fromSpec U.2 (CommRingCat.ofHom φ)`. Take `rfl : φ = φ'` from `RingHom.ext fun r => (valR_base U le_rfl hg hO r).symm.trans (valR_base U le_rfl hg' hO r)`.
-
-Conclude with `(existsUnique_isTranslate t φ hg hv).unique hw hw'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem translate_unique (U : X.affineOpens) {v : Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left}
     (hv : IsTanAtG t (chart U) v) {S : Type} [CommRing S] {g : Sp S ⟶ t.G.left} {φ φ' : Γ(X, U.1) →+* S}
@@ -207,23 +205,21 @@ theorem translate_unique (U : X.affineOpens) {v : Sp (DualNumber Γ(X, U.1)) ⟶
   exact (existsUnique_isTranslate t φ hg hv).unique hw hw'
 
 /- English proof (translation)
-Set `tr : ∀ (S : Type) [CommRing S], (Sp S ⟶ t.G.left) → (Sp (DualNumber S) ⟶ t.G.left)` to `fun S _ g => if h : ⊤ ≤ g ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U.1) then (exists_translate U hv g h).choose_spec.choose else spMap (algebraMap S (DualNumber S)) ≫ g`. Establish `htr : ∀ (S : Type) [CommRing S] (g : Sp S ⟶ t.G.left), ⊤ ≤ g ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U.1) → ∃ φ : Γ(X, U.1) →+* S, g ≫ t.G.hom = spMap φ ≫ chart U ∧ IsTranslate t φ g v (tr S g)`. Introduce `S _ g h`. Simplify using `only [tr, dif_pos h]`. Conclude with `⟨_, (exists_translate U hv g h).choose_spec.choose_spec⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hex : ∀ (O : t.G.left.Opens) (f : Γ(t.G.left, O)), ∃ s : Γ(t.G.left, O), O ≤ t.G.hom ⁻¹ᵁ U.1 → ∀ (S : Type) [CommRing S] (g : Sp S ⟶ t.G.left), ⊤ ≤ g ⁻¹ᵁ O → valR g O s = (valR (tr S g) O f).snd`. Introduce `O f`. Distinguish the cases in `hO : O ≤ t.G.hom ⁻¹ᵁ U.1`. Take `⟨s, hs⟩` from `exists_sec O (fun S _ g => (valR (tr S g) O f).snd) (fun S S' _ _ ρ g hg => by`. Take `⟨φ, h₁, h₂⟩` from `htr S g (le_preimage_mono g hO hg)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ', h₁', h₂'⟩` from `htr S' (spMap ρ ≫ g) (fun p _ => hO (hg (Set.mem_univ (spMap ρ p))))`. Establish `h₃ : (spMap ρ ≫ g) ≫ t.G.hom = spMap (ρ.comp φ) ≫ chart U`. Rewrite using `[Category.assoc, h₁, ← Category.assoc, GlobalTheory.LogKSLoc.spMap_comp']`. Rewrite using `[translate_unique U hv h₁' h₃ h₂' (translate_map h₂ ρ), GlobalTheory.Points.valR_spMap_comp _ _ _ (GlobalTheory.CechKS.le_preimage_of_red (translate_red hv h₁ h₂) hg)]`. Simplify using `[dualMap])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨s, fun _ => hs⟩`. Conclude with `⟨0, fun h => (hO h).elim⟩`. Use `choose dd hdd using hex`. Establish `hin : ∀ (O : t.G.left.Opens), O ≤ t.G.hom ⁻¹ᵁ U.1 → ∀ (S : Type) [CommRing S] (g : Sp S ⟶ t.G.left), ⊤ ≤ g ⁻¹ᵁ O → ⊤ ≤ tr S g ⁻¹ᵁ O ∧ ∀ f, (valR (tr S g) O f).fst = valR g O f`. Introduce `O hO S _ g hg`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, h₁, h₂⟩` from `htr S g (le_preimage_mono g hO hg)`. Establish `hr` using `translate_red hv h₁ h₂`. Establish `hw` using `GlobalTheory.CechKS.le_preimage_of_red hr hg`. Use `⟨hw, fun f => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.Points.valR_spMap_comp (TrivSqZeroExt.fstHom S S S).toRingHom _ O hw f`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hr]`. Conclude with `e.symm`. Use `⟨dd, ⟨fun O hO f f' => ?_, fun O hO f f' => ?_, fun O O' e hO f => ?_⟩, fun O hO r => ?_, fun O hO f S _ φ g w hg hgO hw => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CechInv.ext_of_valR O _ _ fun S _ g hg => ?_` and prove the remaining obligations. Rewrite using `[valR_add _ _ hg, hdd O _ hO S g hg, hdd O _ hO S g hg, hdd O _ hO S g hg, valR_add _ _ (hin O hO S g hg).1, TrivSqZeroExt.snd_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.CechInv.ext_of_valR O _ _ fun S _ g hg => ?_` and prove the remaining obligations. Rewrite using `[valR_add _ _ hg, valR_mul _ _ hg, valR_mul _ _ hg, hdd O _ hO S g hg, hdd O _ hO S g hg, hdd O _ hO S g hg, valR_mul _ _ (hin O hO S g hg).1, DualNumber.snd_mul, (hin O hO S g hg).2, (hin O hO S g hg).2]`. Expand and normalize the polynomial expressions, which then agree. Use `GlobalTheory.CechInv.ext_of_valR O' _ _ fun S _ g hg => ?_` and prove the remaining obligations. Rewrite using `[valR_res _ e hg, hdd O' _ (e.trans hO) S g hg, hdd O _ hO S g (le_preimage_mono g e hg), valR_res _ e (hin O' (e.trans hO) S g hg).1]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.CechInv.ext_of_valR O _ _ fun S _ g hg => ?_` and prove the remaining obligations. Take `⟨φ, h₁, h₂⟩` from `htr S g (le_preimage_mono g hO hg)`. Rewrite using `[hdd O _ hO S g hg, GlobalTheory.Points.valR_zero _ _ hg, valR_appLE _ _ hO (hin O hO S g hg).1, translate_over h₂, GlobalTheory.Points.valR_spMap_comp _ _ _ (le_preimage_comp g _ hO hg)]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Take `⟨φ', h₁, h₂⟩` from `htr S g (le_preimage_mono g hO hgO)`.
-
-Rewrite using `[hdd O _ hO S g hgO, translate_unique U hv h₁ hg h₂ hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invField (U : X.affineOpens) {v : Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left}
     (hv : IsTanAtG t (chart U) v) :
@@ -288,7 +284,7 @@ theorem exists_invField (U : X.affineOpens) {v : Sp (DualNumber Γ(X, U.1)) ⟶ 
     rw [hdd O _ hO S g hgO, translate_unique U hv h₁ hg h₂ hw]
 
 /- English proof (translation)
-Establish `h2 : ∀ {p q : L.1}, ⊤ ≤ g ⁻¹ᵁ L.U p → ⊤ ≤ g ⁻¹ᵁ L.U q → ⊤ ≤ g ⁻¹ᵁ (L.U p ⊓ L.U q)` using `fun h h' _ hx => ⟨h hx, h' hx⟩`. Establish `h3 : ∀ {p q s : L.1}, ⊤ ≤ g ⁻¹ᵁ L.U p → ⊤ ≤ g ⁻¹ᵁ L.U q → ⊤ ≤ g ⁻¹ᵁ L.U s → ⊤ ≤ w ⁻¹ᵁ (L.U p ⊓ L.U q ⊓ L.U s)` using `fun h h' h'' => GlobalTheory.CechKS.le_preimage_of_red hw fun _ hx => ⟨⟨h hx, h' hx⟩, h'' hx⟩`. Use `GlobalTheory.CechKS.dlog_of_mul_eq _ _ _ _ _ _ _ _ ?_ (GlobalTheory.CechKS.valR_fst_mul_inv hw (h2 ha hb) _) (GlobalTheory.CechKS.valR_fst_mul_inv hw (h2 ha' hb') _) (GlobalTheory.CechKS.valR_fst_mul_inv hw (h2 hb hb') _) (GlobalTheory.CechKS.valR_fst_mul_inv hw (h2 ha ha') _)` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechKS.PrismDlog.valR_cocycle L hL w a b b' (h3 ha hb hb'), GlobalTheory.CechKS.PrismDlog.valR_cocycle L hL w a a' b' (h3 ha ha' hb')]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dlog_four {Z : Scheme.{0}} (L : LB Z) (hL : L.IsLB) {S : Type} [CommRing S] {g : Sp S ⟶ Z}
     {w : Sp (DualNumber S) ⟶ Z} (hw : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w = g) (a b a' b' : L.1)
@@ -309,7 +305,7 @@ theorem dlog_four {Z : Scheme.{0}} (L : LB Z) (hL : L.IsLB) {S : Type} [CommRing
     GlobalTheory.CechKS.PrismDlog.valR_cocycle L hL w a a' b' (h3 ha ha' hb')]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun k => k.hom r) (t.G.hom.appLE_map h (homOfLE e).op)`.
+A detailed English derivation is pending.
 -/
 theorem resG_appLE (U : X.affineOpens) {O O' : t.G.left.Opens} (h : O ≤ t.G.hom ⁻¹ᵁ U.1) (e : O' ≤ O)
     (r : Γ(X, U.1)) :
@@ -320,9 +316,9 @@ variable {V : X.Opens} {U : X.affineOpens} {n : ℕ} {v : Fin n → (Sp (DualNum
   {D D' : Γ(X, U.1) → Γ(X, U.1)} {Θ Θ' : Matrix (Fin n) (Fin n) Γ(X, U.1)}
 
 /- English proof (translation)
-Take `⟨J, W, j, d, hcov, hWj, hF, hD, hc⟩` from `h`. Establish `hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1` using `fun i => (le_iSup W i).trans (hcov.le.trans (t.G.hom.preimage_mono inf_le_left))`. Use `⟨J, W, j, fun i => smulFld ((t.G.hom.appLE U.1 (W i) (hWU i)).hom r) (d i), hcov, hWj, fun i => isField_smul _ (hF i), fun i h s => ?_, fun i i' O hO f S _ φ g w hg hgO hw => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[smulFld_of_le le_rfl, resG_appLE, hD, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[smulFld_of_le (hO.trans inf_le_left), smulFld_of_le (hO.trans inf_le_right), resG_appLE, resG_appLE, ← mul_sub, valR_mul _ _ hgO, valR_base U _ hg hgO, hc i i' O hO f S φ g w hg hgO hw]`. Simplify using `only [Finset.mul_sum, Matrix.smul_apply, smul_eq_mul, map_mul, _root_.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isKS_smul (h : IsKS t V U v D Θ) (r : Γ(X, U.1)) : IsKS t V U v (fun s => r * D s) (r • Θ) := by
   obtain ⟨J, W, j, d, hcov, hWj, hF, hD, hc⟩ := h
@@ -338,21 +334,21 @@ theorem isKS_smul (h : IsKS t V U v D Θ) (r : Γ(X, U.1)) : IsKS t V U v (fun s
     simp only [Finset.mul_sum, Matrix.smul_apply, smul_eq_mul, map_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Take `⟨J, W, j, d, hcov, hWj, hF, hD, hc⟩` from `h`. Take `⟨J', W', j', d', hcov', hWj', hF', hD', hc'⟩` from `h'`. Establish `hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1` using `fun i => (le_iSup W i).trans (hcov.le.trans (t.G.hom.preimage_mono inf_le_left))`. Establish `hWU' : ∀ i, W' i ≤ t.G.hom ⁻¹ᵁ U.1` using `fun i => (le_iSup W' i).trans (hcov'.le.trans (t.G.hom.preimage_mono inf_le_left))`. Use `choose dd hdF hd0 hdv using fun a => exists_invField U (hv a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Wp : J × J' → t.G.left.Opens` to `fun p => W p.1 ⊓ W' p.2`. Establish `hpU : ∀ p, Wp p ≤ t.G.hom ⁻¹ᵁ U.1` using `fun p => inf_le_left.trans (hWU p.1)`. Establish `hpL : ∀ p, Wp p ≤ t.PP.L.U (j p.1) ⊓ t.PP.L.U (j' p.2)` using `fun p => inf_le_inf (hWj p.1) (hWj' p.2)`. Set `cf : ∀ p, Fin n → Γ(t.G.left, Wp p)` to `fun p a => ∑ b, (t.G.hom.appLE U.1 (Wp p) (hpU p)).hom (Θ' a b) * (dd b _ (resG _ (hpL p) (t.PP.L.g (j p.1) (j' p.2)).val) * resG _ (hpL p) (t.PP.L.g (j p.1) (j' p.2))⁻¹.val)`. Use `⟨J × J', Wp, fun p => j p.1, fun p O f => (d p.1 O f + d' p.2 O f) + ∑ a, smulFld (cf p a) (dd a) O f, ?_, fun p => inf_le_left.trans (hWj p.1), fun p => isField_add (isField_add (isField_mono inf_le_left (hF p.1)) (isField_mono inf_le_right (hF' p.2))) (isField_sum fun a => isFi …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iSup_prod]`. Simplify using `only [Wp]`. Simplify using `only [← inf_iSup_eq, ← iSup_inf_eq, hcov, hcov', inf_idem]`. Use `beta_reduce`. Simplify using `only [smulFld_of_le le_rfl, hd0, mul_zero, Finset.sum_const_zero, add_zero, map_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← resG_appLE U (hWU p.1) (inf_le_left : Wp p ≤ W p.1), (hF p.1).2.2 _ _ _ le_rfl, hD, resG_appLE]`. Rewrite using `[← resG_appLE U (hWU' p.2) (inf_le_right : Wp p ≤ W' p.2), (hF' p.2).2.2 _ _ _ le_rfl, hD', resG_appLE]`. Establish `hp : O ≤ Wp p` using `hO.trans inf_le_left`. Establish `hq : O ≤ Wp q` using `hO.trans inf_le_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred` using `fun a => translate_red (hv a) hg (hw a)`. Establish `hcf : ∀ r, O ≤ Wp r → valR g O (∑ a, smulFld (cf r a) (dd a) O f) = ∑ a, ∑ b, φ (Θ' a b) * ((valR (w b) _ (t.PP.L.g (j r.1) (j' r.2)).val).snd * valR g _ (t.PP.L.g (j r.1) (j' r.2))⁻¹.val) * (valR (w a) O f).snd`. Introduce `r hr`. Establish `hgr` using `le_preimage_mono g hr hgO`. Rewrite using `[valR_eq _ _ hgO, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← valR_eq _ _ hgO, smulFld_of_le hr, valR_mul _ _ hgO, valR_res _ hr hgO, hdv a O (hr.trans (hpU r)) f S φ g (w a) hg hgO (hw a), ← Finset.sum_mul, valR_eq _ _ hgr, map_sum]`. Use `congrArg (· * _) (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[← valR_eq _ _ hgr, valR_mul _ _ hgr, valR_mul _ _ hgr, valR_base U _ hg hgr, valR_res _ _ hgr, hdv b _ (hpU r) _ S φ g (w b) hg hgr (hw b), valR_res _ _ (GlobalTheory.CechKS.le_preimage_of_red (hred b) hgr)]`. Establish `e₁` using `hc p.1 q.1 O (le_inf (hp.trans inf_le_left) (hq.trans inf_le_left)) f S φ g w hg hgO hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `hc' p.2 q.2 O (le_inf (hp.trans inf_le_right) (hq.trans inf_le_right)) f S φ g w hg hgO hw`. Establish `e₃` using `fun b => dlog_four t.PP.L t.PP.isLB (hred b) (j p.1) (j' p.2) (j q.1) (j' q.2) (le_preimage_mono g ((hp.trans (hpL p)).trans inf_le_left) hgO) (le_preimage_mono g ((hp.trans (hpL p)).trans inf_le_right) hgO) (le_preimage_mono g ((hq.trans (hpL q)).trans inf_le_left) hgO) (le_prei …`. Use `beta_reduce`. Rewrite using `[show d p.1 O f + d' p.2 O f + ∑ a, smulFld (cf p a) (dd a) O f - (d q.1 O f + d' q.2 O f + ∑ a, smulFld (cf q a) (dd a) O f) = (d p.1 O f - d q.1 O f) + (d' p.2 O f - d' q.2 O f) + (∑ a, smulFld (cf p a) (dd a) O f - ∑ a, smulFld (cf q a) (dd a) O f) by ring, valR_add _ _ hgO, v …`. Simplify using `only [← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, map_add]`. Take the linear combination `(-(φ (Θ' a b) * (valR (w a) O f).snd)) * e₃ b`.
+A detailed English derivation is pending.
 -/
 theorem isKS_add (hv : ∀ a, IsTanAtG t (chart U) (v a)) (h : IsKS t V U v D Θ) (h' : IsKS t V U v D' Θ') :
     IsKS t V U v (fun s => D s + D' s) (Θ + Θ') := by
@@ -416,7 +412,7 @@ theorem isKS_add (hv : ∀ a, IsTanAtG t (chart U) (v a)) (h : IsKS t V U v D Θ
     linear_combination (-(φ (Θ' a b) * (valR (w a) O f).snd)) * e₃ b
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ hv _ _ _ _ r _ _ h h'` and use `⟨isKS_add hv h h', isKS_smul h r⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isKS_linear : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (D D' : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (r : Γ(Y.X, U.1)) (Θ Θ' : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), IsKS Y.t (interior Y) U v D.1 Θ → IsKS Y.t (interior Y) U v D'.1 Θ' → IsKS Y.t (interior Y) U v (D + D').1 (Θ + Θ') ∧ IsKS Y.t (interior Y) U v (r • D).1 (r • Θ) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ hv _ _ _ _ r _ _ h h' => ⟨isKS_add hv h h', isKS_smul h r⟩

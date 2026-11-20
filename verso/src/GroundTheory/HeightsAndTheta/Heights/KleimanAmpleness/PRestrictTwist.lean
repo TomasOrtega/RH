@@ -21,11 +21,11 @@ def IsFrac (x : Fin (N + 1) → Ω) (c : ℤ) (I : Finset (Fin (N + 1))) (z : Ω
     (t.2.2.2 : ℤ) = t.2.2.1 + c ∧ z = aeval x t.1 / aeval x t.2.1
 
 /- English proof (translation)
-Take `⟨f, s, e, e'⟩` from `t`. Take `⟨f', s', d, d'⟩` from `t'`. Take `⟨hs, hf, hse, hc, rfl⟩` from `h`. Take `⟨hs', hf', hse', hc', rfl⟩` from `h'`. Simplify using `only at hs hf hse hc hs' hf' hse' hc' ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Use `⟨mul_mem hs hs', (hf.mul hse').add ?_, hse.mul hse', by push_cast; omega, ?_⟩` and prove the remaining obligations. Establish `hdeg : e + d' = e' + d` using `by omega`. Rewrite using `[← hdeg]`. Conclude with `hse.mul hf'`. Simplify using `only [map_add, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_add_div _ _ (hI s hs) (hI s' hs')]`.
+A detailed English derivation is pending.
 -/
 theorem isFrac_add {x : Fin (N + 1) → Ω} {c : ℤ} {I : Finset (Fin (N + 1))} {z z' : Ω}
     {t t' : Poly S N × Poly S N × ℕ × ℕ} (hI : ∀ s ∈ monos (S := S) I, aeval x s ≠ 0)
@@ -44,7 +44,7 @@ theorem isFrac_add {x : Fin (N + 1) → Ω} {c : ℤ} {I : Finset (Fin (N + 1))}
     rw [div_add_div _ _ (hI s hs) (hI s' hs')]
 
 /- English proof (translation)
-Take `⟨f, s, e, e'⟩` from `t`. Take `⟨hs, hf, hse, hc, rfl⟩` from `h`. Simplify using `only at hs hf hse hc ⊢`. Use `⟨mul_mem hu hs, hg.mul hf, hud.mul hse, by push_cast; omega, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, div_mul_div_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isFrac_mul {x : Fin (N + 1) → Ω} {c : ℤ} {I : Finset (Fin (N + 1))} {z : Ω}
     {t : Poly S N × Poly S N × ℕ × ℕ} {g u : Poly S N} {d : ℕ} (hu : u ∈ monos I)
@@ -57,15 +57,13 @@ theorem isFrac_mul {x : Fin (N + 1) → Ω} {c : ℤ} {I : Finset (Fin (N + 1))}
   simp only [map_mul, div_mul_div_comm]
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨f, s, e, e', hs, hf, hse, hc, rfl⟩` from `hz`. Conclude with `⟨(f, s, e, e'), hs, hf, hse, hc, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨i, hi⟩` from `I.2.1`. Establish `h0 : (0 : ℤ) ≤ ((-c).toNat : ℤ) + c`. Use `Int.self_le_toNat (-c)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨(0, X i ^ (-c).toNat, (-c).toNat, (((-c).toNat : ℤ) + c).toNat), pow_mem (X_mem_monos hi) _, isHomogeneous_zero _ _ _, isHomogeneous_X_pow _ _, ?_, by simp⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Int.toNat_of_nonneg h0`. Consider the case `add a b _ _ ha hb`. Take `⟨t, ht⟩` from `ha`. Take `⟨t', ht'⟩` from `hb`. Conclude with `⟨_, isFrac_add (fun s hs => eval_ne_zero_of_mem_monos I hs) ht ht'⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul a z _ hz`. Take `⟨t, ht⟩` from `hz`. Take `⟨g, u, d, hu, hg, hud, hga⟩` from `a.2`. Use `⟨(g * t.1, u * t.2.1, d + t.2.2.1, d + t.2.2.2), ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def, hga]`.
-
-Conclude with `isFrac_mul hu hg hud ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isFrac {x : Fin (N + 1) → Ω} {c : ℤ} {I : Chart x} {z : Ω}
     (hz : z ∈ twistMod S x c I) : ∃ t, IsFrac (S := S) x c I.1 z t := by
@@ -92,11 +90,11 @@ theorem exists_isFrac {x : Fin (N + 1) → Ω} {c : ℤ} {I : Chart x} {z : Ω}
     exact isFrac_mul hu hg hud ht
 
 /- English proof (translation)
-Take `⟨f, s, e, e'⟩` from `t`. Take `⟨f', s', d, d'⟩` from `t'`. Take `⟨-, hf, hs, hc, hz⟩` from `h`. Take `⟨-, hf', hs', hc', hz'⟩` from `h'`. Simplify using `only at hf hs hc hz hf' hs' hc' hz' hx hx' hy hy' ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Establish `hdeg : d' + e = e' + d` using `by omega`. Establish `hg : (f * s' - f' * s).IsHomogeneous (e' + d)` using `(hf.mul hs').sub (by rw [← hdeg]; exact hf'.mul hs)`. Establish `hx0 : aeval x (f * s' - f' * s) = 0`. Use `hz.symm.trans hz'` as an intermediate fact. Rewrite `this` using `[div_eq_div_iff hx hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_mul, this, sub_self]`. Establish `hy0` using `(mem_primeOf_of_isHomogeneous y hg).mp (hle ((mem_primeOf_of_isHomogeneous x hg).mpr hx0))`. Rewrite `hy0` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Rewrite using `[div_eq_div_iff hy hy', hy0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem div_eq_of_isFrac {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'}
     (hle : primeOf (S := S) x ≤ primeOf (S := S) y) {c : ℤ} {I J : Finset (Fin (N + 1))} {z : Ω}
@@ -130,7 +128,7 @@ def twistRes (x : Fin (N + 1) → Ω) (y : Fin (N + 1) → K') (c : ℤ) (z : Ω
   else 0
 
 /- English proof (translation)
-Establish `hex : ∃ (I : Chart y) (t : Poly S N × Poly S N × ℕ × ℕ), IsFrac x c I.1 z t` using `⟨I, t, h⟩`. Rewrite using `[twistRes, dif_pos hex]`. Establish `h₀` using `Classical.choose_spec (Classical.choose_spec hex)`. Conclude with `div_eq_of_isFrac hle h₀ h (eval_ne_zero_of_mem_monos (liftChart hxy (Classical.choose hex)) h₀.1) (eval_ne_zero_of_mem_monos (liftChart hxy I) h.1) (eval_ne_zero_of_mem_monos (Classical.choose hex) h₀.1) (eval_ne_zero_of_mem_monos I h.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twistRes_eq {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'} (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
     (hle : primeOf (S := S) x ≤ primeOf (S := S) y) {c : ℤ} (I : Chart y) {z : Ω}
@@ -146,7 +144,7 @@ theorem twistRes_eq {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'} (hxy : ∀
     (eval_ne_zero_of_mem_monos (Classical.choose hex) h₀.1) (eval_ne_zero_of_mem_monos I h.1)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_isFrac hq`. Rewrite using `[twistRes_eq hxy hle I ht]`. Conclude with `Submodule.subset_span ⟨t.1, t.2.1, t.2.2.1, t.2.2.2, ht.1, ht.2.1, ht.2.2.1, ht.2.2.2.1, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistRes_mem {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'} (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
     (hle : primeOf (S := S) x ≤ primeOf (S := S) y) (c : ℤ) (I : Chart y) {q : Ω}
@@ -156,7 +154,7 @@ theorem twistRes_mem {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'} (hxy : �
   exact Submodule.subset_span ⟨t.1, t.2.1, t.2.2.1, t.2.2.2, ht.1, ht.2.1, ht.2.2.1, ht.2.2.2.1, rfl⟩
 
 /- English proof (translation)
-The claim follows from `twistRes_mem hxy hle c I hq add I q hq q' hq' := by obtain ⟨t, ht⟩ := exists_isFrac hq obtain ⟨t', ht'⟩ := exists_isFrac hq' have hsum := isFrac_add (fun s hs => eval_ne_zero_of_mem_monos (liftChart hxy I) hs) ht ht' rw [twistRes_eq hxy hle I hsum, twistRes_eq hxy hle I ht, twist …`.
+A detailed English derivation is pending.
 -/
 theorem restrictData_twistSys {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'}
     (hxy : ∀ i, y i ≠ 0 → x i ≠ 0) (hle : primeOf (S := S) x ≤ primeOf (S := S) y) (c : ℤ) :
@@ -185,7 +183,7 @@ theorem restrictData_twistSys {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'}
         twistRes_eq (t := (f, s, e, e')) hxy hle I ⟨hs, hf, hse, hc, rfl⟩⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, a, ha, rfl⟩`. Conclude with `Submodule.mul_mem_mul hq ha`. Conclude with `Submodule.mul_le.mpr fun q hq a ha => Submodule.subset_span ⟨q, hq, a, ha, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem twist_sub_eq {L : Type w} [Field L] [Algebra S L] {z : Fin (N + 1) → L}
     (F Q : SubSystem S z L) (I : Chart z) : (F.twist Q).sub I = Q.sub I * F.sub I := by
@@ -196,16 +194,16 @@ theorem twist_sub_eq {L : Type w} [Field L] [Algebra S L] {z : Fin (N + 1) → L
   · exact Submodule.mul_le.mpr fun q hq a ha => Submodule.subset_span ⟨q, hq, a, ha, rfl⟩
 
 /- English proof (translation)
-The claim follows from `P.smul_mem (⟨c, hc⟩ : chartRing S x I) hq`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem' {x : Fin (N + 1) → Ω} {I : Chart x} {P : Submodule (chartRing S x I) Ω} {c q : Ω}
     (hc : c ∈ chartRing S x I) (hq : q ∈ P) : c * q ∈ P :=
   P.smul_mem (⟨c, hc⟩ : chartRing S x I) hq
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem m hm n hn => exact ⟨[(m, n)], by simp [hm, hn], by simp⟩`. Consider the case `add a _ b _ ha hb`. Take `⟨l, hl, rfl⟩` from `ha`. Take `⟨l', hl', rfl⟩` from `hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨l ++ l', fun p hp => (List.mem_append.mp hp).elim (hl p) (hl' p), by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_list_of_mem_mul {A : Type*} [CommRing A] [Algebra A Ω] {P Q : Submodule A Ω} {z : Ω}
     (hz : z ∈ P * Q) :
@@ -218,11 +216,11 @@ theorem exists_list_of_mem_mul {A : Type*} [CommRing A] [Algebra A Ω] {P Q : Su
     exact ⟨l ++ l', fun p hp => (List.mem_append.mp hp).elim (hl p) (hl' p), by simp⟩
 
 /- English proof (translation)
-Take `⟨Q', hQ'⟩` from `Q.invertible I`. Establish `h1 : (1 : Ω) ∈ Q.sub I * Q'`. Rewrite using `[hQ']`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Take `⟨l, hl, hsum⟩` from `exists_list_of_mem_mul h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, fun p hp => ⟨(hl p hp).1, fun a ha => ?_⟩, hsum⟩` and prove the remaining obligations. Establish `h2 : p.2 * a ∈ Q.sub I * Q'`. Rewrite using `[mul_comm p.2 a]`. Conclude with `Submodule.mul_mem_mul ha (hl p hp).2`. Rewrite `h2` using `[hQ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `Submodule.mem_one.mp h2`. Rewrite using `[← hb]`. Conclude with `b.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual {x : Fin (N + 1) → Ω} (Q : LineBundle S x) (I : Chart x) :
     ∃ l : List (Ω × Ω), (∀ p ∈ l, p.1 ∈ Q.sub I ∧ ∀ a ∈ Q.sub I, p.2 * a ∈ chartRing S x I) ∧
@@ -241,7 +239,7 @@ theorem exists_dual {x : Fin (N + 1) → Ω} (Q : LineBundle S x) (I : Chart x) 
 variable {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'} {hxy : ∀ i, y i ≠ 0 → x i ≠ 0}
 
 /- English proof (translation)
-Use `h.add I 0 (Q.sub _).zero_mem 0 (Q.sub _).zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_zero_of {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
     (h : RestrictData Q hxy Q' r) (I : Chart y) : r 0 = 0 := by
@@ -250,7 +248,7 @@ theorem map_zero_of {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K
   simpa using this
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simpa using map_zero_of h I | a :: l, hl => by rw [List.sum_cons, List.map_cons, List.sum_cons, h.add I a (hl a List.mem_cons_self) _ (list_sum_mem fun q hq => hl q (List.mem_cons_of_mem _ hq)), map_list_sum_of h I l fun q hq => hl q (List.mem_cons_of_mem _ hq)]`.
+A detailed English derivation is pending.
 -/
 theorem map_list_sum_of {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
     (h : RestrictData Q hxy Q' r) (I : Chart y) :
@@ -270,9 +268,9 @@ def red (I : Finset (Fin (N + 1))) (a : Ω) : K' := by
     aeval y (Classical.choose h).1 / aeval y (Classical.choose h).2.1 else 0
 
 /- English proof (translation)
-Establish `hex : ∃ t : Poly S N × Poly S N × ℕ, t.2.1 ∈ monos I.1 ∧ t.1.IsHomogeneous t.2.2 ∧ t.2.1.IsHomogeneous t.2.2 ∧ a = aeval x t.1 / aeval x t.2.1`. Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `ha`. Conclude with `⟨(f, s, e), hs, hf, hse, rfl⟩`. Take `⟨hs, hf, hse, ha'⟩` from `Classical.choose_spec hex`. Rewrite using `[red, dif_pos hex]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `h.smul I q hq _ _ _ hs hf hse` as an intermediate fact. Rewrite `this` using `[← ha']`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_of {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {r : Ω → K'}
     (h : RestrictData Q hxy Q' r) (I : Chart y) {a q : Ω}
@@ -293,7 +291,7 @@ def prodRes (r₁ r₂ : Ω → K') (l : List (Ω × Ω)) (z : Ω) : K' :=
   (l.map fun p => r₁ p.1 * r₂ (p.2 * z)).sum
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem b hb a ha`. Rewrite using `[show v * (b * a) = (v * a) * b by ring]; exact mul_mem' (hv a ha) hb`. Consider the case `add z _ z' _ h h' => rw [mul_add]`. Conclude with `add_mem h h'`.
+Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_of_mem_mul {Q₁ Q₂ : SubSystem S x Ω} {I : Chart x} {v z : Ω}
     (hv : ∀ a ∈ Q₁.sub I, v * a ∈ chartRing S x I) (hz : z ∈ Q₂.sub I * Q₁.sub I) :
@@ -304,7 +302,7 @@ theorem mul_mem_of_mem_mul {Q₁ Q₂ : SubSystem S x Ω} {I : Chart x} {v z : �
   | add z _ z' _ h h' => rw [mul_add]; exact add_mem h h'
 
 /- English proof (translation)
-Rewrite using `[prodRes, prodRes, prodRes, ← List.sum_map_add]`. Use `congrArg List.sum (List.map_congr_left fun p hp => ?_)` and prove the remaining obligations. Rewrite using `[mul_add, h₂.add I _ (hz p hp) _ (hz' p hp), mul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodRes_add {r₁ : Ω → K'} {Q₂ : SubSystem S x Ω} {Q₂' : SubSystem S y K'} {r₂ : Ω → K'}
     (h₂ : RestrictData Q₂ hxy Q₂' r₂) (I : Chart y) {l : List (Ω × Ω)} {z z' : Ω}
@@ -316,11 +314,11 @@ theorem prodRes_add {r₁ : Ω → K'} {Q₂ : SubSystem S x Ω} {Q₂' : SubSys
   rw [mul_add, h₂.add I _ (hz p hp) _ (hz' p hp), mul_add]
 
 /- English proof (translation)
-Establish `ha' : a = (l.map fun p => (p.2 * a) * p.1).sum`. Combine the equalities or inequalities in the displayed calculation. Establish `key : r₁ a = (l.map fun p => red S x y I.1 (p.2 * a) * r₁ p.1).sum` using `by conv_lhs => rw [ha']`. Rewrite using `[map_list_sum_of h₁ I _ ?_, List.map_map]`. Conclude with `congrArg List.sum (List.map_congr_left fun p hp => map_mul_of h₁ I ((hl p hp).2 a ha) (hl p hp).1)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Take `⟨p, hp, rfl⟩` from `List.mem_map.mp hq`. Conclude with `mul_mem' ((hl p hp).2 a ha) (hl p hp).1`. Rewrite using `[key, prodRes, ← List.sum_map_mul_right]`. Use `congrArg List.sum (List.map_congr_left fun p hp => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show p.2 * (b * a) = (p.2 * a) * b by ring, map_mul_of h₂ I ((hl p hp).2 a ha) hb]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem prodRes_mul {Q₁ Q₂ : SubSystem S x Ω} {Q₁' Q₂' : SubSystem S y K'} {r₁ r₂ : Ω → K'}
     (h₁ : RestrictData Q₁ hxy Q₁' r₁) (h₂ : RestrictData Q₂ hxy Q₂' r₂) (I : Chart y)
@@ -347,9 +345,9 @@ theorem prodRes_mul {Q₁ Q₂ : SubSystem S x Ω} {Q₁' Q₂' : SubSystem S y 
   ring
 
 /- English proof (translation)
-Establish `H : prodRes r₁ r₂ l z = prodRes r₁ r₂ l' z ∧ z ∈ Q₂.sub (liftChart hxy K) * Q₁.sub (liftChart hxy K)`. Proceed by induction on `hz using Submodule.mul_induction_on' with`. Consider the case `mem_mul_mem b hb a ha`. Establish `ha'` using `Q₁.mono (liftChart hxy I) (liftChart hxy K) hIK a ha`. Establish `hb'` using `Q₂.mono (liftChart hxy I) (liftChart hxy K) hIK b hb`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by rw [prodRes_mul h₁ h₂ I hl hl1 ha hb, prodRes_mul h₁ h₂ K hl' hl1' ha' hb'], Submodule.mul_mem_mul hb' ha'⟩`. Consider the case `add z hz z' hz' h h'`. Use `⟨?_, add_mem h.2 h'.2⟩` and prove the remaining obligations. Rewrite using `[prodRes_add h₂ I (fun p hp => mul_mem_of_mem_mul (hl p hp).2 hz) (fun p hp => mul_mem_of_mem_mul (hl p hp).2 hz'), prodRes_add h₂ K (fun p hp => mul_mem_of_mem_mul (hl' p hp).2 h.2) (fun p hp => mul_mem_of_mem_mul (hl' p hp).2 h'.2), h.1, h'.1]`. Conclude with `H.1`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodRes_eq_of_subset {Q₁ Q₂ : SubSystem S x Ω} {Q₁' Q₂' : SubSystem S y K'} {r₁ r₂ : Ω → K'}
     (h₁ : RestrictData Q₁ hxy Q₁' r₁) (h₂ : RestrictData Q₂ hxy Q₂' r₂) {I K : Chart y}
@@ -379,23 +377,21 @@ theorem prodRes_eq_of_subset {Q₁ Q₂ : SubSystem S x Ω} {Q₁' Q₂' : SubSy
   exact H.1
 
 /- English proof (translation)
-Use `choose L hL hL1 using fun I : Chart y => exists_dual Q₁ (liftChart hxy I)`. Set `r : Ω → K'` to `fun z => if h : ∃ I : Chart y, z ∈ Q₂.sub (liftChart hxy I) * Q₁.sub (liftChart hxy I) then prodRes r₁ r₂ (L (Classical.choose h)) z else 0`. Establish `hr : ∀ (I : Chart y) (z : Ω), z ∈ Q₂.sub (liftChart hxy I) * Q₁.sub (liftChart hxy I) → r z = prodRes r₁ r₂ (L I) z`. Introduce `I z hz`. Establish `hex : ∃ I : Chart y, z ∈ Q₂.sub (liftChart hxy I) * Q₁.sub (liftChart hxy I)` using `⟨I, hz⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [r, dif_pos hex]`. Establish `hJ` using `Classical.choose_spec hex`. Set `K : Chart y` to `⟨(Classical.choose hex).1 ∪ I.1, (Classical.choose hex).2.1.mono Finset.subset_union_left, Finset.union_subset (Classical.choose hex).2.2 I.2.2⟩`. Rewrite using `[prodRes_eq_of_subset h₁ h₂ (K := K) Finset.subset_union_left (hL _) (hL1 _) (hL K) (hL1 K) hJ, prodRes_eq_of_subset h₁ h₂ (K := K) Finset.subset_union_right (hL I) (hL1 I) (hL K) (hL1 K) hz]`. Establish `hmem : ∀ (I : Chart y) (z : Ω), z ∈ (Q₁.toSubSystem.twist Q₂.toSubSystem).sub (liftChart hxy I) → z ∈ Q₂.sub (liftChart hxy I) * Q₁.sub (liftChart hxy I)` using `fun I z hz => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hz` using `[twist_sub_eq]`. Then use the resulting hypothesis. Establish `hv : ∀ (I : Chart y) (z : Ω), z ∈ Q₂.sub (liftChart hxy I) * Q₁.sub (liftChart hxy I) → ∀ p ∈ L I, p.2 * z ∈ Q₂.sub (liftChart hxy I)` using `fun I z hz p hp => mul_mem_of_mem_mul (hL I p hp).2 hz`. Establish `hrmem : ∀ (I : Chart y), ∀ q ∈ (Q₁.toSubSystem.twist Q₂.toSubSystem).sub (liftChart hxy I), r q ∈ (Q₁'.toSubSystem.twist Q₂'.toSubSystem).sub I`. Introduce `I q hq`. Rewrite using `[twist_sub_eq, hr I q (hmem I q hq), prodRes]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `list_sum_mem fun w hw => ?_` and prove the remaining obligations. Take `⟨p, hp, rfl⟩` from `List.mem_map.mp hw`. Rewrite using `[mul_comm (r₁ p.1)]`. Conclude with `Submodule.mul_mem_mul (h₂.mem I _ (hv I q (hmem I q hq) p hp)) (h₁.mem I _ (hL I p hp).1)`. Use `⟨r, hrmem, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `I q hq q' hq'`. Establish `hq₁` using `hmem I q hq`. Establish `hq₁'` using `hmem I q' hq'`. Rewrite using `[hr I _ (add_mem hq₁ hq₁'), hr I _ hq₁, hr I _ hq₁']`. Conclude with `prodRes_add h₂ I (hv I q hq₁) (hv I q' hq₁')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `I q hq f s e hs hf hse`. Establish `hq₁` using `hmem I q hq`. Establish `hc : aeval x f / aeval x s ∈ chartRing S x (liftChart hxy I)` using `⟨f, s, e, hs, hf, hse, rfl⟩`. Rewrite using `[hr I _ (mul_mem' hc hq₁), hr I _ hq₁, prodRes, prodRes, ← List.sum_map_mul_left]`. Use `congrArg List.sum (List.map_congr_left fun p hp => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show p.2 * (aeval x f / aeval x s * q) = aeval x f / aeval x s * (p.2 * q) by ring, h₂.smul I _ (hv I q hq₁ p hp) f s e hs hf hse]`. Expand and normalize the polynomial expressions, which then agree. Introduce `I`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.mpr fun _ ⟨q, hq, hrq⟩ => hrq ▸ hrmem I q hq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[twist_sub_eq Q₁'.toSubSystem Q₂'.toSubSystem I, ← h₁.span I, ← h₂.span I, Submodule.span_mul_span]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨b, hb, rfl⟩, _, ⟨a, ha, rfl⟩, rfl⟩`. Establish `hba : b * a ∈ Q₂.sub (liftChart hxy I) * Q₁.sub (liftChart hxy I)` using `Submodule.mul_mem_mul hb ha`. Use `Submodule.subset_span ⟨b * a, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[twist_sub_eq]`. Conclude with `hba`. Rewrite using `[hr I _ hba, prodRes_mul h₁ h₂ I (hL I) (hL1 I) ha hb, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictData_twist {Q₁ Q₂ : LineBundle S x} {Q₁' Q₂' : LineBundle S y} {r₁ r₂ : Ω → K'}
     (h₁ : RestrictData Q₁.toSubSystem hxy Q₁'.toSubSystem r₁)
@@ -460,7 +456,7 @@ theorem restrictData_twist {Q₁ Q₂ : LineBundle S x} {Q₁' Q₂' : LineBundl
       · rw [hr I _ hba, prodRes_mul h₁ h₂ I (hL I) (hL1 I) ha hb, mul_comm]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `S _ Ω _ _ N x K' _ _ y hxy hle c`. Conclude with `⟨_, restrictData_twistSys hxy hle c⟩`. Introduce `S _ Ω _ _ N x K' _ _ y hxy Q₁ Q₂ Q₁' Q₂' r₁ r₂ h₁ h₂`. Conclude with `restrictData_twist h₁ h₂`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem proof : Statement.{u, w} := by
   refine ⟨?_, ?_⟩

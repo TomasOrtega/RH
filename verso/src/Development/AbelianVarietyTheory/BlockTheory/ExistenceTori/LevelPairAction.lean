@@ -74,11 +74,9 @@ def LevActLawsSt (Xo : Moduli Dw l) (c : Coeff l) : Prop :=
       (fun (g : Γ) y y' => LevAct (ρM g) (ρA g) y y')
 
 /- English proof (translation)
-Take `⟨r, ν, w, ⟨h0, h1, h2⟩, h3⟩` from `h`. Use `⟨r, ν, w, ⟨h0, fun a => ?_, fun a => ?_⟩, h3⟩` and prove the remaining obligations. Establish `e : Xo.univ.eta (gM' a) = Xo.univ.eta (gM a)`. Rewrite using `[show gM' a = (gM' a - gM a) + gM a by abel, Xo.univ.eta_add, Xo.univ.eta_ker _ (hM a), _root_.one_mul]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 a`. Take `⟨b, hb⟩` from `hA a`. Establish `e : Xo.univ.etaA (gA' a) = Xo.univ.etaA (gA a)`. Rewrite using `[show gA' a = (gA' a - gA a) + gA a by abel, Xo.univ.etaA_add, hb, Xo.univ.etaA_ker, _root_.one_mul]`. Rewrite using `[e]`.
-
-Conclude with `h2 a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LevAct.congr {gM gM' gA gA' : Dw.La →ₗ[𝓞 E] Dw.La} (hM : CongM l gM' gM) (hA : CongN l.A gA' gA)
     {S : Type} [CommRing S] [Algebra c.F S] {y y' : FrPt Xo c S} (h : LevAct gM gA y y') : LevAct gM' gA' y y' := by

@@ -14,23 +14,23 @@ open Pb HT
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Introduce `m b z hz a' ha'`. Use function extensionality and compare the values at `s0`. Set `L : GF M n →ₗ[ℂ_[l]] ℂ_[l]` to `{ toFun := fun g => ∑ a ∈ Finset.range (n + 1), ∑ s, z a s * g a ((b a).coord s) map_add' := by`. Introduce `f g`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := by`. Introduce `c f`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `ring }`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hL : Sp P M n ≤ LinearMap.ker L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hz v`. Take `⟨N, hN, hmem⟩` from `h a' (b a' s0)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : L (tgt hC (b a' s0) N) = 0` using `hL hmem`. Establish `hGe : ∀ s, Gx hC (b a' s0) ((b a').coord s) (oneH M.q) = (b a').coord s (b a' s0)`. Introduce `s`. Unfold `Gx`. Rewrite using `[dif_pos (Nat.zero_add a')]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.flip_apply, cupL_apply]`. Rewrite using `[(hC _ _ M.q).2.2.2.1]`. Establish `hGn : ∀ a, a ≠ a' → ∀ s, Gx hC (b a' s0) ((b a).coord s) (oneH M.q) = 0`. Introduce `a ha s`. Unfold `Gx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dif_neg (by omega)]`. Both sides reduce to the same expression. Establish `hv : L (tgt hC (b a' s0) N) = z a' s0 * qC l N` using `by show ∑ a ∈ Finset.range (n + 1), ∑ s, z a s * (qC l N * kC K (Gx hC (b a' s0) ((b a).coord s) (oneH M.q))) = _`. Rewrite using `[Finset.sum_eq_single a']`. Simplify using `only [hGe, Module.Basis.coord_apply, Module.Basis.repr_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single s0]`. Simplify using the standard rewrite rules. Introduce `s _ hs`. Simplify using `[Ne.symm hs]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a _ ha`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hGn a ha]`. Simplify using the standard rewrite rules. Introduce `ha`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_range.2 (by omega)) ha`. Rewrite `h0` using `[hv]`. Establish `hq : qC l N ≠ 0` using `(map_ne_zero (qC l)).2 hN`. Simplify `h0` using `[hq]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem surj_of_core (hC : CupLaws) (P : HTPre l K) (M : Model l K) (n : ℕ)
     (h : ∀ a' (x : Hdg M.q a' n), ∃ N : ℚ_[l], N ≠ 0 ∧ tgt hC x N ∈ Sp P M n) : Surj P M n := by

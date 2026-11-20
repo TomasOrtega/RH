@@ -24,21 +24,21 @@ private def CReads (V : Mean4O.Cover Y) (L : LB V.X) (s : L.ι → V.X.functionF
         (V.φ (f (below y.1)) * SmallSec.fnMap V.j (j_gen_specializes V) (s i))))
 
 /- English proof (translation)
-Take `⟨r, hr, hu, hc, hf⟩` from `h`. Use `haveI := CoverHt.isPreimmersion_j V`. Establish `hη` using `j_gen_specializes V`. Set `ρ : V.X.functionField ≃+* V.G.functionField` to `RingEquiv.ofBijective (SmallSec.fnMap V.j hη) ⟨(SmallSec.fnMap V.j hη).injective, SmallSec.fnMap_surjective V.j hη⟩`. Establish `hρ : ∀ (U : V.X.Opens) (hU : genericPoint V.X ∈ U) (hU' : genericPoint V.G ∈ V.j ⁻¹ᵁ U) (s : Γ(V.X, U)), ρ (fnOf U hU s) = fnOf (V.j ⁻¹ᵁ U) hU' (V.j.app U s)` using `fun U hU hU' s => SmallSec.fnMap_fnOf V.j hη hU hU' s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : V.j (genericPoint V.G) = genericPoint V.X` using `(hη.antisymm (genericPoint_specializes _)).eq`. Establish `hv : ∀ {K : Type} [Field K] (y : Sp K ⟶ V.G) (g : V.X.functionField), TrueGeo.valAt (y ≫ V.j) g = TrueGeo.valAt y (ρ g)` using `fun y g => ModelFn.valAt_comp V.j hη y g`. Establish `hR` using `InducedIsom.isRatSec_lift V.j ρ hρ hj M.B hr`. Establish `eρ : ∀ i, ρ ((Units.map ρ.symm.toMonoidHom (r fun _ => i) : V.X.functionFieldˣ) : V.X.functionField) = (r fun _ => i : V.G.functionField)` using `fun i => ρ.apply_symm_apply _`. Use `⟨_, hR, fun v e y z yt i e₁ e₂ hU => ?_, fun hf1 ha0 τ y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `eρ' : SmallSec.fnMap V.j (j_gen_specializes V) ((Units.map ρ.symm.toMonoidHom (r fun _ => i) : V.X.functionFieldˣ) : V.X.functionField) = (r fun _ => i : V.G.functionField)` using `eρ i`. Rewrite using `[eρ']`. Establish `hpt : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ M.B.U i`. Rewrite using `[← e₂]`. Conclude with `hU (Set.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁ : below z ∈ (M.B.pull V.j).U (fun _ => i)` using `Set.mem_iInter.2 fun _ => hpt`. Establish `hw` using `hu _ _ m₁`. Establish `hb : V.π (below z) = below y.1` using `by rw [← e₁]; rfl`. Rewrite `hw` using `[hb]`. Conclude with `⟨hw, hf v e y z yt (fun _ => i) e₁ e₂ hU⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, rfl, z, hz⟩` from `cxPts_from_generic_fibre V τ y`. Rewrite using `[logNorm]`. Establish `hyj` using `CxPts.mem_pick (M.φ (σ.comp (algebraMap (𝓞 F) F))).isLB y`. Generalize the expression as in `CxPts.pick (M.φ (σ.comp (algebraMap (𝓞 F) F))).isLB y = j at hyj ⊢`. Set `y₀ : Pts Y σ` to `⟨z.1 ≫ V.π, by rw [Category.assoc]; exact z.2⟩`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hun : under y = V.j (under z)`. Express the relevant statement in the definitionally equal form `y.1 _ = _`. Rewrite using `[hz]`. Both sides reduce to the same expression. Establish `m₁ : under z ∈ (M.B.pull V.j).U fun _ => j` using `Set.mem_iInter.2 fun _ => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `V.j (under z) ∈ M.B.U j`. Rewrite using `[← hun]`. Conclude with `CxPts.mem_ptsIn.1 hyj`. Establish `H` using `hc σ z y₀ y (fun _ => j) rfl hz m₁`. Establish `hq : ratVal ((Units.map ρ.symm.toMonoidHom (r fun _ => j) : V.X.functionFieldˣ) : V.X.functionField) y = ratVal (r fun _ => j : V.G.functionField) z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ModelFn.ratVal_eq, ModelFn.ratVal_eq, hz, hv, eρ]`. Simplify using `only [hf1, ha0, map_one, one_mul] at H`. Rewrite using `[hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_lift (V : Mean4O.Cover Y) (M : HermLB V.p) {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ} (h : Norms V M f a l) :
@@ -94,23 +94,23 @@ private theorem exists_lift (V : Mean4O.Cover Y) (M : HermLB V.p) {f : Y.X → Y
     linarith
 
 /- English proof (translation)
-Use `haveI := CoverHt.isPreimmersion_j V`. Use `haveI := VertOrd.charZero_fn V.ar`. Establish `hη` using `j_gen_specializes V`. Take `⟨i, hi⟩` from `exists_chart hL z`. Establish `hmult` using `((presents_divOfRatSec hL hs).isEqn i z hi).mult_eq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : (s i : V.X.functionField) ≠ 0` using `Units.ne_zero _`. Establish `hp0 : (p : V.X.functionField) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hstep : ∀ u : V.X.functionField, (u = s i ∨ u = (s i : V.X.functionField)⁻¹) → RegAt z (((p ^ ⌈b⌉₊ : ℕ) : V.X.functionField) * u)`. Introduce `u hu0`. Use `GlobalTheory.Mean4O.Cover.RegCrit.regAt_of_integral_values F Y V (L.U i) _ (fun v e z' yt hz' e₂ hU => ?_) z hi` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `y : AlgPt Y` to `⟨z' ≫ V.π, by rw [Category.assoc]; exact hz'⟩`. Take `⟨hw, H⟩` from `h v e y z' yt i rfl e₂ hU`. Simplify using `only [map_one, one_mul] at hw H`. Establish `hρu : UnitAt (below z') (SmallSec.fnMap V.j hη u) ∧ |Real.log (e.w (TrueGeo.valAt z' (SmallSec.fnMap V.j hη u)))| = |lg v e y|`. Break down `hu0 with rfl | rfl` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hw, by rw [H]⟩`. Use `⟨by rw [map_inv₀]; exact hw.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, LineNorm.Neg.valAt_inv hw, map_inv₀, Real.log_inv, abs_neg, H]`. Rewrite using `[ModelFn.valAt_comp V.j hη, map_mul, map_natCast, SmallSec.valAt_mul (VertOrd.regAt_natCast _ _) hρu.1.regAt, VertOrd.valAt_natCast, map_mul, Nat.cast_pow, AbsoluteValue.map_pow]`. Establish `hW : 0 < e.w (p : AlgebraicClosure F) ∧ e.w (p : AlgebraicClosure F) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : e.w (p : AlgebraicClosure F) = NumberField.HeightOneSpectrum.adicAbv F v (p : F)`. Rewrite using `[← e.w_alg, map_natCast (algebraMap F (AlgebraicClosure F))]`. Establish `hl' : (p : F) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Rewrite using `[e₁]`. Conclude with `⟨AbsoluteValue.pos _ hl', NumberField.HeightOneSpectrum.adicAbv_natCast_le_one F v p⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : 0 < e.w (TrueGeo.valAt z' (SmallSec.fnMap V.j hη u))` using `e.w.pos (Res.valAt_ne_zero hρu.1)`. Establish `hsum` using `VertOrd.sum_log_add_le {p} (fun _ => b) (fun _ => ⌈b⌉₊) 1 (fun l => e.w (l : AlgebraicClosure F)) (by simpa using hW) (resP v) (lg v e y) (by simpa using Nat.le_ceil b) (by simpa only [Finset.mem_singleton] using hlg v e y)`. Rewrite `hsum` using `[Finset.sum_singleton, Nat.cast_one, one_mul]`. Establish `hlog : Real.log (e.w (p : AlgebraicClosure F) ^ ⌈b⌉₊ * e.w (TrueGeo.valAt z' (SmallSec.fnMap V.j hη u))) ≤ 0`. Rewrite using `[Real.log_mul (pow_pos hW.1 _).ne' ht.ne', Real.log_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `le_abs_self (Real.log (e.w (TrueGeo.valAt z' (SmallSec.fnMap V.j hη u))))`. Rewrite `h5` using `[hρu.2]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hgt`. Conclude with `absurd hlog (not_le.2 (Real.log_pos (not_le.1 hgt)))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : ((p ^ ⌈b⌉₊ : ℕ) : V.X.functionField) ≠ 0` using `by rw [Nat.cast_pow]; exact pow_ne_zero _ hp0`. Establish `h₁` using `VertOrd.ord_nonneg_of_regAt (hstep _ (Or.inl rfl)) (mul_ne_zero hN0 hg0)`. Establish `h₂` using `VertOrd.ord_nonneg_of_regAt (hstep _ (Or.inr rfl)) (mul_ne_zero hN0 (inv_ne_zero hg0))`. Rewrite `h₁` using `[Scheme.ord_mul hN0 hg0, Nat.cast_pow, VertOrd.ord_pow' hp0]`. Rewrite `h₂` using `[Scheme.ord_mul hN0 (inv_ne_zero hg0), Nat.cast_pow, VertOrd.ord_pow' hp0, VertOrd.ord_inv' hg0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_ne (VertOrd.ord_nonneg_of_regAt (VertOrd.regAt_natCast z p) hp0) fun e => hz ?_` and prove the remaining obligations. Rewrite `h₁`, `h₂` using `[← e, mul_zero, zero_add]`. Rewrite using `[hmult]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem ord_pos (V : Mean4O.Cover Y) [IsLocallyNoetherian V.X] {L : LB V.X} (hL : L.IsLB)
     {s : L.ι → V.X.functionFieldˣ} (hs : IsRatSec L s)
@@ -171,9 +171,9 @@ private theorem ord_pos (V : Mean4O.Cover Y) [IsLocallyNoetherian V.X] {L : LB V
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Establish `h₁ : q z ∈ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv (p : R))`. Rewrite using `[basicOpen_eq_of_affine]`. Conclude with `hc`. Establish `h₂ : z ∈ X.basicOpen (p : Γ(X, ⊤))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : z ∈ q ⁻¹ᵁ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv (p : R))` using `h₁`. Rewrite `h₃` using `[Scheme.preimage_basicOpen_top, map_natCast, map_natCast]`. Then use the resulting hypothesis. Establish `h₄` using `(unitAt_fnOf_iff (U := ⊤) (TopologicalSpace.Opens.mem_top z) (TopologicalSpace.Opens.mem_top _) _).2 h₂`. Rewrite `h₄` using `[map_natCast]`. Conclude with `h.ne' h₄.ord_eq_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_asIdeal {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (q : X ⟶ Sp R) (p : ℕ) (z : X) (h : 0 < Scheme.ord (p : X.functionField) z) : (p : R) ∈ (q z).asIdeal := by
@@ -189,13 +189,13 @@ private theorem mem_asIdeal {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral
   exact h.ne' h₄.ord_eq_zero
 
 /- English proof (translation)
-Use `⟨hs, W, hW, fun e y yt i hy e₂ hU => ?_⟩` and prove the remaining obligations. Use `haveI := SmallSec.isPreimmersion_j Q`. Establish `hη : Q.j (genericPoint Y.X) ⤳ genericPoint Q.X` using `j_gen_specializes (Cover.ofModel Q hQ)`. Take `⟨hw, H⟩` from `h v e y y.1 yt i (Category.comp_id _) e₂ hU`. Express the relevant statement in the definitionally equal form `UnitAt (below y.1) (f (below y.1) * SmallSec.fnMap Q.j hη (s i)) at hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = Real.log (e.w (TrueGeo.valAt y.1 (f (below y.1) * SmallSec.fnMap Q.j hη (s i)))) at H`. Establish `hfy` using `hf _ hy`. Establish `hu : UnitAt (below y.1) (SmallSec.fnMap Q.j hη (s i))`. Use `hfy.inv.mul hw` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left₀ hfy.ne_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[unitAt_iff (Units.ne_zero _)]`. Use `⟨(SmallSec.regAt_fnMap_iff Q.j hη).1 hu.regAt, (SmallSec.regAt_fnMap_iff Q.j hη).1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀]`. Conclude with `hu.inv.regAt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hl e y hy, H, ModelFn.valAt_comp Q.j hη, SmallSec.valAt_mul hfy.regAt hu.regAt, map_mul, Real.log_mul (e.w.pos (Res.valAt_ne_zero hfy)).ne' (e.w.pos (Res.valAt_ne_zero hu)).ne']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem gReads (Q : TrueGeo.Model Y) [IsIntegral Q.X] (hQ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Q.X)
     {L : LB Q.X} {s : L.ι → Q.X.functionFieldˣ} (hs : IsRatSec L s) {f : Y.X → Y.Fn}
@@ -227,31 +227,29 @@ end UpperTheory.VertGlob
 
 open UpperTheory.VertGlob GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.VertForm GlobalTheory.ArInt GlobalTheory.TrivFlag MvPolynomial in
 /- English proof (translation)
-Introduce `hP F _ _ Y M ι _ A L m Ψ hI hΨ p hp i₀ i₁ hA c _ hlg d hd`. Substitute `hd` using the available equality. Establish `hC` using `hP.p4`. Use `haveI := M.ar.isIntegral`. Take `⟨Q, ρ, -, hQ, hρ, -, hj, -, -, -⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI iQ : IsIntegral Q.X := Q.ar.isIntegral`. Use `haveI nQ : IsLocallyNoetherian Q.X := Q.ar.isLocallyNoetherian`. Use `haveI : IsNoetherian Q.X := Q.ar.isNoetherian`. Use `haveI : IsLocallyNoetherian (Cover.ofModel Q hQ).X := nQ`. Take `⟨eρ, dρ⟩` from `GlobalTheory.CoverModelDeg.map_genericPoint_and_deg F Y (Cover.ofModel Q hQ) M ρ hρ (by simpa [Cover.ofModel] using hj)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `dρ` using `[Cover.deg_ofModel]`. Establish `d₁ : ρ.residueDegree (genericPoint Q.X) = 1` using `dρ`. Set `L' : ι → HermLB Q.p` to `fun i => (L i).pull ρ hρ`. Establish `hΦ : IsArFun L' Y.dim Ψ`. Establish `h₁` using `(hC.arProj (𝓞 F) M.X Q.X M.p Q.p Y.dim M.ar Q.ar ρ hρ eρ (d₁ ▸ one_ne_zero)).2 ι L Ψ hΨ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h₁` using `[d₁, Nat.cast_one, one_smul]`. Then use the resulting hypothesis. Establish `hL' (i : ι)` using `norms_of_induces (Cover.induces_ofModel hQ (GlobalTheory.T.induced_metric_pullback F _ Y (A i) M Q ρ hρ hj (L i) m 0 (hI i)))`. Use `choose s hs hR _ using fun i => exists_lift (Cover.ofModel Q hQ) (L' i) (hL' i)`. Take `⟨r, hr, hRr, h1⟩` from `exists_lift (Cover.ofModel Q hQ) _ (norms_div hA (hL' i₀) (hL' i₁))`. Establish `hpos (z : Q.X) (hz : (divOfRatSec ((L' i₀).tens (L' i₁).dual).isLB hr).mult z ≠ 0) : 0 < Scheme.ord (p : Q.X.functionField) z` using `ord_pos (Cover.ofModel Q hQ) _ hr hRr p hp.out ((m : ℕ) * c) (fun v ε y => by`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]`. Use `(mul_le_mul_of_nonneg_left (hlg v ε y) (Nat.cast_nonneg _)).trans_eq ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring) z hz`. Use `⟨Q, iQ, nQ, fun k => (L' k).B, s, ((L' i₀).tens (L' i₁).dual).B, ((L' i₀).tens (L' i₁).dual).isLB, r, hr, hQ, fun k => (L' k).isLB, fun v k => ?_, fun v => ?_, fun z hz => mem_asIdeal Q.p p z (hpos z hz), fun ν => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hE⟩` from `((A k).D.isEqn_genericPoint 1).exists_nhds`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `hu (x : Y.X) (hx : x ∈ W) : UnitAt x (eqn (A k).D x : Y.Fn)`. Simplify using `using (hE x hx).iff_unitAt.1 (Base.isEqn_eqn (A k).D x)`. Use `gReads Q hQ (hs k) (hR k) W hW (fun x hx => ?_) v _ fun e y hy => ?_` and prove the remaining obligations. Rewrite using `[genAt, Units.val_inv_eq_inv_val]`. Proceed by induction on `(m : ℕ) with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `zero => simpa using unitAt_one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul (hu x hx).inv`. Rewrite using `[genAt, Units.val_inv_eq_inv_val, Res.valAt_pow (hu _ hy).inv.regAt, LineNorm.Neg.valAt_inv (hu _ hy), AbsoluteValue.map_pow, map_inv₀, Real.log_pow, Real.log_inv, VertCmp.lam]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `gReads Q hQ hr hRr ⊤ trivial (fun x _ => unitAt_one x) v _ fun e y _ => ?_` and prove the remaining obligations. Establish `hD : (A i₁).D = (A i₀).D` using `by rw [hA]`. Establish `h0` using `VertOrd.valAt_natCast y.1 1`. Rewrite `h0` using `[Nat.cast_one, Nat.cast_one]`. Rewrite using `[h0, map_one, Real.log_one, VertCmp.lam, VertCmp.lam, hD]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨num, hn, -⟩` from `GlobalTheory.T.arith_intersection_form_exists hC _ _ Q.p _ Q.ar`. Take `⟨rt, rd, -, -⟩` from `GlobalTheory.T.arith_class_form_properties hC _ _ Q.p _ Q.ar num hn`. Establish `hv` using `GlobalTheory.T.height_of_rational_section_via_divisor hP _ Q.X Q.p _ Q.ar num hn ((L' i₀).tens (L' i₁).dual) r hr (fun σ y _ => h1 (fun _ => rfl) (fun _ _ => rfl) σ y) (fun j => L' (ν j)) (fun _ => p) (fun z => (pdeg p (fun j => (L' (ν j)).B) z : ℝ)) fun z hz => by`. Take `⟨Z, i, hi, hZ, hAl, e₁, e₂⟩` from `GlobalTheory.T.exists_integral_subscheme_prime_fibre _ Q.X Q.p _ Q.ar p z (hpos z hz)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hex : ∃ a, IsDeg p (fun j => (L' (ν j)).B) z a` using `⟨_, Z, i, hi, hZ, hAl, e₁, e₂, rfl⟩`. Take `⟨Z', i', hi', hZ', hAl', e₁', e₂', e₃⟩` from `hex.choose_spec`. Conclude with `⟨hp, Z', i', hi', hZ', hAl', e₁', e₂', by rw [pdeg, dif_pos hex, e₃]⟩`. Use `hn ι L' Ψ hΦ (Fin.cons (Pi.single i₀ 1 - Pi.single i₁ 1) fun j => Pi.single (ν j) 1)` as an intermediate fact. Establish `e₂ : lin (Pi.single i₀ 1 - Pi.single i₁ 1 : ι → ℝ) = X i₀ - X i₁`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← TrivFlag.lin_single, ← TrivFlag.lin_single]`. Simplify using `only [lin, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`. Rewrite `this` using `[Fin.prod_univ_succ, Fin.cons_zero, e₂]`. Simplify using `only [Fin.cons_succ, TrivFlag.lin_single] at this`. Rewrite using `[this, mul_finsum]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ (hv.trans (finsum_congr fun z => ?_))` and prove the remaining obligations. Use `map_congr_rad num fun j => Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `h₁` using `neg_mem (add_mem (rt (L' i₀) (L' i₁).dual) (rd (L' i₁)))`. Use `h₁ using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Fin.cons_zero, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
-
-Normalize the expressions using the abelian group laws. Simplify using `[Pi.single_apply]`. Rewrite using `[Int.cast_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.arithmetic_function_induced_bound :
     GlobalTheory.CovTop.Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (ι : Type) [Fintype ι] (A : ι → Adl (cxSt F) Y) (L : ι → HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ), (∀ i, (A i).Induced M (L i) m 0) → (haveI := M.ar.isIntegral; GlobalTheory.ArInt.IsArFun L Y.dim Ψ) → ∀ (p : ℕ) [Fact p.Prime] (i₀ i₁ : ι), A i₁ = { A i₀ with lg := (A i₁).lg } → ∀ (c : ℝ), 0 ≤ c → (∀ v e y, |(A i₀).lg v e y - (A i₁).lg v e y| ≤ (if resP v = p then c else 0) * (-Real.log (e.w (resP v : AlgebraicClosure F)))) → ∀ d : ℕ, Y.dim = d → ∃ (Q : TrueGeo.Model Y) (_ : IsIntegral Q.X) (_ : IsLocallyNoetherian Q.X) (N : ι → LB Q.X) (s : ∀ k, (N k).ι → Q.X.functionFieldˣ) (M₀ : LB Q.X) (hM₀ : M₀.IsLB) (r : M₀.ι → Q.X.functionFieldˣ) (hr : IsRatSec M₀ r), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Q.X ∧ (∀ k, (N k).IsLB) ∧ (∀ v k, GReads Q v (N k) (s k) (fun e y => ((m : ℕ) : ℝ) * lam (A k) v e y)) ∧ (∀ v, GReads Q v M₀ r (fun e y => ((m : ℕ) : ℝ) * (lam (A i₀) v e y - lam (A i₁) v e y))) ∧ (∀ z, (divOfRatSec hM₀ hr).mult z ≠ 0 → (p : 𝓞 F) ∈ (Q.p z).asIdeal) ∧ ∀ ν : Fin d → ι, Ψ ((MvPolynomial.X i₀ - MvPolynomial.X i₁) * ∏ j, MvPolynomial.X (ν j)) = Real.log p * ∑ᶠ z : Q.X, (((divOfRatSec hM₀ hr).mult z * pdeg p (fun j => N (ν j)) z : ℤ) : ℝ) := by

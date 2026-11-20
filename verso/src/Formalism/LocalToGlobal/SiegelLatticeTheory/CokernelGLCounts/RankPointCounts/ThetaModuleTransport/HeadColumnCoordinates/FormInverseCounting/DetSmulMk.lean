@@ -21,7 +21,7 @@ theorem lamL_apply (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y : Fin (r + 1) �
     lamL O Z y = lamC (Z.map O.subtype) (fun j => (y j : E)) := rfl
 
 /- English proof (translation)
-Rewrite using `[lamL_apply, lamC]`. Establish `hv : (fun j => ((Z.mulVec w j : O) : E)) = (Z.map O.subtype).mulVec (fun j => (w j : E))`. Use function extensionality and compare the values at `j`. Conclude with `RingHom.map_mulVec O.subtype Z w j`. Rewrite using `[hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamL_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (w : Fin (r + 1) → O) : lamL O Z (Z.mulVec w) = (w (Fin.last r) : E) := by
@@ -32,7 +32,7 @@ theorem lamL_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.m
   rw [hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `(mem_headCols_iff Z k).1 hk`. Rewrite using `[lamL_mulVec O Z hu, hw]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamL_K (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (k : Fin (r + 1) → O) (hk : k ∈ headCols Z) : lamL O Z k = 0 := by
@@ -40,22 +40,20 @@ theorem lamL_K (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.
   rw [lamL_mulVec O Z hu, hw]; rfl
 
 /- English proof (translation)
-The claim follows from `col_eq_mulVec Z _`.
+A detailed English derivation is pending.
 -/
 theorem bvec_eq (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) :
     (fun i => Z i (Fin.last r)) = Z.mulVec (Pi.single (Fin.last r) 1) := col_eq_mulVec Z _
 
 /- English proof (translation)
-Rewrite using `[bvec_eq, lamL_mulVec O Z hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lamL_b (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det) :
     lamL O Z (fun i => Z i (Fin.last r)) = 1 := by
   rw [bvec_eq, lamL_mulVec O Z hu]; simp
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_smul, bCls, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Use `set u := Z.adjugate.mulVec v`. Establish `hdv : Z.det • v = Z.mulVec u`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[hdv, bvec_eq, ← Matrix.mulVec_smul, ← Matrix.mulVec_sub]`.
-
-Conclude with `(mem_headCols_iff Z _).mpr ⟨_, by simp, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_smul_mk' (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (v : Fin (r + 1) → O) :
     Z.det • (Submodule.Quotient.mk v : MbMod Z) =
@@ -68,15 +66,15 @@ theorem det_smul_mk' (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (v : Fin (r + 1)
   exact (mem_headCols_iff Z _).mpr ⟨_, by simp, rfl⟩
 
 /- English proof (translation)
-Conclude with `RingHom.map_det O.subtype Z`.
+A detailed English derivation is pending.
 -/
 theorem det_coe (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) : ((Z.det : O) : E) = (Z.map O.subtype).det := by
   exact RingHom.map_det O.subtype Z
 
 /- English proof (translation)
-Rewrite using `[det_coe, lamL_apply, lamC, Matrix.inv_def, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, ← mul_assoc, Ring.mul_inverse_cancel _ hu, one_mul]`. Establish `h1` using `RingHom.map_mulVec O.subtype Z.adjugate v (Fin.last r)`. Establish `h2` using `RingHom.map_adjugate O.subtype Z`. Simplify using `only [RingHom.mapMatrix_apply] at h2`. Rewrite `*` using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem det_mul_lamL (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (v : Fin (r + 1) → O) :
@@ -90,9 +88,9 @@ theorem det_mul_lamL (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.
   exact h1.symm
 
 /- English proof (translation)
-Set `Λ` to `(headCols Z₂).liftQ (lamL O Z₂) (fun k hk => LinearMap.mem_ker.mpr (lamL_K O Z₂ hu₂ k hk))`. Establish `hΛb : Λ (bCls Z₂) = 1` using `lamL_b O Z₂ hu₂`. Establish `hΛy : Λ (Submodule.Quotient.mk y₂) = lamL O Z₂ y₂` using `rfl`. Establish `key` using `congrArg (fun q => Λ (γ q)) (det_smul_mk' O Z₁ y₁)`. Simplify using `only [map_smul, hb, h, hΛb, hΛy] at key`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdet : IsUnit ((Z₁.det : O) : E)` using `by rw [det_coe]; exact hu₁`. Apply `hdet.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[det_mul_lamL O Z₁ hu₁ y₁]`. Rewrite `key` using `[Subring.smul_def, Subring.smul_def, smul_eq_mul, smul_eq_mul, mul_one]`. Conclude with `key`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_keep {Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (hu₁ : IsUnit (Z₁.map O.subtype).det)
     (hu₂ : IsUnit (Z₂.map O.subtype).det) (γ : MbMod Z₁ →ₗ[O] MbMod Z₂) (hb : γ (bCls Z₁) = bCls Z₂)

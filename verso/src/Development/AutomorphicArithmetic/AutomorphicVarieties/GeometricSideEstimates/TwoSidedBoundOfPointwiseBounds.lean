@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeometricSideEstim
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Break down `le_or_gt |x| 1 with h | h` into its components or cases. Establish `h1` using `Real.abs_exp_sub_one_sub_id_le h`. Establish `h2 : x ^ 2 ≤ x ^ 2 * Real.exp |x|` using `le_mul_of_one_le_right (sq_nonneg x) (Real.one_le_exp (abs_nonneg x))`. Establish `h3` using `(abs_le.mp h1).2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `le_or_gt 0 x with hx | hx` into its components or cases. Rewrite `h`, the goal using `[abs_of_nonneg hx]`. Establish `: Real.exp x ≤ x ^ 2 * Real.exp x` using `le_mul_of_one_le_left (Real.exp_pos x).le (by nlinarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h`, the goal using `[abs_of_neg hx]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1 : Real.exp x ≤ 1` using `Real.exp_le_one_iff.mpr hx.le`. Establish `h2 : x ^ 2 ≤ x ^ 2 * Real.exp (-x)` using `le_mul_of_one_le_right (sq_nonneg x) (Real.one_le_exp (by linarith))`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem exp_quad (x : ℝ) : Real.exp x ≤ 1 + x + x ^ 2 * Real.exp |x| := by
   rcases le_or_gt |x| 1 with h | h
@@ -29,21 +29,21 @@ private theorem exp_quad (x : ℝ) : Real.exp x ≤ 1 + x + x ^ 2 * Real.exp |x|
       nlinarith
 
 /- English proof (translation)
-Establish `hpi` using `Real.pi_pos`. Establish `hE : Real.exp (-Real.pi * (q + u)) = Real.exp (-Real.pi * q) * Real.exp (-Real.pi * u)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hx` using `exp_quad (-Real.pi * u)`. Establish `habs : |-Real.pi * u| = Real.pi * |u|`. Rewrite using `[abs_mul, abs_neg, abs_of_pos hpi]`. Rewrite `hx` using `[habs]`. Establish `hu4 : |u| ≤ q / 4` using `by nlinarith [abs_nonneg u, mul_nonneg (sub_nonneg.mpr h4) hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu2 : u ^ 2 ≤ ε ^ 2 * q ^ 2`. Use `mul_self_le_mul_self (abs_nonneg u) hu` as an intermediate fact. Use polynomial arithmetic with `[sq_abs u]`. Establish `hpu : Real.pi * |u| ≤ Real.pi * (q / 4)` using `mul_le_mul_of_nonneg_left hu4 hpi.le`. Establish `hy0 : 0 ≤ Real.pi * q / 4` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp1 : Real.exp (Real.pi * |u|) * Real.exp (-Real.pi * q) ≤ Real.exp (-Real.pi * (1 / 2 * q)) * Real.exp (-(Real.pi * q / 4))`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hquad : (Real.pi * q / 4) ^ 2 ≤ 2 * Real.exp (Real.pi * q / 4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Real.quadratic_le_exp_of_nonneg hy0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hey : (Real.pi * q / 4) ^ 2 * Real.exp (-(Real.pi * q / 4)) ≤ 2`. Establish `h1 : Real.exp (Real.pi * q / 4) * Real.exp (-(Real.pi * q / 4)) = 1`. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2` using `Real.exp_pos (-(Real.pi * q / 4))`. Use the polynomial consequences of the given equalities and inequalities. Establish `A : (-Real.pi * u) ^ 2 ≤ ε ^ 2 * (Real.pi ^ 2 * q ^ 2)`. Establish `: (-Real.pi * u) ^ 2 = Real.pi ^ 2 * u ^ 2` using `by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use polynomial arithmetic with `[sq_nonneg Real.pi]`. Establish `hterm : (-Real.pi * u) ^ 2 * Real.exp (Real.pi * |u|) * Real.exp (-Real.pi * q) ≤ 32 * ε ^ 2 * Real.exp (-Real.pi * (1 / 2 * q))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hE0` using `Real.exp_pos (-Real.pi * q)`. Establish `hm` using `mul_le_mul_of_nonneg_left hx hE0.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem up_pt (q u ε : ℝ) (hq : 0 ≤ q) (h0 : 0 ≤ ε) (h4 : ε ≤ 1 / 4) (hu : |u| ≤ ε * q) :
     Real.exp (-Real.pi * (q + u)) ≤ Real.exp (-Real.pi * q) + -Real.pi * (u * Real.exp (-Real.pi * q)) +
@@ -95,9 +95,9 @@ private theorem up_pt (q u ε : ℝ) (hq : 0 ≤ q) (h0 : 0 ≤ ε) (h4 : ε ≤
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `Real.add_one_le_exp (-Real.pi * u - m)`. Establish `hE : Real.exp (-Real.pi * (q + u)) = Real.exp m * Real.exp (-Real.pi * q) * Real.exp (-Real.pi * u - m)`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hE]`. Establish `hp : 0 ≤ Real.exp m * Real.exp (-Real.pi * q)` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem low_pt (q u m : ℝ) :
     Real.exp m * ((1 - m) * Real.exp (-Real.pi * q) + -Real.pi * (u * Real.exp (-Real.pi * q))) ≤
@@ -111,11 +111,11 @@ private theorem low_pt (q u m : ℝ) :
   nlinarith [mul_le_mul_of_nonneg_left h hp]
 
 /- English proof (translation)
-Rewrite using `[Real.norm_eq_abs, abs_mul, abs_of_pos (Real.exp_pos _)]`. Establish `hu4 : |u| ≤ q / 4` using `by nlinarith [mul_nonneg (sub_nonneg.mpr h4) hq]`. Establish `hpi` using `Real.pi_pos`. Establish `h1` using `Real.add_one_le_exp (Real.pi * q / 2)`. Establish `hsplit : Real.exp (-Real.pi * (1 / 2 * q)) = Real.exp (-Real.pi * q) * Real.exp (Real.pi * q / 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Establish `hE` using `Real.exp_pos (-Real.pi * q)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : q / 4 ≤ Real.exp (Real.pi * q / 2)` using `by nlinarith [Real.pi_gt_three]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem sum_pt (q u ε : ℝ) (hq : 0 ≤ q) (h4 : ε ≤ 1 / 4) (hu : |u| ≤ ε * q) :
     ‖u * Real.exp (-Real.pi * q)‖ ≤ Real.exp (-Real.pi * (1 / 2 * q)) := by
@@ -134,25 +134,23 @@ private theorem sum_pt (q u ε : ℝ) (hq : 0 ≤ q) (h4 : ε ≤ 1 / 4) (hu : |
     _ ≤ _ := by rw [mul_comm]; exact mul_le_mul_of_nonneg_left h2 hE.le
 
 /- English proof (translation)
-Introduce `N`. Use `⟨32 * 2 ^ N, by positivity, ?_⟩` and prove the remaining obligations. Introduce `ι _ q u ε hS h0 h4 hu`. Take `⟨hq, hsc⟩` from `hS`. Establish `hsum1` using `(hsc 1 1 one_pos le_rfl).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [one_mul] at hsum1`. Establish `hhalf` using `hsc (1 / 2) 1 (by norm_num) (by norm_num)`. Establish `hsumh : Summable fun i => Real.exp (-Real.pi * (1 / 2 * q i))` using `hhalf.1`. Establish `hSle : ∑' i, Real.exp (-Real.pi * (1 / 2 * q i)) ≤ 2 ^ N * ∑' i, Real.exp (-Real.pi * q i)`. Establish `h` using `hhalf.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (1 : ℝ) / (1 / 2) = 2` using `by norm_num`. Rewrite `h` using `[h2]`. Simplify using `only [one_mul] at h`. Conclude with `h`. Use `set Z := ∑' i, Real.exp (-Real.pi * q i) with hZ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set Z' := ∑' i, Real.exp (-Real.pi * (q i + u i)) with hZ'`. Use `set M := ∑' i, u i * Real.exp (-Real.pi * q i) with hM`. Use `set S := ∑' i, Real.exp (-Real.pi * (1 / 2 * q i)) with hS'`. Take `⟨i0⟩` from `‹Nonempty ι›`. Establish `hZpos : 0 < Z` using `hsum1.tsum_pos (fun i => (Real.exp_pos _).le) i0 (Real.exp_pos _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsumM : Summable fun i => u i * Real.exp (-Real.pi * q i)` using `Summable.of_norm_bounded hsumh (fun i => sum_pt (q i) (u i) ε (hq i) h4 (hu i))`. Establish `hR : HasSum (fun i => Real.exp (-Real.pi * q i) + -Real.pi * (u i * Real.exp (-Real.pi * q i)) + 32 * ε ^ 2 * Real.exp (-Real.pi * (1 / 2 * q i))) (Z + -Real.pi * M + 32 * ε ^ 2 * S)` using `(hsum1.hasSum.add (hsumM.hasSum.mul_left _)).add (hsumh.hasSum.mul_left _)`. Establish `hsum' : Summable fun i => Real.exp (-Real.pi * (q i + u i))` using `Summable.of_nonneg_of_le (fun i => (Real.exp_pos _).le) (fun i => up_pt (q i) (u i) ε (hq i) h0 h4 (hu i)) hR.summable`. Establish `hup : Z' ≤ Z + -Real.pi * M + 32 * ε ^ 2 * S`. Rewrite using `[← hR.tsum_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Summable.tsum_le_tsum (fun i => up_pt (q i) (u i) ε (hq i) h0 h4 (hu i)) hsum' hR.summable`. Use `set m := -Real.pi * M / Z with hm`. Establish `hmZ : m * Z = -Real.pi * M` using `by rw [hm]; exact div_mul_cancel₀ _ hZpos.ne'`. Establish `hlow : Real.exp m * Z ≤ Z'`. Establish `hL : HasSum (fun i => Real.exp m * ((1 - m) * Real.exp (-Real.pi * q i) + -Real.pi * (u i * Real.exp (-Real.pi * q i)))) (Real.exp m * ((1 - m) * Z + -Real.pi * M))` using `((hsum1.hasSum.mul_left (1 - m)).add (hsumM.hasSum.mul_left (-Real.pi))).mul_left (Real.exp m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : (1 - m) * Z + -Real.pi * M = Z` using `by linear_combination (-1 : ℝ) * hmZ`. Rewrite using `[← e, ← hL.tsum_eq]`. Conclude with `Summable.tsum_le_tsum (fun i => low_pt (q i) (u i) m) hL.summable hsum'`. Establish `hZ'pos : 0 < Z'` using `lt_of_lt_of_le (by positivity) hlow`. Establish `hLo : m ≤ Real.log Z' - Real.log Z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Real.log_le_log (by positivity) hlow` as an intermediate fact. Rewrite `this` using `[Real.log_mul (Real.exp_pos m).ne' hZpos.ne', Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hUp : Real.log Z' - Real.log Z ≤ m + 32 * 2 ^ N * ε ^ 2`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos hZ'pos hZpos)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Real.log_div hZ'pos.ne' hZpos.ne']`. Establish `h2 : Z' / Z - 1 ≤ m + 32 * 2 ^ N * ε ^ 2`. Rewrite using `[div_sub_one hZpos.ne', div_le_iff₀ hZpos]`. Establish `h3` using `mul_le_mul_of_nonneg_left hSle (by positivity : (0 : ℝ) ≤ 32 * ε ^ 2)`. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexpr : Real.pi * (M / Z) = -m` using `by rw [hm]; ring`. Rewrite using `[hexpr, abs_le]`. Establish `hK : (0 : ℝ) ≤ 32 * 2 ^ N * ε ^ 2` using `by positivity`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.two_sided_bound_of_pointwise_bounds :
     LogTaylor := by

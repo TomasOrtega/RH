@@ -29,7 +29,7 @@ variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word)
 variable {W}
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DefiniteMult.topMult_and_extV_injective D _ _ _ _ _ (_root_.GlobalTheory.Fam.pk_z W) _ W.Q.charW.base).1`.
+A detailed English derivation is pending.
 -/
 theorem rec_tie_mult_h_pk_z : Formalism.IndefR.RecTie.TopMultH (_root_.GlobalTheory.Fam.pk_z W) :=
   (GlobalTheory.DefiniteMult.topMult_and_extV_injective D _ _ _ _ _ (_root_.GlobalTheory.Fam.pk_z W) _ W.Q.charW.base).1

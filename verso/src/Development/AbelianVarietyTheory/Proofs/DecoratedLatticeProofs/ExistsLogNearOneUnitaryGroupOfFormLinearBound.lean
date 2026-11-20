@@ -6,7 +6,7 @@ namespace GlobalTheory.UnitaryLog
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h : ‖X i j‖₊ ≤ ‖X‖₊`. Rewrite using `[Matrix.linfty_opNNNorm_def]`. Conclude with `(Finset.single_le_sum (f := fun j => ‖X i j‖₊) (fun _ _ => bot_le) (Finset.mem_univ j)).trans (Finset.le_sup (f := fun i => ∑ j, ‖X i j‖₊) (Finset.mem_univ i))`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_le_linfty {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖X i j‖ ≤ ‖X‖ := by
   have h : ‖X i j‖₊ ≤ ‖X‖₊ := by
@@ -16,9 +16,9 @@ theorem entry_le_linfty {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n)
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h' : ‖M‖₊ ≤ (n : NNReal) * δ.toNNReal`. Rewrite using `[Matrix.linfty_opNNNorm_def]`. Use `Finset.sup_le fun i _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, Real.coe_toNNReal _ hδ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i j`. Use `_ = (n : NNReal) * δ.toNNReal := by simp`. Use `NNReal.coe_le_coe.2 h'` as an intermediate fact. Simplify `this` using `[Real.coe_toNNReal _ hδ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem linfty_le_of_entries {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {δ : ℝ} (hδ : 0 ≤ δ)
     (h : ∀ i j, ‖M i j‖ ≤ δ) : ‖M‖ ≤ n * δ := by
@@ -33,7 +33,7 @@ theorem linfty_le_of_entries {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) {δ : �
   simpa [Real.coe_toNNReal _ hδ] using this
 
 /- English proof (translation)
-Rewrite using `[Matrix.exp_neg, Matrix.exp_units_conj', Matrix.exp_conjTranspose, hX]`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc uᴴ, hu, Units.inv_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_conj_neg_eq {n : ℕ} (U : (Matrix (Fin n) (Fin n) ℂ)ˣ) (X u : Matrix (Fin n) (Fin n) ℂ)
     (hX : NormedSpace.exp X = u) (hu : uᴴ * (U : Matrix (Fin n) (Fin n) ℂ) * u = U) :
@@ -44,7 +44,7 @@ theorem exp_conj_neg_eq {n : ℕ} (U : (Matrix (Fin n) (Fin n) ℂ)ˣ) (X u : Ma
   rw [mul_assoc, mul_assoc, ← mul_assoc uᴴ, hu, Units.inv_mul]
 
 /- English proof (translation)
-Establish `e : (U : Matrix (Fin n) (Fin n) ℂ) * X = -(Xᴴ * (U : Matrix (Fin n) (Fin n) ℂ))` using `by conv_lhs => rw [h]`. Rewrite using `[mul_neg, mul_assoc (((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)), Units.mul_inv_cancel_left]`. Rewrite using `[e, add_neg_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_of_fixed {n : ℕ} (U : (Matrix (Fin n) (Fin n) ℂ)ˣ) (X : Matrix (Fin n) (Fin n) ℂ)
     (h : X = -(((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * Xᴴ *
@@ -58,11 +58,11 @@ theorem lie_of_fixed {n : ℕ} (U : (Matrix (Fin n) (Fin n) ℂ)ˣ) (X : Matrix 
 open Matrix Filter Topology in
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: A = 0` using `Subsingleton.elim _ _`. Simplify using `[this]`. Establish `hδ : 0 ≤ δ` using `(norm_nonneg _).trans (h ⟨0, hn⟩ ⟨0, hn⟩)`. Use `lift δ to NNReal using hδ`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[linfty_opNorm_def]`. Establish `key : (Finset.univ.sup fun i => ∑ j, ‖A i j‖₊) ≤ n • δ`. Use `Finset.sup_le fun i _ => ?_` and prove the remaining obligations. Use `Finset.sum_le_card_nsmul Finset.univ (fun j => ‖A i j‖₊) δ (fun j _ => by exact_mod_cast h i j)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(NNReal.coe_le_coe.2 key)` as an intermediate fact. Simplify `this` using `[nsmul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma linftyOp_norm_le_mul_of_entry_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (δ : ℝ)
     (h : ∀ i j, ‖A i j‖ ≤ δ) : ‖A‖ ≤ n * δ := by
@@ -83,7 +83,7 @@ private lemma linftyOp_norm_le_mul_of_entry_le {n : ℕ} (A : Matrix (Fin n) (Fi
 open Matrix Filter Topology in
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 /- English proof (translation)
-Rewrite using `[linfty_opNorm_def]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.single_le_sum (f := fun k => ‖A i k‖₊) (fun _ _ => by positivity) (Finset.mem_univ j)` after adjusting the coercions. Use `_ ≤ _ := by`. Conclude with `Finset.le_sup (f := fun i => ∑ k, ‖A i k‖₊) (Finset.mem_univ i)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma norm_entry_le_linftyOp_norm {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     ‖A i j‖ ≤ ‖A‖ := by
@@ -99,25 +99,23 @@ open Matrix Filter Topology in
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Establish `hf : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _) ((ContinuousLinearEquiv.refl ℂ (Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℂ] _)) 0` using `hasStrictFDerivAt_exp_zero`. Use `set L := hf.localInverse _ _ _ with hL`. Use `set φ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ := fun X => G⁻¹ * Xᴴ * G with hφ`. Establish `hφc : Continuous φ` using `(continuous_const.mul continuous_id.matrix_conjTranspose).mul continuous_const`. Establish `hφ0 : Tendsto φ (𝓝 0) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hφc.tendsto 0` using `[φ]`. Establish `hleft : ∀ᶠ X in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), L (NormedSpace.exp X) = X` using `hf.eventually_left_inverse`. Establish `hP : ∀ᶠ X in 𝓝 (0 : Matrix (Fin n) (Fin n) ℂ), L (NormedSpace.exp X) = X ∧ L (NormedSpace.exp (φ X)) = φ X ∧ L (NormedSpace.exp (-X)) = -X` using `hleft.and ((hφ0.eventually hleft).and ((continuous_neg.tendsto' (0 : Matrix (Fin n) (Fin n) ℂ) 0 neg_zero).eventually hleft))`. Take `⟨K, s, hs, hK⟩` from `hf.to_localInverse.exists_lipschitzOnWith`. Establish `hQ` using `hf.eventually_right_inverse.and ((hf.localInverse_tendsto.eventually hP).and hs)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : L (NormedSpace.exp 0) = 0` using `hf.localInverse_apply_image`. Establish `hs1 : NormedSpace.exp (0 : Matrix (Fin n) (Fin n) ℂ) ∈ s` using `mem_of_mem_nhds hs`. Rewrite `hQ`, `hL1`, `hs1` using `[NormedSpace.exp_zero]`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.1 hQ`. Establish `hpos : (0 : ℝ) < 2 * ((n : ℝ) + 1)` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ε / (2 * ((n : ℝ) + 1)), K * n, by positivity, ?_⟩` and prove the remaining obligations. Introduce `u δ hu hδ hentry`. Establish `hnorm : ‖u - 1‖ ≤ n * δ` using `linftyOp_norm_le_mul_of_entry_le _ δ hentry`. Establish `hsmall : (n : ℝ) * (ε / (2 * ((n : ℝ) + 1))) < ε`. Rewrite using `[← mul_div_assoc, div_lt_iff₀ hpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hdist : dist u 1 < ε`. Rewrite using `[dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hexp, ⟨hX, hXφ, hXneg⟩, hus⟩` from `hball hdist`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L u, ?_, hexp, ?_⟩` and prove the remaining obligations. Establish `hGu : IsUnit G` using `(Matrix.isUnit_iff_isUnit_det G).2 hG`. Establish `hinv : u⁻¹ = G⁻¹ * uᴴ * G`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `hu'` using `hu`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc] at hu' ⊢`. Rewrite using `[hu', Matrix.nonsing_inv_mul G hG]`. Establish `hexpφ : NormedSpace.exp (φ (L u)) = NormedSpace.exp (-L u)`. Rewrite using `[Matrix.exp_neg, hexp, hinv]`. Simplify using `only [φ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.exp_conj' G _ hGu, Matrix.exp_conjTranspose, hexp]`. Establish `heq : φ (L u) = -L u`. Rewrite using `[← hXφ, ← hXneg, hexpφ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [φ]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv G hG, Matrix.one_mul]`. Use `_ = 0 := by rw [heq, Matrix.mul_neg, neg_add_cancel]`. Introduce `i j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dist_eq_norm]`.
-
-Conclude with `mul_le_mul_of_nonneg_left hnorm K.coe_nonneg`. Use `_ = K * n * δ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnitaryLog.exists_log_unitary (n : ℕ)
     (G : Matrix (Fin n) (Fin n) ℂ) (hG : IsUnit G.det) :

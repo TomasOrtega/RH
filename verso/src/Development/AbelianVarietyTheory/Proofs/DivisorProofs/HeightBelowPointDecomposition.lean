@@ -21,9 +21,9 @@ variable {F : Type} [Field F] [NumberField F] {Y : Var F} {K : Type} [Field K] [
 include hp in
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Establish `: IsScalarTower ℚ F K` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `: Module.Finite F K` using `Module.Finite.of_restrictScalars_finite ℚ F K`. Establish `: IsFinite (p ≫ Y.str)`. Rewrite using `[hp]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsFinite.SpecMap_iff _).2 this`. Conclude with `IsFinite.of_comp p Y.str`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_pt : IsFinite p := by
   letI := φ.toAlgebra
@@ -35,11 +35,11 @@ theorem isFinite_pt : IsFinite p := by
   exact IsFinite.of_comp p Y.str
 
 /- English proof (translation)
-Use `isFinite_pt p hp` as an intermediate fact. Establish `hw : IsClosed ({IsLocalRing.closedPoint K} : Set (Sp K))` using `IsLocalRing.isClosed_singleton_closedPoint K`. Rewrite using `[← finsum_subtype_eq_finsum_cond, ← finsum_eq_sum_of_fintype]`. Use `Eq.trans ?_ (CoverHt.finsum_lifts σ p Y.str (IsLocalRing.closedPoint K) hw f)` and prove the remaining obligations. Use `finsum_eq_of_bijective (fun θ => ⟨⟨spMap θ.1, by` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp, ← Spec.map_comp]`. Conclude with `congrArg spMap θ.2⟩, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩)`. Use the proof step `⟨fun a b h => ?_, ?_⟩ fun _ => rfl`. Establish `h1 : spMap a.1 = spMap b.1` using `congrArg (fun t => t.1.1) h`. Conclude with `Subtype.ext (congrArg CommRingCat.Hom.hom (Spec.map_injective h1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨z, hz⟩, hz'⟩`. Take `⟨χ, rfl⟩` from `Spec.map_surjective z`. Establish `h2 : Spec.map (CommRingCat.ofHom φ ≫ χ) = spMap σ`. Rewrite using `[Spec.map_comp, ← hz, hp]`. Conclude with `⟨⟨χ.hom, congrArg CommRingCat.Hom.hom (Spec.map_injective h2)⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_over {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (σ : F →+* Ω)
     [Fintype {θ : K →+* Ω // θ.comp φ = σ}] (f : {y : Sp Ω ⟶ Y.X // y ≫ Y.str = spMap σ} → ℝ) :
@@ -65,15 +65,13 @@ theorem sum_over {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (σ : F �
 include hp in
 
 /- English proof (translation)
-Use `isFinite_pt p hp` as an intermediate fact. Establish `hw : IsClosed ({IsLocalRing.closedPoint K} : Set (Sp K))` using `IsLocalRing.isClosed_singleton_closedPoint K`. Establish `hx : IsClosed ({below p} : Set Y.X)`. Use `p.isClosedMap _ hw` as an intermediate fact. Conclude with `(Set.image_singleton (f := p) (a := (IsLocalRing.closedPoint K : Sp K))) ▸ this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `sum_over p hp (algebraMap F (AlgebraicClosure F)) fun _ => 1`. Take `⟨_, _⟩` from `ExtConj.pts Y _ hx`. Establish `e (α : Type) [Finite α] : ∑ᶠ _ : α, (1 : ℝ) = Nat.card α`. Use `Fintype.ofFinite α` as an intermediate fact. Simplify using `[finsum_eq_sum_of_fintype]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← finsum_subtype_eq_finsum_cond]`. Establish `h'` using `h.trans (congrArg _ (e {y : AlgPt Y // below y.1 = below p}))`. Rewrite using `[← h']`. Use `letI := φ.toAlgebra`. Establish `: IsScalarTower ℚ F K` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite F K` using `Module.Finite.of_restrictScalars_finite ℚ F K`. Establish `hc : Fintype.card {θ : K →+* AlgebraicClosure F // θ.comp φ = algebraMap F (AlgebraicClosure F)} = Module.finrank F K`. Rewrite using `[← AlgHom.card F K (AlgebraicClosure F)]`. Conclude with `Fintype.card_congr ⟨fun θ => ⟨θ.1, fun a => RingHom.congr_fun θ.2 a⟩, fun a => ⟨a.toRingHom, a.comp_algebraMap⟩, fun _ => rfl, fun _ => rfl⟩`. Rewrite using `[Finset.sum_const, Finset.card_univ, hc, ← Module.finrank_mul_finrank ℚ F K]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_eq : (Module.finrank ℚ K : ℝ) = Module.finrank ℚ F *
     (p.residueDegree (IsLocalRing.closedPoint K) * Nat.card {y : AlgPt Y // below y.1 = below p}) := by
@@ -103,13 +101,13 @@ theorem finrank_eq : (Module.finrank ℚ K : ℝ) = Module.finrank ℚ F *
   simp
 
 /- English proof (translation)
-Introduce `F _ _ C Y A K _ _ φ p hp`. Use `set d : ℝ := ((p.residueDegree (IsLocalRing.closedPoint K) : ℕ) : ℝ) with hd`. Establish `h₁ : ∑ σ : K →+* ℂ, (Real.log (C.pn Y (σ.comp φ) A.D (A.m _) (C.cx Y _ ((eqn A.D (below p))⁻¹ : Y.Fnˣ)) (cxPtOf p hp σ)) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk (σ.comp φ))) = d * ∑ σ : F →+* ℂ, ∑ᶠ (z : Pts Y σ) (_ : Cartier.under z = below p), (Real.log (C.pn Y σ A.D (A.m σ) (C …`. Rewrite using `[Finset.mul_sum, ← Fintype.sum_fiberwise (fun σ : K →+* ℂ => σ.comp φ)]`. Use `Finset.sum_congr rfl fun σ _ => Eq.trans ?_ (sum_over p hp σ fun z : Pts Y σ => Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D (below p))⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨θ, rfl⟩ _`. Both sides reduce to the same expression. Establish `h₂ : ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, A.lg v (extOf v) (algPtOf p hp θ) = d * ∑ᶠ v : HeightOneSpectrum (𝓞 F), if h : Nonempty (TrueGeo.Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = below p), A.lg v h.some y else 0`. Rewrite using `[mul_finsum]`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (inferInstance : Nonempty (TrueGeo.Ext v))]`. Conclude with `@sum_over F _ _ Y K _ _ φ p hp _ _ _ _ (algebraMap F (AlgebraicClosure F)) (inferInstanceAs (Fintype (EmbOver φ))) (A.lg v (extOf v))`. Establish `h₃` using `finrank_eq p hp`. Establish `hK : (Module.finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd0 : d ≠ 0` using `left_ne_zero_of_mul (right_ne_zero_of_mul (h₃ ▸ hK))`. Rewrite using `[h₁, h₂, h₃, Adl.ht, ← mul_add, ← mul_neg, ← hd]`. Rewrite using `[show ∀ a b c : ℝ, a * (b * (d * c)) = d * (a * b * c) from fun a b c => by ring, mul_div_mul_left _ _ hd0]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} (A : Adl C Y) {K : Type} [Field K] [NumberField K] (φ : F →+* K) (p : Sp K ⟶ Y.X) (hp : p ≫ Y.str = spMap φ), A.ht (below p) = -((∑ σ : K →+* ℂ, (Real.log (C.pn Y (σ.comp φ) A.D (A.m _) (C.cx Y _ ((eqn A.D (below p))⁻¹ : Y.Fnˣ)) (cxPtOf p hp σ)) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk (σ.comp φ)))) + ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, A.lg v (extOf v) (algPtOf p hp θ)) / (((A.n : ℕ) : ℝ) * (Module.finrank ℚ K : ℝ)) := by
   intro F _ _ C Y A K _ _ φ p hp

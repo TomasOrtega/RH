@@ -15,11 +15,11 @@ open GlobalTheory.SplitWeil
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Establish `hE` using `GlobalTheory.ConjParahoric.isEquiv_of_continuous i hi`. Establish `hle : ∀ x, ValuativeRel.valuation (s.w.adicCompletion L) x ≤ 1 → Valued.v (i.symm x) ≤ 1` using `fun x hx => (Valuation.isEquiv_iff_val_le_one.1 hE).2 hx`. Take `⟨u, rfl⟩` from `hy`. Use `set M := Matrix.GeneralLinearGroup.map i.symm.toRingHom (Matrix.GeneralLinearGroup.map (algebraMap _ (s.w.adicCompletion L)) u) with hM`. Take `⟨κ, hκ, hloc⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s M`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ, GlobalTheory.HeckeStdFacts.mem_Umax_of_loc s κ hκ ?_ ?_, hκ, ?_⟩` and prove the remaining obligations. Introduce `a b`. Rewrite using `[hloc]`. Conclude with `hle _ (u.val a b).2`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, hloc, hM, ← map_inv, ← map_inv]`. Conclude with `hle _ ((u⁻¹).val a b).2`. Rewrite using `[hloc, hM]`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift {n : ℕ} (s : SplitPlace L)
     (i : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L) (hi : Continuous i)
@@ -45,27 +45,23 @@ theorem exists_lift {n : ℕ} (s : SplitPlace L)
     simp
 
 /- English proof (translation)
-Set `H : Subgroup (GL (Fin n) (s.w.adicCompletion L))` to `{ carrier := {g | ∀ j, σ.ρ g (u j) = u j} mul_mem' := fun {a b} ha hb j => by`. Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb j, ha j]`. Use the proof step `one_mem' := fun j => by simp`. Use the proof step `inv_mem' := fun {a} ha j => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_ofPred_eq] at ha ⊢`. Use `conv_lhs => rw [← ha j]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hHo : IsOpen (H : Set (GL (Fin n) (s.w.adicCompletion L)))`. Establish `: (H : Set (GL (Fin n) (s.w.adicCompletion L))) = ⋂ j, {g | σ.ρ g (u j) = u j}`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `g`. Simplify using `[H]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun j => σ.smooth (u j)`. Use `set K := KO (s.w.adicCompletion L) (Fin n) with hK`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp GlobalTheory.SplitFlip.isCompact_KO`. Use `haveI : Finite (K ⧸ H.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ (hHo.preimage continuous_subtype_val)`. Use `letI : Fintype (K ⧸ H.subgroupOf K) := Fintype.ofFinite _`. Use `set N : ℂ := (Fintype.card (K ⧸ H.subgroupOf K) : ℂ) with hNdef`. Establish `hN : N ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e : ι → σ.V` to `fun j => N⁻¹ • ∑ q : K ⧸ H.subgroupOf K, σ.ρ ((q.out : K) : GL (Fin n) _) (u j)`. Use `⟨e, fun j => ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Simplify using `only [e, map_smul, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Establish `hstep : ∀ q : K ⧸ H.subgroupOf K, σ.ρ (k : GL (Fin n) _) (σ.ρ ((q.out : K) : GL (Fin n) _) (u j)) = σ.ρ (((k • q).out : K) : GL (Fin n) _) (u j)`. Introduce `q`. Establish `hq : (QuotientGroup.mk ((k • q).out) : K ⧸ H.subgroupOf K) = QuotientGroup.mk (k * q.out)`. Rewrite using `[QuotientGroup.out_eq']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `hmem` using `QuotientGroup.eq.1 hq`. Rewrite `hmem` using `[Subgroup.mem_subgroupOf]`. Establish `h1 : ((k * q.out : K) : GL (Fin n) (s.w.adicCompletion L)) = (((k • q).out : K) : GL (Fin n) (s.w.adicCompletion L)) * ((((k • q).out)⁻¹ * (k * q.out) : K) : GL (Fin n) (s.w.adicCompletion L))`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel_left]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Express the relevant statement in the definitionally equal form `σ.ρ ((k * q.out : K) : GL (Fin n) _) (u j) = _`. Rewrite using `[h1, map_mul, Module.End.mul_apply, hmem j]`. Repeatedly rewrite using `[hstep]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Equiv.sum_comp (MulAction.toPerm k) (fun (q : K ⧸ H.subgroupOf K) => σ.ρ ((q.out : K) : GL (Fin n) (s.w.adicCompletion L)) (u j))`. Use `choose κ hκU hκT hκ using fun (q : K ⧸ H.subgroupOf K) => exists_lift s i hi ((q.out : K) : GL (Fin n) _) q.out.2`. Establish `key : ∀ q : K ⧸ H.subgroupOf K, ∑ j, T j (σ.ρ ((q.out : K) : GL (Fin n) _) (u j)) = f`. Introduce `q`. Rewrite using `[← hκ q]`.
-
-Repeatedly rewrite using `[hT _ (κ q) (hκT q)]`. Rewrite using `[← map_sum, ← hf, hfix _ (hκU q) (hκT q)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← hNdef, inv_mul_cancel₀ hN, one_smul]`. Use `_ = N⁻¹ • ∑ q : K ⧸ H.subgroupOf K, ∑ j, T j (σ.ρ ((q.out : K) : GL (Fin n) _) (u j)) := by`.
-
-Repeatedly rewrite using `[key]`. Use `_ = ∑ j, T j (e j) := by`. Simplify using `only [e, map_smul, map_sum, ← Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_of_sum {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (s : SplitPlace L)
     (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L)))
@@ -142,9 +138,9 @@ end GlobalTheory.SphAvg
 namespace GlobalTheory.SphAvg
 
 /- English proof (translation)
-Introduce `L _ _ _ n π s σ i hi _ f hf hfix`. Take `⟨c, hc, hcf⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ f).1 hf`. Use `choose u hu using hc`. Establish `hsum : f = ∑ t : c.support, t.1.1 (u t.1)`. Rewrite using `[← hcf, Finsupp.sum, ← Finset.sum_coe_sort]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_congr rfl fun t _ => (hu t.1).symm`. Take `⟨e, he, hfe⟩` from `exists_fixed_of_sum s σ i hi (ι := c.support) (fun t => t.1.1) (fun t => t.1.2.2) (fun t => u t.1) f hsum hfix`. Use `⟨c.support.card, fun j => (c.support.equivFin.symm j).1.1, fun j => e (c.support.equivFin.symm j), fun j => (c.support.equivFin.symm j).1.2.2, fun j => he _, ?_⟩` and prove the remaining obligations. Rewrite using `[hfe]`. Conclude with `(Equiv.sum_comp c.support.equivFin.symm (fun t => t.1.1 (e t))).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_fixed : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.AutRep L n) (s : SplitPlace L)
     (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L)))

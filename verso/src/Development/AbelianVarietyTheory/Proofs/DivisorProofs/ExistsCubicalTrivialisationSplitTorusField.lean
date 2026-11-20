@@ -17,13 +17,13 @@ namespace GlobalTheory.Mum.TorusCubTriv
 open GlobalTheory GlobalTheory.UU GlobalTheory.EvenGenTorus TorusCube
 
 /- English proof (translation)
-Introduce `k _ hk G₀ _ _ X _ _ _ P₀ i hi`. Use `letI := hk.toField`. Use `haveI := hi`. Use `haveI : IsAffine (splitTorus (Sp k) X).left := isAffine_of_isAffineHom (splitTorus (Sp k) X).hom`. Use `haveI := GlobalTheory.SS.LiftTorus.subsingleton_pic_torus k X`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ, hτ⟩` from `GlobalTheory.LB.exists_isGen_of_subsingleton_pic_top (ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_linComb P₀.L.isLB (K := PUnit) (fun _ => i.left) (fun _ => 1))`. Establish `e1 : (1 : splitTorus (Sp k) X ⟶ splitTorus (Sp k) X).left ≫ i.left = (1 : splitTorus (Sp k) X ⟶ G₀).left`. Rewrite using `[← Over.comp_left, MonObj.one_comp]`. Take `⟨σ, hσ, vσ⟩` from `exists_gen (φ' := ![i.left, (1 : splitTorus (Sp k) X ⟶ G₀).left]) (ε' := ![1, -1]) P₀.L.isLB (fun U _ h => (Fintype.prod_sum_type _).trans (by simp [Fin.prod_univ_two, e1])) (LB.mulGen _ _ _ _ _ τ (LB.invGen _ _ _ (LB.pullGen P₀.L.L (fun _ : PUnit => i.left) (fun _ => 1) τ (1 : s …`. Establish `v : ∀ (T : Over (Sp k)) (x : T ⟶ splitTorus (Sp k) X) (z : T.left) (J), Good P₀.L.L z J → val σ x.left z J = val τ x.left z J * (val τ (1 : T ⟶ splitTorus (Sp k) X).left z J)⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T x z J hJ`. Rewrite using `[vσ _ _ z J hJ, val_mul hJ, val_inv, val_pull hJ, ← Over.comp_left, MonObj.comp_one]`. Use `⟨⟨σ, hσ, fun T x y u z J hJ => ?_⟩⟩` and prove the remaining obligations. Establish `a` using `cube k X G₀ i P₀.L P₀.c τ hτ T x y u z J hJ`. Simplify using `only [v T _ z J hJ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a'` using `congrArg Additive.ofMul a`. Simplify using `only [ofMul_mul, ofMul_inv] at a' ⊢`. Take the linear combination `(norm := abel) a'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_cubTriv : ∀ (k : Type) [CommRing k], IsField k → ∀ (G₀ : Over (Sp k)) [GrpObj G₀] [IsCommMonObj G₀] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (P₀ : GlobalTheory.UU.CP G₀) (i : splitTorus (Sp k) X ⟶ G₀), IsMonHom i → Nonempty (GlobalTheory.UU.CubTriv P₀.c i) := by
   intro k _ hk G₀ _ _ X _ _ _ P₀ i hi

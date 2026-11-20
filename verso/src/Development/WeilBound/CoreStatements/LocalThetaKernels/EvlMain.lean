@@ -14,22 +14,22 @@ open PositivityTheory.ThK
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.VacAny.continuous_psiV h.1 v, fun _ => GlobalTheory.StdCharFromIsStd.norm_psi h _, GlobalTheory.PsiNontriv.psiAt_ne_one ψ h v⟩`.
+Supply the required witnesses or components.
 -/
 theorem psiAt_good {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (v : Pl F) :
     Continuous (psiAt ψ v) ∧ (∀ x, ‖psiAt ψ v x‖ = 1) ∧ psiAt ψ v ≠ 1 :=
   ⟨GlobalTheory.VacAny.continuous_psiV h.1 v, fun _ => GlobalTheory.StdCharFromIsStd.norm_psi h _, GlobalTheory.PsiNontriv.psiAt_ne_one ψ h v⟩
 
 /- English proof (translation)
-Introduce and unpack `F E _ _ _ _ _ σ n d B X W M om hP v ⟨w₀, hw₀⟩ m Cy hL ⟨Cx, hLx, hsp⟩`. Take `⟨hc, hn, h1⟩` from `psiAt_good hP.base.std v`. Take `⟨r, s, hX⟩` from `hP.herm`. Take `⟨r', s', hW⟩` from `hP.skew`. Take `⟨l, ⟨φ, hφ, hlφ⟩, hl⟩` from `GlobalTheory.CompanionTheory.LagFun.exists_invariant_form (Fv F v) (Fin n × Fin d) (psiAt B.ψ v) hc h1 (lagr M v Cy) (lagr_iso M hL)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨l, (isEvAt_iff M hL B.ψ l).2 hl, fun h0 => hlφ ?_⟩` and prove the remaining obligations. Take `⟨hS, hne, θ, -, hvac⟩` from `hP.good.vac v`. Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`. Use `core hc hn h1 hS hne (lagr M v Cy) l hl (fun w => ?_) h0 φ hφ` and prove the remaining obligations. Take `⟨u, rfl⟩` from `exists_locCo M.co w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, z', e⟩` from `space_split hX.lat hW.lat hsp u`. Use `⟨_, ⟨z, rfl⟩, locCo M.co v (z' * Cxᵀ), by rw [e, map_add], ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z' * Cxᵀ ∈ latAtV X W v`. Conclude with `Or.inl ⟨_, ((acts_iff M.co B.ψ (hat _ hz) hS).1 (hvac _ hz)).symm⟩`. Use `right`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `hz (mem_latAtV_of_dual hP.base hX hW (hP.base.inert v w₀ hw₀).2.2 (at_mul hLx.supp z') fun γ hγ => ?_)` and prove the remaining obligations. Take `⟨y, y', hy, rfl⟩` from `lat_split hsp hγ`. Rewrite using `[GlobalTheory.LatVacArith.symp_add_left, symp_lag hLx, add_zero, psi_form M.co B.ψ (hat _ hy)]`. Assume the negation of the conclusion as `hne'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hcon ⟨_, ⟨y, rfl⟩, ?_, hne'⟩` and prove the remaining obligations. Establish `h` using `(acts_iff M.co B.ψ (hat _ hy) hS).1 (hvac _ hy)`. Rewrite `h` using `[symp_lag hL, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evVac : PositivityTheory.ThK.EvVac := by
   rintro F E _ _ _ _ _ σ n d B X W M om hP v ⟨w₀, hw₀⟩ m Cy hL ⟨Cx, hLx, hsp⟩

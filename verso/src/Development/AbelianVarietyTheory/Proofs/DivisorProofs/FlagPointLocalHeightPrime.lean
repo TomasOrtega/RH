@@ -21,22 +21,20 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sp_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Take `rfl : φ₁ = φ₂` from `RingHom.ext fun a => hι ((RingHom.congr_fun h₁.2.1 a).symm.trans (RingHom.congr_fun h₂.2.1 a))`. Take `⟨k₁, hk₁⟩` from `f₁.exists_isMap _ h₁.2.1 h₁.1`. Take `⟨k₂, hk₂⟩` from `f₂.exists_isMap _ h₁.2.1 h₁.1`. Take `⟨q₁, hq₁⟩` from `f₁.exists_isMap _ b.2.1 b.1`. Take `⟨q₂, hq₂⟩` from `f₂.exists_isMap _ b.2.1 b.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 (τ i d) : k₂.co f₀ τ d i = ∑ j, k₁.co f₀ τ j i * ι (f₂.co f₁ τ d j)`. Rewrite using `[← k₂.co_mul k₁, hk₂.co τ hk₁ h₁.1, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hM (τ d i) (h : i < d) : f₂.co f₁ τ d i = 0` using `hι ((tri_of_mul (M := fun i a => ι (f₂.co f₁ τ a i)) (fun i a => (h₂.co τ hk₂).1 a i) (fun i a' => (h₁.co τ hk₁).1 a' i) (fun i => (h₁.co τ hk₁).2 i ▸ (t₁ τ i).ne_zero) (e1 τ) i d h).trans (map_zero _).symm)`. Establish `hT (τ) (a i) (h : i < a) : q₂.co g τ a i = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← q₂.co_mul q₁, hq₂.co τ hq₁ b.1, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `lt_or_ge j a with hj | hj` into its components or cases. Rewrite using `[Matrix.map_apply, hM τ a j hj, map_zero, zero_mul]`. Rewrite using `[(b.co τ hq₁).1 j i (h.trans_le hj), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu (τ i) : q₂.co g τ i i ≠ 0`. Use `q₂.isUnit_det_co g τ` as an intermediate fact. Rewrite `this` using `[Matrix.det_of_upperTriangular (M := q₂.co g τ) fun _ _ h => hT τ _ _ h]`. Conclude with `Finset.prod_ne_zero_iff.1 this.ne_zero i (Finset.mem_univ i)`. Use `⟨fun τ i => Units.mk0 _ (hu τ i), b.1, b.2.1, fun τ i => ⟨fun a => q₂.co g τ a i, rfl, fun a ha => hT τ a i ha, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[← funext (hq₂ τ)]`. Conclude with `q₂.co_spec g τ i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tri_swap {R : Type} [CommRing R]
     {φ₁ φ₂ : c.F →+* R} {x : Sp R ⟶ Z.X}
@@ -72,11 +70,11 @@ private theorem tri_swap {R : Type} [CommRing R]
   exact q₂.co_spec g τ i
 
 /- English proof (translation)
-Break down `st with ⟨τ, k⟩ | k` into its components or cases. Distinguish the cases in `hk : k < Dw.mult τ`. Simplify using `only [letterOf, stepNorm, dif_pos hk, Option.elim]`. Rewrite using `[grNorm_tri (f.tan τ) (d := fun i => d ⟨τ, i⟩) (fun i => hd _) (h τ)]`. Simplify using `[letterOf, stepNorm, hk]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : k < (letters Dw).length`. Take `⟨i1, c1⟩` from `GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c Z.X Z.t C φ x f.v ⟨fun τ i => ⟨f.tan τ i, f.eig τ i⟩, f.basis⟩`. Establish `e : letterOf Dw (.inr k) = some ((letters Dw).get ⟨k, hk⟩)` using `List.getElem?_eq_getElem hk`. Simplify using `only [e, stepNorm, dif_pos hk, Option.elim]`. Rewrite using `[grNorm_tri (u := fun i => f.v ((letters Dw).get i).1 ((letters Dw).get i).2) (fun i => f.tan _ _) (d := fun i => d ((letters Dw).get i)) (fun i => hd _) (fun j => by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨cf, e1, e2, e3⟩` from `h ((letters Dw).get j).1 ((letters Dw).get j).2`. Take `⟨cg, a1, a2, a3⟩` from `c1 j cf _ e2 e3`. Conclude with `⟨cg, a2.trans e1, a1, a3⟩)]`. Establish `e : letterOf Dw (.inr k) = none` using `List.getElem?_eq_none (not_lt.1 hk)`. Simplify using `[e, stepNorm, hk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem stepNorm_change {C : Type} [NontriviallyNormedField C]
     [IsUltrametricDist C] {φ : c.F →+* C} {x : Sp C ⟶ Z.X} (f g : EigFrame Z φ x)
@@ -103,7 +101,7 @@ private theorem stepNorm_change {C : Type} [NontriviallyNormedField C]
       simp [e, stepNorm, hk]
 
 /- English proof (translation)
-Rewrite `hA`, the goal using `[h]`. Rewrite using `[Real.log_mul (left_ne_zero_of_mul hA) (right_ne_zero_of_mul hA)]`. Apply the tactic sequence `cases o <;> simp`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem log_change {A B : ℝ} {o : Option (Pad.Letter Dw)} {N : Pad.Letter Dw → ℝ}
     (h : A = o.elim 1 N * B) (hA : A ≠ 0) : Real.log A = o.elim 0 (fun z => Real.log (N z)) + Real.log B := by
@@ -112,9 +110,9 @@ private theorem log_change {A B : ℝ} {o : Option (Pad.Letter Dw)} {N : Pad.Let
   cases o <;> simp
 
 /- English proof (translation)
-Simplify using `only [expo, Finsupp.sum, Int.cast_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Break down `letterOf Dw a.2.2 with _ | z` into its components or cases. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single z (fun b _ hb => by simp [hb.symm]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sum_letters (w : Pad.Sym E →₀ ℤ) (L : Pad.Letter Dw → ℝ) :
     ∑ a ∈ w.support, (w a : ℝ) * (letterOf Dw a.2.2).elim 0 L = ∑ z, (expo Dw w z : ℝ) * L z := by
@@ -128,11 +126,11 @@ private theorem sum_letters (w : Pad.Sym E →₀ ℤ) (L : Pad.Letter Dw → �
     simp
 
 /- English proof (translation)
-Take `⟨s₂, b₂⟩` from `tri_swap f₁ f₂ hι h₁ h₂ b`. Take `⟨u, hu⟩` from `exists_unit_ratio f₂ f₁ hι h₂ h₁`. Use `⟨s₂, r₁ * ((∏ z : Pad.Letter Dw, u z.1 z.2 ^ n z : Rˣ) : R), b₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr, mul_assoc]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hu _ _ _ _ h₂ h₁, mul_zpow, Finset.prod_mul_distrib, ← map_zpow, ← map_prod]`. Both sides reduce to the same expression. Establish `hs : Units.map (ψ : R →* k) (∏ z : Pad.Letter Dw, u z.1 z.2 ^ n z) * ∏ z : Pad.Letter Dw, s₂ z.1 z.2 ^ (-n z) = ∏ z : Pad.Letter Dw, s₁ z.1 z.2 ^ (-n z)`. Simplify using `only [hu _ _ _ _ b₂ b, mul_zpow, map_prod, map_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_left_comm, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[map_mul, mul_assoc, ← hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem coord_move {R : Type} [CommRing R]
     [IsLocalRing R] {φ₁ φ₂ : c.F →+* R} {x : Sp R ⟶ Z.X}
@@ -161,15 +159,15 @@ private theorem coord_move {R : Type} [CommRing R]
     rfl
 
 /- English proof (translation)
-Establish `hx : spMap J ≫ x = spMap (J.comp ψ) ≫ x₀`. Rewrite using `[b₂.1, ← Category.assoc, sp_comp']`. Take `⟨f', hf'⟩` from `f₂.exists_isMap (J.comp ψ) (φ' := J.comp φ) (by rw [b₂.2.1, RingHom.comp_assoc]) hx`. Take `⟨g', hg'⟩` from `g.exists_isMap J rfl rfl`. Establish `key` using `stepNorm_change f' g' (d := fun z => J (s z.1 z.2)) (fun z => (map_ne_zero _).2 (Units.ne_zero _)) (fun τ i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨cf, e1, e2, e3⟩` from `b₂.2.2 τ i`. Use `⟨fun a => J (cf a), congrArg J e1, fun a ha => (congrArg J (e2 a ha)).trans (map_zero _), ?_⟩` and prove the remaining obligations. Use `GlobalTheory.GradedPieces.comb_map J rfl e3` as an intermediate fact. Simplify using `only [GlobalTheory.GradedPieces.dual_comp] at this`. Rewrite using `[hg' τ i, funext (hf' τ)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)`. Establish `ef : (fun τ i => spMap (dualMap (J.comp ψ)) ≫ f₂.v τ i) = f'.v`. Use function extensionality and compare the values at `fun τ => funext fun i => (hf' τ i).symm`. Establish `eg : (fun τ i => spMap (dualMap J) ≫ g.v τ i) = g'.v`. Use function extensionality and compare the values at `fun τ => funext fun i => (hg' τ i).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[eg]`. Rewrite using `[← hx, ef, eg, Finsupp.sum, Finsupp.sum, Finset.sum_congr rfl fun a ha => by rw [hw a ha, lnStep_false], Finset.sum_congr (s₁ := w.support) (f := fun a => (w a : ℝ) * Real.log (stepNorm Z.t _ g'.v a.2.2)) rfl fun a ha => by rw [log_change (key a.2.2) (hn a ha)]]`. Simplify using `only [mul_add, Finset.sum_add_distrib, sum_letters]`. Establish `hr0 : J r ≠ 0` using `(map_ne_zero _).2 hr`. Establish `hs0 (z : Pad.Letter Dw) : ‖J (s z.1 z.2)‖ ≠ 0` using `norm_ne_zero_iff.2 ((map_ne_zero _).2 (Units.ne_zero _))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.coe_prod, Units.val_zpow_eq_zpow_val, map_mul, map_prod, map_zpow₀, norm_mul, norm_prod, norm_zpow]`. Rewrite using `[Real.log_mul (norm_ne_zero_iff.2 hr0) (Finset.prod_ne_zero_iff.2 fun z _ => zpow_ne_zero _ (hs0 z)), Real.log_prod fun z _ => zpow_ne_zero _ (hs0 z)]`. Simplify using `only [Real.log_zpow, Int.cast_neg, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem core {R k C : Type} [CommRing R] [Field k]
     [NontriviallyNormedField C] [IsUltrametricDist C] {φ₂ : c.F →+* R} {x₀ : Sp R ⟶ Z.X} (f₂ : EigFrame Z φ₂ x₀)
@@ -213,13 +211,13 @@ private theorem core {R k C : Type} [CommRing R] [Field k]
   ring
 
 /- English proof (translation)
-Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨y₀, ψ, φ₁, f, t, t', r, h₁, h₂, h₃, h₄, rfl⟩` from `hco`. Establish `h0 : spMap ψ ≫ Y.Y.X.fromSpecStalk y₀ = spMap (Scheme.stalkClosedPointTo y).hom ≫ Y.Y.X.fromSpecStalk (below y)` using `h₁.symm.trans (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y).symm`. Establish `hE` using `stalk_ext (isLocalHom_of_algebraic φ₁ ψ) inferInstance h0`. Take `rfl : y₀ = below y` from `hE.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq hE.2`. Establish `hι` using `IsFractionRing.injective (Y.Y.X.presheaf.stalk (below y)) Y.Y.X.functionField`. Take `⟨s, r₂, b₂, hr, hb'⟩` from `coord_move f f₂ hι h₂ h h₃ _ h₄`. Establish `hP : ∀ s : Finset (Pad.Letter Dw), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn (below y) (∏ z ∈ s, t₂ z.1 z.2 ^ n z)` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `empty => simpa using CartierDiv.isEqn_zero (below y)`. Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((ht _ _).zsmul _).add ih`. Take `⟨u, hu, hu'⟩` from `(Base.isEqn_eqn (divOf Y n) (below y)).iff_unitAt.1 (hP Finset.univ)`. Take `rfl : u = r₂` from `hι (by rw [hu', hr, div_eq_inv_mul, Units.val_inv_eq_inv_val])`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, _, (hu.map (Scheme.stalkClosedPointTo y).hom).ne_zero, b₂, ?_, hb'⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_comm, ← hr, Base.valAt_stalk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord_at {F : Type} [Field F] [NumberField F]
     {e : F ≃+* c.F} (Y : FlagCpt Z e) {K : Type} [Field K] [CharZero K] [Algebra.IsAlgebraic ℚ K]
@@ -255,7 +253,7 @@ private theorem coord_at {F : Type} [Field F] [NumberField F]
   rw [Units.val_mul, mul_comm, ← hr, Base.valAt_stalk]
 
 /- English proof (translation)
-Rewrite using `[h0, h1, h2, ← mul_add, h3, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pullback_fin_relation {A A' B d lr lb S S' : ℝ} (h0 : A = A') (h1 : A' = d * lr) (h2 : B = d * lb)
     (h3 : lr + S = lb + S') : A + d * S = B + d * S' := by
@@ -264,7 +262,7 @@ private theorem pullback_fin_relation {A A' B d lr lb S S' : ℝ} (h0 : A = A') 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-The claim follows from `dif_pos hp.out`.
+A detailed English derivation is pending.
 -/
 private theorem lg_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (w : Pad.Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) [hp : Fact (resP v).Prime] (ε : GlobalTheory.TrueGeo.Ext v) (y : AlgPt Y.Y) :
   lgOf Y w v ε y = Real.log (ε.w (valAt y.1 (((∏ x : Pad.Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose x.1 x.2 ^ expo Dw w x) *
@@ -274,9 +272,9 @@ private theorem lg_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
           (fun τ i => spMap (dualMap ((ioOf (resP v) ε).comp (Scheme.stalkClosedPointTo y.1).hom)) ≫ (Y.gr_spec (below y.1)).choose_spec.choose.v τ i) (resP v) (a.1 (resP v)) a.2.2 := dif_pos hp.out
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y w v hp ε y φ x g a hw hn hco`. Establish `: Algebra.IsAlgebraic ℚ (AlgebraicClosure F)` using `Algebra.IsAlgebraic.trans ℚ F _`. Take `⟨s, r, hr, b₂, e2, rfl⟩` from `coord_at Y hco _ (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose_spec.1 (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose_spec.2`. Establish `hlog` using `log_w_eq (resP v) ε _ (ioOf_le_one_iff _ (residueCharacteristic_mem v) ε)`. Establish `key` using `core _ g b₂ (ioOf (resP v) ε) (resP v) w hw hn hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(lg_eq Y w v ε y).trans (pullback_fin_relation (congrArg (fun a => Real.log (ε.w a)) e2) (hlog _) (hlog _) key)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.flag_point_local_height_prime : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) [Fact (resP v).Prime] (ε : GlobalTheory.TrueGeo.Ext v) (y : AlgPt Y.Y) {φ : c.F →+* AlgebraicClosure F} {x : Sp (AlgebraicClosure F) ⟶ Z.X} (g : EigFrame Z φ x) (a : AlgebraicClosure F), (∀ s ∈ w.support, s.1 (resP v) = false) → (∀ s ∈ w.support, stepNorm Z.t (spMap (ioOf (resP v) ε) ≫ x) (fun τ i => spMap (dualMap (ioOf (resP v) ε)) ≫ g.v τ i) s.2.2 ≠ 0) → IsCoord Y y.1 g (expo Dw w) (((eqn (divOf Y (expo Dw w)) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) a → lgOf Y w v ε y = Real.log (ε.w a) + (-Real.log (ε.w (resP v)) / Real.log (resP v)) * w.sum fun s n => (n : ℝ) * Real.log (stepNorm Z.t (spMap (ioOf (resP v) ε) ≫ x) (fun τ i => spMap (dualMap (ioOf (resP v) ε)) ≫ g.v τ i) s.2.2) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y w v hp ε y φ x g a hw hn hco

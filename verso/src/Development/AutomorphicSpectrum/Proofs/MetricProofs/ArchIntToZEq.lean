@@ -16,9 +16,9 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
 /- English proof (translation)
-Introduce `k _ X _ p t D hX N M hN hM e r hr`. Establish `W` using `fun τ : ℤ →+* ℂ => GlobalTheory.T.archIntegrable_iff_over_integers k X p t τ D hX N M (wZ N t τ) (wZ M t τ) (wOver_wZ N t τ) (wOver_wZ M t τ) (hN τ) e r hr`. Set `τ₀ : ℤ →+* ℂ` to `Int.castRingHom ℂ`. Establish `hu : ∀ τ : ℤ →+* ℂ, τ = τ₀` using `fun τ => Subsingleton.elim _ _`. Use `⟨⟨fun h => (W τ₀).1.1 (h τ₀), fun h τ => (W τ).1.2 h⟩, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Unique (ℤ →+* ℂ) := ⟨⟨τ₀⟩, hu⟩`. Unfold `HermLB.archInt`. Rewrite using `[finsum_unique]`. Conclude with `(W default).2 h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archInt_toZ : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (D : ℕ), IsArithVar p D → ∀ (N M : HermLB p) (hN : ∀ τ, (wZ N t τ).IsCInf) (hM : ∀ τ, (wZ M t τ).IsCInf) (e : ℕ) (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r), ((toZ N t hN).ArchIntegrable (toZ M t hM) e hr ↔ N.ArchIntegrable M e hr) ∧ (N.ArchIntegrable M e hr → (toZ N t hN).archInt (toZ M t hM) e hr = N.archInt M e hr) := by
   intro k _ X _ p t D hX N M hN hM e r hr

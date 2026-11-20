@@ -24,21 +24,21 @@ variable {o W V : Type} [CommRing o] [CommRing W] [IsLocalRing W] [CommRing V] [
 abbrev Bp : Over (Sp V) := (Over.pullback (spMap iw)).obj T.B
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.isAbelianScheme_pullback_obj _ _ T.isAb`.
+A detailed English derivation is pending.
 -/
 theorem isAb_Bp : IsAbelianScheme (Bp T iw) := GlobalTheory.isAbelianScheme_pullback_obj _ _ T.isAb
 
 instance : IsCommMonObj (Bp T iw) := (isAb_Bp T iw).comm
 
 /- English proof (translation)
-The claim follows from `isGrpPullback_pullback T.B _`.
+A detailed English derivation is pending.
 -/
 theorem cart : IsGrpPullback (Bp T iw) T.B (spMap iw) (pullback.fst T.B.hom (spMap iw)) := isGrpPullback_pullback T.B _
 
 abbrev cm : CubeMap (Bp T iw) T.B := cubeMapOf (cart T iw)
 
 /- English proof (translation)
-The claim follows from `proved_CubePullSt _ _ T.B (Bp T iw) (cm T iw) T.M T.cub`.
+A detailed English derivation is pending.
 -/
 theorem pullSt : ∃ (hL : (T.M.L.pull (cm T iw).F).IsLB) (hr : ((cm T iw).rigPull T.M.L T.M.rig).IsGen),
     (∃ c' : CubicalStr (Bp T iw) ((cm T iw).rigLB T.M hL hr), (cm T iw).IsPullCubical c' T.cub) ∧
@@ -64,7 +64,7 @@ variable {o W V : Type} [CommRing o] [CommRing W] [IsLocalRing W] [CommRing V] [
 abbrev push (Tt : Over (Sp V)) : (Tt ⟶ Bp T iw) →* (Over.mk (Tt.hom ≫ spMap iw) ⟶ T.B) := pushHom (cart T iw) Tt
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(cart T iw).1.hom_ext` to reduce the goal to its premises. Conclude with `congrArg (fun q => q.left) h`. Rewrite using `[Over.w x, Over.w y]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_inj {Tt : Over (Sp V)} {x y : Tt ⟶ Bp T iw} (h : push T iw Tt x = push T iw Tt y) : x = y := by
   apply Over.OverMorphism.ext
@@ -76,7 +76,7 @@ def pullPt {Tt : Over (Sp V)} (q : Over.mk (Tt.hom ≫ spMap iw) ⟶ T.B) : Tt �
   Over.homMk ((cart T iw).1.lift q.left Tt.hom (Over.w q)) ((cart T iw).1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((cart T iw).1.lift_fst _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem push_pullPt {Tt : Over (Sp V)} (q : Over.mk (Tt.hom ≫ spMap iw) ⟶ T.B) : push T iw Tt (pullPt T iw q) = q :=
   Over.OverMorphism.ext ((cart T iw).1.lift_fst _ _ _)
@@ -84,18 +84,18 @@ theorem push_pullPt {Tt : Over (Sp V)} (q : Over.mk (Tt.hom ≫ spMap iw) ⟶ T.
 def cp (a : Fin T.r → ℤ) : 𝟙_ (Over (Sp V)) ⟶ Bp T iw := pullPt T iw (toUnit _ ≫ T.c₀ a)
 
 /- English proof (translation)
-The claim follows from `push_pullPt T iw _`.
+A detailed English derivation is pending.
 -/
 theorem push_cp (a : Fin T.r → ℤ) : push T iw _ (cp T iw a) = toUnit _ ≫ T.c₀ a := push_pullPt T iw _
 
 /- English proof (translation)
-The claim follows from `push_inj T iw (by rw [map_mul, push_cp, push_cp, push_cp, T.c₀_add, MonObj.comp_mul])`.
+A detailed English derivation is pending.
 -/
 theorem cp_add (a a' : Fin T.r → ℤ) : cp T iw (a + a') = cp T iw a * cp T iw a' :=
   push_inj T iw (by rw [map_mul, push_cp, push_cp, push_cp, T.c₀_add, MonObj.comp_mul])
 
 /- English proof (translation)
-Use `congrArg (fun q => q.left) h` as an intermediate fact. Simplify using `only [Over.comp_left, TautEx.toUnit_left] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_of_push {Tt : Over (Sp V)} {z : Tt ⟶ Bp T iw} {z₀ : 𝟙_ (Over (Sp W)) ⟶ T.B}
     (h : push T iw Tt z = toUnit _ ≫ z₀) : z.left ≫ pullback.fst T.B.hom (spMap iw) = (Tt.hom ≫ spMap iw) ≫ z₀.left := by
@@ -104,7 +104,7 @@ theorem left_of_push {Tt : Over (Sp V)} {z : Tt ⟶ Bp T iw} {z₀ : 𝟙_ (Over
   exact this
 
 /- English proof (translation)
-Use `fin_cases k`. Conclude with `left_of_push T iw (by rw [map_mul, hx, hy, MonObj.comp_mul])`. Conclude with `left_of_push T iw hx`. Conclude with `left_of_push T iw hy`. Conclude with `left_of_push T iw (by rw [map_one, MonObj.comp_one])`.
+A detailed English derivation is pending.
 -/
 theorem lam_comm {Tt : Over (Sp V)} {x y : Tt ⟶ Bp T iw} {x₀ y₀ : 𝟙_ (Over (Sp W)) ⟶ T.B}
     (hx : push T iw Tt x = toUnit _ ≫ x₀) (hy : push T iw Tt y = toUnit _ ≫ y₀) (k : Fin 4) :
@@ -116,7 +116,7 @@ theorem lam_comm {Tt : Over (Sp V)} {x y : Tt ⟶ Bp T iw} {x₀ y₀ : 𝟙_ (O
   · exact left_of_push T iw (by rw [map_one, MonObj.comp_one])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `left_of_push T iw hx` as an intermediate fact. Use `show (U ≫ x).left ≫ pullback.fst T.B.hom (spMap iw) = _`. Rewrite using `[Over.comp_left, Over.comp_left, TautEx.toUnit_left, Category.assoc, this, ← Category.assoc, ← Category.assoc, Over.w U]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem push_pre {Tt Tt' : Over (Sp V)} (U : Tt' ⟶ Tt) {x : Tt ⟶ Bp T iw} {x₀ : 𝟙_ (Over (Sp W)) ⟶ T.B}
     (hx : push T iw Tt x = toUnit _ ≫ x₀) : push T iw Tt' (U ≫ x) = toUnit _ ≫ x₀ := by
@@ -142,7 +142,7 @@ def Jd {Tt : Over (Sp V)} (z : Tt.left) (J : (Tt.left ⟶ (Bp T iw).left) → PU
   else (exists_chart T.M.isLB (χ z)).choose
 
 /- English proof (translation)
-Establish `hχ : (ψ ≫ pullback.fst T.B.hom (spMap iw)) ≫ T.B.hom = Tt.hom ≫ spMap iw`. Rewrite using `[Category.assoc, (cart T iw).1.w, ← Category.assoc, hψ]`. Rewrite using `[Jd, dif_pos hχ]`. Use `congr 1`. Conclude with `(cart T iw).1.hom_ext ((cart T iw).1.lift_fst _ _ _) (((cart T iw).1.lift_snd _ _ _).trans hψ.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Jd_eq {Tt : Over (Sp V)} (z : Tt.left) (J : (Tt.left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι)
     (ψ : Tt.left ⟶ (Bp T iw).left) (hψ : ψ ≫ (Bp T iw).hom = Tt.hom) :
@@ -154,9 +154,9 @@ theorem Jd_eq {Tt : Over (Sp V)} (z : Tt.left) (J : (Tt.left ⟶ (Bp T iw).left)
   exact (cart T iw).1.hom_ext ((cart T iw).1.lift_fst _ _ _) (((cart T iw).1.lift_snd _ _ _).trans hψ.symm)
 
 /- English proof (translation)
-Introduce `χ`. Distinguish the cases in `hχ : χ ≫ T.B.hom = Tt.hom ≫ spMap iw`. Use `mem_pull.1 (hJ ((cart T iw).1.lift χ Tt.hom hχ))` as an intermediate fact. Rewrite using `[Jd, dif_pos hχ]`. Establish `h2 : ((cart T iw).1.lift χ Tt.hom hχ ≫ pullback.fst T.B.hom (spMap iw)) z ∈ T.M.L.U (J ((cart T iw).1.lift χ Tt.hom hχ) PUnit.unit)` using `this`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[(cart T iw).1.lift_fst χ Tt.hom hχ]`. Conclude with `h2`. Rewrite using `[Jd, dif_neg hχ]`. Conclude with `(exists_chart T.M.isLB (χ z)).choose_spec`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jd_good {Tt : Over (Sp V)} {z : Tt.left} {J : (Tt.left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι}
     (hJ : Good (Mp T iw).L z J) : Good T.M.L z (Jd T iw z J) := by
@@ -172,7 +172,7 @@ theorem Jd_good {Tt : Over (Sp V)} {z : Tt.left} {J : (Tt.left ⟶ (Bp T iw).lef
     exact (exists_chart T.M.isLB (χ z)).choose_spec
 
 /- English proof (translation)
-Establish `hz` using `hJ.mem ψ r`. Use `((gm_res r z _ hz _).trans (gm_pull r h z _ (GeneratorPullback.pullAlong_le T.M.L _ h φ ψ hψ _ hz) _)).trans ?_` and prove the remaining obligations. Use `(val_of t (r ≫ h) z (Jd T iw z J) _ fun k => ?_).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hψ k, ← Category.assoc, Jd_eq T iw z J _ (by rw [Category.assoc, hw k])]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_pullAlong {Tt : Over (Sp V)} {Y₀ Y : Scheme.{0}} {K : Type} [Fintype K]
     (h : Y ⟶ Y₀) (φ : K → (Y₀ ⟶ T.B.left)) (ε : K → ℤ) (ψ : K → (Y ⟶ (Bp T iw).left))
@@ -195,7 +195,7 @@ variable {o W V : Type} [CommRing o] [CommRing W] [IsLocalRing W] [CommRing V] [
 abbrev cK (x : Fin T.r → ℤ) : TK V ⟶ Bp T iw := toUnit _ ≫ cp T iw x
 
 /- English proof (translation)
-The claim follows from `push_pre T iw _ (push_cp T iw x)`.
+A detailed English derivation is pending.
 -/
 theorem push_cK (x : Fin T.r → ℤ) : push T iw _ (cK T iw x) = toUnit _ ≫ T.c₀ x := push_pre T iw _ (push_cp T iw x)
 
@@ -204,13 +204,13 @@ def uT (x y : Fin T.r → ℤ) : LB.Gen (LB.LinComb (Mp T iw).L (lamPts (cK T iw
     (lam_comm T iw (push_cK T iw x) (push_cK T iw y)) (T.τ₀ x y)
 
 /- English proof (translation)
-The claim follows from `LBxP.isGen_pullAlong T.M.L _ _ _ _ _ _ (T.τ₀ x y) (T.τ₀_gen x y)`.
+A detailed English derivation is pending.
 -/
 theorem isGen_uT (x y : Fin T.r → ℤ) : (uT T iw x y).IsGen :=
   LBxP.isGen_pullAlong T.M.L _ _ _ _ _ _ (T.τ₀ x y) (T.τ₀_gen x y)
 
 /- English proof (translation)
-Establish `h₂` using `val_pullAlong T iw ((TK V).hom ≫ spMap iw) (lamPts (T.c₀ x) (T.c₀ y)) negε (lamPts (cK T iw x) (cK T iw y)) (lam_comm T iw (push_cK T iw x) (push_cK T iw y)) (T.τ₀ x y) (𝟙 _) (fun k => by rw [Category.id_comp]; exact TautEx.lamPts_w _ _ k) hJ`. Rewrite `h₂` using `[Category.id_comp]`. Conclude with `h₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_uT (x y : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι}
     (hJ : Good (Mp T iw).L z J) :
@@ -222,18 +222,18 @@ theorem val_uT (x y : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶ (
   exact h₂
 
 /- English proof (translation)
-Rewrite using `[val_uT T iw x y hJ, val_uT T iw y x hJ, val_corr (Jd_good T iw hJ) (corr_of_val T.M.isLB (T.τ₀_symm x y))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uT_symm (x y : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι}
     (hJ : Good (Mp T iw).L z J) : val (uT T iw x y) (𝟙 _) z J = val (uT T iw y x) (𝟙 _) z J := by
   rw [val_uT T iw x y hJ, val_uT T iw y x hJ, val_corr (Jd_good T iw hJ) (corr_of_val T.M.isLB (T.τ₀_symm x y))]
 
 /- English proof (translation)
-Apply `hom_ext_triple` to reduce the goal to its premises. Introduce `i`. Establish `hL : (lift (cK T iw x) (lift (cK T iw x') (cK T iw y))).left ≫ (x3 (Bp T iw) i).left = (lift (cK T iw x) (lift (cK T iw x') (cK T iw y)) ≫ x3 (Bp T iw) i).left` using `rfl`. Establish `hR : (lift (T.c₀ x) (lift (T.c₀ x') (T.c₀ y))).left ≫ (x3 T.B i).left = (lift (T.c₀ x) (lift (T.c₀ x') (T.c₀ y)) ≫ x3 T.B i).left` using `rfl`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, hL, Category.assoc ((TK V).hom ≫ spMap iw), hR]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e₀, e₁, e₂⟩` from `TautEx.triple_lift_comp_projections (cK T iw x) (cK T iw x') (cK T iw y)`. Take `⟨f₀, f₁, f₂⟩` from `TautEx.triple_lift_comp_projections (T.c₀ x) (T.c₀ x') (T.c₀ y)`. Use `match i with`. Consider the case `0 => rw [e₀, f₀]`. Conclude with `left_of_push T iw (push_cK T iw x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `1 => rw [e₁, f₁]`. Conclude with `left_of_push T iw (push_cK T iw x')`. Consider the case `2 => rw [e₂, f₂]`. Conclude with `left_of_push T iw (push_cK T iw y)`.
+A detailed English derivation is pending.
 -/
 theorem tautBaseChange_tripleLift_left (x x' y : Fin T.r → ℤ) :
     (lift (cK T iw x) (lift (cK T iw x') (cK T iw y))).left ≫ (cm T iw).F3 =
@@ -253,9 +253,9 @@ theorem tautBaseChange_tripleLift_left (x x' y : Fin T.r → ℤ) :
   | 2 => rw [e₂, f₂]; exact left_of_push T iw (push_cK T iw y)
 
 /- English proof (translation)
-Establish `hc : cubV (cubP T iw) z J (cK T iw x) (cK T iw x') (cK T iw y) = val T.cub.t (((TK V).hom ≫ spMap iw) ≫ (lift (T.c₀ x) (lift (T.c₀ x') (T.c₀ y))).left) z (Jd T iw z J)`. Use `(val_pullAlong T iw (cm T iw).F3 (thφ T.B (x3 T.B)) thε (thφ (Bp T iw) (x3 (Bp T iw))) (fun I => (cm T iw).psum_comm I.down) T.cub.t (lift (cK T iw x) (lift (cK T iw x') (cK T iw y))).left (fun I => ?_) hJ).trans ?_` and prove the remaining obligations. Use `show _ ≫ (psum _ _ _).left ≫ _ = _`. Rewrite using `[Over.w, Over.w]`. Conclude with `congrArg (fun r => val T.cub.t r z (Jd T iw z J)) (tautBaseChange_tripleLift_left T iw x x' y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `corr` using `corr_of_val T.M.isLB (t := LB.mulGen T.M.L _ _ _ _ (T.τ₀ (x + x') y) (LB.pullGen T.M.L (thφ T.B (x3 T.B)) thε T.cub.t (lift (T.c₀ x) (lift (T.c₀ x') (T.c₀ y))).left)) (t' := LB.mulGen T.M.L _ _ _ _ (T.τ₀ x y) (T.τ₀ x' y)) (fun y₁ J' hJ' => (val_mul hJ' _ _ _).trans (Eq.trans (con …`. Establish `hJd` using `Jd_good T iw hJ`. Establish `e : val (T.τ₀ (x + x') y) ((TK V).hom ≫ spMap iw) z (Jd T iw z J) * val T.cub.t (((TK V).hom ≫ spMap iw) ≫ (lift (T.c₀ x) (lift (T.c₀ x') (T.c₀ y))).left) z (Jd T iw z J) = val (T.τ₀ x y) ((TK V).hom ≫ spMap iw) z (Jd T iw z J) * val (T.τ₀ x' y) ((TK V).hom ≫ spMap iw) z (Jd T iw …` using `(congrArg (_ * ·) (val_pull hJd _ _ _).symm).trans ((val_mul hJd _ _ _).symm.trans ((val_corr hJd corr _).trans (val_mul hJd _ _ _)))`. Rewrite using `[val_uT T iw _ _ hJ, val_uT T iw _ _ hJ, val_uT T iw _ _ hJ, hc]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uT_add (x x' y : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι}
     (hJ : Good (Mp T iw).L z J) :
@@ -299,20 +299,20 @@ def kU (a b : Fin T.r → ℤ) : (FractionRing V)ˣ :=
     hs k (IsFractionRing.injective V (FractionRing V) (h.trans (map_zero _).symm))) ^ ((n : ℤ) * ε k a b)
 
 /- English proof (translation)
-Simplify using `[kU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kU_val (a b : Fin T.r → ℤ) :
     (kU T s hs ε n a b : FractionRing V) = ∏ i, algebraMap V (FractionRing V) (s i) ^ ((n : ℤ) * ε i a b) := by
   simp [kU]
 
 /- English proof (translation)
-Simplify using `only [kU, hε _ a b]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kU_symm (hε : ∀ k a b, ε k a b = ε k b a) (a b : Fin T.r → ℤ) : kU T s hs ε n a b = kU T s hs ε n b a := by
   simp only [kU, hε _ a b]
 
 /- English proof (translation)
-Simplify using `only [kU, ← Finset.prod_mul_distrib, ← zpow_add, map_add, LinearMap.add_apply, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kU_add (a a' b : Fin T.r → ℤ) : kU T s hs ε n (a + a') b = kU T s hs ε n a b * kU T s hs ε n a' b := by
   simp only [kU, ← Finset.prod_mul_distrib, ← zpow_add, map_add, LinearMap.add_apply, mul_add]
@@ -322,7 +322,7 @@ def tauF (a b : Fin T.r → ℤ) :
   TautEx.mulU (unitOn (kU T s hs ε n a b)) (uT T iw ((n : ℤ) • a) ((n : ℤ) • b))
 
 /- English proof (translation)
-The claim follows from `TautEx.val_mulU (L := (Mp T iw).L) _ _ (𝟙 _) z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem val_tauF (a b : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι}
     (hJ : Good (Mp T iw).L z J) : val (tauF T iw s hs ε n a b) (𝟙 _) z J =
@@ -330,7 +330,7 @@ theorem val_tauF (a b : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶
   TautEx.val_mulU (L := (Mp T iw).L) _ _ (𝟙 _) z J hJ
 
 /- English proof (translation)
-Establish `h` using `uT_add T iw ((n : ℤ) • a) ((n : ℤ) • a') ((n : ℤ) • b) hJ`. Rewrite `h` using `[← smul_add]`. Rewrite using `[val_tauF T iw s hs ε n _ _ hJ, val_tauF T iw s hs ε n _ _ hJ, val_tauF T iw s hs ε n _ _ hJ, kU_add, TautEx.unitOn_mul, map_mul]`. Conclude with `TautEx.alg_step h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauF_add (a a' b : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι}
     (hJ : Good (Mp T iw).L z J) :
@@ -344,7 +344,7 @@ theorem tauF_add (a a' b : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left 
   exact TautEx.alg_step h
 
 /- English proof (translation)
-The claim follows from `(isGen_iff _).1 (CubePf.idIsoL_isGen (Mp T iw).isLB)`.
+A detailed English derivation is pending.
 -/
 theorem pGen_Mp : PGen (L := T.M.L) (F := pullback.fst T.B.hom (spMap iw)) (CubePf.idIsoL (Mp T iw).L) :=
   (isGen_iff _).1 (CubePf.idIsoL_isGen (Mp T iw).isLB)
@@ -374,14 +374,14 @@ end Periods
 section abelian₂
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left ((gm_cocycle hL f y hi hj hi).trans (gm_self hL f y hi))`.
+A detailed English derivation is pending.
 -/
 theorem gm_swap {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (y : Y) {i j : L.ι} (hi : f y ∈ L.U i)
     (hj : f y ∈ L.U j) : gm f y _ (L.g i j) = (gm f y _ (L.g j i))⁻¹ :=
   eq_inv_of_mul_eq_one_left ((gm_cocycle hL f y hi hj hi).trans (gm_self hL f y hi))
 
 /- English proof (translation)
-Use `show gm f y _ (∏ _k : PUnit, (res _ (pullU F _ (L.g j (k PUnit.unit)))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res f y _ (show f y ∈ (L.pull F).U (fun _ => j) ⊓ (L.pull F).U k from ⟨mem_pull.2 hj, mem_pull.2 hk⟩) _).trans (gm_pull f F y (L.U j ⊓ L.U (k PUnit.unit)) (show F (f y) ∈ L.U j ⊓ L.U (k PUnit.unit) from ⟨hj, hk⟩) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gw_idIsoL {X X' Y : Scheme.{0}} {L : LB X} {F : X' ⟶ X} (f : Y ⟶ X') (y : Y) (j : L.ι) (k : PUnit → L.ι)
     (hj : F (f y) ∈ L.U j) (hk : F (f y) ∈ L.U (k PUnit.unit)) :
@@ -400,21 +400,19 @@ abbrev wLam : LB.Iso (abelian₂ (Bp T iw) (Mp T iw).L) ((abelian₂ T.B T.M.L).
   GlobalTheory.HalfBC.lamIso (cart T iw) (vId T iw)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HalfBC.isGen_lamIso _ _ ((isGen_iff _).2 (pGen_Mp T iw))`.
+A detailed English derivation is pending.
 -/
 theorem isGen_wLam : (wLam T iw).IsGen :=
   GlobalTheory.HalfBC.isGen_lamIso _ _ ((isGen_iff _).2 (pGen_Mp T iw))
 
 /- English proof (translation)
-Establish `hJd` using `Jd_good T iw hJ'`. Establish `mJ : ∀ q : (TK V).left ⟶ (Bp T iw).left, pullback.fst T.B.hom (spMap iw) (q z) ∈ T.M.L.U (J (q ≫ pullback.fst T.B.hom (spMap iw)))` using `fun q => hJ (q ≫ pullback.fst T.B.hom (spMap iw))`. Establish `mJ' : ∀ q : (TK V).left ⟶ (Bp T iw).left, pullback.fst T.B.hom (spMap iw) (q z) ∈ T.M.L.U (J' q PUnit.unit)` using `fun q => mem_pull.1 (hJ' q)`. Use `(gen_trans (T.τ₀_gen x y) ((TK V).hom ≫ spMap iw) z (hJd.mem _ _) (hJ.mem _ _)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Set `h : ((TK V).left ⟶ (Bp T iw).left) → ((TK V).left.presheaf.stalk z)ˣ` to `fun q => gm (q ≫ pullback.fst T.B.hom (spMap iw)) z _ (T.M.L.g (J (q ≫ pullback.fst T.B.hom (spMap iw))) (J' q PUnit.unit))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `h₁ : trF (lamPts (T.c₀ x) (T.c₀ y)) negε ((TK V).hom ≫ spMap iw) z (fun k => Jd T iw z J' (((TK V).hom ≫ spMap iw) ≫ lamPts (T.c₀ x) (T.c₀ y) k)) (fun k => J (((TK V).hom ≫ spMap iw) ≫ lamPts (T.c₀ x) (T.c₀ y) k)) = ∏ k, (h (lamPts (cK T iw x) (cK T iw y) k))⁻¹ ^ negε k`. Use `Finset.prod_congr rfl fun k _ => congrArg (· ^ negε k) ?_` and prove the remaining obligations. Establish `e₁` using `lam_comm T iw (push_cK T iw x) (push_cK T iw y) k`. Use `beta_reduce`. Rewrite using `[← e₁, Jd_eq T iw z J' _ (TautEx.lamPts_w _ _ k)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `gm_swap T.M.isLB (lamPts (cK T iw x) (cK T iw y) k ≫ pullback.fst T.B.hom (spMap iw)) z (mJ' (lamPts (cK T iw x) (cK T iw y) k)) (mJ (lamPts (cK T iw x) (cK T iw y) k))`. Establish `h₂ : ∏ k, (h (lamPts (cK T iw x) (cK T iw y) k))⁻¹ ^ negε k = h (cK T iw x * cK T iw y).left * (h (cK T iw x).left)⁻¹ * (h (cK T iw y).left)⁻¹ * h (1 : TK V ⟶ Bp T iw).left`. Simplify using `using Wit.prod_neg_lamPts (cK T iw x) (cK T iw y) h`. Establish `h₃ : lamVal (wLam T iw) (lift (cK T iw x) (cK T iw y)).left z J J' = ∏ I, h ((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.PrimCocycle.lamφ (Bp T iw) I) ^ GlobalTheory.PrimCocycle.lamε I`. Establish `e : (fun I => J ((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.HalfBC.sqOf (cart T iw) ≫ GlobalTheory.PrimCocycle.lamφ T.B I)) = fun I => J (((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.PrimCocycle.lamφ (Bp T iw) I) ≫ pullback.fst T.B.hom (spMap iw))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun I => by rw [GlobalTheory.HalfBC.sqOf_lamφ, Category.assoc]`. Use `show gw (wLam T iw) (lift (cK T iw x) (cK T iw y)).left z (fun I => J ((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.HalfBC.sqOf (cart T iw) ≫ GlobalTheory.PrimCocycle.lamφ T.B I)) (fun I => J' ((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.PrimCocycle.lamφ (Bp T iw) I) …`. Rewrite using `[e, GlobalTheory.HalfBC.gw_lamIso (cart T iw) (vId T iw) (lift (cK T iw x) (cK T iw y)).left z (fun I => J (((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.PrimCocycle.lamφ (Bp T iw) I) ≫ pullback.fst T.B.hom (spMap iw))) (fun I => J' ((lift (cK T iw x) (cK T iw y)).left ≫ Gl …`. Use `Finset.prod_congr rfl fun I _ => congrArg (· ^ GlobalTheory.PrimCocycle.lamε I) ?_` and prove the remaining obligations. Conclude with `gw_idIsoL ((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.PrimCocycle.lamφ (Bp T iw) I) z _ _ (mJ ((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.PrimCocycle.lamφ (Bp T iw) I)) (mJ' ((lift (cK T iw x) (cK T iw y)).left ≫ GlobalTheory.PrimCocycle.lamφ (Bp T iw) I))`.
-
-Use `h₁.trans (h₂.trans ?_)` and prove the remaining obligations. Rewrite using `[h₃, GlobalTheory.PrimCocycle.prod_lam]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_trans (x y : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left ⟶ T.B.left) → T.M.L.ι}
     {J' : ((TK V).left ⟶ (Bp T iw).left) → PUnit → T.M.L.ι} (hJ : Good T.M.L z J) (hJ' : Good (Mp T iw).L z J') :
@@ -469,7 +467,7 @@ theorem val_trans (x y : Fin T.r → ℤ) {z : (TK V).left} {J : ((TK V).left �
 end abelian₂
 
 /- English proof (translation)
-Introduce `o W V _ _ _ _ _ T iw I _ s ε n hs hε`. Use `⟨dataF T iw s hs ε n hε, AddEquiv.refl _, pullback.fst T.B.hom (spMap iw), GlobalTheory.HalfBC.sqOf (cart T iw), wLam T iw, cart T iw, GlobalTheory.HalfBC.isSquare_sqOf (cart T iw), isGen_wLam T iw, fun a => ?_, fun a b => ⟨kU T s hs ε n a b, kU_val T s hs ε n a b, fun z J J' hJ …` and prove the remaining obligations. Apply the tactic sequence `exact (left_of_push T iw (push_cp T iw _)).trans (by rw [TautEx.unit_hom]; simp <;> rfl)`. Conclude with `(val_tauF T iw s hs ε n a b hJ').trans (congrArg _ ((val_uT T iw _ _ hJ').trans (val_trans T iw _ _ hJ hJ')))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_dataFrom : ∀ {o W V : Type} [CommRing o] [CommRing W] [IsLocalRing W] [CommRing V] [IsDomain V]
     (T : TautBase o W) (iw : W →+* V) {I : Type} [Fintype I] (s : I → V)

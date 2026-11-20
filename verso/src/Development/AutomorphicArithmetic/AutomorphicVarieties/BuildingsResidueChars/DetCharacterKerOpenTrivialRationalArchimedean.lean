@@ -5,9 +5,9 @@ open UpperTheory.V.W (Plc)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h : ∀ w : InfinitePlace E, ∃ y : w.Completion, y ^ m = (d : Ad E).1 w` using `fun w => by`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e ((d : Ad E).1 w)) hm`. Conclude with `⟨e.symm z, e.injective (by rw [map_pow, e.apply_symm_apply, hz])⟩`. Use `choose y hy using h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `Y : Ad E` to `((y : InfiniteAdeleRing E), (1 : Af E))`. Establish `hY : Y ^ m = (d : Ad E)` using `Prod.ext (funext hy) ((one_pow m).trans hd.symm)`. Establish `hu : IsUnit Y` using `(isUnit_pow_iff hm.ne').1 (hY ▸ d.isUnit)`. Conclude with `⟨hu.unit, Units.ext (by rw [Units.val_pow_eq_pow_val, hu.unit_spec, hY])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_root (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ} (hm : 0 < m)
     (d : Ideles E) (hd : pFin E (d : Ad E) = 1) : ∃ y : Ideles E, y ^ m = d := by
@@ -22,11 +22,11 @@ private theorem exists_root (E : Type) [Field E] [NumberField E] [IsTotallyCompl
   exact ⟨hu.unit, Units.ext (by rw [Units.val_pow_eq_pow_val, hu.unit_spec, hY])⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n ν m hm h`. Establish `h1 : ∀ x, ν.1 x ^ m = 1` using `fun x => congrArg (fun ξ : HChar E => ξ.1 x) h`. Use `⟨isOpen_ker_of_pow _ ?_ hm fun g => h1 _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ν.2.1.comp (Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val)`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `Subgroup.mem_subgroupOf.1 hg`. Rewrite using `[← hγ, chiDet_ratGL]`. Introduce `g hg`. Establish `hg' : Matrix.GeneralLinearGroup.map (pFin E) (g : GA E n) = 1` using `hg`. Take `⟨y, hy⟩` from `exists_root E hm (Matrix.GeneralLinearGroup.det (g : GA E n)) (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.CuspRep.det_map, hg']`. Use the proof step `simp)`. Express the relevant statement in the definitionally equal form `ν.1 (Matrix.GeneralLinearGroup.det (g : GA E n)) = 1`. Rewrite using `[← hy, map_pow, h1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.detCharacter_ker_open_trivial_rational_archimedean :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ν : HChar E) (m : ℕ), 0 < m → ν.OrderDvd m → IsOpen (((chiDet n ν).comp (UA E n).subtype).ker : Set (UA E n)) ∧ (∀ g ∈ ratU E n, chiDet n ν (g : UA E n) = 1) ∧ ∀ g ∈ infU E n, chiDet n ν (g : UA E n) = 1 := by

@@ -12,13 +12,13 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `hU hL E _ _ _ _ H l c nΨ n' f o La hG L hLg hp h Hh σ`. Take `⟨-, -, -, -, hΨ, hA', -, -, -, tΨ, t', -, -, hI, hP, hb, vΨ, v', -, hgood, -, harch, -⟩` from `hG`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CM.TopLieVector.sq_eq_det_gram hU hL o.K₁ o.B o.xB o.φB hp h Hh o.Tl o.LamL σ (harch σ)` as an intermediate fact. Conclude with `((congrArg Real.sqrt this).symm.trans (Real.sqrt_sq (hgood.2 σ).le)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw1, hw2⟩` from `hLg.2.2.1 k`. Establish `h4` using `hLg.2.2.2 k`. Unfold `LamLetters.IsLetter at hw1`. Consider the cases of `hs : L.src k with`. Consider the case `inl q`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw1`, `h4` using `[hs]`. Simplify using `only at hw1 h4`. Rewrite using `[h4]`. Conclude with `form_letter_le hU hL o.AΨ o.B o.oaΨ o.xΨ o.φΨg (S := psiSet H) o.τΨ _ hΨ tΨ (GenFib.mk o.xB.P o.φB hp o.xB.v o.xB.basis) h Hh (o.φΨ q.1) (hI.1 _) (o.hΨ q.1) (hP.2.2.1 q.1) La (hb.1 q.1) q.2 _ (vΨ q.2) _ w hw2 hw1 σ`. Consider the case `inr q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hw1`, `h4` using `[hs]`. Simplify using `only at hw1 h4`. Rewrite using `[h4]`. Conclude with `form_letter_le hU hL o.A' o.B o.oa' o.x' o.φ'g (S := (psiSet H)ᶜ) o.τ' _ hA' t' (GenFib.mk o.xB.P o.φB hp o.xB.v o.xB.basis) h Hh (o.φ' q.1) (hI.2.1 _) (o.h' q.1) (hP.2.2.2 q.1) La (hb.2 q.1) q.2 _ (v' q.2) _ w hw2 hw1 σ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamLen_of_isHerm : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) (l : Level H) (c : Coeff l) (nΨ n' f : ℕ) (o : LamObj c nΨ n') (La : ℝ), LamObjGood o f La → ∀ L : LamLetters o, L.IsGood → ∀ (hf : IsPolFibre (algebraMap (𝓞 o.K₁) o.K₁) o.B o.xB.P o.φB) (h : HermFam o.K₁ (Fin o.xB.P.g → o.K₁)), (GenFib.mk o.xB.P o.φB hf o.xB.v o.xB.basis : GenFib o.B).IsHerm h → ∀ (σ : o.K₁ →+* ℂ), o.LamL.n σ = Real.sqrt (h.gram σ (fun i : Fin o.xB.P.g => Pi.single i 1)).det.re ∧ ∀ k, (h.form σ (L.U k) (L.U k)).re ≤ (La * (L.ℓ k).n σ) ^ 2 := by
   intro hU hL E _ _ _ _ H l c nΨ n' f o La hG L hLg hp h Hh σ

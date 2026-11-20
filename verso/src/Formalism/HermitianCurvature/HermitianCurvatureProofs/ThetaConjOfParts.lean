@@ -29,7 +29,7 @@ def JThetaAdjC : Prop :=
 def JThetaCOfParts : Prop := JDom → CptInCC → JThetaAdjC → JThetaC
 
 /- English proof (translation)
-Unfold `TransportedAlt`. Rewrite using `[lt_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) r, sq_nonneg (((2 * r + k + 1 : ℕ) : ℝ))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem thr_big (k r m : ℕ) :
     TransportedAlt k r (9 * ((r : ℝ) + 1) * ((((2 * r + k + 1 : ℕ) : ℝ)) ^ 2 + 1) + 6 * (r : ℝ) * (m : ℝ)) m := by
@@ -46,9 +46,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `hD hc hA k r Wp Wq _ _ _ _ _ _ D Θ F hS hC hF hFc g hg`. Establish `hT : JTheta` using `Formalism.FourierDecayAlt.P.theta_bessel_commute_of_parts (Formalism.FourierDecayAlt.P.bessel_words_of_domain hD) Formalism.FourierDecayAlt.P.rewrite_rho_action`. Take `⟨C, hCc, hCO, hCF⟩` from `hFc`. Use `⟨?_, hA k r Wp Wq D Θ F hS hC hF ⟨C, hCc, hCO, hCF⟩ g hg⟩` and prove the remaining obligations. Establish `hIn` using `hc k r (Wq →L[ℂ] Wp) F C hF hCc hCF (9 * ((r : ℝ) + 1) * ((((2 * r + k + 1 : ℕ) : ℝ)) ^ 2 + 1) + 6 * (r : ℝ) * (opOrder Θ : ℝ)) (opOrder Θ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hT k r Wp Wq D _ (opOrder Θ) F Θ le_rfl (JFxG.thr_big k r _) hIn hC g hg).symm`.
+A detailed English derivation is pending.
 -/
 theorem theta_conj_of_parts : Formalism.FourierDecayAlt.P.JFxG.JThetaCOfParts := by
   intro hD hc hA k r Wp Wq _ _ _ _ _ _ D Θ F hS hC hF hFc g hg

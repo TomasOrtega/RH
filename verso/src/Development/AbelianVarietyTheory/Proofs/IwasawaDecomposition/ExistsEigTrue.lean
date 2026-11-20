@@ -24,14 +24,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SCuspRows
 
 /- English proof (translation)
-The claim follows from `EvG.imp (Step.and h1 h2) fun _ _ _ _ _ H => H.imp fun _ _ _ _ G a b c w hw P x => ⟨(G a b c).1 w hw P x, (G a b c).2 w hw P x⟩`.
+A detailed English derivation is pending.
 -/
 theorem allSt_and' {p q : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (P : Pre2 K w), St P → Prop}
     (h1 : AllSt p) (h2 : AllSt q) : AllSt fun K B f T w P x => p K B f T w P x ∧ q K B f T w P x :=
   EvG.imp (Step.and h1 h2) fun _ _ _ _ _ H => H.imp fun _ _ _ _ G a b c w hw P x => ⟨(G a b c).1 w hw P x, (G a b c).2 w hw P x⟩
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun _ _ _ _ _ H => H.imp fun _ _ _ _ G a b c w hw P x => hq _ _ _ _ _ _ _ (G a b c w hw P x)`.
+A detailed English derivation is pending.
 -/
 theorem allSt_mono' {p q : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (P : Pre2 K w), St P → Prop}
     (h : AllSt p) (hq : ∀ K B f T w P x, p K B f T w P x → q K B f T w P x) : AllSt q :=
@@ -40,7 +40,7 @@ theorem allSt_mono' {p q : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨Sb, h1, h2, -⟩` from `GlobalTheory.TwInputs.Eig.exists_low (ι := Empty) n.In.Sb (fun i => i.elim) (fun i => i.elim) fun i => i.elim`. Establish `h` using `GlobalTheory.TwInputs.Eig.eigTrue hL x.r.Y x.m.z.lev.is l.a.A.wdT l.a.A.row l.a.row n.rat.eig h1 h2`. Establish `hC : x.m.z.R.C = cfOf x` using `x.m.z.lev.C`. Conclude with `⟨Sb, (congrArg (fun c : CharFrame (Dof x) => GlobalTheory.TwInputs.EigTrue (Dof x) c l.a.A.row Sb n.In.eig) hC).mp h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_eigTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} {x : St P} (l : LA hL x) (n : InRat x.r.Y x.m.z.cG) :
@@ -51,9 +51,9 @@ theorem exists_eigTrue {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} 
   exact ⟨Sb, (congrArg (fun c : CharFrame (Dof x) => GlobalTheory.TwInputs.EigTrue (Dof x) c l.a.A.row Sb n.In.eig) hC).mp h⟩
 
 /- English proof (translation)
-Introduce `hP hL hPar hRat`. Use `allSt_mono' (allSt_and' (allSt_and' hPar hRat) (valLL0_allSt hP)) ?_` and prove the remaining obligations. Introduce and unpack `K B f T w P x ⟨⟨hp, he⟩, hv⟩ l j hj1 hj2 σ hσ hg`. Take `⟨π, hc, hr, hs, -, -, -⟩` from `hp l j hj1 hj2 σ hσ hg`. Take `⟨n⟩` from `he l`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Sb, hn⟩` from `exists_eigTrue l n`. Use `⟨π, hc, hr, hs, ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.CuspFrobSplit.galPol_lifts_ae (Dof x) (cfOf x) l.a.A.row Sb n.In.eig hv hn j hj1 hj2 σ hσ hg π hc hs`. Establish `h4` using `GlobalTheory.GalAllPlaces.galPol_lifts_of_split hL hP.what₂.fin hP.what₂.gal hP.what₂.cheb (Dof x) l.a.A.wdT l.a.cg _ (embLL0 (Dof x)) π hc hr h2`. Conclude with `(GlobalTheory.TwistLift.galPol_lifts_tw_etaTinv (Dof x) (cfOf x) l.a.A.chr hv π h4).mono fun w hw => (Polynomial.mem_lifts _).1 hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sCusp_of_parSt : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, ParSt hL → SRat hL → SCusp hL := by
   intro hP hL hPar hRat

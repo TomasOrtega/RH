@@ -21,7 +21,7 @@ open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.UnramOrder.algebraMap_mem_iff L a).2 a.2`.
+A detailed English derivation is pending.
 -/
 private lemma algebraMap_integer_mem_O' (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) (a : 𝒪[F]) :
     algebraMap F E (a : F) ∈ L.O :=
@@ -32,7 +32,7 @@ open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Use `⟨L.cj x * algebraMap F E ((↑u⁻¹ : 𝒪[F]) : F), mul_mem (_root_.GlobalTheory.UnramOrder.cj_mem L hx) (algebraMap_integer_mem_O' L _), ?_⟩` and prove the remaining obligations. Establish `h : ((u : 𝒪[F]) : F) * ((↑u⁻¹ : 𝒪[F]) : F) = 1`. Conclude with `congrArg Subtype.val u.mul_inv` after adjusting the coercions. Rewrite using `[← mul_assoc, hc, ← map_mul, h, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma exists_inv_of_isUnit_norm (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {x : E} (hx : x ∈ L.O) {c : 𝒪[F]}
     (hc : x * L.cj x = algebraMap F E (c : F)) (hu : IsUnit c) : ∃ y ∈ L.O, x * y = 1 := by
@@ -49,7 +49,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 variable [IsNonarchimedeanLocalField F] [CharZero F] in
 /- English proof (translation)
-Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hmem : c ∈ IsLocalRing.maximalIdeal 𝒪[F]` using `(IsLocalRing.mem_maximalIdeal c).2 hc`. Rewrite `hmem` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `hmem`. Conclude with `⟨d, by rw [← hd, mul_comm]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma uniformizer_dvd_of_not_isUnit {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {c : 𝒪[F]}
     (hc : ¬ IsUnit c) : ∃ d, c = ϖ * d := by
@@ -65,9 +65,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 variable [IsNonarchimedeanLocalField F] [CharZero F] in
 /- English proof (translation)
-Take `⟨c, hc⟩` from `_root_.GlobalTheory.UnramOrder.exists_norm L hx`. Establish `hcu : ¬ IsUnit c` using `fun hu => by`. Take `⟨y, hy, hxy⟩` from `exists_inv_of_isUnit_norm L hx hc hu`. Conclude with `hnu y hy hxy`. Take `⟨d, rfl⟩` from `uniformizer_dvd_of_not_isUnit hϖ hcu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨d, by rw [hc, MulMemClass.coe_mul, map_mul]⟩`.
+A detailed English derivation is pending.
 -/
 private lemma exists_norm_eq_uniformizer_mul_of_nonunit (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {ϖ : 𝒪[F]}
     (hϖ : Irreducible ϖ) {x : E} (hx : x ∈ L.O) (hnu : ∀ z ∈ L.O, x * z ≠ 1) :
@@ -84,7 +84,7 @@ open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-The claim follows from `L.cj.commutes a`.
+A detailed English derivation is pending.
 -/
 private lemma cj_algebraMap' (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) (a : F) :
     L.cj (algebraMap F E a) = algebraMap F E a :=
@@ -96,23 +96,23 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] [CharZero F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-Use `haveI := hPID`. Set `y₁ : L.O` to `⟨y, hy⟩`. Set `ϖ₁ : L.O` to `⟨algebraMap F E (ϖ : F), algebraMap_integer_mem_O' L ϖ⟩`. Set `J : Ideal L.O` to `Ideal.span {y₁, ϖ₁}`. Take `⟨p, hp⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator J).1 (Ideal.subset_span (by simp) : y₁ ∈ J)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator J).1 (Ideal.subset_span (by simp) : ϖ₁ ∈ J)`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.1 (Submodule.IsPrincipal.generator_mem J)`. Use `set g := Submodule.IsPrincipal.generator J`. Establish `hpE : y = (p : E) * g` using `by simpa [y₁, smul_eq_mul] using congrArg Subtype.val hp`. Establish `htE : algebraMap F E (ϖ : F) = (t : E) * g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `congrArg Subtype.val ht` using `[ϖ₁, smul_eq_mul]`. Establish `habE : (a : E) * y + b * algebraMap F E (ϖ : F) = g`. Simplify `congrArg Subtype.val hab` using `[y₁, ϖ₁]`. Establish `hg : ∀ z ∈ L.O, (g : E) * z ≠ 1`. Introduce `z hz hgz`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `exists_norm_eq_uniformizer_mul_of_nonunit L hϖ hy hyu`. Establish `hmem : algebraMap F E (d : F) * a * z + b * z * L.cj y ∈ L.O` using `add_mem (mul_mem (mul_mem (algebraMap_integer_mem_O' L d) a.2) hz) (mul_mem (mul_mem b.2 hz) (_root_.GlobalTheory.UnramOrder.cj_mem L hy))`. Establish `hσy : L.cj y = algebraMap F E (ϖ : F) * (algebraMap F E (d : F) * a * z + b * z * L.cj y)`. Take the linear combination `(-L.cj y) * hgz + (-(L.cj y) * z) * habE + ((a : E) * z) * hd`. Use `hyϖ _ (_root_.GlobalTheory.UnramOrder.cj_mem L hmem) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg L.cj hσy` as an intermediate fact. Rewrite `this` using `[L.cj_cj, map_mul, cj_algebraMap']`. Then use the resulting hypothesis. Establish `ht' : ∀ z ∈ L.O, (t : E) * z ≠ 1`. Introduce `z hz htz`. Use `hyϖ ((p : E) * z) (mul_mem p.2 hz) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take the linear combination `hpE - ((p : E) * z) * htE - ((p : E) * g) * htz`. Take `⟨d₁, hd₁⟩` from `exists_norm_eq_uniformizer_mul_of_nonunit L hϖ g.2 hg`. Take `⟨d₂, hd₂⟩` from `exists_norm_eq_uniformizer_mul_of_nonunit L hϖ t.2 ht'`. Establish `hE : algebraMap F E ((ϖ : F) * ϖ * 1) = algebraMap F E ((ϖ : F) * ϖ * (d₁ * d₂))`. Simplify using `only [map_mul, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hϖ0 : (ϖ : F) * ϖ ≠ 0`. Establish `h0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Conclude with `mul_ne_zero h0 h0`. Establish `hdF : (1 : F) = d₁ * d₂` using `mul_left_cancel₀ hϖ0 (_root_.GlobalTheory.UnramOrder.algebraMap_inj L hE)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : d₁ * d₂ = 1` using `Subtype.ext (by rw [MulMemClass.coe_mul]; exact hdF.symm)`. Take `⟨z, hz, hzN⟩` from `hnorm ⟨d₂, d₁, by rw [mul_comm]; exact hd, hd⟩`. Use `⟨g * z, mul_mem g.2 hz, ?_⟩` and prove the remaining obligations. Establish `hdd : algebraMap F E (d₁ : F) * algebraMap F E (d₂ : F) = 1`. Rewrite using `[← map_mul, ← hdF, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hd₁, hzN]`. Take the linear combination `(algebraMap F E (ϖ : F)) * hdd`.
+A detailed English derivation is pending.
 -/
 private lemma exists_norm_eq_uniformizer' (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ)
     (hPID : IsPrincipalIdealRing L.O)
@@ -178,7 +178,7 @@ open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-Establish `h0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Conclude with `(IsUnit.mk0 _ h0).map _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma isUnit_algebraMap_uniformizer (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) :
     IsUnit (algebraMap F E (ϖ : F)) := by
@@ -191,21 +191,19 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] [CharZero F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-Use `haveI := hPID`. Set `π₁ : L.O` to `⟨π, hπ⟩`. Set `π₂ : L.O` to `⟨L.cj π, _root_.GlobalTheory.UnramOrder.cj_mem L hπ⟩`. Set `K : Ideal L.O` to `Ideal.span {π₁, π₂}`. Take `⟨p, hp⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator K).1 (Ideal.subset_span (by simp) : π₁ ∈ K)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator K).1 (Ideal.subset_span (by simp) : π₂ ∈ K)`. Use `set δ := Submodule.IsPrincipal.generator K`. Establish `hp' : π = (p : E) * δ` using `by simpa [π₁, smul_eq_mul] using congrArg Subtype.val hp`. Establish `hq' : L.cj π = (q : E) * δ` using `by simpa [π₂, smul_eq_mul] using congrArg Subtype.val hq`. Establish `hsq : ((δ : E) * p * q) * ((δ : E) * p * q) = algebraMap F E (ϖ : F) * ((p : E) * q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hN, hq', hp']`. Expand and normalize the polynomial expressions, which then agree. Establish `hspan : ((p * q : L.O) : E) • algebraMap F E (ϖ : F) = (δ : E) * p * q * ((δ : E) * p * q)`. Rewrite using `[hsq, smul_eq_mul, Subring.coe_mul, mul_comm]`. Establish `hmem` using `L.unram ϖ hϖ _ (mul_mem (mul_mem δ.2 p.2) q.2) (Submodule.mem_span_singleton.2 ⟨p * q, by rw [Subring.smul_def]; exact hspan⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hmem`. Rewrite `ha` using `[Subring.smul_def, smul_eq_mul]`. Establish `hu : IsUnit ((δ : E) * p * q)`. Apply `isUnit_of_mul_isUnit_left (y := (δ : E))` to reduce the goal to its premises. Rewrite using `[show (δ : E) * p * q * δ = algebraMap F E (ϖ : F) by rw [← hN, hq', hp']; ring]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isUnit_algebraMap_uniformizer L hϖ`. Establish `h1 : (a : E) * δ = 1`. Establish `: ((δ : E) * p * q) * ((a : E) * δ) = ((δ : E) * p * q) * 1`. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.mul_left_cancel this`. Establish `hδ : IsUnit δ` using `isUnit_iff_exists_inv'.2 ⟨a, Subtype.ext (by simpa using h1)⟩`. Establish `hK : K = ⊤`. Rewrite using `[← Submodule.IsPrincipal.span_singleton_generator K]`. Conclude with `Ideal.span_singleton_eq_top.2 hδ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1K : (1 : L.O) ∈ K` using `hK ▸ Submodule.mem_top`. Take `⟨r, s, hrs⟩` from `Ideal.mem_span_pair.1 h1K`. Use `⟨r, r.2, s, s.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hrs` as an intermediate fact. Simplify using `only [Subring.coe_add, Subring.coe_mul, Subring.coe_one, π₁, π₂] at this`.
-
-Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma exists_coprime_combination_pi_cj (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ)
     (hPID : IsPrincipalIdealRing L.O) {π : E} (hπ : π ∈ L.O)
@@ -257,15 +255,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] [CharZero F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-Take `⟨r, hr, s, hs, hrs⟩` from `exists_coprime_combination_pi_cj L hϖ hPID hπ hN`. Establish `hσπ` using `_root_.GlobalTheory.UnramOrder.cj_mem L hπ`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.UnramOrder.exists_trace L (mul_mem hx (mul_mem hσπ hs))`. Establish `hcj : L.cj (x * (L.cj π * s)) = L.cj x * π * L.cj s`. Rewrite using `[map_mul, map_mul, L.cj_cj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hwO : x * r - L.cj x * L.cj s ∈ L.O` using `sub_mem (mul_mem hx hr) (mul_mem (_root_.GlobalTheory.UnramOrder.cj_mem L hx) (_root_.GlobalTheory.UnramOrder.cj_mem L hs))`. Establish `hxa : x = algebraMap F E (a : F) + π * (x * r - L.cj x * L.cj s)`. Rewrite using `[← ha, hcj]`. Take the linear combination `(-x) * hrs`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hau : IsUnit a`. Assume the negation of the conclusion as `hna`. Take `⟨d, rfl⟩` from `uniformizer_dvd_of_not_isUnit hϖ hna`. Use `hnot ⟨L.cj π * algebraMap F E (d : F) + (x * r - L.cj x * L.cj s), add_mem (mul_mem hσπ (algebraMap_integer_mem_O' L d)) hwO, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Take `⟨v, rfl⟩` from `hau`. Establish `hv : algebraMap F E ((v : 𝒪[F]) : F) * algebraMap F E ((↑v⁻¹ : 𝒪[F]) : F) = 1`. Rewrite using `[← map_mul, show ((v : 𝒪[F]) : F) * ((↑v⁻¹ : 𝒪[F]) : F) = 1 by`. Conclude with `congrArg Subtype.val v.mul_inv, map_one]` after adjusting the coercions. Use `⟨algebraMap F E ((↑v⁻¹ : 𝒪[F]) : F), algebraMap_integer_mem_O' L _, (x * r - L.cj x * L.cj s) * algebraMap F E ((↑v⁻¹ : 𝒪[F]) : F), mul_mem hwO (algebraMap_integer_mem_O' L _), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `conv_lhs => rw [hxa]`. Take the linear combination `hv`.
+A detailed English derivation is pending.
 -/
 private lemma exists_mul_eq_one_add_pi_mul_of_not_dvd (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ)
     (hPID : IsPrincipalIdealRing L.O) {π : E} (hπ : π ∈ L.O)
@@ -304,9 +302,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 variable [IsNonarchimedeanLocalField F] [CharZero F] in
 /- English proof (translation)
-Take `⟨t, ht⟩` from `_root_.GlobalTheory.UnramOrder.exists_trace L hw`. Take `⟨n, hn⟩` from `_root_.GlobalTheory.UnramOrder.exists_norm L hw`. Apply `exists_inv_of_isUnit_norm L (sub_mem (one_mem _) (mul_mem (algebraMap_integer_mem_O' L ϖ) hw)) (c := 1 - ϖ * (t - ϖ * n))` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, cj_algebraMap', map_one, show ((1 - ϖ * (t - ϖ * n) : 𝒪[F]) : F) = 1 - (ϖ : F) * ((t : F) - ϖ * n) by push_cast; ring]`. Simplify using `only [map_sub, map_mul, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-algebraMap F E (ϖ : F)) * ht + (algebraMap F E (ϖ : F)) ^ 2 * hn`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (ϖ * (t - ϖ * n)) with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_left h) hϖ.not_isUnit`. Conclude with `h`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private lemma exists_inv_one_sub_uniformizer_mul (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {ϖ : 𝒪[F]}
     (hϖ : Irreducible ϖ) {w : E} (hw : w ∈ L.O) :
@@ -329,13 +327,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] [CharZero F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨⟨x₁, hx₁I, hx₁⟩, ⟨x₂, hx₂I, hx₂⟩⟩` from `hcon`. Establish `hN' : L.cj π * L.cj (L.cj π) = algebraMap F E (ϖ : F)` using `by rw [L.cj_cj, mul_comm, hN]`. Take `⟨u₁, hu₁, w₁, hw₁, h₁⟩` from `exists_mul_eq_one_add_pi_mul_of_not_dvd L hϖ hPID hπ hN x₁.2 (by rintro ⟨c, hc, h⟩; exact hx₁ c hc h)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₂, hu₂, w₂, hw₂, h₂⟩` from `exists_mul_eq_one_add_pi_mul_of_not_dvd L hϖ hPID (_root_.GlobalTheory.UnramOrder.cj_mem L hπ) hN' x₂.2 (by rintro ⟨c, hc, h⟩; exact hx₂ c hc h)`. Take `⟨y, hy, hy1⟩` from `exists_inv_one_sub_uniformizer_mul L hϖ (mul_mem hw₁ hw₂)`. Set `z : L.O` to `x₁ * ⟨u₁, hu₁⟩ + x₂ * ⟨u₂, hu₂⟩ - x₁ * ⟨u₁, hu₁⟩ * x₂ * ⟨u₂, hu₂⟩`. Establish `hz : z ∈ I` using `sub_mem (add_mem (I.mul_mem_right _ hx₁I) (I.mul_mem_right _ hx₂I)) (I.mul_mem_right _ (I.mul_mem_left _ hx₂I))`. Establish `hzE : (z : E) = 1 - algebraMap F E (ϖ : F) * (w₁ * w₂)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (z : E) = (x₁ : E) * u₁ + x₂ * u₂ - x₁ * u₁ * x₂ * u₂ from rfl]`. Take the linear combination `(1 - (x₂ : E) * u₂) * h₁ + (-(π * w₁)) * h₂ + (-(w₁ * w₂)) * hN`. Apply `hI` to reduce the goal to its premises. Use `Ideal.eq_top_of_isUnit_mem I hz (isUnit_iff_exists_inv.2 ⟨⟨y, hy⟩, Subtype.ext ?_⟩)` and prove the remaining obligations. Use `show (z : E) * y = 1`.
-
-Rewrite using `[hzE, hy1]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ideal_le_pi_or_le_cj_pi_of_proper (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ)
     (hPID : IsPrincipalIdealRing L.O) {π : E} (hπ : π ∈ L.O)
@@ -365,11 +361,9 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ`. Take `⟨-, -, -, hPID, -, -, -, hnorm⟩` from `_root_.GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Distinguish the cases in `h : ∃ y ∈ L.O, (∀ z ∈ L.O, y * z ≠ 1) ∧ ∀ c ∈ L.O, y ≠ algebraMap F E ϖ * c`. Use `right`. Take `⟨y, hy, hyu, hyϖ⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ, hN⟩` from `exists_norm_eq_uniformizer' L hϖ hPID hnorm hy hyu hyϖ`. Conclude with `⟨π, hπ, hN, fun I hI => ideal_le_pi_or_le_cj_pi_of_proper L hϖ hPID hπ hN I hI⟩`. Use `left push_neg at h`. Introduce `I hI x hx`. Apply `h x x.2` to reduce the goal to its premises.
-
-Introduce `z hz hxz`. Conclude with `hI (Ideal.eq_top_of_isUnit_mem I hx (isUnit_iff_exists_inv.2 ⟨⟨z, hz⟩, Subtype.ext hxz⟩))`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.UnramOrder.proper_ideals : ∀ {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E]

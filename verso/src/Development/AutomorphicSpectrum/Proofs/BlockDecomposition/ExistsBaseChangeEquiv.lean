@@ -6,7 +6,7 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.ExteriorBase
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.TopForm.isBaseChange_exteriorPower (TensorProduct.isBaseChange A M R) a`. Use `⟨h.equiv, fun r m => ?_⟩` and prove the remaining obligations. Rewrite using `[h.equiv_tmul, GlobalTheory.exteriorPowerMapOver_ιMulti]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_baseChange_equiv (A R M : Type) [CommRing A] [CommRing R] [Algebra A R]
     [AddCommGroup M] [Module A M] (a : ℕ) :

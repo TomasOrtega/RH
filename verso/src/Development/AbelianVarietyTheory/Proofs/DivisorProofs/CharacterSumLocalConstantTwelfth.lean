@@ -7,15 +7,13 @@ open scoped ComplexOrder
 namespace GlobalTheory.CouplingCosets
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℚ (Sp E n) := Module.Finite.trans E (Sp E n)`. Establish `hd : Module.finrank ℚ (Sp E n) = Module.finrank ℚ E * n`. Rewrite using `[← Module.finrank_mul_finrank ℚ E (Sp E n)]`. Simplify using the standard rewrite rules. Take `⟨hf, hle⟩` from `GlobalTheory.SemilocalClasses.finite_card_le A₁.subtype.toAddMonoidHom (Submodule.subtype_injective _) (A₀.comap A₁.subtype).mkQ.toAddMonoidHom (Submodule.mkQ_surjective _) c hc fun x => (Submodule.Quotient.mk_eq_zero _).2 (h x x.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[hd]`. Set `φ : (A₁ ⧸ A₀.comap A₁.subtype) → Set (Sp E n)` to `fun q => {z | z - ((Quotient.out q : A₁) : Sp E n) ∈ A₀}`. Establish `hsub : {Y : Set (Sp E n) | ∃ y ∈ A₁, Y = {z | z - y ∈ A₀}} ⊆ Set.range φ`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨Submodule.Quotient.mk ⟨y, hy⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (Submodule.Quotient.mk (Quotient.out (Submodule.Quotient.mk (p` using `A₀.comap A₁.subtype) ⟨y, hy⟩)) : A₁ ⧸ A₀.comap A₁.subtype) = Submodule.Quotient.mk ⟨y, hy⟩ := Quotient.out_eq _`. Establish `h2` using `(Submodule.Quotient.eq _).1 h1`. Use `set w : A₁ := Quotient.out (Submodule.Quotient.mk (p := A₀.comap A₁.subtype) ⟨y, hy⟩) with hw`. Establish `h3 : (w : Sp E n) - y ∈ A₀` using `h2`. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show z - (w : Sp E n) ∈ A₀ ↔ z - y ∈ A₀`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Simplify using `using A₀.add_mem hz h3`. Introduce `hz`.
-
-Simplify using `using A₀.sub_mem hz h3`. Use `⟨(Set.finite_range φ).subset hsub, ((Set.ncard_le_ncard hsub (Set.finite_range φ)).trans ?_).trans hle⟩` and prove the remaining obligations. Conclude with `Finite.card_range_le φ`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_ncard_cosets {E : Type} [Field E] [NumberField E] {n : ℕ} (A₁ A₀ : Submodule (𝓞 E) (Sp E n)) (c : ℕ) (hc : 0 < c)
     (h : ∀ y ∈ A₁, c • y ∈ A₀) :
@@ -49,17 +47,15 @@ theorem finite_ncard_cosets {E : Type} [Field E] [NumberField E] {n : ℕ} (A₁
   exact Finite.card_range_le φ
 
 /- English proof (translation)
-Establish `hvG : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs`. Introduce `P`. Break down `Finset.mem_union.mp P.2 with h | h` into its components or cases. Conclude with `h`. Establish `h0 : QE sel (mu : Chr X.F X.E X.K) = ∅`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmu]`. Conclude with `twistPrimes_trivialTuple_empty sel Sg`. Rewrite `h` using `[h0]`. Simplify using `at h`. Use `finite_ncard_cosets _ _ _ (Nat.mul_pos (hPr.g_prime 0).pos (hPr.g_prime 1).pos) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `y hy`. Unfold `locLat at hy ⊢`. Rewrite `hy`, the goal using `[Submodule.mem_iInf]`. Introduce `P`. Establish `h1` using `hy P`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, the goal using `[Submodule.mem_comap]`. Simplify using `only [hvG P, if_true, zpow_neg, zpow_one, inv_inv, zpow_zero, inv_one, one_smul, LinearMap.restrictScalars_apply, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] at h1 ⊢`. Break down `Finset.mem_union.mp (hvG P) with h | h` into its components or cases. Establish `hq : Formalism.L2.Col.qOf P.1 = Pr.g 0` using `hPr.vG_norm 0 _ h`. Rewrite `h1` using `[hq]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_nsmul]`. Conclude with `nsmul_mem h1 _`. Establish `hq : Formalism.L2.Col.qOf P.1 = Pr.g 1` using `hPr.vG_norm 1 _ h`. Rewrite `h1` using `[hq]`. Rewrite using `[mul_nsmul']`.
-
-Conclude with `nsmul_mem h1 _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_ncard_ybSet {X : Fields} {Pr : Primes X} (hPr : Pr.Ok)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {Sg : Set ℕ} (mu : Tup X.F X.E X.K Sg) (hmu : mu = 1)
@@ -95,15 +91,15 @@ theorem finite_ncard_ybSet {X : Fields} {Pr : Primes X} (hPr : Pr.Ok)
     exact nsmul_mem h1 _
 
 /- English proof (translation)
-Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H n hn`. Take `⟨⟨-, -, -, -, -, -, hX, -, -, hPr, -, -, hg, -⟩, -, -, -, hmu, -⟩` from `H`. Establish `hf : Module.finrank ℚ X.E = 2 * N.R.f`. Rewrite using `[← GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.card_eq_f N X pl.symm, ← Module.finrank_mul_finrank ℚ X.F X.E, hX.ok.rankE, ← hX.ok.card_Tau, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key : ∀ L : Submodule (𝓞 X.E) (Sp X.E n), ((ybSet sel mu cst L).ncard : ℝ) ≤ Real.exp (2 * errUnit N (Pr.T u))`. Introduce `L`. Establish `h1` using `(finite_ncard_ybSet hPr sel mu hmu cst L).2`. Rewrite `h1` using `[hf, hg 0, hg 1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `g0 : (1 : ℝ) ≤ N.g 0` using `by rw [← hg 0]; exact_mod_cast (hPr.g_prime 0).one_le`. Establish `g1 : (1 : ℝ) ≤ N.g 1` using `by rw [← hg 1]; exact_mod_cast (hPr.g_prime 1).one_le`. Establish `hT : (1 : ℝ) ≤ Pr.T u` using `by exact_mod_cast (hPr.T_prime u).one_le`. Establish `gg : (1 : ℝ) ≤ (N.g 0 : ℝ) * N.g 1` using `one_le_mul_of_one_le_of_one_le g0 g1`. Establish `ggT : (N.g 0 : ℝ) * N.g 1 ≤ (N.g 0 : ℝ) * N.g 1 * Pr.T u` using `le_mul_of_one_le_right (by linarith) hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : 2 * N.R.f * n ≤ 2 * N.R.f * (N.R.m ^ 2 * N.Nm ^ 2)`. Use `Nat.mul_le_mul_left _ (hn.trans ?_)` and prove the remaining obligations. Establish `hm : 1 ≤ N.R.m ^ 2` using `Nat.one_le_pow _ _ (by have := N.R.two_le_m; omega)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.exp_log (show 0 < (N.g 0 : ℝ) * N.g 1 * Pr.T u by linarith), ← Real.exp_nat_mul, Real.exp_eq_exp]`. Unfold `errUnit`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨key _, fun L _ => key L⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 -/
 theorem ncard_ybSet_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), Hyp N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ n ≤ N.Nm, (((ybSet sel mu cst (Formalism.L2.Col.stdLat X.E n)).ncard : ℝ) ≤ Real.exp (C * errUnit N (Pr.T u))) ∧ ∀ L : Submodule (𝓞 X.E) (Sp X.E n), Submodule.IsLattice X.E L → ((ybSet sel mu cst L).ncard : ℝ) ≤ Real.exp (C * errUnit N (Pr.T u)) := by
   refine ⟨2, by norm_num, ?_⟩

@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.TauFrame
 
 /- English proof (translation)
-Take `⟨ι, a, ha, hsp, hli⟩` from `exists_linearIndependent' C f`. Use `haveI : Finite ι := Finite.of_injective a ha`. Use `haveI := Fintype.ofFinite ι`. Establish `hb` using `Module.finrank_eq_card_basis (Module.Basis.mk hli (by rw [hsp, hf]))`. Rewrite `hb` using `[Module.finrank_fin_fun]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `e : Fin r ≃ ι` to `(Fintype.equivFinOfCardEq hb.symm).symm`. Conclude with `⟨a ∘ e, hli.comp e e.injective⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_basis {C : Type} [Field C] {d r : ℕ} (f : Fin d → Fin r → C)
     (hf : Submodule.span C (Set.range f) = ⊤) :
@@ -32,14 +32,14 @@ section Norm
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-The claim follows from `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc (fun i _ => h i)`.
+A detailed English derivation is pending.
 -/
 theorem norm_sum_le {n : ℕ} (f : Fin n → C) {c : ℝ} (hc : 0 ≤ c) (h : ∀ i, ‖f i‖ ≤ c) :
     ‖∑ i, f i‖ ≤ c :=
   IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc (fun i _ => h i)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `norm_sum_le _ (mul_nonneg hx hy) fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA _ _) (hB _ _) (norm_nonneg _) hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_le {a b c : ℕ} (A : Matrix (Fin a) (Fin b) C) (B : Matrix (Fin b) (Fin c) C)
     {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (hA : ∀ i j, ‖A i j‖ ≤ x) (hB : ∀ i j, ‖B i j‖ ≤ y) (i j) :
@@ -50,7 +50,7 @@ theorem norm_mul_le {a b c : ℕ} (A : Matrix (Fin a) (Fin b) C) (B : Matrix (Fi
   exact mul_le_mul (hA _ _) (hB _ _) (norm_nonneg _) hx
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `norm_sum_le _ zero_le_one fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA _ _) (norm_nonneg _) (hv _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mulVec_le {a b : ℕ} (A : Matrix (Fin a) (Fin b) C) (v : Fin b → C)
     (hA : ∀ i j, ‖A i j‖ ≤ 1) (hv : ∀ i, ‖v i‖ ≤ 1) (i) : ‖A.mulVec v i‖ ≤ 1 := by
@@ -60,7 +60,7 @@ theorem norm_mulVec_le {a b : ℕ} (A : Matrix (Fin a) (Fin b) C) (v : Fin b →
   exact mul_le_one₀ (hA _ _) (norm_nonneg _) (hv _)
 
 /- English proof (translation)
-Use `⟨‖fun p : Fin a × Fin a => A p.1 p.2‖, norm_nonneg _, ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `(pi_norm_lt_iff hρ).2 fun p => h _ _`. Conclude with `norm_le_pi_norm (fun p : Fin a × Fin a => A p.1 p.2) (i, j)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bound_lt {a : ℕ} (A : Matrix (Fin a) (Fin a) C) {ρ : ℝ} (hρ : 0 < ρ)
     (h : ∀ i j, ‖A i j‖ < ρ) : ∃ x, 0 ≤ x ∧ x < ρ ∧ ∀ i j, ‖A i j‖ ≤ x := by
@@ -71,7 +71,7 @@ theorem exists_bound_lt {a : ℕ} (A : Matrix (Fin a) (Fin a) C) {ρ : ℝ} (hρ
 end Norm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hA _ _) (hB _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mul {C : Type} [Field C] (F : Subfield C) {a b c : ℕ} (A : Matrix (Fin a) (Fin b) C)
     (B : Matrix (Fin b) (Fin c) C) (hA : ∀ i j, A i j ∈ F) (hB : ∀ i j, B i j ∈ F) (i j) :
@@ -85,13 +85,13 @@ def subC (F : IntermediateField ℚ_[l] (Om l)) : Subfield (PadicComplex l) :=
   F.toSubfield.map (algebraMap (Om l) (PadicComplex l))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_subC {F : IntermediateField ℚ_[l] (Om l)} {y : PadicComplex l} :
     y ∈ subC F ↔ y ∈ inC F := Iff.rfl
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `hy`. Establish `h1` using `ha.1 σ x`. Establish `h2 : σ x = x` using `hσ ⟨x, hx⟩`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_fix {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
     {F : IntermediateField ℚ_[l] (Om l)} {σ : GQ l} (hσ : σ ∈ F.fixingSubgroup)
@@ -103,7 +103,7 @@ theorem act_fix {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : Is
   exact h1
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mul' {a b c : ℕ} (f : PadicComplex l ≃+* PadicComplex l)
     (A : Matrix (Fin a) (Fin b) (PadicComplex l)) (B : Matrix (Fin b) (Fin c) (PadicComplex l)) :
@@ -112,47 +112,41 @@ theorem map_mul' {a b c : ℕ} (f : PadicComplex l ≃+* PadicComplex l)
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Take `⟨hdet, hDi, hDl, ⟨hgen, hcont, hint, hmul, hH, hg⟩, hrel⟩` from `hD`. Use `set e' := Dm⁻¹ * E * Dm with he'`. Establish `h1 : Dm * Dm⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `h2 : Dm⁻¹ * Dm = 1` using `Matrix.nonsing_inv_mul _ hdet`. Establish `hDe : Dm * e' = E * Dm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he', ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hfixm : ∀ σ ∈ Gj K m, ∀ {a b : ℕ} (X : Matrix (Fin a) (Fin b) (PadicComplex l)), (∀ i j, X i j ∈ subC (Ks K m)) → X.map (act σ) = X`. Introduce `σ hσ a b X hX`. Use extensionality with `i j`. Conclude with `act_fix ha hσ (hX i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomm : ∀ σ ∈ Gj K m, e' * U σ = U σ * e'`. Introduce `σ hσ`. Establish `: Dm * (e' * U σ) = Dm * (U σ * e')`. Rewrite using `[← Matrix.mul_assoc, hDe, Matrix.mul_assoc, hrel σ hσ, ← Matrix.mul_assoc, hEM σ hσ, Matrix.mul_assoc, ← Matrix.mul_assoc Dm, hrel σ hσ, Matrix.mul_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← hEσ σ hσ]`. Use `conv_rhs => rw [← hfixm σ hσ e' hEF]`. Rewrite using `[← map_mul', ← map_mul', hDe]`. Establish `h3` using `congrArg (fun X => Dm⁻¹ * X) this`. Simplify `h3` using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkey : ∀ σ ∈ Gj K m, R * U σ * S * R = R * U σ`. Introduce `σ hσ`. Establish `h3 : R * U σ = R * U σ * e'`. Rewrite using `[Matrix.mul_assoc, ← hcomm σ hσ, ← Matrix.mul_assoc, hRe]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = R * U σ := by rw [heSR, ← h3]`. Establish `heq : ∀ σ ∈ Gj K m, (R * Dm⁻¹) * M σ = (R * U σ * S) * (R * Dm⁻¹).map (act σ)`. Introduce `σ hσ`. Establish `h3 : Dm.map (act σ) * Dm⁻¹.map (act σ) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul', h1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h4 : Dm⁻¹ * M σ = U σ * Dm⁻¹.map (act σ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h3, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [← hrel σ hσ, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[map_mul', hfixm σ hσ R (fun i j => (hR i j).1), ← Matrix.mul_assoc, hkey σ hσ, Matrix.mul_assoc, h4, Matrix.mul_assoc]`. Establish `hsec : R * Dm⁻¹ * (Dm * S) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Dm⁻¹, h2, Matrix.one_mul, hRS]`. Use `⟨⟨hgen, ?_, ?_, ?_, ?_, ?_⟩, ?_, heq, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a b`. Simplify using `only [Matrix.mul_apply]`. Use `continuousOn_finset_sum _ fun k _ => ContinuousOn.mul ?_ continuousOn_const` and prove the remaining obligations. Conclude with `continuousOn_finset_sum _ fun j _ => ContinuousOn.mul continuousOn_const (hcont _ _)`. Introduce `σ hσ a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨mem_subC.1 (mem_mul _ _ _ (mem_mul _ _ _ (fun i j => (hR i j).1) (fun i j => mem_subC.2 (hint σ hσ i j).1)) (fun i j => (hS i j).1) a b), ?_⟩` and prove the remaining obligations. Use `norm_mul_le (R * U σ) S (mul_nonneg zero_le_one zero_le_one) zero_le_one (norm_mul_le R (U σ) zero_le_one zero_le_one (fun i j => (hR i j).2) (fun i j => (hint σ hσ i j).2)) (fun i j => (hS i j).2) a b` as an intermediate fact. Simplify using `using this`. Introduce `σ hσ τ hτ`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hmul σ hσ τ hτ, ← Matrix.mul_assoc (R * U σ * S), ← Matrix.mul_assoc (R * U σ * S), hkey σ hσ]`. Simplify using `only [Matrix.mul_assoc]`. Introduce `σ hσ`. Simplify using `only`. Rewrite using `[hH σ hσ, Matrix.mul_one, hRS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b`. Establish `hrho : 0 < rho1 l` using `Real.rpow_pos_of_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Take `⟨x, hx0, hx, hxb⟩` from `exists_bound_lt (U g - 1) hrho hg`. Establish `h3 : R * U g * S - 1 = R * (U g - 1) * S`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hRS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only`. Rewrite using `[h3]`. Use `norm_mul_le (R * (U g - 1)) S (mul_nonneg zero_le_one hx0) zero_le_one (norm_mul_le R (U g - 1) zero_le_one hx0 (fun i j => (hR i j).2) hxb) (fun i j => (hS i j).2) a b` as an intermediate fact. Conclude with `lt_of_le_of_lt (by simpa using this) hx`. Use `set Pm := R * Dm⁻¹ with hPm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsp : Submodule.span (PadicComplex l) (Set.range fun k => Pm.mulVec (e k)) = ⊤`. Establish `h3 : Submodule.span (PadicComplex l) (Set.range e) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by simp)`. Establish `h4 : (Set.range fun k => Pm.mulVec (e k)) = Pm.mulVecLin '' Set.range e`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, ← Submodule.map_span, h3, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `y`. Use `⟨(Dm * S).mulVec y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hsec, Matrix.one_mulVec]`. Take `⟨κ, hκ⟩` from `exists_sub_basis _ hsp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨fun k => Pm.mulVec (e (κ k)), fun k => u (κ k), hκ, fun k => hJ _ fun h0 => ?_, ?_⟩` and prove the remaining obligations. Apply `hκ.ne_zero k` to reduce the goal to its premises. Establish `h3 : Pm * E = Pm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPm, he']`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_one]`. Use `_ = Pm := by rw [hRe]`. Use `show Pm.mulVec (e (κ k)) = 0`. Rewrite using `[← h3, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero]`. Introduce `σ hσ k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `hfix σ hσ (κ k)`. Unfold `twAct at h3 ⊢`. Establish `hmap : (fun a => act σ (Pm.mulVec (e (κ k)) a)) = (Pm.map (act σ)).mulVec (fun a => act σ (e (κ k) a))`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`.
-
-Simplify using `only`. Rewrite using `[hmap, Matrix.mulVec_mulVec, ← heq σ hσ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul, h3]`. Introduce `y hy`. Use `⟨Dm.mulVec (S.mulVec y), norm_mulVec_le _ _ hDi (norm_mulVec_le _ _ (fun i j => (hS i j).2) hy), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hsec, Matrix.one_mulVec]`.
-
-Introduce `x hx`. Establish `h3 : (l : PadicComplex l) • (R * Dm⁻¹).mulVec x = R.mulVec (((l : PadicComplex l) • Dm⁻¹).mulVec x)`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_mulVec]`. Rewrite using `[h3]`. Conclude with `norm_mulVec_le _ _ (fun i j => (hR i j).2) (norm_mulVec_le _ _ (fun i j => hDl i j) hx)`.
-
-Use `⟨Dm * e' * S, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frame_of_idem (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ)
     (ha : IsActC act) (K : FinExt l) (m d r : ℕ)

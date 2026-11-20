@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Unfold `orth`. Use `Submodule.mem_iInf _ |>.2 fun y => Submodule.mem_iInf _ |>.2 fun hy => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨i, rfl⟩ := hz`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Conclude with `hx i`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add, LinearMap.add_apply, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hy, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_orth_of {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (x : (VS D).V) (hx : ∀ i, (VS D).hT (F.e i) x = 0) :
     x ∈ orth (VS D) F.X := by
@@ -28,7 +28,7 @@ theorem mem_orth_of {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (x : (VS D).V) (h
   | smul c y _ hy => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hy, smul_zero]
 
 /- English proof (translation)
-Unfold `orth at hx`. Establish `h` using `(Submodule.mem_iInf _ |>.1 hx) (F.e i)`. Establish `h2` using `(Submodule.mem_iInf _ |>.1 h) (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `LinearMap.mem_ker.1 h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orth_e {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (x : (VS D).V) (hx : x ∈ orth (VS D) F.X) (i : Fin D.R.rS) :
     (VS D).hT (F.e i) x = 0 := by
@@ -38,9 +38,9 @@ theorem orth_e {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (x : (VS D).V) (hx : x
   exact LinearMap.mem_ker.1 h2
 
 /- English proof (translation)
-Establish `hinv : ((x₁⁻¹ : GLR D) : MatR D) = L⁻¹ * a₁⁻¹ * L`. Rewrite using `[Matrix.coe_units_inv, hx₁]`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, hinv, hx₂, Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem img_quot (L a₁ a₂ : MatR D) (hL : IsUnit L.det) (ha₁ : IsUnit a₁.det) (x₁ x₂ : GLR D)
     (hx₁ : (x₁ : MatR D) = L⁻¹ * a₁ * L) (hx₂ : (x₂ : MatR D) = L⁻¹ * a₂ * L) :
@@ -57,7 +57,7 @@ theorem img_quot (L a₁ a₂ : MatR D) (hL : IsUnit L.det) (ha₁ : IsUnit a₁
     _ = _ := by rw [Matrix.mul_nonsing_inv _ hL, Matrix.mul_one]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e : t = t * m₁ * m₁⁻¹` using `(mul_inv_cancel_right t m₁).symm`. Rewrite using `[e]`. Conclude with `act_mul f (t * m₁) m₁⁻¹ V₂ V₁⁻¹ (fun b => by show t (m₁ (f b)) = _; rw [ht, h₂]) (act_inv' f m₁ V₁ hV₁ h₁) b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_quot (f : Fin (D.R.rS + 1) → (VS D).V) (t m₁ m₂ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (V₁ V₂ : MatR D)
     (hV₁ : IsUpUni V₁) (h₁ : ∀ b, m₁ (f b) = ∑ c, V₁ c b • f c) (h₂ : ∀ b, m₂ (f b) = ∑ c, V₂ c b • f c)

@@ -8,13 +8,13 @@ open Finset Real
 namespace Formalism.CountingSumsFrames
 
 /- English proof (translation)
-Unfold `weylDim`. Rewrite using `[Fin.prod_univ_succ]`. Use `congr 1`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, lt_self_iff_false, if_false, one_mul, Fin.succ_pos, if_true, Fin.val_succ, Fin.val_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_succ]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_succ, Fin.cons_zero, Fin.not_lt_zero, if_false, one_mul, Fin.succ_lt_succ_iff, Fin.val_succ]`. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Use `push_cast`. Apply the tactic sequence `congr 1 <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem gram_weylDim_cons (n : ℕ) (A : ℤ) (μ : Fin n → ℤ) :
     weylDim (n + 1) (Fin.cons A μ : Fin (n + 1) → ℤ) =
@@ -39,11 +39,11 @@ theorem gram_weylDim_cons (n : ℕ) (A : ℤ) (μ : Fin n → ℤ) :
     · rfl
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Fin.prod_univ_castSucc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Rewrite using `[← ih]`. Establish `h` using `Nat.add_one_mul_choose_eq (a' + n) n`. Establish `h' : ((a' + n : ℝ) + 1) * (((a' + n).choose n : ℕ) : ℝ) = (((a' + n + 1).choose (n + 1) : ℕ) : ℝ) * ((n : ℝ) + 1)` using `by exact_mod_cast h`. Rewrite using `[show a' + (n + 1) = a' + n + 1 by ring]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Rewrite using `[mul_div_assoc', eq_div_iff hn.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gram_choose_prod (a' : ℕ) : ∀ n : ℕ,
     (((a' + n).choose n : ℕ) : ℝ) = ∏ j : Fin n, ((a' : ℝ) + ((j : ℕ) : ℝ) + 1) / (((j : ℕ) : ℝ) + 1) := by
@@ -63,7 +63,7 @@ theorem gram_choose_prod (a' : ℕ) : ∀ n : ℕ,
     linarith
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_prod_le (m : ℕ) (f g : Fin m → ℝ) (t : ℝ) (hf : ∀ j, 0 ≤ f j)
     (hfg : ∀ j, f j ≤ (1 + t) * g j) :
@@ -73,9 +73,9 @@ theorem gram_prod_le (m : ℕ) (f g : Fin m → ℝ) (t : ℝ) (hf : ∀ j, 0 �
       rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hp : 0 ≤ (1 + x) ^ n` using `by positivity`. Distinguish the cases in `h : 1 - y ≤ 0`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h` using `[not_le]`. Establish `e1 : 1 - y ≤ Real.exp (-y)` using `by linarith [Real.add_one_le_exp (-y)]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (1 + x) ^ n ≤ Real.exp (n * x)`. Rewrite using `[Real.exp_nat_mul]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp x]) n`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gram_key (n : ℕ) (x y : ℝ) (hx : 0 ≤ x) (hy : (n : ℝ) * x ≤ y) :
     (1 - y) * (1 + x) ^ n ≤ 1 := by
@@ -94,11 +94,11 @@ theorem gram_key (n : ℕ) (x y : ℝ) (hx : 0 ≤ x) (hy : (n : ℝ) * x ≤ y)
       _ = 1 := Real.exp_zero
 
 /- English proof (translation)
-Unfold `weylDim`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `j _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Establish `h1 : ((i : ℕ) : ℚ) < ((j : ℕ) : ℚ)` using `by exact_mod_cast (show (i : ℕ) < (j : ℕ) from h)`. Establish `h2 : μ j ≤ μ i` using `hμ h.le`. Establish `h3 : ((μ j : ℤ) : ℚ) ≤ ((μ i : ℤ) : ℚ)` using `by exact_mod_cast h2`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply div_pos <;> linarith`. Conclude with `one_pos`.
+A detailed English derivation is pending.
 -/
 theorem gram_weylDim_pos (m : ℕ) (μ : Fin m → ℤ) (hμ : Antitone μ) : 0 < weylDim m μ := by
   unfold weylDim
@@ -113,9 +113,9 @@ theorem gram_weylDim_pos (m : ℕ) (μ : Fin m → ℤ) (hμ : Antitone μ) : 0 
   · exact one_pos
 
 /- English proof (translation)
-Establish `hPW : 0 ≤ P * W` using `mul_nonneg hP0 hW`. Establish `hCW : 0 ≤ C * W` using `mul_nonneg hC hW`. Distinguish the cases in `h : 1 - y ≤ 0`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h` using `[not_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem one_sub_mul_mul_le (y P W C x : ℝ) (n : ℕ) (hW : 0 ≤ W) (hP0 : 0 ≤ P) (hC : 0 ≤ C)
     (hPle : P ≤ (1 + x) ^ n * C) (hkey : (1 - y) * (1 + x) ^ n ≤ 1) : (1 - y) * (P * W) ≤ C * W := by

@@ -8,11 +8,11 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hc' : (algebraMap Bh F).comp g = a.comp f` using `RingHom.ext hc`. Rewrite using `[← (d_pull DE ι).1 z, hp, (d_toDet _ z).1, ← ((d_gmap (D.map g)).2.2.1 (algebraMap Bh F) z).1, (d_gmap D).2.1, hc', ← (d_gmap D).2.1, hD, (d_gmap (GDet.ofRep ρ)).2.2.2, ← (d_toDet _ _).1, d_toDet_ofRep.1, (d_ofRep _ _ _).1]`. Use `congr 1`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single s b`. Establish `: (MonoidAlgebra.single s b : MonoidAlgebra Bh G) = b • MonoidAlgebra.single s 1` using `by simp`. Rewrite using `[MonoidAlgebra.mapRingHom_single]`. Use `conv_rhs => rw [this, map_smul, map_smul, hr]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[GDet.repAlg, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem characteristic_polynomial_compatibility {n : ℕ} {G B A Bh F E : Type} [Group G] [CommRing B] [CommRing A] [CommRing Bh] [CommRing F]
     [Ring E] [Algebra Bh E] [Algebra Bh F] (D : GDet n B G) (f : B →+* A) (g : B →+* Bh) (a : A →+* F)
@@ -37,7 +37,7 @@ private theorem characteristic_polynomial_compatibility {n : ℕ} {G B A Bh F E 
     simp [GDet.repAlg, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P Bh _ _ _ _ hc H y`. Take `⟨z, rfl⟩` from `H.surj y`. Conclude with `characteristic_polynomial_compatibility u.D P.f.toRingHom (algebraMap B Bh) (algebraMap x.A (FractionRing x.A)) (mat (x.ρ.comp h.p₀)) P.maps.1 hc H.ι H.DE H.pull H.r H.r_ι z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.hat_chi :
     ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] [Algebra O x.K] {r : Resid G.frame O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] {u : Pair r B} (P : OoPt h x u), ∀ {Bh : Type} [CommRing Bh] [IsLocalRing Bh] [Algebra B Bh] [Algebra Bh (FractionRing x.A)], (∀ b, algebraMap Bh (FractionRing x.A) (algebraMap B Bh b) = algebraMap x.A (FractionRing x.A) (P.f b)) → ∀ H : Hat h x u.D P.ker Bh (G.frame.eps O B), ∀ y, (H.DE.chi y).map (algebraMap Bh (FractionRing x.A)) = (H.r y).charpoly := by

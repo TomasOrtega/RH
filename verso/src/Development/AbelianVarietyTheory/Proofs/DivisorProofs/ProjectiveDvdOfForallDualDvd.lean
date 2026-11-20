@@ -5,11 +5,11 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O M _ _ _ _ a b h`. Take `⟨s, hs⟩` from `Module.projective_def'.mp (inferInstance : Module.Projective O M)`. Establish `hc : ∀ i : M, a ∣ s b i` using `fun i => h ((Finsupp.lapply i).comp s)`. Use `choose c hc using hc`. Use `⟨∑ i ∈ (s b).support, c i • i, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : Finsupp.linearCombination O id (s b) = b`. Simplify using `using LinearMap.congr_fun hs b`. Rewrite using `[Finset.smul_sum]`. Use `conv_lhs => rw [← hb]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← hc i]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem projective_dvd_of_forall_dual_dvd :
     ∀ (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] [Module.Projective O M] (a : O) (b : M),

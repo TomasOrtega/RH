@@ -16,19 +16,19 @@ namespace PositivityTheory.Rg.Sw.Glob.DilAH
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Unfold `cLoc`. Use `abs_pos.2 h` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem cLoc_pos {l : D.what₂.Tau → ℝ} {τ : D.what₂.Tau} (h : l τ ≠ 0) : 0 < cLoc l τ := by
   unfold cLoc; have := abs_pos.2 h; positivity
 
 /- English proof (translation)
-Unfold `tLoc cLoc; rw [abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * Real.pi)]`.
+Replace the relevant objects with their definitions.
 -/
 theorem abs_tLoc (l : D.what₂.Tau → ℝ) (τ : D.what₂.Tau) : |tLoc l τ| = cLoc l τ := by
   unfold tLoc cLoc; rw [abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 2 * Real.pi)]
 
 /- English proof (translation)
-Simplify using `only [gramB, evX, Qb, map_sum, map_mul, MvPolynomial.eval_X, if_true, Bool.false_eq_true, if_false, Matrix.trace, Matrix.diag]`. Use `push_cast`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul', Complex.star_def]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_gramB_real {m : ℕ} (ε : Fin m → Bool) (b : Bool) (u : Fin m → Fin n → ℂ) :
     (gramB ε b u).trace = ((∑ a ∈ Finset.univ.filter (fun a => ε a = b), ∑ j, ‖u a j‖ ^ 2 : ℝ) : ℂ) := by
@@ -40,7 +40,7 @@ theorem trace_gramB_real {m : ℕ} (ε : Fin m → Bool) (b : Bool) (u : Fin m �
   rw [← Complex.conj_mul', Complex.star_def]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_union]`. Apply the tactic sequence `congr 1; ext a; cases ε a <;> simp`. Rewrite using `[Finset.disjoint_filter]`. Introduce `a _ h`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_filter_bool {m : ℕ} (ε : Fin m → Bool) (f : Fin m → ℝ) :
     ∑ a ∈ Finset.univ.filter (fun a => ε a = true), f a + ∑ a ∈ Finset.univ.filter (fun a => ε a = false), f a =
@@ -50,9 +50,9 @@ theorem sum_filter_bool {m : ℕ} (ε : Fin m → Bool) (f : Fin m → ℝ) :
   · rw [Finset.disjoint_filter]; intro a _ h; simp [h]
 
 /- English proof (translation)
-Unfold `gC`. Use `congr 1`. Simplify using `only [Matrix.smul_mul, Matrix.one_mul, Matrix.trace_smul, smul_eq_mul, trace_gramB_real]`. Establish `h` using `sum_filter_bool (epsT t ε) (fun a => ∑ j, ‖u a j‖ ^ 2)`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,9 +72,9 @@ theorem gC_gauss {m : ℕ} (ε : Fin m → Bool) (t c : ℝ) (hc : 0 < c) (δ : 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Establish `e1 : gZf ε t c (Complex.I • 1) u = gC ε t c ((Complex.I * (c / c : ℝ)) • 1) ((-(Complex.I * (c / c : ℝ))) • 1) u`. Unfold `gZf gC`. Rewrite using `[div_self hc.ne', Complex.ofReal_one, mul_one, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Complex.star_def, Complex.conj_I]`. Rewrite using `[e1, gC_gauss ε t c hc c u]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[fP, evX, gs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fP_one {m : ℕ} (ε : Fin m → Bool) (t c : ℝ) (hc : 0 < c) :
     fP c (1 : PX m n) = gZf ε t c (Complex.I • 1) := by

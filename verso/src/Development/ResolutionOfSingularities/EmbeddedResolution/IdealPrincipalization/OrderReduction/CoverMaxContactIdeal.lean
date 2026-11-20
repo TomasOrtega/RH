@@ -42,7 +42,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, c.comp_struct, ← Category.assoc, morphismRestrict_ι, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comapEtale_map_comp_affineSpaceFinToSpec {k : Type u} [Field k] {X Y : Scheme.{u}}
     {q : Y ⟶ Spec (CommRingCat.of k)} (g : X ⟶ Y) {U : Y.Opens} {n : ℕ}
@@ -52,7 +52,7 @@ private theorem comapEtale_map_comp_affineSpaceFinToSpec {k : Type u} [Field k] 
   rw [Category.assoc, c.comp_struct, ← Category.assoc, morphismRestrict_ι, Category.assoc]
 
 /- English proof (translation)
-Use `c.isEtale` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem etale_comapEtale_map {k : Type u} [Field k] {X Y : Scheme.{u}}
     {q : Y ⟶ Spec (CommRingCat.of k)} (g : X ⟶ Y) [AlgebraicGeometry.Etale g]
@@ -78,14 +78,14 @@ Both sides reduce to the same expression.
     (EtaleChart.comapEtale g c).map = morphismRestrict g U ≫ c.map := rfl
 
 /- English proof (translation)
-The claim follows from `(Scheme.Opens.range_ι U).subset`.
+A detailed English derivation is pending.
 -/
 private theorem range_ι_base_subset {X : Scheme.{u}} (U : X.Opens) :
     Set.range U.ι.base ⊆ (U : Set ↥X) :=
   (Scheme.Opens.range_ι U).subset
 
 /- English proof (translation)
-Establish `h1 : (I.comap b).comap a = I.comap (a ≫ b)`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Establish `h2 : (I.comap b').comap a' = I.comap (a' ≫ b')`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Rewrite using `[h1, h2, hsq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_comap_eq_of_comp_eq {W X Y Z : Scheme.{u}} (a : W ⟶ X) (b : X ⟶ Z) (a' : W ⟶ Y)
     (b' : Y ⟶ Z) (hsq : a ≫ b = a' ≫ b') (I : Z.IdealSheafData) :
@@ -97,7 +97,7 @@ private theorem comap_comap_eq_of_comp_eq {W X Y Z : Scheme.{u}} (a : W ⟶ X) (
   rw [h1, h2, hsq]
 
 /- English proof (translation)
-The claim follows from `(MaxContactOpenCover.restrictIdeal_coverTripleOpen T hv i (MaxContactCoverData.coverMaxContactIdeal T hv)).trans (congrArg (fun J : (MaxContactOpenCover.coverPiece T hv i).IdealSheafData => J.comap (MaxContactOpenCover.coverPieceIso T hv i).inv) (hres i))`.
+A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_coverTripleOpen_coverMaxContactIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hres : ∀ i : (MaxContactCoverData.chosenCoverData T hv).idx,
@@ -112,23 +112,19 @@ private theorem restrictIdeal_coverTripleOpen_coverMaxContactIdeal (T : MarkedId
       J.comap (MaxContactOpenCover.coverPieceIso T hv i).inv) (hres i))
 
 /- English proof (translation)
-Use `hv.charZero` as an intermediate fact. Use `hv.smooth` as an intermediate fact. Use `hv.locallyOfFiniteType` as an intermediate fact. Establish `hftc : AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.coverMap T hv ≫ T.structMap)` using `(inferInstance : AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.coverTriple T hv).structMap)`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hxi⟩` from `MaxContactOpenCover.exists_mem_coverTripleOpen T hv x`. Establish `hAff0 : AlgebraicGeometry.IsAffine (MaxContactOpenCover.coverPiece T hv i)` using `hgood.isAffine i`. Establish `haffineOpen : IsAffineOpen (MaxContactOpenCover.coverTripleOpen T hv i)` using `isAffineOpen_opensRange (MaxContactOpenCover.coverPieceι T hv i)`. Use `⟨MaxContactOpenCover.coverTripleOpen T hv i, haffineOpen, hxi, ?_⟩` and prove the remaining obligations. Establish `hcompι : MaxContactOpenCover.coverPieceι T hv i ≫ MaxContactCoverData.coverMap T hv = ((MaxContactCoverData.chosenCoverData T hv).opens i).ι` using `sigma_ι_sigmaOpensDesc T.scheme (MaxContactCoverData.chosenCoverData T hv).opens i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsub : ∀ y : ↥(MaxContactCoverData.coverTriple T hv).scheme, y ∈ (↑(MaxContactOpenCover.coverTripleOpen T hv i) : Set ↥(MaxContactCoverData.coverTriple T hv).scheme) → (MaxContactCoverData.coverMap T hv).base y ∈ (↑((MaxContactCoverData.chosenCoverData T hv).opens i) : Set ↥T.sch …`. Introduce `y hy`. Establish `hy' : y ∈ Set.range (MaxContactOpenCover.coverPieceι T hv i).base` using `hy`. Take `⟨z, rfl⟩` from `hy'`. Establish `hz : (MaxContactCoverData.coverMap T hv).base ((MaxContactOpenCover.coverPieceι T hv i).base z) = ((MaxContactCoverData.chosenCoverData T hv).opens i).ι.base z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hcompι]`. Both sides reduce to the same expression. Rewrite using `[hz]`. Conclude with `range_ι_base_subset _ ⟨z, rfl⟩`. Break down `hgood.dichotomy i with ⟨hdisj, htop⟩ | ⟨n, c, j, hloc, hmc⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `left`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `y hy hy2`. Establish `hy3 : y ∈ orderAtLeastLocus ((MaxContactCoverData.balancedTunedIdeal T hv).comap (MaxContactCoverData.coverMap T hv)) (MaxContactCoverData.tunedMult T)` using `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy3` using `[orderAtLeastLocus_comap T.base T.structMap (MaxContactCoverData.coverMap T hv) (MaxContactCoverData.balancedTunedIdeal T hv) (MaxContactCoverData.tunedMult T)]`. Establish `hy4 : (MaxContactCoverData.coverMap T hv).base y ∈ orderAtLeastLocus (MaxContactCoverData.balancedTunedIdeal T hv) (MaxContactCoverData.tunedMult T)` using `hy3`. Conclude with `(Set.disjoint_left.mp hdisj) hy4 (hsub y hy2)`. Rewrite using `[restrictIdeal_coverTripleOpen_coverMaxContactIdeal T hv hres i, htop]`. Conclude with `Scheme.IdealSheafData.comap_top _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right`. Use `⟨n, MaxContactOpenCover.coverEtaleChart T hv i c, j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[restrictIdeal_coverTripleOpen_coverMaxContactIdeal T hv hres i, hloc]`. Conclude with `(MaxContactOpenCover.coverEtaleChart_coordIdeal T hv i c {j}).symm`. Establish `hmc' : c.coordIdeal {j} ≤ (maxContactIdeal T.base T.structMap (MaxContactCoverData.balancedTunedIdeal T hv) (MaxContactCoverData.tunedMult T)).comap ((MaxContactCoverData.chosenCoverData T hv).opens i).ι` using `hmc`.
-
-Establish `hmax : maxContactIdeal (MaxContactCoverData.coverTriple T hv).base (MaxContactCoverData.coverTriple T hv).structMap (MaxContactCoverData.coverTriple T hv).ideal (MaxContactCoverData.tunedMult T) = (maxContactIdeal T.base T.structMap (MaxContactCoverData.balancedTunedIdeal T hv) ( …` using `derivIdealSheafIterate_comap T.base T.structMap (MaxContactCoverData.coverMap T hv) (MaxContactCoverData.tunedMult T - 1) (MaxContactCoverData.balancedTunedIdeal T hv)`. Establish `h1 : (MaxContactOpenCover.coverEtaleChart T hv i c).coordIdeal {j} = (c.coordIdeal {j}).comap (MaxContactOpenCover.coverPieceIso T hv i).inv` using `MaxContactOpenCover.coverEtaleChart_coordIdeal T hv i c {j}`. Establish `h2` using `comap_comap_eq_of_comp_eq (MaxContactOpenCover.coverTripleOpen T hv i).ι (MaxContactCoverData.coverMap T hv) (MaxContactOpenCover.coverPieceIso T hv i).inv ((MaxContactCoverData.chosenCoverData T hv).opens i).ι (MaxContactOpenCover.coverTripleOpen_ι_comp_coverMap T hv i) (maxCont …`. Establish `h3 : (c.coordIdeal {j}).comap (MaxContactOpenCover.coverPieceIso T hv i).inv ≤ ((maxContactIdeal T.base T.structMap (MaxContactCoverData.balancedTunedIdeal T hv) (MaxContactCoverData.tunedMult T)).comap ((MaxContactCoverData.chosenCoverData T hv).opens i).ι).comap (MaxContactOpen …` using `Scheme.IdealSheafData.comap_mono _ hmc'`. Use `show (MaxContactOpenCover.coverEtaleChart T hv i c).coordIdeal {j} ≤ restrictIdeal (maxContactIdeal (MaxContactCoverData.coverTriple T hv).base (MaxContactCoverData.coverTriple T hv).structMap (MaxContactCoverData.coverTriple T hv).ideal (MaxContactCoverData.tunedMult T)) (MaxCon …`.
-
-Rewrite using `[hmax]`. Conclude with `(le_of_eq h1).trans (le_of_le_of_eq h3 h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurface_coverMaxContactIdeal_of_comap_eq (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     [AlgebraicGeometry.LocallyOfFiniteType (MaxContactCoverData.coverTriple T hv).structMap]
@@ -224,21 +220,21 @@ theorem isMaxContactHypersurface_coverMaxContactIdeal_of_comap_eq (T : MarkedIde
       exact (le_of_eq h1).trans (le_of_le_of_eq h3 h2.symm)
 
 /- English proof (translation)
-Take `⟨i, hxi⟩` from `MaxContactOpenCover.exists_mem_coverTripleOpen T hv x`. Establish `h1` using `MaxContactOpenCover.restrictIdeal_coverTripleOpen T hv i (MaxContactCoverData.coverMaxContactIdeal T hv)`. Break down `hgood.dichotomy i with ⟨_hdisj, htop⟩ | ⟨n, c, j, hlocal, _hmc⟩` into its components or cases. Establish `h2 : ((MaxContactCoverData.coverMaxContactIdeal T hv).comap (MaxContactOpenCover.coverPieceι T hv i)).comap (MaxContactOpenCover.coverPieceIso T hv i).inv = ⊤`. Rewrite using `[hres i, htop]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.IdealSheafData.comap_top _`. Establish `key` using `h1.trans h2`. Establish `hsm : AlgebraicGeometry.Smooth (MaxContactCoverData.coverTriple T hv).structMap`. Use `MaxContactCoverData.smooth_coverMap_of_isAdmissible T hv` as an intermediate fact. Use `hv.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(inferInstance : AlgebraicGeometry.Smooth (MaxContactCoverData.coverMap T hv ≫ T.structMap))`. Take `⟨U, m, hxU, hUle, -, ⟨ch⟩⟩` from `exists_etaleChart_le (MaxContactCoverData.coverTriple T hv).structMap x (MaxContactOpenCover.coverTripleOpen T hv i) hxi`. Establish `keyU : restrictIdeal (MaxContactCoverData.coverMaxContactIdeal T hv) U = ⊤`. Apply the tactic sequence `apply restrictIdeal_eq_top_of_le <;> assumption`. Use `inStrictNormalCrossingPositionAt_of_exists_etaleChart ⟨U, hxU, m, ch, fun _ => none, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `r _hr s _hs t hrt _hst`. Simplify using `at hrt`. Introduce `r hr _hnone`. Establish `hr1 : r < 1` using `by simpa using hr`. Establish `hr0 : r = 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hr0` using the available equality. Conclude with `keyU`. Introduce `r _hr t hrt`. Simplify using `at hrt`. Establish `h2 : ((MaxContactCoverData.coverMaxContactIdeal T hv).comap (MaxContactOpenCover.coverPieceι T hv i)).comap (MaxContactOpenCover.coverPieceIso T hv i).inv = (MaxContactOpenCover.coverEtaleChart T hv i c).coordIdeal {j}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hres i, hlocal, MaxContactOpenCover.coverEtaleChart_coordIdeal]`. Establish `key` using `h1.trans h2`. Use `inStrictNormalCrossingPositionAt_of_exists_etaleChart ⟨MaxContactOpenCover.coverTripleOpen T hv i, hxi, n, MaxContactOpenCover.coverEtaleChart T hv i c, fun _ => some j, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr s hs t _hrt _hst`. Establish `hr1 : r < 1` using `by simpa using hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs1 : s < 1` using `by simpa using hs`. Use linear arithmetic over natural numbers and integers. Introduce `r _hr hnone`. Simplify using `at hnone`. Introduce `r hr t hrt`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hr1 : r < 1` using `by simpa using hr`. Establish `hr0 : r = 0` using `by omega`. Substitute `hr0` using the available equality. Take `rfl : j = t` from `Option.some.inj hrt`. Conclude with `key`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPositionAt_coverMaxContactIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType
@@ -298,7 +294,7 @@ theorem inStrictNormalCrossingPositionAt_coverMaxContactIdeal (T : MarkedIdealWi
       exact key
 
 /- English proof (translation)
-Use `(inStrictNormalCrossingPosition_iff _ _).mpr ⟨?_, fun x => inStrictNormalCrossingPositionAt_coverMaxContactIdeal T hv hgood hres x⟩` and prove the remaining obligations. Introduce `D hD`. Establish `hD' : D = MaxContactCoverData.coverMaxContactIdeal T hv` using `List.mem_singleton.mp hD`. Substitute `hD'` using the available equality. Conclude with `hsm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_coverMaxContactIdeal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (hgood : MaxContactReduction.IsMaxContactCover T (MaxContactCoverData.chosenCoverData T hv) hv.locallyOfFiniteType

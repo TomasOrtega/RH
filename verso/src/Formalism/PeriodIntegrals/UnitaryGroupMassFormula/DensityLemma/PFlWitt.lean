@@ -15,36 +15,36 @@ namespace FLW
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_l (H : Matrix (Fin n) (Fin n) ℂ) (u u' w : Fin n → ℂ) :
     herm H (u + u') w = herm H u w + herm H u' w := by
   simp [herm, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_l (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (u w : Fin n → ℂ) : herm H (c • u) w = c * herm H u w := by
   simp [herm, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[herm, star_add, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_r (H : Matrix (Fin n) (Fin n) ℂ) (u w w' : Fin n → ℂ) :
     herm H u (w + w') = herm H u w + herm H u w' := by
   simp [herm, star_add, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm, star_smul, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_r (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (u w : Fin n → ℂ) :
     herm H u (c • w) = star c * herm H u w := by
   simp [herm, star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Simplify using `only [herm, Matrix.mulVec_single_one] at this`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[dotProduct, Matrix.mulVec, Matrix.col, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[dotProduct, Matrix.mulVec, Pi.single_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitary_of_herm (H M : Matrix (Fin n) (Fin n) ℂ) (h : ∀ u v, herm H (M *ᵥ u) (M *ᵥ v) = herm H u v) :
     Mᴴ * H * M = H := by
@@ -61,35 +61,33 @@ theorem unitary_of_herm (H M : Matrix (Fin n) (Fin n) ℂ) (h : ∀ u v, herm H 
 end FLW
 
 /- English proof (translation)
-Use `set H := Hpk k r with hHdef`. Establish `hHh : Hᴴ = H` using `Formalism.QuantumDeterminants.GBasic.Hpk_herm k r`. Establish `hHH : H * H = 1` using `Formalism.QuantumDeterminants.GBasic.Hpk_sq k r`. Set `Bf : (Fin (2 * r + k + 1) → ℂ) →ₗ⋆[ℂ] (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun u v => herm H v u) (fun u u' v => FLW.herm_add_r H v u u') (fun c u v => by rw [FLW.herm_smul_r, smul_eq_mul]; rfl) (fun u v v' => FLW.herm_add_l H v v' u) (fun c u v => by rw [FLW.herm_smul_l, smul_eq_mul]; rfl)`. Establish `hB : ∀ u v, Bf u v = herm H v u` using `fun u v => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsym : ∀ a b, star (Bf a b) = Bf b a`. Introduce `a b`. Rewrite using `[hB, hB, ggHerm_swap H hHh a b]`. Establish `hnd : ∀ a, (∀ b, Bf a b = 0) → a = 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `ha (H *ᵥ a)`. Rewrite `h0` using `[hB]`. Simplify using `only [herm, Matrix.mulVec_mulVec, hHH, Matrix.one_mulVec] at h0`. Establish `h1 : ∑ i, Complex.normSq (a i) = 0`. Establish `: (∑ i, Complex.normSq (a i) : ℂ) = star a ⬝ᵥ a`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct, Complex.mul_conj, mul_comm]`. Conclude with `this.trans h0` after adjusting the coercions. Use function extensionality and compare the values at `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (a j))).1 h1 i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U` to `Submodule.span ℂ (Set.range x)`. Set `bU : Module.Basis ι ℂ U` to `Module.Basis.span hx`. Establish `hbU : ∀ a, (bU a : Fin (2 * r + k + 1) → ℂ) = x a` using `fun a => by show ((Module.Basis.span hx a : U) : Fin (2 * r + k + 1) → ℂ) = x a`. Rewrite using `[Module.Basis.span_apply]`. Set `f : U →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `bU.constr ℂ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ a, f (bU a) = y a` using `fun a => bU.constr_basis ℂ y a`. Establish `hfsum : ∀ u : U, f u = ∑ a, bU.repr u a • y a`. Introduce `u`. Use `conv_lhs => rw [← bU.sum_repr u]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_smul, hf]`. Establish `husum : ∀ u : U, (u : Fin (2 * r + k + 1) → ℂ) = ∑ a, bU.repr u a • x a`. Introduce `u`. Use `conv_lhs => rw [← bU.sum_repr u]`. Rewrite using `[Submodule.coe_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.coe_smul, hbU]`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Rewrite `hu` using `[hfsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc` using `Fintype.linearIndependent_iff.mp hy _ hu`. Establish `: bU.repr u = 0` using `by ext a; simp [hc a]`. Simplify using `using this`. Establish `hsum_l : ∀ (c : ι → ℂ) (v : ι → Fin (2 * r + k + 1) → ℂ) (w : Fin (2 * r + k + 1) → ℂ), herm H (∑ a, c a • v a) w = ∑ a, c a * herm H (v a) w`. Introduce `c v w`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[herm, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]`. Establish `hsum_r : ∀ (c : ι → ℂ) (v : ι → Fin (2 * r + k + 1) → ℂ) (w : Fin (2 * r + k + 1) → ℂ), herm H w (∑ a, c a • v a) = ∑ a, star (c a) * herm H w (v a)`. Introduce `c v w`. Simplify using `[herm, star_sum, star_smul, sum_dotProduct, smul_dotProduct, smul_eq_mul]`. Establish `hisom : ∀ u v : U, Bf (f u) (f v) = Bf u v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v`. Rewrite using `[hB, hB, hfsum, hfsum, husum, husum, hsum_l, hsum_l]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[hsum_r, hsum_r]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[hg]`. Take `⟨g, hgB, hgf⟩` from `_root_.witt_extension_theorem ℂ (Fin (2 * r + k + 1) → ℂ) Bf hsym hnd U f hinj hisom`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨LinearMap.toMatrix' (g : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)), ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show _ * H * _ = H`. Apply `FLW.unitary_of_herm` to reduce the goal to its premises. Introduce `u v`. Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hgB v u` as an intermediate fact. Rewrite `this` using `[hB, hB]`. Conclude with `this`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Use `hgf (bU i)` as an intermediate fact.
-
-Rewrite `this` using `[hbU, hf]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem wittHpk (k r : ℕ) {ι : Type} [Fintype ι] (x y : ι → Fin (2 * r + k + 1) → ℂ)
     (hx : LinearIndependent ℂ x) (hy : LinearIndependent ℂ y)

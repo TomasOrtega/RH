@@ -19,23 +19,19 @@ namespace GlobalTheory.GenSpread
 open SpreadAb (grpObj_of_dominant isPullback_square)
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ X f A _ _ φ h _ _`. Take `⟨a₁, ha₁, H₁⟩` from `exists_hom (pullback.fst f f ≫ f) f (isPullback_square h) ((μ[A]).left ≫ φ) (by`. Rewrite using `[(isPullback_square h).w, Category.assoc, h.w, Over.w_assoc]`. Use the proof step `rfl)`. Take `⟨a₂, ha₂, H₂⟩` from `exists_hom f f h ((ι[A]).left ≫ φ) (by rw [Category.assoc, h.w, Over.w_assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₃, ha₃, H₃⟩` from `exists_hom (𝟙 _) f (IsPullback.id_vert (spMap (algebraMap R K))) ((η[A]).left ≫ φ) (by rw [Category.assoc, h.w, Over.w_assoc]; simp)`. Use `⟨a₁ * a₂ * a₃, mul_ne_zero (mul_ne_zero ha₁ ha₂) ha₃, fun R' _ g hg ψ hψ hψg G π φ' hG hφ₁ hφ₂ => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[map_mul, map_mul, IsUnit.mul_iff, IsUnit.mul_iff]`. Take `⟨⟨u₁, u₂⟩, u₃⟩` from `hg`. Establish `hc : spMap ψ ≫ spMap g = spMap (algebraMap R K)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψg, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hφ : IsPullback φ' A.hom G.hom (spMap ψ)` using `IsPullback.of_right (by rwa [hφ₁, hc]) hφ₂ hG`. Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom ψ) hψ` as an intermediate fact. Establish `: Flat G.hom` using `MorphismProperty.of_isPullback (P := @Flat) hG inferInstance`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSeparated G.hom` using `MorphismProperty.of_isPullback (P := @IsSeparated) hG inferInstance`. Take `⟨m, hm₁, hm₂⟩` from `H₁ R' g u₁ _ _ _ (isPullback_square hG).w`. Take `⟨i, hi₁, hi₂⟩` from `H₂ R' g u₂ _ _ _ hG.w`. Take `⟨e, he₁, he₂⟩` from `H₃ R' g u₃ _ (spMap g) (𝟙 _) (by simp)`. Establish `L : ∀ (Y : Over (Sp R')) (u : Y.left ⟶ X), u ≫ f = Y.hom ≫ spMap g → ∃ v : Y ⟶ G, v.left ≫ π = u` using `fun Y u w => ⟨Over.homMk (hG.lift u Y.hom w) (hG.lift_snd _ _ _), hG.lift_fst _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm'⟩` from `L (G ⊗ G) m (hm₁.trans (isPullback_square hG).w)`. Take `⟨i', hi'⟩` from `L G i (hi₁.trans hG.w)`. Take `⟨e', he'⟩` from `L (𝟙_ _) e (he₁.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Conclude with `grpObj_of_dominant (spMap ψ) G A φ' hφ m' i' e' (fun φ₂ ⟨k₁, k₂⟩ => by`. Apply `hG.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Category.assoc, hφ₁, hm']`. Use `hm₂ φ₂ (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, ← hφ₁]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ π) k₁).trans (Category.assoc _ _ _))`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd, ← hφ₁]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ π) k₂).trans (Category.assoc _ _ _))`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hφ₂, Over.w_assoc, ← Over.w (fst G G), reassoc_of% k₁, hφ₂, Over.w_assoc])`. Use the proof step `(by`. Apply `hG.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hφ₁, hi']`.
-
-Conclude with `hi₂ φ' hφ₁`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hφ₂, Over.w_assoc])`. Use the proof step `(by`. Apply `hG.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hφ₁, he']`.
-
-Conclude with `he₂ _ hc`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hφ₂, Over.w_assoc]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_grpObj : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (X : Scheme.{0}) (f : X ⟶ Sp R) (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (φ : A.left ⟶ X), IsPullback φ A.hom f (spMap (algebraMap R K)) → Smooth f → IsProper f → ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ (ψ : R' →+* K), Function.Injective ψ → ψ.comp g = algebraMap R K → ∀ (G' : Over (Sp R')) (π : G'.left ⟶ X) (φ' : A.left ⟶ G'.left), IsPullback π G'.hom f (spMap g) → φ' ≫ π = φ → φ' ≫ G'.hom = A.hom ≫ spMap ψ → ∃ _ : GrpObj G', IsCommMonObj G' ∧ IsGrpPullback A G' (spMap ψ) φ' := by
   intro R K _ _ _ _ _ _ X f A _ _ φ h _ _

@@ -15,11 +15,11 @@ namespace UpperTheory.V.Z.Win
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 /- English proof (translation)
-The claim follows from `recTExists E Ω A w h`.
+A detailed English derivation is pending.
 -/
 theorem exRec'_alt (_N : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) (h : IsPlaceOver A w) : ∃ rc, IsRecT h rc := recTExists E Ω A w h
 /- English proof (translation)
-Unfold `_root_.UpperTheory.V.Af.Hypotheses'.exists_rec_ty`. Use `intros`. Conclude with `_root_.UpperTheory.V.Z.Win.exRec'_alt (by assumption : _root_.UpperTheory.V.Af.Hypotheses').litN _`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_rec_alt_alt_alt : _root_.UpperTheory.V.Af.Hypotheses'.exists_rec_ty := by
   unfold _root_.UpperTheory.V.Af.Hypotheses'.exists_rec_ty

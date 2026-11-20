@@ -159,9 +159,9 @@ def GapHyp {D : D7} (T : ThetaX D) : Prop :=
       ((((Formalism.MainNotions.ZetaProductPairs.parD T).b τ ⟨j + 1, h⟩ - (Formalism.MainNotions.ZetaProductPairs.parD T).b τ ⟨j, by omega⟩ : ℚ)) : ℝ)
 
 /- English proof (translation)
-Introduce `τ j h`. Establish `h1` using `(P.nodes_gap τ j h).1`. Establish `h2` using `P.heightBound_ge_rank_cubic`. Establish `hb : (Formalism.MainNotions.ZetaProductPairs.parD T).b τ = (D.hc τ).b` using `D.hcW_b _ _`. Rewrite using `[hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (Nfun D : ℝ) = (D.R.k : ℝ) + D.R.m * (D.R.t + (D.R.r + 6) + 1)`. Unfold `Nfun`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -373,7 +373,7 @@ def ThetaOntoKFinite {Y : Formalism.MainNotions.ZetaProductPairs.Loc D T} (W : L
 def PeriodNonvanishingOnImage (Y : Formalism.MainNotions.ZetaProductPairs.Loc D T) : Prop := ∀ u, ∃ da, Y.ellT u da ≠ 0
 
 /- English proof (translation)
-Introduce `u h0`. Take `⟨da, hda⟩` from `h u`. Apply `hda` to reduce the goal to its premises. Rewrite using `[W.ellT_eq, h0]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem period_ne_zero_of_value {Y : Formalism.MainNotions.ZetaProductPairs.Loc D T} (W : LocC Y) (h : PeriodNonvanishingOnImage Y) : LinearFormNonzero W := by
   intro u h0
@@ -383,9 +383,9 @@ theorem period_ne_zero_of_value {Y : Formalism.MainNotions.ZetaProductPairs.Loc 
   rfl
 
 /- English proof (translation)
-Introduce `u`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `hE u (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `LinearMap.ext_on (hT u) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨da, rfl⟩`. Take `⟨da', h1, h2⟩` from `W.v_free u v da`. Use `hcon da'` as an intermediate fact. Rewrite `this` using `[W.ellT_eq, h1, h2]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem value_ne_zero_of_onto {Y : Formalism.MainNotions.ZetaProductPairs.Loc D T} (W : LocC Y) (hE : LinearFormNonzero W) (hT : ThetaOntoKFinite W) : PeriodNonvanishingOnImage Y := by
   intro u
@@ -403,7 +403,7 @@ def RealConstantHypotheses {Y : Formalism.MainNotions.ZetaProductPairs.Loc D T} 
   NonzeroBesselPeriodChain D T ∧ ParametersPolynomiallyBounded T ∧ UnfoldingAnyLevel Y
 
 /- English proof (translation)
-Take `⟨μ, π, φ, F, Φ, pos, h1, h2, h3, h4, h5, h6, hB⟩` from `h8 (T.parOf u) (hP u)`. Take `⟨μ', π', φ', F', Φ', pos', -, hB', n, Xp, Yp, dk, hs, hr⟩` from `hU u ⟨μ, π, φ, F, Φ, pos, ⟨h1, h2, h3, h4, h5, h6⟩, hB⟩`. Rewrite `hB'` using `[hs]`. Take `⟨k, -, hk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hB'`. Conclude with `⟨Xp k, Yp k, dk k, left_ne_zero_of_mul hk, right_ne_zero_of_mul hk, hr k⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem term_of_unf {Y : Formalism.MainNotions.ZetaProductPairs.Loc D T} (h8 : NonzeroBesselPeriodChain D T) (hP : ParametersPolynomiallyBounded T) (hU : UnfoldingAnyLevel Y) (u : D.what₂.Word) :
     ∃ (Xp Yp : ℂ) (d0 : Y.ArchDat u), Xp ≠ 0 ∧ Y.ellT u d0 ≠ 0 ∧ ∀ da, Y.ellT u da * Xp = Y.Au u da * Yp := by
@@ -415,7 +415,7 @@ theorem term_of_unf {Y : Formalism.MainNotions.ZetaProductPairs.Loc D T} (h8 : N
   exact ⟨Xp k, Yp k, dk k, left_ne_zero_of_mul hk, right_ne_zero_of_mul hk, hr k⟩
 
 /- English proof (translation)
-Introduce `u` and use `let ⟨_, _, d0, _, h, _⟩ := term_of_unf h8 hP hU u ⟨d0, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem value_ne_zero_of_unfolding {Y : Formalism.MainNotions.ZetaProductPairs.Loc D T} (h8 : NonzeroBesselPeriodChain D T) (hP : ParametersPolynomiallyBounded T) (hU : UnfoldingAnyLevel Y) : PeriodNonvanishingOnImage Y := fun u =>
   let ⟨_, _, d0, _, h, _⟩ := term_of_unf h8 hP hU u
@@ -436,7 +436,7 @@ def IdentityWithHalfPowerFactor : Prop :=
         ((Z.kapR D.what₂.embLL * rho μ * ∏ j ∈ Icc 1 D.R.m, D.what₂.lamP μ j π : ℝ) : ℂ) • x
 
 /- English proof (translation)
-Use `⟨fun _ => 1, rfl, fun μ => ⟨fun _ => 0, by simp⟩, fun μ π x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h μ π x hx, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_power_of_exact_identity (h : Conclusion2 D Z) : IdentityWithHalfPowerFactor D Z := by
   refine ⟨fun _ => 1, rfl, fun μ => ⟨fun _ => 0, by simp⟩, fun μ π x hx => ?_⟩
@@ -543,7 +543,7 @@ def LiftingLemmasStatement : Prop :=
   Hyp D Z T → TieRowTypL V → admitted D Z T A X → AdmL Z X S b ty V → ConclusionL Z S b ty V
 
 /- English proof (translation)
-Use `⟨fun μ => (h μ).1, S.kapOf_pos ty, fun _ => 1, rfl, fun _ => one_pos, DV.rhoUnit_one D, fun μ σ => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one]`. Conclude with `(h μ).2 σ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_clause_of_level_bijection (h : LevelIotaBijective S b ty) : S.RowLatticeBoundForBasis b ty (S.kapOf ty) := by
   refine ⟨fun μ => (h μ).1, S.kapOf_pos ty, fun _ => 1, rfl, fun _ => one_pos, DV.rhoUnit_one D, fun μ σ => ?_⟩
@@ -579,7 +579,7 @@ def HypF (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Hyp (Fm.D x i) (Fm.X x i) (Fm.ex x hx i).th
 
 /- English proof (translation)
-Introduce `x hx i` and use `GapHyp_of_params _ (Fm.params x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GapHypF (Fm : Formalism.MainNotions.FamP eps) : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), GapHyp (Fm.ex x hx i).th :=
   fun x hx i => GapHyp_of_params _ (Fm.params x hx i)
@@ -597,7 +597,7 @@ def ExactStatementsFamily (Fm : Formalism.MainNotions.FamP eps) (A : TH.ProvA) (
   ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Stmt (Fm.D x i) (Fm.X x i) (Fm.ex x hx i).th A (XF x hx i)
 
 /- English proof (translation)
-Introduce `hH hA x hx i` and use `h x hx i (hH x hx i) (hA x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem family_of_pointwise_statements (Fm : Formalism.MainNotions.FamP eps) (A : TH.ProvA) (XF : LocF Fm) (h : ExactStatementsFamily Fm A XF) : KudlaFamilyStatement Fm A XF :=
   fun hH hA x hx i => h x hx i (hH x hx i) (hA x hx i)

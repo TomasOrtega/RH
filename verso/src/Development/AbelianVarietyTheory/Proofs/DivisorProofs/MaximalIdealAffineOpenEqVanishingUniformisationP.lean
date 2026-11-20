@@ -8,15 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.MaxPoints
 
 /- English proof (translation)
-Introduce `A _ g L u hA U hU m hm`. Use `haveI : Smooth A.hom := hA.smooth`. Establish `hft : LocallyOfFiniteType A.hom` using `inferInstance`. Set `c : ℂ →+* Γ(A.left, U)` to `((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ A.hom.appLE ⊤ U (fun _ _ => trivial)).hom`. Establish `hc : c.FiniteType`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (A.hom.appLE ⊤ U (fun _ _ => trivial)).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType A.hom hft ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _`. Conclude with `h1.comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2)`. Use `letI : Algebra ℂ Γ(A.left, U) := c.toAlgebra`. Use `haveI : Algebra.FiniteType ℂ Γ(A.left, U) := hc`. Use `haveI : IsJacobsonRing Γ(A.left, U) := isJacobsonRing_of_finiteType (A := ℂ)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI : Field (Γ(A.left, U) ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite ℂ (Γ(A.left, U) ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℂ (Γ(A.left, U) ⧸ m)`. Establish `hb : Function.Bijective (algebraMap ℂ (Γ(A.left, U) ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`. Set `i : ℂ ≃ₐ[ℂ] (Γ(A.left, U) ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId ℂ _) hb`. Set `e : Γ(A.left, U) →ₐ[ℂ] ℂ` to `(i.symm : (Γ(A.left, U) ⧸ m) →ₐ[ℂ] ℂ).comp (Ideal.Quotient.mkₐ ℂ m)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `he : ∀ a, e.toRingHom (constFn A.hom U a) = a` using `fun a => e.commutes a`. Take `⟨x, ⟨hxU, hx⟩, -⟩` from `GlobalTheory.existsUnique_point_of_ringHom A U hU e.toRingHom he`. Take `⟨z, rfl⟩` from `u.ex_onto x`. Use `⟨z, hxU, fun b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b ∈ m ↔ valAt' (u.ex z).left U b = 0`.
-
-Rewrite using `[hx b]`. Express the relevant statement in the definitionally equal form `b ∈ m ↔ i.symm (Ideal.Quotient.mk m b) = 0`. Rewrite using `[← map_zero i.symm, i.symm.injective.eq_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A →
     ∀ (U : A.left.Opens), IsAffineOpen U → ∀ m : Ideal Γ(A.left, U), m.IsMaximal →

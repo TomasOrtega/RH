@@ -22,7 +22,7 @@ theorem firstRow_apply (N : ℕ) (u : Fin 1 × Fin N → ℂ) (j : Fin N) : firs
   rfl
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[sphereNormalize, HermNorm.std_norm_eq, firstRow_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sphereNormalize_eq (N : ℕ) (u : Fin 1 × Fin N → ℂ) :
     (fun j ↦ sphereNormalize (HermNorm.std N) 1 u (0, j)) =
@@ -31,7 +31,7 @@ theorem sphereNormalize_eq (N : ℕ) (u : Fin 1 × Fin N → ℂ) :
   simp [sphereNormalize, HermNorm.std_norm_eq, firstRow_apply]
 
 /- English proof (translation)
-Establish `h'` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ ↦ sq_nonneg ‖u (0, i)‖)).mp (le_antisymm h (Finset.sum_nonneg fun i _ ↦ sq_nonneg _))`. Use extensionality with `j`. Simplify `h' j (Finset.mem_univ j)` using `[firstRow_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem firstRow_eq_zero (N : ℕ) (u : Fin 1 × Fin N → ℂ) (h : ∑ i, ‖u (0, i)‖ ^ 2 ≤ 0) :
     firstRow N u = 0 := by
@@ -41,9 +41,9 @@ theorem firstRow_eq_zero (N : ℕ) (u : Fin 1 × Fin N → ℂ) (h : ∑ i, ‖u
   simpa [firstRow_apply] using h' j (Finset.mem_univ j)
 
 /- English proof (translation)
-Set `T : Submodule ℝ (Fin 1 × Fin N → ℂ)` to `(S.restrictScalars ℝ).comap (firstRow N)`. Establish `hT : T ≠ ⊤`. Introduce `h`. Apply `hS` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Set `u : Fin 1 × Fin N → ℂ` to `fun ij ↦ v ij.2`. Establish `hu : u ∈ T` using `h ▸ Submodule.mem_top`. Conclude with `hu`. Conclude with `Measure.addHaar_submodule volume T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volume_firstRow_mem (N : ℕ) (S : Submodule ℂ (Fin N → ℂ)) (hS : S ≠ ⊤) :
     volume {u : Fin 1 × Fin N → ℂ | firstRow N u ∈ S} = 0 := by
@@ -63,21 +63,19 @@ end SphereLawBasic
 open SphereLawBasic in
 
 /- English proof (translation)
-Introduce `N hN`. Establish `hf : Measurable fun (u : Fin 1 × Fin N → ℂ) (j : Fin N) ↦ sphereNormalize (HermNorm.std N) 1 u (0, j)`. Unfold `sphereNormalize`. Simplify using `only [HermNorm.std_norm_eq]`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbot : (⊥ : Submodule ℂ (Fin N → ℂ)) ≠ ⊤`. Introduce `h`. Establish `hmem : (Pi.single ⟨0, hN⟩ 1 : Fin N → ℂ) ∈ (⊥ : Submodule ℂ (Fin N → ℂ))` using `h ▸ Submodule.mem_top`. Simplify using `using congrFun ((Submodule.mem_bot ℂ).mp hmem) ⟨0, hN⟩`. Establish `h0 : ∀ᵐ u ∂(volume[|sphereBall (HermNorm.std N) 1]), firstRow N u ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `cond_absolutelyContinuous.ae_le ?_` and prove the remaining obligations. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp (volume_firstRow_mem N ⊥ hbot)] with u hu`. Simplify using `using hu`. Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sphereLaw, ae_map_iff hf.aemeasurable (measurableSet_eq_fun (by fun_prop) measurable_const)] filter_upwards [h0] with u hu`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 < ∑ i, ‖u (0, i)‖ ^ 2` using `lt_of_not_ge fun h ↦ hu (firstRow_eq_zero N u h)`. Establish `key : ∀ j, ‖sphereNormalize (HermNorm.std N) 1 u (0, j)‖ ^ 2 = (∑ i, ‖u (0, i)‖ ^ 2)⁻¹ * ‖u (0, j)‖ ^ 2`. Introduce `j`. Establish `e` using `congrFun (sphereNormalize_eq N u) j`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, firstRow_apply, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), mul_pow, inv_pow, Real.sq_sqrt hs.le]`. Simplify using `only [key, ← Finset.mul_sum]`. Conclude with `inv_mul_cancel₀ hs.ne'`. Introduce `S hS`. Establish `hSm : MeasurableSet (S : Set (Fin N → ℂ))` using `(S.restrictScalars ℝ).closed_of_finiteDimensional.measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sphereLaw, Measure.map_apply hf hSm]`. Use `measure_mono_null ?_ (cond_absolutelyContinuous (volume_firstRow_mem N S hS))` and prove the remaining obligations. Introduce `u hu`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at hu`. Rewrite `hu` using `[sphereNormalize_eq]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show firstRow N u ∈ S`. Distinguish the cases in `hc : ((√(∑ i, ‖u (0, i)‖ ^ 2) : ℝ) : ℂ) = 0`. Establish `hle : ∑ i, ‖u (0, i)‖ ^ 2 ≤ 0` using `Real.sqrt_eq_zero'.mp (by exact_mod_cast hc)`. Rewrite using `[firstRow_eq_zero N u hle]`. Conclude with `S.zero_mem`.
-
-Use `S.smul_mem ((√(∑ i, ‖u (0, i)‖ ^ 2) : ℝ) : ℂ) hu` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem SphereLawBasic.proof : SphereLawBasic.Statement := by
   intro N hN

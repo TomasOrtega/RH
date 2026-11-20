@@ -12,9 +12,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.ConjugateSelfDu
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `a b`. Establish `key : ∀ u v : D.nd.O i, C.inc ((D.nbr i w hw).toLL (u * v)) = C.inc ((D.nbr i w hw).toLL u) * C.inc ((D.nbr i w hw).toLL v)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u v`. Rewrite using `[map_mul, map_mul]`. Conclude with `key _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locC_rTwO (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
@@ -32,7 +32,7 @@ theorem locC_rTwO (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fi
   exact key _ _
 
 /- English proof (translation)
-Introduce `T hT`. Use `subquot_crys (fun x => Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x)) hc (hFont w hw C) (fun x => ?_) hwin T hT` and prove the remaining obligations. Rewrite using `[locC_rTwO]`. Conclude with `(hG2 w hw C).2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LiftWin_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
@@ -48,9 +48,9 @@ theorem LiftWin_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (F
   exact (hG2 w hw C).2 x
 
 /- English proof (translation)
-Establish `hmat : Continuous fun g => Formalism.MainNotions.TruncatedSeriesCountingIdentities.locC C M g`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g : Br.G D.nbr i w hw => M ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd) a b` using `(hM.matrix_elem a b).comp (continuous_subtype_val.comp (Br.iota_cont D.nbr i w hw))`. Establish `h2 : Continuous fun y : D.nd.O i => (((D.nbr i w hw).eO y : ↥(OL (D.nbr i w hw).LL)) : ↥(D.nbr i w hw).LL.1)` using `continuous_subtype_val.comp (D.nbr i w hw).eO_cont`. Establish `h3 : Continuous fun y : ↥(D.nbr i w hw).LL.1 => C.inc y` using `Continuous.subtype_mk continuous_subtype_val _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3.comp (h2.comp h1)`. Conclude with `hmat.matrix_mulVec continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem locC_cont (D : D7) (i : D.nd.Loc) {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (hM : Continuous fun g => M g)
@@ -69,9 +69,9 @@ theorem locC_cont (D : D7) (i : D.nd.Loc) {k : ℕ} (M : GE D.nd →* Matrix (Fi
   exact hmat.matrix_mulVec continuous_const
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)`. Establish `e : (fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)) = fun g => ((D.nd.chi i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `(D.nd.chi_cont i 1).comp continuous_inv`. Conclude with `h1.smul (hr x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTwO_cont (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (x : D.nd.X i) : Continuous fun g => rTwO D.nd i r x g := by
@@ -86,7 +86,7 @@ theorem rTwO_cont (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fi
   exact h1.smul (hr x)
 
 /- English proof (translation)
-The claim follows from `lifting_condition_of_crystalline_lift D HW F i r dc e' M h CA CB CK hCA h54 hl hur (fun w hw hcol C hC => LiftWin_of D i r ρ π w hw C M h hFont hG2 (fun x v => locC_cont D i _ (rTwO_cont D i r hr x) w hw C v) (hwin w hw hcol C hC)) he`.
+A detailed English derivation is pending.
 -/
 theorem lifting_condition_of_windows (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

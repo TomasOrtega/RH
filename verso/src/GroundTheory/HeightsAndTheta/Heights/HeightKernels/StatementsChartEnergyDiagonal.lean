@@ -16,12 +16,12 @@ def ChartEnergyDiagonal.Statement : Prop :=
       1 / 2 * (∑ j, Real.log (l j)) * chartMass (1 : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ)
 
 /- English proof (translation)
-Introduce `j` and use `by fin_cases j <;> norm_num`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ j, 0 < (![4, 1] : Fin (1 + 1) → ℝ) j := fun j => by fin_cases j <;> norm_num
 
 /- English proof (translation)
-The claim follows from `Matrix.posDef_diagonal_iff.mpr fun j => by simpa using hl j`.
+A detailed English derivation is pending.
 -/
 example (e : ℕ) (l : Fin (e + 1) → ℝ) (hl : ∀ j, 0 < l j) :
     (Matrix.diagonal fun j => (l j : ℂ)).PosDef :=

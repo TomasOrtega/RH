@@ -21,7 +21,7 @@ def wS {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n)
 def yS {ε : Fin n → Bool} (z : PCoord ε → ℂ) (S : Finset (Fin n)) : ℝ := ∑ s ∈ S, pev z s
 
 /- English proof (translation)
-Rewrite using `[wS, Complex.ofReal_pow, Complex.star_def, Complex.mul_conj']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem minor_weight_cast {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n)
     (S : {S : Finset (Fin n) // S.card = i}) :
@@ -33,7 +33,7 @@ theorem minor_weight_cast {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ
   rw [wS, Complex.ofReal_pow, Complex.star_def, Complex.mul_conj']
 
 /- English proof (translation)
-Establish `hu : ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)ᴴ = 1` using `Unitary.mul_star_self_of_mem (pmat_isHermitian z).eigenvectorUnitary.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem pmat_eq_eigenvectorUnitary_conj_diagonal_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     pmat z = ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
@@ -45,7 +45,7 @@ theorem pmat_eq_eigenvectorUnitary_conj_diagonal_pev {ε : Fin n → Bool} (z : 
     _ = _ := by rw [← Matrix.mul_assoc, pmat_mul_evU]
 
 /- English proof (translation)
-Establish `hU` using `(pmat_isHermitian z).eigenvectorUnitary.2`. Conclude with `⟨Unitary.mul_star_self_of_mem hU, Unitary.star_mul_self_of_mem hU⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pmat_eigenvectorUnitary_mul_conjTranspose_and_conj_mul {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
@@ -56,16 +56,16 @@ theorem pmat_eigenvectorUnitary_mul_conjTranspose_and_conj_mul {ε : Fin n → B
   exact ⟨Unitary.mul_star_self_of_mem hU, Unitary.star_mul_self_of_mem hU⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem matrix_map_id (M : Matrix (Fin n) (Fin n) ℂ) : M.map (RingHom.id ℂ) = M := by
   ext a b
   rfl
 
 /- English proof (translation)
-Unfold `Del`. Rewrite using `[dif_pos hi]`. Establish `h` using `leading_minor_conj_diagonal (RingHom.id ℂ) hi ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) d`. Rewrite `h` using `[matrix_map_id, matrix_map_id]`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun S _ => ?_)` and prove the remaining obligations. Rewrite using `[minor_weight_cast z hi S]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leading_minor_sum_weights {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) (d : Fin n → ℂ) :
     Del (((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * diagonal d *
@@ -81,15 +81,15 @@ theorem leading_minor_sum_weights {ε : Fin n → Bool} (z : PCoord ε → ℂ) 
   rfl
 
 /- English proof (translation)
-Establish `hu` using `(pmat_eigenvectorUnitary_mul_conjTranspose_and_conj_mul z).1`. Establish `hUu : IsUnit ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)` using `isUnit_iff_exists.mpr ⟨_, hu, (pmat_eigenvectorUnitary_mul_conjTranspose_and_conj_mul z).2⟩`. Establish `hsm : (t : ℂ) • pmat z = ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * diagonal (fun s => ((t * pev z s : ℝ) : ℂ)) * ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)⁻¹`. Rewrite using `[Matrix.inv_eq_right_inv hu]`. Use `conv_lhs => rw [pmat_eq_eigenvectorUnitary_conj_diagonal_pev z]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : diagonal (fun s => ((t * pev z s : ℝ) : ℂ)) = (t : ℂ) • diagonal (fun s => ((pev z s : ℝ) : ℂ))`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [h]`. Rewrite using `[hd, mul_smul_comm, smul_mul_assoc]`. Establish `hexp : NormedSpace.exp ((t : ℂ) • pmat z) = ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * diagonal (fun s => Complex.exp ((t * pev z s : ℝ) : ℂ)) * ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)ᴴ`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsm, Matrix.exp_conj _ _ hUu, Matrix.exp_diagonal, Matrix.inv_eq_right_inv hu]`. Use `congr 1`. Use `congr 1`. Use `congr 1`. Rewrite using `[Pi.exp_def]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Simplify using `only [Complex.exp_eq_exp_ℂ]`. Rewrite using `[hexp, leading_minor_sum_weights z hi]`. Use `Finset.sum_congr rfl (fun S _ => ?_)` and prove the remaining obligations. Rewrite using `[← Complex.exp_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Simplify using `[yS, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lemma3a {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) (t : ℝ) :
     Del (NormedSpace.exp ((t : ℂ) • pmat z)) i =
@@ -120,9 +120,9 @@ theorem lemma3a {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i 
   simp [yS, Finset.mul_sum]
 
 /- English proof (translation)
-Establish `h` using `leading_minor_sum_weights z hi (fun _ => (1 : ℂ))`. Simplify using `only [Matrix.diagonal_one, (pmat_eigenvectorUnitary_mul_conjTranspose_and_conj_mul z).1, Finset.prod_const_one, mul_one] at h`. Establish `h1 : Del (1 : Matrix (Fin n) (Fin n) ℂ) i = 1`. Unfold `Del`. Rewrite using `[dif_pos hi, Matrix.submatrix_one _ (Fin.castLE_injective hi), Matrix.det_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm.trans h1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem lemma3b {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) : ∑ S, wS z hi S = 1 := by
   have h := leading_minor_sum_weights z hi (fun _ => (1 : ℂ))
@@ -134,9 +134,9 @@ theorem lemma3b {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i 
 
 open Polynomial in
 /- English proof (translation)
-Establish `hL` using `leading_minor_conj_diagonal (Polynomial.C : ℂ →+* ℂ[X]) hi ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) (fun s => 1 + X * C (μ s))`. Rewrite `hL` using `[conj_polynomial_diagonal _ (pmat_eigenvectorUnitary_mul_conjTranspose_and_conj_mul z).1 μ, hM]`. Establish `hsub : (1 + (X : ℂ[X]) • M.map C).submatrix (Fin.castLE hi) (Fin.castLE hi) = 1 + (X : ℂ[X]) • (M.submatrix (Fin.castLE hi) (Fin.castLE hi)).map C`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, (Fin.castLE_injective hi).eq_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `hL` using `[hsub]`. Rewrite using `[hL, Polynomial.finsetSum_coeff]`. Use `Finset.sum_congr rfl (fun S _ => ?_)` and prove the remaining obligations. Rewrite using `[← minor_weight_cast z hi S, Polynomial.coeff_C_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_weights_coeff_eq_det {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) (μ : Fin n → ℂ)
     (M : Matrix (Fin n) (Fin n) ℂ)
@@ -156,7 +156,7 @@ theorem sum_weights_coeff_eq_det {ε : Fin n → Bool} (z : PCoord ε → ℂ) {
   rw [← minor_weight_cast z hi S, Polynomial.coeff_C_mul]
 
 /- English proof (translation)
-Rewrite using `[trace_leading_submatrix]`. Simplify using `[pmat_diag_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_leading_submatrix_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) :
     trace ((pmat z).submatrix (Fin.castLE hi) (Fin.castLE hi)) = 0 := by
@@ -166,9 +166,9 @@ theorem trace_leading_submatrix_pmat {ε : Fin n → Bool} (z : PCoord ε → �
 open Polynomial in
 
 /- English proof (translation)
-Establish `hP` using `sum_weights_coeff_eq_det z hi (fun s => ((pev z s : ℝ) : ℂ)) (pmat z) (pmat_eq_eigenvectorUnitary_conj_diagonal_pev z).symm 1`. Rewrite `hP` using `[Matrix.coeff_det_one_add_X_smul_one, trace_leading_submatrix_pmat z hi]`. Establish `hc : ∀ S : {S : Finset (Fin n) // S.card = i}, (∏ s ∈ S.1, (1 + X * C ((pev z s : ℝ) : ℂ))).coeff 1 = ((yS z S.1 : ℝ) : ℂ)`. Introduce `S`. Rewrite using `[(coeff_prod_one_add_low S.1 _).2.1, yS]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [hc] at hP`. Conclude with `hP` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lemma3c {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) :
     ∑ S, wS z hi S * yS z S.1 = 0 := by
@@ -186,15 +186,15 @@ theorem lemma3c {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i 
 open Polynomial in
 
 /- English proof (translation)
-Establish `hP2` using `sum_weights_coeff_eq_det z hi (fun s => ((pev z s : ℝ) : ℂ)) (pmat z) (pmat_eq_eigenvectorUnitary_conj_diagonal_pev z).symm 2`. Establish `hsq : ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * diagonal (fun s => ((pev z s : ℝ) : ℂ) ^ 2) * ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)ᴴ = pmat z * pmat z`. Rewrite using `[← sq_conj_diagonal _ _ (pmat_eigenvectorUnitary_mul_conjTranspose_and_conj_mul z).2, ← pmat_eq_eigenvectorUnitary_conj_diagonal_pev z]`. Establish `hP1` using `sum_weights_coeff_eq_det z hi (fun s => ((pev z s : ℝ) : ℂ) ^ 2) (pmat z * pmat z) hsq 1`. Use `beta_reduce at hP1 hP2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP1` using `[Matrix.coeff_det_one_add_X_smul_one]`. Establish `h2` using `coeff_two_det_hermitian _ ((pmat_isHermitian z).submatrix (Fin.castLE hi))`. Rewrite `h2` using `[trace_leading_submatrix_pmat z hi]`. Establish `hS : ∀ S : {S : Finset (Fin n) // S.card = i}, ((yS z S.1 : ℝ) : ℂ) ^ 2 = 2 * (∏ s ∈ S.1, (1 + X * C ((pev z s : ℝ) : ℂ))).coeff 2 + (∏ s ∈ S.1, (1 + X * C (((pev z s : ℝ) : ℂ) ^ 2))).coeff 1`. Introduce `S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, h2'⟩` from `coeff_prod_one_add_low S.1 (fun s => ((pev z s : ℝ) : ℂ))`. Take `⟨-, h1'', -⟩` from `coeff_prod_one_add_low S.1 (fun s => ((pev z s : ℝ) : ℂ) ^ 2)`. Rewrite using `[h2', h1'', yS]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[variance_eq_trace_diff hi (pmat z) (pmat_isHermitian z)]`. Simplify using `only [hS, mul_add, Finset.sum_add_distrib, mul_left_comm _ (2 : ℂ), ← Finset.mul_sum]`. Rewrite using `[hP2, hP1, h2]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lemma3d {ε : Fin n → Bool} (z : PCoord ε → ℂ) {i : ℕ} (hi : i ≤ n) :
     ∑ S, wS z hi S * yS z S.1 ^ 2 = Vi (pmat z) i := by

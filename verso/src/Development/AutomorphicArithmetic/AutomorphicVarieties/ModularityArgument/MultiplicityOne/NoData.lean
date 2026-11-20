@@ -7,7 +7,7 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.BcB Positiv
 namespace UpperTheory.V.Z.Mult
 
 /- English proof (translation)
-Take `⟨D₀, hone, hr⟩` from `onePre E n hn π hreg (csdDisc E n hn π hd)`. Establish `hs` using `oneSat E n hn π D₀ hone`. Establish `ht : D₀.ThetaStable` using `(csdSat E n hn π hd).mono fun w ⟨B, a, b⟩ => ⟨B, (hs w B).1 a, fun u hu => (hs u _).1 (b u hu)⟩`. Take `⟨e, he⟩` from `Rig.locRigid_holds E n D D₀ r hr (galStep_le hW E hunr n hn4 D D₀ r hr t ht (s.mono fun w hw hx => (hw hx).imp fun B hB => ⟨hB.1, (hs w B).1 hB.2⟩))`. Conclude with `onlyOne cuspOrTwo notTwo oneSat E n hn π D D₀ e r hone he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem onlyPre (hW : GalWeak 4) {E : Type} [Field E] [NumberField E] [IsCMField E] (hunr : GlobalTheory.BCT.Unr E) {n : ℕ} (hn : 1 ≤ n)
     (hn4 : n ≤ 4) (π : CuspSub E n) (hreg : (CG.mk π).IsRegAlg) (hd : GlobalTheory.ContraPair.DualIsConj π) (D : Pre E n) (r : D.Reg)

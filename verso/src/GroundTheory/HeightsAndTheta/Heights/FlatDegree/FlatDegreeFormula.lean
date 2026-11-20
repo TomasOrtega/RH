@@ -9,7 +9,7 @@ noncomputable def rootDisc (F : Type*) [Field F] [NumberField F] : ℝ :=
   |(discr F : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ F : ℝ))
 
 /- English proof (translation)
-Simplify using `[rootDisc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rootDisc_rat : rootDisc ℚ = 1 := by
   simp [rootDisc]
@@ -19,7 +19,7 @@ def RootDiscriminantMonotone.Statement : Prop :=
     rootDisc K ≤ rootDisc E
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem RootDiscriminantMonotone.inhabitant : Nonempty (Algebra ℚ (CyclotomicField 4 ℚ)) :=
   ⟨inferInstance⟩

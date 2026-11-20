@@ -15,7 +15,7 @@ open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevelSeries.flipScal_mem_valRing_of_unit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFlipScalarMemCoefficientRingAuxiliaryLevel.lean&line=124#L124)
 -/

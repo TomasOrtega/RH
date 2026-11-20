@@ -9,9 +9,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial GlobalTheory.CoefDuty
 namespace GlobalTheory.CoefDuty
 /- English proof (translation)
-Introduce `D cf jE A M C tup hM big L hB`. Take `⟨Sp, -, -⟩` from `hB`. Use `⟨fun i => ?_, fun j h1 h2 w hw => ?_⟩` and prove the remaining obligations. Establish `h : i ∈ L.X.nd.locs (L.X.nd.j i) (L.X.nd.w i)` using `(L.X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Conclude with `(Sp.Q_eq _ _ i h).trans (Sp.Qc_eq _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `h2' : j < D.R.m` using `h2`. Conclude with `⟨(hM.full w ⟨j, h2'⟩ hw).1, fun v k s ϖ hg hc hu => hM.int w ⟨j, h2'⟩ v k s ϖ hw hg hc hu⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latInt_member_alt : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE) (M : MtFam D) (C : NChoice D) (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E), MtInput D M tup C.Q → ∀ big L, _root_.GlobalTheory.CoefDuty.BuiltAlt A M C tup big L → (∀ i, (withLoc L).nd.Q i = C.Q ((withLoc L).nd.w i)) ∧ ∀ j h1 h2 w, (withLoc L).what₂.muAt w ≠ (withLoc L).what₂.mu0 → LatInt (withLoc L) (mtL L M) (C.Q w) j h1 h2 w := by
   intro D cf jE A M C tup hM big L hB

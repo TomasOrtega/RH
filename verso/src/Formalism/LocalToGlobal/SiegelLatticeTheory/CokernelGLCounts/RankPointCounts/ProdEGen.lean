@@ -14,33 +14,31 @@ variable {G : Type} [Group G] {ι : Type} {H : ι → Type} [∀ i, Group (H i)]
 def glob (A : ∀ i, Subgroup (H i)) : Subgroup G := ⨅ i, (A i).comap (π i)
 
 /- English proof (translation)
-Simplify using `[glob, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_glob {A : ∀ i, Subgroup (H i)} {g : G} : g ∈ glob π A ↔ ∀ i, π i g ∈ A i := by
   simp [glob, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Use `set K := (glob π C).subgroupOf (glob π A) with hK`. Set `Φ : ↥(glob π A) → ∀ i : S, ↥(A (i : ι)) ⧸ (C (i : ι)).subgroupOf (A (i : ι))` to `fun g i => QuotientGroup.mk ⟨π i g, (mem_glob π).1 g.2 i⟩`. Establish `hrel : ∀ a b : ↥(glob π A), Φ a = Φ b ↔ a⁻¹ * b ∈ K`. Introduce `a b`. Rewrite using `[hK, Subgroup.mem_subgroupOf, mem_glob]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φ, funext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Distinguish the cases in `hi : i ∈ S`. Establish `h1` using `h ⟨i, hi⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using h1`. Rewrite using `[← hS i hi]`. Simplify using `using (A i).mul_mem ((A i).inv_mem ((mem_glob π).1 a.2 i)) ((mem_glob π).1 b.2 i)`. Introduce `h i`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using h i`. Establish `hsurj : Function.Surjective Φ`. Introduce `q`. Use `choose r hr using fun i : S => QuotientGroup.mk_surjective (q i)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg1, hg2⟩` from `happrox (fun i => if hi : i ∈ S then ((r ⟨i, hi⟩ : A i) : H i) else 1)`. Establish `hgA : g ∈ glob π A`. Rewrite using `[mem_glob]`. Introduce `i`. Distinguish the cases in `hi : i ∈ S`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hg1 i hi`. Simplify using `only [dif_pos hi] at h1`. Establish `h2` using `(A i).mul_mem (r ⟨i, hi⟩).2 (Subgroup.mem_inf.1 h1).1`. Simplify using `using h2`. Conclude with `hg2 i hi`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨g, hgA⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[← hr i]`. Simplify using `only [Φ]`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `hg1 i.1 i.2`. Simplify using `only [dif_pos i.2] at h1`. Simplify using `using (C i).inv_mem (Subgroup.mem_inf.1 h1).2`. Set `Ψ : ↥(glob π A) ⧸ K → ∀ i : S, ↥(A (i : ι)) ⧸ (C (i : ι)).subgroupOf (A (i : ι))` to `Quotient.lift Φ (fun a b hab => (hrel a b).2 (QuotientGroup.leftRel_apply.1 hab))`. Establish `hbij : Function.Bijective Ψ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective y`. Conclude with `QuotientGroup.eq.2 ((hrel a b).1 hxy)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `q`. Take `⟨a, ha⟩` from `hsurj q`. Conclude with `⟨QuotientGroup.mk a, ha⟩`. Establish `hcard` using `Nat.card_congr (Equiv.ofBijective Ψ hbij)`. Rewrite `hcard` using `[Nat.card_pi]`.
-
-Rewrite using `[← Finset.prod_coe_sort S]`. Conclude with `hcard`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_glob (A C : ∀ i, Subgroup (H i)) (S : Finset ι) (hS : ∀ i ∉ S, A i = C i)
     (hfin : ∀ i, (C i).relIndex (A i) ≠ 0)
@@ -103,11 +101,11 @@ theorem relIndex_glob (A C : ∀ i, Subgroup (H i)) (S : Finset ι) (hS : ∀ i 
   exact hcard
 
 /- English proof (translation)
-Establish `happrox' : ∀ h : ∀ i, H i, ∃ g : G, (∀ i ∈ S, (h i)⁻¹ * π i g ∈ C i ⊓ A i) ∧ ∀ i ∉ S, π i g ∈ C i`. Introduce `h`. Take `⟨g, hg1, hg2⟩` from `happrox h`. Use `⟨g, fun i hi => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[inf_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg1 i hi`. Rewrite using `[← hS i hi]`. Conclude with `hg2 i hi`. Unfold `Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio`. Rewrite using `[relIndex_glob π A C S hS hfinA happrox, relIndex_glob π C A S (fun i hi => (hS i hi).symm) hfinC happrox']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[Finset.prod_div_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem idxRatio_glob (A C : ∀ i, Subgroup (H i)) (S : Finset ι) (hS : ∀ i ∉ S, A i = C i)
     (hfinA : ∀ i, (C i).relIndex (A i) ≠ 0) (hfinC : ∀ i, (A i).relIndex (C i) ≠ 0)

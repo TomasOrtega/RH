@@ -20,7 +20,7 @@ open GroundTheory.Heights₂.Heights (chartProjMatrix chartWeight chartPot chart
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FExistsGoodProjFirstCoordinate.lean&line=315#L315)
 -/

@@ -18,9 +18,7 @@ namespace GlobalTheory.AbCoh
 section Transfer
 
 /- English proof (translation)
-Establish `key` using `(GlobalTheory.quasiIso_iff_coneExact _).1 h`. Use `clear h`. Generalize the expression as in `hf : algebraMap R R' = f at key`. Establish `e : inst = f.toAlgebra` using `Algebra.algebra_ext _ _ (fun r => by rw [hf]; rfl)`. Substitute `e` using the available equality.
-
-Conclude with `key`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem coneExact_baseChange_of_quasiIso {R R' : Type} [CommRing R] [CommRing R'] [inst : Algebra R R']
     {K C : CochainComplex (ModuleCat.{0} R) ℕ} (φ : K ⟶ C)
@@ -39,14 +37,14 @@ variable {R : Type} [CommRing R] {K C : CochainComplex (ModuleCat.{0} R) ℕ} (�
   (R' : Type) [CommRing R'] [Algebra R R']
 
 /- English proof (translation)
-Simplify using `only [dB, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp, ← ModuleCat.hom_comp, φ.comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dB_comm (i j : ℕ) (x : R' ⊗[R] K.X i) :
     dB C R' i j ((φ.f i).hom.baseChange R' x) = (φ.f j).hom.baseChange R' (dB K R' i j x) := by
   simp only [dB, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp, ← ModuleCat.hom_comp, φ.comm]
 
 /- English proof (translation)
-Simplify using `only [dB, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp, ← ModuleCat.hom_comp, L.d_comp_d, ModuleCat.hom_zero, LinearMap.baseChange_zero, LinearMap.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dB_dB (L : CochainComplex (ModuleCat.{0} R) ℕ) (i j k : ℕ) (x : R' ⊗[R] L.X i) :
     dB L R' j k (dB L R' i j x) = 0 := by
@@ -65,7 +63,7 @@ theorem cycMap_val (i j : ℕ) (z : LinearMap.ker (dB K R' i j)) :
     (cycMap φ R' i j z).1 = (φ.f i).hom.baseChange R' z.1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => simp [ext]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ext_comm {R'' : Type} [CommRing R''] [Algebra R R''] (α : R' →ₐ[R] R'') (i : ℕ) (y : R' ⊗[R] K.X i) :
     (φ.f i).hom.baseChange R'' (ext α _ y) = ext α _ ((φ.f i).hom.baseChange R' y) := by
@@ -75,11 +73,11 @@ theorem ext_comm {R'' : Type} [CommRing R''] [Algebra R R''] (α : R' →ₐ[R] 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs x`. Take `⟨c', k', hk', hsum⟩` from `surj z.1 z.2`. Establish `hm : dB C R' i j c' ∈ LinearMap.ker (dB C R' j k)` using `dB_dB R' C i j k c'`. Establish `hz : z = cycMap φ R' j k ⟨k', hk'⟩ + ⟨_, hm⟩` using `Subtype.ext (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.coe_add, cycMap_val, ← hsum, add_comm])`. Use `⟨⟨k', hk'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hz, map_add, (hk ⟨_, hm⟩).2 ⟨c', rfl⟩, add_zero]`. Rewrite using `[LinearMap.comp_apply, hk, cycMap_val]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, hc⟩`. Conclude with `inj z.1 c z.2 hc.symm`. Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨(φ.f i).hom.baseChange R' b, by rw [dB_comm, hb]⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exact_comp {H : Type} [AddCommGroup H] [Module R' H] (i j k : ℕ)
     (θ : LinearMap.ker (dB C R' j k) →ₗ[R'] H) (hs : Function.Surjective θ)
@@ -108,29 +106,25 @@ theorem exact_comp {H : Type} [AddCommGroup H] [Module R' H] (i j k : ℕ)
 end Transfer
 
 /- English proof (translation)
-Introduce `R _ X s K C φ hq M`. Establish `h0 : IsPullback (𝟙 X) s s (spMap (algebraMap R R))` using `by show IsPullback (𝟙 X) s s (spMap (RingHom.id R))`. Rewrite using `[Cris.spMap_id]`. Conclude with `IsPullback.id_horiz s`. Take `⟨e1, -⟩` from `M.θ0_one h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy1, hy2⟩` from `(coneExact_baseChange_of_quasiIso φ (hq R)).zero ((1 : R) ⊗ₜ[R] M.one) 0 ((LinearMap.mem_ker.1 e1).trans (map_zero _).symm) (map_zero _)`. Set `oneK : K.X 0` to `TensorProduct.lid R (K.X 0) y`. Establish `hy : (1 : R) ⊗ₜ[R] oneK = y`. Rewrite using `[← TensorProduct.lid_symm_apply, LinearEquiv.symm_apply_apply]`. Establish `hinj : ∀ {M : ModuleCat.{0} R} (a b : M), (1 : R) ⊗ₜ[R] a = (1 : R) ⊗ₜ[R] b → a = b` using `fun a b hab => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hab` using `[← TensorProduct.lid_symm_apply, ← TensorProduct.lid_symm_apply]`. Conclude with `(TensorProduct.lid R _).symm.injective hab`. Establish `hφone : (φ.f 0).hom oneK = M.one` using `hinj _ _ (by`. Rewrite using `[← LinearMap.baseChange_tmul, hy]`. Conclude with `hy1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdone : (K.d 0 1).hom oneK = 0` using `hinj _ _ (by`. Rewrite using `[← LinearMap.baseChange_tmul, hy, TensorProduct.tmul_zero]`. Conclude with `hy2)`. Use `⟨{ θ0 := fun {R'} _ _ {X'} {s'} {ψ} h => (LinearEquiv.ofBijective (cycMap φ R' 0 1) ⟨?_, ?_⟩).trans (M.θ0 h) one := oneK θ0_one := ?_ θ1 := fun {R'} _ _ {X'} {s'} {ψ} h => (M.θ1 h).comp (cycMap φ R' 1 2) θ2 := fun {R'} _ _ {X'} {s'} {ψ} h => (M.θ2 h).comp (cycMap φ R' 2 3)` and prove the remaining obligations. Conclude with `:= ?_`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `nat := ?_ }⟩`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Conclude with `Subtype.ext ((coneExact_baseChange_of_quasiIso φ (hq _)).inj z.1 (congrArg Subtype.val hz) z.2)`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx1, hx2⟩` from `(coneExact_baseChange_of_quasiIso φ (hq _)).zero w.1 0 ((LinearMap.mem_ker.1 w.2).trans (map_zero _).symm) (map_zero _)`. Conclude with `⟨⟨x, hx2⟩, Subtype.ext hx1⟩`. Introduce `R' _ _ X' s' ψ h`. Establish `e : (1 : R') ⊗ₜ[R] oneK ∈ LinearMap.ker (dB K R' 0 1)`. Rewrite using `[LinearMap.mem_ker, dB, LinearMap.baseChange_tmul, hdone, TensorProduct.tmul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨e', he'⟩` from `M.θ0_one h`. Use `⟨e, fun T => ?_⟩` and prove the remaining obligations. Establish `hc : cycMap φ R' 0 1 ⟨_, e⟩ = ⟨_, e'⟩` using `Subtype.ext (by`. Rewrite using `[cycMap_val, LinearMap.baseChange_tmul, hφone])`. Use `show (M.θ0 h (cycMap φ R' 0 1 ⟨_, e⟩)).1 T = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc]`. Conclude with `he' T`. Introduce `R' _ _ X' s' ψ h`. Establish `hc` using `coneExact_baseChange_of_quasiIso φ (hq R')`. Take `⟨s1, k1, s2, k2⟩` from `M.exact h`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `A` using `exact_comp φ R' 0 1 2 (M.θ1 h) s1 k1 (fun c hc0 => by`. Take `⟨c', k', h1, h2⟩` from `hc.succ 0 c 0 (hc0.trans (map_zero _).symm) (map_zero _)`. Conclude with `⟨c', k', h2, h1⟩)`. Use the proof step `(fun k' c hk' hkc => by`. Take `⟨x, -, hx⟩` from `hc.zero c k' hkc.symm hk'`.
+Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨x, hx⟩)`. Establish `B` using `exact_comp φ R' 1 2 3 (M.θ2 h) s2 k2 (fun c hc0 => by`. Take `⟨c', k', h1, h2⟩` from `hc.succ 1 c 0 (hc0.trans (map_zero _).symm) (map_zero _)`. Conclude with `⟨c', k', h2, h1⟩)`. Use the proof step `(fun k' c hk' hkc => by`.
-
-Take `⟨c', k'', -, hx⟩` from `hc.succ 0 c k' hkc.symm hk'`. Conclude with `⟨k'', hx⟩)`. Conclude with `⟨A.1, A.2, B.1, B.2⟩`. Introduce `R' _ _ X' s' ψ h R'' _ _ X'' s'' ψ' h' α χ w hχ`. Take `⟨n1, n2⟩` from `M.nat h h' α χ w hχ`.
-
-Use `⟨fun z z' hz => ?_, fun z z' hz => ?_⟩` and prove the remaining obligations. Use `show M.θ1 h' (cycMap φ R'' 1 2 z') = pullHO1 w (M.θ1 h (cycMap φ R' 1 2 z))`. Conclude with `n1 _ _ (by rw [cycMap_val, cycMap_val, hz, ext_comm])`. Use `show M.θ2 h' (cycMap φ R'' 2 3 z') = pullHO2 w (M.θ2 h (cycMap φ R' 2 3 z))`. Conclude with `n2 _ _ (by rw [cycMap_val, cycMap_val, hz, ext_comm])`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_model_of_quasiIso : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R)
     (K C : CochainComplex (ModuleCat.{0} R) ℕ) (φ : K ⟶ C), (∀ (S : Type) [CommRing S] [Algebra R S],

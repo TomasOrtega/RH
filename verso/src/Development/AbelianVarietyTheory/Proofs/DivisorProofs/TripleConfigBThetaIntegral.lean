@@ -23,14 +23,14 @@ def reM {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (Y : Spc 
   ⟨M.co, M.vac, M.μ, M.dom⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hM.rat, hM.vac, hM.std, hM.haar, hM.dom⟩`.
+Supply the required witnesses or components.
 -/
 theorem reM_isGood {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} (Y : Spc F E n) {ψ : AddChar (AF F) ℂ}
     (hM : M.IsGood ψ) : (reM M Y).IsGood ψ :=
   ⟨hM.rat, hM.vac, hM.std, hM.haar, hM.dom⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨he.maps, he.Heisenberg₂, he.inv, he.loc⟩`.
+Supply the required witnesses or components.
 -/
 theorem reM_isEv {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {B : Base F E}
     {M : Model σ X W} {M₁ : Model σ X₁ W₁} (Y : Spc F E n) {ι : Matrix (Fin n) (Fin n₁) E} {ι' : Matrix (Fin d) (Fin d₁) E}
@@ -39,17 +39,17 @@ theorem reM_isEv {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : S
   ⟨he.maps, he.Heisenberg₂, he.inv, he.loc⟩
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev Φ hΦ h Q hQ q hqQ g`. Establish `hq` using `(hQ q).1 hqQ`. Establish `hP0` using `Inhab.pairV hT`. Establish `hP : IsPair B (reM G.M V₂) X.β (X.β / X.α) om (a - G.p) G.p (a + (b + 2) - (G.p + G.q)) (G.p + G.q)` using `⟨hP0.base, hV₂, hP0.skew, reM_isGood V₂ hP0.good, hP0.hX, hP0.hW, hP0.resX, hP0.resW, hP0.weil⟩`. Take `⟨M₁, hM₁⟩` from `GlobalTheory.T.exists_good_schrodinger_model F E σ B hT.base a (a + b) (reS G.V V₂) G₁.W _ _ _ _ hV₂ hT₁.geo.hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e₀, he₀⟩` from `((GlobalTheory.T.theta_evaluation_zero_cone hKP.base).1 F E σ B a (a + (b + 2)) (reS G.V V₂) G.W (reM G.M V₂) _ _ om _ _ _ _ hP (a + b) (reS G.V V₂) G₁.W H' a (a + b + 1) M₁ rfl hC.hH' hM₁).1`. Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `GlobalTheory.T.exists_unipotent_haar_domain F E σ B (a + (b + 2)) (a + b) G.W G₁.W H' a (a + b + 1) _ _ _ _ hT.base hT.geo.hW hT₁.geo.hW hC.hH'`. Take `⟨C, hC0, hiso⟩` from `GlobalTheory.T.eigen_intertwiner_double_restriction hKP F E σ B a (a + (b + 2)) (a + b) (reS G.V V₂) G.W G₁.W (reM G.M V₂) M₁ H' a (a + b + 1) hC.hH' hM₁ e₀ he₀ n₁ X₁ H₀ j₀ j₁ M₂ hH₀ hM₂ e₂ (reM_isEv V₂ hev)`. Establish `hΨ : om (g, h) Φ ∈ schA F _` using `hT.weil.isUSplitting.pres _ Φ (StabInv.polData_le_schA hT.geo.hM hΦ)`. Establish `hx0 : H₀.x ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Use `hH₀.xy` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[form] at this`. Establish `key` using `hiso _ _ om _ _ _ _ hP μ 𝓕 hμ h𝓕 h1 _ hΨ H₀.x hx0 hH₀.xx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k1` using `key q hq.1 hq.2`. Establish `k2` using `key 1 (one_mem _) (by simp [mat])`. Rewrite `k2` using `[k1]`. Establish `k3` using `mul_left_cancel₀ hC0 k2`. Establish `hone : om (1, 1) (om (g, h) Φ) = om (g, h) Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Prod.mk_one_one, map_one om, Module.End.one_apply]`. Establish `hmul : om (q, 1) (om (g, h) Φ) = om (q * g, h) Φ`. Rewrite using `[← Module.End.mul_apply, ← map_mul om, Prod.mk_mul_mk, one_mul]`. Establish `k4 : thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (q, 1) (om (g, h) Φ)))) = thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (1, 1) (om (g, h) Φ))))` using `k3`. Rewrite `k4` using `[hone, hmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[k4]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coneTerm_left_inv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)) (hC : CfgB B G G₁ H H') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W) (hT : IsTriple B G X om om') (hT₁ : IsTriple B G₁ X om₁ om₁') (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)) (hV₂ : (reS G.V V₂).IsHerm σ B (a - G.p) G.p) (hH₀ : H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁) (hM₂ : M₂.IsGood B.ψ) (hev : IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂) (Φ : Fn F a (a + (b + 2))) (hΦ : Φ ∈ PolData B G.M) (h : UA σ G.W.J) (Q : Subgroup (UA σ G.V.J)) (hQ : ∀ q, q ∈ Q ↔ q ∈ ratU σ G.V.J ∧ mat q *ᵥ incV F H₀.x = incV F H₀.x), ∀ q ∈ Q, ∀ g : UA σ G.V.J, ‖thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (q * g, h) Φ)))‖ₑ = ‖thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, h) Φ)))‖ₑ := by
   intro hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev Φ hΦ h Q hQ q hqQ g

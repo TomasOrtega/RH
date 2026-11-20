@@ -12,9 +12,9 @@ noncomputable section
 namespace UpperTheory.Lit.Branch
 
 /- English proof (translation)
-Introduce `hHC hCW hCR hR`. Establish `h0` using `Cusp.exists_cusp_form_theta_period_ne_zero hHC hCW hCR (packEx_of_eigen hR) GlobalTheory.T.gridDepth_pays_every_loss`. Introduce `ε CF hCF`. Take `⟨x, hx⟩` from `h0 ε CF hCF`. Use `⟨x, fun D large₂ e a b T L μ0 hL G W M hM M₀ MP t ht t0 w w0 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, v, w', hp⟩` from `hx D large₂ e a b T L μ0 hL G W M hM M₀ MP t ht t0`. Take `⟨a', ha', hp'⟩` from `GlobalTheory.PeriodNePf.exists_kf W M hM hCR hHC M₀ MP ht hy v w' hp w w0`. Conclude with `⟨y, hy, a', ha', hp'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem periodNe_of_eigen : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     GlobalTheory.Published.CuspRapidDecay → RealInputE → PeriodNe := by

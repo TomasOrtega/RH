@@ -19,19 +19,19 @@ theorem tau_val (p : Fin (2 * r + k + 1)) :
     (tau k r p).val = if p.val < r ∨ r + k < p.val then 2 * r + k - p.val else p.val := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold WeylGroupFacts.sgn; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_sgn (p : Fin (2 * r + k + 1)) : star (WeylGroupFacts.sgn k r p) = WeylGroupFacts.sgn k r p := by
   unfold WeylGroupFacts.sgn; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `WeylGroupFacts.sgn`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgn_one (p : Fin (2 * r + k + 1)) (h : p.val ≠ r + k) : WeylGroupFacts.sgn k r p = 1 := by
   unfold WeylGroupFacts.sgn; rw [if_neg h]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single (tau k r l)]`. Rewrite using `[hpk_row, if_pos rfl]`. Introduce `m _ hm`. Rewrite using `[hpk_row, if_neg hm, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -44,14 +44,14 @@ theorem mulVec_hpk (v : Fin (2 * r + k + 1) → ℂ) (l : Fin (2 * r + k + 1)) :
   · simp
 
 /- English proof (translation)
-Unfold `herm`. Simplify using `only [dotProduct, mulVec_hpk, Pi.star_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem herm_expand (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) v w = ∑ l, star (w l) * (WeylGroupFacts.sgn k r l * v (tau k r l)) := by
   unfold herm; simp only [dotProduct, mulVec_hpk, Pi.star_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (tau k r q)]`. Rewrite using `[hpk_symm, hpk_row, if_pos rfl]`. Introduce `m _ hm`. Rewrite using `[hpk_symm, hpk_row, if_neg hm, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_hpk_apply (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (p q : Fin (2 * r + k + 1)) :
     (M * Hpk k r) p q = M p (tau k r q) * WeylGroupFacts.sgn k r q := by
@@ -94,14 +94,14 @@ section MajorantSquareBound
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `Tn; rw [if_neg (by omega), if_neg (by omega)]`.
+Replace the relevant objects with their definitions.
 -/
 theorem Tn_S_row (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : r + k < p.val) : Tn k r j hj y p q = 0 := by
   unfold Tn; rw [if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `Tn Cf`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Tn_X_col (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hq : q.val < r) : Tn k r j hj y p q = 0 := by
@@ -109,21 +109,21 @@ theorem Tn_X_col (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) →
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Unfold `Cf; rw [dif_neg (by omega)]`.
+Replace the relevant objects with their definitions.
 -/
 theorem Cf_nonS (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (l q : Fin (2 * r + k + 1))
     (hq : ¬ r + k < q.val) : Cf k r j hj y l q = 0 := by
   unfold Cf; rw [dif_neg (by omega)]
 
 /- English proof (translation)
-Unfold `Tn; rw [if_neg (by omega), if_pos hp]`.
+Replace the relevant objects with their definitions.
 -/
 theorem triangular_factor_middle_row (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : r ≤ p.val ∧ p.val ≤ r + k) : Tn k r j hj y p q = Cf k r j hj y p q := by
   unfold Tn; rw [if_neg (by omega), if_pos hp]
 
 /- English proof (translation)
-Unfold `Tn`. Rewrite using `[if_pos hp, if_pos hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tn_XW (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : p.val < r) (hq : r ≤ q.val ∧ q.val ≤ r + k) :
@@ -131,7 +131,7 @@ theorem Tn_XW (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → �
   unfold Tn; rw [if_pos hp, if_pos hq]
 
 /- English proof (translation)
-Unfold `Tn; rw [if_pos hp, if_neg (by omega), if_pos hq]`.
+Replace the relevant objects with their definitions.
 -/
 theorem Tn_XS (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hp : p.val < r) (hq : r + k < q.val) :
@@ -151,17 +151,17 @@ theorem Ym_apply (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) →
     Ym k r j hj y a c = y a (esI k r (Fin.castLE hj c)) := rfl
 
 /- English proof (translation)
-Distinguish the cases in `hc : 2 * r + k - q.val < j`. Establish `hq' : q = esI k r (Fin.castLE hj ⟨2 * r + k - q.val, hc⟩)` using `by ext; simp [esI]; omega`. Establish `hGY : (Ym k r j hj y)⁻¹ * Ym k r j hj y = 1` using `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet)`. Use `congrFun (congrFun hGY b) ⟨2 * r + k - q.val, hc⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Zv`. Rewrite using `[hq']`. Simplify using `only [Ym_apply] at this`. Rewrite using `[this]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Substitute `h` using the available equality. Simplify using `only [esI, Fin.val_castLE]`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h`. Use `ext`. Simplify using `only [esI, Fin.val_castLE] at h`. Simplify using `only`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Unfold `Zv`. Rewrite using `[if_neg (by omega)]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show q = esI k r ⟨2 * r + k - q.val, by omega⟩ by ext; simp [esI]; omega, hy0 a _ (by simp; omega), mul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem Zv_star (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (hy0 : ∀ (a : Fin j) (b : Fin r), j ≤ b.val → y a (esI k r b) = 0)
@@ -187,15 +187,15 @@ theorem Zv_star (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → 
     rw [show q = esI k r ⟨2 * r + k - q.val, by omega⟩ by ext; simp [esI]; omega, hy0 a _ (by simp; omega), mul_zero]
 
 /- English proof (translation)
-Establish `hYG : Ym k r j hj y * (Ym k r j hj y)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet)`. Unfold `Zv`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_eq_single a]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (congrFun hYG a) a` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply, if_pos rfl]`. Simplify using `only [Ym_apply] at this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `c`. Expand and normalize the polynomial expressions, which then agree. Use `_ = y a p := by rw [this, one_mul]`. Introduce `a' _ ha'`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun (congrFun hYG a) a'` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply, if_neg (Ne.symm ha')]`. Simplify using `only [Ym_apply] at this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `c`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [this, zero_mul]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Zv_comb (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (hdet : (Ym k r j hj y).det ≠ 0) (a : Fin j) (p : Fin (2 * r + k + 1)) :
@@ -223,9 +223,9 @@ theorem Zv_comb (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → 
   · simp
 
 /- English proof (translation)
-Establish `h : herm (Hpk k r) (Zv k r j hj y b') (Zv k r j hj y b) = ∑ a, ∑ a', star ((Ym k r j hj y)⁻¹ b a') * (Ym k r j hj y)⁻¹ b' a * herm (Hpk k r) (y a) (y a')`. Simplify using `only [herm_expand, Zv, star_sum, star_mul', Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun a' _ => ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Simplify using `[hiso]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_Zv (j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (hiso : ∀ a a', herm (Hpk k r) (y a) (y a') = 0) (b b' : Fin j) :

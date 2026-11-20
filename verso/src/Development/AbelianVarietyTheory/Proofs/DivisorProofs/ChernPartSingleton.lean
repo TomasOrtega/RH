@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.ArchDimZero
 
 /- English proof (translation)
-Establish `h` using `(stdOrthonormalBasis ℝ (ReciprocityTheory.L2DbarEstimates.V 0)).volume_parallelepiped`. Rewrite `h` using `[Set.eq_univ_of_forall (s := parallelepiped _) fun v => (Subsingleton.elim 0 v) ▸ ⟨0, by simp, by simp⟩]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem volume_univ_zero : (volume : Measure (ReciprocityTheory.L2DbarEstimates.V 0)) Set.univ = 1 := by
   have h := (stdOrthonormalBasis ℝ (ReciprocityTheory.L2DbarEstimates.V 0)).volume_parallelepiped
@@ -25,9 +25,9 @@ theorem volume_univ_zero : (volume : Measure (ReciprocityTheory.L2DbarEstimates.
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp k}
 
 /- English proof (translation)
-Take `⟨U, x, hU, hg, hx⟩` from `GenericEtale.exists_etale_coords hq`. Establish `hy : y ∈ ptsIn q σ U`. Rewrite using `[mem_ptsIn, show y.1 (IsLocalRing.closedPoint ℂ) = genericPoint Y from TwistTop.under_eq_genericPoint hq y]`. Conclude with `hg`. Take `⟨c, hc, -⟩` from `AlgChart.exists_of_etale hU x hx hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart (hq : IsArithVar q 0) {σ : k →+* ℂ} (y : CxPts q σ) :
     ∃ c : AlgChart q σ 0, y ∈ c.e.source := by
@@ -40,7 +40,7 @@ theorem exists_chart (hq : IsArithVar q 0) {σ : k →+* ℂ} (y : CxPts q σ) :
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Take `⟨N, j, _, hj⟩` from `hq.isProjOver`. Use `isProper_str k N` as an intermediate fact. Conclude with `hj ▸ inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper (hq : IsArithVar q 0) : IsProper q := by
   obtain ⟨N, j, _, hj⟩ := hq.isProjOver
@@ -48,7 +48,7 @@ theorem isProper (hq : IsArithVar q 0) : IsProper q := by
   exact hj ▸ inferInstance
 
 /- English proof (translation)
-Use `isProper hq` as an intermediate fact. Take `⟨c, hc⟩` from `exists_chart hq y`. Rewrite using `[Weight.chernPart_apply (L.cInf σ) ε c (measurableSet_singleton y) (Set.singleton_subset_iff.2 hc)]`. Establish `e : c.e '' {y} = Set.univ` using `Set.eq_univ_of_forall fun v => ⟨y, rfl, Subsingleton.elim _ _⟩`. Simplify using `[e, AlgChart.chernDens_zero, volume_univ_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chernPart_singleton (hq : IsArithVar q 0) (L : HermLB q) (σ : k →+* ℂ) (ε : ℤˣ)
     (y : CxPts q σ) : (L.φ σ).chernPart 0 ε {y} = ENNReal.ofReal (ε : ℤ) := by
@@ -60,7 +60,7 @@ theorem chernPart_singleton (hq : IsArithVar q 0) (L : HermLB q) (σ : k →+* �
   simp [e, AlgChart.chernDens_zero, volume_univ_zero]
 
 /- English proof (translation)
-Use `HtSelfInter.finite_ringHom hq` as an intermediate fact. Take `⟨e⟩` from `HtSelfInter.nonempty_equiv hq`. Establish `: Finite (Σ σ : k →+* ℂ, CxPts q σ)` using `.of_equiv _ e.symm`. Conclude with `.of_injective _ (sigma_mk_injective (i := σ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cxPts (hq : IsArithVar q 0) (σ : k →+* ℂ) : Finite (CxPts q σ) := by
   have := HtSelfInter.finite_ringHom hq
@@ -69,11 +69,11 @@ theorem finite_cxPts (hq : IsArithVar q 0) (σ : k →+* ℂ) : Finite (CxPts q 
   exact .of_injective _ (sigma_mk_injective (i := σ))
 
 /- English proof (translation)
-Use `isProper hq` as an intermediate fact. Use `finite_cxPts hq σ` as an intermediate fact. Set `` to `Fintype.ofFinite (CxPts q σ)`. Establish `h₁ : (L.φ σ).chernPart 0 1 = Measure.count` using `Measure.ext_iff_singleton.2 fun y => by`. Rewrite using `[chernPart_singleton hq L σ 1 y, Measure.count_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h₂ : (L.φ σ).chernPart 0 (-1) = 0` using `Measure.ext_iff_singleton.2 fun y => by`. Rewrite using `[chernPart_singleton hq L σ (-1) y]`. Simplify using the standard rewrite rules. Rewrite using `[Weight.chernInt, h₁, h₂, Measure.restrict_univ, Measure.restrict_univ, integral_zero_measure, sub_zero, integral_fintype (Integrable.of_finite (μ := Measure.count) (f := f)), finsum_eq_sum_of_fintype]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Measure.real]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chernInt_univ (hq : IsArithVar q 0) (L : HermLB q) (σ : k →+* ℂ) (f : CxPts q σ → ℝ) :
     (L.φ σ).chernInt 0 Set.univ f = ∑ᶠ y, f y := by
@@ -91,7 +91,7 @@ theorem chernInt_univ (hq : IsArithVar q 0) (L : HermLB q) (σ : k →+* ℂ) (f
   simp [Measure.real]
 
 /- English proof (translation)
-Introduce `k _ Y _ q hq M N r hr`. Unfold `HermLB.archInt`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Establish `hS : offSupp q σ (M.div hr) = Set.univ` using `Set.eq_univ_of_forall fun y => mem_offSupp.2 fun h => CartierDiv.genericPoint_notMem_supp _ (TwistTop.under_eq_genericPoint hq y ▸ h)`. Rewrite using `[hS, chernInt_univ hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar q 0 → ∀ (M N : HermLB q) (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r), N.archInt M 0 hr = ∑ᶠ σ : k →+* ℂ, ∑ᶠ y : CxPts q σ, logNorm (M.φ σ) r y := by
   intro k _ Y _ q hq M N r hr

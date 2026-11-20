@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.PlaceExt
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `hpos : 0 < V.valuation y` using `zero_lt_iff.2 ((map_ne_zero _).2 hy)`. Rewrite using `[← V.valuation_le_one_iff, map_inv₀, not_le, one_lt_inv₀ hpos]`. Simplify using `[hy]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem valuation_lt_one_iff_inv {L : Type*} [Field L] (V : ValuationSubring L) (y : L) :
     V.valuation y < 1 ↔ y = 0 ∨ y⁻¹ ∉ V := by
@@ -19,7 +19,7 @@ theorem valuation_lt_one_iff_inv {L : Type*} [Field L] (V : ValuationSubring L) 
     simp [hy]
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Conclude with `⟨(IsAlgClosed.lift : M →ₐ[L] C), fun x => (IsAlgClosed.lift : M →ₐ[L] C).commutes x⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem exists_lift {L M C : Type*} [Field L] [Field M] [Algebra L M] [Algebra.IsAlgebraic L M] [Field C]
     [IsAlgClosed C] (f : L →+* C) : ∃ h : M →+* C, ∀ x, h (algebraMap L M x) = f x := by
@@ -27,21 +27,19 @@ theorem exists_lift {L M C : Type*} [Field L] [Field M] [Algebra L M] [Algebra.I
   exact ⟨(IsAlgClosed.lift : M →ₐ[L] C), fun x => (IsAlgClosed.lift : M →ₐ[L] C).commutes x⟩
 
 /- English proof (translation)
-Introduce `F F' hle hfin W K _ _ O g hg`. Use `haveI : FiniteDimensional ℚ F := FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion hle).injective`. Use `haveI : NumberField F := ⟨⟩`. Use `letI : Algebra F F' := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ F F' := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.IsAlgebraic F F' := Algebra.IsAlgebraic.tower_top (K := ℚ) F`. Set `Ω` to `AlgebraicClosure F'`. Use `haveI : Algebra.IsAlgebraic F Ω := Algebra.IsAlgebraic.trans F F' Ω`. Use `haveI : IsAlgClosure F Ω := ⟨inferInstance, inferInstance⟩`. Take `⟨g₀, hg₀⟩` from `exists_lift (M := F') g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨ι₂, hι₂⟩` from `exists_lift (M := Ω) g₀`. Take `⟨ι₁, hι₁⟩` from `exists_lift (M := Ω) (algebraMap F' ℂ)`. Establish `k₁ : ∀ y : F, ι₁ (algebraMap F Ω y) = (y : ℂ)` using `fun y => by`. Rewrite using `[IsScalarTower.algebraMap_apply F F' Ω, hι₁]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `k₂ : ∀ y : F, ι₂ (algebraMap F Ω y) = g y` using `fun y => by`. Rewrite using `[IsScalarTower.algebraMap_apply F F' Ω, hι₂, hg₀]`. Set `A` to `W.comap ι₁`. Set `A'` to `O.comap ι₂`. Establish `h : ∀ x : 𝓞 F, A.valuation (algebraMap F Ω x) < 1 ↔ A'.valuation (algebraMap F Ω x) < 1`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `x`. Generalize the expression as in `(x : F) = y`. Rewrite using `[valuation_lt_one_iff_inv, valuation_lt_one_iff_inv, ValuationSubring.mem_comap, ValuationSubring.mem_comap, ← map_inv₀, k₁, k₂, hg]`. Take `⟨σ, hσ⟩` from `GlobalTheory.InertiaLift.exists_smul_eq (F := F) (Ω := Ω) h`. Use `⟨ι₂.comp (σ.toRingEquiv.toRingHom.comp (algebraMap F' Ω)), fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ι₂ (σ (algebraMap F' Ω (algebraMap F F' x))) = g x`. Rewrite using `[← IsScalarTower.algebraMap_apply, σ.commutes, k₂]`. Express the relevant statement in the definitionally equal form `ι₂ (σ (algebraMap F' Ω x)) ∈ O`. Assume the negation of the conclusion as `hn`. Establish `h1 : A'.valuation (σ (algebraMap F' Ω x)⁻¹) < 1`.
+Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[valuation_lt_one_iff_inv, map_inv₀, inv_inv]`. Conclude with `Or.inr hn`. Break down `(valuation_lt_one_iff_inv _ _).1 ((hσ _).1 h1) with h2 | h2` into its components or cases. Establish `: x = 0` using `by simpa using h2`. Substitute `this` using the available equality.
-
-Conclude with `hn (by simp)`. Apply `h2` to reduce the goal to its premises. Rewrite using `[inv_inv, ValuationSubring.mem_comap, hι₁]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend_compatible : ∀ (F F' : IntermediateField ℚ ℂ) (hle : F ≤ F'), FiniteDimensional ℚ F' →
     ∀ (W : ValuationSubring ℂ) (K : Type) [Field K] [IsAlgClosed K] (O : ValuationSubring K) (g : F →+* K),

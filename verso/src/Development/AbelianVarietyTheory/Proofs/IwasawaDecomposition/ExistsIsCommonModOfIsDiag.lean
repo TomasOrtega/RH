@@ -22,11 +22,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Establish `: IsPreimmersion (spMap (i.c.V W).subtype)` using `IsPreimmersion.of_isLocalization (S := i.c.F) (nonZeroDivisors (i.c.V W))`. Use `(Y i).jQ_open` as an intermediate fact. Set `z : Sp k ⟶ pullback (Y i).s (spMap (i.c.V W).subtype)` to `pullback.lift x (spMap f) (hf.trans (sp_comp _ _).symm)`. Establish `hz : z ≫ pullback.fst _ _ = x` using `pullback.lift_fst _ _ _`. Establish `hr : Set.range z ⊆ Set.range (Y i).jQ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨b, hb⟩` from `hx ⟨a, rfl⟩`. Use `⟨b, (pullback.fst (Y i).s (spMap (i.c.V W).subtype)).isEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hz]`. Conclude with `hb`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `IsOpenImmersion.lift_fac (Y i).jQ z hr`. Use `⟨IsOpenImmersion.lift (Y i).jQ z hr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j, ← Category.assoc, e, hz]`. Rewrite using `[← (Y i).jQ_over, ← Category.assoc, e]`. Conclude with `pullback.lift_snd _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (i : Idx H p) {k : Type} [Field k] (x : Sp k ⟶ (Y i).X) (f : i.c.F →+* k)
     (hf : x ≫ (Y i).s = spMap (f.comp (i.c.V W).subtype)) (hx : Set.range x ⊆ Set.range (Y i).j) :
@@ -50,7 +50,7 @@ theorem exists_lift (i : Idx H p) {k : Type} [Field k] (x : Sp k ⟶ (Y i).X) (f
     exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `exists_lift Z.i _ _ (by rw [Category.assoc, Z.π_s, ← h, Category.assoc, Z.affineOpenChart_comp_structure_eq_spMap]) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Use `Z.cover.le (Set.mem_iUnion.2 ⟨a, ?_⟩)` and prove the remaining obligations. Conclude with `(Z.U a).2.range_fromSpec.le ⟨spMap φ x, by rw [← h]; exact (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lift_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a : Fin Z.m}
     {φ : Γ(Z.X, (Z.U a).1) →+* k} (h : spMap φ ≫ Z.chart a = w) :
@@ -62,7 +62,7 @@ theorem exists_lift_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.
   exact (Z.U a).2.range_fromSpec.le ⟨spMap φ x, by rw [← h]; exact (Scheme.Hom.comp_apply _ _ _).symm⟩
 
 /- English proof (translation)
-Establish `hf` using `isFrame_bc E H Dw _ _ _ _ _ _ _ φ _ _ (Z.frame a)`. Rewrite `hf` using `[← Category.assoc, h]`. Conclude with `⟨a, φ, h, hf, SameFlag.refl fun τ i => (hf.1 τ i).1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem flagAt_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a : Fin Z.m}
     {φ : Γ(Z.X, (Z.U a).1) →+* k} (h : spMap φ ≫ Z.chart a = w) : Z.FlagAt w ((Z.fr a).bc φ) := by
@@ -71,7 +71,7 @@ theorem flagAt_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a
   exact ⟨a, φ, h, hf, SameFlag.refl fun τ i => (hf.1 τ i).1⟩
 
 /- English proof (translation)
-Take `⟨mu, hmu, ht⟩` from `exists_isTrans_id (Y := Y) Z.i`. Take `⟨a, φ, h⟩` from `Z.exists_chart w hw`. Use `⟨𝟙 _, mu, (Z.fr a).bc φ, ht, by simp, flagAt_chart Z h, ?_⟩` and prove the remaining obligations. Simplify `flagAt_chart Z h` using `only [hmu, Category.comp_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natImg_refl (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} (hw : Set.range w ⊆ Z.opn) :
     NatImg Z Z w w := by
@@ -81,9 +81,9 @@ theorem natImg_refl (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} (hw
   simpa only [hmu, Category.comp_id] using flagAt_chart Z h
 
 /- English proof (translation)
-Take `⟨b, ψ, hb, fu, su⟩` from `h`. Take `⟨c, k₁, k₂, k₃⟩` from `flagAt_two Z₁ hu hv`. Rewrite `e` using `[← Category.assoc]`. Establish `fr : IsFrame (Y Z₂.i).t (ψ.comp (Z₂.alg b)) (w₂ ≫ Z₂.π) (Dw` using `Dw) fun σ j => v σ j ≫ mu.φ := by`. Rewrite `fu`, the goal using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `isFrame_push mu k₁ k₂ fu`. Establish `sf` using `sameFlag_push mu hty k₃`. Rewrite `sf` using `[← e]`. Conclude with `⟨b, ψ, hb, fr, sameFlag_trans (tan_chart Z₂ hb) (fun σ j => (fu.1 σ j).1) (fun σ j => (fr.1 σ j).1) su sf⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flagAt_push {Z₁ Z₂ : Mdl Y i₀} (hty : ∀ σ, Z₂.ty σ ⊆ Z₁.ty σ) {k : Type} [Field k] {w₁ : Sp k ⟶ Z₁.X}
     {w₂ : Sp k ⟶ Z₂.X} {τ : (Y Z₁.i).X ⟶ (Y Z₂.i).X} (mu : SABMap (Y Z₁.i).t (Y Z₂.i).t τ)
@@ -100,11 +100,11 @@ theorem flagAt_push {Z₁ Z₂ : Mdl Y i₀} (hty : ∀ σ, Z₂.ty σ ⊆ Z₁.
   exact ⟨b, ψ, hb, fr, sameFlag_trans (tan_chart Z₂ hb) (fun σ j => (fu.1 σ j).1) (fun σ j => (fr.1 σ j).1) su sf⟩
 
 /- English proof (translation)
-Take `⟨τ, mu, u, t, e, fu, fu'⟩` from `hf`. Take `⟨τ', mu', v, t', e', fv, fv'⟩` from `hg`. Take `⟨rfl, hmu⟩` from `TransUniq.trans_unique E H Dw Xo p W Y _ _ τ τ' mu mu' h.2.1 t t'`. Establish `fv₀` using `fv`. Take `⟨a, φ, ha, gv, -⟩` from `fv₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, -⟩` from `exists_lift_chart Z₁ ha`. Establish `ev : (fun σ j => v σ j ≫ mu'.φ : Vecs Dw (Y Z₂.i).t k) = fun σ j => v σ j ≫ mu.φ`. Use function extensionality and compare the values at `fun σ => funext fun j => (hmu k y _ _ _ (by rw [hy]; exact (gv.1 σ j).1.1)).symm`. Rewrite `fv'` using `[ev]`. Establish `f₂` using `flagAt_push h.2.2 mu e fu fv fu'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f₃` using `f₂`. Take `⟨b, ψ, hb, g, -⟩` from `f₃`. Take `⟨y₂, hy₂, hs⟩` from `exists_lift_chart Z₂ hb`. Rewrite `g` using `[← hy₂]`. Conclude with `(Z₂.bij k _ y₂ hs _ g).unique ⟨hy₂.symm, f₂⟩ ⟨(e'.trans e.symm).trans hy₂.symm, fv'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natImg_unique {Z₁ Z₂ : Mdl Y i₀} (h : LocM.Corr Z₁ Z₂) {k : Type} [Field k] {w₁ : Sp k ⟶ Z₁.X}
     {w₂ w₂' : Sp k ⟶ Z₂.X} (hf : NatImg Z₁ Z₂ w₁ w₂) (hg : NatImg Z₁ Z₂ w₁ w₂') : w₂ = w₂' := by
@@ -125,9 +125,9 @@ theorem natImg_unique {Z₁ Z₂ : Mdl Y i₀} (h : LocM.Corr Z₁ Z₂) {k : Ty
   exact (Z₂.bij k _ y₂ hs _ g).unique ⟨hy₂.symm, f₂⟩ ⟨(e'.trans e.symm).trans hy₂.symm, fv'⟩
 
 /- English proof (translation)
-Use `M.normal` as an intermediate fact. Establish `: IsReduced M.X` using `GlobalTheory.IsNormalScheme.isReduced`. Use `Toroidal.isProper_toroidalModel_structureMap (Y Z.i)` as an intermediate fact. Establish `: IsSeparated ((Y Z.i).s ≫ terminal.from _)` using `inferInstance`. Use `ext_of_fromSpecResidueField_eq _ _ ((Y Z.i).s ≫ terminal.from _) M.opn M.dense (fun x hx => ?_) (terminal.hom_ext _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨τ', mu', -, t', e, -⟩` from `hf.2 (M.X.residueField x) (M.X.fromSpecResidueField x) (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(Scheme.fromSpecResidueField_apply x a).symm ▸ hx)`. Take `⟨rfl, -⟩` from `TransUniq.trans_unique E H Dw Xo p W Y _ _ τ τ' mu mu' hf.1.2.1 t t'`. Conclude with `(Category.assoc _ _ _).symm.trans e`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comp_π_eq {M Z : Mdl Y i₀} {f : M.X ⟶ Z.X} (hf : IsMap M Z f) {τ : (Y M.i).X ⟶ (Y Z.i).X}
     {mu : SABMap (Y M.i).t (Y Z.i).t τ} (t : IsTrans Z.i M.i τ mu) : f ≫ Z.π = M.π ≫ τ := by
@@ -144,9 +144,7 @@ theorem comp_π_eq {M Z : Mdl Y i₀} {f : M.X ⟶ Z.X} (hf : IsMap M Z f) {τ :
   exact (Category.assoc _ _ _).symm.trans e
 
 /- English proof (translation)
-Take `⟨_, _, _, -, -, -, h⟩` from `hf.2 (M.X.residueField x) (M.X.fromSpecResidueField x) (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(Scheme.fromSpecResidueField_apply x a).symm ▸ hx)`. Set `a : Sp (M.X.residueField x)` to `IsLocalRing.closedPoint _`. Use `range_subset_opn Z h ⟨a, (Scheme.Hom.comp_apply _ _ a).trans ?_⟩` and prove the remaining obligations.
-
-Conclude with `congrArg f (Scheme.fromSpecResidueField_apply x a)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_mem_opn {M Z : Mdl Y i₀} {f : M.X ⟶ Z.X} (hf : IsMap M Z f) {x : M.X} (hx : x ∈ M.opn) : f x ∈ Z.opn := by
   obtain ⟨_, _, _, -, -, -, h⟩ := hf.2 (M.X.residueField x) (M.X.fromSpecResidueField x) (by
@@ -157,9 +155,9 @@ theorem map_mem_opn {M Z : Mdl Y i₀} {f : M.X ⟶ Z.X} (hf : IsMap M Z f) {x :
   exact congrArg f (Scheme.fromSpecResidueField_apply x a)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Set.mem_iUnion.1 (Z.cover.ge hx)`. Establish `hu : IsUnit ((p : ℕ) : Γ(Z.X, (Z.U a).1))`. Use `(IsUnit.mk0 ((p : ℕ) : Z.i.c.F) (Nat.cast_ne_zero.2 hp)).map (Z.alg a)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h` using `Z.X.basicOpen_res ((p : ℕ) : Γ(Z.X, ⊤)) (homOfLE (le_top : (Z.U a).1 ≤ ⊤)).op`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[map_natCast, Scheme.basicOpen_of_isUnit _ hu]`. Conclude with `(h.le ha).2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_genO_of_mem_opn (hp : p ≠ 0) (Z : Mdl Y i₀) {x : Z.X} (hx : x ∈ Z.opn) : x ∈ Z.genO := by
   obtain ⟨a, ha⟩ := Set.mem_iUnion.1 (Z.cover.ge hx)
@@ -171,7 +169,7 @@ theorem mem_genO_of_mem_opn (hp : p ≠ 0) (Z : Mdl Y i₀) {x : Z.X} (hx : x �
   exact (h.le ha).2
 
 /- English proof (translation)
-Rewrite using `[Mdl.genO, Scheme.preimage_basicOpen_top, map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem preimage_genO {M Z : Mdl Y i₀} (f : M.X ⟶ Z.X) : f ⁻¹ᵁ Z.genO = M.genO := by
   rw [Mdl.genO, Scheme.preimage_basicOpen_top, map_natCast]
@@ -181,7 +179,7 @@ def genMap {M Z : Mdl Y i₀} (f : M.X ⟶ Z.X) : M.genO.toScheme ⟶ Z.genO.toS
   f.resLE Z.genO M.genO (preimage_genO f).ge
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.resLE_comp_ι _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem genMap_ι {M Z : Mdl Y i₀} (f : M.X ⟶ Z.X) : genMap f ≫ Z.genO.ι = M.genO.ι ≫ f :=
   Scheme.Hom.resLE_comp_ι _ _

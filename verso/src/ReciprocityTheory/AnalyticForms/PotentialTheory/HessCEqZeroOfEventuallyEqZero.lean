@@ -11,9 +11,9 @@ noncomputable section
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `p`. Take `⟨j, hj⟩` from `A.cover p`. Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j p)`. Use `(hf j).continuousOn.continuousAt ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.preimage_univ, Set.inter_univ]`. Conclude with `(A.chart j).open_target.mem_nhds ((A.chart j).map_source hj)`. Use `(h1.comp ((A.chart j).continuousAt hj)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with q hq`. Simplify using `[(A.chart j).left_inv hq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smooth_continuous {A : FinHolAtlas e X} {f : X → ℝ} (hf : A.Smooth f) : Continuous f := by
   rw [continuous_iff_continuousAt]
@@ -28,22 +28,22 @@ theorem smooth_continuous {A : FinHolAtlas e X} {f : X → ℝ} (hf : A.Smooth f
   simp [(A.chart j).left_inv hq]
 
 /- English proof (translation)
-Introduce `j` and use `(hf j).mul (hg j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothOn_mul {A : FinHolAtlas e X} {U : Set X} {f g : X → ℝ} (hf : A.SmoothOn U f)
     (hg : A.SmoothOn U g) : A.SmoothOn U (fun x => f x * g x) := fun j => (hf j).mul (hg j)
 
 /- English proof (translation)
-Introduce `j` and use `ContDiffOn.sum fun i hi => hf i hi j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_sum {A : FinHolAtlas e X} {ι : Type} (s : Finset ι) {f : ι → X → ℝ}
     (hf : ∀ i ∈ s, A.Smooth (f i)) : A.Smooth (fun x => ∑ i ∈ s, f i x) := fun j =>
   ContDiffOn.sum fun i hi => hf i hi j
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs with hP`. Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `setIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[h j y hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_congr {A : FinHolAtlas e X} {Φ Ψ : Fin e → LocPot X} {g g' : X → ℝ}
     (h : ∀ j, ∀ y ∈ (A.chart j).target,
@@ -59,7 +59,7 @@ theorem mInt_congr {A : FinHolAtlas e X} {Φ Ψ : Fin e → LocPot X} {g g' : X 
   · rfl
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs`. Simplify using `[integralWith, hg]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_zero_fun (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) {g : X → ℝ}
     (hg : ∀ x, g x = 0) : mInt A Φ g = 0 := by
@@ -69,7 +69,7 @@ theorem mInt_zero_fun (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) {g : X →
   · rfl
 
 /- English proof (translation)
-Establish `h2 : fderiv ℝ (fderiv ℝ f) y = fderiv ℝ (fderiv ℝ g) y` using `h.fderiv.fderiv_eq`. Use extensionality with `i j`. Simplify using `[hessC, h2]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hessC_congr_eventuallyEq {D : ℕ} {f g : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (h : f =ᶠ[𝓝 y] g) : hessC f y = hessC g y := by
@@ -78,7 +78,7 @@ theorem hessC_congr_eventuallyEq {D : ℕ} {f g : (Fin D → ℂ) → ℝ} {y : 
   simp [hessC, h2]
 
 /- English proof (translation)
-Unfold `maDens`. Use `congr 3`. Use function extensionality and compare the values at `k`. Conclude with `hessC_congr_eventuallyEq (h k)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem maDens_congr_germ {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (h : ∀ i, φ i =ᶠ[𝓝 y] ψ i) : maDens φ y = maDens ψ y := by
@@ -88,9 +88,9 @@ theorem maDens_congr_germ {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ} 
   exact hessC_congr_eventuallyEq (h k)
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ f =ᶠ[𝓝 y] fderiv ℝ (fun _ : Fin D → ℂ => (0 : ℝ))` using `h.fderiv`. Establish `h2 : fderiv ℝ (fderiv ℝ f) y = 0`. Rewrite using `[h1.fderiv_eq]`. Simplify using the standard rewrite rules. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[hessC, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hessC_eq_zero_of_eventuallyEq_zero {D : ℕ} {f : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (h : f =ᶠ[𝓝 y] fun _ => 0) : hessC f y = 0 := by
@@ -102,7 +102,7 @@ theorem hessC_eq_zero_of_eventuallyEq_zero {D : ℕ} {f : (Fin D → ℂ) → �
   simp [hessC, h2]
 
 /- English proof (translation)
-Establish `hc : (fun k => hessC ((Fin.cons f φ : Fin (n + 1) → (Fin (n + 1) → ℂ) → ℝ) k) y) = Fin.cons (hessC f y) (fun k => hessC (φ k) y)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> simp`. Unfold `maDens`. Rewrite using `[hc, ReciprocityTheory.AnForm.A.mdisc_cons_eq_sum, hessC_eq_zero_of_eventuallyEq_zero h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -118,9 +118,9 @@ theorem maDens_cons_eq_zero {n : ℕ} {f : (Fin (n + 1) → ℂ) → ℝ}
   simp
 
 /- English proof (translation)
-Unfold `locDens`. Establish `hfam : (fun i y' => ((Fin.cons (LocPot.ofFun v) Φ : Fin (e + 1) → LocPot X) i).φ ((A.chart j).symm y) ((A.chart j).symm y')) = Fin.cons (fun y' => v ((A.chart j).symm y')) (fun i y' => (Φ i).φ ((A.chart j).symm y) ((A.chart j).symm y'))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) i <;> rfl`. Rewrite using `[hfam]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply `maDens_cons_eq_zero` to reduce the goal to its premises. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (tsupport v)ᶜ)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (isClosed_tsupport v).isOpen_compl`. Use `filter_upwards [hO.mem_nhds ⟨hy, hv⟩] with y' hy'`. Conclude with `image_eq_zero_of_notMem_tsupport hy'.2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locDens_cons_ofFun_eq_zero {A : FinHolAtlas (e + 1) X} (v : X → ℝ)
     (Φ : Fin e → LocPot X) (j : Fin A.n) {y : Fin (e + 1) → ℂ} (hy : y ∈ (A.chart j).target)
@@ -142,7 +142,7 @@ theorem locDens_cons_ofFun_eq_zero {A : FinHolAtlas (e + 1) X} (v : X → ℝ)
   exact image_eq_zero_of_notMem_tsupport hy'.2
 
 /- English proof (translation)
-Establish `: {y : Fin n → ℂ | y i = 0} = Function.eval i ⁻¹' {0}` using `rfl`. Rewrite using `[this, volume_pi]`. Conclude with `Measure.pi_eval_preimage_null _ (measure_singleton 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_coord_eq_zero {n : ℕ} (i : Fin n) : volume {y : Fin n → ℂ | y i = 0} = 0 := by
   have : {y : Fin n → ℂ | y i = 0} = Function.eval i ⁻¹' {0} := rfl
@@ -150,7 +150,7 @@ theorem volume_coord_eq_zero {n : ℕ} (i : Fin n) : volume {y : Fin n → ℂ |
   exact Measure.pi_eval_preimage_null _ (measure_singleton 0)
 
 /- English proof (translation)
-Rewrite using `[ae_all_iff]`. Introduce `i`. Rewrite using `[ae_iff]`. Simplify using `using volume_coord_eq_zero i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ae_coord_ne_zero {n : ℕ} : ∀ᵐ y : Fin n → ℂ, ∀ i, y i ≠ 0 := by
   rw [ae_all_iff]
@@ -159,11 +159,11 @@ theorem ae_coord_ne_zero {n : ℕ} : ∀ᵐ y : Fin n → ℂ, ∀ i, y i ≠ 0 
   simpa using volume_coord_eq_zero i
 
 /- English proof (translation)
-Introduce `y hy`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `A.cover (ψ.symm y)`. Establish `h1 : ContDiffAt ℝ ∞ (f ∘ (A.chart a).symm) (A.chart a (ψ.symm y))`. Establish `hO' : IsOpen ((A.chart a).target ∩ (A.chart a).symm ⁻¹' U)` using `(A.chart a).continuousOn_symm.isOpen_inter_preimage (A.chart a).open_target hU`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hf a).contDiffAt (hO'.mem_nhds ⟨(A.chart a).map_source ha, ?_⟩)` and prove the remaining obligations. Simplify `hy.2` using `[(A.chart a).left_inv ha]`. Establish `h2 : ContDiffAt ℝ ∞ (A.chart a ∘ ψ.symm) y` using `((hψ a).2 y ⟨hy.1, ha⟩).contDiffAt.restrict_scalars ℝ`. Use `(h1.comp y h2).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hN : ψ.target ∩ ψ.symm ⁻¹' (A.chart a).source ∈ 𝓝 y` using `(ψ.continuousOn_symm.isOpen_inter_preimage ψ.open_target (A.chart a).open_source).mem_nhds ⟨hy.1, ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hN] with y' hy'`. Simplify using `[(A.chart a).left_inv hy'.2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_compat {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) {U : Set X} (hU : IsOpen U) {f : X → ℝ} (hf : A.SmoothOn U f) :
@@ -186,7 +186,7 @@ theorem contDiffOn_compat {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (F
   simp [(A.chart a).left_inv hy'.2]
 
 /- English proof (translation)
-The claim follows from `(hψ a).1 _ ⟨(A.chart a).map_source hpa, by simpa [(A.chart a).left_inv hpa] using hpψ⟩`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_compat {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) (a : Fin A.n) {p : X} (hpa : p ∈ (A.chart a).source)
@@ -200,16 +200,14 @@ def chartExt (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (v : X → ℝ) : (F
   ψ.target.indicator (v ∘ ψ.symm)
 
 /- English proof (translation)
-Simplify using `[chartPush, Set.indicator_of_mem (ψ.map_target hy), ψ.right_inv hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartPush_symm (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (F : (Fin e → ℂ) → ℝ)
     {y : Fin e → ℂ} (hy : y ∈ ψ.target) : chartPush ψ F (ψ.symm y) = F y := by
   simp [chartPush, Set.indicator_of_mem (ψ.map_target hy), ψ.right_inv hy]
 
 /- English proof (translation)
-Unfold `chartPush`. Distinguish the cases in `hs : p ∈ ψ.source`. Rewrite using `[Set.indicator_of_mem hs]`. Assume the negation of the conclusion as `hne`. Conclude with `hp ⟨ψ p, subset_tsupport _ hne, ψ.left_inv hs⟩`.
-
-Conclude with `Set.indicator_of_notMem hs _`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem chartPush_eq_zero (ψ : OpenPartialHomeomorph X (Fin e → ℂ))
     {F : (Fin e → ℂ) → ℝ} {p : X}
@@ -222,7 +220,7 @@ theorem chartPush_eq_zero (ψ : OpenPartialHomeomorph X (Fin e → ℂ))
   · exact Set.indicator_of_notMem hs _
 
 /- English proof (translation)
-The claim follows from `hK.image_of_continuousOn (ψ.continuousOn_symm.mono hKt)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_symm_image {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} {F : (Fin e → ℂ) → ℝ}
     (hK : IsCompact (tsupport F)) (hKt : tsupport F ⊆ ψ.target) :
@@ -230,7 +228,7 @@ theorem isCompact_symm_image {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} {F :
   hK.image_of_continuousOn (ψ.continuousOn_symm.mono hKt)
 
 /- English proof (translation)
-Use `closure_minimal (fun p hp => ?_) (isCompact_symm_image hK hKt).isClosed` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hp (chartPush_eq_zero ψ h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem tsupport_chartPush [T2Space X] (ψ : OpenPartialHomeomorph X (Fin e → ℂ))
     {F : (Fin e → ℂ) → ℝ} (hK : IsCompact (tsupport F)) (hKt : tsupport F ⊆ ψ.target) :
@@ -240,7 +238,7 @@ theorem tsupport_chartPush [T2Space X] (ψ : OpenPartialHomeomorph X (Fin e → 
   exact hp (chartPush_eq_zero ψ h)
 
 /- English proof (translation)
-Use `(tsupport_chartPush ψ hK hKt).trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `ψ.map_target (hKt hy)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tsupport_chartPush_source [T2Space X] (ψ : OpenPartialHomeomorph X (Fin e → ℂ))
     {F : (Fin e → ℂ) → ℝ} (hK : IsCompact (tsupport F)) (hKt : tsupport F ⊆ ψ.target) :
@@ -250,15 +248,13 @@ theorem tsupport_chartPush_source [T2Space X] (ψ : OpenPartialHomeomorph X (Fin
   exact ψ.map_target (hKt hy)
 
 /- English proof (translation)
-Introduce `a y hy`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `set C := ψ.symm '' tsupport F`. Establish `hC : IsClosed C` using `(isCompact_symm_image hK hKt).isClosed`. Distinguish the cases in `hs : (A.chart a).symm y ∈ ψ.source`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hya : (A.chart a).symm y ∈ (A.chart a).source` using `(A.chart a).map_target hy.1`. Establish `h2 : ContDiffAt ℝ ∞ (ψ ∘ (A.chart a).symm) y`. Use `(analyticAt_compat hψ a hya hs).contDiffAt (n := ∞)` as an intermediate fact. Rewrite `this` using `[(A.chart a).right_inv hy.1]`. Conclude with `this.restrict_scalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hF.contDiffAt.comp y h2).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hN : (A.chart a).target ∩ (A.chart a).symm ⁻¹' ψ.source ∈ 𝓝 y` using `((A.chart a).continuousOn_symm.isOpen_inter_preimage (A.chart a).open_target ψ.open_source).mem_nhds ⟨hy.1, hs⟩`. Use `filter_upwards [hN] with y' hy'`. Simplify using `only [chartPush, Function.comp_apply]`. Rewrite using `[Set.indicator_of_mem (show (A.chart a).symm y' ∈ ψ.source from hy'.2)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `hnC : (A.chart a).symm y ∉ C` using `fun h => hs (by`. Take `⟨z, hz, hzz⟩` from `h`. Rewrite using `[← hzz]`. Conclude with `ψ.map_target (hKt hz))`.
-
-Use `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hN : (A.chart a).target ∩ (A.chart a).symm ⁻¹' Cᶜ ∈ 𝓝 y` using `((A.chart a).continuousOn_symm.isOpen_inter_preimage (A.chart a).open_target hC.isOpen_compl).mem_nhds ⟨hy.1, hnC⟩`. Use `filter_upwards [hN] with y' hy'`. Conclude with `chartPush_eq_zero ψ hy'.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_chartPush [T2Space X] {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) {F : (Fin e → ℂ) → ℝ} (hF : ContDiff ℝ ∞ F)
@@ -292,15 +288,13 @@ theorem smooth_chartPush [T2Space X] {A : FinHolAtlas e X} {ψ : OpenPartialHome
     exact chartPush_eq_zero ψ hy'.2
 
 /- English proof (translation)
-Establish `hK : IsCompact (ψ '' tsupport v)` using `(isClosed_tsupport v).isCompact.image_of_continuousOn (ψ.continuousOn.mono hvs)`. Establish `hsupp : ∀ y, y ∉ ψ '' tsupport v → chartExt ψ v y = 0`. Introduce `y hy`. Unfold `chartExt`. Distinguish the cases in `ht : y ∈ ψ.target`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem ht]`. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨ψ.symm y, subset_tsupport _ hne, ψ.right_inv ht⟩`. Conclude with `Set.indicator_of_notMem ht _`. Use `⟨?_, hK, closure_minimal (fun y hy => by_contra fun h => hy (hsupp y h)) hK.isClosed⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `y`. Distinguish the cases in `ht : y ∈ ψ.target`. Establish `h1` using `contDiffOn_compat hψ isOpen_univ hv`. Simplify using `only [Set.preimage_univ, Set.inter_univ] at h1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(h1.contDiffAt (ψ.open_target.mem_nhds ht)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ψ.open_target.mem_nhds ht] with y' hy'`. Simplify using `[chartExt, Set.indicator_of_mem hy']`. Establish `hy : y ∉ ψ '' tsupport v`. Introduce and unpack `⟨p, hp, rfl⟩`.
-
-Conclude with `ht (ψ.map_source (hvs hp))`. Use `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hK.isClosed.isOpen_compl.mem_nhds hy] with y' hy'`. Conclude with `hsupp y' hy'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_chartExt [T2Space X] [CompactSpace X] {A : FinHolAtlas e X}
     {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) {v : X → ℝ}

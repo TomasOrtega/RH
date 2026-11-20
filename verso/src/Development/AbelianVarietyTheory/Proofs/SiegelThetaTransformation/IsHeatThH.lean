@@ -17,7 +17,7 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimension
 omit [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-Establish `h : ConvexOn ℝ Set.univ fun p => Real.exp ((L p).re)`. Use `convexOn_exp.comp_linearMap (Complex.reLm ∘ₗ (L.toLinearMap.restrictScalars ℝ))` as an intermediate fact. Conclude with `this`. Simplify `h.smul (norm_nonneg c)` using `only [norm_mul, Complex.norm_exp, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem convexOn_norm_term (c : ℂ) (L : V →L[ℂ] ℂ) :
     ConvexOn ℝ Set.univ fun p => ‖c * cexp (L p)‖ := by
@@ -28,9 +28,9 @@ theorem convexOn_norm_term (c : ℂ) (L : V →L[ℂ] ℂ) :
   simpa only [norm_mul, Complex.norm_exp, smul_eq_mul] using h.smul (norm_nonneg c)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `: FiniteDimensional ℝ V` using `Module.Finite.trans ℂ V`. Take `⟨b, hb, hbU⟩` from `exists_mem_interior_convexHull_affineBasis (hU.mem_nhds hx)`. Use `⟨_, mem_interior_iff_mem_nhds.1 hb, fun i => ∑ j, ‖c i * cexp (L i (b j))‖, summable_sum fun j _ => hs _ (hbU (subset_convexHull ℝ _ ⟨j, rfl⟩)), fun i p hp => ?_⟩` and prove the remaining obligations. Take `⟨y, ⟨j, rfl⟩, hy⟩` from `(convexOn_norm_term (c i) (L i)).exists_ge_of_mem_convexHull (Set.subset_univ _) hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hy.trans (Finset.single_le_sum (f := fun j => ‖c i * cexp (L i (b j))‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j))`.
+A detailed English derivation is pending.
 -/
 theorem locally_normal (hU : IsOpen U) (c : ι → ℂ) (L : ι → V →L[ℂ] ℂ)
     (hs : ∀ p ∈ U, Summable fun i => ‖c i * cexp (L i p)‖) :
@@ -46,7 +46,7 @@ theorem locally_normal (hU : IsOpen U) (c : ι → ℂ) (L : ι → V →L[ℂ] 
     (fun _ _ => norm_nonneg _) (Finset.mem_univ j))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SCV.differentiableOn_tsum_of_locally_normal hU (fun i => Differentiable.differentiableOn (by fun_prop)) (locally_normal hU c L hs)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn (hU : IsOpen U) (c : ι → ℂ) (L : ι → V →L[ℂ] ℂ)
     (hs : ∀ p ∈ U, Summable fun i => ‖c i * cexp (L i p)‖) :
@@ -55,11 +55,11 @@ theorem differentiableOn (hU : IsOpen U) (c : ι → ℂ) (L : ι → V →L[ℂ
     (fun i => Differentiable.differentiableOn (by fun_prop)) (locally_normal hU c L hs)
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.SCV.hasSum_fderiv_of_locally_normal (F := fun i p => c i * cexp (L i p)) hU (fun i => Differentiable.differentiableOn (by fun_prop)) (locally_normal hU c L hs) hp`. Establish `h2` using `(ContinuousLinearMap.apply ℂ ℂ v).hasSum h1`. Establish `h3` using `((differentiableOn hU c L hs).differentiableAt (hU.mem_nhds hp)).lineDeriv_eq_fderiv (v := v)`. Rewrite `h3` using `[lineDeriv]`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun i => c i * L i v * cexp (L i p)) = fun i => ContinuousLinearMap.apply ℂ ℂ v (fderiv ℂ (fun p => c i * cexp (L i p)) p)`. Use function extensionality and compare the values at `i`. Establish `: HasFDerivAt (fun p => c i * cexp (L i p)) (c i • cexp (L i p) • L i) p` using `((L i).hasFDerivAt.cexp).const_mul (c i)`. Rewrite using `[this.fderiv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_deriv (hU : IsOpen U) (c : ι → ℂ) (L : ι → V →L[ℂ] ℂ)
     (hs : ∀ p ∈ U, Summable fun i => ‖c i * cexp (L i p)‖) {p : V} (hp : p ∈ U) (v : V) :
@@ -84,7 +84,7 @@ theorem hasSum_deriv (hU : IsOpen U) (c : ι → ℂ) (L : ι → V →L[ℂ] �
   exact h2
 
 /- English proof (translation)
-Establish `h` using `hasSum_deriv hU (fun i => c i * L i w) L (fun q hq => summable_norm_iff.2 (hasSum_deriv hU c L hs hq w).summable) (p := p) (by simpa using hp 0) v`. Use `h using 3 with s` and compare the differences between its conclusion and the goal. Conclude with `(hasSum_deriv hU c L hs (hp s) w).tsum_eq.symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem hasSum_deriv_deriv (hU : IsOpen U) (c : ι → ℂ) (L : ι → V →L[ℂ] ℂ)
     (hs : ∀ p ∈ U, Summable fun i => ‖c i * cexp (L i p)‖) {p : V} (v w : V)
@@ -102,7 +102,7 @@ end General
 variable {E : Type} [Field E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ}
 
 /- English proof (translation)
-Unfold `imH IsHermitian`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose, ← neg_sub Z, smul_neg, ← neg_smul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem imH_isHermitian (Z : Matrix (Fin N) (Fin N) ℂ) : (imH Z).IsHermitian := by
   unfold imH IsHermitian
@@ -112,7 +112,7 @@ theorem imH_isHermitian (Z : Matrix (Fin N) (Fin N) ℂ) : (imH Z).IsHermitian :
   simp
 
 /- English proof (translation)
-Use `isOpen_iff_mem_nhds.2 fun p hp => ?_` and prove the remaining obligations. Use `Filter.eventually_all.2 fun τ => ReciprocityTheory.ChartRestriction.G.AR.Up.ExhB.posDef_eventually (fun q : CF Ψ N N × CF Ψ n N × CF Ψ n N => imH (q.1 τ)) (fun i j => ?_) (fun q => imH_isHermitian _) p (hp τ)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun q : CF Ψ N N × CF Ψ n N × CF Ψ n N => (2 * I)⁻¹ * (q.1 τ i j - star (q.1 τ j i))`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isOpen_dom : IsOpen {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM Ψ N N) ∈ Hn Ψ N} := by
   refine isOpen_iff_mem_nhds.2 fun p hp => ?_
@@ -124,7 +124,7 @@ theorem isOpen_dom : IsOpen {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM
   fun_prop
 
 /- English proof (translation)
-Simplify using `only [expo, dotProduct, mulVec, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expo_eq (x : Matrix (Fin n) (Fin N) E) (Z : CF Ψ N N) (z z' : CF Ψ n N) :
     expo Ψ x Z z z' = ∑ τ : Ψ, ∑ k, (∑ a, ∑ b, τ.1 (x k a) * (Z τ a b * conj (τ.1 (x k b))) +
@@ -165,7 +165,7 @@ noncomputable def dir {m : ℕ} (τ : Ψ) (k : Fin m) (a : Fin N) : CF Ψ m N :=
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ i j`. Express the relevant statement in the definitionally equal form `x σ i j + (if σ = τ then Matrix.single k a s else 0 : Matrix (Fin m) (Fin N) ℂ) i j = x σ i j + s * dir Ψ τ k a σ i j`. Apply the tactic sequence `by_cases h : σ = τ <;> by_cases h1 : i = k <;> by_cases h2 : j = a <;>`. Apply the tactic sequence `simp [dir, h, h1, h2, Matrix.single] <;> tauto`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem add_smul_dir {m : ℕ} (x : CM Ψ m N) (τ : Ψ) (k : Fin m) (a : Fin N) (s : ℂ) :
     (fun σ => x σ + if σ = τ then Matrix.single k a s else 0 : CM Ψ m N) =
@@ -177,7 +177,7 @@ theorem add_smul_dir {m : ℕ} (x : CM Ψ m N) (τ : Ψ) (k : Fin m) (a : Fin N)
     simp [dir, h, h1, h2, Matrix.single] <;> tauto
 
 /- English proof (translation)
-Rewrite using `[form_apply, expo_eq, Finset.sum_eq_single τ]`. Simplify using `[dir]`. Introduce `σ _ h`. Simplify using `[dir, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_dir₁ (x : Matrix (Fin n) (Fin N) E) (τ : Ψ) (a b : Fin N) :
     form Ψ x (dir Ψ τ a b, 0, 0) = 2 * π * I * ∑ k, τ.1 (x k a) * conj (τ.1 (x k b)) := by
@@ -189,7 +189,7 @@ theorem form_dir₁ (x : Matrix (Fin n) (Fin N) E) (τ : Ψ) (a b : Fin N) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[form_apply, expo_eq, Finset.sum_eq_single τ]`. Simplify using `[dir]`. Introduce `σ _ h`. Simplify using `[dir, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_dir₂ (x : Matrix (Fin n) (Fin N) E) (τ : Ψ) (k : Fin n) (a : Fin N) :
     form Ψ x (0, dir Ψ τ k a, 0) = 2 * π * I * τ.1 (x k a) := by
@@ -201,7 +201,7 @@ theorem form_dir₂ (x : Matrix (Fin n) (Fin N) E) (τ : Ψ) (k : Fin n) (a : Fi
   · simp
 
 /- English proof (translation)
-Rewrite using `[form_apply, expo_eq, Finset.sum_eq_single τ]`. Simplify using `[dir]`. Introduce `σ _ h`. Simplify using `[dir, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_dir₃ (x : Matrix (Fin n) (Fin N) E) (τ : Ψ) (k : Fin n) (a : Fin N) :
     form Ψ x (0, 0, dir Ψ τ k a) = 2 * π * I * conj (τ.1 (x k a)) := by
@@ -234,9 +234,9 @@ theorem line₃ (Z : CF Ψ N N) (z z' v : CF Ψ n N) (s : ℂ) :
     (Z, z, z') + s • ((0, 0, v) : CF Ψ N N × CF Ψ n N × CF Ψ n N) = (Z, z, z' + s • v) := by simp
 
 /- English proof (translation)
-Establish `h1` using `(hasSum_deriv (isOpen_dom Ψ) φ (form Ψ) hs (p := (Z, z, z')) hZ (dir Ψ τ a b, 0, 0)).mul_left (2 * π * I)`. Establish `h2` using `hasSum_sum (s := Finset.univ) fun k _ => hasSum_deriv_deriv (isOpen_dom Ψ) φ (form Ψ) hs (p := (Z, z, z')) (0, dir Ψ τ k a, 0) (0, 0, dir Ψ τ k b) (fun s => by rw [line₂]; exact hZ)`. Establish `e : (fun x => 2 * π * I * (φ x * form Ψ x (dir Ψ τ a b, 0, 0) * cexp (form Ψ x (Z, z, z')))) = fun x => ∑ k, φ x * form Ψ x (0, 0, dir Ψ τ k b) * form Ψ x (0, dir Ψ τ k a, 0) * cexp (form Ψ x (Z, z, z'))`. Use function extensionality and compare the values at `x`. Simplify using `only [form_dir₁, form_dir₂, form_dir₃, Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite `h1` using `[e]`. Establish `h3` using `h1.unique h2`. Simplify using `only [line₁, line₂, line₃] at h3`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heat_dir (φ : Matrix (Fin n) (Fin N) E → ℂ)
     (hs : ∀ p ∈ {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM Ψ N N) ∈ Hn Ψ N},
@@ -266,7 +266,7 @@ end GlobalTheory.SW.ExpSum
 open GlobalTheory.SW.ExpSum in
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ hΨ n N φ hφ`. Establish `hs : ∀ p ∈ {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM Ψ N N) ∈ Hn Ψ N}, Summable fun x => ‖φ x * cexp (form Ψ x p)‖` using `fun p hp => (GlobalTheory.SW.thH_summable_and_inj E Ψ hΨ n N φ hφ _ hp).1 _ _`. Use `⟨differentiableOn (isOpen_dom Ψ) φ (form Ψ) hs, fun Z hZ z z' τ a b => ?_⟩` and prove the remaining obligations. Simplify using `only [add_smul_dir]`. Conclude with `heat_dir Ψ φ hs Z hZ z z' τ a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SW.isHeat_thH : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ) (φ : Matrix (Fin n) (Fin N) E → ℂ), IsSB φ → IsHeat Ψ (thH Ψ φ) := by
   intro E _ _ _ Ψ hΨ n N φ hφ

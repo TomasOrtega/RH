@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg`. Take `⟨hF, h0, -, -⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hg`. Establish `hP` using `GlobalTheory.T.abelianScheme_globalOneForms_primitive R A g hA hg`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, u, v, hw⟩` from `GlobalTheory.T.exteriorDeriv_globalOneForm_eq_sum_wedge R _ (OAff A.hom) hF h0 w`. Establish `hμ : ClRel (OAff (A ⊗ A).hom) (pF μ[A] w) (fun k ↦ pF μ[A] (u k)) (fun k ↦ pF μ[A] (v k))` using `GlobalTheory.T.exteriorDerivSumWedge_semilinearPullback R R _ _ A.hom (A ⊗ A).hom (RingHom.id R) (μ[A]).left (ovw μ[A]) w n u v hw`. Establish `h1 : ClRel (OAff (A ⊗ A).hom) (pF (fst A A) w) (fun k ↦ pF (fst A A) (u k)) (fun k ↦ pF (fst A A) (v k))` using `GlobalTheory.T.exteriorDerivSumWedge_semilinearPullback R R _ _ A.hom (A ⊗ A).hom (RingHom.id R) (fst A A).left (ovw (fst A A)) w n u v hw`. Establish `h2 : ClRel (OAff (A ⊗ A).hom) (pF (snd A A) w) (fun k ↦ pF (snd A A) (u k)) (fun k ↦ pF (snd A A) (v k))` using `GlobalTheory.T.exteriorDerivSumWedge_semilinearPullback R R _ _ A.hom (A ⊗ A).hom (RingHom.id R) (snd A A).left (ovw (snd A A)) w n u v hw`. Establish `hsum : wsum (OAff (A ⊗ A).hom) (fun k ↦ pF μ[A] (u k)) (fun k ↦ pF μ[A] (v k)) = wsum (OAff (A ⊗ A).hom) (fun k ↦ pF (fst A A) (u k)) (fun k ↦ pF (fst A A) (v k)) + wsum (OAff (A ⊗ A).hom) (fun k ↦ pF (snd A A) (u k)) (fun k ↦ pF (snd A A) (v k))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `T`. Establish `e` using `hP w`. Combine the equalities or inequalities in the displayed calculation. Establish `hz` using `GlobalTheory.T.sum_wedge_primitive_oneForms_eq_zero_abelianScheme R A g hA hg n u v hsum`. Conclude with `fun T ↦ (hw T).trans (congrFun hz T)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closed1_eq_top_of_abelian : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → Closed1 (OAff A.hom) = ⊤ := by

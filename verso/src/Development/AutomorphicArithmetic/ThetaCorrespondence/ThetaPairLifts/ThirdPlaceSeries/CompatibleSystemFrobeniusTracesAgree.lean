@@ -19,15 +19,15 @@ open Formalism.BasicNotions.TH
 namespace GlobalTheory.HeightCounting.Up.StandardFrameAgreement
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `_ hL`. Use `⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun K _ _ _ _ _ _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => ?_⟩` and prove the remaining obligations. Introduce `_ w Z Wt p0 t nch n xd c hNE _ _ hC Xd E labPi hb htup hg hf`. Take `⟨m⟩` from `hNE`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ad` using `m.ad`. Use `⟨⟨t.r.Y.hF, ad.PV, fun j => (stdFrame_iff _ _).1 (ad.std j), fun j => (stdFrame_iff _ _).1 (t.r.Y.stdPsi.2 j), fun _ => 1, ?_, fun μ hμ j => (ad.eW μ hμ j).symm, ?_, ?_, fun σ => ?_⟩⟩` and prove the remaining obligations. Introduce `j h`. Simplify using `only [inv_one, one_mul, mul_one]`. Conclude with `ad.rat j h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ hμ j h γ hγ he v`. Establish `he'` using `he`. Simplify using `only [inv_one, one_mul, mul_one] at he'`. Establish `key` using `ad.wt μ hμ j h γ hγ he' ((ad.eW μ hμ j).symm v)`. Use `(LinearEquiv.symm_apply_eq _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ key.symm` and prove the remaining obligations. Conclude with `congrArg _ (LinearEquiv.apply_symm_apply _ v).symm`. Introduce `μ hμ j x h`. Use `(LinearEquiv.eq_symm_apply _).2 ?_` and prove the remaining obligations. Use `(ad.read μ hμ j x h).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [inv_one, one_mul]`. Both sides reduce to the same expression. Conclude with `Formalism.L2.NG.IsoRep.refl _`.
+A detailed English derivation is pending.
 -/
 theorem frobeniusTraces_agree_of_layer_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ T w Z Wt _ t nch n c => ∀ (hC : t.r.z.R.C = TC.cf w.I w.l Z) (Xd : DivX (w.D Z)) (E : EigIdx (w.D Z) Xd) (labPi : E.Pi → (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A.fam.base.Ix) hb htup hg hf, Nonempty (GlobalTheory.NJoin.Agree (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi hb htup hg hf) c.a.all.gal.mt (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi hb htup hg hf).rep) := by
   intro _ hL
@@ -63,7 +63,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.StandardFrameAgreement.frobeniusTraces_agree_of_layer_alt | exact _root_.GlobalTheory.HeightCounting.Up.StandardFrameAgreement.frobeniusTraces_agree_of_layer_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.StandardFr …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.nonempty_agree_realOfRead_at_member : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ T w Z Wt _ t nch n c => ∀ (hC : t.r.z.R.C = TC.cf w.I w.l Z) (Xd : DivX (w.D Z)) (E : EigIdx (w.D Z) Xd) (labPi : E.Pi → (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A.fam.base.Ix) hb htup hg hf, Nonempty (GlobalTheory.NJoin.Agree (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi hb htup hg hf) c.a.all.gal.mt (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi hb htup hg hf).rep) := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.StandardFrameAgreement.frobeniusTraces_agree_of_layer_alt | exact _root_.GlobalTheory.HeightCounting.Up.StandardFrameAgreement.frobeniusTraces_agree_of_layer_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.StandardFrameAgreement.frobeniusTraces_agree_of_layer_alt <;> assumption)

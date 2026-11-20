@@ -17,11 +17,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH.CoreTests
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨pullback.lift c (𝟙 T) (by simpa using hc) ≫ e.hom ≫ r, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[cart.w, reassoc_of% e₁, pullback.lift_snd_assoc, Category.id_comp]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[e₂, pullback.lift_fst_assoc]`. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨cart.lift c (𝟙 T) (by simpa using hc) ≫ e.inv ≫ pullback.fst _ _, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[pullback.condition, ← reassoc_of% e₁, e.inv_hom_id_assoc, cart.lift_snd_assoc, Category.id_comp]`. Simplify using `only [Category.assoc]`. Rewrite using `[← e₂, e.inv_hom_id_assoc, cart.lift_fst_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem image_iff {T H B G B' F P : Scheme.{0}} (h : H ⟶ B) (s : T ⟶ B) (g : G ⟶ B') (s' : T ⟶ B')
     (r : F ⟶ G) (q : F ⟶ T) (cart : IsPullback r q g s') (u : H ⟶ P) (v : G ⟶ P)
@@ -43,7 +43,7 @@ theorem image_iff {T H B G B' F P : Scheme.{0}} (h : H ⟶ B) (s : T ⟶ B) (g :
       rw [← e₂, e.inv_hom_id_assoc, cart.lift_fst_assoc]
 
 /- English proof (translation)
-Take `⟨y₀, t, c, ⟨tm⟩⟩` from `(GlobalTheory.T.exists_geometricTest_map_classicalPoint hL o Ω S ρ M U₀ EE hB Q hS hG).1 p y hy`. Take `⟨τ, e, e₁, e₂⟩` from `GlobalTheory.T.exists_uniformisationTest_of_geometricTest hL o Ω S ρ M U₀ EE hB Q ex p y y₀ t c tm hS`. Use `⟨τ, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(image_iff _ _ _ _ _ _ t.mod.cart.1 _ _ e e₁ e₂ x).trans (GlobalTheory.T.specialFibre_image_test_independent hL o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hS x hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_test (hL : GlobalTheory.UT.LL) (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω]
     (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J)
@@ -61,13 +61,13 @@ theorem exists_test (hL : GlobalTheory.UT.LL) (o Ω : Type) [CommRing o] [Field 
 end GlobalTheory.ZH.CoreTests
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hS hG`. Establish `key` using `GlobalTheory.ZH.CoreTests.exists_test hL o Ω S ρ M U₀ EE hB Q ex hS hG`. Establish `hT : ex.core.HasTests` using `fun p _ y hy => ⟨(key p y hy).choose⟩`. Use `⟨hT, GlobalTheory.T.indep_of_nested_special_fibre_images _ hT fun p _ y y' hy hy' hr => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `key p y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨τ', hτ'⟩` from `key p y' hy'`. Use `⟨τ, τ', fun c hc => ?_⟩` and prove the remaining obligations. Establish `hx : (c ≫ τ.f ≫ Q.G.ι) ≫ Q.P.hom = GlobalTheory.ZJ.rPt p ≫ y`. Establish `h : c ≫ τ.f ≫ ex.core.GG.hom = GlobalTheory.ZJ.rPt p ≫ y`. Rewrite using `[τ.f_over, reassoc_of% hc, τ.fac]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Conclude with `h`. Take `⟨c', hc', hf⟩` from `(hτ' _ (hx.trans hr)).2 ((hτ _ hx).1 ⟨c, hc, rfl⟩)`. Use `⟨c', hc', ?_⟩` and prove the remaining obligations. Establish `: Mono ex.core.G.ι` using `inferInstance`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono ex.core.G.ι, Category.assoc, Category.assoc]`. Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ZH.Clos.Ext.hasTests_and_indep : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (ex : Q.Ext), S.Big → ρ.HasGeo → ex.core.HasTests ∧ ex.core.Indep := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hS hG

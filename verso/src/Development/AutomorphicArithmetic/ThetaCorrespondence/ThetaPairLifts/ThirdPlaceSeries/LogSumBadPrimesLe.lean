@@ -10,7 +10,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 namespace GlobalTheory.BadLog
 variable {D : D7} {L : SizeData₂ D}
 /- English proof (translation)
-Introduce `h` and use `Closed.imp h fun Fm _ _ _ => ⟨2 * |Fm.CYL| + 17, by positivity, 0, fun x hx _ ι p _ i _ Y hY => by obtain ⟨a, b⟩ := log_level_le (Fm.params x hx ι) rw [Fm.params_CYL] at b exact (logSum_le_log a fun q hq => dvd_of_mem_badPrimes p.fw.laws.pins hY.1 hq).trans b⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem logSum_badPrimes_le_alt : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p _ Y _ C => logSum (badPrimes p.T.Q.H Y.d.l₂) ≤ C * zBase (Fm.L x ι) :=
   fun h => Closed.imp h fun Fm _ _ _ => ⟨2 * |Fm.CYL| + 17, by positivity, 0, fun x hx _ ι p _ i _ Y hY => by

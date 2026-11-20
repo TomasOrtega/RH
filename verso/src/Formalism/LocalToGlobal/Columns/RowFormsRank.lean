@@ -20,7 +20,7 @@ def GSD.orbFun (d : S.D) (v : S.V) (x : S.D) : S.V := if hx : ∃ g : S.G, g •
 variable {S}
 
 /- English proof (translation)
-Establish `h1 : (g₂⁻¹ * g₁) • d = d` using `by rw [mul_smul, e, inv_smul_smul]`. Establish `h2 : S.ρ g₁ = S.ρ g₂ * S.ρ (g₂⁻¹ * g₁)` using `by rw [← map_mul, mul_inv_cancel_left]`. Rewrite using `[h2, Module.End.mul_apply, hv _ h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem GSD.rho_eq_of_fixed {d : S.D} {v : S.V} (hv : ∀ g : S.G, g • d = d → S.ρ g v = v) {g₁ g₂ : S.G}
     (e : g₁ • d = g₂ • d) : S.ρ g₁ v = S.ρ g₂ v := by
@@ -29,7 +29,7 @@ theorem GSD.rho_eq_of_fixed {d : S.D} {v : S.V} (hv : ∀ g : S.G, g • d = d �
   rw [h2, Module.End.mul_apply, hv _ h1]
 
 /- English proof (translation)
-Establish `hx : ∃ g' : S.G, g' • d = g • d` using `⟨g, rfl⟩`. Unfold `GSD.orbFun`. Rewrite using `[dif_pos hx]`. Conclude with `GSD.rho_eq_of_fixed hv hx.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GSD.orbFun_smul {d : S.D} {v : S.V} (hv : ∀ g : S.G, g • d = d → S.ρ g v = v) (g : S.G) :
     S.orbFun d v (g • d) = S.ρ g v := by
@@ -39,9 +39,9 @@ theorem GSD.orbFun_smul {d : S.D} {v : S.V} (hv : ∀ g : S.G, g • d = d → S
   exact GSD.rho_eq_of_fixed hv hx.choose_spec
 
 /- English proof (translation)
-Introduce `g x`. Distinguish the cases in `hx : ∃ g' : S.G, g' • d = x`. Take `⟨g', rfl⟩` from `hx`. Rewrite using `[← mul_smul, GSD.orbFun_smul hv, GSD.orbFun_smul hv, map_mul, Module.End.mul_apply]`. Establish `hx' : ¬ ∃ g' : S.G, g' • d = g • x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨g', e⟩`. Conclude with `hx ⟨g⁻¹ * g', by rw [mul_smul, e, inv_smul_smul]⟩`. Unfold `GSD.orbFun`. Rewrite using `[dif_neg hx, dif_neg hx', map_zero]`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GSD.orbFun_mem {d : S.D} {v : S.V} (hv : ∀ g : S.G, g • d = d → S.ρ g v = v) : S.orbFun d v ∈ S.EqFun := by
   intro g x
@@ -55,13 +55,13 @@ theorem GSD.orbFun_mem {d : S.D} {v : S.V} (hv : ∀ g : S.G, g • d = d → S.
     rw [dif_neg hx, dif_neg hx', map_zero]
 
 /- English proof (translation)
-Use `S.finiteDimensional_EqFun h` as an intermediate fact. Rewrite using `[Module.finrank_pos_iff_exists_ne_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ⟩`. Establish `: ∃ d, (φ : S.D → S.V) d ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hφ (Subtype.ext (funext fun d => by`. Assume the negation of the conclusion as `hd`. Conclude with `hc ⟨d, hd⟩))`. Take `⟨d, hd⟩` from `this`.
+Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨d, _, hd, fun g hg => ?_⟩` and prove the remaining obligations. Use `φ.2 g d` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this.symm`. Introduce and unpack `⟨d, v, hv0, hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨S.orbFun d v, GSD.orbFun_mem hv⟩, fun e => hv0 ?_⟩` and prove the remaining obligations. Establish `h1 : S.orbFun d v ((1 : S.G) • d) = 0` using `congrFun (congrArg Subtype.val e) ((1 : S.G) • d)`. Rewrite `h1` using `[GSD.orbFun_smul hv, map_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem GSD.finrank_pos_iff (h : S.Ok) :
     0 < finrank K S.EqFun ↔ ∃ (d : S.D) (v : S.V), v ≠ 0 ∧ ∀ g : S.G, g • d = d → S.ρ g v = v := by

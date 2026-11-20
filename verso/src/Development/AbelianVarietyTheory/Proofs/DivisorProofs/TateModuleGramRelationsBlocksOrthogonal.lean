@@ -34,9 +34,7 @@ variable [IsAlgClosed C] [CharZero C]
 omit [NumberField K] in
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `haveI : IsMonHom (C := Over (Sp (𝓞 K))) (M := T.pol.A) (N := T'.pol.A) f := hf.isMonHom`. Use `haveI : IsMonHom (C := Over (Sp (𝓞 K))) (M := T.pol.A) (N := T'.pol.A) f' := hf'.isMonHom`. Use `haveI := (patAct T).hom g`. Introduce `s t`.
-
-Establish `e` using `pairT_homT_of_lamEq (X := T.pol) (Y := T.pol) (A := T'.pol) (B := T.pol) hv ε (embO hv i) (patAct T) (patAct T) (patAct T') (patAct T) f f' ((patAct T).act g) (𝟙 _) h s t`. Rewrite `e` using `[homT_act, homT_id]`. Conclude with `e`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairT_patT_gram {T T' : PAT H (Sp (𝓞 K))} {f f' : T.t.G ⟶ T'.t.G} (hf : Serre.IsLinearHom T.t.act T'.t.act f)
     (hf' : Serre.IsLinearHom T.t.act T'.t.act f') {g : 𝓞 E}
@@ -54,9 +52,9 @@ theorem pairT_patT_gram {T T' : PAT H (Sp (𝓞 K))} {f f' : T.t.G ⟶ T'.t.G} (
   exact e
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `haveI : IsMonHom (C := Over (Sp (𝓞 K))) (M := A.pol.A) (N := B.pol.A) f := hf.isMonHom`. Use `haveI : IsMonHom (C := Over (Sp (𝓞 K))) (M := A'.pol.A) (N := B.pol.A) f' := hf'.isMonHom`. Use `haveI : IsMonHom (1 : A'.pol.A ⟶ A.pol.A) := LamF.IsogSum.isMonHom_of_points _ fun T a b => by`. Simplify using `only [MonObj.comp_one, _root_.mul_one]`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s t`. Establish `e` using `pairT_homT_of_lamEq (X := A.pol) (Y := A'.pol) (A := B.pol) (B := A.pol) hv ε (embO hv i) (patAct A) (patAct A') (patAct B) (patAct A) f f' (𝟙 _) 1 (lamEq_one hρ A A' B hA hA' hf hf') s t`. Rewrite `e` using `[homT_one, LinearMap.zero_apply, map_zero]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem pairT_patT_orth (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) {A A' B : PAT H (Sp (𝓞 K))} {m m' : ℕ}
     (hA : HasType H A.t.act ρ m 0) (hA' : HasType H A'.t.act ρ 0 m') {f : A.t.G ⟶ B.t.G} {f' : A'.t.G ⟶ B.t.G}
@@ -74,7 +72,7 @@ theorem pairT_patT_orth (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) {A A' B : PAT H (Sp (�
   exact e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => pairT_patT_gram (T := X.A true) hv ε i (X.lin (.inl a)) (X.lin (.inl b)) ((lamEq_of_isGram X h).1 a b), fun a b => pairT_patT_gram (T := X.A false) hv ε i (X.lin (.inr a)) (X.lin (.inr b)) ((lamEq_of_isGram X h).2 a b), fun a b => pairT_patT_orth (A := X.A true) (A' : …`.
+Supply the required witnesses or components.
 -/
 theorem tateModule_gram_relations_blocks_orthogonal {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (h : IsGram X gP gQ) :
     letI := H.starRing
@@ -91,7 +89,7 @@ theorem tateModule_gram_relations_blocks_orthogonal {gP : Matrix (Fin p) (Fin p)
 end At
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `haveI hP : ∀ i, IsMonHom (M := (X.A true).pol.A) (N := X.B.pol.A) (phiP X i) := fun i => (X.lin (.inl i)).isMonHom`. Use `haveI hQ : ∀ i, IsMonHom (M := (X.A false).pol.A) (N := X.B.pol.A) (phiQ X i) := fun i => (X.lin (.inr i)).isMonHom`. Take `⟨N, ψ, ψ', hN, hψ, hψ', h1, h2⟩` from `exists_inverse X`. Conclude with `⟨N, hN, fun ℓ _ C _ v O _ _ hv ε i => ⟨_, _, homT_inverse (B := X.B.pol) (A := (X.A true).pol) (A' := (X.A false).pol) hv ε (embO hv i) (patAct X.B) (patAct (X.A true)) (patAct (X.A false)) (phiP X) (phiQ X) ψ ψ' h1 h2⟩⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_inverse_tateModule_sum_up_to_integer (X : CMObj H K ρ σ₁ p q) : letI := H.starRing
     ∃ N : ℕ, 0 < N ∧ ∀ (ℓ : ℕ) [Fact ℓ.Prime] (C : Type) [Field C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O]
@@ -116,9 +114,9 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] {v : Valuation C ℝ�
   (hv : v.Integers O) (ε : Eps ℓ C) (i : K →+* C) (X : CMObj H K ρ σ₁ p q) [IsAlgClosed C] [CharZero C]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨N, hN, h⟩` from `exists_inverse_tateModule_sum_up_to_integer X`. Take `⟨ψ, ψ', -, h2⟩` from `h ℓ C v O hv ε i`. Establish `key : ∀ (P : Point ℓ v O (𝓞 E)) (x y : P.T), N • x = N • y → x = y` using `fun P x y e => by`. Rewrite `e` using `[← Nat.cast_smul_eq_nsmul ℤ_[ℓ], ← Nat.cast_smul_eq_nsmul ℤ_[ℓ]]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ (Nat.cast_ne_zero.2 hN.ne') e`. Conclude with `fun z z' e => Prod.ext (funext fun l => key _ _ _ (((h2 z.1 z.2).1 l).symm.trans ((congrArg (ψ l) e).trans ((h2 z'.1 z'.2).1 l)))) (funext fun l => key _ _ _ (((h2 z.1 z.2).2 l).symm.trans ((congrArg (ψ' l) e).trans ((h2 z'.1 z'.2).2 l))))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem sumT_injective : letI := H.starRing
     Function.Injective fun z : (Fin p → (pointA hv ε i X true).T) × (Fin q → (pointA hv ε i X false).T) =>
@@ -135,9 +133,9 @@ theorem sumT_injective : letI := H.starRing
 
 include hv ε i in
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨N, hN, hI⟩` from `exists_inverse_tateModule_sum_up_to_integer X`. Take `⟨ψ, ψ', h1, -⟩` from `hI ℓ C v O hv ε i`. Take `⟨hP, hQ, hO⟩` from `tateModule_gram_relations_blocks_orthogonal hv ε i X h`. Establish `hg : ∀ b, 0 < (pointA hv ε i X b).A.g` using `fun b => (dims X).2.2.trans_eq ((dims X).1 b).symm`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi` using `sumT_injective hv ε i X`. Use `⟨det_ne_zero_of_inverse hN (A := pointA hv ε i X true) (A' := pointA hv ε i X false) (B := pointB hv ε i X) (hg true) (phiTP hv ε i X) (phiTQ hv ε i X) gP hP hO (fun t => ⟨_, _, h1 t⟩) fun s hs => ?_, det_ne_zero_of_inverse hN (A := pointA hv ε i X false) (A' := pointA hv ε i X t …` and prove the remaining obligations. Conclude with `congrArg Prod.fst (@hi (s, 0) (0, 0) (by simp only [hs, Pi.zero_apply, map_zero, Finset.sum_const_zero]))`. Conclude with `((isAlt_pairT (pointB hv ε i X).A ε).neg_eq _ _).symm.trans (neg_eq_zero.2 (hO b a t s))`. Conclude with `congrArg Prod.snd (@hi (0, s) (0, 0) (by simp only [hs, Pi.zero_apply, map_zero, Finset.sum_const_zero]))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_det_of_emb {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (h : IsGram X gP gQ) :
     gP.det ≠ 0 ∧ gQ.det ≠ 0 ∧ (∀ a b, H.bar (gP b a) = gP a b) ∧ ∀ a b, H.bar (gQ b a) = gQ a b := by
@@ -161,11 +159,9 @@ theorem gram_det_of_emb {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin
 variable [Algebra ℤ_[ℓ] C]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨hP, hQ, hO⟩` from `tateModule_gram_relations_blocks_orthogonal hv ε i X h`. Use `⟨fun a b x y => ?_, fun a b x y => ?_, fun a b x y => ?_⟩` and prove the remaining obligations. Establish `e` using `pairV_baseChange (A := pointB hv ε i X) (B := pointA hv ε i X true) (g₂ := LinearMap.id) (hP a b) x y`. Rewrite `e` using `[LinearMap.baseChange_id]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Establish `e` using `pairV_baseChange (A := pointB hv ε i X) (B := pointA hv ε i X false) (g₂ := LinearMap.id) (hQ a b) x y`. Rewrite `e` using `[LinearMap.baseChange_id]`. Conclude with `e`. Establish `e` using `pairV_baseChange (A := pointB hv ε i X) (B := pointB hv ε i X) (g₁ := 0) (g₂ := 0) (fun s t => (hO a b s t).trans (map_zero _).symm) x y`.
-
-Rewrite `e` using `[LinearMap.baseChange_zero, LinearMap.baseChange_zero, LinearMap.zero_apply, LinearMap.zero_apply, map_zero]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_V {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (h : IsGram X gP gQ) :
     letI := H.starRing
@@ -189,7 +185,7 @@ theorem gram_V {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin 
     exact e
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨N, hN, h⟩` from `exists_inverse_tateModule_sum_up_to_integer X`. Take `⟨ψ, ψ', h1, h2⟩` from `h ℓ C v O hv ε i`. Conclude with `bijective_of_inverse (A := pointA hv ε i X true) (A' := pointA hv ε i X false) (B := pointB hv ε i X) (phiTP hv ε i X) (phiTQ hv ε i X) hN ψ ψ' h1 h2`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sumV_bijective : letI := H.starRing
     Function.Bijective fun z : (Fin p → (pointA hv ε i X true).V) × (Fin q → (pointA hv ε i X false).V) =>
@@ -203,7 +199,7 @@ theorem sumV_bijective : letI := H.starRing
 end At
 
 /- English proof (translation)
-Take `⟨ε⟩ : Nonempty (Eps 2 ℂ_[2])` from `inferInstance`. Conclude with `gram_det_of_emb (PadicComplexInt.integers 2) ε (IsAlgClosed.lift (R := ℚ) (S := K) (M := ℂ_[2])).toRingHom X h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gram_det (X : CMObj H K ρ σ₁ p q) {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (𝓞 E)}
     (h : IsGram X gP gQ) :
@@ -212,13 +208,13 @@ theorem gram_det (X : CMObj H K ρ σ₁ p q) {gP : Matrix (Fin p) (Fin p) (𝓞
   exact gram_det_of_emb (PadicComplexInt.integers 2) ε (IsAlgClosed.lift (R := ℚ) (S := K) (M := ℂ_[2])).toRingHom X h
 
 /- English proof (translation)
-Use `letI := H.starRing`. Establish `lift : ∀ {C : Type} [Field C] [IsAlgClosed C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O] [Algebra O C] (hv : v.Integers O) (i : K →+* C), ∃ κ : AlgebraicClosure K →+* C, κ.comp (algebraMap (𝓞 K) (AlgebraicClosure K)) = (algebraMap O C).comp (embO hv i)`. Introduce `C _ _ v O _ _ hv i`. Use `letI := i.toAlgebra`. Use `⟨(IsAlgClosed.lift (R := K) (S := AlgebraicClosure K) (M := C)).toRingHom, RingHom.ext fun a => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, algebraMap_embO, IsScalarTower.algebraMap_apply (𝓞 K) K]`. Conclude with `AlgHom.commutes _ _`. Take `⟨κ, hκ⟩` from `lift hv i`. Take `⟨κ', hκ'⟩` from `lift hv' i'`. Take `⟨e, he⟩` from `exists_tateEquiv (Λ := 𝓞 E) hv ε (embO hv i) _ κ hκ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he'⟩` from `exists_tateEquiv (Λ := 𝓞 E) hv' ε' (embO hv' i') _ κ' hκ'`. Establish `key : ∀ (B B' : Out.PolAV (Sp (𝓞 K))) (o : B.OAct (𝓞 E)) (o' : B'.OAct (𝓞 E)) (f : B.A ⟶ B'.A) [IsMonHom f] (t), e' B' o' ((e B' o').symm (homT hv ε (embO hv i) o o' f t)) = homT hv' ε' (embO hv' i') o o' f (e' B o ((e B o).symm t))` using `fun B B' o o' f _ t => by`. Rewrite using `[← he', (e B' o').symm_apply_eq.2 ((congrArg _ ((e B o).apply_symm_apply t).symm).trans (he B B' o o' f _).symm)]`. Use `⟨fun T => (e T.pol (patAct T)).symm.trans (e' T.pol (patAct T)), fun T a t => ?_, fun T T' f hf t => ?_⟩` and prove the remaining obligations. Use `haveI := (patAct T).hom a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `key T.pol T.pol (patAct T) (patAct T) ((patAct T).act a) t`. Rewrite `h` using `[homT_act, homT_act]`. Conclude with `h`. Use `haveI : IsMonHom (C := Over (Sp (𝓞 K))) (M := T.pol.A) (N := T'.pol.A) f := hf.isMonHom`. Conclude with `key T.pol T'.pol (patAct T) (patAct T') f t`.
+A detailed English derivation is pending.
 -/
 theorem exists_patT_equiv {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
     [Algebra O C] [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (ε : Eps ℓ C) (i : K →+* C) {C' : Type} [Field C']
@@ -254,7 +250,7 @@ theorem exists_patT_equiv {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] {v :
     exact key T.pol T'.pol (patAct T) (patAct T') f t
 
 /- English proof (translation)
-The claim follows from `letI := algPadicField ℓ (gram_V (PadicComplexInt.integers ℓ) ε i X h).2.2`.
+A detailed English derivation is pending.
 -/
 example (X : CMObj H K ρ σ₁ p q) {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (𝓞 E)}
     (h : IsGram X gP gQ) (ℓ : ℕ) [Fact ℓ.Prime] (ε : Eps ℓ ℂ_[ℓ]) (i : K →+* ℂ_[ℓ]) :

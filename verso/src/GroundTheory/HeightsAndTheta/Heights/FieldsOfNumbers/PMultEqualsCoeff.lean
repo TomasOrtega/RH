@@ -14,13 +14,13 @@ namespace MultEqualsCoeff
 variable {K : Type*}
 
 /- English proof (translation)
-The claim follows from `tendsto_atTop_atTop.2 fun a => ⟨a + c, fun _ hm => le_sub_iff_add_le.mpr hm⟩`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_sub (c : K → ℤ) : Tendsto (fun m : K → ℤ => m - c) atTop atTop :=
   tendsto_atTop_atTop.2 fun a => ⟨a + c, fun _ hm => le_sub_iff_add_le.mpr hm⟩
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | b :: L => by simp only [List.foldr_cons] rw [foldr_diffStep_sum s f L] funext m simp only [diffStep, Finset.sum_apply, Finset.sum_sub_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_sum {J : Type*} (s : Finset J) (f : J → (K → ℤ) → ℤ) :
     ∀ L : List (K → ℤ), L.foldr diffStep (∑ j ∈ s, f j) = ∑ j ∈ s, L.foldr diffStep (f j)
@@ -32,7 +32,7 @@ theorem foldr_diffStep_sum {J : Type*} (s : Finset J) (f : J → (K → ℤ) →
       simp only [diffStep, Finset.sum_apply, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | b :: L => by simp only [List.foldr_cons, foldr_diffStep_zero L] funext m simp [diffStep]`.
+A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_zero : ∀ L : List (K → ℤ), L.foldr diffStep (0 : (K → ℤ) → ℤ) = 0
   | [] => rfl
@@ -42,7 +42,7 @@ theorem foldr_diffStep_zero : ∀ L : List (K → ℤ), L.foldr diffStep (0 : (K
       simp [diffStep]
 
 /- English proof (translation)
-The claim follows from `| [] => rfl | b :: L => by simp only [List.foldr_cons] rw [foldr_diffStep_shift h c L] funext m simp only [diffStep, sub_right_comm m b c]`.
+A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_shift (h : (K → ℤ) → ℤ) (c : K → ℤ) :
     ∀ L : List (K → ℤ),
@@ -55,7 +55,7 @@ theorem foldr_diffStep_shift (h : (K → ℤ) → ℤ) (c : K → ℤ) :
       simp only [diffStep, sub_right_comm m b c]
 
 /- English proof (translation)
-The claim follows from `| [] => e | b :: L => by have e' := foldr_diffStep_eventuallyEq e L filter_upwards [e', (tendsto_sub b).eventually e'] with m h1 h2 simp only [List.foldr_cons, diffStep] rw [h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_eventuallyEq {h g : (K → ℤ) → ℤ} (e : h =ᶠ[atTop] g) :
     ∀ L : List (K → ℤ), L.foldr diffStep h =ᶠ[atTop] L.foldr diffStep g
@@ -67,9 +67,9 @@ theorem foldr_diffStep_eventuallyEq {h g : (K → ℤ) → ℤ} (e : h =ᶠ[atTo
       rw [h1, h2]
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h0 (not_le.mpr (WithBot.bot_lt_coe _))`. Consider the case `coe y`. Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => exact absurd h (not_lt.mpr (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe z`. Establish `hz0 : 0 ≤ z` using `by exact_mod_cast h0`. Take `⟨d, rfl⟩` from `Int.eq_ofNat_of_zero_le hz0`. Establish `hdn : (d : ℤ) < n` using `by exact_mod_cast h`. Conclude with `⟨d, by norm_cast, by omega⟩`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_nat_of_nonneg_of_lt {x : WithBot (WithTop ℤ)} {n : ℕ} (h0 : 0 ≤ x)
     (h : x < n) : ∃ d : ℕ, x = d ∧ d < n := by
@@ -89,11 +89,11 @@ variable [Fintype K] [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Unfold `relDim`. Generalize the expression as in `ringKrullDim (MRing ι F ⧸ I) = x at h ⊢`. Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h (not_le.mpr (WithBot.bot_lt_coe _))`. Consider the case `coe y`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top => exact WithBot.coe_le_coe.mpr le_top`. Consider the case `coe e`. Establish `he : Fintype.card K ≤ e` using `by exact_mod_cast h`. Establish `: (0 : WithTop ℤ) ≤ WithTop.map (fun e : ℕ => (e : ℤ) - Fintype.card K) (e : ℕ∞)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(0 : WithTop ℤ) ≤ (((e : ℤ) - Fintype.card K : ℤ) : WithTop ℤ)`. Conclude with `(by omega : (0 : ℤ) ≤ (e : ℤ) - Fintype.card K)` after adjusting the coercions. Conclude with `WithBot.coe_le_coe.mpr this`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem relDim_nonneg_of_card_le (I : Ideal (MRing ι F))
     (h : ((Fintype.card K : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ I)) : 0 ≤ relDim I := by
@@ -112,19 +112,17 @@ theorem relDim_nonneg_of_card_le (I : Ideal (MRing ι F))
       exact WithBot.coe_le_coe.mpr this
 
 /- English proof (translation)
-Simplify using `only [IsRelevant, not_forall, not_exists, not_not] at hI`. Take `⟨k, hk⟩` from `hI`. Use `filter_upwards [eventually_ge_atTop (1 : K → ℤ)] with m hm`. Unfold `hilbFn`. Use `split_ifs with h0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbot : gradedPiece I (fun k => (m k).toNat) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨f, hf, rfl⟩`. Rewrite using `[Submodule.mem_bot, AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem, MvPolynomial.as_sum f]`. Use `Ideal.sum_mem _ fun s hs => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp hf (mem_support_iff.mp hs)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv, hvk⟩ : ∃ v ∈ s.support, v.1 = k := by`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_and] at hne`. Establish `h1` using `congrFun hw k`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Finset.sum_eq_zero fun v hv => by`. Simplify using `[blockWeight, Ne.symm (hne v hv)]] at h1`. Use `hm k` as an intermediate fact. Simplify using `only [Pi.one_apply] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Finsupp.single v 1 ≤ s`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hv)`. Establish `hX : (X v : MRing ι F) ∈ I`. Take `⟨k', i⟩` from `v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hvk` using the available equality. Conclude with `hk i`. Establish `e : monomial s (coeff s f) = X v * monomial (s - Finsupp.single v 1) (coeff s f)`. Rewrite using `[show (X v : MRing ι F) = monomial (Finsupp.single v 1) 1 from rfl, monomial_mul, one_mul, add_tsub_cancel_of_le hle]`. Rewrite using `[e]`.
-
-Conclude with `I.mul_mem_right _ hX`. Rewrite using `[hbot]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hilbFn_eventually_zero_of_not_relevant (I : Ideal (MRing ι F)) (hI : ¬ IsRelevant I) :
     ∀ᶠ m in atTop, hilbFn I m = 0 := by
@@ -171,31 +169,27 @@ end MultEqualsCoeff
 open MultEqualsCoeff in
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ I hI hrel n hn bs`. Take `⟨r, Q, c, hQ, hsum, hmult, hcase⟩` from `h1 F K ι I hI`. Set `top : Ideal (MRing ι F) → Prop` to `fun W => W ∈ I.minimalPrimes ∧ IsRelevant W ∧ relDim W = n`. Set `val : Ideal (MRing ι F) → ℤ` to `fun W => if top W then intNum F W bs else 0`. Establish `hpiece : ∀ j, ∀ᶠ m in atTop, mixedDiff bs (hilbFn (Q j)) (m - fun k => (c j k : ℤ)) = val (Q j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j`. Use `(tendsto_sub fun k => (c j k : ℤ)).eventually (p := fun x => mixedDiff bs (hilbFn (Q j)) x = val (Q j)) ?_` and prove the remaining obligations. Take `⟨hpr, hhom, -⟩` from `hQ j`. Distinguish the cases in `hr : IsRelevant (Q j)`. Break down `(hcase j).resolve_left (not_not.mpr hr) with hlt | ⟨hmin, heq⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hlt` using `[hn]`. Establish `hnt : ¬ top (Q j)` using `fun ht => lt_irrefl _ (ht.2.2 ▸ hlt)`. Simplify using `only [val, if_neg hnt]`. Take `⟨d, hd, hdn⟩` from `exists_nat_of_nonneg_of_lt (relDim_nonneg_of_card_le (Q j) (h3 F K ι (Q j) ⟨hpr, hhom, hr⟩)) hlt`. Conclude with `(h2 F K ι (Q j) hhom hr d hd).2 n hdn bs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : top (Q j)` using `⟨hmin, hr, heq.trans hn⟩`. Simplify using `only [val, if_pos ht]`. Conclude with `(h2 F K ι (Q j) hhom hr n (heq.trans hn)).1 bs`. Establish `hnt : ¬ top (Q j)` using `fun ht => hr ht.2.1`. Simplify using `only [val, if_neg hnt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [foldr_diffStep_eventuallyEq (hilbFn_eventually_zero_of_not_relevant (Q j) hr) (List.ofFn bs)] with m hm`. Unfold `mixedDiff`. Rewrite using `[hm]`. Conclude with `congrFun (foldr_diffStep_zero _) m`. Establish `hI' : ∀ᶠ m in atTop, mixedDiff bs (hilbFn I) m = ∑ j, val (Q j)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : mixedDiff bs (hilbFn I) =ᶠ[atTop] mixedDiff bs (∑ j, fun m => hilbFn (Q j) (m - fun k => (c j k : ℤ)))`. Apply `foldr_diffStep_eventuallyEq` to reduce the goal to its premises. Use `filter_upwards [hsum] with m hm`. Rewrite using `[hm, Finset.sum_apply]`. Use `filter_upwards [e1, eventually_all.2 hpiece] with m hm hall`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, mixedDiff, foldr_diffStep_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[foldr_diffStep_shift]`. Conclude with `hall j`. Establish `hval : intNum F I bs = ∑ j, val (Q j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take `⟨m, ha, hb⟩` from `(((h2 F K ι I hI hrel n hn).1 bs).and hI').exists`. Rewrite using `[← ha, hb]`. Establish `hsupp : (Function.support fun W => topCycle I n W * intNum F W bs) ⊆ (Finset.univ.image Q : Set (Ideal (MRing ι F)))`. Introduce `W hW`. Assume the negation of the conclusion as `hWQ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Apply `hW` to reduce the goal to its premises. Simplify using `only [topCycle]`. Use `split_ifs with h`. Establish `hm` using `hmult W h.1 h.2.1 (h.2.2.trans hn.symm)`. Establish `h0 : (Finset.univ.filter fun j => Q j = W) = ∅`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Introduce and unpack `rfl`. Conclude with `hWQ (by simp)`. Rewrite `hm` using `[h0, Finset.card_empty]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hm]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[hval, cycEval, finsum_eq_sum_of_support_subset _ hsupp, ← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.univ.image Q) (g := Q) (fun j _ => Finset.mem_image_of_mem Q (Finset.mem_univ j)) (fun j => val (Q j))]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.sum_congr rfl fun j hj => by rw [(Finset.mem_filter.1 hj).2], Finset.sum_const, nsmul_eq_mul]`. Simplify using `only [topCycle, val, top]`. Use `split_ifs with h`. Rewrite using `[← hmult W h.1 h.2.1 (h.2.2.trans hn.symm)]`. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem MultEqualsCoeff.proof (h1 : PrimeFiltration.Statement.{u})
     (h2 : MixedDiffConst.Statement.{u}) (h3 : RelevantPrimeDimGe.Statement.{u}) :

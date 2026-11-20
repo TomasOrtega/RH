@@ -8,7 +8,7 @@ open scoped NNReal
 namespace GlobalTheory.K5
 
 /- English proof (translation)
-Rewrite using `[qO, ← map_pow, HahnSeries.single_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qO_pow_eq (p : ℕ) [Fact p.Prime] (j : ℕ) :
     qO p ^ j = algebraMap (Lau p) (O0 p) (HahnSeries.single (j : ℤ) (1 : ℤ_[p])) := by
@@ -16,11 +16,11 @@ theorem qO_pow_eq (p : ℕ) [Fact p.Prime] (j : ℕ) :
   simp
 
 /- English proof (translation)
-Establish `fg : (pI p).FG` using `Submodule.fg_span_singleton _`. Establish `hker` using `AdicCompletion.ker_evalOneₐ_eq_map (pI p) fg`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalOneₐ (pI p) x)`. Establish `hmem : x - algebraMap (Lau p) (O0 p) a ∈ RingHom.ker (AdicCompletion.evalOneₐ (pI p)).toRingHom`. Rewrite using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show AdicCompletion.evalOneₐ (pI p) (x - algebraMap (Lau p) (O0 p) a) = 0`. Rewrite using `[map_sub, (AdicCompletion.evalOneₐ (pI p)).commutes a]`. Use `show _ - Ideal.Quotient.mk (pI p) a = 0`. Rewrite using `[ha, sub_self]`. Establish `hmap : (pI p).map (algebraMap (Lau p) (O0 p)) = Ideal.span {(p : O0 p)}`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Rewrite `hmem` using `[hker, hmap, Ideal.mem_span_singleton]`. Take `⟨z, hz⟩` from `hmem`. Conclude with `⟨a, z, by rw [← hz]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lau_add_p_mul (p : ℕ) [Fact p.Prime] (x : O0 p) :
     ∃ (f : Lau p) (z : O0 p), x = algebraMap (Lau p) (O0 p) f + (p : O0 p) * z := by
@@ -41,7 +41,7 @@ theorem exists_lau_add_p_mul (p : ℕ) [Fact p.Prime] (x : O0 p) :
   exact ⟨a, z, by rw [← hz]; ring⟩
 
 /- English proof (translation)
-Take `⟨f, z, rfl⟩` from `exists_lau_add_p_mul p x`. Take `⟨g, h, hf⟩` from `GlobalTheory.T.laurentSeriesPadic_exists_pthPower_combination p f`. Use `⟨fun j => algebraMap (Lau p) (O0 p) (g j), algebraMap (Lau p) (O0 p) h + z, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, map_add, map_sum, map_mul, map_natCast]`. Simplify using `only [map_mul, map_pow, qO_pow_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

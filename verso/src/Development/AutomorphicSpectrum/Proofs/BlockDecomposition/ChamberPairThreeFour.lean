@@ -45,21 +45,21 @@ def chamberPairThreeFour (M : ℝ) : Set (ℝ × ℝ) := {x | x.1 + 2 * x.2 < -M
 def chamberPairFourLast (M : ℝ) : Set (ℝ × ℝ) := {x | x.2 < -M ∧ x.1 < -M}
 
 /- English proof (translation)
-Simplify using `only [Om1, Set.mem_preimage, chgR, affR, coneC, Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma mem_Om1 {N r : ℝ} {x : ℝ × ℝ} : x ∈ Om1 N r ↔ r < N - x.1 ∧ r < x.1 + 2 * x.2 + 2 - N := by
   simp only [Om1, Set.mem_preimage, chgR, affR, coneC, Set.mem_setOf_eq]
   constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-Simplify using `only [Om2, Set.mem_preimage, chgR, affR, coneA, Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma mem_Om2 {N r : ℝ} {x : ℝ × ℝ} : x ∈ Om2 N r ↔ r < N - x.1 - x.2 ∧ r < x.2 + 1 := by
   simp only [Om2, Set.mem_preimage, chgR, affR, coneA, Set.mem_setOf_eq]
   constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-Simplify using `only [Om3, Set.mem_preimage, chgR, affR, coneC, Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma mem_Om3 {N r : ℝ} {x : ℝ × ℝ} :
     x ∈ Om3 N r ↔ r < 2 * N - 1 - x.1 - 2 * x.2 ∧ r < 2 * N - 1 - x.1 := by
@@ -67,7 +67,7 @@ lemma mem_Om3 {N r : ℝ} {x : ℝ × ℝ} :
   constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-Simplify using `only [Om4, Set.mem_inter_iff, Set.mem_preimage, chgR, affR, coneI, Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> rintro ⟨⟨h₁, h₂⟩, h₃⟩ <;> refine ⟨⟨?_, ?_⟩, h₃⟩ <;> linarith`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma mem_Om4 {N r : ℝ} {x : ℝ × ℝ} :
     x ∈ Om4 N r ↔ (r < N - 1 - x.2 ∧ r < 2 * N - 1 - x.2 - x.1) ∧ x.1 < 1 / 2 := by
@@ -75,15 +75,15 @@ lemma mem_Om4 {N r : ℝ} {x : ℝ × ℝ} :
   constructor <;> rintro ⟨⟨h₁, h₂⟩, h₃⟩ <;> refine ⟨⟨?_, ?_⟩, h₃⟩ <;> linarith
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const (continuous_affR α β γ)`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_hp (α β γ r : ℝ) : IsOpen {x : ℝ × ℝ | r < affR α β γ x} :=
   isOpen_lt continuous_const (continuous_affR α β γ)
 
 /- English proof (translation)
-Establish `hl : IsLinearMap ℝ (fun x : ℝ × ℝ => α * x.1 + β * x.2)` using `⟨fun a b => by simp only [Prod.fst_add, Prod.snd_add]; ring, fun c a => by simp only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul]; ring⟩`. Establish `h` using `convex_halfSpace_gt hl (r - γ)`. Establish `e : {x : ℝ × ℝ | r < affR α β γ x} = {w : ℝ × ℝ | r - γ < α * w.1 + β * w.2}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, affR]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> intro h' <;> linarith`. Rewrite using `[e]`. Conclude with `h`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma convex_hp (α β γ r : ℝ) : Convex ℝ {x : ℝ × ℝ | r < affR α β γ x} := by
   have hl : IsLinearMap ℝ (fun x : ℝ × ℝ => α * x.1 + β * x.2) :=
@@ -98,7 +98,7 @@ lemma convex_hp (α β γ r : ℝ) : Convex ℝ {x : ℝ × ℝ | r < affR α β
   exact h
 
 /- English proof (translation)
-Establish `e : Ω = {x | r < affR α₁ β₁ γ₁ x} ∩ {x | r < affR α₂ β₂ γ₂ x}`. Use extensionality with `x`. Conclude with `h x`. Rewrite using `[e]`. Conclude with `⟨(isOpen_hp _ _ _ _).inter (isOpen_hp _ _ _ _), (convex_hp _ _ _ _).inter (convex_hp _ _ _ _)⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma open_convex2 {Ω : Set (ℝ × ℝ)} (α₁ β₁ γ₁ α₂ β₂ γ₂ r : ℝ)
     (h : ∀ x, x ∈ Ω ↔ r < affR α₁ β₁ γ₁ x ∧ r < affR α₂ β₂ γ₂ x) : IsOpen Ω ∧ Convex ℝ Ω := by
@@ -108,13 +108,13 @@ lemma open_convex2 {Ω : Set (ℝ × ℝ)} (α₁ β₁ γ₁ α₂ β₂ γ₂ 
   exact ⟨(isOpen_hp _ _ _ _).inter (isOpen_hp _ _ _ _), (convex_hp _ _ _ _).inter (convex_hp _ _ _ _)⟩
 
 /- English proof (translation)
-The claim follows from `open_convex2 0 1 0 1 1 0 r fun x => by simp [coneI, affR, add_comm]`.
+A detailed English derivation is pending.
 -/
 lemma oc_coneI (r : ℝ) : IsOpen (coneI r) ∧ Convex ℝ (coneI r) :=
   open_convex2 0 1 0 1 1 0 r fun x => by simp [coneI, affR, add_comm]
 
 /- English proof (translation)
-The claim follows from `open_convex2 (-1) 0 N 1 2 (2 - N) r fun x => by rw [mem_Om1]; simp only [affR] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_convex_Om1 (N r : ℝ) : IsOpen (Om1 N r) ∧ Convex ℝ (Om1 N r) :=
   open_convex2 (-1) 0 N 1 2 (2 - N) r fun x => by
@@ -122,7 +122,7 @@ lemma isOpen_convex_Om1 (N r : ℝ) : IsOpen (Om1 N r) ∧ Convex ℝ (Om1 N r) 
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-The claim follows from `open_convex2 (-1) (-1) N 0 1 1 r fun x => by rw [mem_Om2]; simp only [affR] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_convex_Om2 (N r : ℝ) : IsOpen (Om2 N r) ∧ Convex ℝ (Om2 N r) :=
   open_convex2 (-1) (-1) N 0 1 1 r fun x => by
@@ -130,7 +130,7 @@ lemma isOpen_convex_Om2 (N r : ℝ) : IsOpen (Om2 N r) ∧ Convex ℝ (Om2 N r) 
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-The claim follows from `open_convex2 (-1) (-2) (2 * N - 1) (-1) 0 (2 * N - 1) r fun x => by rw [mem_Om3]; simp only [affR] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_convex_Om3 (N r : ℝ) : IsOpen (Om3 N r) ∧ Convex ℝ (Om3 N r) :=
   open_convex2 (-1) (-2) (2 * N - 1) (-1) 0 (2 * N - 1) r fun x => by
@@ -138,11 +138,11 @@ lemma isOpen_convex_Om3 (N r : ℝ) : IsOpen (Om3 N r) ∧ Convex ℝ (Om3 N r) 
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-Establish `h` using `open_convex2 (Ω := {x : ℝ × ℝ | r < N - 1 - x.2 ∧ r < 2 * N - 1 - x.2 - x.1}) 0 (-1) (N - 1) (-1) (-1) (2 * N - 1) r fun x => by`. Simplify using `only [affR, Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith`. Establish `h'` using `(isOpen_hp (-1) 0 (1 / 2) 0)`. Establish `h''` using `(convex_hp (-1) 0 (1 / 2) 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Om4 N r = {x : ℝ × ℝ | r < N - 1 - x.2 ∧ r < 2 * N - 1 - x.2 - x.1} ∩ {x | 0 < affR (-1) 0 (1 / 2) x}`. Use extensionality with `x`. Rewrite using `[mem_Om4]`. Simplify using `only [affR, Set.mem_inter_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h₁, h₂⟩; exact ⟨h₁, by linarith⟩`. Introduce and unpack `⟨h₁, h₂⟩; exact ⟨h₁, by linarith⟩`. Rewrite using `[e]`. Conclude with `⟨h.1.inter h', h.2.inter h''⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma isOpen_convex_Om4 (N r : ℝ) : IsOpen (Om4 N r) ∧ Convex ℝ (Om4 N r) := by
   have h := open_convex2 (Ω := {x : ℝ × ℝ | r < N - 1 - x.2 ∧ r < 2 * N - 1 - x.2 - x.1})
@@ -163,7 +163,7 @@ lemma isOpen_convex_Om4 (N r : ℝ) : IsOpen (Om4 N r) ∧ Convex ℝ (Om4 N r) 
   exact ⟨h.1.inter h', h.2.inter h''⟩
 
 /- English proof (translation)
-The claim follows from `(open_convex2 (-1) 0 0 1 1 0 M fun x => by simp only [chamberPairOneTwo, affR, Set.mem_setOf_eq] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_chamberPairOneTwo (M : ℝ) : IsOpen (chamberPairOneTwo M) :=
   (open_convex2 (-1) 0 0 1 1 0 M fun x => by
@@ -171,7 +171,7 @@ lemma isOpen_chamberPairOneTwo (M : ℝ) : IsOpen (chamberPairOneTwo M) :=
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1
 
 /- English proof (translation)
-The claim follows from `(open_convex2 (-1) (-1) 0 1 2 0 M fun x => by simp only [chamberPairTwoThree, affR, Set.mem_setOf_eq] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_V12 (M : ℝ) : IsOpen (chamberPairTwoThree M) :=
   (open_convex2 (-1) (-1) 0 1 2 0 M fun x => by
@@ -179,7 +179,7 @@ lemma isOpen_V12 (M : ℝ) : IsOpen (chamberPairTwoThree M) :=
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1
 
 /- English proof (translation)
-The claim follows from `(open_convex2 (-1) (-2) 0 0 1 0 M fun x => by simp only [chamberPairThreeFour, affR, Set.mem_setOf_eq] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_V23 (M : ℝ) : IsOpen (chamberPairThreeFour M) :=
   (open_convex2 (-1) (-2) 0 0 1 0 M fun x => by
@@ -187,7 +187,7 @@ lemma isOpen_V23 (M : ℝ) : IsOpen (chamberPairThreeFour M) :=
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1
 
 /- English proof (translation)
-The claim follows from `(open_convex2 0 (-1) 0 (-1) 0 0 M fun x => by simp only [chamberPairFourLast, affR, Set.mem_setOf_eq] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_V34 (M : ℝ) : IsOpen (chamberPairFourLast M) :=
   (open_convex2 0 (-1) 0 (-1) 0 0 M fun x => by
@@ -195,37 +195,37 @@ lemma isOpen_V34 (M : ℝ) : IsOpen (chamberPairFourLast M) :=
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(-M - 1, 2 * M + 2), by simp only [chamberPairOneTwo, Set.mem_setOf_eq]; constructor <;> linarith⟩`.
+Supply the required witnesses or components.
 -/
 lemma nonempty_V01 (M : ℝ) : (chamberPairOneTwo M).Nonempty :=
   ⟨(-M - 1, 2 * M + 2), by simp only [chamberPairOneTwo, Set.mem_setOf_eq]; constructor <;> linarith⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(-3 * M - 3, 2 * M + 2), by simp only [chamberPairTwoThree, Set.mem_setOf_eq]; constructor <;> linarith⟩`.
+Supply the required witnesses or components.
 -/
 lemma nonempty_V12 (M : ℝ) : (chamberPairTwoThree M).Nonempty :=
   ⟨(-3 * M - 3, 2 * M + 2), by simp only [chamberPairTwoThree, Set.mem_setOf_eq]; constructor <;> linarith⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(-3 * M - 3, M + 1), by simp only [chamberPairThreeFour, Set.mem_setOf_eq]; constructor <;> linarith⟩`.
+Supply the required witnesses or components.
 -/
 lemma nonempty_V23 (M : ℝ) : (chamberPairThreeFour M).Nonempty :=
   ⟨(-3 * M - 3, M + 1), by simp only [chamberPairThreeFour, Set.mem_setOf_eq]; constructor <;> linarith⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(-M - 1, -M - 1), by simp only [chamberPairFourLast, Set.mem_setOf_eq]; constructor <;> linarith⟩`.
+Supply the required witnesses or components.
 -/
 lemma nonempty_V34 (M : ℝ) : (chamberPairFourLast M).Nonempty :=
   ⟨(-M - 1, -M - 1), by simp only [chamberPairFourLast, Set.mem_setOf_eq]; constructor <;> linarith⟩
 
 /- English proof (translation)
-Take `⟨u, v⟩` from `x`. Use `set B : ℝ := |r| + 1 with hB`. Use `set A : ℝ := |r| + |r + 1 - 2 * N + 2 * u| + |r + 1 - 2 * N + 2 * u + 4 * v - 2 * B| + 1 with hA`. Establish `h₀` using `le_abs_self r`. Establish `h₁` using `le_abs_self (r + 1 - 2 * N + 2 * u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `le_abs_self (r + 1 - 2 * N + 2 * u + 4 * v - 2 * B)`. Establish `h₃` using `abs_nonneg r`. Establish `h₄` using `abs_nonneg (r + 1 - 2 * N + 2 * u)`. Establish `h₅` using `abs_nonneg (r + 1 - 2 * N + 2 * u + 4 * v - 2 * B)`. Use `⟨(A, B), ?_, (2 * u - A, 2 * v - B), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [coneI, Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[mem_Om3]`. Simplify using `only`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[midpoint_eq_smul_add]`. Apply the tactic sequence `ext <;> simp <;> ring`.
+A detailed English derivation is pending.
 -/
 lemma exists_midpoint (N r : ℝ) (x : ℝ × ℝ) :
     ∃ a ∈ coneI r, ∃ b ∈ Om3 N r, x = midpoint ℝ a b := by
@@ -248,7 +248,7 @@ lemma exists_midpoint (N r : ℝ) (x : ℝ × ℝ) :
     ext <;> simp <;> ring
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, hE⟩` from `hTC X T 3 ![Ω₀, Ω₁, Ω₂, Ω₃] ![F₀, F₁, F₂, F₃] (by intro i; fin_cases i; exacts [h₀, h₁, h₂, h₃]) (by intro i; fin_cases i; exacts [j₀, j₁, j₂]) (by intro x; obtain ⟨a, ha, b, hb, e⟩ := mid x; exact ⟨0, 3, a, ha, b, hb, e⟩)`. Conclude with `⟨Φ, hΦ, hE 0, hE 3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma chain4 (hTC : TubeChain) {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X]
     {T : Type} [TopologicalSpace T] [FirstCountableTopology T] {Ω₀ Ω₁ Ω₂ Ω₃ : Set (ℝ × ℝ)}
@@ -273,7 +273,7 @@ section Fac
 variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
 
 /- English proof (translation)
-Use `Fac_left hf 1 0 0 (Ω := Ω) (fun x hx => by simpa [affR] using h x hx)` as an intermediate fact. Simplify `this` using `[aff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Fac_left_fst {f : ℂ → X} {a : ℝ} (hf : LeftGood f a) {Ω : Set (ℝ × ℝ)}
     (h : ∀ x ∈ Ω, x.1 < a) : Fac (fun l => f l.1) Ω := by
@@ -281,7 +281,7 @@ lemma Fac_left_fst {f : ℂ → X} {a : ℝ} (hf : LeftGood f a) {Ω : Set (ℝ 
   simpa [aff] using this
 
 /- English proof (translation)
-Use `Fac_left hf 0 1 0 (Ω := Ω) (fun x hx => by simpa [affR] using h x hx)` as an intermediate fact. Simplify `this` using `[aff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Fac_left_snd {f : ℂ → X} {a : ℝ} (hf : LeftGood f a) {Ω : Set (ℝ × ℝ)}
     (h : ∀ x ∈ Ω, x.2 < a) : Fac (fun l => f l.2) Ω := by
@@ -289,7 +289,7 @@ lemma Fac_left_snd {f : ℂ → X} {a : ℝ} (hf : LeftGood f a) {Ω : Set (ℝ 
   simpa [aff] using this
 
 /- English proof (translation)
-Use `Fac_strip hf 0 1 0 Ω` as an intermediate fact. Simplify `this` using `[aff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Fac_strip_snd {f : ℂ → X} (hf : StripEntire f) (Ω : Set (ℝ × ℝ)) : Fac (fun l => f l.2) Ω := by
   have := Fac_strip hf 0 1 0 Ω
@@ -298,7 +298,7 @@ lemma Fac_strip_snd {f : ℂ → X} (hf : StripEntire f) (Ω : Set (ℝ × ℝ))
 end Fac
 
 /- English proof (translation)
-Introduce `p v`. Apply `Differentiable.differentiableOn` to reduce the goal to its premises. Simplify using `only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma lineHol_exp (U : Set (ℂ × ℂ)) : LineHol (fun l : ℂ × ℂ => Complex.exp (l.1 ^ 2 + l.2 ^ 2)) U := by
   intro p v
@@ -314,39 +314,33 @@ variable {T : Type} [TopologicalSpace T] [FirstCountableTopology T]
   [NormedSpace ℂ W] [CompleteSpace W]
 
 /- English proof (translation)
-Establish `hN` using `abs_le.1 (show |N| ≤ R - 1 by linarith)`. Establish `hN₁` using `hN.1`. Establish `hN₂` using `hN.2`. Establish `hR1 : 1 ≤ R` using `by linarith [abs_nonneg N]`. Use `set F₀ : ℂ × ℂ → T → ES →L[ℂ] W := fun l g => (Dc (yv N l) * Da (zv N l) * Db l.2) • o₀ l g with hF₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F₁ : ℂ × ℂ → T → ES →L[ℂ] W := fun l g => (Da (zv N l) * Db l.2) • (oc (mc N l) g).comp (Op₀ l.1) with hF₁`. Use `set F₂ : ℂ × ℂ → T → ES →L[ℂ] W := fun l g => Db l.2 • (oa (ma N l) g).comp ((Opc (yv N l)).comp (Op₀ l.1)) with hF₂`. Use `set F₃ : ℂ × ℂ → T → ES →L[ℂ] W := fun l g => (ob (mb N l) g).comp ((Opa (zv N l)).comp ((Opc (yv N l)).comp (Op₀ l.1))) with hF₃`. Establish `t₀ : TubeGood F₀ (coneI (10 * R))` using `TubeGood_smul (Fac_mul (Fac_mul (Fac_strip hDc _ _ _ _) (Fac_strip hDa _ _ _ _)) (Fac_strip_snd hDb _)) g₀`. Establish `t₁ : TubeGood F₁ (Om1 N (10 * R))` using `TubeGood_smul (Fac_mul (Fac_strip hDa _ _ _ _) (Fac_strip_snd hDb _)) (TubeGood_comp (TubeGood_chg gc _ _ _ _ _ _) (Fac_left_fst hOp₀ fun x hx => by have := (mem_Om1.1 hx).1; linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `t₂ : TubeGood F₂ (Om2 N (10 * R))` using `TubeGood_smul (Fac_strip_snd hDb _) (TubeGood_comp (TubeGood_chg ga _ _ _ _ _ _) (Fac_comp (Fac_left hOpc _ _ _ fun x hx => by`. Use `(mem_Om2.1 hx).1` as an intermediate fact. Simplify using `only [affR]`. Use the proof step `linarith)`. Use the proof step `(Fac_left_fst hOp₀ fun x hx => by`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `mem_Om2.1 hx` as an intermediate fact. Combine the linear relations using `[this.1, this.2])))`. Establish `t₃ : TubeGood F₃ (Om3 N (10 * R))` using `TubeGood_comp (TubeGood_chg gb _ _ _ _ _ _) (Fac_comp (Fac_left hOpa _ _ _ fun x hx => by`. Use `(mem_Om3.1 hx).1` as an intermediate fact. Simplify using `only [affR]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `linarith)`. Use the proof step `(Fac_comp (Fac_left hOpc _ _ _ fun x hx => by`. Use `mem_Om3.1 hx` as an intermediate fact. Simplify using `only [affR]`. Combine the linear relations using `[this.1, this.2])`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(Fac_left_fst hOp₀ fun x hx => by`. Use `(mem_Om3.1 hx).2` as an intermediate fact. Use the proof step `linarith)))`. Establish `j₀ : ∃ V : Set (ℝ × ℝ), IsOpen V ∧ V.Nonempty ∧ V ⊆ coneI (10 * R) ∩ Om1 N (10 * R) ∧ ∀ l ∈ tube V, ∀ g, F₀ l g = F₁ l g`. Use `⟨chamberPairOneTwo (100 * R), isOpen_chamberPairOneTwo _, nonempty_V01 _, ?_, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨h₁, h₂⟩`. Use `⟨?_, mem_Om1.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [coneI, Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> linarith`. Apply the tactic sequence `all_goals linarith`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `l hl g`. Express the relevant statement in the definitionally equal form `(Dc (yv N l) * Da (zv N l) * Db l.2) • o₀ l g = (Da (zv N l) * Db l.2) • (oc (mc N l) g).comp (Op₀ l.1)`. Rewrite using `[← J₀ l hl g, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `j₁ : ∃ V : Set (ℝ × ℝ), IsOpen V ∧ V.Nonempty ∧ V ⊆ Om1 N (10 * R) ∩ Om2 N (10 * R) ∧ ∀ l ∈ tube V, ∀ g, F₁ l g = F₂ l g`. Use `⟨chamberPairTwoThree (100 * R), isOpen_V12 _, nonempty_V12 _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨h₁, h₂⟩`. Apply the tactic sequence `refine ⟨mem_Om1.2 ⟨?_, ?_⟩, mem_Om2.2 ⟨?_, ?_⟩⟩ <;> linarith`. Introduce `l hl g`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Da (zv N l) * Db l.2) • (oc (mc N l) g).comp (Op₀ l.1) = Db l.2 • (oa (ma N l) g).comp ((Opc (yv N l)).comp (Op₀ l.1))`. Rewrite using `[← ContinuousLinearMap.comp_assoc _ (Opc (yv N l)), ← J₁ l hl g, ContinuousLinearMap.smul_comp, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `j₂ : ∃ V : Set (ℝ × ℝ), IsOpen V ∧ V.Nonempty ∧ V ⊆ Om2 N (10 * R) ∩ Om3 N (10 * R) ∧ ∀ l ∈ tube V, ∀ g, F₂ l g = F₃ l g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨chamberPairThreeFour (100 * R), isOpen_V23 _, nonempty_V23 _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨h₁, h₂⟩`. Apply the tactic sequence `refine ⟨mem_Om2.2 ⟨?_, ?_⟩, mem_Om3.2 ⟨?_, ?_⟩⟩ <;> linarith`. Introduce `l hl g`. Express the relevant statement in the definitionally equal form `Db l.2 • (oa (ma N l) g).comp ((Opc (yv N l)).comp (Op₀ l.1)) = (ob (mb N l) g).comp ((Opa (zv N l)).comp ((Opc (yv N l)).comp (Op₀ l.1)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ContinuousLinearMap.comp_assoc _ (Opa (zv N l)), ← J₂ l hl g, ContinuousLinearMap.smul_comp]`. Take `⟨Φ, hΦ, e₀, e₃⟩` from `chain4 hTC (F₀ := F₀) (F₁ := F₁) (F₂ := F₂) (F₃ := F₃) ⟨(oc_coneI _).1, (oc_coneI _).2, t₀⟩ ⟨(isOpen_convex_Om1 N _).1, (isOpen_convex_Om1 N _).2, t₁⟩ ⟨(isOpen_convex_Om2 N _).1, (isOpen_convex_Om2 N _).2, t₂⟩ ⟨(isOpen_convex_Om3 N _).1, (isOpen_convex_Om3 N _).2, t₃⟩ j₀ j₁ j₂ (e …`. Use `⟨Φ, hΦ, e₀, fun l hl g => ?_⟩` and prove the remaining obligations. Establish `hsub : chamberPairFourLast (100 * R) ⊆ Om4 N (10 * R) ∩ Om3 N (10 * R)`. Introduce and unpack `x ⟨h₁, h₂⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨mem_Om4.2 ⟨⟨?_, ?_⟩, ?_⟩, mem_Om3.2 ⟨?_, ?_⟩⟩ <;> linarith`. Establish `hneg : StripEntire fun z => -d z` using `⟨hd.1.neg, fun b c => by`. Take `⟨M, hM⟩` from `hd.2 b c`. Conclude with `⟨M, fun z h₁ h₂ => by simpa using hM z h₁ h₂⟩⟩`. Establish `hleft : LineHol (fun l : ℂ × ℂ => (-d (nz N l)) • Φ l g) (tube (Om4 N (10 * R)))` using `(TubeGood_smul (Fac_strip hneg (-1) 0 N _) (TubeGood_mono hΦ (Set.subset_univ _))).hol g`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : TubeGood (fun (l : ℂ × ℂ) g => (ol (ml N l) g).comp ((Opb l.2).comp ((Opa (zv N l)).comp ((Opc (yv N l)).comp (O l.1))))) (Om4 N (10 * R))` using `TubeGood_comp (TubeGood_mono (TubeGood_chg gl _ _ _ _ _ _) fun x hx => hx.1) (Fac_comp (Fac_left_snd hOpb fun x hx => by`. Use `(mem_Om4.1 hx).1.1` as an intermediate fact. Use the proof step `linarith)`. Use the proof step `(Fac_comp (Fac_left hOpa _ _ _ fun x hx => by`. Use `mem_Om4.1 hx` as an intermediate fact.
-
-Simplify using `only [affR]`. Combine the linear relations using `[this.1.1, this.2])`. Use the proof step `(Fac_comp (Fac_left hOpc _ _ _ fun x hx => by`. Use `mem_Om4.1 hx` as an intermediate fact. Simplify using `only [affR]`.
-
-Combine the linear relations using `[this.1.1, this.2])`. Use the proof step `(Fac_left_fst hO fun x hx => (mem_Om4.1 hx).2))))`. Establish `hright : LineHol (fun l : ℂ × ℂ => Complex.exp (l.1 ^ 2 + l.2 ^ 2) • (ol (ml N l) g).comp ((Opb l.2).comp ((Opa (zv N l)).comp ((Opc (yv N l)).comp (O l.1))))) (tube (Om4 N (10 * R)))` using `fun p v => (lineHol_exp _ p v).smul (hcomp.hol g p v)`. Use `hId (ES →L[ℂ] W) (Om4 N (10 * R)) (chamberPairFourLast (100 * R)) _ _ (isOpen_convex_Om4 N _).1 (isOpen_convex_Om4 N _).2 (isOpen_V34 _) (nonempty_V34 _) (fun x hx => (hsub hx).1) hleft hright ?_ hl` and prove the remaining obligations. Introduce `l' hl'`.
-
-Establish `e` using `e₃ l' (show (l'.1.re, l'.2.re) ∈ Om3 N (10 * R) from (hsub hl').2) g`. Simplify using `only [e]`. Rewrite using `[smul_comm]`. Conclude with `congrArg _ (J₃ l' hl' g)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hId : IdTube) (hTC : TubeChain) (N R : ℝ) (hR : |N| + 1 ≤ R)
     {o₀ : ℂ × ℂ → T → ES →L[ℂ] W} {oc oa : ℂ × ℂ → T → EB →L[ℂ] W} {ob ol : ℂ × ℂ → T → EA →L[ℂ] W}

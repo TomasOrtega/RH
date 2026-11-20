@@ -10,25 +10,25 @@ open Module Submodule Matrix GroundTheory.Heights₂.Theta.FunctionalEquationAlt
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact fun _ _ _ => ⟨0, fun b _ _ _ => ⟨b, rfl, fun i => i.elim0⟩⟩`. Consider the case `succ m ih`. Introduce `lam hlam C`. Take `⟨g, hg, hgb⟩` from `(bounds (W := W) m).1 (lam / 2) (half_pos hlam)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨R', hR'⟩` from `ih (lam / 2) (half_pos hlam) (C / lam ^ 2)`. Use `⟨|R'| + Real.sqrt (C / g), fun b hb hsep hC => ?_⟩` and prove the remaining obligations. Take `⟨v, c, hvL, hv, hlv, hmin, hc, hmemc, hsepc, hdet⟩` from `decompose b hb hlam hsep`. Establish `hgc` using `hgb c hc hsepc`. Establish `hv2 : ‖v‖ ^ 2 ≤ C / g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hg]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hgc (sq_nonneg ‖v‖)]`. Establish `hvR : ‖v‖ ≤ Real.sqrt (C / g)` using `(le_abs_self _).trans (Real.abs_le_sqrt hv2)`. Establish `hcC : (gram ℝ c).det ≤ C / lam ^ 2`. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : lam ^ 2 ≤ ‖v‖ ^ 2` using `pow_le_pow_left₀ hlam.le hlv 2`. Use polynomial arithmetic with `[hg.le.trans hgc]`. Take `⟨c', hc'span, hc'R⟩` from `hR' c hc hsepc hcC`. Use `set L := span ℤ (Set.range b) with hL`. Establish `hlift : ∀ i, ∃ y ∈ L, proj v y = c' i ∧ ‖y‖ ≤ ‖c' i‖ + ‖v‖ / 2`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hci : c' i ∈ span ℤ (Set.range c)` using `hc'span ▸ subset_span ⟨i, rfl⟩`. Take `⟨x, hx, hxe⟩` from `(hmemc _).1 hci`. Take `⟨y, hyL, hy, hyn⟩` from `exists_lift hvL hv hx`. Conclude with `⟨y, hyL, hy.trans hxe, hxe ▸ hyn⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose y hyL hy hyn using hlift`. Use `⟨Fin.cons v y, le_antisymm ?_ ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hvL`. Simplify using `using hyL j`. Introduce `x hx`. Take `⟨k, hk⟩` from `(mem_span_range_iff_exists_fun ℤ).1 (hc'span ▸ (hmemc (proj v x)).2 ⟨x, hx, rfl⟩)`. Establish `hzL : ∑ j, k j • y j ∈ L` using `L.sum_mem fun j _ => L.smul_mem _ (hyL j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : proj v (x - ∑ j, k j • y j) = 0`. Rewrite using `[map_sub, map_sum, ← hk, sub_eq_zero]`. Simplify using `[map_zsmul, hy]`. Take `⟨n, hn⟩` from `mem_zsmul_of_proj_eq_zero hvL hv hmin (L.sub_mem hx hzL) h0`. Establish `hxe : x = n • v + ∑ j, k j • y j` using `by rw [← hn]; abel`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hxe]`. Use `add_mem (smul_mem _ _ (subset_span ⟨0, by simp⟩)) (sum_mem fun j _ => smul_mem _ _ (subset_span ⟨j.succ, by simp⟩))` and prove the remaining obligations. Establish `hs` using `Real.sqrt_nonneg (C / g)`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[abs_nonneg R']`. Simplify using `only [Fin.cons_succ]`. Combine the linear relations using `[hyn j, hc'R j, le_abs_self R']`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ReducedBasisBound.short_basis {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℝ W]
     [FiniteDimensional ℝ W] (m : ℕ) : ∀ lam : ℝ, 0 < lam → ∀ C : ℝ, ∃ R : ℝ,
@@ -87,17 +87,17 @@ theorem ReducedBasisBound.short_basis {W : Type*} [NormedAddCommGroup W] [InnerP
         linarith [hyn j, hc'R j, le_abs_self R']
 
 /- English proof (translation)
-Introduce `d t c ht`. Take `⟨R, hR⟩` from `ReducedBasisBound.short_basis (W := EuclideanSpace ℝ (Fin d)) d t ht (c ^ 2)`. Use `⟨R, fun L _ _ hmin hcov => ?_⟩` and prove the remaining obligations. Establish `hrk : finrank ℤ L = d` using `by rw [ZLattice.rank ℝ L, finrank_euclideanSpace_fin]`. Set `e : Basis (Fin d) ℤ L` to `Module.finBasisOfFinrankEq ℤ L hrk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hspan : span ℤ (Set.range fun i => (e i : EuclideanSpace ℝ (Fin d))) = L`. Rewrite using `[show (Set.range fun i => (e i : EuclideanSpace ℝ (Fin d))) = L.subtype '' Set.range e by`. Rewrite using `[← Set.range_comp]`. Use the proof step `rfl, ← Submodule.map_span, e.span_eq, Submodule.map_top,`. Use the proof step `Submodule.range_subtype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℝ fun i => (e i : EuclideanSpace ℝ (Fin d))`. Establish `h` using `(e.ofZLatticeBasis ℝ L).linearIndependent`. Rewrite using `[show ⇑(e.ofZLatticeBasis ℝ L) = fun i => (e i : EuclideanSpace ℝ (Fin d)) from` and apply the resulting hypothesis. Use function extensionality and compare the values at `fun i => e.ofZLatticeBasis_apply ℝ L i] at h`. Establish `hdet : (gram ℝ fun i => (e i : EuclideanSpace ℝ (Fin d))).det ≤ c ^ 2`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `GroundTheory.Heights₂.Heights.covolume_eq_sqrt_det_gram L e`. Break down `le_or_gt 0 (gram ℝ fun i => (e i : EuclideanSpace ℝ (Fin d))).det with h | h` into its components or cases. Rewrite using `[← Real.sq_sqrt h, ← h1]`. Conclude with `pow_le_pow_left₀ (ZLattice.covolume_pos L).le hcov 2`. Use polynomial arithmetic with `[sq_nonneg c]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsep : Sep (span ℤ (Set.range fun i => (e i : EuclideanSpace ℝ (Fin d)))) t`. Rewrite using `[hspan]`. Conclude with `hmin`. Take `⟨b', hb'span, hb'R⟩` from `hR _ hli hsep hdet`. Rewrite `hb'span` using `[hspan]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htop : ⊤ ≤ span ℝ (Set.range b')`. Rewrite using `[← IsZLattice.span_top (K := ℝ) (L := L), ← hb'span, Submodule.span_span_of_tower]`. Establish `hliR : LinearIndependent ℝ b'` using `linearIndependent_of_top_le_span_of_card_eq_finrank htop (by simp)`. Use `⟨(Basis.span (hliR.restrict_scalars' ℤ)).map (LinearEquiv.ofEq _ _ hb'span), fun i => ?_⟩` and prove the remaining obligations. Simplify using `using hb'R i`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ReducedBasisBound.proof : ReducedBasisBound.Statement := by
   intro d t c ht

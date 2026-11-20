@@ -11,7 +11,7 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.AdicCompl
 
 /- English proof (translation)
-Establish `h` using `AdicCompletion.isAdicComplete (R := B) (I := Ideal.span {π}) (M := B) (Submodule.fg_span_singleton _)`. Rewrite `h` using `[← IsAdicComplete.map_algebraMap_iff (S := AdicCompletion (Ideal.span {π}) B)]`. Simplify `h` using `[Ideal.map_span]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem completion_complete (B : Type) [CommRing B] (π : B) :
     IsAdicComplete (Ideal.span {algebraMap B (AdicCompletion (Ideal.span {π}) B) π})
@@ -22,9 +22,9 @@ theorem completion_complete (B : Type) [CommRing B] (π : B) :
   simpa [Ideal.map_span] using h
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (y.1 M)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hx : y - algebraMap B (AdicCompletion (Ideal.span {π}) B) a ∈ ((Ideal.span {π}) ^ M).map (algebraMap B (AdicCompletion (Ideal.span {π}) B))`. Rewrite using `[← Submodule.restrictScalars_mem B, ← Ideal.smul_top_eq_map, AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton π), AdicCompletion.algebraMap_apply]`. Simplify `ha.symm` using `[AdicCompletion.eval, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hx` using `[Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem completion_surj (B : Type) [CommRing B] (π : B) (M : ℕ)
     (y : AdicCompletion (Ideal.span {π}) B) :
@@ -41,9 +41,9 @@ theorem completion_surj (B : Type) [CommRing B] (π : B) (M : ℕ)
   rwa [Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow] at hx
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 h`. Establish `h1` using `congrArg (AdicCompletion.evalₐ (Ideal.span {π}) M) hz`. Establish `hf : Ideal.Quotient.mk (Ideal.span {π} ^ M) (π ^ M) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (by`. Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_pow, AlgHom.commutes, ← map_pow, AlgHom.commutes, Ideal.Quotient.algebraMap_eq, hf, mul_zero]`. Rewrite using `[← Ideal.span_singleton_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem completion_inj (B : Type) [CommRing B] (π : B) (M : ℕ) (x : B)
     (h : algebraMap B (AdicCompletion (Ideal.span {π}) B) x ∈
@@ -60,7 +60,7 @@ theorem completion_inj (B : Type) [CommRing B] (π : B) (M : ℕ) (x : B)
   exact Ideal.Quotient.eq_zero_iff_mem.1 h1.symm
 
 /- English proof (translation)
-Introduce `B _ π`. Conclude with `⟨AdicCompletion (Ideal.span {π}) B, inferInstance, algebraMap B (AdicCompletion (Ideal.span {π}) B), { compl := completion_complete B π surj := completion_surj B π inj := completion_inj B π }⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isCompl : ∀ (B : Type) [CommRing B] (π : B),
     ∃ (T : Type) (_ : CommRing T) (g : B →+* T), IsCompl π g := by

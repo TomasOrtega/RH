@@ -55,13 +55,11 @@ def Q5 : Prop :=
     (IsField (Fv F v ⊗[F] E) ↔ IsField (S ⧸ lev (⟨_, hϖ⟩ : S) 1))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d bs v hB S σS hcar hsig ϖ hϖ0 hϖ1 hϖd hϖc hϖ ε hε`. Establish `hH : QuadHyp σ bs v S σS ϖ` using `⟨hσ, hB, hcar, hsig, hϖ0, hϖ1, hϖd, hϖc⟩`. Take `⟨a1, a2, a3, a4, a5⟩` from `h1 F E σ d bs v S σS ϖ hH hϖ`. Take `⟨b1, b2⟩` from `h2 F E σ d bs v S σS ϖ hH hϖ`. Take `⟨c1, c2⟩` from `h4 F E σ d bs v S σS ϖ hH hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e5` using `h5 F E σ d bs v S σS ϖ hH hϖ`. Use `⟨a1, a2, a3, a4, b1, b2, c1, c2, a5, h3 F E σ d bs v S σS ϖ hH hϖ, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hf : IsField (Fv F v ⊗[F] E)`. Use `left`. Use `⟨?_, e5.1 hf⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (ε : ℂ) = -1` using `by rw [hε, eSp, if_pos hf]`. Conclude with `this` after adjusting the coercions. Use `right`. Use `⟨?_, fun h => hf (e5.2 h)⟩` and prove the remaining obligations. Establish `: (ε : ℂ) = 1` using `by rw [hε, eSp, if_neg hf]`.
-
-Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quadAt_of (h1 : Q1) (h2 : Q2) (h3 : Q3) (h4 : Q4) (h5 : Q5) : QuadAt := by
   intro F E _ _ _ _ _ σ hσ d bs v hB S σS hcar hsig ϖ hϖ0 hϖ1 hϖd hϖc hϖ ε hε

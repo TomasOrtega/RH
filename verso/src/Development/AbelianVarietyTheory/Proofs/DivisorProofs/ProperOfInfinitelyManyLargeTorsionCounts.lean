@@ -10,13 +10,11 @@ open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed I
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `k _ _ G _ hG g hsm C hinf`. Take `⟨m, ⟨hm0, s, hs, hle⟩, hCm⟩` from `hinf.exists_gt C`. Establish `hm1 : 1 ≤ m` using `by omega`. Establish `hcard : 0 < s.card`. Break down `Nat.eq_zero_or_pos s.card with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hle` using `[h, Nat.mul_zero]`. Establish `: 0 < m ^ (2 * g)` using `Nat.pow_pos hm1`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hlt : m ^ (2 * g) < m * s.card` using `lt_of_le_of_lt hle (Nat.mul_lt_mul_of_pos_right hCm hcard)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `CharP.exists k`. Break down `CharP.char_is_prime_or_zero k p with hpp | hp0` into its components or cases. Use `haveI : Fact p.Prime := ⟨hpp⟩`. Conclude with `GlobalTheory.T.isProper_smoothConnGroup_of_many_torsion_charP k p G hG g hsm m hm0 s hs hlt`. Substitute `hp0 haveI : CharZero k := CharP.charP_to_charZero k` using the available equality.
-
-Conclude with `GlobalTheory.T.isProper_of_many_torsion_points_charZero k G hG g hsm m s hs hlt`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.properOfInfinitelyManyLargeTorsionCounts :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], GlobalTheory.SS.SmConn G →

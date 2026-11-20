@@ -16,25 +16,23 @@ namespace GlobalTheory.GenDvr
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.H1
 
 /- English proof (translation)
-Take `⟨k₀, hb₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hθ`. Establish `hk₀ : g ∈ L.U k₀` using `X.basicOpen_le _ hb₀`. Establish `un : IsUnit (gs (𝟙 _) g _ (θ.f k₀))`. Rewrite using `[gs_eq (𝟙 _) g _ hk₀]`. Conclude with `(X.mem_basicOpen _ _ hk₀).1 hb₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, gw'⟩` from `hw`. Establish `down` using `sec_pull_down ((isGen_iff w).1 gw') hL hL'`. Take `⟨θ', hθ'⟩` from `down θ`. Establish `: IsDominant (spMap (algebraMap V (FractionRing V)))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V (FractionRing V))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap V (FractionRing V)))` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSchemeTheoreticallyDominant φ` using `IsSchemeTheoreticallyDominant.of_isPullback hφ.flip`. Establish `: QuasiCompact φ` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hφ.flip inferInstance`. Establish `inj : ∀ (σ τ σK τK : _) (r : V), (∀ (Z : Scheme.{0}) (q : Z ⟶ X') (y : Z) j k, φ (q y) ∈ L.U j → q y ∈ L'.U k → gs (q ≫ φ) y _ (LB.Sec.f σ j) = (gw w q y j k).val * gs q y _ (LB.Sec.f σK k)) → (∀ (Z : Scheme.{0}) (q : Z ⟶ X') (y : Z) j k, φ (q y) ∈ L.U j → q y ∈ L'.U k → gs (q ≫ …`. Introduce `σ τ σK τK r h₁ h₂ h₃ j`. Use `φ.app_injective _ (fn_ext fun y hy => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_chart hL' y`. Use `(gs_pull (𝟙 _) φ y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 _) φ y _ hy _).symm)` and prove the remaining obligations. Rewrite using `[gs_mul (𝟙 _ ≫ φ) y _ hy, gs_constFn _ _ (𝟙 _ ≫ φ) y hy, h₁ _ (𝟙 _) y j k hy hk, h₂ _ (𝟙 _) y j k hy hk, (sec_eq_iff _ _ _ _).1 h₃ k y hk, Category.id_comp, hφ.w, cst_comp, mul_left_comm]`. Establish `mulc : ∀ {s t u : L'.Sec} {a a' : FractionRing V}, (∀ k, s.f k = constFn p' _ a * t.f k) → (∀ k, t.f k = constFn p' _ a' * u.f k) → ∀ k, s.f k = constFn p' _ (a * a') * u.f k` using `fun h h' => (sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 h k y hy, (sec_eq_iff _ _ _ _).1 h' k y hy, cst_mul, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `invc : ∀ {s t : L'.Sec} {a : FractionRing V}, a ≠ 0 → (∀ k, s.f k = constFn p' _ a * t.f k) → ∀ k, t.f k = constFn p' _ a⁻¹ * s.f k` using `fun ha h => (sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 h k y hy, ← _root_.mul_assoc, ← cst_mul, inv_mul_cancel₀ ha, cst_one, _root_.one_mul]`. Establish `unit : ∀ (σ : L.Sec) (r : V), (∀ j, θ.f j = constFn p _ r * σ.f j) → IsUnit r` using `fun σ r h => by`. Assume the negation of the conclusion as `hr`. Rewrite `un` using `[(sec_eq_iff _ _ _ _).1 h k₀ g hk₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `cst_not_isUnit p g hg hr (isUnit_of_mul_isUnit_left un)`. Take `⟨a₀, ha₀⟩` from `hb θ'`. Establish `h₀ : a₀ ≠ 0` using `fun h => not_isUnit_zero (unit θ 0 (inj θ θ θ' θ' 0 hθ' hθ' ((sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 ha₀ k y hy, h, map_zero, ← _root_.mul_assoc, ← cst_mul, mul_zero])))`. Take `⟨σK, hσK⟩` from `down σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : FractionRing V, ∀ i, σK.f i = constFn p' _ a * θ'.f i := by`. Take `⟨a, ha⟩` from `hb σK`. Conclude with `⟨a * a₀⁻¹, mulc ha (invc h₀ ha₀)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : V, ∀ i, σ.f i = constFn p _ r * θ.f i := by`. Distinguish the cases in `h : IsLocalization.IsInteger V a`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, rfl⟩` from `h`. Conclude with `⟨r, inj σ θ σK θ' r hσK hθ' ha⟩`. Establish `hne : a ≠ 0` using `fun e => h (e ▸ IsLocalization.isInteger_zero)`. Take `⟨r, hr⟩` from `(ValuationRing.isInteger_or_isInteger V a).resolve_left h`. Take `⟨u, rfl⟩` from `unit σ r (inj θ σ θ' σK r hθ' hσK (hr ▸ invc hne ha))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd ⟨(u⁻¹ : Vˣ), by rw [← inv_inv a, ← hr, map_units_inv]⟩ h`. Use `⟨r, hr, fun r' hr' => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `e : cst p g (r' - r) * gs (𝟙 _) g _ (θ.f k₀) = cst p g (r' - r) * 0`. Rewrite using `[cst_sub, sub_mul, ← (sec_eq_iff _ _ _ _).1 hr' k₀ g hk₀, ← (sec_eq_iff _ _ _ _).1 hr k₀ g hk₀, sub_self, mul_zero]`.
-
-Conclude with `un.ne_zero (cst_regular p g (sub_ne_zero.2 hne) e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generates_of_generic_line {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {X X' : Scheme.{0}}
     (p : X ⟶ Sp V) [Flat p] {p' : X' ⟶ Sp (FractionRing V)} {φ : X' ⟶ X}
@@ -107,7 +105,7 @@ theorem resG_appTop_toΓ {V : Type} [CommRing V] {X : Scheme.{0}} (p : X ⟶ Sp 
     resG X (le_top : U ≤ ⊤) (p.appTop.hom (toΓ V a)) = constFn p U a := rfl
 
 /- English proof (translation)
-Introduce `_ h₂ E _ _ _ H Dw l Xo _ T G t' x m₁ m₂ θ ⟨g, hg, hθ⟩ σ`. Use `G.semi.smooth` as an intermediate fact. Take `⟨b, hb⟩` from `globalSections_rank_one_fibre h₂.secTwist amplePt Xo.univ m₁`. Take `⟨w, hw, -⟩` from `m₂.lin`. Conclude with `generates_of_generic_line G.G.hom m₂.cart.1 G.PP.isLB t'.PP.isLB ⟨w, hw⟩ b (fun s => (hb s).exists) θ hg hθ σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem generates_of_nonzero_on_special_fibre : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr)) (x : Sp T.Fr ⟶ Xo.X) (_ : SABMap t' Xo.univ.t x) (_ : SABMap t' G (spMap (algebraMap T.V T.Fr))) (θ : LB.Sec G.PP.L), (∃ g : G.G.left, G.G.hom g = IsLocalRing.closedPoint T.V ∧ g ∈ Out.nonzeroLocus θ) → ∀ σ : LB.Sec G.PP.L, ∃! a : T.V, ∀ i, σ.f i = resG G.G.left le_top ((G.G.hom).appTop.hom (toΓ T.V a)) * θ.f i := by
   intro _ h₂ E _ _ _ H Dw l Xo _ T G t' x m₁ m₂ θ ⟨g, hg, hθ⟩ σ

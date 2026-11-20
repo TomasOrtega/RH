@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.Orthogo
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.AddPreservesExpCongruence
 
 /- English proof (translation)
-The claim follows from `PI.HasseOrdBdW.hasseOrdBd_of PI.HasseOrdBdW.compositionalInverseSymm PI.HasseOrdBdW.orthogonalSplitPolarizationVanishes PI.HasseOrdBdW.addPreservesExpCongruence PI.HasseOrdBdW.expCongruenceExtendsToSum`.
+A detailed English derivation is pending.
 -/
 theorem hasse_order_bound : PI.HasseOrdBd :=
   PI.HasseOrdBdW.hasseOrdBd_of PI.HasseOrdBdW.compositionalInverseSymm PI.HasseOrdBdW.orthogonalSplitPolarizationVanishes PI.HasseOrdBdW.addPreservesExpCongruence

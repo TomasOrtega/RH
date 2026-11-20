@@ -10,9 +10,9 @@ namespace Formalism.RepresentationBoundsCohomology.BR
 open Formalism.NG
 
 /- English proof (translation)
-Introduce `O _ _ _ D _ L V M _ _ _ _ _ _ _ _ ρL ρV ρM i q tens htens hi hq hker hsat hiρ hqρ Ff j κ hF1 hF2 hF3 hF4 x m hx a`. Use `choose y hy using fun b => Submodule.Quotient.mk_surjective (1 : Submodule O (FractionRing O)) (x b)`. Establish `hsum : ∀ g, q (∑ b, y b • i ((κ b : D → L) g)) = ρM g m - m`. Introduce `g`. Rewrite using `[← hx g, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hy b, htens]`. Establish `key` using `c3 O D L V M ρL ρV ρM i q hi hq hker hsat hiρ hqρ Ff j κ hF1 hF2 hF3 hF4 y m hsum a`. Rewrite using `[← hy a]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selmer_inj_tensor_form : SelmerInjTensorForm := by
   intro O _ _ _ D _ L V M _ _ _ _ _ _ _ _ ρL ρV ρM i q tens htens hi hq hker hsat hiρ hqρ Ff j κ
@@ -28,11 +28,9 @@ theorem selmer_inj_tensor_form : SelmerInjTensorForm := by
   exact (Submodule.Quotient.mk_eq_zero _).mpr key
 
 /- English proof (translation)
-Introduce `O _ _ _ A T' G _ _ _ _ M _ _ _ _ L _ _ _ _ V _ _ _ _ _ _ r χ Dl i q tens hiA hqA htens hi hq hker hsat Ff j κ κz hκ hF1 hF2 hF3 hF4 x hx`. Take `⟨m, hm⟩` from `LinearMap.mem_range.mp hx`. Use `selmer_inj_tensor_form O Dl L V M (resRep (uRep O (M := L) r χ) Dl) (resRep (uRep (FractionRing O) (M := V) r χ) Dl) (resRep (uRep O (M := M) r χ) Dl) i q tens htens hi hq hker hsat ?_ ?_ Ff j κz hF1 hF2 hF3 hF4 x m ?_` and prove the remaining obligations. Introduce `g v`. Conclude with `hiA (uElt r χ (g : G)) v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g v`. Conclude with `hqA (uElt r χ (g : G)) v`. Introduce `g`. Establish `h1` using `congrFun hm g`. Simplify using `only [hκ]`.
-
-Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selmer_inj_column_place : SelmerInjColumnPlace := by
   intro O _ _ _ A T' G _ _ _ _ M _ _ _ _ L _ _ _ _ V _ _ _ _ _ _ r χ Dl i q tens hiA hqA htens hi hq

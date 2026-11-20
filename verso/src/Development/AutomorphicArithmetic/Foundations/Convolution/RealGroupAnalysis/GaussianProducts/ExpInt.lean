@@ -20,18 +20,18 @@ namespace UpperTheory.ConvolutionTheory.R2.G.expIntegrability
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `[wt4, Fin.prod_univ_four, GlobalTheory.CompanionTheory.EpConvB.adeleWeight_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem adelicWeightFour_eq_product (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (N : ℕ) (x y : A F) :
     wt4 L N ![0, x, y, 0] = GlobalTheory.CompanionTheory.EpConvB.adeleWeight L N x * GlobalTheory.CompanionTheory.EpConvB.adeleWeight L N y := by
   simp [wt4, Fin.prod_univ_four, GlobalTheory.CompanionTheory.EpConvB.adeleWeight_zero]
 
 /- English proof (translation)
-Establish `hc : Continuous fun a : IdeleGroup F => (ab a)⁻¹ ^ 2 * wt4 L N ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0]`. Simplify using `only [adelicWeightFour_eq_product]`. Establish `h1` using `GlobalTheory.CompanionTheory.EpConvB.continuous_adeleWeight L N`. Use `((UpperTheory.ConvolutionTheory.R2.continuous_ab.inv₀ fun a => UpperTheory.ConvolutionTheory.R2.ab_ne_zero a).pow 2).mul ((h1.comp Units.continuous_coe_inv).mul (h1.comp Units.continuous_val))` and prove the remaining obligations. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (lintegral_mono fun a => ?_) (lt_top_iff_ne_top.2 hN)` and prove the remaining obligations. Establish `hnn : 0 ≤ (ab a)⁻¹ ^ 2 * wt4 L N ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0]`. Establish `: 0 ≤ wt4 L N ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0]` using `Finset.prod_nonneg fun _ _ => GlobalTheory.CompanionTheory.EpConvB.adeleWeight_nonneg _ _ _`. Check the signs of the components of the expression. Rewrite using `[Real.enorm_of_nonneg hnn, ENNReal.ofReal_mul (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul' le_rfl ?_` and prove the remaining obligations. Establish `h` using `ENNReal.le_tsum (f := fun ξ : Fin 2 → F => ENNReal.ofReal (wt4 L N ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F) * rt (ξ 0), (a : A F) * rt (ξ 1)])) ![1, 0]`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem term_int {N : ℕ} (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ)
     (hN : ∫⁻ a : IdeleGroup F, M.wt a * ∑' ξ : Fin 2 → F,
@@ -57,7 +57,7 @@ private theorem term_int {N : ℕ} (L : (FractionalIdeal (𝓞 F)⁰ F)ˣ)
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-The claim follows from `|TR.pInf F (k 1 j) w| ≤ 1 := by have h1 : TR.pInf F ((k.1 * k.1ᵀ) 1 1) = TR.pInf F ((1 : Matrix (Fin 2) (Fin 2) (A F)) 1 1) := congrArg (TR.infEq F).symm (hk.1 1 1) have h2 : (TR.pInf F (k 1 0) w) ^ 2 + (TR.pInf F (k 1 1) w) ^ 2 = 1 := by have h3 := congrFun h1 w simpa [Matrix.mu …`.
+A detailed English derivation is pending.
 -/
 private theorem abs_entry_le {k : G1 F} (hk : k ∈ KK F) (j : Fin 2) (w : InfinitePlace F) :
     |TR.pInf F (k 1 j) w| ≤ 1 := by
@@ -74,9 +74,9 @@ private theorem abs_entry_le {k : G1 F} (hk : k ∈ KK F) (j : Fin 2) (w : Infin
     nlinarith [sq_nonneg (TR.pInf F (k 1 0) w)]
 
 /- English proof (translation)
-Establish `e : ∀ (j : Fin 2) w, |TR.pInf F (row (mD a * k) j) w| ≤ |TR.pInf F ((a⁻¹ : (A F)ˣ) : A F) w|`. Introduce `j w`. Establish `h : row (mD a * k) j = ((a⁻¹ : (A F)ˣ) : A F) * k 1 j`. Rewrite using `[row, specialLinear_mul_entry]`. Simplify using `[mD]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, map_mul, Pi.mul_apply, abs_mul]`. Conclude with `mul_le_of_le_one_right (abs_nonneg _) (abs_entry_le hk j w)`. Simplify using `only [sz, Fin.sum_univ_two]`. Rewrite using `[two_mul]`. Conclude with `add_le_add (Finset.sum_le_sum fun w _ => e 0 w) (Finset.sum_le_sum fun w _ => e 1 w)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sz_le (a : (A F)ˣ) {k : G1 F} (hk : k ∈ KK F) :
     sz (row (mD a * k)) ≤ 2 * ∑ w, |TR.pInf F ((a⁻¹ : (A F)ˣ) : A F) w| := by
@@ -92,13 +92,13 @@ private theorem sz_le (a : (A F)ˣ) {k : G1 F} (hk : k ∈ KK F) :
   exact add_le_add (Finset.sum_le_sum fun w _ => e 0 w) (Finset.sum_le_sum fun w _ => e 1 w)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 private theorem sz_nonneg (r : Fin 2 → A F) : 0 ≤ sz r :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _
 
 /- English proof (translation)
-Establish `h : Continuous (TR.infEq F).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`. Establish `hp : Continuous (TR.pInf F)` using `h.comp continuous_fst`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun w _ => ?_` and prove the remaining obligations. Apply the tactic sequence `exact ((continuous_apply w).comp (hp.comp (UpperTheory.ConvolutionTheory.R2.continuous_entry 1 i))).abs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_sz : Continuous fun g : G1 F => sz (row g) := by
   have h : Continuous (TR.infEq F).symm := continuous_pi fun w =>
@@ -112,39 +112,35 @@ end UpperTheory.ConvolutionTheory.R2.G.expIntegrability
 
 open UpperTheory.ConvolutionTheory.R2.G.expIntegrability in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ R`. Establish `hS` using `UpperTheory.ConvolutionTheory.R2.hatSt F E D W`. Establish `hK : IsCompact (KK F)` using `(UpperTheory.ConvolutionTheory.R2.M.kkCpt F).2`. Take `⟨U, hUle, hUfd, hUmem⟩` from `(UpperTheory.ConvolutionTheory.R2.fockSt F E D W).om φ hφ (KK F) hK fun k hk => hk.1`. Take `⟨n, b, c, Bc, hb, -, hbd⟩` from `UpperTheory.ConvolutionTheory.R2.G.coefBd F E D W φ (KK F) U hK hUfd hUmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H, hH⟩` from `UpperTheory.ConvolutionTheory.R2.G.hatLin F`. Take `⟨N, hN⟩` from `UpperTheory.ConvolutionTheory.R2.G.zetaFin F`. Establish `hhat : ∀ i, hat (b i).1 ∈ FockFn D.δ` using `fun i => UpperTheory.ConvolutionTheory.R2.G.hatFock F D.δ _ (mem_fock.1 (hUle (hb i)))`. Establish `hg` using `fun i => UpperTheory.ConvolutionTheory.R2.G.fockGauss F D.δ D.neg (hat (b i).1) (hhat i) (2 * |R|) N`. Use `choose Bg L hBg0 hBg using hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Bf, hBf0, hBf⟩` from `UpperTheory.ConvolutionTheory.R2.G.bdInv F π f hf (gl '' KK F) (hK.image UpperTheory.ConvolutionTheory.R2.continuous_gl)`. Take `⟨-, -, -, -, hint⟩` from `UpperTheory.ConvolutionTheory.R2.conv F E D W M π f hf φ hφ 1`. Use `haveI := M.prob`. Set `T : Fin n → IdeleGroup F → ℝ` to `fun i a => (ab a)⁻¹ ^ 2 * wt4 (L i) N ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0]`. Establish `hT : ∀ i, Integrable (T i) (ideleMeasure F)` using `fun i => term_int (L i) (hN (L i))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `G : IdeleGroup F × G1 F → ℝ` to `fun p => ∑ i, Bf * |Bc| * Bg i * T i p.1`. Establish `hG : Integrable G M.ν`. Use `integrable_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((hT i).comp_fst M.κ).const_mul (Bf * |Bc| * Bg i)`. Establish `hexp : Continuous fun p : IdeleGroup F × G1 F => ((Real.exp (R * sz (row (mD p.1 * p.2))) : ℝ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_const.mul ?_))` and prove the remaining obligations. Conclude with `continuous_sz.comp ((UpperTheory.ConvolutionTheory.R2.continuous_mD.comp continuous_fst).mul continuous_snd)`. Use `hG.mono' (hexp.aestronglyMeasurable.mul hint.1) ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ p ∂M.ν, p.2 ∈ KK F`. Establish `h0 : ∀ᵐ k ∂M.κ, k ∈ KK F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[ae_iff]`. Conclude with `M.supp`. Conclude with `Measure.quasiMeasurePreserving_snd.ae h0`. Use `filter_upwards [hae] with p hp`. Take `⟨a, k⟩` from `p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `k ∈ KK F at hp`. Establish `hnu : nu F (1 : GL (Fin 2) (A E)) = 1` using `by simp [nu]`. Establish `hA0 : 0 < ab a` using `UpperTheory.ConvolutionTheory.R2.ab_pos a`. Use `set v : V4 F := ![0, ((a⁻¹ : (A F)ˣ) : A F), (a : A F), 0] with hv`. Establish `hw : w1 W f.1 φ 1 (mD a * k) = Wf f.1 (gl (mD a * k)) * (((W.η.1 a : ℂˣ) : ℂ) * ((ab a : ℝ) : ℂ) * hat (W.Om k φ).1 v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[w1, hnu, UpperTheory.ConvolutionTheory.R2.dM_one, mul_one, map_one, Module.End.one_apply, map_mul, Module.End.mul_apply, hS.m, hv]`. Simplify using the standard rewrite rules. Establish `hsum : hat (W.Om k φ).1 v = ∑ i, c i k * hat (b i).1 v`. Establish `h1` using `(hbd k hp).2`. Rewrite using `[← hH, h1, map_sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Finset.sum_apply, hH]`. Establish `hη : ‖((W.η.1 a : ℂˣ) : ℂ)‖ = 1`. Establish `h1 : ((W.η.1 a : ℂˣ) : ℂ) ^ 2 = 1`. Use `congrArg (Units.val) (W.η_sq a)` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ‖((W.η.1 a : ℂˣ) : ℂ)‖ ^ 2 = 1` using `by rw [← norm_pow, h1, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2`. Establish `hWf : ‖Wf f.1 (gl (mD a * k))‖ * ab a ≤ Bf`. Establish `h1` using `(hBf 0 a (gl k) ⟨k, hp, rfl⟩).2`. Rewrite `h1` using `[UpperTheory.ConvolutionTheory.R2.nU_zero, one_mul, ← UpperTheory.ConvolutionTheory.R2.gl_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set e : ℝ := Real.exp (R * sz (row (mD a * k))) with he`. Establish `he0 : 0 < e` using `Real.exp_pos _`. Establish `hterm : ∀ i, e * ‖hat (b i).1 v‖ ≤ Bg i * wt4 (L i) N v`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : e ≤ Real.exp (2 * |R| * ∑ w, |TR.pInf F (v 1) w|)`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `h2` using `sz_le a hp`. Establish `h3` using `sz_nonneg (row (mD a * k))`. Establish `h4 : v 1 = ((a⁻¹ : (A F)ˣ) : A F)` using `by simp [hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h4]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(mul_le_mul_of_nonneg_right h1 (norm_nonneg _)).trans (hBg i v)`. Establish `hS1 : e * ‖∑ i, c i k * hat (b i).1 v‖ ≤ ∑ i, |Bc| * (Bg i * wt4 (L i) N v)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ i, |Bc| * (Bg i * wt4 (L i) N v) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `mul_le_mul (((hbd k hp).1 i).trans (le_abs_self _)) (hterm i) (mul_nonneg he0.le (norm_nonneg _)) (abs_nonneg _)` and prove the remaining obligations. Establish `hn : ‖((e : ℝ) : ℂ) * iw (w1 W f.1 φ 1) (a, k)‖ = (ab a)⁻¹ ^ 2 * (‖Wf f.1 (gl (mD a * k))‖ * ab a) * (e * ‖∑ i, c i k * hat (b i).1 v‖)`. Simplify using `only [iw]`. Rewrite using `[hw, hsum]`.
-
-Simplify using `only [norm_mul, hη, Complex.norm_real, Real.norm_eq_abs, abs_of_pos he0, abs_of_pos hA0, abs_pow, abs_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `show ‖((e : ℝ) : ℂ) * iw (w1 W f.1 φ 1) (a, k)‖ ≤ ∑ i, Bf * |Bc| * Bg i * T i a`. Rewrite using `[hn]`. Establish `hq : 0 ≤ (ab a)⁻¹ ^ 2` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [T, ← hv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.expInt :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, ∀ R : ℝ,

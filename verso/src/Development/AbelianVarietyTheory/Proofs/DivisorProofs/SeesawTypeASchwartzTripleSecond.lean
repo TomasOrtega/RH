@@ -16,13 +16,11 @@ namespace GlobalTheory.FinFinite
 open GlobalTheory.HeisSchA
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `hl : IsLocallyConstant fun p : K => Φ p.1`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `p₀`. Establish `h1 : ∀ᶠ p in 𝓝 p₀.1, ∀ z ∈ C, Φ p z = Φ p₀.1 z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hC.eventually_forall_of_forall_eventually fun z _ => ?_` and prove the remaining obligations. Establish `h2` using `hΦ.eventually_eq (p₀.1, z)`. Establish `h3 : ∀ᶠ q : P × Z in 𝓝 (p₀.1, z), Φ p₀.1 q.2 = Φ p₀.1 z` using `(hΦ.comp_continuous (f := fun q : P × Z => (p₀.1, q.2)) (by fun_prop)).eventually_eq (p₀.1, z)`. Use `filter_upwards [h2, h3] with q e2 e3`. Rewrite using `[e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [continuous_subtype_val.continuousAt.eventually h1] with p hp`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ C`. Conclude with `hp z hz`. Rewrite using `[h0 _ p.2 z hz, h0 _ p₀.2 z hz]`.
-
-Rewrite using `[Set.image_eq_range]`. Conclude with `hl.range_finite`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_image_of_isLocallyConstant {P Z Y : Type} [TopologicalSpace P] [TopologicalSpace Z] [Zero Y]
     (Φ : P → Z → Y) (hΦ : IsLocallyConstant fun q : P × Z => Φ q.1 q.2) {K : Set P} (hK : IsCompact K)
@@ -49,9 +47,9 @@ theorem finite_image_of_isLocallyConstant {P Z Y : Type} [TopologicalSpace P] [T
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `finite_image_of_isLocallyConstant _ ?_ hK (C := (fun q : (κ → Af F) × P => q.1 - s q.2) '' (tsupport g ×ˢ K)) ((hg.2.isCompact.prod hK).image (by fun_prop)) ?_` and prove the remaining obligations. Establish `hlin : Continuous fun q : P × (κ → Af F) => q.2 ⬝ᵥ d q.1 + d₀ q.1` using `(continuous_snd.dotProduct (hd.comp continuous_fst)).add (hd₀.comp continuous_fst)`. Conclude with `((finChar_isLocallyConstant ψ hψ).comp_continuous hlin).mul (hg.1.comp_continuous (continuous_snd.add (hs.comp continuous_fst)))`. Introduce `p hp z hz`. Establish `: g (z + s p) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hz ⟨(z + s p, p), ⟨subset_tsupport _ h, hp⟩, by simp⟩`. Simplify using `only [finS, this, mul_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_finS (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F))
     {P : Type} [TopologicalSpace P] {d s : P → κ → Af F} {d₀ : P → Af F} (hd : Continuous d) (hs : Continuous s)
@@ -70,13 +68,13 @@ theorem finite_finS (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {g : (κ →
     simp only [finS, this, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + w.1) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use function extensionality and compare the values at `i`. Use `congr 1`. Express the relevant statement in the definitionally equal form `p1 (x i + w.1 i) = p1 (x i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_add, h1, add_zero]`. Establish `e2 : (fun i => ((x + w.1) i).2) = (fun i => (x i).2) + fun i => p2 (w.1 i)` using `rfl`. Establish `e3 : ψ (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) = finChar ψ ((fun i => (x i).2) ⬝ᵥ (fun i => p2 (w.2 i)) + p2 (⅟(2 : AF F)) * ((fun i => p2 (w.1 i)) ⬝ᵥ fun i => p2 (w.2 i)))`. Rewrite using `[map_eq_mul ψ]`. Establish `: p1 (x ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [dotProduct, map_add, map_mul, map_sum, h2, mul_zero, Finset.sum_const_zero, add_zero]`. Rewrite using `[this, show mk (F := F) 0 0 = 0 from rfl, AddChar.map_zero_eq_one, one_mul]`. Use `congr 1`. Simplify using `only [dotProduct, map_add, map_mul, map_sum]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [schr, pureA, finS]`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_pureA_fin [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F))
     (h1 : ∀ i, p1 (w.1 i) = 0) (h2 : ∀ i, p1 (w.2 i) = 0) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) :
@@ -104,11 +102,11 @@ theorem schr_pureA_fin [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ) (w : (�
   ring
 
 /- English proof (translation)
-Establish `: hTens c JA JB (a • Matrix.vecMulVec u v) (a' • Matrix.vecMulVec u v) = ∑ j, ∑ l, (a * v j * JB j l * c a' * c (v l)) * ∑ i, ∑ k, u i * (JA i k * c (u k))`. Unfold `hTens`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset β))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Simplify using `only [h, mul_zero, Finset.sum_const_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hTens_smul_vecMulVec {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A)
@@ -130,29 +128,27 @@ theorem hTens_smul_vecMulVec {R A : Type} [CommRing R] [CommRing A] [Algebra R A
   simp only [h, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC e _ X om om' om₁ om₁' hT _ g hg m hm`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `set bs := Algebra.TensorProduct.basis (AF F) (Module.finBasis F E) with hbs`. Use `set M := Matrix.vecMulVec (incV F H.x) (incV F H'.y) with hM`. Use `set c : Af F := algebraMap F (Af F) (m : F)⁻¹ with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcm : c * (m : Af F) = 1`. Rewrite using `[hc, ← map_natCast (algebraMap F (Af F)), ← map_mul, inv_mul_cancel₀ (by exact_mod_cast hm.ne'), map_one]`. Set `u : Fin (Module.finrank F E) → (Fin (b + 2) × Fin (b + 2 + a') → AF F) × (Fin (b + 2) × Fin (b + 2 + a') → AF F)` to `fun i => G.M.co.e (bs i • M)`. Set `s : (Fin (Module.finrank F E) → Af F) → Fin (b + 2) × Fin (b + 2 + a') → Af F` to `fun t k => ∑ i, c * t i * p2 ((u i).1 k)`. Set `d : (Fin (Module.finrank F E) → Af F) → Fin (b + 2) × Fin (b + 2 + a') → Af F` to `fun t k => ∑ i, c * t i * p2 ((u i).2 k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Continuous s` using `continuous_pi fun k => continuous_finsetSum _ fun i _ => (continuous_const.mul (continuous_apply i)).mul continuous_const`. Establish `hd : Continuous d` using `continuous_pi fun k => continuous_finsetSum _ fun i _ => (continuous_const.mul (continuous_apply i)).mul continuous_const`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin (Module.finrank F E) => {a : Af F | ∀ v : HeightOneSpectrum (𝓞 F), a.1 v ∈ v.adicCompletionIntegers F})` using `isCompact_univ_pi fun _ => GlobalTheory.LatHatClosed.isCompact_integralFinite F`. Establish `hfin` using `finite_finS B.ψ hψ hg (d₀ := fun t => p2 (⅟(2 : AF F)) * (s t ⬝ᵥ d t)) hd hs (continuous_const.mul (hs.dotProduct hd)) hK`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, gs, -, hgs⟩` from `hfin.fin_param`. Use `⟨r, gs, fun j => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨t, -, ht⟩ : gs j ∈ _` from `hgs ▸ Set.mem_range_self j`. Rewrite using `[← ht]`. Conclude with `finS_mem _ hψ hg _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `t : Fin (Module.finrank F E) → Af F` to `fun i => p2 ((m : AF F) * GlobalTheory.IdeleDecay.coord F E l.1 i)`. Establish `ht : t ∈ Set.univ.pi fun _ : Fin (Module.finrank F E) => {a : Af F | ∀ v : HeightOneSpectrum (𝓞 F), a.1 v ∈ v.adicCompletionIntegers F}` using `fun i _ v => hl i v`. Establish `hmem` using `Set.mem_image_of_mem (fun p => finS B.ψ g (d p) (s p) (p2 (⅟(2 : AF F)) * (s p ⬝ᵥ d p))) ht`. Rewrite `hmem` using `[← hgs]`. Take `⟨j, hj⟩` from `hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨j, fun f => ?_⟩` and prove the remaining obligations. Establish `hl' : l.1 = ∑ i, GlobalTheory.IdeleDecay.coord F E l.1 i • bs i` using `(bs.sum_equivFun l.1).symm`. Establish `hw : G.M.co.e (((pairA F 0 1 : AF F) • l.1) • M) = ∑ i, (pairA F 0 1 * GlobalTheory.IdeleDecay.coord F E l.1 i) • u i` using `by conv_lhs => rw [hl']`. Simplify using `only [Finset.smul_sum, Finset.sum_smul, map_sum, smul_smul, u, ← map_smul, smul_assoc]`. Establish `hp1 : p1 (pairA F 0 1) = 0` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp2 : p2 (pairA F 0 1) = 1` using `rfl`. Establish `hct : ∀ i, c * t i = p2 (GlobalTheory.IdeleDecay.coord F E l.1 i)` using `fun i => by`. Simplify using `only [t, map_mul, map_natCast, ← mul_assoc, hcm, one_mul]`. Establish `hsplit : shiftA H H' l = ((pairA F 1 0 : AF F) • l.1) • M + ((pairA F 0 1 : AF F) • l.1) • M`. Rewrite using `[← add_smul, ← add_smul, show (pairA F 1 0 : AF F) + pairA F 0 1 = 1 from Prod.ext (add_zero _) (zero_add _), one_smul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hiso : symp (R` using `AF F) (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) (((pairA F 1 0 : AF F) • l.1) • M) (((pairA F 0 1 : AF F) • l.1) • M) = 0 := by`. Unfold `symp`. Rewrite using `[hM, hTens_smul_vecMulVec, mul_zero, map_zero]`. Establish `h0` using `congrArg (inclR (F := F) (AF F)) hC.hH.xx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcA : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun _ => rfl`. Rewrite `h0` using `[map_zero]`. Rewrite using `[← h0]`. Simplify using `only [form, Matrix.mulVec, dotProduct, incM, incV, Matrix.map_apply, hcA, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[hsplit, ← GlobalTheory.MixW.UnipHeis.rho_rho G.M.co B.ψ _ _ hiso]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Darboux.rho, schr_pureA_fin, hj]`. Establish `e1 : (fun k => p2 ((G.M.co.e (((pairA F 0 1 : AF F) • l.1) • M)).1 k)) = s t`. Use function extensionality and compare the values at `k`. Simplify using `only [hw, Prod.fst_sum, Finset.sum_apply, Prod.smul_fst, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, hp2, one_mul, s, hct]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : (fun k => p2 ((G.M.co.e (((pairA F 0 1 : AF F) • l.1) • M)).2 k)) = d t`. Use function extensionality and compare the values at `k`. Simplify using `only [hw, Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, hp2, one_mul, d, hct]`. Rewrite using `[e1, e2]`. Introduce `k`.
-
-Simplify using `only [hw, Prod.fst_sum, Finset.sum_apply, Prod.smul_fst, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, hp1, zero_mul, Finset.sum_const_zero]`. Introduce `k`. Simplify using `only [hw, Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, hp1, zero_mul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rho_shiftA_pureA_finite : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

@@ -20,7 +20,7 @@ namespace SchwartzComplete
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Establish `hf : ContDiff ℝ n f` using `f.smooth n`. Establish `hg : ContDiff ℝ n g` using `g.smooth n`. Rewrite using `[show (⇑(f - g) : V → ℂ) = ⇑f - ⇑g from rfl]`. Conclude with `iteratedFDeriv_sub_apply hf.contDiffAt hg.contDiffAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_sub' (f g : 𝓢(V, ℂ)) (n : ℕ) (x : V) :
     iteratedFDeriv ℝ n (⇑(f - g)) x = iteratedFDeriv ℝ n f x - iteratedFDeriv ℝ n g x := by
@@ -30,9 +30,9 @@ theorem iteratedFDeriv_sub' (f g : 𝓢(V, ℂ)) (n : ℕ) (x : V) :
   exact iteratedFDeriv_sub_apply hf.contDiffAt hg.contDiffAt
 
 /- English proof (translation)
-Rewrite `hu` using `[cauchySeq_iff_tendsto, uniformity_eq_comap_nhds_zero, tendsto_comap_iff]`. Establish `h` using `((schwartz_withSeminorms ℝ V ℂ).tendsto_nhds _ 0).1 hu (k, n) ε hε`. Take `⟨⟨N₁, N₂⟩, hN⟩` from `eventually_atTop.1 h`. Use `⟨max N₁ N₂, fun a ha b hb => ?_⟩` and prove the remaining obligations. Use `hN (b, a) (Prod.mk_le_mk.2 ⟨le_of_max_le_left hb, le_of_max_le_right ha⟩)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[schwartzSeminormFamily]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cauchy_seminorm {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (k n : ℕ) {ε : ℝ} (hε : 0 < ε) :
     ∃ N, ∀ a ≥ N, ∀ b ≥ N, SchwartzMap.seminorm ℝ k n (u a - u b) < ε := by
@@ -48,9 +48,9 @@ noncomputable def limD (u : ℕ → 𝓢(V, ℂ)) (n : ℕ) (x : V) :
   limUnder atTop fun j => iteratedFDeriv ℝ n (u j) x
 
 /- English proof (translation)
-Use `tendsto_nhds_limUnder (cauchySeq_tendsto_of_complete ?_)` and prove the remaining obligations. Rewrite using `[Metric.cauchySeq_iff]`. Introduce `ε hε`. Take `⟨N, hN⟩` from `cauchy_seminorm hu 0 n hε`. Use `⟨N, fun a ha b hb => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dist_eq_norm, ← iteratedFDeriv_sub']`. Use `SchwartzMap.le_seminorm ℝ 0 n (u a - u b) x` as an intermediate fact. Simplify using `only [pow_zero, one_mul] at this`. Conclude with `this.trans_lt (hN a ha b hb)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (n : ℕ) (x : V) :
     Tendsto (fun j => iteratedFDeriv ℝ n (u j) x) atTop (𝓝 (limD u n x)) := by
@@ -65,9 +65,9 @@ theorem tendsto_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (n : ℕ) (x 
   exact this.trans_lt (hN a ha b hb)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `cauchy_seminorm hu k n hε`. Use `⟨N, fun j hj x => ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun b => ‖x‖ ^ k * ‖iteratedFDeriv ℝ n (u j) x - iteratedFDeriv ℝ n (u b) x‖) atTop (𝓝 (‖x‖ ^ k * ‖iteratedFDeriv ℝ n (u j) x - limD u n x‖))` using `((tendsto_const_nhds.sub (tendsto_limD hu n x)).norm).const_mul _`. Use `le_of_tendsto ht (eventually_atTop.2 ⟨N, fun b hb => ?_⟩)` and prove the remaining obligations. Rewrite using `[← iteratedFDeriv_sub']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(SchwartzMap.le_seminorm ℝ k n (u j - u b) x).trans (hN j hj b hb).le`.
+A detailed English derivation is pending.
 -/
 theorem key {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (k n : ℕ) {ε : ℝ} (hε : 0 < ε) :
     ∃ N, ∀ j ≥ N, ∀ x, ‖x‖ ^ k * ‖iteratedFDeriv ℝ n (u j) x - limD u n x‖ ≤ ε := by
@@ -81,9 +81,9 @@ theorem key {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (k n : ℕ) {ε : ℝ}
   exact (SchwartzMap.le_seminorm ℝ k n (u j - u b) x).trans (hN j hj b hb).le
 
 /- English proof (translation)
-Rewrite using `[Metric.tendstoUniformly_iff]`. Introduce `ε hε`. Take `⟨N, hN⟩` from `key hu 0 n (half_pos hε)`. Use `eventually_atTop.2 ⟨N, fun j hj x => ?_⟩` and prove the remaining obligations. Use `hN j hj x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_zero, one_mul]`. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem tendstoUniformly_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (n : ℕ) :
     TendstoUniformly (fun j => iteratedFDeriv ℝ n (u j)) (limD u n) atTop := by
@@ -97,7 +97,7 @@ theorem tendstoUniformly_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (n :
   linarith
 
 /- English proof (translation)
-The claim follows from `(tendstoUniformly_limD hu n).continuous (Eventually.of_forall (f := atTop) fun j => ((u j).smooth ⊤).continuous_iteratedFDeriv (m := n) (by exact_mod_cast le_top)).frequently`.
+A detailed English derivation is pending.
 -/
 theorem continuous_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (n : ℕ) :
     Continuous (limD u n) :=
@@ -105,7 +105,7 @@ theorem continuous_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (n : ℕ) 
     ((u j).smooth ⊤).continuous_iteratedFDeriv (m := n) (by exact_mod_cast le_top)).frequently
 
 /- English proof (translation)
-Use `hasFDerivAt_of_tendstoUniformly (f := fun j => iteratedFDeriv ℝ m (u j)) (f' := fun j y => fderiv ℝ (iteratedFDeriv ℝ m (u j)) y) (g' := fun y => (limD u (m + 1) y).curryLeft) ?_ ?_ (fun y => tendsto_limD hu m y) x` and prove the remaining obligations. Conclude with `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => V) ℂ).isometry.uniformContinuous.comp_tendstoUniformly (tendstoUniformly_limD hu (m + 1))`. Introduce `j y`. Conclude with `((((u j).smooth ⊤).differentiable_iteratedFDeriv (by exact_mod_cast WithTop.coe_lt_top (m : ℕ))) y).hasFDerivAt`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (m : ℕ) (x : V) :
     HasFDerivAt (limD u m) ((limD u (m + 1) x).curryLeft) x := by
@@ -119,7 +119,7 @@ theorem hasFDerivAt_limD {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (m : ℕ)
       (by exact_mod_cast WithTop.coe_lt_top (m : ℕ))) y).hasFDerivAt
 
 /- English proof (translation)
-The claim follows from `rfl fderiv m _ x := hasFDerivAt_limD hu m x cont m _ := continuous_limD hu m`.
+A detailed English derivation is pending.
 -/
 theorem hasFTaylorSeries {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) :
     HasFTaylorSeriesUpTo ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => (limD u 0 x).curry0)
@@ -146,16 +146,16 @@ noncomputable def limMap (u : ℕ → 𝓢(V, ℂ)) (hu : CauchySeq u) : 𝓢(V,
     linarith
 
 /- English proof (translation)
-The claim follows from `((hasFTaylorSeries hu).eq_iteratedFDeriv (m := n) (by exact_mod_cast le_top) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_limMap {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) (n : ℕ) (x : V) :
     iteratedFDeriv ℝ n (limMap u hu) x = limD u n x :=
   ((hasFTaylorSeries hu).eq_iteratedFDeriv (m := n) (by exact_mod_cast le_top) x).symm
 
 /- English proof (translation)
-Rewrite using `[(schwartz_withSeminorms ℝ V ℂ).tendsto_nhds]`. Introduce and unpack `⟨k, n⟩ ε hε`. Take `⟨N, hN⟩` from `key hu k n (half_pos hε)`. Use `eventually_atTop.2 ⟨N, fun j hj => ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt ?_ (half_lt_self hε)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `SchwartzMap.seminorm_le_bound ℝ k n _ (half_pos hε).le fun x => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_sub', iteratedFDeriv_limMap]`. Conclude with `hN j hj x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_limMap {u : ℕ → 𝓢(V, ℂ)} (hu : CauchySeq u) :
     Tendsto u atTop (𝓝 (limMap u hu)) := by
@@ -175,7 +175,7 @@ instance completeSpace : CompleteSpace 𝓢(V, ℂ) := by
 end SchwartzComplete
 
 /- English proof (translation)
-Introduce `V _ _ _`. Use `haveI : (𝓤 𝓢(V, ℂ)).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schwartzMap_barrelledSpace : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V], BarrelledSpace ℂ (SchwartzMap V ℂ) := by

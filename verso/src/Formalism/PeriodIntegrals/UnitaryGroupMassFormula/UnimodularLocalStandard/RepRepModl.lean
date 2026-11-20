@@ -4,27 +4,25 @@ namespace PI.UnitaryGroupMassFormula.UnimodLocStd
 
 open Polynomial in
 /- English proof (translation)
-Establish `normForm_surj_zmod_lemma {l : ℕ} [Fact l.Prime] (A B : ZMod l) (D : ZMod l) (hOK : 4 * A = B ^ 2 + D) (hD : D ≠ 0) (v : ZMod l) (hv : v ≠ 0) : ∃ s t : ZMod l, s ^ 2 + B * s * t + A * t ^ 2 = v`. Establish `hl : l.Prime` using `Fact.out`. Break down `hl.eq_two_or_odd with rfl | hodd` into its components or cases. Use `⟨1, 0, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ x : ZMod 2, x ≠ 0 → x = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Use `fin_cases x`. Conclude with `absurd rfl hx`. Both sides reduce to the same expression. Rewrite using `[h1 v hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hl2 : l ≠ 2` using `by omega`. Establish `h2 : (2 : ZMod l) ≠ 0` using `Ring.two_ne_zero (by rw [ZMod.ringChar_zmod_n]; exact hl2)`. Establish `hcard : Fintype.card (ZMod l) % 2 = 1` using `by rw [ZMod.card]; exact hodd`. Use `open Polynomial in`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hf : ((X : (ZMod l)[X]) ^ 2).degree = 2`. Rewrite using `[degree_X_pow]`. Both sides reduce to the same expression. Use `open Polynomial in`. Establish `hdeg : (C D * X ^ 2 : (ZMod l)[X]).degree = 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[degree_C_mul_X_pow 2 hD]`. Both sides reduce to the same expression. Use `open Polynomial in`. Establish `hg : (C D * X ^ 2 - C (4 * v) : (ZMod l)[X]).degree = 2`. Rewrite using `[degree_sub_C (by rw [hdeg]; decide), hdeg]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, y, hxy⟩` from `FiniteField.exists_root_sum_quadratic hf hg hcard`. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C] at hxy`. Use `set i : ZMod l := (2 : ZMod l)⁻¹ with hi_def`. Establish `hi : 2 * i = 1` using `mul_inv_cancel₀ h2`. Use `⟨(x - B * y) * i, y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : (4 : ZMod l) ≠ 0`. Establish `: (4 : ZMod l) = 2 * 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `mul_ne_zero h2 h2`. Apply `mul_left_cancel₀ h4` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `hxy + y ^ 2 * hOK + ((2 * i + 1) * (x - B * y) ^ 2 + 2 * B * y * (x - B * y)) * hi`. Use `Fact.mk hl` as an intermediate fact. Establish `: NeZero l` using `⟨hl.ne_zero⟩`. Establish `nz : ∀ z : ℤ, ¬ (l : ℤ) ∣ z → (z : ZMod l) ≠ 0` using `fun z hz h => hz ((ZMod.intCast_zmod_eq_zero_iff_dvd z l).mp h)`. Establish `hOK' : 4 * (((a : ℤ) : ZMod l) * (c : ZMod l)) = (b : ZMod l) ^ 2 + ((d : ℤ) : ZMod l)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (Int.cast : ℤ → ZMod l) hOK` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Take the linear combination `this`. Establish `hN'` using `nz N hN`. Take `⟨s, t, hst⟩` from `normForm_surj_zmod_lemma (((a : ℤ) : ZMod l) * (c : ZMod l)) (b : ZMod l) ((d : ℤ) : ZMod l) hOK' (nz _ hld) ((Q0 : ZMod l) * (S : ZMod l) * (N : ZMod l)⁻¹) (mul_ne_zero (mul_ne_zero (nz _ hQ) (nz _ hS)) (inv_ne_zero hN'))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(s.val : ℤ), (t.val : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `hs : ((s.val : ℤ) : ZMod l) = s` using `by rw [Int.cast_natCast, ZMod.natCast_zmod_val]`. Establish `ht : ((t.val : ℤ) : ZMod l) = t` using `by rw [Int.cast_natCast, ZMod.natCast_zmod_val]`. Simplify using `only [Int.cast_sub, Int.cast_mul, Int.cast_add, Int.cast_pow, hs, ht]`.
-
-Establish `hst' : s ^ 2 + (b : ZMod l) * s * t + ((a : ℤ) : ZMod l) * (c : ZMod l) * t ^ 2 = (Q0 : ZMod l) * (S : ZMod l) * (N : ZMod l)⁻¹` using `hst`. Rewrite using `[hst', mul_assoc, inv_mul_cancel₀ hN', mul_one, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem rep_rep_modl {l : ℕ} (hl : l.Prime) (a : ℕ) (b c : ℤ) (d : ℕ) (hOK : 4 * (a : ℤ) * c = b ^ 2 + d)
     (hld : ¬ (l : ℤ) ∣ d) (N S Q0 : ℤ) (hN : ¬ (l : ℤ) ∣ N) (hS : ¬ (l : ℤ) ∣ S) (hQ : ¬ (l : ℤ) ∣ Q0) :

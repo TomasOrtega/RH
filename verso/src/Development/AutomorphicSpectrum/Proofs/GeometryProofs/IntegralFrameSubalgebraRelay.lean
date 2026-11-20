@@ -19,7 +19,7 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `ModelDimension.integral_frame_over_cdvr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FCommonZeroEvaluation%2FIntegralFrameOverCdvr.lean&line=27#L27)
 -/

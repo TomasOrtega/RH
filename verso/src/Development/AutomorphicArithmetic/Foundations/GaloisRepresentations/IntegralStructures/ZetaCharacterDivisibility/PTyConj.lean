@@ -19,23 +19,19 @@ private def smIrrComap {G H : Type} [Group G] [TopologicalSpace G] [Group H] [To
       (fun h => β.symm h) β.symm.surjective (LinearEquiv.refl ℂ _) (fun _ _ => rfl)).2 σ.irred⟩
 
 /- English proof (translation)
-Introduce `hL E _ _ _ l a U w hw hT`. Take `⟨hU, β, hβ, -, hc⟩` from `hL E a w hw`. Take `⟨m, J, θ, χ, hJo, hJc, hJt, hθ, hχ, hcus, φ, hφU, hφ0, hφ⟩` from `hT`. Set `J' : Subgroup (GL (Fin a) ((cpl w).adicCompletion E))` to `J.comap β.toMulEquiv.toMonoidHom`. Set `r : J' →* J` to `{ toFun := fun g => ⟨β g.1, g.2⟩ map_one' := Subtype.ext (map_one β) map_mul' := fun x y => Subtype.ext (map_mul β _ _) }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨m, J', θ.comp r, χ, ?_, ?_, ?_, ?_, hχ, ?_, φ, hφU, hφ0, ?_⟩` and prove the remaining obligations. Conclude with `hJo.preimage β.continuous`. Conclude with `β.toHomeomorph.isCompact_preimage.2 hJc`. Introduce `x hx k hk hxk`. Establish `h` using `hJt (β x) hx k hk (by rw [← map_pow, hxk, map_one])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `β.injective (h.trans (map_one β).symm)`. Introduce `t`. Take `⟨g, rfl⟩` from `hθ t`. Establish `hg : β.symm g.1 ∈ J'` using `by show β (β.symm g.1) ∈ J`. Rewrite using `[β.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `g.2`. Use `⟨⟨β.symm g.1, hg⟩, ?_⟩` and prove the remaining obligations. Use `show θ (r _) = θ g`. Conclude with `congrArg θ (Subtype.ext (β.apply_symm_apply _))`. Introduce `σ' v hv he`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : GlobalTheory.SmGL.IsCuspidal (smIrrComap β σ').ρ`. Use `hcus (smIrrComap β σ') v hv fun g => ?_` and prove the remaining obligations. Establish `hg : β.symm g.1 ∈ J'` using `by show β (β.symm g.1) ∈ J`. Rewrite using `[β.apply_symm_apply]`. Conclude with `g.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `he ⟨β.symm g.1, hg⟩`. Establish `e : r ⟨β.symm g.1, hg⟩ = g` using `Subtype.ext (β.apply_symm_apply _)`. Establish `e' : (θ.comp r) ⟨β.symm g.1, hg⟩ = θ g` using `congrArg θ e`. Rewrite `h` using `[e']`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hc σ'.V (σ'.ρ.comp β.symm.toMulEquiv.toMonoidHom) hcu`. Establish `e : (σ'.ρ.comp β.symm.toMulEquiv.toMonoidHom).comp β.toMulEquiv.toMonoidHom = σ'.ρ` using `MonoidHom.ext fun g => congrArg σ'.ρ (β.symm_apply_apply g)`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis. Introduce `x hx h`. Establish `hx' : x ∈ locU a w` using `hU ▸ hx`.
-
-Establish `hm : cLoc w x ∈ J`. Rewrite using `[← hβ]`. Conclude with `h`. Rewrite using `[hφ x hx' hm]`. Establish `e : r ⟨cLoc (cpl w) x, h⟩ = ⟨cLoc w x, hm⟩` using `Subtype.ext (hβ x)`.
-
-Use `show _ = ((χ (θ (r ⟨cLoc (cpl w) x, h⟩)) : ℂˣ) : ℂ) • φ`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.tyConj_of :
     LocIso → TyConj := by

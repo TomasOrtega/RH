@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.ResolutionCharZero.PrincipalisationC
 namespace NadelVanishingSeparation.NSI
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.isolatedNonKltDivisor_of_principalisation PositivityTheory.ResPlug.WeightsCompactStabilizer.principalisation_closed`.
+A detailed English derivation is pending.
 -/
 theorem isolatedNonKltDivisor : GlobalTheory.Published.IsolatedNonKltDivisor :=
   GlobalTheory.isolatedNonKltDivisor_of_principalisation PositivityTheory.ResPlug.WeightsCompactStabilizer.principalisation_closed

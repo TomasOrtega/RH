@@ -18,7 +18,7 @@ noncomputable def pBLin {n : ℕ} (ε : Fin n → Bool) : (Mode ε → ℂ) →�
     split_ifs <;> simp [Complex.real_smul, star_mul', Complex.conj_ofReal]
 
 /- English proof (translation)
-Unfold `pB`. Rewrite using `[dif_pos x.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pB_mode {n : ℕ} (ε : Fin n → Bool) (B : Mode ε → ℂ) (x : Mode ε) :
     pB ε B x.1.1 x.1.2 = B x := by
@@ -26,11 +26,11 @@ theorem pB_mode {n : ℕ} (ε : Fin n → Bool) (B : Mode ε → ℂ) (x : Mode 
   rw [dif_pos x.2]
 
 /- English proof (translation)
-Introduce `n ε`. Take `⟨⟨L, hL, hD⟩, h2⟩` from `GlobalTheory.exp_conj_entries_hasFDerivAt_zero n (Mode ε) (pBLin ε) (fun x => x.1)`. Use `⟨?_, fun s => ?_⟩` and prove the remaining obligations. Establish `hLid : L = ContinuousLinearMap.id ℝ (Mode ε → ℂ)` using `by ext1 w; funext x`. Rewrite using `[hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pB_mode ε w x`. Rewrite using `[← hLid]`. Conclude with `hD`. Take `⟨L', hL', hD'⟩` from `h2 (Matrix.diagonal s)`. Use `⟨L', fun w x => ?_, hD'⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hL']`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal s * pB ε w - pB ε w * Matrix.diagonal s) x.1.1 x.1.2 = _`. Rewrite using `[Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, pB_mode]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem stExpDeriv : StExpDeriv := by
   intro n ε

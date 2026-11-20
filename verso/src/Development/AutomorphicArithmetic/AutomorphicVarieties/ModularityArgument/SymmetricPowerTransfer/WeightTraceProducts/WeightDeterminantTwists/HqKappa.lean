@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial
 namespace UpperTheory.V.Z.Sym.Wt
 /- English proof (translation)
-Establish `e : ∀ i, hq (2 + τ) (2 + τ) (i + 2) = (2 + τ) * hq (2 + τ) (2 + τ) (i + 1) - (2 + τ) * hq (2 + τ) (2 + τ) i` using `fun i => hq.eq_3 _ _ i`. Establish `f : ∀ i, hq τ 1 (i + 2) = τ * hq τ 1 (i + 1) - 1 * hq τ 1 i` using `fun i => hq.eq_3 _ _ i`. Proceed by induction on `j with`. Consider the case `zero`. Establish `e2 : hq (2 + τ) (2 + τ) 2 = (2 + τ) * hq (2 + τ) (2 + τ) 1 - (2 + τ) * hq (2 + τ) (2 + τ) 0` using `e 0`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `e3 : hq (2 + τ) (2 + τ) 3 = (2 + τ) * hq (2 + τ) (2 + τ) 2 - (2 + τ) * hq (2 + τ) (2 + τ) 1` using `e 1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show hq (2 + τ) (2 + τ) 1 = (2 + τ) ^ 1 * hq τ 1 0`. Rewrite using `[hq.eq_2, hq.eq_1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `show hq (2 + τ) (2 + τ) 3 = (2 + τ) ^ 2 * hq τ 1 1`. Rewrite using `[e3, e2, hq.eq_2, hq.eq_1, hq.eq_2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ j ih`. Use `⟨ih.2, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : hq (2 + τ) (2 + τ) (2 * j + 5) = (2 + τ) * hq (2 + τ) (2 + τ) (2 * j + 4) - (2 + τ) * hq (2 + τ) (2 + τ) (2 * j + 3)` using `e (2 * j + 3)`. Establish `e4 : hq (2 + τ) (2 + τ) (2 * j + 4) = (2 + τ) * hq (2 + τ) (2 + τ) (2 * j + 3) - (2 + τ) * hq (2 + τ) (2 + τ) (2 * j + 2)` using `e (2 * j + 2)`. Establish `e3 : hq (2 + τ) (2 + τ) (2 * j + 3) = (2 + τ) * hq (2 + τ) (2 + τ) (2 * j + 2) - (2 + τ) * hq (2 + τ) (2 + τ) (2 * j + 1)` using `e (2 * j + 1)`. Establish `f2 : hq τ 1 (j + 2) = τ * hq τ 1 (j + 1) - 1 * hq τ 1 j` using `f j`. Establish `i0 : hq (2 + τ) (2 + τ) (2 * j + 1) = (2 + τ) ^ (j + 1) * hq τ 1 j` using `ih.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `i1 : hq (2 + τ) (2 + τ) (2 * j + 3) = (2 + τ) ^ (j + 2) * hq τ 1 (j + 1)` using `ih.2`. Use `show hq (2 + τ) (2 + τ) (2 * j + 5) = (2 + τ) ^ (j + 3) * hq τ 1 (j + 2)`. Rewrite using `[f2]`. Take the linear combination `e5 + (2 + τ) * e4 + (2 + τ) * e3 + ((2 + τ) ^ 2 - 2 * (2 + τ)) * i1 - (2 + τ) ^ 2 * i0`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem hq_kap (τ : ℂ) (j : ℕ) : hq (2 + τ) (2 + τ) (2 * j + 1) = (2 + τ) ^ (j + 1) * hq τ 1 j ∧ hq (2 + τ) (2 + τ) (2 * (j+1) + 1) = (2 + τ) ^ (j + 2) * hq τ 1 (j+1) := by
   have e : ∀ i, hq (2 + τ) (2 + τ) (i + 2) = (2 + τ) * hq (2 + τ) (2 + τ) (i + 1) - (2 + τ) * hq (2 + τ) (2 + τ) i :=
@@ -43,7 +43,7 @@ private theorem hq_kap (τ : ℂ) (j : ℕ) : hq (2 + τ) (2 + τ) (2 * j + 1) =
     rw [f2]
     linear_combination e5 + (2 + τ) * e4 + (2 + τ) * e3 + ((2 + τ) ^ 2 - 2 * (2 + τ)) * i1 - (2 + τ) ^ 2 * i0
 /- English proof (translation)
-Introduce `j τ` and use `(hq_kap τ j).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hqKappa : HqKappa := fun j τ => (hq_kap τ j).1
 end UpperTheory.V.Z.Sym.Wt

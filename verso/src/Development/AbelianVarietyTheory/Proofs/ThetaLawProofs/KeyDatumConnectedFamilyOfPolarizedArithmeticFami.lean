@@ -20,14 +20,14 @@ namespace GlobalTheory.KeyFam.Frames
 variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
 
 /- English proof (translation)
-Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp (f : R →+* R') (f' : R' →+* R'') : spMap (f'.comp f) = spMap f' ≫ spMap f := by
   show Spec.map _ = Spec.map _ ≫ Spec.map _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Take `⟨φ', hc', hg', w', hw'⟩` from `h'`. Take `⟨φ, hc, hg, w, hw⟩` from `h`. Substitute `e` using the available equality. Take `⟨w'', T⟩` from `exists_comp P'.isLB w w' ((isGen_iff w).1 hw) ((isGen_iff w').1 hw') P.isLB P''.isLB`. Conclude with `⟨φ' ≫ φ, (hc'.comp hc).congr (spMap_comp f f').symm rfl, hg'.trans hg, w'', (isGen_iff w'').2 (T.pgen_comp P'.isLB ((isGen_iff w).1 hw) ((isGen_iff w').1 hw'))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem polPB_comp {P : Out.PolAV (Sp R)} {P' : Out.PolAV (Sp R')} {P'' : Out.PolAV (Sp R'')} {f : R →+* R'}
     {f' : R' →+* R''} {g : R →+* R''} (e : f'.comp f = g) (h' : ∃ φ', PolPB P'' P' (spMap f') φ')
@@ -40,11 +40,11 @@ theorem polPB_comp {P : Out.PolAV (Sp R)} {P' : Out.PolAV (Sp R')} {P'' : Out.Po
     (isGen_iff w'').2 (T.pgen_comp P'.isLB ((isGen_iff w).1 hw) ((isGen_iff w').1 hw'))⟩
 
 /- English proof (translation)
-Take `⟨φ'', hc'', hg'', w'', hw''⟩` from `h''`. Take `⟨φ, hc, hg, w, hw⟩` from `h`. Substitute `e` using the available equality. Establish `hsp` using `spMap_comp f f'`. Establish `hp` using `hc.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ', hφ, hw0⟩ : ∃ φ' : P''.A.left ⟶ P'.A.left, φ' ≫ φ = φ'' ∧ φ' ≫ P'.A.hom = P''.A.hom ≫ spMap f'` from `⟨hp.lift φ'' (P''.A.hom ≫ spMap f') (by rw [hc''.1.w, Category.assoc, hsp]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `hφ` using the available equality. Establish `g` using `(isGen_iff w).1 hw`. Establish `g''` using `(isGen_iff w'').1 hw''`. Take `⟨w', T⟩` from `exists_cancel P.isLB w w'' g g'' P'.isLB P''.isLB`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨φ', hc.cancel (hc''.congr hsp rfl) hw0, hg''.trans hg.symm, w', (isGen_iff w').2 (T.pgen_cancel P.isLB g g'')⟩`.
+Supply the required witnesses or components.
 -/
 theorem polPB_cancel {P : Out.PolAV (Sp R)} {P' : Out.PolAV (Sp R')} {P'' : Out.PolAV (Sp R'')} {f : R →+* R'}
     {f' : R' →+* R''} {g : R →+* R''} (e : f'.comp f = g) (h : ∃ φ, PolPB P' P (spMap f) φ)
@@ -66,7 +66,7 @@ theorem polPB_cancel {P : Out.PolAV (Sp R)} {P' : Out.PolAV (Sp R')} {P'' : Out.
     (isGen_iff w').2 (T.pgen_cancel P.isLB g g'')⟩
 
 /- English proof (translation)
-Take `⟨P', φ, hφ, hg, hm, t, ht⟩` from `hB _ _ (spMap f) P`. Use `⟨P', φ, ⟨hφ, fun T x y x₀ y₀ hx hy => ?_⟩, hg, LBIso.symm ⟨t, ht⟩⟩` and prove the remaining obligations. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polPB_exists (hB : Out.PolBaseChangeSt) (P : Out.PolAV (Sp R)) (f : R →+* R') :
     ∃ (P' : Out.PolAV (Sp R')) (φ : P'.A.left ⟶ P.A.left), PolPB P' P (spMap f) φ := by
@@ -76,7 +76,7 @@ theorem polPB_exists (hB : Out.PolBaseChangeSt) (P : Out.PolAV (Sp R)) (f : R �
   rfl
 
 /- English proof (translation)
-The claim follows from `let ⟨φ, _, w, hg, _, hc, hw, _⟩ := h ⟨φ, hc, hg, w, hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem polPB_of_keyPB {x : KeyIn R} {x' : KeyIn R'} {f : R →+* R'} (h : KeyPB x' x f) :
     ∃ φ, PolPB x'.P x.P (spMap f) φ :=
@@ -84,9 +84,9 @@ theorem polPB_of_keyPB {x : KeyIn R} {x' : KeyIn R'} {f : R →+* R'} (h : KeyPB
   ⟨φ, hc, hg, w, hw⟩
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := (s.comp (algebraMap K R)).toAlgebra`. Use `haveI : Algebra.IsAlgebraic K K' := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Set `e : K' →ₐ[K] ℂ` to `IsAlgClosed.lift`. Set `sA : R →ₐ[K] ℂ` to `{ s with commutes' := fun _ => rfl }`. Use `⟨Algebra.TensorProduct.includeRight.toRingHom, (Algebra.TensorProduct.lift e sA fun _ _ => Commute.all _ _).toRingHom, Algebra.TensorProduct.lift (AlgHom.id K' K') ((Algebra.ofId K K').comp s₀) fun _ _ => Commute.all _ _, RingHom.ext fun r => ?_, RingHom.ext fun r => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[sA]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_points (K K' R : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     [CommRing R] [Algebra K R] (s : R →+* ℂ) (s₀ : R →ₐ[K] K) :
@@ -109,19 +109,17 @@ namespace GlobalTheory.KeyFam
 open Frames
 
 /- English proof (translation)
-Introduce `hL hL2 hF x`. Take `⟨K, _, _, R, _, _, Q, s, s₀, φ, hG, hP, hK⟩` from `hF x.P x.g_pos`. Take `⟨P₀, φ₀, hP₀⟩` from `polPB_exists hL.polBaseChange Q s₀.toRingHom`. Take `⟨K', _, _, j, hKn⟩` from `hK P₀ φ₀ hP₀`. Use `letI : Algebra K K' := j.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨i, s', s₀', hs', hs₀'⟩` from `exists_points K K' R s s₀`. Take `⟨Q', ψ, hQ'⟩` from `polPB_exists hL.polBaseChange Q i`. Establish `hG' : GeomInt K' (K' ⊗[K] R)` using `(GlobalTheory.T.geom_integral_base_change_and_localization K K' R hG).1`. Use `haveI := hG'.1`. Use `haveI : IsNoetherianRing (K' ⊗[K] R) := Algebra.FiniteType.isNoetherianRing K' _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, hr₀, y, χ, hy⟩` from `GlobalTheory.T.exists_keyData_near_two_primes hL hL2 (K' ⊗[K] R) Q' ⟨RingHom.ker s', RingHom.ker_isPrime _⟩ ⟨RingHom.ker s₀'.toRingHom, RingHom.ker_isPrime _⟩ (by rw [hQ'.2.1, ← hP.2.1]; exact x.g_pos)`. Establish `hu : IsUnit (s' r)` using `isUnit_iff_ne_zero.2 hr`. Establish `hu₀ : IsUnit (s₀'.toRingHom r)` using `isUnit_iff_ne_zero.2 hr₀`. Establish `hS : GeomInt K' (Localization.Away r)` using `(GlobalTheory.T.geom_integral_base_change_and_localization K' K' _ hG').2 r fun h => hr (h ▸ Ideal.zero_mem _)`. Set `t : Localization.Away r →+* ℂ` to `IsLocalization.Away.lift r hu`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ht : t.comp (algebraMap _ _) = s'` using `IsLocalization.Away.lift_comp r hu`. Set `u : Localization.Away r →+* K'` to `IsLocalization.Away.lift r hu₀`. Establish `hu' : u.comp (algebraMap _ _) = s₀'.toRingHom` using `IsLocalization.Away.lift_comp r hu₀`. Set `t₀ : Localization.Away r →ₐ[K'] K'` to `{ u with commutes' := fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply K' (K' ⊗[K] R) (Localization.Away r)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(RingHom.congr_fun hu' _).trans (s₀'.commutes a) }`. Establish `hyQ` using `polPB_comp rfl ⟨χ, hy⟩ ⟨ψ, hQ'⟩`. Take `⟨φ₁, hφ₁⟩` from `polPB_cancel (f' := t) (by rw [← RingHom.comp_assoc, ht, hs']) hyQ ⟨φ, hP⟩`. Take `⟨S', _, _, j', y', v, v₀, ψ', hS', hx, hy', hv₀⟩` from `GlobalTheory.T.exists_thetaKeyFamily_universal_frames hL K' _ y x t φ₁ t₀ hS hφ₁`. Take `⟨y₀, hy₀⟩` from `exists_keyPB_ring y' v₀.toRingHom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : v₀.toRingHom.comp j'.toRingHom = u` using `congrArg AlgHom.toRingHom hv₀`. Establish `h₁` using `polPB_comp e₁ (polPB_of_keyPB hy₀) ⟨ψ', hy'⟩`. Establish `h₂` using `polPB_comp (g := ((RingHom.id K').comp j).comp s₀.toRingHom) (by rw [← RingHom.comp_assoc, hu', hs₀']; rfl) h₁ hyQ`. Take `⟨φ₂, hφ₂⟩` from `polPB_cancel rfl ⟨φ₀, hP₀⟩ h₂`. Take `⟨c, hc⟩` from `hKn K' (RingHom.id K') y₀ φ₂ hφ₂`.
-
-Conclude with `⟨K', _, ‹_›, S', _, _, y', v, v₀, c, hS'.1, hS'.2, hx, fun e x₀ h => hc e x₀ (KeyCancel.keyPB_cancel _ _ _ y' y₀ x₀ _ _ hy₀ h)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem connFam_of_polFam : Out.Laws → Out.Laws2 → PolFam → GlobalTheory.KeyKa.ConnFam := by
   intro hL hL2 hF x

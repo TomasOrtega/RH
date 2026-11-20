@@ -7,11 +7,11 @@ open PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Fo
 namespace GlobalTheory.WachFree
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_def'.mp ‹Module.Projective D⟦X⟧ M›`. Establish `hs' : ∀ m, Finsupp.linearCombination D⟦X⟧ id (s m) = m` using `fun m => LinearMap.congr_fun hs m`. Establish `hd : ∀ m, (X : D⟦X⟧) ∣ s x m`. Introduce `m`. Establish `h1` using `congrArg (fun w => constantCoeff (s w m)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, constantCoeff_C, constantCoeff_X, zero_mul] at h1`. Conclude with `X_dvd_iff.mpr ((mul_eq_zero.mp h1).resolve_left hc)`. Establish `: x ∈ LinearMap.range ((X : D⟦X⟧) • (LinearMap.id : M →ₗ[D⟦X⟧] M))`. Rewrite using `[← hs' x, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hd m`. Conclude with `⟨d • m, by rw [hd, mul_smul]; rfl⟩`. Take `⟨z, hz⟩` from `this`. Conclude with `⟨z, by simpa using hz.symm⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_X_smul_of_projective {D M : Type} [CommRing D] [IsDomain D] [AddCommGroup M]
     [Module D⟦X⟧ M] [Module.Projective D⟦X⟧ M] (c : D) (hc : c ≠ 0) (x y : M)
@@ -33,25 +33,21 @@ theorem mem_X_smul_of_projective {D M : Type} [CommRing D] [IsDomain D] [AddComm
   exact ⟨z, by simpa using hz.symm⟩
 
 /- English proof (translation)
-Use `haveI : Module.FinitePresentation O⟦X⟧ M := Module.finitePresentation_of_finite _ _`. Establish `hker : Ideal.span {(X : O⟦X⟧)} = RingHom.ker (constantCoeff (R` using `O)) := by`. Use extensionality with `f`. Rewrite using `[Ideal.mem_span_singleton, RingHom.mem_ker, X_dvd_iff]`. Set `e : (O⟦X⟧ ⧸ Ideal.span {(X : O⟦X⟧)}) ≃+* O` to `(Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective (f := constantCoeff (R := O)) fun a => ⟨C a, by simp⟩)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsDomain (O⟦X⟧ ⧸ Ideal.span {(X : O⟦X⟧)}) := e.toMulEquiv.isDomain`. Use `haveI : IsPrincipalIdealRing (O⟦X⟧ ⧸ Ideal.span {(X : O⟦X⟧)}) := IsPrincipalIdealRing.of_surjective e.symm.toRingHom e.symm.surjective`. Establish `hpow : ∀ (k : ℕ) (x y : M), (C (c ^ k) : O⟦X⟧) • x = (X : O⟦X⟧) • y → ∃ z : M, x = (X : O⟦X⟧) • z`. Introduce `k`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => intro x y hxy; exact ⟨y, by simpa using hxy⟩`. Consider the case `succ k ih`. Introduce `x y hxy`. Rewrite `hxy` using `[pow_succ, map_mul, mul_smul]`. Take `⟨z, hz⟩` from `ih _ _ hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h _ _ hz`. Establish `hdvd : ∀ a : O, a ≠ 0 → ∃ k : ℕ, a ∣ c ^ k`. Introduce `a ha`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Establish `hj : j ≠ 0`. Introduce and unpack `rfl`. Conclude with `hc' (by simp)`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Units.mul_left_dvd]`. Conclude with `pow_dvd_pow_of_dvd (Dvd.dvd.mul_left (dvd_pow_self _ hj) _) _`. Use `haveI := Module.Finite.of_restrictScalars_finite O⟦X⟧ (O⟦X⟧ ⧸ Ideal.span {(X : O⟦X⟧)}) (QuotSMulTop (X : O⟦X⟧) M)`. Use `haveI : Module.IsTorsionFree (O⟦X⟧ ⧸ Ideal.span {(X : O⟦X⟧)}) (QuotSMulTop (X : O⟦X⟧) M) := by`. Use `Module.IsTorsionFree.of_smul_eq_zero fun r m hrm => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Distinguish the cases in `hr : constantCoeff r = 0`. Use `left`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr`. Use `right`. Establish `h1 : (Submodule.Quotient.mk (r • m) : QuotSMulTop (X : O⟦X⟧) M) = 0` using `hrm`. Rewrite `h1`, the goal using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨y, -, hy⟩` from `h1`.
-
-Take `⟨k, b, hb⟩` from `hdvd _ hr`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : (X : O⟦X⟧) ∣ C (c ^ k) - C b * r := by`. Rewrite using `[X_dvd_iff]`. Simplify using `[hb, mul_comm]`. Take `⟨z, hz⟩` from `hpow k m (d • m + (C b : O⟦X⟧) • y) (by`.
-
-Rewrite using `[smul_add, smul_comm (X : O⟦X⟧) (C b : O⟦X⟧) y, hy, smul_smul, smul_smul, ← hd, ← add_smul, sub_add_cancel])`. Conclude with `⟨z, trivial, hz.symm⟩`. Use `(Module.free_quotSMulTop_iff_free O⟦X⟧ M ?_ hX).mp inferInstance` and prove the remaining obligations. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_of_regular {O M : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup M] [Module O⟦X⟧ M] [Module.Finite O⟦X⟧ M] (c : O) (hc : c ≠ 0) (hc' : ¬ IsUnit c)
@@ -118,11 +114,11 @@ theorem free_of_regular {O M : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
   simp
 
 /- English proof (translation)
-Use `letI : Algebra (ι → R) R := (Pi.evalRingHom (fun _ : ι => R) i).toAlgebra`. Use `haveI : Module.Free R (R ⊗[ι → R] N) := Module.free_of_flat_of_isLocalRing`. Use `⟨Module.finrank R (R ⊗[ι → R] N), fun S _ _ _ hS => ?_⟩` and prove the remaining obligations. Use `letI : Algebra R S := ((algebraMap (ι → R) S).comp (Pi.constRingHom ι R)).toAlgebra`. Use `haveI : IsScalarTower (ι → R) R S := IsScalarTower.of_algebraMap_eq fun a => by`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `algebraMap (ι → R) S a = algebraMap (ι → R) S (fun _ => a i)`. Establish `: a * Pi.single i 1 = (fun _ => a i) * Pi.single i 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hj]`. Establish `h2` using `congrArg (algebraMap (ι → R) S) this`. Rewrite `h2` using `[map_mul, map_mul, hS, mul_one, mul_one]`. Then use the resulting hypothesis. Rewrite using `[← (AlgebraTensorModule.cancelBaseChange (ι → R) R S S N).finrank_eq, Module.finrank_baseChange]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fibre {ι R N : Type} [DecidableEq ι] [CommRing R] [IsLocalRing R] [AddCommGroup N]
     [Module (ι → R) N] [Module.Finite (ι → R) N] [Module.Flat (ι → R) N] (i : ι) :
@@ -145,23 +141,17 @@ theorem finrank_fibre {ι R N : Type} [DecidableEq ι] [CommRing R] [IsLocalRing
     Module.finrank_baseChange]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite ι`. Use `haveI : Module.Flat (ι → R) N := Algebra.FormallyUnramified.flat_of_restrictScalars R (ι → R) N`. Use `haveI : Finite (MaximalSpectrum (ι → R)) := by haveI := (Algebra.QuasiFinite.finite_primesOver (S := ι → R) (IsLocalRing.maximalIdeal R)).to_subtype`. Use `Finite.of_injective (fun n : MaximalSpectrum (ι → R) => (⟨n.asIdeal, n.isMaximal.isPrime, ⟨(IsLocalRing.eq_maximalIdeal (@Ideal.isMaximal_comap_of_isIntegral_of_isMaximal R _ _ _ _ _ n.asIdeal n.isMaximal)).symm⟩⟩ : (IsLocalRing.maximalIdeal R).primesOver (ι → R))) fun a b hab => …` and prove the remaining obligations. Conclude with `MaximalSpectrum.ext (congrArg Subtype.val hab)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Module.nonempty_basis_of_flat_of_finrank_eq _ _ _ fun P => ?_` and prove the remaining obligations. Use `haveI := P.isMaximal`. Establish `hee : ∀ i : ι, (Pi.single i 1 : ι → R) * (Pi.single i 1 - 1) = 0`. Introduce `i`. Use function extensionality and compare the values at `j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : ι, (Pi.single i 1 : ι → R) ∉ P.asIdeal := by`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `P.isMaximal.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← Finset.univ_sum_single (1 : ι → R)]`. Conclude with `Ideal.sum_mem _ fun j _ => hcon j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi' : (Pi.single i 1 - 1 : ι → R) ∈ P.asIdeal` using `(P.isMaximal.isPrime.mem_or_mem (by rw [hee i]; exact Ideal.zero_mem _)).resolve_left hi`. Take `⟨r, hr⟩` from `finrank_fibre (R := R) (N := N) i`. Rewrite using `[hr ((ι → R) ⧸ P.asIdeal) (by`. Rewrite using `[Ideal.Quotient.algebraMap_eq, ← map_one (Ideal.Quotient.mk P.asIdeal), Ideal.Quotient.eq]`. Conclude with `hi')]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `I : Ideal E` to `Ideal.span {algebraMap (ι → R) E (Pi.single i 1 - 1)}`. Use `haveI : Nontrivial (E ⧸ I) := by`. Rewrite using `[Ideal.Quotient.nontrivial_iff]`. Introduce `hI`. Rewrite `hI` using `[Ideal.span_singleton_eq_top]`.
-
-Apply `hi` to reduce the goal to its premises. Establish `: algebraMap (ι → R) E (Pi.single i 1) = 0`. Rewrite using `[← hI.mul_left_eq_zero, ← map_mul, hee, map_zero]`. Rewrite using `[hE (this.trans (map_zero _).symm)]`. Conclude with `Ideal.zero_mem _`.
-
-Use `haveI : Nontrivial E := (algebraMap E (E ⧸ I)).domain_nontrivial`. Rewrite using `[← hr (E ⧸ I) (by`. Rewrite using `[IsScalarTower.algebraMap_apply (ι → R) E (E ⧸ I), Ideal.Quotient.algebraMap_eq, ← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span (by simp)),`. Use the proof step `← (AlgebraTensorModule.cancelBaseChange (ι → R) E (E ⧸ I) (E ⧸ I) N).finrank_eq,`.
-
-Use the proof step `(AlgebraTensorModule.congr (LinearEquiv.refl (E ⧸ I) (E ⧸ I)) hf.equiv).finrank_eq,`. Use the proof step `Module.finrank_baseChange]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_of_baseChange {ι R N E D : Type} [Finite ι] [CommRing R] [IsLocalRing R]
     [AddCommGroup N] [Module (ι → R) N] [Module.Finite (ι → R) N] [Module R N]
@@ -220,7 +210,7 @@ theorem basis_of_baseChange {ι R N E D : Type} [Finite ι] [CommRing R] [IsLoca
     Module.finrank_baseChange]
 
 /- English proof (translation)
-Use `letI : Module O⟦X⟧ N := Module.compHom _ (algebraMap O⟦X⟧ (ι → O⟦X⟧))`. Use `haveI : IsScalarTower O⟦X⟧ (ι → O⟦X⟧) N := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : Module.Finite O⟦X⟧ N := Module.Finite.trans (ι → O⟦X⟧) _`. Use `haveI : Module.Free O⟦X⟧ N := free_of_regular c hc hc' hX h`. Conclude with `basis_of_baseChange hE f hf`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem basis_of_regular {ι O N E D : Type} [Finite ι] [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [AddCommGroup N] [Module (ι → O⟦X⟧) N] [Module.Finite (ι → O⟦X⟧) N]
@@ -241,19 +231,17 @@ theorem basis_of_regular {ι O N E D : Type} [Finite ι] [CommRing O] [IsDomain 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨_, -, hl⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Use `haveI := (P.PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Establish `hproj` using `H.W_proj K s LL h T`. Generalize the expression as in `H.W K s LL h = W at hproj ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hfree, hrk⟩` from `W.DD_free T`. Rewrite using `[← hrk]`. Use `haveI : Module.Finite (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥(W.N T) := Module.Finite.iff_fg.mpr (W.N_fg T)`. Establish `hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun x : ↥(OL LL) => (x : ↥LL.1)) h0` as an intermediate fact. Simplify using `[(Fact.out : l.Prime).ne_zero] at this`. Use `basis_of_regular (ι := ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (O := ↥(OL LL)) (N := ↥(W.N T)) (E := W.EE) (D := W.DD T) W.EE_inj (W.N T).subtype (W.N_base T hT) ((l : ℕ) : ↥(OL LL)) hl0 hl ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h1 : (letπ : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) • (x : W.DD T) = (letπ : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) • (y : W.DD T)` using `congrArg Subtype.val hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← algebraMap_smul W.EE, ← algebraMap_smul W.EE letπ (y : W.DD T)]`. Conclude with `Subtype.ext (W.EE_π.smul_left_cancel.mp h1)`. Introduce `x y hxy`. Establish `e1 : zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) (C ((l : ℕ) : ℤ_[l])) = fun _ => C ((l : ℕ) : ↥(OL LL))`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e2 : zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) X = fun _ => X`. Use function extensionality and compare the values at `i`. Simplify using `[zlA]`. Take `⟨z, hz⟩` from `@mem_X_smul_of_projective ℤ_[l] ↥(W.N T) _ _ _ (Module.compHom _ (zlA LL (Module.finrank ℚ_[l] ↥(K0 K)))) hproj ((l : ℕ) : ℤ_[l]) (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero) x y (by`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) (C ((l : ℕ) : ℤ_[l])) • x = zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) X • y`. Rewrite using `[e1, e2]`. Conclude with `hxy)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x = zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) X • z at hz`.
-
-Rewrite `hz` using `[e2]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wach_free {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) (K : FinExt l) (s : ℕ)
     (LL : FinExt l) (h : Good K s LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))

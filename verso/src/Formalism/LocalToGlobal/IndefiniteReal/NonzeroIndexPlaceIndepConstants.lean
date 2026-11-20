@@ -27,9 +27,9 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `ht` using `Q.charW.tup`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _, _, h4⟩`. Conclude with `h4`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun w hw => ht.mu_ne w ((h w).2 hw), fun w _ => ht.mu_conj w, fun w => ?_, h⟩` and prove the remaining obligations. Use `show Q.Rl.mu w = _`. Use `split_ifs with hw`. Both sides reduce to the same expression. Conclude with `ht.mu_off w fun hm => hw ((h w).1 hm)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem muDef_iff (Q : RealT Rc P Dcf Spf Zscf S Ks) (C CH : ℝ) :
     (Q.Rl.toCx3 Q.F).MuDef Q.F.cr (Q.Rl.num Q.F C CH) Q.Rl.mu ↔
@@ -46,7 +46,7 @@ theorem muDef_iff (Q : RealT Rc P Dcf Spf Zscf S Ks) (C CH : ℝ) :
     · exact ht.mu_off w fun hm => hw ((h w).1 hm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (muDef_iff Q 0 0).1 (h.muDef 0 0), fun h => ⟨fun C CH => (muDef_iff Q C CH).2 h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem realPins3_iff (Q : RealT Rc P Dcf Spf Zscf S Ks) :
     RealPins3 Q ↔ ∀ w, w ∈ Q.Rl.twPl ↔ (Q.Rl.toCx3 Q.F).W1 Q.F.cr (Q.Rl.num Q.F 0 0) w :=
@@ -62,7 +62,7 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   {Q : RealT Rc P Dcf Spf Zscf S Ks}
 
 /- English proof (translation)
-Introduce `w hw` and use `(h.muDef C CH).2.2.2 w |>.2 hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem w1 (h : RealPins3 Q) (C CH : ℝ) :
     ∀ w, (Q.Rl.toCx3 Q.F).W1 Q.F.cr (Q.Rl.num Q.F C CH) w → w ∈ Q.Rl.twPl :=

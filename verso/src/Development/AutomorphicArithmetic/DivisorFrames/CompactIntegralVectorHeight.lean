@@ -15,11 +15,9 @@ open GlobalTheory.ConeSmallUnf
 
 open scoped nonZeroDivisors in
 /- English proof (translation)
-Take `⟨a, ha, hL⟩` from `L.isFractional`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Use `⟨Ideal.absNorm (Ideal.span {a}), Nat.pos_of_ne_zero ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `ha0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Take `⟨y, hy⟩` from `hL x hx`. Establish `h1 : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : K) * x = algebraMap (𝓞 K) K (b * y)`. Rewrite using `[map_mul, hy, Algebra.smul_def, ← mul_assoc, ← map_mul, hb, map_natCast]`. Rewrite using `[h1]`.
-
-Conclude with `RingOfIntegers.isIntegral_coe _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nat_den (K : Type) [Field K] [NumberField K] (L : FractionalIdeal (𝓞 K)⁰ K) :
     ∃ m : ℕ, 0 < m ∧ ∀ x ∈ L, IsIntegral ℤ ((m : K) * x) := by
@@ -37,23 +35,21 @@ private theorem nat_den (K : Type) [Field K] [NumberField K] (L : FractionalIdea
 
 open GroundTheory.Global GroundTheory.Global.IdeleGroup GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Take `⟨S, hS, hSm⟩` from `exists_isCompact_mul_mem_of_ideleModule_mem_Icc (K := K) one_pos 1`. Use `set D' := (fun p : IdeleGroup K × AdeleRing (𝓞 K) K => ((p.1⁻¹ : IdeleGroup K) : AdeleRing (𝓞 K) K) * p.2) '' (S ×ˢ D) with hD'def`. Establish `hD' : IsCompact D'` using `(hS.prod hD).image ((Units.continuous_val.comp (continuous_inv.comp continuous_fst)).mul continuous_snd)`. Take `⟨L, hL⟩` from `exists_subset_idealFiniteAdeles (hD'.image continuous_snd)`. Take `⟨m, hm, hmL⟩` from `nat_den K L.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : Continuous fun y : AdeleRing (𝓞 K) K => ∑ w : InfinitePlace K, ‖y.1 w‖` using `continuous_finsetSum _ fun w _ => continuous_norm.comp ((continuous_apply w).comp continuous_fst)`. Take `⟨B, hB⟩` from `hD'.bddAbove_image hc.continuousOn`. Use `⟨m, B, hm, fun t => ?_⟩` and prove the remaining obligations. Establish `hn : Module.finrank ℚ K ≠ 0` using `Module.finrank_pos.ne'`. Establish `ht : 0 < (ideleModule K t : ℝ)` using `(ideleModule K t).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ : ℝ := (ideleModule K t : ℝ) ^ ((Module.finrank ℚ K : ℝ)⁻¹) with hρdef`. Establish `hρ : 0 < ρ` using `Real.rpow_pos_of_pos ht _`. Establish `hρn : ρ ^ Module.finrank ℚ K = (ideleModule K t : ℝ)` using `Real.rpow_inv_natCast_pow ht.le hn`. Use `set z : IdeleGroup K := posIdele ρ hρ with hz`. Establish `hzt : ideleModule K z = ideleModule K t` using `Subtype.ext ((ideleModule_posIdele ρ hρ).trans hρn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : (ideleModule K (t * z⁻¹) : ℝ) = 1`. Rewrite using `[map_mul, map_inv, hzt, mul_inv_cancel]`. Both sides reduce to the same expression. Take `⟨c, hcS⟩` from `hSm (t * z⁻¹) h1.ge h1.le`. Use `⟨c⁻¹, ρ, hρ, hρn.symm, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : (z : AdeleRing (𝓞 K) K) * algebraMap K (AdeleRing (𝓞 K) K) (((c⁻¹ : Kˣ) : K) * x) ∈ D'`. Use `⟨(_, _), ⟨hcS, hx⟩, ?_⟩` and prove the remaining obligations. Establish `e : (diagonal K c * (t * z⁻¹))⁻¹ * t = z * diagonal K c⁻¹`. Rewrite using `[map_inv, mul_inv, mul_inv, inv_inv, mul_assoc, mul_right_comm, inv_mul_cancel, one_mul, mul_comm]`. Use `show (((diagonal K c * (t * z⁻¹))⁻¹ : IdeleGroup K) : AdeleRing (𝓞 K) K) * (_ * _) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_assoc, ← Units.val_mul, e, Units.val_mul, coe_diagonal, map_mul, mul_assoc]`. Generalize the expression as in `((c⁻¹ : Kˣ) : K) * x = y at hmem`. Prove the components needed by the constructor for the conclusion. Apply `hmL` to reduce the goal to its premises. Rewrite using `[← algebraMap_mem_idealFiniteAdeles_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hL ⟨_, hmem, rfl⟩`. Establish `h3 : ((z : AdeleRing (𝓞 K) K) * algebraMap K (AdeleRing (𝓞 K) K) y).2 = algebraMap K (FiniteAdeleRing (𝓞 K) K) y`. Use extensionality with `v`. Rewrite using `[adele_snd_mul_apply, hz, posIdele_finite, one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h3]`. Conclude with `h2`. Introduce `φ`. Establish `h2` using `hB ⟨_, hmem, rfl⟩`. Use `le_trans ?_ ((Finset.single_le_sum (f := fun w : InfinitePlace K => ‖((z : AdeleRing (𝓞 K) K) * algebraMap K (AdeleRing (𝓞 K) K) y).1 w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ (InfinitePlace.mk φ))).trans h2)` and prove the remaining obligations.
-
-Rewrite using `[adele_fst_mul_apply, norm_mul, hz, norm_posIdele_infinite]`. Use `le_of_eq (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[← InfinitePlace.apply]`. Conclude with `(NumberField.InfinitePlace.Completion.norm_coe (InfinitePlace.mk φ) (WithAbs.toAbs _ y)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adelic (K : Type) [Field K] [NumberField K] (D : Set (AdeleRing (𝓞 K) K)) (hD : IsCompact D) :
     ∃ (m : ℕ) (B : ℝ), 0 < m ∧ ∀ t : IdeleGroup K, ∃ (ξ : Kˣ) (ρ : ℝ), 0 < ρ ∧
@@ -111,13 +107,13 @@ private theorem adelic (K : Type) [Field K] [NumberField K] (D : Set (AdeleRing 
     exact (NumberField.InfinitePlace.Completion.norm_coe (InfinitePlace.mk φ) (WithAbs.toAbs _ y)).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d C hC`. Establish `hD : IsCompact (⋃ i : Fin d, (fun y : Fin d → AE F E => GlobalTheory.TateConv.tens F E (y i)) '' C)` using `isCompact_iUnion fun i => hC.image ((GlobalTheory.TateConv.continuous_tens F E).comp (continuous_apply i))`. Take `⟨m, B, hm, h⟩` from `adelic E _ hD`. Use `⟨m, (∑ _i : Fin d, ∑ _φ : E →+* ℂ, B) ^ Module.finrank ℚ E, hm, fun w t ht => ?_⟩` and prove the remaining obligations. Take `⟨ξ, ρ, hρ, hmod, hx⟩` from `h (GlobalTheory.TateConv.idl F E t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hw` using `fun i => hx (w i) (Set.mem_iUnion.2 ⟨i, _, ht, by`. Establish `e : GlobalTheory.TateConv.tens F E (incV F w i) = algebraMap E (AdeleRing (𝓞 E) E) (w i)`. Use `(GroundTheory.Global.AdeleBaseChange.adeleTensorAlgEquivLeft_tmul (K := F) 1 (w i)).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, mul_one]`. Use `show GlobalTheory.TateConv.tens F E (t.1 * incV F w i) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, e, GlobalTheory.TateConv.idl_val]⟩)`. Use `⟨ξ, fun i => (hw i).1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.TateConv.absE_eq, hmod, ← mul_pow]`. Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun φ _ => (hw i).2 φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.compact_integral_vector_height :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (C : Set (Fin d → AE F E)), IsCompact C → ∃ (m : ℕ) (c : ℝ), 0 < m ∧

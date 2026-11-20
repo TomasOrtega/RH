@@ -26,11 +26,11 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.ConjHalfVac
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT _ _ _ Y hY`. Take `⟨hpair, _, _, _, _, _, _, _, hvac⟩` from `hP`. Establish `hstd : IsStdChar D ψ (-1)` using `hvac.1`. Establish `hth0 : IsThetaFunO ψ V W f₀` using `GlobalTheory.OneMapRef.isThetaFunO_of_isVacO hvac`. Establish `hinf : infPart D (cA D eT) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ y ∈ Y, map y ⇑(infPart D) = 0` using `fun y hy => GlobalTheory.DatumFock.infPart_of_isHalf hinf (hY y hy)`. Use `⟨?_, fun τ => ?_⟩` and prove the remaining obligations. Proceed by induction on `Y using Finset.induction_on with`. Consider the case `empty => simpa using GlobalTheory.OrientedHeis.theta_zero (ψ := ψ) (S := V) (T := W)`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha]`. Conclude with `GlobalTheory.OrientedHeis.theta_add (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hstd hth0 a) (ih (fun y hy => hY y (Finset.mem_insert_of_mem hy)) (fun y hy => hfin y (Finset.mem_insert_of_mem hy)))`. Establish `hF : IsFockVacAt (heisO ψ V W) θ τ (cplxO (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) (sW τ)) f₀` using `hvac.2.fock τ`. Use `GlobalTheory.FockTranslate.isFockVacAt_sum D ψ θ V W hstd.1 hpair.inf f₀ hth0 τ _ hF (WO V W) Y id (fun _ => 1) (fun y hy => hfin y hy)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_conj_half_vac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (m : ℕ) (eT : AE D), IsIdemSum eT T → Odd m → Nat.Coprime m (GlobalTheory.Tow.badN D) → (∀ PP ∈ T, ((m : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → ∀ Y : Finset (WO V W), (∀ y ∈ Y, IsHalf (cA D eT) y) → IsThetaFunO ψ V W (∑ y ∈ Y, heisO ψ V W y f₀) ∧ ∀ τ, IsFockVacAt (heisO ψ V W) θ τ (cplxO (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) (sW τ)) (∑ y ∈ Y, heisO ψ V W y f₀) := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT _ _ _ Y hY

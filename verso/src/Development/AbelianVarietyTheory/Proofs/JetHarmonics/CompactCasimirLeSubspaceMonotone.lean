@@ -8,9 +8,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `CasK`. Simplify using `only [LinearMap.sum_apply]`. Use `S.sum_mem fun a _ => S.sum_mem fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hS _ _ h _ (hS _ _ h.symm _ hx)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem casK_mem_of_compact_stable {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (S : Submodule ℂ M)
@@ -24,15 +24,15 @@ theorem casK_mem_of_compact_stable {M : Type} [AddCommGroup M] [Module ℂ M] {n
   · simp
 
 /- English proof (translation)
-Set `e` to `WithLp.linearEquiv 2 ℂ (S₁ × S₂)`. Set `Φ : WithLp 2 (S₁ × S₂) →ₗ[ℂ] M` to `(S₁.subtype.coprod S₂.subtype) ∘ₗ e.toLinearMap`. Set `A : WithLp 2 (S₁ × S₂) →ₗ[ℂ] WithLp 2 (S₁ × S₂)` to `e.symm.toLinearMap ∘ₗ ((B.restrict h₁).prodMap (B.restrict h₂)) ∘ₗ e.toLinearMap`. Establish `hA1 : ∀ z, ((A z).fst : M) = B z.fst` using `fun z => rfl`. Establish `hA2 : ∀ z, ((A z).snd : M) = B z.snd` using `fun z => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : ∀ z, Φ z = (z.fst : M) + (z.snd : M)` using `fun z => rfl`. Establish `key` using `GlobalTheory.T.re_inner_le_on_image_of_intertwining' (WithLp 2 (S₁ × S₂)) M Φ A B C (by`. Introduce `z w`. Simplify using `only [WithLp.prod_inner_apply, Submodule.coe_inner]`. Express the relevant statement in the definitionally equal form `⟪((A z).fst : M), (w.fst : M)⟫_ℂ + ⟪((A z).snd : M), (w.snd : M)⟫_ℂ = ⟪(z.fst : M), ((A w).fst : M)⟫_ℂ + ⟪(z.snd : M), ((A w).snd : M)⟫_ℂ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hA1, hA2, hA1, hA2, hB, hB])`. Use `hB`. Use the proof step `(by`. Introduce `z`. Rewrite using `[hΦ, hΦ, hA1, hA2, map_add])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `z`. Rewrite using `[WithLp.prod_norm_sq_eq_of_L2]`. Simplify using `only [WithLp.prod_inner_apply, Submodule.coe_inner]`. Express the relevant statement in the definitionally equal form `(⟪(z.fst : M), ((A z).fst : M)⟫_ℂ + ⟪(z.snd : M), ((A z).snd : M)⟫_ℂ).re ≤ C * (‖(z.fst : M)‖ ^ 2 + ‖(z.snd : M)‖ ^ 2)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hA1, hA2, Complex.add_re, mul_add]`. Conclude with `add_le_add (b₁ _ z.fst.2) (b₂ _ z.snd.2))`. Introduce `x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Conclude with `key (WithLp.toLp 2 (⟨y, hy⟩, ⟨z, hz⟩))`.
+A detailed English derivation is pending.
 -/
 theorem quadForm_le_on_sup {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M] (B : M →ₗ[ℂ] M)
     (hB : B.IsSymmetric) (C : ℝ) (S₁ S₂ : Submodule ℂ M) [FiniteDimensional ℂ S₁] [FiniteDimensional ℂ S₂]
@@ -70,13 +70,13 @@ theorem quadForm_le_on_sup {M : Type} [NormedAddCommGroup M] [InnerProductSpace 
   exact key (WithLp.toLp 2 (⟨y, hy⟩, ⟨z, hz⟩))
 
 /- English proof (translation)
-Introduce `M _ _ n ε E hU`. Use `⟨fun c => ⟨⊥, inferInstance, ?_, Submodule.zero_mem _, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b _ x hx`. Rewrite `hx` using `[Submodule.mem_bot]`. Simplify using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_bot]`. Simplify using `[hx]`. Introduce and unpack `c x y ⟨S₁, f₁, s₁, hx, b₁⟩ ⟨S₂, f₂, s₂, hy, b₂⟩`. Use `⟨S₁ ⊔ S₂, inferInstance, ?_, Submodule.add_mem_sup hx hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab w hw`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (s₁ a b hab u hu) (s₂ a b hab v hv)`. Conclude with `quadForm_le_on_sup _ (GlobalTheory.T.casK_isSymmetric_and_inner_re_eq M n ε E hU).1 _ S₁ S₂ (casK_mem_of_compact_stable ε E S₁ s₁) (casK_mem_of_compact_stable ε E S₂ s₂) b₁ b₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `c a x ⟨S, f, s, hx, b⟩`. Conclude with `⟨S, f, s, S.smul_mem a hx, b⟩`. Introduce and unpack `c c' x hc hcc ⟨S, f, s, hx, b⟩`. Use `⟨S, f, s, hx, fun y hy => (b y hy).trans ?_⟩` and prove the remaining obligations. Use `gcongr`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem casKLe_subspace_mono : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M), KUnit ε E → (∀ c, CasKLe ε E c 0) ∧ (∀ c x y, CasKLe ε E c x → CasKLe ε E c y → CasKLe ε E c (x + y)) ∧ (∀ c (a : ℂ) x, CasKLe ε E c x → CasKLe ε E c (a • x)) ∧ ∀ c c' x, 0 ≤ c → c ≤ c' → CasKLe ε E c x → CasKLe ε E c' x := by
   intro M _ _ n ε E hU

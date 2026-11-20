@@ -67,7 +67,7 @@ variable {m : ℕ} {L : Lev (per l K) m}
   {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (s : ℕ)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem lnMap_id {B : Type} [CommRing B] (k n : ℕ) (y : B ⧸ Ideal.span {(k : B) ^ n}) :
     lnMap (RingHom.id B) k (le_refl n) y = y := by
@@ -75,7 +75,7 @@ theorem lnMap_id {B : Type} [CommRing B] (k n : ℕ) (y : B ⧸ Ideal.span {(k :
   rfl
 
 /- English proof (translation)
-The claim follows from `(red_nm (d n) (d n) s (nmPullA L u hu) _ _ _ _ _ (hc n) (hc n) _ _ (fun _ _ => rfl) (fun _ => (lnMap_id l n _).symm) none j x).symm`.
+A detailed English derivation is pending.
 -/
 theorem rHof_pull (n j : ℕ) (x : N.Hc false n j) :
     nmHM (nmPullA L u hu) l s none n j (rHof d hc N s n j x) =

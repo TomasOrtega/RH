@@ -16,9 +16,9 @@ open Formalism.REAL (qdet GlRel IsHW)
 namespace GlobalTheory.WigSh
 
 /- English proof (translation)
-Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `y`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, Submodule.inner_orthogonalProjection_eq_of_mem_left, PiLp.inner_apply, Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[PiLp.single_eq_of_ne, hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem adjoint_eval_subspace {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     {k : ℕ} (S : Submodule ℂ (PiLp 2 (fun _ : Fin k => V))) (c : Fin k) (v : V) :
@@ -35,23 +35,23 @@ theorem adjoint_eval_subspace {V : Type} [NormedAddCommGroup V] [InnerProductSpa
   · simp
 
 /- English proof (translation)
-Introduce `V _ _ _ n r z π u β L B l hz hT hπ hL hu hB hl`. Take `⟨hH, hadj⟩` from `GlobalTheory.TypeGlModule.hyp_and_adj V n r z π u β L B hz hT hπ hL hu hB`. Establish `hrep : IsRepW (n + 1) r z π` using `⟨hπ.2.1, hπ.2.2.1⟩`. Take `⟨πt, ht1, ht2, ht3⟩` from `GlobalTheory.exists_tensor_standard_rep V (n + 1) r z π B hz hT hrep hπ.2.2.2.1 hB`. Establish `hE` using `GlobalTheory.TensorStd.EB_tensor_std V (n + 1) r z π B πt hz hT hrep ht1 hB ht3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, hS1, hS2, hS3, hS4, hS5⟩` from `GlobalTheory.T.pieri_raising_submodule_glSucc V n (EB π B) (EB πt B) β L l hH hadj hE hl`. Establish `hq : ∀ (w : ℂ), ∀ y ∈ S, qdet (EB πt B) w y = (∏ i ∈ Finset.Icc 1 (n + 1), (w - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 + ((Function.update u ((l : ℕ) + 1) (u ((l : ℕ) + 1) + 1) i : ℝ) : ℂ))) • y`. Introduce `w y hy`. Establish `h1` using `hS4 hy`. Unfold `CapSp at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[Submodule.mem_iInf]`. Establish `h2` using `h1 w`. Rewrite `h2` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[h2, Formalism.FourierDecayAlt.P.FrameExtension.prod_Icc_fin]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `cpol shf`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `hu j`. Distinguish the cases in `hjl : j = l`. Substitute `hjl` using the available equality.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Function.update_self]`. Move the coercions through the operations in `at hj ⊢`. Take the linear combination `-hj`. Establish `hne : (j : ℕ) + 1 ≠ (l : ℕ) + 1` using `fun h => hjl (Fin.ext (by omega))`. Rewrite using `[Function.update_of_ne hjl, Function.update_of_ne hne]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-hj`. Take `⟨πS, hπS, hπS2⟩` from `GlobalTheory.isType_of_irreducible_stable _ (n + 1) r z πt B S _ hz hT ht1 ht2 hB hS1 hS2 hS3 hq`. Set `a : Fin (n + 1) → (S →L[ℂ] V)` to `fun c => (PiLp.proj 2 (𝕜 := ℂ) (fun _ : Fin (n + 1) => V) c).comp S.subtypeL`. Establish `ha : ∀ c (y : S), a c y = (y : PiLp 2 (fun _ : Fin (n + 1) => V)) c` using `fun c y => rfl`. Take `⟨hW, hA⟩` from `GlobalTheory.WigSh.ContrPlus.contraction_wigMap V (n + 1) r z π B S πS a hz hT hB (by`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Simplify using `only [ha]`. Rewrite using `[← PiLp.norm_sq_eq_of_L2]`. Use the proof step `rfl)`. Use the proof step `(by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h hh y c`. Simplify using `only [ha]`. Rewrite using `[hπS2 h hh y, ht3 h hh])`. Use `⟨S, inferInstance, inferInstance, inferInstance, πS, _, hπS, hW, ?_⟩` and prove the remaining obligations. Introduce `M v hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hA]`. Rewrite using `[ha, ← hS5 M v hv]`. Simplify using `only [a]`. Rewrite using `[adjoint_eval_subspace]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wigner_step_raise : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n r : ℕ) (z : (Fin (2 * r + (n + 1) + 1) → ℂ)) (π : Mx (n + 1) r → (V →L[ℂ] V)) (u : ℕ → ℝ) (β : ℂ) (L : Fin (n + 1) → ℤ) (B : Fin (n + 1) → (Fin (2 * r + (n + 1) + 1) → ℂ)) (l : Fin (n + 1)), inWb (n + 1) r z → 0 < Tz (n + 1) r z → IsType (n + 1) r z π u → StrictAnti L → (∀ j : Fin (n + 1), (u ((j : ℕ) + 1) : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 = β + (L j : ℂ)) → IsFrameOf (n + 1) r [z] B → (∀ j, L j ≠ L l + 1) → ∃ (V₂ : Type) (_ : NormedAddCommGroup V₂) (_ : InnerProductSpace ℂ V₂) (_ : FiniteDimensional ℂ V₂) (π₂ : Mx (n + 1) r → (V₂ →L[ℂ] V₂)) (A : (Fin (2 * r + (n + 1) + 1) → ℂ) → (V₂ →L[ℂ] V)), IsType (n + 1) r z π₂ (Function.update u ((l : ℕ) + 1) (u ((l : ℕ) + 1) + 1)) ∧ GlobalTheory.WigSh.WigMap (n + 1) r z π₂ π 1 A ∧ ∀ (M : Fin n → ℤ) (v : V), v ∈ CapSp (subA (EB π B)) (shf β M) → A (B (Fin.last n)) (ContinuousLinearMap.adjoint (A (B (Fin.last n))) v) = ((GlobalTheory.WigSh.wP L M l : ℝ) : ℂ) • v := by
   intro V _ _ _ n r z π u β L B l hz hT hπ hL hu hB hl

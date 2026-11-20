@@ -21,7 +21,7 @@ def jOf {M : DSModel (D.sp.Y 0) S} {μ : Measure (GA D (D.sp.Y 0))} {𝓕 : Set 
   h.choose_spec.2.choose
 
 /- English proof (translation)
-The claim follows from `h.choose_spec.2.choose_spec T`.
+A detailed English derivation is pending.
 -/
 theorem jOf_spec {M : DSModel (D.sp.Y 0) S} {μ : Measure (GA D (D.sp.Y 0))} {𝓕 : Set (GA D (D.sp.Y 0))}
     {E : Submodule ℂ (MMap M)} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {G : GoodOp X}

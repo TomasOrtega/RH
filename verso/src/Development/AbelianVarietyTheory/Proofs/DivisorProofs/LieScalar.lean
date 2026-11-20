@@ -12,9 +12,9 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.LieScal
 
 /- English proof (translation)
-Establish `h : ∀ w, atPl w (L w + a w • (1 : Module.End ℂ (V w))) = atPl w (L w) + a w • (1 : Module.End ℂ (⨂[ℂ] i, V i))`. Introduce `w`. Establish `e` using `(PiTensorProduct.mapMultilinear ℂ V V).map_update_add (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w (L w) (a w • LinearMap.id)`. Establish `e2` using `(PiTensorProduct.mapMultilinear ℂ V V).map_update_smul (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w (a w) LinearMap.id`. Simplify using `only [PiTensorProduct.mapMultilinear_apply, Function.update_eq_self, PiTensorProduct.map_id] at e e2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [atPl]`. Rewrite using `[Module.End.one_eq_id, Module.End.one_eq_id, e, e2]`. Simplify using `only [sumPl, h, Finset.sum_add_distrib, Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sumPl_add_smul {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
     (L : ∀ w, Module.End ℂ (V w)) (a : ι → ℂ) :
@@ -33,19 +33,17 @@ theorem sumPl_add_smul {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Typ
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `hP hD hV F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om hCM hψ hFr hΦ hom`. Take `⟨ω₀, c₀, hH, hc, hact⟩` from `GlobalTheory.T.darboux_schrodinger_compatibility hP hD hV F E σ α β κ P Q R S ψ τ JA JB d a b A C Φ hCM hψ hFr hΦ`. Take `⟨ν, hν, hmul, hνc, hν0⟩` from `GlobalTheory.T.weil_representation_unitary_standard_character hP F E σ α β κ ψ JA JB d om ω₀ hψ hom hH hc`. Take `⟨k, hk⟩` from `GlobalTheory.T.archimedean_frame_character_factorization hP F E σ β R S τ JB b C hCM hFr.2.2 ν hmul hνc hν0`. Use `⟨fun w => c₀ w + k w, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ hγ Y hY T g hg l hl`. Establish `hH1 : ∀ t : ℝ, At (evI F) (((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)) - 1)` using `fun t => hγ.2 _`. Establish `hpm : ∀ f : SInf F κ, pureA F f g ∈ schA F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `e1 : (fun t : ℝ => l (om (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))) = fun t => ν (γ (Multiplicative.ofAdd t)) * l (ω₀ (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hν _ (hH1 t) _ (hpm _), map_smul, smul_eq_mul]`. Use `show HasDerivAt (fun t : ℝ => l (om (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))) _ 0`. Rewrite using `[e1]`. Establish `h3` using `(hk γ hγ Y hY).mul (hact γ hγ Y hY T g hg l hl)`. Establish `hγ0 : γ (Multiplicative.ofAdd (0 : ℝ)) = 1` using `by rw [ofAdd_zero, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1m : At (evI F) (((1 : UG (cA σ) JB).1 : Matrix β β (AE F E)) - 1)` using `fun u _ => by simp`. Establish `hν1 : ν 1 = 1`. Use `hmul 1 1 h1m h1m` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left₀ (hν0 1 h1m)).mp this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce at h3`. Rewrite `h3` using `[hγ0, hν1, map_one, Module.End.one_apply, one_mul]`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Establish `e2 : sumPl (fun w => fockAct2 P Q R S (Y w) + (((fun w => c₀ w + k w) w) * (Y w).trace) • (1 : Module.End ℂ _)) = sumPl (fun w => fockAct2 P Q R S (Y w) + (c₀ w * (Y w).trace) • (1 : Module.End ℂ _)) + (∑ w, k w * (Y w).trace) • (1 : Module.End ℂ (Tens F P Q R S))`. Simplify using `only [add_mul, add_smul, ← add_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sumPl_add_smul (fun w => fockAct2 P Q R S (Y w) + (c₀ w * (Y w).trace) • (1 : Module.End ℂ _)) _`. Rewrite using `[e2, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul]`. Establish `key : ∀ (z : ℂ) (f f' : SInf F κ), pureA F ⇑(f' + z • f) g = z • pureA F ⇑f g + pureA F ⇑f' g`. Introduce `z f f'`. Use function extensionality and compare the values at `x`.
-
-Simplify using `[pureA]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, map_add, map_smul, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieScalar : GlobalTheory.FunPr.Hypotheses₂ → DerEx → VacLine → LieScalar := by
   intro hP hD hV F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om hCM hψ hFr hΦ hom

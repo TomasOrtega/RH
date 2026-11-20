@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubqu
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC GlobalTheory.DefU Formalism.BasicNotions Formalism.ConjugateSelfDual GlobalTheory.Cong
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.orbit_finite_mem_finite_ext` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FFiniteAutomorphismOrbitMemFiniteExtensionPadic.lean&line=9#L9)
 -/

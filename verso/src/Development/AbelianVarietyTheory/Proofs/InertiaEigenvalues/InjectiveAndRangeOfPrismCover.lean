@@ -24,15 +24,13 @@ noncomputable def matCoordMap {A B : Type} [CommRing A] [CommRing B] {d : ℕ} (
     simp
 
 /- English proof (translation)
-Introduce `l _ K bk d S B C N _ _ V h f hc`. Take `⟨D, p, q, hpo⟩` from `hc.stable.po C h`. Take `⟨hinj, hrange⟩` from `GlobalTheory.T.prism_cover_injective_and_descent l _ B C h hc`. Use `haveI := V.fin`. Use `haveI := V.proj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : p.f.comp h.f = q.f.comp h.f` using `congrArg Hom.f hpo.comm`. Establish `key` using `GlobalTheory.T.finite_projective_module_element_descent_equalizer B.A C.A D.A h.f p.f q.f hcomm hinj (hrange D p q hpo) N (Fin d → C.A) (Fin d → D.A) (V.v h f) (matCoordMap p.f 1) (matCoordMap q.f (S.ε (p.comp f) (q.comp f))) (V.v (p.comp h) (p.comp f)) (V.bc h f) (V.bc (p.comp h …`. Express the relevant statement in the definitionally equal form `V.v (p.comp h) (p.comp f) x = (1 : Matrix (Fin d) (Fin d) D.A).mulVec fun i => p.f (V.v h f x i)`. Rewrite using `[Matrix.one_mulVec]`. Use function extensionality and compare the values at `i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `V.v_nat p h f x i)`. Use the proof step `(fun x => by`. Express the relevant statement in the definitionally equal form `V.v (p.comp h) (p.comp f) x = (S.ε (p.comp f) (q.comp f)).mulVec fun i => q.f (V.v h f x i)`. Establish `e : ∀ a a' : Hom B D, a = a' → V.v a (q.comp f) x = V.v a' (q.comp f) x`. Introduce `a a' e`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Substitute `e` using the available equality. Both sides reduce to the same expression. Rewrite using `[V.v_ε (p.comp h) (p.comp f) (q.comp f) x, e _ _ hpo.comm]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `V.v_nat q h f x i)`. Use `⟨key.1, fun z hz => key.2 z ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin d) (Fin d) D.A).mulVec (fun i => p.f (z i)) = (S.ε (p.comp f) (q.comp f)).mulVec fun i => q.f (z i)`. Rewrite using `[Matrix.one_mulVec]`. Conclude with `hz D p q hpo.comm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Eval.effective_of_cover : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d) (B C : Obj l ↥(OL K)) (N : Type) [AddCommGroup N] [Module B.A N] (V : Eval S B N) (h : Hom B C) (f : Hom bk.prism C), Cover h → Function.Injective (V.v h f) ∧ ∀ z : Fin d → C.A, (∀ (Q : Obj l ↥(OL K)) (p q : Hom C Q), p.comp h = q.comp h → (fun i => p.f (z i)) = (S.ε (p.comp f) (q.comp f)).mulVec fun i => q.f (z i)) → ∃ y, V.v h f y = z := by
   intro l _ K bk d S B C N _ _ V h f hc

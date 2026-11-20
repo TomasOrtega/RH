@@ -29,16 +29,16 @@ private noncomputable def twoSide [TopologicalSpace R] [IsTopologicalRing R] (h 
   continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_inv {S : Type} [CommRing S] (f : R →+* S) {x y : Matrix (Fin a) (Fin a) R} (h : x * y = 1) :
     x.map f * y.map f = 1 := by
   rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Establish `h0 : (x - 1).map f = 0`. Rewrite using `[← h]`. Use extensionality with `i j`. Simplify using `[he]`. Rewrite `h0` using `[Matrix.map_sub _ (map_sub f), Matrix.map_one _ (map_zero f) (map_one f)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h0`.
+A detailed English derivation is pending.
 -/
 private theorem map_eq_one {S : Type} [CommRing S] (f : R →+* S) {e : R} (he : f e = 0) {x : Matrix (Fin a) (Fin a) R}
     (h : e • (x - 1) = x - 1) : x.map f = 1 := by
@@ -69,15 +69,13 @@ private noncomputable def famEquiv {T : Type} [Fintype T] (h hi : T → Matrix (
 end Gen
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add f₁ f₂ _ _ i₁ i₂ => exact Submodule.add_mem _ i₁ i₂`. Consider the case `smul c f _ i => exact Submodule.smul_mem _ c i`. Consider the case `mem Φ hm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨f, k, hk, rfl⟩` from `hm`. Apply the tactic sequence `haveI : IsTopologicalRing (Af D.host.F ⊗[D.host.F] D.host.E) := by first | infer_instance | exact GlobalTheory.AdelicU.isTopologicalRing_tens | exact isTopologicalRing_tens`. Set `ρ : D.what₂.Tau → (AE D →+* ℂ)` to `fun τ => (θ τ).comp (infPart D)`. Set `L` to `famEquiv (fun τ => h.1.map (ρ τ)) (fun τ => h.2.map (ρ τ)) (fun τ => g.1.map (ρ τ)) (fun τ => g.2.map (ρ τ)) (fun τ => map_inv _ h.3) (fun τ => map_inv _ h.4) (fun τ => map_inv _ g.3) (fun τ => map_inv _ g.4)`. Set `H` to `twoSide (h.1.map (finPart D)) (h.2.map (finPart D)) (g.1.map (finPart D)) (g.2.map (finPart D)) (map_inv _ h.3) (map_inv _ h.4) (map_inv _ g.3) (map_inv _ g.4)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L f, fun y => k (H y), ⟨hk.1.comp_continuous H.continuous, hk.2.comp_homeomorph H⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`. Establish `e1 : (fun τ i j => compAt θ τ (mm (mm h.1 X) g.1) i j) = L (fun τ i j => compAt θ τ X i j)`. Use function extensionality and compare the values at `τ`. Use `show (h.1 * X * g.1).map (ρ τ) = h.1.map (ρ τ) * X.map (ρ τ) * g.1.map (ρ τ)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `e2 : (fun i j => finPart D (mm (mm h.1 X) g.1 i j)) = H (fun i j => finPart D (X i j))` using `by show (h.1 * X * g.1).map (finPart D) = h.1.map (finPart D) * X.map (finPart D) * g.1.map (finPart D)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `show f (fun τ i j => compAt θ τ (mm (mm h.1 X) g.1) i j) * k (fun i j => finPart D (mm (mm h.1 X) g.1 i j)) = _`. Rewrite using `[e1, e2]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem schw {D : D7} (θ : InfFam D) {a n : ℕ} (h : GL (Fin a) (AE D)) (g : GL (Fin n) (AE D)) {Φ : Mx D a n → ℂ}
     (hΦ : Φ ∈ schwartzA θ a n) : (fun X => Φ (mm (mm h.1 X) g.1)) ∈ schwartzA θ a n := by
@@ -111,15 +109,13 @@ end GlobalTheory.CompanionTheory.AlgStab
 
 open GlobalTheory.CompanionTheory.AlgStab in
 /- English proof (translation)
-Introduce `_ D θ _ a n S e he h g hh hg Φ hΦ hG hC`. Use `⟨schw θ h g hΦ, fun X => ?_, ?_⟩` and prove the remaining obligations. Establish `hI : IntOff S (mm (mm h.1 X) g.1) ↔ IntOff S X`. Use `forall_congr' fun v => forall_congr' fun hv => ?_` and prove the remaining obligations. Establish `h0 : cv D v e = 0` using `by rw [he.2 v, if_neg hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (h.1 * X * g.1).map (cv D v) = X.map (cv D v)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_eq_one _ h0 hh, map_eq_one _ h0 hg, Matrix.one_mul, Matrix.mul_one]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[show cv D v (mm (mm h.1 X) g.1 i j) = cv D v (X i j) from congrFun (congrFun this i) j]`. Establish `hs : e • mm (mm h.1 X) g.1 = mm (mm h.1 (e • X)) g.1` using `by show e • (h.1 * X * g.1) = h.1 * (e • X) * g.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `hG (mm (mm h.1 X) g.1)` as an intermediate fact. Distinguish the cases in `hX : IntOff S X`. Rewrite `this` using `[if_pos (hI.2 hX), hs]`. Rewrite using `[if_pos hX]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite `this` using `[if_neg (fun c => hX (hI.1 c))]`. Rewrite using `[if_neg hX]`. Conclude with `this`. Apply the tactic sequence `haveI : IsTopologicalRing (AE D) := by first | infer_instance | exact GlobalTheory.AdelicU.isTopologicalRing_tens | exact isTopologicalRing_tens`.
-
-Conclude with `hC.comp_homeomorph (twoSide h.1 h.2 g.1 g.2 h.3 h.4 g.3 g.4)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.AlgStab.algStab : IdemEx → AlgStab := by
   intro _ D θ _ a n S e he h g hh hg Φ hΦ hG hC

@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SmoothRep
 
 /- English proof (translation)
-Establish `hinv : ((finGL E a u)⁻¹ * y)⁻¹ = y⁻¹ * finGL E a u`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Establish `hfin : GeneralLinearGroup.map (pFin E) (y⁻¹ * finGL E a u) = GeneralLinearGroup.map (pFin E) y⁻¹ * u`. Rewrite using `[map_mul, pFin_finGL]`. Establish `hinf : GeneralLinearGroup.map (pInf E) (y⁻¹ * finGL E a u) = GeneralLinearGroup.map (pInf E) y⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, pInf_finGL, mul_one]`. Unfold `tst ker`. Rewrite using `[hinv, hfin, hinf]`. Distinguish the cases in `hm : GeneralLinearGroup.map (pFin E) y⁻¹ ∈ U`. Rewrite using `[if_pos (U.mul_mem hm hu), if_pos hm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hm (by simpa using U.mul_mem h (U.inv_mem hu))), if_neg hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tst_finGL_inv_mul {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (U : Subgroup (GL (Fin a) (Af E))) (β : Lie E a → ℂ) (u : GL (Fin a) (Af E)) (hu : u ∈ U)
@@ -34,7 +34,7 @@ theorem tst_finGL_inv_mul {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   · rw [if_neg (fun h => hm (by simpa using U.mul_mem h (U.inv_mem hu))), if_neg hm]
 
 /- English proof (translation)
-Unfold `convR`. Establish `h` using `integral_mul_left_eq_self (μ := μ) (fun y => tst U β ((finGL E a u)⁻¹ * y) * Fl (x * y)) (finGL E a u)`. Simplify using `only [inv_mul_cancel_left] at h`. Simplify using `only [tst_finGL_inv_mul U β u hu] at h`. Simplify `h` using `only [mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem convR_tst_mul_finGL (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
@@ -49,7 +49,7 @@ theorem convR_tst_mul_finGL (E : Type) [Field E] [NumberField E] [IsTotallyCompl
   simpa only [mul_assoc] using h
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ U β Fl u hu x`. Conclude with `convR_tst_mul_finGL E a μ U β Fl u hu x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem convR_tst_right_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (U : Subgroup (GL (Fin a) (Af E))) (β : Lie E a → ℂ) (Fl : GA E a → ℂ) (u : GL (Fin a) (Af E)), u ∈ U → ∀ x : GA E a, convR μ (tst U β) Fl (x * finGL E a u) = convR μ (tst U β) Fl x := by
   intro E _ _ _ a μ _ _ U β Fl u hu x

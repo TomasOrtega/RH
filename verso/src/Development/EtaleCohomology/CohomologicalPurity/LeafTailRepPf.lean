@@ -6,13 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.Thom
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `set s : Γ(U, ⊤) := (a.1 : Γ(U, ⊤)) - b.1 with hs_def`. Establish `hs : ∀ i, s * w.1 i = 0` using `fun i => by rw [hs_def, sub_mul, ← a.2 i, ← b.2 i, sub_self]`. Establish `hcov : (⊤ : U.Opens) ≤ iSup fun i => U.basicOpen (w.1 i)`. Introduce `p _`. Take `⟨i, -, hp⟩` from `w.2 p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hp⟩`. Use `U.sheaf.eq_of_locally_eq' (fun i => U.basicOpen (w.1 i)) ⊤ (fun i => homOfLE le_top) hcov s 0 fun i => ?_` and prove the remaining obligations. Establish `hu : IsUnit (U.presheaf.map (homOfLE (U.basicOpen_le (w.1 i))).op (w.1 i))` using `U.toRingedSpace.isUnit_res_basicOpen (w.1 i)`. Establish `h0` using `congrArg (U.presheaf.map (homOfLE (U.basicOpen_le (w.1 i))).op) (hs i)`. Rewrite `h0` using `[map_mul, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `U.presheaf.map _ s = U.presheaf.map _ 0`. Rewrite using `[map_zero]`. Conclude with `(hu.mul_left_eq_zero).1 h0`.
+A detailed English derivation is pending.
 -/
 theorem Vec.hom_subsingleton (N k : ℕ) (U : Scheme.{0}) (v w : Vec N k U) : Subsingleton (v ⟶ w) := by
   constructor
@@ -35,9 +35,9 @@ theorem Vec.hom_subsingleton (N k : ℕ) (U : Scheme.{0}) (v w : Vec N k U) : Su
   exact (hu.mul_left_eq_zero).1 h0
 
 /- English proof (translation)
-Introduce `p hp`. Simplify using `only [off, Scheme.Hom.mem_preimage] at hp ⊢`. Introduce `hI`. Apply `hp` to reduce the goal to its premises. Establish `hI' : ∀ x ∈ I, Polynomial.C x ∈ p.asIdeal` using `fun x hx => hI hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show ((Ideal.map Polynomial.C I : Ideal (Polynomial A)) : Set (Polynomial A)) ⊆ p.asIdeal`. Conclude with `Ideal.map_le_iff_le_comap.2 (fun x hx => hI' x hx)`.
+A detailed English derivation is pending.
 -/
 theorem off_le_C (A : Type) [CommRing A] (I : Ideal A) : off (Polynomial A) (I.map Polynomial.C) ≤
     Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A)) ⁻¹ᵁ off A I := by
@@ -66,9 +66,9 @@ def LeafTailRep0 : Prop := ∀ (d : ℕ) (R : Type) [CommRing R],
         e₁.hom ≫ yoneda.map ((Spec.map (CommRingCat.ofHom (Polynomial.C : A →+* Polynomial A))).resLE _ _ h)
 
 /- English proof (translation)
-Introduce `d R _ n`. Take `⟨R', _, ψ, e₁, e₂, w₁⟩` from `hN d R n`. Take `⟨A, _, I, φ, hI, h, f₁, f₂, w₂⟩` from `h0 d R'`. Use `⟨A, inferInstance, I, φ.comp ψ, hI, h, disc.mapIso (e₁ ≪≫ f₁), disc.mapIso (e₂ ≪≫ f₂), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `disc.map _ ≫ disc.map (e₂.hom ≫ f₂.hom) = disc.map (e₁.hom ≫ f₁.hom) ≫ disc.map (yoneda.map _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← Category.assoc, w₁, Category.assoc, w₂, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafTailRep_of (hN : LeafTailNerve) (h0 : LeafTailRep0) : LeafTailRep := by
   intro d R _ n

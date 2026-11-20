@@ -21,9 +21,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `e` using `isMulLeftInvariant_eq_smul (map (· * k) μ) μ`. Establish `h` using `congrArg (fun ν : Measure K => ν univ) e`. Simplify using `only [map_apply (continuous_mul_const k).measurable MeasurableSet.univ, Set.preimage_univ, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h`. Establish `hc : haarScalarFactor (map (· * k) μ) μ = 1`. Use `(ENNReal.mul_eq_right (IsOpen.measure_ne_zero μ isOpen_univ univ_nonempty) (measure_ne_top μ univ)).1 h.symm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[e, hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_eq_self_of_compactSpace {K : Type*} [Group K] [TopologicalSpace K]
     [IsTopologicalGroup K] [CompactSpace K] [T2Space K] [SecondCountableTopology K]
@@ -40,7 +40,7 @@ theorem map_mul_right_eq_self_of_compactSpace {K : Type*} [Group K] [Topological
   rw [e, hc, one_smul]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hz`. Use extensionality with `w`. Simplify using `only [Set.mem_smul_set_iff_inv_smul_mem, smul_eq_mul, SetLike.mem_coe, mul_inv_rev, mul_assoc]`. Conclude with `(N.mul_mem_cancel_left (N.inv_mem ha)).symm`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_coe_eq_of_mem {N : Subgroup G} {x z : G} (hz : z ∈ x • (N : Set G)) :
     x • (N : Set G) = z • (N : Set G) := by
@@ -59,7 +59,7 @@ def smallCosets : Set (Set G) :=
   {s | ∃ x : G, ∃ N : Subgroup G, IsSmallNormal K N ∧ s = x • (N : Set G)}
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, N₁, hN₁, rfl⟩ _ ⟨y, N₂, hN₂, rfl⟩ ⟨z, hz₁, hz₂⟩`. Use `⟨z, N₁ ⊓ N₂, ⟨hN₁.1.inter hN₂.1, inf_le_of_left_le hN₁.2.1, fun k hk w hw => ⟨hN₁.2.2 k hk w hw.1, hN₂.2.2 k hk w hw.2⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_coe_eq_of_mem hz₁, smul_coe_eq_of_mem hz₂, ← Set.smul_set_inter, Subgroup.coe_inf]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPiSystem_smallCosets : IsPiSystem (smallCosets K) := by
   rintro _ ⟨x, N₁, hN₁, rfl⟩ _ ⟨y, N₂, hN₂, rfl⟩ ⟨z, hz₁, hz₂⟩
@@ -70,15 +70,13 @@ theorem isPiSystem_smallCosets : IsPiSystem (smallCosets K) := by
 variable {K}
 
 /- English proof (translation)
-Use `le_antisymm ?_ (MeasurableSpace.generateFrom_le ?_)` and prove the remaining obligations. Rewrite using `[BorelSpace.measurable_eq (α := G)]`. Use `MeasurableSpace.generateFrom_le fun U hU => ?_` and prove the remaining obligations. Set `ι` to `{q : G × Subgroup G // IsSmallNormal K q.2 ∧ q.1 • (q.2 : Set G) ⊆ U}`. Set `s : ι → Set G` to `fun q => q.1.1 • (q.1.2 : Set G)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hU' : U = ⋃ q, s q`. Use `Subset.antisymm (fun y hy => ?_) (iUnion_subset fun q => q.2.2)` and prove the remaining obligations. Establish `: y⁻¹ • U ∈ 𝓝 (1 : G)`. Use `(hU.smul y⁻¹).mem_nhds ?_` and prove the remaining obligations. Conclude with `⟨y, hy, inv_mul_cancel y⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Take `⟨N, hN, hNU⟩` from `hN _ this`. Use `mem_iUnion.2 ⟨⟨(y, N), hN, ?_⟩, ⟨1, N.one_mem, mul_one y⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Take `⟨u, hu, hua⟩` from `hNU ha`. Rewrite using `[← hua]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show y * (y⁻¹ * u) ∈ U`. Rewrite using `[mul_inv_cancel_left]`. Conclude with `hu`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable s fun q => q.2.1.1.smul _`. Rewrite using `[hU', ← hT]`.
-
-Conclude with `MeasurableSet.biUnion hTc fun q _ => MeasurableSpace.measurableSet_generateFrom ⟨q.1.1, q.1.2, q.2.1, rfl⟩`. Introduce and unpack `_ ⟨x, N, hN, rfl⟩`. Conclude with `(hN.1.smul x).measurableSet`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem borel_eq_generateFrom_smallCosets
     (hN : ∀ U ∈ 𝓝 (1 : G), ∃ N : Subgroup G, IsSmallNormal K N ∧ (N : Set G) ⊆ U) :
@@ -109,45 +107,43 @@ theorem borel_eq_generateFrom_smallCosets
     exact (hN.1.smul x).measurableSet
 
 /- English proof (translation)
-Establish `hN : ∀ U ∈ 𝓝 (1 : G), ∃ N : Subgroup G, IsSmallNormal K N ∧ (N : Set G) ⊆ U`. Introduce `U hU`. Take `⟨N, -, hNU, hNK⟩` from `exists_compactOpenSubgroup_normalized hKc (inter_mem hU (hKo.mem_nhds K.one_mem))`. Conclude with `⟨N, ⟨N.isOpen, fun x hx => (hNU hx).2, hNK⟩, fun x hx => (hNU hx).1⟩`. Establish `: LocallyCompactSpace P` using `hP.locallyCompactSpace`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hKc`. Establish `: SecondCountableTopology P` using `IsEmbedding.subtypeVal.secondCountableTopology`. Establish `: SecondCountableTopology K` using `IsEmbedding.subtypeVal.secondCountableTopology`. Establish `: BorelSpace P` using `Subtype.borelSpace (P : Set G)`. Establish `: BorelSpace K` using `Subtype.borelSpace (K : Set G)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : P × K → G := fun x => (x.1 : G) * x.2 with hm_def`. Establish `hm : Measurable m` using `(measurable_subtype_coe.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)`. Use `set ν := map m (μP.prod μK) with hν`. Establish `hleft : ∀ p : P, map ((p : G) * ·) ν = ν`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hν, map_map (continuous_const_mul _).measurable hm]`. Establish `: ((p : G) * ·) ∘ m = m ∘ Prod.map (p * ·) id`. Use function extensionality and compare the values at `x`. Simplify using `[m, mul_assoc]`. Rewrite using `[this, ← map_map hm ((continuous_const_mul p).measurable.prodMap measurable_id), ← map_prod_map _ _ (continuous_const_mul p).measurable measurable_id, map_mul_left_eq_self, Measure.map_id]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hright : ∀ k : K, map (· * (k : G)) ν = ν`. Introduce `k`. Rewrite using `[hν, map_map (continuous_mul_const _).measurable hm]`. Establish `: (· * (k : G)) ∘ m = m ∘ Prod.map id (· * k)`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[m, mul_assoc]`. Rewrite using `[this, ← map_map hm (measurable_id.prodMap (continuous_mul_const k).measurable), ← map_prod_map _ _ measurable_id (continuous_mul_const k).measurable, map_mul_right_eq_self_of_compactSpace, Measure.map_id]`. Establish `hνK : ν K = μP (Subtype.val ⁻¹' (K : Set G)) * μK univ`. Rewrite using `[hν, map_apply hm hKo.measurableSet]`. Establish `: m ⁻¹' (K : Set G) = (Subtype.val ⁻¹' (K : Set G)) ×ˢ (univ : Set K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `⟨p, k⟩`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Set.mem_prod, Set.mem_univ, and_true, m]`. Conclude with `K.mul_mem_cancel_right k.2`. Rewrite using `[this, prod_prod]`. Establish `hPKc : IsCompact (Subtype.val ⁻¹' (K : Set G) : Set P)` using `hP.isClosedEmbedding_subtypeVal.isCompact_preimage hKc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hνKfin : ν K ≠ ∞`. Rewrite using `[hνK]`. Conclude with `ENNReal.mul_ne_top hPKc.measure_lt_top.ne (measure_ne_top _ _)`. Establish `hcoset : ∀ N, IsSmallNormal K N → ∀ x : G, ν (x • (N : Set G)) = ν N`. Introduce `N hN x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨p, hp, k, hk, rfl⟩` from `hPK x`. Establish `h1 : ν ((p * k) • (N : Set G)) = ν (k • (N : Set G))`. Use `congrArg (fun μ : Measure G => μ ((p * k) • (N : Set G))) (hleft ⟨p, hp⟩)` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[map_apply (continuous_const_mul _).measurable (hN.1.smul _).measurableSet]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_smul_set_iff_inv_smul_mem, smul_eq_mul]`. Rewrite using `[show (p * k)⁻¹ * (p * y) = k⁻¹ * y by group]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ν (k • (N : Set G)) = ν N`. Use `congrArg (fun μ : Measure G => μ N) (hright ⟨k⁻¹, K.inv_mem hk⟩)` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[map_apply (continuous_mul_const _).measurable hN.1.measurableSet]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_smul_set_iff_inv_smul_mem, smul_eq_mul, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hN.2.2 k hk _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `h`. Use `hN.2.2 k⁻¹ (K.inv_mem hk) _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Establish `hfin : ∀ N, IsSmallNormal K N → ∀ x : G, ν (x • (N : Set G)) ≠ ∞` using `fun N hN x => by`. Rewrite using `[hcoset N hN x]`. Conclude with `ne_top_of_le_ne_top hνKfin (measure_mono hN.2.1)`. Establish `hKsmall : IsSmallNormal K K` using `⟨hKo, le_rfl, fun k hk y hy => K.mul_mem (K.mul_mem hk hy) (K.inv_mem hk)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B : ℕ → G, ⋃ i, B i • (K : Set G) = univ := by`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun x : G => x • (K : Set G)) fun x => hKo.smul x`. Establish `hU : ⋃ x : G, x • (K : Set G) = univ` using `eq_univ_of_forall fun y => mem_iUnion.2 ⟨y, ⟨1, K.one_mem, mul_one y⟩⟩`. Establish `hTne : T.Nonempty`. Assume the negation of the conclusion as `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`. Rewrite `hT` using `[h, hU]`. Conclude with `Set.empty_ne_univ (by simpa using hT)`. Take `⟨f, rfl⟩` from `hTc.exists_eq_range hTne`. Use `⟨f, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hU, ← hT, Set.biUnion_range]`. Establish `hpre : ∀ (g x : G) (S : Set G), ((g * ·) ⁻¹' (x • S)) = (g⁻¹ * x) • S`. Introduce `g x S`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_smul_set_iff_inv_smul_mem, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show x⁻¹ * (g * y) = (g⁻¹ * x)⁻¹ * y by group]`. Establish `hinv : ν.IsMulLeftInvariant` using `⟨fun g => by`. Use `ext_of_generateFrom_of_iUnion (smallCosets K) (fun i => B i • (K : Set G)) (borel_eq_generateFrom_smallCosets hN) (isPiSystem_smallCosets K) hB (fun i => ⟨B i, K, hKsmall, rfl⟩) (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_apply (continuous_const_mul g).measurable (hKo.smul _).measurableSet, hpre]`. Conclude with `hfin K hKsmall _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, N, hN', rfl⟩`. Rewrite using `[map_apply (continuous_const_mul g).measurable (hN'.1.smul _).measurableSet, hpre, hcoset N hN', hcoset N hN']⟩`. Establish `hfc : IsFiniteMeasureOnCompacts ν` using `⟨fun C hC => by`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun x : G => x • (K : Set G)) (fun x => hKo.smul x) fun y _ => mem_iUnion.2 ⟨y, ⟨1, K.one_mem, mul_one y⟩⟩`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `e` using `isMulLeftInvariant_eq_smul ν μG`. Rewrite using `[← hνK, e]`. Use extensionality with `s hs`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem map_mul_prod_eq_smul [TotallyDisconnectedSpace G] (P K : Subgroup G)
     (hP : IsClosed (P : Set G))
@@ -277,11 +273,11 @@ theorem map_mul_prod_eq_smul [TotallyDisconnectedSpace G] (P K : Subgroup G)
   ring
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace P` using `hP.locallyCompactSpace`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hKc`. Establish `: SecondCountableTopology P` using `IsEmbedding.subtypeVal.secondCountableTopology`. Establish `: SecondCountableTopology K` using `IsEmbedding.subtypeVal.secondCountableTopology`. Establish `: BorelSpace P` using `Subtype.borelSpace (P : Set G)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace K` using `Subtype.borelSpace (K : Set G)`. Establish `hm : Measurable fun x : P × K => (x.1 : G) * x.2` using `(measurable_subtype_coe.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)`. Establish `h` using `congrArg (fun μ : Measure G => ∫⁻ g, f g ∂μ) (map_mul_prod_eq_smul P K hP hKo hKc hPK μG μP μK)`. Simplify using `only [lintegral_smul_measure, smul_eq_mul] at h`. Rewrite `h` using `[lintegral_map hf hm, lintegral_prod (fun x : P × K => f ((x.1 : G) * x.2)) (hf.comp hm).aemeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_mul_prod_eq [TotallyDisconnectedSpace G] (P K : Subgroup G)
     (hP : IsClosed (P : Set G))
@@ -308,17 +304,15 @@ theorem lintegral_mul_prod_eq [TotallyDisconnectedSpace G] (P K : Subgroup G)
   exact h
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace P` using `hP.locallyCompactSpace`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hKc`. Establish `: SecondCountableTopology P` using `IsEmbedding.subtypeVal.secondCountableTopology`. Establish `: SecondCountableTopology K` using `IsEmbedding.subtypeVal.secondCountableTopology`. Establish `: BorelSpace P` using `Subtype.borelSpace (P : Set G)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace K` using `Subtype.borelSpace (K : Set G)`. Establish `hm : Measurable fun x : P × K => (x.1 : G) * x.2` using `(measurable_subtype_coe.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)`. Establish `key` using `map_mul_prod_eq_smul P K hP hKo hKc hPK μG μP μK`. Use `set ν := map (fun x : P × K => (x.1 : G) * x.2) (μP.prod μK)`. Use `set d : ℝ≥0∞ := μP (Subtype.val ⁻¹' (K : Set G)) * μK univ with hd_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : μG K ≠ 0` using `hKo.measure_ne_zero μG ⟨1, K.one_mem⟩`. Establish `hcT : μG K ≠ ∞` using `hKc.measure_lt_top.ne`. Establish `hPKc : IsCompact (Subtype.val ⁻¹' (K : Set G) : Set P)` using `hP.isClosedEmbedding_subtypeVal.isCompact_preimage hKc`. Establish `hdT : d ≠ ∞` using `ENNReal.mul_ne_top hPKc.measure_lt_top.ne (measure_ne_top _ _)`. Establish `hν : ν = ((μG K)⁻¹ * d) • μG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_smul, ← key, smul_smul, ENNReal.inv_mul_cancel hc0 hcT, one_smul]`. Establish `hfν : Integrable f ν`. Rewrite using `[hν]`. Conclude with `hf.smul_measure (ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hc0) hdT)`. Establish `hfm : Integrable (fun x : P × K => f ((x.1 : G) * x.2)) (μP.prod μK)` using `(integrable_map_measure hfν.aestronglyMeasurable hm.aemeasurable).1 hfν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∫ g, f g ∂ν = ∫ p, ∫ k, f ((p : G) * k) ∂μK ∂μP`. Rewrite using `[integral_map hm.aemeasurable hfν.aestronglyMeasurable]`. Conclude with `integral_prod _ hfm`. Establish `h2 : ∫ g, f g ∂ν = ((μG K)⁻¹ * d).toReal • ∫ g, f g ∂μG`. Rewrite using `[hν, integral_smul_measure]`.
-
-Rewrite using `[← h1, h2, smul_smul, ENNReal.toReal_mul, ENNReal.toReal_inv, ← mul_assoc, Measure.real, mul_inv_cancel₀ (ENNReal.toReal_ne_zero.2 ⟨hc0, hcT⟩), one_mul, hd_def, ENNReal.toReal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_mul_prod_eq [TotallyDisconnectedSpace G] (P K : Subgroup G)
     (hP : IsClosed (P : Set G))
@@ -372,7 +366,7 @@ variable (F : Type*) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
 
 /- English proof (translation)
-The claim follows from `lintegral_mul_prod_eq _ _ (isClosed_blockUpper F n β) (GLnLocal.isOpen_integralGL F n) (GLnLocal.isCompact_integralGL F n) (Iwasawa.exists_blockUpper_mul_integralGL F n hβ) μG μP μK hf`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_parabolic_integralGL (hβ : Monotone β) (μG : Measure (GL (Fin n) F))
     [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β)) [μP.IsHaarMeasure]
@@ -386,7 +380,7 @@ theorem lintegral_parabolic_integralGL (hβ : Monotone β) (μG : Measure (GL (F
     μG μP μK hf
 
 /- English proof (translation)
-Establish `h` using `lintegral_parabolic_integralGL F n hβ μG μP μK hf`. Rewrite `h` using `[hG, hP, hK, one_mul, one_mul, one_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_eq_lintegral_parabolic_integralGL (hβ : Monotone β)
     (μG : Measure (GL (Fin n) F)) [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β))
@@ -400,7 +394,7 @@ theorem lintegral_eq_lintegral_parabolic_integralGL (hβ : Monotone β)
   exact h.symm
 
 /- English proof (translation)
-The claim follows from `integral_mul_prod_eq _ _ (isClosed_blockUpper F n β) (GLnLocal.isOpen_integralGL F n) (GLnLocal.isCompact_integralGL F n) (Iwasawa.exists_blockUpper_mul_integralGL F n hβ) μG μP μK hf`.
+A detailed English derivation is pending.
 -/
 theorem integral_parabolic_integralGL (hβ : Monotone β) (μG : Measure (GL (Fin n) F))
     [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β)) [μP.IsHaarMeasure]
@@ -415,7 +409,7 @@ theorem integral_parabolic_integralGL (hβ : Monotone β) (μG : Measure (GL (Fi
     μG μP μK hf
 
 /- English proof (translation)
-Establish `h` using `integral_parabolic_integralGL F n hβ μG μP μK hf`. Simplify using `only [Measure.real, hG, hP, hK, ENNReal.toReal_one, one_mul, one_smul] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_eq_integral_parabolic_integralGL (hβ : Monotone β)
     (μG : Measure (GL (Fin n) F)) [μG.IsHaarMeasure] (μP : Measure (Iwasawa.blockUpper F n β))

@@ -18,13 +18,11 @@ variable {E V : Type} [CommRing E] [AddCommGroup V] [Module E V] {m : ℕ}
 def tup (t : E) (g g' : Fin m → V) : Fin m ⊕ Fin m → V := Sum.elim g fun b => t • (g' b - g b)
 
 /- English proof (translation)
-Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `key` using `hli (Sum.elim (fun a => c (Sum.inl a) - t * c (Sum.inr a)) fun b => t * c (Sum.inr b)) (by`. Rewrite using `[← hc]`. Simplify using `only [Fintype.sum_sum_type, tup, Sum.elim_inl, Sum.elim_inr, ← Finset.sum_add_distrib]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [sub_smul, smul_sub, smul_smul, mul_comm t]`. Use the proof step `abel)`. Establish `h2 : ∀ b, c (Sum.inr b) = 0` using `fun b => by`. Use `key (Sum.inr b)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inr] at this`. Take the linear combination `θ * this - c (Sum.inr b) * h`. Introduce and unpack `(a | b)`. Use `key (Sum.inl a)` as an intermediate fact. Simplify `this` using `[h2]`.
-
-Conclude with `h2 b`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tup_indep {t θ : E} (h : θ * t = 1) {g g' : Fin m → V}
     (hli : LinearIndependent E (Sum.elim g g')) : LinearIndependent E (tup t g g') := by
@@ -47,9 +45,9 @@ theorem tup_indep {t θ : E} (h : θ * t = 1) {g g' : Fin m → V}
   · exact h2 b
 
 /- English proof (translation)
-Apply the tactic sequence `apply le_antisymm <;> rw [Submodule.span_le]`. Introduce and unpack `_ ⟨a | b, rfl⟩`. Conclude with `Submodule.subset_span ⟨Sum.inl a, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩) (Submodule.subset_span ⟨Sum.inl b, rfl⟩))`. Introduce and unpack `_ ⟨a | b, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span ⟨Sum.inl a, rfl⟩`. Establish `: Sum.elim g g' (Sum.inr b) = tup t g g' (Sum.inl b) + θ • tup t g g' (Sum.inr b)`. Simplify using `[tup, smul_smul, h]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨Sum.inl b, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tup_span {t θ : E} (h : θ * t = 1) (g g' : Fin m → V) :
     Submodule.span E (Set.range (tup t g g')) = Submodule.span E (Set.range (Sum.elim g g')) := by
@@ -67,7 +65,7 @@ theorem tup_span {t θ : E} (h : θ * t = 1) (g g' : Fin m → V) :
         (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩))
 
 /- English proof (translation)
-Break down `j with j | j` into its components or cases. Simplify using `[tup, Fintype.sum_sum_type, hp]`. Simplify using `only [tup, Fintype.sum_sum_type, hp, hp', Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, Finset.smul_sum, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `module`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tup_change (t : E) (g g' p p' : Fin m → V) (u u' : Matrix (Fin m) (Fin m) E)
     (hp : ∀ j, p j = ∑ i, u i j • g i) (hp' : ∀ j, p' j = ∑ i, u' i j • g' i) (j) :
@@ -81,7 +79,7 @@ theorem tup_change (t : E) (g g' p p' : Fin m → V) (u u' : Matrix (Fin m) (Fin
     module
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => h0 i j hij)]`. Simplify using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_uni (s : Matrix (Fin m) (Fin m) E) (h0 : ∀ i j, j < i → s i j = 0) (h1 : ∀ i, s i i = 1) :
     s.det = 1 := by
@@ -89,7 +87,7 @@ theorem det_uni (s : Matrix (Fin m) (Fin m) E) (h0 : ∀ i j, j < i → s i j = 
   simp [h1]
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by rw [mul_comm]` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem comb_mul (g : Fin m → V) (s A : Matrix (Fin m) (Fin m) E) (j : Fin m) :
     ∑ i, A i j • ∑ l, s l i • g l = ∑ l, (s * A) l j • g l := by
@@ -103,13 +101,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' (gramT L H x))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `α hα`. Establish `h1 : ∑ i, α i • x i = 0`. Use `Submodule.disjoint_def.1 hd _ ((Submodule.mem_span_range_iff_exists_fun E).2 ⟨α, rfl⟩) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[FrameBasic.mem_perp_span L h]`. Introduce `j`. Express the relevant statement in the definitionally equal form `FrameBasic.hfL L H (x j) _ = 0`. Rewrite using `[map_sum]`. Use `Eq.trans ?_ (congrFun hα j)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec, dotProduct, gramT, Matrix.of_apply, map_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hli α h1 i`. Establish `hb` using `IsArtinian.bijective_of_injective_endomorphism _ hinj`.
-
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.isUnit_toLin'_iff]`. Conclude with `(Module.End.isUnit_iff _).2 hb`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_unit (L : LocE F E) [IsArtinianRing E] {n m : ℕ} {H : Matrix (Fin n) (Fin n) E}
     (h : IsHerm L H) (x : Fin m → Fin n → E) (hli : LinearIndependent E x)
@@ -135,7 +131,7 @@ theorem gram_unit (L : LocE F E) [IsArtinianRing E] {n m : ℕ} {H : Matrix (Fin
   exact (Module.End.isUnit_iff _).2 hb
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isLat_std (L : LocE F E) (n : ℕ) :
     IsLat L (Submodule.span L.O (Set.range fun i => (Pi.single i 1 : Fin n → E))) := by
@@ -146,19 +142,19 @@ theorem isLat_std (L : LocE F E) (n : ℕ) :
   exact Submodule.subset_span ⟨i, by simp⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S`. Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Establish `: IsArtinianRing E` using `IsArtinianRing.of_finite F E`. Take `⟨hli, hco, -, -, -, hth, -⟩` from `FrameBasic.main L r k S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hN, hN', -⟩` from `FrameOnto.unipotent_onto L r k S`. Set `e : Fin (r + 1) ⊕ Fin (r + 1) ≃ Fin (2 * r + 2)` to `finSumFinEquiv.trans (finCongr (by omega))`. Establish `hθ : algebraMap F E S.th * algebraMap F E S.th⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hth, map_one]`. Establish `hME : S.ME = Submodule.span E (Set.range (Sum.elim S.f S.f'))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ`. Use extensionality with `i`. Simplify using `using i.2`. Simplify using `only [Frames.ME, Frames.spanTo, hs, Set.image_univ, Set.Sum.elim_range, Submodule.span_union]`. Establish `hspan : Submodule.span E (Set.range (tup (algebraMap F E S.th⁻¹) S.f S.f' ∘ e.symm)) = S.ME`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e.symm.surjective.range_comp, tup_span hθ, hME]`. Use `⟨tup (algebraMap F E S.th⁻¹) S.f S.f' ∘ e.symm, ?_, hspan, rfl, isLat_std L _, fun _ => rfl, ?_⟩` and prove the remaining obligations. Use `gram_unit L S.herm.1 _ ((tup_indep hθ hli).comp _ e.symm.injective) ?_` and prove the remaining obligations. Rewrite using `[hspan]`. Conclude with `hco.disjoint`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `C ⟨n, hn, n', hn', rfl⟩ p ⟨A, A', -, -, h0, h1, -, hp, hp'⟩`. Take `⟨s, ⟨hs0, hs1⟩, hs⟩` from `hN n hn`. Take `⟨s', ⟨hs0', hs1'⟩, hs'⟩` from `hN' n' hn'`. Simplify using `only [hs, hs', comb_mul] at hp hp'`. Use `⟨tup (algebraMap F E S.th⁻¹) p.1 p.2 ∘ e.symm, (Matrix.fromBlocks (s * A) (algebraMap F E S.th⁻¹ • (s' * A' - s * A)) 0 (s' * A')).submatrix e.symm e.symm, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_mul, Matrix.det_mul, det_uni s hs0 hs1, det_uni s' hs0' hs1', det_uni A (fun i j h => (h0 i j h).1) fun i => (h1 i).1, det_uni A' (fun i j h => (h0 i j h).2) fun i => (h1 i).2]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `j`. Rewrite using `[Function.comp_apply, tup_change _ S.f S.f' p.1 p.2 _ _ hp hp', rmul]`. Conclude with `(e.symm.sum_comp _).symm`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e.symm.surjective.range_comp, tup, Set.Sum.elim_range]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∃ x : Fin (2 * r + 2) → S.V, IsUnit (gramT L S.Hm x).det ∧ Submodule.span E (Set.range x) = S.ME ∧ S.H0 = fixG L S.Hm S.ME ∧ IsLat L (Submodule.span L.O (Set.range fun i => (Pi.single i 1 : S.V))) ∧ (∀ Mh, S.massSig Mh = sigMass L S.Hm S.ME (Submodule.span L.O (Set.range fun i => (Pi.single i 1 : S.V))) Mh) ∧ ∀ C, S.IsCls C → ∀ p ∈ C, ∃ (y : Fin (2 * r + 2) → S.V) (B : Matrix (Fin (2 * r + 2)) (Fin (2 * r + 2)) E), B.det * L.cj B.det = 1 ∧ y = rmul x B ∧ S.Mof p.1 p.2 = Submodule.span L.O (Set.range y) := by
   intro F _ _ _ _ _ E _ _ _ L r k S

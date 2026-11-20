@@ -5,27 +5,25 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ F' Ω' _ _ _ _ _ f σ hσ`. Establish `hc : ∀ g : G F' Ω', ∀ x : F, ((σ.trans g.toRingEquiv).trans σ.symm) (algebraMap F Ω x) = algebraMap F Ω x`. Introduce `g x`. Simplify using `only [RingEquiv.trans_apply, hσ, AlgEquiv.toRingEquiv_eq_coe, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes]`. Rewrite using `[← hσ, RingEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `φ : G F' Ω' →* G F Ω` to `{ toFun := fun g => AlgEquiv.ofRingEquiv (hc g) map_one' := by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `a b`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `}`. Establish `hφ : ∀ g x, φ g x = σ.symm (g (σ x))` using `fun _ _ => rfl`. Use `haveI : Algebra.IsAlgebraic F' Ω' := IsAlgClosure.isAlgebraic`. Use `⟨φ, ?_, fun g x => by rw [hφ, σ.apply_symm_apply], ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one, Filter.tendsto_def]`. Introduce `U hU`. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff F Ω U).1 hU`. Set `b` to `Module.finBasis F E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV : (⋂ i, {g : G F' Ω' | g (σ (b i)) = σ (b i)}) ∈ nhds (1 : G F' Ω')` using `Filter.iInter_mem.2 fun i => IsOpen.mem_nhds (isOpen_setOf_apply (σ (b i)) (fun y => y = σ (b i))) rfl`. Use `Filter.mem_of_superset hV ?_` and prove the remaining obligations. Introduce `g hg`. Apply `hEU` to reduce the goal to its premises. Establish `hb : ∀ i, φ g (b i) = b i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hφ, Set.mem_iInter.1 hg i, RingEquiv.symm_apply_apply]`. Use `show φ g ∈ fixingSubgroup (G F Ω) (E : Set Ω)`. Rewrite using `[mem_fixingSubgroup_iff]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[AlgEquiv.smul_def]`. Establish `hs` using `congrArg (fun z : E => (z : Ω)) (b.sum_repr ⟨y, hy⟩)`. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul] at hs`. Rewrite using `[← hs, map_sum]`. Simplify using `[map_smul, hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `l _ g haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective haveI : CharZero Ω' := charZero_of_injective_algebraMap (algebraMap F' Ω').injective haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F haveI : IsAlgClosed Ω' := IsAlgClosure.isAlgClosed F'`. Simplify using `only [cycZ, MonoidHom.comp_apply]`. Use `(KStar.TotallyRealRoots.cyclotomicCharacter_conj σ _ _ fun x => ?_).symm` and prove the remaining obligations. Use `show g (σ x) = σ (φ g x)`. Rewrite using `[hφ, σ.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a b h`. Use extensionality with `y`. Use `congrArg (fun k : G F Ω => k (σ.symm y)) h` as an intermediate fact. Simplify `this` using `[hφ]`. Introduce `hf h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : ∀ y : F', ((σ.symm.trans h.toRingEquiv).trans σ) (algebraMap F' Ω' y) = algebraMap F' Ω' y`. Introduce `y`. Take `⟨x, rfl⟩` from `hf y`. Rewrite using `[← hσ]`. Simplify using the standard rewrite rules.
-
-Conclude with `⟨AlgEquiv.ofRingEquiv hc', by ext x; simp [hφ]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.galTransport :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (F' Ω' : Type) [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (f : F →+* F') (σ : Ω ≃+* Ω'), (∀ x, σ (algebraMap F Ω x) = algebraMap F' Ω' (f x)) →

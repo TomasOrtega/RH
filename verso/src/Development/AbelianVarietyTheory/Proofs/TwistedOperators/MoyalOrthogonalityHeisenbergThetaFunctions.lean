@@ -23,25 +23,21 @@ open GlobalTheory.Asc
 namespace GlobalTheory.MoyalTheta
 
 /- English proof (translation)
-Introduce `D ψ hψ S T v f f₀ hf hf₀`. Establish `hv : IsCovolOne (ratL T S) v.μ v.𝓕` using `v.covol`. Take `⟨hμ, h𝓕, h1⟩` from `hv`. Take `⟨i1, i2, i3, i4, i5, -, -, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : IsTopologicalAddGroup (WO S T) := i1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : LocallyCompactSpace (WO S T) := i2`. Use `haveI : SecondCountableTopology (WO S T) := i3`. Use `haveI : T2Space (WO S T) := i4`. Use `haveI : DiscreteTopology (ratL T S) := i5`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := hμ`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨-, -, -, -, hcont, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Establish `hcc` using `GlobalTheory.T.continuous_thetaMatrixCoeff_heisenbergTranslate D ψ hψ S T v.μ v.𝓕 v.covol f f₀ hf hf₀`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `GlobalTheory.T.rationalTranslateSum_bounded_rapidDecay D ψ hψ θ hθ S T _ (GlobalTheory.T.thetaMatrixCoeff_eq_zero_unless_orthogonal_level D ψ hψ S T v.μ v.𝓕 v.covol f f₀ hf hf₀) (GlobalTheory.T.thetaMatrixCoeff_polynomialDecay_realDirections D ψ hψ θ hθ S T v.μ v.𝓕 v.covol f f₀ h …`. Establish `hint : Integrable (fun w => thPair v.μ v.𝓕 f (heisO ψ S T w f₀)) v.μ` using `GlobalTheory.T.integrable_of_tsum_norm_translate_le (WO S T) (ratL T S) v.μ inferInstance v.𝓕 h𝓕 (by rw [h1]; exact ENNReal.one_lt_top) _ hcc C hC`. Use `⟨hint, fun x => ?_⟩` and prove the remaining obligations. Establish `hψn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Establish `hgc : Continuous fun w => heisO ψ S T w f₀ x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `heisO`. Conclude with `(hψ.1.1.comp (hcont.comp (continuous_const.prodMk continuous_id))).mul (hf₀.cont.comp (continuous_const.add continuous_id))`. Take `⟨-, ⟨B, hB⟩, -⟩` from `GlobalTheory.ThetaSquare.squareIntegrable hψ f₀ hf₀`. Establish `hgb : ∃ B : ℝ, ∀ w, ‖heisO ψ S T w f₀ x‖ ≤ B` using `⟨B, fun w => by rw [GlobalTheory.ThetaSquare.norm_heisO hψ]; exact hB _⟩`. Rewrite using `[GlobalTheory.T.integral_eq_setIntegral_tsum_of_fundamentalDomain (WO S T) (ratL T S) v.μ inferInstance v.𝓕 h𝓕 _ _ hint hgc hgb]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Repeatedly rewrite using `[GlobalTheory.T.fourierInversion_thetaMatrixCoeff_rationalTranslates D ψ hψ S T v.μ v.𝓕 v.covol f f₀ hf hf₀ _ x (hC _).1]`. Establish `e : ∀ w, f x * star (heisO ψ S T w f₀ x) * heisO ψ S T w f₀ x = f x * (f₀ (w + x) * star (f₀ (w + x)))`. Introduce `w`. Establish `hu : star (ψ (symplOH S T x w)) * ψ (symplOH S T x w) = 1`. Rewrite using `[Complex.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hψn]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Unfold `heisO`. Rewrite using `[star_mul, add_comm x w]`. Take the linear combination `(f x * f₀ (w + x) * star (f₀ (w + x))) * hu`. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul]`. Establish `hper : ∀ γ ∈ ratL T S, ∀ w : WO S T, f₀ (γ + w) * star (f₀ (γ + w)) = f₀ w * star (f₀ w)`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Establish `hq` using `hf₀.quasi γ w`. Establish `hu : ψ (-(symplOH S T (ratW T S γ) w)) * star (ψ (-(symplOH S T (ratW T S γ) w))) = 1`.
-
-Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hψn]`. Evaluate the numerical expressions. Express the relevant statement in the definitionally equal form `f₀ (ratW T S γ + w) * star (f₀ (ratW T S γ + w)) = _`. Rewrite using `[hq, star_mul]`. Take the linear combination `(f₀ w * star (f₀ w)) * hu`.
-
-Rewrite using `[GlobalTheory.CompactQuotientFourier.setIntegral_translate (ratL T S) v.μ v.𝓕 h𝓕 (fun w => f₀ w * star (f₀ w)) hper x]`. Unfold `thPair`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem orthogonality : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (v : VolM D T.rank S.rank) f f₀, IsThetaFunO ψ S T f → IsThetaFunO ψ S T f₀ → Integrable (fun w => thPair v.μ v.𝓕 f (heisO ψ S T w f₀)) v.μ ∧ ∀ x, ∫ w, thPair v.μ v.𝓕 f (heisO ψ S T w f₀) * heisO ψ S T w f₀ x ∂v.μ = thPair v.μ v.𝓕 f₀ f₀ * f x := by
   intro D ψ hψ S T v f f₀ hf hf₀

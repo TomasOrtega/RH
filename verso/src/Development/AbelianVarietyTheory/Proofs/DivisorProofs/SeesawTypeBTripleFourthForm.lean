@@ -18,7 +18,7 @@ open Matrix GlobalTheory.IsoCoord GlobalTheory.PlaneBasis
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
 /- English proof (translation)
-Establish `hD : (Cᵀ * J.map t * I.map (t.comp σ)) i k = (fun r => C r i) ⬝ᵥ (J.map t *ᵥ fun r => t (σ (I r k)))`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[hD, funext h, dot_form]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_entry (t : E →ₐ[F] Fv F v) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (C : Matrix (Fin n) (Fin n) (Fv F v))
     (I : Matrix (Fin n) (Fin m) E) (i : Fin n) (k : Fin m) (y : Fin n → E) (h : ∀ r, C r i = t (y r)) :
@@ -29,14 +29,14 @@ theorem gram_entry (t : E →ₐ[F] Fv F v) {n m : ℕ} (J : Matrix (Fin n) (Fin
   rw [hD, funext h, dot_form]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem triple_entry {R : Type} [CommRing R] {n m d e : ℕ} (A : Matrix (Fin n) (Fin m) R) (z : Matrix (Fin m) (Fin e) R)
     (C : Matrix (Fin d) (Fin e) R) (i : Fin n) (j : Fin d) : (A * z * Cᵀ) i j = A i ⬝ᵥ (z *ᵥ C j) := by
   rw [Matrix.mul_assoc]; rfl
 
 /- English proof (translation)
-Establish `hP' : IsUnit Pᵀ.det` using `by rwa [det_transpose]`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Rewrite using `[nonsing_inv_mul_cancel_left _ _ hP', mul_nonsing_inv _ hQ, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem co_eq {R : Type} [Field R] {n m d e : ℕ} (P A : Matrix (Fin n) (Fin n) R) (Q C : Matrix (Fin d) (Fin d) R)
     (hP : IsUnit P.det) (hQ : IsUnit Q.det) (I : Matrix (Fin n) (Fin m) R) (I' : Matrix (Fin d) (Fin e) R)
@@ -47,9 +47,9 @@ theorem co_eq {R : Type} [Field R] {n m d e : ℕ} (P A : Matrix (Fin n) (Fin n)
   rw [nonsing_inv_mul_cancel_left _ _ hP', mul_nonsing_inv _ hQ, Matrix.mul_one]
 
 /- English proof (translation)
-Use `⟨fun h => funext fun k => ?_, fun h => funext fun k => ?_, fun k h => funext fun l => ?_⟩` and prove the remaining obligations. Use `form_swap hcm ε hJ (fun r => H.ι r k) H.x` as an intermediate fact. Rewrite `this` using `[(orth_col hH k).1, map_zero]`. Apply the tactic sequence `rw [gram_entry t _ _ _ i k H.x h, (mul_eq_zero.1 this.symm).resolve_left hε, map_zero, Pi.zero_apply]`. Use `form_swap hcm ε hJ (fun r => H.ι r k) H.y` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[(orth_col hH k).2, map_zero]`. Apply the tactic sequence `rw [gram_entry t _ _ _ i k H.y h, (mul_eq_zero.1 this.symm).resolve_left hε, map_zero, Pi.zero_apply]`. Apply the tactic sequence `rw [gram_entry t _ _ _ i l (fun r => H.ι r k) h, gram_form, hH.gram]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_rows {B : Base F E} (hcm : IsCMExt F E σ) {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     {i₀ i₁ : ℕ} (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (ε : E) (hε : ε ≠ 0) (hJ : ∀ i j, σ (Y.J j i) = ε * Y.J i j)
@@ -71,17 +71,17 @@ variable {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} {
     {H' : Plane E (a + (b + 2)) (a + b)}
 
 /- English proof (translation)
-Rewrite using `[co_eq _ _ _ _ hP hQ]`. Unfold `crdP crdQ`. Use `congr 2`. Use extensionality with `i j`. Take `⟨p0, p1, p2⟩` from `gram_rows hB.cm hC.hH 1 one_ne_zero (fun i j => by rw [one_mul]; exact hG.hV'.herm i j) t (basV t H) i`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨q0, q1, q2⟩` from `gram_rows hB.cm hC.hH' (-1) (neg_ne_zero.2 one_ne_zero) (fun i j => by rw [neg_one_mul]; exact hG.hW.skew i j) t (basW t H') j`. Rewrite using `[Matrix.neg_apply, triple_entry]`. Distinguish the cases in `i0 : i.1 = 0`. Rewrite using `[p0 fun r => by simp only [basV, dif_pos i0]]`. Simplify using `[insS, i0]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `i1 : i.1 = b + 1`. Rewrite using `[p1 fun r => by simp only [basV, dif_neg i0, dif_pos i1]]`. Simplify using `[insS, i1]`. Rewrite using `[p2 ⟨i.1 - 1, by have := i.2; omega⟩ fun r => by simp only [basV, dif_neg i0, dif_neg i1]]`. Distinguish the cases in `j0 : j.1 = a`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[q0 fun r => by simp only [basW, dif_pos j0]]`. Simplify using `[insS, i0, i1, j0]`. Distinguish the cases in `j1 : j.1 = a + b + 1`. Rewrite using `[q1 fun r => by simp only [basW, dif_neg j0, dif_pos j1]]`. Establish `e1 : ¬ j.1 < a` using `by omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [insS, dif_neg i0, dif_neg i1, dif_neg e1, dif_neg j0, dif_pos j1]`. Simplify using the standard rewrite rules. Distinguish the cases in `j2 : j.1 < a`. Rewrite using `[q2 ⟨j.1, by omega⟩ fun r => by simp only [basW, dif_neg j0, dif_neg j1, dif_pos j2]]`. Simplify using `only [insS, dif_neg i0, dif_neg i1, dif_pos j2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.neg_apply, triple_entry]`. Rewrite using `[q2 ⟨j.1 - 1, by have := j.2; omega⟩ fun r => by simp only [basW, dif_neg j0, dif_neg j1, dif_neg j2]]`. Simplify using `only [insS, dif_neg i0, dif_neg i1, dif_neg j0, dif_neg j1, dif_neg j2]`. Rewrite using `[Matrix.neg_apply, triple_entry]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem co_embedded (hB : B.IsGood σ) (hG : G.IsGood B) (hC : CfgB B G G₁ H H') (t : E →ₐ[F] Fv F v)
     (hP : IsUnit (basV t H).det) (hQ : IsUnit (basW t H').det) (z : Matrix (Fin b) (Fin (a + b)) (Fv F v)) :
@@ -120,17 +120,17 @@ theorem co_embedded (hB : B.IsGood σ) (hG : G.IsGood B) (hC : CfgB B G G₁ H H
     rw [Matrix.neg_apply, triple_entry]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ L hLSB hheis _ ι ι₁ hι hι₁ Y φ hφ`. Take `⟨hP, hQ⟩` from `GlobalTheory.T.seesaw_type_b_triple_hypothesis_form B G G₁ H H' hC X om om' om₁ om₁' hT hT₁`. Establish `hN : IsUnit (G₁.V'.J.map B.τ₁).det` using `isUnit_iff_ne_zero.2 (det_map_ne_zero _ (GlobalTheory.isUnit_det_of_isHerm F E σ B b G₁.V' _ _ hT₁.geo.hV').ne_zero)`. Establish `hM : IsUnit (G₁.W.J.map B.τ₁)ᵀ.det`. Rewrite using `[det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.2 (det_map_ne_zero _ (det_ne_zero_skew hT₁.geo.hW))`. Take `⟨z, hz, z0, z1⟩` from `GlobalTheory.SplitComps.exists_mat_comps hT.base.cm B.v₁ B.τ₁ 0 (-((G₁.V'.J.map B.τ₁)⁻¹ * Y * (G₁.W.J.map B.τ₁)ᵀ⁻¹))`. Establish `hY : -(G₁.V'.J.map B.τ₁ * z.map (piW (B.τ₁.comp σ)) * (G₁.W.J.map B.τ₁)ᵀ) = Y`. Rewrite using `[z1]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_nonsing_inv_cancel_left _ _ hN, nonsing_inv_mul _ hM, Matrix.mul_one]`. Establish `hat : At (evFin F B.v₁) (incM F H.ι * z * (incM F H'.ι)ᵀ)`. Introduce `r hr`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hz r hr, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hinc : ∀ (t : E →ₐ[F] Fv F B.v₁) {m n : ℕ} (A : Matrix (Fin m) (Fin n) E), (incM F A).map (piW t) = A.map t` using `fun t _ _ A => Matrix.ext fun i j => piW_incl t (A i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ t : E →ₐ[F] Fv F B.v₁, (incM F H.ι * z * (incM F H'.ι)ᵀ).map (piW t) = H.ι.map t * z.map (piW t) * (H'.ι.map t)ᵀ`. Introduce `t`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hinc, hinc]`. Establish `hL` using `hι`. Establish `hL₁` using `hι₁`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.IsLinBar at hL hL₁`. Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one] at hL hL₁`. Establish `s` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hT.base.std.1 B.v₁ (GlobalTheory.LatVac.locCo G.M'.co B.v₁ (incM F H.ι * z * (incM F H'.ι)ᵀ)) φ hφ`. Establish `s₁` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hT.base.std.1 B.v₁ (GlobalTheory.LatVac.locCo G₁.M'.co B.v₁ z) _ (hLSB φ hφ)`. Use `⟨_, s, ?_, fun Z => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hheis z hz φ hφ, hL₁.trans z hz z0 _ (hLSB φ hφ) _ s₁ (GlobalTheory.VacBridge.rho_acts_locCo G₁.M'.co B.ψ B.v₁ z hz _)] beta_reduce`. Rewrite using `[hY, zero_add]`. Rewrite using `[hL.trans _ hat (by rw [hm, z0, Matrix.mul_zero, Matrix.zero_mul]) _ hφ _ s (GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ B.v₁ _ hat _)] beta_reduce`. Rewrite using `[hm, co_embedded hT.base hT.geo hC B.τ₁ hP hQ, hY]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_transl : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

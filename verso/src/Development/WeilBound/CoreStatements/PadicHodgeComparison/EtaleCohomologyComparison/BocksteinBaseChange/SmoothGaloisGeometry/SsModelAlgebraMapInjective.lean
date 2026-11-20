@@ -20,13 +20,13 @@ variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : 
 
 include hϖ h1 h2 in
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.semistable_model_ring_isDomain O ϖ hϖ m r h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem ssModel_isDomain : IsDomain (GlobalTheory.Et.ssModel O ϖ m r) := GlobalTheory.T.semistable_model_ring_isDomain O ϖ hϖ m r h1 h2
 
 include hϖ h1 h2 in
 /- English proof (translation)
-Use `haveI := ssModel_isDomain O ϖ hϖ m r h1 h2`. Introduce `h`. Establish `h0 : ϖ ∈ nonZeroDivisors O` using `mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero`. Use `GlobalTheory.LogCris.model_mul_eq_zero ϖ h0 (1 : GlobalTheory.Et.ssModel O ϖ m r) (by rw [h, zero_mul])` as an intermediate fact. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ssModel_algebraMap_ne_zero : algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ ≠ 0 := by
   haveI := ssModel_isDomain O ϖ hϖ m r h1 h2
@@ -37,9 +37,9 @@ theorem ssModel_algebraMap_ne_zero : algebraMap O (GlobalTheory.Et.ssModel O ϖ 
 
 include hϖ h1 h2 in
 /- English proof (translation)
-Use `haveI := ssModel_isDomain O ϖ hϖ m r h1 h2`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Assume the negation of the conclusion as `hc0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc0 hϖ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[map_mul, map_pow]`. Break down `mul_eq_zero.1 hc with h | h` into its components or cases. Conclude with `(u.isUnit.map (algebraMap O _)).ne_zero h`. Conclude with `ssModel_algebraMap_ne_zero O ϖ hϖ m r h1 h2 (pow_eq_zero_iff'.1 h).1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ssModel_algebraMap_injective : Function.Injective (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r)) := by
   haveI := ssModel_isDomain O ϖ hϖ m r h1 h2
@@ -54,9 +54,9 @@ theorem ssModel_algebraMap_injective : Function.Injective (algebraMap O (GlobalT
 
 include hϖ h1 h2 in
 /- English proof (translation)
-Establish `hd` using `ssModel_isDomain O ϖ hϖ m r h1 h2`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Establish `ht` using `ssModel_algebraMap_ne_zero O ϖ hϖ m r h1 h2`. Establish `hred` using `GlobalTheory.T.semistable_special_fibre_property O ϖ hϖ m r h1 h2`. Establish `hs` using `GlobalTheory.T.semistable_generic_fibre_localization O ϖ hϖ m r h1 h2 F`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Smooth (Spec.map (CommRingCat.ofHom (IsLocalization.Away.map F (Localization.Away (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ)) (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r)) ϖ))) := HasRingHomProperty.Spec_iff.mpr hs`. Establish `hn` using `GlobalTheory.isNormalScheme_of_smooth (Spec.map (CommRingCat.ofHom (IsLocalization.Away.map F (Localization.Away (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ)) (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r)) ϖ)))`. Use `haveI : IsDomain (Localization.Away (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ)) := IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors ht)`. Establish `hic` using `(GlobalTheory.IsNormalScheme.spec_iff_of_isDomain (CommRingCat.of (Localization.Away (algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ)))).mp hn`. Conclude with `GlobalTheory.T.isIntegrallyClosed_of_reduced_quotient_localization _ _ ht hred hic`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ssModel_normal (F : Type) [Field F] [Algebra O F] [IsLocalization.Away ϖ F] :
     IsDomain (GlobalTheory.Et.ssModel O ϖ m r) ∧ IsIntegrallyClosed (GlobalTheory.Et.ssModel O ϖ m r) := by
@@ -78,7 +78,7 @@ theorem ssModel_normal (F : Type) [Field F] [Algebra O F] [IsLocalization.Away �
 
 include hϖ h1 h2 in
 /- English proof (translation)
-Use `haveI := ssModel_isDomain O ϖ hϖ m r h1 h2`. Establish `hi` using `ssModel_algebraMap_injective O ϖ hϖ m r h1 h2`. Use `haveI : Module.IsTorsionFree O (GlobalTheory.Et.ssModel O ϖ m r) := Module.isTorsionFree_iff_algebraMap_injective.mpr hi`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ssModel_flat : Module.Flat O (GlobalTheory.Et.ssModel O ϖ m r) := by
   haveI := ssModel_isDomain O ϖ hϖ m r h1 h2
@@ -93,9 +93,9 @@ section Scheme
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} [FiniteDimensional ℚ_[l] K]
 
 /- English proof (translation)
-Use `haveI := OK_dvr (l := l) (K := K)`. Take `⟨-, ϖ, hϖ, hss⟩` from `hM`. Use `haveI := OK_away hϖ`. Use `GlobalTheory.IsNormalScheme.of_forall_exists_opens fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, hx, m, r, h1, h2, ψ, hψ, -⟩` from `hss x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨U, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IsNormalScheme.iff_spec_of_isAffineOpen hU]`. Take `⟨hd, hic⟩` from `ssModel_normal (OK l K) ϖ hϖ m r h1 h2 K`. Use `haveI : Etale (Spec.map (CommRingCat.ofHom ψ)) := HasRingHomProperty.Spec_iff.mpr hψ`. Conclude with `GlobalTheory.isNormalScheme_of_smooth (Spec.map (CommRingCat.ofHom ψ))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_isNormalScheme (M : Model l K) (hM : M.Good) : GlobalTheory.IsNormalScheme M.X := by
   haveI := OK_dvr (l := l) (K := K)
@@ -110,9 +110,7 @@ theorem good_isNormalScheme (M : Model l K) (hM : M.Good) : GlobalTheory.IsNorma
   exact GlobalTheory.isNormalScheme_of_smooth (Spec.map (CommRingCat.ofHom ψ))
 
 /- English proof (translation)
-Use `haveI := OK_dvr (l := l) (K := K)`. Take `⟨-, ϖ, hϖ, hss⟩` from `hM`. Use `choose U hU hx m r h1 h2 ψ hψ _hc using hss`. Use `isLocallyNoetherian_of_affine_cover (S := fun x => ⟨U x, hU x⟩) ?_ fun x => ?_` and prove the remaining obligations. Use `top_le_iff.mp fun y _ => ?_` and prove the remaining obligations.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨y, hx y⟩`. Use `letI := (ψ x).toAlgebra haveI : Algebra.Etale _ _ := hψ x`. Conclude with `Algebra.FiniteType.isNoetherianRing (GlobalTheory.Et.ssModel (OK l K) ϖ (m x) (r x)) Γ(M.X, U x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem good_isLocallyNoetherian (M : Model l K) (hM : M.Good) : IsLocallyNoetherian M.X := by
   haveI := OK_dvr (l := l) (K := K)
@@ -126,13 +124,11 @@ theorem good_isLocallyNoetherian (M : Model l K) (hM : M.Good) : IsLocallyNoethe
     exact Algebra.FiniteType.isNoetherianRing (GlobalTheory.Et.ssModel (OK l K) ϖ (m x) (r x)) Γ(M.X, U x)
 
 /- English proof (translation)
-Use `haveI := OK_dvr (l := l) (K := K)`. Take `⟨-, ϖ, hϖ, hss⟩` from `hM`. Use `choose U hU hx m r h1 h2 ψ hψ hc using hss`. Use `HasRingHomProperty.of_iSup_eq_top (P := @Flat) (U := fun x => ⟨U x, hU x⟩) ?_ fun x => ?_` and prove the remaining obligations. Use `top_le_iff.mp fun y _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨y, hx y⟩`. Establish `e : (M.p.appLE ⊤ (U x) le_top) = (Scheme.ΓSpecIso (CommRingCat.of (OK l K))).hom ≫ CommRingCat.ofHom ((ψ x).comp (algebraMap (OK l K) _))`. Rewrite using `[hc x]`. Simplify using the standard rewrite rules. Use `show RingHom.Flat (M.p.appLE ⊤ (U x) le_top).hom`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, CommRingCat.hom_comp]`. Use `RingHom.Flat.comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)) ?_` and prove the remaining obligations. Use `haveI : Etale (Spec.map (CommRingCat.ofHom (ψ x))) := HasRingHomProperty.Spec_iff.mpr (hψ x)`. Establish `hf : RingHom.Flat (ψ x)` using `HasRingHomProperty.Spec_iff.mp (inferInstance : Flat (Spec.map (CommRingCat.ofHom (ψ x))))`. Use `RingHom.Flat.comp ?_ hf` and prove the remaining obligations.
-
-Conclude with `RingHom.flat_algebraMap_iff.mpr (ssModel_flat (OK l K) ϖ hϖ (m x) (r x) (h1 x) (h2 x))`.
+A detailed English derivation is pending.
 -/
 theorem good_flat (M : Model l K) (hM : M.Good) : Flat M.p := by
   haveI := OK_dvr (l := l) (K := K)

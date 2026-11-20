@@ -12,11 +12,11 @@ open scoped ContDiff ENNReal Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨η, hη, hF⟩` from `Xa.posF`. Use `⟨η, hη, fun x0 ho z hz ξ => ?_⟩` and prove the remaining obligations. Establish `ht : 0 < 1 + Xa.c1 / Xa.a1` using `by have := Xa.frame_theta_const_pos; have := Xa.frame_theta_weight_pos; positivity`. Establish `hx0` using `IW.orth_mem_dom X x0 ho`. Establish `h` using `hF (1 + Xa.c1 / Xa.a1) ht.le (by rw [mul_comm]; exact Xa.rr_le) x0 hx0 z hz ξ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[IW.leviM_comb X x0 ho hz]`. Establish `hca : ContDiffAt ℝ 2 (fun w => Xa.ps0 (cpt X x0 w)) z` using `((Xa.potential_smooth x0 hx0).contDiffAt ((ExF.isOpen_OmF X x0).mem_nhds hz)).of_le (show (2 : WithTop ℕ∞) ≤ (⊤ : ℕ∞) from WithTop.coe_le_coe.2 le_top)`. Rewrite using `[IC.leviO_smul X x0 Xa.ps0 _ hca ξ]`. Establish `h2` using `mul_le_mul_of_nonneg_left (Xa.base_psi_levi_lower_bound x0 hx0 z hz ξ) ht.le`. Simplify using `only [leviO] at h h2 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use polynomial arithmetic with `[h, h2]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem strict_margin (r : ℕ) (X : Data E r) (Xa : ArchInM X) :
     ∃ η : ℝ, 0 < η ∧ ∀ x0, IsOrth X x0 →
@@ -39,7 +39,7 @@ theorem strict_margin (r : ℕ) (X : Data E r) (Xa : ArchInM X) :
   nlinarith [h, h2]
 
 /- English proof (translation)
-Introduce `hP hK` and use `interpC_of hP hK strict_margin`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : PoinStatement (E := E) → KronHolPsiStatement (E := E) → InterpCStatement (E := E) :=
   fun hP hK => interpC_of hP hK strict_margin

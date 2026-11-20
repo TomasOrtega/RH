@@ -14,21 +14,19 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.LevelMapBase
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' hle hpq hd`. Take `⟨r₀, jK, m, hk, -, -, -, -, hc⟩` from `(GlobalTheory.T.moduliScheme_levelMaps_heckePoints'.2 E H Dw hpq).1 l l' Xo Xo' hd`. Establish `hle₁ : KA l ≤ c'.F` using `fun x hx => by`. Use `c'.le (jK ⟨x, hx⟩).2` as an intermediate fact. Rewrite `this` using `[hk]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `c₁ : Coeff l` to `{ F := c'.F fin := c'.fin conj := c'.conj zeta_mem := by`. Take `⟨e, he⟩` from `GlobalTheory.LevelExist.zeta_eq_pow_of_dvd (a := l.M') (GlobalTheory.LevelExist.M'_pos l') (Nat.lcm_dvd (hd.1.trans (Nat.dvd_lcm_left _ _)) (hd.2.2.trans (Nat.dvd_lcm_right _ _)) : l.M' ∣ l'.M')`. Rewrite using `[he]`. Conclude with `pow_mem c'.zeta_mem e`. Use `le := hle₁ }`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨rF, e1, e2, f1, f2, f3, -⟩` from `hc c₁ c' rfl`. Establish `hid : spMap (IntermediateField.inclusion (le_refl c'.F)).toRingHom = 𝟙 (Sp c'.F)`. Rewrite using `[← Spec.map_id]`. Both sides reduce to the same expression. Establish `e2' : rF ≫ pullback.snd _ _ = pullback.snd _ _` using `e2.trans ((congrArg _ hid).trans (Category.comp_id _))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : spMap (IntermediateField.inclusion hle).toRingHom ≫ spMap (IntermediateField.inclusion c.le).toRingHom = spMap (IntermediateField.inclusion c₁.le).toRingHom`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `b : Xo.XF c₁ ⟶ Xo.XF c` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hle).toRingHom) (by rw [Category.assoc, hi, pullback.condition])`. Establish `hb1 : b ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : b ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hle).toRingHom` using `pullback.lift_snd _ _ _`. Establish `hp : IsPullback b (pullback.snd _ _) (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) (spMap (IntermediateField.inclusion hle).toRingHom)`. Use `IsPullback.of_right ?_ hb2 (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[hb1, hi]`. Conclude with `IsPullback.of_hasPullback _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : (rF ≫ b) ≫ pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) = pullback.snd Xo'.s (spMap (IntermediateField.inclusion c'.le).toRingHom) ≫ spMap (IntermediateField.inclusion hle).toRingHom`. Rewrite using `[Category.assoc, hb2, reassoc_of% e2']`. Establish `hlift : pullback.lift (rF ≫ b) _ h = rF ≫ hp.isoPullback.hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, IsPullback.isoPullback_hom_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.lift_snd, Category.assoc, IsPullback.isoPullback_hom_snd, e2']`. Use `⟨rF ≫ b, h, r₀, m, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hb1, e1]`. Rewrite using `[hlift]`. Use `infer_instance`.
-
-Rewrite using `[hlift]`. Use `infer_instance`. Rewrite using `[hlift]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelMap_coeff_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (hle : c.F ≤ c'.F),

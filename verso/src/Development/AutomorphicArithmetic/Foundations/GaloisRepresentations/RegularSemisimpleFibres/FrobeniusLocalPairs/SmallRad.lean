@@ -13,7 +13,7 @@ section SlopeTestRemainingChoices
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨x, hx0, hx1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hc0 : 0 < valuation k x` using `zero_lt_iff.2 ((valuation k).ne_zero_iff.2 hx0)`. Establish `hm0 : 0 < min γ 1` using `lt_min (zero_lt_iff.2 hγ) zero_lt_one`. Establish `hlt : valuation k x * min γ 1 < min γ 1` using `mul_lt_of_lt_one_left hm0 hx1`. Conclude with `⟨valuation k x * min γ 1, mul_pos hc0 hm0, hlt.trans_le (min_le_right _ _), hlt.trans_le (min_le_left _ _)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem exists_rad {γ : ValueGroupWithZero k} (hγ : γ ≠ 0) :
     ∃ r : ValueGroupWithZero k, 0 < r ∧ r < 1 ∧ r < γ := by
@@ -24,7 +24,7 @@ private theorem exists_rad {γ : ValueGroupWithZero k} (hγ : γ ≠ 0) :
   exact ⟨valuation k x * min γ 1, mul_pos hc0 hm0, hlt.trans_le (min_le_right _ _), hlt.trans_le (min_le_left _ _)⟩
 
 /- English proof (translation)
-Take `⟨γ, hγ, hs⟩` from `(IsValuativeTopology.hasBasis_nhds' x).mem_iff.1 hW`. Take `⟨r, h0, h1, h2⟩` from `exists_rad hγ`. Conclude with `⟨r, h0, h1, fun y hy => hs (lt_of_le_of_lt hy h2)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem nhds_rad {x : k} {W : Set k} (hW : W ∈ 𝓝 x) :
     ∃ r : ValueGroupWithZero k, 0 < r ∧ r < 1 ∧ {y | valuation k (y - x) ≤ r} ⊆ W := by
@@ -33,9 +33,9 @@ private theorem nhds_rad {x : k} {W : Set k} (hW : W ∈ 𝓝 x) :
   exact ⟨r, h0, h1, fun y hy => hs (lt_of_le_of_lt hy h2)⟩
 
 /- English proof (translation)
-Take `⟨c, hc0, hc1, -⟩` from `exists_rad (k := k) one_ne_zero`. Take `⟨o, ho⟩` from `Finite.exists_min (fun o : Option ι => o.elim c R)`. Use `⟨o.elim c R, ?_, ?_, fun i => ho (some i)⟩` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact hc0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some i => exact h0 i`. Consider the cases of `o with`. Consider the case `none => exact hc1`. Consider the case `some i => exact h1 i`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem fin_rad {ι : Type} [Finite ι] (R : ι → ValueGroupWithZero k) (h0 : ∀ i, 0 < R i) (h1 : ∀ i, R i < 1) :
     ∃ r : ValueGroupWithZero k, 0 < r ∧ r < 1 ∧ ∀ i, r ≤ R i := by
@@ -50,7 +50,7 @@ private theorem fin_rad {ι : Type} [Finite ι] (R : ι → ValueGroupWithZero k
     | some i => exact h1 i
 
 /- English proof (translation)
-Rewrite `hV` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hsub⟩` from `hV`. Use `choose R h0 h1 hR using fun i => hP i (t i) (ht i)`. Take `⟨r, hr0, hr1, hr⟩` from `fin_rad R h0 h1`. Conclude with `⟨r, hr0, hr1, fun y hy => hsub fun i _ => hR i (hm i _ _ (hr i) (hy i))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem pi_rad {ι : Type} [Finite ι] {X : ι → Type} [∀ i, TopologicalSpace (X i)] (x : ∀ i, X i)
     (P : ∀ i, ValueGroupWithZero k → Set (X i))
@@ -64,7 +64,7 @@ private theorem pi_rad {ι : Type} [Finite ι] {X : ι → Type} [∀ i, Topolog
   exact ⟨r, hr0, hr1, fun y hy => hsub fun i _ => hR i (hm i _ _ (hr i) (hy i))⟩
 
 /- English proof (translation)
-Use `pi_rad (X := fun _ : Fin n => Fin n → k) (fun i j => (1 : Matrix (Fin n) (Fin n) k) i j) (fun i r => {y | ∀ j, valuation k (y j - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ r}) (fun i W hW => ?_) (fun i r r' h y hy j => (hy j).trans h) hV` and prove the remaining obligations. Conclude with `pi_rad (X := fun _ : Fin n => k) (fun j => (1 : Matrix (Fin n) (Fin n) k) i j) (fun j r => {y | valuation k (y - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ r}) (fun j W hW => nhds_rad hW) (fun j r r' h y hy => (show valuation k (y - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ r from le_tran …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem mat_rad {n : ℕ} {V : Set (Matrix (Fin n) (Fin n) k)} (hV : V ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) k)) :
     ∃ r : ValueGroupWithZero k, 0 < r ∧ r < 1 ∧
@@ -77,7 +77,7 @@ private theorem mat_rad {n : ℕ} {V : Set (Matrix (Fin n) (Fin n) k)} (hV : V �
     (fun j r r' h y hy => (show valuation k (y - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ r from le_trans hy h)) hW
 
 /- English proof (translation)
-Rewrite `hU` using `[Units.isEmbedding_embedProduct.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTU⟩` from `hU`. Take `⟨a, ha, b, hb, hab⟩` from `mem_nhds_prod_iff.1 (by simpa using hT)`. Use `⟨a ∩ MulOpposite.op ⁻¹' b, Filter.inter_mem ha (MulOpposite.continuous_op.continuousAt.preimage_mem_nhds (by simpa using hb)), fun g h1 h2 => hTU ?_⟩` and prove the remaining obligations. Conclude with `hab ⟨h1.1, h2.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem unit_nhds {A : Type} [Monoid A] [TopologicalSpace A] {U : Set Aˣ} (hU : U ∈ 𝓝 (1 : Aˣ)) :
     ∃ V ∈ 𝓝 (1 : A), ∀ g : Aˣ, (g : A) ∈ V → ((g⁻¹ : Aˣ) : A) ∈ V → g ∈ U := by
@@ -89,7 +89,7 @@ private theorem unit_nhds {A : Type} [Monoid A] [TopologicalSpace A] {U : Set A�
   exact hab ⟨h1.1, h2.2⟩
 
 /- English proof (translation)
-Establish `h` using `Valuation.map_one_add_of_lt (valuation k) (lt_of_le_of_lt hx h1)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem val_near {r : ValueGroupWithZero k} (h1 : r < 1) {x : k} (hx : valuation k (x - 1) ≤ r) :
     valuation k x = 1 := by
@@ -97,7 +97,7 @@ private theorem val_near {r : ValueGroupWithZero k} (h1 : r < 1) {x : k} (hx : v
   simpa using h
 
 /- English proof (translation)
-Establish `e : x * y - 1 = x * (y - 1) + (x - 1)` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_le _ ?_ hx` and prove the remaining obligations. Rewrite using `[map_mul, val_near h1 hx, one_mul]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem near_mul' {r : ValueGroupWithZero k} (h1 : r < 1) {x y : k} (hx : valuation k (x - 1) ≤ r)
     (hy : valuation k (y - 1) ≤ r) : valuation k (x * y - 1) ≤ r := by
@@ -108,9 +108,9 @@ private theorem near_mul' {r : ValueGroupWithZero k} (h1 : r < 1) {x y : k} (hx 
   exact hy
 
 /- English proof (translation)
-Establish `hv` using `val_near h1 hx`. Establish `e : ((x⁻¹ : kˣ) : k) - 1 = -((x : k) - 1) * ((x⁻¹ : kˣ) : k)`. Rewrite using `[neg_mul, sub_mul, Units.mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv' : valuation k ((x⁻¹ : kˣ) : k) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hv, inv_one]`. Rewrite using `[e, map_mul, hv', mul_one, Valuation.map_neg]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem near_inv' {r : ValueGroupWithZero k} (h1 : r < 1) (x : kˣ) (hx : valuation k ((x : k) - 1) ≤ r) :
     valuation k (((x⁻¹ : kˣ) : k) - 1) ≤ r := by
@@ -124,7 +124,7 @@ private theorem near_inv' {r : ValueGroupWithZero k} (h1 : r < 1) (x : kˣ) (hx 
   exact hx
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne := { hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `infer_instance`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem t2 : T2Space k := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
@@ -136,11 +136,11 @@ private theorem t2 : T2Space k := by
   infer_instance
 
 /- English proof (translation)
-Use `haveI : T2Space k := t2`. Establish `hC : IsCompact {x : k | valuation k (x - 1) ≤ r}`. Establish `h` using `(IsNonarchimedeanLocalField.isCompact_closedBall k r).image (f := fun x => x + 1) (by fun_prop)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x - 1, hx, sub_add_cancel _ _⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := k)).isCompact_preimage (hC.prod (hC.image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Units.embedProduct_apply, Set.mem_prod, MulOpposite.op_injective.mem_set_image]`. Conclude with `⟨fun hx => ⟨hx, near_inv' h1 x hx⟩, fun hx => hx.1⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem compact_units (r : ValueGroupWithZero k) (h1 : r < 1) :
     IsCompact {x : kˣ | valuation k ((x : k) - 1) ≤ r} := by
@@ -165,23 +165,21 @@ private theorem compact_units (r : ValueGroupWithZero k) (h1 : r < 1) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U hU`. Take `⟨V, hV, hVU⟩` from `unit_nhds hU`. Take `⟨r, h0, h1, hr⟩` from `mat_rad hV`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, -, -⟩` from `UpperTheory.ConvolutionTheory.Loc.ballSub k n r h0 h1`. Use `⟨r, h0, h1, fun r' hr' g hg => ?_⟩` and prove the remaining obligations. Establish `hg' : g ∈ ball n r` using `fun i j => (hg i j).trans hr'`. Establish `hgK : g ∈ K`. Establish `: g ∈ (K : Set (GL (Fin n) k))` using `hK ▸ hg'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hinv : g⁻¹ ∈ ball n r`. Establish `: g⁻¹ ∈ (K : Set (GL (Fin n) k))` using `K.inv_mem hgK`. Conclude with `hK ▸ this`. Conclude with `hVU g (hr hg') (hr hinv)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `W hW`. Take `⟨r, h0, h1, hr⟩` from `pi_rad (X := fun _ : Fin n => kˣ) (1 : Fin n → kˣ) (fun _ r => {u : kˣ | valuation k ((u : k) - 1) ≤ r}) (fun i Y hY => by`. Take `⟨V, hV, hVU⟩` from `unit_nhds hY`. Take `⟨r, h0, h1, hr⟩` from `nhds_rad hV`. Conclude with `⟨r, h0, h1, fun u hu => hVU u (hr hu) (hr (near_inv' h1 u hu))⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun _ r r' h y hy => (show valuation k ((y : k) - 1) ≤ r from le_trans hy h)) hW`. Conclude with `⟨r, h0, h1, fun r' hr' u hu => hr fun i => (hu i).trans hr'⟩`. Introduce `r h1`. Use `⟨{ carrier := {u | Near r u} one_mem' := fun i => by simp mul_mem' := fun {a b} ha hb i => by` and prove the remaining obligations. Simplify using `using near_mul' h1 (ha i) (hb i)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use the proof step `inv_mem' := fun {a} ha i => by`. Simplify using `using near_inv' h1 (a i) (ha i) }, fun u => Iff.rfl, ?_⟩`. Establish `h` using `isCompact_univ_pi (fun _ : Fin n => compact_units r h1)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Near, Set.mem_pi]`. Conclude with `(continuous_leviEmb k (points (Fin n))).comp (continuous_leviTorus k (Fin n))`. Take `⟨x, hx0, hx1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Use `⟨fun i => Units.mk0 x hx0 ^ (n - (i : ℕ)), fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mk0, map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hij' : (i : ℕ) < j` using `hij`. Conclude with `pow_lt_pow_right_of_lt_one₀ (zero_lt_iff.2 ((valuation k).ne_zero_iff.2 hx0)) hx1 (by omega)`. Introduce `t₀ t h₀ ht i j hij`. Establish `a` using `h₀ i j hij`. Establish `b` using `ht i j hij`.
-
-Establish `c : 0 < valuation k (t j : k)` using `zero_lt_iff.2 (by simp)`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smallRad :
     UpperTheory.Gal.InertialTypesAlt.L.SmallRad := by

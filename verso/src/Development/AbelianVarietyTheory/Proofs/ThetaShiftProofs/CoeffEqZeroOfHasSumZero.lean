@@ -10,19 +10,17 @@ open Complex ReciprocityTheory.ChartRestriction.G.FD
 noncomputable section
 
 /- English proof (translation)
-Establish `hs : Summable fun k => ‖d k‖`. Use `(h 0).summable` as an intermediate fact. Simplify using `only [ofReal_zero, mul_zero, Complex.exp_zero, one_zpow, mul_one] at this`. Conclude with `summable_norm_iff.mpr this`. Establish `hpow : ∀ (k : ℤ) (t : ℝ), cexp (2 * Real.pi * I * t) ^ k * cexp (2 * Real.pi * I * t) ^ (-j) = cexp ((2 * Real.pi * I * ((k - j : ℤ) : ℂ)) * t)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k t`. Rewrite using `[← Complex.exp_int_mul, ← Complex.exp_int_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hI` using `intervalIntegral.hasSum_integral_of_dominated_convergence (μ := MeasureTheory.volume) (a := 0) (b := 1) (f := fun _ : ℝ => (0 : ℂ)) (F := fun (k : ℤ) (t : ℝ) => d k * cexp ((2 * Real.pi * I * ((k - j : ℤ) : ℂ)) * t)) (fun k _ => ‖d k‖) (fun k => (by fun_prop : Continuous fun t : …`. Establish `: (2 * Real.pi * I * ((k - j : ℤ) : ℂ)) * t = ((2 * Real.pi * ((k - j : ℤ) : ℝ) * t : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[norm_mul, this, Complex.norm_exp_ofReal_mul_I, mul_one])`. Use the proof step `(MeasureTheory.ae_of_all _ fun t _ => hs) intervalIntegrable_const`. Use the proof step `(MeasureTheory.ae_of_all _ fun t _ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(h t).mul_right (cexp (2 * Real.pi * I * t) ^ (-j))` as an intermediate fact. Simplify using `only [zero_mul, mul_assoc (d _), hpow] at this`. Conclude with `this)`. Establish `hval : ∀ k : ℤ, (∫ t in (0 : ℝ)..1, d k * cexp ((2 * Real.pi * I * ((k - j : ℤ) : ℂ)) * t)) = if k = j then d j else 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hk`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Establish `hc : (2 * Real.pi * I * ((k - j : ℤ) : ℂ)) ≠ 0`. Use `mul_ne_zero Complex.two_pi_I_ne_zero ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `sub_ne_zero.mpr hk` after adjusting the coercions. Rewrite using `[intervalIntegral.integral_const_mul, integral_exp_mul_complex hc]`. Establish `: cexp (2 * Real.pi * I * ((k - j : ℤ) : ℂ)) = 1`. Rewrite using `[mul_comm]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I _`.
-
-Simplify using `only [ofReal_one, mul_one, ofReal_zero, mul_zero, Complex.exp_zero, this]`. Simplify using the standard rewrite rules. Simplify using `only [hval, intervalIntegral.integral_zero] at hI`. Conclude with `(hasSum_ite_eq j (d j)).unique hI`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_hasSum_zero (d : ℤ → ℂ)
     (h : ∀ t : ℝ, HasSum (fun k : ℤ => d k * cexp (2 * Real.pi * I * t) ^ k) 0) (j : ℤ) :
@@ -68,15 +66,15 @@ theorem coeff_eq_zero_of_hasSum_zero (d : ℤ → ℂ)
   exact (hasSum_ite_eq j (d j)).unique hI
 
 /- English proof (translation)
-Establish `hsum : ∀ k : ℤ, Summable fun i : {i // n i = k} => c i`. Introduce `k`. Establish `h1` using `((hc 0).summable.subtype fun i => n i = k).mul_right (cexp (2 * Real.pi * I * ((0 : ℝ) + y * I)) ^ (-k))`. Use `h1.congr fun i => ?_` and prove the remaining obligations. Establish `hi : n i = k` using `i.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, hi]`. Rewrite using `[mul_assoc, ← zpow_add₀ (Complex.exp_ne_zero _)]`. Simplify using the standard rewrite rules. Establish `hb : ∀ t : ℝ, HasSum (fun k : ℤ => (∑' i : {i // n i = k}, c i) * cexp (2 * Real.pi * I * (t + y * I)) ^ k) (f t)`. Introduce `t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(Equiv.sigmaFiberEquiv n).hasSum_iff.mpr (hc t)`. Use `h1.sigma fun k => ?_` and prove the remaining obligations. Use `(hsum k).hasSum.mul_right (cexp (2 * Real.pi * I * (t + y * I)) ^ k)` as an intermediate fact. Use `this.congr_fun fun i => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Equiv.sigmaFiberEquiv, Equiv.coe_fn_mk, i.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hz` using `coeff_eq_zero_of_hasSum_zero (fun k => (a k - ∑' i : {i // n i = k}, c i) * cexp (2 * Real.pi * I * (y * I)) ^ k) (fun t => by`. Use `(ha t).sub (hb t)` as an intermediate fact. Rewrite `this` using `[sub_self]`. Use `this.congr_fun fun k => ?_` and prove the remaining obligations. Rewrite using `[mul_add, Complex.exp_add, mul_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring) j`. Establish `hz' : a j = ∑' i : {i // n i = j}, c i` using `sub_eq_zero.mp ((mul_eq_zero.mp hz).resolve_right (zpow_ne_zero _ (Complex.exp_ne_zero _)))`. Rewrite using `[hz']`. Conclude with `(hsum j).hasSum`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_fiber_of_hasSum_line {ι : Type*} (c : ι → ℂ) (n : ι → ℤ) (a : ℤ → ℂ) (y : ℝ)
     (f : ℝ → ℂ)
@@ -115,11 +113,11 @@ theorem hasSum_fiber_of_hasSum_line {ι : Type*} (c : ι → ℂ) (n : ι → �
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hiv : X.IsIsoV fun τ => Data.emb τ.1 ξ`. Introduce `τ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `key : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = τ.1 (herm X.Gm ξ ξ)`. Simplify using `only [hermC, herm, Data.emb, map_sum, map_mul, cc, NumberField.IsCMField.complexEmbedding_complexConj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0`. Rewrite using `[key, hξ.2.1, map_zero]`. Introduce `h0`. Apply `hξ.2.2` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun h0 a` as an intermediate fact. Simplify `this` using `[Data.emb]`. Use `(flowDomainCriterion_holds r X _ hiv x hx s).1.2 fun τ => ?_` and prove the remaining obligations. Establish `ht : 0 < X.ttV (fun τ => Data.emb τ.1 ξ) x τ` using `one_div_pos.mpr (mul_pos (MajorantFamilyNorms.c_pos X τ) (X.maj_pos hx τ (hiv τ).2))`. Use `div_nonneg (hs τ) ht.le` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -146,21 +144,19 @@ theorem flow_mem_dom_of_im_nonneg (X : Data E r) {ξ : Fin r → E} (hξ : X.IsI
   linarith
 
 /- English proof (translation)
-Use `set n : (X.Ψ → ℝ) → ℤ := fun ν => ⌊2 * ∑ τ, ν τ * sb τ⌋ with hn`. Establish `hnν : ∀ ν, X.fj la ξ ν P x ≠ 0 → 2 * ∑ τ, ν τ * sb τ = n ν`. Introduce `ν hν`. Take `⟨k, hk⟩` from `hint ν hν`. Simplify using `only [hn, hk, Int.floor_intCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `him : ∀ t : ℝ, ((t : ℂ) + y * I).im = y` using `fun t => by simp`. Establish `H` using `hasSum_fiber_of_hasSum_line (fun ν => κ * X.fj la ξ ν P x) n (fun k => a k * u₁ ^ k) y (fun t => κ * P (X.flow ξ (fun τ => ((t : ℂ) + y * I) * sb τ) x)) (fun t => by`. Use `ha _ (him t) using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[mul_zpow, mul_assoc])`. Use the proof step `(fun t => by`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(m3bExp_holds r X la P hP ξ hξ x hx _ (hdom _ (him t))).mul_left κ` as an intermediate fact. Use `this.congr_fun fun ν => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Distinguish the cases in `hν : X.fj la ξ ν P x = 0`. Simplify using `[hν]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← Complex.exp_int_mul]`. Use `congr 1`. Establish `h2 : ((n ν : ℤ) : ℂ) = 2 * ∑ τ, (ν τ : ℂ) * sb τ`. Use `congrArg (fun z : ℝ => (z : ℂ)) (hnν ν hν)` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this.symm`. Establish `h3 : ∑ τ, (ν τ : ℂ) * (((t : ℂ) + y * I) * sb τ) = ((t : ℂ) + y * I) * ∑ τ, (ν τ : ℂ) * sb τ`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun τ _ => by ring`. Rewrite using `[h2, h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use the proof step `ring) j`. Establish `e1` using `(hasSum_subtype_iff_indicator (s := {ν | n ν = j}) (f := fun ν => κ * X.fj la ξ ν P x)).mp H`. Use `(hasSum_subtype_iff_indicator (s := {ν : X.Ψ → ℝ | 2 * ∑ τ, ν τ * sb τ = j}) (f := fun ν => κ * X.fj la ξ ν P x)).mpr ?_` and prove the remaining obligations. Use `e1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ν`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hν : X.fj la ξ ν P x = 0`. Simplify using `[Set.indicator_apply, hν]`. Establish `: (2 * ∑ τ, ν τ * sb τ = j) ↔ n ν = j`. Rewrite using `[hnν ν hν]`. Conclude with `Int.cast_inj`.
-
-Simplify using `only [Set.indicator_apply, Set.mem_ofPred_eq, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_fj_of_line (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
     (hP : X.IsSec la P) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -214,7 +210,7 @@ theorem hasSum_fj_of_line (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → 
     simp only [Set.indicator_apply, Set.mem_ofPred_eq, this]
 
 /- English proof (translation)
-Use `hasSum_fj_of_line X hP hξ hx sb hint κ u₁ a (max T 0 + 1) (fun w hw => ?_) (fun w hw => ha w (by rw [hw]; linarith [le_max_left T 0])) j` and prove the remaining obligations. Use `flow_mem_dom_of_im_nonneg X hξ hx _ fun τ => ?_` and prove the remaining obligations. Simplify using `only [mul_im, ofReal_re, ofReal_im, mul_zero, zero_add, hw]`. Conclude with `mul_nonneg (by linarith [le_max_right T 0]) (hsb τ)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_fj (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
     (hP : X.IsSec la P) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -232,7 +228,7 @@ theorem hasSum_fj (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
   exact mul_nonneg (by linarith [le_max_right T 0]) (hsb τ)
 
 /- English proof (translation)
-Use `(hasSum_fj X hP hξ hx sb hsb hint κ u₁ a T ha j).unique ?_` and prove the remaining obligations. Use `hasSum_single (f := fun ν : {ν : X.Ψ → ℝ // 2 * ∑ τ, ν τ * sb τ = j} => κ * X.fj la ξ ν P x) ⟨ν₀, hj⟩ fun ν hν => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : X.fj la ξ ν P x = 0`. Simplify using `[h0]`. Conclude with `absurd (Subtype.ext (huniq ν h0 ν.2)) hν`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_mul_zpow_eq_mul_fj (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
     (hP : X.IsSec la P) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -252,7 +248,7 @@ theorem coeff_mul_zpow_eq_mul_fj (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ
   · exact absurd (Subtype.ext (huniq ν h0 ν.2)) hν
 
 /- English proof (translation)
-Simplify `ha)` using `using coeff_mul_zpow_eq_mul_fj X hP hξ hx sb (fun τ => (hsb τ).le) ν₀ j hj huniq hint 1 1 a T (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_eq_fj (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
     (hP : X.IsSec la P) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -268,7 +264,7 @@ theorem coeff_eq_fj (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}
     1 1 a T (by simpa using ha)
 
 /- English proof (translation)
-Establish `h` using `coeff_mul_zpow_eq_mul_fj X hP.1.1.1 hξ hx sb hsb ν₀ j hj huniq hint κ u₁ a T ha`. Rewrite `h` using `[hP.2 ξ hξ ν₀ hν₀ x hx, mul_zero]`. Conclude with `(mul_eq_zero.mp h).resolve_right (zpow_ne_zero _ hu₁)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_mem_SSgt' (X : Data E r) {la : Wt X.Ψ r} {c : ℝ} {P : Frame X.Ψ r → ℂ}
     (hP : P ∈ X.SSgt la c) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -285,7 +281,7 @@ theorem coeff_eq_zero_of_mem_SSgt' (X : Data E r) {la : Wt X.Ψ r} {c : ℝ} {P 
   exact (mul_eq_zero.mp h).resolve_right (zpow_ne_zero _ hu₁)
 
 /- English proof (translation)
-Rewrite using `[coeff_eq_fj X hP.1.1.1 hξ hx sb hsb ν₀ j hj huniq hint a T ha, hP.2 ξ hξ ν₀ hν₀ x hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_eq_zero_of_mem_SSgt (X : Data E r) {la : Wt X.Ψ r} {c : ℝ} {P : Frame X.Ψ r → ℂ}
     (hP : P ∈ X.SSgt la c) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)

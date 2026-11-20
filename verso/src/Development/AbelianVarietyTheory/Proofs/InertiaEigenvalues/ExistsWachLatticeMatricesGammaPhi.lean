@@ -14,7 +14,7 @@ section Abstract
 variable {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {N : Submodule A M} {r : ℕ}
 
 /- English proof (translation)
-Establish `hli : LinearIndependent A (fun i => (nb i : M))` using `nb.linearIndependent.map' N.subtype (Submodule.ker_subtype N)`. Conclude with `Fintype.linearIndependent_iffₛ.1 hli a b h i`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeff_ext (nb : Module.Basis (Fin r) A ↥N) {a b : Fin r → A}
     (h : ∑ i, a i • (nb i : M) = ∑ i, b i • (nb i : M)) (i : Fin r) : a i = b i := by
@@ -23,7 +23,7 @@ theorem coeff_ext (nb : Module.Basis (Fin r) A ↥N) {a b : Fin r → A}
   exact Fintype.linearIndependent_iffₛ.1 hli a b h i
 
 /- English proof (translation)
-Establish `h` using `congrArg N.subtype (nb.sum_repr ⟨x, hx⟩)`. Rewrite `h` using `[map_sum]`. Simplify using `using h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_sum (nb : Module.Basis (Fin r) A ↥N) {x : M} (hx : x ∈ N) :
     x = ∑ i, nb.repr ⟨x, hx⟩ i • (nb i : M) := by
@@ -32,14 +32,14 @@ theorem eq_sum (nb : Module.Basis (Fin r) A ↥N) {x : M} (hx : x ∈ N) :
   simpa using h.symm
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hf _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semi_sum {f : M →+ M} {σ : A → A} (hf : ∀ a x, f (a • x) = σ a • f x) (a : Fin r → A)
     (x : Fin r → M) : f (∑ i, a i • x i) = ∑ i, σ (a i) • f (x i) := by
   rw [map_sum]; exact Finset.sum_congr rfl fun i _ => hf _ _
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by rw [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sum (P C : Matrix (Fin r) (Fin r) A) (e : Fin r → M) (j : Fin r) :
     ∑ k, C k j • ∑ i, P i k • e i = ∑ i, (P * C) i j • e i := by
@@ -48,7 +48,7 @@ theorem sum_sum (P C : Matrix (Fin r) (Fin r) A) (e : Fin r → M) (j : Fin r) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by rw [mul_comm]
 
 /- English proof (translation)
-Use `choose k hk using h`. Use `⟨∑ j, k j, fun j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j))`. Rewrite using `[hc, add_comm, pow_add, mul_smul]`. Conclude with `S.smul_mem _ (hk j)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem common_exp (S : Submodule A M) (Q : A) (x : Fin r → M) (h : ∀ j, ∃ k : ℕ, Q ^ k • x j ∈ S) :
     ∃ m : ℕ, ∀ j, Q ^ m • x j ∈ S := by
@@ -60,25 +60,23 @@ theorem common_exp (S : Submodule A M) (Q : A) (x : Fin r → M) (h : ∀ j, ∃
   exact S.smul_mem _ (hk j)
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `common_exp N Q (fun j => φ (nb j : M)) fun j => hNφ _ (nb j).2`. Take `⟨k, hk⟩` from `common_exp _ Q (fun j => (nb j : M)) fun j => hNinv _ (nb j).2`. Establish `hspan : Submodule.span A (φ '' (N : Set M)) ≤ Submodule.span A (Set.range fun i => φ (nb i : M))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eq_sum nb hx, semi_sum hφ]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `choose c hc using fun j => (Submodule.mem_span_range_iff_exists_fun A).1 (hspan (hk j))`. Take `⟨Gm, hG⟩ : ∃ Gm : Γ → Matrix (Fin r) (Fin r) A, ∀ g j, γ g (nb j : M) = ∑ i, Gm g i j • (nb i : M)` from `⟨fun g i j => nb.repr ⟨_, hNΓ g _ (nb j).2⟩ i, fun g j => eq_sum nb _⟩`. Take `⟨Pm, hP⟩ : ∃ Pm : Matrix (Fin r) (Fin r) A, ∀ j, Q ^ m • φ (nb j : M) = ∑ i, Pm i j • (nb i : M)` from `⟨fun i j => nb.repr ⟨_, hm j⟩ i, fun j => eq_sum nb _⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hone : ∀ (a : A) (j : Fin r), ∑ i, (a * if i = j then 1 else 0) • (nb i : M) = a • (nb j : M)`. Introduce `a j`. Apply the tactic sequence `rw [Finset.sum_eq_single j] <;> simp +contextual`. Use `⟨m, m + k, Gm, Pm, Matrix.of fun i j => c j i, ?_, ?_, ?_, ?_, hG, hP⟩` and prove the remaining obligations. Introduce `g h`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Use `coeff_ext nb (a := fun i => Gm (g * h) i j) (b := fun i => (Gm g * (Gm h).map (τ g)) i j) ?_ i` and prove the remaining obligations. Rewrite using `[← hG, hmul, hG h, semi_sum (hγ g), ← sum_sum]`. Simplify using `only [hG, Matrix.map_apply]`. Introduce `g i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, e⟩` from `hNπ g _ (nb j).2`. Use `⟨nb.repr ⟨y, hy⟩ i, ?_⟩` and prove the remaining obligations. Use `coeff_ext nb (a := fun i => Gm g i j) (b := fun i => (if i = j then 1 else 0) + π * nb.repr ⟨y, hy⟩ i) ?_ i` and prove the remaining obligations. Establish `h1` using `hone 1 j`. Simplify using `only [one_mul, one_smul] at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [add_smul, Finset.sum_add_distrib, mul_smul]`. Rewrite using `[← hG, h1, ← Finset.smul_sum, ← eq_sum nb hy, ← e]`. Normalize the expressions using the abelian group laws. Use extensionality with `i j`. Use `coeff_ext nb (a := fun i => (Pm * Matrix.of fun i j => c j i) i j) (b := fun i => ((Q ^ (m + k)) • (1 : Matrix (Fin r) (Fin r) A)) i j) ?_ i` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← sum_sum]`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, hone, ← hP, Matrix.of_apply]`. Rewrite using `[pow_add, mul_smul, ← hc j, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => smul_comm _ _ _`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `coeff_ext nb (a := fun i => ((τ g Q ^ m) • (Pm * (Gm g).map σ)) i j) (b := fun i => ((Q ^ m) • (Gm g * Pm.map (τ g))) i j) ?_ i` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Rewrite using `[← sum_sum, ← sum_sum]`. Establish `h1 : ∑ k, (Gm g).map σ k j • ∑ i, Pm i k • (nb i : M) = Q ^ m • γ g (φ (nb j : M))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomm, hG, semi_sum hφ, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← hP, smul_comm, Matrix.map_apply]`. Establish `h2 : ∑ k, Pm.map (τ g) k j • ∑ i, Gm g i k • (nb i : M) = τ g Q ^ m • γ g (φ (nb j : M))`. Rewrite using `[← map_pow, ← hγ, hP, semi_sum (hγ g)]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← hG, Matrix.map_apply]`.
-
-Rewrite using `[h1, h2, smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrices {Γ : Type} [Mul Γ] (nb : Module.Basis (Fin r) A ↥N) (Q π : A)
     (φ : M →+ M) (σ : A → A) (hφ : ∀ a x, φ (a • x) = σ a • φ x)
@@ -156,11 +154,11 @@ theorem exists_matrices {Γ : Type} [Mul Γ] (nb : Module.Basis (Fin r) A ↥N) 
 end Abstract
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n s Γ R Zl Ai _ _ _ _ RW _ _ inclR φR gR πA I E zl Mo T r nb`. Establish `hφ : ∀ (a : LetA O n) (x : E.DD T), E.φD T (a • x) = letφ R.φ₀ a • E.φD T x`. Introduce `a x`. Rewrite using `[← algebraMap_smul R.EE a x, E.φD_smul, R.φE_ext, algebraMap_smul]`. Establish `hγ : ∀ g (a : LetA O n) (x : E.DD T), E.γD T g (a • x) = letγ (R.γ₀ g) a • E.γD T g x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g a x`. Rewrite using `[← algebraMap_smul R.EE a x, E.γD_smul, R.γE_ext, algebraMap_smul]`. Take `⟨m, m', Gm, Pm, Pm', h1, h2, h3, h4, h5, h6⟩` from `exists_matrices nb R.Q letπ (E.φD T).toAddMonoidHom (letφ R.φ₀) hφ (fun g => (E.γD T g).toAddMonoidHom) (fun g => (letγ (n := n) (R.γ₀ g)).toRingHom) hγ (E.γD_mul T) (E.φγ_comm T) (Mo.N_φ T) (Mo.N_φinv T) (Mo.N_Γ T) (Mo.N_π T)`. Use `⟨m, m', Gm, Pm, Pm', h1, ?_, h3, h4, h5, h6⟩` and prove the remaining obligations. Introduce `g i j k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `h2 g i j`. Rewrite using `[hc]`. Apply the tactic sequence `split_ifs <;> simp [letπ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wach_matrices : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n s : ℕ} {Γ : WGam PD LL O v n s} {R : WSer Γ} {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O] [Algebra Zl Ai] {RW : Type} [CommRing RW] [Algebra O RW] {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai} {I : WIo R (O ⊗[Zl] Ai) RW inclR φR gR πA} {E : WEt I} {zl : PowerSeries Zl →+* LetA O n} (Mo : WN E zl) (T : LocLat G Qp LL O) (r : ℕ) (nb : Module.Basis (Fin r) (LetA O n) ↥(Mo.N T)), ∃ (m m' : ℕ) (Gm : Γ.Gam → Matrix (Fin r) (Fin r) (LetA O n)) (Pm Pm' : Matrix (Fin r) (Fin r) (LetA O n)), (∀ g h, Gm (g * h) = Gm g * (Gm h).map (letγ (R.γ₀ g))) ∧ (∀ g i j k, PowerSeries.constantCoeff (Gm g i j k) = if i = j then 1 else 0) ∧ Pm * Pm' = (R.Q ^ m') • (1 : Matrix (Fin r) (Fin r) (LetA O n)) ∧ (∀ g, (letγ (R.γ₀ g) R.Q ^ m) • (Pm * (Gm g).map (letφ R.φ₀)) = (R.Q ^ m) • (Gm g * Pm.map (letγ (R.γ₀ g)))) ∧ (∀ g j, E.γD T g (nb j : E.DD T) = ∑ i, Gm g i j • (nb i : E.DD T)) ∧ ∀ j, R.Q ^ m • E.φD T (nb j : E.DD T) = ∑ i, Pm i j • (nb i : E.DD T) := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n s Γ R Zl Ai _ _ _ _

@@ -8,7 +8,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.RadCov.Place
 
 /- English proof (translation)
-Establish `h2 : (I.φ v).comp (algebraMap I.F I.E) = v.embedding` using `RingHom.ext (I.φ_over v)`. Rewrite using `[InfinitePlace.comap_mk, h2, InfinitePlace.mk_embedding]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_mk_phi (I : AutInst) (v : InfinitePlace I.F) :
     (InfinitePlace.mk (I.φ v)).comap (algebraMap I.F I.E) = v := by
@@ -16,11 +16,11 @@ theorem comap_mk_phi (I : AutInst) (v : InfinitePlace I.F) :
   rw [InfinitePlace.comap_mk, h2, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Introduce `I xf`. Establish `hb` using `GlobalTheory.Count.FrameMajorant.comap_bijective I`. Use `⟨⟨fun v v' h => ?_, fun w => ⟨w.comap (algebraMap I.F I.E), hb.1 (comap_mk_phi I _)⟩⟩, fun v => ?_⟩` and prove the remaining obligations. Establish `h' : InfinitePlace.mk (I.φ v) = InfinitePlace.mk (I.φ v')` using `h`. Rewrite using `[← comap_mk_phi I v, h', comap_mk_phi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he` using `GlobalTheory.PointEquivariance.embedding_eq I (InfinitePlace.mk (I.φ v))`. Establish `hu : ∀ u, uMat ((((1, xf) : I.GA)).1 u) = 1` using `fun u => rfl`. Rewrite `he` using `[comap_mk_phi]`. Unfold `frm`. Rewrite using `[comap_mk_phi, hu, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : (InfinitePlace.mk (I.φ v)).embedding = I.φ v`. Conclude with `Or.inl ⟨h, if_pos h⟩`. Conclude with `Or.inr ⟨he.resolve_left h, if_neg h⟩`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 theorem placeMatch : ∀ (I : AutInst) (xf : I.Gf), PlaceMatch I.φ I.P (frm I (1, xf)) := by
   intro I xf

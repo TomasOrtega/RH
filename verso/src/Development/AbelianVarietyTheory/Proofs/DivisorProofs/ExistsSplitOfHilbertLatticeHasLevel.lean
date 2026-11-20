@@ -21,39 +21,37 @@ open scoped Classical MatrixGroups nonZeroDivisors in
 variable {F : Type} [Field F] [NumberField F] in
 
 /- English proof (translation)
-Take `⟨hNL, hLstd⟩` from `hL`. Establish `hLint : ∀ v ∈ L, ∀ i, v i ∈ (1 : Submodule (𝓞 F) F)` using `fun v hv i => (Submodule.mem_pi.1 (hLstd hv)) i (Set.mem_univ i)`. Establish `hN0 : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hsingle : ∀ i, Pi.single i (N : F) ∈ L`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstd : (Pi.single i (1 : F) : Fin 2 → F) ∈ _root_.GlobalTheory.HilbFam.stdLat F`. Use `Submodule.mem_pi.2 fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using (1 : Submodule (𝓞 F) F).one_le.1 le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hj]`. Use `hNL _ hstd` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Distinguish the cases in `hj : j = i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `[Algebra.smul_def]`. Simplify using `[hj]`. Set `B0 : Submodule (𝓞 F) F` to `L.map (LinearMap.proj (R := 𝓞 F) (φ := fun _ : Fin 2 => F) 0)`. Set `C0 : Submodule (𝓞 F) F` to `L.comap (LinearMap.single (𝓞 F) (fun _ : Fin 2 => F) 1)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hB0 : B0 ≤ 1`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hLint v hv 0`. Establish `hC0 : C0 ≤ 1`. Introduce `c hc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hLint _ hc 1`. Set `Bf : FractionalIdeal (𝓞 F)⁰ F` to `⟨B0, FractionalIdeal.isFractional_of_le_one B0 hB0⟩`. Set `Cf : FractionalIdeal (𝓞 F)⁰ F` to `⟨C0, FractionalIdeal.isFractional_of_le_one C0 hC0⟩`. Establish `hBne : Bf ≠ 0`. Introduce `h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : (N : F) ∈ Bf` using `by show (N : F) ∈ B0`. Conclude with `⟨_, hsingle 0, by simp⟩`. Rewrite `hmem` using `[h]`. Conclude with `hN0 ((FractionalIdeal.mem_zero_iff _).1 hmem)`. Establish `hCne : Cf ≠ 0`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `hmem : (N : F) ∈ Cf` using `by show Pi.single 1 (N : F) ∈ L`. Conclude with `hsingle 1`. Rewrite `hmem` using `[h]`. Conclude with `hN0 ((FractionalIdeal.mem_zero_iff _).1 hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ t ∈ (Bf : Submodule (𝓞 F) F) * ((Bf⁻¹ : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F), ∃ y : F, ∀ b ∈ Bf, (![t * b, y * b] : Fin 2 → F) ∈ L`. Introduce `t ht`. Use `Submodule.mul_induction_on ht ?_ ?_` and prove the remaining obligations. Introduce `b' hb' c hc`. Take `⟨w, hw, hw0⟩` from `(show b' ∈ B0 from hb')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c * w 1, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hcb : c * b ∈ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Rewrite using `[← inv_mul_cancel₀ hBne]`. Conclude with `FractionalIdeal.mul_mem_mul hc hb`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 hcb`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `L.smul_mem r hw using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Use `fin_cases i`. Simplify using `[Algebra.smul_def, hr, ← hw0]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[Algebra.smul_def, hr]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `t₁ t₂ ⟨y₁, hy₁⟩ ⟨y₂, hy₂⟩`. Use `⟨y₁ + y₂, fun b hb => ?_⟩` and prove the remaining obligations. Use `L.add_mem (hy₁ b hb) (hy₂ b hb) using 1` and compare the differences between its conclusion and the goal.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp <;> ring`. Establish `h1 : (1 : F) ∈ (Bf : Submodule (𝓞 F) F) * ((Bf⁻¹ : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F)`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hBne]`. Conclude with `FractionalIdeal.one_mem_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `key 1 h1`. Use `⟨Units.mk0 (FractionalIdeal.dual ℤ ℚ Cf) (FractionalIdeal.dual_ne_zero ℤ ℚ hCne), Units.mk0 Bf hBne, x, ?_⟩` and prove the remaining obligations. Establish `hlat : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM (Units.mk0 (FractionalIdeal.dual ℤ ℚ Cf) (FractionalIdeal.dual_ne_zero ℤ ℚ hCne)) = Cf`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM_eq_dual, Units.val_mk0, FractionalIdeal.dual_dual]`. Use extensionality with `v`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `_root_.GlobalTheory.HilbFam.split`. Rewrite using `[Submodule.mem_mk]`. Express the relevant statement in the definitionally equal form `v ∈ L ↔ v 0 ∈ ((Units.mk0 Bf hBne : (FractionalIdeal (𝓞 F)⁰ F)ˣ) : FractionalIdeal (𝓞 F)⁰ F) ∧ v 1 - v 0 * x ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM (Units.mk0 (FractionalIdeal.dual ℤ ℚ Cf) (FractionalIdeal.dual_ne_zero ℤ ℚ hCne))`. Rewrite using `[hlat, Units.val_mk0]`. Express the relevant statement in the definitionally equal form `v ∈ L ↔ v 0 ∈ B0 ∧ Pi.single 1 (v 1 - v 0 * x) ∈ L`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨⟨v, hv, rfl⟩, ?_⟩` and prove the remaining obligations. Use `L.sub_mem hv (hx (v 0) ⟨v, hv, rfl⟩) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`.
-
-Apply the tactic sequence `fin_cases i <;> simp <;> ring`. Introduce and unpack `⟨hb, hc⟩`. Use `L.add_mem (hx (v 0) hb) hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp <;> ring`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbFam.exists_eq_split_of_hasLevel (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (N : ℕ) (L : _root_.GlobalTheory.HilbFam.Lat F) (hN : 0 < N) (hL : _root_.GlobalTheory.HilbFam.HasLevel N L) :

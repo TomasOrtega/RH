@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.AestronglyMeasur
 open MeasureTheory GlobalTheory.AutomorphicL2Unitary
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AutomorphicL2Unitary.inner_R_sub_eq_intervalIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FInnerRightRegularRepSubEqIntervalIntegralDerivat.lean&line=26#L26)
 -/

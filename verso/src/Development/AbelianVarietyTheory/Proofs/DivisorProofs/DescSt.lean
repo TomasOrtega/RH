@@ -18,7 +18,7 @@ open GlobalTheory.Desc GlobalTheory.SiegJoin
 namespace GlobalTheory.SiegDescent
 
 /- English proof (translation)
-Take `⟨R, _, _, _, b, ξ, m, t, Q, δ, a, G₁, _, y, α₁, ⟨hc, h0, -, hx, het, hun⟩, ⟨-, -, hr⟩, ⟨hs, hab, hy, hgen⟩, -⟩` from `h`. Conclude with `⟨{ R := R, complete := hc, charZero := h0, ξ := ξ, centre := hx, etc := het, unr := hun, G := G₁, semi := hs, y := y, hy := hy, α := α₁, gen := hgen }, fun p => (hab p).trans (hr p).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {F : SFam g n ζ} {S : Scheme.{0}} {s : S ⟶ Sp o}
     {j : F.X ⟶ S} [IsOpenImmersion j] {φ : InvFun ℤ} {BD : EffCartierData S} {d : ℕ} {x : S}
@@ -29,13 +29,11 @@ theorem exists_chart {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {F : SFam g n 
            y := y, hy := hy, α := α₁, gen := hgen }, fun p => (hab p).trans (hr p).symm⟩
 
 /- English proof (translation)
-Introduce `g _ φ n hn _ F Z z i OZ d S π j _ BD _ hB _ hC`. Take `⟨J, -, -, -, ⟨hN, -⟩, hP, hD, -⟩` from `hB`. Establish `hn0 : n ≠ 0` using `by omega`. Use `haveI : IsDedekindDomain (cycAway n) := (arBase_cycAway n hn0).1`. Use `haveI : IsProper (π ≫ z) := GlobalTheory.SchemeWords.isProper_of_isProjOver hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing (CommRingCat.of (cycAway n)) := inferInstanceAs (IsNoetherianRing (cycAway n))`. Use `haveI : IsLocallyNoetherian S := LocallyOfFiniteType.isLocallyNoetherian (π ≫ z)`. Use `haveI : CompactSpace S := QuasiCompact.compactSpace_of_compactSpace (π ≫ z)`. Use `haveI : AlgebraicGeometry.IsNoetherian S := {}`. Establish `hj : IsDominant j` using `⟨hD⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hd : SmoothOfRelativeDimension g F.univ.A.hom` using `GlobalTheory.SiegSharpCover.smoothDim F.univ (by omega) (cycBase hn0).ζ.isUnit (isUnit_natCast hn0)`. Take `⟨G, _, e, hG, he, hπ⟩` from `GlobalTheory.T.semiAbelian_descent_from_complete_regular_charts F.X S ((GlobalTheory.isNormalScheme_iff_pred S).1 hN) j hj F.univ.A F.univ.ab F.univ.diag (pull_isLB F.univ.isLB _) F.princ.1 fun x => ⟨(exists_chart (hC x)).choose⟩`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.descended_group_abelianLocus_and_relDim F.X S j hj F.univ.A G e g F.univ.ab hd hG he fun x => by`. Take `⟨C, hab⟩` from `exists_chart (hC x)`. Take `⟨p, hp, -⟩` from `hπ x C`.
-
-Conclude with `⟨C.R, inferInstance, inferInstance, C.ξ, C.G, inferInstance, p, C.centre, hp, hab⟩`. Conclude with `⟨G, inferInstance, e, hG, h₂, he, h₁⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem descSt : GlobalTheory.SiegJoin.DescSt := by
   intro g _ φ n hn _ F Z z i OZ d S π j _ BD _ hB _ hC

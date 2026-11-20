@@ -16,21 +16,21 @@ noncomputable section
 namespace GlobalTheory.MBLow
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [dualMap, Chart.dualMapR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_dualMapR {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     (dualMap g).comp (Chart.dualMapR f) = dualMap (g.comp f) := by
   ext a <;> simp [dualMap, Chart.dualMapR]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') :
     (dualMap g).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp g := by
   ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use `haveI : IsIso U.gen.inv.left := inferInstanceAs (IsIso ((Over.forget _).map U.gen.inv))`. Establish `sq : IsPullback U.gen.inv.left A.A.hom (pullback.snd G.hom (jK V)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by simpa using Over.w U.gen.inv⟩`. Simplify using `using sq.paste_horiz (IsPullback.of_hasPullback G.hom (jK V))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPullback_gen {V : Type} [CommRing V] [IsDomain V] {I : Ideal V} {D : DegData V I}
     {A : PolAV (Sp (FractionRing V))} {G : Over (Sp V)} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) :
@@ -41,15 +41,15 @@ theorem isPullback_gen {V : Type} [CommRing V] [IsDomain V] {I : Ideal V} {D : D
   simpa using sq.paste_horiz (IsPullback.of_hasPullback G.hom (jK V))
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ D A G _ _ _ U F _ _ y`. Establish `hφ` using `isPullback_gen U.toUnifPre`. Establish `hT : IsPullback (fst (TFK (R` using `V) F) A.A).left (snd (TFK (R := V) F) A.A).left (TFK (R := V) F).hom A.A.hom := IsPullback.of_hasPullback _ _`. Establish `key : ∀ (v : epsR (FractionRing V) ⟶ A.A) yA, IsVecOver (algebraMap V (FractionRing V)) (U.gen.inv.left ≫ pullback.fst G.hom (jK V)) y v → VecAt U.toUnifPre F y yA → yA ≫ (snd (TFK (R` using `V) F) A.A).left = spMap (dualMap (algebraMap (FractionRing V) F)) ≫ v.left := by`. Introduce `v yA hv hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hφ.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hy.2, Category.assoc]`. Unfold `IsVecOver at hv`. Rewrite using `[hv, ← Category.assoc, spMap_comp_spMap, dualMap_comp_dualMapR]`. Rewrite using `[Category.assoc, Over.w (snd _ _), ← Over.w (fst _ _), ← Category.assoc, hy.1, Category.assoc, Over.w v] show spMap _ ≫ spMap _ = spMap _ ≫ spMap _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap_comp_spMap, spMap_comp_spMap, dualMap_comp_algebraMap]`. Take `⟨v, hv, hvu⟩` from `existsUnique_isVecOver hφ y`. Use `⟨?_, ⟨v, hv, hvu⟩, key⟩` and prove the remaining obligations. Establish `w : (spMap (algebraMap F (DualNumber F)) ≫ (TFK (R` using `V) F).hom) = (spMap (dualMap (algebraMap (FractionRing V) F)) ≫ v.left) ≫ A.A.hom := by`. Rewrite using `[Category.assoc, Over.w v]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show spMap _ ≫ spMap _ = spMap _ ≫ spMap _`. Rewrite using `[spMap_comp_spMap, spMap_comp_spMap, dualMap_comp_algebraMap]`. Establish `hy : VecAt U.toUnifPre F y (hT.lift _ _ w)`. Use `⟨hT.lift_fst _ _ w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hT.lift_snd _ _ w, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `IsVecOver at hv`. Rewrite using `[hv, ← Category.assoc, spMap_comp_spMap, dualMap_comp_dualMapR]`. Use `⟨hT.lift _ _ w, hy, fun yA h => ?_⟩` and prove the remaining obligations. Conclude with `hT.hom_ext ((h.1).trans (hT.lift_fst _ _ w).symm) ((key v yA hv h).trans (hT.lift_snd _ _ w).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vecAt_genFibre : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (y : epsR V ⟶ G),
     (∃! yA, VecAt U.toUnifPre F y yA) ∧

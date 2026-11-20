@@ -9,9 +9,9 @@ open CategoryTheory GlobalTheory.CatCoh GlobalTheory.AnPer GlobalTheory.AnPer.Ch
 namespace GlobalTheory.AnPer.Charts
 
 /- English proof (translation)
-Take `⟨hcov, hjoin⟩` from `hK`. Take `⟨k, hk⟩` from `hcov (F.shift l (F.shift m q)) hq`. Take `⟨k₁, hk₁⟩` from `hcov (F.shift m q) hq`. Take `⟨k', hk', -, hlk⟩` from `hjoin l k₁ k (F.shift m q) hk₁ hk`. Take `⟨k₂, hk₂⟩` from `hcov q hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k'', hk'', -, hmk⟩` from `hjoin m k₂ k' q hk₂ hk'`. Conclude with `⟨k, k', k'', hlk, hmk, hk''⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_composable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
     (K : Charts F) (hK : K.Rich) (l m : Λ) (q : Tot I g) (hq : q.1 ∈ F.V) :
@@ -25,9 +25,9 @@ theorem exists_composable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommG
   exact ⟨k, k', k'', hlk, hmk, hk''⟩
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F K hK l m p hp`. Apply `Hol.ext_fn` to reduce the goal to its premises. Introduce `z hz`. Take `⟨k, k', k'', h1, h2, hq⟩` from `exists_composable K hK l m ((z, 0) : Tot I g) hz`. Establish `h : (K.cst k'' p).fn ((z, 0) : Tot I g) = (0 : Hol (K.W k'')).fn ((z, 0) : Tot I g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hp k k' k'' h1 h2]`. Rewrite `h` using `[fn_cst K k'' p hq, show (0 : Hol (K.W k'')) = algebraMap ℂ _ 0 from (map_zero _).symm, Hol.fn_algebraMap _ hq]`. Rewrite using `[show (0 : Hol F.V) = algebraMap ℂ _ 0 from (map_zero _).symm, Hol.fn_algebraMap _ hz]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cst_composable : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
     (K : Charts F), K.Rich → ∀ (l m : Λ) (p : Hol F.V),

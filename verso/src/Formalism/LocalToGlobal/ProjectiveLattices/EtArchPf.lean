@@ -26,7 +26,7 @@ def TrOK (X : PT E) (r1 : ℕ) (a : Fin X.r → Vsp X.dim) : Prop :=
     ∀ x ∈ X.L, ∃ c : Fin X.r → 𝓞 E, ∃ y ∈ X.L, x = ∑ j, act (c j) (((r1 : ℂ) ^ 2) • a j) + (r1 : ℂ) • y
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => div_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem thRat_nonneg (X : PT E) (s : (Fin 1 → Vsp X.dim) → ℂ) (a : Fin X.r → Vsp X.dim) : 0 ≤ thRat X s a :=
   Finset.prod_nonneg fun _ _ => div_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
@@ -58,9 +58,9 @@ def EtNum (r q m r1 Nc nt : ℕ) (tableLineDegreeTwo : ℝ) : Prop :=
     2 * (r1 : ℝ) ^ 4 * (Real.log ((nt : ℝ) * Nc) + r * exponentP1 E r q) ≤ tableLineDegreeTwo
 
 /- English proof (translation)
-Establish `hc : 0 < 2 * Real.pi - 1` using `by linarith [Real.pi_gt_three]`. Establish `h1 : ka * ph = (B * ka / (2 * Real.pi - 1)) * ((2 * Real.pi - 1) * ph / B)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, Real.log_mul (div_pos (mul_pos hB hk) hc).ne' (div_pos (mul_pos hc hph) hB).ne']`. Establish `h2` using `mul_le_mul_of_nonneg_left (Real.log_le_sub_one_of_pos (div_pos (mul_pos hc hph) hB)) hB.le`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : B * ((2 * Real.pi - 1) * ph / B) = (2 * Real.pi - 1) * ph`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h2 + h3`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem etKey {B ka ph : ℝ} (hB : 0 < B) (hk : 0 < ka) (hph : 0 < ph) :
     B * Real.log (ka * ph) ≤ (2 * Real.pi - 1) * ph + B * (Real.log (B * ka / (2 * Real.pi - 1)) - 1) := by
@@ -74,7 +74,7 @@ theorem etKey {B ka ph : ℝ} (hB : 0 < B) (hk : 0 < ka) (hph : 0 < ph) :
   linear_combination h2 + h3
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty X.Ψ` from `Fintype.card_pos_iff.1 (ReciprocityTheory.ChartRestriction.G.FD.QuadraticCoefficientForms.card_Psi_pos (X := X))`. Establish `h` using `A.T.dim_conj τ.1`. Rewrite `h` using `[A.dim_pos τ, A.dim_neg τ]`. Use `X.p0_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem torusAt_r {r : ℕ} {X : ReciprocityTheory.ChartRestriction.G.FD.Data E r} {x : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (A : TorusAt X x) :
     A.T.r = r := by
@@ -86,31 +86,27 @@ theorem torusAt_r {r : ℕ} {X : ReciprocityTheory.ChartRestriction.G.FD.Data E 
   omega
 
 /- English proof (translation)
-Take `⟨hNc, hnt, hn1, hn2⟩` from `hnum`. Establish `e1 : exponentP1 E X.r P.q = P.p1` using `rfl`. Establish `e3 : exponentP3 E X.r P.q P.m = P.p3` using `rfl`. Establish `ek : etKa0 E P.m = P.ka0` using `rfl`. Rewrite `hn1` using `[e3, ek]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn2` using `[e1]`. Simplify using `only [etB] at hn1`. Establish `hfr` using `P.hfr`. Establish `hf : 0 < PT.f E` using `Nat.pos_of_ne_zero fun h0 => by rw [h0, zero_mul] at hfr; omega`. Establish `hr : 0 < X.r` using `Nat.pos_of_ne_zero fun h0 => by rw [h0, mul_zero] at hfr; omega`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : 0 < dstar (E` using `E) P.m := by unfold dstar; exact Nat.mul_pos (Nat.mul_pos two_pos hf) P.hm1`. Establish `hrd : 0 < PT.rd E` using `by linarith [P.hrd]`. Establish `hka : 0 < P.ka0`. Unfold `ReciprocityTheory.ChartRestriction.G.I2.Par.ka0 RR`. Conclude with `mul_pos (mul_pos (by norm_num) (pow_pos hrd 7)) (pow_pos (by exact_mod_cast hd) 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hr1p : (0 : ℝ) < r1` using `by exact_mod_cast (show 0 < r1 by omega)`. Establish `hR : (0 : ℝ) < 2 * (r1 : ℝ) ^ 4` using `mul_pos two_pos (pow_pos hr1p 4)`. Establish `hB : 0 < 2 * (r1 : ℝ) ^ 4 * ((X.r * dstar (E` using `E) P.m : ℝ) / 4) := mul_pos hR (div_pos (mul_pos (by exact_mod_cast hr) (by exact_mod_cast hd)) (by norm_num))`. Establish `hph0 : 0 ≤ P.ph`. Unfold `ReciprocityTheory.ChartRestriction.G.I2.Par.ph PT.ph`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> positivity`. Take `⟨bd, hbd⟩ : ∃ bd : ℝ, bd = if 0 < P.ph then Real.exp P.p3 * (P.ka0 * P.ph) ^ ((X.r * dstar (E` from `E) P.m : ℝ) / 4) * Real.exp (-(Real.pi * P.ph / (r1 : ℝ) ^ 4)) else Real.exp (X.r * P.p1) := ⟨_, rfl⟩`. Establish `hrat : ∀ g t, thRat X s (a g t) ≤ bd`. Introduce `g t`. Establish `hT` using `T_holds E X DF P r1 hr1 (a g t) (ha g t).1 (ha g t).2 s hs hs0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbd]`. Use `split_ifs with hp`. Conclude with `hT.1 hp`. Conclude with `hT.2 (le_antisymm (not_lt.1 hp) hph0)`. Establish `hbdpos : 0 < bd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hbd]`. Use `split_ifs with hp`. Conclude with `mul_pos (mul_pos (Real.exp_pos _) (Real.rpow_pos_of_pos (mul_pos hka hp) _)) (Real.exp_pos _)`. Conclude with `Real.exp_pos _`. Establish `hfac : ∀ g, ∑ t, |(c g t : ℝ)| * thRat X s (a g t) ≤ (nt : ℝ) * Nc * bd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]`. Establish `hNt : (0 : ℝ) < (nt : ℝ) * Nc` using `mul_pos (Nat.cast_pos.2 hnt) (Nat.cast_pos.2 hNc)`. Establish `hx : 0 < (nt : ℝ) * Nc * bd` using `mul_pos hNt hbdpos`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlog : Real.log ((nt : ℝ) * Nc * bd) ≤ (tableLineDegreeTwo - P.ph) / (2 * (r1 : ℝ) ^ 4)`. Rewrite using `[le_div_iff₀ hR, Real.log_mul hNt.ne' hbdpos.ne']`. Distinguish the cases in `hp : 0 < P.ph`. Establish `hlb : Real.log bd = P.p3 + (X.r * dstar (E` using `E) P.m : ℝ) / 4 * Real.log (P.ka0 * P.ph) + -(Real.pi * P.ph / (r1 : ℝ) ^ 4) := by`. Rewrite using `[hbd, if_pos hp, Real.log_mul (mul_pos (Real.exp_pos _) (Real.rpow_pos_of_pos (mul_pos hka hp) _)).ne' (Real.exp_pos _).ne', Real.log_mul (Real.exp_pos _).ne' (Real.rpow_pos_of_pos (mul_pos hka hp) _).ne', Real.log_exp, Real.log_exp, Real.log_rpow (mul_pos hka hp)]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hlb]`. Establish `hk` using `etKey hB hka hp`. Establish `hdiv : Real.pi * P.ph / (r1 : ℝ) ^ 4 * (2 * (r1 : ℝ) ^ 4) = 2 * Real.pi * P.ph`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hk + hn1 - hdiv`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hp0 : P.ph = 0` using `le_antisymm (not_lt.1 hp) hph0`. Establish `hlb : Real.log bd = X.r * P.p1` using `by rw [hbd, if_neg hp, Real.log_exp]`. Rewrite using `[hlb]`. Take the linear combination `hn2 + hp0`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Real.exp_nat_mul, Real.exp_log hx]`. Use `_ ≤ Real.exp (((2 * r1 ^ 4 * i : ℕ) : ℝ) * ((tableLineDegreeTwo - P.ph) / (2 * (r1 : ℝ) ^ 4))) := Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left hlog (Nat.cast_nonneg _))`. Use `_ = Real.exp (-(i : ℝ) * (P.ph - tableLineDegreeTwo)) := by`. Use `congr 1`. Establish `hr1ne : (r1 : ℝ) ≠ 0` using `hr1p.ne'`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem etProd_bound (X : PT E) {DF : ℕ} (P : ReciprocityTheory.ChartRestriction.G.I2.Par X DF) (r1 : ℕ) (hr1 : 2 ≤ r1)
     (s : (Fin 1 → Vsp X.dim) → ℂ) (hs : s ∈ X.Sec 1 1) (hs0 : s ≠ 0) {i nt Nc : ℕ} {tableLineDegreeTwo : ℝ}

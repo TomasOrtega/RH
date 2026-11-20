@@ -18,13 +18,13 @@ section Arith
 variable {D : D7}
 end Arith
 /- English proof (translation)
-Take `⟨e, he, h⟩` from `h`. Use `⟨0, fun CF _ => ⟨e, he, fun eps h1 h2 => ?_⟩⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `h eps h1 h2`. Use `⟨K, fun Fm CH hc hL _ => ⟨10, fun C hC => ?_⟩⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `hK Fm CH hc hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, fun x hx hle i p hp d hd => ?_⟩` and prove the remaining obligations. Establish `hs` using `hx0 x hx hle i p hp`. Take `⟨-, a, ha⟩` from `hd`. Establish `hw : d.Bw = (maxWt _ 1 : ℝ)` using `ha.sq.weight`. Take `⟨w1, w2, hb⟩` from `maxWt_le hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `eb : p.Z.b = (Fm.L x i).sc.b` using `rfl`. Use `show 1 ≤ d.Bw ∧ d.Bw ≤ C * p.Z.b ∧ Real.log d.Bw ≤ C * Real.log p.Z.b`. Rewrite using `[hw, eb]`. Establish `hb0 : 0 < (Fm.L x i).sc.b` using `by linarith`. Establish `l10 : Real.log 10 ≤ Real.log (Fm.L x i).sc.b` using `Real.log_le_log (by norm_num) (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l0 : 0 ≤ Real.log (Fm.L x i).sc.b` using `l10.trans' (Real.log_nonneg (by norm_num))`. Use `⟨w1, w2.trans (by nlinarith), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem wt_tie_alt (h : _root_.GlobalTheory.BigTop.Fun.SizeAtAlt) : _root_.GlobalTheory.BigTop.Fun.LeafWeightBound @Comparison₂ := by
   obtain ⟨e, he, h⟩ := h

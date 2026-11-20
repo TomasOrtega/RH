@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.CocycleNat
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatCastNormLtOne.main`. Consider the case `exact _root_.GlobalTheory.NatCastNormLtOne.main`. Consider the case `(apply _root_.GlobalTheory.NatCastNormLtOne.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatCastNormLtOne.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatCastNormLtOne.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatCastNormLtOne.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem {l : ℕ} [hl : Fact l.Prime] {O K : Type} [CommRing O] [NormedField K] [Algebra O K]
     [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] {G : Type} [Group G] [TopologicalSpace G]
@@ -36,9 +36,9 @@ noncomputable section
 namespace GlobalTheory.CocycleNat
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul r x`. Simplify using `only [actB, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Subtype.ext (f.equiv g x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actB_map {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [NormedField K] [Algebra O K]
     [NormedAlgebra ℚ_[l] K] {G : Type} [Group G] [TopologicalSpace G] (s : G →* GQ l)
@@ -58,19 +58,19 @@ end GlobalTheory.CocycleNat
 namespace GlobalTheory.CocycleNat
 
 /- English proof (translation)
-Introduce `hF y c hc`. Take `⟨b, ⟨hy, m₀, σ, b₀, h1, h2, h3, h4, hb⟩, hcob⟩` from `hc`. Establish `N` using `GlobalTheory.T.bcrisTensorIdentification_natural l a e O K t ϖ ι D₁.toPhiMod T₁ R₁.I R₁.jB R₁.cmp κ D₂.toPhiMod T₂ R₂.I R₂.jB f F.toHom R₂.cmp hF`. Use `set Φ := TensorProduct.map (R := O) (LinearMap.id (R := O) (M := OB l O)) ((f.f.restrictScalars O).restrict f.T_le) with hΦ`. Establish `hy' : F.app y ∈ ME D₂.toPhiMod` using `F.app_mem_Mext (le_away _ _) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ' : F.app σ.1 ∈ D₂.MMl` using `F.toHom.app_mem_ext ((A_le_S (l := l) (e := e)).trans (le_away _ _)) σ.2`. Use `⟨Φ b, ⟨hy', homW t ϖ F.toHom m₀, ⟨F.app σ.1, hσ'⟩, Φ b₀, ?_, F.app_mem_inv h2, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← homW_phiW, ← map_sub, h1, homW_toW]`. Express the relevant statement in the definitionally equal form `D₂.conn (F.app σ.1) = D₂.zeta (F.app y)`. Rewrite using `[← F.toHom.app_conn, h3, F.toHom.app_zeta]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `N.2 _ _ h4` as an intermediate fact. Rewrite `this` using `[homW_phiW]`. Then use the resulting hypothesis. Rewrite using `[hb, map_sub, N.1 σ ⟨F.app σ.1, hσ'⟩ rfl]`. Introduce `g n x' hx'`. Take `⟨N', hN'⟩` from `exists_pow_smul_mem T₁ (c g)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc2` using `congrArg Φ (hcob g N' ⟨_, hN'⟩ rfl)`. Rewrite `hc2` using `[map_smul, map_sub, actB_map, hΦ, TensorProduct.map_tmul, LinearMap.id_apply]`. Rewrite `hc2` using `[← hΦ]`. Establish `hsm : ∀ (k : ℕ) (v : T₂.V), ((l : O) ^ k) • v = (l : K) ^ k • v` using `fun k v => by`. Rewrite using `[← algebraMap_smul K ((l : O) ^ k) v, map_pow, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx'' : (l : O) ^ N' • x' = (l : O) ^ n • ((f.f.restrictScalars O).restrict f.T_le ⟨_, hN'⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(l : O) ^ N' • (x' : T₂.V) = (l : O) ^ n • f.f ((l : K) ^ N' • c g)`. Rewrite using `[hx', hsm, hsm, map_smul, smul_smul, smul_smul, mul_comm]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key : ∀ z w : TW (OB l O) T₂, (l : O) ^ N' • z = (l : O) ^ N' • w → z = w`. Introduce `z w h`. Establish `hu : IsUnit ((l : OB l O) ^ N')`. Use `(GlobalTheory.MemLoc.isUnit_l_Bcris l).map (Algebra.TensorProduct.includeRight : Per.Bcris l →ₐ[ℤ_[l]] OB l O)` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.pow N'`. Rewrite `h` using `[← algebraMap_smul (OB l O) ((l : O) ^ N') z, ← algebraMap_smul (OB l O) ((l : O) ^ N') w, map_pow, map_natCast]`. Conclude with `hu.smul_left_cancel.1 h`. Apply `key` to reduce the goal to its premises. Rewrite using `[← TensorProduct.tmul_smul, hx'', TensorProduct.tmul_smul, hc2, smul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O]
     [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K]

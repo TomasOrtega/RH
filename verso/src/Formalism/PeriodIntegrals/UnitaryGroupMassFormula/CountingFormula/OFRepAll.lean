@@ -10,12 +10,12 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.CntFormula
 
 /- English proof (translation)
-The claim follows from `stage1_of_unipotentIntegralIsGroup unipotent_integral_isGroup`.
+A detailed English derivation is pending.
 -/
 theorem orbit_count_first_stage : Stage1 := stage1_of_unipotentIntegralIsGroup unipotent_integral_isGroup
 
 /- English proof (translation)
-The claim follows from `orbitReps_of unipotent_integral_isGroup rank_gram good_places_integral orbit_count_first_stage h2 finite_level_index`.
+A detailed English derivation is pending.
 -/
 theorem orbitReps_of_stage2 (h2 : Stage2) : OrbitReps :=
   orbitReps_of unipotent_integral_isGroup rank_gram good_places_integral orbit_count_first_stage h2 finite_level_index

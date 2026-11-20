@@ -12,7 +12,7 @@ namespace GroundTheory.Arith.Modular
 section Restrict
 
 /- English proof (translation)
-Rewrite using `[Functor.map_comp, CommRingCat.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma presheaf_map_map_apply {Y : Scheme.{u}} {A B C : Y.Opens} (f : op C ⟶ op B) (g : op B ⟶ op A)
     (s : Γ(Y, C)) : Y.presheaf.map g (Y.presheaf.map f s) = Y.presheaf.map (f ≫ g) s := by
@@ -22,7 +22,7 @@ variable {A σ : Type u} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A]
 variable (𝒜 : ℕ → σ) [GradedRing 𝒜]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun s => (Proj.basicOpen 𝒜 1).topIso.hom s) (ι_appTop_toSpecZero 𝒜 z)`. Simplify using `only [CategoryTheory.Iso.inv_hom_id_apply] at h`. Rewrite using `[← h, Scheme.Opens.ι_appTop, Scheme.Opens.topIso_hom]`. Conclude with `presheaf_map_map_apply _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma awayToSection_one_fromZero (z : 𝒜 0) :
     Proj.awayToSection 𝒜 1 (HomogeneousLocalization.fromZeroRingHom 𝒜 _ z) =
@@ -34,7 +34,7 @@ lemma awayToSection_one_fromZero (z : 𝒜 0) :
   exact presheaf_map_map_apply _ _ _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => φ.hom (HomogeneousLocalization.fromZeroRingHom 𝒜 _ z)) (Proj.awayMap_awayToSection 𝒜 hf (one_mul f).symm)`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom, HomogeneousLocalization.awayMap_fromZeroRingHom] at h`. Rewrite using `[h, awayToSection_one_fromZero, presheaf_map_map_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma awayToSection_fromZero {f : A} {m : ℕ} (hf : f ∈ 𝒜 m) (z : 𝒜 0) :
     Proj.awayToSection 𝒜 f (HomogeneousLocalization.fromZeroRingHom 𝒜 _ z) =

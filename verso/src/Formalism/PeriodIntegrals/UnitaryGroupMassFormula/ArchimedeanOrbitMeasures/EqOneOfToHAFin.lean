@@ -13,9 +13,9 @@ open scoped TensorProduct
 namespace PI.AprimeInfU
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[tauF_tmul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem tauF_eq_comm {D : D7} (X : HidaSetting D) (y : AF X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     tauF X.B.I y = Algebra.TensorProduct.comm X.B.I.F (Af X.B.I.F) X.B.I.E
@@ -28,11 +28,11 @@ theorem tauF_eq_comm {D : D7} (X : HidaSetting D) (y : AF X.B.I.F ⊗[X.B.I.F] X
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hbr` using `((toHA_isBridge X.B.I hb) (s, 1)).2`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hbr i) j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [ofHAFin, Matrix.map_apply] at e`. Rewrite `e` using `[tauF_eq_comm]`. Establish `e2` using `congrArg (Algebra.TensorProduct.comm X.B.I.F (Af X.B.I.F) X.B.I.E).symm e`. Rewrite `e2` using `[AlgEquiv.symm_apply_apply]`. Use `show tensMap (E := X.B.I.E) (sndA X.B.I.F) _ = _`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e2]`. Use `show _ = (1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Af X.B.I.F ⊗[X.B.I.F] X.B.I.E)) i j`. Simplify using `only [Formalism.MainNotions.S.AutInst.fmat, OneMemClass.coe_one, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem toHA_fin_one {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (s : X.B.I.Ginf) :
     (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb (s, 1))).2 = 1 := by
@@ -52,11 +52,11 @@ theorem toHA_fin_one {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (s : 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hbr` using `((toHA_isBridge X.B.I hb) p).2`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hbr i) j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [ofHAFin, Matrix.map_apply] at e`. Rewrite `e` using `[tauF_eq_comm]`. Establish `h2 : tensMap (E` using `X.B.I.E) (sndA X.B.I.F) (hmat X.B.I (toHA X.B.I hb p) i j) = (1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Af X.B.I.F ⊗[X.B.I.F] X.B.I.E)) i j := by`. Use `congrArg (fun g : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J => (HA.mat (Af X.B.I.F) X.B.I.cm.sig X.B.I.J g).val i j) h` as an intermediate fact. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h2]`. Rewrite `e` using `[Formalism.MainNotions.S.AutInst.fmat]`. Use `show _ = (1 : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) i j`. Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eq_one_of_toHA_fin {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (p : X.B.I.GA)
     (h : (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb p)).2 = 1) : p.2 = 1 := by
@@ -94,9 +94,9 @@ def thetaInf (v : InfinitePlace X.B.I.F) : Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E →
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[thetaV_tmul]`. Simplify using `only [thetaInf, tensMap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lift_tmul, AlgHom.id_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem thetaV_eq (v : InfinitePlace X.B.I.F) (y : AF X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     thetaV X.B.I v y = thetaInf X v (tensMap (E := X.B.I.E) (fstA X.B.I.F) y) := by
@@ -110,9 +110,9 @@ theorem thetaV_eq (v : InfinitePlace X.B.I.F) (y : AF X.B.I.F ⊗[X.B.I.F] X.B.I
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Unfold `ofHAInf`. Use `congr 2`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, thetaV_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J => (HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g).val i j) h` as an intermediate fact. Conclude with `congrArg (thetaInf X v) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofHAInf_congr (a b : HAd X.B.I)
     (h : (splitA X.B.I.cm.sig X.B.I.J a).1 = (splitA X.B.I.cm.sig X.B.I.J b).1) :
@@ -127,7 +127,7 @@ theorem ofHAInf_congr (a b : HAd X.B.I)
   exact congrArg (thetaInf X v) this
 
 /- English proof (translation)
-Unfold `ofHAFin`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, tauF_eq_comm]`. Use `congrArg (fun g : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J => (HA.mat (Af X.B.I.F) X.B.I.cm.sig X.B.I.J g).val i j) h` as an intermediate fact. Conclude with `congrArg (Algebra.TensorProduct.comm X.B.I.F (Af X.B.I.F) X.B.I.E) this`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ofHAFin_congr (a b : HAd X.B.I)
     (h : (splitA X.B.I.cm.sig X.B.I.J a).2 = (splitA X.B.I.cm.sig X.B.I.J b).2) :
@@ -140,7 +140,7 @@ theorem ofHAFin_congr (a b : HAd X.B.I)
   exact congrArg (Algebra.TensorProduct.comm X.B.I.F (Af X.B.I.F) X.B.I.E) this
 
 /- English proof (translation)
-Take `⟨a₁, b₁⟩` from `(toHA_isBridge X.B.I hb) p`. Take `⟨a₂, b₂⟩` from `(toHA_isBridge X.B.I hb) q`. Use `Prod.ext (funext fun v => ?_) ?_` and prove the remaining obligations. Conclude with `Subtype.ext (Units.ext ((a₁ v).trans ((congrFun h1 v).trans (a₂ v).symm)))`. Conclude with `Subtype.ext (Units.ext (b₁.trans (h2.trans b₂.symm)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_ofHA (p q : X.B.I.GA) (h1 : ofHAInf X.B.I (toHA X.B.I hb p) = ofHAInf X.B.I (toHA X.B.I hb q))
     (h2 : ofHAFin X.B.I (toHA X.B.I hb p) = ofHAFin X.B.I (toHA X.B.I hb q)) : p = q := by
@@ -151,7 +151,7 @@ theorem eq_of_ofHA (p q : X.B.I.GA) (h1 : ofHAInf X.B.I (toHA X.B.I hb p) = ofHA
   · exact Subtype.ext (Units.ext (b₁.trans (h2.trans b₂.symm)))
 
 /- English proof (translation)
-Establish `e : ((s * t, 1) : X.B.I.GA) = (s, 1) * (t, 1)` using `by simp`. Use `show (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb (s * t, 1))).1 = _`. Rewrite using `[e, map_mul, map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toInf_mul (s t : X.B.I.Ginf) : X.toInf hb (s * t) = X.toInf hb s * X.toInf hb t := by
   have e : ((s * t, 1) : X.B.I.GA) = (s, 1) * (t, 1) := by simp
@@ -160,17 +160,15 @@ theorem toInf_mul (s t : X.B.I.Ginf) : X.toInf hb (s * t) = X.toInf hb s * X.toI
   rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hS X.B.I.cm.sig X.B.I.J`. Use `set h := toHA X.B.I hb (1, x) with hh`. Use `set h' := e.symm (1, (splitA X.B.I.cm.sig X.B.I.J h).2) with hh'`. Establish `hs' : splitA X.B.I.cm.sig X.B.I.J h' = (1, (splitA X.B.I.cm.sig X.B.I.J h).2)`. Establish `h0` using `e.apply_symm_apply (1, (splitA X.B.I.cm.sig X.B.I.J h).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[he]`. Conclude with `h0`. Use `set q := (toHA X.B.I hb).symm h' with hq`. Establish `hqh : toHA X.B.I hb q = h'` using `(toHA X.B.I hb).apply_symm_apply h'`. Establish `h1 : ofHAInf X.B.I (toHA X.B.I hb q) = ofHAInf X.B.I (toHA X.B.I hb (1, 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hqh]`. Apply `ofHAInf_congr` to reduce the goal to its premises. Rewrite using `[hs', show ((1, 1) : X.B.I.GA) = 1 from rfl, map_one, map_one]`. Both sides reduce to the same expression. Establish `h1' : ofHAInf X.B.I (toHA X.B.I hb (1, 1)) = ofHAInf X.B.I (toHA X.B.I hb (1, x))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Take `⟨a₁, -⟩` from `(toHA_isBridge X.B.I hb) (1, 1)`. Take `⟨a₂, -⟩` from `(toHA_isBridge X.B.I hb) (1, x)`. Use function extensionality and compare the values at `v`. Conclude with `(a₁ v).symm.trans (a₂ v)`. Establish `h2 : ofHAFin X.B.I (toHA X.B.I hb q) = ofHAFin X.B.I (toHA X.B.I hb (1, x))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hqh]`. Apply `ofHAFin_congr` to reduce the goal to its premises. Rewrite using `[hs']`. Establish `hq1 : q = (1, x)` using `eq_of_ofHA X hb q (1, x) (h1.trans h1') h2`. Establish `: h' = h` using `by rw [← hqh, hq1]`.
-
-Rewrite using `[← this, hs']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toHA_inf_one (hS : MassDataMassesW.SplitIso) (x : X.B.I.Gf) :
     (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb (1, x))).1 = 1 := by
@@ -202,9 +200,7 @@ theorem toHA_inf_one (hS : MassDataMassesW.SplitIso) (x : X.B.I.Gf) :
   rw [← this, hs']
 
 /- English proof (translation)
-Establish `e : p = (p.1, 1) * (1, p.2)` using `by simp`. Use `conv_lhs => rw [e, map_mul, map_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show X.toInf hb p.1 * (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb (1, p.2))).1 = _`. Rewrite using `[toHA_inf_one X hb hS, mul_one]`.
-
-Use `show (splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb (p.1, 1))).2 * finHA X hb p.2 = _`. Rewrite using `[toHA_fin_one X hb, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_toHA (hS : MassDataMassesW.SplitIso) (p : X.B.I.GA) :
     splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb p) = (X.toInf hb p.1, finHA X hb p.2) := by
@@ -217,11 +213,9 @@ theorem split_toHA (hS : MassDataMassesW.SplitIso) (p : X.B.I.GA) :
     rw [toHA_fin_one X hb, one_mul]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨e, he⟩` from `hS X.B.I.cm.sig X.B.I.J`. Use `set p := (toHA X.B.I hb).symm (e.symm (y, 1))`. Establish `hp : splitA X.B.I.cm.sig X.B.I.J (toHA X.B.I hb p) = (y, 1)`. Rewrite using `[← he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[p]`. Establish `h2 : p.2 = 1` using `eq_one_of_toHA_fin X hb p (by rw [hp])`. Use `⟨p.1, ?_⟩` and prove the remaining obligations. Use `congrArg Prod.fst hp` as an intermediate fact. Rewrite `this` using `[split_toHA X hb hS]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toInf_surjective (hS : MassDataMassesW.SplitIso) : Function.Surjective (X.toInf hb) := by
   intro y

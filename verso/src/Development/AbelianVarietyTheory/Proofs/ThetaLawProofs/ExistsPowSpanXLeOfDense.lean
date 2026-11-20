@@ -5,19 +5,17 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.KeyKa
 
 /- English proof (translation)
-Use `set J : Ideal (MvPowerSeries (Fin g) K) := Ideal.span (Set.range MvPowerSeries.X) with hJ`. Set `L : (Fin N → K) →ₗ[K] MvPowerSeries (Fin g) K` to `Fintype.linearCombination K ρ`. Establish `hL : ∀ v, L v = ∑ k, v k • ρ k` using `fun v => Fintype.linearCombination_apply K ρ v`. Set `V : ℕ →o (Submodule K (Fin N → K))ᵒᵈ` to `⟨fun r => OrderDual.toDual (((I ⊔ J ^ r).restrictScalars K).comap L), by`. Introduce `a b hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((I ⊔ J ^ b).restrictScalars K).comap L ≤ ((I ⊔ J ^ a).restrictScalars K).comap L`. Introduce `v hv`. Conclude with `(sup_le_sup_left (Ideal.pow_le_pow_right hab) I) hv⟩`. Take `⟨r, hr⟩` from `IsArtinian.monotone_stabilizes V`. Establish `hV : ∀ v, L v ∈ I ⊔ J ^ r → L v ∈ I ⊔ J ^ (r + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `e : ((I ⊔ J ^ r).restrictScalars K).comap L = ((I ⊔ J ^ (r + 1)).restrictScalars K).comap L` using `hr (r + 1) (Nat.le_succ r)`. Establish `: v ∈ ((I ⊔ J ^ r).restrictScalars K).comap L` using `hv`. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfg : J.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hjac : J ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, hJ, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [SetLike.mem_coe, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use `⟨r, Submodule.le_of_le_smul_of_le_jacobson_bot (N' := J ^ r) (N := I) (I := J) (Ideal.FG.pow hfg) hjac ?_⟩` and prove the remaining obligations. Introduce `G hG`. Take `⟨v, hv⟩` from `h (r + 1) G`. Rewrite `hv` using `[← hL]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : L v ∈ I ⊔ J ^ r`. Establish `h2 : G - L v ∈ I ⊔ J ^ r` using `(sup_le_sup_left (Ideal.pow_le_pow_right (Nat.le_succ r)) I) hv`. Establish `h3 : G ∈ I ⊔ J ^ r` using `Ideal.mem_sup_right hG`. Simplify using `using Ideal.sub_mem _ h3 h2`. Establish `h4` using `Ideal.add_mem _ hv (hV v h1)`.
-
-Rewrite `h4` using `[sub_add_cancel, pow_succ']`. Conclude with `h4`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_span_X_le_of_dense (K : Type) [Field K] (g N : ℕ)
     (I : Ideal (MvPowerSeries (Fin g) K)) (ρ : Fin N → MvPowerSeries (Fin g) K)
@@ -63,9 +61,9 @@ theorem exists_pow_span_X_le_of_dense (K : Type) [Field K] (g N : ℕ)
   exact h4
 
 /- English proof (translation)
-Introduce `K _ g N Y _ I ρ h G`. Establish `hy : ∀ y, ∃ r : ℕ, Ideal.span (Set.range (MvPowerSeries.X : Fin g → MvPowerSeries (Fin g) K)) ^ r ≤ I y` using `fun y => exists_pow_span_X_le_of_dense K g N (I y) (ρ y) fun r F => by`. Take `⟨v, hv⟩` from `h r (fun _ => F)`. Conclude with `⟨v, hv y⟩`. Use `choose r hr using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `(Set.finite_range r).bddAbove`. Take `⟨v, hv⟩` from `h R G`. Use `⟨v, fun y => ?_⟩` and prove the remaining obligations. Conclude with `(sup_le le_rfl ((Ideal.pow_le_pow_right (hR ⟨y, rfl⟩)).trans (hr y))) (hv y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_of_dense : ∀ (K : Type) [Field K] (g N : ℕ) (Y : Type) [Finite Y] (I : Y → Ideal (MvPowerSeries (Fin g) K)) (ρ : Y → Fin N → MvPowerSeries (Fin g) K), (∀ (r : ℕ) (G : Y → MvPowerSeries (Fin g) K), ∃ v : Fin N → K, ∀ y, G y - ∑ k, v k • ρ y k ∈ I y ⊔ Ideal.span (Set.range MvPowerSeries.X) ^ r) → ∀ G : Y → MvPowerSeries (Fin g) K, ∃ v : Fin N → K, ∀ y, G y - ∑ k, v k • ρ y k ∈ I y := by
   intro K _ g N Y _ I ρ h G

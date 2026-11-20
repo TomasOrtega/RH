@@ -9,9 +9,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [pderiv_mul, map_add, hp, pderiv_X, Pi.single_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> (try simp) <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pderiv_comm_two_variables (i j : Fin 2) (P : MvPolynomial (Fin 2) ℝ) :
     pderiv i (pderiv j P) = pderiv j (pderiv i P) := by
@@ -23,11 +23,11 @@ theorem pderiv_comm_two_variables (i j : Fin 2) (P : MvPolynomial (Fin 2) ℝ) :
     split_ifs <;> (try simp) <;> ring
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [eval_C, pderiv_C, map_zero]`. Conclude with `hasDerivAt_const s a`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p n hp`. Establish `hX : HasDerivAt (fun u : ℝ => (![u, t] : Fin 2 → ℝ) n) (eval ![s, t] (pderiv 0 (X n))) s` using `by fin_cases n`. Simplify using `using hasDerivAt_id' s`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hasDerivAt_const s t`. Simplify using `only [map_mul, eval_X, pderiv_mul, map_add]`. Conclude with `hp.mul hX`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_eval_fst (P : MvPolynomial (Fin 2) ℝ) (s t : ℝ) :
     HasDerivAt (fun u => eval ![u, t] P) (eval ![s, t] (pderiv 0 P)) s := by
@@ -47,11 +47,11 @@ theorem hasDerivAt_eval_fst (P : MvPolynomial (Fin 2) ℝ) (s t : ℝ) :
     exact hp.mul hX
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [eval_C, pderiv_C, map_zero]`. Conclude with `hasDerivAt_const t a`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p n hp`. Establish `hX : HasDerivAt (fun u : ℝ => (![s, u] : Fin 2 → ℝ) n) (eval ![s, t] (pderiv 1 (X n))) t` using `by fin_cases n`. Simplify using `using hasDerivAt_const t s`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hasDerivAt_id' t`. Simplify using `only [map_mul, eval_X, pderiv_mul, map_add]`. Conclude with `hp.mul hX`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_eval_snd (P : MvPolynomial (Fin 2) ℝ) (s t : ℝ) :
     HasDerivAt (fun u => eval ![s, u] P) (eval ![s, t] (pderiv 1 P)) t := by
@@ -71,21 +71,21 @@ theorem hasDerivAt_eval_snd (P : MvPolynomial (Fin 2) ℝ) (s t : ℝ) :
     exact hp.mul hX
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun u => (hasDerivAt_eval_fst P u t).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eval_fst (P : MvPolynomial (Fin 2) ℝ) (t : ℝ) :
     Continuous fun u => eval ![u, t] P :=
   continuous_iff_continuousAt.2 fun u => (hasDerivAt_eval_fst P u t).continuousAt
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun u => (hasDerivAt_eval_snd P s u).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eval_snd (P : MvPolynomial (Fin 2) ℝ) (s : ℝ) :
     Continuous fun u => eval ![s, u] P :=
   continuous_iff_continuousAt.2 fun u => (hasDerivAt_eval_snd P s u).continuousAt
 
 /- English proof (translation)
-The claim follows from `intervalIntegral.integral_eq_sub_of_hasDerivAt (fun u _ => hasDerivAt_eval_fst P u t) ((continuous_eval_fst _ t).intervalIntegrable a b)`.
+A detailed English derivation is pending.
 -/
 theorem integral_eval_pderiv_fst (P : MvPolynomial (Fin 2) ℝ) (t a b : ℝ) :
     ∫ u in a..b, eval ![u, t] (pderiv 0 P) = eval ![b, t] P - eval ![a, t] P :=
@@ -93,7 +93,7 @@ theorem integral_eval_pderiv_fst (P : MvPolynomial (Fin 2) ℝ) (t a b : ℝ) :
     ((continuous_eval_fst _ t).intervalIntegrable a b)
 
 /- English proof (translation)
-The claim follows from `intervalIntegral.integral_eq_sub_of_hasDerivAt (fun u _ => hasDerivAt_eval_snd P s u) ((continuous_eval_snd _ s).intervalIntegrable a b)`.
+A detailed English derivation is pending.
 -/
 theorem integral_eval_pderiv_snd (P : MvPolynomial (Fin 2) ℝ) (s a b : ℝ) :
     ∫ u in a..b, eval ![s, u] (pderiv 1 P) = eval ![s, b] P - eval ![s, a] P :=
@@ -101,9 +101,9 @@ theorem integral_eval_pderiv_snd (P : MvPolynomial (Fin 2) ℝ) (s a b : ℝ) :
     ((continuous_eval_snd _ s).intervalIntegrable a b)
 
 /- English proof (translation)
-Unfold `gKernel`. Simplify using `only [map_sum, map_sub, map_mul, map_pow, eval_X, Matrix.cons_val_zero, Matrix.cons_val_one]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j < k` using `Finset.mem_range.1 hj`. Establish `h : 2 * j + 1 + (2 * k - 1 - 2 * j) = 2 * j + (2 * k - 2 * j)` using `by omega`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, ← pow_add, h, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gKernel_eval_diag (k : ℕ) (c : ℝ) : eval ![c, c] (gKernel ℝ k) = 0 := by
   unfold gKernel
@@ -115,23 +115,21 @@ theorem gKernel_eval_diag (k : ℕ) (c : ℝ) : eval ![c, c] (gKernel ℝ k) = 0
   rw [← pow_add, ← pow_add, h, sub_self]
 
 /- English proof (translation)
-Introduce `k`. Take `⟨-, -, h11, hmm, h1m, hm1, hc⟩` from `h0 ℝ k`. Use `set G := gKernel ℝ k with hGdef`. Establish `hg : gMixed k = pderiv 0 (pderiv 1 G)` using `rfl`. Establish `hg' : gMixed k = pderiv 1 (pderiv 0 G)` using `by rw [hg, pderiv_comm_two_variables]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI1 : ∀ t : ℝ, ∫ x in (-1 : ℝ)..1, eval ![x, t] (gMixed k) = eval ![1, t] (pderiv 1 G) - eval ![-1, t] (pderiv 1 G)` using `fun t => by`. Rewrite using `[hg]`. Conclude with `integral_eval_pderiv_fst _ _ _ _`. Establish `hI2 : ∀ s : ℝ, ∫ y in (-1 : ℝ)..1, eval ![s, y] (gMixed k) = eval ![s, 1] (pderiv 0 G) - eval ![s, -1] (pderiv 0 G)` using `fun s => by`. Rewrite using `[hg']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `integral_eval_pderiv_snd _ _ _ _`. Establish `hsq : squareMean (gMixed k) = k`. Unfold `squareMean`. Simplify using `only [hI2]`. Rewrite using `[intervalIntegral.integral_sub ((continuous_eval_fst _ _).intervalIntegrable _ _) ((continuous_eval_fst _ _).intervalIntegrable _ _), integral_eval_pderiv_fst, integral_eval_pderiv_fst, h11, hmm, h1m, hm1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨hsq, fun c => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3, e4⟩` from `hc c`. Establish `hdiag` using `gKernel_eval_diag k c`. Rewrite `hdiag` using `[← hGdef]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `doublyCentred`. Simplify using `only [hI1, hI2, hsq]`. Establish `hin : ∀ s : ℝ, ∫ t in (-1 : ℝ)..c, (eval ![s, t] (gMixed k) - 1 / 2 * (eval ![1, t] (pderiv 1 G) - eval ![-1, t] (pderiv 1 G)) - 1 / 2 * (eval ![s, 1] (pderiv 0 G) - eval ![s, -1] (pderiv 0 G)) + (k : ℝ)) = (eval ![s, c] (pderiv 0 G) - eval ![s, -1] (pderiv 0 G)) - 1 / 2 * ((eval …`. Introduce `s`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun t => eval ![s, t] (pderiv 0 G) - 1 / 2 * (eval ![1, t] G - eval ![-1, t] G) - (1 / 2 * (eval ![s, 1] (pderiv 0 G) - eval ![s, -1] (pderiv 0 G)) - k) * t)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `t _`. Use `((hasDerivAt_eval_snd (pderiv 0 G) s t).sub (((hasDerivAt_eval_snd G 1 t).sub (hasDerivAt_eval_snd G (-1) t)).const_mul (1 / 2))).sub ((hasDerivAt_id t).const_mul (1 / 2 * (eval ![s, 1] (pderiv 0 G) - eval ![s, -1] (pderiv 0 G)) - k))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.sub_apply, id]`. Rewrite using `[hg']`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(((continuous_eval_snd _ s).sub (continuous_const.mul ((continuous_eval_snd _ 1).sub (continuous_eval_snd _ (-1))))).sub continuous_const |>.add continuous_const).intervalIntegrable _ _`. Simplify using `only [hin]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun s => eval ![s, c] G - eval ![s, -1] G - 1 / 2 * ((eval ![1, c] G - eval ![1, -1] G) - (eval ![-1, c] G - eval ![-1, -1] G)) * s - (c + 1) * (1 / 2 * (eval ![s, 1] G - eval ![s, -1] G) - k * s))]`. Take the linear combination `(1 / 2 : ℝ) * e1 + (1 / 2 : ℝ) * e2 - (1 / 2 : ℝ) * e3 - (1 / 2 : ℝ) * e4 + hdiag + (1 + c) / 2 * h1m - c * hmm + (1 + c) / 2 * hm1`. Introduce `s _`. Use `(((hasDerivAt_eval_fst G s c).sub (hasDerivAt_eval_fst G s (-1))).sub ((hasDerivAt_id s).const_mul (1 / 2 * ((eval ![1, c] G - eval ![1, -1] G) - (eval ![-1, c] G - eval ![-1, -1] G))))).sub ((((hasDerivAt_eval_fst G s 1).sub (hasDerivAt_eval_fst G s (-1))).const_mul (1 / 2)).sub …` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `u`. Simplify using `only [Pi.sub_apply, id]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `((((continuous_eval_fst _ c).sub (continuous_eval_fst _ (-1))).sub continuous_const).sub (continuous_const.mul ((continuous_const.mul ((continuous_eval_fst _ 1).sub (continuous_eval_fst _ (-1)))).sub continuous_const))).intervalIntegrable _ _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GHatIdentity.proof (h0 : GKernelIdentity.Statement) : GHatIdentity.Statement := by
   intro k

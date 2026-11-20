@@ -6,7 +6,7 @@ open AlgebraicGeometry CategoryTheory Matrix ReciprocityTheory.ChartRestriction.
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.smoothOn_log_grSq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLogGramSquareSmooth.lean&line=12#L12)
 -/

@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HasCompactSuppo
 namespace PositivityTheory.AdelicQuotientData
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.CompanionTheory.CutOff.exists_cut`.
+A detailed English derivation is pending.
 -/
 theorem last_row_cutoff_of : jumpWindows.S4 → jumpWindows.S8 → jumpWindows.G0 → LastRowCutoff := @GlobalTheory.CompanionTheory.CutOff.exists_cut
 

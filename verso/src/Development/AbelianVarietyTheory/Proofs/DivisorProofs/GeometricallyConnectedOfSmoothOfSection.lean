@@ -6,7 +6,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X f e _ he _`. Conclude with `GlobalTheory.RatPointConn.of_section f e he`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_smooth_of_section :
     ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of k))

@@ -6,9 +6,9 @@ namespace GlobalTheory.CompanionTheory.LCSecFub
 open Ad3.K.LC Ad3.K.LC.B in
 
 /- English proof (translation)
-Introduce `hJ k hk Ψ g`. Establish `hI : Integrable (secI k Ψ g) ((volume : Measure M22).prod (volume : Measure ℂ))` using `hJ k hk Ψ g`. Establish `hprod : ∫ p : M22 × ℂ, secI k Ψ g p = ∫ h : M22, ∫ t : ℂ, secI k Ψ g (h, t)` using `integral_prod _ hI`. Rewrite using `[hprod]`. Unfold `sec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [secI]`. Rewrite using `[integral_mul_const, integral_mul_const]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem secFub_of_secJ : Ad3.K.LC.B.SecJ → Ad3.K.LC.B.SecFub := by
   intro hJ k hk Ψ g

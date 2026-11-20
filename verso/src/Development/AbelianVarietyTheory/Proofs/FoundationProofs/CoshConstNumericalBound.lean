@@ -5,23 +5,23 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Schu
 namespace GlobalTheory.CartanInt
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (p + q) with h0 | hpos` into its components or cases. Establish `hp : p = 0` using `by omega`. Establish `hq : q = 0` using `by omega`. Substitute `hp hq` using the available equality. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hsq : (p + q) ^ 2 = (p ^ 2 + q ^ 2) + 2 * (p * q)` using `by ring`. Establish `hmin : 2 * (p + q) * min p q ≤ 4 * (p * q)`. Break down `le_total p q with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[min_eq_right h]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hR : Real.exp (3 * ((p + q : ℕ) : ℝ) ^ 2 * Real.log (((p + q : ℕ) : ℝ) + 2)) = (((p + q : ℕ) : ℝ) + 2) ^ (3 * (p + q) ^ 2)`. Establish `: (3 * ((p + q : ℕ) : ℝ) ^ 2) = ((3 * (p + q) ^ 2 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[this, Real.exp_nat_mul, Real.exp_log (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR, hsq]`. Establish `ha : (1 : ℝ) ≤ ((p + q : ℕ) : ℝ)` using `by exact_mod_cast hpos`. Generalize the expression as in `((p + q : ℕ) : ℝ) = a at ha`. Generalize the expression as in `p ^ 2 + q ^ 2 = d`. Generalize the expression as in `2 * (p + q) * min p q = m at hmin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `p * q = n at hmin`. Establish `ha0 : 0 < a` using `by linarith`. Establish `hpi` using `Real.pi_pos`. Establish `hmax : max 1 (3 / 2 * a ^ 2) = 3 / 2 * a ^ 2` using `max_eq_right (by nlinarith)`. Establish `h1 : 18 / 5 * (3 / 2 * a ^ 2) / a = 27 / 5 * a` using `by field_simp; ring`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 2 * Real.pi / (2 / ((a + 1) / 2)) ^ 2 = Real.pi * ((a + 1) ^ 2 / 8)` using `by field_simp; ring`. Rewrite using `[hmax, h1, h2]`. Establish `h3 : (2 : ℝ) ^ m ≤ 16 ^ n`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : 27 / 5 * a * (9 / 2) ≤ (a + 2) ^ 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (sq_nonneg (a - 1)) (show (0 : ℝ) ≤ a + 8 by linarith)]`. Establish `h5 : 8 * a * (a + 1) ≤ (a + 2) ^ 3`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg (a - 1)) ha0.le]`. Establish `h6 : (27 / 5 * a) ^ 2 * 16 * ((a + 1) ^ 2 / 8) ≤ (a + 2) ^ 6`. Establish `h7 : (8 * a * (a + 1)) ^ 2 ≤ ((a + 2) ^ 3) ^ 2` using `by gcongr`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : 0 ≤ (a * (a + 1)) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add, pow_mul, mul_pow Real.pi, mul_pow (27 / 5 * a) (9 / 2), mul_pow _ ((a + 1) ^ 2 / 8), mul_pow _ (16 : ℝ)]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `_ ≤ ((a + 2) ^ 3) ^ d * ((a + 2) ^ 6) ^ n := by gcongr`. Use `_ = (a + 2) ^ (3 * (d + 2 * n)) := by`. Rewrite using `[← pow_mul, ← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cosh_const_numerical_bound (p q : ℕ) :
     (18 / 5 * max 1 (3 / 2 * ((p + q : ℕ) : ℝ) ^ 2) / ((p + q : ℕ) : ℝ)) ^ ((p + q) ^ 2) * (9 / 2) ^ (p ^ 2 + q ^ 2) / Real.pi ^ (p * q) * (2 ^ (2 * (p + q) * min p q) * (2 * Real.pi / (2 / ((((p + q : ℕ) : ℝ) + 1) / 2)) ^ 2) ^ (p * q)) ≤ Real.exp (3 * ((p + q : ℕ) : ℝ) ^ 2 * Real.log (((p + q : ℕ) : ℝ) + 2)) := by

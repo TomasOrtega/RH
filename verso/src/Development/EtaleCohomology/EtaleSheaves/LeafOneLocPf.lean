@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.E.LeafOneLocPf
 
 /- English proof (translation)
-Unfold `freeGen Sec.res`. Establish `h` using `congrArg (fun f => f.hom (ModuleCat.freeMk (ULift.up x))) ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp] at h`. Establish `h2 : (((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (ULift.up x)) = ModuleCat.freeMk (R` using `ULift.{1} R) (ULift.up.{1} (P.map g.op x)) := ModuleCat.free_map_apply (R := ULift.{1} R) _ _`. Conclude with `h.symm.trans (congrArg _ h2)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem freeGen_res (R : Type) [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     Sec.res g (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
@@ -20,9 +20,9 @@ theorem freeGen_res (R : Type) [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V 
   exact h.symm.trans (congrArg _ h2)
 
 /- English proof (translation)
-Unfold `ev`. Establish `hn` using `congrArg (fun f => f.hom (freeGen R _ U x)) ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at hn`. Express the relevant statement in the definitionally equal form `_ = _ at hn`. Rewrite using `[Sx.res, ← freeGen_res]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn.symm`.
+A detailed English derivation is pending.
 -/
 theorem ev_res {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
@@ -39,7 +39,7 @@ def LeafPrimLoc : Prop := ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), IsUnit (q :
   Loc U fun V _ => Nonempty (Prim q Γ(V, ⊤))
 
 /- English proof (translation)
-Introduce `q _ E hE α hα U x`. Take `⟨S, hS, hP⟩` from `hprim q U (hE U ⟨x⟩)`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨ζ⟩` from `hP V g hg`. Conclude with `⟨ζ, (ev_res α.1 0 0 (by simp) g x).trans (hα V (Sx.res g x) ζ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafOneLoc_of (hprim : LeafPrimLoc) : LateralTheory.E.LeafRingUnitPf.LeafOneLoc := by
   intro q _ E hE α hα U x

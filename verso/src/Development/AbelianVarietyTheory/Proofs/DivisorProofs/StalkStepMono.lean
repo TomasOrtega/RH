@@ -43,7 +43,7 @@ def incl (τ : ι) (i : Fin (N + 1)) : F ι N τ i ⟶ (Scheme.Modules.pullback 
   (sub ι N τ i).incl ≫ (freeIso ι N).inv
 
 /- English proof (translation)
-The claim follows from `iInf_mono fun _ => iInf_mono fun _ => Submodule.span_mono fun _ ⟨j, hj, e⟩ => ⟨j, lt_of_lt_of_le hj h, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem stalkStep_mono (τ : ι) {l l' : ℕ} (h : l ≤ l') (y : Fl ι N) : stalkStep ι N τ l y ≤ stalkStep ι N τ l' y :=
   iInf_mono fun _ => iInf_mono fun _ => Submodule.span_mono fun _ ⟨j, hj, e⟩ => ⟨j, lt_of_lt_of_le hj h, e⟩
@@ -53,7 +53,7 @@ def step (τ : ι) (i : Fin N) : F ι N τ i.castSucc ⟶ F ι N τ i.succ :=
     exact stalkStep_mono ι N τ (by simp [Fin.val_succ]) x ((sub ι N τ i.castSucc).incl_app_mem s x hx)
 
 /- English proof (translation)
-The claim follows from `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ (freeIso ι N).inv) (VB.Sub.lift_incl _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem step_incl (τ : ι) (i : Fin N) : step ι N τ i ≫ incl ι N τ i.succ = incl ι N τ i.castSucc :=
   (Category.assoc _ _ _).symm.trans (congrArg (· ≫ (freeIso ι N).inv) (VB.Sub.lift_incl _ _ _))

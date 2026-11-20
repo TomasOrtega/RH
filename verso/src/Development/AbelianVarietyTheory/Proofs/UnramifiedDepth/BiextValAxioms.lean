@@ -16,7 +16,7 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, comp_lift]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem biextVal_pull {S : Scheme.{0}} {G : Over S} {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
     {φ : K → ((G ⊗ G ⊗ G).left ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) {T T' : Over S} (ρ : T' ⟶ T)
@@ -29,17 +29,17 @@ private theorem biextVal_pull {S : Scheme.{0}} {G : Over S} {X : Scheme.{0}} {L 
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Introduce `S G _ _ P β T z J hJ t₁ t₂ h₁ h₂`. Establish `a₀ : ∀ a b c d : T ⟶ G, lift a (lift b (lift c d)) ≫ x4 G 0 = a` using `fun a b c d => by simp [x4]`. Establish `a₁ : ∀ a b c d : T ⟶ G, lift a (lift b (lift c d)) ≫ x4 G 1 = b` using `fun a b c d => by simp [x4]`. Establish `a₂ : ∀ a b c d : T ⟶ G, lift a (lift b (lift c d)) ≫ x4 G 2 = c` using `fun a b c d => by simp [x4]`. Establish `a₃ : ∀ a b c d : T ⟶ G, lift a (lift b (lift c d)) ≫ x4 G 3 = d` using `fun a b c d => by simp [x4]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₀ : ∀ a b c d : T ⟶ G, lift a (lift b (lift c d)) ≫ padd G (x4 G 0) (x4 G 1) = a * b` using `fun a b c d => (MonObj.comp_mul _ _ _).trans (by rw [a₀, a₁])`. Establish `b₁ : ∀ a b c d : T ⟶ G, lift a (lift b (lift c d)) ≫ padd G (x4 G 1) (x4 G 2) = b * c` using `fun a b c d => (MonObj.comp_mul _ _ _).trans (by rw [a₁, a₂])`. Establish `b₂ : ∀ a b c d : T ⟶ G, lift a (lift b (lift c d)) ≫ padd G (x4 G 2) (x4 G 3) = c * d` using `fun a b c d => (MonObj.comp_mul _ _ _).trans (by rw [a₂, a₃])`. Establish `c₀ : ∀ a b c : T ⟶ G, lift a (lift b c) ≫ x3 G 0 = a` using `fun a b c => by simp [x3]`. Establish `c₁ : ∀ a b c : T ⟶ G, lift a (lift b c) ≫ x3 G 1 = b` using `fun a b c => by simp [x3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₂ : ∀ a b c : T ⟶ G, lift a (lift b c) ≫ x3 G 2 = c` using `fun a b c => by simp [x3]`. Simplify using `only [h₁, h₂]`. Use `⟨fun x x' x'' y => ?_, fun x x' y => ?_, fun x y y' y'' => ?_, fun x y y' => ?_, fun x x' y y' => ?_⟩` and prove the remaining obligations. Use `val_corr hJ β.assoc1 (lift x (lift x' (lift x'' y))).left` as an intermediate fact. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (biextVal_pull _ _ hJ _ _ _) (biextVal_pull _ _ hJ _ _ _))).symm.trans (this.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (biextVal_pull _ _ hJ _ _ _) (biextVal_pull _ _ hJ _ _ _))))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[b₀, b₁, a₀, a₁, a₂, a₃]`. Then use the resulting hypothesis. Establish `e` using `(val_corr hJ β.comm1 (lift x (lift x' y)).left).trans (biextVal_pull _ _ hJ _ _ _)`. Rewrite `e` using `[c₀, c₁, c₂]`. Then use the resulting hypothesis. Use `val_corr hJ β.assoc2 (lift x (lift y (lift y' y''))).left` as an intermediate fact. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (biextVal_pull _ _ hJ _ _ _) (biextVal_pull _ _ hJ _ _ _))).symm.trans (this.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (biextVal_pull _ _ hJ _ _ _) (biextVal_pull _ _ hJ _ _ _))))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[b₁, b₂, a₀, a₁, a₂, a₃]`. Then use the resulting hypothesis. Establish `e` using `(val_corr hJ β.comm2 (lift x (lift y y')).left).trans (biextVal_pull _ _ hJ _ _ _)`. Rewrite `e` using `[c₀, c₁, c₂]`. Then use the resulting hypothesis. Use `val_corr hJ β.compat (lift x (lift x' (lift y y'))).left` as an intermediate fact. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (biextVal_pull _ _ hJ _ _ _) (biextVal_pull _ _ hJ _ _ _))) (biextVal_pull _ _ hJ _ _ _))).symm.trans (this.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (cong …`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[b₀, b₂, a₀, a₁, a₂, a₃]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem biext_val_axioms :
   (∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : ReciprocityTheory.ChartRestriction.G.Semi.LB (G ⊗ G).left) (β : ReciprocityTheory.ChartRestriction.G.Semi.IsBiext G P) (T : Over S) (z : T.left)

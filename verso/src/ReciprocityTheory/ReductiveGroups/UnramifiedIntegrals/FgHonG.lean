@@ -13,7 +13,7 @@ def triSol {K : Type} [Field K] (a : ℕ → ℕ → K) (b : ℕ → K) : ℕ �
   | m => (b m - ∑ i : Fin m, triSol a b i.1 * a i.1 m) / a m m
 
 /- English proof (translation)
-Establish `h : triSol a b m = (b m - ∑ i : Fin m, triSol a b i.1 * a i.1 m) / a m m`. Rewrite using `[triSol]`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range, h, div_mul_cancel₀ _ (ha m)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem triSol_eq {K : Type} [Field K] (a : ℕ → ℕ → K) (b : ℕ → K) (ha : ∀ m, a m m ≠ 0)
     (m : ℕ) : ∑ i ∈ Finset.range (m + 1), triSol a b i * a i m = b m := by
@@ -23,9 +23,9 @@ theorem triSol_eq {K : Type} [Field K] (a : ℕ → ℕ → K) (b : ℕ → K) (
   ring
 
 /- English proof (translation)
-Establish `hr : 0 ≤ r` using `(norm_nonneg _).trans (hb 0)`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Rewrite using `[triSol, norm_div, ha, div_one, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hb m) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_neg]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hr fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem triSol_norm (a : ℕ → ℕ → K) (b : ℕ → K) (ha1 : ∀ i m, ‖a i m‖ ≤ 1)
     (ha : ∀ m, ‖a m m‖ = 1) (r : ℝ) (hb : ∀ m, ‖b m‖ ≤ r) (m : ℕ) : ‖triSol a b m‖ ≤ r := by
@@ -42,7 +42,7 @@ theorem triSol_norm (a : ℕ → ℕ → K) (b : ℕ → K) (ha1 : ∀ i m, ‖a
       _ = r := mul_one r
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, hτ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem norm_pow_apply_of_isometric (τ : K →+* K) (hτ : ∀ x, ‖τ x‖ = ‖x‖) (i : ℕ) (x : K) :
     ‖(τ ^ i) x‖ = ‖x‖ := by
@@ -55,11 +55,11 @@ def triIter {K : Type} [Field K] (a : ℕ → ℕ → K) (π : K) : ℕ → ℕ 
   | k + 1 => triSol a (fun m => if m = 0 then 0 else π * triIter a π k (m + 1))
 
 /- English proof (translation)
-Proceed by induction on `k generalizing m with`. Consider the case `zero`. Rewrite using `[triIter, pow_zero]`. Use `triSol_norm a _ ha1 ha 1 (fun j => ?_) m` and prove the remaining obligations. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `ha1 0 0`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Rewrite using `[triIter]`. Use `triSol_norm a _ ha1 ha _ (fun j => ?_) m` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[norm_mul, pow_succ']`. Conclude with `mul_le_mul_of_nonneg_left (ih _) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem triIter_norm (a : ℕ → ℕ → K) (π : K) (ha1 : ∀ i m, ‖a i m‖ ≤ 1)
     (ha : ∀ m, ‖a m m‖ = 1) (k m : ℕ) : ‖triIter a π k m‖ ≤ ‖π‖ ^ k := by
@@ -79,25 +79,23 @@ theorem triIter_norm (a : ℕ → ℕ → K) (π : K) (ha1 : ∀ i m, ‖a i m�
       exact mul_le_mul_of_nonneg_left (ih _) (norm_nonneg _)
 
 /- English proof (translation)
-Use `set a : ℕ → ℕ → K := fun i m => (τ ^ i) (c (m - i)) with ha_def`. Establish `ha1 : ∀ i m, ‖a i m‖ ≤ 1` using `fun i m => by`. Rewrite using `[ha_def]`. Simplify using `only`. Rewrite using `[norm_pow_apply_of_isometric τ hτ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc _`. Establish `ha : ∀ m, ‖a m m‖ = 1` using `fun m => by`. Rewrite using `[ha_def]`. Simplify using `only`. Rewrite using `[norm_pow_apply_of_isometric τ hτ, Nat.sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc0`. Establish `ha0 : ∀ m, a m m ≠ 0` using `fun m h => by`. Use `ha m` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsum : ∀ m, Summable fun k => triIter a π k m` using `fun m => Summable.of_norm_bounded (summable_geometric_of_lt_one (norm_nonneg π) hπ) (fun k => triIter_norm a π ha1 ha k m)`. Establish `hz0 : triIter a π 0 0 = 1`. Establish `h` using `triSol_eq a (fun m => if m = 0 then a 0 0 else 0) ha0 0`. Simplify using `only [zero_add, Finset.sum_range_one, if_true] at h`. Rewrite using `[triIter]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ (ha0 0) (h.trans (one_mul _).symm)`. Establish `hzs : ∀ k, triIter a π (k + 1) 0 = 0` using `fun k => by`. Establish `h` using `triSol_eq a (fun m => if m = 0 then 0 else π * triIter a π k (m + 1)) ha0 0`. Simplify using `only [zero_add, Finset.sum_range_one, if_true] at h`. Rewrite using `[triIter]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_eq_zero.mp h).resolve_right (ha0 0)`. Use `⟨fun m => ∑' k, triIter a π k m, ?_, fun n => ?_, fun n hn => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[(hsum 0).tsum_eq_zero_add, hz0]`. Simplify using `[hzs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg zero_le_one fun k => ?_` and prove the remaining obligations. Conclude with `(triIter_norm a π ha1 ha k n).trans (pow_le_one₀ (norm_nonneg _) hπ.le)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 2` from `⟨n - 2, by omega⟩`. Establish `hterm : ∀ i, (∑' k, triIter a π k i) * (τ ^ i) (c (m + 2 - 1 - i)) = ∑' k, triIter a π k i * a i (m + 1)` using `fun i => by`. Rewrite using `[tsum_mul_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Simplify using `only [hterm]`. Rewrite using `[← Summable.tsum_finsetSum (fun i _ => (hsum i).mul_right _)]`. Establish `hS : Summable fun k => ∑ i ∈ Finset.range (m + 2), triIter a π k i * a i (m + 1)` using `summable_sum fun i _ => (hsum i).mul_right _`. Rewrite using `[hS.tsum_eq_zero_add, ← tsum_mul_left]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : ∑ i ∈ Finset.range (m + 2), triIter a π 0 i * a i (m + 1) = 0`. Establish `h` using `triSol_eq a (fun m => if m = 0 then a 0 0 else 0) ha0 (m + 1)`. Simplify `h` using `[triIter]`. Rewrite using `[h0, zero_add]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations.
-
-Establish `h` using `triSol_eq a (fun m => if m = 0 then 0 else π * triIter a π k (m + 1)) ha0 (m + 1)`. Simplify `h.symm` using `[triIter]`.
+A detailed English derivation is pending.
 -/
 theorem twisted_division (τ : K →+* K) (hτ : ∀ x, ‖τ x‖ = ‖x‖) (π : K) (hπ : ‖π‖ < 1)
     (c : ℕ → K) (hc0 : ‖c 0‖ = 1) (hc : ∀ i, ‖c i‖ ≤ 1) :

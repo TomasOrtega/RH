@@ -9,13 +9,11 @@ open scoped TensorProduct
 namespace GlobalTheory.TvAdjust
 
 /- English proof (translation)
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Distinguish the cases in `hg : N.Coprime b`. Conclude with `⟨1, N, 0, by simp, by simp, hg⟩`. Take `⟨M, hM⟩` from `Nat.gcd_dvd_left N b`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hg0 : 0 < N.gcd b` using `Nat.gcd_pos_of_pos_left _ hN`. Establish `hg1 : 1 < N.gcd b`. Break down `Nat.lt_or_ge 1 (N.gcd b) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (show N.gcd b = 1 by omega) hg`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 < M` using `Nat.pos_of_ne_zero (by rintro rfl; omega)`. Establish `hlt : M < N` using `by nlinarith`. Take `⟨A, B, e, h1, h2, h3⟩` from `ih M hlt hM0`. Use `⟨N.gcd b * A, B, e + 1, by rw [mul_assoc, ← h1]; exact hM, ?_, h3⟩` and prove the remaining obligations. Rewrite using `[pow_succ']`.
-
-Conclude with `mul_dvd_mul (Nat.gcd_dvd_right N b) h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split (b : ℕ) (N : ℕ) (hN : 0 < N) :
     ∃ A B e : ℕ, N = A * B ∧ A ∣ b ^ e ∧ B.Coprime b := by
@@ -37,9 +35,9 @@ theorem exists_split (b : ℕ) (N : ℕ) (hN : 0 < N) :
       exact mul_dvd_mul (Nat.gcd_dvd_right N b) h2
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem`. Consider the case `exact _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤)
@@ -53,9 +51,9 @@ theorem exists_nsmul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
   | (intros; exact _root_.GlobalTheory.NatSmulIntegral.exists_nat_smul_mem ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nsmul_mulVec_mem`. Consider the case `exact _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nsmul_mulVec_mem`. Consider the case `(apply _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nsmul_mulVec_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nsmul_mulVec_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nsmul_mulVec_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nsmul_mulVec_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mulVec_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
@@ -70,7 +68,7 @@ theorem exists_nsmul_mulVec_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
   | (intros; exact _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nsmul_mulVec_mem ..)
 
 /- English proof (translation)
-Establish `: tv σ G x (q * t) = 1 + q • (tv σ G x t - 1)`. Use extensionality with `a b`. Simplify using `[tv, mul_assoc]`. Rewrite using `[this, add_mulVec, one_mulVec, smul_mulVec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tv_mul_mulVec {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (G : Matrix (Fin n) (Fin n) R)
     (x v : Fin n → R) (t : R) (q : ℤ) :
@@ -81,21 +79,21 @@ theorem tv_mul_mulVec {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (G : Ma
   rw [this, add_mulVec, one_mulVec, smul_mulVec]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c n G _ _ L hfg hL x t b _ ht`. Take `⟨N, hN0, hN⟩` from `exists_nsmul_mulVec_mem L hfg hL (tv (c : E →+* E) G x t - 1)`. Take `⟨A, B, e, hAB, ⟨r, hr⟩, hB⟩` from `exists_split b N hN0`. Establish `hBA : B.Coprime (b * A)`. Use `Nat.Coprime.mul_right hB ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.Coprime.coprime_dvd_right ⟨r, hr⟩ (hB.pow_right e)`. Take `⟨u, w, huw⟩` from `Nat.isCoprime_iff_coprime.mpr hBA`. Move the coercions through the operations in `at huw`. Use `⟨((u * B : ℤ) : E) * t, B, e, ?_, hB, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, ← mul_add, ht, mul_zero]`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz` using `hN v hv`. Establish `h1 : tv (c : E →+* E) G x t *ᵥ v = v + (tv (c : E →+* E) G x t - 1) *ᵥ v`. Rewrite using `[sub_mulVec, one_mulVec]`. Normalize the expressions using the abelian group laws. Establish `key : ∀ s : ℤ, b ^ e • (tv (c : E →+* E) G x (((s * B : ℤ) : E) * t) *ᵥ v) ∈ L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[tv_mul_mulVec, smul_add]`. Use `L.add_mem (nsmul_mem hv _) ?_` and prove the remaining obligations. Use `zsmul_mem hz (s * r)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, hAB, ← natCast_zsmul, ← natCast_zsmul, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨(-w) • N • ((tv (c : E →+* E) G x t - 1) *ᵥ v), zsmul_mem hz _, ?_⟩, key u, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tv_mul_mulVec]`. Generalize the expression as in `tv (c : E →+* E) G x t *ᵥ v = y at h1 ⊢`. Generalize the expression as in `(tv (c : E →+* E) G x t - 1) *ᵥ v = z at h1 ⊢`. Substitute `h1` using the available equality. Establish `: v + (u * B) • z - (v + z) = (u * B - 1) • z`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hAB, ← natCast_zsmul, ← natCast_zsmul, ← natCast_zsmul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(B : ℤ) * huw`. Use `key (-u)` as an intermediate fact. Use `this using 4` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_tv_adjust : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E), Module.finrank F E = 2 → IsHerm (c : E →+* E) G → ∀ L : Submodule (𝓞 E) (Fin n → E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∀ (x : Fin n → E) (t : E) (b : ℕ), 0 < b → t + c t = 0 → ∃ (t' : E) (k e : ℕ), t' + c t' = 0 ∧ k.Coprime b ∧ ∀ v ∈ L, (∃ w ∈ L, k • (tv (c : E →+* E) G x t' *ᵥ v - tv (c : E →+* E) G x t *ᵥ v) = b • w) ∧ b ^ e • (tv (c : E →+* E) G x t' *ᵥ v) ∈ L ∧ b ^ e • (tv (c : E →+* E) G x (-t') *ᵥ v) ∈ L := by
   intro F E _ _ _ _ _ c n G _ _ L hfg hL x t b _ ht

@@ -19,11 +19,11 @@ open GlobalTheory.WeightSubst
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Introduce `α`. Distinguish the cases in `h : α ∈ Set.range (Finsupp.mapDomain f)`. Take `⟨μ, rfl⟩` from `h`. Rewrite using `[← Finsupp.embDomain_eq_mapDomain, MvPowerSeries.coeff_embDomain_rename, Finsupp.sum_embDomain]`. Use `hF μ using 2` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [hr, Finsupp.sum, Finsupp.degree_apply]`. Use `push_cast`. Rewrite using `[Finset.sum_mul, zero_sub]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_rename_eq_zero _ _ h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wtNonneg_rename (v : AddValuation C (WithTop ℝ)) {σ τ : Type} [Finite σ] (f : σ ↪ τ) (ρ : τ → ℝ)
     (r : ℝ) (hr : ∀ s, ρ (f s) = r) (F : MvPowerSeries σ C)
@@ -43,7 +43,7 @@ theorem wtNonneg_rename (v : AddValuation C (WithTop ℝ)) {σ τ : Type} [Finit
     simp
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[map_add]`. Conclude with `v.map_le_add (hF α) (hG α)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtNonneg_add (v : AddValuation C (WithTop ℝ)) {τ : Type} (ρ : τ → ℝ) {F G : MvPowerSeries τ C}
     (hF : WtNonneg v ρ F) (hG : WtNonneg v ρ G) : WtNonneg v ρ (F + G) := by
@@ -52,7 +52,7 @@ theorem wtNonneg_add (v : AddValuation C (WithTop ℝ)) {τ : Type} (ρ : τ →
   exact v.map_le_add (hF α) (hG α)
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[map_sum]`. Conclude with `v.map_le_sum fun i hi => hF i hi α`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtNonneg_sum (v : AddValuation C (WithTop ℝ)) {τ ι : Type} (ρ : τ → ℝ) (s : Finset ι)
     {F : ι → MvPowerSeries τ C} (hF : ∀ i ∈ s, WtNonneg v ρ (F i)) : WtNonneg v ρ (∑ i ∈ s, F i) := by
@@ -61,7 +61,7 @@ theorem wtNonneg_sum (v : AddValuation C (WithTop ℝ)) {τ ι : Type} (ρ : τ 
   exact v.map_le_sum fun i hi => hF i hi α
 
 /- English proof (translation)
-Introduce `α`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `VF.Ge.mul_int hc (hF α)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtNonneg_smul (V : VF C) {τ : Type} (ρ : τ → ℝ) {c : C} (hc : V.Ge 0 c) {F : MvPowerSeries τ C}
     (hF : WtNonneg V.v ρ F) : WtNonneg V.v ρ (c • F) := by
@@ -70,7 +70,7 @@ theorem wtNonneg_smul (V : VF C) {τ : Type} (ρ : τ → ℝ) {c : C} (hc : V.G
   exact VF.Ge.mul_int hc (hF α)
 
 /- English proof (translation)
-Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe t`. Rewrite using `[← WithTop.coe_add, WithTop.coe_le_coe, WithTop.coe_le_coe]`. Conclude with `sub_le_iff_le_add.symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_add_coe_iff (x : WithTop ℝ) (w r : ℝ) :
     (w : WithTop ℝ) ≤ x + (r : WithTop ℝ) ↔ ((w - r : ℝ) : WithTop ℝ) ≤ x := by
@@ -81,7 +81,7 @@ theorem le_add_coe_iff (x : WithTop ℝ) (w r : ℝ) :
     exact sub_le_iff_le_add.symm
 
 /- English proof (translation)
-Establish `: (l : ℝ) ≠ 0` using `by exact_mod_cast hl`. Unfold `r1 del rho`. Establish `h : 1 / (2 * (l : ℝ) ^ i) - 1 / (8 * (l : ℝ) ^ i) = 3 / (8 * (l : ℝ) ^ i)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -95,7 +95,7 @@ theorem radius_one (l i : ℕ) (hl : l ≠ 0) :
   linarith
 
 /- English proof (translation)
-Unfold `r2 del rho`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem radius_two (l i : ℕ) :
     r2 l - del l i = 1 / ((l : ℝ) ^ 2 - 1) + 1 / 2 - 1 / (8 * (l : ℝ) ^ i) := by
@@ -103,7 +103,7 @@ theorem radius_two (l i : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `h0 : ∀ x : σ, MvPowerSeries.constantCoeff (∑ c : ι, e c x • (MvPowerSeries.X c : MvPowerSeries ι C)) = 0`. Introduce `x`. Simplify using `[map_sum]`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero h0) h0 hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_linPull {σ ι : Type} [Fintype σ] [Fintype ι] (e : ι → σ → C) (F : MvPowerSeries σ C)
     (hF : MvPowerSeries.constantCoeff F = 0) : MvPowerSeries.constantCoeff (linPull e F) = 0 := by
@@ -114,9 +114,9 @@ theorem constantCoeff_linPull {σ ι : Type} [Fintype σ] [Fintype ι] (e : ι �
   exact MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero h0) h0 hF
 
 /- English proof (translation)
-Unfold `mainM`. Rewrite using `[Derivation.map_smul, map_sum, Finset.sum_eq_single b]`. Rewrite using `[map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Derivation.leibniz, Derivation.leibniz_pow, MvPowerSeries.pderiv_X]`. Introduce `b' _ hb`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Simplify using `[Derivation.leibniz, Derivation.leibniz_pow, MvPowerSeries.pderiv_X, hb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -137,35 +137,31 @@ theorem pderiv_mainM (V : VF C) (i : ℕ) {ι ι' : Type} [Fintype ι] [Fintype 
   · simp
 
 /- English proof (translation)
-Introduce `C _ V d _ I J _ _ X hA hl g a i hi hid S t ht N M e v' Φt he hv hv' hT hZ`. Use `haveI := X.charZero`. Establish `hl0 : V.l ≠ 0` using `V.l_prime.ne_zero`. Establish `hpull` using `GlobalTheory.T.hPullW_upG_twoGroupEmbedding_eq_rename C I g (Fin N) (Fin M) e v'`. Establish `key` using `GlobalTheory.weight_of_weight_pderiv C V.v V.l V.l_prime V.v_l hl i (Fin N) (Fin M) (X.hM g a i e v' - mainM V i (fun b c => ∑ κ : J g, ∑ k : I (1 - g), Φt c κ * X.pair g κ k * v' b k)) hi.pos ?_ ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ`. Rewrite using `[le_add_coe_iff]`. Use `key μ using 3` and compare the differences between its conclusion and the goal. Rewrite using `[Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sum_type, radius_one _ _ hl0, radius_two]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Introduce `α hα`. Assume the negation of the conclusion as `hn`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push Not at hn`. Conclude with `hα (GlobalTheory.T.coeff_leafGauge_sub_mainTerm_eq_zero_on_first_axis C V d I J X g a i _ _ e v' _ α hn)`. Introduce `b set ρ : Fin N ⊕ Fin M → ℝ := Sum.elim (fun _ => 1 / ((V.l : ℝ) ^ 2 - 1) + 3 / (8 * (V.l : ℝ) ^ i)) (fun _ => 1 / ((V.l : ℝ) - 1)) with hρ`. Establish `hinl : ∀ F : MvPowerSeries (Fin N) C, WtGe1 V i 0 F → WtNonneg V.v ρ (MvPowerSeries.rename (Sum.inl : Fin N → Fin N ⊕ Fin M) F)`. Introduce `F hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `wtNonneg_rename V.v Function.Embedding.inl ρ (1 / ((V.l : ℝ) ^ 2 - 1) + 3 / (8 * (V.l : ℝ) ^ i)) (fun _ => rfl) F fun μ => ?_` and prove the remaining obligations. Use `hF μ` as an intermediate fact. Rewrite `this` using `[le_add_coe_iff, radius_one _ _ hl0, zero_sub]`. Conclude with `this`. Take `⟨γ, hγ, hd⟩` from `GlobalTheory.T.pderiv_leafGauge_eq_pairing_add_integral C V d I J X hA g a i hi hid S t ht (Fin N) (Fin M) e v' he hv hv' b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hE : MvPowerSeries.pderiv C (Sum.inr b) (X.hM g a i e v' - mainM V i (fun b c => ∑ κ : J g, ∑ k : I (1 - g), Φt c κ * X.pair g κ k * v' b k)) = MvPowerSeries.subst (fun w : WV I => hPullW (upG w.1 (t w.1 w.2)) (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b))) γ + ∑ κ : J g, ( …`. Rewrite using `[map_sub, hd, pderiv_mainM, add_sub_assoc]`. Use `congr 1`. Simplify using `only [hpull.1, map_sub, smul_sub, Finset.sum_sub_distrib, map_smul, map_sum, map_pow, MvPowerSeries.rename_X]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Finset.smul_sum, smul_smul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, Finset.mul_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `WtNonneg V.v ρ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hE]`. Establish `hw : ∀ g' : Fin 2, g' = g ∨ g' = 1 - g`. Establish `: ∀ g g' : Fin 2, g' = g ∨ g' = 1 - g` using `by decide`. Conclude with `this g`. Use `wtNonneg_add _ _ ?_ (wtNonneg_sum _ _ _ fun κ _ => ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `weight_subst_nonneg C V.v _ _ ρ γ _ hγ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨g', x⟩`. Break down `hw g' with rfl | rfl` into its components or cases. Simplify using `only [hpull.1, MvPowerSeries.constantCoeff_rename]`. Conclude with `constantCoeff_linPull _ _ ((ht _).1 x)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hpull.2, MvPowerSeries.constantCoeff_rename]`. Conclude with `constantCoeff_linPull _ _ ((ht _).1 x)`. Introduce and unpack `⟨g', x⟩`. Break down `hw g' with rfl | rfl` into its components or cases. Simplify using `only [hpull.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hinl _ (hT x)`. Simplify using `only [hpull.2]`. Use `wtNonneg_rename V.v Function.Embedding.inr ρ (1 / ((V.l : ℝ) - 1)) (fun _ => rfl) _ fun μ => ?_` and prove the remaining obligations. Use `GlobalTheory.T.linearSubst_coordinate_weight_nonneg_radius C V d _ _ (X.G (1 - g)) (S _) (t _) (ht _) M v' hv x μ` as an intermediate fact. Unfold `VF.Ge at this`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_one_div]`. Conclude with `this`. Distinguish the cases in `hκ : (X.G g).ty (Sum.inr κ) = a + (i : ZMod d)`. Conclude with `wtNonneg_smul V ρ (VF.Ge.sum fun k _ => (X.pair_int g κ k).mul_int (hv b k)) (hinl _ (hZ κ hκ))`. Establish `: ∑ k, X.pair g κ k * v' b k = 0`.
-
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (X.G (1 - g)).ty (Sum.inl k) = a + (i : ZMod d)`. Rewrite using `[X.pair_type g κ k (by rw [hk]; exact hκ), zero_mul]`. Rewrite using `[hv' b k hk, mul_zero]`. Rewrite using `[this, zero_smul]`.
-
-Introduce `α`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_gauge_sub_main : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J), X.Alt → 5 ≤ V.l → ∀ (g : Fin 2) (a : ZMod d) (i : ℕ), Odd i → i < d → ∀ (S : ∀ g, Sys (X.G g)) (t : ∀ g, I g → MvPowerSeries (I g) C), (∀ g, (S g).IsT (t g)) → ∀ (N M : ℕ) (e : Fin N → I g → C) (v' : Fin M → I (1 - g) → C) (Φt : Fin N → J g → C), (∀ c x, (X.G g).ty (Sum.inl x) ≠ a → e c x = 0) → (∀ b k, V.Ge 0 (v' b k)) → (∀ b k, (X.G (1 - g)).ty (Sum.inl k) ≠ a + (i : ZMod d) → v' b k = 0) → (∀ c, WtGe1 V i 0 (linPull e (t g c))) → (∀ κ : J g, (X.G g).ty (Sum.inr κ) = a + (i : ZMod d) → WtGe1 V i 0 (linPull e ((S g).ze (t g) κ) - ((V.l : C) ^ expE V.l i)⁻¹ • ∑ δ : Fin N, Φt δ κ • (MvPowerSeries.X δ : MvPowerSeries (Fin N) C) ^ (V.l ^ i))) → WtGe2 V i (1 / ((V.l : ℝ) - 1)) (X.hM g a i e v' - mainM V i (fun b c => ∑ κ : J g, ∑ k : I (1 - g), Φt c κ * X.pair g κ k * v' b k)) := by
   intro C _ V d _ I J _ _ X hA hl g a i hi hid S t ht N M e v' Φt he hv hv' hT hZ

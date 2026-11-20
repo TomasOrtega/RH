@@ -5,11 +5,11 @@ import Formalism.GaussJetBounds.GaussJetProofs.TheoremAMatrixEntries
 namespace Formalism.DworkPowerSeriesWeights
 
 /- English proof (translation)
-The claim follows from `one_letter_gauss_sum`.
+A detailed English derivation is pending.
 -/
 theorem oneLetterGauss : OneLetterGauss := one_letter_gauss_sum
 /- English proof (translation)
-The claim follows from `theorem_A_matrix_entries`.
+A detailed English derivation is pending.
 -/
 theorem thmAEntry : ThmAEntry := theorem_A_matrix_entries
 

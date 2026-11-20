@@ -8,25 +8,23 @@ noncomputable section
 namespace MainStatements.WeightKernel
 
 /- English proof (translation)
-Introduce `hU H _ _ _ _ _ _ _ _ n ι hι μ _ Ω I _ _ m _ c q hk P _ _ _ W p K C hW hp hK hC hWC`. Take `⟨B, hB⟩` from `hU H n ι hι Ω I m c q hk P W p K C hW hp hK hC hWC`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `: IsFiniteMeasure (μ.restrict K)` using `⟨by rw [Measure.restrict_apply_univ]; exact hK.measure_lt_top⟩`. Establish `hmc : Continuous (matCoord ι)` using `hι.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : H × H → ℂ := fun z => W (matCoord ι z.1, p z.2) with hG`. Establish `hGc : Continuous G` using `hW.continuous.comp ((hmc.comp continuous_fst).prodMk (hp.comp continuous_snd))`. Use `set F : H → Ω → ℂ := fun k x => ker c q (fun y => W (matCoord ι y, p k)) x with hF`. Establish `hvan : ∀ x, ∀ k ∈ K, ∀ i, i ∉ (hk.fin x C hC).toFinset → c i x * W (matCoord ι (q i x), p k) = 0`. Introduce `x k hkK i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_and_or, not_not] at hi`. Break down `hi with h | h` into its components or cases. Simplify using `[h]`. Simplify using `[hWC k hkK _ h]`. Establish `hmeas : AEStronglyMeasurable (Function.uncurry F) ((μ.restrict K).prod m)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `(atTop : Filter (Finset I)).exists_seq_tendsto`. Use `aestronglyMeasurable_of_tendsto_ae (u := atTop) (f := fun N (z : H × Ω) => ∑ i ∈ u N, c i z.2 * W (matCoord ι (q i z.2), p z.1)) ?_ ?_` and prove the remaining obligations. Introduce `N`. Use `(Finset.measurable_sum _ fun i _ => ?_).aestronglyMeasurable` and prove the remaining obligations. Use `((hk.mc i).comp measurable_snd).mul ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Measurable fun z : H × Ω => ((q i z.2, z.1) : H × H)` using `((hk.mq i).comp measurable_snd).prodMk measurable_fst`. Conclude with `hGc.measurable.comp this`. Establish `hae : ∀ᵐ z ∂((μ.restrict K).prod m), z.1 ∈ K` using `Measure.QuasiMeasurePreserving.ae Measure.quasiMeasurePreserving_fst (ae_restrict_mem hKm) filter_upwards [hae] with z hz`. Establish `hs : HasSum (fun i => c i z.2 * W (matCoord ι (q i z.2), p z.1)) (∑' i, c i z.2 * W (matCoord ι (q i z.2), p z.1))` using `(summable_of_ne_finset_zero (s := (hk.fin z.2 C hC).toFinset) (hvan z.2 z.1 hz)).hasSum`. Conclude with `hs.comp hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : Integrable (Function.uncurry F) ((μ.restrict K).prod m)`. Rewrite using `[integrable_prod_iff hmeas]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hKm] with k hkK`. Conclude with `(hB k hkK).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Integrable.mono' (integrable_const B) hmeas.norm.integral_prod_right' ?_ filter_upwards [ae_restrict_mem hKm] with k hkK` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Conclude with `(hB k hkK).2`. Rewrite using `[integral_integral_swap hint]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hF, ker]`. Establish `hT` using `hvan x`. Use `set T := (hk.fin x C hC).toFinset`. Rewrite using `[setIntegral_congr_fun hKm (fun k hkK => tsum_eq_sum (s := T) (hT k hkK))]`. Rewrite using `[integral_finsetSum]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tsum_eq_sum (s := T)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `integral_const_mul _ _`. Introduce `i hi`. Simplify using `only [T, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_and_or, not_not] at hi`.
-
-Break down `hi with h | h` into its components or cases. Simplify using `[h]`. Rewrite using `[setIntegral_eq_zero_of_forall_eq_zero (fun k hkK => hWC k hkK _ h), mul_zero]`. Introduce `i _`. Conclude with `(ContinuousOn.integrableOn_compact hK (continuous_const.mul (hW.continuous.comp (continuous_const.prodMk hp))).continuousOn)`.
+A detailed English derivation is pending.
 -/
 theorem kerSwap : KerUnif → KerSwap := by
   intro hU H _ _ _ _ _ _ _ _ n ι hι μ _ Ω I _ _ m _ c q hk P _ _ _ W p K C hW hp hK hC hWC

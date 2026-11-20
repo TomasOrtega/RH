@@ -40,9 +40,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies (IsUn
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `height_comparison V hθ`. Use `⟨C * 2, by positivity, fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨γ, hγ, h2⟩` from `exists_height_le_two_mul_quotHeight V g`. Rewrite using `[mul_assoc]`. Conclude with `(NNReal.coe_le_coe.2 (GlobalTheory.CuspDecay.quotHeight_le g hγ)).trans ((h _).1.trans (mul_le_mul_of_nonneg_left h2 hC.le))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, h2⟩` from `GlobalTheory.CuspDecay.exists_height_le (θ := θ) g`. Rewrite using `[mul_assoc]`. Conclude with `(quotHeight_le V g hγ).trans ((h _).2.trans (mul_le_mul_of_nonneg_left (by exact_mod_cast h2) hC.le))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotHeight_comparison (hθ : IsInfFam θ) (V : HSp D) : ∃ C : ℝ, 0 < C ∧ ∀ g : GA D V,
     (GlobalTheory.CuspDecay.quotHeight θ V g : ℝ) ≤ C * quotHeight V g ∧
@@ -58,9 +58,9 @@ theorem quotHeight_comparison (hθ : IsInfFam θ) (V : HSp D) : ∃ C : ℝ, 0 <
     exact (quotHeight_le V g hγ).trans ((h _).2.trans (mul_le_mul_of_nonneg_left (by exact_mod_cast h2) hC.le))
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `quotHeight_comparison hθ V`. Establish `key : ∀ {a b x C : ℝ} {N : ℕ}, 0 ≤ a → 0 ≤ x → a ≤ K * b → x * b ^ N ≤ C → x * a ^ N ≤ K ^ N * C` using `fun {a b x C N} ha hx h1 h2 => (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ ha h1 N) hx).trans (by`. Rewrite using `[mul_pow, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left h2 (pow_pos hK N).le)`. Use `and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun N => ⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨C, hC⟩`. Conclude with `⟨_, fun g => key (NNReal.coe_nonneg _) (norm_nonneg _) (h g).1 (hC g)⟩`. Introduce and unpack `⟨C, hC⟩`. Conclude with `⟨_, fun g => key (quotHeight_pos V g).le (norm_nonneg _) (h g).2 (hC g)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rapidDec_iff_isRapidDecay (hθ : IsInfFam θ) {φ : GA D V → ℂ} :
     RapidDec V φ ↔ (∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) ∧ Continuous φ ∧ GlobalTheory.CuspDecay.IsRapidDecay θ V φ := by
@@ -75,11 +75,9 @@ theorem rapidDec_iff_isRapidDecay (hθ : IsInfFam θ) {φ : GA D V → ℂ} :
     exact ⟨_, fun g => key (quotHeight_pos V g).le (norm_nonneg _) (h g).2 (hC g)⟩
 
 /- English proof (translation)
-Take `⟨K, hK, hh⟩` from `height_comparison V hθ`. Take `⟨A, hA⟩` from `h`. Establish `key : ∀ ψ : GA D V → ℂ, (∃ C : ℝ, ∀ g, ‖ψ g‖ ≤ C * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g : ℝ) ^ A) → ModGrowthExp V A ψ`. Introduce and unpack `ψ ⟨C, hC⟩`. Use `⟨|C| * K ^ A, fun g => (hC g).trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (NNReal.coe_nonneg _) (hh g).1 A) (pow_nonneg (NNReal.coe_nonneg _) A) (abs_nonneg _)`. Use `⟨A, fun l hl => key _ ?_⟩` and prove the remaining obligations. Take `⟨l', hl'⟩` from `exists_sigma_list l hl`. Rewrite using `[hl', foldr_Rder_eq ((GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V)]`.
-
-Conclude with `hA _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unifModGrowth_of_isUnifModerate (hθ : IsInfFam θ) {φ : GA D V → ℂ}
     (h : IsUnifModerate θ V (expInf θ V) φ) : UnifModGrowth V θ φ := by
@@ -98,7 +96,7 @@ theorem unifModGrowth_of_isUnifModerate (hθ : IsInfFam θ) {φ : GA D V → ℂ
   exact hA _
 
 /- English proof (translation)
-The claim follows from `have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V unifModGrowth_of_isUnifModerate hθ ((growth_iff hθ R h.toIsAutFun ((smooth_iff R φ).1 h.smooth)).1 h.growth)`.
+A detailed English derivation is pending.
 -/
 theorem unifModGrowth_of_isAutFunSm (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) :
     UnifModGrowth V θ φ :=
@@ -106,9 +104,9 @@ theorem unifModGrowth_of_isAutFunSm (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h
   unifModGrowth_of_isUnifModerate hθ ((growth_iff hθ R h.toIsAutFun ((smooth_iff R φ).1 h.smooth)).1 h.growth)
 
 /- English proof (translation)
-Introduce `D θ hθ V e he φ ha hs hg hc`. Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Take `rfl` from `eq_expInf R he`. Take `⟨A, hA⟩` from `unifModGrowth_of_isUnifModerate hθ hg`. Take `⟨U, hU, hφ⟩` from `ha.level`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `((rapidDec_iff_isRapidDecay hθ).1 ⟨ha.left, ha.cont, fun N => ?_⟩).2.2` and prove the remaining obligations. Take `⟨L, C, hL, h⟩` from `hP D θ hθ V U hU A N`. Use `choose! c hc' using hA`. Conclude with `⟨_, h φ ha hφ ((smooth_iff R φ).2 hs) (fun l hl => ⟨c l, hc' l hl⟩) hc c fun l hl => hc' l (hL l hl)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cuspRapidDecay_of_bound (hP : GlobalTheory.Published.CuspDecayBound) : GlobalTheory.Published.CuspRapidDecay := by
   intro D θ hθ V e he φ ha hs hg hc
@@ -122,7 +120,7 @@ theorem cuspRapidDecay_of_bound (hP : GlobalTheory.Published.CuspDecayBound) : G
   exact ⟨_, h φ ha hφ ((smooth_iff R φ).2 hs) (fun l hl => ⟨c l, hc' l hl⟩) hc c fun l hl => hc' l (hL l hl)⟩
 
 /- English proof (translation)
-The claim follows from `have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V have hs' := (smooth_iff R φ).1 hs (rapidDec_iff_isRapidDecay hθ).2 ⟨ha.left, ha.cont, hP D θ hθ V _ (isExpFam_expInf R) φ ha hs' ((growth_iff hθ R ha hs').1 (hg.growth hθ)) hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem rapidDec_of_unifModGrowth (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) {φ : GA D V → ℂ}
     (ha : IsAutFun V φ)
@@ -136,21 +134,21 @@ theorem rapidDec_of_unifModGrowth (hP : GlobalTheory.Published.CuspRapidDecay) (
     hP D θ hθ V _ (isExpFam_expInf R) φ ha hs' ((growth_iff hθ R ha hs').1 (hg.growth hθ)) hc⟩
 
 /- English proof (translation)
-The claim follows from `rapidDec_of_unifModGrowth hP hθ h.toIsAutFun h.smooth (unifModGrowth_of_isAutFunSm hθ h) hc`.
+A detailed English derivation is pending.
 -/
 theorem rapidDec_of_cuspForm (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) {φ : GA D V → ℂ}
     (h : IsAutFunSm θ V φ) (hc : IsCuspFun V φ) : RapidDec V φ :=
   rapidDec_of_unifModGrowth hP hθ h.toIsAutFun h.smooth (unifModGrowth_of_isAutFunSm hθ h) hc
 
 /- English proof (translation)
-The claim follows from `h.integrableOn (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V μ 𝓕 hμ h𝓕).ne`.
+A detailed English derivation is pending.
 -/
 theorem RapidDec.integrableOn_fundamentalDomain {Φ : GA D V → ℂ} (h : RapidDec V Φ) {μ : Measure (GA D V)}
     {𝓕 : Set (GA D V)} (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) : IntegrableOn Φ 𝓕 μ :=
   h.integrableOn (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V μ 𝓕 hμ h𝓕).ne
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `h.decay A`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V μ 𝓕 hμ h𝓕).ne`. Use `Integrable.of_bound (hm.mul h.continuous.aestronglyMeasurable) (|C| * B) (.of_forall fun g => ?_)` and prove the remaining obligations. Establish `hq` using `(pow_pos (quotHeight_pos V g) A).le`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem RapidDec.integrableOn_mul_of_le {f Φ : GA D V → ℂ} (h : RapidDec V Φ) {μ : Measure (GA D V)}
     {𝓕 : Set (GA D V)} (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ)
@@ -168,7 +166,7 @@ theorem RapidDec.integrableOn_mul_of_le {f Φ : GA D V → ℂ} (h : RapidDec V 
     _ ≤ _ := mul_le_mul_of_nonneg_left (hB g) (abs_nonneg C)
 
 /- English proof (translation)
-Take `⟨C, A, hC⟩` from `hf`. Conclude with `h.integrableOn_mul_of_le hμ h𝓕 hm (norm_le_quotHeight_pow hl hC)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem RapidDec.integrableOn_modGrowth_mul {f Φ : GA D V → ℂ} (h : RapidDec V Φ) {μ : Measure (GA D V)}
     {𝓕 : Set (GA D V)} (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) (hf : ModGrowth V f)

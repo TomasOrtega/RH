@@ -12,15 +12,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 namespace GlobalTheory.ThK.MidJac
 
 /- English proof (translation)
-Set `f : V ≃ₗ[ℂ] V'` to `e.toLinearEquiv`. Establish `he : ∀ g v, f (ρ g v) = ρ' g (f v)` using `fun g v => LinearMap.congr_fun (e.isIntertwining' g) v`. Establish `he' : ∀ g v, f.symm (ρ' g v) = ρ g (f.symm v)` using `fun g v => by`. Rewrite using `[f.symm_apply_eq, he, f.apply_symm_apply]`. Set `F : Subrepresentation ρ ≃o Subrepresentation ρ'` to `{ toFun := fun U => ⟨U.toSubmodule.map (f : V →ₗ[ℂ] V'), fun g v hv => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨u, hu, rfl⟩` from `hv`. Conclude with `⟨ρ g u, U.apply_mem_toSubmodule g hu, he g u⟩⟩`. Use `invFun := fun U => ⟨U.toSubmodule.map (f.symm : V' →ₗ[ℂ] V), fun g v hv => by`. Take `⟨u, hu, rfl⟩` from `hv`. Conclude with `⟨ρ' g u, U.apply_mem_toSubmodule g hu, he' g u⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `left_inv := fun U => by`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[Submodule.mem_map_equiv]`. Use `right_inv := fun U => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[Submodule.mem_map_equiv]`. Use the proof step `map_rel_iff' := by`. Introduce `U U'`.
-
-Use `show U.toSubmodule.map (f : V →ₗ[ℂ] V') ≤ U'.toSubmodule.map (f : V →ₗ[ℂ] V') ↔ U.toSubmodule ≤ U'.toSubmodule`. Conclude with `Submodule.map_le_map_iff_of_injective f.injective _ _ }`. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := hρ`. Conclude with `F.symm.isSimpleOrder`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_repEquiv {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'}
@@ -54,9 +52,9 @@ theorem isIrreducible_of_repEquiv {G V V' : Type} [Monoid G] [AddCommGroup V] [M
   exact F.symm.isSimpleOrder
 
 /- English proof (translation)
-Introduce `hK k _ _ _ _ x x' α β hα hβ`. Use `⟨?_, GlobalTheory.ThK.MidJac.isAdmissible_detInd k x x' α β⟩` and prove the remaining obligations. Take `⟨e⟩` from `GlobalTheory.DetIndProd.detInd_equiv_prod₂ k x x' α β`. Establish `h₁` using `GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp (k := k) x hα.1 hα.2`. Establish `h₂` using `GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp (k := k) x' hβ.1 hβ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (prod₂ (detRep (Fin x) α) (detRep (Fin x') β)).IsIrreducible` using `hK.base.bernsteinUnitaryProductIrreducible k x x' ℂ ℂ _ _ h₁.1 h₁.2.1 h₁.2.2 h₂.1 h₂.2.1 h₂.2.2`. Conclude with `isIrreducible_of_repEquiv e.symm hP`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem detInd_irreducible_admissible : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (x x' : ℕ) (α β : kˣ →* ℂˣ), GlobalTheory.KSplit.IsSmU α → GlobalTheory.KSplit.IsSmU β →

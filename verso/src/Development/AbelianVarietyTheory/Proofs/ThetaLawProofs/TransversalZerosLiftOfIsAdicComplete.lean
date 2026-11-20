@@ -23,9 +23,9 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {x : KeyIn R} {x' : KeyIn R'} 
   {w : LB.Iso x'.P.L (x.P.L.pull φ)}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨k, hk⟩` from `exists_chart x.P.isLB (φ y)`. Establish `hle : (x.P.L.pull φ).U (fun _ => k) ⊓ x'.P.L.U i ≤ φ ⁻¹ᵁ x.P.L.U k` using `fun y hy => mem_pull.1 hy.1`. Establish `e` using `hs (fun _ => k) i hle`. Establish `hV : y ∈ (x.P.L.pull φ).U (fun _ => k) ⊓ x'.P.L.U i` using `⟨mem_pull.2 hk, x'.P.A.left.basicOpen_le _ hi⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : y ∈ x'.P.A.left.basicOpen ((φ.appLE _ _ hle).hom (s.f k))`. Use `(congrArg x'.P.A.left.basicOpen e).ge ((Scheme.basicOpen_mul _ _ _).ge ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `(Scheme.basicOpen_of_isUnit _ ((Units.isUnit (w.s (fun _ => k, i))).pow l)).ge hV`. Conclude with `(Scheme.basicOpen_res _ _ _).ge ⟨hV, hi⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, ((Scheme.basicOpen_appLE φ _ (x.P.L.U k) hle (s.f k)).le h1).2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_mem_nonzeroLocus_via {l : ℕ} {s' : RR x' l} {s : RR x l} (hs : SecVia x' x φ w s' s) (y : x'.P.A.left)
     (hy : y ∈ Out.nonzeroLocus s') : φ y ∈ Out.nonzeroLocus s := by
@@ -41,9 +41,9 @@ theorem map_mem_nonzeroLocus_via {l : ℕ} {s' : RR x' l} {s : RR x l} (hs : Sec
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨k, ((Scheme.basicOpen_appLE φ _ (x.P.L.U k) hle (s.f k)).le h1).2⟩
 
 /- English proof (translation)
-Establish `hle : (x.P.L.pull φ).U (fun _ => c) ⊓ x'.P.L.U c' ≤ φ ⁻¹ᵁ x.P.L.U c` using `fun y hy => mem_pull.1 hy.1`. Establish `hV : (𝟙 x'.P.A.left : _ ⟶ _) y ∈ (x.P.L.pull φ).U (fun _ => c) ⊓ x'.P.L.U c'` using `⟨mem_pull.2 h, h'⟩`. Establish `e` using `congrArg (gs (𝟙 _) y _) (hs (fun _ => c) c' hle)`. Establish `e₁` using `(gs_res (𝟙 _) y hle hV ((φ.app _).hom (s.f c))).trans (gs_pull (𝟙 _) φ y _ h (s.f c))`. Rewrite `e₁` using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, ?_, e₁.symm.trans (e.trans ((gs_mul _ _ _ hV _ _).trans (congrArg (_ * ·) (gs_res (𝟙 _) y inf_le_right hV _))))⟩` and prove the remaining obligations. Rewrite using `[gs_eq _ _ _ hV]`. Conclude with `(((Units.isUnit (w.s (fun _ => c, c'))).pow l).map _).map _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gs_via {l : ℕ} {s' : RR x' l} {s : RR x l} (hs : SecVia x' x φ w s' s) (y : x'.P.A.left)
     (c : x.P.L.ι) (c' : x'.P.L.ι) (h : φ y ∈ x.P.L.U c) (h' : y ∈ x'.P.L.U c') :
@@ -61,25 +61,21 @@ theorem exists_gs_via {l : ℕ} {s' : RR x' l} {s : RR x l} (hs : SecVia x' x φ
 end Via
 
 /- English proof (translation)
-Take `⟨_, _, F, hp, _, _, _, hF₁, hF₂, hv⟩` from `hvia`. Use `x.P.isAb.smooth` as an intermediate fact. Set `pt : Sp (IsLocalRing.ResidueField O)` to `IsLocalRing.closedPoint _`. Establish `hpt : ∀ r : Sp (IsLocalRing.ResidueField O), r = pt` using `fun r => Subsingleton.elim (α := PrimeSpectrum (IsLocalRing.ResidueField O)) _ _`. Take `⟨c, hc⟩` from `exists_chart x.P.isLB (φ (zk.left pt))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : zk.left pt ∈ xk.P.L.U c'` using `h₁ (x := pt) trivial`. Establish `hφ : ⊤ ≤ (zk.left ≫ φ) ⁻¹ᵁ x.P.L.U c` using `fun r _ => by`. Take `rfl` from `hpt r`. Conclude with `hc`. Establish `hW` using `le_inf_pull (T := IsLocalRing.ResidueField O) zk.left c c' hφ h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `u` to `Units.map (valH (T := IsLocalRing.ResidueField O) zk.left _ hW).toMonoidHom (w.s (fun _ => c, c'))`. Establish `hu : valT (T` using `IsLocalRing.ResidueField O) zk.left ((x.P.L.pull φ).U (fun _ => c) ⊓ xk.P.L.U c') (w.s (fun _ => c, c')).val = u := valT_eq _ _ hW _`. Establish `hd : (Matrix.of fun i k => (valT (T` using `DualNumber (IsLocalRing.ResidueField O)) (((toUnit (epsR _) ≫ zk) * xk.v k).left ≫ φ) (x.P.L.U c) ((s (i.cast hg)).f c)).snd).det ≠ 0 := by`. Use `fun h => mul_ne_zero (pow_ne_zero (Fintype.card (Fin xk.P.g)) (pow_ne_zero n u.ne_zero)) h₃.ne_zero ((Matrix.det_smul _ _).symm.trans (Eq.trans ?_ h))` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `i k`. Establish `l₂` using `translate_le zk (xk.v k) (xk.basis.1 _) h₁`. Establish `l₃ : ⊤ ≤ (((toUnit (epsR _) ≫ zk) * xk.v k).left ≫ φ) ⁻¹ᵁ x.P.L.U c` using `translate_le zk (xk.v k) (xk.basis.1 _) (U := φ ⁻¹ᵁ x.P.L.U c) hφ`. Establish `e` using `valT_via (T := DualNumber (IsLocalRing.ResidueField O)) (hs i) _ c c' l₃ l₂`. Use `Eq.symm ((congrArg TrivSqZeroExt.snd e).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(snd_pow_mul _ _ _ ((fst_valT_translate zk (xk.v k) (xk.basis.1 _) h₁ _).trans (h₂ i))).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· ^ n * _) ((fst_valT_translate zk (xk.v k) (xk.basis.1 _) hW _).trans hu)`. Take `⟨z₀, hz₁, hz₂, hz₃, hz₄⟩` from `exists_section_of_transversal hp.1 zk.left (Over.w zk) pt hc (fun i : Fin xk.P.g => (s (i.cast hg)).f c) (fun i => (valT_via (T := IsLocalRing.ResidueField O) (hs i) zk.left c c' hφ h₁).trans (mul_eq_zero_of_right _ (h₂ i))) (by`. Rewrite using `[← (jac_ne_zero_iff_span_eq_maximalIdeal _ xk n sk zk c' pt h₁ h₂).1 h₃.ne_zero]`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨v, hv, e⟩` from `exists_gs_via (hs i) (zk.left pt) c c' hc hc'`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hv).1 (Ideal.subset_span ⟨i, e⟩))`. Use the proof step `(fun k => ((toUnit (epsR _) ≫ zk) * xk.v k).left)`. Use the proof step `(fun k => fst_comp_translate zk (xk.v k) (xk.basis.1 _)) (fun k => Over.w ((toUnit (epsR _) ≫ zk) * xk.v k)) hd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `z : Pt x` to `Over.homMk z₀ hz₁`. Establish `hz : ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U c` using `(Scheme.preimage_eq_top_of_closedPoint_mem z₀ (by`. Rewrite using `[← IsLocalRing.comap_closedPoint (IsLocalRing.residue O)]`. Conclude with `(congrArg (fun g => g pt ∈ x.P.L.U c) hz₂).ge hc)).ge`. Use `⟨z, c, hz₂, hz, fun i => hz₃ (i.cast hg.symm), ?_, fun y r hy hy' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Use `fun h => hd (Eq.trans ?_ h)` and prove the remaining obligations. Unfold `jac`. Rewrite using `[RingHom.map_det, ← Matrix.det_submatrix_equiv_self (finCongr hg)]`. Use `congr 1`.
-
-Use extensionality with `i k`. Establish `e` using `translate_comp hp F hF₁ z zk hz₂.symm (x.v (k.cast hg)) (xk.v k) (hv k)`. Establish `l₁` using `translate_le z (x.v (k.cast hg)) (x.basis.1 _) hz`. Establish `e₂` using `(congrArg (fun q => valT (T := DualNumber (IsLocalRing.ResidueField O)) q (x.P.L.U c) ((s (i.cast hg)).f c)) e).trans (valT_spMap F _ l₁ _)`. Conclude with `(congrArg TrivSqZeroExt.snd e₂).trans (snd_map _ F hF₁ hF₂ _)`.
-
-Take `rfl` from `hpt r`. Conclude with `hz₄ y hy fun i h => hy' (i.cast hg) (TopologicalSpace.Opens.mem_iSup.2 ⟨c, h⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lift_point {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] {x : KeyIn O} {xk : KeyIn (IsLocalRing.ResidueField O)} {φ w}
@@ -155,15 +151,15 @@ end GlobalTheory.HenselZero
 open GlobalTheory.HenselZero in
 
 /- English proof (translation)
-Introduce `O _ _ _ _ x xk φ w n d hg s sk zk chk hvia hs ⟨h₁, h₂, h₃, h₄, h₅⟩`. Use `choose z ch hz₀ hz₁ hz₂ hz₃ hz₄ using fun a => exists_lift_point hg hvia hs (zk a) (chk a) (h₁ a) (h₂ a) (h₃ a)`. Take `⟨_, _, _, ⟨hp, -⟩, -⟩` from `hvia`. Use `x.P.isAb.proper` as an intermediate fact. Use `isClosedImmersion_fibre hp` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `pt : Sp (IsLocalRing.ResidueField O)` to `IsLocalRing.closedPoint _`. Establish `hcp : spMap (IsLocalRing.residue O) pt = IsLocalRing.closedPoint O` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue O)`. Establish `hw : ∀ a, (z a).left ≫ x.P.A.hom = 𝟙 (Sp O)` using `fun a => Over.w (z a)`. Establish `hzc : ∀ a, (z a).left (IsLocalRing.closedPoint O) = φ ((zk a).left pt)` using `fun a => (congrArg (z a).left hcp).symm.trans (congrArg (fun g => g pt) (hz₀ a))`. Use `⟨z, ch, hz₁, hz₂, hz₃, fun a a' h r e => h₄ a a' h pt (φ.isClosedEmbedding.injective ?_), fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion ((z a').left ≫ x.P.A.hom)`. Rewrite using `[hw]`. Conclude with `(inferInstance : IsClosedImmersion (𝟙 (Sp O) : Sp O ⟶ Sp O))`. Use `IsClosedImmersion.of_comp (z a').left x.P.A.hom` as an intermediate fact. Take `⟨r', hr'⟩` from `((IsLocalRing.specializes_closedPoint r).map (z a).left.continuous).mem_closed (z a').left.isClosedEmbedding.isClosed_range ⟨r, e.symm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : r' = IsLocalRing.closedPoint O` using `(congrArg (fun g => g r') (hw a')).symm.trans ((congrArg x.P.A.hom hr').trans (congrArg (fun g => g (IsLocalRing.closedPoint O)) (hw a)))`. Rewrite using `[← hzc, ← hzc, ← hr', e₁]`. Take `⟨y₀, hy₀, e⟩` from `(IsLocalRing.specializes_closedPoint (x.P.A.hom y)).mem_closed (x.P.A.hom.isClosedMap _ (isClosed_closure (s := {y}))) ⟨y, subset_closure rfl, rfl⟩`. Establish `hsp : y ⤳ y₀` using `specializes_iff_mem_closure.2 hy₀`. Take `⟨y', rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hp y₀ pt (e.trans hcp.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, r, rfl⟩` from `h₅ y' fun i h => hy (i.cast hg) (hsp.mem_open (Out.nonzeroLocus _).isOpen (map_mem_nonzeroLocus_via (hs i) y' h))`. Conclude with `⟨a, hz₄ a y r hsp hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KeyKa.etZ_lift_of_isAdicComplete : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (x : KeyIn O) (xk : KeyIn (IsLocalRing.ResidueField O)) φ w (n d : ℕ) (hg : xk.P.g = x.P.g) (s : Fin x.P.g → RR x n) (sk : Fin xk.P.g → RR xk n) (zk : Fin d → Pt xk) (chk : Fin d → xk.P.L.ι), KeyVia xk x (IsLocalRing.residue O) φ w → (∀ i, SecVia xk x φ w (sk i) (s (i.cast hg))) → EtZ xk sk zk chk → ∃ (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), EtZ x s z ch := by
   intro O _ _ _ _ x xk φ w n d hg s sk zk chk hvia hs ⟨h₁, h₂, h₃, h₄, h₅⟩

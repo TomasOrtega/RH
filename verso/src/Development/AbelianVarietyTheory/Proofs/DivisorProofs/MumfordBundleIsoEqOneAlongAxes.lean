@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.TInj
 
 /- English proof (translation)
-Introduce `o W _ _ _ T I _ ε n V _ _ D ω s e β ββ w hB hF Z y z J J' hJ hJ'`. Use `letI := D.P.isAb.comm`. Establish `hpb` using `hF.1`. Establish `hsq` using `hF.2.1`. Establish `hw` using `hF.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `N` using `GlobalTheory.T.mumfordBundleIso_origin_one_of_generic_origin_domain T.B D.P.A T.M.L D.P.L T.M.isLB D.P.isLB (spMap ω) β ββ w hpb hsq hw (GlobalTheory.T.mumfordBundleIso_generic_origin_one_tautologicalBase T ε n V D ω s e β ββ w hB hF)`. Conclude with `⟨GlobalTheory.T.mumfordBundleIso_cartesianSquare_trivial_first_axis T.B D.P.A T.M.L D.P.L T.M.isLB D.P.isLB D.P.isAb (spMap ω) β ββ w hpb hsq hw N Z y z J J' hJ hJ', GlobalTheory.T.mumfordBundleIso_cartesianSquare_trivial_second_axis T.B D.P.A T.M.L D.P.L T.M.isLB D.P.isLB D.P.is …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lamVal_axes_one : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) {I : Type} [Fintype I] (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ) (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (ω : W →+* V) (s : I → V) (e : D.X ≃+ (Fin T.r → ℤ)) (β : D.P.A.left ⟶ T.B.left) (ββ : (G2 D.P.A).left ⟶ (G2 T.B).left) (w : LB.Iso (abelian₂ D.P.A D.P.L) ((abelian₂ T.B T.M.L).pull ββ)), D.TauBimult → From T ω s ε n D e β ββ w → ∀ (Z : Over (Sp V)) (y : Z ⟶ D.P.A) (z : Z.left) J J', Good T.M.L z J → Good D.P.L z J' → lamVal w (lift (1 : Z ⟶ D.P.A) y).left z J J' = 1 ∧ lamVal w (lift y (1 : Z ⟶ D.P.A)).left z J J' = 1 := by
   intro o W _ _ _ T I _ ε n V _ _ D ω s e β ββ w hB hF Z y z J J' hJ hJ'

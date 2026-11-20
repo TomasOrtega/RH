@@ -41,7 +41,7 @@ def l2NormOn {S : Set (ι → ℂ)} (m : ConeMetricOn ℂ ι S) (σ : o →+* �
   Real.sqrt (∫ z, ptNormOn m σ d f z ^ 2 ∂μ)
 
 /- English proof (translation)
-Introduce `_ hz` and use `hz.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conePts_ne_zero (σ : o →+* C) (I : Ideal (MvPolynomial ι o)) :
     ∀ z ∈ conePts σ I, z ≠ 0 :=
@@ -70,7 +70,7 @@ section Gauss
 variable {o : Type*} [CommRing o] {C : Type*} [NormedField C] {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Unfold `ptNorm`. Conclude with `div_le_div_of_nonneg_left (norm_nonneg _) (pow_pos ((maxMetric C ι).pos z hz) d) (pow_le_pow_left₀ (norm_nonneg _) hle d)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ptNorm_le_ptNorm_maxMetric (h : ConeMetric C ι) (σ : o →+* C) (d : ℕ)
     (f : MvPolynomial ι o) {z : ι → C} (hz : z ≠ 0) (hle : ‖z‖ ≤ h.ρ z) :
@@ -80,7 +80,7 @@ theorem ptNorm_le_ptNorm_maxMetric (h : ConeMetric C ι) (σ : o →+* C) (d : �
     (pow_le_pow_left₀ (norm_nonneg _) hle d)
 
 /- English proof (translation)
-Unfold `ptNorm`. Rewrite using `[← heq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptNorm_eq_ptNorm_maxMetric (h : ConeMetric C ι) (σ : o →+* C) (d : ℕ)
     (f : MvPolynomial ι o) {z : ι → C} (heq : ‖z‖ = h.ρ z) :
@@ -96,9 +96,9 @@ section Homog
 variable {o : Type*} [CommRing o] {C : Type*} [NormedField C] {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i, m i = d`. Use `hφ (mem_support_iff.mp hm)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_smul_of_isHomogeneousP {R : Type*} [CommRing R] {φ : MvPolynomial ι R} {d : ℕ}
     (hφ : φ.IsHomogeneous d) (c : R) (z : ι → R) : eval (c • z) φ = c ^ d * eval z φ := by
@@ -113,7 +113,7 @@ theorem eval_smul_of_isHomogeneousP {R : Type*} [CommRing R] {φ : MvPolynomial 
   ring
 
 /- English proof (translation)
-Unfold `ptNormOn`. Rewrite using `[eval_smul_of_isHomogeneousP hf, m.smul c z hz hcz, norm_mul, norm_pow, mul_pow]`. Conclude with `mul_div_mul_left _ _ (pow_ne_zero _ (norm_ne_zero_iff.mpr hc))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptNormOn_smul {S : Set (ι → C)} (m : ConeMetricOn C ι S) (σ : o →+* C) {d : ℕ}
     {f : MvPolynomial ι o} (hf : (map σ f).IsHomogeneous d) {c : C} (hc : c ≠ 0) {z : ι → C}

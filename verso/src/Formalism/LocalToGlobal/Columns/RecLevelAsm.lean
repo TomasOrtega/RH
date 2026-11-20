@@ -48,7 +48,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (d.1.dia c⁻¹).dia c = d.1`. Apply the tactic sequence `ext <;> simp [Deco.dia, ← mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rla_dia_inv (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c⁻¹).dia c = d := by
   apply Subtype.ext
@@ -56,7 +56,7 @@ theorem rla_dia_inv (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c⁻¹).dia
   ext <;> simp [Deco.dia, ← mul_assoc]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (d.1.dia c).dia c⁻¹ = d.1`. Apply the tactic sequence `ext <;> simp [Deco.dia, ← mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rla_dia_inv' (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).dia c⁻¹ = d := by
   apply Subtype.ext
@@ -64,13 +64,13 @@ theorem rla_dia_inv' (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).dia c�
   ext <;> simp [Deco.dia, ← mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← rla_dia_inv' n ST SG c d, h, rla_dia_inv' n ST SG c d']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rla_dia_inj (c : DiaG E ST) {d d' : DecoSet E n ST SG} (h : d.dia c = d'.dia c) : d = d' := by
   rw [← rla_dia_inv' n ST SG c d, h, rla_dia_inv' n ST SG c d']
 
 /- English proof (translation)
-Use `show (d.1.dia c).L = d.1.L`. Unfold `Deco.L`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Deco.dia, Set.mem_setOf_eq, Units.mul_right_eq_zero]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DecoSet.dia_L (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).1.L = d.1.L := by
   show (d.1.dia c).L = d.1.L
@@ -80,7 +80,7 @@ theorem DecoSet.dia_L (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).1.L = 
   simp only [Deco.dia, Set.mem_setOf_eq, Units.mul_right_eq_zero]
 
 /- English proof (translation)
-Use `show (decoOf ST SG (ptOf hc n ST SG (d.dia c⁻¹) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).dia c = d`. Rewrite using `[decoOf_ptOf hc n ST SG hS (d.dia c⁻¹)]`. Conclude with `rla_dia_inv n ST SG c d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decoOfD_ptOfD (hS : DecoPtSurj hc n ST SG) (c : DiaG E ST) (d : DecoSet E n ST SG) :
     decoOfD n ST SG c (ptOfD hc n ST SG c d : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d := by
@@ -94,7 +94,7 @@ Both sides reduce to the same expression.
 theorem rla_dia_smulH (c : DiaG E ST) (g : UF E n × H) (d : DecoSet E n ST SG) : (g • d).dia c = g • d.dia c := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp (Quotient.exact h))`. Introduce and unpack `⟨g, hg⟩`. Conclude with `Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, hg⟩))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rla_cls_eq {d d' : DecoSet E n ST SG} :
     decoCls n ST SG H d = decoCls n ST SG H d' ↔ ∃ g : UF E n × H, g • d' = d := by
@@ -105,19 +105,17 @@ theorem rla_cls_eq {d d' : DecoSet E n ST SG} :
     exact Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, hg⟩))
 
 /- English proof (translation)
-Set `Φ : DecoCl n ST SG H → DecoCl n ST SG H` to `fun q => Quotient.liftOn' q (fun d => decoCls n ST SG H (d.dia c₀⁻¹)) (fun a b hab => by`. Take `⟨g, hg⟩` from `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp hab)`. Rewrite using `[← hg]`. Conclude with `Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, rfl⟩)))`. Set `Ψ : DecoCl n ST SG H → DecoCl n ST SG H` to `fun q => Quotient.liftOn' q (fun d => decoCls n ST SG H (d.dia c₀)) (fun a b hab => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp hab)`. Rewrite using `[← hg]`. Conclude with `Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, rfl⟩)))`. Establish `hΦΨ : ∀ q, Φ (Ψ q) = q`. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h d => show decoCls n ST SG H ((d.dia c₀).dia c₀⁻¹) = _`. Rewrite using `[rla_dia_inv' n ST SG c₀ d]`. Both sides reduce to the same expression. Establish `hΨΦ : ∀ q, Ψ (Φ q) = q`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `q`. Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h d => show decoCls n ST SG H ((d.dia c₀⁻¹).dia c₀) = _`. Rewrite using `[rla_dia_inv n ST SG c₀ d]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦ : Function.Bijective Φ` using `Function.bijective_iff_has_inverse.mpr ⟨Ψ, hΨΦ, hΦΨ⟩`. Set `s' : DecoCl n ST SG H → DecoSet E n ST SG` to `fun c => (s (Ψ c)).dia c₀⁻¹`. Establish `hs' : ∀ c, decoCls n ST SG H (s' c) = c`. Introduce `c`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `levU_y_bij hc n ST SG H hS s' hs'`. Establish `heq : (fun c : DecoCl n ST SG H => (Quotient.mk'' (ptOfD hc n ST SG c₀ (s c)) : AdCl hc n ST SG H)) = (fun c => (Quotient.mk'' (ptOf hc n ST SG (s' (Φ c))) : AdCl hc n ST SG H))`. Use function extensionality and compare the values at `c`. Use `show _ = (Quotient.mk'' (ptOf hc n ST SG ((s (Ψ (Φ c))).dia c₀⁻¹)) : AdCl hc n ST SG H)`. Rewrite using `[hΨΦ c]`.
-
-Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `hF.comp hΦ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levU_y_bijD (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (s : DecoCl n ST SG H → DecoSet E n ST SG)
     (hs : ∀ c, decoCls n ST SG H (s c) = c) :
@@ -167,9 +165,9 @@ theorem levU_y_bijD (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (s : DecoCl 
   exact hF.comp hΦ
 
 /- English proof (translation)
-Simplify using `only [MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `rla_dia_inj n ST SG c (d := g • d) (d' := d) h`. Introduce `h show (g • d).dia c = d.dia c`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem rla_mem_stab_dia (c : DiaG E ST) (d : DecoSet E n ST SG) (g : UF E n × H) :
     g ∈ MulAction.stabilizer (UF E n × H) (d.dia c) ↔ g ∈ MulAction.stabilizer (UF E n × H) d := by
@@ -182,9 +180,9 @@ theorem rla_mem_stab_dia (c : DiaG E ST) (d : DecoSet E n ST SG) (g : UF E n × 
     rw [h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[rlc_ratHom_stabRat hc n ST SG H d a]`. Conclude with `a.2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, hmem⟩`. Use `⟨⟨(ratHom hc n γ, h), hmem⟩, ?_⟩` and prove the remaining obligations. Apply `(ratHom_bijective hc n).1` to reduce the goal to its premises. Rewrite using `[rlc_ratHom_stabRat]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rla_mem_range_stabRat (d : DecoSet E n ST SG) (γ : URat hc n) :
     γ ∈ (stabRat hc n ST SG H d).range ↔ ∃ h : H, (ratHom hc n γ, h) ∈ MulAction.stabilizer (UF E n × H) d := by
@@ -199,7 +197,7 @@ theorem rla_mem_range_stabRat (d : DecoSet E n ST SG) (γ : URat hc n) :
     rw [rlc_ratHom_stabRat]
 
 /- English proof (translation)
-Establish `hy' : decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d.dia c⁻¹`. Rewrite using `[← hy]`. Conclude with `(rla_dia_inv' n ST SG c _).symm`. Rewrite using `[← stabRat_range hc n ST SG H (d.dia c⁻¹) y hy' γ, rla_mem_range_stabRat, rla_mem_range_stabRat]`. Simplify using `only [rla_mem_stab_dia]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stabRat_rangeD (c : DiaG E ST) (d : DecoSet E n ST SG) (y : UAd hc n)
     (hy : decoOfD n ST SG c (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d) (γ : URat hc n) :
@@ -213,7 +211,7 @@ theorem stabRat_rangeD (c : DiaG E ST) (d : DecoSet E n ST SG) (y : UAd hc n)
   simp only [rla_mem_stab_dia]
 
 /- English proof (translation)
-Rewrite using `[← DecoSet.dia_L n ST SG c⁻¹ d]`. Conclude with `levU_y_lat hc n ST SG hS (d.dia c⁻¹) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levU_y_latD (hS : DecoPtSurj hc n ST SG) (c : DiaG E ST) (d : DecoSet E n ST SG)
     (x : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F) :

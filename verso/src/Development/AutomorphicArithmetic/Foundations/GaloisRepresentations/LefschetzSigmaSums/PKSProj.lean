@@ -7,11 +7,11 @@ open UpperTheory.Gal.LocalSmoothExtension
 open UpperTheory.Gal.Int.Geo (KS Lv Sc)
 
 /- English proof (translation)
-Introduce `hSm hPr p _ D G L hSc gb k T N`. Establish `hq : qAt T N = (T.e N).hom ≫ ((KS.pow (T.M N).univ.A k).hom ≫ (T.M N).s)` using `(T.e_q N).symm`. Rewrite using `[hq]`. Prove the components needed by the constructor for the conclusion. Take `⟨M, i, hi, hi'⟩` from `hPr p D hSc.cpt gb N.1 N.2.1 N.2.2 (T.M N) k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Use `⟨M, (T.e N).hom ≫ i, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hi infer_instance`. Rewrite using `[Category.assoc, hi']`. Take `⟨d, hd⟩` from `hSm D.toG gb N.1 N.2.1 (T.M N) k haveI := hd`. Establish `h0 : SmoothOfRelativeDimension 0 (T.e N).hom` using `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `AlgebraicGeometry.smoothOfRelativeDimension_comp (n := 0) (m := d) (T.e N).hom ((KS.pow (T.M N).univ.A k).hom ≫ (T.M N).s)`. Rewrite `h2` using `[zero_add]`. Conclude with `⟨d, h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.kSProj_of :
     ZSm → ZPr → KSProj := by

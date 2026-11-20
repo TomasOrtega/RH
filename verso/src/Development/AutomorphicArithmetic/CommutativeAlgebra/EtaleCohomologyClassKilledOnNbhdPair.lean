@@ -8,7 +8,7 @@ namespace UpperTheory.NaturalityElementwise
 variable {J : Type} [SmallCategory J]
 
 /- English proof (translation)
-Use `congrArg (fun g => g.hom x) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma sq_el {A B C D : AddCommGrpCat.{1}} {p : A ⟶ B} {q : B ⟶ D} {r : A ⟶ C} {s : C ⟶ D}
     (h : p ≫ q = r ≫ s) (x : A) : q.hom (p.hom x) = s.hom (r.hom x) := by
@@ -16,14 +16,14 @@ private lemma sq_el {A B C D : AddCommGrpCat.{1}} {p : A ⟶ B} {q : B ⟶ D} {r
   simpa using this
 
 /- English proof (translation)
-The claim follows from `sq_el (η.naturality f) x`.
+A detailed English derivation is pending.
 -/
 private lemma nat_el {F G : J ⥤ AddCommGrpCat.{1}} (η : F ⟶ G) {a b : J} (f : a ⟶ b) (x : F.obj a) :
     (η.app b).hom ((F.map f).hom x) = (G.map f).hom ((η.app a).hom x) :=
   sq_el (η.naturality f) x
 
 /- English proof (translation)
-Use `congrArg (fun g => g.hom x) (c.w f)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma w_el {F : J ⥤ AddCommGrpCat.{1}} (c : Cocone F) {a b : J} (f : a ⟶ b) (x : F.obj a) :
     (c.ι.app b).hom ((F.map f).hom x) = (c.ι.app a).hom x := by
@@ -41,15 +41,15 @@ end UpperTheory.NaturalityElementwise
 
 open UpperTheory.NaturalityElementwise in
 /- English proof (translation)
-Introduce `J _ _ T j x hx`. Establish `h0 : (T.cYm.ι.app j).hom ((T.fg.app j).hom x) = 0`. Rewrite using `[← sq_el (T.fg_w j) x, hx, map_zero]`. Take `⟨j1, f1, h1⟩` from `T.injYm j _ h0`. Establish `h2 : (T.fg.app j1).hom ((T.Rm.map f1).hom x) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[nat_el T.fg f1 x, h1]`. Take `⟨w, hw⟩` from `T.exR j1 _ h2`. Establish `h3 : T.dlL.hom ((T.cWp.ι.app j1).hom w) = 0`. Rewrite using `[sq_el (T.dl_w j1) w, hw, w_el T.cR f1 x, hx]`. Take `⟨y, hy⟩` from `T.exWL _ h3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j2, y', rfl⟩` from `T.surYp y`. Set `a : j1 ⟶ IsFiltered.max j1 j2` to `IsFiltered.leftToMax j1 j2`. Set `b : j2 ⟶ IsFiltered.max j1 j2` to `IsFiltered.rightToMax j1 j2`. Establish `h4 : (T.cWp.ι.app _).hom ((T.Wp.map a).hom w - (T.rs.app _).hom ((T.Yp.map b).hom y')) = 0`. Rewrite using `[map_sub, w_el T.cWp a w, ← sq_el (T.rs_w _) ((T.Yp.map b).hom y'), w_el T.cYp b y', hy, sub_self]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j4, c, h5⟩` from `T.injWp _ _ h4`. Use `⟨j4, f1 ≫ a ≫ c, ?_⟩` and prove the remaining obligations. Establish `h6 : (T.Wp.map c).hom ((T.Wp.map a).hom w) = (T.rs.app j4).hom ((T.Yp.map c).hom ((T.Yp.map b).hom y'))`. Rewrite `h5` using `[map_sub, sub_eq_zero]`. Rewrite using `[h5, nat_el T.rs c]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_el, ← hw, comp_el, ← nat_el T.dl a w, ← nat_el T.dl c, h6]`. Conclude with `T.cx j4 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.etaleCohomology_class_killed_on_nbhd_pair :
     LateralTheory.E.NeighbourhoodKilling.PairFive := by

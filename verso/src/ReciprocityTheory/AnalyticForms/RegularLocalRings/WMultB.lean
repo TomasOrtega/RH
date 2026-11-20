@@ -7,9 +7,9 @@ open AlgebraicGeometry CategoryTheory MvPolynomial
 variable {W : Scheme.{0}} {s : W ⟶ Spec (.of ℂ)}
 
 /- English proof (translation)
-Unfold `AffPres.secHom`. Rewrite using `[RingHom.coe_comp, RingHom.coe_comp, RingHom.coe_comp]`. Establish `i1 : IsIso P.iso.hom.appTop`. Establish `: IsIso (Scheme.Γ.map P.iso.hom.op)` using `inferInstance`. Simplify using `using this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(ConcreteCategory.bijective_of_isIso P.V.topIso.hom).2.comp ?_` and prove the remaining obligations. Use `(ConcreteCategory.bijective_of_isIso P.iso.hom.appTop).2.comp ?_` and prove the remaining obligations. Use `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv).2.comp ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.mk_surjective`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem secHom_surjective (P : AffPres s) : Function.Surjective P.secHom := by
   unfold AffPres.secHom
@@ -24,7 +24,7 @@ theorem secHom_surjective (P : AffPres s) : Function.Surjective P.secHom := by
   exact Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Establish `hg' : g ∉ ptIdeal p` using `fun h => hg (RingHom.mem_ker.mp h)`. Use `(IsLocalization.map_units (locPt p) (⟨g, hg'⟩ : (ptIdeal p).primeCompl)).map (Ideal.Quotient.mk (Ideal.map (algebraMap (MvPolynomial (Fin n) ℂ) (locPt p)) K))` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.mk_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_algebraMap_of_eval_ne_zero {n : ℕ} (K : Ideal (MvPolynomial (Fin n) ℂ))
     (p : Fin n → ℂ) {g : MvPolynomial (Fin n) ℂ} (hg : eval p g ≠ 0) :
@@ -35,7 +35,7 @@ theorem isUnit_algebraMap_of_eval_ne_zero {n : ℕ} (K : Ideal (MvPolynomial (Fi
   rwa [Ideal.Quotient.mk_algebraMap] at this
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_eq_zero_of_mem {n : ℕ} {K : Ideal (MvPolynomial (Fin n) ℂ)} (p : Fin n → ℂ)
     {k : MvPolynomial (Fin n) ℂ} (hk : k ∈ K) : algebraMap _ (locRing K p) k = 0 := by
@@ -43,17 +43,15 @@ theorem algebraMap_eq_zero_of_mem {n : ℕ} {K : Ideal (MvPolynomial (Fin n) ℂ
   exact Ideal.mem_map_of_mem _ hk
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `isUnit_algebraMap_of_eval_ne_zero I p S.eval_h`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Rewrite using `[Ideal.mem_comap]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `S.le_span g hg`. Establish `h3 : Ideal.map (algebraMap _ (locRing I p)) (Ideal.span {∏ l ∈ S.J, S.r l} ⊔ I) ≤ Ideal.span {∏ l ∈ S.J, algebraMap _ (locRing I p) (S.r l)}`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_prod]`. Use `sup_le le_rfl ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite using `[Ideal.mem_comap, algebraMap_eq_zero_of_mem p hk]`. Conclude with `Ideal.zero_mem _`. Establish `h2` using `h3 (Ideal.mem_map_of_mem _ h1)`. Rewrite `h2` using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `he : algebraMap _ (locRing I p) g = ↑v⁻¹ * (algebraMap _ (locRing I p) S.h * algebraMap _ (locRing I p) g)`. Rewrite using `[← hv, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[he]`. Conclude with `Ideal.mul_mem_left _ _ h2`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Ideal.mem_map_of_mem (algebraMap _ (locRing I p)) S.mem_bd`. Rewrite `h1` using `[map_mul, map_prod]`. Establish `he : ∏ l ∈ S.J, algebraMap _ (locRing I p) (S.r l) = ↑v⁻¹ * (algebraMap _ (locRing I p) S.h * ∏ l ∈ S.J, algebraMap _ (locRing I p) (S.r l))`. Rewrite using `[← hv, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[he]`.
-
-Conclude with `Ideal.mul_mem_left _ _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_bd_eq_span {m : ℕ} {I bd : Ideal (MvPolynomial (Fin m) ℂ)} {p : Fin m → ℂ} {e rc : ℕ}
     (S : SncData I bd p e rc) :
@@ -90,11 +88,11 @@ theorem map_bd_eq_span {m : ℕ} {I bd : Ideal (MvPolynomial (Fin m) ℂ)} {p : 
     exact Ideal.mul_mem_left _ _ h1
 
 /- English proof (translation)
-Establish `hψ : ∀ g, P.stalkEquiv x hx hcl (W.presheaf.germ P.V x hx (P.secHom g)) = algebraMap _ (locRing P.K (P.coord x hx)) g` using `P.stalkEquiv_germ x hx hcl`. Establish `hsecmap : Z.ideal P.affOpen = Ideal.map P.secHom (P.bdIdeal Z)` using `(Ideal.map_comap_of_surjective _ (secHom_surjective P) _).symm`. Establish `hcompψ : (((P.stalkEquiv x hx hcl : W.presheaf.stalk x →+* locRing P.K (P.coord x hx)).comp (W.presheaf.germ P.V x hx).hom).comp P.secHom) = algebraMap _ (locRing P.K (P.coord x hx))` using `RingHom.ext hψ`. Establish `e1 : Ideal.map (P.stalkEquiv x hx hcl : W.presheaf.stalk x →+* locRing P.K (P.coord x hx)) (FinalTheorems.stalkId Z x) = Ideal.map (P.stalkEquiv x hx hcl : W.presheaf.stalk x →+* locRing P.K (P.coord x hx)) (Ideal.span {∏ l ∈ S.J, W.presheaf.germ P.V x hx (P.secHom (S.r l))})`. Establish `hZmap : FinalTheorems.stalkId Z x = Ideal.map (W.presheaf.germ P.V x hx).hom (Ideal.map P.secHom (P.bdIdeal Z))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hsecmap]`. Conclude with `stalkId_eq_map_germ Z x P.affOpen hx`. Rewrite using `[hZmap, Ideal.map_map, Ideal.map_map, hcompψ, map_bd_eq_span S, Ideal.map_span, Set.image_singleton, map_prod]`. Simplify using `only [RingHom.coe_coe, hψ]`. Use `congrArg (Ideal.map ((P.stalkEquiv x hx hcl).symm : locRing P.K (P.coord x hx) →+* W.presheaf.stalk x)) e1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Ideal.map_of_equiv, Ideal.map_of_equiv]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem stalkId_eq_span_of_sncData (P : AffPres s) (Z : W.IdealSheafData) (x : W) (hx : x ∈ P.V)
     (hcl : IsClosed ({x} : Set W)) {e rc : ℕ} (S : SncData P.K (P.bdIdeal Z) (P.coord x hx) e rc) :
@@ -123,9 +121,9 @@ theorem stalkId_eq_span_of_sncData (P : AffPres s) (Z : W.IdealSheafData) (x : W
   rwa [Ideal.map_of_equiv, Ideal.map_of_equiv] at this
 
 /- English proof (translation)
-Establish `hψ : ∀ g, P.stalkEquiv x hx hcl (W.presheaf.germ P.V x hx (P.secHom g)) = algebraMap _ (locRing P.K (P.coord x hx)) g` using `P.stalkEquiv_germ x hx hcl`. Rewrite using `[P.rsp_iff x hx hcl]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hψ]`. Conclude with `S.span_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← P.ringKrullDim_stalk x hx hcl, hdim]`.
+A detailed English derivation is pending.
 -/
 theorem rsp_of_sncData (P : AffPres s) (Z : W.IdealSheafData) (x : W) (hx : x ∈ P.V)
     (hcl : IsClosed ({x} : Set W)) {e rc : ℕ} (hdim : ringKrullDim (W.presheaf.stalk x) = e)

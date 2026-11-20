@@ -7,9 +7,9 @@ namespace PI.QuotSetU.UnitaryGroupMassFormula
 open PI PI.QuotSetU
 
 /- English proof (translation)
-Introduce `k r z hz hT`. Use `⟨hUH k r, hSG k r z hz hT, hSub k r z, ?_, ?_⟩` and prove the remaining obligations. Introduce `μG hμ`. Take `⟨D, hD, hD1⟩` from `hMod _ _ (hUH k r)`. Conclude with `hD1 (hTG k r D hD) μG hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μS hμ`. Take `⟨D, hD, hD1⟩` from `hMod _ _ (hSG k r z hz hT)`. Conclude with `hD1 (hTS k r z hz hT D hD) μS hμ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quotSetU_of (hUH : UHGroup) (hSub : SsetSub) (hSG : SsetGroup) (hMod : ModExists)
     (hTG : TrivG) (hTS : TrivS) : PI.QuotSetU := by

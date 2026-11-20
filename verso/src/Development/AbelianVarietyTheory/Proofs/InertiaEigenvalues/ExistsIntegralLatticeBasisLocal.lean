@@ -11,19 +11,15 @@ open GlobalTheory.BaseCoef
 namespace GlobalTheory.BaseCoef
 
 /- English proof (translation)
-Introduce `l _ G _ _ LL T`. Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI hfr : IsFractionRing ↥(OL LL) ↥LL.1 := integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥LL.1`. Use `haveI := T.L.free`. Use `haveI : Module.Finite ↥(OL LL) ↥T.L.T := Module.Finite.iff_fg.mpr T.L.fg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e0` to `Module.Free.chooseBasis ↥(OL LL) ↥T.L.T`. Set `e` to `e0.reindex (Fintype.equivFin _)`. Set `v : Fin (Fintype.card (Module.Free.ChooseBasisIndex ↥(OL LL) ↥T.L.T)) → T.V` to `fun i => (e i : T.V)`. Establish `hliO : LinearIndependent ↥(OL LL) v` using `e.linearIndependent.map' T.L.T.subtype (Submodule.ker_subtype _)`. Establish `hli : LinearIndependent ↥LL.1 v` using `(LinearIndependent.iff_fractionRing ↥(OL LL) ↥LL.1).1 hliO`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : ∀ (x : T.V) (hx : x ∈ T.L.T), x = ∑ i, (((e.repr ⟨x, hx⟩ i : ↥(OL LL)) : ↥LL.1)) • v i`. Introduce `x hx`. Establish `h1` using `e.sum_repr ⟨x, hx⟩`. Establish `h2` using `congrArg (fun y : ↥T.L.T => (y : T.V)) h1`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(algebraMap_smul ↥LL.1 (e.repr ⟨x, hx⟩ i) (v i)).symm`. Establish `hsp : ⊤ ≤ Submodule.span ↥LL.1 (Set.range v)`. Rewrite using `[← T.L.span]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hexp x hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨_, Module.Basis.mk hli hsp, fun i => ?_, fun x hx i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply]`.
-
-Conclude with `(e i).2`. Establish `h3 : (Module.Basis.mk hli hsp).repr x = fun j => (((e.repr ⟨x, hx⟩ j : ↥(OL LL)) : ↥LL.1))` using `by conv_lhs => rw [hexp x hx]`. Repeatedly rewrite using `[← Module.Basis.mk_apply hli hsp]`. Conclude with `(Module.Basis.mk hli hsp).repr_sum_self _`. Rewrite using `[h3]`.
-
-Conclude with `(e.repr ⟨x, hx⟩ i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_basis_exists : ∀ (l : ℕ) [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] (LL : FinExt l) (T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)), ∃ (k : ℕ) (b : Module.Basis (Fin k) ↥LL.1 T.V), IsLatBasis T b := by
   intro l _ G _ _ LL T

@@ -4,25 +4,25 @@ open UpperHalfPlane hiding I
 open CongruenceSubgroup
 
 /- English proof (translation)
-Introduce `k M hM f`. Use `haveI : NeZero M := ⟨by omega⟩`. Take `⟨C, hC⟩` from `CuspFormClass.exists_bound f`. Use `⟨C, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.V.Af.Nf.nsl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `set J : ℂ := (x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ) with hJdef`. Use `set w : ℂ := (((SignType.sign x.det : ℝ)) : ℂ) * (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) / J) with hwdef`. Establish `hJ0 : J ≠ 0`. Introduce `h`. Establish `h1` using `congrArg Complex.re h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `congrArg Complex.im h`. Simplify using `[J] at h1 h2`. Apply `hx` to reduce the goal to its premises. Rewrite using `[Matrix.det_fin_two, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : Complex.normSq J = ‖J‖ ^ 2` using `Complex.normSq_eq_norm_sq J`. Establish `hJpos : 0 < ‖J‖` using `norm_pos_iff.mpr hJ0`. Establish `hDpos : 0 < |x.det|` using `abs_pos.mpr hx`. Establish `hq : (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) / J).im = x.det / Complex.normSq J`. Rewrite using `[Complex.div_im, Matrix.det_fin_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `[J]`. Expand and normalize the polynomial expressions, which then agree. Establish `himw : w.im = |x.det| / ‖J‖ ^ 2`. Rewrite using `[hwdef, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero, hq, hn]`. Break down `lt_or_gt_of_ne hx with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[sign_neg h, abs_of_neg h]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sign_pos h, abs_of_pos h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hw : 0 < w.im`. Rewrite using `[himw]`. Check the signs of the components of the expression. Establish `hτ : (ofComplex w).im = |x.det| / ‖J‖ ^ 2`. Rewrite using `[← himw, UpperHalfPlane.ofComplex_apply_of_im_pos hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `all_goals rfl`. Establish `hb` using `hC (ofComplex w)`. Rewrite `hb` using `[hτ]`. Establish `hpow : (|x.det| / ‖J‖ ^ 2) ^ (((k : ℤ) : ℝ) / 2) = |x.det| ^ ((k : ℝ) / 2) / ‖J‖ ^ k`. Rewrite using `[Real.div_rpow hDpos.le (by positivity), ← Real.rpow_natCast ‖J‖ 2, ← Real.rpow_mul hJpos.le]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Use `congr 1`. Rewrite using `[show (2 : ℝ) * ((k : ℝ) / 2) = ((k : ℕ) : ℝ) by ring, Real.rpow_natCast]`. Rewrite `hb` using `[hpow]`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity), norm_zpow]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 0 < |x.det| ^ ((k : ℝ) / 2)` using `by positivity`. Establish `h2 : 0 < ‖J‖ ^ k` using `by positivity`. Rewrite using `[zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Nf.archBd :
     UpperTheory.V.Af.Nf.ArchBd := by

@@ -15,9 +15,9 @@ section Gen
 variable {E : Type*} [Field E] [NumberField E]
 
 /- English proof (translation)
-Set `v` to `AddValuation.toValuation ν`. Establish `h1 : IsIntegral v.integer (x : E)` using `(RingOfIntegers.isIntegral_coe x).tower_top`. Establish `h2` using `(Valuation.integer.integers v).mem_of_integral h1`. Rewrite `h2` using `[Valuation.mem_integer_iff]`. Establish `h3 : Multiplicative.ofAdd (OrderDual.toDual (ν (x : E))) ≤ Multiplicative.ofAdd (OrderDual.toDual (0 : WithTop ℤ))` using `h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `OrderDual.toDual_le_toDual.mp (Multiplicative.ofAdd_le.mp h3)`.
+A detailed English derivation is pending.
 -/
 theorem addVal_nonneg (ν : AddValuation E (WithTop ℤ)) (x : 𝓞 E) : 0 ≤ ν (x : E) := by
   let v := AddValuation.toValuation ν
@@ -29,11 +29,9 @@ theorem addVal_nonneg (ν : AddValuation E (WithTop ℤ)) (x : 𝓞 E) : 0 ≤ �
   exact OrderDual.toDual_le_toDual.mp (Multiplicative.ofAdd_le.mp h3)
 
 /- English proof (translation)
-Take `⟨a, b, hb, hab⟩` from `hP.exists_inv hs`. Use `le_antisymm ?_ (addVal_nonneg ν s)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1 : 0 < ν ((a : E) * s + b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_lt_of_le (lt_min ?_ (hPν b hb)) (ν.map_add _ _)` and prove the remaining obligations. Rewrite using `[ν.map_mul]`. Conclude with `lt_of_lt_of_le h (le_add_of_nonneg_left (addVal_nonneg ν a))`. Establish `h2 : ((a : E) * s + b) = 1` using `by exact_mod_cast congrArg (fun t : 𝓞 E => (t : E)) hab`. Rewrite `h1` using `[h2, ν.map_one]`.
-
-Conclude with `lt_irrefl _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addVal_eq_zero_of_not_mem (ν : AddValuation E (WithTop ℤ)) (P : Ideal (𝓞 E)) (hP : P.IsMaximal)
     (hPν : ∀ y ∈ P, 0 < ν (y : E)) (s : 𝓞 E) (hs : s ∉ P) : ν (s : E) = 0 := by
@@ -54,7 +52,7 @@ end Gen
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨T⟩` from `Frame.exists H`. Apply `(T.ι.injective.comp T.j.injective)` to reduce the goal to its premises. Use `show T.ι (T.j (H.conj (H.conj z))) = T.ι (T.j z)`. Rewrite using `[T.conj, T.conj, Complex.conj_conj]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_conj (H : Formalism.BasicNotions.Host D.R) (z : H.E) : H.conj (H.conj z) = z := by
   obtain ⟨T⟩ := Frame.exists H
@@ -63,9 +61,9 @@ theorem conj_conj (H : Formalism.BasicNotions.Host D.R) (z : H.E) : H.conj (H.co
   rw [T.conj, T.conj, Complex.conj_conj]
 
 /- English proof (translation)
-Establish `: Fact (D.mem u).A.T.Prime` using `⟨(D.mem u).A.T_prime⟩`. Establish `: CharP ((D.mem u).A.Fv v) (D.mem u).A.T` using `charP_of_card_eq_prime ((D.mem u).A.card_Fv v)`. Establish `hN : ¬ (D.mem u).A.T ∣ D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2`. Introduce `hd`. Take `⟨k, hk⟩` from `Ideal.mem_span_singleton'.mp A.piU_cong`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `congrArg (A.res v) hk`. Rewrite `h2` using `[map_mul, map_sub, A.res_pi, map_one, map_natCast, (CharP.cast_eq_zero_iff _ (D.mem u).A.T _).2 hd, mul_zero, zero_sub]`. Conclude with `one_ne_zero (neg_eq_zero.mp h2.symm)`. Conclude with `fun h => hN (Dvd.dvd.mul_right h _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem T_ne (A : AtTTied u) (v : (D.mem u).A.vT) :
     ¬ (D.mem u).A.T ∣ D.host.condN := by
@@ -81,41 +79,35 @@ theorem T_ne (A : AtTTied u) (v : (D.mem u).A.vT) :
   exact fun h => hN (Dvd.dvd.mul_right h _)
 
 /- English proof (translation)
-Introduce `w hw hseen v x hx`. Establish `hw' : D.what₂.places.resChar w = (D.mem u).A.T` using `hw`. Establish `: Fact (D.mem u).A.T.Prime` using `⟨(D.mem u).A.T_prime⟩`. Establish `: CharP ((D.mem u).A.Fv v) (D.mem u).A.T` using `charP_of_card_eq_prime ((D.mem u).A.card_Fv v)`. Set `σ : D.host.E ≃ₐ[ℚ] D.host.E` to `D.host.sigmaOf (D.eTau ((D.fm u).tauOf w v) : D.R.GG)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ν : AddValuation D.host.E (WithTop ℤ)` to `(D.what₂.places.val w).comap (D.embE.comp (σ : D.host.E →+* D.host.E))`. Establish `hν : ∀ y, ν y = D.what₂.places.val w (D.embE (σ y))` using `fun y => rfl`. Express the relevant statement in the definitionally equal form `_ ≤ ν (x : D.host.E)`. Set `cO : 𝓞 D.host.E ≃+* 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv`. Establish `hcO : ∀ y : 𝓞 D.host.E, ((cO y : 𝓞 D.host.E) : D.host.E) = D.host.conj (y : D.host.E)` using `fun y => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinv` using `conj_conj D.host`. Establish `mkF : ∀ z : 𝓞 D.host.E, D.host.conj (z : D.host.E) = z → ∃ zF : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) zF = z`. Introduce `z hz`. Establish `hF : (z : D.host.E) ∈ D.host.F` using `(D.host.conjE_mem_hostF_iff _).2 hz`. Use `⟨⟨⟨z, hF⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isIntegral_algHom_iff (D.host.F.subtype.toIntAlgHom) Subtype.val_injective).mp (RingOfIntegers.isIntegral_coe z)`. Both sides reduce to the same expression. Establish `hcoe : ∀ zF : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) D.host.E zF = ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) zF : 𝓞 D.host.E) : D.host.E)` using `fun _ => rfl`. Establish `hTau : ∀ zF : 𝓞 D.host.F, zF ∈ (A.eV v).1.asIdeal ↔ 0 < ν ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) zF : 𝓞 D.host.E) : D.host.E)`. Introduce `zF`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[A.tauOf w hw' v zF, hcoe]`. Conclude with `Iff.rfl`. Establish `hπ : 0 < ν (A.piU : D.host.E)`. Use `A.seenP w hw' ((D.fm u).tauOf w v)` as an intermediate fact. Rewrite `this` using `[if_pos hseen]`.
+Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hpb : A.res v (cO A.piU) ≠ 0` using `A.res_conj v (cO A.piU) rfl`. Establish `hπb : ν ((cO A.piU : 𝓞 D.host.E) : D.host.E) = 0`. Take `⟨zF, hzF⟩` from `mkF (A.piU + cO A.piU) (by push_cast; simp only [hcO, map_add, hinv]; ring)`. Establish `hnot : zF ∉ (A.eV v).1.asIdeal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[A.res_v, hzF, map_add, A.res_pi, zero_add]`. Conclude with `hpb`. Rewrite `hnot` using `[hTau, hzF]`. Use `le_antisymm (not_lt.mp fun h => hnot ?_) (addVal_nonneg ν _)` and prove the remaining obligations. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `lt_of_lt_of_le (lt_min hπ h) (ν.map_add _ _)`. Establish `hPν : ∀ y ∈ A.Pv v, 0 < ν (y : D.host.E)`. Introduce `y hy`. Establish `hy' : A.res v y = 0` using `hy`. Take `⟨zF, hzF⟩` from `mkF (y * cO A.piU + cO y * A.piU) (by push_cast; simp only [hcO, map_add, map_mul, hinv]; ring)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hin : zF ∈ (A.eV v).1.asIdeal`. Rewrite using `[A.res_v, hzF, map_add, map_mul, map_mul, hy', A.res_pi]`. Simplify using the standard rewrite rules. Rewrite `hin` using `[hTau, hzF]`. Move the coercions through the operations in `at hin`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 < ν (((cO y : 𝓞 D.host.E) : D.host.E) * A.piU)`. Rewrite using `[ν.map_mul]`. Conclude with `lt_of_lt_of_le hπ (le_add_of_nonneg_left (addVal_nonneg ν _))`. Establish `h3 : 0 < ν ((y : D.host.E) * (cO A.piU : 𝓞 D.host.E))`. Establish `: (y : D.host.E) * (cO A.piU : 𝓞 D.host.E) = ((y : D.host.E) * (cO A.piU : 𝓞 D.host.E) + ((cO y : 𝓞 D.host.E) : D.host.E) * A.piU) - ((cO y : 𝓞 D.host.E) : D.host.E) * A.piU` using `by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `lt_of_lt_of_le (lt_min hin h2) (ν.map_sub _ _)`. Rewrite `h3` using `[ν.map_mul, hπb, add_zero]`. Then use the resulting hypothesis. Establish `hPmax : (A.Pv v).IsMaximal` using `RingHom.ker_isMaximal_of_surjective (A.res v) (A.res_surj v)`. Establish `hres_nat : ∀ s : ℕ, A.res v (s : 𝓞 D.host.E) = 0 ↔ (D.mem u).A.T ∣ s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero_iff _ (D.mem u).A.T s`. Use `span_isPrime (D.mem u).A.T` as an intermediate fact. Establish `hlies : (A.Pv v).LiesOver (span {((D.mem u).A.T : ℤ)})`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_⟩` and prove the remaining obligations. Establish `hle : span {((D.mem u).A.T : ℤ)} ≤ (A.Pv v).comap (algebraMap ℤ (𝓞 D.host.E))`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show A.res v (algebraMap ℤ (𝓞 D.host.E) ((D.mem u).A.T : ℤ)) = 0`. Rewrite using `[map_natCast]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hres_nat _).2 dvd_rfl`. Establish `hmax : (span {((D.mem u).A.T : ℤ)}).IsMaximal`. Use `this.isMaximal ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `(D.mem u).A.T_prime.ne_zero` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmax.eq_of_le (Ideal.comap_ne_top _ hPmax.ne_top) hle`. Take `⟨I, hI, hIP⟩` from `map_eq_mul_coprime D.host (D.mem u).A.T (T_ne A v) (A.Pv v)`. Take `⟨s, hsI, hsP⟩` from `Set.not_subset.mp hIP`. Establish `hxP : x ∈ A.Pv v` using `hx`. Establish `hxs : x * s ∈ (span {((D.mem u).A.T : ℤ)}).map (algebraMap ℤ (𝓞 D.host.E))`.
-
-Rewrite using `[hI]`. Conclude with `Ideal.mul_mem_mul hxP hsI`. Rewrite `hxs` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton', map_natCast]`. Take `⟨z, hz⟩` from `hxs`. Establish `hz' : (z : D.host.E) * ((D.mem u).A.T : D.host.E) = (x : D.host.E) * s`.
-
-Conclude with `congrArg (fun t : 𝓞 D.host.E => (t : D.host.E)) hz` after adjusting the coercions. Establish `hνs : ν (s : D.host.E) = 0` using `addVal_eq_zero_of_not_mem ν (A.Pv v) hPmax hPν s hsP`. Establish `hνT : ν ((D.mem u).A.T : D.host.E) = (((D.what₂.places.ramIdx w : ℕ) : ℤ) : WithTop ℤ)`. Rewrite using `[hν, map_natCast, map_natCast, ← hw']`. Conclude with `D.what₂.places.val_resChar w`.
-
-Establish `key : ν ((z : D.host.E) * ((D.mem u).A.T : D.host.E)) = ν ((x : D.host.E) * s)` using `by rw [hz']`. Rewrite `key` using `[ν.map_mul, ν.map_mul, hνs, add_zero, hνT]`. Rewrite using `[← key]`. Conclude with `le_add_of_nonneg_left (addVal_nonneg ν z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem second_unramified_condition_holds (A : AtTTied u) : Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.UnramifiedAtLevelPrimes D u A := by
   intro w hw hseen v x hx

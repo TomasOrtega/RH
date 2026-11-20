@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryConjugation.Tran
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryConjugation.SubmatrixMemUnitaryGroup
 
 /- English proof (translation)
-The claim follows from `PI.UConjT.conjTranspose_of PI.UConjT.onbReal PI.UConjT.transferStep PI.UConjT.blockStep`.
+A detailed English derivation is pending.
 -/
 theorem unitary_conj_transpose : PI.UMultOne.ConjTranspose :=
   PI.UConjT.conjTranspose_of PI.UConjT.onbReal PI.UConjT.transferStep PI.UConjT.blockStep

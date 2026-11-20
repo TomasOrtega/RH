@@ -3,27 +3,25 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolyno
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
 /- English proof (translation)
-Use `haveI : NeZero p := ⟨hp.out.ne_zero⟩`. Use `haveI : (Ideal.span {(p : R)}).IsPrime := (Ideal.span_singleton_prime hpr.ne_zero).mpr hpr`. Use `haveI : CharP (R ⧸ Ideal.span {(p : R)}) p := CharP.quotient R p (mem_nonunits_iff.mpr hpr.not_unit)`. Set `K` to `R ⧸ Ideal.span {(p : R)}`. Set `π : R →+* K` to `Ideal.Quotient.mk _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ZMod p →+* K` to `ZMod.castHom (dvd_refl p) K`. Establish `hxx : π x ^ p = π x`. Establish `h1` using `hfrob x`. Rewrite `h1` using `[hx]`. Establish `h2 : π (x - x ^ p) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h2` using `[map_sub, map_pow]`. Conclude with `(sub_eq_zero.mp h2).symm`. Establish `hf : Function.Injective f` using `f.injective`. Set `q : Polynomial K` to `Polynomial.X ^ p - Polynomial.X`. Establish `hdeg : q.natDegree = p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (Polynomial.X : Polynomial K).natDegree < (Polynomial.X ^ p : Polynomial K).natDegree`. Rewrite using `[Polynomial.natDegree_X_pow, Polynomial.natDegree_X]`. Conclude with `hp.out.one_lt`. Rewrite using `[Polynomial.natDegree_sub_eq_left_of_natDegree_lt h1, Polynomial.natDegree_X_pow]`. Establish `hq : q ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `hdeg` as an intermediate fact. Rewrite `this` using `[h, Polynomial.natDegree_zero]`. Conclude with `hp.out.ne_zero this.symm`. Establish `hroot : ∀ t : K, t ^ p = t → t ∈ q.roots.toFinset`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t ht`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hq]`. Simplify using `[q, ht]`. Establish `hsub : Finset.univ.image f ⊆ q.roots.toFinset`. Introduce `t ht`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp ht`. Apply `hroot` to reduce the goal to its premises. Rewrite using `[← map_pow, ZMod.pow_card]`. Establish `hcard : q.roots.toFinset.card ≤ (Finset.univ.image f).card`. Rewrite using `[Finset.card_image_of_injective _ hf, Finset.card_univ, ZMod.card]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub hcard`. Establish `hmem : π x ∈ Finset.univ.image f` using `heq ▸ hroot _ hxx`. Take `⟨a, -, ha⟩` from `Finset.mem_image.mp hmem`. Establish `hval : π (a.val : R) = π x`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast, ZMod.natCast_val, ← ha]`. Both sides reduce to the same expression. Establish `hmemI : x - (a.val : R) ∈ Ideal.span {(p : R)}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `π (x - (a.val : R)) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, hval, sub_self]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hmemI`. Use `⟨a.val, y, by rw [mul_comm, hy]; ring, ?_⟩` and prove the remaining obligations. Establish `h3 : (p : R) * σ y = p * y`. Use `congrArg σ hy` as an intermediate fact.
-
-Rewrite `this` using `[map_mul, map_natCast, map_sub, map_natCast, hx]`. Rewrite using `[mul_comm, this, mul_comm, hy]`. Conclude with `mul_left_cancel₀ hpr.ne_zero h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_natCast_add_mul_of_frobenius_fixed {R : Type} [CommRing R] [IsDomain R] (p : ℕ) [hp : Fact p.Prime]
     (σ : R ≃+* R) (hpr : Prime (p : R)) (hfrob : ∀ x : R, σ x - x ^ p ∈ Ideal.span {(p : R)})
@@ -86,27 +84,25 @@ private theorem exists_natCast_add_mul_of_frobenius_fixed {R : Type} [CommRing R
   exact mul_left_cancel₀ hpr.ne_zero h3
 
 /- English proof (translation)
-Introduce `R _ p _ _ σ hσ x hx`. Take `⟨hdom, hpr, hcomp, hfrob, -⟩` from `hσ`. Use `haveI := hdom`. Use `haveI := hcomp`. Establish `step : ∀ y : {y : R // σ y = y}, ∃ a : ℕ, ∃ y' : {y : R // σ y = y}, y.1 = a + p * y'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨a, y', h1, h2⟩` from `exists_natCast_add_mul_of_frobenius_fixed p σ hpr hfrob y.1 y.2`. Conclude with `⟨a, ⟨y', h2⟩, h1⟩`. Use `choose d nx hdn using step`. Set `seq : ℕ → {y : R // σ y = y}` to `fun n => Nat.rec ⟨x, hx⟩ (fun _ y => nx y) n`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `s : ℕ → ℕ` to `fun n => ∑ i ∈ Finset.range n, d (seq i) * p ^ i`. Establish `hrep : ∀ n, x = (s n : R) + (p : R) ^ n * (seq n).1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [s, seq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Establish `e : seq (n + 1) = nx (seq n)` using `rfl`. Rewrite using `[ih, hdn (seq n)]`. Simplify using `only [s, Finset.sum_range_succ, e]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdvd : ∀ m k, (p : ℤ) ^ m ∣ ((s (m + k) : ℕ) : ℤ) - (s m : ℤ)`. Introduce `m k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Establish `e : ((s (m + (k + 1)) : ℕ) : ℤ) - s m = (((s (m + k)) : ℤ) - s m) + (d (seq (m + k)) : ℤ) * (p : ℤ) ^ (m + k)`. Simplify using `only [s, ← add_assoc, Finset.sum_range_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `dvd_add ih (Dvd.dvd.mul_left (pow_dvd_pow _ (Nat.le_add_right _ _)) _)`. Establish `hZ : ∀ (a b : ℤ_[p]) (m : ℕ), a ≡ b [SMOD ((IsLocalRing.maximalIdeal ℤ_[p]) ^ m • ⊤ : Submodule ℤ_[p] ℤ_[p])] ↔ (p : ℤ_[p]) ^ m ∣ a - b`. Introduce `a b m`. Rewrite using `[SModEq.sub_mem, PadicInt.maximalIdeal_eq_span_p, Ideal.span_singleton_pow, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := IsLocalRing.maximalIdeal ℤ_[p]) inferInstance (f := fun n => (s n : ℤ_[p])) (by`. Introduce `m n hmn`. Rewrite using `[hZ]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Establish `h1` using `map_dvd (Int.castRingHom ℤ_[p]) (hdvd m k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_pow, map_sub, map_natCast] at h1`. Rewrite using `[← dvd_neg, neg_sub]`. Conclude with `h1)`. Use `⟨L, ?_⟩` and prove the remaining obligations. Rewrite using `[IsHausdorff.eq_iff_smodEq (I := Ideal.span {(p : R)})]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `n`. Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `(hZ _ _ n).mp (hL n)`. Establish `h2` using `congrArg (algebraMap ℤ_[p] R) hc`. Rewrite `h2` using `[map_sub, map_natCast, map_mul, map_pow, map_natCast]`.
-
-Use `⟨-(algebraMap ℤ_[p] R c + (seq n).1), ?_⟩` and prove the remaining obligations. Take the linear combination `(-1 : R) * h2 - hrep n`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pFixAbs :
     UpperTheory.Kd.C7.SFixAbs := by

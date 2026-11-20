@@ -15,7 +15,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory
 namespace DiscreteGroups.T1.G
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[PhiU, GlobalTheory.Tw.Phi, apply_ite]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_PhiU {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (a : ℕ) :
     GeneralLinearGroup.map p (PhiU a R) = PhiU a S := by
@@ -26,22 +26,22 @@ theorem map_PhiU {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (a : ℕ
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `map_PhiU (algebraMap E (Ad E)) n`.
+A detailed English derivation is pending.
 -/
 theorem ratGL_PhiU : ratGL E n (PhiU n E) = PhiU n (Ad E) :=
   map_PhiU (algebraMap E (Ad E)) n
 
 /- English proof (translation)
-Use `conv_lhs => rw [← infGL_mul_finGL (PhiU n (Ad E))]`. Rewrite using `[map_PhiU, map_PhiU, infGL_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PhiU_Ad : PhiU n (Ad E) = finGL E n (PhiU n (Af E)) * infGL E n (PhiU n (Cinf E)) := by
   conv_lhs => rw [← infGL_mul_finGL (PhiU n (Ad E))]
   rw [map_PhiU, map_PhiU, infGL_comm]
 
 /- English proof (translation)
-Establish `e : invT n (Ad E) (GeneralLinearGroup.map (conjAd E) g) = PositivityTheory.Rg.BcB.thetaA E n g`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((GeneralLinearGroup.map (conjAd E) g)⁻¹ : GL (Fin n) (Ad E)).valᵀ = (((g⁻¹ : GL (Fin n) (Ad E)) : Matrix (Fin n) (Fin n) (Ad E)).map (conjAd E))ᵀ`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `MulAut.conj (PhiU n (Ad E)) (invT n (Ad E) (GeneralLinearGroup.map (conjAd E) g)) * PhiU n (Ad E) = _`. Rewrite using `[e, MulAut.conj_apply, inv_mul_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaA_mul_PhiU (g : GA E n) :
     GlobalTheory.ThetaPull.thetaA E n g * PhiU n (Ad E) = PhiU n (Ad E) * PositivityTheory.Rg.BcB.thetaA E n g := by
@@ -55,15 +55,13 @@ theorem thetaA_mul_PhiU (g : GA E n) :
   rw [e, MulAut.conj_apply, inv_mul_cancel_right]
 
 /- English proof (translation)
-Introduce `E _ _ _ n _ π hd`. Unfold `PositivityTheory.Rg.BcB.Desc.ThetaFix`. Establish `hc : π.IsCsd` using `GlobalTheory.CsdBack.isCsd_of_paired hF E n π (hG E n π) hd`. Use `⟨GlobalTheory.BcSpehCompare.isNormalised_of_isCsd hc, fun ψ hψ => ?_⟩` and prove the remaining obligations. Take `⟨T, hT⟩` from `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hiso : (GlobalTheory.ThetaPull.thetaSub π).Iso π`. Use `⟨((GlobalTheory.ThetaPull.pull E n).submoduleMap π.V).symm.trans T, fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `((GlobalTheory.ThetaPull.pull E n).submoduleMap π.V).surjective φ`. Establish `e : (GlobalTheory.ThetaPull.thetaSub π).op o ((GlobalTheory.ThetaPull.pull E n).submoduleMap π.V χ) = (GlobalTheory.ThetaPull.pull E n).submoduleMap π.V (π.op (thetaOp o) χ)` using `Subtype.ext (GlobalTheory.ThetaPull.act_pull o χ.1)`. Express the relevant statement in the definitionally equal form `T (((GlobalTheory.ThetaPull.pull E n).submoduleMap π.V).symm ((GlobalTheory.ThetaPull.thetaSub π).op o ((GlobalTheory.ThetaPull.pull E n).submoduleMap π.V χ))) = π.op o (T (((GlobalTheory.ThetaPull.pull E n).submoduleMap π.V).symm ((GlobalTheory.ThetaPull.pull E n).submoduleMap π …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [e, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, hT]`. Establish `hV : (GlobalTheory.ThetaPull.thetaSub π).V = π.V` using `hM E n _ _ (Quotient.sound hiso)`. Establish `hχ : act (.fin (PhiU n (Af E))) (act (.cpt (PhiK E n)) ψ) ∈ π.V` using `π.stable _ _ (π.stable _ _ hψ)`. Establish `hp : GlobalTheory.ThetaPull.pull E n (act (.fin (PhiU n (Af E))) (act (.cpt (PhiK E n)) ψ)) ∈ (GlobalTheory.ThetaPull.thetaSub π).V` using `Submodule.mem_map_of_mem hχ`. Use `⟨_, hV ▸ hp, fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hK : Unitary.toUnits (PhiK E n) = PhiU n (Cinf E)` using `Units.ext rfl`. Establish `h1 : (GlobalTheory.ThetaPull.pull E n (act (.fin (PhiU n (Af E))) (act (.cpt (PhiK E n)) ψ))).1 g = ψ.1 (GlobalTheory.ThetaPull.thetaA E n g * PhiU n (Ad E))`. Express the relevant statement in the definitionally equal form `ψ.1 (GlobalTheory.ThetaPull.thetaA E n g * finGL E n (PhiU n (Af E)) * infGL E n (Unitary.toUnits (PhiK E n))) = _`. Rewrite using `[hK, mul_assoc, ← PhiU_Ad]`. Rewrite using `[h1, thetaA_mul_PhiU, ← ratGL_PhiU]`.
-
-Conclude with `(π.cusp ψ hψ).1.left _ _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaFixOf_of (hG : GlobalTheory.Published.GelfandKazhdanDual) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hM : GlobalTheory.Published.CuspidalMultiplicityOne) : PositivityTheory.Rg.BcB.Desc.ThetaFixOf := by

@@ -9,9 +9,9 @@ namespace GlobalTheory.ParamLabel.RootPolyFactor
 open GlobalTheory.GoodCharsCompare
 
 /- English proof (translation)
-Establish `e : (Σ c : Cyc b, {i : Fin r // b i = c.1}) ≃ Fin r` using `{ toFun := fun y => y.2.1 invFun := fun i => ⟨⟨b i, i, rfl⟩, i, rfl⟩ left_inv := by`. Introduce and unpack `⟨⟨c, hc⟩, i, hi⟩`. Consider the cases of `hi`. Both sides reduce to the same expression. Use `right_inv := fun i => rfl }`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Fintype.card_congr e` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, Fintype.card_sigma]`. Rewrite using `[Fintype.card_sigma]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_sigma_cyc {r : ℕ} (b : Fin r → Fin r) :
     Fintype.card (Σ c : Cyc b, Fin (cycLen b c)) = r := by
@@ -29,7 +29,7 @@ theorem card_sigma_cyc {r : ℕ} (b : Fin r → Fin r) :
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[mem_rootsBar (monic_prod_of_monic _ _ fun c _ => h c).ne_zero, map_prod, Finset.prod_eq_zero_iff]`. Simplify using `only [mem_rootsBar (h _).ne_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootsBar_prod {p : ℕ} [Fact p.Prime] {ι : Type} (s : Finset ι) (φ : ι → (ZMod p)[X])
     (h : ∀ c, (φ c).Monic) {z : Fbar p} :
@@ -38,9 +38,9 @@ theorem rootsBar_prod {p : ℕ} [Fact p.Prime] {ι : Type} (s : Finset ι) (φ :
   simp only [mem_rootsBar (h _).ne_zero]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_dg_mul (cycLen_pos b c) (hx c)`. Establish `h0` using `cycLen_pos b c`. Establish `hle : dg (x c) ≤ cycLen b c` using `Nat.le_of_dvd h0 ⟨k, hk⟩`. Assume the negation of the conclusion as `hne`. Establish `hlt : dg (x c) < cycLen b c` using `lt_of_le_of_ne hle hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `@hinj ⟨c, ⟨dg (x c), hlt⟩⟩ ⟨c, ⟨0, h0⟩⟩ (by show x c ^ p ^ dg (x c) = x c ^ p ^ 0` as an intermediate fact. Rewrite using `[(frobenius_orbit_degreeOverPrimeFieldFbar (x c)).1, pow_zero, pow_one])`. Establish `h2` using `congrArg (fun y : (Σ c : Cyc b, Fin (cycLen b c)) => (y.2 : ℕ)) this`. Conclude with `(dg_pos (x c)).ne' h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dg_eq {p : ℕ} [Fact p.Prime] {r : ℕ} {b : Fin r → Fin r} {x : Cyc b → Fbar p}
     (hx : ∀ c, x c ^ (p ^ cycLen b c - 1) = 1) (hinj : Function.Injective (rootElt x)) (c : Cyc b) :
@@ -57,7 +57,7 @@ theorem dg_eq {p : ℕ} [Fact p.Prime] {r : ℕ} {b : Fin r → Fin r} {x : Cyc 
   exact (dg_pos (x c)).ne' h2
 
 /- English proof (translation)
-Rewrite using `[← Multiset.mem_toFinset, roots_minpoly]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_roots_lt {p : ℕ} [Fact p.Prime] {y z : Fbar p} :
     z ∈ Formalism.CyclotomicNorms.rootsBar (minpoly (ZMod p) y) ↔ ∃ i < dg y, y ^ p ^ i = z := by
@@ -66,21 +66,19 @@ theorem mem_roots_lt {p : ℕ} [Fact p.Prime] {y z : Fbar p} :
   simp
 
 /- English proof (translation)
-Introduce `p _ r b x f ⟨hx, hm, hr⟩`. Establish `hdeg : f.natDegree = r`. Rewrite using `[← card_rootsBar, hr, Multiset.card_map, ← Finset.card_def, Finset.card_univ, card_sigma_cyc]`. Establish `hsq : Squarefree f ↔ Function.Injective (rootElt x)`. Rewrite using `[squarefree_iff hm.ne_zero, hr, Multiset.nodup_map_iff_inj_on Finset.univ.nodup]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Function.Injective]`. Use `⟨hdeg, ?_, hsq, fun hs => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_zero_iff hm.ne_zero, hr, Multiset.mem_map]`. Introduce and unpack `⟨⟨c, i⟩, -, h⟩`. Establish `h1 : x c = 0` using `eq_zero_of_pow_eq_zero h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `hx c` as an intermediate fact. Rewrite `this` using `[h1, zero_pow (g_pow_sub_pos (cycLen_pos b c)).ne']`. Conclude with `zero_ne_one this`. Establish `hinj` using `hsq.1 hs`. Establish `hd` using `dg_eq hx hinj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hd, fun c c' h => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : x c' ∈ Formalism.CyclotomicNorms.rootsBar (minpoly (ZMod p) (x c))`. Rewrite using `[show minpoly (ZMod p) (x c) = minpoly (ZMod p) (x c') from h]`. Conclude with `mem_roots_minpoly.2 ⟨0, by simp⟩`. Take `⟨i, hi, e⟩` from `mem_roots_lt.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `@hinj ⟨c, ⟨i, hd c ▸ hi⟩⟩ ⟨c', ⟨0, cycLen_pos b c'⟩⟩ (by show x c ^ p ^ i = x c' ^ p ^ 0` as an intermediate fact. Rewrite using `[e, pow_zero, pow_one])`. Conclude with `congrArg Sigma.fst this`. Establish `hmon : ∀ c, (minpoly (ZMod p) (x c)).Monic` using `fun c => minpoly.monic (isInt _)`. Establish `hP` using `monic_prod_of_monic Finset.univ _ fun c _ => hmon c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `eq_of_rootsBar hm hP` to reduce the goal to its premises. Apply `Multiset.eq_of_le_of_card_le` to reduce the goal to its premises. Rewrite using `[Multiset.le_iff_subset ((squarefree_iff hm.ne_zero).1 hs)]`. Introduce `z hz`. Rewrite `hz` using `[hr, Multiset.mem_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨c, i⟩, -, rfl⟩` from `hz`. Conclude with `(rootsBar_prod _ _ hmon).2 ⟨c, Finset.mem_univ _, mem_roots_minpoly.2 ⟨i, rfl⟩⟩`. Rewrite using `[card_rootsBar, card_rootsBar, hdeg, natDegree_prod_of_monic _ _ fun c _ => hmon c]`. Use `card_sigma_cyc b` as an intermediate fact. Rewrite `this` using `[Fintype.card_sigma]`.
-
-Simplify using `only [Fintype.card_fin] at this`. Conclude with `((Finset.sum_congr rfl fun c _ => hd c).trans this).le`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootPoly_factor : ∀ (p : ℕ) [Fact p.Prime] (r : ℕ) (b : Fin r → Fin r) (x : Cyc b → Fbar p) (f : (ZMod p)[X]), IsRootPoly x f → f.natDegree = r ∧ f.coeff 0 ≠ 0 ∧ (Squarefree f ↔ Function.Injective (rootElt x)) ∧ (Squarefree f → (∀ c, (minpoly (ZMod p) (x c)).natDegree = cycLen b c) ∧ Function.Injective (fun c => minpoly (ZMod p) (x c)) ∧ f = ∏ c, minpoly (ZMod p) (x c)) := by
   intro p _ r b x f ⟨hx, hm, hr⟩

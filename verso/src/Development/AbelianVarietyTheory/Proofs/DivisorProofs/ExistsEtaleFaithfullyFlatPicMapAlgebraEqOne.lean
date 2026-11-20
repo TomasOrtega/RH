@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.PicLoc
 
 /- English proof (translation)
-Introduce `A _ c p _`. Use `letI := @Module.addCommMonoidToAddCommGroup A`. Use `haveI : Module.FinitePresentation A c := Module.finitePresentation_of_projective A c`. Use `haveI : Module.Free (Localization.AtPrime p) (LocalizedModule p.primeCompl c) := Module.free_of_flat_of_isLocalRing`. Take `⟨f, hf, hfree, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl c) (Localization.AtPrime p)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[CommRing.Pic.mapAlgebra_apply, CommRing.Pic.mk_eq_one_iff_free]`. Conclude with `Module.Free.of_equiv (LocalizedModule.equivTensorProduct (Submonoid.powers f) c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_away_mapAlgebra_eq_one : ∀ (A : Type) [CommRing A] (c : CommRing.Pic A) (p : Ideal A) [p.IsPrime], ∃ f ∉ p, CommRing.Pic.mapAlgebra A (Localization.Away f) c = 1 := by
   intro A _ c p _
@@ -24,17 +24,15 @@ theorem exists_away_mapAlgebra_eq_one : ∀ (A : Type) [CommRing A] (c : CommRin
   exact Module.Free.of_equiv (LocalizedModule.equivTensorProduct (Submonoid.powers f) c)
 
 /- English proof (translation)
-Introduce `A _ c`. Set `T : Set A` to `{f | CommRing.Pic.mapAlgebra A (Localization.Away f) c = 1}`. Establish `hT : Ideal.span T = ⊤`. Assume the negation of the conclusion as `h`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hf1⟩` from `exists_away_mapAlgebra_eq_one A c m`. Conclude with `hf (hle (Ideal.subset_span hf1))`. Take `⟨s, hsT, hs⟩` from `(Ideal.span_eq_top_iff_finite T).mp hT`. Set `R : s → Type` to `fun i => Localization.Away (i : A)`. Use `haveI : ∀ i, Algebra.Etale A (R i) := fun i => Algebra.Etale.of_isLocalizationAway (i : A)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `halg : ∀ i, (Pi.evalRingHom R i).comp (algebraMap A ((i : s) → R i)) = algebraMap A (R i)` using `fun i => RingHom.ext fun _ => rfl`. Use `⟨(i : s) → R i, inferInstance, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Use `Module.FaithfullyFlat.of_comap_surjective fun p => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : s, (i : A) ∉ p.asIdeal := by`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at h`. Apply `p.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hs, Ideal.span_le]`. Introduce `x hx`. Conclude with `h ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : p ∈ Set.range (PrimeSpectrum.comap (algebraMap A (R i)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (R i) (i : A)]`. Conclude with `hi`. Take `⟨q, rfl⟩` from `hp`. Use `⟨PrimeSpectrum.comap (Pi.evalRingHom R i) q, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← PrimeSpectrum.comap_comp_apply, halg]`. Apply `GlobalTheory.PicPi.eq_one_of_forall` to reduce the goal to its premises. Introduce `i`. Rewrite using `[← CommRing.Pic.mapRingHom_algebraMap, CommRing.Pic.mapRingHom_mapRingHom, halg, CommRing.Pic.mapRingHom_algebraMap]`. Conclude with `hsT i.2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_etale_faithfullyFlat_mapAlgebra_eq_one : ∀ (A : Type) [CommRing A] (c : CommRing.Pic A), ∃ (B : Type) (_ : CommRing B) (_ : Algebra A B) (_ : Algebra.Etale A B) (_ : Module.FaithfullyFlat A B), CommRing.Pic.mapAlgebra A B c = 1 := by
   intro A _ c

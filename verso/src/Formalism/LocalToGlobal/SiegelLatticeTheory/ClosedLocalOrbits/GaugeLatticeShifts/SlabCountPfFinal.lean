@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.Pf.SlabCount
 
 /- English proof (translation)
-The claim follows from `countC_of_leviFin levi_finite_index`.
+A detailed English derivation is pending.
 -/
 theorem countC_holds : Formalism.L2.SG.Pf.Slab.CountC := countC_of_leviFin levi_finite_index
 

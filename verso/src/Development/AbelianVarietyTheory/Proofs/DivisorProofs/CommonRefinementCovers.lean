@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.CoverCommon
 
 /- English proof (translation)
-Introduce `F _ _ Y V₁ V₂`. Take `⟨G, _, _, g, k, _, _, hk⟩` from `GlobalTheory.T.normal_finite_dominant_refinement F Y V₁ V₂`. Take `⟨W, a, k', ha, hW, hk'⟩` from `GlobalTheory.T.cover_lift_through_normal F Y V₁ V₂ G g k hk`. Take `⟨W', b, c, hb, hc, hW', hV⟩` from `GlobalTheory.T.cover_dominating_pair F Y W V₂ k' hk'`. Take `⟨e, he₁, he₂⟩` from `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he₁', he₂'⟩` from `hW'`. Use `⟨W', b ≫ a, c, by rw [Category.assoc, ha, hb], hc, ⟨e' ≫ e, ?_, ?_⟩, hV⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, he₁, ← Category.assoc, he₁', Category.assoc]`. Rewrite using `[Category.assoc, he₂, he₂']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cover_dominating_two : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V₁ V₂ : Cover Y), ∃ (V : Cover Y) (π₁ : V.X ⟶ V₁.X) (π₂ : V.X ⟶ V₂.X), π₁ ≫ V₁.p = V.p ∧ π₂ ≫ V₂.p = V.p ∧ Lies V V₁ π₁ ∧ Lies V V₂ π₂ := by
   intro F _ _ Y V₁ V₂

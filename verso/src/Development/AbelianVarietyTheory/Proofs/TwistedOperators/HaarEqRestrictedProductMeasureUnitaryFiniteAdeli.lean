@@ -19,17 +19,17 @@ namespace GlobalTheory.FinMeasEq
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `locallyCompactSpace_finPts D.sp.cm.sig V.gram`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace_GfC (V : HSp D) : LocallyCompactSpace (GfC V) :=
   locallyCompactSpace_finPts D.sp.cm.sig V.gram
 
 /- English proof (translation)
-Distinguish the cases in `hg : g ∈ levelOffFin D.sp.cm.sig V.gram (frameLat V) ∅`. Rewrite using `[Set.indicator_of_mem hg]`. Establish `hv` using `(mem_levelOffFin.1 hg).2`. Unfold `tensorFin`. Rewrite using `[Pi.one_apply]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `(finprod_congr fun v => ?_).trans finprod_one` and prove the remaining obligations. Simplify using `[unitLoc, hv v (Finset.notMem_empty v)]`. Rewrite using `[Set.indicator_of_notMem hg]`. Assume the negation of the conclusion as `hne`. Use `hg (mem_levelOffFin.2 ⟨fun v hv => absurd hv (Finset.notMem_empty v), fun v _ => ?_⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isFinFamily_unit.tensorFin_ne_zero_iff g).1 hne v` as an intermediate fact. Assume the negation of the conclusion as `hv`. Conclude with `this (by simp [unitLoc, hv])`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem tensorFin_unitLoc (V : HSp D) (g : GFin D.sp.cm.sig V.gram) :
     tensorFin D.sp.cm.sig V.gram (unitLoc D.sp.cm.sig V.gram (frameLat V)) g =
@@ -49,29 +49,25 @@ theorem tensorFin_unitLoc (V : HSp D) (g : GFin D.sp.cm.sig V.gram) :
     exact this (by simp [unitLoc, hv])
 
 /- English proof (translation)
-Introduce `D V μf νF hF ν hν s hs`. Use `haveI := locallyCompactSpace_GfC V`. Use `haveI : ν.IsHaarMeasure := hν.1`. Use `set e := finPtsEquiv D.sp.cm.sig V.gram`. Use `set ν' : Measure (GfC V) := νF.map e with hν'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∀ t : Set (GfC V), ν' t = νF (e ⁻¹' t)` using `fun t => e.toHomeomorph.toMeasurableEquiv.map_apply t`. Use `haveI : ν'.IsHaarMeasure := (isRestrictedProdFinPts_iff.1 hF.map_finPts).2.1`. Use `set Kf : Set (GFin D.sp.cm.sig V.gram) := (levelOffFin D.sp.cm.sig V.gram (frameLat V) ∅ : Set (GFin D.sp.cm.sig V.gram))`. Use `set K : Set (GfC V) := e.symm ⁻¹' Kf with hK`. Establish `hKo : IsOpen K` using `(isOpen_levelOffFin_empty _ _ _).preimage e.symm.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hKf_closed : IsClosed Kf` using `Subgroup.isClosed_of_isOpen _ (isOpen_levelOffFin_empty _ _ _)`. Establish `hKc : IsClosed K` using `hKf_closed.preimage e.symm.continuous`. Establish `hKcpt : IsCompact K`. Establish `: K = e '' Kf` using `(e.toHomeomorph.image_eq_preimage_symm Kf).symm`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(isCompact_levelOffFin _ _ _ ∅).image e.continuous`. Establish `hKne : K.Nonempty` using `⟨1, by`. Express the relevant statement in the definitionally equal form `e.symm 1 ∈ Kf`. Rewrite using `[map_one]`. Conclude with `Subgroup.one_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ν' K = ∏ᶠ v, μf v (stabLoc D.sp.cm.sig V.gram (frameLat V) v)`. Rewrite using `[hmap]`. Use `(congrArg νF (Set.ext fun x => ?_)).trans hF.measure_level` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm (e x) ∈ Kf ↔ _`. Rewrite using `[e.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : (Function.mulSupport fun v => μf v (stabLoc D.sp.cm.sig V.gram (frameLat V) v)).Finite` using `Filter.eventually_cofinite.1 (isRestrictedProdFin_iff.1 hF).2.2.1`. Establish `h2 : ν.real K = ∏ᶠ v, (μf v).real (stabLoc D.sp.cm.sig V.gram (frameLat V) v)`. Establish `hi` using `hν.2 _ isFinFamily_unit`. Establish `hfn : finFn V (unitLoc D.sp.cm.sig V.gram (frameLat V)) = K.indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.TrConv.finFn_eq_tensorFin, tensorFin_unitLoc]`. Both sides reduce to the same expression. Rewrite `hi` using `[hfn, integral_indicator_const _ hKo.measurableSet]`. Establish `hloc : ∀ v, ∫ x, unitLoc D.sp.cm.sig V.gram (frameLat V) v x ∂μf v = (((μf v).real (stabLoc D.sp.cm.sig V.gram (frameLat V) v) : ℝ) : ℂ)` using `fun v => by`. Use `(isOpen_stabLoc D.sp.cm.sig V.gram (frameLat V) v).measurableSet` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[unitLoc, show (1 : GLoc D.sp.cm.sig V.gram v → ℂ) = fun _ => 1 from rfl, integral_indicator_const _ this]`. Simplify using the standard rewrite rules. Rewrite `hi` using `[hloc]`. Establish `hc : (∏ᶠ v, (((μf v).real (stabLoc D.sp.cm.sig V.gram (frameLat V) v) : ℝ) : ℂ)) = ((∏ᶠ v, (μf v).real (stabLoc D.sp.cm.sig V.gram (frameLat V) v) : ℝ) : ℂ)` using `(Complex.ofRealHom.toMonoidHom.map_finprod_of_injective Complex.ofReal_injective _).symm`. Rewrite `hi` using `[Complex.real_smul, mul_one, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi` after adjusting the coercions. Establish `h3 : ν K = ν' K`. Rewrite using `[h1]`. Establish `hK' : ν K ≠ ⊤` using `hKcpt.measure_lt_top.ne`. Establish `hP : ∏ᶠ v, μf v (stabLoc D.sp.cm.sig V.gram (frameLat V) v) ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `hKcpt.measure_lt_top.ne`. Rewrite using `[← ENNReal.toReal_eq_toReal_iff' hK' hP]`. Rewrite using `[show (ν K).toReal = ν.real K from rfl, h2]`. Conclude with `(ENNReal.toRealHom.map_finprod hfin).symm`.
-
-Establish `hc` using `Measure.measure_isMulInvariant_eq_smul_of_isCompact_closure ν ν' (s := K) (by rw [hKc.closure_eq]; exact hKcpt)`. Establish `hc1 : Measure.haarScalarFactor ν ν' = 1`. Establish `hpos : ν' K ≠ 0` using `hKo.measure_ne_zero ν' hKne`. Establish `htop : ν' K ≠ ⊤` using `hKcpt.measure_lt_top.ne`. Rewrite `hc` using `[h3, ENNReal.smul_def, smul_eq_mul]`.
-
-Use `(ENNReal.mul_left_inj hpos htop).1 ((one_mul _).trans hc)` as an intermediate fact. Conclude with `this.symm` after adjusting the coercions. Rewrite using `[Measure.measure_isMulInvariant_eq_smul_of_isCompact_closure ν ν' hs, hc1, one_smul, hmap]`.
+A detailed English derivation is pending.
 -/
 theorem finMeas_eq : ∀ (D : D7) (V : HSp D) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v))
     (νF : Measure (GFin D.sp.cm.sig V.gram)), IsRestrictedProdFin D.sp.cm.sig V.gram (frameLat V) μf νF →

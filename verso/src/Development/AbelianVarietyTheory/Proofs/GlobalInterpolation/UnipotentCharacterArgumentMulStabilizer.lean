@@ -43,42 +43,42 @@ def UnfNe (P : HeightOneSpectrum (𝓞 E)) (psi : E → K) {n' c' n c : ℕ} (Ps
   ∃ A₀ B₀ : ℕ, ∀ A B, A₀ ≤ A → B₀ ≤ B → IndefiniteRowSideFullHecke.SourceLatticeInvariance.unfoldAB P psi A B Psi ≠ 0
 
 /- English proof (translation)
-Introduce `_` and use `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntV.zero (P : HeightOneSpectrum (𝓞 E)) {N : ℕ} : IntV P (0 : Fin N → E) := fun _ => IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P
 
 /- English proof (translation)
-Introduce `l` and use `(hv l).add (hw l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntV.add {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} {v w : Fin N → E} (hv : IntV P v) (hw : IntV P w) : IntV P (v + w) :=
   fun l => (hv l).add (hw l)
 
 /- English proof (translation)
-Introduce `l` and use `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg (hv l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntV.neg {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} {v : Fin N → E} (hv : IntV P v) : IntV P (-v) :=
   fun l => IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg (hv l)
 
 /- English proof (translation)
-Introduce `l` and use `hu.mul (hv l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntV.smul {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} {u : E} {v : Fin N → E} (hu : IntAt P u) (hv : IntV P v) :
     IntV P (u • v) := fun l => hu.mul (hv l)
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intAt_one (P : HeightOneSpectrum (𝓞 E)) : IntAt P (1 : E) := by simpa using IntAt.coe P 1
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (IntAt P) (fun _ _ => IntAt.add) (IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P) h`.
+A detailed English derivation is pending.
 -/
 theorem intAt_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) :
     IntAt P (∑ i ∈ s, f i) :=
   Finset.sum_induction f (IntAt P) (fun _ _ => IntAt.add) (IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P) h
 
 /- English proof (translation)
-Introduce `l`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `intAt_one P`. Conclude with `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intV_single (P : HeightOneSpectrum (𝓞 E)) {N : ℕ} (s : Fin N) : IntV P (Pi.single s (1 : E) : Fin N → E) := by
   intro l
@@ -88,9 +88,9 @@ theorem intV_single (P : HeightOneSpectrum (𝓞 E)) {N : ℕ} (s : Fin N) : Int
   · exact IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P
 
 /- English proof (translation)
-Use `⟨fun h s l => h _ (intV_single P s) l, fun h v hv l => ?_⟩` and prove the remaining obligations. Establish `e : y v = ∑ s, v s • y (Pi.single s 1)` using `by conv_lhs => rw [show v = ∑ s, v s • (Pi.single s (1 : E) : Fin a → E) from by`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Simplify using `only [map_sum, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Finset.sum_apply]`. Conclude with `intAt_sum _ _ fun s _ => (hv s).mul (h s l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intHom_iff {P : HeightOneSpectrum (𝓞 E)} {a b : ℕ} (y : (Fin a → E) →ₗ[E] (Fin b → E)) :
     IntHom P y ↔ ∀ s l, IntAt P (y (Pi.single s 1) l) := by
@@ -104,7 +104,7 @@ theorem intHom_iff {P : HeightOneSpectrum (𝓞 E)} {a b : ℕ} (y : (Fin a → 
   exact intAt_sum _ _ fun s _ => (hv s).mul (h s l)
 
 /- English proof (translation)
-The claim follows from `mem_localization_standardLattice P v`.
+A detailed English derivation is pending.
 -/
 theorem mem_stdAt_iff [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} (v : Fin N → E) : v ∈ stdAt E N P ↔ IntV P v :=
   mem_localization_standardLattice P v
@@ -112,9 +112,9 @@ theorem mem_stdAt_iff [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} (v
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Rewrite `h` using `[pow_zero, one_smul]`. Simplify using `[h] at hx`. Establish `: IntHom P (x + y) ↔ IntHom P x`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨fun h v hv => ?_, fun h v hv => (h v hv).add (hy v hv)⟩` and prove the remaining obligations. Use `(h v hv).add (hy v hv).neg` as an intermediate fact. Simplify using `using this`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 example (P : HeightOneSpectrum (𝓞 E)) (a b : ℕ) :
     HomBdd P 0 (fun x : (Fin a → E) →ₗ[E] (Fin b → E) => if IntHom P x then (1 : K) else 0) := by
@@ -133,7 +133,7 @@ section Flags
 variable {F : Type} [Field F] {n c : ℕ}
 
 /- English proof (translation)
-Unfold `Loc.inX`. Rewrite using `[LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inX_apply (x : Fin n → F) (l : Fin (n + c)) : Loc.inX F n c x l = if h : l.1 < n then x ⟨l.1, h⟩ else 0 := by
   unfold Loc.inX
@@ -141,24 +141,24 @@ theorem inX_apply (x : Fin n → F) (l : Fin (n + c)) : Loc.inX F n c x l = if h
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Ufl {i : ℕ} {v : Fin (n + c) → F} : v ∈ Loc.Ufl F n c i ↔ ∀ l : Fin (n + c), ¬ l.1 < n + i → v l = 0 := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `mem_Ufl.2 fun l hl => by rw [inX_apply, dif_neg (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem inX_mem_Ufl (i : ℕ) (x : Fin n → F) : Loc.inX F n c x ∈ Loc.Ufl F n c i :=
   mem_Ufl.2 fun l hl => by rw [inX_apply, dif_neg (by omega)]
 
 /- English proof (translation)
-Introduce `_ hv` and use `mem_Ufl.2 fun l hl => mem_Ufl.1 hv l (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ufl_mono {i j : ℕ} (h : i ≤ j) : Loc.Ufl F n c i ≤ Loc.Ufl F n c j :=
   fun _ hv => mem_Ufl.2 fun l hl => mem_Ufl.1 hv l (by omega)
 
 /- English proof (translation)
-The claim follows from `mem_Ufl.2 fun l hl => by unfold Loc.eN rw [if_neg (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem eN_mem_Ufl {i s : ℕ} (h : s < n + i) : Loc.eN F (n + c) s ∈ Loc.Ufl F n c i :=
   mem_Ufl.2 fun l hl => by
@@ -166,14 +166,14 @@ theorem eN_mem_Ufl {i s : ℕ} (h : s < n + i) : Loc.eN F (n + c) s ∈ Loc.Ufl 
     rw [if_neg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[inX_apply, dif_pos (by simp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inX_castAdd (x : Fin n → F) (a : Fin n) : Loc.inX F n c x (Fin.castAdd c a) = x a := by
   rw [inX_apply, dif_pos (by simp)]
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[inX_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(mem_Ufl.1 hv l (by omega)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inX_of_mem_Ufl {v : Fin (n + c) → F} (hv : v ∈ Loc.Ufl F n c 0) :
     Loc.inX F n c (fun a => v (Fin.castAdd c a)) = v := by
@@ -184,16 +184,16 @@ theorem inX_of_mem_Ufl {v : Fin (n + c) → F} (hv : v ∈ Loc.Ufl F n c 0) :
   · exact (mem_Ufl.1 hv l (by omega)).symm
 
 /- English proof (translation)
-Introduce `x y h` and use `by funext a rw [← inX_castAdd (c := c) x, h, inX_castAdd]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inX_injective : Function.Injective (Loc.inX F n c) := fun x y h => by
   funext a
   rw [← inX_castAdd (c := c) x, h, inX_castAdd]
 
 /- English proof (translation)
-Establish `key : ∀ s : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F), Loc.R1cond F n c s → ∀ x, Loc.inX F n c ((LinearMap.funLeft F F (Fin.castAdd c) ∘ₗ s.toLinearMap ∘ₗ Loc.inX F n c) x) = s (Loc.inX F n c x)` using `fun s hs x => inX_of_mem_Ufl (hs.1 0 _ (inX_mem_Ufl 0 x))`. Use `⟨LinearEquiv.ofLinear (LinearMap.funLeft F F (Fin.castAdd c) ∘ₗ r.toLinearMap ∘ₗ Loc.inX F n c) (LinearMap.funLeft F F (Fin.castAdd c) ∘ₗ (r⁻¹).toLinearMap ∘ₗ Loc.inX F n c) ?_ ?_, fun x => (key r hr.1 x).symm⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => inX_injective (c := c) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, key r hr.1, key r⁻¹ hr.2]`. Conclude with `r.apply_symm_apply _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun x => inX_injective (c := c) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, key r⁻¹ hr.2, key r hr.1]`. Conclude with `r.symm_apply_apply _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} (hr : r ∈ Loc.R1 F n c) :
     ∃ γ : (Fin n → F) ≃ₗ[F] (Fin n → F), ∀ x, r (Loc.inX F n c x) = Loc.inX F n c (γ x) := by
@@ -210,28 +210,28 @@ theorem exists_res {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} (hr :
     exact r.symm_apply_apply _
 
 /- English proof (translation)
-Unfold `Loc.atN`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atN_add {N : ℕ} (v w : Fin N → F) (i : ℕ) : Loc.atN (v + w) i = Loc.atN v i + Loc.atN w i := by
   unfold Loc.atN
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Loc.atN`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atN_sub {N : ℕ} (v w : Fin N → F) (i : ℕ) : Loc.atN (v - w) i = Loc.atN v i - Loc.atN w i := by
   unfold Loc.atN
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Loc.atN`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atN_smul {N : ℕ} (a : F) (v : Fin N → F) (i : ℕ) : Loc.atN (a • v) i = a * Loc.atN v i := by
   unfold Loc.atN
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Loc.atN`. Use `split_ifs with h`. Conclude with `mem_Ufl.1 hv _ (by simp)`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem atN_of_mem_Ufl {i : ℕ} {v : Fin (n + c) → F} (hv : v ∈ Loc.Ufl F n c i) : Loc.atN v (n + i) = 0 := by
   unfold Loc.atN
@@ -240,13 +240,11 @@ theorem atN_of_mem_Ufl {i : ℕ} {v : Fin (n + c) → F} (hv : v ∈ Loc.Ufl F n
   · rfl
 
 /- English proof (translation)
-Establish `h1 : v - Loc.atN v (n + i) • Loc.eN F (n + c) (n + i) ∈ Loc.Ufl F n c i` using `mem_Ufl.2 fun l hl => by`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Loc.eN, smul_eq_mul]`. Use `split_ifs with h`. Unfold `Loc.atN`. Rewrite using `[dif_pos (h ▸ l.2), mul_one, sub_eq_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Fin.ext h`. Rewrite using `[mem_Ufl.1 hv l (by omega)]`. Simplify using the standard rewrite rules. Establish `h2` using `atN_of_mem_Ufl (hr.1 i _ h1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `atN_of_mem_Ufl (hr.2.2 i)`. Establish `h4` using `atN_of_mem_Ufl h1`. Rewrite `h2` using `[map_sub, map_smul, atN_sub, atN_smul]`. Rewrite `h3` using `[atN_sub]`. Rewrite `h4` using `[atN_sub, atN_smul]`.
-
-Take the linear combination `h2 - h4 + Loc.atN v (n + i) * h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem atN_of_R1cond {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} (hr : Loc.R1cond F n c r) {i : ℕ}
     {v : Fin (n + c) → F} (hv : v ∈ Loc.Ufl F n c (i + 1)) : Loc.atN (r v) (n + i) = Loc.atN v (n + i) := by
@@ -268,11 +266,11 @@ theorem atN_of_R1cond {r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} (h
   linear_combination h2 - h4 + Loc.atN v (n + i) * h3
 
 /- English proof (translation)
-Unfold `Loc.n1Arg`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `atN_of_R1cond hr (hs.2.2 (i + 1))`. Establish `h2 : Loc.atN (Loc.eN F (n + c) (n + (i + 1))) (n + i) = 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Loc.atN Loc.eN`. Use `split_ifs with h h'`. Simplify using `at h'`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_sub, atN_sub, atN_sub, h2]`. Express the relevant statement in the definitionally equal form `Loc.atN (r (s (Loc.eN F (n + c) (n + (i + 1))))) (n + i) = Loc.atN (r (Loc.eN F (n + c) (n + (i + 1)))) (n + i) + Loc.atN (s (Loc.eN F (n + c) (n + (i + 1)))) (n + i)`. Take the linear combination `h1`.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem unipotentCharacterArgument_mul_stabilizer {r s : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)} (hr : Loc.R1cond F n c r) (hs : Loc.R1cond F n c s) :
     Loc.n1Arg (r * s) = Loc.n1Arg r + Loc.n1Arg s := by
@@ -292,7 +290,7 @@ theorem unipotentCharacterArgument_mul_stabilizer {r s : (Fin (n + c) → F) ≃
   linear_combination h1
 
 /- English proof (translation)
-Unfold `Loc.xx1`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Simplify using `only [Matrix.col_apply, Matrix.of_apply, LinearMap.toMatrix'_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearMap_unfolding_apply_single {n' c' : ℕ} (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) (t : Loc.FC n' c' n c → F) (s : Fin (n' + c'))
     (l : Fin (n + c)) : Loc.xx1 xj t (Pi.single s 1) l =
@@ -304,13 +302,13 @@ theorem linearMap_unfolding_apply_single {n' c' : ℕ} (xj : (Fin n' → F) →�
   simp only [Matrix.col_apply, Matrix.of_apply, LinearMap.toMatrix'_apply]
 
 /- English proof (translation)
-Establish `: Loc.xx1 xj t ∘ₗ Loc.inX F n' c' = Loc.inX F n c ∘ₗ xj`. Use `LinearMap.pi_ext' fun a => LinearMap.ext_ring ?_` and prove the remaining obligations. Establish `e : Loc.inX F n' c' (Pi.single a 1) = Pi.single (Fin.castAdd c' a) 1`. Use function extensionality and compare the values at `l`. Rewrite using `[inX_apply, Pi.single_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1 h2 h2`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_apply, if_neg]`. Introduce and unpack `rfl`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Substitute using the available equality.
 
-Conclude with `h2 rfl`. Substitute `h2` using the available equality. Simplify using `at h1`. Both sides reduce to the same expression. Use function extensionality and compare the values at `l`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Loc.xx1 xj t (Loc.inX F n' c' (Pi.single a 1)) l = Loc.inX F n c (xj (Pi.single a 1)) l`. Rewrite using `[e, linearMap_unfolding_apply_single, dif_neg (fun h => by have := h.1; have := a.2; simp at *; omega), dif_pos (by simp), inX_apply]`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun this v`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unfoldingAffinePointMap_apply_inclusion {n' c' : ℕ} (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) (t : Loc.FC n' c' n c → F) (v : Fin n' → F) :
     Loc.xx1 xj t (Loc.inX F n' c' v) = Loc.inX F n c (xj v) := by

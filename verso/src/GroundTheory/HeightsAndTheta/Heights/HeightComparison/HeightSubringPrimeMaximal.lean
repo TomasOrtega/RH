@@ -10,9 +10,9 @@ def SubringPrimeMaximal.Statement : Prop :=
     q.IsPrime → q ≠ ⊥ → q.IsMaximal
 
 /- English proof (translation)
-Set `e` to `Algebra.botEquivOfInjective (R := ℤ) (A := ℚ) Int.cast_injective`. Establish `: (Ideal.span {(2 : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two`. Use `⟨Ideal.comap (e : (⊥ : Subalgebra ℤ ℚ) →+* ℤ) (Ideal.span {2}), Ideal.comap_isPrime _ _, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `hm : (2 : (⊥ : Subalgebra ℤ ℚ)) ∈ Ideal.comap (e : (⊥ : Subalgebra ℤ ℚ) →+* ℤ) (Ideal.span {2})`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, map_ofNat]`. Conclude with `Ideal.mem_span_singleton_self 2`. Rewrite `hm` using `[h, Ideal.mem_bot]`. Use `congrArg Subtype.val hm` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 example : ∃ q : Ideal (⊥ : Subalgebra ℤ ℚ), q.IsPrime ∧ q ≠ ⊥ := by
   let e := Algebra.botEquivOfInjective (R := ℤ) (A := ℚ) Int.cast_injective

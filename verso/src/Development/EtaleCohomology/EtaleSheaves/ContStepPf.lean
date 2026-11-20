@@ -17,7 +17,7 @@ def PCK (X0 : Scheme.{0}) : Prop := ∀ (q : ℕ) {J : Type} [SmallCategory J] [
     ∃ (k : J) (f : k ⟶ j), pull _ (sch.map (D.map f)) _ _ y = 0
 
 /- English proof (translation)
-Introduce `q J _ _ D c hc ha hcs hqs hu j0 e n i`. Conclude with `⟨h1 q D c hc ha hcs hqs hu j0 e n i, h2 q D c hc ha hcs hqs hu j0 e n i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem PC_of {X0 : Scheme.{0}} (h1 : PCS X0) (h2 : PCK X0) : PC X0 := by
   intro q J _ _ D c hc ha hcs hqs hu j0 e n i
@@ -30,7 +30,7 @@ def StepK : Prop := Hyp → MV → ∀ (X : Scheme.{0}) (U V : X.Opens), IsCompa
   U ⊔ V = ⊤ → PC U.toScheme → PC V.toScheme → PC (U ⊓ V).toScheme → PCK X
 
 /- English proof (translation)
-Introduce `h hmv X U V hU hV hUV pU pV pW`. Conclude with `PC_of (hS h hmv X U V hU hV hUV pU pV pW) (hK h hmv X U V hU hV hUV pU pV pW)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ContStep_of (hS : StepS) (hK : StepK) : ContStep := by
   intro h hmv X U V hU hV hUV pU pV pW

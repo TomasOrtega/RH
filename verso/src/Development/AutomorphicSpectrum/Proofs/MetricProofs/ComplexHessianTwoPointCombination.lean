@@ -29,7 +29,7 @@ theorem selL_apply {D E : ℕ} (σ : Fin E → Fin D) (z : Fin D → ℂ) (a : F
     selL σ z a = z (σ a) := rfl
 
 /- English proof (translation)
-Use extensionality with `a k`. Simplify using `[ReciprocityTheory.AnForm.A.jacC, ContinuousLinearMap.fderiv, selL_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem jacC_selL {D E : ℕ} (σ : Fin E → Fin D) (z : Fin D → ℂ) :
     ReciprocityTheory.AnForm.A.jacC (selL σ) z = Matrix.of fun a k => if σ a = k then (1 : ℂ) else 0 := by
@@ -37,7 +37,7 @@ theorem jacC_selL {D E : ℕ} (σ : Fin E → Fin D) (z : Fin D → ℂ) :
   simp [ReciprocityTheory.AnForm.A.jacC, ContinuousLinearMap.fderiv, selL_apply, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.AnForm.A.hessC_comp φ (selL σ) z ((selL σ).analyticAt z) hφ, jacC_selL]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hessC_selL_apply {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) (σ : Fin E → Fin D) (z : Fin D → ℂ)
     (hφ : ContDiffAt ℝ 2 φ (selL σ z)) (i j : Fin D) :
@@ -50,7 +50,7 @@ theorem hessC_selL_apply {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) (σ : Fin E 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[hessC_selL_apply φ σ z hφ]`. Simplify using `[hσ.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hessC_selL_inj {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) {σ : Fin E → Fin D}
     (hσ : Function.Injective σ) (z : Fin D → ℂ) (hφ : ContDiffAt ℝ 2 φ (selL σ z)) (a b : Fin E) :
@@ -59,7 +59,7 @@ theorem hessC_selL_inj {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) {σ : Fin E �
   simp [hσ.eq_iff]
 
 /- English proof (translation)
-Rewrite using `[hessC_selL_apply φ σ z hφ]`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hessC_selL_left {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) (σ : Fin E → Fin D) (z : Fin D → ℂ)
     (hφ : ContDiffAt ℝ 2 φ (selL σ z)) {i : Fin D} (hi : ∀ a, σ a ≠ i) (j : Fin D) :
@@ -68,7 +68,7 @@ theorem hessC_selL_left {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) (σ : Fin E �
   simp [hi]
 
 /- English proof (translation)
-Rewrite using `[hessC_selL_apply φ σ z hφ]`. Simplify using `[hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hessC_selL_right {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) (σ : Fin E → Fin D) (z : Fin D → ℂ)
     (hφ : ContDiffAt ℝ 2 φ (selL σ z)) (i : Fin D) {j : Fin D} (hj : ∀ a, σ a ≠ j) :
@@ -77,7 +77,7 @@ theorem hessC_selL_right {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) (σ : Fin E 
   simp [hj]
 
 /- English proof (translation)
-The claim follows from `ContDiffAt.comp z hφ ((selL σ).restrictScalars ℝ).contDiff.contDiffAt`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_comp_selL {D E : ℕ} (φ : (Fin E → ℂ) → ℝ) (σ : Fin E → Fin D) (z : Fin D → ℂ)
     (hφ : ContDiffAt ℝ 2 φ (selL σ z)) : ContDiffAt ℝ 2 (φ ∘ selL σ) z :=
@@ -89,17 +89,17 @@ def selA {d : ℕ} (c : Fin (d + 2)) : Fin (d + 1) → Fin (d + 2) :=
 def selT {d : ℕ} : Fin d → Fin (d + 2) := fun i => i.succ.succ
 
 /- English proof (translation)
-Introduce `a b h` and use `Fin.succ_injective _ (Fin.succ_injective _ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem selT_injective {d : ℕ} : Function.Injective (selT (d := d)) := fun a b h =>
   Fin.succ_injective _ (Fin.succ_injective _ h)
 
 /- English proof (translation)
-Introduce `a b h`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ b => exact absurd h.symm (by simpa [selA] using hc b)`. Consider the case `succ a`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => exact absurd h (by simpa [selA] using hc a)`. Consider the case `succ b`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: a.succ.succ = b.succ.succ` using `by simpa [selA] using h`. Rewrite using `[Fin.succ_injective _ (Fin.succ_injective _ this)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem selA_injective {d : ℕ} {c : Fin (d + 2)} (hc : ∀ i : Fin d, i.succ.succ ≠ c) :
     Function.Injective (selA c) := by
@@ -117,7 +117,7 @@ theorem selA_injective {d : ℕ} {c : Fin (d + 2)} (hc : ∀ i : Fin d, i.succ.s
       rw [Fin.succ_injective _ (Fin.succ_injective _ this)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero => simp [selL_apply, selA]`. Consider the case `succ a => simp [selL_apply, selA, Fin.tail]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem selA_eq_cons {d : ℕ} (c : Fin (d + 2)) (z : Fin (d + 2) → ℂ) :
     selL (selA c) z = Fin.cons (z c) (Fin.tail (Fin.tail z)) := by
@@ -156,21 +156,21 @@ theorem blk_succ_succ {d : ℕ} (e : ℂ) (B : Matrix (Fin d) (Fin d) ℂ) (p q 
     blk e B p.succ q.succ = B p q := rfl
 
 /- English proof (translation)
-Establish `p00 : T₀ 0 0 = e₀` using `a₀ 0 0`. Establish `p0k : ∀ k : Fin d, T₀ 0 k.succ.succ = 0` using `fun k => a₀ 0 k.succ`. Establish `pk0 : ∀ k : Fin d, T₀ k.succ.succ 0 = 0` using `fun k => a₀ k.succ 0`. Establish `pkl : ∀ k l : Fin d, T₀ k.succ.succ l.succ.succ = B₀ k l` using `fun k l => a₀ k.succ l.succ`. Establish `q11 : T₁ (Fin.succ 0) (Fin.succ 0) = e₁` using `a₁ 0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q1k : ∀ k : Fin d, T₁ (Fin.succ 0) k.succ.succ = 0` using `fun k => a₁ 0 k.succ`. Establish `qk1 : ∀ k : Fin d, T₁ k.succ.succ (Fin.succ 0) = 0` using `fun k => a₁ k.succ 0`. Establish `qkl : ∀ k l : Fin d, T₁ k.succ.succ l.succ.succ = B₁ k l` using `fun k l => a₁ k.succ l.succ`. Establish `wkl : ∀ k l : Fin d, T₂ k.succ.succ l.succ.succ = C k l` using `fun k l => a₂ k l`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp only [p00, l₁, l₂, blk_zero_zero, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp only [r₀, l₁, l₂, blk_zero_succ, mul_zero, add_zero]`. Consider the case `succ k => simp only [p0k, l₁, l₂, blk_zero_succ, mul_zero, add_zero]`. Consider the case `succ i`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp only [l₀, r₁, l₂', blk_succ_zero, mul_zero, add_zero]`. Consider the case `succ j`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp only [l₀, q11, l₂', blk_succ_succ, blk_zero_zero, mul_zero, add_zero, zero_add]`. Consider the case `succ k => simp only [l₀, q1k, l₂', blk_succ_succ, blk_zero_succ, mul_zero, add_zero]`. Consider the case `succ k`. Proceed by induction on `j using Fin.cases with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp only [pk0, r₁, r₂, blk_succ_zero, mul_zero, add_zero]`. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp only [r₀, qk1, r₂', blk_succ_succ, blk_succ_zero, mul_zero, add_zero]`. Consider the case `succ l`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [pkl, qkl, wkl, blk_succ_succ, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_assemble {d : ℕ} (T₀ T₁ T₂ : Matrix (Fin (d + 2)) (Fin (d + 2)) ℂ) (e₀ e₁ s t v : ℂ)
     (B₀ B₁ C : Matrix (Fin d) (Fin d) ℂ)
@@ -220,31 +220,31 @@ theorem blk_assemble {d : ℕ} (T₀ T₁ T₂ : Matrix (Fin (d + 2)) (Fin (d + 
           simp only [pkl, qkl, wkl, blk_succ_succ, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `d f α y p₀ p₁ e₀ e₁ B₀ B₁ s t v hf₀ hf₁ hα h₀ h₁`. Establish `ho : (Fin.succ 0 : Fin (d + 2)) = 1` using `by simp`. Establish `hinj₀ : Function.Injective (selA (0 : Fin (d + 2)))` using `selA_injective fun i => Fin.succ_ne_zero _`. Establish `hinj₁ : Function.Injective (selA (Fin.succ 0 : Fin (d + 2)))` using `selA_injective fun i h => Fin.succ_ne_zero _ (Fin.succ_injective _ h)`. Establish `q₀ : selL (selA 0) (Fin.cons p₀ (Fin.cons p₁ y) : Fin (d + 2) → ℂ) = Fin.cons p₀ y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[selA_eq_cons]`. Simplify using `[Fin.tail_cons]`. Establish `q₁ : selL (selA (Fin.succ 0)) (Fin.cons p₀ (Fin.cons p₁ y) : Fin (d + 2) → ℂ) = Fin.cons p₁ y`. Rewrite using `[selA_eq_cons]`. Simplify using `[Fin.tail_cons]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `q₂ : selL selT (Fin.cons p₀ (Fin.cons p₁ y) : Fin (d + 2) → ℂ) = y`. Rewrite using `[selT_eq_tail]`. Simplify using `[Fin.tail_cons]`. Establish `g₀ : ContDiffAt ℝ 2 f (selL (selA 0) (Fin.cons p₀ (Fin.cons p₁ y) : Fin (d + 2) → ℂ))`. Rewrite using `[q₀]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `g₁ : ContDiffAt ℝ 2 f (selL (selA (Fin.succ 0)) (Fin.cons p₀ (Fin.cons p₁ y) : Fin (d + 2) → ℂ))` using `by rwa [q₁]`. Establish `g₂ : ContDiffAt ℝ 2 α (selL selT (Fin.cons p₀ (Fin.cons p₁ y) : Fin (d + 2) → ℂ))`. Rewrite using `[q₂]` and apply the resulting hypothesis. Establish `c₀` using `contDiffAt_comp_selL f _ _ g₀`. Establish `c₁` using `contDiffAt_comp_selL f _ _ g₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₂` using `contDiffAt_comp_selL α _ _ g₂`. Establish `E : (fun z : Fin (d + 2) → ℂ => s * f (Fin.cons (z 0) (Fin.tail (Fin.tail z))) + t * f (Fin.cons (z 1) (Fin.tail (Fin.tail z))) + v * α (Fin.tail (Fin.tail z))) = fun z => (fun z => (fun z => s * (f ∘ selL (selA 0)) z) z + (fun z => t * (f ∘ selL (selA (Fin.succ 0))) z) z) z + (f …`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp, selA_eq_cons, selT_eq_tail, ho]`. Rewrite using `[E, hessC_add' _ _ _ ((contDiffAt_const.mul c₀).add (contDiffAt_const.mul c₁)) (contDiffAt_const.mul c₂), hessC_add' _ _ _ (contDiffAt_const.mul c₀) (contDiffAt_const.mul c₁), hessC_const_mul', hessC_const_mul', hessC_const_mul']`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `blk_assemble _ _ _ _ _ _ _ _ _ _ _ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b`. Rewrite using `[hessC_selL_inj f hinj₀ _ g₀, q₀, h₀]`. Introduce `j`. Use `hessC_selL_left f _ _ g₀ ?_ j` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero => exact (Fin.succ_ne_zero _).symm`. Consider the case `succ a => exact fun h => Fin.succ_ne_zero _ (Fin.succ_injective _ h)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hessC_selL_right f _ _ g₀ i ?_` and prove the remaining obligations. Introduce `a`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero => exact (Fin.succ_ne_zero _).symm`. Consider the case `succ a => exact fun h => Fin.succ_ne_zero _ (Fin.succ_injective _ h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `a b`. Rewrite using `[hessC_selL_inj f hinj₁ _ g₁, q₁, h₁]`. Introduce `j`. Use `hessC_selL_left f _ _ g₁ ?_ j` and prove the remaining obligations. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a using Fin.cases with`. Consider the case `zero => exact Fin.succ_ne_zero (0 : Fin (d + 1))`. Consider the case `succ a => exact Fin.succ_ne_zero (Fin.succ a)`. Introduce `i`. Use `hessC_selL_right f _ _ g₁ i ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Proceed by induction on `a using Fin.cases with`. Consider the case `zero => exact Fin.succ_ne_zero (0 : Fin (d + 1))`. Consider the case `succ a => exact Fin.succ_ne_zero (Fin.succ a)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hessC_selL_inj α selT_injective _ g₂, q₂]`. Introduce `j`. Conclude with `hessC_selL_left α _ _ g₂ (fun a => Fin.succ_ne_zero _) j`. Introduce `i`. Conclude with `hessC_selL_right α _ _ g₂ i (fun a => Fin.succ_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Conclude with `hessC_selL_left α _ _ g₂ (fun a h => Fin.succ_ne_zero _ (Fin.succ_injective _ h)) j`. Introduce `i`. Conclude with `hessC_selL_right α _ _ g₂ i (fun a h => Fin.succ_ne_zero _ (Fin.succ_injective _ h))`.
+A detailed English derivation is pending.
 -/
 theorem hessC_row_square : ∀ (d : ℕ) (f : (Fin (d + 1) → ℂ) → ℝ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ) (p₀ p₁ e₀ e₁ : ℂ)
     (B₀ B₁ : Matrix (Fin d) (Fin d) ℂ) (s t v : ℝ),

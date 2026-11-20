@@ -10,23 +10,21 @@ namespace FunctorialResolution.EmbeddedResolution.FlatDescentIdealSheaf
 variable {W Y : Scheme.{u}}
 
 /- English proof (translation)
-Set `_ : Algebra R S` to `φ.toAlgebra`. Establish `: Module.Flat R S` using `hφ`. Establish `halg : (algebraMap R S) = φ` using `rfl`. Establish `hex : Function.Exact (Submodule.subtype (Submodule.comap (LinearMap.lsmul R R a) L)) ((L.mkQ).comp (LinearMap.lsmul R R a))`. Rewrite using `[LinearMap.exact_iff, LinearMap.ker_comp, Submodule.ker_mkQ, Submodule.range_subtype]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hex2` using `Module.Flat.lTensor_exact (M := S) hex`. Establish `key : ∀ s : S, s ∈ L.map φ → s ⊗ₜ[R] (L.mkQ (1 : R)) = 0`. Introduce `s hs`. Set `ψ : S →ₗ[S] S ⊗[R] (R ⧸ L)` to `{ toFun := fun t => t ⊗ₜ[R] (L.mkQ (1 : R)) map_add' := fun x y => TensorProduct.add_tmul x y _ map_smul' := fun c x => TensorProduct.smul_tmul' c x _ }`. Establish `hψ : ∀ t : S, ψ t = t ⊗ₜ[R] (L.mkQ (1 : R))` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsub : L.map φ ≤ LinearMap.ker ψ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `l hl`. Establish `h0 : l • (L.mkQ (1 : R)) = 0`. Rewrite using `[← map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul, mul_one]`. Conclude with `hl`. Simplify using `only [Ideal.mem_comap, LinearMap.mem_ker, hψ]`. Rewrite using `[show φ l = l • (1 : S) from by rw [Algebra.smul_def, halg, mul_one], TensorProduct.smul_tmul, h0, TensorProduct.tmul_zero]`. Establish `hker` using `LinearMap.mem_ker.mp (hsub hs)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hker` using `[hψ]`. Then use the resulting hypothesis. Establish `hzero : (LinearMap.lTensor S ((L.mkQ).comp (LinearMap.lsmul R R a))) ((1 : S) ⊗ₜ[R] (1 : R)) = 0`. Rewrite using `[LinearMap.lTensor_tmul]`. Use `show (1 : S) ⊗ₜ[R] (L.mkQ (a * (1 : R))) = 0`. Rewrite using `[mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (L.mkQ a) = a • (L.mkQ (1 : R))`. Rewrite using `[← map_smul]`. Simplify using the standard rewrite rules. Rewrite using `[h1, ← TensorProduct.smul_tmul, show a • (1 : S) = φ a from by rw [Algebra.smul_def, halg, mul_one]]`. Conclude with `key _ h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `(hex2 ((1 : S) ⊗ₜ[R] (1 : R))).mp hzero`. Establish `hrange : ∀ u : S ⊗[R] (Submodule.comap (LinearMap.lsmul R R a) L), (TensorProduct.rid R S) (LinearMap.lTensor S (Submodule.subtype (Submodule.comap (LinearMap.lsmul R R a) L)) u) ∈ Ideal.map φ (Submodule.comap (LinearMap.lsmul R R a) L)`. Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul s c`. Rewrite using `[LinearMap.lTensor_tmul, TensorProduct.rid_tmul, Algebra.smul_def, halg]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem φ c.2)`. Consider the case `add u₁ u₂ h₁ h₂`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `Submodule.add_mem _ h₁ h₂`. Establish `hfin` using `hrange v`. Rewrite `hfin` using `[hv, TensorProduct.rid_tmul, one_smul]`. Conclude with `hfin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_map_colon_of_mem_map {R S : Type u} [CommRing R] [CommRing S] (φ : R →+* S)
     (hφ : RingHom.Flat φ) (L : Ideal R) (a : R) (h : φ a ∈ L.map φ) :
@@ -86,11 +84,9 @@ private theorem one_mem_map_colon_of_mem_map {R S : Type u} [CommRing R] [CommRi
   exact hfin
 
 /- English proof (translation)
-Take `⟨m, hm, hCm⟩` from `C.exists_le_maximal hC`. Set `p : PrimeSpectrum Γ(X, U)` to `⟨m, hm.isPrime⟩`. Use `⟨hU.fromSpec.base p, ?_, ?_⟩` and prove the remaining obligations. Establish `hr : hU.fromSpec.base p ∈ Set.range hU.fromSpec.base` using `⟨p, rfl⟩`. Rewrite `hr` using `[hU.range_fromSpec]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hr`. Introduce `c hc hmem`. Establish `h1 : p ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen c` using `hmem`. Rewrite `h1` using `[hU.fromSpec_preimage_basicOpen]`. Establish `h2 : c ∉ m` using `h1`.
-
-Conclude with `h2 (hCm hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_not_mem_basicOpen_of_ne_top {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (C : Ideal Γ(X, U)) (hC : C ≠ ⊤) :
@@ -108,13 +104,11 @@ private theorem exists_not_mem_basicOpen_of_ne_top {X : Scheme.{u}} {U : X.Opens
     exact h2 (hCm hc)
 
 /- English proof (translation)
-Establish `hxr : x ∈ Set.range hU.fromSpec.base`. Rewrite using `[hU.range_fromSpec]`. Conclude with `hx`. Take `⟨p, hp⟩` from `hxr`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hcon`. Establish `hsub : s ⊆ (p.asIdeal : Set Γ(X, U))`. Introduce `c hcs`. Establish `h1 : ¬ (p ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen c)`. Introduce `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcon c hcs (by rw [← hp]; exact hmem)`. Rewrite `h1` using `[hU.fromSpec_preimage_basicOpen]`. Establish `h2 : c ∈ p.asIdeal`. Assume the negation of the conclusion as `hcc`. Conclude with `h1 hcc`.
-
-Simplify using `using h2`. Establish `hle` using `Ideal.span_le.mpr hsub`. Rewrite `hle` using `[hs]`. Conclude with `p.2.ne_top (top_le_iff.mp hle)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mem_basicOpen_of_span_eq_top {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (s : Set Γ(X, U)) (hs : Ideal.span s = ⊤) (x : X) (hx : x ∈ U) :
@@ -139,7 +133,7 @@ private theorem exists_mem_basicOpen_of_span_eq_top {X : Scheme.{u}} {U : X.Open
   exact p.2.ne_top (top_le_iff.mp hle)
 
 /- English proof (translation)
-Apply `AlgebraicGeometry.HasRingHomProperty.appLE (P := @AlgebraicGeometry.Flat)` to reduce the goal to its premises. Apply the tactic sequence `all_goals assumption`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem flat_appLE (g : W ⟶ Y) [AlgebraicGeometry.Flat g] (U : Y.affineOpens)
     (V : W.affineOpens) (e : (V : W.Opens) ≤ g ⁻¹ᵁ (U : Y.Opens)) :
@@ -148,17 +142,15 @@ private theorem flat_appLE (g : W ⟶ Y) [AlgebraicGeometry.Flat g] (U : Y.affin
   all_goals assumption
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hCtop`. Take `⟨x, hxU, hx⟩` from `exists_not_mem_basicOpen_of_ne_top U.2 C hCtop`. Take `⟨w, hw⟩` from `AlgebraicGeometry.Surjective.surj (f := g) x`. Establish `hwU : w ∈ g ⁻¹ᵁ (U : Y.Opens)` using `by show g.base w ∈ (U : Y.Opens)`. Rewrite using `[hw]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxU`. Take `⟨V, hV, hwV, hVU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp W.isBasis_affineOpens) hwU`. Establish `hV' : IsAffineOpen V` using `hV`. Establish `hcomap0` using `Scheme.IdealSheafData.le_def.mp h ⟨V, hV'⟩`. Rewrite `hcomap0` using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE I g U ⟨V, hV'⟩ hVU, Scheme.IdealSheafData.comap_ideal_eq_map_appLE J g U ⟨V, hV'⟩ hVU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomap : Ideal.map (g.appLE (U : Y.Opens) V hVU).hom (I.ideal U) ≤ Ideal.map (g.appLE (U : Y.Opens) V hVU).hom (J.ideal U)` using `hcomap0`. Establish `hflat : RingHom.Flat (g.appLE (U : Y.Opens) V hVU).hom` using `flat_appLE g U ⟨V, hV'⟩ hVU`. Establish `hone` using `one_mem_map_colon_of_mem_map (g.appLE (U : Y.Opens) V hVU).hom hflat (J.ideal U) a (hcomap (Ideal.mem_map_of_mem _ ha))`. Rewrite `hone` using `[← hCdef]`. Establish `htop : Ideal.map (g.appLE (U : Y.Opens) V hVU).hom C = ⊤` using `(Ideal.eq_top_iff_one _).mpr hone`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span (((g.appLE (U : Y.Opens) V hVU).hom) '' (C : Set Γ(Y, (U : Y.Opens)))) = ⊤`. Rewrite using `[← Ideal.map_span, Ideal.span_eq]`. Conclude with `htop`. Take `⟨f, hf, hwf⟩` from `exists_mem_basicOpen_of_span_eq_top hV' _ hspan w hwV`. Take `⟨c, hc, hcf⟩` from `hf`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwb : w ∈ W.basicOpen ((g.appLE (U : Y.Opens) V hVU).hom c)`. Rewrite using `[hcf]`. Conclude with `hwf`. Establish `hbeta : W.basicOpen ((g.appLE (U : Y.Opens) V hVU).hom c) ≤ g ⁻¹ᵁ (Y.basicOpen c)`. Rewrite using `[Scheme.preimage_basicOpen]`.
-
-Simplify using `[Scheme.Hom.appLE]`. Establish `hmem` using `hbeta hwb`. Conclude with `hx c hc (by rw [← hw]; exact hmem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem colon_eq_top_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (I J : Y.IdealSheafData)
@@ -202,9 +194,9 @@ private theorem colon_eq_top_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g
   exact hx c hc (by rw [← hw]; exact hmem)
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.le_def]`. Introduce `U a ha`. Establish `hC` using `colon_eq_top_of_comap_le g I J h U a ha _ rfl`. Establish `h1 : (1 : Γ(Y, (U : Y.Opens))) ∈ Submodule.comap (LinearMap.lsmul Γ(Y, (U : Y.Opens)) Γ(Y, (U : Y.Opens)) a) (J.ideal U)`. Rewrite using `[hC]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Establish `h2 : a * (1 : Γ(Y, (U : Y.Opens))) ∈ J.ideal U` using `h1`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem le_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (I J : Y.IdealSheafData)
@@ -219,7 +211,7 @@ theorem le_of_comap_le (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
   simpa using h2
 
 /- English proof (translation)
-The claim follows from `le_antisymm (le_of_comap_le g I J (le_of_eq h)) (le_of_comap_le g J I (le_of_eq h.symm))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_comap_eq (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (I J : Y.IdealSheafData)

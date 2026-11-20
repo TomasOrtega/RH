@@ -3,9 +3,9 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)`. Establish `h2` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)`. Establish `h3 : Nat.card (M ⧸ LinearMap.ker f) = Nat.card (LinearMap.range f)` using `Nat.card_congr f.quotKerEquivRange.toEquiv`. Rewrite `h2` using `[h3]`. Establish `hpos : 0 < Nat.card (LinearMap.range f)` using `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, mul_comm]`. Conclude with `(Nat.eq_of_mul_eq_mul_left hpos h1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_coker_eq_card_ker {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     [Finite M] (f : M →ₗ[A] M) :
@@ -20,19 +20,19 @@ private theorem card_coker_eq_card_ker {A M : Type} [CommRing A] [AddCommGroup M
   exact (Nat.eq_of_mul_eq_mul_left hpos h1).symm
 
 /- English proof (translation)
-Establish `hmax` using `ht.maximalIdeal_eq`. Establish `ht0 : t ≠ 0` using `ht.ne_zero`. Set `J : ℕ → AddSubgroup A` to `fun k => (Ideal.span {t ^ k}).toAddSubgroup`. Establish `hJ : ∀ k, Nat.card (A ⧸ Ideal.span {t ^ k}) = (J k).index` using `fun k => rfl`. Establish `h1 : (J 1).index = Nat.card (ResidueField A)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hJ, pow_one, ← hmax]`. Both sides reduce to the same expression. Rewrite using `[hJ]`. Proceed by induction on `e with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Simplify using `[J, Ideal.span_singleton_one, AddSubgroup.index_top]`. Consider the case `succ e ih`. Establish `hle : J (e + 1) ≤ J e`. Introduce `x hx`. Simplify using `only [J, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton] at hx ⊢`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(pow_dvd_pow t (Nat.le_succ e)).trans hx`. Establish `hrel : (J (e + 1)).relIndex (J e) = Nat.card (ResidueField A)`. Set `f : A →+ A` to `AddMonoidHom.mulLeft (t ^ e)`. Establish `hrange : f.range = J e`. Use extensionality with `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, AddMonoidHom.mem_range, AddMonoidHom.coe_mulLeft, J, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `dvd_mul_right _ _`. Introduce and unpack `⟨a, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a, rfl⟩`. Establish `hcomap : (J (e + 1)).comap f = J 1`. Use extensionality with `x`. Simplify using `only [f, AddSubgroup.mem_comap, AddMonoidHom.coe_mulLeft, J, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton, pow_one]`. Rewrite using `[pow_succ, mul_dvd_mul_iff_left (pow_ne_zero e ht0)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← hcomap, AddSubgroup.index_comap, hrange]`. Rewrite using `[← AddSubgroup.relIndex_mul_index hle, ih, hrel, pow_succ, mul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.B2.card_quot_span_pow_irreducible_eq_pow {A : Type} [CommRing A] [IsDomain A]
     [IsDiscreteValuationRing A] (t : A) (ht : Irreducible t) (e : ℕ) :
@@ -73,41 +73,37 @@ private theorem UpperTheory.V.Pa.B2.card_quot_span_pow_irreducible_eq_pow {A : T
     rw [← AddSubgroup.relIndex_mul_index hle, ih, hrel, pow_succ, mul_comm]
 
 /- English proof (translation)
-Introduce `A H _ _ _ _ _ _ _ t g C m ht hm hcard ξ`. Distinguish the cases in `hCm : m ≤ C`. Use `⟨fun _ => 1, ⟨0, isUnit_one⟩, ?_⟩` and prove the remaining obligations. Establish `hp : t ^ C = t ^ (C - m) * t ^ m`. Rewrite using `[← pow_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hp, mul_smul, hm, smul_zero]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `set e := C + 1 with he`. Establish `hem : e ≤ m` using `by omega`. Set `φ : (Fin (g + 1) → A) →ₗ[A] H` to `Fintype.linearCombination A ξ`. Establish `hφ : ∀ c, φ c = ∑ i, c i • ξ i` using `fun c => Fintype.linearCombination_apply A ξ c`. Establish `hmax` using `ht.maximalIdeal_eq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ k ≤ e, ∀ d d0 : Fin (g + 1) → A, φ d = t ^ e • φ d0 → ∀ i, t ^ k ∣ d i`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ d d0 _ i`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `hk d d0 hd`. Use `choose d' hd' using ih (by omega) d d0 hd`. Distinguish the cases in `hall : ∀ i, t ∣ d' i`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `i`. Take `⟨w, hw⟩` from `hall i`. Conclude with `⟨w, by rw [hd' i, hw, pow_succ, mul_assoc]⟩`. Use `push_neg at hall`. Take `⟨i0, hi0⟩` from `hall`.
+Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hdd : d = t ^ k • d'` using `funext fun i => by simp [hd' i]`. Rewrite `hd` using `[hdd, map_smul]`. Establish `e1 : t ^ k • φ (d' - t ^ (e - k) • d0) = 0`. Rewrite using `[map_sub, map_smul, smul_sub, hd, smul_smul, ← pow_add, Nat.add_sub_cancel' (by omega : k ≤ e), sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hne (d' - t ^ (e - k) • d0) ⟨i0, ?_⟩` to reduce the goal to its premises. Rewrite using `[← hφ]`. Establish `hp : t ^ C = t ^ (C - k) * t ^ k`. Rewrite using `[← pow_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hp, mul_smul, e1, smul_zero]`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, smul_eq_mul, ← notMem_maximalIdeal, hmax, Ideal.mem_span_singleton]`. Introduce `hdiv`. Apply `hi0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h2 : t ∣ t ^ (e - k) * d0 i0` using `Dvd.dvd.mul_right (dvd_pow_self t (by omega : e - k ≠ 0)) _`. Simplify using `using dvd_add hdiv h2`. Set `N` to `LinearMap.range φ`. Set `Q` to `N ⧸ LinearMap.range (LinearMap.lsmul A N (t ^ e))`. Use `haveI : Finite Q := Finite.of_surjective _ (Submodule.mkQ_surjective _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsurj : Function.Surjective (Ideal.Quotient.mk (Ideal.span {t ^ e}))` using `Ideal.Quotient.mk_surjective`. Set `sec` to `Function.surjInv hsurj`. Set `γ : (Fin (g + 1) → A ⧸ Ideal.span {t ^ e}) → Q` to `fun x => Submodule.Quotient.mk ⟨φ (fun i => sec (x i)), LinearMap.mem_range_self φ _⟩`. Establish `hinj : Function.Injective γ`. Introduce `x y hxy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(Submodule.Quotient.eq _).mp hxy`. Take `⟨n, hn⟩` from `LinearMap.mem_range.mp h1`. Take `⟨d0, hd0⟩` from `LinearMap.mem_range.mp n.2`. Establish `hd : φ ((fun i => sec (x i)) - (fun i => sec (y i))) = t ^ e • φ d0`. Rewrite using `[hd0, map_sub]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val hn` as an intermediate fact. Simplify using `using this.symm`. Use function extensionality and compare the values at `i`. Establish `hdv` using `key e le_rfl _ d0 hd i`. Rewrite using `[← Function.surjInv_eq hsurj (x i), ← Function.surjInv_eq hsurj (y i)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.Quotient.eq.mpr (Ideal.mem_span_singleton.mpr (by simpa using hdv))`. Establish `hQ : Nat.card (Fin (g + 1) → A ⧸ Ideal.span {t ^ e}) ≤ Nat.card Q` using `Nat.card_le_card_of_injective γ hinj`. Rewrite `hQ` using `[Nat.card_fun, Nat.card_fin, UpperTheory.V.Pa.B2.card_quot_span_pow_irreducible_eq_pow t ht e]`. Establish `hQN : Nat.card Q = Nat.card (LinearMap.ker (LinearMap.lsmul A N (t ^ e)))` using `card_coker_eq_card_ker _`. Establish `hker : Nat.card (LinearMap.ker (LinearMap.lsmul A N (t ^ e))) ≤ Nat.card (LinearMap.ker (LinearMap.lsmul A H (t ^ e)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Nat.card_le_card_of_injective (fun x => ⟨x.1.1, by` and prove the remaining obligations. Use `x.2` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, LinearMap.lsmul_apply] at this ⊢`. Conclude with `congrArg Subtype.val this⟩) ?_`. Introduce `x y hxy`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `congrArg Subtype.val hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hv`. Establish `hH : Nat.card (LinearMap.ker (LinearMap.lsmul A H (t ^ e))) = Nat.card (H ⧸ LinearMap.range (LinearMap.lsmul A H (t ^ e)))` using `(card_coker_eq_card_ker _).symm`.
-
-Establish `hb` using `hcard e hem`. Establish `hq : 1 < Nat.card (ResidueField A)` using `Finite.one_lt_card`. Establish `hlt : Nat.card (ResidueField A) ^ (g * e + C) < (Nat.card (ResidueField A) ^ e) ^ (g + 1)`. Rewrite using `[← pow_mul]`. Conclude with `Nat.pow_lt_pow_right hq (by rw [he]; ring_nf; omega)`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.genTrick :
     ∀ (A H : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Finite (ResidueField A)] [AddCommGroup H] [Module A H] [Finite H] (t : A) (g C m : ℕ), Irreducible t → (∀ y : H, t ^ m • y = 0) → (∀ e ≤ m, Nat.card (H ⧸ LinearMap.range (LinearMap.lsmul A H (t ^ e))) ≤ Nat.card (ResidueField A) ^ (g * e + C)) → ∀ ξ : Fin (g + 1) → H, ∃ c : Fin (g + 1) → A, (∃ i, IsUnit (c i)) ∧ t ^ C • ∑ i, c i • ξ i = 0 := by

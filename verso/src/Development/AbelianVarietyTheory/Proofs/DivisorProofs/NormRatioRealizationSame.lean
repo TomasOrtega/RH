@@ -21,27 +21,27 @@ open scoped TensorProduct
 namespace GlobalTheory.BigOn.Exp
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4`. Establish `hI` using `readInj`. Establish `hS` using `GlobalTheory.T.scaleRoot_of_cuspRapidDecay_of_reciprocity_of_rayClassField h1 h2 h3 h4`. Establish `hC` using `GlobalTheory.T.norm_ratio_realization_same_dual h1 h2 h3 h4`. Establish `hR` using `coordRange`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ReadInj at hI`. Unfold `ScaleRoot at hS`. Unfold `CoordRange at hR`. Unfold `AtTw AtPts at hI hS hC hR ⊢`. Use `Closed.imp (Closed.and (Closed.and (Closed.and hI hS) hC) hR) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `eps Fm CH _ h`. Take `⟨x0, hx0⟩` from `EvPt.and (EvPt.and (EvPt.and h.1.1.1 h.1.1.2) h.1.2) h.2`. Use `⟨x0, ?_⟩` and prove the remaining obligations. Introduce `x hx hle i p hp hm w hw j ρ ρ' hρ hρ' ν ν' hpin hlev hpin' hSB hN hN' hR0 hR0' s h P hd hP f f' hf hf'`. Take `⟨⟨⟨a1, a2⟩, a3⟩, a4⟩` from `hx0 x hx hle i p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hν : ν ≠ 0` using `hN.1`. Establish `hν' : ν' ≠ 0` using `hN'.1`. Establish `inj'` using `a1 hm w hw j ρ' hρ' ν hν`. Establish `inj` using `a1 hm w hw j ρ hρ ν hν`. Distinguish the cases in `hf0 : f = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hf0` using the available equality. Establish `h0 : rdAt p w j hρ' ν' f' = rdAt p w j hρ' ν' 0`. Rewrite using `[hf', ← hf, map_zero, map_zero]`. Use `a1 hm w hw j ρ' hρ' ν' hν' h0` as an intermediate fact. Conclude with `⟨1, ⟨1, one_ne_zero, one_pow 1⟩, by rw [this, smul_zero]⟩`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hθ : ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Apply `inj` to reduce the goal to its premises. Rewrite using `[hf, h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn, hnn⟩` from `a2 hm w hw j ρ ρ' hρ hρ' ν ν' hpin hpin' hSB hN hN' hR0 hR0' s h P hd hP hθ`. Take `⟨c, ⟨m, hm0, hcm⟩, hc⟩` from `a3 hm w hw j ρ ρ' hρ hρ' ν ν' hpin hlev hpin' hSB hN hN' hR0 hR0' s h P hd hP f hf`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hcm` using `[zero_pow hm0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hcm`. Establish `hap` using `fun ν₁ g => realRd_apply p.nexp p.v₀ hρ' ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) ν₁ g`. Establish `key : rdAt p w j hρ' ν f' = (ν' * ν⁻¹ * c⁻¹) • rdAt p w j hρ' ν f`. Rewrite using `[hc, ← hf', smul_smul]`. Establish `e1` using `hap ν f'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hap ν' f'`. Simplify using `only [rdAt]`. Rewrite using `[e1, e2, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `a4 hm w hw j ρ' hρ' ν _ hν f f' hf0 key`. Use `⟨u, ⟨n * m, mul_ne_zero hn hm0, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `(ρ'.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w)).injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one, hu, mul_pow, mul_pow, pow_mul ν', hnn, ← pow_mul, inv_pow, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hν), mul_comm n m, pow_mul c, hcm]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `inj'` to reduce the goal to its premises. Rewrite using `[key, map_smulₛₗ, hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seriesUnit : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → AtTw fun Fm x hx i p w j => ∀ (ρ ρ' : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (hρ' : ρ'.Good) (ν ν' : ℂ),
   RealPin p.R p.cG ρ → ρ.LevelOf (Fm.D x i).nexp → RealPin p.R p.cG ρ' → SameBut ρ ρ' →

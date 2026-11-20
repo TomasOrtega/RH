@@ -16,9 +16,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 namespace SubSystem
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_eq_span_mul_set]`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ = _`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨q, hq, y, hy, rfl⟩`. Conclude with `Set.mul_mem_mul hq hy`. Introduce and unpack `⟨q, hq, y, hy, rfl⟩`. Conclude with `⟨q, hq, y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twist_sub_eq_mul_of_line (F Q : SubSystem S x Ω) (I : Chart x) :
     (F.twist Q).sub I = Q.sub I * F.sub I := by
@@ -33,21 +33,21 @@ theorem twist_sub_eq_mul_of_line (F Q : SubSystem S x Ω) (I : Chart x) :
     exact ⟨q, hq, y, hy, rfl⟩
 
 /- English proof (translation)
-The claim follows from `ext_sub fun I => by rw [twist_sub_eq_mul_of_line, twist_sub_eq_mul_of_line, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem twist_comm (F Q : SubSystem S x Ω) : F.twist Q = Q.twist F :=
   ext_sub fun I => by rw [twist_sub_eq_mul_of_line, twist_sub_eq_mul_of_line, mul_comm]
 
 /- English proof (translation)
-The claim follows from `ext_sub fun I => by simp only [twist_sub_eq_mul_of_line, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem twist_assoc (F P Q : SubSystem S x Ω) : (F.twist P).twist Q = F.twist (P.twist Q) :=
   ext_sub fun I => by simp only [twist_sub_eq_mul_of_line, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Take `⟨i, hi⟩` from `I.2.1`. Express the relevant statement in the definitionally equal form `twistMod S x 0 I = _`. Rewrite using `[twistMod_eq_span 0 I hi, zpow_zero, pow_zero, Submodule.one_eq_span]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Express the relevant statement in the definitionally equal form `((Q.pow n).twist Q).sub I = _`. Rewrite using `[twist_sub_eq_mul_of_line, ih, pow_succ']`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_sub (Q : SubSystem S x Ω) (n : ℕ) (I : Chart x) : (Q.pow n).sub I = Q.sub I ^ n := by
   induction n with
@@ -62,9 +62,9 @@ theorem pow_sub (Q : SubSystem S x Ω) (n : ℕ) (I : Chart x) : (Q.pow n).sub I
 end SubSystem
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`. Express the relevant statement in the definitionally equal form `twistMod S x b I * twistMod S x a I = twistMod S x (a + b) I`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[twistMod_eq_span b I hi, twistMod_eq_span a I hi, twistMod_eq_span (a + b) I hi, Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ hxi, add_comm b a]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistSys_twist_eq_add (a b : ℤ) :
     (twistSys S x a).twist (twistSys S x b) = twistSys S x (a + b) := by
@@ -77,9 +77,9 @@ theorem twistSys_twist_eq_add (a b : ℤ) :
     Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ hxi, add_comm b a]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => show twistSys S x 0 = twistSys S x (((0 : ℕ) : ℤ) * c)`. Rewrite using `[Nat.cast_zero, zero_mul]`. Consider the case `succ n ih`. Express the relevant statement in the definitionally equal form `((twistSys S x c).pow n).twist (twistSys S x c) = _`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ih, twistSys_twist_eq_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_twistSys (c : ℤ) (n : ℕ) : (twistSys S x c).pow n = twistSys S x (n * c) := by
   induction n with
@@ -94,28 +94,28 @@ theorem pow_twistSys (c : ℤ) (n : ℕ) : (twistSys S x c).pow n = twistSys S x
     ring
 
 /- English proof (translation)
-Rewrite using `[twistMul, SubSystem.twist_sub_eq_mul_of_line, SubSystem.pow_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistMul_sub (M : SubSystem S x Ω) (p : ℕ) (m : ℤ) (I : Chart x) :
     (twistMul M p m).sub I = (twistSys S x m).sub I * M.sub I ^ p := by
   rw [twistMul, SubSystem.twist_sub_eq_mul_of_line, SubSystem.pow_sub]
 
 /- English proof (translation)
-Rewrite using `[← twistSys_twist_eq_add, SubSystem.twist_sub_eq_mul_of_line, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistSys_sub_mul (a b : ℤ) (I : Chart x) :
     (twistSys S x a).sub I * (twistSys S x b).sub I = (twistSys S x (a + b)).sub I := by
   rw [← twistSys_twist_eq_add, SubSystem.twist_sub_eq_mul_of_line, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← SubSystem.pow_sub, pow_twistSys]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistSys_sub_pow (c : ℤ) (n : ℕ) (I : Chart x) :
     (twistSys S x c).sub I ^ n = (twistSys S x (n * c)).sub I := by
   rw [← SubSystem.pow_sub, pow_twistSys]
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Rewrite using `[twistMul_sub, twistMul_sub, twistMul_sub, mul_pow, twistSys_sub_pow, ← pow_mul, ← mul_assoc, twistSys_sub_mul, mul_comm q n, add_comm a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistMul_twistMul (M : SubSystem S x Ω) (q n : ℕ) (m a : ℤ) :
     twistMul (twistMul M q m) n a = twistMul M (n * q) (n * m + a) := by
@@ -124,7 +124,7 @@ theorem twistMul_twistMul (M : SubSystem S x Ω) (q n : ℕ) (m a : ℤ) :
     ← mul_assoc, twistSys_sub_mul, mul_comm q n, add_comm a]
 
 /- English proof (translation)
-Establish `h` using `twistMul_twistMul M q j m 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[← h]`. Conclude with `(SubSystem.twist_twistSys_zero _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_twistMul (M : SubSystem S x Ω) (q j : ℕ) (m : ℤ) :
     (twistMul M q m).pow j = twistMul M (j * q) (j * m) := by
@@ -194,7 +194,7 @@ def powBundle (Q : LineBundle S x) : ℕ → LineBundle S x
   | n + 1 => (Q.powBundle n).tensorProd Q
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Express the relevant statement in the definitionally equal form `(Q.powBundle n).toSubSystem.twist Q.toSubSystem = (Q.toSubSystem.pow n).twist Q.toSubSystem`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem powBundle_toSubSystem (Q : LineBundle S x) (n : ℕ) :
     (Q.powBundle n).toSubSystem = Q.toSubSystem.pow n := by
@@ -207,7 +207,7 @@ theorem powBundle_toSubSystem (Q : LineBundle S x) (n : ℕ) :
 end LineBundle
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(M.powBundle p).tensorProd (twistBundle S x m), by change (M.powBundle p).toSubSystem.twist (twistSys S x m) = _ rw [LineBundle.powBundle_toSubSystem] rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lineBundle_twistMul (M : LineBundle S x) (p : ℕ) (m : ℤ) :
     ∃ L : LineBundle S x, L.toSubSystem = twistMul M.toSubSystem p m :=

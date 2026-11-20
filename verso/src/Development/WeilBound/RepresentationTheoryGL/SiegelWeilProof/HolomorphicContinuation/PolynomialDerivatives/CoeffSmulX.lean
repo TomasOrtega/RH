@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem fform_eq_gf (c : ℝ) (p q : PX m n) : fform c p q = gf (fun s => (wt c s : ℂ)) p q := rfl
 
 /- English proof (translation)
-Unfold `wt`. Use `Finset.prod_subset (Finset.subset_univ _) fun k _ hk => ?_` and prove the remaining obligations. Establish `: s k = 0` using `by simpa [Finsupp.mem_support_iff] using hk`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem wt_univ (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) :
     wt c s = ∏ k, ((s k).factorial : ℝ) * (2 * c) ^ (s k) := by
@@ -28,18 +28,18 @@ theorem wt_univ (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) :
   simp [this]
 
 /- English proof (translation)
-Rewrite using `[wt_univ]`. Conclude with `Finset.prod_pos fun k _ => mul_pos (Nat.cast_pos.mpr (Nat.factorial_pos _)) (pow_pos (by linarith) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_pos {c : ℝ} (hc : 0 < c) (s : Fin m × Fin n × Bool →₀ ℕ) : 0 < wt c s := by
   rw [wt_univ]
   exact Finset.prod_pos fun k _ => mul_pos (Nat.cast_pos.mpr (Nat.factorial_pos _)) (pow_pos (by linarith) _)
 
 /- English proof (translation)
-Establish `h : wt c (Finsupp.single k 1 + s) = (2 * c) * ((s k : ℝ) + 1) * wt c s`. Rewrite using `[wt_univ, wt_univ, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), ← Finset.mul_prod_erase Finset.univ (fun j => ((s j).factorial : ℝ) * (2 * c) ^ (s j)) (Finset.mem_univ k)]`. Establish `hrest : ∏ j ∈ Finset.univ.erase k, (((Finsupp.single k 1 + s : Fin m × Fin n × Bool →₀ ℕ) j).factorial : ℝ) * (2 * c) ^ ((Finsupp.single k 1 + s : Fin m × Fin n × Bool →₀ ℕ) j) = ∏ j ∈ Finset.univ.erase k, ((s j).factorial : ℝ) * (2 * c) ^ (s j)`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjk : j ≠ k` using `Finset.ne_of_mem_erase hj`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hjk]`. Rewrite using `[hrest]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Rewrite using `[add_comm 1 (s k), Nat.factorial_succ, pow_succ]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wt_step (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) (k : Fin m × Fin n × Bool) :
     (wt c (Finsupp.single k 1 + s) : ℂ) = ((2 * c : ℝ) : ℂ) * ((s k : ℂ) + 1) * (wt c s : ℂ) := by
@@ -59,7 +59,7 @@ theorem wt_step (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) (k : Fin m × 
   rw [h]; push_cast; ring
 
 /- English proof (translation)
-Simplify using `[KopL, LinearMap.sub_apply, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem KopL_apply (ε : Fin m → Bool) (i j : Fin n) (p : PX m n) :
     KopL ε i j p = ∑ a ∈ Finset.univ.filter (fun a => ε a = true), X (a, i, false) * pderiv (a, j, false) p -
@@ -67,19 +67,19 @@ theorem KopL_apply (ε : Fin m → Bool) (i j : Fin n) (p : PX m n) :
   simp [KopL, LinearMap.sub_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[rdeg, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rdeg_add (ε : Fin m → Bool) (s t : Fin m × Fin n × Bool →₀ ℕ) : rdeg ε (s + t) = rdeg ε s + rdeg ε t := by
   funext a; simp [rdeg, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Unfold `rdeg`. Take `⟨a0, i0, b0⟩` from `k`. Simplify using `only [inF1] at hk`. Substitute `hk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Distinguish the cases in `ha : a = a0`. Substitute `ha` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single i0]`. Simplify using the standard rewrite rules. Introduce `i _ hi`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hi]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg ha]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `ha (congrArg Prod.fst h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rdeg_single (ε : Fin m → Bool) (k : Fin m × Fin n × Bool) (hk : inF1 ε k) :
     rdeg ε (Finsupp.single k 1) = fun a => if a = k.1 then 1 else 0 := by
@@ -100,13 +100,11 @@ theorem rdeg_single (ε : Fin m → Bool) (k : Fin m × Fin n × Bool) (hk : inF
     intro h; exact ha (congrArg Prod.fst h).symm
 
 /- English proof (translation)
-Rewrite using `[pderiv_monomial, X, monomial_mul, one_mul, one_mul]`. Distinguish the cases in `h0 : s l = 0`. Simplify using `[h0]`. Rewrite using `[show (monomial (Finsupp.single k 1 + (s - Finsupp.single l 1)) ((s l : ℕ) : ℂ) : PX m n) = ((s l : ℕ) : ℂ) • monomial (Finsupp.single k 1 + (s - Finsupp.single l 1)) (1 : ℂ) by`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun k' hk' => ?_, ?_, rfl⟩)` and prove the remaining obligations. Break down `Finset.mem_union.mp (Finsupp.support_add hk') with h | h` into its components or cases. Rewrite `h` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Rewrite using `[h]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs k' (Finsupp.support_tsub h)`. Establish `hle : Finsupp.single l 1 ≤ s` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h0)`. Establish `e1 : rdeg ε (Finsupp.single k 1) = rdeg ε (Finsupp.single l 1)`. Rewrite using `[rdeg_single ε k hk, rdeg_single ε l hl, hkl]`. Rewrite using `[rdeg_add, e1, ← rdeg_add, add_tsub_cancel_of_le hle]`.
-
-Conclude with `hR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_mem_box (ε : Fin m → Bool) (R : Set (Fin m → ℕ)) (k l : Fin m × Fin n × Bool)
     (hk : inF1 ε k) (hl : inF1 ε l) (hkl : k.1 = l.1) (s : Fin m × Fin n × Bool →₀ ℕ)
@@ -129,9 +127,7 @@ theorem term_mem_box (ε : Fin m → Bool) (R : Set (Fin m → ℕ)) (k l : Fin 
       exact hR
 
 /- English proof (translation)
-Rewrite using `[KopL_apply]`. Use `Submodule.sub_mem _ (Submodule.sum_mem _ fun a ha => ?_) (Submodule.sum_mem _ fun a ha => ?_)` and prove the remaining obligations. Establish `ha' : ε a = true` using `(Finset.mem_filter.mp ha).2`. Conclude with `term_mem_box ε R (a, i, false) (a, j, false) (by simp [inF1, ha']) (by simp [inF1, ha']) rfl s hs hR`. Establish `ha' : ε a = false` using `(Finset.mem_filter.mp ha).2`.
-
-Conclude with `term_mem_box ε R (a, j, true) (a, i, true) (by simp [inF1, ha']) (by simp [inF1, ha']) rfl s hs hR`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gen_stable (ε : Fin m → Bool) (i j : Fin n) (R : Set (Fin m → ℕ)) (s : Fin m × Fin n × Bool →₀ ℕ)
     (hs : ∀ k ∈ s.support, inF1 ε k) (hR : rdeg ε s ∈ R) : KopL ε i j (monomial s (1 : ℂ)) ∈ box ε R := by
@@ -143,11 +139,9 @@ theorem gen_stable (ε : Fin m → Bool) (i j : Fin n) (R : Set (Fin m → ℕ))
     exact term_mem_box ε R (a, j, true) (a, i, true) (by simp [inF1, ha']) (by simp [inF1, ha']) rfl s hs hR
 
 /- English proof (translation)
-Introduce `f hf`. Use `Submodule.span_induction (p := fun x _ => KopL ε i j x ∈ box ε R) ?_ ?_ ?_ ?_ hf` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, hR, rfl⟩`. Conclude with `gen_stable ε i j R s hs hR`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `r x _ hx`. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ r hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_stable (ε : Fin m → Bool) (i j : Fin n) (R : Set (Fin m → ℕ)) :
     ∀ f ∈ box (n := n) ε R, KopL ε i j f ∈ box ε R := by
@@ -162,11 +156,11 @@ theorem box_stable (ε : Fin m → Bool) (i j : Fin n) (R : Set (Fin m → ℕ))
 def symW (u : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ) : ℂ := ∏ k ∈ u.support, ((u k).factorial : ℂ)
 
 /- English proof (translation)
-Establish `hu : ∀ v : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ, symW v = ∏ k, ((v k).factorial : ℂ)` using `fun v => by`. Unfold `symW`. Use `Finset.prod_subset (Finset.subset_univ _) fun k _ hk => ?_` and prove the remaining obligations. Establish `: v k = 0` using `by simpa [Finsupp.mem_support_iff] using hk`. Simplify using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu, hu, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), ← Finset.mul_prod_erase Finset.univ (fun j => ((u j).factorial : ℂ)) (Finset.mem_univ k)]`. Establish `hrest : ∏ j ∈ Finset.univ.erase k, (((Finsupp.single k 1 + u : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ) j).factorial : ℂ) = ∏ j ∈ Finset.univ.erase k, ((u j).factorial : ℂ)`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjk : j ≠ k` using `Finset.ne_of_mem_erase hj`. Simplify using `[Finsupp.single_apply, Ne.symm hjk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrest]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Rewrite using `[add_comm 1 (u k), Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symW_step (u : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ) (k) :
     symW (Finsupp.single k 1 + u) = 1 * ((u k : ℂ) + 1) * symW u := by
@@ -190,7 +184,7 @@ theorem symW_step (u : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[coeff_smul, coeff_X']`. Distinguish the cases in `h : w0 = u`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun e => h ((Finsupp.single_left_inj one_ne_zero).mp e)), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -202,7 +196,7 @@ theorem coeff_smul_X {τ : Type} [DecidableEq τ] (c : ℂ) (w0 u : τ) :
   · rw [if_neg (fun e => h ((Finsupp.single_left_inj one_ne_zero).mp e)), if_neg h]; simp
 
 /- English proof (translation)
-Repeatedly rewrite using `[coeff_smul_X, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem expand_lin {τ : Type} [Fintype τ] [DecidableEq τ] (c : ℂ) (w0 : τ) :
     (c • X w0 : MvPolynomial τ ℂ) = ∑ u, (c • X w0 : MvPolynomial τ ℂ).coeff (Finsupp.single u 1) • X u := by
@@ -210,7 +204,7 @@ theorem expand_lin {τ : Type} [Fintype τ] [DecidableEq τ] (c : ℂ) (w0 : τ)
   rw [Finset.sum_ite_eq]; simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with ⟨a, i', b⟩ | ⟨a, i', b⟩ <;> simp only [symK, mkDerivation_X, Sum.elim_inl, Sum.elim_inr] <;> split_ifs <;> first`. Consider the case `exact ⟨1, _, (one_smul _ _).symm⟩`. Consider the case `exact ⟨-1, _, by rw [neg_smul, one_smul]⟩`. Consider the case `exact ⟨0, Sum.inl (a, i', b), (zero_smul _ _).symm⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem symK_lin (ε : Fin m → Bool) (i j : Fin n) (v) :
     ∃ (c : ℂ) (w0 : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool)), symK ε i j (X v : Sym m n) = c • X w0 := by
@@ -222,7 +216,7 @@ theorem symK_lin (ε : Fin m → Bool) (i j : Fin n) (v) :
     | exact ⟨0, Sum.inl (a, i', b), (zero_smul _ _).symm⟩
 
 /- English proof (translation)
-Take `⟨c, w0, h⟩` from `symK_lin ε i j v`. Rewrite using `[h]`. Conclude with `expand_lin c w0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symK_hlin (ε : Fin m → Bool) (i j : Fin n) (v) :
     symK ε i j (X v : Sym m n) = ∑ u, (symK ε i j (X v : Sym m n)).coeff (Finsupp.single u 1) • X u := by
@@ -230,7 +224,7 @@ theorem symK_hlin (ε : Fin m → Bool) (i j : Fin n) (v) :
   rw [h]; exact expand_lin c w0
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with ⟨a, i', b⟩ | ⟨a, i', b⟩ <;> rcases u with ⟨a', i'', b'⟩ | ⟨a', i'', b'⟩ <;>`. Apply the tactic sequence `simp only [symK, mkDerivation_X, Sum.elim_inl, Sum.elim_inr] <;>`. Apply the tactic sequence `split_ifs <;> simp_all [coeff_X', Finsupp.single_left_inj, coeff_neg] <;> aesop`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem symK_tr (ε : Fin m → Bool) (i j : Fin n) (v u) :
     (symK ε j i (X u : Sym m n)).coeff (Finsupp.single v 1) = star ((symK ε i j (X v : Sym m n)).coeff (Finsupp.single u 1)) := by
@@ -242,9 +236,9 @@ end CoreC
 
 open CoreC CoreC.G in
 /- English proof (translation)
-Introduce `m n ε c hc`. Establish `hw : ∀ (s : Fin m × Fin n × Bool →₀ ℕ) k, (fun s => (wt c s : ℂ)) (Finsupp.single k 1 + s) = ((2 * c : ℝ) : ℂ) * ((s k : ℂ) + 1) * (fun s => (wt c s : ℂ)) s` using `fun s k => wt_step c s k`. Establish `hst : ∀ s : Fin m × Fin n × Bool →₀ ℕ, star ((fun s => (wt c s : ℂ)) s) = (fun s => (wt c s : ℂ)) s` using `fun s => Complex.conj_ofReal _`. Establish `hpos : ∀ s : Fin m × Fin n × Bool →₀ ℕ, 0 < ((fun s => (wt c s : ℂ)) s).re` using `fun s => by`. Simplify using `using wt_pos hc s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun p q => gf_herm _ hst p q, fun p hp => gf_pos _ hst hpos p hp, fun i j p q => ?_, fun i j R f hf => box_stable ε i j R f hf, fun i j s t => ⟨by simp [fform], ?_⟩⟩` and prove the remaining obligations. Rewrite using `[fform_eq_gf, fform_eq_gf, KopL_apply, KopL_apply, gf_sub_left, gf_sub_right, gf_sum_left, gf_sum_left, gf_sum_right, gf_sum_right]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun a _ => gf_adj _ hw _ _ _ _`. Conclude with `der_adj (w := symW) 1 symW_step (symK ε i j) (symK ε j i) (symK_hlin ε i j) (symK_hlin ε j i) (symK_tr ε i j) s t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem formFacts : FormFacts := by
   intro m n ε c hc

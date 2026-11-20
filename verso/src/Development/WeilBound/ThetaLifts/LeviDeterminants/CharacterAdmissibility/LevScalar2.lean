@@ -15,13 +15,11 @@ variable {R : Type} [CommRing R] [Invertible (2 : R)] {E : Type} [CommRing E] [A
 omit [DecidableEq α] in
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h.uniq hS hj he (e' := om₁ g⁻¹ ∘ₗ e ∘ₗ om m) (fun w w₁ hw φ hφ => by`. Take `⟨u, rfl⟩` from `d.e.surjective w`. Take `⟨z, rfl⟩` from `d₁.e.surjective w₁`. Take `⟨b, rfl⟩` from `(hrel u z).1 hw`. Establish `r` using `(hrel (actB c m (z * ιᵀ + b * Xᵀ)) (actB c g z)).2 ⟨z * nᵀ + b * tᵀ, by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [actB, Matrix.add_mul, Matrix.mul_assoc, ← transpose_mul, h1, h2, transpose_add, Matrix.mul_add, add_assoc]⟩`. Use `show om₁ g⁻¹ (e (om m (d.rho ψ _ φ))) = d₁.rho ψ z (om₁ g⁻¹ (e (om m φ)))`. Rewrite using `[hs.impl _ _ _ hφ, Darboux.rho, he.law _ _ r _ (hs.pres _ _ hφ)]`. Use `(hs₁.impl g⁻¹ _ _ (he.maps _ (hs.pres _ _ hφ))).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[actB, Matrix.mul_assoc, ← transpose_mul]) (hs.adm m _ (he.adm _ (hs₁.adm g⁻¹ _ (h.ev0 _))))`. Use `⟨a, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← ha φ hφ]`. Use `show _ = (om₁ g * om₁ g⁻¹) _`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lev_scalar2 (h : Ax C ψ) (hS : IsSp S) (hj : Function.Injective j) (he : IsE C ψ S j e)
     {d : Darboux (symp c ξ JA J) κ} {d₁ : Darboux (symp c ξ JA J₁) κ₁}
@@ -59,52 +57,48 @@ theorem low_val {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableE
     (low n t).1 = fromBlocks 1 0 n t.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext ((det_fromBlocks_zero₁₂ 1 n t.1).trans (by rw [det_one, one_mul]; rfl))`.
+A detailed English derivation is pending.
 -/
 theorem det_low {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (n : Matrix b a E) (t : GL b E) :
     GeneralLinearGroup.det (low n t) = GeneralLinearGroup.det t :=
   Units.ext ((det_fromBlocks_zero₁₂ 1 n t.1).trans (by rw [det_one, one_mul]; rfl))
 
 /- English proof (translation)
-Take `⟨hs₀, dd, omd, hd, ⟨-, hs, hr⟩, hb⟩` from `hW`. Take `⟨hs₁₀, dd₁, omd₁, hd₁, ⟨-, hs₁, hr₁⟩, hb₁⟩` from `hW₁`. Establish `hj2` using `hj.sumMap hj`. Establish `hrel2` using `rel_dbl hj hrel hd hd₁`. Take `⟨E₂, hE⟩` from `h.exists_E hS.dbS hj2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, hinv, hcyc⟩` from `h.exists_diag κ₁`. Take `⟨γ, s, s', e1, e2, hγ⟩` from `hF.exists_gamma`. Establish `hrule` using `rule_of_conj hs.toIsSplitting γ s s' e1 e2 hγ hr`. Establish `hdiag : ∀ z : Matrix α β₁ E, dd₁.e (z * (diagCols (E` using `E) β₁)ᵀ) = dv (d₁.e z) (d₁.e z) := fun z => by`. Rewrite using `[diagCols, transpose_fromRows, transpose_one, mul_fromCols, Matrix.mul_one, hd₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hL` using `hrule (l ∘ₗ E₂) (hE.adm l hl) fun z φ hφ => by`. Establish `r` using `(hrel2 (z * (fromCols (dd2 ι * diagCols (E := E) β₁) (dd2 X))ᵀ) (z.toCols₁ * (diagCols (E := E) β₁)ᵀ)).2 ⟨z.toCols₂, by conv_lhs => rw [← fromCols_toCols z]`. Rewrite using `[transpose_fromCols, fromCols_mul_fromRows, transpose_mul, Matrix.mul_assoc]⟩`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, Darboux.rho, hE.law _ _ r _ hφ, hdiag, hinv _ _ (hE.maps _ hφ)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hL₁` using `hr₁ l hl fun z φ hφ => by rw [Darboux.rho, hdiag, hinv _ _ hφ]`. Take `⟨Ψ₀, hΨ₀, hne⟩` from `h.comp_ne hS.dbS hj2 hE hcyc`. Establish `hE0 : E₂ Ψ₀ ≠ 0` using `fun e0 => hne (by rw [e0, map_zero])`. Set `em : UG c (dbl J₁) →* UG c (dbl J)` to `hF.dbl.emb.comp (MonoidHom.inl _ _)`. Establish `emi : ∀ p, (em p).1.1 * dd2 ι = dd2 ι * p.1.1` using `fun p => hF.dbl.emb_i (p, 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `emx : ∀ p, (em p).1.1 * dd2 X = dd2 X * (1 : Matrix (ν ⊕ ν) (ν ⊕ ν) E)` using `fun p => by`. Establish `e3 : dd2 (fromCols X Y) * dd2 (fromRows (1 : Matrix ν ν E) (0 : Matrix ν ν E)) = dd2 X`. Rewrite using `[fromBlocks_multiply]`. Simplify using `[fromCols_mul_fromRows]`. Establish `e4 : (em p).1.1 * dd2 (fromCols X Y) = dd2 (fromCols X Y) * (1 : Matrix ((ν ⊕ ν) ⊕ (ν ⊕ ν)) ((ν ⊕ ν) ⊕ (ν ⊕ ν)) E)` using `hF.dbl.embeddingAtLocalFactor (p, 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← e3, ← Matrix.mul_assoc, e4, Matrix.mul_one, Matrix.mul_one]`. Use `choose a ha using fun p => lev_scalar h hS.dbS hj2 hE hrel2 hs.toIsSplitting hs₁.toIsSplitting (em p) p 1 (emi p) (emx p)`. Establish `hinj : ∀ p, ∀ Ψ, omd₁ p Ψ = 0 → Ψ = 0` using `fun p Ψ h0 => by`. Use `congrArg (omd₁ p⁻¹) h0` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `A : UG c (dbl J₁) →* ℂ` to `{ toFun := a map_one' := by`. Use `ha 1 Ψ₀ hΨ₀` as an intermediate fact. Rewrite `this` using `[map_one, map_one, map_one, Module.End.one_apply, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hE0 (this.symm.trans (one_smul _ _).symm)`. Use the proof step `map_mul' := fun p q => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `ha (p * q) Ψ₀ hΨ₀` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, Module.End.mul_apply, ha p _ (hs.pres _ _ hΨ₀), ha q _ hΨ₀, map_smul, smul_smul, ← Module.End.mul_apply, ← map_mul]`. Conclude with `smul_left_injective ℂ (fun e0 => hE0 (hinj _ _ e0)) this.symm }`. Establish `hA : A.toHomUnits = 1` using `hch _ (by`. Rewrite using `[Units.isEmbedding_val₀.continuous_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hcyc _ (hs₁.pres p₀ _ (hE.maps _ hΨ₀)) fun e0 => hE0 (hinj _ _ e0)`. Take `⟨z, rfl⟩` from `dd₁.e.surjective w`. Establish `r` using `(hrel2 (actB c p₀⁻¹ z * (dd2 ι)ᵀ) (actB c p₀⁻¹ z)).2 ⟨0, by simp⟩`. Establish `hΨ` using `h.schr _ (dd.e (actB c p₀⁻¹ z * (dd2 ι)ᵀ)) _ hΨ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : l (omd₁ p₀ (E₂ (schr ψ (dd.e (actB c p₀⁻¹ z * (dd2 ι)ᵀ)) Ψ₀))) ≠ 0`. Rewrite using `[hE.law _ _ r _ hΨ₀]`. Use `hs₁.impl p₀ (actB c p₀⁻¹ z) _ (hE.maps _ hΨ₀)` as an intermediate fact. Rewrite `this` using `[show actB c p₀ (actB c p₀⁻¹ z) = z by simp [actB, Matrix.mul_assoc, ← transpose_mul]]`. Conclude with `fun e0 => hw ((congrArg l this).symm.trans e0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `schr ψ (dd.e (actB c p₀⁻¹ z * (dd2 ι)ᵀ)) Ψ₀ = Ψ at hΨ h0`. Establish `c1` using `(hs.cont _ (hE.adm l hl) Ψ hΨ).comp hF.dbl.continuous_emb`. Establish `c2` using `hs₁.cont l hl _ (hE.maps Ψ hΨ)`. Use `(c1.continuousAt.div c2.continuousAt h0).congr ?_` and prove the remaining obligations. Use `filter_upwards [c2.continuousAt.eventually_ne h0] with p hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show l (E₂ (omd (em p) Ψ)) / _ = a p`. Rewrite using `[ha p Ψ hΨ, map_smul, smul_eq_mul, mul_div_cancel_right₀ _ hp]) fun p t' hp => by`. Establish `e3` using `hL (em p) (blk t' (1 : GL (ν ⊕ ν) E)) (by`. Rewrite using `[blk_val, mul_fromCols, fromCols_mul_fromBlocks, ← Matrix.mul_assoc, emi, emx, Matrix.mul_assoc, hp]`. Simplify using `[Matrix.mul_assoc]) Ψ₀ hΨ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `e3` using `[det_blk, map_one, mul_one, LinearMap.comp_apply, LinearMap.comp_apply, ha p _ hΨ₀, map_smul, hL₁ p t' hp _ (hE.maps _ hΨ₀), smul_eq_mul]`. Conclude with `Units.ext ((mul_eq_right₀ (mul_ne_zero (fac_ne χ _ _) hne)).1 e3)`. Establish `ha1 : ∀ p, ∀ Ψ ∈ C.sp (κ ⊕ κ), E₂ (omd (em p) Ψ) = omd₁ p (E₂ Ψ)` using `fun p Ψ hΨ => by`. Establish `: a p = 1` using `congrArg Units.val (DFunLike.congr_fun hA p)`. Rewrite using `[ha p Ψ hΨ, this, one_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨md, hmd⟩` from `exists_doubled_unitary_block m`. Take `⟨gd, hgd⟩` from `exists_doubled_unitary_block g`. Set `nd : Matrix (ν ⊕ ν) (β₁ ⊕ β₁) E` to `fromBlocks n 0 0 0`. Establish `k1 : md.1.1 * dd2 ι = dd2 ι * gd.1.1 + dd2 X * nd`. Rewrite using `[hmd, hgd, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`. Establish `k2 : md.1.1 * dd2 X = dd2 X * (blk t (1 : GL ν E)).1`. Rewrite using `[blk_val, hmd, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[h2]`. Establish `k3 : (md * em gd⁻¹).1.1 * dd2 ι = dd2 ι * (1 : UG c (dbl J₁)).1.1 + dd2 X * (nd * (gd⁻¹).1.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc, emi, ← Matrix.mul_assoc, k1, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc]`. Simplify using the standard rewrite rules. Establish `k4 : (md * em gd⁻¹).1.1 * dd2 X = dd2 X * (blk t (1 : GL ν E)).1`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc, emx, Matrix.mul_one, k2]`. Take `⟨b, hb'⟩` from `lev_scalar2 h hS.dbS hj2 hE hrel2 hs.toIsSplitting hs₁.toIsSplitting _ 1 _ _ k3 k4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbv : b = fac C χ (Fintype.card α) (GeneralLinearGroup.det t)`. Establish `e3` using `hL (md * em gd⁻¹) (low (nd * (gd⁻¹).1.1 * diagCols (E := E) β₁) (blk t (1 : GL ν E))) (by`. Rewrite using `[low_val, mul_fromCols, fromCols_mul_fromBlocks, ← Matrix.mul_assoc, k3, k4]`. Simplify using `[Matrix.add_mul, Matrix.mul_assoc]) Ψ₀ hΨ₀`. Rewrite `e3` using `[det_low, det_blk, map_one, mul_one, LinearMap.comp_apply, LinearMap.comp_apply, hb' _ hΨ₀, map_one, Module.End.one_apply, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hne e3`. Take `⟨φ₁, h₁, φ₂, h₂, hne₂⟩` from `h.box_ne hS hj hE hcyc`. Take `⟨B, hB, hBe⟩` from `h.box_E hS hj he hE φ₂ h₂`. Establish `hB0 : B ≠ 0` using `fun e0 => hne₂ (by`. Rewrite using `[hBe _ h₁, e0, show boxFun (e φ₁) (0 : (κ₁ → R) → ℂ) = 0 from funext fun x => mul_zero _, map_zero])`.
-
-Introduce `φ hφ`. Establish `hx` using `h.box _ _ _ hφ _ h₂`. Establish `e5 : omd md (boxFun φ φ₂) = omd (md * em gd⁻¹) (omd (em gd) (boxFun φ φ₂))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, map_inv, inv_mul_cancel_right]`. Establish `e6` using `congrArg E₂ e5`.
-
-Rewrite `e6` using `[hb' _ (hs.pres _ _ hx), map_one, Module.End.one_apply, ha1 _ _ hx, hb m md hmd _ hφ _ h₂, hBe _ (hs₀.pres _ _ hφ), hBe _ hφ, hb₁ g gd hgd _ (he.maps _ hφ) _ hB, hbv]`. Conclude with `box_cancel hB0 (e6.trans (funext fun x => (mul_assoc _ _ _).symm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TU [TopologicalSpace R] [TopologicalSpace E] [IsModuleTopology R E] [IsTopologicalRing E]
     (h : Ax C ψ) (hS : IsSp S) (hj : Function.Injective j) (he : IsE C ψ S j e)

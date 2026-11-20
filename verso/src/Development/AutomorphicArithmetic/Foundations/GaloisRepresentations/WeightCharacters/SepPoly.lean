@@ -7,7 +7,7 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem mvEval_aeval_X_sub_C_eq_eval_sub {k : Type} [Field k] {σ : Type} (p : Polynomial k) (i : σ) (c : k)
     (z : σ → k) :
@@ -18,11 +18,11 @@ private theorem mvEval_aeval_X_sub_C_eq_eval_sub {k : Type} [Field k] {σ : Type
   | monomial n a => simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hc0`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj]`. Establish `h1` using `h j (Finset.mem_insert_self j s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `ih (fun l hl => h l (Finset.mem_insert_of_mem hl))`. Establish `hx : ‖f j‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max (f j - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le (h1.trans hc) le_rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : f j * ∏ l ∈ s, f l - 1 = f j * (∏ l ∈ s, f l - 1) + (f j - 1)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ h1)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem norm_prod_sub_one_le_of_norm_sub_one_le {k : Type} [NormedField k] [IsUltrametricDist k] {ι : Type}
     [DecidableEq ι] (s : Finset ι) (f : ι → k) {c : ℝ} (hc0 : 0 ≤ c) (hc : c ≤ 1)
@@ -45,7 +45,7 @@ private theorem norm_prod_sub_one_le_of_norm_sub_one_le {k : Type} [NormedField 
       _ = c := one_mul c
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_one]`. Rewrite using `[norm_neg]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_one_sub_le_one_of_norm_le_one {k : Type} [NormedField k] [IsUltrametricDist k] {x : k}
     (h : ‖x‖ ≤ 1) : ‖1 - x‖ ≤ 1 := by
@@ -56,31 +56,27 @@ private theorem norm_one_sub_le_one_of_norm_le_one {k : Type} [NormedField k] [I
     exact h
 
 /- English proof (translation)
-Introduce `hK k _ _ σ _ Z₁ Z₂ h₁ h₂ hd ε hε`. Take `⟨D, hD, hDd⟩` from `hd.exists_thickenings h₁ h₂.isClosed`. Establish `he0 : 0 < min ε 1` using `lt_min hε one_pos`. Establish `he1 : min ε 1 ≤ 1` using `min_le_right _ _`. Establish `heε : min ε 1 ≤ ε` using `min_le_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hTsub, hTfin, hcov⟩` from `h₁.finite_cover_balls (mul_pos hD he0)`. Choose the witnesses or unpack the hypotheses as in `⟨Y, hY, hmemY⟩ : ∃ Y : Set k, IsCompact Y ∧ ∀ i, ∀ a ∈ hTfin.toFinset, ∀ z ∈ Z₁ ∪ Z₂, z i - a i ∈ Y := by`. Use `⟨⋃ i : σ, ⋃ a ∈ hTfin.toFinset, (fun z : σ → k => z i - a i) '' (Z₁ ∪ Z₂), ?_, ?_⟩` and prove the remaining obligations. Conclude with `isCompact_iUnion fun i => hTfin.toFinset.isCompact_biUnion fun a _ => (h₁.union h₂).image (by fun_prop)`. Introduce `i a ha z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_iUnion.2 ⟨i, Set.mem_iUnion₂.2 ⟨a, ha, z, hz, rfl⟩⟩`. Take `⟨p, hp1, hp2, hp3⟩` from `hK k Y hY D (min ε 1) hD he0 he1`. Take `⟨q, hq⟩ : ∃ q : (σ → k) → MvPolynomial σ k, ∀ a z, MvPolynomial.eval z (q a) = ∏ i, Polynomial.eval (z i - a i) p` from `⟨fun a => ∏ i, Polynomial.aeval (MvPolynomial.X i - MvPolynomial.C (a i)) p, fun a z => by simp only [map_prod, mvEval_aeval_X_sub_C_eq_eval_sub]⟩`. Establish `hqle : ∀ a ∈ hTfin.toFinset, ∀ z ∈ Z₁ ∪ Z₂, ‖MvPolynomial.eval z (q a)‖ ≤ 1`. Introduce `a ha z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hq, norm_prod]`. Conclude with `Finset.prod_le_one (fun i _ => norm_nonneg _) (fun i _ => hp1 _ (hmemY i a ha z hz))`. Use `⟨1 - ∏ a ∈ hTfin.toFinset, (1 - q a), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨a0, ha0T, hza⟩` from `Set.mem_iUnion₂.1 (hcov hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0 : a0 ∈ hTfin.toFinset` using `hTfin.mem_toFinset.2 ha0T`. Establish `hnear : ‖MvPolynomial.eval z (q a0) - 1‖ ≤ min ε 1`. Rewrite using `[hq]`. Apply `norm_prod_sub_one_le_of_norm_sub_one_le _ _ he0.le he1` to reduce the goal to its premises. Introduce `i _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hp3` to reduce the goal to its premises. Use `norm_le_pi_norm (z - a0) i` as an intermediate fact. Rewrite `hza` using `[Metric.mem_ball, dist_eq_norm]`. Simplify using `only [Pi.sub_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_one, map_prod]`. Rewrite using `[show (1 : k) - ∏ a ∈ hTfin.toFinset, (1 - MvPolynomial.eval z (q a)) - 1 = -∏ a ∈ hTfin.toFinset, (1 - MvPolynomial.eval z (q a)) by ring, norm_neg, norm_prod, ← Finset.mul_prod_erase _ _ ha0]`. Establish `hrest : ∏ a ∈ hTfin.toFinset.erase a0, ‖1 - MvPolynomial.eval z (q a)‖ ≤ 1`. Apply `Finset.prod_le_one (fun _ _ => norm_nonneg _)` to reduce the goal to its premises. Introduce `a ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `norm_one_sub_le_one_of_norm_le_one (hqle a (Finset.mem_of_mem_erase ha) z (Or.inl hz))`. Establish `h0 : ‖1 - MvPolynomial.eval z (q a0)‖ ≤ min ε 1`. Rewrite using `[norm_sub_rev]`. Conclude with `hnear`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `z hz`. Establish `hfar : ∀ a ∈ hTfin.toFinset, ‖MvPolynomial.eval z (q a)‖ ≤ min ε 1`. Introduce `a ha`. Establish `hdist : D ≤ ‖z - a‖`. Assume the negation of the conclusion as `hlt`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_neg at hlt`. Apply `Set.disjoint_left.1 hDd (Metric.self_subset_thickening hD _ (hTsub (hTfin.mem_toFinset.1 ha)))` to reduce the goal to its premises. Conclude with `Metric.mem_thickening_iff.2 ⟨z, hz, by rw [dist_eq_norm, norm_sub_rev]; exact hlt⟩`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, D ≤ ‖z i - a i‖ := by`. Assume the negation of the conclusion as `hno`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `push_neg at hno`. Use `(pi_norm_lt_iff (x := z - a) hD).2 (fun i => by simpa using hno i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hq, norm_prod, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]`. Establish `h0` using `hp2 _ (hmemY i a ha z (Or.inr hz)) hi`.
-
-Establish `hrest : ∏ j ∈ Finset.univ.erase i, ‖Polynomial.eval (z j - a j) p‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun j _ => hp1 _ (hmemY j a ha z (Or.inr hz)))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sub, map_one, map_prod]`. Use `norm_prod_sub_one_le_of_norm_sub_one_le hTfin.toFinset (fun a => 1 - MvPolynomial.eval z (q a)) he0.le he1 (fun a ha => by` as an intermediate fact. Rewrite using `[show (1 : k) - MvPolynomial.eval z (q a) - 1 = -MvPolynomial.eval z (q a) by ring, norm_neg]`.
-
-Conclude with `hfar a ha)`. Rewrite using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.sepPoly_of :
     UpperTheory.Gal.Wt.Kapl → UpperTheory.Gal.Wt.SepPoly := by

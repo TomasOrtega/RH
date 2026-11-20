@@ -22,14 +22,14 @@ namespace GlobalTheory.CompanionTheory.Ar.Pub.CxComp
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
 
 /- English proof (translation)
-Introduce `_ hz` and use `⟨hz.1, fun f hf => hz.2 _ (hQ.1.2 (Ideal.mem_map_of_mem _ hf))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem conePts_subset_mcPts_of_minimal {P : Ideal (MRing ι)} {Q : Ideal (MRingOver ℂ ι)}
     (hQ : Q ∈ (cxIdeal P).minimalPrimes) : conePts Q ⊆ mcPts P := fun _ hz =>
   ⟨hz.1, fun f hf => hz.2 _ (hQ.1.2 (Ideal.mem_map_of_mem _ hf))⟩
 
 /- English proof (translation)
-Establish `hz' : z ∈ conePts (cxIdeal P)` using `by rw [← mcPts_eq_conePts]; exact hz`. Establish `hle : cxIdeal P ≤ RingHom.ker (eval z : MRingOver ℂ ι →+* ℂ)` using `fun f hf => RingHom.mem_ker.2 (hz'.2 f hf)`. Establish `: (RingHom.ker (eval z : MRingOver ℂ ι →+* ℂ)).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨Q, hQ, hQle⟩` from `Ideal.exists_minimalPrimes_le hle`. Conclude with `⟨Q, hQ, hz'.1, fun f hf => RingHom.mem_ker.1 (hQle hf)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_minimal_of_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) :
     ∃ Q ∈ (cxIdeal P).minimalPrimes, z ∈ conePts Q := by
@@ -41,9 +41,9 @@ theorem exists_minimal_of_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) →
   exact ⟨Q, hQ, hz'.1, fun f hf => RingHom.mem_ker.1 (hQle hf)⟩
 
 /- English proof (translation)
-Use `choose i0 hi0 using hz.1`. Take `⟨-, h4⟩` from `eq_bsmul_of_segre_eq i0 hi0 hs`. Establish `hJ` using `GroundTheory.Heights₂.Heights.HilbertSamuel.ComponentResBridge.isMultiHomogIdeal_of_mem_minimalPrimes hP hQ`. Establish `h5` using `ReciprocityTheory.AnForm.R.eval_eq_zero_of_smul hJ (fun k => z' ⟨k, i0 k⟩ / z ⟨k, i0 k⟩) z hz.2`. Use `⟨hz', fun f hf => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Conclude with `h5 f hf`.
+A detailed English derivation is pending.
 -/
 theorem mem_conePts_of_segre_eq {P : Ideal (MRing ι)} {Q : Ideal (MRingOver ℂ ι)} (hP : IsArithVar P (e + 1))
     (hQ : Q ∈ (cxIdeal P).minimalPrimes) {z z' : (Σ k, ι k) → ℂ} (hz : z ∈ conePts Q)
@@ -58,7 +58,7 @@ theorem mem_conePts_of_segre_eq {P : Ideal (MRing ι)} {Q : Ideal (MRingOver ℂ
   exact h5 f hf
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.mono fun _ h' => ⟨h'.1, conePts_subset_mcPts_of_minimal hQ h'.2.1, h'.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSheet_of_isSetSheet {P : Ideal (MRing ι)} {Q : Ideal (MRingOver ℂ ι)}
     (hQ : Q ∈ (cxIdeal P).minimalPrimes) {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
@@ -67,15 +67,13 @@ theorem isSheet_of_isSetSheet {P : Ideal (MRing ι)} {Q : Ideal (MRingOver ℂ �
   ⟨h.1, h.2.mono fun _ h' => ⟨h'.1, conePts_subset_mcPts_of_minimal hQ h'.2.1, h'.2.2⟩⟩
 
 /- English proof (translation)
-Take `⟨z, hz, hzw, -⟩` from `hw`. Take `⟨hd, hm, hΨγ⟩` from `h.2.self_of_nhds`. Establish `hγQ : γ y ∈ conePts Q` using `mem_conePts_of_segre_eq hP hQ hz hm.1 (hzw.trans h.1.symm)`. Establish `hfin : (cxIdeal P).minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`. Establish `hev : ∀ᶠ y' in 𝓝 y, ∀ Q' ∈ (cxIdeal P).minimalPrimes, Q' ≠ Q → γ y' ∉ conePts Q'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Filter.eventually_all_finite hfin).2 fun Q' hQ' => ?_` and prove the remaining obligations. Distinguish the cases in `hne : Q' = Q`. Conclude with `Eventually.of_forall fun _ h' => absurd hne h'`. Establish `hnot : γ y ∉ conePts Q'` using `fun hc => hne (hone Q' hQ' _ hγQ hc hΨγ)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hf0⟩ : ∃ f ∈ Q', eval (γ y) f ≠ 0 := by`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hnot ⟨hm.1, hcon⟩`. Establish `hc : ContinuousAt (fun y' => eval (γ y') f) y` using `(MvPolynomial.continuous_eval f).continuousAt.comp hd.continuousAt`. Use `filter_upwards [hc.eventually_ne hf0] with y' hy' _ hmem`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `hy' (hmem.2 f hf)`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h.2, hev] with y' h1 h2`. Take `⟨Q', hQ', hz'⟩` from `exists_minimal_of_mem_mcPts h1.2.1`. Distinguish the cases in `hne : Q' = Q`.
-
-Substitute `hne` using the available equality. Conclude with `⟨h1.1, hz', h1.2.2⟩`. Conclude with `absurd hz' (h2 Q' hQ' hne)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSetSheet_of_isSheet {P : Ideal (MRing ι)} {Q : Ideal (MRingOver ℂ ι)} (hP : IsArithVar P (e + 1))
     (hQ : Q ∈ (cxIdeal P).minimalPrimes) {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}

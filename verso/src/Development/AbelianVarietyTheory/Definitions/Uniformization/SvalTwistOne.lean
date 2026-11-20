@@ -90,7 +90,7 @@ def PreU.ProdExp (U : PreU I D A G) (T : Over (Spec (CommRingCat.of R))) {k l : 
 section Inhabitants
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `h`. Conclude with `⟨q ≫ ρ, by rw [Category.assoc, hρ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Lvl.precomp {R : Type} [CommRing R] {I : Ideal R} {e : ℕ} {Z Z' : Scheme.{0}}
     {p : Z ⟶ Spec (CommRingCat.of R)} (h : Lvl I e p) (q : Z' ⟶ Z) : Lvl I e (q ≫ p) := by
@@ -98,7 +98,7 @@ theorem Lvl.precomp {R : Type} [CommRing R] {I : Ideal R} {e : ℕ} {Z Z' : Sche
   exact ⟨q ≫ ρ, by rw [Category.assoc, hρ]⟩
 
 /- English proof (translation)
-Unfold `twist sval DVR.SecOps.secScale`. Establish `hm` using `hJ.mem (famφT D (TA R W) α) r`. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm _))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sval_twist {W : Type} [CommRing W] [Algebra R W] {k : ℕ} (a : Multiplicative D.X →* Wˣ)
     (f : ∀ α, SecBT D (TA R W) k α) (α : D.X) {Z : Scheme.{0}} (r : Z ⟶ (TA R W ⊗ D.P.A).left) (z : Z) {J}

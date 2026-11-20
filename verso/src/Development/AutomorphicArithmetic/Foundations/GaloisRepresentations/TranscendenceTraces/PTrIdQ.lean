@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Establish `hw : IsWt (𝟙 S) (Wt.const S d)` using `hW.2.2 (𝟙 S) d`. Use `Subtype.ext (funext fun k => ?_)` and prove the remaining obligations. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hq : IsUnit ((l ^ k : ℕ) : Γ(S, ⊤))`. Rewrite using `[Nat.cast_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu.pow k`. Use `(hHl l n i (𝟙 S) _ hw hu x k).trans ?_` and prove the remaining obligations. Conclude with `(hL (l ^ k) n i).2.2 S d hq (x.1 k)`.
+A detailed English derivation is pending.
 -/
 private theorem trHl_id_apply (hHl : TrHl) (hL : TrLin) (hW : WtLin) (l : ℕ) [Fact l.Prime] (n i : ℤ) (S : Scheme.{0})
     (d : ℤ) (hu : IsUnit (l : Γ(S, ⊤))) (x : Hl l (sch.obj S) n i) :
@@ -21,11 +21,11 @@ private theorem trHl_id_apply (hHl : TrHl) (hL : TrLin) (hW : WtLin) (l : ℕ) [
   exact (hL (l ^ k) n i).2.2 S d hq (x.1 k)
 
 /- English proof (translation)
-Introduce `hHl hL hW l _ n i S d hu`. Unfold `trHQ`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[LinearMap.baseChange_tmul, trHl_id_apply hHl hL hW l n i S d hu m]`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, TensorProduct.tmul_smul]`. Rewrite using `[Int.cast_smul_eq_zsmul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.trIdQ_of :
     TrHl → TrLin → WtLin → TrIdQ := by

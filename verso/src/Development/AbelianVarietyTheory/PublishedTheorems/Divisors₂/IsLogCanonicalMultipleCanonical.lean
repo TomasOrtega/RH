@@ -56,21 +56,21 @@ open Classical in
 def formOrd (η : RatForms p n) : ℤ := if h : ∃ a, E.IsFormOrd η a then h.choose else 0
 
 /- English proof (translation)
-Rewrite using `[ord, ord, ord, Units.val_mul, map_mul, WithZero.log_mul ((map_ne_zero _).2 f.ne_zero) ((map_ne_zero _).2 g.ne_zero)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_mul (f g : X.functionFieldˣ) : E.ord (f * g) = E.ord f + E.ord g := by
   rw [ord, ord, ord, Units.val_mul, map_mul,
     WithZero.log_mul ((map_ne_zero _).2 f.ne_zero) ((map_ne_zero _).2 g.ne_zero)]
 
 /- English proof (translation)
-Simplify using `[ord]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ord_one : E.ord 1 = 0 := by simp [ord]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Establish `h` using `le_ordTop_vw_iff (F := X.functionField) ht 0 f`. Rewrite `h` using `[ordTop_vw_of_ne_zero _ f.ne_zero, WithTop.coe_le_coe]`. Use `h.trans ⟨?_, fun hf => ⟨⟨_, hf⟩, by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[ha, zpow_zero, one_mul]`. Conclude with `a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_nonneg_iff (f : X.functionFieldˣ) :
     0 ≤ E.ord f ↔ (f : X.functionField) ∈ E.ring := by
@@ -83,7 +83,7 @@ theorem ord_nonneg_iff (f : X.functionFieldˣ) :
   exact a.2
 
 /- English proof (translation)
-Rewrite using `[ord, ← e]`. Conclude with `(congrArg WithZero.log (Ring.ordFrac_of_isUnit hu)).trans WithZero.log_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_eq_zero {f : X.functionFieldˣ} {u : E.ring} (hu : IsUnit u)
     (e : (u : X.functionField) = f) : E.ord f = 0 := by
@@ -93,9 +93,9 @@ theorem ord_eq_zero {f : X.functionFieldˣ} {u : E.ring} (hu : IsUnit u)
 variable {E}
 
 /- English proof (translation)
-Take `⟨ω, hω, f, rfl, rfl⟩` from `h`. Take `⟨ω', hω', g, e, rfl⟩` from `h'`. Take `⟨u, rfl⟩` from `hω.2 ω'`. Establish `hu` using `hω.smul_iff.1 hω'`. Establish `h0 : E.toRat n ω ≠ 0` using `fun h => hη (by rw [h, smul_zero])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[map_smulₛₗ, smul_smul]`. Establish `e'` using `smul_left_injective _ h0 e`. Establish `hu0 : (u : X.functionField) ≠ 0` using `(hu.map E.ring.subtype).ne_zero`. Take `rfl : f = g * Units.mk0 _ hu0` from `Units.ext e'`. Rewrite using `[ord_mul, E.ord_eq_zero (f := Units.mk0 _ hu0) hu rfl, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsFormOrd.unique {η : RatForms p n} (hη : η ≠ 0) {a b : ℤ} (h : E.IsFormOrd η a)
     (h' : E.IsFormOrd η b) : a = b := by
@@ -111,7 +111,7 @@ theorem IsFormOrd.unique {η : RatForms p n} (hη : η ≠ 0) {a b : ℤ} (h : E
   rw [ord_mul, E.ord_eq_zero (f := Units.mk0 _ hu0) hu rfl, add_zero]
 
 /- English proof (translation)
-Establish `h' : ∃ a, E.IsFormOrd η a` using `⟨a, h⟩`. Rewrite using `[formOrd, dif_pos h']`. Conclude with `h'.choose_spec.unique hη h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFormOrd.formOrd_eq {η : RatForms p n} (hη : η ≠ 0) {a : ℤ} (h : E.IsFormOrd η a) :
     E.formOrd η = a := by
@@ -122,7 +122,7 @@ theorem IsFormOrd.formOrd_eq {η : RatForms p n} (hη : η ≠ 0) {a : ℤ} (h :
 variable (E)
 
 /- English proof (translation)
-Use `letI := E.const.toAlgebra`. Use `letI := (Cartier.constFn p).toAlgebra`. Use `haveI : IsScalarTower k E.ring X.functionField := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.FormallyEtale E.ring X.functionField := .of_isLocalization (nonZeroDivisors E.ring)`. Conclude with `hω.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k E.ring X.functionField) n)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isFreeGen_toRat {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) :
     IsFreeGen X.functionField (E.toRat n ω) := by
@@ -135,15 +135,15 @@ theorem isFreeGen_toRat {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) :
     (KaehlerDifferential.isBaseChange_of_formallyEtale k E.ring X.functionField) n)
 
 /- English proof (translation)
-Use `letI := E.const.toAlgebra`. Use `letI := (Cartier.constFn p).toAlgebra`. Use `haveI : IsScalarTower k E.ring X.functionField := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.EssFiniteType k E.ring := E.essFiniteType`. Use `haveI := formallySmooth_of_isRegularLocalRing_of_perfectField k E.ring`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Take `⟨m, z, b, -, hb⟩` from `exists_basis_kaehler_uniformiser k ht`. Establish `h1` using `trdeg_eq_of_basis_kaehler k X.functionField b`. Establish `e : (Spec.preimage (X.fromSpecStalk (genericPoint X) ≫ p)).hom = Cartier.constFn p`. Use `letI := algebraΓOfHom p`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e₁ : strHom k X = p` using `strHom_eq fun _ => rfl`. Establish `e₂ : X.fromSpecStalk (genericPoint X) ≫ p = Spec.map (CommRingCat.ofHom (Cartier.constFn p))` using `by conv_lhs => rw [← e₁, strHom, ← Category.assoc, Scheme.fromSpecStalk_toSpecΓ, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using `[Cartier.constFn, fnOf, algX, Scheme.Hom.appLE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e₂, Spec.preimage_map]`. Both sides reduce to the same expression. Establish `h2` using `topologicalKrullDim_preimage_genericPoint_eq p (d := m + 1) (by rw [e]; exact h1)`. Establish `h3 : (p ⁻¹' {genericPoint (Spec (.of k))} : Set X) = Set.univ` using `Set.eq_univ_of_forall fun _ => Subsingleton.elim (α := PrimeSpectrum k) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h2` using `[h3, (Homeomorph.Set.univ X).isHomeomorph.topologicalKrullDim_eq, hn]`. Take `rfl : n = m + 1` from `by exact_mod_cast h2`. Conclude with `⟨_, isFreeGen_dForm z b hb⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isFreeGen [PerfectField k] [LocallyOfFiniteType p]
     (hn : topologicalKrullDim X = n) : ∃ ω : Forms E.const n, IsFreeGen E.ring ω := by
@@ -175,7 +175,7 @@ theorem exists_isFreeGen [PerfectField k] [LocallyOfFiniteType p]
   exact ⟨_, isFreeGen_dForm z b hb⟩
 
 /- English proof (translation)
-Take `⟨ω, hω⟩` from `E.exists_isFreeGen hn`. Take `⟨f, rfl⟩` from `(E.isFreeGen_toRat hω).2 η`. Establish `hf : f ≠ 0` using `fun h => hη (by rw [h]; exact zero_smul _ _)`. Establish `h : E.IsFormOrd (f • E.toRat n ω) _` using `⟨ω, hω, Units.mk0 f hf, rfl, rfl⟩`. Conclude with `(h.formOrd_eq hη).symm ▸ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFormOrd_formOrd [PerfectField k] [LocallyOfFiniteType p]
     (hn : topologicalKrullDim X = n) {η : RatForms p n} (hη : η ≠ 0) :
@@ -189,19 +189,17 @@ theorem isFormOrd_formOrd [PerfectField k] [LocallyOfFiniteType p]
 end DivOver
 
 /- English proof (translation)
-Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨x, hx⟩⟩`. Use `letI := X.presheaf.algebra_section_stalk (⟨x, hx⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨x, hx⟩`. Use `(mem_range_algebraMap_iff_forall_height_eq_one (A := X.presheaf.stalk x) f).2 fun q hq h1 => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : PrimeSpectrum Γ(X, U)` to `⟨q.comap (algebraMap _ (X.presheaf.stalk x)), inferInstance⟩`. Establish `hP1 : P.asIdeal.height = 1` using `(IsLocalization.height_comap (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl q).trans h1`. Establish `hPQ : P ≤ hU.primeIdealOf ⟨x, hx⟩` using `fun s hs => by_contra fun hs' => hq.ne_top (q.eq_top_of_isUnit_mem hs (IsLocalization.map_units (X.presheaf.stalk x) (⟨s, hs'⟩ : (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl)))`. Establish `hz : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `z : U` to `⟨hU.fromSpec P, hz⟩`. Establish `hP : hU.primeIdealOf z = P` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf z)`. Establish `hzx : (z : X) ⤳ x`. Establish `h` using `((PrimeSpectrum.le_iff_specializes P (hU.primeIdealOf ⟨x, hx⟩)).mp hPQ).map hU.fromSpec.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[hU.fromSpec_primeIdealOf ⟨x, hx⟩]`. Then use the resulting hypothesis. Use `clear_value z`. Use `haveI := hU.isLocalization_stalk z`. Establish `hc : Order.coheight (z : X) = 1`. Use `IsLocalization.AtPrime.ringKrullDim_eq_height (hU.primeIdealOf z).asIdeal (X.presheaf.stalk (z : X))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[ringKrullDim_stalk_eq_coheight, hP, hP1]`. Conclude with `this` after adjusting the coercions. Take `⟨a, rfl⟩` from `h z hzx hc`. Take `⟨⟨c, s⟩, e⟩` from `IsLocalization.surj (hU.primeIdealOf z).asIdeal.primeCompl a`. Use `(mem_primeLocalSubalgebra_iff q _).2 ⟨algebraMap _ _ s.1, ?_, algebraMap _ _ c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `s.2` as an intermediate fact. Rewrite `this` using `[Ideal.mem_primeCompl_iff]`. Establish `h' : s.1 ∉ P.asIdeal` using `by simpa only [hP] using this`. Conclude with `h'`. Establish `e'` using `congrArg (algebraMap _ X.functionField) e`.
-
-Rewrite `e'` using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[Algebra.smul_def, mul_comm]`. Conclude with `((algebraMap_germ hx c).trans e'.symm).trans (congrArg _ (algebraMap_germ hx s.1).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_of_forall_coheight_eq_one [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] {x : X}
     {f : X.functionField} (h : ∀ z, z ⤳ x → Order.coheight z = 1 → RegAt z f) : RegAt x f := by
@@ -251,7 +249,7 @@ namespace DivOver
 variable {p : X ⟶ Sp k} {E : DivOver p} {n : ℕ} {x z : X}
 
 /- English proof (translation)
-The claim follows from `have ⟨U, hx, a, e⟩ := hf.exists_fnOf e ▸ regAt_fnOf (h.mem_open U.isOpen hx) _ a`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Discrepancy.regAt_of_specializes {f : X.functionField} (h : z ⤳ x)
     (hf : RegAt x f) : RegAt z f :=
@@ -259,13 +257,13 @@ theorem _root_.GlobalTheory.Discrepancy.regAt_of_specializes {f : X.functionFiel
   e ▸ regAt_fnOf (h.mem_open U.isOpen hx) _ a
 
 /- English proof (translation)
-Introduce `f hf` and use `h f (regAt_of_specializes hz hf)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Through.of_specializes (h : E.Through z) (hz : z ⤳ x) : E.Through x :=
   fun f hf => h f (regAt_of_specializes hz hf)
 
 /- English proof (translation)
-The claim follows from `Through.of_specializes (fun f => (h f).2) hz`.
+A detailed English derivation is pending.
 -/
 theorem IsAt.through (h : E.IsAt z) (hz : z ⤳ x) : E.Through x :=
   Through.of_specializes (fun f => (h f).2) hz
@@ -278,7 +276,7 @@ def IsAt.equiv (h : E.IsAt z) : X.presheaf.stalk z ≃+* E.ring :=
       fun f => have ⟨a, ha⟩ := (h f).1 f.2; ⟨a, Subtype.ext ha⟩⟩
 
 /- English proof (translation)
-Use `(ringKrullDim_eq_of_ringEquiv h.equiv).trans (IsDiscreteValuationRing.ringKrullDim_eq_one E.ring)` as an intermediate fact. Rewrite `this` using `[ringKrullDim_stalk_eq_coheight]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAt.coheight_eq_one (h : E.IsAt z) : Order.coheight z = 1 := by
   have := (ringKrullDim_eq_of_ringEquiv h.equiv).trans
@@ -287,11 +285,9 @@ theorem IsAt.coheight_eq_one (h : E.IsAt z) : Order.coheight z = 1 := by
   exact_mod_cast this
 
 /- English proof (translation)
-Use `haveI : IsDiscreteValuationRing (X.presheaf.stalk z) := IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing h.equiv.symm`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible (X.presheaf.stalk z)`. Take `⟨m, u, e⟩` from `exists_eq_unit_mul_zpow ht g.ne_zero`. Establish `h1` using `ordTop_vw_unit_mul_zpow (F := X.functionField) ht u m`. Establish `h2` using `ordTop_vw_unit_mul_zpow (F := X.functionField) (ht.map h.equiv) (Units.map h.equiv.toMonoidHom u) m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← e, ordTop_vw_of_ne_zero _ g.ne_zero, WithTop.coe_inj]`. Use `replace h2 : ordTop_vw E.ring (g : X.functionField) = m := e ▸ h2`. Rewrite `h2` using `[ordTop_vw_of_ne_zero _ g.ne_zero, WithTop.coe_inj]`. Use `h2.trans ((Scheme.ord_eq_iff h.coheight_eq_one g.ne_zero).2 ?_).symm` and prove the remaining obligations. Rewrite using `[← h1]`.
-
-Conclude with `(WithZero.exp_log ((map_ne_zero _).2 g.ne_zero)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAt.ord_eq [IsLocallyNoetherian X] (h : E.IsAt z) (g : X.functionFieldˣ) :
     E.ord g = Scheme.ord (g : X.functionField) z := by
@@ -312,11 +308,11 @@ theorem IsAt.ord_eq [IsLocallyNoetherian X] (h : E.IsAt z) (g : X.functionField�
 variable (p) in
 
 /- English proof (translation)
-Set `V : ValuationSubring X.functionField` to `{ (algebraMap (X.presheaf.stalk z) X.functionField).range with mem_or_inv_mem' := ValuationRing.isInteger_or_isInteger (X.presheaf.stalk z) }`. Set `e : X.presheaf.stalk z ≃+* V` to `RingEquiv.ofBijective (algebraMap (X.presheaf.stalk z) X.functionField).rangeRestrict ⟨fun _ _ e => IsFractionRing.injective _ X.functionField (congrArg Subtype.val e), RingHom.rangeRestrict_surjective _⟩`. Take `⟨U, hU, hz, -⟩` from `exists_isAffineOpen_mem_and_subset (x := z) (U := ⊤) trivial`. Establish `hc (a : k) : algebraMap _ X.functionField (X.presheaf.germ U z hz (algX p U a)) = Cartier.constFn p a` using `(algebraMap_germ hz _).trans (RingHom.congr_fun (fnOf_comp_algX p U _) a)`. Use `⟨⟨V, fun a => ⟨_, hc a⟩, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, ?_⟩, fun _ => Iff.rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (algX p U).FiniteType` using `(p.finiteType_appLE (isAffineOpen_top _) hU _).comp (.of_surjective _ (ConcreteCategory.bijective_of_isIso _).2)`. Establish `h2 : (X.presheaf.germ U z hz).hom.EssFiniteType`. Use `letI := X.presheaf.algebra_section_stalk (⟨z, hz⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨z, hz⟩`. Use the proof step `Algebra.EssFiniteType.of_isLocalization (X.presheaf.stalk z) (hU.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h3` using `(h1.essFiniteType.comp h2).comp (RingHom.FiniteType.of_surjective e.toRingHom e.surjective).essFiniteType`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun a => Subtype.ext (hc a).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_isAt [LocallyOfFiniteType p] (z : X)
     [IsDiscreteValuationRing (X.presheaf.stalk z)] : ∃ E : DivOver p, E.IsAt z := by
@@ -347,7 +343,7 @@ theorem exists_isAt [LocallyOfFiniteType p] (z : X)
   exact RingHom.ext fun a => Subtype.ext (hc a).symm
 
 /- English proof (translation)
-The claim follows from `haveI := IsNormalScheme.isDiscreteValuationRing_stalk h exists_isAt p z`.
+A detailed English derivation is pending.
 -/
 theorem exists_isAt_of_coheight_eq_one [LocallyOfFiniteType p] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (h : Order.coheight z = 1) : ∃ E : DivOver p, E.IsAt z :=
@@ -355,9 +351,7 @@ theorem exists_isAt_of_coheight_eq_one [LocallyOfFiniteType p] [IsLocallyNoether
   exists_isAt p z
 
 /- English proof (translation)
-Set `z : Sp (Polynomial k)` to `⟨Ideal.span {Polynomial.X}, (Ideal.span_singleton_prime Polynomial.X_ne_zero).mpr Polynomial.prime_X⟩`. Establish `hz : Order.coheight z = 1`. Rewrite using `[← idealHeight_eq_coheight]`. Conclude with `Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (R := Polynomial k) (mem_nonZeroDivisors_of_ne_zero Polynomial.X_ne_zero) Polynomial.prime_X.not_unit`. Use `haveI : LocallyOfFiniteType (spMap (algebraMap k (Polynomial k))) := HasRingHomProperty.Spec_iff.2 (RingHom.finiteType_algebraMap.2 inferInstance)`.
-
-Conclude with `⟨z, exists_isAt_of_coheight_eq_one hz⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isAt_affineLine :
     ∃ (z : Sp (Polynomial k)) (E : DivOver (spMap (algebraMap k (Polynomial k)))),
@@ -419,13 +413,13 @@ variable {p} {Δ : X → ℚ} {η η' : RatForms p n} {x z : X} {m m' : ℕ} {g 
   {E : DivOver p}
 
 /- English proof (translation)
-The claim follows from `have ⟨η, m, g, h₁, h₂, h₃, h₄⟩ := h; ⟨η, m, g, h₁, h₂, h₃, fun E hE => (h₄ E hE).le⟩`.
+A detailed English derivation is pending.
 -/
 theorem KltAt.lcAt (h : KltAt p n Δ x) : LcAt p n Δ x :=
   have ⟨η, m, g, h₁, h₂, h₃, h₄⟩ := h; ⟨η, m, g, h₁, h₂, h₃, fun E hE => (h₄ E hE).le⟩
 
 /- English proof (translation)
-Establish `: (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[discrep, ← h z hz E hE]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsLogEqn.discrep_eq_neg (h : IsLogEqn p Δ η x m g) (hm : 0 < m) (hz : z ⤳ x)
     (hE : E.IsAt z) : discrep E η m g = -Δ z := by
@@ -435,7 +429,7 @@ theorem IsLogEqn.discrep_eq_neg (h : IsLogEqn p Δ η x m g) (hm : 0 < m) (hz : 
   ring
 
 /- English proof (translation)
-Take `⟨η, m, g, -, hm, hg, h⟩` from `h`. Use `h E (hE.through hz)` as an intermediate fact. Rewrite `this` using `[hg.discrep_eq_neg hm hz hE]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem KltAt.lt_one (h : KltAt p n Δ x) (hz : z ⤳ x) (hE : E.IsAt z) : Δ z < 1 := by
   obtain ⟨η, m, g, -, hm, hg, h⟩ := h
@@ -444,7 +438,7 @@ theorem KltAt.lt_one (h : KltAt p n Δ x) (hz : z ⤳ x) (hE : E.IsAt z) : Δ z 
   linarith
 
 /- English proof (translation)
-Take `⟨η, m, g, -, hm, hg, h⟩` from `h`. Use `h E (hE.through hz)` as an intermediate fact. Rewrite `this` using `[hg.discrep_eq_neg hm hz hE]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem LcAt.le_one (h : LcAt p n Δ x) (hz : z ⤳ x) (hE : E.IsAt z) : Δ z ≤ 1 := by
   obtain ⟨η, m, g, -, hm, hg, h⟩ := h
@@ -453,7 +447,7 @@ theorem LcAt.le_one (h : LcAt p n Δ x) (hz : z ⤳ x) (hE : E.IsAt z) : Δ z �
   linarith
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih => rw [pow_succ, E.ord_mul, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem DivOver.ord_pow (E : DivOver p) (f : X.functionFieldˣ) (r : ℕ) :
     E.ord (f ^ r) = r * E.ord f := by
@@ -462,7 +456,7 @@ theorem DivOver.ord_pow (E : DivOver p) (f : X.functionFieldˣ) (r : ℕ) :
   | succ r ih => rw [pow_succ, E.ord_mul, ih]; push_cast; ring
 
 /- English proof (translation)
-Use `E.ord_mul f f⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, E.ord_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem DivOver.ord_inv (E : DivOver p) (f : X.functionFieldˣ) : E.ord f⁻¹ = -E.ord f := by
   have := E.ord_mul f f⁻¹
@@ -472,7 +466,7 @@ theorem DivOver.ord_inv (E : DivOver p) (f : X.functionFieldˣ) : E.ord f⁻¹ =
 variable [PerfectField k] [LocallyOfFiniteType p]
 
 /- English proof (translation)
-Take `⟨ω, hω, f', e, h⟩` from `E.isFormOrd_formOrd hn hη`. Use `DivOver.IsFormOrd.formOrd_eq (smul_ne_zero f.ne_zero hη) ⟨ω, hω, f * f', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_smul, ← e]`. Rewrite using `[E.ord_mul, h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem DivOver.formOrd_smul (E : DivOver p) (hn : topologicalKrullDim X = n) (hη : η ≠ 0)
     (f : X.functionFieldˣ) :
@@ -483,19 +477,17 @@ theorem DivOver.formOrd_smul (E : DivOver p) (hn : topologicalKrullDim X = n) (h
   · rw [E.ord_mul, h]
 
 /- English proof (translation)
-Take `⟨ω, hω, f, e, -⟩` from `E.isFormOrd_formOrd hn hη`. Take `⟨f', e'⟩` from `(E.isFreeGen_toRat hω).2 η'`. Establish `hf' : f' ≠ 0` using `fun h => hη' (by rw [← e', h]; exact zero_smul _ _)`. Take `⟨c, rfl⟩ : ∃ c : X.functionFieldˣ, η' = (c : X.functionField) • η` from `⟨Units.mk0 f' hf' * f⁻¹, by rw [e, smul_smul, ← e']; simp⟩`. Establish `h₁ : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₂ : (m' : ℚ) ≠ 0` using `by exact_mod_cast hm'.ne'`. Use `set u : X.functionFieldˣ := c ^ (m * m') * g ^ m' * (g' ^ m)⁻¹ with hu`. Establish `key (F : DivOver p) : (F.ord u : ℚ) = m * m' * F.ord c + m' * F.ord g - m * F.ord g'`. Rewrite using `[hu, F.ord_mul, F.ord_mul, F.ord_inv, F.ord_pow, F.ord_pow, F.ord_pow]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 (z : X) (hz : z ⤳ x) (F : DivOver p) (hF : F.IsAt z) : F.ord u = 0`. Establish `a` using `h z hz F hF`. Establish `b` using `h' z hz F hF`. Rewrite `b` using `[F.formOrd_smul hn hη]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (F.ord u : ℚ) = 0`. Rewrite using `[key, ← a, ← b]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `reg (v : X.functionFieldˣ) (hv : ∀ z, z ⤳ x → ∀ F : DivOver p, F.IsAt z → 0 ≤ F.ord v) : 0 ≤ E.ord v` using `(E.ord_nonneg_iff v).2 (hE _ (regAt_of_forall_coheight_eq_one fun z hz h1 =>`. Establish `⟨F, hF⟩` using `DivOver.exists_isAt_of_coheight_eq_one (p := p) h1`. Use the proof step `(hF _).1 ((F.ord_nonneg_iff v).1 (hv z hz F hF))))`. Establish `a` using `reg u fun z hz F hF => (h0 z hz F hF).ge`. Establish `b` using `reg u⁻¹ fun z hz F hF => by rw [F.ord_inv, h0 z hz F hF, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b` using `[E.ord_inv]`. Establish `hE0 : (E.ord u : ℚ) = 0` using `by exact_mod_cast (by omega : E.ord u = 0)`. Rewrite `hE0` using `[key]`. Rewrite using `[discrep, discrep, E.formOrd_smul hn hη]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-hE0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem discrep_eq [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (hn : topologicalKrullDim X = n) (hη : η ≠ 0) (hη' : η' ≠ 0) (hm : 0 < m) (hm' : 0 < m')
@@ -537,7 +529,7 @@ theorem discrep_eq [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
   linear_combination -hE0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _, _, h₁, h₂, h₃, h₄⟩ E hE => discrep_eq hn h₁ hη h₂ hm h₃ h hE ▸ h₄ E hE, fun h' => ⟨η, m, g, hη, hm, h, h'⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLogEqn.kltAt_iff [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X]
     (hn : topologicalKrullDim X = n) (hη : η ≠ 0) (hm : 0 < m) (h : IsLogEqn p Δ η x m g) :
@@ -546,9 +538,9 @@ theorem IsLogEqn.kltAt_iff [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme 
     fun h' => ⟨η, m, g, hη, hm, h, h'⟩⟩
 
 /- English proof (translation)
-Take `⟨ω', hω', f, e, h⟩` from `E.isFormOrd_formOrd hn h0`. Set `ρ : Γ(X, U) →+* E.ring` to `(fnOf U (gen_mem hx)).codRestrict E.ring fun a => hE _ (regAt_fnOf hx _ a)`. Establish `hρ : ρ.comp (algX p U) = E.const` using `RingHom.ext fun a => Subtype.ext (RingHom.congr_fun (fnOf_comp_algX p U _) a)`. Establish `e₁ : E.toRat n (TopForm.formMap n ρ hρ ω) = formOf U (gen_mem hx) ω` using `formMap_formMap _ _ _ rfl _ _ _ ω`. Take `⟨a, ha⟩` from `hω'.2 (TopForm.formMap n ρ hρ ω)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `e₁` using `[← ha, map_smulₛₗ, e]`. Rewrite using `[← h, E.ord_nonneg_iff, ← (E.isFreeGen_toRat hω').1 e₁]`. Conclude with `a.2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DivOver.formOrd_formOf_nonneg (hn : topologicalKrullDim X = n) {U : X.Opens} (hx : x ∈ U)
     (hE : E.Through x) (ω : FormsOn p n U) (h0 : formOf U (gen_mem hx) ω ≠ 0) :
@@ -568,11 +560,11 @@ theorem DivOver.formOrd_formOf_nonneg (hn : topologicalKrullDim X = n) {U : X.Op
 omit [PerfectField k] [LocallyOfFiniteType p] in
 
 /- English proof (translation)
-Establish `h0 : formOf U (gen_mem hz) ω ≠ 0` using `fun h => one_ne_zero ((isFreeGen_formOf (gen_mem hz) hω).1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Set `ρ : Γ(X, U) →+* E.ring` to `hE.equiv.toRingHom.comp (X.presheaf.germ U z hz).hom`. Establish `hρ' : E.ring.subtype.comp ρ = fnOf U (gen_mem hz)` using `RingHom.ext fun a => algebraMap_germ hz a`. Establish `hρ : ρ.comp (algX p U) = E.const` using `RingHom.ext fun a => Subtype.ext ((RingHom.congr_fun hρ' _).trans (RingHom.congr_fun (fnOf_comp_algX p U _) a))`. Establish `e₁ : E.toRat n (TopForm.formMap n ρ hρ ω) = formOf U (gen_mem hz) ω` using `formMap_formMap _ _ _ hρ' _ _ _ ω`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DivOver.IsFormOrd.formOrd_eq h0 ⟨TopForm.formMap n ρ hρ ω, ?_, 1, by simp [e₁], E.ord_one⟩` and prove the remaining obligations. Use `letI := (algX p U).toAlgebra`. Use `letI := E.const.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `letI := X.presheaf.algebra_section_stalk (⟨z, hz⟩ : U)`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower k Γ(X, U) E.ring := IsScalarTower.of_algebraMap_eq' hρ.symm`. Use `haveI := hω.affine.isLocalization_stalk ⟨z, hz⟩`. Use `haveI : IsLocalization (hω.affine.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl E.ring := IsLocalization.isLocalization_of_algEquiv _ (AlgEquiv.ofRingEquiv (f := hE.equiv) fun _ => rfl : X.presheaf.stalk z ≃ₐ[Γ(X, U)] E.ring)`. Use `haveI : Algebra.FormallyEtale Γ(X, U) E.ring := .of_isLocalization (hω.affine.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl`. Conclude with `hω.gen.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k Γ(X, U) E.ring) n)`.
+A detailed English derivation is pending.
 -/
 theorem DivOver.formOrd_formOf_eq_zero {U : X.Opens} (hz : z ∈ U) (hE : E.IsAt z)
     {ω : FormsOn p n U} (hω : IsFrame ω) : E.formOrd (formOf U (gen_mem hz) ω) = 0 := by
@@ -604,9 +596,9 @@ theorem DivOver.formOrd_formOf_eq_zero {U : X.Opens} (hz : z ∈ U) (hE : E.IsAt
 omit [LocallyOfFiniteType p] in
 
 /- English proof (translation)
-Use `haveI := SmoothOfRelativeDimension.smooth n p`. Take `⟨U, ω, hx, hω⟩` from `exists_isFrame p n x`. Establish `h0 : formOf U (gen_mem hx) ω ≠ 0` using `fun h => one_ne_zero ((isFreeGen_formOf (gen_mem hx) hω).1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Use `⟨_, 1, 1, h0, one_pos, fun z hz E hE => ?_, fun E hE => ?_⟩` and prove the remaining obligations. Simplify using `[DivOver.formOrd_formOf_eq_zero (hz.mem_open U.isOpen hx) hE hω]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `DivOver.formOrd_formOf_nonneg hn hx hE ω h0` as an intermediate fact. Establish `: (0 : ℚ) ≤ E.formOrd (formOf U (gen_mem hx) ω)` using `by exact_mod_cast this`. Simplify using `only [discrep, E.ord_one]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kltAt_zero_of_smooth [SmoothOfRelativeDimension n p] (hn : topologicalKrullDim X = n)
     (x : X) : KltAt p n 0 x := by
@@ -625,13 +617,13 @@ theorem kltAt_zero_of_smooth [SmoothOfRelativeDimension n p] (hn : topologicalKr
 omit [LocallyOfFiniteType p] in
 
 /- English proof (translation)
-Use `haveI := SmoothOfRelativeDimension.smooth n p`. Use `⟨baseForm p n, baseForm_ne_zero p n, fun x g hg z hz E hE => ?_⟩` and prove the remaining obligations. Take `⟨U, ω, hU, hω⟩` from `exists_isFrame p n z`. Establish `hgen` using `isFreeGen_formOf (gen_mem hU) hω`. Establish `h0 : formOf U (gen_mem hU) ω ≠ 0` using `fun h => one_ne_zero (hgen.1 (a₁ := 1) (a₂ := 0) (by simp [h]))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hgen.2 (baseForm p n)`. Establish `hc0 : c ≠ 0` using `fun e => baseForm_ne_zero p n (by rw [← hc, e]; exact zero_smul _ _)`. Establish `h1` using `isDivOfForm_canonical p n U ω hω z hU (Units.mk0 c hc0) hc.symm`. Establish `h2` using `E.formOrd_smul hn h0 (Units.mk0 c hc0)`. Rewrite `h2` using `[DivOver.formOrd_formOf_eq_zero hU hE hω, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `replace h2 : E.formOrd (baseForm p n) = E.ord (Units.mk0 c hc0) := hc ▸ h2`. Take `⟨V, hV, hgV⟩` from `hg.exists_nhds`. Take `⟨d, hd⟩` from `D.exists_isEqn z`. Establish `h3` using `((hgV z (hz.mem_open V.isOpen hV)).mult_eq.symm.trans ((h1.nsmul m).add hd).mult_eq)`. Rewrite `h3` using `[← hE.ord_eq, ← hE.ord_eq, E.ord_mul, E.ord_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[h2, h3, qWeil, hd.mult_eq, ← hE.ord_eq]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isLogCanonicalMultiple_canonical [IsLocallyNoetherian X] [SmoothOfRelativeDimension n p]
     (hn : topologicalKrullDim X = n) (D : CartierDiv X) (hm : 0 < m) :
@@ -665,7 +657,7 @@ section Checks
 variable {p : X ⟶ Sp k} {n : ℕ} [IsLocallyNoetherian X]
 
 /- English proof (translation)
-The claim follows from `D.finite_support_mult.subset fun z hz h => hz (by simp [qWeil, h]) coheight z hz := CartierDiv.coheight_eq_one_of_mult_ne_zero (D := D) fun h => hz (by simp [qWeil, h]) nonneg z := by refine div_nonneg (Int.cast_nonneg ?_) (Nat.cast_nonneg m) obtain ⟨g, hg⟩ := D.exists_isEqn z ob …`.
+A detailed English derivation is pending.
 -/
 theorem isEffQDiv_qWeil [CompactSpace X] {D : CartierDiv X} (hD : D.Eff) (m : ℕ) :
     IsEffQDiv (qWeil D m) where
@@ -682,7 +674,7 @@ theorem isEffQDiv_qWeil [CompactSpace X] {D : CartierDiv X} (hD : D.Eff) (m : �
     · rw [hg.mult_eq, Scheme.ord_eq_zero_of_coheight_neq_one hz]
 
 /- English proof (translation)
-Introduce `hk` and use `have ⟨_, hE⟩ := DivOver.exists_isAt_of_coheight_eq_one (p := p) h1 (hk.lt_one hz hE).not_ge h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_kltAt_of_one_le [LocallyOfFiniteType p] [GlobalTheory.IsNormalScheme X] {Δ : X → ℚ} {x z : X}
     (hz : z ⤳ x) (h1 : Order.coheight z = 1) (h : 1 ≤ Δ z) : ¬ KltAt p n Δ x := fun hk =>
@@ -690,7 +682,7 @@ theorem not_kltAt_of_one_le [LocallyOfFiniteType p] [GlobalTheory.IsNormalScheme
   (hk.lt_one hz hE).not_ge h
 
 /- English proof (translation)
-The claim follows from `kltAt_zero_of_smooth (ProjVar.Var.topologicalKrullDim_eq _) x`.
+A detailed English derivation is pending.
 -/
 example (d : ℕ) (x : (ProjVar.proj ℂ d).X) :
     KltAt (ProjVar.proj ℂ d).str (ProjVar.proj ℂ d).dim 0 x :=
@@ -736,9 +728,9 @@ def IsolatedNonKltDivisor : Prop :=
 def NadelVanishingAndNonKltDivisor : Prop := NadelVanishingPair ∧ IsolatedNonKltDivisor
 
 /- English proof (translation)
-Use `haveI := Y.isNormalScheme`. Use `h Y.X Y.str Y.dim Y.isProjOver Y.topologicalKrullDim_eq _ _ m _ r _ (isLB_toLB N) (isEffQDiv_qWeil hD m) hm (isLogCanonicalMultiple_canonical Y.topologicalKrullDim_eq D hm) hr hM hM' fun C hC => ?_` and prove the remaining obligations. Establish `hC'` using `(Y.isCurve_iff C).2 hC`. Establish `: (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Express the relevant statement in the definitionally equal form `(Y.deg C N : ℚ) = Y.deg C (m • canonical Y.str Y.dim + D) / m + Y.deg C M / r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e C hC', hC'.deg_add, hC'.deg_nsmul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem NadelVanishingPair.of_smooth (h : NadelVanishingPair) (Y : ProjVar.Var ℂ) (N D M : Y.Dv)
     {m r : ℕ} (hm : 0 < m) (hr : 0 < r) (hD : Y.Eff D) (hM : Y.nef M) (hM' : Y.big M)

@@ -16,13 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠`. Establish `hne : (𝔠.elt : Submodule (𝓞 F) F) ≠ ⊥`. Introduce `h`. Apply `𝔠.ne_zero` to reduce the goal to its premises. Conclude with `(FractionalIdeal.coeToSubmodule_eq_bot).mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).mp hne`. Take `⟨a, ha, hint⟩` from `(𝔠 : FractionalIdeal (𝓞 F)⁰ F).isFractional`. Take `⟨y, hy⟩` from `hint x hx`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hy0 : (algebraMap (𝓞 F) F y) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, Algebra.smul_def]`. Conclude with `mul_ne_zero ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 F) F)).mpr ha0) hx0`. Use `⟨⟨(a * y) • x, Submodule.smul_mem _ _ hx⟩, ?_⟩` and prove the remaining obligations. Introduce `τ`. Establish `hval : ((a * y) • x : F) = algebraMap (𝓞 F) F y * algebraMap (𝓞 F) F y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm a y, mul_smul, ← hy, Algebra.smul_def]`. Use `show 0 < τ ((a * y) • x)`. Rewrite using `[hval, map_mul]`. Establish `: τ (algebraMap (𝓞 F) F y) ≠ 0` using `(map_ne_zero τ).mpr hy0`. Conclude with `mul_self_pos.mpr this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fracId_exists_totPos : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F),
     ∃ c : 𝔠.elt, IsTotPos (c : F) := by

@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.LiftRefIrr
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push_neg at H`. Conclude with `h (Submodule.iSup_induction p (motive := fun z => ℓ z = 0) hx (fun i y hy => H i y hy) (map_zero ℓ) (fun a b ha hb => by rw [map_add, ha, hb, add_zero]))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_ne_of_mem_iSup' {M : Type} [AddCommGroup M] [Module ℂ M] {ι : Sort*} (p : ι → Submodule ℂ M)
     (ℓ : M →+ ℂ) {x : M} (hx : x ∈ ⨆ i, p i) (h : ℓ x ≠ 0) : ∃ i, ∃ y ∈ p i, ℓ y ≠ 0 := by
@@ -29,11 +29,11 @@ theorem exists_ne_of_mem_iSup' {M : Type} [AddCommGroup M] [Module ℂ M] {ι : 
     (fun a b ha hb => by rw [map_add, ha, hb, add_zero]))
 
 /- English proof (translation)
-Take `⟨-, ι, -, S, hirr, -, -, -, -, hsum⟩` from `GlobalTheory.T.typeSpaces_orthogonal_of_classSum_inner D.host.E D.R.nV Mr.wt Mr.J Mr.χ Mr.J_open`. Set `p : ι → Submodule ℂ (D.what₂.Mt μ j)` to `fun i => (NG.isoTyp Mr.wt.ρ (S i) ⊓ NG.TypeSp Mr.wt.ρ Mr.J Mr.χ).comap Mr.real`. Establish `htop : (⨆ i, p i) = ⊤`. Apply `Submodule.map_injective_of_injective Mr.real_inj` to reduce the goal to its premises. Rewrite using `[Submodule.map_iSup, Submodule.map_top, Mr.real_range]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hsum]`. Use `iSup_congr fun i => ?_` and prove the remaining obligations. Use `show Submodule.map Mr.real (Submodule.comap Mr.real _) = _`. Rewrite using `[Submodule.map_comap_eq, Mr.real_range]`. Conclude with `inf_eq_right.2 inf_le_right`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hxm : x ∈ ⨆ i, p i` using `htop ▸ Submodule.mem_top`. Set `ℓ : D.what₂.Mt μ j →+ ℂ` to `AddMonoidHom.mk' (fun F => inner ℂ F x) (fun a b => inner_add_left a b x)`. Take `⟨i, F, hF, hne⟩` from `exists_ne_of_mem_iSup' p ℓ hxm (by show inner ℂ x x ≠ 0`. Conclude with `inner_self_ne_zero.2 hx)`. Conclude with `⟨S i, hirr i, F, (Submodule.mem_inf.1 hF).1, hne⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_irr_pair {D : D7} {μ : D.what₂.Tup} {j : ℕ} (Mr : MtReal D μ j) (x : D.what₂.Mt μ j) (hx : x ≠ 0) :
     ∃ (S : Submodule ℂ (GAf D.host.E D.R.nV → Mr.wt.W)) (_ : NG.IsIrrRep Mr.wt.ρ S),
@@ -61,11 +61,11 @@ end GlobalTheory.LiftRefIrr
 open GlobalTheory.LiftRefIrr in
 
 /- English proof (translation)
-Introduce `hN hL`. Establish `hA` using `GlobalTheory.T.theta_isotypic_injective hN hL`. Establish `hB` using `GlobalTheory.T.theta_isotypic_inner_ne_zero hN hL`. Unfold `GlobalTheory.LiftRef.AtRows at *`. Use `GlobalTheory.LiftRef.overRows_and_mono hA hB ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K B f T w Z Wt hX z p0 Y hA' hB' Rw a M tup Q hMA hMI j hj1 hj2 σ hσ`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 hσ`. Establish `hθ` using `fun h => hy0 (hA' Rw a M tup Q hMA hMI j hj1 hj2 σ y hy h)`. Take `⟨S, hS, F, hF, hne⟩` from `exists_irr_pair (M _ j hj1 hj2) _ hθ`. Use `⟨S, hS, ?_, hB' Rw a M tup Q hMA hMI j hj1 hj2 σ S hS ⟨y, hy, F, hF, hne⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hb`. Rewrite `hF` using `[hb, Submodule.mem_bot]`. Substitute `hF` using the available equality. Conclude with `hne (inner_zero_left _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LiftRef.local_lift_at_reference : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.LiftRef.AtRows hL fun D cf _ Rw a M => ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (σ : D.what₂.FT), D.what₂.isot j σ ≠ ⊥ → ∃ (S : Submodule ℂ (Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 j h1 h2).wt.W)) (hS : NG.IsIrrRep (M D.what₂.mu0 j h1 h2).wt.ρ S), (NG.isoTyp (M D.what₂.mu0 j h1 h2).wt.ρ S).comap (M D.what₂.mu0 j h1 h2).real ≠ ⊥ ∧ ∀ μ : D.naut.CG 1, (a.chr.e1 μ).1 = cf.mu0 ⟨j - 1, by omega⟩ → ∀ w, IsSplitPl D.host w → D.nbc.locAU j (a.A.cls j h1 h2 (GlobalTheory.LiftRef.autOf (M D.what₂.mu0 j h1 h2) S hS)) w = D.naut.lpChar (D.naut.lpSum (Rw.locR σ w) (spehLoc D.nd D.naut ⟨1, μ, D.R.t⟩ w)) (D.naut.locG D.naut.etaTinv w) := by
   intro hN hL

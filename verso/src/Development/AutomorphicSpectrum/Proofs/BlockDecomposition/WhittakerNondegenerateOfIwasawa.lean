@@ -25,31 +25,27 @@ variable {D : D7} {n : ℕ}
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hω` using `hS.hω`. Establish `hH` using `hS.hH`. Take `⟨𝓕, h𝓕⟩` from `hS.hμ`. Establish `hμ : μ.IsAddHaarMeasure` using `h𝓕.1`. Establish `hl : lam.IsAddHaarMeasure` using `hC.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnb : IsNMap nb` using `hC.1`. Establish `hub : u = nb b1` using `mat_inj (by rw [hnb b1]; exact hu)`. Use `set A := absA D (Matrix.GeneralLinearGroup.det a) with hAdef`. Establish `hA : 0 < A` using `absA_pos _`. Take `⟨m', hm'P, hm'⟩` from `exists_ad a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwm : w * m = m' * w` using `weyl_mul hw a hm hm'`. Establish `hblk : blkA (mat m') = (ad a).1` using `by rw [hm', upperLeft_blockMatrix]; rfl`. Use `set φ0 : schwartzA θ V.rank n := ω k Φ with hφ0`. Establish `hωe : ω (m * u * k) Φ = ω (m * u) φ0`. Rewrite using `[map_mul (f := ω) (m * u) k]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set T : Mx D n n := adj a.1 * β.1.map (incA D) * a.1 with hT`. Use `set ct : ℂ := ψ (halfTr (Matrix.trace (T * b1.1))) with hct`. Use `set c0 : ℂ := (χ (Matrix.GeneralLinearGroup.det a) : ℂ) * npow A ((V.rank : ℂ) / 2) with hc0`. Establish `hpt : ∀ (z : ℂ) (b' : hermA D n), npow (H (w * nb (cg a (b' - b1)) * (m * u * k))) (z - s0 V n) * Jt ψ V μ (ω (m * u * k) Φ).1 (cg a (b' - b1)) * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) (cg a (b' - b1)).1 : Mx D n n))) = (npow A (s0 V n - z) * (c0 * npow A (-(V.ran …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z b'`. Establish `e : w * nb (cg a (b' - b1)) * (m * u * k) = m' * (w * nb b' * k)`. Combine the equalities or inequalities in the displayed calculation. Establish `hHe : H (w * nb (cg a (b' - b1)) * (m * u * k)) = A⁻¹ * H (w * nb b' * k)`. Rewrite using `[e, height_mul hH hm'P (ad a) hblk, absA_ad]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : Jt ψ V μ (ω (m * u * k) Φ).1 (cg a (b' - b1)) = c0 * (npow A (-(V.rank : ℂ)) * Jt ψ V μ φ0.1 b')`. Rewrite using `[hωe, jt_step hω hμ a hm hu φ0 (b' - b1), sub_add_cancel]`. Establish `e1 : Matrix.trace (HMul.hMul (β.1.map (incA D)) (cg a (b' - b1)).1 : Mx D n n) = Matrix.trace (T * (b' - b1).1)` using `trace_beta a _ _`. Establish `e2 : Matrix.trace (T * (b' - b1).1) = Matrix.trace (T * b'.1) + -Matrix.trace (T * b1.1)`. Establish `: (b' - b1).1 = b'.1 - b1.1` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, Matrix.mul_sub, Matrix.trace_sub, sub_eq_add_neg]`. Establish `hch : ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) (cg a (b' - b1)).1 : Mx D n n))) = ψ (-halfTr (Matrix.trace (HMul.hMul T b'.1 : Mx D n n))) * ct`. Rewrite using `[e1, e2, halfTr_add, halfTr_neg, neg_add, neg_neg, AddChar.map_add_eq_mul]`. Rewrite using `[hHe, hJ, hch, npow_mul', npow_inv' hA, show -(z - s0 V n) = s0 V n - z from neg_sub z (s0 V n)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ z : ℂ, (∫ b, npow (H (w * nb b * (m * u * k))) (z - s0 V n) * Jt ψ V μ (ω (m * u * k) Φ).1 b * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) ∂lam) = npow A (s0 V n - z) * ((npow A (n : ℂ) * (c0 * npow A (-(V.rank : ℂ))) * ct) * whitT ψ V μ lam …`. Introduce `z`. Use `set Gz : hermA D n → ℂ := fun b => npow (H (w * nb b * (m * u * k))) (z - s0 V n) * Jt ψ V μ (ω (m * u * k) Φ).1 b * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) with hGz`. Establish `h1 : ∫ c, Gz (cg a c) ∂lam = npow A (-(n : ℂ)) * ∫ b, Gz b ∂lam` using `GlobalTheory.CompanionTheory.CgMod.integral_cg D n lam hl a Gz`. Establish `h2 : ∫ x, Gz (cg a (x - b1)) ∂lam = ∫ c, Gz (cg a c) ∂lam` using `integral_shift_herm lam hl (fun c => Gz (cg a c)) b1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ∫ x, Gz (cg a (x - b1)) ∂lam = (npow A (s0 V n - z) * (c0 * npow A (-(V.rank : ℂ))) * ct) * whitT ψ V μ lam nb w H φ0.1 T k z`. Simplify using `only [hGz, hpt, integral_const_mul]`. Both sides reduce to the same expression. Establish `h4 : npow A (n : ℂ) * npow A (-(n : ℂ)) = 1`. Rewrite using `[← npow_add' hA, add_neg_cancel, npow_zero' A hA]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3, h1]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0` using `hK D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ a k hk`. Establish `hc` using `(holValueAt_const (npow A (n : ℂ) * (c0 * npow A (-(V.rank : ℂ))) * ct) (s0 V n)).mul h0`. Establish `hfin` using `holValueAt_npow_sub_mul _ (fun z => ∫ b, npow (H (w * nb b * (m * u * k))) (z - s0 V n) * Jt ψ V μ (ω (m * u * k) Φ).1 b * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) ∂lam) (s0 V n) _ A 0 hA hc (fun z _ => hint z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : npow A (n : ℂ) * (c0 * npow A (-(V.rank : ℂ))) * ct * (npow (absA D (Matrix.GeneralLinearGroup.det a)) ((V.rank : ℂ) - n) * IfrB V ν (fun x => (ω k Φ).1 (HMul.hMul x a.1)) β) = IfrB V ν (ω (m * u * k) Φ).1 β`. Establish `h5 : npow A (n : ℂ) * npow A (-(V.rank : ℂ)) * npow A ((V.rank : ℂ) - n) = 1`. Rewrite using `[← npow_add' hA, ← npow_add' hA]`. Establish `: (n : ℂ) + -(V.rank : ℂ) + ((V.rank : ℂ) - n) = 0` using `by ring`. Rewrite using `[this, npow_zero' A hA]`.
-
-Establish `h6 : ψ (halfTr (Matrix.trace (b1.1 * T))) = ct`. Rewrite using `[hct, Matrix.trace_mul_comm]`. Rewrite using `[hωe, ifrB_step hω ν a hm hu φ0 β, ← hAdef, ← hT, ← hc0, h6]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hfin` using `[hval]`.
-
-Conclude with `hfin`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_step (hK : WhitKA) {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle}
     {θ : InfFam D} {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} {H : G D n → ℝ≥0}
@@ -149,9 +145,9 @@ theorem whit_step (hK : WhitKA) {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF
   exact hfin
 
 /- English proof (translation)
-Introduce `hK D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ g`. Take `⟨p, hp, k, hk, rfl⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D n g`. Take `⟨a, ha⟩` from `exists_blkA hp`. Take `⟨m, u, b, rfl, hm, hu⟩` from `exists_levi_unip hp a ha`. Establish `hbh : adj b = b` using `(exists_unip b).1 ⟨u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `whit_step hK hS hR hC hw hβ a hk hm ⟨b, hbh⟩ hu`.
+A detailed English derivation is pending.
 -/
 theorem iwaRedA : GlobalTheory.CompanionTheory.IwaAd.WhitKA → PositivityTheory.PfSWUS.WhitNDg := by
   intro hK D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ g

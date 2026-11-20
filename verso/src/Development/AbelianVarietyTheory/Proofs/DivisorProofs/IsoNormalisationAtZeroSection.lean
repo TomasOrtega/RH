@@ -10,23 +10,23 @@ noncomputable section
 namespace GlobalTheory.HomFixNorm
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_finsum {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {κ : Type} (s : Finset κ)
     (a : κ → Γ(X, U)) : gs f y U (∑ i ∈ s, a i) = ∑ i ∈ s, gs f y U (a i) := by
   simp only [gs_eq f y U h, map_sum]
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_npow {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)) (n : ℕ) :
     gs f y U (a ^ n) = gs f y U a ^ n := by
   simp only [gs_eq f y U h, map_pow]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom hφ (𝟙_ (Over S'))))`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem one_comp_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G]
     [GrpObj G'] {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G f φ) : (η[G']).left ≫ φ = f ≫ (η[G]).left := by
@@ -38,44 +38,36 @@ theorem one_comp_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S
   simp
 
 /- English proof (translation)
-Rewrite using `[Units.val_pow_eq_pow_val, ← gs_unit (𝟙 Y) (t z) V h, map_pow, ← gs_stalkMap t z V h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkMap_gm_pow {Z Y : Scheme.{0}} (t : Z ⟶ Y) (z : Z) (V : Y.Opens) (h : t z ∈ V) (a : Γ(Y, V)ˣ) (n : ℕ) :
     (t.stalkMap z).hom ((gm (𝟙 Y) (t z) V a) ^ n).val = gs t z V a.val ^ n := by
   rw [Units.val_pow_eq_pow_val, ← gs_unit (𝟙 Y) (t z) V h, map_pow, ← gs_stalkMap t z V h]
 
 /- English proof (translation)
-Introduce `Rg _ A B _ _ L M k mA mB bA bB eA eB αA βB R _ t A' B' _ _ φA' φB' Φ' c u hcov hA hB hT hN hrel p`. Take `⟨gA, gB, hΦ, -⟩` from `hT`. Use `haveI : IsMonHom Φ' := hΦ`. Establish `e₀ : zeroPt A' ≫ A'.hom = 𝟙 _` using `by simp [zeroPt]`. Establish `eΦ : zeroPt A' ≫ Φ'.left = zeroPt B'` using `by rw [zeroPt, zeroPt, ← Over.comp_left, IsMonHom.one_hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eA' : zeroPt A' ≫ φA' ≫ θ A = t ≫ eSec A ≫ θ A`. Rewrite using `[← Category.assoc, zeroPt, one_comp_of_isGrpPullback gA, Category.assoc]`. Both sides reduce to the same expression. Establish `eB' : zeroPt A' ≫ Φ'.left ≫ φB' ≫ θ B = t ≫ eSec B ≫ θ B`. Rewrite using `[← Category.assoc, eΦ, ← Category.assoc, zeroPt, one_comp_of_isGrpPullback gB, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `hz0` using `hz`. Take `⟨⟨hzU', hzA'⟩, hzB'⟩` from `hz`. Establish `hzU : zeroPt A' z ∈ (isoLB (L` using `L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p := hzU'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzA : t z ∈ LB.wchart L (fun _ : PUnit => eSec A) (fun _ => p.2 0)` using `hzA'`. Establish `hzB : t z ∈ LB.wchart M (fun _ : PUnit => eSec B) (fun _ => p.1 0)` using `hzB'`. Establish `pA : eSec A (t z) ∈ L.U (p.2 0)` using `Set.mem_iInter.1 hzA PUnit.unit`. Establish `pB : eSec B (t z) ∈ M.U (p.1 0)` using `Set.mem_iInter.1 hzB PUnit.unit`. Establish `mA : (eSec A ≫ θ A) (t z) ∈ LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations. Use `show (snd (topS Rg) A).left ((eSec A ≫ θ A) (t z)) ∈ L.U (p.2 i)`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, θ_snd, Category.comp_id, Subsingleton.elim i 0]`. Conclude with `pA`. Establish `mB : (eSec B ≫ θ B) (t z) ∈ LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations. Use `show (snd (topS Rg) B).left ((eSec B ≫ θ B) (t z)) ∈ M.U (p.1 i)`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, θ_snd, Category.comp_id, Subsingleton.elim i 0]`. Conclude with `pB`. Establish `sB : ∀ j, gs (zeroPt A') z ((isoLB (L` using `L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p) (((Φ'.left ≫ (φB' ≫ θ B)).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1) ((isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p) (inf_le_left.trans (GlobalTheory.HomFixMat.wchart_comp_le M _ _ p.1))).hom ((bB …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Establish `v` using `hB j (t z) p.1 mB`. Use `erw [gs_appLE _ _ _ _ _ _ hzU]`. Rewrite using `[eB']`. Use `erw [gs_comp t _ z _ mB]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `erw [v]`. Simplify using `only [GlobalTheory.HomFixUniv.uFr]`. Rewrite using `[map_mul]`. Use `erw [stalkMap_gm_pow t z _ hzB, ← gs_stalkMap t z ⊤ trivial]`. Establish `sA : ∀ i, gs (zeroPt A') z ((isoLB (L` using `L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p) (((φA' ≫ θ A).appLE (LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p.2) ((isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p) (inf_le_right.trans (GlobalTheory.HomFixMat.wchart_comp_le L _ _ p.2))).hom ((bA i).f p.2)) …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `v` using `hA i (t z) p.2 mA`. Use `erw [gs_appLE _ _ _ _ _ _ hzU]`. Rewrite using `[eA']`. Use `erw [gs_comp t _ z _ mA]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `erw [v]`. Simplify using `only [GlobalTheory.HomFixUniv.uFr]`. Rewrite using `[map_mul]`. Use `erw [stalkMap_gm_pow t z _ hzA, ← gs_stalkMap t z ⊤ trivial]`. Establish `sC : ∀ i j, gs (zeroPt A') z ((isoLB (L` using `L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p) ((A'.hom.appLE ⊤ ((isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p) (by simp)).hom (c i j)) = gs (𝟙 _) z ⊤ (c i j) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Use `erw [gs_appLE _ _ _ _ _ _ hzU]`. Rewrite using `[e₀]`. Establish `gt : ∀ x : Γ(Sp Rg, ⊤), gs t z ⊤ x = gs (𝟙 _) z ⊤ (t.appTop x)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `gs_pull (𝟙 (Sp R)) t z ⊤ trivial x`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e.symm`. Establish `nN : ∀ j, ∑ i, gs (𝟙 _) z ⊤ (c i j) * gs t z ⊤ (αA i) = gs t z ⊤ (βB j)`. Introduce `j`.
-
-Rewrite using `[gt, hN j, gs_finsum _ z ⊤ trivial]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [gt, gs_mul _ z ⊤ trivial]`. Establish `hcz : (eSec B ≫ θ B) (t z) ∈ (⨆ j, nonzeroLocus (bB j))` using `by rw [hcov]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hcz`. Establish `hu` using `(GlobalTheory.mem_nonzeroLocus_iff_pull (bB j) (eSec B ≫ θ B) (t z) mB).1 hj`.
-
-Use `erw [hB j (t z) p.1 mB] at hu`. Establish `hβ : IsUnit (gs t z ⊤ (βB j))`. Rewrite using `[gs_stalkMap t z ⊤ trivial]`. Conclude with `(isUnit_of_mul_isUnit_left hu).map _`. Establish `E` using `congrArg (gs (zeroPt A') z ((isoLB (L := L) (M := M) k Φ' (φA' ≫ θ A) (φB' ≫ θ B)).U p)) (hrel j p)`.
-
-Rewrite `E` using `[sB j, gs_mul _ _ _ hzU, gs_finsum _ _ _ hzU]`. Simplify using `only [gs_mul _ _ _ hzU, sC, sA] at E`. Establish `hs : ∑ i, gs (𝟙 _) z ⊤ (c i j) * (gs t z ⊤ (αA i) * gs t z (LB.wchart L (fun _ : PUnit => eSec A) (fun _ => p.2 0)) (eA.s (fun _ => p.2 0)).val ^ k) = (∑ i, gs (𝟙 _) z ⊤ (c i j) * gs t z ⊤ (αA i)) * gs t z (LB.wchart L (fun _ : PUnit => eSec A) (fun _ => p.2 0)) (eA.s (fun _ => p …`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => (mul_assoc _ _ _).symm`.
-
-Rewrite `E` using `[hs, nN j]`. Rewrite using `[gs_mul _ z _ hz0, gs_npow _ z _ hz0, gs_npow _ z _ hz0]`. Use `erw [gs_appLE _ _ _ _ _ _ hz0, gs_appLE _ _ _ _ _ _ hz0, gs_appLE _ _ _ _ _ _ hz0]`. Simplify using `only [Category.id_comp]`. Conclude with `hβ.mul_left_cancel (by rw [E]; ring)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_at_zero : ∀ (Rg : Type) [CommRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left) (k mA mB : ℕ) (bA : Fin mA → LB.Sec (LPow A L (k : ℤ) (topS Rg))) (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))) (eA : LB.Gen (L.pull (eSec A))) (eB : LB.Gen (M.pull (eSec B))) (αA : Fin mA → Γ(Sp Rg, ⊤)) (βB : Fin mB → Γ(Sp Rg, ⊤)) (R : Type) [CommRing R] (t : Sp R ⟶ Sp Rg) (A' B' : Over (Sp R)) [GrpObj A'] [GrpObj B'] (φA' : A'.left ⟶ A.left) (φB' : B'.left ⟶ B.left) (Φ' : A' ⟶ B') (c : Fin mA → Fin mB → Γ(Sp R, ⊤)) (u : ∀ p, Γ(A'.left, (isoLB (L := L) (M := M) k Φ' (φA' ≫ GlobalTheory.HomFixUniv.θ A) (φB' ≫ GlobalTheory.HomFixUniv.θ B)).U p)ˣ), (⨆ j, nonzeroLocus (bB j)) = ⊤ → (∀ i, GlobalTheory.HomFixUniv.IsVal (eSec A ≫ GlobalTheory.HomFixUniv.θ A) (GlobalTheory.HomFixUniv.uFr A L k eA) (bA i) (αA i)) → (∀ j, GlobalTheory.HomFixUniv.IsVal (eSec B ≫ GlobalTheory.HomFixUniv.θ B) (GlobalTheory.HomFixUniv.uFr B M k eB) (bB j) (βB j)) → IsTest A B L M t A' B' φA' φB' Φ' → GlobalTheory.HomFixUniv.Normal t c αA βB → (∀ (j : Fin mB) (p : (Fin 1 → M.ι) × (Fin 1 → L.ι)),
       ((Φ'.left ≫ (φB' ≫ GlobalTheory.HomFixUniv.θ B)).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1)

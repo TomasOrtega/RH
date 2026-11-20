@@ -29,13 +29,13 @@ variable (F) in
 def partInf (z : M) : M := realAd F 1 • z
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [partFin, smul_smul, ← smul_eq_mul, GlobalTheory.LatVac.at_liftV v 1 u hu, zero_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_partFin (v : Pl F) (z : M) : At (evFin F v) (partFin v z) := fun u hu => by
   rw [partFin, smul_smul, ← smul_eq_mul, GlobalTheory.LatVac.at_liftV v 1 u hu, zero_smul]
 
 /- English proof (translation)
-Establish `h` using `hz (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partFin_of_at {v : Pl F} {z : M} (hz : At (evFin F v) z) : partFin v z = z := by
   have h := hz (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])
@@ -43,13 +43,13 @@ theorem partFin_of_at {v : Pl F} {z : M} (hz : At (evFin F v) z) : partFin v z =
   exact h.symm
 
 /- English proof (translation)
-The claim follows from `((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem evI_realAd_one : evI F (realAd F 1) = 1 :=
   ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _).trans (map_one _)
 
 /- English proof (translation)
-Introduce `u hu` and use `by have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu) have h : u * realAd F 1 = 0 := Prod.ext (show u.1 * _ = 0 by rw [h1, zero_mul]) (show u.2 * 0 = 0 from mul_zero _) rw [partInf, smul_smul, h, zero_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_partInf (z : M) : At (evI F) (partInf F z) := fun u hu => by
   have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
@@ -57,7 +57,7 @@ theorem at_partInf (z : M) : At (evI F) (partInf F z) := fun u hu => by
   rw [partInf, smul_smul, h, zero_smul]
 
 /- English proof (translation)
-Establish `h` using `hz (1 - realAd F 1) (by`. Rewrite using `[GlobalTheory.ArchUniq.evI_eq_evIHom, map_sub, map_one, ← GlobalTheory.ArchUniq.evI_eq_evIHom, evI_realAd_one, sub_self])`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partInf_of_at {z : M} (hz : At (evI F) z) : partInf F z = z := by
   have h := hz (1 - realAd F 1) (by
@@ -111,36 +111,34 @@ def unitsAt (v : Pl F) : Subgroup (AE F E)ˣ :=
   idelesAt E (evFin F v) ⊓ (intLoc F E v).toSubmonoid.units.comap (unitFin F E v)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_UAtSub {X : Spc F E n} {ev : AF F → R} {g : UA σ X.J} : g ∈ UAtSub σ X ev ↔ g ∈ UAt σ X ev := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_KAt {X : Spc F E n} {K : Subgroup (UA σ X.J)} {ev : AF F → R} {g : UA σ X.J} :
     g ∈ KAt K ev ↔ g ∈ K ∧ g ∈ UAt σ X ev := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_idelesAt {ev : AF F → R} {l : (AE F E)ˣ} : l ∈ idelesAt E ev ↔ At ev ((l : AE F E) - 1) := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitsAt {v : Pl F} {l : (AE F E)ˣ} : l ∈ unitsAt E v ↔ l ∈ idelesAt E (evFin F v) ∧
     compFin F E v l ∈ intLoc F E v ∧ compFin F E v (l⁻¹ : (AE F E)ˣ) ∈ intLoc F E v := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem unitsAt_le (v : Pl F) : unitsAt E v ≤ idelesAt E (evFin F v) := inf_le_left
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Establish `hm : Continuous fun g : UA σ X.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`.
-
-Express the relevant statement in the definitionally equal form `IsClosed {g : UA σ X.J | ∀ u, ev u = 0 → u • (mat g - 1) = 0}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq ((hm.sub continuous_const).const_smul u) continuous_const`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_UAtSub (X : Spc F E n) (ev : AF F → R) : IsClosed (UAtSub σ X ev : Set (UA σ X.J)) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -154,15 +152,13 @@ theorem isClosed_UAtSub (X : Spc F E n) (ev : AF F → R) : IsClosed (UAtSub σ 
     isClosed_eq ((hm.sub continuous_const).const_smul u) continuous_const
 
 /- English proof (translation)
-The claim follows from `hK.inter_right (isClosed_UAtSub X ev)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KAt {X : Spc F E n} {K : Subgroup (UA σ X.J)} (hK : IsCompact (K : Set (UA σ X.J))) (ev : AF F → R) :
     IsCompact (KAt K ev : Set (UA σ X.J)) := hK.inter_right (isClosed_UAtSub X ev)
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Express the relevant statement in the definitionally equal form `IsClosed {l : (AE F E)ˣ | ∀ u, ev u = 0 → u • ((l : AE F E) - 1) = 0}`.
-
-Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq ((Units.continuous_val.sub continuous_const).const_smul u) continuous_const`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_idelesAt (ev : AF F → R) : IsClosed (idelesAt E ev : Set (AE F E)ˣ) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -177,7 +173,7 @@ theorem isClosed_idelesAt (ev : AF F → R) : IsClosed (idelesAt E ev : Set (AE 
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b x => exact congrArg (· ⊗ₜ[F] x) (map_mul (evFin F v) a b)`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_smul (v : Pl F) (a : AF F) (z : AE F E) : compFin F E v (a • z) = evFin F v a • compFin F E v z := by
   induction z using TensorProduct.induction_on with
@@ -188,7 +184,7 @@ theorem compFin_smul (v : Pl F) (a : AF F) (z : AE F E) : compFin F E v (a • z
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b x => exact congrArg (· ⊗ₜ[F] x) (map_mul (evInf F w) a b)`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compInf_smul (w : InfinitePlace F) (a : AF F) (z : AE F E) :
     compInf F E w (a • z) = evInf F w a • compInf F E w z := by
@@ -198,11 +194,11 @@ theorem compInf_smul (w : InfinitePlace F) (a : AF F) (z : AE F E) :
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Rewrite using `[← partFin_of_at hz, partFin]`. Use `⟨fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[compInf_smul, show evInf F w (GlobalTheory.LatVac.liftV v 1) = 0 from rfl, zero_smul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compFin_smul, show evFin F w (GlobalTheory.LatVac.liftV v 1) = 0 from evalV_singleFin_ne hw 1, zero_smul]`. Introduce and unpack `⟨h1, h2⟩ u hu`. Use `GlobalTheory.Doubling.adele_ext (fun w => ?_) fun w => ?_` and prove the remaining obligations. Rewrite using `[compInf_smul, h1, smul_zero, map_zero]`. Rewrite using `[compFin_smul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hu, zero_smul]`. Rewrite using `[h2 w hw, smul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_evFin_iff {v : Pl F} {z : AE F E} : At (evFin F v) z ↔
     (∀ w, compInf F E w z = 0) ∧ ∀ w, w ≠ v → compFin F E w z = 0 := by
@@ -221,9 +217,9 @@ theorem at_evFin_iff {v : Pl F} {z : AE F E} : At (evFin F v) z ↔
       · rw [h2 w hw, smul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz w`. Rewrite using `[← partInf_of_at hz, partInf, compFin_smul, show evFin F w (realAd F 1) = 0 from map_zero (evalV F w), zero_smul]`. Introduce `h u hu`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.Doubling.adele_ext (fun w => ?_) fun w => ?_` and prove the remaining obligations. Rewrite using `[compInf_smul, map_zero, show evInf F w u = 0 from congrFun h1 w, zero_smul]`. Rewrite using `[compFin_smul, h, smul_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_evI_iff {z : AE F E} : At (evI F) z ↔ ∀ w, compFin F E w z = 0 := by
   constructor
@@ -236,7 +232,7 @@ theorem at_evI_iff {z : AE F E} : At (evI F) z ↔ ∀ w, compFin F E w z = 0 :=
     · rw [compFin_smul, h, smul_zero, map_zero]
 
 /- English proof (translation)
-Use `at_evFin_iff.2 ⟨fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_one, sub_eq_zero]`. Conclude with `congrArg Units.val (GlobalTheory.Doubling.unitInf_ideleAt w v x)`. Rewrite using `[map_sub, map_one, sub_eq_zero]`. Conclude with `congrArg Units.val (GlobalTheory.Doubling.unitFin_ideleAt_ne hw x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleAt_mem (v : Pl F) (x : (Fv F v ⊗[F] E)ˣ) : ideleAt F E v x ∈ idelesAt E (evFin F v) := by
   refine at_evFin_iff.2 ⟨fun w => ?_, fun w hw => ?_⟩
@@ -246,11 +242,11 @@ theorem ideleAt_mem (v : Pl F) (x : (Fv F v ⊗[F] E)ˣ) : ideleAt F E v x ∈ i
     exact congrArg Units.val (GlobalTheory.Doubling.unitFin_ideleAt_ne hw x)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `at_evFin_iff.1 hl`. Use `GlobalTheory.Doubling.idele_ext (fun w => ?_) fun w => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.unitInf_ideleAt]`. Use `h1 w` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ext this.symm`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[GlobalTheory.Doubling.unitFin_ideleAt_self]`. Rewrite using `[GlobalTheory.Doubling.unitFin_ideleAt_ne hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h2 w hw` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `Units.ext this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleAt_unitFin {v : Pl F} {l : (AE F E)ˣ} (hl : l ∈ idelesAt E (evFin F v)) :
     ideleAt F E v (unitFin F E v l) = l := by
@@ -279,30 +275,28 @@ def idelesAtEquiv (v : Pl F) : idelesAt E (evFin F v) ≃ₜ* (Fv F v ⊗[F] E)�
   continuous_invFun := (GlobalTheory.Doubling.continuous_ideleAt v).subtype_mk _
 
 /- English proof (translation)
-Use `conv_lhs => rw [← ideleAt_unitFin hl, GlobalTheory.Doubling.absE_ideleAt]`.
+A detailed English derivation is pending.
 -/
 theorem absE_of_mem {v : Pl F} {l : (AE F E)ˣ} (hl : l ∈ idelesAt E (evFin F v)) :
     absE F E l = absEv F E v (unitFin F E v l) := by
   conv_lhs => rw [← ideleAt_unitFin hl, GlobalTheory.Doubling.absE_ideleAt]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Set `b` to `integralBasis E`. Set `φ : (Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Fv F v) →ₗ[Fv F v] Fv F v ⊗[F] E` to `Fintype.linearCombination (Fv F v) fun i => (1 : Fv F v) ⊗ₜ[F] b i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφ : ∀ a, φ a = ∑ i, a i ⊗ₜ[F] b i` using `fun a => by`. Simplify using `only [φ, Fintype.linearCombination_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `hq : ∀ (c : ℚ) (a : Fv F v) (x : E), a ⊗ₜ[F] (c • x) = ((c : Fv F v) * a) ⊗ₜ[F] x` using `fun c a x => by`. Rewrite using `[show c • x = (c : F) • x by rw [Rat.cast_smul_eq_qsmul], ← TensorProduct.smul_tmul, Algebra.smul_def, map_ratCast]`. Establish `hsurj : Function.Surjective φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul a x`. Use `⟨fun i => (b.repr x i : Fv F v) * a, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hφ]`. Use `conv_rhs => rw [← b.sum_repr x, TensorProduct.tmul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hq _ _ _).symm`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨c, rfl⟩` from `hy`. Conclude with `⟨a + c, map_add _ _ _⟩`. Establish `himg : (intLoc F E v : Set (Fv F v ⊗[F] E)) = φ '' Set.univ.pi fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `intLoc_induction (p := fun z => z ∈ φ '' Set.univ.pi fun _ => (v.adicCompletionIntegers F : Set (Fv F v))) (fun a ha x => ?_) ⟨0, fun _ _ => zero_mem _, map_zero _⟩ ?_ ?_` and prove the remaining obligations. Use `⟨fun i => (RingOfIntegers.basis E).repr x i • a, fun i _ => zsmul_mem ha _, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Use `conv_rhs => rw [← b.sum_repr (x : E), TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hq, show b.repr (x : E) i = algebraMap ℤ ℚ ((RingOfIntegers.basis E).repr x i) from integralBasis_repr_apply E x i]`. Simplify using the standard rewrite rules. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨c, hc, rfl⟩`. Conclude with `⟨a + c, fun i hi => add_mem (ha i hi) (hc i hi), map_add _ _ _⟩`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨-a, fun i hi => neg_mem (ha i hi), map_neg _ _⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[hφ]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show b i = ((RingOfIntegers.basis E i : 𝓞 E) : E) from integralBasis_apply E i]`.
-
-Conclude with `tmul_mem_intLoc (ha i (Set.mem_univ i)) _`. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hC : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Rewrite using `[himg]`. Conclude with `⟨(isCompact_univ_pi fun _ => hC).image (IsModuleTopology.continuous_of_linearMap φ), (IsModuleTopology.isOpenQuotientMap_of_surjective hsurj).isOpenMap _ (isOpen_set_pi Set.finite_univ fun _ _ => hO)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_isOpen_intLoc (v : Pl F) :
     IsCompact (intLoc F E v : Set (Fv F v ⊗[F] E)) ∧ IsOpen (intLoc F E v : Set (Fv F v ⊗[F] E)) := by
@@ -360,9 +354,9 @@ theorem isCompact_isOpen_intLoc (v : Pl F) :
     (IsModuleTopology.isOpenQuotientMap_of_surjective hsurj).isOpenMap _ (isOpen_set_pi Set.finite_univ fun _ _ => hO)⟩
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : T2Space (Fv F v ⊗[F] E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Establish `e : {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v} = (idelesAtEquiv E v).toHomeomorph ⁻¹' ((intLoc F E v).toSubmonoid.units : Set _)`. Use extensionality with `l`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨l.2, h⟩⟩`. Rewrite using `[e]`. Conclude with `⟨(Homeomorph.isCompact_preimage _).2 (Submonoid.units_isCompact (isCompact_isOpen_intLoc v).1), (Submonoid.isOpen_units (isCompact_isOpen_intLoc v).2).preimage (Homeomorph.continuous _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_isOpen_unitsAt (v : Pl F) :
     IsCompact {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v} ∧ IsOpen {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v} := by
@@ -392,11 +386,7 @@ def IsNormE (v : Pl F) (μ : Measure (idelesAt E (evFin F v))) : Prop :=
   μ.IsHaarMeasure ∧ μ {l | l.1 ∈ unitsAt E v} = 1
 
 /- English proof (translation)
-Use `haveI : CompactSpace (KAt K ev) := isCompact_iff_compactSpace.1 (isCompact_KAt hK ev)`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `h0 : IsNormK K ev (Measure.haarMeasure ⊤)` using `⟨Measure.isHaarMeasure_haarMeasure _, Measure.haarMeasure_self⟩`.
-
-Use `⟨_, h0, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `haveI := hμ.1`. Use `haveI := h0.1`. Use `haveI : IsProbabilityMeasure μ := ⟨hμ.2⟩`. Use `haveI : IsProbabilityMeasure (Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts (KAt K ev))) := ⟨h0.2⟩`.
-
-Use `haveI : LocallyCompactSpace (KAt K ev) := IsCompact.locallyCompactSpace_of_mem_nhds_of_group isCompact_univ (x := 1) univ_mem`. Conclude with `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_isNormK {K : Subgroup (UA σ X.J)} (hK : IsCompact (K : Set (UA σ X.J))) (ev : AF F → R) :
     ∃! μ, IsNormK K ev μ := by
@@ -418,11 +408,7 @@ theorem existsUnique_isNormK {K : Subgroup (UA σ X.J)} (hK : IsCompact (K : Set
 variable (E) in
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
-
-Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`.
-
-Use `haveI : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Conclude with `⟨inferInstance, (isClosed_idelesAt ev).locallyCompactSpace, inferInstance, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem idelesAt_facts (ev : AF F → R) : IsTopologicalGroup (idelesAt E ev) ∧ LocallyCompactSpace (idelesAt E ev) ∧
     SecondCountableTopology (idelesAt E ev) ∧ T2Space (idelesAt E ev) ∧ BorelSpace (idelesAt E ev) := by
@@ -444,14 +430,14 @@ theorem idelesAt_facts (ev : AF F → R) : IsTopologicalGroup (idelesAt E ev) �
 variable (E) in
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E ev`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_haar_idelesAt (ev : AF F → R) : ∃ μ : Measure (idelesAt E ev), μ.IsHaarMeasure := by
   obtain ⟨_, _, _, _, _⟩ := idelesAt_facts E ev
   exact ⟨Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E ev`. Conclude with `⟨_, (Measure.haarScalarFactor_pos_of_isHaarMeasure μ' μ).ne', Measure.isMulLeftInvariant_eq_smul μ' μ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem haar_idelesAt_eq_smul {ev : AF F → R} (μ' μ : Measure (idelesAt E ev)) [μ'.IsHaarMeasure] [μ.IsHaarMeasure] :
     ∃ c : ℝ≥0, c ≠ 0 ∧ μ' = c • μ := by
@@ -461,11 +447,9 @@ theorem haar_idelesAt_eq_smul {ev : AF F → R} (μ' μ : Measure (idelesAt E ev
 variable (E) in
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Take `⟨hc, ho⟩` from `isCompact_isOpen_unitsAt (E := E) v`. Set `U : TopologicalSpace.PositiveCompacts (idelesAt E (evFin F v))` to `⟨⟨_, hc⟩, ⟨1, mem_interior_iff_mem_nhds.2 (ho.mem_nhds (one_mem (unitsAt E v)))⟩⟩`. Establish `h0 : IsNormE E v (Measure.haarMeasure U)` using `⟨Measure.isHaarMeasure_haarMeasure _, Measure.haarMeasure_self⟩`. Use `⟨_, h0, fun μ hμ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hμ.1`. Use `haveI := h0.1`. Take `⟨c, -, hc⟩` from `haar_idelesAt_eq_smul μ (Measure.haarMeasure U)`. Establish `h1` using `hμ.2`. Rewrite `h1` using `[hc, Measure.smul_apply, h0.2, ENNReal.smul_def, smul_eq_mul, mul_one, ENNReal.coe_eq_one]`.
-
-Rewrite using `[hc, h1, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isNormE (v : Pl F) : ∃! μ, IsNormE E v μ := by
   obtain ⟨_, _, _, _, _⟩ := idelesAt_facts E (evFin F v)
@@ -482,11 +466,9 @@ theorem existsUnique_isNormE (v : Pl F) : ∃! μ, IsNormE E v μ := by
   rw [hc, h1, one_smul]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `hb : IsCompact (absE F E '' (Subtype.val '' {l : idelesAt E (evFin F v) | l.1 ∈ unitsAt E v}))` using `((isCompact_isOpen_unitsAt v).1.image continuous_subtype_val).image GlobalTheory.Doubling.continuous_absE`. Take `⟨C, hC⟩` from `hb.bddAbove`. Establish `key : ∀ m ∈ unitsAt E v, absE F E m ≤ 1` using `fun m hm => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt C (not_le.1 h)`. Establish `hk' : m ^ k ∈ unitsAt E v` using `pow_mem hm k`. Conclude with `not_le.2 hk (by rw [← map_pow]; exact hC ⟨_, ⟨⟨_, hk'.1⟩, hk', rfl⟩, rfl⟩)`. Use `le_antisymm (key l hl) ?_` and prove the remaining obligations.
-
-Establish `h1` using `key _ (inv_mem hl)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem absE_of_mem_unitsAt {v : Pl F} {l : (AE F E)ˣ} (hl : l ∈ unitsAt E v) : absE F E l = 1 := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -522,7 +504,7 @@ def locOpInf (T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)) (f : SInf
   if h : ∃ f₁ : SInf F κ, Acts (evI F) T f f₁ then h.choose else 0
 
 /- English proof (translation)
-Unfold `locOp`. Use `split_ifs with h`. Use `exacts [h.choose_spec.1, zero_mem _]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem locOp_mem (v : Pl F) (T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)) (φ : (κ → Fv F v) → ℂ) : locOp v T φ ∈ SB (κ → Fv F v) := by
   unfold locOp
@@ -530,7 +512,7 @@ theorem locOp_mem (v : Pl F) (T : ((κ → AF F) → ℂ) → ((κ → AF F) →
   exacts [h.choose_spec.1, zero_mem _]
 
 /- English proof (translation)
-Rewrite using `[locOp, dif_pos h]`. Conclude with `h.choose_spec.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_locOp {v : Pl F} {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} {φ : (κ → Fv F v) → ℂ}
     (h : ∃ φ₁, φ₁ ∈ SB (κ → Fv F v) ∧ Acts (evFin F v) T φ φ₁) : Acts (evFin F v) T φ (locOp v T φ) := by
@@ -538,14 +520,14 @@ theorem acts_locOp {v : Pl F} {T : ((κ → AF F) → ℂ) → ((κ → AF F) �
   exact h.choose_spec.2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ hφ fun r hr => (acts_locOp ⟨φ₁, hφ₁, h⟩ r hr).symm.trans (h r hr)`.
+A detailed English derivation is pending.
 -/
 theorem locOp_eq {v : Pl F} {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} {φ φ₁ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB (κ → Fv F v))
     (hφ₁ : φ₁ ∈ SB (κ → Fv F v)) (h : Acts (evFin F v) T φ φ₁) : locOp v T φ = φ₁ :=
   GlobalTheory.TensUniq.eq_of_tens_eq v φ _ _ hφ fun r hr => (acts_locOp ⟨φ₁, hφ₁, h⟩ r hr).symm.trans (h r hr)
 
 /- English proof (translation)
-Rewrite using `[locOpInf, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_locOpInf {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} {f : SInf F κ} (h : ∃ f₁ : SInf F κ, Acts (evI F) T f f₁) :
     Acts (evI F) T f (locOpInf T f) := by
@@ -555,11 +537,9 @@ theorem acts_locOpInf {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} 
 variable (F κ) in
 
 /- English proof (translation)
-Set `φ : ∀ w : Pl F, (κ → Fv F w) → ℂ` to `fun w => Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Use `⟨fun x => ∏ᶠ w, φ w fun i => evFin F w (x i), ?_, fun f => ⟨fun x z hz => ?_, ?_⟩⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[finprod_eq_one_of_forall_eq_one fun w => ?_]`. Conclude with `one_ne_zero`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [φ, Pi.zero_apply, map_zero]`. Rewrite using `[Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression. Establish `h : ∀ w i, evFin F w (z i) = 0` using `fun w i => by`. Rewrite using `[← partInf_of_at hz, partInf, Pi.smul_apply, smul_eq_mul, map_mul, show evFin F w (realAd F 1) = 0 from map_zero (evalV F w), zero_mul]`.
-
-Simplify using `only [Pi.add_apply, map_add, h, add_zero]`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ (fun w => GlobalTheory.StdVacuum.indicator_mem_SB w) (Eventually.of_forall fun _ => rfl)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rest_inf : ∃ r : ((κ → AF F) → ℂ), r 0 ≠ 0 ∧ ∀ f : SInf F κ, Rest (evI F) f r := by
   let φ : ∀ w : Pl F, (κ → Fv F w) → ℂ := fun w => Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1
@@ -577,9 +557,9 @@ theorem exists_rest_inf : ∃ r : ((κ → AF F) → ℂ), r 0 ≠ 0 ∧ ∀ f :
   · exact GlobalTheory.TensUniq.pure_mem_schA f φ (fun w => GlobalTheory.StdVacuum.indicator_mem_SB w) (Eventually.of_forall fun _ => rfl)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Set `z : κ → AF F` to `fun i => GlobalTheory.HeisSchA.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) 0`. Establish `hz : At (evI F) z` using `fun u hu => funext fun i => GlobalTheory.HeisSchA.at_mk _ u hu`. Establish `hy : (fun i => evI F (z i)) = y` using `funext fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`. Establish `e` using `congrFun h z`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrz : r z = r 0` using `by simpa using hr 0 z hz`. Simplify using `only [tens, hy, hrz] at e`. Conclude with `mul_right_cancel₀ h0 e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_tens_inf {r : ((κ → AF F) → ℂ)} (h0 : r 0 ≠ 0) (hr : ∀ x z, At (evI F) z → r (x + z) = r x)
     {f g : (κ → mixedEmbedding.mixedSpace F) → ℂ} (h : tens (evI F) f r = tens (evI F) g r) : f = g := by
@@ -593,7 +573,7 @@ theorem eq_of_tens_inf {r : ((κ → AF F) → ℂ)} (h0 : r 0 ≠ 0) (hr : ∀ 
   exact mul_right_cancel₀ h0 e
 
 /- English proof (translation)
-Take `⟨r, h0, hr⟩` from `exists_rest_inf F κ`. Conclude with `DFunLike.coe_injective (eq_of_tens_inf h0 (hr f).1 ((acts_locOpInf ⟨f₁, h⟩ r (hr f)).symm.trans (h r (hr f))))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locOpInf_eq {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} {f f₁ : SInf F κ} (h : Acts (evI F) T f f₁) : locOpInf T f = f₁ := by
   obtain ⟨r, h0, hr⟩ := exists_rest_inf F κ
@@ -601,7 +581,7 @@ theorem locOpInf_eq {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} {f
     (eq_of_tens_inf h0 (hr f).1 ((acts_locOpInf ⟨f₁, h⟩ r (hr f)).symm.trans (h r (hr f))))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_lin {R : Type} (ev : AF F → R) (a b : ℂ) (φ φ' : (κ → R) → ℂ) (r : ((κ → AF F) → ℂ)) :
     tens ev (a • φ + b • φ') r = a • tens ev φ r + b • tens ev φ' r := by
@@ -610,9 +590,9 @@ theorem tens_lin {R : Type} (ev : AF F → R) (a b : ℂ) (φ φ' : (κ → R) �
   ring
 
 /- English proof (translation)
-Establish `hs : a • φ + b • φ' ∈ SB (κ → Fv F v)` using `add_mem ((SB _).smul_mem a hφ) ((SB _).smul_mem b hφ')`. Take `⟨r, h0, hr⟩` from `GlobalTheory.RestWitness.exists_rest κ v`. Establish `key : tens (evFin F v) (locOp v T (a • φ + b • φ')) r = tens (evFin F v) (a • locOp v T φ + b • locOp v T φ') r`. Rewrite using `[← acts_locOp (hex _ hs) r (hr _ hs), tens_lin, tens_lin, hT.map_add, hT.map_smul, hT.map_smul, acts_locOp (hex _ hφ) r (hr _ hφ), acts_locOp (hex _ hφ') r (hr _ hφ')]`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hrz : r (fun i => GlobalTheory.LatVac.liftV v (t i)) = r 0` using `by simpa using (hr φ hφ).1 0 _ hz`. Establish `e` using `congrFun key fun i => GlobalTheory.LatVac.liftV v (t i)`. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hrz] at e`. Conclude with `mul_right_cancel₀ h0 e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locOp_lin {v : Pl F} {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} (hT : IsLinearMap ℂ T)
     (hex : ∀ φ ∈ SB (κ → Fv F v), ∃ φ₁, φ₁ ∈ SB (κ → Fv F v) ∧ Acts (evFin F v) T φ φ₁) (a b : ℂ)
@@ -631,7 +611,7 @@ theorem locOp_lin {v : Pl F} {T : ((κ → AF F) → ℂ) → ((κ → AF F) →
   exact mul_right_cancel₀ h0 e
 
 /- English proof (translation)
-Take `⟨r, h0, hr⟩` from `exists_rest_inf F κ`. Use `DFunLike.coe_injective (eq_of_tens_inf h0 (hr f).1 ?_)` and prove the remaining obligations. Rewrite using `[← acts_locOpInf (hex _) r (hr _)]`. Express the relevant statement in the definitionally equal form `T (tens (evI F) (a • ⇑f + b • ⇑f') r) = tens (evI F) (a • ⇑(locOpInf T f) + b • ⇑(locOpInf T f')) r`. Rewrite using `[tens_lin, tens_lin, hT.map_add, hT.map_smul, hT.map_smul, acts_locOpInf (hex _) r (hr _), acts_locOpInf (hex _) r (hr _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem locOpInf_lin {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} (hT : IsLinearMap ℂ T)
     (hex : ∀ f : SInf F κ, ∃ f₁ : SInf F κ, Acts (evI F) T f f₁) (a b : ℂ) (f f' : SInf F κ) :
@@ -644,7 +624,7 @@ theorem locOpInf_lin {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} (
     acts_locOpInf (hex _) r (hr _)]
 
 /- English proof (translation)
-The claim follows from `locOp_eq hφ hφ fun _ hr => hT _ hr.2`.
+A detailed English derivation is pending.
 -/
 theorem locOp_of_fix {v : Pl F} {T : ((κ → AF F) → ℂ) → ((κ → AF F) → ℂ)} (hT : ∀ Φ ∈ schA F κ, T Φ = Φ) {φ : (κ → Fv F v) → ℂ}
     (hφ : φ ∈ SB (κ → Fv F v)) : locOp v T φ = φ := locOp_eq hφ hφ fun _ hr => hT _ hr.2
@@ -654,9 +634,9 @@ variable {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V → V → AF F}
 open scoped GlobalTheory.VacAny in
 
 /- English proof (translation)
-Establish `e : GlobalTheory.LatVac.locCo co v (partFin v u) = GlobalTheory.LatVac.locCo co v u`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>`. Simplify using `[GlobalTheory.LatVac.locCo, partFin, GlobalTheory.LatVac.evFin_liftV]`. Establish `h` using `GlobalTheory.VacBridge.rho_acts_locCo co ψ v _ (at_partFin v u) φ`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm` using `GlobalTheory.SchrSB.schr_mem_SB ψ hψ v (GlobalTheory.LatVac.locCo co v u) φ hφ`. Conclude with `⟨acts_locOp ⟨_, hm, h⟩, locOp_eq hφ hm h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem locOp_rho (co : Darboux Bf κ) {ψ : AddChar (AF F) ℂ} (hψ : Continuous ψ) (v : Pl F) (u : V)
     {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB (κ → Fv F v)) :
@@ -673,11 +653,11 @@ theorem locOp_rho (co : Darboux Bf κ) {ψ : AddChar (AF F) ℂ} (hψ : Continuo
 open GlobalTheory.ArchUniq Classical in
 
 /- English proof (translation)
-Establish `e : ∀ x : κ → AF F, locV (realAd F 1 • x) = locV x` using `fun x => funext fun i => by`. Simplify using `only [locV, Pi.smul_apply, smul_eq_mul, evI_eq_evIHom, map_mul]`. Rewrite using `[← evI_eq_evIHom, evI_realAd_one, one_mul]`. Establish `hg : ⇑(GlobalTheory.HeisSchA.archS f (locV (co.e u).2) (locV (co.e u).1) (trP F κ (locV (co.e u).1) (locV (co.e u).2) / 2)) = schrF (trP F κ) (locV (co.e u).1, locV (co.e u).2) f`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GlobalTheory.HeisSchA.archS_apply, GlobalTheory.Published.Metaplectic.eChar_apply, schrF, ContinuousLinearMap.neg_apply, GlobalTheory.HeisSchA.trL_apply]`. Use `congr 2`. Simplify using `only [trP, dotProduct]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `acts_rho_of_at_inf ψ hψ co _ (at_partInf u) f _ (by`. Rewrite using `[hg, partInf, map_smul, Prod.smul_fst, Prod.smul_snd, e, e])`. Conclude with `⟨acts_locOpInf ⟨_, h⟩, by rw [locOpInf_eq h, hg]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem locOpInf_rho (co : Darboux Bf κ) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (u : V) (f : SInf F κ) :
     Acts (evI F) (co.rho ψ (partInf F u)) f (locOpInf (co.rho ψ (partInf F u)) f) ∧
@@ -705,13 +685,13 @@ section Cone
 variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-The claim follows from `(smul_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_shiftA (H : Plane E n n₁) (H' : Plane E d d₁) (a : AF F) (l : (AE F E)ˣ) :
     a • shiftA H H' l = (a • l.1) • Matrix.vecMulVec (incV F H.x) (incV F H'.y) := (smul_assoc _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[map_smul]`. Conclude with `(smul_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_shiftB (H : Plane E n n₁) (H' : Plane E d d₁) (a : AF F) (l : (AE F E)ˣ) :
     a • shiftB σ H H' l = cA σ (a • l.1) • Matrix.vecMulVec (incV F H.y) (incV F H'.x) := by
@@ -719,7 +699,7 @@ theorem smul_shiftB (H : Plane E n n₁) (H' : Plane E d d₁) (a : AF F) (l : (
   exact (smul_assoc _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `acts_locOp ((hA F E σ B n d X W M χX χW om r s r' s' hP v).1 g hg h hh φ hφ).exists`.
+A detailed English derivation is pending.
 -/
 theorem acts_locOp_om (hA : ActsEx) {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
     (hP : IsPair B M χX χW om r s r' s') {v : Pl F} {g : UA σ X.J} (hg : g ∈ UAt σ X (evFin F v)) {h : UA σ W.J}
@@ -746,7 +726,7 @@ variable {B M om v ev K μK μ u ν z}
 open scoped GlobalTheory.VacAny in
 
 /- English proof (translation)
-Rewrite using `[coneFinInt, (locOp_rho M.co hψ v (u l) (locOp_mem v _ φ)).2, absE_of_mem hl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coneFinInt_eq (hψ : Continuous B.ψ) (φ : (Fin n × Fin d → Fv F v) → ℂ) (k : UA σ X.J) {l : (AE F E)ˣ}
     (hl : l ∈ idelesAt E (evFin F v)) (y : Fin n₁ × Fin d₁ → Fv F v) :
@@ -758,7 +738,7 @@ theorem coneFinInt_eq (hψ : Continuous B.ψ) (φ : (Fin n × Fin d → Fv F v) 
 open scoped GlobalTheory.VacAny in
 
 /- English proof (translation)
-Establish `hT : IsLinearMap ℂ (M.co.rho B.ψ (partFin v (u l)))` using `⟨fun f g => funext fun x => mul_add _ _ _, fun c f => funext fun x => mul_left_comm _ _ _⟩`. Simplify using `only [coneFinInt]`. Rewrite using `[locOp_lin (om (k, 1)).isLinear hk a b hφ hφ', locOp_lin hT (fun f hf => ⟨_, locOp_mem v _ f, (locOp_rho M.co hψ v (u l) hf).1⟩) a b (locOp_mem _ _ _) (locOp_mem _ _ _), map_add, map_smul, map_smul]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coneFinInt_lin (hψ : Continuous B.ψ) {k : UA σ X.J}
     (hk : ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ∃ φ₁, φ₁ ∈ SB (Fin n × Fin d → Fv F v) ∧ Acts (evFin F v) (om (k, 1)) φ φ₁)
@@ -776,9 +756,7 @@ theorem coneFinInt_lin (hψ : Continuous B.ψ) {k : UA σ X.J}
   ring
 
 /- English proof (translation)
-Simplify using `only [coneFin]`. Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_add (h2.const_mul a) (h2'.const_mul b)]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_add ((h1 k).const_mul a) ((h1' k).const_mul b)]`.
-
-Conclude with `integral_congr_ae (Eventually.of_forall fun l => coneFinInt_lin hψ (hk k.1 k.2) a b hφ hφ' l.1 y)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneFin_lin (hψ : Continuous B.ψ)
     (hk : ∀ k ∈ KAt K (evFin F v), ∀ φ ∈ SB (Fin n × Fin d → Fv F v),
@@ -799,7 +777,7 @@ theorem coneFin_lin (hψ : Continuous B.ψ)
   exact integral_congr_ae (Eventually.of_forall fun l => coneFinInt_lin hψ (hk k.1 k.2) a b hφ hφ' l.1 y)
 
 /- English proof (translation)
-Use `haveI : IsProbabilityMeasure μK := ⟨hK.2⟩`. Establish `e : ∀ k : KAt K (evFin F v), locOp v (om (k.1, 1)) φ = φ` using `fun k => locOp_eq hφ hφ (hfix k.1 k.2)`. Simplify using `only [coneFin, coneFinInt, e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coneFin_of_fixed (hK : IsNormK K (evFin F v) μK) {φ : (Fin n × Fin d → Fv F v) → ℂ}
     (hφ : φ ∈ SB (Fin n × Fin d → Fv F v)) (hfix : ∀ k ∈ KAt K (evFin F v), Acts (evFin F v) (om (k, 1)) φ φ)
@@ -812,7 +790,7 @@ theorem coneFin_of_fixed (hK : IsNormK K (evFin F v) μK) {φ : (Fin n × Fin d 
   simp
 
 /- English proof (translation)
-Establish `t : ∀ r, tens (evFin F v) (0 : (Fin n × Fin d → Fv F v) → ℂ) r = 0` using `fun r => funext fun x => zero_mul _`. Establish `e : ∀ k, locOp v (om (k, 1)) 0 = 0` using `fun k => locOp_eq (zero_mem _) (zero_mem _) fun r _ => by rw [t, map_zero]`. Establish `e' : ∀ w, locOp v (M.co.rho B.ψ w) 0 = 0` using `fun w => locOp_eq (zero_mem _) (zero_mem _) fun r _ => by rw [t]; exact funext fun x => mul_zero _`. Use function extensionality and compare the values at `y`. Simplify using `[coneFin, coneFinInt, e, e']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 example : coneFin B M om v ev K μK μ u ν z 0 = 0 := by
   have t : ∀ r, tens (evFin F v) (0 : (Fin n × Fin d → Fv F v) → ℂ) r = 0 := fun r => funext fun x => zero_mul _
@@ -845,7 +823,7 @@ def coneInf (f : SInf F (Fin n × Fin d)) : SInf F (Fin n₁ × Fin d₁) :=
 variable {B M om ei K μK μ u ν z}
 
 /- English proof (translation)
-The claim follows from `(mul_comm _ _).trans (mul_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem coneInfInt_apply (f : SInf F (Fin n × Fin d)) (k : UA σ X.J) (l : (AE F E)ˣ)
     (y : Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F) :
@@ -854,7 +832,7 @@ theorem coneInfInt_apply (f : SInf F (Fin n × Fin d)) (k : UA σ X.J) (l : (AE 
   (mul_comm _ _).trans (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[coneInf, dif_pos h]`. Conclude with `h.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_coneInf {f : SInf F (Fin n × Fin d)}
     (h : ∃ g : SInf F (Fin n₁ × Fin d₁), ⇑g = coneInfFun B M om ei K μK μ u ν z f) :
@@ -863,14 +841,14 @@ theorem coe_coneInf {f : SInf F (Fin n × Fin d)}
   exact h.choose_spec
 
 /- English proof (translation)
-The claim follows from `DFunLike.coe_injective ((coe_coneInf ⟨g, h⟩).trans h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem coneInf_eq {f : SInf F (Fin n × Fin d)} {g : SInf F (Fin n₁ × Fin d₁)}
     (h : ⇑g = coneInfFun B M om ei K μK μ u ν z f) : coneInf B M om ei K μK μ u ν z f = g :=
   DFunLike.coe_injective ((coe_coneInf ⟨g, h⟩).trans h.symm)
 
 /- English proof (translation)
-Establish `hT : IsLinearMap ℂ (M.co.rho B.ψ (partInf F (u l)))` using `⟨fun f g => funext fun x => mul_add _ _ _, fun c f => funext fun x => mul_left_comm _ _ _⟩`. Simplify using `only [coneInfInt]`. Rewrite using `[locOpInf_lin (om (k, 1)).isLinear hk, locOpInf_lin hT fun g => ⟨_, (locOpInf_rho M.co hψ (u l) g).1⟩, map_add, map_smul, map_smul, smul_add, smul_comm _ a, smul_comm _ b]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneInfInt_lin (hψ : IsStd B.ψ) {k : UA σ X.J}
     (hk : ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (k, 1)) f f₁)
@@ -884,13 +862,13 @@ theorem coneInfInt_lin (hψ : IsStd B.ψ) {k : UA σ X.J}
     map_add, map_smul, map_smul, smul_add, smul_comm _ a, smul_comm _ b]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.2, ((hK k).1 h.1).1⟩, fun h => ⟨(hK k).2 ⟨h.2, fun y hy => ?_⟩, h.1⟩⟩` and prove the remaining obligations. Establish `h0 : realAd F 1 • y = 0`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, -, x, -, rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_comm]`. Conclude with `at_partInf _ a ha`. Consider the case `zero => exact smul_zero _`. Consider the case `add _ _ _ _ h1 h2 => rw [smul_add, h1, h2, add_zero]`. Consider the case `neg _ _ h1 => rw [smul_neg, h1, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `key : ∀ g ∈ UAtSub σ X (evI F), mat g *ᵥ y = y` using `fun g hg => by`. Establish `h1 : (mat g - 1) *ᵥ y = 0`. Rewrite using `[← partInf_of_at hg, partInf, Matrix.smul_mulVec, ← Matrix.mulVec_smul, h0, Matrix.mulVec_zero]`. Rewrite `h1` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[key k h.1, key k⁻¹ (inv_mem (show k ∈ UAtSub σ X (evI F) from h.1))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hy, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_KAt_inf {B : Base F E} {K : Subgroup (UA σ X.J)} (hK : IsStab B K) {k : UA σ X.J} :
     k ∈ KAt K (evI F) ↔ k ∈ KInf σ X B.emb := by
@@ -916,7 +894,7 @@ end Inf
 end Cone
 
 /- English proof (translation)
-Introduce `h` and use `by haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E have h1 := absE_of_mem_unitsAt h rw [GlobalTheory.Doubling.absE_ideleAt, GlobalTheory.Doubling.absEv_algebraMap] at h1 exact ha ((pow_eq_one_iff_of_nonneg zero_le' Module.finrank_pos.ne').1 h1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (v : Pl F) (a : (Fv F v)ˣ) (ha : ‖a.1‖₊ ≠ 1) :
     ideleAt F E v (Units.map (algebraMap (Fv F v) (Fv F v ⊗[F] E)).toMonoidHom a) ∉ unitsAt E v := fun h => by
@@ -926,7 +904,7 @@ example (v : Pl F) (a : (Fv F v)ˣ) (ha : ‖a.1‖₊ ≠ 1) :
   exact ha ((pow_eq_one_iff_of_nonneg zero_le' Module.finrank_pos.ne').1 h1)
 
 /- English proof (translation)
-Use `⟨ideleAt_mem v _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `unitFin F E v (ideleAt F E v (-1)) ∈ (intLoc F E v).toSubmonoid.units`. Rewrite using `[GlobalTheory.Doubling.unitFin_ideleAt_self]`. Conclude with `(Submonoid.mem_units_iff _ _).2 ⟨(intLoc F E v).neg_mem (one_mem _), (intLoc F E v).neg_mem (one_mem _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (v : Pl F) : ideleAt F E v (-1) ∈ unitsAt E v := by
   refine ⟨ideleAt_mem v _, ?_⟩
@@ -935,7 +913,7 @@ example (v : Pl F) : ideleAt F E v (-1) ∈ unitsAt E v := by
   exact (Submonoid.mem_units_iff _ _).2 ⟨(intLoc F E v).neg_mem (one_mem _), (intLoc F E v).neg_mem (one_mem _)⟩
 
 /- English proof (translation)
-Use `locOp_eq hφ ⟨hφ.1.comp_continuous (continuous_add_const t), hφ.2.comp_homeomorph (Homeomorph.addRight t)⟩ fun r hr => funext fun x => ?_` and prove the remaining obligations. Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Simplify using `only [tens, hr.1 x _ hz, Pi.add_apply, map_add, GlobalTheory.LatVac.evFin_liftV]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 example {κ : Type} [Fintype κ] (v : Pl F) (t : κ → Fv F v) {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB (κ → Fv F v)) :
     locOp v (fun Φ x => Φ (x + fun i => GlobalTheory.LatVac.liftV v (t i))) φ = fun x => φ (x + t) := by
@@ -946,7 +924,7 @@ example {κ : Type} [Fintype κ] (v : Pl F) (t : κ → Fv F v) {φ : (κ → Fv
   rfl
 
 /- English proof (translation)
-The claim follows from `coneFin B G.M om v ev K (existsUnique_isNormK hK _).choose (existsUnique_isNormE E v).choose (shiftA H H') X.ν ((b + 2 - a') / 2)`.
+A detailed English derivation is pending.
 -/
 example {b a' : ℕ} (B : Base F E) (G : Geo σ (b + 2) a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))
     (X : Chars F E) (om : Rep σ G.V G.W) (v : Pl F)
@@ -957,7 +935,7 @@ example {b a' : ℕ} (B : Base F E) (G : Geo σ (b + 2) a') (H : Plane E (b + 2)
     ((b + 2 - a') / 2)
 
 /- English proof (translation)
-The claim follows from `coneInf B G.M' om' ei K (existsUnique_isNormK hK _).choose (exists_haar_idelesAt E (evI F)).choose (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1)`.
+A detailed English derivation is pending.
 -/
 example {a b : ℕ} (B : Base F E) (G : Geo σ a (b + 2)) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b))
     (X : Chars F E) (om' : Rep σ G.V' G.W) (ei : SInf F (Fin (b + 2) × Fin (a + (b + 2))) →L[ℂ] SInf F (Fin b × Fin (a + b)))

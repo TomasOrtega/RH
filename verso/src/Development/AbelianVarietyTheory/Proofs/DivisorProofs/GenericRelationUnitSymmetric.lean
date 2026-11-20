@@ -14,40 +14,40 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     spMap (ψ.comp φ) = spMap ψ ≫ spMap φ := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap]`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_comp' {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) :=
   RingHom.ext fun x => by ext <;> simp [dualMap]
 
 /- English proof (translation)
-Rewrite using `[dualMap_comp', spMap_comp']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_dualMap_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     spMap (dualMap (ψ.comp φ)) = spMap (dualMap ψ) ≫ spMap (dualMap φ) := by
   rw [dualMap_comp', spMap_comp']
 
 /- English proof (translation)
-Establish `hx1` using `h1.1`. Establish `hφ1` using `h1.2.1`. Establish `hx2` using `h2.1`. Establish `hφ2` using `h2.2.1`. Establish `hx : x'' = spMap (ψ'.comp ψ) ≫ x` using `by rw [hx2, hx1, spMap_comp', Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : φ'' = (ψ'.comp ψ).comp φ` using `by rw [hφ2, hφ1]; rfl`. Take `⟨f1, hf1⟩` from `f.exists_isMap ψ hφ1 hx1`. Take `⟨f2, hf2⟩` from `f1.exists_isMap ψ' hφ2 hx2`. Take `⟨g2, hg2⟩` from `g.exists_isMap ψ' hφ2 hx2`. Use `⟨hx, hφ, fun τ i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hco : f2.co h τ = f2.co g2 τ * g2.co h τ` using `(EigFrame.co_mul f2 g2 h τ).symm`. Establish `hA : f2.co g2 τ = (f1.co g τ).map ψ'` using `EigFrame.IsMap.co τ hf2 hg2 hx2`. Establish `hB` using `EigFrame.Tri.co τ h1 hf1`. Establish `hC` using `EigFrame.Tri.co τ h2 hg2`. Use `⟨fun k => f2.co h τ k i, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[hco, hA, Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify using `[Matrix.map_apply, hB.2, hC.2]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with hb | hb` into its components or cases.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Matrix.map_apply, hB.1 i b hb]`. Simplify using `[hC.1 b i hb]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Introduce `k hk dsimp only`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Rewrite using `[hco, hA, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b < k`. Simplify using `[Matrix.map_apply, hB.1 k b hb]`. Simplify using `[hC.1 b i (lt_of_lt_of_le hk (not_lt.1 hb))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : (fun k => spMap (dualMap (ψ'.comp ψ)) ≫ f.v τ k) = f2.v τ` using `funext fun k => by`. Rewrite using `[hf2 τ k, hf1 τ k, spMap_dualMap_comp, Category.assoc]`. Rewrite using `[e]`. Conclude with `f2.co_spec h τ i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_trans {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {φ : c.F →+* R} {φ' : c.F →+* R'}
     {φ'' : c.F →+* R''} {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X} {x'' : Sp R'' ⟶ Z.X} {f : EigFrame Z φ x}
@@ -91,9 +91,9 @@ theorem tri_trans {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {�
     exact f2.co_spec h τ i
 
 /- English proof (translation)
-Use `⟨by rw [h.1, spMap_comp', Category.assoc, hx], by rw [h.2.1, hφ]; rfl, fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨cf, h1, h2, h3⟩` from `h.2.2 τ i`. Use `⟨cf, h1, h2, ?_⟩` and prove the remaining obligations. Establish `e : (fun j => spMap (dualMap b) ≫ k.v τ j) = fun j => spMap (dualMap (b.comp a)) ≫ f.v τ j`. Use function extensionality and compare the values at `fun j => by rw [hk τ j, spMap_dualMap_comp, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_of_isMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {φ : c.F →+* R} {φ' : c.F →+* R'}
     {φ'' : c.F →+* R''} {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X} {x'' : Sp R'' ⟶ Z.X} {f : EigFrame Z φ x}
@@ -115,13 +115,13 @@ namespace GlobalTheory.ShFam.GalCarry.Tw
 open GlobalTheory.ShFam.GalCarry.LocCarry
 
 /- English proof (translation)
-Introduce and unpack `⟨hπ, hgen, g₀, hpush, htri⟩`. Use `⟨hπ, hgen, fun y y' χ' f' t' hy hf' => ?_⟩` and prove the remaining obligations. Substitute `hy` using the available equality. Set `a : C'.Y.X.presheaf.stalk (φ.hom y) →+* C.Y.X.presheaf.stalk y` to `(φ.hom.stalkMap y).hom`. Establish `ha : stalkPt C.Y y ≫ φ.hom = spMap a ≫ stalkPt C'.Y (φ.hom y)` using `(Scheme.SpecMap_stalkMap_fromSpecStalk φ.hom).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmap` using `map_alg hgen y`. Establish `hring : ψ.comp (algebraMap (C'.Y.X.presheaf.stalk (φ.hom y)) C'.Y.X.functionField) = (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField).comp a` using `RingHom.ext hmap`. Take `⟨k', hk'⟩` from `f'.exists_isMap a (φ' := a.comp χ') (x' := spMap a ≫ stalkPt C'.Y (φ.hom y) ≫ C'.π ≫ genι Z) rfl rfl`. Establish `hx : spMap a ≫ stalkPt C'.Y (φ.hom y) ≫ C'.π ≫ genι Z = (stalkPt C.Y y ≫ C.π ≫ genι Z) ≫ T.ρ.hom`. Rewrite using `[← Category.assoc (spMap a), ← ha, Category.assoc, reassoc_of% hπ, T.g_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Take `⟨f, hf⟩` from `T.exists_pull k' rfl hx`. Take `⟨t, ht⟩` from `T.exists_relab (fun τ i => Units.map (ψ : C'.Y.Fn →* C.Y.Fn) (t' τ i) * t₀ τ i)`. Use `⟨a, a.comp χ', f, t, ha, rfl, hmap, ?_, ht, fun τ i => ?_⟩` and prove the remaining obligations. Use `(Push.tri_iff hf hpush ht).2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `tri_trans hf' htri`. Rewrite `h3` using `[hring]`. Conclude with `tri_of_isMap hk' rfl rfl h3`. Rewrite using `[← hk' τ i]`. Conclude with `hf.2.2 τ i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locRel_of_genRel (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F)

@@ -17,13 +17,11 @@ section Algebra
 variable {A B : Type} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Set `T : Submonoid B` to `p.primeCompl.map φ ⊔ Submonoid.powers b`. Establish `hdisj : Disjoint ((p.map φ : Ideal B) : Set B) (T : Set B)`. Rewrite using `[Set.disjoint_left]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hxJ hxT`. Take `⟨y, hy, z, hz, rfl⟩` from `Submonoid.mem_sup.mp hxT`. Take `⟨s, hs, rfl⟩` from `Submonoid.mem_map.mp hy`. Take `⟨n, rfl⟩` from `(Submonoid.mem_powers_iff _ _).mp hz`. Conclude with `hne s (Ideal.mem_primeCompl_iff.mp hs) n hxJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, hQ, hJQ, hQT⟩` from `Ideal.exists_le_prime_disjoint (S := T) (disjoint := hdisj)`. Establish `hcomap : Q.comap φ = p`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Assume the negation of the conclusion as `hap`.
-
-Conclude with `Set.disjoint_left.mp hQT (Ideal.mem_comap.mp ha) (Submonoid.mem_sup_left (Submonoid.mem_map_of_mem φ (Ideal.mem_primeCompl_iff.mpr hap)))`. Conclude with `Ideal.map_le_iff_le_comap.mp hJQ`. Conclude with `Set.disjoint_left.mp hQT (h Q hQ hcomap) (Submonoid.mem_sup_right (Submonoid.mem_powers b))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_mem_map (φ : A →+* B) (p : Ideal A) [p.IsPrime] (b : B)
     (h : ∀ Q : Ideal B, Q.IsPrime → Q.comap φ = p → b ∈ Q) :
@@ -49,11 +47,11 @@ theorem exists_mul_pow_mem_map (φ : A →+* B) (p : Ideal A) [p.IsPrime] (b : B
   exact Set.disjoint_left.mp hQT (h Q hQ hcomap) (Submonoid.mem_sup_right (Submonoid.mem_powers b))
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `haveI : Module.Finite A B := hφ`. Establish `hrange : LinearMap.range (Algebra.lmul A B u) ≤ p • (⊤ : Submodule A B)`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_right _ _ hu`. Take `⟨g, hgm, -, hgc, hg0⟩` from `LinearMap.exists_monic_and_natDegree_eq_and_coeff_mem_pow_and_aeval_eq_zero (f := Algebra.lmul A B u) (I := p) (hI := hrange)`. Use `⟨g, hgm, fun i hi => Ideal.pow_le_self (Nat.sub_ne_zero_of_lt hi) (hgc i), ?_⟩` and prove the remaining obligations. Establish `e2` using `Polynomial.aeval_algHom_apply (Algebra.lmul A B) u g`. Rewrite `e2` using `[hg0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `congrArg (fun F : Module.End A B => F 1) e2`. Establish `e4 : aeval u g = 0` using `by simpa using e3.symm`. Rewrite `e4` using `[aeval_def]`. Conclude with `e4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monic_coeff_mem (φ : A →+* B) (hφ : φ.Finite) (p : Ideal A) (u : B) (hu : u ∈ p.map φ) :
     ∃ g : A[X], g.Monic ∧ (∀ i < g.natDegree, g.coeff i ∈ p) ∧ eval₂ φ u g = 0 := by
@@ -75,11 +73,9 @@ theorem exists_monic_coeff_mem (φ : A →+* B) (hφ : φ.Finite) (p : Ideal A) 
   exact e4
 
 /- English proof (translation)
-Establish `key` using `hw`. Rewrite `key` using `[aeval_eq_sum_range, Finset.sum_range_succ, hg.coeff_natDegree, one_smul]`. Establish `hsum : (∑ i ∈ Finset.range g.natDegree, g.coeff i • w ^ i) ∈ P`. Use `P.sum_mem fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.mul_mem_right _ (hc i (Finset.mem_range.mp hi))`. Establish `hpow : w ^ g.natDegree ∈ P`. Establish `e : w ^ g.natDegree = -(∑ i ∈ Finset.range g.natDegree, g.coeff i • w ^ i)`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `key`.
-
-Rewrite using `[e]`. Conclude with `P.neg_mem hsum`. Conclude with `hP.mem_of_pow_mem _ hpow`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_aeval_eq_zero {R : Type} [CommRing R] [Algebra A R] (P : Ideal R) [hP : P.IsPrime] (g : A[X])
     (hg : g.Monic) (hc : ∀ i < g.natDegree, algebraMap A R (g.coeff i) ∈ P) (w : R) (hw : aeval w g = 0) :
@@ -99,7 +95,7 @@ theorem mem_of_aeval_eq_zero {R : Type} [CommRing R] [Algebra A R] (P : Ideal R)
   exact hP.mem_of_pow_mem _ hpow
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Polynomial.coeff_map, Polynomial.map_multiset_prod, Multiset.map_map]`. Establish `hX : ∀ a ∈ s, ((Polynomial.map (Ideal.Quotient.mk P)) ∘ fun a => X - C a) a = X`. Introduce `a ha`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr (hs a ha)]`. Rewrite using `[Multiset.map_congr rfl hX, Multiset.map_const', Multiset.prod_replicate, coeff_X_pow, if_neg hi.ne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_prod_X_sub_C_mem {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime] (s : Multiset R)
     (hs : ∀ a ∈ s, a ∈ P) (i : ℕ) (hi : i < Multiset.card s) :
@@ -119,15 +115,13 @@ section Spectral
 variable {A B : Type} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Set `` to `φ.toAlgebra`. Establish `: Module.Finite A B` using `hφ`. Establish `hb : aeval b h = 0`. Rewrite using `[aeval_def]`. Conclude with `hh`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : aeval ((1 : K) ⊗ₜ[A] b) h = 0`. Establish `e` using `Polynomial.aeval_algHom_apply (Algebra.TensorProduct.includeRight : B →ₐ[A] K ⊗[A] B) b h`. Rewrite `e` using `[hb, map_zero]`. Conclude with `e`. Establish `hK : aeval (Algebra.lmul K (K ⊗[A] B) (1 ⊗ₜ b)) (h.map (algebraMap A K)) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.aeval_algHom_apply, Polynomial.aeval_map_algebraMap, h1, map_zero]`. Establish `hΩ : aeval ((Algebra.lmul K (K ⊗[A] B) (1 ⊗ₜ b)).baseChange Ω) ((h.map (algebraMap A K)).map (algebraMap K Ω)) = 0`. Establish `e` using `Polynomial.aeval_algHom_apply (Module.End.baseChangeHom K Ω (K ⊗[A] B)) (Algebra.lmul K (K ⊗[A] B) (1 ⊗ₜ b)) (h.map (algebraMap A K))`. Rewrite `e` using `[hK, map_zero, ← Polynomial.aeval_map_algebraMap Ω]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hroot : ((Algebra.lmul K (K ⊗[A] B) (1 ⊗ₜ b)).baseChange Ω).charpoly.IsRoot μ`. Rewrite using `[LinearMap.charpoly_baseChange]`. Conclude with `hμ`. Take `⟨v, hv⟩` from `((Module.End.hasEigenvalue_iff_isRoot_charpoly _ μ).mpr hroot).exists_hasEigenvector`. Establish `e` using `Module.End.aeval_apply_of_hasEigenvector (p := (h.map (algebraMap A K)).map (algebraMap K Ω)) hv`.
-
-Rewrite `e` using `[hΩ, LinearMap.zero_apply, eq_comm, smul_eq_zero]`. Break down `e with e | e` into its components or cases. Rewrite `e` using `[Polynomial.map_map, ← IsScalarTower.algebraMap_eq, Polynomial.eval_map_algebraMap]`. Then use the resulting hypothesis. Conclude with `absurd e hv.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem aeval_eq_zero_of_isRoot (φ : A →+* B) (hφ : φ.Finite) (K Ω : Type) [Field K] [Algebra A K] [Field Ω]
     [Algebra A Ω] [Algebra K Ω] [IsScalarTower A K Ω] (b : B) (h : A[X]) (hh : eval₂ φ b h = 0) (μ : Ω)
@@ -170,37 +164,31 @@ section Main
 variable {A B : Type} [CommRing A] [IsDomain A] [CommRing B]
 
 /- English proof (translation)
-Use `set K := FractionRing A with hKdef`. Use `set χ := charK φ hφ K b with hχdef`. Establish `hχm : χ.Monic` using `charK_monic φ hφ K b`. Distinguish the cases in `hkN : χ.natDegree < k`. Establish `h0 : algebraMap A K a = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, coeff_reverse, revAt_eq_self_of_lt hkN]`. Conclude with `coeff_eq_zero_of_natDegree_lt hkN`. Establish `ha0 : a = 0` using `IsFractionRing.injective A K (h0.trans (map_zero _).symm)`. Rewrite using `[ha0]`. Conclude with `p.zero_mem`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `push Not at hkN`. Take `⟨s, hs, n, hsn⟩` from `exists_mul_pow_mem_map φ p b h`. Take `⟨g, hgm, hgc, hg0⟩` from `exists_monic_coeff_mem φ hφ p _ hsn`. Establish `hbint : ∃ m : A[X], m.Monic ∧ eval₂ φ b m = 0`. Use `letI := φ.toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Finite A B := hφ`. Conclude with `Algebra.IsIntegral.isIntegral (R := A) b`. Take `⟨m, hmm, hm0⟩` from `hbint`. Establish `hinj : Function.Injective (algebraMap A (AlgebraicClosure K))`. Rewrite using `[IsScalarTower.algebraMap_eq A K (AlgebraicClosure K), RingHom.coe_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(algebraMap K (AlgebraicClosure K)).injective.comp (IsFractionRing.injective A K)`. Take `⟨P, -, hP, hPp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := integralClosure A (AlgebraicClosure K)) p ⊥ (by`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`. Establish `hx0 : x = 0` using `hinj (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A (integralClosure A (AlgebraicClosure K)) (AlgebraicClosure K), hx, map_zero, map_zero])`. Rewrite using `[hx0]`. Conclude with `p.zero_mem)`. Establish `hint : ∀ μ ∈ (χ.map (algebraMap K (AlgebraicClosure K))).roots, μ ∈ integralClosure A (AlgebraicClosure K)`. Introduce `μ hμ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e` using `aeval_eq_zero_of_isRoot φ hφ K (AlgebraicClosure K) b m hm0 μ (mem_roots'.mp hμ).2`. Conclude with `(mem_integralClosure_iff A (AlgebraicClosure K)).mpr ⟨m, hmm, by rwa [aeval_def] at e⟩`. Establish `hmemP : ∀ c : integralClosure A (AlgebraicClosure K), (χ.map (algebraMap K (AlgebraicClosure K))).IsRoot (c : AlgebraicClosure K) → c ∈ P`. Introduce `c hc`. Establish `e1 : eval₂ φ b (g.comp (C s * X ^ n)) = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[eval₂_comp]`. Simplify using `using hg0`. Establish `e2` using `aeval_eq_zero_of_isRoot φ hφ K (AlgebraicClosure K) b _ e1 (c : AlgebraicClosure K) hc`. Rewrite `e2` using `[aeval_comp]`. Simplify using `only [map_mul, aeval_C, map_pow, aeval_X] at e2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3 : aeval (algebraMap A (integralClosure A (AlgebraicClosure K)) s * c ^ n) g = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Polynomial.aeval_subalgebra_coe]`. Simplify using `using e2`. Establish `hw` using `mem_of_aeval_eq_zero P g hgm (fun i hi => by rw [← Ideal.mem_comap, hPp]; exact hgc i hi) _ e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hP.mem_or_mem hw with h1 | h1` into its components or cases. Establish `h2 : s ∈ P.comap (algebraMap A (integralClosure A (AlgebraicClosure K)))` using `h1`. Rewrite `h2` using `[hPp]`. Conclude with `(hs h2).elim`. Conclude with `hP.mem_of_pow_mem n h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩ : ∃ t : Multiset (integralClosure A (AlgebraicClosure K)), t.map Subtype.val = (χ.map (algebraMap K (AlgebraicClosure K))).roots` from `⟨(χ.map (algebraMap K (AlgebraicClosure K))).roots.attach.map fun x => ⟨x.1, hint x.1 x.2⟩, by simp [Multiset.map_map]⟩`. Establish `hsplit : (χ.map (algebraMap K (AlgebraicClosure K))).Splits` using `IsAlgClosed.splits _`. Establish `hprod : χ.map (algebraMap K (AlgebraicClosure K)) = ((t.map fun c => X - C c).prod).map (algebraMap (integralClosure A (AlgebraicClosure K)) (AlgebraicClosure K))` using `by conv_lhs => rw [hsplit.eq_prod_roots_of_monic (hχm.map _), ← ht]`. Rewrite using `[Polynomial.map_multiset_prod, Multiset.map_map, Multiset.map_map]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `c _`. Simplify using the standard rewrite rules. Establish `hcard : Multiset.card t = χ.natDegree`. Rewrite using `[← Multiset.card_map Subtype.val t, ht, ← hsplit.natDegree_eq_card_roots, natDegree_map]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hi : χ.natDegree - k < Multiset.card t` using `by omega`. Establish `hc` using `coeff_prod_X_sub_C_mem P t (fun c hct => hmemP c (by`. Establish `hmem : (c : AlgebraicClosure K) ∈ (χ.map (algebraMap K (AlgebraicClosure K))).roots`. Rewrite using `[← ht]`. Conclude with `Multiset.mem_map_of_mem _ hct`.
-
-Conclude with `(mem_roots'.mp hmem).2)) _ hi`. Establish `hval : algebraMap A (AlgebraicClosure K) a = algebraMap (integralClosure A (AlgebraicClosure K)) (AlgebraicClosure K) ((t.map fun c => X - C c).prod.coeff (χ.natDegree - k))`. Rewrite using `[IsScalarTower.algebraMap_apply A K (AlgebraicClosure K), ha, coeff_reverse, revAt_le hkN, ← Polynomial.coeff_map, hprod, Polynomial.coeff_map]`. Establish `hAR : algebraMap A (integralClosure A (AlgebraicClosure K)) a = (t.map fun c => X - C c).prod.coeff (χ.natDegree - k)`. Apply `Subtype.val_injective` to reduce the goal to its premises.
-
-Express the relevant statement in the definitionally equal form `algebraMap (integralClosure A (AlgebraicClosure K)) (AlgebraicClosure K) (algebraMap A (integralClosure A (AlgebraicClosure K)) a) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, hval]`. Both sides reduce to the same expression. Establish `hmemA : a ∈ P.comap (algebraMap A (integralClosure A (AlgebraicClosure K)))`. Rewrite using `[Ideal.mem_comap, hAR]`.
-
-Conclude with `hc`. Rewrite `hmemA` using `[hPp]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_mem_prime (φ : A →+* B) (hφ : φ.Finite) (b : B) (p : Ideal A) [p.IsPrime]
     (h : ∀ Q : Ideal B, Q.IsPrime → Q.comap φ = p → b ∈ Q) (k : ℕ) (hk : 1 ≤ k) (a : A)
@@ -307,9 +295,7 @@ section Main
 variable {A B : Type} [CommRing A] [IsDomain A] [CommRing B]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Distinguish the cases in `hex : ∃ a : A, algebraMap A (FractionRing A) a = (charK φ hφ (FractionRing A) b).reverse.coeff k`. Conclude with `mem_of_forall_mem_prime φ hφ b p hne k hk _ (algebraMap_normCoeff φ hφ b k hex)`.
-
-Rewrite using `[normCoeff, dif_neg hex]`. Conclude with `p.zero_mem`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_comap_eq_notMem (φ : A →+* B) (hφ : φ.Finite) (b : B) (p : Ideal A) [p.IsPrime] (k : ℕ)
     (hk : 1 ≤ k) (h : normCoeff φ hφ b k ∉ p) : ∃ Q : Ideal B, Q.IsPrime ∧ Q.comap φ = p ∧ b ∉ Q := by
@@ -328,15 +314,13 @@ section Geometry
 open AlgebraicGeometry CategoryTheory
 
 /- English proof (translation)
-Introduce `X Y f _ V hV _ _ τ x k hxV hk hx`. Establish `hU : IsAffineOpen (f ⁻¹ᵁ V)` using `hV.preimage f`. Use `set px := hV.primeIdealOf ⟨x, hxV⟩ with hpx`. Establish `hfx : hV.fromSpec px = x` using `hV.fromSpec_primeIdealOf ⟨x, hxV⟩`. Establish `hnot : normCoeff (f.app V).hom (f.finite_app V hV) τ k ∉ px.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : hV.fromSpec px ∈ X.basicOpen (normCoeff (f.app V).hom (f.finite_app V hV) τ k)`. Rewrite using `[hfx]`. Conclude with `hx`. Establish `h2 : px ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen (normCoeff (f.app V).hom (f.finite_app V hV) τ k)` using `h1`. Rewrite `h2` using `[hV.fromSpec_preimage_basicOpen]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `(PrimeSpectrum.mem_basicOpen _ _).mp h2`. Take `⟨Q, hQ, hQp, hτQ⟩` from `exists_prime_comap_eq_notMem (f.app V).hom (f.finite_app V hV) τ px.asIdeal k hk hnot`. Set `q : Spec Γ(Y, f ⁻¹ᵁ V)` to `(⟨Q, hQ⟩ : PrimeSpectrum Γ(Y, f ⁻¹ᵁ V))`. Use `⟨hU.fromSpec q, ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : q ∈ PrimeSpectrum.basicOpen τ` using `(PrimeSpectrum.mem_basicOpen _ _).mpr hτQ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[← hU.fromSpec_preimage_basicOpen]`. Conclude with `h3`. Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec f hV hU le_rfl`. Establish `e2 : f (hU.fromSpec q) = hV.fromSpec (Spec.map (f.appLE V (f ⁻¹ᵁ V) le_rfl) q)`. Rewrite using `[← Scheme.Hom.comp_apply, ← e, Scheme.Hom.comp_apply]`.
-
-Rewrite using `[e2, Scheme.Hom.appLE_eq_app, Spec.map_apply]`. Establish `hq : PrimeSpectrum.comap (f.app V).hom q = px` using `PrimeSpectrum.ext hQp`. Rewrite using `[hq, hfx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_basicOpen_of_mem_basicOpen_normCoeff : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f]
     {V : X.Opens} (hV : IsAffineOpen V) [IsDomain Γ(X, V)] [IsIntegrallyClosed Γ(X, V)] (τ : Γ(Y, f ⁻¹ᵁ V))

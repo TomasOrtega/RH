@@ -36,13 +36,13 @@ variable {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.Good
 include hσ hU ha hx
 
 /- English proof (translation)
-Take `⟨hp0, hty⟩` from `hU.2.1 k`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨f, hf⟩` from `FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (Formalism.L2.PjFree.relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Rewrite `hf` using `[← hp0]`. Establish `hper (v) : W.Pm k x v = perVec (U.X k) (W.e.trans f) x.1 (W.φ k v : Fin r → E)` using `funext fun j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[W.Pm_eq, perVec, Equiv.trans_apply]`. Establish `h` using `hf (W.e j)`. Generalize the expression as in `f (W.e j) = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega), Formalism.L2.PjFree.perFr, dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega), Formalism.L2.PjFree.perFr, dif_neg a, dif_pos (show conjEmb (Formalism.L2.PjFree.relab c σ (W.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression. Establish `hd : (((2 * a : ℝ) : ℂ) • 1 : Matrix _ _ ℂ) = diagonal (diagXi (U.X k) (W.e.trans f))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[smul_one_eq_diagonal]`. Conclude with `congrArg _ (funext fun j => by rw [diagXi, ha])`. Rewrite using `[hd, hper, hper, im_diag_ortho _ _ _ hx, ← W.iso]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem im_hermForm_orth (v w : (W.F.Di (W.ik k)).La) :
     (hermForm (((2 * a : ℝ) : ℂ) • 1) (W.Pm k x v) (W.Pm k x w)).im = (W.F.Di (W.ik k)).EF v w := by
@@ -72,13 +72,13 @@ theorem im_hermForm_orth (v w : (W.F.Di (W.ik k)).La) :
   simp
 
 /- English proof (translation)
-Establish `p` using `W.period k x`. Take `⟨hPx, hv⟩` from `W.lie k x`. Take `⟨h, gam, hex, hh, hiso, -⟩` from `familyUnif_exp_unique E H Dw l Xo _ _ _ W.F i (W.ik k) P _ hP p (by rw [← hPx, ← hy.1, e])`. Use `set A := LinearMap.toMatrix' h.toLinearMap with hA`. Establish `hAv : ∀ z, A *ᵥ z = h z` using `fun z => by rw [hA, LinearMap.toMatrix'_mulVec]; rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol (b) : A *ᵥ z τ b = ∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)`. Establish `d1` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ _ _ W.F _ _ p _ ((U.un k x).u τ) _ (hv τ) _ (y.u τ b)).1 (hPx ▸ hT b)`. Establish `d2` using `(ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ _ _ W.F _ P hP _ _ h.toLinearMap p hex _ _).1 (hy.2 τ b)`. Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ _ _ W.F _ _ p`. Rewrite using `[hAv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d1`. Establish `key` using `UnitDet.eq_of_im_hermForm_eq _ hP.2.2.2.1 (Aᵀ * ((((2 * a : ℝ) : ℂ) • 1) * A.map (starRingEnd ℂ))) Hm (by`. Introduce and unpack `_ ⟨v, rfl⟩ _ ⟨w, rfl⟩`. Rewrite using `[← UnitDet.hermForm_mulVec, hAv, hAv, ← hh, ← hh, im_hermForm_orth hσ hU W ha hx, hiso, hH])`. Use extensionality with `b b'`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[of_apply, ← key, ← UnitDet.hermForm_mulVec, hcol, hcol]`. Establish `hi : ∀ j j' : Fin (Dw.mult τ), W.e.symm ⟨τ, j⟩ = W.e.symm ⟨τ, j'⟩ ↔ j = j'` using `fun j j' => by simp`. Simplify using `[hermForm, smul_mulVec, sum_dotProduct, dotProduct_sum, star_sum, Pi.single_apply, hi, mul_apply, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermForm_eq_of_orth {i : Fin W.F.n} {P : (W.F.Di i).La →+ (Fin W.g → ℂ)}
     (hP : IsPeriod (W.F.Di i) (fun j => Formalism.L2.PjFree.relab c σ (W.e j).1) P) {Hm : Matrix (Fin W.g) (Fin W.g) ℂ}
@@ -113,9 +113,9 @@ theorem hermForm_eq_of_orth {i : Fin W.F.n} {P : (W.F.Di i).La →+ (Fin W.g →
 end Riemann
 
 /- English proof (translation)
-Take `⟨x, xo, u, ut, ue, ub, s, sg⟩` from `y'`. Simplify using `only at e`. Substitute `e` using the available equality. Set `L` to `lieEquiv (S := CAt σ) Z y (x := (cxPt Z y).1 ≫ genι Z) (Category.assoc _ _ _).symm`. Use `(isComb_iff (t := Xo.univ.t) (S := CAt σ) (fun i => tanOf (y.tan τ i)) _ (tanOf (ut τ b))).2 (L.injective ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(tan_ext (w := g.vec τ b) (hg τ b).symm).trans (((cxFrame Z y).vec_eq g τ b).trans ((map_sum L _ _).trans (Finset.sum_congr rfl fun _ _ => map_smul L _ _)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isCombAt_co {y y' : FrPt Xo c (CAt σ)} (e : y'.x = y.x) {g : EigFrame Z σ ((cxPt Z y).1 ≫ genι Z)}
     (hg : ∀ τ i, g.v τ i = (cxFrame Z y').v τ i) (τ : E →+* ℂ) (b : Fin (Dw.mult τ)) :
@@ -129,7 +129,7 @@ theorem isCombAt_co {y y' : FrPt Xo c (CAt σ)} (e : y'.x = y.x) {g : EigFrame Z
     ((map_sum L _ _).trans (Finset.sum_congr rfl fun _ _ => map_smul L _ _)).symm)
 
 /- English proof (translation)
-Use `Z.jQ_open` as an intermediate fact. Rewrite using `[← ptF_fst (S := CAt σ) y, ← ptF_fst (S := CAt σ) y']`. Conclude with `congrArg (· ≫ _) ((cancel_mono Z.jQ).1 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem x_eq_of_cxPt {y y' : FrPt Xo c (CAt σ)} (h : (cxPt Z y).1 = (cxPt Z y').1) : y.x = y'.x := by
   have := Z.jQ_open
@@ -161,7 +161,7 @@ def EigMet.hodge (b : ℝ) (hb : 0 < b) (G₀ : EigMet Z σ) : EigMet Z σ where
 variable {U} {y : CxPts (genStr Z) σ} {f g : EigFrame Z σ (y.1 ≫ genι Z)}
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_dualMap_id (R : Type) [CommRing R] : spMap (dualMap (RingHom.id R)) = 𝟙 _ := by
   rw [← Spec.map_id]
@@ -169,7 +169,7 @@ theorem spMap_dualMap_id (R : Type) [CommRing R] : spMap (dualMap (RingHom.id R)
   ext r <;> simp [dualMap]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, σ, k, x, .inl rfl, rfl, hσ, hx, by rw [show spMap (RingHom.id ℂ) = 𝟙 _ from Spec.map_id _, Category.id_comp], fun _ _ => by rw [spMap_dualMap_id, Category.id_comp]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHodgeFrame_cxFrame (hσ : Formalism.L2.PjFree.GoodEmb c σ) {k : (U σ).Comp} {x : ((U σ).X k).dom}
     (hx : IsOrth ((U σ).X k) x.1) : IsHodgeFrame U (cxPt Z ((U σ).un k x)) (cxFrame Z ((U σ).un k x)) :=
@@ -177,7 +177,7 @@ theorem isHodgeFrame_cxFrame (hσ : Formalism.L2.PjFree.GoodEmb c σ) {k : (U σ
     fun _ _ => by rw [spMap_dualMap_id, Category.id_comp]⟩
 
 /- English proof (translation)
-Establish `: y'.1 (IsLocalRing.closedPoint ℂ) = y.1 (IsLocalRing.closedPoint ℂ)`. Rewrite using `[e]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg _ (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))`. Rewrite using `[LiesIn, LiesIn, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liesIn_iff_of_comp {σ' : c.F →+* ℂ} {y' : CxPts (genStr Z) σ'} {ψ : ℂ →+* ℂ} (e : y'.1 = spMap ψ ≫ y.1)
     (C : Closeds (gen Z)) : LiesIn y' C ↔ LiesIn y C := by
@@ -187,16 +187,16 @@ theorem liesIn_iff_of_comp {σ' : c.F →+* ℂ} {y' : CxPts (genStr Z) σ'} {ψ
   rw [LiesIn, LiesIn, this]
 
 /- English proof (translation)
-Introduce `hy` and use `by obtain ⟨ψ, σ', k, x, -, -, -, -, e, -⟩ := h exact not_liesIn_cxPt _ ((liesIn_iff_of_comp e _).2 hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsHodgeFrame.not_liesIn (h : IsHodgeFrame U y g) : ¬ LiesIn y (genBd Z) := fun hy => by
   obtain ⟨ψ, σ', k, x, -, -, -, -, e, -⟩ := h
   exact not_liesIn_cxPt _ ((liesIn_iff_of_comp e _).2 hy)
 
 /- English proof (translation)
-Take `⟨ψ, σ', k, x, h1, h2, h3, h4, h5, h6⟩` from `h`. Use `⟨ψ.comp (starRingEnd ℂ), σ', k, x, ?_, by rw [h2, hσ]; rfl, h3, h4, ?_, fun τ i => ?_⟩` and prove the remaining obligations. Break down `h1 with rfl | rfl exacts [.inr rfl, .inl (RingHom.ext Complex.conj_conj)]` into its components or cases. Rewrite using `[h5, e, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h6, hg, GlobalTheory.GradedPieces.dual_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsHodgeFrame.conj (h : IsHodgeFrame U y g) {σ₁ : c.F →+* ℂ} {y₁ : CxPts (genStr Z) σ₁}
     {g₁ : EigFrame Z σ₁ (y₁.1 ≫ genι Z)} (hσ : σ = (starRingEnd ℂ).comp σ₁) (e : y.1 = spMap (starRingEnd ℂ) ≫ y₁.1)
@@ -212,19 +212,17 @@ variable (hU : ∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.
 include hU
 
 /- English proof (translation)
-Establish `good : ∀ {σ : c.F →+* ℂ} {y : CxPts (genStr Z) σ}, Formalism.L2.PjFree.GoodEmb c σ → ¬ LiesIn y (genBd Z) → ∃ g, IsHodgeFrame U y g` using `fun {σ y} hσ hy => by`. Establish `hr : Set.range y.1 ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim _ _`. Conclude with `not_not.1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Z.jQ_open` as an intermediate fact. Set `xF` to `IsOpenImmersion.lift Z.jQ y.1 hr`. Establish `hxF : xF ≫ Z.jQ = y.1` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hs : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F (CAt σ))`. Establish `h2` using `y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hxF, Category.assoc, Z.jQ_over]`. Conclude with `h2`. Establish `ho : (xF ≫ pullback.fst _ _) ≫ Xo.s = sOf c (CAt σ)`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs]`. Conclude with `OpenReg.spMap_comp _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: IsLocalRing (CAt σ)` using `inferInstanceAs (IsLocalRing ℂ)`. Take `⟨z, hz⟩ : ∃ z : FrPt Xo c (CAt σ), z.x = xF ≫ pullback.fst _ _` from `GlobalTheory.FlagTan.exists_frPt _ ho`. Take `⟨k, f, t, hb⟩` from `(hU σ hσ).2.2.1 z`. Take `⟨x, hx, b, hb', e⟩` from `ortho_holds r _ f.1 f.2`. Take `⟨t', ht⟩` from `((hU σ hσ).2.2.2.1 k k ⟨x, KU.orth_dom _ hx⟩ f).2 ⟨1, one_mem _, b, hb', by rw [KU.lact_one, ← e]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : cxPt Z ((U σ).un k ⟨x, KU.orth_dom _ hx⟩) = y := by`. Rewrite using `[cxPt_congr (ht.1.symm.trans hb.1.symm)]`. Conclude with `Subtype.ext (Eq.trans (congrArg (· ≫ Z.jQ) (pullback.hom_ext ((ptF_fst z).trans hz) ((ptF_snd z).trans hs.symm))) hxF)`. Conclude with `⟨_, isHodgeFrame_cxFrame hσ hx⟩`. Distinguish the cases in `hσ : GoodEmb c σ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `good hσ hy`. Establish `h1 : GoodEmb c ((starRingEnd ℂ).comp σ)` using `by simpa only [goodOf, if_neg hσ] using goodEmb_goodOf c σ`. Establish `hc : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext Complex.conj_conj))`.
-
-Set `y' : CxPts (genStr Z) ((starRingEnd ℂ).comp σ)` to `⟨spMap (starRingEnd ℂ) ≫ y.1, by rw [Category.assoc, y.2, ← Spec.map_comp]; rfl⟩`. Take `⟨g', hg'⟩` from `good (y := y') h1 fun h => hy ((liesIn_iff_of_comp rfl _).1 h)`. Take `⟨g, hg⟩` from `g'.exists_isMap (starRingEnd ℂ) (φ' := σ) (x' := y.1 ≫ genι Z) (RingHom.ext fun _ => (Complex.conj_conj _).symm) (by simp only [y', ← Category.assoc, hc, Category.id_comp])`. Use `⟨g, hg'.conj rfl rfl fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, GlobalTheory.GradedPieces.dual_comp, show (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ from RingHom.ext Complex.conj_conj, spMap_dualMap_id, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isHodgeFrame (hy : ¬ LiesIn y (genBd Z)) : ∃ g, IsHodgeFrame U y g := by
   have good : ∀ {σ : c.F →+* ℂ} {y : CxPts (genStr Z) σ}, Formalism.L2.PjFree.GoodEmb c σ → ¬ LiesIn y (genBd Z) →
@@ -272,15 +270,15 @@ variable {a : ℝ} (ha0 : 0 < a) (ha : ∀ σ k (τ : ((U σ).X k).Ψ), (τ.1 (-
 include ha0 ha
 
 /- English proof (translation)
-Take `⟨ψ, σ', k, x, h1, h2, h3, h4, h5, h6⟩` from `hf`. Take `⟨ψ₁, σ₁, k₁, x₁, g1, g2, g3, g4, g5, g6⟩` from `hg`. Choose the witnesses or unpack the hypotheses as in `rfl : ψ = ψ₁ := by`. Rewrite `h3` using `[h2]`. Rewrite `g3` using `[g2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases h1 with rfl | rfl <;> rcases g1 with rfl | rfl`. Use `exacts [rfl, (not_good_conj c (σ := σ) h3 g3).elim, (not_good_conj c (σ := σ) g3 h3).elim, rfl]`. Take `rfl : σ' = σ₁` from `h2.trans g2.symm`. Establish `hx : (cxPt Z ((U σ').un k x)).1 ≫ genι Z = spMap ψ ≫ y.1 ≫ genι Z` using `by rw [h5, Category.assoc]`. Take `⟨g', hg'⟩` from `g.exists_isMap ψ h2 hx`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W⟩` from `nonempty_unfWit_of_isUnf E H Dw l Xo c σ' r _ (hU _ h3)`. Establish `e` using `x_eq_of_cxPt (g5.trans h5.symm)`. Establish `key` using `hermForm_eq_of_orth h3 (hU _ h3) W (ha σ') h4 (W.period k₁ x₁) (im_hermForm_orth h3 (hU _ h3) W (ha σ') g4) (W.lie k₁ x₁) e (isCombAt_co e (fun τ i => (hg' τ i).trans (g6 τ i).symm) τ)`. Establish `h7 : (((2 * a : ℝ) : ℂ)) ≠ 0` using `Complex.ofReal_ne_zero.2 (by positivity)`. Rewrite `key` using `[h6.co τ hg' hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k2 : ((f.co g τ).map ψ)ᴴ * (f.co g τ).map ψ = 1` using `smul_right_injective _ h7 (key.symm.trans (by`. Use extensionality with `b b'`. Simplify using `[hermForm, smul_mulVec, Pi.single_apply, one_apply, eq_comm]))`. Break down `h1 with rfl | rfl` into its components or cases. Conclude with `k2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun M => M.map (starRingEnd ℂ)) k2` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at this`. Apply the tactic sequence `convert this using 2 <;> ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem IsHodgeFrame.unitary (hf : IsHodgeFrame U y f) (hg : IsHodgeFrame U y g) (τ : E →+* ℂ) :
     (f.co g τ)ᴴ * f.co g τ = 1 := by
@@ -314,7 +312,7 @@ theorem IsHodgeFrame.unitary (hf : IsHodgeFrame U y f) (hg : IsHodgeFrame U y g)
 variable {b : ℝ} {hb : 0 < b} {G₀ : EigMet Z σ}
 
 /- English proof (translation)
-Establish `h : ∃ f, IsHodgeFrame U y f` using `⟨f, hf⟩`. Use `(dif_pos h).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[← h.choose.co_mul f g, conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ _ (f.co g τ), h.choose_spec.unitary hU ha0 ha hf, Matrix.one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsHodgeFrame.gram_eq (hf : IsHodgeFrame U y f) (g : EigFrame Z σ (y.1 ≫ genι Z)) (τ : E →+* ℂ) :
     (EigMet.hodge U b hb G₀).gram y g τ = (b : ℂ) • ((f.co g τ)ᴴ * f.co g τ) := by
@@ -324,11 +322,9 @@ theorem IsHodgeFrame.gram_eq (hf : IsHodgeFrame U y f) (g : EigFrame Z σ (y.1 �
     h.choose_spec.unitary hU ha0 ha hf, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `key : ∀ (y : CxPts (genStr Z) σ) (g : EigFrame Z σ (y.1 ≫ genι Z)), y = cxPt Z q → (∀ τ i, g.v τ i = (cxFrame Z q).v τ i) → (EigMet.hodge U _ hb G₀).gram y g τ = (Real.pi : ℂ) • of fun b b' => hermForm Hm (z τ b') (z τ b)` using `fun y g e hg => by`. Take `⟨f, ψ, σ', k, x, rfl | rfl, h2, h3, h4, h5, -⟩` from `exists_isHodgeFrame hU (y := y) (e ▸ not_liesIn_cxPt q)`. Take `rfl : σ' = σ` from `h2`. Take `rfl : cxPt Z ((U σ').un k x) = y` from `Subtype.ext (h5.trans ((congrArg (· ≫ y.1) (Spec.map_id _)).trans (Category.id_comp _)))`. Establish `e'` using `(x_eq_of_cxPt (congrArg Subtype.val e)).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(isHodgeFrame_cxFrame hσ h4).gram_eq hU ha0 ha, hermForm_eq_of_orth hσ (hU _ hσ) W (ha σ') h4 hP hH.2.2 hq e' (isCombAt_co e' hg τ), smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(not_good_conj c (σ := σ) hσ (h2 ▸ h3)).elim`.
-
-Conclude with `key _ _ rfl fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hodge_gram_eq_riemann (hσ : Formalism.L2.PjFree.GoodEmb c σ) (W : UnfWit (U σ)) {i : Fin W.F.n}
     {P : (W.F.Di i).La →+ (Fin W.g → ℂ)} (hP : IsPeriod (W.F.Di i) (fun j => Formalism.L2.PjFree.relab c σ (W.e j).1) P)

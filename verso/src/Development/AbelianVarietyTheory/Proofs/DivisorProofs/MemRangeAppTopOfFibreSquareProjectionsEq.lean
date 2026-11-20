@@ -10,15 +10,13 @@ open scoped TensorProduct
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `hRL : Function.Injective (algebraMap R (FractionRing A))`. Rewrite using `[IsScalarTower.algebraMap_eq R A (FractionRing A)]`. Conclude with `(IsFractionRing.injective A (FractionRing A)).comp hinj`. Use `haveI : FaithfulSMul R (FractionRing A) := (faithfulSMul_iff_algebraMap_injective R _).mpr hRL`. Use `letI : Algebra (FractionRing R) (FractionRing A) := FractionRing.liftAlgebra R (FractionRing A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := FractionRing.isScalarTower_liftAlgebra R (FractionRing A)`. Take `⟨φ, hφ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap (FractionRing R) (FractionRing A)) (LinearMap.ker_eq_bot.mpr (algebraMap (FractionRing R) (FractionRing A)).injective)`. Establish `hφ1 : φ 1 = 1` using `by simpa using congr($hφ 1)`. Set `Φ : FractionRing A ⊗[R] FractionRing A →ₗ[R] FractionRing A` to `LinearMap.mul' R (FractionRing A) ∘ₗ TensorProduct.map ((Algebra.linearMap (FractionRing R) (FractionRing A) ∘ₗ φ).restrictScalars R) LinearMap.id`. Establish `key` using `congr(Φ $h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Simplify using `only [Φ, LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.restrictScalars_apply, Algebra.linearMap_apply, LinearMap.id_apply, LinearMap.mul'_apply, hφ1, map_one] at key`. Use `replace key : algebraMap (FractionRing R) (FractionRing A) (φ (algebraMap A (FractionRing A) a)) = algebraMap A (FractionRing A) a := by`. Use `key using 1` and compare the differences between its conclusion and the goal. Conclude with `(_root_.mul_one _).symm`. Conclude with `(_root_.one_mul _).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : IsIntegral R (φ (algebraMap A (FractionRing A) a))`. Rewrite using `[← isIntegral_algHom_iff (IsScalarTower.toAlgHom R (FractionRing R) (FractionRing A)) (algebraMap (FractionRing R) (FractionRing A)).injective]`. Express the relevant statement in the definitionally equal form `IsIntegral R (algebraMap (FractionRing R) (FractionRing A) _)`. Rewrite using `[key]`. Conclude with `ha.map (IsScalarTower.toAlgHom R A (FractionRing A))`.
-
-Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Use `⟨r, IsFractionRing.injective A (FractionRing A) ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply R (FractionRing R) (FractionRing A), hr, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_of_tmul_eq_tmul {R A : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [CommRing A]
     [IsDomain A] [Algebra R A] (hinj : Function.Injective (algebraMap R A)) (a : A) (ha : IsIntegral R a)
@@ -60,27 +58,25 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ S π hP hI hinj x hx`. Take `⟨s⟩ : Nonempty S` from `hI.nonempty`. Take `⟨U, hU, hsU, -⟩` from `exists_isAffineOpen_mem_and_subset (show s ∈ (⊤ : S.Opens) from trivial)`. Use `haveI : Nonempty U := ⟨⟨s, hsU⟩⟩`. Set `res` to `S.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hres : Function.Injective res.hom` using `map_injective_of_isIntegral S _`. Establish `happ : ∀ t, (π.appLE ⊤ U le_top).hom t = res.hom (π.appTop.hom t)` using `fun t => rfl`. Set `ρ : R →+* Γ(S, U)` to `((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ π.appLE ⊤ U le_top).hom`. Use `letI : Algebra R Γ(S, U) := ρ.toAlgebra`. Establish `hρ : ∀ t, (π.appLE ⊤ U le_top).hom t = algebraMap R Γ(S, U) ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom t)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Express the relevant statement in the definitionally equal form `_ = ρ _`. Simplify using `only [ρ, CommRingCat.hom_comp, RingHom.comp_apply]`. Use `congr 1`. Conclude with `(Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of R)) t).symm`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρinj : Function.Injective (algebraMap R Γ(S, U))`. Introduce `a b hab`. Establish `h1 : ∀ c, algebraMap R Γ(S, U) c = res.hom (π.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c))` using `fun c => rfl`. Rewrite `hab` using `[h1, h1]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.symm.injective (hinj (hres hab))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : UniversallyClosed π := inferInstance`. Establish `hxint : IsIntegral R (res.hom x)`. Take `⟨p, hpm, hp⟩` from `isIntegral_appTop_of_universallyClosed π x`. Use `⟨p.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom, hpm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (algebraMap R Γ(S, U)).comp (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom = res.hom.comp π.appTop.hom`. Use extensionality with `t`. Conclude with `(hρ t).symm.trans (happ t)`. Rewrite using `[hc, ← Polynomial.hom_eval₂, hp, map_zero]`. Establish `H : IsPullback (pullback.fst π π) (pullback.snd π π) π π` using `IsPullback.of_hasPullback π π`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := U) (UX := U) le_top le_top rfl).mp (isIso_pushoutSection_of_isAffineOpen H le_top le_top rfl (isAffineOpen_top _) hU hU)`. Set `j₁ : Γ(S, U) →+* FractionRing Γ(S, U) ⊗[R] FractionRing Γ(S, U)` to `Algebra.TensorProduct.includeLeftRingHom.comp (algebraMap Γ(S, U) (FractionRing Γ(S, U)))`. Set `j₂ : Γ(S, U) →+* FractionRing Γ(S, U) ⊗[R] FractionRing Γ(S, U)` to `(Algebra.TensorProduct.includeRight : FractionRing Γ(S, U) →ₐ[R] _).toRingHom.comp (algebraMap Γ(S, U) (FractionRing Γ(S, U)))`. Establish `hw : π.appLE ⊤ U le_top ≫ (CommRingCat.ofHom j₁ : Γ(S, U) ⟶ CommRingCat.of _) = π.appLE ⊤ U le_top ≫ (CommRingCat.ofHom j₂ : Γ(S, U) ⟶ CommRingCat.of _)`. Use extensionality with `t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `j₁ ((π.appLE ⊤ U le_top).hom t) = j₂ ((π.appLE ⊤ U le_top).hom t)`. Rewrite using `[hρ]`. Use `show algebraMap Γ(S, U) (FractionRing Γ(S, U)) (algebraMap R Γ(S, U) _) ⊗ₜ[R] (1 : FractionRing Γ(S, U)) = (1 : FractionRing Γ(S, U)) ⊗ₜ[R] algebraMap Γ(S, U) (FractionRing Γ(S, U)) (algebraMap R Γ(S, U) _)`. Rewrite using `[← IsScalarTower.algebraMap_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `hd1` using `congr(($(po.inl_desc _ _ hw)).hom (res.hom x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hd2` using `congr(($(po.inr_desc _ _ hw)).hom (res.hom x))`. Establish `e1 : ∀ (f : pullback π π ⟶ S) (h : pullback.fst π π ⁻¹ᵁ U ⊓ pullback.snd π π ⁻¹ᵁ U ≤ f ⁻¹ᵁ U), (f.appLE U _ h).hom (res.hom x) = ((pullback π π).presheaf.map (homOfLE (le_top : pullback.fst π π ⁻¹ᵁ U ⊓ pullback.snd π π ⁻¹ᵁ U ≤ ⊤)).op).hom (f.appTop.hom x)`. Introduce `f h`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : j₁ (res.hom x) = j₂ (res.hom x)`. Use `hd1.symm.trans (Eq.trans ?_ hd2)` and prove the remaining obligations. Rewrite using `[CommRingCat.comp_apply, CommRingCat.comp_apply, e1, e1, hx]`. Take `⟨r, hr⟩` from `mem_range_of_tmul_eq_tmul hρinj _ hxint hj`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r, hres ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← happ]`. Conclude with `hr`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_appTop_of_fst_eq_snd : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (S : Scheme.{0})
     (π : S ⟶ Sp R), IsProper π → IsIntegral S → Function.Injective π.appTop.hom → ∀ x : Γ(S, ⊤),

@@ -18,16 +18,14 @@ def EqOn (A : Set σ) (F G : MvPowerSeries σ K) : Prop :=
   ∀ μ : σ →₀ ℕ, (↑μ.support : Set σ) ⊆ A → MvPowerSeries.coeff μ F = MvPowerSeries.coeff μ G
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem EqOn.refl (A : Set σ) (F : MvPowerSeries σ K) : EqOn A F F := fun _ _ => rfl
 
 /- English proof (translation)
-Introduce `μ hμ`. Rewrite using `[MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hs : p.1 + p.2 = μ` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `h1 : (↑p.1.support : Set σ) ⊆ A` using `fun x hx => hμ (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: p.1 ≤ μ` using `hs ▸ le_self_add`. Conclude with `Finset.mem_coe.2 (Finsupp.support_mono this (Finset.mem_coe.1 hx)))`. Establish `h2 : (↑p.2.support : Set σ) ⊆ A` using `fun x hx => hμ (by`. Establish `: p.2 ≤ μ` using `hs ▸ le_add_self`. Conclude with `Finset.mem_coe.2 (Finsupp.support_mono this (Finset.mem_coe.1 hx)))`.
-
-Rewrite using `[h p.1 h1, h' p.2 h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EqOn.mul {A : Set σ} {F G F' G' : MvPowerSeries σ K} (h : EqOn A F G) (h' : EqOn A F' G') :
     EqOn A (F * F') (G * G') := by
@@ -44,7 +42,7 @@ theorem EqOn.mul {A : Set σ} {F G F' G' : MvPowerSeries σ K} (h : EqOn A F G) 
   rw [h p.1 h1, h' p.2 h2]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using EqOn.refl A (1 : MvPowerSeries σ K)`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem EqOn.pow {A : Set σ} {F G : MvPowerSeries σ K} (h : EqOn A F G) (k : ℕ) : EqOn A (F ^ k) (G ^ k) := by
   induction k with
@@ -52,7 +50,7 @@ theorem EqOn.pow {A : Set σ} {F G : MvPowerSeries σ K} (h : EqOn A F G) (k : �
   | succ k ih => rw [pow_succ, pow_succ]; exact ih.mul h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using EqOn.refl A (1 : MvPowerSeries σ K)`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EqOn.prod {A : Set σ} {ι : Type} (s : Finset ι) {F G : ι → MvPowerSeries σ K}
     (h : ∀ i ∈ s, EqOn A (F i) (G i)) : EqOn A (∏ i ∈ s, F i) (∏ i ∈ s, G i) := by
@@ -63,7 +61,7 @@ theorem EqOn.prod {A : Set σ} {ι : Type} (s : Finset ι) {F G : ι → MvPower
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `μ hμ`. Use `show ∑ k ∈ Finset.range (μ.degree + 1), MvPowerSeries.coeff μ (F ^ k) / (k.factorial : K) = ∑ k ∈ Finset.range (μ.degree + 1), MvPowerSeries.coeff μ (G ^ k) / (k.factorial : K)`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [h.pow k μ hμ]`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem EqOn.mvExp {A : Set σ} {F G : MvPowerSeries σ K} (h : EqOn A F G) : EqOn A (mvExp F) (mvExp G) := by
   intro μ hμ
@@ -72,7 +70,7 @@ theorem EqOn.mvExp {A : Set σ} {F G : MvPowerSeries σ K} (h : EqOn A F G) : Eq
   exact Finset.sum_congr rfl fun k _ => by rw [h.pow k μ hμ]
 
 /- English proof (translation)
-Unfold `jetAt0`. Conclude with `Finset.sum_congr rfl fun μ hμ => by rw [h μ (hP μ hμ)]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem EqOn.jet {A : Set σ} {F G : MvPowerSeries σ K} (h : EqOn A F G) (P : MvPolynomial σ K)
     (hP : ∀ μ ∈ P.support, (↑μ.support : Set σ) ⊆ A) : jetAt0 P F = jetAt0 P G := by
@@ -80,9 +78,9 @@ theorem EqOn.jet {A : Set σ} {F G : MvPowerSeries σ K} (h : EqOn A F G) (P : M
   exact Finset.sum_congr rfl fun μ hμ => by rw [h μ (hP μ hμ)]
 
 /- English proof (translation)
-Introduce `ν hν`. Distinguish the cases in `hr : ν ∈ Set.range (Finsupp.mapDomain e)`. Take `⟨μ, rfl⟩` from `hr`. Rewrite using `[← Finsupp.embDomain_eq_mapDomain, MvPowerSeries.coeff_embDomain_rename, MvPowerSeries.coeff_embDomain_rename]`. Use `h μ fun x hx => hν ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finsupp.embDomain_eq_mapDomain, Finsupp.support_embDomain]`. Conclude with `Finset.mem_coe.2 (Finset.mem_map_of_mem e hx)`. Rewrite using `[MvPowerSeries.coeff_rename_eq_zero _ _ hr, MvPowerSeries.coeff_rename_eq_zero _ _ hr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EqOn.rename {τ : Type} (e : σ ↪ τ) {A : Set τ} {F G : MvPowerSeries σ K}
     (h : ∀ μ : σ →₀ ℕ, (∀ x ∈ μ.support, e x ∈ A) → MvPowerSeries.coeff μ F = MvPowerSeries.coeff μ G) :
@@ -100,15 +98,15 @@ theorem EqOn.rename {τ : Type} (e : σ ↪ τ) {A : Set τ} {F G : MvPowerSerie
 end EqOn
 
 /- English proof (translation)
-Introduce `C _ V d _ I _ κ _ X H n Po kind hk gr`. Rewrite using `[rtj_valOf]`. Use `set A : Set (Fin n × WV I) := {x | ∃ μ ∈ Po.support, μ x ≠ 0} with hA`. Use `EqOn.jet (A := A) ?_ Po fun μ hμ x hx => ⟨μ, hμ, Finsupp.mem_support_iff.1 (Finset.mem_coe.1 hx)⟩` and prove the remaining obligations. Use `EqOn.prod _ fun ρ _ => (EqOn.refl A _).mul (EqOn.mvExp ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rtj_rowCopy_eq, rtj_rowCopy_eq]`. Use `EqOn.rename (rtjR ρ) fun μ hμ => ?_` and prove the remaining obligations. Consider the cases of `hkd : kind ρ with`. Consider the case `none`. Take `⟨g, hg⟩` from `hk.2 ρ hkd`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ w ∈ μ.support, w.1 = g` using `fun w hw => by`. Take `⟨μ', hμ', hne⟩` from `hμ w hw`. Conclude with `hg μ' hμ' w hne`. Establish `h2 : (∀ w ∈ μ.support, w.1 = 0) ∨ (∀ w ∈ μ.support, w.1 = 1)` using `by fin_cases g`. Conclude with `Or.inl h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr h1`. Rewrite using `[H.axes μ h2]`. Simplify using `[rtjH]`. Consider the case `some q`. Take `⟨g, a, a'⟩` from `q`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ w ∈ μ.support, X.OnLf g a a' w` using `fun w hw => by`. Take `⟨μ', hμ', hne⟩` from `hμ w hw`. Conclude with `(hk.1 ρ g a a' hkd).2.2 μ' hμ' w hne`. Use `show MvPowerSeries.coeff μ X.hRow = (if ∀ w ∈ μ.support, X.OnLf g a a' w then MvPowerSeries.coeff μ X.hRow else 0)`. Rewrite using `[if_pos h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leaf_holds : LeafSt := by
   intro C _ V d _ I _ κ _ X H n Po kind hk gr

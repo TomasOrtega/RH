@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ClozelPurity
 
 /- English proof (translation)
-Simplify using `[EopV, Eop, lieS_apply, CuspSub.op_val, act]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EopV_val (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (τ : E →+* ℂ) (i j : Fin a) (φ : π.V) : (EopV π τ i j φ).1 = Eop τ i j φ.1 := by

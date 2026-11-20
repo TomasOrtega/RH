@@ -37,9 +37,9 @@ theorem wordH_cons (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)
     (Φ : (κ → AF F) → ℂ) : wordH ψ (w :: l) Φ = dH ψ w (wordH ψ l Φ) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [dH, schr, Pi.smul_apply, smul_eq_mul]`. Establish `: (fun t : ℝ => ψ (x ⬝ᵥ (realAd F t • w).2 + ⅟(2 : AF F) * ((realAd F t • w).1 ⬝ᵥ (realAd F t • w).2)) * (a * Φ (x + (realAd F t • w).1))) = fun t => a * (ψ (x ⬝ᵥ (realAd F t • w).2 + ⅟(2 : AF F) * ((realAd F t • w).1 ⬝ᵥ (realAd F t • w).2)) * Φ (x + (realAd F t • w).1))`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, deriv_const_mul_field']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dH_smul (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (a : ℂ) (Φ : (κ → AF F) → ℂ) :
     dH ψ w (a • Φ) = a • dH ψ w Φ := by
@@ -52,9 +52,7 @@ theorem dH_smul (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (
   rw [this, deriv_const_mul_field']
 
 /- English proof (translation)
-Unfold `realAd`. Simplify using `only [LinearMap.inl_apply, map_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show _ * _ = _`. Rewrite using `[← map_mul]`.
-
-Conclude with `mul_zero _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realAd_mul (a b : ℝ) : realAd F a * realAd F b = realAd F (a * b) := by
   unfold realAd
@@ -65,9 +63,9 @@ theorem realAd_mul (a b : ℝ) : realAd F a * realAd F b = realAd F (a * b) := b
   · exact mul_zero _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [dH, Pi.smul_apply, smul_eq_mul]`. Establish `e : (fun t : ℝ => schr ψ (realAd F t • realAd F c • w) Φ x) = fun t => (fun s : ℝ => schr ψ (realAd F s • w) Φ x) (c * t)`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_smul, realAd_mul, mul_comm t c]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `h` using `deriv_comp_mul_left (f := fun s : ℝ => schr ψ (realAd F s • w) Φ x) (c := c) (x := 0)`. Rewrite `h` using `[mul_zero, Complex.real_smul]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dH_realAd_smul (ψ : AddChar (AF F) ℂ) (c : ℝ) (w : (κ → AF F) × (κ → AF F)) (Φ : (κ → AF F) → ℂ) :
     dH ψ (realAd F c • w) Φ = (c : ℂ) • dH ψ w Φ := by
@@ -82,11 +80,11 @@ theorem dH_realAd_smul (ψ : AddChar (AF F) ℂ) (c : ℝ) (w : (κ → AF F) ×
   exact h
 
 /- English proof (translation)
-Introduce `i`. Use `⟨fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `show u * (a * w.1 i) = 0`. Rewrite using `[mul_left_comm]`. Use `(hw i).1 u hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul] at this`. Rewrite using `[this, mul_zero]`. Use `show u * (a * w.2 i) = 0`. Rewrite using `[mul_left_comm]`. Use `(hw i).2 u hu` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul] at this`. Rewrite using `[this, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem isArch_smul {w : (κ → AF F) × (κ → AF F)} (hw : IsArch w) (a : AF F) : IsArch (a • w) := by
   intro i

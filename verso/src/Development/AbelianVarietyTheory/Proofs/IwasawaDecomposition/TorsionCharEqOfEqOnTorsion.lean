@@ -18,7 +18,7 @@ namespace GlobalTheory.CharUniq
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
@@ -27,7 +27,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   (t : SAB H X)
 
 /- English proof (translation)
-Set `δ : Over.mk p' ⟶ Over.mk p` to `Over.homMk g h`. Conclude with `⟨{ toFun := fun w => δ ≫ w, map_one' := by simp, map_mul' := fun a b => comp_mul _ _ _ }, fun w => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_restr {T T' : Scheme.{0}} (g : T' ⟶ T) (p : T ⟶ X) (p' : T' ⟶ X) (h : g ≫ p = p') :
     ∃ r : (Over.mk p ⟶ t.G) →* (Over.mk p' ⟶ t.G), ∀ w, (r w).left = g ≫ w.left := by
@@ -35,29 +35,25 @@ theorem exists_restr {T T' : Scheme.{0}} (g : T' ⟶ T) (p : T ⟶ X) (p' : T' �
   exact ⟨{ toFun := fun w => δ ≫ w, map_one' := by simp, map_mul' := fun a b => comp_mul _ _ _ }, fun w => rfl⟩
 
 /- English proof (translation)
-Establish `he' : (algebraMap R B).comp e.symm.toRingHom = algebraMap L B`. Rewrite using `[← he]`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `th : ∀ (S : Type) [CommRing S] (φ : R →+* S) (w : Sp S ⟶ t.G.left), Thru t u'.left φ w ↔ Thru t u.left (φ.comp e.symm.toRingHom) w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `S _ φ w`. Rewrite using `[hu]`. Use `exists_congr fun β => and_congr_left fun _ => ⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← a, RingHom.comp_assoc, he']`. Rewrite using `[← he, ← RingHom.comp_assoc, a]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `b`. Simplify using the standard rewrite rules. Establish `tr : ∀ (S : Type) [CommRing S] (φ : R →+* S), ∃ r : (Over.mk (spMap φ ≫ x) ⟶ t.G) →* (Over.mk (spMap (φ.comp e.symm.toRingHom) ≫ spMap e.toRingHom ≫ x) ⟶ t.G), ∀ w, (r w).left = w.left`. Introduce `S _ φ`. Take `⟨r, hr⟩` from `exists_restr t (𝟙 _) (spMap φ ≫ x) (spMap (φ.comp e.symm.toRingHom) ≫ spMap e.toRingHom ≫ x) (by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.id_comp, ← Category.assoc, spc]`. Use `congr 2`. Use extensionality with `b`. Use the proof step `simp)`. Conclude with `⟨r, fun w => (hr w).trans (Category.id_comp _)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components. Equip the data with the indicated structure.
 
-Use `letI : Algebra R L := e.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R L B := IsScalarTower.of_algebraMap_eq' he.symm`. Set `e' : R ≃ₐ[R] L` to `AlgEquiv.ofRingEquiv (f := e) fun _ => rfl`. Use `haveI := h.finite`. Use `haveI := h.free`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite R L := Module.Finite.equiv e'.toLinearEquiv`. Use `haveI : Module.Free R L := Module.Free.of_equiv e'.toLinearEquiv`. Use `⟨Module.Finite.trans L B, Module.Free.trans (S := L), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_restr t (𝟙 _) (spMap (algebraMap L B) ≫ spMap e.toRingHom ≫ x) (spMap (algebraMap R B) ≫ x) (by rw [Category.id_comp, ← Category.assoc, spc, he])`. Establish `: u' = r u` using `Over.OverMorphism.ext (by rw [hr, hu]; exact (Category.id_comp _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← map_pow, h.tors, map_one]`. Introduce `S _ β β' h1 h2`. Use `h.mono S β β' (by rw [← he', ← RingHom.comp_assoc, h1, RingHom.comp_assoc]) (by rw [← hu]; exact h2)` and prove the remaining obligations. Introduce `S _ φ w hw hm`. Take `⟨r, hr⟩` from `tr S φ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[th, ← hr]`. Use `h.isOpen S _ (r w) (by rw [← map_pow, hw, map_one]) fun 𝔪 h𝔪 => ?_` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `(th _ _ _).1 (hm 𝔪 h𝔪)`. Introduce `S _ φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `tr S φ`. Rewrite using `[th, ← hr, map_one]`. Conclude with `h.one S _`. Introduce `S _ φ w w' h1 h2`. Take `⟨r, hr⟩` from `tr S φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1`, `h2`, the goal using `[th, ← hr]`. Rewrite using `[map_mul]`. Conclude with `h.mul S _ _ _ h1 h2`. Introduce `k _ β`. Take `⟨σ, hσ⟩` from `h.sect k β`.
-
-Use `⟨e'.symm.toAlgHom.comp (σ.restrictScalars R), hσ.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← he']`. Both sides reduce to the same expression. Introduce `b hb`. Use `h.inj b fun σ => ?_` and prove the remaining obligations.
-
-Use `hb (e'.symm.toAlgHom.comp (σ.restrictScalars R))` as an intermediate fact. Conclude with `e'.symm.injective (this.trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFinPart_of_equiv {R L B : Type} [CommRing R] [CommRing L] [CommRing B] [Algebra R B] [Algebra L B]
     (e : R ≃+* L) (he : (algebraMap L B).comp e.toRingHom = algebraMap R B) (x : Sp R ⟶ X) (q : ℕ)
@@ -122,17 +118,15 @@ theorem isFinPart_of_equiv {R L B : Type} [CommRing R] [CommRing L] [CommRing B]
     exact e'.symm.injective (this.trans (map_zero _).symm)
 
 /- English proof (translation)
-Take `⟨f, B₀, _, _, u, hf, hu, hk⟩` from `GlobalTheory.T.exists_local_finite_torsion_splitting E H X t R x q hq hs (IsLocalRing.maximalIdeal R) inferInstance`. Establish `hfu : IsUnit f`. Assume the negation of the conclusion as `hn`. Conclude with `hf hn`. Set `e : R ≃+* Localization.Away f` to `(IsLocalization.atUnits R (Submonoid.powers f) (S := Localization.Away f) ((Submonoid.powers_le).2 hfu)).toRingEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hee : e.toRingHom = algebraMap R (Localization.Away f)`. Use extensionality with `a`. Conclude with `(IsLocalization.atUnits R (Submonoid.powers f) (S := Localization.Away f) ((Submonoid.powers_le).2 hfu)).commutes a`. Use `letI : Algebra R B₀ := ((algebraMap (Localization.Away f) B₀).comp e.toRingHom).toAlgebra`. Use `revert u`.
+By extensionality, compare the relevant components. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hee]`. Introduce `u hu hk`. Take `⟨r, hr⟩` from `exists_restr t (𝟙 _) (spMap (algebraMap (Localization.Away f) B₀) ≫ spMap e.toRingHom ≫ x) (spMap (algebraMap R B₀) ≫ x) (by rw [Category.id_comp, ← Category.assoc, spc])`. Establish `hr' : (r u).left = u.left` using `(hr u).trans (Category.id_comp _)`. Establish `hu'` using `isFinPart_of_equiv t e rfl x q u (r u) hr' hu`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `⟨B₀, inferInstance, inferInstance, r u, hu', fun B _ _ _ w hw => hu'.isOpen B _ w hw fun 𝔪 h𝔪 => ?_⟩` and prove the remaining obligations. Use `letI := Ideal.Quotient.field 𝔪`. Set `φ : R →+* B ⧸ 𝔪` to `(Ideal.Quotient.mk 𝔪).comp (algebraMap R B)`. Establish `hφ : (φ.comp e.symm.toRingHom).comp e.toRingHom = φ` using `by ext a; simp`. Take `⟨s, hs⟩` from `exists_restr t (spMap (Ideal.Quotient.mk 𝔪)) (spMap (algebraMap R B) ≫ x) (spMap (φ.comp e.symm.toRingHom) ≫ spMap e.toRingHom ≫ x) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Category.assoc, spc, spc, hφ])`. Take `⟨β, h1, h2⟩` from `hk (B ⧸ 𝔪) (φ.comp e.symm.toRingHom) (by`. Rewrite using `[hφ]`. Establish `: (𝔪.comap (algebraMap R B)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal 𝔪`. Rewrite using `[← IsLocalRing.eq_maximalIdeal this, ← RingHom.comap_ker, Ideal.mk_ker]) (s w)`.
-
-Use the proof step `(by rw [← map_pow, hw, map_one])`. Use `⟨β, ?_, by rw [hr', h2, hs]⟩` and prove the remaining obligations. Conclude with `(congrArg (fun z => z.comp e.toRingHom) h1).trans hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finPart_local [IsLocallyNoetherian X] (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [CharZero R] [IsLocalRing R] (x : Sp R ⟶ X) (q : ℕ) (hq : q ≠ 0) (hs : SplitTors t x q) :
@@ -174,7 +168,7 @@ theorem exists_finPart_local [IsLocallyNoetherian X] (R : Type) [CommRing R] [Is
   exact (congrArg (fun z => z.comp e.toRingHom) h1).trans hφ
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.IntegralPointCheck.valuationRing_intO C`. Use `haveI := GlobalTheory.IntegralPointCheck.isFractionRing_intO C`. Use `haveI : IsAlgClosed (FractionRing ↥(intO C)) := IsAlgClosed.of_ringEquiv C _ (FractionRing.algEquiv ↥(intO C) C).symm.toRingEquiv`. Conclude with `exists_finPart_local t _ x q hq (GlobalTheory.T.splitTors_algClosed_fraction_field E H X t _ x q hq)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finPart_int [IsLocallyNoetherian X] (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     [IsAlgClosed C] [CharZero C] (x : Sp ↥(intO C) ⟶ X) (q : ℕ) (hq : q ≠ 0) :
@@ -190,11 +184,11 @@ theorem exists_finPart_int [IsLocallyNoetherian X] (C : Type) [NontriviallyNorme
   exact exists_finPart_local t _ x q hq (GlobalTheory.T.splitTors_algClosed_fraction_field E H X t _ x q hq)
 
 /- English proof (translation)
-Introduce `E _ _ _ H X _ t C _ _ _ _ x q hq c c' h B _ _ _ w hw`. Take `⟨B₀, _, _, u, hu, hth⟩` from `exists_finPart_int t C x q hq`. Use `haveI := hu.finite`. Establish `key : (c.χ B₀ u : B₀) = c'.χ B₀ u`. Use `sub_eq_zero.1 (hu.inj _ fun σ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `exists_restr t (spMap σ.toRingHom) (spMap (algebraMap ↥(intO C) B₀) ≫ x) (spMap (algebraMap ↥(intO C) ↥(intO C)) ≫ x) (by`. Rewrite using `[← Category.assoc, spc]`. Use `congr 2`. Conclude with `RingHom.ext fun a => σ.commutes a)`. Rewrite using `[map_sub, ← c.nat B₀ _ σ u (r u) hu.tors (hr u), ← c'.nat B₀ _ σ u (r u) hu.tors (hr u), h (r u) (by rw [← map_pow, hu.tors, map_one]), sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨β, h1, h2⟩` from `hth B w hw`. Set `β' : B₀ →ₐ[↥(intO C)] B` to `{ β with commutes' := fun a => RingHom.congr_fun h1 a }`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[c.nat B₀ B β' u w hu.tors h2.symm, c'.nat B₀ B β' u w hu.tors h2.symm, key]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [CharZero C] (x : Sp ↥(intO C) ⟶ X) (q : ℕ), q ≠ 0 → ∀ c c' : TorsChar t x q, (∀ w : Over.mk (spMap (algebraMap ↥(intO C) ↥(intO C)) ≫ x) ⟶ t.G, w ^ q = 1 → c.χ ↥(intO C) w = c'.χ ↥(intO C) w) → ∀ (B : Type) [CommRing B] [Algebra ↥(intO C) B] [Module.Finite ↥(intO C) B] (w : Over.mk (spMap (algebraMap ↥(intO C) B) ≫ x) ⟶ t.G), w ^ q = 1 → c.χ B w = c'.χ B w := by
   intro E _ _ _ H X _ t C _ _ _ _ x q hq c c' h B _ _ _ w hw

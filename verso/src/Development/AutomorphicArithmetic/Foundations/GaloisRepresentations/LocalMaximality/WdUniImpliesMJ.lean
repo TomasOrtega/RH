@@ -4,7 +4,7 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma wd_at {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (w : ι → Module.End ℂ E) (c : Finset ι → E) (t : Finset ι) :
@@ -12,7 +12,7 @@ private lemma wd_at {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ 
   simp [wd, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[wd_at, wd_at, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[map_zsmul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma wd_act {ι S E : Type} [LinearOrder ι] [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (act : S →ₐ[ℂ] Module.End ℂ E) (u : ι → S) (f : Finset ι → S) (m : E) (t : Finset ι) :
@@ -23,7 +23,7 @@ private lemma wd_act {ι S E : Type} [LinearOrder ι] [CommRing S] [Algebra ℂ 
   simp [map_zsmul, Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[wd_at]`. Express the relevant statement in the definitionally equal form `_ = g (∑ i ∈ t, GlobalTheory.cubeSign t i • b (t.erase i))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[map_zsmul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma wd_one {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (g : E →ₗ[ℂ] E) (b : Finset ι → E) (t : Finset ι) :
@@ -35,25 +35,25 @@ private lemma wd_one {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ
   simp [map_zsmul]
 
 /- English proof (translation)
-The claim follows from `(h β κ ℂ (fun _ => 0) (fun _ => 0) b L).2.1`.
+A detailed English derivation is pending.
 -/
 private lemma lft_uni' (h : WdUni) {β κ : Type} [LinearOrder β] [LinearOrder κ] (b : Finset β) (L : Finset κ) :
     lft (uni b L) = b := (h β κ ℂ (fun _ => 0) (fun _ => 0) b L).2.1
 
 /- English proof (translation)
-The claim follows from `(h β κ ℂ (fun _ => 0) (fun _ => 0) b L).2.2.1`.
+A detailed English derivation is pending.
 -/
 private lemma rgt_uni' (h : WdUni) {β κ : Type} [LinearOrder β] [LinearOrder κ] (b : Finset β) (L : Finset κ) :
     rgt (uni b L) = L := (h β κ ℂ (fun _ => 0) (fun _ => 0) b L).2.2.1
 
 /- English proof (translation)
-The claim follows from `(h β κ ℂ (fun _ => 0) (fun _ => 0) ∅ ∅).2.2.2.2 s`.
+A detailed English derivation is pending.
 -/
 private lemma uni_lr (h : WdUni) {β κ : Type} [LinearOrder β] [LinearOrder κ] (s : Finset (β ⊕ₗ κ)) :
     uni (lft s) (rgt s) = s := (h β κ ℂ (fun _ => 0) (fun _ => 0) ∅ ∅).2.2.2.2 s
 
 /- English proof (translation)
-Simplify using `only [Sys.mj, lft_uni' h, rgt_uni' h, map_zsmul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mj_uni (h : WdUni) {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) {κ : Type} [LinearOrder κ] (p : ℕ) (θ : Finset (Fin (d + 1) ⊕ₗ κ) → S)
@@ -62,27 +62,27 @@ private lemma mj_uni (h : WdUni) {d : ℕ} {S E : Type} [CommRing S] [Algebra �
   simp only [Sys.mj, lft_uni' h, rgt_uni' h, map_zsmul]
 
 /- English proof (translation)
-Introduce `h d S E _ _ _ _ T κ _ _ z p θ b hθ hb hJ`. Use function extensionality and compare the values at `s`. Take `⟨I, J, L, rfl⟩ : ∃ I J L, s = uni (uni I J) L` from `⟨lft (lft s), rgt (lft s), rgt s, by rw [uni_lr h, uni_lr h]⟩`. Establish `hw2 : ∀ l : κ, T.wt z (inrE l) = T.act (z l)` using `fun _ => rfl`. Establish `hw3 : ∀ i : Fin (d + 1), T.wt z (inlE (inlE i)) = 1` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw4 : ∀ i : Fin (d + 1), T.wt z (inlE (inrE i)) = 1` using `fun _ => rfl`. Establish `e1` using `(h (Two d) κ E (T.wt z) (T.mj p θ b) (uni I J) L).1`. Establish `e2` using `(h (Fin (d + 1)) (Fin (d + 1)) E (fun i => T.wt z (inlE i)) (fun b' => T.mj p θ b (uni b' L)) I J).1`. Establish `e3` using `(h (Fin (d + 1)) κ S (fun t => Algebra.lmul ℂ S (app (fun _ => 1) z t)) θ I L).1`. Rewrite `e3` using `[hθ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcard : (uni I J).card = I.card + J.card` using `(h _ _ ℂ (fun _ => 0) (fun _ => 0) I J).2.2.2.1`. Use `set P : S := wd (fun i => Algebra.lmul ℂ S (1 : S)) (fun b' => θ (uni b' L)) I with hP`. Use `set Q : S := wd (fun l => Algebra.lmul ℂ S (z l)) (fun L' => θ (uni I L')) L with hQ`. Establish `hPQ : P + ((-1 : ℤ) ^ I.card) • Q = 0` using `e3.symm`. Establish `tA : wd (fun i => T.wt z (inlE (inlE i))) (fun b' => T.mj p θ b (uni (uni b' J) L)) I = T.act P (((-1 : ℤ) ^ ((p + 1) * L.card)) • b J)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP, ← wd_act]`. Simplify using `only [mj_uni h, hw3, map_one]`. Establish `tB : wd (fun j => T.wt z (inlE (inrE j))) (fun J' => T.mj p θ b (uni (uni I J') L)) J = 0`. Establish `: (fun J' => T.mj p θ b (uni (uni I J') L)) = fun J' => (((-1 : ℤ) ^ ((p + 1) * L.card)) • T.act (θ (uni I L))) (b J')`. Use function extensionality and compare the values at `J'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mj_uni h, map_zsmul, LinearMap.smul_apply]`. Simplify using `only [this, hw4]`. Rewrite using `[wd_one, hb]`. Simplify using the standard rewrite rules. Establish `tC : wd (fun l => T.wt z (inrE l)) (fun L' => T.mj p θ b (uni (uni I J) L')) L = T.act Q (((-1 : ℤ) ^ ((p + 1) * (L.card + 1))) • b J)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hQ, ← wd_act, wd_at, wd_at]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hc : (L.erase l).card + 1 = L.card` using `Finset.card_erase_add_one hl`. Establish `hs : ((-1 : ℤ) ^ ((p + 1) * (L.erase l).card)) = (-1 : ℤ) ^ ((p + 1) * (L.card + 1))`. Rewrite using `[← hc, show (p + 1) * ((L.erase l).card + 1 + 1) = (p + 1) * (L.erase l).card + 2 * (p + 1) by ring, pow_add, pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[mj_uni h, hs, hw2]`. Establish `main : wd (T.wt z) (T.mj p θ b) (uni (uni I J) L) = T.act P (((-1 : ℤ) ^ ((p + 1) * L.card)) • b J) + ((-1 : ℤ) ^ (I.card + J.card)) • T.act Q (((-1 : ℤ) ^ ((p + 1) * (L.card + 1))) • b J)`. Rewrite using `[e1, e2, hcard, tA, tB, tC]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[main]`. Express the relevant statement in the definitionally equal form `_ = (0 : E)`. Distinguish the cases in `hJc : J.card = p + 1`. Establish `hsgn : ((-1 : ℤ) ^ (I.card + J.card)) * ((-1 : ℤ) ^ ((p + 1) * (L.card + 1))) = ((-1 : ℤ) ^ I.card) * ((-1 : ℤ) ^ ((p + 1) * L.card))`. Rewrite using `[hJc, pow_add, show (p + 1) * (L.card + 1) = (p + 1) * L.card + (p + 1) by ring, pow_add]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((-1 : ℤ) ^ (p + 1)) * ((-1 : ℤ) ^ (p + 1)) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Take the linear combination `((-1 : ℤ) ^ I.card * (-1 : ℤ) ^ ((p + 1) * L.card)) * this`. Establish `hPQ' : T.act P + ((-1 : ℤ) ^ I.card) • T.act Q = 0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_zsmul, ← map_add, hPQ, map_zero]`. Use `congrArg (fun f : Module.End ℂ E => f (((-1 : ℤ) ^ ((p + 1) * L.card)) • b J)) hPQ'` as an intermediate fact. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.zero_apply] at this`. Simplify using `only [map_zsmul, smul_smul] at this ⊢`. Rewrite using `[hsgn]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[smul_smul, mul_comm]`. Rewrite using `[hJ J hJc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.mJ_of :
     WdUni → MJ := by

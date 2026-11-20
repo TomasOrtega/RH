@@ -15,7 +15,7 @@ private noncomputable def UpperTheory.matrixLeftMulLinearMap (n : ℕ) (a : Fin 
     (UpperTheory.matrixSpaceLinearEquiv n).symm.toLinearMap
 
 /- English proof (translation)
-Unfold `UpperTheory.matrixLeftMulLinearMap`. Rewrite using `[LinearMap.det_conj, LinearMap.det_pi]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.det_leftMulLinearMap (n : ℕ) (a : Fin n → Fin n → ℂ) :
     LinearMap.det (UpperTheory.matrixLeftMulLinearMap n a) = (Matrix.of a).det ^ n := by
@@ -24,11 +24,9 @@ private theorem UpperTheory.det_leftMulLinearMap (n : ℕ) (a : Fin n → Fin n 
   simp
 
 /- English proof (translation)
-Introduce `n a ha`. Establish `hf : (fun x : Fin n → Fin n → ℂ => Matrix.of.symm (Matrix.of a * Matrix.of x)) = ⇑((UpperTheory.matrixLeftMulLinearMap n a).restrictScalars ℝ)`. Use function extensionality and compare the values at `x i j`. Both sides reduce to the same expression. Establish `hd : LinearMap.det ((UpperTheory.matrixLeftMulLinearMap n a).restrictScalars ℝ) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.det_restrictScalars, UpperTheory.det_leftMulLinearMap, Algebra.norm_complex_apply, map_pow, Complex.normSq_eq_norm_sq, ha]`. Simplify using the standard rewrite rules. Use `haveI h1 : (MeasureTheory.volume : MeasureTheory.Measure (Fin n → ℂ)).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`. Use `haveI h2 : (MeasureTheory.volume : MeasureTheory.Measure (Fin n → Fin n → ℂ)).IsAddHaarMeasure := MeasureTheory.Measure.pi.isAddHaarMeasure _`. Rewrite using `[hf, MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [hd]; exact one_ne_zero), hd]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.map_left_mul_volume_eq :
     ∀ (n : ℕ) (a : Fin n → Fin n → ℂ), ‖(Matrix.of a).det‖ = 1 →

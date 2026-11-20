@@ -12,19 +12,17 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `ι _ _ n P`. Take `⟨c, hc⟩` from `P.exists_chart`. Take `⟨s, g0, hinj, hint⟩` from `exists_integral_inj_algHom_of_fg ℚ (P.ChartAlg c)`. Set `b : Coord n → P.ChartAlg c` to `fun v ↦ (P.chartMap c).rangeRestrict (X v)`. Use `choose δ R hδ hR hbd using fun v ↦ exists_integral_bound g0 hint (b v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set Δ : ℕ := ∏ v, δ v with hΔ`. Use `set R0 : ℝ := 1 + ∑ v, R v with hR0`. Establish `hΔpos : 0 < Δ` using `Finset.prod_pos fun v _ ↦ hδ v`. Establish `hRnn : ∀ v, 0 ≤ R v` using `fun v ↦ zero_le_one.trans (hR v)`. Establish `hR0pos : 0 < R0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nonneg fun v (_ : v ∈ Finset.univ) ↦ hRnn v` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨{z | ∃ ψ : P.ChartAlg c →ₐ[ℚ] AlgebraicClosure ℚ, (∀ j, ∃ N : ℕ, 0 < N ∧ ψ (g0 (X j)) ^ N = 1) ∧ z = P.chartPoint c ψ}, ∑ k, (Real.log Δ + Real.log (Real.sqrt (n k + 1) * R0)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨ψ, -, rfl⟩`. Conclude with `P.chartPoint_mem c hc ψ`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `m f hf hvan`. Assume the negation of the conclusion as `hfP`. Establish `hg` using `P.chartMap_ne_zero c hc hf hfP`. Take `⟨ψ, hψ, hroots⟩` from `exists_algHom_rootsOfUnity_ne_zero g0 hinj hint hg`. Apply `hψ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← P.evalCone_chartPoint c ψ f]`. Conclude with `hvan _ ⟨ψ, hroots, rfl⟩`. Introduce and unpack `z ⟨ψ, hroots, rfl⟩`. Use `height_standard_le _ (P.chartPoint_mem c hc ψ).1 hΔpos hR0pos (fun k i ↦ ?_) (fun σ k i ↦ ?_)` and prove the remaining obligations. Establish `h1` using `(hbd ⟨k, i⟩ ψ hroots).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (Δ : AlgebraicClosure ℚ) * P.chartPoint c ψ k i = ((∏ w ∈ Finset.univ.erase ⟨k, i⟩, δ w : ℕ) : AlgebraicClosure ℚ) * ((δ ⟨k, i⟩ : AlgebraicClosure ℚ) * ψ (b ⟨k, i⟩))`. Rewrite using `[← mul_assoc, ← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ _)]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Establish `h3 : IsIntegral ℤ (((∏ w ∈ Finset.univ.erase ⟨k, i⟩, δ w : ℕ) : AlgebraicClosure ℚ))`.
-
-Use `isIntegral_algebraMap (R := ℤ) (A := AlgebraicClosure ℚ) (x := ((∏ w ∈ Finset.univ.erase ⟨k, i⟩, δ w : ℕ) : ℤ))` as an intermediate fact. Simplify using `using this`. Conclude with `h3.mul h1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem denseBoundedHeight : DenseBoundedHeight.Statement := by
   intro ι _ _ n P

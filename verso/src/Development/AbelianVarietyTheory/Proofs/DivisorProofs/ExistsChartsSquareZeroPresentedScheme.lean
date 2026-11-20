@@ -14,14 +14,14 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+
   {s₀ : X₀ ⟶ Sp R₀} {S : Sys I π s₀} {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_congr {A Y : Scheme.{0}} {f g : A ⟶ Y} (h : f = g) (U : Y.Opens) (W : A.Opens)
     (e : W ≤ f ⁻¹ᵁ U) : f.appLE U W e = g.appLE U W (h ▸ e) := by
   subst h; rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem specMap_appLE_top {A B : CommRingCat.{0}} (f : A ⟶ B) (e : (⊤ : (Spec B).Opens) ≤ Spec.map f ⁻¹ᵁ ⊤) :
     (Spec.map f).appLE ⊤ ⊤ e ≫ (Scheme.ΓSpecIso B).hom = (Scheme.ΓSpecIso A).hom ≫ f := by
@@ -33,7 +33,7 @@ def chartOpen (P : S.Presents s i) (T : AffOp X₀) : X.Opens :=
   (P.y T).opensRange
 
 /- English proof (translation)
-Use `haveI := P.isOpen T`. Conclude with `Scheme.Hom.preimage_opensRange _`.
+A detailed English derivation is pending.
 -/
 theorem preimage_chartOpen (P : S.Presents s i) (T : AffOp X₀) : P.y T ⁻¹ᵁ chartOpen P T = ⊤ := by
   haveI := P.isOpen T
@@ -52,9 +52,9 @@ instance isIso_chartSec (P : S.Presents s i) (T : AffOp X₀) : IsIso (chartSec 
   infer_instance
 
 /- English proof (translation)
-Use `haveI := P.isOpen T`. Use `haveI := P.isOpen T'`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ ((P.y T').opensRange : Set X) at hx`. Express the relevant statement in the definitionally equal form `x ∈ ((P.y T).opensRange : Set X)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx`, the goal using `[Scheme.Hom.coe_opensRange]`. Take `⟨q, rfl⟩` from `hx`. Rewrite using `[← P.nat a, Scheme.Hom.comp_apply]`. Conclude with `Set.mem_range_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartOpen_le (P : S.Presents s i) ⦃T T' : AffOp X₀⦄ (a : T ⟶ T') : chartOpen P T' ≤ chartOpen P T := by
   haveI := P.isOpen T
@@ -68,9 +68,9 @@ theorem chartOpen_le (P : S.Presents s i) ⦃T T' : AffOp X₀⦄ (a : T ⟶ T')
   exact Set.mem_range_self _
 
 /- English proof (translation)
-Establish `e1 : (⊤ : (Sp (S.F.obj T')).Opens) ≤ P.y T' ⁻¹ᵁ chartOpen P T` using `(preimage_chartOpen P T').ge.trans (Scheme.Hom.preimage_mono _ (chartOpen_le P a))`. Unfold `chartSec`. Rewrite using `[← Category.assoc, Scheme.Hom.map_appLE _ _ (homOfLE (chartOpen_le P a)).op]`. Rewrite using `[appLE_congr (P.nat a).symm _ _ e1]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE _ _ _ _ _ (preimage_chartOpen P T).ge le_top]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc]`. Use `congr 1`. Conclude with `specMap_appLE_top _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem res_chartSec (P : S.Presents s i) ⦃T T' : AffOp X₀⦄ (a : T ⟶ T') :
     X.presheaf.map (homOfLE (chartOpen_le P a)).op ≫ chartSec P T' =
@@ -86,7 +86,7 @@ theorem res_chartSec (P : S.Presents s i) ⦃T T' : AffOp X₀⦄ (a : T ⟶ T')
   exact specMap_appLE_top _ _
 
 /- English proof (translation)
-Use `haveI : IsClosedImmersion i := MorphismProperty.of_isPullback (P := @IsClosedImmersion) h.flip (IsClosedImmersion.spec_of_surjective _ hπ)`. Conclude with `i.isClosedEmbedding.injective`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_isPullback {R R₀ : Type} [CommRing R] [CommRing R₀] {π : R →+* R₀}
     (hπ : Function.Surjective π) {s₀ : X₀ ⟶ Sp R₀} {s : X ⟶ Sp R} {i : X₀ ⟶ X}
@@ -96,7 +96,7 @@ theorem injective_of_isPullback {R R₀ : Type} [CommRing R] [CommRing R₀] {π
   exact i.isClosedEmbedding.injective
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, Category.assoc, ← Functor.map_comp_assoc]`. Establish `: ((eqToHom hU.fromSpec_preimage_self).op ≫ (homOfLE e).op : Opposite.op _ ⟶ Opposite.op _) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fromSpec_appLE_ΓSpecIso {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) (e : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U) :
     hU.fromSpec.appLE U ⊤ e ≫ (Scheme.ΓSpecIso Γ(Y, U)).hom = 𝟙 _ := by
@@ -107,15 +107,15 @@ theorem fromSpec_appLE_ΓSpecIso {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOp
   rw [this, CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id]
 
 /- English proof (translation)
-The claim follows from `IsAffineOpen.range_fromSpec T.unop.2`.
+A detailed English derivation is pending.
 -/
 theorem range_affPt (T : AffOp X₀) : Set.range (affPt s₀ T.unop) = T.unop.1 :=
   IsAffineOpen.range_fromSpec T.unop.2
 
 /- English proof (translation)
-Use `haveI := P.isOpen T`. Express the relevant statement in the definitionally equal form `x ∈ ((P.y T).opensRange : Set X) at hx`. Rewrite `hx` using `[Scheme.Hom.coe_opensRange]`. Take `⟨q, rfl⟩` from `hx`. Take `⟨q₀, rfl⟩` from `(S.surjective_spMap_p hI T).surj q`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨affPt s₀ T.unop q₀, ?_, ?_⟩` and prove the remaining obligations. Establish `: affPt s₀ T.unop q₀ ∈ Set.range (affPt s₀ T.unop)` using `Set.mem_range_self _`. Rewrite `this` using `[range_affPt]`. Conclude with `this`. Rewrite using `[← Scheme.Hom.comp_apply, ← P.red T, Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_chartOpen (hI : I ^ 2 = 0) (P : S.Presents s i) (T : AffOp X₀) (x : X)
     (hx : x ∈ chartOpen P T) : ∃ x₀ ∈ T.unop.1, i x₀ = x := by
@@ -131,9 +131,9 @@ theorem exists_of_mem_chartOpen (hI : I ^ 2 = 0) (P : S.Presents s i) (T : AffOp
   · rw [← Scheme.Hom.comp_apply, ← P.red T, Scheme.Hom.comp_apply]
 
 /- English proof (translation)
-Use `haveI := P.isOpen T`. Introduce `x₀ hx₀`. Establish `hx' : x₀ ∈ Set.range (affPt s₀ T.unop)` using `by rw [range_affPt]; exact hx₀`. Take `⟨q, rfl⟩` from `hx'`. Express the relevant statement in the definitionally equal form `i (affPt s₀ T.unop q) ∈ ((P.y T).opensRange : Set X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.coe_opensRange, ← Scheme.Hom.comp_apply, ← P.red T, Scheme.Hom.comp_apply]`. Conclude with `Set.mem_range_self _`.
+A detailed English derivation is pending.
 -/
 theorem le_preimage_chartOpen (P : S.Presents s i) (T : AffOp X₀) :
     T.unop.1 ≤ i ⁻¹ᵁ chartOpen P T := by
@@ -146,7 +146,7 @@ theorem le_preimage_chartOpen (P : S.Presents s i) (T : AffOp X₀) :
   exact Set.mem_range_self _
 
 /- English proof (translation)
-Use `le_antisymm (fun x₀ hx₀ ↦ ?_) (le_preimage_chartOpen P T)` and prove the remaining obligations. Take `⟨y₀, hy₀, e⟩` from `exists_of_mem_chartOpen hI P T (i x₀) hx₀`. Rewrite using `[← hinj e]`. Conclude with `hy₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_chartOpen_eq (hI : I ^ 2 = 0) (hinj : Function.Injective i) (P : S.Presents s i)
     (T : AffOp X₀) : i ⁻¹ᵁ chartOpen P T = T.unop.1 := by
@@ -156,11 +156,11 @@ theorem preimage_chartOpen_eq (hI : I ^ 2 = 0) (hinj : Function.Injective i) (P 
   exact hy₀
 
 /- English proof (translation)
-Establish `hf : ⊤ ≤ (affPt s₀ T.unop) ⁻¹ᵁ T.unop.1` using `(IsAffineOpen.fromSpec_preimage_self T.unop.2).ge`. Establish `k : (affPt s₀ T.unop).appLE T.unop.1 ⊤ hf ≫ (Scheme.ΓSpecIso Γ(X₀, T.unop.1)).hom = 𝟙 _` using `fromSpec_appLE_ΓSpecIso T.unop.2 hf`. Establish `e1 : (⊤ : (Sp (Sec s₀ T.unop.1)).Opens) ≤ (affPt s₀ T.unop ≫ i) ⁻¹ᵁ chartOpen P T` using `hf.trans (Scheme.Hom.preimage_mono _ hT)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (affPt s₀ T.unop) i _ _ _ hT hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.assoc _ _ _).symm`. Use `_ = (spMap (S.p T) ≫ P.y T).appLE (chartOpen P T) ⊤ ((P.red T) ▸ e1) ≫ (Scheme.ΓSpecIso Γ(X₀, T.unop.1)).hom := by`. Rewrite using `[appLE_congr (P.red T).symm _ _ e1]`. Use `_ = (chartSec P T ≫ CommRingCat.ofHom (S.p T) : Γ(X, chartOpen P T) ⟶ Γ(X₀, T.unop.1)) := by`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE _ _ _ _ _ (preimage_chartOpen P T).ge le_top]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Unfold `chartSec`. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `congr 1`. Conclude with `specMap_appLE_top _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem appLE_chartSec (P : S.Presents s i) (T : AffOp X₀) (hT : T.unop.1 ≤ i ⁻¹ᵁ chartOpen P T) :
     i.appLE (chartOpen P T) T.unop.1 hT = chartSec P T ≫ CommRingCat.ofHom (S.p T) := by
@@ -190,14 +190,14 @@ def chartInv (P : S.Presents s i) (T : AffOp X₀) : S.F.obj T →+* Γ(X, chart
   (RingEquiv.ofBijective (chartSec P T).hom (ConcreteCategory.bijective_of_isIso (chartSec P T))).symm.toRingHom
 
 /- English proof (translation)
-The claim follows from `(RingEquiv.ofBijective (chartSec P T).hom (ConcreteCategory.bijective_of_isIso (chartSec P T))).apply_symm_apply b`.
+A detailed English derivation is pending.
 -/
 theorem chartSec_chartInv (P : S.Presents s i) (T : AffOp X₀) (b : S.F.obj T) :
     (chartSec P T).hom (chartInv P T b) = b :=
   (RingEquiv.ofBijective (chartSec P T).hom (ConcreteCategory.bijective_of_isIso (chartSec P T))).apply_symm_apply b
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `chartSec_chartInv P T b`. Introduce and unpack `rfl`. Conclude with `(ConcreteCategory.bijective_of_isIso (chartSec P T)).1 (chartSec_chartInv P T _)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem chartInv_eq_iff (P : S.Presents s i) (T : AffOp X₀) (b : S.F.obj T) (c : Γ(X, chartOpen P T)) :
     chartInv P T b = c ↔ (chartSec P T).hom c = b := by
@@ -211,11 +211,11 @@ end GlobalTheory.PresCharts
 open GlobalTheory.PresCharts in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ S X s i P h`. Establish `hinj` using `injective_of_isPullback hπ h`. Use `⟨chartOpen P, chartOpen_le P, le_preimage_chartOpen P, chartInv P, preimage_chartOpen_eq hI hinj P, fun T T' a b ↦ ?_, fun T b ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[chartInv_eq_iff]`. Use `congrArg (fun f ↦ f.hom (chartInv P T b)) (res_chartSec P a)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `this.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mp S.F a) ((chartSec P T).hom (chartInv P T b)) = _`. Rewrite using `[chartSec_chartInv]`. Use `congrArg (fun f ↦ f.hom (chartInv P T b)) (appLE_chartSec P T (le_preimage_chartOpen P T))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `S.p T ((chartSec P T).hom (chartInv P T b)) = _`. Rewrite using `[chartSec_chartInv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.PresCharts.exists_charts : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀) (S : Sys I π s₀) (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X) (P : S.Presents s i), IsPullback i s₀ s (spMap π) → ∃ (V : AffOp X₀ → X.Opens) (hV : ∀ ⦃T T' : AffOp X₀⦄, (T ⟶ T') → V T' ≤ V T) (hi : ∀ T, T.unop.1 ≤ i ⁻¹ᵁ V T) (e : ∀ T, S.F.obj T →+* Γ(X, V T)), (∀ T, i ⁻¹ᵁ V T = T.unop.1) ∧ (∀ (T T' : AffOp X₀) (a : T ⟶ T') (b : S.F.obj T), e T' (mp S.F a b) = resG X (hV a) (e T b)) ∧ ∀ T b, (i.appLE (V T) T.unop.1 (hi T)).hom (e T b) = S.p T b := by
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ S X s i P h

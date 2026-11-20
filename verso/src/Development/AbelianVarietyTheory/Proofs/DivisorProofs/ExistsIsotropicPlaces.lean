@@ -14,9 +14,9 @@ open scoped TensorProduct
 namespace GlobalTheory.PlaceIso
 
 /- English proof (translation)
-Introduce `F _ _ w y`. Establish `h` using `InfinitePlace.Completion.denseRange_coe w y`. Use `h using 2` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨(WithAbs.equiv w.1).symm x, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨WithAbs.equiv w.1 x, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem denseRange_algebraMap_completion : ∀ (F : Type) [Field F] [NumberField F] (w : InfinitePlace F), DenseRange (algebraMap F w.Completion) := by
   intro F _ _ w y
@@ -30,17 +30,15 @@ theorem denseRange_algebraMap_completion : ∀ (F : Type) [Field F] [NumberField
     exact ⟨WithAbs.equiv w.1 x, rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hM hJ S₁ S₂ ε hε hnc`. Establish `key : (∃ w ∈ S₁, ∃ u : Fin M → w.Completion ⊗[F] E, u ≠ 0 ∧ hR w.Completion σ J u u = 0) ∨ (∃ v ∈ S₂, ∃ u : Fin M → Fv F v ⊗[F] E, u ≠ 0 ∧ hR (Fv F v) σ J u u = 0)`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Apply `hnc` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.T.isCompact_specialUnitary_supportedAtPlaces F E σ hσ M J hJ S₁ S₂ ε hε` to reduce the goal to its premises. Introduce `w hw`. Use `letI := GroundTheory.Automorphic.completionNontriviallyNormedField (K := F) w`. Conclude with `GlobalTheory.T.exists_compact_set_unitary_hermitian_real F E σ hσ w.Completion M J hJ (fun u hu => by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Conclude with `hno.1 w hw u h hu)`. Introduce `v hv`. Use `letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _`. Use `haveI := Formalism.BasicNotions.Examples₂.LocF.proper v`. Conclude with `GlobalTheory.T.exists_compact_set_unitary_hermitian_real F E σ hσ (Fv F v) M J hJ (fun u hu => by`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hno.2 v hv u h hu)`. Break down `key with ⟨w, hw, u, hu0, hu⟩ | ⟨v, hv, u, hu0, hu⟩` into its components or cases. Take `⟨ε', hε'⟩` from `GlobalTheory.Published.StrongApprox.exists_isPlacesIdem (F := F) {w} ∅`. Use `⟨{w}, ∅, ε', Finset.singleton_subset_iff.2 hw, Finset.empty_subset _, Or.inl (Finset.singleton_nonempty w), hε', ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hx hy`. Use `letI := GroundTheory.Automorphic.completionNontriviallyNormedField (K := F) w`. Take `⟨z, hz, ⟨h1, ht1⟩, ⟨h2, ht2⟩⟩` from `GlobalTheory.T.exists_rational_vector_isotropic_nondegenerate_planes_at_place F E σ hσ w.Completion (denseRange_algebraMap_completion F w) M J hM hJ ⟨u, hu0, hu⟩ x y hx hy`. Conclude with `⟨z, hz, ⟨h1, GlobalTheory.T.exists_norm_solution_adelic_from_archimedean F E σ w ε' hε' _ ht1⟩, ⟨h2, GlobalTheory.T.exists_norm_solution_adelic_from_archimedean F E σ w ε' hε' _ ht2⟩⟩`. Take `⟨ε', hε'⟩` from `GlobalTheory.Published.StrongApprox.exists_isPlacesIdem (F := F) ∅ {v}`.
-
-Use `⟨∅, {v}, ε', Finset.empty_subset _, Finset.singleton_subset_iff.2 hv, Or.inr (Finset.singleton_nonempty v), hε', ?_⟩` and prove the remaining obligations. Introduce `x y hx hy`. Use `letI : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _`. Take `⟨z, hz, ⟨h1, ht1⟩, ⟨h2, ht2⟩⟩` from `GlobalTheory.T.exists_rational_vector_isotropic_nondegenerate_planes_at_place F E σ hσ (Fv F v) (HeightOneSpectrum.denseRange_algebraMap F v) M J hM hJ ⟨u, hu0, hu⟩ x y hx hy`. Conclude with `⟨z, hz, ⟨h1, GlobalTheory.T.idempotent_adelic_norm_eq_of_local_norm_eq F E σ v ε' hε' _ ht1⟩, ⟨h2, GlobalTheory.T.idempotent_adelic_norm_eq_of_local_norm_eq F E σ v ε' hε' _ ht2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isotropic_places : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), 2 ≤ M → IsHermND σ J → ∀ (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → ¬ IsCompact (SUSupp σ J ε) → ∃ (S₁' : Finset (InfinitePlace F)) (S₂' : Finset (HeightOneSpectrum (𝓞 F))) (ε' : AF F), S₁' ⊆ S₁ ∧ S₂' ⊆ S₂ ∧ (S₁'.Nonempty ∨ S₂'.Nonempty) ∧ IsPlacesIdem S₁' S₂' ε' ∧ ∀ x y : Fin M → E, hE σ J x x ≠ 0 → hE σ J y y ≠ 0 → ∃ z : Fin M → E, hE σ J z z ≠ 0 ∧ (hE σ J (z - (hE σ J x z / hE σ J x x) • x) (z - (hE σ J x z / hE σ J x x) • x) ≠ 0 ∧ ∃ t : AF F ⊗[F] E, algebraMap (AF F) (AF F ⊗[F] E) ε' * (t * sigR (AF F) σ t + inclR (AF F) (hE σ J x x / hE σ J (z - (hE σ J x z / hE σ J x x) • x) (z - (hE σ J x z / hE σ J x x) • x))) = 0) ∧ (hE σ J (y - (hE σ J z y / hE σ J z z) • z) (y - (hE σ J z y / hE σ J z z) • z) ≠ 0 ∧ ∃ t : AF F ⊗[F] E, algebraMap (AF F) (AF F ⊗[F] E) ε' * (t * sigR (AF F) σ t + inclR (AF F) (hE σ J z z / hE σ J (y - (hE σ J z y / hE σ J z z) • z) (y - (hE σ J z y / hE σ J z z) • z))) = 0) := by
   intro F E _ _ _ _ _ σ hσ M J hM hJ S₁ S₂ ε hε hnc

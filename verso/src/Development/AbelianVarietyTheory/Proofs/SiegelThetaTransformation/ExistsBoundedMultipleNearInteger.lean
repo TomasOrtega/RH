@@ -5,21 +5,21 @@ namespace GlobalTheory.SimultaneousDiophantineApprox
 open NumberField
 
 /- English proof (translation)
-Establish `hNq : (0 : ℚ) < N` using `by exact_mod_cast hN`. Establish `hbox : ∀ (j : ℕ) (i : ι), (⌊Int.fract ((j : ℚ) * a i) * N⌋).toNat < N`. Introduce `j i`. Establish `h0 : 0 ≤ Int.fract ((j : ℚ) * a i) * N` using `mul_nonneg (Int.fract_nonneg _) hNq.le`. Establish `h1 : Int.fract ((j : ℚ) * a i) * N < N`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.fract_lt_one ((j : ℚ) * a i)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hlt : ⌊Int.fract ((j : ℚ) * a i) * N⌋ < (N : ℤ)` using `Int.floor_lt.mpr (by exact_mod_cast h1)`. Establish `hnn : 0 ≤ ⌊Int.fract ((j : ℚ) * a i) * N⌋` using `Int.floor_nonneg.mpr h0`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Set `f : Fin (N ^ Fintype.card ι + 1) → (ι → Fin N)` to `fun j i => ⟨_, hbox j i⟩`. Establish `key : ∀ x y : Fin (N ^ Fintype.card ι + 1), x < y → f x = f y → ∃ m : ℕ, 0 < m ∧ m ≤ N ^ Fintype.card ι ∧ ∃ z : ι → ℤ, ∀ i, |(m : ℚ) * a i - z i| ≤ 1 / N`. Introduce `x y hxy hf`. Establish `hxy' : (x : ℕ) < y` using `hxy`. Establish `hy` using `y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨y - x, by omega, by omega, fun i => ⌊(y : ℚ) * a i⌋ - ⌊(x : ℚ) * a i⌋, fun i => ?_⟩` and prove the remaining obligations. Establish `hv` using `congrArg Fin.val (congrFun hf i)`. Simplify using `only [f] at hv`. Establish `hx0 : 0 ≤ Int.fract ((x : ℕ) * a i) * (N : ℚ)` using `mul_nonneg (Int.fract_nonneg _) hNq.le`. Establish `hy0 : 0 ≤ Int.fract ((y : ℕ) * a i) * (N : ℚ)` using `mul_nonneg (Int.fract_nonneg _) hNq.le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfl : ⌊Int.fract (((x : ℕ) : ℚ) * a i) * N⌋ = ⌊Int.fract (((y : ℕ) : ℚ) * a i) * N⌋`. Use `Int.floor_nonneg.mpr hx0` as an intermediate fact. Use `Int.floor_nonneg.mpr hy0` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hclose` using `Int.abs_sub_lt_one_of_floor_eq_floor hfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `heq : (((y - x : ℕ) : ℕ) : ℚ) * a i - ((⌊(y : ℚ) * a i⌋ - ⌊(x : ℚ) * a i⌋ : ℤ) : ℚ) = Int.fract (((y : ℕ) : ℚ) * a i) - Int.fract (((x : ℕ) : ℚ) * a i)`. Rewrite using `[Nat.cast_sub hxy'.le]`. Unfold `Int.fract`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[heq, le_div_iff₀ hNq]`. Establish `hm : |Int.fract (((y : ℕ) : ℚ) * a i) - Int.fract (((x : ℕ) : ℚ) * a i)| * N = |Int.fract (((x : ℕ) : ℚ) * a i) * N - Int.fract (((y : ℕ) : ℚ) * a i) * N|`. Rewrite using `[← sub_mul, abs_mul, abs_of_pos hNq, abs_sub_comm]`. Rewrite using `[hm]`. Conclude with `hclose.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, hne, hf⟩` from `Fintype.exists_ne_map_eq_of_card_lt f (by simp)`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `key x y h hf`. Conclude with `key y x h hf.symm`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem simultaneous_approx {ι : Type} [Fintype ι] (N : ℕ) (hN : 0 < N) (a : ι → ℚ) :
     ∃ m : ℕ, 0 < m ∧ m ≤ N ^ Fintype.card ι ∧ ∃ z : ι → ℤ,
@@ -72,17 +72,17 @@ theorem simultaneous_approx {ι : Type} [Fintype ι] (N : ℕ) (hN : 0 < N) (a :
   · exact key y x h hf.symm
 
 /- English proof (translation)
-Use `set b := integralBasis E`. Use `set C : ℝ := ∑ i, ∑ σ : E →+* ℂ, ‖σ (b i)‖ with hC`. Establish `hC0 : 0 ≤ C` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun σ _ => norm_nonneg _`. Take `⟨N, hN⟩` from `exists_nat_gt C`. Establish `hN0 : 0 < N` using `by exact_mod_cast hC0.trans_lt hN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN0`. Use `⟨N ^ Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)), fun x => ?_⟩` and prove the remaining obligations. Take `⟨m, hm0, hmN, z, hz⟩` from `simultaneous_approx N hN0 (b.repr x)`. Use `⟨m, ∑ i, (z i : E) * b i, hm0, hmN, ?_, ?_⟩` and prove the remaining obligations. Use `IsIntegral.sum _ fun i _ => IsIntegral.mul ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ E (z i)))`. Rewrite using `[integralBasis_apply]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `hx : (m : E) * x - ∑ i, (z i : E) * b i = ∑ i, ((((m : ℚ) * b.repr x i - z i : ℚ)) : E) * b i` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, pi_norm_lt_iff one_pos]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ`. Rewrite using `[canonicalEmbedding.apply_at, map_sum]`. Use `lt_of_le_of_lt (norm_sum_le _ _) ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (Finset.sum_le_sum (g := fun i => 1 / (N : ℝ) * ∑ τ : E →+* ℂ, ‖τ (b i)‖) fun i _ => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, map_ratCast, Complex.norm_ratCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `mul_le_mul ?_ (Finset.single_le_sum (f := fun τ : E →+* ℂ => ‖τ (b i)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ σ)) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Establish `h` using `Rat.cast_le (K := ℝ) |>.mpr (hz i)`. Rewrite `h` using `[Rat.cast_div, Rat.cast_one, Rat.cast_natCast, Rat.cast_abs]`. Then use the resulting hypothesis. Rewrite using `[← Finset.mul_sum, ← hC, one_div_mul_eq_div, div_lt_one hNr]`. Conclude with `hN`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bounded_multiple_near_integer (E : Type) [Field E] [NumberField E] :
     ∃ M : ℕ, ∀ x : E, ∃ (m : ℕ) (y : E), 0 < m ∧ m ≤ M ∧ IsIntegral ℤ y ∧

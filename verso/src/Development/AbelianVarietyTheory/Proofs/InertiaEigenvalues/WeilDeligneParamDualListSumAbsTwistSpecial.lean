@@ -16,7 +16,7 @@ variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
   [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Use `⟨Module.dualProdDualEquivDual ℂ V V', fun σ x => ?_, fun x => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext v <;> simp`. Apply the tactic sequence `ext v <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem iso_sum_dual (a : WDRep h V) (b : WDRep h V') : (a.dual.sum b.dual).Iso (a.sum b).dual := by
   refine ⟨Module.dualProdDualEquivDual ℂ V V', fun σ x => ?_, fun x => ?_⟩
@@ -24,11 +24,11 @@ theorem iso_sum_dual (a : WDRep h V) (b : WDRep h V') : (a.dual.sum b.dual).Iso 
   · ext v <;> simp
 
 /- English proof (translation)
-Use `⟨TensorProduct.dualDistribEquiv ℂ V V', fun σ x => ?_, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f g`. Use `TensorProduct.ext' fun m n => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[TensorProduct.dualDistrib_apply]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f g`.
+Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `TensorProduct.ext' fun m n => ?_` and prove the remaining obligations. Simplify using `[TensorProduct.dualDistrib_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem iso_tensor_dual (a : WDRep h V) (b : WDRep h V') :
     (a.dual.tensor b.dual).Iso (a.tensor b).dual := by
@@ -50,13 +50,13 @@ theorem iso_tensor_dual (a : WDRep h V) (b : WDRep h V') :
 omit [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← qPow_add, neg_add_cancel, qPow_zero])`.
+A detailed English derivation is pending.
 -/
 theorem qPow_neg' (s : ℝ) : qPow w (-s) = (qPow w s)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← qPow_add, neg_add_cancel, qPow_zero])
 
 /- English proof (translation)
-Use `⟨LinearEquiv.refl ℂ _, fun σ f => ?_, fun f => rfl⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `only [WDRep.tw, WDRep.dual_ρ, WDRep.twist_ρ, unrChar_apply, LinearEquiv.refl_apply, LinearMap.dualMap_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, qPow_neg', map_inv, _root_.inv_zpow']`. Use `congr 2`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem iso_tw_dual (a : WDRep h V) (s : ℝ) : (a.tw s).dual.Iso (a.dual.tw (-s)) := by
   refine ⟨LinearEquiv.refl ℂ _, fun σ f => ?_, fun f => rfl⟩
@@ -67,7 +67,7 @@ theorem iso_tw_dual (a : WDRep h V) (s : ℝ) : (a.tw s).dual.Iso (a.dual.tw (-s
   simp
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[shiftEnd_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp only [Pi.single_apply, Fin.ext_iff, Fin.val_mk, Pi.zero_apply] <;> split_ifs <;> first | rfl | (exfalso; have := k.2; have := j.2; omega)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shiftEnd_single {n : ℕ} (j : Fin n) :
     shiftEnd n (Pi.single j 1) = if hj : (j : ℕ) + 1 < n then Pi.single ⟨j + 1, hj⟩ 1 else 0 := by
@@ -77,9 +77,9 @@ theorem shiftEnd_single {n : ℕ} (j : Fin n) :
     split_ifs <;> first | rfl | (exfalso; have := k.2; have := j.2; omega)
 
 /- English proof (translation)
-Rewrite using `[WDRep.spEig, WDRep.spEig, ← qPow_neg']`. Use `congr 1`. Rewrite using `[Fin.val_rev]`. Establish `: (i : ℕ) + 1 ≤ n` using `i.2`. Rewrite using `[Nat.cast_sub (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem spEig_rev {n : ℕ} (i : Fin n) : WDRep.spEig w n i.rev = (WDRep.spEig w n i)⁻¹ := by
   rw [WDRep.spEig, WDRep.spEig, ← qPow_neg']
@@ -91,7 +91,7 @@ theorem spEig_rev {n : ℕ} (i : Fin n) : WDRep.spEig w n i.rev = (WDRep.spEig w
   ring
 
 /- English proof (translation)
-Use extensionality with `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagEnd_single {n : ℕ} (c : Fin n → ℂ) (j : Fin n) :
     diagEnd c (Pi.single j 1) = c j • Pi.single j (1 : ℂ) := by
@@ -111,9 +111,9 @@ theorem spDualMap_apply {n : ℕ} (f : Dual ℂ (Fin n → ℂ)) (i : Fin n) :
     spDualMap n f i = (-1 : ℂ) ^ (i : ℕ) * f (Pi.single i.rev 1) := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Use `LinearMap.pi_ext fun j x => ?_` and prove the remaining obligations. Use `congrFun hf j.rev` as an intermediate fact. Rewrite `this` using `[spDualMap_apply, Fin.rev_rev, Pi.zero_apply, mul_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : f (Pi.single j 1) = 0` using `this.resolve_left (pow_ne_zero _ (by norm_num))`. Establish `h2 : (Pi.single j x : Fin n → ℂ) = x • Pi.single j (1 : ℂ)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[h2, map_smul, h1, smul_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spDualMap_injective (n : ℕ) : Function.Injective (spDualMap n) := by
   rw [injective_iff_map_eq_zero]
@@ -127,13 +127,13 @@ theorem spDualMap_injective (n : ℕ) : Function.Injective (spDualMap n) := by
   rw [h2, map_smul, h1, smul_zero]; simp
 
 /- English proof (translation)
-Use `⟨LinearMap.linearEquivOfInjective (spDualMap n) (spDualMap_injective n) (by simp [Subspace.dual_finrank_eq]), fun σ f => ?_, fun f => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [LinearMap.linearEquivOfInjective_apply, spDualMap_apply, WDRep.dual_ρ, WDRep.sp_ρ, LinearMap.dualMap_apply, diagEnd_single, map_smul, smul_eq_mul, diagEnd_apply, spEig_rev]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `i`. Simplify using `only [LinearMap.linearEquivOfInjective_apply, spDualMap_apply, WDRep.dual_N, WDRep.sp_N, LinearMap.neg_apply, LinearMap.dualMap_apply, shiftEnd_single, shiftEnd_apply]`. Distinguish the cases in `hi : 1 ≤ (i : ℕ)`. Establish `hr : (i.rev : ℕ) + 1 < n` using `by rw [Fin.val_rev]; omega`. Rewrite using `[dif_pos hr, if_pos hi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : (⟨(i.rev : ℕ) + 1, hr⟩ : Fin n) = (⟨(i : ℕ) - 1, by omega⟩ : Fin n).rev` using `by ext; simp only [Fin.val_rev]; omega`. Rewrite using `[he]`. Take `⟨k, hk⟩ : ∃ k, (i : ℕ) = k + 1` from `⟨(i : ℕ) - 1, by omega⟩`. Simplify using `only [hk, Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hr : ¬ (i.rev : ℕ) + 1 < n` using `by rw [Fin.val_rev]; omega`. Rewrite using `[dif_neg hr, if_neg hi]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iso_sp_dual (n : ℕ) : (WDRep.sp h n).dual.Iso (WDRep.sp h n) := by
   refine ⟨LinearMap.linearEquivOfInjective (spDualMap n) (spDualMap_injective n)
@@ -162,7 +162,7 @@ theorem iso_sp_dual (n : ℕ) : (WDRep.sp h n).dual.Iso (WDRep.sp h n) := by
 namespace WDClass
 
 /- English proof (translation)
-Rewrite using `[WD.lpZero, WD.lpDual_mk]`. Conclude with `WD.sound ⟨LinearEquiv.ofFinrankEq _ _ (by simp [Subspace.dual_finrank_eq]), fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpDual_lpZero : (WD.lpZero h).lpDual = WD.lpZero h := by
   rw [WD.lpZero, WD.lpDual_mk]
@@ -170,9 +170,9 @@ theorem lpDual_lpZero : (WD.lpZero h).lpDual = WD.lpZero h := by
     fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP m b`. Rewrite using `[WD.lpSum_mk, WD.lpDual_mk, WD.lpDual_mk, WD.lpDual_mk, WD.lpSum_mk]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `WD.sound (iso_sum_dual a b).symm`.
+A detailed English derivation is pending.
 -/
 theorem lpDual_lpSum (x y : WD h) : (x.lpSum y).lpDual = x.lpDual.lpSum y.lpDual := by
   induction x using WD.ind with
@@ -183,7 +183,7 @@ theorem lpDual_lpSum (x y : WD h) : (x.lpSum y).lpDual = x.lpDual.lpSum y.lpDual
       exact WD.sound (iso_sum_dual a b).symm
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact lpDual_lpZero`. Consider the case `cons x l ih => show (x.lpSum (sumList l)).lpDual = x.lpDual.lpSum (sumList (l.map WD.lpDual))`. Rewrite using `[lpDual_lpSum, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem lpDual_sumList (l : List (WD h)) : (sumList l).lpDual = sumList (l.map WD.lpDual) := by
   induction l with
@@ -193,7 +193,7 @@ theorem lpDual_sumList (l : List (WD h)) : (sumList l).lpDual = sumList (l.map W
     rw [lpDual_lpSum, ih]
 
 /- English proof (translation)
-Proceed by induction on `y using WD.ind with`. Consider the case `hP n a`. Rewrite using `[WD.lpTw_mk, WD.lpDual_mk, WD.lpDual_mk, WD.lpTw_mk]`. Conclude with `WD.sound (iso_tw_dual a s)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpDual_lpTw (y : WD h) (s : ℝ) : (y.lpTw s).lpDual = y.lpDual.lpTw (-s) := by
   induction y using WD.ind with
@@ -202,7 +202,7 @@ theorem lpDual_lpTw (y : WD h) (s : ℝ) : (y.lpTw s).lpDual = y.lpDual.lpTw (-s
     exact WD.sound (iso_tw_dual a s)
 
 /- English proof (translation)
-Proceed by induction on `y using WD.ind with`. Consider the case `hP m a`. Rewrite using `[WD.lpSp, WD.lpChar_mk, WD.lpDual_mk, WD.lpDual_mk, WD.lpChar_mk]`. Conclude with `WD.sound ((iso_tensor_dual a (WDRep.sp h n)).symm.trans ((WDRep.Iso.refl a.dual).tensor (iso_sp_dual n)))`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpDual_lpChar_lpSp (y : WD h) (n : ℕ) :
     (y.lpChar (WD.lpSp h n)).lpDual = y.lpDual.lpChar (WD.lpSp h n) := by
@@ -215,7 +215,7 @@ theorem lpDual_lpChar_lpSp (y : WD h) (n : ℕ) :
 end WDClass
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _` and use `⟨WDClass.lpDual_sumList, WDClass.lpDual_lpTw, WDClass.lpDual_lpChar_lpSp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lpDual_sum_tw_sp : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w),

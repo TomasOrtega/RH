@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G.TB (dLin)
 variable {S : Type} [CommRing S] {d : ℕ}
 
 /- English proof (translation)
-Establish `hf : (fun p : Fin 2 × Fin d => (![u, v] : Fin 2 → Fin d → MvPolynomial κ' S) p.1 p.2 - C (constantCoeff ((![u, v] : Fin 2 → Fin d → MvPolynomial κ' S) p.1 p.2))) = fun p : Fin 2 × Fin d => (![fun j => u j - C (constantCoeff (u j)), fun j => v j - C (constantCoeff (v j))] : Fin 2 …`. Use function extensionality and compare the values at `p`. Break down `p with ⟨k, j⟩` into its components or cases. Apply the tactic sequence `fin_cases k <;> rfl`. Rewrite using `[jetSubstP_mk, hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -37,7 +37,7 @@ theorem jet_subst_pair_mk {κ' : Type} (m : ℕ) (u v : Fin d → MvPolynomial �
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[xs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem X_sub_cc {n : ℕ} (k : Fin n) :
     (fun j => (X (k, j) : MvPolynomial (Fin n × Fin d) S) - C (constantCoeff (X (k, j) : MvPolynomial (Fin n × Fin d) S))) =
@@ -46,11 +46,11 @@ theorem X_sub_cc {n : ℕ} (k : Fin n) :
   simp [xs]
 
 /- English proof (translation)
-Establish `hker : ∀ a ∈ orig S (Fin 2 × Fin d) ^ (m + 1), (constantCoeff : MvPolynomial (Fin 2 × Fin d) S →+* S) a = 0`. Introduce `a ha`. Establish `h1 : orig S (Fin 2 × Fin d) ^ (m + 1) ≤ orig S (Fin 2 × Fin d)` using `Ideal.pow_le_self (Nat.succ_ne_zero m)`. Establish `h2 : orig S (Fin 2 × Fin d) ≤ RingHom.ker (constantCoeff : MvPolynomial (Fin 2 × Fin d) S →+* S)`. Unfold `orig`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using the standard rewrite rules. Conclude with `h2 (h1 ha)`. Set `φ` to `Ideal.Quotient.lift _ (constantCoeff : MvPolynomial (Fin 2 × Fin d) S →+* S) hker`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφP : φ (Ideal.Quotient.mk _ P) = coeff 0 P` using `Ideal.Quotient.lift_mk _ _ _`. Establish `hu : IsUnit (φ (U : Jet S (Fin 2 × Fin d) m))` using `U.isUnit.map φ`. Rewrite `hu` using `[← hP, hφP]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_coeff_zero {m : ℕ} {P : MvPolynomial (Fin 2 × Fin d) S} (U : (Jet S (Fin 2 × Fin d) m)ˣ)
     (hP : Ideal.Quotient.mk (orig S (Fin 2 × Fin d) ^ (m + 1)) P = U) : IsUnit (coeff 0 P) := by
@@ -73,7 +73,7 @@ theorem isUnit_coeff_zero {m : ℕ} {P : MvPolynomial (Fin 2 × Fin d) S} (U : (
   exact hu
 
 /- English proof (translation)
-Simplify using `only [bilL, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bilL_neg [Algebra ℚ S] (G : FGLaw S d) (c : Fin d → Fin d → S) : bilL G (-c) = -bilL G c := by
   simp only [bilL, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]
@@ -83,9 +83,9 @@ section Main
 variable [Algebra ℚ S]
 
 /- English proof (translation)
-Establish `hc : constantCoeff (psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F i)) = 0` using `by rw [FBIdPh.cc_psIn]; exact G.const i`. Establish `hr : (rename fun p : Fin 2 × Fin d => (((![0, 1] : Fin 2 → Fin 3) p.1), p.2) : MvPolynomial (Fin 2 × Fin d) S →ₐ[S] MvPolynomial (Fin 3 × Fin d) S) = aeval (fun p : Fin 2 × Fin d => (X (((![0, 1] : Fin 2 → Fin 3) p.1), p.2) : MvPolynomial (Fin 3 × Fin d) S))`. Use extensionality with `p`. Simplify using the standard rewrite rules. Establish `e : psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F i) - C (constantCoeff (psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F i))) - (xs S d 0 i + xs S d 1 i) = aeval (fun p : Fin 2 × Fin d => (X (((![0, 1] : Fin 2 → Fin 3) p.1), p.2) : MvPolynomial (Fin 3 × Fin d) S)) (psTrunc m (G.F i) - (X ((0 : …`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hc, map_zero, sub_zero, psIn, hr, map_sub, map_add, aeval_X, aeval_X]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `aeval_mem_pow _ (fun p => Ideal.subset_span ⟨_, rfl⟩) 2 (psTrunc_law_sub_mem G hm i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psIn_law_sub_mem (G : FGLaw S d) {m : ℕ} (hm : 1 ≤ m) (i : Fin d) :
     psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F i) - C (constantCoeff (psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F i))) - (xs S d 0 i + xs S d 1 i) ∈
@@ -104,9 +104,9 @@ theorem psIn_law_sub_mem (G : FGLaw S d) {m : ℕ} (hm : 1 ≤ m) (i : Fin d) :
   exact aeval_mem_pow _ (fun p => Ideal.subset_span ⟨_, rfl⟩) 2 (psTrunc_law_sub_mem G hm i)
 
 /- English proof (translation)
-Unfold `ev2`. Proceed by induction on `h using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Simplify using `only [map_add, *]`. Name the introduced variables `p n _`.
+Replace the relevant objects with their definitions. Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `n with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `fin_cases i <;> simp [hu, hv]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem constantCoeff_germEvalPair_eq_zero_lemma {τ : Type} (h : MvPolynomial (Fin 2 × Fin d) S) (u v : Fin d → MvPolynomial τ S)
     (hu : ∀ j, constantCoeff (u j) = 0) (hv : ∀ j, constantCoeff (v j) = 0) :
@@ -120,19 +120,17 @@ private theorem constantCoeff_germEvalPair_eq_zero_lemma {τ : Type} (h : MvPoly
     fin_cases i <;> simp [hu, hv]
 
 /- English proof (translation)
-Establish `hIo : ∀ {σ : Type} (f : MvPolynomial σ S), f ∈ Io S σ → constantCoeff f = 0`. Introduce `σ f hf`. Establish `h2 : Io S σ ≤ RingHom.ker (constantCoeff : MvPolynomial σ S →+* S)`. Unfold `Io idealOfVars`. Rewrite using `[Ideal.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using the standard rewrite rules. Conclude with `h2 hf`. Establish `hfF0 : ∀ i, constantCoeff (fF i) = 0` using `fun i => hIo _ (hfF i)`. Establish `hxs : ∀ (k : Fin 3) (j : Fin d), constantCoeff (xs S d k j) = 0`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k j`. Simplify using `[xs]`. Establish `hpow : Io S (Fin 3 × Fin d) ^ (m + 1) ≤ Io S (Fin 3 × Fin d)` using `Ideal.pow_le_self (Nat.succ_ne_zero m)`. Establish `h0` using `hIo _ (hpow hph1)`. Rewrite `h0` using `[map_sub, map_mul, constantCoeff_germEvalPair_eq_zero_lemma P fF (xs S d 2) hfF0 (hxs 2), constantCoeff_germEvalPair_eq_zero_lemma P (xs S d 0) (xs S d 2) (hxs 0) (hxs 2), constantCoeff_germEvalPair_eq_zero_lemma P (xs S d 1) (xs S d 2) (hxs 1) (hxs 2)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu' : IsUnit (constantCoeff P)` using `hu`. Establish `hc : constantCoeff P = 1`. Establish `h3 : constantCoeff P * (1 - constantCoeff P) = 0`. Rewrite using `[mul_sub, mul_one]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(sub_eq_zero.1 ((hu'.mul_right_eq_zero).1 h3)).symm`. Rewrite using `[pow_one]`. Unfold `Io idealOfVars`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `e he`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hne : e ≠ 0`. Introduce and unpack `rfl`. Establish `hc' : coeff 0 P = 1` using `hc`. Rewrite `he` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sub, MvPolynomial.coeff_zero_one, hc', sub_self]`. Conclude with `he rfl`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, e i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (Finsupp.ext hcon)`. Conclude with `⟨i, Set.mem_univ _, hi⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem const_one' {P : MvPolynomial (Fin 2 × Fin d) S} {m : ℕ} (fF : Fin d → MvPolynomial (Fin 3 × Fin d) S)
     (hfF : ∀ i, fF i ∈ Io S (Fin 3 × Fin d))
@@ -179,35 +177,29 @@ theorem const_one' {P : MvPolynomial (Fin 2 × Fin d) S} {m : ℕ} (fF : Fin d �
   exact ⟨i, Set.mem_univ _, hi⟩
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Ideal.Quotient.mk_surjective (U : Jet S (Fin 2 × Fin d) m)`. Establish `hu` using `isUnit_coeff_zero U hP`. Use `set fF : Fin d → MvPolynomial (Fin 3 × Fin d) S := fun j => psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F j) - C (constantCoeff (psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F j))) with hfFdef`. Establish `hfF : ∀ i, fF i ∈ Io S (Fin 3 × Fin d)` using `fun i => sub_C_mem _`. Establish `poly1 : ∀ (V : Jet S (Fin 2 × Fin d) m) (Q : MvPolynomial (Fin 2 × Fin d) S), Ideal.Quotient.mk (orig S (Fin 2 × Fin d) ^ (m + 1)) Q = V → jetSubstP m (fun p : Fin 2 × Fin d => (![fun j => psIn d m (![0, 1] : Fin 2 → Fin 3) (G.F j), fun j => X ((2 : Fin 3), j)] : Fin 2 → Fin d → …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V Q hQ h`. Rewrite `h` using `[← hQ, jet_subst_pair_mk, jet_subst_pair_mk, jet_subst_pair_mk, ← map_mul, mk_eq_iff, X_sub_cc (k := (2 : Fin 3)), X_sub_cc (k := (0 : Fin 3)), X_sub_cc (k := (1 : Fin 3))]`. Conclude with `h`. Establish `polys : ∀ (V : Jet S (Fin 2 × Fin d) m) (Q : MvPolynomial (Fin 2 × Fin d) S), Ideal.Quotient.mk (orig S (Fin 2 × Fin d) ^ (m + 1)) Q = V → jetSubstP m (fun p : Fin 2 × Fin d => (![fun j => X ((1 : Fin 2), j), fun j => X ((0 : Fin 2), j)] : Fin 2 → Fin d → MvPolynomial (Fin 2 × Fi …`. Introduce `V Q hQ h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[← hQ, jet_subst_pair_mk, mk_eq_iff, X_sub_cc (k := (1 : Fin 2)), X_sub_cc (k := (0 : Fin 2))]`. Conclude with `h`. Establish `hph1` using `poly1 _ P hP h1`. Establish `hsym` using `polys _ P hP hs`. Distinguish the cases in `hm2 : 2 ≤ m`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF : ∀ i, fF i - (xs S d 0 i + xs S d 1 i) ∈ Io S (Fin 3 × Fin d) ^ 2` using `fun i => psIn_law_sub_mem G (by omega) i`. Take `⟨h2, h3, hsymB⟩` from `lead_bil hm2 fF hF hph1 hsym hu`. Use `set B : Fin d → Fin d → S := fun i l => coeff (sil i l) (homogeneousComponent 2 (P - 1)) with hBdef`. Establish `hbalB : ∀ a, Matrix.transpose (Matrix.of (dLin (act a))) * Matrix.of B = Matrix.of B * Matrix.of (dLin (act (bar a)))`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hba` using `hb a`. Rewrite `hba` using `[← hP, jet_subst_pair_mk, jet_subst_pair_mk, mk_eq_iff, X_sub_cc (k := (1 : Fin 2)), X_sub_cc (k := (0 : Fin 2))]`. Conclude with `CIndFrExp2b.bal_of hm2 B (dLin (act a)) (dLin (act (bar a))) h2 h3 _ _ (psIn_act_sub_mem (act a) (hact a) (by omega) 0) (psIn_act_sub_mem (act (bar a)) (hact (bar a)) (by omega) 1) hba`. Use `⟨-B, fun i l => by show -B i l = -B l i; exact congrArg Neg.neg (hsymB i l), fun a => ?_, ?_⟩` and prove the remaining obligations. Use `hbalB a show Matrix.transpose (dLin (act a)) * (-Matrix.of B) = (-Matrix.of B) * dLin (act (bar a))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_neg, Matrix.neg_mul]`. Conclude with `congrArg Neg.neg this`. Use `set Pinv : MvPolynomial (Fin 2 × Fin d) S := psTrunc m (expP (-bilL G B)) with hPinv`. Establish `hEinv : Ideal.Quotient.mk (orig S (Fin 2 × Fin d) ^ (m + 1)) Pinv = psJet m (expP (-bilL G B))` using `rfl`. Establish `hQ : Ideal.Quotient.mk (orig S (Fin 2 × Fin d) ^ (m + 1)) (P * Pinv) = (U : Jet S (Fin 2 × Fin d) m) * psJet m (expP (-bilL G B))` using `by rw [map_mul, hP, hEinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hph1Q` using `poly1 _ (P * Pinv) hQ (by`. Rewrite using `[map_mul, map_mul, map_mul, h1, twist_mul_first_argument_jet G B m]`. Use the proof step `ring)`. Establish `hsymQ` using `polys _ (P * Pinv) hQ (by rw [map_mul, hs, twist_sym_jet G B (fun i l => hsymB i l) m])`. Establish `hPi : Pinv - (1 - bil B) ∈ Io S (Fin 2 × Fin d) ^ 3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : psTrunc 2 (expP (-bilL G B)) = 1 - bil B`. Rewrite using `[← bilL_neg, CIndFrExp2a.psTrunc_two_twist]`. Simplify using `[bil, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `psTrunc_sub_mem (expP (-bilL G B)) (k := 2) hm2` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ3 : P * Pinv - 1 ∈ Io S (Fin 2 × Fin d) ^ 3`. Establish `e : P * Pinv - 1 = (P - 1 - bil B) * Pinv + (1 + bil B) * (Pinv - (1 - bil B)) - bil B * bil B` using `by ring`. Rewrite using `[e]`. Use `sub_mem (add_mem (Ideal.mul_mem_right _ _ h3) (Ideal.mul_mem_left _ _ hPi)) ?_` and prove the remaining obligations. Establish `hbb : bil B * bil B ∈ Io S (Fin 2 × Fin d) ^ (2 + 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul (bil_mem B) (bil_mem B)`. Conclude with `Ideal.pow_le_pow_right (by omega) hbb`. Establish `hone` using `eq_one_of_cube fF hF hph1Q hsymQ hQ3`. Establish `hUE : (U : Jet S (Fin 2 × Fin d) m) * psJet m (expP (-bilL G B)) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hQ, ← map_one (Ideal.Quotient.mk (orig S (Fin 2 × Fin d) ^ (m + 1)))]`. Conclude with `(mk_eq_iff m _ _).2 hone`. Establish `hinv : (psJet m (expP (-bilL G (-B))) : Jet S (Fin 2 × Fin d) m) * psJet m (expP (-bilL G B)) = 1`. Use `(twU G (-B) m).val_inv` as an intermediate fact. Rewrite `this` using `[twU_val]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e : ((twU G (-B) m)⁻¹ : (Jet S (Fin 2 × Fin d) m)ˣ).val = psJet m (expP (-bilL G B))` using `by show psJet m (expP (-bilL G (-(-B)))) = _`. Rewrite using `[neg_neg]`. Rewrite using `[← e]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `⟨0, fun _ _ => rfl, fun a => by simp, ?_⟩` and prove the remaining obligations. Establish `hP1 : P - 1 ∈ Io S (Fin 2 × Fin d) ^ (m + 1)`. Establish `h01` using `const_one' fF hfF hph1 hu`. Break down `Nat.lt_or_ge m 1 with hm0 | hm1` into its components or cases. Establish `: m = 0` using `by omega`.
-
-Substitute `this` using the available equality. Conclude with `h01`. Establish `hm1' : m = 1` using `by omega`. Substitute `hm1'` using the available equality. Conclude with `stepNo2 le_rfl le_rfl (by omega) fF (fun i => psIn_law_sub_mem G le_rfl i) hph1 hsym h01`.
-
-Establish `hU1 : (U : Jet S (Fin 2 × Fin d) m) = 1`. Rewrite using `[← hP, ← map_one (Ideal.Quotient.mk (orig S (Fin 2 × Fin d) ^ (m + 1)))]`. Conclude with `(mk_eq_iff m _ _).2 hP1`. Rewrite using `[hU1, twist_zero, FBIdJet.psJet_one]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixExp (G : FGLaw S d) {O : Type} (act : O → Fin d → PS S 1 d)
     (hact : ∀ a i, MvPowerSeries.constantCoeff (act a i) = 0) (bar : O → O) (m : ℕ)

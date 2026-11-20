@@ -24,7 +24,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (Fv F v) c).sum_repr z]`. Simplify using `only [map_sum, Finsupp.coe_finset_sum, Finset.sum_apply, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_change {ι ι' : Type} [Fintype ι'] (b : Module.Basis ι F E)
     (c : Module.Basis ι' F E) (z : Fv F v ⊗[F] E) (k : ι) :
@@ -37,9 +37,9 @@ theorem repr_change {ι ι' : Type} [Fintype ι'] (b : Module.Basis ι F E)
     Finsupp.smul_apply, Finsupp.mapRange_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h j`. Rewrite using `[repr_change v c b z j]`. Conclude with `sum_mem fun k _ => mul_mem (h k) (hcb k j)`. Introduce `h k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repr_change v b c z k]`. Conclude with `sum_mem fun j _ => mul_mem (h j) (hbc j k)`.
+A detailed English derivation is pending.
 -/
 theorem int_iff {ι ι' : Type} [Fintype ι] [Fintype ι'] (b : Module.Basis ι F E)
     (c : Module.Basis ι' F E)
@@ -65,9 +65,9 @@ abbrev Xc (z : Fv F v ⊗[F] E) : Fv F v := (Algebra.TensorProduct.basis (Fv F v
 abbrev Yc (z : Fv F v ⊗[F] E) : Fv F v := (Algebra.TensorProduct.basis (Fv F v) A.c).repr z 1
 
 /- English proof (translation)
-Establish `h0 : (Algebra.TensorProduct.basis (Fv F v) A.c).repr (x ⊗ₜ (1 : E)) = Finsupp.single 0 x`. Rewrite using `[← A.hc0, Algebra.TensorProduct.basis_repr_tmul, A.c.repr_self]`. Simplify using `[Finsupp.mapRange_single]`. Establish `h1 : (Algebra.TensorProduct.basis (Fv F v) A.c).repr (y ⊗ₜ A.δ) = Finsupp.single 1 y`. Rewrite using `[← A.hc1, Algebra.TensorProduct.basis_repr_tmul, A.c.repr_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.mapRange_single]`. Rewrite using `[map_add, h0, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_Pt (x y : Fv F v) :
     (Algebra.TensorProduct.basis (Fv F v) A.c).repr (Pt v A x y) = Finsupp.single 0 x + Finsupp.single 1 y := by
@@ -80,19 +80,19 @@ theorem repr_Pt (x y : Fv F v) :
   rw [map_add, h0, h1]
 
 /- English proof (translation)
-Rewrite using `[Xc, repr_Pt]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Xc_Pt (x y : Fv F v) : Xc v A (Pt v A x y) = x := by
   rw [Xc, repr_Pt]; simp
 
 /- English proof (translation)
-Rewrite using `[Yc, repr_Pt]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Yc_Pt (x y : Fv F v) : Yc v A (Pt v A x y) = y := by
   rw [Yc, repr_Pt]; simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (Fv F v) A.c).sum_repr z]`. Rewrite using `[Fin.sum_univ_two, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, A.hc0, A.hc1, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp (z : Fv F v ⊗[F] E) : z = Pt v A (Xc v A z) (Yc v A z) := by
   conv_lhs => rw [← (Algebra.TensorProduct.basis (Fv F v) A.c).sum_repr z]
@@ -101,9 +101,9 @@ theorem decomp (z : Fv F v ⊗[F] E) : z = Pt v A (Xc v A z) (Yc v A z) := by
     mul_one]
 
 /- English proof (translation)
-Establish `e : (y * y') ⊗ₜ[F] (algebraMap F E A.D0) = (y * y' * algebraMap F (Fv F v) A.D0) ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.algebraMap_eq_smul_one A.D0, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`. Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pt, add_mul, mul_add, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, A.hδ, e, TensorProduct.add_tmul]`. Rewrite using `[mul_comm y x']`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem Pt_mul (x y x' y' : Fv F v) :
     Pt v A x y * Pt v A x' y' =
@@ -119,56 +119,56 @@ theorem Pt_mul (x y x' y' : Fv F v) :
   abel
 
 /- English proof (translation)
-Rewrite using `[Pt, TensorProduct.zero_tmul, add_zero, Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_eq_Pt : (1 : Fv F v ⊗[F] E) = Pt v A 1 0 := by
   rw [Pt, TensorProduct.zero_tmul, add_zero, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ (Pt v A x y) = _`. Simplify using `[Pt, Algebra.TensorProduct.map_tmul, A.hσδ, TensorProduct.tmul_neg, TensorProduct.neg_tmul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sig_Pt (x y : Fv F v) : sigR (Fv F v) σ (Pt v A x y) = Pt v A x (-y) := by
   show Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ (Pt v A x y) = _
   simp [Pt, Algebra.TensorProduct.map_tmul, A.hσδ, TensorProduct.tmul_neg, TensorProduct.neg_tmul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp v A z, decomp v A w, Pt_mul, Xc_Pt]`.
+A detailed English derivation is pending.
 -/
 theorem Xc_mul (z w : Fv F v ⊗[F] E) :
     Xc v A (z * w) = Xc v A z * Xc v A w + Yc v A z * Yc v A w * algebraMap F (Fv F v) A.D0 := by
   conv_lhs => rw [decomp v A z, decomp v A w, Pt_mul, Xc_Pt]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp v A z, decomp v A w, Pt_mul, Yc_Pt]`.
+A detailed English derivation is pending.
 -/
 theorem Yc_mul (z w : Fv F v ⊗[F] E) :
     Yc v A (z * w) = Xc v A z * Yc v A w + Yc v A z * Xc v A w := by
   conv_lhs => rw [decomp v A z, decomp v A w, Pt_mul, Yc_Pt]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp v A z, sig_Pt, Xc_Pt]`.
+A detailed English derivation is pending.
 -/
 theorem Xc_sig (z : Fv F v ⊗[F] E) : Xc v A (sigR (Fv F v) σ z) = Xc v A z := by
   conv_lhs => rw [decomp v A z, sig_Pt, Xc_Pt]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp v A z, sig_Pt, Yc_Pt]`.
+A detailed English derivation is pending.
 -/
 theorem Yc_sig (z : Fv F v ⊗[F] E) : Yc v A (sigR (Fv F v) σ z) = -Yc v A z := by
   conv_lhs => rw [decomp v A z, sig_Pt, Yc_Pt]
 
 /- English proof (translation)
-Rewrite using `[one_eq_Pt v A, Xc_Pt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Xc_one : Xc v A 1 = 1 := by rw [one_eq_Pt v A, Xc_Pt]
 
 /- English proof (translation)
-Rewrite using `[one_eq_Pt v A, Yc_Pt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Yc_one : Yc v A 1 = 0 := by rw [one_eq_Pt v A, Yc_Pt]
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.basis (Fv F v) A.c).repr ((1 : Fv F v) ⊗ₜ e) j = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_incl (e : E) (j : Fin 2) :
     (Algebra.TensorProduct.basis (Fv F v) A.c).repr (inclR (Fv F v) e) j =
@@ -178,36 +178,36 @@ theorem repr_incl (e : E) (j : Fin 2) :
   simp
 
 /- English proof (translation)
-Rewrite using `[Xc, Xc, Xc, map_add, Finsupp.add_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Xc_add (z w : Fv F v ⊗[F] E) : Xc v A (z + w) = Xc v A z + Xc v A w := by
   rw [Xc, Xc, Xc, map_add, Finsupp.add_apply]
 
 /- English proof (translation)
-Rewrite using `[Yc, Yc, Yc, map_add, Finsupp.add_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Yc_add (z w : Fv F v ⊗[F] E) : Yc v A (z + w) = Yc v A z + Yc v A w := by
   rw [Yc, Yc, Yc, map_add, Finsupp.add_apply]
 
 /- English proof (translation)
-Rewrite using `[Xc, Xc, map_neg, Finsupp.neg_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Xc_neg (z : Fv F v ⊗[F] E) : Xc v A (-z) = -Xc v A z := by
   rw [Xc, Xc, map_neg, Finsupp.neg_apply]
 
 /- English proof (translation)
-Rewrite using `[Yc, Yc, map_neg, Finsupp.neg_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Yc_neg (z : Fv F v ⊗[F] E) : Yc v A (-z) = -Yc v A z := by
   rw [Yc, Yc, map_neg, Finsupp.neg_apply]
 
 /- English proof (translation)
-Simplify using `[Xc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Xc_zero : Xc v A 0 = 0 := by simp [Xc]
 
 /- English proof (translation)
-Simplify using `[Yc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Yc_zero : Yc v A 0 = 0 := by simp [Yc]
 
@@ -246,18 +246,18 @@ def lamC : Subring (Fv F v ⊗[F] E) where
     exact ⟨by rw [Xc_neg]; exact neg_mem hz.1, by rw [Yc_neg]; exact neg_mem hz.2⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lamC (z : Fv F v ⊗[F] E) : z ∈ lamC v A hD ↔
     Xc v A z ∈ v.adicCompletionIntegers F ∧ Yc v A z ∈ v.adicCompletionIntegers F := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `hz`.
+A detailed English derivation is pending.
 -/
 theorem rho_mem {z : Fv F v ⊗[F] E} (hz : z ∈ lamC v A hD) : InC v A z := hz
 
 /- English proof (translation)
-Rewrite using `[mem_lamC, Xc, Yc, repr_incl, repr_incl]`. Conclude with `⟨he 0, he 1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem incl_mem (e : E) (he : ∀ j, algebraMap F (Fv F v) (A.c.repr e j) ∈ v.adicCompletionIntegers F) :
     inclR (Fv F v) e ∈ lamC v A hD := by
@@ -265,7 +265,7 @@ theorem incl_mem (e : E) (he : ∀ j, algebraMap F (Fv F v) (A.c.repr e j) ∈ v
   exact ⟨he 0, he 1⟩
 
 /- English proof (translation)
-Rewrite using `[mem_lamC, Xc_sig, Yc_sig]`. Conclude with `⟨hz.1, neg_mem hz.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sig_mem {z : Fv F v ⊗[F] E} (hz : z ∈ lamC v A hD) : sigR (Fv F v) σ z ∈ lamC v A hD := by
   rw [mem_lamC, Xc_sig, Yc_sig]
@@ -322,7 +322,7 @@ theorem rho_apply (z : lamC v A hD) : rho v A hD r hr z =
     algebraMap _ K (red v (Xc v A z)) + algebraMap _ K (red v (Yc v A z)) * r := rfl
 
 /- English proof (translation)
-Establish `hz` using `z.2`. Rewrite `hz` using `[mem_lamC]`. Rewrite using `[rho_apply, rho_apply, coe_sigC, Xc_sig, Yc_sig, red_neg v hz.2, map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hσr, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_sig (σ' : K ≃ₐ[𝓞 F ⧸ v.asIdeal] K) (hσr : σ' r = -r)
     (z : lamC v A hD) : rho v A hD r hr (sigC v A hD z) = σ' (rho v A hD r hr z) := by
@@ -337,11 +337,11 @@ variable (hbij : Function.Bijective
 
 include hbij in
 /- English proof (translation)
-Establish `hz` using `z.2`. Rewrite `hz` using `[mem_lamC]`. Rewrite using `[← red_eq_zero_iff v hz.1, ← red_eq_zero_iff v hz.2, rho_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hbij.1 (a₁ := (red v (Xc v A z), red v (Yc v A z))) (a₂ := (0, 0)) (by simpa using h)` as an intermediate fact. Simplify using `only [Prod.mk.injEq] at this`. Conclude with `this`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem rho_eq_zero (z : lamC v A hD) : rho v A hD r hr z = 0 ↔
     Valued.v (Xc v A z) < 1 ∧ Valued.v (Yc v A z) < 1 := by
@@ -358,9 +358,9 @@ theorem rho_eq_zero (z : lamC v A hD) : rho v A hD r hr z = 0 ↔
 
 include hbij in
 /- English proof (translation)
-Take `⟨⟨s, t⟩, hst⟩` from `hbij.2 w`. Take `⟨x, hx, rfl⟩` from `red_surj v s`. Take `⟨y, hy, rfl⟩` from `red_surj v t`. Use `⟨⟨Pt v A x y, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lamC, Xc_Pt, Yc_Pt]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hx, hy⟩`. Rewrite using `[rho_apply]`. Simplify using `only [Xc_Pt, Yc_Pt]`. Conclude with `hst`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rho_surj (w : K) : ∃ z : lamC v A hD, rho v A hD r hr z = w := by
   obtain ⟨⟨s, t⟩, hst⟩ := hbij.2 w
@@ -373,15 +373,15 @@ theorem rho_surj (w : K) : ∃ z : lamC v A hD, rho v A hD r hr z = w := by
     exact hst
 
 /- English proof (translation)
-Establish `hπ` using `unifV_spec v`. Establish `hπv : Valued.v (unifV v) < 1` using `by rw [unifV_val]; decide`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', hz', rfl⟩`. Rewrite `hz'` using `[mem_lamC]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ex : Xc v A (unifV v • z') = unifV v * Xc v A z'`. Rewrite using `[Xc, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `ey : Yc v A (unifV v • z') = unifV v * Yc v A z'`. Rewrite using `[Yc, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `h1 : ∀ x ∈ v.adicCompletionIntegers F, Valued.v (unifV v * x) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lamC, ex, ey]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨mul_mem hπ.2.2 hz'.1, mul_mem hπ.2.2 hz'.2⟩`. Rewrite using `[ex]`. Conclude with `h1 _ hz'.1`. Rewrite using `[ey]`. Conclude with `h1 _ hz'.2`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨_, h1, h2⟩`. Use `⟨(unifV v)⁻¹ • z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lamC, Xc, Yc, map_smul, Finsupp.smul_apply, Finsupp.smul_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `⟨(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) (K := F) (v := v)).2 ((lt_one_iff_unif v _).1 h1), (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) (K := F) (v := v)).2 ((lt_one_iff_unif v _).1 h2)⟩`. Rewrite using `[smul_smul, mul_inv_cancel₀ hπ.1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_char (z : Fv F v ⊗[F] E) :
     (∃ z', z' ∈ lamC v A hD ∧ unifV v • z' = z) ↔

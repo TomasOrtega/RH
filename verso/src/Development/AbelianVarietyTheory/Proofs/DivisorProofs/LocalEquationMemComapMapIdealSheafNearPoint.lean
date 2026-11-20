@@ -8,11 +8,11 @@ open GlobalTheory.SiegelTor
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Take `⟨U, s, hUa, hxU, hUle, hs⟩` from `RatModel.exists_affine_of_mem_O hO (V := D.U i ⊓ π ⁻¹ᵁ V.1) ⟨hxi, hxV⟩`. Establish `hUi : U ≤ D.U i` using `hUle.trans inf_le_left`. Establish `hUV : U ≤ π ⁻¹ᵁ V.1` using `hUle.trans inf_le_right`. Establish `hUne : (U : Set M.Z).Nonempty` using `⟨x, hxU⟩`. Establish `hmem` using `(GlobalTheory.Cartier.comap_le_iff (D.idealSheaf.map π) π ((D.idealSheaf.map π).comap π)).1 le_rfl V g hg ⟨U, hUa⟩ hUV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨U, hUa⟩, hUi, hxU, ?_⟩` and prove the remaining obligations. Establish `key : resG M.Z hUi (D.f i) = s * resG M.Z hUV ((π.app V.1).hom g)`. Apply `M.valF_injective hUne` to reduce the goal to its premises. Rewrite using `[← M.res_apply U hUne (s * _), map_mul, M.res_apply, M.res_apply, M.valF_resG hUi hUne, M.valF_resG hUV hUne, hs]`. Establish `h2` using `hπ.valF_app ⟨π x, hxV⟩ g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.coe_id, id_eq] at h2`. Rewrite using `[h2, div_mul_cancel₀ _ hG]`. Rewrite using `[key]`. Conclude with `Ideal.mul_mem_left _ _ hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resG_f_mem_comap_map_ideal (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M₁ M : RatModel o Ω)
     (π : M.Z ⟶ M₁.Z) (hπ : M₁.IsHom M (AlgHom.id o Ω) π) (D : EffCartierData M.Z) (V : M₁.Z.affineOpens)

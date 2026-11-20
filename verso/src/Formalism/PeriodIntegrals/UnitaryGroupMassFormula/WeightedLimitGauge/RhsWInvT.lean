@@ -8,7 +8,7 @@ namespace PI.RhsWLim.W.RI
 open PI.RhsWLim PI.RhsWLim.W
 
 /- English proof (translation)
-The claim follows from `rhsWInv_of_hyp hQ unimodK fibTrans`.
+A detailed English derivation is pending.
 -/
 theorem rhsWInv_of_hypQ (hQ : HypQ) : RhsWInv := rhsWInv_of_hyp hQ unimodK fibTrans
 

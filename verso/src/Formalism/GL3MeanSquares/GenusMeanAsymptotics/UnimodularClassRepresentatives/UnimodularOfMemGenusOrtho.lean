@@ -11,11 +11,11 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `hsm : ∀ (s : 𝓞 K) (v : V), g (s • v) = s • g v` using `fun s v => by`. Rewrite using `[← algebraMap_smul K s v, ← algebraMap_smul K s (g v), map_smul]`. Unfold `Formalism.HermitianLatticesTheory.loc Formalism.HermitianLatticesTheory.gmap Formalism.HermitianLatticesTheory.locS`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, y, hy, hyx⟩`. Use `⟨g.symm x, ⟨s, hs, ?_⟩, by simp⟩` and prove the remaining obligations. Establish `e : s • g.symm x = y` using `g.injective (by rw [hsm, g.apply_symm_apply]; exact hyx.symm)`. Rewrite using `[e]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Introduce and unpack `⟨z, ⟨s, hs, hz⟩, rfl⟩`. Conclude with `⟨s, hs, s • z, hz, hsm s z⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_gmap (g : V ≃ₗ[K] V) (p : Ideal (𝓞 K)) (L : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.loc (K := K) p (Formalism.HermitianLatticesTheory.gmap g L) = Formalism.HermitianLatticesTheory.gmap g (Formalism.HermitianLatticesTheory.loc (K := K) p L) := by
@@ -34,7 +34,7 @@ theorem loc_gmap (g : V ≃ₗ[K] V) (p : Ideal (𝓞 K)) (L : Submodule (𝓞 K
     exact ⟨s, hs, s • z, hz, hsm s z⟩
 
 /- English proof (translation)
-Introduce `L M hLM`. Unfold `Formalism.HermitianLatticesTheory.gmap at hLM`. Conclude with `Submodule.map_injective_of_injective (f := (g : V →ₗ[K] V).restrictScalars (𝓞 K)) (fun a b h => g.injective h) hLM`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gmap_injective (g : V ≃ₗ[K] V) :
     Function.Injective (Formalism.HermitianLatticesTheory.gmap g : Submodule (𝓞 K) V → Submodule (𝓞 K) V) := by
@@ -44,7 +44,7 @@ theorem gmap_injective (g : V ≃ₗ[K] V) :
     (fun a b h => g.injective h) hLM
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.IsUnimodularAt`. Rewrite using `[he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnimodularAt_of_loc_eq {h : V →ₗ⋆[K] V →ₗ[K] K} (p : Ideal (𝓞 K))
     {L M : Submodule (𝓞 K) V} (he : Formalism.HermitianLatticesTheory.loc (K := K) p L = Formalism.HermitianLatticesTheory.loc (K := K) p M) :

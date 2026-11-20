@@ -58,7 +58,7 @@ def LimitBound (B : ℕ) (a : ℝ) : Prop :=
   ((D.n : ℝ) + 1) * (a - meanU H Cd / 2) * degMu H ≤ arLim H S B
 
 /- English proof (translation)
-Introduce `p q hp hpq`. Use `filter_upwards [Ioc_mem_nhdsGT (zero_lt_one' ℝ)] with t ht`. Conclude with `h p q hp hpq t ht.1 ht.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RegBoundUnit.regBound {B : ℕ} {a : ℝ} (h : RegBoundUnit H Cd S' B a) : RegBound H Cd S' B a := by
   intro p q hp hpq
@@ -66,7 +66,7 @@ theorem RegBoundUnit.regBound {B : ℕ} {a : ℝ} (h : RegBoundUnit H Cd S' B a)
   exact h p q hp hpq t ht.1 ht.2
 
 /- English proof (translation)
-Establish `: ((D.n : ℝ) + 1) * (a - meanU H Cd / 2) * degMu H = ((D.n : ℝ) + 1) * (a * degMu H - ptsIntegral (e` using `D.n) (mCoordIdeal D.y) (fun _ => phMu H) Cd.cuspWeight / 2) := by`. Unfold `meanU`. Clear the denominators using the available nonvanishing facts. Rewrite using `[LimitBound, this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem limitBound_iff (hd : 0 < degMu H) (B : ℕ) (a : ℝ) :
     LimitBound H Cd S B a ↔ ((D.n : ℝ) + 1) * (a * degMu H -
@@ -102,14 +102,14 @@ def StokesLimitUnguarded : Prop :=
       RegBound H Cd S' B a → LimitBound H Cd S B a
 
 /- English proof (translation)
-Introduce `II hII Ψ _ K _ ι _ Ω _ _ E _ _ D H O abelian₂ _ _ _ Cd M S S' hT _ _ B a hB _ hL hR` and use `h II hII Ψ K ι Ω E D H O abelian₂ Cd M S S' hT.1 hT.2.1 B a hB hL hR`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StokesLimitUnguarded.stokesLimit (h : StokesLimitUnguarded) : StokesLimit :=
   fun II hII Ψ _ K _ ι _ Ω _ _ E _ _ D H O abelian₂ _ _ _ Cd M S S' hT _ _ B a hB _ hL hR =>
     h II hII Ψ K ι Ω E D H O abelian₂ Cd M S S' hT.1 hT.2.1 B a hB hL hR
 
 /- English proof (translation)
-Use `⟨⟨Line.lineRegT_tied II hII, Line.lineBRegC_tied II hII, fun _ _ => rfl⟩, fun z _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `x ⟨I, hI, -, hiso, -⟩`. Conclude with `absurd ((Submodule.eq_bot_iff I).2 fun v hv => Line.eq_zero_of_isIsoSub hiso hv) hI`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 example (II : IntersectionSystem) (hII) :
     Ties (Line.lineHodge II hII) (Line.gaussCusp II hII) (Line.lineRegT II hII) (Line.lineBRegC II hII) ∧

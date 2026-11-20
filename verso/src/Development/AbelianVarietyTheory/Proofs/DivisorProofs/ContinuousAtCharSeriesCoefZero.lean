@@ -9,7 +9,7 @@ noncomputable def avg {Y ι : Type} [AddCommGroup Y] [Fintype ι] (w : ι → Y)
   (Fintype.card ι : ℂ)⁻¹ * ∑ i, χ (w i)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (Fintype.card ι) with h | h` into its components or cases. Simplify using `[h]`. Establish `hc : (0:ℝ) < Fintype.card ι` using `by exact_mod_cast h`. Rewrite using `[norm_mul, norm_inv, Complex.norm_natCast, inv_mul_le_iff₀ hc, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_avg_le_one_of {ι : Type} [Fintype ι] (f : ι → ℂ) (hf : ∀ i, ‖f i‖ ≤ 1) :
     ‖(Fintype.card ι : ℂ)⁻¹ * ∑ i, f i‖ ≤ 1 := by
@@ -22,9 +22,9 @@ theorem norm_avg_le_one_of {ι : Type} [Fintype ι] (f : ι → ℂ) (hf : ∀ i
     _ = Fintype.card ι := by simp
 
 /- English proof (translation)
-Unfold `avg`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [AddChar.map_add_eq_mul, AddChar.map_nsmul_eq_pow]`. Rewrite using `[← Finset.sum_mul_sum, Fintype.card_prod, Fintype.card_fin]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem avg_prod {Y ι : Type} [AddCommGroup Y] [Fintype ι] (w : ι → Y) (y : Y) (K : ℕ)
     (χ : AddChar Y ℂ) :
@@ -39,9 +39,9 @@ theorem avg_prod {Y ι : Type} [AddCommGroup Y] [Fintype ι] (w : ι → Y) (y :
   ring
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => ζ ^ k) K, geom_sum_eq hζ K]`. Establish `hz : 0 < ‖ζ - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hζ)`. Establish `hKpos : (0:ℝ) < K` using `by exact_mod_cast hK`. Establish `hnum : ‖ζ ^ K - 1‖ ≤ 2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, norm_div, norm_inv, Complex.norm_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem geom_avg_le {ζ : ℂ} (hζ : ζ ≠ 1) (h1 : ‖ζ‖ = 1) (K : ℕ) (hK : 0 < K) :
     ‖(K:ℂ)⁻¹ * ∑ k : Fin K, ζ ^ (k:ℕ)‖ ≤ 2 / (K * ‖ζ - 1‖) := by
@@ -56,19 +56,17 @@ theorem geom_avg_le {ζ : ℂ} (hζ : ζ ≠ 1) (h1 : ‖ζ‖ = 1) (K : ℕ) (h
     _ = 2 / (K * ‖ζ - 1‖) := by field_simp
 
 /- English proof (translation)
-Use `revert h0`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `_`. Conclude with `⟨Unit, inferInstance, inferInstance, fun _ => 0, by simp⟩`. Introduce `a T ha ih h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0` using `fun h => h0 (by simp [h])`. Establish `hT0 : (0:Ξ) ∉ T` using `fun h => h0 (Finset.mem_insert_of_mem h)`. Take `⟨ι, _, _, w, hw⟩` from `ih hT0`. Take `⟨y, hy⟩` from `hne a ha0`. Establish `hz : 0 < ‖e a y - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK⟩` from `exists_nat_gt (2 / (δ * ‖e a y - 1‖))`. Establish `hK0 : (0:ℝ) < K` using `lt_trans (by positivity) hK`. Establish `hKn : 0 < K` using `by exact_mod_cast hK0`. Use `haveI : Nonempty (Fin K) := ⟨⟨0, hKn⟩⟩`. Use `⟨ι × Fin K, inferInstance, inferInstance, fun ik => w ik.1 + (ik.2 : ℕ) • y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Rewrite using `[avg_prod, norm_mul]`. Establish `hA : ‖avg w (e b)‖ ≤ 1` using `norm_avg_le_one_of _ (fun i => (hn b _).le)`. Establish `hG : ‖(K:ℂ)⁻¹ * ∑ k : Fin K, e b y ^ (k:ℕ)‖ ≤ 1`. Use `norm_avg_le_one_of (ι := Fin K) (fun k => e b y ^ (k:ℕ)) (fun k => by rw [norm_pow, hn]; simp)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using this`. Break down `Finset.mem_insert.mp hb with rfl | hbT` into its components or cases. Establish `hg` using `geom_avg_le hy (hn b y) K hKn`. Establish `: 2 / (K * ‖e b y - 1‖) ≤ δ`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hK` using `[div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `hg.trans this`. Use `_ = δ := one_mul δ`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hw b hbT`. Use `_ = δ := mul_one δ`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_avg {Y Ξ : Type} [AddCommGroup Y] [Zero Ξ] (e : Ξ → AddChar Y ℂ)
     (hn : ∀ a y, ‖e a y‖ = 1) (hne : ∀ a, a ≠ 0 → ∃ y, e a y ≠ 1)
@@ -115,33 +113,31 @@ theorem exists_avg {Y Ξ : Type} [AddCommGroup Y] [Zero Ξ] (e : Ξ → AddChar 
         _ = δ := mul_one δ
 
 /- English proof (translation)
-Establish `hM0 : ∀ a, 0 ≤ M a` using `fun a => (norm_nonneg _).trans (hb.self_of_nhds a)`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set S := ∑' a, M a with hSdef`. Establish `hS : 0 ≤ S` using `tsum_nonneg hM0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : Finset Ξ, S - ∑ a ∈ s, M a < ε / 6 := by`. Establish `h2` using `(Metric.tendsto_nhds.mp hM.hasSum) (ε / 6) (by positivity)`. Take `⟨s, hs⟩` from `h2.exists`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[Real.dist_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[neg_abs_le (∑ a ∈ s, M a - S)]`. Use `set δ := ε / 6 / (S + 1) with hδdef`. Establish `hδ : 0 < δ` using `by positivity`. Establish `hδS : δ * S ≤ ε / 6`. Establish `: δ * (S + 1) = ε / 6` using `div_mul_cancel₀ _ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨ι, _, _, w, hw⟩` from `exists_avg e hn hne δ hδ (s.erase 0) (by simp)`. Use `set α : Ξ → ℂ := fun b => avg w (e b) with hαdef`. Establish `hα1 : ∀ b, ‖α b‖ ≤ 1` using `fun b => norm_avg_le_one_of _ (fun i => (hn b _).le)`. Establish `hα0 : α 0 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [hαdef, avg, he0, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`. Conclude with `inv_mul_cancel₀ (by exact_mod_cast Fintype.card_ne_zero)`. Set `A : P → ℂ` to `fun p => (Fintype.card ι : ℂ)⁻¹ * ∑ i, ∑' a, e a (w i) * c p a`. Establish `hAc : ContinuousAt A p0` using `continuousAt_const.mul (tendsto_finset_sum _ (fun i _ => hc (w i)))`. Establish `key : ∀ p, (∀ a, ‖c p a‖ ≤ M a) → ‖A p - c p 0‖ ≤ δ * S + (S - ∑ a ∈ s, M a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Establish `hsum : ∀ i, HasSum (fun a => e a (w i) * c p a) (∑' a, e a (w i) * c p a)`. Introduce `i`. Use `(Summable.of_norm_bounded hM (fun a => ?_)).hasSum` and prove the remaining obligations. Rewrite using `[norm_mul, hn, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hp a`. Establish `h1 : HasSum (fun a => α a * c p a) (A p)`. Use `(hasSum_sum (s := Finset.univ) (fun i _ => hsum i)).mul_left ((Fintype.card ι : ℂ)⁻¹)` as an intermediate fact. Establish `hfun : (fun a => α a * c p a) = fun a => (Fintype.card ι : ℂ)⁻¹ * ∑ i, e a (w i) * c p a`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hαdef, avg, Finset.sum_mul, mul_assoc]`. Rewrite using `[hfun]`. Conclude with `this`. Establish `h2 : HasSum (fun a : Ξ => if a = (0:Ξ) then c p 0 else 0) (c p 0)` using `hasSum_ite_eq (0:Ξ) (c p 0)`. Establish `h3 : HasSum (fun a => α a * c p a - if a = 0 then c p 0 else 0) (A p - c p 0)` using `HasSum.sub h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : HasSum (fun a => δ * M a + (M a - if a ∈ s then M a else 0)) (δ * S + (S - ∑ a ∈ s, M a))`. Use `(hM.hasSum.mul_left δ).add (hM.hasSum.sub ?_)` and prove the remaining obligations. Establish `: HasSum (fun a => if a ∈ s then M a else 0) (∑ b ∈ s, if b ∈ s then M b else 0)` using `hasSum_sum_of_ne_finset_zero (fun b hb => if_neg hb)`. Establish `e2 : (∑ b ∈ s, if b ∈ s then M b else 0) = ∑ b ∈ s, M b` using `Finset.sum_congr rfl (fun b hb => if_pos hb)`. Rewrite `this` using `[e2]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `this`. Use `h3.norm_le_of_bounded hg (fun a => ?_)` and prove the remaining obligations. Establish `hMa` using `hM0 a`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hα0, one_mul, if_true, sub_self, norm_zero]`. Apply the tactic sequence `split_ifs <;> nlinarith [mul_nonneg hδ.le hMa]`. Simplify using `only [ha, if_false, sub_zero]`. Distinguish the cases in `has : a ∈ s`. Simplify using `only [has, if_true, sub_self, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Use `hw a (Finset.mem_erase.mpr ⟨ha, has⟩)` as an intermediate fact. Conclude with `mul_le_mul this (hp a) (norm_nonneg _) hδ.le`. Simplify using `only [has, if_false, sub_zero]`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ‖α a‖ * ‖c p a‖ ≤ 1 * M a` using `mul_le_mul (hα1 a) (hp a) (norm_nonneg _) zero_le_one`. Use the polynomial consequences of the given equalities and inequalities. Establish `hAev` using `(Metric.tendsto_nhds.mp hAc) (ε / 3) (by positivity)`. Establish `hp0` using `key p0 hb.self_of_nhds`. Use `filter_upwards [hb, hAev] with p hp hAp`.
-
-Establish `hpk` using `key p hp`. Rewrite `hAp`, the goal using `[dist_eq_norm]`. Establish `: c p 0 - c p0 0 = -(A p - c p 0) + (A p - A p0) + (A p0 - c p0 0)` using `by ring`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuousAt_coef_zero {Y Ξ P : Type} [AddCommGroup Y] [Zero Ξ] [TopologicalSpace P]
     (e : Ξ → AddChar Y ℂ)
@@ -233,7 +229,7 @@ theorem continuousAt_coef_zero {Y Ξ P : Type} [AddCommGroup Y] [Zero Ξ] [Topol
 end GlobalTheory.CharSeriesCoef
 
 /- English proof (translation)
-Introduce `e hn he0 hne c p0 M hM hb hc` and use `GlobalTheory.CharSeriesCoef.continuousAt_coef_zero e hn he0 hne c p0 M hM hb hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.continuousAt_charSeries_coef_zero :
     ∀ {Y Ξ P : Type} [AddCommGroup Y] [Zero Ξ] [TopologicalSpace P] (e : Ξ → AddChar Y ℂ),

@@ -9,7 +9,7 @@ variable {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [AddCommG
   [DiscreteTopology M]
 
 /- English proof (translation)
-Establish `h` using `hc.2 1 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem coc_one {ρ : Representation R Γ M} {c : Γ → M} (hc : c ∈ Z1 ρ) : c 1 = 0 := by
   have h := hc.2 1 1
@@ -32,9 +32,9 @@ private def killSub (ρ : Representation R Γ M) {c : Γ → M} (hc : c ∈ Z1 �
     simpa using h.symm
 
 /- English proof (translation)
-Introduce and unpack `g ⟨hg, hg'⟩ h`. Use `⟨by rw [map_mul, map_mul, hg, mul_one, ← map_mul, mul_inv_cancel, map_one], ?_⟩` and prove the remaining obligations. Establish `e` using `hc.2 h h⁻¹`. Rewrite `e` using `[mul_inv_cancel, coc_one hc]`. Rewrite using `[hc.2, hc.2, hg', map_zero, add_zero, map_mul, hg, mul_one]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 private theorem killSub_normal (ρ : Representation R Γ M) {c : Γ → M} (hc : c ∈ Z1 ρ) : (killSub ρ hc).Normal where
   conj_mem := by
@@ -46,9 +46,9 @@ private theorem killSub_normal (ρ : Representation R Γ M) {c : Γ → M} (hc :
     exact e.symm
 
 /- English proof (translation)
-Establish `e : (killSub ρ hc : Set Γ) = (⋂ m : M, {g | ρ g m = m}) ∩ {g | c g = 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `and_congr_left' LinearMap.ext_iff`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsClosed.inter (isClosed_iInter fun m => isClosed_eq ?_ continuous_const) (isClosed_eq hc.1 continuous_const)` and prove the remaining obligations. Conclude with `Continuous.comp (g := fun p : Γ × M => ρ p.1 p.2) hρ (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 private theorem killSub_closed (ρ : Representation R Γ M) (hρ : ContAction ρ) {c : Γ → M} (hc : c ∈ Z1 ρ) :
     IsClosed (killSub ρ hc : Set Γ) := by
@@ -61,7 +61,7 @@ private theorem killSub_closed (ρ : Representation R Γ M) (hρ : ContAction ρ
   exact Continuous.comp (g := fun p : Γ × M => ρ p.1 p.2) hρ (continuous_id.prodMk continuous_const)
 
 /- English proof (translation)
-Use `haveI : Finite (B1 ρ) := (Set.finite_range (d0 ρ)).to_subtype`. Use `haveI : Finite ((B1 ρ).comap (Z1 ρ).subtype) := Finite.of_injective (fun x => (⟨x.1.1, x.2⟩ : B1 ρ)) fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : B1 ρ => z.1) h))`. Use `haveI : Finite ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup := this`. Use `haveI : Finite (Z1 ρ ⧸ ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup) := ‹Finite (H1 ρ)›`. Conclude with `Finite.of_addSubgroup_quotient ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup`.
+A detailed English derivation is pending.
 -/
 private theorem module_finite_z1_padicInt [Finite M] (ρ : Representation R Γ M) [Finite (H1 ρ)] : Finite (Z1 ρ) := by
   haveI : Finite (B1 ρ) := (Set.finite_range (d0 ρ)).to_subtype
@@ -75,15 +75,13 @@ private theorem module_finite_z1_padicInt [Finite M] (ρ : Representation R Γ M
 end
 
 /- English proof (translation)
-Introduce `hGF F Ω _ _ _ _ _ l _ M _ _ _ _ _ ρ S hS hρ hU`. Take `⟨ρS, hcomp, hρS⟩` from `UpperTheory.V.Ws.Gys.descend F Ω _ M ρ S hρ hU`. Take `⟨-, f1, -⟩` from `hGF F Ω l 1 M S ρS one_pos hS hρS`. Use `haveI := f1`. Use `haveI := module_finite_z1_padicInt ρS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(Set.finite_range fun c : Z1 ρS => c.1 ∘ toGS Ω (S : Set (HeightOneSpectrum (𝓞 F)))).subset ?_` and prove the remaining obligations. Introduce and unpack `c ⟨hc, hI⟩`. Use `haveI := killSub_normal ρ hc`. Establish `hle : NS Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≤ killSub ρ hc`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal fun g hg => ?_) (killSub_closed ρ hρ hc)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [Set.mem_iUnion] at hg`. Take `⟨v, hv, A, hA, hg⟩` from `hg`. Conclude with `⟨hU v hv A hA g hg, hI v hv A hA g hg⟩`. Set `cS : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) → M` to `Quotient.lift c fun a b hab => by`. Establish `h` using `(hle (QuotientGroup.leftRel_apply.1 hab)).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hc.2 a (a⁻¹ * b)`. Rewrite `e` using `[mul_inv_cancel_left, h, map_zero, add_zero]`. Conclude with `e.symm`. Use `⟨⟨cS, hc.1.quotient_lift _, fun x y => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`.
-
-Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective y`. Establish `e` using `hc.2 a b`. Rewrite `e` using `[← hcomp]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.zunrFin :
     GlobalFiniteness → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation (ZMod (l ^ 1)) (G F Ω) M) (S : Finset (HeightOneSpectrum (𝓞 F))), ContainsAbove S l → ContAction ρ → UnrOut ρ S → (Zunr ρ S).Finite := by

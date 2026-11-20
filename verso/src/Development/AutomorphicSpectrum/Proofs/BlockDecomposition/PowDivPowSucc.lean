@@ -16,7 +16,7 @@ universe w u v
 variable {R R₁ R₂ R₃ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] [CommRing R₃] {C : Type u} [Category.{v} C]
 
 /- English proof (translation)
-Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (h z))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pull_sq {F : C ⥤ ModuleCat.{w} R} {F₁ : C ⥤ ModuleCat.{w} R₁} {F₂ : C ⥤ ModuleCat.{w} R₂} {F₃ : C ⥤ ModuleCat.{w} R₃}
     {σ₁ : R →+* R₁} {σ₂ : R₁ →+* R₃} {σ₃ : R →+* R₂} {σ₄ : R₂ →+* R₃}
@@ -39,28 +39,28 @@ def lcCast {U : Type*} [TopologicalSpace U] {Q q : ℕ} (h : q ∣ Q) :
     exact map_add (ZMod.castHom h (ZMod q)) (f v) (g v)
 
 /- English proof (translation)
-Establish `h : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Rewrite using `[pow_succ', Nat.mul_div_cancel _ h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_div_pow_succ (n : ℕ) : l ^ (n + 1) / l ^ n = l := by
   have h : 0 < l ^ n := pow_pos (Fact.out : l.Prime).pos n
   rw [pow_succ', Nat.mul_div_cancel _ h]
 
 /- English proof (translation)
-Apply `(clToC l).injective` to reduce the goal to its premises. Rewrite using `[map_pow, r.hρ, r.hρ, rootSeq_succ_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_pow (r : Roots l) (n : ℕ) : (r.ρ n).1 = (r.ρ (n + 1)).1 ^ l := by
   apply (clToC l).injective
   rw [map_pow, r.hρ, r.hρ, rootSeq_succ_pow]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[lcRes]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lcRes_id {U : Scheme.{0}} (q : ℕ) (f : LocallyConstant U (ZMod q)) : lcRes q (𝟙 U) f = f := by
   ext v
   simp [lcRes]
 
 /- English proof (translation)
-Rewrite using `[pow_div_pow_succ]`. Express the relevant statement in the definitionally equal form `((toΓ A.Ug).comp (kb A)) (r.ρ n).1 = (𝟙 (SU A) : SU A ⟶ SU A).appTop.hom (((toΓ A.Ug).comp (kb A)) (r.ρ (n + 1)).1) ^ l`. Rewrite using `[rho_pow r n, map_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zeta_red (r : Roots l) (A : PAlg l) (n : ℕ) :
     (r.zeta A n).1 = (primRes (𝟙 (SU A)) (r.zeta A (n + 1))).1 ^ (l ^ (n + 1) / l ^ n) := by
@@ -70,7 +70,7 @@ theorem zeta_red (r : Roots l) (A : PAlg l) (n : ℕ) :
   simp
 
 /- English proof (translation)
-The claim follows from `(hN l H _ A.property n).2 f`.
+A detailed English derivation is pending.
 -/
 theorem lc_red (hN : LcNat) (H : RIn l) (A : Test l) (n : ℕ) (f : LocallyConstant (SU A.obj) (ZMod (l ^ (n + 1)))) :
     A.obj.red n.le_succ (lcA A.obj (n + 1) f) = lcA A.obj n (lcCast (pow_dvd_pow l n.le_succ) f) :=
@@ -94,7 +94,7 @@ namespace GlobalTheory.CompanionTheory.EtReduction
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `pull_sq (F := (probe H r (𝟭 (El P) ⋙ CategoryOfElements.π _) (n + 1)).L) (F₁ := CH.modF (AcrEl P (n + 1))) (F₂ := (probe H r (𝟭 (El P) ⋙ CategoryOfElements.π _) n).L) (F₃ := CH.modF (AcrEl P n)) (lcMor hN H r (𝟭 (El P) ⋙ CategoryOfElements.π _) (n + 1)) (Mor.ofNatTrans (redEl P n …`.
+A detailed English derivation is pending.
 -/
 theorem red_lc_sq (hN : LcNat) (H : RIn l) (r : Roots l) (P : PAlg l ⥤ Type) (n j : ℕ)
     (c : CH.H (probe H r (𝟭 (El P) ⋙ CategoryOfElements.π _) (n + 1)).L j) :
@@ -113,7 +113,7 @@ end GlobalTheory.CompanionTheory.EtReduction
 namespace GlobalTheory.CompanionTheory.EtReduction
 
 /- English proof (translation)
-Introduce `hE E hN l _ H r K M n j x`. Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `: NeZero (l ^ (n + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `key` using `hE E.gen E.red E.op (l ^ (n + 1)) (l ^ n) (pow_dvd_pow l n.le_succ) (El M.P) (El M.P) (probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) (n + 1)) (probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n) (gb M) (pts H r M (𝟭 _) (n + 1)) (pts H r M (𝟭 _) n) (redMor H r (𝟭 (El M.P) ⋙ Categ …`. Conclude with `(red_lc_sq hN H r M.P n j _).trans (congrArg _ key)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fred_of_etRed : EtRed → FRed := by
   intro hE E hN l _ H r K M n j x

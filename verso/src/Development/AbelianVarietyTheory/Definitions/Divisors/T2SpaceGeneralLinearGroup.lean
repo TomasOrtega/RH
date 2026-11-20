@@ -12,11 +12,11 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Use `⟨fun i j => (u.val i j).2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((u⁻¹).val i j).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `inj : Function.Injective ((algebraMap 𝒪[k] k).mapMatrix (m` using `n)) := fun A B h => by ext i j; exact congrFun (congrFun h i) j`. Set `A : Matrix n n 𝒪[k]` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix n n 𝒪[k]` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : (algebraMap 𝒪[k] k).mapMatrix A = g.val` using `rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (algebraMap 𝒪[k] k).mapMatrix B = (g⁻¹).val` using `rfl`. Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KO_iff (g : GL n k) :
     g ∈ KO k n ↔ (∀ i j, g.val i j ∈ 𝒪[k]) ∧ ∀ i j, (g⁻¹).val i j ∈ 𝒪[k] := by
@@ -36,7 +36,7 @@ theorem mem_KO_iff (g : GL n k) :
     · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `secondCountable_and_t2_local_field (k := k)`. Use `Units.isEmbedding_val_mk' (f := fun A : Matrix n n k => A⁻¹) (fun A hA => ?_) fun u => by simp` and prove the remaining obligations. Use `(continuousAt_matrix_inv A ?_).continuousWithinAt` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ ((Matrix.isUnit_iff_isUnit_det A).1 hA).ne_zero`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEmbedding_val_GL : IsEmbedding (fun g : GL n k => g.val) := by
   obtain ⟨_, _⟩ := secondCountable_and_t2_local_field (k := k)
@@ -61,7 +61,7 @@ instance locallyCompact_GL : LocallyCompactSpace (GL n k) := by
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Simplify using `only [Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `isOpen_int.preimage (f := fun A : Matrix m n k => A i j) (by fun_prop)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_intMatrix {m : Type*} [Fintype m] : IsOpen {A : Matrix m n k | ∀ i j, A i j ∈ 𝒪[k]} := by
   simp only [Set.setOf_forall]
@@ -70,7 +70,7 @@ theorem isOpen_intMatrix {m : Type*} [Fintype m] : IsOpen {A : Matrix m n k | �
 
 omit [DecidableEq n] [Fintype n] in
 /- English proof (translation)
-Establish `h : IsCompact (Set.pi Set.univ fun _ : m => Set.pi Set.univ fun _ : n => (𝒪[k] : Set k))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_int`. Establish `e : {A : Matrix m n k | ∀ i j, A i j ∈ 𝒪[k]} = (Set.pi Set.univ fun _ : m => Set.pi Set.univ fun _ : n => (𝒪[k] : Set k))` using `Set.ext fun x => ⟨fun hx i _ j _ => hx i j, fun hx i j => hx i trivial j trivial⟩`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intMatrix {m : Type*} : IsCompact {A : Matrix m n k | ∀ i j, A i j ∈ 𝒪[k]} := by
   have h : IsCompact (Set.pi Set.univ fun _ : m => Set.pi Set.univ fun _ : n => (𝒪[k] : Set k)) :=
@@ -81,7 +81,7 @@ theorem isCompact_intMatrix {m : Type*} : IsCompact {A : Matrix m n k | ∀ i j,
   rw [e]; exact h
 
 /- English proof (translation)
-Establish `h1` using `(isOpen_intMatrix (k := k) (m := n) (n := n)).preimage (Units.continuous_val (M := Matrix n n k))`. Establish `h2` using `(isOpen_intMatrix (k := k) (m := n) (n := n)).preimage (Units.continuous_coe_inv (M := Matrix n n k))`. Use `h1.inter h2 using 1` and compare the differences between its conclusion and the goal. Conclude with `Set.ext mem_KO_iff`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isOpen_KO : IsOpen (KO k n : Set (GL n k)) := by
   have h1 := (isOpen_intMatrix (k := k) (m := n) (n := n)).preimage (Units.continuous_val (M := Matrix n n k))
@@ -90,9 +90,9 @@ theorem isOpen_KO : IsOpen (KO k n : Set (GL n k)) := by
   exact Set.ext mem_KO_iff
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `secondCountable_and_t2_local_field (k := k)`. Establish `hK` using `isCompact_intMatrix (k := k) (m := n) (n := n)`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix n n k)).isCompact_preimage (hK.prod (hK.image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [SetLike.mem_coe, mem_KO_iff, Set.mem_setOf_eq, Set.mem_preimage, Units.embedProduct_apply, Set.mem_prod, (MulOpposite.op_injective).mem_set_image]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isCompact_KO : IsCompact (KO k n : Set (GL n k)) := by
   obtain ⟨_, _⟩ := secondCountable_and_t2_local_field (k := k)
@@ -118,7 +118,7 @@ Both sides reduce to the same expression.
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_diagGL (c : n → kˣ) : Matrix.GeneralLinearGroup.det (diagGL c) = ∏ i, c i := by
   ext; simp [Matrix.GeneralLinearGroup.val_det_apply]
@@ -133,27 +133,23 @@ def diagHom : (n → kˣ) →* GL n k where
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Establish `pos : ∀ g, Δ g ≠ 0` using `fun g => ((Group.isUnit g).map Δ).ne_zero`. Establish `conj : ∀ x y p : GL n k, p * x = y * p → Δ x = Δ y` using `fun x y p h => by`. Use `congrArg Δ h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, mul_comm]`. Conclude with `mul_right_cancel₀ (pos p) this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiag : ∀ c : n → kˣ, Δ (diagGL c) = 1` using `fun c => by`. Establish `h1 : ∀ σ : Equiv.Perm n, Δ (diagGL c) = Δ (diagGL (c ∘ σ))` using `fun σ => conj _ _ (Matrix.GeneralLinearGroup.mkOfDetNeZero (σ.permMatrix k) (by`. Rewrite using `[Matrix.det_permutation]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h])) (Units.ext (by`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, Matrix.GeneralLinearGroup.val_mkOfDetNeZero, diagGL_val, mul_diagonal, diagonal_mul, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Function.comp]`. Apply the tactic sequence `split_ifs with h <;> simp [h]))`. Establish `h2 : Δ (diagHom (∏ σ : Equiv.Perm n, c ∘ σ)) = 1` using `hc _ fun h => Units.ext (by`. Break down `isEmpty_or_nonempty n with hn | ⟨⟨i₀⟩⟩` into its components or cases. Conclude with `Subsingleton.elim _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (∏ σ : Equiv.Perm n, c ∘ σ) = fun _ => ∏ σ : Equiv.Perm n, c (σ i₀)`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.prod_apply]`. Conclude with `(Fintype.prod_equiv (Equiv.mulRight (Equiv.swap i₀ i)) _ _ fun σ => by simp)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [diagHom, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mul, diagGL_val, ← smul_one_eq_diagonal]`. Use the proof step `simp)`. Rewrite `h2` using `[← MonoidHom.comp_apply, map_prod]`. Establish `h3 : ∏ σ : Equiv.Perm n, Δ (diagGL c) = 1`. Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun σ _ => h1 σ`. Rewrite `h3` using `[Finset.prod_const]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le (Finset.card_ne_zero.2 Finset.univ_nonempty)).1 h3`. Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun M => ∀ g : GL n k, g.val = M → Δ g = 1) g.val g.det_ne_zero ?_ ?_ ?_ g rfl` and prove the remaining obligations. Introduce `D hD g hg`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hD` using `[det_diagonal, Finset.prod_ne_zero_iff]`. Rewrite using `[show g = diagGL fun i => Units.mk0 (D i) (hD i (Finset.mem_univ _)) from Units.ext hg]`. Conclude with `hdiag _`. Introduce and unpack `⟨i, j, hij, c⟩ g hg`. Establish `hinv : (g⁻¹).val = transvection i j (-c)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[hg, TransvectionStruct.toMatrix_mk, transvection_mul_transvection_same _ _ hij]`. Simplify using the standard rewrite rules. Establish `h1 : Δ g = Δ g⁻¹` using `conj _ _ (diagGL fun l => if l = i then -1 else 1) (Units.ext (by`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_mul, hinv, hg, TransvectionStruct.toMatrix_mk]`. Simplify using `only [diagGL_val, mul_diagonal, diagonal_mul, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Use `clear conj hdiag hc pos hinv hg`. Simplify using `only [apply_ite (Units.val : kˣ → k), Units.val_neg, Units.val_one]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; grind) | ring))`.
-
-Establish `h2 : Δ g ^ 2 = 1`. Rewrite using `[pow_two]`. Use `nth_rewrite 2 [h1]`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h2`.
-
-Introduce `A B hA hB pA pB g hg`. Rewrite using `[show g = Matrix.GeneralLinearGroup.mkOfDetNeZero A hA * Matrix.GeneralLinearGroup.mkOfDetNeZero B hB from Units.ext hg, map_mul, pA _ rfl, pB _ rfl, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_eq_one_of_center (Δ : GL n k →* ℝ≥0) (hc : ∀ g, (∀ h, g * h = h * g) → Δ g = 1) (g : GL n k) :
     Δ g = 1 := by
@@ -240,14 +236,14 @@ def haarVol (J : Subgroup (GL n k)) : Measure (GL n k) :=
   ((Measure.haar : Measure (GL n k)) J)⁻¹ • Measure.haar
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(ho.measure_pos μ ⟨1, one_mem _⟩).ne', ((measure_mono hK).trans_lt isCompact_KO.measure_lt_top).ne⟩`.
+Supply the required witnesses or components.
 -/
 theorem haar_ne_zero_ne_top (μ : Measure (GL n k)) [μ.IsHaarMeasure] {J : Subgroup (GL n k)}
     (ho : IsOpen (J : Set (GL n k))) (hK : J ≤ KO k n) : μ J ≠ 0 ∧ μ J ≠ ⊤ :=
   ⟨(ho.measure_pos μ ⟨1, one_mem _⟩).ne', ((measure_mono hK).trans_lt isCompact_KO.measure_lt_top).ne⟩
 
 /- English proof (translation)
-The claim follows from `have h := haar_ne_zero_ne_top Measure.haar ho hK Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 h.2) (ENNReal.inv_ne_top.2 h.1)`.
+A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_haarVol {J : Subgroup (GL n k)} (ho : IsOpen (J : Set (GL n k))) (hK : J ≤ KO k n) :
     (haarVol J).IsHaarMeasure :=
@@ -255,7 +251,7 @@ theorem isHaarMeasure_haarVol {J : Subgroup (GL n k)} (ho : IsOpen (J : Set (GL 
   Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 h.2) (ENNReal.inv_ne_top.2 h.1)
 
 /- English proof (translation)
-Establish `h` using `haar_ne_zero_ne_top Measure.haar ho hK`. Simplify using `[haarVol, ENNReal.inv_mul_cancel h.1 h.2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem haarVol_self {J : Subgroup (GL n k)} (ho : IsOpen (J : Set (GL n k))) (hK : J ≤ KO k n) :
     haarVol J J = 1 := by
@@ -263,7 +259,7 @@ theorem haarVol_self {J : Subgroup (GL n k)} (ho : IsOpen (J : Set (GL n k))) (h
   simp [haarVol, ENNReal.inv_mul_cancel h.1 h.2]
 
 /- English proof (translation)
-Use `isHaarMeasure_haarVol ho hK` as an intermediate fact. Establish `h` using `Measure.isMulLeftInvariant_eq_smul μ (haarVol J)`. Establish `h2` using `congrArg (fun m : Measure (GL n k) => m J) h`. Simplify using `only [Measure.coe_nnreal_smul_apply, haarVol_self ho hK, h1, mul_one] at h2`. Rewrite using `[h, show Measure.haarScalarFactor μ (haarVol J) = 1 by exact_mod_cast h2.symm, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_haarVol (μ : Measure (GL n k)) [μ.IsHaarMeasure] {J : Subgroup (GL n k)}
     (ho : IsOpen (J : Set (GL n k))) (hK : J ≤ KO k n) (h1 : μ J = 1) : μ = haarVol J := by

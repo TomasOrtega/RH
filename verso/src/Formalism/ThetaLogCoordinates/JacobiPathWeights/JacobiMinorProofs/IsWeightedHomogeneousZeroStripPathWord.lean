@@ -19,9 +19,9 @@ def LeadAt (w : σ → M) (γ : M) (f t : MvPolynomial σ R) : Prop :=
   (∀ e ∈ f.support, Finsupp.weight w e ≤ γ) ∧ weightedHomogeneousComponent w γ f = t
 
 /- English proof (translation)
-Rewrite `h` using `[map_add]`. Establish `h1 : Finsupp.weight w a = γ`. Assume the negation of the conclusion as `hne`. Use `add_lt_add_of_lt_of_le (lt_of_le_of_ne ha hne) hb` as an intermediate fact. Rewrite `this` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ this`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[h1]`. Conclude with `le_antisymm (le_of_add_le_add_left h.le) (le_of_add_le_add_left h.ge)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem weight_eq_of_le_of_add_eq_lemma {w : σ → M} {γ δ : M} {a b : σ →₀ ℕ}
     (ha : Finsupp.weight w a ≤ γ) (hb : Finsupp.weight w b ≤ δ) (h : Finsupp.weight w (a + b) = γ + δ) :
@@ -37,21 +37,19 @@ private theorem weight_eq_of_le_of_add_eq_lemma {w : σ → M} {γ δ : M} {a b 
   exact le_antisymm (le_of_add_le_add_left h.le) (le_of_add_le_add_left h.ge)
 
 /- English proof (translation)
-Take `⟨hf1, rfl⟩` from `hf`. Take `⟨hg1, rfl⟩` from `hg`. Use `⟨fun e he => ?_, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[mem_support_iff, coeff_mul]`. Take `⟨p, hp, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hp' : p.1 + p.2 = e` using `by first`. Consider the case `exact Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Consider the case `exact Finset.mem_antidiagonal.mp hp`. Consider the case `simpa using hp`. Rewrite using `[← hp', map_add]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_le_add (hf1 _ (mem_support_iff.mpr (left_ne_zero_of_mul hne))) (hg1 _ (mem_support_iff.mpr (right_ne_zero_of_mul hne)))`. Use extensionality with `e`. Establish `h1 : IsWeightedHomogeneous w (weightedHomogeneousComponent w γ f) γ`. Apply `weightedHomogeneousComponent_isWeightedHomogeneous` to reduce the goal to its premises. Establish `h2 : IsWeightedHomogeneous w (weightedHomogeneousComponent w δ g) δ`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `weightedHomogeneousComponent_isWeightedHomogeneous` to reduce the goal to its premises. Establish `hom` using `h1.mul h2`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with he`. Rewrite using `[coeff_mul, coeff_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = e` using `by first`. Consider the case `exact Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Consider the case `exact Finset.mem_antidiagonal.mp hp`. Consider the case `simpa using hp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent]`. Distinguish the cases in `hab : coeff p.1 f ≠ 0 ∧ coeff p.2 g ≠ 0`. Take `⟨ha1, ha2⟩` from `_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.weight_eq_of_le_of_add_eq_lemma (hf1 _ (mem_support_iff.mpr hab.1)) (hg1 _ (mem_support_iff.mpr hab.2)) (by rw [hp']; exact he)`. Rewrite using `[if_pos ha1, if_pos ha2]`. Establish `h0 : coeff p.1 f * coeff p.2 g = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `not_and_or.mp hab with h | h` into its components or cases. Rewrite using `[not_not.mp h, zero_mul]`. Rewrite using `[not_not.mp h, mul_zero]`. Rewrite using `[h0]`. Apply the tactic sequence `split_ifs <;> simp [h0]`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `he (hom (Ne.symm hne))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem LeadAt.mul {w : σ → M} {γ δ : M} {f g tf tg : MvPolynomial σ R}
     (hf : LeadAt w γ f tf) (hg : LeadAt w δ g tg) : LeadAt w (γ + δ) (f * g) (tf * tg) := by
@@ -99,9 +97,9 @@ theorem LeadAt.mul {w : σ → M} {γ δ : M} {f g tf tg : MvPolynomial σ R}
       exact he (hom (Ne.symm hne))
 
 /- English proof (translation)
-Use `⟨fun e he => le_of_eq (hf (mem_support_iff.mp he)), ?_⟩` and prove the remaining obligations. Use extensionality with `e`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `h (hf (Ne.symm hne))`.
+A detailed English derivation is pending.
 -/
 theorem LeadAt.of_hom {w : σ → M} {γ : M} {f : MvPolynomial σ R} (hf : IsWeightedHomogeneous w f γ) :
     LeadAt w γ f f := by
@@ -114,9 +112,9 @@ theorem LeadAt.of_hom {w : σ → M} {γ : M} {f : MvPolynomial σ R} (hf : IsWe
     exact h (hf (Ne.symm hne))
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sum_empty, Finset.prod_empty, Finset.prod_empty]`. Apply `Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.LeadAt.of_hom` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `isWeightedHomogeneous_one` to reduce the goal to its premises. Introduce `a s ha ih h`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeadAt.prod {ι : Type*} {w : σ → M} (s : Finset ι) (γ : ι → M) (f t : ι → MvPolynomial σ R)
     (h : ∀ i ∈ s, LeadAt w (γ i) (f i) (t i)) :
@@ -133,9 +131,9 @@ theorem LeadAt.prod {ι : Type*} {w : σ → M} (s : Finset ι) (γ : ι → M) 
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_zero]`. Use `split_ifs with he`. Assume the negation of the conclusion as `hne`. Use `hf.1 e (mem_support_iff.mpr hne)` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[he]`. Conclude with `absurd this (not_le.mpr h)`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem LeadAt.comp_eq_zero {w : σ → M} {γ γ' : M} {f t : MvPolynomial σ R} (hf : LeadAt w γ f t)
     (h : γ < γ') : weightedHomogeneousComponent w γ' f = 0 := by
@@ -149,11 +147,9 @@ theorem LeadAt.comp_eq_zero {w : σ → M} {γ γ' : M} {f t : MvPolynomial σ R
   · rfl
 
 /- English proof (translation)
-Use `⟨fun e he => ?_, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[mem_support_iff, coeff_sum]`. Take `⟨m, hm, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero he`. Rewrite using `[ht m hm hne]`. Distinguish the cases in `hmt : m = top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hmt]`. Conclude with `(hlt m hm hmt).le`. Rewrite using `[map_sum, Finset.sum_eq_single top]`. Conclude with `(Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.LeadAt.of_hom (ht top htop)).2`. Introduce `m hm hmt`.
-
-Conclude with `(Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.LeadAt.of_hom (ht m hm)).comp_eq_zero (hlt m hm hmt)`. Introduce `h`. Conclude with `absurd htop h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeadAt.sum {ι : Type*} {w : σ → M} (T : Finset ι) (v : ι → M) (t : ι → MvPolynomial σ R)
     (ht : ∀ m ∈ T, IsWeightedHomogeneous w (t m) (v m)) (top : ι) (htop : top ∈ T)
@@ -178,7 +174,7 @@ end Top
 def rw_ {n : ℕ} (v : Bool) (j : Fin n) : Fin n := if v then Fin.rev j else j
 
 /- English proof (translation)
-Apply the tactic sequence `cases v <;> simp [rw_]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rw_rw {n : ℕ} (v : Bool) (j : Fin n) : rw_ v (rw_ v j) = j := by
   cases v <;> simp [rw_]
@@ -191,7 +187,7 @@ def rho (n N : ℕ) (v : Bool) : (ℕ × Fin n →₀ ℕ) →+ Lex (Fin n → �
 def wt (n N : ℕ) (v : Bool) : ℕ × Fin n → Lex (Fin n → ℕ) := fun x => rho n N v (Finsupp.single x 1)
 
 /- English proof (translation)
-Apply `Finsupp.addHom_ext` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_single_index (by simp)]`. Use `show y • rho n N v (Finsupp.single x 1) = rho n N v (Finsupp.single x y)`. Rewrite using `[← map_nsmul, Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_wt (n N : ℕ) (v : Bool) : Finsupp.weight (wt n N v) = rho n N v := by
   apply Finsupp.addHom_ext
@@ -201,9 +197,9 @@ theorem weight_wt (n N : ℕ) (v : Bool) : Finsupp.weight (wt n N v) = rho n N v
   rw [← map_nsmul, Finsupp.smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `h : ∀ j : Fin n, (Finsupp.single x 1 : ℕ × Fin n →₀ ℕ) (N, rw_ v j) = 0` using `fun j => by`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hx rfl`. Use `show toLex (fun j => (Finsupp.single x 1 : ℕ × Fin n →₀ ℕ) (N, rw_ v j)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [h]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem wt_zero {n N : ℕ} (v : Bool) {x : ℕ × Fin n} (hx : x.1 ≠ N) : wt n N v x = 0 := by
   have h : ∀ j : Fin n, (Finsupp.single x 1 : ℕ × Fin n →₀ ℕ) (N, rw_ v j) = 0 := fun j => by
@@ -215,15 +211,13 @@ theorem wt_zero {n N : ℕ} (v : Bool) {x : ℕ × Fin n} (hx : x.1 ≠ N) : wt 
   rfl
 
 /- English proof (translation)
-Establish `hba : rw_ v h < rw_ v m`. Consider the cases of `v`. Simplify `hmh` using `[rw_]`. Simplify `hmh` using `[rw_, Fin.rev_lt_rev]`. Establish `key : ∀ a j : Fin n, (wt n N v (N, a) : Fin n → ℕ) j = if j = rw_ v a then 1 else 0`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `a j`. Use `show (Finsupp.single (N, a) 1 : ℕ × Fin n →₀ ℕ) (N, rw_ v j) = _`. Rewrite using `[Finsupp.single_apply]`. Distinguish the cases in `hj : j = rw_ v a`. Rewrite using `[if_pos hj, if_pos]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj, rw_rw]`. Rewrite using `[if_neg hj, if_neg]`. Introduce `he`. Apply `hj` to reduce the goal to its premises. Rewrite using `[(Prod.mk.inj he).2, rw_rw]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rw_ v h, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, key, if_neg, if_neg]`. Conclude with `ne_of_lt hj`. Conclude with `ne_of_lt (lt_trans hj hba)`. Use `beta_reduce`.
-
-Rewrite using `[key, key, if_neg (ne_of_lt hba), if_pos rfl]`. Conclude with `Nat.zero_lt_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_lt {n N : ℕ} (v : Bool) {m h : Fin n} (hmh : if v then m < h else h < m) :
     wt n N v (N, m) < wt n N v (N, h) := by
@@ -251,7 +245,7 @@ theorem wt_lt {n N : ℕ} (v : Bool) {m h : Fin n} (hmh : if v then m < h else h
     exact Nat.zero_lt_one
 
 /- English proof (translation)
-Establish `h2 : (fun j => e (N, rw_ v j)) = (fun j => e' (N, rw_ v j))` using `h`. Use `congrFun h2 (rw_ v m)` as an intermediate fact. Simplify `this` using `only [rw_rw]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rho_inj {n N : ℕ} (v : Bool) {e e' : ℕ × Fin n →₀ ℕ} (h : rho n N v e = rho n N v e')
     (m : Fin n) : e (N, m) = e' (N, m) := by
@@ -266,7 +260,7 @@ section Col
 variable {R M : Type*} [CommRing R] [AddCommMonoid M] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← map_intCast (C : R →+* MvPolynomial σ R) z]`. Apply `isWeightedHomogeneous_C` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem hom_intCast0 {σ : Type*} (w : σ → M) (z : ℤ) :
     IsWeightedHomogeneous w ((z : ℤ) : MvPolynomial σ R) 0 := by
@@ -274,7 +268,7 @@ theorem hom_intCast0 {σ : Type*} (w : σ → M) (z : ℤ) :
   apply isWeightedHomogeneous_C
 
 /- English proof (translation)
-Establish `hX : IsWeightedHomogeneous w (X (j, m) : MvPolynomial (ℕ × Fin n) R) (w (j, m))`. Apply `isWeightedHomogeneous_X` to reduce the goal to its premises. Use `((hom_intCast0 (R := R) w (Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg I m)).mul (hK (I.erase m))).mul hX` as an intermediate fact. Simplify `this` using `only [zero_add]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wedge_term (w : ℕ × Fin n → M) (K : Form (MvPolynomial (ℕ × Fin n) R) n)
     (hK : ∀ J, IsWeightedHomogeneous w (K J) 0) (j : ℕ) (I : Finset (Fin n)) (m : Fin n) :
@@ -286,7 +280,7 @@ theorem wedge_term (w : ℕ × Fin n → M) (K : Form (MvPolynomial (ℕ × Fin 
   simpa only [zero_add] using this
 
 /- English proof (translation)
-Establish `hX : IsWeightedHomogeneous w (X (j, m) : MvPolynomial (ℕ × Fin n) R) (w (j, m))`. Apply `isWeightedHomogeneous_X` to reduce the goal to its premises. Use `((hom_intCast0 (R := R) w (Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg I m)).mul hX).mul (hK (insert m I))` as an intermediate fact. Simplify `this` using `only [zero_add, add_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem contr_term (w : ℕ × Fin n → M) (K : Form (MvPolynomial (ℕ × Fin n) R) n)
     (hK : ∀ J, IsWeightedHomogeneous w (K J) 0) (j : ℕ) (I : Finset (Fin n)) (m : Fin n) :
@@ -307,7 +301,7 @@ private theorem stripPathWord_succ_eq_lemma_2 {R : Type*} [CommRing R] {n : ℕ}
   rfl
 
 /- English proof (translation)
-Introduce `e he`. Rewrite `he` using `[coeff_sum]`. Take `⟨i, hi, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero he`. Conclude with `h i hi hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem isWH_sum_lemma_3 {σ R M ι : Type*} [CommRing R] [AddCommMonoid M] {w : σ → M} (s : Finset ι)
     (φ : ι → MvPolynomial σ R) (d : M) (h : ∀ i ∈ s, IsWeightedHomogeneous w (φ i) d) :
@@ -318,17 +312,15 @@ private theorem isWH_sum_lemma_3 {σ R M ι : Type*} [CommRing R] [AddCommMonoid
   exact h i hi hne
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ J`. Use `show IsWeightedHomogeneous w (if J = ∅ then (1 : MvPolynomial (ℕ × Fin n) R) else 0) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `split_ifs`. Apply `isWeightedHomogeneous_one` to reduce the goal to its premises. Apply `isWeightedHomogeneous_zero` to reduce the goal to its premises. Consider the case `succ j ih`. Introduce `hj J`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ J, IsWeightedHomogeneous w (Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) j J) 0` using `ih (by omega)`. Establish `hw0 : ∀ m : Fin n, w (j, m) = 0` using `fun m => hw (j, m) (show j ≠ N by omega)`. Rewrite using `[stripPathWord_succ_eq_lemma_2]`. Use `split_ifs with hc`. Conclude with `hK J`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.stepF split`. Use `show IsWeightedHomogeneous w (∑ m ∈ J, ((Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg J m : ℤ) : MvPolynomial (ℕ × Fin n) R) * Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) j (J.erase m) * XR R n j m) 0`. Apply `isWH_sum_lemma_3` to reduce the goal to its premises. Introduce `m _`. Use `wedge_term w _ hK j J m` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hw0]`. Then use the resulting hypothesis. Use `show IsWeightedHomogeneous w (∑ m ∈ Jᶜ, ((Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg J m : ℤ) : MvPolynomial (ℕ × Fin n) R) * XR R n j m * Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) j (insert m J)) 0`. Apply `isWH_sum_lemma_3` to reduce the goal to its premises. Introduce `m _`. Use `contr_term w _ hK j J m` as an intermediate fact.
-
-Rewrite `this` using `[hw0]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_zero_stripPathWord (w : ℕ × Fin n → M) (N : ℕ) (hw : ∀ x : ℕ × Fin n, x.1 ≠ N → w x = 0)
     (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (c : ℤ) : ∀ j ≤ N, ∀ J,
@@ -366,14 +358,14 @@ theorem isWeightedHomogeneous_zero_stripPathWord (w : ℕ × Fin n → M) (N : �
 end Col
 
 /- English proof (translation)
-Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg`. Conclude with `neg_one_pow_eq_or ℤ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sg_pm {n : ℕ} (I : Finset (Fin n)) (m : Fin n) : sg I m = 1 ∨ sg I m = -1 := by
   unfold Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg
   exact neg_one_pow_eq_or ℤ _
 
 /- English proof (translation)
-Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_canIdx {n : ℕ} (μN : Fin n → ℤ) (c : ℤ) (m : Fin n) :
     m ∈ canIdx μN c ↔ if 1 ≤ c then m.val < colHeight μN c else colHeight μN c ≤ m.val := by
@@ -385,7 +377,7 @@ def Dc {n : ℕ} (μ : ℕ → Fin n → ℤ) (N : ℕ) (c : ℤ) : ℕ × Fin n
       m.val = min (colHeight (μ (N + 1)) c) (colHeight (μ N) c) then Finsupp.single (N, m) 1 else 0
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Finset.mem_erase, Finset.mem_filter, Finset.mem_univ, true_and, ne_eq]`. Rewrite using `[Fin.ext_iff]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem erase_seg_lemma_4 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val = k) :
     (univ.filter fun m : Fin n => m.val < k + 1).erase t = univ.filter fun m : Fin n => m.val < k := by
@@ -395,7 +387,7 @@ private theorem erase_seg_lemma_4 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val = 
   constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[Fin.ext_iff]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem insert_seg_lemma_5 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val = k) :
     insert t (univ.filter fun m : Fin n => m.val < k) = univ.filter fun m : Fin n => m.val < k + 1 := by
@@ -405,7 +397,7 @@ private theorem insert_seg_lemma_5 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val =
   constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Finset.mem_erase, Finset.mem_filter, Finset.mem_univ, true_and, ne_eq]`. Rewrite using `[Fin.ext_iff]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem erase_coseg_lemma_6 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val = k) :
     (univ.filter fun m : Fin n => k ≤ m.val).erase t = univ.filter fun m : Fin n => k + 1 ≤ m.val := by
@@ -415,7 +407,7 @@ private theorem erase_coseg_lemma_6 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val 
   constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[Fin.ext_iff]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem insert_coseg_lemma_7 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val = k) :
     insert t (univ.filter fun m : Fin n => k + 1 ≤ m.val) = univ.filter fun m : Fin n => k ≤ m.val := by
@@ -425,7 +417,7 @@ private theorem insert_coseg_lemma_7 {n : ℕ} (k : ℕ) (t : Fin n) (ht : t.val
   constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem stepForm_true_lemma_10 {R : Type*} [CommRing R] {n : ℕ} {up : Bool} (h : up = true) (K : Formalism.InvariantFactorPaths.GelfandTsetlinBases.Form R n)
     (Xv : Fin n → R) : Formalism.InvariantFactorPaths.GelfandTsetlinBases.stepF up K Xv = Formalism.InvariantFactorPaths.GelfandTsetlinBases.wedgeF K Xv := by
@@ -433,7 +425,7 @@ private theorem stepForm_true_lemma_10 {R : Type*} [CommRing R] {n : ℕ} {up : 
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem stepForm_false_lemma_11 {R : Type*} [CommRing R] {n : ℕ} {up : Bool} (h : up = false) (K : Formalism.InvariantFactorPaths.GelfandTsetlinBases.Form R n)
     (Xv : Fin n → R) : Formalism.InvariantFactorPaths.GelfandTsetlinBases.stepF up K Xv = Formalism.InvariantFactorPaths.GelfandTsetlinBases.contrF K Xv := by
@@ -441,7 +433,7 @@ private theorem stepForm_false_lemma_11 {R : Type*} [CommRing R] {n : ℕ} {up :
   rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.LeadAt.sum I (fun m => wt n N v (N, m)) (fun m => ((Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg I m : ℤ) : MvPolynomial (ℕ × Fin n) R) * K (I.erase m) * XR R n N m) (fun m _ => wedge_term _ K hK N I m) top htop hlt`.
+A detailed English derivation is pending.
 -/
 private theorem leading_wedge_lemma_12 {R : Type*} [CommRing R] {n N : ℕ} (v : Bool)
     (K : Formalism.InvariantFactorPaths.GelfandTsetlinBases.Form (MvPolynomial (ℕ × Fin n) R) n)
@@ -455,7 +447,7 @@ private theorem leading_wedge_lemma_12 {R : Type*} [CommRing R] {n N : ℕ} (v :
     (fun m _ => wedge_term _ K hK N I m) top htop hlt
 
 /- English proof (translation)
-Rewrite using `[mul_right_comm]`. Conclude with `Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.LeadAt.sum Iᶜ (fun m => wt n N v (N, m)) (fun m => ((Formalism.InvariantFactorPaths.GelfandTsetlinBases.sg I m : ℤ) : MvPolynomial (ℕ × Fin n) R) * XR R n N m * K (insert m I)) (fun m _ => contr_term _ K hK N I m) top (Finset. …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem leading_contract_lemma_13 {R : Type*} [CommRing R] {n N : ℕ} (v : Bool)
     (K : Formalism.InvariantFactorPaths.GelfandTsetlinBases.Form (MvPolynomial (ℕ × Fin n) R) n)
@@ -477,57 +469,51 @@ private theorem monomial_zero_one_eq_lemma_14 {σ R : Type*} [CommRing R] :
   rfl
 
 /- English proof (translation)
-Establish `hK : ∀ J, IsWeightedHomogeneous (wt n N (isVec N)) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) N J) 0` using `isWeightedHomogeneous_zero_stripPathWord (R := R) (wt n N (isVec N)) N (fun x hx => wt_zero (isVec N) hx) isVec μ c N le_rfl`. Establish `hstep` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.path_height hp (Nat.lt_succ_self N) c`. Establish `hle1` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.colHeight_le (μ (N + 1)) c`. Establish `hle0` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.colHeight_le (μ N) c`. Distinguish the cases in `hch : Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c = Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, Or.inl rfl, ?_⟩` and prove the remaining obligations. Establish `hcj : Dc μ N c = 0`. Unfold `Dc`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => h.1 hch`. Establish `hci : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ (N + 1)) c = Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ N) c`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Rewrite using `[hch]`. Rewrite using `[hcj, map_zero, hci, stripPathWord_succ_eq_lemma_2, if_pos hch, Int.cast_one, one_mul, monomial_zero_one_eq_lemma_14, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.LeadAt.of_hom (hK _)`. Establish `hmin : min (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c) < n`. Break down `Nat.lt_or_gt_of_ne hch with h | h` into its components or cases. Conclude with `lt_of_le_of_lt (min_le_left _ _) (lt_of_lt_of_le h hle0)`. Conclude with `lt_of_le_of_lt (min_le_right _ _) (lt_of_lt_of_le h hle1)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨top, htopv⟩ : ∃ t : Fin n, t.val = min (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c)` from `⟨⟨_, hmin⟩, rfl⟩`. Establish `hcj : Dc μ N c = Finsupp.single (N, top) 1`. Unfold `Dc`. Rewrite using `[Finset.sum_eq_single top]`. Rewrite using `[if_pos ⟨hch, htopv⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `m _ hm`. Rewrite using `[if_neg]`. Introduce and unpack `⟨_, h⟩`. Conclude with `hm (Fin.ext (h.trans htopv.symm))`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ top) h`. Establish `hmono : (monomial (Dc μ N c) (1 : R) : MvPolynomial (ℕ × Fin n) R) = XR R n N top`. Rewrite using `[hcj]`. Both sides reduce to the same expression. Establish `hlev : Finsupp.weight (wt n N (isVec N)) (Dc μ N c) = wt n N (isVec N) (N, top)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hcj, weight_wt]`. Both sides reduce to the same expression. Rewrite using `[hmono, hlev, stripPathWord_succ_eq_lemma_2, if_neg hch]`. Distinguish the cases in `hv : isVec N = true`. Rewrite `hstep` using `[if_pos hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hb : Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c = Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c + 1` using `hstep.resolve_left hch`. Establish `htv : top.val = Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c`. Rewrite using `[htopv, hb]`. Conclude with `min_eq_right (Nat.le_succ _)`. Establish `hord : ∀ m : Fin n, m.val < top.val → wt n N (isVec N) (N, m) < wt n N (isVec N) (N, top)` using `fun m hm => wt_lt (isVec N) (by rw [if_pos hv]; exact Fin.lt_def.mpr hm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hc : 1 ≤ c`. Establish `hup : (isVec N == decide (1 ≤ c)) = true`. Rewrite using `[hv, decide_eq_true hc]`. Both sides reduce to the same expression. Establish `hI1 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ (N + 1)) c = univ.filter (fun m : Fin n => m.val < Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Rewrite using `[if_pos hc, hb]`. Establish `hI0 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ N) c = (univ.filter (fun m : Fin n => m.val < Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c + 1)).erase top`. Rewrite using `[erase_seg_lemma_4 _ top htv]`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hc]`. Rewrite using `[stepForm_true_lemma_10 hup, hI1, hI0]`. Use `⟨_, sg_pm _ top, leading_wedge_lemma_12 (isVec N) _ hK _ top ?_ ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_univ _, by omega⟩`. Introduce `m hm hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hm' : m.val < Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c + 1` using `(Finset.mem_filter.mp hm).2`. Establish `hne' : m.val ≠ top.val` using `fun h => hne (Fin.ext h)`. Conclude with `hord m (by omega)`. Establish `hup : (isVec N == decide (1 ≤ c)) = false`. Rewrite using `[hv, decide_eq_false hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hI1 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ (N + 1)) c = univ.filter (fun m : Fin n => Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c + 1 ≤ m.val)`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Rewrite using `[if_neg hc, hb]`. Establish `hI0 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ N) c = insert top (univ.filter (fun m : Fin n => Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c + 1 ≤ m.val))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[insert_coseg_lemma_7 _ top htv]`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Rewrite using `[if_neg hc]`. Rewrite using `[stepForm_false_lemma_11 hup, hI1, hI0]`. Use `⟨_, sg_pm _ top, leading_contract_lemma_13 (isVec N) _ hK _ top ?_ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Use `(Finset.mem_filter.mp h).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `m hm hne`. Establish `hm' : ¬ (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c + 1 ≤ m.val)` using `fun h => Finset.mem_compl.mp hm (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hne' : m.val ≠ top.val` using `fun h => hne (Fin.ext h)`. Conclude with `hord m (by omega)`. Rewrite `hstep` using `[if_neg hv]`. Establish `hb : Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c + 1 = Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c` using `hstep.resolve_left hch`. Establish `htv : top.val = Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[htopv]`. Conclude with `min_eq_left (by omega)`. Establish `hv' : isVec N = false` using `by simpa using hv`. Establish `hord : ∀ m : Fin n, top.val < m.val → wt n N (isVec N) (N, m) < wt n N (isVec N) (N, top)` using `fun m hm => wt_lt (isVec N) (by rw [if_neg hv]; exact Fin.lt_def.mpr hm)`. Distinguish the cases in `hc : 1 ≤ c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hup : (isVec N == decide (1 ≤ c)) = false`. Rewrite using `[hv', decide_eq_true hc]`. Both sides reduce to the same expression. Establish `hI1 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ (N + 1)) c = univ.filter (fun m : Fin n => m.val < Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c)`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_pos hc]`. Establish `hI0 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ N) c = insert top (univ.filter (fun m : Fin n => m.val < Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c))`. Rewrite using `[insert_seg_lemma_5 _ top htv]`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Rewrite using `[if_pos hc, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[stepForm_false_lemma_11 hup, hI1, hI0]`. Use `⟨_, sg_pm _ top, leading_contract_lemma_13 (isVec N) _ hK _ top ?_ ?_⟩` and prove the remaining obligations. Introduce `h`. Use `(Finset.mem_filter.mp h).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m hm hne`. Establish `hm' : ¬ (m.val < Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c)` using `fun h => Finset.mem_compl.mp hm (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)`. Establish `hne' : m.val ≠ top.val` using `fun h => hne (Fin.ext h)`. Conclude with `hord m (by omega)`. Establish `hup : (isVec N == decide (1 ≤ c)) = true`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv', decide_eq_false hc]`. Both sides reduce to the same expression. Establish `hI1 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ (N + 1)) c = univ.filter (fun m : Fin n => Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c ≤ m.val)`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Rewrite using `[if_neg hc]`.
-
-Establish `hI0 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ N) c = (univ.filter (fun m : Fin n => Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c ≤ m.val)).erase top`. Rewrite using `[erase_coseg_lemma_6 _ top htv]`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Rewrite using `[if_neg hc, hb]`. Rewrite using `[stepForm_true_lemma_10 hup, hI1, hI0]`.
-
-Use `⟨_, sg_pm _ top, leading_wedge_lemma_12 (isVec N) _ hK _ top ?_ ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_filter.mpr ⟨Finset.mem_univ _, by omega⟩`. Introduce `m hm hne`. Establish `hm' : Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c ≤ m.val` using `(Finset.mem_filter.mp hm).2`. Establish `hne' : m.val ≠ top.val` using `fun h => hne (Fin.ext h)`.
-
-Conclude with `hord m (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem col_lead (R : Type*) [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ (N + 1)) (c : ℤ) :
@@ -683,7 +669,7 @@ theorem col_lead (R : Type*) [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {B 
           exact hord m (by omega)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Finset.mem_compl, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem compl_seg_lemma_8 {n : ℕ} (k : ℕ) :
     (univ.filter fun m : Fin n => m.val < k)ᶜ = univ.filter fun m : Fin n => k ≤ m.val := by
@@ -692,9 +678,9 @@ private theorem compl_seg_lemma_8 {n : ℕ} (k : ℕ) :
   constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Establish `e : (univ.filter fun m : Fin n => m.val < k).map Fin.valEmbedding = range k`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `ha`. Introduce `hx`. Conclude with `⟨⟨x, by omega⟩, hx, rfl⟩`. Rewrite using `[← Finset.card_map Fin.valEmbedding, e, Finset.card_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_seg_lemma_9 {n : ℕ} (k : ℕ) (hk : k ≤ n) : (univ.filter fun m : Fin n => m.val < k).card = k := by
   have e : (univ.filter fun m : Fin n => m.val < k).map Fin.valEmbedding = range k := by
@@ -708,9 +694,9 @@ private theorem card_seg_lemma_9 {n : ℕ} (k : ℕ) (hk : k ≤ n) : (univ.filt
   rw [← Finset.card_map Fin.valEmbedding, e, Finset.card_range]
 
 /- English proof (translation)
-Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex`. Introduce `c`. Establish `hle` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.colHeight_le μN c`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `card_seg_lemma_9 _ hle`. Rewrite using `[← compl_seg_lemma_8, Finset.card_compl, Fintype.card_fin, card_seg_lemma_9 _ hle]`.
+A detailed English derivation is pending.
 -/
 theorem isIndex_can {n : ℕ} (μN : Fin n → ℤ) : IsIndex μN (canIdx μN) := by
   unfold Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex
@@ -722,13 +708,13 @@ theorem isIndex_can {n : ℕ} (μN : Fin n → ℤ) : IsIndex μN (canIdx μN) :
   · rw [← compl_seg_lemma_8, Finset.card_compl, Fintype.card_fin, card_seg_lemma_9 _ hle]
 
 /- English proof (translation)
-Establish `e1` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight hμ c m`. Establish `e2` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight hν c m`. Establish `hs2` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.strip_height hν hμ hs c`. Apply the tactic sequence `have hmin : min (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight ν c) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight μ c) = Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight μ c := min_eq_right (by rcases hs2 with h | h <;> omega)`. Rewrite using `[hmin, Finset.mem_Ioc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hne, hm⟩`. Use `⟨not_le.mp fun h => ?_, e2.mpr ?_⟩` and prove the remaining obligations. Use `e1.mp h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Break down `hs2 with h | h` into its components or cases. Conclude with `absurd h hne`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h1, h2⟩`. Establish `a1 : ¬ m.val < Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight μ c` using `fun h => not_le.mpr h1 (e1.mpr h)`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `e2.mp h2`. Apply the tactic sequence `rcases hs2 with h | h <;> refine ⟨?_, ?_⟩ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem strip_iff {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (hν : Antitone ν) (hμ : Antitone μ)
     (hs : HStrip ν μ b) (c : ℤ) (m : Fin n) :
@@ -757,7 +743,7 @@ def DD {n : ℕ} (μ : ℕ → Fin n → ℤ) (N : ℕ) : ℕ × Fin n →₀ �
   ∑ m : Fin n, Finsupp.single (N, m) (|μ (N + 1) m - μ N m|).toNat
 
 /- English proof (translation)
-Establish `e : S.filter P = Finset.Ioc a b`. Use extensionality with `c`. Rewrite using `[Finset.mem_filter, hiff c]`. Conclude with `⟨fun h => h.2, fun h => ⟨hS c ((hiff c).mpr h), h⟩⟩`. Rewrite using `[e, Int.card_Ioc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_filter_eq_Ioc_lemma_15 (S : Finset ℤ) (P : ℤ → Prop) [DecidablePred P] (a b : ℤ)
     (hiff : ∀ c, P c ↔ c ∈ Finset.Ioc a b) (hS : ∀ c, P c → c ∈ S) : (S.filter P).card = (b - a).toNat := by
@@ -768,11 +754,11 @@ private theorem card_filter_eq_Ioc_lemma_15 (S : Finset ℤ) (P : ℤ → Prop) 
   rw [e, Int.card_Ioc]
 
 /- English proof (translation)
-Take `⟨-, hanti, hstr⟩` from `hp`. Establish `hN` using `hstr N (Nat.lt_succ_self N)`. Establish `key : ∀ m : Fin n, (S.filter fun c => Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c ≠ Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c ∧ m.val = min (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c) (Form …`. Introduce `m`. Distinguish the cases in `hv : isVec N = true`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite `hN` using `[if_pos hv]`. Rewrite using `[card_filter_eq_Ioc_lemma_15 S (fun c => Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c ≠ Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c ∧ m.val = min (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c) (F …`. Rewrite `hN` using `[if_neg hv]`. Rewrite using `[card_filter_eq_Ioc_lemma_15 S (fun c => Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c ≠ Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ N) c ∧ m.val = min (Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (μ (N + 1)) c) (F …`. Unfold `Dc DD`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, Finsupp.smul_single, smul_eq_mul, mul_one, key m]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_Dc {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ (N + 1)) (S : Finset ℤ)
@@ -799,7 +785,7 @@ theorem sum_Dc {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ �
   rw [← Finset.sum_filter, Finset.sum_const, Finsupp.smul_single, smul_eq_mul, mul_one, key m]
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `hp`. Conclude with `⟨h0, fun i hi => h1 i (by omega), fun i hi => h2 i (by omega)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPath_trunc {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ (N + 1)) : IsPath n isVec B μ N := by
@@ -807,13 +793,13 @@ theorem isPath_trunc {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : 
   exact ⟨h0, fun i hi => h1 i (by omega), fun i hi => h2 i (by omega)⟩
 
 /- English proof (translation)
-Establish `hp0` using `isPath_trunc hp`. Take `⟨hfin1, -⟩` from `Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathProductDegrees R n (N + 1) isVec B μ _ hp (isIndex_can _)`. Take `⟨hfin0, -⟩` from `Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathProductDegrees R n N isVec B μ _ hp0 (isIndex_can _)`. Establish `hchg` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.path_finite hp (Nat.lt_succ_self N)`. Take `⟨S, hS1, hS0, hSc⟩ : ∃ S : Finset ℤ, Function.mulSupport (fun c : ℤ => Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) (N + 1) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ (N + 1)) c)) ⊆ ↑S ∧ Function.mulSupport (fun c : ℤ => Formal …` from `⟨hfin1.toFinset ∪ hfin0.toFinset ∪ hchg.toFinset, fun c hc => Finset.mem_coe.mpr (Finset.mem_union_left _ (Finset.mem_union_left _ (hfin1.mem_toFinset.mpr hc))), fun c hc => Finset.mem_coe.mpr (Finset.mem_union_left _ (Finset.mem_union_right _ (hfin0.mem_toFinset.mpr hc))), fun c …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose a ha hL using fun c => col_lead R hp c`. Establish `e1 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.psiPath R isVec μ (N + 1) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ (N + 1))) = ∏ c ∈ S, Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) (N + 1) (Formalism.InvariantFactorPa …` using `finprod_eq_prod_of_mulSupport_subset _ hS1`. Establish `e0 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.psiPath R isVec μ N (Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ N)) = ∏ c ∈ S, Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) N (Formalism.InvariantFactorPaths.GelfandTsetlin …` using `finprod_eq_prod_of_mulSupport_subset _ hS0`. Establish `hsum : ∑ c ∈ S, Dc μ N c = DD μ N` using `sum_Dc hp S hSc`. Establish `hlev : ∑ c ∈ S, Finsupp.weight (wt n N (isVec N)) (Dc μ N c) = rho n N (isVec N) (DD μ N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum, hsum, weight_wt]`. Establish `hterm : ∏ c ∈ S, ((a c : MvPolynomial (ℕ × Fin n) R) * Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) N (Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx (μ N) c) * monomial (Dc μ N c) 1) = ((∏ c ∈ S, a c : ℤ) : MvPolynomial (ℕ × Fin n) R) …`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Int.cast_prod, e0, ← hsum, monomial_sum_one]`. Establish `hprod` using `Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.LeadAt.prod S (fun c => Finsupp.weight (wt n N (isVec N)) (Dc μ N c)) (fun c => Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathWord isVec μ c (XR R n) (N + 1) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx …`. Rewrite `hprod` using `[hlev, hterm, ← e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ c ∈ S, a c, ?_, hprod⟩` and prove the remaining obligations. Use `Finset.prod_induction _ (fun x : ℤ => x = 1 ∨ x = -1) ?_ (Or.inl rfl) (fun c _ => ha c)` and prove the remaining obligations. Introduce `x y hx hy`. Apply the tactic sequence `rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;> norm_num`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem psi_lead (R : Type) [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ (N + 1)) :
@@ -868,15 +854,13 @@ end A1
 namespace A1
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Assume the negation of the conclusion as `hgi`. Establish `hne : (s.filter fun j => g j ≠ 0).Nonempty` using `⟨i, Finset.mem_filter.mpr ⟨hi, hgi⟩⟩`. Take `⟨j, hj, hjmax⟩` from `(s.filter fun j => g j ≠ 0).exists_max_image Γ hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsum : ∑ k ∈ s, g k • π (Γ j) (v k) = 0`. Use `congrArg (π (Γ j)) hg` as an intermediate fact. Simplify `this` using `only [map_sum, map_smul, map_zero]`. Establish `hsum2 : ∑ k ∈ s.filter (fun k => Γ k = Γ j), g k • π (Γ j) (v k) = 0`. Rewrite using `[Finset.sum_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (Finset.sum_congr rfl fun k hk => ?_) hsum` and prove the remaining obligations. Use `split_ifs with hk'`. Both sides reduce to the same expression. Distinguish the cases in `hgk : g k = 0`. Simplify using `[hgk]`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hle : Γ k ≤ Γ j` using `hjmax k (Finset.mem_filter.mpr ⟨hk, hgk⟩)`. Rewrite using `[h0 k (Γ j) (lt_of_le_of_ne hle hk'), smul_zero]`. Establish `hsumT : ∑ x ∈ s.subtype (fun k => Γ k = Γ j), g x.1 • π (Γ j) (v x.1) = 0`. Rewrite using `[Finset.sum_subtype_eq_sum_filter (f := fun k => g k • π (Γ j) (v k))]`. Conclude with `hsum2`.
-
-Establish `hj0` using `(linearIndependent_iff'.mp (hli (Γ j))) (s.subtype (fun k => Γ k = Γ j)) (fun x => g x.1) hsumT ⟨j, rfl⟩ (Finset.mem_subtype.mpr (Finset.mem_filter.mp hj).1)`. Conclude with `(Finset.mem_filter.mp hj).2 hj0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem li_of_lead {k V V' ι O : Type*} [Field k] [AddCommGroup V] [Module k V] [AddCommGroup V']
     [Module k V'] [LinearOrder O] (v : ι → V) (Γ : ι → O) (π : O → V →ₗ[k] V')
@@ -909,9 +893,9 @@ theorem li_of_lead {k V V' ι O : Type*} [Field k] [AddCommGroup V] [Module k V]
   exact (Finset.mem_filter.mp hj).2 hj0
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`. Both sides reduce to the same expression. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `h`. Rewrite using `[stripPathWord_succ_eq_lemma_2, stripPathWord_succ_eq_lemma_2, ih (fun i hi => h i (by omega)), h (j + 1) le_rfl, h j (Nat.le_succ j)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pathWord_congr {R : Type*} [CommRing R] {n : ℕ} (isVec : ℕ → Bool) (μ μ' : ℕ → Fin n → ℤ) (c : ℤ)
     (Xr : ℕ → Fin n → R) : ∀ j, (∀ i ≤ j, μ i = μ' i) →
@@ -925,7 +909,7 @@ theorem pathWord_congr {R : Type*} [CommRing R] {n : ℕ} (isVec : ℕ → Bool)
       h j (Nat.le_succ j)]
 
 /- English proof (translation)
-Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.psiPath`. Conclude with `finprod_congr fun c => by rw [pathWord_congr isVec μ μ' c _ N h]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psiPath_congr (R : Type*) [CommRing R] {n : ℕ} (isVec : ℕ → Bool) {μ μ' : ℕ → Fin n → ℤ} {N : ℕ}
     (h : ∀ i ≤ N, μ i = μ' i) (I : ℤ → Finset (Fin n)) :
@@ -934,7 +918,7 @@ theorem psiPath_congr (R : Type*) [CommRing R] {n : ℕ} (isVec : ℕ → Bool) 
   exact finprod_congr fun c => by rw [pathWord_congr isVec μ μ' c _ N h]
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `hp`. Use `⟨by rw [← h 0 (Nat.zero_le _)]; exact h0, fun i hi => by rw [← h i hi]; exact h1 i hi, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[← h i hi.le, ← h (i + 1) hi]`. Conclude with `h2 i hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPath_congr {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ μ' : ℕ → Fin n → ℤ}
     (h : ∀ i ≤ N, μ i = μ' i) (hp : IsPath n isVec B μ N) : IsPath n isVec B μ' N := by
@@ -944,9 +928,9 @@ theorem isPath_congr {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ μ
   exact h2 i hi
 
 /- English proof (translation)
-Unfold `DD`. Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single m]`. Conclude with `Finsupp.single_eq_same`. Introduce `b _ hb`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hb (Prod.mk.inj h).2`. Introduce `h`. Conclude with `absurd (Finset.mem_univ m) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DD_apply {n : ℕ} (μ : ℕ → Fin n → ℤ) (N : ℕ) (m : Fin n) :
     DD μ N (N, m) = (|μ (N + 1) m - μ N m|).toNat := by
@@ -961,13 +945,13 @@ theorem DD_apply {n : ℕ} (μ : ℕ → Fin n → ℤ) (N : ℕ) (m : Fin n) :
     exact absurd (Finset.mem_univ m) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `h1` using `rho_inj v hΓ m`. Rewrite `h1` using `[DD_apply, DD_apply]`. Establish `h2` using `congrArg (Nat.cast : ℕ → ℤ) h1`. Take `⟨-, -, hs⟩` from `hp`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hs'⟩` from `hp'`. Establish `a` using `hs N (Nat.lt_succ_self N)`. Establish `b` using `hs' N (Nat.lt_succ_self N)`. Establish `he'` using `congrFun he m`. Distinguish the cases in `hv : isVec N = true`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite `a`, `b` using `[if_pos hv]`. Establish `x1` using `a.1 m`. Establish `x2` using `b.1 m`. Rewrite `h2` using `[Int.toNat_of_nonneg (abs_nonneg _), Int.toNat_of_nonneg (abs_nonneg _), abs_of_nonneg (by linarith), abs_of_nonneg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `a`, `b` using `[if_neg hv]`. Establish `x1` using `a.1 m`. Establish `x2` using `b.1 m`. Rewrite `h2` using `[Int.toNat_of_nonneg (abs_nonneg _), Int.toNat_of_nonneg (abs_nonneg _), abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem end_determined {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ μ' : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ (N + 1)) (hp' : IsPath n isVec B μ' (N + 1)) (he : μ (N + 1) = μ' (N + 1))
@@ -996,7 +980,7 @@ theorem end_determined {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ 
     linarith
 
 /- English proof (translation)
-Take `⟨ε, hε, hL⟩` from `psi_lead k hp`. Establish `hne : (ε : k) ≠ 0`. Apply the tactic sequence `rcases hε with rfl | rfl <;> simp`. Use `⟨Units.mk0 _ hne, ?_⟩` and prove the remaining obligations. Rewrite using `[hL.2, Units.smul_def, Units.val_mk0, smul_eq_C_mul, map_intCast, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_lead_unit (k : Type) [Field k] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ (N + 1)) :
@@ -1016,51 +1000,43 @@ end A1
 
 open A1 in
 /- English proof (translation)
-Introduce `k _ n N isVec B ν`. Proceed by induction on `N generalizing ν with`. Consider the case `zero`. Distinguish the cases in `hne : Nonempty (A1.Idx n isVec B 0 ν)`. Use `swap`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `haveI := not_nonempty_iff.mp hne`. Conclude with `linearIndependent_empty_type`. Take `⟨P0⟩` from `hne`. Establish `hν : ν = 0`. Take `⟨μ0, ⟨h00, -, -⟩, h01, -⟩` from `P0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h01.symm.trans h00`. Substitute `hν` using the available equality. Establish `hall : ∀ P : A1.Idx n isVec B 0 0, P = P0`. Introduce `P`. Take `⟨μ, ⟨hμ0, -, -⟩, -, hz⟩` from `P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨μ0, ⟨hμ00, -, -⟩, -, hz0⟩` from `P0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Conclude with `hμ0.trans hμ00.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hz i hi).trans (hz0 i hi).symm`. Use `haveI : Unique (A1.Idx n isVec B 0 0) := ⟨⟨P0⟩, hall⟩`. Establish `hcan : ∀ c : ℤ, canIdx (0 : Fin n → ℤ) c = ∅`. Introduce `c`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.canIdx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hc : 1 ≤ c`. Rewrite using `[if_pos hc, Finset.filter_eq_empty_iff]`. Introduce `m _ hm`. Establish `h0 : colHeight (0 : Fin n → ℤ) c = 0`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `x _ hx`. Establish `: c ≤ 0` using `hx`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[if_neg hc, Finset.filter_eq_empty_iff]`. Introduce `m _ hm`. Establish `hn : colHeight (0 : Fin n → ℤ) c = n`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight`. Establish `hc0 : c ≤ 0` using `by omega`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hc0]`. Use `m.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hone : psiPath k isVec P0.1 0 (canIdx (0 : Fin n → ℤ)) = 1`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.psiPath`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `(finprod_congr fun c => ?_).trans finprod_one` and prove the remaining obligations. Rewrite using `[hcan c]`. Use `show (if (∅ : Finset (Fin n)) = ∅ then (1 : MvPolynomial (ℕ × Fin n) k) else 0) = 1`. Rewrite using `[if_pos rfl]`. Use `linearIndependent_unique_iff.mpr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show psiPath k isVec P0.1 0 (canIdx (0 : Fin n → ℤ)) ≠ 0`. Rewrite using `[hone]`. Conclude with `one_ne_zero`. Consider the case `succ N ih`. Use `A1.li_of_lead (k := k) (fun P : A1.Idx n isVec B (N + 1) ν => psiPath k isVec P.1 (N + 1) (canIdx ν)) (fun P : A1.Idx n isVec B (N + 1) ν => A1.rho n N (isVec N) (A1.DD P.1 N)) (fun γ => weightedHomogeneousComponent (A1.wt n N (isVec N)) γ) ?_ ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P γ hγ`. Take `⟨ε, -, hL⟩` from `A1.psi_lead k P.2.1`. Establish `h` using `hL.comp_eq_zero hγ`. Rewrite `h` using `[P.2.2.1]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `γ show LinearIndependent k (fun Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ} => weightedHomogeneousComponent (A1.wt n N (isVec N)) γ (psiPath k isVec Q.1.1 (N + 1) (canIdx ν)))`. Distinguish the cases in `hne : Nonempty {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ}`. Use `swap`. Use `haveI := not_nonempty_iff.mp hne`. Conclude with `linearIndependent_empty_type`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨Q0⟩` from `hne`. Establish `hend : ∀ Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ}, Q.1.1 N = Q0.1.1 N` using `fun Q => A1.end_determined Q.1.2.1 Q0.1.2.1 (Q.1.2.2.1.trans Q0.1.2.2.1.symm) (isVec N) (Q.2.trans Q0.2.symm)`. Establish `hDD : ∀ Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ}, A1.DD Q.1.1 N = A1.DD Q0.1.1 N`. Introduce `Q`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.A1.DD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hend Q, Q.1.2.2.1, Q0.1.2.2.1]`. Use `choose u hu using fun Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ} => A1.psi_lead_unit k Q.1.2.1`. Establish `hfam : (fun Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ} => weightedHomogeneousComponent (A1.wt n N (isVec N)) γ (psiPath k isVec Q.1.1 (N + 1) (canIdx ν))) = fun Q => u Q • (psiPath k isVec Q.1.1 N (canIdx (Q0.1.1 N)) * monomial (A1.DD Q0.1.1 N) …`. Use function extensionality and compare the values at `Q`. Establish `h` using `hu Q`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Q.2, Q.1.2.2.1, hend Q, hDD Q]`. Conclude with `h`. Set `tr : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ} → A1.Idx n isVec B N (Q0.1.1 N)` to `fun Q => ⟨fun i => if i ≤ N then Q.1.1 i else 0, A1.isPath_congr (fun i hi => by simp [hi]) (A1.isPath_trunc Q.1.2.1), show (if N ≤ N then Q.1.1 N else 0) = Q0.1.1 N by rw [if_pos le_rfl]; exact hend Q, fun i hi => show (if i ≤ N then Q.1.1 i else 0) = 0 from if_neg (by omega)⟩`. Establish `htr : Function.Injective tr`. Introduce `Q Q' h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ∀ i, i ≤ N → Q.1.1 i = Q'.1.1 i`. Introduce `i hi`. Establish `h2 : (if i ≤ N then Q.1.1 i else 0) = (if i ≤ N then Q'.1.1 i else 0)` using `congrFun (congrArg Subtype.val h) i`. Rewrite `h2` using `[if_pos hi, if_pos hi]`. Then use the resulting hypothesis. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Break down `lt_trichotomy i (N + 1) with hi | hi | hi` into its components or cases. Conclude with `h' i (by omega)`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Q.1.2.2.1, Q'.1.2.2.1]`. Rewrite using `[Q.1.2.2.2 i hi, Q'.1.2.2.2 i hi]`. Establish `hbase0 : LinearIndependent k (fun Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ} => psiPath k isVec Q.1.1 N (canIdx (Q0.1.1 N)))`. Establish `h1` using `(ih (Q0.1.1 N)).comp tr htr`. Establish `e : (fun Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ} => psiPath k isVec Q.1.1 N (canIdx (Q0.1.1 N))) = (fun P : A1.Idx n isVec B N (Q0.1.1 N) => psiPath k isVec P.1 N (canIdx (Q0.1.1 N))) ∘ tr`.
-
-Use function extensionality and compare the values at `Q`. Use `show psiPath k isVec Q.1.1 N (canIdx (Q0.1.1 N)) = psiPath k isVec (tr Q).1 N (canIdx (Q0.1.1 N))`. Conclude with `A1.psiPath_congr k isVec (fun i hi => by show Q.1.1 i = if i ≤ N then Q.1.1 i else 0; rw [if_pos hi]) _`. Rewrite using `[e]`. Conclude with `h1`.
-
-Establish `hM : (monomial (A1.DD Q0.1.1 N) (1 : k) : MvPolynomial (ℕ × Fin n) k) ≠ 0`. Rewrite using `[Ne, MvPolynomial.monomial_eq_zero]`. Conclude with `one_ne_zero`. Establish `hbase1` using `hbase0.map' (LinearMap.mulRight k (monomial (A1.DD Q0.1.1 N) (1 : k) : MvPolynomial (ℕ × Fin n) k)) (LinearMap.ker_eq_bot.mpr (by`. Introduce `a b hab`.
-
-Simplify using `only [LinearMap.mulRight_apply] at hab`. Conclude with `mul_right_cancel₀ hM hab))`. Establish `e2 : (⇑(LinearMap.mulRight k (monomial (A1.DD Q0.1.1 N) (1 : k) : MvPolynomial (ℕ × Fin n) k)) ∘ fun Q : {P : A1.Idx n isVec B (N + 1) ν // A1.rho n N (isVec N) (A1.DD P.1 N) = γ} => psiPath k isVec Q.1.1 N (canIdx (Q0.1.1 N))) = fun Q => psiPath k isVec Q.1.1 N (canIdx (Q0.1.1 N …`. Use function extensionality and compare the values at `Q`. Simplify using `only [Function.comp_apply, LinearMap.mulRight_apply]`.
-
-Rewrite `hbase1` using `[e2]`. Rewrite using `[hfam]`. Conclude with `hbase1.units_smul u`.
+A detailed English derivation is pending.
 -/
 theorem pathProductLinearIndependent : PathProductLinearIndependent := by
   intro k _ n N isVec B ν

@@ -10,13 +10,13 @@ namespace GlobalTheory.FockSwap
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem linePos_swap (l : Ln p q r s) : linePos (l.swap : Ln r s p q) = linePos l := by
   rcases l with ⟨a | a, c | c⟩ <;> rfl
 
 /- English proof (translation)
-Unfold `lowB`. Rewrite using `[linePos_swap]`. Use `split_ifs`. Conclude with `(pderiv_rename Prod.swap_injective l P).symm`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_lowB (l : Ln p q r s) (P : Pol p q r s) :
     rename Prod.swap (lowB l P) = lowB (l.swap : Ln r s p q) (rename Prod.swap P) := by
@@ -27,9 +27,7 @@ theorem rename_lowB (l : Ln p q r s) (P : Pol p q r s) :
   · simp
 
 /- English proof (translation)
-Unfold `raiB`. Rewrite using `[linePos_swap]`. Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using `only [LinearMap.neg_apply, map_neg, neg_inj]`.
-
-Conclude with `(pderiv_rename Prod.swap_injective l P).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_raiB (l : Ln p q r s) (P : Pol p q r s) :
     rename Prod.swap (raiB l P) = raiB (l.swap : Ln r s p q) (rename Prod.swap P) := by
@@ -41,7 +39,7 @@ theorem rename_raiB (l : Ln p q r s) (P : Pol p q r s) :
     exact (pderiv_rename Prod.swap_injective l P).symm
 
 /- English proof (translation)
-Unfold `omE`. Simplify using `only [LinearMap.add_apply, map_add, Module.End.mul_apply, rename_raiB, rename_lowB, Prod.swap_inj]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rename_omE (l l' : Ln p q r s) (P : Pol p q r s) :
     rename Prod.swap (omE l l' P) =
@@ -53,7 +51,7 @@ theorem rename_omE (l l' : Ln p q r s) (P : Pol p q r s) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [omAct_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, rename_omE]`. Use `Fintype.sum_equiv (Equiv.prodComm _ _) _ _ fun l => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (Equiv.prodComm _ _) _ _ fun l' => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rename_omAct (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) :
     rename Prod.swap (omAct p q r s M P) =
@@ -65,7 +63,7 @@ theorem rename_omAct (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s
   simp
 
 /- English proof (translation)
-Simplify using `only [fockAct1, fockAct2, LinearMap.comp_apply]`. Rewrite using `[rename_omAct]`. Use `congr 2`. Use extensionality with `⟨a, b⟩ ⟨c, d⟩`. Simplify using `[Matrix.kroneckerMapBilinear_apply_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_fockAct1 (Z : Mat p q) (P : Pol p q r s) :
     rename Prod.swap (fockAct1 p q r s Z P) = fockAct2 r s p q Z (rename Prod.swap P) := by
@@ -76,7 +74,7 @@ theorem rename_fockAct1 (Z : Mat p q) (P : Pol p q r s) :
   simp [Matrix.kroneckerMapBilinear_apply_apply, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [fockAct1, fockAct2, LinearMap.comp_apply]`. Rewrite using `[rename_omAct]`. Use `congr 2`. Use extensionality with `⟨a, b⟩ ⟨c, d⟩`. Simplify using `[Matrix.kroneckerMapBilinear_apply_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rename_fockAct2 (Z : Mat r s) (P : Pol p q r s) :
     rename Prod.swap (fockAct2 p q r s Z P) = fockAct1 r s p q Z (rename Prod.swap P) := by
@@ -87,7 +85,7 @@ theorem rename_fockAct2 (Z : Mat r s) (P : Pol p q r s) :
   simp [Matrix.kroneckerMapBilinear_apply_apply, mul_comm]
 
 /- English proof (translation)
-Unfold `minusPart`. Use `(renameEquiv ℂ e).toAddEquiv.map_finsum (fun d : ℕ => homogeneousComponent d (A (homogeneousComponent (d + 2) P)))` as an intermediate fact. Use `this.trans (finsum_congr fun d => ?_)` and prove the remaining obligations. Use `show rename e _ = _`. Rewrite using `[rename_homogeneousComponent, h, rename_homogeneousComponent]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_minusPart {σ τ : Type} (e : σ ≃ τ) (A : Module.End ℂ (MvPolynomial σ ℂ))
     (B : Module.End ℂ (MvPolynomial τ ℂ)) (h : ∀ P, rename e (A P) = B (rename e P))
@@ -100,7 +98,7 @@ theorem rename_minusPart {σ τ : Type} (e : σ ≃ τ) (A : Module.End ℂ (MvP
   rw [rename_homogeneousComponent, h, rename_homogeneousComponent]
 
 /- English proof (translation)
-Rewrite using `[← rename_minusPart e A B h, map_eq_zero_iff _ (rename_injective _ e.injective)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem minusPart_eq_zero_iff {σ τ : Type} (e : σ ≃ τ) (A : Module.End ℂ (MvPolynomial σ ℂ))
     (B : Module.End ℂ (MvPolynomial τ ℂ)) (h : ∀ P, rename e (A P) = B (rename e P))
@@ -108,7 +106,7 @@ theorem minusPart_eq_zero_iff {σ τ : Type} (e : σ ≃ τ) (A : Module.End ℂ
   rw [← rename_minusPart e A B h, map_eq_zero_iff _ (rename_injective _ e.injective)]
 
 /- English proof (translation)
-Introduce `p q r s`. Use `⟨rename_fockAct1, rename_fockAct2, fun P => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `forall₂_congr fun Z _ => minusPart_eq_zero_iff (Equiv.prodComm _ _) _ _ (rename_fockAct2 Z) P`. Conclude with `forall₂_congr fun Z _ => minusPart_eq_zero_iff (Equiv.prodComm _ _) _ _ (rename_fockAct1 Z) P`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem swap_symmetry : ∀ (p q r s : ℕ), (∀ (Z : Mat p q) (P : Pol p q r s), rename Prod.swap (fockAct1 p q r s Z P) = fockAct2 r s p q Z (rename Prod.swap P)) ∧ (∀ (Z : Mat r s) (P : Pol p q r s), rename Prod.swap (fockAct2 p q r s Z P) = fockAct1 r s p q Z (rename Prod.swap P)) ∧ (∀ P : Pol p q r s, (P ∈ harm1 p q r s ↔ rename Prod.swap P ∈ harm2 r s p q) ∧ (P ∈ harm2 p q r s ↔ rename Prod.swap P ∈ harm1 r s p q)) := by
   intro p q r s

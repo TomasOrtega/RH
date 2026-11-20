@@ -28,11 +28,11 @@ open scoped TensorProduct Matrix
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Set `φ : CAt σ →ₐ[c.F] CAt σ` to `{ toRingHom := (τ.symm : ℂ →+* ℂ) commutes' := fun a => by show τ.symm (σ a) = σ a conv_lhs => rw [← hτ a]`. Conclude with `τ.symm_apply_apply _ }`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS D.host.E H Dw l Xo c _ _ φ y`. Establish `hx : y.x = spMap (τ : ℂ →+* ℂ) ≫ z.x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : z.x = spMap (τ.symm : ℂ →+* ℂ) ≫ y.x` using `hz.1`. Establish `h2 : spMap (τ : ℂ →+* ℂ) ≫ spMap (τ.symm : ℂ →+* ℂ) = 𝟙 _`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ y.x) h2).trans (Category.id_comp _))).symm`. Conclude with `⟨z, fun f hf => conj_value σ σ τ (RingHom.ext fun a => (hτ a).symm) hf z y hx⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj_pt_fix (σ : c.F →+* ℂ) (τ : ℂ ≃+* ℂ) (hτ : ∀ a, τ (σ a) = σ a) (y : FrPt Xo c (CAt σ)) :
     ∃ y₀ : FrPt Xo c (CAt σ), ∀ f ∈ sec Xo c 0 0, toC (evR Xo c f y) = τ (toC (evR Xo c f y₀)) := by
@@ -59,27 +59,25 @@ theorem exists_conj_pt_fix (σ : c.F →+* ℂ) (τ : ℂ ≃+* ℂ) (hτ : ∀ 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `haveI : Countable c.F := (Module.finBasis ℚ c.F).equivFun.toEquiv.countable_iff.2 inferInstance`. Establish `hg : σ (IntermediateField.inclusion c.le (baseKA l).ρ) = H.rt0` using `hC.good`. Establish `hrt : τ H.rt0 = H.rt0` using `by conv_lhs => rw [← hg, hτ, hta.base, hg]`. Take `⟨π, hπ⟩` from `GlobalTheory.T.exists_perm_periodSpaces_complexAut D.host.E H Dw l Xo _ _ _ C.F hC.pos hC.good ((GlobalTheory.Relab.relab_good D.host.E H l c σ hC.good).2.2.2 Dw C.g C.e) hC.lA τ hrt`. Take `⟨κ, ⟨u, hu⟩, hκ⟩` from `GlobalTheory.T.autConj_translates_detCharacter_markings D H Dw l Xo c σ V r C hC hsig τ hrt hcur π hπ xi hx1 hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcu` using `hconj u`. Rewrite `hcu` using `[← hu]`. Establish `hgal : galRul hta f ∈ sec Xo c 0 0` using `((GlobalTheory.T.conjugateSection_values_semilinear D.host.E H Dw l Xo c ta hta).1 0 0 f hf).1`. Establish `hne : ((xi' (Matrix.GeneralLinearGroup.det (finHom V u)) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hpt : ∀ y : FrPt Xo c (CAt σ), toC (evR Xo c (galRul hta f) y) = (τ a₀ / a₀' * ((xi' (Matrix.GeneralLinearGroup.det (finHom V u)) : ℂˣ) : ℂ)⁻¹) * toC (evR Xo c f' y) ∧ toC (evR Xo c f' y) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨y₀, hy, hval⟩` from `exists_conj_point σ hta τ hτ y`. Take `⟨i, P, hP, hiP⟩` from `C.F.onto y₀.x y₀.x_over`. Take `⟨P', hP', hiP'⟩` from `hπ i P hP`. Take `⟨h, -, hm⟩` from `GlobalTheory.Member.exists_finite_mark D H Dw l Xo c σ V r C hC i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h', -, hm'⟩` from `GlobalTheory.Member.exists_finite_mark D H Dw l Xo c σ V r C hC (π i)`. Establish `e1` using `hv y₀ i P hP hiP.symm h 1 hm`. Establish `e2` using `hv' y (π i) P' hP' (hy.trans (hiP ▸ hiP')) h' 1 hm'`. Establish `e3` using `hκ h 1 i h' 1 hm hm'`. Establish `e4` using `hval f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e4, e1, e2, ← hconj (1 * h'), e3, Units.val_mul, map_mul τ, map_mul τ, hcu]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Conclude with `mul_ne_zero ha' (Units.ne_zero _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y1⟩` from `GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.abelianSchemeLaws_all.2.secTwist _ _ _ _ Xo c hC.pos σ`. Establish `hmem : (τ a₀ / a₀' * ((xi' (Matrix.GeneralLinearGroup.det (finHom V u)) : ℂˣ) : ℂ)⁻¹) ∈ Set.range σ`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Use `GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv (K := c.F) _ fun s => ?_` and prove the remaining obligations. Establish `hs : ∀ a, s.toRingEquiv (σ a) = σ a` using `fun a => s.commutes a`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y₀, hy₀⟩` from `exists_conj_pt_fix σ s.toRingEquiv hs y1`. Establish `h1` using `(hpt y1).1`. Establish `hn` using `(hpt y1).2`. Rewrite `h1` using `[hy₀ _ hgal, hy₀ _ hf', (hpt y₀).1, map_mul]`. Rewrite `hn` using `[hy₀ _ hf']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_right_cancel₀ hn h1`. Take `⟨ka, hka⟩` from `hmem`. Use `⟨u, ka, hka, ?_⟩` and prove the remaining obligations. Establish `hsplit : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (t : c.F), evR Xo c (galRul hta f + (-t) • f') y = evR Xo c (galRul hta f) y - algebraMap c.F S t * evR Xo c f' y`. Introduce `S _ _ y t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `evR`. Rewrite using `[evalAt_add, evalAt_smul, map_neg, neg_mul, sub_eq_add_neg]`. Establish `hz : galRul hta f + (-ka) • f' = 0`. Use `sec_eq_zero_of_complex σ (add_mem hgal (Submodule.smul_mem _ _ hf')) fun y => ?_` and prove the remaining obligations. Rewrite using `[hsplit, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show toC (evR Xo c (galRul hta f) y) = σ ka * toC (evR Xo c f' y)`. Rewrite using `[hka]`. Conclude with `(hpt y).1`. Introduce `k _ _ _ y`. Establish `e` using `hsplit k y ka`.
-
-Rewrite `e` using `[hz]`. Establish `e0 : evR Xo c (0 : Rul Xo c) y = 0` using `evalAt_zero _ _ y`. Conclude with `sub_eq_zero.1 (e.symm.trans e0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem galRul_eq_cmul_complex (V : HSp D) (r : ℕ) (σ : c.F →+* ℂ) (C : Ctx Xo c σ V r) (hC : C.OK)
     (hsig : Dw.p = 0 ∨ Dw.q = 0 ∨ 3 ≤ Dw.p + Dw.q) {ta : c.F ≃+* c.F} (hta : Fixes c ta) (τ : ℂ ≃+* ℂ)
@@ -173,7 +171,7 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {c : Coeff l}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq hU`. Take `rfl` from `eq_of_heq hd`. Conclude with `h`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cxiAt_of_eq (V : HSp D) (hr : V.rank = r) (σ0 : c.F →+* ℂ) {d d' : DeltaDat Xo c n} (e : d' = d)
     {U₂ : Unf d.Xo₂ d.c₂ (σ0.comp (d.eF.symm : d.c₂.F →+* c.F)) r}
@@ -188,7 +186,7 @@ theorem cxiAt_of_eq (V : HSp D) (hr : V.rank = r) (σ0 : c.F →+* ℂ) {d d' : 
   exact h
 
 /- English proof (translation)
-The claim follows from `e ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem cδ_mem_of_eq {d d' : DeltaDat Xo c n} (e : d' = d) (h : d'.cδ ∈ sec d'.Xo₂ d'.c₂ 0 0) :
     d.cδ ∈ sec d.Xo₂ d.c₂ 0 0 := e ▸ h
@@ -198,29 +196,27 @@ end Transport
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup M hM τ ta hta hFix hcO hxiF`. Take `⟨c0, ⟨m, hm0, hm⟩, hc⟩` from `(GlobalTheory.OneMapAll.cXiVal_iff _ _ _ _ _ _ _ _ _).1 hM.cxi`. Establish `hc0 : c0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hm` using `[zero_pow hm0.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hm`. Use `⟨τ c0 / c0, ⟨m, hm0, by rw [div_pow, ← map_pow, hm, map_one, div_one]⟩, ?_⟩` and prove the remaining obligations. Introduce `a b cx hab hU hd hct`. Establish `hfix' : Fixes M.c' ta`. Use `⟨fun τ' x => Subtype.ext ?_, fun x => Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hta]`. Conclude with `hFix.host τ' x`. Rewrite using `[hta]`. Conclude with `hFix.core ⟨_, T.Q.c.le x.2⟩`. Take `⟨hlev, hA, -⟩` from `hM.cov a`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h₂` using `fixes_covAut (M.dδ a) hA hfix'`. Use `⟨h₂, ?_⟩` and prove the remaining obligations. Take `⟨hT'⟩` from `hT`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, by omega⟩`. Take `⟨-, hpq, -, hq2⟩` from `GlobalTheory.Member.exists_iotaOK D T.Q hT'.laws.pins ((i : ℕ) + 1) hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Establish `hsig : (T.Q.Dw ((i : ℕ) + 1)).p = 0 ∨ (T.Q.Dw ((i : ℕ) + 1)).q = 0 ∨ 3 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q`. Distinguish the cases in `h0 : (T.Q.Dw ((i : ℕ) + 1)).q = 0`. Conclude with `Or.inr (Or.inl h0)`. Use `right`. Use `right`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpos : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q` using `by omega`. Establish `hιok` using `GlobalTheory.TupleCover.iotaOK_and_frame T hT'.laws ((i : ℕ) + 1) hj M.s0 (by have e : M.s0 = T.σ₀ := sOv_eq _ _ _; rw [e]; exact T.good_σ₀) (Wc D i) M.hV (rank_Wc i)`. Set `σ₂ : (M.dδ a).c₂.F →+* ℂ` to `(inC M.c').comp ((M.dδ a).eF.symm : (M.dδ a).c₂.F →+* M.c'.F)`. Take `⟨C, hC, hCι, hCx⟩` from `(GlobalTheory.Member.exists_ctx D _ _ _ (M.dδ a).Xo₂ (M.dδ a).c₂ σ₂ (Wc D i) D.R.r (rank_Wc i) _ hιok.1 hpos hA rfl).2.2 _ hιok.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hτ₂ : ∀ x, τ (σ₂ x) = σ₂ (covAut (M.dδ a) ta x)` using `fun x => by show τ (((M.dδ a).eF.symm x : M.c'.F) : ℂ) = (((M.dδ a).eF.symm ((M.dδ a).eF (ta ((M.dδ a).eF.symm x))) : M.c'.F) : ℂ)`. Rewrite using `[AlgEquiv.symm_apply_apply, hta]`. Establish `hconj : ∀ h : GA D (Wc D i), τ ((M.xi a (Matrix.GeneralLinearGroup.det (finHom (Wc D i) h)) : ℂˣ) : ℂ) = ((M.xi b (Matrix.GeneralLinearGroup.det (finHom (Wc D i) h)) : ℂˣ) : ℂ)` using `fun h => by`. Take `⟨x, hx⟩` from `(GlobalTheory.Member.isDetRoot_laws D (Wc D i)).1 h`. Rewrite using `[(hM.tuple a).xi h x hx, (hM.tuple b).xi h x hx, hct.2 x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hrat : ∀ t : Tp, ∀ γ ∈ GQ (Wc D i), M.xi t (Matrix.GeneralLinearGroup.det (finHom (Wc D i) γ)) = 1`. Introduce `t γ hγ`. Take `⟨-, -, hr3, -⟩` from `GlobalTheory.Member.isDetRoot_laws D (Wc D i)`. Take `⟨x, hx⟩` from `hr3 γ hγ`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hM.tuple t).xi γ _ hx, (hR.lev.xi (tup t)).1.2 x]`. Simplify using the standard rewrite rules. Establish `hl₂ : (M.dδ b).l₂ = (M.dδ a).l₂` using `by rw [hab]`. Establish `hxa` using `GlobalTheory.T.coverCharacter_trivial_on_level_determinants D G Pl0 T0 A T R F κ v₀ hR ⟨hT'⟩ i Tp tup M hM a`. Establish `hxb : ∀ u : GA D (Wc D i), gLat (Wc D i) u = latHat (Wc D i) → (∃ w ∈ GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)), ((Matrix.GeneralLinearGroup.det (finHom (Wc D i) u) : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : (Af D.host.F ⊗[D.host.F] D.host.E)) …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu hw`. Rewrite `hw` using `[← hl₂]`. Conclude with `GlobalTheory.T.coverCharacter_trivial_on_level_determinants D G Pl0 T0 A T R F κ v₀ hR ⟨hT'⟩ i Tp tup M hM b u hu hw`. Establish `hfa : (M.dδ a).cδ ∈ sec (M.dδ a).Xo₂ (M.dδ a).c₂ 0 0` using `hlev.2.2.2.2.2.2.2.1`. Establish `hfb : cx ∈ sec (M.dδ a).Xo₂ (M.dδ a).c₂ 0 0` using `cδ_mem_of_eq (d := { M.dδ a with cδ := cx }) hab (hM.cov b).1.2.2.2.2.2.2.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hva` using `GlobalTheory.T.weightZeroSection_value_on_markedPeriodSpace D G Pl0 T0 A T R F κ v₀ hR ⟨hT'⟩ i Tp tup M hM a C hC hCι hCx (M.dδ a).cδ (M.xi a) c0 hfa hxa (hrat a) (hc a)`. Establish `hvb` using `GlobalTheory.T.weightZeroSection_value_on_markedPeriodSpace D G Pl0 T0 A T R F κ v₀ hR ⟨hT'⟩ i Tp tup M hM a C hC hCι hCx cx (M.xi b) c0 hfb hxb (hrat b) (cxiAt_of_eq _ _ _ (d := { M.dδ a with cδ := cx }) hab hU hd _ _ _ _ (hc b))`. Take `⟨u, ka₂, hka, heq⟩` from `galRul_eq_cmul_complex (Wc D i) D.R.r σ₂ C hC hsig h₂ τ hτ₂ hFix.curve (M.xi a) (M.xi b) hxa (hrat a) hconj c0 c0 hc0 hfa hfb hva hvb`. Take `⟨x, hx⟩` from `(GlobalTheory.Member.isDetRoot_laws D (Wc D i)).1 u`. Use `⟨(M.dδ a).eF.symm ka₂, x⁻¹, ?_, fun k _ _ _ y => ?_⟩` and prove the remaining obligations.
-
-Use `show σ₂ ka₂ = _`. Rewrite using `[hka, (hM.tuple b).xi u x hx, map_inv, Circle.coe_inv]`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `heq k y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_cover_const : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (τ : ℂ ≃+* ℂ) (ta : M.c'.F ≃+* M.c'.F), (∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)) → FixBase T R i τ → GlobalTheory.CompRat.CurveOver T.Q.H M.c'.F 1 → (∀ t x, ((R.xi (tup t) x : Circle) : ℂ) ∈ M.c'.F) → ∃ k0 : ℂ, IsRoot1 k0 ∧ ∀ (a b : Tp) (cx : Rul (M.dδ a).Xo₂ (M.dδ a).c₂), M.dδ b = { M.dδ a with cδ := cx } → HEq (M.U₂ b) (M.U₂ a) → HEq (M.dict₂ b) (M.dict₂ a) → ConjTup R τ (tup a) (tup b) → ∃ (h₂ : Fixes (M.dδ a).c₂ (covAut (M.dδ a) ta)) (ka : M.c'.F) (s : (AE D)ˣ), (ka : ℂ) = k0 * ((R.xi (tup b) s : Circle) : ℂ) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra (M.dδ a).c₂.F k] (y₂ : FrPt (M.dδ a).Xo₂ (M.dδ a).c₂ k), evR (M.dδ a).Xo₂ (M.dδ a).c₂ (galRul h₂ (M.dδ a).cδ) y₂ = algebraMap (M.dδ a).c₂.F k ((M.dδ a).eF ka) * evR (M.dδ a).Xo₂ (M.dδ a).c₂ cx y₂ := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup M hM τ ta hta hFix hcO hxiF

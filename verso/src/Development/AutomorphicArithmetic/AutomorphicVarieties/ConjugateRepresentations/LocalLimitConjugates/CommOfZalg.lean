@@ -15,7 +15,7 @@ namespace UpperTheory.V.Cj.H.CasimirOperatorShift
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `Algebra.adjoin_induction (p := fun x _ => Commute x o) ?_ (fun r => Algebra.commutes r _) (fun _ _ _ _ hx hy => hx.add_left hy) (fun _ _ _ _ hx hy => hx.mul_left hy) hz` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Conclude with `ho τ u`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem comm_of_zalg {z o : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (ho : ∀ τ u, Commute (cap τ u) o) :
     Commute z o := by
@@ -25,18 +25,18 @@ private theorem comm_of_zalg {z o : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E 
   exact ho τ u
 
 /- English proof (translation)
-Rewrite using `[shift_apply, shift_apply, map_add, Cm.uC_ιC, ← algebraMap_smul ℂ (r * ell E a X) (1 : Cm.UC E a), map_smul, map_one, algebraMap_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem uC_sh (r : ℝ) (X : Lie E a) : Cm.uC E a (shift (Cm.ιC E a) r X) = shift (lie E a) r X := by
   rw [shift_apply, shift_apply, map_add, Cm.uC_ιC, ← algebraMap_smul ℂ (r * ell E a X) (1 : Cm.UC E a), map_smul,
     map_one, algebraMap_smul]
 
 /- English proof (translation)
-Establish `hL : IsLieHom (shift (Cm.ιC E a) r)` using `(ellFacts E a).2.2.2 _ _ r Cm.isLieHom_ιC`. Establish `hX : ∀ X, Commute (cas (shift (Cm.ιC E a) r) e) (Cm.ιC E a X)` using `fun X => by`. Establish `h` using `casComm E a n e he _ _ hL X`. Establish `h' : Cm.ιC E a X = shift (Cm.ιC E a) r X - (r * ell E a X) • 1` using `by rw [shift_apply, add_sub_cancel_right]`. Rewrite using `[h']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.sub_right ((Commute.one_right _).smul_right _)`. Establish `hle : Algebra.adjoin ℂ {x : Cm.UC E a | ∃ τ i j, x = Cm.genC τ i j} ≤ Subalgebra.centralizer ℂ {cas (shift (Cm.ιC E a) r) e}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, i, j, rfl⟩ _ rfl`. Conclude with `(((hX _).sub_right ((hX _).smul_right _)).smul_right _).eq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hle` using `[Cm.adjoin_genC]`. Rewrite using `[Cm.Zalg_eq_map]`. Conclude with `⟨_, Subalgebra.mem_center_iff.2 fun x => (hle Algebra.mem_top _ rfl).symm, by simp only [cas, map_sum, map_sub, map_mul, uC_sh, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cas_mem {n : ℕ} {e : Fin n → Herm E a} (he : IsFrame e) (r : ℝ) :
     cas (shift (lie E a) r) e ∈ Zalg E a := by
@@ -57,14 +57,14 @@ private theorem cas_mem {n : ℕ} {e : Fin n → Herm E a} (he : IsFrame e) (r :
     by simp only [cas, map_sum, map_sub, map_mul, uC_sh, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]⟩
 
 /- English proof (translation)
-Rewrite using `[← infGL_mul_finGL g, map_mul]`. Conclude with `(GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _).mul_right (commute_cap_finRep τ u _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cap_rt (τ : E →+* ℂ) (u : ℂ) (g : GA E a) : Commute (cap τ u) (rt E a g) := by
   rw [← infGL_mul_finGL g, map_mul]
   exact (GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _).mul_right (commute_cap_finRep τ u _)
 
 /- English proof (translation)
-Rewrite using `[shift_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sh_apply (r : ℝ) (X : Lie E a) (φ : Sm E a) :
     shift (lie E a) r X φ = lie E a X φ + ((r * ell E a X : ℝ) : ℂ) • φ := by
@@ -74,13 +74,11 @@ end UpperTheory.V.Cj.H.CasimirOperatorShift
 
 open UpperTheory.V.Cj.H.CasimirOperatorShift in
 /- English proof (translation)
-Introduce `E _ _ _ a n e he r c`. Establish `hz` using `cas_mem he r`. Establish `hc : ∀ o : Module.End ℂ (Sm E a), (∀ τ u, Commute (cap τ u) o) → Commute o (casA r c e)` using `fun o ho => (comm_of_zalg hz ho).symm.sub_right ((Commute.one_right _).smul_right _)`. Use `⟨fun X => hc _ fun τ u => commute_cap_lie τ u X, fun g => hc _ fun τ u => cap_rt τ u g, fun N hN => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ X, ∀ φ ∈ N, shift (lie E a) r X φ ∈ N` using `fun X φ hφ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[sh_apply]`. Conclude with `N.add_mem (hN X φ hφ) (N.smul_mem _ hφ)`. Use `⟨fun φ hφ => ?_, fun T hT φ hφ => ?_⟩` and prove the remaining obligations. Simplify using `only [casA, cas, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `N.sub_mem (N.sum_mem fun j _ => N.sub_mem (hs _ _ (hs _ _ hφ)) (hs _ _ (hs _ _ hφ))) (N.smul_mem _ hφ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : ∀ X, ∀ φ ∈ N, shift (lie E a) r X (T φ) = T (shift (lie E a) r X φ)` using `fun X φ hφ => by`. Rewrite using `[sh_apply, sh_apply, hT.lie X φ hφ, map_add, map_smul]`. Simplify using `only [casA, cas, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_sum, map_smul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[ht _ _ hφ, ht _ _ (hs _ _ hφ), ht _ _ hφ, ht _ _ (hs _ _ hφ)]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.casOp :
     UpperTheory.V.Cj.H.CasOp := by

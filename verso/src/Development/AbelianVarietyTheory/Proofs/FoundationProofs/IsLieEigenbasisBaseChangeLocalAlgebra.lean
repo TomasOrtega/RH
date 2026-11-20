@@ -17,15 +17,15 @@ open EigenSplit LieEigen
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts scaleD)
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Set `F : (Fin n → R) →ₗ[R] (Fin n → R')` to `(Algebra.linearMap R R').compLeft (Fin n)`. Establish `hF : IsBaseChange R' F` using `IsBaseChange.finitePow (Fin n) (IsBaseChange.linearMap R R')`. Establish `hf' : ∀ a x, F (ρ a x) = ρ' a (F x)` using `hf`. Establish `hB` using `isBaseChange_eigenMapAlgebra hσ hf' hF τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b' : Fin m → eigenSub ρ (σ τ)` to `fun i => ⟨b i, hb i⟩`. Establish `key : ∀ c : eigenSub ρ (σ τ), ∃! d, Fintype.linearCombination R b' d = c` using `fun c => by`. Use `(existsUnique_congr fun d => ?_).1 (H _ c.2)` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff, Fintype.linearCombination_apply]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Set `B : Module.Basis (Fin m) R (eigenSub ρ (σ τ))` to `Module.Basis.ofEquivFun (LinearEquiv.ofBijective _ ((Function.bijective_iff_existsUnique _).2 key)).symm`. Establish `hBi : ∀ i, (B i : Fin n → R) = b i` using `fun i => by`. Simplify using `[B, b', Module.Basis.coe_ofEquivFun, Fintype.linearCombination_apply_single]`. Set `B'` to `hB.basis B`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hB' : ∀ i, (B' i : Fin n → R') = f ∘ b i` using `fun i => by`. Rewrite using `[← hBi, IsBaseChange.basis_apply]`. Both sides reduce to the same expression. Use `⟨fun i => hB' i ▸ (B' i).2, fun c hc => ?_⟩` and prove the remaining obligations. Establish `k : ∀ d : Fin m → R', ∑ i, d i • (f ∘ b i) = c ↔ B'.equivFun ⟨c, hc⟩ = d` using `fun d => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply, Subtype.ext_iff, eq_comm]`. Simplify using `[hB']`. Simplify using `only [k]`. Conclude with `existsUnique_eq'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigenBasis_map {O R R' I : Type} [CommRing O] [CommRing R] [CommRing R'] [Finite I]
     {σ : I → O →+* R} (hσ : IsSplitting σ) {n m : ℕ} (ρ : O →+* Module.End R (Fin n → R)) (f : R →+* R')
@@ -61,11 +61,11 @@ theorem eigenBasis_map {O R R' I : Type} [CommRing O] [CommRing R] [CommRing R']
   exact existsUnique_eq'
 
 /- English proof (translation)
-Establish `mem : ∀ c, EigenvectorLieDegree.IsEigVec act χ (prodPts c e) ↔ c ∈ eigenSub ρ χ` using `fun c => by`. Rewrite using `[mem_eigenSub]`. Use `(and_iff_right (isTangent_prodPts he.1 c)).trans (forall_congr' fun a => ?_)` and prove the remaining obligations. Rewrite using `[← hρ, ← (prodPts_injective he).eq_iff]`. Rewrite using `[prodPts_smul, Over.OverMorphism.ext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `cb : ∀ d c, IsLieComb d (fun i => prodPts (b i) e) (prodPts c e) ↔ ∑ i, d i • b i = c` using `fun d c => by`. Use `(Chart.isLieComb_iff d _ _).trans ?_` and prove the remaining obligations. Rewrite using `[prodPts_prodPts he.1, eq_comm]`. Conclude with `(prodPts_injective he).eq_iff`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr (forall_congr' fun i => mem _) ⟨fun h c hc => ?_, fun h w hw => ?_⟩` and prove the remaining obligations. Conclude with `(existsUnique_congr fun d => cb d c).1 (h _ ((mem c).2 hc))`. Take `⟨c, rfl⟩` from `exists_prodPts he hw.1`. Conclude with `(existsUnique_congr fun d => cb d c).2 (h _ ((mem c).1 hw))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isEigBasis_iff {O R : Type} [CommRing O] [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     {n m : ℕ} {e : Fin n → (epsR R ⟶ G)} (he : IsLieBasis e) {act : OAct O G}
@@ -89,11 +89,11 @@ theorem isEigBasis_iff {O R : Type} [CommRing O] [CommRing R] {G : Over (Sp R)} 
     exact (existsUnique_congr fun d => cb d c).2 (h _ ((mem c).1 hw))
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c R R' _ _ _ j g t t' n τ m v v' hv hv'`. Set `σ₀ : (E →+* ℂ) → 𝓞 E →+* c.F` to `fun τ => (τ.codRestrict c.F.toSubfield (c.conj τ)).comp (algebraMap (𝓞 E) E)`. Establish `hσ₀ : Function.Injective σ₀` using `fun τ τ' h => (isSplitting_complex E).injective (RingHom.ext fun a => congrArg Subtype.val (RingHom.congr_fun h a))`. Establish `hσ : IsSplitting fun τ => j.comp (σ₀ τ)` using `isSplitting_of_isDomain hσ₀ (NumberField.Embeddings.card E ℂ) j (by`. Simplify using `using (isUnit_discr_of_charZero (E := E) c.F).map j)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨N, e, he⟩` from `Chart.exists_isLieBasis t.G t.semi.smooth`. Take `⟨e', he', ee⟩` from `exists_isLieBasis_baseChange R R' g _ _ _ n.cart t.semi.smooth N e he`. Take `⟨ρ, hρ⟩` from `exists_action he t.act`. Take `⟨ρ', hρ'⟩` from `exists_action he' t'.act`. Use `choose b hb using fun i => exists_prodPts he (hv.1 i).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : v = fun i => prodPts (b i) e` from `(funext hb).symm`. Take `rfl : v' = fun i => prodPts (g ∘ b i) e'` from `funext fun i => Over.OverMorphism.ext (n.cart.1.hom_ext ((hv' i).trans (prodPts_left n.cart ee _).symm) ((Over.w _).trans (Over.w _).symm))`. Take `⟨h1, h2⟩` from `(isEigBasis_iff he hρ _ b).1 hv`. Conclude with `(isEigBasis_iff he' hρ' _ _).2 (eigenBasis_map hσ ρ g ρ' (action_baseChange n.cart he' ee n.act hρ hρ') τ b h1 h2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isEigBasis_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (l : Level H) (c : Coeff l) (R R' : Type) [CommRing R] [IsLocalRing R] [CommRing R'] (j : c.F →+* R) (g : R →+* R') (t : SAB H (Sp R)) (t' : SAB H (Sp R')) (n : SABMap t' t (spMap g)) (τ : E →+* ℂ) (m : ℕ) (v : Fin m → (epsR R ⟶ t.G)) (v' : Fin m → (epsR R' ⟶ t'.G)), EigenvectorLieDegree.IsEigBasis t.act (FramedFlatCoordinates.chr c τ j) v → (∀ i, IsVecOver g n.φ (v i) (v' i)) → EigenvectorLieDegree.IsEigBasis t'.act (FramedFlatCoordinates.chr c τ (g.comp j)) v' := by
   intro E _ _ _ H l c R R' _ _ _ j g t t' n τ m v v' hv hv'

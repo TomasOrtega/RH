@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.LatticePeriodEtaObj
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LatticePeriodEtaProof.latticePeriodEta`.
+A detailed English derivation is pending.
 -/
 theorem latticePeriodEta_obj : GlobalTheory.IndefiniteRowSideFullHecke.PeriodLatticeAgreement.LatticePeriodEta :=
   GlobalTheory.LatticePeriodEtaProof.latticePeriodEta

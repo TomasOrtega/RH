@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `R _ Z W _ s Ω _ ξ f g hs hξ h`. Use `projProper _ _ _ hs` as an intermediate fact. Establish `: W.IsSeparated` using `⟨by`. Rewrite using `[← terminal.comp_from s]`. Use the proof step `infer_instance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsDominant ξ` using `⟨fun q => closure_mono (Set.singleton_subset_iff.2 (Set.mem_range_self _)) (specializes_iff_mem_closure.1 (hξ q))⟩`. Conclude with `ext_of_isDominant ξ h`.
+A detailed English derivation is pending.
 -/
 theorem morphism_eq_of_generic_point_eq : ∀ (R : Type) [CommRing R] (Z W : Scheme.{0}) [IsIntegral Z] (s : W ⟶ Sp R) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ Z) (f g : Z ⟶ W), IsProjOver s → (∀ q : Z, genPt ξ ⤳ q) → ξ ≫ f = ξ ≫ g → f = g := by
   intro R _ Z W _ s Ω _ ξ f g hs hξ h

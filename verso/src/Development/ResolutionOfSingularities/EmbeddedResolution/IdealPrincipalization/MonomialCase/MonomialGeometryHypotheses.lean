@@ -80,7 +80,7 @@ theorem pullbackOverField_eq_pullbackAlong (T : MarkedIdealWithBoundary.{u}) (Y 
   rfl
 
 /- English proof (translation)
-The claim follows from `List.length_map _`.
+A detailed English derivation is pending.
 -/
 theorem pullbackOverField_boundary_length (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (k' : Type u)
     [Field k'] (q : Y ⟶ Spec (CommRingCat.of k')) (h : Y ⟶ T.scheme) :
@@ -88,7 +88,7 @@ theorem pullbackOverField_boundary_length (T : MarkedIdealWithBoundary.{u}) (Y :
   List.length_map _
 
 /- English proof (translation)
-The claim follows from `(congrArg List.length (MarkedIdealWithBoundary.pullbackAlong_boundary T Y q h)).trans (List.length_map _)`.
+A detailed English derivation is pending.
 -/
 theorem pullbackAlong_boundary_length (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
@@ -127,7 +127,7 @@ def IsIrreducibleComponentOf {Y : Scheme.{u}} (C S : Set ↥Y) : Prop :=
   IsIrreducible C ∧ C ⊆ S ∧ ∀ C' : Set ↥Y, IsIrreducible C' → C ⊆ C' → C' ⊆ S → C' = C
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intersectionComponents_iff {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) (C : Set ↥Y) :
@@ -139,7 +139,7 @@ abbrev transformedBoundary {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheaf
   L.map (Blowup.strictTransform π Z) ++ [Blowup.exceptionalIdeal π Z]
 
 /- English proof (translation)
-Simplify using `[transformedBoundary]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transformedBoundary_length {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) :
@@ -175,7 +175,7 @@ def preimageStrictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.Idea
   Finset.univ.filter fun j => strictTransformIndex π Z L j ∈ J'
 
 /- English proof (translation)
-Simplify using `[preimageStrictTransformIndex]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_preimageStrictTransformIndex_iff {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData)

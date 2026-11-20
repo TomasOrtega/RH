@@ -6,7 +6,7 @@ open GlobalTheory.ThK.Dbl
 namespace PositivityTheory.SiegelWeilFormula.Fin
 
 /- English proof (translation)
-The claim follows from `siegelWeilStd_pre TW.Twp.poisson hCT`.
+A detailed English derivation is pending.
 -/
 theorem siegelWeilStd_of_ct (hCT : CTSplit) : SiegelWeilStd := siegelWeilStd_pre TW.Twp.poisson hCT
 

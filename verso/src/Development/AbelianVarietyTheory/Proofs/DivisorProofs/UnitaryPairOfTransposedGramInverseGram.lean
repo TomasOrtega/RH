@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.WeilSchrodinger
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA, sigR]`. Consider the case `add x y hx hy => simp_all`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem matchPair_cA_eq_sigR (D : D7) (x : AE D) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig x = sigR (AF D.host.F) D.sp.cm.sig x := by
@@ -24,9 +24,9 @@ theorem matchPair_cA_eq_sigR (D : D7) (x : AE D) :
   | add x y hx hy => simp_all
 
 /- English proof (translation)
-Establish `e1 : Biᵀ * Bmᵀ = 1` using `by rw [← Matrix.transpose_mul, hBB, Matrix.transpose_one]`. Establish `e2 : P * Cm = Biᵀ * P`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : Cm * Q = Q * Biᵀ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem matchPair_inv_transpose {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     (Bm Bi P Q Cm Ci : Matrix n n R) (hBB : Bm * Bi = 1) (hPQ : P * Q = 1) (hQP : Q * P = 1)
@@ -46,16 +46,16 @@ theorem matchPair_inv_transpose {R : Type} [CommRing R] {n : Type} [Fintype n] [
     _ = Q := by rw [← Matrix.mul_assoc, hCC, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `matchPair_cA_eq_sigR D (M i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem matchPair_map_cA (D : D7) {n m : ℕ} (M : Matrix (Fin n) (Fin m) (AE D)) :
     M.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = M.map (sigR (AF D.host.F) D.sp.cm.sig) := by
   ext i j; exact matchPair_cA_eq_sigR D (M i j)
 
 /- English proof (translation)
-Establish `ha : a.1.1ᵀ * incM D.host.F JA * a.1.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = incM D.host.F JA` using `a.2`. Use `show Formalism.UG.cT _ _ * _ * _ = _`. Use `congrArg Matrix.transpose ha` as an intermediate fact. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, hA] at this`. Unfold `Formalism.UG.cT JR`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← matchPair_map_cA]`. Establish `e : (incM D.host.F T.gramᵀ)ᵀ = incM D.host.F T.gram`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.transpose_map]`. Rewrite `this` using `[e]`. Conclude with `(Matrix.mul_assoc _ _ _).trans this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchPair_memT (D : D7) (T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (hA : JA = T.gramᵀ)
     (a : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JA)) : (a.1 : GL (Fin T.rank) (AE D)) ∈ HR (AF D.host.F) D.sp.cm.sig T.gram := by
@@ -71,11 +71,11 @@ theorem matchPair_memT (D : D7) (T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.ran
   exact (Matrix.mul_assoc _ _ _).trans this
 
 /- English proof (translation)
-Establish `hb : b.1.1ᵀ * incM D.host.F JB * b.1.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = incM D.host.F JB` using `b.2`. Establish `hxi : IsUnit (incA D D.host.xi0)` using `(isUnit_iff_ne_zero.2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)).map _`. Establish `hsc : (incM D.host.F (D.host.xi0 • S.gram⁻¹) : Matrix (Fin S.rank) (Fin S.rank) (AE D)) = (incA D D.host.xi0 : AE D) • (incM D.host.F S.gram⁻¹ : Matrix (Fin S.rank) (Fin S.rank) (AE D))`. Use extensionality with `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, incA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `t1 : ∀ (r : AE D) (X Y : Matrix (Fin S.rank) (Fin S.rank) (AE D)), X * (r • Y) = r • (X * Y)` using `fun r X Y => Matrix.mul_smul X r Y`. Establish `t2 : ∀ (r : AE D) (X Y : Matrix (Fin S.rank) (Fin S.rank) (AE D)), (r • X) * Y = r • (X * Y)` using `fun r X Y => Matrix.smul_mul r X Y`. Establish `e1` using `congrArg (fun M => ξ • M) hb`. Rewrite `e1` using `[← t2, ← t1, hB, hsc]`. Establish `e2 : b.1.1ᵀ * ((incA D D.host.xi0 : AE D) • incM D.host.F S.gram⁻¹) * b.1.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = (incA D D.host.xi0 : AE D) • (b.1.1ᵀ * incM D.host.F S.gram⁻¹ * b.1.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTenso …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[t1, t2]`. Rewrite `e1` using `[e2]`. Conclude with `hxi.smul_left_cancel.1 e1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchPair_keeps_inv_gram (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (ξ : AF D.host.F ⊗[D.host.F] D.host.E)
@@ -102,13 +102,11 @@ theorem matchPair_keeps_inv_gram (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hBB : b.1.1 * (b⁻¹).1.1 = 1` using `Units.mul_inv b.1`. Establish `hBB' : (b⁻¹).1.1 * b.1.1 = 1` using `Units.inv_mul b.1`. Establish `hdet : IsUnit S.gram.det` using `(Formalism.L2.Theta.gram_det_ne S).isUnit`. Establish `hPQ : incM D.host.F S.gram⁻¹ * incM D.host.F S.gram = 1`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQP : incM D.host.F S.gram * incM D.host.F S.gram⁻¹ = 1`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hCC : (b⁻¹).1.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) * b.1.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = 1`. Use `map_mul ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig).toRingHom.mapMatrix : Matrix (Fin S.rank) (Fin S.rank) (AE D) →+* Matrix (Fin S.rank) (Fin S.rank) (AE D)) (b⁻¹).1.1 b.1.1` as an intermediate fact. Rewrite `this` using `[hBB', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `key` using `matchPair_inv_transpose _ _ _ _ _ _ hBB hPQ hQP hCC (matchPair_keeps_inv_gram D S JB ξ hB b)`. Use `⟨⟨(b⁻¹).1.1ᵀ, b.1.1ᵀ, by rw [← Matrix.transpose_mul, hBB, Matrix.transpose_one], by rw [← Matrix.transpose_mul, hBB', Matrix.transpose_one]⟩, rfl, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.cT _ _ * _ * _ = _`. Unfold `Formalism.UG.cT JR`.
-
-Rewrite using `[← matchPair_map_cA, Matrix.transpose_map, Matrix.transpose_transpose]`. Conclude with `key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchPair_memS (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (ξ : AF D.host.F ⊗[D.host.F] D.host.E)
@@ -137,7 +135,7 @@ theorem matchPair_memS (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.ran
   exact key
 
 /- English proof (translation)
-Introduce `D S T JA JB ξ hA hB a b`. Take `⟨G, hG, hGm⟩` from `matchPair_memS D S JB ξ hB b`. Conclude with `⟨⟨G, hGm⟩, ⟨a.1, matchPair_memT D T JA hA a⟩, rfl, hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem match_pair : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →

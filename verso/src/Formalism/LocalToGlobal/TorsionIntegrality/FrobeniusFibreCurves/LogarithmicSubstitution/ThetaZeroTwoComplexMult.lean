@@ -15,7 +15,7 @@ open Formalism.L2.Th1.E (Unif ptW inW px IntCurve OneUnit GaussOne)
 open Polynomial
 
 /- English proof (translation)
-Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun h => ?_)` and prove the remaining obligations. Rewrite `h` using `[PadicInt.norm_int_lt_one_iff_dvd]`. Take `⟨k, hk⟩` from `hT`. Take `⟨m, hm⟩` from `h`. Move the coercions through the operations in `at hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -28,18 +28,18 @@ theorem norm_odd (T : ℤ) (hT : Odd T) : ‖(T : ℤ_[2])‖ = 1 := by
   omega
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_int_lt_one_iff_dvd]`. Conclude with `even_iff_two_dvd.mp hN` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_even (N : ℤ) (hN : Even N) : ‖(N : ℤ_[2])‖ < 1 := by
   rw [PadicInt.norm_int_lt_one_iff_dvd]
   exact_mod_cast even_iff_two_dvd.mp hN
 
 /- English proof (translation)
-Introduce `T N hT hN`. Set `F : Polynomial ℤ_[2]` to `X ^ 2 - C (T : ℤ_[2]) * X + C (N : ℤ_[2])`. Establish `hF0 : F.aeval (0 : ℤ_[2]) = (N : ℤ_[2])` using `by simp [F]`. Establish `hD0 : F.derivative.aeval (0 : ℤ_[2]) = -(T : ℤ_[2])` using `by simp [F]`. Establish `hnorm : ‖F.aeval (0 : ℤ_[2])‖ < ‖F.derivative.aeval (0 : ℤ_[2])‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF0, hD0, norm_neg, norm_odd T hT]`. Simplify using `using norm_even N hN`. Take `⟨z, hz, hz1, -, -⟩` from `hensels_lemma hnorm`. Rewrite `hz1` using `[hD0, norm_neg, norm_odd T hT, sub_zero]`. Establish `hz' : z ^ 2 - (T : ℤ_[2]) * z + (N : ℤ_[2]) = 0` using `by simpa [F] using hz`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(T : ℤ_[2]) - z, z, by ring, by linear_combination -hz', ?_, hz1⟩` and prove the remaining obligations. Establish `h` using `PadicInt.norm_add_eq_max_of_ne (q := (T : ℤ_[2])) (r := -z) (by rw [norm_neg, norm_odd T hT]; exact hz1.ne')`. Rewrite using `[sub_eq_add_neg, h, norm_neg, norm_odd T hT]`. Conclude with `max_eq_left hz1.le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quadratic_two_adic_holds : QuadTwoAdic := by
   intro T N hT hN
@@ -59,13 +59,13 @@ theorem quadratic_two_adic_holds : QuadTwoAdic := by
   exact max_eq_left hz1.le
 
 /- English proof (translation)
-Introduce `ι α T N hT hN hTo hNe`. Take `⟨b, b', hs, hp, hb, hb'⟩` from `quadratic_two_adic_holds T N hTo hNe`. Set `φ : ℤ_[2] →+* ℂ_[2]` to `UniformSpace.Completion.coeRingHom.comp ((algebraMap ℚ_[2] (PadicAlgCl 2)).comp PadicInt.Coe.ringHom)`. Establish `hφ : ∀ x : ℤ_[2], φ x = ((algebraMap ℚ_[2] (PadicAlgCl 2) (x : ℚ_[2]) : PadicAlgCl 2) : ℂ_[2])` using `fun x => rfl`. Use `⟨b, b', hb, hb', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← hφ]`. Establish `hs' : φ b + φ b' = ι α + ι (conj α)`. Rewrite using `[← map_add, ← map_add, hs, hT]`. Simplify using the standard rewrite rules. Establish `hp' : φ b * φ b' = ι α * ι (conj α)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, hp, hN]`. Simplify using the standard rewrite rules. Establish `key : (ι α - φ b) * (ι α - φ b') = 0`. Take the linear combination `(-(ι α)) * hs' + hp'`. Break down `mul_eq_zero.mp key with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : ι α = φ b` using `sub_eq_zero.mp h`. Conclude with `Or.inl ⟨e, by linear_combination -hs' - e⟩`. Establish `e : ι α = φ b'` using `sub_eq_zero.mp h`. Conclude with `Or.inr ⟨e, by linear_combination -hs' - e⟩`.
+Establish an intermediate fact. Prove the first alternative. Establish an intermediate fact. Prove the second alternative.
 -/
 theorem roots_two_adic_holds : RootsTwoAdic := by
   intro ι α T N hT hN hTo hNe
@@ -92,7 +92,7 @@ theorem roots_two_adic_holds : RootsTwoAdic := by
     exact Or.inr ⟨e, by linear_combination -hs' - e⟩
 
 /- English proof (translation)
-Introduce `ω hω`. Establish `h1 : conj α = (T : ℂ) - α` using `by rw [← hT]; ring`. Rewrite using `[h1, sub_mul, ← zsmul_eq_mul]`. Conclude with `L.lattice.sub_mem (L.lattice.smul_mem T hω) (h ω hω)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulStable_conj (L : PeriodPair) (α : ℂ) (T : ℤ) (h : MulStable L α)
     (hT : α + conj α = (T : ℂ)) : MulStable L (conj α) := by
@@ -102,11 +102,11 @@ theorem mulStable_conj (L : PeriodPair) (α : ℂ) (T : ℤ) (h : MulStable L α
   exact L.lattice.sub_mem (L.lattice.smul_mem T hω) (h ω hω)
 
 /- English proof (translation)
-Establish `KI : KernelIntegral` using `KKer.KernelIntegral_of KNorm.two_torsion_kernel_unique_holds KNorm.torsion_norm_bound_holds KNorm.kappa_norm_holds KSum.kappa_sum_holds`. Establish `hF : ThetaZeroAtTwo` using `KFin.Th0TwoFinal_of (KFin.PointsTwoFinal_of KI (KFin.kernel_stable_of_integral_kernel KI) KNorm.two_torsion_kernel_unique_holds)`. Introduce `L ι W hU hI ha α ω₀ T N hα hT hN hTo hNe hω h1 h2`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : (T : ℂ) = 0` using `by rw [← hT]; simp`. Establish `hT0 : T = 0` using `by exact_mod_cast h0`. Take `⟨k, hk⟩` from `hTo`. Use linear arithmetic over natural numbers and integers. Take `⟨b, b', hb, hb', (⟨e1, e2⟩ | ⟨e1, e2⟩)⟩` from `roots_two_adic_holds ι α T N hT hN hTo hNe`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Conclude with `hF L ι W hU hI ha α ω₀ b b' hα0 hα e1 e2 hb hb' hω h2`. Establish `hc : conj (conj α) = α` using `Complex.conj_conj α`. Establish `hs` using `mulStable_conj L α T hα hT`. Conclude with `hF L ι W hU hI ha (conj α) ω₀ b b' (by simpa using hα0) hs e2 (by rw [hc]; exact e1) hb hb' hω (by rw [hc]; exact h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_zero_two_adic_trace : ThetaZeroTwoTrace := by
   have KI : KernelIntegral := KKer.KernelIntegral_of KNorm.two_torsion_kernel_unique_holds
@@ -128,7 +128,7 @@ theorem theta_zero_two_adic_trace : ThetaZeroTwoTrace := by
       (by rw [hc]; exact e1) hb hb' hω (by rw [hc]; exact h1)
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Th1.CM.omegaK, map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_omegaK (d : ℕ) :
     conj (Formalism.L2.Th1.CM.omegaK d) = (1 - Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2 := by
@@ -137,13 +137,13 @@ theorem conj_omegaK (d : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `d L hd hCM ι W hU hI ha ω₀ hω h1 h2`. Take `⟨k, hk⟩ : ∃ k, d = 8 * k + 7` from `⟨d / 8, by omega⟩`. Establish `hs2 : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = 8 * (k : ℂ) + 7`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _), hk]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `theta_zero_two_adic_trace L ι W hU hI ha (CM.omegaK d) ω₀ 1 (2 * (k : ℤ) + 2) hCM ?_ ?_ ?_ ?_ hω h1 h2` and prove the remaining obligations. Rewrite using `[conj_omegaK]`. Simplify using `only [CM.omegaK]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[conj_omegaK]`. Simplify using `only [CM.omegaK]`. Use `push_cast`. Take the linear combination `(-(((Real.sqrt d : ℝ) : ℂ) ^ 2) / 4) * Complex.I_sq + (1 / 4) * hs2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `odd_one`. Conclude with `⟨k + 1, by push_cast; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem theta_zero_two_complex_mult : ThetaZeroTwoCM := by
   intro d L hd hCM ι W hU hI ha ω₀ hω h1 h2

@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.RealMult.ProjOverC
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 X c hc`. Establish `hL : (X.diag c).IsLB` using `LB.isLB_pull (X.isLB c) _`. Establish `hq : IsQProjOver (X.A.hom ≫ 𝟙 (Sp ℂ))` using `GlobalTheory.RelAmpleQProj.isQProjOver_of_relAmple ℂ (Sp ℂ) (𝟙 _) X.A (X.diag c) (GlobalTheory.ZM.OnePoint.isQProjOver_id ℂ) hL (X.pos c hc)`. Rewrite `hq` using `[Category.comp_id]`. Establish `hp : IsProper X.A.hom` using `X.ab.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsProper (𝟙 X.A.left ≫ X.A.hom)` using `by rw [Category.id_comp]; exact hp`. Establish `h` using `GlobalTheory.isProjOver_of_isProper_of_isImmersion (𝟙 X.A.left) hq`. Rewrite `h` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isProjOver_A : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt),
     IsTotPos (c : F) → IsProjOver X.A.hom := by
@@ -39,7 +39,7 @@ theorem isProjOver_A : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F
   rwa [Category.id_comp] at h
 
 /- English proof (translation)
-The claim follows from `isProjOver_A`.
+A detailed English derivation is pending.
 -/
 example : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt),
     IsTotPos (c : F) → IsProjOver X.A.hom := isProjOver_A

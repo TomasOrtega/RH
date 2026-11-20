@@ -12,7 +12,7 @@ open AlgebraicGeometry CategoryTheory Limits MvPolynomial NumberField Reciprocit
 namespace GlobalTheory.ShFam.CarriesAt
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_mul_of_blockTriangular {R : Type} [CommRing R] {n : ℕ} {A B : Matrix (Fin n) (Fin n) R}
     (hA : A.BlockTriangular id) (hB : B.BlockTriangular id) (i : Fin n) : (A * B) i i = A i i * B i i := by
@@ -23,7 +23,7 @@ theorem diag_mul_of_blockTriangular {R : Type} [CommRing R] {n : ℕ} {A B : Mat
   · rw [hB h, mul_zero]
 
 /- English proof (translation)
-Rewrite `hd` using `[Matrix.det_of_upperTriangular hA]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun j => A j j) (Finset.mem_univ i)) hd`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_diag_of_blockTriangular {R : Type} [CommRing R] {n : ℕ} {A : Matrix (Fin n) (Fin n) R}
     (hA : A.BlockTriangular id) (hd : IsUnit A.det) (i : Fin n) : IsUnit (A i i) := by
@@ -31,43 +31,41 @@ theorem isUnit_diag_of_blockTriangular {R : Type} [CommRing R] {n : ℕ} {A : Ma
   exact isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun j => A j j) (Finset.mem_univ i)) hd
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C k _ φ x g p hC y ψ φ₁ f t hp hf`. Take `⟨y₁, ψ₁, φ₂, f₁, t₁, t₁', hp₁, hf₁, hg₁⟩` from `hC`. Establish `hsp : p (IsLocalRing.closedPoint k) ⤳ y`. Establish `: p (IsLocalRing.closedPoint k) ∈ Set.range (C.Y.X.fromSpecStalk y)`. Rewrite using `[hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨spMap ψ (IsLocalRing.closedPoint k), rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hsp₁ : p (IsLocalRing.closedPoint k) ⤳ y₁`. Establish `: p (IsLocalRing.closedPoint k) ∈ Set.range (C.Y.X.fromSpecStalk y₁)`. Rewrite using `[hp₁]`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨spMap ψ₁ (IsLocalRing.closedPoint k), rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hψ : ψ = (Scheme.stalkClosedPointTo (R` using `CommRingCat.of k) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp).hom := by`. Use `EigLoc.spMap_inj ((cancel_mono (C.Y.X.fromSpecStalk y)).1 ?_)` and prove the remaining obligations. Establish `e1` using `spMap_stalkClosedPointTo p`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom ≫ C.Y.X.fromSpecStalk y = C.Y.X.fromSpecStalk _` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`. Establish `e3 : spMap ((Scheme.stalkClosedPointTo (R` using `CommRingCat.of k) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp).hom) = spMap (Scheme.stalkClosedPointTo (R := CommRingCat.of k) p).hom ≫ spMap (C.Y.X.presheaf.stalkSpecializes hsp).hom := by`. Simplify using `[spMap, Spec.map_comp]`. Rewrite using `[e3, Category.assoc, e2, e1]`. Conclude with `hp.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψ₁ : ψ₁ = (Scheme.stalkClosedPointTo (R` using `CommRingCat.of k) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp₁).hom := by`. Use `EigLoc.spMap_inj ((cancel_mono (C.Y.X.fromSpecStalk y₁)).1 ?_)` and prove the remaining obligations. Establish `e1` using `spMap_stalkClosedPointTo p`. Establish `e2 : spMap (C.Y.X.presheaf.stalkSpecializes hsp₁).hom ≫ C.Y.X.fromSpecStalk y₁ = C.Y.X.fromSpecStalk _` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp₁`. Establish `e3 : spMap ((Scheme.stalkClosedPointTo (R` using `CommRingCat.of k) p).hom.comp (C.Y.X.presheaf.stalkSpecializes hsp₁).hom) = spMap (Scheme.stalkClosedPointTo (R := CommRingCat.of k) p).hom ≫ spMap (C.Y.X.presheaf.stalkSpecializes hsp₁).hom := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[spMap, Spec.map_comp]`. Rewrite using `[e3, Category.assoc, e2, e1]`. Conclude with `hp₁.symm`. Use `set ψp := (Scheme.stalkClosedPointTo (R := CommRingCat.of k) p).hom with hψpdef`. Use `set ρ := (C.Y.X.presheaf.stalkSpecializes hsp).hom with hρdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ρ₁ := (C.Y.X.presheaf.stalkSpecializes hsp₁).hom with hρ₁def`. Use `set alg := algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint k))) C.Y.X.functionField with halgdef`. Establish `hinj : Function.Injective alg` using `IsFractionRing.injective _ _`. Establish `halg : algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField = alg.comp ρ` using `algebraMap_eq_comp_specializes hsp`. Establish `halg₁ : algebraMap (C.Y.X.presheaf.stalk y₁) C.Y.X.functionField = alg.comp ρ₁` using `algebraMap_eq_comp_specializes hsp₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxp : spMap ρ ≫ stalkPt C.Y y = stalkPt C.Y (p (IsLocalRing.closedPoint k))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`. Establish `hxp₁ : spMap ρ₁ ≫ stalkPt C.Y y₁ = stalkPt C.Y (p (IsLocalRing.closedPoint k))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp₁`. Establish `hpp : spMap ψp ≫ stalkPt C.Y (p (IsLocalRing.closedPoint k)) = p` using `spMap_stalkClosedPointTo p`. Establish `c1 : alg.comp (ρ.comp φ₁) = constF e C.Y` using `by rw [← RingHom.comp_assoc, ← halg, hf.2.1]`. Establish `c2 : alg.comp (ρ₁.comp φ₂) = constF e C.Y` using `by rw [← RingHom.comp_assoc, ← halg₁, hf₁.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρφ : ρ₁.comp φ₂ = ρ.comp φ₁` using `RingHom.ext fun a => hinj ((RingHom.congr_fun c2 a).trans (RingHom.congr_fun c1 a).symm)`. Establish `hgen : genericPt C.Y ≫ C.π ≫ genι Z = spMap alg ≫ stalkPt C.Y (p (IsLocalRing.closedPoint k)) ≫ C.π ≫ genι Z`. Rewrite using `[hf.1, halg, ← hxp]`. Simplify using `[spMap, Spec.map_comp]`. Establish `hx0 : x = p ≫ C.π ≫ genι Z` using `by rw [hg₁.1, hp₁, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxk : x = spMap ψp ≫ stalkPt C.Y (p (IsLocalRing.closedPoint k)) ≫ C.π ≫ genι Z`. Rewrite using `[hx0, ← Category.assoc (spMap ψp), hpp]`. Establish `hxψ : x = spMap ψ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z`. Rewrite using `[hx0, hp, Category.assoc]`. Establish `hφk : φ = ψ.comp φ₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg₁.2.1, hψ₁, hψ, RingHom.comp_assoc, RingHom.comp_assoc, hρφ]`. Take `⟨f', hf'⟩` from `f.exists_isMap (x' := stalkPt C.Y (p (IsLocalRing.closedPoint k)) ≫ C.π ≫ genι Z) ρ rfl (by rw [← hxp, Category.assoc])`. Take `⟨f₁', hf₁'⟩` from `f₁.exists_isMap (x' := stalkPt C.Y (p (IsLocalRing.closedPoint k)) ≫ C.π ≫ genι Z) ρ₁ hρφ.symm (by rw [← hxp₁, Category.assoc])`. Take `⟨fF, hfF⟩` from `f'.exists_isMap alg c1.symm hgen`. Take `⟨f₁F, hf₁F⟩` from `f₁'.exists_isMap alg c1.symm hgen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨fk, hfk⟩` from `f.exists_isMap ψ hφk hxψ`. Take `⟨f₁k, hf₁k⟩` from `f₁.exists_isMap ψ₁ hg₁.2.1 hg₁.1`. Establish `iF : f.IsMap (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField) fF` using `fun τ i => by`. Rewrite using `[hfF τ i, hf' τ i, ← Category.assoc (spMap (dualMap alg)), ← spMap_dualMap_comp, ← halg]`. Establish `i₁F : f₁.IsMap (algebraMap (C.Y.X.presheaf.stalk y₁) C.Y.X.functionField) f₁F` using `fun τ i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf₁F τ i, hf₁' τ i, ← Category.assoc (spMap (dualMap alg)), ← spMap_dualMap_comp, ← halg₁]`. Establish `ik : f'.IsMap ψp fk` using `fun τ i => by`. Rewrite using `[hfk τ i, hf' τ i, ← Category.assoc (spMap (dualMap ψp)), ← spMap_dualMap_comp, ← hψ]`. Establish `i₁k : f₁'.IsMap ψp f₁k` using `fun τ i => by`. Rewrite using `[hf₁k τ i, hf₁' τ i, ← Category.assoc (spMap (dualMap ψp)), ← spMap_dualMap_comp, ← hψ₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ τ, (fk.co g τ).BlockTriangular id ∧ ∀ i, IsUnit (fk.co g τ i i)`. Introduce `τ`. Establish `hU` using `EigFrame.Tri.co (τ := τ) hf iF`. Establish `hU₁` using `EigFrame.Tri.co (τ := τ) hf₁ i₁F`. Establish `hU₁t : (f₁F.co C.f0 τ).BlockTriangular id` using `fun a i h => hU₁.1 a i h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU₁d : IsUnit (f₁F.co C.f0 τ).det` using `f₁F.isUnit_det_co C.f0 τ`. Establish `hW : fF.co f₁F τ = fF.co C.f0 τ * (f₁F.co C.f0 τ)⁻¹`. Rewrite using `[← fF.co_mul f₁F C.f0 τ, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hU₁d, Matrix.mul_one]`. Establish `hWt : (fF.co f₁F τ).BlockTriangular id` using `by haveI := Matrix.invertibleOfIsUnitDet _ hU₁d`. Rewrite using `[hW]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.BlockTriangular.mul (fun a i h => hU.1 a i h) (Matrix.blockTriangular_inv_of_blockTriangular hU₁t)`. Establish `hM : fF.co f₁F τ = (f'.co f₁' τ).map alg` using `EigFrame.IsMap.co τ hfF hf₁F hgen`. Establish `hMt : (f'.co f₁' τ).BlockTriangular id` using `fun a i h => hinj (by`. Use `hWt h` as an intermediate fact. Rewrite `this` using `[hM, Matrix.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero])`. Establish `hMu : ∀ i, IsUnit (f'.co f₁' τ i i)` using `isUnit_diag_of_blockTriangular hMt (f'.isUnit_det_co f₁' τ)`. Establish `hN` using `EigFrame.Tri.co (τ := τ) hg₁ hf₁k`. Establish `hNt : (f₁k.co g τ).BlockTriangular id` using `fun a i h => hN.1 a i h`. Establish `hMk : fk.co f₁k τ = (f'.co f₁' τ).map ψp` using `EigFrame.IsMap.co τ ik i₁k hxk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hMkt : (fk.co f₁k τ).BlockTriangular id` using `fun a i h => by`. Rewrite using `[hMk, Matrix.map_apply, hMt h, map_zero]`. Establish `hQ : fk.co g τ = fk.co f₁k τ * f₁k.co g τ` using `(fk.co_mul f₁k g τ).symm`. Use `⟨hQ ▸ hMkt.mul hNt, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, diag_mul_of_blockTriangular hMkt hNt, hMk, Matrix.map_apply, hN.2 i]`.
-
-Conclude with `((hMu i).map ψp).mul (Units.isUnit _)`. Use `⟨fun τ i => ((key τ).2 i).unit, hxψ, hφk, fun τ i => ⟨fun a => fk.co g τ a i, ((key τ).2 i).unit_spec.symm, fun a ha => (key τ).1 ha, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← funext (hfk τ)]`. Conclude with `fk.co_spec g τ i`.
+A detailed English derivation is pending.
 -/
 theorem tri_of_carries : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (k : Type) [Field k] (φ : c.F →+* k) (x : Sp k ⟶ Z.X) (g : EigFrame Z φ x) (p : Sp k ⟶ C.Y.X), C.Carries p g → ∀ (y : C.Y.X) (ψ : C.Y.X.presheaf.stalk y →+* k) (φ₁ : c.F →+* C.Y.X.presheaf.stalk y) (f : EigFrame Z φ₁ (stalkPt C.Y y ≫ C.π ≫ genι Z)) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ), p = spMap ψ ≫ stalkPt C.Y y → f.Tri (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField) C.f0 t → ∃ t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ, f.Tri ψ g t' := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e C k _ φ x g p hC y ψ φ₁ f t hp hf

@@ -6,15 +6,15 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 namespace GlobalTheory.ZeroDetect
 
 /- English proof (translation)
-Establish `h : Tendsto (fun Q : ℕ => (Q : ℝ) ^ ((1 : ℝ) / 40)) atTop atTop` using `(tendsto_rpow_atTop (by norm_num)).comp tendsto_natCast_atTop_atTop`. Take `⟨Q₀, hQ₀⟩` from `eventually_atTop.mp (h.eventually_ge_atTop 1204)`. Use `⟨max Q₀ 1, fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hQ₀ Q (le_of_max_le_left hQ)`. Establish `hQ1 : (1 : ℝ) ≤ Q` using `by exact_mod_cast le_of_max_le_right hQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : (0 : ℝ) < Q` using `by linarith`. Establish `hlog` using `Real.log_le_rpow_div hQ0.le (show (0 : ℝ) < 1 / 100 by norm_num)`. Establish `hone : (1 : ℝ) ≤ (Q : ℝ) ^ ((1 : ℝ) / 100)` using `Real.one_le_rpow hQ1 (by norm_num)`. Establish `h2 : 1 + Real.log ((Q ^ 3 : ℕ) : ℝ) ≤ 301 * (Q : ℝ) ^ ((1 : ℝ) / 100)`. Rewrite using `[Nat.cast_pow, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (Q : ℝ) ^ ((1 : ℝ) / 20) = (Q : ℝ) ^ ((1 : ℝ) / 100) * ((Q : ℝ) ^ 6) ^ ((1 : ℝ) / 400) * (Q : ℝ) ^ ((1 : ℝ) / 40)`. Rewrite using `[← Real.rpow_natCast (Q : ℝ) 6, ← Real.rpow_mul hQ0.le, ← Real.rpow_add hQ0, ← Real.rpow_add hQ0]`. Evaluate the numerical expressions.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `ha : 0 < ((Q : ℝ) ^ 6) ^ ((1 : ℝ) / 400)` using `by positivity`. Rewrite using `[h3]`. Use `set a := ((Q : ℝ) ^ 6) ^ ((1 : ℝ) / 400)`. Use `set b := (Q : ℝ) ^ ((1 : ℝ) / 100)`. Use `set c := (Q : ℝ) ^ ((1 : ℝ) / 40)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hb : 0 < b` using `by linarith`. Establish `hc : 0 < c` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem pole_small : ∃ Q₀ : ℕ, ∀ Q : ℕ, Q₀ ≤ Q →
     (1 + Real.log ((Q ^ 3 : ℕ) : ℝ)) * (((Q : ℝ) ^ 6) ^ ((1 : ℝ) / 400) / (Q : ℝ) ^ ((1 : ℝ) / 20))
@@ -47,49 +47,47 @@ theorem pole_small : ∃ Q₀ : ℕ, ∀ Q : ℕ, Q₀ ≤ Q →
     _ ≤ 1 / 4 := by rw [div_le_iff₀ hc]; linarith
 
 /- English proof (translation)
-Take `⟨Q₀, hQ₀⟩` from `pole_small`. Use `⟨max Q₀ 1024, fun Q hQ' ρ hre hre1 hlow him hL => ?_⟩` and prove the remaining obligations. Establish `hpole` using `hQ₀ Q (le_of_max_le_left hQ')`. Establish `hQ : 1024 ≤ Q` using `le_of_max_le_right hQ'`. Use `set f : ℕ → ℂ := fun n => (n : ℂ) ^ (-ρ) with hfdef`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ m n, 0 < m → 0 < n → f (m * n) = f m * f n`. Introduce `m n _ _`. Simplify using `only [hfdef, Nat.cast_mul, Complex.natCast_mul_natCast_cpow]`. Establish `hf1 : f 1 = 1` using `by simp [hfdef]`. Establish `hQ1 : 1 ≤ Q` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQr : (1024 : ℝ) ≤ Q` using `by exact_mod_cast hQ`. Establish `hD1 : 1 ≤ Q ^ 3` using `Nat.one_le_pow _ _ hQ1`. Establish `hD2 : 2 ≤ Q ^ 3` using `le_trans (by omega) (Nat.le_self_pow (by norm_num) Q)`. Establish `hX : Q ^ 6 = Q ^ 3 * Q ^ 3` using `by ring`. Establish `hDX : Q ^ 3 ≤ Q ^ 6` using `Nat.pow_le_pow_right hQ1 (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : 0 < ρ.re` using `by linarith`. Establish `hρ1 : ρ ≠ 1`. Introduce `h`. Rewrite `hre1` using `[h]`. Simplify using `at hre1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hρ : ‖ρ‖ / ρ.re ≤ 4 * Q`. Establish `h1 : ‖ρ‖ ≤ ρ.re + Q`. Use `Complex.norm_le_abs_re_add_abs_im ρ` as an intermediate fact. Rewrite `this` using `[abs_of_pos hσ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ hσ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hG : 0 < (Q : ℝ) ^ ((1 : ℝ) / 20)` using `by positivity`. Establish `hden : (Q : ℝ) ^ ((1 : ℝ) / 20) ≤ ‖ρ - 1‖`. Use `Complex.abs_im_le_norm (ρ - 1)` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_im, one_im, sub_zero] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set B : ℝ := ((Q : ℝ) ^ 6) ^ ((1 : ℝ) / 400) / (Q : ℝ) ^ ((1 : ℝ) / 20) with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hconv` using `sum_trunc_conv (fun d => ((moebius d : ℤ) : ℂ)) f hf (Q ^ 3) (Q ^ 6)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinit` using `sum_initial f (Q ^ 3) hD1`. Establish `hbound : ‖∑ d ∈ Finset.Icc 1 (Q ^ 3), ((moebius d : ℤ) : ℂ) * f d * ∑ m ∈ Finset.Icc 1 (Q ^ 6 / d), f m‖ ≤ 1 / 2`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (g := fun d : ℕ => 1 / (4 * (Q : ℝ) ^ 3) + (d : ℝ)⁻¹ * B) ?_).trans ?_` and prove the remaining obligations. Introduce `d hd`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hd1, hdD⟩` from `Finset.mem_Icc.mp hd`. Establish `hN : 1 ≤ Q ^ 6 / d` using `Nat.div_pos (hdD.trans hDX) hd1`. Establish `ht` using `GlobalTheory.T.norm_riemannZeta_sub_partial_sum_le ρ hσ hρ1 _ hN`. Establish `hy : Q ^ 6 ≤ 2 * (d * (Q ^ 6 / d))`. Establish `h1` using `Nat.div_add_mod (Q ^ 6) d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.mod_lt (Q ^ 6) hd1`. Establish `h3 : 2 * Q ^ 3 ≤ Q ^ 6` using `by rw [hX]; exact Nat.mul_le_mul_right _ hD2`. Use linear arithmetic over natural numbers and integers. Establish `hy2 : d * (Q ^ 6 / d) ≤ Q ^ 6` using `Nat.mul_div_le _ _`. Generalize the expression as in `Q ^ 6 / d = M at *`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast hd1`. Establish `hM0 : (0 : ℝ) < M` using `by exact_mod_cast hN`. Rewrite `ht` using `[hL, zero_sub, ← neg_add', norm_neg]`. Establish `hμ : ‖((moebius d : ℤ) : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_intCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `abs_moebius_le_one` after adjusting the coercions. Establish `hfd : ‖f d‖ = (d : ℝ) ^ (-ρ.re)`. Simplify using `only [hfdef]`. Rewrite using `[Complex.norm_natCast_cpow_of_pos hd1, Complex.neg_re]`. Establish `hr` using `rpow_bound (y := (d : ℝ) * (M : ℝ)) (σ := ρ.re) hQr (by exact_mod_cast hy) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hr` using `[Real.mul_rpow (by positivity) (by positivity)]`. Establish `hp : ‖(M : ℂ) ^ (1 - ρ) / (ρ - 1)‖ ≤ (M : ℝ) ^ (1 - ρ.re) / (Q : ℝ) ^ ((1 : ℝ) / 20)`. Rewrite using `[norm_div, Complex.norm_natCast_cpow_of_pos hN]`. Simplify using `only [sub_re, one_re]`. Use `gcongr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ht2 : ‖∑ m ∈ Finset.Icc 1 M, f m‖ ≤ 4 * Q * (M : ℝ) ^ (-ρ.re) + (M : ℝ) ^ (1 - ρ.re) / (Q : ℝ) ^ ((1 : ℝ) / 20)`. Establish `h1` using `norm_sub_le (∑ m ∈ Finset.Icc 1 M, f m + (M : ℂ) ^ (1 - ρ) / (ρ - 1)) ((M : ℂ) ^ (1 - ρ) / (ρ - 1))`. Rewrite `h1` using `[add_sub_cancel_right]`. Establish `h2 : ‖ρ‖ / ρ.re * (M : ℝ) ^ (-ρ.re) ≤ 4 * Q * (M : ℝ) ^ (-ρ.re)` using `by gcongr`. Simplify using `only [hfdef] at h1 ⊢`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : (d : ℝ) ^ (-ρ.re) * (M : ℝ) ^ (1 - ρ.re) ≤ (d : ℝ)⁻¹ * ((Q : ℝ) ^ 6) ^ ((1 : ℝ) / 400)`. Establish `h1 : (d : ℝ) ^ (-ρ.re) = (d : ℝ)⁻¹ * (d : ℝ) ^ (1 - ρ.re)`. Rewrite using `[← Real.rpow_neg_one, ← Real.rpow_add hd0]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, mul_assoc, ← Real.mul_rpow hd0.le hM0.le]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `h2 : (d : ℝ) * M ≤ (Q : ℝ) ^ 6` using `by exact_mod_cast hy2`. Use `(Real.rpow_le_rpow (by positivity) h2 (by linarith)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Real.rpow_le_rpow_of_exponent_le (one_le_pow₀ (by linarith)) (by linarith)`. Establish `h3 : 4 * (Q : ℝ) * (16 * (Q : ℝ) ^ 5)⁻¹ ≤ 1 / (4 * (Q : ℝ) ^ 3)`. Establish `: 4 * (Q : ℝ) * (16 * (Q : ℝ) ^ 5)⁻¹ = 1 / (4 * (Q : ℝ) ^ 4)` using `by field_simp; norm_num`. Rewrite using `[this]`. Use `gcongr`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Rewrite using `[norm_mul, norm_mul, hfd]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, Finset.sum_const]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hh : ∑ d ∈ Finset.Icc 1 (Q ^ 3), (d : ℝ)⁻¹ ≤ 1 + Real.log ((Q ^ 3 : ℕ) : ℝ)`. Use `harmonic_le_one_add_log (Q ^ 3)` as an intermediate fact. Rewrite `this` using `[harmonic_eq_sum_Icc]`. Move the coercions through the operations in `at this ⊢`. Conclude with `this`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (Finset.Icc 1 (Q ^ 3)).card • (1 / (4 * (Q : ℝ) ^ 3)) = 1 / 4`. Simplify using `only [Nat.card_Icc, Nat.add_sub_cancel, nsmul_eq_mul, Nat.cast_pow]`. Clear the denominators using the available nonvanishing facts. Establish `h2` using `mul_le_mul_of_nonneg_right hh hB0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hbound` using `[← hconv, ← Finset.sum_Ioc_consecutive _ (Nat.zero_le _) hDX]`. Simplify using `only [Int.cast_sum] at hinit`. Rewrite `hbound` using `[hinit, hf1]`. Simplify using `only [Int.cast_sum, mul_one]`. Use `norm_sub_le (1 + ∑ n ∈ Finset.Ioc (Q ^ 3) (Q ^ 6), (∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), ((moebius d : ℤ) : ℂ)) * f n) (∑ n ∈ Finset.Ioc (Q ^ 3) (Q ^ 6), (∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), ((moebius d : ℤ) : ℂ)) * f n)` as an intermediate fact.
-
-Rewrite `this` using `[add_sub_cancel_right, norm_one]`. Simplify using `only [hfdef] at this hbound`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem zeta_zero_detect : ∃ Q₀ : ℕ, ∀ Q : ℕ, Q₀ ≤ Q → ∀ ρ : ℂ, 1 - 1 / 400 ≤ ρ.re → ρ.re < 1 → (Q : ℝ) ^ ((1 : ℝ) / 20) ≤ |ρ.im| → |ρ.im| ≤ Q → riemannZeta ρ = 0 → (1 / 2 : ℝ) ≤ ‖∑ n ∈ Finset.Ioc (Q ^ 3) (Q ^ 6), ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * (1 : ℂ) * (n : ℂ) ^ (-ρ)‖ := by
   obtain ⟨Q₀, hQ₀⟩ := pole_small

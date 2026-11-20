@@ -15,11 +15,11 @@ variable {n : ℕ}
 open MeasureTheory
 
 /- English proof (translation)
-Take `⟨B, c, P, hev, -, -, hP1, -, hc0, hQ, hfib, -⟩` from `pm_core dual hσ hD hsm hgap hV hc hVK hW hG`. Use `⟨fun z f hf hf0 hz => ?_, fun s Q _ _ _ _ hQ1 hQ0 x hx => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `hev z f hf hf0 hz`. Establish `hcne : c b ≠ 0` using `fun h0 => hf0 (by rw [← hP1 b f hf hz]; exact hc0 b h0 f hf)`. Establish `h1` using `hfib ((b : ℝ) : ℂ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[pm_sum_single hb]`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists] at hne`. Rewrite `h1` using `[Finset.filter_eq_empty_iff.2 (fun s _ h => hne s h.symm), Finset.sum_empty]`. Conclude with `hcne h1`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ Q _ hQ1 hQ0 x hx, hfib, pm_filter_pole dual hgap.1 s, Finset.sum_singleton]`.
+A detailed English derivation is pending.
 -/
 theorem pole_match (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
@@ -50,15 +50,13 @@ theorem pole_match (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCom
   · rw [hQ Q _ hQ1 hQ0 x hx, hfib, pm_filter_pole dual hgap.1 s, Finset.sum_singleton]
 
 /- English proof (translation)
-Take `⟨B, c, P, hev, hPM, hPz, hP1, hcb, hc0, -, hfib, x₀, hx₀, hx₀0⟩` from `pm_core dual hσ hD hsm hgap hV hc hVK hW hG`. Establish `h1` using `hfib (poleF dual lam s)`. Rewrite `h1` using `[pm_filter_pole dual hgap.1 s, Finset.sum_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h0 f hf hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hf0`. Take `⟨b, hb, hzb⟩` from `hev _ f hf hf0 hz`. Establish `hcne : c b ≠ 0` using `fun h => hf0 (by rw [← hP1 b f hf (hzb ▸ hz)]; exact hc0 b h f hf)`. Rewrite `h1` using `[hzb, pm_sum_single hb, h0, Complex.ofReal_zero]`. Conclude with `hcne h1`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hno`. Establish `hsum : (∑ b ∈ B, if ((b : ℝ) : ℂ) = poleF dual lam s then c b else 0) = 0`. Use `sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Establish `hz : ∀ f ∈ tensSub (genSub E V), P b f = 0` using `fun f hf => hno _ (hPM b f hf) (by rw [hPz b f hf, h])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : c b • x₀ = 0`. Rewrite using `[← hcb b x₀ hx₀, ptr_apply]`. Conclude with `sum_eq_zero fun i _ => by rw [hz _ (pm_single_mem _ hx₀ _)]; rfl`. Conclude with `(smul_eq_zero.1 h2).resolve_right hx₀0`. Both sides reduce to the same expression.
-
-Rewrite `h1` using `[hsum]`. Conclude with `h1.symm` after adjusting the coercions.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pole_zero (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}

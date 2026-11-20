@@ -7,7 +7,7 @@ open UpperTheory.V.Sd.S2 ReciprocityTheory.Gal
 namespace UpperTheory
 
 /- English proof (translation)
-Establish `a : ∀ i j, Continuous fun x => A x i j` using `fun i j => hA.matrix_elem i j`. Establish `b : ∀ i j, Continuous fun x => B x i j` using `fun i j => hB.matrix_elem i j`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mix, div_eq_mul_inv] <;> fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mix_cont {k X : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] [TopologicalSpace X] (γ : kˣ)
     {A B : X → Matrix (Fin 2) (Fin 2) k} (hA : Continuous A) (hB : Continuous B) :
@@ -18,19 +18,17 @@ private theorem mix_cont {k X : Type} [Field k] [TopologicalSpace k] [IsTopologi
   fin_cases i <;> fin_cases j <;> simp [mix, div_eq_mul_inv] <;> fun_prop
 
 /- English proof (translation)
-Introduce `l _ Γ₀ Γ _ _ _ _ _ j t α β ρ R hM hj hρ`. Use `haveI hN : j.range.Normal := Subgroup.normal_of_index_eq_two hM.index`. Establish `hc : ∀ h : Γ₀, ∃ h', j h' = t⁻¹ * j h * t` using `fun h => by`. Use `hN.conj_mem (j h) ⟨h, rfl⟩ t⁻¹` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `choose c hc using hc`. Establish `cc : Continuous c`. Rewrite using `[hj.isInducing.continuous_iff]`. Establish `: (j ∘ c) = fun h => t⁻¹ * j h * t` using `funext hc`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hj.continuous` as an intermediate fact. Use `fun_prop`. Establish `ci : Continuous fun h : Γ₀ => h⁻¹`. Rewrite using `[hj.isInducing.continuous_iff]`. Establish `: (j ∘ fun h : Γ₀ => h⁻¹) = fun h => (j h)⁻¹` using `funext fun h => by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hj.continuous.inv`. Establish `hv : Continuous fun h => (ρ h).val` using `Units.continuous_val.comp hρ`. Establish `h1 : Continuous fun h => (R (j h)).val`. Establish `: (fun h => (R (j h)).val) = fun h => mix (β / α) (ρ h) (ρ (c h))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun h => hM.on h (c h) (hc h)`. Rewrite using `[this]`. Conclude with `mix_cont _ hv (hv.comp cc)`. Establish `h2 : Continuous (R ∘ j)`. Rewrite using `[Units.continuous_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `h1.comp ci` as an intermediate fact. Use `this.congr fun h => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, map_inv]`. Use `continuous_of_continuousAt_one R ?_` and prove the remaining obligations.
-
-Use `(hj.continuousAt_iff (g := R) (x := 1)).1 h2.continuousAt` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem continuous_mix_family : UpperTheory.V.Sd.S2.MixCont := by
   intro l _ Γ₀ Γ _ _ _ _ _ j t α β ρ R hM hj hρ

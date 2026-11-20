@@ -4,7 +4,7 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma wd_apply' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (w : ι → Module.End ℂ E) (c : Finset ι → E) (t : Finset ι) :
@@ -12,7 +12,7 @@ private lemma wd_apply' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module 
   simp [wd, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[wd_apply']`. Simplify using `[deltaL, GlobalTheory.DI.delta]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma wd_one_eq {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (c : Finset ι → E) : wd (fun _ => (1 : Module.End ℂ E)) c = deltaL ℂ ι E c := by
@@ -21,11 +21,11 @@ private lemma wd_one_eq {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module 
   simp [deltaL, GlobalTheory.DI.delta]
 
 /- English proof (translation)
-Rewrite using `[wd_apply']`. Use `split_ifs with h`. Take `⟨l, rfl⟩` from `Finset.card_eq_one.1 h`. Simplify using `[GlobalTheory.cubeSign, Finset.filter_singleton]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: L.erase i ≠ ∅`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `Finset.card_erase_of_mem hi` as an intermediate fact. Rewrite `this` using `[h0, Finset.card_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.card_pos.2 ⟨i, hi⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma wd_tail {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] (v : E) (L : Finset ι)
     (hL : L.Nonempty) :
@@ -46,55 +46,53 @@ private lemma wd_tail {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module �
     simp [this]
 
 /- English proof (translation)
-Introduce `hU ι E _ _ _ _ G d x hx hB`. Take `⟨y, hyC, hy⟩` from `hB`. Establish `hxC` using `hx.1`. Establish `hxd : deltaL ℂ ι E x = 0` using `hx.2`. Establish `hy' : wd (fun _ => (1 : Module.End ℂ E)) y = edge1 x` using `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyC' : ∀ s, y s ∈ (if (s.card : ℤ) = ((d : ℤ) + 2 - 1) then mixF (fun I J => G (uni I J)) s else ⊥)` using `fun s => hyC s (Set.mem_univ s)`. Establish `hxC' : ∀ I, x I ∈ (if I.Nonempty ∧ (I.card : ℤ) = (d : ℤ) + 1 then G (uni I ∅) else ⊥)` using `fun I => hxC I (Set.mem_univ I)`. Establish `hUn` using `hU ι ι E (fun _ => 1)`. Establish `hl : ∀ (b L : Finset ι), lft (uni b L) = b` using `fun b L => (hUn y b L).2.1`. Establish `hr : ∀ (b L : Finset ι), rgt (uni b L) = L` using `fun b L => (hUn y b L).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ (b L : Finset ι), (uni b L).card = b.card + L.card` using `fun b L => (hUn y b L).2.2.2.1`. Establish `hs : ∀ s : Finset (ι ⊕ₗ ι), uni (lft s) (rgt s) = s` using `(hUn y ∅ ∅).2.2.2.2`. Establish `hx0 : ∀ I : Finset ι, (I.card : ℤ) ≠ (d : ℤ) + 1 → x I = 0`. Introduce `I hI`. Use `hxC' I` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg (fun h => hI h.2)]`. Simplify using `using this`. Establish `hy0 : ∀ s, ¬ ((lft s).Nonempty ∧ (rgt s).Nonempty) → y s = 0`. Introduce `s h`. Use `hyC' s` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `split_ifs at this`. Simplify `this` using `[mixF, h]`. Simplify using `using this`. Set `e : Finset (ι ⊕ₗ ι) → E` to `fun s => if rgt s = ∅ then x (lft s) else 0`. Establish `he : ∀ b L, e (uni b L) = if L = ∅ then x b else 0`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b L`. Simplify using `only [e, hl, hr]`. Establish `hwe : ∀ s, wd (fun _ => (1 : Module.End ℂ E)) e s = (-((-1 : ℤ) ^ d)) • edge1 x s`. Introduce `s`. Rewrite using `[← hs s]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `lft s = b`. Generalize the expression as in `rgt s = L`. Establish `h1` using `(hU ι ι E (fun _ => 1) e b L).1`. Simplify using `only [he] at h1`. Rewrite using `[h1]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hL : L = ∅`. Substitute `hL` using the available equality. Establish `: edge1 (κ` using `ι) x (uni b ∅) = 0 := by simp [edge1, hr]`. Rewrite using `[this, smul_zero]`. Establish `hd : wd (fun _ => (1 : Module.End ℂ E)) x = 0` using `by rw [wd_one_eq, hxd]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (fun b' : Finset ι => if (∅ : Finset ι) = ∅ then x b' else 0) = x`. Use function extensionality and compare the values at `b'`. Simplify using the standard rewrite rules. Rewrite using `[e1, hd]`. Simplify using `[wd_apply']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hLn : L.Nonempty` using `Finset.nonempty_iff_ne_empty.2 hL`. Simplify using `only [hL, if_false]`. Establish `h0 : wd (fun _ => (1 : Module.End ℂ E)) (fun _ : Finset ι => (0 : E)) b = 0`. Simplify using `[wd_apply']`. Establish `h2` using `wd_tail (x b) L hLn`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, h2, zero_add]`. Simplify using `only [edge1, hl, hr]`. Use `split_ifs with h1c`. Distinguish the cases in `hb : (b.card : ℤ) = (d : ℤ) + 1`. Establish `hb' : b.card = d + 1` using `by exact_mod_cast hb`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hb', pow_succ]`. Simplify using the standard rewrite rules. Simplify using `[hx0 b hb]`. Simplify using the standard rewrite rules. Use `⟨e + ((-1 : ℤ) ^ d) • y, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `s _`. Express the relevant statement in the definitionally equal form `(e + ((-1 : ℤ) ^ d) • y) s ∈ (if s.Nonempty ∧ (s.card : ℤ) = (d : ℤ) + 1 then G s else ⊥)`. Distinguish the cases in `hr0 : rgt s = ∅`. Establish `hys : y s = 0` using `hy0 s (fun h => h.2.ne_empty hr0)`. Establish `hs' : uni (lft s) ∅ = s`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hs s` as an intermediate fact. Rewrite `this` using `[hr0]`. Then use the resulting hypothesis. Establish `hcard : s.card = (lft s).card`. Use `hc (lft s) ∅` as an intermediate fact. Rewrite `this` using `[hs']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hval : (e + ((-1 : ℤ) ^ d) • y) s = x (lft s)`. Simplify using `[e, hr0, hys]`. Rewrite using `[hval]`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hxC' (lft s)` as an intermediate fact. Establish `hlc : ((lft s).card : ℤ) = (d : ℤ) + 1` using `by rw [← hcard]; exact h.2`. Establish `hne : (lft s).Nonempty`. Apply `Finset.card_pos.1` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[if_pos ⟨hne, hlc⟩, hs']`. Conclude with `this`. Establish `: x (lft s) = 0`. Apply `hx0` to reduce the goal to its premises. Introduce `hlc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Apply `h` to reduce the goal to its premises. Establish `hsc : (s.card : ℤ) = (d : ℤ) + 1` using `by rw [hcard]; exact hlc`. Use `⟨Finset.card_pos.1 ?_, hsc⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hval : (e + ((-1 : ℤ) ^ d) • y) s = ((-1 : ℤ) ^ d) • y s`. Simplify using `[e, hr0]`. Rewrite using `[hval]`. Distinguish the cases in `hcs : (s.card : ℤ) = (d : ℤ) + 2 - 1`. Distinguish the cases in `hlr : (lft s).Nonempty ∧ (rgt s).Nonempty`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hyC' s` as an intermediate fact. Rewrite `this` using `[if_pos hcs]`. Simplify using `only [mixF, if_pos hlr, hs s] at this`. Establish `hsc : (s.card : ℤ) = (d : ℤ) + 1` using `by omega`. Rewrite using `[if_pos ⟨Finset.card_pos.1 (by omega), hsc⟩]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zsmul_mem this _`. Simplify using `[hy0 s hlr]`. Use `hyC' s` as an intermediate fact. Rewrite `this` using `[if_neg hcs]`. Establish `h0 : y s = 0` using `by simpa using this`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Express the relevant statement in the definitionally equal form `deltaL ℂ (ι ⊕ₗ ι) E (e + ((-1 : ℤ) ^ d) • y) = 0`. Rewrite using `[← wd_one_eq, map_add, map_zsmul, hy']`. Use function extensionality and compare the values at `s`. Simplify using `[hwe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `J`. Establish `h1 : y (uni ∅ J) = 0` using `hy0 _ (fun h => by`. Use `h.1` as an intermediate fact. Rewrite `this` using `[hl]`. Simplify using `at this)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : x ∅ = 0` using `hx0 ∅ (by simp; omega)`. Simplify using `[he, h1, h2]`. Introduce `I`. Establish `h1 : y (uni I ∅) = 0` using `hy0 _ (fun h => by`. Use `h.2` as an intermediate fact.
-
-Rewrite `this` using `[hr]`. Simplify using `at this)`. Simplify using `[he, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.edgeInj_of :
     WdUni → EdgeInj := by

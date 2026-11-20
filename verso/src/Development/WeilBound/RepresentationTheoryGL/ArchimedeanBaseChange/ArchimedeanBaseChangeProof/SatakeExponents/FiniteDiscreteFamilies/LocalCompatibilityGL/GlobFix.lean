@@ -27,11 +27,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 omit [IsCMField E] in
 
 /- English proof (translation)
-Set `A : ∀ w : HeightOneSpectrum (𝓞 E), Set (w.adicCompletion E)` to `fun w => w.adicCompletionIntegers E`. Set `y : Finset (HeightOneSpectrum (𝓞 E)) → ∀ w, A w` to `fun F w => ⟨pLoc E w (x F), hx F w⟩`. Set `y0 : ∀ w, A w` to `fun w => ⟨pLoc E w c, hc w⟩`. Establish `hy : Tendsto y atTop (𝓝 y0)`. Rewrite using `[tendsto_pi_nhds]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop {w}] with F hF`. Conclude with `Subtype.ext (hxc F w (hF (Finset.mem_singleton_self w))).symm`. Establish `h2` using `((RestrictedProduct.isEmbedding_structureMap (A := A) (𝓕 := cofinite)).continuous.tendsto y0).comp hy`.
-
-Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_of_eq_on (c : Af E) (hc : ∀ u, pLoc E u c ∈ u.adicCompletionIntegers E)
     (x : Finset (HeightOneSpectrum (𝓞 E)) → Af E) (hx : ∀ F u, pLoc E u (x F) ∈ u.adicCompletionIntegers E)
@@ -49,17 +47,15 @@ theorem tendsto_of_eq_on (c : Af E) (hc : ∀ u, pLoc E u c ∈ u.adicCompletion
   exact h2
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `choose g hgK hg1 hgH using hc`. Establish `hone : ∀ (u : HeightOneSpectrum (𝓞 E)) (i j : Fin N), pLoc E u ((1 : Matrix (Fin N) (Fin N) (Af E)) i j) = (1 : Matrix (Fin N) (Fin N) (u.adicCompletion E)) i j`. Introduce `u i j`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `honeI : ∀ (u : HeightOneSpectrum (𝓞 E)) (i j : Fin N), pLoc E u ((1 : Matrix (Fin N) (Fin N) (Af E)) i j) ∈ u.adicCompletionIntegers E`. Introduce `u i j`. Rewrite using `[hone, Matrix.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Establish `ht : Tendsto g atTop (𝓝 1)`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `Tendsto.prodMk_nhds ?_ ((MulOpposite.continuous_op.tendsto _).comp ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Use `tendsto_of_eq_on _ (fun u => honeI u i j) (fun F => (g F).val i j) (fun F u => (GlobalTheory.EulerTwRestr.mem_KGL_iff.1 (hgK F u)).1 i j) (fun F u hu => ?_)` and prove the remaining obligations. Rewrite using `[hone]`. Conclude with `congrArg (fun x : GL (Fin N) (u.adicCompletion E) => x.1 i j) (hg1 F u hu)`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `tendsto_of_eq_on _ (fun u => honeI u i j) (fun F => ((g F)⁻¹).val i j) (fun F u => by` and prove the remaining obligations. Use `(GlobalTheory.EulerTwRestr.mem_KGL_iff.1 (hgK F u)).2 i j` as an intermediate fact. Rewrite using `[GlobalTheory.EulerTwRestr.loc_inv_val] at this) (fun F u hu => ?_)` and apply the resulting hypothesis. Rewrite using `[hone]`. Establish `h1 : GeneralLinearGroup.map (pLoc E u) (g F)⁻¹ = 1` using `by rw [map_inv, hg1 F u hu, inv_one]`.
-
-Conclude with `congrArg (fun x : GL (Fin N) (u.adicCompletion E) => x.1 i j) h1`. Take `⟨F, hF⟩` from `(ht.eventually_mem hH).exists`. Conclude with `hgH F hF`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finset_of_mem_nhds {H : Set (GL (Fin N) (Af E))} (hH : H ∈ 𝓝 1) :
     ∃ F : Finset (HeightOneSpectrum (𝓞 E)), ∀ g : GL (Fin N) (Af E),
@@ -110,7 +106,7 @@ def FixAt (Kf : ∀ w : HeightOneSpectrum (𝓞 E), Subgroup (GL (Fin N) (w.adic
   ∀ k ∈ Kf u, finRep E N (locGL E N u k) χ = χ
 
 /- English proof (translation)
-Introduce `k hk`. Rewrite using `[← Module.End.mul_apply, ← map_mul, LocSph.comm_locGL w (locGL E N u k) (pLoc_locGL_of_ne (Ne.symm h) k) g, map_mul, Module.End.mul_apply, hχ k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixAt_locGL {Kf : ∀ w : HeightOneSpectrum (𝓞 E), Subgroup (GL (Fin N) (w.adicCompletion E))}
     {u w : HeightOneSpectrum (𝓞 E)} (h : u ≠ w) {χ : Sm E N} (hχ : FixAt Kf u χ)
@@ -121,17 +117,15 @@ theorem fixAt_locGL {Kf : ∀ w : HeightOneSpectrum (𝓞 E), Subgroup (GL (Fin 
     hχ k hk]
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_finset_of_mem_nhds (N := N) (E := E) (hχ.level.mem_nhds (by simp))`. Establish `key : ∀ T : Finset (HeightOneSpectrum (𝓞 E)), ∀ v : GL (Fin N) (Af E), (∀ u ∈ T, GeneralLinearGroup.map (pLoc E u) v ∈ Kf u) → (∀ u ∉ T, GeneralLinearGroup.map (pLoc E u) v ∈ GlobalTheory.LFun.KGL u N ∧ (u ∈ F → GeneralLinearGroup.map (pLoc E u) v = 1)) → finRep E N v χ = χ`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `v _ h2`. Conclude with `hF v (fun u => (h2 u (Finset.notMem_empty u)).1) fun u hu => (h2 u (Finset.notMem_empty u)).2 hu`. Consider the case `insert w T hwT ih`. Introduce `v h1 h2`. Use `set a := locGL E N w (GeneralLinearGroup.map (pLoc E w) v) with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hc : ∀ u, GeneralLinearGroup.map (pLoc E u) (a⁻¹ * v) = if u = w then 1 else GeneralLinearGroup.map (pLoc E u) v` using `fun u => by split_ifs with e`. Substitute `e` using the available equality. Rewrite using `[map_mul, map_inv, ha, pLoc_locGL, inv_mul_cancel]`. Rewrite using `[map_mul, map_inv, ha, pLoc_locGL_of_ne e, inv_one, one_mul]`. Establish `h3 : finRep E N (a⁻¹ * v) χ = χ` using `ih _ (fun u hu => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, if_neg (fun e : u = w => hwT (by rw [← e]; exact hu))]; exact h1 u (Finset.mem_insert_of_mem hu))`. Use `fun u hu => by`. Rewrite using `[hc]`. Use `split_ifs with e`. Conclude with `⟨one_mem _, fun _ => rfl⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h2 u (by simp [e, hu])`. Rewrite using `[← mul_inv_cancel_left a v, map_mul, Module.End.mul_apply, h3]`. Conclude with `hfix w _ (h1 w (Finset.mem_insert_self w T))`. Introduce `v hv`. Establish `hv' : ∀ u, GeneralLinearGroup.map (pLoc E u) v ∈ Kf u` using `fun u => by`.
-
-Simplify `Subgroup.mem_iInf.1 hv u` using `[globL, Subgroup.mem_iInf]`. Establish `hfin` using `Filter.eventually_cofinite.1 hcof`. Use `key (F ∪ hfin.toFinset) v (fun u _ => hv' u) fun u hu => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_or, not_not] at hu`. Conclude with `⟨hu.2 ▸ hv' u, fun h => absurd h hu.1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fix_of_fixAll {Kf : ∀ w : HeightOneSpectrum (𝓞 E), Subgroup (GL (Fin N) (w.adicCompletion E))}
     (hcof : ∀ᶠ w in Filter.cofinite, Kf w = GlobalTheory.LFun.KGL w N) {χ : Sm E N} (hχ : IsAutForm χ)

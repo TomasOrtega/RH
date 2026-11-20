@@ -16,16 +16,16 @@ open GlobalTheory.UnitLemma Polynomial GlobalTheory.UnitLemma.Orbit
 variable {K : UQ}
 
 /- English proof (translation)
-Unfold `val`. Rewrite using `[map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy), neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_mul {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) : val K.O (x * y) = val K.O x + val K.O y := by
   unfold val
   rw [map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy), neg_add]
 
 /- English proof (translation)
-Unfold `val at h`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E (algebraMap K.O K.E u) ≠ 0`. Simplify using `using h0`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E (algebraMap K.O K.E u) = 1`. Rewrite using `[← WithZero.exp_log h1, neg_eq_zero.1 h, WithZero.exp_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Assume the negation of the conclusion as `hn`. Conclude with `h2 ((IsLocalRing.mem_maximalIdeal u).2 hn)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isUnit_of_val (u : K.O) (h0 : algebraMap K.O K.E u ≠ 0) (h : val K.O (algebraMap K.O K.E u) = 0) :
     IsUnit u := by
@@ -39,7 +39,7 @@ theorem isUnit_of_val (u : K.O) (h0 : algebraMap K.O K.E u ≠ 0) (h : val K.O (
   exact h2 ((IsLocalRing.mem_maximalIdeal u).2 hn)
 
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective K.O K.E`. Rewrite using `[resultant_map_map, natDegree_map_eq_of_injective hinj, natDegree_map_eq_of_injective hinj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem resultant_map (p q : K.O[X]) :
     resultant (p.map (algebraMap K.O K.E)) (q.map (algebraMap K.O K.E)) = algebraMap K.O K.E (resultant p q) := by
@@ -47,7 +47,7 @@ theorem resultant_map (p q : K.O[X]) :
   rw [resultant_map_map, natDegree_map_eq_of_injective hinj, natDegree_map_eq_of_injective hinj]
 
 /- English proof (translation)
-Establish `h` using `Polynomial.aeval_algHom_apply (Algebra.lmul K.E B.A) B.g B.P`. Establish `h0 : aeval (Algebra.lmul K.E B.A B.g) B.P = 0` using `LinearMap.aeval_self_charpoly _`. Rewrite `h` using `[h0]`. Rewrite using `[← aeval_map_algebraMap K.E B.g p, hp]`. Conclude with `Algebra.lmul_injective (h.symm.trans (map_zero _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_lift (B : InvAlg K) (p : K.O[X]) (hp : p.map (algebraMap K.O K.E) = B.P) : aeval B.g p = 0 := by
   have h := Polynomial.aeval_algHom_apply (Algebra.lmul K.E B.A) B.g B.P
@@ -57,11 +57,11 @@ theorem aeval_lift (B : InvAlg K) (p : K.O[X]) (hp : p.map (algebraMap K.O K.E) 
   exact Algebra.lmul_injective (h.symm.trans (map_zero _).symm)
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `h`. Establish `e : ((1, 0) : B.A × C.A) = aeval ((B.g, C.g) : B.A × C.A) (b * q)`. Establish `h1` using `Polynomial.aeval_algHom_apply (AlgHom.fst K.O B.A C.A) (B.g, C.g) (b * q)`. Establish `h2` using `Polynomial.aeval_algHom_apply (AlgHom.snd K.O B.A C.A) (B.g, C.g) (b * q)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `congrArg (aeval B.g) hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, aeval_lift B p hp, mul_zero, zero_add, map_one]`. Conclude with `this.symm`. Use `Eq.trans ?_ h2` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 = aeval C.g (b * q)`. Rewrite using `[map_mul, aeval_lift C q hq, mul_zero]`. Rewrite using `[e]`. Conclude with `aeval_mem_adjoin_singleton _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mem (B C : InvAlg K) (p q : K.O[X]) (hp : p.map (algebraMap K.O K.E) = B.P)
     (hq : q.map (algebraMap K.O K.E) = C.P) (h : IsCoprime p q) :
@@ -82,7 +82,7 @@ theorem idem_mem (B C : InvAlg K) (p q : K.O[X]) (hp : p.map (algebraMap K.O K.E
   exact aeval_mem_adjoin_singleton _ _
 
 /- English proof (translation)
-Set `e : ι ≃ Fin (Module.finrank K.E B.A)` to `b.indexEquiv (Module.finBasis K.E B.A)`. Rewrite using `[← eta_gram B x (b.reindex e), ← Matrix.det_submatrix_equiv_self e]`. Use `congr 2`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eta_gram' (B : InvAlg K) (x : B.A) {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K.E B.A) :
     K.eta (Matrix.of fun i j => B.herm x (b i) (b j)).det = K.eta (B.gramDet x) := by
@@ -93,9 +93,9 @@ theorem eta_gram' (B : InvAlg K) (x : B.A) {ι : Type} [Fintype ι] [DecidableEq
   simp
 
 /- English proof (translation)
-Rewrite using `[← LieEnd.eta_mul K hx hy]`. Use `(eta_gram' (B.prod C) _ ((Module.finBasis K.E B.A).prod (Module.finBasis K.E C.A))).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Unfold `InvAlg.gramDet`. Rewrite using `[← Matrix.det_fromBlocks_zero₂₁ _ 0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : ∀ u v : B.A × C.A, (B.prod C).herm ((x, y) : B.A × C.A) u v = B.herm x u.1 v.1 + C.herm y u.2 v.2` using `fun u v => LieEnd.trace_prod B C _`. Use `set b : Module.Basis _ K.E (B.A × C.A) := (Module.finBasis K.E B.A).prod (Module.finBasis K.E C.A) with hb`. Use `congr 1`. Apply the tactic sequence `ext (i | i) (j | j) <;> refine (hh (b _) (b _)).trans ?_ <;> simp [InvAlg.herm, hb]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eta_prod (B C : InvAlg K) (x : B.A) (y : C.A) (hx : B.gramDet x ≠ 0) (hy : C.gramDet y ≠ 0) :
     K.eta ((B.prod C).gramDet ((x, y) : B.A × C.A)) = K.eta (B.gramDet x) * K.eta (C.gramDet y) := by
@@ -111,9 +111,9 @@ theorem eta_prod (B C : InvAlg K) (x : B.A) (y : C.A) (hx : B.gramDet x ≠ 0) (
   ext (i | i) (j | j) <;> refine (hh (b _) (b _)).trans ?_ <;> simp [InvAlg.herm, hb]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.UnitLemma.InvAlg.gramDet_eq_norm_mul]`. Use `mul_ne_zero (hx.map _).ne_zero fun hd => ?_` and prove the remaining obligations. Take `⟨r, hr, hr0⟩` from `LieEnd.exists_rad B hd`. Use `LieEnd.X_empty (B.prod C) ((r, 0) : B.A × C.A) (fun h => hr (congrArg Prod.fst h)) (fun z => ?_) _ (LieEnd.nonempty_of_N_ne_zero _ _ h)` and prove the remaining obligations. Use `(LieEnd.trace_prod B C (r * z.1, 0 * z.2)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hr0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_ne (B C : InvAlg K) (x : B.A) (y : C.A) (hx : IsUnit x)
     (h : (B.prod C).N ((x, y) : B.A × C.A) ≠ 0) : B.gramDet x ≠ 0 := by
@@ -132,7 +132,7 @@ def onCl (B : InvAlg K) (F : B.A → ℚ) (hF : ∀ (x : B.A) (u : B.Aˣ), F (x 
     simp only [hu, hF])
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Quot.out_eq k]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem onCl_rep (B : InvAlg K) (F : B.A → ℚ) (hF : ∀ (x : B.A) (u : B.Aˣ), F (x * (u * B.σ (u : B.A))) = F x)
     (k : B.Cl) : F k.rep = onCl B F hF k := by
@@ -171,9 +171,9 @@ def clProd (B C : InvAlg K) : (B.prod C).Cl ≃ B.Cl × C.Cl where
     rfl
 
 /- English proof (translation)
-Establish `e : ∀ k : (B.prod C).Cl, F k.rep = onCl B G hG (clProd B C k).1 * onCl C H hH (clProd B C k).2`. Introduce `k`. Use `conv_rhs => rw [← Quot.out_eq k]`. Conclude with `h _ _ (Units.isUnit (fixProd B C k.out).1.1) (Units.isUnit (fixProd B C k.out).2.1) (fixProd B C k.out).1.2 (fixProd B C k.out).2.2`. Use `haveI := Fintype.ofFinite B.Cl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI := Fintype.ofFinite C.Cl`. Simplify using `only [e, onCl_rep B G hG, onCl_rep C H hH]`. Rewrite using `[finsum_comp_equiv (clProd B C) (f := fun k => onCl B G hG k.1 * onCl C H hH k.2)]`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.sum_mul_sum, Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_prod (B C : InvAlg K) [Finite B.Cl] [Finite C.Cl] (F : (B.prod C).A → ℚ) (G : B.A → ℚ)
     (H : C.A → ℚ)
@@ -199,12 +199,12 @@ def swap4 (B₁ B₂ C₁ C₂ : InvAlg K) :
   AlgEquiv.ofRingEquiv (f := RingEquiv.prodProdProdComm B₁.A B₂.A C₁.A C₂.A) fun _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIso_swap4 (B₁ B₂ C₁ C₂ : InvAlg K) : IsIso (swap4 B₁ B₂ C₁ C₂) := ⟨fun _ => rfl, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K (B.prod C) x u).1]`. Use `congr 1`. Conclude with `(GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K B x.1 (MulEquiv.prodUnits (M := B.A) (N := C.A) u).1).2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem kap_inv (B C : InvAlg K) (x : (B.prod C).A) (u : (B.prod C).Aˣ) :
     K.eta (B.gramDet (x * (u * (B.prod C).σ (u : (B.prod C).A))).1) *
@@ -214,7 +214,7 @@ theorem kap_inv (B C : InvAlg K) (x : (B.prod C).A) (u : (B.prod C).Aˣ) :
   exact (GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K B x.1 (MulEquiv.prodUnits (M := B.A) (N := C.A) u).1).2
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.T.finite_classes_of_separable_charPoly K B hs.of_mul_left`. Use `haveI := GlobalTheory.T.finite_classes_of_separable_charPoly K C hs.of_mul_right`. Conclude with `finsum_prod B C (B.prod C).N B.N C.N (fun x u => (GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K B x u).1) (fun x u => (GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K C x u).1) (GlobalTheory.T.latticeCount_prod_of_idempotent_separable K B C he hs)`.
+A detailed English derivation is pending.
 -/
 theorem stSum_prod (B C : InvAlg K) (hs : (B.P * C.P).Separable)
     (he : ((1, 0) : B.A × C.A) ∈ Algebra.adjoin K.O ({(B.g, C.g)} : Set (B.A × C.A))) :
@@ -225,11 +225,11 @@ theorem stSum_prod (B C : InvAlg K) (hs : (B.P * C.P).Separable)
     (fun x u => (GlobalTheory.T.latticeCount_and_gramDetSign_norm_class K C x u).1) (GlobalTheory.T.latticeCount_prod_of_idempotent_separable K B C he hs)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.T.finite_classes_of_separable_charPoly K _ hs.of_mul_left`. Use `haveI := GlobalTheory.T.finite_classes_of_separable_charPoly K _ hs.of_mul_right`. Unfold `InvAlg.kapSum`. Rewrite using `[(isIso_swap4 B₁ B₂ C₁ C₂).finsum_eq (fun x => K.eta ((B₁.prod C₁).gramDet x.1) * ((B₁.prod C₁).prod (B₂.prod C₂)).N x) (kap_inv _ _)]`. Use `finsum_prod (B₁.prod B₂) (C₁.prod C₂) (fun x => K.eta ((B₁.prod C₁).gramDet (swap4 B₁ B₂ C₁ C₂ x).1) * ((B₁.prod C₁).prod (B₂.prod C₂)).N (swap4 B₁ B₂ C₁ C₂ x)) (fun x => K.eta (B₁.gramDet x.1) * (B₁.prod B₂).N x) (fun x => K.eta (C₁.gramDet x.1) * (C₁.prod C₂).N x) (kap_inv _ _) …` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hx hy sx sy`. Use `(congrArg (HMul.hMul _) (((isIso_swap4 B₁ B₂ C₁ C₂).N_eq _).trans (GlobalTheory.T.latticeCount_prod_of_idempotent_separable K _ _ he hs x y hx hy sx sy))).trans ?_` and prove the remaining obligations. Distinguish the cases in `h1 : (B₁.prod B₂).N x = 0`. Simplify using `[h1]`. Distinguish the cases in `h2 : (C₁.prod C₂).N y = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h2]`. Establish `e` using `eta_prod B₁ C₁ x.1 y.1 (gram_ne B₁ B₂ x.1 x.2 (hx.map (RingHom.fst B₁.A B₂.A)) h1) (gram_ne C₁ C₂ y.1 y.2 (hy.map (RingHom.fst C₁.A C₂.A)) h2)`. Express the relevant statement in the definitionally equal form `K.eta ((B₁.prod C₁).gramDet ((x.1, y.1) : B₁.A × C₁.A)) * _ = _`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kapSum_prod (B₁ B₂ C₁ C₂ : InvAlg K) (hs : ((B₁.prod B₂).P * (C₁.prod C₂).P).Separable)
     (he : ((1, 0) : (B₁.prod B₂).A × (C₁.prod C₂).A) ∈ Algebra.adjoin K.O
@@ -259,7 +259,7 @@ theorem kapSum_prod (B₁ B₂ C₁ C₂ : InvAlg K) (hs : ((B₁.prod B₂).P *
   ring
 
 /- English proof (translation)
-Use `nontriviality R`. Establish `e` using `resultant_mul_left p₁ r₁ (p₂ * r₂) _ le_rfl`. Rewrite `e` using `[← h₁.natDegree_mul k₁]`. Rewrite using `[e, h₂.natDegree_mul k₂, resultant_mul_right _ _ _ _ le_rfl, resultant_mul_right _ _ _ _ le_rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem resultant_four {R : Type} [CommRing R] {p₁ p₂ r₁ r₂ : R[X]} (h₁ : p₁.Monic) (h₂ : p₂.Monic)
     (k₁ : r₁.Monic) (k₂ : r₂.Monic) :
@@ -272,17 +272,17 @@ theorem resultant_four {R : Type} [CommRing R] {p₁ p₂ r₁ r₂ : R[X]} (h�
   ring
 
 /- English proof (translation)
-Introduce `K B₁ B₂ C₁ C₂ hs i₁ i₂ j₁ j₂ hv hB hC`. Establish `sB` using `hs.of_mul_left`. Establish `sC` using `hs.of_mul_right`. Take `⟨p₁, m₁, e₁⟩` from `exists_monic_map_eq_charpoly₂ B₁ sB.of_mul_left i₁`. Take `⟨p₂, m₂, e₂⟩` from `exists_monic_map_eq_charpoly₂ B₂ sB.of_mul_right i₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₁, n₁, f₁⟩` from `exists_monic_map_eq_charpoly₂ C₁ sC.of_mul_left j₁`. Take `⟨r₂, n₂, f₂⟩` from `exists_monic_map_eq_charpoly₂ C₂ sC.of_mul_right j₂`. Establish `eB : (p₁ * p₂).map (algebraMap K.O K.E) = B₁.P * B₂.P` using `by rw [Polynomial.map_mul, e₁, e₂]`. Establish `eC : (r₁ * r₂).map (algebraMap K.O K.E) = C₁.P * C₂.P` using `by rw [Polynomial.map_mul, f₁, f₂]`. Establish `hcop : IsCoprime (p₁ * p₂) (r₁ * r₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `resultant_ne_zero _ _ hs.isCoprime`. Rewrite `h0`, `hv` using `[← eB, ← eC, resultant_map]`. Conclude with `(isUnit_resultant_iff_isCoprime (m₁.mul m₂)).1 (isUnit_of_val _ h0 hv)`. Establish `s₁ : (B₁.P * C₁.P).Separable` using `hs.of_dvd (mul_dvd_mul (dvd_mul_right _ _) (dvd_mul_right _ _))`. Establish `s₂ : (B₂.P * C₂.P).Separable` using `hs.of_dvd (mul_dvd_mul (dvd_mul_left _ _) (dvd_mul_left _ _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `kapSum_prod B₁ B₂ C₁ C₂ (by rw [prod_P, prod_P]; exact hs) (idem_mem _ _ _ _ (eB.trans (prod_P _ _).symm) (eC.trans (prod_P _ _).symm) hcop)`. Establish `h₁` using `stSum_prod B₁ C₁ s₁ (idem_mem _ _ _ _ e₁ f₁ hcop.of_mul_left_left.of_mul_right_left)`. Establish `h₂` using `stSum_prod B₂ C₂ s₂ (idem_mem _ _ _ _ e₂ f₂ hcop.of_mul_left_right.of_mul_right_right)`. Establish `hr : val K.O (resultant (B₁.P * C₁.P) (B₂.P * C₂.P)) = val K.O (resultant B₁.P B₂.P) + val K.O (resultant C₁.P C₂.P)`. Establish `u₁ : IsUnit (resultant p₁ r₂)` using `(isUnit_resultant_iff_isCoprime m₁).2 hcop.of_mul_left_left.of_mul_right_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u₂ : IsUnit (resultant r₁ p₂)` using `(isUnit_resultant_iff_isCoprime n₁).2 hcop.of_mul_left_right.of_mul_right_left.symm`. Establish `a₁` using `resultant_ne_zero _ _ sB.isCoprime`. Establish `a₂` using `resultant_ne_zero _ _ sC.isCoprime`. Establish `hu : resultant B₁.P C₂.P * resultant C₁.P B₂.P = algebraMap K.O K.E (resultant p₁ r₂ * resultant r₁ p₂)`. Rewrite using `[map_mul, ← resultant_map, ← resultant_map, e₁, e₂, f₁, f₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resultant_four (p₁ := B₁.P) (p₂ := B₂.P) (r₁ := C₁.P) (r₂ := C₂.P) (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _) (LinearMap.charpoly_monic _), hu, val_mul (mul_ne_zero a₁ a₂) ((u₁.mul u₂).map _).ne_zero, val_mul a₁ a₂, val_unit _ (u₁.mul …`. Establish `hq : (-(K.q : ℚ)) ≠ 0` using `neg_ne_zero.2 (Nat.cast_ne_zero.2 (LieEnd.q_ne_zero K))`. Unfold `InvAlg.Identity at hB hC ⊢`. Rewrite using `[prod_P, prod_P, hr, hk, h₁, h₂, neg_add, zpow_add₀ hq, mul_mul_mul_comm, hB, hC]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem identity_prod : ∀ (K : UQ) (B₁ B₂ C₁ C₂ : InvAlg K), ((B₁.P * B₂.P) * (C₁.P * C₂.P)).Separable →
     IsIntegral K.O B₁.g → IsIntegral K.O B₂.g → IsIntegral K.O C₁.g → IsIntegral K.O C₂.g →

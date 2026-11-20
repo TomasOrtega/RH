@@ -37,9 +37,9 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 namespace GlobalTheory.MovedKappaArith
 
 /- English proof (translation)
-Establish `s0` using `GlobalTheory.MovedVacuum.sd_stdL D N`. Establish `s0'` using `GlobalTheory.MovedVacuum.sd_stdL D N'`. Establish `k0 : KLat D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N')` using `Or.inr ⟨_, _, s0, s0', rfl⟩`. Establish `k1 : KLat D (tor0 D cc δ) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) L L')` using `Or.inr ⟨_, _, hL, hL', rfl⟩`. Establish `huni` using `GlobalTheory.theta_translation_intertwiner_unitary D cc δ hC N N' _ _ k0 k1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `GlobalTheory.TrueTheta.ne_zero_of_like hC ht s0 s0' he.2.2.2.1 (by rw [← (huni e0 he.1).2.2.2, h, GlobalTheory.VacuumScalar.Iop_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem selfDualIntertwiner_baseVector_ne_zero {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} (hC : Crv D cc δ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0) {N N' : ℕ} {e0 : VC D N N' → ℂ} (he : oddE0 D cc δ t0 N N' e0)
@@ -56,7 +56,7 @@ theorem selfDualIntertwiner_baseVector_ne_zero {D : D7} {cc : Ideal (𝓞 D.host
     (by rw [← (huni e0 he.1).2.2.2, h, GlobalTheory.VacuumScalar.Iop_zero])
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.GL3Theta.applyAt0`. Rewrite using `[MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem applyAt0_monomial (D : D7) {N N' : ℕ} (α : Mono D N N') (G : VC D N N' → ℂ) :
     Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial α 1) G
@@ -71,11 +71,11 @@ end GlobalTheory.MovedKappaArith
 namespace GlobalTheory.MovedKappaArith
 
 /- English proof (translation)
-Introduce `hPr hInp D Γ _ _ Pl0 T A Ks _ _ _ R ch hIs p hp x y κ κ' h1 h2`. Use `set F := Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) (GlobalTheory.MovedDict.tgtLat ch.S.toGridChoice p x y)) (ch.S.Z.e …`. Establish `hF : Differentiable ℂ F` using `GlobalTheory.MovedDict.Entire.differentiable_intertwining_moved hPr hInp ch hIs p hp x y`. Take `⟨hsd, hsd'⟩` from `GlobalTheory.MovedSD.sd_srcLat_tgtLat hPr hInp ch hIs p hp x y`. Establish `hF0 : F ≠ 0` using `selfDualIntertwiner_baseVector_ne_zero ch.S.Z.crv ch.S.Z.pt0 (ch.S.Z.e0_is p hp) hsd hsd'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `GlobalTheory.NatFamily.exists_taylor_ne D hF hF0`. Establish `e` using `(h1 α).symm.trans (h2 α)`. Rewrite `e` using `[applyAt0_monomial, applyAt0_monomial, GlobalTheory.ProdThetaConj.taylor_const_mul hF, GlobalTheory.ProdThetaConj.taylor_const_mul hF]`. Establish `e'` using `(opp p).injective (mul_left_cancel₀ (ch.S.Z.c0 p).ne_zero e)`. Establish `hP : (α.prod fun v e => period ch.S.Z.δ v.1 ^ e) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (GlobalTheory.FunObj.period_ne_zero (GlobalTheory.TwoTorsionPt.delta_ne ch.S.Z.crv) v.1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : (α.prod fun _ n => (n.factorial : ℂ)) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `e''` using `mul_left_cancel₀ (mul_ne_zero hP hfac) (by simpa only [mul_assoc] using e')`. Conclude with `mul_right_cancel₀ hα e''`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kappa_unique : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
@@ -110,7 +110,7 @@ end GlobalTheory.MovedKappaArith
 namespace GlobalTheory.MovedKappaArith
 
 /- English proof (translation)
-Introduce `hPr hInp D Γ _ _ Pl0 T A Ks _ _ _ R ch hIs p hp x y κ hj`. Take `⟨κ₀, hm, hu, hj₀⟩` from `GlobalTheory.T.exists_unit_modulus_scalar_local hPr hInp ch hIs p hp x y`. Take `rfl` from `kappa_unique hPr hInp ch hIs p hp x y κ κ₀ hj hj₀`. Conclude with `⟨hm, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kappa_arith : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

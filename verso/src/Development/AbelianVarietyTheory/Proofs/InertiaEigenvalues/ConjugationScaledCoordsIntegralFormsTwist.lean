@@ -18,31 +18,29 @@ open GlobalTheory.HeightCounting.Up (PrN)
 namespace GlobalTheory.PlaceConj
 
 /- English proof (translation)
-Introduce `D j B hB hlam Φ κ hκ0 hval hκ τ hτ ψ ψ' hψ hψ' hcc hf`. Establish `huq` using `GlobalTheory.CoefLatConj.existsUnique_eq Φ hB hlam hκ0 hval hκ`. Establish `hinj : Function.Injective Φ` using `fun x y hxy => (huq (Φ x) (hval x)).unique rfl hxy`. Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective Φ (LinearMap.ker_eq_bot.2 hinj)`. Establish `hπx : ∀ x, π (Φ x) = x` using `fun x => LinearMap.congr_fun hπ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπv : ∀ P ∈ B.valSpace, Φ (π P) = P` using `fun P hP => by`. Take `⟨x, rfl, -⟩` from `huq P hP`. Rewrite using `[hπx]`. Set `C : Amb D j →ₛₗ[(τ : ℂ →+* ℂ)] Amb D j` to `{ toFun := fun F h => Φ ((τ κ / κ) • GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D j) (π (F h))) map_add' := fun F G => by`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, map_add, smul_add]`. Use the proof step `map_smul' := fun a F => by`. Use function extensionality and compare the values at `h`. Simplify using `only [Pi.smul_apply, map_smul, map_smulₛₗ, RingHom.id_apply]`. Conclude with `smul_comm _ _ _ }`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ F h, C F h = Φ ((τ κ / κ) • GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D j) (π (F h)))` using `fun _ _ => rfl`. Establish `hconjAt : ∀ F, (∀ h, F h ∈ B.valSpace) → ConjAt Φ κ τ F (C F)` using `fun F hF h => ⟨π (F h), GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D j) (π (F h)), rfl, (hπv _ (hF h)).symm, hC F h⟩`. Use `⟨C, fun F hF => ⟨hconjAt F hF, fun h0 => ?_⟩, fun O hO => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Establish `e` using `congrFun h0 h`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hC, Pi.zero_apply, ← map_zero Φ]`. Establish `e1` using `hinj e`. Establish `hc : τ κ / κ ≠ 0` using `div_ne_zero ((map_ne_zero _).2 hκ0) hκ0`. Rewrite `e1` using `[smul_eq_zero]`. Establish `e2 : π (F h) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `e1 with e1 | e1` into its components or cases. Conclude with `absurd e1 hc`. Use `congrArg (GlobalTheory.CoefModel.mapVV (τ.symm : ℂ →+* ℂ) (lamV D j)) e1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CoefLatConj.mapVV_symm_mapVV, map_zero]`. Then use the resulting hypothesis. Rewrite using `[Pi.zero_apply, ← hπv _ (hF h), e2, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ' : ∀ a, τ.symm (embLL0 D a) = embLL0 D a` using `fun a => by rw [τ.symm_apply_eq, hτ]`. Establish `hO' : IsCoefRing (embLL0 D) (labLL0 D) (O.map (τ : ℂ →+* ℂ))` using `⟨hO.emb, fun a => Subring.mem_map.2 ⟨_, hO.int a, hτ _⟩⟩`. Establish `hOO : (O.map (τ : ℂ →+* ℂ)).map (τ.symm : ℂ →+* ℂ) = O`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hz`. Take `⟨_, hw, rfl⟩` from `Subring.mem_map.1 hz`. Take `⟨b, hb, rfl⟩` from `Subring.mem_map.1 hw`. Simplify using `using hb`. Introduce `hz`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Subring.mem_map.2 ⟨τ z, Subring.mem_map.2 ⟨z, hz, rfl⟩, by simp⟩`. Use extensionality with `F'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Establish `hFv : ∀ h, F h ∈ B.valSpace` using `((Base.mem_formsC B).1 ((Base.mem_mtLat B _ _ _).1 hF).1).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.MtLatConj.mtLat_conj D j B hB hlam Φ κ hκ0 hval hκ _ (embLL0 D) (labLL0 D) O hO τ hτ ψ ψ' hψ hψ' hcc hf F (C F) (hconjAt F hFv) hF`. Introduce `hF'`. Establish `hF'v : ∀ h, F' h ∈ B.valSpace` using `((Base.mem_formsC B).1 ((Base.mem_mtLat B _ _ _).1 hF').1).1`. Set `F : Amb D j` to `fun h => Φ ((τ.symm κ / κ) • GlobalTheory.CoefModel.mapVV (τ.symm : ℂ →+* ℂ) (lamV D j) (π (F' h)))`. Establish `hFm : F ∈ B.mtLat (embLL0 D) (labLL0 D) O ψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `key` using `GlobalTheory.MtLatConj.mtLat_conj D j B hB hlam Φ κ hκ0 hval hκ _ (embLL0 D) (labLL0 D) (O.map (τ : ℂ →+* ℂ)) hO' τ.symm hτ' ψ' ψ hψ' hψ hcc.symm hf.symm F' F (fun h => ⟨π (F' h), GlobalTheory.CoefModel.mapVV (τ.symm : ℂ →+* ℂ) (lamV D j) (π (F' h)), rfl, (hπv _ (hF'v h)).symm, r …`. Rewrite `key` using `[hOO]`. Then use the resulting hypothesis. Use `⟨F, hFm, funext fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hC]`. Express the relevant statement in the definitionally equal form `Φ ((τ κ / κ) • GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D j) (π (Φ ((τ.symm κ / κ) • GlobalTheory.CoefModel.mapVV (τ.symm : ℂ →+* ℂ) (lamV D j) (π (F' h)))))) = F' h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hπx, map_smulₛₗ (GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D j))]`. Establish `e3` using `GlobalTheory.CoefLatConj.mapVV_symm_mapVV (lamV D j) τ.symm (π (F' h))`. Rewrite `e3` using `[RingEquiv.symm_symm]`. Rewrite using `[e3, smul_smul]`. Establish `: τ κ / κ * (τ (τ.symm κ / κ)) = 1`.
-
-Rewrite using `[map_div₀, RingEquiv.apply_symm_apply]`. Establish `: τ κ ≠ 0` using `(map_ne_zero _).2 hκ0`. Clear the denominators using the available nonvanishing facts. Rewrite using `[RingHom.coe_coe, this, one_smul, hπv _ (hF'v h)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_lat : ∀ (D : D7) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)), B.Good → B.w.lam = lamV D j → ∀ (Φ : VsV D j ℂ →ₗ[ℂ] PolF D (Wc D j).rank (Vc D j).rank) (κ : ℂ), κ ≠ 0 → (∀ x, Φ x ∈ B.valSpace) →
   (∀ x : VsV D j ℂ, harmFn (Wc D j).rank B.w B.F.BS (Φ x) = κ • coefFn (RingHom.id ℂ) (lamV D j) (x : Pol ℂ D.what₂.Tau (Vc D j).rank)) →

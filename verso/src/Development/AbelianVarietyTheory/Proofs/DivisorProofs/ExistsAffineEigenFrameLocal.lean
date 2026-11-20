@@ -12,15 +12,13 @@ set_option autoImplicit false
 namespace GlobalTheory.ShFam.IntCell
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z hsm z`. Take `⟨U, hU, φ, f, hzU, hs, -⟩` from `GlobalTheory.ShFam.EigSpread.exists_stable_eigFrame E H Dw l Xo c O β Z z`. Use `haveI : GlobalTheory.IsNormalScheme (gen Z) := by`. Establish `hY : ∀ y : Sp c.F, IsDomain ((Sp c.F).presheaf.stalk y) ∧ IsIntegrallyClosed ((Sp c.F).presheaf.stalk y)` using `(GlobalTheory.isNormalScheme_iff _).1 (GlobalTheory.IsNormalScheme.spec (CommRingCat.of c.F))`. Conclude with `(GlobalTheory.isNormalScheme_iff _).2 (GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (genStr Z) hY)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsLocallyNoetherian (gen Z) := LocallyOfFiniteType.isLocallyNoetherian (genStr Z)`. Set `C : Set (gen Z)` to `irreducibleComponent z`. Establish `hC : C ∈ irreducibleComponents (gen Z)` using `irreducibleComponent_mem_irreducibleComponents z`. Establish `hCo : IsOpen C` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents hC`. Establish `hzC : z ∈ C` using `mem_irreducibleComponent`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hV, hzV, hVle⟩` from `exists_isAffineOpen_mem_and_subset (X := gen Z) (U := U ⊓ ⟨C, hCo⟩) (x := z) ⟨hzU, hzC⟩`. Establish `hVU : V ≤ U` using `fun y hy => (hVle hy).1`. Establish `hVC : (V : Set (gen Z)) ⊆ C` using `fun y hy => (hVle hy).2`. Establish `hirr : IsIrreducible (V : Set (gen Z))` using `⟨⟨z, hzV⟩, hC.1.2.open_subset V.isOpen hVC⟩`. Use `haveI : IrreducibleSpace V.toScheme := Subtype.irreducibleSpace hirr`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hint : IsIntegral V.toScheme` using `GlobalTheory.IsNormalScheme.isIntegral_of_irreducibleSpace _`. Set `ρ : Γ(gen Z, U) →+* Γ(gen Z, V)` to `((gen Z).presheaf.map (homOfLE hVU).op).hom`. Establish `hρ : spMap ρ ≫ hU.fromSpec = hV.fromSpec` using `hU.map_fromSpec hV (homOfLE hVU).op`. Take `⟨g, -⟩` from `GlobalTheory.ShFam.Spread.exists_bc f ρ (φ' := ρ.comp φ) rfl (x' := hV.fromSpec ≫ genι Z) (by rw [← Category.assoc, hρ])`. Use `⟨V, hV, ρ.comp φ, g, hzV, hint, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hρ, Category.assoc, hs, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_eigFrame : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}, Smooth (genStr Z) → ∀ z : gen Z, ∃ (V : (gen Z).Opens) (hV : IsAffineOpen V) (φV : c.F →+* Γ(gen Z, V)) (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)), z ∈ V ∧ IsIntegral V.toScheme ∧ hV.fromSpec ≫ genStr Z = spMap φV := by
   intro E _ _ _ H Dw l Xo c O _ β Z hsm z

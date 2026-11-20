@@ -3,23 +3,21 @@ import Mathlib
 namespace GlobalTheory.AdTh
 
 /- English proof (translation)
-Establish `hu : IsUnit (T : Module.End ℂ M)` using `(Module.End.isUnit_iff _).2 ⟨hT, LinearMap.injective_iff_surjective.1 hT⟩`. Take `⟨u, hu⟩` from `hu`. Establish `h1 : ∀ γ, (u : Module.End ℂ M) * ρ γ = χ γ • (ρ γ * u)`. Introduce `γ`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[hu, h]`. Establish `hχ : ∀ γ ∈ S, χ γ = 1`. Introduce `γ hγ`. Establish `h2 : (u : Module.End ℂ M) * ρ γ * (↑u⁻¹ : Module.End ℂ M) = χ γ • ρ γ`. Rewrite using `[h1, smul_mul_assoc, mul_assoc, Units.mul_inv, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg (LinearMap.trace ℂ M) h2`. Rewrite `h3` using `[LinearMap.trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul, map_smul, smul_eq_mul]`. Establish `h4` using `htr γ hγ`. Establish `: (χ γ - 1) * LinearMap.trace ℂ M (ρ γ) = 0` using `by linear_combination -h3`. Break down `mul_eq_zero.1 this with h5 | h5` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `sub_eq_zero.1 h5`. Conclude with `absurd h5 h4`. Establish `hc : ∀ γ, Commute (u : Module.End ℂ M) (ρ γ)`. Introduce `γ`. Establish `hγ : γ ∈ Subgroup.closure S` using `hS ▸ Subgroup.mem_top γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hγ using Subgroup.closure_induction with`. Consider the case `mem x hx`. Use `h1 x` as an intermediate fact. Rewrite `this` using `[hχ x hx, one_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `one => rw [map_one]`. Conclude with `Commute.one_right _`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `hx.mul_right hy`. Consider the case `inv x _ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e1 : ρ x * ρ x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `e2 : ρ x⁻¹ * ρ x = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Conclude with `Commute.units_inv_right (u := ⟨ρ x, ρ x⁻¹, e1, e2⟩) hx`. Take `⟨a, ha⟩` from `Module.End.exists_eigenvalue (T : Module.End ℂ M)`. Use `⟨a, fun x => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `hirr (Module.End.eigenspace T a) (by` into its components or cases. Introduce and unpack `γ _ ⟨y, hy, rfl⟩`. Establish `hy' : T y = a • y` using `Module.End.mem_eigenspace_iff.1 hy`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Use `congrArg (fun f : Module.End ℂ M => f y) (hc γ).eq` as an intermediate fact.
-
-Simplify using `only [hu, Module.End.mul_apply] at this`. Rewrite using `[this, hy', map_smul]) with h0 | h0`. Conclude with `absurd h0 (Module.End.hasEigenvalue_iff.1 ha)`. Conclude with `Module.End.mem_eigenspace_iff.1 (h0 ▸ Submodule.mem_top)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_of_intertwines_up_to_scalar (Γ M : Type) [Group Γ] [AddCommGroup M] [Module ℂ M]
     [FiniteDimensional ℂ M] [Nontrivial M] (ρ : Γ →* Module.End ℂ M) (S : Set Γ)

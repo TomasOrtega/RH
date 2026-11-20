@@ -18,7 +18,7 @@ def Uni (D : Dat A n r) (S : (n → A) →ₗ[A] (n → A)) : Prop := ∀ x y, D
 variable {D : Dat A n r}
 
 /- English proof (translation)
-Establish `key : ∀ x y, D.h x y = D.hL x y` using `fun _ _ => rfl`. Establish `H3 : ∀ a c, D.hL (D.e a) (D.e c) = 0` using `fun a c => H.3 a c`. Rewrite using `[key]`. Simplify using `only [Dat.pX.eq_1, LinearMap.sum_apply, LinearMap.smulRight_apply, map_sum, map_smul, H3, smul_zero, Finset.sum_const_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem h_e_pX (H : D.Hyp) (b : Fin r) (u : n → A) : D.h (D.e b) (D.pX u) = 0 := by
   have key : ∀ x y, D.h x y = D.hL x y := fun _ _ => rfl
@@ -28,9 +28,9 @@ theorem h_e_pX (H : D.Hyp) (b : Fin r) (u : n → A) : D.h (D.e b) (D.pX u) = 0 
     map_smul, H3, smul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Establish `hy' : ∀ b, ∑ x, ∑ x_1, D.σA (D.e b x) * D.JA x x_1 * y x_1 = 0` using `fun b => hy b`. Simplify using `only [Dat.h, hform, Dat.pX.eq_1, LinearMap.sum_apply, LinearMap.smulRight_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_mul]`. Repeatedly rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset n)) (t := (Finset.univ : Finset (Fin r)))]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zero (D.σA ((D.hL (D.f d)) u)), ← hy' d, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x1 _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h_pX_left {y : n → A} (hy : ∀ b, D.h (D.e b) y = 0) (u : n → A) : D.h (D.pX u) y = 0 := by
   have hy' : ∀ b, ∑ x, ∑ x_1, D.σA (D.e b x) * D.JA x x_1 * y x_1 = 0 := fun b => hy b
@@ -45,14 +45,14 @@ theorem h_pX_left {y : n → A} (hy : ∀ b, D.h (D.e b) y = 0) (u : n → A) : 
   ring
 
 /- English proof (translation)
-Rewrite using `[h_symm H, h_pX_left hy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_pX_right (H : D.Hyp) {y : n → A} (hy : ∀ b, D.h (D.e b) y = 0) (u : n → A) :
     D.h y (D.pX u) = 0 := by
   rw [h_symm H, h_pX_left hy, map_zero]
 
 /- English proof (translation)
-Simplify using `only [Dat.pX.eq_1, LinearMap.sum_apply, LinearMap.smulRight_apply, map_sum, map_smul, hS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem S_pX {S : (n → A) →ₗ[A] (n → A)} (hS : ∀ a, S (D.e a) = D.e a) (u : n → A) :
     S (D.pX u) = D.pX u := by
@@ -60,7 +60,7 @@ theorem S_pX {S : (n → A) →ₗ[A] (n → A)} (hS : ∀ a, S (D.e a) = D.e a)
     map_smul, hS]
 
 /- English proof (translation)
-Establish `h1` using `hU (D.e b) w`. Rewrite `h1` using `[(show (∀ a, S (D.e a) = D.e a) ∧ S D.z = D.z from hS).1 b]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem h_e_S {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) (b : Fin r)
     (w : n → A) : D.h (D.e b) (S w) = D.h (D.e b) w := by
@@ -68,7 +68,7 @@ theorem h_e_S {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S
   rwa [(show (∀ a, S (D.e a) = D.e a) ∧ S D.z = D.z from hS).1 b] at h1
 
 /- English proof (translation)
-Establish `h1` using `hU D.z w`. Rewrite `h1` using `[(show (∀ a, S (D.e a) = D.e a) ∧ S D.z = D.z from hS).2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem h_z_S {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) (w : n → A) :
     D.h D.z (S w) = D.h D.z w := by
@@ -76,7 +76,7 @@ theorem h_z_S {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S
   rwa [(show (∀ a, S (D.e a) = D.e a) ∧ S D.z = D.z from hS).2] at h1
 
 /- English proof (translation)
-Rewrite using `[pU_apply, pXv_apply, pz_apply]`. Simplify using `[h_e_S hS hU, h_z_S hS hU, hw.1, hw.2.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isotropic_proj_image_complement {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) {w : n → A}
     (hw : IsW D w) : D.pU (S w) = D.pX (S w) := by
@@ -84,14 +84,14 @@ theorem isotropic_proj_image_complement {S : (n → A) →ₗ[A] (n → A)} (hS 
   simp [h_e_S hS hU, h_z_S hS hU, hw.1, hw.2.2]
 
 /- English proof (translation)
-Rewrite using `[Dat.pW.eq_1, LinearMap.sub_apply, LinearMap.id_apply, isotropic_proj_image_complement hS hU hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem complement_proj_image {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) {w : n → A}
     (hw : IsW D w) : D.pW (S w) = S w - D.pX (S w) := by
   rw [Dat.pW.eq_1, LinearMap.sub_apply, LinearMap.id_apply, isotropic_proj_image_complement hS hU hw]
 
 /- English proof (translation)
-Establish `h1 : D.pU (D.Pi S' v) = D.pU v`. Rewrite using `[Pi_apply, map_add, pU_pU H, pU_of_isW (isW_pW H _), add_zero]`. Establish `h2 : D.pW (D.Pi S' v) = D.pW (S' (D.pW v))`. Rewrite using `[Pi_apply, map_add, pW_pU H, pW_pW H, zero_add]`. Rewrite using `[Pi_apply D S, h1, h2, complement_proj_image hS' hU' (isW_pW H v), map_sub, S_pX hS, map_sub, pW_pX H, sub_zero, Pi_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -107,45 +107,45 @@ theorem Pi_comp (H : D.Hyp) {S S' : (n → A) →ₗ[A] (n → A)} (hS : ∀ a, 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Pi_apply, LinearMap.id_apply, pW_pW H, pW_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem Pi_id (H : D.Hyp) (v : n → A) : D.Pi LinearMap.id v = v := by
   rw [Pi_apply, LinearMap.id_apply, pW_pW H, pW_apply]
   abel
 
 /- English proof (translation)
-Rewrite using `[Pi_apply, pU_e H, pW_e H, map_zero, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pi_e (H : D.Hyp) (S : (n → A) →ₗ[A] (n → A)) (a : Fin r) : D.Pi S (D.e a) = D.e a := by
   rw [Pi_apply, pU_e H, pW_e H, map_zero, map_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[Pi_apply, pU_f H, pW_f H, map_zero, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pi_f (H : D.Hyp) (S : (n → A) →ₗ[A] (n → A)) (a : Fin r) : D.Pi S (D.f a) = D.f a := by
   rw [Pi_apply, pU_f H, pW_f H, map_zero, map_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[Pi_apply, pU_z_eq H, orthogonal_proj_normal_zero H, map_zero, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipotent_proj_fixes_normal (H : D.Hyp) (S : (n → A) →ₗ[A] (n → A)) : D.Pi S D.z = D.z := by
   rw [Pi_apply, pU_z_eq H, orthogonal_proj_normal_zero H, map_zero, map_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[pU_apply, h_add_left, h_add_left, pX_apply, pXv_apply, pz_apply, h_sum_left, h_sum_left]`. Simplify using `[h_smul_left, hw.1, hw.2.1, hw.2.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hermitian_isotropic_proj_complement (H : D.Hyp) {w : n → A} (hw : IsW D w) (x : n → A) : D.h (D.pU x) w = 0 := by
   rw [pU_apply, h_add_left, h_add_left, pX_apply, pXv_apply, pz_apply, h_sum_left, h_sum_left]
   simp [h_smul_left, hw.1, hw.2.1, hw.2.2]
 
 /- English proof (translation)
-Rewrite using `[h_symm H, hermitian_isotropic_proj_complement H hw, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_W_pU (H : D.Hyp) {w : n → A} (hw : IsW D w) (x : n → A) : D.h w (D.pU x) = 0 := by
   rw [h_symm H, hermitian_isotropic_proj_complement H hw, map_zero]
 
 /- English proof (translation)
-Establish `ex : x = D.pU x + D.pW x` using `by rw [pW_apply]; abel`. Establish `ey : y = D.pU y + D.pW y` using `by rw [pW_apply]; abel`. Use `conv_lhs => rw [ex, ey]`. Rewrite using `[h_add_left, h_add_right, h_add_right, hermitian_isotropic_proj_complement H (isW_pW H y), h_W_pU H (isW_pW H x)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem h_dec (H : D.Hyp) (x y : n → A) :
     D.h x y = D.h (D.pU x) (D.pU y) + D.h (D.pW x) (D.pW y) := by
@@ -156,11 +156,11 @@ theorem h_dec (H : D.Hyp) (x y : n → A) :
   ring
 
 /- English proof (translation)
-Introduce `x y`. Establish `hW : ∀ w w' : n → A, IsW D w → IsW D w' → D.h (D.pW (S w)) (D.pW (S w')) = D.h w w'`. Introduce `w w' hw hw'`. Establish `he : ∀ {u : n → A}, IsW D u → ∀ b, D.h (D.e b) (S u) = 0` using `fun hu b => by`. Rewrite using `[h_e_S hS hU, hu.1 b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[complement_proj_image hS hU hw, complement_proj_image hS hU hw', h_sub_left, h_sub_right, h_sub_right, h_pX_left (he hw'), h_pX_left (fun b => h_e_pX H b _), h_pX_right H (he hw), hU]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : ∀ v, D.pU (D.Pi S v) = D.pU v` using `fun v => by`. Rewrite using `[Pi_apply, map_add, pU_pU H, pU_of_isW (isW_pW H _), add_zero]`. Establish `hq : ∀ v, D.pW (D.Pi S v) = D.pW (S (D.pW v))` using `fun v => by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi_apply, map_add, pW_pU H, pW_pW H, zero_add]`. Rewrite using `[h_dec H (D.Pi S x), hp, hp, hq, hq, hW _ _ (isW_pW H x) (isW_pW H y), ← h_dec H]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pi_uni (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) :
     D.Uni (D.Pi S) := by
@@ -180,13 +180,13 @@ theorem Pi_uni (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) 
   rw [h_dec H (D.Pi S x), hp, hp, hq, hq, hW _ _ (isW_pW H x) (isW_pW H y), ← h_dec H]
 
 /- English proof (translation)
-Establish `h1 : D.pU (S v) = D.pU v`. Establish `a1 : D.pX (S v) = D.pX v`. Rewrite using `[pX_apply, pX_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hf a]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Establish `a2 : D.pXv (S v) = D.pXv v`. Rewrite using `[pXv_apply, pXv_apply]`. Simplify using `only [h_e_S hS hU]`. Establish `a3 : D.pz (S v) = D.pz v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pz_apply, pz_apply, h_z_S hS hU]`. Rewrite using `[pU_apply, a1, a2, a3]`. Both sides reduce to the same expression. Establish `h2 : S (D.pU v) = D.pU v`. Rewrite using `[pU_apply, map_add, map_add, S_pX hS.1, pXv_apply, pz_apply, map_sum, map_smul, hS.2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, hf]`. Establish `h3 : S (D.pW v) = S v - D.pU v` using `by rw [pW_apply, map_sub, h2]`. Rewrite using `[Pi_apply, h3, pW_apply, map_sub, h1, pU_pU H]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Pi_of_fix (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S)
     (hf : ∀ a, S (D.f a) = D.f a) (hU : D.Uni S) (v : n → A) : D.Pi S v = S v := by
@@ -210,9 +210,9 @@ theorem Pi_of_fix (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ 
   abel
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `pW_e H a`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pW_span (H : D.Hyp) {x : n → A} (hx : x ∈ Submodule.span A (Set.range D.e)) :
     D.pW x = 0 := by
@@ -225,14 +225,14 @@ theorem pW_span (H : D.Hyp) {x : n → A} (hx : x ∈ Submodule.span A (Set.rang
   | smul c x _ hx => rw [map_smul, hx, smul_zero]
 
 /- English proof (translation)
-Simplify using `only [Dat.pX.eq_1, LinearMap.sum_apply, LinearMap.smulRight_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pX_mem_span (u : n → A) : D.pX u ∈ Submodule.span A (Set.range D.e) := by
   simp only [Dat.pX.eq_1, LinearMap.sum_apply, LinearMap.smulRight_apply]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Establish `hw` using `isW_pW H v`. Establish `h1 : D.pW (S (D.pW v)) = D.pW v`. Establish `e1 : S (D.pW v) = D.pW v + (S (D.pW v) - D.pW v)` using `by abel`. Rewrite using `[e1, map_add, pW_pW H, pW_span H (hN _ hw.1), add_zero]`. Rewrite using `[Pi_apply, h1, pW_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -247,9 +247,9 @@ theorem Pi_of_N (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)}
   abel
 
 /- English proof (translation)
-Establish `hw` using `isW_pW H v`. Establish `hpU : S (D.pU v) = D.pU v`. Rewrite using `[pU_apply, map_add, map_add, S_pX hS.1, pXv_apply, pz_apply, map_smul, hS.2]`. Simplify using `[hv]`. Establish `key : S (D.Pi Si v) - v = -D.pX (Si (D.pW v))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Pi_apply, complement_proj_image hSi hUi hw, map_add, map_sub, hSSi, S_pX hS.1, hpU, pW_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `Submodule.neg_mem _ (pX_mem_span _)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pi_N_part (H : D.Hyp) {S Si : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S)
     (hSi : D.FixEZ Si) (hUi : D.Uni Si) (hSSi : ∀ v, S (Si v) = v) (v : n → A)

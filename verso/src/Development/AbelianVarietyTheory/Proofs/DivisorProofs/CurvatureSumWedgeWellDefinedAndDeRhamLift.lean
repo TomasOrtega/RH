@@ -11,15 +11,13 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ C _ F`. Use `⟨fun hcl x n n' u v u' v' ⟨f, ω, hf, hω, hd⟩ ⟨f', ω', hf', hω', hd'⟩ ↦ ?_, fun x n u v ⟨f, ω, hf, hω, hd⟩ h0 ↦ ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `H1.mk_eq_mk.1 (hf.trans hf'.symm)`. Set `e0 : Glob1 F` to `⟨fun T ↦ ω T - ω' T - D R _ (b T), fun T T' φ ↦ by`. Establish `hb' : f.1 T T' φ - f'.1 T T' φ = b T' - mp F φ (b T)` using `(congrFun (congrFun (congrFun hb T) T') φ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : D R _ (b T') = D R _ (f.1 T T' φ) - D R _ (f'.1 T T' φ) + D R _ (mp F φ (b T))`. Rewrite using `[← map_sub, hb', map_sub]`. Normalize the expressions using the abelian group laws. Use `show ω T' - ω' T' - D R _ (b T') = p1 F φ (ω T - ω' T - D R _ (b T))`. Rewrite using `[hω φ, hω' φ, map_sub, map_sub, p1_D, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `abel⟩`. Establish `he0 : e0 ∈ Closed1 F` using `by rw [hcl]; exact Submodule.mem_top`. Use function extensionality and compare the values at `T`. Rewrite using `[← hd T, ← hd' T]`. Establish `h` using `he0 T`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `dOne R _ (ω T - ω' T - D R _ (b T)) = 0 at h`. Rewrite `h` using `[map_sub, map_sub, dOne_D, sub_zero, sub_eq_zero]`. Conclude with `h`. Use `⟨Hyp1.mk F ⟨(f.1, ω), mem_cechDeRhamTotalCocyclesOne_iff.2 ⟨f.2, hω, fun T ↦ (hd T).trans (congrFun h0 T)⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[toO_mk]`.
-
-Conclude with `hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curvature_wellDefined_and_lift : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R), (Closed1 F = ⊤ → ∀ (x : GlobalTheory.CatCoh.H1 F) (n n' : ℕ) (u v : Fin n → Glob1 F) (u' v' : Fin n' → Glob1 F), ObRel F x u v → ObRel F x u' v' → wsum F u v = wsum F u' v') ∧ ∀ (x : GlobalTheory.CatCoh.H1 F) (n : ℕ) (u v : Fin n → Glob1 F), ObRel F x u v → wsum F u v = 0 → ∃ c, toO F c = x := by
   intro R _ C _ F

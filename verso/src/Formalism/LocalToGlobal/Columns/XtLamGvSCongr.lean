@@ -14,21 +14,19 @@ section PhiS
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Unfold `LocE.lamGvS`. Establish `hS : ∀ M0 : ℕ → ℕ → E, (∀ p p', p < a → p' < a → IntAt P (M0 p p')) → redP P (∑ i ∈ Finset.range (k₀ - 1), M0 i (i + 1) + ∑ i ∈ Finset.range (r - k₀ - 1), M0 (k₀ + i) (k₀ + i + 1)) = ∑ i ∈ Finset.range (k₀ - 1), redP P (M0 i (i + 1)) + ∑ i ∈ Finset.range (r - k₀ - 1), redP P (M0 …`. Introduce `M0 hM0`. Establish `h1 : ∀ i ∈ Finset.range (k₀ - 1), IntAt P (M0 i (i + 1))` using `fun i hi => by`. Rewrite `hi` using `[Finset.mem_range]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hM0 _ _ (by omega) (by omega)`. Establish `h2 : ∀ i ∈ Finset.range (r - k₀ - 1), IntAt P (M0 (k₀ + i) (k₀ + i + 1))` using `fun i hi => by`. Rewrite `hi` using `[Finset.mem_range]`. Conclude with `hM0 _ _ (by omega) (by omega)`. Rewrite using `[reduction_add (ciIntAt_sum _ _ h1) (ciIntAt_sum _ _ h2), redP_sum _ _ h1, redP_sum _ _ h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hS M' (fun p p' hp hp' => (h p p' hp hp').2.1), hS M (fun p p' hp hp' => (h p p' hp hp').1)]`. Establish `hblk : ∀ i ∈ Finset.range j, ∀ s s' : Fin t, r + i * t + s.1 < a ∧ r + i * t + s'.1 < a`. Introduce `i hi s s'`. Rewrite `hi` using `[Finset.mem_range]`. Establish `hit : i * t + t ≤ j * t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `Nat.mul_le_mul_right t (show i + 1 ≤ j by omega)`. Rewrite `h3` using `[Nat.succ_mul]`. Then use the resulting hypothesis. Establish `hs` using `s.2`. Establish `hs'` using `s'.2`. Generalize the expression as in `i * t = u at hit ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Generalize the expression as in `j * t = v at hit hja`. Apply the tactic sequence `constructor <;> omega`. Use `congr 1`. Use `congr 1`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Conclude with `(h _ _ (by omega) (by omega)).2.2`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(h _ _ (by omega) (by omega)).2.2`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Apply `ciUnitV_congr` to reduce the goal to its premises. Rewrite using `[redP_det (Matrix.of fun s s' : Fin t => M' (r + i * t + s.1) (r + i * t + s'.1)) (fun s s' => (h _ _ (hblk i hi s s').1 (hblk i hi s s').2).2.1), redP_det (Matrix.of fun s s' : Fin t => M (r + i * t + s.1) (r + i * t + s'.1)) (fun s s' => (h _ _ (hblk i hi s s').1 (hblk i hi s s …`. Use `congr 1`.
-
-Use extensionality with `s s'`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Conclude with `(h _ _ (hblk i hi s s').1 (hblk i hi s s').2).2.2`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xtLamGvS_congr (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ r t j a : ℕ} (M M' : ℕ → ℕ → E)
     (hk : k₀ ≤ a) (_hr : r ≤ a) (hja : r + j * t ≤ a)
@@ -84,29 +82,25 @@ theorem xtLamGvS_congr (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → 
 open Classical in
 
 /- English proof (translation)
-Establish `hone : IntAt P (-1 : E)` using `⟨-1, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`. Establish `hneg : ∀ z : E, IntAt P z → IntAt P (-z)` using `fun z hz => by`. Rewrite using `[← neg_one_mul]`. Conclude with `hone.mul hz`. Establish `hqI : IntAt P (q : E)` using `⟨q, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hra : r ≤ r + (j - 1) * t` using `Nat.le_add_right _ _`. Establish `imp : ∀ A B : ℕ → ℕ → E, (∀ p p', p < n + c → p' < r + (j - 1) * t → ∃ d, IntAt P d ∧ B p p' = A p p' + q * d) → ((∀ p p', p < n + c → p' < r + (j - 1) * t → IntAt P (A p p')) ∧ (∀ p p', r + (j - 1) * t ≤ p → p < n + c → p' < r + (j - 1) * t → IntAt P (A p p' / (q : E))) ∧ (∀ p', …`. Introduce `A B hAB ⟨c1, c2, c3, c4⟩`. Establish `hint : ∀ p p', p < n + c → p' < r + (j - 1) * t → IntAt P (B p p')`. Introduce `p p' hp hp'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, he⟩` from `hAB p p' hp hp'`. Rewrite using `[he]`. Conclude with `(c1 p p' hp hp').add (hqI.mul hd)`. Establish `hred : ∀ p p', p < n + c → p' < r + (j - 1) * t → redP P (B p p') = redP P (A p p')`. Introduce `p p' hp hp'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd, he⟩` from `hAB p p' hp hp'`. Rewrite using `[he, reduction_add (c1 p p' hp hp') (hqI.mul hd), reduction_mul hqI hd, redP_natCast_eq_zero hq, zero_mul, add_zero]`. Use `⟨hint, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p p' h1 h2 h3`. Take `⟨d, hd, he⟩` from `hAB p p' h2 h3`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he, add_div, mul_div_cancel_left₀ _ hq0]`. Conclude with `(c2 p p' h1 h2 h3).add hd`. Introduce `p' hp'`. Establish `hp'a : p' < r + (j - 1) * t` using `by omega`. Establish `hp'n : p' < n + c` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨by rw [hred p' p' hp'n hp'a]; exact (c3 p' hp').1, fun p hp hne hcond => ?_⟩` and prove the remaining obligations. Rewrite using `[hred p p' (by omega) hp'a]`. Conclude with `(c3 p' hp').2 p hp hne hcond`. Introduce `p p' h1 h2 h3 h4`. Rewrite using `[hred p p' (by omega) h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `c4 p p' h1 h2 h3 h4`. Establish `fwd : ∀ p p', p < n + c → p' < r + (j - 1) * t → ∃ d, IntAt P d ∧ LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x' p p' = LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x p p' + q * d` using `hD`. Establish `bwd : ∀ p p', p < n + c → p' < r + (j - 1) * t → ∃ d, IntAt P d ∧ LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x p p' = LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x' p p' + q * d`. Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨-d, hneg d hd, by rw [he]; ring⟩`. Unfold `LocE.PhiGS`. Simplify using `only`. Use `split_ifs with h1 h2 h2`. Establish `hM` using `h2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hall : ∀ p p', p < r + (j - 1) * t → p' < r + (j - 1) * t → IntAt P (LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x p p') ∧ IntAt P (LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x' p p') ∧ redP P (LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + …`. Introduce `p p' hp hp'`. Establish `hpn : p < n + c` using `by omega`. Use `⟨hM p p' hpn hp', h1.1 p p' hpn hp', ?_⟩` and prove the remaining obligations. Take `⟨d, hd, he⟩` from `hD p p' hpn hp'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[he, reduction_add (hM p p' hpn hp') (hqI.mul hd), reduction_mul hqI hd, redP_natCast_eq_zero hq, zero_mul, add_zero]`. Rewrite using `[xtLamGvS_congr ψ₀ χ _ _ (by omega) hra le_rfl hall]`. Use `congr 2`. Apply `ciUnitV_congr` to reduce the goal to its premises. Rewrite using `[redP_det (Matrix.of fun s s' : Fin (r + (j - 1) * t) => LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x' s.1 s'.1) (fun s s' => (hall _ _ s.2 s'.2).2.1), redP_det (Matrix.of fun s s' : Fin (r + (j - 1) * t) => LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + …`.
-
-Use `congr 1`. Use extensionality with `s s'`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Conclude with `(hall _ _ s.2 s'.2).2.2`. Conclude with `absurd (imp _ _ bwd h1) h2`.
-
-Conclude with `absurd (imp _ _ fwd h2) h1`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xtPhiGS_congr (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ rS r t j c' n' c n : ℕ} (x x' : HomE E (n' + c') (n + c))
@@ -201,9 +195,9 @@ theorem xtPhiGS_congr (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) �
 
 open Classical in
 /- English proof (translation)
-Introduce `p p' hp hp'`. Assume the negation of the conclusion as `hn`. Apply `h` to reduce the goal to its premises. Unfold `LocE.PhiGS`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg]`. Introduce `hc`. Conclude with `hn (hc.1 p p' hp hp')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xtPhiGS_int (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     {k₀ rS r t j c' n' c n : ℕ} (x : HomE E (n' + c') (n + c)) (h : LocE.PhiGS (P := P) q ψ₀ χ k₀ rS r t j c' n' c n x ≠ 0) :
@@ -225,9 +219,9 @@ section Til
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {N n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `hOk` using `Deco.Ok.til (ST := ST) d.2 hT hG`. Establish `htil : DecoSet.tilH (ST` using `ST) rfl pi d = ⟨d.1.til (ST := ST) pi, hOk⟩ := by show DecoSet.til (ST := ST) pi d = _`. Unfold `DecoSet.til`. Rewrite using `[dif_pos hOk]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htil]`. Use `show v ∈ localization₂ w.asIdeal (tilN d.1.N) ↔ _`. Rewrite using `[mem_localization_tilN]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xtTilH_mem (hN : N = n + 1) (d : DecoSet E n ∅ SG) {pi : 𝓞 E} (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal)
     (w : HeightOneSpectrum (𝓞 E)) (v : Sp E N) :
@@ -247,11 +241,11 @@ theorem xtTilH_mem (hN : N = n + 1) (d : DecoSet E n ∅ SG) {pi : 𝓞 E} (hT :
 open Classical in
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `hOk` using `Deco.Ok.til (ST := ST) d.2 hT hG`. Establish `htil : DecoSet.tilH (ST` using `ST) rfl pi d = ⟨d.1.til (ST := ST) pi, hOk⟩ := by show DecoSet.til (ST := ST) pi d = _`. Unfold `DecoSet.til`. Rewrite using `[dif_pos hOk]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv`, the goal using `[htil]`. Establish `hv' : v ∈ localization₂ w.1.asIdeal (tilN d.1.N)` using `hv`. Use `show (if v ∈ localization₂ w.1.asIdeal (tilN d.1.N) then Fin.snoc (α := fun _ => 𝓞 E ⧸ w.1.asIdeal) (d.1.be w (initL E n v)) (redP w.1 (v (Fin.last n) / algebraMap (𝓞 E) E pi)) else 0) i = _`. Rewrite using `[if_pos hv']`. Use `split_ifs with h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `hi : i = Fin.castSucc ⟨i.1, h⟩` using `Fin.ext rfl conv_lhs => rw [hi, Fin.snoc_castSucc]`. Both sides reduce to the same expression. Establish `hi : i = Fin.last n` using `Fin.ext (by have := i.2; simp only [Fin.val_last]; omega)`. Rewrite using `[hi, Fin.snoc_last]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xtTilH_be (hN : N = n + 1) (d : DecoSet E n ∅ SG) {pi : 𝓞 E} (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal)
     (w : SG) (v : Sp E N) (hv : v ∈ (DecoSet.tilH (ST := ST) hN pi d).1.at w.1) (i : Fin N) :

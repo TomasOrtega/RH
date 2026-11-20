@@ -32,7 +32,7 @@ namespace GlobalTheory.TowerCT
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨u, -, hu⟩` from `Subgroup.mem_map.mp (Subgroup.mem_subgroupOf.mp h)`. Use `⟨(u : Matrix (Fin W.rank) (Fin W.rank) D.host.E), ?_⟩` and prove the remaining obligations. Establish `hu'` using `congrArg (fun x : GL (Fin W.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E) => (x : Matrix (Fin W.rank) (Fin W.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E))) hu`. Conclude with `hu'.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratM_ex (D : D7) (W : HSp D) (γ : GA D W) (h : γ ∈ GQ W) :
     ∃ m : Matrix (Fin W.rank) (Fin W.rank) D.host.E, Formalism.L2.Theta.mt W γ = m.map (incA D) := by
@@ -47,18 +47,16 @@ variable {D : D7}
 def ratM (W : HSp D) (γ : GQ W) : Matrix (Fin W.rank) (Fin W.rank) D.host.E := Classical.choose (ratM_ex D W γ.1 γ.2)
 
 /- English proof (translation)
-Unfold `ratM`. Conclude with `(ratM_ex D W γ.1 γ.2).choose_spec`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ratM_spec (W : HSp D) (γ : GQ W) : Formalism.L2.Theta.mt W γ.1 = (ratM W γ).map (incA D) := by
   unfold ratM
   exact (ratM_ex D W γ.1 γ.2).choose_spec
 
 /- English proof (translation)
-Establish `: Nontrivial (AF D.host.F)`. Take `⟨v⟩ : Nonempty (NumberField.InfinitePlace D.host.F)` from `inferInstance`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h2 : ((0 : AF D.host.F).1 v) = ((1 : AF D.host.F).1 v)` using `congrArg (fun x : AF D.host.F => x.1 v) h`. Conclude with `zero_ne_one h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Use extensionality with `i j`. Establish `hij : (a.map (incA D)) i j = (b.map (incA D)) i j`. Rewrite using `[show a.map (incA D) = b.map (incA D) from hab]`. Simplify using `only [Matrix.map_apply] at hij`.
-
-Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap D.host.F (AF D.host.F)).injective hij`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_incA_injective (W : HSp D) :
     Function.Injective fun m : Matrix (Fin W.rank) (Fin W.rank) D.host.E => m.map (incA D) := by
@@ -75,7 +73,7 @@ theorem map_incA_injective (W : HSp D) :
   exact Algebra.TensorProduct.includeRight_injective (algebraMap D.host.F (AF D.host.F)).injective hij
 
 /- English proof (translation)
-Apply `map_incA_injective W` to reduce the goal to its premises. Use `show (ratM W (a * b)).map (incA D) = (ratM W a * ratM W b).map (incA D)`. Rewrite using `[Matrix.map_mul, ← ratM_spec, ← ratM_spec, ← ratM_spec]`. Conclude with `congrArg Units.val (map_mul (matHom W) a.1 b.1)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratM_mul (W : HSp D) (a b : GQ W) : ratM W (a * b) = ratM W a * ratM W b := by
   apply map_incA_injective W
@@ -84,7 +82,7 @@ theorem ratM_mul (W : HSp D) (a b : GQ W) : ratM W (a * b) = ratM W a * ratM W b
   exact congrArg Units.val (map_mul (matHom W) a.1 b.1)
 
 /- English proof (translation)
-Apply `map_incA_injective W` to reduce the goal to its premises. Use `show (ratM W 1).map (incA D) = (1 : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D)`. Rewrite using `[← ratM_spec, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `congrArg Units.val (map_one (matHom W))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratM_one (W : HSp D) : ratM W (1 : GQ W) = 1 := by
   apply map_incA_injective W
@@ -93,7 +91,7 @@ theorem ratM_one (W : HSp D) : ratM W (1 : GQ W) = 1 := by
   exact congrArg Units.val (map_one (matHom W))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Unfold `heisO`. Simplify using `only [symplOH]`. Unfold `symplO hO`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem heisO_zero_twisted_operators {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (u : WO V W → ℂ) :
     heisO ψ V W 0 u = u := by
@@ -119,75 +117,63 @@ end GlobalTheory.TowerCT
 open GlobalTheory.TowerCT
 
 /- English proof (translation)
-Introduce `D V V' W r C B hS ψ χS χT χS' χT' ω ω' hω hω' hc μ 𝓨 hY ν 𝓕 hν h𝓕 κ 𝓝 hκ h𝓝 F hFd hFc f hf g`. Take `⟨hVlc, hVsc, hVt2, hVb, hVtg, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨hWlc, hWsc, hWt2, hWb, hWtg, -, hWcount⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Establish `hMc : ∀ a b : ℕ, Countable (Matrix (Fin a) (Fin b) D.host.E)` using `fun a b => inferInstanceAs (Countable (Fin a → Fin b → D.host.E))`. Take `⟨C', h1, h2, h3⟩` from `GlobalTheory.T.exists_isotropicDualFrame_of_splitEmbedding D V V' r C B hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hstd : IsStdChar D ψ (-1)` using `hω.std`. Take `⟨θ, hθ⟩` from `(GlobalTheory.Ker.exists_infFam_and_stdChar D).1`. Establish `hG` using `GlobalTheory.KernelSeminorm.thetaGrowth_onObjects D`. Establish `hωm : ∀ (p q : GA D V × GA D W) (u : WO V W → ℂ), ω (p * q) u = ω p (ω q u)`. Introduce `p q u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hL : ∀ (k a : GA D V) (b : GA D W) (u : WO V W → ℂ), ω (k * a, b) u = ω (k, 1) (ω (a, b) u)`. Introduce `k a b u`. Rewrite using `[← hωm, Prod.mk_mul_mk, one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : ∀ (a : GA D V) (k b : GA D W) (u : WO V W → ℂ), ω (a, k * b) u = ω (1, k) (ω (a, b) u)`. Introduce `a k b u`. Rewrite using `[← hωm, Prod.mk_mul_mk, one_mul]`. Establish `hLR : ∀ (k a : GA D V) (k' b : GA D W) (u : WO V W → ℂ), ω (k * a, k' * b) u = ω (k, k') (ω (a, b) u)`. Introduce `k a k' b u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hωm]`. Both sides reduce to the same expression. Establish `hf₁ : IsThetaFunO ψ V W (ω (g, 1) f)` using `hω.om_pres _ f hf`. Establish `hfp : ∀ p : GA D V × GA D W, IsThetaFunO ψ V W (ω p f)` using `fun p => hω.om_pres p f hf`. Take `⟨hI1, hI2, -, -⟩` from `(GlobalTheory.T.thetaRestrictIsotropicQuotient_wittTower_properties D V V' W r C B hS ψ hstd μ 𝓨 hY).1 _ hf₁`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hvol : κ 𝓝 ≠ ⊤` using `vol D V r C hS.frame κ 𝓝 hκ h𝓝`. Establish `: IsFiniteMeasure (κ.restrict 𝓝)` using `isFiniteMeasure_restrict.mpr hvol`. Take `⟨tm, htm⟩ : ∃ tm : Matrix (Fin W.rank) (Fin r) D.host.E → (WO V W → ℂ) → ℂ, ∀ y u, tm y u = res V V' W C B μ 𝓨 (heisO ψ V W (isoPart V W C' (Matrix.map y (incA D))) u) 0` from `⟨fun y u => res V V' W C B μ 𝓨 (heisO ψ V W (isoPart V W C' (Matrix.map y (incA D))) u) 0, fun _ _ => rfl⟩`. Establish `hsum : ∀ u, IsThetaFunO ψ V W u → HasSum (fun y => tm y u) (u 0)`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [htm]`. Conclude with `(GlobalTheory.T.theta_series_summable_on_covolume_domain D V V' W r C C' B hS h1 h2 h3 ψ hstd μ 𝓨 hY u hu).2`. Establish `hrat : ∀ n ∈ NI V C, n ∈ GQ V → ∀ y u, IsThetaFunO ψ V W u → tm y (ω (n, 1) u) = tm y u`. Introduce `n hn hnq y u hu`. Rewrite using `[htm, htm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.mixedModelTerms_rationalUnipotent_invariant D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY n hn hnq y u hu`. Establish `heqv : ∀ (γ : GA D W) (γ₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E), γ ∈ GQ W → Formalism.L2.Theta.mt W γ = γ₀.map (incA D) → ∀ y u, IsThetaFunO ψ V W u → tm (γ₀ * y) (ω (1, γ) u) = tm y u`. Introduce `γ γ₀ hγ hγ₀ y u hu`. Rewrite using `[htm, htm]`. Conclude with `GlobalTheory.T.restrictedHeisenbergTerms_permuted_rationalUnitary D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY γ γ₀ hγ hγ₀ y u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hnon : ∀ y : Matrix (Fin W.rank) (Fin r) D.host.E, adj D y * W.gram * y ≠ 0 → ∀ u, IsThetaFunO ψ V W u → ∫ n in 𝓝, tm y (ω ((n : GA D V), 1) u) ∂κ = 0`. Introduce `y hy u hu`. Simplify using `only [htm]`. Conclude with `GlobalTheory.T.anisotropicTerms_mean_zero_unipotentRadical D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY κ 𝓝 hκ h𝓝 y hy u hu`. Establish `hcuspN : ∀ (s : ℕ) (L : Matrix (Fin W.rank) (Fin s) D.host.E) (m : Matrix (Fin s) (Fin r) D.host.E), IsIsoFrame W L → m.rank = s → ∀ (n' : NI W L) u, IsThetaFunO ψ V W u → ∫ n in 𝓝, tm (L * m) (ω ((n : GA D V), (n' : GA D W)) u) ∂κ = ∫ n in 𝓝, tm (L * m) (ω ((n : GA D V), 1) u) ∂ …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `s L m hL hm n' u hu`. Simplify using `only [htm]`. Conclude with `GlobalTheory.T.isotropicTermMean_invariant_unipotentRadical D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY κ 𝓝 hκ h𝓝 s L m hL hm n' u hu`. Take `⟨A, hA⟩` from `GlobalTheory.T.mixedModel_thetaSeries_moderate_growth D V V' W r C C' B hS h1 h2 h3 ψ χS χT ω hω μ 𝓨 hY`. Take `⟨c, hcb⟩` from `hA f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcont : ∀ y, Continuous fun p : GA D V × GA D W => tm y (ω p f)`. Introduce `y`. Simplify using `only [htm]`. Conclude with `(hcb 1 1).1 y`. Establish `hTm : ∀ y, Measurable (Function.uncurry fun (n : NI V C) (h : GA D W) => tm y (ω ((n : GA D V) * g, h) f))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Conclude with `((hcont y).comp (by fun_prop : Continuous fun q : NI V C × GA D W => ((q.1 : GA D V) * g, q.2))).measurable`. Establish `hKm : ∀ y, Measurable fun h : GA D W => ∫ n in 𝓝, tm y (ω ((n : GA D V) * g, h) f) ∂κ`. Introduce `y`. Conclude with `(StronglyMeasurable.integral_prod_left (μ := κ.restrict 𝓝) (hTm y).stronglyMeasurable).measurable`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0` using `GlobalTheory.T.lintegral_thetaLift_termSum_ne_top D V W r C hS.frame κ 𝓝 hκ h𝓝 ν 𝓕 hν h𝓕 F hFd (fun p => ∑' y, ‖tm y (ω p f)‖ₑ) (by`. Introduce `n hn hnq a b`. Use `tsum_congr fun y => ?_` and prove the remaining obligations. Use `show ‖tm y (ω (n * a, b) f)‖ₑ = ‖tm y (ω (a, b) f)‖ₑ`. Rewrite using `[hL, hrat n hn hnq y _ (hfp _)])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(by`. Introduce `γ hγ a b`. Use `show ∑' y, ‖tm y (ω (a, γ * b) f)‖ₑ = ∑' y, ‖tm y (ω (a, b) f)‖ₑ`. Set `γq : GQ W` to `⟨γ, hγ⟩`. Establish `hl : ∀ y : Matrix (Fin W.rank) (Fin r) D.host.E, ratM W γq⁻¹ * (ratM W γq * y) = y` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← ratM_mul, inv_mul_cancel, ratM_one, Matrix.one_mul]`. Establish `hr : ∀ y : Matrix (Fin W.rank) (Fin r) D.host.E, ratM W γq * (ratM W γq⁻¹ * y) = y` using `fun y => by`. Rewrite using `[← Matrix.mul_assoc, ← ratM_mul, mul_inv_cancel, ratM_one, Matrix.one_mul]`. Set `e : Matrix (Fin W.rank) (Fin r) D.host.E ≃ Matrix (Fin W.rank) (Fin r) D.host.E` to `⟨fun y => ratM W γq * y, fun y => ratM W γq⁻¹ * y, hl, hr⟩`. Rewrite using `[← e.tsum_eq (fun y => ‖tm y (ω (a, γ * b) f)‖ₑ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun y => ?_` and prove the remaining obligations. Use `show ‖tm (ratM W γq * y) (ω (a, γ * b) f)‖ₑ = ‖tm y (ω (a, b) f)‖ₑ`. Rewrite using `[hR, heqv γ (ratM W γq) hγ (ratM_spec W γq) y _ (hfp _)])`. Use `A c (fun a b => by simp only [htm]; exact (hcb a b).2) g`. Take `⟨hInt, hSum, hHas⟩` from `fub (κ.restrict 𝓝) ν Set.univ 𝓕 (fun y (n : NI V C) h => tm y (ω ((n : GA D V) * g, h) f)) hTm (fun (n : NI V C) h => thetaKO ω ((n : GA D V) * g) h f) F hFd.2.1.measurable (fun n h => hsum _ (hfp _)) (by rw [Measure.restrict_univ]; exact hb0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Measure.restrict_univ, integrableOn_univ] at hInt hSum hHas`. Use `set a : Matrix (Fin W.rank) (Fin r) D.host.E → ℂ := fun y => ∫ h in 𝓕, (∫ n in 𝓝, tm y (ω ((n : GA D V) * g, h) f) ∂κ) * F h ∂ν with ha`. Establish `heis0 : ∀ u : WO V W → ℂ, heisO ψ V W 0 u = u` using `fun u => heisO_zero_twisted_operators ψ V W u`. Establish `hT0 : ∀ (n : NI V C) (h : GA D W), tm 0 (ω ((n : GA D V) * g, h) f) = thetaKO ω' 1 h (res V V' W C B μ 𝓨 (ω (g, 1) f))`. Introduce `n h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[htm]`. Establish `hiso0 : isoPart V W C' ((0 : Matrix (Fin W.rank) (Fin r) D.host.E).map (incA D)) = 0`. Simplify using `[isoPart]`. Rewrite using `[hiso0, heis0, hL, GlobalTheory.T.wittTower_restriction_unipotentRadical_invariant D V V' W r C B hS ψ χS χT ω hω μ 𝓨 hY n _ (hfp _)]`. Establish `e2 : ((g, h) : GA D V × GA D W) = (1, h) * (g, 1)` using `by rw [Prod.mk_mul_mk, one_mul, mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Rewrite using `[e2, hωm, hc μ 𝓨 hY h _ hf₁]`. Both sides reduce to the same expression. Establish `hc0 : ∀ h : GA D W, ∫ _ in 𝓝, thetaKO ω' 1 h (res V V' W C B μ 𝓨 (ω (g, 1) f)) ∂κ = ((κ 𝓝).toReal : ℂ) * thetaKO ω' 1 h (res V V' W C B μ 𝓨 (ω (g, 1) f))`. Introduce `h`. Rewrite using `[setIntegral_const, Complex.real_smul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `try rfl`. Establish `ha0 : a 0 = ((κ 𝓝).toReal : ℂ) * Lift.liftInt ν 𝓕 (thetaKO ω') (res V V' W C B μ 𝓨 (ω (g, 1) f)) F 1`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (ae_of_all _ fun h => ?_)` and prove the remaining obligations. Simplify using `only [hT0, hc0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[integral_const_mul]`. Both sides reduce to the same expression. Establish `hvanish : ∑' y : {y : Matrix (Fin W.rank) (Fin r) D.host.E // y ≠ 0}, a y.1 = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `letI := ratAct W r`. Use `GlobalTheory.T.tsum_setIntegral_fundamentalDomain_eq_zero_by_orbits (GA D W) ν (GQ W) {y : Matrix (Fin W.rank) (Fin r) D.host.E // y ≠ 0} 𝓕 h𝓕 (fun y h => (∫ n in 𝓝, tm y.1 (ω ((n : GA D V) * g, h) f) ∂κ) * F h) (fun y => (hKm y.1).mul hFd.2.1.measurable) ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ y h show (∫ n in 𝓝, tm (ratM W γ * y.1) (ω ((n : GA D V) * g, (γ : GA D W) * h) f) ∂κ) * F ((γ : GA D W) * h) = (∫ n in 𝓝, tm y.1 (ω ((n : GA D V) * g, h) f) ∂κ) * F h`. Rewrite using `[hFd.1 γ γ.2 h]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (ae_of_all _ fun n => ?_)` and prove the remaining obligations. Use `show tm (ratM W γ * y.1) (ω ((n : GA D V) * g, (γ : GA D W) * h) f) = tm y.1 (ω ((n : GA D V) * g, h) f)`. Rewrite using `[hR, heqv γ.1 (ratM W γ) γ.2 (ratM_spec W γ) y.1 _ (hfp _)]`. Use `ne_top_of_le_ne_top hSum ?_` and prove the remaining obligations. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective (fun y => ∫⁻ h in 𝓕, ‖(∫ n in 𝓝, tm y (ω ((n : GA D V) * g, h) f) ∂κ) * F h‖ₑ ∂ν)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `y 𝓖 h𝓖 hint`. Distinguish the cases in `hiso : adj D y.1 * W.gram * y.1 = 0`. Take `⟨s, L, m, m', hLf, hm, hmm', hy⟩` from `rankFac D W r y.1 y.2 hiso`. Establish `hLy : ∀ k : GQ W, ratM W k * y.1 = y.1 → ratM W k * L = L`. Introduce `k hk`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hk` using `[hy, ← Matrix.mul_assoc]`. Establish `hk'` using `congrArg (· * m') hk`. Simplify `hk'` using `only [Matrix.mul_assoc, hmm', Matrix.mul_one]`. Use `cusp D W s L hLf ν hν F hFd hFc ((MulAction.stabilizer (GQ W) y).map (GQ W).subtype) (Subgroup.map_subtype_le _) ?_ ?_ (fun h => ∫ n in 𝓝, tm y.1 (ω ((n : GA D V) * g, h) f) ∂κ) (hKm y.1) ?_ ?_ 𝓖 h𝓖 hint` and prove the remaining obligations. Introduce and unpack `γ ⟨k, hk, rfl⟩ n hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk1 : ratM W k * y.1 = y.1` using `congrArg Subtype.val (MulAction.mem_stabilizer_iff.mp hk)`. Conclude with `(GlobalTheory.T.rationalFrameStabiliser_normalises_unipotentRadical D W s L hLf).1 k.1 k.2 (ratM W k) (ratM_spec W k) (hLy k hk1) n hn`. Introduce `n hn hnq`. Use `⟨⟨n, hnq⟩, MulAction.mem_stabilizer_iff.mpr (Subtype.ext ?_), rfl⟩` and prove the remaining obligations. Use `show ratM W ⟨n, hnq⟩ * y.1 = y.1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy, ← Matrix.mul_assoc, (GlobalTheory.T.rationalFrameStabiliser_normalises_unipotentRadical D W s L hLf).2 n hn (ratM W ⟨n, hnq⟩) (ratM_spec W ⟨n, hnq⟩)]`. Introduce `n' hn' h`. Establish `e1 : (fun n : NI V C => tm y.1 (ω ((n : GA D V) * g, n' * h) f)) = fun n : NI V C => tm (L * m) (ω ((n : GA D V), n') (ω (g, h) f))`. Use function extensionality and compare the values at `n`. Rewrite using `[hLR, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun n : NI V C => tm y.1 (ω ((n : GA D V) * g, h) f)) = fun n : NI V C => tm (L * m) (ω ((n : GA D V), 1) (ω (g, h) f))`. Use function extensionality and compare the values at `n`. Rewrite using `[hL, hy]`. Use `show ∫ n in 𝓝, tm y.1 (ω ((n : GA D V) * g, n' * h) f) ∂κ = ∫ n in 𝓝, tm y.1 (ω ((n : GA D V) * g, h) f) ∂κ`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Conclude with `hcuspN s L m hLf hm ⟨n', hn'⟩ _ (hfp _)`. Introduce and unpack `γ ⟨k, hk, rfl⟩ h`. Establish `hk1 : ratM W k * y.1 = y.1` using `congrArg Subtype.val (MulAction.mem_stabilizer_iff.mp hk)`. Use `integral_congr_ae (ae_of_all _ fun n => ?_)` and prove the remaining obligations. Use `show tm y.1 (ω ((n : GA D V) * g, (k : GA D W) * h) f) = tm y.1 (ω ((n : GA D V) * g, h) f)`.
-
-Use `conv_lhs => rw [← hk1]`. Rewrite using `[hR, heqv k.1 (ratM W k) k.2 (ratM_spec W k) y.1 _ (hfp _)]`. Establish `hz : ∀ h, ∫ n in 𝓝, tm y.1 (ω ((n : GA D V) * g, h) f) ∂κ = 0`. Introduce `h`. Establish `e2 : (fun n : NI V C => tm y.1 (ω ((n : GA D V) * g, h) f)) = fun n : NI V C => tm y.1 (ω ((n : GA D V), 1) (ω (g, h) f))`.
-
-Use function extensionality and compare the values at `n`. Rewrite using `[hL]`. Rewrite using `[e2]`. Conclude with `hnon y.1 hiso _ (hfp _)`. Simplify using `[hz]`.
-
-Establish `hbsum : HasSum (Set.indicator {y | y ≠ 0} a) 0`. Establish `hs` using `hHas.summable.indicator {y | y ≠ 0}`. Establish `ht : ∑' y, Set.indicator {y | y ≠ 0} a y = 0`. Rewrite using `[← tsum_subtype]`. Conclude with `hvanish`.
-
-Rewrite using `[← ht]`. Conclude with `hs.hasSum`. Establish `hfull : HasSum a (a 0 + 0)` using `by classical`. Establish `h0` using `(hasSum_ite_eq (0 : Matrix (Fin W.rank) (Fin r) D.host.E) (a 0)).add hbsum`. Use `h0 using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hy0]`.
-
-Use `⟨hvol, hI1, hI2, fun g₁ => GlobalTheory.Chain.LiftConv.integrableOn_of_rapidDec hG hθ hω hf hν h𝓕 hFd g₁, GlobalTheory.Chain.LiftConv.integrableOn_of_rapidDec hG hθ hω' hI2 hν h𝓕 hFd 1, hInt, ?_⟩` and prove the remaining obligations. Conclude with `(hHas.unique hfull).trans ((add_zero _).trans ha0)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TowerCT.towerConstTermOfCompatible_holds : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.TowerConstTermOfCompatible D := by
   intro D V V' W r C B hS ψ χS χT χS' χT' ω ω' hω hω' hc μ 𝓨 hY ν 𝓕 hν h𝓕 κ 𝓝 hκ h𝓝 F hFd hFc f hf g

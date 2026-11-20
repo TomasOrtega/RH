@@ -6,7 +6,7 @@ open NumberField GlobalTheory.ShFam.Pad AlgebraicGeometry CategoryTheory
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LiePull.lieBasis_of_tanBasis` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGroupPullbackTangentVectorsCompat.lean&line=64#L64)
 -/

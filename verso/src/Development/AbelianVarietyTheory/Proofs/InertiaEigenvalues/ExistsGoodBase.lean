@@ -25,7 +25,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => simpa using h`. Consider the case `succ n _ ih => rw [pow_succ, pow_succ]`. Conclude with `GlobalTheory.TowerCharRead.chrEq_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chrEq_pow {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ) (n : ℕ) (hn : 0 < n) :
     ChrEq (c ^ n) (χ ^ n) := by

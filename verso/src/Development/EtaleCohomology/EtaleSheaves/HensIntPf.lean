@@ -7,9 +7,7 @@ open IsLocalRing Polynomial
 namespace LateralTheory.E.HensIntPf
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Ideal.exists_maximal S`. Use `IsLocalRing.of_unique_max_ideal ⟨q, hq, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨e, he, H⟩` from `GlobalTheory.exists_idempotent_notMem_iff_of_henselian A q`. Break down `hid e he with h | h` into its components or cases. Conclude with `absurd (h ▸ q.zero_mem) ((H q hq).2 rfl)`.
-
-Conclude with `(H n hn).1 (h ▸ fun h1 => hn.ne_top ((Ideal.eq_top_iff_one n).2 h1))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem local_of_finite (A S : Type) [CommRing A] [HenselianLocalRing A] [CommRing S] [Algebra A S]
     [Module.Finite A S] [Nontrivial S] (hid : ∀ e : S, IsIdempotentElem e → e = 0 ∨ e = 1) : IsLocalRing S := by
@@ -21,14 +19,14 @@ theorem local_of_finite (A S : Type) [CommRing A] [HenselianLocalRing A] [CommRi
   · exact (H n hn).1 (h ▸ fun h1 => hn.ne_top ((Ideal.eq_top_iff_one n).2 h1))
 
 /- English proof (translation)
-The claim follows from `Algebra.finite_adjoin_of_finite_of_isIntegral s.finite_toSet (fun x _ => Algebra.IsIntegral.isIntegral (R := A) x)`.
+A detailed English derivation is pending.
 -/
 theorem sub_finite (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Algebra.IsIntegral A B] (s : Finset B) :
     Module.Finite A (Algebra.adjoin A (s : Set B)) :=
   Algebra.finite_adjoin_of_finite_of_isIntegral s.finite_toSet (fun x _ => Algebra.IsIntegral.isIntegral (R := A) x)
 
 /- English proof (translation)
-Use `haveI := sub_finite A B s`. Use `local_of_finite A _ fun e he => ?_` and prove the remaining obligations. Break down `hid e (by have h := congrArg Subtype.val he.eq; exact h) with h | h` into its components or cases. Conclude with `Or.inl (Subtype.ext h)`. Conclude with `Or.inr (Subtype.ext h)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem sub_local (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [Nontrivial B] [Algebra A B]
     [Algebra.IsIntegral A B] (hid : ∀ e : B, IsIdempotentElem e → e = 0 ∨ e = 1) (s : Finset B) : IsLocalRing (Algebra.adjoin A (s : Set B)) := by
@@ -39,9 +37,9 @@ theorem sub_local (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] 
   · exact Or.inr (Subtype.ext h)
 
 /- English proof (translation)
-Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations. Use `haveI := sub_local A B hid {x}`. Set `y : Algebra.adjoin A ((({x} : Finset B)) : Set B)` to `⟨x, Algebra.subset_adjoin (by simp)⟩`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self y with h | h` into its components or cases. Conclude with `Or.inl (h.map (Algebra.adjoin A _).val)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (by simpa [y] using h.map (Algebra.adjoin A _).val)`.
+A detailed English derivation is pending.
 -/
 theorem isLocal (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [Nontrivial B] [Algebra A B]
     [Algebra.IsIntegral A B] (hid : ∀ e : B, IsIdempotentElem e → e = 0 ∨ e = 1) : IsLocalRing B := by
@@ -53,7 +51,7 @@ theorem isLocal (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [N
   · exact Or.inr (by simpa [y] using h.map (Algebra.adjoin A _).val)
 
 /- English proof (translation)
-Use `letI := isLocal A B hid`. Use `letI := sub_local A B hid s`. Use `haveI : Algebra.IsIntegral (Algebra.adjoin A (s : Set B)) B := Algebra.IsIntegral.tower_top A`. Establish `: ((maximalIdeal B).comap (algebraMap (Algebra.adjoin A (s : Set B)) B)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _`. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maxIdeal_comap (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [Nontrivial B] [Algebra A B]
     [Algebra.IsIntegral A B] (hid : ∀ e : B, IsIdempotentElem e → e = 0 ∨ e = 1) (s : Finset B) :
@@ -68,17 +66,15 @@ theorem maxIdeal_comap (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRin
   exact IsLocalRing.eq_maximalIdeal this
 
 /- English proof (translation)
-Use `letI := isLocal A B hid`. Use `⟨fun f hf a0 h0 h1 => ?_⟩` and prove the remaining obligations. Use `set s : Finset B := insert a0 f.coeffs`. Set `S` to `Algebra.adjoin A (s : Set B)`. Use `letI := sub_local A B hid s`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI := sub_finite A B s`. Use `haveI : HenselianLocalRing S := GlobalTheory.henselianLocalRing_of_finite A S`. Establish `hc : (↑f.coeffs : Set B) ⊆ S.toSubring` using `fun c hc => Algebra.subset_adjoin (by simp [s, hc])`. Set `g : S[X]` to `f.toSubring S.toSubring hc`. Establish `hgf : g.map S.val.toRingHom = f` using `f.map_toSubring S.toSubring hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `b0 : S` to `⟨a0, Algebra.subset_adjoin (by simp [s])⟩`. Establish `hmem : ∀ y : S, y ∈ maximalIdeal S ↔ (y : B) ∈ maximalIdeal B` using `fun y => by`. Rewrite using `[← maxIdeal_comap A B hid s]`. Both sides reduce to the same expression. Establish `he' : ∀ (p : S[X]) (y : S), ((p.eval y : S) : B) = (p.map S.val.toRingHom).eval (y : B)` using `fun p y => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[eval_map, ← show S.val.toRingHom y = (y : B) from rfl, eval₂_at_apply]`. Both sides reduce to the same expression. Establish `he : ∀ p : S[X], ((p.eval b0 : S) : B) = (p.map S.val.toRingHom).eval a0` using `fun p => he' p b0`. Establish `hgm : g.Monic`. Rewrite `hf` using `[← hgf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Polynomial.monic_of_injective Subtype.val_injective hf`. Take `⟨a, ha, ha'⟩` from `HenselianLocalRing.is_henselian g hgm b0 ((hmem _).2 (by rw [he, hgf]; exact h0)) (by`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, hmem, he, ← derivative_map, hgf]`. Conclude with `IsLocalRing.notMem_maximalIdeal.2 h1)`. Use `⟨a, ?_, (hmem _).1 ha'⟩` and prove the remaining obligations.
-
-Rewrite using `[IsRoot.def, ← hgf, ← he', ha.eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hens (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [Nontrivial B] [Algebra A B]
     [Algebra.IsIntegral A B] (hid : ∀ e : B, IsIdempotentElem e → e = 0 ∨ e = 1) : HenselianLocalRing B := by
@@ -111,7 +107,7 @@ theorem hens (A B : Type) [CommRing A] [CommRing B] [HenselianLocalRing A] [Nont
   rw [IsRoot.def, ← hgf, ← he', ha.eq_zero]; rfl
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ f hf hid`. Use `letI : Algebra A B := f.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hf⟩`. Conclude with `⟨hens A B hid⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HensInt_of : LateralTheory.E.t_E3Cut.HensInt := by
   intro A B _ _ _ _ f hf hid

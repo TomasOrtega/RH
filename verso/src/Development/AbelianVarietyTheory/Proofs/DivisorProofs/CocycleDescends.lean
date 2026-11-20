@@ -31,27 +31,25 @@ Both sides reduce to the same expression.
     (f : A →ₐ[D] E) (x : A) : restrictR hA hE f x = f x := rfl
 
 /- English proof (translation)
-Introduce `R _ D D' _ _ _ _ ψ hψ c hnat hcoc`. Use `letI : Algebra D D' := (ψ : D →+* D').toAlgebra`. Use `haveI : Module.FaithfullyFlat D D' := hψ`. Use `letI instRT : Algebra R (D' ⊗[D] D') := ((algebraMap D (D' ⊗[D] D')).comp (algebraMap R D)).toAlgebra`. Establish `h' : ∀ r, algebraMap D D' (algebraMap R D r) = algebraMap R D' r` using `fun r => ψ.commutes r`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ r, algebraMap D (D' ⊗[D] D') (algebraMap R D r) = algebraMap R (D' ⊗[D] D') r` using `fun _ => rfl`. Set `i₁ : D' →ₐ[R] D' ⊗[D] D'` to `restrictR h' hT Algebra.TensorProduct.includeLeft`. Set `i₂ : D' →ₐ[R] D' ⊗[D] D'` to `restrictR h' hT Algebra.TensorProduct.includeRight`. Establish `h12 : i₁.comp ψ = i₂.comp ψ`. Use extensionality with `d`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Conclude with `((Algebra.TensorProduct.includeLeft (R := D) (S := D) (A := D') (B := D')).commutes d).trans ((Algebra.TensorProduct.includeRight (R := D) (A := D') (B := D')).commutes d).symm`. Take `⟨a, ha⟩` from `GlobalTheory.AmitsurCohomologyH1.cocycle_is_coboundary D D' (c (D' ⊗[D] D') i₁ i₂) (by`. Introduce `E _ _ f₁ f₂ f₃`. Use `letI : Algebra R E := ((algebraMap D E).comp (algebraMap R D)).toAlgebra`. Establish `hE : ∀ r, algebraMap D E (algebraMap R D r) = algebraMap R E r` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ f g : D' →ₐ[D] E, Algebra.TensorProduct.lift f g (fun _ _ ↦ Commute.all _ _) (c (D' ⊗[D] D') i₁ i₂) = c E (restrictR h' hE f) (restrictR h' hE g)`. Introduce `f g`. Set `ρ : D' ⊗[D] D' →ₐ[R] E` to `restrictR hT hE (Algebra.TensorProduct.lift f g (fun _ _ ↦ Commute.all _ _))`. Establish `hn` using `hnat (D' ⊗[D] D') E i₁ i₂ ρ h12`. Establish `e1 : ρ.comp i₁ = restrictR h' hE f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `[ρ, i₁]`. Establish `e2 : ρ.comp i₂ = restrictR h' hE g`. Use extensionality with `x`. Simplify using `[ρ, i₂]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[e1, e2]`. Conclude with `hn.symm`. Establish `hc : ∀ f g : D' →ₐ[D] E, (restrictR h' hE f).comp ψ = (restrictR h' hE g).comp ψ`. Introduce `f g`. Use extensionality with `d`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(f.commutes d).trans (g.commutes d).symm`. Rewrite using `[key, key, key]`. Conclude with `hcoc E _ _ _ (hc _ _) (hc _ _))`. Use `⟨a, ?_⟩` and prove the remaining obligations. Introduce `E _ _ α β hαβ`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `letI : Algebra D E := ((α.comp ψ : D →ₐ[R] E) : D →+* E).toAlgebra`. Set `α' : D' →ₐ[D] E` to `⟨α.toRingHom, fun _ => rfl⟩`. Set `β' : D' →ₐ[D] E` to `⟨β.toRingHom, fun d => by show β (ψ d) = α (ψ d)`. Conclude with `(DFunLike.congr_fun hαβ d).symm⟩`. Establish `hE : ∀ r, algebraMap D E (algebraMap R D r) = algebraMap R E r` using `fun r => by show α (ψ _) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[ψ.commutes, α.commutes]`. Set `ρ : D' ⊗[D] D' →ₐ[R] E` to `restrictR hT hE (Algebra.TensorProduct.lift α' β' (fun _ _ ↦ Commute.all _ _))`. Establish `hn` using `hnat (D' ⊗[D] D') E i₁ i₂ ρ h12`. Establish `e1 : ρ.comp i₁ = α`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ρ, i₁, α']`. Establish `e2 : ρ.comp i₂ = β`. Use extensionality with `x`. Simplify using `[ρ, i₂, β']`. Rewrite `hn` using `[e1, e2]`.
-
-Rewrite using `[hn]`. Use `show Algebra.TensorProduct.lift α' β' (fun _ _ ↦ Commute.all _ _) (c (D' ⊗[D] D') i₁ i₂) = _`. Rewrite using `[ha]`. Simplify using `[α', β']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cocycle_descends : ∀ (R : Type) [CommRing R] (D D' : Type) [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (ψ : D →ₐ[R] D'), (ψ : D →+* D').FaithfullyFlat → ∀ (c : ∀ (E : Type) [CommRing E] [Algebra R E], (D' →ₐ[R] E) → (D' →ₐ[R] E) → E), (∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (α β : D' →ₐ[R] E) (ρ : E →ₐ[R] E'), α.comp ψ = β.comp ψ → c E' (ρ.comp α) (ρ.comp β) = ρ (c E α β)) → (∀ (E : Type) [CommRing E] [Algebra R E] (f₁ f₂ f₃ : D' →ₐ[R] E), f₁.comp ψ = f₂.comp ψ → f₂.comp ψ = f₃.comp ψ → c E f₁ f₃ = c E f₁ f₂ + c E f₂ f₃) → ∃ a : D', ∀ (E : Type) [CommRing E] [Algebra R E] (α β : D' →ₐ[R] E), α.comp ψ = β.comp ψ → c E α β = β a - α a := by
   intro R _ D D' _ _ _ _ ψ hψ c hnat hcoc

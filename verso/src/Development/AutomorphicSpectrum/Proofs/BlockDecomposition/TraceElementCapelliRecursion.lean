@@ -15,27 +15,27 @@ namespace GlobalTheory.CompanionTheory.CapelliEigen
 open Formalism.REAL Finset Polynomial GlobalTheory.CapelliNewton
 
 /- English proof (translation)
-Introduce `V _ _ m E hE P v hP N t ht`. Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).mp fun φ => ?_` and prove the remaining obligations. Take `⟨c, hc1, hc⟩` from `GlobalTheory.T.exists_monic_poly_eq_qdet (Module.End ℂ V) (m + 1) E`. Establish `hmin : ∀ i j : Fin (m + 1), ∃ c' : ℕ → Module.End ℂ V, ∀ w : ℂ, qminor E (Fin.succAbove j) (Fin.succAbove i) w = ∑ d ∈ range (m + 1), w ^ d • c' d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j`. Take `⟨c', hc'⟩` from `GlobalTheory.qminor_polyMap (Module.End ℂ V) (m + 1) m E (Fin.succAbove j) (Fin.succAbove i) 0`. Conclude with `⟨c', fun w => by simpa using hc' w⟩`. Use `choose cm hcm using hmin`. Set `Rc : ℕ → Module.End ℂ V` to `fun d => ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : Module.End ℂ V) * cm i j d * epow E (N + 1) j i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hR : ∀ w : ℂ, ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : Module.End ℂ V) * qminor E (Fin.succAbove j) (Fin.succAbove i) w * epow E (N + 1) j i = ∑ d ∈ range (m + 1), w ^ d • Rc d`. Introduce `w`. Simplify using `only [Rc, hcm, mul_sum, sum_mul, smul_sum, mul_smul_comm, smul_mul_assoc]`. Use `conv_lhs => enter [2, x]`. Rewrite using `[sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sum_comm]`. Use `set Rp := polyOf m Rc φ v with hRp`. Use `set Pq := polyOf (m + 1) c φ (etr E N v) with hPq`. Establish `hPqe : ∀ w : ℂ, Pq.eval w = φ (qdet E w (etr E N v))` using `fun w => by rw [hPq, polyOf_eval, hc]`. Establish `hPv : ∀ w : ℂ, φ (qdet E w v) = P.eval w * φ v` using `fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP, map_smul, smul_eq_mul]`. Establish `hsq : (((-1 : ℂ) ^ N) ^ 2) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Simplify using the standard rewrite rules. Establish `hrec : ∀ w : ℂ, (w - m) ^ (N + 1) * ((P.eval (w + 1) - P.eval w) * φ v) + (-1) ^ N * Rp.eval w = (∑ k ∈ range N, (-1) ^ k * (w - m) ^ (N - k) * t k) * (P.eval w * φ v) + (-1) ^ N * Pq.eval w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Establish `h1` using `congrArg (fun T : Module.End ℂ V => φ (T v)) (GlobalTheory.T.traced_qminor_comatrix_truncated_inverse (Module.End ℂ V) m E hE w N)`. Rewrite `h1` using `[← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor', hR]`. Establish `h2 : (qdet E w * ∑ k ∈ range (N + 1), algebraMap ℂ (Module.End ℂ V) ((-1) ^ k * (w - m) ^ (N - k)) * etr E k) v = (∑ k ∈ range N, (-1) ^ k * (w - m) ^ (N - k) * t k) • qdet E w v + ((-1 : ℂ) ^ N) • qdet E w (etr E N v)`. Establish `h3 : ∀ k ∈ range N, (algebraMap ℂ (Module.End ℂ V) ((-1) ^ k * (w - m) ^ (N - k)) * etr E k) v = ((-1) ^ k * (w - m) ^ (N - k) * t k) • v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k hk`. Rewrite using `[Module.End.mul_apply, ht k (mem_range.mp hk), Module.algebraMap_end_apply, smul_smul]`. Rewrite using `[Module.End.mul_apply, sum_range_succ, LinearMap.add_apply, LinearMap.sum_apply, sum_congr rfl h3, ← sum_smul, map_add, map_smul, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Module.algebraMap_end_apply, map_add, map_smul, LinearMap.sub_apply, map_sub, smul_eq_mul] at h1`. Rewrite `h1` using `[← polyOf_eval, ← hRp, ← hPqe]`. Simplify using `only [hPv] at h1`. Take the linear combination `h1`. Establish `hpoly : C (φ v) * ((-1 : ℂ[X]) ^ N * ((X - C (m : ℂ)) ^ (N + 1) * (P.comp (X + 1) - P) - P * ∑ k ∈ range N, C ((-1) ^ k * t k) * (X - C (m : ℂ)) ^ (N - k))) = Pq - Rp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Polynomial.funext fun w => ?_` and prove the remaining obligations. Establish `h1` using `hrec w`. Simplify using `only [eval_mul, eval_C, eval_pow, eval_neg, eval_one, eval_sub, eval_X, eval_comp, eval_add, eval_finset_sum]`. Establish `h4 : ∑ k ∈ range N, (-1) ^ k * t k * (w - m) ^ (N - k) = ∑ k ∈ range N, (-1) ^ k * (w - m) ^ (N - k) * t k` using `sum_congr rfl fun k _ => by ring`. Rewrite using `[h4]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `((-1 : ℂ) ^ N) * h1 + (Pq.eval w - Rp.eval w) * hsq`. Establish `hco` using `congrArg (fun p : ℂ[X] => p.coeff (m + 1)) hpoly`. Simplify using `only [coeff_C_mul, coeff_sub] at hco`. Establish `hPc : Pq.coeff (m + 1) = φ (etr E N v)`. Rewrite using `[hPq, polyOf_coeff, hc1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hRc : Rp.coeff (m + 1) = 0` using `coeff_eq_zero_of_natDegree_lt ((polyOf_natDegree _ _ _ _).trans_lt (Nat.lt_succ_self m))`. Rewrite `hco` using `[hPc, hRc, sub_zero]`. Rewrite using `[map_sub, map_smul, smul_eq_mul, ← hco]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem etr_apply_of_eigen : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ) (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ V), Formalism.REAL.GlRel E → ∀ (P : Polynomial ℂ) (v : V), (∀ u : ℂ, Formalism.REAL.qdet E u v = P.eval u • v) → ∀ (N : ℕ) (t : ℕ → ℂ), (∀ k < N, Formalism.REAL.etr E k v = t k • v) → Formalism.REAL.etr E N v = ((-1 : Polynomial ℂ) ^ N * ((Polynomial.X - Polynomial.C (m : ℂ)) ^ (N + 1) * ((P).comp (Polynomial.X + 1) - (P)) - (P) * ∑ k ∈ Finset.range N, Polynomial.C ((-1) ^ k * t k) * (Polynomial.X - Polynomial.C (m : ℂ)) ^ (N - k))).coeff (m + 1) • v := by
   intro V _ _ m E hE P v hP N t ht

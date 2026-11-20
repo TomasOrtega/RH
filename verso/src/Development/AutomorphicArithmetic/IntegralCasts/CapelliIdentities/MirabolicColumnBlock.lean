@@ -3,13 +3,13 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.MirabolicColumnBlock
 
 /- English proof (translation)
-Establish `hev : ∀ a, ∃ v : Fin n → K, Module.End.HasEigenvector (Matrix.toLin' M) (d a) v`. Introduce `a`. Apply `Module.End.HasEigenvalue.exists_hasEigenvector` to reduce the goal to its premises. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', hM, Polynomial.IsRoot.def, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) (by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose v hv using hev`. Establish `hli : LinearIndependent K v` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' M) d hd v hv`. Establish `hu : IsUnit (Matrix.of v).transpose`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `hli`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hmul : M * (Matrix.of v).transpose = (Matrix.of v).transpose * Matrix.diagonal d`. Use extensionality with `i a`. Establish `h` using `congrFun (hv a).apply_eq_smul i`. Rewrite `h` using `[Matrix.toLin'_apply]`. Rewrite using `[Matrix.mul_diagonal, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Take `⟨u, hu⟩` from `hu`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hu, hmul, ← hu, ← Matrix.mul_assoc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_diagonal {K : Type} [Field K] {n : ℕ} (d : Fin n → K) (hd : Function.Injective d)
     (M : Matrix (Fin n) (Fin n) K) (hM : M.charpoly = ∏ a, (Polynomial.X - Polynomial.C (d a))) :

@@ -12,19 +12,17 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Introduce `E _ _ Ω Vs _ _ _ ρ ρH R g N ℓ t HL h1 h`. Take `⟨⟨-, -, hX⟩, hmap, -⟩` from `h`. Establish `key : ∀ (c : 𝓞 E) (i : Fin N), ρH c (t i) ∈ HL`. Introduce `c i`. Rewrite using `[hX, ← (RingOfIntegers.basis E).sum_repr c, map_sum, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply]`. Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range.2 ⟨(i, k), rfl⟩)) _`. Establish `stable : ∀ a, ∀ y ∈ HL, ρH a y ∈ HL`. Introduce `a y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hX]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `key _ _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r x _ hx`. Establish `e : ρH a (r • x) = r • ρH a x` using `map_smul (ρH a) (r : Ω) x`. Rewrite using `[e]`. Conclude with `HL.smul_mem r hx`. Use `⟨fun i => ?_, stable, fun a i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using key 1 i`. Establish `hi : ℓ i ∈ HL.map ((LinearMap.fst Ω Vs (Module.Dual Ω Vs)).restrictScalars R)` using `hmap ▸ Submodule.subset_span ⟨i, rfl⟩`. Take `⟨y, hy, e⟩` from `hi`. Rewrite using `[← hmap]`. Use `⟨ρH a y, stable a y hy, ?_⟩` and prove the remaining obligations.
-
-Establish `e' : y.1 = ℓ i` using `e`. Express the relevant statement in the definitionally equal form `(ρH a y).1 = _`. Rewrite using `[h1, e']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodgeAt_stable : ∀ (E : Type) [Field E] [NumberField E] (Ω Vs : Type) [Field Ω] [AddCommGroup Vs] [Module Ω Vs]
     (ρ : 𝓞 E →+* Module.End Ω Vs) (ρH : 𝓞 E →+* Module.End Ω (Vs × Module.Dual Ω Vs))

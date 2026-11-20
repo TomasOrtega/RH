@@ -24,21 +24,21 @@ namespace GlobalTheory.ArchSch
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 + b.1) = _`. Conclude with `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lagL_evI_add (a b : AF F) : evI F (a + b) = evI F a + evI F b := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 + b.1) = _
   exact map_add _ _ _
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : Ainf F) = 0`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem lagL_evI_zero : evI F 0 = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : Ainf F) = 0
   exact map_zero _
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) * a.1) = _`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lagL_evI_realAd_mul (t : ℝ) (a : AF F) : evI F (realAd F t * a) = t • evI F a := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F
@@ -47,45 +47,45 @@ theorem lagL_evI_realAd_mul (t : ℝ) (a : AF F) : evI F (realAd F t * a) = t �
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[arch, lagL_evI_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lagL_arch_add {κ : Type} (p q : κ → AF F) : arch F (p + q) = arch F p + arch F q := by
   funext i; simp [arch, lagL_evI_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[arch, lagL_evI_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lagL_arch_zero {κ : Type} : arch F (0 : κ → AF F) = 0 := by
   funext i; simp [arch, lagL_evI_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[arch, lagL_evI_realAd_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lagL_arch_smul {κ : Type} (t : ℝ) (p : κ → AF F) : arch F (realAd F t • p) = t • arch F p := by
   funext i; simp [arch, lagL_evI_realAd_mul]
 
 /- English proof (translation)
-Introduce `u _` and use `smul_zero u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lagL_at_zero {M : Type} [AddCommGroup M] [Module (AF F) M] : At (evI F) (0 : M) :=
   fun u _ => smul_zero u
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_add, hx u hu, hy u hu, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lagL_at_add {M : Type} [AddCommGroup M] [Module (AF F) M] {x y : M} (hx : At (evI F) x)
     (hy : At (evI F) y) : At (evI F) (x + y) :=
   fun u hu => by rw [smul_add, hx u hu, hy u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_comm, hx u hu, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lagL_at_smul {M : Type} [AddCommGroup M] [Module (AF F) M] {x : M} (c : AF F) (hx : At (evI F) x) :
     At (evI F) (c • x) :=
   fun u hu => by rw [smul_comm, hx u hu, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[dd.form, dd.form, dd.form, map_add]`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lagL_dar_add_left {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V]
     {Bf : V → V → AF F} (dd : Darboux Bf κ) (x y w : V) : Bf (x + y) w = Bf x w + Bf y w := by
@@ -94,7 +94,7 @@ theorem lagL_dar_add_left {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [
   ring
 
 /- English proof (translation)
-Rewrite using `[dd.form, dd.form, dd.form, map_add]`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lagL_dar_add_right {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V]
     {Bf : V → V → AF F} (dd : Darboux Bf κ) (x y w : V) : Bf w (x + y) = Bf w x + Bf w y := by
@@ -105,7 +105,7 @@ theorem lagL_dar_add_right {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `u hu`. Use extensionality with `i j`. Use `congrFun (hc u hu) i` as an intermediate fact. Simplify using `only [Pi.smul_apply, Pi.zero_apply] at this`. Simplify using `[Matrix.vecMulVec_apply, ← smul_mul_assoc, this]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lagL_at_vmv {n d : ℕ} {c : Fin n → AE F E} (hc : At (evI F) c) (x : Fin d → AE F E) :
     At (evI F) (Matrix.vecMulVec c x) := by
@@ -116,7 +116,7 @@ theorem lagL_at_vmv {n d : ℕ} {c : Fin n → AE F E} (hc : At (evI F) c) (x : 
   simp [Matrix.vecMulVec_apply, ← smul_mul_assoc, this]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, smul_mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lagL_smul_vmv {n d : ℕ} (a : AF F) (c : Fin n → AE F E) (x : Fin d → AE F E) :
     a • Matrix.vecMulVec c x = Matrix.vecMulVec (a • c) x := by
@@ -127,29 +127,29 @@ end GlobalTheory.ArchSch
 namespace GlobalTheory.ArchSch
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hH`. Establish `hω` using `fun w w' => GlobalTheory.ArchSch.trace_evI_darboux M.co w w'`. Establish `hω₁` using `fun z z' => GlobalTheory.ArchSch.trace_evI_darboux M₁.co z z'`. Establish `hS₁ : ∀ z z' : Matrix (Fin n) (Fin d₁) (AE F E), arch F (M₁.co.e z).1 = 0 → arch F (M₁.co.e z').1 = 0 → Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W₁.J) z z')) = 0 := by`. Introduce `z z' hz hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hω₁, hz, hz']`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨0, ⟨0, by simp⟩, lagL_at_zero, 0, lagL_at_zero, by simp [lagL_arch_zero], ?_⟩` and prove the remaining obligations. Simplify using `[lagL_arch_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce and unpack `l ⟨u, ⟨y, rfl⟩, hu, z, hz, hz1, rfl⟩ l' ⟨u', ⟨y', rfl⟩, hu', z', hz', hz1', rfl⟩`. Use `⟨_, ⟨y + y', rfl⟩, by rw [Matrix.add_vecMulVec]; exact lagL_at_add hu hu', z + z', lagL_at_add hz hz', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, Prod.fst_add, lagL_arch_add, hz1, hz1', add_zero]`. Establish `: Matrix.vecMulVec (y + y') (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * (z + z') * (incM F H'.ι)ᵀ = (Matrix.vecMulVec y (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) + (Matrix.vecMulVec y' (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n …`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.add_vecMulVec, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Apply the tactic sequence `ext : 1 <;> simp only [Prod.fst_add, Prod.snd_add, LinearEquiv.map_add, lagL_arch_add] <;> abel`. Introduce and unpack `t l ⟨u, ⟨y, rfl⟩, hu, z, hz, hz1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Use `⟨_, ⟨realAd F t • y, rfl⟩, ?_, realAd F t • z, lagL_at_smul _ hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← lagL_smul_vmv]`. Conclude with `lagL_at_smul _ hu`. Rewrite using `[map_smul, Prod.smul_fst, lagL_arch_smul, hz1, smul_zero]`. Establish `: Matrix.vecMulVec (realAd F t • y) (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * (realAd F t • z) * (incM F H'.ι)ᵀ = realAd F t • (Matrix.vecMulVec y (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lagL_smul_vmv, smul_add, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[this, map_smul, Prod.smul_fst, Prod.smul_snd, lagL_arch_smul, lagL_arch_smul]`. Both sides reduce to the same expression. Introduce and unpack `l ⟨u, ⟨y, rfl⟩, hu, z, hz, hz1, rfl⟩ l' ⟨u', ⟨y', rfl⟩, hu', z', hz', hz1', rfl⟩`. Rewrite using `[← sub_eq_zero, ← hω, lagL_dar_add_left M.co, lagL_dar_add_right M.co, lagL_dar_add_right M.co, GlobalTheory.LagIsotropic.symp_vecMulVec_x_eq_zero B W W₁ H' i₀ i₁ X.J hH, (GlobalTheory.ArchSch.OrthPlane.symp_tens_orth B W W₁ H' r' s' i₀ i₁ X.J hB hW hH y z').2.1, (GlobalTheory.Ar …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS₁ z z' hz1 hz1'`. Introduce `v hv`. Take `⟨w, hwA, hw1, hw2⟩` from `GlobalTheory.ArchSch.exists_darboux_lift M.co v.1 v.2`. Take `⟨a, b, z, ha, hb, hz, rfl⟩` from `GlobalTheory.ThK.DecW.decompose B W W₁ H' r' s' i₀ i₁ hW hH w hwA`. Establish `key : ∀ w', (arch F (M.co.e w').1, arch F (M.co.e w').2) ∈ lagSet M M₁ H' → Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (Matrix.vecMulVec a (incV F H'.x) + incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ + Matrix.vecMulVec b (incV F H'.y)) w')) = 0 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w' hl`. Use `hv _ hl` as an intermediate fact. Rewrite using `[hω, hw1, hw2]`. Conclude with `sub_eq_zero.mpr this`. Establish `hb0 : b = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ArchTraceNondeg.eq_zero_of_trace_orth B X r s GlobalTheory.ArchSch.trAE_nondeg hX b hb fun c hc => ?_` and prove the remaining obligations. Establish `hl : (arch F (M.co.e (Matrix.vecMulVec c (incV F H'.x))).1, arch F (M.co.e (Matrix.vecMulVec c (incV F H'.x))).2) ∈ lagSet M M₁ H'`. Use `⟨_, ⟨c, rfl⟩, lagL_at_vmv hc _, 0, lagL_at_zero, by simp [lagL_arch_zero], ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `key _ hl` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `this` using `[lagL_dar_add_left M.co, lagL_dar_add_left M.co, GlobalTheory.LagIsotropic.symp_vecMulVec_x_eq_zero B W W₁ H' i₀ i₁ X.J hH, (GlobalTheory.ArchSch.OrthPlane.symp_tens_orth B W W₁ H' r' s' i₀ i₁ X.J hB hW hH c z).1, GlobalTheory.ArchSch.symp_dual_iso B W W₁ H' r' s' i₀ i₁ X.J hW hH …`. Then use the resulting hypothesis. Substitute `hb0` using the available equality. Establish `hp : arch F (M₁.co.e z).1 = 0`. Use function extensionality and compare the values at `i`. Use `GlobalTheory.mixedSpace_traceForm_nondegenerate F _ fun η => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z', hz'A, hz'1, hz'2⟩` from `GlobalTheory.ArchSch.exists_darboux_lift M₁.co 0 (Pi.single i η)`. Establish `hl : (arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z' * (incM F H'.ι)ᵀ)).1, arch F (M.co.e (incM F (1 : Matrix (Fin n) (Fin n) E) * z' * (incM F H'.ι)ᵀ)).2) ∈ lagSet M M₁ H'`. Use `⟨0, ⟨0, by simp⟩, lagL_at_zero, z', hz'A, hz'1, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `key _ hl` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[lagL_dar_add_left M.co, lagL_dar_add_left M.co, (GlobalTheory.ArchSch.OrthPlane.symp_tens_orth B W W₁ H' r' s' i₀ i₁ X.J hB hW hH a z').2.1, GlobalTheory.SympRestrict.symp_embed_eq B W W₁ H' i₀ i₁ X.J hH, (GlobalTheory.ArchSch.OrthPlane.symp_tens_orth B W W₁ H' r' s' i₀ i₁ X.J h …`. Simplify `this` using `[mixedTracePairing_apply, Pi.single_apply]`. Use `⟨_, ⟨a, rfl⟩, lagL_at_vmv ha _, z, hz, hp, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp [← hw1, ← hw2]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lagSet_isLagrangian : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W)

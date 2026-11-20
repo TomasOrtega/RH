@@ -17,7 +17,7 @@ namespace GlobalTheory.LatStab
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem finE_val (V : HSp D) (g : GA D V) :
     (finE V g).val = (Formalism.L2.Theta.mt V g).map (toEAf D) := by
@@ -25,11 +25,11 @@ theorem finE_val (V : HSp D) (g : GA D V) :
   rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hM`. Rewrite using `[hβ _]`. Establish `hx'` using `(hβ x).1 hx`. Establish `e : (β⁻¹).val * (frGL β y).val = (intGL D.host.F D.host.E n y).val * (β⁻¹).val`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `β⁻¹ * (β * intGL D.host.F D.host.E n y * β⁻¹) = _`. Use `group`. Introduce `i`. Rewrite using `[Matrix.mulVec_mulVec, e, ← Matrix.mulVec_mulVec]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ j, (intGL D.host.F D.host.E n y).val i j * ((β⁻¹).val *ᵥ x) j ∈ _`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (y.val i j).2 (hx' j)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_mem_St {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (β M : GL (Fin n) (Lev.EAf D))
     (hβ : IsFrame β Λ) (hM : M ∈ St β) (x : Fin n → Lev.EAf D) (hx : x ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) :
@@ -48,17 +48,15 @@ theorem mulVec_mem_of_mem_St {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n �
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (y.val i j).2 (hx' j)
 
 /- English proof (translation)
-Establish `hs'` using `mem_closure_of_mem_hatL ΛS s hs`. Establish `ht'` using `mem_closure_of_mem_hatL ΛT t ht`. Use `clear hs ht`. Express the relevant statement in the definitionally equal form `rankOneHom S T a s _ ∈ _`. Proceed by induction on `hs' using AddSubgroup.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem s hs`. Proceed by induction on `ht' using AddSubgroup.closure_induction with`. Consider the case `mem t ht`. Take `⟨α, hα, x, hx, rfl⟩` from `hs`. Take `⟨β, hβ, y, hy, rfl⟩` from `ht`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (((1 : D.host.E) ⊗ₜ[D.host.F] γ : Lev.EAf D) • fun i => (y i ⊗ₜ[D.host.F] β : Lev.EAf D)) = fun i => y i ⊗ₜ[D.host.F] (γ * β)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨γ * β * α, (mul_mem (mul_mem hγ hβ) hα : γ * β * α ∈ Formalism.UG.intAd D.host.F), fun v hv => ?_, a, ha, x, hx, y, hy, rankOne_pure S T a x y α (γ * β)⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hP v hv, zero_mul, zero_mul]`. Consider the case `zero => rw [smul_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [smul_neg, map_neg]`. Conclude with `neg_mem hy`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rankOne_smul_mem_latO (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (Pv : HeightOneSpectrum (𝓞 D.host.F) → Prop)
@@ -95,13 +93,11 @@ theorem rankOne_smul_mem_latO (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fi
   | neg y _ hy => rw [map_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hu`. Establish `e` using `rankOne_pure S T a s t 1 α`. Rewrite `e` using `[mul_one]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (fun i => (t i ⊗ₜ[D.host.F] α : Lev.EAf D)) = ((1 : D.host.E) ⊗ₜ[D.host.F] α : Lev.EAf D) • fun i => (t i ⊗ₜ[D.host.F] (1 : Af D.host.F) : Lev.EAf D)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[← e, actO_rankOne, e2, Matrix.mulVec_smul, ← finE_val, ← finE_val]`. Conclude with `rankOne_smul_mem_latO S T ΛS ΛT Pv α hα hP a ha _ (mulVec_mem_of_mem_St ΛS βS _ hS hg _ (pure_mem_hatL ΛS 1 (one_mem _) s hs)) _ (mulVec_mem_of_mem_St ΛT βT _ hT hh _ (pure_mem_hatL ΛT 1 (one_mem _) t ht))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp only [actO, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => simp only [actO, Matrix.mul_add, Matrix.add_mul] at hy hz ⊢`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => simp only [actO, Matrix.mul_neg, Matrix.neg_mul] at hy ⊢`.
-
-Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actO_mem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
@@ -128,9 +124,9 @@ theorem actO_mem (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → 
   | neg y _ hy => simp only [actO, Matrix.mul_neg, Matrix.neg_mul] at hy ⊢; exact neg_mem hy
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT βS βT _ _ hS hT g h hg hh Pv u`. Use `⟨actO_mem S T ΛS ΛT βS βT hS hT g h hg hh Pv u, fun hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `actO_mem S T ΛS ΛT βS βT hS hT g⁻¹ h⁻¹ (by rw [map_inv]; exact inv_mem hg) (by rw [map_inv]; exact inv_mem hh) Pv _ hu`. Establish `h2` using `actO_actO_inv S T g⁻¹ h⁻¹ u`. Rewrite `h2` using `[inv_inv, inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_latO_iff_actO_mem : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Submodule.IsLattice D.host.E ΛS → Submodule.IsLattice D.host.E ΛT → IsFrame βS ΛS → IsFrame βT ΛT → ∀ (g : GA D S) (h : GA D T), finE S g ∈ St βS → finE T h ∈ St βT → ∀ (Pv : HeightOneSpectrum (𝓞 D.host.F) → Prop) (u : WO S T), u ∈ latO S T ΛS ΛT Pv ↔ actO S T g h u ∈ latO S T ΛS ΛT Pv := by
   intro D S T ΛS ΛT βS βT _ _ hS hT g h hg hh Pv u

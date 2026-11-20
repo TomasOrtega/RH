@@ -11,34 +11,34 @@ noncomputable def fractInt (s : ℂ) : ℂ :=
 noncomputable def cutFract : ℝ → ℂ := (Ioi (1 : ℝ)).indicator fun t => ((Int.fract t : ℝ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Int.fract_nonneg t)]`. Conclude with `(Int.fract_lt_one t).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_fract_le (t : ℝ) : ‖((Int.fract t : ℝ) : ℂ)‖ ≤ 1 := by
   rw [Complex.norm_real, Real.norm_of_nonneg (Int.fract_nonneg t)]
   exact (Int.fract_lt_one t).le
 
 /- English proof (translation)
-The claim follows from `(norm_indicator_le_norm_self _ _).trans (norm_fract_le t)`.
+A detailed English derivation is pending.
 -/
 lemma norm_cutFract_le (t : ℝ) : ‖cutFract t‖ ≤ 1 :=
   (norm_indicator_le_norm_self _ _).trans (norm_fract_le t)
 
 /- English proof (translation)
-The claim follows from `Complex.measurable_ofReal.comp measurable_fract`.
+A detailed English derivation is pending.
 -/
 lemma measurable_fract_ofReal : Measurable fun t : ℝ => ((Int.fract t : ℝ) : ℂ) :=
   Complex.measurable_ofReal.comp measurable_fract
 
 /- English proof (translation)
-The claim follows from `measurable_fract_ofReal.indicator measurableSet_Ioi`.
+A detailed English derivation is pending.
 -/
 lemma measurable_cutFract : Measurable cutFract :=
   measurable_fract_ofReal.indicator measurableSet_Ioi
 
 /- English proof (translation)
-Unfold `fractInt mellin cutFract`. Establish `h : ∀ t : ℝ, (t : ℂ) ^ (-s - 1) • (Ioi (1 : ℝ)).indicator (fun t => ((Int.fract t : ℝ) : ℂ)) t = (Ioi (1 : ℝ)).indicator (fun t => ((Int.fract t : ℝ) : ℂ) * (t : ℂ) ^ (-(s + 1))) t`. Introduce `t`. Distinguish the cases in `ht : t ∈ Ioi (1 : ℝ)`. Rewrite using `[indicator_of_mem ht, indicator_of_mem ht, smul_eq_mul, mul_comm, show -s - 1 = -(s + 1) by ring]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_notMem ht, indicator_of_notMem ht, smul_zero]`. Repeatedly rewrite using `[h]`. Rewrite using `[setIntegral_indicator measurableSet_Ioi, Ioi_inter_Ioi, max_eq_right zero_le_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma fractInt_eq_mellin (s : ℂ) : fractInt s = mellin cutFract (-s) := by
   unfold fractInt mellin cutFract
@@ -54,13 +54,13 @@ lemma fractInt_eq_mellin (s : ℂ) : fractInt s = mellin cutFract (-s) := by
   rw [setIntegral_indicator measurableSet_Ioi, Ioi_inter_Ioi, max_eq_right zero_le_one]
 
 /- English proof (translation)
-Establish `h1 : DifferentiableAt ℂ (mellin cutFract) (-s)`. Use `mellin_differentiableAt_of_isBigO_rpow (a := 0) (b := -s.re - 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `LocallyIntegrable.locallyIntegrableOn ?_ _` and prove the remaining obligations. Use `(locallyIntegrable_const (1 : ℝ)).mono measurable_cutFract.aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun t => by simpa using norm_cutFract_le t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Asymptotics.IsBigO.of_bound 1 (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `using norm_cutFract_le t`. Simplify using `using hs`. Use `Asymptotics.IsBigO.of_bound 1 ?_` and prove the remaining obligations. Establish `: Iio (1 : ℝ) ∈ 𝓝[>] (0 : ℝ)` using `mem_nhdsWithin_of_mem_nhds (Iio_mem_nhds one_pos)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [this] with t ht`. Establish `ht' : t ∉ Ioi (1 : ℝ)` using `fun h => lt_asymm (mem_Iio.1 ht) (mem_Ioi.1 h)`. Rewrite using `[cutFract, indicator_of_notMem ht', norm_zero]`. Check the signs of the components of the expression. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : fractInt = fun s => mellin cutFract (-s)` using `funext fractInt_eq_mellin`. Rewrite using `[h2]`. Conclude with `h1.comp s differentiableAt_id.neg`.
+A detailed English derivation is pending.
 -/
 lemma differentiableAt_fractInt {s : ℂ} (hs : 0 < s.re) : DifferentiableAt ℂ fractInt s := by
   have h1 : DifferentiableAt ℂ (mellin cutFract) (-s) := by
@@ -83,7 +83,7 @@ lemma differentiableAt_fractInt {s : ℂ} (hs : 0 < s.re) : DifferentiableAt ℂ
   exact h1.comp s differentiableAt_id.neg
 
 /- English proof (translation)
-Establish `ht0 : 0 < t` using `lt_trans one_pos ht`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos ht0]`. Simplify using `only [neg_re, add_re, one_re]`. Conclude with `mul_le_of_le_one_left (by positivity) (norm_fract_le t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma norm_integrand_le (s : ℂ) {t : ℝ} (ht : t ∈ Ioi (1 : ℝ)) :
     ‖((Int.fract t : ℝ) : ℂ) * (t : ℂ) ^ (-(s + 1))‖ ≤ t ^ (-(s.re + 1)) := by
@@ -93,9 +93,9 @@ lemma norm_integrand_le (s : ℂ) {t : ℝ} (ht : t ∈ Ioi (1 : ℝ)) :
   exact mul_le_of_le_one_left (by positivity) (norm_fract_le t)
 
 /- English proof (translation)
-Establish `h : -(s.re + 1) < -1` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le (integrableOn_Ioi_rpow_of_lt h one_pos) ?_` and prove the remaining obligations. Rewrite using `[ae_restrict_iff' measurableSet_Ioi]`. Conclude with `Eventually.of_forall fun t ht => norm_integrand_le s ht`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 1 / s.re := by`. Rewrite using `[integral_Ioi_rpow_of_lt h one_pos, Real.one_rpow, show -(s.re + 1) + 1 = -s.re by ring, neg_div_neg_eq]`.
+A detailed English derivation is pending.
 -/
 lemma norm_fractInt_le {s : ℂ} (hs : 0 < s.re) : ‖fractInt s‖ ≤ 1 / s.re := by
   have h : -(s.re + 1) < -1 := by linarith
@@ -108,7 +108,7 @@ lemma norm_fractInt_le {s : ℂ} (hs : 0 < s.re) : ‖fractInt s‖ ≤ 1 / s.re
           show -(s.re + 1) + 1 = -s.re by ring, neg_div_neg_eq]
 
 /- English proof (translation)
-Establish `h : (-(s + 1)).re < -1` using `by simp; linarith`. Conclude with `(integrableOn_Ioi_cpow_of_lt h one_pos).bdd_mul (c := 1) measurable_fract_ofReal.aestronglyMeasurable (Eventually.of_forall norm_fract_le)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma integrableOn_integrand {s : ℂ} (hs : 0 < s.re) :
     IntegrableOn (fun t : ℝ => ((Int.fract t : ℝ) : ℂ) * (t : ℂ) ^ (-(s + 1))) (Ioi 1) := by
@@ -117,9 +117,9 @@ lemma integrableOn_integrand {s : ℂ} (hs : 0 < s.re) :
     measurable_fract_ofReal.aestronglyMeasurable (Eventually.of_forall norm_fract_le)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ZetaFractionalIntegral.zeta_eq_sub_integral_fract`. Consider the case `exact _root_.GlobalTheory.ZetaFractionalIntegral.zeta_eq_sub_integral_fract`. Consider the case `(apply _root_.GlobalTheory.ZetaFractionalIntegral.zeta_eq_sub_integral_fract <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ZetaFractionalIntegral.zeta_eq_sub_integral_fract <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ZetaFractionalIntegral.zeta_eq_sub_integral_fract <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ZetaFractionalIntegral.zeta_eq_sub_integral_fract ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma zeta_eq_of_one_lt {s : ℂ} (hs : 1 < s.re) :
     riemannZeta s = s / (s - 1) - s * fractInt s := by
@@ -132,13 +132,13 @@ lemma zeta_eq_of_one_lt {s : ℂ} (hs : 1 < s.re) :
   | (intros; exact _root_.GlobalTheory.ZetaFractionalIntegral.zeta_eq_sub_integral_fract ..)
 
 /- English proof (translation)
-Establish `hU : IsOpen {z : ℂ | 0 < z.re}` using `isOpen_lt continuous_const continuous_re`. Establish `hf : AnalyticOnNhd ℂ riemannZeta₀ {z : ℂ | 0 < z.re}` using `differentiable_riemannZeta₀.differentiableOn.analyticOnNhd hU`. Establish `hg : AnalyticOnNhd ℂ (fun z => 1 - z * fractInt z) {z : ℂ | 0 < z.re}` using `DifferentiableOn.analyticOnNhd (fun z hz => ((differentiableAt_const _).sub (differentiableAt_id.mul (differentiableAt_fractInt hz))).differentiableWithinAt) hU`. Establish `key : ∀ z : ℂ, z ≠ 1 → z / (z - 1) = (z - 1)⁻¹ + 1`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sub_ne_zero.2 hz` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `heq` using `hf.eqOn_of_preconnected_of_eventuallyEq hg (convex_halfSpace_re_gt 0).isPreconnected (z₀ := 2) (by simp) (by`. Establish `: {z : ℂ | 1 < z.re} ∈ 𝓝 (2 : ℂ)` using `(isOpen_lt continuous_const continuous_re).mem_nhds (by simp)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [this] with z hz`. Establish `hz1 : z ≠ 1`. Introduce and unpack `rfl`. Simplify using `at hz`. Establish `h1` using `zeta_eq_of_one_lt hz`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[riemannZeta_eq_inv_sub_add hz1, key z hz1]`. Take the linear combination `h1)`. Establish `h2 : riemannZeta₀ s = 1 - s * fractInt s` using `heq hs`. Rewrite using `[riemannZeta_eq_inv_sub_add hs1, key s hs1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zeta_eq {s : ℂ} (hs : 0 < s.re) (hs1 : s ≠ 1) :
     riemannZeta s = s / (s - 1) - s * fractInt s := by
@@ -170,7 +170,7 @@ theorem zeta_eq {s : ℂ} (hs : 0 < s.re) (hs1 : s ≠ 1) :
   ring
 
 /- English proof (translation)
-Introduce `s hs hs1`. Rewrite using `[zeta_eq hs hs1, sub_sub_cancel_left, norm_neg, norm_mul, div_eq_mul_one_div]`. Conclude with `mul_le_mul_of_nonneg_left (norm_fractInt_le hs) (norm_nonneg s)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_zeta_sub_le :
     ∀ s : ℂ, 0 < s.re → s ≠ 1 → ‖riemannZeta s - s / (s - 1)‖ ≤ ‖s‖ / s.re := by

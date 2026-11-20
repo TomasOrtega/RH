@@ -8,13 +8,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Establish `hq : ∀ f : MvPowerSeries W.σ O, p (W.π f) = 0 → MvPowerSeries.constantCoeff f = 0`. Introduce `f hf`. Establish `h1` using `congrArg (fun g => g (W.π f)) hx`. Simplify using `only [AlgHom.comp_apply, hf, map_zero, WPres.origin_π] at h1`. Conclude with `h1.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hq, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Take `⟨z, rfl⟩` from `hp y`. Take `⟨f, rfl⟩` from `W.surj z`. Establish `e1` using `WPres.origin_π (W.quot p hp hh) hq f`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun g => g (W.π f)) hx`. Simplify using `only [AlgHom.comp_apply, WPres.origin_π] at e2`. Conclude with `e1.trans e2.symm`. Use function extensionality and compare the values at `j show Submodule.map (p.comp W.π).toLinearMap _ = Submodule.map p.toLinearMap (Submodule.map W.π.toLinearMap _)`. Rewrite using `[← Submodule.map_comp]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem quot_facts {O X R R' : Type} [CommRing O] [AddCommGroup X] [CommRing R] [Algebra O R]
     [CommRing R'] [Algebra O R'] (W : WPres O X R) (h : W.HasOrigin) (p : R →ₐ[O] R') (hp : Function.Surjective p)
@@ -40,9 +38,9 @@ private theorem quot_facts {O X R R' : Type} [CommRing O] [AddCommGroup X] [Comm
     rfl
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite `hg` using `[pow_two]`. Use `Submodule.mul_induction_on hg (fun a ha b hb => ?_) ?_` and prove the remaining obligations. Rewrite `ha`, `hb` using `[RingHom.mem_ker]`. Rewrite using `[hD a b, ha, hb, zero_smul, zero_smul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem der_sq {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (x : A →ₐ[O] O)
     (D : A →ₗ[O] O) (hD : D ∈ PtDer x O) : ∀ g ∈ RingHom.ker x ^ 2, D g = 0 := by
@@ -55,13 +53,11 @@ private theorem der_sq {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (x :
     rw [map_add, ha, hb, add_zero]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc k`. Establish `hs : (satSq x).mkQ (∑ i, c i • g i) = 0`. Rewrite using `[map_sum]`. Simplify `hc` using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hs` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨a, ha0, ha⟩` from `hs`. Take `⟨δ, hδ, hk, hk'⟩` from `hd k`. Establish `hz` using `der_sq x δ hδ _ ha`. Rewrite `hz` using `[map_smul, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_smul, smul_eq_mul] at hz`. Rewrite `hz` using `[Finset.sum_eq_single k (fun j _ hj => by rw [hk' j hj, mul_zero]) (by simp)]`. Break down `mul_eq_zero.mp hz with h | h` into its components or cases. Conclude with `absurd h ha0`. Break down `mul_eq_zero.mp h with h | h` into its components or cases.
-
-Conclude with `h`. Conclude with `absurd h hk`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem indep {O A κ : Type} [CommRing O] [IsDomain O] [CommRing A] [Algebra O A] [Fintype κ] (x : A →ₐ[O] O)
     (g : κ → A) (hd : ∀ k, ∃ δ ∈ PtDer x O, δ (g k) ≠ 0 ∧ ∀ k', k' ≠ k → δ (g k') = 0) :
@@ -86,19 +82,19 @@ private theorem indep {O A κ : Type} [CommRing O] [IsDomain O] [CommRing A] [Al
     · exact absurd h hk
 
 /- English proof (translation)
-Establish `hker : ∀ y, y ∈ Ideal.span (Set.range g) → x y = 0 ∧ δ y = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨k, rfl⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hg k, h0 k⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha.1, ha.2, hb.1, hb.2]`. Consider the case `smul a z _ hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hz.1]`. Rewrite using `[smul_eq_mul, hδ a z, hz.1, hz.2, smul_zero, zero_smul, add_zero]`. Establish `hle : LinearMap.ker p.toLinearMap ≤ LinearMap.ker δ`. Introduce `y hy`. Establish `hy' : y ∈ RingHom.ker p` using `hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hy'` using `[hk]`. Conclude with `(hker y hy').2`. Set `e` to `LinearMap.quotKerEquivOfSurjective p.toLinearMap hp`. Set `δ' : A' →ₗ[O] O` to `((LinearMap.ker p.toLinearMap).liftQ δ hle).comp e.symm.toLinearMap`. Establish `hδ' : ∀ y, δ' (p y) = δ y`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `: e.symm (p y) = Submodule.Quotient.mk y`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [δ', LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ', ?_, hδ'⟩` and prove the remaining obligations. Introduce `f g'`. Take `⟨a, rfl⟩` from `hp f`. Take `⟨b, rfl⟩` from `hp g'`. Rewrite using `[← map_mul, hδ', hδ', hδ', hδ a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : x' (p a) = x a` using `by rw [← hx]; rfl`. Establish `hb : x' (p b) = x b` using `by rw [← hx]; rfl`. Rewrite using `[ha, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem der_desc {O A A' κ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing A'] [Algebra O A']
     (x : A →ₐ[O] O) (g : κ → A) (hg : ∀ k, x (g k) = 0) (p : A →ₐ[O] A') (hp : Function.Surjective p)
@@ -140,43 +136,37 @@ private theorem der_desc {O A A' κ : Type} [CommRing O] [CommRing A] [Algebra O
   rw [ha, hb]
 
 /- English proof (translation)
-Introduce `O X _ _ _ _ _ _ _ _ _ P _ _ _ W h n hs κ _ g w hgw hd`. Take `⟨τ, _, wt0, φ, hc, hn⟩` from `hs`. Use `set I : Ideal P := Ideal.span (Set.range g) with hI`. Establish `hIx : ∀ a ∈ I, W.origin h a = 0`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : I ≤ RingHom.ker (W.origin h)`. Rewrite using `[hI, Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(hgw k).2`. Conclude with `hle ha`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `p : P →ₐ[O] P ⧸ I` to `Ideal.Quotient.mkₐ O I`. Establish `hp : Function.Surjective p` using `Ideal.Quotient.mkₐ_surjective O I`. Establish `hpker : RingHom.ker p = Ideal.span (Set.range g)`. Rewrite using `[← hI]`. Conclude with `Ideal.Quotient.mkₐ_ker O I`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Set `x' : P ⧸ I →ₐ[O] O` to `Ideal.Quotient.liftₐ I (W.origin h) hIx`. Establish `hx' : x'.comp p = W.origin h`. Use extensionality with `y`. Both sides reduce to the same expression. Establish `hli` using `indep (W.origin h) g hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ', _, wt', φ', hc', hn'⟩` from `chart_cut O P X W.part (W.origin h) τ wt0 φ hc κ g w hgw hli (P ⧸ I) p x' hp hpker hx'`. Establish `hgA : ∀ k, (⟨g k, W.part_le_A (hgw k).1⟩ : W.A) ∈ W.gr (w k)` using `fun k => (hgw k).1`. Take `⟨hhom, -⟩` from `homog_span O P X W κ (fun k => ⟨g k, W.part_le_A (hgw k).1⟩) w hgA`. Establish `hh1 : IsHomog O W.wt (RingHom.ker (p.comp W.π))`. Establish `e : RingHom.ker (p.comp W.π) = Ideal.comap W.π (Ideal.span (Set.range fun k => g k))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `f`. Simplify using `[p, Ideal.Quotient.eq_zero_iff_mem, hI]`. Rewrite using `[e]`. Conclude with `hhom`. Take `⟨h1, ho1, hpart1⟩` from `quot_facts W h p hp hh1 x' hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set W1 := W.quot p hp hh1 with hW1`. Establish `hc1 : IsChart W1.part (W1.origin h1) wt' φ'`. Rewrite using `[ho1, hpart1]`. Conclude with `hc'`. Take `⟨hprime, hhom1, hkle, hdk, hdesc⟩` from `chart_ker O X (P ⧸ I) W1 h1 τ' wt' φ' hc1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set J : Ideal (P ⧸ I) := RingHom.ker φ' with hJ`. Establish `hJx : ∀ a ∈ J, x' a = 0`. Introduce `a ha`. Use `hkle ha` as an intermediate fact. Rewrite `this` using `[ho1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Conclude with `this`. Set `p2 : P ⧸ I →ₐ[O] (P ⧸ I) ⧸ J` to `Ideal.Quotient.mkₐ O J`. Establish `hp2 : Function.Surjective p2` using `Ideal.Quotient.mkₐ_surjective O J`. Set `x'' : (P ⧸ I) ⧸ J →ₐ[O] O` to `Ideal.Quotient.liftₐ J x' hJx`. Set `φ'' : (P ⧸ I) ⧸ J →ₐ[O] MvPowerSeries τ' (FractionRing O)` to `Ideal.Quotient.liftₐ J φ' (fun a ha => ha)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx'' : x''.comp p2 = W1.origin h1`. Rewrite using `[ho1]`. Use extensionality with `y`. Both sides reduce to the same expression. Establish `hφ'' : φ''.comp p2 = φ'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `y`. Both sides reduce to the same expression. Establish `hc2` using `hdesc ((P ⧸ I) ⧸ J) p2 x'' φ'' hp2 hx'' hφ''`. Establish `hh2 : IsHomog O W1.wt (RingHom.ker (p2.comp W1.π))`. Establish `e : RingHom.ker (p2.comp W1.π) = RingHom.ker (φ'.comp W1.π)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `f`. Simplify using `[p2, Ideal.Quotient.eq_zero_iff_mem, hJ]`. Rewrite using `[e]`. Conclude with `hhom1`. Take `⟨h2, ho2, hpart2⟩` from `quot_facts W1 h1 p2 hp2 hh2 x'' hx''`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set W2 := W1.quot p2 hp2 hh2 with hW2`. Establish `hc3 : IsChart W2.part (W2.origin h2) wt' φ''`. Rewrite using `[ho2, hpart2]`. Conclude with `hc2`. Establish `hgr` using `chart_gr O X ((P ⧸ I) ⧸ J) W2 h2 τ' wt' φ'' hc3`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : J.IsPrime := hprime`. Set `q : P →ₐ[O] (P ⧸ I) ⧸ J` to `p2.comp p`. Establish `hq : Function.Surjective q` using `hp2.comp hp`. Establish `hpartq : ∀ j, W2.part j = (W.part j).map q.toLinearMap`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpart2, hpart1]`. Use `show _ = Submodule.map (p2.toLinearMap.comp p.toLinearMap) _`. Rewrite using `[Submodule.map_comp]`. Use `⟨(P ⧸ I) ⧸ J, inferInstance, inferInstance, co_quot O P _ q hq, inferInstance, q, W2, h2, fun j => Nat.card {i // wt' i = j}, hq, fun s => ⟨s, rfl⟩, hpartq, ?_, ?_, ?_, ⟨τ', inferInstance, wt', _, hgr, fun j => rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ho2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Both sides reduce to the same expression. Introduce `k show p2 (p (g k)) = 0`. Establish `: p (g k) = 0` using `by show Ideal.Quotient.mk I (g k) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hI]`.
-
-Conclude with `Ideal.subset_span ⟨k, rfl⟩`. Rewrite using `[this, map_zero]`. Introduce `δ hδ h0 y hy`. Take `⟨δ', hδ'mem, hδ'⟩` from `der_desc (W.origin h) g (fun k => (hgw k).2) p hp hpker x' hx' δ hδ h0`. Rewrite using `[← hδ' y]`.
-
-Establish `hJy : p y ∈ J`. Establish `: p2 (p y) = 0` using `hy`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).mp this`. Apply `hdk δ' (by rw [ho1]; exact hδ'mem) (p y) hJy` to reduce the goal to its premises. Introduce `j`.
-
-Rewrite using `[← hn j]`. Conclude with `hn' j`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_smooth_quotient_by_weighted_equations :
     ∀ (O X : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [AddCommGroup X] [DecidableEq X] [Module.Free ℤ X] [Module.Finite ℤ X] (P : Type) [CommRing P] [Algebra O P] [IsCO O P] (W : WPres O X P) (h : W.HasOrigin) (n : X → ℕ), SmoothPt W.part (W.origin h) n → ∀ (κ : Type) [Fintype κ] (g : κ → P) (w : κ → X), (∀ k, g k ∈ W.part (w k) ∧ W.origin h (g k) = 0) → (∀ k, ∃ δ ∈ PtDer (W.origin h) O, δ (g k) ≠ 0 ∧ ∀ k', k' ≠ k → δ (g k') = 0) → ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (_ : IsCO O R) (_ : IsDomain R) (q : P →ₐ[O] R) (W' : WPres O X R) (h' : W'.HasOrigin) (n' : X → ℕ), Function.Surjective q ∧ (∀ s, ∃ s', W'.wt s = W.wt s') ∧ (∀ j, W'.part j = (W.part j).map q.toLinearMap) ∧ (W'.origin h').comp q = W.origin h ∧ (∀ k, q (g k) = 0) ∧ (∀ δ ∈ PtDer (W.origin h) O, (∀ k, δ (g k) = 0) → ∀ y, q y = 0 → δ y = 0) ∧ SmoothPt W'.gr (W'.originA h') n' ∧ ∀ j, n' j + Nat.card {k // w k = j} = n j := by

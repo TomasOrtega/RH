@@ -27,7 +27,7 @@ namespace GlobalTheory.SatExists
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Introduce `v' _`. Use `show ((1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v') = 1`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivOutside_one (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : TrivOutside {v} (1 : GAf L n) := by
   intro v' _
@@ -35,7 +35,7 @@ theorem trivOutside_one (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) :
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Introduce `v' hv'`. Use `show (((x.1 * y.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))).map (compAt L v') = 1`. Rewrite using `[Units.val_mul, Matrix.map_mul, hx v' hv', hy v' hv', Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivOutside_mul {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {x y : GAf L n}
     (hx : TrivOutside {v} x) (hy : TrivOutside {v} y) : TrivOutside {v} (x * y) := by
@@ -44,9 +44,9 @@ theorem trivOutside_mul {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {
   rw [Units.val_mul, Matrix.map_mul, hx v' hv', hy v' hv', Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `v' hv'`. Establish `e : (((x⁻¹ : GAf L n).1 : Matrix (Fin n) (Fin n) (AL L))).map (compAt L v') * ((x.1 : Matrix (Fin n) (Fin n) (AL L))).map (compAt L v') = 1`. Rewrite using `[← Matrix.map_mul]`. Establish `: ((x⁻¹ : GAf L n).1 : Matrix (Fin n) (Fin n) (AL L)) * (x.1 : Matrix (Fin n) (Fin n) (AL L)) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite `e` using `[hx v' hv', Matrix.mul_one]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem trivOutside_inv {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {x : GAf L n}
     (hx : TrivOutside {v} x) : TrivOutside {v} x⁻¹ := by
@@ -60,41 +60,37 @@ theorem trivOutside_inv {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {
   rwa [hx v' hv', Matrix.mul_one] at e
 
 /- English proof (translation)
-Introduce `L _ _ _ n π v w _ hsph Dv`. Take `⟨f₀, hf₀S, hf₀0, hf₀K⟩` from `hsph`. Take `⟨-, N, hN, hNf⟩` from `π.irrS.1.le hf₀S`. Set `U : Subgroup (GAf L n)` to `Subgroup.closure ({κ | NG.Cong L n N κ} ∪ {κ | κ ∈ Umax L n ∧ TrivOutside {v} κ})`. Establish `hUmax : U ≤ Umax L n` using `(Subgroup.closure_le _).2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `κ (hκ | hκ)`. Conclude with `hκ.1`. Conclude with `hκ.1)`. Establish `hUv : ∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)` using `fun κ hκ => ⟨fun h => hUmax h, fun h => Subgroup.subset_closure (Or.inr ⟨h, hκ⟩)⟩`. Establish `hCU : ∀ κ, NG.Cong L n N κ → κ ∈ U` using `fun κ hκ => Subgroup.subset_closure (Or.inl hκ)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf₀U : ∀ κ ∈ U, NG.rt L n κ f₀ = f₀`. Introduce `κ hκ`. Proceed by induction on `hκ using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with hx | hx` into its components or cases.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Conclude with `funext fun g => hNf x hx g`. Conclude with `hf₀K x hx.1 hx.2`. Consider the case `one => exact funext fun g => by change f₀ (g * 1) = f₀ g; rw [mul_one]`. Consider the case `mul x y _ _ hx hy`. Use `funext fun g => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f₀ (g * (x * y)) = f₀ g`. Establish `h1 : f₀ (g * x * y) = f₀ (g * x)` using `congrFun hy (g * x)`. Establish `h2 : f₀ (g * x) = f₀ g` using `congrFun hx g`. Rewrite using `[← mul_assoc, h1, h2]`. Consider the case `inv x _ hx`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `funext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f₀ (g * x⁻¹) = f₀ g`. Establish `h1 : f₀ (g * x⁻¹ * x) = f₀ (g * x⁻¹)` using `congrFun hx (g * x⁻¹)`. Rewrite using `[← h1, inv_mul_cancel_right]`. Establish `hdec : ∀ u ∈ U, ∃ a b : GAf L n, u = a * b ∧ a ∈ U ∧ TrivOutside {v} a ∧ b ∈ U ∧ ∀ x : GAf L n, TrivOutside {v} x → x * b = b * x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `u hu`. Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with hx | hx` into its components or cases. Take `⟨a, b, e, ha, hat, hb, hc⟩` from `GlobalTheory.T.congruence_element_decompose L n v N x hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨a, b, e, (hUv a hat).2 ha, hat, hCU b hb, hc⟩`. Conclude with `⟨x, 1, (mul_one x).symm, Subgroup.subset_closure (Or.inr hx), hx.2, one_mem _, fun y _ => by rw [mul_one, one_mul]⟩`. Consider the case `one => exact ⟨1, 1, (mul_one 1).symm, one_mem _, trivOutside_one v, one_mem _, fun y _ => by rw [mul_one, one_mul]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, rfl, ha, hat, hb, hbc⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', b', rfl, ha', hat', hb', hbc'⟩` from `hy`. Use `⟨a * a', b * b', ?_, mul_mem ha ha', trivOutside_mul hat hat', mul_mem hb hb', fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc b a', ← hbc a' hat', mul_assoc]`. Rewrite using `[← mul_assoc, hbc z hz, mul_assoc, hbc' z hz, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inv x _ hx`. Take `⟨a, b, rfl, ha, hat, hb, hbc⟩` from `hx`. Use `⟨a⁻¹, b⁻¹, ?_, inv_mem ha, trivOutside_inv hat, inv_mem hb, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_rev, eq_mul_inv_iff_mul_eq, mul_assoc, hbc a⁻¹ (trivOutside_inv hat), inv_mul_cancel_left]`. Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, hbc z hz, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `V : Submodule ℂ (GAf L n → π.W)` to `{ carrier := {f | f ∈ π.S ∧ ∀ κ ∈ U, NG.rt L n κ f = f} zero_mem' := ⟨π.S.zero_mem, fun κ _ => map_zero _⟩ add_mem' := fun ha hb => ⟨π.S.add_mem ha.1 hb.1, fun κ hκ => by rw [map_add, ha.2 κ hκ, hb.2 κ hκ]⟩ smul_mem' := fun c f hf => ⟨π.S.smul_mem c hf.1, fun κ hκ => by rw [map_s …`. Use `haveI : FiniteDimensional ℂ π.W := π.alg.1`. Use `haveI : FiniteDimensional ℂ V := by`. Use `GlobalTheory.AlgFormsFin.fixedForms_finite L n π.ρ (GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel L n) hN` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := GlobalTheory.AlgFormsFin.fixedForms L n π.ρ N) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `f ⟨hfS, hfU⟩`. Conclude with `⟨(π.irrS.1.le hfS).1, fun κ hκ g => congrFun (hfU κ (hCU κ hκ)) g⟩`. Establish `hf₀V : f₀ ∈ V` using `⟨hf₀S, hf₀U⟩`. Use `haveI : Nontrivial V := ⟨⟨⟨f₀, hf₀V⟩, 0, fun e => hf₀0 (congrArg Subtype.val e)⟩⟩`. Set `T : Hecke ℂ (KU Dv.σw n) → Module.End ℂ V` to `fun h => { toFun := fun f => ⟨heckeFunI L n U Dv h.1 f.1, GlobalTheory.T.inertHeckeOperator_preserves_rightTranslationStable L n v w Dv U hUv π.W π.S π.irrS.1.stable h.1 h.2 f.1 f.2.1, GlobalTheory.T.inertHeckeOperator_preserves_levelInvariants L n v w Dv U hUv hdec π.W h.1 h.2 f …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ h (f : V), ((T h f : V) : GAf L n → π.W) = heckeFunI L n U Dv h.1 f.1` using `fun _ _ => rfl`. Establish `hcomm : ∀ a b, T a * T b = T b * T a` using `fun a b => LinearMap.ext fun f => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `heckeFunI L n U Dv a.1 (heckeFunI L n U Dv b.1 f.1) = heckeFunI L n U Dv b.1 (heckeFunI L n U Dv a.1 f.1)`. Rewrite using `[← GlobalTheory.T.inertHeckeOperator_comp_spherical_convolution L n v w Dv U hUv π.W a.1 a.2 b.1 b.2 f.1 f.2.2, ← GlobalTheory.T.inertHeckeOperator_comp_spherical_convolution L n v w Dv U hUv π.W b.1 b.2 a.1 a.2 f.1 f.2.2, GlobalTheory.UnitarySwap.heckeCommU _ Dv.ϖ Dv.σw _ n ℂ Dv …`. Take `⟨f, hf0, hμ⟩` from `GlobalTheory.exists_common_eigenvector_of_commute T hcomm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `choose μ hμ using hμ`. Establish `ev : ∀ h : Hecke ℂ (KU Dv.σw n), heckeFunI L n U Dv h.1 f.1 = μ h • f.1` using `fun h => congrArg Subtype.val (hμ h)`. Establish `hf'0 : (f : GAf L n → π.W) ≠ 0` using `fun e => hf0 (Subtype.ext e)`. Establish `inj` using `smul_left_injective ℂ hf'0`. Set `l : Hecke ℂ (KU Dv.σw n) →ₗ[ℂ] ℂ` to `{ toFun := μ map_add' := fun h h' => inj (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `μ (h + h') • f.1 = (μ h + μ h') • f.1`. Rewrite using `[← ev, add_smul, ← ev, ← ev]`. Conclude with `(GlobalTheory.T.inertHeckeOperator_bilinear L n v w Dv U hUv π.W h.1 h.2 h'.1 h'.2 1 f.1 f.1).1)`. Use the proof step `map_smul' := fun c h => inj (by`. Express the relevant statement in the definitionally equal form `μ (c • h) • f.1 = (c * μ h) • f.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ev, mul_smul, ← ev]`. Conclude with `(GlobalTheory.T.inertHeckeOperator_bilinear L n v w Dv U hUv π.W h.1 h.2 h.1 h.2 c f.1 f.1).2.1) }`. Take `⟨α, hα⟩` from `GlobalTheory.LFun.SatCompare.exists_satU_eq Dv.unram l (inj (by`. Express the relevant statement in the definitionally equal form `μ _ • f.1 = (1 : ℂ) • f.1`. Rewrite using `[← ev, one_smul]`.
-
-Conclude with `GlobalTheory.T.inertHeckeOperator_sphericalUnit_eq_id L n v w Dv U hUv π.W f.1 f.2.2))`. Use the proof step `(fun h h' => inj (by`. Express the relevant statement in the definitionally equal form `μ _ • f.1 = (μ h * μ h') • f.1`. Rewrite using `[← ev]`. Express the relevant statement in the definitionally equal form `heckeFunI L n U Dv (conv (KU Dv.σw n) h.1 h'.1) f.1 = _`.
-
-Rewrite using `[GlobalTheory.T.inertHeckeOperator_comp_spherical_convolution L n v w Dv U hUv π.W h.1 h.2 h'.1 h'.2 f.1 f.2.2, ev h', (GlobalTheory.T.inertHeckeOperator_bilinear L n v w Dv U hUv π.W h.1 h.2 h.1 h.2 (μ h') f.1 f.1).2.2.2, ev h, smul_smul, mul_comm]))`. Use `⟨fun i => (α i : ℂ), f.1, f.2.1, hf'0, U, f.2.2, hUv, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[ev ⟨h, hh⟩]`. Use `congr 1`. Conclude with `hα ⟨h, hh⟩`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_satAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.AutRep L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → π.SphAt v → ∀ Dv : InertDatum L n v w, ∃ α, NG.SatAt π Dv α := by
   intro L _ _ _ n π v w _ hsph Dv

@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Introduce `R _ _ K _ ι _ P f`. Apply `Set.Finite.subset (Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {f}))` to reduce the goal to its premises. Introduce `W hW`. Assume the negation of the conclusion as `hmin`. Apply `hW` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `divCycle`. Rewrite using `[dif_neg]`. Conclude with `fun h => hmin h.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DivCycleFiniteSupport.proof : DivCycleFiniteSupport.Statement.{u} := by
   intro R _ _ K _ ι _ P f

@@ -21,13 +21,13 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 
 open Formalism.L2.Host.CT UpperTheory.V.FieldIso in
 /- English proof (translation)
-Take `⟨π, hπ, -⟩` from `Dp.exCusp E n μ V hV`. Take `⟨s, hs⟩` from `UpperTheory.CBC.SGalAdEx_holds E σ`. Establish `h1` using `UpperTheory.ConvolutionTheory.K.adUnique E σ s.toRingHom hs.1 hs.2.1`. Establish `h2` using `UpperTheory.ConvolutionTheory.K.adUnique E σ (adm σ) (continuous_adm σ) (adm_algebraMap σ)`. Establish `hc : Dp.Carries μ (pullSub σ π) V'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Dp.conjCarries E n μ θ σ s hs (fun g => by rw [h1]; exact hθ g) π _ V' ?_).2 (e ▸ hπ)` and prove the remaining obligations. Rewrite using `[h1, ← h2]`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨φ, hφ, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨φ.1, ⟨φ, hφ, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨φ, hφ, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨φ, hφ, rfl⟩, rfl⟩`. Use `⟨fun τ m => ?_, fun w B hB => ?_⟩` and prove the remaining obligations. Rewrite using `[Dp.sInfIff E n μ π V hπ, Dp.sInfIff E n μ _ V' hc]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hasInfChar_pullSub σ π τ m).symm`. Take `⟨B', rfl, h⟩` from `(Dp.sSatIff E n μ π V hπ _ _).1 hB`. Conclude with `(Dp.sSatIff E n μ _ V' hc _ _).2 ⟨B', rfl, hasSat_pullSub σ h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem swap_one {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} {μ : Measure (G1 E n)}
     [μ.IsHaarMeasure] (σ : E ≃+* E) (θ : Twist μ) (hθ : UpperTheory.ConvolutionTheory.K.IsGal σ θ) {V V' : Submodule ℂ (L2 μ)}
@@ -55,7 +55,7 @@ private theorem swap_one {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
 
 open Formalism.L2.Host.CT in
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Establish `e : RingOfIntegers.mapRingEquiv σ.toRingEquiv (algebraMap (𝓞 F) (𝓞 E) x) = algebraMap (𝓞 F) (𝓞 E) x` using `RingOfIntegers.ext (σ.commutes x)`. Use `mem_plMap σ.toRingEquiv w (algebraMap (𝓞 F) (𝓞 E) x)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem under_plMap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E ≃ₐ[F] E) (w : Pl E) : (plMap σ.toRingEquiv w).under (𝓞 F) = w.under (𝓞 F) := by
@@ -68,7 +68,7 @@ private theorem under_plMap {F E : Type} [Field F] [NumberField F] [Field E] [Nu
 
 open Formalism.L2.Host.CT in
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 F) (𝓞 E) (E ≃ₐ[F] E) w.asIdeal w'.asIdeal (congrArg HeightOneSpectrum.asIdeal h)`. Use `⟨g, HeightOneSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hg, asIdeal_plMap]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem exists_plMap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E]
     {w w' : Pl E} (h : w.under (𝓞 F) = w'.under (𝓞 F)) : ∃ g : E ≃ₐ[F] E, plMap g.toRingEquiv w = w' := by
@@ -80,19 +80,17 @@ private theorem exists_plMap {F E : Type} [Field F] [NumberField F] [Field E] [N
 
 open Formalism.L2.Host.CT in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ h2 hσ τ₁ τ₂ θ hp hθ e₁ e₂`. Establish `s₁ : IsSummand (BW.mu1 E 2) τ₁` using `⟨hp.irr₁.le, hp.irr₁.closed, hp.irr₁.inv, hp.irr₁.ne, hp.irr₁.irr⟩`. Establish `s₂ : IsSummand (BW.mu1 E 2) τ₂` using `⟨hp.irr₂.le, hp.irr₂.closed, hp.irr₂.inv, hp.irr₂.ne, hp.irr₂.irr⟩`. Establish `hcard : Nat.card (E ≃ₐ[F] E) = 2` using `(IsGalois.card_aut_eq_finrank F E).trans h2`. Establish `hall : ∀ g : E ≃ₐ[F] E, g = 1 ∨ g = σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy, hu⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hcard`. Establish `hs : σ ≠ 1`. Introduce and unpack `rfl`. Conclude with `hy (by simpa using hσ y)`. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg : g = 1`. Conclude with `Or.inl hg`. Conclude with `Or.inr ((hu g hg).trans (hu σ hs).symm)`. Establish `hinv : σ.toRingEquiv.symm = σ.toRingEquiv`. Break down `hall σ⁻¹ with h | h` into its components or cases.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_eq_one.1 h]`. Both sides reduce to the same expression. Conclude with `congrArg AlgEquiv.toRingEquiv h`. Establish `hpp : ∀ w, plMap σ.toRingEquiv (plMap σ.toRingEquiv w) = w` using `fun w => by`. Use `plMap_symm_plMap σ.toRingEquiv w` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Use `⟨(swap_one σ.toRingEquiv θ hθ s₂ e₁).1, fun w w' hw hc B => ?_⟩` and prove the remaining obligations. Establish `e : w' = plMap σ.toRingEquiv w`. Break down `hc with hc | hc` into its components or cases. Take `⟨g, hg⟩` from `exists_plMap hw`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hall g with rfl | rfl` into its components or cases. Conclude with `absurd (hg ▸ HeightOneSpectrum.ext (Ideal.ext fun x => Iff.rfl)) hc`. Conclude with `hg.symm`. Use `(UpperTheory.ConvolutionTheory.T.places F E (h2 ▸ Nat.prime_two)).2.2.2.1 _ hc` as an intermediate fact. Conclude with `congrArg Subtype.val (this ⟨plMap σ.toRingEquiv w, ⟨(congrArg HeightOneSpectrum.asIdeal (under_plMap σ w)).symm⟩⟩ ⟨w', ⟨congrArg HeightOneSpectrum.asIdeal hw⟩⟩)`.
-
-Substitute `e` using the available equality. Use `⟨fun h => (swap_one σ.toRingEquiv θ hθ s₂ e₁).2 _ B (by rwa [hpp]), (swap_one σ.toRingEquiv θ hθ s₁ e₂).2 w B⟩` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.swapAt :
     SwapAt := by

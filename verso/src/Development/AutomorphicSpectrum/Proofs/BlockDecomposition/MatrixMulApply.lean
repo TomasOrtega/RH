@@ -86,7 +86,7 @@ def dInn (Q : Sw) (h : M22) (t : ℂ) (M : complexMatrix3) : complexMatrix3 →L
     (J (PA i j Q) M h t - if i = j then J Q M h t else 0) • ellc M i j)
 
 /- English proof (translation)
-Establish `hu : IsUnit (Matrix.of M).det` using `isUnit_iff_ne_zero.mpr hM`. Simplify using `only [Rm_apply, minv, Equiv.apply_symm_apply, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Rm_minv {M : complexMatrix3} (hM : (Matrix.of M).det ≠ 0) (X : M23) : Rm (minv M) (Rm M X) = X := by
   have hu : IsUnit (Matrix.of M).det := isUnit_iff_ne_zero.mpr hM
@@ -94,7 +94,7 @@ theorem Rm_minv {M : complexMatrix3} (hM : (Matrix.of M).det ≠ 0) (X : M23) : 
   rfl
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun X => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_Rm_le (M : complexMatrix3) : ‖Rm M‖ ≤ ‖mulB‖ * ‖M‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun X => ?_
@@ -104,7 +104,7 @@ theorem norm_Rm_le (M : complexMatrix3) : ‖Rm M‖ ≤ ‖mulB‖ * ‖M‖ :=
     _ = ‖mulB‖ * ‖M‖ * ‖X‖ := by ring
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_` and prove the remaining obligations. Establish `h1 : ‖ell M i j m‖ = ‖mul3 (minv M) m i j‖` using `rfl`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_ell_le (M : complexMatrix3) (i j : Fin 3) : ‖ell M i j‖ ≤ ‖mul3‖ * ‖minv M‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_
@@ -116,7 +116,7 @@ theorem norm_ell_le (M : complexMatrix3) (i j : Fin 3) : ‖ell M i j‖ ≤ ‖
     _ ≤ ‖mul3‖ * ‖minv M‖ * ‖m‖ := by gcongr; exact mul3.le_opNorm _
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_` and prove the remaining obligations. Establish `h1 : ‖ellc M i j m‖ = ‖ell M i j m‖`. Rewrite using `[ellc_apply, ell_apply, RCLike.norm_conj]`. Rewrite using `[h1]`. Conclude with `((ell M i j).le_opNorm m).trans (by gcongr; exact norm_ell_le M i j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ellc_le (M : complexMatrix3) (i j : Fin 3) : ‖ellc M i j‖ ≤ ‖mul3‖ * ‖minv M‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_
@@ -126,9 +126,9 @@ theorem norm_ellc_le (M : complexMatrix3) (i j : Fin 3) : ‖ellc M i j‖ ≤ �
   exact ((ell M i j).le_opNorm m).trans (by gcongr; exact norm_ell_le M i j)
 
 /- English proof (translation)
-Establish `hdet : Continuous (fun M' : complexMatrix3 => (Matrix.of M').det)` using `Continuous.matrix_det (by exact continuous_id)`. Establish `hinv : ContinuousAt minv M`. Use `continuousAt_matrix_inv (Matrix.of M) (by` as an intermediate fact. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ hM)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h1 : ∀ᶠ M' in 𝓝 M, (Matrix.of M').det ≠ 0` using `hdet.continuousAt.eventually_ne hM`. Establish `h2 : ∀ᶠ M' in 𝓝 M, ‖minv M'‖ < ‖minv M‖ + 1` using `(continuous_norm.continuousAt.comp hinv).eventually (gt_mem_nhds (lt_add_one _))`. Establish `h3 : ∀ᶠ M' in 𝓝 M, ‖M'‖ < ‖M‖ + 1` using `continuous_norm.continuousAt.eventually (gt_mem_nhds (lt_add_one _))`. Use `filter_upwards [h1, h2, h3] with M' a b c using ⟨a, b, c⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nb_mem {M : complexMatrix3} (hM : (Matrix.of M).det ≠ 0) : nb M ∈ 𝓝 M := by
   have hdet : Continuous (fun M' : complexMatrix3 => (Matrix.of M').det) :=
@@ -145,36 +145,36 @@ theorem nb_mem {M : complexMatrix3} (hM : (Matrix.of M).det ≠ 0) : nb M ∈ �
   filter_upwards [h1, h2, h3] with M' a b c using ⟨a, b, c⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hM, lt_add_one _, lt_add_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem self_mem_nb {M : complexMatrix3} (hM : (Matrix.of M).det ≠ 0) : M ∈ nb M :=
   ⟨hM, lt_add_one _, lt_add_one _⟩
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem nb_det {M M' : complexMatrix3} (h : M' ∈ nb M) : (Matrix.of M').det ≠ 0 := h.1
 
 /- English proof (translation)
-The claim follows from `(norm_Rm_le _).trans (by gcongr; exact h.2.1.le)`.
+A detailed English derivation is pending.
 -/
 theorem nb_inv {M M' : complexMatrix3} (h : M' ∈ nb M) : ‖Rm (minv M')‖ ≤ ‖mulB‖ * (‖minv M‖ + 1) :=
   (norm_Rm_le _).trans (by gcongr; exact h.2.1.le)
 
 /- English proof (translation)
-The claim follows from `(norm_Rm_le _).trans (by gcongr; exact h.2.2.le)`.
+A detailed English derivation is pending.
 -/
 theorem nb_fwd {M M' : complexMatrix3} (h : M' ∈ nb M) : ‖Rm M'‖ ≤ ‖mulB‖ * (‖M‖ + 1) :=
   (norm_Rm_le _).trans (by gcongr; exact h.2.2.le)
 
 /- English proof (translation)
-The claim follows from `(norm_ell_le _ _ _).trans (by gcongr; exact h.2.1.le)`.
+A detailed English derivation is pending.
 -/
 theorem nb_ell {M M' : complexMatrix3} (h : M' ∈ nb M) (i j : Fin 3) : ‖ell M' i j‖ ≤ ‖mul3‖ * (‖minv M‖ + 1) :=
   (norm_ell_le _ _ _).trans (by gcongr; exact h.2.1.le)
 
 /- English proof (translation)
-The claim follows from `(norm_ellc_le _ _ _).trans (by gcongr; exact h.2.1.le)`.
+A detailed English derivation is pending.
 -/
 theorem nb_ellc {M M' : complexMatrix3} (h : M' ∈ nb M) (i j : Fin 3) : ‖ellc M' i j‖ ≤ ‖mul3‖ * (‖minv M‖ + 1) :=
   (norm_ellc_le _ _ _).trans (by gcongr; exact h.2.1.le)
@@ -189,14 +189,14 @@ theorem gl_val (M : complexMatrix3) (hM : (Matrix.of M).det ≠ 0) :
     ((gl M hM : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ) = Matrix.of M := rfl
 
 /- English proof (translation)
-Simplify using `only [inn, J, innB, Rq_apply, Rm_apply, gl_val, one_mul, Equiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inn_eq_J (Q : Sw) (M : complexMatrix3) (hM : (Matrix.of M).det ≠ 0) (h : M22) (t : ℂ) :
     inn Q (gl M hM) (Matrix.of h) t = J Q M h t := by
   simp only [inn, J, innB, Rq_apply, Rm_apply, gl_val, one_mul, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Simplify using `only [secI, G, wt, inn_eq_J, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem secI_eq_G (k : ℕ) (Q : Sw) (M : complexMatrix3) (hM : (Matrix.of M).det ≠ 0) (p : M22 × ℂ) :
     secI k Q (gl M hM) p = G k Q M p := by

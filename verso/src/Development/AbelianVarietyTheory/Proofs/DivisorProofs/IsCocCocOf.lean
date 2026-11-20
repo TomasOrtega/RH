@@ -21,7 +21,7 @@ abbrev smallAt (W : K → X.left.Opens) {D : Type} [CommRing D] [Algebra R D] (x
     SmallCat W := ⟨trivAt x, h⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Conclude with `⟨i, (trivMap φ x).le_preimage hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Sm.map {W : K → X.left.Opens} {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
     (φ : D →ₐ[R] D') {x : Pt X D} (h : Sm W x) : Sm W (spOver φ ≫ x) := by
@@ -40,11 +40,11 @@ namespace GlobalTheory.PtExt
 variable {R : Type} [CommRing R] {X : Over (Sp R)} {K : Type}
 
 /- English proof (translation)
-Introduce `D _ _ D' _ _ D'' _ _ φ ψ x hx`. Establish `tr : ∀ (y y' : Pt X D'') (e : y = y') (h : Sm W y) (h' : Sm W y') (f : smallAt W x hx ⟶ smallAt W y h) (f' : smallAt W x hx ⟶ smallAt W y' h'), (∀ r, f.hom.φ r = f'.hom.φ r) → n _ _ f = n _ _ f'`. Introduce and unpack `y _ rfl h h' f f' hf`. Establish `: f = f'` using `ObjectProperty.hom_ext _ (Thick.hom_ext hf)`. Substitute `this` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Establish `key` using `hn (smallAt W x hx) (smallAt W _ (hx.map φ)) (smallAt W _ ((hx.map φ).map ψ)) (ObjectProperty.homMk (trivMap φ x)) (ObjectProperty.homMk (trivMap ψ _)) rfl rfl rfl`. Rewrite `key` using `[d1_apply]`. Simplify using `only [cocOf, dif_pos hx, dif_pos (hx.map φ), dif_pos (hx.map (ψ.comp φ))]`. Establish `e` using `tr (spOver (ψ.comp φ) ≫ x) (spOver ψ ≫ spOver φ ≫ x) (by rw [← spOver_comp, Category.assoc]) (hx.map (ψ.comp φ)) ((hx.map φ).map ψ) (ObjectProperty.homMk (trivMap (ψ.comp φ) x)) ((ObjectProperty.homMk (trivMap φ x) : smallAt W x hx ⟶ smallAt W _ (hx.map φ)) ≫ (ObjectProperty.homM …`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `ψ _ - _ + _ = 0 at key`. Take the linear combination `-key`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isCoc_cocOf (W : K → X.left.Opens)
     (n : C1 ((IsSmall (dp0 R) (X.hom ≫ 𝟙 _) W).ι ⋙ O (dp0 R) (X.hom ≫ 𝟙 _)))

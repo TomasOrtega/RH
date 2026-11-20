@@ -9,9 +9,9 @@ open MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver chartRingOver mConeMapOver)
 
 /- English proof (translation)
-Introduce `h0`. Apply `hp` to reduce the goal to its premises. Establish `hmem : (X p : MvPolynomial (Σ k, ι k) S) ∈ mIdealOver S y`. Simplify using `[mIdealOver, RingHom.mem_ker, mConeMapOver, h0]`. Establish `h'` using `h hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h'` using `[mIdealOver, RingHom.mem_ker, mConeMapOver]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ne_zero_of_mIdealOver_le {S : Type} [CommRing S] {K : Type} {ι : K → Type} {Ω Ω' : Type} [Field Ω]
     [Field Ω'] [Algebra S Ω] [Algebra S Ω'] {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → Ω'}
@@ -24,7 +24,7 @@ theorem ne_zero_of_mIdealOver_le {S : Type} [CommRing S] {K : Type} {ι : K → 
   simpa [mIdealOver, RingHom.mem_ker, mConeMapOver] using h'
 
 /- English proof (translation)
-Unfold `chartRingOver`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval, AlgHom.mem_range]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_chartRing_blockVec_iff {S : Type} [CommRing S] {K : Type} {ι : K → Type} {Ω : Type} [Field Ω]
     [Algebra S Ω] (z : (Σ k, ι k) → Ω) (k₀ : K) (j : ι k₀) (u : Ω) :
@@ -36,7 +36,7 @@ theorem mem_chartRing_blockVec_iff {S : Type} [CommRing S] {K : Type} {ι : K �
   rfl
 
 /- English proof (translation)
-Rewrite using `[aeval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_rename_blockRatio {S : Type} [CommRing S] {K : Type} {ι : K → Type} {L : Type} [Field L]
     [Algebra S L] (z : (Σ k, ι k) → L) (k₀ : K) (c : ∀ k, ι k) (P : MvPolynomial (Σ _ : Unit, ι k₀) S) :
@@ -47,21 +47,19 @@ theorem aeval_rename_blockRatio {S : Type} [CommRing S] {K : Type} {ι : K → T
   rfl
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ Ω _ _ y k₀ hB Ω' _ _ y' hne hle j hj k`. Establish `hy` using `ne_zero_of_mIdealOver_le hle`. Take `⟨c, hck₀, hc⟩ : ∃ c : ∀ k, ι k, c k₀ = j ∧ ∀ k, y' ⟨k, c k⟩ ≠ 0` from `by choose c₀ hc₀ using hne`. Use `⟨Function.update c₀ k₀ j, Function.update_self _ _ _, fun k' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : k' = k₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Consider the cases of `h`. Rewrite using `[Function.update_self]`. Conclude with `hj`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hc₀ k'`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb₀ : y ⟨k, c k⟩ ≠ 0` using `hy _ (hc k)`. Take `⟨w, hw, hsum⟩` from `hB j (hy _ hj) k`. Use `choose P hP using fun a b => (mem_chartRing_blockVec_iff y k₀ j _).1 (hw a b)`. Set `φ : (Σ _ : Unit, ι k₀) → (Σ k, ι k)` to `fun v => ⟨k₀, v.2⟩`. Establish `hR1 : ∀ a b, aeval (fun p => y p / y ⟨p.1, c p.1⟩) (X ⟨k, a⟩ * rename φ (P (c k) b) - rename φ (P a b)) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `a b`. Simplify using `only [map_sub, map_mul, aeval_X, φ, aeval_rename_blockRatio, hck₀, hP]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hR2 : aeval (fun p => y p / y ⟨p.1, c p.1⟩) (∑ b, X ⟨k, b⟩ * rename φ (P (c k) b) - 1) = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sub, map_sum, map_mul, map_one, aeval_X, φ, aeval_rename_blockRatio, hck₀, hP]`. Rewrite using `[sub_eq_zero, ← hsum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `⟨fun b => aeval (fun v : (Σ _ : Unit, ι k₀) => y' ⟨k₀, v.2⟩ / y' ⟨k₀, j⟩) (P (c k) b) / y' ⟨k, c k⟩, fun a b => ?_, ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hk S K ι Ω y Ω' y' hle c hc _ (hR1 a b)`. Simplify using `only [map_sub, map_mul, aeval_X, φ, aeval_rename_blockRatio, hck₀, sub_eq_zero] at h1`. Rewrite using `[mem_chartRing_blockVec_iff]`. Use `⟨P a b, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hk S K ι Ω y Ω' y' hle c hc _ hR2`. Simplify using `only [map_sub, map_sum, map_mul, map_one, aeval_X, φ, aeval_rename_blockRatio, hck₀, sub_eq_zero] at h2`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem BlockGenTransfer.proof (hk : ChartKernel.Statement) : BlockGenTransfer.Statement := by
   intro S _ K _ _ ι _ Ω _ _ y k₀ hB Ω' _ _ y' hne hle j hj k

@@ -8,11 +8,11 @@ open GlobalTheory.VertCmp
 open scoped Classical
 
 /- English proof (translation)
-Introduce `htop`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `h𝔭 ((Ideal.eq_top_iff_one _).2 (hf 1 0 (by simp)))`. Use `letI : Invertible f⁻¹ := invertibleOfNonzero (inv_ne_zero hf0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hpx⟩` from `Algebra.exists_aeval_invOf_eq_zero_of_idealMap_adjoin_sup_span_eq_top f⁻¹ 𝔭 h𝔭 htop`. Rewrite `hpx` using `[invOf_eq_inv, inv_inv]`. Take `⟨c, hc⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (isIntegral_leadingCoeff_smul p f hpx)`. Establish `h1 : p.leadingCoeff ∈ 𝔭` using `hf _ c (by rw [hc, Algebra.smul_def])`. Apply `h𝔭` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Simplify using `using 𝔭.sub_mem h1 hp`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem pole_proper {A K : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field K] [Algebra A K]
     [IsFractionRing A K] (𝔭 : Ideal A) (h𝔭 : 𝔭 ≠ ⊤) (f : K)
@@ -34,13 +34,11 @@ private theorem pole_proper {A K : Type} [CommRing A] [IsDomain A] [IsIntegrally
   simpa using 𝔭.sub_mem h1 hp
 
 /- English proof (translation)
-Introduce `F _ _ v F' _ _ ε O _ b hup A _ _ _ _ _ _ K _ _ _ 𝔭 h𝔭 hm f hf g hg`. Set `R` to `Algebra.adjoin A ({f⁻¹} : Set K)`. Set `x : R` to `⟨f⁻¹, Algebra.subset_adjoin rfl⟩`. Use `letI : Algebra O R := ((algebraMap A R).comp (algebraMap O A)).toAlgebra`. Use `haveI : IsScalarTower O A R := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : Algebra.FiniteType A R := by`. Apply `Subalgebra.fg_iff_finiteType _ |>.1` to reduce the goal to its premises. Conclude with `⟨{f⁻¹}, by simp [R]⟩`. Use `haveI : Algebra.FiniteType O R := Algebra.FiniteType.trans (S := A) inferInstance inferInstance`. Establish `hinj : Function.Injective (algebraMap A R)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a a' h`. Conclude with `IsFractionRing.injective A K (congrArg Subtype.val h)`. Use `haveI : CharZero R := charZero_of_injective_algebraMap hinj`. Take `⟨e, φ, h1, h2, h3⟩` from `UpperTheory.finiteType_domain_extension_point F v F' ε O b hup R (𝔭.map (algebraMap A R) ⊔ Ideal.span {x}) (pole_proper 𝔭 h𝔭.ne_top f hf) (fun a ha => Ideal.mem_sup_left (Ideal.mem_map_of_mem (algebraMap A R) (hm a ha))) (algebraMap A R g) (fun h => hg (hinj (h.trans (map_zero _) …`. Use `⟨e, φ.comp (algebraMap A R), φ x, h1, h3, h2 x (Ideal.mem_sup_right (Ideal.subset_span rfl)), fun s c hsc => ?_⟩` and prove the remaining obligations.
-
-Establish `: algebraMap A R s * x = algebraMap A R c` using `Subtype.ext hsc`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← map_mul, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_ext_point_inv_val_lt_one_of_pole_at_prime :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F') [IsDiscreteValuationRing O] (b : 𝓞 F →+* O), IsUp v ε O b → ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Algebra O A] [Algebra.FiniteType O A] [CharZero A] (K : Type) [Field K] [Algebra A K] [IsFractionRing A K] (𝔭 : Ideal A), 𝔭.IsPrime → (∀ a ∈ maximalIdeal O, algebraMap O A a ∈ 𝔭) → ∀ f : K, (∀ s c : A, algebraMap A K s * f = algebraMap A K c → s ∈ 𝔭) → ∀ g : A, g ≠ 0 → ∃ (e : TrueGeo.Ext v) (φ : A →+* e.O) (t : e.O), (∀ a : 𝓞 F, ((φ (algebraMap O A (b a)) : e.O) : AlgebraicClosure F) = algebraMap F (AlgebraicClosure F) (algebraMap (𝓞 F) F a)) ∧ φ g ≠ 0 ∧ e.w (t : AlgebraicClosure F) < 1 ∧ ∀ s c : A, algebraMap A K s * f⁻¹ = algebraMap A K c → φ s * t = φ c := by

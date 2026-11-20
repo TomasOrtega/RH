@@ -12,7 +12,7 @@ section Galois
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `{}`. Establish `ho : IsOpen ((MulAction.stabilizer (G E Ω) y : Subgroup (G E Ω)) : Set (G E Ω))` using `isOpen_setOf_apply (F := E) y (fun t => t = y)`. Establish `hf : Finite (G E Ω ⧸ MulAction.stabilizer (G E Ω) y)` using `Subgroup.quotient_finite_of_isOpen _ ho`. Take `⟨d, hd, -, h⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := MulAction.stabilizer (G E Ω) y)) σ`. Conclude with `⟨d, hd, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_apply_eq (σ : G E Ω) (y : Ω) : ∃ d : ℕ, 0 < d ∧ (σ ^ d) y = y := by
   have : IsGalois E Ω := {}
@@ -24,15 +24,13 @@ theorem exists_pow_apply_eq (σ : G E Ω) (y : Ω) : ∃ d : ℕ, 0 < d ∧ (σ 
   exact ⟨d, hd, h⟩
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Take `⟨d, hd, h⟩` from `exists_pow_apply_eq σ y`. Establish `key : ∀ (τ : G E Ω), τ ∈ Dec (F` using `E) A → ∀ a b : Ω, b ≠ 0 → A.valuation a < A.valuation b → A.valuation (τ a) < A.valuation (τ b) := by`. Introduce `τ hτ a b hb hab`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb' : 0 < A.valuation b` using `zero_lt_iff.2 (by simpa using hb)`. Establish `hb'' : 0 < A.valuation (τ b)` using `zero_lt_iff.2 (by simpa using hb)`. Establish `h1 : A.valuation (a / b) < 1` using `by rw [map_div₀, div_lt_one₀ hb']; exact hab`. Rewrite `h1` using `[← valuation_apply_lt_one_iff hτ, map_div₀, map_div₀, div_lt_one₀ hb'']`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy (A.valuation (σ y)) (A.valuation y) with h1 | h1 | h1` into its components or cases. Establish `: StrictAnti fun i : ℕ => A.valuation ((σ ^ i) y)` using `strictAnti_nat_of_succ_lt fun i => by`. Rewrite using `[pow_succ, AlgEquiv.mul_apply]`. Conclude with `key _ (pow_mem hσ i) _ _ hy h1`. Use `this hd` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h] at this`. Conclude with `h1`. Establish `: StrictMono fun i : ℕ => A.valuation ((σ ^ i) y)` using `strictMono_nat_of_lt_succ fun i => by`. Rewrite using `[pow_succ, AlgEquiv.mul_apply]`. Conclude with `key _ (pow_mem hσ i) _ _ (by simpa using hy) h1`.
-
-Use `this hd` as an intermediate fact. Simplify using `[h] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_apply_eq {A : ValuationSubring Ω} {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (y : Ω) :
     A.valuation (σ y) = A.valuation y := by
@@ -70,7 +68,7 @@ noncomputable def cobChar (A : ValuationSubring Ω) (y : Ωˣ) :
       (QuotientGroup.eq_one_iff _).2 h, one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (cob σ.1 (Units.mk0 y hy)) : Ωˣ ⧸ A.principalUnitGroup) ^ n = 1 ↔ _`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff, ValuationSubring.mem_principalUnitGroup_iff, Units.val_pow_eq_pow_val, coe_cob, Units.val_mk0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cobChar_pow_eq_one (A : ValuationSubring Ω) (y : Ω) (hy : y ≠ 0) (σ : Ine (F := E) A) (n : ℕ) :
     cobChar A (Units.mk0 y hy) σ ^ n = 1 ↔ A.valuation ((σ.1 y / y) ^ n - 1) < 1 := by
@@ -104,9 +102,9 @@ def primeTo (A : ValuationSubring Ω) (l : ℕ) : Subgroup (G E Ω) where
     rw [map_inv, inv_pow, e1, inv_one]
 
 /- English proof (translation)
-Establish `e : (primeTo E A l : Set (G E Ω)) = (Ine (F` using `E) A : Set (G E Ω)) ∩ ⋂ y, {σ : G E Ω | y ≠ 0 → ∃ n : ℕ, Nat.Coprime n l ∧ A.valuation ((σ y / y) ^ n - 1) < 1} := by`. Use extensionality with `σ`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq, SetLike.mem_coe]`. Conclude with `Iff.rfl`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isClosed_Ine A).inter (isClosed_iInter fun y => isClosed_setOf_apply y (fun t => y ≠ 0 → ∃ n : ℕ, Nat.Coprime n l ∧ A.valuation ((t / y) ^ n - 1) < 1))`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_primeTo (A : ValuationSubring Ω) (l : ℕ) : IsClosed (primeTo E A l : Set (G E Ω)) := by
   have e : (primeTo E A l : Set (G E Ω)) = (Ine (F := E) A : Set (G E Ω)) ∩
@@ -119,9 +117,9 @@ theorem isClosed_primeTo (A : ValuationSubring Ω) (l : ℕ) : IsClosed (primeTo
     (fun t => y ≠ 0 → ∃ n : ℕ, Nat.Coprime n l ∧ A.valuation ((t / y) ^ n - 1) < 1))
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Take `⟨h1, h2⟩` from `hn`. Use `⟨by simpa using conj_mem_Ine g.2 h1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `h2 ((g.1⁻¹ : G E Ω) y) (by simpa using hy)`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[← valuation_apply_lt_one_iff g.2, map_sub, map_pow, map_div₀, mul_inv_apply, map_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normal_primeTo (A : ValuationSubring Ω) (l : ℕ) :
     ((primeTo E A l).subgroupOf (Dec (F := E) A)).Normal where
@@ -135,19 +133,19 @@ theorem normal_primeTo (A : ValuationSubring Ω) (l : ℕ) :
     exact h
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `{}`. Set `C : ClosedSubgroup (G E Ω)` to `⟨H, H.isClosed_of_isOpen ho⟩`. Establish `hC : (IntermediateField.fixedField H).fixingSubgroup = H` using `InfiniteGalois.fixingSubgroup_fixedField C`. Rewrite using `[← hC, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : (σ ^ (l ^ a)) y = y` using `(IntermediateField.mem_fixedField_iff H y).1 hy _ hH`. Assume the negation of the conclusion as `hne`. Establish `hx : σ y - y ≠ 0` using `sub_ne_zero.2 hne`. Establish `hx' : (σ ^ (l ^ a)) (σ y - y) = σ y - y`. Rewrite using `[map_sub, ← AlgEquiv.mul_apply, ← pow_succ, pow_succ', AlgEquiv.mul_apply, hy']`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn, h1⟩` from `hσ.2 _ hx`. Establish `e1` using `(cobChar_pow_eq_one A _ hx ⟨σ, hσ.1⟩ n).2 h1`. Establish `e2 : cobChar A (Units.mk0 _ hx) (⟨σ, hσ.1⟩ : Ine (F` using `E) A) ^ (l ^ a) = 1 := by`. Rewrite using `[← map_pow, ← pow_one (cobChar A _ _), cobChar_pow_eq_one]`. Simplify using `[hx', div_self hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e3 : cobChar A (Units.mk0 _ hx) (⟨σ, hσ.1⟩ : Ine (F` using `E) A) = 1 := by`. Use `(pow_eq_one_iff_of_coprime (hn.pow_right a)).1 ⟨e1, e2⟩` as an intermediate fact. Conclude with `this`. Establish `e4 : ∀ i : ℕ, A.valuation ((σ ^ i) (σ y - y) / (σ y - y) - 1) < 1` using `fun i => by`. Use `(cobChar_pow_eq_one A _ hx (⟨σ, hσ.1⟩ ^ i) 1).1 (by rw [map_pow, e3]; simp)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hsum : ∑ i ∈ Finset.range (l ^ a), (σ ^ i) (σ y - y) = 0`. Establish `: ∀ i, (σ ^ i) (σ y - y) = (σ ^ (i + 1)) y - (σ ^ i) y`. Introduce `i`. Rewrite using `[map_sub, pow_succ, AlgEquiv.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[this]`. Rewrite using `[Finset.sum_range_sub (fun i => (σ ^ i) y), hy']`. Simplify using the standard rewrite rules. Establish `hlt : A.valuation (∑ i ∈ Finset.range (l ^ a), ((σ ^ i) (σ y - y) / (σ y - y) - 1)) < 1` using `Valuation.map_sum_lt _ one_ne_zero fun i _ => e4 i`. Rewrite `hlt` using `[Finset.sum_sub_distrib, ← Finset.sum_div, hsum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Apply `v.isPrime.mem_of_pow_mem a` to reduce the goal to its premises. Rewrite using `[← hA]`. Simplify using `using hlt`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mem {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 E)} (hA : IsPlaceOver A v)
     {l : ℕ} (hl : l.Prime) (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) (H : Subgroup (G E Ω))
@@ -191,13 +189,11 @@ theorem mem_of_pow_mem {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 E)
   simpa using hlt
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `{}`. Take `⟨V, hV, hVU⟩` from `isOpen_induced_iff.1 ho`. Establish `h1 : (1 : G E Ω) ∈ V`. Establish `: (1 : Dec (F` using `E) A) ∈ (U : Set (Dec (F := E) A)) := U.one_mem`. Rewrite `this` using `[← hVU]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV h1`. Establish `hf : Finite (G E Ω ⧸ H.toSubgroup)` using `Subgroup.quotient_finite_of_isOpen _ H.isOpen`. Take `⟨d, hd, -, h⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := H.toSubgroup)) j.1`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hd.ne' l hl.ne_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, ((Nat.Prime.coprime_iff_not_dvd hl).2 hm).symm, ?_⟩` and prove the remaining obligations. Use `mem_of_pow_mem hA hl hv H.toSubgroup H.isOpen (pow_mem (Subgroup.mem_subgroupOf.1 hj) m) a (by rw [← pow_mul, mul_comm]; exact h)` as an intermediate fact. Establish `h2 : j ^ m ∈ (U : Set (Dec (F` using `E) A)) := by`. Rewrite using `[← hVU]`. Conclude with `hH this`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coprime_pow_mem {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 E)} (hA : IsPlaceOver A v)
     {l : ℕ} (hl : l.Prime) (hv : ((l : ℕ) : 𝓞 E) ∉ v.asIdeal) (U : Subgroup (Dec (F := E) A))
@@ -223,11 +219,11 @@ theorem exists_coprime_pow_mem {A : ValuationSubring Ω} {v : HeightOneSpectrum 
   exact h2
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `{}`. Take `⟨j, hj⟩` from `exists_clusterPt_of_compactSpace (Filter.map (fun n : ℕ => σ ^ (l ^ n)) Filter.atTop)`. Establish `key : ∀ C : Set (G E Ω), IsClosed C → (∀ᶠ n in Filter.atTop, σ ^ (l ^ n) ∈ C) → j ∈ C` using `fun C hC h => hC.mem_of_mapClusterPt hj h`. Use `⟨j, ⟨key _ (isClosed_Ine A) (Filter.Eventually.of_forall fun n => pow_mem hσ _), fun y hy => ?_⟩, key⟩` and prove the remaining obligations. Use `key _ (isClosed_setOf_apply y (fun t => ∃ n : ℕ, Nat.Coprime n l ∧ A.valuation ((t / y) ^ n - 1) < 1)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd, h⟩` from `exists_pow_apply_eq σ y`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hd.ne' l hl.ne_one`. Use `filter_upwards [Filter.eventually_ge_atTop a] with n hn`. Use `⟨m, ((Nat.Prime.coprime_iff_not_dvd hl).2 hm).symm, ?_⟩` and prove the remaining obligations. Establish `e2 : cobChar A (Units.mk0 _ hy) (⟨σ, hσ⟩ : Ine (F` using `E) A) ^ (l ^ a * m) = 1 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← pow_one (cobChar A _ _), cobChar_pow_eq_one]`. Simplify using `[h, div_self hy]`. Use `(cobChar_pow_eq_one A y hy (⟨σ, hσ⟩ ^ (l ^ n)) m).1 ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Rewrite using `[map_pow, ← pow_mul, pow_add, mul_right_comm, pow_mul, e2, one_pow]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_limit (A : ValuationSubring Ω) {l : ℕ} (hl : l.Prime) {σ : G E Ω} (hσ : σ ∈ Ine (F := E) A) :
     ∃ j ∈ primeTo E A l, ∀ C : Set (G E Ω), IsClosed C → (∀ᶠ n in Filter.atTop, σ ^ (l ^ n) ∈ C) → j ∈ C := by
@@ -255,11 +251,9 @@ section Algebra
 open IsLocalRing
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Simplify using `[Matrix.det_isEmpty]`. Establish `: Nonempty (Fin r)` using `⟨⟨0, hr⟩⟩`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `: CharP (ResidueField O) l` using `(CharP.charP_iff_prime_eq_zero hl).2 (by`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (residue O), residue_eq_zero_iff]`. Conclude with `hO)`. Rewrite `h`, the goal using `[← residue_ne_zero_iff_isUnit, RingHom.map_det]`. Rewrite `h` using `[map_sub, map_one]`. Rewrite using `[map_sub, map_one, map_pow, ← one_pow (l ^ n), ← sub_pow_char_pow_of_commute _ _ (Commute.one_right _), Matrix.det_pow]`.
-
-Conclude with `pow_ne_zero _ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_pow_sub_one {O : Type} [CommRing O] [IsLocalRing O] {l : ℕ} (hl : l.Prime)
     (hO : (l : O) ∈ maximalIdeal O) {r : ℕ} (M : Matrix (Fin r) (Fin r) O) (h : IsUnit (M - 1).det) (n : ℕ) :
@@ -277,13 +271,11 @@ theorem isUnit_det_pow_sub_one {O : Type} [CommRing O] [IsLocalRing O] {l : ℕ}
   exact pow_ne_zero _ h
 
 /- English proof (translation)
-Establish `hp : IsPrimitiveRoot (ζ : O) q`. Rewrite using `[IsPrimitiveRoot.coe_units_iff, ← h]`. Conclude with `IsPrimitiveRoot.orderOf ζ`. Establish `h0` using `hp.geom_sum_eq_zero hq`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : residue O ζ = 1`. Rewrite `hn` using `[← residue_ne_zero_iff_isUnit, not_not, map_sub, map_one, sub_eq_zero]`. Conclude with `hn`. Establish `h2 : ((q : ℕ) : ResidueField O) = 0`. Use `congrArg (residue O) h0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[h1]`. Establish `h3 : ((l : ℕ) : ResidueField O) = 0`. Rewrite using `[← map_natCast (residue O), residue_eq_zero_iff]`. Conclude with `hO`. Use `(Nat.isCoprime_iff_coprime.2 hlq).map (Int.castRingHom (ResidueField O))` as an intermediate fact.
-
-Simplify using `[h2, h3] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_sub_one_of_orderOf {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {l q : ℕ}
     (hlq : Nat.Coprime l q) (hq : 1 < q) (hO : (l : O) ∈ maximalIdeal O) (ζ : Oˣ) (h : orderOf ζ = q) :
@@ -304,9 +296,9 @@ theorem isUnit_sub_one_of_orderOf {O : Type} [CommRing O] [IsDomain O] [IsLocalR
   simp [h2, h3] at this
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero (algebraMap ℤ_[l] O) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, hI.hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `n _`. Establish `hl : (0 : ℝ) < (l : ℝ) ^ (-(n : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds (0 : ℤ_[l]) hl] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[mem_closedBall_zero_iff, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hO n)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_algebraMap_padicInt {O : Type} [CommRing O] [TopologicalSpace O] [IsTopologicalRing O]
     {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] (I : Ideal O) (hI : IsAdic I) (hO : (l : O) ∈ I) :
@@ -326,7 +318,7 @@ variable {Γ O Λ B : Type} [Group Γ] [CommRing O] [IsLocalRing O] [CommRing Λ
 
 omit [Algebra O Λ] in
 /- English proof (translation)
-Use `choose n hn using hB`. Use `⟨∑ a, n (m a), fun x hx a => hn _ x (Ideal.pow_le_pow_right ?_ hx)⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun a => n (m a)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pow_kill (hB : ∀ b : B, ∃ n, ∀ x ∈ maximalIdeal Λ ^ n, x • b = 0) (m : Fin r → B) :
     ∃ n, ∀ x ∈ maximalIdeal Λ ^ n, ∀ a, x • m a = 0 := by
@@ -335,7 +327,7 @@ theorem exists_pow_kill (hB : ∀ b : B, ∃ n, ∀ x ∈ maximalIdeal Λ ^ n, x
   exact Finset.single_le_sum (f := fun a => n (m a)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)
 
 /- English proof (translation)
-Establish `h1 : (maximalIdeal O).map (algebraMap O Λ) ≤ maximalIdeal Λ` using `map_maximalIdeal_le _`. Use `Ideal.mem_map_of_mem (algebraMap O Λ) hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_pow {x : O} {n : ℕ} (hx : x ∈ maximalIdeal O ^ n) : algebraMap O Λ x ∈ maximalIdeal Λ ^ n := by
   have h1 : (maximalIdeal O).map (algebraMap O Λ) ≤ maximalIdeal Λ := map_maximalIdeal_le _
@@ -344,15 +336,13 @@ theorem map_mem_pow {x : O} {n : ℕ} (hx : x ∈ maximalIdeal O ^ n) : algebraM
   exact Ideal.pow_right_mono h1 n this
 
 /- English proof (translation)
-Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_pow_kill hB m`. Establish `hopen : IsOpen ((maximalIdeal O ^ n : Ideal O) : Set O)` using `(isAdic_iff.1 hO).1 n`. Establish `h1 : ∀ᶠ h in nhds g, κ h = κ g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpen ((fun h => g⁻¹ * h) ⁻¹' (κ.ker : Set Γ))` using `hκ.preimage (by fun_prop)`. Use `filter_upwards [this.mem_nhds (show g ∈ _ by simp)] with h hh`. Establish `: κ (g⁻¹ * h) = 1` using `hh`. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ᶠ h in nhds g, ∀ a b, ((ρ h : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) a b - ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) a b ∈ maximalIdeal O ^ n`. Simplify using `only [Filter.eventually_all]`. Introduce `a b`. Conclude with `(hopen.preimage ((hρ.matrix_elem a b).sub continuous_const)).mem_nhds (by simp)`. Use `(continuousAt_const (y := repOn ρ κ B g m)).congr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h1, h2] with h e1 e2`. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `(κ g : Λ) • ∑ b, algebraMap O Λ (((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) a b) • m b = (κ h : Λ) • ∑ b, algebraMap O Λ (((ρ h : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) a b) • m b`. Rewrite using `[e1]`. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `hn _ (map_mem_pow (Λ := Λ) (e2 a b)) b` as an intermediate fact. Rewrite `this` using `[map_sub, sub_smul, sub_eq_zero]`. Conclude with `this.symm`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contAction_repOn [TopologicalSpace Γ] [IsTopologicalGroup Γ] [TopologicalSpace O] [IsTopologicalRing O]
     [TopologicalSpace B] [DiscreteTopology B] (hO : IsAdic (maximalIdeal O))
@@ -388,11 +378,11 @@ theorem contAction_repOn [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Topologi
 
 omit [IsLocalRing O] [IsLocalRing Λ] [IsLocalHom (algebraMap O Λ)] in
 /- English proof (translation)
-Use `set M := ((ρ j : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) with hM`. Establish `h1 : Formalism.MainNotions.BlochKatoReduction.matAct (M` using `B) ((M - 1).map (algebraMap O Λ)) m = 0 := by`. Use function extensionality and compare the values at `a`. Use `congrFun hm a` as an intermediate fact. Express the relevant statement in the definitionally equal form `(κ j : Λ) • ∑ b, algebraMap O Λ (M a b) • m b = m a at this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hκ, Units.val_one, one_smul]`. Express the relevant statement in the definitionally equal form `∑ b, algebraMap O Λ ((M - 1) a b) • m b = 0`. Simplify using `[sub_smul, Finset.sum_sub_distrib, this, Matrix.one_apply]`. Establish `h2 : Formalism.MainNotions.BlochKatoReduction.matAct (M` using `B) (((M - 1)⁻¹ * (M - 1)).map (algebraMap O Λ)) m = 0 := by`. Rewrite using `[Matrix.map_mul, Formalism.MainNotions.BlochKatoReduction.matAct_mul, Module.End.mul_apply, h1, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Matrix.nonsing_inv_mul _ hρ, Matrix.map_one _ (map_zero _) (map_one _), Formalism.MainNotions.BlochKatoReduction.matAct_one]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fixed (ρ : Γ →* GL (Fin r) O) (κ : Γ →* Λˣ) {j : Γ} (hκ : κ j = 1)
     (hρ : IsUnit (((ρ j : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) - 1).det) (m : Fin r → B)
@@ -415,17 +405,15 @@ end Algebra
 open IsLocalRing in
 
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `{}`. Establish `: CompactSpace (Dec (F` using `E) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Use `GlobalTheory.T.continuousCohomology_vanishes_of_primeToL_normal_no_invariants (Dec (F := E) A) Λ (Fin r → B) _ l ((primeTo E A l).subgroupOf (Dec (F := E) A)) hl (normal_primeTo A l) ((isClosed_primeTo A l).preimage continuous_subtype_val) (fun U _ ho j hj => exists_coprime_pow_m …` and prove the remaining obligations. Conclude with `(contAction_repOn hO ρ hρ κ hκ hB).comp (f := fun p : Dec (F := E) A × (Fin r → B) => ((p.1 : G E Ω), p.2)) (by fun_prop)`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_kill hB m`. Use `⟨n, funext fun a => ?_⟩` and prove the remaining obligations. Use `hn _ (map_mem_pow (Λ := Λ) (Ideal.pow_mem_pow hlO n)) a` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m hm`. Take `⟨j, hj, hC⟩` from `exists_limit A hl hσ`. Establish `h1 : κ j = 1`. Use `hC _ (κ.ker.isClosed_of_isOpen hκ) ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hκl σ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `filter_upwards [Filter.eventually_ge_atTop a] with n hn`. Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Express the relevant statement in the definitionally equal form `κ _ = 1`. Rewrite using `[map_pow, pow_add, pow_mul, ha, one_pow]`. Establish `hopen : IsOpen ((maximalIdeal O : Ideal O) : Set O)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using (isAdic_iff.1 hO).1 1`. Establish `h2 : j ∈ (fun g => (((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) - 1).det) ⁻¹' ((maximalIdeal O : Ideal O) : Set O)ᶜ`. Use `hC _ (hopen.isClosed_compl.preimage (hρ.sub continuous_const).matrix_det) (Filter.Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Use `isUnit_det_pow_sub_one hl hlO _ hu n` as an intermediate fact. Rewrite `this` using `[← notMem_maximalIdeal]`.
-
-Simplify using `using this`. Conclude with `eq_zero_of_fixed ρ κ h1 (notMem_maximalIdeal.1 h2) m (hm ⟨j, Ine_le_Dec A hj.1⟩ hj)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem vanishing {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 E)} (hA : IsPlaceOver A v)
@@ -479,7 +467,7 @@ section HidaSetting
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Rewrite using `[← not_not (a := _ ∈ _), IsLocalRing.notMem_maximalIdeal]`. Introduce `h`. Use `h.map (algebraMap (X.O0 i) (X.O i))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `IsLocalRing.notMem_maximalIdeal.2 this (X.O_l i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem (i : X.Tw) : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i) := by
   rw [← not_not (a := _ ∈ _), IsLocalRing.notMem_maximalIdeal]
@@ -489,7 +477,7 @@ theorem l_mem (i : X.Tw) : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal
   exact IsLocalRing.notMem_maximalIdeal.2 this (X.O_l i)
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GE N => (((chiS i s g)⁻¹ : (X.O0 i)ˣ) : X.O0 i)`. Repeatedly rewrite using `[← map_inv]`. Conclude with `(X.twistCharacterFamily_continuous i _ _).comp continuous_inv`. Conclude with `h1.smul (X.rhoS_cont i s)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_Tmat (i : X.Tw) (s : X.Sig i) : Continuous (Tmat i s) := by
   have h1 : Continuous fun g : GE N => (((chiS i s g)⁻¹ : (X.O0 i)ˣ) : X.O0 i) := by
@@ -498,13 +486,13 @@ theorem continuous_Tmat (i : X.Tw) (s : X.Sig i) : Continuous (Tmat i s) := by
   exact h1.smul (X.rhoS_cont i s)
 
 /- English proof (translation)
-Rewrite using `[← Tgl_coe, ← Tgl_coe, map_inv, Matrix.coe_units_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Tmat_inv (i : X.Tw) (s : X.Sig i) (g : GE N) : (Tmat i s g)⁻¹ = Tmat i s g⁻¹ := by
   rw [← Tgl_coe, ← Tgl_coe, map_inv, Matrix.coe_units_inv]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GE N => ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i)` using `(continuous_algebraMap_padicInt _ (X.twistBaseCoefficientRing_isAdic i) (l_mem i)).comp (Units.continuous_val.comp (continuous_cycZ D.host.E N.Om (X.l i)))`. Establish `h2 : Continuous fun g : GE N => (Tmat i s g)⁻¹.transpose`. Repeatedly rewrite using `[Tmat_inv]`. Conclude with `((continuous_Tmat i s).comp continuous_inv).matrix_transpose`. Conclude with `h1.smul h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_Tdual (i : X.Tw) (s : X.Sig i) : Continuous (Tdual i s) := by
   have h1 : Continuous fun g : GE N => ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) :=
@@ -516,23 +504,21 @@ theorem continuous_Tdual (i : X.Tw) (s : X.Sig i) : Continuous (Tdual i s) := by
   exact h1.smul h2
 
 /- English proof (translation)
-Take `⟨hv1, hv2⟩` from `hv`. Establish `hA` using `N.plOm.2 v`. Distinguish the cases in `hg : ∃ k, v ∈ placesOver D.host.E (D.host.g k)`. Take `⟨k, hk⟩` from `hg`. Take `⟨σ, hσ, hd⟩` from `(h.2.1.2 k (fun e => hv2 (e ▸ hk)) v hk _ hA).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Establish `e : Tmat i s σ - 1 = (((chiS i s σ)⁻¹ : (X.O0 i)ˣ) : X.O0 i) • (((X.rhoS i s σ : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) - ((chiS i s σ : (X.O0 i)ˣ) : X.O0 i) • 1)`. Rewrite using `[smul_sub, smul_smul, Units.inv_mul, one_smul]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `((Units.isUnit _).pow _).mul ?_` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Use `hd using 2` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [rbar, Matrix.one_apply, hab]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hg' : ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hg ⟨k, hk⟩`. Establish `hp : v ∈ X.pD i`. Break down `hv1 with h1 | h1` into its components or cases. Conclude with `absurd (Set.mem_iUnion.1 h1) hg`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl : (X.l i).Prime` using `Fact.out`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hq15, hql⟩ : ∃ q : ℕ, q.Prime ∧ q ∣ 15 ∧ X.l i ≠ q := by`. Distinguish the cases in `h3 : X.l i = 3`. Conclude with `⟨5, by norm_num, by norm_num, by omega⟩`. Conclude with `⟨3, by norm_num, by norm_num, h3⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fact q.Prime` using `⟨hq⟩`. Establish `hc` using `X.delta_15 i v hp _ hA`. Establish `: Finite ((Ine (F` using `D.host.E) (N.plOm.1 v)).map (X.delta i)) := Nat.finite_of_card_ne_zero (by rw [hc]; norm_num)`. Take `⟨⟨_, σ, hσ, rfl⟩, hz⟩` from `exists_prime_orderOf_dvd_card' q (hc ▸ hq15)`. Rewrite `hz` using `[← Subgroup.orderOf_coe]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Establish `ho : orderOf (chiS i s σ)⁻¹ = q`. Rewrite using `[orderOf_inv, chiS, X.twistCharacterFamily_at_auxiliaryPlaces i _ _ v hp _ hA σ hσ]`. Use `split_ifs`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[orderOf_inv]`. Conclude with `hz`. Establish `hu` using `isUnit_sub_one_of_orderOf ((Nat.coprime_primes hl hq).2 hql) hq.one_lt (l_mem i) _ ho`. Establish `e : Tmat i s σ - 1 = ((((chiS i s σ)⁻¹ : (X.O0 i)ˣ) : X.O0 i) - 1) • 1`. Rewrite using `[Tmat, h.1.1 v hv2 hg' _ hA σ hσ, sub_smul, one_smul]`.
-
-Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `hu.pow _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inertia (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (h : GalHyp bkP i s)
     (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ Spl (X := X) i) :
@@ -584,17 +570,15 @@ theorem exists_inertia (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (h : GalHyp bkP i
 end HidaSetting
 
 /- English proof (translation)
-Introduce `D N X bkP i s h v hv Λ _ _ _ _ κ hκ hκl B _ _ _ _ hB ρ hρ`. Take `⟨σ, hσ, hu⟩` from `exists_inertia bkP i s h v hv`. Establish `hA` using `N.plOm.2 v`. Establish `hvl : ((X.l i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal` using `hv.2`. Use `vanishing hA Fact.out hvl (X.twistBaseCoefficientRing_isAdic i) (l_mem i) ρ ?_ κ hκ hκl hB hσ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hρ with rfl | hρ` into its components or cases. Repeatedly rewrite using `[Tgl_coe]`. Conclude with `continuous_Tmat i s`. Repeatedly rewrite using `[hρ]`. Conclude with `continuous_Tdual i s`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hρ with rfl | hρ` into its components or cases. Rewrite using `[Tgl_coe]`. Conclude with `hu`. Establish `h1 : cycZ D.host.E N.Om (X.l i) σ = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[cycZ_toZModPow_eq hvl hA (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]`. Simplify using the standard rewrite rules. Establish `h2 : eps0 X i σ = 1`. Rewrite using `[eps0, MonoidHom.comp_apply, h1, map_one]`. Establish `h3 : IsUnit (Tmat i s σ).det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Tgl_coe]`. Conclude with `Matrix.isUnits_det_units _`. Establish `e : Tdual i s σ - 1 = (-((Tmat i s σ)⁻¹ * (Tmat i s σ - 1))).transpose`. Rewrite using `[Tdual, h2, Units.val_one, one_smul, mul_sub, Matrix.nonsing_inv_mul _ h3, mul_one, neg_sub, Matrix.transpose_sub, Matrix.transpose_one]`. Rewrite using `[hρ, e, Matrix.det_transpose, Matrix.det_neg, Matrix.det_mul]`.
-
-Conclude with `(isUnit_neg_one.pow _).mul ((Matrix.isUnit_nonsing_inv_det _ h3).mul hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_cohomology_vanishes : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → ∀ v ∈ Spl (X := X) i, ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [Algebra (X.O0 i) Λ] [IsLocalHom (algebraMap (X.O0 i) Λ)] (κ : GE N →* Λˣ), IsOpen (κ.ker : Set (GE N)) → (∀ g, ∃ n, κ g ^ (X.l i ^ n) = 1) → ∀ (B : Type) [AddCommGroup B] [Module Λ B] [TopologicalSpace B] [DiscreteTopology B], (∀ b : B, ∃ n, ∀ x ∈ IsLocalRing.maximalIdeal Λ ^ n, x • b = 0) → ∀ ρ : GE N →* GL (Fin D.R.r) (X.O0 i), (ρ = Tgl i s ∨ ∀ g, (ρ g : Matrix _ _ (X.O0 i)) = Tdual i s g) → H0 ((repOn ρ κ B).comp (DecV N v).subtype) = ⊥ ∧ Subsingleton (H1 ((repOn ρ κ B).comp (DecV N v).subtype)) ∧ Subsingleton (H2 ((repOn ρ κ B).comp (DecV N v).subtype)) := by
   intro D N X bkP i s h v hv Λ _ _ _ _ κ hκ hκl B _ _ _ _ hB ρ hρ

@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Establish `h : (Finset.univ.val.map fun b => a * c b) = (Finset.univ.val.map c).map (fun x => a • x)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Establish `hd : ((j : ℕ) + 1) ∣ N.factorial` using `Nat.dvd_factorial (Nat.succ_pos _) j.isLt`. Unfold `symTup`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, ← Multiset.pow_smul_esymm, smul_eq_mul, mul_pow, ← pow_mul, Nat.mul_div_cancel' hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symTup_mul {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (a : R) (j : Fin N) :
     symTup (fun b => a * c b) j = a ^ N.factorial * symTup c j := by
@@ -24,7 +24,7 @@ theorem symTup_mul {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (a : R) (
   rw [h, ← Multiset.pow_smul_esymm, smul_eq_mul, mul_pow, ← pow_mul, Nat.mul_div_cancel' hd]
 
 /- English proof (translation)
-Establish `h : (Finset.univ.val.map fun b => c (σ b)) = Finset.univ.val.map c` using `by conv_rhs => rw [← Multiset.map_univ_val_equiv σ, Multiset.map_map]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `j`. Unfold `symTup`. Rewrite using `[h]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symTup_perm {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (σ : Equiv.Perm (Fin N)) :
     symTup (fun b => c (σ b)) = symTup c := by
@@ -36,9 +36,9 @@ theorem symTup_perm {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (σ : Eq
   rw [h]
 
 /- English proof (translation)
-Establish `h : (Finset.univ.val.map fun b => i (c b)) = (Finset.univ.val.map c).map i`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Unfold `symTup`. Rewrite using `[h, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Multiset.esymm, map_multiset_sum, Multiset.powersetCard_map, Multiset.map_map, Function.comp_def, map_multiset_prod]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem map_symTup {R R' : Type} [CommRing R] [CommRing R'] (i : R →+* R') {N : ℕ} (c : Fin N → R) (j : Fin N) :
     i (symTup c j) = symTup (fun b => i (c b)) j := by
@@ -51,15 +51,15 @@ theorem map_symTup {R R' : Type} [CommRing R] [CommRing R'] (i : R →+* R') {N 
     map_multiset_prod]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hc : Multiset.card (Finset.univ.val.map c) = N` using `by simp`. Establish `he : ∀ k, 0 < k → k ≤ N → (Finset.univ.val.map c).esymm k = 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk hkN`. Use `hne ⟨k - 1, by omega⟩` as an intermediate fact. Unfold `symTup at this`. Establish `h2` using `eq_zero_of_pow_eq_zero this`. Simplify `h2` using `[Nat.sub_add_cancel hk]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hp : ((Finset.univ.val.map c).map fun t => Polynomial.X - Polynomial.C t).prod = Polynomial.X ^ N`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hc, Finset.sum_range_succ']`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using `[Multiset.esymm]`. Introduce `k hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he (k + 1) (Nat.succ_pos _) (Finset.mem_range.1 hk)]`. Simplify using the standard rewrite rules. Establish `hev` using `congrArg (Polynomial.eval (c a)) hp`. Rewrite `hev` using `[Polynomial.eval_multiset_prod, Multiset.prod_eq_zero]`. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_X] at hev`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `pow_ne_zero N ha hev.symm`. Simplify using `only [Multiset.mem_map]`. Conclude with `⟨_, ⟨c a, ⟨a, Finset.mem_univ_val a, rfl⟩, rfl⟩, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_symTup_ne_zero {K : Type} [Field K] {N : ℕ} (c : Fin N → K) (h : ∃ a, c a ≠ 0) :
     ∃ j, symTup c j ≠ 0 := by
@@ -88,7 +88,7 @@ theorem exists_symTup_ne_zero {K : Type} [Field K] {N : ℕ} (c : Fin N → K) (
     exact ⟨_, ⟨c a, ⟨a, Finset.mem_univ_val a, rfl⟩, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ c a j => symTup_mul c a j, fun _ _ _ c σ => symTup_perm c σ, fun _ _ _ _ i _ c j => map_symTup i c j, fun _ _ _ c h => exists_symTup_ne_zero c h⟩`.
+Supply the required witnesses or components.
 -/
 theorem symTup_basic :
     (∀ (R : Type) [CommRing R] (N : ℕ) (c : Fin N → R) (a : R) (j : Fin N),

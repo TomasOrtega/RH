@@ -13,16 +13,16 @@ structure Peel {n' m : ℕ} (A : Finset (Fin n')) (X XT sp : Fin n' → Fin (m +
   off : ∀ s, s ∉ A → XT s = 0 ∧ sp s = X s
 
 /- English proof (translation)
-Unfold `lamAt`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamAt_congr {n' m : ℕ} {X Y : Fin n' → Fin (m + 1) → ℤ} {s : Fin n'} (h : X s = Y s) : lamAt X s = lamAt Y s := by
   unfold lamAt
   rw [h]
 
 /- English proof (translation)
-Unfold `lamAt`. Rewrite using `[h]`. Use `split_ifs`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem lamAt_zero {n' m : ℕ} {X : Fin n' → Fin (m + 1) → ℤ} {s : Fin n'} (h : X s = 0) : lamAt X s = 0 := by
   unfold lamAt
@@ -33,23 +33,23 @@ theorem lamAt_zero {n' m : ℕ} {X : Fin n' → Fin (m + 1) → ℤ} {s : Fin n'
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `[nuOf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nuOf_zero (m : ℕ) : nuOf (0 : Fin (m + 1) → ℤ) = 0 := by
   funext t
   simp [nuOf]
 
 /- English proof (translation)
-Introduce `_ _ _` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem anti_zero (m : ℕ) : Antitone (0 : Fin (m + 1) → ℤ) := fun _ _ _ => le_rfl
 
 /- English proof (translation)
-Unfold `H0`. Rewrite using `[if_pos (anti_zero m)]`. Simplify using `only [Submodule.mem_iInf]`. Introduce and unpack `g ⟨hg, -⟩`. Rewrite using `[nablaLTwMem O Kf m 0 g hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun t : Fin (m + 1) => (((0 : Fin (m + 1) → ℤ) t) - (0 : Fin (m + 1) → ℤ) (Fin.last m)).toNat) = 0`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem_dualWeyl`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_H0_weight_zero (O Kf : Type) [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (Λ : Submodule O (Fin (m + 1) → Kf)) :
     (1 : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) ∈ H0 O m 0 Λ := by
@@ -71,9 +71,9 @@ section
 variable {Kf : Type} [Field Kf] {n' m : ℕ} {A : Finset (Fin n')} {X XT sp : Fin n' → Fin (m + 1) → ℤ}
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨y, hy, he⟩` from `slice_tensor (R := Kf) A (fun s => if Antitone (lamAt X s) then dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt X s)) else ⊥) (fun s => if Antitone (lamAt XT s) then dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt XT s)) else ⊥) (fun s => if Antitone (lamAt sp s) then dualWeyl Kf (m + 1) (m + …`. Rewrite using `[lamAt_zero (hP.top s hs).2, if_pos (anti_zero m), nuOf_zero]`. Conclude with `one_mem_dualWeyl⟩)`. Use the proof step `(fun s hs => ⟨by rw [lamAt_zero (hP.off s hs).1, if_pos (anti_zero m), nuOf_zero]; exact one_mem_dualWeyl, by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lamAt_congr (hP.off s hs).2]⟩)`. Use `γ 1 (fun Q _ => ⟨γ Q, by simp⟩) u hu`. Rewrite using `[he, one_smul]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem slice_V (hP : Peel A X XT sp)
     (γ : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf →ₗ[Kf] Kf) :
@@ -94,7 +94,7 @@ theorem slice_V (hP : Peel A X XT sp)
 variable {O : Type} [CommRing O] [Algebra O Kf]
 
 /- English proof (translation)
-The claim follows from `slice_tensor (R := O) A _ _ _ (fun s hs => ⟨by rw [lamAt_congr (hP.top s hs).1], by rw [lamAt_zero (hP.top s hs).2]; exact one_mem_H0_weight_zero O Kf m _⟩) (fun s hs => ⟨by rw [lamAt_zero (hP.off s hs).1]; exact one_mem_H0_weight_zero O Kf m _, by rw [lamAt_congr (hP.off s hs).2 …`.
+A detailed English derivation is pending.
 -/
 theorem slice_Hten (hP : Peel A X XT sp) (Λ : Fin n' → Submodule O (Fin (m + 1) → Kf))
     (γ : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf →ₗ[Kf] Kf) (c : Kf)
@@ -108,13 +108,11 @@ theorem slice_Hten (hP : Peel A X XT sp) (Λ : Fin n' → Submodule O (Fin (m + 
     γ c hγ
 
 /- English proof (translation)
-Introduce `Q hQ`. Use `choose g hg hΛg using hΛ`. Establish `h1 : Q ∈ tensorLat O Kf (fun s => nablaLTw O Kf m (lamAt X s) (g s))`. Use `Submodule.span_mono ?_ hQ` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F, fun s => ?_, rfl⟩` and prove the remaining obligations. Establish `h0 : F s ∈ H0 O m (lamAt X s) (Λ s)` using `hF s`. Rewrite `h0` using `[hΛg s]`. Conclude with `H0_le_twisted_nabla m _ (kp_lamAt_antitone X hd s) (g s) (hg s) h0`. Establish `h2` using `tr_tens_le O Kf m (fun s => lamAt X s) g hg Q h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Vsp`. Establish `: (fun s => if Antitone (lamAt X s) then dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt X s)) else ⊥) = fun s => dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt X s))`. Use function extensionality and compare the values at `s`. Rewrite using `[if_pos (kp_lamAt_antitone X hd s)]`. Rewrite using `[this]`.
-
-Conclude with `h2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Hten_le_V (hd : IsDominant X) (Λ : Fin n' → Submodule O (Fin (m + 1) → Kf))
     (hΛ : ∀ s, ∃ g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf, IsUnit g.det ∧ Λ s = colSpan O g) :

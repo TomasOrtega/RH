@@ -8,13 +8,11 @@ open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityThe
 namespace GlobalTheory.PrimePart
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hmem : ((p : ℕ) : 𝓞 E) ∈ RingHom.ker f`. Rewrite using `[RingHom.mem_ker, map_natCast]`. Conclude with `CharP.cast_eq_zero k p`. Establish `hne : RingHom.ker f ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.1 hmem)`. Establish `hmax : (RingHom.ker f).IsMaximal` using `(RingHom.ker_isPrime f).isMaximal hne`. Use `⟨hmax, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Finite (𝓞 E ⧸ RingHom.ker f) := Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Use `letI : Fintype (𝓞 E ⧸ RingHom.ker f) := Fintype.ofFinite _`. Use `letI : Field (𝓞 E ⧸ RingHom.ker f) := Ideal.Quotient.field _`. Use `haveI : CharP (𝓞 E ⧸ RingHom.ker f) p := by`. Use `(CharP.charP_iff_prime_eq_zero hp).2 ?_` and prove the remaining obligations.
-
-Rewrite using `[← map_natCast (Ideal.Quotient.mk (RingHom.ker f)), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmem`. Take `⟨n, -, hn⟩` from `FiniteField.card (𝓞 E ⧸ RingHom.ker f) p`. Conclude with `⟨n, n.pos, by rw [Nat.card_eq_fintype_card, hn]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ker_isMaximal_card {E k : Type} [Field E] [NumberField E] [Field k] (p : ℕ) [Fact p.Prime] [CharP k p]
     (f : 𝓞 E →+* k) :
@@ -40,7 +38,7 @@ theorem ker_isMaximal_card {E k : Type} [Field E] [NumberField E] [Field k] (p :
   exact ⟨n, n.pos, by rw [Nat.card_eq_fintype_card, hn]⟩
 
 /- English proof (translation)
-Use `haveI := charP_residueField_of_irreducible X`. Rewrite using `[primeBelow_eq_ker]`. Conclude with `ker_isMaximal_card p (red io X τ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeBelow_isMaximal_card (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H)
     (c : Coeff l) (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (X : ValExt T p) (τ : E →+* ℂ) :

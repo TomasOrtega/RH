@@ -30,13 +30,13 @@ section exp
 open scoped Matrix.Norms.Operator
 
 /- English proof (translation)
-Establish `h' : ∀ X : Matrix (Fin k) (Fin n) ℂ, B * (A * X) = X` using `fun X => by rw [← Matrix.mul_assoc, h, Matrix.one_mul]`. Set `Ψ : Matrix (Fin k) (Fin k) ℂ × ℂ →+* Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun x => A * x.1 * B + x.2 • (1 - A * B) map_one' := by simp map_mul' := fun x y => by`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, h', Matrix.mul_one, Matrix.one_mul, sub_self, smul_zero, add_zero]`. Use `module`. Use the proof step `map_zero' := by simp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use the proof step `map_add' := fun x y => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Matrix.add_mul, Matrix.mul_add, add_smul]`. Use `abel }`. Establish `hc : Continuous Ψ` using `by show Continuous fun x : Matrix (Fin k) (Fin k) ℂ × ℂ => A * x.1 * B + x.2 • (1 - A * B) fun_prop`. Establish `e` using `NormedSpace.map_exp Ψ hc (Z, 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : Ψ (Z, 0) = A * Z * B` using `by simp [Ψ]`. Rewrite `e` using `[e1]`. Use `e.symm.trans ?_` and prove the remaining obligations. Use `show A * (NormedSpace.exp (Z, (0 : ℂ))).1 * B + (NormedSpace.exp (Z, (0 : ℂ))).2 • (1 - A * B) = _`. Establish `f1 : (NormedSpace.exp (Z, (0 : ℂ))).1 = NormedSpace.exp Z` using `Prod.fst_exp (Z, (0 : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `f2 : (NormedSpace.exp (Z, (0 : ℂ))).2 = NormedSpace.exp 0` using `Prod.snd_exp (Z, (0 : ℂ))`. Rewrite using `[f1, f2]`. Simplify using `only [NormedSpace.exp_zero, one_smul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exp_corner {n k : ℕ} (A : Matrix (Fin n) (Fin k) ℂ) (B : Matrix (Fin k) (Fin n) ℂ) (h : B * A = 1)
     (Z : Matrix (Fin k) (Fin k) ℂ) : NormedSpace.exp (A * Z * B) = 1 + A * (NormedSpace.exp Z - 1) * B := by
@@ -76,7 +76,7 @@ variable {k r : ℕ}
 def incl (k r : ℕ) : Matrix (Fin (2 * r + k + 1)) (Fin k) ℂ := fun i a => if i = bl k r a then 1 else 0
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Matrix.conjTranspose_apply, incl]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : i = bl k r a <;> by_cases h2 : j = bl k r b <;> simp [h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incl_mul_apply (h : Matrix (Fin k) (Fin k) ℂ) (i j) : (incl k r * h * (incl k r)ᴴ) i j =
     ∑ a, ∑ b, if i = bl k r a ∧ j = bl k r b then h a b else 0 := by
@@ -86,11 +86,11 @@ theorem incl_mul_apply (h : Matrix (Fin k) (Fin k) ℂ) (i j) : (incl k r * h * 
   by_cases h1 : i = bl k r a <;> by_cases h2 : j = bl k r b <;> simp [h1, h2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, incl_mul_apply]`. Distinguish the cases in `hi : InB k r i`. Take `⟨a, rfl⟩ : ∃ a, bl k r a = i` from `⟨_, block_mk hi (by unfold InB at hi; omega)⟩`. Distinguish the cases in `hj : InB k r j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨b, rfl⟩ : ∃ a, bl k r a = j` from `⟨_, block_mk hj (by unfold InB at hj; omega)⟩`. Rewrite using `[blockW_bl]`. Simplify using `[blockIndex_injective.eq_iff, ite_and, Matrix.one_apply]`. Establish `: ∀ b, j ≠ bl k r b` using `fun b hb => hj (hb ▸ inB_bl b)`. Rewrite using `[blockW_in_out _ hi hj, Matrix.one_apply_ne (ne_of_inB hi hj)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[this]`. Establish `: ∀ b, i ≠ bl k r b` using `fun b hb => hi (hb ▸ inB_bl b)`. Rewrite using `[blockW_out _ hi]`. Simplify using `[this, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockW_eq (h : Matrix (Fin k) (Fin k) ℂ) : blockW k r h = 1 + incl k r * (h - 1) * (incl k r)ᴴ := by
   ext i j
@@ -109,7 +109,7 @@ theorem blockW_eq (h : Matrix (Fin k) (Fin k) ℂ) : blockW k r h = 1 + incl k r
     simp [this, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `a j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (bl k r a)]`. Simplify using `[incl, Hpk_apply, piI_in (inB_bl a), epsI_in (inB_bl a)]`. Introduce `b _ hb`. Simplify using `[incl, hb]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -121,7 +121,7 @@ theorem incl_H : (incl k r)ᴴ * Hpk k r = (incl k r)ᴴ := by
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (bl k r a)]`. Simplify using `[incl, blockIndex_injective.eq_iff, Matrix.one_apply]`. Introduce `b _ hb`. Simplify using `[incl, hb]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -135,19 +135,19 @@ theorem incl_incl : (incl k r)ᴴ * incl k r = 1 := by
 variable {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
 
 /- English proof (translation)
-Rewrite using `[inv_eq_UH hg, Matrix.conjTranspose_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, incl_H]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem co_eq (hg : g ∈ UH (Hpk k r)) : (g * incl k r)ᴴ * Hpk k r = (incl k r)ᴴ * g⁻¹ := by
   rw [inv_eq_UH hg, Matrix.conjTranspose_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, incl_H]
 
 /- English proof (translation)
-Rewrite using `[co_eq hg, Matrix.mul_assoc, ← Matrix.mul_assoc g⁻¹, inv_mul_UH' hg, Matrix.one_mul, incl_incl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem co_mul (hg : g ∈ UH (Hpk k r)) : (g * incl k r)ᴴ * Hpk k r * (g * incl k r) = 1 := by
   rw [co_eq hg, Matrix.mul_assoc, ← Matrix.mul_assoc g⁻¹, inv_mul_UH' hg, Matrix.one_mul, incl_incl]
 
 /- English proof (translation)
-Rewrite using `[co_eq hg, blockW_eq, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, mul_inv_UH hg]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_blockW (hg : g ∈ UH (Hpk k r)) (h : Matrix (Fin k) (Fin k) ℂ) :
     g * blockW k r h * g⁻¹ = 1 + g * incl k r * (h - 1) * ((g * incl k r)ᴴ * Hpk k r) := by
@@ -155,18 +155,18 @@ theorem conj_blockW (hg : g ∈ UH (Hpk k r)) (h : Matrix (Fin k) (Fin k) ℂ) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[mulVec_bvec_apply]`. Simplify using `[Matrix.mul_apply, incl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem col_eq (a : Fin k) (p) : (g *ᵥ bvec (bl k r a)) p = (g * incl k r) p a := by
   rw [mulVec_bvec_apply]
   simp [Matrix.mul_apply, incl]
 
 /- English proof (translation)
-Use extensionality with `p q`. Establish `e : Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (Formalism.QuantumDeterminants.bvec q) (g *ᵥ bvec (bl k r b)) = ((g * incl k r)ᴴ * Hpk k r) b q`. Rewrite using `[Matrix.mul_apply]`. Unfold `Formalism.QuantumDeterminants.herm dotProduct`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.star_apply, col_eq, Matrix.conjTranspose_apply]`. Use `congr 1`. Conclude with `mulVec_bvec_apply _ _ _`. Simplify using `only [Q.unitB, Matrix.of_apply]`. Rewrite using `[e, col_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `g * incl k r = A`. Generalize the expression as in `Aᴴ * Hpk k r = B`. Simplify using `[Matrix.mul_apply, Matrix.single, ite_and, Finset.sum_ite_eq]`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitB_eq (a b : Fin k) : Q.unitB (Formalism.QuantumDeterminants.Hpk k r) (fun a => g *ᵥ bvec (bl k r a)) a b =
     g * incl k r * Matrix.single a b (1 : ℂ) * ((g * incl k r)ᴴ * Hpk k r) := by
@@ -186,21 +186,21 @@ theorem unitB_eq (a b : Fin k) : Q.unitB (Formalism.QuantumDeterminants.Hpk k r)
   simp [Matrix.mul_apply, Matrix.single, ite_and, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Establish `hf` using `form_of_unitary (Hpk k r) hg.1`. Establish `h1 : ∀ (a : Fin k) i, Formalism.QuantumDeterminants.herm (Hpk k r) (bvec (bl k r a)) (bvec i) = if i = bl k r a then 1 else 0`. Introduce `a i`. Rewrite using `[← herm_symm _ Hpk_conjTranspose, herm_right_bvec, piI_in (inB_bl a), epsI_in (inB_bl a), bvec_apply]`. Apply the tactic sequence `by_cases h : i = bl k r a <;> simp [h, eq_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun a i hi => ?_, fun a b => ?_, fun a v hv => ?_⟩` and prove the remaining obligations. Establish `hl` using `i.isLt`. Establish `hp` using `piI_val (k := k) (r := r) i`. Establish `hfix : g *ᵥ bvec (piI k r i) = bvec (piI k r i)`. Break down `hi with hi | hi` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `have e : esI k r ⟨i.val, hi⟩ = piI k r i := Fin.ext (by rw [hp]; simp only [esI]; split_ifs <;> omega)`. Rewrite using `[← e]`. Conclude with `(hg.2.1 _).2`. Apply the tactic sequence `have e : eI k r ⟨2 * r + k - i.val, by omega⟩ = piI k r i := Fin.ext (by rw [hp]; simp only [eI]; split_ifs <;> omega)`. Rewrite using `[← e]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hg.2.1 _).1`. Establish `h2` using `hf (bvec (bl k r a)) (bvec (piI k r i))`. Rewrite `h2` using `[hfix, herm_right_bvec, piI_piI, h1, if_neg]`. Use `(mul_eq_zero.1 h2).resolve_left fun h => ?_` and prove the remaining obligations. Use `epsI_mul_self (k := k) (r := r) (piI k r i)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h]`. Simplify using `at this`. Introduce `h`. Establish `h3 : (piI k r i).val = r + a.val` using `congrArg Fin.val h`. Use `a.isLt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h3` using `[hp]`. Apply the tactic sequence `split_ifs at h3 <;> omega`. Use `(hf _ _).trans ?_` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using `[blockIndex_injective.eq_iff, eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[List.mem_singleton.1 hv, ← hg.2.2]`. Use `(hf _ _).trans ?_` and prove the remaining obligations. Rewrite using `[herm_smul_right, h1, if_neg, mul_zero]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `a.isLt` as an intermediate fact. Simplify using `only [bl, wI, Fin.val_last] at *`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isFrameOf (hg : IsFrameW k r z g) : Q.IsFrameOf k r [z] (fun a => g *ᵥ bvec (bl k r a)) := by
   have hf := form_of_unitary (Hpk k r) hg.1
@@ -246,15 +246,15 @@ section weight
 open PI.UpqRep GlobalTheory.UnitaryHighestWeight
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc, e⟩`. Establish `hr : ∀ x y : Fin k, ∑ i : Fin k, (i.val : ℝ) * root x y i = x.val - y.val`. Introduce `x y`. Simplify using `[root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`. Establish `e2` using `congrArg (fun f : Fin k → ℝ => ∑ i : Fin k, (i.val : ℝ) * f i) e`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `l : ∑ i : Fin k, (i.val : ℝ) * (Λ - (Λ + root a b)) i = -((a.val : ℝ) - b.val)`. Rewrite using `[← hr, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp`. Establish `r : ∑ i : Fin k, (i.val : ℝ) * (∑ x, ∑ y, (c x y : ℝ) • root x y) i = ∑ x, ∑ y, (c x y : ℝ) * ((x.val : ℝ) - y.val)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun i _ => by ring`. Simplify using `only [l, r] at e2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∑ x, ∑ y, (c x y : ℝ) * ((x.val : ℝ) - y.val) ≤ 0`. Use `Finset.sum_nonpos fun x _ => Finset.sum_nonpos fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : c x y = 0`. Simplify using `[h0]`. Establish `: (x.val : ℝ) < y.val` using `by exact_mod_cast (hc x y h0).1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _) (by linarith)`. Establish `: (a.val : ℝ) < b.val` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem not_cdom {k : ℕ} (Λ : Fin k → ℝ) {a b : Fin k} (hab : a < b) : ¬ CDom (allPos k) (Λ + root a b) Λ := by
   rintro ⟨c, hc, e⟩
@@ -283,9 +283,9 @@ theorem not_cdom {k : ℕ} (Λ : Fin k → ℝ) {a b : Fin k} (hab : a < b) : ¬
   linarith
 
 /- English proof (translation)
-Establish `h1 : (univ.filter fun b : Fin k => s < b) = Finset.Ioi s` using `by ext; simp`. Establish `h2 : (univ.filter fun b : Fin k => b < s) = Finset.Iio s` using `by ext; simp`. Use `s.isLt` as an intermediate fact. Simplify using `only [lowK, rhoN, rhoC, allPos, Formalism.QuantumDeterminants.rhoStd, Pi.add_apply, Pi.sub_apply, ne_eq, not_true, and_false, and_true, Finset.filter_false, Finset.card_empty, h1, h2, Fin.card_Ioi, Fin.card_Iio]`. Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowK_add_rho {k : ℕ} (u : Fin k → ℝ) (s : Fin k) : lowK (allPos k) u s + Formalism.QuantumDeterminants.rhoStd k s = u s := by
   have h1 : (univ.filter fun b : Fin k => s < b) = Finset.Ioi s := by ext; simp
@@ -298,13 +298,13 @@ theorem lowK_add_rho {k : ℕ} (u : Fin k → ℝ) (s : Fin k) : lowK (allPos k)
   ring
 
 /- English proof (translation)
-Take `⟨-, -, hU, -, -, -, ⟨v, -, hv, hw⟩, hdom⟩` from `hπ`. Establish `hw'` using `isWeight_of_isWtOn E hE _ v hw`. Use `⟨v, hv, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.QuantumDeterminants.capelliHW W k E (fun a => (lowK (allPos k) u a : ℂ)) v hgl ⟨hw', fun a b hab => ?_⟩ Y]`. Simplify using `only [Formalism.QuantumDeterminants.capP, ← Complex.ofReal_add, lowK_add_rho]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Use `not_cdom _ hab (hdom _ _ trivial hne (isWtOn_of_isWeight hU E hE _ _ fun c => ?_))` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (hgl c c a b) v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hw' c, map_smul] at h`. Rewrite using `[sub_eq_iff_eq_add.1 h]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : c = a <;> by_cases h2 : b = c`. Conclude with `absurd (h1 ▸ h2 ▸ hab) (lt_irrefl _)`. Substitute `h1` using the available equality. Simplify using `[root, h2, Ne.symm h2, add_smul, add_comm]`. Substitute `h2` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[root, h1, add_smul, add_comm]`. Simplify using `[root, h1, h2, Ne.symm h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qdet_eigen {k : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {π : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)} {u : Fin k → ℝ} (hπ : IsHCTypeU k u π)
@@ -337,25 +337,25 @@ variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)}
 
 /- English proof (translation)
-Take `⟨g, hg, h₀⟩` from `h₀`. Take `⟨E, hgl, -, hE⟩` from `GlobalTheory.UnitaryDerived.exists_derived_action k W _ h₀.2.2.1`. Take `⟨v, hv, hq⟩` from `qdet_eigen h₀ E hgl hE`. Establish `hB` using `isFrameOf hg`. Take `⟨-, hrep, hcont, -, -, hcap⟩` from `hπ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set A := g * incl k r with hA`. Use `set B := Aᴴ * Hpk k r with hBd`. Establish `hd : ∀ Z : Matrix (Fin k) (Fin k) ℂ, Zᴴ = -Z → ∀ x, Q.dRep π (A * Z * B) x = ∑ a, ∑ b, Z a b • E a b x`. Introduce `Z hZ x`. Rewrite using `[← (hE Z hZ x).deriv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `Q.dRep`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[conj_blockW hg.1, ← exp_corner _ _ (co_mul hg.1), Matrix.mul_smul, Matrix.smul_mul]`. Establish `hH : (Formalism.QuantumDeterminants.Hpk k r)⁻¹ = Hpk k r` using `Matrix.inv_eq_left_inv Hpk_mul_self`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ Y : Matrix (Fin k) (Fin k) ℂ, (Formalism.QuantumDeterminants.Hpk k r)⁻¹ * (A * Y * B)ᴴ * Formalism.QuantumDeterminants.Hpk k r = A * Yᴴ * B`. Introduce `Y`. Rewrite using `[hH, hBd]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Hpk_conjTranspose, ← Matrix.mul_assoc, Hpk_mul_self, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hEB : Qr.EB π (fun a => g *ᵥ bvec (bl k r a)) = E`. Use function extensionality and compare the values at `a b`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hl` using `P.QrD.frame_lie hB a b`. Use `show P.QrD.ecOp π _ x = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← P.QrD.ecRep_eq hrep hcont hl.1 hl.2, unitB_eq]`. Unfold `Q.EcRep Formalism.QuantumDeterminants.hpart1 Formalism.QuantumDeterminants.hpart2`. Rewrite using `[← hA, ← hBd, hc, ← Matrix.sub_mul, ← Matrix.mul_sub, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.smul_mul, ← Matrix.mul_smul, hd, hd]`. Simplify using `only [Finset.smul_sum, smul_smul, ← Finset.sum_add_distrib, ← add_smul]`. Establish `e : ∀ c d, ((1 / 2 : ℂ) • (Matrix.single a b (1 : ℂ) - (Matrix.single a b (1 : ℂ))ᴴ)) c d + Complex.I * ((1 / (2 * Complex.I) : ℂ) • (Matrix.single a b (1 : ℂ) + (Matrix.single a b (1 : ℂ))ᴴ)) c d = Matrix.single a b (1 : ℂ) c d`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Introduce `c d`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Matrix.single, ite_and, ite_smul]`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose, ← neg_smul, add_comm]`. Use `congr 1`. Simplify using `[Complex.conj_ofNat]`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, ← smul_neg, neg_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Establish `h1` using `(P.frame_general_linear W k r k z π _ ⟨hrep, hcont⟩ hB).2 (Y + ((k : ℂ) - 1) / 2) v`. Rewrite `h1` using `[hEB, hq, hcap _ hB]`. Rewrite using `[← smul_left_injective ℂ hv h1, ← Finset.Ico_add_one_right_eq_Icc, Finset.prod_Ico_eq_prod_range, Nat.add_sub_cancel, ← Fin.prod_univ_eq_prod_range (fun i => Y + ((k : ℂ) - 1) / 2 - k / 2 + 1 / 2 + (u (1 + i) : ℂ))]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm 1 s.val]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem prod_eq {u : ℕ → ℝ} {u₀ : Fin k → ℝ} (hπ : Q.IsType k r z π u) (h₀ : IsHCTypeW k r z u₀ π) (Y : ℂ) :
     ∏ s, (Y + (u₀ s : ℂ)) = ∏ s : Fin k, (Y + (u (s.val + 1) : ℂ)) := by

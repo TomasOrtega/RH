@@ -11,9 +11,9 @@ open Formalism.FourierDecayAlt
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `e1 : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i j) = fun t : ℝ => Matrix.entryLinearMap ℝ ℂ i j (NormedSpace.exp (t • X))`. Use function extensionality and compare the values at `t`. Establish `: (t : ℂ) • X = t • X` using `by ext a b; simp [Complex.real_smul]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : X i j = Matrix.entryLinearMap ℝ ℂ i j (NormedSpace.exp ((0 : ℝ) • X) * X)`. Simplify using `[NormedSpace.exp_zero]`. Rewrite using `[e1, e2]`. Use `open scoped Matrix.Norms.Operator in`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_hasDerivAt {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i j) (X i j) 0 := by
@@ -51,7 +51,7 @@ def act {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] :
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Take `⟨b, X⟩` from `o`. Apply the tactic sequence `cases b <;> rfl`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_eq (o : Bool × B.Mat k r) (f : B.Mat k r → E) (g : B.Mat k r) :
     act o f g = deriv (fun t : ℝ => f (curve o g t)) 0 := by
@@ -59,14 +59,14 @@ theorem act_eq (o : Bool × B.Mat k r) (f : B.Mat k r → E) (g : B.Mat k r) :
   cases b <;> rfl
 
 /- English proof (translation)
-Take `⟨b, X⟩` from `o`. Apply the tactic sequence `cases b <;> simp [curve]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem curve_zero (o : Bool × B.Mat k r) (g : B.Mat k r) : curve o g 0 = g := by
   obtain ⟨b, X⟩ := o
   cases b <;> simp [curve]
 
 /- English proof (translation)
-Break down `o with ⟨_ | _, X⟩` into its components or cases. Conclude with `UH_mul _ _ _ hg (exp_mem_UH _ _ (lie_smul _ X hX t))`. Establish `: -((t : ℂ) • X) = ((-t : ℝ) : ℂ) • X` using `by push_cast; rw [neg_smul] show NormedSpace.exp (-((t : ℂ) • X)) * g ∈ B.GV k r`. Rewrite using `[this]`. Conclude with `UH_mul _ _ _ (exp_mem_UH _ _ (lie_smul _ X hX (-t))) hg`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curve_mem (o : Bool × B.Mat k r) (g : B.Mat k r) (t : ℝ) (hX : B.inLie k r o.2)
     (hg : g ∈ B.GV k r) : curve o g t ∈ B.GV k r := by
@@ -78,11 +78,11 @@ theorem curve_mem (o : Bool × B.Mat k r) (g : B.Mat k r) (t : ℝ) (hX : B.inLi
     exact UH_mul _ _ _ (exp_mem_UH _ _ (lie_smul _ X hX (-t))) hg
 
 /- English proof (translation)
-Break down `o with ⟨_ | _, X⟩` into its components or cases. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_ show HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • X)) i j) ((g * X) i j) 0` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `HasDerivAt.fun_sum (u := Finset.univ) (A := fun l (t : ℝ) => g i l * NormedSpace.exp ((t : ℂ) • X) l j) fun l _ => (entry_hasDerivAt X l j).const_mul (g i l)`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_ show HasDerivAt (fun t : ℝ => (NormedSpace.exp (-((t : ℂ) • X)) * g) i j) ((-(X * g)) i j) 0` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ∀ t : ℝ, -((t : ℂ) • X) = (t : ℂ) • (-X)` using `fun t => (smul_neg _ _).symm`. Simplify using `only [e, Matrix.mul_apply]`. Use `HasDerivAt.fun_sum (u := Finset.univ) (A := fun l (t : ℝ) => NormedSpace.exp ((t : ℂ) • (-X)) i l * g l j) fun l _ => (entry_hasDerivAt (-X) i l).mul_const (g l j)` as an intermediate fact. Establish `hv : (-(X * g)) i j = ∑ l, (-X) i l * g l j`. Simplify using `[Matrix.mul_apply, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem curve_hasDerivAt (o : Bool × B.Mat k r) (g : B.Mat k r) :
     HasDerivAt (curve o g) (dir o g) 0 := by
@@ -104,7 +104,7 @@ theorem curve_hasDerivAt (o : Bool × B.Mat k r) (g : B.Mat k r) :
     exact this
 
 /- English proof (translation)
-Break down `o with ⟨_ | _, X⟩` into its components or cases. Set `L : B.Mat k r →ₗ[ℝ] B.Mat k r` to `{ toFun := fun g => g * X map_add' := fun a b => Matrix.add_mul a b X map_smul' := fun c a => Matrix.smul_mul c a X }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`. Set `L : B.Mat k r →ₗ[ℝ] B.Mat k r` to `{ toFun := fun g => -(X * g) map_add' := fun a b => by simp only [Matrix.mul_add, neg_add] map_smul' := fun c a => by simp only [Matrix.mul_smul, smul_neg, RingHom.id_apply] }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem dir_contDiff (o : Bool × B.Mat k r) : ContDiff ℝ ∞ (dir o) := by
   rcases o with ⟨_ | _, X⟩
@@ -120,9 +120,9 @@ theorem dir_contDiff (o : Bool × B.Mat k r) : ContDiff ℝ ∞ (dir o) := by
     exact (LinearMap.toContinuousLinearMap L).contDiff
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℝ f' g` using `(hf'.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by simp)`. Establish `hc` using `curve_hasDerivAt o g`. Establish `h1 : HasDerivAt (f' ∘ curve o g) (fderiv ℝ f' g (dir o g)) 0` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq 0 hc (curve_zero o g).symm`. Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hcont : ContinuousAt (curve o g) 0` using `hc.continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ t in 𝓝 (0 : ℝ), curve o g t ∈ U` using `hcont.preimage_mem_nhds (by rw [curve_zero]; exact hU.mem_nhds hgU)`. Use `filter_upwards [hev] with t ht`. Conclude with `hagree _ ht (curve_mem o g t hX hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem along (H : B.Mat k r → E) {U : Set (B.Mat k r)} {f' : B.Mat k r → E} (hU : IsOpen U)
     (hf' : ContDiffOn ℝ ∞ f' U) (hagree : ∀ g ∈ U, g ∈ B.GV k r → H g = f' g)
@@ -141,7 +141,7 @@ theorem along (H : B.Mat k r → E) {U : Set (B.Mat k r)} {f' : B.Mat k r → E}
   exact hagree _ ht (curve_mem o g t hX hg)
 
 /- English proof (translation)
-Take `⟨U, f', hU, hgU, hf', hagree⟩` from `hH g hg`. Conclude with `⟨_, along H hU hf' hagree o hX g hgU hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_along (H : B.Mat k r → E) (hH : B.CkOn (⊤ : ℕ∞) (B.GV k r) H)
     (o : Bool × B.Mat k r) (hX : B.inLie k r o.2) (g : B.Mat k r) (hg : g ∈ B.GV k r) :
@@ -150,9 +150,9 @@ theorem exists_along (H : B.Mat k r → E) (hH : B.CkOn (⊤ : ℕ∞) (B.GV k r
   exact ⟨_, along H hU hf' hagree o hX g hgU hg⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg₀U, hf', hagree⟩` from `hH g₀ hg₀`. Use `⟨U, fun g => fderiv ℝ f' g (dir o g), hU, hg₀U, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hf'.fderiv_of_isOpen hU (by simp)).clm_apply (dir_contDiff o).contDiffOn`. Introduce `g hgU hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[act_eq]`. Conclude with `(along H hU hf' hagree o hX g hgU hg).deriv`.
+A detailed English derivation is pending.
 -/
 theorem act_ck (H : B.Mat k r → E) (hH : B.CkOn (⊤ : ℕ∞) (B.GV k r) H)
     (o : Bool × B.Mat k r) (hX : B.inLie k r o.2) : B.CkOn (⊤ : ℕ∞) (B.GV k r) (act o H) := by
@@ -165,9 +165,9 @@ theorem act_ck (H : B.Mat k r → E) (hH : B.CkOn (⊤ : ℕ∞) (B.GV k r) H)
     exact (along H hU hf' hagree o hX g hgU hg).deriv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[act_eq]`. Establish `h1 : HasFDerivAt Q (fderiv ℝ Q (curve o g 0)) (curve o g 0)` using `((hQ.differentiable (by norm_num)) _).hasFDerivAt`. Establish `h2` using `h1.comp_hasDerivAt (0 : ℝ) (curve_hasDerivAt o g)`. Rewrite `h2` using `[curve_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.deriv`.
+A detailed English derivation is pending.
 -/
 theorem act_smooth (Q : B.Mat k r → E) (hQ : ContDiff ℝ ∞ Q) (o : Bool × B.Mat k r) :
     act o Q = fun g => fderiv ℝ Q g (dir o g) := by
@@ -180,7 +180,7 @@ theorem act_smooth (Q : B.Mat k r → E) (hQ : ContDiff ℝ ∞ Q) (o : Bool × 
   exact h2.deriv
 
 /- English proof (translation)
-Rewrite using `[act_smooth Q hQ o]`. Conclude with `(hQ.fderiv_right (by simp)).clm_apply (dir_contDiff o)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_smooth_contDiff (Q : B.Mat k r → E) (hQ : ContDiff ℝ ∞ Q) (o : Bool × B.Mat k r) :
     ContDiff ℝ ∞ (act o Q) := by
@@ -188,13 +188,13 @@ theorem act_smooth_contDiff (Q : B.Mat k r → E) (hQ : ContDiff ℝ ∞ Q) (o :
   exact (hQ.fderiv_right (by simp)).clm_apply (dir_contDiff o)
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Set.univ, Q, isOpen_univ, Set.mem_univ _, hQ.contDiffOn, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem smooth_ck (Q : B.Mat k r → E) (hQ : ContDiff ℝ ∞ Q) : B.CkOn (⊤ : ℕ∞) (B.GV k r) Q :=
   fun _ _ => ⟨Set.univ, Q, isOpen_univ, Set.mem_univ _, hQ.contDiffOn, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg₀U, hf', hagree⟩` from `hH g₀ hg₀`. Use `⟨U, fun g => Q g • f' g, hU, hg₀U, hQ.contDiffOn.smul hf', ?_⟩` and prove the remaining obligations. Introduce `g hgU hg`. Simplify using `only [hagree g hgU hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem smul_ck (Q : B.Mat k r → ℂ) (hQ : ContDiff ℝ ∞ Q) (H : B.Mat k r → E)
     (hH : B.CkOn (⊤ : ℕ∞) (B.GV k r) H) : B.CkOn (⊤ : ℕ∞) (B.GV k r) (fun g => Q g • H g) := by
@@ -205,7 +205,7 @@ theorem smul_ck (Q : B.Mat k r → ℂ) (hQ : ContDiff ℝ ∞ Q) (H : B.Mat k r
   simp only [hagree g hgU hg]
 
 /- English proof (translation)
-Rewrite using `[act_eq, act_eq]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (curve_mem o g t hX hg)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem act_local (o : Bool × B.Mat k r) (hX : B.inLie k r o.2) (f₁ f₂ : B.Mat k r → E)
     (h : ∀ g ∈ B.GV k r, f₁ g = f₂ g) (g : B.Mat k r) (hg : g ∈ B.GV k r) : act o f₁ g = act o f₂ g := by
@@ -215,7 +215,7 @@ theorem act_local (o : Bool × B.Mat k r) (hX : B.inLie k r o.2) (f₁ f₂ : B.
   exact h _ (curve_mem o g t hX hg)
 
 /- English proof (translation)
-Take `⟨v₁, hv₁⟩` from `exists_along f₁ h₁ o hX g hg`. Take `⟨v₂, hv₂⟩` from `exists_along f₂ h₂ o hX g hg`. Rewrite using `[act_eq, act_eq, act_eq, hv₁.deriv, hv₂.deriv]`. Conclude with `(hv₁.add hv₂).deriv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_add (o : Bool × B.Mat k r) (hX : B.inLie k r o.2) (f₁ f₂ : B.Mat k r → E)
     (h₁ : B.CkOn (⊤ : ℕ∞) (B.GV k r) f₁) (h₂ : B.CkOn (⊤ : ℕ∞) (B.GV k r) f₂)
@@ -227,9 +227,9 @@ theorem act_add (o : Bool × B.Mat k r) (hX : B.inLie k r o.2) (f₁ f₂ : B.Ma
   exact (hv₁.add hv₂).deriv
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_along H hH o hX g hg`. Establish `h1 : HasFDerivAt Q (fderiv ℝ Q (curve o g 0)) (curve o g 0)` using `((hQ.differentiable (by norm_num)) _).hasFDerivAt`. Establish `hQd` using `h1.comp_hasDerivAt (0 : ℝ) (curve_hasDerivAt o g)`. Rewrite `hQd` using `[curve_zero]`. Rewrite using `[act_eq, act_eq, act_eq, hv.deriv, show deriv (fun t => Q (curve o g t)) 0 = fderiv ℝ Q g (dir o g) from hQd.deriv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show deriv (fun t => Q (curve o g t) • H (curve o g t)) 0 = (Q ∘ curve o g) 0 • v + fderiv ℝ Q g (dir o g) • H (curve o g 0) from (hQd.smul hv).deriv]`. Simplify using `only [Function.comp_apply, curve_zero]`. Rewrite using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_leib (o : Bool × B.Mat k r) (hX : B.inLie k r o.2) (Q : B.Mat k r → ℂ) (hQ : ContDiff ℝ ∞ Q)
     (H : B.Mat k r → E) (hH : B.CkOn (⊤ : ℕ∞) (B.GV k r) H) (g : B.Mat k r) (hg : g ∈ B.GV k r) :

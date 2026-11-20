@@ -8,7 +8,7 @@ section SlopeTestRemainingChoices
 variable {C : Type} [CommRing C] {m : ℕ} {I M : Ideal C}
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact I.sum_mem fun k _ => I.mul_mem_left _ (hX k b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem entIn_mul_left (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (A * X) := fun a b => by
@@ -16,7 +16,7 @@ private theorem entIn_mul_left (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin m
   exact I.sum_mem fun k _ => I.mul_mem_left _ (hX k b)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply] exact I.sum_mem fun k _ => I.mul_mem_right _ (hX a k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem entIn_mul_right (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (X * A) := fun a b => by
@@ -24,7 +24,7 @@ private theorem entIn_mul_right (A : Matrix (Fin m) (Fin m) C) {X : Matrix (Fin 
   exact I.sum_mem fun k _ => I.mul_mem_right _ (hX a k)
 
 /- English proof (translation)
-Introduce `a b` and use `by have h : EntIn I Xᵀ := fun a b => hX b a exact I.neg_mem (entIn_mul_right _ (entIn_mul_left _ h) a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem entIn_thetaLie {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (thetaLie X) := fun a b => by
@@ -32,7 +32,7 @@ private theorem entIn_thetaLie {X : Matrix (Fin m) (Fin m) C}
   exact I.neg_mem (entIn_mul_right _ (entIn_mul_left _ h) a b)
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `hX`. Conclude with `entIn_thetaLie hX`.
+A detailed English derivation is pending.
 -/
 private theorem entIn_ite (s : ℤˣ) {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (if s = 1 then X else thetaLie X) := by
@@ -41,14 +41,14 @@ private theorem entIn_ite (s : ℤˣ) {X : Matrix (Fin m) (Fin m) C}
   · exact entIn_thetaLie hX
 
 /- English proof (translation)
-The claim follows from `entIn_mul_right _ (entIn_mul_left _ (entIn_ite _ hX))`.
+A detailed English derivation is pending.
 -/
 private theorem entIn_adFun (x : GG m C) {X : Matrix (Fin m) (Fin m) C}
     (hX : EntIn I X) : EntIn I (x.adFun X) :=
   entIn_mul_right _ (entIn_mul_left _ (entIn_ite _ hX))
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Use `Ideal.mul_mem_mul (hX a k) (hY k b)` as an intermediate fact. Rewrite `this` using `[hI, Ideal.mem_bot]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem entIn_mul_zero (hI : M * I = ⊥) {X Y : Matrix (Fin m) (Fin m) C}
     (hX : EntIn M X) (hY : EntIn I Y) : X * Y = 0 := by
@@ -59,11 +59,9 @@ private theorem entIn_mul_zero (hI : M * I = ⊥) {X Y : Matrix (Fin m) (Fin m) 
   rwa [hI, Ideal.mem_bot] at this
 
 /- English proof (translation)
-Unfold `GG.adFun`. Rewrite using `[hr]`. Establish `hY` using `entIn_ite y.right hX`. Generalize the expression as in `(if y.right = 1 then X else thetaLie X) = Y at hY ⊢`. Establish `h1 : x.mat * Y = y.mat * Y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← Matrix.sub_mul]`. Conclude with `entIn_mul_zero hI hm hY`. Establish `h2 : ((y.left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) - ((x.left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) = ((x.left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) * (x.mat - y.mat) * ((y.left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C)`. Simplify using `only [GG.mat, Matrix.mul_sub, Matrix.sub_mul, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[h1, eq_comm, ← sub_eq_zero, ← Matrix.mul_sub, h2]`.
-
-Conclude with `entIn_mul_zero (by rwa [mul_comm]) (entIn_mul_left _ hY) (entIn_mul_right _ (entIn_mul_left _ hm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adFun_congr (hI : M * I = ⊥) {x y : GG m C} (hr : x.right = y.right)
     (hm : EntIn M (x.mat - y.mat)) {X : Matrix (Fin m) (Fin m) C} (hX : EntIn I X) :
@@ -92,9 +90,9 @@ private def onePlus (X : Matrix (Fin m) (Fin m) C) (h : X * X = 0) : GL (Fin m) 
   inv_val := by simp [Matrix.mul_add, Matrix.sub_mul, h]
 
 /- English proof (translation)
-Establish `h : ((-1 : ℤˣ) = 1) = False` using `by decide`. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Simplify using `[hq]`. Establish `hinv : ((q⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) = 1 - X`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hq, Matrix.add_mul, Matrix.mul_sub, Matrix.mul_sub, entIn_mul_zero hI hX hX]`. Simplify using the standard rewrite rules. Rewrite using `[sgnAct_neg_one, theta_val, hinv]`. Simplify using `only [h, if_false, thetaLie, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Jmat_mul_Jmat]`. Rewrite using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sgnAct_one_add (hI : I * I = ⊥) (q : GL (Fin m) C)
     (X : Matrix (Fin m) (Fin m) C) (hX : EntIn I X) (hq : (q : Matrix (Fin m) (Fin m) C) = 1 + X)
@@ -119,13 +117,13 @@ private structure Near (I : Ideal C) (y : GG m C) (X : Matrix (Fin m) (Fin m) C)
   ent : EntIn I X
 
 /- English proof (translation)
-Rewrite using `[← MulAut.mul_apply, ← map_mul, Int.units_mul_self, map_one, MulAut.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_act (s : ℤˣ) (g : GL (Fin m) C) : sgnAct m C s (sgnAct m C s g) = g := by
   rw [← MulAut.mul_apply, ← map_mul, Int.units_mul_self, map_one, MulAut.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← h.mat]`. Simplify using `[GG.mat, h.right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem Near.mul_mat {y : GG m C} {X : Matrix (Fin m) (Fin m) C} (h : Near I y X) (x : GG m C) :
     (y * x).mat = (1 + X) * x.mat := by
@@ -133,7 +131,7 @@ private theorem Near.mul_mat {y : GG m C} {X : Matrix (Fin m) (Fin m) C} (h : Ne
   simp [GG.mat, h.right]
 
 /- English proof (translation)
-Use `⟨by simp [h.right, h'.right], ?_, fun a b => I.add_mem (h.ent a b) (h'.ent a b)⟩` and prove the remaining obligations. Rewrite using `[h.mul_mat, h'.mat, Matrix.add_mul, Matrix.one_mul, Matrix.mul_add, entIn_mul_zero hI h.ent h'.ent, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem Near.mul (hI : I * I = ⊥) {y y' : GG m C} {X X' : Matrix (Fin m) (Fin m) C}
     (h : Near I y X) (h' : Near I y' X') : Near I (y * y') (X + X') := by
@@ -143,7 +141,7 @@ private theorem Near.mul (hI : I * I = ⊥) {y y' : GG m C} {X X' : Matrix (Fin 
   abel
 
 /- English proof (translation)
-Use `⟨by simp [h.right], ?_, entIn_adFun x h.ent⟩` and prove the remaining obligations. Establish `e : (x * y * x⁻¹).left = x.left * sgnAct m C x.right y.left * x.left⁻¹`. Simplify using `[h.right, act_act]`. Rewrite using `[GG.mat, e, Units.val_mul, Units.val_mul, sgnAct_one_add hI _ _ h.ent h.mat, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Units.mul_inv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem Near.conj (hI : I * I = ⊥) {y : GG m C} {X : Matrix (Fin m) (Fin m) C}
     (h : Near I y X) (x : GG m C) : Near I (x * y * x⁻¹) (x.adFun X) := by
@@ -155,14 +153,14 @@ private theorem Near.conj (hI : I * I = ⊥) {y : GG m C} {X : Matrix (Fin m) (F
   rfl
 
 /- English proof (translation)
-The claim follows from `add_left_cancel (h.mat.symm.trans h'.mat)`.
+A detailed English derivation is pending.
 -/
 private theorem Near.uniq {y : GG m C} {X X' : Matrix (Fin m) (Fin m) C}
     (h : Near I y X) (h' : Near I y X') : X = X' :=
   add_left_cancel (h.mat.symm.trans h'.mat)
 
 /- English proof (translation)
-Use `ext1`. Conclude with `Units.ext (h.mat.trans h'.mat.symm)`. Rewrite using `[h.right, h'.right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Near.eq {y y' : GG m C} {X : Matrix (Fin m) (Fin m) C}
     (h : Near I y X) (h' : Near I y' X) : y = y' := by
@@ -171,14 +169,14 @@ private theorem Near.eq {y y' : GG m C} {X : Matrix (Fin m) (Fin m) C}
   · rw [h.right, h'.right]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨onePlus X (entIn_mul_zero hI hX hX), 1⟩, rfl, rfl, hX⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_near (hI : I * I = ⊥) {X : Matrix (Fin m) (Fin m) C} (hX : EntIn I X) :
     ∃ y : GG m C, Near I y X :=
   ⟨⟨onePlus X (entIn_mul_zero hI hX hX), 1⟩, rfl, rfl, hX⟩
 
 /- English proof (translation)
-Use `⟨by simp [hr], ?_, hX⟩` and prove the remaining obligations. Establish `e : (x * y⁻¹).left = x.left * y.left⁻¹` using `by simp [hr, act_act]`. Rewrite using `[GG.mat, e, Units.val_mul]`. Express the relevant statement in the definitionally equal form `x.mat * _ = _`. Rewrite using `[hm, GG.mat, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem near_of {x y : GG m C} {X : Matrix (Fin m) (Fin m) C} (hX : EntIn I X)
     (hr : x.right = y.right) (hm : x.mat = (1 + X) * y.mat) : Near I (x * y⁻¹) X := by
@@ -191,23 +189,19 @@ private theorem near_of {x y : GG m C} {X : Matrix (Fin m) (Fin m) C} (hX : EntI
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O R D _ _ _ _ _ _ _ _ _ η Ψ K j hK hle hH s hs hη hred hc`. Establish `hKK : K * K = ⊥` using `le_bot_iff.1 (hK ▸ Ideal.mul_mono_left hle)`. Use `choose c hcw hcK hcm using hc`. Establish `hu : ∀ g h, Near K (s g * s h * (s (g * h))⁻¹) (c g h)` using `fun g h => near_of (hcK g h) (by simp [hη]) (hcm g h)`. Establish `had : ∀ g {X : Matrix (Fin 3) (Fin 3) R}, EntIn K X → (s g).adFun X = adRep ((GG.map (algebraMap O R)).comp (r0 η Ψ)) g X` using `fun g X hX => adFun_congr hK (y := GG.map (algebraMap O R) (r0 η Ψ g)) (hη g) (hred g) hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlc : IsLocallyConstant fun z : D × D => c z.1 z.2`. Establish `e : (fun z : D × D => c z.1 z.2) = (fun w : (GG 3 R × GG 3 R) × GG 3 R => (w.1.1 * w.1.2 * w.2⁻¹).mat - 1) ∘ fun z : D × D => ((s z.1, s z.2), s (z.1 * z.2))`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, (hu z.1 z.2).mat, add_sub_cancel_left]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(((hs.comp_continuous continuous_fst).prodMk (hs.comp_continuous continuous_snd)).prodMk (hs.comp_continuous continuous_mul)).comp _`. Take `⟨b, hb, hbw, hbK, hbe⟩` from `lifting_obstruction_second_cohomology η Ψ K j hK hH (fun z => c z.1 z.2) hlc (fun z => hcw _ _) (fun z => hcK _ _) (fun g h k => by`. Establish `h1` using `(hu g h).mul hKK (hu (g * h) k)`. Establish `h2` using `((hu h k).conj hKK (s g)).mul hKK (hu g (h * k))`. Establish `e : s g * s h * (s (g * h))⁻¹ * (s (g * h) * s k * (s (g * h * k))⁻¹) = s g * (s h * s k * (s (h * k))⁻¹) * (s g)⁻¹ * (s g * s (h * k) * (s (g * (h * k)))⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_assoc g h k]`. Use `group`. Rewrite `h1` using `[e]`. Establish `h3` using `h1.uniq h2`. Rewrite `h3` using `[had g (hcK h k)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[sub_add_eq_add_sub, ← h3]`. Use the proof step `abel)`. Establish `hnb : ∀ g, EntIn K (-b g)` using `fun g a a' => K.neg_mem (hbK g a a')`. Use `choose e he using fun g => exists_near hKK (hnb g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `hmul : ∀ g h, e (g * h) * s (g * h) = e g * s g * (e h * s h)` using `fun g h => by`. Establish `h1` using `((he g).mul hKK ((he h).conj hKK (s g))).mul hKK (hu g h)`. Establish `h2 : -b g + (s g).adFun (-b h) + c g h = -b (g * h)`. Use `hbe g h` as an intermediate fact. Simplify using `only at this`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[had g (hnb h), map_neg, this]`. Normalize the expressions using the abelian group laws. Rewrite `h1` using `[h2]`. Rewrite using `[← h1.eq (he (g * h))]`. Use `group`.
-
-Use `⟨MonoidHom.mk' (fun g => e g * s g) hmul, ?_, fun g => ⟨?_, -b g, neg_mem (hbw g), hnb g, (he g).mul_mat _⟩⟩` and prove the remaining obligations. Establish `e' : mats (MonoidHom.mk' (fun g => e g * s g) hmul) = (fun w : Matrix (Fin 3) (Fin 3) R × GG 3 R => (1 + -w.1) * w.2.mat) ∘ fun g => (b g, s g)`. Use function extensionality and compare the values at `g`. Conclude with `(he g).mul_mat _`. Rewrite using `[e']`.
-
-Conclude with `(hb.prodMk hs).comp _`. Use `show (e g * s g).right = η g`. Simplify using `[(he g).right, hη]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.lt_corr :
     ∀ {O R D : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] [Finite R] [Group D] [TopologicalSpace D] [IsTopologicalGroup D] (η : D →* ℤˣ) (Ψ : D →* Oˣ) (K : Ideal R) (j : ℤ),

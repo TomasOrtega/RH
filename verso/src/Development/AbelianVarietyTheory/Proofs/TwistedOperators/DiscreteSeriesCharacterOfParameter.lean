@@ -23,9 +23,9 @@ def Concl {n : ℕ} (ε : Fin n → Bool) (μ : Measure (UJ ε)) (lam : Fin n �
       ∀ θ : Fin n → ℝ, IsRegSS (ujMat ε (torusPt ε θ)) → Θ (torusPt ε θ) = dsChar ε lam θ
 
 /- English proof (translation)
-Use `⟨Matrix.mem_unitaryGroup_iff'.2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [Jm, diagonal_mul_diagonal, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diag_mem_K {n : ℕ} (ε : Fin n → Bool) (θ : Fin n → ℝ) :
     (diagonal fun a => Complex.exp (θ a * Complex.I)) ∈ Kset ε := by
@@ -38,13 +38,11 @@ theorem diag_mem_K {n : ℕ} (ε : Fin n → Bool) (θ : Fin n → ℝ) :
   · simp only [Jm, diagonal_mul_diagonal, mul_comm]
 
 /- English proof (translation)
-Establish `key : ∀ θ : Fin n → ℝ, Complex.exp ((∑ a, ν a * θ a : ℝ) * Complex.I) = Complex.exp ((∑ a, ν' a * θ a : ℝ) * Complex.I)` using `fun θ => by`. Establish `e` using `h θ (diag_mem_K ε θ)`. Establish `e'` using `h' θ (diag_mem_K ε θ)`. Use `set T := σ (diagonal fun a => Complex.exp (θ a * Complex.I))`. Establish `t : ∀ w : ℂ, T w = T 1 * w` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, smul_eq_mul, mul_one]`. Rewrite `e`, `e'` using `[t, smul_eq_mul]`. Conclude with `(mul_right_cancel₀ hv e).symm.trans (mul_right_cancel₀ hv' e')`. Use function extensionality and compare the values at `a`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ν a - ν' a ≠ 0` using `sub_ne_zero.2 hne`. Use `key (Pi.single a (Real.pi / (ν a - ν' a)))` as an intermediate fact. Simplify using `only [Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Establish `e : ν a * (Real.pi / (ν a - ν' a)) = ν' a * (Real.pi / (ν a - ν' a)) + Real.pi` using `by field_simp; ring`. Rewrite `this` using `[e, Complex.ofReal_add, add_mul, Complex.exp_add, Complex.exp_pi_mul_I]`.
-
-Conclude with `Complex.exp_ne_zero _ (by linear_combination (-1 / 2 : ℂ) * this)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_unique {n : ℕ} (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (ℂ →L[ℂ] ℂ)) {ν ν' : Fin n → ℝ}
     {v v' : ℂ} (hv : v ≠ 0) (hv' : v' ≠ 0) (h : IsWtOn (Kset ε) σ ν v) (h' : IsWtOn (Kset ε) σ ν' v') : ν = ν' := by
@@ -67,9 +65,9 @@ theorem wt_unique {n : ℕ} (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) �
   exact Complex.exp_ne_zero _ (by linear_combination (-1 / 2 : ℂ) * this)
 
 /- English proof (translation)
-Take `⟨h0, h1, h2⟩` from `GlobalTheory.HCChar.Model.ds_case n s m μ`. Take `⟨Θ, h3, h4⟩` from `h2 h1.2.2.1`. Use `⟨h0, ℂ, inferInstance, inferInstance, inferInstance, detPow n m, ⟨h1.1, h1.2.1, h1.2.2.1, h1.2.2.2.1, h1.2.2.2.2.1⟩, h1.2.2.2.2.2.1, fun ν S hS => ⟨0, by simp, ?_⟩, Θ, h3.1, h4⟩` and prove the remaining obligations. Take `⟨S', hS'⟩` from `h1.2.2.2.2.2.1`. Take `⟨v, -, hv, hw⟩` from `hS.2.2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v', -, hv', hw'⟩` from `hS'.2.2.2.1`. Simplify using `using wt_unique _ _ hv hv' hw hw'`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem concl_detPow (n : ℕ) (s : Bool) (m : ℤ) (μ : Measure (UJ fun _ : Fin n => s)) [μ.IsHaarMeasure] :
     Formalism.QuantumDeterminants.IsHCParam (lamDet n m) ∧ Concl (fun _ : Fin n => s) μ (lamDet n m) := by
@@ -83,7 +81,7 @@ theorem concl_detPow (n : ℕ) (s : Bool) (m : ℤ) (μ : Measure (UJ fun _ : Fi
   simpa using wt_unique _ _ hv hv' hw hw'
 
 /- English proof (translation)
-Take `rfl : ε = fun _ => true` from `Subsingleton.elim _ _`. Take `rfl : lam = lamDet 0 0` from `Subsingleton.elim _ _`. Conclude with `(concl_detPow 0 true 0 μ).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rank_zero (ε : Fin 0 → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (lam : Fin 0 → ℝ) : Concl ε μ lam := by
   obtain rfl : ε = fun _ => true := Subsingleton.elim _ _
@@ -91,9 +89,9 @@ theorem rank_zero (ε : Fin 0 → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure
   exact (concl_detPow 0 true 0 μ).2
 
 /- English proof (translation)
-Take `⟨s, rfl⟩ : ∃ s, ε = fun _ => s` from `⟨ε 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Take `⟨m, hm⟩` from `h.2 0`. Choose the witnesses or unpack the hypotheses as in `rfl : lam = lamDet 1 m := by`. Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[lamDet, Formalism.QuantumDeterminants.rhoStd] at hm ⊢`. Conclude with `hm`. Conclude with `(concl_detPow 1 s m μ).2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_one (ε : Fin 1 → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (lam : Fin 1 → ℝ)
     (h : Formalism.QuantumDeterminants.IsHCParam lam) : Concl ε μ lam := by
@@ -123,13 +121,13 @@ namespace GlobalTheory.DSUFromSU
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsRegSS, charpoly_diagonal, Polynomial.separable_prod_X_sub_C_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isRegSS_diagonal_iff (d : Fin n → ℂ) : IsRegSS (diagonal d) ↔ Function.Injective d := by
   rw [IsRegSS, charpoly_diagonal, Polynomial.separable_prod_X_sub_C_iff]
 
 /- English proof (translation)
-Rewrite using `[isRegSS_diagonal_iff, isRegSS_diagonal_iff]`. Conclude with `fun h a b e => h (mul_right_cancel₀ hc e)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRegSS_diagonal_mul (d : Fin n → ℂ) {c : ℂ} (hc : c ≠ 0) :
     IsRegSS (diagonal d) → IsRegSS (diagonal fun a => d a * c) := by
@@ -137,9 +135,9 @@ theorem isRegSS_diagonal_mul (d : Fin n → ℂ) {c : ℂ} (hc : c ≠ 0) :
   exact fun h a b e => h (mul_right_cancel₀ hc e)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show diagonal (fun a => Complex.exp (θ a * Complex.I)) = (Circle.exp φ : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) * diagonal (fun a => Complex.exp (((θ a - φ : ℝ) : ℂ) * Complex.I))`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, ← diagonal_smul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Circle.coe_exp, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem torusPt_eq_scalarMul (ε : Fin n → Bool) (θ : Fin n → ℝ) (φ : ℝ) (h : ∑ a, (θ a - φ) = 0) :
     torusPt ε θ = scalarMul ε (Circle.exp φ, suTorusPt ε (fun a => θ a - φ) h) := by
@@ -156,15 +154,15 @@ theorem torusPt_eq_scalarMul (ε : Fin n → Bool) (θ : Fin n → ℝ) (φ : �
   ring
 
 /- English proof (translation)
-Simplify using `only [weylDenom, sub_sub_sub_cancel_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weylDenom_sub_const (θ : Fin n → ℝ) (φ : ℝ) : weylDenom (fun a => θ a - φ) = weylDenom θ := by
   simp only [weylDenom, sub_sub_sub_cancel_right]
 
 /- English proof (translation)
-Establish `hsum : ∑ a, lam (w.symm a) = m` using `by rw [Equiv.sum_comp w.symm lam]; exact hm`. Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Rewrite using `[Circle.coe_exp, wtVal, wtVal, ← Complex.exp_int_mul, ← Complex.exp_add]`. Use `congr 1`. Establish `key : (∑ a, (lam ∘ w.symm) a * θ a) = (m : ℝ) * ((∑ a, θ a) / n) + ∑ a, ((fun a => lam a - (m : ℝ) / n) ∘ w.symm) a * (θ a - (∑ b, θ b) / n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, sub_mul, mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hsum]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -186,7 +184,7 @@ theorem wtVal_twist (hn : n ≠ 0) (lam θ : Fin n → ℝ) (m : ℤ) (hm : ∑ 
   ring
 
 /- English proof (translation)
-Simplify using `only [dsChar, wtVal_twist hn lam θ m hm, weylDenom_sub_const]`. Establish `: ∀ s : Finset (Equiv.Perm (Fin n)), ∀ (c : ℂ) (f g : Equiv.Perm (Fin n) → ℂ), ∑ w ∈ s, f w * (c * g w) = c * ∑ w ∈ s, f w * g w` using `fun s c f g => by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dsChar_twist (ε : Fin n → Bool) (hn : n ≠ 0) (lam θ : Fin n → ℝ) (m : ℤ) (hm : ∑ a, lam a = m) :
     dsChar ε lam θ = (Circle.exp ((∑ a, θ a) / n) : ℂ) ^ m *
@@ -203,19 +201,19 @@ end GlobalTheory.DSUFromSU
 namespace GlobalTheory.DSUFromSU
 
 /- English proof (translation)
-Introduce `n ε μ _ lam hlam`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Use `interval_cases n`. Conclude with `Small.rank_zero ε μ lam`. Conclude with `Small.rank_one ε μ lam hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : 1 ≤ n` using `by omega`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hU : IsParU lam` using `⟨hlam.1.injective, hlam.2⟩`. Take `⟨m, hm, hS, -⟩` from `GlobalTheory.SUtoU.extension_main n hn1 ε ℂ (fun _ => 0) lam hU`. Take `⟨μ', hμ'⟩` from `exists_isHaarMeasure_SUJ ε`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, i1, i2, i3, σ, hσ, Θ', hΘ', hform⟩` from `hP n hn ε μ' _ hS`. Take `⟨m2, hm2, -, hext⟩` from `GlobalTheory.SUtoU.extension_main n hn1 ε V σ lam hU`. Establish `e : m2 = m` using `by exact_mod_cast hm2.symm.trans hm`. Rewrite `hext` using `[e]`. Take `⟨π, hE, hHC⟩` from `hext hσ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hDS : IsHCDS ε lam π`. Establish `h` using `GlobalTheory.DSSU.Chamber.vChamber n ε V π lam 1 (fun a b h _ => h) hlam.1 hHC`. Simplify `h` using `only [Equiv.Perm.one_symm, Equiv.Perm.coe_one, Function.comp_id, Matrix.submatrix_id_id]`. Take `⟨Θ, hΘ, hΘf⟩` from `GlobalTheory.ExtChar.exists_isCharFn_ext n hn1 ε μ μ' V m σ π hσ.1.2.2.1 hDS.1.2.2.1 hE Θ' hΘ'`. Use `⟨V, i1, i2, i3, π, hDS.1, hDS.2.2.1.exists, hDS.2.2.2, Θ, hΘ, fun θ hreg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hθ' : ∑ a, (θ a - (∑ b, θ b) / n) = 0`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hreg' : IsRegSS (suMat ε (suTorusPt ε (fun a => θ a - (∑ b, θ b) / n) hθ'))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[suMat_suTorusPt]`. Rewrite `hreg` using `[ujMat_torusPt]`. Establish `h` using `isRegSS_diagonal_mul _ (Complex.exp_ne_zero ((-((∑ b, θ b) / n : ℝ) : ℂ) * Complex.I)) hreg`. Use `h using 3 with a` and compare the differences between its conclusion and the goal. Rewrite using `[← Complex.exp_add]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hanti : StrictAnti fun a => lam a - (m : ℝ) / n` using `fun a b h => sub_lt_sub_right (hlam.1 h) _`. Rewrite using `[torusPt_eq_scalarMul ε θ _ hθ', hΘf _ _ hreg', hform _ hθ' hreg', chamberChar_of_strictAnti ε hanti, dsChar_twist ε hn0 lam θ m hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discreteSeriesCharacterOfParameter (hP : DiscreteSeriesCharacterSU) : DiscreteSeriesCharacterOfParameter := by
   intro n ε μ _ lam hlam

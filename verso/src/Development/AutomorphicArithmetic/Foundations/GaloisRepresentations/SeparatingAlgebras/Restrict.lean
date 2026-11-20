@@ -6,13 +6,13 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `k _ _ J J' i θ S h ε hε`. Take `⟨s, c, hs, hc⟩` from `h ε hε`. Use `⟨s.image (fun x => x ∘ i), fun ζ => ∑ η ∈ s with η ∘ i = ζ, c η, ?_, ?_⟩` and prove the remaining obligations. Introduce `ζ hζ`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨η, hη, rfl⟩` from `hζ`. Conclude with `⟨η, hs hη, rfl⟩`. Introduce `P`. Establish `key : ∀ η : J' → k, MvPolynomial.aeval (η ∘ i) P = MvPolynomial.aeval η (MvPolynomial.rename i P)`. Introduce `η`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.aeval_rename]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 2`. Conclude with `key θ`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := s) (t := s.image (fun x => x ∘ i)) (g := fun x => x ∘ i) (fun η hη => Finset.mem_image_of_mem _ hη)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun η hη => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hη).2, key]`. Use `_ ≤ ε := hc _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.restrict_pf :
     UpperTheory.Gal.Gen.Restrict := by

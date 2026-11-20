@@ -11,9 +11,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `K _ _ _ n _ μ _ V hV`. Use `⟨sInfEx K n μ V hV, fun w hw => ?_, fun w B hB h0 => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `sSatEx K n μ V hV w hw`. Conclude with `⟨B, hB, (sSatUnit K n μ w V B hB).2⟩`. Take `⟨B', rfl⟩` from `(sSatUnit K n μ w V B hB).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, -, hb⟩` from `Multiset.mem_map.1 h0`. Conclude with `b.ne_zero hb`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.parEx :
     UpperTheory.ConvolutionTheory.ParEx := by

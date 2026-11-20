@@ -17,7 +17,7 @@ section Map
 variable {P P' P'' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[push]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma push_add (φ ψ : P ⟶ P') (n : ℕ) (σ : Cochain P U n) :
     push U (φ + ψ) n σ = push U φ n σ + push U ψ n σ := by
@@ -25,7 +25,7 @@ lemma push_add (φ ψ : P ⟶ P') (n : ℕ) (σ : Cochain P U n) :
   simp [push]
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[mem_cocycles]`. Rewrite using `[← push_d, hσ, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma push_mem_cocycles (φ : P ⟶ P') {n : ℕ} {σ : Cochain P U n} (hσ : σ ∈ cocycles P U n) :
     push U φ n σ ∈ cocycles P' U n := by
@@ -33,9 +33,9 @@ lemma push_mem_cocycles (φ : P ⟶ P') {n : ℕ} {σ : Cochain P U n} (hσ : σ
   rw [← push_d, hσ, map_zero]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Rewrite `hσ`, the goal using `[coboundaries_zero, AddSubgroup.mem_bot]`. Rewrite using `[hσ, map_zero]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite `hσ`, the goal using `[coboundaries_succ]`. Take `⟨τ, rfl⟩` from `hσ`. Conclude with `⟨push U φ n τ, (push_d U φ n τ).symm⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma push_mem_coboundaries (φ : P ⟶ P') {n : ℕ} {σ : Cochain P U n}
     (hσ : σ ∈ coboundaries P U n) : push U φ n σ ∈ coboundaries P' U n := by
@@ -58,7 +58,7 @@ def cechHMap (φ : P ⟶ P') (n : ℕ) : cechH P U n →+ cechH P' U n :=
     exact push_mem_coboundaries U φ (AddSubgroup.mem_addSubgroupOf.1 hσ)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma cls_congr {P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} {n : ℕ} {σ σ' : Cochain P U n} (h : σ = σ')
     (hσ : d P U n σ = 0) (hσ' : d P U n σ' = 0) : cls σ hσ = cls σ' hσ' := by
@@ -72,7 +72,7 @@ lemma cechHMap_cls (φ : P ⟶ P') {n : ℕ} (σ : Cochain P U n) (hσ : d P U n
     cechHMap U φ n (cls σ hσ) = cls (push U φ n σ) (by rw [← push_d, hσ, map_zero]) := rfl
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Rewrite using `[cechHMap_cls]`. Conclude with `cls_congr U (push_id U n σ) _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cechHMap_id (n : ℕ) (x : cechH P U n) : cechHMap U (𝟙 P) n x = x := by
   obtain ⟨σ, hσ, rfl⟩ := exists_cls x
@@ -80,7 +80,7 @@ lemma cechHMap_id (n : ℕ) (x : cechH P U n) : cechHMap U (𝟙 P) n x = x := b
   exact cls_congr U (push_id U n σ) _ _
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Rewrite using `[cechHMap_cls, cechHMap_cls, cechHMap_cls]`. Conclude with `cls_congr U (push_comp U φ ψ n σ).symm _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cechHMap_comp (φ : P ⟶ P') (ψ : P' ⟶ P'') (n : ℕ) (x : cechH P U n) :
     cechHMap U (φ ≫ ψ) n x = cechHMap U ψ n (cechHMap U φ n x) := by
@@ -89,7 +89,7 @@ lemma cechHMap_comp (φ : P ⟶ P') (ψ : P' ⟶ P'') (n : ℕ) (x : cechH P U n
   exact cls_congr U (push_comp U φ ψ n σ).symm _ _
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Rewrite using `[cechHMap_cls, cechHMap_cls, cechHMap_cls]`. Use `(cls_congr U (push_add U φ ψ n σ) _ ?_).trans (cls_add _ _ _ _ _)` and prove the remaining obligations. Rewrite using `[map_add, ← push_d, ← push_d, hσ, map_zero, map_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma cechHMap_add (φ ψ : P ⟶ P') (n : ℕ) (x : cechH P U n) :
     cechHMap U (φ + ψ) n x = cechHMap U φ n x + cechHMap U ψ n x := by
@@ -99,7 +99,7 @@ lemma cechHMap_add (φ ψ : P ⟶ P') (n : ℕ) (x : cechH P U n) :
   rw [map_add, ← push_d, ← push_d, hσ, map_zero, map_zero, add_zero]
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Rewrite using `[cechHMap_cls]`. Conclude with `(cls_congr U (push_zero' U n σ) _ (map_zero _)).trans cls_zero`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cechHMap_zero (n : ℕ) (x : cechH P U n) : cechHMap U (0 : P ⟶ P') n x = 0 := by
   obtain ⟨σ, hσ, rfl⟩ := exists_cls x
@@ -134,9 +134,9 @@ variable {F I Q F' I' Q' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} {f : F ⟶ I} 
 include h₁₂ h₂₃
 
 /- English proof (translation)
-Take `⟨τ, ρ, hρ, hτ, hρτ, hc⟩` from `hS.delta_spec n σ`. Rewrite using `[hc, cechHMap_cls]`. Use `hS'.deltaRel_unique (hS'.delta_spec n _) ⟨push U α₂ n τ, push U α₁ (n + 1) ρ, _, ?_, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `push U g' n (push U α₂ n τ) = push U α₃ n σ.1`. Rewrite using `[push_comp, ← h₂₃, ← push_comp, hτ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[push_comp, ← h₁₂, ← push_comp, hρτ, push_d]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma IsCechShortExact.delta_naturality (n : ℕ) (σ : cocycles Q U n) :
     hS'.delta n (cocyclesMap U α₃ n σ) = cechHMap U α₁ (n + 1) (hS.delta n σ) := by
@@ -148,7 +148,7 @@ lemma IsCechShortExact.delta_naturality (n : ℕ) (σ : cocycles Q U n) :
   · rw [push_comp, ← h₁₂, ← push_comp, hρτ, push_d]
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Conclude with `hS.delta_naturality hS' α₁ α₂ α₃ h₁₂ h₂₃ (m + 1) ⟨σ, (mem_cocycles σ).2 hσ⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma IsCechShortExact.deltaEquiv_naturality (hI : CechAcyclic I U) (hI' : CechAcyclic I' U)
     (m : ℕ) (x : cechH Q U (m + 1)) :
@@ -166,7 +166,7 @@ variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})]
   (hS : S.ShortExact) (hS' : S'.ShortExact) (α : S ⟶ S')
 
 /- English proof (translation)
-Rewrite using `[H.δ_apply, H.δ_apply, Sheaf.H.map_apply, Sheaf.H.map_apply, Ext.comp_assoc_of_second_deg_zero, Ext.comp_assoc_of_third_deg_zero, ShortComplex.ShortExact.extClass_naturality hS hS' α]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma H.δ_naturality (n₀ n₁ : ℕ) (h : n₀ + 1 = n₁) (x : Sheaf.H.{w'} S.X₃ n₀) :
     H.δ hS' n₀ n₁ h (Sheaf.H.map α.τ₃ n₀ x) = Sheaf.H.map α.τ₁ n₁ (H.δ hS n₀ n₁ h x) := by
@@ -175,7 +175,7 @@ lemma H.δ_naturality (n₀ n₁ : ℕ) (h : n₀ + 1 = n₁) (x : Sheaf.H.{w'} 
     ShortComplex.ShortExact.extClass_naturality hS hS' α]
 
 /- English proof (translation)
-The claim follows from `H.δ_naturality hS hS' α (m + 1) (m + 2) rfl x`.
+A detailed English derivation is pending.
 -/
 lemma hDeltaEquiv_naturality [Injective S.X₂] [Injective S'.X₂] (m : ℕ)
     (x : Sheaf.H.{w'} S.X₃ (m + 1)) :
@@ -190,9 +190,9 @@ section Zero
 variable {P P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}}
 
 /- English proof (translation)
-Apply `(globalCocycleEquiv P' U hP' hU).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `push U φ 0 σ.1 = (globalCocycle P' U _).1`. Rewrite using `[← push_globalCocycle]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `((globalCocycleEquiv P U hP hU).apply_symm_apply σ).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma globalCocycleEquiv_symm_naturality (hP : Presheaf.IsSheaf (Opens.grothendieckTopology X) P)
     (hP' : Presheaf.IsSheaf (Opens.grothendieckTopology X) P') (hU : iSup U = ⊤) (φ : P ⟶ P')
@@ -210,7 +210,7 @@ lemma globalCocycleEquiv_symm_naturality (hP : Presheaf.IsSheaf (Opens.grothendi
 variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})]
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Simplify using `only [cechHZeroEquivH, cechHZeroEquiv, AddEquiv.trans_apply]`. Rewrite using `[Sheaf.H.equiv₀_symm_naturality]`. Use `congr 1`. Conclude with `globalCocycleEquiv_symm_naturality U G.property G'.property hU φ.hom _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma cechHZeroEquivH_naturality {G G' : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}}
     (φ : G ⟶ G') (hU : iSup U = ⊤) (x : cechH G.obj U 0) :

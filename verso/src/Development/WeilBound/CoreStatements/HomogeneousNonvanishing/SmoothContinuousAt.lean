@@ -9,7 +9,7 @@ open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P Filter Topology Set A
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover x`. Establish `hc` using `((hg j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds (x := A.chart j x) ⟨(A.chart j).map_source hj, by rwa [Set.mem_preimage, (A.chart j).left_inv hj]⟩)).continuousAt`. Conclude with `((A.chart j).symm.continuousAt_iff_continuousAt_comp_right (f := g) (x := x) (by simpa using hj)).mpr (by simpa using hc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_continuousAt {A : FinHolAtlas e X} {U : Set X} (hU : IsOpen U) {g : X → ℝ} (hg : A.SmoothOn U g)
     {x : X} (hx : x ∈ U) : ContinuousAt g x := by
@@ -20,7 +20,7 @@ theorem smooth_continuousAt {A : FinHolAtlas e X} {U : Set X} (hU : IsOpen U) {g
     (f := g) (x := x) (by simpa using hj)).mpr (by simpa using hc)
 
 /- English proof (translation)
-Use `hs.2 x x' y ⟨h, h'⟩` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, zero_mul, eq_comm, mul_eq_zero]`. Conclude with `norm_eq_zero.mp (this.resolve_right (Real.exp_pos _).ne')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_zero {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ} (hs : IsSection A L s) {x x' y : X}
     (h : y ∈ L.U x) (h' : y ∈ L.U x') (h0 : s x y = 0) : s x' y = 0 := by
@@ -36,27 +36,25 @@ def Loc (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) {n : ℕ} (W 
     ∃ u : X → ℂ, A.HoloOn ψ.source u ∧ (∀ y ∈ ψ.source, u y ≠ 0) ∧ ∀ y ∈ ψ.source, s x y = u y * ∏ i, ψ y i ^ mm i
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hx, hU, σ, hσ, hW, u₀, -, hu₀, hE⟩` from `h₀ x`. Use `set c := ψ x with hc`. Establish `hO : ψ.target ∩ ψ.symm ⁻¹' L.U x ∩ {v | ∀ i, c i ≠ 0 → v i ≠ 0} ∈ 𝓝 c`. Use `inter_mem ((ψ.isOpen_inter_preimage_symm (L.isOpen_U x)).mem_nhds ⟨ψ.map_source hx, by rw [Set.mem_preimage, hc, ψ.left_inv hx]; exact L.mem_U x⟩) ?_` and prove the remaining obligations. Use `eventually_all.mpr fun i => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : c i = 0`. Conclude with `Eventually.of_forall fun v h => absurd hi h`. Use `filter_upwards [(continuous_apply i).continuousAt.eventually_ne hi] with v hv _ using hv`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.mp hO`. Establish `hsh : ∀ z ∈ Metric.ball (0 : Fin e → ℂ) r, z + c ∈ Metric.ball c r` using `fun z hz => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hz`. Take `⟨mm, u, hm, hu, hu0, hF⟩` from `g_monomial e (Finset.univ.filter fun i => c i = 0 ∧ ∃ k, σ k = some i) (fun z => s x (ψ.symm (z + c))) r hr (fun z hz => AnalyticAt.comp (g := s x ∘ ψ.symm) (f := fun z => z + c) (holo_compat hψ (hs.1 x) (hball (hsh z hz)).1.1 (hball (hsh z hz)).1.2) (analyticAt_id.add analyticAt …`. Introduce `z hzb hS h0`. Take `⟨⟨h1, h2⟩, h3⟩` from `hball (hsh z hzb)`. Establish `h4` using `ψ.map_target h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h5 : s₀ x (ψ.symm (z + c)) = 0` using `(hz x _ _ ⟨hU h4, L₀.mem_U _⟩).mpr (hb (section_zero hs h2 (L.mem_U _) h0))`. Rewrite `h5` using `[hE _ h4, mul_eq_zero, Finset.prod_eq_zero_iff]`. Take `⟨k, -, hk⟩` from `h5.resolve_left (hu₀ _ h4)`. Break down `h : σ k with _ | i` into its components or cases. Simplify using `[h] at hk`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [h, ψ.right_inv h1] at hk`. Establish `h6` using `eq_zero_of_pow_eq_zero hk`. Distinguish the cases in `hi : c i = 0`. Conclude with `hS i (by simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact ⟨hi, k, h⟩) (by simpa [hi] using h6)`. Conclude with `h3 i hi h6)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hop : IsOpen (ψ.source ∩ ψ ⁻¹' Metric.ball c r)` using `ψ.isOpen_inter_preimage Metric.isOpen_ball`. Establish `hsub : ∀ y, ψ y ∈ Metric.ball c r → ψ y - c ∈ Metric.ball (0 : Fin e → ℂ) r` using `fun y hy => by`. Simplify `hy` using `[dist_eq_norm]`. Establish `hm' : ∀ i, mm i ≠ 0 → c i = 0 ∧ ∃ k, σ k = some i` using `fun i hi => by`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hi (hm i (by simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using h))`. Use `⟨ψ.restrOpen _ hop, σ, mm, fun j => ⟨(hψ j).1.mono fun v hv => ⟨hv.1, hv.2.1⟩, (hψ j).2.mono fun v hv => ⟨hv.1.1, hv.2⟩⟩, ⟨hx, hx, Metric.mem_ball_self hr⟩, fun y hy => ?_, hσ, fun k => ?_, hm', fun y => u (ψ y - c), ?_, fun y hy => hu0 _ (hsub y hy.2.2), fun y hy => ?_⟩` and prove the remaining obligations. Use `(hball hy.2.2).1.2` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, ψ.left_inv hy.1]`. Then use the resulting hypothesis. Use extensionality with `y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `: y ∈ W k ∩ ψ.source` using `⟨h1, h2.1⟩`. Rewrite `this` using `[hW]`. Conclude with `⟨h2, this.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `: y ∈ W k ∩ ψ.source` using `by rw [hW]; exact ⟨h1.1, h2⟩`. Conclude with `⟨this.1, h1⟩`. Conclude with `holoOn_of_compat hψ (G := fun v => u (v - c)) (fun y hy => hy.1) fun y hy => AnalyticAt.comp (g := u) (f := fun v => v - c) (hu _ (hsub y hy.2.2)) (analyticAt_id.sub analyticAt_const)`. Use `hF _ (hsub y hy.2.2)` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_add_cancel, ψ.left_inv hy.1] at this`. Rewrite using `[this]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : mm i = 0`.
-
-Simplify using `[hi]`. Rewrite using `[Pi.sub_apply, (hm' i hi).1, sub_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_loc {A : FinHolAtlas e X} {L₀ L : LocPot X} {s₀ s : X → X → ℂ} {n : ℕ} {m₀ : Fin n → ℕ}
     {W : Fin n → Set X} (h₀ : IsSNC A L₀ s₀ m₀ W) (hs : IsSection A L s) (hb : bdry s ⊆ {x | s₀ x x = 0})
@@ -128,7 +126,7 @@ theorem exists_loc {A : FinHolAtlas e X} {L₀ L : LocPot X} {s₀ s : X → X �
       rfl
 
 /- English proof (translation)
-The claim follows from `(((isEquivalent_const_iff_tendsto hc).mpr hv).mul (IsEquivalent.refl (u := f))).isTheta.trans ((isTheta_const_mul_left hc).mpr isTheta_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem theta_mul {𝕜 : Type} [NormedField 𝕜] {l : Filter X} {v f : X → 𝕜} {c : 𝕜} (hc : c ≠ 0)
     (hv : Tendsto v l (𝓝 c)) : (fun w => v w * f w) =Θ[l] f :=
@@ -138,9 +136,9 @@ theorem theta_mul {𝕜 : Type} [NormedField 𝕜] {l : Filter X} {v f : X → �
 variable {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ} {n : ℕ} {W : Fin n → Set X}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `: y ∈ W k ∩ ψ.source` using `⟨h1, hy⟩`. Rewrite `this` using `[h.2.2.2.2.1]`. Conclude with `this.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Establish `: y ∈ W k ∩ ψ.source` using `by rw [h.2.2.2.2.1]; exact ⟨hy, h1⟩`. Conclude with `this.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Loc.mem_iff {x : X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} {σ : Fin n → Option (Fin e)} {mm : Fin e → ℕ}
     (h : Loc A L s W x ψ σ mm) {y : X} (hy : y ∈ ψ.source) (k : Fin n) :
@@ -155,11 +153,11 @@ theorem Loc.mem_iff {x : X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} {σ :
     exact this.1
 
 /- English proof (translation)
-Take `⟨u, hu, hu0, hE⟩` from `h.2.2.2.2.2.2`. Establish `h1 : s x =ᶠ[𝓝 y] fun w => (u w * ∏ j ∈ Finset.univ.erase i, ψ w j ^ mm j) * ψ w i ^ mm i` using `by filter_upwards [ψ.open_source.mem_nhds hy] with w hw`. Rewrite using `[hE w hw, mul_assoc, Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Use `h1.isTheta.trans (theta_mul (c := u y * ∏ j ∈ Finset.univ.erase i, ψ y j ^ mm j) ?_ ?_)` and prove the remaining obligations. Use `mul_ne_zero (hu0 y hy) (Finset.prod_ne_zero_iff.mpr fun j hj => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj0 : mm j = 0`. Simplify using `[hj0]`. Take `⟨-, k', hk'⟩` from `h.2.2.2.2.2.1 j hj0`. Use `pow_ne_zero _ fun h0 => hg k' ?_ ((h.mem_iff hy k').mpr ⟨j, hk', h0⟩)` and prove the remaining obligations. Introduce and unpack `rfl`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hk'` using `[hk]`. Conclude with `Finset.ne_of_mem_erase hj (Option.some.inj hk').symm`. Conclude with `(holo_continuousAt hu hy).tendsto.mul (tendsto_finsetProd _ fun j _ => (((continuous_apply j).continuousAt.comp (ψ.continuousAt hy)).pow _).tendsto)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Loc.theta {x : X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} {σ : Fin n → Option (Fin e)} {mm : Fin e → ℕ}
     (h : Loc A L s W x ψ σ mm) {y : X} (hy : y ∈ ψ.source) {k : Fin n} {i : Fin e} (hk : σ k = some i)
@@ -182,11 +180,11 @@ theorem Loc.theta {x : X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} {σ : F
       (((continuous_apply j).continuousAt.comp (ψ.continuousAt hy)).pow _).tendsto)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hab`. Use `push Not at hab`. Establish `t1 : Tendsto (fun t : ℂ => Function.update (ψ y) i t) (𝓝 0) (𝓝 (ψ y))`. Use `(GMon.analyticAt_update_right i (ψ y) 0).continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[show Function.update (ψ y) i 0 = ψ y by rw [← hi, Function.update_eq_self]]`. Then use the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `h.comp_tendsto ((tendsto_symm ψ hy).comp t1)`. Establish `h2 : ∀ c : ℕ, ((fun w => ψ w i ^ c) ∘ ψ.symm ∘ fun t : ℂ => Function.update (ψ y) i t) =ᶠ[𝓝 0] fun t => t ^ c` using `fun c => by filter_upwards [t1 (ψ.open_target.mem_nhds (ψ.map_source hy))] with t ht`. Simplify using `only [Function.comp_apply]`. Rewrite using `[ψ.right_inv ht]`. Simplify using `only [Function.update_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3` using `(h1.congr' (h2 a) (h2 b)).trans_isLittleO (isLittleO_pow_pow hab)`. Use `isLittleO_irrefl ?_ h3` and prove the remaining obligations. Use `Frequently.filter_mono (Eventually.frequently (f := 𝓝[≠] (0 : ℂ)) ?_) nhdsWithin_le_nhds` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t ht using pow_ne_zero _ ht`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_of_isBigO (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) {y : X} (hy : y ∈ ψ.source) {i : Fin e}
     (hi : ψ y i = 0) {a b : ℕ} (h : (fun w => ψ w i ^ a) =O[𝓝 y] fun w => ψ w i ^ b) : b ≤ a := by
@@ -208,17 +206,15 @@ theorem le_of_isBigO (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) {y : X} (hy 
   filter_upwards [self_mem_nhdsWithin] with t ht using pow_ne_zero _ ht
 
 /- English proof (translation)
-Establish `hi : ψ y i = 0`. Take `⟨j, hj, h0⟩` from `(h.mem_iff hy k).mp hyW`. Rewrite `hj` using `[hk]`. Rewrite using `[Option.some.inj hj]` and apply the resulting hypothesis. Use `le_of_isBigO ψ hy hi ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : s x =Θ[𝓝 y] s x'`. Establish `e1 : (fun w => ‖s x w‖) =ᶠ[𝓝 y] fun w => Real.exp (L.φ x w - L.φ x' w) * ‖s x' w‖` using `by filter_upwards [ψ.open_source.mem_nhds hy, ψ'.open_source.mem_nhds hy'] with w h1 h2`. Use `hs.2 x x' w ⟨h.2.2.1 h1, h'.2.2.1 h2⟩` as an intermediate fact. Rewrite `this` using `[Real.exp_neg, Real.exp_neg]`. Rewrite using `[Real.exp_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `p1` using `(Real.exp_pos (L.φ x w)).ne'`. Establish `p2` using `(Real.exp_pos (L.φ x' w)).ne'`. Clear denominators, using `at this ⊢` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2` using `e1.isTheta.trans (theta_mul (Real.exp_pos _).ne' ((smooth_continuousAt (L.isOpen_U x) (hL.1 x) (h.2.2.1 hy)).sub (smooth_continuousAt (L.isOpen_U x') (hL.1 x') (h'.2.2.1 hy'))).rexp.tendsto)`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `isTheta_norm_left.mp (isTheta_norm_right.mp e2)`. Establish `h2 : (fun w => ψ' w i') =O[𝓝 y] fun w => ψ w i`. Establish `ha : AnalyticAt ℂ ((fun w => ψ' w i') ∘ ψ.symm) (ψ y)` using `holo_compat h.1 (holoOn_of_compat h'.1 (G := fun v => v i') subset_rfl fun _ _ => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) i').analyticAt _) (ψ.map_source hy) (by rwa [ψ.left_inv hy])`. Take `⟨C, hC⟩` from `GMon.isBigO_coord i ha hi (by filter_upwards [ψ.open_target.mem_nhds (ψ.map_source hy), tendsto_symm ψ hy (ψ'.open_source.mem_nhds hy')] with v h1 h2 h3`. Take `⟨j, hj, h0⟩` from `(h'.mem_iff h2 k).mp ((h.mem_iff (ψ.map_target h1) k).mpr ⟨i, hk, by rwa [ψ.right_inv h1]⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[hk']`. Rewrite using `[← Option.some.inj hj] at h0)` and apply the resulting hypothesis. Use `IsBigO.of_bound C ?_` and prove the remaining obligations. Use `filter_upwards [(ψ.continuousAt hy).eventually hC, ψ.open_source.mem_nhds hy] with w h1 h2`. Simplify `h1` using `only [Function.comp_apply, ψ.left_inv h2]`.
-
-Conclude with `(((h.theta hy hk hg).symm.trans h1).trans (h'.theta hy' hk' hg)).isBigO.trans (h2.pow _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Loc.le_generic (hL : IsPotential A L) (hs : IsSection A L s) {x x' : X}
     {ψ ψ' : OpenPartialHomeomorph X (Fin e → ℂ)} {σ σ' : Fin n → Option (Fin e)} {mm mm' : Fin e → ℕ}
@@ -262,17 +258,15 @@ theorem Loc.le_generic (hL : IsPotential A L) (hs : IsSection A L s) {x x' : X}
   exact (((h.theta hy hk hg).symm.trans h1).trans (h'.theta hy' hk' hg)).isBigO.trans (h2.pow _)
 
 /- English proof (translation)
-Establish `hi : ψ y i = 0`. Take `⟨j, hj, h0⟩` from `(h.mem_iff hy k).mp hyW`. Rewrite `hj` using `[hk]`. Rewrite using `[Option.some.inj hj]` and apply the resulting hypothesis. Set `v : ℂ → Fin e → ℂ` to `fun t => Function.update (fun j => ψ y j + t) i 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `t1 : Tendsto v (𝓝[≠] 0) (𝓝 (ψ y))`. Establish `hc : Continuous v` using `Continuous.update (by fun_prop) i continuous_const`. Establish `h0 : v 0 = ψ y`. Simplify using `only [v, add_zero]`. Rewrite using `[← hi, Function.update_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h0 ▸ hc.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `t2 : ∀ᶠ t in 𝓝[≠] (0 : ℂ), ∀ j, ψ y j + t ≠ 0` using `eventually_all.mpr fun j => by`. Distinguish the cases in `hj : ψ y j = 0`. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Rewrite using `[hj, zero_add]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ht`. Conclude with `nhdsWithin_le_nhds (ContinuousAt.eventually_ne (g := fun t : ℂ => ψ y j + t) (by fun_prop) (by simpa using hj))`. Take `⟨t, h1, h2, h3⟩` from `(t2.and ((t1.eventually (ψ.open_target.mem_nhds (ψ.map_source hy))).and (((tendsto_symm ψ hy).comp t1).eventually (ψ'.open_source.mem_nhds hy')))).exists`. Establish `h4` using `ψ.map_target h2`. Establish `h5 : ψ.symm (v t) ∈ W k` using `(h.mem_iff h4 k).mpr ⟨i, hk, by rw [ψ.right_inv h2]; simp [v]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6 : ∀ k', k' ≠ k → ψ.symm (v t) ∉ W k'`. Introduce `k' hne hm`. Take `⟨j, hj, h0⟩` from `(h.mem_iff h4 k').mp hm`. Rewrite `h0` using `[ψ.right_inv h2]`. Distinguish the cases in `hji : j = i`.
-
-Conclude with `hne (h.2.2.2.1 k' k i (hji ▸ hj) hk)`. Simplify using `only [v, Function.update_of_ne hji] at h0`. Conclude with `h1 j h0`. Conclude with `le_antisymm (h'.le_generic hL hs h h3 h4 hk' hk h5 h6) (h.le_generic hL hs h' h4 h3 hk hk' h5 h6)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Loc.order_eq (hL : IsPotential A L) (hs : IsSection A L s) {x x' : X}
     {ψ ψ' : OpenPartialHomeomorph X (Fin e → ℂ)} {σ σ' : Fin n → Option (Fin e)} {mm mm' : Fin e → ℕ}
@@ -312,11 +306,11 @@ theorem Loc.order_eq (hL : IsPotential A L) (hs : IsSection A L s) {x x' : X}
   exact le_antisymm (h'.le_generic hL hs h h3 h4 hk' hk h5 h6) (h.le_generic hL hs h' h4 h3 hk hk' h5 h6)
 
 /- English proof (translation)
-Establish `h1 : ∀ k, (σ k).elim 1 f = ∏ i, if σ k = some i then f i else 1` using `fun k => by`. Break down `σ k with _ | j` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [h1]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : f i = 1`. Simplify using `[hi]`. Take `⟨k, hk⟩` from `hf i hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.prod_eq_single k, if_pos hk]`. Introduce `k' _ hne`. Conclude with `if_neg fun h => hne (hσ k' k i h hk)`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_opt {σ : Fin n → Option (Fin e)} (hσ : ∀ k k' i, σ k = some i → σ k' = some i → k = k')
     (f : Fin e → ℂ) (hf : ∀ i, f i ≠ 1 → ∃ k, σ k = some i) : ∏ k, (σ k).elim 1 f = ∏ i, f i := by
@@ -337,25 +331,23 @@ theorem prod_opt {σ : Fin n → Option (Fin e)} (hσ : ∀ k k' i, σ k = some 
     · simp
 
 /- English proof (translation)
-Use `choose ψ σ mm h using hloc`. Set `ord : Fin n → X → ℕ` to `fun k y => (σ y k).elim 0 (mm y)`. Establish `hord : ∀ x y k i, y ∈ (ψ x).source → y ∈ W k → σ x k = some i → ord k y = mm x i`. Introduce `x y k i hy hW hk`. Take `⟨j, hj, -⟩` from `((h y).mem_iff (h y).2.1 k).mp hW`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ord, hj, Option.elim_some]`. Conclude with `(h y).order_eq hL hs (h x) (h y).2.1 hy hj hk hW`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ∀ y i, mm y i < N := by`. Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover (fun x => (ψ x).source) (fun x => (ψ x).open_source) fun x _ => mem_iUnion.mpr ⟨x, (h x).2.1⟩`. Use `⟨∑ x ∈ T, ∑ i, mm x i + 1, fun y i => Nat.lt_succ_of_le ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : mm y i = 0`. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`. Take `⟨h1, k, hk⟩` from `(h y).2.2.2.2.2.1 i h0`. Establish `hW : y ∈ W k` using `((h y).mem_iff (h y).2.1 k).mpr ⟨i, hk, h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hyx⟩` from `mem_iUnion₂.mp (hT (mem_univ y))`. Take `⟨j, hj, -⟩` from `((h x).mem_iff hyx k).mp hW`. Rewrite using `[← hord y y k i (h y).2.1 hW hk, hord x y k j hyx hW hj]`. Conclude with `(Finset.single_le_sum (f := mm x) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun x => ∑ i, mm x i) (fun _ _ => Nat.zero_le _) hx)`. Set `E : Fin (n * N) ≃ Fin n × Fin N` to `finProdFinEquiv.symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨n * N, fun q => (E q).2, fun q => {y | y ∈ W (E q).1 ∧ ord (E q).1 y = (E q).2}, fun x => ?_⟩` and prove the remaining obligations. Set `τ : Fin (n * N) → Option (Fin e)` to `fun q => (σ x (E q).1).filter fun i => mm x i = (E q).2`. Establish `hτ : ∀ q i, τ q = some i ↔ σ x (E q).1 = some i ∧ mm x i = (E q).2` using `fun q i => by`. Simplify using `[τ, Option.filter_eq_some_iff]`. Establish `hinj : ∀ q q' i, τ q = some i → τ q' = some i → q = q'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q q' i h1 h2`. Rewrite `h1`, `h2` using `[hτ]`. Conclude with `E.injective (Prod.ext ((h x).2.2.2.1 _ _ i h1.1 h2.1) (Fin.ext (h1.2.symm.trans h2.2)))`. Take `⟨u, hu, hu0, hE⟩` from `(h x).2.2.2.2.2.2`. Use `⟨ψ x, (h x).1, (h x).2.1, (h x).2.2.1, τ, hinj, fun q => ?_, u, hu, hu0, fun y hy => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Take `⟨i, hi, h0⟩` from `((h x).mem_iff h3 _).mp h1`. Conclude with `⟨h3, i, (hτ q i).mpr ⟨hi, (hord x y _ i h3 h1 hi).symm.trans h2⟩, h0⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h3, i, hi, h0⟩`. Rewrite `hi` using `[hτ]`. Establish `h1` using `((h x).mem_iff h3 _).mpr ⟨i, hi.1, h0⟩`. Conclude with `⟨⟨h1, (hord x y _ i h3 h1 hi.1).trans hi.2⟩, h3⟩`. Rewrite using `[hE y hy, ← prod_opt hinj (fun i => ψ x y i ^ mm x i) fun i hi => ?_]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations. Break down `hq : τ q with _ | i` into its components or cases. Both sides reduce to the same expression. Simplify using `only [Option.elim_some]`.
-
-Rewrite using `[((hτ q i).mp hq).2]`. Take `⟨-, k, hk⟩` from `(h x).2.2.2.2.2.1 i fun h0 => hi (by rw [h0, pow_zero])`. Conclude with `⟨E.symm (k, ⟨mm x i, hN x i⟩), (hτ _ i).mpr (by rw [E.apply_symm_apply]; exact ⟨hk, rfl⟩)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem snc_of_loc [CompactSpace X] (hL : IsPotential A L) (hs : IsSection A L s)
     (hloc : ∀ x, ∃ ψ σ mm, Loc A L s W x ψ σ mm) :

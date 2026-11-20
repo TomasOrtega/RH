@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.Mem.PrimesAtLevel
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩ : IsCoprime (p : ℤ) (q : ℤ)` from `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hq).mpr hne)`. Establish `h1 : ((a * p + b * q : ℤ) : R) = 1` using `by rw [hab, Int.cast_one]`. Move the coercions through the operations in `at h1`. Apply `(inferInstance : P.IsPrime).ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hqP)`.
+A detailed English derivation is pending.
 -/
 theorem not_both_mem {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hne : p ≠ q) (hpP : (p : R) ∈ P) (hqP : (q : R) ∈ P) : False := by
@@ -28,29 +28,23 @@ theorem not_both_mem {R : Type} [CommRing R] (P : Ideal R) [P.IsPrime] {p q : �
   exact P.add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hqP)
 
 /- English proof (translation)
-Introduce `B X I hI l u a v`. Take `⟨P, hP⟩` from `v`. Simplify using `only at hP ⊢`. Establish `hpr` using `l.pr`. Establish `hpiT : (B.primes X).piT u ∈ P.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Primes.vT divs at hP`. Use `split_ifs at hP with h`. Conclude with `h.mem_toFinset.mp hP`. Simplify using `at hP`. Establish `hT : (((B.primes X).T u : ℕ) : 𝓞 B.fields.E) ∈ P.asIdeal`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpr.piT_norm u]`. Conclude with `P.asIdeal.mul_mem_right _ hpiT`. Establish `hTF : (((B.primes X).T u : ℕ) : 𝓞 B.host.F) ∈ (P.under (𝓞 B.host.F)).asIdeal` using `by show _ ∈ Ideal.comap (algebraMap _ _) _`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hT`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hc`. Establish `h2 : B.fields.conjO ((B.primes X).piT u) ∈ P.asIdeal`. Establish `h3 : (B.primes X).piT u ∈ (conjPrime₂ P).asIdeal` using `by rw [hc]; exact hpiT`. Conclude with `(mem_conjP P _).mp h3`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨x, y, hxy⟩` from `hpr.piT_cop u`. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hxy]`. Conclude with `P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ hpiT) (P.asIdeal.mul_mem_left _ h2)`. Introduce `w hw hov`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hTw : (((B.primes X).T u : ℕ) : 𝓞 B.fields.E) ∈ w.asIdeal`. Rewrite `hov` using `[IsOver]`. Rewrite `hTF` using `[hov, Ideal.mem_comap, map_natCast]`. Conclude with `hTF`. Take `⟨i, hi⟩ : ∃ i, w ∈ (B.primes X).vG i` from `by classical`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Break down `Finset.mem_union.mp hw with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Establish `hgw : (((B.primes X).g i : ℕ) : 𝓞 B.fields.E) ∈ w.asIdeal`. Establish `hc : B.fields.conjO ((B.primes X).piG i) ∈ w.asIdeal`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Primes.vG divs at hi`. Use `split_ifs at hi with h`. Conclude with `h.mem_toFinset.mp hi`. Simplify using `at hi`. Rewrite using `[← hpr.piG_norm i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `w.asIdeal.mul_mem_left _ hc`. Conclude with `not_both_mem w.asIdeal (hpr.T_prime u) (hpr.g_prime i) (hpr.T_ne_g u i) hTw hgw`. Introduce `Q hQ hov`. Take `⟨v, -, hsel, hgood⟩` from `I.exists_of_mem_Q hQ`. Establish `hv : v.asIdeal = (P.under (𝓞 B.host.F)).asIdeal`.
-
-Rewrite using `[hov, ← hsel]`. Conclude with `(hI.sel_ok v).symm`. Establish `hTv : (((B.primes X).T u : ℕ) : 𝓞 B.fields.F ⧸ v.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem, hv]`. Conclude with `hTF`.
-
-Establish `hd : ringChar (𝓞 B.fields.F ⧸ v.asIdeal) ∣ (B.primes X).T u` using `(ringChar.spec _ _).mp hTv`. Break down `(Nat.dvd_prime (hpr.T_prime u)).mp hd with h1 | h1` into its components or cases. Conclude with `CharP.ringChar_ne_one h1`. Apply `hgood.2.2` to reduce the goal to its premises. Use `hI.T_mem u using 1` and compare the differences between its conclusion and the goal.
-
-Conclude with `h1`. Conclude with `Finset.disjoint_right.mpr (Q_notMem_of_ok hI a)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem primes_atT : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (u : B.Word) (a : I.ι) (v : (I.atT l u a).vT), conjPrime₂ v.1 ≠ v.1 ∧ (∀ w ∈ (B.primes X).vGs, ¬ IsOver (v.1.under (𝓞 B.host.F)) w) ∧ (∀ P ∈ I.Q a, ¬ IsOver (v.1.under (𝓞 B.host.F)) P) ∧ Disjoint (B.primes X).vGs (I.Q a) := by
   intro B X I hI l u a v

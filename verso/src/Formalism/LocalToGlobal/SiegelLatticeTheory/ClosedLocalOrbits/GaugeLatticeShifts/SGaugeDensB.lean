@@ -14,7 +14,7 @@ abbrev EL (ε : Fin n → Bool) := EuclideanSpace ℝ (Fin (dimL ε))
 def expC (ε : Fin n → Bool) (t : EL ε) : Formalism.REAL.UJ ε := expG ε ((obG ε).repr.symm t)
 
 /- English proof (translation)
-Rewrite using `[expC, uMat_expG, of_thetaExp, linT_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_expC (ε : Fin n → Bool) (t : EL ε) : uMat (expC ε t) = Matrix.of (thetaExp ε t) := by
   rw [expC, uMat_expG, of_thetaExp, linT_apply]
@@ -53,7 +53,7 @@ def BallFormOf (ε : Fin n → Bool) : Prop :=
 def DensOfBall (ε : Fin n → Bool) : Prop := BallForm ε → GaugeDens ε
 
 /- English proof (translation)
-The claim follows from `h6 (h5 h1 (h4 h2 h3))`.
+A detailed English derivation is pending.
 -/
 theorem gaugeDens_of_parts (ε : Fin n → Bool) (h1 : ChartNhd ε) (h2 : TransC ε) (h3 : JacInv ε) (h4 : LocInvOf ε)
     (h5 : BallFormOf ε) (h6 : DensOfBall ε) : GaugeDens ε :=

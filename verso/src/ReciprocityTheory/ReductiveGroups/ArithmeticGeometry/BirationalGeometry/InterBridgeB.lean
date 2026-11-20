@@ -9,9 +9,9 @@ open MvPolynomial
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq', MvPolynomial.eval_eq', Finset.mul_sum, MvPolynomial.support_map_of_injective _ (RingHom.injective_int (Int.castRingHom ℂ))]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hc : ∏ p : (Σ k, ι k), c p.1 ^ m p = ∏ k, c k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∏ y, c k ^ m ⟨k, y⟩ = c k ^ a k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf m hm k]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_smul_homog (f : MRing ι) (a : K → ℕ) (hf : IsMultiHomog f a) (c : K → ℂ)
     (z : (Σ k, ι k) → ℂ) :
@@ -29,11 +29,11 @@ theorem eval_smul_homog (f : MRing ι) (a : K → ℕ) (hf : IsMultiHomog f a) (
   ring
 
 /- English proof (translation)
-Take `⟨S0, hS0, rfl⟩` from `hJ`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`. Establish `hle : Ideal.span S0 ≤ RingHom.ker ((MvPolynomial.eval (fun p => c p.1 * z p)).comp (MvPolynomial.map (Int.castRingHom ℂ)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_le]`. Introduce `s hs`. Take `⟨a, ha⟩` from `hS0 s hs`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[eval_smul_homog s a ha c z, hz.2 s (Ideal.subset_span hs), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hle hf` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mcPts_smul {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J) (c : K → ℂ)
     (hc : ∀ k, c k ≠ 0) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts J) :
@@ -53,7 +53,7 @@ theorem mcPts_smul {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J) (c : K → 
     simpa using this
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `mcPts_smul hJ c hc hz'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_of_sameOrbit {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J)
     {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (hz' : z' ∈ mcPts J) : z ∈ mcPts J := by
@@ -61,7 +61,7 @@ theorem mem_mcPts_of_sameOrbit {J : Ideal (MRing ι)} (hJ : IsMultiHomogIdeal J)
   exact mcPts_smul hJ c hc hz'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [segre, Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     segre (fun p => c p.1 * z p) = (∏ k, c k) • segre z := by
@@ -69,9 +69,9 @@ theorem segre_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
   simp only [segre, Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Unfold `segre`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k)]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun l hl => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Finset.ne_of_mem_erase hl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segre_update [DecidableEq K] (z : (Σ k, ι k) → ℂ) (p : (k : K) → ι k) (k : K) (i : ι k) :
     segre z (Function.update p k i) = z ⟨k, i⟩ * ∏ l ∈ Finset.univ.erase k, z ⟨l, p l⟩ := by
@@ -83,13 +83,11 @@ theorem segre_update [DecidableEq K] (z : (Σ k, ι k) → ℂ) (p : (k : K) →
     simp [Finset.ne_of_mem_erase hl]
 
 /- English proof (translation)
-Use `choose p0 hp0 using hz'`. Establish `hz0 : ∀ k, z ⟨k, p0 k⟩ ≠ 0`. Establish `hs : segre z p0 ≠ 0`. Rewrite using `[h, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_ne_zero hμ (Finset.prod_ne_zero_iff.mpr fun k _ => hp0 k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Conclude with `hs (Finset.prod_eq_zero (Finset.mem_univ k) hk)`. Establish `hR : ∀ k, ∏ l ∈ Finset.univ.erase k, z ⟨l, p0 l⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.mpr fun l _ => hz0 l`. Establish `hR' : ∀ k, ∏ l ∈ Finset.univ.erase k, z' ⟨l, p0 l⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.mpr fun l _ => hp0 l`. Use `⟨fun k => μ * (∏ l ∈ Finset.univ.erase k, z' ⟨l, p0 l⟩) / ∏ l ∈ Finset.univ.erase k, z ⟨l, p0 l⟩, fun k => div_ne_zero (mul_ne_zero hμ (hR' k)) (hR k), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Take `⟨k, i⟩` from `q`. Establish `e` using `congrFun h (Function.update p0 k i)`. Rewrite `e` using `[Pi.smul_apply, smul_eq_mul, segre_update, segre_update]`. Use `show z ⟨k, i⟩ = μ * (∏ l ∈ Finset.univ.erase k, z' ⟨l, p0 l⟩) / (∏ l ∈ Finset.univ.erase k, z ⟨l, p0 l⟩) * z' ⟨k, i⟩`.
-
-Clear denominators, using `[hR k]` for the nonvanishing conditions. Take the linear combination `e`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sameOrbit_of_segre {z z' : (Σ k, ι k) → ℂ} (hz' : ∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0) (μ : ℂ)
     (hμ : μ ≠ 0) (h : segre z = μ • segre z') : SameOrbit z z' := by

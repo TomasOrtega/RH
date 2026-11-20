@@ -23,7 +23,7 @@ variable (q N : ℕ) (I : Cx R) (n : ℤ) {B : Shv R}
       Sec.res w (χ p s h V x b) = χ p s h W (x.res w) (Sec.res w b))
 include hχ in
 /- English proof (translation)
-Use `ev_exists _ (fun p s h W W' g y => ?_)` and prove the remaining obligations. Rewrite using `[hχ, secRes_res, sxMap_res, sxMap_res]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem buildC_exists (U : Scheme.{0}) (b : Sec B U) :
     ∃ α : Cochain ((chains R).obj (sch.obj U ⨯ fibQ q N)) I n, ∀ p s h W y,
@@ -36,7 +36,7 @@ def cochainOfSection (U : Scheme.{0}) (b : Sec B U) : Cochain ((chains R).obj (s
   (buildC_exists q N I n χ hχ U b).choose
 
 /- English proof (translation)
-The claim follows from `(buildC_exists q N I n χ hχ U b).choose_spec p s h W y`.
+A detailed English derivation is pending.
 -/
 theorem buildC_ev (U : Scheme.{0}) (b : Sec B U) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (W : Scheme.{0})
     (y : Sx (sch.obj U ⨯ fibQ q N) p W) :
@@ -63,17 +63,17 @@ def buildMor : B.obj ⟶ cotPre R q N I n where
 end Build
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `A B g f hf`. Set `ψ : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ V : Scheme.{0}, Sx (fibQ q N) p V → Sec A V →ₗ[ULift.{1} R] Sec (I.X s) V` to `fun p s h V x => (evLin I _ n p s h V (sxPair (schSx (𝟙 V) p) x)).comp (g.hom.app (op V)).hom`. Establish `hψ : ∀ p s h (V W : Scheme.{0}) (w : W ⟶ V) (x : Sx (fibQ q N) p V) (a : Sec A V), Sec.res w (ψ p s h V x a) = ψ p s h W (x.res w) (Sec.res w a)`. Introduce `p s h V W w x a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : (g.hom.app (op W)).hom (Sec.res w a) = ((cotPre R q N I n).map w.op).hom ((g.hom.app (op V)).hom a)` using `ConcreteCategory.congr_hom (g.hom.naturality w.op) a`. Use `(ev_res (E := sch.obj V ⨯ fibQ q N) (I := I) ((g.hom.app (op V)).hom a) p s h w _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun c => ev (E := sch.obj W ⨯ fibQ q N) (I := I) c p s h W (sxPair (schSx (𝟙 W) p) (x.res w))) hn).symm` and prove the remaining obligations. Establish `e2` using `ev_pull (I := I) (prod.map (sch.map w) (𝟙 (fibQ q N))) ((g.hom.app (op V)).hom a) p s h W (sxPair (schSx (𝟙 W) p) (x.res w))`. Use `Eq.trans ?_ e2.symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sxPair_res, sxPair_map]`. Use `congr 2`. Establish `hχ` using `fun p s h => GlobalTheory.T.natural_sections_linear_extension R ((fibQ q N).obj (op (SimplexCategory.mk p))) (I.X s) (hI s) f hf (ψ p s h) (hψ p s h)`. Use `choose χ hχn hχf using hχ`. Use `⟨⟨buildMor q N I n χ hχn⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `U a : 4`. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cochainOfSection q N I n χ hχn U.unop (Sec.map f a) = (g.hom.app U).hom a`. Use `ev_ext _ _ (fun p s h W y => ?_)` and prove the remaining obligations. Use `(buildC_ev q N I n χ hχn U.unop (Sec.map f a) p s h W y).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (χ p s h W (y.map prod.snd)) (map_res f (show W ⟶ U.unop from y.map prod.fst) a)).trans ?_` and prove the remaining obligations. Use `(hχf p s h W _ _).trans ?_` and prove the remaining obligations. Establish `hn` using `ConcreteCategory.congr_hom (g.hom.naturality (show W ⟶ U.unop from y.map prod.fst).op) a`. Use `(congrArg (fun c => ev (E := sch.obj W ⨯ fibQ q N) (I := I) c p s h W (sxPair (schSx (𝟙 W) p) (y.map prod.snd))) hn).trans ?_` and prove the remaining obligations. Use `(ev_pull (I := I) (prod.map (sch.map (show W ⟶ U.unop from y.map prod.fst)) (𝟙 (fibQ q N))) ((g.hom.app U).hom a) p s h W _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[sxPair_map]`. Conclude with `sxPair_eta y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_cotSheaf (q N : ℕ) (I : Cx R) (hI : ∀ m, Injective (I.X m)) (n : ℤ)
     (hS : Presheaf.IsSheaf Scheme.etaleTopology.{0} (cotPre R q N I n)) :
@@ -115,7 +115,7 @@ theorem injective_cotSheaf (q N : ℕ) (I : Cx R) (hI : ∀ m, Injective (I.X m)
   exact sxPair_eta y
 
 /- English proof (translation)
-Introduce `R _ q N I hI n`. Establish `hS` using `GlobalTheory.T.isSheaf_projBundleCochainPresheaf_etale R q N I n`. Conclude with `Injective.of_iso (sheafificationIso (⟨cotPre R q N I n, hS⟩ : Shv R)) (injective_cotSheaf q N I hI n hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Jcx_X_injective : ∀ (R : Type) [CommRing R] (q N : ℕ) (I : Cx R), (∀ n, CategoryTheory.Injective (I.X n)) →
     ∀ n, CategoryTheory.Injective ((Jcx R q N I).X n) := by

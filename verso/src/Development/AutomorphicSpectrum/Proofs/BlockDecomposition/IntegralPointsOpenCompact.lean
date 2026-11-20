@@ -8,13 +8,11 @@ open NumberField IsDedekindDomain Matrix
 namespace GlobalTheory.CompanionTheory.IntegralPoints
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `e : {g : GL (Fin n) R | (∀ i j, (g : Matrix (Fin n) (Fin n) R) i j ∈ O) ∧ ∀ i j, ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j ∈ O} = (⋂ i, ⋂ j, (fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) i j) ⁻¹' (O : Set R)) ∩ (⋂ i, ⋂ j, (fun g : GL (Fin n) R => ((g⁻¹ : GL …`. Use extensionality with `g`. Simplify using `[Set.mem_iInter]`. Rewrite using `[e]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ho.preimage (Units.continuous_val.matrix_elem i j)`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ho.preimage (Units.continuous_coe_inv.matrix_elem i j)`. Establish `hM : IsCompact {A : Matrix (Fin n) (Fin n) R | ∀ i j, A i j ∈ O}`. Use `isCompact_univ_pi fun _ : Fin n => isCompact_univ_pi fun _ : Fin n => hc` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : {A : Matrix (Fin n) (Fin n) R | ∀ i j, A i j ∈ O} = Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => (O : Set R)` using `Set.ext fun A => ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`. Conclude with `e ▸ this`. Use `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) R)).isCompact_preimage (hM.prod (hM.image MulOpposite.continuous_op))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
-
-Conclude with `⟨fun h => ⟨h.1, _, h.2, rfl⟩, fun ⟨h1, A, hA, e⟩ => ⟨h1, fun i j => by`. Establish `: A = ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)` using `MulOpposite.op_injective e`. Conclude with `this ▸ hA i j⟩⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_isCompact_intGL {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     (O : Subring R) (ho : IsOpen (O : Set R)) (hc : IsCompact (O : Set R)) (n : ℕ) :
@@ -52,13 +50,13 @@ theorem isOpen_isCompact_intGL {R : Type} [CommRing R] [TopologicalSpace R] [IsT
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, PositivityTheory.Rg.BcB.G8.Kf, Subgroup.mem_iInf, Subgroup.mem_comap, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j w => ?_, fun i j w => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `h w`. Rewrite `h1` using `[← SetLike.mem_coe, GlobalTheory.LFun.KGL, GlobalTheory.LFun.IntPtsUnitary.coe_GLint]`. Conclude with `h1.1 i j`. Establish `h1` using `h w`. Rewrite `h1` using `[← SetLike.mem_coe, GlobalTheory.LFun.KGL, GlobalTheory.LFun.IntPtsUnitary.coe_GLint]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h1.2 i j`. Rewrite `h2` using `[← map_inv]`. Conclude with `h2`. Introduce and unpack `⟨h1, h2⟩ w`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.LFun.KGL, GlobalTheory.LFun.IntPtsUnitary.coe_GLint]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i j => h1 i j w, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `h2 i j w`.
+A detailed English derivation is pending.
 -/
 theorem coe_Kf (n : ℕ) : (PositivityTheory.Rg.BcB.G8.Kf E n : Set (GL (Fin n) (FiniteAdeleRing (𝓞 E) E))) =
     {g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E) | (∀ i j, (g : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) i j ∈ Formalism.UG.intAd E) ∧
@@ -84,7 +82,7 @@ theorem coe_Kf (n : ℕ) : (PositivityTheory.Rg.BcB.G8.Kf E n : Set (GL (Fin n) 
     exact h2 i j w
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Use `haveI : T2Space (FiniteAdeleRing (𝓞 E) E) := Formalism.MainNotions.Gaps.LevGap.t2Space_adeleRing_numberField`. Rewrite using `[coe_Kf]`. Conclude with `isOpen_isCompact_intGL (Formalism.UG.intAd E) Formalism.MainNotions.Gaps.LevGap.isOpen_intAd Formalism.MainNotions.Gaps.LevGap.isCompact_intAd n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfOC : PositivityTheory.Rg.BcB.G8.KfOC := by
   intro E _ _ _ n

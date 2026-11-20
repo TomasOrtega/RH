@@ -7,17 +7,17 @@ open Matrix
 namespace GlobalTheory.SUVol
 
 /- English proof (translation)
-Establish `key : ∀ g : Matrix (Fin r) (Fin r) O, (g.det - 1 ∈ w ∧ ∀ a b, (gᵀ * g.map c - 1) a b ∈ w) ↔ (g.map (Ideal.Quotient.mk w))ᵀ ∈ Matrix.specialUnitaryGroup (Fin r) (O ⧸ w)`. Introduce `g`. Rewrite using `[Matrix.mem_specialUnitaryGroup_iff, Matrix.mem_unitaryGroup_iff, Matrix.det_transpose, and_comm]`. Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.ext_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Matrix.sub_apply, map_sub, sub_eq_zero]`. Establish `e1 : Ideal.Quotient.mk w ((gᵀ * g.map c) a b) = ((g.map (Ideal.Quotient.mk w))ᵀ * star (g.map (Ideal.Quotient.mk w))ᵀ) a b`. Simplify using `[Matrix.mul_apply, Matrix.star_apply, hc]`. Establish `e2 : Ideal.Quotient.mk w ((1 : Matrix (Fin r) (Fin r) O) a b) = (1 : Matrix (Fin r) (Fin r) (O ⧸ w)) a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[e1, e2]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero, map_one, RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `himg : ((fun g : Matrix (Fin r) (Fin r) O => g.map (Ideal.Quotient.mk w)) '' {g | g.det - 1 ∈ w ∧ ∀ a b, (gᵀ * g.map c - 1) a b ∈ w}) = Matrix.transpose '' (Matrix.specialUnitaryGroup (Fin r) (O ⧸ w) : Set _)`. Use extensionality with `A`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨_, (key g).1 hg, Matrix.transpose_transpose _⟩`. Introduce and unpack `⟨B, hB, rfl⟩ choose s hs using Ideal.Quotient.mk_surjective (I := w)`. Establish `e : (Bᵀ.map s).map (Ideal.Quotient.mk w) = Bᵀ`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[hs]`. Use `⟨Bᵀ.map s, (key _).2 ?_, e⟩` and prove the remaining obligations. Rewrite using `[e, Matrix.transpose_transpose]`. Conclude with `hB`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[himg, Set.ncard_image_of_injective _ Matrix.transpose_injective, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ncard_image_lifts_eq_card_specialUnitaryGroup {O : Type*} [CommRing O] (w : Ideal O)
     [StarRing (O ⧸ w)] (c : O → O)
@@ -61,11 +61,11 @@ theorem ncard_image_lifts_eq_card_specialUnitaryGroup {O : Type*} [CommRing O] (
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hf` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `h2 : (2 : K) = 0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (fun y : K => y * y)`. Introduce `y z hyz`. Simplify using `only at hyz`. Establish `: (y - z) * (y - z) = 0` using `by linear_combination hyz + (z * z - y * z) * h2`. Conclude with `sub_eq_zero.1 (mul_self_eq_zero.1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Finite.surjective_of_injective hinj x`. Take `⟨a, ha⟩` from `hmul y`. Conclude with `⟨a, by rw [ha, h y]; exact hy⟩`. Take `⟨a, ha⟩` from `hadd (x / 2)`. Conclude with `⟨a, by rw [ha, h]; field_simp; ring⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_star_ne_of_not_surjective {K A : Type*} [Field K] [Finite K] [StarRing K]
     (f : A → K) (hadd : ∀ x : K, ∃ a, f a = x + star x) (hmul : ∀ x : K, ∃ a, f a = x * star x)
@@ -87,31 +87,27 @@ theorem exists_star_ne_of_not_surjective {K A : Type*} [Field K] [Finite K] [Sta
     exact ⟨a, by rw [ha, h]; field_simp; ring⟩
 
 /- English proof (translation)
-Unfold `locFactor resOrder`. Rewrite using `[if_pos hw]`. Use `set w := v.asIdeal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) with hwdef`. Use `set c := IsCMField.ringOfIntegersComplexConj E with hcdef`. Establish `hcc : ∀ x, c (c x) = x` using `fun x => by ext; simp [hcdef]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ a, c (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) a) = algebraMap _ _ a` using `fun a => (IsCMField.ringOfIntegersComplexConj_eq_self_iff E _).2 ⟨a, rfl⟩`. Establish `hle : w ≤ w.comap (c : 𝓞 E →+* 𝓞 E)`. Rewrite using `[hwdef, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `c _ ∈ _`. Rewrite using `[hfix]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Establish `hw0 : w ≠ ⊥`. Rewrite using `[hwdef, Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `v.ne_bot`. Use `haveI hmax : w.IsMaximal := hw.isMaximal hw0`. Use `letI : Field (𝓞 E ⧸ w) := Ideal.Quotient.field w`. Use `haveI : Finite (𝓞 E ⧸ w) := Ideal.finiteQuotientOfFreeOfNeBot w hw0`. Set `σ : (𝓞 E ⧸ w) →+* (𝓞 E ⧸ w)` to `Ideal.quotientMap w (c : 𝓞 E →+* 𝓞 E) hle`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hσ : ∀ x, σ (Ideal.Quotient.mk w x) = Ideal.Quotient.mk w (c x)` using `fun x => rfl`. Use `letI : StarRing (𝓞 E ⧸ w) := { star := σ star_involutive := fun x => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `σ (σ _) = _`. Rewrite using `[hσ, hσ, hcc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `star_mul := fun x y => by`. Express the relevant statement in the definitionally equal form `σ (x * y) = σ y * σ x`. Rewrite using `[map_mul, mul_comm]`. Use `star_add := fun x y => map_add σ x y }`. Establish `hstar : ∀ x, star (Ideal.Quotient.mk w x) = Ideal.Quotient.mk w (c x)` using `hσ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[ncard_image_lifts_eq_card_specialUnitaryGroup w c hstar r]`. Use `set q := Ideal.absNorm v.asIdeal with hq`. Establish `hK : Nat.card (𝓞 E ⧸ w) = q ^ 2`. Establish `h` using `Ideal.absNorm_algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) v.asIdeal`. Rewrite `h` using `[← IsFractionRing.finrank_eq (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) (𝓞 E) E, Algebra.IsQuadraticExtension.finrank_eq_two, Ideal.absNorm_apply (Ideal.map _ _), Submodule.cardQuot_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Establish `hq2 : 2 ≤ q` using `GlobalTheory.FiniteOrders.two_le_of_card_eq_sq hK`. Establish `hs : ∃ a : 𝓞 E ⧸ w, star a ≠ a`. Set `f : (𝓞 (maximalRealSubfield E) ⧸ v.asIdeal) →+* (𝓞 E ⧸ w)` to `Ideal.quotientMap w (algebraMap _ _) Ideal.le_comap_map`. Establish `hf : ∀ a, f (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk w (algebraMap _ _ a)` using `fun a => rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_star_ne_of_not_surjective f (fun x => ?_) (fun x => ?_) (fun hsurj => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨a, ha⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff E (y + c y)).1 (by change c _ = _; rw [map_add, hcc, add_comm])`. Conclude with `⟨Ideal.Quotient.mk _ a, by rw [hf, ha, hstar, map_add]⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take `⟨a, ha⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff E (y * c y)).1 (by change c _ = _; rw [map_mul, hcc, mul_comm])`. Conclude with `⟨Ideal.Quotient.mk _ a, by rw [hf, ha, hstar, map_mul]⟩`. Use `haveI : Finite (𝓞 (maximalRealSubfield E) ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Establish `h1` using `Nat.card_le_card_of_surjective f hsurj`. Establish `h2 : Nat.card (𝓞 (maximalRealSubfield E) ⧸ v.asIdeal) = q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `h1` using `[hK, h2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `GlobalTheory.FiniteOrders.card_specialUnitaryGroup hK hs (Fin r) (Fintype.card_fin r) hr`. Establish `h'` using `congrArg (Rat.cast : ℚ → ℝ) h`.
-
-Move the coercions through the operations in `at h'`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast (by omega : 1 ≤ q)`. Establish `hq0 : (0 : ℝ) < q` using `by linarith`. Rewrite using `[le_div_iff₀ (by positivity)]`. Use `le_of_le_of_eq ?_ h'.symm` and prove the remaining obligations.
-
-Rewrite using `[mul_comm]`. Use `mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun i _ => ?_) (fun i _ => ?_)) (by positivity)` and prove the remaining obligations. Conclude with `sub_nonneg.2 (inv_le_one_of_one_le₀ (one_le_pow₀ hq1))`. Establish `hp : (0 : ℝ) ≤ ((q : ℝ) ^ i)⁻¹` using `by positivity`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℝ i with h1 | h1 <;> rw [h1] <;> linarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prod_le_locFactor_of_isPrime (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hr : 1 ≤ r)

@@ -16,7 +16,7 @@ variable {D : D7} {Y : ShimX D.what₂.Tau}
 def wallPt (u : Wt Y) (s : ℝ) : Option (D.what₂.Tau × Fin Y.N) → ℝ := fun o => o.elim s (fun x => u x.1 x.2)
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by norm_num)).2 ?_` and prove the remaining obligations. Introduce and unpack `(_ | x)`. Simplify using `[wallPt]`. Simplify `hu x.1 x.2` using `[wallPt]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wallPt_norm_le (u : Wt Y) (hu : ∀ τ i, |u τ i| ≤ 1 / 2) : ‖wallPt u 0‖ ≤ 1 / 2 := by
   refine (pi_norm_le_iff_of_nonneg (by norm_num)).2 ?_
@@ -25,11 +25,11 @@ theorem wallPt_norm_le (u : Wt Y) (hu : ∀ τ i, |u τ i| ≤ 1 / 2) : ‖wallP
   · simpa [wallPt] using hu x.1 x.2
 
 /- English proof (translation)
-Establish `hK : 0 ≤ ‖A.dir‖` using `norm_nonneg _`. Establish `ht2 : t ^ 2 ≤ t` using `by nlinarith`. Establish `ht0 : 0 ≤ t ^ 2` using `sq_nonneg t`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 ?_` and prove the remaining obligations. Introduce and unpack `(_ | x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [wallPt, Pi.sub_apply, Option.elim, sub_zero, Real.norm_eq_abs, abs_of_nonneg ht0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hd : |A.dir x.1 x.2| ≤ ‖A.dir‖` using `le_trans (norm_le_pi_norm (A.dir x.1) x.2) (norm_le_pi_norm A.dir x.1)`. Establish `hd'` using `abs_le.1 hd`. Establish `h3 : t ^ 2 * A.dir x.1 x.2 ≤ t * ‖A.dir‖` using `by nlinarith`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : -(t * ‖A.dir‖) ≤ t ^ 2 * A.dir x.1 x.2` using `by nlinarith`. Simplify using `only [wallPt, Pi.sub_apply, Option.elim, Real.norm_eq_abs, SlopeTestRemainingChoices.sh, offWall]`. Apply the tactic sequence `split_ifs <;> (rw [abs_le]; constructor <;> nlinarith)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wallPt_sub_norm_le (A : SlopeTestRemainingChoices Y) (τ₀ : D.what₂.Tau) (u : Wt Y) (t : ℝ) (h0 : 0 ≤ t) (h1 : t ≤ 1) :
     ‖wallPt (A.sh (offWall Y τ₀ t u) (t ^ 2)) (t ^ 2) - wallPt u 0‖ ≤ (3 + ‖A.dir‖) * t := by
@@ -49,7 +49,7 @@ theorem wallPt_sub_norm_le (A : SlopeTestRemainingChoices Y) (τ₀ : D.what₂.
     split_ifs <;> (rw [abs_le]; constructor <;> nlinarith)
 
 /- English proof (translation)
-Use `(MvPolynomial.continuous_eval P).comp (f := fun u : Wt Y => wallPt u 0) ?_` and prove the remaining obligations. Use `continuous_pi ?_` and prove the remaining obligations. Introduce and unpack `(_ | x)`. Conclude with `continuous_const`. Conclude with `(continuous_apply x.2).comp (continuous_apply x.1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem continuous_evS (P : MvPolynomial (Option (D.what₂.Tau × Fin Y.N)) ℝ) :
     Continuous fun u : Wt Y => evS Y P u 0 := by
@@ -60,45 +60,41 @@ theorem continuous_evS (P : MvPolynomial (Option (D.what₂.Tau × Fin Y.N)) ℝ
   · exact (continuous_apply x.2).comp (continuous_apply x.1)
 
 /- English proof (translation)
-Introduce `D Y A Φ hf ⟨C1, h1⟩ hA ⟨Cw, B1, hw⟩`. Take `⟨s₀, hs₀, Ca, hA⟩` from `hA 1`. Take `⟨n, hn, hL⟩` from `GlobalTheory.T.polynomial_lipschitz_coefficient_bound (Option (D.what₂.Tau × Fin Y.N)) (dimY Y + 1)`. Establish `hK : 0 ≤ ‖A.dir‖` using `norm_nonneg _`. Establish `hf0 : 0 < D.R.f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos D.R.f with h | h` into its components or cases. Rewrite `hf` using `[h]`. Simplify using `at hf`. Conclude with `h`. Establish `hfR : (0 : ℝ) < D.R.f` using `by exact_mod_cast hf0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K := ‖A.dir‖ with hKdef`. Use `set κ : ℝ := 5 * (D.R.f : ℝ) with hκ`. Establish `hκ0 : 0 < κ` using `by positivity`. Use `set δ : ℝ := min s₀ (1 / (2 * (3 + K))) with hδ`. Establish `hδ0 : 0 < δ` using `lt_min hs₀ (by positivity)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨B2, hB2⟩` from `exists_nat_ge (κ / δ)`. Use `⟨Cw + (Fintype.card Y.Comp : ℝ) * (|Ca| * κ ^ 2 + n * |C1| * (3 + K) * κ), max B1 (max B2 3), ?_⟩` and prove the remaining obligations. Introduce `B hB τ₀ u hu`. Establish `hB1 : B1 ≤ B` using `le_trans (le_max_left _ _) hB`. Establish `hB2' : B2 ≤ B` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB3 : 3 ≤ B` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hB`. Establish `hB3R : (3 : ℝ) ≤ B` using `by exact_mod_cast hB3`. Establish `hBpos : (0 : ℝ) < B` using `by linarith`. Establish `hlog : 1 ≤ Real.log B`. Rewrite using `[Real.le_log_iff_exp_le hBpos]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hP, hsum⟩` from `h1 B (by linarith)`. Establish `hcont : Continuous fun u : Wt Y => atWt Y (Φ B) u`. Establish `: (fun u : Wt Y => atWt Y (Φ B) u) = fun u => ∑ c, evS Y (A.Ps B c) u 0` using `funext fun u => (hsum u).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun c _ => continuous_evS _`. Establish `hcl` using `GlobalTheory.T.rational_points_dense_in_wall D.what₂.Tau Y.N Y.j τ₀ Y.j_pos Y.j_lt hu`. Use `closure_minimal ?_ (isClosed_le hcont.abs continuous_const) hcl` and prove the remaining obligations. Use `clear hcl hu u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `u ⟨hu, hrat⟩`. Take `⟨hdom, hsmall⟩` from `hw B hB1 τ₀ u hu hrat _ rfl`. Use `set t : ℚ := 5 * (D.R.f : ℚ) / B with ht`. Establish `htR : (t : ℝ) = κ / B` using `by rw [ht, hκ]; push_cast; ring`. Establish `ht0 : (0 : ℝ) < t` using `by rw [htR]; positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htδ : (t : ℝ) ≤ δ`. Rewrite using `[htR, div_le_iff₀ hBpos]`. Establish `h2 : κ / δ ≤ B` using `le_trans hB2 (by exact_mod_cast hB2')`. Rewrite `h2` using `[div_le_iff₀ hδ0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hts : (t : ℝ) ≤ s₀` using `le_trans htδ (min_le_left _ _)`. Establish `htK : (3 + K) * t ≤ 1 / 2`. Establish `h2 : (t : ℝ) ≤ 1 / (2 * (3 + K))` using `le_trans htδ (min_le_right _ _)`. Rewrite `h2` using `[le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `ht1 : (t : ℝ) ≤ 1 / 6` using `by nlinarith`. Establish `hrat' : IsRat Y (offWall Y τ₀ t u)`. Introduce `τ i`. Take `⟨q, hq⟩` from `hrat τ i`. Simplify using `only [offWall]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `⟨q + 2 * t, by rw [hq]; push_cast; ring⟩`. Conclude with `⟨q, by rw [hq]; simp⟩`. Establish `hsup : supAbs Y (offWall Y τ₀ t u) ≤ 1`. Use `Real.iSup_le ?_ zero_le_one` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Use `abs_le.1 (hu.1 x.1 x.2)` as an intermediate fact. Simplify using `only [offWall]`. Apply the tactic sequence `split_ifs <;> (rw [abs_le]; constructor <;> linarith)`. Establish `hag` using `hA B (by linarith) (offWall Y τ₀ t u) (t ^ 2) hrat' hsup (by have : (0 : ℚ) < t := by exact_mod_cast ht0 positivity) (by push_cast; nlinarith) (by push_cast; exact hdom)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Move the coercions through the operations in `at hag`. Establish `hdiff` using `wallPt_sub_norm_le A τ₀ u t ht0.le (by linarith)`. Establish `hb` using `wallPt_norm_le u hu.1`. Establish `ha : ‖wallPt (A.sh (offWall Y τ₀ t u) ((t : ℝ) ^ 2)) ((t : ℝ) ^ 2)‖ ≤ 1`. Use `norm_le_norm_add_norm_sub' (wallPt (A.sh (offWall Y τ₀ t u) ((t : ℝ) ^ 2)) ((t : ℝ) ^ 2)) (wallPt u 0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : ∀ c, |evS Y (A.Ps B c) u 0 - Y.arSelfC (Y.Mbar B (offWall Y τ₀ t u) (t ^ 2)) c| ≤ (|Ca| * κ ^ 2 + n * |C1| * (3 + K) * κ) * Real.log B / B`. Introduce `c`. Establish `e1` using `hag c`. Establish `e2 : |evS Y (A.Ps B c) (A.sh (offWall Y τ₀ t u) ((t : ℝ) ^ 2)) ((t : ℝ) ^ 2) - evS Y (A.Ps B c) u 0| ≤ _` using `hL (A.Ps B c) (|C1| * Real.log B) _ _ (hP c).1 (fun m => le_trans ((hP c).2 m) (mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith))) ha (le_trans hb (by norm_num))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e3 : n * (|C1| * Real.log B) * ‖wallPt (A.sh (offWall Y τ₀ t u) ((t : ℝ) ^ 2)) ((t : ℝ) ^ 2) - wallPt u 0‖ ≤ n * |C1| * (3 + K) * κ * Real.log B / B`. Use `le_trans (mul_le_mul_of_nonneg_left hdiff (by positivity)) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[htR]`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : Ca * (t : ℝ) ^ 2 ≤ |Ca| * κ ^ 2 * Real.log B / B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `le_trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sq_nonneg _)) ?_` and prove the remaining obligations. Establish `e5 : (1 : ℝ) / B ≤ Real.log B` using `le_trans (by rw [div_le_one hBpos]; linarith) hlog`. Combine the equalities or inequalities in the displayed calculation. Establish `e6` using `abs_le.1 (le_trans e1 e4)`. Establish `e7` using `abs_le.1 (le_trans e2 e3)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[add_mul, add_div, abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hs : |atWt Y (Φ B) u - Y.arSelf (Y.Mbar B (offWall Y τ₀ t u) (t ^ 2))| ≤ (Fintype.card Y.Comp : ℝ) * ((|Ca| * κ ^ 2 + n * |C1| * (3 + K) * κ) * Real.log B / B)`. Rewrite using `[← hsum u, Y.arSelf_sum, ← Finset.sum_sub_distrib]`. Use `le_trans (Finset.abs_sum_le_sum_abs _ _) ?_` and prove the remaining obligations.
-
-Use `le_trans (Finset.sum_le_sum fun c _ => hc c) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `show |atWt Y (Φ B) u| ≤ _`. Establish `e8` using `abs_le.1 hs`. Establish `e9` using `abs_le.1 hsmall`.
-
-Establish `e10 : (Cw + (Fintype.card Y.Comp : ℝ) * (|Ca| * κ ^ 2 + n * |C1| * (3 + K) * κ)) * Real.log B / B = Cw * Real.log B / B + (Fintype.card Y.Comp : ℝ) * ((|Ca| * κ ^ 2 + n * |C1| * (3 + K) * κ) * Real.log B / B)` using `by ring`. Rewrite using `[e10, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem wallBd_of_wallSmall : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (A : SlopeTestRemainingChoices Y), ∀ (Φ : ℝ → Fn Y),
     2 < D.R.f * (Y.N - 1) → PolySize A Φ → Agree A → WallSmall A → WallBd Φ := by

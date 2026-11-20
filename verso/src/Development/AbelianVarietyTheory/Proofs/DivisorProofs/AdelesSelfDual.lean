@@ -7,27 +7,23 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid.CentPos
 
 /- English proof (translation)
-Use `set Zm : Matrix (Fin n) (Fin n) ℂ := (Z : Matrix (Fin n) (Fin n) ℂ)`. Use `set Zi : Matrix (Fin n) (Fin n) ℂ := ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)`. Establish `h1 : Zi * Zm = 1` using `by simp [Zi, Zm, ← Units.val_mul]`. Establish `h2 : Zm * Zi = 1` using `by simp [Zi, Zm, ← Units.val_mul]`. Establish `hD : Zi * M = diagonal lam * Zi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcoord : ∀ a : Fin n → ℂ, M *ᵥ a = μ • a → ∀ j, lam j * (Zi *ᵥ a) j = μ * (Zi *ᵥ a) j`. Introduce `a ha j`. Establish `e : diagonal lam *ᵥ (Zi *ᵥ a) = μ • (Zi *ᵥ a)`. Rewrite using `[mulVec_mulVec, ← hD, ← mulVec_mulVec, ha, mulVec_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrFun e j` as an intermediate fact. Rewrite `this` using `[mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hback : ∀ a : Fin n → ℂ, Zm *ᵥ (Zi *ᵥ a) = a`. Introduce `a`. Rewrite using `[mulVec_mulVec, h2, one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set u' := Zi *ᵥ u`. Use `set w' := Zi *ᵥ w`. Establish `hu'0 : u' ≠ 0`. Introduce `h`. Apply `hu0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[← hback u]`. Use `show Zm *ᵥ u' = 0`. Rewrite using `[h, mulVec_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, u' i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at h`. Conclude with `hu'0 (funext h)`. Establish `hlam0 : lam i0 = μ` using `mul_right_cancel₀ hi0 (hcoord u hu i0)`. Use `⟨w' i0 / u' i0, ?_⟩` and prove the remaining obligations. Establish `hw' : w' = (w' i0 / u' i0) • u'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hj : j = i0`. Substitute `hj` using the available equality. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : lam j - μ ≠ 0`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Apply `hlam` to reduce the goal to its premises. Rewrite using `[hlam0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h`. Establish `hu0j : u' j = 0`. Use `hcoord u hu j` as an intermediate fact. Establish `h' : (lam j - μ) * u' j = 0` using `by rw [sub_mul]; exact sub_eq_zero.2 this`. Conclude with `(mul_eq_zero.1 h').resolve_left hne`.
-
-Establish `hw0j : w' j = 0`. Use `hcoord w hw j` as an intermediate fact. Establish `h' : (lam j - μ) * w' j = 0` using `by rw [sub_mul]; exact sub_eq_zero.2 this`. Conclude with `(mul_eq_zero.1 h').resolve_left hne`. Rewrite using `[hu0j, hw0j, mul_zero]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_eigen {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) ℂ) (lam : Fin n → ℂ)
     (hlam : Function.Injective lam) (hZ : M * (Z : Matrix (Fin n) (Fin n) ℂ) = (Z : Matrix (Fin n) (Fin n) ℂ) * diagonal lam)
@@ -78,15 +74,15 @@ theorem eq_smul_of_eigen {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin
     _ = (w' i0 / u' i0) • u := by rw [mulVec_smul, hback u]
 
 /- English proof (translation)
-Establish `hsim : (y.1 : G.C) * P.β * sh G y.1 = algebraMap ℚ G.C (y.2 : ℚ) * P.β` using `hy.2`. Establish `hgu : IsUnit (G.gram v).det` using `isUnit_iff_ne_zero.mpr (G.gram_det v)`. Establish `hgg : G.gram v * (G.gram v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgu`. Establish `hgg' : (G.gram v)⁻¹ * G.gram v = 1` using `Matrix.nonsing_inv_mul _ hgu`. Establish `hH : ∀ x : G.C, (G.psi v x)ᴴ = G.gram v * G.psi v (sh G x) * (G.gram v)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `e : G.psi v (sh G x) = (G.gram v)⁻¹ * (G.psi v x)ᴴ * G.gram v` using `G.psi_star v x`. Rewrite using `[e, ← mul_assoc, ← mul_assoc, hgg, one_mul, mul_assoc, hgg, mul_one]`. Establish `hu : sh G (y.1 : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C) * y.1 = algebraMap ℚ G.C (y.2 : ℚ) * ((P.β⁻¹ : G.Cˣ) : G.C)`. Apply `(Units.mul_right_inj (y.1 * P.β)).mp` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.val_mul, ← Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = (y.2 : ℚ) • ((P.β : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C) * y.1) := by`. Rewrite using `[hsim, ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_mul_assoc]`. Use `_ = (y.2 : ℚ) • ((y.1 : G.C) * P.β * ((P.β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[Units.mul_inv, one_mul, mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [mul_smul_comm, mul_assoc]`. Rewrite using `[hH]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hgg', mul_one, map_mul, map_mul]`. Use `_ = G.gram v * (((y.2 : ℚˣ) : ℚ) • G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[hu, map_mul, RingHom.map_rat_algebraMap, ← Algebra.smul_def]`. Use `_ = _ := by rw [mul_smul_comm, Rat.cast_smul_eq_qsmul]`.
+A detailed English derivation is pending.
 -/
 theorem cent_form_law {p : ℕ} [Fact p.Prime] (G : HTGroup p) (P : Pair G) (v : InfinitePlace G.F)
     (y : G.Cˣ × ℚˣ) (hy : y ∈ P.cent) :
@@ -130,21 +126,19 @@ namespace GlobalTheory.LKMid
 open GlobalTheory.LKMid.CentPos in
 
 /- English proof (translation)
-Introduce `p _ G P μ _ hm y hy`. Take `⟨v, -, x, hx, hpos⟩` from `hm`. Use `set H := G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C) with hHdef`. Use `set M := G.psi v (P.γ : G.C) with hMdef`. Use `set Y := G.psi v (y.1 : G.C) with hYdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : (y.1 : G.C) * P.γ = P.γ * y.1`. Use `congrArg Units.val hy.1` as an intermediate fact. Simplify using `using this`. Establish `hMY : M * Y = Y * M` using `by rw [hMdef, hYdef, ← map_mul, ← map_mul, hc]`. Establish `hform : Yᴴ * H * Y = (((y.2 : ℚˣ) : ℚ) : ℂ) • H` using `cent_form_law G P v y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Z, lam, hinj, -, hZ⟩` from `psi_eigenbasis p G P v`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hpos`. Establish `hYx : M *ᵥ (Y *ᵥ x) = μ • (Y *ᵥ x)`. Rewrite using `[mulVec_mulVec, hMY, ← mulVec_mulVec, hx, mulVec_smul]`. Take `⟨l, hl⟩` from `eq_smul_of_eigen M Z lam hinj hZ μ x (Y *ᵥ x) hx hYx hx0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : star (Y *ᵥ x) ⬝ᵥ (H *ᵥ (Y *ᵥ x)) = star x ⬝ᵥ ((Yᴴ * H * Y) *ᵥ x)`. Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, dotProduct_mulVec, vecMul_vecMul]`. Simplify using `only [hHdef, Matrix.mul_assoc]`. Rewrite `key` using `[hform, hl]`. Simplify using `only [Matrix.smul_mulVec, mulVec_smul, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set q := star x ⬝ᵥ (H *ᵥ x) with hq`. Establish `hq0 : q ≠ 0` using `by intro h; rw [h] at hpos; simp at hpos`. Establish `hs : star l * l = (((y.2 : ℚˣ) : ℚ) : ℂ)`. Rewrite `key` using `[← mul_assoc]`. Use `mul_right_cancel₀ hq0 key` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm]`. Conclude with `this`. Establish `hsre : ((((y.2 : ℚˣ) : ℚ) : ℂ)).re = ((y.2 : ℚˣ) : ℚ)` using `by simp`. Establish `hnn : (0 : ℝ) ≤ (((y.2 : ℚˣ) : ℚ) : ℝ)`. Establish `: (star l * l).re = Complex.normSq l`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, Complex.star_def, Complex.mul_conj]`. Simplify using the standard rewrite rules. Rewrite `this` using `[hs]`. Establish `h2 : ((((y.2 : ℚˣ) : ℚ) : ℂ)).re = (((y.2 : ℚˣ) : ℚ) : ℝ)` using `by simp`. Rewrite using `[← h2, this]`.
-
-Conclude with `Complex.normSq_nonneg l`. Establish `hnn' : (0 : ℚ) ≤ ((y.2 : ℚˣ) : ℚ)` using `by exact_mod_cast hnn`. Conclude with `lt_of_le_of_ne hnn' (Ne.symm (y.2.ne_zero))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cent_sim_pos : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ : ℂ), G.a = 1 → P.Mark μ →
     ∀ y ∈ P.cent, 0 < ((y.2 : ℚˣ) : ℚ) := by
@@ -182,7 +176,7 @@ theorem cent_sim_pos : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G)
   exact lt_of_le_of_ne hnn' (Ne.symm (y.2.ne_zero))
 
 /- English proof (translation)
-The claim follows from `cent_sim_pos`.
+A detailed English derivation is pending.
 -/
 example : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ : ℂ), G.a = 1 → P.Mark μ →
     ∀ y ∈ P.cent, 0 < ((y.2 : ℚˣ) : ℚ) := cent_sim_pos

@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RayTan
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y`. Establish `h1 : Smooth Y.q.left` using `Y.smooth_q`. Use `Q.P.smoothDim` as an intermediate fact. Establish `h2 : Smooth Q.P.A.hom` using `SmoothOfRelativeDimension.smooth Q.P.g _`. Rewrite using `[← Over.w Y.q]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem smooth_H : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa), Smooth Y.H.hom := by
   intro R _ _ Q O _ _ _ oa Y
@@ -30,7 +30,7 @@ theorem smooth_H : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : 
   infer_instance
 
 /- English proof (translation)
-Introduce `R _ _ _ _ Q O _ _ _ oa Y`. Take `⟨n, ⟨v⟩⟩` from `GlobalTheory.T.exists_finite_basis_tangentModule_smooth_commGroupScheme R Y.H (smooth_H R Q O oa Y)`. Use `choose dd hdd using fun a => GlobalTheory.T.exists_invariantVectorField_of_tangentVector_origin R Y.H (v a)`. Conclude with `⟨n, v, dd, hdd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis_isInv : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa), ∃ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), ∀ a, IsInv Y.H (v a) (dd a) := by
   intro R _ _ _ _ Q O _ _ _ oa Y

@@ -7,13 +7,13 @@ open Formalism.UG GlobalTheory.SatakeWeyl
 namespace GlobalTheory.SatakeWeyl
 
 /- English proof (translation)
-Introduce `G _ K N h g k₁ k₂ hh hk₁ hk₂ hN hN'`. Unfold `cellSum`. Rewrite using `[← finsum_comp_equiv (MulAction.toPerm k₁ : Equiv.Perm (G ⧸ K))]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : K, (k₁ • x).out = k₁ * x.out * k := by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← MulAction.Quotient.mk_smul_out]`. Conclude with `QuotientGroup.mk_out_eq_mul K _`. Rewrite using `[MulAction.toPerm_apply, hk]`. Establish `e : h (k₁ * x.out * k) = h x.out` using `hh ⟨k₁, hk₁⟩ k _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `if_congr ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations. Introduce and unpack `⟨u, hu, k', hk', e'⟩`. Use `⟨k₂ * u * k₂⁻¹, hN u hu, k₂ * k' * (k : G)⁻¹, K.mul_mem (K.mul_mem hk₂ hk') (K.inv_mem k.2), ?_⟩` and prove the remaining obligations. Establish `: x.out = k₁⁻¹ * (k₁ * x.out * k) * (k : G)⁻¹` using `by group`. Rewrite using `[this, e']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `group`. Introduce and unpack `⟨u, hu, k', hk', e'⟩`. Use `⟨k₂⁻¹ * u * k₂, hN' u hu, k₂⁻¹ * k' * k, K.mul_mem (K.mul_mem (K.inv_mem hk₂) hk') k.2, ?_⟩` and prove the remaining obligations. Rewrite using `[e']`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellInv_holds : CellInv := by
   classical

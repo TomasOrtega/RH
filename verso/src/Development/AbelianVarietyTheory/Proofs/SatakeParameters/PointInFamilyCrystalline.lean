@@ -11,9 +11,9 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hF D X hX hG i hl π hπ`. Establish `hZ` using `LargeLevelLemmas.zgoodSubsetZ i hπ`. Establish `hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition (D` using `D) i (X.r i) (X.ρ i) π := by`. Take `⟨e, he⟩` from `(hX.compl i π hZ).rho`. Conclude with `⟨e, fun g u => he g u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h0 : D.nd.l i ≠ D.host.g 0` using `fun h => hl (by simp [TwistedPlaces.gset, h])`. Establish `h1 : D.nd.l i ≠ D.host.g 1` using `fun h => hl (by simp [TwistedPlaces.gset, h])`. Conclude with `⟨hX.good i, fun x => (hX.good i x).1, hZ, hd, hX.cont i π, fun w hw C x => ((GlobalTheory.T.coefficient_extension_decomposition hF D i _ _ π (hX.good i) (hG i _ (hX.good i)) h0 h1 hd w hw C).2 x).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pointInputAwayFromTypePrimes : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (X : KillingConditions.HubData D), GlobalTheory.PtCore.PtFam D X.r X.ρ → AdmissibleParameterJ.DeRhamFamilyAway D → ∀ i : D.nd.Loc, D.nd.l i ∉ TwistedPlaces.gset D → ∀ π ∈ D.nd.Zgood i, GlobalTheory.HTW.RecS.PtIn i (X.r i) (X.ρ i) π := by
   intro hF D X hX hG i hl π hπ

@@ -34,13 +34,13 @@ def expPosHomeomorph : ℝ ≃ₜ {r : ℝ // 0 < r} where
   continuous_invFun := continuous_subtype_val.log fun r ↦ r.2.ne'
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (exp_add x y)`.
+A detailed English derivation is pending.
 -/
 theorem expPos_add (x y : ℝ) : expPos (x + y) = expPos x * expPos y :=
   Subtype.ext (exp_add x y)
 
 /- English proof (translation)
-The claim follows from `expPosHomeomorph.continuous.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_expPos : Measurable expPos := expPosHomeomorph.continuous.measurable
 
@@ -48,20 +48,20 @@ def posRealMeasure : Measure {r : ℝ // 0 < r} :=
   Measure.comap Subtype.val (volume.withDensity fun t : ℝ ↦ ENNReal.ofReal t⁻¹)
 
 /- English proof (translation)
-The claim follows from `MeasurableEmbedding.subtype_coe measurableSet_Ioi`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_posReal_val :
     MeasurableEmbedding (Subtype.val : {r : ℝ // 0 < r} → ℝ) :=
   MeasurableEmbedding.subtype_coe measurableSet_Ioi
 
 /- English proof (translation)
-Use extensionality with `S hS`. Rewrite using `[posRealMeasure, measurableEmbedding_posReal_val.comap_apply, withDensity_apply _ (measurableEmbedding_posReal_val.measurableSet_image' hS), Measure.map_apply measurable_expPos hS]`. Use `set s : Set ℝ := expPos ⁻¹' S`. Establish `hs : MeasurableSet s` using `measurable_expPos hS`. Establish `himg : exp '' s = Subtype.val '' S`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨expPos x, hx, rfl⟩`. Introduce and unpack `⟨r, hr, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨log r, ?_, exp_log r.2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `expPos (log r) ∈ S`. Use `hr` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (exp_log r.2)`. Rewrite using `[← himg, lintegral_image_eq_lintegral_abs_deriv_mul hs (fun x _ ↦ (hasDerivAt_exp x).hasDerivWithinAt) (exp_injective.injOn)]`.
+Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← setLIntegral_one]`. Use `setLIntegral_congr_fun hs fun x _ ↦ ?_` and prove the remaining obligations. Rewrite using `[abs_of_pos (exp_pos x), ← ENNReal.ofReal_mul (exp_pos x).le, mul_inv_cancel₀ (exp_pos x).ne', ENNReal.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posRealMeasure_eq_map_expPos : posRealMeasure = Measure.map expPos volume := by
   ext S hS
@@ -111,7 +111,7 @@ instance isHaarMeasure_posRealMeasure : posRealMeasure.IsHaarMeasure := by
   exact {}
 
 /- English proof (translation)
-Rewrite using `[posRealMeasure_eq_map_expPos]`. Express the relevant statement in the definitionally equal form `∫ t, f t ∂Measure.map expPosHomeomorph.toMeasurableEquiv volume = _`. Rewrite using `[integral_map_equiv expPosHomeomorph.toMeasurableEquiv (fun t ↦ f t), ← Real.range_exp, ← Set.image_univ, integral_image_eq_integral_abs_deriv_smul MeasurableSet.univ (fun x _ ↦ (hasDerivAt_exp x).hasDerivWithinAt) exp_injective.injOn, Measure.restrict_univ]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only [abs_of_pos (exp_pos x), smul_smul, mul_inv_cancel₀ (exp_pos x).ne', one_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -141,7 +141,7 @@ def posRealElem (w : InfinitePlace K) (t : ℝ) : w.Completion :=
   else (ringEquivComplexOfIsComplex (not_isReal_iff_isComplex.1 hw)).symm (Real.sqrt t : ℂ)
 
 /- English proof (translation)
-Unfold `posRealElem`. Use `split_ifs with hw`. Conclude with `map_mul _ s t`. Rewrite using `[Real.sqrt_mul hs, Complex.ofReal_mul, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posRealElem_mul (w : InfinitePlace K) {s t : ℝ} (hs : 0 ≤ s) :
     posRealElem w (s * t) = posRealElem w s * posRealElem w t := by
@@ -151,7 +151,7 @@ theorem posRealElem_mul (w : InfinitePlace K) {s t : ℝ} (hs : 0 ≤ s) :
   · rw [Real.sqrt_mul hs, Complex.ofReal_mul, map_mul]
 
 /- English proof (translation)
-Unfold `posRealElem`. Use `split_ifs with hw`. Conclude with `map_one _`. Rewrite using `[Real.sqrt_one, Complex.ofReal_one, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posRealElem_one (w : InfinitePlace K) : posRealElem w 1 = 1 := by
   unfold posRealElem
@@ -160,9 +160,9 @@ theorem posRealElem_one (w : InfinitePlace K) : posRealElem w 1 = 1 := by
   · rw [Real.sqrt_one, Complex.ofReal_one, map_one]
 
 /- English proof (translation)
-Unfold `posRealElem`. Use `split_ifs with hw`. Establish `h : ‖(ringEquivRealOfIsReal hw).symm t‖ = ‖t‖` using `(isometryEquivRealOfIsReal hw).symm.isometry.norm_map_of_map_zero (map_zero (ringEquivRealOfIsReal hw).symm) t`. Rewrite using `[h, mult, if_pos hw, pow_one, Real.norm_of_nonneg ht]`. Establish `hc` using `not_isReal_iff_isComplex.1 hw`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ‖(ringEquivComplexOfIsComplex hc).symm (Real.sqrt t : ℂ)‖ = ‖(Real.sqrt t : ℂ)‖` using `(isometryEquivComplexOfIsComplex hc).symm.isometry.norm_map_of_map_zero (map_zero (ringEquivComplexOfIsComplex hc).symm) _`. Rewrite using `[h, mult, if_neg hw, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg t), Real.sq_sqrt ht]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_posRealElem_pow (w : InfinitePlace K) {t : ℝ} (ht : 0 ≤ t) :
     ‖posRealElem w t‖ ^ w.mult = t := by
@@ -180,7 +180,7 @@ theorem norm_posRealElem_pow (w : InfinitePlace K) {t : ℝ} (ht : 0 ≤ t) :
       Real.sq_sqrt ht]
 
 /- English proof (translation)
-Introduce `h`. Use `norm_posRealElem_pow w ht.le` as an intermediate fact. Apply the tactic sequence `rw [h, norm_zero, zero_pow (by unfold mult; split_ifs <;> norm_num)] at this`. Conclude with `ht.ne this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem posRealElem_ne_zero (w : InfinitePlace K) {t : ℝ} (ht : 0 < t) : posRealElem w t ≠ 0 := by
   intro h
@@ -189,7 +189,7 @@ theorem posRealElem_ne_zero (w : InfinitePlace K) {t : ℝ} (ht : 0 < t) : posRe
   exact ht.ne this
 
 /- English proof (translation)
-Unfold `posRealElem`. Use `split_ifs with hw`. Conclude with `(isometryEquivRealOfIsReal hw).symm.continuous`. Conclude with `(isometryEquivComplexOfIsComplex (not_isReal_iff_isComplex.1 hw)).symm.continuous.comp (Complex.continuous_ofReal.comp Real.continuous_sqrt)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_posRealElem (w : InfinitePlace K) : Continuous (posRealElem w) := by
   unfold posRealElem
@@ -204,7 +204,7 @@ def posRealToUnits (w : InfinitePlace K) : {r : ℝ // 0 < r} →* (w.Completion
   map_mul' s _ := Units.ext (posRealElem_mul w s.2.le)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨(continuous_posRealElem w).comp continuous_subtype_val, ((continuous_posRealElem w).comp continuous_subtype_val).inv₀ fun t ↦ posRealElem_ne_zero w t.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_posRealToUnits (w : InfinitePlace K) : Continuous (posRealToUnits w) :=
   Units.continuous_iff.2 ⟨(continuous_posRealElem w).comp continuous_subtype_val,
@@ -217,14 +217,14 @@ def moduleSection (w : InfinitePlace K) : {r : ℝ // 0 < r} →* IdeleGroup K :
   (infiniteEmbedding w).comp (posRealToUnits w)
 
 /- English proof (translation)
-The claim follows from `(continuous_infiniteEmbedding w).comp (continuous_posRealToUnits w) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_moduleSection (w : InfinitePlace K) : Continuous (moduleSection w) :=
   (continuous_infiniteEmbedding w).comp (continuous_posRealToUnits w)
 
 @[simp]
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[moduleSection, MonoidHom.comp_apply, ideleModule_infiniteEmbedding]`. Conclude with `norm_posRealElem_pow w t.2.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleModule_moduleSection (w : InfinitePlace K) (t : {r : ℝ // 0 < r}) :
     ideleModule K (moduleSection w t) = t := by
@@ -248,7 +248,7 @@ instance locallyCompactSpace_normOneSubgroup : LocallyCompactSpace (normOneSubgr
   (isClosed_normOneSubgroup K).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 /- English proof (translation)
-Rewrite using `[normOneSubgroup, MonoidHom.mem_ker, map_mul, map_inv, ideleModule_moduleSection, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_moduleSection_mem (w : InfinitePlace K) (x : IdeleGroup K) :
     x * (moduleSection w (ideleModule K x))⁻¹ ∈ normOneSubgroup K := by
@@ -283,7 +283,7 @@ def normOneSplitting (w : InfinitePlace K) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem normOneSplitting_apply_snd (w : InfinitePlace K) (x : IdeleGroup K) :
     (normOneSplitting w x).2 = ideleModule K x :=
@@ -308,7 +308,7 @@ variable {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Me
   [BorelSpace H] [LocallyCompactSpace H] [SecondCountableTopology H]
 
 /- English proof (translation)
-Use `conv_lhs => rw [Measure.isMulLeftInvariant_eq_smul lam ((Measure.haar : Measure G).prod ν)]`. Rewrite using `[Measure.restrict_smul, Measure.map_smul, ← Measure.prod_restrict, Measure.restrict_univ, Measure.map_fst_prod, Measure.restrict_apply_univ, hν, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_fst_restrict_eq_smul_haar (lam : Measure (G × H)) [lam.IsHaarMeasure]
     (ν : Measure H) [ν.IsHaarMeasure] {S : Set H} (hν : ν S = 1) :
@@ -319,7 +319,7 @@ theorem map_fst_restrict_eq_smul_haar (lam : Measure (G × H)) [lam.IsHaarMeasur
     Measure.map_fst_prod, Measure.restrict_apply_univ, hν, one_smul]
 
 /- English proof (translation)
-Rewrite using `[map_fst_restrict_eq_smul_haar lam ν hν]`. Conclude with `Measure.IsHaarMeasure.nnreal_smul _ (Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_map_fst_restrict (lam : Measure (G × H)) [lam.IsHaarMeasure]
     (ν : Measure H) [ν.IsHaarMeasure] {S : Set H} (hν : ν S = 1) :
@@ -329,7 +329,7 @@ theorem isHaarMeasure_map_fst_restrict (lam : Measure (G × H)) [lam.IsHaarMeasu
     (Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne'
 
 /- English proof (translation)
-Rewrite using `[map_fst_restrict_eq_smul_haar lam ν hν, Measure.prod_smul_left]`. Conclude with `Measure.isMulLeftInvariant_eq_smul lam _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_prod_map_fst_restrict (lam : Measure (G × H)) [lam.IsHaarMeasure]
     (ν : Measure H) [ν.IsHaarMeasure] {S : Set H} (hν : ν S = 1) :
@@ -348,15 +348,15 @@ variable (K : Type*) [Field K] [NumberField K]
 def posRealUnitInterval : Set {r : ℝ // 0 < r} := Subtype.val ⁻¹' Set.Icc 1 (exp 1)
 
 /- English proof (translation)
-The claim follows from `measurable_subtype_coe measurableSet_Icc`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_posRealUnitInterval : MeasurableSet posRealUnitInterval :=
   measurable_subtype_coe measurableSet_Icc
 
 /- English proof (translation)
-Rewrite using `[posRealMeasure_eq_map_expPos, Measure.map_apply measurable_expPos measurableSet_posRealUnitInterval]`. Establish `: expPos ⁻¹' posRealUnitInterval = Set.Icc 0 1`. Use extensionality with `x`. Simplify using `only [posRealUnitInterval, Set.mem_preimage, Set.mem_Icc, coe_expPos]`. Rewrite using `[one_le_exp_iff, exp_le_exp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Real.volume_Icc, sub_zero, ENNReal.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem posRealMeasure_posRealUnitInterval : posRealMeasure posRealUnitInterval = 1 := by
   rw [posRealMeasure_eq_map_expPos, Measure.map_apply measurable_expPos
@@ -382,7 +382,7 @@ instance isHaarMeasure_normOneMeasureAt (w : InfinitePlace K) :
   isHaarMeasure_map_fst_restrict _ posRealMeasure posRealMeasure_posRealUnitInterval
 
 /- English proof (translation)
-The claim follows from `eq_prod_map_fst_restrict _ posRealMeasure posRealMeasure_posRealUnitInterval`.
+A detailed English derivation is pending.
 -/
 theorem map_normOneSplitting_eq_prod_at (w : InfinitePlace K) :
     (ideleMeasure K).map (normOneSplitting w) = (normOneMeasureAt w).prod posRealMeasure :=
@@ -397,7 +397,7 @@ open IdeleGroup
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[normOneSubgroup, MonoidHom.mem_ker, map_mul, map_inv, ideleModule_moduleSection, ideleModule_moduleSection, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem moduleSection_mul_inv_mem (w w' : InfinitePlace K) (t : {r : ℝ // 0 < r}) :
     moduleSection w t * (moduleSection w' t)⁻¹ ∈ normOneSubgroup K := by
@@ -405,13 +405,13 @@ theorem moduleSection_mul_inv_mem (w w' : InfinitePlace K) (t : {r : ℝ // 0 < 
     ideleModule_moduleSection, mul_inv_cancel]
 
 /- English proof (translation)
-Use `set m := normOneMeasureAt w`. Set `c : {r : ℝ // 0 < r} → normOneSubgroup K` to `fun t ↦ ⟨moduleSection w t * (moduleSection w' t)⁻¹, moduleSection_mul_inv_mem w w' t⟩`. Establish `hc : Continuous c` using `((continuous_moduleSection w).mul (continuous_moduleSection w').inv).subtype_mk _`. Set `φ : normOneSubgroup K × {r : ℝ // 0 < r} → normOneSubgroup K × {r : ℝ // 0 < r}` to `fun p ↦ (c p.2 * p.1, p.2)`. Establish `hsplit : (normOneSplitting w' : IdeleGroup K → _) = φ ∘ normOneSplitting w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Use `Prod.ext (Subtype.ext ?_) rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x * (moduleSection w' (ideleModule K x))⁻¹ = moduleSection w (ideleModule K x) * (moduleSection w' (ideleModule K x))⁻¹ * (x * (moduleSection w (ideleModule K x))⁻¹)`. Generalize the expression as in `moduleSection w (ideleModule K x) = a`. Generalize the expression as in `moduleSection w' (ideleModule K x) = b`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show a * b⁻¹ * (x * a⁻¹) = (a * a⁻¹) * (x * b⁻¹) by ac_rfl, mul_inv_cancel, one_mul]`. Establish `hψ : MeasurePreserving (fun p : {r : ℝ // 0 < r} × normOneSubgroup K ↦ (id p.1, c p.1 * p.2)) (posRealMeasure.prod m) (posRealMeasure.prod m)` using `(MeasurePreserving.id posRealMeasure).skew_product (g := fun t u ↦ c t * u) ((hc.comp continuous_fst).mul continuous_snd).measurable (Filter.Eventually.of_forall fun t ↦ map_mul_left_eq_self m (c t))`. Establish `hφ : MeasurePreserving φ (m.prod posRealMeasure) (m.prod posRealMeasure)` using `Measure.measurePreserving_swap.comp (hψ.comp Measure.measurePreserving_swap)`. Establish `hmap : (ideleMeasure K).map (normOneSplitting w') = m.prod posRealMeasure`. Rewrite using `[hsplit, ← Measure.map_map hφ.measurable (map_continuous _).measurable, map_normOneSplitting_eq_prod_at w, hφ.map_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normOneMeasureAt, hmap, ← Measure.prod_restrict, Measure.restrict_univ, Measure.map_fst_prod, Measure.restrict_apply_univ, posRealMeasure_posRealUnitInterval, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem normOneMeasureAt_eq (w w' : InfinitePlace K) :
     normOneMeasureAt w' = normOneMeasureAt w := by
@@ -462,21 +462,21 @@ instance isHaarMeasure_normOneMeasure : (normOneMeasure K).IsHaarMeasure := by
 variable {K}
 
 /- English proof (translation)
-The claim follows from `normOneMeasureAt_eq _ w`.
+A detailed English derivation is pending.
 -/
 theorem normOneMeasureAt_eq_normOneMeasure (w : InfinitePlace K) :
     normOneMeasureAt w = normOneMeasure K :=
   normOneMeasureAt_eq _ w
 
 /- English proof (translation)
-Rewrite using `[← normOneMeasureAt_eq_normOneMeasure w, map_normOneSplitting_eq_prod_at]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_normOneSplitting_eq_prod (w : InfinitePlace K) :
     (ideleMeasure K).map (normOneSplitting w) = (normOneMeasure K).prod posRealMeasure := by
   rw [← normOneMeasureAt_eq_normOneMeasure w, map_normOneSplitting_eq_prod_at]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(map_continuous _).measurable, map_normOneSplitting_eq_prod w⟩`.
+Supply the required witnesses or components.
 -/
 theorem measurePreserving_normOneSplitting (w : InfinitePlace K) :
     MeasurePreserving (normOneSplitting w) (ideleMeasure K)
@@ -484,11 +484,9 @@ theorem measurePreserving_normOneSplitting (w : InfinitePlace K) :
   ⟨(map_continuous _).measurable, map_normOneSplitting_eq_prod w⟩
 
 /- English proof (translation)
-Establish `hcomp : (fun p ↦ f ((normOneSplitting w).symm p)) ∘ (normOneSplitting w) = f`. Use function extensionality and compare the values at `fun x ↦ congrArg f ((normOneSplitting w).symm_apply_apply x)`. Establish `h1 : ∫ x, f x ∂ideleMeasure K = ∫ p, f ((normOneSplitting w).symm p) ∂(normOneMeasure K).prod posRealMeasure`. Rewrite using `[← map_normOneSplitting_eq_prod w]`. Express the relevant statement in the definitionally equal form `_ = ∫ p, f ((normOneSplitting w).symm p) ∂Measure.map (normOneSplitting w).toHomeomorph.toMeasurableEquiv (ideleMeasure K)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[integral_map_equiv (normOneSplitting w).toHomeomorph.toMeasurableEquiv]`. Conclude with `congrArg (fun g ↦ ∫ x, g x ∂ideleMeasure K) hcomp.symm`. Rewrite using `[h1, integral_prod_symm]`. Both sides reduce to the same expression. Rewrite using `[← map_normOneSplitting_eq_prod w]`.
-
-Conclude with `(integrable_map_equiv (normOneSplitting w).toHomeomorph.toMeasurableEquiv (fun p ↦ f ((normOneSplitting w).symm p))).2 (by convert hf using 1; exact hcomp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_ideleMeasure_eq_integral_normOne {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] (w : InfinitePlace K) {f : IdeleGroup K → E}

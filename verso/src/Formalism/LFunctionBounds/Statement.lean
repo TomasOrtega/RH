@@ -114,11 +114,11 @@ Evaluate the decidable proposition.
 -/
 example : triples 3 = {(1, 1, 1)} := by decide
 /- English proof (translation)
-Evaluate the numerical expressions using `[saw]`.
+Evaluate the numerical expressions.
 -/
 example : saw (1 / 2) = 0 := by norm_num [saw]
 /- English proof (translation)
-Simplify using `[saw]`.
+Simplify using the standard rewrite rules.
 -/
 example (y : ℝ) : saw (y + 1) = saw y := by simp [saw]
 

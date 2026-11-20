@@ -24,14 +24,14 @@ open MeasureTheory
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_orthogonal_projection_polynomial_compact_unitary ε d p hp`.
+A detailed English derivation is pending.
 -/
 theorem orth_decomp_L (ε : Fin n → Bool) (d : ℕ) (p : KG ε → ℂ) (hp : Continuous p) :
     ∃ p' ∈ polyV ε d, ∀ q ∈ polyV ε d, ∫ k, star (q k) * (p k - p' k) ∂(muK ε) = 0 :=
   GlobalTheory.T.exists_orthogonal_projection_polynomial_compact_unitary ε d p hp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.integral_star_mul_convolution_eq_integral_swap ε e q g he hq hg`.
+A detailed English derivation is pending.
 -/
 theorem conv_swap_L (ε : Fin n → Bool) (e q g : KG ε → ℂ) (he : Continuous e) (hq : Continuous q)
     (hg : Continuous g) :
@@ -40,20 +40,20 @@ theorem conv_swap_L (ε : Fin n → Bool) (e q g : KG ε → ℂ) (he : Continuo
   GlobalTheory.T.integral_star_mul_convolution_eq_integral_swap ε e q g he hq hg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.eq_zero_of_orthogonal_compactUnitaryPolyFun ε h hh ho`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_orth_L (ε : Fin n → Bool) (h : KG ε → ℂ) (hh : Continuous h)
     (ho : ∀ d, ∀ q ∈ polyV ε d, ∫ k, star (q k) * h k ∂(muK ε) = 0) : h = 0 :=
   GlobalTheory.T.eq_zero_of_orthogonal_compactUnitaryPolyFun ε h hh ho
 
 /- English proof (translation)
-The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_cont (ε : Fin n → Bool) {f : KG ε → ℂ} (hf : Continuous f) : Integrable f (muK ε) :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
 /- English proof (translation)
-The claim follows from `haveI : FirstCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (FirstCountableTopology (Fin n → Fin n → ℂ)) ((isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal).isInducing.firstCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem firstCountable_KG (ε : Fin n → Bool) : FirstCountableTopology (KG ε) :=
   haveI : FirstCountableTopology (Matrix (Fin n) (Fin n) ℂ) :=
@@ -61,7 +61,7 @@ theorem firstCountable_KG (ε : Fin n → Bool) : FirstCountableTopology (KG ε)
   ((isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal).isInducing.firstCountableTopology
 
 /- English proof (translation)
-Use `haveI := firstCountable_KG ε`. Use `continuous_parametric_integral_of_continuous (μ := muK ε) hF (s := Set.univ) isCompact_univ` as an intermediate fact. Simplify `this` using `[Measure.restrict_univ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_param (ε : Fin n → Bool) {F : KG ε → KG ε → ℂ} (hF : Continuous (Function.uncurry F)) :
     Continuous fun a => ∫ k, F a k ∂(muK ε) := by
@@ -70,17 +70,17 @@ theorem continuous_param (ε : Fin n → Bool) {F : KG ε → KG ε → ℂ} (hF
   simpa [Measure.restrict_univ] using this
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `p hp`. Simplify using `only [zero_add, Finset.range_one, Finset.sum_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(he 0).2.2 p hp (fun q hq => by simp [lowV] at hq; simp [hq])`. Consider the case `succ d ih`. Introduce `p hp`. Take `⟨p', hp', horth⟩` from `orth_decomp_L ε d p (continuous_of_mem hp)`. Establish `hp'' : (fun k => p k - p' k) ∈ polyV ε (d + 1)` using `sub_mem hp (polyV_mono ε (Nat.le_succ d) hp')`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp : Continuous p` using `continuous_of_mem hp`. Establish `hcp' : Continuous p'` using `continuous_of_mem hp'`. Establish `hce : ∀ i, Continuous (e i)` using `fun i => continuous_of_mem (he i).1`. Establish `hsplit : ∀ i, ∫ k, e i k * p k ∂(muK ε) = ∫ k, e i k * p' k ∂(muK ε) + ∫ k, e i k * (p k - p' k) ∂(muK ε)`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← integral_add (integrable_of_cont ε (f := fun k => e i k * p' k) ((hce i).mul hcp')) (integrable_of_cont ε (f := fun k => e i k * (p k - p' k)) ((hce i).mul (hcp.sub hcp')))]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_range_succ, hsplit (d + 1), Finset.sum_congr rfl (fun i _ => hsplit i), Finset.sum_add_distrib, ih p' hp']`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ∫ k, e (d + 1) k * p' k ∂(muK ε) = 0` using `(he (d + 1)).2.1 p' hp'`. Establish `h1 : ∫ k, e (d + 1) k * (p k - p' k) ∂(muK ε) = p 1 - p' 1` using `(he (d + 1)).2.2 _ hp'' (fun q hq => horth q hq)`. Establish `h2 : ∀ i ∈ Finset.range (d + 1), ∫ k, e i k * (p k - p' k) ∂(muK ε) = 0`. Introduce `i hi`. Establish `hi' : i ≤ d` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : (fun k => star (e i k)) ∈ polyV ε d` using `polyV_mono ε hi' (star_mem (he i).1)`. Use `horth _ hs` as an intermediate fact. Simplify using `using this`. Rewrite using `[Finset.sum_eq_zero h2, h0, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_ker_poly (ε : Fin n → Bool) (e : ℕ → KG ε → ℂ) (he : ∀ i, IsKer ε i (e i)) :
     ∀ d, ∀ p ∈ polyV ε d, ∑ i ∈ Finset.range (d + 1), ∫ k, e i k * p k ∂(muK ε) = p 1 := by
@@ -119,7 +119,7 @@ theorem sum_ker_poly (ε : Fin n → Bool) (e : ℕ → KG ε → ℂ) (he : ∀
     ring
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Conclude with `(he (j + 1)).2.1 p (polyV_mono ε (by omega) hp)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ker_vanish (ε : Fin n → Bool) (e : ℕ → KG ε → ℂ) (he : ∀ i, IsKer ε i (e i)) {d i : ℕ} (hi : d < i)
     {p : KG ε → ℂ} (hp : p ∈ polyV ε d) : ∫ k, e i k * p k ∂(muK ε) = 0 := by
@@ -127,29 +127,27 @@ theorem ker_vanish (ε : Fin n → Bool) (e : ℕ → KG ε → ℂ) (he : ∀ i
   exact (he (j + 1)).2.1 p (polyV_mono ε (by omega) hp)
 
 /- English proof (translation)
-Establish `hce : ∀ i, Continuous (e i)` using `fun i => continuous_of_mem (he i).1`. Use `set P : ℕ → KG ε → ℂ := fun i k' => ∫ k, e i k * g (k' * k) ∂(muK ε) with hPdef`. Establish `hPc : ∀ i, Continuous (P i)` using `fun i => continuous_param ε (F := fun k' k => e i k * g (k' * k)) (((hce i).comp continuous_snd).mul (hg.comp (continuous_fst.mul continuous_snd)))`. Establish `hsum : ∀ k', Summable (fun i => P i k')` using `fun k' => Summable.of_norm_bounded hb (fun i => hbd i k')`. Use `set u : KG ε → ℂ := fun k' => ∑' i, P i k' with hudef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Continuous u` using `continuous_tsum hPc hb hbd`. Establish `key : ∀ d, ∀ q ∈ polyV ε d, ∫ k, star (q k) * (u k - g k) ∂(muK ε) = 0`. Introduce `d q hq`. Establish `hcq : Continuous q` using `continuous_of_mem hq`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, ∀ k, ‖star (q k)‖ ≤ M := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨M, hM⟩` from `(isCompact_univ.image (continuous_star.comp hcq)).isBounded.exists_norm_le`. Conclude with `⟨M, fun k => hM _ ⟨k, Set.mem_univ _, rfl⟩⟩`. Establish `hint : ∀ i, Integrable (fun k => star (q k) * P i k) (muK ε)` using `fun i => integrable_of_cont ε ((continuous_star.comp hcq).mul (hPc i))`. Establish `hnorm : ∀ i, ∫ k, ‖star (q k) * P i k‖ ∂(muK ε) ≤ M * b i`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `integral_mono (hint i).norm (integrable_const _) (fun k => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hM k) (hbd i k) (norm_nonneg _) ((norm_nonneg _).trans (hM k))`. Use `_ = M * b i := by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hsn : Summable fun i => ∫ k, ‖star (q k) * P i k‖ ∂(muK ε)` using `Summable.of_nonneg_of_le (fun i => integral_nonneg fun k => norm_nonneg _) hnorm (hb.mul_left M)`. Establish `e1 : ∫ k, star (q k) * u k ∂(muK ε) = ∑' i, ∫ k, star (q k) * P i k ∂(muK ε)`. Rewrite using `[integral_tsum_of_summable_integral_norm hint hsn]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hudef]`. Simplify using `only`. Conclude with `(tsum_mul_left).symm`. Use `set r : ℕ → KG ε → ℂ := fun i y => ∫ x, e i x * star (q (y * x⁻¹)) ∂(muK ε) with hrdef`. Establish `hpy : ∀ y, (fun x => star (q (y * x⁻¹))) ∈ polyV ε d` using `fun y => star_mem (inv_mem (φ := fun k => q (y * k)) (mul_left_mem y hq))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrc : ∀ i, Continuous (r i)` using `fun i => continuous_param ε (F := fun y x => e i x * star (q (y * x⁻¹))) (((hce i).comp continuous_snd).mul (continuous_star.comp (hcq.comp (continuous_fst.mul continuous_snd.inv))))`. Establish `e2 : ∀ i, ∫ k, star (q k) * P i k ∂(muK ε) = ∫ y, g y * r i y ∂(muK ε)` using `fun i => conv_swap_L ε (e i) q g (hce i) hcq hg`. Establish `hr0 : ∀ i ∉ Finset.range (d + 1), ∫ y, g y * r i y ∂(muK ε) = 0`. Introduce `i hi`. Establish `hi' : d < i` using `by simpa using hi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ∀ y, r i y = 0` using `fun y => ker_vanish ε e he hi' (hpy y)`. Simplify using `[this]`. Establish `hrs : ∀ y, ∑ i ∈ Finset.range (d + 1), r i y = star (q y)`. Introduce `y`. Use `sum_ker_poly ε e he d _ (hpy y)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hrdef]`. Simplify using `using this`. Establish `e3 : ∫ k, star (q k) * u k ∂(muK ε) = ∫ k, star (q k) * g k ∂(muK ε)`. Rewrite using `[e1, tsum_congr e2, tsum_eq_sum hr0, ← integral_finset_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[← Finset.mul_sum, hrs y, mul_comm]`. Introduce `i _`. Conclude with `integrable_of_cont ε (hg.mul (hrc i))`. Establish `hsub : (fun k => star (q k) * (u k - g k)) = fun k => star (q k) * u k - star (q k) * g k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsub, integral_sub (integrable_of_cont ε (f := fun k => star (q k) * u k) ((continuous_star.comp hcq).mul hu)) (integrable_of_cont ε (f := fun k => star (q k) * g k) ((continuous_star.comp hcq).mul hg)), e3, sub_self]`. Establish `hzero` using `eq_zero_of_orth_L ε (fun k => u k - g k) (hu.sub hg) key`. Establish `h1 : u 1 = g 1` using `sub_eq_zero.1 (congrFun hzero 1)`.
-
-Establish `h2 : u 1 = ∑' i, ∫ k, e i k * g k ∂(muK ε)` using `by simp [hudef, hPdef]`. Rewrite using `[← h1, h2]`. Use `(hsum 1).hasSum` as an intermediate fact. Simplify `this` using `[hPdef]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasSum_kFourier (ε : Fin n → Bool) (e : ℕ → KG ε → ℂ) (he : ∀ i, IsKer ε i (e i))
     (g : KG ε → ℂ) (hg : Continuous g) (b : ℕ → ℝ) (hb : Summable b)

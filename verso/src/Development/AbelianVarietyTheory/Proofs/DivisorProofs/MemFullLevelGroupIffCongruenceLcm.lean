@@ -10,33 +10,33 @@ namespace GlobalTheory.EqCovol.FullLevel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `IsCMField.complexConj_apply_apply E a`.
+A detailed English derivation is pending.
 -/
 lemma cc_cc' (a : E) : cc (cc a) = a := IsCMField.complexConj_apply_apply E a
 
 /- English proof (translation)
-Simplify using `[herm, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_sub_left' {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (u v y : Fin r → E) :
     herm G (u - v) y = herm G u y - herm G v y := by
   simp [herm, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[herm, cc, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_sub_right' {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x u v : Fin r → E) :
     herm G x (u - v) = herm G x u - herm G x v := by
   simp [herm, cc, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[herm, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_smul_left'' {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (c : E) (u y : Fin r → E) :
     herm G (c • u) y = c * herm G u y := by
   simp [herm, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, cc, map_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma herm_smul_right'' {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (c : E) (x v : Fin r → E) :
     herm G x (c • v) = cc c * herm G x v := by
@@ -45,7 +45,7 @@ lemma herm_smul_right'' {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (c : E) (x v : 
   ring
 
 /- English proof (translation)
-Use extensionality with `i`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 lemma oe_smul {r : ℕ} (c : 𝓞 E) (y : Fin r → E) : c • y = (c : E) • y := by
   ext i; rfl
@@ -55,35 +55,31 @@ end GlobalTheory.EqCovol.FullLevel
 open GlobalTheory.EqCovol.FullLevel in
 
 /- English proof (translation)
-Introduce `E _ _ _ H l r Y hL hS γ`. Establish `hM0 : (l.M : E) ≠ 0`. Establish `: l.M ≠ 0` using `by have := l.three_le; omega`. Conclude with `this` after adjusting the coercions. Establish `hA0 : (l.A : E) ≠ 0` using `by exact_mod_cast l.A_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hγ`. Take `⟨hU, hM, hA⟩` from `(hL γ).1 hγ`. Take `⟨-, hMinv, -⟩` from `(hL γ⁻¹).1 (Y.Γ.inv_mem hγ)`. Use `set g : Matrix (Fin r) (Fin r) E := (γ : Matrix (Fin r) (Fin r) E) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set gi : Matrix (Fin r) (Fin r) E := ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) with hgi`. Establish `hggi : ∀ v, g.mulVec (gi.mulVec v) = v`. Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, hg, hgi, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hunit : ∀ u v, herm Y.Gm (g.mulVec u) v = herm Y.Gm u (gi.mulVec v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `u v`. Use `hU.1 u (gi.mulVec v)` as an intermediate fact. Rewrite `this` using `[hggi]`. Then use the resulting hypothesis. Establish `hcop : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.coprime]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_top`. Take `⟨b', hb', b, hb, hsum⟩` from `Submodule.mem_sup.1 hcop`. Establish `hsumE : (b' : E) + (b : E) = 1` using `by exact_mod_cast congrArg (fun t : 𝓞 E => (t : E)) hsum`. Establish `key : ∀ x ∈ Y.Λ, ∃ y ∈ Y.Λ, g.mulVec x - x = l.M • y`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y1, hy1, e1⟩` from `hM (b • x) (Submodule.smul_mem_smul hb hx)`. Use `set z : Fin r → E := (l.M : E)⁻¹ • ((b' : E) • (g.mulVec x - x)) with hz`. Establish `hzmem : z ∈ Y.Λ`. Use `(hS z).2 fun y hy => ?_` and prove the remaining obligations. Establish `hc : H.bar b' ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mem_map_of_mem _ hb'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, ew⟩` from `hMinv (H.bar b' • y) (Submodule.smul_mem_smul hc hy)`. Establish `hbarE : ((H.bar b' : 𝓞 E) : E) = cc (b' : E)` using `H.bar_eq b'`. Rewrite `ew` using `[oe_smul, hbarE, ← Nat.cast_smul_eq_nsmul E]`. Establish `h1 : herm Y.Gm z y = herm Y.Gm x w`. Establish `h2` using `congrArg (herm Y.Gm x) ew`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[herm_sub_right', ← hunit, herm_smul_right'', herm_smul_right'', herm_smul_right'', cc_cc', cc, map_natCast]`. Rewrite using `[hz, herm_smul_left'', herm_smul_left'', herm_sub_left']`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h2`. Take `⟨n, hn⟩` from `(hS x).1 hx w hw`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨n, by rw [h1, hn]⟩`. Use `⟨z + y1, Y.Λ.add_mem hzmem hy1, ?_⟩` and prove the remaining obligations. Rewrite `e1` using `[oe_smul, Matrix.mulVec_smul]`. Rewrite using `[smul_add, ← e1, ← Nat.cast_smul_eq_nsmul E, hz, smul_smul, mul_inv_cancel₀ hM0, one_smul, ← smul_sub, ← add_smul, hsumE, one_smul]`. Use `⟨hU, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy, ey⟩` from `key x hx`. Take `⟨y', hy', ey'⟩` from `hA x hx`. Use `⟨Nat.gcdA l.M l.A • y' + Nat.gcdB l.M l.A • y, Y.Λ.add_mem (Y.Λ.toAddSubgroup.zsmul_mem hy' _) (Y.Λ.toAddSubgroup.zsmul_mem hy _), ?_⟩` and prove the remaining obligations. Use `set t := g.mulVec x - x with ht`. Rewrite `ey`, `ey'` using `[← Nat.cast_smul_eq_nsmul E]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hy1 : y = (l.M : E)⁻¹ • t` using `by rw [ey, smul_smul, inv_mul_cancel₀ hM0, one_smul]`. Establish `hy2 : y' = (l.A : E)⁻¹ • t` using `by rw [ey', smul_smul, inv_mul_cancel₀ hA0, one_smul]`. Establish `hG : ((Nat.gcd l.M l.A : ℕ) : E) = (l.M : E) * (Nat.gcdA l.M l.A : E) + (l.A : E) * (Nat.gcdB l.M l.A : E)`. Use `congrArg (Int.cast : ℤ → E) (Nat.gcd_eq_gcd_ab l.M l.A)` as an intermediate fact. Move the coercions through the operations in `at this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `this`. Establish `hGL : ((Nat.gcd l.M l.A : ℕ) : E) * (l.M' : E) = (l.M : E) * (l.A : E)`. Unfold `Level.M'`. Conclude with `Nat.gcd_mul_lcm l.M l.A` after adjusting the coercions. Rewrite using `[← Nat.cast_smul_eq_nsmul E, ← Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul E, hy1, hy2, smul_smul, smul_smul, ← add_smul, smul_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `conv_lhs => rw [← one_smul E t]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hGL.symm + (l.M' : E) * hG`. Introduce and unpack `⟨hU, h⟩`.
-
-Use `(hL γ).2 ⟨hU, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `h x (Submodule.smul_le_right hx)`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Conclude with `⟨k • y, Y.Λ.toAddSubmonoid.nsmul_mem hy k, by rw [e, hk, mul_smul]⟩`. Take `⟨y, hy, e⟩` from `h x hx`.
-
-Take `⟨k, hk⟩ : l.A ∣ l.M'` from `Nat.dvd_lcm_right _ _`. Conclude with `⟨k • y, Y.Λ.toAddSubmonoid.nsmul_mem hy k, by rw [e, hk, mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EqCovol.mem_iff_congr_lcm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (l : Level H) (r : ℕ) (Y : Data E r), GlobalTheory.EqCovol.IsLevGrp l Y → GlobalTheory.EqCovol.IsSelfDualTr Y →

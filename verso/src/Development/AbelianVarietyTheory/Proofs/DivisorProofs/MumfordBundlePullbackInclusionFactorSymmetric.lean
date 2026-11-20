@@ -20,9 +20,9 @@ variable {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] [IsCommMonObj G] {L : LB 
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `((List.finRange n).filter (· ∈ I)) with`. Consider the case `nil => simp only [List.foldr_nil, pzero]`. Rewrite using `[← Category.assoc, comp_toUnit]`. Consider the case `cons a l ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[← ih]`. Conclude with `MonObj.comp_mul _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_psum {n : ℕ} (h : T' ⟶ T) (x : Fin n → (T ⟶ G)) (I : Finset (Fin n)) :
     h ≫ psum G x I = psum G (fun k => h ≫ x k) I := by
@@ -44,7 +44,7 @@ def chartPullCube (L : LB G.left) (s t : T ⟶ G) (h : T' ⟶ T) (s' t' : T' ⟶
     exacts [hs, ht]
 
 /- English proof (translation)
-Use `lbIso_of_refines hL (refines_self _ _) (refines_self _ _) _ isGen_one fun U _ f => ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (Fintype.prod_empty _) (prod_square ![s, t] fun x => f x.left)).trans (Eq.symm ((prod_square ![t, s] fun x => f x.left).trans ?_))` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, _root_.one_mul, _root_.mul_comm t s]`. Rewrite using `[mul_right_comm (f _) (f t.left)⁻¹]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cube_swap (hL : L.IsLB) (s t : T ⟶ G) : LBIso (cubeLB G ![s, t] L) (cubeLB G ![t, s] L) := by
   refine lbIso_of_refines hL (refines_self _ _) (refines_self _ _) _ isGen_one fun U _ f => ?_
@@ -54,7 +54,7 @@ theorem cube_swap (hL : L.IsLB) (s t : T ⟶ G) : LBIso (cubeLB G ![s, t] L) (cu
   rw [mul_right_comm (f _) (f t.left)⁻¹]
 
 /- English proof (translation)
-Establish `r : LBIso (cubeLB G ![s, t] L) (cubeLB G ![s, t] L)` using `exists_iso hL rfl _`. Conclude with `LBIso.chartPull (chartPullCube L s t h s' t' hs ht) (GlobalTheory.chartPullPull _ h.left) r`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cube_pull (hL : L.IsLB) (s t : T ⟶ G) (h : T' ⟶ T) (s' t' : T' ⟶ G) (hs : s' = h ≫ s) (ht : t' = h ≫ t) :
     LBIso (cubeLB G ![s', t'] L) ((cubeLB G ![s, t] L).pull h.left) := by
@@ -62,7 +62,7 @@ theorem cube_pull (hL : L.IsLB) (s t : T ⟶ G) (h : T' ⟶ T) (s' t' : T' ⟶ G
   exact LBIso.chartPull (chartPullCube L s t h s' t' hs ht) (GlobalTheory.chartPullPull _ h.left) r
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullCube L _ _ (lift s t) _ _ (by simp) (by simp)) (chartPullCube L _ _ (lift s t) _ _ (by simp) (by simp)) H`.
+A detailed English derivation is pending.
 -/
 theorem cube_adj {a b : G ⟶ G}
     (H : LBIso (cubeLB G ![fst G G ≫ a, snd G G] L) (cubeLB G ![fst G G, snd G G ≫ b] L)) (s t : T ⟶ G) :
@@ -71,15 +71,13 @@ theorem cube_adj {a b : G ⟶ G}
     (chartPullCube L _ _ (lift s t) _ _ (by simp) (by simp)) H
 
 /- English proof (translation)
-Introduce `S G G' _ _ _ _ L hL O _ _ oG hadj e f inc _ he hef P hP hPL`. Establish `cI : ∀ s t : G2 G ⟶ G', (cubeLB G' ![s, t] L).IsLB` using `fun s t => DVR.linComb_isLB _ hL _ _`. Establish `lI : (abelian₂ G' L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Use `set x : G2 G ⟶ G' := fst G G ≫ inc with hx`. Use `set y : G2 G ⟶ G' := snd G G ≫ inc with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `xe : x ≫ oG.act e = x` using `by rw [hx, Category.assoc, he]`. Establish `ye : y ≫ oG.act e = y` using `by rw [hy, Category.assoc, he]`. Establish `h₁ : LBIso P (cubeLB G' ![x, y ≫ oG.act f] L)` using `hPL.trans hP (pull_isLB lI _) (cI _ _) (cube_pull hL _ _ _ _ _ (by simp) (by simp [hy])).symm`. Establish `h₂ : LBIso (P.pull (lift (snd G G) (fst G G)).left) (cubeLB G' ![y, x ≫ oG.act f] L)` using `LBIso.chartPull (GlobalTheory.chartPullPull P _) (chartPullCube L _ _ (lift (snd G G) (fst G G)) _ _ (by simp [hx, hy]) (by simp [hx, hy])) h₁`. Establish `h₃` using `cube_swap hL y (x ≫ oG.act f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄` using `cube_adj (hadj f) x y`. Establish `h₅` using `cube_adj (hadj e) x (y ≫ oG.act (star f))`. Establish `h₆` using `cube_adj (hadj e) x (y ≫ oG.act f)`. Rewrite `h₅`, `h₆` using `[xe]`. Establish `k : (y ≫ oG.act (star f)) ≫ oG.act (star e) = (y ≫ oG.act f) ≫ oG.act (star e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun a => y ≫ oG.act a) hef` as an intermediate fact. Simplify using `only [oG.map_mul] at this`. Rewrite `this` using `[← Category.assoc, ← Category.assoc, ← Category.assoc, ← Category.assoc, ye]`. Conclude with `this.symm`. Rewrite `h₅` using `[k]`.
-
-Establish `h₇ : LBIso (cubeLB G' ![y, x ≫ oG.act f] L) (cubeLB G' ![x, y ≫ oG.act f] L)` using `h₃.trans (cI _ _) (cI _ _) (cI _ _) (h₄.trans (cI _ _) (cI _ _) (cI _ _) (h₅.trans (cI _ _) (cI _ _) (cI _ _) h₆.symm))`. Conclude with `h₁.trans hP (cI _ _) (pull_isLB hP _) (h₇.symm.trans (cI _ _) (cI _ _) (pull_isLB hP _) h₂.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_swap : ∀ (S : Scheme.{0}) (G G' : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (L : LB G'.left), L.IsLB → ∀ (O : Type) [Ring O] [StarRing O] (oG : RingAct G' O), (∀ a : O, LBIso (cubeLB G' ![fst G' G' ≫ oG.act a, snd G' G'] L) (cubeLB G' ![fst G' G', snd G' G' ≫ oG.act (star a)] L)) → ∀ (e f : O) (inc : G ⟶ G'), IsMonHom inc → inc ≫ oG.act e = inc → star e * f * e = star e * star f * e → ∀ P : LB (G2 G).left, P.IsLB → LBIso P ((abelian₂ G' L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act f)).left) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) := by
   intro S G G' _ _ _ _ L hL O _ _ oG hadj e f inc _ he hef P hP hPL

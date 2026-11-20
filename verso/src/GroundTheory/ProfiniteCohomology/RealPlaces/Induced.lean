@@ -40,7 +40,7 @@ noncomputable def subsingletonCoindIso (M : Rep.{u} k K) : M ≅ discreteCoind k
       rw [Subsingleton.elim x 1]))
 
 /- English proof (translation)
-The claim follows from `(isZero_cohomology_discreteCoind k K M n).of_iso { hom := cohomologyMap (subsingletonCoindIso M).hom (n + 1) inv := cohomologyMap (subsingletonCoindIso M).inv (n + 1) hom_inv_id := by rw [← cohomologyMap_comp, Iso.hom_inv_id, cohomologyMap_id] inv_hom_id := by rw [← cohomologyMap …`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_succ_of_subsingleton (M : Rep.{u} k K) [IsDiscreteRep M] (n : ℕ) :
     IsZero (cohomology M (n + 1)) :=
@@ -60,18 +60,18 @@ def InOutCoset (y : G) : Prop :=
   ∃ u : U, y = (u : G) * (DoubleCoset.mk U ι.range y).out
 
 /- English proof (translation)
-Simplify using `using doubleCosetMk_mul_mul U ι y u 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem doubleCosetMk_mul_left (u : U) (y : G) :
     DoubleCoset.mk U ι.range ((u : G) * y) = DoubleCoset.mk U ι.range y := by
   simpa using doubleCosetMk_mul_mul U ι y u 1
 
 /- English proof (translation)
-Unfold `InOutCoset`. Rewrite using `[doubleCosetMk_mul_left]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u', hu'⟩`. Use `⟨u⁻¹ * u', ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc]`. Introduce and unpack `⟨u', hu'⟩`. Use `⟨u * u', ?_⟩` and prove the remaining obligations. Use `nth_rewrite 1 [hu']`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem inOutCoset_mul_left_iff (u : U) (y : G) : InOutCoset U ι ((u : G) * y) ↔ InOutCoset U ι y := by
   unfold InOutCoset
@@ -91,21 +91,17 @@ theorem inOutCoset_mul_left_iff (u : U) (y : G) : InOutCoset U ι ((u : G) * y) 
 variable [Fintype H] (N : Rep.{u} k U)
 
 /- English proof (translation)
-Establish `hmem : (fun y => if InOutCoset U ι y then f.1 y else 0) ∈ Representation.coindV U.subtype N.ρ`. Introduce `u y`. Express the relevant statement in the definitionally equal form `(if InOutCoset U ι ((u : G) * y) then f.1 ((u : G) * y) else 0) = N.ρ u (if InOutCoset U ι y then f.1 y else 0)`. Distinguish the cases in `hy : InOutCoset U ι y`. Rewrite using `[if_pos ((inOutCoset_mul_left_iff U ι u y).2 hy), if_pos hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f.2 u y`. Rewrite using `[if_neg (mt (inOutCoset_mul_left_iff U ι u y).1 hy), if_neg hy, map_zero]`. Use `⟨⟨_, hmem⟩, Subtype.ext (funext fun y => ?_)⟩` and prove the remaining obligations. Establish `hnorm : ((Rep.res ι (Rep.coind U.subtype N)).ρ.norm ⟨_, hmem⟩).1 y = ∑ h : H, (if InOutCoset U ι (y * ι h) then f.1 (y * ι h) else 0)`. Rewrite using `[Representation.norm, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hnorm]`. Take `⟨u₀, h₀, e₀⟩` from `exists_eq_mul_out_mul U ι y`. Use `set x := (DoubleCoset.mk U ι.range y).out with hx`. Establish `hD : ∀ h : H, DoubleCoset.mk U ι.range (y * ι h) = DoubleCoset.mk U ι.range y` using `fun h => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `doubleCosetMk_mul_mul U ι y 1 h` as an intermediate fact. Simplify using `using this`. Establish `hinv : ∀ h : H, f.1 (y * ι h) = f.1 y` using `fun h => congrArg (fun g : Rep.res ι (Rep.coind U.subtype N) => g.1 y) (hf h)`. Rewrite using `[Finset.sum_eq_single h₀⁻¹]`. Rewrite using `[if_pos, hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u₀, ?_⟩` and prove the remaining obligations. Rewrite using `[hD, ← hx, e₀, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Introduce `h _ hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hu` using `[hD, ← hx]`. Apply `hne` to reduce the goal to its premises. Establish `key : x * ι (h₀ * h) * x⁻¹ = ((u₀⁻¹ * u : U) : G)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`.
-
-Use `group`. Use `_ = (u₀ : G)⁻¹ * (y * ι h) * x⁻¹ := by rw [← e₀]`. Use `_ = (u₀ : G)⁻¹ * ((u : G) * x) * x⁻¹ := by rw [hu]`. Use `_ = ((u₀⁻¹ * u : U) : G) := by rw [Subgroup.coe_mul, Subgroup.coe_inv]; group`. Conclude with `eq_inv_of_mul_eq_one_right (hfree x _ (key ▸ (u₀⁻¹ * u).2))`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_norm_eq_res_coind (hfree : ∀ (x : G) (h : H), x * ι h * x⁻¹ ∈ U → h = 1)
     (f : Rep.res ι (Rep.coind U.subtype N))
@@ -201,9 +197,7 @@ def FreeOnCosets (U : Subgroup G) : Prop :=
 variable (U : OpenSubgroup G) (N : Rep.{u} k (U : Subgroup G)) [IsDiscreteRep N]
 
 /- English proof (translation)
-Establish `hb` using `mackeyCohomology_bijective U (ψ w) N (n + 1)`. Establish `hsub : ∀ d : MackeyDoubleCoset (U : Subgroup G) (ψ w).toMonoidHom, Subsingleton (cohomology (mackeyRep (U : Subgroup G) (ψ w).toMonoidHom N d.out) (n + 1))` using `fun d => by`. Establish `: Subsingleton (mackeySubgroup (U : Subgroup G) (ψ w).toMonoidHom d.out)` using `⟨fun a b => Subtype.ext ((hU w d.out a ((mem_mackeySubgroup _ _ _ _).1 a.2)).trans (hU w d.out b ((mem_mackeySubgroup _ _ _ _).1 b.2)).symm)⟩`. Conclude with `ModuleCat.isZero_iff_subsingleton.1 (isZero_cohomology_succ_of_subsingleton _ n)`. Establish `: Subsingleton (cohomology (Rep.res (ψ w).toMonoidHom (Rep.coind (U : Subgroup G).subtype N)) (n + 1))` using `⟨fun c c' => hb.1 (funext fun d => Subsingleton.elim _ _)⟩`.
-
-Conclude with `ModuleCat.isZero_of_subsingleton _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_res_coind (hU : FreeOnCosets ψ (U : Subgroup G)) (w : κ) (n : ℕ) :
     IsZero (cohomology (Rep.res (ψ w).toMonoidHom (Rep.coind (U : Subgroup G).subtype N)) (n + 1)) := by
@@ -223,7 +217,7 @@ theorem isZero_cohomology_res_coind (hU : FreeOnCosets ψ (U : Subgroup G)) (w :
 omit [IsTopologicalGroup G] [CompactSpace G] [∀ w, IsTopologicalGroup (F w)] [IsDiscreteRep N] in
 
 /- English proof (translation)
-The claim follows from `exists_norm_eq_res_coind (U : Subgroup G) (ψ w).toMonoidHom N (hU w) f hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_norm_eq_res_coind' (hU : FreeOnCosets ψ (U : Subgroup G)) (w : κ)
     (f : Rep.res (ψ w).toMonoidHom (Rep.coind (U : Subgroup G).subtype N))

@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-Introduce `V _ _ U hU hUc q ω hω y hy`. Conclude with `StokesSlices.asm StokesSlices.subAlt StokesSlices.subHyp StokesSlices.subSlice U hU hUc q ω hω y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sStokes_of : SStokes := by
   intro V _ _ U hU hUc q ω hω y hy

@@ -10,7 +10,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {LL V : Type} [Field LL] [Alg
   [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing b with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Module.End.mul_apply, phiV_tmul, ih, pow_succ, AlgHom.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem phiV_pow_tmul (n : ℕ) (v : V) (b : Bst P) :
     (phiV P LL V ^ n) (v ⊗ₜ[ℚ_[l]] b) = v ⊗ₜ[ℚ_[l]] (phiSt P ^ n) b := by
@@ -22,7 +22,7 @@ private theorem phiV_pow_tmul (n : ℕ) (v : V) (b : Bst P) :
 variable {K : FinExt l} (ρ : Representation LL ↥(GK K) V)
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, coe_phiD, pow_succ, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coe_phiD_pow (n : ℕ) (x : ↥(Dpst P ρ)) :
     (((phiD P ρ ^ n) x : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) = (phiV P LL V ^ n) (x : V ⊗[ℚ_[l]] Bst P) := by
@@ -32,7 +32,7 @@ private theorem coe_phiD_pow (n : ℕ) (x : ↥(Dpst P ρ)) :
     rw [pow_succ, Module.End.mul_apply, ih, coe_phiD, pow_succ, Module.End.mul_apply]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rw [phiV_pow_tmul, stRep_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 private theorem stRep_phiV_pow (γ : ↥(GK K)) (n : ℕ) (y : V ⊗[ℚ_[l]] Bst P) :
     stRep P ρ γ ((phiV P LL V ^ n) y) =
@@ -45,7 +45,7 @@ private theorem stRep_phiV_pow (γ : ↥(GK K)) (n : ℕ) (y : V ⊗[ℚ_[l]] Bs
 end
 
 /- English proof (translation)
-Introduce `l _ P E Ω _ _ _ _ _ A w h O _ _ _ Bw LL V _ _ _ _ ρ _ g hg x`. Establish `e : -alpha l g = (resDeg l w : ℤ)` using `by simp [alpha, hg]`. Rewrite using `[weilD_apply, e, zpow_natCast, Units.val_pow_eq_pow_val, coe_phiU, End.mul_apply, coe_actD, coe_phiD_pow, stRep_phiV_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.crystallineComparison.detWeil_of :
     WeilCo := by

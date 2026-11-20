@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Rewrite using `[show (∑ j : Fin l, f (Fin.castLE h j)) = ∑ j ∈ Finset.univ.map (Fin.castLEEmb h), f j from (Finset.sum_map Finset.univ (Fin.castLEEmb h) f).symm]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => hf j ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hj (Finset.mem_map.mpr ⟨⟨j.val, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sum_fin_castLE {m l : ℕ} (h : l ≤ m) (f : Fin m → ℂ)
     (hf : ∀ j : Fin m, l ≤ j.val → f j = 0) :
@@ -21,13 +21,13 @@ theorem sum_fin_castLE {m l : ℕ} (h : l ≤ m) (f : Fin m → ℂ)
   exact hj (Finset.mem_map.mpr ⟨⟨j.val, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
 /- English proof (translation)
-Establish `hord : ∀ i j : Fin l, i < j → Fin.castLE hl i < Fin.castLE hl j` using `fun i j h => Fin.lt_def.2 (by simpa using Fin.lt_def.1 h)`. Establish `h1 : (L * X).submatrix (Fin.castLE hl) (Fin.castLE hl) = L.submatrix (Fin.castLE hl) (Fin.castLE hl) * X.submatrix (Fin.castLE hl) (Fin.castLE hl)`. Use extensionality with `i j`. Simplify using `only [submatrix_apply, mul_apply]`. Rewrite using `[sum_fin_castLE hl (fun q => L (Fin.castLE hl i) q * X q (Fin.castLE hl j)) (fun q hq => by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hL0 _ _ (Fin.lt_def.2 (by simp; omega)), zero_mul])]`. Establish `h2 : (Y * U).submatrix (Fin.castLE hl) (Fin.castLE hl) = Y.submatrix (Fin.castLE hl) (Fin.castLE hl) * U.submatrix (Fin.castLE hl) (Fin.castLE hl)`. Use extensionality with `i j`. Simplify using `only [submatrix_apply, mul_apply]`. Rewrite using `[sum_fin_castLE hl (fun q => Y (Fin.castLE hl i) q * U q (Fin.castLE hl j)) (fun q hq => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hU0 _ _ (Fin.lt_def.2 (by simp; omega)), mul_zero])]`. Establish `hdL : (L.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular (L.submatrix (Fin.castLE hl) (Fin.castLE hl)) (fun i j hij => hL0 _ _ (hord _ _ (OrderDual.toDual_lt_toDual.mp hij)))]`. Simplify using `[hL1]`. Establish `hdU : (U.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_of_upperTriangular (M := U.submatrix (Fin.castLE hl) (Fin.castLE hl)) (fun i j hij => hU0 _ _ (hord _ _ hij))]`. Simplify using `[hU1]`. Establish `h3` using `congrArg Matrix.det (show (L * X).submatrix (Fin.castLE hl) (Fin.castLE hl) = (Y * U).submatrix (Fin.castLE hl) (Fin.castLE hl) by rw [h])`. Rewrite `h3` using `[h1, h2, Matrix.det_mul, Matrix.det_mul, hdL, hdU, one_mul, mul_one]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_eq_of_mul {m : ℕ} (L U X Y : Matrix (Fin m) (Fin m) ℂ)
     (hL0 : ∀ i j : Fin m, i < j → L i j = 0) (hL1 : ∀ i, L i i = 1)
@@ -65,7 +65,7 @@ def Fm (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Matrix (Fin (2 * r + k + 
   Matrix.of fun i a => fvec k r z a i
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_assoc]`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem Zhat_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -75,7 +75,7 @@ theorem Zhat_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
   rfl
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Establish `h1 : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Establish `h2 : mᴴ * Hpk k r * m = Hpk k r` using `hm.1`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem Sset_UH {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ Sset k r z) :
@@ -88,9 +88,9 @@ theorem Sset_UH {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     _ = Hpk k r := by rw [h1, h2]
 
 /- English proof (translation)
-Use extensionality with `i a`. Express the relevant statement in the definitionally equal form `(h *ᵥ fvec k r z a) i = fvec k r z a i`. Unfold `fvec`. Use `split_ifs with ha`. Rewrite using `[(hh.2.1 ⟨a.val, ha⟩).1]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh.2.2]`.
+A detailed English derivation is pending.
 -/
 theorem UW_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
@@ -103,7 +103,7 @@ theorem UW_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
   · rw [hh.2.2]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(m *ᵥ fvec k r z a) i = _`. Simplify using `[fvec, hA, bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mF_col {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ)
     (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i : Fin (2 * r + k + 1))
@@ -117,9 +117,7 @@ def Uof (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ)
   fun c a => if hc : c.val < r then (m * Fm k r z) (eI k r ⟨c.val, hc⟩) a else if c = a then 1 else 0
 
 /- English proof (translation)
-Unfold `fvec`. Use `split_ifs with hc h1 h1`. Simplify using `[bvec, eI, Pi.single_apply, Fin.ext_iff, h1]`. Apply the tactic sequence `simp [bvec, eI, Pi.single_apply, Fin.ext_iff] <;> omega`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `hz i (Or.inl hi)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fvec_apply_lt {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
     (c : Fin (r + 1)) (i : Fin (2 * r + k + 1)) (hi : i.val < r) :
@@ -132,9 +130,9 @@ theorem fvec_apply_lt {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k
   · exact hz i (Or.inl hi)
 
 /- English proof (translation)
-Unfold `fvec`. Use `split_ifs with hc h1 h1`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `simp [bvec, eI, Pi.single_apply, Fin.ext_iff] <;> omega`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `c.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem fvec_apply_ge {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ)
     (c : Fin (r + 1)) (i : Fin (2 * r + k + 1)) (hi : r ≤ i.val) :
@@ -148,25 +146,23 @@ theorem fvec_apply_ge {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ)
     omega
 
 /- English proof (translation)
-Establish `hm2` using `hm.2.1`. Establish `hm3` using `hm.2.2`. Use extensionality with `i a`. Use `conv_rhs => rw [Matrix.mul_apply]`. Distinguish the cases in `hi : i.val < r`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hF : ∀ c, Fm k r z i c = if c = ⟨i.val, by omega⟩ then 1 else 0` using `fun c => by`. Express the relevant statement in the definitionally equal form `fvec k r z c i = _`. Rewrite using `[fvec_apply_lt z hz c i hi]`. Simplify using `[Fin.ext_iff]`. Simplify using `only [hF, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Uof, hi, eI]`. Establish `hF : ∀ c, Fm k r z i c = if c = Fin.last r then z i else 0` using `fun c => by`. Express the relevant statement in the definitionally equal form `fvec k r z c i = _`. Rewrite using `[fvec_apply_ge z c i (by omega)]`. Simplify using `[Fin.ext_iff]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hF, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hU : Uof k r z m (Fin.last r) a = if Fin.last r = a then 1 else 0` using `by simp [Uof]`. Rewrite using `[hU]`. Distinguish the cases in `ha : a.val < r`. Rewrite using `[mF_col z m i a ha, hm2 ⟨a.val, ha⟩ i (by show a.val ≤ i.val; omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : i ≠ eI k r ⟨a.val, ha⟩`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Express the relevant statement in the definitionally equal form `i.val = a.val at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2 : Fin.last r ≠ a`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`. Establish `ha' : a = Fin.last r` using `Fin.ext (by have := a.isLt; simp; omega)`. Substitute `ha'` using the available equality. Simplify using `only [if_true, mul_one]`. Express the relevant statement in the definitionally equal form `(m *ᵥ fvec k r z (Fin.last r)) i = z i`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hf : fvec k r z (Fin.last r) = z` using `by simp [fvec]`. Rewrite using `[hf]`. Establish `hterm : ∀ j, m i j * z j = if i = j then z j else 0`. Introduce `j`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz j hj]`. Simplify using the standard rewrite rules. Use `push_neg at hj`. Rewrite using `[hm3 i j hj.1 hj.2 (by omega)]`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Simplify using `only [Matrix.mulVec, dotProduct, hterm, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem N_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : m ∈ Nset k r) :
@@ -221,11 +217,11 @@ theorem N_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
       simp only [Matrix.mulVec, dotProduct, hterm, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hm2` using `hm.2.1`. Establish `hac' : a.val < c.val` using `hac`. Distinguish the cases in `hc : c.val < r`. Simplify using `only [Uof, hc, dif_pos]`. Rewrite using `[mF_col z m _ a (by omega), hm2 ⟨a.val, by omega⟩ _ (by show a.val ≤ c.val; omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Express the relevant statement in the definitionally equal form `c.val = a.val at this`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Establish `hne : c ≠ a` using `fun h => by rw [h] at hac'; omega`. Simplify using `[Uof, hc, hne]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Uof_lower_zero {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : m ∈ Nset k r)
@@ -244,7 +240,7 @@ theorem Uof_lower_zero {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     simp [Uof, hc, hne]
 
 /- English proof (translation)
-Establish `hm2` using `hm.2.1`. Distinguish the cases in `hc : c.val < r`. Simplify using `only [Uof, hc, dif_pos]`. Rewrite using `[mF_col z m _ c hc, hm2 ⟨c.val, hc⟩ _ (le_refl _), if_pos rfl]`. Simplify using `[Uof, hc]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Uof_diag {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : m ∈ Nset k r)
@@ -256,7 +252,7 @@ theorem Uof_diag {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
   · simp [Uof, hc]
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Use `⟨Uof k r z m, fun c a hac => Uof_lower_zero hm c a hac, fun c => Uof_diag hm c, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, N_F hz hm, ← Matrix.mul_assoc, UW_F hh]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ Sset k r z) :
@@ -267,13 +263,13 @@ theorem S_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
   rw [Matrix.mul_assoc, N_F hz hm, ← Matrix.mul_assoc, UW_F hh]
 
 /- English proof (translation)
-Introduce `k r z z' hz hz' s hs s' hs' g l`. Take `⟨U, hU0, hU1, hsF⟩` from `S_F hz hs`. Take `⟨U', hU0', hU1', hsF'⟩` from `S_F hz' hs'`. Establish `hH : sᴴ * Hpk k r * s = Hpk k r` using `Sset_UH hs`. Establish `hFs : (Fm k r z)ᴴ * sᴴ = Uᴴ * (Fm k r z)ᴴ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← conjTranspose_mul, hsF, conjTranspose_mul]`. Establish `hL0 : ∀ i j : Fin (r + 1), i < j → Uᴴ i j = 0` using `fun i j hij => by`. Simplify using `[conjTranspose_apply, hU0 j i hij]`. Establish `hL1 : ∀ i, Uᴴ i i = 1` using `fun i => by simp [conjTranspose_apply, hU1 i]`. Establish `hmul : Uᴴ * Zhat k r z z' (s * g * s') = Zhat k r z z' g * U'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Zhat_eq, Zhat_eq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Fm k r z)ᴴ * (sᴴ * Hpk k r * s) * g * (s' * Fm k r z') := by`. Rewrite using `[← hFs]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Fm k r z)ᴴ * Hpk k r * g * Fm k r z' * U' := by`. Rewrite using `[hH, hsF']`. Simplify using `only [Matrix.mul_assoc]`. Conclude with `minor_eq_of_mul Uᴴ U' _ _ hL0 hL1 hU0' hU1' hmul l.val _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagonal_inverse_holds : DInv := by
   intro k r z z' hz hz' s hs s' hs' g l
@@ -299,14 +295,14 @@ theorem diagonal_inverse_holds : DInv := by
   exact minor_eq_of_mul Uᴴ U' _ _ hL0 hL1 hU0' hU1' hmul l.val _
 
 /- English proof (translation)
-Introduce `k r z z' hz hz' s hs s' hs' g`. Simplify using `only [Gf, diagonal_inverse_holds k r z z' hz hz' s hs s' hs' g]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem group_inverse_holds : GInv := by
   intro k r z z' hz hz' s hs s' hs' g
   simp only [Gf, diagonal_inverse_holds k r z z' hz hz' s hs s' hs' g]
 
 /- English proof (translation)
-Introduce `k r z z' g h`. Establish `hne : Complex.normSq (Dmin k r z z' g ⟨r, by omega⟩) ≠ 0` using `(Complex.normSq_pos.mpr h).ne'`. Simplify using `only [Gf, GGf, zeta, Complex.normSq_div]`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem group_factorization_holds : GFactor := by
   intro k r z z' g h

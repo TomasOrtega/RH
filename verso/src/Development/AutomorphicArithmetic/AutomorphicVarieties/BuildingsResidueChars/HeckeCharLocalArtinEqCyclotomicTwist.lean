@@ -10,17 +10,15 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands Glo
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `N F Ω _ _ _ _ _ l _ ι χ ξ t hξ ⟨hc, art, n, hart, _, hL⟩ w hw A h a ha s`. Use `haveI : Finite (G F Ω ⧸ ξ.ker) := ξ.ker.quotient_finite_of_isOpen hξ`. Establish `hN : ξ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h1` using `UpperTheory.V.Loc.laHecke h art hart ι χ n _ hL ⟨a, ha⟩`. Establish `h2` using `UpperTheory.V.Loc.laArith N.aut.art h hw ((cycBar F Ω l ^ t * ξ).comp (Dec (F := F) A).subtype) (hc.comp continuous_subtype_val) t ξ.ker.index (Nat.pos_of_ne_zero hN) fun g _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((cycBar F Ω l ^ t * ξ).comp (Dec (F` using `F) A).subtype) g * cycBar F Ω l g ^ (-t) = ξ g := by show cycBar F Ω l g ^ t * ξ g * cycBar F Ω l g ^ (-t) = ξ g`. Rewrite using `[mul_right_comm, ← zpow_add, add_neg_cancel, zpow_zero, one_mul]`. Rewrite using `[e, ← map_pow]`. Conclude with `ξ.ker.pow_index_mem _`. Establish `h3` using `UpperTheory.V.Loc.laUnique h ⟨a, ha⟩ _ _ _ h1 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `haveI : Fintype {j : w.adicCompletion F →+* Qbar l // Continuous j} := @Fintype.ofFinite _ (finite_contEmb w)`. Establish `h4 : locPow ι n w (a s : w.adicCompletion F) = Hi.algPow w (fun _ => 1) (a s : w.adicCompletion F) ^ t`. Unfold `locPow Hi.algPow`. Rewrite using `[finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype, ← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[neg_injective (congrFun h3 j), zpow_one]`. Establish `h0 : Hi.algPow w (fun _ : F →+* Qbar l => 1) (a s : w.adicCompletion F) ^ t ≠ 0`. Use `zpow_ne_zero _ ?_` and prove the remaining obligations. Unfold `Hi.algPow`. Rewrite using `[finprod_eq_prod_of_fintype]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => zpow_ne_zero _ ((map_ne_zero j.1).2 (a s).ne_zero)`. Establish `h5` using `hL.loc (a s) s (ha.glob art hart s)`. Establish `h6` using `UpperTheory.V.Loc.epsArt N.aut.art h hw a ha s`. Establish `h7 : (((cycBar F Ω l ^ t * ξ) (s : G F Ω) : (Qbar l)ˣ) : Qbar l) = (cycBar F Ω l (s : G F Ω) : Qbar l) ^ t * (ξ (s : G F Ω) : Qbar l)`. Rewrite using `[← Units.val_zpow_eq_zpow_val, ← Units.val_mul]`.
-
-Both sides reduce to the same expression. Rewrite `h5` using `[h7, h6, h4, mul_zpow, mul_right_comm, mul_left_inj' h0, eq_comm, RingEquiv.symm_apply_eq]`. Rewrite using `[h5, map_mul, map_zpow₀, map_zpow₀, map_natCast, ← zpow_mul, mul_comm t]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.heckeChar_localArtin_eq_cyclotomic_twist :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (χ : HChar F) (ξ : G F Ω →* (Qbar l)ˣ) (t : ℤ), IsOpen (ξ.ker : Set (G F Ω)) → IsCharOf ι χ (cycBar F Ω l ^ t * ξ) → ∀ (w : HeightOneSpectrum (𝓞 F)), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion F)ˣ), IsLocalArtin h a → ∀ s : Weil h, ((χ.loc w (a s) : ℂˣ) : ℂ) = ((normV w : ℕ) : ℂ) ^ (t * deg s) * ι (ξ (s : G F Ω) : Qbar l) := by

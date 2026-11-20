@@ -17,7 +17,7 @@ def Eqv (j : ℕ) (F : X.Fm j) : Prop :=
     F c ((X.Lv.lev j c).smul γ L) = ((X.Lv.lev j c).χ γ : X.G.O) • (X.Lv.lev j c).actX γ (F c L)
 
 /- English proof (translation)
-Simplify using `only [Sys.Int, Levels.Int, Submodule.mem_pi, Set.mem_univ, true_implies, Level.M, Level.funMod, Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mem_ker, LinearMap.proj_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.restrict …`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Int_iff (j : ℕ) (F : X.Fm j) :
     F ∈ X.Int j ↔ (∀ c (L : (X.Pj j).Tup), (X.Pj j).IsLatTup L → F c L ∈ (X.Pj j).HtupW L) ∧ Eqv X j F := by
@@ -27,7 +27,7 @@ theorem mem_Int_iff (j : ℕ) (F : X.Fm j) :
     sub_eq_zero, Eqv, forall_and, and_assoc]
 
 /- English proof (translation)
-Use `⟨fun c L hL => ?_, fun c γ L => ?_⟩` and prove the remaining obligations. Simplify using `[h.1 c L hL]`. Simplify using `only [Pi.smul_apply, h.2 c γ L]`. Rewrite using `[smul_comm, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Eqv_smul {j : ℕ} {F : X.Fm j} (a : X.G.Kf) (h : Eqv X j F) : Eqv X j (a • F) := by
   refine ⟨fun c L hL => ?_, fun c γ L => ?_⟩
@@ -36,7 +36,7 @@ theorem Eqv_smul {j : ℕ} {F : X.Fm j} (a : X.G.Kf) (h : Eqv X j F) : Eqv X j (
     rw [smul_comm, map_smul]
 
 /- English proof (translation)
-Use `⟨fun c L hL => ?_, fun c γ L => ?_⟩` and prove the remaining obligations. Simplify using `[h.1 c L hL, h'.1 c L hL]`. Simplify using `[h.2 c γ L, h'.2 c γ L, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Eqv_add {j : ℕ} {F F' : X.Fm j} (h : Eqv X j F) (h' : Eqv X j F') : Eqv X j (F + F') := by
   refine ⟨fun c L hL => ?_, fun c γ L => ?_⟩
@@ -44,16 +44,16 @@ theorem Eqv_add {j : ℕ} {F F' : X.Fm j} (h : Eqv X j F) (h' : Eqv X j F') : Eq
   · simp [h.2 c γ L, h'.2 c γ L, smul_add]
 
 /- English proof (translation)
-Use `⟨fun _ _ _ => rfl, fun c γ L => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Eqv_zero (j : ℕ) : Eqv X j 0 := by
   refine ⟨fun _ _ _ => rfl, fun c γ L => ?_⟩
   simp
 
 /- English proof (translation)
-Unfold `Sys.FQ at h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact ((mem_Int_iff X j x).1 hx).2`. Consider the case `zero => exact Eqv_zero X j`. Consider the case `add x y _ _ hx hy => exact Eqv_add X hx hy`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => exact Eqv_smul X a hx`.
+Treat this case separately.
 -/
 theorem Eqv_of_FQ {j : ℕ} {F : X.Fm j} (h : F ∈ X.FQ j) : Eqv X j F := by
   unfold Sys.FQ at h
@@ -66,13 +66,13 @@ theorem Eqv_of_FQ {j : ℕ} {F : X.Fm j} (h : F ∈ X.FQ j) : Eqv X j F := by
 variable {X}
 
 /- English proof (translation)
-Unfold `Sys.vGe scale`. Rewrite using `[Submodule.mem_map]`. Distinguish the cases in `hc : X.vsc g = 0`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c L`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, hc, zero_smul, Pi.zero_apply]`. Distinguish the cases in `hL : (X.Pj j).IsLatTup L`. Take `⟨y, _, hy⟩` from `hv c L hL`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, hc, zero_smul] at hy`. Conclude with `hy`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hE.1 c L hL).symm`. Use `⟨(X.vsc g)⁻¹ • F, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Int_iff]`. Use `⟨fun c L hL => ?_, Eqv_smul X _ hE⟩` and prove the remaining obligations. Take `⟨y, hy, hy'⟩` from `hv c L hL`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply] at hy'`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[← hy', smul_smul, inv_mul_cancel₀ hc, one_smul]`. Conclude with `hy`. Simplify using `[smul_smul, inv_mul_cancel₀ hc, mul_inv_cancel₀ hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vGe_of (Y : Pend X) {j : ℕ} {F : X.Fm j} {g : ℝ} (hE : Eqv X j F)
     (hv : ∀ c (L : (X.Pj j).Tup), (X.Pj j).IsLatTup L → F c L ∈ scale (X.vsc g) ((X.Pj j).HtupW L)) :
@@ -107,49 +107,47 @@ def ERel (J : ℕ) (i0 : X.Pl → ℕ) (L'' L' : (X.Pj J).Tup) : Prop :=
 def pN (J : ℕ) (i0 : X.Pl → ℕ) (v : X.Pl) : X.G.Kf := (p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) J (i0 v))
 
 /- English proof (translation)
-Simplify using `[pN, h, Nprime]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pN_zero (J : ℕ) (i0 : X.Pl → ℕ) (v : X.Pl) (h : i0 v = 0) : pN X J i0 v = 1 := by
   simp [pN, h, Nprime]
 
 /- English proof (translation)
-Simplify using `[Sys.vB, Sys.vJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vB_vJ (J : ℕ) (v : X.Pl) : X.vB J (X.vJ J v) = v := by
   simp [Sys.vB, Sys.vJ]
 
 /- English proof (translation)
-Simplify using `[Sys.vB, Sys.vJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vJ_vB (J : ℕ) (v' : Fin (X.Pj J).nV) : X.vJ J (X.vB J v') = v' := by
   simp [Sys.vB, Sys.vJ]
 
 /- English proof (translation)
-Introduce `vs`. Proceed by induction on `vs with`. Consider the case `nil`. Introduce `_ a Lc H`. Use `H Lc (fun v' => Or.inl ⟨by simp, rfl⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[TtL]`. Consider the case `cons v vs ih`. Introduce `hnd a Lc H`. Establish `hv : v ∉ vs` using `(List.nodup_cons.mp hnd).1`. Establish `hnd' : vs.Nodup` using `(List.nodup_cons.mp hnd).2`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : TtL X J i0 (v :: vs) F = X.Tt v (i0 v) J (TtL X J i0 vs F)` using `rfl`. Rewrite using `[hT]`. Distinguish the cases in `h0 : i0 v = 0`. Unfold `Sys.Tt`. Rewrite using `[if_pos h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `ih hnd' a Lc` to reduce the goal to its premises. Introduce `L'' hrel`. Establish `hfun : (fun u => if u ∈ v :: vs then i0 u else 0) = (fun u => if u ∈ vs then i0 u else 0)`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Simplify using `[h0, hv]`. Simplify using `[hu]`. Use `H L'' (by rw [hfun]; exact hrel)` as an intermediate fact. Rewrite `this` using `[List.map_cons, List.prod_cons, pN_zero X J i0 v h0, one_mul]`. Then use the resulting hypothesis.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Unfold `Sys.Tt`. Rewrite using `[if_neg h0]`. Use `show a • ((p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) J (i0 v)) • ∑ᶠ (L1 : Submodule ((X.Pj J).W (X.vJ J v)) (Fin ((X.Pj J).m + 1) → (X.Pj J).Qq (X.vJ J v))) (_ : IsEdge p ((X.Pj J).n' (X.vJ J v)) (i0 v) ⟨L1, Lc (X.vJ J v)⟩), TtL X J i0 vs F c' (Function.update Lc (X.vJ J v) L1 …`. Rewrite using `[smul_smul]`. Use `finsum_induction (fun x => (a * (p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) J (i0 v))) • x ∈ T) (by rw [smul_zero]; exact T.zero_mem) (fun x y hx hy => by rw [smul_add]; exact T.add_mem hx hy) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `L1`. Use `finsum_induction (fun x => (a * (p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) J (i0 v))) • x ∈ T) (by rw [smul_zero]; exact T.zero_mem) (fun x y hx hy => by rw [smul_add]; exact T.add_mem hx hy) ?_` and prove the remaining obligations. Introduce `hE`. Apply `ih hnd'` to reduce the goal to its premises. Introduce `L'' hrel`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `H L'' ?_` as an intermediate fact. Rewrite `this` using `[List.map_cons, List.prod_cons, ← mul_assoc]`. Then use the resulting hypothesis. Introduce `v'`. Distinguish the cases in `hv' : v' = X.vJ J v`. Substitute `hv' right` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h1` using `hrel (X.vJ J v)`. Simplify using `only [vB_vJ, if_neg hv] at h1`. Break down `h1 with ⟨_, h1⟩ | ⟨h1, _⟩` into its components or cases. Simplify using `only [vB_vJ, List.mem_cons, true_or, if_true]`. Use `⟨Nat.one_le_iff_ne_zero.mpr h0, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : Function.update (β` using `fun a => Submodule ((X.Pj J).W a) (Fin ((X.Pj J).m + 1) → (X.Pj J).Qq a)) Lc (X.vJ J v) L1 (X.vJ J v) = L1 := Function.update_self _ _ _`. Establish `h1' : L'' (X.vJ J v) = L1` using `h1.trans e1`. Rewrite using `[h1']`. Conclude with `hE`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : X.vB J v' ≠ v`. Introduce `h`. Apply `hv'` to reduce the goal to its premises. Rewrite using `[← h, vJ_vB]`. Establish `e2 : Function.update (β` using `fun a => Submodule ((X.Pj J).W a) (Fin ((X.Pj J).m + 1) → (X.Pj J).Qq a)) Lc (X.vJ J v) L1 v' = Lc v' := Function.update_of_ne hv' _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hval : (if X.vB J v' ∈ v :: vs then i0 (X.vB J v') else 0) = (if X.vB J v' ∈ vs then i0 (X.vB J v') else 0)`. Simplify using `only [List.mem_cons, hne, false_or]`. Use `show (if X.vB J v' ∈ v :: vs then i0 (X.vB J v') else 0) = 0 ∧ L'' v' = Lc v' ∨ 1 ≤ (if X.vB J v' ∈ v :: vs then i0 (X.vB J v') else 0) ∧ IsEdge p ((X.Pj J).n' v') (if X.vB J v' ∈ v :: vs then i0 (X.vB J v') else 0) ⟨L'' v', Lc v'⟩`. Rewrite using `[hval]`. Break down `hrel v' with ⟨ha, hb⟩ | ⟨ha, hb⟩` into its components or cases.
-
-Conclude with `Or.inl ⟨ha, hb.trans e2⟩`. Conclude with `Or.inr ⟨ha, (congrArg (fun Z => IsEdge p ((X.Pj J).n' v') (if X.vB J v' ∈ vs then i0 (X.vB J v') else 0) ⟨L'' v', Z⟩) e2).mp hb⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem TtL_mem (J : ℕ) (i0 : X.Pl → ℕ) (c' : X.Lv.comp J) (T : Submodule X.G.O (X.Pj J).Xsp) (F : X.Fm J) :
     ∀ (vs : List X.Pl), vs.Nodup → ∀ (a : X.G.Kf) (Lc : (X.Pj J).Tup),
@@ -233,7 +231,7 @@ theorem TtL_mem (J : ℕ) (i0 : X.Pl → ℕ) (c' : X.Lv.comp J) (T : Submodule 
 variable {X}
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[MvPolynomial.coeff_map, MvPolynomial.coeff_smul, Algebra.smul_def, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smulK (Y : Pend X) {σ : Type*} (a : X.G.Kf) (x : MvPolynomial σ X.G.Kf) :
     MvPolynomial.map (algebraMap X.G.Kf Y.Kc) (a • x) = a • MvPolynomial.map (algebraMap X.G.Kf Y.Kc) x := by
@@ -248,7 +246,7 @@ def KSum (Y : Pend X) (j : ℕ) (cK : Y.Kc) (Cl Yb : Type) [Fintype Cl] [Fintype
       ∑ x : Cl, (((wt x : Y.Kc))⁻¹ * cK) • ∑ y : Yb, Y.ker j (La x y) (c', L') (F (La x y).1 (La x y).2)
 
 /- English proof (translation)
-Use `⟨fun x _ => Y.Rep_lat j x.1 x.2, fun x => ⟨Y.stab_fin j hj x.1 (Y.Rep_lat j x.1 x.2), X.dG_spec j hj x.1.1 x.1.2 (Y.Rep_lat j x.1 x.2)⟩, fun F hF c' L' hL' => ?_⟩` and prove the remaining obligations. Rewrite using `[h4 F hF c' L' hL']`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Conclude with `(Finset.sum_coe_sort (Y.Rep j) (fun La => (((X.stab j La : Y.Kc))⁻¹ * cK) • Y.ker j La (c', L') (F La.1 La.2))).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ksum_entry (Y : Pend X) {j : ℕ} (hj : j ≤ X.mm) {cK : Y.Kc}
     (h4 : ∀ F ∈ X.FQ j, ∀ (c' : X.Lv.comp (j + 1)) (L' : (X.Pj (j + 1)).Tup), (X.Pj (j + 1)).IsLatTup L' →
@@ -263,7 +261,7 @@ theorem ksum_entry (Y : Pend X) {j : ℕ} (hj : j ≤ X.mm) {cK : Y.Kc}
     (fun La => (((X.stab j La : Y.Kc))⁻¹ * cK) • Y.ker j La (c', L') (F La.1 La.2))).symm
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge (j + 1) X.mm with h | h` into its components or cases. Take `⟨cK, hcK, _, h4'⟩` from `h4.1 j h`. Apply the tactic sequence `exact ⟨cK, hcK, _, _, inferInstance, inferInstance, _, _, ksum_entry Y hj.le h4'⟩`. Take `⟨cK, hcK, _, Cl, Yb, iC, iY, wt, La, h1, h2, h3, _⟩` from `h4.2 j (by omega)`. Conclude with `⟨cK, hcK, Cl, Yb, iC, iY, wt, La, h1, h2, h3⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kernel_sum_of_class_data (D : Formalism.BasicNotions.D7) (Y : Pend X) (h4 : ArchimedeanSignatureMatching D X Y) {j : ℕ} (hj : j < X.mm) :
     ∃ cK : Y.Kc, cK ∈ Y.Oc ∧ ∃ (Cl Yb : Type) (_ : Fintype Cl) (_ : Fintype Yb) (wt : Cl → ℕ) (La : Cl → Yb → X.Lt j),
@@ -275,15 +273,15 @@ theorem kernel_sum_of_class_data (D : Formalism.BasicNotions.D7) (Y : Pend X) (h
     exact ⟨cK, hcK, Cl, Yb, iC, iY, wt, La, h1, h2, h3⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, h4, _, _, _, h7, _, _⟩` from `hA`. Apply `descent Y` to reduce the goal to its premises. Establish `hL'' : (X.Pj (j + 1)).IsLatTup L''` using `fun v' => (hrel v').elim (fun h => h.2 ▸ hL' v') (fun h => h.2.1)`. Take `⟨cK, hcK, Cl, Yb, iC, iY, wt, La, hlat, hwt, h4'⟩` from `kernel_sum_of_class_data D Y h4 hj`. Establish `e` using `h4' G (Submodule.subset_span hG) c' L'' hL''`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_smulK, e, Finset.smul_sum]`. Apply `inLatC_sum` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[smul_comm]`. Establish `hb : (((wt x : Y.Kc))⁻¹ * cK) * (p : Y.Kc) ^ ((X.dG j : ℕ) : ℤ) ∈ Y.Oc`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Y.Oc.mul_mem (wt_inv Y (wt x) (X.dG j) (hwt x).1 (hwt x).2) hcK` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hy : Y.inLatC (j + 1) g L' ((∏ v : X.Pl, pN X (j + 1) i0 v) • ∑ y : Yb, Y.ker j (La x y) (c', L'') (G (La x y).1 (La x y).2))`. Rewrite using `[Finset.smul_sum]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `inLatC_sum` to reduce the goal to its premises. Introduce `y _`. Establish `hLaL` using `hlat x y`. Take `⟨φ, hφ⟩` from `h7 j hj (La x y) c' L' L'' i0 hLaL hL' hi0 hrel`. Establish `h7'` using `hφ (X.ThZA Y.Kc j (Y.ThA j (La x y) (c', L'') φ)) g (fun I n => hE (La x y) (c', L'') hLaL hL'' φ I n) (G (La x y).1 (La x y).2) (((mem_Int_iff X j G).mp hG).1 (La x y).1 (La x y).2 hLaL)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h7'` using `[← Y.ThF_frm]`. Conclude with `h7'`. Use `inLatC_smulC Y _ _ hb hy` as an intermediate fact. Rewrite `this` using `[Int.cast_natCast]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mem (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y) {j : ℕ} (hj : j < X.mm) (i0 : X.Pl → ℕ) (g : ℝ)
     (hi0 : ∀ v, i0 v ≤ X.G.P.r) (hE : EntB X Y j i0 g) (G : X.Fm j) (hG : G ∈ X.Int j) (c' : X.Lv.comp (j + 1))
@@ -324,9 +322,7 @@ def RestTmEquiv (X : Sys p) : Prop :=
   ∀ (J : ℕ) (v : X.Pl) (i : ℕ) (F : X.Fm J), Eqv X J F → Eqv X J (X.Tm v i J F)
 
 /- English proof (translation)
-Proceed by induction on `vs with`. Consider the case `nil => simpa [TtL] using hF`. Consider the case `cons v vs ih => show Eqv X J (X.Tt v (i0 v) J (TtL X J i0 vs F))`. Unfold `Sys.Tt`. Use `split_ifs`.
-
-Conclude with `ih`. Conclude with `Eqv_smul X _ (hR J v (i0 v) _ ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Eqv_TtL (hR : RestTmEquiv X) (J : ℕ) (i0 : X.Pl → ℕ) (F : X.Fm J) (hF : Eqv X J F) (vs : List X.Pl) :
     Eqv X J (TtL X J i0 vs F) := by
@@ -340,15 +336,13 @@ theorem Eqv_TtL (hR : RestTmEquiv X) (J : ℕ) (i0 : X.Pl → ℕ) (F : X.Fm J) 
     · exact Eqv_smul X _ (hR J v (i0 v) _ ih)
 
 /- English proof (translation)
-Introduce `j hj i0 vs g hnd hi0 hoff hE G hG`. Establish `h3b : adm3b D X` using `hA.2.2.2.2.2.1`. Establish `hFQ` using `h3b j hj G (Submodule.subset_span hG)`. Apply `vGe_of Y (Eqv_TtL hR (j + 1) i0 _ (Eqv_of_FQ X hFQ) vs)` to reduce the goal to its premises. Introduce `c' L' hL'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfun : (fun v => if v ∈ vs then i0 v else 0) = i0`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ vs`. Simplify using `[hv]`. Simplify using `[hv, hoff v hv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hprod : (vs.map (pN X (j + 1) i0)).prod = ∏ v : X.Pl, pN X (j + 1) i0 v`. Rewrite using `[← List.prod_toFinset _ hnd]`. Apply `Finset.prod_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `v _ hv`. Conclude with `pN_zero X (j + 1) i0 v (hoff v (by simpa using hv))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `TtL_mem X (j + 1) i0 c' (scale (X.vsc (g - X.dG j)) ((X.Pj (j + 1)).HtupW L')) (X.Kz j G) vs hnd 1 L' (by` as an intermediate fact. Introduce `L'' hrel`. Rewrite `hrel` using `[hfun]`. Rewrite using `[one_mul, hprod]`. Conclude with `entry_mem D Y hA hj i0 g hi0 hE G hG c' L' L'' hL' hrel)`.
-
-Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem formB_of (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y) (hR : RestTmEquiv X) : FormB X Y := by
   intro j hj i0 vs g hnd hi0 hoff hE G hG

@@ -18,7 +18,7 @@ namespace GlobalTheory
 namespace BoxSpan
 
 /- English proof (translation)
-Set `_ : Field C` to `hC.toField`. Establish `hb : Module.finrank C M = Fintype.card I` using `Module.finrank_eq_card_basis (Module.Basis.mk hli hsp.ge)`. Establish `_ : Module.Finite C M` using `Module.Finite.of_basis (Module.Basis.mk hli hsp.ge)`. Conclude with `hv.span_eq_top_of_card_eq_finrank' (hc.trans hb.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_card {C M : Type} [CommRing C] (hC : IsField C) [AddCommGroup M] [Module C M]
     {I I' : Type} [Fintype I] [Fintype I'] (b : I → M) (hli : LinearIndependent C b)
@@ -31,13 +31,11 @@ theorem span_eq_top_of_card {C M : Type} [CommRing C] (hC : IsField C) [AddCommG
   exact hv.span_eq_top_of_card_eq_finrank' (hc.trans hb.symm)
 
 /- English proof (translation)
-Take `⟨V, hpV, b, hb⟩` from `hS (Spec (CommRingCat.of K)) P n hn default`. Establish `hbo : (baseOver (Spec (CommRingCat.of K))).hom = 𝟙 _` using `rfl`. Establish `hr : Set.range q ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `: q x = default` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Conclude with `hpV`. Choose the witnesses or unpack the hypotheses as in `⟨t, rfl⟩ : ∃ t : Spec (CommRingCat.of F) ⟶ V.toScheme, t ≫ V.ι ≫ (baseOver (Spec (CommRingCat.of K))).hom = q := by`. Use `⟨IsOpenImmersion.lift V.ι q hr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbo]`. Use `erw [Category.comp_id]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Unfold `LPow at b`. Use `choose b' hb' using fun i => GlobalTheory.IndivisibleSection.exists_pull_chart (b i) (homAt (V := V) t ▷ P.A).left (fun _ => (snd (baseAt (V := V) t) P.A).left) (fun _ => by rw [← Over.comp_left, whiskerRight_snd])`.
-
-Take `⟨hli, hsp⟩` from `hb F t b' (fun i j => hb' i j _)`. Conclude with `⟨fun i => SecM.ofSec P.A (b' i), hli, hsp⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis (hS : SecBaseChangeSt) {K : Type} [Field K] (P : PolAV (Spec (CommRingCat.of K))) (n : ℕ)
     (hn : 1 ≤ n) (F : Type) [CommRing F] (q : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of K)) :
@@ -63,7 +61,7 @@ theorem exists_basis (hS : SecBaseChangeSt) {K : Type} [Field K] (P : PolAV (Spe
   exact ⟨fun i => SecM.ofSec P.A (b' i), hli, hsp⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun l _ => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_apply {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) (a : ℤ) (T : Over S) {I : Type}
     [Fintype I] (c : I → Γ(T.left, ⊤)) (v : I → SecM A L a T) (jj) :
@@ -72,7 +70,7 @@ theorem comb_apply {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) (a :
   exact Finset.sum_congr rfl fun l _ => rfl
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ΓSpecIso_inv_hom_apply (F : Type) [CommRing F] (x : Γ(Spec (CommRingCat.of F), ⊤)) :
     (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom x) = x := by
@@ -83,25 +81,23 @@ end BoxSpan
 open BoxSpan in
 
 /- English proof (translation)
-Introduce `hL R _ _ j A A' pA F _ _ k hk s`. Take `⟨b, hbi, -⟩` from `exists_basis hL.secBaseChange A k hk F (TFK (R := R) F).hom`. Take `⟨b', hbi', hbs'⟩` from `exists_basis hL.secBaseChange A' k hk F (TFK (R := R) F).hom`. Set `σ : Fin (k ^ A.g) → LB.Sec (LB.LinComb A.L (K` to `Fin 1) (fun _ => (snd (TFK (R := R) F) A.A).left) (fun _ => (k : ℤ))) := fun l => ⟨(b l).1, fun i i' => (b l).2 i i'⟩`. Establish `hb : ∀ c : Fin (k ^ A.g) → F, (∀ jj, ∑ l, liftFun A.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c l)) * (σ l).f jj = 0) → c = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `h0` using `Fintype.linearIndependent_iff.mp hbi (fun l => (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c l)) (by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `jj`. Conclude with `(comb_apply A.A A.L (k : ℤ) (Over.mk (TFK (R := R) F).hom) _ b jj).trans (hc jj))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l`. Establish `h1` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (h0 l)`. Rewrite `h1` using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, map_zero]`. Conclude with `h1`. Use `choose t' ht' using fun a : Fin j → Fin (k ^ A.g) => exists_boxSec_pow_ext R j A A' pA F k (fun i => σ (a i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hind` using `boxProduct_linearIndependent R j A A' pA F k (k ^ A.g) σ hb t' ht'`. Establish `hli : LinearIndependent Γ((Over.mk (TFK (R` using `R) F).hom).left, ⊤) (fun a => (SecM.ofSec A'.A (t' a) : SecM A'.A A'.L (k : ℤ) (Over.mk (TFK (R := R) F).hom))) := by`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a`. Establish `hc` using `hind (fun a => (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (g a)) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `jj`. Establish `h1` using `congrArg (fun x : SecM A'.A A'.L (k : ℤ) (Over.mk (TFK (R := R) F).hom) => x.1 jj) hg`. Establish `h2` using `(comb_apply A'.A A'.L (k : ℤ) (Over.mk (TFK (R := R) F).hom) g (fun a => SecM.ofSec A'.A (t' a)) jj).symm.trans h1`. Use `Eq.trans (Finset.sum_congr rfl fun a _ => ?_) h2` and prove the remaining obligations. Conclude with `congrArg (fun x => liftFun (T := TFK (R := R) F) A'.A _ x * (t' a).f jj) (ΓSpecIso_inv_hom_apply F (g a)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrFun hc a`. Rewrite `h2` using `[Pi.zero_apply]`. Rewrite using `[← ΓSpecIso_inv_hom_apply F (g a), h2, map_zero]`. Establish `hfield : IsField Γ((Over.mk (TFK (R` using `R) F).hom).left, ⊤) := MulEquiv.isField (Field.toIsField F) (Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.toMulEquiv`. Establish `hcard : Fintype.card (Fin j → Fin (k ^ A.g)) = Fintype.card (Fin (k ^ A'.g))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, polAV_g_of_isPowPolAV _ j A A' pA, ← pow_mul, mul_comm]`. Conclude with `(Fintype.card_fin _).symm`. Establish `hspan` using `span_eq_top_of_card hfield b' hbi' hbs' _ hli hcard`. Establish `hmem : (SecM.ofSec A'.A s : SecM A'.A A'.L (k : ℤ) (Over.mk (TFK (R` using `R) F).hom)) ∈ Submodule.span Γ((Over.mk (TFK (R := R) F).hom).left, ⊤) (Set.range fun a => (SecM.ofSec A'.A (t' a) : SecM A'.A A'.L (k : ℤ) (Over.mk (TFK (R := R) F).hom))) := by`. Rewrite using `[hspan]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_top`. Take `⟨g, hg⟩` from `Submodule.mem_span_range_iff_exists_fun _ |>.mp hmem`. Set `e` to `Fintype.equivFin (Fin j → Fin (k ^ A.g))`. Use `⟨Fintype.card (Fin j → Fin (k ^ A.g)), fun l => (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (g (e.symm l)), fun l i => σ (e.symm l i), fun l => t' (e.symm l), fun l => ht' (e.symm l), ?_⟩` and prove the remaining obligations. Introduce `jj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `congrArg (fun x : SecM A'.A A'.L (k : ℤ) (Over.mk (TFK (R := R) F).hom) => x.1 jj) hg`. Establish `h2` using `(comb_apply A'.A A'.L (k : ℤ) (Over.mk (TFK (R := R) F).hom) g (fun a => SecM.ofSec A'.A (t' a)) jj).symm.trans h1`. Use `h2.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← e.symm.sum_comp]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Use `congr 1`. Use `congr 1`. Conclude with `(ΓSpecIso_inv_hom_apply F _).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem boxProduct_span : Laws → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (pA : IsPowPolAV A' A j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 1 ≤ k → ∀ s : LB.Sec (LB.LinComb A'.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A'.A).left) (fun _ => (k : ℤ))), ∃ (n : ℕ) (c : Fin n → F) (t : Fin n → Fin j → LB.Sec (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A.A).left) (fun _ => (k : ℤ)))) (t' : Fin n → LB.Sec (LB.LinComb A'.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A'.A).left) (fun _ => (k : ℤ)))), (∀ l, (∀ (Z : Scheme.{0}) (r : Z ⟶ ((TFK (R := R) F) ⊗ A'.A).left) (z : Z) (J J'), Geo.Tor.Good A.L z J → Geo.Tor.Good A'.L z J' → (bw pA.w (r ≫ (snd (TFK (R := R) F) A'.A).left) z (fun i => J ((r ≫ (snd (TFK (R := R) F) A'.A).left) ≫ (pA.pr i).left)) (J' (r ≫ (snd (TFK (R := R) F) A'.A).left)) ^ k).val * Geo.Tor.sval (t' l) r z J' = ∏ i, Geo.Tor.sval (t l i) (r ≫ ((TFK (R := R) F) ◁ pA.pr i).left) z J)) ∧ ∀ jj, s.f jj = ∑ l, liftFun A'.A _ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (c l)) * (t' l).f jj := by
   intro hL R _ _ j A A' pA F _ _ k hk s

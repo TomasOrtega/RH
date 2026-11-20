@@ -49,7 +49,7 @@ theorem negM_rep (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
 variable (θ : InfFam D)
 
 /- English proof (translation)
-Unfold `DSModel.sm`. Rewrite using `[(GlobalTheory.T.signedUnitaryGroup_compat D θ hθ true V).lie τ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem negM_sm (hθ : IsInfFam θ) (τ : D.what₂.Tau) : (negM M).sm τ = M.sm τ := by
   unfold DSModel.sm
@@ -64,7 +64,7 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (θ
 def smEquiv (τ : D.what₂.Tau) : (negM M).sm τ ≃ₗ[ℂ] M.sm τ := LinearEquiv.ofEq _ _ (negM_sm M θ hθ τ)
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.coe_ofEq_apply (negM_sm M θ hθ τ) w`.
+A detailed English derivation is pending.
 -/
 theorem coe_smEquiv (τ : D.what₂.Tau) (w : (negM M).sm τ) : ((smEquiv M θ hθ τ w : M.sm τ) : M.H τ) = (w : (negM M).H τ) :=
   LinearEquiv.coe_ofEq_apply (negM_sm M θ hθ τ) w
@@ -72,14 +72,14 @@ theorem coe_smEquiv (τ : D.what₂.Tau) (w : (negM M).sm τ) : ((smEquiv M θ h
 def smTEquiv : SmT (negM M) ≃ₗ[ℂ] SmT M := PiTensorProduct.congr fun τ => smEquiv M θ hθ τ
 
 /- English proof (translation)
-The claim follows from `PiTensorProduct.congr_tprod _ _`.
+A detailed English derivation is pending.
 -/
 theorem smTEquiv_tprod (v : (negM M).Vec) :
     smTEquiv M θ hθ (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ fun τ => smEquiv M θ hθ τ (v τ) :=
   PiTensorProduct.congr_tprod _ _
 
 /- English proof (translation)
-Rewrite using `[smTEquiv_tprod]`. Unfold `inclT`. Rewrite using `[PiTensorProduct.map_tprod, PiTensorProduct.map_tprod]`. Conclude with `congrArg (PiTensorProduct.tprod ℂ) (funext fun i => coe_smEquiv M θ hθ i (v i))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclT_smTEquiv_tprod (v : (negM M).Vec) :
     inclT M (smTEquiv M θ hθ (PiTensorProduct.tprod ℂ v)) = inclT (negM M) (PiTensorProduct.tprod ℂ v) := by
@@ -89,7 +89,7 @@ theorem inclT_smTEquiv_tprod (v : (negM M).Vec) :
   exact congrArg (PiTensorProduct.tprod ℂ) (funext fun i => coe_smEquiv M θ hθ i (v i))
 
 /- English proof (translation)
-Establish `: (inclT M).comp (smTEquiv M θ hθ).toLinearMap = inclT (negM M)` using `PiTensorProduct.ext (MultilinearMap.ext fun v => inclT_smTEquiv_tprod M θ hθ v)`. Conclude with `LinearMap.congr_fun this x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inclT_smTEquiv (x : SmT (negM M)) : inclT M (smTEquiv M θ hθ x) = inclT (negM M) x := by
   have : (inclT M).comp (smTEquiv M θ hθ).toLinearMap = inclT (negM M) :=
@@ -97,9 +97,9 @@ theorem inclT_smTEquiv (x : SmT (negM M)) : inclT M (smTEquiv M θ hθ x) = incl
   exact LinearMap.congr_fun this x
 
 /- English proof (translation)
-Establish `h : Formalism.REAL.Jm (fun a => !M.ε τ a) = -Formalism.REAL.Jm (M.ε τ)`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Apply the tactic sequence `subst hab; cases h : M.ε τ a <;> simp [Formalism.REAL.Jm, h]`. Simplify using `[Formalism.REAL.Jm, hab]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use `show (M.fr τ)⁻¹ * Formalism.REAL.Jm (fun a => !M.ε τ a) * M.fr τ = -((M.fr τ)⁻¹ * Formalism.REAL.Jm (M.ε τ) * M.fr τ)`. Rewrite using `[h, Matrix.mul_neg, Matrix.neg_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cart_negM (τ : D.what₂.Tau) : cart (negM M) τ = sgnM true (cart M τ) := by
   have h : Formalism.REAL.Jm (fun a => !M.ε τ a) = -Formalism.REAL.Jm (M.ε τ) := by
@@ -116,7 +116,7 @@ namespace GlobalTheory.NegModel
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (θ : InfFam D) (hθ : IsInfFam θ)
 
 /- English proof (translation)
-Establish `h` using `coe_smEquiv M θ hθ τ ((smEquiv M θ hθ τ).symm w)`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_smEquiv_symm (τ : D.what₂.Tau) (w : M.sm τ) : (((smEquiv M θ hθ τ).symm w : (negM M).sm τ) : (negM M).H τ) = (w : M.H τ) := by
   have h := coe_smEquiv M θ hθ τ ((smEquiv M θ hθ τ).symm w)
@@ -149,7 +149,7 @@ theorem ofNeg_apply (T : MMap (negM M)) (v : M.Vec) (x : GA D V) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `funext fun ρ => Function.apply_update (fun ρ (u : (negM M).sm ρ) => smEquiv M θ hθ ρ u) v τ w ρ`.
+A detailed English derivation is pending.
 -/
 theorem eq_update (v : (negM M).Vec) (τ : D.what₂.Tau) (w : (negM M).sm τ) :
     (fun ρ => smEquiv M θ hθ ρ (Function.update v τ w ρ)) = Function.update (fun ρ => smEquiv M θ hθ ρ (v ρ)) τ (smEquiv M θ hθ τ w) :=
@@ -157,7 +157,7 @@ theorem eq_update (v : (negM M).Vec) (τ : D.what₂.Tau) (w : (negM M).sm τ) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `funext fun ρ => Function.apply_update (fun ρ (u : M.sm ρ) => (smEquiv M θ hθ ρ).symm u) v τ w ρ`.
+A detailed English derivation is pending.
 -/
 theorem eq_symm_update (v : M.Vec) (τ : D.what₂.Tau) (w : M.sm τ) :
     (fun ρ => (smEquiv M θ hθ ρ).symm (Function.update v τ w ρ)) =
@@ -165,7 +165,7 @@ theorem eq_symm_update (v : M.Vec) (τ : D.what₂.Tau) (w : M.sm τ) :
   funext fun ρ => Function.apply_update (fun ρ (u : M.sm ρ) => (smEquiv M θ hθ ρ).symm u) v τ w ρ
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).1).2 (hT.aut _) cusp v := ((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).2).2 (hT.cusp _) lev v k hk := absurd hk (Set.notMem_empty _) equiv τ g hg v w hw := by clas …`.
+A detailed English derivation is pending.
 -/
 theorem isMultMap_toNeg {T : MMap M} (hT : IsMultMap θ M ∅ 1 T) : IsMultMap θ (negM M) ∅ 1 (toNeg M θ hθ T) where
   aut v := ((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).1).2 (hT.aut _)
@@ -190,17 +190,13 @@ theorem isMultMap_toNeg {T : MMap M} (hT : IsMultMap θ M ∅ 1 T) : IsMultMap �
     · rw [toNeg_apply, eq_update, ← hℓw, coe_smEquiv]; rfl
 
 /- English proof (translation)
-Establish `e : (fun g => ofNeg M θ hθ T v (ofSgn true V g)) = T (fun τ => (smEquiv M θ hθ τ).symm (v τ))`. Use function extensionality and compare the values at `g`. Rewrite using `[ofNeg_apply, MulEquiv.symm_apply_apply]`. Conclude with `((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).1).1 (e ▸ hT.aut _)`. Use `cusp v := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun g => ofNeg M θ hθ T v (ofSgn true V g)) = T (fun τ => (smEquiv M θ hθ τ).symm (v τ))`. Use function extensionality and compare the values at `g`. Rewrite using `[ofNeg_apply, MulEquiv.symm_apply_apply]`. Conclude with `((GlobalTheory.T.automorphic_cusp_forms_hermitianSpaceSignTwist D θ hθ true V _).2).1 (e ▸ hT.cusp _)`. Use `lev v k hk := absurd hk (Set.notMem_empty _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `equiv τ g hg v w hw := by classical`. Establish `hg' : g ∈ Formalism.QuantumDeterminants.UH (gramAt D (sgn true V) τ)` using `((GlobalTheory.T.signedUnitaryGroup_compat D θ hθ true V).grp τ).symm ▸ hg`. Establish `hw' : (((smEquiv M θ hθ τ).symm w : (negM M).sm τ) : (negM M).H τ) = (negM M).rep τ g (((smEquiv M θ hθ τ).symm (v τ) : (negM M).sm τ) : (negM M).H τ)`. Rewrite using `[coe_smEquiv_symm, coe_smEquiv_symm]`. Conclude with `hw`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hT.equiv τ g hg' (fun ρ => (smEquiv M θ hθ ρ).symm (v ρ)) ((smEquiv M θ hθ τ).symm w) hw'`. Use function extensionality and compare the values at `x`. Rewrite using `[ofNeg_apply, eq_symm_update, h]`. Use `show T (fun ρ => (smEquiv M θ hθ ρ).symm (v ρ)) ((ofSgn true V).symm x * atTau θ (sgn true V) τ g) = T (fun ρ => (smEquiv M θ hθ ρ).symm (v ρ)) ((ofSgn true V).symm (x * atTau θ V τ g))`. Rewrite using `[map_mul, ← (GlobalTheory.T.signedUnitaryGroup_compat D θ hθ true V).atTau τ g, MulEquiv.symm_apply_apply]`.
-
-Use `cont τ v x := by classical`. Take `⟨ℓ, hℓ, hℓw⟩` from `hT.cont τ (fun ρ => (smEquiv M θ hθ ρ).symm (v ρ)) ((ofSgn true V).symm x)`. Use `⟨ℓ, ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← (GlobalTheory.T.signedUnitaryGroup_compat D θ hθ true V).lie τ]`. Conclude with `hℓ`.
-
-Rewrite using `[ofNeg_apply, eq_symm_update, ← hℓw, coe_smEquiv_symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isMultMap_ofNeg {T : MMap (negM M)} (hT : IsMultMap θ (negM M) ∅ 1 T) : IsMultMap θ M ∅ 1 (ofNeg M θ hθ T) where
   aut v := by
@@ -232,9 +228,9 @@ theorem isMultMap_ofNeg {T : MMap (negM M)} (hT : IsMultMap θ (negM M) ∅ 1 T)
     · rw [ofNeg_apply, eq_symm_update, ← hℓw, coe_smEquiv_symm]; rfl
 
 /- English proof (translation)
-Unfold `Mult at hT ⊢`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (isMultMap_toNeg M θ hθ hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem toNeg_mem {T : MMap M} (hT : T ∈ Mult θ M ∅ 1) : toNeg M θ hθ T ∈ Mult θ (negM M) ∅ 1 := by
   unfold Mult at hT ⊢
@@ -245,9 +241,9 @@ theorem toNeg_mem {T : MMap M} (hT : T ∈ Mult θ M ∅ 1) : toNeg M θ hθ T �
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Unfold `Mult at hT ⊢`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (isMultMap_ofNeg M θ hθ hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ofNeg_mem {T : MMap (negM M)} (hT : T ∈ Mult θ (negM M) ∅ 1) : ofNeg M θ hθ T ∈ Mult θ M ∅ 1 := by
   unfold Mult at hT ⊢
@@ -263,7 +259,7 @@ namespace GlobalTheory.NegModel
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (θ : InfFam D) (hθ : IsInfFam θ)
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, smTEquiv_tprod]`. Conclude with `congrArg (PiTensorProduct.tprod ℂ) (funext fun τ => (LinearEquiv.apply_symm_apply (smEquiv M θ hθ τ) (v τ)).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smTEquiv_symm_tprod (v : M.Vec) :
     (smTEquiv M θ hθ).symm (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ fun τ => (smEquiv M θ hθ τ).symm (v τ) := by
@@ -271,9 +267,9 @@ theorem smTEquiv_symm_tprod (v : M.Vec) :
   exact congrArg (PiTensorProduct.tprod ℂ) (funext fun τ => (LinearEquiv.apply_symm_apply (smEquiv M θ hθ τ) (v τ)).symm)
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_multT]`. Establish `e : PiTensorProduct.lift.symm ((LinearMap.funLeft ℂ ℂ (ofSgn true V)) ∘ₗ F ∘ₗ (smTEquiv M θ hθ).toLinearMap) = toNeg M θ hθ (PiTensorProduct.lift.symm F)`. Use extensionality with `v g`. Rewrite using `[toNeg_apply, PiTensorProduct.lift_symm, PiTensorProduct.lift_symm]`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, smTEquiv_tprod]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `toNeg_mem M θ hθ hF`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multT_toNeg {F : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hF : F ∈ MultT θ M ∅ 1) :
     (LinearMap.funLeft ℂ ℂ (ofSgn true V)) ∘ₗ F ∘ₗ (smTEquiv M θ hθ).toLinearMap ∈ MultT θ (negM M) ∅ 1 := by
@@ -288,9 +284,9 @@ theorem multT_toNeg {F : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hF : F ∈ MultT �
   exact toNeg_mem M θ hθ hF
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_multT]`. Establish `e : PiTensorProduct.lift.symm ((LinearMap.funLeft ℂ ℂ (ofSgn true V).symm) ∘ₗ F ∘ₗ (smTEquiv M θ hθ).symm.toLinearMap) = ofNeg M θ hθ (PiTensorProduct.lift.symm F)`. Use extensionality with `v g`. Rewrite using `[ofNeg_apply, PiTensorProduct.lift_symm, PiTensorProduct.lift_symm]`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, smTEquiv_symm_tprod]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ofNeg_mem M θ hθ hF`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multT_ofNeg {F : SmT (negM M) →ₗ[ℂ] (GA D (sgn true V) → ℂ)} (hF : F ∈ MultT θ (negM M) ∅ 1) :
     (LinearMap.funLeft ℂ ℂ (ofSgn true V).symm) ∘ₗ F ∘ₗ (smTEquiv M θ hθ).symm.toLinearMap ∈ MultT θ M ∅ 1 := by
@@ -305,13 +301,9 @@ theorem multT_ofNeg {F : SmT (negM M) →ₗ[ℂ] (GA D (sgn true V) → ℂ)} (
   exact ofNeg_mem M θ hθ hF
 
 /- English proof (translation)
-Use `show smTEquiv M θ hθ (c • x) = c • smTEquiv M θ hθ x`. Conclude with `map_smul _ c x`. Use `cart τ := cart_negM M τ`. Use `act τ g _ x y := by show _ ↔ inclT M (smTEquiv M θ hθ y) = actT M τ g (inclT M (smTEquiv M θ hθ x))`. Rewrite using `[inclT_smTEquiv, inclT_smTEquiv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `der τ Y _ x y := by show _ ↔ DerT M τ Y (smTEquiv M θ hθ x) (smTEquiv M θ hθ y)`. Unfold `DerT`. Rewrite using `[inclT_smTEquiv, inclT_smTEquiv]`. Both sides reduce to the same expression.
-
-Use `ell w₁ := ⟨w₁, fun x => by show _ = ellT M w₁ (inclT M (smTEquiv M θ hθ x))`. Rewrite using `[inclT_smTEquiv]`. Use the proof step `rfl⟩`. Use `vec v₁ := ⟨fun τ => smEquiv M θ hθ τ (v₁ τ), smTEquiv_tprod M θ hθ v₁, fun τ => by rw [coe_smEquiv]; rfl⟩`. Use `mult F hF := ⟨_, multT_toNeg M θ hθ hF, fun x g => rfl⟩`.
-
-Use the proof step `mult' F₁ hF₁ := ⟨_, multT_ofNeg M θ hθ hF₁, fun x g => by show F₁ x g = F₁ ((smTEquiv M θ hθ).symm (smTEquiv M θ hθ x)) ((ofSgn true V).symm (ofSgn true V g))`. Rewrite using `[LinearEquiv.symm_apply_apply, MulEquiv.symm_apply_apply]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modelTr_negM : ModelTr (RingHom.id ℂ) true θ (negM M) M (smTEquiv M θ hθ).toAddEquiv where
   smul c x := by
@@ -342,7 +334,7 @@ end GlobalTheory.NegModel
 open GlobalTheory.NegModel in
 
 /- English proof (translation)
-Introduce `_ θ hθ _ _ M` and use `⟨negM M, (smTEquiv M θ hθ).toAddEquiv, modelTr_negM M θ hθ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.negModel_tr : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S),
     ∃ (M₁ : DSModel (sgn true V) fun τ => GlobalTheory.SignedHC.flip (S τ)) (κ : SmT M₁ ≃+ SmT M),

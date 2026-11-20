@@ -20,9 +20,9 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hbij : Function.Bijective mem` using `⟨fun w w' h => (hmem w).symm.trans ((congrArg (realMemberPlace S ιr hL) h).trans (hmem w')), fun p => ⟨realMemberPlace S ιr hL p, realMemberPlace_injective S ιr hL (hmem _)⟩⟩`. Establish `hlow : ∀ p : {p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom // ¬ mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ι …` using `fun p => card_cohomology_zero_mackeyRep_of_ne_top S hL ιr B p.1.1 p.1.2 p.2`. Establish `htop : ∏ w : {w : InfinitePlace L.1 // w.IsReal}, gsRealH0Card (placesOver S) (Rep.res (gsBaseChange S hL).symm.toMulEquiv.toMonoidHom B) ιrL w = ∏ p : {p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S …` using `Fintype.prod_equiv (Equiv.ofBijective mem hbij : {w : InfinitePlace L.1 // w.IsReal} ≃ {p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom // mackeySubgroup (gsOpenSub …`. Establish `hsplit` using `Fintype.prod_subtype_mul_prod_subtype (fun p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom => mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K …`. Simplify using `only [hlow, Finset.prod_const, Finset.card_univ, Fintype.card_eq_nat_card] at hsplit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Finset.prod_congr rfl fun v _ => gsRealH0Card_coind S hL ιr B v).trans <| (Fintype.prod_sigma (fun p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom => Nat.card (coh …`.
+A detailed English derivation is pending.
 -/
 theorem prod_gsRealH0Card_coind
     (ιrL : ∀ w : {w : InfinitePlace L.1 // w.IsReal}, ℚ̄ →ₐ[L.1] AlgebraicClosure w.1.Completion)
@@ -89,7 +89,7 @@ theorem prod_gsRealH0Card_coind
     hsplit.symm.trans (congrArg (· * _) htop.symm)
 
 /- English proof (translation)
-Substitute `hχ hC hP` using the available equality. Rewrite using `[← pow_mul, ← hN, pow_add, ← mul_assoc, mul_div_mul_right _ _ (pow_ne_zero _ hB)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratio_coind_arith {χ χ' PK PL nC nB : ℚ} {cK cL b n : ℕ} (hχ : χ = χ') (hC : nC = nB ^ n)
     (hP : PK = PL * nB ^ b) (hN : cL + b = n * cK) (hB : nB ≠ 0) :
@@ -100,9 +100,9 @@ theorem ratio_coind_arith {χ χ' PK PL nC nB : ℚ} {cK cL b n : ℕ} (hχ : χ
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hχ` using `(eulerChar_coind (gsOpenSubgroup S hL) B).trans (eulerChar_res_continuousMulEquiv (gsBaseChange S hL).symm B).symm`. Establish `hC : ((Nat.card (Rep.coind (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype B) : ℕ) : ℚ) = (Nat.card B : ℚ) ^ Module.finrank K.1 L.1`. Conclude with `card_coind_gsOpenSubgroup S hL B` after adjusting the coercions. Establish `hP` using `prod_gsRealH0Card_coind S hL ιr B ιrL mem hmem e he`. Establish `hPq : (∏ v : {v : InfinitePlace K.1 // v.IsReal}, (gsRealH0Card S (Rep.coind (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype B) ιr v : ℚ)) = (∏ w : {w : InfinitePlace L.1 // w.IsReal}, (gsRealH0Card (placesOver S) (Rep.res (gsBaseChange S hL).symm.toMulEq …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hP` after adjusting the coercions. Establish `hN` using `card_infinitePlace_add_card S hL ιr`. Simplify using `only [Nat.card_eq_fintype_card (α := InfinitePlace K.1), Nat.card_eq_fintype_card (α := InfinitePlace L.1)] at hN`. Establish `hB : (Nat.card B : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Conclude with `ratio_coind_arith hχ hC hPq hN hB`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsEulerRatio_coind_eq_of [Finite B]
     (ιrL : ∀ w : {w : InfinitePlace L.1 // w.IsReal}, ℚ̄ →ₐ[L.1] AlgebraicClosure w.1.Completion)

@@ -25,9 +25,9 @@ def one1 (x : T ⟶ (zeroPolAV S).A) (k : ℤ) :
 macro "ones" : tactic => `(tactic| (repeat (first | erw [map_one] | erw [one_zpow] | erw [one_pow] | erw [inv_one] | erw [_root_.mul_one] | erw [_root_.one_mul])))
 
 /- English proof (translation)
-Use `⟨one_pow _, ?_, ⟨fun _ => 1⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j erw [linComb_triv_g, _root_.one_mul]`. Simplify using `only [one1]`. Repeat the step `erw [map_one]` while it applies. Introduce `i j erw [linComb_triv_g, _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeat the step `erw [map_one]` while it applies. Introduce `j j' _ _ _ dsimp only [LB.pullGen, LB.mulGen, LB.invGen, rigPow, rig1] ones`. Introduce `j j' _ _ _ dsimp only [LB.pullGen, LB.mulGen, rigT, powFrame, rig1, one1] ones`.
+Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 example : IsTorsFrame (zeroPolAV S) (rig1 S) 3 (1 : T ⟶ (zeroPolAV S).A) (one1 S T 1 1) := by
   refine ⟨one_pow _, ?_, ⟨fun _ => 1⟩, ?_, ?_, ?_⟩
@@ -50,7 +50,7 @@ def theta1 (k : ℤ) : ThetaGrp (zeroPolAV S).A (zeroPolAV S).L k T where
     erw [linComb_triv_g, _root_.one_mul]; repeat erw [map_one]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j erw [linComb_triv_g, _root_.one_mul]`. Repeat the step `erw [map_one]` while it applies. Introduce `j j' _ _ _ dsimp only [LB.pullGen, LB.mulGen, rigT, rig1] erw [show (theta1 S T k).φ.s = fun _ => 1 from rfl] ones`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 example (k : ℤ) : IsThetaFrame (zeroPolAV S) (rig1 S) k (theta1 S T k) ⟨fun _ => 1⟩ := by
   refine ⟨?_, ?_⟩
@@ -62,7 +62,7 @@ example (k : ℤ) : IsThetaFrame (zeroPolAV S) (rig1 S) k (theta1 S T k) ⟨fun 
     ones
 
 /- English proof (translation)
-Introduce `i j`. Use `erw [linComb_triv_g]`. Simplify using `only [Units.val_one]`. Use `ones`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 example (a : ℤ) : (fun _ => 1) ∈ SecM (zeroPolAV S).A (zeroPolAV S).L a T := by
   intro i j
@@ -72,13 +72,13 @@ def oneSec (a : ℤ) (T : Over S) : LB.Sec (LPow (zeroPolAV S).A (zeroPolAV S).L
   ⟨fun _ => 1, by intro i j; erw [linComb_triv_g]; simp only [Units.val_one]; ones; rfl⟩
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨(oneSec S N T).compat, ?_⟩` and prove the remaining obligations. Introduce `p`. Use `⟨⊤, trivial, oneSec S N _, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Simplify using `only [SecM.toSec, oneSec]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `(repeat erw [map_one])`. Use `⟨1, fun _ => 1, fun _ => oneSec S N _, fun _ => ?_, ?_⟩` and prove the remaining obligations. Use `⟨oneSec S 1 _, oneSec S N _, ⟨fun _ => 1⟩, theta1 S _ N, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j erw [linComb_triv_g, _root_.one_mul]`. Repeat the step `erw [map_one]` while it applies.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `only [oneSec, Units.val_one]`. Use the proof step `(repeat erw [map_one])`. Apply the tactic sequence `(try erw [_root_.one_mul])`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [oneSec, Units.val_one]`. Use the proof step `(repeat erw [map_one])`. Apply the tactic sequence `(try erw [_root_.one_mul])`. Introduce `j dsimp only [oneSec]`. Simplify using `only [liftFun, map_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin, one_smul, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 example (N m : ℕ) : (oneSec S (N : ℤ) T).f ∈ VVsub (zeroPolAV S) N m T := by
   refine Submodule.subset_span ⟨(oneSec S N T).compat, ?_⟩
@@ -103,7 +103,7 @@ example (N m : ℕ) : (oneSec S (N : ℤ) T).f ∈ VVsub (zeroPolAV S) N m T := 
         _root_.mul_one]
 
 /- English proof (translation)
-The claim follows from `0`.
+A detailed English derivation is pending.
 -/
 example : de (zeroPolAV S) T := 0
 

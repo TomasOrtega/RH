@@ -21,16 +21,16 @@ namespace GlobalTheory.DetDecomp
 open GlobalTheory.UTrans
 
 /- English proof (translation)
-Simplify using `[hf, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_single {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (M : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     hf σ M (Pi.single i 1) (Pi.single j 1) = M i j := by
   simp [hf, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hf_single]`. Rewrite using `[← this]`. Simplify using `only [hf, Matrix.mulVec_single_one, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.col_apply, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isU_mat {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (M γ : Matrix (Fin n) (Fin n) R)
     (h : IsU σ M γ) : γᵀ * M * γ.map σ = M := by
@@ -43,11 +43,11 @@ theorem isU_mat {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (M γ : Matri
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Use `set x : Fin n → K := Pi.single i 1`. Use `set y : Fin n → K := Pi.single j 1`. Establish `hm0 : hf σ M x y ≠ 0` using `by rw [hf_single]; exact hij`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc` using `Calc.hf_conj σ M hσ hM x y`. Establish `e : hf σ M (x + hf σ M x y • y) (x + hf σ M x y • y) = hf σ M x x + σ (hf σ M x y) * hf σ M x y + hf σ M x y * hf σ M y x + hf σ M x y * σ (hf σ M x y) * hf σ M y y`. Simplify using `only [Calc.hf_add_left, Calc.hf_add_right, Calc.hf_smul_left, Calc.hf_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[hno, hno x, hno y, ← hc]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hs : σ (hf σ M x y) ≠ 0` using `(map_ne_zero σ).2 hm0`. Establish `: (2 : K) * (σ (hf σ M x y) * hf σ M x y) = 0` using `by linear_combination -e`. Break down `mul_eq_zero.1 this with h2 | h2` into its components or cases. Conclude with `two_ne_zero h2`. Conclude with `mul_ne_zero hs hm0 h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_aniso {K : Type} [Field K] [CharZero K] {n : ℕ} (σ : K →+* K) (hσ : ∀ a, σ (σ a) = a)
     (M : Matrix (Fin n) (Fin n) K) (hM : ∀ a b, σ (M a b) = M b a) {i j : Fin n} (hij : M i j ≠ 0) :
@@ -70,7 +70,7 @@ theorem exists_aniso {K : Type} [Field K] [CharZero K] {n : ℕ} (σ : K →+* K
   · exact mul_ne_zero hs hm0 h2
 
 /- English proof (translation)
-Use `⟨Calc.isU_tv σ M hσ hM x _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, map_mul, map_sub, map_one, hcr]`. Take the linear combination `r * hz + (z - 1) * (σ z - 1) * r * hrQ`. Rewrite using `[Calc.tv_det, hQ]`. Take the linear combination `(z - 1) * hrQ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem refl_isU_det {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (hσ : ∀ a, σ (σ a) = a)
     (M : Matrix (Fin n) (Fin n) R) (hM : ∀ a b, σ (M a b) = M b a) (x : Fin n → R) {Q r z : R}
@@ -85,7 +85,7 @@ theorem refl_isU_det {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (hσ : �
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [hf, map_sum, map_mul, Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.DualPairCheck.cA_incA, starRingEnd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_incA (V : HSp D) (x0 : Fin V.rank → D.host.E) :
     hf (cA D) (V.gram.map (incA D))ᵀ (fun a => incA D (x0 a)) (fun a => incA D (x0 a)) =
@@ -94,9 +94,9 @@ theorem hf_incA (V : HSp D) (x0 : Fin V.rank → D.host.E) :
     starRingEnd_apply]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, V.gramᵀ i j ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `GlobalTheory.LevelSubgroup.gram_det_ne_zero V` to reduce the goal to its premises. Establish `h0 : V.gram = 0` using `Matrix.ext fun a b => hne b a`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Use `haveI : Nonempty (Fin V.rank) := ⟨⟨0, hV⟩⟩`. Conclude with `Matrix.det_zero`. Conclude with `exists_aniso _ (fun a => star_star a) _ (fun a b => GlobalTheory.DualPairCheck.gram_star V b a) hij`.
+A detailed English derivation is pending.
 -/
 theorem exists_aniso_gram (V : HSp D) (hV : 0 < V.rank) :
     ∃ x0 : Fin V.rank → D.host.E, hf (starRingEnd D.host.E) V.gramᵀ x0 x0 ≠ 0 := by
@@ -111,15 +111,13 @@ theorem exists_aniso_gram (V : HSp D) (hV : 0 < V.rank) :
   exact exists_aniso _ (fun a => star_star a) _ (fun a b => GlobalTheory.DualPairCheck.gram_star V b a) hij
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `exists_aniso_gram V hV`. Establish `hqs : star (hf (starRingEnd D.host.E) V.gramᵀ x0 x0) = hf (starRingEnd D.host.E) V.gramᵀ x0 x0` using `Calc.hf_conj (starRingEnd D.host.E) V.gramᵀ (fun a => star_star a) (fun a b => GlobalTheory.DualPairCheck.gram_star V b a) x0 x0`. Establish `hrQ : incA D (hf (starRingEnd D.host.E) V.gramᵀ x0 x0)⁻¹ * incA D (hf (starRingEnd D.host.E) V.gramᵀ x0 x0) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hx0, map_one]`. Establish `hcr : cA D (incA D (hf (starRingEnd D.host.E) V.gramᵀ x0 x0)⁻¹) = incA D (hf (starRingEnd D.host.E) V.gramᵀ x0 x0)⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, star_inv₀, hqs]`. Establish `hMA : ∀ a b, cA D ((V.gram.map (incA D))ᵀ a b) = (V.gram.map (incA D))ᵀ b a` using `fun a b => by`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.gram_star]`. Take `⟨hU, hdet⟩` from `refl_isU_det (cA D) GlobalTheory.DualPairCheck.cA_cA _ hMA _ (hf_incA V x0) hrQ hcr hz`. Generalize the expression as in `tv (cA D) ((HSpace.gram V).map ⇑(incA D))ᵀ (fun a ↦ (incA D) (x0 a)) ((z - 1) * (incA D) (hf (starRingEnd D.host.E) (HSpace.gram V)ᵀ x0 x0)⁻¹) = γ at hU hdet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Establish `hzu : IsUnit z` using `⟨⟨z, cA D z, hz, by rw [mul_comm]; exact hz⟩, rfl⟩`. Establish `hmat` using `congrArg Matrix.transpose (isU_mat (cA D) _ _ hU)`. Rewrite `hmat` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, ← Matrix.mul_assoc]`. Establish `hunit` using `(Matrix.isUnit_iff_isUnit_det γ).2 (by rw [hdet]; exact hzu)`. Use `⟨⟨hunit.unit, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) hunit.unit.1 * JR (AF D.host.F) V.gram * hunit.unit.1 = JR (AF D.host.F) V.gram`. Rewrite using `[IsUnit.unit_spec]`. Conclude with `hmat`. Use `show (hunit.unit.1).det = z`. Rewrite using `[IsUnit.unit_spec]`.
-
-Conclude with `hdet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_eq (V : HSp D) (hV : 0 < V.rank) (z : Formalism.L2.Theta.AE D) (hz : z * cA D z = 1) :
     ∃ g : GA D V, (mt V g).det = z := by
@@ -151,14 +149,14 @@ theorem exists_det_eq (V : HSp D) (hV : 0 < V.rank) (z : Formalism.L2.Theta.AE D
     exact hdet
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_blk {R : Type} [CommRing R] {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (P : Matrix (Fin p) (Fin p) R)
     (Q : Matrix (Fin q) (Fin q) R) : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e P Q).det = P.det * Q.det := by
   simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Rewrite using `[skewGram, Matrix.det_smul, det_blk, Matrix.det_transpose, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero) (mul_ne_zero (GlobalTheory.LevelSubgroup.gram_det_ne_zero A) (GlobalTheory.LevelSubgroup.gram_det_ne_zero B))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skewGram_det_ne (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) :
     (skewGram A B e).det ≠ 0 := by
@@ -167,13 +165,13 @@ theorem skewGram_det_ne (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank �
     (mul_ne_zero (GlobalTheory.LevelSubgroup.gram_det_ne_zero A) (GlobalTheory.LevelSubgroup.gram_det_ne_zero B))
 
 /- English proof (translation)
-Establish `hx : (mat x)ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J * (mat x).map (cA D) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J` using `x.2`. Establish `hd` using `congrArg Matrix.det hx`. Establish `hm : ((mat x).map (cA D)).det = cA D (mat x).det` using `(RingHom.map_det (cA D) (mat x)).symm`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hm]`. Establish `hJ : IsUnit (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J).det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm' : (J.map (incA D)).det = incA D J.det` using `(RingHom.map_det (incA D) J).symm`. Use `show IsUnit (J.map (incA D)).det`. Rewrite using `[hm']`. Establish `h0 : J.det ≠ 0` using `h ▸ skewGram_det_ne A B e`. Use `⟨⟨incA D J.det, incA D J.det⁻¹, ?_, ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ h0, map_one]`. Rewrite using `[← map_mul, inv_mul_cancel₀ h0, map_one]`. Apply `hJ.mul_right_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hd`.
+A detailed English derivation is pending.
 -/
 theorem det_mul_conj (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (h : J = skewGram A B e) (x : UB J) : (mat x).det * cA D (mat x).det = 1 := by
@@ -202,19 +200,19 @@ theorem mat_blkU (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin 
     mat (blkU A B e h g) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e (mt A g.1) (mt B g.2) := rfl
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one (V : HSp D) : mt V 1 = 1 := by
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Introduce `D A B d e J h hd x`. Establish `hz` using `det_mul_conj A B e h x`. Establish `hzu : IsUnit (mat x).det` using `⟨⟨_, _, hz, by rw [mul_comm]; exact hz⟩, rfl⟩`. Establish `hcard : A.rank + B.rank = d` using `by simpa using Fintype.card_congr e`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : GA D A × GA D B, (mat (blkU A B e h g)).det = (mat x).det := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `Nat.eq_zero_or_pos A.rank with hA | hA` into its components or cases. Take `⟨g, hg⟩` from `exists_det_eq B (by omega) _ hz`. Conclude with `⟨(1, g), by rw [mat_blkU, det_blk, mt_one, Matrix.det_one, one_mul, hg]⟩`. Take `⟨g, hg⟩` from `exists_det_eq A hA _ hz`. Conclude with `⟨(g, 1), by rw [mat_blkU, det_blk, mt_one, Matrix.det_one, mul_one, hg]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨x * (blkU A B e h g)⁻¹, g, ?_, (inv_mul_cancel_right x _).symm⟩` and prove the remaining obligations. Establish `hm : mat x = mat (x * (blkU A B e h g)⁻¹) * mat (blkU A B e h g)` using `by conv_lhs => rw [← inv_mul_cancel_right x (blkU A B e h g)]`. Both sides reduce to the same expression. Establish `hd2` using `congrArg Matrix.det hm`. Rewrite `hd2` using `[Matrix.det_mul, hg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hzu.mul_left_injective` to reduce the goal to its premises. Simplify using `only [one_mul]`. Conclude with `hd2.symm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_detOne_mul_blkU : ∀ {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (h : J = skewGram A B e), 0 < d → ∀ x : UB J, ∃ (s : UB J) (g : GA D A × GA D B), (mat s).det = 1 ∧ x = s * blkU A B e h g := by

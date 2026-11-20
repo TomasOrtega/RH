@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.FinPl.CoreMat
 
 /- English proof (translation)
-Establish `hv : ratV (vecB B.o B.ζ) = B.o.jB *ᵥ ratV B.ζ`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (incA D) B.o.iB B.ζ i`. Establish `hB : mt B.V₀ (B.o.emb (κ, 1)) ⬝ B.o.jB = B.o.jB`. Rewrite using `[B.o.emb_jB]`. Establish `h1 : mt B.L (1 : GA D B.L) = 1` using `by simp [Formalism.L2.Theta.mt]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, Matrix.mul_one]`. Rewrite using `[hv, Matrix.mulVec_mulVec, hB]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_emb_mulVec_ratV_vecB {D : D7} {ρ : ℕ} (B : BesLev D ρ) (κ : GA D B.A) :
     mt B.V₀ (B.o.emb (κ, 1)) *ᵥ ratV (vecB B.o B.ζ) = ratV (vecB B.o B.ζ) := by
@@ -39,13 +39,13 @@ theorem mt_emb_mulVec_ratV_vecB {D : D7} {ρ : ℕ} (B : BesLev D ρ) (κ : GA D
   rw [hv, Matrix.mulVec_mulVec, hB]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n _ _ ρ B β β₀ hS κ g hg`. Establish `hA : mt B.V₀ (B.o.emb (κ, 1)) ⬝ B.o.jA = B.o.jA ⬝ mt B.A κ` using `B.o.emb_jA κ 1`. Establish `hv` using `mt_emb_mulVec_ratV_vecB B κ`. Establish `key : (mt B.V₀ (B.o.emb (κ, 1))).map p.pr * β₀.b = β₀.b * (GlobalTheory.RootEx.embX 1 g).val`. Rewrite using `[hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : ((GlobalTheory.RootEx.embX 1 g).val : Matrix (n ⊕ Fin 1) (n ⊕ Fin 1) k) = fromBlocks g.val 0 0 1` using `rfl`. Rewrite using `[hX]`. Rewrite using `[Matrix.mul_fromCols, fromCols_mul_fromBlocks, Matrix.mul_zero, add_zero, Matrix.mul_zero, zero_add, Matrix.mul_one]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, hA, Matrix.map_mul, Matrix.mul_assoc, hg, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, β.b'b, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Use `congrFun hv i` as an intermediate fact. Simplify using `only [Matrix.mul_apply, replicateCol_apply, Matrix.map_apply, ← map_mul, ← map_sum]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem coreMat : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {p : GlobalTheory.FinPl.SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {ρ : ℕ} (B : BesLev D ρ) (β : GlobalTheory.FinPl.Frame p B.A n) (β₀ : GlobalTheory.FinPl.Frame p B.V₀ (n ⊕ Fin 1)), GlobalTheory.FinPl.IsSumFrame B.o B.ζ β β₀ → ∀ (κ : GA D B.A) (g : GL n k), (mt B.A κ).map p.pr = β.b * g.val * β.b' → (mt B.V₀ (B.o.emb (κ, 1))).map p.pr = β₀.b * (GlobalTheory.RootEx.embX 1 g).val * β₀.b' := by
   intro D k _ _ _ _ p n _ _ ρ B β β₀ hS κ g hg

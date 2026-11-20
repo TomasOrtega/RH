@@ -13,21 +13,21 @@ section inv
 variable {A : Type*} [CommRing A] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι)
 
 /- English proof (translation)
-Simplify using `[mul_Phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laurentExpand_C (σ : Type*) (b : LaurentPolynomial A) :
     mul_Phi σ A (C b) = AddMonoidAlgebra.mapRingHom ℤ (C : A →+* MvPolynomial σ A) b := by
   simp [mul_Phi]
 
 /- English proof (translation)
-Simplify using `[mul_Phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laurentExpand_X (σ : Type*) (v : σ) :
     mul_Phi σ A (X v) = LaurentPolynomial.C (X v) := by
   simp [mul_Phi]
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[AddMonoidAlgebra.coeff_mapRingHom, LaurentPolynomial.C_apply, LaurentPolynomial.C_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapRingHom_laurent_C {A' : Type*} [CommRing A'] (f : A →+* A') (a : A) :
     AddMonoidAlgebra.mapRingHom ℤ f (LaurentPolynomial.C a) = LaurentPolynomial.C (f a) := by
@@ -36,7 +36,7 @@ theorem mapRingHom_laurent_C {A' : Type*} [CommRing A'] (f : A →+* A') (a : A)
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [AddMonoidAlgebra.coeff_mapRingHom, RingHom.comp_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mapRingHom_laurent_comp {A₁ B₁ D₁ : Type*} [CommRing A₁] [CommRing B₁] [CommRing D₁]
     (f : B₁ →+* D₁) (g : A₁ →+* B₁) (x : LaurentPolynomial A₁) :
@@ -46,9 +46,9 @@ private theorem mapRingHom_laurent_comp {A₁ B₁ D₁ : Type*} [CommRing A₁]
   simp only [AddMonoidAlgebra.coeff_mapRingHom, RingHom.comp_apply]
 
 /- English proof (translation)
-Establish `key : (mul_Phi (ι × Fin n) A).comp (matrixSubst LL S (RingHom.id _) (M.map LaurentPolynomial.C) (M'.map LaurentPolynomial.C)) = (AddMonoidAlgebra.mapRingHom ℤ (matrixSubst LL S (RingHom.id A) M M')).comp (mul_Phi (ι × Fin n) A)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `b`. Establish `hC : (matrixSubst LL S (RingHom.id A) M M').comp (C : A →+* MvPolynomial (ι × Fin n) A) = C` using `RingHom.ext fun a => by simp only [RingHom.comp_apply, matrixSubst_C, RingHom.id_apply]`. Simplify using `only [RingHom.comp_apply, matrixSubst_C, RingHom.id_apply, laurentExpand_C, mapRingHom_laurent_comp, hC]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `only [RingHom.comp_apply, matrixSubst_X, laurentExpand_X, mapRingHom_laurent_C]`. Apply the tactic sequence `split_ifs <;> simp [map_sum, laurentExpand_C, laurentExpand_X, mapRingHom_laurent_C, Matrix.map_apply]`. Conclude with `congrArg (fun f => f Q) key`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem laurentExpand_substitution (M M' : Matrix (Fin n) (Fin n) A) (Q : MvPolynomial (ι × Fin n) (LaurentPolynomial A)) :
     mul_Phi (ι × Fin n) A (matrixSubst LL S (RingHom.id _) (M.map LaurentPolynomial.C) (M'.map LaurentPolynomial.C) Q) =
@@ -67,11 +67,11 @@ theorem laurentExpand_substitution (M M' : Matrix (Fin n) (Fin n) A) (Q : MvPoly
   exact congrArg (fun f => f Q) key
 
 /- English proof (translation)
-Rewrite using `[mul_degs_eq (matrixSubst LL S (RingHom.id _) _ _ Q), laurentExpand_substitution]`. Establish `key : (AddMonoidAlgebra.mapRingHom ℤ (matrixSubst LL S (RingHom.id A) M M')).comp (mul_Phi (ι × Fin n) A) = eval₂Hom (AddMonoidAlgebra.mapRingHom ℤ ((matrixSubst LL S (RingHom.id A) M M').comp C)) (fun v => LaurentPolynomial.C (matrixSubst LL S (RingHom.id A) M M' (X v)))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `b`. Simplify using `only [RingHom.comp_apply, laurentExpand_C, mapRingHom_laurent_comp, MvPolynomial.eval₂Hom_C]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `only [RingHom.comp_apply, laurentExpand_X, mapRingHom_laurent_C, MvPolynomial.eval₂Hom_X']`. Establish `e` using `congrArg (fun f => f Q) key`. Simplify using `only [RingHom.comp_apply] at e`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_Psi_support _ _ Q`.
+A detailed English derivation is pending.
 -/
 theorem laurent_degrees_substitution_subset (M M' : Matrix (Fin n) (Fin n) A) (Q : MvPolynomial (ι × Fin n) (LaurentPolynomial A)) :
     mul_degs (matrixSubst LL S (RingHom.id _) (M.map LaurentPolynomial.C) (M'.map LaurentPolynomial.C) Q) ⊆
@@ -91,9 +91,9 @@ theorem laurent_degrees_substitution_subset (M M' : Matrix (Fin n) (Fin n) A) (Q
   exact mul_Psi_support _ _ Q
 
 /- English proof (translation)
-Apply `Finset.Subset.antisymm (laurent_degrees_substitution_subset LL S M M' Q)` to reduce the goal to its premises. Establish `h' : M' * M = 1` using `by first`. Consider the case `exact Matrix.mul_eq_one_comm.1 h`. Consider the case `exact mul_eq_one_comm.1 h`. Consider the case `exact Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _) h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Matrix.nonsing_inv_mul_cancel_of_mul_eq_one h`. Establish `hQ : matrixSubst LL S (RingHom.id _) (M'.map LaurentPolynomial.C) (M.map LaurentPolynomial.C) (matrixSubst LL S (RingHom.id _) (M.map LaurentPolynomial.C) (M'.map LaurentPolynomial.C) Q) = Q`. Rewrite using `[matrixSubst_comp, ← Matrix.map_mul, h', Matrix.map_one _ (map_zero _) (map_one _), matrixSubst_one, MvPolynomial.map_id]`. Use `conv_lhs => rw [← hQ]`. Conclude with `laurent_degrees_substitution_subset LL S M' M _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem laurent_degrees_substitution_eq (M M' : Matrix (Fin n) (Fin n) A) (h : M * M' = 1)
     (Q : MvPolynomial (ι × Fin n) (LaurentPolynomial A)) :
@@ -116,11 +116,11 @@ theorem laurent_degrees_substitution_eq (M M' : Matrix (Fin n) (Fin n) A) (h : M
 end inv
 
 /- English proof (translation)
-Establish `e : genericMatrixInverse R n = IsLocalization.Away.invSelf (S` using `GLCoord R n) (genMat R n).det • (genMat R n).adjugate.map (algebraMap (MvPolynomial (Fin n × Fin n) R) (GLCoord R n)) := by`. Use extensionality with `a b`. Simplify using `[genericMatrixInverse, Matrix.smul_apply]`. Rewrite using `[e, genericMatrixRootWeights, Matrix.mul_smul, ← Matrix.map_mul, Matrix.mul_adjugate]`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Rewrite using `[mul_comm]`. Conclude with `IsLocalization.Away.mul_invSelf _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.smul_apply, Matrix.one_apply, hab]`.
+A detailed English derivation is pending.
 -/
 private theorem genericMatrixBis_mul_genericMatrixInverse (R : Type) [Field R] (n : ℕ) : genericMatrixRootWeights R n * genericMatrixInverse R n = 1 := by
   have e : genericMatrixInverse R n = IsLocalization.Away.invSelf (S := GLCoord R n) (genMat R n).det •
@@ -137,14 +137,14 @@ private theorem genericMatrixBis_mul_genericMatrixInverse (R : Type) [Field R] (
   · simp [Matrix.smul_apply, Matrix.one_apply, hab]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> (ext a b; simp [genericMatrixRootWeights, genericMatrixInverse, gL, gLinv])`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_C_genericMatrixBis_and_inverse_eq_gL_gLinv (R : Type) [Field R] (n : ℕ) :
     (genericMatrixRootWeights R n).map LaurentPolynomial.C = gL R n ∧ (genericMatrixInverse R n).map LaurentPolynomial.C = gLinv R n := by
   constructor <;> (ext a b; simp [genericMatrixRootWeights, genericMatrixInverse, gL, gLinv])
 
 /- English proof (translation)
-Rewrite using `[← LaurentPolynomial.single_eq_C_mul_T, AddMonoidAlgebra.coeff_single]`. Conclude with `Finsupp.support_single_ne_zero _ hh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_laurent_C_mul_T_of_ne_zero {B : Type*} [CommRing B] (h : B) (hh : h ≠ 0) (w : ℤ) :
     (LaurentPolynomial.C h * LaurentPolynomial.T w).coeff.support = {w} := by
@@ -152,9 +152,9 @@ private theorem support_laurent_C_mul_T_of_ne_zero {B : Type*} [CommRing B] (h :
   exact Finsupp.support_single_ne_zero _ hh
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Use `congrArg (fun p : LaurentPolynomial B => p.coeff w) e` as an intermediate fact. Rewrite `this` using `[← LaurentPolynomial.single_eq_C_mul_T, AddMonoidAlgebra.coeff_single]`. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 private theorem laurent_C_mul_T_eq_zero_iff {B : Type*} [CommRing B] (h : B) (w : ℤ) :
     LaurentPolynomial.C h * LaurentPolynomial.T w = 0 ↔ h = 0 := by
@@ -167,25 +167,23 @@ private theorem laurent_C_mul_T_eq_zero_iff {B : Type*} [CommRing B] (h : B) (w 
     simp
 
 /- English proof (translation)
-Introduce `R _ ι _ LL n S j G`. Set `u : (GLLaurent R n)ˣ` to `⟨LaurentPolynomial.T 1, LaurentPolynomial.T (-1), by rw [← LaurentPolynomial.T_add]; simp, by rw [← LaurentPolynomial.T_add]; simp⟩`. Set `D : Fin n → (GLLaurent R n)ˣ` to `fun a => if a = j then u else 1`. Establish `hD : (Matrix.diagonal fun a => ((D a : (GLLaurent R n)ˣ) : GLLaurent R n)) = Matrix.diagonal (fun a => if a = j then LaurentPolynomial.T 1 else 1)`. Apply the tactic sequence `congr 1; funext a; by_cases h : a = j <;> simp [D, h, u]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hD' : (Matrix.diagonal fun a => (((D a)⁻¹ : (GLLaurent R n)ˣ) : GLLaurent R n)) = Matrix.diagonal (fun a => if a = j then LaurentPolynomial.T (-1) else 1)`. Apply the tactic sequence `congr 1; funext a; by_cases h : a = j <;> simp [D, h, u]`. Take `⟨hgL, hgLinv⟩` from `map_C_genericMatrixBis_and_inverse_eq_gL_gLinv R n`. Establish `hcoefL : (LaurentPolynomial.C).comp (coefficientMap R n) = coefL R n` using `rfl`. Establish `hH : MvPolynomial.map LaurentPolynomial.C (genericTranslate LL S G) = matrixSubst LL S (coefL R n) (gLinv R n) (gL R n) G`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[genericTranslate, map_matrixSubst, hgL, hgLinv, hcoefL]`. Establish `hT : twistSub LL S j G = matrixSubst LL S (RingHom.id _) (gL R n) (gLinv R n) (matrixSubst LL S (RingHom.id _) (Matrix.diagonal fun a => ((D a : (GLLaurent R n)ˣ) : GLLaurent R n)) (Matrix.diagonal fun a => (((D a)⁻¹ : (GLLaurent R n)ˣ) : GLLaurent R n)) (MvPolynomial.map Laurent …`. Rewrite using `[hH, hD, hD', matrixSubst_comp, matrixSubst_comp, twistSub_eq_matrixSubst]`. Simplify using `only [twistMat, Matrix.mul_assoc]`. Establish `hprod : ∀ w : Fin n → ℤ, (((∏ a, D a ^ w a) : (GLLaurent R n)ˣ) : GLLaurent R n) = LaurentPolynomial.T (w j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[Finset.prod_eq_single j (fun a _ ha => by simp [D, ha]) (fun h => absurd (Finset.mem_univ j) h)]`. Simplify using `only [D, if_pos rfl]`. Break down `w j with k | k` into its components or cases. Rewrite using `[Int.ofNat_eq_coe, zpow_natCast, Units.val_pow_eq_pow_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [u, LaurentPolynomial.T_pow, mul_one]`. Rewrite using `[zpow_negSucc, ← inv_pow, Units.val_pow_eq_pow_val]`. Simplify using `only [u, Units.inv_mk, LaurentPolynomial.T_pow]`. Use `congr 1`. Rewrite using `[Int.negSucc_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set H := genericTranslate LL S G with hHdef`. Use `set P := matrixSubst LL S (RingHom.id _) (Matrix.diagonal fun a => ((D a : (GLLaurent R n)ˣ) : GLLaurent R n)) (Matrix.diagonal fun a => (((D a)⁻¹ : (GLLaurent R n)ˣ) : GLLaurent R n)) (MvPolynomial.map LaurentPolynomial.C H) with hPdef`. Establish `hcoef : ∀ m, P.coeff m = LaurentPolynomial.C (H.coeff m) * LaurentPolynomial.T (wtS LL S m j)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[hPdef]`. Use `conv_lhs => rw [H.as_sum]`. Simplify using `only [map_sum, MvPolynomial.map_monomial, torus_acts_through_weight (GLLaurent R n) (GLLaurent R n) ι LL n S (RingHom.id _) D, RingHom.id_apply, hprod, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hm`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.mp hm]`. Simplify using the standard rewrite rules. Establish `hsupp : P.support = H.support`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `m`. Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.mem_support_iff, hcoef, Ne, laurent_C_mul_T_eq_zero_iff]`. Use `show mul_degs (twistSub LL S j G) = _`. Rewrite using `[hT, ← hgL, ← hgLinv, laurent_degrees_substitution_eq LL S (genericMatrixRootWeights R n) (genericMatrixInverse R n) (genericMatrixBis_mul_genericMatrixInverse R n)]`. Rewrite using `[mul_degs, hsupp, ← Finset.biUnion_singleton]`.
-
-Apply `Finset.biUnion_congr rfl` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[hcoef]`. Conclude with `support_laurent_C_mul_T_of_ne_zero _ (MvPolynomial.mem_support_iff.mp hm) _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_exponents_are_weight_entries : TwistExponentsAreWeightEntries := by
   intro R _ ι _ LL n S j G

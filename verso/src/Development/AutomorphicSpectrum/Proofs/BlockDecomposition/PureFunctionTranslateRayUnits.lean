@@ -7,27 +7,25 @@ open scoped ENNReal NNReal Classical
 namespace GlobalTheory.CompanionTheory.BasePsi
 
 /- English proof (translation)
-Introduce `F _ _ θ r hr S T G g a hST hT δ hδ t`. Take `⟨h1, h2⟩` from `hr δ hδ`. Establish `c1 : ((pr t * (a * r δ) : (AF F)ˣ) : AF F).1 = (a : AF F).1 * (θ δ * algebraMap F (Ainf F) (t : F))`. Establish `: ((pr t * (a * r δ) : (AF F)ˣ) : AF F).1 = algebraMap F (Ainf F) (t : F) * ((a : AF F).1 * (r δ : AF F).1)` using `rfl`. Rewrite using `[this, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `c2 : ∀ v, ((pr t * (a * r δ) : (AF F)ˣ) : AF F).2 v = (a : AF F).2 v * algebraMap F (Fv F v) (t : F)`. Introduce `v`. Establish `: ((pr t * (a * r δ) : (AF F)ˣ) : AF F).2 v = algebraMap F (Fv F v) (t : F) * ((a : AF F).2 v * (r δ : AF F).2 v)` using `rfl`. Rewrite using `[this, h2]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((1 : FiniteAdeleRing (𝓞 F) F)) v = 1` using `rfl`. Rewrite using `[h3, mul_one, mul_comm]`. Establish `inv : ∀ v, (a : AF F).2 v * ((a⁻¹ : (AF F)ˣ) : AF F).2 v = 1`. Introduce `v`. Establish `: ((a * a⁻¹ : (AF F)ˣ) : AF F).2 v = (a : AF F).2 v * ((a⁻¹ : (AF F)ˣ) : AF F).2 v` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `key : ∀ v, v ∉ T → ((a : AF F).2 v * algebraMap F (Fv F v) (t : F) ∈ v.adicCompletionIntegers F ↔ algebraMap F (Fv F v) (t : F) ∈ v.adicCompletionIntegers F)`. Introduce `v hv`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h'` using `mul_mem (hT v hv).2 h`. Establish `e : ((a⁻¹ : (AF F)ˣ) : AF F).2 v * ((a : AF F).2 v * algebraMap F (Fv F v) (t : F)) = algebraMap F (Fv F v) (t : F)`. Rewrite using `[← mul_assoc, mul_comm (((a⁻¹ : (AF F)ˣ) : AF F).2 v), inv, one_mul]`. Rewrite `h'` using `[e]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `fun h => mul_mem (hT v hv).1 h`. Rewrite using `[GlobalTheory.T.pure_adelic_function_formula F S G g (pr t * (a * r δ))]`. Simplify using `only [c1, c2]`. Distinguish the cases in `ht : ∀ v, v ∉ T → algebraMap F (Fv F v) (t : F) ∈ v.adicCompletionIntegers F`. Rewrite using `[if_pos ht]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : ∀ v, v ∉ S → (a : AF F).2 v * algebraMap F (Fv F v) (t : F) ∈ v.adicCompletionIntegers F`. Rewrite using `[if_pos h]`. Establish `hp : ∏ v ∈ S, g v ((a : AF F).2 v * algebraMap F (Fv F v) (t : F)) = ∏ v ∈ T, psiA S g a v (fun _ => algebraMap F (Fv F v) (t : F))`. Rewrite using `[← Finset.prod_subset hST]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[psiA, hv]`. Introduce `v _ hv`. Simplify using `[psiA, hv, h v hv]`. Rewrite using `[hp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h` using `[if_neg h] push_neg`. Take `⟨v, hvS, hv⟩` from `h`. Establish `hvT : v ∈ T`. Assume the negation of the conclusion as `hvT`. Conclude with `hv ((key v hvT).2 (ht v hvT))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hz : ∏ v ∈ T, psiA S g a v (fun _ => algebraMap F (Fv F v) (t : F)) = 0` using `Finset.prod_eq_zero hvT (by simp [psiA, hvS, hv])`. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg ht, if_neg]`. Introduce `h`.
-
-Conclude with `ht fun v hv => (key v hv).1 (h v fun hs => hv (hST hs))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pure_term : ∀ (F : Type) [Field F] [NumberField F] (θ : ℝ →+* Ainf F) (r : ℝ → (AF F)ˣ), IsRay θ r →
     ∀ (S T : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ) (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (a : (AF F)ˣ), S ⊆ T →

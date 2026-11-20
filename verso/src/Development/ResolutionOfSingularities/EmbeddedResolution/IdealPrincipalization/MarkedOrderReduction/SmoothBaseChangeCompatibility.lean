@@ -26,7 +26,7 @@ namespace MarkedPullbackSquare
 variable {T : MarkedIdealWithBoundary.{u}} {Y : Scheme.{u}} {g : Y ⟶ T.scheme}
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Smooth) S.isPullback.flip ‹AlgebraicGeometry.Smooth g›`.
+A detailed English derivation is pending.
 -/
 theorem smooth_verticalMap (S : MarkedPullbackSquare T g) [AlgebraicGeometry.Smooth g] :
     AlgebraicGeometry.Smooth S.left :=
@@ -34,7 +34,7 @@ theorem smooth_verticalMap (S : MarkedPullbackSquare T g) [AlgebraicGeometry.Smo
     (P := @AlgebraicGeometry.Smooth) S.isPullback.flip ‹AlgebraicGeometry.Smooth g›
 
 /- English proof (translation)
-Rewrite using `[← S.bottom_structMap, ← hq, ← Category.assoc, S.isPullback.w, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem verticalMap_comp_lowerStructMap (S : MarkedPullbackSquare T g) (q : Y ⟶ Spec (CommRingCat.of T.base))
     (hq : g ≫ T.structMap = q) :
@@ -42,7 +42,7 @@ theorem verticalMap_comp_lowerStructMap (S : MarkedPullbackSquare T g) (q : Y �
   rw [← S.bottom_structMap, ← hq, ← Category.assoc, S.isPullback.w, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `hGeom.withBoundary_valid (S.upperTriple k' q E) hV ((S.lowerTriple.pullbackOverField S.topScheme k' (S.top ≫ q) S.left).boundary) hE.symm`.
+A detailed English derivation is pending.
 -/
 theorem pullbackOverField_isAdmissible_of_sameNontrivialBoundary (hGeom : MonomialGeometryHypotheses.{u}) (S : MarkedPullbackSquare T g)
     (k' : Type u) [Field k'] (q : Y ⟶ Spec (CommRingCat.of k'))
@@ -54,7 +54,7 @@ theorem pullbackOverField_isAdmissible_of_sameNontrivialBoundary (hGeom : Monomi
     ((S.lowerTriple.pullbackOverField S.topScheme k' (S.top ≫ q) S.left).boundary) hE.symm
 
 /- English proof (translation)
-The claim follows from `S.orderAt_comap_verticalMap_le hT hg S.ideal _ hord y`.
+A detailed English derivation is pending.
 -/
 theorem orderAt_comap_verticalMap_le_of_forall_orderAt_le (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g)
@@ -65,11 +65,9 @@ theorem orderAt_comap_verticalMap_le_of_forall_orderAt_le (S : MarkedPullbackSqu
 end MarkedPullbackSquare
 
 /- English proof (translation)
-Establish `hgord : OrderAtPullbackInvariant T g` using `orderAtPullbackInvariant_of_smooth T hT g`. Use `⟨?_, ?_, ?_, ?_, hgord⟩` and prove the remaining obligations. Introduce `S hord E hE hV hdimS`. Establish `: AlgebraicGeometry.Smooth S.left` using `MarkedPullbackSquare.smooth_verticalMap S`. Conclude with `hF.smooth_pullback S.lowerTriple S.valid (le_trans S.dim_le hdim) hord S.topScheme (S.top ≫ q) S.left (MarkedPullbackSquare.verticalMap_comp_lowerStructMap S q hq) E hE hV hdimS (fun y => MarkedPullbackSquare.orderAt_comap_verticalMap_le_of_forall_orderAt_le S hT hgord hord y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inferInstance`. Introduce `S hmon E hE hmon'`. Establish `: AlgebraicGeometry.Smooth S.left` using `MarkedPullbackSquare.smooth_verticalMap S`. Conclude with `monomialPrincipalization_isPullbackBlowupSequence_of_smooth hG.monomialInputs τ S.lowerTriple hmon S.topScheme (S.top ≫ q) S.left (MarkedPullbackSquare.verticalMap_comp_lowerStructMap S q hq) E hE hmon'`. Introduce `S E hE hV`.
-
-Establish `: AlgebraicGeometry.Smooth S.left` using `MarkedPullbackSquare.smooth_verticalMap S`. Conclude with `hG.nonMonomialPart_comap_of_sameNontrivialBoundary S.lowerTriple S.valid S.topScheme (S.top ≫ q) S.left (MarkedPullbackSquare.verticalMap_comp_lowerStructMap S q hq) (MarkedPullbackSquare.pullbackOverField_isAdmissible_of_sameNontrivialBoundary hG.monomialInputs S T.base q E hE h …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem baseChangeCompatible_of_smooth (hG : PrincipalizationGeometryHypotheses.{u}) (τ : ComapIsoInvariance.{u}) (n : ℕ)
     (F G : PrincipalizationAssignment.{u}) (hF : IsOrderReduction (fun d => d ≤ n) F G)

@@ -11,7 +11,7 @@ section
 variable {p n' : ℕ} {R₁ R₂ : RS p n'} (I : RSIso R₁ R₂) {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ)
 
 /- English proof (translation)
-Use `show MvPolynomial.map (I.φK.symm : R₂.Kf →+* R₁.Kf) (MvPolynomial.map (I.φK : R₁.Kf →+* R₂.Kf) P) = P`. Establish `h : (I.φK.symm : R₂.Kf →+* R₁.Kf).comp (I.φK : R₁.Kf →+* R₂.Kf) = RingHom.id _`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.map_map, h, MvPolynomial.map_id]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pm_symm (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₁.Kf) :
     I.symm.JO.pm (I.JO.pm P) = P := by
@@ -21,7 +21,7 @@ theorem pm_symm (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₁.
   rw [MvPolynomial.map_map, h, MvPolynomial.map_id]
 
 /- English proof (translation)
-Use `show MvPolynomial.map (I.φK : R₁.Kf →+* R₂.Kf) (MvPolynomial.map (I.φK.symm : R₂.Kf →+* R₁.Kf) P) = P`. Establish `h : (I.φK : R₁.Kf →+* R₂.Kf).comp (I.φK.symm : R₂.Kf →+* R₁.Kf) = RingHom.id _`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.map_map, h, MvPolynomial.map_id]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pm_symm' (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₂.Kf) :
     I.JO.pm (I.symm.JO.pm P) = P := by
@@ -38,7 +38,7 @@ def PsiV : Vsp R₁.Kf lam0 ≃+ Vsp R₂.Kf lam0 where
   map_add' _ _ := Subtype.ext (map_add _ _ _)
 
 /- English proof (translation)
-Establish `h` using `Hten_tr (I := I) (lam0 := lam0) (Λ := fun s => extO R₁.O R₁.ι R₁.σ s.val L) (P := P) hP`. Simplify using `only [extO_tr] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HLpoly_tr (L : Submodule R₁.W (Fin (m + 1) → R₁.Qq))
     (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₁.Kf)
@@ -49,7 +49,7 @@ theorem HLpoly_tr (L : Submodule R₁.W (Fin (m + 1) → R₁.Qq))
   exact h
 
 /- English proof (translation)
-Establish `h` using `Hten_tr (I := I) (lam0 := lam0) (Λ := fun s => LeAt p R₁.ι R₁.σ R₁.w s.val e) (P := P) hP`. Simplify using `only [LeAt_tr] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HLepoly_tr (e : Edge R₁.W R₁.Qq (m + 1))
     (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₁.Kf)
@@ -63,21 +63,19 @@ theorem HLepoly_tr (e : Edge R₁.W R₁.Qq (m + 1))
 end
 
 /- English proof (translation)
-Introduce `p n' R₁ R₂ I m lam0`. Establish `hΨ : ∀ (c : R₁.Kf) (v : Vsp R₁.Kf lam0), PsiV I lam0 (c • v) = I.φK c • PsiV I lam0 v`. Introduce `c v`. Conclude with `Subtype.ext (map_smul' _ c v.1)`. Use `⟨mapSubEquiv I.JW, PsiV I lam0, hΨ, fun L => isLattice_mapSub_iff I.JW L, fun r e => ?_, fun L x => ?_, fun e x => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `isEdge_mapSub I.JW p n' r`. Introduce `h`. Establish `h2` using `isEdge_mapSub I.JW.symm p n' r h`. Simplify using `only at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : mapSub I.JW.symm (mapSub I.JW e.src) = e.src` using `mapSub_symm _ _`. Establish `h4 : mapSub I.JW.symm (mapSub I.JW e.tgt) = e.tgt` using `mapSub_symm _ _`. Establish `h5 : (⟨mapSub I.JW.symm (mapSub I.JW e.src), mapSub I.JW.symm (mapSub I.JW e.tgt)⟩ : Edge R₁.W R₁.Qq (m + 1)) = e` using `by rw [h3, h4]`. Establish `h6 : IsEdge p n' r (⟨mapSub I.JW.symm (mapSub I.JW e.src), mapSub I.JW.symm (mapSub I.JW e.tgt)⟩ : Edge R₁.W R₁.Qq (m + 1))` using `h2`. Rewrite `h6` using `[h5]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `HLpoly_tr I lam0 L x.1 hx`. Introduce `hx`. Establish `h2` using `HLpoly_tr I.symm lam0 (mapSub I.JW L) (PsiV I lam0 x).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : mapSub I.symm.JW (mapSub I.JW L) = L` using `mapSub_symm I.JW L`. Rewrite `h2` using `[h3]`. Establish `h4 : I.symm.JO.pm ((PsiV I lam0 x : Vsp R₂.Kf lam0) : MvPolynomial _ R₂.Kf) = x.1` using `pm_symm I x.1`. Rewrite `h2` using `[h4]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `HLepoly_tr I lam0 e x.1 hx`. Introduce `hx`. Establish `h2` using `HLepoly_tr I.symm lam0 ⟨mapSub I.JW e.src, mapSub I.JW e.tgt⟩ (PsiV I lam0 x).1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : mapSub I.symm.JW (mapSub I.JW e.src) = e.src` using `mapSub_symm I.JW _`. Establish `h3' : mapSub I.symm.JW (mapSub I.JW e.tgt) = e.tgt` using `mapSub_symm I.JW _`. Simplify using `only [h3, h3'] at h2`. Establish `h4 : I.symm.JO.pm ((PsiV I lam0 x : Vsp R₂.Kf lam0) : MvPolynomial _ R₂.Kf) = x.1` using `pm_symm I x.1`. Rewrite `h2` using `[h4]`.
-
-Conclude with `h2`. Unfold `dimV Module.finrank`. Rewrite using `[rank_eq_of_equiv_equiv I.φK (PsiV I lam0) I.φK.bijective hΨ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restHLTransport : RestHLTransport := by
   intro p n' R₁ R₂ I m lam0
@@ -123,7 +121,7 @@ theorem restHLTransport : RestHLTransport := by
     rw [rank_eq_of_equiv_equiv I.φK (PsiV I lam0) I.φK.bijective hΨ]
 
 /- English proof (translation)
-The claim follows from `lpRingIndep_of h restHLTransport`.
+A detailed English derivation is pending.
 -/
 theorem lpRingIndep_of' (h : RestRSIso) : LPRingIndep := lpRingIndep_of h restHLTransport
 

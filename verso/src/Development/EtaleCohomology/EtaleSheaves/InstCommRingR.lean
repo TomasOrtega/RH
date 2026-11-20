@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.D2
 
 /- English proof (translation)
-Introduce `U ⟨x⟩` and use `h U ⟨(f.app _).app _ x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_of {q : ℕ} {E E' : Spc} (f : E ⟶ E') (h : Inv q E') : Inv q E :=
   fun U ⟨x⟩ => h U ⟨(f.app _).app _ x⟩
@@ -86,13 +86,13 @@ def LeafNewton : Prop :=
   ∀ (A : Type 1) [CommRing A] (c : ℕ → A) (x : A), c 0 = 1 → c 1 = -x → (∀ j, 1 < j → c j = 0) → ∀ k, 0 < k → newton c k = x ^ k
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hD q _ k hk`. Take `⟨P⟩` from `hR q`. Establish `hE` using `fun {E : Spc} (h : Inv q E) {N : ℕ} (V : E ⟶ ofCat (glCat N)) => hC hD q P h V`. Use `choose c hc hu using @hE`. Use `⟨fun {E N} V => if h : Inv q E then P.π h k (newton (fun j => P.ι h j (c h V j)) k) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E E' N f V h'`. Establish `h` using `inv_of f h'`. Simplify using `only [dif_pos h, dif_pos h']`. Rewrite using `[← hu h (f ≫ V) _ (hN q P f h h' V _ (hc h' V)), ← P.π_map f h h', hS.1 _ _ _ _ (hc h' V).1]`. Simplify using `only [P.map_ι]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E a b V W h`. Simplify using `only [dif_pos h]`. Take `⟨e, he, hk⟩` from `hW q P h V W _ _ (hc h V) (hc h W)`. Rewrite using `[← hu h _ e he, hS.2.1 _ (fun j => P.ι h j (c h V j)) (fun j => P.ι h j (c h W j)) _ (hc h V).1 (hc h W).1 hk, map_add]`. Introduce `E L h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos h]`. Rewrite using `[hS.2.2 _ _ _ (hc h L).1 (hL q P h L _ (hc h L)) (fun j hj => by rw [(hc h L).2.1 j hj, map_zero]) k hk, ← P.ι_cpow, P.π_ι]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal_of (hR : LeafRing) (hC : LeafChern) (hN : LeafNat) (hW : LeafWhitney) (hL : LeafLine) (hS : LeafNewton) :
     LateralTheory.E.EtaleChapterDTwo := by

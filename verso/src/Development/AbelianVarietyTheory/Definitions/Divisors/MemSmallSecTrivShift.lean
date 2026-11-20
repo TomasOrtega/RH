@@ -25,7 +25,7 @@ def pt (σ : k →+* ℂ) (v : V D) : CxPts (CanonLB.affStr k D) σ :=
     simp [CanonLB.polyFn]
 
 /- English proof (translation)
-Rewrite using `[pt, ev_ofHom]`. Simplify using `[CanonLB.polyFn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_pt (v : V D) (P : MvPolynomial (Fin D) k) :
     ev _ σ ⊤ (CanonLB.polyFn P) (pt σ v) = MvPolynomial.eval₂Hom σ (fun a => v a) P := by
@@ -33,18 +33,18 @@ theorem ev_pt (v : V D) (P : MvPolynomial (Fin D) k) :
   simp [CanonLB.polyFn]
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).inv).2`.
+A detailed English derivation is pending.
 -/
 theorem polyFn_surj : Function.Surjective (CanonLB.polyFn : MvPolynomial (Fin D) k → _) :=
   (ConcreteCategory.bijective_of_isIso
       (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).inv).2
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `polyFn_surj a`. Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Establish `: ev (CanonLB.affStr k D) σ ⊤ (CanonLB.polyFn P) ∘ pt σ = fun v : V D => MvPolynomial.eval₂Hom σ (fun a => v a) P` using `funext fun v => ev_pt v P`. Rewrite using `[this]`. Use `clear this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `mul_X p n hp`. Simplify using `only [map_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `hp.mul (EuclideanSpace.proj (𝕜 := ℂ) n : V D →L[ℂ] ℂ).differentiable`.
+A detailed English derivation is pending.
 -/
 theorem diff_pt (a : Γ(Sp (MvPolynomial (Fin D) k), ⊤)) :
     DifferentiableOn ℂ (ev (CanonLB.affStr k D) σ ⊤ a ∘ pt σ) univ := by
@@ -108,14 +108,14 @@ def std (σ : k →+* ℂ) (D : ℕ) : AlgChart (CanonLB.affStr k D) σ D where
 def u (v : V 1) : ℝ := 1 + ((v 0).re ^ 2 + (v 0).im ^ 2)
 
 /- English proof (translation)
-Unfold `u`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem u_pos (v : V 1) : 0 < u v := by unfold u; positivity
 
 def crd : V 1 →L[ℝ] ℂ := (EuclideanSpace.proj (𝕜 := ℂ) (0 : Fin 1) : V 1 →L[ℂ] ℂ).restrictScalars ℝ
 
 /- English proof (translation)
-Establish `h₁` using `(Complex.reCLM.comp crd).hasFDerivAt (x := v)`. Establish `h₂` using `(Complex.imCLM.comp crd).hasFDerivAt (x := v)`. Use `HasFDerivAt.congr_fderiv (((h₁.pow 2).add (h₂.pow 2)).const_add 1) ?_` and prove the remaining obligations. Use extensionality with `w`. Simplify using `[crd]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hasFDerivAt_u (v : V 1) : HasFDerivAt u
     ((2 * (v 0).re) • Complex.reCLM.comp crd + (2 * (v 0).im) • Complex.imCLM.comp crd) v := by
@@ -126,9 +126,9 @@ theorem hasFDerivAt_u (v : V 1) : HasFDerivAt u
   simp [crd]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `h` using `Complex.ofRealCLM.hasFDerivAt.comp v ((hasFDerivAt_u v).log (u_pos v).ne')`. Establish `h' : HasFDerivAt (fun v => (Real.log (u v) : ℂ)) _ v` using `h`. Rewrite using `[wdb, h'.fderiv]`. Establish `h2` using `Complex.re_add_im (v 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[crd, bas]`. Take the linear combination `(u v : ℂ)⁻¹ * h2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wdb_log : wdb 1 0 (fun v => (Real.log (u v) : ℂ)) = fun v => v 0 * ((u v)⁻¹ : ℝ) := by
   funext v
@@ -140,9 +140,9 @@ theorem wdb_log : wdb 1 0 (fun v => (Real.log (u v) : ℂ)) = fun v => v 0 * ((u
   linear_combination (u v : ℂ)⁻¹ * h2
 
 /- English proof (translation)
-Establish `h` using `crd.hasFDerivAt.mul (Complex.ofRealCLM.hasFDerivAt.comp v ((hasDerivAt_inv (u_pos v).ne').comp_hasFDerivAt v (hasFDerivAt_u v)))`. Establish `h' : HasFDerivAt (fun v : V 1 => v 0 * (((u v)⁻¹ : ℝ) : ℂ)) _ v` using `h`. Rewrite using `[cHess, Matrix.of_apply, wdb_log, wd, h'.fderiv]`. Establish `h0 : (u v : ℂ) ≠ 0` using `by exact_mod_cast (u_pos v).ne'`. Establish `h1 : (u v : ℂ) = 1 + ((v 0).re ^ 2 + (v 0).im ^ 2)` using `by simp [u]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Complex.re_add_im (v 0)`. Simplify using `[crd, bas]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(exp := 1) 2 * h1 + (2 * (v 0).re - 2 * Complex.I * (v 0).im) * h2 + (2 * (v 0).im ^ 2 - u v) * Complex.I_mul_I`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cHess_log (v : V 1) : cHess 1 (fun v => (Real.log (u v) : ℂ)) v 0 0 = ((u v ^ 2)⁻¹ : ℝ) := by
   have h := crd.hasFDerivAt.mul (Complex.ofRealCLM.hasFDerivAt.comp v
@@ -157,15 +157,15 @@ theorem cHess_log (v : V 1) : cHess 1 (fun v => (Real.log (u v) : ℂ)) v 0 0 = 
   linear_combination (exp := 1) 2 * h1 + (2 * (v 0).re - 2 * Complex.I * (v 0).im) * h2 + (2 * (v 0).im ^ 2 - u v) * Complex.I_mul_I
 
 /- English proof (translation)
-Establish `hd : Module.finrank ℝ (V 1) = 2`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (V 1)]`. Simplify using the standard rewrite rules. Establish `hu (v : V 1) : u v = 1 + ‖v‖ ^ 2`. Rewrite using `[u, EuclideanSpace.norm_sq_eq, Fin.sum_univ_one, Complex.sq_norm, Complex.normSq_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: Nontrivial (V 1)` using `inferInstance`. Establish `h` using `integral_fun_norm_addHaar (volume : Measure (V 1)) (fun r => 1 / Real.pi * ((1 + r ^ 2) ^ 2)⁻¹)`. Establish `hr : ∫ r in Ioi (0 : ℝ), r * ((1 + r ^ 2) ^ 2)⁻¹ = 0 - -(2 * (1 + (0 : ℝ) ^ 2))⁻¹`. Use `integral_Ioi_of_hasDerivAt_of_nonneg' (g := fun r => -(2 * (1 + r ^ 2))⁻¹) (fun r _ => ?_) (fun r hr => mul_nonneg (le_of_lt hr) (by positivity)) ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (2 * (1 + r ^ 2)) ≠ 0` using `by positivity`. Use `HasDerivAt.congr_deriv ((((hasDerivAt_pow 2 r).const_add 1).const_mul 2).inv this).neg ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[← neg_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(tendsto_inv_atTop_zero.comp (Tendsto.const_mul_atTop two_pos (tendsto_atTop_add_const_left _ 1 (tendsto_pow_atTop two_ne_zero)))).neg`. Simplify using `only [hu]`. Rewrite using `[h, hd, Measure.real, AnReadModel.volume_ball_one, ENNReal.toReal_ofReal Real.pi_pos.le]`. Simplify using `only [smul_eq_mul, Nat.reduceSub, pow_one, mul_left_comm _ (1 / Real.pi), integral_const_mul, hr]`. Use `Real.pi_pos` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem integral_dens : ∫ v : V 1, 1 / Real.pi * (u v ^ 2)⁻¹ = 1 := by
   have hd : Module.finrank ℝ (V 1) = 2 := by
@@ -198,7 +198,7 @@ def fsLine (σ : k →+* ℂ) : Weight (CanonLB.affStr k 1) σ (LB.triv _) :=
   Weight.ofFun fun z => Real.log (u ((std σ 1).e z))
 
 /- English proof (translation)
-The claim follows from `Weight.isCInf_ofFun fun y => by refine cInfAt_of_chart isOpen_univ (std σ 1) ?_ trivial trivial have hc : ContDiff ℝ ∞ u := contDiff_const.add (((Complex.reCLM.comp crd).contDiff.pow 2).add ((Complex.imCLM.comp crd).contDiff.pow 2)) exact (hc.log fun v => (u_pos v).ne').contDiffO …`.
+A detailed English derivation is pending.
 -/
 theorem isCInf_fsLine : (fsLine σ).IsCInf := Weight.isCInf_ofFun fun y => by
   refine cInfAt_of_chart isOpen_univ (std σ 1) ?_ trivial trivial
@@ -208,7 +208,7 @@ theorem isCInf_fsLine : (fsLine σ).IsCInf := Weight.isCInf_ofFun fun y => by
     congrArg (fun w => Real.log (u w)) ((std σ 1).e.right_inv trivial)
 
 /- English proof (translation)
-Establish `e : (fun w => ((fsLine σ).φ (pick (fsLine σ).isLB ((std σ 1).e.symm v)) ((std σ 1).e.symm w) : ℂ)) = fun w => (Real.log (u w) : ℂ)` using `funext fun w => congrArg (fun w => (Real.log (u w) : ℂ)) ((std σ 1).e.right_inv trivial)`. Rewrite using `[AlgChart.chernDens, AlgChart.hess, e, (std σ 1).e.right_inv trivial, Matrix.det_unique]`. Use `erw [cHess_log]`. Rewrite using `[Complex.ofReal_re]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chernDens_fsLine (v : V 1) : (std σ 1).chernDens (fsLine σ) ((std σ 1).e.symm v) =
     1 / Real.pi * (u v ^ 2)⁻¹ := by
@@ -221,13 +221,13 @@ theorem chernDens_fsLine (v : V 1) : (std σ 1).chernDens (fsLine σ) ((std σ 1
   simp
 
 /- English proof (translation)
-Establish `: Smooth (CanonLB.affStr k 1)` using `SmoothOfRelativeDimension.smooth 1 _`. Establish `: QuasiCompact (CanonLB.affStr k 1)` using `inferInstance`. Establish `him : (std σ 1).e '' univ = univ` using `(std σ 1).e.image_source_eq_target`. Establish `hn (v : V 1) : 0 ≤ 1 / Real.pi * (u v ^ 2)⁻¹` using `by have := Real.pi_pos; positivity`. Establish `h₁ : (fsLine σ).chernPart 1 1 univ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Weight.chernPart_apply isCInf_fsLine 1 (std σ 1) .univ fun _ _ => trivial, him]`. Simplify using `only [chernDens_fsLine, Units.val_one, Int.cast_one, one_mul, Measure.restrict_univ]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (Integrable.of_integral_ne_zero (integral_dens.trans_ne one_ne_zero)) (.of_forall hn), integral_dens, ENNReal.ofReal_one]`. Establish `h₂ : (fsLine σ).chernPart 1 (-1) = 0`. Rewrite using `[← Measure.measure_univ_eq_zero, Weight.chernPart_apply isCInf_fsLine (-1) (std σ 1) .univ fun _ _ => trivial, him]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `setLIntegral_eq_zero .univ fun v _ => ENNReal.ofReal_eq_zero.2 ?_` and prove the remaining obligations. Rewrite using `[chernDens_fsLine]`. Simplify using `using hn v`. Establish `: IsProbabilityMeasure ((fsLine σ).chernPart 1 1)` using `⟨h₁⟩`. Use `⟨⟨integrableOn_univ.2 (integrable_const _), h₂ ▸ integrableOn_univ.2 (integrable_const _)⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Weight.chernInt, h₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chernInt_fsLine : (fsLine σ).ChernIntegrableOn 1 univ (fun _ => 1) ∧
     (fsLine σ).chernInt 1 univ (fun _ => 1) = 1 := by
@@ -251,7 +251,7 @@ theorem chernInt_fsLine : (fsLine σ).ChernIntegrableOn 1 univ (fun _ => 1) ∧
   simp [Weight.chernInt, h₂]
 
 /- English proof (translation)
-Introduce `h` and use `have := h.charZero_base NeZero.ne n (Nat.cast_eq_zero.1 (ZMod.natCast_self n))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isArithVar_zmod (n : ℕ) [NeZero n] {X : Scheme.{0}} (p : X ⟶ Sp (ZMod n)) (D : ℕ) :
     ¬ IsArithVar p D := fun h =>
@@ -259,7 +259,7 @@ theorem not_isArithVar_zmod (n : ℕ) [NeZero n] {X : Scheme.{0}} (p : X ⟶ Sp 
   NeZero.ne n (Nat.cast_eq_zero.1 (ZMod.natCast_self n))
 
 /- English proof (translation)
-Introduce `h` and use `have := h.finite Int.not_isField ((Algebra.IsIntegral.isField_iff_isField (R := ℤ) (S := ℚ) Int.cast_injective).2 (Field.toIsField ℚ))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isArithVar_rat {X : Scheme.{0}} (p : X ⟶ Sp ℚ) (D : ℕ) : ¬ IsArithVar p D := fun h =>
   have := h.finite
@@ -270,15 +270,15 @@ def trivShift (k : Type) [CommRing k] (t : ℝ) : HermLB (𝟙 (Sp k)) :=
   (HermLB.triv _).shift (fun _ => t) fun _ => rfl
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `h`. Establish `hX` using `ArithBase.isArithVar_id hd`. Use `hX.isLocallyNoetherian` as an intermediate fact. Use `hX.finite_emb` as an intermediate fact. Set `i` to `𝟙 (Sp k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hr : IsRatSec ((trivShift k t).restr i).B fun _ => 1` using `fun a b h => by`. Take `rfl : a = b` from `Subsingleton.elim (α := PUnit → PUnit) _ _`. Use `congrArg (fun u : Γ(Sp k, _)ˣ => fnOf _ h.1 u.val) (((trivShift k t).restr i).isLB.g_self a)` as an intermediate fact. Rewrite `this` using `[Units.val_one, map_one]`. Conclude with `(this.symm.trans (fnOf_resG _ h.1 _)).trans (mul_one _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁ (z : Sp k) : (((trivShift k t).restr i).div hr).mult z = 0`. Establish `⟨a, ha⟩` using `exists_chart ((trivShift k t).restr i).isLB z`. Use the proof step `((presents_divOfRatSec _ hr).isEqn a z ha).mult_eq.trans (unitAt_one z).ord_eq_zero`. Establish `h₂ (σ) (y : CxPts (i ≫ 𝟙 _) σ) : logNorm (((trivShift k t).restr i).φ σ) (fun _ => 1) y = -t`. Establish `e` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[map_one, ev_one mem_ptsIn_top]`. Establish `e' : _ = 0 + 2 * t` using `((trivShift k t).φ σ).pull_φ i rfl (pick (((trivShift k t).restr i).φ σ).isLB y) y`. Rewrite using `[logNorm, Units.val_one, e]`. Conclude with `(congrArg (_ - · / 2) e').trans (by simp)`. Establish `h₃ (σ : k →+* ℂ) : ∑ᶠ _ : CxPts (i ≫ 𝟙 _) σ, -t = -t` using `finsum_eq_single _ ⟨spMap σ, by simp [i]⟩ fun y hy => absurd (Subtype.ext (by simpa [i] using y.2)) hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(hf.point _ i hX.charZero hX.dim_eq _ hr).trans ?_` and prove the remaining obligations. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `[HermLB.curveDeg, h₁, h₂, h₃, finsum_eq_sum_of_fintype, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem selfInter_trivShift [IsDomain k] [CharZero k] [Module.Finite ℤ k] (hd : ringKrullDim k = 1)
     {t a : ℝ} (h : (trivShift k t).IsSelfInter a) : a = t * Nat.card (k →+* ℂ) := by
@@ -312,9 +312,7 @@ theorem selfInter_trivShift [IsDomain k] [CharZero k] [Module.Finite ℤ k] (hd 
   simp [HermLB.curveDeg, h₁, h₂, h₃, finsum_eq_sum_of_fintype, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[(ArithBase.isArithHeight_trivShift t).isNef_iff ArithBase.isArithVar_int]`. Use `⟨fun h => ?_, fun ht => ⟨(HermLB.isNef_triv _ 0).semiPos.shift _ _, fun Z i _ _ _ => ?_⟩⟩` and prove the remaining obligations. Use `(h.2 _ (𝟙 _) ArithBase.isArithVar_int.dim_eq).trans_eq (if_pos (Ideal.ext fun n => ?_))` and prove the remaining obligations. Conclude with `(ArithBase.mem_asIdeal_iff (𝟙 (Sp ℤ)) n).trans (have := ArithBase.isArithVar_int.charZero; Int.cast_eq_zero)`. Use `split_ifs`.
-
-Conclude with `ht`. Conclude with `Real.log_natCast_nonneg _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isNef_trivShift_iff (t : ℝ) : (ArithBase.trivShift t).IsNef 0 ↔ 0 ≤ t := by
   rw [(ArithBase.isArithHeight_trivShift t).isNef_iff ArithBase.isArithVar_int]
@@ -327,7 +325,7 @@ theorem isNef_trivShift_iff (t : ℝ) : (ArithBase.trivShift t).IsNef 0 ↔ 0 �
     · exact Real.log_natCast_nonneg _
 
 /- English proof (translation)
-Use `forall₂_congr fun σ y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖ev _ σ ⊤ (s.f PUnit.unit) y‖ ^ 2 * Real.exp (-(0 + 2 * t)) ≤ 1 ↔ _`. Rewrite using `[zero_add, Real.exp_neg, mul_inv_le_iff₀ (Real.exp_pos _), one_mul, two_mul, Real.exp_add, ← sq, sq_le_sq₀ (norm_nonneg _) (Real.exp_pos _).le]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_smallSec_trivShift (t : ℝ) (s : (trivShift k t).B.Sec) :
     s ∈ (trivShift k t).smallSec ↔

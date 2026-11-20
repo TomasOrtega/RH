@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e : (finSumFinEquiv.trans (finCongr hn)).symm (finCongr hn (Fin.castAdd t j)) = Sum.inl j`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using the standard rewrite rules. Simplify using `only [jn, Matrix.submatrix_apply, id, e, Matrix.fromCols_apply_inl]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem jn_firstCols {D : D7} {a r t n : ℕ} (hn : r + t = n) (w : Mx D a r) (v : Mx D a t) :
     (jn hn w v).submatrix id (fun j : Fin r => finCongr hn (Fin.castAdd t j)) = w := by
@@ -29,7 +29,7 @@ theorem jn_firstCols {D : D7} {a r t n : ℕ} (hn : r + t = n) (w : Mx D a r) (v
   simp only [jn, Matrix.submatrix_apply, id, e, Matrix.fromCols_apply_inl]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [jn, Matrix.submatrix_apply, id]`. Break down `(finSumFinEquiv.trans (finCongr hn)).symm j with k | k` into its components or cases. Simplify using `using (continuous_fst.matrix_elem i k)`. Simplify using `using (continuous_snd.matrix_elem i k)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_jn_pair {D : D7} {a r t n : ℕ} (hn : r + t = n) :
     Continuous fun p : Mx D a r × Mx D a t => jn hn p.1 p.2 := by
@@ -40,19 +40,19 @@ theorem continuous_jn_pair {D : D7} {a r t n : ℕ} (hn : r + t = n) :
   · simpa using (continuous_snd.matrix_elem i k)
 
 /- English proof (translation)
-Introduce `hIk hDom hOrb hShift hJn hExt D n t B W d hn I θ hθ x₀ hx Φ hΦ`. Use `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Take `⟨hT, -, hS, -, -⟩` from `top_mx (D := D) W.rank t`. Take `⟨hT', -, -, -, -⟩` from `top_mx (D := D) W.rank W.rank`. Take `⟨-, g2, g3, -, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hBor : BorelSpace (GA D W)` using `⟨rfl⟩`. Establish `hΨ : ikp I Φ ∈ schwartzA θ W.rank n` using `(hIk D n t B W d I θ hθ Φ hΦ).2`. Establish `hcΨ : Continuous (ikp I Φ)` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ _ hΨ).1`. Establish `hinj : Function.Injective fun j : Fin W.rank => finCongr hn (Fin.castAdd t j)`. Introduce `a b h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.castAdd_injective _ _ ((finCongr hn).injective h)`. Take `⟨M, hM, -, hMd⟩` from `hDom D θ hθ W.rank n W.rank _ hinj _ hΨ`. Establish `hcM : Continuous M` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ M hM).1`. Establish `hform : ∀ (y : Mx D W.rank t) (h : GA D W), (ikp I fun X => Φ (mm X (bl hn 1 y 0 1))) (mm (mt W h⁻¹) (rat (ext0 hn x₀))) = ikp I Φ (jn hn (ww W x₀ h) (mm (ww W x₀ h) y + 0))`. Introduce `y h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hShift D n t B W d hn I Φ y, hExt D n t W hn x₀ h, hJn D n t W.rank W.rank hn]`. Establish `hfun : (fun y : Mx D W.rank t => orb W I.m (ikp I fun X => Φ (mm X (bl hn 1 y 0 1))) (ext0 hn x₀)) = fun y => ∫ h, ikp I Φ (jn hn (ww W x₀ h) (mm (ww W x₀ h) y + 0)) ∂I.m`. Use function extensionality and compare the values at `y`. Conclude with `integral_congr_ae (Eventually.of_forall fun h => hform y h)`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcw` using `continuous_ww (D := D) (W := W) x₀`. Establish `hb : Integrable (fun h => M (ww W x₀ h)) I.m` using `⟨(hcM.comp hcw).aestronglyMeasurable, hOrb D θ hθ W I.m I.haar x₀ hx M hM⟩`. Establish `hpt : ∀ (h : GA D W), Continuous fun y : Mx D W.rank t => ikp I Φ (jn hn (ww W x₀ h) (mm (ww W x₀ h) y + 0))`. Introduce `h`. Use `hcΨ.comp ((continuous_jn_pair hn).comp (continuous_const.prodMk ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(continuous_const.matrix_mul continuous_id).add continuous_const`. Establish `hmeas : ∀ y : Mx D W.rank t, Continuous fun h : GA D W => ikp I Φ (jn hn (ww W x₀ h) (mm (ww W x₀ h) y + 0))`. Introduce `y`. Use `hcΨ.comp ((continuous_jn_pair hn).comp (hcw.prodMk ?_))` and prove the remaining obligations. Conclude with `(hcw.matrix_mul continuous_const).add continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hF : FirstCountableTopology (Mx D W.rank t)` using `@TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ hS`. Use `continuous_of_dominated (bound := fun h => ‖M (ww W x₀ h)‖) (fun y => (hmeas y).aestronglyMeasurable) (fun y => Eventually.of_forall fun h => ?_) hb.norm (Eventually.of_forall hpt)` and prove the remaining obligations. Establish `h1` using `hMd (jn hn (ww W x₀ h) (mm (ww W x₀ h) y + 0))`. Rewrite `h1` using `[jn_firstCols]`. Conclude with `h1.trans (Complex.re_le_norm _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orb_shear : IkSch → Dom → OrbFin → Shift → JnBl → Ext0 → ∀ (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t)
     (hn : W.rank + t = n) (I : IkD d n) θ, IsInfFam θ → ∀ (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E), x₀.det ≠ 0 →

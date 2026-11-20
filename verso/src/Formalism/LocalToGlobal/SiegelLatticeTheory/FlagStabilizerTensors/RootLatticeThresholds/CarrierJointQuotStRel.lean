@@ -18,13 +18,11 @@ section LocRel
 variable {n r : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Establish `L : hJ ε (fam e z a) ((S * G) *ᵥ fam e z' b) = hJ ε (fam e z a) ((G * T) *ᵥ fam e z' b)`. Rewrite using `[hrel]`. Rewrite `L` using `[← Matrix.mulVec_mulVec, hadj, flag_expand ε e f z hfe hfz Si hSi a, hJ_sum_l']`. Rewrite `L` using `[← Matrix.mulVec_mulVec, flag_expand ε e f z' hfe hfz' T hT b, Matrix.mulVec_add, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul] at L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `L` using `[hJ_add_r', hJ_sum_r']`. Establish `L2` using `add_left_cancel L`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [RealObj.Zhat, fam_castSucc]`. Simplify using the standard rewrite rules. Use `_ = ∑ c : Fin r, (if c.castSucc < b then hJ ε (f c) (T *ᵥ fam e z' b) else 0) * hJ ε (fam e z a) (G *ᵥ e c) := L2`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
-
-Use `split_ifs`. Simplify using `only [RealObj.Zhat, fam_castSucc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relA_loc (e f : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ)
     (hfe : ∀ a b, hJ ε (f a) (e b) = if b = a then 1 else 0) (hfz : ∀ a, hJ ε (f a) z = 0)
@@ -57,9 +55,9 @@ theorem relA_loc (e f : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ)
         · simp
 
 /- English proof (translation)
-Unfold `rootCoord nxt`. Rewrite using `[Matrix.one_mulVec]`. Use `split_ifs with hlt`. Rewrite using `[hfe, if_neg]`. Introduce `h'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `at this`. Conclude with `hfz a`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootCoord_one (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (hfe : ∀ a b, hJ ε (f a) (e b) = if b = a then 1 else 0) (hfz : ∀ a, hJ ε (f a) z = 0) (a : Fin r) :
@@ -74,13 +72,13 @@ theorem rootCoord_one (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
   · exact hfz a
 
 /- English proof (translation)
-Establish `h` using `relAlg (RealObj.Zhat ε (fam e z) (fam e z') G) π hπ hP1 hP2 (fun c a => hJ ε (f c) (Si *ᵥ fam e z a)) (fun c b => hJ ε (f c) (T *ᵥ fam e z' b)) (relA_loc ε e f z z' hfe hfz hfz' S Si G T hSi hT hadj hrel)`. Establish `hU : ∀ k : Fin r, rootCoord ε e f z' T k = hJ ε (f k) (T *ᵥ fam e z' k.succ)`. Introduce `k`. Unfold `rootCoord`. Rewrite using `[nxt_eq_fam]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ∀ k : Fin r, hJ ε (f k) (Si *ᵥ fam e z k.succ) = - rootCoord ε e f z S k`. Introduce `k`. Establish `h1` using `Formalism.L2.SG.Pf.Vanish2.rootCoord_mul ε e f z hfe hfz hSi hS k`. Rewrite `h1` using `[hSiS, rootCoord_one ε e f z hfe hfz]`. Establish `h2 : rootCoord ε e f z Si k = hJ ε (f k) (Si *ᵥ fam e z k.succ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `rootCoord`. Rewrite using `[nxt_eq_fam]`. Rewrite using `[← h2]`. Take the linear combination `-h1`. Simplify using `only [hU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Simplify using `only [hm, Complex.neg_re, Finset.sum_neg_distrib, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rel_loc (e f : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ)
     (hfe : ∀ a b, hJ ε (f a) (e b) = if b = a then 1 else 0) (hfz : ∀ a, hJ ε (f a) z = 0)
@@ -110,7 +108,7 @@ theorem rel_loc (e f : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ)
   simp only [hm, Complex.neg_re, Finset.sum_neg_distrib, neg_neg]
 
 /- English proof (translation)
-Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.add_conj]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -124,7 +122,7 @@ theorem sum_add_star {ι : Type*} [Fintype ι] (x : ι → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `psiR`. Rewrite using `[sum_add_star, sum_add_star, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiR_eq_of (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ) (S T : Matrix (Fin n) (Fin n) ℂ)
     (h : ∑ k : Fin r, (rootCoord ε e f z' T k).re = ∑ k : Fin r, (rootCoord ε e f z S k).re) :
@@ -133,7 +131,7 @@ theorem psiR_eq_of (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z z' : Fin n → 
   rw [sum_add_star, sum_add_star, h]
 
 /- English proof (translation)
-Unfold `psiR`. Rewrite using `[sum_add_star, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_div₀, Complex.conj_ofReal, Complex.conj_I, map_natCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiR_mul_star (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (S : Matrix (Fin n) (Fin n) ℂ) :
     psiR ε gg e f z S * star (psiR ε gg e f z S) = 1 := by
@@ -152,41 +150,37 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[famSc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem famSc_one {n r : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : famSc 1 e z = fam e z := by
   funext a; simp [famSc]
 
 /- English proof (translation)
-Introduce `w hw s hs`. Use `set γ := gamW X u u' w with hγdef`. Establish `hγ : IsPtRep X u u' w γ`. Rewrite using `[hγdef, gamW, dif_pos hw.1]`. Conclude with `hw.1.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `psiU psiInf`. Rewrite using `[Complex.star_def, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.star_def]`. Use `set ε := X.B.I.ε v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set e : Fin D.R.rS → Fin X.B.I.n → ℂ := fun a => rv X.B.I v (X.eR a)`. Use `set f : Fin D.R.rS → Fin X.B.I.n → ℂ := fun a => rv X.B.I v (X.fR a)`. Use `set z := rv X.B.I v (X.zR u)`. Use `set z' := rv X.B.I v (X.zR u')`. Establish `hfe : ∀ a b, hJ ε (f a) (e b) = if b = a then 1 else 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[Formalism.L2.SG.Pf.Level.hJ_rv, Formalism.L2.SG.Pf.Vanish2.hE_f_e]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hfz : ∀ (u : D.what₂.Word) a, hJ ε (f a) (rv X.B.I v (X.zR u)) = 0`. Introduce `u a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.L2.SG.Pf.Level.hJ_rv, Formalism.L2.SG.Pf.Vanish2.hermitian_f_z_zero, map_zero]`. Establish `hS : InS e z (uMat (s v))` using `(hs.1 v).1`. Establish `hT : InS e z' (uMat ((γ⁻¹ * s * γ) v))` using `(hs.2 v).1`. Establish `hSiS : uMat (s v)⁻¹ * uMat (s v) = 1` using `Formalism.L2.SG.RealObj.InfCut.uMat_inv_mul' (s v)`. Establish `hSi : InS e z (uMat (s v)⁻¹)` using `Formalism.L2.SG.RealObj.InfCut.inS_inv e z _ _ hSiS hS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrel : uMat (s v) * uMat (γ v) = uMat (γ v) * uMat ((γ⁻¹ * s * γ) v)`. Establish `e1 : s v * γ v = γ v * (γ⁻¹ * s * γ) v`. Simplify using `only [Pi.mul_apply, Pi.inv_apply]`. Use `group`. Establish `e2 : uMat (s v * γ v) = uMat (γ v * (γ⁻¹ * s * γ) v)` using `by rw [e1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `e2` using `[uMat]`. Establish `hZ : ZX X u u' 1 γ v = RealObj.Zhat ε (fam e z) (fam e z') (uMat (γ v))`. Simplify using `only [ZX, frm, famSc_one]`. Both sides reduce to the same expression. Establish `hO` using `hγ v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hsum : (w.1.map Prod.snd).sum = D.R.rS + 1` using `w.2.2`. Establish `hZe : ∀ c b : Fin (D.R.rS + 1), RealObj.Zhat ε (fam e z) (fam e z') (uMat (γ v)) c b = (-1 : ℂ) ^ (D.R.rS - b.1) * X.B.I.φ v (X.ιE.symm (if c.val = ptPar w.1 b.val then ptSc w.1 b.val else 0))`. Introduce `c b`. Establish `h1` using `congrFun (congrFun hO c) b`. Simplify using `only [RealObj.ZhatO, ptC, Matrix.map_apply, ptMat, hZ] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ptEntry_eq w.1 c.val b.val (by rw [hsum]; exact b.2), ← h1, ← mul_assoc, ← mul_pow]`. Evaluate the numerical expressions. Establish `hne : ∀ b : ℕ, b < D.R.rS + 1 → X.B.I.φ v (X.ιE.symm (ptSc w.1 b)) ≠ 0`. Introduce `b hb`. Rewrite using `[map_ne_zero, map_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ptSc_ne w.1 w.2.1 b (by rw [hsum]; exact hb)`. Set `π : Fin (D.R.rS + 1) → Fin (D.R.rS + 1)` to `fun b => ⟨ptPar w.1 b.val, lt_of_lt_of_eq (ptPar_lt w.1 b.val (by rw [hsum]; exact b.2)) hsum⟩`. Establish `hπ : ∀ a, π (π a) = a` using `fun a => Fin.ext (ptPar_invol w.1 a.val (by rw [hsum]; exact a.2))`. Establish `hP1 : ∀ c b, RealObj.Zhat ε (fam e z) (fam e z') (uMat (γ v)) c b ≠ 0 ↔ c = π b`. Introduce `c b`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hZe]`. Distinguish the cases in `h : c.val = ptPar w.1 b.val`. Rewrite using `[if_pos h]`. Use `⟨fun _ => Fin.ext h, fun _ => mul_ne_zero (pow_ne_zero _ (by norm_num)) (hne b.val b.2)⟩` and prove the remaining obligations. Rewrite using `[if_neg h, map_zero, map_zero, mul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h' => absurd rfl h', fun h' => absurd (congrArg Fin.val h') h⟩`. Establish `hP2 : ∀ k : Fin D.R.rS, ((π k.succ).val + 1 = (π k.castSucc).val ∧ RealObj.Zhat ε (fam e z) (fam e z') (uMat (γ v)) (π k.succ) k.succ = - RealObj.Zhat ε (fam e z) (fam e z') (uMat (γ v)) (π k.castSucc) k.castSucc) ∨ (π k.castSucc).val < (π k.succ).val`. Introduce `k`. Establish `hsz : ∀ b ∈ w.1, 1 ≤ b.2` using `fun b hb => (w.2.1 b hb).2`. Break down `ptPar_consec w.1 hsz k.val (by rw [hsum]; omega) with h3 | h3` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Use `⟨h3.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hZe, hZe, if_pos rfl, if_pos rfl]`. Simplify using `only [Fin.val_succ, Fin.val_castSucc]`. Rewrite using `[h3.2]`.
-
-Establish `hk : D.R.rS - k.val = (D.R.rS - (k.val + 1)) + 1` using `by omega`. Rewrite using `[hk, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `right`. Conclude with `h3`.
-
-Establish `hR` using `rel_loc ε e f z z' hfe (hfz u) (hfz u') (uMat (s v)) (uMat (s v)⁻¹) (uMat (γ v)) (uMat ((γ⁻¹ * s * γ) v)) hS hSi hSiS hT (fun x y => Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.hJ_adj (s v) x y) hrel π hπ hP1 hP2`. Rewrite using `[psiR_eq_of ε X.B.g e f z z' _ _ hR]`. Conclude with `psiR_mul_star ε X.B.g e f z' _`.
+A detailed English derivation is pending.
 -/
 theorem stRel_holds (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) : StRel X u u' := by
   intro w hw s hs

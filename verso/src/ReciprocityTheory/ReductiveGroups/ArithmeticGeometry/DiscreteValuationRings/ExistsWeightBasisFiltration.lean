@@ -15,9 +15,9 @@ open ReciprocityTheory.ChartRestriction.G.Out
 variable {F : Type} [Field F] (v : AddValuation F (WithTop ℚ))
 
 /- English proof (translation)
-Break down `eq_or_ne b ⊤ with rfl | hbt` into its components or cases. Conclude with `le_top`. Break down `eq_or_ne a ⊤ with rfl | hat` into its components or cases. Simplify using `at h`. Use `lift a to ℚ using hat`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `lift b to ℚ using hbt`. Normalize the coercions in `at h ha ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_weight_basis_filtration {a b : WithTop ℚ} (h : a + b = 0) (ha : a ≤ 0) : 0 ≤ b := by
   rcases eq_or_ne b ⊤ with rfl | hbt
@@ -30,9 +30,9 @@ theorem exists_weight_basis_filtration {a b : WithTop ℚ} (h : a + b = 0) (ha :
   linarith
 
 /- English proof (translation)
-Break down `eq_or_ne b ⊤ with rfl | hbt` into its components or cases. Simplify using `at h`. Break down `eq_or_ne a ⊤ with rfl | hat` into its components or cases. Simplify using `at h`. Use `lift a to ℚ using hat`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared.
 
-Use `lift b to ℚ using hbt`. Normalize the coercions in `at h hb ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem le_zero_of_add_eq_zero_nonneg {a b : WithTop ℚ} (h : a + b = 0) (hb : 0 ≤ b) : a ≤ 0 := by
   rcases eq_or_ne b ⊤ with rfl | hbt
@@ -64,19 +64,19 @@ def Ov : ValuationSubring F where
       rw [← AddValuation.map_mul, mul_inv_cancel₀ hx, AddValuation.map_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Ov {x : F} : x ∈ Ov v ↔ 0 ≤ v x := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(mem_Ov v).1 r.2`.
+A detailed English derivation is pending.
 -/
 theorem v_nonneg (r : Ov v) : (0 : WithTop ℚ) ≤ v (r : F) := (mem_Ov v).1 r.2
 
 /- English proof (translation)
-Establish `h1` using `v_nonneg v (r : Ov v)`. Establish `h2` using `v_nonneg v ((r⁻¹ : (Ov v)ˣ) : Ov v)`. Establish `hm : ((r : Ov v) : F) * (((r⁻¹ : (Ov v)ˣ) : Ov v) : F) = 1` using `congrArg Subtype.val r.mul_inv`. Establish `hs : v ((r : Ov v) : F) + v (((r⁻¹ : (Ov v)ˣ) : Ov v) : F) = 0`. Rewrite using `[← AddValuation.map_mul, hm, AddValuation.map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm (le_zero_of_add_eq_zero_nonneg hs h2) h1`.
+A detailed English derivation is pending.
 -/
 theorem v_unit (r : (Ov v)ˣ) : v ((r : Ov v) : F) = 0 := by
   have h1 := v_nonneg v (r : Ov v)
@@ -92,13 +92,11 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
 abbrev algVF : V →+* F := (algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))
 
 /- English proof (translation)
-Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Use `⟨?_, fun _ h => absurd rfl h⟩` and prove the remaining obligations. Rewrite using `[map_zero, AddValuation.map_zero]`. Conclude with `le_top`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Establish `hH : HasVal ϖ (algebraMap V (FractionRing V) x) (n : ℤ)` using `⟨u, by rw [hu, map_mul, map_pow, zpow_natCast, mul_comm]⟩`. Establish `hval : v (algVF x) = (((n : ℤ) : ℚ) : WithTop ℚ)` using `hv _ _ hH`. Rewrite using `[hval]`. Use `⟨?_, fun hnu _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℚ) ≤ ((n : ℤ) : ℚ)` using `by positivity`. Conclude with `h0` after adjusting the coercions. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Conclude with `(hnu (by rw [hu, h0, pow_zero, mul_one]; exact u.isUnit)).elim`. Establish `h1 : (1 : ℚ) ≤ ((n : ℤ) : ℚ)` using `by exact_mod_cast hpos`.
-
-Conclude with `h1` after adjusting the coercions.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem v_of_V (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) (x : V) : (0 : WithTop ℚ) ≤ v (algVF x) ∧
     (¬ IsUnit x → x ≠ 0 → (1 : WithTop ℚ) ≤ v (algVF x)) := by
@@ -141,9 +139,9 @@ instance isLocalHom_fO (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) : IsLocalHom
     exact absurd h1 (by decide)
 
 /- English proof (translation)
-Establish `hE : ValuativeCriterion.Existence p`. Establish `h : (ValuativeCriterion.Existence ⊓ @QuasiCompact) p`. Rewrite using `[← UniversallyClosed.eq_valuativeCriterion]`. Use `infer_instance`. Conclude with `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `S : ValuativeCommSq p` to `{ R := Ov v, K := F, i₁ := x, i₂ := Spec.map (CommRingCat.ofHom (fO v hϖ hv)), commSq := ⟨by rw [hx, ← Spec.map_comp, ← CommRingCat.ofHom_comp, fO_comp]⟩ }`. Take `⟨l⟩` from `(hE S).exists_lift`. Conclude with `⟨l.l, l.fac_right, l.fac_left⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of V))
     [IsProper p] (x : Spec (CommRingCat.of F) ⟶ X) (hx : x ≫ p = Spec.map (CommRingCat.ofHom algVF)) :
@@ -161,7 +159,7 @@ theorem exists_lift (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {X : Scheme.{0}
   exact ⟨l.l, l.fac_right, l.fac_left⟩
 
 /- English proof (translation)
-Set `S : ValuativeCommSq p` to `{ R := Ov v, K := F, i₁ := Spec.map (CommRingCat.ofHom (algebraMap (Ov v) F)) ≫ x₁, i₂ := Spec.map (CommRingCat.ofHom (fO v hϖ hv)), commSq := ⟨by rw [Category.assoc, h₁]⟩ }`. Establish `hU : Subsingleton S.commSq.LiftStruct` using `IsSeparated.valuativeCriterion p S`. Establish `hl : (⟨x₁, rfl, h₁⟩ : S.commSq.LiftStruct) = ⟨x₂, h.symm, h₂⟩` using `@Subsingleton.elim _ hU _ _`. Conclude with `congrArg CommSq.LiftStruct.l hl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_unique (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of V))
     [IsSeparated p] (x₁ x₂ : Spec (CommRingCat.of (Ov v)) ⟶ X)

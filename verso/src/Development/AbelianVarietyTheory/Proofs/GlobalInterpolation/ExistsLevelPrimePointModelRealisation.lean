@@ -37,7 +37,7 @@ variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Numbe
   (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)
 
 /- English proof (translation)
-Take `⟨F, rfl⟩` from `(GlobalTheory.TilClass.mem_ValC_iff emb σ _ _).1 hf`. Rewrite using `[GlobalTheory.TilClass.trFr_fnOf]`. Conclude with `Submodule.smul_mem _ _ ((GlobalTheory.TilClass.mem_ValC_iff emb σ _ _).2 ⟨_, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trFr_mem (γ : GL (Fin n) E) (c : Kˣ) {f : Fr emb σ n → ℂ} (hf : f ∈ ValC (Gr emb σ n) lam) :
     trFr emb σ γ c f ∈ ValC (Gr emb σ n) lam := by
@@ -57,19 +57,19 @@ def actV : GG E K n →* Module.End ℂ (ValC (Gr emb σ n) lam) where
     simp only [trFr_apply, map_mul, _root_.mul_inv_rev, frMul_mul, Units.val_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨⟨γ, hγ⟩, ⟨c, hc⟩⟩` from `h`. Take `⟨P, -, rfl⟩` from `hf`. Take `⟨Q, -, rfl⟩` from `hf'`. Establish `hG : ∀ τ, Gr emb σ n τ = 1` using `fun τ => by simp [gramC]`. Establish `e0 : (1 : ι → Matrix (Fin n) (Fin n) ℂ) = fun τ => ((fr0 emb σ n).1 τ)⁻¹` using `funext fun τ => inv_one.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ τ, ((fr0 emb σ n).1 τ)ᴴ * Gr emb σ n τ * (fr0 emb σ n).1 τ = 1` using `fun τ => by`. Rewrite using `[hG]`. Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * 1 * 1 = 1`. Simplify using the standard rewrite rules. Set `o` to `frMul emb σ γ (fr0 emb σ n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ho : ∀ τ, o.1 τ = (γ : Matrix (Fin n) (Fin n) E).map (embAt σ emb τ)` using `fun τ => Matrix.mul_one _`. Establish `h1 : ∀ τ, (o.1 τ)ᴴ * Gr emb σ n τ * o.1 τ = 1` using `fun τ => by`. Rewrite using `[hG, ho, Matrix.mul_one, ← Matrix.conjTranspose_map _ (fun x => hF.conjE _ x), ← Matrix.map_mul, show (γ : Matrix (Fin n) (Fin n) E)ᴴ * (γ : Matrix (Fin n) (Fin n) E) = 1 from hγ]`. Simplify using the standard rewrite rules. Establish `hi : ∀ τ, (o.1 τ)⁻¹ = ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map (embAt σ emb τ)` using `fun τ => by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ho]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Units.inv_mul]`. Simplify using the standard rewrite rules. Establish `ht : ∀ P, trFr emb σ γ c (fnOf (Gr emb σ n) (shiftOf lam) 1 P) = σ c • fnOf (Gr emb σ n) (shiftOf lam) (fun τ => (o.1 τ)⁻¹) P` using `fun P => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[trFr_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Simplify using `only [hi, fnOf, LinearMap.coe_mk, AddHom.coe_mk, frMul, Pi.one_apply, Matrix.one_mul]`. Establish `hn : starRingEnd ℂ (σ c) * σ c = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 hc`. Establish `e1 : (σ c) ^ m = 1` using `by rw [← map_pow, ← Units.val_pow_eq_pow_val, e]; simp`. Establish `e2 : ‖σ c‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one e1 hm.ne'`. Rewrite using `[Complex.conj_mul', e2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ipVal emb σ lam (trFr emb σ γ c _) (trFr emb σ γ c _) = _`. Rewrite using `[ht, ht, map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_smul, mul_comm, hn, one_smul]`. Unfold `ipVal`. Rewrite using `[ipFr_fnOf _ _ _ _ h0 h1, e0, ipFr_fnOf _ _ _ _ h0 h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipVal_trFr (hF : FOk emb σ) (h : GG E K n) {f f' : Fr emb σ n → ℂ} (hf : f ∈ ValC (Gr emb σ n) lam)
     (hf' : f' ∈ ValC (Gr emb σ n) lam) :
@@ -124,7 +124,7 @@ structure Hyp (A : TDat S ST) (T : ℕ) : Prop where
   t : A.Tied T
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun P => ⟨sp.T_mem P P.2, sp.T_nsq P P.2⟩, fun P Q => sp.nonconj P P.2 Q Q.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem tAt (sp : Split A T) : TAt T ST :=
   ⟨fun P => ⟨sp.T_mem P P.2, sp.T_nsq P P.2⟩, fun P Q => sp.nonconj P P.2 Q Q.2⟩
@@ -162,7 +162,7 @@ def mk (h : Hyp A T) (sp : Split A T) (b : S.β) (ζ : CommGroup.torsion Kˣ) (d
 variable (h : Hyp A T) (sp : Split A T)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => Quotient.exact (eq_of_heq (Sigma.mk.inj e).2), fun e => congrArg (Sigma.mk b) (Quotient.sound e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mk_fst_iff (b : S.β) (ζ ζ' : CommGroup.torsion Kˣ) (d d' : S.D b) :
     (mk h sp b ζ d).1 = (mk h sp b ζ' d').1 ↔
@@ -170,9 +170,9 @@ theorem mk_fst_iff (b : S.β) (ζ ζ' : CommGroup.torsion Kˣ) (d d' : S.D b) :
   ⟨fun e => Quotient.exact (eq_of_heq (Sigma.mk.inj e).2), fun e => congrArg (Sigma.mk b) (Quotient.sound e)⟩
 
 /- English proof (translation)
-Introduce `x`. Use `⟨?_, h.a.f_act b g d P x⟩` and prove the remaining obligations. Use `show _ ∈ localization₂ P.1.asIdeal (A.N b (g • d)) ↔ x ∈ localization₂ P.1.asIdeal (A.N b d)`. Rewrite using `[memLoc, memLoc]`. Use `exists_congr fun s => and_congr Iff.rfl ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h.a.N_act b g d, Matrix.mulVec_smul]`.
+A detailed English derivation is pending.
 -/
 theorem prs_act (b : S.β) (g : S.G b) (d : S.D b) (P : ST) :
     LocF.PP.IsAct (S.gam b g) (prs h sp b d P) (prs h sp b (g • d) P) := by
@@ -184,9 +184,9 @@ theorem prs_act (b : S.β) (g : S.G b) (d : S.D b) (P : ST) :
   rw [← h.a.N_act b g d, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `P`. Use `prs_act h sp b g d P` as an intermediate fact. Rewrite `this` using `[hg]`. Use `pp_ext (fun x => ?_) fun x _ => ?_` and prove the remaining obligations. Simplify using `using (this x).1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (this x).2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prs_triv (b : S.β) (g : S.G b) (hg : S.gam b g = 1) (d : S.D b) : prs h sp b (g • d) = prs h sp b d := by
   funext P
@@ -197,9 +197,9 @@ theorem prs_triv (b : S.β) (g : S.G b) (hg : S.gam b g = 1) (d : S.D b) : prs h
   · simpa using (this x).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Take `⟨g, h1, h2, h3⟩` from `(mk_fst_iff h sp b ζ ζ' d d').1 (congrArg Prod.fst e)`. Use `⟨g, h1, h2, sp.ext b _ _ h3 ?_⟩` and prove the remaining obligations. Use `deco_ext (tAt sp) (h.t.ok _ _) (h.t.ok _ _) (fun w hw => sp.off_lat b _ _ h3 w fun P hP => hw ⟨P, hP⟩) fun P => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun ((prs_triv h sp b g h1 d).trans (congrArg Prod.snd e)) P`. Introduce and unpack `⟨g, h1, h2, rfl⟩`. Conclude with `Prod.ext ((mk_fst_iff h sp b ζ ζ' d _).2 ⟨g, h1, h2, (sp.off b).refl _⟩) (prs_triv h sp b g h1 d).symm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mk_eq_iff (b : S.β) (ζ ζ' : CommGroup.torsion Kˣ) (d d' : S.D b) :
     mk h sp b ζ d = mk h sp b ζ' d' ↔ ∃ g : S.G b, S.gam b g = 1 ∧ ζ = ζ' * chrT h b g ∧ g • d = d' := by
@@ -213,9 +213,9 @@ theorem mk_eq_iff (b : S.β) (ζ ζ' : CommGroup.torsion Kˣ) (d d' : S.D b) :
     exact Prod.ext ((mk_fst_iff h sp b ζ ζ' d _).2 ⟨g, h1, h2, (sp.off b).refl _⟩) (prs_triv h sp b g h1 d).symm
 
 /- English proof (translation)
-Take `⟨⟨b, q⟩, p⟩` from `p`. Take `⟨⟨ζ, d⟩, rfl⟩` from `Quotient.exists_rep q`. Take `⟨e, he, ho, hp⟩` from `exists_deco (tAt sp) (h.t.ok b d).lat (h.t.ok b d).uni p`. Take `⟨d', h1, h2⟩` from `sp.surj b d e he fun w hw => ho w fun P => hw P.1 P.2`. Substitute `h2` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Use `⟨⟨b, ζ, d'⟩, Prod.ext ?_ (funext hp)⟩` and prove the remaining obligations. Conclude with `(mk_fst_iff h sp b ζ ζ d' d).2 ⟨1, by simp, by simp, by rw [one_smul]; exact (sp.off b).symm h1⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mk_surj (p : PT h sp) : ∃ x : Σ b, CommGroup.torsion Kˣ × S.D b, mk h sp x.1 x.2.1 x.2.2 = p := by
   obtain ⟨⟨b, q⟩, p⟩ := p
@@ -229,7 +229,7 @@ theorem mk_surj (p : PT h sp) : ∃ x : Σ b, CommGroup.torsion Kˣ × S.D b, mk
 def lift (b : S.β) (γ : UG E n) : S.G b := (sp.gam_surj b γ.1 γ.2).choose
 
 /- English proof (translation)
-The claim follows from `(sp.gam_surj b γ.1 γ.2).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem gam_lift (b : S.β) (γ : UG E n) : S.gam b (lift sp b γ) = γ.1 := (sp.gam_surj b γ.1 γ.2).choose_spec
 
@@ -238,11 +238,11 @@ def sm (k : GG E K n) (p : PT h sp) : PT h sp :=
   mk h sp x.1 (k.2 * x.2.1 * (chrT h x.1 (lift sp x.1 k.1))⁻¹) (lift sp x.1 k.1 • x.2.2)
 
 /- English proof (translation)
-Unfold `sm`. Establish `hx` using `(mk_surj h sp (mk h sp b ζ d)).choose_spec`. Generalize the expression as in `(mk_surj h sp (mk h sp b ζ d)).choose = x at hx`. Take `⟨b', ζ', d'⟩` from `x`. Take `rfl : b' = b` from `congrArg (fun p : PT h sp => p.1.1) hx`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g0, h1, h2, rfl⟩` from `(mk_eq_iff h sp _ _ _ _ _).1 hx`. Use `(mk_eq_iff h sp _ _ _ _ _).2 ⟨g * g0 * (lift sp b' k.1)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, gam_lift, hg, h1, mul_one, mul_inv_cancel]`. Simplify using `only at h2 ⊢`. Rewrite using `[h2, map_mul, map_mul, map_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Rewrite using `[mul_smul, mul_smul, inv_smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sm_mk (k : GG E K n) (b : S.β) (ζ : CommGroup.torsion Kˣ) (d : S.D b) (g : S.G b) (hg : S.gam b g = k.1.1) :
     sm h sp k (mk h sp b ζ d) = mk h sp b (k.2 * ζ * (chrT h b g)⁻¹) (g • d) := by
@@ -276,13 +276,13 @@ instance actPT : MulAction (GG E K n) (PT h sp) where
     simp only [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `sm_mk h sp k b ζ d g hg`.
+A detailed English derivation is pending.
 -/
 theorem smul_mk (k : GG E K n) (b : S.β) (ζ : CommGroup.torsion Kˣ) (d : S.D b) (g : S.G b) (hg : S.gam b g = k.1.1) :
     k • mk h sp b ζ d = mk h sp b (k.2 * ζ * (chrT h b g)⁻¹) (g • d) := sm_mk h sp k b ζ d g hg
 
 /- English proof (translation)
-Rewrite using `[smul_mk h sp _ b 1 d g rfl]`. Use `congr 1`. Use `show chrT h b g * 1 * _ = 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_smul (b : S.β) (g : S.G b) (d : S.D b) : phi h b g • mk h sp b 1 d = mk h sp b 1 (g • d) := by
   rw [smul_mk h sp _ b 1 d g rfl]
@@ -291,7 +291,7 @@ theorem phi_smul (b : S.β) (g : S.G b) (d : S.D b) : phi h b g • mk h sp b 1 
   simp
 
 /- English proof (translation)
-Rewrite using `[smul_mk h sp _ b 1 d 1 (map_one _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inr_smul (ζ : CommGroup.torsion Kˣ) (b : S.β) (d : S.D b) :
     (MonoidHom.inr (UG E n) (CommGroup.torsion Kˣ) ζ : GG E K n) • mk h sp b 1 d = mk h sp b ζ d := by
@@ -299,11 +299,9 @@ theorem inr_smul (ζ : CommGroup.torsion Kˣ) (b : S.β) (d : S.D b) :
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite `e` using `[smul_mk h sp k b 1 d _ (gam_lift sp b _), mk_eq_iff]`. Take `⟨g, h1, h2, h3⟩` from `e`. Use `⟨g * lift sp b k.1, Prod.ext (Subtype.ext ?_) ?_, by rw [mul_smul, h3]⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show S.gam b _ = _`. Rewrite using `[map_mul, h1, one_mul, gam_lift]`. Use `show chrT h b _ = _`. Rewrite `h2` using `[mul_one, one_mul, mul_inv_eq_iff_eq_mul]`. Rewrite using `[map_mul, h2]`.
-
-Introduce and unpack `⟨g, rfl, rfl⟩`. Conclude with `phi_smul h sp b g d`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smul_eq_iff (k : GG E K n) (b : S.β) (d d' : S.D b) :
     k • mk h sp b 1 d = mk h sp b 1 d' ↔ ∃ g, phi h b g = k ∧ g • d = d' := by
@@ -321,11 +319,11 @@ theorem smul_eq_iff (k : GG E K n) (b : S.β) (d d' : S.D b) :
     exact phi_smul h sp b g d
 
 /- English proof (translation)
-Take `⟨⟨b, ζ, d⟩, rfl⟩` from `mk_surj h sp p`. Take `⟨⟨b', ζ', d'⟩, rfl⟩` from `mk_surj h sp p'`. Take `rfl : b = b'` from `congrArg Sigma.fst e`. Take `⟨g0, h1, h2, h3⟩` from `(mk_fst_iff h sp _ _ _ _ _).1 e`. Rewrite using `[smul_mk h sp k b ζ d _ (gam_lift sp b _), smul_mk h sp k b ζ' d' _ (gam_lift sp b _), mk_fst_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨lift sp b k.1 * g0 * (lift sp b k.1)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, h1, mul_one, mul_inv_cancel]`. Simplify using `only at h2 ⊢`. Rewrite using `[h2, map_mul, map_mul, map_inv]`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_smul, mul_smul, inv_smul_smul]`. Conclude with `sp.off_act b _ _ _ h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_fst (k : GG E K n) (p p' : PT h sp) (e : p.1 = p'.1) : (k • p).1 = (k • p').1 := by
   obtain ⟨⟨b, ζ, d⟩, rfl⟩ := mk_surj h sp p
@@ -342,7 +340,7 @@ theorem smul_fst (k : GG E K n) (p p' : PT h sp) (e : p.1 = p'.1) : (k • p).1 
     exact sp.off_act b _ _ _ h3
 
 /- English proof (translation)
-Take `⟨⟨b, ζ, d⟩, rfl⟩` from `mk_surj h sp p`. Rewrite using `[smul_mk h sp k b ζ d _ (gam_lift sp b _), ← gam_lift sp b k.1]`. Conclude with `prs_act h sp b _ d P`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_snd (k : GG E K n) (p : PT h sp) (P : ST) : LocF.PP.IsAct k.1.1 (p.2 P) ((k • p).2 P) := by
   obtain ⟨⟨b, ζ, d⟩, rfl⟩ := mk_surj h sp p
@@ -350,7 +348,7 @@ theorem smul_snd (k : GG E K n) (p : PT h sp) (P : ST) : LocF.PP.IsAct k.1.1 (p.
   exact prs_act h sp b _ d P
 
 /- English proof (translation)
-Take `⟨⟨b, ζ, d⟩, rfl⟩` from `mk_surj h sp p`. Use `⟨S.cl b d, MonoidHom.inr (UG E n) (CommGroup.torsion Kˣ) ζ * phi h b (S.mv b d), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, phi_smul, S.mv_smul, inr_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_surj (p : PT h sp) : ∃ (c : S.Cl) (k : GG E K n), k • mk h sp c.1 1 (S.rep c) = p := by
   obtain ⟨⟨b, ζ, d⟩, rfl⟩ := mk_surj h sp p
@@ -358,9 +356,9 @@ theorem rep_surj (p : PT h sp) : ∃ (c : S.Cl) (k : GG E K n), k • mk h sp c.
   rw [mul_smul, phi_smul, S.mv_smul, inr_smul]
 
 /- English proof (translation)
-Take `⟨b, q⟩` from `c`. Take `⟨b', q'⟩` from `c'`. Choose the witnesses or unpack the hypotheses as in `rfl : b = b' := by`. Rewrite `e` using `[smul_mk h sp k b 1 _ _ (gam_lift sp b _)]`. Conclude with `congrArg (fun p : PT h sp => p.1.1) e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, -, hg⟩` from `(smul_eq_iff h sp k b _ _).1 e`. Use `congrArg (Sigma.mk b) ?_` and prove the remaining obligations. Rewrite using `[← S.rp_spec b q, ← S.rp_spec b q']`. Conclude with `Quotient.sound ((MulAction.orbitRel (S.G b) (S.D b)).symm ⟨g, hg⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_inj (c c' : S.Cl) (k : GG E K n) (e : k • mk h sp c.1 1 (S.rep c) = mk h sp c'.1 1 (S.rep c')) : c = c' := by
   obtain ⟨b, q⟩ := c
@@ -374,9 +372,9 @@ theorem rep_inj (c c' : S.Cl) (k : GG E K n) (e : k • mk h sp c.1 1 (S.rep c) 
   exact Quotient.sound ((MulAction.orbitRel (S.G b) (S.D b)).symm ⟨g, hg⟩)
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun g => ⟨phi h b g.1, (smul_eq_iff h sp _ b d d).2 ⟨g.1, rfl, g.2⟩⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `g g' e`. Establish `e1 : S.gam b g.1 = S.gam b g'.1` using `congrArg (fun k => k.1.1.1) e`. Use `h.s.stab_inj b (g⁻¹ * g').1 d (g⁻¹ * g').2 (by` as an intermediate fact. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, e1, inv_mul_cancel])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mul_eq_one.1 (Subtype.ext this)`. Introduce and unpack `⟨k, hk⟩`. Take `⟨g, rfl, hg⟩` from `(smul_eq_iff h sp k b d d).1 hk`. Conclude with `⟨⟨g, hg⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_stab (b : S.β) (d : S.D b) :
     Nat.card (MulAction.stabilizer (S.G b) d) = Nat.card (MulAction.stabilizer (GG E K n) (mk h sp b 1 d)) := by
@@ -391,9 +389,9 @@ theorem card_stab (b : S.β) (d : S.D b) :
     exact ⟨⟨g, hg⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[phi_smul, S.mv_smul]`. Use `Prod.ext ((mk_fst_iff h sp b 1 1 d' d).2 ⟨1, by simp, by simp, by rw [one_smul]; exact (sp.off b).symm ho⟩) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `Q`. Simplify using `only`. Distinguish the cases in `e : Q = P`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `h1`. Rewrite using `[Function.update_of_ne e]`. Conclude with `h2 Q e`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_move {inst : DecidableEq ST} (b : S.β) (d d' : S.D b) (P : ST) (p₁ : LocF.PP (locF ((tAt sp).unif P)) n) (ho : (sp.off b).r d d')
     (h1 : prs h sp b d' P = p₁) (h2 : ∀ Q, Q ≠ P → prs h sp b d' Q = prs h sp b d Q) :
@@ -412,9 +410,7 @@ theorem mk_move {inst : DecidableEq ST} (b : S.β) (d d' : S.D b) (P : ST) (p₁
 
 include h in
 /- English proof (translation)
-Use `dual_redL ((h.t.ok c.1 (S.rep c)).f_smul P) _ ?_ hx` and prove the remaining obligations. Establish `h0` using `hl.fv_ne P c`. Unfold `TDat.fv at h0 ⊢`. Use `split_ifs at h0 ⊢ with h1`. Conclude with `h1.choose_spec`.
-
-Conclude with `absurd rfl h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fv_redL (hl : A.Laws T) (P : ST) (c : S.Cl) {x : Fin n → E} (hx : x ∈ localization₂ P.1.asIdeal (A.N c.1 (S.rep c))) :
     A.fv P c (redL _ P.1 x) = A.f c.1 (S.rep c) P x := by
@@ -426,7 +422,7 @@ theorem fv_redL (hl : A.Laws T) (P : ST) (c : S.Cl) {x : Fin n → E} (hx : x �
   · exact absurd rfl h0
 
 /- English proof (translation)
-Rewrite using `[h.t.dnN_eq]`. Conclude with `mem_pair_ker _ ((tAt sp).ne P) _ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ker (b : S.β) (d : S.D b) (P : ST) (x : Fin n → E) :
     x ∈ (prs h sp b d P).ker ↔ x ∈ localization₂ P.1.asIdeal (A.dnN b d P) := by
@@ -435,13 +431,11 @@ theorem mem_ker (b : S.β) (d : S.D b) (P : ST) (x : Fin n → E) :
 
 include h sp in
 /- English proof (translation)
-Establish `h0` using `hl.te_ne P c`. Unfold `TDat.te at h0 ⊢`. Use `split_ifs at h0 ⊢ with h1`. Use `swap`. Conclude with `absurd rfl h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression.
 
-Take `⟨e', he', hf, ht⟩` from `h1.choose_spec`. Generalize the expression as in `h1.choose = t at ht`. Set `p` to `prs h sp c.1 (S.rep c) P`. Establish `m1 : e ∈ p.1.L` using `mem_of_f_ne p (by show A.f c.1 (S.rep c) P e ≠ 0; rw [he]; exact one_ne_zero)`. Establish `m2 : e' ∈ p.1.L` using `le_locP P.1 _ he'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `m3 : e + (-1 : GlobalTheory.LvT.Inh.valO P.1) • e' ∈ p.ker` using `⟨p.1.L.add_mem m1 (p.1.L.smul_mem _ m2), by`. Rewrite using `[p.2.add _ m1 _ (p.1.L.smul_mem _ m2), p.2.smul _ _ m2, map_neg, map_one]`. Use `show A.f c.1 (S.rep c) P e + -1 * A.f c.1 (S.rep c) P e' = 0`. Rewrite using `[he, hf]`. Use the proof step `ring⟩`.
-
-Rewrite `m3` using `[mem_ker]`. Establish `e1 : (T : E) • e = toO P.1 T • (e + (-1 : GlobalTheory.LvT.Inh.valO P.1) • e') + (t : Fin n → E)`. Rewrite using `[ht, toO_smul, neg_one_smul, ← smul_add, neg_add_cancel_right, ← algebraMap_smul E (T : 𝓞 E), map_natCast]`. Rewrite using `[e1, redL_add ((locO P.1 _).smul_mem _ m3) (le_locP P.1 _ t.2), redL_smul _ m3, resP_toO, Ideal.Quotient.eq_zero_iff_mem.2 (sp.T_mem P P.2), zero_smul, zero_add, redL_coe]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redL_te (hl : A.Laws T) (P : ST) (c : S.Cl) (e : Fin n → E) (he : A.f c.1 (S.rep c) P e = 1) :
     redL (A.dnN c.1 (S.rep c) P) P.1 ((T : E) • e) = A.te T P c := by
@@ -466,13 +460,13 @@ theorem redL_te (hl : A.Laws T) (P : ST) (c : S.Cl) (e : Fin n → E) (he : A.f 
     Ideal.Quotient.eq_zero_iff_mem.2 (sp.T_mem P P.2), zero_smul, zero_add, redL_coe]
 
 /- English proof (translation)
-Unfold `TDat.upPt`. Establish `hr : redL (A.N c.1 (S.rep c)) P.1 ((Quotient.out (redL (A.N c.1 (S.rep c)) P.1 x) : A.N c.1 (S.rep c)) : Fin n → E) = redL (A.N c.1 (S.rep c)) P.1 x`. Rewrite using `[redL_coe]`. Conclude with `Quotient.out_eq _`. Generalize the expression as in `(Quotient.out (redL (A.N c.1 (S.rep c)) P.1 x) : A.N c.1 (S.rep c)) = z at hr`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hz : A.f c.1 (S.rep c) P z = 1`. Rewrite using `[← fv_redL h hl P c (le_locP P.1 _ z.2), hr, fv_redL h hl P c hp.1, hf]`. Establish `hd` using `h.t.up_deco c.1 (S.rep c) P z z.2 hz`. Establish `hu` using `h.t.ok c.1 (A.up c.1 (S.rep c) P z)`. Rewrite `hu` using `[hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨sp.off_up _ _ P z z.2 hz, ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (pair_up (tAt sp) (h.t.ok _ _) P z.2 hz hr hp hu)` and prove the remaining obligations. Unfold `prs`. Use `congr 1`. Use `Eq.trans ?_ (pair_up_ne (tAt sp) (h.t.ok _ _) hQ z.2 hu)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `prs`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem up_spec (hl : A.Laws T) (P : ST) (c : S.Cl) (x : Fin n → E) (p₁ : LocF.PP (locF ((tAt sp).unif P)) n)
     (hf : A.f c.1 (S.rep c) P x = 1) (hp : (prs h sp c.1 (S.rep c) P).IsUp x p₁) :
@@ -497,13 +491,13 @@ theorem up_spec (hl : A.Laws T) (P : ST) (c : S.Cl) (x : Fin n → E) (p₁ : Lo
     congr 1
 
 /- English proof (translation)
-Unfold `TDat.dnPt`. Establish `hL : ∀ x, x ∈ localization₂ P.1.asIdeal (A.dnN c.1 (S.rep c) P) ↔ x ∈ p₀.1.L` using `fun x => by`. Rewrite using `[← mem_ker h sp, ← hp]`. Both sides reduce to the same expression. Establish `e0 : TDat.extF (A.dnN c.1 (S.rep c) P) P.1 γ = p₀.1.f`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ localization₂ P.1.asIdeal (A.dnN c.1 (S.rep c) P)`. Rewrite using `[extF_of_mem γ hx, hf x ((hL x).1 hx)]`. Rewrite using `[extF_of_notMem γ hx, p₀.2.off x fun h' => hx ((hL x).2 h')]`. Rewrite using `[e0]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hok` using `dn_ok (tAt sp) (h.t.ok c.1 (S.rep c)) P p₀ hp`. Establish `hd` using `h.t.dn_deco c.1 (S.rep c) P _ hok`. Use `⟨sp.off_dn _ _ P _ hok, ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (pair_dn (tAt sp) (h.t.ok _ _) P p₀ hp hok)` and prove the remaining obligations. Unfold `prs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `Eq.trans ?_ (pair_dn_ne (tAt sp) (h.t.ok _ _) hQ hok)` and prove the remaining obligations. Unfold `prs`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem dn_spec (P : ST) (c : S.Cl) (γ : Module.Dual (Res P.1) (A.lk P c)) (p₀ : LocF.PP (locF ((tAt sp).unif P)) n)
     (hp : (p₀.1.L : Set (Fin n → E)) = (prs h sp c.1 (S.rep c) P).ker)
@@ -530,9 +524,9 @@ theorem dn_spec (P : ST) (c : S.Cl) (γ : Module.Dual (Res P.1) (A.lk P c)) (p�
     congr 1
 
 /- English proof (translation)
-Unfold `TDat.diaPt`. Establish `hN` using `h.a.dia_N c.1 P a (S.rep c)`. Use `⟨sp.off_dia _ _ P a, pp_ext (fun x => ?_) fun x _ => ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[hp.1] show x ∈ localization₂ P.1.asIdeal (A.N _ _) ↔ x ∈ localization₂ P.1.asIdeal (A.N _ _)`. Rewrite using `[hN]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp.2]`. Conclude with `h.a.dia_f c.1 P a _ x`. Conclude with `pair_congr _ _ _ (congrArg (localization₂ Q.1.asIdeal) hN) (sp.dia_deco _ _ P Q a hQ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dil_spec (P : ST) (c : S.Cl) (a : (Res P.1)ˣ) (p' : LocF.PP (locF ((tAt sp).unif P)) n)
     (hp : LocF.PP.IsDil (a : Res P.1) (prs h sp c.1 (S.rep c) P) p') :
@@ -555,7 +549,7 @@ section Model
 variable {D : D7} {u : D.what₂.Word} (B : Dat D u) (i : ℕ) (sp : Split (B.J.A i) B.J.T)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨B.hI.step i, B.hJ.lev i, B.hJ.tied i⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyp : Hyp (B.J.A i) B.J.T := ⟨B.hI.step i, B.hJ.lev i, B.hJ.tied i⟩
 
@@ -665,7 +659,7 @@ def real : B.Real i sp (model B i sp) where
 end Model
 
 /- English proof (translation)
-Introduce `_ _ B i sp` and use `⟨model B i sp, ⟨real B i sp⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_real : ∀ (D : D7) (u : D.what₂.Word) (B : Built.Dat D u) (i : ℕ) (sp : Split (B.J.A i) B.J.T),
     ∃ M : PtModel B.ch i, Nonempty (B.Real i sp M) :=

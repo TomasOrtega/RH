@@ -15,9 +15,9 @@ variable {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Conclude with `heq_of_eq (congrFun (eq_of_heq hx.ΛV) i).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ΛV_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
     HEq (z.R.ΛV i) (z'.R.ΛV i') := by
@@ -32,9 +32,9 @@ theorem ΛV_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Conclude with `heq_of_eq (congrFun (eq_of_heq hx.ΛW) i).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ΛW_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
     HEq (z.R.ΛW i) (z'.R.ΛW i') := by
@@ -49,9 +49,9 @@ theorem ΛW_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Conclude with `heq_of_eq (congrFun (eq_of_heq hx.βV) i).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem βV_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
     HEq (z.R.βV i) (z'.R.βV i') := by
@@ -66,9 +66,9 @@ theorem βV_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Conclude with `heq_of_eq (congrFun (eq_of_heq hx.βW) i).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem βW_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
     HEq (z.R.βW i) (z'.R.βW i') := by
@@ -83,13 +83,13 @@ theorem βW_at (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at a b c d g`. Consider the cases of `a`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Consider the cases of `c`. Consider the cases of `d`. Consider the cases of `g`. Introduce `τ τ' hτ`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `hτ`. Establish `e` using `eq_of_heq hv`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sameVec_gen (q : B'.toPre = B.toPre) (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i')
     {S : (w.st Z).toD7.what₂.Tau → Formalism.BasicNotions.TH.SPar} {S' : (w'.st Z').toD7.what₂.Tau → Formalism.BasicNotions.TH.SPar}
@@ -115,7 +115,7 @@ theorem sameVec_gen (q : B'.toPre = B.toPre) (i : Fin (w.st Z).toD7.R.m) (i' : F
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `have h := hx.MW i i' hi sameVec_gen q i i' hi _ _ h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2.2.2.1 _ _ h.2.2.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem v₀_of_extN (q : B'.toPre = B.toPre) (hx : ExtN z z') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
     GlobalTheory.TwInputs.Move.SameVec (z.geo.v₀ i (w.st Z).toD7.what₂.embLL) (z'.geo.v₀ i' (w'.st Z').toD7.what₂.embLL) :=
@@ -129,11 +129,9 @@ namespace GlobalTheory.HeightCounting.SerMove
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a'`. Establish `q : B'.toPre = B.toPre` using `l.enl.1`. Establish `hx` using `l.extN`. Use `⟨hx.Pg.symm, hx.ψ.symm, hx.θ.symm, fun j j' h => FrameValuesAtLevel.ΛV_at q hx j j' h, fun j j' h => FrameValuesAtLevel.ΛW_at q hx j j' h, fun j j' h => FrameValuesAtLevel.βV_at q hx j j' h, fun j j' h => FrameValuesAtLevel.βW_at q hx j j' h, fun j j' h => ((hx.BV j j' h).2.2.2.2 …` and prove the remaining obligations. Use `show GlobalTheory.TwInputs.Move.SameModel (x.m.z.R.MW j (Formalism.IndefR.Links.sg0 (Dof x) (sideAt x g hg a).A3.A)) (x'.m.z.R.MW j' (Formalism.IndefR.Links.sg0 (Dof x') (sideAt x' g' hg' a').A3.A))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.TwInputs.Move.sign_at_base_place_eq_embedding (sideAt x g hg a), GlobalTheory.TwInputs.Move.sign_at_base_place_eq_embedding (sideAt x' g' hg' a')]`. Establish `m` using `hx.MW j j' h`. Conclude with `⟨m.1.symm, m.2.1.symm, m.2.2.1.symm, m.2.2.2.1.symm, m.2.2.2.2.1.symm, m.2.2.2.2.2.1.symm, m.2.2.2.2.2.2.1.symm⟩`. Use `show GlobalTheory.TwInputs.Move.SameVec (g.v₀ j (Formalism.IndefR.Links.sg0 (Dof x) (sideAt x g hg a).A3.A)) (g'.v₀ j' (Formalism.IndefR.Links.sg0 (Dof x') (sideAt x' g' hg' a').A3.A))`. Rewrite using `[GlobalTheory.TwInputs.Move.sign_at_base_place_eq_embedding (sideAt x g hg a), GlobalTheory.TwInputs.Move.sign_at_base_place_eq_embedding (sideAt x' g' hg' a')]`.
-
-Conclude with `FrameValuesAtLevel.v₀_of_extN q hx j j' h`.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frames_of_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), Frames (sideAt x g hg a) (sideAt x' g' hg' a') := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a'

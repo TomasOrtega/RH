@@ -39,19 +39,19 @@ def JointBWith {D : D7} (L : SizeData₂ D) (HW : HWOf D.loc) (C₂ : ℝ) (P : 
       TruncatedSeriesCountingBounds.Clusters (jA L (D.nd.l i)) (TruncatedSeriesCountingBounds.Thick Wd.b Wd.η Wd.sz)) ∧ ∀ a, P (Wd.Mi a) (Wd.hi a)
 
 /- English proof (translation)
-Take `⟨hev, hup, hs, -, hbig⟩` from `hA`. Distinguish the cases in `hall : ∀ a, ThickN Wd.b Wd.η Wd.sz a`. Conclude with `Or.inr hall`. Use `left`. Take `⟨a, ha⟩` from `not_forall.1 hall`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `none : ∀ c, ¬ ThickN Wd.b Wd.η Wd.sz c`. Introduce `c hc`. Take `⟨a₀, -, hsup⟩` from `Finset.exists_mem_eq_sup (Finset.univ : Finset (ZMod n)) Finset.univ_nonempty Wd.sz`. Establish `hgr : IsGreatest (Set.range Wd.sz) (Finset.univ.sup Wd.sz)`. Use `⟨⟨a₀, hsup.symm⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Finset.le_sup (Finset.mem_univ a)`. Establish `h1` using `(hbig _ hgr a).1`. Establish `h2 : Wd.sz c ≤ Finset.univ.sup Wd.sz` using `hgr.2 ⟨c, rfl⟩`. Establish `h3` using `(hT a).resolve_left ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Finset.univ.sup Wd.sz + Wd.S ≤ 2 * Wd.sz a`. Establish `: ((Finset.univ.sup Wd.sz : ℕ) : ℝ) + Wd.S ≤ 2 * (Wd.sz a : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Take `⟨b1, -, b2, -⟩` from `hs`. Use `hc.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨hs, fun c => ?_, ⟨a, ha⟩, fun c hc => none c hc.1⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hev`. Establish `hn : 0 < n` using `Nat.pos_of_ne_zero (NeZero.ne n)`. Establish `: Fact (1 < n)` using `⟨by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : (c + 1).val % 2 = (c.val + 1) % 2`. Rewrite using `[ZMod.val_add, ZMod.val_one, Nat.mod_mod_of_dvd _ ⟨k, by omega⟩]`. Rewrite using `[hup, hup]`. Distinguish the cases in `h : (c.val + d) % 2 = 1`. Establish `: ¬ ((c + 1).val + d) % 2 = 1` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h, this]`. Establish `: ((c + 1).val + d) % 2 = 1` using `by omega`. Simplify using `[h, this]`.
+A detailed English derivation is pending.
 -/
 theorem nt_or_allThick {n : ℕ} [NeZero n] (l d : ℕ) (Wd : NWord n)
     (hT : ∀ a, ThickN Wd.b Wd.η Wd.sz a ∨ Wd.sz a ≤ Wd.w) (hA : Rec.WordsAT l Wd d) :
@@ -95,14 +95,14 @@ def toDat {n : ℕ} (Wd : NWord n) : WordDat n :=
   ⟨Wd.b, Wd.w, Wd.S, Wd.η, Wd.m, Wd.up, Wd.sz, Wd.Mi, Wd.hi⟩
 
 /- English proof (translation)
-Unfold `NWord.win WordDat.win toDat`. Apply the tactic sequence `cases h : Wd.up a <;> ext u <;> simp [h, abs_le]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem win_eq {n : ℕ} (Wd : NWord n) (a : ZMod n) : (toDat Wd).win a = Wd.win a := by
   unfold NWord.win WordDat.win toDat
   cases h : Wd.up a <;> ext u <;> simp [h, abs_le]
 
 /- English proof (translation)
-Unfold `Rec.hB TwistedPlaces.hB`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hB_le {D : D7} (L : SizeData₂ D) : Rec.hB L ≤ TwistedPlaces.hB L := by
   unfold Rec.hB TwistedPlaces.hB; linarith
@@ -113,7 +113,7 @@ variable {D : D7} (L : SizeData₂ D) (HW : HWOf D.loc) (i : D.nd.Loc)
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `h`. Conclude with `⟨e, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem recS_isTwistedDual_of_isTwistedDual {w : HeightOneSpectrum (𝓞 D.host.E)} {hw : w ∈ placesOver D.host.E (D.nd.l i)}
     {Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw} {T : LatW i w hw Cx} (h : Formalism.MainNotions.N.IsTwistedDualOfGaloisRep i ρ π w hw Cx T) :
@@ -122,7 +122,7 @@ theorem recS_isTwistedDual_of_isTwistedDual {w : HeightOneSpectrum (𝓞 D.host.
   exact ⟨e, he⟩
 
 /- English proof (translation)
-The claim follows from `h.unram deg := h.deg split := h.split dvr := RecS.Model.coefExt_dvr i w hw Cx t1 T hT := ⟨(h.t1 T hT).1, fun a => by rw [win_eq]; exact (h.t1 T hT).2.1 a, (h.t1 T hT).2.2⟩ t2 T hT := h.t2 T (recS_isTwistedDual_of_isTwistedDual i ρ π hT) thick_or := h.num.thick_or h_le := h.num.h_ …`.
+A detailed English derivation is pending.
 -/
 theorem base_of {w : HeightOneSpectrum (𝓞 D.host.E)} {hw : w ∈ placesOver D.host.E (D.nd.l i)}
     {Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw} {hG : Good (D.nbr i w hw).Kw 1 Cx.LL} {Wd : NWord (RecS.nLet i w hw)}
@@ -141,7 +141,7 @@ theorem base_of {w : HeightOneSpectrum (𝓞 D.host.E)} {hw : w ∈ placesOver D
   m_eq := h.num.m_eq
 
 /- English proof (translation)
-Introduce `w hw`. Use `⟨(h i h1 h2 r ρ π hP w hw).1, fun Cx hG => ?_⟩` and prove the remaining obligations. Take `⟨Wd, hB, -, -, a1, a2, a3⟩` from `(h i h1 h2 r ρ π hP w hw).2 Cx hG`. Conclude with `⟨toDat Wd, base_of L HW i r ρ π hB, a1, a2, a3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frozenB_of (C₂ : ℝ) (h : RecS.JointB L HW C₂) (h1 : InertUnr D (D.nd.l i)) (h2 : Rec.IsRowB L (D.nd.l i))
     (hP : RecS.PtIn i r ρ π) : LocalRepresentationBoundCondition L HW C₂ i r ρ π := by
@@ -151,19 +151,19 @@ theorem frozenB_of (C₂ : ℝ) (h : RecS.JointB L HW C₂) (h1 : InertUnr D (D.
   exact ⟨toDat Wd, base_of L HW i r ρ π hB, a1, a2, a3⟩
 
 /- English proof (translation)
-Introduce `w hw`. Use `⟨(h i h1 r ρ π hP w hw).1, fun Cx hG => ?_⟩` and prove the remaining obligations. Take `⟨Wd, hB, -, h11, hX, hor⟩` from `(h i h1 r ρ π hP w hw).2 Cx hG`. Establish `nz : NeZero (RecS.nLet i w hw)` using `nLet_neZero i w hw`. Establish `nt : Rec.WordsNT Wd → Formalism.MainNotions.N.WordsNT (toDat Wd)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨-, -, s1, s2, s3, s4⟩, ha, hn, h3⟩`. Use `⟨s4, s1, s2, s3, hn, fun a => ⟨?_, h3 a⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Wd.up (a + 1) ≠ Wd.up a`. Apply the tactic sequence `rw [ha a]; cases Wd.up a <;> simp`. Use `⟨toDat Wd, base_of L HW i r ρ π hB, ⟨fun a => (hX.box_le a).trans (by have := hB_le L; linarith), hX.nt, hX.b_lo, hX.b_hi⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hor with hN | ⟨d, hA, -⟩` into its components or cases. Conclude with `Or.inl (nt hN)`. Break down `nt_or_allThick _ d Wd hB.num.thick_or hA with hN | hall` into its components or cases. Conclude with `Or.inl (nt hN)`. Take `⟨T₁, T₂, F, t1, t2, hF, -⟩` from `RecS.Model.exists_lattices i r ρ π w hw Cx hP`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Establish `hS` using `RecS.settingC_of_wordsAT L HW i r ρ π w hw Cx hG Wd d h11 hB hA nz T₁ T₂ F t1 t2 hF`. Establish `hp : ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).p = D.nd.l i` using `(D.loc _).PD_p _`. Use `Or.inr ⟨⟨RecS.exists_primitiveRoot_of_good hG, fun T hT a τ hτ => ?_⟩, d, hA.1, fun a => ?_, hall, fun a => ?_, hS.2.2.2.2.2.2.2.2.2⟩` and prove the remaining obligations. Use `(D.nbr i w hw).Kw.2` as an intermediate fact. Use `letI ft : Fintype (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥Cx.LL.1) := Fintype.ofFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `h` using `(hB.t2 T (recS_isTwistedDual_of_isTwistedDual i ρ π hT)).2 ft a`. Unfold `TruncatedSeriesCountingBounds.lowCount at h`. Establish `hfil : (Finset.univ.filter (fun τ' => Formalism.MainNotions.LiftingTheory.Over (RecS.WW HW i w hw Cx hG) τ' a)) = {τ}`. Use extensionality with `τ'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h' => (existsUnique_over _ _ _ (RecS.WW HW i w hw Cx hG) hB.unram a).unique h' hτ, fun h' => h' ▸ hτ⟩`. Rewrite `h` using `[hfil, Finset.sum_singleton]`. Conclude with `h`. Express the relevant statement in the definitionally equal form `Wd.up a = true ↔ _`. Rewrite using `[hA.2.1 a]`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [decide_eq_true_eq]`. Use linear arithmetic over natural numbers and integers. Use `hS.2.2.2.2.2.2.2.2.1 a` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `this`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frozenCD_of (h : RecS.JointCD L HW) (h1 : InertUnr D (D.nd.l i))
     (hP : RecS.PtIn i r ρ π) : LocalRepresentationCongruenceCondition L HW i r ρ π := by
@@ -206,7 +206,7 @@ theorem frozenCD_of (h : RecS.JointCD L HW) (h1 : InertUnr D (D.nd.l i))
 end
 
 /- English proof (translation)
-Unfold `InertUnr TwistedPlaces.InertK`. Express the relevant statement in the definitionally equal form `_ ↔ D.host.cls p = _ ∨ D.host.cls p = _`. Unfold `Host.cls primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inert_iff (D : D7) (p : ℕ) : InertUnr D p ↔ TwistedPlaces.InertK D p := by
   unfold InertUnr TwistedPlaces.InertK
@@ -215,21 +215,19 @@ theorem inert_iff (D : D7) (p : ℕ) : InertUnr D p ↔ TwistedPlaces.InertK D p
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Establish `hall` using `(GlobalTheory.FrobSign.frobG_isArithFrob_and_sign D l (Formalism.HC.HostRaw.notMem_small_of_not_dvd hlN) (Formalism.HC.HostRaw.ne_q_of_not_dvd hlN) (Formalism.HC.HostRaw.ne_d_of_not_dvd hlN)).1`. Establish `hlZ : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.1 hl.out`. Establish `hlI : (Ideal.span {(l : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hlZ.ne_zero).2 hlZ`. Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty ((Ideal.span {(l : ℤ)}).primesOver (𝓞 D.host.E))` from `inferInstance`. Establish `hg : D.host.gal (D.host.sigmaOf (DV.frobG D l)) = DV.frobG D l` using `MulEquiv.apply_symm_apply _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, h⟩` from `((D.host.der.frob l hlN P).2.2.1 _ (hall P)).2.2`. Rewrite `h` using `[hg]`. Establish `key : ∀ o : ℕ, (D.R.hH (DV.frobG D l).2) ^ o = 1 ↔ ((l : ZMod (2 ^ (D.R.e + 2))) ^ o = 1 ∨ (l : ZMod (2 ^ (D.R.e + 2))) ^ o = -1)`. Introduce `o`. Rewrite using `[h, ← hu]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(QuotientGroup.mk' (Subgroup.zpowers (-1 : (ZMod (2 ^ (D.R.e + 2)))ˣ)) u) ^ o = 1 ↔ _`. Rewrite using `[← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, ← Units.val_pow_eq_pow_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Establish `hk' : (-1 : (ZMod (2 ^ (D.R.e + 2)))ˣ) ^ k = u ^ o` using `hk`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Break down `Int.even_or_odd k with e | e` into its components or cases. Use `left`. Rewrite using `[← hk', e.neg_one_zpow]`. Both sides reduce to the same expression. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hk', e.neg_one_zpow]`. Both sides reduce to the same expression. Introduce and unpack `(e | e)`. Establish `: u ^ o = 1` using `Units.ext e`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `: u ^ o = -1` using `Units.ext e`. Rewrite using `[this]`. Conclude with `Subgroup.mem_zpowers _`. Unfold `TwistedPlaces.ordH`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < orderOf (D.R.hH (DV.frobG D l).2)` using `orderOf_pos _`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hne : {o : ℕ | 0 < o ∧ ((l : ZMod (2 ^ (D.R.e + 2))) ^ o = 1 ∨ (l : ZMod (2 ^ (D.R.e + 2))) ^ o = -1)}.Nonempty` using `⟨_, hpos, (key _).1 (pow_orderOf_eq_one _)⟩`. Use `Nat.sInf_mem hne` as an intermediate fact. Conclude with `orderOf_le_of_pow_eq_one this.1 ((key _).2 this.2)`.
-
-Conclude with `Nat.sInf_le ⟨hpos, (key _).1 (pow_orderOf_eq_one _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem order_eq (D : D7) (l : ℕ) [hl : Fact l.Prime] (hlN : ¬ l ∣ D.host.condN) :
     orderOf (D.R.hH (DV.frobG D l).2) = TwistedPlaces.ordH D l := by
@@ -268,7 +266,7 @@ theorem order_eq (D : D7) (l : ℕ) [hl : Fact l.Prime] (hlN : ¬ l ∣ D.host.c
   · exact Nat.sInf_le ⟨hpos, (key _).1 (pow_orderOf_eq_one _)⟩
 
 /- English proof (translation)
-Introduce `i h1 h2 π hπ`. Establish `h3` using `(inert_iff D _).2 h2`. Use `⟨fun hb => frozenB_of L HW i _ _ π _ hB h3 ⟨hb.1, ?_⟩ (hP i h1 h2 π hπ), fun _ => frozenCD_of L HW i _ _ π hC h3 (hP i h1 h2 π hπ)⟩` and prove the remaining obligations. Rewrite using `[order_eq D _ (h3.not_dvd_condN Fact.out)]`. Conclude with `hb.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frozenBCD_of {D : D7} (L : SizeData₂ D) (HW : HWOf D.loc) (X : KillingConditions.HubData D) (R : KillingConditions.RowK)
     (hB : RecS.JointB L HW R.C₂) (hC : RecS.JointCD L HW)

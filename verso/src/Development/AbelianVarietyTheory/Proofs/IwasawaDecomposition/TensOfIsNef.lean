@@ -12,11 +12,9 @@ open GlobalTheory GlobalTheory.CechPic
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h k _ X f hf A N hA hN`. Use `letI := GlobalTheory.algebraΓOfHom f`. Use `IsAmpleLB.tens_of_forall_isPsEff k X f hf A N hA hN.isLB fun Z hZ => ?_` and prove the remaining obligations. Use `haveI := isIntegral_red hZ`. Use `letI := algebraΓAlong k (redι Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hi` using `appTop_algebraMap_along k (redι Z)`. Establish `hp : IsProjOver (strHom k X)` using `by rwa [strHom_eq (f := f) fun _ => rfl]`. Establish `hp' : IsProjOver (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Take `⟨n, e, he, hs⟩` from `hp`. Conclude with `⟨n, redι Z ≫ e, inferInstance, by rw [Category.assoc, hs, comp_strHom hi]⟩`.
-
-Conclude with `IsNef.isPsEff h k _ hp' _ (hN.pull_of_isClosedImmersion (redι Z) hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.tens_of_isNef : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Sp k), IsProjOver f → ∀ A N : LB X, GlobalTheory.IsAmpleLB A → (letI := GlobalTheory.algebraΓOfHom f; GlobalTheory.IsNef k N) → GlobalTheory.IsAmpleLB (GlobalTheory.CechPic.tens A N) := by
   intro h k _ X f hf A N hA hN

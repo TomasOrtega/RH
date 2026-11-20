@@ -13,9 +13,9 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ X X' ρ π hπ S _ s' hft`. Take `⟨hA, hc, hV⟩` from `hπ`. Establish `hq : IsAffineQuotient ρ π` using `{ comp_eq := hc isAffineHom := hA app_injective := fun W => (hV W).1 mem_range_app := fun W s hs => (hV W).2 s (by`. Introduce `g hg`. Unfold `IsInvariantSection at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take `⟨_, e⟩` from `hs g`. Conclude with `e) }`. Conclude with `⟨hq.isFinite s', hq.locallyOfFiniteType s', fun _ => hq.quasiCompact s', fun _ => hq.isSeparated s', fun _ => hq.isProper s'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quotient_isFinite_locallyOfFiniteType_descend :
     ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' : Scheme.{0}) (ρ : Γ →* Aut X) (π : X ⟶ X'), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s' : X' ⟶ S), LocallyOfFiniteType (π ≫ s') → IsFinite π ∧ LocallyOfFiniteType s' ∧ (QuasiCompact (π ≫ s') → QuasiCompact s') ∧ (IsSeparated (π ≫ s') → IsSeparated s') ∧ (IsProper (π ≫ s') → IsProper s') := by

@@ -10,21 +10,21 @@ open scoped ENNReal
 namespace PI.RhsWLim.W
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ _ X _ Φ ν δ hδ hδ0 hν`. Take `⟨ε0, hε0, hν⟩` from `hν`. Rewrite using `[Metric.tendsto_nhdsWithin_nhds]`. Introduce `ε hε`. Establish `he : (0 : ℝ≥0∞) < ENNReal.ofReal (ε / 2)` using `ENNReal.ofReal_pos.mpr (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnhds : Set.Icc (δ 0 - ENNReal.ofReal (ε / 2)) (δ 0 + ENNReal.ofReal (ε / 2)) ∈ 𝓝 (δ 0)` using `ENNReal.Icc_mem_nhds hδ0 he.ne'`. Take `⟨η1, hη1, hball⟩` from `Metric.mem_nhds_iff.mp (hδ hnhds)`. Use `⟨min η1 ε0, lt_min hη1 hε0, fun {ρ} hρ hdist => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 < ρ` using `Set.mem_Ioi.mp hρ`. Establish `hρ' : ρ < min η1 ε0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdist` using `[Real.dist_eq, sub_zero, abs_of_pos hρ0]`. Then use the resulting hypothesis. Establish `hρη : ρ < η1` using `lt_of_lt_of_le hρ' (min_le_left _ _)`. Establish `hρε : ρ < ε0` using `lt_of_lt_of_le hρ' (min_le_right _ _)`. Establish `hV0 : volume (Metric.ball (0 : E) ρ) ≠ 0` using `(Metric.measure_ball_pos volume (0 : E) hρ0).ne'`. Establish `hVt : volume (Metric.ball (0 : E) ρ) ≠ ⊤` using `measure_ball_lt_top.ne`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ x ∈ Metric.ball (0 : E) ρ, δ x ∈ Set.Icc (δ 0 - ENNReal.ofReal (ε / 2)) (δ 0 + ENNReal.ofReal (ε / 2))` using `fun x hx => hball (Metric.ball_subset_ball hρη.le hx)`. Establish `hup : ∫⁻ x in Metric.ball (0 : E) ρ, δ x ≤ (δ 0 + ENNReal.ofReal (ε / 2)) * volume (Metric.ball (0 : E) ρ)`. Combine the equalities or inequalities in the displayed calculation. Establish `hlo : (δ 0 - ENNReal.ofReal (ε / 2)) * volume (Metric.ball (0 : E) ρ) ≤ ∫⁻ x in Metric.ball (0 : E) ρ, δ x`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `htop1 : δ 0 + ENNReal.ofReal (ε / 2) ≠ ⊤` using `ENNReal.add_ne_top.mpr ⟨hδ0, ENNReal.ofReal_ne_top⟩`. Establish `hAt : ∫⁻ x in Metric.ball (0 : E) ρ, δ x ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top htop1 hVt) hup`. Establish `hVr : 0 < (volume (Metric.ball (0 : E) ρ)).toReal` using `ENNReal.toReal_pos hV0 hVt`. Establish `hupR : (∫⁻ x in Metric.ball (0 : E) ρ, δ x).toReal ≤ ((δ 0).toReal + ε / 2) * (volume (Metric.ball (0 : E) ρ)).toReal`. Establish `h1` using `ENNReal.toReal_mono (ENNReal.mul_ne_top htop1 hVt) hup`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[ENNReal.toReal_mul, ENNReal.toReal_add hδ0 ENNReal.ofReal_ne_top, ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Establish `hloR : ((δ 0).toReal - ε / 2) * (volume (Metric.ball (0 : E) ρ)).toReal ≤ (∫⁻ x in Metric.ball (0 : E) ρ, δ x).toReal`. Establish `h1` using `ENNReal.toReal_mono hAt hlo`. Rewrite `h1` using `[ENNReal.toReal_mul]`. Establish `h2 : (δ 0).toReal - ε / 2 ≤ (δ 0 - ENNReal.ofReal (ε / 2)).toReal`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `ENNReal.le_toReal_sub (a := δ 0) (b := ENNReal.ofReal (ε / 2)) ENNReal.ofReal_ne_top`. Rewrite `h3` using `[ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Conclude with `le_trans (mul_le_mul_of_nonneg_right h2 hVr.le) h1`. Establish `h4` using `(div_le_iff₀ hVr).mpr hupR`. Establish `h5` using `(le_div_iff₀ hVr).mpr hloR`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hν ρ hρ0 hρε, Real.dist_eq, abs_lt]`. Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem chartLim : ChartLim := by
   intro E _ _ _ _ _ _ X _ Φ ν δ hδ hδ0 hν

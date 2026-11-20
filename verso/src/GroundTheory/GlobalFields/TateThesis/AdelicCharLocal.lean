@@ -24,7 +24,7 @@ def finiteAdeleSingleAdd (v : HeightOneSpectrum (𝓞 K)) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleSingleAdd_apply (v u : HeightOneSpectrum (𝓞 K)) (x : v.adicCompletion K) :
     finiteAdeleSingleAdd v x u =
@@ -32,7 +32,7 @@ theorem finiteAdeleSingleAdd_apply (v u : HeightOneSpectrum (𝓞 K)) (x : v.adi
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[finiteAdeleSingleAdd_apply]`. Conclude with `Pi.single_eq_same v x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteAdeleSingleAdd_apply_self (v : HeightOneSpectrum (𝓞 K)) (x : v.adicCompletion K) :
     finiteAdeleSingleAdd v x v = x := by
@@ -41,7 +41,7 @@ theorem finiteAdeleSingleAdd_apply_self (v : HeightOneSpectrum (𝓞 K)) (x : v.
   exact Pi.single_eq_same v x
 
 /- English proof (translation)
-Rewrite using `[finiteAdeleSingleAdd_apply]`. Conclude with `Pi.single_eq_of_ne h x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteAdeleSingleAdd_apply_of_ne {v u : HeightOneSpectrum (𝓞 K)} (h : u ≠ v)
     (x : v.adicCompletion K) : finiteAdeleSingleAdd v x u = 0 := by
@@ -50,9 +50,9 @@ theorem finiteAdeleSingleAdd_apply_of_ne {v u : HeightOneSpectrum (𝓞 K)} (h :
   exact Pi.single_eq_of_ne h x
 
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 K)))`. Simplify using the standard rewrite rules. Set `g : v.adicCompletion K → Πʳ w : HeightOneSpectrum (𝓞 K), [w.adicCompletion K, w.adicCompletionIntegers K]_[Filter.principal {v}ᶜ]` to `fun x ↦ ⟨Pi.single v x, Filter.eventually_principal.2 fun w hw ↦ by`. Rewrite using `[Pi.single_eq_of_ne hw x]`. Conclude with `zero_mem _⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : Continuous g` using `RestrictedProduct.continuous_rng_of_principal.mpr (continuous_single v)`. Establish `hfg : (finiteAdeleSingleAdd (K` using `K) v : v.adicCompletion K → FiniteAdeleRing (𝓞 K) K) = RestrictedProduct.inclusion _ _ hS ∘ g := by`. Both sides reduce to the same expression. Rewrite using `[hfg]`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hg`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_finiteAdeleSingleAdd (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (finiteAdeleSingleAdd (K := K) v) := by
@@ -98,7 +98,7 @@ theorem finitePlaceIncl_apply (v : HeightOneSpectrum (𝓞 K)) (x : v.adicComple
     finitePlaceIncl v x = finiteAdeleInr (finiteAdeleSingleAdd v x) := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_const.prodMk (continuous_finiteAdeleSingleAdd v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finitePlaceIncl (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (finitePlaceIncl (K := K) v) :=
@@ -141,7 +141,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Use `Prod.ext (α := InfiniteAdeleRing K) (β := FiniteAdeleRing (𝓞 K) K) ?_ ?_` and prove the remaining obligations. Rewrite using `[adeleRing_add_fst, infiniteAdeleInl_fst, finiteAdeleInr_fst, add_zero]`. Rewrite using `[adeleRing_add_snd, infiniteAdeleInl_snd, finiteAdeleInr_snd, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteAdeleInl_add_finiteAdeleInr (x : 𝔸[K]) :
     infiniteAdeleInl x.1 + finiteAdeleInr x.2 = x := by
@@ -150,7 +150,7 @@ theorem infiniteAdeleInl_add_finiteAdeleInr (x : 𝔸[K]) :
   · rw [adeleRing_add_snd, infiniteAdeleInl_snd, finiteAdeleInr_snd, zero_add]
 
 /- English proof (translation)
-Conclude with `(continuous_single (A := fun u : InfinitePlace K => u.Completion) w).prodMk continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infinitePlaceIncl (w : InfinitePlace K) :
     Continuous (infinitePlaceIncl (K := K) w) := by
@@ -181,21 +181,21 @@ theorem infiniteAdelicChar_apply' (w : InfinitePlace K) (z : w.Completion) :
     infiniteAdelicChar K w z = adelicChar K (infinitePlaceIncl w z) := rfl
 
 /- English proof (translation)
-The claim follows from `(continuous_adelicChar (K := K)).comp (continuous_finitePlaceIncl v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_localAdelicChar (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (localAdelicChar K v) :=
   (continuous_adelicChar (K := K)).comp (continuous_finitePlaceIncl v)
 
 /- English proof (translation)
-The claim follows from `(continuous_adelicChar (K := K)).comp (continuous_infinitePlaceIncl w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteAdelicChar (w : InfinitePlace K) :
     Continuous (infiniteAdelicChar K w) :=
   (continuous_adelicChar (K := K)).comp (continuous_infinitePlaceIncl w)
 
 /- English proof (translation)
-Rewrite using `[infiniteAdelicChar_apply', adelicChar_of_mem_invDifferentAdeles (mem_invDifferentAdeles.mpr (by rw [infinitePlaceIncl_snd]; exact zero_mem _)), infiniteTrace_apply, Finset.sum_eq_single w]`. Rewrite using `[infinitePlaceIncl_fst, Pi.single_eq_same]`. Introduce `u _ hu`. Rewrite using `[infinitePlaceIncl_fst, Pi.single_eq_of_ne hu, map_zero, Complex.zero_re, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infiniteAdelicChar_apply (w : InfinitePlace K) (z : w.Completion) :
     infiniteAdelicChar K w z = 𝐞 (-((w.mult : ℝ) * (extensionEmbedding w z).re)) := by
@@ -209,7 +209,7 @@ theorem infiniteAdelicChar_apply (w : InfinitePlace K) (z : w.Completion) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[infiniteAdelicChar_apply, hw.mult_eq_one, ← extensionEmbeddingOfIsReal_apply hw, Complex.ofReal_re, Nat.cast_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteAdelicChar_apply_of_isReal {w : InfinitePlace K} (hw : IsReal w)
     (z : w.Completion) : infiniteAdelicChar K w z = 𝐞 (-extensionEmbeddingOfIsReal hw z) := by
@@ -217,7 +217,7 @@ theorem infiniteAdelicChar_apply_of_isReal {w : InfinitePlace K} (hw : IsReal w)
     Complex.ofReal_re, Nat.cast_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[infiniteAdelicChar_apply, hw.mult_eq_two, Nat.cast_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteAdelicChar_apply_of_isComplex {w : InfinitePlace K} (hw : IsComplex w)
     (z : w.Completion) :
@@ -225,7 +225,7 @@ theorem infiniteAdelicChar_apply_of_isComplex {w : InfinitePlace K} (hw : IsComp
   rw [infiniteAdelicChar_apply, hw.mult_eq_two, Nat.cast_ofNat]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem addChar_map_finsetSum {ι A : Type*} [AddCommMonoid A] (χ : AddChar A Circle)
     (s : Finset ι) (f : ι → A) : χ (∑ i ∈ s, f i) = ∏ i ∈ s, χ (f i) := by
@@ -236,7 +236,7 @@ theorem addChar_map_finsetSum {ι A : Type*} [AddCommMonoid A] (χ : AddChar A C
     rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Rewrite using `[adelicChar_of_mem_invDifferentAdeles (mem_invDifferentAdeles.mpr (by rw [infiniteAdeleInl_snd]; exact zero_mem _)), infiniteAdeleInl_fst, infiniteTrace_apply, ← Finset.sum_neg_distrib, addChar_map_finsetSum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[infiniteAdelicChar_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicChar_infiniteAdeleInl (x : InfiniteAdeleRing K) :
     adelicChar K (infiniteAdeleInl x) = ∏ w : InfinitePlace K, infiniteAdelicChar K w (x w) := by
@@ -247,7 +247,7 @@ theorem adelicChar_infiniteAdeleInl (x : InfiniteAdeleRing K) :
   rw [infiniteAdelicChar_apply]
 
 /- English proof (translation)
-Establish `hc : ∀ z : K, (z : v.adicCompletion K) = algebraMap K (v.adicCompletion K) z` using `fun z => by simp [algebraMap_adicCompletion]`. Rewrite using `[hc, hc, hc, map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_sub_adicCompletion (v : HeightOneSpectrum (𝓞 K)) (a b : K) :
     ((a - b : K) : v.adicCompletion K) = (a : v.adicCompletion K) - (b : v.adicCompletion K) := by
@@ -256,11 +256,11 @@ theorem coe_sub_adicCompletion (v : HeightOneSpectrum (𝓞 K)) (a b : K) :
   rw [hc, hc, hc, map_sub]
 
 /- English proof (translation)
-Establish `hU : IsOpen {z : v.adicCompletion K | y - z ∈ v.adicCompletionIntegers K}` using `(Valued.isOpen_valuationSubring (v.adicCompletion K)).preimage (continuous_const.sub continuous_id)`. Take `⟨z, hz⟩` from `(denseRange_algebraMap (K := K) v).exists_mem_open hU ⟨y, by simp⟩`. Take `⟨k, hkS, hkn⟩` from `exists_valuation_sub_le_one {v} (fun _ => z)`. Use `⟨k, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `(coe_mem_adicCompletionIntegers_iff v (k - z)).mpr (hkS v (Finset.mem_singleton_self v))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : y - (k : v.adicCompletion K) = (y - (z : v.adicCompletion K)) - ((k - z : K) : v.adicCompletion K)`. Rewrite using `[coe_sub_adicCompletion]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Establish `hz' : y - (z : v.adicCompletion K) ∈ v.adicCompletionIntegers K` using `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_mem hz' h1`. Conclude with `(coe_mem_adicCompletionIntegers_iff u k).mpr (hkn u (by simpa using hu))`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_adicCompletionIntegers_and_forall_ne (v : HeightOneSpectrum (𝓞 K))
     (y : v.adicCompletion K) :
@@ -284,9 +284,9 @@ theorem exists_sub_mem_adicCompletionIntegers_and_forall_ne (v : HeightOneSpectr
   · exact (coe_mem_adicCompletionIntegers_iff u k).mpr (hkn u (by simpa using hu))
 
 /- English proof (translation)
-Rewrite using `[localAdelicChar_apply, adelicChar_of_mem_invDifferentAdeles]`. Simplify using `[finitePlaceIncl_apply]`. Use `mem_invDifferentAdeles.mpr fun u => ?_` and prove the remaining obligations. Rewrite using `[finitePlaceIncl_apply, finiteAdeleInr_snd]`. Distinguish the cases in `hu : u = v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Rewrite using `[finiteAdeleSingleAdd_apply_self]` and apply the resulting hypothesis. Rewrite using `[finiteAdeleSingleAdd_apply_of_ne hu]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localAdelicChar_eq_one_of_mem {v : HeightOneSpectrum (𝓞 K)} {y : v.adicCompletion K}
     (hy : y ∈ localInvDifferent v) : localAdelicChar K v y = 1 := by
@@ -301,9 +301,9 @@ theorem localAdelicChar_eq_one_of_mem {v : HeightOneSpectrum (𝓞 K)} {y : v.ad
       exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[localAdelicChar_apply, adelicChar_eq (k := k)]`. Rewrite using `[finitePlaceIncl_apply, finiteAdeleInr_fst, zero_sub, map_neg (infiniteTrace K), neg_neg, infiniteTrace_algebraMap]`. Introduce `u show finiteAdeleSingleAdd v y u - (k : u.adicCompletion K) ∈ localInvDifferent u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[finiteAdeleSingleAdd_apply_self]` and apply the resulting hypothesis. Rewrite using `[finiteAdeleSingleAdd_apply_of_ne hu, zero_sub]`. Conclude with `neg_mem (hk' u hu)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localAdelicChar_eq (v : HeightOneSpectrum (𝓞 K)) (y : v.adicCompletion K) {k : K}
     (hk : y - k ∈ localInvDifferent v)
@@ -321,7 +321,7 @@ theorem localAdelicChar_eq (v : HeightOneSpectrum (𝓞 K)) (y : v.adicCompletio
       exact neg_mem (hk' u hu)
 
 /- English proof (translation)
-The claim follows from `localAdelicChar_eq v _ (by rw [sub_self]; exact zero_mem _) hk'`.
+A detailed English derivation is pending.
 -/
 theorem localAdelicChar_coe (v : HeightOneSpectrum (𝓞 K)) {k : K}
     (hk' : ∀ u ≠ v, (k : u.adicCompletion K) ∈ localInvDifferent u) :
@@ -329,7 +329,7 @@ theorem localAdelicChar_coe (v : HeightOneSpectrum (𝓞 K)) {k : K}
   localAdelicChar_eq v _ (by rw [sub_self]; exact zero_mem _) hk'
 
 /- English proof (translation)
-Take `⟨k, hk, hk'⟩` from `exists_sub_mem_adicCompletionIntegers_and_forall_ne v y`. Conclude with `⟨k, hk, hk', localAdelicChar_eq v y (mem_localInvDifferent_of_mem hk) fun u hu => mem_localInvDifferent_of_mem (hk' u hu)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_localAdelicChar_eq (v : HeightOneSpectrum (𝓞 K)) (y : v.adicCompletion K) :
     ∃ k : K, y - k ∈ v.adicCompletionIntegers K ∧
@@ -340,15 +340,15 @@ theorem exists_localAdelicChar_eq (v : HeightOneSpectrum (𝓞 K)) (y : v.adicCo
     fun u hu => mem_localInvDifferent_of_mem (hk' u hu)⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun hx a ha => localAdelicChar_eq_one_of_mem (mul_mem_localInvDifferent ha hx)⟩` and prove the remaining obligations. Take `⟨k, hk, hk'⟩` from `exists_sub_mem_adicCompletionIntegers_and_forall_ne v x`. Establish `htr : ∀ a : 𝓞 K, Algebra.trace ℚ K (k * algebraMap (𝓞 K) K a) ∈ (algebraMap ℤ ℚ).range`. Introduce `a`. Establish `hb' : ∀ u ≠ v, ((k * algebraMap (𝓞 K) K a : K) : u.adicCompletion K) ∈ localInvDifferent u` using `fun u hu => mem_localInvDifferent_of_mem (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[coe_mul_adicCompletion]`. Conclude with `mul_mem (hk' u hu) (coe_algebraMap_mem_adicCompletionIntegers u a))`. Establish `h1` using `localAdelicChar_coe v hb'`. Establish `hbx : ((k * algebraMap (𝓞 K) K a : K) : v.adicCompletion K) = ((algebraMap (𝓞 K) K a : K) : v.adicCompletion K) * x - ((algebraMap (𝓞 K) K a : K) : v.adicCompletion K) * (x - k)`. Rewrite using `[coe_mul_adicCompletion]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hbx, AddChar.map_sub_eq_div, h _ (coe_algebraMap_mem_adicCompletionIntegers v a), localAdelicChar_eq_one_of_mem (mul_mem_localInvDifferent (coe_algebraMap_mem_adicCompletionIntegers v a) (mem_localInvDifferent_of_mem hk)), div_one, eq_comm, fourierChar_eq_one_iff]`. Take `⟨n, hn⟩` from `h1`. Conclude with `⟨n, by exact_mod_cast hn.symm⟩`. Establish `hk_mem` using `(forall_mul_mem_iff_forall_trace_mem K k).mpr htr`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨z, hz⟩` from `hk_mem y hy`. Establish `: x * ((algebraMap (𝓞 K) K y : K) : v.adicCompletion K) = ((k * algebraMap (𝓞 K) K y : K) : v.adicCompletion K) + (x - k) * ((algebraMap (𝓞 K) K y : K) : v.adicCompletion K)`. Rewrite using `[coe_mul_adicCompletion]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← hz]`. Conclude with `add_mem (coe_algebraMap_mem_adicCompletionIntegers v z) (mul_mem hk (coe_algebraMap_mem_adicCompletionIntegers v y))`.
+A detailed English derivation is pending.
 -/
 theorem forall_localAdelicChar_mul_eq_one_iff (v : HeightOneSpectrum (𝓞 K))
     (x : v.adicCompletion K) :
@@ -389,7 +389,7 @@ theorem forall_localAdelicChar_mul_eq_one_iff (v : HeightOneSpectrum (𝓞 K))
     (mul_mem hk (coe_algebraMap_mem_adicCompletionIntegers v y))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h x hx => (forall_localAdelicChar_mul_eq_one_iff v x).mp fun a ha => h _ (hM a ha x hx), fun h _ hx => localAdelicChar_eq_one_of_mem (h hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem forall_localAdelicChar_eq_one_iff_le (v : HeightOneSpectrum (𝓞 K))
     (M : AddSubgroup (v.adicCompletion K))
@@ -399,7 +399,7 @@ theorem forall_localAdelicChar_eq_one_iff_le (v : HeightOneSpectrum (𝓞 K))
     fun h _ hx => localAdelicChar_eq_one_of_mem (h hx)⟩
 
 /- English proof (translation)
-The claim follows from `(Filter.eventually_cofinite.mp x.2.2).subset fun _ hv hO => hv (localAdelicChar_eq_one_of_mem (mem_localInvDifferent_of_mem hO))`.
+A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_localAdelicChar (x : 𝔸[K]) :
     (Function.mulSupport fun v => localAdelicChar K v (x.2 v)).Finite :=
@@ -407,19 +407,17 @@ theorem finite_mulSupport_localAdelicChar (x : 𝔸[K]) :
     hv (localAdelicChar_eq_one_of_mem (mem_localInvDifferent_of_mem hO))
 
 /- English proof (translation)
-Establish `hS` using `Filter.eventually_cofinite.mp x.2.2`. Use `set S := hS.toFinset`. Establish `hmemS : ∀ u, u ∉ S → x.2 u ∈ u.adicCompletionIntegers K` using `fun u hu => by`. Establish `h` using `hu`. Simplify using `only [S, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨f, hfdef⟩ : ∃ f : FiniteAdeleRing (𝓞 K) K, f = ∑ v ∈ S, finiteAdeleSingleAdd v (x.2 v)` from `⟨_, rfl⟩`. Establish `hrest : x.2 - f ∈ finiteInvDifferent K`. Introduce `u`. Establish `hsum : f u = ∑ v ∈ S, finiteAdeleSingleAdd v (x.2 v) u` using `hfdef ▸ map_sum (RestrictedProduct.evalAddMonoidHom (fun u : HeightOneSpectrum (𝓞 K) => u.adicCompletion K) u) _ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show x.2 u - f u ∈ localInvDifferent u`. Rewrite using `[hsum]`. Distinguish the cases in `hu : u ∈ S`. Rewrite using `[Finset.sum_eq_single_of_mem u hu (fun v _ hv => finiteAdeleSingleAdd_apply_of_ne (Ne.symm hv) _), finiteAdeleSingleAdd_apply_self, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_zero (fun v hv => finiteAdeleSingleAdd_apply_of_ne (by rintro rfl; exact hu hv) _), sub_zero]`. Conclude with `mem_localInvDifferent_of_mem (hmemS u hu)`. Establish `hf : finiteAdeleInr f + finiteAdeleInr (x.2 - f) = finiteAdeleInr (K` using `K) x.2 := by`. Rewrite using `[← map_add, add_sub_cancel]`. Establish `hx : x = infiniteAdeleInl x.1 + finiteAdeleInr f + finiteAdeleInr (x.2 - f)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_assoc, hf, infiniteAdeleInl_add_finiteAdeleInr]`. Establish `h1 : adelicChar K (finiteAdeleInr (x.2 - f)) = 1`. Rewrite using `[adelicChar_of_mem_invDifferentAdeles (mem_invDifferentAdeles.mpr (by rw [finiteAdeleInr_snd]; exact hrest)), finiteAdeleInr_fst, map_zero, neg_zero, AddChar.map_zero_eq_one]`. Establish `h2 : adelicChar K (finiteAdeleInr f) = ∏ v ∈ S, localAdelicChar K v (x.2 v)`. Rewrite using `[hfdef, map_sum, addChar_map_finsetSum]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h3 : ∏ᶠ v, localAdelicChar K v (x.2 v) = ∏ v ∈ S, localAdelicChar K v (x.2 v)`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvS`. Conclude with `hv (localAdelicChar_eq_one_of_mem (mem_localInvDifferent_of_mem (hmemS v hvS)))`.
-
-Use `conv_lhs => rw [hx]`. Rewrite using `[AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, h1, mul_one, h2, h3, adelicChar_infiniteAdeleInl]`.
+A detailed English derivation is pending.
 -/
 theorem adelicChar_eq_prod (x : 𝔸[K]) :
     adelicChar K x = (∏ w : InfinitePlace K, infiniteAdelicChar K w (x.1 w)) *

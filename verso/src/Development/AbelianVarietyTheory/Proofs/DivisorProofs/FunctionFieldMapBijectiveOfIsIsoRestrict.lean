@@ -11,13 +11,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `X Y _ _ s _ U hU hiso`. Establish `hg : s (genericPoint Y) = genericPoint X`. Establish `h` using `(genericPoint_spec Y).image s.continuous`. Rewrite `h` using `[Set.image_univ, s.denseRange.closure_range]`. Conclude with `h.eq (genericPoint_spec X)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : genericPoint Y ∈ s ⁻¹ᵁ U`. Express the relevant statement in the definitionally equal form `s (genericPoint Y) ∈ U`. Rewrite using `[hg]`. Conclude with `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr (by simpa using hU)`. Establish `h1 : IsIso ((s ∣_ U).stalkMap ⟨genericPoint Y, hmem⟩)` using `((isIso_iff_isIso_stalkMap (s ∣_ U)).1 hiso).2 _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsIso (s.stalkMap (genericPoint Y))` using `((MorphismProperty.isomorphisms CommRingCat).arrow_mk_iso_iff (morphismRestrictStalkMap s U ⟨genericPoint Y, hmem⟩)).mp h1`. Establish `h3 : ∀ (x y : X) (_ : x = y) (h : x ⤳ y), IsIso (X.presheaf.stalkSpecializes h)`. Introduce and unpack `x y rfl h`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Use `infer_instance`.
-
-Unfold `functionFieldMap`. Establish `h4` using `h3 _ _ hg (hg ▸ specializes_rfl)`. Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem functionFieldMap_bijective_of_isIso_restrict : ∀ (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (s : Y ⟶ X) [IsDominant s] (U : X.Opens), (U : Set X).Nonempty → IsIso (s ∣_ U) → Function.Bijective (functionFieldMap s) := by
   intro X Y _ _ s _ U hU hiso

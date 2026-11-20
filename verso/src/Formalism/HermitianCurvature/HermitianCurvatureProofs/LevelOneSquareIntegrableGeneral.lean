@@ -12,7 +12,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Unfold `fsv`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsv_add (s s' t : ℂ) : fsv s t * fsv s' t = fsv (s + s') t := by
   unfold fsv
@@ -22,7 +22,7 @@ theorem fsv_add (s s' t : ℂ) : fsv s t * fsv s' t = fsv (s + s') t := by
   ring
 
 /- English proof (translation)
-Simplify using `[fsv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsv_zero (t : ℂ) : fsv 0 t = 1 := by
   simp [fsv]
@@ -43,13 +43,11 @@ def waveJ : Submodule ℂ (RadSp P.k P.r z z' π π') :=
   Submodule.span ℂ {Ψ | IsWaveJ P z z' π π' D l Ψ}
 
 /- English proof (translation)
-Introduce `Ψ hΨ`. Unfold `waveJ at hΨ ⊢`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨hlc, s0, ε, G, hε, hN, hval⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show IsWaveJ P z z' π π' D l (Wv x)`. Unfold `IsWaveJ`. Use `⟨fun c0 hc0 => ?_, s + s0, ε, G, hε, hN, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hcU, K, hKc, hKG, hK0⟩` from `hlc c0 hc0`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨U, hU, hcU, K, hKc, hKG, fun c' hc' g hg hgK => by rw [hW x c' g, hK0 c' hc' g hg hgK, smul_zero]⟩`. Rewrite using `[hW x y.1 y.2, hval y hy, smul_smul, fsv_add]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem waveJ_wave {Wv : Module.End ℂ (RadSp P.k P.r z z' π π')} {s : ℂ} (hW : multiplicationOperator Wv (fun c _ => fsv s (c l))) :
     ∀ Ψ ∈ waveJ P z z' π π' D l, Wv Ψ ∈ waveJ P z z' π π' D l := by
@@ -77,7 +75,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Use `⟨jfCptLocAll Wp Wq P z z' π π' D F Φ hP hz hz' hπ hπ' hF hΦ, ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, hG⟩` from `hF.1.2`. Use `⟨0, ε, F, hε, ⟨Formalism.FourierDecayAlt.P.SmoothnessOrderArithmetic.ckOn_top_of_all (fun m => (hF.1.1 0 m).choose_spec.1), hF.1.1, fun g hg hne => by rw [hz, hz']; exact hG g hg hne⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[fsv_zero, one_smul]`. Conclude with `hΦ y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWaveJ_jf (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (D : B.RealPlaceData P.k P.r Wp Wq) (hP : IsPlace P z z' π π') (hz : D.z = z)
@@ -92,17 +90,17 @@ theorem isWaveJ_jf (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx
   exact hΦ y hy
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr fun Φ hΦ => ?_` and prove the remaining obligations. Establish `key : ∀ (i : Fin (P.r + 1)) (Ψ : RadSp P.k P.r z z' π π'), HerGenC S P z z' π π' L st l0 D i Ψ → i = 0 → Ψ ∈ waveJ P z z' π π' D l`. Introduce `i Ψ h`. Proceed by induction on `h with`. Consider the case `jf F Φ hF hΦ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `fun _ => Submodule.subset_span (isWaveJ_jf P z z' π π' D hD.1 hz hz' hπ hπ' l F hF Φ hΦ)`. Consider the case `slice l' w a b Φ _ _ _ => exact fun h => absurd h (Fin.succ_ne_zero l')`. Consider the case `waveC l' w' s Wv Wv' a' b' Φ _ h1 _ _ ih`. Introduce `h`. Establish `hll : l' = l` using `Fin.castSucc_injective _ (h.trans hl.symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hll` using the available equality. Establish `hv` using `ih h`. Establish `hVw : Vw (mkP Wv Wv') s w' a' b' = mkP Wv Wv' * UUiw s w' a' b'`. Unfold `Vw`. Conclude with `io_apply_mul _ _ _ _`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `mem_bot_alg (UUiw_mem (A := Pr (RadSp P.k P.r z z' π π')) (𝒜 := ⊥) s w' a' b')`. Establish `e : (Vw (mkP Wv Wv') s w' a' b').1 Φ = κ • Wv Φ`. Rewrite using `[hVw, hκ, pr_fst_mul, pr_fst_algebraMap, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(waveJ P z z' π π' D l').smul_mem κ (waveJ_wave P z z' π π' D l' h1 Φ hv)`. Consider the case `waveZ w s Wv Wv' a b Φ _ _ _ _ _`. Introduce `h`. It suffices to derive a contradiction. Establish `h0` using `congrArg Fin.val h`.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg Fin.val hl`. Simplify using `only [Fin.val_last, Fin.val_zero, Fin.val_castSucc] at h0 h1`. Use `l.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `key 0 Φ hΦ rfl`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem herKc0_le_waveJ (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
@@ -142,21 +140,19 @@ theorem herKc0_le_waveJ (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π
   exact key 0 Φ hΦ rfl
 
 /- English proof (translation)
-Substitute `hz hz' hπ hπ'` using the available equality. Set `F' : Ix S → Mx P.k P.r → (Wq →L[ℂ] Wp)` to `fun b' => if b' = b then G else fun _ => 0`. Establish `hN' : ∀ b', JC.NiceCoef D ε (F' b')`. Introduce `b'`. Distinguish the cases in `h : b' = b`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [F', if_pos h]`. Conclude with `hN`. Simplify using `only [F', if_neg h]`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero`. Set `x : Ix S → Mx P.k P.r → (Wq →L[ℂ] Wp)` to `fun b' => B.JF D (F' b')`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φv : Ix S → RadSp P.k P.r D.z D.z' D.π D.π'` to `fun b' => if b' = b then Φ else 0`. Establish `hx : ∀ b', x b' ∈ FFl P.k P.r D.z D.z' D.π D.π' 0 (OmPlus P.k P.r D.z D.z')` using `fun b' => Formalism.FourierDecayAlt.P.bessel_function_finite_class P.k P.r Wp Wq D (F' b') ε hε (hN' b')`. Establish `hΦv : ∀ b', ∀ y ∈ DomR P.k P.r D.z D.z', (Φv b' : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (x b') y.1 y.2`. Introduce `b' y hy`. Distinguish the cases in `h : b' = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φv, x, F', if_pos h]`. Conclude with `hΦ y hy`. Simplify using `only [Φv, x, F', if_neg h]`. Simplify using `only [resG, Formalism.FourierDecayAlt.P.JCx2.bc_JF_zero, smul_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `key` using `Formalism.FourierDecayAlt.P.JCx2.rma_main D.z_mem D.z'_mem X L st (M.sgn P l0) hD.2.2.1 hD.2.2.2.1 w x Φv hx hΦv`. Establish `hsingle : act (RRi L st 0 w) Φv a = ((RRi L st 0 w) a b).1 Φ`. Unfold `act`. Rewrite using `[Finset.sum_eq_single b (fun b' _ hb' => by simp only [Φv, if_neg hb', map_zero]) (fun h => absurd (Finset.mem_univ b) h)]`. Simplify using `only [Φv, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR` using `Formalism.FourierDecayAlt.P.JCx2.mn_rrop_closure Formalism.FourierDecayAlt.P.JCx2.bcGood_closed (Formalism.FourierDecayAlt.P.JCx2.rma_Qop P.k P.r D.z D.z' (M.sgn P l0)) (fun Y p q => Formalism.FourierDecayAlt.P.JCx2.bcGood_tL (Bs := D) (ε := ε) (M.sgn P l0) Y p q) w`. Use `⟨Formalism.FourierDecayAlt.D.actOp (Formalism.FourierDecayAlt.D.RRop (Formalism.FourierDecayAlt.P.JCx2.rma_Qop P.k P.r D.z D.z' (M.sgn P l0)) w) F' a, ?_, ?_⟩` and prove the remaining obligations. Use `show JC.NiceCoef D ε (∑ b', Formalism.FourierDecayAlt.D.ap (Formalism.FourierDecayAlt.D.RRop (Formalism.FourierDecayAlt.P.JCx2.rma_Qop P.k P.r D.z D.z' (M.sgn P l0)) w a b') (F' b'))`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_sum' Finset.univ _ fun b' _ => (hR a b').1 (F' b') (hN' b')`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hsingle, key a y hy]`. Establish `hGV : wCell P.k P.r (Fin.last _) y.1 * y.2 ∈ B.GV P.k P.r`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.QuantumDeterminants.big_cell_mem_holds _ _ _ 1 hy.1 (by simp)) hy.2.1.1`. Establish `hh : wCell P.k P.r (Fin.last _) y.1 * y.2 ∈ JF.Om P.k P.r D.z D.z'` using `⟨hGV, Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus D.z_mem D.z'_mem hy.1 hy.2.1 hy.2.2⟩`.
-
-Simplify using `only [resG]`. Use `congr 1`. Conclude with `(Formalism.FourierDecayAlt.P.JCx2.bc_core _ hR F' hN' a hh).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rr_pic (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
@@ -212,25 +208,23 @@ theorem rr_pic (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k
     exact (Formalism.FourierDecayAlt.P.JCx2.bc_core _ hR F' hN' a hh).symm
 
 /- English proof (translation)
-Establish `hRRlc` using `RRi_lc X μ L st l0 hD 0 w hw.1.2.1`. Establish `hbase : ∀ (Φ : RadSp P.k P.r z z' π π'), Φ ∈ lcSub P.k P.r z z' π π' → ∀ (ε : ℝ), 0 < ε → ∀ G, JC.NiceCoef D ε G → (∀ y ∈ DomR P.k P.r z z', (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.JF D G) y.1 y.2) → ∀ c d, ((RRi L st 0 w) c d).1 Φ ∈ waveJ P z z' π …`. Introduce `Φ hlc ε hε G hN hΦ c d`. Take `⟨G', hN', hpic⟩` from `rr_pic P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' ε hε G hN Φ hΦ w c d`. Use `Submodule.subset_span ⟨(hRRlc c d).1 Φ hlc, 0, ε, G', hε, hN', fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fsv_zero, one_smul]`. Conclude with `hpic y hy`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Ψ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨hlc, s, ε, G, hε, hN, hv⟩` from `hx`. Take `⟨Wv, hWv⟩` from `Formalism.FourierDecayAlt.P5.waveCExists Wp Wq P.k P.r z z' π π' l s`. Take `⟨Wv', hWv'⟩` from `Formalism.FourierDecayAlt.P5.waveCExists Wp Wq P.k P.r z z' π π' l (-s)`. Use `set Φ := Wv' Ψ with hΦdef`. Establish `hΦlc : Φ ∈ lcSub P.k P.r z z' π π'` using `mul_lc hWv' Ψ hlc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΦ : ∀ y ∈ DomR P.k P.r z z', (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.JF D G) y.1 y.2`. Introduce `y hy`. Rewrite using `[hΦdef, hWv' Ψ y.1 y.2, hv y hy, smul_smul, fsv_neg_mul_fsv, one_smul]`. Establish `hΨΦ : Ψ = Wv Φ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `c g`. Use `show (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = (Wv Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g`. Distinguish the cases in `hy : (c, g) ∈ DomR P.k P.r z z'`. Rewrite using `[hWv Φ c g, hΦ (c, g) hy, hv (c, g) hy]`. Rewrite using `[radSp_zero_off Ψ (x := (c, g)) hy, radSp_zero_off (Wv Φ) (x := (c, g)) hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hC` using `Formalism.FourierDecayAlt.P5.waveCommQQAll Wp Wq P z z' π π' X μ L st l0 hD l s Wv Wv' hWv hWv'`. Establish `hWQ` using `waveQQ_castSucc X L st hD.2.2.1 l s Wv Wv' hWv hWv' hC`. Rewrite `hWQ` using `[hl]`. Take `⟨hWave, -⟩` from `Formalism.FourierDecayAlt.P5.waveSiteAll Wp Wq P z z' π π' X L hD.2.2.1 l s Wv Wv' hWv hWv'`. Establish `hrr` using `rr_io_wave (QQi L st 0) (mkP Wv Wv') (mkP Wv' Wv) s w hWave hWQ hw.1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `he` using `congrFun (congrFun hrr a) b`. Rewrite `he` using `[mul_io_apply, io_apply_mul]`. Establish `hM : ((star (UUw s w) * RRw (QQi L st 0) w * UUw s w : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) a b) ∈ sendsTo (waveJ P z z' π π' D l) Φ`. Rewrite using `[Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Take `⟨α, hα⟩` from `mem_bot_alg (star_entSub (UUw_mem (A := Pr (RadSp P.k P.r z z' π π')) (𝒜 := ⊥) s w) a c)`. Take `⟨β, hβ⟩` from `mem_bot_alg (UUw_mem (A := Pr (RadSp P.k P.r z z' π π')) (𝒜 := ⊥) s w d b)`. Rewrite using `[hα, hβ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `sendsTo_alg_mul_alg _ Φ (hbase Φ hΦlc ε hε G hN hΦ c d) α β`. Establish `e : ((RRi L st 0 w) a b).1 (Wv Φ) = Wv (((star (UUw s w) * RRw (QQi L st 0) w * UUw s w : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) a b).1 Φ)` using `congrArg (fun x : Pr (RadSp P.k P.r z z' π π') => x.1 Φ) he`. Rewrite using `[hΨΦ, e]`. Conclude with `waveJ_wave P z z' π π' D l hWv _ hM`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `(waveJ P z z' π π' D l).zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `(waveJ P z z' π π' D l).add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `(waveJ P z z' π π' D l).smul_mem c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rr_waveJ (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
@@ -294,11 +288,11 @@ theorem rr_waveJ (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P
   | smul c x _ hx => rw [map_smul]; exact (waveJ P z z' π π' D l).smul_mem c hx
 
 /- English proof (translation)
-Take `⟨hlc, s, ε, G, hε, hN, hval⟩` from `hΨ`. Take `⟨Wv, hWv⟩` from `waveCExists Wp Wq P.k P.r z z' π π' l s`. Take `⟨Wv', hWv'⟩` from `waveCExists Wp Wq P.k P.r z z' π π' l (-s)`. Establish `e1 : -s + s = 0` using `by ring`. Establish `e2 : s + -s = 0` using `by ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨s, ε, G, Wv' Ψ, Wv, hε, hN, fun c0 hc0 => ?_, fun y hy => ?_, hWv, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hcU, K, hKc, hKG, hK0⟩` from `hlc c0 hc0`. Conclude with `⟨U, hU, hcU, K, hKc, hKG, fun c' hc' g hg hgK => by rw [hWv' Ψ c' g, hK0 c' hc' g hg hgK, smul_zero]⟩`. Rewrite using `[hWv' Ψ y.1 y.2, hval y hy, smul_smul, fsv_add, e1, fsv_zero, one_smul]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `c g`. Rewrite using `[hWv (Wv' Ψ) c g, hWv' Ψ c g, smul_smul, fsv_add, e2, fsv_zero, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem unwave (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (D : B.RealPlaceData P.k P.r Wp Wq) (l : Fin P.r) (Ψ : RadSp P.k P.r z z' π π')
@@ -338,9 +332,9 @@ variable (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k r (Fin.l
 
 include hμ in
 /- English proof (translation)
-Establish `hadd : ∀ A A' C : Wq →L[ℂ] Wp, B.hsInner (A + A') C = B.hsInner A C + B.hsInner A' C`. Introduce `A A' C`. Simplify using `[B.hsInner, B.hsVec, PiLp.inner_apply, inner_add_right, Finset.sum_add_distrib]`. Unfold `pairAt`. Rewrite using `[← integral_add (int_lc μ hμ h1 hv p) (int_lc μ hμ h2 hv p)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [Submodule.coe_add, Pi.add_apply, hadd]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairAt_add_left_lc {u1 u2 v : RadSp k r z z' π π'} (h1 : u1 ∈ lcSub k r z z' π π')
     (h2 : u2 ∈ lcSub k r z z' π π') (hv : v ∈ lcSub k r z z' π π') (p : Fin r → ℂ) :
@@ -356,13 +350,13 @@ theorem pairAt_add_left_lc {u1 u2 v : RadSp k r z z' π π'} (h1 : u1 ∈ lcSub 
 
 include hμ in
 /- English proof (translation)
-Take `⟨hu1, hu2⟩` from `hu`. Take `⟨hv1, hv2⟩` from `hv`. Use `⟨Submodule.add_mem _ hu1 hv1, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hw : Measurable (fun c' : Cf r l.succ => wtI l.succ c')`. Unfold `wtI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `first | fun_prop | measurability`. Establish `cross : ∀ a b : RadSp k r z z' π π', a ∈ lcSub k r z z' π π' → b ∈ lcSub k r z z' π π' → LevelSquareIntegrable μ l.succ a (Function.update c l t) → LevelSquareIntegrable μ l.succ b (Function.update c l t) → Integrable (fun c' : Cf r l.succ => wtI l.succ c' * pairAt μ a b (glue l. …`. Introduce `a b ha hb ia ib`. Use `Integrable.mono' (Integrable.add (Integrable.norm ia) (Integrable.norm ib)) ?_ (ae_of_all _ fun c' => ?_)` and prove the remaining obligations. Conclude with `hw.aestronglyMeasurable.mul (pairAt_measI μ l.succ a b _).aestronglyMeasurable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, norm_mul]`. Rewrite using `[← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pairAt_leI μ hμ ha hb _) (norm_nonneg _)`. Unfold `LevelSquareIntegrable`. Use `Integrable.congr (Integrable.add (Integrable.add (Integrable.add (hu2 t ht) (cross u v hu1 hv1 (hu2 t ht) (hv2 t ht))) (cross v u hv1 hu1 (hv2 t ht) (hu2 t ht))) (hv2 t ht)) (ae_of_all _ fun c' => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[pairAt_add_add μ hμ hu1 hv1]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem goodL_add {u v : RadSp k r z z' π π'} (hu : GoodL μ l c u) (hv : GoodL μ l c v) : GoodL μ l c (u + v) := by
   obtain ⟨hu1, hu2⟩ := hu
@@ -388,19 +382,19 @@ theorem goodL_add {u v : RadSp k r z z' π π'} (hu : GoodL μ l c u) (hv : Good
   ring
 
 /- English proof (translation)
-Simplify using `[B.hsInner, B.hsVec, PiLp.inner_apply, inner_smul_right, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hsInner_smul_lemma (a : ℂ) (A C : Wq →L[ℂ] Wp) : B.hsInner (a • A) C = a * B.hsInner A C := by
   simp [B.hsInner, B.hsVec, PiLp.inner_apply, inner_smul_right, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `[B.hsInner, B.hsVec, PiLp.inner_apply, inner_smul_left, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hsInner_smul_lemma_2 (a : ℂ) (A C : Wq →L[ℂ] Wp) : B.hsInner A (a • C) = conj a * B.hsInner A C := by
   simp [B.hsInner, B.hsVec, PiLp.inner_apply, inner_smul_left, Finset.mul_sum]
 
 /- English proof (translation)
-Unfold `pairAt`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, hsInner_smul_lemma]`. Conclude with `integral_const_mul a _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pairAt_smul_lemma_3 (a : ℂ) (u v : RadSp k r z z' π π') (p : Fin r → ℂ) :
     pairAt μ (a • u) v p = a * pairAt μ u v p := by
@@ -409,7 +403,7 @@ private theorem pairAt_smul_lemma_3 (a : ℂ) (u v : RadSp k r z z' π π') (p :
   exact integral_const_mul a _
 
 /- English proof (translation)
-Unfold `pairAt`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, hsInner_smul_lemma_2]`. Conclude with `integral_const_mul _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pairAt_smul_lemma_4 (a : ℂ) (u v : RadSp k r z z' π π') (p : Fin r → ℂ) :
     pairAt μ u (a • v) p = conj a * pairAt μ u v p := by
@@ -418,9 +412,9 @@ private theorem pairAt_smul_lemma_4 (a : ℂ) (u v : RadSp k r z z' π π') (p :
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Take `⟨hlc, hL2⟩` from `hu`. Use `⟨Submodule.smul_mem _ a hlc, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h` using `Integrable.const_mul (hL2 t ht) (a * conj a)`. Unfold `LevelSquareIntegrable`. Use `h.congr (ae_of_all _ fun c' => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [pairAt_smul_lemma_3, pairAt_smul_lemma_4]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem goodL_smul {u : RadSp k r z z' π π'} (a : ℂ) (hu : GoodL μ l c u) : GoodL μ l c (a • u) := by
   obtain ⟨hlc, hL2⟩ := hu
@@ -432,9 +426,9 @@ theorem goodL_smul {u : RadSp k r z z' π π'} (a : ℂ) (hu : GoodL μ l c u) :
   ring
 
 /- English proof (translation)
-Use `⟨Submodule.zero_mem _, fun t _ => ?_⟩` and prove the remaining obligations. Unfold `LevelSquareIntegrable`. Use `(integrable_zero _ _ _).congr (ae_of_all _ fun c' => ?_)` and prove the remaining obligations. Establish `h` using `pairAt_smul_lemma_3 μ (0 : ℂ) (0 : RadSp k r z z' π π') 0 (glue l.succ (Function.update c l t) c')`. Rewrite `h` using `[zero_smul, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem goodL_zero : GoodL μ l c (0 : RadSp k r z z' π π') := by
   refine ⟨Submodule.zero_mem _, fun t _ => ?_⟩
@@ -445,7 +439,7 @@ theorem goodL_zero : GoodL μ l c (0 : RadSp k r z z' π π') := by
   simp [h]
 
 /- English proof (translation)
-Unfold `pairAt`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[hW u p, hsInner_smul_lemma, hsInner_smul_lemma_2, ← mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, hm]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pairAt_mul_lemma_6 {W : Module.End ℂ (RadSp k r z z' π π')} {m : (Fin r → ℂ) → Mx k r → ℂ}
     (hW : multiplicationOperator W m) (hm : ∀ c g, ‖m c g‖ = 1) (u : RadSp k r z z' π π') (p : Fin r → ℂ) :
@@ -457,9 +451,9 @@ private theorem pairAt_mul_lemma_6 {W : Module.End ℂ (RadSp k r z z' π π')} 
   simp
 
 /- English proof (translation)
-Take `⟨hlc, hL2⟩` from `hu`. Use `⟨fun c0 hc0 => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hcU, K, hKc, hKG, hK0⟩` from `hlc c0 hc0`. Conclude with `⟨U, hU, hcU, K, hKc, hKG, fun c' hc' g hg hgK => by rw [hW u c' g, hK0 c' hc' g hg hgK, smul_zero]⟩`. Establish `h` using `hL2 t ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Unfold `LevelSquareIntegrable at h ⊢`. Simplify `h` using `only [pairAt_mul_lemma_6 μ hW hm]`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem goodL_mul {W : Module.End ℂ (RadSp k r z z' π π')} {m : (Fin r → ℂ) → Mx k r → ℂ} (hW : multiplicationOperator W m)
     (hm : ∀ c g, ‖m c g‖ = 1) {u : RadSp k r z z' π π'} (hu : GoodL μ l c u) : GoodL μ l c (W u) := by
@@ -473,13 +467,13 @@ theorem goodL_mul {W : Module.End ℂ (RadSp k r z z' π π')} {m : (Fin r → �
 
 include hμ in
 /- English proof (translation)
-Take `⟨h1l, h1L⟩` from `h1`. Take `⟨h2l, h2L⟩` from `h2`. Take `⟨hvl, hvL⟩` from `hv`. Establish `hw : Measurable (fun c' : Cf r l.succ => wtI l.succ c')`. Unfold `wtI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `first | fun_prop | measurability`. Establish `cross : ∀ a b : RadSp k r z z' π π', a ∈ lcSub k r z z' π π' → b ∈ lcSub k r z z' π π' → LevelSquareIntegrable μ l.succ a (Function.update c l t) → LevelSquareIntegrable μ l.succ b (Function.update c l t) → Integrable (fun c' : Cf r l.succ => wtI l.succ c' * pairAt μ a b (glue l. …`. Introduce `a b ha hb ia ib`. Use `Integrable.mono' (Integrable.add (Integrable.norm ia) (Integrable.norm ib)) ?_ (ae_of_all _ fun c' => ?_)` and prove the remaining obligations. Conclude with `hw.aestronglyMeasurable.mul (pairAt_measI μ l.succ a b _).aestronglyMeasurable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, norm_mul]`. Rewrite using `[← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pairAt_leI μ hμ ha hb _) (norm_nonneg _)`. Unfold `fs`. Rewrite using `[← integral_add (cross u1 v h1l hvl (h1L t ht) (hvL t ht)) (cross u2 v h2l hvl (h2L t ht) (hvL t ht))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `c'`. Rewrite using `[pairAt_add_left_lc μ hμ h1l h2l hvl, mul_add]`.
+A detailed English derivation is pending.
 -/
 theorem fs_add_left {u1 u2 v : RadSp k r z z' π π'} (h1 : GoodL μ l c u1) (h2 : GoodL μ l c u2)
     (hv : GoodL μ l c v) {t : ℂ} (ht : t ≠ 0) : fs μ l (u1 + u2) v c t = fs μ l u1 v c t + fs μ l u2 v c t := by
@@ -505,7 +499,7 @@ theorem fs_add_left {u1 u2 v : RadSp k r z z' π π'} (h1 : GoodL μ l c u1) (h2
   rw [pairAt_add_left_lc μ hμ h1l h2l hvl, mul_add]
 
 /- English proof (translation)
-Unfold `fs`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `c'`. Rewrite using `[pairAt_smul_lemma_3]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -518,9 +512,9 @@ theorem fs_smul_left (u v : RadSp k r z z' π π') (a : ℂ) (t : ℂ) : fs μ l
   ring
 
 /- English proof (translation)
-Unfold `pairAt`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [B.hsInner]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(inner_conj_symm _ _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem pairAt_swap_lemma_5 (u v : RadSp k r z z' π π') (p : Fin r → ℂ) :
     pairAt μ v u p = conj (pairAt μ u v p) := by
@@ -532,9 +526,9 @@ private theorem pairAt_swap_lemma_5 (u v : RadSp k r z z' π π') (p : Fin r →
   exact (inner_conj_symm _ _).symm
 
 /- English proof (translation)
-Unfold `fs`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use extensionality with `c'`. Rewrite using `[map_mul, pairAt_swap_lemma_5]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[wtI]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem fs_swap (u v : RadSp k r z z' π π') (t : ℂ) : fs μ l v u c t = conj (fs μ l u v c t) := by
   unfold fs
@@ -546,13 +540,13 @@ theorem fs_swap (u v : RadSp k r z z' π π') (t : ℂ) : fs μ l v u c t = conj
   simp [wtI]
 
 /- English proof (translation)
-Simplify using `using fs_smul_left μ l c 0 v 0 t`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fs_zero_left (v : RadSp k r z z' π π') (t : ℂ) : fs μ l 0 v c t = 0 := by
   simpa using fs_smul_left μ l c 0 v 0 t
 
 /- English proof (translation)
-Unfold `pairAt`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [h1 Φ1 p, h2 Φ2 p, hsInner_smul_lemma, hsInner_smul_lemma_2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -568,9 +562,9 @@ private theorem pairAt_wave_lemma_7 {W1 W2 : Module.End ℂ (RadSp k r z z' π �
   ring
 
 /- English proof (translation)
-Unfold `fs`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `c'`. Establish `hg : glue l.succ (Function.update c l t) c' l = t`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[glue, Fin.val_succ]`. Rewrite using `[pairAt_wave_lemma_7 μ l h1 h2, hg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fs_wave {W1 W2 : Module.End ℂ (RadSp k r z z' π π')} {s1 s2 : ℂ}
     (h1 : multiplicationOperator W1 (fun c _ => fsv s1 (c l))) (h2 : multiplicationOperator W2 (fun c _ => fsv s2 (c l)))
@@ -637,35 +631,29 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' w hw l hl x v hx hv c hc _ t ht`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hD.2.1`. Establish `hl0 : l.castSucc = 0` using `Fin.ext (by simp [hl])`. Rewrite `hx`, `hv`, the goal using `[hl0]`. Establish `hle` using `herKc0_le_waveJ (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgood : ∀ u ∈ waveJ P z z' π π' D l, GoodL μ l c u`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨s, ε, G, Φ, Wv, hε, hN, hlc, hpic, hWv, rfl⟩` from `unwave P z z' π π' D l u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `goodL_mul μ l c hWv (fun _ _ => norm_fsv _ _) ⟨hlc, fun t ht => hL2 Wp Wq P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 ε hε G hN Φ hlc hpic c hc t ht⟩`. Consider the case `zero => exact goodL_zero μ l c`. Consider the case `add u1 u2 _ _ h1 h2 => exact goodL_add μ hD.2.1 l c h1 h2`. Consider the case `smul a u _ h => exact goodL_smul μ l c a h`. Establish `hcont : ∀ u ∈ waveJ P z z' π π' D l, ∀ v' ∈ waveJ P z z' π π' D l, ContinuousOn (fun t => fs μ l u v' c t) {0}ᶜ`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Introduce `v' hv'`. Proceed by induction on `hv' using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem v' hv'`. Take `⟨s, ε, G, Φ, Wv, hε, hN, hlc, hpic, hWv, rfl⟩` from `unwave P z z' π π' D l u hu`. Take `⟨s', ε', G', Φ', Wv', hε', hN', hlc', hpic', hWv', rfl⟩` from `unwave P z z' π π' D l v' hv'`. Establish `e : (fun t => fs μ l (Wv Φ) (Wv' Φ') c t) = fun t => fsv s t * conj (fsv s' t) * fs μ l Φ Φ' c t`. Use function extensionality and compare the values at `fun t => fs_wave μ l c hWv hWv' Φ Φ' t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(((contDiff_fsv s).continuous.mul (Complex.continuous_conj.comp (contDiff_fsv s').continuous)) ).continuousOn.mul ?_` and prove the remaining obligations. Conclude with `hC Wp Wq P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 ε ε' hε hε' G G' hN hN' Φ Φ' hlc hlc' hpic hpic' c hc`. Consider the case `zero`. Establish `e : (fun t => fs μ l u 0 c t) = fun _ => 0` using `funext fun t => by`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fs_swap, fs_zero_left, map_zero]`. Rewrite using `[e]`. Conclude with `continuousOn_const`. Consider the case `add v1 v2 hv1 hv2 h1 h2`. Establish `hu'` using `hgood u (Submodule.subset_span hu)`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `((h1.add h2)).congr fun t ht => ?_` and prove the remaining obligations. Use `show fs μ l u (v1 + v2) c t = fs μ l u v1 c t + fs μ l u v2 c t`. Rewrite using `[fs_swap, fs_add_left μ hD.2.1 l c (hgood v1 hv1) (hgood v2 hv2) hu' ht, map_add, ← fs_swap, ← fs_swap]`. Consider the case `smul a v' _ h`. Use `((continuousOn_const (c := (starRingEnd ℂ) a)).mul h).congr fun t _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show fs μ l u (a • v') c t = conj a * fs μ l u v' c t`. Rewrite using `[fs_swap, fs_smul_left, map_mul, ← fs_swap]`. Consider the case `zero`. Introduce `v' _`. Establish `e : (fun t => fs μ l 0 v' c t) = fun _ => 0` using `funext fun t => fs_zero_left μ l c v' t`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Rewrite using `[e]`. Conclude with `continuousOn_const`. Consider the case `add u1 u2 hu1 hu2 h1 h2`. Introduce `v' hv'`. Use `((h1 v' hv').add (h2 v' hv')).congr fun t ht => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fs_add_left μ hD.2.1 l c (hgood u1 hu1) (hgood u2 hu2) (hgood v' hv') ht`. Consider the case `smul a u _ h`. Introduce `v' hv'`. Conclude with `((continuousOn_const (c := a)).mul (h v' hv')).congr fun t _ => fs_smul_left μ l c u v' a t`. Establish `hu : ∀ a, act (RRi L st 0 w) x a ∈ waveJ P z z' π π' D l` using `fun a => by show ∑ b, ((RRi L st 0 w) a b).1 (x b) ∈ waveJ P z z' π π' D l`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.sum_mem _ fun b _ => rr_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 w hw a b (x b) (hle (hx b))`. Establish `hv' : ∀ a, v a ∈ waveJ P z z' π π' D l` using `fun a => hle (hv a)`. Establish `hD' : ∀ t', t' ≠ 0 → Dens μ l (act (RRi L st 0 w) x) v c t' = ((‖t'‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ a, fs μ l (act (RRi L st 0 w) x a) (v a) c t'`. Introduce `t' ht'`. Unfold `Dens form fs`.
-
-Use `congr 1`. Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `integral_finsetSum _ fun a _ => int_crossI μ hD.2.1 l.succ (hgood _ (hu a)).1 (hgood _ (hv' a)).1 _ ((hgood _ (hu a)).2 t' ht') ((hgood _ (hv' a)).2 t' ht')`. Establish `hon : ContinuousOn (fun t' => ((‖t'‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ a, fs μ l (act (RRi L st 0 w) x a) (v a) c t') {0}ᶜ`. Use `ContinuousOn.mul ?_ (continuousOn_finset_sum _ fun a _ => hcont _ (hu a) _ (hv' a))` and prove the remaining obligations.
-
-Use `Complex.continuous_ofReal.comp_continuousOn ?_` and prove the remaining obligations. Conclude with `(continuous_norm.continuousOn).zpow₀ (-2) fun t' ht' => Or.inl (norm_ne_zero_iff.mpr ht')`. Establish `hat` using `(hon.continuousAt (isOpen_compl_singleton.mem_nhds ht))`. Use `hat.congr ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_compl_singleton.mem_nhds ht] with t' ht'`.
-
-Conclude with `(hD' t' ht').symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDens0_of (hL2 : LevelOneSquareIntegrableGeneral) (hC : ContLev1Gen) : ContDens0 := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' w hw l hl x v hx hv c hc _ t ht

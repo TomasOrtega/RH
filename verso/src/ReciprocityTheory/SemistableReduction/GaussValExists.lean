@@ -12,13 +12,11 @@ noncomputable def gaussRed {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ
   ∑ α ∈ p.support, monomial α (IsLocalRing.residue _ ⟨p.coeff α, hc α⟩)
 
 /- English proof (translation)
-Unfold `gaussRed`. Rewrite using `[MvPolynomial.coeff_sum]`. Distinguish the cases in `h : α ∈ p.support`. Rewrite using `[Finset.sum_eq_single α]`. Rewrite using `[MvPolynomial.coeff_monomial, if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg hb]`. Introduce `h'`. Conclude with `absurd h h'`. Establish `h0 : p.coeff α = 0` using `by simpa [MvPolynomial.mem_support_iff] using h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (⟨p.coeff α, hc α⟩ : V.comap (algebraMap Ω U)) = 0` using `Subtype.ext h0`. Rewrite using `[Finset.sum_eq_zero, hz, map_zero]`. Introduce `b hb`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce and unpack `rfl`.
-
-Conclude with `h hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gaussRed_coeff {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
     (V : ValuationSubring U) (p : MvPolynomial σ Ω)
@@ -43,13 +41,13 @@ theorem gaussRed_coeff {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : T
     exact h hb
 
 /- English proof (translation)
-Apply the tactic sequence `try dsimp only`. Use `letI := residueAlgebra V (algebraMap Ω U)`. Take `⟨y, hydef⟩ : ∃ y : V, y = ∑ α ∈ p.support, comapInclusion V (algebraMap Ω U) ⟨p.coeff α, hc α⟩ * ∏ s ∈ α.support, (⟨t s, ht s⟩ : V) ^ α s` from `⟨_, rfl⟩`. Establish `hy : (y : U) = aeval t p`. Express the relevant statement in the definitionally equal form `V.subtype y = _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hydef, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Simplify using `only [map_sum, map_mul, map_prod, map_pow]`. Both sides reduce to the same expression. Establish `hmem : aeval t p ∈ V`. Rewrite using `[← hy]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `y.2`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `hyy : (⟨aeval t p, hmem⟩ : V) = y` using `Subtype.ext hy.symm`. Rewrite using `[hyy, hydef, map_sum]`. Unfold `gaussRed`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial]`. Simplify using `only [map_mul, map_prod, map_pow]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gaussRed_eval {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
     (t : σ → U) (V : ValuationSubring U) (ht : ∀ s, t s ∈ V) (p : MvPolynomial σ Ω)
@@ -82,7 +80,7 @@ theorem gaussRed_eval {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Ty
   congr 1
 
 /- English proof (translation)
-Introduce `h`. Establish `hm : x ∈ IsLocalRing.maximalIdeal R`. Conclude with `(IsLocalRing.residue_eq_zero_iff x).1 h`. Conclude with `mem_nonunits_iff.1 ((IsLocalRing.mem_maximalIdeal x).1 hm) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem residue_ne_zero_of_isUnit {R : Type*} [CommRing R] [IsLocalRing R] {x : R}
     (hx : IsUnit x) : IsLocalRing.residue R x ≠ 0 := by
@@ -92,7 +90,7 @@ private theorem residue_ne_zero_of_isUnit {R : Type*} [CommRing R] [IsLocalRing 
   exact mem_nonunits_iff.1 ((IsLocalRing.mem_maximalIdeal x).1 hm) hx
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Apply `h` to reduce the goal to its premises. Establish `hm : x ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal x).2 (mem_nonunits_iff.2 hx)`. Conclude with `(IsLocalRing.residue_eq_zero_iff x).2 hm`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_residue_ne_zero' {R : Type*} [CommRing R] [IsLocalRing R] {x : R}
     (h : IsLocalRing.residue R x ≠ 0) : IsUnit x := by
@@ -103,7 +101,7 @@ private theorem isUnit_of_residue_ne_zero' {R : Type*} [CommRing R] [IsLocalRing
   exact (IsLocalRing.residue_eq_zero_iff x).2 hm
 
 /- English proof (translation)
-Conclude with `(algebraicIndependent_iff.1 hx) q h`.
+A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_aeval_eq_zero_of_algebraicIndependent {R A ι : Type*} [CommRing R] [CommRing A] [Algebra R A]
     {x : ι → A} (hx : AlgebraicIndependent R x) {q : MvPolynomial ι R}
@@ -111,11 +109,11 @@ private theorem eq_zero_of_aeval_eq_zero_of_algebraicIndependent {R A ι : Type*
   exact (algebraicIndependent_iff.1 hx) q h
 
 /- English proof (translation)
-Use `letI := residueAlgebra V (algebraMap Ω U)`. Establish `hind' : AlgebraicIndependent (IsLocalRing.ResidueField (V.comap (algebraMap Ω U))) (fun s => IsLocalRing.residue V ⟨t s, ht s⟩)` using `hind`. Take `⟨hmem, hres⟩` from `gaussRed_eval t V ht p hc`. Establish `hu0 : IsUnit (⟨p.coeff α₀, hc α₀⟩ : V.comap (algebraMap Ω U))` using `isUnit_iff_exists_inv.mpr ⟨⟨(p.coeff α₀)⁻¹, hα₀⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`. Establish `hq : gaussRed V p hc ≠ 0`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1` using `gaussRed_coeff V p hc α₀`. Rewrite `h1` using `[h, MvPolynomial.coeff_zero]`. Conclude with `residue_ne_zero_of_isUnit hu0 h1.symm`. Establish `hne : IsLocalRing.residue V ⟨aeval t p, hmem⟩ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hres]`. Introduce `h`. Conclude with `hq (eq_zero_of_aeval_eq_zero_of_algebraicIndependent hind' h)`. Establish `hunit` using `isUnit_of_residue_ne_zero' hne`. Conclude with `(V.valuation_eq_one_iff _).1 hunit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gauss_unit {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
     (t : σ → U) (V : ValuationSubring U) (ht : ∀ s, t s ∈ V)
@@ -144,21 +142,19 @@ theorem gauss_unit {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
   exact (V.valuation_eq_one_iff _).1 hunit
 
 /- English proof (translation)
-Establish `hne : p.support.Nonempty` using `Finset.nonempty_iff_ne_empty.2 fun h => hp (MvPolynomial.support_eq_empty.1 h)`. Take `⟨α₀, hα₀, hmax⟩` from `Finset.exists_max_image p.support (fun α => V.valuation (algebraMap Ω U (p.coeff α))) hne`. Use `⟨α₀, hα₀, hmax, ?_⟩` and prove the remaining obligations. Establish `hc0 : p.coeff α₀ ≠ 0` using `MvPolynomial.mem_support_iff.1 hα₀`. Establish `hv0 : V.valuation (algebraMap Ω U (p.coeff α₀)) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `(map_ne_zero _).2 hc0`. Take `⟨q, hqdef⟩ : ∃ q : MvPolynomial σ Ω, q = MvPolynomial.C (p.coeff α₀)⁻¹ * p` from `⟨_, rfl⟩`. Establish `hqcoeff : ∀ α, q.coeff α = (p.coeff α₀)⁻¹ * p.coeff α`. Introduce `α`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hqdef]`. Conclude with `MvPolynomial.coeff_C_mul _ _ _`. Establish `hqc : ∀ α, q.coeff α ∈ V.comap (algebraMap Ω U)`. Introduce `α`. Rewrite using `[hqcoeff, ValuationSubring.mem_comap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `(V.valuation_le_one_iff _).1` to reduce the goal to its premises. Simplify using `only [map_mul, map_inv₀]`. Distinguish the cases in `hα : α ∈ p.support`. Establish `hle : V.valuation (algebraMap Ω U (p.coeff α)) ≤ V.valuation (algebraMap Ω U (p.coeff α₀))` using `hmax α hα`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left hle zero_le'`. Use `_ = 1 := inv_mul_cancel₀ hv0`. Establish `h0 : p.coeff α = 0` using `by simpa [MvPolynomial.mem_support_iff] using hα`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hα₀' : (q.coeff α₀)⁻¹ ∈ V.comap (algebraMap Ω U)`. Rewrite using `[hqcoeff, inv_mul_cancel₀ hc0, inv_one]`. Conclude with `one_mem _`. Establish `h0' : q.coeff α₀ ≠ 0`. Rewrite using `[hqcoeff, inv_mul_cancel₀ hc0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `one_ne_zero`. Establish `h1` using `gauss_unit t V ht hind q hqc α₀ hα₀' h0'`. Establish `hq : aeval t q = algebraMap Ω U (p.coeff α₀)⁻¹ * aeval t p`. Rewrite using `[hqdef, map_mul, MvPolynomial.aeval_C]`. Rewrite `h1` using `[hq]`.
-
-Simplify using `only [map_mul, map_inv₀] at h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hv0, one_mul]`. Use `_ = V.valuation (algebraMap Ω U (p.coeff α₀)) := by rw [h1, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gaussValuation_of_mem_valuationSubring {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
     (t : σ → U) (V : ValuationSubring U) (ht : ∀ s, t s ∈ V)
@@ -217,9 +213,9 @@ private theorem gaussValuation_of_mem_valuationSubring {Ω U : Type} [Field Ω] 
     _ = V.valuation (algebraMap Ω U (p.coeff α₀)) := by rw [h1, mul_one]
 
 /- English proof (translation)
-Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Rewrite using `[map_zero, MvPolynomial.support_zero, Finset.sup_empty]`. Conclude with `V.valuation.map_zero`. Take `⟨α₀, hα₀, hmax, hv⟩` from `gaussValuation_of_mem_valuationSubring t V ht hind p hp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Conclude with `le_antisymm (Finset.le_sup (f := fun α => V.valuation (algebraMap Ω U (p.coeff α))) hα₀) (Finset.sup_le hmax)`.
+A detailed English derivation is pending.
 -/
 theorem gauss_val {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
     (t : σ → U) (V : ValuationSubring U) (ht : ∀ s, t s ∈ V)

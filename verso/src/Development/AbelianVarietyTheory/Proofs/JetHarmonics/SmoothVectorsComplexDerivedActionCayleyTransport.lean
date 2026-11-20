@@ -15,9 +15,9 @@ section Smooth
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hm, hF, he⟩` from `hf (A * g₀ * B) (hAB g₀ hg₀)`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun g => A * g * B map_add' := fun x y => by simp only [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c x => by simp only [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply] }`. Set `L'` to `LinearMap.toContinuousLinearMap L`. Use `⟨L' ⁻¹' U, F ∘ L', hU.preimage L'.continuous, hm, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hF.comp L'.contDiff.contDiffOn (fun x hx => hx)`. Introduce `g hg hgJ`. Conclude with `he (A * g * B) hg (hAB g hgJ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothOn_comp {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {H J A B : Matrix (Fin n) (Fin n) ℂ} (hAB : ∀ g, gᴴ * J * g = J → (A * g * B)ᴴ * H * (A * g * B) = H)
@@ -38,9 +38,9 @@ theorem smoothOn_comp {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace �
 end Smooth
 
 /- English proof (translation)
-Unfold `PI.PhMeasCore.dsig PI.UpqRep.dsig`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `: (t : ℂ) • (Q⁻¹ * X * Q) = Q⁻¹ * ((t : ℂ) • X) * Q`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.exp_conj' Q _ hQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dsig_conj {k r : ℕ} (R : Rep k r) {Q : Mx k r} (hQ : IsUnit Q) (X : Mx k r) (v : R.H) :
     PI.PhMeasCore.dsig (fun g => R.σ (Q⁻¹ * g * Q)) X v =
@@ -53,15 +53,15 @@ theorem dsig_conj {k r : ℕ} (R : Rep k r) {Q : Mx k r} (hQ : IsUnit Q) (X : Mx
   rw [this, Matrix.exp_conj' Q _ hQ]
 
 /- English proof (translation)
-Introduce `k r ε R Q ⟨⟨hunit, hcay⟩, hU⟩`. Establish `h1 : Q * Qᴴ = 1` using `(Matrix.mem_unitaryGroup_iff).mp hU`. Establish `h2 : Qᴴ * Q = 1` using `(Matrix.mem_unitaryGroup_iff').mp hU`. Establish `hinv : Q⁻¹ = Qᴴ` using `Matrix.inv_eq_left_inv h2`. Establish `hH : Formalism.QuantumDeterminants.Hpk k r = Qᴴ * Formalism.REAL.Jm ε * Q` using `hcay.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ Z : Mx k r, Q * (Qᴴ * Z) = Z` using `fun Z => by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `v hv`. Use `smoothOn_comp (H := PI.UpqRep.Hpk k r) (f := fun g => R.σ g v) ?_ hv` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hcay, hinv]`. Establish `hg' : gᴴ * PI.UpqRep.Jm ε * g = PI.UpqRep.Jm ε` using `hg`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, hc]`. Simplify using `only [Matrix.mul_assoc] at hg'`. Rewrite using `[← Matrix.mul_assoc (PI.UpqRep.Jm ε) g Q, ← Matrix.mul_assoc gᴴ _ Q, hg']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y v`. Establish `ht : Q⁻¹ * PI.DSInfCharCap.thetaJ ε Y * Q = -(Formalism.QuantumDeterminants.Hpk k r * (Q⁻¹ * Y * Q)ᴴ * Formalism.QuantumDeterminants.Hpk k r)`. Rewrite using `[hH, hinv, PI.DSInfCharCap.thetaJ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, hc, Matrix.mul_neg, Matrix.neg_mul]`. Unfold `PI.DSInfCharCap.dsigC Rep.dC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[dsig_conj R hunit, dsig_conj R hunit, ← ht]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smooth_and_dsigC_transport : ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (R : Rep k r) (Q : Mx k r), PI.UpqRep.IsCayleyU k r ε Q → (∀ v ∈ R.sm, v ∈ PI.PhMeasCore.smoothVecs (Formalism.REAL.Jm ε) (fun g => R.σ (Q⁻¹ * g * Q))) ∧ ∀ Y v, PI.DSInfCharCap.dsigC ε (fun g => R.σ (Q⁻¹ * g * Q)) Y v = R.dC (Q⁻¹ * Y * Q) v := by
   intro k r ε R Q ⟨⟨hunit, hcay⟩, hU⟩

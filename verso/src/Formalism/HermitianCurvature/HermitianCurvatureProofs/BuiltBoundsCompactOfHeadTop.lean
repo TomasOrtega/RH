@@ -12,7 +12,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBGDegLift
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `hA` and use `built_bounds_compact_of_leaves radial_head hH degree_of_lift_pairing top_local_built_places degree_top top_ratio (germ_parts_compact_support kernel_continuity_built germ_rate_bound hA) (fun hA' => uniform_decay_of_place hA' radial_head hH (uniform_decay_of_heads radial_head hH)) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem built_bounds_compact_of_head_top (hH : Formalism.FourierDecayAlt.KB.HeadTop) : Formalism.FourierDecayAlt.KB.BuiltBounds2Cpt := fun hA =>
   built_bounds_compact_of_leaves radial_head hH degree_of_lift_pairing top_local_built_places degree_top

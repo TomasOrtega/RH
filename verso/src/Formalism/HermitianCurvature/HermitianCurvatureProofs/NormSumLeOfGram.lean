@@ -6,9 +6,9 @@ open Finset
 open scoped ComplexConjugate InnerProductSpace
 
 /- English proof (translation)
-Rewrite using `[show ((‖∑ j ∈ J, b j • y j‖ ^ 2 : ℝ) : ℂ) = ⟪∑ j ∈ J, b j • y j, ∑ j ∈ J, b j • y j⟫_ℂ by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use the proof step `norm_cast, sum_inner]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_sq_comb {κ : Type} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (J : Finset κ) (b : κ → ℂ)
     (y : κ → W) :
@@ -22,7 +22,7 @@ theorem norm_sq_comb {κ : Type} {W : Type} [NormedAddCommGroup W] [InnerProduct
   ring
 
 /- English proof (translation)
-Rewrite using `[sq, sum_mul]`. Use `sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `mul_le_mul_of_nonneg_left (single_le_sum (fun j _ => hx j) (mem_univ i)) (hx i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sq_le_sq_sum {I : Type} [Fintype I] (x : I → ℝ) (hx : ∀ i, 0 ≤ x i) :
     ∑ i, x i ^ 2 ≤ (∑ i, x i) ^ 2 := by
@@ -32,17 +32,15 @@ theorem sum_sq_le_sq_sum {I : Type} [Fintype I] (x : I → ℝ) (hx : ∀ i, 0 �
   exact mul_le_mul_of_nonneg_left (single_le_sum (fun j _ => hx j) (mem_univ i)) (hx i)
 
 /- English proof (translation)
-Establish `h1 : ((‖∑ j ∈ J, a j • v (P j)‖ ^ 2 : ℝ) : ℂ) = ∑ i, ((c i * ‖∑ j ∈ J, conj (a j) • Y i (P j)‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[norm_sq_comb]`. Combine the equalities or inequalities in the displayed calculation. Use `sum_congr rfl fun j hj => sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[← hv, hk j hj l hl, mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Use `_ = ∑ i, ∑ j ∈ J, ∑ l ∈ J, (c i : ℂ) * (conj (a j) * a l * ⟪Y i (P l), Y i (P j)⟫_ℂ) := by`. Conclude with `(sum_congr rfl fun j _ => sum_comm).trans sum_comm`. Use `_ = ∑ i, ((c i * ‖∑ j ∈ J, conj (a j) • Y i (P j)‖ ^ 2 : ℝ) : ℂ) := by`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_mul, norm_sq_comb, mul_sum, sum_comm]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sum]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖∑ j ∈ J, a j • v (P j)‖ ^ 2 = ∑ i, c i * ‖∑ j ∈ J, conj (a j) • Y i (P j)‖ ^ 2`. Conclude with `h1` after adjusting the coercions. Establish `h3 : ‖∑ j ∈ J, a j • v (P j)‖ ^ 2 ≤ (∑ i, √(c i) * ‖∑ j ∈ J, conj (a j) • Y i (P j)‖) ^ 2`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ i, c i * ‖∑ j ∈ J, conj (a j) • Y i (P j)‖ ^ 2 = ∑ i, (√(c i) * ‖∑ j ∈ J, conj (a j) • Y i (P j)‖) ^ 2`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (hc i)]`. Rewrite using `[this]`. Conclude with `sum_sq_le_sq_sum _ fun i => mul_nonneg (Real.sqrt_nonneg _) (norm_nonneg _)`.
-
-Establish `hb : 0 ≤ ∑ i, √(c i) * ‖∑ j ∈ J, conj (a j) • Y i (P j)‖` using `sum_nonneg fun i _ => mul_nonneg (Real.sqrt_nonneg _) (norm_nonneg _)`. Use polynomial arithmetic with `[norm_nonneg (∑ j ∈ J, a j • v (P j))]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_sum_le_of_gram {ι κ I : Type} [Fintype I] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (k : ι → ι → ℂ) (v : ι → H)

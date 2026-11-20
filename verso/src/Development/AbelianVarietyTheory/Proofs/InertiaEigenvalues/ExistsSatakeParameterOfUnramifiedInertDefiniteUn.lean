@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.InertSatakeGiven
 
 /- English proof (translation)
-Establish `h : Filter.Tendsto s (nhds 0) (nhds 0)`. Rewrite using `[(Valued.hasBasis_nhds_zero K Γ₀).tendsto_iff (Valued.hasBasis_nhds_zero K Γ₀)]`. Introduce `γ _`. Use `⟨γ, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding] at hx ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs]` and apply the resulting hypothesis. Conclude with `continuous_of_continuousAt_zero s (by simpa [ContinuousAt] using h)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem continuous_of_valuation_eq {K : Type} [Field K] {Γ₀ : Type} [LinearOrderedCommGroupWithZero Γ₀] [Valued K Γ₀]
     (s : K →+* K) (hs : ∀ x, Valued.v (s x) = Valued.v x) : Continuous s := by
@@ -30,11 +30,11 @@ theorem continuous_of_valuation_eq {K : Type} [Field K] {Γ₀ : Type} [LinearOr
   exact continuous_of_continuousAt_zero s (by simpa [ContinuousAt] using h)
 
 /- English proof (translation)
-Introduce `L _ _ _ n U hU w hun hns s ϖ q hs hI hph`. Establish `hsph : (GlobalTheory.DefU.AU.mk ⟨U, hU⟩).Sph w` using `(GlobalTheory.DefU.AU.sph_mk _ w).2 hph`. Take `⟨α0, hα⟩` from `(GlobalTheory.T.definiteUnitary_spherical_iff_hasSatake_inert L n _ w hun hns).1 hsph`. Rewrite `hα` using `[GlobalTheory.DefU.AU.isSat_mk]`. Take `⟨s', ϖ', q', hs', hI', hsat⟩` from `hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hss : s' = s`. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Use `(HeightOneSpectrum.denseRange_algebraMap L w).equalizer (continuous_of_valuation_eq s' hI'.2.1) (continuous_of_valuation_eq s hI.2.1) (funext fun k => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hs', hs]`. Substitute `hss` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Establish `hqq : q' = q` using `Nat.pow_left_injective (n := 2) (by norm_num) (hI'.2.2.2.2.2.2.symm.trans hI.2.2.2.2.2.2)`. Substitute `hqq` using the available equality. Take `⟨b, hb, hbJ, p, hp, σ, hc, hS⟩` from `hsat`. Conclude with `⟨α0, b, hb, hbJ, p, hp, σ, hc, hS.1, fun x hx h0 => (hS.2 x hx h0).of_unif hI' hI⟩`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasSatAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (U : Submodule ℂ (UA L n → ℂ)), IsAutRepU U → ∀ (w : HeightOneSpectrum (𝓞 L)), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield L)) w.asIdeal → ¬ IsSplitAt w → ∀ (s : w.adicCompletion L →+* w.adicCompletion L) (ϖ : w.adicCompletion L) (q : ℕ), (∀ x : L, s (algebraMap L _ x) = algebraMap L _ (IsCMField.complexConj L x)) → Formalism.UG.IsUnramInv ϖ s q → IsUnramU U w → ∃ α0 : Fin (n / 2) → ℂˣ, HasSatAt U w s ϖ q α0 := by
   intro L _ _ _ n U hU w hun hns s ϖ q hs hI hph

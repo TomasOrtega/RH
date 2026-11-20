@@ -13,11 +13,11 @@ namespace GlobalTheory.HilbFam.LagDeriv
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Establish `hu : HasDerivAt (fun w : ℂ ↦ 1 + w * c) c z`. Simplify using `using ((hasDerivAt_id z).mul_const c).const_add 1`. Establish `hinv : HasDerivAt (fun w : ℂ ↦ (1 + w * c)⁻¹) (-c / (1 + z * c) ^ 2) z` using `hu.inv hz`. Establish `hpow : HasDerivAt (fun w : ℂ ↦ (1 + w * c)⁻¹ ^ j) (j * (1 + z * c)⁻¹ ^ (j - 1) * (-c / (1 + z * c) ^ 2)) z` using `hinv.pow j`. Establish `hq : HasDerivAt (fun w : ℂ ↦ y * w / (1 + w * c)) (y / (1 + z * c) ^ 2) z`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(((hasDerivAt_id z).const_mul y).div hu hz).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [id, mul_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `(hpow.mul hq.cexp).congr_deriv ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Break down `j with _ | j` into its components or cases. Simplify using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Nat.cast_succ, Nat.add_sub_cancel, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -46,7 +46,7 @@ private lemma hasDerivAt_inv_pow_mul_exp_div_one_add_mul (c y : ℂ) (j : ℕ) {
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HilbFam.rco`. Simplify using `[Nat.choose_eq_zero_of_lt hm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma rco_eq_zero_of_lt (k n m : ℕ) (hm : n < m) :
     _root_.GlobalTheory.HilbFam.rco k n m = 0 := by
@@ -56,7 +56,7 @@ private lemma rco_eq_zero_of_lt (k n m : ℕ) (hm : n < m) :
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp [Nat.ascFactorial_succ]`. Consider the case `succ e ih`. Rewrite using `[Nat.ascFactorial_succ, ih, Nat.ascFactorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma ascFactorial_succ_eq_mul_succ_ascFactorial (a e : ℕ) :
     a.ascFactorial (e + 1) = a * (a + 1).ascFactorial e := by
@@ -69,15 +69,15 @@ private lemma ascFactorial_succ_eq_mul_succ_ascFactorial (a e : ℕ) :
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Unfold `_root_.GlobalTheory.HilbFam.rco`. Break down `d with _ | e` into its components or cases. Simplify using the standard rewrite rules. Establish `h1 : m + (e + 1) + 1 - (m + 1) = e + 1` using `by omega`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : m + (e + 1) - (m + 1) = e` using `by omega`. Establish `h3 : m + (e + 1) - m = e + 1` using `by omega`. Rewrite using `[h1, h2, h3]`. Establish `hc` using `Nat.choose_succ_right_eq (m + (e + 1)) m`. Establish `hc' : m + (e + 1) - m = e + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[hc']`. Establish `hs : (m + (e + 1) + 1).choose (m + 1) = (m + (e + 1)).choose m + (m + (e + 1)).choose (m + 1)` using `Nat.choose_succ_succ' _ _`. Establish `ha1 : (k + (m + 1)).ascFactorial (e + 1) = (k + (m + 1) + e) * (k + (m + 1)).ascFactorial e` using `Nat.ascFactorial_succ`. Establish `ha2` using `ascFactorial_succ_eq_mul_succ_ascFactorial (k + m) e`. Rewrite using `[hs, ha1, ha2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkm : k + m + 1 = k + (m + 1)` using `by omega`. Rewrite using `[hkm]`. Use `push_cast`. Establish `hcz : ((m + (e + 1)).choose (m + 1) : ℤ) * (m + 1) = ((m + (e + 1)).choose m : ℤ) * (e + 1)`. Conclude with `hc` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Take the linear combination `((-1 : ℤ) ^ e * ((k + (m + 1)).ascFactorial e : ℤ)) * hcz`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma rco_succ_succ (k n m : ℕ) (hm : m ≤ n) :
     (_root_.GlobalTheory.HilbFam.rco k (n + 1) (m + 1) : ℤ) =
@@ -111,11 +111,11 @@ private lemma rco_succ_succ (k n m : ℕ) (hm : m ≤ n) :
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Establish `hZ` using `congrArg (Int.cast : ℤ → ℂ) (rco_succ_succ k n m hm)`. Move the coercions through the operations in `at hZ`. Rewrite using `[hZ]`. Break down `hm.lt_or_eq with hlt | rfl` into its components or cases. Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `e1 : m + t + 1 + 1 - (m + 1) = t + 1` using `by omega`. Establish `e2 : m + t + 1 - (m + 1) = t` using `by omega`. Establish `e3 : m + t + 1 - m = t + 1` using `by omega`. Rewrite using `[e1, e2, e3]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rco_eq_zero_of_lt k m (m + 1) (Nat.lt_succ_self m)]`. Simplify using `only [Nat.sub_self, pow_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma rco_mul_pow_mul_pow_succ_succ (k n m : ℕ) (hm : m ≤ n) (c y : ℂ) :
     (_root_.GlobalTheory.HilbFam.rco k (n + 1) (m + 1) : ℂ) * c ^ (n + 1 - (m + 1)) * y ^ (m + 1) =
@@ -141,7 +141,7 @@ private lemma rco_mul_pow_mul_pow_succ_succ (k n m : ℕ) (hm : m ≤ n) (c y : 
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HilbFam.rco`. Simplify using `only [Nat.sub_zero, Nat.choose_zero_right, Nat.cast_one, mul_one, add_zero, Nat.ascFactorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma rco_succ_zero (k n : ℕ) :
     (_root_.GlobalTheory.HilbFam.rco k (n + 1) 0 : ℤ) =
@@ -154,7 +154,7 @@ private lemma rco_succ_zero (k n : ℕ) :
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Establish `hZ` using `congrArg (Int.cast : ℤ → ℂ) (rco_succ_zero k n)`. Move the coercions through the operations in `at hZ`. Rewrite using `[hZ]`. Simplify using `only [Nat.sub_zero, pow_zero, add_zero]`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -172,21 +172,21 @@ private lemma rco_mul_pow_mul_pow_succ_zero (k n : ℕ) (c y : ℂ) :
 set_option autoImplicit false in
 open Filter Topology in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `k z _`. Simplify using `[_root_.GlobalTheory.HilbFam.rco]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `k z hz`. Establish `hopen : IsOpen {w : ℂ | 1 + w * c ≠ 0}` using `isOpen_ne_fun (by fun_prop) continuous_const`. Establish `hev : iteratedDeriv n (fun w : ℂ ↦ (1 + w * c)⁻¹ ^ k * Complex.exp (y * w / (1 + w * c))) =ᶠ[𝓝 z] fun w ↦ ∑ m ∈ Finset.range (n + 1), (_root_.GlobalTheory.HilbFam.rco k n m : ℂ) * c ^ (n - m) * y ^ m * ((1 + w * c)⁻¹ ^ (k + n + m) * Complex.exp (y * w / (1 + w * c)))` using `Filter.eventually_of_mem (hopen.mem_nhds hz) fun w hw ↦ ih k w hw`. Rewrite using `[iteratedDeriv_succ, hev.deriv_eq]`. Establish `hd` using `HasDerivAt.fun_sum (u := Finset.range (n + 1)) (fun m _ ↦ (hasDerivAt_inv_pow_mul_exp_div_one_add_mul c y (k + n + m) hz).const_mul ((_root_.GlobalTheory.HilbFam.rco k n m : ℂ) * c ^ (n - m) * y ^ m))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd.deriv]`. Use `set H : ℕ → ℂ := fun j ↦ (1 + z * c)⁻¹ ^ j * Complex.exp (y * z / (1 + z * c)) with hH`. Use `set C : ℕ → ℕ → ℂ := fun n m ↦ (_root_.GlobalTheory.HilbFam.rco k n m : ℂ) * c ^ (n - m) * y ^ m with hC`. Express the relevant statement in the definitionally equal form `∑ m ∈ Finset.range (n + 1), C n m * (-(((k + n + m : ℕ) : ℂ) * c) * H (k + n + m + 1) + y * H (k + n + m + 2)) = ∑ m ∈ Finset.range (n + 1 + 1), C (n + 1) m * H (k + (n + 1) + m)`. Establish `hA : ∑ m ∈ Finset.range (n + 1 + 1), -(((k + n + m : ℕ) : ℂ) * c) * C n m * H (k + n + m + 1) = ∑ m ∈ Finset.range (n + 1), -(((k + n + m : ℕ) : ℂ) * c) * C n m * H (k + n + m + 1)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range_succ]`. Simplify using `[hC, rco_eq_zero_of_lt k n (n + 1) (Nat.lt_succ_self n)]`. Establish `hT : ∀ m ∈ Finset.range (n + 1), C (n + 1) (m + 1) * H (k + (n + 1) + (m + 1)) = -(((k + n + (m + 1) : ℕ) : ℂ) * c) * C n (m + 1) * H (k + n + (m + 1) + 1) + C n m * (y * H (k + n + m + 2))`. Introduce `m hm`. Establish `hmn : m ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hC]`. Rewrite using `[rco_mul_pow_mul_pow_succ_succ k n m hmn c y]`. Establish `e1 : k + (n + 1) + (m + 1) = k + n + (m + 1) + 1` using `by omega`. Establish `e2 : k + n + m + 2 = k + n + (m + 1) + 1` using `by omega`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : C (n + 1) 0 * H (k + (n + 1) + 0) = -(((k + n + 0 : ℕ) : ℂ) * c) * C n 0 * H (k + n + 0 + 1)`. Simplify using `only [hC]`. Rewrite using `[rco_mul_pow_mul_pow_succ_zero k n c y]`. Establish `e1 : k + (n + 1) + 0 = k + n + 0 + 1` using `by omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Establish `hS : ∑ m ∈ Finset.range (n + 1), -(((k + n + (m + 1) : ℕ) : ℂ) * c) * C n (m + 1) * H (k + n + (m + 1) + 1) + -(((k + n + 0 : ℕ) : ℂ) * c) * C n 0 * H (k + n + 0 + 1) = ∑ m ∈ Finset.range (n + 1), -(((k + n + m : ℕ) : ℂ) * c) * C n m * H (k + n + m + 1)`. Rewrite using `[← Finset.sum_range_succ' (fun m ↦ -(((k + n + m : ℕ) : ℂ) * c) * C n m * H (k + n + m + 1))]`. Conclude with `hA`. Establish `hB : ∑ m ∈ Finset.range (n + 1), C n m * (-(((k + n + m : ℕ) : ℂ) * c) * H (k + n + m + 1)) = ∑ m ∈ Finset.range (n + 1), -(((k + n + m : ℕ) : ℂ) * c) * C n m * H (k + n + m + 1)` using `Finset.sum_congr rfl fun m _ ↦ by ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `conv_rhs => rw [Finset.sum_range_succ', Finset.sum_congr rfl hT, Finset.sum_add_distrib, h0]`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Rewrite using `[hB, ← hS]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private lemma iteratedDeriv_inv_pow_mul_exp_eq_sum_rco (c y : ℂ) (n : ℕ) :
     ∀ k : ℕ, ∀ z : ℂ, 1 + z * c ≠ 0 →
@@ -252,7 +252,7 @@ set_option autoImplicit false in
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `k n c y`. Rewrite using `[iteratedDeriv_inv_pow_mul_exp_eq_sum_rco c y n k 0 (by simp)]`. Unfold `_root_.GlobalTheory.HilbFam.lag`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HilbFam.LagDeriv.iteratedDeriv_zero_eq_lag : ∀ (k n : ℕ) (c y : ℂ),
     iteratedDeriv n (fun z : ℂ ↦ (1 + z * c)⁻¹ ^ k * Complex.exp (y * z / (1 + z * c))) 0 =

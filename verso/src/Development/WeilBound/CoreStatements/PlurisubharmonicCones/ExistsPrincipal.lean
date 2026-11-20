@@ -10,21 +10,19 @@ namespace LevelTowerAlt.Val
 open GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.UU GlobalTheory.CompanionTheory.Ar.QuotLoc.Pair
 
 /- English proof (translation)
-Establish `hN0 : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Use `tB.semi.smooth` as an intermediate fact. Use `tB.semi.geomConnected` as an intermediate fact. Establish `hAb : IsAbelianScheme tB.G` using `⟨tB.semi.comm, tB.semi.smooth, hP.1, tB.semi.geomConnected⟩`. Establish `hL'` using `pull_isLB t.PP.isLB φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ψ, hψ, e₀, -⟩` from `GlobalTheory.Ex.UnifModel.exists_cancel (g := 𝟙 _) (f := z) (hpb.congr (Category.id_comp _).symm rfl) m.cart t.PP.isLB tB.PP.isLB hL' ⟨Out.CubePf.idIsoL _, Out.CubePf.idIsoL_isGen hL'⟩ (GlobalTheory.Ex.UnifModel.iso_of_map m)`. Establish `hak` using `amplePt _ _ (𝟙 _) _ _ ψ hψ _ _ tB.PP.isLB hL' e₀ hP.2.1 hP.2.2`. Establish `hA : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hAb hψ`. Establish `: ConnectedSpace tB.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := tB.G.hom) (𝟙 _) (𝟙 _) tB.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected tB.G.hom (eSec tB.G (default : PrimeSpectrum ℂ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ws, gs', -⟩` from `t.sym`. Set `Q : Out.PolAV (Sp ℂ)` to `{ A := A, isAb := hA, g := d smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hψ.1 hd L := t.PP.L.pull φ, isLB := hL' rigid := GlobalTheory.PolBaseChange.rigidified_pull hpb ⟨t.PP.rig, t.PP.rigGen⟩ sym := GlobalTheory.PolBaseChange.sym_pull hpb fun …`. Use `haveI : IsCommMonObj A := hA.comm`. Establish `tors : ∀ w : Fin g → ℂ, w ∈ u.Λ → u.ex ((N : ℂ)⁻¹ • w) ^ N = 1` using `fun w hw => by`. Rewrite using `[← ex_nsmul_hol, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hN0, one_smul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(u.ker w).2 hw`. Take `⟨hL, hr, ⟨c', hc⟩, -⟩` from `Out.CubePf.cubePull _ _ _ _ (cubeMapOf hpb) t.PP t.cub`. Take `⟨ξ, hξ, -⟩` from `existsUnique_cubWeil c' (tors a ha) (tors b hb)`. Establish `hw' : (cubeMapOf hpb).F ≫ t.G.hom = A.hom ≫ z` using `hpb.1.w`. Establish `mul : ∀ (T : Over (Sp ℂ)) (p q : T ⟶ A), Out.toBase hw' (p * q) = Out.toBase hw' p * Out.toBase hw' q` using `fun T p q => Over.OverMorphism.ext (hpb.2 T p q _ _ rfl rfl).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `cubWeil_of_isPullCubical _ _ z t.G A (cubeMapOf hpb) hw' mul _ _ t.cub c' hc N _ _ _ ξ hξ`. Establish `h2 : CubWeil t.cub N x y ξ` using `cubWeil_congr (Category.id_comp z) hx hy h1`. Take `rfl : ξ = unitOn ζ` from `h2.unique h`. Establish `hW₁ : Out.WeilIs Q.A Q.L N (u.ex ((N : ℂ)⁻¹ • a)) (u.ex ((N : ℂ)⁻¹ • b)) (unitOn ζ)` using `(cubWeil_iff_weilIs GlobalTheory.globalFns_holds hA (tors a ha) (tors b hb) _).1 hξ`. Take `⟨Ef, hE, -, -, -, -, hWe⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH GlobalTheory.thetaUnifAV_all Q g u Hm χ hAH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c : ℂˣ` to `Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (Ef ⟨a, ha⟩ ⟨b, hb⟩ : ℂ) / N)) (Complex.exp_ne_zero _)`. Establish `hW₂` using `hWe N ⟨a, ha⟩ ⟨b, hb⟩ c hN rfl`. Establish `e` using `((GlobalTheory.abelianSchemeLaws_all.1.weil (Sp ℂ) Q N (𝟙_ _)).1 _ _ (tors a ha) (tors b hb)).unique hW₁ hW₂`. Establish `e' : ζ = c` using `Units.ext (by`. Use `congrArg (fun v : Γ(Sp ℂ, ⊤)ˣ => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom v.val) e` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `this)` using `[unitOn]`. Rewrite using `[e']`. Use `show Complex.exp _ = _`. Establish `i` using `hE ⟨a, ha⟩ ⟨b, hb⟩`. Use `congr 3`.
-
-Conclude with `congrArg (fun r : ℝ => (r : ℂ)) i` after adjusting the coercions.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem weil_fibre {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X)
     (z : Sp ℂ ⟶ X) (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ t.G.left) (g : ℕ) (u : HolUnif A (t.PP.L.pull φ) g)
@@ -85,7 +83,7 @@ theorem weil_fibre {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   exact_mod_cast congrArg (fun r : ℝ => (r : ℂ)) i
 
 /- English proof (translation)
-Establish `hw : m.cm.F ≫ t.G.hom = t'.G.hom ≫ f` using `m.cart.1.w`. Establish `mul : ∀ (T : Over S') (x y : T ⟶ t'.G), Out.toBase hw (x * y) = Out.toBase hw x * Out.toBase hw y` using `fun T x y => Over.OverMorphism.ext (m.cart.2 T x y _ _ rfl rfl).symm`. Establish `h1` using `GlobalTheory.UU.cubWeil_of_isPullCubical S S' f t.G t'.G m.cm hw mul _ _ t.cub t'.cub m.lin N (Over.mk a) x y ζ h`. Conclude with `cubWeil_congr rfl ex ey h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cubWeil_push {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) {Z : Scheme.{0}} (a : Z ⟶ S') {N : ℕ}
@@ -98,9 +96,9 @@ theorem cubWeil_push {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   exact cubWeil_congr rfl ex ey h1
 
 /- English proof (translation)
-Take `⟨t', ⟨m₀⟩⟩` from `exists_sab (C.pt b) C.tV`. Take `⟨mK, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.m₁ m₀`. Take `⟨mx, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.m₂ m₀`. Take `⟨mX, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m mK`. Take `⟨w₂, g₂, -⟩` from `mx.lin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨am, kt⟩` from `amplePt _ _ _ _ _ mx.φ mx.cart _ _ Xo.univ.t.PP.isLB t'.PP.isLB ⟨w₂, g₂⟩ Xo.univ.ample Xo.univ.ktriv`. Rewrite `mX` using `[(C.pt_eq b hb).1]`. Conclude with `⟨t', mX, MorphismProperty.of_isPullback (P := @IsProper) mx.cart.1 Xo.univ.proper, am, kt⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_principal {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : Flat.BdryChart Xo σ n a) {X : Scheme.{0}} {t : SAB H X}

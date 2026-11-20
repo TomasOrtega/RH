@@ -13,7 +13,7 @@ private def bm (x y z : k) : Matrix (Fin 3 ⊕ Fin 3) (Fin 3 ⊕ Fin 3) k :=
   Matrix.fromBlocks (am x y z) 0 0 (am x y z)
 
 /- English proof (translation)
-Rewrite using `[emb_apply, GG.mat, unitaryThreeReflection_left, theta_tor, unitaryThreeReflection_right, h1, h2, map_one, if_neg (by decide)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem emb_c {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* kˣ) (c : Γ) (h1 : η c = -1) (h2 : Ψ c = 1) :
     emb (r0 η Ψ c) = sw k := by
@@ -21,20 +21,20 @@ private theorem emb_c {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* 
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Jmat] <;> decide`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem J3 : Jmat k 3 = !![0, 0, 1; 0, 1, 0; 1, 0, 0] := by
   ext a b
   fin_cases a <;> fin_cases b <;> simp [Jmat] <;> decide
 
 /- English proof (translation)
-Simplify using `[sw, bm, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sw_bm (x y z : k) : sw k * bm x y z * sw k = bm x y z := by
   simp [sw, bm, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `: t • am x y z = am (t * x) (t * y) (t * z)`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [am]`. Simplify using `[bm, Matrix.fromBlocks_smul, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem bm_smul (t x y z : k) : t • bm x y z = bm (t * x) (t * y) (t * z) := by
   have : t • am x y z = am (t * x) (t * y) (t * z) := by
@@ -43,11 +43,11 @@ private theorem bm_smul (t x y z : k) : t • bm x y z = bm (t * x) (t * y) (t *
   simp [bm, Matrix.fromBlocks_smul, this]
 
 /- English proof (translation)
-Establish `h0 : (am x y z)ᵀ * Jmat k 3 + Jmat k 3 * am x y z = 0`. Rewrite using `[J3]`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [am, Matrix.mul_apply, Fin.sum_univ_three]`. Establish `h1 : ∀ a b : Fin 3, wt1 a - wt1 b ≠ j → am x y z a b = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `a b h`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [wt1] at h <;> simp [am] <;> first | exact hx (by omega) | exact hy (by omega) | exact hz (by omega)`. Use `⟨⟨?_, fun a b h => ?_⟩, fun a b h => ?_⟩` and prove the remaining obligations. Rewrite using `[blockPairingForm_JR]`. Simplify using `[bm, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> first | rfl | exact absurd rfl h`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> first | rfl | exact h1 a b h`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bm_mem (O : Type) [CommRing O] [Algebra O k] (j : ℤ) (x y z : k) (hx : j ≠ 0 → x = 0)
     (hy : j ≠ 1 → y = 0) (hz : j ≠ -1 → z = 0) : bm x y z ∈ (form6 O).gw k j := by
@@ -66,21 +66,21 @@ private theorem bm_mem (O : Type) [CommRing O] [Algebra O k] (j : ℤ) (x y z : 
   · rcases a with a | a <;> rcases b with b | b <;> first | rfl | exact h1 a b h
 
 /- English proof (translation)
-Take `⟨⟨y1, y2⟩, y3⟩` from `hY`. Take `⟨A, B, C, D, rfl⟩ : ∃ A B C D, Y = Matrix.fromBlocks A B C D` from `⟨_, _, _, _, (Matrix.fromBlocks_toBlocks Y).symm⟩`. Establish `hB : B = 0`. Use extensionality with `a b`. Conclude with `y2 (.inl a) (.inr b) (by simp [form6])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hC : C = 0`. Use extensionality with `a b`. Conclude with `y2 (.inr a) (.inl b) (by simp [form6])`. Substitute `hB hC` using the available equality. Establish `hD : D = A`.
+By extensionality, compare the relevant components. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[sw, Matrix.fromBlocks_multiply] at hs`. Conclude with `hs.1`. Substitute `hD` using the available equality. Rewrite `y1` using `[blockPairingForm_JR]`. Establish `h0 : Dᵀ * Jmat k 3 + Jmat k 3 * D = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `a b`. Use `congrFun (congrFun y1 (.inl a)) (.inr b)` as an intermediate fact. Simplify `this` using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add]`. Rewrite `h0` using `[J3]`. Establish `e` using `fun a b => congrFun (congrFun h0 a) b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e00` using `e 0 0`. Establish `e01` using `e 0 1`. Establish `e02` using `e 0 2`. Establish `e11` using `e 1 1`. Establish `e12` using `e 1 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e22` using `e 2 2`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_three, ← two_mul, h2] at e00 e01 e02 e11 e12 e22`. Use `⟨D 0 0, D 0 1, D 1 0, ?_, fun h => y3 (.inl 0) (.inl 0) ?_, fun h => y3 (.inl 0) (.inl 1) ?_, fun h => y3 (.inl 1) (.inl 0) ?_⟩` and prove the remaining obligations. Establish `: D = am (D 0 0) (D 0 1) (D 1 0)`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [am] <;> first | assumption | linear_combination e01 | linear_combination e02 | linear_combination e12`. Rewrite using `[bm, ← this]`. Simplify using `[wt6, wt1]`. Use linear arithmetic over natural numbers and integers. Simplify using `[wt6, wt1]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[wt6, wt1]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem eq_bm (O : Type) [CommRing O] [Algebra O k] (h2 : (2 : k) ≠ 0) (j : ℤ)
     (Y : Matrix (Fin 3 ⊕ Fin 3) (Fin 3 ⊕ Fin 3) k) (hY : Y ∈ (form6 O).gw k j) (hs : sw k * Y * sw k = Y) :
@@ -128,23 +128,23 @@ end UpperTheory.V.U3.FixDim
 
 open UpperTheory.V.U3.FixDim in
 /- English proof (translation)
-Introduce `O k _ _ _ h2 Γ _ η Ψ c h1 hΨ j`. Establish `e1` using `emb_c η Ψ c h1 hΨ`. Establish `e2` using `emb_c η Ψ c⁻¹ (by rw [map_inv, h1]; rfl) (by rw [map_inv, hΨ, inv_one])`. Establish `hk : ∀ Y : (form6 O).gw k j, Y ∈ LinearMap.ker (FormData.adRep (blockPairingForm_normalises_baseLift O η Ψ) j c - 1) ↔ sw k * Y.1 * sw k = Y.1`. Introduce `Y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, Subtype.ext_iff]`. Use `show emb (r0 η Ψ c) * Y.1 * emb (r0 η Ψ c⁻¹) = Y.1 ↔ _`. Rewrite using `[e1, e2]`. Establish `one : ∀ x y z : k, (j ≠ 0 → x = 0) → (j ≠ 1 → y = 0) → (j ≠ -1 → z = 0) → bm x y z ≠ 0 → (∀ x' y' z' : k, (j ≠ 0 → x' = 0) → (j ≠ 1 → y' = 0) → (j ≠ -1 → z' = 0) → ∃ t : k, t * x = x' ∧ t * y = y' ∧ t * z = z') → Module.finrank k (LinearMap.ker (FormData.adRep (blockPairingForm_n …`. Introduce `x y z hx hy hz hne hgen`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `finrank_eq_one_iff'.2 ⟨⟨⟨bm x y z, bm_mem O j x y z hx hy hz⟩, (hk _).2 (sw_bm x y z)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hne (congrArg (fun v => v.1.1) h)`. Introduce and unpack `⟨Y, hY⟩`. Take `⟨x', y', z', e, h⟩` from `eq_bm O h2 j Y.1 Y.2 ((hk Y).1 hY)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, rfl, rfl, rfl⟩` from `hgen x' y' z' h.1 h.2.1 h.2.2`. Use `⟨t, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Use `show t • bm x y z = Y.1`. Rewrite using `[e, bm_smul]`. Distinguish the cases in `j0 : j = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `j0` using the available equality. Use `one 1 0 0 (by simp) (by simp) (by simp) (fun h => ?_) (fun x y z _ hy hz => ⟨x, by simp, ?_, ?_⟩)` and prove the remaining obligations. Simplify `congrFun (congrFun h (.inl 0)) (.inl 0)` using `[bm, am]`. Simplify using `[hy (by decide)]`. Simplify using `[hz (by decide)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `j1 : j = 1`. Substitute `j1` using the available equality. Use `one 0 1 0 (by simp) (by simp) (by simp) (fun h => ?_) (fun x y z hx _ hz => ⟨y, ?_, by simp, ?_⟩)` and prove the remaining obligations. Simplify `congrFun (congrFun h (.inl 0)) (.inl 1)` using `[bm, am]`. Simplify using `[hx (by decide)]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hz (by decide)]`. Distinguish the cases in `j2 : j = -1`. Substitute `j2` using the available equality. Use `one 0 0 1 (by simp) (by simp) (by simp) (fun h => ?_) (fun x y z hx hy _ => ⟨z, ?_, ?_, by simp⟩)` and prove the remaining obligations. Simplify `congrFun (congrFun h (.inl 1)) (.inl 0)` using `[bm, am]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hx (by decide)]`. Simplify using `[hy (by decide)]`. Rewrite using `[boxDef, if_neg (by rw [abs_le]; omega), Submodule.finrank_eq_zero, eq_bot_iff]`. Introduce `Y hY`. Take `⟨x, y, z, e, hx, hy, hz⟩` from `eq_bm O h2 j Y.1 Y.2 ((hk Y).1 hY)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[e, hx j0, hy j1, hz j2]`. Simplify using `using (bm_smul (0 : k) 0 0 0).symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finrank_ker_adRep_complexConj_sub_one_eq_boxDef :
     ∀ (O k : Type) [CommRing O] [Field k] [Algebra O k], (2 : k) ≠ 0 → ∀ {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* kˣ) (c : Γ), η c = -1 → Ψ c = 1 → ∀ j : ℤ,

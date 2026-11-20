@@ -10,7 +10,7 @@ def imC {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) : Matrix (Fin g) (Fin g) ℂ
   (τ.map Complex.im).map (fun x : ℝ => (x : ℂ))
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h : τ j i = τ i j` using `by simpa using congrFun (congrFun hτ i) j`. Simplify using `only [Matrix.sub_apply, Matrix.conjTranspose_apply, Matrix.smul_apply, imC, Matrix.map_apply, h, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sub_conjTranspose_of_symm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm) :
     τ - τᴴ = (2 * I) • imC τ := by
@@ -21,17 +21,15 @@ theorem sub_conjTranspose_of_symm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (h
   apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Use `set x : Fin g → ℝ := fun i => (v i).re with hxdef`. Use `set y : Fin g → ℝ := fun i => (v i).im with hydef`. Establish `key : (star v ⬝ᵥ (Y.map (fun x : ℝ => (x : ℂ)) *ᵥ v)).re = x ⬝ᵥ (Y *ᵥ x) + y ⬝ᵥ (Y *ᵥ y)`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, Complex.re_sum, Finset.mul_sum, ← Finset.sum_add_distrib, hxdef, hydef]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Complex.mul_re, Complex.mul_im]`. Establish `hnn : ∀ z : Fin g → ℝ, 0 ≤ z ⬝ᵥ (Y *ᵥ z)`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hY.dotProduct_mulVec_pos hz` as an intermediate fact. Simplify using `only [star_trivial] at this`. Conclude with `this.le`. Establish `hxy : x ≠ 0 ∨ y ≠ 0`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hc`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `Complex.ext` to reduce the goal to its premises. Conclude with `congrFun hc.1 i`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `congrFun hc.2 i`. Rewrite using `[key]`. Break down `hxy with h | h` into its components or cases. Use `hY.dotProduct_mulVec_pos h` as an intermediate fact. Simplify using `only [star_trivial] at this`.
-
-Combine the linear relations using `[hnn y]`. Use `hY.dotProduct_mulVec_pos h` as an intermediate fact. Simplify using `only [star_trivial] at this`. Combine the linear relations using `[hnn x]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem re_pos_of_posDef {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} (hY : Y.PosDef) {v : Fin g → ℂ}
     (hv : v ≠ 0) : 0 < (star v ⬝ᵥ (Y.map (fun x : ℝ => (x : ℂ)) *ᵥ v)).re := by
@@ -67,7 +65,7 @@ theorem re_pos_of_posDef {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} (hY : Y.PosD
     linarith [hnn x]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₂₁]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_conjTranspose₂₁ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) :
     ((cMat γ).toBlocks₂₁)ᴴ = ((cMat γ).toBlocks₂₁)ᵀ := by
@@ -75,7 +73,7 @@ theorem blk_conjTranspose₂₁ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g 
   simp [Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₂₁]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₂₂]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_conjTranspose₂₂ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) :
     ((cMat γ).toBlocks₂₂)ᴴ = ((cMat γ).toBlocks₂₂)ᵀ := by
@@ -83,7 +81,7 @@ theorem blk_conjTranspose₂₂ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g 
   simp [Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₂₂]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₁₁]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_conjTranspose₁₁ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) :
     ((cMat γ).toBlocks₁₁)ᴴ = ((cMat γ).toBlocks₁₁)ᵀ := by
@@ -91,7 +89,7 @@ theorem blk_conjTranspose₁₁ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g 
   simp [Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₁₁]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₁₂]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_conjTranspose₁₂ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) :
     ((cMat γ).toBlocks₁₂)ᴴ = ((cMat γ).toBlocks₁₂)ᵀ := by
@@ -99,17 +97,15 @@ theorem blk_conjTranspose₁₂ {g : ℕ} (γ : Matrix (Fin g ⊕ Fin g) (Fin g 
   simp [Matrix.conjTranspose_apply, cMat, Matrix.toBlocks₁₂]
 
 /- English proof (translation)
-Establish `h1` using `SymplecticGroup.mem_iff'.mp hγ`. Establish `h3 : (cMat γ)ᵀ * Matrix.J (Fin g) ℂ * cMat γ = Matrix.J (Fin g) ℂ`. Establish `hJ : (Matrix.J (Fin g) ℤ).map (Int.castRingHom ℂ) = Matrix.J (Fin g) ℂ`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.J, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `all_goals (try split_ifs)`. Apply the tactic sequence `all_goals (try simp_all)`. Use `congrArg (fun M => M.map (Int.castRingHom ℂ)) h1` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[← Matrix.fromBlocks_toBlocks (cMat γ), Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Take `⟨e11, e12, e21, e22⟩` from `Matrix.fromBlocks_inj.mp h3`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.zero_mul, Matrix.neg_mul, Matrix.one_mul] at e11 e12 e21 e22`. Establish `hA` using `blk_conjTranspose₁₁ γ`. Establish `hB` using `blk_conjTranspose₁₂ γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hC` using `blk_conjTranspose₂₁ γ`. Establish `hD` using `blk_conjTranspose₂₂ γ`. Simplify using `only [jAut, nAut]`. Generalize the expression as in `(cMat γ).toBlocks₁₁ = A at e11 e12 e21 e22 hA hB hC hD ⊢`. Generalize the expression as in `(cMat γ).toBlocks₁₂ = B at e11 e12 e21 e22 hA hB hC hD ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `(cMat γ).toBlocks₂₁ = C at e11 e12 e21 e22 hA hB hC hD ⊢`. Generalize the expression as in `(cMat γ).toBlocks₂₂ = D at e11 e12 e21 e22 hA hB hC hD ⊢`. Establish `e : (C * τ + D)ᴴ * (A * τ + B) - (A * τ + B)ᴴ * (C * τ + D) = τᴴ * (Cᵀ * A + -(Aᵀ * C)) * τ + τᴴ * (Cᵀ * B + -(Aᵀ * D) + 1) + (Dᵀ * A + -(Bᵀ * C) - 1) * τ + (Dᵀ * B + -(Bᵀ * D)) + (τ - τᴴ)`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hA, hB, hC, hD]`. Use `noncomm_ring`.
-
-Rewrite using `[e, e11, e12, e21, e22]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_keyH {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) (τ : Matrix (Fin g) (Fin g) ℂ) :
@@ -148,15 +144,11 @@ theorem sp_keyH {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
   noncomm_ring
 
 /- English proof (translation)
-Establish `h1` using `SymplecticGroup.mem_iff'.mp hγ`. Establish `h3 : (cMat γ)ᵀ * Matrix.J (Fin g) ℂ * cMat γ = Matrix.J (Fin g) ℂ`. Establish `hJ : (Matrix.J (Fin g) ℤ).map (Int.castRingHom ℂ) = Matrix.J (Fin g) ℂ`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.J, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `all_goals (try split_ifs)`. Apply the tactic sequence `all_goals (try simp_all)`. Use `congrArg (fun M => M.map (Int.castRingHom ℂ)) h1` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[← Matrix.fromBlocks_toBlocks (cMat γ), Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Take `⟨e11, e12, e21, e22⟩` from `Matrix.fromBlocks_inj.mp h3`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.zero_mul, Matrix.neg_mul, Matrix.one_mul] at e11 e12 e21 e22`. Use `set A := (cMat γ).toBlocks₁₁`. Use `set B := (cMat γ).toBlocks₁₂`.
-
-Use `set C := (cMat γ).toBlocks₂₁`. Use `set D := (cMat γ).toBlocks₂₂`. Establish `e : (jAut γ τ)ᵀ * nAut γ τ - (nAut γ τ)ᵀ * jAut γ τ = τᵀ * (Cᵀ * A + -(Aᵀ * C)) * τ + τᵀ * (Cᵀ * B + -(Aᵀ * D) + 1) + (Dᵀ * A + -(Bᵀ * C) - 1) * τ + (Dᵀ * B + -(Bᵀ * D)) + (τ - τᵀ)`. Simplify using `only [jAut, nAut, Matrix.transpose_add, Matrix.transpose_mul]`. Use `noncomm_ring`.
-
-Rewrite using `[e, e11, e12, e21, e22]`. Use `noncomm_ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_keyT {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) (τ : Matrix (Fin g) (Fin g) ℂ) :
@@ -189,11 +181,11 @@ theorem sp_keyT {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
   noncomm_ring
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hpos` using `re_pos_of_posDef hτ.2 hv`. Establish `h0 : star v ⬝ᵥ (((jAut γ τ)ᴴ * nAut γ τ - (nAut γ τ)ᴴ * jAut γ τ) *ᵥ v) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_mulVec, dotProduct_sub, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hJv, Matrix.mulVec_zero, dotProduct_zero, sub_zero, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, hJv, star_zero, zero_dotProduct]`. Rewrite `h0` using `[sp_keyH hγ τ, sub_conjTranspose_of_symm hτ.1, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, mul_eq_zero]`. Break down `h0 with h | h` into its components or cases. Simplify using `at h`. Rewrite `hpos` using `[show (τ.map Complex.im).map (fun x : ℝ => (x : ℂ)) = imC τ from rfl, h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hpos`.
+Simplify using the standard rewrite rules.
 -/
 theorem jAut_isUnit {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) {τ : Matrix (Fin g) (Fin g) ℂ}
@@ -214,11 +206,9 @@ theorem jAut_isUnit {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) �
     simp at hpos
 
 /- English proof (translation)
-Use `show (nAut γ τ * (jAut γ τ)⁻¹)ᵀ = nAut γ τ * (jAut γ τ)⁻¹`. Establish `hk` using `sp_keyT hγ τ`. Rewrite `hk` using `[hτ.eq, sub_self, sub_eq_zero]`. Establish `hJt : IsUnit (jAut γ τ)ᵀ.det` using `by rwa [Matrix.det_transpose]`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_nonsing_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hj, Matrix.mul_one]`. Use `_ = ((jAut γ τ)ᵀ)⁻¹ * ((nAut γ τ)ᵀ * jAut γ τ) * (jAut γ τ)⁻¹ := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((jAut γ τ)ᵀ)⁻¹ * ((jAut γ τ)ᵀ * nAut γ τ) * (jAut γ τ)⁻¹ := by rw [← hk]`.
-
-Use `_ = nAut γ τ * (jAut γ τ)⁻¹ := by`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJt, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spAct_isSymm {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
@@ -238,7 +228,7 @@ theorem spAct_isSymm {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) 
         rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJt, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, imC, Matrix.map_apply, Pi.star_apply, Complex.star_def, Complex.conj_ofReal, Complex.ofReal_sum, Complex.ofReal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem real_quad {g : ℕ} (σ : Matrix (Fin g) (Fin g) ℂ) (x : Fin g → ℝ) :
     ((x ⬝ᵥ (σ.map Complex.im *ᵥ x) : ℝ) : ℂ) =
@@ -247,23 +237,21 @@ theorem real_quad {g : ℕ} (σ : Matrix (Fin g) (Fin g) ℂ) (x : Fin g → ℝ
     Complex.conj_ofReal, Complex.ofReal_sum, Complex.ofReal_mul]
 
 /- English proof (translation)
-Establish `hj` using `jAut_isUnit hγ hτ`. Establish `hs` using `spAct_isSymm hγ hτ.1 hj`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Apply `Matrix.PosDef.of_dotProduct_mulVec_pos` to reduce the goal to its premises. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `h` using `congrFun (congrFun hs.eq i) j`. Simplify using `only [Matrix.transpose_apply] at h`. Simplify using `[Matrix.conjTranspose_apply, h]`. Introduce `x hx`. Rewrite using `[star_trivial]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hJh : IsUnit (jAut γ τ)ᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hj.star`. Establish `hk` using `sp_keyH hγ τ`. Establish `e1 : spAct γ τ - (spAct γ τ)ᴴ = ((jAut γ τ)⁻¹)ᴴ * (τ - τᴴ) * (jAut γ τ)⁻¹`. Rewrite using `[← hk, show spAct γ τ = nAut γ τ * (jAut γ τ)⁻¹ from rfl, Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [← Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.nonsing_inv_mul _ hJh, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hj, Matrix.mul_one]`. Establish `e2 : imC (spAct γ τ) = ((jAut γ τ)⁻¹)ᴴ * imC τ * (jAut γ τ)⁻¹`. Establish `h2I : (2 * Complex.I) ≠ 0` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `smul_right_injective _ h2I` to reduce the goal to its premises. Use `show (2 * Complex.I) • imC (spAct γ τ) = (2 * Complex.I) • (((jAut γ τ)⁻¹)ᴴ * imC τ * (jAut γ τ)⁻¹)`. Rewrite using `[← sub_conjTranspose_of_symm hs, e1, sub_conjTranspose_of_symm hτ.1, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hxc : (fun i => (x i : ℂ)) ≠ 0`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify using `using this`. Establish `hw : (jAut γ τ)⁻¹ *ᵥ (fun i => (x i : ℂ)) ≠ 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hxc` to reduce the goal to its premises. Use `congrArg (jAut γ τ *ᵥ ·) h` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hj]`. Establish `hq` using `real_quad (spAct γ τ) x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[e2, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star fun i => (x i : ℂ)), ← Matrix.star_mulVec]`. Establish `hpos` using `re_pos_of_posDef hτ.2 hw`. Establish `hre` using `congrArg Complex.re hq`. Rewrite `hre` using `[Complex.ofReal_re]`. Rewrite using `[hre]`.
-
-Conclude with `hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spAct_mem {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) {τ : Matrix (Fin g) (Fin g) ℂ}
@@ -314,24 +302,22 @@ theorem spAct_mem {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ
     exact hpos
 
 /- English proof (translation)
-Introduce `_ _ hγ _ hτ` and use `⟨jAut_isUnit hγ hτ, spAct_mem hγ hτ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem spAct_holds : SpActStatement := fun _ _ hγ _ hτ => ⟨jAut_isUnit hγ hτ, spAct_mem hγ hτ⟩
 
 /- English proof (translation)
-Establish `hs` using `spAct_isSymm hγ hτ hj`. Establish `hJt : IsUnit (jAut γ τ)ᵀ.det` using `by rwa [Matrix.det_transpose]`. Establish `hσ : spAct γ τ = ((jAut γ τ)ᵀ)⁻¹ * (nAut γ τ)ᵀ`. Rewrite using `[← hs.eq, show spAct γ τ = nAut γ τ * (jAut γ τ)⁻¹ from rfl, Matrix.transpose_mul, Matrix.transpose_nonsing_inv]`. Establish `h1` using `SymplecticGroup.mem_iff'.mp hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (cMat γ)ᵀ * Matrix.J (Fin g) ℂ * cMat γ = Matrix.J (Fin g) ℂ`. Establish `hJ : (Matrix.J (Fin g) ℤ).map (Int.castRingHom ℂ) = Matrix.J (Fin g) ℂ`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.J, Matrix.one_apply]`. Apply the tactic sequence `all_goals (try split_ifs)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `all_goals (try simp_all)`. Use `congrArg (fun M => M.map (Int.castRingHom ℂ)) h1` as an intermediate fact. Rewrite `this` using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJ]`. Conclude with `this`. Rewrite `h3` using `[← Matrix.fromBlocks_toBlocks (cMat γ), Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨e11, _, e21, _⟩` from `Matrix.fromBlocks_inj.mp h3`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.zero_mul, Matrix.neg_mul, Matrix.one_mul] at e11 e21`. Establish `key : (jAut γ τ)ᵀ * ((cMat γ).toBlocks₁₁ - spAct γ τ * (cMat γ).toBlocks₂₁) = 1`. Rewrite using `[hσ, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJt, Matrix.one_mul]`. Simplify using `only [jAut, nAut]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(cMat γ).toBlocks₁₁ = A at e11 e21 ⊢`. Generalize the expression as in `(cMat γ).toBlocks₁₂ = B at e11 e21 ⊢`. Generalize the expression as in `(cMat γ).toBlocks₂₁ = C at e11 e21 ⊢`. Generalize the expression as in `(cMat γ).toBlocks₂₂ = D at e11 e21 ⊢`. Establish `e : (C * τ + D)ᵀ * A - (A * τ + B)ᵀ * C = τᵀ * (Cᵀ * A + -(Aᵀ * C)) + (Dᵀ * A + -(Bᵀ * C))`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_add, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_mul]`. Use `noncomm_ring`. Rewrite using `[e, e11, e21, Matrix.mul_zero, zero_add]`. Rewrite using `[Matrix.transpose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJt, Matrix.one_mul]`. Use `_ = ((jAut γ τ)ᵀ)⁻¹ := by rw [key, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_A {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)

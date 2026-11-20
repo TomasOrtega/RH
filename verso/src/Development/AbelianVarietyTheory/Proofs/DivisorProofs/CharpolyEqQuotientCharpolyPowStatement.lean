@@ -6,7 +6,7 @@ open scoped TensorProduct nonZeroDivisors
 open Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.NilpFiltration.charpoly_eq_charpoly_mapQ_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCharpolyEqQuotientCharpolyPow.lean&line=111#L111)
 -/

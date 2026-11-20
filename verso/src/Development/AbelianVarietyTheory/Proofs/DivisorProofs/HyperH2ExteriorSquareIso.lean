@@ -25,13 +25,13 @@ section Wedge
 variable {R : Type} [CommRing R] {M : Type} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem update_pair_vector_zero (a b x : M) : Function.update ![a, b] 0 x = ![x, b] := by
   funext i; fin_cases i <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem update_pair_vector_one (a b x : M) : Function.update ![a, b] 1 x = ![a, x] := by
   funext i; fin_cases i <;> simp
@@ -52,20 +52,20 @@ def ιTwo : M →ₗ[R] M →ₗ[R] ⋀[R]^2 M :=
       simpa only [update_pair_vector_one] using h)
 
 /- English proof (translation)
-Rewrite using `[ιTwo, LinearMap.mk₂_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ιTwo_apply (a b : M) : ιTwo a b = exteriorPower.ιMulti R 2 ![a, b] := by
   rw [ιTwo, LinearMap.mk₂_apply]
 
 /- English proof (translation)
-Rewrite using `[ιTwo_apply]`. Conclude with `(exteriorPower.ιMulti R 2 (M := M)).map_eq_zero_of_eq ![a, a] (i := 0) (j := 1) rfl (by decide)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ιTwo_self (a : M) : ιTwo (R := R) a a = 0 := by
   rw [ιTwo_apply]
   exact (exteriorPower.ιMulti R 2 (M := M)).map_eq_zero_of_eq ![a, a] (i := 0) (j := 1) rfl (by decide)
 
 /- English proof (translation)
-Establish `h` using `ιTwo_self (R := R) (a + b)`. Simplify using `only [map_add, LinearMap.add_apply, ιTwo_self, zero_add, add_zero] at h`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ιTwo_swap (a b : M) : ιTwo (R := R) b a = -ιTwo a b := by
   have h := ιTwo_self (R := R) (a + b)
@@ -73,9 +73,9 @@ theorem ιTwo_swap (a b : M) : ιTwo (R := R) b a = -ιTwo a b := by
   exact eq_neg_of_add_eq_zero_left h
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product' (s := Finset.univ) (t := Finset.univ) (f := fun a b ↦ c a b • ιTwo (R := R) (x a) (x b))]`. Use `Finset.sum_involution (fun p _ ↦ p.swap) (fun p _ ↦ ?_) (fun p _ hp ↦ ?_) (fun p _ ↦ by simp) (fun p _ ↦ Prod.swap_swap p)` and prove the remaining obligations. Simplify using `only [Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[hc p.2 p.1, ιTwo_swap (x p.1), smul_neg, add_neg_cancel]`. Introduce `he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hp` to reduce the goal to its premises. Establish `: p.1 = p.2` using `(Prod.ext_iff.1 he).2`. Simplify using `only [this, ιTwo_self, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_sum_ιTwo_of_symm {n : ℕ} (x : Fin n → M) (c : Fin n → Fin n → R)
     (hc : ∀ a b, c a b = c b a) : ∑ a, ∑ b, c a b • ιTwo (R := R) (x a) (x b) = 0 := by
@@ -105,7 +105,7 @@ def hypercohomologyTwoToAlgebraCohomology : Hyp2 F →ₗ[R] CatCoh.H2 F :=
   Submodule.mapQ _ _ (fnZZ2 F) (by rintro _ ⟨e, rfl⟩; exact ⟨e.1, rfl⟩)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Hyp1.mk_surjective F a`. Take `⟨b, rfl⟩` from `Hyp1.mk_surjective F b`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem hypercohomologyTwo_cup_forget_forms (a b : Hyp1 F) : hypercohomologyTwoToAlgebraCohomology F (cupHyp F a b) = cup F (toO F a) (toO F b) := by
   obtain ⟨a, rfl⟩ := Hyp1.mk_surjective F a
@@ -123,7 +123,7 @@ def cupWedge (halt : ∀ a, cupHyp F a a = 0) : ⋀[R]^2 (Hyp1 F) →ₗ[R] Hyp2
   exteriorPower.alternatingMapLinearEquiv (cupProductWedge F halt)
 
 /- English proof (translation)
-Rewrite using `[ιTwo_apply, cupWedge, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cupWedge_ιTwo (halt : ∀ a, cupHyp F a a = 0) (a b : Hyp1 F) :
     cupWedge F halt (ιTwo a b) = cupHyp F a b := by
@@ -131,11 +131,11 @@ theorem cupWedge_ιTwo (halt : ∀ a, cupHyp F a a = 0) (a b : Hyp1 F) :
   rfl
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h : y ∈ Fil1 F` using `hy`. Rewrite `h` using `[Fil1_eq_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ω, rfl⟩` from `h`. Conclude with `⟨ω.1, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Establish `h : clAll F hc w ∈ Fil1 F`. Rewrite using `[Fil1_eq_range]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`. Conclude with `h`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exact_clAll_toO (hc : Closed1 F = ⊤) : Function.Exact (clAll F hc) (toO F) := by
   intro y
@@ -157,37 +157,35 @@ end GlobalTheory.AbCoh
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ C _ F hF h0 hc hs hw halt`. Set `e₀` to `cupWedge F halt`. Establish `e₀_ι : ∀ a b, e₀ (ιTwo a b) = cupHyp F a b` using `cupWedge_ιTwo F halt`. Establish `hsurj : Function.Surjective e₀`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, a, b, rfl⟩` from `GlobalTheory.T.hyper_h2_generated_by_cups R C F hF h0 hc hs hw z`. Conclude with `⟨∑ k, ιTwo (a k) (b k), by simp only [map_sum, e₀_ι]⟩`. Establish `hex` using `exact_clAll_toO F hc`. Establish `hinj : Function.Injective e₀`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Take `⟨ew, hew⟩` from `hw`. Establish `hcomm : ew.toLinearMap ∘ₗ exteriorPower.map 2 (toO F) = hypercohomologyTwoToAlgebraCohomology F ∘ₗ e₀`. Use `exteriorPower.linearMap_ext (AlternatingMap.ext fun v ↦ ?_)` and prove the remaining obligations. Apply the tactic sequence `have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hv' : (toO F) ∘ v = ![toO F (v 0), toO F (v 1)] := by funext i; fin_cases i <;> rfl`. Simplify using `only [LinearMap.compAlternatingMap_apply, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, exteriorPower.map_apply_ιMulti, hv', hew]`. Rewrite using `[hv, ← ιTwo_apply, e₀_ι, hypercohomologyTwo_cup_forget_forms]`. Both sides reduce to the same expression. Establish `h1 : exteriorPower.map 2 (toO F) t = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `ew.injective` to reduce the goal to its premises. Use `LinearMap.congr_fun hcomm t` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe] at this`. Rewrite using `[this, ht, map_zero, map_zero]`. Take `⟨m, a, w, rfl⟩` from `GlobalTheory.T.exists_sum_ιMulti_of_exteriorSquare_map_eq_zero R (Glob1 F) (Hyp1 F) (CatCoh.H1 F) (clAll F hc) (toO F) hs hex t h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [← ιTwo_apply] at ht ⊢`. Establish `hsum : ∑ k, cupHyp F (a k) (clAll F hc (w k)) = 0`. Simplify `ht` using `only [map_sum, e₀_ι]`. Take `⟨N, ⟨Φ⟩⟩` from `hF`. Take `⟨l, -, hl⟩` from `GlobalTheory.T.globalOneFormFrame_coordinates_constant R C F h0 N Φ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `x : Fin N → Hyp1 F` to `fun i ↦ clAll F hc (Φ.w i)`. Establish `hcl : ∀ v : Glob1 F, clAll F hc v = ∑ i, l i v • x i`. Introduce `v`. Use `conv_lhs => rw [hl v]`. Simplify using `only [map_sum, map_smul, x]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Mi : Fin N → Hyp1 F` to `fun i ↦ ∑ k, l i (w k) • a k`. Establish `ht1 : ∑ k, ιTwo (R` using `R) (a k) (clAll F hc (w k)) = ∑ i, ιTwo (Mi i) (x i) := by`. Simplify using `only [hcl, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Mi]`. Conclude with `Finset.sum_comm`. Establish `hM0 : ∀ i, toO F (Mi i) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Use `GlobalTheory.T.sum_cup_oneForms_zero_imp_coordinates_zero R C F ⟨N, ⟨Φ⟩⟩ h0 hc hs m a w hsum (l i)` as an intermediate fact. Simplify `this` using `only [Mi, map_sum, map_smul]`. Establish `hMu : ∀ i, ∃ u, clAll F hc u = Mi i` using `fun i ↦ (hex (Mi i)).1 (hM0 i)`. Use `choose u hu using hMu`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[ht1]`. Simplify using `only [← hu]`. Establish `hcup : ∑ i, cupHyp F (clAll F hc (u i)) (clAll F hc (Φ.w i)) = 0`. Rewrite using `[← ht, ht1]`. Simplify using `only [← hu, map_sum, e₀_ι, x]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hw2` using `(GlobalTheory.T.cupSum_closedGlobalOneForms_eq_zero_iff_sumWedge R C F hc hs N u Φ.w).1 hcup`. Establish `hsym` using `(GlobalTheory.T.sumWedgeGlobalOneForms_eq_zero_iff R C F ⟨N, ⟨Φ⟩⟩ h0 N u Φ.w).1 hw2`. Set `c : Fin N → Fin N → R` to `fun p q ↦ ∑ i, l p (u i) * l q (Φ.w i)`. Establish `hc' : ∀ p q, c p q = c q p`. Introduce `p q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hsym (l p) (l q)` as an intermediate fact. Rewrite `this` using `[Finset.sum_sub_distrib, sub_eq_zero]`. Simplify using `only [c]`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `step : ∀ i, ιTwo (R` using `R) (clAll F hc (u i)) (x i) = ∑ p, ∑ q, (l p (u i) * l q (Φ.w i)) • ιTwo (R := R) (x p) (x q) := by`. Introduce `i`. Rewrite using `[hcl (u i)]`. Use `conv_lhs => rw [show x i = ∑ q, l q (Φ.w i) • x q from hcl (Φ.w i)]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun p _ ↦ Finset.sum_congr rfl fun q _ ↦ by rw [mul_comm]`. Establish `hexp : ∑ i, ιTwo (R` using `R) (clAll F hc (u i)) (x i) = ∑ p, ∑ q, c p q • ιTwo (R := R) (x p) (x q) := by`. Simplify using `only [step]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ ↦ ?_` and prove the remaining obligations. Simplify using `only [c, Finset.sum_smul]`. Rewrite using `[hexp]`.
-
-Conclude with `sum_sum_ιTwo_of_symm x c hc'`. Use `⟨LinearEquiv.ofBijective e₀ ⟨hinj, hsurj⟩, fun a b ↦ ?_⟩` and prove the remaining obligations. Use `e₀_ι a b` as an intermediate fact. Rewrite `this` using `[ιTwo_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_wedge_hyp_equiv : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),
     HasFrame F → CohomZeroIsConstants F → Closed1 F = ⊤ → Function.Surjective (toO F) → WedgeO F →

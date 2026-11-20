@@ -32,26 +32,26 @@ def lift (D : D7) (r : Formalism.IndefR.Datum.EAf D) : AE D :=
   GlobalTheory.LatticeStable.liftFin D ((Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).symm r)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdForm.toEAf_liftFin r`.
+A detailed English derivation is pending.
 -/
 theorem toEAf_lift (r : Formalism.IndefR.Datum.EAf D) : toEAf D (lift D r) = r := GlobalTheory.AdForm.toEAf_liftFin r
 
 /- English proof (translation)
-Unfold `lift`. Rewrite using `[map_add, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_add (r s : Formalism.IndefR.Datum.EAf D) : lift D (r + s) = lift D r + lift D s := by
   unfold lift
   rw [map_add, map_add]
 
 /- English proof (translation)
-Rewrite `h` using `[GlobalTheory.AdForm.toEAf_eq_comm]`. Conclude with `(Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective (h.trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_eq_zero_of_toEAf {z : AE D} (h : toEAf D z = 0) : finPart D z = 0 := by
   rw [GlobalTheory.AdForm.toEAf_eq_comm] at h
   exact (Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective (h.trans (map_zero _).symm)
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (GlobalTheory.LatVac.eq_zero_of_parts _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, hx, hy, sub_zero]`. Conclude with `finPart_eq_zero_of_toEAf (by rw [RingHom.map_sub, h, sub_self])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_toEAf {x y : AE D} (hx : infPart D x = 0) (hy : infPart D y = 0) (h : toEAf D x = toEAf D y) : x = y := by
   refine sub_eq_zero.1 (GlobalTheory.LatVac.eq_zero_of_parts _ ?_ ?_)
@@ -59,7 +59,7 @@ theorem eq_of_toEAf {x y : AE D} (hx : infPart D x = 0) (hy : infPart D y = 0) (
   · exact finPart_eq_zero_of_toEAf (by rw [RingHom.map_sub, h, sub_self])
 
 /- English proof (translation)
-Use `show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Establish `: fstA D.host.F (pairA D.host.F 0 α) = 0` using `rfl`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_fj (α : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) : infPart D (fj D α) = 0 := by
   show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] (1 : D.host.E) = 0
@@ -69,13 +69,13 @@ theorem infPart_fj (α : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolum
 variable {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D}
 
 /- English proof (translation)
-Rewrite using `[← he.pl_mul, map_mul, infPart_fj, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_idem (he : SplitAt D v e) : infPart D e = 0 := by
   rw [← he.pl_mul, map_mul, infPart_fj, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← RingHom.map_sub]`. Use `((chart_comp he).2.1 _).2 ?_` and prove the remaining obligations. Use `GlobalTheory.LatVac.eq_zero_of_parts _ ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, infPart_idem he, zero_mul]`. Rewrite using `[RingHom.map_mul, finPart_eq_zero_of_toEAf (z := x - y) (by rw [RingHom.map_sub, h, sub_self]), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_of_toEAf (he : SplitAt D v e) {x y : AE D} (h : toEAf D x = toEAf D y) :
     comp he x = comp he y := by
@@ -86,26 +86,26 @@ theorem comp_eq_of_toEAf (he : SplitAt D v e) {x y : AE D} (h : toEAf D x = toEA
   · rw [RingHom.map_mul, finPart_eq_zero_of_toEAf (z := x - y) (by rw [RingHom.map_sub, h, sub_self]), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.SplitPoint.sec_apply, map_mul, infPart_fj, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_sec (a : Fv D.host.F v) : infPart D (GlobalTheory.FinPl.SplitPoint.sec D v e a) = 0 := by
   rw [GlobalTheory.FinPl.SplitPoint.sec_apply, map_mul, infPart_fj, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.SplitPoint.sec_apply, map_mul, comp_fj, comp_self, mul_one, GlobalTheory.SplitIdem.evalV_singleV_same]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_sec (he : SplitAt D v e) (a : Fv D.host.F v) : comp he (GlobalTheory.FinPl.SplitPoint.sec D v e a) = a := by
   rw [GlobalTheory.FinPl.SplitPoint.sec_apply, map_mul, comp_fj, comp_self, mul_one, GlobalTheory.SplitIdem.evalV_singleV_same]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.SplitPoint.sec_apply, sc_spec he z]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sec_comp (he : SplitAt D v e) (z : AE D) : GlobalTheory.FinPl.SplitPoint.sec D v e (comp he z) = e * z := by
   rw [GlobalTheory.FinPl.SplitPoint.sec_apply, sc_spec he z]
   rfl
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Conclude with `zero_le'`. Rewrite `hx`, the goal using `[← WithZero.exp_log h0]`. Rewrite `hx` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Conclude with `WithZero.exp_le_exp.2 (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one {x : WithZero (Multiplicative ℤ)} (hx : x < 1) : x ≤ WithZero.exp (-1) := by
   rcases eq_or_ne x 0 with rfl | h0
@@ -123,7 +123,7 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitChart
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D}
 
 /- English proof (translation)
-Rewrite using `[← RingHom.map_mul]`. Conclude with `comp_eq_of_toEAf he (by rw [RingHom.map_mul, toEAf_lift, toEAf_lift, toEAf_lift])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_lift_mul (he : SplitAt D v e) (r s : Formalism.IndefR.Datum.EAf D) :
     comp he (lift D (r * s)) = comp he (lift D r) * comp he (lift D s) := by
@@ -131,38 +131,32 @@ theorem comp_lift_mul (he : SplitAt D v e) (r s : Formalism.IndefR.Datum.EAf D) 
   exact comp_eq_of_toEAf he (by rw [RingHom.map_mul, toEAf_lift, toEAf_lift, toEAf_lift])
 
 /- English proof (translation)
-Rewrite using `[lift_add, RingHom.map_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_lift_add (he : SplitAt D v e) (r s : Formalism.IndefR.Datum.EAf D) :
     comp he (lift D (r + s)) = comp he (lift D r) + comp he (lift D s) := by
   rw [lift_add, RingHom.map_add]
 
 /- English proof (translation)
-Establish `hmem : r ∈ Formalism.L2.DIV.idS D.host.F PP.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(map_eq_zero_iff _ (RingEquiv.ofBijective (Formalism.L2.DIV.cmpS D.host.F PP.asIdeal) (Formalism.L2.DIV.cmpS_bij (F := D.host.F) PP.asIdeal PP.ne_bot)).symm.injective).1 hr`. Establish `he1 : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `(GlobalTheory.IdemRes.resS_idem_eq_one D e PP hI).1`. Establish `hint : ∀ s : Formalism.L2.Herm.intAf D.host.F D.host.E, comp he (lift D (s : Formalism.IndefR.Datum.EAf D)) ∈ v.adicCompletionIntegers D.host.F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `GlobalTheory.SplitHecke.isInt_Ov.1 (((chart_comp he).2.2.2 _).1 ?_)` and prove the remaining obligations. Use `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, toEAf_lift]`. Conclude with `mul_mem he1 s.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `I : Ideal (Formalism.L2.Herm.intAf D.host.F D.host.E)` to `{ carrier := {s | Valued.v (comp he (lift D (s : Formalism.IndefR.Datum.EAf D))) < 1} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, Subring.coe_add, comp_lift_add] at ha hb ⊢`. Conclude with `Valuation.map_add_lt _ ha hb`. Use the proof step `zero_mem' := by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq, ZeroMemClass.coe_zero]`. Establish `: lift D (0 : Formalism.IndefR.Datum.EAf D) = 0`. Establish `h` using `lift_add (D := D) 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_add.1 h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, RingHom.map_zero, Valuation.map_zero]`. Conclude with `zero_lt_one`. Use the proof step `smul_mem' := by`. Introduce `c a ha`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, Subring.coe_mul, comp_lift_mul] at ha ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_mul]`. Establish `hc` using `hint c`. Rewrite `hc` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(mul_le_of_le_one_left' hc).trans_lt ha }`. Establish `hle : Formalism.L2.DIV.idS D.host.F PP.asIdeal ≤ I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.map_le_iff_le_comap.2 fun p hp => ?_` and prove the remaining obligations. Use `show Valued.v (comp he (lift D ((Formalism.L2.DIV.oToS D.host.F D.host.E p : Formalism.L2.Herm.intAf D.host.F D.host.E) : Formalism.IndefR.Datum.EAf D))) < 1`. Break down `eq_or_ne p 0 with rfl | hp0` into its components or cases. Rewrite using `[map_zero]`. Establish `: lift D (0 : Formalism.IndefR.Datum.EAf D) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `lift_add (D := D) 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_add.1 h`. Rewrite using `[ZeroMemClass.coe_zero, this, RingHom.map_zero, Valuation.map_zero]`. Conclude with `zero_lt_one`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : comp he (lift D ((Formalism.L2.DIV.oToS D.host.F D.host.E p : Formalism.L2.Herm.intAf D.host.F D.host.E) : Formalism.IndefR.Datum.EAf D)) = comp he (incA D (p : D.host.E))` using `comp_eq_of_toEAf he (by rw [toEAf_lift, Formalism.L2.DIV.oToS_coe]; rfl)`. Rewrite using `[hx]`. Establish `hx0 : (p : D.host.E) ≠ 0` using `fun h => hp0 (RingOfIntegers.coe_eq_zero_iff.1 h)`. Establish `h1 : comp he (incA D (p : D.host.E)) ∈ v.adicCompletionIntegers D.host.F`. Use `GlobalTheory.SplitHecke.isInt_Ov.1 (((chart_comp he).2.2.2 _).1 ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul]`. Use `mul_mem he1 ?_` and prove the remaining obligations. Establish `: toEAf D (incA D (p : D.host.E)) = ((Formalism.L2.DIV.oToS D.host.F D.host.E p : Formalism.L2.Herm.intAf D.host.F D.host.E) : Formalism.IndefR.Datum.EAf D)` using `by rw [Formalism.L2.DIV.oToS_coe]; rfl`. Rewrite using `[this]`.
-
-Conclude with `Subtype.prop _`. Establish `h2 : comp he (incA D (p : D.host.E)⁻¹) ∉ v.adicCompletionIntegers D.host.F`. Introduce `h`. Conclude with `(hI.2 p hp0).1 hp (((chart_comp he).2.2.2 _).2 (GlobalTheory.SplitHecke.isInt_Ov.2 h))`. Establish `h3 : comp he (incA D (p : D.host.E)) * comp he (incA D (p : D.host.E)⁻¹) = 1`.
-
-Rewrite using `[← RingHom.map_mul, ← RingHom.map_mul, mul_inv_cancel₀ hx0, RingHom.map_one, RingHom.map_one]`. Rewrite `h1`, `h2` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Assume the negation of the conclusion as `hn`. Establish `ha : Valued.v (comp he (incA D (p : D.host.E))) = 1` using `le_antisymm h1 (not_lt.1 hn)`. Establish `hb` using `congrArg Valued.v h3`.
-
-Rewrite `hb` using `[Valuation.map_mul, ha, one_mul, Valuation.map_one]`. Conclude with `h2 hb.le`. Conclude with `hle hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_one (PP : Pl D.host.E) (hI : Formalism.L2.NTheta.IsIdemAt e PP) (he : SplitAt D v e)
     (r : Formalism.L2.Herm.intAf D.host.F D.host.E) (hr : Formalism.L2.DIV.resS D.host.F PP r = 0) :
@@ -250,11 +244,11 @@ variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Apply `tmul_one_inj (F := D.host.F) (A := AF D.host.F) (E := D.host.E)` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (AF D.host.F) (AE D) (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * GlobalTheory.FinPl.SplitPoint.sec D v e a)) = fj D (singleV D.host.F v (comp he (incA D D.host.xi0) * a))`. Rewrite using `[GlobalTheory.FockCompare.SymplVal.trace_AE, GlobalTheory.FinPl.SplitPoint.sec_apply]`. Establish `h1 : e * incA D D.host.xi0 = fj D (singleV D.host.F v (comp he (incA D D.host.xi0))) * e` using `sc_spec he _`. Establish `h2 : singleV D.host.F v a * singleV D.host.F v (comp he (incA D D.host.xi0)) * singleV D.host.F v 1 = singleV D.host.F v (comp he (incA D D.host.xi0) * a)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[singleV_mul D v _ (singleV D.host.F v a), GlobalTheory.SplitIdem.evalV_singleV_same, singleV_mul D v 1, GlobalTheory.SplitIdem.evalV_singleV_same, mul_one, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (incA D D.host.xi0), mul_assoc]`. Use `_ = fj D (singleV D.host.F v a) * fj D (singleV D.host.F v (comp he (incA D D.host.xi0))) * (e + cA D e) := by`. Rewrite using `[h1, RingHom.map_mul, RingHom.map_mul, cA_fj, cA_fj, ← mul_add, ← mul_add, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = fj D (singleV D.host.F v (comp he (incA D D.host.xi0) * a)) := by`. Establish `h3 : e + cA D e = fj D (singleV D.host.F v 1)` using `he.2.2`. Rewrite using `[h3, ← map_mul (fj D) (singleV D.host.F v a), ← map_mul (fj D) (singleV D.host.F v a * singleV D.host.F v (comp he (incA D D.host.xi0))) (singleV D.host.F v 1), h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_generator_split_section (he : SplitAt D v e) (a : Fv D.host.F v) :
     Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * GlobalTheory.FinPl.SplitPoint.sec D v e a) =
@@ -285,15 +279,15 @@ namespace GlobalTheory.SplitDualElt
 open GlobalTheory.IdemModTwo GlobalTheory.SplitChart
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `GlobalTheory.CharConductor.exists_exponent_of_valued χ hχ hne`. Take `⟨ϖ, hϖ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer F v`. Establish `hv : Valued.v (ϖ : v.adicCompletion F) = WithZero.exp (-1)`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hϖ]`. Use `set t₀ : v.adicCompletion F := (ϖ : v.adicCompletion F) ^ (-(n + 1)) with ht₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvt : Valued.v t₀ = WithZero.exp (n + 1)`. Rewrite using `[ht₀, map_zpow₀, hv, ← WithZero.exp_zsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hnot : ¬ Valued.v t₀ ≤ WithZero.exp n`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvt, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨s, hs1, hs⟩ : ∃ s : v.adicCompletion F, Valued.v s ≤ 1 ∧ χ (t₀ * s) ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hnot ((hn t₀).1 h)`. Use `⟨t₀ * s, hs, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hm'` using `le_exp_neg_one hm`. Establish `hle : Valued.v (t₀ * s * m) ≤ WithZero.exp n`. Rewrite using `[map_mul, map_mul, hvt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(hn (t₀ * s * m)).2 hle 1 (by rw [map_one])` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_edge {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (χ : AddChar (v.adicCompletion F) ℂ)
     (hχ : Continuous χ) (hne : ∃ a, χ a ≠ 1) :
@@ -333,21 +327,19 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitChart
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ e PP hI`. Take `⟨v, he⟩` from `(isSplitIdem_iff e).1 hI.1`. Set `T : AE D →+ AF D.host.F` to `(Algebra.trace (AF D.host.F) (AE D)).toAddMonoidHom.comp (AddMonoidHom.mulLeft (incA D D.host.xi0))`. Set `χ : AddChar (Fv D.host.F v) ℂ` to `ψ.compAddMonoidHom (T.comp (GlobalTheory.FinPl.SplitPoint.sec D v e))`. Establish `hχa : ∀ a, χ a = ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * GlobalTheory.FinPl.SplitPoint.sec D v e a))` using `fun a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hχ : Continuous χ` using `hψ.1.1.comp ((GlobalTheory.Core.Rk.SplitPsi.continuous_trace_mul D (incA D D.host.xi0)).comp GlobalTheory.FinPl.SplitPoint.continuous_sec)`. Establish `hκ : comp he (incA D D.host.xi0) ≠ 0`. Introduce `h0`. Establish `h1 : comp he (incA D D.host.xi0) * comp he (incA D D.host.xi0⁻¹) = 1`. Rewrite using `[← RingHom.map_mul, ← RingHom.map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), RingHom.map_one, RingHom.map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1`. Establish `hne : ∃ a, χ a ≠ 1`. Take `⟨y, hy⟩` from `GlobalTheory.StdCharLocal.psiV_ne_one D ψ hψ v`. Use `⟨(comp he (incA D D.host.xi0))⁻¹ * y, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχa, trace_generator_split_section he, mul_inv_cancel_left₀ hκ]`. Conclude with `hy`. Take `⟨c₀, hc₀, hc₀m⟩` from `exists_edge v χ hχ hne`. Use `⟨toEAf D (GlobalTheory.FinPl.SplitPoint.sec D v e c₀), ?_, ?_⟩` and prove the remaining obligations. Introduce `Z hZ r hr hZr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ' : Z = GlobalTheory.FinPl.SplitPoint.sec D v e c₀ * lift D (r : Formalism.IndefR.Datum.EAf D)` using `eq_of_toEAf hZ (by rw [RingHom.map_mul, infPart_sec, zero_mul]) (by rw [hZr, RingHom.map_mul, toEAf_lift])`. Establish `heZ : e * Z = Z`. Rewrite using `[hZ', GlobalTheory.FinPl.SplitPoint.sec_apply]`. Generalize the expression as in `fj D (singleV D.host.F v c₀) = f`. Generalize the expression as in `lift D (r : Formalism.IndefR.Datum.EAf D) = R`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, mul_comm e f, mul_assoc f e e, he.1]`. Establish `hsec : GlobalTheory.FinPl.SplitPoint.sec D v e (comp he Z) = Z`. Rewrite using `[sec_comp he, heZ]`. Establish `hcomp : comp he Z = c₀ * comp he (lift D (r : Formalism.IndefR.Datum.EAf D))`. Rewrite using `[hZ', RingHom.map_mul, comp_sec he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hc₀m _ (val_lt_one PP hI he r hr)`. Rewrite `h` using `[← hcomp, hχa, hsec]`. Conclude with `h`. Introduce `Z hZ hZc`. Establish `hZ' : Z = GlobalTheory.FinPl.SplitPoint.sec D v e c₀` using `eq_of_toEAf hZ (infPart_sec c₀) hZc`.
-
-Rewrite using `[hZ', ← hχa]`. Conclude with `hc₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_elt : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (e₁ : AE D) (PP : Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e₁ PP → ∃ c : Datum.EAf D, (∀ Z : AE D, infPart D Z = 0 → ∀ r : Formalism.L2.Herm.intAf D.host.F D.host.E, resS D.host.F PP r = 0 → toEAf D Z = c * r → ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * Z)) = 1) ∧ (∀ Z : AE D, infPart D Z = 0 → toEAf D Z = c → ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * Z)) ≠ 1) := by
   intro D ψ hψ e PP hI

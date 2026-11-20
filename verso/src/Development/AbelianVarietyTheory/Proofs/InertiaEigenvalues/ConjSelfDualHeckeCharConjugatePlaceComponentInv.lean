@@ -13,9 +13,7 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.CuspRep Glo
 namespace GlobalTheory.ConjLocCsd
 
 /- English proof (translation)
-Use extensionality with `y`. Use `set j : Hs.E ≃+* Hs.E := (Hs.conj : Hs.E ≃+* Hs.E)`. Use `set x := (RingOfIntegers.mapRingEquiv j).symm y with hx`. Establish `hy : RingOfIntegers.mapRingEquiv j x = y` using `by rw [hx, RingEquiv.apply_symm_apply]`. Establish `hyx : (y : Hs.E) = Hs.conj (x : Hs.E)` using `by rw [← hy]; rfl`.
-
-Rewrite using `[← hy, CT.mem_plMap, hy]`. Conclude with `h x y hyx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plMap_conj_eq {R : Ranks} (Hs : Host R) (w w' : HeightOneSpectrum (𝓞 Hs.E)) (h : IsConjPl Hs w w') :
     CT.plMap (Hs.conj : Hs.E ≃+* Hs.E) w = w' := by
@@ -28,15 +26,13 @@ theorem plMap_conj_eq {R : Ranks} (Hs : Host R) (w w' : HeightOneSpectrum (𝓞 
   exact h x y hyx
 
 /- English proof (translation)
-Introduce `R Hs μ hμ w w' hc`. Establish `hcsd` using `hμ.1 w w' hc`. Take `rfl` from `plMap_conj_eq Hs w w' hc`. Use `set j : Hs.E ≃+* Hs.E := (Hs.conj : Hs.E ≃+* Hs.E) with hj`. Use `set i := CT.compEquiv j w with hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous i` using `CT.continuous_compEquiv j w`. Establish `halg : ∀ x, i (algebraMap Hs.E _ x) = algebraMap Hs.E _ (Hs.conj x)` using `fun x => CT.compEquiv_algebraMap j w x`. Use `⟨i, hcont, halg, ?_⟩` and prove the remaining obligations. Take `⟨ξ, -, huniq, -⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary Hs.E μ⁻¹ w`. Use `set ψ₁ : (w.adicCompletion Hs.E)ˣ →* ℂˣ := (μ.loc (CT.plMap j w)).comp (Units.map i.toRingHom.toMonoidHom) with hψ₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : IsComp μ⁻¹ w ψ₁`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hc' : Continuous (Units.map i.toRingHom.toMonoidHom)` using `Units.continuous_map hcont`. Conclude with `(ParLaws.isSmoothChar_loc μ (CT.plMap j w)).preimage hc'`. Establish `hu : Units.map i.toRingHom.toMonoidHom (Units.map (algebraMap Hs.E (w.adicCompletion Hs.E)).toMonoidHom x) = Units.map (algebraMap Hs.E ((CT.plMap j w).adicCompletion Hs.E)).toMonoidHom (Units.map (Hs.conj : Hs.E ≃+* Hs.E).toRingHom.toMonoidHom x)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `halg (x : Hs.E)`. Rewrite using `[hψ₁, MonoidHom.comp_apply, hu]`. Use `hcsd x` as an intermediate fact. Conclude with `this`.
-
-Establish `h2 : IsComp μ⁻¹ w ((μ⁻¹).loc w)` using `⟨ParLaws.isSmoothChar_loc _ w, fun x => rfl⟩`. Establish `he : ψ₁ = (μ⁻¹).loc w` using `(huniq _ h1).trans (huniq _ h2).symm`. Introduce `x`. Use `congrArg (fun f => f x) he` as an intermediate fact. Simplify `this` using `[hψ₁, HChar.loc_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ {R : Ranks} (Hs : Host R) (μ : HChar Hs.E), IsCSD Hs μ → ∀ (w w' : HeightOneSpectrum (𝓞 Hs.E)), IsConjPl Hs w w' → ∃ i : w.adicCompletion Hs.E ≃+* w'.adicCompletion Hs.E, Continuous i ∧ (∀ x, i (algebraMap Hs.E _ x) = algebraMap Hs.E _ (Hs.conj x)) ∧ ∀ x, μ.loc w' (Units.map i.toRingHom.toMonoidHom x) = (μ.loc w x)⁻¹ := by
   intro R Hs μ hμ w w' hc

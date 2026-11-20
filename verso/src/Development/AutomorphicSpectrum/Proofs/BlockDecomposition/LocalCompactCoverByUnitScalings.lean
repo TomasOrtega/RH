@@ -15,27 +15,23 @@ section Abstract
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [ProperSpace K]
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd T := IsModuleTopology.toContinuousAdd K T`. Use `haveI : ContinuousSMul K T := IsModuleTopology.toContinuousSMul K T`. Set `c : T ≃ₗ[K] (Fin (Module.finrank K T) → K)` to `(Module.finBasis K T).equivFun`. Establish `hc : Continuous c` using `IsModuleTopology.continuous_of_linearMap c.toLinearMap`. Establish `hc' : Continuous c.symm` using `IsModuleTopology.continuous_of_linearMap c.symm.toLinearMap`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨C, hC⟩ : ∃ C, ∀ X ∈ A, ‖c X‖ ≤ C := by`. Take `⟨C, hC⟩` from `(hA.image hc).isBounded.exists_norm_le`. Conclude with `⟨C, fun X hX => hC _ ⟨X, hX, rfl⟩⟩`. Establish `hπ : 0 < ‖π‖` using `norm_pos_iff.2 h0`. Take `⟨k, hk⟩ : ∃ k : ℕ, C < (‖π‖⁻¹) ^ k` from `pow_unbounded_of_one_lt C ((one_lt_inv₀ hπ).2 h1)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `himg : c.symm '' Metric.sphere 0 1 = c ⁻¹' Metric.sphere 0 1`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hX`. Conclude with `⟨c X, hX, by simp⟩`. Use `⟨c.symm '' Metric.sphere 0 1, k, (isCompact_sphere _ _).image hc', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `(IsUltrametricDist.isClopen_sphere 0 one_ne_zero).isOpen.preimage hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[himg]`. Simplify using the standard rewrite rules. Introduce `X hX hX0`. Establish `hw : c X ≠ 0` using `by simpa using hX0`. Take `⟨l, hl⟩ : ∃ l, c X l ≠ 0` from `Function.ne_iff.1 hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Nonempty (Fin (Module.finrank K T)) := ⟨l⟩`. Take `⟨m, -, hm⟩` from `Finset.exists_mem_eq_sup (Finset.univ) Finset.univ_nonempty (fun i => ‖c X i‖₊)`. Establish `hnorm : ‖c X‖ = ‖c X m‖`. Rewrite using `[← coe_nnnorm, Pi.nnnorm_def, hm, coe_nnnorm]`. Establish `hm0 : c X m ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hnorm` using `[h, norm_zero]`. Conclude with `hw (norm_eq_zero.1 hnorm)`. Take `⟨j, hj⟩` from `hv _ hm0`. Rewrite `hj` using `[← hnorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjk : -(k : ℤ) ≤ j`. Establish `: ‖π‖ ^ j ≤ ‖π‖ ^ (-(k : ℤ))`. Rewrite using `[← hj, zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `((hC X hX).trans hk.le)`. Conclude with `(zpow_le_zpow_iff_right_of_lt_one₀ hπ h1).1 this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hY : ‖c ((π ^ (-j)) • X)‖ = 1`. Rewrite using `[map_smul, norm_smul, norm_zpow, hj, ← zpow_add₀ hπ.ne']`. Simplify using the standard rewrite rules. Use `⟨(j + k).toNat, (π ^ (-j)) • X, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`.
-
-Simplify using `using hY`. Establish `: (((j + k).toNat : ℕ) : ℤ) - k = j`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, smul_smul, ← zpow_add₀ h0]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sphere {T : Type} [AddCommGroup T] [Module K T] [Module.Finite K T]
     [TopologicalSpace T] [IsModuleTopology K T] (π : K) (h0 : π ≠ 0) (h1 : ‖π‖ < 1)
@@ -104,11 +100,9 @@ variable {K R : Type} [NormedField K] [IsUltrametricDist K] [ProperSpace K] [Com
   [Algebra K R] [Module.Finite K R] [TopologicalSpace R] [IsModuleTopology K R]
 
 /- English proof (translation)
-Use `haveI : IsDomain R := hR.isDomain`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Establish `h0 : X 0 ≠ 0` using `fun h => hX (funext fun p => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : p = 0` from `Subsingleton.elim _ _`. Conclude with `h)`. Take `⟨l, hl⟩ : ∃ l, X 0 l ≠ 0` from `Function.ne_iff.1 h0`. Establish `h1` using `congrFun hg l`. Simplify using `only [Fin.sum_univ_one, Fin.isValue, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`.
-
-Conclude with `(mul_eq_zero.1 h1).resolve_right hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_ne_zero (hR : IsField R) {M : ℕ} {X : Fin 1 → Fin M → R}
     (hX : X ≠ 0) : LinearIndependent R X := by
@@ -125,19 +119,17 @@ theorem linearIndependent_of_ne_zero (hR : IsField R) {M : ℕ} {X : Fin 1 → F
   exact (mul_eq_zero.1 h1).resolve_right hl
 
 /- English proof (translation)
-Use `haveI : Nontrivial R := ⟨hR.exists_pair_ne⟩`. Take `⟨P, k, hPc, hPo, hP0, hcov⟩` from `exists_sphere π h0 h1 hv A hA`. Set `w : Kˣ` to `Units.mk0 π h0`. Set `u : ℕ → Rˣ` to `fun i => Units.map (algebraMap K R).toMonoidHom (w ^ ((i : ℤ) - k))`. Establish `hu : ∀ i : ℕ, (u i : R) = algebraMap K R (π ^ ((i : ℤ) - k))` using `fun i => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap K R ((w ^ ((i : ℤ) - k) : Kˣ) : K) = _`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Use `⟨ℕ, inferInstance, P, u, hPc, hPo, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `X hX`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `linearIndependent_of_ne_zero hR fun h => hP0 (h ▸ hX)`. Establish `hd : 0 < Module.finrank K R` using `Module.finrank_pos`. Establish `hπ : 0 < ‖π‖₊` using `nnnorm_pos.2 h0`. Establish `hlt : ‖π‖₊ < 1` using `by exact_mod_cast h1`. Use `set e : ℕ := Module.finrank K R * (M - 1) with he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : e ≠ 0` using `Nat.mul_ne_zero hd.ne' (by omega)`. Establish `hq : ‖π‖₊ ^ e < 1` using `pow_lt_one₀ hπ.le hlt he0`. Establish `hs` using `(NNReal.summable_geometric hq).mul_left ((‖π‖₊ ^ (-(k : ℤ))) ^ e)`. Use `hs.congr fun i => ?_` and prove the remaining obligations. Rewrite using `[hu, Algebra.norm_algebraMap, nnnorm_pow, nnnorm_zpow, sub_eq_add_neg, zpow_add₀ hπ.ne', zpow_natCast, he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `X ⟨hXA, hXf⟩`. Establish `hX0 : X ≠ 0`. Introduce `h`. Establish `h2 : LinearIndependent R X` using `hXf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.ne_zero 0 (by rw [h]; rfl)`. Take `⟨i, Y, hY, hXY⟩` from `hcov X hXA hX0`. Use `Set.mem_iUnion.2 ⟨i, Y, hY, ?_⟩` and prove the remaining obligations. Rewrite using `[hXY]`. Use function extensionality and compare the values at `p l`.
-
-Simplify using `[hu, Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cover (hR : IsField R) (π : K) (h0 : π ≠ 0) (h1 : ‖π‖ < 1)
     (hv : ∀ a : K, a ≠ 0 → ∃ j : ℤ, ‖a‖ = ‖π‖ ^ j) {M : ℕ} (hM : 2 ≤ M)
@@ -183,15 +175,15 @@ theorem exists_cover (hR : IsField R) (π : K) (h0 : π ≠ 0) (h1 : ‖π‖ < 
 end Cover
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Set `ϖ : Fv F v` to `(π : Fv F v)`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Establish `hϖ0 : ϖ ≠ 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `h1 : Valued.v ϖ < 1`. Rewrite using `[hϖ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Evaluate the decidable proposition. Use `⟨ϖ, hϖ0, Valued.toNormedField.norm_lt_one_iff.2 h1, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hva : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Use `set k : ℤ := WithZero.log (Valued.v a) with hk`. Establish `hu : Valued.v (a * ϖ ^ k) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, map_zpow₀, hϖ, ← WithZero.exp_log hva, ← WithZero.exp_zsmul, ← WithZero.exp_add, ← hk, ← WithZero.exp_zero]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hn : ‖a * ϖ ^ k‖ = 1` using `le_antisymm (Valued.toNormedField.norm_le_one_iff.2 hu.le) (not_lt.1 fun h => (Valued.toNormedField.norm_lt_one_iff.1 h).ne hu)`. Establish `hϖn : ‖ϖ‖ ≠ 0` using `norm_ne_zero_iff.2 hϖ0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[norm_mul, norm_zpow]`. Rewrite using `[zpow_neg]`. Conclude with `eq_inv_of_mul_eq_one_left hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniformizer {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ π : Fv F v, π ≠ 0 ∧ ‖π‖ < 1 ∧ ∀ a : Fv F v, a ≠ 0 → ∃ j : ℤ, ‖a‖ = ‖π‖ ^ j := by
@@ -221,9 +213,7 @@ theorem exists_uniformizer {F : Type} [Field F] [NumberField F] (v : HeightOneSp
   exact eq_inv_of_mul_eq_one_left hn
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h M hM v hF A hA`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h.2.2.1]; omega)`. Use `haveI : ProperSpace (Fv F v) := GlobalTheory.CompanionTheory.DictLoc.properSpace_Fv v`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Take `⟨π, h0, h1, hv⟩` from `exists_uniformizer v`.
-
-Conclude with `exists_cover hF π h0 h1 hv hM A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coverF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ), 2 ≤ M → ∀ (v : HeightOneSpectrum (𝓞 F)), IsField (Fv F v ⊗[F] E) → ∀ A : Set (Fin 1 → Fin M → Fv F v ⊗[F] E), IsCompact A → ∃ (ι : Type) (_ : Countable ι) (P : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) (u : ι → (Fv F v ⊗[F] E)ˣ), IsCompact P ∧ IsOpen P ∧ P ⊆ {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} ∧ Summable (fun i => ‖Algebra.norm (Fv F v) (u i : Fv F v ⊗[F] E)‖₊ ^ (M - 1)) ∧ A ∩ {X : Fin 1 → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X} ⊆ ⋃ i, (fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u i : Fv F v ⊗[F] E) * X p k) '' P := by
   intro F E _ _ _ _ _ σ h M hM v hF A hA

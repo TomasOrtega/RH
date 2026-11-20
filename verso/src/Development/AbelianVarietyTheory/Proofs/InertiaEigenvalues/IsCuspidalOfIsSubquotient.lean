@@ -21,7 +21,7 @@ namespace GlobalTheory.JacFactor
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `⟨h.isSmooth hτ.1, fun s d e he => ?_⟩` and prove the remaining obligations. Take `⟨S, f, hf⟩` from `GlobalTheory.JacquetExact.isSubquotient_jac e hτ.1 h`. Use `haveI := hτ.2 s d e he`. Conclude with `hf.subsingleton`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCuspidal_of_isSubquotient {n V W : Type} [Fintype n] [DecidableEq n] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {π : Representation ℂ (GL n k) V} {τ : Representation ℂ (GL n k) W}
@@ -32,11 +32,11 @@ theorem isCuspidal_of_isSubquotient {n V W : Type} [Fintype n] [DecidableEq n] [
   exact hf.subsingleton
 
 /- English proof (translation)
-Set `f : kˣ →* ℂ` to `{ toFun := fun z => ((‖(ω z : ℂ)‖ ^ (-(b : ℝ)⁻¹) : ℝ) : ℂ) map_one' := by simp map_mul' := fun x y => by`. Rewrite using `[map_mul, Units.val_mul, norm_mul, Real.mul_rpow (norm_nonneg _) (norm_nonneg _), Complex.ofReal_mul] }`. Use `⟨f.toHomUnits, Subgroup.isOpen_mono (H₁ := ω.ker) (fun z hz => ?_) hω, fun z => ?_⟩` and prove the remaining obligations. Use `Units.ext ?_` and prove the remaining obligations. Establish `hz' : ω z = 1` using `hz`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ((‖(ω z : ℂ)‖ ^ (-(b : ℝ)⁻¹) : ℝ) : ℂ) = 1`. Rewrite using `[hz']`. Simplify using the standard rewrite rules. Establish `h0 : 0 < ‖(ω z : ℂ)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Establish `e : ((f.toHomUnits z : ℂˣ) : ℂ) = ((‖(ω z : ℂ)‖ ^ (-(b : ℝ)⁻¹) : ℝ) : ℂ)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val, e, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg h0.le _), ← Real.rpow_natCast, ← Real.rpow_mul h0.le, neg_mul, inv_mul_cancel₀ (by positivity), Real.rpow_neg_one, m …`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_norm {ω : kˣ →* ℂˣ} (hω : IsSmoothChar ω) {b : ℕ} (hb : 0 < b) :
     ∃ ψ : kˣ →* ℂˣ, IsSmoothChar ψ ∧ ∀ z, ‖((ω * ψ ^ b) z : ℂ)‖ = 1 := by
@@ -57,27 +57,25 @@ theorem exists_root_norm {ω : kˣ →* ℂˣ} (hω : IsSmoothChar ω) {b : ℕ}
       neg_mul, inv_mul_cancel₀ (by positivity), Real.rpow_neg_one, mul_inv_cancel₀ h0.ne']
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_ne (0 : X)`. Set `S : Subrepresentation τ` to `⟨Submodule.span ℂ (Set.range fun g => τ g x), fun g v hv => by`. Establish `hle : Submodule.span ℂ (Set.range fun g => τ g x) ≤ (Submodule.span ℂ (Set.range fun g => τ g x)).comap (τ g)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g', rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨g * g', by simp⟩`. Conclude with `hle hv⟩`. Establish `hxS : x ∈ S.toSubmodule` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hnt : Nontrivial S.toSubmodule` using `⟨⟨⟨x, hxS⟩, 0, fun h => hx (congrArg Subtype.val h)⟩⟩`. Take `⟨Y, _, _, ρ, hρi, p, hp⟩` from `GlobalTheory.T.exists_irreducible_quotient_finitelyGenerated_rep _ _ S.toRepresentation {⟨x, hxS⟩} hnt (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.map_injective_of_injective S.toSubmodule.injective_subtype ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype]`. Use `show _ = Submodule.span ℂ (Set.range fun g => τ g x)`. Use `congr 1`. Use extensionality with `y`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨g, v, hv, rfl⟩, rfl⟩`. Rewrite using `[Finset.mem_singleton.1 hv]`. Conclude with `⟨g, rfl⟩`. Introduce and unpack `⟨g, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, ⟨g, _, Finset.mem_singleton_self _, rfl⟩, rfl⟩)`. Establish `hρc : IsCuspidal ρ` using `isCuspidal_of_isSubquotient hτ ⟨S, p, hp⟩`. Establish `hSs : IsSmooth S.toRepresentation` using `IsSubquotient.isSmooth ⟨S, Representation.IntertwiningMap.id _, Function.surjective_id⟩ hτ.1`. Take `⟨ω, hω, hωc⟩` from `GlobalTheory.LocGL.exists_smooth_hasCentralChar hρc.1 hρi`. Take `⟨ψ, hψ, hψ1⟩` from `exists_root_norm hω hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : IsCuspidal (twist ρ (detChar (Fin b) ψ))` using `GlobalTheory.LocGL.isCuspidal_twist hρc hψ`. Establish `hsc` using `GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal k b Y _ hc'`. Use `haveI : Nontrivial Y := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hρi`. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨l, hl, hly⟩` from `GlobalTheory.T.exists_smoothDual_ne_zero_at_vector _ _ (twist ρ (detChar (Fin b) ψ)) (fun U hU => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨γ, hγ, h⟩` from `GlobalTheory.CentralExponent.exists_cong_subset (n := Fin b) hU`. Conclude with `⟨_, GlobalTheory.CentralExponent.isOpen_cong γ hγ, GlobalTheory.CentralExponent.isCompact_cong γ hγ, h⟩) hc'.1 y hy`. Establish `hu` using `GlobalTheory.T.isUnitarisableComplexRep_of_supercuspidal_unitary_center _ _ _ l hl (fun h => hly (by rw [h]; rfl)) (GlobalTheory.LocGL.isIrreducible_twist hρi _) hsc (fun z hz => by`. Rewrite `hz` using `[Matrix.GeneralLinearGroup.center_eq_range_scalar]`. Take `⟨z, rfl⟩` from `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `h` using `GlobalTheory.LocGL.hasCentralChar_twist hωc ψ z`. Rewrite `h` using `[Fintype.card_fin]`. Conclude with `⟨_, hψ1 z, h⟩)`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_nonzero_intertwiningMap_from_unitary_supercuspidal _ _ _ (twist S.toRepresentation (detChar (Fin b) ψ)) _ (twistMap p _) (isSmooth_twist hSs hψ.detChar) hsc hu (fun z hz' => by`. Take `⟨c, hc⟩` from `hz z hz'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(detChar (Fin b) ψ z : ℂ) * c, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[twist_apply, mul_smul]`. Conclude with `congrArg _ (Subtype.ext (hc w)))`. Use the proof step `(fun h => by`. Take `⟨w, hw⟩` from `hp y`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : twistMap p (detChar (Fin b) ψ) w = y` using `hw`. Rewrite `h1` using `[h]`. Conclude with `hy h1.symm)`. Use `⟨Y, _, _, ρ, hρi, hρc, S.toSubmodule.subtype ∘ₗ ι.toLinearMap, fun h => hι ?_, fun g v => ?_⟩` and prove the remaining obligations. Use extensionality with `v`.
-
-Conclude with `LinearMap.congr_fun h v`. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ ι g v`. Rewrite `h1` using `[twist_apply, twist_apply, map_smul]`. Conclude with `congrArg Subtype.val (smul_right_injective _ (Units.ne_zero _) h1)`.
+A detailed English derivation is pending.
 -/
 theorem exists_irreducible_sub {b : ℕ} (hb : 0 < b) {X : Type} [AddCommGroup X] [Module ℂ X] [Nontrivial X]
     (τ : Representation ℂ (GL (Fin b) k) X) (hτ : IsCuspidal τ)
@@ -146,15 +144,13 @@ theorem exists_irreducible_sub {b : ℕ} (hb : 0 < b) {X : Type} [AddCommGroup X
     exact congrArg Subtype.val (smul_right_injective _ (Units.ne_zero _) h1)
 
 /- English proof (translation)
-Establish `hex : ∃ b : ℕ, 0 < b ∧ ∃ (a : ℕ) (h : a + b = n), Nontrivial (Jacquet π (unipRad k (two (stdSum h))))` using `⟨n, hn, 0, zero_add n, GlobalTheory.SmGL.JacquetEmptyFirstBlock.jacquet_nontrivial k n V π hi _⟩`. Take `⟨hb, a, h, hnt⟩` from `Nat.find_spec hex`. Establish `hmin` using `fun t (ht : t < Nat.find hex) => Nat.find_min hex ht`. Generalize the expression as in `Nat.find hex = b at hb h hnt hmin`. Establish `hJc` using `GlobalTheory.T.isCuspidal_jacquetModule_second_block_of_vanishing k a b n h V π hs fun r t h' h0 ht => not_nontrivial_iff_subsingleton.1 fun h1 => hmin t ht ⟨h0, r, h', h1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Take `⟨s, hspan⟩` from `GlobalTheory.T.normalizedJacquetTwoBlocks_finitelyGenerated k a b n h V π hs hi`. Take `⟨X, _, _, τ, hτi, f, hf⟩` from `GlobalTheory.T.exists_irreducible_quotient_finitelyGenerated_rep _ _ _ s hnt hspan`. Establish `hτs : IsSmooth τ` using `(IsSubquotient.of_surjective f hf).isSmooth (isSmooth_jac₂ _ hs)`. Establish `hτc : IsCuspidal (k` using `k) (n := Fin b) (τ.comp (MonoidHom.inr _ _)) := isCuspidal_of_isSubquotient hJc (IsSubquotient.of_surjective (compMap f _) hf)`. Use `haveI : Nontrivial X := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hτi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := GlobalTheory.LocGL.secondCountableTopology_GL k (Fin a)`. Use `haveI := GlobalTheory.LocGL.secondCountableTopology_GL k (Fin b)`. Take `⟨Y, _, _, ρ, hρi, hρc, hι⟩` from `exists_irreducible_sub hb (τ.comp (MonoidHom.inr _ _)) hτc fun z hz => GlobalTheory.LocGL.exists_eq_smul_of_isSmooth hτs hτi ⟨τ (1, z), fun g => by`. Rewrite using `[← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext (by simp) (Subgroup.mem_center_iff.1 hz g.2).symm⟩`. Take `⟨W, _, _, σ, hσs, hσi, ⟨φ⟩⟩` from `GlobalTheory.T.exists_equiv_exteriorTensor_of_irreducible_prod_rep _ _ X Y τ ρ hτs hτi hρi (GlobalTheory.T.injective_tensor_lift_equivariant_maps_of_irreducible _ X Y (τ.comp (MonoidHom.inr _ _)) ρ hρi (GlobalTheory.LocGL.schur_GL hρc.1 hρi)) hι`. Use `⟨a, b, h, W, Y, _, _, _, _, σ, ρ, hb, hσs, hσi, hρc.1, hρi, hρc, φ.toIntertwiningMap.comp f, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_ne (0 : X)`. Take `⟨w, rfl⟩` from `hf x`.
-
-Establish `h1 : φ (f w) = 0` using `congrArg (fun F => F w) h0`. Conclude with `hx ((map_eq_zero_iff φ φ.injective).1 h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_map_jac₂ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V)

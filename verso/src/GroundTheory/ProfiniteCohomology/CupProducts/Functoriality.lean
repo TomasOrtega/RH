@@ -13,7 +13,7 @@ universe u
 variable {k G H : Type u} [CommRing k] [Group G] [Group H]
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.induction with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[Fin.partialProd_succ, Fin.partialProd_succ, ih, map_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem partialProd_comp_monoidHom {M N : Type*} [Monoid M] [Monoid N] {m : ℕ} (φ : M →* N)
     (x : Fin m → M) (j : Fin (m + 1)) :
@@ -65,9 +65,9 @@ variable {A A' B B' : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep A'] [IsDiscr
 omit [TopologicalSpace H] [IsTopologicalGroup H] in
 
 /- English proof (translation)
-Proceed by induction on `x using cohomology_induction_on with | h x => ?_`. Proceed by induction on `y using cohomology_induction_on with | h y => ?_`. Rewrite using `[cup_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cup_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[cochainOf_cocycleι_cyclesMap, cocycleι_cupCocycles, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cyclesMap]`. Use function extensionality and compare the values at `s`. Conclude with `tensorHom_cupCochain f g h _ _ s`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_tensorHom_cup (f : A ⟶ A') (g : B ⟶ B') (h : p + q = n)
     (x : cohomology A p) (y : cohomology B q) :
@@ -87,7 +87,7 @@ theorem cohomologyMap_tensorHom_cup (f : A ⟶ A') (g : B ⟶ B') (h : p + q = n
 omit [TopologicalSpace H] [IsTopologicalGroup H] in
 
 /- English proof (translation)
-Use `cohomologyMap_tensorHom_cup f (𝟙 B) h x y` as an intermediate fact. Rewrite `this` using `[cohomologyMap_id, tensorHom_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cohomologyMap_whiskerRight_cup (f : A ⟶ A') (h : p + q = n) (x : cohomology A p)
     (y : cohomology B q) :
@@ -103,9 +103,9 @@ variable (φ : H →* G) (hφ : Continuous φ) {A B : Rep.{u} k G} {A' B' : Rep.
   [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep A'] [IsDiscreteRep B'] {p q n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `x using cohomology_induction_on with | h x => ?_`. Proceed by induction on `y using cohomology_induction_on with | h y => ?_`. Rewrite using `[cup_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ, cup_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cocycleι_cupCocycles, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong]`. Use function extensionality and compare the values at `s`. Rewrite using `[cupCochain_apply, cupCochain_apply, resTensorHom_tmul, partialProd_comp_monoidHom]`. Conclude with `congrArg (TensorProduct.tmul k _) (Rep.hom_comm_apply g _ _)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_resTensorHom_cup (f : Rep.res φ A ⟶ A') (g : Rep.res φ B ⟶ B')
     (h : p + q = n) (x : cohomology A p) (y : cohomology B q) :
@@ -131,9 +131,9 @@ section Restriction
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] {p q n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `x using cohomology_induction_on with | h x => ?_`. Proceed by induction on `y using cohomology_induction_on with | h y => ?_`. Rewrite using `[cohomologyRes_eq, cohomologyRes_eq, cohomologyRes_eq, cup_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ, cup_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+Proceed by induction. Proceed by induction. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesMapAlong, cocycleι_cupCocycles, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong]`. Use function extensionality and compare the values at `s`. Simplify using `only [cupCochain_apply]`. Rewrite using `[partialProd_comp_monoidHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyMap_resTensorIso_cohomologyRes_cup (S : Subgroup G) (h : p + q = n)
     (x : cohomology A p) (y : cohomology B q) :

@@ -103,9 +103,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hg : cT (σ : E →+* E) ((g : GL n E) : Matrix n n E) * J * ((g : GL n E) : Matrix n n E) = J` using `g.2`. Use `show cT (sigR σ R) ((inclE (F := F) R).mapMatrix ((g : GL n E) : Matrix n n E)) * J.map (inclE (F := F) R) * (inclE (F := F) R).mapMatrix ((g : GL n E) : Matrix n n E) = J.map (inclE (F := F) R)`. Establish `key : cT (sigR σ R) ((inclE (F` using `F) R).mapMatrix ((g : GL n E) : Matrix n n E)) = (inclE (F := F) R).mapMatrix (cT (σ : E →+* E) ((g : GL n E) : Matrix n n E)) := by first`. Consider the case `(unfold cT; ext i j; simp [sigR, inclE]; done)`. Consider the case `(unfold cT; ext i j; simp [sigR, inclE, Matrix.conjTranspose_apply]; done)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(unfold cT sigR inclE; done)`. Rewrite using `[key]`. Establish `h2` using `congrArg (inclE (F := F) R).mapMatrix hg`. Simplify `h2` using `only [map_mul, RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bc_mem_UPts (σ : E →ₐ[F] E) (J : Matrix n n E) (R : Type) [CommRing R] [Algebra F R]
     (g : UJ (σ : E →+* E) J) : bc (inclE (F := F) R) (g : GL n E) ∈ UPts σ J R := by
@@ -151,14 +151,14 @@ section Proofs
 variable {Γ Gi Gf : Type} [Group Γ] [Group Gi] [Group Gf] (ιf : Γ →* Gf) (K : Subgroup Gf)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Equi {k : Type} [Field k] {W : Type} [AddCommGroup W] [Module k W]
     (ρ : Representation k Γ W) (χ : K →* kˣ) (f : Gf → W) :
     f ∈ Equi k ιf K ρ χ ↔ ∀ γ : Γ, ∀ x : Gf, ∀ κ : K, f (ιf γ * x * κ) = (χ κ : k) • ρ γ (f x) := Iff.rfl
 
 /- English proof (translation)
-Introduce `x γ hx` and use `hs x γ (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stabTriv_mono {K K0 : Subgroup Gf} (h : K ≤ K0) (hs : StabTriv ιf K0) : StabTriv ιf K := fun x γ hx => hs x γ (h hx)
 
@@ -170,7 +170,7 @@ theorem equi_subtype {k : Type} [Field k] {W : Type} [AddCommGroup W] [Module k 
     Equi k Γ'.subtype K ρ χ = Formalism.L2.SG.ClassAct.AMFChi k Γ' K ρ χ := rfl
 
 /- English proof (translation)
-Take `⟨h, hh, κ, hκ, e⟩` from `(DoubleCoset.eq _ _ _ _).1 (hs (DoubleCoset.mk ιf.range K g))`. Take `⟨γ, rfl⟩` from `MonoidHom.mem_range.1 hh`. Conclude with `⟨(γ, ⟨κ, hκ⟩), e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_dec (s : Classes ιf K → Gf) (hs : ∀ c, DoubleCoset.mk ιf.range K (s c) = c)
     (g : Gf) : ∃ p : Γ × K, g = ιf p.1 * s (DoubleCoset.mk ιf.range K g) * (p.2 : Gf) := by
@@ -179,9 +179,9 @@ theorem exists_dec (s : Classes ιf K → Gf) (hs : ∀ c, DoubleCoset.mk ιf.ra
   exact ⟨(γ, ⟨κ, hκ⟩), e⟩
 
 /- English proof (translation)
-Establish `h1 : x⁻¹ * ιf (γ'⁻¹ * γ) * x = (κ' : Gf) * (κ : Gf)⁻¹`. Rewrite using `[map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : x⁻¹ * ιf (γ'⁻¹ * γ) * x ∈ K`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `K.mul_mem κ'.2 (K.inv_mem κ.2)`. Establish `hγ : γ'⁻¹ * γ = 1` using `hst x _ hmem`. Rewrite `hγ` using `[inv_mul_eq_one]`. Substitute `hγ` using the available equality. Conclude with `⟨rfl, Subtype.ext (mul_left_cancel e)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dec_unique (hst : StabTriv ιf K) (x : Gf) (γ γ' : Γ) (κ κ' : K)
     (e : ιf γ * x * κ = ιf γ' * x * κ') : γ = γ' ∧ κ = κ' := by
@@ -205,9 +205,9 @@ def extF (s : Classes ιf K → Gf) (hs : ∀ c, DoubleCoset.mk ιf.range K (s c
     ρ (Classical.choose (exists_dec ιf K s hs g)).1 (w (DoubleCoset.mk ιf.range K g))
 
 /- English proof (translation)
-Establish `hc : DoubleCoset.mk ιf.range K g = c`. Rewrite using `[e]`. Conclude with `((DoubleCoset.eq _ _ _ _).2 ⟨(ιf γ)⁻¹, ιf.range.inv_mem (MonoidHom.mem_range.2 ⟨γ, rfl⟩), ((κ : K) : Gf)⁻¹, K.inv_mem κ.2, by group⟩).trans (hs c)`. Establish `spec` using `Classical.choose_spec (exists_dec ιf K s hs g)`. Unfold `extF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Classical.choose (exists_dec ιf K s hs g) = p at spec ⊢`. Rewrite `spec`, the goal using `[hc]`. Take `⟨h1, h2⟩` from `dec_unique ιf K hst (s c) _ _ _ _ (spec.symm.trans e)`. Rewrite using `[h1, h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extF_eq (hst : StabTriv ιf K) (s : Classes ιf K → Gf)
     (hs : ∀ c, DoubleCoset.mk ιf.range K (s c) = c) (ρ : Representation k Γ W) (χ : K →* kˣ)
@@ -225,9 +225,9 @@ theorem extF_eq (hst : StabTriv ιf K) (s : Classes ιf K → Gf)
   rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[mem_Equi]`. Introduce `γ x κ`. Take `⟨p, hp⟩` from `exists_dec ιf K s hs x`. Establish `hx` using `extF_eq ιf K hst s hs ρ χ w _ x p.1 p.2 hp`. Establish `hy` using `extF_eq ιf K hst s hs ρ χ w (DoubleCoset.mk ιf.range K x) (ιf γ * x * κ) (γ * p.1) (p.2 * κ) (by conv_lhs => rw [hp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, Subgroup.coe_mul, mul_assoc])`. Rewrite using `[hy, hx, map_mul, map_mul, Units.val_mul, Module.End.mul_apply, map_smul, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extF_mem (hst : StabTriv ιf K) (s : Classes ιf K → Gf)
     (hs : ∀ c, DoubleCoset.mk ιf.range K (s c) = c) (ρ : Representation k Γ W) (χ : K →* kˣ)
@@ -263,7 +263,7 @@ def decEquiv (hst : StabTriv ιf K) (s : Classes ιf K → Gf)
     simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c => Quotient.out c, fun c => Quotient.out_eq' c⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_doubleCoset_section {Γ' Gf' : Type} [Group Γ'] [Group Gf'] (ιf' : Γ' →* Gf')
     (K' : Subgroup Gf') :
@@ -271,9 +271,7 @@ private theorem exists_doubleCoset_section {Γ' Gf' : Type} [Group Γ'] [Group G
   ⟨fun c => Quotient.out c, fun c => Quotient.out_eq' c⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_doubleCoset_section ιf K`. Use `haveI := Fintype.ofFinite (Classes ιf K)`. Set `e` to `decEquiv ιf K hst s hs ρ χ`. Use `haveI : FiniteDimensional k (Equi k ιf K ρ χ) := LinearEquiv.finiteDimensional e.symm`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e.finrank_eq, Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card, mul_comm]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equi_dim (hst : StabTriv ιf K) [Finite (Classes ιf K)] [FiniteDimensional k W]
     (ρ : Representation k Γ W) (χ : K →* kˣ) :
@@ -299,9 +297,9 @@ def toEqui (ιi : Γ →* Gi) (ψ : K →* kˣ) (π : Representation k Gi V)
   (LinearMap.proj ((1 : Gi), x)).comp (T : V →ₗ[k] (Gi × Gf → k))
 
 /- English proof (translation)
-Take `⟨hT1, hT2⟩` from `T.2`. Rewrite using `[mem_Equi]`. Introduce `γ x κ`. Use extensionality with `ξ`. Take `⟨hF1, hF2⟩` from `hT1 ξ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `e1 : ((1 : Gi), ιf γ * x * (κ : Gf)) = ((1 : Gi), ιf γ * x) * (1, (κ : Gf))` using `by simp`. Establish `e2 : ((1 : Gi), ιf γ * x) = (ιi γ, ιf γ) * (ιi γ⁻¹, x)` using `by simp`. Establish `e3 : (ιi γ⁻¹, x) = ((1 : Gi), x) * (ιi γ⁻¹, (1 : Gf))` using `by simp`. Use `show (T : V →ₗ[k] (Gi × Gf → k)) ξ (1, ιf γ * x * κ) = (ψ κ : k) * (T : V →ₗ[k] (Gi × Gf → k)) (π (ιi γ⁻¹) ξ) (1, x)`. Rewrite using `[e1, hF2, e2, hF1, e3, ← hT2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toEqui_mem (ιi : Γ →* Gi) (ψ : K →* kˣ) (π : Representation k Gi V)
     (T : Cols k ιi ιf K ψ π) : toEqui ιf K ιi ψ π T ∈ Equi k ιf K (dualRep ιi π) ψ := by
@@ -324,11 +322,11 @@ def ofEquiFun (ιi : Γ →* Gi) (π : Representation k Gi V) (f : Gf → Dual k
   map_smul' c ξ := by funext y; simp
 
 /- English proof (translation)
-Establish `hf` using `(mem_Equi ιf K (dualRep ιi π) ψ _).1 f.2`. Use `⟨fun ξ => ⟨fun γ y => ?_, fun y κ => ?_⟩, fun h ξ y => ?_⟩` and prove the remaining obligations. Use `hf γ y.2 1` as an intermediate fact. Simplify using `only [OneMemClass.coe_one, mul_one, map_one, Units.val_one, one_smul] at this`. Use `show (f : Gf → Dual k V) (ιf γ * y.2) (π (ιi γ * y.1) ξ) = (f : Gf → Dual k V) y.2 (π y.1 ξ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `show (f : Gf → Dual k V) y.2 (π (ιi γ⁻¹) (π (ιi γ * y.1) ξ)) = (f : Gf → Dual k V) y.2 (π y.1 ξ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, map_inv, inv_mul_cancel_left]`. Use `hf 1 y.2 κ` as an intermediate fact. Simplify using `only [map_one, one_mul] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (f : Gf → Dual k V) (y.2 * κ) (π (y.1 * 1) ξ) = (ψ κ : k) * (f : Gf → Dual k V) y.2 (π y.1 ξ)`. Rewrite using `[this, mul_one, Module.End.one_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `show (f : Gf → Dual k V) y.2 (π y.1 (π h ξ)) = (f : Gf → Dual k V) (y.2 * 1) (π (y.1 * h) ξ)`. Rewrite using `[mul_one, map_mul, Module.End.mul_apply]`.
+A detailed English derivation is pending.
 -/
 theorem ofEqui_mem (ιi : Γ →* Gi) (ψ : K →* kˣ) (π : Representation k Gi V)
     (f : Equi k ιf K (dualRep ιi π) ψ) : ofEquiFun ιi π (f : Gf → Dual k V) ∈ Cols k ιi ιf K ψ π := by
@@ -377,7 +375,7 @@ variable {Γ Gi Gf : Type} [Group Γ] [Group Gi] [Group Gf] (ιf : Γ →* Gf) (
   {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Establish `h2 : z * starRingEnd ℂ z = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, h]`. Evaluate the numerical expressions. Establish `h3 : starRingEnd ℂ z = z⁻¹` using `eq_inv_of_mul_eq_one_right h2`. Rewrite using `[← h3, Complex.conj_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inv_norm_one (z : ℂ) (h : ‖z‖ = 1) : starRingEnd ℂ z⁻¹ = z := by
   have h2 : z * starRingEnd ℂ z = 1 := by
@@ -386,7 +384,7 @@ theorem conj_inv_norm_one (z : ℂ) (h : ‖z‖ = 1) : starRingEnd ℂ z⁻¹ =
   rw [← h3, Complex.conj_conj]
 
 /- English proof (translation)
-Use `hπ h v (π h⁻¹ w)` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inner_unitary (π : Representation ℂ Gi V)
     (hπ : ∀ h : Gi, ∀ v w : V, inner ℂ (π h v) (π h w) = inner ℂ v w) (h : Gi) (v w : V) :
@@ -398,7 +396,7 @@ def sharpFun (f : Gf → Dual ℂ V) (x : Gf) : V :=
   (toDual ℂ V).symm (LinearMap.toContinuousLinearMap (f x))
 
 /- English proof (translation)
-Unfold `sharpFun`. Rewrite using `[toDual_symm_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inner_sharpFun (f : Gf → Dual ℂ V) (x : Gf) (ξ : V) :
     inner ℂ (sharpFun f x) ξ = f x ξ := by
@@ -407,9 +405,9 @@ theorem inner_sharpFun (f : Gf → Dual ℂ V) (x : Gf) (ξ : V) :
   rfl
 
 /- English proof (translation)
-Establish `hf` using `(mem_Equi ιf K (dualRep ιi π) ψ _).1 f.2`. Use `show _ ∈ Equi ℂ ιf K (π.comp ιi) ψ⁻¹`. Rewrite using `[mem_Equi]`. Introduce `γ x κ`. Apply `ext_inner_right ℂ` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ`. Rewrite using `[inner_sharpFun, hf γ x κ, inner_smul_left, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, conj_inv_norm_one _ (hψ κ), MonoidHom.comp_apply, inner_unitary π hπ, inner_sharpFun, ← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sharpFun_mem (ιi : Γ →* Gi) (ψ : K →* ℂˣ) (π : Representation ℂ Gi V)
     (hπ : ∀ h : Gi, ∀ v w : V, inner ℂ (π h v) (π h w) = inner ℂ v w)
@@ -426,9 +424,9 @@ theorem sharpFun_mem (ιi : Γ →* Gi) (ψ : K →* ℂˣ) (π : Representation
   rfl
 
 /- English proof (translation)
-Establish `hφ` using `(mem_Equi ιf K (π.comp ιi) ψ⁻¹ _).1 φ.2`. Rewrite using `[mem_Equi]`. Introduce `γ x κ`. Use extensionality with `ξ`. Use `show inner ℂ ((φ : Gf → V) (ιf γ * x * κ)) ξ = (ψ κ : ℂ) * inner ℂ ((φ : Gf → V) x) (π (ιi γ⁻¹) ξ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ γ x κ, inner_smul_left, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, conj_inv_norm_one _ (hψ κ), MonoidHom.comp_apply, inner_unitary π hπ, ← map_inv ιi γ]`.
+A detailed English derivation is pending.
 -/
 theorem innerFun_mem (ιi : Γ →* Gi) (ψ : K →* ℂˣ) (π : Representation ℂ Gi V)
     (hπ : ∀ h : Gi, ∀ v w : V, inner ℂ (π h v) (π h w) = inner ℂ v w)
@@ -446,15 +444,13 @@ end SharpProof
 
 open InnerProductSpace in
 /- English proof (translation)
-Introduce `Γ Gi Gf _ _ _ V _ _ _ ιi ιf K ψ π hπ hψ`. Set `F : Equi ℂ ιf K (dualRep ιi π) ψ ≃ Sharp ℂ ιi ιf K π ψ` to `{ toFun := fun f => ⟨sharpFun (f : Gf → Module.Dual ℂ V), sharpFun_mem ιf K ιi ψ π hπ hψ f⟩ invFun := fun φ => ⟨fun x => (innerₛₗ ℂ ((φ : Gf → V) x) : Module.Dual ℂ V), innerFun_mem ιf K ιi ψ π hπ hψ φ⟩ left_inv := fun f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use extensionality with `ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Conclude with `inner_sharpFun _ x ξ`. Use `right_inv := fun φ => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Apply `ext_inner_right ℂ` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ξ`. Conclude with `inner_sharpFun _ x ξ }`. Use `⟨(colsEquiv ιf K ιi ψ π).toEquiv.trans F, fun T x ξ => (inner_sharpFun (toEqui ιf K ιi ψ π T) x ξ).symm, fun c T => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Apply `ext_inner_right ℂ` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ξ`. Establish `h1` using `inner_sharpFun (toEqui ιf K ιi ψ π (c • T)) x ξ`. Establish `h2` using `inner_sharpFun (toEqui ιf K ιi ψ π T) x ξ`. Use `show inner ℂ (sharpFun (toEqui ιf K ιi ψ π (c • T)) x) ξ = inner ℂ ((starRingEnd ℂ c) • sharpFun (toEqui ιf K ιi ψ π T) x) ξ`. Rewrite using `[h1, inner_smul_left, Complex.conj_conj, h2]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sharp_bijective : SharpBij := by
   intro Γ Gi Gf _ _ _ V _ _ _ ιi ιf K ψ π hπ hψ
@@ -486,16 +482,16 @@ theorem sharp_bijective : SharpBij := by
   rfl
 
 /- English proof (translation)
-Introduce `Γ Gi Gf _ _ _ k _ V _ _ ιi ιf K ψ π s hs hst`. Conclude with `⟨(colsEquiv ιf K ιi ψ π).trans (decEquiv ιf K hst s hs (dualRep ιi π) ψ), fun T c ξ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem columns_decomposition : ColsDecomp := by
   intro Γ Gi Gf _ _ _ k _ V _ _ ιi ιf K ψ π s hs hst
   exact ⟨(colsEquiv ιf K ιi ψ π).trans (decEquiv ιf K hst s hs (dualRep ιi π) ψ), fun T c ξ => rfl⟩
 
 /- English proof (translation)
-Introduce `Γ Gi Gf _ _ _ k _ V _ _ ιi ιf K K0 ψ π hK hst hfin hV`. Take `⟨h1, h2⟩` from `equi_dim ιf K (stabTriv_mono ιf hK hst) (dualRep ιi π) ψ`. Set `e` to `colsEquiv ιf K ιi ψ π`. Use `haveI := h1`. Use `⟨LinearEquiv.finiteDimensional e.symm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.finrank_eq, h2, Subspace.dual_finrank_eq]`.
+A detailed English derivation is pending.
 -/
 theorem columns_dimension : ColsDim := by
   intro Γ Gi Gf _ _ _ k _ V _ _ ιi ιf K K0 ψ π hK hst hfin hV
@@ -506,14 +502,14 @@ theorem columns_dimension : ColsDim := by
   rw [e.finrank_eq, h2, Subspace.dual_finrank_eq]
 
 /- English proof (translation)
-Introduce `Γ Gi Gf _ _ _ k _ V _ _ ιi ιf K K0 ψ π hK hst hfin hV`. Conclude with `equi_dim ιf K (stabTriv_mono ιf hK hst) (π.comp ιi) ψ⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sharp_dimension : SharpDim := by
   intro Γ Gi Gf _ _ _ k _ V _ _ ιi ιf K K0 ψ π hK hst hfin hV
   exact equi_dim ιf K (stabTriv_mono ιf hK hst) (π.comp ιi) ψ⁻¹
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ n _ _ σ J K K0 ψ V _ _ π hK hst hfin hV`. Conclude with `columns_dimension _ _ _ ℂ V _ _ K K0 ψ π hK hst hfin hV`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem columns_dimension_unitary : ColsDimU := by
   intro F E _ _ _ _ n _ _ σ J K K0 ψ V _ _ π hK hst hfin hV

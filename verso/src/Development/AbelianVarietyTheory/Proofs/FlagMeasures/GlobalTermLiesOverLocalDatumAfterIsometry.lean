@@ -20,13 +20,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Mat
 
 /- English proof (translation)
-Take `⟨hA0, hA1⟩` from `hA`. Take `⟨hB0, hB1⟩` from `hB`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_or_ge c a with h | h` into its components or cases. Rewrite using `[hA0 a c h, zero_mul]`. Rewrite using `[hB0 c b (lt_of_lt_of_le hab h), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hA1, hB1, one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[hA0 a c h, zero_mul]`. Rewrite using `[hB0 c a h, mul_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ a) h`.
+A detailed English derivation is pending.
 -/
 theorem uni_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : Uni A) (hB : Uni B) :
     Uni (A * B) := by
@@ -48,9 +48,9 @@ theorem uni_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) 
       exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Take `⟨A, hA, hAc⟩` from `h1`. Take `⟨B, hB, hBc⟩` from `h2`. Establish `hAc' : ∀ b, g b = ∑ a, A a b • f a` using `hAc`. Establish `hBc' : ∀ b, h b = ∑ a, B a b • g a` using `hBc`. Use `⟨A * B, uni_mul hA hB, fun b => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hBc' b]`. Simplify using `only [hAc', Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => by rw [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_trans {K W : Type} [CommRing K] [AddCommGroup W] [Module K W] {n : ℕ} {f g h : Fin n → W}
     (h1 : Tri K f g) (h2 : Tri K g h) : Tri K f h := by
@@ -65,7 +65,7 @@ theorem tri_trans {K W : Type} [CommRing K] [AddCommGroup W] [Module K W] {n : �
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => by rw [mul_comm]
 
 /- English proof (translation)
-Take `⟨A, hA, hc⟩` from `h`. Establish `hc' : ∀ b, g b = ∑ a, A a b • f a` using `hc`. Conclude with `⟨A, hA, fun b => by simp only [hc' b, map_sum, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tri_map {K W W' : Type} [CommRing K] [AddCommGroup W] [Module K W] [AddCommGroup W'] [Module K W'] {n : ℕ}
     (φ : W →ₗ[K] W') {f g : Fin n → W} (h : Tri K f g) : Tri K (fun a => φ (f a)) (fun a => φ (g a)) := by
@@ -84,7 +84,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Unfold `img`. Conclude with `Submodule.mem_map`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_img (g : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) (x : V) :
     x ∈ img g Λ ↔ ∃ y ∈ Λ, g y = x := by
@@ -92,7 +92,7 @@ theorem mem_img (g : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) (x : V) :
   exact Submodule.mem_map
 
 /- English proof (translation)
-Introduce `v hv`. Establish `h` using `Submodule.mem_map_of_mem (f := (g : V →ₗ[E] V).restrictScalars M.L.O) hv`. Rewrite `h` using `[← Submodule.span_image]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_map_le (g : V ≃ₗ[E] V) (S : Set V) :
     ∀ v ∈ Submodule.span M.L.O S, g v ∈ Submodule.span M.L.O ((fun x => g x) '' S) := by
@@ -102,15 +102,15 @@ theorem span_map_le (g : V ≃ₗ[E] V) (S : Set V) :
   exact h
 
 /- English proof (translation)
-Take `⟨hfg, hsp, hdual⟩` from `hΛ`. Establish `hg' : ∀ x y, H.h (g x) (g y) = H.h x y` using `hg`. Establish `hset : ((img g Λ : Submodule M.L.O V) : Set V) = (g : V →ₗ[E] V) '' (Λ : Set V)`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_img, Set.mem_image, LinearEquiv.coe_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨hfg.map _, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hset, Submodule.span_image, hsp, Submodule.map_top]`. Conclude with `LinearEquiv.range g`. Establish `hx : x ∈ img g Λ ↔ g.symm x ∈ Λ`. Rewrite using `[mem_img]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h`. Conclude with `⟨_, h, by simp⟩`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hdual (g.symm x)]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨z, hz, rfl⟩` from `(mem_img g Λ y).1 hy`. Use `h z hz` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hg' (g.symm x) z, LinearEquiv.apply_symm_apply]`. Conclude with `this`. Introduce `h z hz`. Rewrite using `[← hg' (g.symm x) z, LinearEquiv.apply_symm_apply]`. Conclude with `h (g z) ((mem_img g Λ (g z)).2 ⟨z, hz, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem img_selfDual (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
     {Λ : Submodule M.L.O V} (hΛ : H.IsSelfDual Λ) : H.IsSelfDual (img g Λ) := by
@@ -141,13 +141,13 @@ theorem img_selfDual (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
       exact h (g z) ((mem_img g Λ (g z)).2 ⟨z, hz, rfl⟩)
 
 /- English proof (translation)
-Establish `hg' : ∀ x y, H.h (g x) (g y) = H.h x y` using `hg`. Take `⟨⟨hmem, hli, hsp⟩, hiso, hzz, hT⟩` from `hf`. Use `⟨⟨fun a => (mem_img g Λ _).2 ⟨f a, hmem a, rfl⟩, hli.map' _ g.ker, ?_⟩, ?_, ?_, hT⟩` and prove the remaining obligations. Introduce `x hx hxs`. Take `⟨y, hy, rfl⟩` from `(mem_img g Λ x).1 hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hr : Set.range (fun b => g (f b)) = (g : V →ₗ[E] V) '' Set.range f` using `Set.range_comp (⇑(g : V →ₗ[E] V)) f`. Establish `hys : y ∈ Submodule.span E (Set.range f)`. Rewrite `hxs` using `[hr, Submodule.span_image, Submodule.mem_map]`. Take `⟨z, hz, hzy⟩` from `hxs`. Rewrite using `[← g.injective hzy]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `span_map_le (M := M) g (Set.range f) y (hsp y hy hys)`. Establish `hr' : Set.range (fun b => g (f b)) = (fun x => g x) '' Set.range f` using `Set.range_comp (fun x => g x) f`. Rewrite using `[hr']`. Conclude with `h2`. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg']`. Conclude with `hiso a b hab`. Rewrite using `[hg']`. Conclude with `hzz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem img_frame (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
     {Λ : Submodule M.L.O V} {r : ℕ} {f : Fin (r + 1) → V} {T : F} (hf : H.IsFrame Λ r f T) :
@@ -175,7 +175,7 @@ theorem img_frame (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
     exact hzz
 
 /- English proof (translation)
-Unfold `HermSp.smulLat at hx ⊢`. Use `Submodule.span_mono ?_ (span_map_le (M := M) g _ x hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨g v, (mem_img g Λ (g v)).2 ⟨v, hv, rfl⟩, by simp only [map_smul]⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem smulLat_map (H : HermSp M V) (g : V ≃ₗ[E] V) (c : E) (Λ : Submodule M.L.O V) {x : V}
     (hx : x ∈ H.smulLat c Λ) : g x ∈ H.smulLat c (img g Λ) := by
@@ -185,7 +185,7 @@ theorem smulLat_map (H : HermSp M V) (g : V ≃ₗ[E] V) (c : E) (Λ : Submodule
   exact ⟨g v, (mem_img g Λ (g v)).2 ⟨v, hv, rfl⟩, by simp only [map_smul]⟩
 
 /- English proof (translation)
-Establish `hg' : ∀ x y, H.h (g x) (g y) = H.h x y` using `hg`. Use extensionality with `a b`. Simplify using `only [HermSp.Zhat, Matrix.of_apply, hg']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma Zhat_comp_unitary (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g) {r : ℕ}
     (f f' : Fin (r + 1) → V) :
@@ -195,7 +195,7 @@ private lemma Zhat_comp_unitary (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUni
   simp only [HermSp.Zhat, Matrix.of_apply, hg']
 
 /- English proof (translation)
-Simplify using `only [HermSp.Dl, Zhat_comp_unitary H hg]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma Dl_comp_unitary (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g) {r : ℕ}
     (f f' : Fin (r + 1) → V) (l : ℕ) :
@@ -203,11 +203,9 @@ private lemma Dl_comp_unitary (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnita
   simp only [HermSp.Dl, Zhat_comp_unitary H hg]
 
 /- English proof (translation)
-Take `⟨hsd, hfr, hfr', hD, hG, hsp⟩` from `ht`. Use `⟨img_selfDual H hg hsd, img_frame H hg hfr, img_frame H hg hfr', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (H.Dl (fun b => g (t.f b)) (fun b => g (t.f' b)) (r + 1))`. Rewrite using `[Dl_comp_unitary H hg]`. Conclude with `hD`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show H.Gdet (fun b => g (t.f b)) (fun b => g (t.f' b)) t.T t.T' ≠ 0`. Simplify `hG` using `only [HermSp.Gdet, Dl_comp_unitary H hg]`. Introduce `q hq`. Take `⟨h1, h2, h3⟩` from `hsp q hq`. Use `⟨h1, h2, fun b => ?_⟩` and prove the remaining obligations.
-
-Use `show g (t.f' b) - g (t.f b) ∈ H.smulLat _ (img g t.abelian₂)`. Rewrite using `[← map_sub]`. Conclude with `smulLat_map H g _ t.abelian₂ (h3 b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTerm_move (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g) {r : ℕ} {t : Term V M r}
     (ht : H.IsTerm t) : H.IsTerm (move g t) := by
@@ -230,19 +228,17 @@ end Loc
 section Glob
 
 /- English proof (translation)
-Introduce `D Z u u' F0 Λ hrow F' hPD hG w F00 F'0 hcell hpt p P hAt`. Establish `hT : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (Formalism.L2.SG.GramJoint.Tu_pos D u).ne'`. Establish `hT' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (Formalism.L2.SG.GramJoint.Tu_pos D u').ne'`. Take `⟨-, γ, hγ, hA, hA'⟩` from `GlobalTheory.T.rationalFramePairs_differ_isometry_unitriangular D (lf D F0) F00 F' F'0 w hT hT' hG hcell hpt`. Apply the tactic sequence `obtain ⟨g, hext, hgU, -, -, -⟩ := GlobalTheory.T.rational_isometry_extends_local_isometry D Z p γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ht0, htri0⟩` from `locU_isTerm D Z u u' F0 Λ hrow F' hPD hG p`. Establish `hOK : (Z.M p).OK` using `(Z.agree p).1`. Take `⟨A, hAu, hAc⟩` from `hA`. Take `⟨A', hA'u, hA'c⟩` from `hA'`. Take `⟨Ap, hAp, -⟩` from `tri_scaled D Z _ _ A hAu hAc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ap', hAp', -⟩` from `tri_scaled D Z _ _ A' hA'u hA'c`. Establish `hext' : ∀ x, g (baseChange₂ D p x) = baseChange₂ D p (γ x)` using `hext`. Establish `hmove : ∀ f : Fin (D.R.rS + 1) → (VS D).V, (fun a => g (scaled Z p f a)) = scaled Z p (fun a => γ (f a))`. Introduce `f`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [scaled, map_smul, hext']`. Use `set t := locU Z p Λ (lf D F0) F' (Tu D u) (Tu D u') with ht_def`. Establish `hf : Tri (D.s.atP p).Ep P.A.f (move g t).f`. Rewrite using `[hAt.1]`. Establish `h1 : (move g t).f = fun a => g (scaled Z p (frame (lf D F0)) a)` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hmove (frame (lf D F0))]`. Conclude with `⟨Ap p, hAp p⟩`. Establish `hf' : Tri (D.s.atP p).Ep P.B.f (move g t).f'`. Rewrite using `[hAt.2.1]`. Establish `h1 : Tri (D.s.atP p).Ep (fun a => g (scaled Z p (frame F') a)) (fun a => g (t.f' a))` using `tri_map (g : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p) htri0`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hmove (frame F')]`. Conclude with `tri_trans ⟨Ap' p, hAp' p⟩ h1`. Take `⟨d, hd⟩` from `GlobalTheory.T.exists_datum_of_two_congruent_frames (Z.M p) hOK (locH Z p) D.R.rS P (move g t) (isTerm_move (locH Z p) hgU ht0) hAt.2.2.1.symm hAt.2.2.2.symm hf hf'`. Use `⟨d, ?_⟩` and prove the remaining obligations. Unfold `Over`.
-
-Conclude with `⟨g, hgU, d, (orbit_reps_over (Z.M p) hOK (locH Z p) D.R.rS P).1.refl d, hd⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem over_local : ∀ (D : D7) (Z : LocDat D), ∀ (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V), IsRowLat D F0 Λ → ∀ F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E), PD D Λ (lf D F0) u' F' → Gval (lf D F0) F' ≠ 0 → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)), IsInCell (ZhatOM (ZhatL (lf D F0) F')) w → ZhatOM (ZhatL F00 F'0) = ptMat w → ∀ (p : PlF D) (P : LocNG.FPair (locH Z p) D.R.rS), AtBase Z p F00 F'0 (Tu D u) (Tu D u') P → ∃ d, Over P d (locU Z p Λ (lf D F0) F' (Tu D u) (Tu D u')) := by
   intro D Z u u' F0 Λ hrow F' hPD hG w F00 F'0 hcell hpt p P hAt

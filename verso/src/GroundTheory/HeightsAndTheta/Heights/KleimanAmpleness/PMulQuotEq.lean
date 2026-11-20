@@ -22,18 +22,18 @@ def mapCEquiv (e : ∀ I, G I ≃ₗ[R] G' I) (i : ℕ) : Cochain G i ≃ₗ[R] 
   LinearEquiv.piCongrRight fun I : Idx U i => e I.1
 
 /- English proof (translation)
-The claim follows from `mapC_d (fun I => (e I).toLinearMap) he i s`.
+A detailed English derivation is pending.
 -/
 theorem mapCEquiv_d (e : ∀ I, G I ≃ₗ[R] G' I) (he : ∀ I J h m, e J (ρ I J h m) = ρ' I J h (e I m))
     (i : ℕ) (s : Cochain G i) : mapCEquiv e (i + 1) (d G ρ i s) = d G' ρ' i (mapCEquiv e i s) :=
   mapC_d (fun I => (e I).toLinearMap) he i s
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `s ∈ (⊥ : Submodule R _) ↔ mapCEquiv e 0 s ∈ (⊥ : Submodule R _)`. Rewrite using `[Submodule.mem_bot, Submodule.mem_bot, LinearEquiv.map_eq_zero_iff]`. Consider the case `succ i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `s ∈ LinearMap.range (d G ρ i) ↔ mapCEquiv e (i + 1) s ∈ LinearMap.range (d G' ρ' i)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨mapCEquiv e i t, (mapCEquiv_d e he i t).symm⟩`. Introduce and unpack `⟨t', ht'⟩`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨(mapCEquiv e i).symm t', (mapCEquiv e (i + 1)).injective ?_⟩` and prove the remaining obligations. Rewrite using `[mapCEquiv_d e he, LinearEquiv.apply_symm_apply, ht']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_bdry_iff (e : ∀ I, G I ≃ₗ[R] G' I) (he : ∀ I J h m, e J (ρ I J h m) = ρ' I J h (e I m))
     (i : ℕ) (s : Cochain G i) : s ∈ bdry G ρ i ↔ mapCEquiv e i s ∈ bdry G' ρ' i := by
@@ -51,7 +51,7 @@ theorem mem_bdry_iff (e : ∀ I, G I ≃ₗ[R] G' I) (he : ∀ I J h m, e J (ρ 
       rw [mapCEquiv_d e he, LinearEquiv.apply_symm_apply, ht']
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, LinearMap.mem_ker, ← mapCEquiv_d e he, LinearEquiv.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ker_iff (e : ∀ I, G I ≃ₗ[R] G' I) (he : ∀ I J h m, e J (ρ I J h m) = ρ' I J h (e I m))
     (i : ℕ) (s : Cochain G i) : s ∈ LinearMap.ker (d G ρ i) ↔ mapCEquiv e i s ∈ LinearMap.ker (d G' ρ' i) := by
@@ -95,13 +95,13 @@ def mulQuotMap (h₁ : ∀ I, ∀ y ∈ F₁.sub I, s * y ∈ G₁.sub I)
     (fun y hy => (h₃ I y y.2).mpr hy)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `m hm`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite `hm` using `[LinearMap.mem_ker]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (mulSubMap h₁ I y) = 0 at hm`. Rewrite `hm` using `[Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Conclude with `(h₃ I y y.2).mp hm`. Introduce `m`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Take `⟨y, hy, hz⟩` from `h₂ I z z.2`. Use `⟨Submodule.Quotient.mk ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (mulSubMap h₁ I ⟨y, hy⟩) = Submodule.Quotient.mk z`. Rewrite using `[Submodule.Quotient.eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((mulSubMap h₁ I ⟨y, hy⟩ - z : G₁.sub I) : Ω) ∈ G₂.sub I`. Rewrite using `[Submodule.coe_sub, ← neg_sub]`. Conclude with `(G₂.sub I).neg_mem hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulQuotMap_bijective (h₁ : ∀ I, ∀ y ∈ F₁.sub I, s * y ∈ G₁.sub I)
     (h₂ : ∀ I, ∀ z ∈ G₁.sub I, ∃ y ∈ F₁.sub I, z - s * y ∈ G₂.sub I)
@@ -129,9 +129,9 @@ theorem mulQuotMap_bijective (h₁ : ∀ I, ∀ y ∈ F₁.sub I, s * y ∈ G₁
 end Mul
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x F₁ F₂ G₁ G₂ s h₁ h₂ h₃`. Set `e : ∀ I, (F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) ≃ₗ[k] (G₁.sub I ⧸ SubSystem.quotSub G₁ G₂ I)` to `fun I => LinearEquiv.ofBijective (mulQuotMap h₁ h₃ I) (mulQuotMap_bijective h₁ h₂ h₃ I)`. Establish `he : ∀ I J h m, e J (SubSystem.quotRes F₁ F₂ I J h m) = SubSystem.quotRes G₁ G₂ I J h (e I m)`. Introduce `I J h m`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Unfold `eulerCharQuot`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `((Cech.equivH e he i).finrank_eq).symm`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem MulQuotEq.proof : MulQuotEq.Statement.{u, w} := by
   intro k _ Ω _ _ N x F₁ F₂ G₁ G₂ s h₁ h₂ h₃

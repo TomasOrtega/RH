@@ -22,9 +22,9 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.BK
 open GlobalTheory.CompanionTheory.LocDual.Lat in
 
 /- English proof (translation)
-Take `⟨χ, hχ, -, -⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l Lp`. Take `⟨⟨hdom, hdvr, -⟩, -⟩` from `id hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ).2.2.2.2.2 ((χ (g : GQ l) : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite `h` using `[hχ, ← Lp.PD_χ K g]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem cycMem (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l) (LL : Type) [Field LL]
     [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL]
@@ -42,25 +42,21 @@ theorem cycMem (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l) (LL : T
 open GlobalTheory.CompanionTheory.LocDual.Lat in
 
 /- English proof (translation)
-Introduce `l _ Lp K`. Use `haveI : CompactSpace ↥(GK K) := by haveI := K.2`. Conclude with `isCompact_iff_compactSpace.1 (InfiniteGalois.fixingSubgroup_isClosed K.1).isCompact`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `LL _ _ _ O _ _ hG`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hχ` using `cycMem l Lp K LL O hG`. Take `⟨⟨hdom, hdvr, hfr⟩, -⟩` from `hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Use `haveI := hfr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Use `⟨{ T := LinearMap.range (Algebra.linearMap O LL), stable := ?_, fg := ?_, free := Module.Free.of_equiv (LinearEquiv.ofInjective (Algebra.linearMap O LL) hinj), span := ?_ }, rfl⟩` and prove the remaining obligations. Introduce and unpack `g _ ⟨a, rfl⟩`. Take `⟨c, hc⟩` from `hχ g`. Use `⟨c * a, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `algebraMap O LL (c * a) = ((cycLL (Lp.PD K) LL g : LLˣ) : LL) • algebraMap O LL a`. Rewrite using `[map_mul, hc, smul_eq_mul]`. Rewrite using `[← Submodule.map_top]`. Conclude with `Module.Finite.fg_top.map _`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x _`. Establish `h : (1 : LL) ∈ Submodule.span LL (LinearMap.range (Algebra.linearMap O LL) : Set LL)` using `Submodule.subset_span ⟨1, by simp⟩`. Simplify using `using Submodule.smul_mem _ x h`. Introduce `LL _ _ _ O _ _ hG A A' P hP`. Establish `hχ` using `cycMem l Lp K LL O hG`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hdom, hdvr, hfr⟩, -, -, htr, hop⟩` from `hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Use `haveI := hfr`. Use `haveI := htr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨LA⟩` from `exists_stable (O := O) hop A.ρ A.cont`. Take `⟨T', hfg, hfree, hspan, h1, h2⟩` from `exists_dual LA.T LA.fg LA.free LA.span P hP.2.2.1 hP.2.2.2`. Establish `hst : ∀ g, ∀ y ∈ T', A'.ρ g y ∈ T'`. Introduce `g y hy`. Use `(h1 _).2 fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `(h1 y).1 hy (A.ρ g⁻¹ x) (LA.stable _ _ hx)`. Take `⟨c, hc⟩` from `hχ g`. Use `⟨c * a, ?_⟩` and prove the remaining obligations. Establish `h3` using `hP.1 g (A.ρ g⁻¹ x) y`. Establish `h4 : A.ρ g (A.ρ g⁻¹ x) = x`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite `h3` using `[h4, ha, ← hc]`. Rewrite using `[h3, map_mul]`. Use `⟨LA, { T := T', stable := hst, fg := hfg, free := hfree, span := hspan }, ⟨hP, h1⟩, ⟨fun g x y => hP.1 g y x, hP.2.2.1, hP.2.1, hP.2.2.2.symm⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce `x`. Conclude with `h2 x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dualLat : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), cycIntCore (Lp.PD K) ∧ ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 (Lp.PD K) A.ρ A'.ρ P → ∃ (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ), IsDualLat1 (Lp.PD K) LA LA' P ∧ IsDualLat1 (Lp.PD K) LA' LA P.flip := by
   intro l _ Lp K
@@ -120,11 +116,9 @@ theorem dualLat : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l),
 open GlobalTheory.CompanionTheory.LatTop in
 
 /- English proof (translation)
-Introduce `l _ Lp K LL _ _ _ O _ _ hO A LA ϖ hϖ`. Establish `I` using `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ`. Take `⟨⟨hd, hdvr, hfr⟩, hfd, hmt, htr, hop⟩` from `hO`. Take `⟨-, -, hC, -, hB, -⟩` from `I`. Use `haveI := hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hfr`. Use `haveI := htr`. Use `haveI : CompactSpace ↥(GK K) := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK K`. Establish `hopen : IsOpen (LA.T : Set A.V)` using `GlobalTheory.Cyc.isOpen_of_fg_of_span_eq_top hop LA.T LA.fg LA.span`. Establish `hcomp : IsCompact (LA.T : Set A.V)` using `isCompact_lattice hC LA.T LA.fg LA.free LA.span`.
-
-Use `⟨hopen, hasBasis_lattice LA.T hopen hcomp ϖ hϖ.ne_zero hB, hcomp, fun c hc => exists_pow_smul_mem LA.T hopen ϖ hB c hc, ?_⟩` and prove the remaining obligations. Introduce and unpack `A' LA' P ⟨⟨h1, h2, h3, h4⟩, h5⟩`. Use `⟨⟨fun g y x => h1 g x y, h3, h2, h4.symm⟩, fun x => ⟨fun hx y hy => (h5 y).1 hy x hx, fun hx => ?_⟩⟩` and prove the remaining obligations. Conclude with `mem_of_dual_dual LA.T LA.fg LA.free LA.span (LA'.T : Set A'.V) P h3 h4 h5 x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem latTop : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O), Irreducible ϖ → IsOpen (LA.T : Set A.V) ∧ (nhds (0 : A.V)).HasBasis (fun _ : ℕ => True) (fun n => (fun x => ϖ ^ n • x) '' (LA.T : Set A.V)) ∧ IsCompact (LA.T : Set A.V) ∧ (∀ c : ↥(GK K) → A.V, Continuous c → ∃ n : ℕ, ∀ g, ϖ ^ n • c g ∈ LA.T) ∧ ∀ (A' : GRep ↥(GK K) ℚ_[l] LL O) (LA' : Lattice (O := O) A'.ρ) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (Lp.PD K) LA LA' P → IsDualLat1 (Lp.PD K) LA' LA P.flip := by
   intro l _ Lp K LL _ _ _ O _ _ hO A LA ϖ hϖ
@@ -147,13 +141,13 @@ theorem latTop : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), 
 open GlobalTheory.CompanionTheory.CupFlip in
 
 /- English proof (translation)
-Introduce `l _ Lp K LL _ _ _ O _ _ hO A A' P hP`. Establish `: IsTopologicalRing LL` using `hO.2.2.2.1`. Establish `hd` using `hP.1`. Establish `hdf : ∀ g y x, P.flip (A'.ρ g y) (A.ρ g x) = ((cycLL (Lp.PD K) LL g : LLˣ) : LL) * P.flip y x` using `fun g y x => hd g x y`. Use `⟨⟨hdf, hP.2.2.1, hP.2.1, hP.2.2.2.symm⟩, fun a ha b hb => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hac, hacoc⟩` from `ha`. Take `⟨hbc, hbcoc⟩` from `hb`. Establish `hc : Continuous fun g => P (a g) (b g)` using `(continuous_pair A A' P).comp (hac.prodMk hbc)`. Establish `hflip : CobL (Lp.PD K) (cupL A.ρ P.flip b a) → CobL (Lp.PD K) (cupL A'.ρ P a b)` using `cob_of_flip _ hd hacoc hbcoc hc`. Use `⟨continuous_cup A A' P hac hbc, d2_cup _ hd hacoc hbcoc, ⟨fun h => ?_, hflip⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `cob_of_flip _ (P := P.flip) hdf hbcoc hacoc hc ?_` and prove the remaining obligations. Rewrite using `[LinearMap.flip_flip]` and apply the resulting hypothesis. Introduce and unpack `(h | h)`. Take `⟨x, hx⟩` from `LinearMap.mem_range.1 h`. Conclude with `cob_of_left _ hd (x := x) (fun g => by rw [← hx]; rfl) hbcoc ((continuous_pair A A' P).comp (continuous_const.prodMk hbc))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `LinearMap.mem_range.1 h`. Conclude with `hflip (cob_of_left _ (P := P.flip) hdf (x := y) (fun g => by rw [← hy]; rfl) hacoc ((continuous_pair A' A P.flip).comp (continuous_const.prodMk hac)))`.
+A detailed English derivation is pending.
 -/
 theorem cupFlip : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (P : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 (Lp.PD K) A.ρ A'.ρ P → IsDual1 (Lp.PD K) A'.ρ A.ρ P.flip ∧ ∀ a ∈ continuousCocycles A.ρ, ∀ b ∈ continuousCocycles A'.ρ, Continuous (cupL A'.ρ P a b) ∧ ReciprocityTheory.Def.d2 (charRep (cycLL (Lp.PD K) LL)) (cupL A'.ρ P a b) = 0 ∧ (CobL (Lp.PD K) (cupL A'.ρ P a b) ↔ CobL (Lp.PD K) (cupL A.ρ P.flip b a)) ∧ ((a ∈ B1 A.ρ ∨ b ∈ B1 A'.ρ) → CobL (Lp.PD K) (cupL A'.ρ P a b)) := by
   intro l _ Lp K LL _ _ _ O _ _ hO A A' P hP
@@ -181,9 +175,9 @@ theorem cupFlip : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l),
 open GlobalTheory.CompanionTheory.FinCoc in
 
 /- English proof (translation)
-Introduce `hT hE l _ Lp K LL _ _ _ O _ _ hg A LA ϖ hϖ r hI`. Take `⟨-, -, -, ⟨-, hl, -⟩, -, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hg ϖ hϖ`. Take `⟨-, hB, hC, -, -⟩` from `latTop l Lp K LL O hg A LA ϖ hϖ`. Establish `hW : (fun x => ϖ ^ r • x) '' (LA.T : Set A.V) ∈ nhds (0 : A.V)` using `hB.mem_of_mem trivial`. Establish `hMfin` using `finite_quot LA hC hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `GlobalTheory.CocycleCount.cocycles_finite_ncard_le hT hE l K r _ (fun g => (actQ LA _ hI g).toAddMonoidHom) (actQ_one' LA _ hI) (fun g h m => actQ_mul' LA _ hI g h m) (pow_nsmul_quot LA hl r) (actQ_isLocallyConstant LA hW A.cont hI)`. Conclude with `hfin.1.to_subtype`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finZQ : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), FinZQ (Lp.PD K) := by
@@ -201,19 +195,19 @@ theorem finZQ : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.Galoi
 open GlobalTheory.CompanionTheory.LocDual.TopCoh ReciprocityTheory.Gal Formalism.GaloisCohomology GlobalTheory.Cyc GlobalTheory.Cyc.TwistLift in
 
 /- English proof (translation)
-Introduce `hT l _ Lp K n χ hn hχ M _ _ _ z hz hcoc hchar`. Take `⟨hΦ1, hΦ2⟩` from `GlobalTheory.Cyc.TwistLift.continuous_fixingSubgroupEquiv K.1`. Set `Ψ : Formalism.GaloisCohomology.GK l K.1 ≃* ↥(GK K)` to `K.1.fixingSubgroupEquiv.symm`. Establish `hΨ : Continuous Ψ` using `hΦ1`. Establish `hΨ' : Continuous Ψ.symm` using `hΦ2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcyc : IsCyc Lp.χQ` using `Lp.χQ_cyc`. Set `χZ : Formalism.GaloisCohomology.GK l K.1 →* ℤ_[l]ˣ` to `(cyclotomicCharacter (PadicAlgCl l) l).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l K.1) (PadicAlgCl l))`. Establish `hχZ : ∀ g, ((χZ g : ℤ_[l]) : ℚ_[l]) = (Lp.χQ (Ψ g : GQ l) : ℚ_[l])` using `fun g => by`. Rewrite using `[isCyc_unique hcyc (isCyc_cycChar l)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hχc : Continuous fun g => (χZ g : ℤ_[l])`. Rewrite using `[continuous_iff_coe]`. Simplify using `only [hχZ]`. Conclude with `hcyc.continuous.comp (continuous_subtype_val.comp hΨ)`. Establish `hval : ∀ g : Formalism.GaloisCohomology.GK l K.1, (χ (Ψ g) : ZMod (l ^ n)) = (Formalism.GaloisCohomology.cycK l K.1 n g : ZMod (l ^ n))` using `fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hu'⟩` from `hχ (Ψ g)`. Rewrite `hu` using `[Lp.PD_χ K (Ψ g), ← hχZ]`. Rewrite using `[← hu', show u = (χZ g : ℤ_[l]) from Subtype.ext hu]`. Both sides reduce to the same expression. Use `letI : TopologicalSpace M := ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : DiscreteTopology M := ⟨rfl⟩`. Take `⟨c, hc, hd⟩` from `coboundary_of_characters hT l K.1 K.2 n hn ((continuous_toZModPow n).comp hχc) M (fun p => z (Ψ p.1, Ψ p.2)) (hz.continuous.comp (hΨ.prodMap hΨ)) (fun g h k => by`. Use `hcoc (Ψ g) (Ψ h) (Ψ k)` as an intermediate fact. Rewrite `this` using `[hval, ← map_mul Ψ, ← map_mul Ψ]`. Conclude with `this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `(fun ψ => by`. Take `⟨f, hf, hd⟩` from `hchar ψ`. Use `⟨fun g => f (Ψ g), hf.continuous.comp hΨ, fun g h => ?_⟩` and prove the remaining obligations. Use `hd (Ψ g) (Ψ h)` as an intermediate fact. Rewrite `this` using `[hval, ← map_mul Ψ]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this)`. Use `⟨fun g => c (Ψ.symm g), (IsLocallyConstant.iff_continuous _).2 (hc.comp hΨ'), fun g h => ?_⟩` and prove the remaining obligations. Use `hd (Ψ.symm g) (Ψ.symm h)` as an intermediate fact. Rewrite `this` using `[← map_mul Ψ.symm, ← hval]`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem cobChar : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), ∀ (n : ℕ) (χ : ↥(GK K) →* (ZMod (l ^ n))ˣ), 0 < n → (∀ g, ∃ u : ℤ_[l], (u : ℚ_[l]) = (((Lp.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧ PadicInt.toZModPow n u = (χ g : ZMod (l ^ n))) → ∀ (M : Type) [AddCommGroup M] [Module (ZMod (l ^ n)) M] [Finite M] (z : ↥(GK K) × ↥(GK K) → M), IsLocallyConstant z → (∀ g h k, (χ g : ZMod (l ^ n)) • z (h, k) - z (g * h, k) + z (g, h * k) - z (g, h) = 0) → (∀ ψ : M →+ ZMod (l ^ n), ∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = ψ (z (g, h))) → ∃ f : ↥(GK K) → M, IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) • f h - f (g * h) + f g = z (g, h) := by
   intro hT l _ Lp K n χ hn hχ M _ _ _ z hz hcoc hchar
@@ -259,49 +253,47 @@ theorem cobChar : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ)
 open GlobalTheory.CompanionTheory.LocDual.Pair in
 
 /- English proof (translation)
-Introduce `hT l _ Lp K n χ hn hχ W _ _ a h1 hmul hlc W' _ _ a' h1' hmul' hlc' P hP1 hP2 hP S hBS hS c hc H`. Establish `hne : NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `mW : Module (ZMod (l ^ n)) W` using `AddCommGroup.zmodModule fun x => hP1 _ fun y => by`. Rewrite using `[map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Establish `mW' : Module (ZMod (l ^ n)) W'` using `AddCommGroup.zmodModule fun y => hP2 _ fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Use `letI tW' : TopologicalSpace W' := ⊥`. Use `haveI dW' : DiscreteTopology W' := ⟨rfl⟩`. Use `haveI hK : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Set `φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `IntermediateField.fixingSubgroupEquiv K.1`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : Continuous φ ∧ Continuous φ.symm` using `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1`. Set `rho : Representation (ZMod (l ^ n)) (Formalism.GaloisCohomology.GK l K.1) W'` to `GlobalTheory.CocycleCount.repOfAction _ (fun g => a' (φ.symm g)) (fun m => by rw [map_one, h1']) (fun g h m => by rw [map_mul, hmul'])`. Establish `hrho_apply : ∀ (g : Formalism.GaloisCohomology.GK l K.1) (m : W'), rho g m = a' (φ.symm g) m` using `fun _ _ => rfl`. Establish `hrho : ReciprocityTheory.Gal.ContAction rho` using `continuous_prod_of_discrete_right.2 fun m => (hlc' m).continuous.comp hφ.2`. Take `⟨⟨e⟩, -, -, hb, -⟩` from `hT l K.1 K.2 n W' rho hn hrho`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ` to `Formalism.GaloisCohomology.cycK l K.1 n`. Establish `hψ : ∀ g : ↥(GK K), ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) = (χ g : ZMod (l ^ n))`. Introduce `g`. Take `⟨u, hu1, hu2⟩` from `hχ g`. Establish `hcyc : Lp.χQ = GlobalTheory.Cyc.cycChar l` using `GlobalTheory.Cyc.TwistLift.isCyc_unique Lp.χQ_cyc (GlobalTheory.Cyc.isCyc_cycChar l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu1` using `[Lp.PD_χ K g, hcyc]`. Establish `hu : u = ((cyclotomicCharacter (PadicAlgCl l) l (MulSemiringAction.toRingAut (GQ l) (PadicAlgCl l) g.1) : ℤ_[l]ˣ) : ℤ_[l])` using `Subtype.ext hu1`. Rewrite using `[← hu2, hu]`. Both sides reduce to the same expression. Take `⟨E, hE⟩` from `exists_equiv_dual (n := l ^ n) P.flip hP2 hP1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hE' : ∀ x y, E x y = P x y` using `fun x y => hE x y`. Set `τ : Representation (ZMod (l ^ n)) (Formalism.GaloisCohomology.GK l K.1) (ReciprocityTheory.Gal.TDual (ZMod (l ^ n)) W')` to `(ReciprocityTheory.Gal.twDual ψ rho).comp (MonoidHom.id _)`. Establish `hEq : ∀ (g : ↥(GK K)) (x : W), E (a g x) = τ (φ g) (E x)`. Introduce `g x`. Apply `ReciprocityTheory.Gal.TDual.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `y`. Express the relevant statement in the definitionally equal form `E (a g x) y = ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * E x (rho (φ g)⁻¹ y)`. Establish `hy : a' g (a' g⁻¹ y) = y` using `by rw [← hmul', mul_inv_cancel, h1']`. Establish `hinv : rho (φ g)⁻¹ y = a' g⁻¹ y`. Rewrite using `[hrho_apply, map_inv, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE', hE', hψ, hinv, ← hP, hy]`. Establish `ev : ∀ (g : Formalism.GaloisCohomology.GK l K.1) (t : ReciprocityTheory.Gal.TDual (ZMod (l ^ n)) W') (y : W'), t y = P (E.symm t) y` using `fun g t y => by rw [← hE', E.apply_symm_apply]`. Set `toS : ReciprocityTheory.Gal.Z1 τ →+ (↥(GK K) → W)` to `AddMonoidHom.mk' (fun z g => E.symm (z.1 (φ g))) (fun z z' => by funext g; simp)`. Establish `toS_apply : ∀ z g, toS z g = E.symm (z.1 (φ g))` using `fun _ _ => rfl`. Set `A : AddSubgroup (ReciprocityTheory.Gal.Z1 τ)` to `S.comap toS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `lift : ∀ s : ↥(GK K) → W, (IsLocallyConstant s ∧ ∀ g h, s (g * h) = s g + a g (s h)) → ∃ z : ReciprocityTheory.Gal.Z1 τ, toS z = s`. Introduce `s hs`. Use `⟨⟨fun g => E (s (φ.symm g)), ((hs.1.comp E).continuous).comp hφ.2, fun g h => ?_⟩,` and prove the remaining obligations. Use function extensionality and compare the values at `fun g => ?_⟩`. Use `hEq (φ.symm g) (s (φ.symm h))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `E (s (φ.symm (g * h))) = E (s (φ.symm g)) + τ g (E (s (φ.symm h)))`. Rewrite using `[map_mul, hs.2, map_add, this]`. Rewrite using `[toS_apply, AddEquiv.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `E (s (φ.symm (φ g))) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MulEquiv.symm_apply_apply]`. Take `⟨zc, hcz⟩` from `lift c hc`. Establish `hBA : ∀ z : ReciprocityTheory.Gal.Z1 τ, z.1 ∈ ReciprocityTheory.Gal.B1 τ → z ∈ A`. Introduce `z hz`. Take `⟨t, ht⟩` from `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).1 hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `toS z ∈ S`. Establish `: toS z = fun g => a g (E.symm t) - E.symm t`. Use function extensionality and compare the values at `g`. Rewrite using `[toS_apply, ht, AddEquiv.symm_apply_eq, map_sub, hEq, AddEquiv.apply_symm_apply]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hBS _`. Establish `key : ∀ (x : ReciprocityTheory.Gal.Z1 τ) (y : ReciprocityTheory.Gal.Z1 (rho.comp (MonoidHom.id _))), ReciprocityTheory.Gal.cupH1H1TwistedDual ψ rho (MonoidHom.id _) (hrho.comp' continuous_id) (Submodule.Quotient.mk x) (Submodule.Quotient.mk y) = 0 ↔ ∃ f : ↥(GK K) → ZMod (l ^ n), …`. Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨f, hf, hd⟩` from `(ReciprocityTheory.Gal.separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Use `⟨fun g => f (φ g), (IsLocallyConstant.iff_continuous _).2 (hf.comp hφ.1), fun g h => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrFun hd (φ g, φ h)`. Establish `h3 : ((ψ (φ g) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * f (φ h) - f (φ g * φ h) + f (φ g) = (x.1 (φ g)) (rho (φ g) (y.1 (φ h)))` using `h2`. Rewrite `h3` using `[hψ, ← map_mul, hrho_apply, MulEquiv.symm_apply_apply, ev (φ g)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h3`. Introduce and unpack `⟨f, hf, hd⟩`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((ReciprocityTheory.Gal.separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => f (φ.symm g), hf.continuous.comp hφ.2, funext fun p => ?_⟩)` and prove the remaining obligations. Take `⟨g, h⟩` from `p`. Establish `h3` using `hd (φ.symm g) (φ.symm h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← hψ, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply, ← map_mul]`. Express the relevant statement in the definitionally equal form `((ψ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * f (φ.symm h) - f (φ.symm (g * h)) + f (φ.symm g) = (x.1 g) (rho g (y.1 h))`. Rewrite using `[ev g, hrho_apply]`. Use `toS_apply x (φ.symm g)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Rewrite using `[← this]`. Conclude with `h3`. Establish `hmain : zc ∈ A`. Use `mem_of_cup_flip ψ rho (hrho.comp' continuous_id) e hb.2 A hBA zc fun y hy => ?_` and prove the remaining obligations. Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc' : IsLocallyConstant (fun g => y.1 (φ g)) ∧ ∀ g h, y.1 (φ (g * h)) = y.1 (φ g) + a' g (y.1 (φ h))`. Use `⟨(IsLocallyConstant.iff_continuous _).2 (y.2.1.comp hφ.1), fun g h => ?_⟩` and prove the remaining obligations. Use `y.2.2 (φ g) (φ h)` as an intermediate fact. Rewrite using `[map_mul]`. Use `this.trans ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ + rho (φ g) _ = _`. Rewrite using `[hrho_apply, MulEquiv.symm_apply_apply]`. Establish `hz` using `H (fun g => y.1 (φ g)) hc' (fun s hs => ?_)`. Use `(key zc y).2 ?_` and prove the remaining obligations. Rewrite using `[hcz]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨f, hf, hd⟩` from `hz`. Conclude with `⟨f, hf, hd⟩`. Take `⟨zs, hzs⟩` from `lift s (hS s hs)`. Establish `hA : zs ∈ A`. Express the relevant statement in the definitionally equal form `toS zs ∈ S`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hzs]`. Conclude with `hs`. Take `⟨f, hf, hd⟩` from `(key zs y).1 (hy zs hA)`. Rewrite `hd` using `[hzs]`. Conclude with `⟨f, hf, hd⟩`.
-
-Establish `hmem : toS zc ∈ S` using `hmain`. Rewrite `hmem` using `[hcz]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem dblAnn : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), ∀ (n : ℕ) (χ : ↥(GK K) →* (ZMod (l ^ n))ˣ), 0 < n → (∀ g, ∃ u : ℤ_[l], (u : ℚ_[l]) = (((Lp.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧ PadicInt.toZModPow n u = (χ g : ZMod (l ^ n))) → ∀ (W : Type) [AddCommGroup W] [Finite W] (a : ↥(GK K) → W →+ W), (∀ m, a 1 m = m) → (∀ g h m, a (g * h) m = a g (a h m)) → (∀ m, IsLocallyConstant fun g => a g m) → ∀ (W' : Type) [AddCommGroup W'] [Finite W'] (a' : ↥(GK K) → W' →+ W'), (∀ m, a' 1 m = m) → (∀ g h m, a' (g * h) m = a' g (a' h m)) → (∀ m, IsLocallyConstant fun g => a' g m) → ∀ P : W →+ W' →+ ZMod (l ^ n), (∀ x, (∀ y, P x y = 0) → x = 0) → (∀ y, (∀ x, P x y = 0) → y = 0) → (∀ g x y, P (a g x) (a' g y) = (χ g : ZMod (l ^ n)) * P x y) → ∀ S : AddSubgroup (↥(GK K) → W), (∀ m : W, (fun g => a g m - m) ∈ S) → (∀ s ∈ S, (IsLocallyConstant s ∧ ∀ g h, s (g * h) = s g + a g (s h))) → ∀ c : ↥(GK K) → W, (IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)) → (∀ c' : ↥(GK K) → W', (IsLocallyConstant c' ∧ ∀ g h, c' (g * h) = c' g + a' g (c' h)) → (∀ s ∈ S, (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (s g) (a' g (c' h)))) → (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (c g) (a' g (c' h)))) → c ∈ S := by
   intro hT l _ Lp K n χ hn hχ W _ _ a h1 hmul hlc W' _ _ a' h1' hmul' hlc' P hP1 hP2 hP S hBS hS c hc H
@@ -431,9 +423,9 @@ theorem dblAnn : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) 
   rwa [hcz] at hmem
 
 /- English proof (translation)
-Introduce `hT l _ Lp K n χ hn hχ W _ _ a a1 amul alc W' _ _ a' a1' amul' alc' P hl hr hP S hcob hS c' hc' H`. Establish `hP' : ∀ g x y, P (a g x) (a' g y) = ((χ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * P x y` using `hP`. Use `dblAnn hT l Lp K n χ hn hχ W' a' a1' amul' alc' W a a1 amul alc P.flip (fun y h => hr y fun x => h x) (fun x h => hl x fun y => h y) (fun g x y => hP g y x) S hcob hS c' hc' ?_` and prove the remaining obligations. Introduce `c hc hs`. Establish `hAll` using `H c hc fun s hsS => GlobalTheory.CompanionTheory.LocDual.cup_flip_cob (fun g => ((χ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n))) a a' P hP' c s hc (hS s hsS) _ _ (Or.inr ⟨rfl, rfl⟩) (hs s hsS)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CompanionTheory.LocDual.cup_flip_cob (fun g => ((χ g : (ZMod (l ^ n))ˣ) : ZMod (l ^ n))) a a' P hP' c c' hc hc' _ _ (Or.inl ⟨rfl, rfl⟩) hAll`.
+A detailed English derivation is pending.
 -/
 theorem dblAnnR : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), ∀ (n : ℕ) (χ : ↥(GK K) →* (ZMod (l ^ n))ˣ), 0 < n → (∀ g, ∃ u : ℤ_[l], (u : ℚ_[l]) = (((Lp.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧ PadicInt.toZModPow n u = (χ g : ZMod (l ^ n))) → ∀ (W : Type) [AddCommGroup W] [Finite W] (a : ↥(GK K) → W →+ W), (∀ m, a 1 m = m) → (∀ g h m, a (g * h) m = a g (a h m)) → (∀ m, IsLocallyConstant fun g => a g m) → ∀ (W' : Type) [AddCommGroup W'] [Finite W'] (a' : ↥(GK K) → W' →+ W'), (∀ m, a' 1 m = m) → (∀ g h m, a' (g * h) m = a' g (a' h m)) → (∀ m, IsLocallyConstant fun g => a' g m) → ∀ P : W →+ W' →+ ZMod (l ^ n), (∀ x, (∀ y, P x y = 0) → x = 0) → (∀ y, (∀ x, P x y = 0) → y = 0) → (∀ g x y, P (a g x) (a' g y) = (χ g : ZMod (l ^ n)) * P x y) → ∀ S : AddSubgroup (↥(GK K) → W'), (∀ m : W', (fun g => a' g m - m) ∈ S) → (∀ s ∈ S, (IsLocallyConstant s ∧ ∀ g h, s (g * h) = s g + a' g (s h))) → ∀ c' : ↥(GK K) → W', (IsLocallyConstant c' ∧ ∀ g h, c' (g * h) = c' g + a' g (c' h)) → (∀ c : ↥(GK K) → W, (IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)) → (∀ s ∈ S, (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (c g) (a' g (s h)))) → (∃ f : ↥(GK K) → ZMod (l ^ n), IsLocallyConstant f ∧ ∀ g h, (χ g : ZMod (l ^ n)) * f h - f (g * h) + f g = P (c g) (a' g (c' h)))) → c' ∈ S := by
   intro hT l _ Lp K n χ hn hχ W _ _ a a1 amul alc W' _ _ a' a1' amul' alc' P hl hr hP S hcob hS c' hc' H
@@ -451,23 +443,19 @@ theorem dblAnnR : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ)
 open GlobalTheory.CompanionTheory.LocDual.TI in
 
 /- English proof (translation)
-Introduce `hT l _ Lp K LL _ _ _ O _ _ hO L1 hL1 ϖ hϖ r z hz hcob`. Take `⟨-, hFin, -, ⟨e, hl, -⟩, -, hZ⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ`. Take `⟨⟨hD, hDVR, hFr⟩, -⟩` from `hO`. Use `haveI := hD`. Use `haveI := hDVR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hFr`. Use `haveI := K.2`. Use `haveI : CompactSpace ↥(GK K) := isCompact_iff_compactSpace.1 (IntermediateField.fixingSubgroup_isClosed K.1).isCompact`. Take `⟨F, ⟨hF, -⟩, hFz⟩` from `hcob`. Take `⟨s, hrs, hFs⟩` from `exists_tor_range L1.T hF.range_finite hϖ hL1 r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨χZ, hχZ, hχc, -⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l Lp`. Establish `hlpos : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Use `haveI : NeZero (l ^ (s + 1)) := ⟨pow_ne_zero _ hlpos⟩`. Set `χ : ↥(GK K) →* (ZMod (l ^ (s + 1)))ˣ` to `(Units.map (PadicInt.toZModPow (s + 1) : ℤ_[l] →+* ZMod (l ^ (s + 1))).toMonoidHom).comp (χZ.comp (GK K).subtype)`. Establish `hχv : ∀ g, (χ g : ZMod (l ^ (s + 1))) = PadicInt.toZModPow (s + 1) ((χZ (g : GQ l) : ℤ_[l]ˣ) : ℤ_[l])` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hχlc : IsLocallyConstant fun g => (χ g : ZMod (l ^ (s + 1)))` using `(lc_toZModPow (s + 1)).comp_continuous (Units.continuous_val.comp (hχc.comp continuous_subtype_val))`. Establish `hcyc : ∀ g : ↥(GK K), ((cycLL (Lp.PD K) LL g : LLˣ) : LL) = algebraMap ℚ_[l] LL (((χZ (g : GQ l) : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])` using `fun g => by`. Rewrite using `[hχZ, ← Lp.PD_χ K g]`. Both sides reduce to the same expression. Establish `hS : ∀ q ∈ tor L1.T ϖ s, (l ^ (s + 1)) • q = 0` using `fun q hq => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 hl`. Rewrite `hq` using `[mem_tor]`. Establish `h1 : (l : O) ^ (s + 1) = (ϖ * c ^ (s + 1)) * ϖ ^ s` using `by rw [hc]; ring`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow, h1, mul_smul, hq, smul_zero]`. Establish `hact : ∀ g, ∀ q ∈ tor L1.T ϖ s, repD L1 g q = (χ g : ZMod (l ^ (s + 1))).val • q` using `fun g q hq => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective L1.T q`. Rewrite using `[hχv, ← mk_mul_int L1.T hZ (s + 1) _ x (hS _ hq), ← hcyc]`. Both sides reduce to the same expression. Use `letI : Module (ZMod (l ^ (s + 1))) ↥(tor L1.T ϖ r) := AddCommGroup.zmodModule fun m => Subtype.ext (hS _ (tor_mono L1.T hrs m.2))`. Use `haveI := finite_tor L1.T hL1 hϖ hFin r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, hfM, hfe⟩` from `descent (fun g => (repD L1 g).toAddMonoidHom) (fun g h q => by`. Express the relevant statement in the definitionally equal form `repD L1 (g * h) q = repD L1 g (repD L1 h q)`. Rewrite using `[map_mul, Module.End.mul_apply])`. Use `χ hχlc (tor L1.T ϖ r) (tor L1.T ϖ s) (tor_mono L1.T hrs) hS hact F hF hFs`. Use the proof step `(fun p => Submodule.Quotient.mk (z p)) (fun g h => congrFun hFz (g, h))`.
-
-Use the proof step `(fun p => (mk_mem_tor L1.T).2 (hz p))`. Use the proof step `(fun zz h1 h2 h3 => cobChar hT l Lp K (s + 1) χ (Nat.succ_pos s) (fun g => ⟨(χZ (g : GQ l) : ℤ_[l]ˣ), by rw [hχZ, ← Lp.PD_χ K g], rfl⟩) ↥(tor L1.T ϖ r) zz h1 h2 h3)`. Use `choose x hx using fun g => Submodule.Quotient.mk_surjective L1.T (f g)`. Use `⟨x, fun g => (mk_mem_tor L1.T).1 (by rw [hx]; exact hfM g), ?_, fun p => ?_⟩` and prove the remaining obligations. Simplify `hf` using `only [hx]`.
-
-Establish `h1 : (Submodule.Quotient.mk (ReciprocityTheory.Def.d1 (charRep (cycLL (Lp.PD K) LL)) x p) : LL ⧸ L1.T) = repD L1 p.1 (Submodule.Quotient.mk (x p.2)) - Submodule.Quotient.mk (x (p.1 * p.2)) + Submodule.Quotient.mk (x p.1)` using `rfl`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, h1, hx, hx, hx, sub_eq_zero]`. Conclude with `hfe p.1 p.2`.
+A detailed English derivation is pending.
 -/
 theorem topInj : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l),
     TopInj (Lp.PD K) := by

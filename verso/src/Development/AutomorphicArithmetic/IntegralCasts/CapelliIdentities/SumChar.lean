@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G _ _ χ hχ`. Establish `hne : (Units.coeHom ℂ).comp χ ≠ 1`. Introduce `h`. Apply `hχ` to reduce the goal to its premises. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hz` using `DFunLike.congr_fun h z`. Simplify using `using hz`. Simplify using `using sum_hom_units_eq_zero ((Units.coeHom ℂ).comp χ) hne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.Reformulated.B.Qe46.sum_char :
     ∀ {G : Type} [inst : CommGroup G] [inst_1 : Fintype G] (χ : G →* ℂˣ),

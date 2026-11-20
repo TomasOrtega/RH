@@ -11,21 +11,17 @@ open Polynomial Classical GlobalTheory.BadShare Formalism.BasicNotions Formalism
 namespace UpperTheory.Win
 
 /- English proof (translation)
-Establish `hx2 : 2 ≤ x` using `by have := Real.add_one_le_exp (209 : ℝ); linarith`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hQ0 : 0 < Q` using `(Real.rpow_pos_of_pos hx0 _).trans hQ1`. Establish `hl : 209 ≤ Real.log x` using `(Real.le_log_iff_exp_le hx0).2 hx`. Establish `hl2 : Real.log 2 ≤ Real.log x` using `Real.log_le_log (by norm_num) hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (2 : ℝ) = Real.exp (Real.log 2)` using `(Real.exp_log (by norm_num)).symm`. Establish `ep : ∀ a : ℝ, x ^ a = Real.exp (Real.log x * a)` using `fun a => Real.rpow_def_of_pos hx0 a`. Rewrite using `[div_le_iff₀ hQ0]`. Break down `le_total (x ^ (z / 7)) (3 * Real.log x) with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← e2, ← ep]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ Real.exp (-(x ^ (z / 7))) * Real.exp (Real.log x * (c + 5)) := by`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ _ := by`. Rewrite using `[← ep]`. Conclude with `mul_le_mul_of_nonneg_left hQ1.le (Real.exp_pos _).le`. Use `set v := x ^ (z / 7) with hv`. Establish `hv1 : 625 ≤ v` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (5 : ℝ) ≤ v ^ (1 / 4 : ℝ)`. Establish `e : (5 : ℝ) = (625 : ℝ) ^ (1 / 4 : ℝ)`. Rewrite using `[show (625 : ℝ) = 5 ^ (4 : ℝ) by norm_num, ← Real.rpow_mul (by norm_num)]`. Evaluate the numerical expressions. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_le_rpow (by norm_num) hv1 (by norm_num)`. Establish `h6 : v * v ^ (1 / 4 : ℝ) ≤ x ^ (z / 5 - z / 100)`. Rewrite using `[hv, ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `h7 : 5 * v ≤ Real.log Q` using `by nlinarith`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e2, ← ep]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ Real.exp (-v) * Real.exp (Real.log Q) := by`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`.
-
-Conclude with `Real.exp_le_exp.2 (by linarith)`. Use `_ = _ := by rw [Real.exp_log hQ0]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_div_le_exp {x z c P Q : ℝ} (hx : Real.exp 209 ≤ x) (hz : 0 < z) (hP1 : P ≤ x ^ (c + 1))
     (hP2 : P ≤ x ^ (10 : ℝ)) (hQ1 : x ^ (c + 5) < Q) (hQ2 : x ^ (z / 5 - z / 100) ≤ Real.log Q) :
@@ -67,13 +63,13 @@ theorem two_mul_div_le_exp {x z c P Q : ℝ} (hx : Real.exp 209 ≤ x) (hz : 0 <
       _ = _ := by rw [Real.exp_log hQ0]
 
 /- English proof (translation)
-Take `⟨-, -, hK, -, hT, -, hQ, -⟩` from `h`. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `he0` using `L.sc.eps_pos`. Establish `he1` using `L.sc.eps_lt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.rank_add_five_le`. Establish `h3 : D.R.f ≤ D.R.k` using `D.R.f_le_k`. Establish `sq : ∀ (y : ℕ) (a b : ℝ), D.R.k ≤ y → (y : ℝ) ≤ L.sc.x ^ a → a + a ≤ b → (D.R.f : ℝ) * D.R.m ≤ L.sc.x ^ b`. Introduce `y a b hy ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a1 : (D.R.f : ℝ) ≤ y` using `by exact_mod_cast h3.trans hy`. Establish `a2 : (D.R.m : ℝ) ≤ y` using `by exact_mod_cast (by omega : D.R.m ≤ y)`. Combine the equalities or inequalities in the displayed calculation. Use `two_mul_div_le_exp (c := 2 * L.Ct) hx L.sc.ez_pos (sq D.R.t _ _ (by omega) hT.2 (by unfold szTh; linarith)) (sq D.R.k _ _ le_rfl hK.2 (by unfold szTh; linarith)) ?_ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_min]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_min hP.qd_pow.1 hP.qd_pow.2`. Apply the tactic sequence `rcases min_choice D.host.q D.host.d with e | e <;> rw [e]`. Conclude with `hQ.2.1`. Conclude with `hQ.2.2.2.1`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fm_div_min_le {D : D7} (L : SizeData₂ D) (hP : ParameterChoice' D L) (h : SizesAt L) (hx : Real.exp 209 ≤ L.sc.x) :
     2 * ((D.R.f : ℝ) * D.R.m) / ((min D.host.q D.host.d : ℕ) : ℝ) ≤ Real.exp (-(L.sc.x ^ (L.sc.ez / 7))) := by
@@ -103,17 +99,17 @@ theorem fm_div_min_le {D : D7} (L : SizeData₂ D) (hP : ParameterChoice' D L) (
     · exact hQ.2.2.2.1
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `badBound_numbers eps C heps heps1`. Use `⟨max x₀ 1, ?_⟩` and prove the remaining obligations. Introduce `x hx z hz g₁ g₂ _ _ N m q d f ι₁ ι₂ _ _ h1 h2 hp1 hp2 hg1 hg2 hf hf' hm hN hN' hq L₁ L₂ τ₁ τ₂ ht1 ht2 ch₁ ch₂ M _ _ _ ρ hC`. Establish `hx1 : 1 ≤ x` using `(le_max_right _ _).trans hx`. Establish `hm0 : (0 : ℝ) ≤ (m : ℝ)` using `Nat.cast_nonneg m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : (0 : ℝ) ≤ (f : ℝ)` using `Nat.cast_nonneg f`. Establish `hE : Real.exp (-(x ^ (eps / 7))) ≤ Real.exp (-(x ^ (z / 7)))` using `Real.exp_le_exp.2 (neg_le_neg (Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)))`. Establish `hE0` using `Real.exp_pos (-(x ^ (z / 7)))`. Establish `one : ∀ g : ℝ, Real.exp (8 * x ^ eps) ≤ g → max 0 (badBound g f m N ((min q d : ℕ) : ℝ)) ≤ Real.exp (-(x ^ (z / 7))) / 2`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, hb⟩` from `hx₀ x ((le_max_left _ _).trans hx) g f m N _ hg hf hf' hm0 hm hN hN' le_rfl`. Use `max_le (by linarith) ?_` and prove the remaining obligations. Establish `e : badBound g f m N ((min q d : ℕ) : ℝ) = badBound g f m N (Real.exp (x ^ (eps / 6))) + 2 * ((f : ℝ) * m) / ((min q d : ℕ) : ℝ) / 4 - 2 * f * m * (1 / (4 * Real.exp (x ^ (eps / 6))))`. Unfold `badBound`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: 0 ≤ 2 * (f : ℝ) * m * (1 / (4 * Real.exp (x ^ (eps / 6))))` using `by positivity`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hN5, -, -⟩` from `hx₀ x ((le_max_left _ _).trans hx) g₁ f m N _ hg1 hf hf' hm0 hm hN hN' le_rfl`. Establish `hN5' : 100000 ≤ N` using `by exact_mod_cast hN5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.badRows_share_bound_two_primes g₁ g₂ N m q d ι₁ ι₂ hN5' hp1 hp2 L₁ L₂ τ₁ τ₂ ht1 ht2 ch₁ ch₂ M ρ 0 le_rfl (by norm_num) hC`. Rewrite `key` using `[h1, h2]`. Use `⟨_, ?_, ?_, key⟩` and prove the remaining obligations. Use `le_max_left 0 (badBound g₁ f m N ((min q d : ℕ) : ℝ))` as an intermediate fact. Use `le_max_left 0 (badBound g₂ f m N ((min q d : ℕ) : ℝ))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Use `one g₁ hg1` as an intermediate fact. Use `one g₂ hg2` as an intermediate fact. Evaluate the numerical expressions using `only`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

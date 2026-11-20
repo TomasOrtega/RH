@@ -15,21 +15,19 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D T L sc G p P e he c hc u hu hhalf`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Distinguish the cases in `hc0 : c = 0`. Substitute `hc0` using the available equality. Establish `hS : ∑ PP ∈ P, es PP = 0` using `Finset.sum_eq_zero fun PP hPP => (hc PP hPP (by simp)).elim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hu0 : u = 0`. Use extensionality with `i j`. Establish `h` using `hhalf i j`. Rewrite `h` using `[hS, zero_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hu0` using the available equality. Conclude with `⟨0, (pairLat G p).zero_mem, fun i j => by simp, by simp⟩`. Establish `hx : ((c : 𝓞 D.host.E)) ≠ 0` using `by exact_mod_cast hc0`. Set `w : AE D` to `(∑ PP ∈ P, es PP) * incA D (((c : 𝓞 D.host.E) : D.host.E))⁻¹`. Establish `hw : finPart D w ∈ intAE D`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, Finset.sum_mul, map_sum]`. Use `AddSubgroup.sum_mem _ ?_` and prove the remaining obligations. Introduce `PP hPP`. Assume the negation of the conclusion as `hn`. Conclude with `hc PP hPP (((hes PP hPP).2 _ hx).mpr hn)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : incA D (((c : 𝓞 D.host.E) : D.host.E))⁻¹ * (c : AE D) = 1`. Rewrite using `[← map_natCast (incA D) c, ← map_mul]`. Establish `hce : (((c : 𝓞 D.host.E) : D.host.E)) = (c : D.host.E)` using `by simp`. Rewrite using `[hce, inv_mul_cancel₀ (by exact_mod_cast hc0), map_one]`. Establish `hcw : (c : AE D) * w = ∑ PP ∈ P, es PP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [w]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ PP ∈ P, es PP := by rw [h1, mul_one]`. Use `⟨w • u, GlobalTheory.LatticeStable.smul_mem_latO _ _ _ _ _ _ w hw u hu, ?_, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, mul_comm _ w, mul_assoc, hhalf i j]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul]`.
-
-Rewrite using `[← mul_assoc, hcw, hhalf i j]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.halfUnit :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (p : GlobalTheory.ChiGrid.Pair T) (P : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e P →

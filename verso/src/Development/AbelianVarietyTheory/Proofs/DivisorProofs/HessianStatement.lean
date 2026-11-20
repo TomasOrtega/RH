@@ -21,9 +21,9 @@ open scoped ContDiff
 namespace GlobalTheory.HessReg
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.leviV_eq_dv (GlobalTheory.contDiffAt_ofReal_comp hg), GlobalTheory.leviForm_eq_del_dbar hg]`. Establish `e : (fun v => ReciprocityTheory.L2DbarEstimates.Y.dbv (fderiv ℝ (fun v => (g v : ℂ)) v) (WithLp.toLp 2 ξ)) = fun x => GlobalTheory.dbar (fun y => (g y : ℂ)) x (WithLp.toLp 2 ξ)`. Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.dbar_apply, ReciprocityTheory.L2DbarEstimates.Y.dbv]`. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, GlobalTheory.del_apply, ReciprocityTheory.L2DbarEstimates.Y.dv]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leviV_eq_leviForm {n : ℕ} {g : ReciprocityTheory.L2DbarEstimates.V n → ℝ} {y : ReciprocityTheory.L2DbarEstimates.V n}
     (hg : ContDiffAt ℝ 2 g y) (ξ : Fin n → ℂ) :
@@ -46,7 +46,7 @@ variable {k : Type} [CommRing k] {Y : AlgebraicGeometry.Scheme.{0}} {p : Y ⟶ R
   {σ : k →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-Use `(continuous_and_smul ha hy).2 0 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kae_zero {R : GlobalTheory.AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) {c : GlobalTheory.AlgChart p σ d}
     {y : GlobalTheory.CxPts p σ} (hy : y ∈ c.e.source) : a c y 0 = 0 := by
@@ -54,7 +54,7 @@ theorem kae_zero {R : GlobalTheory.AnRead p σ d} {a : ChartForm p σ d} (ha : I
   simpa using this
 
 /- English proof (translation)
-Distinguish the cases in `h : ξ = 0`. Rewrite using `[h, kae_zero ha hy]`. Conclude with `(ha.2 c y hy ξ h).le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kae_nonneg {R : GlobalTheory.AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) {c : GlobalTheory.AlgChart p σ d}
     {y : GlobalTheory.CxPts p σ} (hy : y ∈ c.e.source) (ξ : Fin d → ℂ) : 0 ≤ a c y ξ := by
@@ -63,63 +63,61 @@ theorem kae_nonneg {R : GlobalTheory.AnRead p σ d} {a : ChartForm p σ d} (ha :
   · exact (ha.2 c y hy ξ h).le
 
 /- English proof (translation)
-The claim follows from `(isOpen_lt continuous_const continuous_norm).inter (isOpen_lt continuous_norm continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ann (δ : ℝ) : IsOpen {w : ℂ | 0 < ‖w‖ ∧ ‖w‖ < δ} :=
   (isOpen_lt continuous_const continuous_norm).inter (isOpen_lt continuous_norm continuous_const)
 
 /- English proof (translation)
-Establish `hA` using `h.A_nonneg`. Establish `hK` using `h.K_nonneg`. Establish `hδ` using `h.δ_pos`. Establish `htt₁ : t < t₁` using `lt_of_le_of_lt htt (by nlinarith)`. Establish `htδ : t < δ` using `htt₁.trans ht₁δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : ‖(t : ℂ)‖ = t` using `by simp [abs_of_pos ht]`. Establish `hmem : ∀ (c : GlobalTheory.AlgChart p σ d) v, v ∈ c.e.target → (v, (t : ℂ)) ∈ c.e.target ×ˢ {w : ℂ | 0 < ‖w‖ ∧ ‖w‖ < δ}` using `fun c v hv => ⟨hv, by simp only [Set.mem_setOf_eq, hnt]; exact ⟨ht, htδ⟩⟩`. Establish `hφ : ContDiff ℝ ∞ (fun v : ReciprocityTheory.L2DbarEstimates.V d => (v, (t : ℂ)))` using `contDiff_id.prodMk contDiff_const`. Use `⟨fun i => ?_, fun c y hy ξ => ?_⟩` and prove the remaining obligations. Establish `hc` using `(h.smooth (R.chart i)).comp hφ.contDiffOn (s := (R.chart i).e.target ∩ (R.chart i).e.symm ⁻¹' Set.univ) (fun v (hv : v ∈ (R.chart i).e.target ∩ _) => hmem _ v hv.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hc.add (contDiffOn_const (c := K * t ^ 2))).congr fun v _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hnt]`. Establish `hF` using `h.smooth c`. Establish `hopen : IsOpen (c.e.target ×ˢ {w : ℂ | 0 < ‖w‖ ∧ ‖w‖ < δ})` using `c.e.open_target.prod (isOpen_ann δ)`. Establish `hF2 : ∀ q ∈ c.e.target ×ˢ {w : ℂ | 0 < ‖w‖ ∧ ‖w‖ < δ}, ContDiffAt ℝ 2 (fun q : ReciprocityTheory.L2DbarEstimates.V d × ℂ => Ψ (c.e.symm q.1) ‖q.2‖) q` using `fun q hq => (hF.contDiffAt (hopen.mem_nhds hq)).of_le (WithTop.coe_le_coe.2 le_top)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `c.e.map_source hy`. Establish `hinv` using `c.e.left_inv hy`. Use `set g : ℝ → ℝ := fun s => Ψ y s with hg_def`. Establish `hg : ContDiffOn ℝ 2 g (Set.Ioo 0 δ)`. Establish `hψ : ContDiff ℝ ∞ (fun s : ℝ => (c.e y, (s : ℂ)))` using `contDiff_const.prodMk Complex.ofRealCLM.contDiff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hF.comp hψ.contDiffOn (s := Set.Ioo 0 δ) fun s hs => ⟨hy', ?_⟩).of_le (WithTop.coe_le_coe.2 le_top)).congr fun s hs => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs.1]`. Conclude with `hs`. Simplify using `only [g, Function.comp_apply, hinv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs.1]`. Establish `hLevi : ∀ w : ℂ, 0 < ‖w‖ → ‖w‖ < δ → -(Real.pi * K) ≤ (GlobalTheory.leviForm (fun z : ℂ => g ‖z‖) w 1 1).re`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw1 hw2`. Establish `H` using `h.hess c y hy w hw1 hw2 0 1`. Establish `hφ2 : ContDiffAt ℂ 2 (fun z : ℂ => ((c.e y : ReciprocityTheory.L2DbarEstimates.V d), z)) w` using `(contDiff_const.prodMk contDiff_id).contDiffAt`. Establish `hd : fderiv ℂ (fun z : ℂ => ((c.e y : ReciprocityTheory.L2DbarEstimates.V d), z)) w 1 = (0, 1)`. Establish `hh : HasFDerivAt (fun z : ℂ => ((c.e y : ReciprocityTheory.L2DbarEstimates.V d), z)) ((0 : ℂ →L[ℂ] ReciprocityTheory.L2DbarEstimates.V d).prod (ContinuousLinearMap.id ℂ ℂ)) w` using `(hasFDerivAt_const _ w).prodMk (hasFDerivAt_id w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hh.fderiv]`. Simplify using the standard rewrite rules. Establish `e0` using `GlobalTheory.leviForm_comp_holo (hF2 _ ⟨hy', hw1, hw2⟩) hφ2 1 1`. Rewrite `e0` using `[hd]`. Establish `e1 : (fun x : ℂ => Ψ (c.e.symm ((fun z : ℂ => ((c.e y : ReciprocityTheory.L2DbarEstimates.V d), z)) x).1) ‖((fun z : ℂ => ((c.e y : ReciprocityTheory.L2DbarEstimates.V d), z)) x).2‖) = fun z => g ‖z‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [g, hinv]`. Rewrite `e0` using `[e1]`. Rewrite using `[e0]`. Establish `h0 : ((0 : ReciprocityTheory.L2DbarEstimates.V d)).ofLp = 0` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `H` using `[h0, kae_zero ha hy, hθ]`. Establish `H' : -K ≤ (GlobalTheory.leviForm (fun q : ReciprocityTheory.L2DbarEstimates.V d × ℂ => Ψ (c.e.symm q.1) ‖q.2‖) (c.e y, w) (0, 1) (0, 1)).re / Real.pi`. Simplify using `using H`. Use `(le_div_iff₀ Real.pi_pos).1 H'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsl` using `GlobalTheory.T.subharmonic_log_convexity_quotient g δ (Real.pi * K) hδ hg hLevi t t₁ ht htt₁ ht₁δ`. Establish `hgd : DifferentiableAt ℝ g t` using `(hg.differentiableOn (by norm_num) t ⟨ht, htδ⟩).differentiableAt (Ioo_mem_nhds ht htδ)`. Establish `hder : deriv (fun s => Ψ y s + K * s ^ 2) t = deriv g t + K * (2 * t)`. Use `(hgd.hasDerivAt.add ((hasDerivAt_pow 2 t).const_mul K)).deriv` as an intermediate fact. Establish `e : (fun s => Ψ y s + K * s ^ 2) = g + fun s => K * s ^ 2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set L := Real.log (1 / t) with hL_def`. Use `set LL := Real.log L with hLL_def`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hlogt : Real.log t ≤ -Real.exp 1`. Use `Real.log_le_log ht hte` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Establish `hL : L = -Real.log t` using `by rw [hL_def, one_div, Real.log_inv]`. Establish `hLe : Real.exp 1 ≤ L` using `by rw [hL]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLpos : 0 < L` using `lt_of_lt_of_le (Real.exp_pos 1) hLe`. Establish `hLL : 1 ≤ LL` using `by rw [hLL_def]; exact (Real.le_log_iff_exp_le hLpos).2 hLe`. Establish `hlogt₁ : Real.log t ≤ 2 * Real.log t₁`. Use `Real.log_le_log ht htt` as an intermediate fact. Rewrite `this` using `[Real.log_pow, Nat.cast_ofNat]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hD : L / 2 ≤ Real.log (t₁ / t)`. Rewrite using `[Real.log_div ht₁.ne' ht.ne', hL]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hup` using `(hlow t₁ ht₁ le_rfl y).2`. Establish `hdn` using `(hlow t ht htt₁.le y).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht₁sq : t₁ ^ 2 ≤ 1` using `by nlinarith`. Establish `htsq : t ^ 2 ≤ 1` using `by nlinarith`. Establish `hN : g t₁ + Real.pi * K * t₁ ^ 2 - (g t + Real.pi * K * t ^ 2) ≤ (2 * Cl + 5 * K) * LL`. Simplify using `only [g]`. Establish `h1 : Real.pi * K * t₁ ^ 2 ≤ Real.pi * K * 1` using `mul_le_mul_of_nonneg_left ht₁sq (mul_nonneg Real.pi_pos.le hK)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Real.pi * K ≤ 4 * K` using `mul_le_mul_of_nonneg_right Real.pi_le_four hK`. Establish `h3 : Cl + 5 * K ≤ (Cl + 5 * K) * LL` using `le_mul_of_one_le_right (by linarith) hLL`. Establish `h4 : 0 ≤ Real.pi * K * t ^ 2` using `by positivity`. Establish `h5 : 0 ≤ K * t₁ ^ 2` using `by positivity`. Establish `h6 : K * t ^ 2 ≤ K` using `mul_le_of_le_one_right hK htsq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h7 : (2 * Cl + 5 * K) * LL = (Cl + 5 * K) * LL + Cl * LL` using `by ring`. Rewrite using `[h7]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM0 : 0 ≤ (2 * Cl + 5 * K) * LL` using `mul_nonneg (by linarith) (by linarith)`. Establish `hT : t * deriv (fun s => Ψ y s + K * s ^ 2) t ≤ 2 * (2 * Cl + 5 * K) * (LL / L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hder]`. Establish `hDpos : 0 < Real.log (t₁ / t)` using `lt_of_lt_of_le (half_pos hLpos) hD`. Establish `h1 : t * deriv g t + 2 * (Real.pi * K) * t ^ 2 ≤ (2 * Cl + 5 * K) * LL / Real.log (t₁ / t)` using `hsl.trans (div_le_div_of_nonneg_right hN hDpos.le)`. Establish `h2 : (2 * Cl + 5 * K) * LL / Real.log (t₁ / t) ≤ (2 * Cl + 5 * K) * LL / (L / 2)` using `div_le_div_of_nonneg_left hM0 (half_pos hLpos) hD`. Establish `h3 : (2 * Cl + 5 * K) * LL / (L / 2) = 2 * (2 * Cl + 5 * K) * (LL / L)`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Establish `h4 : t * (deriv g t + K * (2 * t)) ≤ t * deriv g t + 2 * (Real.pi * K) * t ^ 2`. Use polynomial arithmetic with `[mul_nonneg (by linarith [Real.pi_gt_three] : (0 : ℝ) ≤ Real.pi - 1) (mul_nonneg hK (sq_nonneg t))]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht2 : t ^ 2 ≤ LL / L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hLpos]`. Establish `h1 : L ≤ 1 / t - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Establish `h2 : t ^ 2 * L ≤ t ^ 2 * (1 / t)` using `mul_le_mul_of_nonneg_left (by linarith) (sq_nonneg t)`. Establish `h3 : t ^ 2 * (1 / t) = t` using `by field_simp`. Establish `h4 : t ≤ 1` using `by nlinarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `H` using `h.hess c y hy (t : ℂ) (by rw [hnt]; exact ht) (by rw [hnt]; exact htδ) (WithLp.toLp 2 ξ) 0`. Rewrite `H` using `[hnt]`. Simplify using `only [WithLp.ofLp_toLp, norm_zero, mul_zero, add_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow] at H`. Establish `hξa` using `kae_nonneg ha hy ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hddc : ddcForm (fun z => Ψ z t + K * t ^ 2) c y ξ = (GlobalTheory.leviForm (fun q : ReciprocityTheory.L2DbarEstimates.V d × ℂ => Ψ (c.e.symm q.1) ‖q.2‖) (c.e y, (t : ℂ)) (WithLp.toLp 2 ξ, 0) (WithLp.toLp 2 ξ, 0)).re / Real.pi`. Establish `hFt` using `hF2 _ (hmem c _ hy')`. Establish `hφt : ContDiffAt ℂ 2 (fun v : ReciprocityTheory.L2DbarEstimates.V d => (v, (t : ℂ))) (c.e y)` using `(contDiff_id.prodMk contDiff_const).contDiffAt`. Establish `hh : HasFDerivAt (fun v : ReciprocityTheory.L2DbarEstimates.V d => (v, (t : ℂ))) ((ContinuousLinearMap.id ℂ (ReciprocityTheory.L2DbarEstimates.V d)).prod (0 : ReciprocityTheory.L2DbarEstimates.V d →L[ℂ] ℂ)) (c.e y)` using `(hasFDerivAt_id _).prodMk (hasFDerivAt_const _ _)`. Establish `hd : fderiv ℂ (fun v : ReciprocityTheory.L2DbarEstimates.V d => (v, (t : ℂ))) (c.e y) (WithLp.toLp 2 ξ) = (WithLp.toLp 2 ξ, 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hh.fderiv]`. Simplify using the standard rewrite rules. Establish `e0` using `GlobalTheory.leviForm_comp_holo (φ := fun v : ReciprocityTheory.L2DbarEstimates.V d => (v, (t : ℂ))) (z := c.e y) hFt hφt (WithLp.toLp 2 ξ) (WithLp.toLp 2 ξ)`. Rewrite `e0` using `[hd]`. Establish `hG : ContDiffAt ℝ 2 (fun v : ReciprocityTheory.L2DbarEstimates.V d => Ψ (c.e.symm v) ‖(t : ℂ)‖) (c.e y)` using `hFt.comp (g := fun q : ReciprocityTheory.L2DbarEstimates.V d × ℂ => Ψ (c.e.symm q.1) ‖q.2‖) (c.e y) (hφt.restrict_scalars ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (fun v : ReciprocityTheory.L2DbarEstimates.V d => Ψ (c.e.symm v) t + K * t ^ 2) = fun v => Ψ (c.e.symm v) ‖(t : ℂ)‖ + K * t ^ 2`. Use function extensionality and compare the values at `v`. Rewrite using `[hnt]`. Establish `hG2 : ContDiffAt ℝ 2 (fun v : ReciprocityTheory.L2DbarEstimates.V d => Ψ (c.e.symm v) t + K * t ^ 2) (c.e y)` using `e2 ▸ hG.add contDiffAt_const`. Unfold `ddcForm GlobalTheory.AlgChart.levi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[leviV_eq_leviForm hG2, e2, GlobalTheory.leviForm_add_const _ hG]`. Conclude with `congrArg (fun z : ℂ => z.re / Real.pi) e0`. Rewrite using `[hddc]`. Establish `h1 : A * (t * deriv (fun s => Ψ y s + K * s ^ 2) t) ≤ A * (2 * (2 * Cl + 5 * K) * (LL / L))` using `mul_le_mul_of_nonneg_left hT hA`. Establish `h2 : K * t ^ 2 ≤ K * (LL / L)` using `mul_le_mul_of_nonneg_left ht2 hK`.
-
-Establish `h3 : (A * (t * deriv (fun s => Ψ y s + K * s ^ 2) t) + K * t ^ 2) * a c y ξ ≤ (2 * A * (2 * Cl + 5 * K) + K) * (LL / L) * a c y ξ` using `mul_le_mul_of_nonneg_right (by linarith) hξa`. Establish `e1 : (A * (t * deriv (fun s => Ψ y s + K * s ^ 2) t) + K * t ^ 2) * a c y ξ = A * (t * deriv (fun s => Ψ y s + K * s ^ 2) t) * a c y ξ + K * (t ^ 2 * a c y ξ)` using `by ring`. Rewrite `h3` using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core {R : GlobalTheory.AnRead p σ d} {a θ : ChartForm p σ d} {Ψ : GlobalTheory.CxPts p σ → ℝ → ℝ} {A K δ : ℝ}
     (h : IsRegConst a θ Ψ A K δ) (ha : IsKaehlerForm R a) (hθ : ∀ c y, θ c y 0 = 0)
@@ -287,13 +285,13 @@ theorem core {R : GlobalTheory.AnRead p σ d} {a θ : ChartForm p σ d} {Ψ : Gl
 end Core
 
 /- English proof (translation)
-Introduce `hc hl D O x P hC hN hR`. Take `⟨Cl, t₀, hCl, ht₀, hlow⟩` from `hl D O x P hC hN hR`. Take `⟨hA, hK, hδ, hreg⟩` from `hc D O x P hC hN hR`. Use `set t₁ := min (min t₀ (P.δ / 2)) (1 / 2) with ht₁_def`. Establish `ht₁ : 0 < t₁` using `lt_min (lt_min ht₀ (half_pos hδ)) one_half_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht₁t₀ : t₁ ≤ t₀` using `(min_le_left _ _).trans (min_le_left _ _)`. Establish `ht₁δ : t₁ < P.δ` using `lt_of_le_of_lt ((min_le_left _ _).trans (min_le_right _ _)) (half_lt_self hδ)`. Establish `ht₁1 : t₁ < 1` using `lt_of_le_of_lt (min_le_right _ _) one_half_lt_one`. Use `⟨2 * P.a * (2 * Cl + 5 * P.K) + P.K, min (t₁ ^ 2) (Real.exp (-Real.exp 1)), add_nonneg (mul_nonneg (mul_nonneg zero_le_two hA) (by linarith)) hK, lt_min (pow_pos ht₁ 2) (Real.exp_pos _), ?_⟩` and prove the remaining obligations. Introduce `t ht htle c σ τ i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : P.regFund c σ τ i = fun t z => rho (P.om c σ) (P.exph c σ) (phW (metsOf x O.Φ) (refMet x O.Φ) c σ (fund τ i)) z t + P.K * t ^ 2`. Use function extensionality and compare the values at `t z`. Simplify using `only [PolDat.regFund, if_pos hi]`. Rewrite using `[e]`. Use `core (hreg c σ τ i hi) (P.om_kaehler c σ) (fun ch y => ?_) hCl ht₁ ht₁δ ht₁1 (fun s hs hst y => ?_) t ht (htle.trans (min_le_left _ _)) (htle.trans (min_le_right _ _))` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[thW, curvMet, ddcForm, GlobalTheory.AlgChart.levi, ReciprocityTheory.L2DbarEstimates.leviV]`. Use `hlow s hs (hst.trans ht₁t₀) c σ τ i hi y` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `⟨this.1, this.2.1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hessSt : ConstSt → LowSt → HessSt := by
   intro hc hl D O x P hC hN hR

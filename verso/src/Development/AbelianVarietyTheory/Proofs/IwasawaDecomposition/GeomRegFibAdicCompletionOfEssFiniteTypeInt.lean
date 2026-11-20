@@ -6,9 +6,9 @@ namespace GlobalTheory.GeomRegFibTransport
 open ReciprocityTheory.AnForm.R.FinalTheorems
 
 /- English proof (translation)
-Use `⟨Algebra.EssFiniteType.subalgebra ℤ A, inferInstance, inferInstance, (maximalIdeal A).comap (algebraMap (Algebra.EssFiniteType.subalgebra ℤ A) A), inferInstance, ?_⟩` and prove the remaining obligations. Establish `hsub : Algebra.EssFiniteType.submonoid ℤ A = ((maximalIdeal A).comap (algebraMap (Algebra.EssFiniteType.subalgebra ℤ A) A)).primeCompl`. Use extensionality with `x`. Simplify using `[Algebra.EssFiniteType.submonoid, Ideal.primeCompl, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, IsUnit.mem_submonoid_iff]`. Establish `hloc` using `Algebra.EssFiniteType.isLocalization ℤ A`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hloc` using `[hsub]`. Use `haveI : IsLocalization.AtPrime A ((maximalIdeal A).comap (algebraMap (Algebra.EssFiniteType.subalgebra ℤ A) A)) := hloc`. Conclude with `⟨(IsLocalization.algEquiv ((maximalIdeal A).comap (algebraMap (Algebra.EssFiniteType.subalgebra ℤ A) A)).primeCompl (Localization.AtPrime _) A).toRingEquiv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_loc (A : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] :
     ∃ (A₀ : Type) (_ : CommRing A₀) (_ : Algebra.FiniteType ℤ A₀) (p : Ideal A₀) (_ : p.IsPrime),
@@ -27,7 +27,7 @@ theorem exists_loc (A : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteTyp
     (Localization.AtPrime _) A).toRingEquiv⟩
 
 /- English proof (translation)
-Proceed by induction on `x using AdicCompletion.induction_on with`. Consider the case `h a`. Simplify using `only [AdicCompletion.evalₐ_mk]`. Rewrite using `[Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, AdicCompletion.Ideal.mk_eq_mk I hle]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalₐ_factorPow {R : Type} [CommRing R] (I : Ideal R) {m n : ℕ} (hle : m ≤ n)
     (x : AdicCompletion I R) :
@@ -38,9 +38,9 @@ theorem evalₐ_factorPow {R : Type} [CommRing R] (I : Ideal R) {m n : ℕ} (hle
     rw [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, AdicCompletion.Ideal.mk_eq_mk I hle]
 
 /- English proof (translation)
-Introduce `m n hle`. Use extensionality with `x`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Establish `h1` using `evalₐ_factorPow I hle x`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe] at h1 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← hy, Ideal.quotientMap_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, Ideal.Quotient.factor_mk, Ideal.quotientMap_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem complMap_compat {R S : Type} [CommRing R] [CommRing S] (e : R →+* S) (I : Ideal R)
     (J : Ideal S) (h : I.map e ≤ J) : ∀ {m n : ℕ} (hle : m ≤ n),
@@ -67,7 +67,7 @@ noncomputable def complMap {R S : Type} [CommRing R] [CommRing S] (e : R →+* S
     (complMap_compat e I J h)
 
 /- English proof (translation)
-Unfold `complMap`. Conclude with `AdicCompletion.evalₐ_liftRingHom J _ (complMap_compat e I J h) n x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem evalₐ_complMap {R S : Type} [CommRing R] [CommRing S] (e : R →+* S) (I : Ideal R)
     (J : Ideal S) (h : I.map e ≤ J) (n : ℕ) (x : AdicCompletion I R) :
@@ -79,7 +79,7 @@ theorem evalₐ_complMap {R S : Type} [CommRing R] [CommRing S] (e : R →+* S) 
   exact AdicCompletion.evalₐ_liftRingHom J _ (complMap_compat e I J h) n x
 
 /- English proof (translation)
-Apply `AdicCompletion.ext_evalₐ` to reduce the goal to its premises. Introduce `n`. Rewrite using `[evalₐ_complMap]`. Simplify using `[AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem complMap_algebraMap {R S : Type} [CommRing R] [CommRing S] (e : R →+* S) (I : Ideal R)
     (J : Ideal S) (h : I.map e ≤ J) (r : R) :
@@ -90,9 +90,9 @@ theorem complMap_algebraMap {R S : Type} [CommRing R] [CommRing S] (e : R →+* 
   simp [AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_of]
 
 /- English proof (translation)
-Apply `AdicCompletion.ext_evalₐ` to reduce the goal to its premises. Introduce `n`. Rewrite using `[evalₐ_complMap, evalₐ_complMap, evalₐ_complMap]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[← hy]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ideal.quotientMap_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem complMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (e : R →+* S)
     (e' : S →+* T) (I : Ideal R) (J : Ideal S) (K : Ideal T) (h : I.map e ≤ J) (h' : J.map e' ≤ K)
@@ -107,9 +107,9 @@ theorem complMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (e :
   simp [Ideal.quotientMap_mk]
 
 /- English proof (translation)
-Apply `AdicCompletion.ext_evalₐ` to reduce the goal to its premises. Introduce `n`. Rewrite using `[evalₐ_complMap]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[← hy]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ideal.quotientMap_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem complMap_id {R : Type} [CommRing R] (I : Ideal R) (h : I.map (RingHom.id R) ≤ I)
     (x : AdicCompletion I R) : complMap (RingHom.id R) I I h x = x := by
@@ -121,13 +121,11 @@ theorem complMap_id {R : Type} [CommRing R] (I : Ideal R) (h : I.map (RingHom.id
   simp [Ideal.quotientMap_mk]
 
 /- English proof (translation)
-Establish `h1 : I.map (e : R →+* S) ≤ J` using `h.le`. Establish `h2 : J.map (e.symm : S →+* R) ≤ I`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite `hy` using `[← h, Ideal.mem_map_of_equiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, rfl⟩` from `hy`. Simplify using `using hx`. Use `⟨RingEquiv.ofRingHom (complMap (e : R →+* S) I J h1) (complMap (e.symm : S →+* R) J I h2) ?_ ?_, complMap_algebraMap _ I J h1⟩` and prove the remaining obligations. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, complMap_comp]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingEquiv.toRingHom_eq_coe, RingEquiv.comp_symm, RingHom.id_apply]`. Conclude with `complMap_id J _ x`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, complMap_comp]`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingEquiv.symm_comp, RingHom.id_apply]`.
-
-Conclude with `complMap_id I _ x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compl_equiv (R S : Type) [CommRing R] [CommRing S] (e : R ≃+* S) (I : Ideal R)
     (J : Ideal S) (h : I.map e = J) : ∃ f : AdicCompletion I R ≃+* AdicCompletion J S,
@@ -151,11 +149,11 @@ theorem compl_equiv (R S : Type) [CommRing R] [CommRing S] (e : R ≃+* S) (I : 
     exact complMap_id I _ x
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h`. Use `⟨S, ?_⟩` and prove the remaining obligations. Apply `IntermediateField.toSubfield_injective` to reduce the goal to its premises. Establish `hr : Set.range (algebraMap F K) = Set.range (algebraMap F' K)`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨φ x, (hφ x).symm⟩`. Introduce and unpack `⟨x, rfl⟩; exact ⟨φ.symm x, by rw [hφ, RingEquiv.apply_symm_apply]⟩`. Establish `h2` using `congrArg IntermediateField.toSubfield hS`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h2`, the goal using `[IntermediateField.adjoin_toSubfield, IntermediateField.top_toSubfield]`. Rewrite using `[hr]`. Conclude with `h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_top_transfer {F F' K : Type} [Field F] [Field F'] [Field K] [Algebra F K] [Algebra F' K]
     (φ : F ≃+* F') (hφ : ∀ x, algebraMap F K x = algebraMap F' K (φ x))
@@ -194,7 +192,7 @@ noncomputable def tensorHom {A A' B B' K : Type} [CommRing A] [CommRing A'] [Com
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Simplify using `[tensorHom, Algebra.TensorProduct.lift_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorHom_tmul {A A' B B' K : Type} [CommRing A] [CommRing A'] [CommRing B]
     [CommRing B'] [CommRing K] [Algebra A B] [Algebra A' B'] [Algebra A K] [Algebra A' K]
@@ -204,15 +202,15 @@ theorem tensorHom_tmul {A A' B B' K : Type} [CommRing A] [CommRing A'] [CommRing
   simp [tensorHom, Algebra.TensorProduct.lift_tmul]
 
 /- English proof (translation)
-Establish `hf' : ∀ a, f.symm (algebraMap A' B' a) = algebraMap A B (e.symm a)` using `fun a => by`. Apply `f.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, hf, RingEquiv.apply_symm_apply]`. Establish `hK' : ∀ a, algebraMap A' K a = algebraMap A K (e.symm a)` using `fun a => by`. Rewrite using `[hK, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨RingEquiv.ofRingHom (tensorHom (e : A →+* A') (f : B →+* B') hf hK) (tensorHom (e.symm : A' →+* A) (f.symm : B' →+* B) hf' hK') ?_ ?_⟩` and prove the remaining obligations. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[RingHom.comp_apply]`. Use `erw [tensorHom_tmul, tensorHom_tmul]`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [RingHom.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b k`. Rewrite using `[RingHom.comp_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `erw [tensorHom_tmul, tensorHom_tmul]`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [RingHom.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_equiv {A A' B B' K : Type} [CommRing A] [CommRing A'] [CommRing B]
     [CommRing B'] [CommRing K] [Algebra A B] [Algebra A' B'] [Algebra A K] [Algebra A' K]
@@ -243,7 +241,7 @@ theorem tensor_equiv {A A' B B' K : Type} [CommRing A] [CommRing A'] [CommRing B
     | add x y hx hy => simp only [RingHom.comp_apply, map_add] at hx hy ⊢; rw [hx, hy]
 
 /- English proof (translation)
-Use `⟨isNoetherianRing_of_ringEquiv T F, fun Q' _ => ?_⟩` and prove the remaining obligations. Use `haveI := hR (Q'.comap F)`. Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.ringEquivOfRingEquiv (Localization.AtPrime (Q'.comap F)) (Localization.AtPrime Q') F (F.map_primeCompl_comap_eq Q'))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem regular_transfer {T T' : Type} [CommRing T] [CommRing T'] (F : T ≃+* T')
     (hN : IsNoetherianRing T)
@@ -256,7 +254,7 @@ theorem regular_transfer {T T' : Type} [CommRing T] [CommRing T'] (F : T ≃+* T
     (Localization.AtPrime (Q'.comap F)) (Localization.AtPrime Q') F (F.map_primeCompl_comap_eq Q'))
 
 /- English proof (translation)
-The claim follows from `Ideal.ResidueField.map_algebraMap _ P' (e : A →+* A') rfl a`.
+A detailed English derivation is pending.
 -/
 theorem residueFieldRingEquiv_algebraMap {A A' : Type} [CommRing A] [CommRing A'] (e : A ≃+* A')
     (P' : Ideal A') [P'.IsPrime] (a : A) :
@@ -266,11 +264,11 @@ theorem residueFieldRingEquiv_algebraMap {A A' : Type} [CommRing A] [CommRing A'
   Ideal.ResidueField.map_algebraMap _ P' (e : A →+* A') rfl a
 
 /- English proof (translation)
-Introduce `h P' _ K _ _ _ _ hfg`. Set `P : Ideal A` to `P'.comap (e : A →+* A')`. Use `haveI : P.IsPrime := Ideal.comap_isPrime _ _`. Set `φ : P.ResidueField ≃+* P'.ResidueField` to `Ideal.residueFieldRingEquiv P P' e rfl`. Use `letI : Algebra A K := ((algebraMap A' K).comp (e : A →+* A')).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra P.ResidueField K := ((algebraMap P'.ResidueField K).comp (φ : _ →+* _)).toAlgebra`. Use `haveI : IsScalarTower A P.ResidueField K := IsScalarTower.of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `algebraMap A' K (e a) = algebraMap P'.ResidueField K (φ (algebraMap A P.ResidueField a))`. Rewrite using `[residueFieldRingEquiv_algebraMap e P' a, ← IsScalarTower.algebraMap_apply]`. Establish `hfg' : (⊤ : IntermediateField P.ResidueField K).FG` using `fg_top_transfer φ (fun _ => rfl) hfg`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hN, hR⟩` from `h P K hfg'`. Take `⟨F⟩` from `tensor_equiv (K := K) e f hf (fun _ => rfl)`. Conclude with `regular_transfer F hN hR`.
+A detailed English derivation is pending.
 -/
 theorem transport (A A' B B' : Type) [CommRing A] [CommRing A'] [CommRing B] [CommRing B']
     [Algebra A B] [Algebra A' B'] (e : A ≃+* A') (f : B ≃+* B')
@@ -291,7 +289,7 @@ theorem transport (A A' B B' : Type) [CommRing A] [CommRing A'] [CommRing B] [Co
   exact regular_transfer F hN hR
 
 /- English proof (translation)
-Introduce `hQE A _ _ _`. Take `⟨A₀, _, _, p, _, ⟨e⟩⟩` from `exists_loc A`. Establish `h2` using `((hQE A₀).2.1 p).2`. Take `⟨f, hf⟩` from `compl_equiv _ _ e (maximalIdeal (Localization.AtPrime p)) (maximalIdeal A) (map_ringEquiv_maximalIdeal e)`. Conclude with `transport _ _ _ _ e f hf h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem geomRegFib_adicCompletion_of_essFiniteType_int :
     (∀ (A : Type) [CommRing A] [Algebra.FiniteType ℤ A], ReciprocityTheory.AnForm.R.FinalTheorems.QERing A) →

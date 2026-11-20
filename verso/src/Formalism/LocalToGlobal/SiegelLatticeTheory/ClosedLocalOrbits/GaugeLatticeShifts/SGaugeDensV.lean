@@ -10,13 +10,13 @@ namespace Formalism.MainNotions.S.Gauge
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(continuous_expG ε).comp (obG ε).repr.symm.continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_expC (ε : Fin n → Bool) : Continuous (expC ε) :=
   (continuous_expG ε).comp (obG ε).repr.symm.continuous
 
 /- English proof (translation)
-Take `⟨ρ₀, hρ, hinj⟩` from `injOn_thetaExp ε`. Use `⟨ρ₀, hρ, fun a ha b hb e => hinj ha hb ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg uMat e`. Rewrite `e2` using `[uMat_expC, uMat_expC]`. Conclude with `Matrix.of.injective e2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expC_injOn (ε : Fin n → Bool) : ∃ ρ₀ > 0, Set.InjOn (expC ε) (Metric.ball 0 ρ₀) := by
   obtain ⟨ρ₀, hρ, hinj⟩ := injOn_thetaExp ε
@@ -26,7 +26,7 @@ theorem expC_injOn (ε : Fin n → Bool) : ∃ ρ₀ > 0, Set.InjOn (expC ε) (M
   exact Matrix.of.injective e2
 
 /- English proof (translation)
-Establish `hm : MeasurableSet (expC ε ⁻¹' B)` using `(continuous_expC ε).measurable hB`. Rewrite using `[lamM, Measure.map_apply (continuous_expC ε).measurable hB, withDensity_apply _ hm, Measure.restrict_restrict hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamM_apply (ε : Fin n → Bool) (s : ℝ) {B : Set (Formalism.REAL.UJ ε)} (hB : MeasurableSet B) :
     lamM ε s B = ∫⁻ t in expC ε ⁻¹' B ∩ Metric.ball 0 s, jd ε t := by
@@ -35,25 +35,23 @@ theorem lamM_apply (ε : Fin n → Bool) (s : ℝ) {B : Set (Formalism.REAL.UJ �
     Measure.restrict_restrict hm]
 
 /- English proof (translation)
-Introduce `hT hJ`. Take `⟨s₁, hs₁, hTs⟩` from `hT`. Take `⟨ρ₀, hρ₀, hinj⟩` from `expC_injOn ε`. Use `⟨min s₁ ρ₀, lt_min hs₁ hρ₀, fun s hs hss z A hA hAs hzA => ?_⟩` and prove the remaining obligations. Establish `hinjs : Set.InjOn (expC ε) (Metric.ball 0 s)` using `hinj.mono (Metric.ball_subset_ball (hss.trans (min_le_right _ _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨U, hU, φ, hφ, hΘ, hsub⟩` from `hTs s hs (hss.trans (min_le_left _ _)) z`. Establish `hexp : ∀ t ∈ U, expC ε (φ t) = z * expC ε t`. Introduce `t ht`. Apply `uMat_inj` to reduce the goal to its premises. Use `show _ = uMat z * uMat (expC ε t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [uMat_expC]`. Conclude with `hΘ t ht`. Use `set T := expC ε ⁻¹' A ∩ Metric.ball 0 s with hTdef`. Establish `hTU : ∀ t ∈ T, t ∈ U ∧ φ t ∈ Metric.ball (0 : EL ε) s` using `fun t ht => hsub t ht.2 (hzA ⟨expC ε t, ht.1, rfl⟩)`. Establish `himage : φ '' T = expC ε ⁻¹' ((fun g => z * g) '' A) ∩ Metric.ball 0 s`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `t'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨?_, (hTU t ht).2⟩` and prove the remaining obligations. Use `show expC ε (φ t) ∈ (fun g => z * g) '' A`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hexp t (hTU t ht).1]`. Conclude with `⟨expC ε t, ht.1, rfl⟩`. Introduce and unpack `⟨⟨a, ha, hza⟩, ht'⟩`. Take `⟨t, htb, rfl⟩` from `hAs ha`. Establish `htT : t ∈ T` using `⟨ha, htb⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨t, htT, hinjs (hTU t htT).2 ht' ?_⟩` and prove the remaining obligations. Rewrite using `[hexp t (hTU t htT).1]`. Conclude with `hza`. Establish `hinjT : Set.InjOn φ T`. Introduce `a ha b hb e`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hinjs ha.2 hb.2` to reduce the goal to its premises. Establish `e2` using `congrArg (expC ε) e`. Rewrite `e2` using `[hexp a (hTU a ha).1, hexp b (hTU b hb).1]`. Conclude with `mul_left_cancel e2`. Establish `hzAm : MeasurableSet ((fun g => z * g) '' A)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (fun g => z * g) '' A = (fun g => z⁻¹ * g) ⁻¹' A`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Simplify using `using ha`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hg`. Conclude with `⟨z⁻¹ * g, hg, by simp⟩`. Rewrite using `[this]`. Conclude with `(continuous_const_mul z⁻¹).measurable hA`. Establish `hTm : MeasurableSet T` using `((continuous_expC ε).measurable hA).inter measurableSet_ball`.
-
-Rewrite using `[lamM_apply ε s hzAm, lamM_apply ε s hA, ← himage, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hTm (fun t ht => ((hφ.differentiableAt (hU.mem_nhds (hTU t ht).1)).hasFDerivAt).hasFDerivWithinAt) hinjT]`. Use `setLIntegral_congr_fun hTm (fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [jd]`. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _), mul_comm, hJ U φ (uMat z) hU hφ hΘ t (hTU t ht).1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInvOf (ε : Fin n → Bool) : LocInvOf ε := by
   intro hT hJ

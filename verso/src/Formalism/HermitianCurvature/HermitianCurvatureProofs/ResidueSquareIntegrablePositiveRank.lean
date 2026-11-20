@@ -17,25 +17,23 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Establish `hlc : Φ ∈ lcSub P.k P.r z z' π π'` using `jfCptLocAll Wp Wq P z z' π π' D F Φ hD.1 hz hz' hπ hπ' hF hΦ`. Establish `hRRlc` using `RRi_lc X μ L st l0 hD 0 w hw.1.2.1`. Use `⟨(hRRlc a b).1 Φ hlc, fun c => ?_⟩` and prove the remaining obligations. Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨ε, hε, hG⟩` from `hF.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hN : JC.NiceCoef D ε F` using `⟨Formalism.FourierDecayAlt.P.SmoothnessOrderArithmetic.ckOn_top_of_all (fun m => (hF.1.1 0 m).choose_spec.1), hF.1.1, hG⟩`. Set `F' : Ix S → Mx P.k P.r → (Wq →L[ℂ] Wp)` to `fun b' => if b' = b then F else fun _ => 0`. Establish `hN' : ∀ b', JC.NiceCoef D ε (F' b')`. Introduce `b'`. Distinguish the cases in `h : b' = b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [F', if_pos h]`. Conclude with `hN`. Simplify using `only [F', if_neg h]`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero`. Set `x : Ix S → Mx P.k P.r → (Wq →L[ℂ] Wp)` to `fun b' => B.JF D (F' b')`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φv : Ix S → RadSp P.k P.r D.z D.z' D.π D.π'` to `fun b' => if b' = b then Φ else 0`. Establish `hx : ∀ b', x b' ∈ FFl P.k P.r D.z D.z' D.π D.π' 0 (OmPlus P.k P.r D.z D.z')` using `fun b' => Formalism.FourierDecayAlt.P.bessel_function_finite_class P.k P.r Wp Wq D (F' b') ε hε (hN' b')`. Establish `hΦv : ∀ b', ∀ y ∈ DomR P.k P.r D.z D.z', (Φv b' : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (x b') y.1 y.2`. Introduce `b' y hy`. Distinguish the cases in `h : b' = b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φv, x, F', if_pos h]`. Conclude with `hΦ y hy`. Simplify using `only [Φv, x, F', if_neg h]`. Simplify using `only [resG, Formalism.FourierDecayAlt.P.JCx2.bc_JF_zero, smul_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `key` using `Formalism.FourierDecayAlt.P.JCx2.rma_main D.z_mem D.z'_mem X L st (M.sgn P l0) hD.2.2.1 hD.2.2.2.1 w x Φv hx hΦv`. Establish `hsingle : act (RRi L st 0 w) Φv a = ((RRi L st 0 w) a b).1 Φ`. Unfold `act`. Rewrite using `[Finset.sum_eq_single b (fun b' _ hb' => by simp only [Φv, if_neg hb', map_zero]) (fun h => absurd (Finset.mem_univ b) h)]`. Simplify using `only [Φv, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hR` using `Formalism.FourierDecayAlt.P.JCx2.mn_rrop_closure Formalism.FourierDecayAlt.P.JCx2.bcGood_closed (Formalism.FourierDecayAlt.P.JCx2.rma_Qop P.k P.r D.z D.z' (M.sgn P l0)) (fun Y p q => Formalism.FourierDecayAlt.P.JCx2.bcGood_tL (Bs := D) (ε := ε) (M.sgn P l0) Y p q) w`. Set `G : Mx P.k P.r → (Wq →L[ℂ] Wp)` to `Formalism.FourierDecayAlt.D.actOp (Formalism.FourierDecayAlt.D.RRop (Formalism.FourierDecayAlt.P.JCx2.rma_Qop P.k P.r D.z D.z' (M.sgn P l0)) w) F' a`. Establish `hGN : JC.NiceCoef D ε G` using `by show JC.NiceCoef D ε (∑ b', Formalism.FourierDecayAlt.D.ap (Formalism.FourierDecayAlt.D.RRop (Formalism.FourierDecayAlt.P.JCx2.rma_Qop P.k P.r D.z D.z' (M.sgn P l0)) w a b') (F' b'))`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_sum' Finset.univ _ fun b' _ => (hR a b').1 (F' b') (hN' b')`. Establish `hpic : ∀ y ∈ DomR P.k P.r D.z D.z', ((((RRi L st 0 w) a b).1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.JF D G) y.1 y.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[← hsingle, key a y hy]`. Establish `hGV : wCell P.k P.r (Fin.last _) y.1 * y.2 ∈ B.GV P.k P.r`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.QuantumDeterminants.big_cell_mem_holds _ _ _ 1 hy.1 (by simp)) hy.2.1.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hh : wCell P.k P.r (Fin.last _) y.1 * y.2 ∈ JF.Om P.k P.r D.z D.z'` using `⟨hGV, Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus D.z_mem D.z'_mem hy.1 hy.2.1 hy.2.2⟩`. Simplify using `only [resG]`. Use `congr 1`. Conclude with `(Formalism.FourierDecayAlt.P.JCx2.bc_core _ hR F' hN' a hh).symm`. Establish `h` using `level_zero_form_integrable_compact (S := Empty) D μ hD.2.1 (fun _ => G) (fun _ => G) (fun _ => ((RRi L st 0 w) a b).1 Φ) (fun _ => ((RRi L st 0 w) a b).1 Φ) (fun _ => hGN.2.1) (fun _ => hGN.2.1) (fun _ => hpic) (fun _ => hpic) c`.
-
-Unfold `LevelZeroSquareIntegrable`. Simplify `h` using `[wt0]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem residue_radial_square_integrable (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r)) [SFinite μ]
@@ -132,15 +130,13 @@ def gd0 (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r �
 variable {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Take `⟨hvl, hvR⟩` from `hv`. Use `⟨unimodular_multiplier_preserves_L2 μ hD.2.1 h1 (fun c _ => norm_fsv _ _) v hvl, fun w hw a b => ?_⟩` and prove the remaining obligations. Establish `hC` using `Formalism.FourierDecayAlt.P5.waveCommQQAll Wp Wq P z z' π π' X μ L st l0 hD l s Wv Wv' h1 h2`. Establish `hWQ` using `waveQQ_castSucc X L st hD.2.2.1 l s Wv Wv' h1 h2 hC`. Rewrite `hWQ` using `[hl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hWave, -⟩` from `Formalism.FourierDecayAlt.P5.waveSiteAll Wp Wq P z z' π π' X L hD.2.2.1 l s Wv Wv' h1 h2`. Establish `hrr` using `rr_io_wave (QQi L st 0) (mkP Wv Wv') (mkP Wv' Wv) s w hWave hWQ hw.1.1`. Establish `he` using `congrFun (congrFun hrr a) b`. Rewrite `he` using `[mul_io_apply, io_apply_mul]`. Establish `hM : ((star (UUw s w) * RRw (QQi L st 0) w * UUw s w : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) a b) ∈ sendsTo (squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hD.2.1) v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Take `⟨α, hα⟩` from `mem_bot_alg (star_entSub (UUw_mem (A := Pr (RadSp P.k P.r z z' π π')) (𝒜 := ⊥) s w) a c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `mem_bot_alg (UUw_mem (A := Pr (RadSp P.k P.r z z' π π')) (𝒜 := ⊥) s w d b)`. Rewrite using `[hα, hβ]`. Conclude with `sendsTo_alg_mul_alg _ v (hvR w hw c d) α β`. Establish `e : ((RRi L st 0 w) a b).1 (Wv v) = Wv ((((star (UUw s w) * RRw (QQi L st 0) w * UUw s w : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) a b)).1 v)` using `congrArg (fun x : Pr (RadSp P.k P.r z z' π π') => x.1 v) he`. Rewrite using `[e]`.
-
-Conclude with `unimodular_multiplier_preserves_L2 μ hD.2.1 h1 (fun c _ => norm_fsv _ _) _ hM`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_domain_plane_wave (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r)) [SFinite μ]
@@ -175,17 +171,15 @@ theorem good_domain_plane_wave (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → �
   exact unimodular_multiplier_preserves_L2 μ hD.2.1 h1 (fun c _ => norm_fsv _ _) _ hM
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr fun Φ hΦ => ?_` and prove the remaining obligations. Establish `key : ∀ (i : Fin (P.r + 1)) (Ψ : RadSp P.k P.r z z' π π'), HerGenC S P z z' π π' L st l0 D i Ψ → i = 0 → Ψ ∈ gd0 S P z z' π π' μ hD.2.1 L st l0`. Introduce `i Ψ h`. Proceed by induction on `h with`. Consider the case `jf F Φ hF hΦ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `fun _ => ⟨radial_transform_square_integrable P z z' π π' μ hD.2.1 D hD.1 hz hz' hπ hπ' F hF Φ hΦ, fun w hw a b => residue_radial_square_integrable P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' F hF Φ hΦ w hw a b⟩`. Consider the case `slice l w a b Φ _ _ _ => exact fun h => absurd h (Fin.succ_ne_zero l)`. Consider the case `waveC l w' s Wv Wv' a' b' Φ _ h1 h2 _ ih`. Introduce `h`. Establish `hv` using `ih h`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hVw : Vw (mkP Wv Wv') s w' a' b' = mkP Wv Wv' * UUiw s w' a' b'`. Unfold `Vw`. Conclude with `io_apply_mul _ _ _ _`. Take `⟨κ, hκ⟩` from `mem_bot_alg (UUiw_mem (A := Pr (RadSp P.k P.r z z' π π')) (𝒜 := ⊥) s w' a' b')`. Establish `e : (Vw (mkP Wv Wv') s w' a' b').1 Φ = κ • Wv Φ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hVw, hκ, pr_fst_mul, pr_fst_algebraMap, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(gd0 S P z z' π π' μ hD.2.1 L st l0).smul_mem κ (good_domain_plane_wave P z z' π π' X μ L st l0 hD l h s Wv Wv' h1 h2 Φ hv)`. Consider the case `waveZ w s Wv Wv' a b Φ _ _ _ _ _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction.
 
-Introduce `h`. It suffices to derive a contradiction. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_last, Fin.val_zero] at this`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `key 0 Φ hΦ rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem compact_kernel_le_good_domain (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r)) [SFinite μ]
@@ -235,7 +229,7 @@ def ResidueSquareIntegrablePositiveRank : Prop :=
         LevelSquareIntegrable μ 0 (act (RRi L st 0 w) x a) c
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' hr w hw x hx a c _`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hD.2.1`. Establish `hle` using `compact_kernel_le_good_domain (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' hr`. Establish `hm : act (RRi L st 0 w) x a ∈ squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hD.2.1` using `(squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hD.2.1).sum_mem fun b _ => (hle (hx b)).2 w hw a b`. Conclude with `hm.2 c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rRL2Lev0Pos : ResidueSquareIntegrablePositiveRank := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' hr w hw x hx a c _
@@ -256,7 +250,7 @@ def HermitianLevelZeroPositiveRank : Prop :=
     HermitianSquareIntegrableAt (S := S) P z z' π π' μ L st l0 D 0
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' hr c hc`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hD.2.1`. Use `⟨fun u hu => ?_, fun w hw x hx a => rRL2Lev0Pos Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' hr w hw x hx a c hc⟩` and prove the remaining obligations. Conclude with `(compact_kernel_le_L2 (S := S) P z z' π π' μ hD.2.1 L st l0 D hD.1 hz hz' hπ hπ' hu).2 c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hermitian_level_zero_positive_rank : HermitianLevelZeroPositiveRank := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' hr c hc
@@ -266,11 +260,11 @@ theorem hermitian_level_zero_positive_rank : HermitianLevelZeroPositiveRank := b
   exact (compact_kernel_le_L2 (S := S) P z z' π π' μ hD.2.1 L st l0 D hD.1 hz hz' hπ hπ' hu).2 c
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' i hi c hc`. Take `⟨Di, Xi, μi, Li, sti, T, hDi, ⟨-, ⟨κ, hκ, hpair⟩, -, hw⟩, hHer⟩` from `hT Wp Wq P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' i c (fun l _ => hc l)`. Establish `hlow` using `hermitian_level_zero_positive_rank Wp Wq S (JC.parLev P i) Di.z Di.z' Di.π Di.π' Xi μi Li sti l0 Di hDi h1 h2 rfl rfl rfl rfl (by show 0 < P.r - (i : ℕ); omega) (fun _ => 1) (fun _ => one_ne_zero)`. Use `⟨fun u hu => ?_, fun w hwo x hx a => ?_⟩` and prove the remaining obligations. Conclude with `level_square_integrable_of_transport μ i c μi T κ hκ hpair u _ (hlow.1 (T u) (hHer S u hu))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hRR, hWO⟩` from `hw S w`. Establish `hA` using `hRR 0 (by omega)`. Establish `e1 : (⟨0 + i.val, by omega⟩ : Fin (P.r + 1)) = i` using `Fin.ext (by simp)`. Establish `e0 : (⟨0, by omega⟩ : Fin (P.r - i + 1)) = 0` using `rfl`. Rewrite `hA` using `[e1, e0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `level_square_integrable_of_transport μ i c μi T κ hκ hpair _ (fun _ => 1) ?_` and prove the remaining obligations. Rewrite using `[act_tr T hA x a]`. Conclude with `hlow.2 w (hWO hwo) _ (fun b => hHer S (x b) (hx b)) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_all_of_transport (hT : Formalism.FourierDecayAlt.P.PTie.LevTransportHer) : HermitianSquareIntegrableAll := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' i hi c hc
@@ -290,7 +284,7 @@ theorem hermitian_all_of_transport (hT : Formalism.FourierDecayAlt.P.PTie.LevTra
     exact hlow.2 w (hWO hwo) _ (fun b => hHer S (x b) (hx b)) a
 
 /- English proof (translation)
-The claim follows from `outer_form_compact_of_square (hermitian_all_of_transport hT)`.
+A detailed English derivation is pending.
 -/
 theorem formIntOuterCpt_of_levT (hT : Formalism.FourierDecayAlt.P.PTie.LevTransportHer) : FormIntOuterCpt :=
   outer_form_compact_of_square (hermitian_all_of_transport hT)

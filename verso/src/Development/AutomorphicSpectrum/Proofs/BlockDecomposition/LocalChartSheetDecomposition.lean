@@ -24,21 +24,19 @@ open Set
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {q : Y ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} {B : LB Y}
 
 /- English proof (translation)
-Use extensionality with `T hT`. Use `set κ := c.finChart ∘ e.symm with hκ`. Establish `ht` using `e.open_target.measurableSet`. Establish `hs : AEMeasurable e.symm (volume.restrict e.target)` using `e.continuousOn_symm.aemeasurable ht`. Establish `hS : MeasurableSet (T ∩ e.source)` using `hT.inter e.open_source.measurableSet`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSc : T ∩ e.source ⊆ c.finChart.source` using `inter_subset_right.trans hsub`. Establish `hA : MeasurableSet (e.target ∩ e.symm ⁻¹' T)`. Establish `hm : Measurable (e.target.restrict e.symm)` using `(continuousOn_iff_continuous_restrict.1 e.continuousOn_symm).measurable`. Use `ht.subtype_image (hm hT)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Conclude with `⟨fun hv => ⟨⟨v, hv.1⟩, hv.2, rfl⟩, by rintro ⟨w, hw, rfl⟩; exact ⟨w.2, hw⟩⟩`. Establish `him : c.finChart.target ∩ c.finChart.symm ⁻¹' (T ∩ e.source) = κ '' (e.target ∩ e.symm ⁻¹' T)`. Rewrite using `[← c.finChart.image_source_inter_eq', inter_eq_right.2 hSc]`. Use extensionality with `z`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hyT, hys⟩, rfl⟩`. Conclude with `⟨e y, ⟨e.map_source hys, by simpa only [mem_preimage, e.left_inv hys] using hyT⟩, by`. Simplify using `only [hκ, Function.comp_apply, e.left_inv hys]⟩`. Introduce and unpack `⟨v, ⟨hv, hvT⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨e.symm v, ⟨hvT, e.map_target hv⟩, rfl⟩`. Establish `hinj : InjOn κ (e.target ∩ e.symm ⁻¹' T)` using `fun v hv w hw hvw => by`. Establish `h1` using `c.finChart.injOn (hsub (e.map_target hv.1)) (hsub (e.map_target hw.1)) hvw`. Conclude with `e.symm.injOn hv.1 hw.1 h1`. Establish `hder : ∀ v ∈ e.target ∩ e.symm ⁻¹' T, HasFDerivWithinAt κ ((fderiv ℂ κ v).restrictScalars ℝ) (e.target ∩ e.symm ⁻¹' T) v` using `fun v hv => (((hd.differentiableAt (e.open_target.mem_nhds hv.1)).hasFDerivAt).restrictScalars ℝ).hasFDerivWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : AEMeasurable c.finChart.symm (volume.restrict c.finChart.target)` using `c.finChart.continuousOn_symm.aemeasurable c.finChart.open_target.measurableSet`. Establish `e1 : φ.chernPart D ε (T ∩ e.source) = ((φ.chernPart D ε).restrict c.finChart.source) (T ∩ e.source)`. Rewrite using `[Measure.restrict_apply hS, inter_eq_left.2 hSc]`. Rewrite using `[Measure.restrict_apply hT, e1, GlobalTheory.ChernMA.restrict_chernPart h ε c, Measure.map_apply_of_aemeasurable (hsc.mono_ac (withDensity_absolutelyContinuous _ _)) hS, Measure.map_apply_of_aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)) hT, withDensity_apply', …`. Use `setLIntegral_congr_fun hA fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ((fderiv ℂ κ v).restrictScalars ℝ).det = Complex.normSq (LinearMap.det (fderiv ℂ κ v : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)))` using `ReciprocityTheory.AnForm.A.det_restrictScalars_real _`. Establish `hleft : c.finChart.symm (κ v) = e.symm v` using `c.finChart.left_inv (hsub (e.map_target hv.1))`. Simplify using `only [hleft, hdet, hρ v hv.1]`. Rewrite using `[abs_of_nonneg (Complex.normSq_nonneg _), ← ENNReal.ofReal_mul (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem restrict_chernPart_of_coords [SecondCountableTopology (GlobalTheory.CxPts q σ)] {φ : GlobalTheory.Weight q σ B} (h : φ.IsCInf)
     (ε : ℤˣ) (c : GlobalTheory.AlgChart q σ D) (e : OpenPartialHomeomorph (GlobalTheory.CxPts q σ) (Fin D → ℂ))
@@ -106,7 +104,7 @@ open Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 variable {m : ℕ} {n : Fin (m + 1) → ℕ} {X : Scheme.{0}} (i : X ⟶ MP ℤ m n)
 
 /- English proof (translation)
-Rewrite using `[CxPts.mem_ptsIn, CxPts.mem_ptsIn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_ptsIn_pre (W : (MP ℤ m n).Opens) (y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) :
     y ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ W) ↔ PtsOver.map i rfl _ y ∈ ptsIn (mpStr ℤ m n) σ₀ W := by
@@ -117,7 +115,7 @@ variable [IsClosedImmersion i] {D : ℕ} {e : OpenPartialHomeomorph (GlobalTheor
   {Γ : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ}
 
 /- English proof (translation)
-Use `differentiableOn_pi.2 fun a => ?_` and prove the remaining obligations. Establish `h` using `(GlobalTheory.CompanionTheory.MixZ.Holo.holo m n X i D e.target Γ e.symm e.open_target hΓ hover).2 c.U (c.x a)`. Use `(h.mono fun v hv => ⟨hv, c.source_subset (hsub (e.map_target hv))⟩).congr fun v hv => ?_` and prove the remaining obligations. Conclude with `c.finChart_eq_ev (hsub (e.map_target hv)) a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableOn_coords (hΓ : DifferentiableOn ℂ Γ e.target) (hover : ∀ v ∈ e.target, Over i (e.symm v) (Γ v))
     (c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D) (hsub : e.source ⊆ c.e.source) :
@@ -128,27 +126,25 @@ theorem differentiableOn_coords (hΓ : DifferentiableOn ℂ Γ e.target) (hover 
   exact c.finChart_eq_ev (hsub (e.map_target hv)) a
 
 /- English proof (translation)
-Establish `hκd` using `differentiableOn_coords i hΓ hover c hsub`. Use `set φ := (Nh.restr i).φ σ₀ with hφ`. Establish `h : φ.IsCInf` using `(Nh.restr i).cInf σ₀`. Use `set κ := c.finChart ∘ e.symm with hκ`. Use `set y₀ := e.symm v with hy₀def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₀ : y₀ ∈ c.e.source` using `hsub (e.map_target hv)`. Establish `hκv : AnalyticAt ℂ κ v` using `GlobalTheory.SCV.analyticAt_of_differentiableOn hκd (e.open_target.mem_nhds hv)`. Establish `hκy : c.finChart.symm (κ v) = y₀` using `c.finChart.left_inv hy₀`. Establish `hz : κ v ∈ c.finChart.target` using `c.finChart.map_source hy₀`. Establish `hma` using `h.maDens_eq c hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hma` using `[hκy]`. Establish `hr : c.e y₀ = GlobalTheory.FinChart.toV D (κ v)` using `rfl`. Establish `hd` using `h.contDiffAt c hy₀ (mem_pick φ.isLB y₀)`. Rewrite `hd` using `[hr]`. Establish `hψ : ContDiffAt ℝ 2 (fun w => φ.locPot.φ y₀ (c.finChart.symm w)) (κ v)` using `(hd.comp (κ v) (GlobalTheory.FinChart.toV D).contDiff.contDiffAt).div_const 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp` using `ReciprocityTheory.AnForm.A.maDens_comp (fun _ w => φ.locPot.φ y₀ (c.finChart.symm w)) κ v hκv (fun _ => hψ)`. Rewrite `hcomp` using `[ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq, hma]`. Establish `hC2 : ContDiffAt ℝ 2 ((fun w => φ.locPot.φ y₀ (c.finChart.symm w)) ∘ κ) v` using `hψ.comp v (hκv.contDiffAt.restrict_scalars ℝ)`. Take `⟨u, hu⟩` from `(isHermRep_iff Nh B).1 hrep`. Use `choose p hp using hmc v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set b := pick φ.isLB y₀ with hbdef`. Establish `hb : PtsOver.map i rfl _ y₀ ∈ ptsIn (mpStr ℤ m n) σ₀ (Nh.B.U (b PUnit.unit))` using `mem_of_mem_linComb (m := fun _ => PtsOver.map i rfl _ y₀) (fun _ => rfl) (mem_pick φ.isLB y₀) PUnit.unit`. Establish `hmch : PtsOver.map i rfl _ y₀ ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart p)` using `(GlobalTheory.CompanionTheory.MixZ.Holo.mem_ptsIn_mchart p).2 fun k => ((hover v hv) k (p k)).1.2 (hp k)`. Use `set W := i ⁻¹ᵁ (Nh.B.U (b PUnit.unit) ⊓ mchart p) with hW`. Set `f : Γ(X, W)` to `i.app _ (u (b PUnit.unit) p).val`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set O := e.target ∩ e.symm ⁻¹' ptsIn (i ≫ mpStr ℤ m n) σ₀ W with hOdef`. Establish `hO : IsOpen O` using `e.isOpen_inter_preimage_symm (isOpen_ptsIn _)`. Establish `hvO : v ∈ O` using `⟨hv, (mem_ptsIn_pre i _ _).2 (mem_ptsIn_inf.2 ⟨hb, hmch⟩)⟩`. Set `g : (Fin D → ℂ) → ℂ` to `fun w => (∏ k, Γ w ⟨k, p k⟩ ^ B.a k) * ev (i ≫ mpStr ℤ m n) σ₀ W f (e.symm w)`. Establish `hF : AnalyticAt ℂ (ev (i ≫ mpStr ℤ m n) σ₀ W f ∘ e.symm) v` using `GlobalTheory.SCV.analyticAt_of_differentiableOn ((GlobalTheory.CompanionTheory.MixZ.Holo.holo m n X i D e.target Γ e.symm e.open_target hΓ hover).2 W f) (hO.mem_nhds hvO)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΓk (k) : AnalyticAt ℂ (fun w => Γ w ⟨k, p k⟩) v` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (differentiableOn_pi.1 hΓ _) (e.open_target.mem_nhds hv)`. Establish `hg : AnalyticAt ℂ g v` using `(Finset.analyticAt_fun_prod _ fun k _ => (hΓk k).zpow (hp k)).mul hF`. Establish `hunit : IsUnit f` using `(u (b PUnit.unit) p).isUnit.map (i.app _).hom`. Establish `hg0 : g v ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hp k)) (ev_ne_zero hvO.2 hunit)`. Establish `hev : (fun w => Real.log (B.h (Γ w))) =ᶠ[𝓝 v] fun w => ((fun w => φ.locPot.φ y₀ (c.finChart.symm w)) ∘ κ) w + Real.log ‖g w‖` using `by filter_upwards [hO.mem_nhds hvO] with w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : e.symm w ∈ c.e.source` using `hsub (e.map_target hw.1)`. Establish `hmem` using `(mem_ptsIn_pre i _ _).1 hw.2`. Establish `hrep'` using `hu.2.2 (b PUnit.unit) p (PtsOver.map i rfl _ (e.symm w)) (Γ w) (hover w hw.1) hmem`. Establish `hzk : ∀ k, Γ w ⟨k, p k⟩ ≠ 0` using `fun k => ((hover w hw.1) k (p k)).1.1 (ptsIn_mono (mchart_le p k) (mem_ptsIn_inf.1 hmem).2)`. Establish `hu0 : ev (i ≫ mpStr ℤ m n) σ₀ W f (e.symm w) ≠ 0` using `ev_ne_zero hw.2 hunit`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hev' : ev (i ≫ mpStr ℤ m n) σ₀ W f (e.symm w) = ev (mpStr ℤ m n) σ₀ _ (u (b PUnit.unit) p).val (PtsOver.map i rfl _ (e.symm w))` using `CxPts.ev_app i rfl _ _ _`. Establish `hg0w : g w ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hzk k)) hu0`. Establish `hnorm : ‖g w‖ = (∏ k, ‖Γ w ⟨k, p k⟩‖ ^ B.a k) * ‖ev (mpStr ℤ m n) σ₀ _ (u (b PUnit.unit) p).val (PtsOver.map i rfl _ (e.symm w))‖`. Simplify using `only [g, norm_mul, norm_prod, norm_zpow, hev']`. Establish `hφb : φ.φ b (e.symm w) = (Nh.φ σ₀).φ (b PUnit.unit) (PtsOver.map i rfl _ (e.symm w))` using `GlobalTheory.Weight.pull_φ _ i rfl b _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hleft : c.finChart.symm (κ w) = e.symm w` using `c.finChart.left_inv hy`. Express the relevant statement in the definitionally equal form `Real.log (B.h (Γ w)) = φ.φ b (c.finChart.symm (κ w)) / 2 + Real.log ‖g w‖`. Rewrite using `[hleft, hφb, hrep', ← hnorm, Real.log_mul (norm_ne_zero_iff.2 hg0w) (Real.exp_ne_zero _), Real.log_exp, add_comm]`. Establish `hh : hessC (fun w => Real.log (B.h (Γ w))) v = hessC ((fun w => φ.locPot.φ y₀ (c.finChart.symm w)) ∘ κ) v` using `(hessCGerm _ _ _ hev).trans (ReciprocityTheory.AnForm.A.hessC_add_log_norm _ g v hC2 hg hg0)`. Express the relevant statement in the definitionally equal form `maDens (fun _ y' => Real.log (B.h (Γ y'))) v = _`.
-
-Rewrite using `[maDens_congr_hessC _ (fun _ => (fun w => φ.locPot.φ y₀ (c.finChart.symm w)) ∘ κ) v fun _ => hh, hcomp]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem maDensity_eq (Nh : GlobalTheory.HermLB (mpStr ℤ m n)) (B : HermLine (Bk n)) (hrep : IsHermRep Nh B)
     (hΓ : DifferentiableOn ℂ Γ e.target) (hover : ∀ v ∈ e.target, Over i (e.symm v) (Γ v))
@@ -228,7 +224,7 @@ theorem maDensity_eq (Nh : GlobalTheory.HermLB (mpStr ℤ m n)) (B : HermLine (B
   ring
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Γ e.target` using `(GlobalTheory.SCV.contDiffOn_of_differentiableOn e.open_target hΓ _).restrict_scalars ℝ`. Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y' => B.h (Γ y')) e.target` using `hB.comp h1 hmc`. Conclude with `(h2.log fun v hv => (B.pos _ (hmc v hv)).ne').of_le (by norm_cast)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_log_metric {B : HermLine (Bk n)} (hB : IsSmoothHerm B) (hΓ : DifferentiableOn ℂ Γ e.target)
     (hmc : ∀ v ∈ e.target, ∀ k, ∃ j, Γ v ⟨k, j⟩ ≠ 0) :
@@ -241,9 +237,9 @@ theorem contDiffOn_log_metric {B : HermLine (Bk n)} (hB : IsSmoothHerm B) (hΓ :
 end Piece
 
 /- English proof (translation)
-Introduce `m n Nh B hrep hB X _ i _ D _ Ψ N e Γ hP`. Take `⟨⟨c, hsub⟩, hΓ, hall⟩` from `hP`. Establish `hover : ∀ v ∈ e.target, Over i (e.symm v) (Γ v)` using `fun v hv => (hall v hv).1`. Establish `hmc : ∀ v ∈ e.target, ∀ k, ∃ j, Γ v ⟨k, j⟩ ≠ 0` using `fun v hv => (hall v hv).2.1.1`. Use `⟨ReciprocityTheory.AnForm.M.maDens_continuousOn _ _ e.open_target fun _ => contDiffOn_log_metric i hB hΓ hmc, fun ε => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `restrict_chernPart_of_coords ((Nh.restr i).cInf σ₀) ε c e hsub (differentiableOn_coords i hΓ hover c hsub) fun v hv => maDensity_eq i Nh B hrep hΓ hover hmc c hsub hv`.
+A detailed English derivation is pending.
 -/
 theorem piece_density : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (Nh : GlobalTheory.HermLB (mpStr ℤ m n)) (B : HermLine (Bk n)), IsHermRep Nh B → IsSmoothHerm B →
     ∀ (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)

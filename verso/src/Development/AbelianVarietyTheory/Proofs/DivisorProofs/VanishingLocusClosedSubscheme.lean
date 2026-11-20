@@ -20,13 +20,13 @@ namespace GlobalTheory.ZeroLocus
 variable {Y T : Scheme.{0}} {G Q : Y.Modules}
 
 /- English proof (translation)
-Establish `hex` using `QCoh.exact_cokernel_π_app u hU`. Establish `hsur` using `QCoh.surjective_cokernel_π_app u hU`. Establish `hsm (b : Γ(Y, U)) (s : Γ(Q, U)) : (cokernel.π u).app U (b • s) = b • (cokernel.π u).app U s` using `Scheme.Modules.Hom.app_smul _ b s`. Rewrite using `[Module.mem_annihilator]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H`. Use `(hex _).1 ?_` and prove the remaining obligations. Rewrite using `[hsm]`. Conclude with `H _`. Introduce and unpack `⟨t, ht⟩ m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `hsur m`. Establish `h0 : a • (cokernel.π u).app U (e 0) = 0`. Rewrite using `[← hsm]`. Conclude with `(hex _).2 ⟨t, ht⟩`. Establish `hs` using `(he.basis le_rfl).sum_repr s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[Fin.sum_univ_one, IsFrame.basis_apply, resM_self]`. Rewrite using `[← hs, hsm, smul_comm, h0, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mem_annihilator_cokernel_iff (u : G ⟶ Q) [G.IsQuasicoherent] [Q.IsQuasicoherent]
     {U : Y.Opens} (hU : IsAffineOpen U) {e : Fin 1 → Γ(Q, U)} (he : IsFrame e) (a : Γ(Y, U)) :
@@ -52,7 +52,7 @@ theorem mem_annihilator_cokernel_iff (u : G ⟶ Q) [G.IsQuasicoherent] [Q.IsQuas
     rw [← hs, hsm, smul_comm, h0, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[QCoh.pullbackSections_smul, Scheme.Hom.appLE_eq_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullbackSections_smul_self (h : T ⟶ Y) {U : Y.Opens} (a : Γ(Y, U)) (s : Γ(Q, U)) :
     QCoh.pullbackSections h Q (le_refl (h ⁻¹ᵁ U)) (a • s) =
@@ -60,9 +60,9 @@ theorem pullbackSections_smul_self (h : T ⟶ Y) {U : Y.Opens} (a : Γ(Y, U)) (s
   rw [QCoh.pullbackSections_smul, Scheme.Hom.appLE_eq_app]
 
 /- English proof (translation)
-Apply `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv _ _).injective` to reduce the goal to its premises. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit]`. Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `s`. Use `H V s` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[QCoh.pullbackSections_apply]`. Use `erw [Twist.resM_self] at this`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pullbackSections (f : T ⟶ Y) {E : T.Modules}
     (α : (Scheme.Modules.pullback f).obj G ⟶ E)
@@ -78,19 +78,17 @@ theorem eq_zero_of_pullbackSections (f : T ⟶ Y) {E : T.Modules}
   exact this
 
 /- English proof (translation)
-Introduce `Y G Q u hG hQ`. Use `haveI := hQ.isFiniteQC`. Set `I` to `QCoh.annihilatorSheaf (cokernel u)`. Establish `hI (U : Y.Opens) (hU : IsAffineOpen U) {e : Fin 1 → Γ(Q, U)} (he : IsFrame e) (a : Γ(Y, U)) : (I.subschemeι.app U).hom a = 0 ↔ ∃ t, u.app U t = a • e 0`. Rewrite using `[← RingHom.mem_ker, I.ker_subschemeι_app ⟨U, hU⟩, QCoh.annihilatorSheaf_ideal]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_annihilator_cokernel_iff u hU he a`. Use `⟨I.subscheme, I.subschemeι, inferInstance, fun T h => ⟨fun H => ?_, ?_⟩⟩` and prove the remaining obligations. Use `choose U e hU hy hle he using fun y : Y => hQ.exists_affine (V := ⊤) (x := y) trivial`. Use `ProjSpace.exists_lift_of_cover I.subschemeι h U hU (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hy y⟩) fun y s hs => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `(hI _ (hU y) (he y) s).1 hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ((Scheme.Modules.pullback h).map u).app (h ⁻¹ᵁ U y) (QCoh.pullbackSections h G (le_refl _) t) = 0` using `by rw [H]; rfl`. Rewrite `h1` using `[QCoh.pullback_map_app_pullbackSections, ht, pullbackSections_smul_self]`. Establish `hf` using `((he y).pullback h) (h ⁻¹ᵁ U y) le_rfl`. Establish `: (fun _ : Fin 1 => h.app (U y) s) = 0` using `hf.1 (by`. Simplify using `only [Fintype.linearCombination_apply, Fin.sum_univ_one, resM_self, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1)`. Simplify using `using congrFun this 0`. Introduce and unpack `⟨h', rfl⟩`. Use `eq_zero_of_pullbackSections _ _ fun V t => ?_` and prove the remaining obligations. Rewrite using `[QCoh.pullback_map_app_pullbackSections]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose W e hW hyW hWV he using fun y : V => hQ.exists_affine y.2`. Use `sec_ext_of_cover (fun y => (h' ≫ I.subschemeι) ⁻¹ᵁ W y) (fun y => Scheme.Hom.preimage_mono _ (hWV y)) (fun x hx => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨_, hx⟩, hyW _⟩) fun y => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Establish `e1` using `QCoh.res_pullbackSections (h' ≫ I.subschemeι) Q (le_refl ((h' ≫ I.subschemeι) ⁻¹ᵁ V)) (Scheme.Hom.preimage_mono _ (hWV y)) (u.app V t)`. Establish `e2` using `QCoh.pullbackSections_res (h' ≫ I.subschemeι) Q (le_refl ((h' ≫ I.subschemeι) ⁻¹ᵁ W y)) (hWV y) (u.app V t)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(e1.trans e2.symm).trans ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `(he y (W y) le_rfl).2 (u.app (W y) (resM G (hWV y) t))`. Rewrite `hc` using `[Fintype.linearCombination_apply, Fin.sum_univ_one, resM_self]`. Establish `ha : (I.subschemeι.app (W y)).hom (c 0) = 0` using `(hI _ (hW y) (he y) (c 0)).2 ⟨_, hc.symm⟩`. Express the relevant statement in the definitionally equal form `QCoh.pullbackSections _ Q _ (resM Q (hWV y) (u.app V t)) = 0`.
-
-Rewrite using `[← app_resM, ← hc, pullbackSections_smul_self]`. Establish `hz : (ConcreteCategory.hom ((h' ≫ I.subschemeι).app (W y))) (c 0) = 0` using `(congrArg (h'.app (I.subschemeι ⁻¹ᵁ W y)).hom ha).trans (map_zero _)`. Rewrite using `[hz, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_zeroLocus : ∀ (Y : Scheme.{0}) (G Q : Y.Modules) (u : G ⟶ Q), G.IsQuasicoherent → IsVB Q 1 →
     ∃ (Z : Scheme.{0}) (j : Z ⟶ Y), IsClosedImmersion j ∧ ∀ (T : Scheme.{0}) (h : T ⟶ Y),

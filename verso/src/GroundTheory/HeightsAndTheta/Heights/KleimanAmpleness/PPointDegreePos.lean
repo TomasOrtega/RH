@@ -18,9 +18,9 @@ section
 variable {k : Type u} [Field k] {N : ℕ}
 
 /- English proof (translation)
-Establish `ho : ∀ g, oneBlock (S` using `k) (N := N) g = rename (HilbertPositive.blockEquiv N) g := fun _ => rfl`. Use extensionality with `d`. Use `set d' := Finsupp.mapDomain (HilbertPositive.blockEquiv N).symm d with hd'`. Establish `hd : d = Finsupp.mapDomain (HilbertPositive.blockEquiv N) d'`. Rewrite using `[hd', ← Finsupp.mapDomain_comp, Equiv.self_comp_symm, Finsupp.mapDomain_id]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : d.degree = d'.degree`. Rewrite using `[hd, Finsupp.degree_mapDomain]`. Rewrite using `[ho, ho, coeff_homogeneousComponent, hd, coeff_rename_mapDomain _ (HilbertPositive.blockEquiv N).injective, coeff_rename_mapDomain _ (HilbertPositive.blockEquiv N).injective, coeff_homogeneousComponent, ← hd, hdeg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneBlock_homogeneousComponent (f : NumbersDVR.MRing (fun _ : Unit => Fin (N + 1)) k) (n : ℕ) :
     oneBlock (S := k) (N := N) (homogeneousComponent n f) =
@@ -38,19 +38,17 @@ theorem oneBlock_homogeneousComponent (f : NumbersDVR.MRing (fun _ : Unit => Fin
     coeff_rename_mapDomain _ (HilbertPositive.blockEquiv N).injective, coeff_homogeneousComponent, ← hd, hdeg]
 
 /- English proof (translation)
-Use `h.isPrime` as an intermediate fact. Set `e : NumbersDVR.MRing (fun _ : Unit => Fin (N + 1)) k ≃+* Poly k N` to `(renameEquiv k (HilbertPositive.blockEquiv N)).toRingEquiv`. Establish `hc : pp.comap (oneBlock (S` using `k) (N := N)).toRingHom = pp.comap e.toRingHom := Ideal.ext fun _ => Iff.rfl`. Use `⟨⟨Ideal.comap_isPrime _ _, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `f hf b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : weightedHomogeneousComponent (NumbersDVR.blockWeight (fun _ : Unit => Fin (N + 1))) b f = homogeneousComponent (b ()) f`. Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_homogeneousComponent, HilbertPositive.weight_blockWeight_one d]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`. Introduce `h`. Use function extensionality and compare the values at `u`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h`. Rewrite using `[heq]`. Express the relevant statement in the definitionally equal form `oneBlock (S := k) (N := N) _ ∈ pp`. Express the relevant statement in the definitionally equal form `oneBlock (S := k) (N := N) f ∈ pp at hf`. Rewrite using `[oneBlock_homogeneousComponent]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.homog _ hf _`. Introduce `u`. Take `⟨i, hi⟩` from `h.relevant`. Use `⟨i, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `oneBlock (S := k) (N := N) (X _) ∉ pp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[oneBlock, rename_X]`. Conclude with `hi`. Rewrite using `[FieldNumbers.CutRegular.relDim_eq_natCast_iff, Fintype.card_unit, hc]`. Establish `hm : pp = (pp.comap e.toRingHom).map e.toRingHom`. Rewrite using `[Ideal.map_comap_of_surjective e.toRingHom e.surjective]`.
-
-Rewrite using `[ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ _ e hm), h.dim]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiProjPrime_comap_oneBlock {Ω : Type w} [Field Ω] [Algebra k Ω] {x : Fin (N + 1) → Ω}
     {pp : Ideal (Poly k N)} (h : IsSubvar x pp 0) :
@@ -93,9 +91,9 @@ theorem isMultiProjPrime_comap_oneBlock {Ω : Type w} [Field Ω] [Algebra k Ω] 
 end
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x pp h`. Take `⟨hP, hrel⟩` from `isMultiProjPrime_comap_oneBlock h`. Use `hP.isPrime` as an intermediate fact. Take `⟨hfd, -⟩` from `FieldNumbers.IntNumBase.full k Unit (fun _ => Fin (N + 1)) _ hP hrel`. Unfold `FieldNumbers.resDeg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hP.isPrime]`. Conclude with `Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PointDegreePos.proof : PointDegreePos.Statement.{u, w} := by
   intro k _ Ω _ _ N x pp h

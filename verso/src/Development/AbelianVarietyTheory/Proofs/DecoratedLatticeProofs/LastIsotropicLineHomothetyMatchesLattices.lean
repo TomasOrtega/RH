@@ -19,15 +19,13 @@ namespace GlobalTheory.Core.Mi.LastLine
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `t ht`. Take `⟨ε, -, hεI, hε⟩` from `GlobalTheory.IwaPlace.LocSD.exists_idem (D := D) v`. Establish `hs : incA D x⁻¹ * t ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ ht`. Establish `ha0 : incA D x * ε ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ hεI.1`. Establish `hA0 : A (incA D x * ε)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA _ ha0, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hx, map_one, one_mul]`. Conclude with `hεI`. Establish `hst : incA D x⁻¹ * t * (incA D x * ε) = t`. Rewrite using `[show incA D x⁻¹ * t * (incA D x * ε) = (incA D x⁻¹ * incA D x) * (ε * t) by ring, ← map_mul, inv_mul_cancel₀ hx, map_one, one_mul, hε t ht]`. Establish `hsa : ∀ a, incA D x⁻¹ * t * a = (incA D x⁻¹ * a) * t` using `fun a => by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hPt`. Use `(h _ hs).1 (fun a ha hAa => by` as an intermediate fact. Rewrite using `[hsa]`. Conclude with `hP _ ((hA a ha).1 hAa) t hPt) _ ha0 hA0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hst]`. Then use the resulting hypothesis. Introduce `hQt`. Use `(h _ hs).2 (fun a ha hAa => by` as an intermediate fact. Rewrite using `[hsa]`. Conclude with `hQ _ ((hA a ha).1 hAa) t hQt) _ ha0 hA0`.
-
-Rewrite `this` using `[hst]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cancel (v : GlobalTheory.FinPl.Pl D) (x : D.host.E) (hx : x ≠ 0) (A : AE D → Prop)
     (hA : ∀ a ∈ idAt D (· = v), A a ↔ incA D x⁻¹ * a ∈ intAt D (· = v)) (P Q : AE D → Prop)
@@ -56,7 +54,7 @@ theorem cancel (v : GlobalTheory.FinPl.Pl D) (x : D.host.E) (hx : x ≠ 0) (A : 
     rwa [hst] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMul_mul {m n : ℕ} (X : Mx D m n) (i : Fin n) (o t : AE D) :
     colMul X i (o * t) = o • colMul X i t := by
@@ -74,17 +72,15 @@ namespace GlobalTheory.Core.Mi.LastLine
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D ψ S S₀ ρ d z L L' M M' v c γ hM hz hL hL' hc hγ hmv i hi a ha`. Take `⟨𝔞, h𝔞, -, hline⟩` from `GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal D S₀ M z hM hz`. Take `⟨x, hx, hgen⟩` from `GlobalTheory.IdVGen.idV_gen D v 𝔞 h𝔞`. Establish `hA : ∀ b ∈ idAt D (· = v), b • ratV z ∈ latV S₀ M (· = v) ↔ incA D x⁻¹ * b ∈ intAt D (· = v)` using `fun b hb => (hline v b hb).trans ((hgen b).trans ⟨fun h => h.1, fun h => ⟨h, hb⟩⟩)`. Establish `hent : ∀ b ∈ idAt D (· = v), ∀ k, (b • ratV z) k ∈ idAt D (· = v)` using `fun b hb k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hb`. Establish `hmove : ∀ b ∈ idAt D (· = v), b • ratV z ∈ latV S₀ M (· = v) ↔ (c * b) • ratV z ∈ latV S₀ M' (· = v)`. Introduce `b hb`. Rewrite using `[hmv _ (hent b hb), Matrix.mulVec_smul, hγ, smul_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcc : c * cA D c = 1` using `hc.1`. Establish `key : ∀ s ∈ idAt D (· = v), (∀ b ∈ idAt D (· = v), b • ratV z ∈ latV S₀ M (· = v) → colMul d.jX i (s * b) ∈ latV S L (· = v)) ↔ (∀ b ∈ idAt D (· = v), b • ratV z ∈ latV S₀ M (· = v) → colMul d.jX i (c * (s * b)) ∈ latV S L' (· = v))`. Introduce `s hs`. Rewrite using `[hL i hi s hs, ← hL' i hi s hs]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h b hb hbM`. Rewrite using `[show c * (s * b) = s * (c * b) by ring]`. Conclude with `h _ (Ideal.mul_mem_left _ _ hb) ((hmove b hb).1 hbM)`. Introduce `h b' hb' hb'M`. Establish `hb : cA D c * b' ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ hb'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb : c * (cA D c * b') = b'` using `by rw [← mul_assoc, hcc, one_mul]`. Use `h _ hb ((hmove _ hb).2 (by rw [hcb]; exact hb'M))` as an intermediate fact. Rewrite `this` using `[show c * (s * (cA D c * b')) = s * (c * (cA D c * b')) by ring, hcb]`. Then use the resulting hypothesis. Conclude with `cancel v x hx (fun b => b • ratV z ∈ latV S₀ M (· = v)) hA (fun t => colMul d.jX i t ∈ latV S L (· = v)) (fun t => colMul d.jX i (c * t) ∈ latV S L' (· = v)) (fun o ho t ht => by show colMul d.jX i (o * t) ∈ latV S L (· = v)`. Rewrite using `[colMul_mul]`.
-
-Conclude with `GlobalTheory.FinPlLoc.smul_latV v ho ht)`. Use the proof step `(fun o ho t ht => by show colMul d.jX i (c * (o * t)) ∈ latV S L' (· = v)`. Rewrite using `[mul_left_comm, colMul_mul]`. Conclude with `GlobalTheory.FinPlLoc.smul_latV v ho ht)`. Use `key a ha`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lastLine_match : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (z : Fin S₀.rank → D.host.E) (L L' : Lat S) (M M' : Lat S₀) (v : GlobalTheory.FinPl.Pl D) (c : AE D) (γ : GA D S₀), IsSelfDualC S₀ M → z ≠ 0 → LastAt ψ d z L M v → LastAt ψ d z L' M' v → NormOneAt v c → Formalism.L2.Theta.mt S₀ γ *ᵥ ratV z = ratV z → SMoves S₀ c γ M M' v → ∀ i : Fin ρ, i.1 + 1 = ρ → ∀ a ∈ idAt D (· = v), (colMul d.jX i a ∈ latV S L (· = v) ↔ colMul d.jX i (c * a) ∈ latV S L' (· = v)) := by
   intro D ψ S S₀ ρ d z L L' M M' v c γ hM hz hL hL' hc hγ hmv i hi a ha

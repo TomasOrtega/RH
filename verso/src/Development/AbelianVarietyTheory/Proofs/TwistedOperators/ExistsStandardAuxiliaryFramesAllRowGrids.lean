@@ -19,9 +19,9 @@ section Gen
 variable {D : D7} {A B : HSp D} {c σ : ℕ}
 
 /- English proof (translation)
-Use `⟨by omega, ?_, fun p => (star ((-D.host.xi0) ^ (p.1 + 1)))⁻¹, ?_⟩` and prove the remaining obligations. Use extensionality with `i p`. Simplify using `only [GlobalTheory.AscInh.rescale, GlobalTheory.RowUnf.jacDec, HermitianOrthogonalExtensionData.iso, colsOf, Matrix.mul_diagonal, Matrix.submatrix_apply, id]`. Conclude with `mul_comm _ _`. Use extensionality with `i p`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.AscInh.rescale, GlobalTheory.RowUnf.jacDec, colsOf, Matrix.mul_diagonal, Matrix.submatrix_apply, id]`. Conclude with `mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem isAuxiliaryVectorWittDec_evenFourierJacobiRescale (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ) :
     IsAuxiliaryVectorWittDec d (GlobalTheory.AscInh.rescale (GlobalTheory.RowUnf.jacDec d h) (fun p => (-D.host.xi0) ^ (p.1 + 1))
@@ -35,9 +35,9 @@ theorem isAuxiliaryVectorWittDec_evenFourierJacobiRescale (d : HermitianOrthogon
     exact mul_comm _ _
 
 /- English proof (translation)
-Use `⟨by omega, ?_, fun p => (star ((-D.host.xi0) ^ (p.1 + 1)))⁻¹, ?_⟩` and prove the remaining obligations. Use extensionality with `i p`. Simplify using `only [GlobalTheory.AscInh.rescale, GlobalTheory.RowUnf.besDec, HermitianOrthogonalExtensionData.iso, colsOf, Matrix.mul_diagonal, Matrix.submatrix_apply, id]`. Conclude with `mul_comm _ _`. Use extensionality with `i p`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.AscInh.rescale, GlobalTheory.RowUnf.besDec, colsOf, Matrix.mul_diagonal, Matrix.submatrix_apply, id]`. Conclude with `mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem isAuxiliaryVectorWittDec_oddBesselRescale (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ + 1) :
     IsAuxiliaryVectorWittDec d (GlobalTheory.AscInh.rescale (GlobalTheory.RowUnf.besDec d h) (fun p => (-D.host.xi0) ^ (p.1 + 1))
@@ -51,7 +51,7 @@ theorem isAuxiliaryVectorWittDec_oddBesselRescale (d : HermitianOrthogonalExtens
     exact mul_comm _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Matrix.fromCols (frameMat B A d.ι) (GlobalTheory.RowUnf.midCol d h)).submatrix id (finSumFinEquiv (m := A.rank) (n := 1)).symm * (Matrix.fromRows (1 : Matrix (Fin A.rank) (Fin A.rank) D.host.E) (0 : Matrix (Fin 1) (Fin A.rank) D.host.E)).submatrix finSumFinEquiv.symm id = _`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromRows, Matrix.mul_one, Matrix.mul_zero, add_zero, Matrix.submatrix_id_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coreMat_iA (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ + 1) :
     GlobalTheory.RowUnf.coreMat d h * (GlobalTheory.OrthSumExists.orthDecHsum D A (GlobalTheory.SeeSaw.Model.nLine D)).iA = frameMat B A d.ι := by
@@ -61,9 +61,9 @@ theorem coreMat_iA (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 
   rw [Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromRows, Matrix.mul_one, Matrix.mul_zero, add_zero, Matrix.submatrix_id_id]
 
 /- English proof (translation)
-Establish `e : GlobalTheory.RowUnf.coreMat d h * (GlobalTheory.OrthSumExists.orthDecHsum D A (GlobalTheory.SeeSaw.Model.nLine D)).iB = GlobalTheory.RowUnf.midCol d h`. Express the relevant statement in the definitionally equal form `(Matrix.fromCols (frameMat B A d.ι) (GlobalTheory.RowUnf.midCol d h)).submatrix id (finSumFinEquiv (m := A.rank) (n := 1)).symm * (Matrix.fromRows (0 : Matrix (Fin A.rank) (Fin 1) D.host.E) (1 : Matrix (Fin 1) (Fin 1) D.host.E)).submatrix finSumFinEquiv.symm id = _`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromRows, Matrix.mul_one, Matrix.mul_zero, zero_add, Matrix.submatrix_id_id]`. Rewrite using `[e]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `∑ j : Fin 1, GlobalTheory.RowUnf.midCol d h i j * (-D.host.xi0) ^ 0 = _`. Rewrite using `[Fin.sum_univ_one, pow_zero, mul_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coreMat_iB (d : HermitianOrthogonalExtensionData A B c (-1)) (h : c = 2 * σ + 1) :
     (GlobalTheory.RowUnf.coreMat d h * (GlobalTheory.OrthSumExists.orthDecHsum D A (GlobalTheory.SeeSaw.Model.nLine D)).iB) *ᵥ
@@ -85,7 +85,7 @@ end Gen
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 
 /- English proof (translation)
-The claim follows from `rfl zB := by funext i simp only [GlobalTheory.AscInh.auxiliaryFrames, GlobalTheory.AscInh.lineDec, Matrix.mulVec, dotProduct, pow_zero, mul_one] exact Fin.sum_univ_one _ ζ ρ := by funext i show (-D.host.xi0) ^ ρ = (-D.host.xi0) ^ ρ * (-D.host.xi0) ^ 0 rw [pow_zero, mul_one] hB ρ …`.
+A detailed English derivation is pending.
 -/
 theorem auxiliaryFrames_standard : Std (GlobalTheory.AscInh.auxiliaryFrames G) where
   zA := rfl
@@ -104,7 +104,7 @@ theorem auxiliaryFrames_standard : Std (GlobalTheory.AscInh.auxiliaryFrames G) w
   aJ ρ h := rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ G _ _ _` and use `⟨_, auxiliaryFrames_standard G⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_std_frames : All fun {_} _ _ _ {G} _ _ => ∃ F : Frames G, Std F :=
   fun _ _ _ _ _ _ _ G _ _ _ => ⟨_, auxiliaryFrames_standard G⟩

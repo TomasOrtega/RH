@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.NatCastNotMemPrime
 
 /- English proof (translation)
-Introduce `hlP`. Establish `hcop : Nat.Coprime l p` using `(Nat.coprime_primes hl hp).2 hne`. Establish `hc : IsCoprime (l : A) (p : A)` using `Nat.Coprime.cast hcop`. Take `⟨a, b, hab⟩` from `hc`. Apply `hP.ne_top` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `P.add_mem (P.mul_mem_left a hlP) (P.mul_mem_left b hpP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_notMem_of_prime_ne {A : Type} [inst : CommRing A] (P : Ideal A)
     [hP : Ideal.IsPrime P] {p l : ℕ} (hp : Nat.Prime p) (hl : Nat.Prime l) (hne : l ≠ p)

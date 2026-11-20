@@ -14,11 +14,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.InterlacingNumerators
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `h1 : rowAct K g (initMinor K I hs) = (Matrix.detRowAlternating (n` using `Fin s) (R := MvPolynomial (Fin r × Fin m) K)).toMultilinearMap (fun p => ∑ b : Fin r, (C (g (I p) b) : MvPolynomial (Fin r × Fin m) K) • fun q : Fin s => (X (b, Fin.castLE hs q) : MvPolynomial (Fin r × Fin m) K)) := by`. Unfold `initMinor`. Rewrite using `[AlgHom.map_det]`. Express the relevant statement in the definitionally equal form `Matrix.det _ = Matrix.det _`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p q : 2`. Simplify using `[rowAct, Finset.sum_apply]`. Rewrite using `[h1, MultilinearMap.map_sum]`. Use `Submodule.sum_mem _ fun J _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, ← map_prod, smul_eq_mul, ← smul_eq_C_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨J, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem rowAct_initMinor_mem {r m s : ℕ} (g : Matrix (Fin r) (Fin r) K) (I : Fin s → Fin r) (hs : s ≤ m) :
     rowAct K g (initMinor K I hs) ∈ Submodule.span K (Set.range fun J : Fin s → Fin r => initMinor K J hs) := by
@@ -39,9 +39,9 @@ theorem rowAct_initMinor_mem {r m s : ℕ} (g : Matrix (Fin r) (Fin r) K) (I : F
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨J, rfl⟩)
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_ (GlobalTheory.OrbitSpan.prod_mem_span_prod Finset.univ _ x hx)` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[Set.mem_fintype_prod]`. Take `⟨z, hz, rfl⟩` from `hy`. Use `choose t ht using hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, Finset.prod_congr rfl fun i _ => ht i⟩`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem_span_range {A ι : Type} [CommRing A] [Algebra K A] [Fintype ι] {J : ι → Type}
     (f : ∀ i, J i → A) (x : ι → A) (hx : ∀ i, x i ∈ Submodule.span K (Set.range (f i))) :
@@ -55,9 +55,9 @@ theorem prod_mem_span_range {A ι : Type} [CommRing A] [Algebra K A] [Fintype ι
   exact ⟨t, Finset.prod_congr rfl fun i _ => ht i⟩
 
 /- English proof (translation)
-Unfold `piGen`. Simplify using `only [map_mul, map_prod]`. Establish `h1` using `prod_mem_span_range (K := K) _ _ fun i : Fin n => prod_mem_span_range _ _ fun k : Fin (aNum lam sg i) => rowAct_initMinor_mem g (t.1 i k) (Nat.succ_le_of_lt i.isLt)`. Establish `h2` using `prod_mem_span_range (K := K) _ _ fun i : Fin n => prod_mem_span_range _ _ fun k : Fin (bNum lam sg i) => rowAct_initMinor_mem g (t.2 i k) i.isLt.le`. Establish `h3` using `Submodule.mul_mem_mul h1 h2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, _, ⟨v, rfl⟩, rfl⟩`. Conclude with `⟨(u, v), rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem rowAct_piGen_mem {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n) (g : Matrix (Fin n) (Fin n) K)
     (t : Gen lam sg) : rowAct K g (piGen K lam sg t) ∈ Submodule.span K (Set.range (piGen K lam sg)) := by
@@ -74,11 +74,11 @@ theorem rowAct_piGen_mem {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n) 
   exact ⟨(u, v), rfl⟩
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ m`. Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_castSucc]`. Establish `h1 : nuNext b (Fin.last m) = 0` using `by simp [nuNext]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, pow_zero, mul_one, Fin.val_zero, h0, one_pow, one_mul]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h2 : nuNext b i.castSucc = b i.succ`. Unfold `nuNext`. Rewrite using `[dif_pos (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_shift {A : Type} [CommMonoid A] {n : ℕ} (D : ℕ → A) (h0 : D 0 = 1) (b : Fin n → ℕ) :
     ∏ i : Fin n, D i.val ^ b i = ∏ i : Fin n, D (i.val + 1) ^ nuNext b i := by
@@ -97,11 +97,11 @@ theorem prod_shift {A : Type} [CommMonoid A] {n : ℕ} (D : ℕ → A) (h0 : D 0
     rfl
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `Fin.pos i`. Unfold `nuNext`. Simplify using `only [aNum, bNum, DomWeight.natW, DomWeight.detShift, dif_pos hn]`. Establish `h1` using `(h i).1`. Use `split_ifs with hi`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(h ⟨i.val + 1, hi⟩).2`. Establish `h3 : (⟨i.val + 1, hi⟩ : Fin n).castSucc = i.succ` using `rfl`. Establish `h4 : sg.w ⟨n - 1, by omega⟩ ≤ sg.w ⟨i.val + 1, hi⟩` using `sg.anti (by simp [Fin.le_def]; omega)`. Rewrite `h2`, the goal using `[h3]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2` using `he i (by omega)`. Establish `h3 : i.succ = Fin.last n` using `Fin.ext (by simp; omega)`. Establish `h4 : (⟨n - 1, by omega⟩ : Fin n) = i` using `Fin.ext (by simp; omega)`. Rewrite using `[h3, h4]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem aNum_add_bNext {n : ℕ} {lam : DomWeight (n + 1)} {sg : DomWeight n} (h : Interlace lam sg)
     (he : EqualLast lam sg) (i : Fin n) :
@@ -123,11 +123,11 @@ theorem aNum_add_bNext {n : ℕ} {lam : DomWeight (n + 1)} {sg : DomWeight n} (h
     omega
 
 /- English proof (translation)
-Set `D : ℕ → MvPolynomial (Fin n × Fin n) K` to `fun k => if hk : k ≤ n then lpMinor K k hk hk else 1`. Establish `hD : ∀ k (hk : k ≤ n), initMinor K (Fin.castLE hk) hk = D k` using `fun k hk => by`. Simplify using `only [D, dif_pos hk]`. Both sides reduce to the same expression. Establish `hD' : ∀ k (hk : k ≤ n), lpMinor K k hk hk = D k` using `hD`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h0 : D 0 = 1`. Rewrite using `[← hD' 0 (Nat.zero_le _)]`. Simplify using `[lpMinor]`. Unfold `piGen hw`. Simplify using `only [hD, hD', Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[prod_shift D h0, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, aNum_add_bNext h he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hw_eq_piGen {n : ℕ} {lam : DomWeight (n + 1)} {sg : DomWeight n} (h : Interlace lam sg)
     (he : EqualLast lam sg) :
@@ -146,9 +146,7 @@ theorem hw_eq_piGen {n : ℕ} {lam : DomWeight (n + 1)} {sg : DomWeight n} (h : 
   rw [← pow_add, aNum_add_bNext h he]
 
 /- English proof (translation)
-Use `(GlobalTheory.OrbitSpan.dualWeyl_le_span_orbit K le_rfl sg.natW (Formalism.L2.Col.natW_anti sg)).trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `beta_reduce`. Rewrite using `[hw_eq_piGen h he]`.
-
-Conclude with `rowAct_piGen_mem lam sg _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualWeyl_le_span_piGen (K : Type) [Field K] [CharZero K] (n : ℕ) (lam : DomWeight (n + 1))
     (sg : DomWeight n) (h : Interlace lam sg) (he : EqualLast lam sg) :

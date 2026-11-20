@@ -16,7 +16,7 @@ section Blocks
 variable {R : Type} [CommRing R] {a b : ℕ}
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) < a + b` using `by omega`. Establish `hj : (j : ℕ) < a + b` using `by omega`. Simplify using `only [entN, hi, hj, and_self, dif_pos]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem entN_tl (M : Matrix (Fin (a + b)) (Fin (a + b)) R) (i j : Fin a) :
     entN M i j = M (Fin.castAdd b i) (Fin.castAdd b j) := by
@@ -26,7 +26,7 @@ theorem entN_tl (M : Matrix (Fin (a + b)) (Fin (a + b)) R) (i j : Fin a) :
   rfl
 
 /- English proof (translation)
-Establish `hi : a + (i : ℕ) < a + b` using `by omega`. Establish `hj : a + (j : ℕ) < a + b` using `by omega`. Simplify using `only [entN, hi, hj, and_self, dif_pos]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem entN_br (M : Matrix (Fin (a + b)) (Fin (a + b)) R) (i j : Fin b) :
     entN M (a + i) (a + j) = M (Fin.natAdd a i) (Fin.natAdd a j) := by
@@ -36,15 +36,15 @@ theorem entN_br (M : Matrix (Fin (a + b)) (Fin (a + b)) R) (i j : Fin b) :
   rfl
 
 /- English proof (translation)
-Simplify using `[entN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entN_self {m : ℕ} (M : Matrix (Fin m) (Fin m) R) (i j : Fin m) : entN M i j = M i j := by
   simp [entN]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv M, ← Matrix.fromBlocks_toBlocks (M.submatrix finSumFinEquiv finSumFinEquiv)]`. Establish `h0 : (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0`. Use extensionality with `i j`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.zero_apply]`. Apply the tactic sequence `apply h <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h0, Matrix.det_fromBlocks_zero₂₁]`. Apply the tactic sequence `congr 2 <;> ext i j <;> simp [Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, entN_tl, entN_br]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_par (M : Matrix (Fin (a + b)) (Fin (a + b)) R)
     (h : ∀ i j : Fin (a + b), (j : ℕ) < a → a ≤ (i : ℕ) → M i j = 0) :
@@ -60,7 +60,7 @@ theorem det_par (M : Matrix (Fin (a + b)) (Fin (a + b)) R)
   congr 2 <;> ext i j <;> simp [Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, entN_tl, entN_br]
 
 /- English proof (translation)
-Establish `hu : IsUnit (p : Matrix (Fin (a + b)) (Fin (a + b)) R).det` using `(Matrix.isUnit_iff_isUnit_det _).1 p.isUnit`. Rewrite `hu` using `[det_par _ h]`. Establish `h1` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_left hu)`. Establish `h2` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right hu)`. Conclude with `⟨h1.unit, h2.unit, fun i j => by simp, fun i j => by simp⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_blocks (p : GL (Fin (a + b)) R)
     (h : ∀ i j : Fin (a + b), (j : ℕ) < a → a ≤ (i : ℕ) → (p : Matrix _ _ R) i j = 0) :
@@ -79,7 +79,7 @@ def dg (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) : Matrix (F
     else if a ≤ (i : ℕ) ∧ a ≤ (j : ℕ) then entN y (i - a) (j - a) else 0
 
 /- English proof (translation)
-Unfold `dg`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_par (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) (i j : Fin (a + b))
     (hj : (j : ℕ) < a) (hi : a ≤ (i : ℕ)) : dg x y i j = 0 := by
@@ -87,7 +87,7 @@ theorem dg_par (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) (i 
   rw [if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[entN_tl]`. Simplify using `[dg, entN_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dg_tl (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) (i j : Fin a) :
     entN (dg x y) i j = x i j := by
@@ -95,7 +95,7 @@ theorem dg_tl (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) (i j
   simp [dg, entN_self]
 
 /- English proof (translation)
-Rewrite using `[entN_br]`. Simplify using `[dg, entN_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dg_br (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) (i j : Fin b) :
     entN (dg x y) (a + i) (a + j) = y i j := by
@@ -103,7 +103,7 @@ theorem dg_br (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) (i j
   simp [dg, entN_self]
 
 /- English proof (translation)
-Rewrite using `[det_par _ (dg_par x y)]`. Apply the tactic sequence `congr 2 <;> ext i j <;> simp [dg_tl, dg_br]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_det (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) :
     (dg x y).det = x.det * y.det := by
@@ -111,16 +111,16 @@ theorem dg_det (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) :
   congr 2 <;> ext i j <;> simp [dg_tl, dg_br]
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, dg_det]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 x.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_unit (x : GL (Fin a) R) (y : GL (Fin b) R) : IsUnit (dg x.val y.val) := by
   rw [Matrix.isUnit_iff_isUnit_det, dg_det]
   exact ((Matrix.isUnit_iff_isUnit_det _).1 x.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit)
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Rewrite using `[← entN_tl (dg 1 1), dg_tl]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[Matrix.one_apply_ne (by intro h; have := congrArg Fin.val h; simp at this; omega)]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[dg]`. Rewrite using `[Matrix.one_apply_ne (by intro h; have := congrArg Fin.val h; simp at this; omega)]`. Simplify using `[dg]`. Rewrite using `[← entN_br (dg 1 1), dg_br]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dg_one : dg (1 : Matrix (Fin a) (Fin a) R) (1 : Matrix (Fin b) (Fin b) R) = 1 := by
   ext i j
@@ -133,7 +133,7 @@ theorem dg_one : dg (1 : Matrix (Fin a) (Fin a) R) (1 : Matrix (Fin b) (Fin b) R
   · rw [← entN_br (dg 1 1), dg_br]; simp [Matrix.one_apply]
 
 /- English proof (translation)
-Unfold `entN`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entN_map {S : Type} [CommRing S] (f : R →+* S) {m : ℕ} (M : Matrix (Fin m) (Fin m) R) (i j : ℕ) :
     entN (M.map f) i j = f (entN M i j) := by
@@ -141,7 +141,7 @@ theorem entN_map {S : Type} [CommRing S] (f : R →+* S) {m : ℕ} (M : Matrix (
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [dg, Matrix.map_apply, entN_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_map {S : Type} [CommRing S] (f : R →+* S) (x : Matrix (Fin a) (Fin a) R) (y : Matrix (Fin b) (Fin b) R) :
     (dg x y).map f = dg (x.map f) (y.map f) := by
@@ -150,7 +150,7 @@ theorem dg_map {S : Type} [CommRing S] (f : R →+* S) (x : Matrix (Fin a) (Fin 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < a`. Rewrite using `[hM i k hk hi, zero_mul]`. Rewrite using `[hN k j hj (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_par (M N : Matrix (Fin (a + b)) (Fin (a + b)) R)
     (hM : ∀ i j : Fin (a + b), (j : ℕ) < a → a ≤ (i : ℕ) → M i j = 0)
@@ -163,7 +163,7 @@ theorem mul_par (M N : Matrix (Fin (a + b)) (Fin (a + b)) R)
   · rw [hN k j hj (by omega), mul_zero]
 
 /- English proof (translation)
-Simplify using `only [entN_tl, Matrix.mul_apply, Fin.sum_univ_add]`. Rewrite using `[Finset.sum_eq_zero (s := (Finset.univ : Finset (Fin b))), add_zero]`. Introduce `k _`. Rewrite using `[hN _ _ (by simp) (by simp), mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_tl (M N : Matrix (Fin (a + b)) (Fin (a + b)) R)
     (hN : ∀ i j : Fin (a + b), (j : ℕ) < a → a ≤ (i : ℕ) → N i j = 0) (i j : Fin a) :
@@ -189,7 +189,7 @@ Both sides reduce to the same expression.
 theorem red_val (n : ℕ) (k : GL (Fin n) ℤ_[g]) : (red g n k).val = k.val.map (PadicInt.toZMod (p := g)) := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, inc_val, Units.coe_map]`. Conclude with `((algebraMap ℤ_[g] ℚ_[g]).map_det k.val).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_inc (n : ℕ) (k : GL (Fin n) ℤ_[g]) : Matrix.GeneralLinearGroup.det (inc g n k) =
     Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom (Matrix.GeneralLinearGroup.det k) := by
@@ -198,7 +198,7 @@ theorem det_inc (n : ℕ) (k : GL (Fin n) ℤ_[g]) : Matrix.GeneralLinearGroup.d
   exact ((algebraMap ℤ_[g] ℚ_[g]).map_det k.val).symm
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, red_val, Units.coe_map]`. Conclude with `((PadicInt.toZMod (p := g)).map_det k.val).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_red (n : ℕ) (k : GL (Fin n) ℤ_[g]) : Matrix.GeneralLinearGroup.det (red g n k) =
     Units.map (PadicInt.toZMod (p := g)).toMonoidHom (Matrix.GeneralLinearGroup.det k) := by
@@ -207,20 +207,20 @@ theorem det_red (n : ℕ) (k : GL (Fin n) ℤ_[g]) : Matrix.GeneralLinearGroup.d
   exact ((PadicInt.toZMod (p := g)).map_det k.val).symm
 
 /- English proof (translation)
-Simplify using `[fixK1, Submodule.mem_iInf, sub_eq_zero, MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_principalCongruenceFixedVectors_iff {n : ℕ} (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (v : V) :
     v ∈ fixK1 π ↔ ∀ k, red g n k = 1 → π (inc g n k) v = v := by
   simp [fixK1, Submodule.mem_iInf, sub_eq_zero, MonoidHom.mem_ker]
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) ℤ_[g]` to `Matrix.of fun i j => ((p.val i j).val : ℤ_[g])`. Establish `hM : M.map (PadicInt.toZMod (p` using `g)) = p.val := by`. Use extensionality with `i j`. Simplify using `[M]`. Establish `hd : PadicInt.toZMod (p` using `g) M.det = p.val.det := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det, ← hM]`. Both sides reduce to the same expression. Establish `hu : IsUnit M.det`. Assume the negation of the conclusion as `hn`. Establish `: M.det ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.ker_toZMod]`. Conclude with `hn`. Rewrite `this` using `[RingHom.mem_ker, hd]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 p.isUnit).ne_zero this`. Establish `hu'` using `(Matrix.isUnit_iff_isUnit_det _).2 hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hu'.unit, ?_, fun i j hj hi => ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[red_val, IsUnit.unit_spec, hM]`. Rewrite using `[IsUnit.unit_spec]`. Simplify using `[M, hp i j hj hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_par_lift {n : ℕ} (a : ℕ) (p : Gn g n) (hp : InPar a (p : Mt g n)) :
     ∃ k : GL (Fin n) ℤ_[g], red g n k = p ∧ ∀ i j : Fin n, (j : ℕ) < a → a ≤ (i : ℕ) → k.val i j = 0 := by
@@ -256,9 +256,9 @@ variable {π : Representation ℂ (GL (Fin (a + b)) ℚ_[g]) V} {σ : Representa
   {ν₁ ν₂ : ℚ_[g]ˣ →* ℂˣ} {Λ : V →ₗ[ℂ] W} {χ : (ZMod g)ˣ →* ℂˣ}
 
 /- English proof (translation)
-Rewrite using `[hΛ (inc g _ k) (inc g a x) (inc g b y), det_inc, det_inc, h1, h2, det_red, one_mul]`. Introduce `i j hj hi`. Rewrite using `[inc_val, Matrix.map_apply, hk i j hj hi, map_zero]`. Introduce `i j`. Rewrite using `[inc_val, inc_val, entN_map, Matrix.map_apply, hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[inc_val, inc_val, entN_map, Matrix.map_apply, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem eqv_int (hΛ : Eqv π σ ν₁ ν₂ Λ)
     (h1 : ∀ u : ℤ_[g]ˣ, ν₁ (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom u) = 1)
@@ -278,9 +278,9 @@ theorem eqv_int (hΛ : Eqv π σ ν₁ ν₂ Λ)
     rw [inc_val, inc_val, entN_map, Matrix.map_apply, hy]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_principalCongruenceFixedVectors_iff]`. Introduce `x hx`. Establish `hu` using `dg_unit x (1 : GL (Fin b) ℤ_[g])`. Establish `h` using `eqv_int hΛ h1 h2 hu.unit x 1 (fun i j hj hi => by rw [IsUnit.unit_spec]; exact dg_par _ _ i j hj hi) (fun i j => by rw [IsUnit.unit_spec, dg_tl]) (fun i j => by rw [IsUnit.unit_spec, dg_br]) v`. Rewrite `h` using `[hv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h.symm`. Use `ext1`. Rewrite using `[red_val, IsUnit.unit_spec, dg_map, ← red_val, ← red_val, hx, map_one]`. Conclude with `dg_one`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_fix (hΛ : Eqv π σ ν₁ ν₂ Λ)
     (h1 : ∀ u : ℤ_[g]ˣ, ν₁ (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom u) = 1)
@@ -299,9 +299,9 @@ theorem map_fix (hΛ : Eqv π σ ν₁ ν₂ Λ)
     exact dg_one
 
 /- English proof (translation)
-Take `⟨k, rfl, hk⟩` from `exists_par_lift a p hp`. Take `⟨x', y', hx', hy'⟩` from `exists_blocks k hk`. Establish `ex : red g a x' = x`. Use extensionality with `i j`. Rewrite using `[hx, red_val, red_val, entN_map, Matrix.map_apply, hx']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `ey : red g b y' = y`. Use extensionality with `i j`. Rewrite using `[hy, red_val, red_val, entN_map, Matrix.map_apply, hy']`. Rewrite using `[← ((GlobalTheory.GLp.finite_group_acts_on_fixK1 g _ V π).2 v hv).2.1, eqv_int hΛ h1 h2 k x' y' hk hx' hy', ey, ((GlobalTheory.GLp.finite_group_acts_on_fixK1 g _ W σ).2 _ (map_fix hΛ h1 h2 v hv)).2.1, ex]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eqv_fin (hΛ : Eqv π σ ν₁ ν₂ Λ)
     (h1 : ∀ u : ℤ_[g]ˣ, ν₁ (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom u) = 1)
@@ -323,7 +323,7 @@ theorem eqv_fin (hΛ : Eqv π σ ν₁ ν₂ Λ)
     ((GlobalTheory.GLp.finite_group_acts_on_fixK1 g _ W σ).2 _ (map_fix hΛ h1 h2 v hv)).2.1, ex]
 
 /- English proof (translation)
-Establish `hu` using `dg_unit x y`. Express the relevant statement in the definitionally equal form `(toG (dg x.val y.val)).val = _`. Rewrite using `[toG, dif_pos hu, IsUnit.unit_spec]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_val (x : Gn g a) (y : Gn g b) : (blk a b (a + b) x y).val = dg x.val y.val := by
   have hu := dg_unit x y
@@ -333,16 +333,16 @@ theorem blk_val (x : Gn g a) (y : Gn g b) : (blk a b (a + b) x y).val = dg x.val
 def InQ (a : ℕ) {n : ℕ} (p : Gn g n) : Prop := InPar a p.val ∧ tl a p.val = 1
 
 /- English proof (translation)
-Rewrite using `[← hp.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem InQ.ent {p : Gn g (a + b)} (hp : InQ a p) (i j : Fin a) :
     entN p.val i j = (1 : Matrix (Fin a) (Fin a) (ZMod g)) i j := by
   rw [← hp.2]; rfl
 
 /- English proof (translation)
-Use `⟨fun i j hj hi => mul_par _ _ hp.1 hq.1 i j hj hi, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `entN (p.val * q.val) i j = _`. Rewrite using `[mul_tl _ _ hq.1]`. Simplify using `only [hp.ent, hq.ent]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_apply, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem InQ.mul {p q : Gn g (a + b)} (hp : InQ a p) (hq : InQ a q) : InQ a (p * q) := by
   refine ⟨fun i j hj hi => mul_par _ _ hp.1 hq.1 i j hj hi, ?_⟩
@@ -353,9 +353,9 @@ theorem InQ.mul {p q : Gn g (a + b)} (hp : InQ a p) (hq : InQ a q) : InQ a (p * 
   rw [← Matrix.mul_apply, one_mul]
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[det_par _ hp.1]`. Establish `e1 : (Matrix.of fun i j : Fin a => entN p.val i j) = 1` using `by ext i j; exact hp.ent i j`. Establish `e2 : (Matrix.of fun i j : Fin b => entN p.val (a + i) (a + j)) = y.val` using `by ext i j; exact (hy i j).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, Matrix.det_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem InQ.det {p : Gn g (a + b)} (hp : InQ a p) (y : Gn g b)
     (hy : ∀ i j : Fin b, y.val i j = entN p.val (a + i) (a + j)) :
@@ -368,7 +368,7 @@ theorem InQ.det {p : Gn g (a + b)} (hp : InQ a p) (y : Gn g b)
   rw [e1, e2, Matrix.det_one, one_mul]
 
 /- English proof (translation)
-Use `((GlobalTheory.GLp.finite_group_acts_on_fixK1 g _ V π).2 v hv).2.1 1` as an intermediate fact. Rewrite `this` using `[map_one, map_one, map_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_one {n : ℕ} (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (v : V) (hv : v ∈ fixK1 π) :
     π (lift g n 1) v = v := by
@@ -377,21 +377,21 @@ theorem lift_one {n : ℕ} (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (v :
   exact this.symm
 
 /- English proof (translation)
-Establish `hb` using `(GlobalTheory.GLp.finite_group_acts_on_fixK1 g _ V π).2 w hw`. Set `φ : Gn g (a + b) →* ℂ` to `(Units.coeHom ℂ).comp (χ.comp Matrix.GeneralLinearGroup.det)`. Establish `hφ : ∀ p, φ p = ((χ (Matrix.GeneralLinearGroup.det p) : ℂˣ) : ℂ)` using `fun p => rfl`. Establish `hφ0 : ∀ p, φ p ≠ 0` using `fun p => by rw [hφ]; exact Units.ne_zero _`. Set `v : V` to `∑ p : {p : Gn g (a + b) // InQ a p}, (φ p.1)⁻¹ • π (lift g _ p.1) w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hq : ∀ q : Gn g (a + b), InQ a q → π (lift g _ q) v = φ q • v`. Introduce `q hq`. Set `m : {p : Gn g (a + b) // InQ a p} → {p : Gn g (a + b) // InQ a p}` to `fun p => ⟨q * p.1, hq.mul p.2⟩`. Establish `hm : Function.Bijective m` using `Finite.injective_iff_bijective.1 fun p p' h => Subtype.ext (mul_left_cancel (congrArg Subtype.val h))`. Establish `e : v = ∑ p : {p : Gn g (a + b) // InQ a p}, (φ (m p).1)⁻¹ • π (lift g _ (m p).1) w` using `(hm.sum_comp (fun p => (φ p.1)⁻¹ • π (lift g _ p.1) w)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_rhs => rw [e]`. Simplify using `only [v, map_sum, map_smul, Finset.smul_sum, m, smul_smul, map_mul, hb.2.2.1]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `hφ0 q` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hφ0 p.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `⟨v, ⟨Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (hb.1 _), fun u hu ht hr => ?_, fun y => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hq u ⟨hu, ht⟩, hφ, InQ.det ⟨hu, ht⟩ 1 (fun i j => by rw [Units.val_one, ← hr]; rfl)]`. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : InQ a (blk a b (a + b) 1 y)`. Use `⟨fun i j hj hi => by rw [blk_val]; exact dg_par _ _ i j hj hi, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[blk_val]`. Conclude with `dg_tl _ _ i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq _ hy, hφ, hy.det y (fun i j => by rw [blk_val, dg_br])]`. Establish `e : ∀ p : {p : Gn g (a + b) // InQ a p}, Λ ((φ p.1)⁻¹ • π (lift g _ p.1) w) = Λ w`. Introduce `p`. Take `⟨x, y, -, hy⟩` from `exists_blocks p.1 p.2.1`. Rewrite using `[map_smul, eqv_fin hΛ h1 h2 p.1 1 y p.2.1 (fun i j => (p.2.ent i j).symm) hy w hw, lift_one σ _ (map_fix hΛ h1 h2 w hw), smul_smul, ← p.2.det y hy, ← hφ, inv_mul_cancel₀ (hφ0 _), one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : Nonempty {p : Gn g (a + b) // InQ a p}`. Use `⟨⟨1, fun i j hj hi => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, ← dg_one]`. Conclude with `dg_par _ _ i j hj hi`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_one, ← dg_one]`. Conclude with `dg_tl _ _ i j`. Simplify using `only [v, map_sum, e, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Use `smul_ne_zero ?_ hw0` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.2 (Finset.card_pos.2 Finset.univ_nonempty).ne'`.
+A detailed English derivation is pending.
 -/
 theorem exists_parVec (hΛ : Eqv π σ ν₁ ν₂ Λ)
     (h1 : ∀ u : ℤ_[g]ˣ, ν₁ (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom u) = 1)

@@ -19,7 +19,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
 
 /- English proof (translation)
-Establish `hB` using `ookCstR_base sel S hX hPr hCh h4 G hm`. Establish `hJ` using `oneCosetSymmetric_and_nonvanishing G.σ₀ hB (ciMemG sel S) (liftFromResidueParabolicProduct_holds Ch sel _ _ m2) (ocbGrpGLoc_holds Ch sel _ _ m2) (ocbChrGLoc_holds Ch sel _ _ m2) (closedLevels_by_entries_holds X Pr R Ch m2 hm)`. Conclude with `oneIdx_ok sel S hX hPr hCh h4 G hT hW hval hm hJ.1 hJ.2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oneIdx_ok_closed (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)

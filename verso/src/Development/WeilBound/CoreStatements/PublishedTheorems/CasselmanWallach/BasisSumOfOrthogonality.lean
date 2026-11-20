@@ -9,12 +9,12 @@ namespace PositivityTheory.CW
 namespace FormEigenMonotone
 
 /- English proof (translation)
-The claim follows from `le_max_right _ _`.
+A detailed English derivation is pending.
 -/
 lemma phi_nonneg (s : ℕ) (R x : ℝ) : 0 ≤ phiR s R x := le_max_right _ _
 
 /- English proof (translation)
-Unfold `phiR`. Apply `max_eq_right` to reduce the goal to its premises. Establish `h1 : (0:ℝ) < (1+R)^s` using `by positivity`. Establish `h2 : (1+R)^s ≤ (1+x)^s` using `pow_le_pow_left₀ (by linarith) (by linarith) s`. Use `inv_anti₀ h1 h2` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -27,7 +27,7 @@ lemma phi_zero {s : ℕ} {R x : ℝ} (hR : 0 < R) (hx : R ≤ x) : phiR s R x = 
   linarith
 
 /- English proof (translation)
-Unfold `phiR`. Apply `max_le _ zero_le_one` to reduce the goal to its premises. Establish `h1 : (1:ℝ) ≤ (1+x)^s` using `one_le_pow₀ (by linarith)`. Establish `h2 : ((1+x)^s)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ h1`. Establish `h3 : 0 ≤ ((1+R)^s)⁻¹` using `by positivity`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -40,7 +40,7 @@ lemma phi_le_one {s : ℕ} {R x : ℝ} (hR : 0 < R) (hx : 0 ≤ x) : phiR s R x 
   linarith
 
 /- English proof (translation)
-Unfold `phiR`. Apply `max_eq_left` to reduce the goal to its premises. Establish `h1 : (0:ℝ) < (1+x)^s` using `by positivity`. Establish `h2 : (1+x)^s ≤ (1+R)^s` using `pow_le_pow_left₀ (by linarith) (by linarith) s`. Use `inv_anti₀ h1 h2` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -57,14 +57,14 @@ variable {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [Inne
   {E : Fin n → Fin n → Module.End ℂ V} {ι : Type} {b : Module.Basis ι ℂ V} {μ : ι → ℝ}
 
 /- English proof (translation)
-Simplify using `only [beta, LinearMap.add_apply, inner_add_right, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma beta_add (A B : Module.End ℂ V) (v w : V) :
     beta ε E (A + B) v w = beta ε E A v w + beta ε E B v w := by
   simp only [beta, LinearMap.add_apply, inner_add_right, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[inner_smul_right, Complex.re_ofReal_mul]`. Use `congr 1`. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma re_inner_smul_self (r : ℝ) (v : V) : (inner ℂ v ((r : ℂ) • v)).re = r * ‖v‖ ^ 2 := by
   rw [inner_smul_right, Complex.re_ofReal_mul]
@@ -72,7 +72,7 @@ lemma re_inner_smul_self (r : ℝ) (v : V) : (inner ℂ v ((r : ℂ) • v)).re 
   exact inner_self_eq_norm_sq (𝕜 := ℂ) v
 
 /- English proof (translation)
-Simplify using `only [beta, LinearMap.smul_apply, Module.End.one_apply, Complex.re_sum, re_inner_smul_self, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma beta_const_re (r : ℝ) (v : V) :
     (beta ε E ((r : ℂ) • 1) v v).re = r * ∑ p ∈ nc ε, ‖E p.1 p.2 v‖ ^ 2 := by
@@ -80,7 +80,7 @@ lemma beta_const_re (r : ℝ) (v : V) :
     Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [beta, Complex.re_sum]`. Conclude with `Finset.sum_le_sum fun p _ => hmono φ ψ h _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma beta_mono
     (hmono : ∀ φ ψ : ℝ → ℝ, (∀ x, 0 ≤ x → φ x ≤ ψ x) → ∀ w,
@@ -91,7 +91,7 @@ lemma beta_mono
   exact Finset.sum_le_sum fun p _ => hmono φ ψ h _
 
 /- English proof (translation)
-Rewrite using `[@norm_sq_eq_re_inner ℂ, hb.inner_sum, RCLike.re_to_complex, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_conj, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_fib (hb : Orthonormal ℂ b) (f : V →ₗ[ℂ] ℂ) (F : Finset ι) :
     ‖∑ j ∈ F, starRingEnd ℂ (f (b j)) • b j‖ ^ 2 = ∑ j ∈ F, ‖f (b j)‖ ^ 2 := by
@@ -100,7 +100,7 @@ lemma norm_fib (hb : Orthonormal ℂ b) (f : V →ₗ[ℂ] ℂ) (F : Finset ι) 
   rw [Complex.conj_conj, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Unfold `Eig`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hb j, hF j hj, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma eig_fib (hb : ∀ i, Eig ε E (μ i) (b i)) (ν : ℝ) (F : Finset ι) (hF : ∀ j ∈ F, μ j = ν)
     (a : ι → ℂ) : Eig ε E ν (∑ j ∈ F, a j • b j) := by
@@ -110,19 +110,19 @@ lemma eig_fib (hb : ∀ i, Eig ε E (μ i) (b i)) (ν : ℝ) (F : Finset ι) (hF
   rw [map_smul, hb j, hF j hj, smul_comm]
 
 /- English proof (translation)
-Establish `hN : ∀ w, 0 ≤ (beta ε E (fc b μ (phiR s R)) w w).re`. Introduce `w`. Establish `h0` using `beta_mono (ε := ε) (E := E) hmono (fun _ => (0:ℝ)) (phiR s R) (fun x _ => phi_nonneg s R x) w`. Rewrite `h0` using `[hconst 0, beta_const_re]`. Simplify using `using h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hd0 : (0:ℝ) ≤ ((1 + R) ^ s)⁻¹` using `inv_nonneg.mpr (pow_nonneg (by linarith) _)`. Establish `hS : ∑ p ∈ nc ε, ‖E p.1 p.2 h‖ ^ 2 = (ν - κ) * ‖h‖ ^ 2`. Rewrite using `[hA0 h, show casimirK ε E h = (ν : ℂ) • h from hh, re_inner_smul_self]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlow : (beta ε E (fc b μ fun x => ((1 + x) ^ s)⁻¹) h h).re - ((1 + R) ^ s)⁻¹ * ((ν - κ) * ‖h‖ ^ 2) ≤ (beta ε E (fc b μ (phiR s R)) h h).re`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : fc b μ (fun x => ((1 + x) ^ s)⁻¹ + -((1 + R) ^ s)⁻¹) = fc b μ (fun x => ((1 + x) ^ s)⁻¹) + fc b μ (fun _ => -((1 + R) ^ s)⁻¹)` using `hadd _ _`. Establish `h1` using `beta_mono (ε := ε) (E := E) hmono (fun x => ((1 + x) ^ s)⁻¹ + -((1 + R) ^ s)⁻¹) (phiR s R) (fun x _ => by`. Simplify using `only [phiR]`. Combine the linear relations using `[le_max_left (((1 + x) ^ s)⁻¹ - ((1 + R) ^ s)⁻¹) 0]) h`. Rewrite `h1` using `[e, beta_add, hconst (-((1 + R) ^ s)⁻¹), Complex.add_re, beta_const_re, hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : 0 ≤ ‖h‖ ^ 2` using `by positivity`. Distinguish the cases in `hx : ν < x₀`. Rewrite using `[if_pos hx]`. Establish `hp0` using `phi_nonneg s R ν`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp1` using `phi_le_one (s := s) hR hν`. Establish `hbd : phiR s R ν * (ν - κ + c) ≤ x₀ + |κ| + c`. Break down `le_total 0 (ν - κ + c) with h0 | h0` into its components or cases. Use polynomial arithmetic with `[neg_le_abs κ, mul_le_mul_of_nonneg_right hp1 h0]`. Use polynomial arithmetic with `[abs_nonneg κ, mul_nonpos_of_nonneg_of_nonpos hp0 h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `mul_le_mul_of_nonneg_right hbd hn` as an intermediate fact. Combine the linear relations using `[hN h]`. Rewrite using `[if_neg hx]`. Establish `hA` using `hA12 ν h (not_lt.mp hx) hh`. Distinguish the cases in `hνR : ν < R`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[phi_eq hν hνR]`. Use polynomial arithmetic with `[hlow, mul_nonneg (mul_nonneg hd0 hc) hn]`. Rewrite using `[phi_zero hR (not_lt.mp hνR)]`. Simplify using `using hN h`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma key {κ c x₀ R : ℝ} {s : ℕ}
     (hA0 : ∀ w, ∑ p ∈ nc ε, ‖E p.1 p.2 w‖ ^ 2 = (inner ℂ w (casimirK ε E w)).re - κ * ‖w‖ ^ 2)
@@ -177,29 +177,27 @@ lemma key {κ c x₀ R : ℝ} {s : ℕ}
 end FormEigenMonotone
 
 /- English proof (translation)
-Introduce `hA0 hA11 hA12 hA13a`. Unfold `A0 FunctionalCalculusLaws A12 BasisSumAsFormValues A13 ForBas ForMod at *`. Introduce `n ε V i1 i2 E hM ι b μ hEB κ hκ c hc`. Take `⟨-, -, hmono, hadd, -, hconst, -⟩` from `hA11 n ε V E hM ι b μ hEB`. Take `⟨s, x₀, hs, hx₀, hb12⟩` from `hA12 n ε V E hM ι b μ hEB κ hκ c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA0'` using `fun w => ((hA0 n ε V E hM).2.2.2 κ hκ w).2.1`. Establish `hK : 0 ≤ x₀ + |κ| + c` using `by linarith [abs_nonneg κ]`. Use `⟨s, x₀, x₀ + |κ| + c, hs, hK, ?_⟩` and prove the remaining obligations. Introduce `R f S T hS hT`. Establish `hTb : 0 ≤ (x₀ + |κ| + c) * ∑ i ∈ T, ‖f (b i)‖ ^ 2` using `mul_nonneg hK (Finset.sum_nonneg fun i _ => by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `le_or_gt R 0 with hR | hR` into its components or cases. Establish `hSe : ∀ i ∈ S, False` using `fun i hi => by`. Use `(hS i).1 hi` as an intermediate fact. Combine the linear relations using `[hEB.nonneg i]`. Rewrite using `[Finset.sum_eq_zero (s := S) (f := fun i => phiR s R (μ i) * ‖f (b i)‖ ^ 2) (fun i hi => (hSe i hi).elim), Finset.sum_eq_zero (s := S) (f := fun i => phiR s R (μ i) * (∑ p ∈ nc ε, ‖f ((E p.1 p.2) (b i))‖ ^ 2 - (μ i - κ) * ‖f (b i)‖ ^ 2)) (fun i hi => (hSe i hi).elim)]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφS : ∀ i ∉ S, phiR s R (μ i) = 0` using `fun i hi => FormEigenMonotone.phi_zero hR (not_lt.mp fun h => hi ((hS i).2 h))`. Take `⟨T', hST', hT'⟩` from `hA13a n ε V E hM ι b μ hEB (phiR s R) S hφS`. Establish `key1` using `hT' f`. Establish `hstep : ∀ ν ∈ Finset.image μ T', (phiR s R ν * (ν - κ + c) - (if ν < x₀ then x₀ + |κ| + c else 0)) * ∑ j ∈ T' with μ j = ν, ‖f (b j)‖ ^ 2 ≤ (beta ε E (fc b μ (phiR s R)) (∑ j ∈ T' with μ j = ν, (starRingEnd ℂ) (f (b j)) • b j) (∑ j ∈ T' with μ j = ν, (starRingEnd ℂ) (f (b j)) • b …`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ν hν`. Take `⟨j0, -, rfl⟩` from `Finset.mem_image.1 hν`. Establish `hEig` using `FormEigenMonotone.eig_fib hEB.eig (μ j0) (T'.filter fun j => μ j = μ j0) (fun j hj => (Finset.mem_filter.1 hj).2) (fun j => (starRingEnd ℂ) (f (b j)))`. Use `beta_reduce at hEig`. Establish `hk` using `FormEigenMonotone.key (b := b) (μ := μ) hA0' hmono hadd hconst hb12 hc hR (μ j0) (hEB.nonneg j0) _ hEig`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[FormEigenMonotone.norm_fib hEB.on f]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum1 : ∑ ν ∈ Finset.image μ T', (phiR s R ν * (ν - κ + c) - (if ν < x₀ then x₀ + |κ| + c else 0)) * ∑ j ∈ T' with μ j = ν, ‖f (b j)‖ ^ 2 = ∑ j ∈ T', (phiR s R (μ j) * (μ j - κ + c) - (if μ j < x₀ then x₀ + |κ| + c else 0)) * ‖f (b j)‖ ^ 2`. Apply `Finset.sum_image'` to reduce the goal to its premises. Introduce `i _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hj).2]`. Establish `e` using `Finset.sum_subset hST' (f := fun j => phiR s R (μ j) * (μ j - κ + c) * ‖f (b j)‖ ^ 2) (fun j _ hj => by simp only [hφS j hj, zero_mul])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsplit : ∑ j ∈ T', (phiR s R (μ j) * (μ j - κ + c) - (if μ j < x₀ then x₀ + |κ| + c else 0)) * ‖f (b j)‖ ^ 2 = ∑ j ∈ S, phiR s R (μ j) * (μ j - κ) * ‖f (b j)‖ ^ 2 + c * ∑ j ∈ S, phiR s R (μ j) * ‖f (b j)‖ ^ 2 - ∑ j ∈ T', (if μ j < x₀ then x₀ + |κ| + c else 0) * ‖f (b j)‖ ^ 2`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[← e, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hTb2 : ∑ j ∈ T', (if μ j < x₀ then x₀ + |κ| + c else 0) * ‖f (b j)‖ ^ 2 ≤ (x₀ + |κ| + c) * ∑ i ∈ T, ‖f (b i)‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_filter]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun j _ => by split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ ≤ ∑ i ∈ T, (x₀ + |κ| + c) * ‖f (b i)‖ ^ 2 := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `j hj`. Conclude with `(hT j).2 (Finset.mem_filter.1 hj).2`. Introduce `j _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg hK (by positivity)`. Establish `hle` using `Finset.sum_le_sum hstep`. Rewrite `hle` using `[hsum1, hsplit, ← key1]`. Establish `hR2 : ∑ i ∈ S, phiR s R (μ i) * (∑ p ∈ nc ε, ‖f ((E p.1 p.2) (b i))‖ ^ 2 - (μ i - κ) * ‖f (b i)‖ ^ 2) = ∑ i ∈ S, phiR s R (μ i) * ∑ p ∈ nc ε, ‖f ((E p.1 p.2) (b i))‖ ^ 2 - ∑ i ∈ S, phiR s R (μ i) * (μ i - κ) * ‖f (b i)‖ ^ 2`. Rewrite using `[← Finset.sum_sub_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hR2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem basis_form_sum_of_gain : A0 → FunctionalCalculusLaws → A12 → BasisSumAsFormValues → A13 := by
   intro hA0 hA11 hA12 hA13a

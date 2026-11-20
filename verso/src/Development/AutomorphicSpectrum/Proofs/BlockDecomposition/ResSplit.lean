@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.ResSplitProof
 
 /- English proof (translation)
-Establish `h` using `φ.hom.naturality g.op`. Conclude with `congrArg (fun k => ModuleCat.Hom.hom k x) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
@@ -14,13 +14,11 @@ theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Sche
   exact congrArg (fun k => ModuleCat.Hom.hom k x) h
 
 /- English proof (translation)
-Introduce `hRL hLS hLC R _ F U hU s x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨ι, f, hf⟩` from `hLS U hU _ (hRL R F s U x hx)`. Take `⟨W, j, hj, -, -, hglue⟩` from `hLC U ι f`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hP : ∀ a, ∃ y, Sec.map ((GlobalTheory.EtC.res R F).d (↑s) (↑(s + 1))) y = Sec.res (j a) x` using `fun a => hf (W a) (j a) a (hj a)`. Use `choose y hy using hP`. Take `⟨z, hz, -⟩` from `hglue R _ y`. Take `⟨w, -, huniq⟩` from `hglue R _ (fun a => Sec.res (j a) x)`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `huniq (Sec.map ((GlobalTheory.EtC.res R F).d (↑s) (↑(s + 1))) z) (fun a => by rw [← map_res, hz a, hy a])`. Establish `h2` using `huniq x (fun a => rfl)`. Conclude with `h1.trans h2.symm`. Introduce and unpack `⟨y, rfl⟩`. Establish `h` using `(GlobalTheory.EtC.res R F).d_comp_d (↑s) (↑(s + 1)) (↑(s + 1 + 1))`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem resSplit : CrystallineSemistableComparison.E.ResLoc → CrystallineSemistableComparison.E.LocSplit → CrystallineSemistableComparison.E.LcCover → CrystallineSemistableComparison.E.ResSplit := by
   intro hRL hLS hLC R _ F U hU s x

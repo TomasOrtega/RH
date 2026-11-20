@@ -11,7 +11,7 @@ open NumberField
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (J : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J (x + x') y =
@@ -19,7 +19,7 @@ theorem hform_add_left (J : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right (J : Matrix (Fin n) (Fin n) E) (x y y' : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J x (y + y') =
@@ -27,7 +27,7 @@ theorem hform_add_right (J : Matrix (Fin n) (Fin n) E) (x y y' : Fin n → E) :
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_smul_left (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J (c • x) y =
@@ -35,7 +35,7 @@ theorem hform_smul_left (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → 
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_right (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J x (c • y) =
@@ -45,25 +45,25 @@ theorem hform_smul_right (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n →
   ring
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_left (J : Matrix (Fin n) (Fin n) E) (y : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J 0 y = 0 := by
   simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_right (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J x 0 = 0 := by
   simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ S, ∀ y ∈ Submodule.span E S, Formalism.UG.hform (starRingEnd E) J x y = 0`. Introduce `x hx y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => exact hS x hx z hz`. Consider the case `zero => exact hform_zero_right J x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [hform_add_right, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [hform_smul_right, ha, mul_zero]`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => exact h1 z hz y hy`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact hform_zero_left J y`. Consider the case `add a b _ _ ha hb => rw [hform_add_left, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [hform_smul_left, ha, mul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hform_span_eq_zero (J : Matrix (Fin n) (Fin n) E) (S : Set (Fin n → E))
     (hS : ∀ y ∈ S, ∀ z ∈ S, Formalism.UG.hform (starRingEnd E) J y z = 0) :
@@ -84,9 +84,9 @@ theorem hform_span_eq_zero (J : Matrix (Fin n) (Fin n) E) (S : Set (Fin n → E)
   | smul c a _ ha => rw [hform_smul_left, ha, mul_zero]
 
 /- English proof (translation)
-Introduce `I R hR hiso`. Use `⟨?_, hform_span_eq_zero I.J _ hiso⟩` and prove the remaining obligations. Take `⟨r, hr, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hR`. Introduce `h`. Apply `hr0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: r ∈ Submodule.span I.E (↑R : Set (Fin I.n → I.E))` using `Submodule.subset_span hr`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot _).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (I : Formalism.MainNotions.S.AutInst)
     (R : Submodule (NumberField.RingOfIntegers (Formalism.MainNotions.S.AutInst.E I))

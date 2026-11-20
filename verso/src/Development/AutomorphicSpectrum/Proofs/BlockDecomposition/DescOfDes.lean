@@ -63,7 +63,7 @@ def mor (T : P.Elements) :
 
 include hθ in
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Conclude with `(hθ (s.obj (Fin.last 0)).hom y)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mor_aug (T : P.Elements) (y : Ff.obj T.1) :
     (mor W P Ff Gf θ hθ T).hom.f 0 (ptsAug W.ι Ff T.1 y) = unAug Gf (jG W P) T (θ T y) := by
@@ -71,9 +71,9 @@ theorem mor_aug (T : P.Elements) (y : Ff.obj T.1) :
   exact (hθ (s.obj (Fin.last 0)).hom y)
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3⟩` from `h`. Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, h3⟩` and prove the remaining obligations. Simplify using `using h0 (e.symm x)`. Use `h1 (e.symm x) (by simpa using hx)` as an intermediate fact. Simplify using `using congrArg e this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, hx⟩` from `h2 y hy`. Conclude with `⟨e x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem res_of_comp {K : Cx.{w} R} {M M' : Type*} [AddCommGroup M] [AddCommGroup M'] [Module R M] [Module R M']
     (e : M ≃ₗ[R] M') (ε : M' →ₗ[R] K.X 0) (s : R) (h : K.ResUpTo s (ε ∘ₗ e.toLinearMap)) : K.ResUpTo s ε := by
@@ -88,9 +88,9 @@ theorem res_of_comp {K : Cx.{w} R} {M M' : Type*} [AddCommGroup M] [AddCommGroup
 include hθ in
 
 /- English proof (translation)
-Introduce `T`. Set `m` to `mor W P Ff Gf θ hθ T`. Use `haveI : m.G.IsLeftAdjoint := inferInstanceAs (toPts W P T).IsLeftAdjoint`. Establish `hup : ∀ n, UpTo (1 : R) (m.hom.mapH n)` using `fun n => ((CrystallineSemistableComparison.P.upTo_alg (m.hom.mapH n) LinearMap.id 1 1).2.2.2.2).2 (CrystallineSemistableComparison.P.adj_mor m (fun x => (θ ((jG W P).obj x.right)).bijective) n)`. Establish `h1` using `(CrystallineSemistableComparison.P.res_transfer m.hom (ptsAug W.ι Ff T.1) s 1 hup).1 (h T.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[mul_one]`. Use `res_of_comp (θ T) _ s ?_` and prove the remaining obligations. Establish `e : m.hom.f 0 ∘ₗ ptsAug W.ι Ff T.1 = unAug Gf (jG W P) T ∘ₗ (θ T).toLinearMap` using `LinearMap.ext fun y => mor_aug W P Ff Gf θ hθ T y`. Rewrite using `[← e]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem desc_of_des (s : R) (h : CrystallineSemistableComparison.D.DesJ W.ι Ff s) : Desc s Gf (jG W P) := by
   intro T
@@ -136,7 +136,7 @@ def stepEquiv (T : P.Elements) :
 include v_add v_smul v_inj v_mem in
 
 /- English proof (translation)
-The claim follows from `desc_of_des W P Ff _ (stepEquiv P c gG Ff ρ hρ μ hμ r v v_add v_smul v_inj v_mem) (fun f x => Subtype.ext (v_nat f x)) s h`.
+A detailed English derivation is pending.
 -/
 theorem desc_step (v_nat : ∀ {T T' : P.Elements} (f : T ⟶ T') (x : Ff.obj T.1),
       v T' ((Ff.map f.1).hom x) = (gG.map f).φ (v T x)) (s : Λ) (h : CrystallineSemistableComparison.D.DesJ W.ι Ff s) :
@@ -147,7 +147,7 @@ theorem desc_step (v_nat : ∀ {T T' : P.Elements} (f : T ⟶ T') (x : Ff.obj T.
 include hρ in
 
 /- English proof (translation)
-The claim follows from `T.pdPow_anti (hρ.2 r) (mul_pdPow L T _ hξ hx)`.
+A detailed English derivation is pending.
 -/
 theorem raise (T : Thick L) (ξ : Λ) (hξ : T.i (c ξ) ∈ T.J) (x : (OM L c).obj T)
     (hx : x ∈ (pdS L c (ρ r)).S T) : ξ • x ∈ (pdS L c (ρ (r + 1))).S T :=
@@ -156,7 +156,7 @@ theorem raise (T : Thick L) (ξ : Λ) (hξ : T.i (c ξ) ∈ T.J) (x : (OM L c).o
 include hρ in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ReesUp.desc_rees ((pdFlt L c ρ hρ μ hμ).comap gG) G μ' ξ hμ' (fun r T x hx => raise c ρ hρ r (gG.obj T) ξ (hm T) x hx) h`.
+A detailed English derivation is pending.
 -/
 theorem desc_flt {C' : Type*} [Category C'] (G : C' ⥤ P.Elements) (μ' ξ : Λ) (hμ' : μ = μ' * ξ)
     (hm : ∀ T : P.Elements, (gG.obj T).i (c ξ) ∈ (gG.obj T).J)
@@ -173,7 +173,7 @@ variable {l : ℕ} [Fact l.Prime]
 def fv {A : PAlg l} {n m : ℕ} (x : (FilF l n m).obj A) : A.Acr n := (show (FilS l n m).S A from x).1
 
 /- English proof (translation)
-The claim follows from `(Submodule.restrictScalars_mem (Acris l) _ _).1 (show (FilS l n m).S A from x).2`.
+A detailed English derivation is pending.
 -/
 theorem fv_mem {A : PAlg l} {n m : ℕ} (x : (FilF l n m).obj A) : fv x ∈ A.Fil n m :=
   (Submodule.restrictScalars_mem (Acris l) _ _).1 (show (FilS l n m).S A from x).2
@@ -182,7 +182,7 @@ def fmk {A : PAlg l} {n m : ℕ} (y : A.Acr n) (h : y ∈ A.Fil n m) : (FilF l n
   (⟨y, (Submodule.restrictScalars_mem (Acris l) (A.Fil n m) y).2 h⟩ : (FilS l n m).S A)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem fv_inj {A : PAlg l} {n m : ℕ} {x x' : (FilF l n m).obj A} (h : fv x = fv x') : x = x' := Subtype.ext h
 
@@ -209,9 +209,7 @@ section Main
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l)
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.CompanionTheory.AcrMod.acr_modp T.1 n).2.2.2.1`. Break down `hk with rfl | rfl` into its components or cases. Conclude with `(pdPow_eq_fil _ _ _).trans (h (ρ r))`. Establish `h0 : (gObj F κ false n T).pdPow 0 = T.1.Fil n 0` using `(pdPow_eq_fil _ _ _).trans (h 0)`. Rewrite `h0` using `[Thick.pdPow_zero]`.
-
-Conclude with `(Thick.pdPow_zero _).trans h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fil_eq (k : Bool) (n : ℕ) (ρ : ℕ → ℕ) (hk : k = false ∨ ρ = 0) (T : (F.pt κ).Elements) (r : ℕ) :
     (gObj F κ k n T).pdPow (ρ r) = T.1.Fil n (ρ r) := by
@@ -223,7 +221,7 @@ theorem fil_eq (k : Bool) (n : ℕ) (ρ : ℕ → ℕ) (hk : k = false ∨ ρ = 
     exact (Thick.pdPow_zero _).trans h0
 
 /- English proof (translation)
-Rewrite using `[fil_eq F κ k n ρ hk T r]`. Conclude with `⟨fun h => ⟨fmk y h, rfl⟩, fun ⟨x, hx⟩ => hx ▸ fv_mem x⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem v_mem (k : Bool) (n : ℕ) (ρ : ℕ → ℕ) (hk : k = false ∨ ρ = 0) (r : ℕ) (T : (F.pt κ).Elements)
     (y : T.1.Acr n) :
@@ -232,7 +230,7 @@ theorem v_mem (k : Bool) (n : ℕ) (ρ : ℕ → ℕ) (hk : k = false ∨ ρ = 0
   exact ⟨fun h => ⟨fmk y h, rfl⟩, fun ⟨x, hx⟩ => hx ▸ fv_mem x⟩
 
 /- English proof (translation)
-Establish `e : (gObj F κ k n T).i ((base l).cris n ξ) = T.1.cris n ξ` using `mapAcr_cris T.1.fromBase n ξ`. Rewrite using `[e]`. Conclude with `fil_le k T.1 n h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_mem (k : Bool) (n : ℕ) (T : (F.pt κ).Elements) (ξ : Acris l) (h : T.1.cris n ξ ∈ T.1.Fil n 1) :
     (gObj F κ k n T).i ((base l).cris n ξ) ∈ (gObj F κ k n T).J := by
@@ -241,7 +239,7 @@ theorem xi_mem (k : Bool) (n : ℕ) (T : (F.pt κ).Elements) (ξ : Acris l) (h :
   exact fil_le k T.1 n h
 
 /- English proof (translation)
-The claim follows from `desc_step (fun A : PAlg l => A.IsTest) (F.pt κ) ((base l).cris n) (gE F κ k n) (FilF l n (ρ r)) ρ hρ ε.μ (ε.μ_mem k (base l) n) r (fun T x => fv x) (fun T x y => fv_add x y) (fun T a x => (fv_smul a x).trans (congrArg (· * fv x) (mapAcr_cris T.1.fromBase n a).symm)) (fun T x y h …`.
+A detailed English derivation is pending.
 -/
 theorem desc_fil (ε : Eps l) (k : Bool) (n : ℕ) (ρ : ℕ → ℕ) (hρ : Slow ρ) (hk : k = false ∨ ρ = 0) (r : ℕ)
     (s : Acris l) (h : CrystallineSemistableComparison.D.Des (FilF l n (ρ r)) s) :
@@ -258,7 +256,7 @@ end Main
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hs : algebraMap (Ainf l) (Acris l) (WittVector.teichmuller l (ε.e 1 : Ob l) - 1) = ε.qk 1 - 1`. Rewrite using `[map_sub, map_one, Eps.qk]`. Rewrite using `[← hs]`. Conclude with `(hOut _ h1 n).2.2 m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem des_qk {l : ℕ} [Fact l.Prime] (hOut : D.Out l) (ε : Eps l)
     (h1 : D.InWm l (WittVector.teichmuller l (ε.e 1 : Ob l) - 1)) (n m : ℕ) :

@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' f T`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f T.t`. Take `⟨⟨T', ht, hg⟩, -⟩` from `GlobalTheory.T.exists_of_cmTriple_pullback E H S S' f T _ m`. Conclude with `⟨T', ht ▸ m, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PAT.exists_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (S S' : Scheme.{0}) (f : S' ⟶ S) (T : PAT H S), ∃ (T' : PAT H S') (_ : SABMap T'.t T.t f), T'.g = T.g := by

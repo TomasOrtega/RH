@@ -17,13 +17,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Introduce `l _ P AI T a b _ _ _ _ K r ρ ρ₁ ρ₂ c hρ hblk hdR h₁ h₂`. Take `⟨K₁, hK₁, Q₁, hQ₁⟩` from `h₁`. Take `⟨K₂, hK₂, Q₂, hQ₂⟩` from `h₂`. Use `haveI := K₁.2`. Use `haveI := K₂.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K' : FinExt l` to `⟨K₁.1 ⊔ K₂.1, inferInstance⟩`. Establish `h1' : K₁.1 ≤ K'.1` using `le_sup_left`. Establish `h2' : K₂.1 ≤ K'.1` using `le_sup_right`. Establish `hK : K.1 ≤ K'.1` using `hK₁.trans h1'`. Set `ι : ↥(GK K') →* ↥(GK K)` to `Subgroup.inclusion (GK_le hK)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ₁' : ∀ g : ↥(GK K'), ((ρ₁.comp ι) g : Matrix a a ↥(MaximalUnramifiedExtension l)).map (ks P) * (Q₁ : Matrix a a (Bst P)).map (actSt P (g : GQ l)) = Q₁` using `fun g => hQ₁ ⟨g, GK_le h1' g.2⟩`. Establish `hQ₂' : ∀ g : ↥(GK K'), ((ρ₂.comp ι) g : Matrix b b ↥(MaximalUnramifiedExtension l)).map (ks P) * (Q₂ : Matrix b b (Bst P)).map (actSt P (g : GQ l)) = Q₂` using `fun g => hQ₂ ⟨g, GK_le h2' g.2⟩`. Establish `hdR₂ : AdmDR P ρ₂` using `(GlobalTheory.T.deRham_blockTriangular_diagonal_blocks l P AI T a b K r ρ ρ₁ ρ₂ c hρ hblk hdR).2`. Take `⟨hcr, hcc, hcoc⟩` from `GlobalTheory.T.matrixHomRepresentationCocycle_rational_continuous l a b K K' hK r ρ ρ₁ ρ₂ c hρ hblk`. Take `⟨v, hv⟩` from `GlobalTheory.T.hyodo_theorem_matrix_unramifiedCoefficients l P AI T (a × b) K' r (homRep (ρ₁.comp ι) (ρ₂.comp ι)) (homUnit Q₁ Q₂) (GlobalTheory.T.matrixHomRepresentation_restrict_rational_continuous l a b K K' hK r ρ ρ₁ ρ₂ c hρ hblk) (GlobalTheory.T.matrixHom_periodMatrix_semista …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, hw⟩` from `GlobalTheory.T.blockTriangular_extensionCocycle_trivial_deRham l P AI T a b K ρ ρ₁ ρ₂ c hblk hdR hdR₂ m`. Conclude with `⟨w, fun g => hw (ι g)⟩)`. Take `⟨Q, hQ⟩` from `GlobalTheory.T.extension_block_periodMatrix_semistable l P a b K' (ρ.comp ι) (ρ₁.comp ι) (ρ₂.comp ι) (fun g => c (ι g)) (fun g => hblk (ι g)) Q₁ Q₂ hQ₁' hQ₂' v hv`. Conclude with `⟨K', hK, Q, fun g => hQ g⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem extStep_holds : ExtStep := by
   intro l _ P AI T a b _ _ _ _ K r ρ ρ₁ ρ₂ c hρ hblk hdR h₁ h₂

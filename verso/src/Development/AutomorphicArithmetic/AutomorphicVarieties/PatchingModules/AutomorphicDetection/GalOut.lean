@@ -14,13 +14,11 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools
 namespace UpperTheory.V.Pa
 
 /- English proof (translation)
-Take `⟨X, m, c, hX, hm, hc, hg, hr⟩` from `pres l S D0 (k1F l _ _ _ S.h _ _ S.k D0 h1) (k2F l _ _ _ S.h _ _ S.k h2) (k3F l _ _ _ S.h _ _ S.k h3)`. Distinguish the cases in `ha : S.x.a = S.n`. Establish `hN` using `S.U.typeI ha`. Establish `hi : ired S.U.N = ⊥`. Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `b ⟨y, hy, z, -, e⟩`. Rewrite `hy` using `[hN, Submodule.mem_bot]`. Rewrite `e` using `[hy, zero_mul]`. Conclude with `S.U.inj (by rw [← e, map_zero])`. Use `presOut0 S.OO S.Bh D0 X hX ?_ Z Q hZ hQ hd` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hg` using `only [Ctx.J2, hi, sup_bot_eq]`. Use `haveI := S.U.fin`. Use `presOut1 S.OO S.Bh S.U.AA S.U.N S.U.inj S.U.compl S.U.mul_mem D0 S.k.g X m c hX hm hc hg hr Z Q hZ hQ hd ((discImp l S Z hZ hs).resolve_left ha) ?_` and prove the remaining obligations. Break down `hq with hq | hq` into its components or cases. Conclude with `Or.inl ((discImp l S Q hQ hq).resolve_left ha)`.
-
-Conclude with `Or.inr (S.U.thick Q hQ hq)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem ctx_out {l : ℕ} [Fact l.Prime] (S : Ctx l) (D0 : ℕ) (h1 : K1 S.h S.k D0) (h2 : K2 S.h S.k) (h3 : K3 S.h S.k)
     (Z Q : Ideal S.Bh) (hZ : Z.IsPrime) (hQ : Q.IsPrime) (hs : DiscSt (S.u.D.map (algebraMap S.B S.Bh)) Z)
@@ -46,9 +44,7 @@ private theorem ctx_out {l : ℕ} [Fact l.Prime] (S : Ctx l) (D0 : ℕ) (h1 : K1
     · exact Or.inr (S.U.thick Q hQ hq)
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k O _ _ _ hO _ _ r B _ _ _ u P Bh _ _ _ D0 hl hc h1 h2 h3 Z Q hZ hQ hs hd hq`. Use `haveI := hO.complete`. Take `⟨rF, hf, hk⟩` from `rfEx x.K O B Bh P.f hc`. Take `⟨U⟩` from `s6 l L G G0 h n x O r B u P Bh rF hl hc hf hk`. Take `⟨OO, i1, i2, i3, i4, i5, i6, a1, a2, a3, a4⟩` from `ooEx x.K O B Bh P.f P.s rF P.surj P.f_s hc hf`.
-
-Conclude with `ctx_out { odd := hl, L := L, G := G, G0 := G0, h := h, n := n, x := x, k := k, O := O, r := r, B := B, u := u, P := P, Bh := Bh, cpl := hc, rF := rF, rF_f := hf, rF_ker := hk, U := U, OO := OO, d6 := i6, oo_A := a1, oo_O := a2, ordinaryPointSection := a3, oo_surj := a4 } D0 h1 h2 …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem galOut : GalOut := by
   intro l _ L G G0 h n x k O _ _ _ hO _ _ r B _ _ _ u P Bh _ _ _ D0 hl hc h1 h2 h3 Z Q hZ hQ hs hd hq

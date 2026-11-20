@@ -12,7 +12,7 @@ open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.KeyOriginNoeth.isEtaleAt_closure_of_disjoint) | (exact GlobalTheory.KeyOriginNoeth.isEtaleAt_closure_of_disjoint) | (intros; apply GlobalTheory.KeyOriginNoeth.isEtaleAt_closure_of_disjoint <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.closure_prime_regular_height : ∀ (A R D : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R] [CommRing D]
     [Algebra (GlobalTheory.LocAcyc.GenFib A R) D]

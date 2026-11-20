@@ -14,7 +14,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 namespace GlobalTheory.VertCommAdm
 
 /- English proof (translation)
-Introduce `D A N j S κ p _ hp W hW z jc E E' a`. Use `haveI := GlobalTheory.ShFam.Pad.isDiscreteValuationRing_V z.Z.i.c hp hW`. Use `haveI := GlobalTheory.ShFam.Pad.charP_residueField_of_mem_nonunits z.Z.i.c hp hW`. Conclude with `GlobalTheory.ShFam.Pad.IthCheck.capDeg_vp_symm p _ E E' a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comm_mdlOf : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) [Fact p.Prime] (hp : p.Prime) (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ), Comm (mdlOf z jc) := by
   intro D A N j S κ p _ hp W hW z jc E E' a

@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Pp
 
 /- English proof (translation)
-Introduce `ι A F K _ _ _ _ M P φ f h hf H`. Use `haveI := RingHom.ker_isPrime f`. Establish `hu : ∀ y : (RingHom.ker f).primeCompl, IsUnit (φ y)` using `fun y => Ne.isUnit fun e => y.2 (hf e)`. Take `⟨V, hV, hl⟩` from `IsLocalRing.exists_factor_valuationRing (IsLocalization.lift (S := Localization.AtPrime (RingHom.ker f)) hu)`. Set `g₀ : Localization.AtPrime (RingHom.ker f) →+* V` to `(IsLocalization.lift hu).codRestrict V.toSubring hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsLocalHom g₀ := hl`. Set `g : A →+* V` to `g₀.comp (algebraMap _ _)`. Establish `hg : V.subtype.comp g = φ` using `RingHom.ext fun a => IsLocalization.lift_eq hu a`. Establish `hk : RingHom.ker f = (maximalIdeal V).comap g`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.mem_comap, ← IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime (RingHom.ker f)) (RingHom.ker f) a, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff]`. Conclude with `(isUnit_map_iff g₀ _).not.symm`. Take `⟨k, hk'⟩` from `triIwa V M P g h (by rw [hg]; exact H)`. Use `letI : Algebra A V := g.toAlgebra`. Set `s : Set V` to `Set.range (fun p : Fin 4 × Fin 4 => k p.1 p.2)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hs : s.Finite` using `Set.finite_range _`. Set `C` to `Algebra.adjoin A s`. Use `haveI : Algebra.FiniteType A C := (Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨s, hs, rfl⟩)`. Set `Y : M4 C` to `fun a b => ⟨k a b, Algebra.subset_adjoin ⟨(a, b), rfl⟩⟩`. Establish `H0 : SpTri M P (algebraMap A C) Y` using `SpTri.of_map C.val.toRingHom Subtype.val_injective hk'`.
-
-Set `q : Ideal C` to `(maximalIdeal V).comap C.val.toRingHom`. Use `haveI : q.IsPrime := Ideal.comap_isPrime _ _`. Take `⟨ψ, hψ⟩` from `extFg q f (by rw [hk]; rfl)`. Conclude with `⟨Y.map ψ, hψ ▸ H0.map ψ⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pp.triSpec :
     ∀ {ι A F K : Type} [CommRing A] [Field F] [Field K] [IsAlgClosed K] (M : ι → M4 A) (P : ι → Fin 4 → A[X]) (φ : A →+* F) (f : A →+* K) (h : M4 F), RingHom.ker φ ≤ RingHom.ker f → SpTri M P φ h → ∃ h' : M4 K, SpTri M P f h' := by

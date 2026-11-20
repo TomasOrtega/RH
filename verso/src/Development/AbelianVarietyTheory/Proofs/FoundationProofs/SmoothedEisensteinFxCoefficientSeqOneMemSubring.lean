@@ -8,27 +8,21 @@ namespace GlobalTheory.KummerEisensteinGalois
 open Finset in
 
 /- English proof (translation)
-Introduce `K _ _ R c M ζ a b hM hcop ha hb hbneg n`. Establish `hca : ¬ (M : ℤ) ∣ (c : ℤ) * a`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Use `Int.dvd_of_dvd_mul_right_of_gcd_one h ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `Nat.Coprime.symm hcop`. Establish `hpow : ∀ m : ℕ, ζ ^ (b * (m : ℤ)) ∈ R ∧ ζ ^ (-(b * (m : ℤ))) ∈ R`. Introduce `m`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_mul, zpow_natCast]`. Conclude with `R.pow_mem hb m`. Rewrite using `[← neg_mul, zpow_mul, zpow_natCast]`. Conclude with `R.pow_mem hbneg m`. Establish `hpow' : ∀ m : ℕ, ζ ^ ((c : ℤ) * b * (m : ℤ)) ∈ R ∧ ζ ^ (-((c : ℤ) * b * (m : ℤ))) ∈ R`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `m`. Establish `h` using `hpow (c * m)`. Rewrite using `[show (c : ℤ) * b * (m : ℤ) = b * ((c * m : ℕ) : ℤ) by push_cast; ring]` and apply the resulting hypothesis. Unfold `_root_.GlobalTheory.KummerEisensteinGalois.smF _root_.GlobalTheory.KummerEisensteinGalois.eisF`. Use `split_ifs with hn`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.KummerEisensteinGalois.const0`. Simplify using `only [if_true, if_neg ha, if_neg hca]`. Establish `hM0 : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `key : (c : ℚ) ^ 2 * (1 / 2 - _root_.GlobalTheory.KummerEisensteinGalois.frc M a) - c * (1 / 2 - _root_.GlobalTheory.KummerEisensteinGalois.frc M (c * a)) = (((c.choose 2 : ℕ) : ℤ) - ((c : ℤ) * ((c : ℤ) * a / M) - (c : ℤ) ^ 2 * (a / M)) : ℤ)`. Unfold `_root_.GlobalTheory.KummerEisensteinGalois.frc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[Int.emod_def, Int.emod_def]`. Use `push_cast`. Rewrite using `[Nat.cast_choose_two]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `intCast_mem R (((c.choose 2 : ℕ) : ℤ) - ((c : ℤ) * ((c : ℤ) * a / M) - (c : ℤ) ^ 2 * (a / M))) using 1` and compare the differences between its conclusion and the goal. Establish `hK` using `congrArg (fun q : ℚ => (q : K)) key`. Simplify using `only [Rat.cast_intCast] at hK`. Rewrite using `[← hK]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Unfold `_root_.GlobalTheory.KummerEisensteinGalois.coefPos`. Use `R.sub_mem (R.mul_mem (R.pow_mem (intCast_mem R _) 2) (R.sum_mem fun d _ => ?_)) (R.mul_mem ?_ (R.sum_mem fun d _ => ?_))` and prove the remaining obligations. Simplify using `only [Nat.sub_self, pow_zero, one_mul]`. Apply the tactic sequence `refine R.sub_mem ?_ ?_ <;> split_ifs`.
-
-Conclude with `(hpow d).1`. Conclude with `R.zero_mem`. Conclude with `(hpow d).2`. Conclude with `R.zero_mem`. Evaluate the numerical expressions.
-
-Simplify using `only [Nat.sub_self, pow_zero, one_mul]`. Apply the tactic sequence `refine R.sub_mem ?_ ?_ <;> split_ifs`. Conclude with `(hpow' d).1`. Conclude with `R.zero_mem`. Conclude with `(hpow' d).2`.
-
-Conclude with `R.zero_mem`.
+Apply the first step, then apply the next step to every resulting obligation. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KummerEisensteinGalois.smF_one_mem_subring : ∀ (K : Type) [Field K] [CharZero K]
     (R : Subring K) (c M : ℕ) (ζ : K) (a b : ℤ),

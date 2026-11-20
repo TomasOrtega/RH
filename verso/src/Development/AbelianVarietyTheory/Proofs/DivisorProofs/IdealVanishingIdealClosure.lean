@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.SncForm
 
 /- English proof (translation)
-Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `emb` using `hU.fromSpec.isOpenEmbedding`. Establish `h1 : hU.fromSpec (hU.primeIdealOf ⟨η, hη⟩) = η` using `hU.fromSpec_primeIdealOf ⟨η, hη⟩`. Establish `h2 : hU.fromSpec ⁻¹' ({η} : Set X) = {hU.primeIdealOf ⟨η, hη⟩}`. Use extensionality with `Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun h => emb.injective (h.trans h1.symm), fun h => (congrArg _ h).trans h1⟩`. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal]`. Express the relevant statement in the definitionally equal form `PrimeSpectrum.vanishingIdeal (hU.fromSpec ⁻¹' closure ({η} : Set X)) = _`. Establish `h3` using `(emb.isOpenMap.preimage_closure_eq_closure_preimage emb.continuous {η}).trans (congrArg closure h2)`. Conclude with `(congrArg PrimeSpectrum.vanishingIdeal h3).trans ((PrimeSpectrum.vanishingIdeal_closure _).trans (PrimeSpectrum.vanishingIdeal_singleton _))`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ideal_vanishingIdeal_closure {X : Scheme.{0}} (U : X.affineOpens) {η : X} (hη : η ∈ U.1) :
     (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {η})).ideal U =
@@ -40,21 +40,19 @@ theorem ideal_vanishingIdeal_closure {X : Scheme.{0}} (U : X.affineOpens) {η : 
     ((PrimeSpectrum.vanishingIdeal_closure _).trans (PrimeSpectrum.vanishingIdeal_singleton _))
 
 /- English proof (translation)
-Establish `hU : IsAffineOpen U.1` using `U.2`. Set `yU : U.1` to `⟨y, hy⟩`. Set `algY : Algebra Γ(X, U.1) (X.presheaf.stalk y)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf yU`. Establish `hlocY : IsLocalization.AtPrime (X.presheaf.stalk y) (hU.primeIdealOf yU).asIdeal` using `hU.isLocalization_stalk yU`. Use `set Py := hU.primeIdealOf yU with hPy`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Pη` to `hU.primeIdealOf ⟨η, hη⟩`. Establish `hfromη : hU.fromSpec Pη = η` using `hU.fromSpec_primeIdealOf ⟨η, hη⟩`. Establish `hfromy : hU.fromSpec Py = y` using `hU.fromSpec_primeIdealOf yU`. Establish `emb` using `hU.fromSpec.isOpenEmbedding`. Establish `hspec : ∀ P Q : PrimeSpectrum Γ(X, U.1), hU.fromSpec P ⤳ hU.fromSpec Q ↔ P ≤ Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P Q`. Rewrite using `[PrimeSpectrum.le_iff_specializes]`. Conclude with `emb.isInducing.specializes_iff`. Establish `hle : Pη ≤ Py` using `(hspec _ _).mp (by rw [hfromη, hfromy]; exact hηy)`. Establish `hdisj : Disjoint (Py.asIdeal.primeCompl : Set Γ(X, U.1)) Pη.asIdeal` using `Set.disjoint_left.mpr fun x hx hx' => hx ((show Pη.asIdeal ≤ Py.asIdeal from hle) hx')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hp` using `[WMult.stalkId_eq_map_germ _ y U hy, ideal_vanishingIdeal_closure U hη]`. Establish `hPeq : Pη.asIdeal = p.comap (algebraMap Γ(X, U.1) (X.presheaf.stalk y))`. Rewrite using `[← hp]`. Conclude with `(IsLocalization.under_map_of_isPrime_disjoint Py.asIdeal.primeCompl (X.presheaf.stalk y) Pη.isPrime hdisj).symm`. Set `T` to `Localization.AtPrime p`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsLocalization.AtPrime T (p.comap (algebraMap Γ(X, U.1) (X.presheaf.stalk y)))` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (M := Py.asIdeal.primeCompl) (S := X.presheaf.stalk y) (T := T) p`. Establish `hT' : IsLocalization Pη.asIdeal.primeCompl T`. Establish `hsm : Pη.asIdeal.primeCompl = (Ideal.comap (algebraMap Γ(X, U.1) (X.presheaf.stalk y)) p).primeCompl`. Use extensionality with `x`. Rewrite using `[Ideal.mem_primeCompl_iff, Ideal.mem_primeCompl_iff, hPeq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hsm]`. Conclude with `hT`. Set `ηU : U.1` to `⟨η, hη⟩`. Set `algη : Algebra Γ(X, U.1) (X.presheaf.stalk η)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ηU`. Establish `hlocη : IsLocalization.AtPrime (X.presheaf.stalk η) Pη.asIdeal` using `hU.isLocalization_stalk ηU`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `φ : X.presheaf.stalk η ≃ₐ[Γ(X, U.1)] T` to `IsLocalization.algEquiv Pη.asIdeal.primeCompl _ _`. Set `algYη : Algebra (X.presheaf.stalk y) (X.presheaf.stalk η)` to `(φ.symm.toRingEquiv.toRingHom.comp (algebraMap (X.presheaf.stalk y) T)).toAlgebra`. Use `⟨algYη, (IsLocalization.isLocalization_iff_of_ringEquiv (M := p.primeCompl) (S := T) φ.symm.toRingEquiv).mp inferInstance, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `(φ.symm.commutes a).symm`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply Γ(X, U.1) (X.presheaf.stalk y) T]`.
-
-Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isLocalization_stalk {X : Scheme.{0}} (U : X.affineOpens) {y η : X} (hy : y ∈ U.1)
     (hη : η ∈ U.1) (hηy : η ⤳ y) (p : Ideal (X.presheaf.stalk y)) [p.IsPrime]
@@ -110,31 +108,27 @@ theorem exists_isLocalization_stalk {X : Scheme.{0}} (U : X.affineOpens) {y η :
   exact h1
 
 /- English proof (translation)
-Introduce `X _ _ B hB s hs r z _ hz hZ x hx i hi`. Take `⟨hreg, n, g, e, hg, hI⟩` from `hx`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVi⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hi (B.U i).isOpen`. Set `U : X.affineOpens` to `⟨V, hV⟩`. Establish `hVi' : V ≤ B.U i` using `hVi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : Γ(X, V)` to `X.presheaf.map (homOfLE hVi').op (s.f i)`. Establish `ht : ∀ (w : X) (hw : w ∈ V), X.presheaf.germ V w hw t = X.presheaf.germ _ w (hVi' hw) (s.f i)` using `fun w hw => X.presheaf.germ_res_apply (homOfLE hVi') w hw _`. Use `set γ := X.presheaf.germ _ x hi (s.f i) with hγ`. Establish `hγ0 : γ ≠ 0` using `fun h0 => fnOf_sec_ne_zero hs (gen_mem hi) ((algebraMap_germ hi (s.f i)).symm.trans ((congrArg _ h0).trans (map_zero _)))`. Set `J : Finset (Fin n)` to `Finset.univ.map e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrad : (∏ j ∈ J, g j) ∈ (Ideal.span {γ}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `Q ⟨hQγ, hQ⟩`. Set `P : PrimeSpectrum Γ(X, V)` to `⟨Q.comap (X.presheaf.germ V x hxV).hom, inferInstance⟩`. Establish `htP : t ∈ P.asIdeal`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `X.presheaf.germ V x hxV t ∈ Q`. Rewrite using `[ht]`. Conclude with `hQγ (Ideal.mem_span_singleton_self _)`. Establish `hmem : hV.fromSpec P ∈ V`. Establish `: hV.fromSpec P ∈ Set.range hV.fromSpec` using `⟨P, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hV.range_fromSpec]`. Then use the resulting hypothesis. Establish `hnz : hV.fromSpec P ∉ nonzeroLocus s`. Rewrite using `[mem_nonzeroLocus_iff s i (hVi' hmem)]`. Introduce `h`. Establish `h' : hV.fromSpec P ∈ X.basicOpen t`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.mem_basicOpen _ _ _ hmem, ht]`. Conclude with `(Scheme.mem_basicOpen _ _ _ _).1 h`. Establish `h'' : P ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen t` using `h'`. Rewrite `h''` using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `h'' htP`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : hV.fromSpec P ∈ ((nonzeroLocus s : Set X)ᶜ)` using `hnz`. Rewrite `hc` using `[hZ]`. Take `⟨a, ha⟩` from `Set.mem_iUnion.1 hc`. Establish `hPx : hV.fromSpec P ⤳ x`. Establish `h1 : hV.fromSpec (hV.primeIdealOf ⟨x, hxV⟩) = x` using `hV.fromSpec_primeIdealOf ⟨x, hxV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : P ≤ hV.primeIdealOf ⟨x, hxV⟩`. Rewrite using `[hV.primeIdealOf_eq_map_closedPoint]`. Conclude with `Ideal.comap_mono (IsLocalRing.le_maximalIdeal hQ.ne_top)`. Establish `h3` using `((PrimeSpectrum.le_iff_specializes _ _).1 h2).map hV.fromSpec.continuous`. Rewrite `h3` using `[h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hxa : x ∈ Closeds.closure {z a}` using `hPx.mem_closed isClosed_closure ha`. Establish `hsup : hV.fromSpec P ∈ ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {z a})).support : Set X)`. Rewrite using `[Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Conclude with `ha`. Rewrite `hsup` using `[WMult.mem_support_fromSpec_iff _ U hV]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : Ideal.span {g (e ⟨a, hxa⟩)} ≤ Q`. Rewrite using `[← hI ⟨a, hxa⟩, WMult.stalkId_eq_map_germ _ x U hxV]`. Conclude with `Ideal.map_le_iff_le_comap.mpr hsup`. Conclude with `Q.mem_of_dvd (Finset.dvd_prod_of_mem _ (Finset.mem_map_of_mem e (Finset.mem_univ _))) (h3 (Ideal.mem_span_singleton_self _))`. Take `⟨u, m, -, hγu⟩` from `eq_unit_mul_monomial g hg.1 hg.2 J hγ0 hrad`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n, g, e, u, inferInstance, hg, hI, ?_⟩` and prove the remaining obligations. Establish `hord : ∀ a, ((divOfSec hB s hs).mult (z a.1)).toNat = m (e a)`. Introduce `a`. Establish `hsp : z a.1 ⤳ x` using `specializes_iff_mem_closure.2 a.2`. Establish `hzV : z a.1 ∈ V` using `hsp.mem_open V.isOpen hxV`.
-
-Establish `hpr : Prime (g (e a))` using `prime_of_regular_params g hg.1 hg.2 _`. Establish `hP : (Ideal.span {g (e a)}).IsPrime` using `(Ideal.span_singleton_prime hpr.ne_zero).mpr hpr`. Take `⟨alg, hloc, hgerm⟩` from `exists_isLocalization_stalk U hxV hzV hsp _ (hI a)`. Establish `h` using `WMult.ord_isLocalization_eq_exponent g hg.1 hg.2 J u m (e a) (Finset.mem_map_of_mem e (Finset.mem_univ _)) (X.presheaf.stalk (z a.1))`. Rewrite `h` using `[← hγu, hγ, ← ht x hxV, ← hgerm t, ht]`.
-
-Rewrite using `[mult_divOfSec (hz _) (hVi' hzV), Int.toNat_natCast]`. Conclude with `(congrArg ENat.toNat h).trans (ENat.toNat_natCast _)`. Rewrite using `[hγu, Finset.prod_map]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun a _ => by rw [hord])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_eq_unit_mul_monomial : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (B : LB X) (hB : B.IsLB) (s : B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (r : ℕ) (z : Fin r → X), Function.Injective z → (∀ a, Order.coheight (z a) = 1) → ((nonzeroLocus s : Set X)ᶜ = ⋃ a, closure {z a}) → ∀ x : X, FinalTheorems.LSncAt X (fun a => (Closeds.closure {z a})) x → ∀ (i : B.ι) (hi : x ∈ B.U i), ∃ (n : ℕ) (g : Fin n → X.presheaf.stalk x) (e : {a : Fin r // x ∈ (Closeds.closure {z a})} ↪ Fin n) (u : (X.presheaf.stalk x)ˣ) (_ : Fintype {a : Fin r // x ∈ (Closeds.closure {z a})}), FinalTheorems.Rsp (X.presheaf.stalk x) n g ∧ (∀ a, FinalTheorems.stalkId (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {z a.1})) x = Ideal.span {g (e a)}) ∧ X.presheaf.germ _ x hi (s.f i) = u * ∏ a, g (e a) ^ ((divOfSec hB s hs).mult (z a.1)).toNat := by
   classical

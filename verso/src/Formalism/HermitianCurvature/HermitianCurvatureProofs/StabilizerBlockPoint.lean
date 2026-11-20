@@ -6,7 +6,7 @@ open Formalism.FourierDecayAlt.G
 namespace Formalism.FourierDecayAlt.P.G4
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin n, finSumFinEquiv.symm (i.castSucc : Fin (n+1)) = Sum.inl i` using `fun i => finSumFinEquiv_symm_apply_castAdd (n := 1) i`. Simplify using `[blk, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_cc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i j : Fin n) :
     blk A b a e i.castSucc j.castSucc = A i j := by
@@ -15,7 +15,7 @@ theorem blk_cc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) 
   simp [blk, h]
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin n, finSumFinEquiv.symm (i.castSucc : Fin (n+1)) = Sum.inl i` using `fun i => finSumFinEquiv_symm_apply_castAdd (n := 1) i`. Establish `h2 : finSumFinEquiv.symm (Fin.last n : Fin (n+1)) = Sum.inr (0 : Fin 1)` using `finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)`. Simplify using `[blk, h, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_cl {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (i : Fin n) :
     blk A b a e i.castSucc (Fin.last n) = b i := by
@@ -26,7 +26,7 @@ theorem blk_cl {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) 
   simp [blk, h, h2]
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin n, finSumFinEquiv.symm (i.castSucc : Fin (n+1)) = Sum.inl i` using `fun i => finSumFinEquiv_symm_apply_castAdd (n := 1) i`. Establish `h2 : finSumFinEquiv.symm (Fin.last n : Fin (n+1)) = Sum.inr (0 : Fin 1)` using `finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)`. Simplify using `[blk, h, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_lc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) (j : Fin n) :
     blk A b a e (Fin.last n) j.castSucc = a j := by
@@ -37,7 +37,7 @@ theorem blk_lc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) 
   simp [blk, h, h2]
 
 /- English proof (translation)
-Establish `h2 : finSumFinEquiv.symm (Fin.last n : Fin (n+1)) = Sum.inr (0 : Fin 1)` using `finSumFinEquiv_symm_apply_natAdd (m := n) (0 : Fin 1)`. Simplify using `[blk, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blk_ll {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     blk A b a e (Fin.last n) (Fin.last n) = e := by
@@ -46,11 +46,11 @@ theorem blk_ll {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) 
   simp [blk, h2]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_mul {n : ℕ} (A A' : Matrix (Fin n) (Fin n) ℂ) (b a b' a' : Fin n → ℂ) (e e' : ℂ) :
     blk A b a e * blk A' b' a' e' =
@@ -65,9 +65,9 @@ theorem blk_mul {n : ℕ} (A A' : Matrix (Fin n) (Fin n) ℂ) (b a b' a' : Fin n
   · ext i j; simp [Matrix.mul_apply, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact h4`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => exact h3 j`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact h2 i`. Consider the case `cast j => exact h1 i j`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mat_ext {n : ℕ} {M N : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ}
     (h1 : ∀ i j : Fin n, M i.castSucc j.castSucc = N i.castSucc j.castSucc)
@@ -86,7 +86,7 @@ theorem mat_ext {n : ℕ} {M N : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ}
     | cast j => exact h1 i j
 
 /- English proof (translation)
-The claim follows from `mat_ext (fun i j => by rw [blk_cc]; rfl) (fun i => by rw [blk_cl]) (fun j => by rw [blk_lc]) (by rw [blk_ll])`.
+A detailed English derivation is pending.
 -/
 theorem blk_eta {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     M = blk (Matrix.of fun i j => M i.castSucc j.castSucc) (fun i => M i.castSucc (Fin.last n))
@@ -95,11 +95,11 @@ theorem blk_eta {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     (by rw [blk_ll])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (congrFun h i.castSucc) j.castSucc` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `only [blk_cc]`. Use extensionality with `i`. Use `congrFun (congrFun h i.castSucc) (Fin.last n)` as an intermediate fact. Simplify `this` using `only [blk_cl]`. Use extensionality with `j`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Use `congrFun (congrFun h (Fin.last n)) j.castSucc` as an intermediate fact. Simplify `this` using `only [blk_lc]`. Use `congrFun (congrFun h (Fin.last n)) (Fin.last n)` as an intermediate fact. Simplify `this` using `only [blk_ll]`. Introduce and unpack `⟨rfl, rfl, rfl, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
 Both sides reduce to the same expression.
 -/
@@ -122,7 +122,7 @@ theorem blk_inj {n : ℕ} {A A' : Matrix (Fin n) (Fin n) ℂ} {b a b' a' : Fin n
   · rintro ⟨rfl, rfl, rfl, rfl⟩; rfl
 
 /- English proof (translation)
-The claim follows from `mat_ext (fun i j => by rw [transpose_apply, blk_cc, blk_cc, transpose_apply]) (fun i => by rw [transpose_apply, blk_lc, blk_cl]) (fun j => by rw [transpose_apply, blk_cl, blk_lc]) (by rw [transpose_apply, blk_ll, blk_ll])`.
+A detailed English derivation is pending.
 -/
 theorem blk_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     (blk A b a e)ᵀ = blk Aᵀ a b e :=
@@ -132,17 +132,15 @@ theorem blk_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n �
     (by rw [transpose_apply, blk_ll, blk_ll])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨fun i => ?_, fun i j hij => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← blk_cc A b a e]`. Conclude with `h1 _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← blk_cc A b a e]`. Conclude with `h2 _ _ (Fin.castSucc_lt_castSucc_iff.2 hij)`. Use extensionality with `j`. Rewrite using `[← blk_lc A b a e]`. Conclude with `h2 _ _ (Fin.castSucc_lt_last j)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← blk_ll A b a e]`. Conclude with `h1 _`. Introduce and unpack `⟨⟨h1, h2⟩, rfl, rfl⟩`. Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `last => rw [blk_ll]`. Consider the case `cast i => rw [blk_cc]`. Conclude with `h1 i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (lt_irrefl _)`. Consider the case `cast j => rw [blk_lc]`. Both sides reduce to the same expression. Consider the case `cast i`.
-
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (not_lt.2 (Fin.le_last _))`. Consider the case `cast j => rw [blk_cc]`. Conclude with `h2 _ _ (Fin.castSucc_lt_castSucc_iff.1 hij)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem upperUni_blk_iff {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     IsUpperUni (blk A b a e) ↔ IsUpperUni A ∧ a = 0 ∧ e = 1 := by
@@ -170,7 +168,7 @@ theorem upperUni_blk_iff {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n
         | cast j => rw [blk_cc]; exact h2 _ _ (Fin.castSucc_lt_castSucc_iff.1 hij)
 
 /- English proof (translation)
-Unfold `IsLowerUni`. Rewrite using `[blk_transpose, upperUni_blk_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowerUni_blk_iff {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n → ℂ) (e : ℂ) :
     IsLowerUni (blk A b a e) ↔ IsLowerUni A ∧ b = 0 ∧ e = 1 := by
@@ -178,9 +176,9 @@ theorem lowerUni_blk_iff {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (b a : Fin n
   rw [blk_transpose, upperUni_blk_iff]
 
 /- English proof (translation)
-Establish `h` using `blk_eta u`. Rewrite `hu` using `[h, upperUni_blk_iff]`. Take `⟨h1, h2, h3⟩` from `hu`. Use `⟨_, fun i => u i.castSucc (Fin.last n), h1, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[h2, h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_blk_upper {n : ℕ} {u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} (hu : IsUpperUni u) :
     ∃ (u' : Matrix (Fin n) (Fin n) ℂ) (b : Fin n → ℂ), IsUpperUni u' ∧ u = blk u' b 0 1 := by
@@ -192,9 +190,9 @@ theorem exists_blk_upper {n : ℕ} {u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} 
   exact h
 
 /- English proof (translation)
-Establish `h` using `blk_eta l`. Rewrite `hl` using `[h, lowerUni_blk_iff]`. Take `⟨h1, h2, h3⟩` from `hl`. Use `⟨_, fun j => l (Fin.last n) j.castSucc, h1, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[h2, h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_blk_lower {n : ℕ} {l : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} (hl : IsLowerUni l) :
     ∃ (l' : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ), IsLowerUni l' ∧ l = blk l' 0 a 1 := by
@@ -206,7 +204,7 @@ theorem exists_blk_lower {n : ℕ} {l : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} 
   exact h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hp _ _ h, zero_mul]`. Rewrite using `[hq _ _ h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tri_mul_diag {d : ℕ} {p q : Matrix (Fin d) (Fin d) ℂ} (hp : ∀ i j, j < i → p i j = 0)
     (hq : ∀ i j, j < i → q i j = 0) (i : Fin d) : (p * q) i i = p i i * q i i := by
@@ -217,7 +215,7 @@ theorem tri_mul_diag {d : ℕ} {p q : Matrix (Fin d) (Fin d) ℂ} (hp : ∀ i j,
   · rw [hq _ _ h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k i with h | h` into its components or cases. Rewrite using `[hp _ _ h, zero_mul]`. Rewrite using `[hq _ _ (lt_of_lt_of_le hij h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tri_mul {d : ℕ} {p q : Matrix (Fin d) (Fin d) ℂ} (hp : ∀ i j, j < i → p i j = 0)
     (hq : ∀ i j, j < i → q i j = 0) (i j : Fin d) (hij : j < i) : (p * q) i j = 0 := by
@@ -228,20 +226,20 @@ theorem tri_mul {d : ℕ} {p q : Matrix (Fin d) (Fin d) ℂ} (hp : ∀ i j, j < 
   · rw [hq _ _ (lt_of_lt_of_le hij h), mul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => Matrix.one_apply_eq i, fun _ _ h => Matrix.one_apply_ne h.ne'⟩`.
+Supply the required witnesses or components.
 -/
 theorem upperUni_one {d : ℕ} : IsUpperUni (1 : Matrix (Fin d) (Fin d) ℂ) :=
   ⟨fun i => Matrix.one_apply_eq i, fun _ _ h => Matrix.one_apply_ne h.ne'⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => by rw [tri_mul_diag hp.2 hq.2, hp.1, hq.1, mul_one], tri_mul hp.2 hq.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem upperUni_mul {d : ℕ} {p q : Matrix (Fin d) (Fin d) ℂ} (hp : IsUpperUni p) (hq : IsUpperUni q) :
     IsUpperUni (p * q) :=
   ⟨fun i => by rw [tri_mul_diag hp.2 hq.2, hp.1, hq.1, mul_one], tri_mul hp.2 hq.2⟩
 
 /- English proof (translation)
-Establish `h : u.BlockTriangular id` using `fun i j hij => hu.2 i j hij`. Rewrite using `[Matrix.det_of_isUpperTriangular h]`. Simplify using `[hu.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem upperUni_det {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni u) : u.det = 1 := by
   have h : u.BlockTriangular id := fun i j hij => hu.2 i j hij
@@ -249,39 +247,39 @@ theorem upperUni_det {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni
   simp [hu.1]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Conclude with `upperUni_det hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerUni_det {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni l) : l.det = 1 := by
   rw [← Matrix.det_transpose]; exact upperUni_det hl
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv u (by rw [upperUni_det hu]; exact isUnit_one)`.
+A detailed English derivation is pending.
 -/
 theorem upper_mul_inv {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni u) : u * u⁻¹ = 1 :=
   Matrix.mul_nonsing_inv u (by rw [upperUni_det hu]; exact isUnit_one)
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul u (by rw [upperUni_det hu]; exact isUnit_one)`.
+A detailed English derivation is pending.
 -/
 theorem upper_inv_mul {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni u) : u⁻¹ * u = 1 :=
   Matrix.nonsing_inv_mul u (by rw [upperUni_det hu]; exact isUnit_one)
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv l (by rw [lowerUni_det hl]; exact isUnit_one)`.
+A detailed English derivation is pending.
 -/
 theorem lower_mul_inv {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni l) : l * l⁻¹ = 1 :=
   Matrix.mul_nonsing_inv l (by rw [lowerUni_det hl]; exact isUnit_one)
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul l (by rw [lowerUni_det hl]; exact isUnit_one)`.
+A detailed English derivation is pending.
 -/
 theorem lower_inv_mul {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni l) : l⁻¹ * l = 1 :=
   Matrix.nonsing_inv_mul l (by rw [lowerUni_det hl]; exact isUnit_one)
 
 /- English proof (translation)
-Establish `h : u.BlockTriangular id` using `fun i j hij => hu.2 i j hij`. Establish `: Invertible u` using `Matrix.invertibleOfIsUnitDet u (by rw [upperUni_det hu]; exact isUnit_one)`. Establish `h' : (u⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular h`. Establish `h2 : ∀ i j, j < i → u⁻¹ i j = 0` using `fun i j hij => h' hij`. Use `⟨fun i => ?_, h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `tri_mul_diag hu.2 h2 i` as an intermediate fact. Rewrite `this` using `[upper_mul_inv hu, Matrix.one_apply_eq, hu.1, one_mul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperUni_inv {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni u) : IsUpperUni u⁻¹ := by
   have h : u.BlockTriangular id := fun i j hij => hu.2 i j hij
@@ -294,7 +292,7 @@ theorem upperUni_inv {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni
   exact this.symm
 
 /- English proof (translation)
-Unfold `IsLowerUni`. Rewrite using `[Matrix.transpose_nonsing_inv]`. Conclude with `upperUni_inv hl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerUni_inv {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni l) : IsLowerUni l⁻¹ := by
   unfold IsLowerUni
@@ -302,7 +300,7 @@ theorem lowerUni_inv {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni
   exact upperUni_inv hl
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `[upper, strictUpper]`. Simplify using `[upper, strictUpper, hij.ne', not_lt.2 hij.le]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upperUni_upper {d : ℕ} (v : UT d → ℂ) : IsUpperUni (upper v) := by
   refine ⟨fun i => ?_, fun i j hij => ?_⟩
@@ -310,9 +308,9 @@ theorem upperUni_upper {d : ℕ} (v : UT d → ℂ) : IsUpperUni (upper v) := by
   · simp [upper, strictUpper, hij.ne', not_lt.2 hij.le]
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[upper, strictUpper, coordU, h, h.ne]`. Substitute `h` using the available equality. Simplify using `[upper, strictUpper, hu.1]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[upper, strictUpper, h.ne', not_lt.2 h.le, hu.2 _ _ h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upper_coordU {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni u) : upper (coordU u) = u := by
   ext i j
@@ -322,7 +320,7 @@ theorem upper_coordU {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni
   · simp [upper, strictUpper, h.ne', not_lt.2 h.le, hu.2 _ _ h]
 
 /- English proof (translation)
-Use extensionality with `⟨⟨i, j⟩, hij⟩`. Establish `hij' : i < j` using `hij`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify `this` using `[upper, strictUpper, hij', hij'.ne]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem upper_injective {d : ℕ} {v v' : UT d → ℂ} (h : upper v = upper v') : v = v' := by
   ext ⟨⟨i, j⟩, hij⟩
@@ -331,14 +329,14 @@ theorem upper_injective {d : ℕ} {v v' : UT d → ℂ} (h : upper v = upper v')
   simpa [upper, strictUpper, hij', hij'.ne] using this
 
 /- English proof (translation)
-Simplify using `[wMat, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem w_mul_apply {d : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) :
     (wMat d * M) i j = M i.rev j := by
   simp [wMat, Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `: ∀ k : Fin d, (j = k.rev) = (k = j.rev)` using `fun k => propext ⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`. Simplify using `[wMat, Matrix.mul_apply, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mul_w_apply {d : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) :
     (M * wMat d) i j = M i j.rev := by
@@ -347,7 +345,7 @@ theorem mul_w_apply {d : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) :
   simp [wMat, Matrix.mul_apply, this]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[w_mul_apply]`. Simplify using `[wMat, Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem w_mul_w (d : ℕ) : wMat d * wMat d = 1 := by
   ext i j
@@ -355,14 +353,14 @@ theorem w_mul_w (d : ℕ) : wMat d * wMat d = 1 := by
   simp [wMat, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[mul_w_apply, w_mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem w_conj_apply {d : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) :
     (wMat d * M * wMat d) i j = M i.rev j.rev := by
   rw [mul_w_apply, w_mul_apply]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Matrix.det (w_mul_w d)` as an intermediate fact. Simplify using `[Matrix.det_mul, h] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem w_det_ne (d : ℕ) : (wMat d).det ≠ 0 := by
   intro h
@@ -370,7 +368,7 @@ theorem w_det_ne (d : ℕ) : (wMat d).det ≠ 0 := by
   simp [Matrix.det_mul, h] at this
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[transpose_apply, w_conj_apply]`. Conclude with `hu.1 _`. Rewrite using `[transpose_apply, w_conj_apply]`. Conclude with `hu.2 _ _ (Fin.rev_lt_rev.2 hij)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerUni_conj {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni u) :
     IsLowerUni (wMat d * u * wMat d) := by
@@ -379,7 +377,7 @@ theorem lowerUni_conj {d : ℕ} {u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUn
   · rw [transpose_apply, w_conj_apply]; exact hu.2 _ _ (Fin.rev_lt_rev.2 hij)
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[w_conj_apply]`. Conclude with `hl.1 _`. Rewrite using `[w_conj_apply]`. Conclude with `hl.2 _ _ (Fin.rev_lt_rev.2 hij)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upperUni_conj {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni l) :
     IsUpperUni (wMat d * l * wMat d) := by
@@ -388,13 +386,13 @@ theorem upperUni_conj {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUn
   · rw [w_conj_apply]; exact hl.2 _ _ (Fin.rev_lt_rev.2 hij)
 
 /- English proof (translation)
-Simplify using `only [superSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Establish `hne : i.castSucc ≠ i.succ` using `(Fin.castSucc_lt_succ).ne`. Rewrite using `[Finset.sum_eq_add i.castSucc i.succ hne]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp.1, hq.1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k _ hk`. Break down `lt_trichotomy k i.castSucc with h | h | h` into its components or cases. Rewrite using `[hp.2 _ _ h]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `absurd h hk.1`. Establish `: i.succ < k`. Break down `lt_or_eq_of_le (Fin.castSucc_lt_iff_succ_le.1 h) with h' | h'` into its components or cases. Conclude with `h'`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `absurd h'.symm hk.2`. Rewrite using `[hq.2 _ _ this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superSum_mul {n : ℕ} {p q : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} (hp : IsUpperUni p)
     (hq : IsUpperUni q) : superSum (p * q) = superSum p + superSum q := by
@@ -417,7 +415,7 @@ theorem superSum_mul {n : ℕ} {p q : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} (h
   · simp
 
 /- English proof (translation)
-Unfold `superSum`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne (Fin.castSucc_lt_succ).ne`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem superSum_one {n : ℕ} : superSum (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) = 0 := by
   unfold superSum
@@ -425,14 +423,14 @@ theorem superSum_one {n : ℕ} : superSum (1 : Matrix (Fin (n + 1)) (Fin (n + 1)
   exact Matrix.one_apply_ne (Fin.castSucc_lt_succ).ne
 
 /- English proof (translation)
-Rewrite using `[← superSum_mul (upperUni_inv hu) hu, upper_inv_mul hu, superSum_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem superSum_inv {n : ℕ} {u : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} (hu : IsUpperUni u) :
     superSum u⁻¹ + superSum u = 0 := by
   rw [← superSum_mul (upperUni_inv hu) hu, upper_inv_mul hu, superSum_one]
 
 /- English proof (translation)
-Unfold `subSum superSum`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[w_conj_apply, Fin.rev_succ, Fin.rev_castSucc, Fin.revPerm_apply, Fin.rev_rev]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem subSum_conj {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     subSum (wMat (n + 1) * M * wMat (n + 1)) = superSum M := by
@@ -442,9 +440,9 @@ theorem subSum_conj {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
   rw [w_conj_apply, Fin.rev_succ, Fin.rev_castSucc, Fin.revPerm_apply, Fin.rev_rev]
 
 /- English proof (translation)
-Unfold `superSum`. Rewrite using `[Fin.sum_univ_castSucc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.succ_castSucc, blk_cc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.succ_last, blk_cl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem superSum_blk {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (b a : Fin (m + 1) → ℂ) (e : ℂ) :
     superSum (blk A b a e) = superSum A + b (Fin.last m) := by
@@ -456,9 +454,9 @@ theorem superSum_blk {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (b a
   · rw [Fin.succ_last, blk_cl]
 
 /- English proof (translation)
-Unfold `subSum`. Rewrite using `[Fin.sum_univ_castSucc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.succ_castSucc, blk_cc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.succ_last, blk_lc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subSum_blk {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (b a : Fin (m + 1) → ℂ) (e : ℂ) :
     subSum (blk A b a e) = subSum A + a (Fin.last m) := by
@@ -470,9 +468,9 @@ theorem subSum_blk {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (b a :
   · rw [Fin.succ_last, blk_lc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[upper_mul_inv hu, Matrix.mul_one, Matrix.mul_assoc, w_mul_w, Matrix.mul_one]`. Use `_ = (l * wMat d * u) * u⁻¹ * wMat d := by simp only [Matrix.mul_assoc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `_ = wMat d * u⁻¹ * wMat d := by rw [h]`. Introduce and unpack `rfl`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = wMat d := by rw [w_mul_w, Matrix.one_mul, upper_inv_mul hu, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stab_core {d : ℕ} {l u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni u) :
     l * wMat d * u = wMat d ↔ l = wMat d * u⁻¹ * wMat d := by
@@ -488,7 +486,7 @@ theorem stab_core {d : ℕ} {l u : Matrix (Fin d) (Fin d) ℂ} (hu : IsUpperUni 
       _ = wMat d := by rw [w_mul_w, Matrix.one_mul, upper_inv_mul hu, Matrix.mul_one]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem stab_right {d : ℕ} {l k k' : Matrix (Fin d) (Fin d) ℂ} (h1 : l * k = 1)
     (h2 : k * wMat d * k' = wMat d) : k' = wMat d * l * wMat d := by
@@ -498,7 +496,7 @@ theorem stab_right {d : ℕ} {l k k' : Matrix (Fin d) (Fin d) ℂ} (h1 : l * k =
     _ = wMat d * l * wMat d := by rw [h2]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `(smul_right_injective _ hz).eq_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_smul {d : ℕ} {z : ℂ} (hz : z ≠ 0) (l u : Matrix (Fin d) (Fin d) ℂ) :
     l * (z • wMat d) * u = z • wMat d ↔ l * wMat d * u = wMat d := by
@@ -506,7 +504,7 @@ theorem stab_smul {d : ℕ} {z : ℂ} (hz : z ≠ 0) (l u : Matrix (Fin d) (Fin 
   exact (smul_right_injective _ hz).eq_iff
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = wMat d := by rw [w_mul_w, Matrix.one_mul, lower_inv_mul hl, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stab_exists {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni l) :
     l⁻¹ * wMat d * (wMat d * l * wMat d) = wMat d := by
@@ -515,7 +513,7 @@ theorem stab_exists {d : ℕ} {l : Matrix (Fin d) (Fin d) ℂ} (hl : IsLowerUni 
     _ = wMat d := by rw [w_mul_w, Matrix.one_mul, lower_inv_mul hl, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `ptBlock`. Rewrite using `[blk_mul, blk_mul, blk_inj]`. Conclude with `⟨by simp, by simp, by simp [Matrix.vecMul_vecMul], by simp⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem block_prod {n : ℕ} (t c : ℂ) (l' u' : Matrix (Fin n) (Fin n) ℂ) (α β : Fin n → ℂ) :
     blk l' 0 α 1 * ptBlock n t c * blk u' β 0 1 =
@@ -526,7 +524,7 @@ theorem block_prod {n : ℕ} (t c : ℂ) (l' u' : Matrix (Fin n) (Fin n) ℂ) (�
   exact ⟨by simp, by simp, by simp [Matrix.vecMul_vecMul], by simp⟩
 
 /- English proof (translation)
-Rewrite using `[blk_mul, blk_inj]`. Conclude with `⟨by simp, by simp, by simp, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem blk_mul_diag_right {n : ℕ} (A K : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ) :
     blk A 0 a 1 * blk K 0 0 1 = blk (A * K) 0 (a ᵥ* K) 1 := by
@@ -534,7 +532,7 @@ theorem blk_mul_diag_right {n : ℕ} (A K : Matrix (Fin n) (Fin n) ℂ) (a : Fin
   exact ⟨by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[blk_mul, blk_inj]`. Conclude with `⟨by simp, by simp, by simp, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem blk_mul_diag_left {n : ℕ} (A K : Matrix (Fin n) (Fin n) ℂ) (b : Fin n → ℂ) :
     blk K 0 0 1 * blk A b 0 1 = blk (K * A) (K *ᵥ b) 0 1 := by
@@ -542,7 +540,7 @@ theorem blk_mul_diag_left {n : ℕ} (A K : Matrix (Fin n) (Fin n) ℂ) (b : Fin 
   exact ⟨by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => by simp [subSum, superSum] | m + 1, k, hk => by rw [subSum_blk, superSum_blk, subSum_conj] simpa using superSum_inv hk`.
+A detailed English derivation is pending.
 -/
 theorem char_blk : ∀ {n : ℕ} {k : Matrix (Fin n) (Fin n) ℂ}, IsUpperUni k →
     subSum (blk (wMat n * k⁻¹ * wMat n) 0 0 1) + superSum (blk k 0 0 1) = 0
@@ -558,9 +556,9 @@ namespace Formalism.FourierDecayAlt.P
 open G4
 
 /- English proof (translation)
-Introduce `n z hz l u _ hu`. Establish `h1 : l * ptLong (n + 1) z * u = ptLong (n + 1) z ↔ l = wMat (n + 1) * u⁻¹ * wMat (n + 1)`. Unfold `ptLong`. Rewrite using `[stab_smul hz, stab_core hu]`. Use `⟨h1, fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1.1 h, subSum_conj, superSum_inv hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stabilizer_long_point : Formalism.FourierDecayAlt.G.StabLong := by
   intro n z hz l u _ hu
@@ -571,11 +569,11 @@ theorem stabilizer_long_point : Formalism.FourierDecayAlt.G.StabLong := by
   rw [h1.1 h, subSum_conj, superSum_inv hu]
 
 /- English proof (translation)
-Introduce `n z hz l u hl hu`. Establish `hk'` using `upperUni_conj hl`. Use `⟨coordU (wMat (n + 1) * l * wMat (n + 1) * u), ⟨l⁻¹, wMat (n + 1) * l * wMat (n + 1), lowerUni_inv hl, hk', ?_, lower_mul_inv hl, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `ptLong`. Rewrite using `[stab_smul hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `stab_exists hl`. Conclude with `(upper_coordU (upperUni_mul hk' hu)).symm`. Introduce and unpack `v ⟨k, k', _, _, h3, h4, h5⟩`. Unfold `ptLong at h3`. Rewrite `h3` using `[stab_smul hz]`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `upper_injective` to reduce the goal to its premises. Rewrite using `[← h5, stab_right h4 h3, upper_coordU (upperUni_mul hk' hu)]`.
+A detailed English derivation is pending.
 -/
 theorem section_at_long_point : Formalism.FourierDecayAlt.G.SectionLong := by
   intro n z hz l u hl hu
@@ -593,19 +591,17 @@ theorem section_at_long_point : Formalism.FourierDecayAlt.G.SectionLong := by
     rw [← h5, stab_right h4 h3, upper_coordU (upperUni_mul hk' hu)]
 
 /- English proof (translation)
-Introduce `n t c ht l u hl hu`. Establish `h1 : l * ptBlock n t c * u = ptBlock n t c ↔ ∃ k : Matrix (Fin n) (Fin n) ℂ, IsUpperUni k ∧ u = blk k 0 0 1 ∧ l = blk (wMat n * k⁻¹ * wMat n) 0 0 1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨l', α, hl', rfl⟩` from `exists_blk_lower hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u', β, hu', rfl⟩` from `exists_blk_upper hu`. Rewrite `h` using `[block_prod]`. Unfold `ptBlock at h`. Rewrite `h` using `[blk_inj]`. Take `⟨e1, e2, e3, _⟩` from `h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hw : (t • wMat n).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ ht) (w_det_ne n)`. Establish `hβ : β = 0`. Use `Matrix.eq_zero_of_mulVec_eq_zero ?_ e2` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_mul, lowerUni_det hl', one_mul]`. Conclude with `hw`. Establish `hα : α = 0`. Use `Matrix.eq_zero_of_vecMul_eq_zero ?_ e3` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, upperUni_det hu', mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw`. Use `⟨u', hu', by rw [hβ], ?_⟩` and prove the remaining obligations. Rewrite using `[hα, (stab_core hu').1 ((stab_smul ht _ _).1 e1)]`. Introduce and unpack `⟨k, hk, rfl, rfl⟩`. Rewrite using `[block_prod]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Unfold `ptBlock`. Rewrite using `[blk_inj]`. Conclude with `⟨(stab_smul ht _ _).2 ((stab_core hk).2 rfl), by simp, by simp, by simp⟩`. Use `⟨h1, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, rfl, rfl⟩` from `h1.1 h`.
-
-Conclude with `char_blk hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stabilizer_block_point : Formalism.FourierDecayAlt.G.StabBlock := by
   intro n t c ht l u hl hu
@@ -643,19 +639,17 @@ theorem stabilizer_block_point : Formalism.FourierDecayAlt.G.StabBlock := by
   exact char_blk hk
 
 /- English proof (translation)
-Introduce `n t c ht l u hl hu`. Take `⟨l', α, hl', rfl⟩` from `exists_blk_lower hl`. Take `⟨u', β, hu', rfl⟩` from `exists_blk_upper hu`. Establish `hk0` using `upperUni_conj hl'`. Use `⟨(α ᵥ* l'⁻¹, coordU (wMat n * l' * wMat n * u'), (wMat n * l' * wMat n) *ᵥ β), ⟨blk l'⁻¹ 0 0 1, blk (wMat n * l' * wMat n) 0 0 1, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(lowerUni_blk_iff _ _ _ _).2 ⟨lowerUni_inv hl', rfl, rfl⟩`. Conclude with `(upperUni_blk_iff _ _ _ _).2 ⟨hk0, rfl, rfl⟩`. Rewrite using `[block_prod]`. Unfold `ptBlock`. Rewrite using `[blk_inj]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(stab_smul ht _ _).2 (stab_exists hl'), by simp, by simp, by simp⟩`. Rewrite using `[blk_mul_diag_right, lower_mul_inv hl']`. Both sides reduce to the same expression. Rewrite using `[blk_mul_diag_left] dsimp only`. Rewrite using `[upper_coordU (upperUni_mul hk0 hu')]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, v, b⟩ ⟨k, k', hk, hk', h3, h4, h5⟩`. Take `⟨κ, hκ, rfl, rfl⟩` from `((stabilizer_block_point n t c ht k k' hk hk').1).1 h3`. Simplify using `only at h4 h5`. Unfold `lowRow at h4`. Rewrite `h4` using `[blk_mul_diag_right, blk_inj]`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[blk_mul_diag_left, blk_inj]`. Take `⟨h41, _, h43, _⟩` from `h4`. Take `⟨h51, h52, _, _⟩` from `h5`. Establish `hκ0 : κ = wMat n * l' * wMat n` using `stab_right h41 ((stab_core hκ).2 rfl)`. Establish `hinv : l'⁻¹ = wMat n * κ⁻¹ * wMat n` using `Matrix.inv_eq_right_inv h41`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `show a = α ᵥ* l'⁻¹`. Rewrite using `[hinv, h43]`. Use `show v = coordU (wMat n * l' * wMat n * u')`. Apply `upper_injective` to reduce the goal to its premises.
-
-Rewrite using `[upper_coordU (upperUni_mul hk0 hu'), ← h51, hκ0]`. Use `show b = (wMat n * l' * wMat n) *ᵥ β`. Rewrite using `[← h52, hκ0]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_at_block_point : Formalism.FourierDecayAlt.G.SectionBlock := by
   intro n t c ht l u hl hu

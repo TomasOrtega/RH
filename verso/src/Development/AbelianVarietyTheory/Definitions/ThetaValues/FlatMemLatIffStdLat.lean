@@ -38,7 +38,7 @@ Both sides reduce to the same expression.
     (flat (n := n) (ι := ι)).symm w k i = w (k, i) := rfl
 
 /- English proof (translation)
-Unfold `Hf HC`. Rewrite using `[Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Hf_flat (v w : Fin n → EuclideanSpace ℂ ι) : Hf (flat v) (flat w) = HC v w := by
   unfold Hf HC
@@ -46,28 +46,28 @@ theorem Hf_flat (v w : Fin n → EuclideanSpace ℂ ι) : Hf (flat v) (flat w) =
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Hf_flat, ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HC_flat_symm (v w : EuclideanSpace ℂ (Fin n × ι)) :
     HC ((flat (n := n) (ι := ι)).symm v) (flat.symm w) = Hf v w := by
   rw [← Hf_flat, ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Simplify using `only [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, flat_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_sq_flat (v : Fin n → EuclideanSpace ℂ ι) : ‖flat v‖ ^ 2 = ∑ k, ‖v k‖ ^ 2 := by
   simp only [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, flat_apply]
 
 /- English proof (translation)
-Rewrite using `[← Hf_flat, ← real_inner_eq_Hf, real_inner_self_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HC_self_re (v : Fin n → EuclideanSpace ℂ ι) : (HC v v).re = ‖flat v‖ ^ 2 := by
   rw [← Hf_flat, ← real_inner_eq_Hf, real_inner_self_eq_norm_sq]
 
 /- English proof (translation)
-Use extensionality with `⟨k', i'⟩`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hi]`. Simplify using `[hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem flat_single [DecidableEq ι] (k : Fin n) (i : ι) (c : ℂ) :
     flat (Pi.single k (EuclideanSpace.single i c) : Fin n → EuclideanSpace ℂ ι) =
@@ -81,13 +81,13 @@ theorem flat_single [DecidableEq ι] (k : Fin n) (i : ι) (c : ℂ) :
   · simp [hk]
 
 /- English proof (translation)
-Rewrite using `[← Hf_flat, ← Hf_flat, Hf_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HC_conj (v w : Fin n → EuclideanSpace ℂ ι) : HC w v = (starRingEnd ℂ) (HC v w) := by
   rw [← Hf_flat, ← Hf_flat, Hf_conj]
 
 /- English proof (translation)
-Simplify using `only [Hf, WithLp.ofLp_sum, Finset.sum_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_sum_left {κ : Type*} (s : Finset κ) (v : κ → EuclideanSpace ℂ ι)
     (w : EuclideanSpace ℂ ι) : Hf (∑ j ∈ s, v j) w = ∑ j ∈ s, Hf (v j) w := by
@@ -95,7 +95,7 @@ theorem Hf_sum_left {κ : Type*} (s : Finset κ) (v : κ → EuclideanSpace ℂ 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [Hf, WithLp.ofLp_sum, Finset.sum_apply, map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_sum_right {κ : Type*} (s : Finset κ) (v : EuclideanSpace ℂ ι)
     (w : κ → EuclideanSpace ℂ ι) : Hf v (∑ j ∈ s, w j) = ∑ j ∈ s, Hf v (w j) := by
@@ -103,28 +103,28 @@ theorem Hf_sum_right {κ : Type*} (s : Finset κ) (v : EuclideanSpace ℂ ι)
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[HC, Hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem HC_add_left (v v' w : Fin n → EuclideanSpace ℂ ι) :
     HC (v + v') w = HC v w + HC v' w := by
   simp [HC, Hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[HC, Hf, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem HC_add_right (v w w' : Fin n → EuclideanSpace ℂ ι) :
     HC v (w + w') = HC v w + HC v w' := by
   simp [HC, Hf, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [← Hf_flat, map_sum, Hf_sum_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem HC_sum_left {κ : Type*} (s : Finset κ) (v : κ → Fin n → EuclideanSpace ℂ ι)
     (w : Fin n → EuclideanSpace ℂ ι) : HC (∑ j ∈ s, v j) w = ∑ j ∈ s, HC (v j) w := by
   simp only [← Hf_flat, map_sum, Hf_sum_left]
 
 /- English proof (translation)
-Simplify using `only [← Hf_flat, map_sum, Hf_sum_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem HC_sum_right {κ : Type*} (s : Finset κ) (v : Fin n → EuclideanSpace ℂ ι)
     (w : κ → Fin n → EuclideanSpace ℂ ι) : HC v (∑ j ∈ s, w j) = ∑ j ∈ s, HC v (w j) := by
@@ -137,7 +137,7 @@ variable {E : Type} [Field E] [NumberField E] {dim : (E →+* ℂ) → ℕ} {n :
 open Classical in
 
 /- English proof (translation)
-Use `flat_single (n := n) l.1 l.2 (1 : ℂ)` as an intermediate fact. Unfold `dir`. Use `this` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem flat_dir (l : Letter n dim) : flat (dir l) = EuclideanSpace.single l 1 := by
   have := flat_single (n := n) l.1 l.2 (1 : ℂ)
@@ -176,51 +176,51 @@ Both sides reduce to the same expression.
 theorem actE_coe (α : 𝓞 E) (v : Vsp dim) : actE (α : E) v = act α v := rfl
 
 /- English proof (translation)
-Simplify using `only [← actL_apply, map_sum, ContinuousLinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actE_sum_left {κ : Type*} (s : Finset κ) (α : κ → E) (v : Vsp dim) :
     actE (∑ j ∈ s, α j) v = ∑ j ∈ s, actE (α j) v := by
   simp only [← actL_apply, map_sum, ContinuousLinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [← actL_apply, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actE_sum_right {κ : Type*} (s : Finset κ) (α : E) (v : κ → Vsp dim) :
     actE α (∑ j ∈ s, v j) = ∑ j ∈ s, actE α (v j) := by
   simp only [← actL_apply, map_sum]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_neg_left (α : E) (v : Vsp dim) : actE (-α) v = -actE α v := by
   ext i; simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_neg_right (α : E) (v : Vsp dim) : actE α (-v) = -actE α v := by
   ext i; simp
 
 /- English proof (translation)
-Rewrite using `[← actE_mul, ← actE_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actE_comm (α β : E) (v : Vsp dim) : actE α (actE β v) = actE β (actE α v) := by
   rw [← actE_mul, ← actE_mul, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_intCast (m : ℤ) (v : Vsp dim) : actE (m : E) v = m • v := by
   ext i; simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_natCast (m : ℕ) (v : Vsp dim) : actE (m : E) v = m • v := by
   ext i; simp
 
 /- English proof (translation)
-The claim follows from `X.stable ⟨α, hα⟩ x hx`.
+A detailed English derivation is pending.
 -/
 theorem actE_mem_of_isIntegral (X : PT E) {α : E} (hα : IsIntegral ℤ α) {x : Vsp X.dim}
     (hx : x ∈ X.L) : actE α x ∈ X.L :=
@@ -235,65 +235,65 @@ Both sides reduce to the same expression.
     tens x v k = actE (v k) x := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun k => actE_add_right (v k) x y`.
+A detailed English derivation is pending.
 -/
 theorem tens_add_left (x y : Vsp dim) (v : Fin n → E) : tens (x + y) v = tens x v + tens y v :=
   funext fun k => actE_add_right (v k) x y
 
 /- English proof (translation)
-The claim follows from `funext fun k => actE_add_left (v k) (w k) x`.
+A detailed English derivation is pending.
 -/
 theorem tens_add_right (x : Vsp dim) (v w : Fin n → E) : tens x (v + w) = tens x v + tens x w :=
   funext fun k => actE_add_left (v k) (w k) x
 
 /- English proof (translation)
-The claim follows from `funext fun k => actE_zero_right (v k)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem tens_zero_left (v : Fin n → E) : tens (0 : Vsp dim) v = 0 :=
   funext fun k => actE_zero_right (v k)
 
 /- English proof (translation)
-The claim follows from `funext fun _ => actE_zero_left x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem tens_zero_right (x : Vsp dim) : tens x (0 : Fin n → E) = 0 :=
   funext fun _ => actE_zero_left x
 
 /- English proof (translation)
-The claim follows from `funext fun k => actE_smul_right (v k) c x`.
+A detailed English derivation is pending.
 -/
 theorem tens_smul_left (c : ℂ) (x : Vsp dim) (v : Fin n → E) : tens (c • x) v = c • tens x v :=
   funext fun k => actE_smul_right (v k) c x
 
 /- English proof (translation)
-The claim follows from `funext fun k => by simp only [tens_apply, Pi.smul_apply, smul_eq_mul, ← actE_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem tens_smul_right (α : E) (x : Vsp dim) (v : Fin n → E) :
     tens x (α • v) = tens (actE α x) v :=
   funext fun k => by simp only [tens_apply, Pi.smul_apply, smul_eq_mul, ← actE_mul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `funext fun k => actE_comm α (v k) x`.
+A detailed English derivation is pending.
 -/
 theorem actE_tens (α : E) (x : Vsp dim) (v : Fin n → E) :
     (fun k => actE α (tens x v k)) = tens (actE α x) v :=
   funext fun k => actE_comm α (v k) x
 
 /- English proof (translation)
-The claim follows from `funext fun k => by simp only [tens_apply, Finset.sum_apply, actE_sum_right]`.
+A detailed English derivation is pending.
 -/
 theorem tens_sum_left {κ : Type*} (s : Finset κ) (x : κ → Vsp dim) (v : Fin n → E) :
     tens (∑ j ∈ s, x j) v = ∑ j ∈ s, tens (x j) v :=
   funext fun k => by simp only [tens_apply, Finset.sum_apply, actE_sum_right]
 
 /- English proof (translation)
-The claim follows from `funext fun k => by simp only [tens_apply, Finset.sum_apply, actE_sum_left]`.
+A detailed English derivation is pending.
 -/
 theorem tens_sum_right {κ : Type*} (s : Finset κ) (x : Vsp dim) (v : κ → Fin n → E) :
     tens x (∑ j ∈ s, v j) = ∑ j ∈ s, tens x (v j) :=
   funext fun k => by simp only [tens_apply, Finset.sum_apply, actE_sum_left]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using `[actE_one]`. Simplify using `[h, actE_zero_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tens_single (x : Vsp dim) (k : Fin n) :
     tens x (Pi.single k (1 : E)) = Pi.single k x := by
@@ -303,7 +303,7 @@ theorem tens_single (x : Vsp dim) (k : Fin n) :
   · simp [h, actE_zero_left]
 
 /- English proof (translation)
-Simplify using `only [tens_single, Finset.univ_sum_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_tens_single (γ : Fin n → Vsp dim) : ∑ k, tens (γ k) (Pi.single k (1 : E)) = γ := by
   simp only [tens_single, Finset.univ_sum_single]
@@ -312,42 +312,42 @@ def tensorEps (w₀ : 𝓞 E) (γ : Fin n → Vsp dim) : ℂ :=
   cexp (Real.pi * I * ((HC γ fun k => act w₀ (γ k)).im : ℂ))
 
 /- English proof (translation)
-Rewrite using `[tensorEps, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_tensorEps (w₀ : 𝓞 E) (γ : Fin n → Vsp dim) : ‖tensorEps w₀ γ‖ = 1 := by
   rw [tensorEps, Complex.norm_exp]
   simp
 
 /- English proof (translation)
-Simplify using `[tensorEps, HC, Hf]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tensorEps_zero (w₀ : 𝓞 E) : tensorEps w₀ (0 : Fin n → Vsp dim) = 1 := by
   simp [tensorEps, HC, Hf]
 
 /- English proof (translation)
-Simplify using `[tensorEps, HC, Hf, act]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorEps_neg (w₀ : 𝓞 E) (γ : Fin n → Vsp dim) : tensorEps w₀ (-γ) = tensorEps w₀ γ := by
   simp [tensorEps, HC, Hf, act]
 
 /- English proof (translation)
-Rewrite using `[tensorEps, h, mul_comm, Complex.ofReal_intCast, Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorEps_of_int (w₀ : 𝓞 E) (γ : Fin n → Vsp dim) (m : ℤ)
     (h : (HC γ fun k => act w₀ (γ k)).im = m) : tensorEps w₀ γ = (-1) ^ m := by
   rw [tensorEps, h, mul_comm, Complex.ofReal_intCast, Complex.exp_int_mul, Complex.exp_pi_mul_I]
 
 /- English proof (translation)
-Rewrite using `[tensorEps, HC, Complex.im_sum, Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorEps_eq_prod (w₀ : 𝓞 E) (γ : Fin n → Vsp dim) :
     tensorEps w₀ γ = ∏ k, cexp (Real.pi * I * ((Hf (γ k) (act w₀ (γ k))).im : ℂ)) := by
   rw [tensorEps, HC, Complex.im_sum, Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum]
 
 /- English proof (translation)
-Rewrite using `[tensorEps_eq_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `X.integral _ _ (hγ k) (X.stable w₀ _ (hγ k))`. Establish `h1` using `heps _ (hγ k)`. Rewrite `h1` using `[hm, mul_comm, Real.cos_int_mul_pi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (X.eps (γ k) : ℂ) = (-1) ^ m` using `by simpa using congrArg (fun t : ℝ => (t : ℂ)) h1`. Rewrite using `[hm, h2, mul_comm, Complex.ofReal_intCast, Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorEps_eq_prod_eps (X : PT E) (w₀ : 𝓞 E)
     (heps : ∀ x ∈ X.L, (X.eps x : ℝ) = Real.cos (Real.pi * (Hf x (act w₀ x)).im))
@@ -364,19 +364,19 @@ theorem tensorEps_eq_prod_eps (X : PT E) (w₀ : 𝓞 E)
 variable [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `Hf_actE α v w`.
+A detailed English derivation is pending.
 -/
 theorem Hf_actE_cc (α : E) (v w : Vsp dim) : Hf (actE α v) w = Hf v (actE (cc α) w) :=
   Hf_actE α v w
 
 /- English proof (translation)
-The claim follows from `Hf_actE' α v w`.
+A detailed English derivation is pending.
 -/
 theorem Hf_actE_cc' (α : E) (v w : Vsp dim) : Hf v (actE α w) = Hf (actE (cc α) v) w :=
   Hf_actE' α v w
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun k _ => Hf_actE_cc α (γ k) (γ' k)`.
+A detailed English derivation is pending.
 -/
 theorem HC_actE (α : E) (γ γ' : Fin n → Vsp dim) :
     HC (fun k => actE α (γ k)) γ' = HC γ fun k => actE (cc α) (γ' k) :=
@@ -385,68 +385,68 @@ theorem HC_actE (α : E) (γ γ' : Fin n → Vsp dim) :
 def contr (γ : Fin n → Vsp dim) (w : Fin n → E) : Vsp dim := ∑ k, actE (cc (w k)) (γ k)
 
 /- English proof (translation)
-Simplify using `[contr, cc, IsCMField.complexEmbedding_complexConj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_apply (γ : Fin n → Vsp dim) (w : Fin n → E) (i : Idx dim) :
     contr γ w i = ∑ k, (starRingEnd ℂ) (i.1 (w k)) * γ k i := by
   simp [contr, cc, IsCMField.complexEmbedding_complexConj]
 
 /- English proof (translation)
-Simplify using `only [contr, Pi.add_apply, actE_add_right, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_add_left (γ γ' : Fin n → Vsp dim) (w : Fin n → E) :
     contr (γ + γ') w = contr γ w + contr γ' w := by
   simp only [contr, Pi.add_apply, actE_add_right, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [contr, cc, Pi.add_apply, map_add, actE_add_left, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_add_right (γ : Fin n → Vsp dim) (w w' : Fin n → E) :
     contr γ (w + w') = contr γ w + contr γ w' := by
   simp only [contr, cc, Pi.add_apply, map_add, actE_add_left, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[contr, actE_zero_right]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem contr_zero_left (w : Fin n → E) : contr (0 : Fin n → Vsp dim) w = 0 := by
   simp [contr, actE_zero_right]
 
 /- English proof (translation)
-Simplify using `[contr, cc, actE_zero_left]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem contr_zero_right (γ : Fin n → Vsp dim) : contr γ (0 : Fin n → E) = 0 := by
   simp [contr, cc, actE_zero_left]
 
 /- English proof (translation)
-Simplify using `only [contr, Pi.smul_apply, actE_smul_right, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_smul_left (c : ℂ) (γ : Fin n → Vsp dim) (w : Fin n → E) :
     contr (c • γ) w = c • contr γ w := by
   simp only [contr, Pi.smul_apply, actE_smul_right, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `only [contr, Pi.smul_apply, ← actL_apply, map_zsmul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_zsmul_left (m : ℤ) (γ : Fin n → Vsp dim) (w : Fin n → E) :
     contr (m • γ) w = m • contr γ w := by
   simp only [contr, Pi.smul_apply, ← actL_apply, map_zsmul, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `only [contr, actE_sum_right, actE_comm α]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_actE_left (α : E) (γ : Fin n → Vsp dim) (w : Fin n → E) :
     contr (fun k => actE α (γ k)) w = actE α (contr γ w) := by
   simp only [contr, actE_sum_right, actE_comm α]
 
 /- English proof (translation)
-Simplify using `only [contr, cc, Pi.smul_apply, smul_eq_mul, map_mul, actE_mul, actE_sum_right]`.
+Simplify using the standard rewrite rules.
 -/
 theorem contr_smul_right (α : E) (γ : Fin n → Vsp dim) (w : Fin n → E) :
     contr γ (α • w) = actE (cc α) (contr γ w) := by
   simp only [contr, cc, Pi.smul_apply, smul_eq_mul, map_mul, actE_mul, actE_sum_right]
 
 /- English proof (translation)
-Simplify using `only [contr, Finset.sum_apply, actE_sum_right]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contr_sum_left {κ : Type*} (s : Finset κ) (γ : κ → Fin n → Vsp dim) (w : Fin n → E) :
     contr (∑ j ∈ s, γ j) w = ∑ j ∈ s, contr (γ j) w := by
@@ -454,7 +454,7 @@ theorem contr_sum_left {κ : Type*} (s : Finset κ) (γ : κ → Fin n → Vsp d
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [contr, cc, Finset.sum_apply, map_sum, actE_sum_left]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contr_sum_right {κ : Type*} (s : Finset κ) (γ : Fin n → Vsp dim) (w : κ → Fin n → E) :
     contr γ (∑ j ∈ s, w j) = ∑ j ∈ s, contr γ (w j) := by
@@ -462,7 +462,7 @@ theorem contr_sum_right {κ : Type*} (s : Finset κ) (γ : Fin n → Vsp dim) (w
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[contr, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ h`. Simplify using `[h, cc, actE_zero_left]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem contr_single' (γ : Fin n → Vsp dim) (k : Fin n) (α : E) :
     contr γ (Pi.single k α) = actE (cc α) (γ k) := by
@@ -473,14 +473,14 @@ theorem contr_single' (γ : Fin n → Vsp dim) (k : Fin n) (α : E) :
   · simp
 
 /- English proof (translation)
-Simplify using `[contr_single', cc, actE_one]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem contr_single (γ : Fin n → Vsp dim) (k : Fin n) :
     contr γ (Pi.single k (1 : E)) = γ k := by
   simp [contr_single', cc, actE_one]
 
 /- English proof (translation)
-Establish `: herm 1 v w = ∑ k, cc (w k) * v k` using `by simp [herm, Matrix.one_apply, mul_comm]`. Simplify using `only [this, contr, tens_apply, actE_sum_left, actE_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem contr_tens (x : Vsp dim) (v w : Fin n → E) :
     contr (tens x v) w = actE (herm 1 v w) x := by
@@ -488,30 +488,30 @@ theorem contr_tens (x : Vsp dim) (v w : Fin n → E) :
   simp only [this, contr, tens_apply, actE_sum_left, actE_mul]
 
 /- English proof (translation)
-Simplify using `only [HC, contr, tens_apply, Hf_sum_left, Hf_actE_cc']`.
+Simplify using the standard rewrite rules.
 -/
 theorem HC_tens_right (γ : Fin n → Vsp dim) (x : Vsp dim) (w : Fin n → E) :
     HC γ (tens x w) = Hf (contr γ w) x := by
   simp only [HC, contr, tens_apply, Hf_sum_left, Hf_actE_cc']
 
 /- English proof (translation)
-Rewrite using `[HC_conj, HC_tens_right, ← Hf_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HC_tens_left (γ : Fin n → Vsp dim) (x : Vsp dim) (w : Fin n → E) :
     HC (tens x w) γ = Hf x (contr γ w) := by
   rw [HC_conj, HC_tens_right, ← Hf_conj]
 
 /- English proof (translation)
-Rewrite using `[HC_tens_right, contr_tens]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HC_tens_tens (x y : Vsp dim) (v w : Fin n → E) :
     HC (tens x v) (tens y w) = Hf (actE (herm 1 v w) x) y := by
   rw [HC_tens_right, contr_tens]
 
 /- English proof (translation)
-Establish `key : ∀ w ∈ Submodule.span E S, contr γ w = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact h w hw`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [contr_add_right, ha, hb, add_zero]`. Consider the case `smul α a _ ha => rw [contr_smul_right, ha, actE_zero_right]`. Use function extensionality and compare the values at `k`. Rewrite using `[← contr_single γ k]`. Conclude with `key _ (hS ▸ Submodule.mem_top)`.
+Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_contr_span {S : Set (Fin n → E)} (hS : Submodule.span E S = ⊤)
     {γ : Fin n → Vsp dim} (h : ∀ w ∈ S, contr γ w = 0) : γ = 0 := by
@@ -537,19 +537,19 @@ def tensorLat (X : PT E) (Λ' : Submodule (𝓞 E) (Fin n → E)) : Submodule �
 variable {X : PT E} {Λ' : Submodule (𝓞 E) (Fin n → E)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_tensorLat {γ : Fin n → Vsp X.dim} :
     γ ∈ tensorLat X Λ' ↔ ∀ w ∈ Λ', contr γ w ∈ X.L := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hγ w hw` and use `hγ w (h hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tensorLat_anti {Λ₁ Λ₂ : Submodule (𝓞 E) (Fin n → E)} (h : Λ₁ ≤ Λ₂) :
     tensorLat X Λ₂ ≤ tensorLat X Λ₁ := fun _ hγ w hw => hγ w (h hw)
 
 /- English proof (translation)
-Introduce `w hw` and use `by have := X.stable α _ (hγ w hw) rwa [act_eq_actE, ← contr_actE_left] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem act_mem_tensorLat (α : 𝓞 E) {γ : Fin n → Vsp X.dim} (hγ : γ ∈ tensorLat X Λ') :
     (fun k => act α (γ k)) ∈ tensorLat X Λ' := fun w hw => by
@@ -557,7 +557,7 @@ theorem act_mem_tensorLat (α : 𝓞 E) {γ : Fin n → Vsp X.dim} (hγ : γ ∈
   rwa [act_eq_actE, ← contr_actE_left] at this
 
 /- English proof (translation)
-Introduce `w hw` and use `by rw [contr_tens] exact actE_mem_of_isIntegral X (hv w hw) hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tens_mem_tensorLat {x : Vsp X.dim} (hx : x ∈ X.L) {v : Fin n → E}
     (hv : ∀ w ∈ Λ', IsIntegral ℤ (herm 1 v w)) : tens x v ∈ tensorLat X Λ' := fun w hw => by
@@ -565,7 +565,7 @@ theorem tens_mem_tensorLat {x : Vsp X.dim} (hx : x ∈ X.L) {v : Fin n → E}
   exact actE_mem_of_isIntegral X (hv w hw) hx
 
 /- English proof (translation)
-Rewrite using `[HC_tens_right]`. Conclude with `X.integral _ _ (hγ w hw) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_HC_tens_int {γ : Fin n → Vsp X.dim} (hγ : γ ∈ tensorLat X Λ') {x : Vsp X.dim}
     (hx : x ∈ X.L) {w : Fin n → E} (hw : w ∈ Λ') : ∃ m : ℤ, (HC γ (tens x w)).im = m := by
@@ -573,9 +573,9 @@ theorem im_HC_tens_int {γ : Fin n → Vsp X.dim} (hγ : γ ∈ tensorLat X Λ')
   exact X.integral _ _ (hγ w hw) hx
 
 /- English proof (translation)
-Use `⟨fun h w hw => h w (Submodule.subset_span hw), fun h w hw => ?_⟩` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact h w hw`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [contr_add_right]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `X.L.add_mem ha hb`. Consider the case `smul α a _ ha`. Establish `: α • a = (α : E) • a` using `rfl`. Rewrite using `[this, contr_smul_right]`. Conclude with `actE_mem_of_isIntegral X (α.isIntegral_coe.map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom) ha`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_tensorLat_span {S : Set (Fin n → E)} {γ : Fin n → Vsp X.dim} :
     γ ∈ tensorLat X (Submodule.span (𝓞 E) S) ↔ ∀ w ∈ S, contr γ w ∈ X.L := by
@@ -593,11 +593,11 @@ theorem mem_tensorLat_span {S : Set (Fin n → E)} {γ : Fin n → Vsp X.dim} :
 omit [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[stdLat, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ k`. Establish `: (∑ j, c j • (Pi.single j 1 : Fin n → E)) k = (c k : E)`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(c k).isIntegral_coe`. Introduce `h`. Establish `hc : ∀ k, ∃ c : 𝓞 E, algebraMap (𝓞 E) E c = v k` using `fun k => ⟨⟨v k, h k⟩, rfl⟩`. Use `choose c hc using hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_stdLat {v : Fin n → E} : v ∈ stdLat E n ↔ ∀ k, IsIntegral ℤ (v k) := by
   rw [stdLat, Submodule.mem_span_range_iff_exists_fun]
@@ -617,16 +617,16 @@ theorem mem_stdLat {v : Fin n → E} : v ∈ stdLat E n ↔ ∀ k, IsIntegral �
 omit [IsCMField E] in
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+A detailed English derivation is pending.
 -/
 theorem stdLat_fg : (stdLat E n).FG := Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Establish `hh : ∀ w, herm 1 v w = ∑ k, v k * cc (w k)` using `fun w => by simp [herm, Matrix.one_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`. Rewrite using `[hh]`. Conclude with `IsIntegral.sum _ fun k _ => (mem_stdLat.1 hv k).mul ((mem_stdLat.1 hw k).map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `mem_stdLat.2 fun k => ?_` and prove the remaining obligations. Use `h (Pi.single k 1) (Submodule.subset_span ⟨k, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hh, Finset.sum_eq_single k]`. Simplify `this` using `[cc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Simplify using `[hj, cc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_stdLat_iff_herm {v : Fin n → E} :
     v ∈ stdLat E n ↔ ∀ w ∈ stdLat E n, IsIntegral ℤ (herm 1 v w) := by
@@ -646,7 +646,7 @@ theorem mem_stdLat_iff_herm {v : Fin n → E} :
     · simp
 
 /- English proof (translation)
-Simplify using `[stdLat, mem_tensorLat_span]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_tensorLat_stdLat {γ : Fin n → Vsp X.dim} :
     γ ∈ tensorLat X (stdLat E n) ↔ ∀ k, γ k ∈ X.L := by
@@ -655,7 +655,7 @@ theorem mem_tensorLat_stdLat {γ : Fin n → Vsp X.dim} :
 omit [IsCMField E] in
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [mem_stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Conclude with `forall_congr' fun k => ⟨fun h => ⟨⟨v k, h⟩, rfl⟩, fun ⟨c, hc⟩ => hc ▸ c.isIntegral_coe⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdLat_eq_pi : stdLat E n = Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E) := by
   ext v
@@ -664,7 +664,7 @@ theorem stdLat_eq_pi : stdLat E n = Submodule.pi Set.univ fun _ => (1 : Submodul
     ⟨fun h => ⟨⟨v k, h⟩, rfl⟩, fun ⟨c, hc⟩ => hc ▸ c.isIntegral_coe⟩
 
 /- English proof (translation)
-Rewrite using `[← stdLat_eq_pi, mem_tensorLat_stdLat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_tensorLat_pi {γ : Fin n → Vsp X.dim} :
     γ ∈ tensorLat X (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)) ↔
@@ -672,21 +672,21 @@ theorem mem_tensorLat_pi {γ : Fin n → Vsp X.dim} :
   rw [← stdLat_eq_pi, mem_tensorLat_stdLat]
 
 /- English proof (translation)
-Rewrite using `[mem_tensorLat_stdLat, flat_eq_eT, TiledBoundaries.mem_latT, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_mem_lat_iff_stdLat {γ : Fin n → Vsp X.dim} :
     flat γ ∈ lat (TiledBoundaries.bT X n) ↔ γ ∈ tensorLat X (stdLat E n) := by
   rw [mem_tensorLat_stdLat, flat_eq_eT, TiledBoundaries.mem_latT, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Simplify using `[mem_tensorLat_span, contr_single']`.
+Simplify using the standard rewrite rules.
 -/
 example (α : E) (γ : Fin 1 → Vsp X.dim) :
     γ ∈ tensorLat X (Submodule.span (𝓞 E) {Pi.single 0 α}) ↔ actE (cc α) (γ 0) ∈ X.L := by
   simp [mem_tensorLat_span, contr_single']
 
 /- English proof (translation)
-Simplify using `[mem_tensorLat_span, contr_single', ← actE_mul, hα, actE_one]`.
+Simplify using the standard rewrite rules.
 -/
 example (α : E) (hα : cc α * α = 1) (x : Vsp X.dim) :
     tens x (Pi.single (0 : Fin 1) α) ∈ tensorLat X (Submodule.span (𝓞 E) {Pi.single 0 α}) ↔
@@ -694,7 +694,7 @@ example (α : E) (hα : cc α * α = 1) (x : Vsp X.dim) :
   simp [mem_tensorLat_span, contr_single', ← actE_mul, hα, actE_one]
 
 /- English proof (translation)
-Simplify using `[contr_single', hκ, actE_neg_left, actE_one]`.
+Simplify using the standard rewrite rules.
 -/
 example (κ : E) (hκ : cc κ = -κ) (x : Vsp dim) :
     contr (tens x (Pi.single (0 : Fin 2) 1)) (Pi.single 0 κ) = -actE κ x := by
@@ -703,7 +703,7 @@ example (κ : E) (hκ : cc κ = -κ) (x : Vsp dim) :
 omit [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[tensorEps, ← Hf_flat, flat_dir, Hf, Finset.sum_eq_single l]`. Simplify using `[act, dir]`. Introduce `p _ hp`. Simplify using `[hp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example (w₀ : 𝓞 E) (l : Letter n dim) :
     tensorEps w₀ (dir l) = cexp (-(Real.pi * I * ((l.2.1 (w₀ : E)).im : ℂ))) := by

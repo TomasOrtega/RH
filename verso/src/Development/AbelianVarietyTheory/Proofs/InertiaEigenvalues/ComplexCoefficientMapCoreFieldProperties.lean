@@ -34,20 +34,20 @@ Both sides reduce to the same expression.
 theorem upL_apply (v : VV K lam) : upL φ lam v = CoefExt.up φ lam v := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [CoefExt.up, MvPolynomial.map_id])`.
+A detailed English derivation is pending.
 -/
 theorem up_id (v : VV K lam) : CoefExt.up (RingHom.id K) lam v = v :=
   Subtype.ext (by simp [CoefExt.up, MvPolynomial.map_id])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [CoefExt.up, MvPolynomial.map_map])`.
+A detailed English derivation is pending.
 -/
 theorem up_comp {K'' : Type} [Field K''] (ψ : K' →+* K'') (v : VV K lam) :
     CoefExt.up ψ lam (CoefExt.up φ lam v) = CoefExt.up (ψ.comp φ) lam v :=
   Subtype.ext (by simp [CoefExt.up, MvPolynomial.map_map])
 
 /- English proof (translation)
-Use `linearIndependent_of_top_le_span_of_card_eq_finrank ?_ ?_` and prove the remaining obligations. Introduce `v _`. Take `⟨a, rfl⟩` from `CoefExt.exists_coord φ lam v`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Module.finrank_eq_card_basis (bVV K' lam)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_bVV_linearIndependent : LinearIndependent K' fun j => CoefExt.up φ lam (bVV K lam j) := by
   classical
@@ -58,7 +58,7 @@ theorem up_bVV_linearIndependent : LinearIndependent K' fun j => CoefExt.up φ l
   · rw [Module.finrank_eq_card_basis (bVV K' lam)]
 
 /- English proof (translation)
-The claim follows from `CoefExt.linearIndependent (φ := RingHom.id K) (c₀ := upL ψ lam) (c' := upL ψ lam) (fun v => by rw [upL_apply, up_id]; rfl) (up_bVV_linearIndependent ψ lam) b hb`.
+A detailed English derivation is pending.
 -/
 theorem up_linearIndependent (ψ : K →+* ℂ) {m : ℕ} (b : Fin m → VV K lam) (hb : LinearIndependent K b) :
     LinearIndependent ℂ fun j => CoefExt.up ψ lam (b j) :=
@@ -66,9 +66,9 @@ theorem up_linearIndependent (ψ : K →+* ℂ) {m : ℕ} (b : Fin m → VV K la
     (fun v => by rw [upL_apply, up_id]; rfl) (up_bVV_linearIndependent ψ lam) b hb
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hs : ∑ j, B.repr x j • c (B j) = 0`. Rewrite using `[← hx]`. Use `conv_rhs => rw [← B.sum_repr x]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul]`. Establish `h0` using `Fintype.linearIndependent_iff.1 h _ hs`. Rewrite using `[← B.sum_repr x]`. Simplify using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem injective_of_basis {W : Type} [AddCommGroup W] [Module K W] {ι : Type} [Fintype ι] (B : Module.Basis ι K (VV K lam))
     (c : VV K lam →ₗ[K] W) (h : LinearIndependent K fun j => c (B j)) : Function.Injective c := by
@@ -91,31 +91,29 @@ open GlobalTheory.AdTh.CoefC in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hT i hstd c0 hc hw hwo`. Take `⟨gramR, c0R, c0L, hT', hC⟩` from `hc`. Establish `hE : ∀ v : VsV D i D.what₂.LL, c0 (CoefExt.up D.what₂.embLL (lamV D i) v) = c0L i v`. Introduce `v`. Take `⟨w, hw', h⟩` from `hC v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show CoefExt.up D.what₂.embLL (lamV D i) v = w from Subtype.ext hw'.symm]`. Conclude with `h`. Take `⟨h1, h2, h3⟩` from `hT'.mapL i`. Establish `hli : ∀ (m : ℕ) (b : Fin m → VsV D i ℂ), LinearIndependent ℂ b → LinearIndependent ℂ fun j => c0 (b j)` using `fun m b hb => CoefExt.linearIndependent (W := (R.cV i).W) (c' := c0) hE h2 b hb`. Establish `hinj : Function.Injective c0` using `by classical`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B` to `(bVV ℂ (lamV D i)).reindex (Fintype.equivFin _)`. Use `injective_of_basis (lamV D i) B c0 ?_` and prove the remaining obligations. Conclude with `hli _ _ B.linearIndependent`. Use `⟨?_, ?_, ?_, fun m b hb => hli m _ (up_linearIndependent _ _ b hb), hinj⟩` and prove the remaining obligations. Establish `hn` using `GlobalTheory.StdFrame.neg_eq_false_of_vStd D i hstd`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg : (D.sp.V ((i : ℕ) + 1)).gram = 1` using `hstd.1`. Set `v : VsV D i D.what₂.LL` to `⟨Formalism.L2.DIV.ten fun τ => Formalism.BasicNotions.extremal D.what₂.LL _ (lamV D i τ), GlobalTheory.Proof.TensorMapDescent.ten_mem _ _ fun τ => Formalism.GradedWeylDivisibility.hwMem _ _ _ le_rfl _ (Formalism.L2.DIV.natW_antitone _)⟩`. Establish `hv : CoefExt.up (inC T.Q.c) (lamV D i) hw = CoefExt.up D.what₂.embLL (lamV D i) v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show MvPolynomial.map (inC T.Q.c) (hw : Pol T.Q.c.F D.what₂.Tau (Vc D i).rank) = MvPolynomial.map D.what₂.embLL (Formalism.L2.DIV.ten _)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hw'` using `hwo`. Unfold `hwOK at hw'`. Rewrite using `[hw', GlobalTheory.Proof.TensorMapDescent.map_ten, GlobalTheory.Proof.TensorMapDescent.map_ten]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.DIV.map_extremal, Formalism.L2.DIV.map_extremal]`. Establish `hG : (if D.sp.Vneg ((i : ℕ) + 1) then -(D.sp.V ((i : ℕ) + 1)).gram else (D.sp.V ((i : ℕ) + 1)).gram) = 1`. Rewrite using `[hn, hg]`. Both sides reduce to the same expression. Establish `hi` using `inner_of_coefTie (hT'.coefL i A.μ0) v v`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hi` using `[hG]`. Use `replace hi := hi.trans ((congrArg D.what₂.embLL (CoefExt.pairVr_extremal (labLL D) v rfl)).trans (map_one _))`. Rewrite using `[hv, hE]`. Establish `hi' : inner ℂ (c0L i v : (R.cV i).W) (c0L i v : (R.cV i).W) = 1` using `hi`. Rewrite `hi'` using `[inner_self_eq_norm_sq_to_K]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4 : ‖(c0L i v : (R.cV i).W)‖ ^ 2 = 1`. Establish `h5` using `congrArg norm hi'`. Simplify using `using h5`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`. Introduce `γ γE hγ v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `alg` to `algebraMap T.Q.c.F D.what₂.LL`. Establish `hres : D.what₂.embLL.comp alg = inC T.Q.c` using `res_embLL T hT.alg hT.laws.pins.2.2.1`. Establish `hup : ∀ w : VsV D i T.Q.c.F, c0 (CoefExt.up (inC T.Q.c) (lamV D i) w) = c0L i (CoefExt.up alg (lamV D i) w)`. Introduce `w`. Rewrite using `[← hE, up_comp, hres]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlab : (fun τ => alg.comp (embF T.Q.c (tauE D τ))) = labLL D`. Use function extensionality and compare the values at `τ`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `RingHom.congr_fun (embV_spec (σ' := RingHom.id ℂ) D.what₂.embLL (by rfl) τ) x`. Establish `e2` using `RingHom.congr_fun hres (embF T.Q.c (tauE D τ) x)`. Conclude with `e2.trans e1.symm`. Establish `hu : IsUnit (γE.val).det` using `(Matrix.isUnit_iff_isUnit_det γE.val).1 γE.isUnit`. Establish `hγE : Matrix.nonsingInvUnit γE.val hu = γE` using `Units.ext rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hup, hup, rhoM, dif_pos hu, hγE, CoefExt.up_rhoVr, hlab]`. Conclude with `h1 γ γE hγ _`. Establish `hs` using `CoefExt.span_top (W := (R.cV i).W) (c' := c0) hE h3`. Use `top_le_iff.1 (hs ▸ Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
-
-Take `⟨a, rfl⟩` from `CoefExt.exists_coord (inC T.Q.c) (lamV D i) w`. Rewrite using `[map_sum]`. Conclude with `Submodule.sum_mem _ fun j _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdTh.CoefC.coefMap_complex_core : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ (c0 : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IsCoefMap R i c0 → ∀ (hw : VsV D i T.Q.c.F), hwOK T.Q.c (lamV D i) hw → ‖c0 (GlobalTheory.AdTh.CoefExt.up (inC T.Q.c) (lamV D i) hw)‖ = 1 ∧ (∀ (γ : GQ (Vc D i)) (γE : GL (Fin (Vc D i).rank) D.host.E), Bridge.IsRatMat (Vc D i) γ γE → ∀ v, c0 (GlobalTheory.AdTh.CoefExt.up (inC T.Q.c) (lamV D i) (rhoM T.Q.c (fun τ => embF T.Q.c (tauE D τ)) (lamV D i) (γE : Matrix _ _ D.host.E) v)) = (R.cV i).ρ γ (c0 (GlobalTheory.AdTh.CoefExt.up (inC T.Q.c) (lamV D i) v))) ∧ Submodule.span ℂ (Set.range fun v => c0 (GlobalTheory.AdTh.CoefExt.up (inC T.Q.c) (lamV D i) v)) = ⊤ ∧ (∀ (m : ℕ) (b : Fin m → VsV D i T.Q.c.F), LinearIndependent T.Q.c.F b → LinearIndependent ℂ (fun j => c0 (GlobalTheory.AdTh.CoefExt.up (inC T.Q.c) (lamV D i) (b j)))) ∧ Function.Injective c0 := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hT i hstd c0 hc hw hwo

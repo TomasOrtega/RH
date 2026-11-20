@@ -22,23 +22,21 @@ open Formalism.L2.SG.PoincareInHH.Cut.GU
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.SG.Pf.unitaryCongruence.hA_smul_right X.B.I u 0 0`. Rewrite `h` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hA_zero_right' (u : VA X.B.I) : hA X.B.I u 0 = 0 := by
   have h := Formalism.L2.SG.Pf.unitaryCongruence.hA_smul_right X.B.I u 0 0
   rwa [zero_smul, zero_mul] at h
 
 /- English proof (translation)
-The claim follows from `X.B.I.Lf.smul_mem ⟨t, ht⟩ hy`.
+A detailed English derivation is pending.
 -/
 theorem intsmul_Lf' {t : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (ht : t ∈ IntAf X.B.I.F X.B.I.E) {y : VA X.B.I}
     (hy : y ∈ X.B.I.Lf) : t • y ∈ X.B.I.Lf :=
   X.B.I.Lf.smul_mem ⟨t, ht⟩ hy
 
 /- English proof (translation)
-Establish `he : ∀ a, X.e0 a ∈ X.B.I.Lf` using `fun a => (X.vectorsInLattice.1 a).1`. Establish `hf : ∀ a, X.f0 a ∈ X.B.I.Lf` using `fun a => (X.vectorsInLattice.1 a).2`. Establish `hz : X.z0 ∈ X.B.I.Lf` using `X.vectorsInLattice.2.1`. Use `sub_mem (add_mem (Submodule.sum_mem _ fun a _ => ?_) (Submodule.sum_mem _ fun a _ => ?_)) ?_` and prove the remaining obligations. Conclude with `intsmul_Lf' X (Formalism.L2.SG.Pf.unitaryCongruence.hA_int X.B.I (hf a) hy) (he a)`.
-
-Conclude with `intsmul_Lf' X (Formalism.L2.SG.Pf.unitaryCongruence.hA_int X.B.I (he a) hy) (hf a)`. Conclude with `intsmul_Lf' X (Formalism.L2.SG.Pf.unitaryCongruence.hA_int X.B.I hz hy) hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem orthProjReferenceFrame_mem_finiteAdelicLattice {y : VA X.B.I} (hy : y ∈ X.B.I.Lf) : GlobalTheory.ScalW.prj0 X y ∈ X.B.I.Lf := by
   have he : ∀ a, X.e0 a ∈ X.B.I.Lf := fun a => (X.vectorsInLattice.1 a).1
@@ -50,7 +48,7 @@ theorem orthProjReferenceFrame_mem_finiteAdelicLattice {y : VA X.B.I} (hy : y �
   · exact intsmul_Lf' X (Formalism.L2.SG.Pf.unitaryCongruence.hA_int X.B.I hz hy) hz
 
 /- English proof (translation)
-The claim follows from `sub_mem (add_mem (sum_mL X _ _ hf fun a => (X.vectorsInLattice.1 a).1) (sum_mL X _ _ he fun a => (X.vectorsInLattice.1 a).2)) (smul_mL X hz X.vectorsInLattice.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem orthProjReferenceFrame_mem_levelMultiple_of_coeff_congr {y : VA X.B.I} (hf : ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) y))
     (he : ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 a) y)) (hz : ZMod' X.B.I X.B.g (hA X.B.I X.z0 y)) :
@@ -59,7 +57,7 @@ theorem orthProjReferenceFrame_mem_levelMultiple_of_coeff_congr {y : VA X.B.I} (
     (smul_mL X hz X.vectorsInLattice.2.1)
 
 /- English proof (translation)
-Establish `e : GlobalTheory.ScalW.prj0 X b - b = (γ - hA X.B.I X.z0 b) • X.z0 - (b - (∑ a, α a • X.e0 a + ∑ a, β a • X.f0 a - γ • X.z0)) - ∑ a, (α a - hA X.B.I (X.f0 a) b) • X.e0 a - ∑ a, (β a - hA X.B.I (X.e0 a) b) • X.f0 a`. Simplify using `only [GlobalTheory.ScalW.prj0, sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (sub_mem (sub_mem (smul_mL X hγ X.vectorsInLattice.2.1) hb) (sum_mL X _ _ hα fun a => (X.vectorsInLattice.1 a).1)) (sum_mL X _ _ hβ fun a => (X.vectorsInLattice.1 a).2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_orthProjReferenceFrame_mem_levelMultiple_of_congr (b : VA X.B.I) (α β : Fin D.R.rS → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
     (γ : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
@@ -77,9 +75,7 @@ theorem sub_orthProjReferenceFrame_mem_levelMultiple_of_congr (b : VA X.B.I) (α
     (sum_mL X _ _ hβ fun a => (X.vectorsInLattice.1 a).2)
 
 /- English proof (translation)
-Use `sub_orthProjReferenceFrame_mem_levelMultiple_of_congr X _ (fun a => if a = c then sigA X.B.I 1 else 0) 0 0 ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a`. Conclude with `Zsw_ite X 1 (X.gramIntegral c a).2.2`. Introduce `a`.
-
-Conclude with `Z0 X (X.gramIntegral a c).1`. Conclude with `Z0 X (Zsw X (X.formsAtZero.2 c).1)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orthProjReferenceFrame_flagE_sub_mem_levelMultiple (c : Fin D.R.rS) : GlobalTheory.ScalW.prj0 X (X.e0 c) - X.e0 c ∈ mL X.B.I X.B.g := by
   refine sub_orthProjReferenceFrame_mem_levelMultiple_of_congr X _ (fun a => if a = c then sigA X.B.I 1 else 0) 0 0 ?_ ?_ ?_ ?_
@@ -89,9 +85,7 @@ theorem orthProjReferenceFrame_flagE_sub_mem_levelMultiple (c : Fin D.R.rS) : Gl
   · exact Z0 X (Zsw X (X.formsAtZero.2 c).1)
 
 /- English proof (translation)
-Use `sub_orthProjReferenceFrame_mem_levelMultiple_of_congr X _ 0 (fun a => if a = c then 1 else 0) 0 ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a`. Conclude with `Z0 X (X.gramIntegral a c).2.1`. Introduce `a`.
-
-Conclude with `Zswap X (X.gramIntegral a c).2.2`. Conclude with `Z0 X (Zsw X (X.formsAtZero.2 c).2)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orthProjReferenceFrame_flagF_sub_mem_levelMultiple (c : Fin D.R.rS) : GlobalTheory.ScalW.prj0 X (X.f0 c) - X.f0 c ∈ mL X.B.I X.B.g := by
   refine sub_orthProjReferenceFrame_mem_levelMultiple_of_congr X _ 0 (fun a => if a = c then 1 else 0) 0 ?_ ?_ ?_ ?_
@@ -101,9 +95,9 @@ theorem orthProjReferenceFrame_flagF_sub_mem_levelMultiple (c : Fin D.R.rS) : Gl
   · exact Z0 X (Zsw X (X.formsAtZero.2 c).2)
 
 /- English proof (translation)
-Use `sub_orthProjReferenceFrame_mem_levelMultiple_of_congr X _ 0 0 (-1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a`. Conclude with `Z0 X (X.formsAtZero.2 a).2`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Z0 X (X.formsAtZero.2 a).1`. Use `Zneg X X.formsAtZero.1` as an intermediate fact. Rewrite `this` using `[neg_add, add_comm]`. Rewrite using `[sub_eq_add_neg]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem orthProjReferenceFrame_flagZ_sub_mem_levelMultiple : GlobalTheory.ScalW.prj0 X X.z0 - X.z0 ∈ mL X.B.I X.B.g := by
   refine sub_orthProjReferenceFrame_mem_levelMultiple_of_congr X _ 0 0 (-1) ?_ ?_ ?_ ?_
@@ -115,9 +109,7 @@ theorem orthProjReferenceFrame_flagZ_sub_mem_levelMultiple : GlobalTheory.ScalW.
     rwa [sub_eq_add_neg]
 
 /- English proof (translation)
-Use `orthProjReferenceFrame_mem_levelMultiple_of_coeff_congr X (fun a => ?_) (fun a => ?_) ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.unitaryCongruence.hA_add_right]`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.Z_add X.B.I X.B.g ((X.weightVectorsIntegral c).2.2 a).2.1 ((X.weightVectorsIntegral c').2.2 a).2.2.2`. Rewrite using `[Formalism.L2.SG.Pf.unitaryCongruence.hA_add_right]`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.Z_add X.B.I X.B.g ((X.weightVectorsIntegral c).2.2 a).1 ((X.weightVectorsIntegral c').2.2 a).2.2.1`.
-
-Rewrite using `[Formalism.L2.SG.Pf.unitaryCongruence.hA_add_right]`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.Z_add X.B.I X.B.g (X.weightVectorsIntegral c).1 (X.weightVectorsIntegral c').2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthProjReferenceFrame_middle_mem_levelMultiple (c c' : Fin D.R.k) : GlobalTheory.ScalW.prj0 X (X.bw c + X.bwd c') ∈ mL X.B.I X.B.g := by
   refine orthProjReferenceFrame_mem_levelMultiple_of_coeff_congr X (fun a => ?_) (fun a => ?_) ?_
@@ -129,9 +121,7 @@ theorem orthProjReferenceFrame_middle_mem_levelMultiple (c c' : Fin D.R.k) : Glo
     exact Formalism.L2.SG.Pf.unitaryCongruence.Z_add X.B.I X.B.g (X.weightVectorsIntegral c).1 (X.weightVectorsIntegral c').2.1
 
 /- English proof (translation)
-Unfold `flagVec`. Use `split_ifs`. Conclude with `(X.vectorsInLattice.1 _).1`. Conclude with `add_mem (X.vectorsInLattice.2.2 _).1 (X.vectorsInLattice.2.2 _).2`. Conclude with `X.vectorsInLattice.2.1`.
-
-Conclude with `(X.vectorsInLattice.1 _).2`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem flagVec_Lf (j : ℕ) : flagVec X.e0 X.f0 X.z0 X.bw X.bwd j ∈ X.B.I.Lf := by
   unfold flagVec
@@ -143,13 +133,9 @@ theorem flagVec_Lf (j : ℕ) : flagVec X.e0 X.f0 X.z0 X.bw X.bwd j ∈ X.B.I.Lf 
   · exact zero_mem _
 
 /- English proof (translation)
-Introduce `D X`. Use `⟨fun y hy => orthProjReferenceFrame_mem_finiteAdelicLattice X hy, fun j => ⟨flagVec_Lf X j, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : ¬ j < D.R.rS` using `by omega`. Establish `h4 : j - D.R.rS < D.R.k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[flagVec, dif_neg h3, dif_pos h4]`. Conclude with `orthProjReferenceFrame_middle_mem_levelMultiple X _ _`. Introduce `h`. Unfold `flagVec`. Use `split_ifs with h1 h2 h3 h4`.
-
-Conclude with `orthProjReferenceFrame_flagE_sub_mem_levelMultiple X _`. Conclude with `absurd ⟨by omega, by omega⟩ h`. Conclude with `orthProjReferenceFrame_flagZ_sub_mem_levelMultiple X`. Conclude with `orthProjReferenceFrame_flagF_sub_mem_levelMultiple X _`. Simplify using `only [GlobalTheory.ScalW.prj0, hA_zero_right', zero_smul, Finset.sum_const_zero, add_zero, sub_zero]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prj0_flagVec_mem_mL_or_sub_mem_mL : ∀ (D : D7) (X : HidaSetting D), (∀ y ∈ X.B.I.Lf, GlobalTheory.ScalW.prj0 X y ∈ X.B.I.Lf) ∧
     ∀ j : ℕ, flagVec X.e0 X.f0 X.z0 X.bw X.bwd j ∈ X.B.I.Lf ∧

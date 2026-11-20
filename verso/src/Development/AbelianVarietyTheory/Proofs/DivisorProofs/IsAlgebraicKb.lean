@@ -18,14 +18,14 @@ namespace GlobalTheory.Mum.LabBC
 open GlobalTheory GlobalTheory.ArcPull GlobalTheory.TorusExt
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `e : spMap (RingHom.id C) = 𝟙 _` using `Spec.map_id _`. Use `⟨rfl, by rw [e, Category.id_comp], fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `corr_of_val D.P.isLB fun y J hJ => ((val_pull hJ _ _ _).trans (congrArg (fun r => val (p.g.s χ) r y J) (Category.id_comp _))).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qkExt_id' {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {C : Type} [Field C]
     [Algebra (FractionRing R) C] {k : ℕ} (p : QkPt D C k) : QkExt (RingHom.id C) p p := by
@@ -36,11 +36,9 @@ theorem qkExt_id' {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {C : Type}
     ((val_pull hJ _ _ _).trans (congrArg (fun r => val (p.g.s χ) r y J) (Category.id_comp _))).symm
 
 /- English proof (translation)
-Use `letI : Algebra R R₁ := ρ.toAlgebra`. Establish `h1 : ∀ r : R, algebraMap R (Kb R₁) r = algebraMap R₁ (Kb R₁) (ρ r)` using `fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply R (FractionRing R₁) (Kb R₁), IsScalarTower.algebraMap_apply R R₁ (FractionRing R₁), IsScalarTower.algebraMap_apply R₁ (FractionRing R₁) (Kb R₁)]`. Both sides reduce to the same expression. Use `haveI : IsScalarTower R R₁ (Kb R₁) := IsScalarTower.of_algebraMap_eq fun r => h1 r`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower R (FractionRing R) (Kb R₁) := IsScalarTower.of_algebraMap_eq fun r => by`. Rewrite using `[h1, hc, IsScalarTower.algebraMap_apply R₁ (FractionRing R₁) (Kb R₁)]`. Use `haveI : Module.Finite R R₁ := hρ`. Use `haveI : Algebra.IsAlgebraic R R₁ := Algebra.IsAlgebraic.of_finite R R₁`. Use `haveI : Algebra.IsAlgebraic R₁ (Kb R₁) := (IsFractionRing.comap_isAlgebraic_iff (A := R₁) (K := FractionRing R₁)).2 inferInstance`.
-
-Use `haveI : Algebra.IsAlgebraic R (Kb R₁) := Algebra.IsAlgebraic.trans R R₁ (Kb R₁)`. Conclude with `(IsFractionRing.comap_isAlgebraic_iff (A := R) (K := FractionRing R)).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_kb {R R₁ : Type} [CommRing R] [IsDomain R] [CommRing R₁] [IsDomain R₁] (ρ : R →+* R₁)
     (hρ : ρ.Finite) [Algebra (FractionRing R) (Kb R₁)]
@@ -63,25 +61,23 @@ theorem isAlgebraic_kb {R R₁ : Type} [CommRing R] [IsDomain R] [CommRing R₁]
   exact (IsFractionRing.comap_isAlgebraic_iff (A := R) (K := FractionRing R)).1 inferInstance
 
 /- English proof (translation)
-Take `⟨ga, hga, hpb, -⟩` from `hfib`. Establish `hK : algebraMap (FractionRing R) (Kb R₁) = (algebraMap (FractionRing R₁) (Kb R₁)).comp ga` using `IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun r => by`. Simplify using `only [RingHom.comp_apply, hga, hc])`. Use `haveI : Algebra.IsAlgebraic (FractionRing R) (Kb R₁) := isAlgebraic_kb ρ hρ.2.2 hc`. Set `mu : Kb R₁ →ₐ[FractionRing R] Kb R` to `IsAlgClosed.lift`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective em` using `fun z => by`. Take `⟨w, hw⟩` from `(Algebra.IsAlgebraic.algHom_bijective (em.comp mu)).2 z`. Conclude with `⟨mu w, hw⟩`. Set `τ : Kb R ≃ₐ[FractionRing R] Kb R₁` to `AlgEquiv.ofBijective em ⟨em.toRingHom.injective, hsurj⟩`. Take `⟨hL, -⟩` from `GlobalTheory.firstFiveLaws`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG` using `hL.globalFns`. Establish `hB` using `D.tau_bimult`. Establish `hB₁` using `D₁.tau_bimult`. Establish `hF : Compat ρ (Kb R₁)` using `hc`. Introduce `σ₁ j P P' hPP'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : 1 ≤ n ^ j` using `Nat.one_le_pow _ _ hn`. Use `set e : Kb R →+* Kb R₁ := em.toRingHom with he_def`. Use `set e' : Kb R₁ →+* Kb R := τ.symm.toAlgHom.toRingHom with he'_def`. Use `set s₁ : Kb R₁ →+* Kb R₁ := σ₁.toRingHom with hs₁_def`. Establish `hee' : e.comp e' = RingHom.id _` using `RingHom.ext fun x => τ.apply_symm_apply x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfσ : s₁.comp (algebraMap (FractionRing R) (Kb R₁)) = algebraMap (FractionRing R) (Kb R₁)`. Rewrite using `[hK, ← RingHom.comp_assoc]`. Conclude with `congrArg (fun f => f.comp ga) σ₁.comp_algebraMap`. Establish `hfσ₁ : s₁.comp (algebraMap (FractionRing R₁) (Kb R₁)) = algebraMap (FractionRing R₁) (Kb R₁)` using `σ₁.comp_algebraMap`. Establish `hfe : e.comp (algebraMap (FractionRing R) (Kb R)) = algebraMap (FractionRing R) (Kb R₁)` using `em.comp_algebraMap`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfe' : e'.comp (algebraMap (FractionRing R) (Kb R₁)) = algebraMap (FractionRing R) (Kb R)` using `τ.symm.toAlgHom.comp_algebraMap`. Establish `hfid : (RingHom.id (Kb R₁)).comp (algebraMap (FractionRing R) (Kb R₁)) = algebraMap (FractionRing R) (Kb R₁)` using `RingHom.id_comp _`. Set `σ : Kb R →ₐ[FractionRing R] Kb R` to `τ.symm.toAlgHom.comp ((({ σ₁.toRingHom with commutes' := fun x => RingHom.congr_fun hfσ x } : Kb R₁ →ₐ[FractionRing R] Kb R₁)).comp em)`. Establish `hσ_def : σ.toRingHom = e'.comp (s₁.comp e)` using `rfl`. Establish `hfσR : σ.toRingHom.comp (algebraMap (FractionRing R) (Kb R)) = algebraMap (FractionRing R) (Kb R)` using `σ.comp_algebraMap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hes : e.comp σ.toRingHom = s₁.comp e`. Rewrite using `[hσ_def, ← RingHom.comp_assoc, hee', RingHom.id_comp]`. Take `⟨q, rfl⟩` from `pullQk_surjective hD hG hF hB hB₁ P`. Take `⟨q', rfl⟩` from `pullQk_surjective hD hG hF hB hB₁ P'`. Establish `hq' : q' = qkExt hB s₁ hfσ q`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `GlobalTheory.QkPullEquiv.pullQk_injective hD hG hF hB hB₁` to reduce the goal to its premises. Rewrite using `[(qkExt_iff hB₁ s₁ hfσ₁ _ _).1 hPP', (qkExt_iff hB₁ s₁ hfσ₁ _ _).1 (GlobalTheory.QkRationalExt.qkExt_pullQk hD hG hB hB₁ hF hF s₁ hfσ hfσ₁ q)]`. Establish `hid : ∀ z : QkPt D.toPre (Kb R₁) (n ^ j), qkExt hB (RingHom.id _) hfid z = z` using `fun z => ((qkExt_iff hB _ hfid z z).1 (qkExt_id' z)).symm`. Establish `hpq : ∀ z : QkPt D.toPre (Kb R₁) (n ^ j), QkExt e (qkExt hB e' hfe' z) z` using `fun z => by`. Rewrite using `[qkExt_iff hB e hfe, GlobalTheory.QkRationalExt.qkExt_qkExt hB e' hfe' e hfe (RingHom.id _) hfid hee', hid]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσpp : QkExt σ.toRingHom (qkExt hB e' hfe' q) (qkExt hB e' hfe' q')`. Rewrite using `[qkExt_iff hB _ hfσR, GlobalTheory.QkRationalExt.qkExt_qkExt hB e' hfe' σ.toRingHom hfσR (e'.comp s₁) (by rw [RingHom.comp_assoc, hfσ, hfe']) (by rw [hσ_def, RingHom.comp_assoc, RingHom.comp_assoc, hee', RingHom.comp_id]), hq', GlobalTheory.QkRationalExt.qkExt_qkExt hB s₁ hfσ e' …`. Establish `hgal` using `hGal σ j _ _ hσpp`. Establish `h₁` using `hrel _ hk _ _ _ (hpq q) ((eq_pullQk_iff hD hG hF hB hB₁ q _).1 rfl).1 ((eq_pullQk_iff hD hG hF hB hB₁ q _).1 rfl).2`. Establish `h₂` using `hrel _ hk _ _ _ (hpq q') ((eq_pullQk_iff hD hG hF hB hB₁ q' _).1 rfl).1 ((eq_pullQk_iff hD hG hF hB hB₁ q' _).1 rfl).2`.
-
-Apply `hpb.1.hom_ext` to reduce the goal to its premises. Rewrite using `[h₂, Category.assoc, h₁, hgal, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', hes]`. Rewrite using `[Category.assoc, Over.w (lab₁ (n ^ j) (pullQk hD hG hF hB hB₁ q')), Over.w (lab₁ (n ^ j) (pullQk hD hG hF hB hB₁ q))] show jFK (R := R₁) (Kb R₁) = spMap s₁ ≫ jFK (R := R₁) (Kb R₁)`. Rewrite using `[spMap_comp', hfσ₁]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galEqN_of_rel {R R₁ : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R₁] [IsDomain R₁]
     [IsLocalRing R₁] (ρ : R →+* R₁) (hρ : FinExt ρ) (D : DegData R (maximalIdeal R))

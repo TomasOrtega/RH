@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding Complex Classical i
 open scoped TensorProduct ContDiff nonZeroDivisors in
 
 /- English proof (translation)
-Unfold `_root_.HeckeCharacterZeroLocus.ThmBIn.cA _root_.HeckeCharacterZeroLocus.ThmBIn.incA _root_.HeckeCharacterZeroLocus.ThmBIn.AE`. Conclude with `rfl`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.cA_incA_apply {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (x : E) :

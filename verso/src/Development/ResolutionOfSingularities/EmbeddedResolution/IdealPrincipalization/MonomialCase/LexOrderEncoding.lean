@@ -7,7 +7,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace MonomialCenter
 
 /- English proof (translation)
-Establish `hlt' : List.Pairwise (· < ·) ((s.image f).sort (· ≤ ·))` using `(Finset.sortedLT_sort (s.image f)).pairwise`. Establish `hmap : List.Pairwise (· < ·) ((s.sort (· ≤ ·)).map f)` using `(Finset.sortedLT_sort s).pairwise.map f (fun _ _ hab => hf hab)`. Use `List.Pairwise.eq_of_mem_iff hlt' hmap ?_` and prove the remaining obligations. Introduce `b`. Simplify using `[Finset.mem_sort]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem sort_image_of_strictMono {α β : Type*} [LinearOrder α] [LinearOrder β]
     [DecidableEq β] (f : α → β) (hf : StrictMono f) (s : Finset α) :
@@ -21,7 +21,7 @@ private theorem sort_image_of_strictMono {α β : Type*} [LinearOrder α] [Linea
   simp [Finset.mem_sort]
 
 /- English proof (translation)
-Rewrite using `[sortedIndices_eq_map_sort, sort_image_of_strictMono φ hφ J, List.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sortedIndices_image_of_strictMono {n n' : ℕ} [DecidableEq (Fin n')]
     (φ : Fin n → Fin n') (hφ : StrictMono φ) (J : Finset (Fin n)) :
@@ -30,15 +30,15 @@ theorem sortedIndices_image_of_strictMono {n n' : ℕ} [DecidableEq (Fin n')]
   rfl
 
 /- English proof (translation)
-Proceed by induction on `l generalizing l' with`. Consider the case `nil`. Consider the cases of `l' with`. Consider the case `nil`. Simplify using `only [List.map_nil]`.
+Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `iff_of_false (by rintro ⟨⟩) (by rintro ⟨⟩)`. Consider the case `cons b t`. Simplify using `only [List.map_nil, List.map_cons]`. Conclude with `iff_of_true List.Lex.nil List.Lex.nil`. Consider the case `cons a s ih`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `l' with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.map_cons]`. Conclude with `iff_of_false (by rintro ⟨⟩) (by rintro ⟨⟩)`. Consider the case `cons b t`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [List.map_cons, List.cons_lex_cons_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨h, h2⟩)`. Conclude with `Or.inl (hf.lt_iff_lt.mp h)`. Conclude with `Or.inr ⟨hf.injective h, (ih t).mp h2⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative.
 
-Introduce and unpack `(h | ⟨rfl, h2⟩)`. Conclude with `Or.inl (hf h)`. Conclude with `Or.inr ⟨rfl, (ih t).mpr h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem lex_map_iff_of_strictMono {α β : Type*} [LinearOrder α] [LinearOrder β]
     (f : α → β) (hf : StrictMono f) (l l' : List α) :
@@ -68,7 +68,7 @@ theorem lex_map_iff_of_strictMono {α β : Type*} [LinearOrder α] [LinearOrder 
         · exact Or.inr ⟨rfl, (ih t).mpr h2⟩
 
 /- English proof (translation)
-Establish `hg : StrictMono (fun j : Fin n => ((φ j : Fin n') : ℕ))` using `fun a b h => Fin.val_strictMono (hφ h)`. Establish `h1` using `lex_map_iff_of_strictMono _ hg (J.sort (· ≤ ·)) (J'.sort (· ≤ ·))`. Establish `h2` using `lex_map_iff_of_strictMono (Fin.val : Fin n → ℕ) Fin.val_strictMono (J.sort (· ≤ ·)) (J'.sort (· ≤ ·))`. Rewrite using `[sortedIndices_image_of_strictMono φ hφ J, sortedIndices_image_of_strictMono φ hφ J', sortedIndices_eq_map_sort, sortedIndices_eq_map_sort]`. Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lex_sortedIndices_image_iff {n n' : ℕ} [DecidableEq (Fin n')]
     (φ : Fin n → Fin n') (hφ : StrictMono φ) (J J' : Finset (Fin n)) :
@@ -86,7 +86,7 @@ theorem lex_sortedIndices_image_iff {n n' : ℕ} [DecidableEq (Fin n')]
 def reversedIndex (n : ℕ) (j : Fin n) : ℕ := n - 1 - (j : ℕ)
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Establish `hj'` using `j'.isLt`. Simplify using `only [reversedIndex, Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem reversedIndex_lt_reversedIndex_iff {n : ℕ} (j j' : Fin n) :
     reversedIndex n j < reversedIndex n j' ↔ j' < j := by
@@ -96,7 +96,7 @@ theorem reversedIndex_lt_reversedIndex_iff {n : ℕ} (j j' : Fin n) :
   omega
 
 /- English proof (translation)
-Introduce `a b h`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `h' : n - 1 - (a : ℕ) = n - 1 - (b : ℕ)` using `h`. Conclude with `Fin.val_injective (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reversedIndex_injective {n : ℕ} : Function.Injective (reversedIndex n) := by
   intro a b h
@@ -106,7 +106,7 @@ theorem reversedIndex_injective {n : ℕ} : Function.Injective (reversedIndex n)
   exact Fin.val_injective (by omega)
 
 /- English proof (translation)
-Establish `hinj : ∀ a ∈ J, ∀ b ∈ J, reversedIndex n a = reversedIndex n b → a = b` using `fun a _ b _ h => reversedIndex_injective h`. Rewrite using `[Finset.sum_image hinj]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem binaryEncode_eq_sum_image {n : ℕ} (J : Finset (Fin n)) :
     _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J = ∑ e ∈ J.image (reversedIndex n), 2 ^ e := by
@@ -116,17 +116,15 @@ theorem binaryEncode_eq_sum_image {n : ℕ} (J : Finset (Fin n)) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [binaryEncode_eq_sum_image]`. Rewrite using `[(Finset.geomSum_lt_geomSum_iff_toColex_lt_toColex (le_refl 2)).trans Finset.Colex.toColex_lt_toColex_iff_exists_forall_lt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he, he', hmax⟩`. Take `⟨a, haJ, rfl⟩` from `Finset.mem_image.mp he`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨a, haJ, ?_, ?_⟩` and prove the remaining obligations. Introduce `haJ'`. Conclude with `he' (Finset.mem_image_of_mem _ haJ')`. Introduce `b hb hbJ`. Establish `hb1 : reversedIndex n b ∈ J'.image (reversedIndex n)` using `Finset.mem_image_of_mem _ hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : reversedIndex n b ∉ J.image (reversedIndex n)`. Introduce `hmem`. Take `⟨c, hc, hceq⟩` from `Finset.mem_image.mp hmem`. Establish `hcb : c = b` using `reversedIndex_injective hceq`. Rewrite `hc` using `[hcb]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hbJ hc`. Conclude with `(reversedIndex_lt_reversedIndex_iff b a).mp (hmax _ hb1 hb2)`. Introduce and unpack `⟨a, haJ, haJ', hmin⟩`. Use `⟨reversedIndex n a, Finset.mem_image_of_mem _ haJ, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc, hceq⟩` from `Finset.mem_image.mp hmem`. Establish `hca : c = a` using `reversedIndex_injective hceq`. Rewrite `hc` using `[hca]`. Conclude with `haJ' hc`. Introduce and unpack `f hf hfnot`.
-
-Take `⟨b, hb, rfl⟩` from `Finset.mem_image.mp hf`. Establish `hbJ : b ∉ J`. Introduce `hbJ`. Conclude with `hfnot (Finset.mem_image_of_mem _ hbJ)`. Conclude with `(reversedIndex_lt_reversedIndex_iff b a).mpr (hmin b hb hbJ)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem binaryEncode_lt_iff {n : ℕ} (J J' : Finset (Fin n)) :
     _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J' < _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J ↔
@@ -164,41 +162,35 @@ theorem binaryEncode_lt_iff {n : ℕ} (J J' : Finset (Fin n)) :
       exact (reversedIndex_lt_reversedIndex_iff b a).mpr (hmin b hb hbJ)
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `L' hlen _ _`. Consider the cases of `L' with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `nil`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Consider the cases of `h`. Introduce and unpack `⟨a, ha, -⟩`.
+Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components.
 
-Simplify using `at ha`. Consider the case `cons b t => simp at hlen`. Consider the case `cons a s ih`. Introduce `L' hlen hs hL'`. Consider the cases of `L' with`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `nil => simp at hlen`. Consider the case `cons b t`. Rewrite `hs`, `hL'` using `[List.pairwise_cons]`. Establish `hlen' : s.length = t.length` using `by simpa using hlen`. Rewrite using `[List.cons_lex_cons_iff]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Prove the components needed by the constructor for the conclusion. Introduce `_`. Use `⟨a, by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`.
+Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `List.mem_cons.mp hmem with h | h` into its components or cases. Rewrite `hab` using `[h]`. Conclude with `absurd hab (lt_irrefl b)`. Conclude with `absurd (hL'.1 a h) (not_lt.mpr hab.le)`. Introduce `y hy _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `List.mem_cons.mp hy with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hab`. Conclude with `lt_trans hab (hL'.1 y h)`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Or.inl hab`. Substitute `hab` using the available equality. Establish `ihst` using `ih t hlen' hs.2 hL'.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨-, h⟩)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h (lt_irrefl _)`. Take `⟨x, hxs, hxt, hmin⟩` from `ihst.mp h`. Use `⟨x, List.mem_cons.mpr (Or.inr hxs), ?_, ?_⟩` and prove the remaining obligations. Introduce `hx`. Break down `List.mem_cons.mp hx with heq | hx` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hxs` using `[heq]`. Conclude with `absurd (hs.1 _ hxs) (lt_irrefl _)`. Conclude with `hxt hx`. Introduce `y hy hyn`. Break down `List.mem_cons.mp hy with heq | hy` into its components or cases.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `absurd ?_ hyn` and prove the remaining obligations. Rewrite using `[heq]`. Simplify using the standard rewrite rules. Conclude with `hmin y hy (fun hys => hyn (List.mem_cons.mpr (Or.inr hys)))`. Introduce and unpack `⟨x, hx, hxn, hmin⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Or.inr ⟨rfl, ihst.mpr ?_⟩` and prove the remaining obligations. Establish `hxs : x ∈ s`. Break down `List.mem_cons.mp hx with h | h` into its components or cases. Use `absurd ?_ hxn` and prove the remaining obligations. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `h`. Use `⟨x, hxs, ?_, ?_⟩` and prove the remaining obligations. Introduce `hxt`. Conclude with `hxn (List.mem_cons.mpr (Or.inr hxt))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `y hy hys`. Use `hmin y (List.mem_cons.mpr (Or.inr hy)) ?_` and prove the remaining obligations. Introduce `hy'`. Break down `List.mem_cons.mp hy' with h | h` into its components or cases. Rewrite `hy` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (hL'.1 _ hy) (lt_irrefl _)`. Conclude with `hys h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨h, -⟩)`. Conclude with `absurd h (not_lt.mpr hab.le)`.
-
-Rewrite `hab` using `[h]`. Conclude with `absurd hab (lt_irrefl b)`. Introduce and unpack `⟨x, hx, hxn, hmin⟩`. Establish `hbs : b ∉ a :: s`. Introduce `hb`.
-
-Break down `List.mem_cons.mp hb with h | h` into its components or cases. Rewrite `hab` using `[h]`. Conclude with `absurd hab (lt_irrefl a)`. Conclude with `absurd (hs.1 b h) (not_lt.mpr hab.le)`. Establish `hxb : x < b` using `hmin b (by simp) hbs`.
-
-Establish `hax : a ≤ x`. Break down `List.mem_cons.mp hx with h | h` into its components or cases. Conclude with `le_of_eq h.symm`. Conclude with `le_of_lt (hs.1 x h)`. Conclude with `absurd hxb (not_lt.mpr (le_trans hab.le hax))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem lex_iff_exists_min_mem {α : Type*} [LinearOrder α] :
     ∀ (L L' : List α), L.length = L'.length → List.Pairwise (· < ·) L →
@@ -296,9 +288,9 @@ private theorem lex_iff_exists_min_mem {α : Type*} [LinearOrder α] :
           exact absurd hxb (not_lt.mpr (le_trans hab.le hax))
 
 /- English proof (translation)
-Establish `hlen : (J.sort (· ≤ ·)).length = (J'.sort (· ≤ ·)).length`. Rewrite using `[Finset.length_sort, Finset.length_sort, hcard]`. Establish `hsJ : List.Pairwise (· < ·) (J.sort (· ≤ ·))` using `(Finset.sortedLT_sort J).pairwise`. Establish `hsJ' : List.Pairwise (· < ·) (J'.sort (· ≤ ·))` using `(Finset.sortedLT_sort J').pairwise`. Establish `hmap` using `lex_map_iff_of_strictMono (Fin.val : Fin n → ℕ) Fin.val_strictMono (J.sort (· ≤ ·)) (J'.sort (· ≤ ·))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `lex_iff_exists_min_mem (J.sort (· ≤ ·)) (J'.sort (· ≤ ·)) hlen hsJ hsJ'`. Establish `hfin : (∃ a ∈ J.sort (· ≤ ·), a ∉ J'.sort (· ≤ ·) ∧ ∀ b ∈ J'.sort (· ≤ ·), b ∉ J.sort (· ≤ ·) → a < b) ↔ (∃ a ∈ J, a ∉ J' ∧ ∀ b ∈ J', b ∉ J → a < b)`. Simplify using `only [Finset.mem_sort]`. Rewrite using `[sortedIndices_eq_map_sort, sortedIndices_eq_map_sort]`. Conclude with `(binaryEncode_lt_iff J J').trans (hfin.symm.trans (hA.symm.trans hmap.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binaryEncode_lt_iff_lex_of_card_eq {n : ℕ} (J J' : Finset (Fin n)) (hcard : J.card = J'.card) :
     _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J' < _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J ↔
@@ -318,9 +310,9 @@ theorem binaryEncode_lt_iff_lex_of_card_eq {n : ℕ} (J J' : Finset (Fin n)) (hc
   exact (binaryEncode_lt_iff J J').trans (hfin.symm.trans (hA.symm.trans hmap.symm))
 
 /- English proof (translation)
-Introduce `J J' h`. Establish `hJ` using `binaryEncode_eq_sum_image J`. Establish `hJ'` using `binaryEncode_eq_sum_image J'`. Establish `h1 : (∑ e ∈ J.image (reversedIndex n), 2 ^ e) = (∑ e ∈ J'.image (reversedIndex n), 2 ^ e)`. Rewrite using `[← hJ, ← hJ']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Conclude with `Finset.image_injective reversedIndex_injective (Finset.geomSum_injective (le_refl 2) h1)`.
+A detailed English derivation is pending.
 -/
 theorem binaryEncode_injective {n : ℕ} :
     Function.Injective (fun J : Finset (Fin n) => _root_.FunctorialResolution.EmbeddedResolution.binaryEncode J) := by

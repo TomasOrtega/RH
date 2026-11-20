@@ -13,19 +13,19 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y XA XG θ φ fst hfst LP LL LM hLL ψ e w₀ hw th σ σ' hth he`. Substitute `hfst` using the available equality. Introduce and unpack `⟨J, K⟩`. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : (θ ≫ φ) y ∈ LM.U (J PUnit.unit)` using `mem_pull.1 hy.1`. Establish `hk : θ y ∈ LP.U (K PUnit.unit)` using `mem_pull.1 hy.2`. Take `⟨i, hi⟩` from `exists_chart hLL ((θ ≫ φ) y)`. Establish `hm1 : (θ ≫ φ) y ∈ LL.U i ⊓ LM.U (J PUnit.unit)` using `⟨hi, hj⟩`. Establish `hm2 : θ y ∈ (LL.pull φ).U (fun _ => i) ⊓ LP.U (K PUnit.unit)` using `⟨mem_pull.2 hi, hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `congrArg (gs (θ ≫ φ) y (LL.U i ⊓ LM.U (J PUnit.unit))) (he (i, J PUnit.unit))`. Establish `hb` using `congrArg (gs θ y ((LL.pull φ).U (fun _ => i) ⊓ LP.U (K PUnit.unit))) (hth (fun _ => i) (K PUnit.unit) (inf_le_left.trans fun x hx => mem_pull.1 hx))`. Establish `hc` using `hw Y (𝟙 Y) y i (J PUnit.unit) (K PUnit.unit) hi hj hk`. Simplify using `only [Category.id_comp] at hc`. Rewrite `ha` using `[gs_mul _ y _ hm1, gs_unit _ y _ hm1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `gs _ y _ (resG XG _ _) = _ * gs _ y _ (resG XG _ _) at ha`. Rewrite `ha` using `[gs_res _ y _ hm1, gs_res _ y _ hm1]`. Simplify using `only at hb`. Use `erw [gs_mul _ y _ hm2, gs_unit _ y _ hm2] at hb`. Express the relevant statement in the definitionally equal form `_ = _ * gs _ y _ (resG XA _ _) at hb`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[gs_res _ y _ hm2]`. Establish `hb' : gs (θ ≫ φ) y (LL.U i) (σ.f i) = (gw ψ θ y i (K PUnit.unit)).val * gs θ y (LP.U (K PUnit.unit)) (th.f (K PUnit.unit))` using `(gs_pull θ φ y _ hi _).symm.trans ((gs_res θ y _ hm2 _).symm.trans hb)`. Establish `hm3 : (𝟙 Y) y ∈ (LM.pull (θ ≫ φ)).U J` using `hy.1`. Establish `hm4 : (𝟙 Y) y ∈ (LP.pull θ).U K` using `hy.2`. Express the relevant statement in the definitionally equal form `gs (𝟙 Y) y _ (resG Y _ (resG Y _ _)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [gs_res _ y _ hy, gs_res _ y _ hm3, gs_pull (𝟙 Y) (θ ≫ φ) y _ hj, gs_mul _ y _ hy, gs_unit _ y _ hy]`. Express the relevant statement in the definitionally equal form `_ = _ * gs (𝟙 Y) y _ (resG Y _ (resG Y _ _))`. Use `erw [gs_res _ y _ hy, gs_res _ y _ hm4, gs_pull (𝟙 Y) θ y (LP.U (K PUnit.unit)) hk]`. Simplify using `only [Category.id_comp]`. Express the relevant statement in the definitionally equal form `_ = (gw w₀ (𝟙 Y) y (J PUnit.unit) fun _ => K PUnit.unit).val * _`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Units.val_mul, _root_.mul_assoc, ← hb']`. Simplify using `only [id] at ha`. Rewrite using `[ha, Units.inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem secMaps_secPull_of_pointwise : ∀ {Y XA XG : Scheme.{0}} (θ : Y ⟶ XA) (φ : XA ⟶ XG) (fst : Y ⟶ XG), θ ≫ φ = fst →
     ∀ (LP : LB XA) (LL LM : LB XG), LL.IsLB →

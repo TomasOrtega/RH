@@ -17,7 +17,7 @@ namespace GlobalTheory.FlatPlace
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => p.e, fun PP h => by rw [Finset.mem_singleton] at h; subst h; exact hp.1, by simp⟩, p.split.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIdemSum_of_isPlc {w : Pl D.host.E} {p : Place D (Kw w)} (hp : IsPlc w p) : IsIdemSum p.e {w} :=
   ⟨⟨fun _ => p.e, fun PP h => by rw [Finset.mem_singleton] at h; subst h; exact hp.1, by simp⟩, p.split.2.1⟩
@@ -25,7 +25,7 @@ theorem isIdemSum_of_isPlc {w : Pl D.host.E} {p : Place D (Kw w)} (hp : IsPlc w 
 open Classical in
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Place.up]`. Rewrite using `[hp.2.2]`. Conclude with `(atPl_spec w _).2 Q`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_up {w : Pl D.host.E} {p : Place D (Kw w)} (hp : IsPlc w p) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y]
     [Fintype Y'] [DecidableEq Y'] (FS : Frame (Kw w) S.rank Y') (FT : Frame (Kw w) T.rank Y) (x : Matrix Y Y' (Kw w))
@@ -38,23 +38,19 @@ theorem cpt_up {w : Pl D.host.E} {p : Place D (Kw w)} (hp : IsPlc w p) {S T : HS
   exact (atPl_spec w _).2 Q
 
 /- English proof (translation)
-Substitute `hNS hNT` using the available equality. Rewrite using `[GlobalTheory.HalfOInt.mem_latO_iff_frMapO_int D S T ΛS ΛT βS βT hS hT fS fT {w} p.e (isIdemSum_of_isPlc hp) (by simpa using hw) _ (Witness.up_half p _ _ x)]`. Use `set FS := frOf rfl βS w`. Use `set FT := frOf rfl βT w`. Establish `hmap : ∀ Q, (frMapO S T βS βT (p.up FS FT x)).map (cpt (D` using `D) Q) = (loc Q βT⁻¹).val * (FT.β * x * FS.γ).map (fun z => (Pi.single w z : ∀ Q, Kw Q) Q) * (loc Q βS).val := by`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Q`. Rewrite using `[← cpt_up hp FS FT x Q]`. Unfold `frMapO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : (loc w βT⁻¹).val * (FT.β * x * FS.γ) * (loc w βS).val = x`. Establish `e1 : (loc w βT⁻¹).val = FT.γ`. Rewrite using `[map_inv]`. Conclude with `(Matrix.submatrix_id_id _).symm`. Establish `e2 : (loc w βS).val = FS.β` using `(Matrix.submatrix_id_id _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, e2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.γβ, Matrix.one_mul, Matrix.mul_assoc, FS.γβ, Matrix.mul_one]`. Establish `hval : ∀ Q i j, cpt (D` using `D) Q (frMapO S T βS βT (p.up FS FT x) i j) = if h : Q = w then h ▸ x i j else 0 := by`. Introduce `Q i j`. Use `congrFun (congrFun (hmap Q) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same, Matrix.map_id']`. Rewrite using `[hw']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (FT.β * x * FS.γ).map (fun z => (Pi.single w z : ∀ Q, Kw Q) Q) = 0` using `Matrix.ext fun _ _ => by simp [Pi.single_eq_of_ne h]`. Rewrite using `[h0, Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_apply]`. Unfold `IsIntM`. Use `⟨fun h a b => ?_, fun h a b => ?_⟩` and prove the remaining obligations. Use `(mem_OA_iff _).1 (h a b) w` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hval, dif_pos rfl]`. Rewrite using `[Valuation.mem_integer_iff, (Good.isEquiv_Kw w).le_one_iff_le_one]`. Conclude with `this`. Use `(mem_OA_iff _).2 fun Q => ?_` and prove the remaining obligations. Rewrite using `[hval]`.
-
-Use `split_ifs with hQ`. Substitute `hQ` using the available equality. Use `h a b` as an intermediate fact. Rewrite `this` using `[Valuation.mem_integer_iff, (Good.isEquiv_Kw Q).le_one_iff_le_one]`. Conclude with `this`.
-
-Conclude with `zero_mem _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_mem_latO_iff {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
@@ -109,11 +105,9 @@ theorem up_mem_latO_iff {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.ra
     · exact zero_mem _
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hde` using `GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s`. Introduce `t w hw p hp j hj`. Establish `hc : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `hch.guard t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb` using `Good.badInt_notMem hL hde hc hw`. Establish `hm : D.R.m ≠ 0` using `by have := D.R.two_le_m; omega`. Use `⟨fun x => up_mem_latO_iff ?_ ?_ (ch.S.B.isFrame_β hL le_rfl hj.le) (ch.S.B.isFrame_β hL le_rfl hj) hb hp _ _ x, fun x => up_mem_latO_iff ?_ ?_ (ch.S.βp_is j hj.le) (ch.S.βp_is (j + 1) hj) hb hp _ _ x⟩` and prove the remaining obligations. Conclude with `(ch.G.isV (X := .grid D.R.m j) ⟨le_rfl, hj.le⟩ fun _ e => by injection e with h; exact hm h).sd`. Conclude with `(ch.G.isV (X := .grid D.R.m (j + 1)) ⟨le_rfl, hj⟩ fun _ e => by injection e with h; exact hm h).sd`.
-
-Conclude with `(ch.G.isV (X := .top j) hj.le fun _ e => by cases e).sd`. Conclude with `(ch.G.isV (X := .top (j + 1)) hj fun _ e => by cases e).sd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem big_latP : Big fun ch => LatP ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

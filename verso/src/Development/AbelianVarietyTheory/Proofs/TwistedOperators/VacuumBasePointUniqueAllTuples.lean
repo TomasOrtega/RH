@@ -17,9 +17,9 @@ open GlobalTheory.RootEx GlobalTheory.RowRep
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h1 : A * G * (X * H) = 1` using `by rw [← Matrix.mul_assoc, Matrix.mul_assoc A, h, hH]`. Establish `h2 : X * H * (A * G) = 1` using `mul_eq_one_comm.1 h1`. Establish `h3 : A * G * (c • X) = A * G * (c • X')`. Rewrite using `[Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_assoc, Matrix.mul_assoc, h, ← Matrix.smul_mul, e, Matrix.smul_mul, h']`. Establish `h4` using `congrArg (X * H * ·) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc (X * H) (A * G), h2, Matrix.one_mul] at h4`. Conclude with `h4`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_eq_of_adj {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] {c : R} {A A' X X' G H : Matrix n n R}
     (h : A * (G * X) = G) (h' : A' * (G * X') = G) (hH : G * H = 1) (e : c • A = c • A') : c • X = c • X' := by
@@ -32,9 +32,9 @@ theorem smul_eq_of_adj {R : Type} [CommRing R] {n : Type} [Fintype n] [Decidable
   exact h4
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `k1 : a * X i j = a * X' i j` using `congrFun (congrFun ha i) j`. Establish `k2 : b * X i j = b * X' i j` using `congrFun (congrFun hb i) j`. Establish `k3` using `h i j`. Establish `k4` using `h' i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.sub_apply] at k3 k4`. Take the linear combination `k1 + k2 - k3 + k4`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_of_halves {R : Type} [CommRing R] {n : Type} [DecidableEq n] {a b : R} {X X' : Matrix n n R}
     (h : ∀ i j, (a + b) * (X - 1) i j = (X - 1) i j) (h' : ∀ i j, (a + b) * (X' - 1) i j = (X' - 1) i j)
@@ -48,7 +48,7 @@ theorem eq_of_halves {R : Type} [CommRing R] {n : Type} [DecidableEq n] {a b : R
   linear_combination k1 + k2 - k3 + k4
 
 /- English proof (translation)
-Establish `k1 : (a - a') * X i j = (a - a') * (1 : Matrix n n R) i j` using `congrFun (congrFun ha i) j`. Establish `k2 : (b - b') * X i j = (b - b') * (1 : Matrix n n R) i j` using `congrFun (congrFun hb i) j`. Establish `k3` using `h i j`. Simplify using `only [Matrix.sub_apply] at k3 ⊢`. Take the linear combination `k3 - k1 - k2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem supp_shrink {R : Type} [CommRing R] {n : Type} [DecidableEq n] {a b a' b' : R} {X : Matrix n n R}
     (h : ∀ i j, (a + b) * (X - 1) i j = (X - 1) i j) (ha : (a - a') • X = (a - a') • (1 : Matrix n n R))
@@ -62,7 +62,7 @@ theorem supp_shrink {R : Type} [CommRing R] {n : Type} [DecidableEq n] {a b a' b
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `smul_eq_of_adj (mt_unitary V g) (mt_unitary V g') (gA_mul_giA V) ((adj_smul e _).symm.trans ((congrArg adj h).trans (adj_smul e _)))`.
+A detailed English derivation is pending.
 -/
 theorem smul_conj {V : HSp D} {e : AE D} {g g' : GA D V} (h : e • mt V g = e • mt V g') :
     cA D e • mt V g = cA D e • mt V g' :=
@@ -70,9 +70,9 @@ theorem smul_conj {V : HSp D} {e : AE D} {g g' : GA D V} (h : e • mt V g = e �
     ((adj_smul e _).symm.trans ((congrArg adj h).trans (adj_smul e _)))
 
 /- English proof (translation)
-Use `mx_ext ?_ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_smul_mx, map_smul_mx, h0, zero_smul, zero_smul]`. Rewrite using `[map_smul_mx, map_smul_mx]`. Break down `h w with h | h` into its components or cases. Rewrite using `[h, zero_smul, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (piAt w e • ·) (congrArg Units.val h)`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_of_loc {V : HSp D} {e : AE D} (h0 : infPart D e = 0) {g g' : GA D V}
     (h : ∀ w : Pl D.host.E, piAt w e = 0 ∨ GlobalTheory.StdFrames.loc w (Lev.finE V g) = GlobalTheory.StdFrames.loc w (Lev.finE V g')) :
@@ -85,7 +85,7 @@ theorem smul_eq_of_loc {V : HSp D} {e : AE D} (h0 : infPart D e = 0) {g g' : GA 
     · exact congrArg (piAt w e • ·) (congrArg Units.val h)
 
 /- English proof (translation)
-Establish `e1 : GlobalTheory.StdFrames.loc w (β⁻¹ * x * β⁻¹⁻¹) = GlobalTheory.StdFrames.loc w (β⁻¹ * y * β⁻¹⁻¹)` using `(GlobalTheory.StepData.reGL _).injective e`. Rewrite `e1` using `[map_mul, map_mul, map_mul, map_mul]`. Conclude with `mul_left_cancel (mul_right_cancel e1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_eq_of_inBasis {n n' : ℕ} (h : n' = n) (β : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E) {x y : GL (Fin n) (Lev.EAf D)}
     (e : inBasis h β w x = inBasis h β w y) : GlobalTheory.StdFrames.loc w x = GlobalTheory.StdFrames.loc w y := by
@@ -95,9 +95,9 @@ theorem loc_eq_of_inBasis {n n' : ℕ} (h : n' = n) (β : GL (Fin n) (Lev.EAf D)
   exact mul_left_cancel (mul_right_cancel e1)
 
 /- English proof (translation)
-Take `⟨hb, a, ha, e⟩` from `h`. Take `⟨hb', a', ha', e'⟩` from `h'`. Establish `i : infHom V b = infHom V b'` using `(MonoidHom.mem_ker.1 hb).trans (MonoidHom.mem_ker.1 hb').symm`. Establish `f : finHom V b = finHom V b'`. Use `congrArg (finHom V) (e.trans e'.symm)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_mul, MonoidHom.mem_ker.1 ha, MonoidHom.mem_ker.1 ha', one_mul, one_mul]`. Then use the resulting hypothesis. Establish `f' : Lev.finE V b = Lev.finE V b'` using `congrArg (Formalism.UG.bc (Lev.swapAE D)) f`. Use `Subtype.ext (Units.ext (mx_ext (congrArg Units.val i) fun w => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun z => (GlobalTheory.StdFrames.loc w z).val) f'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFinOf_unique {V : HSp D} {g b b' : GA D V} (h : IsFinOf g b) (h' : IsFinOf g b') : b = b' := by
   obtain ⟨hb, a, ha, e⟩ := h
@@ -113,7 +113,7 @@ theorem isFinOf_unique {V : HSp D} {g b b' : GA D V} (h : IsFinOf g b) (h' : IsF
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨X, a, b, c⟩` from `exists_lift (n := 1) P fun _ => 1`. Conclude with `⟨X 0 0, congrFun (congrFun a 0) 0, fun w hw => (congrFun (congrFun (b ⟨w, hw⟩) 0) 0).trans (one_apply_eq _), fun w hw => congrFun (congrFun (c w hw) 0) 0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_indicator (P : Finset (Pl D.host.E)) :
     ∃ e : AE D, infPart D e = 0 ∧ (∀ w ∈ P, piAt w e = 1) ∧ ∀ w ∉ P, piAt w e = 0 := by
@@ -122,7 +122,7 @@ theorem exists_indicator (P : Finset (Pl D.host.E)) :
     fun w hw => congrFun (congrFun (c w hw) 0) 0⟩
 
 /- English proof (translation)
-Rewrite using `[(depthAt_of_notMem G hw).1, stair]`. Simplify using `only [zero_mul, pow_zero]`. Conclude with `Units.ext diagonal_one`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stair_off (t : T) {w : Pl D.host.E} (hw : w ∉ G.pl.W0) (j : ℕ) :
     stair (locGrid G t w) (unifAt w) (cosExp G w) j = 1 := by
@@ -131,13 +131,11 @@ theorem stair_off (t : T) {w : Pl D.host.E} (hw : w ∉ G.pl.W0) (j : ℕ) :
   exact Units.ext diagonal_one
 
 /- English proof (translation)
-Take `⟨e, he, hs, hl⟩` from `h`. Take `⟨e0, e1, e2⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he`. Use `replace e1 : ∀ w ∈ locPl G t, piAt w e = 1 := e1`. Use `replace e2 : ∀ w ∉ locPl G t, piAt w e = 0 := e2`. Establish `hsub : ∀ w ∈ G.pl.W0, w ∈ locPl G t` using `fun w hw => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Unfold `locPl`. Use `Finset.mem_union_left _ hw` and compare the differences between its conclusion and the goal. Establish `k : (e - e₀) • mt _ r = (e - e₀) • mt _ (1 : GA D (G.V (.grid D.R.m 0)))`. Use `smul_eq_of_loc (by rw [RingHom.map_sub, e0, h0, sub_self]) fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ G.pl.W0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `.inl (by rw [RingHom.map_sub, e1 w (hsub w hw), h1 w hw, sub_self])`. Distinguish the cases in `hp : w ∈ locPl G t`. Use `.inr (loc_eq_of_inBasis _ (B.β D.R.m 0) w ((hl ⟨w, hp⟩).trans ?_))` and prove the remaining obligations. Rewrite using `[map_one, map_one]`. Conclude with `inv_eq_one.2 (stair_off t hw 0)`.
-
-Conclude with `.inl (by rw [RingHom.map_sub, e2 w hp, h2 w hw, sub_self])`. Establish `k'` using `smul_conj k`. Rewrite `k'` using `[RingHom.map_sub]`. Rewrite `k`, `k'` using `[GlobalTheory.MixModel.mt_one]`. Conclude with `supp_shrink hs k k'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_base (B : Frames G) {t : T} {r : GA D (G.V (.grid D.R.m 0))}
     (h : HasLoc t B (Nat.zero_le _) r fun w => (stair (locGrid G t w.1) (unifAt w.1) (cosExp G w.1) 0)⁻¹) {e₀ : AE D}
@@ -164,11 +162,11 @@ theorem supp_base (B : Frames G) {t : T} {r : GA D (G.V (.grid D.R.m 0))}
   exact supp_shrink hs k k'
 
 /- English proof (translation)
-Take `⟨e₀, h0, h1, h2⟩` from `exists_indicator (D := D) G.pl.W0`. Establish `s` using `supp_base B h h0 h1 h2`. Establish `s'` using `supp_base B h' h0 h1 h2`. Take `⟨-, -, -, hl⟩` from `h`. Take `⟨-, -, -, hl'⟩` from `h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsub : ∀ t, ∀ w ∈ G.pl.W0, w ∈ locPl G t` using `fun t w hw => by`. Unfold `locPl`. Use `Finset.mem_union_left _ hw` and compare the differences between its conclusion and the goal. Establish `k : e₀ • mt _ r = e₀ • mt _ r'`. Use `smul_eq_of_loc h0 fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : w ∈ G.pl.W0`. Conclude with `.inr (loc_eq_of_inBasis _ (B.β D.R.m 0) w ((hl ⟨w, hsub t w hw⟩).trans (hl' ⟨w, hsub t' w hw⟩).symm))`. Conclude with `.inl (h2 w hw)`. Conclude with `Subtype.ext (Units.ext (eq_of_halves s s' k (smul_conj k)))`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem base_zero (B : Frames G) {t t' : T} {r r' : GA D (G.V (.grid D.R.m 0))}
     (h : HasLoc t B (Nat.zero_le _) r fun w => (stair (locGrid G t w.1) (unifAt w.1) (cosExp G w.1) 0)⁻¹)
@@ -189,9 +187,9 @@ theorem base_zero (B : Frames G) {t t' : T} {r r' : GA D (G.V (.grid D.R.m 0))}
   exact Subtype.ext (Units.ext (eq_of_halves s s' k (smul_conj k)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h0 : j = 0`. Substitute `h0` using the available equality. Conclude with `base_zero B h.1 h'.1`. Distinguish the cases in `hj : j ∈ GlobalTheory.RowVal.idx D`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hb⟩` from `h.2.1 j hj`. Take `⟨δ', hδ', hb'⟩` from `h'.2.1 j hj`. Take `rfl` from `isTilt_unique (by have := idx_le hj; omega) hδ hδ'`. Conclude with `isFinOf_unique hb hb'`. Rewrite using `[h.2.2 j h0 hj, h'.2.2 j h0 hj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBase_eq (B : Frames G) {t t' : T} {b b' : Pts G} (h : IsBase t B b) (h' : IsBase t' B b') : b = b' := by
   funext j
@@ -206,7 +204,7 @@ theorem isBase_eq (B : Frames G) {t t' : T} {b b' : Pts G} (h : IsBase t B b) (h
     · rw [h.2.2 j h0 hj, h'.2.2 j h0 hj]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ _ _ _ _ h h' => isBase_eq ch.S.B h h'⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBase_unique : Big fun ch => ∀ t t' b b', IsBase t ch.S.B b → IsBase t' ch.S.B b' → b = b' :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ _ _ _ _ h h' => isBase_eq ch.S.B h h'⟩⟩

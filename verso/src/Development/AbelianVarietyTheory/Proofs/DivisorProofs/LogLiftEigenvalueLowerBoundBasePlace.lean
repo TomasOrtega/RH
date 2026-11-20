@@ -11,9 +11,9 @@ open Formalism.IndefR.Cx GlobalTheory.BigOn
 namespace GlobalTheory.LowRow
 
 /- English proof (translation)
-Introduce `b hC hA hP hL hB j p`. Distinguish the cases in `hW : R.Wp3 j p = ⊥`. Rewrite using `[hC.scal.abs0 j A3.A.μ0 p hW, Real.log_exp]`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Establish `hpos : 0 < R.lam3 j A3.A.μ0 p A3.A.v0` using `hP.2 j A3.A.μ0 p A3.A.v0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heig` using `hA j A3.A.μ0 p x hx`. Conclude with `(hB j).trans (hL j _ x hx0 hpos heig)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem l6m_le_log_lam3_base_place {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) : ∀ b : ℝ, R.WeakCharacterisation F → R.PThmA → R.PPos → LowTop R.toRealDat b → (∀ j, (F.Zsc (R.toCx3 F).zs).l6m j ≤ lowB D j b) → ∀ j p, (F.Zsc (R.toCx3 F).zs).l6m j ≤ Real.log (R.lam3 j A3.A.μ0 p A3.A.v0) := by
   intro b hC hA hP hL hB j p

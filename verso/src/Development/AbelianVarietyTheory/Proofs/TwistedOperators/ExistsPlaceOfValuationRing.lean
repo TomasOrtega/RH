@@ -7,7 +7,7 @@ namespace GlobalTheory.EmbeddingPlace
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Rewrite using `[FinitePlace.mk_apply, FinitePlace.norm_embedding, NumberField.HeightOneSpectrum.adicAbv_def, NNReal.coe_le_one]`. Conclude with `WithZeroMulInt.toNNReal_le_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EmbeddingPlace.finitePlace_le_one_iff {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : K) :
     FinitePlace.mk v x ≤ 1 ↔ v.valuation K x ≤ 1 := by
@@ -17,7 +17,7 @@ theorem _root_.GlobalTheory.EmbeddingPlace.finitePlace_le_one_iff {K : Type} [Fi
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Rewrite using `[← Valuation.mem_valuationSubring_iff, ← HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring, ← ValuationSubring.mem_toSubring, HeightOneSpectrum.valuationSubringAtPrime_toSubring, Subalgebra.mem_toSubring]`. Simplify using `only [Localization.subalgebra.ofField]`. Express the relevant statement in the definitionally equal form `(∃ a s, ∃ (_ : s ∈ v.asIdeal.primeCompl), x = algebraMap R L a * (algebraMap R L s)⁻¹) ↔ _`. Conclude with `⟨fun ⟨a, s, hs, h⟩ => ⟨a, s, hs, h⟩, fun ⟨a, s, hs, h⟩ => ⟨a, s, hs, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 -/
 private theorem valuation_le_one_iff_exists_eq_mul_inv_of_notMem {R L : Type} [CommRing R] [IsDedekindDomain R]
     [Field L] [Algebra R L] [IsFractionRing R L] (v : HeightOneSpectrum R) (x : L) :
@@ -34,27 +34,23 @@ private theorem valuation_le_one_iff_exists_eq_mul_inv_of_notMem {R L : Type} [C
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Establish `hinj` using `IsFractionRing.injective O (FractionRing O)`. Establish `hint : ∀ y : 𝓞 K, IsIntegral O (ι (algebraMap (𝓞 K) K y))` using `fun y => IsIntegral.map_of_comp_eq (algebraMap ℤ O) ι (RingHom.ext_int _ _) (RingOfIntegers.isIntegral_coe y)`. Set `ψ : 𝓞 K →+* O` to `{ toFun := fun y => IsIntegralClosure.mk' O (ι (algebraMap (𝓞 K) K y)) (hint y) map_one' := hinj (by simp [IsIntegralClosure.algebraMap_mk']) map_mul' := fun a b => hinj (by simp [IsIntegralClosure.algebraMap_mk']) map_zero' := hinj (by simp [IsIntegralClosure.algebraMap_mk']) ma …`. Establish `hψ : ∀ y : 𝓞 K, algebraMap O (FractionRing O) (ψ y) = ι (algebraMap (𝓞 K) K y)` using `fun y => IsIntegralClosure.algebraMap_mk' O _ (hint y)`. Set `P : Ideal (𝓞 K)` to `(IsLocalRing.maximalIdeal O).comap ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hpP : (p : 𝓞 K) ∈ P` using `Ideal.mem_comap.mpr (by rw [map_natCast]; exact hpO)`. Establish `hPne : P ≠ ⊥`. Introduce `h`. Establish `hp0` using `hpP`. Rewrite `hp0` using `[h, Ideal.mem_bot, Nat.cast_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp hp0`. Establish `hunitP : ∀ s : 𝓞 K, s ∉ P → IsUnit (ψ s)` using `fun s hs => IsLocalRing.notMem_maximalIdeal.mp hs`. Set `la : HeightOneSpectrum (𝓞 K)` to `{ asIdeal := P, isPrime := Ideal.IsPrime.comap ψ, ne_bot := hPne }`. Use `⟨la, hpP, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.EmbeddingPlace.finitePlace_le_one_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho⟩`. Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Establish `hx0 : x ≠ 0`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `at hx`. Establish `hy : la.valuation K x⁻¹ < 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, s, hs, hxa⟩` from `(valuation_le_one_iff_exists_eq_mul_inv_of_notMem la x⁻¹).mp hy.le`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0`. Establish `: s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hs (zero_mem _)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr this`. Establish `hsa : algebraMap (𝓞 K) K a = x⁻¹ * algebraMap (𝓞 K) K s`. Rewrite using `[hxa, inv_mul_cancel_right₀ hs0]`. Establish `hvs : la.valuation K (algebraMap (𝓞 K) K s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_antisymm (la.intValuation_le_one s) (not_lt.mp fun h => hs ((la.intValuation_lt_one_iff_mem s).mp h))`. Establish `hva : la.intValuation a < 1`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := K)]`. Express the relevant statement in the definitionally equal form `la.valuation K (algebraMap (𝓞 K) K a) < 1`. Rewrite using `[hsa, map_mul, hvs, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy`. Establish `ha : ψ a ∈ IsLocalRing.maximalIdeal O` using `Ideal.mem_comap.mp ((la.intValuation_lt_one_iff_mem a).mp hva)`. Establish `heq : o * ψ a = ψ s` using `hinj (by`. Rewrite using `[map_mul, ho, hψ, hψ, hsa, map_mul, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hx0, map_one, one_mul])`. Establish `hunit : IsUnit (o * ψ a)`.
-
-Rewrite using `[heq]`. Conclude with `hunitP s hs`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp ha (isUnit_of_mul_isUnit_right hunit)`. Introduce `h`. Take `⟨a, s, hs, rfl⟩` from `(valuation_le_one_iff_exists_eq_mul_inv_of_notMem la x).mp h`.
-
-Use `⟨ψ a * ↑(hunitP s hs).unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_units_inv, IsUnit.unit_spec, hψ, hψ, map_mul, map_inv₀]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_heightOneSpectrum_range_iff_finitePlace_le_one {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {K : Type} [Field K] [NumberField K] (p : ℕ) (hp : p ≠ 0)
@@ -130,7 +126,7 @@ private theorem exists_heightOneSpectrum_range_iff_finitePlace_le_one {O : Type}
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `D Ks _ _ i ι`. Use `haveI := D.ntw.domO i`. Use `haveI := D.ntw.dvrO i`. Conclude with `exists_heightOneSpectrum_range_iff_finitePlace_le_one (D.ntw.l i) (D.ntw.lPrime i).out.ne_zero (D.ntw.O_l i) ι`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EmbeddingPlace.exists_place : ∀ (D : _root_.Formalism.BasicNotions.D7) (Ks : Type) [Field Ks] [NumberField Ks] (i : D.ntw.Tw) (ι : Ks →+* FractionRing (D.ntw.O i)), ∃ la : HeightOneSpectrum (𝓞 Ks), ((D.ntw.l i : ℕ) : 𝓞 Ks) ∈ la.asIdeal ∧ ∀ x : Ks, ι x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range ↔ FinitePlace.mk la x ≤ 1 := by
   intro D Ks _ _ i ι

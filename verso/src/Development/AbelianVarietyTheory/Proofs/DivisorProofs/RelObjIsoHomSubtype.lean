@@ -46,15 +46,13 @@ variable [QuasiCompact f] [QuasiSeparated f]
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `coequifibered_iff_forall_isLocalizationAway.mpr fun U r ↦ ?_` and prove the remaining obligations. Set `inst : Algebra Γ(X, f ⁻¹ᵁ U.1) Γ(X, f ⁻¹ᵁ Y.basicOpen r)` to `(X.presheaf.map (homOfLE (f.preimage_mono (Y.basicOpen_le r))).op).hom.toAlgebra`. Establish `hl : IsLocalization.Away ((f.app U.1).hom r) Γ(X, f ⁻¹ᵁ Y.basicOpen r)`. Set `: Algebra Γ(X, f ⁻¹ᵁ U.1) Γ(X, X.basicOpen (f.app _ r))` to `(X.presheaf.map (homOfLE (X.basicOpen_le _)).op).hom.toAlgebra`. Simplify using `+instances [inst]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Simplify by unfolding definitions.
 
-Use `rw! (castMode := .all) [f.preimage_basicOpen r]`. Conclude with `isLocalization_basicOpen_of_qcqs (f.isCompact_preimage U.2.isCompact) (f.isQuasiSeparated_preimage U.2.isQuasiSeparated) (f.app _ r)`. Use `letI := ((diagram H).map (homOfLE (U.basicOpen_le r)).op).hom.toAlgebra`. Use `IsLocalization.Away.mk _ ?_ ?_ ?_` and prove the remaining obligations. Establish `h1 : IsUnit ((Y.presheaf.map (homOfLE (Y.basicOpen_le r)).op).hom r)` using `Y.toRingedSpace.isUnit_res_basicOpen r`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `h1.map ((diagramMap H).app (.op (U.basicOpen r))).hom`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Conclude with `congr($((diagramMap H).naturality (homOfLE (U.basicOpen_le r)).op) r).symm`. Introduce `s`. Take `⟨k, y, hy, e⟩` from `H.loc U.1 U.2 r s.1 s.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨k, ⟨y, hy⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite `e` using `[mul_comm]`. Conclude with `e.symm`. Introduce `a b hab`. Establish `hab' : algebraMap Γ(X, f ⁻¹ᵁ U.1) Γ(X, f ⁻¹ᵁ Y.basicOpen r) a.1 = algebraMap Γ(X, f ⁻¹ᵁ U.1) Γ(X, f ⁻¹ᵁ Y.basicOpen r) b.1` using `congrArg Subtype.val hab`.
-
-Take `⟨n, hn⟩` from `IsLocalization.Away.exists_of_eq ((f.app U.1).hom r) hab'`. Conclude with `⟨n, Subtype.ext hn⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma coequifibered (H : QCohSub f F) : (diagramMap H).Coequifibered := by
   refine coequifibered_iff_forall_isLocalizationAway.mpr fun U r ↦ ?_
@@ -122,9 +120,7 @@ set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← cancel_epi (pullbackRestrictIsoRestrict f U.1).hom, ← Category.assoc]`. Use `trans ((directedCover Y).pullback₁ f).f U ≫ toRel H`. Use `congr 1`. Simplify using the standard rewrite rules. Use `delta toRel`.
-
-Use `generalize_proofs _ _ _ _ H'`. Conclude with `Scheme.OpenCover.map_glueMorphismsOfLocallyDirected _ _ H' _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ι_toRel (H : QCohSub f F) (U : Y.affineOpens) :
     (f ⁻¹ᵁ U.1).ι ≫ toRel H = (f ⁻¹ᵁ U.1).toSpecΓ ≫
@@ -140,7 +136,7 @@ def fromRel (H : QCohSub f F) : relSpec H ⟶ Y := (glueData H).toBase
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `colimit.ι_desc _ _`.
+A detailed English derivation is pending.
 -/
 lemma ι_fromRel (H : QCohSub f F) (U : Y.affineOpens) :
     (relCover H).f U ≫ fromRel H =
@@ -149,7 +145,7 @@ lemma ι_fromRel (H : QCohSub f F) (U : Y.affineOpens) :
 
 set_option backward.isDefEq.respectTransparency.types false in
 /- English proof (translation)
-Simplify using `using! (glueData H).toBase_preimage_eq_opensRange_ι U`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma fromRel_preimage (H : QCohSub f F) (U : Y.affineOpens) :
     fromRel H ⁻¹ᵁ U = ((relCover H).f U).opensRange := by
@@ -158,7 +154,7 @@ lemma fromRel_preimage (H : QCohSub f F) (U : Y.affineOpens) :
 set_option backward.isDefEq.respectTransparency false in
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use `Scheme.Cover.hom_ext (X.openCoverOfIsOpenCover _ (.comap (iSup_affineOpens_eq_top Y) f.base.1)) _ _ fun U ↦ ?_` and prove the remaining obligations. Use `(ι_toRel_assoc H _ _).trans ?_` and prove the remaining obligations. Rewrite using `[ι_fromRel, ← Spec.map_comp_assoc]`. Express the relevant statement in the definitionally equal form `(f ⁻¹ᵁ U.1).toSpecΓ ≫ Spec.map (f.app _) ≫ U.2.fromSpec = (f ⁻¹ᵁ U.1).ι ≫ _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma toRel_fromRel (H : QCohSub f F) : toRel H ≫ fromRel H = f := by
   refine Scheme.Cover.hom_ext (X.openCoverOfIsOpenCover _
@@ -170,9 +166,9 @@ lemma toRel_fromRel (H : QCohSub f F) : toRel H ≫ fromRel H = f := by
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Rewrite using `[IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := @IsFinite) _ (iSup_affineOpens_eq_top _)]`. Introduce `U`. Set `e` to `IsOpenImmersion.isoOfRangeEq (fromRel H ⁻¹ᵁ U).ι ((relCover H).f U) (by simpa using congr($(fromRel_preimage H U).1))`. Rewrite using `[← MorphismProperty.cancel_left_of_respectsIso @IsFinite e.inv, ← MorphismProperty.cancel_right_of_respectsIso @IsFinite _ U.2.isoSpec.hom]`. Use `convert! (IsFinite.SpecMap_iff _).mpr (hfin U)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono U.2.fromSpec]`. Simplify using `[IsAffineOpen.isoSpec_hom, e, ι_fromRel]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isFinite_fromRel (H : QCohSub f F)
     (hfin : ∀ U : Y.affineOpens, ((diagramMap H).app (.op U)).hom.Finite) : IsFinite (fromRel H) := by
@@ -197,11 +193,11 @@ def relObjIso (H : QCohSub f F) {U : Y.Opens} (hU : IsAffineOpen U) :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Simplify using `[relObjIso]`. Express the relevant statement in the definitionally equal form `_ = (relSpec H).presheaf.map (eqToHom (by simp [fromRel_preimage])).op ≫ (((relCover H).f U).appIso _).hom ≫ (Scheme.ΓSpecIso _).hom ≫ CommRingCat.ofHom (F U.1).subtype ≫ X.presheaf.map (eqToHom (by simp [← Scheme.Hom.comp_preimage])).op`. Establish `H' : toRel H ⁻¹ᵁ fromRel H ⁻¹ᵁ U = (f ⁻¹ᵁ U).ι ''ᵁ (((f ⁻¹ᵁ U).ι ≫ toRel H) ⁻¹ᵁ fromRel H ⁻¹ᵁ U)`. Simplify using `[← Scheme.Hom.comp_preimage]`. Use `convert! congr($(Scheme.Hom.congr_app (ι_toRel H U) (fromRel H ⁻¹ᵁ U)) ≫ X.presheaf.map (eqToHom H').op) using 1`.
+Simplify by unfolding definitions. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Hom.app_eq_appLE]`. Use `dsimp`. Simplify using `only [eqToHom_op, Hom.appIso_hom, Category.assoc, Scheme.Hom.naturality_assoc, eqToHom_unop, ← Functor.map_comp_assoc, eqToHom_map (TopologicalSpace.Opens.map _), eqToHom_trans]`. Use `congr 1`. Rewrite using `[← IsIso.eq_inv_comp, ← Functor.map_inv, inv_eqToHom]`.
+Simplify by unfolding definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[← Functor.map_comp, Scheme.Opens.toSpecΓ_appTop, ΓSpecIso_naturality_assoc (CommRingCat.ofHom _)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma toRel_app_preimage (H : QCohSub f F) (U : Y.affineOpens) :
     (toRel H).app (fromRel H ⁻¹ᵁ ↑U) =
@@ -230,7 +226,7 @@ lemma toRel_app_preimage (H : QCohSub f F) (U : Y.affineOpens) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Hom.appLE, toRel_app_preimage H ⟨U, hU⟩, Category.assoc]`. Simplify using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma relObjIso_hom_subtype (H : QCohSub f F) {U : Y.Opens} (hU : IsAffineOpen U) :
     (relObjIso H hU).hom ≫ CommRingCat.ofHom (F U).subtype =
@@ -240,11 +236,11 @@ lemma relObjIso_hom_subtype (H : QCohSub f F) {U : Y.Opens} (hU : IsAffineOpen U
   rfl
 
 /- English proof (translation)
-Establish `hqc : QuasiCompact (toRel H)`. Apply `MorphismProperty.of_postcomp (W := @QuasiCompact) (W' := @QuasiSeparated) _ (fromRel H)` to reduce the goal to its premises. Use `infer_instance`. Rewrite using `[toRel_fromRel] infer_instance`. Establish `hker : (toRel H).ker = ⊥`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (fun U : Y.affineOpens ↦ ⟨fromRel H ⁻¹ᵁ U.1, U.2.preimage _⟩) (TopologicalSpace.IsOpenCover.comap (iSup_affineOpens_eq_top _) _) fun U ↦ ?_` and prove the remaining obligations. Simplify using `only [Hom.ker_apply, IdealSheafData.ideal_bot, Pi.bot_apply]`. Rewrite using `[← RingHom.injective_iff_ker_eq_bot, ← ConcreteCategory.mono_iff_injective_of_preservesPullback, ← MorphismProperty.monomorphisms]`. Simplify using `only [toRel_app_preimage, eqToHom_op, MorphismProperty.cancel_left_of_respectsIso, MorphismProperty.cancel_right_of_respectsIso]`. Rewrite using `[MorphismProperty.monomorphisms, @ConcreteCategory.mono_iff_injective_of_preservesPullback]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subtype.val_injective`. Use `congr(($(hker).support : Set (relSpec H)))` as an intermediate fact. Rewrite `this` using `[IdealSheafData.support_bot, Scheme.Hom.support_ker, TopologicalSpace.Closeds.coe_top]`. Conclude with `⟨dense_iff_closure_eq.mpr this⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma isDominant_toRel (H : QCohSub f F) (hfin : IsFinite (fromRel H)) : IsDominant (toRel H) := by
   have hqc : QuasiCompact (toRel H) := by
@@ -272,7 +268,7 @@ lemma isDominant_toRel (H : QCohSub f F) (hfin : IsFinite (fromRel H)) : IsDomin
 set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 /- English proof (translation)
-The claim follows from `have (i : _) : AlgebraicGeometry.IsReduced ((relCover H).X i) := by have : _root_.IsReduced ((diagram H).obj (.op i)) := isReduced_of_injective (F i.1).subtype Subtype.val_injective dsimp [relCover, glueData, relativeGluingData] infer_instance .of_openCover _ (relCover H)`.
+A detailed English derivation is pending.
 -/
 lemma isReduced_relSpec (H : QCohSub f F) [AlgebraicGeometry.IsReduced X] :
     AlgebraicGeometry.IsReduced (relSpec H) :=
@@ -284,7 +280,7 @@ lemma isReduced_relSpec (H : QCohSub f F) [AlgebraicGeometry.IsReduced X] :
   .of_openCover _ (relCover H)
 
 /- English proof (translation)
-The claim follows from `have := isReduced_relSpec H have : IrreducibleSpace (relSpec H) := by rw [irreducibleSpace_def] convert! ((IrreducibleSpace.isIrreducible_univ X).image _ (toRel H).continuous.continuousOn).closure simpa using (toRel H).denseRange.closure_range.symm isIntegral_of_irreducibleSpace_ …`.
+A detailed English derivation is pending.
 -/
 lemma isIntegral_relSpec (H : QCohSub f F) [AlgebraicGeometry.IsIntegral X] [IsDominant (toRel H)] :
     AlgebraicGeometry.IsIntegral (relSpec H) :=
@@ -300,17 +296,15 @@ lemma isIntegral_relSpec (H : QCohSub f F) [AlgebraicGeometry.IsIntegral X] [IsD
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hF`. Establish `H : QCohSub gp F` using `⟨h1, h2, h3⟩`. Use `haveI : AlgebraicGeometry.IsIntegral (Sp K) := inferInstanceAs (AlgebraicGeometry.IsIntegral (Spec (.of K)))`. Use `haveI : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Use `haveI : TopologicalSpace.NoetherianSpace (Sp K) := inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : QuasiCompact gp := inferInstance`. Use `haveI : QuasiSeparated gp := inferInstance`. Establish `hfin : IsFinite (fromRel H)`. Use `isFinite_fromRel H fun U ↦ ?_` and prove the remaining obligations. Take `⟨t, ht, hx⟩` from `h4 U.1 U.2`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra Γ(S, U.1) (F U.1) := ((gp.app U.1).hom.codRestrict (F U.1) (h1 _ U.2)).toAlgebra`. Express the relevant statement in the definitionally equal form `Module.Finite Γ(S, U.1) (F U.1)`. Use `Module.Finite.of_fg_top ?_` and prove the remaining obligations. Rewrite using `[Submodule.fg_def]`. Use `⟨Set.range (fun y : t ↦ (⟨y.1, ht y.1 y.2⟩ : F U.1)), Set.finite_range _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Take `⟨c, hc⟩` from `hx x.1 x.2`. Establish `: x = ∑ y : t, c y.1 • (⟨y.1, ht y.1 y.2⟩ : F U.1)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, AddSubmonoidClass.coe_finset_sum, ← Finset.sum_coe_sort]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun y _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl⟩)`. Use `haveI := isDominant_toRel H hfin`.
-
-Use `⟨relSpec H, fromRel H, toRel H, toRel_fromRel H, hfin, isIntegral_relSpec H, this, ?_⟩` and prove the remaining obligations. Introduce `V hV x hx`. Use `⟨(relObjIso H hV).inv.hom ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← relObjIso_hom_subtype H hV, ← CommRingCat.comp_apply, Iso.inv_hom_id_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finite_cover {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) [AlgebraicGeometry.IsIntegral S]
     [IsDominant gp] (F : ∀ V : S.Opens, Subring Γ(Sp K, gp ⁻¹ᵁ V)) (hF : GlobalTheory.Mum.IsFinSub gp F) :

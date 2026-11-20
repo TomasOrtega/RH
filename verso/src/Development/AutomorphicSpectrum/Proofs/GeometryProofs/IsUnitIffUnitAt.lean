@@ -20,9 +20,9 @@ theorem stalkEquiv_coe {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommR
     ((stalkEquiv ξ hξ p s : regAt ξ p) : Ω) = genMap ξ p s := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨u, rfl⟩` from `hs`. Use `⟨((u.isUnit).map (genMap ξ p)).ne_zero, ⟨_, rfl⟩, ⟨((u⁻¹ : _ˣ) : X.presheaf.stalk p.1), ?_⟩⟩` and prove the remaining obligations. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Introduce and unpack `⟨h0, -, ⟨t, ht⟩⟩`. Use `IsUnit.of_mul_eq_one t (hξ.inj p ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, ht, mul_inv_cancel₀ h0]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_iff_unitAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (hξ : IsCptGen ξ) (p : Cpt ξ) (s : X.presheaf.stalk p.1) :
@@ -38,17 +38,15 @@ theorem isUnit_iff_unitAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (Co
     rw [map_mul, map_one, ht, mul_inv_cancel₀ h0]
 
 /- English proof (translation)
-Set `p : Cpt ξ` to `⟨centre z, h⟩`. Set `e` to `stalkEquiv ξ hξ p`. Set `v : X.presheaf.stalk (centre z) →+* R` to `(Scheme.stalkClosedPointTo z).hom`. Establish `hv : IsLocalHom v` using `inferInstanceAs (IsLocalHom (Scheme.stalkClosedPointTo z).hom)`. Establish `key : ∀ s, e.symm (e s) = s` using `e.symm_apply_apply`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨v.comp (e.symm : regAt ξ p →+* X.presheaf.stalk p.1), ?_, ?_⟩` and prove the remaining obligations. Introduce `a r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h', s, hs, hr⟩`. Establish `hs' : genMap ξ p s = a` using `hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨⟨s, hs'⟩, ?_⟩` and prove the remaining obligations. Establish `: (⟨a, ⟨s, hs'⟩⟩ : regAt ξ p) = e s` using `Subtype.ext hs'.symm`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[this, key]`. Conclude with `hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨ha, hr⟩`. Use `⟨h, e.symm ⟨a, ha⟩, ?_, hr⟩` and prove the remaining obligations. Use `stalkEquiv_coe ξ hξ p (e.symm ⟨a, ha⟩)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Take `⟨s, rfl⟩` from `e.surjective a`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[key]`. Establish `: IsUnit (v s) ↔ IsUnit s` using `isUnit_map_iff v s`.
-
-Conclude with `this.trans (isUnit_iff_unitAt ξ hξ p s)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_valAt_hom (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (R : Type) [CommRing R] [IsLocalRing R] (z : Spec (CommRingCat.of R) ⟶ X)

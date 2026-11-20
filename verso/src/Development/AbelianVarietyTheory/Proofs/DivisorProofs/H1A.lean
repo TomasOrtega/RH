@@ -19,7 +19,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁`. Use `⟨fun v => ?_, GlobalTheory.T.indLineInf_beta_half_a_of_isMatched hKP F E σ B a b G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁⟩` and prove the remaining obligations. Break down `isEmpty_or_nonempty (E →ₐ[F] Fv F v) with h | h` into its components or cases. Conclude with `GlobalTheory.T.indLineFin_beta_of_isMatched_of_isEmpty_algHom hKP F E σ B a b G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁ v h`. Conclude with `GlobalTheory.T.indLineFin_beta_half_a_of_isMatched_of_nonempty_algHom hKP F E σ B a b G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁ v h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem h1B : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
@@ -36,7 +36,7 @@ theorem h1B : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F]
   · exact GlobalTheory.T.indLineFin_beta_half_a_of_isMatched_of_nonempty_algHom hKP F E σ B a b G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁ v h
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁`. Use `⟨fun v => ?_, GlobalTheory.T.indLineInf_alpha_of_isMatched hKP F E σ B b a' G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁⟩` and prove the remaining obligations. Break down `isEmpty_or_nonempty (E →ₐ[F] Fv F v) with h | h` into its components or cases. Conclude with `GlobalTheory.T.indLineFin_alpha_of_isMatched_of_isEmpty_algHom hKP F E σ B b a' G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁ v h`. Conclude with `GlobalTheory.T.indLineFin_alpha_of_isMatched_of_nonempty_algHom hKP F E σ B b a' G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁ v h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem h1A : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
@@ -53,7 +53,7 @@ theorem h1A : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F]
   · exact GlobalTheory.T.indLineFin_alpha_of_isMatched_of_nonempty_algHom hKP F E σ B b a' G G₁ H H' hc X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁ v h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1B, h1A⟩`.
+Supply the required witnesses or components.
 -/
 theorem h1 : (GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)

@@ -10,17 +10,15 @@ open scoped NNReal ENNReal
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- English proof (translation)
-Use `⟨_, LipschitzOnWith.of_dist_le' (K := δ⁻¹ + ‖ℓ‖ * R / (|β| * (δ * δ))) ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨ha, -⟩ b ⟨hb, hbR⟩`. Use `set ta := (ℓ a - ℓ x) / β with hta_def`. Use `set tb := (ℓ b - ℓ x) / β with htb_def`. Establish `hta : 0 < ta` using `hδ.trans_le ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htb : 0 < tb` using `hδ.trans_le hb`. Establish `hβ : β ≠ 0`. Introduce and unpack `rfl`. Rewrite `hta` using `[hta_def, div_zero]`. Conclude with `lt_irrefl _ hta`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hkey : x + ta⁻¹ • (a - x) - (x + tb⁻¹ • (b - x)) = ta⁻¹ • (a - b) + (ta⁻¹ - tb⁻¹) • (b - x)`. Simplify using `only [smul_sub, sub_smul]`. Normalize the expressions using the abelian group laws. Establish `hdiff : tb - ta = ℓ (b - a) / β`. Rewrite using `[hta_def, htb_def, map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hinv : |ta⁻¹ - tb⁻¹| ≤ ‖ℓ‖ * ‖a - b‖ / (|β| * (δ * δ))`. Rewrite using `[inv_sub_inv hta.ne' htb.ne', hdiff, abs_div, abs_div, abs_of_pos (mul_pos hta htb), div_div]`. Apply `div_le_div₀ (by positivity)` to reduce the goal to its premises. Rewrite using `[← Real.norm_eq_abs, norm_sub_rev a b]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ℓ.le_opNorm _`. Conclude with `mul_pos (abs_pos.2 hβ) (mul_pos hδ hδ)`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul ha hb hδ.le hta.le) (abs_nonneg _)`. Rewrite using `[dist_eq_norm, dist_eq_norm, hkey]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[norm_smul, norm_smul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hta)]`. Use `_ ≤ δ⁻¹ * ‖a - b‖ + ‖ℓ‖ * ‖a - b‖ / (|β| * (δ * δ)) * R := by gcongr`. Use `_ = (δ⁻¹ + ‖ℓ‖ * R / (|β| * (δ * δ))) * ‖a - b‖ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem radial_lipschitzOnWith (x : E) (ℓ : E →L[ℝ] ℝ) {β δ : ℝ} (hδ : 0 < δ) (R : ℝ) :
     ∃ K, LipschitzOnWith K (fun c => x + ((ℓ c - ℓ x) / β)⁻¹ • (c - x))
@@ -59,15 +57,15 @@ theorem radial_lipschitzOnWith (x : E) (ℓ : E →L[ℝ] ℝ) {β δ : ℝ} (h�
 variable [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Establish `hβ : α - ℓ x ≠ 0` using `sub_ne_zero.2 hα`. Establish `hsub : g '' {m | ℓ m = α ∧ (segment ℝ x m ∩ C).Nonempty} ⊆ ⋃ j : ℕ, (g ∘ fun c => x + ((ℓ c - ℓ x) / (α - ℓ x))⁻¹ • (c - x)) '' (C ∩ {c | ((j : ℝ) + 1)⁻¹ ≤ (ℓ c - ℓ x) / (α - ℓ x) ∧ ‖c - x‖ ≤ (j : ℝ) + 1})`. Introduce and unpack `_ ⟨m, ⟨hm, c, hcs, hcC⟩, rfl⟩`. Rewrite `hcs` using `[segment_eq_image']`. Take `⟨s, ⟨hs0, -⟩, rfl⟩` from `hcs`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hs : s ≠ 0`. Introduce and unpack `rfl`. Simplify using `only [zero_smul, add_zero] at hcC`. Conclude with `hx hcC`. Establish `hspos : 0 < s` using `lt_of_le_of_ne hs0 (Ne.symm hs)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : (ℓ (x + s • (m - x)) - ℓ x) / (α - ℓ x) = s`. Rewrite using `[map_add, map_smul, map_sub, hm, smul_eq_mul, add_sub_cancel_left, mul_div_assoc, div_self hβ, mul_one]`. Take `⟨j, hj⟩` from `exists_nat_gt (max s⁻¹ ‖s • (m - x)‖)`. Use `mem_iUnion.2 ⟨j, x + s • (m - x), ⟨hcC, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hτ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : s⁻¹ < (j : ℝ) + 1` using `by linarith [le_max_left s⁻¹ ‖s • (m - x)‖]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_sub_cancel_left]`. Combine the linear relations using `[le_max_right s⁻¹ ‖s • (m - x)‖]`. Simplify using `only [Function.comp_apply, hτ, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hs, one_smul, add_sub_cancel]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null hsub (measure_iUnion_null fun j => ?_)` and prove the remaining obligations. Take `⟨K, hK⟩` from `radial_lipschitzOnWith x ℓ (β := α - ℓ x) (R := (j : ℝ) + 1) (show (0 : ℝ) < ((j : ℝ) + 1)⁻¹ by positivity)`. Establish `hL` using `g.lipschitz.comp_lipschitzOnWith (hK.mono (inter_subset_right (s := C)))`. Use `le_antisymm ?_ zero_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem segment_hits_image_null {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
     [MeasurableSpace F] [BorelSpace F] {C : Set E} {x : E} (hx : x ∉ C) (ℓ : E →L[ℝ] ℝ) {α : ℝ}
@@ -107,9 +105,9 @@ theorem segment_hits_image_null {F : Type} [NormedAddCommGroup F] [NormedSpace �
     _ = 0 := by rw [measure_mono_null inter_subset_left hC, mul_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff_eq_empty, sdiff_eq_empty]`. Take `⟨z, hz⟩` from `hne`. Establish `hlt : ((k : ℝ≥0) : ℝ≥0∞) < dimH U`. Rewrite using `[Real.dimH_of_mem_nhds (hU.mem_nhds hz), hk]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.lt_succ_self k` after adjusting the coercions. Establish `htop` using `hausdorffMeasure_of_lt_dimH hlt`. Rewrite `htop` using `[NNReal.coe_natCast, measure_mono_null h hC]`. Conclude with `ENNReal.zero_ne_top htop`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff_nonempty_of_hausdorffMeasure_null [FiniteDimensional ℝ E] {k : ℕ}
     (hk : Module.finrank ℝ E = k + 1) {C : Set E} (hC : μH[(k : ℝ)] C = 0) {U : Set E}
@@ -125,21 +123,21 @@ theorem diff_nonempty_of_hausdorffMeasure_null [FiniteDimensional ℝ E] {k : �
   exact ENNReal.zero_ne_top htop
 
 /- English proof (translation)
-Use `isPreconnected_of_forall_pair fun x hx y hy => ?_` and prove the remaining obligations. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Conclude with `⟨{x}, singleton_subset_iff.2 hx, rfl, rfl, isPreconnected_singleton⟩`. Set `φ : E ≃L[ℝ] (Fin (k + 1) → ℝ)` to `ContinuousLinearEquiv.ofFinrankEq (by rw [hk, Module.finrank_fin_fun])`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, φ x i ≠ φ y i := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hxy (φ.injective (funext h))`. Set `ℓ : E →L[ℝ] ℝ` to `(ContinuousLinearMap.proj i).comp (φ : E →L[ℝ] (Fin (k + 1) → ℝ))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : E →L[ℝ] (Fin k → ℝ)` to `(ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (i.succAbove j)).comp (φ : E →L[ℝ] (Fin (k + 1) → ℝ))`. Establish `hℓ : ∀ z, ℓ z = φ z i` using `fun z => rfl`. Establish `hg : ∀ z, g z = Fin.removeNth i (φ z)` using `fun z => rfl`. Establish `hαx : (φ x i + φ y i) / 2 ≠ ℓ x` using `by rw [hℓ]; intro h; apply hi; linarith`. Establish `hαy : (φ x i + φ y i) / 2 ≠ ℓ y` using `by rw [hℓ]; intro h; apply hi; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvol : (volume : Measure (Fin k → ℝ)) = μH[(k : ℝ)]`. Use `hausdorffMeasure_pi_real (ι := Fin k)` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this.symm`. Establish `hS0 : volume (g '' {m | ℓ m = (φ x i + φ y i) / 2 ∧ (segment ℝ x m ∩ C).Nonempty} ∪ g '' {m | ℓ m = (φ x i + φ y i) / 2 ∧ (segment ℝ y m ∩ C).Nonempty}) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hvol]`. Conclude with `measure_union_null (segment_hits_image_null hx.2 ℓ hαx g (Nat.cast_nonneg k) hC) (segment_hits_image_null hy.2 ℓ hαy g (Nat.cast_nonneg k) hC)`. Set `ψ : (Fin k → ℝ) → E` to `fun w => φ.symm (Fin.insertNth i ((φ x i + φ y i) / 2) w)`. Establish `hψc : Continuous ψ` using `φ.symm.continuous.comp (continuous_const.finInsertNth i continuous_id)`. Establish `hz₀ : (1 / 2 : ℝ) • x + (1 / 2 : ℝ) • y ∈ B` using `hBc hx.1 hy.1 (by norm_num) (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hψz₀ : ψ (g ((1 / 2 : ℝ) • x + (1 / 2 : ℝ) • y)) = (1 / 2 : ℝ) • x + (1 / 2 : ℝ) • y`. Establish `h1 : φ ((1 / 2 : ℝ) • x + (1 / 2 : ℝ) • y) i = (φ x i + φ y i) / 2`. Simplify using `only [map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ψ, hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h1, Fin.insertNth_self_removeNth, ContinuousLinearEquiv.symm_apply_apply]`. Establish `hWpos : 0 < volume (ψ ⁻¹' B)` using `(hBo.preimage hψc).measure_pos volume ⟨_, show ψ _ ∈ B from hψz₀ ▸ hz₀⟩`. Take `⟨w, hwB, hwS⟩` from `nonempty_of_measure_ne_zero ((measure_sdiff_null hS0).symm ▸ hWpos.ne' : volume (ψ ⁻¹' B \ _) ≠ 0)`. Establish `hφm : φ (ψ w) = Fin.insertNth i ((φ x i + φ y i) / 2) w`. Simplify using `only [ψ, ContinuousLinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓm : ℓ (ψ w) = (φ x i + φ y i) / 2` using `by rw [hℓ, hφm, Fin.insertNth_apply_same]`. Establish `hgm : g (ψ w) = w` using `by rw [hg, hφm, Fin.removeNth_insertNth]`. Establish `hxm : segment ℝ x (ψ w) ⊆ B \ C` using `fun c hc => ⟨hBc.segment_subset hx.1 hwB hc, fun hcC => hwS (Or.inl ⟨ψ w, ⟨hℓm, c, hc, hcC⟩, hgm⟩)⟩`. Establish `hmy : segment ℝ (ψ w) y ⊆ B \ C` using `fun c hc => ⟨hBc.segment_subset hwB hy.1 hc, fun hcC => hwS (Or.inr ⟨ψ w, ⟨hℓm, c, segment_symm ℝ (ψ w) y ▸ hc, hcC⟩, hgm⟩)⟩`. Conclude with `⟨segment ℝ x (ψ w) ∪ segment ℝ (ψ w) y, union_subset hxm hmy, Or.inl (left_mem_segment ℝ x (ψ w)), Or.inr (right_mem_segment ℝ (ψ w) y), (convex_segment x (ψ w)).isPreconnected.union (ψ w) (right_mem_segment ℝ x (ψ w)) (left_mem_segment ℝ (ψ w) y) (convex_segment (ψ w) y).isPreco …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem convex_diff_isPreconnected [FiniteDimensional ℝ E] {k : ℕ}
     (hk : Module.finrank ℝ E = k + 1) {C : Set E} (hC : μH[(k : ℝ)] C = 0) {B : Set E}
@@ -200,15 +198,15 @@ theorem convex_diff_isPreconnected [FiniteDimensional ℝ E] {k : ℕ}
       (left_mem_segment ℝ (ψ w) y) (convex_segment (ψ w) y).isPreconnected⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ D C hDo hDc hC`. Distinguish the cases in `h0 : Module.finrank ℝ E = 0`. Establish `: Subsingleton E` using `Module.finrank_zero_iff.1 h0`. Conclude with `Set.subsingleton_of_subsingleton.isPreconnected`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_one_of_ne_zero h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC' : μH[(k : ℝ)] C = 0`. Rewrite `hC` using `[hk, Nat.cast_add, Nat.cast_one, add_sub_cancel_right]`. Conclude with `hC`. Use `choose! r hr0 hrD using Metric.isOpen_iff.1 hDo`. Establish `hU : D \ C = ⋃ z ∈ D, ball z (r z) \ C`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `z`. Simplify using `only [mem_sdiff, mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzC⟩`. Conclude with `⟨z, hz, mem_ball_self (hr0 z hz), hzC⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, hw, hzb, hzC⟩`. Conclude with `⟨hrD w hw hzb, hzC⟩`. Rewrite using `[hU]`. Use `IsPreconnected.biUnion_of_reflTransGen (fun z _ => convex_diff_isPreconnected hk hC' isOpen_ball (convex_ball z (r z))) ?_` and prove the remaining obligations. Introduce `z hz w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `hDc.induction₂' (fun a b => ReflTransGen (fun i j => ((ball i (r i) \ C) ∩ (ball j (r j) \ C)).Nonempty ∧ i ∈ D) a b) ?_ (fun a b c _ _ _ h1 h2 => h1.trans h2) hz hw` and prove the remaining obligations. Introduce `a ha`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (ball_mem_nhds a (hr0 a ha)), self_mem_nhdsWithin] with b hb hbD`. Take `⟨p, ⟨hpa, hpb⟩, hpC⟩` from `diff_nonempty_of_hausdorffMeasure_null hk hC' (isOpen_ball.inter isOpen_ball) ⟨b, hb, mem_ball_self (hr0 b hbD)⟩`. Conclude with `⟨ReflTransGen.single ⟨⟨p, ⟨hpa, hpC⟩, hpb, hpC⟩, ha⟩, ReflTransGen.single ⟨⟨p, ⟨hpb, hpC⟩, hpa, hpC⟩, hbD⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HausdorffNullComplementConnected.proof : HausdorffNullComplementConnected.Statement := by
   intro E _ _ _ _ _ D C hDo hDc hC

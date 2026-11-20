@@ -15,9 +15,9 @@ def Sorts (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) : Prop :=
   (∀ i, ε (e (Sum.inl i)) = true) ∧ ∀ j, ε (e (Sum.inr j)) = false
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Formalism.REAL.Jm, Matrix.diagonal_apply, EmbeddingLike.apply_eq_iff_eq, Formalism.UG.Jpq]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.one_apply, h.1, h.2]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Sorts.reindex_Jpq {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) :
     Matrix.reindex e e (Formalism.UG.Jpq P Q) = Formalism.REAL.Jm ε := by
@@ -30,9 +30,9 @@ theorem Sorts.reindex_Jpq {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `: Function.Bijective fun i : Fin P => (⟨e (Sum.inl i), h.1 i⟩ : {a // ε a = true})`. Use `⟨fun i j hij => Sum.inl_injective (e.injective (congrArg Subtype.val hij)), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Take `⟨b | b, rfl⟩` from `e.surjective a`. Conclude with `⟨b, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `ha` using `[h.2]`. Consider the cases of `ha`. Rewrite using `[← Nat.card_eq_of_bijective _ this]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Sorts.card_true {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) : Nat.card {a // ε a = true} = P := by
   have : Function.Bijective fun i : Fin P => (⟨e (Sum.inl i), h.1 i⟩ : {a // ε a = true}) := by
@@ -44,13 +44,13 @@ theorem Sorts.card_true {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) : Nat.c
   rw [← Nat.card_eq_of_bijective _ this]; simp
 
 /- English proof (translation)
-Simplify using `using Fintype.card_congr e`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Sorts.add_eq (e : Fin P ⊕ Fin Q ≃ Fin n) : P + Q = n := by
   simpa using Fintype.card_congr e
 
 /- English proof (translation)
-Use `⟨_, _, (Equiv.sumCongr (Fintype.equivFin {a // ε a = true}).symm (Fintype.equivFin {a // ¬ ε a = true}).symm).trans (Equiv.sumCompl fun a => ε a = true), fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `((Fintype.equivFin {a // ε a = true}).symm i).2`. Conclude with `Bool.eq_false_iff.2 ((Fintype.equivFin {a // ¬ ε a = true}).symm j).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sorts (ε : Fin n → Bool) : ∃ (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n), Sorts ε e := by
   refine ⟨_, _, (Equiv.sumCongr (Fintype.equivFin {a // ε a = true}).symm
@@ -76,7 +76,7 @@ theorem reindexUnits_val (e : Fin P ⊕ Fin Q ≃ Fin n) (g : GL (Fin P ⊕ Fin 
       Matrix.reindex e e (g : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Formalism.REAL.inUJ ε (reindexUnits e g : Matrix (Fin n) (Fin n) ℂ) ↔ (g : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ).conjTranspose * Formalism.UG.Jpq P Q * (g : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) = Formalism.UG.Jpq P Q`. Rewrite using `[Formalism.REAL.inUJ, reindexUnits_val, ← h.reindex_Jpq, Matrix.conjTranspose_reindex]`. Rewrite using `[← (Matrix.reindex (α := ℂ) e e).injective.eq_iff]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Sorts.mem_iff {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) (g : GL (Fin P ⊕ Fin Q) ℂ) :
     reindexUnits e g ∈ Formalism.REAL.UJ ε ↔ g ∈ Formalism.UG.Upq P Q := by
@@ -103,15 +103,15 @@ theorem Sorts.umat_equiv {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) (g : U
     umat (h.equiv g) = Matrix.reindex e e (UpqT.mat g) := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem umat_injective : Function.Injective (umat : Formalism.REAL.UJ ε → _) :=
   fun _ _ h => Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hg⟩`. Rewrite `hg` using `[← h.umat_equiv]`. Rewrite using `[Set.mem_preimage, ← umat_injective hg]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Introduce `hg`. Conclude with `⟨_, hg, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Sorts.set_eq {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) (A : Set (Formalism.REAL.UJ ε)) :
     {g | ∃ a ∈ A, umat a = Matrix.reindex e e (UpqT.mat g)} = h.equiv ⁻¹' A := by
@@ -125,17 +125,15 @@ theorem Sorts.set_eq {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) (A : Set (
     exact ⟨_, hg, rfl⟩
 
 /- English proof (translation)
-Use `set σ : Fin P ⊕ Fin Q ≃ Fin P ⊕ Fin Q := e.trans e'.symm with hσ`. Establish `hJ : (Formalism.UG.Jpq P Q).submatrix σ σ = Formalism.UG.Jpq P Q`. Apply `(Matrix.reindex (α := ℂ) e e).injective` to reduce the goal to its premises. Rewrite using `[h.reindex_Jpq, ← h'.reindex_Jpq]`. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hσ]`. Establish `hmem : (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ).submatrix σ id ∈ Set.range (UpqT.mat (P` using `P) (Q := Q)) := by`. Rewrite using `[GlobalTheory.UpqTopology.range_mat]`. Express the relevant statement in the definitionally equal form `_ = _`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hJ]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Simplify using the standard rewrite rules. Take `⟨u, hu⟩` from `hmem`. Use `⟨u, fun g => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h.equiv.symm_apply_eq, eq_mul_inv_iff_mul_eq]`. Apply `GlobalTheory.UpqTopology.isClosedEmbedding_mat.injective` to reduce the goal to its premises. Establish `h1 : UpqT.mat (h.equiv.symm (h'.equiv g)) = (UpqT.mat g).submatrix σ σ`. Apply `(Matrix.reindex (α := ℂ) e e).injective` to reduce the goal to its premises. Rewrite using `[← h.umat_equiv, h.equiv.apply_symm_apply, h'.umat_equiv]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[hσ]`. Express the relevant statement in the definitionally equal form `UpqT.mat (h.equiv.symm (h'.equiv g)) * UpqT.mat u = UpqT.mat u * UpqT.mat g`. Rewrite using `[h1, hu, Matrix.submatrix_mul_equiv, Matrix.mul_one]`. Use `Matrix.submatrix_mul_equiv (1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (UpqT.mat g) σ (Equiv.refl _) id` as an intermediate fact.
-
-Simplify using `using this.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Sorts.exists_conj {e e' : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) (h' : Sorts ε e') :
     ∃ u : UpqT P Q, ∀ g, h'.equiv g = h.equiv (u * g * u⁻¹) := by
@@ -169,18 +167,16 @@ theorem Sorts.exists_conj {e e' : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) (h
   simpa using this.symm
 
 /- English proof (translation)
-Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Conclude with `h.equiv.continuous.measurable`.
+A detailed English derivation is pending.
 -/
 theorem Sorts.measurable_equiv {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) : Measurable h.equiv := by
   haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩
   exact h.equiv.continuous.measurable
 
 /- English proof (translation)
-Take `rfl : P = P'` from `h.card_true.symm.trans h'.card_true`. Choose the witnesses or unpack the hypotheses as in `rfl : Q = Q' := by`. Establish `h1` using `Sorts.add_eq e`. Establish `h2` using `Sorts.add_eq e'`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Use `haveI := cd.haar P Q`. Use `haveI := GlobalTheory.UpqHaarRight.isMulRightInvariant P Q _ (cd.haar P Q)`. Take `⟨u, hu⟩` from `h.exists_conj h'`.
-
-Establish `: (h'.equiv : UpqT P Q → Formalism.REAL.UJ ε) = h.equiv ∘ (fun g => g * u⁻¹) ∘ fun g => u * g` using `funext hu`. Rewrite using `[this, ← Measure.map_map h.measurable_equiv ((measurable_mul_const _).comp (measurable_const_mul _)), ← Measure.map_map (measurable_mul_const _) (measurable_const_mul _), map_mul_left_eq_self, map_mul_right_eq_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sorts.map_eq (cd : CDHaar) {P' Q' : ℕ} {e : Fin P ⊕ Fin Q ≃ Fin n} {e' : Fin P' ⊕ Fin Q' ≃ Fin n}
     (h : Sorts ε e) (h' : Sorts ε e') : (cd.cd P' Q').map h'.equiv = (cd.cd P Q).map h.equiv := by
@@ -200,7 +196,7 @@ theorem Sorts.map_eq (cd : CDHaar) {P' Q' : ℕ} {e : Fin P ⊕ Fin Q ≃ Fin n}
     map_mul_right_eq_self]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Use `haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩`. Use `haveI := cd.haar P Q`. Use `haveI : ((cd.cd P Q).map h.equiv).IsHaarMeasure := h.equiv.isHaarMeasure_map _`. Conclude with `⟨_, Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, Measure.isMulLeftInvariant_eq_smul ((cd.cd P Q).map h.equiv) (Formalism.REAL.muG ε)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Sorts.exists_scale (cd : CDHaar) {e : Fin P ⊕ Fin Q ≃ Fin n} (h : Sorts ε e) :
     ∃ c : NNReal, 0 < c ∧ (cd.cd P Q).map h.equiv = (c : ENNReal) • Formalism.REAL.muG ε := by
@@ -212,7 +208,7 @@ theorem Sorts.exists_scale (cd : CDHaar) {e : Fin P ⊕ Fin Q ≃ Fin n} (h : So
     Measure.isMulLeftInvariant_eq_smul ((cd.cd P Q).map h.equiv) (Formalism.REAL.muG ε)⟩
 
 /- English proof (translation)
-Use `choose P Q e he using fun (n : ℕ) (ε : Fin n → Bool) => exists_sorts ε`. Use `choose sc hpos hsc using fun (n : ℕ) (ε : Fin n → Bool) => (he n ε).exists_scale cd`. Use `⟨sc, hpos, fun n ε P' Q' e' h1 h2 A hA => ?_⟩` and prove the remaining obligations. Establish `h' : Sorts ε e'` using `⟨h1, h2⟩`. Rewrite using `[h'.set_eq, ← Measure.map_apply h'.measurable_equiv hA, (he n ε).map_eq cd h', hsc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cdScaleIs (cd : CDHaar) :
     ∃ sc : ∀ n : ℕ, (Fin n → Bool) → NNReal, (∀ n ε, 0 < sc n ε) ∧ CdScaleIs cd sc := by
@@ -223,7 +219,7 @@ theorem exists_cdScaleIs (cd : CDHaar) :
   rw [h'.set_eq, ← Measure.map_apply h'.measurable_equiv hA, (he n ε).map_eq cd h', hsc]
 
 /- English proof (translation)
-Introduce `cd`. Unfold `trueScale`. Rewrite using `[dif_pos (exists_cdScaleIs cd)]`. Conclude with `(Classical.choose_spec (exists_cdScaleIs cd)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdScaleIs_trueScale : ∀ cd : CDHaar, CdScaleIs cd (trueScale cd) := by
   intro cd
@@ -232,9 +228,9 @@ theorem cdScaleIs_trueScale : ∀ cd : CDHaar, CdScaleIs cd (trueScale cd) := by
   exact (Classical.choose_spec (exists_cdScaleIs cd)).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n ε`. Take `⟨P, Q, e, he⟩` from `exists_sorts ε`. Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts (Formalism.REAL.UJ ε))` from `inferInstance`. Establish `hm : MeasurableSet (K : Set (Formalism.REAL.UJ ε))` using `K.isCompact.measurableSet`. Establish `h0 : Formalism.REAL.muG ε K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty).ne'`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Formalism.REAL.muG ε K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Use `(h n ε P Q e he.1 he.2 K hm).trans (h' n ε P Q e he.1 he.2 K hm).symm` as an intermediate fact. Rewrite `this` using `[Measure.smul_apply, Measure.smul_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj h0 ht).1 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdScaleIs_unique (cd : CDHaar) {sc sc' : ∀ n : ℕ, (Fin n → Bool) → NNReal}
     (h : CdScaleIs cd sc) (h' : CdScaleIs cd sc') : sc = sc' := by

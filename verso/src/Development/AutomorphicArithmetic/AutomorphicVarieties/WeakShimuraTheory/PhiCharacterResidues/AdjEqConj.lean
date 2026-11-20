@@ -5,14 +5,14 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 private def formJ (R : Type) [CommRing R] : M4 R := !![0, 0, 0, 1; 0, 0, 1, 0; 0, -1, 0, 0; -1, 0, 0, 0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [formJ, Matrix.mul_apply, Fin.sum_univ_four]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem formJ_mul (R : Type) [CommRing R] : (formJ R).transpose * formJ R = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [formJ, Matrix.mul_apply, Fin.sum_univ_four]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[formJ, adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem adj_eq_conj {R : Type} [CommRing R] (M : M4 R) :
     adj M = formJ R * (M.transpose * (formJ R).transpose) := by
@@ -21,9 +21,9 @@ private theorem adj_eq_conj {R : Type} [CommRing R] (M : M4 R) :
     simp [formJ, adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four]
 
 /- English proof (translation)
-Introduce `R _ ν M N hM hMN`. Establish `h1 : adj M = ν • N`. Establish `h2 : adj M * M * N = ν • N`. Unfold `IsGSp at hM`. Rewrite using `[hM, smul_mul_assoc, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[mul_assoc, hMN, mul_one]`. Conclude with `h2`. Rewrite using `[← h1, adj_eq_conj, Matrix.charpoly_mul_comm, mul_assoc, formJ_mul, mul_one, Matrix.charpoly_transpose]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiAdj :
     ∀ {R : Type} [CommRing R] (ν : R) (M N : M4 R), IsGSp ν M → M * N = 1 → (ν • N).charpoly = M.charpoly := by

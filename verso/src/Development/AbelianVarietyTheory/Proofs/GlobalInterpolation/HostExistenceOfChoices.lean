@@ -24,19 +24,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX.HostExist
 
 /- English proof (translation)
-Simplify using `[GlobalTheoryTheory.kronSym, Nat.factorization_eq_zero_of_not_dvd h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kronSym_of_odd (a : ℤ) {n : ℕ} (h : ¬ 2 ∣ n) : GlobalTheoryTheory.kronSym a n = jacobiSym a n := by
   simp [GlobalTheoryTheory.kronSym, Nat.factorization_eq_zero_of_not_dvd h]
 
 /- English proof (translation)
-Establish `hp : d.Prime` using `Fact.out`. Use `haveI : NeZero d := ⟨hp.ne_zero⟩`. Establish `hch : ringChar (ZMod d) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Break down `(Nat.dvd_prime hp).1 (DirichletCharacter.conductor_dvd_level ((quadraticChar (ZMod d)).ringHomComp (Int.castRingHom ℂ))) with h | h` into its components or cases. Conclude with `absurd (DirichletCharacter.eq_one_iff_conductor_eq_one.2 h) ((MulChar.ringHomComp_ne_one_iff (Int.cast_injective)).2 (quadraticChar_ne_one hch))`. Conclude with `h`. Establish `ha0 : 0 < a`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos a with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `absurd (Nat.coprime_zero_left M |>.1 ha) hM`. Conclude with `h`. Rewrite using `[GlobalTheoryTheory.chDir, GlobalTheoryTheory.kron, GlobalTheory.kronSym_neg_eq_jacobiSym_and_two.1 d a hd ha0, ← jacobiSym.legendreSym.to_jacobiSym, legendreSym]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quadraticChar_induces (d M : ℕ) [Fact d.Prime] (hd : d % 4 = 3) (hM : M ≠ 1) :
     GlobalTheoryTheory.Induces ((quadraticChar (ZMod d)).ringHomComp (Int.castRingHom ℂ) : DirichletCharacter ℂ d)
@@ -60,7 +58,7 @@ theorem quadraticChar_induces (d M : ℕ) [Fact d.Prime] (hd : d % 4 = 3) (hM : 
     simp
 
 /- English proof (translation)
-The claim follows from `|dlogH H| ≤ C * Real.log x := by haveI : Fact H.d.Prime := ⟨H.hyp.2.1⟩ haveI : NeZero H.d := ⟨H.hyp.2.1.ne_zero⟩ have hd : H.d % 16 = 7 := H.hyp.2.2.2.1 have h1 := (h.2.1 H.d _ (quadraticChar_induces H.d (8 * H.q * H.d) (by omega) (by rw [mul_assoc]; omega))).2 exact (Complex.abs …`.
+A detailed English derivation is pending.
 -/
 theorem abs_dlogH_le {R : Ranks} (H : Host R) {x eps C : ℝ} (h : QDq x eps C H.q H.d) :
     |dlogH H| ≤ C * Real.log x := by
@@ -72,15 +70,11 @@ theorem abs_dlogH_le {R : Ranks} (H : Host R) {x eps C : ℝ} (h : QDq x eps C H
   exact (Complex.abs_re_le_norm _).trans h1
 
 /- English proof (translation)
-Take `⟨H, rfl, rfl, hQS, -, -, -, hPS, hEx, s, hs, hgs⟩` from `Formalism.HC.exists_hostAx R.toFrame hinj he hyp`. Establish `hcm : H.cmType.Nonempty`. Apply `Set.nonempty_of_ncard_ne_zero` to reduce the goal to its premises. Rewrite using `[H.der.cmType.2.1]`. Use `R.ord_pos` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨𝔟, h1, h2, h4⟩` from `H.der.principal`. Use `⟨{ toHostAx := H, flPS := hPS, sqq := s, sqq_sq := hs, gal_sqq := hgs, QS_exact := hEx QS_le := by rw [hQS]; exact Formalism.HC.D7.qs_le R.toFrame hinj he o_pow := ho, q_ne_three := h3, qd_big := hbig, splitBound := B, split_small := hsp small_le := fun l hl h2 hd => by` and prove the remaining obligations. Rewrite `hd` using `[hQS]`. Conclude with `absurd ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (hl.dvd_of_dvd_pow hd)) h2`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `φ₀ := hcm.some, φ₀_mem := hcm.some_mem,`. Use `𝔟 := 𝔟, 𝔟_spec := ⟨h1, h2⟩, 𝔟_stable := h4, levelPrimes := {g 0, g 1, p, p', q0}, g := g, g_prime := hg, g_ne := hne,`. Apply the tactic sequence `g_level := by intro i; fin_cases i <;> simp`. Use `pde := p, pde' := p', pde_prime := hp, pde'_prime := hp', pde_ne := hpp, pde_level := by simp`. Use `pde_mod := hm, pde_ne_g := hpg, ccK := ⊤, ccK_ne_bot := top_ne_bot,`.
-
-Use `ccK_primitive := fun m hm => top_primitive m hm`. Use `ccK_split := fun P hP hle => absurd (top_le_iff.1 hle) hP.ne_top`. Use `ccK_coprime := fun p _ => by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left p`. Use `ccK_coprimeS := by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _`. Use `level_coprimeS := fun l hl => by`.
-
-Rewrite using `[hQS]`. Conclude with `Nat.Coprime.pow_right _ (Nat.coprime_two_right.2 (Nat.odd_iff.2 (hodd l hl)))`. Use `TT := ∅, T2 := T, u0 := 0, Lw := Lw, two_le_Lw := hL, second_set_range := hT, second_set_no_relation := hT', CT2 := CT2 },`. Use the proof step `rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, hQS⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_host (R : Ranks) (q d B : ℕ) (hyp : Formalism.FrobeniusOrbits.HostHyp q d)
     (hbig : 4 * R.t * R.r + 1 < q ∧ 4 * R.t * R.r + 1 < d) (h3 : q ≠ 3) (he : 2 ≤ R.e)
@@ -121,9 +115,9 @@ theorem exists_host (R : Ranks) (q d B : ℕ) (hyp : Formalism.FrobeniusOrbits.H
     rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, hQS⟩
 
 /- English proof (translation)
-Establish `h` using `(isLittleO_log_rpow_atTop he).bound (inv_pos.2 hC)`. Take `⟨x0, h0⟩` from `Filter.eventually_atTop.1 h`. Use `⟨max x0 1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `h0 x (le_of_max_le_left hx)`. Establish `hx1 : 1 ≤ x` using `le_of_max_le_right hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.norm_of_nonneg (Real.log_nonneg hx1), Real.norm_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem log_le_rpow_eventually (eps C : ℝ) (he : 0 < eps) (hC : 0 < C) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → C * Real.log x ≤ x ^ eps := by
@@ -137,21 +131,19 @@ theorem log_le_rpow_eventually (eps C : ℝ) (he : 0 < eps) (hC : 0 < C) :
     _ = x ^ eps := by field_simp
 
 /- English proof (translation)
-Take `⟨x1, h1⟩` from `GlobalTheory.EX.rank_basic_bounds eps he he'`. Take `⟨x2, h2⟩` from `GlobalTheory.scale_poly_comparison eps 814 1 he one_pos`. Use `⟨max (max x1 x2) 5, fun s R q d hs hx hR hrow => ?_⟩` and prove the remaining obligations. Establish `hx5 : 5 ≤ s.x` using `le_of_max_le_right hx`. Establish `hx0 : 0 < s.x` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hr, -, -, -, -, -, -, -, -, -, -, ht, -⟩` from `h1 s R hs (le_of_max_le_left (le_of_max_le_left hx)) hR`. Establish `h814` using `(h2 s hs (le_of_max_le_right (le_of_max_le_left hx))).1`. Establish `hX1 : s.x ^ (814 : ℝ) ≤ GlobalTheoryTheory.X1 s.x s.eps`. Use `h814.trans (Real.exp_le_exp.2 (Real.rpow_le_rpow_of_exponent_le s.one_lt_alt.le ?_))` and prove the remaining obligations. Use `s.eps_pos` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : 1 ≤ Real.log s.x`. Rewrite using `[Real.le_log_iff_exp_le hx0]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hX2 : GlobalTheoryTheory.X1 s.x s.eps ≤ GlobalTheoryTheory.X2 s.x s.eps`. Use `Real.exp_le_exp.2 (le_mul_of_one_le_right (by positivity) (one_le_pow₀ hlog))` and prove the remaining obligations. Establish `hsq : s.x ^ (407 : ℝ) ≤ Real.sqrt (GlobalTheoryTheory.X1 s.x s.eps)`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions using `at hX1 ⊢`. Conclude with `hX1`. Establish `h406 : (R.t : ℝ) * R.r ≤ s.x ^ (406 : ℝ)`. Rewrite using `[show (406 : ℝ) = 401 + 5 by norm_num, Real.rpow_add hx0]`. Use `gcongr`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : 1 ≤ s.x ^ (406 : ℝ)` using `Real.one_le_rpow s.one_lt_alt.le (by norm_num)`. Establish `h407 : 5 * s.x ^ (406 : ℝ) ≤ s.x ^ (407 : ℝ)`. Rewrite using `[show (407 : ℝ) = 1 + 406 by norm_num, Real.rpow_add hx0, Real.rpow_one]`. Use `gcongr`. Establish `hb : ((4 * R.t * R.r + 1 : ℕ) : ℝ) ≤ Real.sqrt (GlobalTheoryTheory.X1 s.x s.eps)` using `by push_cast; linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq` using `hrow.2.2.1`. Establish `hd` using `(Real.sqrt_le_sqrt hX2).trans_lt hrow.2.2.2.2.2.2.1`. Use `⟨⟨by exact_mod_cast hb.trans_lt hq, by exact_mod_cast hb.trans_lt hd⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Move the coercions through the operations in `at hq`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the hypotheses and unpack their components. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem qd_big (eps : ℝ) (he : 0 < eps) (he' : eps < 1 / 52) : ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (q d : ℕ),
     s.eps = eps → x0 ≤ s.x → RankVal s R → Rowq s.x s.eps R.n q d →
@@ -194,17 +186,15 @@ theorem qd_big (eps : ℝ) (he : 0 < eps) (he' : eps < 1 / 52) : ∃ x0 : ℝ, �
   linarith
 
 /- English proof (translation)
-Take `⟨x2, h2⟩` from `GlobalTheory.scale_poly_comparison eps (2 * C) 1 he one_pos`. Use `⟨x2, fun s R q d hs hx hrow => ?_⟩` and prove the remaining obligations. Take `⟨-, -, h3, -, -, -, h7⟩` from `h2 s hs hx`. Rewrite `h3`, `h7` using `[Real.rpow_one]`. Establish `hxc : 1 ≤ s.x ^ (2 * C)` using `Real.one_le_rpow s.one_lt_alt.le (by linarith)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : (0 : ℝ) < R.n` using `by exact_mod_cast R.ord_pos`. Establish `hq : (0 : ℝ) < q` using `by exact_mod_cast hrow.1.pos`. Establish `hd : (0 : ℝ) < d` using `by exact_mod_cast hrow.2.2.2.2.1.pos`. Establish `hN : (0 : ℝ) < 4 * (R.n : ℝ) * q * d` using `by positivity`. Establish `hlog` using `hrow.2.2.2.2.2.2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : (4 * (R.n : ℝ) * q * d) ^ C ≤ Real.exp (2 * C * s.x ^ (s.eps / 5) * Real.log s.x ^ 2)`. Rewrite using `[Real.rpow_def_of_pos hN]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `hX : 0 < s.X'` using `Real.exp_pos _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `a2 : Real.exp (2 * C * s.x ^ (s.eps / 5) * Real.log s.x ^ 2) ≤ s.X'` using `(le_mul_of_one_le_right (Real.exp_pos _).le hxc).trans h7`. Establish `a3 : s.X' ≤ s.b` using `(le_mul_of_one_le_left hX.le hxc).trans h3`. Establish `hb : 1 < s.b`. Establish `: 0 < s.L` using `Real.rpow_pos_of_pos (by have := s.one_lt_alt; linarith) _`. Conclude with `Real.one_lt_exp_iff.2 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (1 : ℝ) ≤ R.k`. Use `R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ R.k)` after adjusting the coercions. Establish `a4 : s.b ≤ R.k * s.b` using `le_mul_of_one_le_left (by linarith) hk`. Establish `a5 : (R.k : ℝ) * s.b < ((R.k : ℝ) * s.b) ^ 8` using `lt_self_pow₀ (by linarith) (by norm_num)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cond_pow_lt (eps C : ℝ) (he : 0 < eps) (hC : 1 ≤ C) : ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (q d : ℕ),
     s.eps = eps → x0 ≤ s.x → Rowq s.x s.eps R.n q d →
@@ -238,49 +228,41 @@ theorem cond_pow_lt (eps C : ℝ) (he : 0 < eps) (hC : 1 ≤ C) : ∃ x0 : ℝ, 
   linarith
 
 /- English proof (translation)
-Take `⟨c6, hc6, hThin⟩` from `hThin eps he he'`. Take `⟨xb, hThin⟩` from `hThin 4`. Take `⟨Cb, xc, hCb, hTops⟩` from `hTops eps 4 he he'`. Take `⟨C8, hC8, hAux⟩` from `GlobalTheory.T.exists_primes_in_progression_bounded hSP`. Take `⟨xd, hG⟩` from `GlobalTheory.T.exists_two_large_norm_one_primes hNP eps he he'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨CT2, hT⟩` from `GlobalTheory.T.exists_noRel_finset_card_ge`. Take `⟨xe, hT⟩` from `hT eps 4 he he'`. Take `⟨xf, hlog⟩` from `log_le_rpow_eventually eps C5 he hC5`. Take `⟨xg, hbig⟩` from `qd_big eps he he'`. Take `⟨xh, hlt⟩` from `cond_pow_lt eps C8 he hC8`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨CT2, max C8 4, c6, Cb, max (max xb (max xc xd)) (max (max xe xf) (max xg xh)), le_max_of_le_left hC8, hc6, hCb, fun s R q d hs hx hJ hR h2e hφ hrow hqd hbox => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hb, hc, hd⟩, ⟨hxe, hf⟩, hg, hh⟩` from `hx`. Establish `hfr : ∀ (φ : Formalism.HC.Frame) (e : ℕ), φ = Formalism.HC.cyclicFrame e → Function.Injective φ.h ∧ φ.o = 1 ∧ φ.ord = 2 ^ e`. Introduce and unpack `_ e rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Formalism.HC.frameCyc_h_injective e 1, Formalism.HC.cyclicFrame_index e, rfl⟩`. Take `⟨hinj, ho1, hord⟩` from `hfr _ _ hφ`. Establish `ho4 : (R.o : ℝ) ≤ 4` using `by rw [ho1]; norm_num`. Establish `hn : 1 ≤ R.n` using `R.ord_pos`. Establish `hq8 : q % 8 = 3` using `hrow.2.1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd16 : d % 16 = 7` using `hrow.2.2.2.2.2.1`. Establish `hyp : Formalism.FrobeniusOrbits.HostHyp q d` using `⟨hrow.1, hrow.2.2.2.2.1, hq8, hd16, by rw [← kronSym_of_odd _ (by omega)]; exact hrow.2.2.2.2.2.2.2.2.1⟩`. Establish `hN : 30 ≤ 4 * R.n * q * d`. Apply the tactic sequence `have : 4 * 1 * 3 * 7 ≤ 4 * R.n * q * d := by gcongr <;> omega`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers.
 
-Establish `hd100 : 100 ≤ d`. Establish `h1` using `(hbig s R q d hs hg hR hrow).1.2`. Establish `h2` using `R.rank_add_five_le`. Establish `h3` using `R.m_add_three_le_k`. Establish `h4` using `R.two_le_m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 6 ≤ R.r` using `by unfold Ranks.r; omega`. Establish `ht : 11 ≤ R.t` using `by omega`. Establish `h5 : 4 * 11 * 6 ≤ 4 * R.t * R.r` using `by gcongr`. Use linear arithmetic over natural numbers and integers. Establish `hmod` using `modRow_of_rowq (pairWin_self s) hn hd100 hrow`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨p, p', q0, hp, hp', hq0, hpp, hq0p, hq0p', mp, mp', mq0, lp, lp', lq0⟩` from `hAux _ hN`. Establish `hmono : ((4 * R.n * q * d : ℕ) : ℝ) ^ C8 ≤ ((4 * R.n * q * d : ℕ) : ℝ) ^ max C8 4` using `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (by omega : 1 ≤ 4 * R.n * q * d)) (le_max_left _ _)`. Establish `kp` using `lp.trans hmono`. Establish `kp'` using `lp'.trans hmono`. Establish `kq0` using `lq0.trans hmono`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at lp lp' lq0`. Take `⟨g, hgi, hg01, hdisj⟩` from `hG s R _ d hs hd hR hmod`. Take `⟨T, t1, t2, t3, t4, t5, t6⟩` from `hT s R hs hxe hR ho4`. Establish `hlt'` using `hlt s R q d hs hh hrow`. Establish `m15 : ∀ a : ℕ, a % (15 * (4 * R.n * q * d)) = 1 → a % 15 = 1 ∧ a % (4 * R.n * q * d) = 1` using `fun a h => mod_of_mod_lcm (by omega) (mod_lcm_of_mod_mul (by omega) h)`.
+Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hodd : ∀ l ∈ ({g 0, g 1, p, p', q0} : Finset ℕ), l % 2 = 1`. Establish `o1 : ∀ a : ℕ, a % (4 * R.n * q * d) = 1 → a % 2 = 1` using `fun a h => by`. Rewrite using `[← Nat.mod_mod_of_dvd a (⟨2 * R.n * q * d, by ring⟩ : 2 ∣ 4 * R.n * q * d), h]`. Establish `o2 : ∀ i, g i % 2 = 1` using `fun i => by`. Establish `h1 : p < g i` using `by exact_mod_cast (lp.trans_lt hlt').trans_le (hgi i).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hp.two_le`. Conclude with `((hgi i).1.eq_two_or_odd).resolve_left (by omega)`. Introduce `l hl`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hl`. Break down `hl with rfl | rfl | rfl | rfl | rfl` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `exacts [o2 0, o2 1, o1 _ (m15 _ mp).2, o1 _ (m15 _ mp').2, o1 _ mq0]`. Take `⟨H0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12⟩` from `exists_host R q d ⌊s.x ^ (s.ez / 5)⌋₊ hyp (hbig s R q d hs hg hR hrow).1 (hbig s R q d hs hg hR hrow).2 h2e hinj (by rw [ho1, one_pow]; exact Nat.one_le_two_pow) (fun l hl h2 hle => by`. Rewrite using `[← kronSym_of_odd _ (fun h => h2 ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hl).1 h).symm)]`. Use `hrow.2.2.2.2.2.2.2.2.2.1 l hl (((Nat.le_floor_iff ?_).1 hle).trans ((pairWin_self s).rpow_ez_le (by norm_num)))` and prove the remaining obligations. Use `s.one_lt_alt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use the proof step `positivity)`. Use `g p p' q0 (fun i => (hgi i).1) hg01 hp hp' hpp ⟨(m15 p mp).1, (m15 p' mp').1⟩`. Use the proof step `(fun i => ⟨fun h => by have := (hgi i).2.1; rw [← h] at this; linarith, fun h => by have := (hgi i).2.1; rw [← h] at this; linarith⟩)`. Use `hodd T (Lwv s) t6 t1 t2 CT2`. Substitute `e1 e2 e4 e5 e6 e9 e11` using the available equality.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hQS : H0.QS = 4 * R.n`. Rewrite using `[e12, show R.n = 2 ^ R.e from hord]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQR : (H0.QS : ℝ) = 4 * R.n` using `by exact_mod_cast hQS`. Rewrite `hN`, `hgi`, `m15`, `mp`, `mp'`, `mq0`, `kp`, `kp'`, `kq0` using `[← hQS]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at kp kp' kq0`. Take `⟨TT, tt1, tt2, hbad, hsh⟩` from `hTops s R H0 hs hc hR hJ ho4 e3.ge`. Establish `hnorm` using `fun i => GlobalTheory.T.norm_one_prime_elements R H0 (H0.QS * H0.q * H0.d) (H0.g i) (by omega) (hgi i).2.2.2`. Establish `hgm : ∀ i, H0.g i % (H0.QS * H0.q * H0.d) = 1` using `fun i => (hnorm i).2.trans (Nat.mod_eq_of_lt (by omega))`. Establish `hsplit` using `GlobalTheory.HostSplit.split_of_one_mod R H0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpr : PairRow s.x s.eps H0`. Rewrite using `[pairRow_iff_rowq, hQS, Nat.mul_div_cancel_left _ (by norm_num)]`. Conclude with `hrow`. Establish `hbH : BoxH { H0 with TT` using `TT } s.x s.eps := UpperTheory.box_bound_for_host R _ _ _ hinj e12 hbox`. Establish `hcond : Real.log ((H0.QS : ℝ) * H0.q * H0.d) ≤ 3 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hmod.2.2.2.2.2` as an intermediate fact. Rewrite `this` using `[← hQS]`. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h4 : (4 : ℝ) ≤ max C8 4` using `le_max_right _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨{ H0 with TT := TT }, q0, rfl, rfl, hQS, rfl, ⟨⟨⟨s.x, pairWin_self s, hpr⟩, ⟨tt1, tt2⟩, t4, ⟨kp, kp'⟩, fun i => ⟨(hgi i).2.1, (hgi i).2.2.1⟩, e10, e8, e3.ge, hJ.trans h4, ho4.trans h4, hQR.trans_le (mul_le_mul_of_nonneg_right h4 (Nat.cast_nonneg _))⟩, ⟨fun i => ?_, hgm, ⟨?_, ?_⟩ …` and prove the remaining obligations. Take `⟨π, h1, h2, -⟩` from `(hnorm i).1`. Conclude with `⟨π, h1, h2⟩`. Conclude with `(GlobalTheory.HostSplit.ncard_placesOver H0.E hp).symm.trans (hsplit _ hp (m15 _ mp).2).1`. Conclude with `(GlobalTheory.HostSplit.ncard_placesOver H0.E hp').symm.trans (hsplit _ hp' (m15 _ mp').2).1`.
-
-Establish `hl' : l ∈ H0.levelPrimes` using `hl`. Rewrite `hl'` using `[e7]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hl'`. Break down `hl' with rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `(hsplit _ (hgi 0).1 (hgm 0)).2`.
-
-Conclude with `(hsplit _ (hgi 1).1 (hgm 1)).2`. Conclude with `(hsplit _ hp (m15 _ mp).2).2`. Conclude with `(hsplit _ hp' (m15 _ mp').2).2`. Conclude with `(hsplit _ hq0 mq0).2`. Rewrite `t3` using `[← e10]`.
-
-Conclude with `t3`. Rewrite `t5` using `[← e10]`. Conclude with `t5`. Use `(abs_dlogH_le { H0 with TT := TT } hqd).trans ?_` and prove the remaining obligations. Rewrite using `[hs]`.
-
-Conclude with `hlog s.x hf`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hostGood (hThin : ThinChoice) (hNP : NormPrimes) (hSP : SmallPrimeOne) (hTops : TopsChoice) (eps C5 : ℝ)
     (he : 0 < eps) (he' : eps < 1 / 52) (hC5 : 0 < C5) :
@@ -412,11 +394,11 @@ theorem exists_hostGood (hThin : ThinChoice) (hNP : NormPrimes) (hSP : SmallPrim
     exact hlog s.x hf
 
 /- English proof (translation)
-Introduce `hQD hThin hNP hSP hTops`. Use `⟨2, by norm_num, fun eps he he' => ?_⟩` and prove the remaining obligations. Take `⟨C5, xa, hC5, hQD⟩` from `hQD eps he he'`. Take `⟨CT2, C8, c6, Cb, xb, hC8, hc6, hCb, h⟩` from `exists_hostGood hThin hNP hSP hTops eps C5 he he' hC5`. Take `⟨xc, hRk⟩` from `exists_ranks_cyclic_frame eps he he'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨CT2, C8, C5, c6, Cb, max xa (max xb xc), hC8, hC5, hc6, hCb, Scales.univ 2 1 le_rfl, fun s hs hx hS => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨R, hR, h2e, hφ⟩` from `hRk s hs hx.2.2`. Take `⟨q, d, hrow, hqd, hbox⟩` from `hQD s.x hx.1 R.n R.ord_pos (hs ▸ hR.1.2)`. Rewrite `hrow`, `hqd`, `hbox` using `[← hs]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨H, q0, -, -, -, h1, h2, -⟩` from `h s R q d hs hx.2.1 (by rw [Scales.mem_univ.1 hS]; norm_num) hR h2e hφ hrow hqd hbox`. Conclude with `⟨R, H, q0, hR, h1, h2, trivial⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hostEx : QDChoice → ThinChoice → NormPrimes → SmallPrimeOne → TopsChoice → HostEx := by
   intro hQD hThin hNP hSP hTops

@@ -6,9 +6,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Use `letI : Field (A ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite K (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing K (A ⧸ m)`. Set `ι : (A ⧸ m) →ₐ[K] AlgebraicClosure K` to `IsAlgClosed.lift`. Use `⟨ι.comp (Ideal.Quotient.mkₐ K m), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : ι (Ideal.Quotient.mk m x) = 0` using `hx`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Ideal.Quotient.mk m x = 0` using `ι.toRingHom.injective (by simpa using h)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_algHom_algebraicClosure_ker_le (K A : Type) [Field K] [CommRing A] [Algebra K A]
     [Algebra.FiniteType K A] (m : Ideal A) [m.IsMaximal] :
@@ -22,15 +22,15 @@ theorem exists_algHom_algebraicClosure_ker_le (K A : Type) [Field K] [CommRing A
   exact Ideal.Quotient.eq_zero_iff_mem.mp h2
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Establish `h1 : ∀ φ ψ : A →ₐ[K] AlgebraicClosure K, φ f = ψ f`. Introduce `φ ψ`. Establish `h` using `(hf.map (Algebra.TensorProduct.productMap φ ψ)).eq_zero`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `[sub_eq_zero]`. Take `⟨m₀, hm₀⟩` from `Ideal.exists_maximal A`. Take `⟨φ₀, -⟩` from `exists_algHom_algebraicClosure_ker_le K A m₀`. Establish `h2 : φ₀ f ∈ Set.range (algebraMap K (AlgebraicClosure K))`. Rewrite using `[InfiniteGalois.mem_range_algebraMap_iff_fixed]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ`. Conclude with `h1 (σ.toAlgHom.comp φ₀) φ₀`. Take `⟨c, hc⟩` from `h2`. Use `haveI : IsJacobsonRing A := isJacobsonRing_of_finiteType (A := K)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : f - algebraMap K A c ∈ (⊥ : Ideal A).jacobson`. Rewrite using `[Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `m ⟨-, hm⟩`. Take `⟨φ, hφ⟩` from `exists_algHom_algebraicClosure_ker_le K A m`. Apply `hφ` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, AlgHom.commutes, hc, h1 φ φ₀, sub_self]`. Establish `h4 : (⊥ : Ideal A).jacobson = ⊥` using `IsJacobsonRing.out inferInstance (Ideal.isRadical_bot)`. Rewrite `h3` using `[h4, Ideal.mem_bot, sub_eq_zero]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_algebraMap_of_isNilpotent_tmul_sub (K A : Type) [Field K] [CharZero K]
     [CommRing A] [Algebra K A] [Algebra.FiniteType K A] [IsReduced A] (f : A)

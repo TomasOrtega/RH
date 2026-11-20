@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.FMX.YBase
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[genU]`. Introduce `l k hlk`. Establish `hlk' : l < k` using `hlk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ¬ k < l` using `not_lt.2 hlk'.le`. Establish `h2 : l ≠ k` using `hlk'.ne`. Simplify using `[genU, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem det_genU (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) : (genU Ω r s).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
@@ -24,9 +24,9 @@ theorem det_genU (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) : (ge
     simp [genU, h1, h2]
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `hc : (Fin.castLE h : Fin m → Fin m) = id`. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Rewrite using `[hc, RingHom.map_det]`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: (A.map f * U).submatrix J id = (f.mapMatrix (A.submatrix J id)) * U`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, Matrix.det_mul, hU, mul_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_map_mul_submatrix {Ω L : Type} [Field Ω] [Field L] (f : Ω →+* L) {n m r : ℕ} (hm : m = r) (h : m ≤ r)
     (A : Matrix (Fin n) (Fin r) Ω) (U : Matrix (Fin r) (Fin r) L) (hU : U.det = 1) (J : Fin m → Fin n) :
@@ -44,13 +44,13 @@ theorem det_map_mul_submatrix {Ω L : Type} [Field Ω] [Field L] (f : Ω →+* L
 variable {Ψ : Type} {p q : ℕ}
 
 /- English proof (translation)
-Take `⟨s, i⟩` from `t`. Break down `s with τ | τ` into its components or cases. Establish `hi : (i : ℕ) < p` using `i.2`. Assume the negation of the conclusion as `hne`. Establish `hne' : (i : ℕ) + 1 ≠ p` using `hne`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `h (τ, ⟨i, by omega⟩) ?_` and prove the remaining obligations. Establish `hp : IsProperStep (p + q) p (⟨i, by omega⟩ : Fin (p + q))` using `⟨hne', by show (i : ℕ) + 1 ≠ p + q omega⟩`. Simplify using `only [blkF, if_pos hp, stepOf]`. Simplify using `[hi]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hi : (i : ℕ) < q` using `i.2`. Assume the negation of the conclusion as `hne`. Establish `hne' : (i : ℕ) + 1 ≠ q` using `hne`. Use `h (τ, ⟨p + i, by omega⟩) ?_` and prove the remaining obligations. Establish `hp : IsProperStep (p + q) p (⟨p + i, by omega⟩ : Fin (p + q))` using `⟨by show p + (i : ℕ) + 1 ≠ p omega, by show p + (i : ℕ) + 1 ≠ p + q omega⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [blkF, if_pos hp, stepOf]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem full_of_noBlock (K₀ : Type) (t : StepIx Ψ p q)
     (h : ∀ r, blkF Ψ p q K₀ r ≠ some (.inr t)) : (t.2 : ℕ) + 1 = rk Ψ p q t.1 := by
@@ -80,7 +80,7 @@ theorem full_of_noBlock (K₀ : Type) (t : StepIx Ψ p q)
     rfl
 
 /- English proof (translation)
-Introduce `Ψ _ p q Ω _ n A K₀ _ J₀ _ x₀ r`. Take `⟨⟨k, hk⟩, i⟩` from `r`. Break down `k with k | t` into its components or cases. Both sides reduce to the same expression. Conclude with `det_map_mul_submatrix (algebraMap Ω (GenField Ω (rk Ψ p q))) (full_of_noBlock K₀ t hk) t.2.2 (A t.1) (genU Ω (rk Ψ p q) t.1) (det_genU Ω _ _) i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem basePart_yv : ∀ (Ψ : Type) [Fintype Ψ] (p q : ℕ) (Ω : Type) [Field Ω] (n : Ψ ⊕ Ψ → ℕ)
     (A : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type)

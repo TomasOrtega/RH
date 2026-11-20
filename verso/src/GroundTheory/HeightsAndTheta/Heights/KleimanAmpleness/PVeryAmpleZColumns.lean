@@ -23,9 +23,9 @@ Both sides reduce to the same expression.
 theorem chart_smul {I : Chart x} (a : chartRing S x I) (e : E) : a • e = (a : Ω) • e := rfl
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.card_empty, pow_zero]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Consider the case `insert a T ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, Finset.card_insert_of_notMem ha, pow_succ']`. Conclude with `Submodule.mul_mem_mul (hh a) ih`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem_pow {I : Chart x} (Q : Submodule (chartRing S x I) Ω) (h : Fin (r + 1) → Ω)
     (hh : ∀ j, h j ∈ Q) (T : Finset (Fin (r + 1))) : ∏ j ∈ T, h j ∈ Q ^ T.card := by
@@ -41,13 +41,11 @@ theorem prod_mem_pow {I : Chart x} (Q : Submodule (chartRing S x I) Ω) (h : Fin
 omit [Module S E] [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q', hq', y, hy, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨q' * q, ?_, y, hy, by rw [mul_comm q' q, mul_smul]⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hq'`, the goal using `[SubSystem.pow_sub]`. Rewrite using `[pow_add]`. Conclude with `Submodule.mul_mem_mul hq' hq`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y y' _ _ hy hy' => rw [smul_add]`. Conclude with `add_mem hy hy'`. Consider the case `smul a y _ hy`. Establish `e1 : q • (a • y) = a • (q • y)`. Rewrite using `[chart_smul, chart_smul, smul_smul, smul_smul, mul_comm]`.
-
-Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ a hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_twist_pow {G : SubSystem S x E} {H : SubSystem S x Ω} {I : Chart x} {n c : ℕ}
     {q : Ω} (hq : q ∈ H.sub I ^ c) {z : E} (hz : z ∈ (G.twist (H.pow n)).sub I) :
@@ -71,15 +69,13 @@ theorem smul_mem_twist_pow {G : SubSystem S x E} {H : SubSystem S x Ω} {I : Cha
 omit [Module S E] [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, hq, y, hy, rfl⟩` from `hy`. Rewrite `hq` using `[SubSystem.pow_sub, pow_add]`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.subset_span ⟨w * q, ?_, y, hy, by rw [smul_smul]⟩` and prove the remaining obligations. Rewrite using `[SubSystem.pow_sub]`. Use `Submodule.mul_induction_on hq (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Establish `e1 : w * (a * b) = (⟨w * b, hw b hb⟩ : chartRing S x I) • a`. Rewrite using `[chartRing_smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ ha`. Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ hy hy' => rw [smul_add]`. Conclude with `add_mem hy hy'`. Consider the case `smul a y _ hy`.
-
-Establish `e1 : w • (a • y) = a • (w • y)`. Rewrite using `[chart_smul, chart_smul, smul_smul, smul_smul, mul_comm]`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ a hy`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_twist_of_inv {G : SubSystem S x E} {H : SubSystem S x Ω} {I : Chart x} {m c : ℕ}
     {w : Ω} (hw : ∀ q ∈ H.sub I ^ m, w * q ∈ chartRing S x I) {z : E}
@@ -110,7 +106,7 @@ variable {G : SubSystem S x E} {H : SubSystem S x Ω} {h : Fin (r + 1) → Ω} {
 omit [Module S E] [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Establish `hq : xProd J ^ k ∈ H.sub I ^ (J.1.card * k)`. Rewrite using `[pow_mul]`. Conclude with `Submodule.pow_mem_pow _ (prod_mem_pow _ h hH J.1) k`. Use `smul_mem_twist_pow hq he` as an intermediate fact. Rewrite using `[show J.1.card * (n + k) = J.1.card * n + J.1.card * k by ring, pow_add, mul_comm (xProd J ^ n), mul_smul]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pow_mono (hH : ∀ j, h j ∈ H.sub I) {J : Chart h} {e : E} {n : ℕ}
     (he : xProd J ^ n • e ∈ (G.twist (H.pow (J.1.card * n))).sub I) (k : ℕ) :
@@ -122,15 +118,13 @@ theorem pow_mono (hH : ∀ j, h j ∈ H.sub I) {J : Chart h} {e : E} {n : ℕ}
     mul_comm (xProd J ^ n), mul_smul]
 
 /- English proof (translation)
-It suffices to establish `h0 : ∃ n, xProd J ^ n • e ∈ (G.twist (H.pow (J.1.card * n))).sub I by`. Take `⟨n, hn⟩` from `h0`. Use `⟨n, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Conclude with `pow_mono hH hn k`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem y hy => exact hy`. Consider the case `zero => exact ⟨0, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add y y' _ _ hy hy'`. Take `⟨n1, h1⟩` from `hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n2, h2⟩` from `hy'`. Use `⟨n1 + n2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem (pow_mono hH h1 n2) ?_` and prove the remaining obligations. Use `pow_mono hH h2 n1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[add_comm n2 n1]`. Then use the resulting hypothesis. Consider the case `smul s y _ hy`. Take `⟨n, hn⟩` from `hy`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`.
-
-Conclude with `Submodule.smul_of_tower_mem _ s hn`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_of_mem (hH : ∀ j, h j ∈ H.sub I) {J : Chart h} {e : E}
     (he : e ∈ secsOnZChart G H h I J) :
@@ -160,11 +154,11 @@ theorem exists_pow_of_mem (hH : ∀ j, h j ∈ H.sub I) {J : Chart h} {e : E}
 omit [IsScalarTower S Ω E] in
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `e ⟨n, hn⟩`. Use `Submodule.subset_span ⟨n, ?_⟩` and prove the remaining obligations. Establish `hq : (∏ j ∈ J'.1 \ J.1, h j) ^ n ∈ H.sub I ^ ((J'.1 \ J.1).card * n)`. Rewrite using `[pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.pow_mem_pow _ (prod_mem_pow _ h hH _) n`. Use `smul_mem_twist_pow hq hn` as an intermediate fact. Establish `hx : xProd J' = (∏ j ∈ J'.1 \ J.1, h j) * xProd J` using `(Finset.prod_sdiff hJJ').symm`. Establish `hc : J'.1.card = J.1.card + (J'.1 \ J.1).card`. Rewrite using `[Finset.card_sdiff_of_subset hJJ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.card_le_card hJJ'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hx, mul_pow, mul_smul, hc, add_mul]`. Conclude with `this`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono (hH : ∀ j, h j ∈ H.sub I) {J J' : Chart h} (hJJ' : J.1 ⊆ J'.1) :
     secsOnZChart G H h I J ≤ secsOnZChart G H h I J' := by
@@ -182,29 +176,27 @@ theorem mono (hH : ∀ j, h j ∈ H.sub I) {J J' : Chart h} (hJJ' : J.1 ⊆ J'.1
   exact this
 
 /- English proof (translation)
-Establish `hH : ∀ j, h j ∈ H.sub I` using `fun j => (Submodule.mem_iInf _).mp (hV.mem_secs j) I`. Take `⟨Q', hQ'⟩` from `H.invertible I`. Establish `h1 : (1 : Ω) ∈ H.sub I * Q'`. Rewrite using `[hQ']`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ z ∈ H.sub I * Q', ∃ u : Fin (r + 1) → Ω, (∀ k, u k ∈ Q') ∧ ∑ k, h k * u k = z`. Introduce `z hz`. Use `Submodule.mul_induction_on hz (fun c hc q hq => ?_) ?_` and prove the remaining obligations. Rewrite `hc` using `[← hV.generates I]`. Take `⟨f, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => f k • q, fun k => Submodule.smul_mem _ _ hq, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [chartRing_smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b ⟨u, hu, rfl⟩ ⟨u', hu', rfl⟩`. Conclude with `⟨u + u', fun k => add_mem (hu k) (hu' k), by`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]⟩`. Take `⟨u, hu, hsum⟩` from `key 1 h1`. Establish `hinv : ∀ k, ∀ q ∈ H.sub I, u k * q ∈ chartRing S x I` using `fun k q hq => by`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.mul_mem_mul hq (hu k)` as an intermediate fact. Rewrite `this` using `[hQ', Submodule.mem_one]`. Take `⟨y, hy⟩` from `this`. Rewrite using `[mul_comm, ← hy]`. Conclude with `y.2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinvm : ∀ k, ∀ (m : ℕ), ∀ q ∈ H.sub I ^ m, u k ^ m * q ∈ chartRing S x I`. Introduce `k m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `q hq`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hq` using `[pow_zero, Submodule.mem_one]`. Take `⟨y, rfl⟩` from `hq`. Rewrite using `[pow_zero, one_mul]`. Conclude with `y.2`. Consider the case `succ m ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Rewrite `hq` using `[pow_succ]`. Use `Submodule.mul_induction_on hq (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[show u k ^ (m + 1) * (a * b) = (u k ^ m * a) * (u k * b) by ring]`. Conclude with `mul_mem (ih a ha) (hinv k b hb)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`. Set `b : Fin (r + 1) → chartRing S x I` to `fun k => ⟨h k * u k, by`. Rewrite using `[mul_comm]`. Conclude with `hinv k _ (hH k)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htop : Ideal.span (Set.range b) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun _ => 1, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [one_mul, b, AddSubmonoidClass.coe_finsetSum, OneMemClass.coe_one]`. Conclude with `hsum`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `htop'` using `Ideal.span_pow_eq_top _ htop m`. Rewrite `htop'` using `[← Set.range_comp]`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.mp (htop' ▸ Submodule.mem_top : (1 : chartRing S x I) ∈ Ideal.span (Set.range ((fun y => y ^ m) ∘ b)))`. Use `⟨fun k => (c k : Ω) * u k ^ m, ?_, fun k q hq => ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : chartRing S x I => (y : Ω)) hc` as an intermediate fact.
-
-Simplify using `only [Function.comp_apply, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, SubmonoidClass.coe_pow, OneMemClass.coe_one, b] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[mul_assoc]`. Conclude with `mul_mem (c k).2 (hinvm k m q hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_partition {H : LineBundle S x} (hV : IsVeryAmpleBy H.toSubSystem h) (I : Chart x)
     (m : ℕ) : ∃ w : Fin (r + 1) → Ω, ∑ k, w k * h k ^ m = 1 ∧
@@ -270,35 +262,33 @@ end VeryAmpleZColumns
 open VeryAmpleZColumns in
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x E _ _ _ _ G H r h hV I`. Establish `hH : ∀ j, h j ∈ H.sub I` using `fun j => (Submodule.mem_iInf _).mp (hV.mem_secs j) I`. Establish `hne : ∃ k, h k ≠ 0`. Take `⟨w, hw, -⟩` from `exists_partition hV I 1`. Assume the negation of the conclusion as `hall`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [not_exists, not_not] at hall`. Simplify using `[hall] at hw`. Take `⟨k0, hk0⟩` from `hne`. Set `J0 : Cech.Idx (support h) 0` to `⟨⟨{k0}, Finset.singleton_nonempty k0, Finset.singleton_subset_iff.mpr ((mem_support h).mpr hk0)⟩, Finset.card_singleton k0⟩`. Use `⟨fun J J' hJJ' => mono hH hJJ', fun J e he => ?_, fun b _ hb => hb J0, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_smul, mul_zero]`. Express the relevant statement in the definitionally equal form `e ∈ (G.toSubSystem.twist (twistSys S x 0)).sub I`. Rewrite using `[SubSystem.twist_twistSys_zero]`. Conclude with `he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs hds`. Establish `hconst` using `Cech.Partition.const hds`. Use `⟨s J0, ?_, fun J => hconst J J0⟩` and prove the remaining obligations. Establish `hex : ∀ J : Cech.Idx (support h) 0, ∃ n, ∀ m, n ≤ m → xProd J.1 ^ m • s J0 ∈ (G.toSubSystem.twist (H.toSubSystem.pow (J.1.1.card * m))).sub I` using `fun J => by`. Use `exists_pow_of_mem (G := G.toSubSystem) hH (hs J (Set.mem_univ _))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hconst J J0]`. Then use the resulting hypothesis. Use `choose f hf using hex`. Take `⟨m, hm1, hfm⟩ : ∃ m, 1 ≤ m ∧ ∀ J, f J ≤ m` from `⟨Finset.univ.sup f + 1, by omega, fun J => (Finset.le_sup (Finset.mem_univ J)).trans (Nat.le_succ _)⟩`. Take `⟨w, hw, hwinv⟩` from `exists_partition hV I m`. Establish `hb : s J0 = ∑ k, w k • (h k ^ m • s J0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[smul_smul]`. Rewrite using `[← Finset.sum_smul, hw, one_smul]`. Rewrite using `[hb]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : h k = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hk, zero_pow (by omega), zero_smul, smul_zero]; exact zero_mem _`. Set `Jk : Cech.Idx (support h) 0` to `⟨⟨{k}, Finset.singleton_nonempty k, Finset.singleton_subset_iff.mpr ((mem_support h).mpr hk)⟩, Finset.card_singleton k⟩`. Establish `h1` using `hf Jk m (hfm Jk)`. Establish `hx : xProd Jk.1 = h k` using `Finset.prod_singleton _ _`. Establish `hc : Jk.1.1.card * m = 0 + m` using `by show ({k} : Finset (Fin (r + 1))).card * m = 0 + m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.card_singleton]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hx, hc]`. Establish `h2` using `smul_mem_twist_of_inv (hwinv k) h1`. Express the relevant statement in the definitionally equal form `_ ∈ (G.toSubSystem.twist (twistSys S x 0)).sub I at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[SubSystem.twist_twistSys_zero]`. Conclude with `h2`. Introduce `p s hs hds`. Establish `hex : ∀ J : Cech.Idx (support h) (p + 1), ∃ n, ∀ m, n ≤ m → xProd J.1 ^ m • s J ∈ (G.toSubSystem.twist (H.toSubSystem.pow (J.1.1.card * m))).sub I` using `fun J => exists_pow_of_mem (G := G.toSubSystem) hH (hs J (Set.mem_univ _))`. Use `choose f hf using hex`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm1, hfm⟩ : ∃ m, 1 ≤ m ∧ ∀ J, f J ≤ m` from `⟨Finset.univ.sup f + 1, by omega, fun J => (Finset.le_sup (Finset.mem_univ J)).trans (Nat.le_succ _)⟩`. Take `⟨w, hw, hwinv⟩` from `exists_partition hV I m`. Use `Cech.Partition.exact_of_partition (A := Ω) _ s hds (fun k => w k * h k ^ m) ?_ ?_` and prove the remaining obligations. Rewrite using `[← hw]`. Use `Finset.sum_subset (Finset.subset_univ _) fun k _ hk => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: h k = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hk ((mem_support h).mpr hne)`. Rewrite using `[this, zero_pow (by omega), mul_zero]`. Introduce `K k hk hkK`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L : Cech.Idx (support h) (p + 1)` to `⟨⟨insert k K.1.1, Finset.insert_nonempty _ _, Finset.insert_subset hk K.1.2.2⟩, by`. Rewrite using `[Finset.card_insert_of_notMem hkK, K.2]⟩`. Rewrite using `[show Cech.Partition.onSet s (insert k K.1.1) = s L from Cech.Partition.onSet_idx s L]`. Establish `h1` using `hf L m (hfm L)`. Establish `hx : xProd L.1 = h k * xProd K.1` using `Finset.prod_insert hkK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : L.1.1.card * m = K.1.1.card * m + m` using `by show (insert k K.1.1).card * m = _`. Rewrite using `[Finset.card_insert_of_notMem hkK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hx, hc]`. Establish `h2` using `smul_mem_twist_of_inv (hwinv k) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Submodule.subset_span ⟨m, ?_⟩` and prove the remaining obligations. Establish `e : xProd K.1 ^ m • (w k * h k ^ m) • s L = w k • (h k * xProd K.1) ^ m • s L`. Rewrite using `[smul_smul, smul_smul, mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VeryAmpleZColumns.proof : VeryAmpleZColumns.Statement.{u, v, w} := by
   intro S _ Ω _ _ N x E _ _ _ _ G H r h hV I

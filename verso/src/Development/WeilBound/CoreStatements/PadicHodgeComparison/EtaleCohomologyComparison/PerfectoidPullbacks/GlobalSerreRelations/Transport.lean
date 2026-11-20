@@ -22,14 +22,14 @@ variable {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : Div
   {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.inOpen_of_thickening_morphism V φ h`.
+A detailed English derivation is pending.
 -/
 theorem inU_map (V : X.Opens) {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : InU V T) : InU V T' := GlobalTheory.T.inOpen_of_thickening_morphism V φ h
 
 end St
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.stable_cover_cech_vanishing.1`.
+A detailed English derivation is pending.
 -/
 theorem glob_van_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {Λ : Type} [CommRing Λ]
@@ -43,7 +43,7 @@ theorem glob_van_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : I
       ∀ j, s + Fintype.card ι ≤ j → Subsingleton (HU F (St Q (Set.range U)) j)) := GlobalTheory.T.stable_cover_cech_vanishing.1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.stable_cover_cech_vanishing.2.1`.
+A detailed English derivation is pending.
 -/
 theorem glob_serre_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {Λ : Type} [CommRing Λ]
@@ -52,7 +52,7 @@ theorem glob_serre_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I :
     (∀ a b, a + b = n → 𝒮.P ((cechH F (fun α => St Q {U α}) b).cx.H a)) → 𝒮.P (HU F (St Q (Set.range U)) n) := GlobalTheory.T.stable_cover_cech_vanishing.2.1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.stable_cover_cech_vanishing.2.2`.
+A detailed English derivation is pending.
 -/
 theorem glob_bc_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}

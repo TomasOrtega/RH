@@ -44,11 +44,9 @@ def Via.lat (L : Submodule (e.comp (algebraMap R (FractionRing R))).range A) : S
   smul_mem' c _ h := L.smul_mem ⟨_, c, rfl⟩ h
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `h`. Use `⟨S, le_antisymm (Submodule.span_le.2 fun x hx => Submodule.subset_span (M := A) hx) fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y : A, y ∈ Submodule.span (e.comp (algebraMap R (FractionRing R))).range (S : Set A) → (y : Via R e A) ∈ Submodule.span R (M` using `Via R e A) (S : Set A) := fun y hy => by`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem _ h => exact Submodule.subset_span h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `smul c _ _ h1`. Take `⟨_, c, rfl⟩` from `c`. Conclude with `Submodule.smul_mem _ c h1`.
-
-Conclude with `key x hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Via.lat_fg {L : Submodule (e.comp (algebraMap R (FractionRing R))).range A} (h : L.FG) : (Via.lat L).FG := by
   obtain ⟨S, rfl⟩ := h
@@ -70,7 +68,7 @@ def inSpan (L : Submodule R V) : Submodule R (Submodule.span (FractionRing R) (L
   L.comap ((Submodule.span (FractionRing R) (L : Set V)).subtype.restrictScalars R)
 
 /- English proof (translation)
-Use `Submodule.fg_of_fg_map_injective ((Submodule.span (FractionRing R) (L : Set V)).subtype.restrictScalars R) Subtype.val_injective ?_` and prove the remaining obligations. Rewrite using `[inSpan, Submodule.map_comap_eq_self fun x hx => ⟨⟨x, Submodule.subset_span hx⟩, rfl⟩]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem inSpan_fg {L : Submodule R V} (h : L.FG) : (inSpan L).FG := by
   refine Submodule.fg_of_fg_map_injective ((Submodule.span (FractionRing R) (L : Set V)).subtype.restrictScalars R)
@@ -78,13 +76,13 @@ theorem inSpan_fg {L : Submodule R V} (h : L.FG) : (inSpan L).FG := by
   rwa [inSpan, Submodule.map_comap_eq_self fun x hx => ⟨⟨x, Submodule.subset_span hx⟩, rfl⟩]
 
 /- English proof (translation)
-The claim follows from `Submodule.span_span_coe_preimage`.
+A detailed English derivation is pending.
 -/
 theorem span_inSpan (L : Submodule R V) : Submodule.span (FractionRing R)
     (inSpan L : Set (Submodule.span (FractionRing R) (L : Set V))) = ⊤ := Submodule.span_span_coe_preimage
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `h`. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `FiniteDimensional.span_of_finite _ S.finite_toSet`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span {L : Submodule R V} (h : L.FG) :
     FiniteDimensional (FractionRing R) (Submodule.span (FractionRing R) (L : Set V)) := by
@@ -93,13 +91,13 @@ theorem finiteDimensional_span {L : Submodule R V} (h : L.FG) :
   exact FiniteDimensional.span_of_finite _ S.finite_toSet
 
 /- English proof (translation)
-Set `U : Submodule (FractionRing R) V` to `{ carrier := {v | g v ∈ Set.range r} zero_mem' := ⟨0, by rw [map_zero, map_zero]⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨x, hx⟩ ⟨y, hy⟩`. Conclude with `⟨x + y, by rw [map_add, map_add, hx, hy]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c v ⟨x, hx⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := R) c`. Establish `hd'` using `nonZeroDivisors.ne_zero hd`. Take `⟨y, rfl⟩` from `hdiv d hd' x`. Use `⟨a • y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_smulₛₗ, ← hx, map_smulₛₗ, smul_smul, RingHom.comp_apply, RingHom.comp_apply, ← map_mul, div_mul_cancel₀ _ (by simpa using hd')] }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `U.subtype.exists_leftInverse_of_injective U.ker_subtype`. Use `choose s hs using fun u : U => u.2`. Set `ψ : U →ₗ[R] M` to `{ toFun := s map_add' := fun u u' => hr (by rw [map_add, hs, hs, hs, Submodule.coe_add, map_add]) map_smul' := fun c u => hr (by`. Rewrite using `[RingHom.id_apply, map_smulₛₗ, hs, hs, Submodule.coe_smul_of_tower, ← algebraMap_smul (FractionRing R) c, map_smulₛₗ]`. Use the proof step `rfl) }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨ψ ∘ₗ p.restrictScalars R, fun v hv => ?_⟩` and prove the remaining obligations. Establish `: p v = ⟨v, hv⟩` using `LinearMap.congr_fun hp ⟨v, hv⟩`. Express the relevant statement in the definitionally equal form `r (s (p v)) = _`. Rewrite using `[this, hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {M : Type} [AddCommGroup M] [Module R M] (g : V →ₛₗ[e] A)
     (r : M →ₛₗ[e.comp (algebraMap R (FractionRing R))] A) (hr : Function.Injective r)
@@ -137,11 +135,11 @@ end Lin
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Use `haveI := X.Ok_fin i k`. Take `⟨d, hd, c, hc⟩` from `(Algebra.IsIntegral.isIntegral (R := X.O i) a).isAlgebraic.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero ha)`. Establish `key : ∀ m : X.Ok i k ⊗[X.O i] Y.Fm i n b, ∃ m', d • m' = m` using `fun m => by`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, smul_zero _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨x, rfl⟩` from `hx`. Take `⟨y, rfl⟩` from `hy`. Conclude with `⟨x + y, smul_add _ _ _⟩`. Consider the case `tmul z f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z ⊗ₜ ((algebraMap (X.O i) (FractionRing (X.O i)) d)⁻¹ • f), ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.tmul_smul, ← algebraMap_smul (FractionRing (X.O i)) d, smul_inv_smul₀ (by simpa using hd)]`. Take `⟨m', rfl⟩` from `key m`. Conclude with `⟨c • m', by rw [smul_smul, ← hc, algebraMap_smul]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem divisible_baseChange (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (n : ℕ) (b : Bool) (k : ℕ) (a : X.Ok i k)
     (ha : a ≠ 0) (m : X.Ok i k ⊗[X.O i] Y.Fm i n b) : ∃ m', a • m' = m := by
@@ -162,7 +160,7 @@ theorem divisible_baseChange (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw
   exact ⟨c • m', by rw [smul_smul, ← hc, algebraMap_smul]⟩
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((normProd s : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_dvd_normProd (s : Finset (Pl D.host.E)) :
     {v : Pl D.host.E | ((normProd s : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal}.Finite := by
@@ -226,7 +224,7 @@ def lat (ρ : Setup X) (i : X.Tw) : ∀ n b k (_ : Finset (Pl D.host.E)) (_ : G 
   | n + 1, b, k, Q, ψ => if h : n < D.R.m ∧ TwOK i k Q ψ then Via.lat (ρ.mt i ⟨n, h.1⟩ b k Q ψ) else ⊥
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _ => Submodule.fg_bot | n + 1, b, k, Q, ψ => by rw [lat] split_ifs with h · exact Via.lat_fg (hL i ⟨n, h.1⟩ b k Q ψ h.2) · exact Submodule.fg_bot`.
+A detailed English derivation is pending.
 -/
 theorem lat_fg (hL : ρ.LatFG) (i : X.Tw) : ∀ n b k Q ψ, (lat ρ i n b k Q ψ).FG
   | 0, _, _, _, _ => Submodule.fg_bot
@@ -248,7 +246,7 @@ variable (hF : ∀ i j b, Faithful (rd i j b))
 
 include hF in
 /- English proof (translation)
-The claim follows from `exists_lift ((ρ.sum i j b k Q ψ).comp (rdV ρ i _ b k Q ψ)) (rdK (rd i j b) hρ k) ((hF i j b).injective_rdK hρ k) (divisible_baseChange Y i _ b k)`.
+A detailed English derivation is pending.
 -/
 theorem exists_thP (i : X.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (Pl D.host.E))
     (ψ : G D.host.E N.Om →* (X.Ok i k)ˣ) :
@@ -264,7 +262,7 @@ def thP (i : X.Tw) : ∀ n b k Q ψ, MtV ρ i n b k Q ψ →ₗ[X.Ok i k] X.Ok i
 
 include hF in
 /- English proof (translation)
-The claim follows from `| 0, _, _, d => d.elim | n + 1, b, k, d => by ext x rw [thPsi, Set.mem_preimage, Setup.gens_one, Set.mem_singleton_iff, Set.mem_singleton_iff, ← ((hF i ⟨n, d.1⟩ b).injective_rdK hρ k).eq_iff, rdK_tmul, map_one, one_smul, ← d.2.rat.choose_spec] rfl`.
+A detailed English derivation is pending.
 -/
 theorem thPsi_one (i : X.Tw) : ∀ n b k (d : Dat rd i n b),
     thPsi hρ rd i n b k ∅ 1 d = {(1 : X.Ok i k) ⊗ₜ[X.O i] th rd i n b d}

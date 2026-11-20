@@ -18,9 +18,9 @@ variable {k G H : Type u} [CommRing k] [Group G] [Group H] [TopologicalSpace G]
   [TopologicalSpace H] [IsTopologicalGroup G] [IsTopologicalGroup H]
 
 /- English proof (translation)
-Establish `h1 : cohomologyMapAlong e.toMonoidHom he f n ≫ cohomologyMapAlong e.symm.toMonoidHom he' g n = 𝟙 _`. Rewrite using `[← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_eq_id _ _ (by ext x; simp) (fun a => hgf a) n`. Establish `h2 : cohomologyMapAlong e.symm.toMonoidHom he' g n ≫ cohomologyMapAlong e.toMonoidHom he f n = 𝟙 _`. Rewrite using `[← cohomologyMapAlong_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `cohomologyMapAlong_eq_id _ _ (by ext x; simp) (fun b => hfg b) n`. Establish `e1 : ∀ x, (cohomologyMapAlong e.symm.toMonoidHom he' g n).hom ((cohomologyMapAlong e.toMonoidHom he f n).hom x) = x` using `fun x => congrArg (fun φ => φ.hom x) h1`. Establish `e2 : ∀ y, (cohomologyMapAlong e.toMonoidHom he f n).hom ((cohomologyMapAlong e.symm.toMonoidHom he' g n).hom y) = y` using `fun y => congrArg (fun φ => φ.hom y) h2`. Conclude with `⟨Function.LeftInverse.injective e1, Function.RightInverse.surjective e2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_cohomologyMapAlong_of_mulEquiv (e : H ≃* G) (he : Continuous e.toMonoidHom)
     (he' : Continuous e.symm.toMonoidHom) {A : Rep.{u} k G} {B : Rep.{u} k H} [IsDiscreteRep A]
@@ -52,9 +52,9 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Set `V : OpenSubgroup G` to `{ toSubgroup := (W : Subgroup (U : Subgroup G)).map (U : Subgroup G).subtype isOpen' := by`. Express the relevant statement in the definitionally equal form `IsOpen (Subtype.val '' (W : Set (U : Subgroup G)))`. Conclude with `U.isOpen.isOpenMap_subtype_val _ W.isOpen }`. Use `⟨V, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.map_subtype_le (W : Subgroup (U : Subgroup G)) hx`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `OpenSubgroup.toSubgroup_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(W : Subgroup (U : Subgroup G)) = ((W : Subgroup (U : Subgroup G)).map (U : Subgroup G).subtype).subgroupOf U`. Conclude with `(Subgroup.comap_map_eq_self_of_injective (Subgroup.subtype_injective _) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_openSubgroupOf (U : OpenSubgroup G) (W : OpenSubgroup (U : Subgroup G)) :
     ∃ V : OpenSubgroup G, V ≤ U ∧ W = openSubgroupOf U V := by
@@ -88,7 +88,7 @@ abbrev fromSubgroupOf {U V : OpenSubgroup G} (hVU : V ≤ U) (C : Rep.{u} (ULift
 
 omit [CompactSpace G] in
 /- English proof (translation)
-The claim follows from `bijective_cohomologyMapAlong_of_mulEquiv (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from hVU)).symm (continuous_subgroupOfEquivOfLe_symm (show (V : Subgroup G) ≤ U from hVU)) (continuous_subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from hVU)) (resSubgroupOfHom (sh …`.
+A detailed English derivation is pending.
 -/
 theorem bijective_fromSubgroupOf {U V : OpenSubgroup G} (hVU : V ≤ U) (C : Rep.{u} (ULift.{u} ℤ) G)
     [IsDiscreteRep C] (m : ℕ) : Function.Bijective (fromSubgroupOf hVU C m).hom :=
@@ -102,9 +102,9 @@ theorem bijective_fromSubgroupOf {U V : OpenSubgroup G} (hVU : V ≤ U) (C : Rep
 include H in
 
 /- English proof (translation)
-Rewrite using `[← H.t_cores U V hVU, cohomologyCoresLE_eq]`. Use `congr 1`. Establish `h` using `congrArg (fun φ => φ.hom z) (cohomologyMapAlong_resSubgroupOfHom_comp (show (V : Subgroup G) ≤ U from hVU) D 2)`. Express the relevant statement in the definitionally equal form `(cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype D) 2).hom z = (cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype D) 2).hom ((cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from hVU)).toMonoidHom (continuous …`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem t_cohomologyCores_openSubgroupOf (U V : OpenSubgroup G) (hVU : V ≤ U)
     (z : cohomology (Rep.res (openSubgroupOf U V : Subgroup (U : Subgroup G)).subtype
@@ -126,7 +126,7 @@ theorem t_cohomologyCores_openSubgroupOf (U V : OpenSubgroup G) (hVU : V ≤ U)
 include H in
 
 /- English proof (translation)
-Establish `hfun : ⇑((H.t U).toAddMonoidHom.comp (cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype D) 2).hom.toAddMonoidHom) = (H.t V) ∘ (fromSubgroupOf hVU D 2).hom`. Use function extensionality and compare the values at `z`. Conclude with `H.t_cohomologyCores_openSubgroupOf U V hVU z`. Rewrite using `[hfun]`. Conclude with `(H.t V).bijective.comp (bijective_fromSubgroupOf hVU D 2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_t_cohomologyCores_openSubgroupOf (U V : OpenSubgroup G) (hVU : V ≤ U) :
     Function.Bijective ((H.t U).toAddMonoidHom.comp
@@ -170,7 +170,7 @@ def zmodSubgroupOfInvHom {U V : OpenSubgroup G} (hVU : V ≤ U) :
 
 omit [CompactSpace G] [IsDiscreteRep D] in
 /- English proof (translation)
-The claim follows from `bijective_cohomologyMapAlong_of_mulEquiv (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from hVU)).symm (continuous_subgroupOfEquivOfLe_symm (show (V : Subgroup G) ≤ U from hVU)) (continuous_subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from hVU)) (zmodSubgroupOfHom n …`.
+A detailed English derivation is pending.
 -/
 theorem bijective_zmodFromSubgroupOf {U V : OpenSubgroup G} (hVU : V ≤ U) (m : ℕ) :
     Function.Bijective (cohomologyMapAlong
@@ -185,7 +185,7 @@ theorem bijective_zmodFromSubgroupOf {U V : OpenSubgroup G} (hVU : V ≤ U) (m :
 omit [IsTopologicalGroup G] [CompactSpace G] [IsDiscreteRep D] in
 
 /- English proof (translation)
-Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a d => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem resFunctor_map_zmodMulPairing_comp {U V : OpenSubgroup G} (hVU : V ≤ U)
     (hD : ∀ d : D, n • d = 0) :
@@ -207,7 +207,7 @@ theorem resFunctor_map_zmodMulPairing_comp {U V : OpenSubgroup G} (hVU : V ≤ U
 omit [CompactSpace G] in
 
 /- English proof (translation)
-Rewrite using `[cupPairing_apply, cupPairing_apply, cohomologyMapAlong_cohomologyMap, resFunctor_map_zmodMulPairing_comp hVU hD, ← cohomologyMap_cohomologyMapAlong, cohomologyMapAlong_resTensorHom_cup]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fromSubgroupOf_cupPairing {U V : OpenSubgroup G} (hVU : V ≤ U) (hD : ∀ d : D, n • d = 0)
     (a : cohomology (zmodRep.{u} ((V : Subgroup G).subgroupOf U) n) 1)
@@ -227,9 +227,9 @@ theorem fromSubgroupOf_cupPairing {U V : OpenSubgroup G} (hVU : V ≤ U) (hD : �
 include H in
 
 /- English proof (translation)
-Take `⟨P₁, P₂⟩` from `H.isPerfectPairing V`. Establish `hD` using `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv`. Establish `key : ∀ a b, (H.t U) ((cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype D) 2).hom (cupPairing (zmodMulPairing n (Rep.res ((V : Subgroup G).subgroupOf U).subtype (Rep.res (U : Subgroup G).subtype D)) hD) (show 1 + 1 = 2 from rfl) a b)) = H.t V (cupPairing (zm …`. Introduce `a b`. Rewrite using `[H.t_cohomologyCores_openSubgroupOf U V hVU]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (H.t V) (fromSubgroupOf_cupPairing hVU hD a b)`. Prove the components needed by the constructor for the conclusion. Conclude with `bijective_of_bijective_comp P₁ (bijective_zmodFromSubgroupOf hVU 1) (γ := (fromSubgroupOf hVU D 1).hom.toAddMonoidHom) (bijective_fromSubgroupOf hVU D 1) (fun a b => key a b)`. Conclude with `bijective_of_bijective_comp P₂ (bijective_fromSubgroupOf hVU D 1) (γ := (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from hVU)).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm _) (zmodSubgroupOfHom n hVU) 1).hom.toAddMonoidHom) (bijective_zmo …`.
+Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem isPerfectPairing_openSubgroupOf (U V : OpenSubgroup G) (hVU : V ≤ U) :
     IsPerfectPairing
@@ -266,7 +266,7 @@ theorem isPerfectPairing_openSubgroupOf (U V : OpenSubgroup G) (hVU : V ≤ U) :
 include H in
 
 /- English proof (translation)
-The claim follows from `H.nonempty_addEquiv finite_two M _ _ hM := H.finite_cohomology U M hM 2 le_rfl subsingleton_three M _ _ hM := H.subsingleton_cohomology_three U M hM bijective_cores W := by obtain ⟨V, hVU, rfl⟩ := exists_eq_openSubgroupOf U W exact H.bijective_t_cohomologyCores_openSubgroupOf U V …`.
+A detailed English derivation is pending.
 -/
 theorem groupDualityHypotheses (U : OpenSubgroup G) :
     GroupDualityHypotheses n (Rep.res (U : Subgroup G).subtype D) (H.t U).toAddMonoidHom where
@@ -300,7 +300,7 @@ instance isDiscreteRep_dualRep_res (S : Subgroup G) (M : Rep.{u} (ULift.{u} ℤ)
 include H in
 
 /- English proof (translation)
-The claim follows from `(H.groupDualityHypotheses U).bijective_dualityMap M hM h`.
+A detailed English derivation is pending.
 -/
 theorem bijective_dualityMap (U : OpenSubgroup G) (M : Rep.{u} (ULift.{u} ℤ) (U : Subgroup G))
     [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 2) :
@@ -325,7 +325,7 @@ def topOpenSubgroupEquiv : ((⊤ : OpenSubgroup G) : Subgroup G) ≃* G where
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_topOpenSubgroupEquiv :
     Continuous (topOpenSubgroupEquiv (G := G)).toMonoidHom :=
@@ -333,14 +333,14 @@ theorem continuous_topOpenSubgroupEquiv :
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `continuous_id.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_topOpenSubgroupEquiv_symm :
     Continuous (topOpenSubgroupEquiv (G := G)).symm.toMonoidHom :=
   continuous_id.subtype_mk _
 
 /- English proof (translation)
-The claim follows from `bijective_cohomologyMapAlong_of_mulEquiv (A := A) (B := Rep.res ((⊤ : OpenSubgroup G) : Subgroup G).subtype A) topOpenSubgroupEquiv continuous_topOpenSubgroupEquiv continuous_topOpenSubgroupEquiv_symm (𝟙 _) (Rep.ofHom ⟨LinearMap.id, fun _ => rfl⟩) (fun _ => rfl) (fun _ => rfl) m`.
+A detailed English derivation is pending.
 -/
 theorem bijective_cohomologyRes_top {k : Type u} [CommRing k] (A : Rep.{u} k G) [IsDiscreteRep A]
     (m : ℕ) : Function.Bijective (cohomologyRes A ((⊤ : OpenSubgroup G) : Subgroup G) m).hom :=
@@ -360,7 +360,7 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDiscon
   [IsDiscreteRep D] in
 
 /- English proof (translation)
-Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a f => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem resTensorIso_inv_comp_resFunctor_map_evalPairing (S : Subgroup G)
     (M : Rep.{u} (ULift.{u} ℤ) G) :
@@ -385,9 +385,9 @@ variable [NeZero n]
 include H in
 
 /- English proof (translation)
-Establish `: Finite (Rep.res ((⊤ : OpenSubgroup G) : Subgroup G).subtype M)` using `inferInstanceAs (Finite M)`. Establish `hU` using `H.bijective_dualityMap ⊤ (Rep.res ((⊤ : OpenSubgroup G) : Subgroup G).subtype M) hM h`. Use `bijective_of_bijective_comp hU (bijective_cohomologyRes_top M r) (γ := (cohomologyRes (dualRep D M) ((⊤ : OpenSubgroup G) : Subgroup G) s).hom.toAddMonoidHom) (bijective_cohomologyRes_top (dualRep D M) s) fun x y => ?_` and prove the remaining obligations. Rewrite using `[dualityMap_apply, dualityMap_apply]`. Express the relevant statement in the definitionally equal form `(H.t ⊤) (cohomologyRes D ((⊤ : OpenSubgroup G) : Subgroup G) 2 (cupPairing (evalPairing D M) h x y)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cohomologyRes_cupPairing, resTensorIso_inv_comp_resFunctor_map_evalPairing]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bijective_dualityMap_of_group (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 2) :

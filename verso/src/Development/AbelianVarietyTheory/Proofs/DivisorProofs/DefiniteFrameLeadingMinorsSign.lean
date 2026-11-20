@@ -7,7 +7,7 @@ open scoped ComplexOrder ComplexConjugate Matrix
 namespace GlobalTheory.FlagDomain
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq_transpose_mul {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (M : Matrix (Fin r) (Fin r) ℂ) :
@@ -18,7 +18,7 @@ theorem gram_eq_transpose_mul {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ)
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[gram_eq_transpose_mul, gram_eq_transpose_mul, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_mul {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (P Q : Matrix (Fin r) (Fin r) ℂ) :
@@ -28,25 +28,23 @@ theorem gram_mul {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ)
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hsgn⟩ : ∃ ε : ℝ, ε ^ 2 = 1 ∧ ∀ a : ℕ, a < r → sgn X.p0 a = ε := by`. Break down `h with h | h` into its components or cases. Conclude with `⟨-1, by norm_num, fun a _ => by simp [sgn, h]⟩`. Conclude with `⟨1, by norm_num, fun a ha => by simp [sgn, h, ha]⟩`. Establish `hi : (i : ℕ) ≤ r` using `Nat.le_of_lt_succ i.isLt`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hps : psgn X.p0 i = ε ^ (i : ℕ)`. Unfold `psgn`. Rewrite using `[Finset.prod_congr rfl (g := fun _ => ε), Finset.prod_const, Finset.card_range]`. Introduce `a ha`. Conclude with `hsgn a (lt_of_lt_of_le (Finset.mem_range.1 ha) hi)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hPdet, hP⟩` from `X.signature τ`. Use `set M := mat x τ with hM`. Use `set Q := P⁻¹ * M with hQ`. Establish `hPQ : P * Q = M` using `Matrix.mul_nonsing_inv_cancel_left P M (isUnit_iff_ne_zero.2 hPdet)`. Establish `hQdet : Q.det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hPQ, Matrix.det_mul, h0, mul_zero]`. Use `set N := Q.map (starRingEnd ℂ) with hN`. Establish `hNdet : N.det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hN, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Simplify using `using hQdet`. Establish `hNinj : Function.Injective N.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det N).2 (isUnit_iff_ne_zero.2 hNdet))`. Establish `hH : (Nᴴ * N).PosDef` using `Matrix.PosDef.conjTranspose_mul_self N hNinj`. Establish `hNt : Nᴴ = Qᵀ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Simplify using `[hN, Matrix.conjTranspose_apply]`. Establish `hdiag : Matrix.diagonal (fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) = (ε : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)`. Rewrite using `[Matrix.smul_one_eq_diagonal]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[hsgn a a.isLt]`. Establish `hgram : gram τ.1 X.Gm M = (ε : ℂ) • (Nᴴ * N)`. Rewrite using `[← hPQ, GlobalTheory.FlagDomain.gram_mul, hP, hdiag, hNt, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Use `set e := Fin.castLE hi with he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsub : ((Nᴴ * N).submatrix e e).PosDef` using `hH.submatrix (Fin.castLE_injective hi)`. Establish `hdpos` using `Complex.pos_iff.1 hsub.det_pos`. Establish `hd : dmin X.Gm x τ i = ((ε ^ (i : ℕ) : ℝ) : ℂ) * ((Nᴴ * N).submatrix e e).det`. Simplify using `only [dmin, lminor]`. Establish `hs : ((ε : ℂ) • (Nᴴ * N)).submatrix e e = (ε : ℂ) • ((Nᴴ * N).submatrix e e)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[← hM, hgram, ← he, hs, Matrix.det_smul, Fintype.card_fin]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Rewrite using `[hd, Complex.re_ofReal_mul, hps, ← mul_assoc, ← pow_add, ← two_mul, pow_mul, hε, one_pow, one_mul]`. Conclude with `hdpos.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dmin_sign_of_definite (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : Data E r) (h : X.p0 = 0 ∨ X.p0 = r) (x : Frame X.Ψ r) (τ : X.Ψ)
@@ -103,7 +101,7 @@ theorem dmin_sign_of_definite (E : Type) [Field E] [NumberField E] [IsCMField E]
   exact hdpos.1
 
 /- English proof (translation)
-Introduce `E _ _ _ r X h x τ hx i` and use `dmin_sign_of_definite E r X h x τ hx i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem definite_frame_leading_minors_sign : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
     (X.p0 = 0 ∨ X.p0 = r) → ∀ (x : Frame X.Ψ r) (τ : X.Ψ), (mat x τ).det ≠ 0 →

@@ -9,9 +9,9 @@ open scoped TensorProduct
 namespace GlobalTheory.HoweTrivial
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 h`. Take `⟨l, hl⟩` from `ENat.ne_top_iff_exists.1 (Module.length_ne_top (R := R) (M := M))`. Use `⟨l + 1, fun m N hN => ?_⟩` and prove the remaining obligations. Break down `m with _ | m` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3` using `Order.LTSeries.length_le_krullDim (LTSeries.mk m N hN)`. Rewrite `h3` using `[← Module.coe_length, ← hl]`. Establish `h4 : m ≤ l` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem chain_bound_of_finiteLength {R M : Type} [Ring R] [AddCommGroup M] [Module R M] (h : IsFiniteLength R M) :
     ∃ L : ℕ, ∀ (m : ℕ) (N : Fin m → Submodule R M), StrictMono N → m ≤ L := by
@@ -26,9 +26,9 @@ theorem chain_bound_of_finiteLength {R M : Type} [Ring R] [AddCommGroup M] [Modu
   omega
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 h`. Establish `hw : WellFoundedGT (Subrepresentation Θ)` using `(Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := Θ)).strictMono.wellFoundedGT`. Establish `hco : IsCoatomic (Subrepresentation Θ)` using `inferInstance`. Take `⟨C, hC, hAC⟩` from `(eq_top_or_exists_le_coatom A).resolve_left hA`. Take `⟨C', hC', hBC⟩` from `(eq_top_or_exists_le_coatom B).resolve_left hB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hc C C' hC hC'`. Conclude with `ne_top_of_le_ne_top hC.1 (sup_le hAC hBC)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sup_ne_top {H T : Type} [Group H] [AddCommGroup T] [Module ℂ T] (Θ : Representation ℂ H T)
     (h : IsFiniteLength (MonoidAlgebra ℂ H) Θ.asModule)
@@ -44,9 +44,9 @@ theorem sup_ne_top {H T : Type} [Group H] [AddCommGroup T] [Module ℂ T] (Θ : 
   exact ne_top_of_le_ne_top hC.1 (sup_le hAC hBC)
 
 /- English proof (translation)
-Establish `hnt : Nontrivial (Subrepresentation (Representation.trivial ℂ G ℂ))`. Use `⟨⊥, ⊤, fun h => ?_⟩` and prove the remaining obligations. Use `congrArg Subrepresentation.toSubmodule h` as an intermediate fact. Conclude with `bot_ne_top (α := Submodule ℂ ℂ) this`. Use `{ eq_bot_or_eq_top := fun a => ?_ }` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_bot_or_eq_top a.toSubmodule with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem trivial_irreducible (G : Type) [Group G] : (Representation.trivial ℂ G ℂ).IsIrreducible := by
   have hnt : Nontrivial (Subrepresentation (Representation.trivial ℂ G ℂ)) := by
@@ -59,7 +59,7 @@ theorem trivial_irreducible (G : Type) [Group G] : (Representation.trivial ℂ G
   · exact Or.inr (Subrepresentation.toSubmodule_injective h)
 
 /- English proof (translation)
-Use `⟨fun v => ?_, fun K _ _ => inferInstance⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem trivial_admissible (G : Type) [Group G] [TopologicalSpace G] :
     GlobalTheory.PRep.IsAdmissible (Representation.trivial ℂ G ℂ) := by
@@ -71,9 +71,9 @@ section
 variable {Y G H T : Type} [Group G] [Group H] [TopologicalSpace Y] [AddCommGroup T] [Module ℂ T]
 
 /- English proof (translation)
-Use `set A := Submodule.span ℂ {z | ∃ g, ∃ φ ∈ SB Y, z = om (g, 1) φ - φ} with hA`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `f`. Use `(hp.2.2 φ).1 hφ (f ∘ₗ A.mkQ ∘ₗ (SB Y).subtype) fun g ψ ψ₁ h => ?_` and prove the remaining obligations. Establish `: A.mkQ (ψ₁ : Y → ℂ) = A.mkQ ψ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(Submodule.Quotient.eq A).2 (Submodule.subset_span ⟨g, ψ, ψ.2, rfl⟩)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, this, Representation.trivial_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_span_of_eq_zero (om : G × H →* Module.End ℂ (Y → ℂ)) (hom : ∀ x, ∀ φ ∈ SB Y, om x φ ∈ SB Y)
     {Θ : Representation ℂ H T} {p : SB Y →ₗ[ℂ] ℂ ⊗[ℂ] T}
@@ -105,9 +105,9 @@ def image (om : G × H →* Module.End ℂ (Y → ℂ)) (hom : ∀ x, ∀ φ ∈
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `⟨?_, fun h => ⟨φ, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨ψ, hψ, e⟩`. Establish `e1 : p ψ = p φ` using `(TensorProduct.lid ℂ T).injective e`. Establish `e2 : p (φ - ψ) = 0` using `by rw [map_sub, e1, sub_self]`. Establish `h3` using `N.add_mem (hA (mem_span_of_eq_zero om hom hp _ e2)) hψ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_image_iff (om : G × H →* Module.End ℂ (Y → ℂ)) (hom : ∀ x, ∀ φ ∈ SB Y, om x φ ∈ SB Y)
     {Θ : Representation ℂ H T} {p : SB Y →ₗ[ℂ] ℂ ⊗[ℂ] T}
@@ -125,17 +125,17 @@ theorem mem_image_iff (om : G × H →* Module.End ℂ (Y → ℂ)) (hom : ∀ x
 end
 
 /- English proof (translation)
-Introduce `Y G H _ _ _ _ _ om hH hom`. Take `⟨⟨T, _, _, Θ, p, hp, -, hfl, hco⟩, -⟩` from `hH ℂ (Representation.trivial ℂ G ℂ) (trivial_irreducible G) (trivial_admissible G)`. Prove the components needed by the constructor for the conclusion. Take `⟨L, hL⟩` from `chain_bound_of_finiteLength hfl`. Use `⟨L, fun m N hN hs => hL m (fun i => Subrepresentation.subrepresentationSubmoduleOrderIso (image om hom hp.1 (N i) (hs i).2.2)) fun i j hij => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := Θ)).strictMono ?_` and prove the remaining obligations. Establish `hlt` using `hN hij`. Use `lt_of_le_of_ne ?_ fun e => hlt.not_ge fun φ hφ => ?_` and prove the remaining obligations. Conclude with `Submodule.map_mono (Submodule.comap_mono hlt.le)`. Establish `h1` using `(mem_image_iff om hom hp (N j) (hs j).1 (hs j).2.2 ⟨φ, (hs j).2.1 hφ⟩).2 hφ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← e]`. Conclude with `(mem_image_iff om hom hp (N i) (hs i).1 (hs i).2.2 _).1 h1`. Establish `key : ∀ (N : Submodule ℂ (Y → ℂ)) (hs : Submodule.span ℂ {z | ∃ g, ∃ φ ∈ SB Y, z = om (g, 1) φ - φ} ≤ N ∧ N ≤ SB Y ∧ ∀ h, ∀ φ ∈ N, om (1, h) φ ∈ N), N ≠ SB Y → image om hom hp.1 N hs.2.2 ≠ ⊤`. Introduce `N hs hne e`. Use `hne (le_antisymm hs.2.1 fun φ hφ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_image_iff om hom hp N hs.1 hs.2.2 ⟨φ, hφ⟩).1 ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Submodule.mem_top`. Introduce `N N' hs hs' hne hne' e`. Use `sup_ne_top Θ hfl hco _ _ (key N hs hne) (key N' hs' hne') ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun t _ => ?_)` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `hp.2.1 ((TensorProduct.lid ℂ T).symm t)`. Establish `hm : (φ : Y → ℂ) ∈ N ⊔ N'` using `by rw [e]; exact φ.2`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hm`. Establish `e1 : φ = (⟨a, hs.2.1 ha⟩ : SB Y) + ⟨b, hs'.2.1 hb⟩` using `Subtype.ext hab.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : t = TensorProduct.lid ℂ T (p ⟨a, hs.2.1 ha⟩) + TensorProduct.lid ℂ T (p ⟨b, hs'.2.1 hb⟩)`. Rewrite using `[← map_add, ← map_add, ← e1, hφ, LinearEquiv.apply_symm_apply]`. Rewrite using `[e2]`. Conclude with `Submodule.add_mem_sup ⟨_, ha, rfl⟩ ⟨_, hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem chain_bounded_and_sup_proper :
     ∀ {Y G H : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace H] [TopologicalSpace Y]

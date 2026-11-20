@@ -76,31 +76,25 @@ def NormalFormAtQ : Prop :=
       (cst : LocCst X (rowSG Pr sel mu)), RepExists Ch sel mu cst ∧ ChoiceExists Ch sel mu cst
 
 /- English proof (translation)
-Use `⟨fun _ => 0, 0, fun _ => ⟨by simp, le_rfl⟩, zero_mem _, ?_⟩` and prove the remaining obligations. Establish `hL : ∀ y, y ∈ lamYat (Pr` using `Pr) (R := R) j P ↔ ∀ l, IntAt P (y l) := by`. Introduce `y`. Unfold `lamYat LocE.lamY LocE.sclLat stdAt`. Rewrite using `[if_neg hP, Submodule.mem_comap, mem_localization_standardLattice]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun l => ?_` and prove the remaining obligations. Simplify using `[LocE.scE]`. Establish `hg : gmap (1 : AutY X R j) (lamYat (Pr` using `Pr) (R := R) j P) = lamYat (Pr := Pr) (R := R) j P := by`. Use extensionality with `y`. Simplify using `[gmap, Submodule.mem_map]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h0 : IntAt P (0 : X.E)` using `by simpa using IntAt.coe P 0`. Establish `hc : ∀ (s : Fin (cOf R j) → X.E) (l : Fin (R.N j + cOf R j)), (Fintype.linearCombination X.E (nfVec (qOf P) (R.N j) (cOf R j) (fun _ => 0) (0 : Sp X.E (R.N j))) s) l = if h : R.N j ≤ l.1 then s ⟨l.1 - R.N j, by have` using `l.2; omega⟩ else 0 := by`. Introduce `s l`. Rewrite using `[Fintype.linearCombination_apply, Finset.sum_apply]`. Simplify using `only [nfVec, zpow_zero, one_smul, map_zero, ite_self, add_zero, Pi.smul_apply, Loc.eN, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨l.1 - R.N j, by have := l.2; omega⟩]`. Rewrite using `[if_pos (by simp; omega)]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `hb (Fin.ext (by simp; omega))`. Simplify using the standard rewrite rules. Conclude with `Finset.sum_eq_zero fun b _ => if_neg (by omega)`. Establish `hx : ∀ (x : Sp X.E (R.N j)) (l : Fin (R.N j + cOf R j)), Loc.inX X.E (R.N j) (cOf R j) x l = if h : l.1 < R.N j then x ⟨l.1, h⟩ else 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `x l`. Unfold `Loc.inX`. Rewrite using `[LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hg]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[hL]`. Use `Submodule.mem_sup.2 ⟨Loc.inX X.E (R.N j) (cOf R j) (fun i => y (Fin.castAdd _ i)), ⟨_, ?_, rfl⟩, Fintype.linearCombination X.E (nfVec (qOf P) (R.N j) (cOf R j) (fun _ => 0) (0 : Sp X.E (R.N j))) (fun i => y (Fin.natAdd _ i)), ⟨_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(mem_localization_standardLattice P _).2 fun i => hy _`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_localization_standardLattice P _).2 fun i => hy _`. Use function extensionality and compare the values at `l`. Rewrite using `[Pi.add_apply, hx, hc]`. Distinguish the cases in `h : l.1 < R.N j`. Rewrite using `[dif_pos h, dif_neg (by omega), add_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_pos (by omega), zero_add]`. Use `congr 1`. Conclude with `Fin.ext (by simp; omega)`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx', rfl⟩`. Rewrite using `[hL]`. Introduce `l`. Use `(mem_localization_standardLattice P _).1 hx'` as an intermediate fact. Rewrite using `[LinearMap.restrictScalars_apply, hx]`.
-
-Use `split_ifs`. Conclude with `this _`. Conclude with `h0`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Rewrite using `[hL]`.
-
-Introduce `l`. Use `(mem_localization_standardLattice P _).1 hs` as an intermediate fact. Rewrite using `[LinearMap.restrictScalars_apply, hc]`. Use `split_ifs`. Conclude with `this _`.
-
-Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nf_one (Pr : Primes X) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (hP : P ∉ Pr.vGs) : NF Pr j P (1 : AutY X R j) := by
   classical

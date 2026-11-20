@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin' O M`. Establish `hgc : Continuous g` using `g.continuous_on_pi`. Establish `hq : Topology.IsQuotientMap g` using `hgc.isClosedMap.isQuotientMap hgc hg`. Establish `hfg : Continuous (f ∘ g)` using `(f.comp g).continuous_on_pi`. Conclude with `hq.continuous_iff.mpr hfg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearMap_continuous_of_compactSpace_of_finite
     {O : Type} [CommRing O] [TopologicalSpace O] [CompactSpace O] {M M' : Type}

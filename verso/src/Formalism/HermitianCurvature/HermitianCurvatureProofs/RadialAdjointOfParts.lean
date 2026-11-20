@@ -48,7 +48,7 @@ def RadAdjOfParts : Prop := Exhaust → JThetaC → BetaAdjC → RadAdj
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `bcWeight`. Use `split_ifs with h`. Conclude with `mul_nonneg (Finset.prod_nonneg fun a _ => by positivity) (pow_nonneg (sub_nonneg.2 h) _)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem bcWeight_nonneg (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' q := by
   unfold bcWeight
@@ -60,7 +60,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `x hx hxG`. Unfold `opAdj`. Use `congr 1`. Use `List.map_congr_left fun T _ => ?_` and prove the remaining obligations. Rewrite using `[PositiveOrbitOpen.rw_local (f₁ := fun y => T.coefAdj y (f₁ y)) (f₂ := fun y => T.coefAdj y (f₂ y)) hV (fun y hy hyG => by simp only [h y hy hyG]) T.word.reverse (fun X hX => T.word_lie X (List.mem_reverse.1 hX)) x hx hxG]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_local (Θ : DiffOp k r Wp Wq) {f₁ f₂ : Mat k r → (Wq →L[ℂ] Wp)} {V : Set (Mat k r)} (hV : IsOpen V)
     (h : ∀ x ∈ V, x ∈ GV k r → f₁ x = f₂ x) : ∀ x ∈ V, x ∈ GV k r → opAdj Θ f₁ x = opAdj Θ f₂ x := by
@@ -73,9 +73,9 @@ theorem adj_local (Θ : DiffOp k r Wp Wq) {f₁ f₂ : Mat k r → (Wq →L[ℂ]
     (fun X hX => T.word_lie X (List.mem_reverse.1 hX)) x hx hxG]
 
 /- English proof (translation)
-Unfold `betaBig`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_imp_of_ae_restrict (Formalism.FourierDecayAlt.P.big_cell_orbit_set k r Wp Wq D)] with q hq`. Distinguish the cases in `hQ : q ∈ Qset D`. Establish `hg : bigCell k r q.1 (D.μsec q.2) ∈ Om k r D.z D.z'` using `hq hQ`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h _ hg, h' _ hg]`. Establish `h0 : bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0` using `le_antisymm (not_lt.1 hQ) (bcWeight_nonneg _ _ q)`. Simplify using `only [h0, Complex.ofReal_zero, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem betaBig_congr (D : RealPlaceData k r Wp Wq)
     {J₁ J₁' J₂ J₂' : Mat k r → PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)}
@@ -100,11 +100,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `hE hJ hB k r Wp Wq _ _ _ _ _ _ D Θ f f' K hI hS hC hf hf' hEf hEf' hK hKQ hvan`. Take `⟨F, hF, hFc, hFf⟩` from `hE k r Wp Wq D f K hf hEf hK hKQ fun q hq hqK => (hvan q hq hqK).1`. Take `⟨F', hF', hF'c, hF'f⟩` from `hE k r Wp Wq D f' K hf' hEf' hK hKQ fun q hq hqK => (hvan q hq hqK).2`. Establish `hB'` using `hB k r Wp Wq D Θ F F' hI hS hC hF hF' hFc hF'c`. Establish `hO` using `PositiveOrbitOpen.omPlus_open (k := k) (r := r) D.z D.z'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1 : ∀ g ∈ Om k r D.z D.z', hsVec (opApply Θ f g) = hsVec (JF D (opApply Θ F) g)`. Introduce `g hg`. Rewrite using `[(hJ k r Wp Wq D Θ F hS hC hF hFc g hg).1, PositiveOrbitOpen.op_local Θ hO (fun x hx hxG => (hFf x ⟨hxG, hx⟩).symm) g hg.2 hg.1]`. Establish `p2 : ∀ g ∈ Om k r D.z D.z', hsVec (opAdj Θ f' g) = hsVec (JF D (opAdj Θ F') g)`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hJ k r Wp Wq D Θ F' hS hC hF' hF'c g hg).2, JFxG.adj_local Θ hO (fun x hx hxG => (hF'f x ⟨hxG, hx⟩).symm) g hg.2 hg.1]`. Establish `p3 : ∀ g ∈ Om k r D.z D.z', hsVec (f g) = hsVec (JF D F g)` using `fun g hg => by rw [hFf g hg]`. Establish `p4 : ∀ g ∈ Om k r D.z D.z', hsVec (f' g) = hsVec (JF D F' g)` using `fun g hg => by rw [hF'f g hg]`. Rewrite using `[JFxG.betaBig_congr D p1 p4, JFxG.betaBig_congr D p3 p2]`. Conclude with `hB'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radial_adjoint_of_parts : Formalism.FourierDecayAlt.P.JFxG.RadAdjOfParts := by
   intro hE hJ hB k r Wp Wq _ _ _ _ _ _ D Θ f f' K hI hS hC hf hf' hEf hEf' hK hKQ hvan

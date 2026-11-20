@@ -5,27 +5,23 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Expone
 namespace GlobalTheory.SchurAdmissibility
 
 /- English proof (translation)
-Distinguish the cases in `hN : ∀ v : N, v = 0`. Conclude with `⟨0, LinearMap.ext fun v => by rw [hN (φ v)]; simp⟩`. Use `push Not at hN`. Take `⟨v, hv⟩` from `hN`. Set `S : Subgroup G` to `{ carrier := {g : G | π g v = v} mul_mem' := by`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hSo : IsOpen (S : Set G)` using `hadm.1 v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSc : IsClosed (S : Set G)` using `S.isClosed_of_isOpen hSo`. Establish `hLo : IsOpen ((K ⊓ S : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKo.inter hSo`. Establish `hLc : IsCompact ((K ⊓ S : Subgroup G) : Set G)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKc.inter_right hSc`. Use `haveI hfd := hadm.2 (K ⊓ S) hLo hLc`. Establish `hmem : ∀ w : N, w ∈ GlobalTheory.PRep.fixed π (K ⊓ S) ↔ ∀ h : (K ⊓ S : Subgroup G), π (h : G) w = w`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(∀ h : (K ⊓ S : Subgroup G), π (h : G) w = _) ↔ _`. Simplify using the standard rewrite rules. Establish `hvm : v ∈ GlobalTheory.PRep.fixed π (K ⊓ S)` using `(hmem v).2 fun h => h.2.2`. Use `haveI : Nontrivial (GlobalTheory.PRep.fixed π (K ⊓ S)) := ⟨⟨⟨v, hvm⟩, 0, fun h => hv (congrArg Subtype.val h)⟩⟩`. Establish `hres : ∀ w ∈ GlobalTheory.PRep.fixed π (K ⊓ S), φ w ∈ GlobalTheory.PRep.fixed π (K ⊓ S)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Rewrite `hw`, the goal using `[hmem]`. Introduce `h`. Rewrite using `[← hφ, hw h]`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (φ.restrict hres)`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Establish `hw0 : (w : N) ≠ 0` using `fun h => hw.2 (Subtype.ext h)`. Establish `hw1 : φ w = c • (w : N)` using `congrArg Subtype.val hw.apply_eq_smul`. Set `U : Subrepresentation π` to `{ toSubmodule := Module.End.eigenspace φ c apply_mem_toSubmodule := by`. Introduce `g x hx`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hφ, hx, map_smul] }`. Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `hirr.eq_bot_or_eq_top U with h | h` into its components or cases. It suffices to derive a contradiction.
-
-Establish `h1 : (w : N) ∈ U.toSubmodule` using `Module.End.mem_eigenspace_iff.2 hw1`. Rewrite `h1` using `[h]`. Conclude with `hw0 h1`. Use extensionality with `x`. Establish `h1 : x ∈ U.toSubmodule`.
-
-Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Module.End.mem_eigenspace_iff.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem schur_admissible (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K : Subgroup G) (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G))

@@ -10,7 +10,7 @@ section P0KLinfty
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Conclude with `NormedSpace.exp_continuous.comp (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 lemma continuous_exp_real_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := by
@@ -19,29 +19,27 @@ lemma continuous_exp_real_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
 end P0KLinfty
 
 /- English proof (translation)
-Conclude with `Subtype.ext (Units.ext hgh)`.
+A detailed English derivation is pending.
 -/
 lemma toM_injective' {n : ℕ} {ε : Fin n → Bool} {g h : UJ ε} (hgh : toM g = toM h) : g = h := by
   exact Subtype.ext (Units.ext hgh)
 
 /- English proof (translation)
-Introduce `n ε X hX`. Establish `hE : ∀ t : ℝ, toM (expG ε X t) = NormedSpace.exp ((t : ℂ) • X)` using `fun t => toM_expG ε X t hX`. Establish `hcont : Continuous (fun t : ℝ => expG ε X t)`. Establish `hcU : Continuous (fun t : ℝ => ((expG ε X t : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ))`. Rewrite using `[Units.continuous_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (Units.val ∘ fun t : ℝ => ((expG ε X t : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)) = fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)` using `funext hE`. Rewrite using `[h1]`. Conclude with `continuous_exp_real_smul X`. Establish `h2 : (fun t : ℝ => ((((expG ε X t : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = fun t : ℝ => NormedSpace.exp (((-t : ℝ) : ℂ) • X)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Use `show toM (expG ε X t) * _ = 1`. Rewrite using `[hE, ← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left ((t : ℝ) : ℂ)).smul_right (((-t : ℝ)) : ℂ)), ← add_smul]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_neg_cancel, zero_smul, NormedSpace.exp_zero]`. Rewrite using `[h2]`. Conclude with `(continuous_exp_real_smul X).comp continuous_neg`. Conclude with `continuous_induced_rng.2 hcU`. Use `⟨?_, ?_, hcont, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Apply `toM_injective'` to reduce the goal to its premises. Rewrite using `[hE]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce `s t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Apply `toM_injective'` to reduce the goal to its premises. Use `show toM (expG ε X (s + t)) = toM (expG ε X s) * toM (expG ε X t)`. Rewrite using `[hE, hE, hE, ← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left ((s : ℝ) : ℂ)).smul_right ((t : ℝ) : ℂ))]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[add_smul]`. Introduce `hK`. Establish `hk : ∀ t : ℝ, ((expK ε X t : KG ε) : UJ ε) = expG ε X t`. Introduce `t`. Unfold `expK`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hK]`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Establish `h3 : (Subtype.val ∘ fun t : ℝ => expK ε X t) = fun t : ℝ => expG ε X t` using `funext hk`. Rewrite using `[h3]`.
-
-Conclude with `hcont`.
+A detailed English derivation is pending.
 -/
 theorem group_exponential_facts : ExpGFacts := by
   intro n ε X hX
@@ -92,7 +90,7 @@ theorem group_exponential_facts : ExpGFacts := by
     exact hcont
 
 /- English proof (translation)
-Unfold `muK`. Prove the components needed by the constructor for the conclusion. Establish `h` using `MeasureTheory.Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (KG ε)))`. Rewrite `h` using `[TopologicalSpace.PositiveCompacts.coe_top]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma compact_haar_probability (n : ℕ) (ε : Fin n → Bool) : IsProbabilityMeasure (muK ε) := by
   unfold muK
@@ -103,9 +101,7 @@ lemma compact_haar_probability (n : ℕ) (ε : Fin n → Bool) : IsProbabilityMe
 instance compact_haar_probability_inst (n : ℕ) (ε : Fin n → Bool) : IsProbabilityMeasure (muK ε) := compact_haar_probability n ε
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ := TopologicalSpace.secondCountableTopology_induced _ _ MulOpposite.unop`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ˣ := TopologicalSpace.secondCountableTopology_induced _ _ (Units.embedProduct _)`. Use `haveI : SecondCountableTopology (UJ ε) := TopologicalSpace.Subtype.secondCountableTopology (UJ ε : Set (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Use `haveI : SecondCountableTopology (KG ε) := TopologicalSpace.Subtype.secondCountableTopology (KG ε : Set (UJ ε))`.
-
-Establish `h` using `MeasureTheory.Measure.haarMeasure_unique ν (⊤ : TopologicalSpace.PositiveCompacts (KG ε))`. Rewrite using `[h, TopologicalSpace.PositiveCompacts.coe_top, measure_univ, one_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma compact_haar_unique_left {n : ℕ} {ε : Fin n → Bool} (ν : Measure (KG ε)) [IsMulLeftInvariant ν]
     [IsProbabilityMeasure ν] : ν = muK ε := by
@@ -124,11 +120,9 @@ lemma compact_haar_unique_left {n : ℕ} {ε : Fin n → Bool} (ν : Measure (KG
   rfl
 
 /- English proof (translation)
-Use `haveI : IsMulLeftInvariant (muK ε) := by`. Unfold `muK`. Use `infer_instance`. Establish `hm : Measurable (fun x : KG ε => x * k)` using `measurable_mul_const k`. Use `haveI : IsProbabilityMeasure (Measure.map (fun x => x * k) (muK ε)) := isProbabilityMeasure_map hm.aemeasurable`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsMulLeftInvariant (Measure.map (fun x => x * k) (muK ε)) := by`. Prove the components needed by the constructor for the conclusion. Introduce `g`. Rewrite using `[Measure.map_map (measurable_const_mul g) hm]`. Establish `e : ((g * ·) ∘ (· * k)) = ((· * k) ∘ (g * ·) : KG ε → KG ε)`.
-
-Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Rewrite using `[e, ← Measure.map_map hm (measurable_const_mul g), map_mul_left_eq_self]`. Conclude with `compact_haar_unique_left _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma compact_haar_right_invariant (n : ℕ) (ε : Fin n → Bool) (k : KG ε) :
     Measure.map (fun x => x * k) (muK ε) = muK ε := by
@@ -152,11 +146,11 @@ instance compact_haar_right_invariant_inst (n : ℕ) (ε : Fin n → Bool) : IsM
   ⟨fun k => compact_haar_right_invariant n ε k⟩
 
 /- English proof (translation)
-Introduce `n ε`. Use `haveI : IsMulLeftInvariant (muK ε) := by`. Unfold `muK`. Use `infer_instance`. Use `⟨compact_haar_probability n ε, fun k => map_mul_left_eq_self _ k, fun k => compact_haar_right_invariant n ε k, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsProbabilityMeasure (Measure.map (fun x : KG ε => x⁻¹) (muK ε)) := isProbabilityMeasure_map measurable_inv.aemeasurable`. Use `haveI : IsMulLeftInvariant (Measure.map (fun x : KG ε => x⁻¹) (muK ε)) := by`. Prove the components needed by the constructor for the conclusion. Introduce `g`. Rewrite using `[Measure.map_map (measurable_const_mul g) measurable_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((g * ·) ∘ (fun x : KG ε => x⁻¹)) = ((fun x : KG ε => x⁻¹) ∘ (· * g⁻¹))`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[e, ← Measure.map_map measurable_inv (measurable_mul_const g⁻¹), compact_haar_right_invariant]`. Conclude with `compact_haar_unique_left _`.
+A detailed English derivation is pending.
 -/
 theorem compact_haar_holds : KHaar := by
   intro n ε
@@ -177,23 +171,19 @@ theorem compact_haar_holds : KHaar := by
   exact compact_haar_unique_left _
 
 /- English proof (translation)
-Introduce `n ε E _ _ _ F D Z hZ hF hD hder`. Use `haveI : IsMulRightInvariant (muK ε) := ⟨fun g => compact_haar_right_invariant n ε g⟩`. Use `haveI : IsProbabilityMeasure (muK ε) := compact_haar_probability n ε`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ := TopologicalSpace.secondCountableTopology_induced _ _ MulOpposite.unop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ˣ := TopologicalSpace.secondCountableTopology_induced _ _ (Units.embedProduct _)`. Use `haveI : SecondCountableTopology (UJ ε) := TopologicalSpace.Subtype.secondCountableTopology (UJ ε : Set (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Use `haveI : SecondCountableTopology (KG ε) := TopologicalSpace.Subtype.secondCountableTopology (KG ε : Set (UJ ε))`. Take `⟨h0, hadd, -, hKf⟩` from `group_exponential_facts n ε Z hZ.1`. Take `⟨hk, -⟩` from `hKf hZ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hhom : ∀ s t : ℝ, expK ε Z (s + t) = expK ε Z s * expK ε Z t`. Introduce `s t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, hk, hk, hk, hadd]`. Establish `hzero : expK ε Z 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hk 0).trans h0`. Establish `hderiv : ∀ (k : KG ε) (t : ℝ), HasDerivAt (fun s => F (k * expK ε Z s)) (D (k * expK ε Z t)) t`. Introduce `k t`. Establish `h` using `hder (k * expK ε Z t)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h` using `[← sub_self t]`. Establish `e : (fun s => F (k * expK ε Z s)) = fun s => F (k * expK ε Z t * expK ε Z (s - t))`. Use function extensionality and compare the values at `s`. Rewrite using `[mul_assoc, ← hhom, add_sub_cancel]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.comp_sub_const t t`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC⟩ : ∃ C, ∀ y : KG ε, ‖D y‖ ≤ C := by`. Take `⟨C, hC⟩` from `(isCompact_univ.image hD.norm).bddAbove`. Conclude with `⟨C, fun y => hC ⟨y, Set.mem_univ _, rfl⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨CF, hCF⟩ : ∃ C, ∀ y : KG ε, ‖F y‖ ≤ C := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `(isCompact_univ.image hF.norm).bddAbove`. Conclude with `⟨C, fun y => hC ⟨y, Set.mem_univ _, rfl⟩⟩`. Establish `hcomp : ∀ t : ℝ, Continuous (fun k : KG ε => k * expK ε Z t)` using `fun t => continuous_id.mul continuous_const`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := muK ε) (x₀ := (0 : ℝ)) (F := fun t k => F (k * expK ε Z t)) (F' := fun t k => D (k * expK ε Z t)) (bound := fun _ => C) (s := Set.univ) Filter.univ_mem (Filter.Eventually.of_forall fun t => (hF.comp (hcomp t)).aestronglyMeasu …`. Establish `hconst : (fun t : ℝ => ∫ k, F (k * expK ε Z t) ∂(muK ε)) = fun _ => ∫ k, F k ∂(muK ε)`.
-
-Use function extensionality and compare the values at `t`. Conclude with `integral_mul_right_eq_self F (expK ε Z t)`. Establish `h2 : HasDerivAt (fun _ : ℝ => ∫ k, F k ∂(muK ε)) (∫ k, D (k * expK ε Z 0) ∂(muK ε)) 0`. Rewrite using `[← hconst]`. Conclude with `key.2`.
-
-Establish `h3` using `h2.unique (hasDerivAt_const (0 : ℝ) (∫ k, F k ∂(muK ε)))`. Simplify using `only [hzero, mul_one] at h3`. Conclude with `h3`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compact_integration_by_parts : KByParts := by
   intro n ε E _ _ _ F D Z hZ hF hD hder

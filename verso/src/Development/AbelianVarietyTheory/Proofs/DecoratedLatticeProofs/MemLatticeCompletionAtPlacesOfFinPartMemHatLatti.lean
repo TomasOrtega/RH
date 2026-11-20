@@ -29,7 +29,7 @@ def cutHom (P : Pl D → Prop) : (Af D.host.F ⊗[D.host.F] D.host.E) →+ AE D 
     rw [mul_add]; exact Formalism.IndefR.Fin.LevelGroupLemmas.Lat.lift_add _ _
 
 /- English proof (translation)
-Unfold `cut`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cut_tmul (P : Pl D → Prop) (a : Af D.host.F) (x : D.host.E) :
     cut P (a ⊗ₜ[D.host.F] x) = pairA D.host.F 0 (GlobalTheory.SelfDualAt.indP P * a) ⊗ₜ[D.host.F] x := by
@@ -40,13 +40,13 @@ theorem cut_tmul (P : Pl D → Prop) (a : Af D.host.F) (x : D.host.E) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Unfold `idAt at hu`. Rewrite `hu` using `[Ideal.mem_inf]`. Take `⟨hinf, hfin⟩` from `hu`. Rewrite `hinf` using `[RingHom.mem_ker]`. Establish `hoff : ∀ w : Pl D, ¬ P w → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D w (finPart D u) = 0`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `w hw`. Use `(Submodule.mem_iInf _).1 hfin ⟨w, hw⟩` as an intermediate fact. Conclude with `(RingHom.mem_ker).1 this`. Establish `hcut : (GlobalTheory.SelfDualAt.indP P ⊗ₜ[D.host.F] (1 : D.host.E)) * finPart D u = finPart D u`. Use `(sub_eq_zero.mp (GlobalTheory.SelfDualAt.eq_zero_of_compFin _ fun w => ?_)).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul]`. Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D w (GlobalTheory.SelfDualAt.indP P ⊗ₜ[D.host.F] (1 : D.host.E)) = evalV D.host.F w (GlobalTheory.SelfDualAt.indP P) ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`. Rewrite using `[hc, GlobalTheory.SelfDualAt.evalV_indP]`. Distinguish the cases in `hw : P w`. Rewrite using `[if_pos hw, ← Algebra.TensorProduct.one_def, one_mul, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hw, TensorProduct.zero_tmul, zero_mul, sub_zero, hoff w hw]`. Unfold `cut`. Rewrite using `[hcut]`. Conclude with `(Formalism.IndefR.Fin.LevelGroupLemmas.Lat.eq_lift_of_infPart u hinf).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cut_finPart (P : Pl D → Prop) (u : AE D) (hu : u ∈ idAt D P) : cut P (finPart D u) = u := by
   unfold idAt at hu
@@ -71,17 +71,15 @@ theorem cut_finPart (P : Pl D → Prop) (u : AE D) (hu : u ∈ idAt D P) : cut P
   exact (Formalism.IndefR.Fin.LevelGroupLemmas.Lat.eq_lift_of_infPart u hinf).symm
 
 /- English proof (translation)
-Introduce `D S L P y hy hz`. Establish `hlat : (fun i => finPart D (y i)) ∈ latHat D.host.F D.host.E (L : Set (Fin S.rank → D.host.E))` using `(GlobalTheory.LevSplit.latHat_iff L _).2 hz`. Establish `key : y = AddMonoidHom.compLeft (cutHom P) (Fin S.rank) (fun i => finPart D (y i))`. Use function extensionality and compare the values at `fun i => (cut_finPart P (y i) (hy i)).symm`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `AddSubgroup.closure_induction (p := fun u _ => AddMonoidHom.compLeft (cutHom P) (Fin S.rank) u ∈ latV S L P) ?_ ?_ ?_ ?_ hlat` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨GlobalTheory.SelfDualAt.indP P * a, ?_, ?_, 1, rfl, x, hx, ?_⟩` and prove the remaining obligations. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, GlobalTheory.SelfDualAt.evalV_indP]`. Use `split_ifs`. Rewrite using `[one_mul]`. Conclude with `ha v`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Introduce `v hv`. Rewrite using `[map_mul, GlobalTheory.SelfDualAt.evalV_indP, if_neg hv, zero_mul]`. Use function extensionality and compare the values at `i show cut P (a ⊗ₜ[D.host.F] x i) = _`. Rewrite using `[cut_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
-
-Introduce `a _ ha`. Rewrite using `[map_neg]`. Conclude with `neg_mem ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latV_of_hatL : ∀ (D : D7) (S : HSp D) (L : Lat S) (P : Pl D → Prop) (y : Fin S.rank → AE D),
     (∀ i, y i ∈ idAt D P) →

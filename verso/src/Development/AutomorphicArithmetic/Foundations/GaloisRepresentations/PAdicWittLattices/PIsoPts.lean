@@ -8,16 +8,16 @@ private noncomputable def geomPt (X : Scheme.{0}) (x : X) : sp (AlgebraicClosure
     X.fromSpecResidueField x
 
 /- English proof (translation)
-Conclude with `Scheme.fromSpecResidueField_apply x _`.
+A detailed English derivation is pending.
 -/
 private theorem geomPt_apply (X : Scheme.{0}) (x : X)
     (s : sp (AlgebraicClosure (X.residueField x))) : geomPt X x s = x := by
   exact Scheme.fromSpecResidueField_apply x _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `z`. Take `⟨y, hy, -⟩` from `h (AlgebraicClosure (Z.residueField z)) (geomPt Z z)`. Take `⟨s⟩ : Nonempty (sp (AlgebraicClosure (Z.residueField z)))` from `⟨IsLocalRing.closedPoint _⟩`. Establish `key : (y ≫ f) s = geomPt Z z s` using `by rw [hy]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `key` using `[Scheme.Hom.comp_apply, geomPt_apply]`. Conclude with `⟨y s, key⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem surj_of_pts {Y Z : Scheme.{0}} (f : Y ⟶ Z)
     (h : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (z : sp Ω ⟶ Z), ∃! y : sp Ω ⟶ Y, y ≫ f = z) : Surjective f := by
@@ -30,11 +30,11 @@ private theorem surj_of_pts {Y Z : Scheme.{0}} (f : Y ⟶ Z)
   exact ⟨y s, key⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `p`. Take `⟨y, hy, huniq⟩` from `h _ (geomPt (pullback f f) p ≫ pullback.fst f f ≫ f)`. Establish `e1 : geomPt (pullback f f) p ≫ pullback.fst f f = geomPt (pullback f f) p ≫ pullback.snd f f`. Rewrite using `[huniq (geomPt (pullback f f) p ≫ pullback.fst f f) (by dsimp only; rw [Category.assoc]), huniq (geomPt (pullback f f) p ≫ pullback.snd f f) (by dsimp only; rw [Category.assoc, pullback.condition])]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (geomPt (pullback f f) p ≫ pullback.fst f f) ≫ pullback.diagonal f = geomPt (pullback f f) p`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[e1]`. Take `⟨s⟩ : Nonempty (sp (AlgebraicClosure ((pullback f f).residueField p)))` from `⟨IsLocalRing.closedPoint _⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `key : ((geomPt (pullback f f) p ≫ pullback.fst f f) ≫ pullback.diagonal f) s = geomPt (pullback f f) p s` using `by rw [e2]`. Rewrite `key` using `[Scheme.Hom.comp_apply, geomPt_apply]`. Conclude with `⟨_, key⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem diag_surj {Y Z : Scheme.{0}} (f : Y ⟶ Z)
     (h : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (z : sp Ω ⟶ Z), ∃! y : sp Ω ⟶ Y, y ≫ f = z) :
@@ -58,7 +58,7 @@ private theorem diag_surj {Y Z : Scheme.{0}} (f : Y ⟶ Z)
   exact ⟨_, key⟩
 
 /- English proof (translation)
-Introduce `Y Z f _ h`. Establish `hd : IsIso (pullback.diagonal f)` using `(isIso_iff_isOpenImmersion_and_surjective _).2 ⟨inferInstance, diag_surj f h⟩`. Establish `: Mono f` using `(pullback.isIso_diagonal_iff f).1 hd`. Establish `: IsOpenImmersion f` using `IsOpenImmersion.of_flat_of_mono f`. Conclude with `(isIso_iff_isOpenImmersion_and_surjective f).2 ⟨this, surj_of_pts f h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pIsoPts :
     IsoPts := by

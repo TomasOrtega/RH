@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.V.AlgebraTools.Det.mapApi_congr {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
     (B : Type) [CommRing B] (i j : Algebra A B) (h : i = j) (x : MonoidAlgebra B G) :
@@ -11,7 +11,7 @@ private theorem UpperTheory.V.AlgebraTools.Det.mapApi_congr {n : ℕ} {A G : Typ
   subst h; rfl
 
 /- English proof (translation)
-Use `letI : Algebra A B := ((algebraMap A' B).comp f).toAlgebra`. Conclude with `D.nat B₀ B { φ with commutes' := hφ } x`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.Det.map_D_mapRingHom_eq {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
     {A' : Type} [CommRing A'] (f : A →+* A') (B₀ : Type) [CommRing B₀] [Algebra A B₀]
@@ -22,19 +22,19 @@ private theorem UpperTheory.V.AlgebraTools.Det.map_D_mapRingHom_eq {n : ℕ} {A 
   exact D.nat B₀ B { φ with commutes' := hφ } x
 
 /- English proof (translation)
-Introduce `n A G _ _ D A' _ f`. Establish `h1 : ∀ y, (D.map f).chi (MonoidAlgebra.mapRingHom G f y) = (D.chi y).map f`. Introduce `y`. Establish `e : MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C (MonoidAlgebra.mapRingHom G f y) = MonoidAlgebra.mapRingHom G (Polynomial.mapRingHom f) (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C y)`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single, Polynomial.coe_mapRingHom, Polynomial.map_X, ← RingHom.comp_apply, ← RingHom.comp_apply, ← MonoidAlgebra.mapRingHom_comp, ← MonoidAlgebra.mapRingHom_comp, Polynomial.mapRingHom_comp_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (D.map f).D A'[X] _ = _`. Rewrite using `[e, UpperTheory.V.AlgebraTools.Det.map_D_mapRingHom_eq D f A[X] A'[X] (Polynomial.mapRingHom f) (fun a => by simp)]`. Both sides reduce to the same expression. Establish `h2 : ∀ i y, (D.map f).lam i (MonoidAlgebra.mapRingHom G f y) = f (D.lam i y)`. Introduce `i y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [GDet.lam, h1, Polynomial.coeff_map, map_mul, map_pow, map_neg, map_one]`. Establish `h4 : ∀ (σ : Type) (x : MonoidAlgebra (MvPolynomial σ A) G), (D.map f).D (MvPolynomial σ A') (MonoidAlgebra.mapRingHom G (MvPolynomial.map f) x) = MvPolynomial.map f (D.D (MvPolynomial σ A) x)` using `fun σ x => UpperTheory.V.AlgebraTools.Det.map_D_mapRingHom_eq D f _ _ (MvPolynomial.map f) (fun a => MvPolynomial.map_C f a) x`. Use `⟨h1, h2, ?_, h4, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i g`. Simplify using `using h2 i (MonoidAlgebra.single g 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m y`. Rewrite using `[← h4]`. Use `congr 1`. Use extensionality with `g`. Simplify using `[GDet.gen]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy B _ _ h`. Use `letI : Algebra A B := ((algebraMap A' B).comp f).toAlgebra`. Use `hy B h` as an intermediate fact. Rewrite using `[show MonoidAlgebra.mapRingHom G (algebraMap A B) y = MonoidAlgebra.mapRingHom G (algebraMap A' B) (MonoidAlgebra.mapRingHom G f y) from by`. Rewrite using `[← RingHom.comp_apply, ← MonoidAlgebra.mapRingHom_comp]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `rfl] at this`. Conclude with `this`. Introduce `A'' _ f'`. Both sides reduce to the same expression. Consider the cases of `D`.
+Both sides reduce to the same expression. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GDet.map]`. Use `congr 1`. Use function extensionality and compare the values at `B _ i`. Use `congr 1`. Conclude with `Algebra.algebra_ext _ _ (fun r => rfl)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.mapApi :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) {A' : Type} [CommRing A'] (f : A →+* A'),

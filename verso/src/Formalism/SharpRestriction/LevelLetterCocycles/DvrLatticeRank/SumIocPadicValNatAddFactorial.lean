@@ -9,18 +9,18 @@ section SlopeTestRemainingChoices
 variable {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `PadicInt.irreducible_p.prime`.
+A detailed English derivation is pending.
 -/
 private theorem prime_prime_padicInt : Prime (p : ℤ_[p]) := PadicInt.irreducible_p.prime
 
 /- English proof (translation)
-Introduce `h` and use `prime_prime_padicInt.not_unit (isUnit_of_dvd_unit h (Units.isUnit _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem not_prime_dvd_padicInt_unit (w : ℤ_[p]ˣ) : ¬ (p : ℤ_[p]) ∣ (w : ℤ_[p]) :=
   fun h => prime_prime_padicInt.not_unit (isUnit_of_dvd_unit h (Units.isUnit _))
 
 /- English proof (translation)
-Establish `hP : Prime (p : ℤ_[p])` using `prime_prime_padicInt`. Use `conv_lhs => rw [PadicInt.unitCoeff_spec hx]`. Rewrite using `[emultiplicity_mul hP, emultiplicity_eq_zero.mpr (not_prime_dvd_padicInt_unit _), zero_add, emultiplicity_pow_self_of_prime hP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma emult_eq_valuation {x : ℤ_[p]} (hx : x ≠ 0) :
     emultiplicity (p : ℤ_[p]) x = x.valuation := by
@@ -30,7 +30,7 @@ lemma emult_eq_valuation {x : ℤ_[p]} (hx : x ≠ 0) :
     emultiplicity_pow_self_of_prime hP]
 
 /- English proof (translation)
-Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Rewrite `h` using `[emult_eq_valuation hx]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma valuation_eq_of_emult {x : ℤ_[p]} {n : ℕ} (h : emultiplicity (p : ℤ_[p]) x = n) :
     x.valuation = n := by
@@ -41,14 +41,14 @@ lemma valuation_eq_of_emult {x : ℤ_[p]} {n : ℕ} (h : emultiplicity (p : ℤ_
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[emult_eq_valuation hx, h1, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma emult_of_valuation_one {x : ℤ_[p]} (hx : x ≠ 0) (h1 : x.valuation = 1) :
     emultiplicity (p : ℤ_[p]) x = 1 := by
   rw [emult_eq_valuation hx, h1, Nat.cast_one]
 
 /- English proof (translation)
-Establish `h` using `emult_of_valuation_one hx h1`. Assume the negation of the conclusion as `hn`. Rewrite `h` using `[emultiplicity_eq_zero.mpr hn]`. Conclude with `zero_ne_one h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma p_dvd_of_valuation_one {x : ℤ_[p]} (hx : x ≠ 0) (h1 : x.valuation = 1) :
     (p : ℤ_[p]) ∣ x := by
@@ -58,7 +58,7 @@ lemma p_dvd_of_valuation_one {x : ℤ_[p]} (hx : x ≠ 0) (h1 : x.valuation = 1)
   exact zero_ne_one h
 
 /- English proof (translation)
-Introduce `hu`. Establish `h1 : (p : ℤ_[p]) ∣ 1` using `by simpa using dvd_sub hu h`. Conclude with `prime_prime_padicInt.not_unit (isUnit_of_dvd_one h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma not_dvd_of_dvd_sub_one {u : ℤ_[p]} (h : (p : ℤ_[p]) ∣ u - 1) : ¬ (p : ℤ_[p]) ∣ u := by
   intro hu
@@ -66,7 +66,7 @@ lemma not_dvd_of_dvd_sub_one {u : ℤ_[p]} (h : (p : ℤ_[p]) ∣ u - 1) : ¬ (p
   exact prime_prime_padicInt.not_unit (isUnit_of_dvd_one h1)
 
 /- English proof (translation)
-Establish `h1` using `(PadicInt.norm_lt_one_iff_dvd _).mpr h`. Establish `h2 : ‖((m : ℤ) : ℤ_[p])‖ < 1` using `by simpa using h1`. Conclude with `Int.natCast_dvd_natCast.mp ((PadicInt.norm_int_lt_one_iff_dvd _).mp h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma dvd_of_natCast_dvd_natCast {m : ℕ} (h : (p : ℤ_[p]) ∣ (m : ℤ_[p])) : p ∣ m := by
   have h1 := (PadicInt.norm_lt_one_iff_dvd _).mpr h
@@ -74,15 +74,15 @@ lemma dvd_of_natCast_dvd_natCast {m : ℕ} (h : (p : ℤ_[p]) ∣ (m : ℤ_[p]))
   exact Int.natCast_dvd_natCast.mp ((PadicInt.norm_int_lt_one_iff_dvd _).mp h2)
 
 /- English proof (translation)
-Establish `hP : Prime (p : ℤ_[p])` using `prime_prime_padicInt`. Establish `hp1 : Odd p` using `hp.out.odd_of_ne_two hodd`. Establish `hu : ¬ (p : ℤ_[p]) ∣ u` using `not_dvd_of_dvd_sub_one hdvd`. Take `⟨e, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hk p hp.out.ne_one`. Establish `hm0 : m ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hm (dvd_zero p)`. Establish `hval : padicValNat p (p ^ e * m) = e`. Rewrite using `[padicValNat.mul (pow_ne_zero _ hp.out.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`. Establish `h1 : emultiplicity (p : ℤ_[p]) (u ^ p ^ e - 1 ^ p ^ e) = 1 + e`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[emultiplicity_pow_prime_pow_sub_pow_prime_pow hP hp1 hdvd hu e, he]`. Rewrite `h1` using `[one_pow]`. Establish `hx : ¬ (p : ℤ_[p]) ∣ u ^ p ^ e` using `fun h => hu (hP.dvd_of_dvd_pow h)`. Establish `hxy : (p : ℤ_[p]) ∣ u ^ p ^ e - 1`. Establish `h2` using `sub_dvd_pow_sub_pow u 1 (p ^ e)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[one_pow]`. Conclude with `hdvd.trans h2`. Establish `hmR : ¬ (p : ℤ_[p]) ∣ (m : ℤ_[p])` using `fun h => hm (dvd_of_natCast_dvd_natCast h)`. Establish `key : emultiplicity (p : ℤ_[p]) ((u ^ p ^ e) ^ m - 1 ^ m) = emultiplicity (p : ℤ_[p]) (u ^ p ^ e - 1)` using `emultiplicity_pow_sub_pow_of_prime hP hxy hx hmR`. Rewrite `key` using `[one_pow, ← pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[key, h1, hval]`. Use `norm_cast`.
+A detailed English derivation is pending.
 -/
 lemma emult_pow_sub_one (hodd : p ≠ 2) {u : ℤ_[p]} (hdvd : (p : ℤ_[p]) ∣ u - 1)
     (he : emultiplicity (p : ℤ_[p]) (u - 1) = 1) {k : ℕ} (hk : k ≠ 0) :
@@ -114,13 +114,13 @@ lemma emult_pow_sub_one (hodd : p ≠ 2) {u : ℤ_[p]} (hdvd : (p : ℤ_[p]) ∣
   norm_cast
 
 /- English proof (translation)
-Establish `hP : Prime (p : ℤ_[p])` using `prime_prime_padicInt`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg i`. Establish `hn : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hi (by simp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hab : ((n : ℤ)).natAbs = n` using `by simp`. Rewrite using `[hab, zpow_natCast, Units.val_pow_eq_pow_val]`. Conclude with `emult_pow_sub_one hodd hdvd he hn`. Establish `hn : n ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi (by simp)`. Establish `hab : (-(n : ℤ)).natAbs = n` using `by simp`. Establish `h1 : (((u ^ n)⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) * (u : ℤ_[p]) ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, Units.inv_mul]`. Establish `hrw : (((u ^ (-(n : ℤ))) : ℤ_[p]ˣ) : ℤ_[p]) - 1 = (((u ^ n)⁻¹ : ℤ_[p]ˣ) : ℤ_[p]) * -((u : ℤ_[p]) ^ n - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_neg, zpow_natCast]`. Take the linear combination `h1`. Rewrite using `[hab, hrw, emultiplicity_mul hP, emultiplicity_eq_zero.mpr (not_prime_dvd_padicInt_unit _), zero_add, emultiplicity_neg]`. Conclude with `emult_pow_sub_one hodd hdvd he hn`.
+A detailed English derivation is pending.
 -/
 lemma emult_zpow_sub_one (hodd : p ≠ 2) (u : ℤ_[p]ˣ) (hdvd : (p : ℤ_[p]) ∣ (u : ℤ_[p]) - 1)
     (he : emultiplicity (p : ℤ_[p]) ((u : ℤ_[p]) - 1) = 1) {i : ℤ} (hi : i ≠ 0) :
@@ -151,9 +151,9 @@ lemma emult_zpow_sub_one (hodd : p ≠ 2) (u : ℤ_[p]ˣ) (hdvd : (p : ℤ_[p]) 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `hP : Prime (p : ℤ_[p])` using `prime_prime_padicInt`. Establish `hdvd` using `p_dvd_of_valuation_one hu0 hu1`. Establish `he` using `emult_of_valuation_one hu0 hu1`. Establish `key : ∀ i ∈ Ω, emultiplicity (p : ℤ_[p]) (1 - ((u ^ i : ℤ_[p]ˣ) : ℤ_[p])) = ((1 + padicValNat p i.natAbs : ℕ) : ℕ∞)`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← neg_sub, emultiplicity_neg]`. Conclude with `emult_zpow_sub_one hodd u hdvd he (fun h => h0 (h ▸ hi))`. Apply `valuation_eq_of_emult` to reduce the goal to its premises. Rewrite using `[Finset.emultiplicity_prod hP, Finset.sum_congr rfl key, Nat.cast_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prod_one_sub_zpow {p : ℕ} [Fact p.Prime] (hodd : p ≠ 2)
     (u : ℤ_[p]ˣ) (hu1 : ((u : ℤ_[p]) - 1).valuation = 1) (hu0 : (u : ℤ_[p]) - 1 ≠ 0)

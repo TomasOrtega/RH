@@ -20,9 +20,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P J :
   {n : ℕ} {R : AnLogRes P J (n + 1)} {V : Set R.X} {BV : FinHolAtlas n V}
 
 /- English proof (translation)
-Establish `hG` using `(ProjRegular.lift_analyticAt hB x hx).1`. Establish `hsx : (BV.chart j).symm (BV.chart j x) = x` using `(BV.chart j).left_inv hx`. Establish `hc : ∀ q, AnalyticAt ℂ (fun u => R.lift x.1 ((BV.chart j).symm u).1 q) (BV.chart j x)` using `fun q => analyticAt_pi_iff.1 hG q`. Establish `hp' : ∀ k, R.lift x.1 ((BV.chart j).symm (BV.chart j x)).1 ⟨k, p k⟩ ≠ 0`. Rewrite using `[hsx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Use `⟨?_, eventually_all.2 fun k => (hc ⟨k, p k⟩).continuousAt.eventually_ne (hp' k)⟩` and prove the remaining obligations. Use `show AnalyticAt ℂ (fun u q => R.lift x.1 ((BV.chart j).symm u).1 q / R.lift x.1 ((BV.chart j).symm u).1 ⟨q.1, p q.1⟩) (BV.chart j x)`. Conclude with `AnalyticAt.pi fun q => (hc q).div (hc ⟨q.1, p q.1⟩) (hp' q.1)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem affLift_analyticAt (hB : HoloMap BV R.A Subtype.val) (x : V) {j : Fin BV.n}
     (hx : x ∈ (BV.chart j).source) (p : (k : K) → ι k)
@@ -41,9 +41,9 @@ theorem affLift_analyticAt (hB : HoloMap BV R.A Subtype.val) (x : V) {j : Fin BV
   exact AnalyticAt.pi fun q => (hc q).div (hc ⟨q.1, p q.1⟩) (hp' q.1)
 
 /- English proof (translation)
-Take `⟨hτa, hev⟩` from `affLift_analyticAt hB x hx p hp`. Establish `h1` using `hasFDerivAt_pi'.1 hτa.differentiableAt.hasFDerivAt ⟨k, p k⟩`. Establish `h2 : HasFDerivAt (fun u => affCoord p (R.lift x.1 ((BV.chart j).symm u).1) ⟨k, p k⟩) (0 : (Fin n → ℂ) →L[ℂ] ℂ) (BV.chart j x)` using `(hasFDerivAt_const (1 : ℂ) _).congr_of_eventuallyEq (by filter_upwards [hev] with u hu`. Conclude with `div_self (hu k))`. Use `congrArg (fun L => L w) (h1.unique h2)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_affLift_self (hB : HoloMap BV R.A Subtype.val) (x : V) {j : Fin BV.n}
     (hx : x ∈ (BV.chart j).source) (p : (k : K) → ι k)
@@ -61,19 +61,17 @@ theorem fderiv_affLift_self (hB : HoloMap BV R.A Subtype.val) (x : V) {j : Fin B
   simpa using this
 
 /- English proof (translation)
-Use `set F : Fin BV.n → (Fin n → ℂ) → ((Σ k, ι k) → ℂ) := fun i u => affCoord p (R.lift x.1 ((BV.chart i).symm u).1) with hF`. Establish `hinj' : Function.Injective (fderiv ℂ (F j') (BV.chart j' x))`. Establish `hk` using `LinearMap.finrank_range_add_finrank_ker (fderiv ℂ (F j') (BV.chart j' x) : (Fin n → ℂ) →ₗ[ℂ] ((Σ k, ι k) → ℂ))`. Rewrite `hk` using `[hr, Module.finrank_fin_fun]`. Establish `h0 : LinearMap.ker (fderiv ℂ (F j') (BV.chart j' x) : (Fin n → ℂ) →ₗ[ℂ] ((Σ k, ι k) → ℂ)) = ⊥` using `Submodule.finrank_eq_zero.1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearMap.ker_eq_bot.1 h0`. Establish `hu0 : BV.chart j x ∈ (BV.chart j).target` using `(BV.chart j).map_source hj`. Establish `hv0 : BV.chart j' x ∈ (BV.chart j').target` using `(BV.chart j').map_source hj'`. Establish `hsj : (BV.chart j).symm (BV.chart j x) = x` using `(BV.chart j).left_inv hj`. Establish `hsk : (BV.chart j').symm (BV.chart j' x) = x` using `(BV.chart j').left_inv hj'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτu : (BV.chart j' ∘ (BV.chart j).symm) (BV.chart j x) = BV.chart j' x` using `by simp [hsj]`. Establish `hτ : AnalyticAt ℂ (BV.chart j' ∘ (BV.chart j).symm) (BV.chart j x)` using `BV.holo j j' _ ⟨hu0, by show (BV.chart j).symm (BV.chart j x) ∈ (BV.chart j').source; rw [hsj]; exact hj'⟩`. Establish `hσ : AnalyticAt ℂ (BV.chart j ∘ (BV.chart j').symm) ((BV.chart j' ∘ (BV.chart j).symm) (BV.chart j x))`. Rewrite using `[hτu]`. Conclude with `BV.holo j' j _ ⟨hv0, by show (BV.chart j').symm (BV.chart j' x) ∈ (BV.chart j).source; rw [hsk]; exact hj⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ u in 𝓝 (BV.chart j x), (BV.chart j).symm u ∈ (BV.chart j').source` using `((BV.chart j).continuousAt_symm hu0).preimage_mem_nhds (by show (BV.chart j').source ∈ 𝓝 ((BV.chart j).symm (BV.chart j x))`. Rewrite using `[hsj]`. Conclude with `(BV.chart j').open_source.mem_nhds hj')`. Establish `hid : (BV.chart j ∘ (BV.chart j').symm) ∘ (BV.chart j' ∘ (BV.chart j).symm) =ᶠ[𝓝 (BV.chart j x)] id` using `by filter_upwards [hev, (BV.chart j).open_target.mem_nhds hu0] with u hu hut`. Simplify using `[(BV.chart j').left_inv hu, (BV.chart j).right_inv hut]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : F j =ᶠ[𝓝 (BV.chart j x)] F j' ∘ (BV.chart j' ∘ (BV.chart j).symm)` using `by filter_upwards [hev] with u hu`. Simplify using `[hF, (BV.chart j').left_inv hu]`. Establish `hFa : AnalyticAt ℂ (F j') ((BV.chart j' ∘ (BV.chart j).symm) (BV.chart j x))`. Rewrite using `[hτu]`. Conclude with `(affLift_analyticAt hB x hj' p hp).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD : fderiv ℂ (F j) (BV.chart j x) = (fderiv ℂ (F j') (BV.chart j' x)).comp (fderiv ℂ (BV.chart j' ∘ (BV.chart j).symm) (BV.chart j x))`. Rewrite using `[hq.fderiv_eq, fderiv_comp _ hFa.differentiableAt hτ.differentiableAt, hτu]`. Establish `hT : Function.LeftInverse (fderiv ℂ (BV.chart j ∘ (BV.chart j').symm) (BV.chart j' x)) (fderiv ℂ (BV.chart j' ∘ (BV.chart j).symm) (BV.chart j x))`. Introduce `w`. Establish `h1` using `hid.fderiv_eq (𝕜 := ℂ)`.
-
-Rewrite `h1` using `[fderiv_comp _ hσ.differentiableAt hτ.differentiableAt, fderiv_id, hτu]`. Simplify using `using congrArg (fun L => L w) h1`. Use `show Function.Injective (fderiv ℂ (F j) (BV.chart j x))`. Rewrite using `[hD]`. Conclude with `hinj'.comp hT.injective`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_fderiv_affLift (hB : HoloMap BV R.A Subtype.val) (x : V) (p : (k : K) → ι k)
     (hp : ∀ k, R.lift x.1 x.1 ⟨k, p k⟩ ≠ 0) {j j' : Fin BV.n} (hj : x ∈ (BV.chart j).source)
@@ -133,19 +131,17 @@ theorem injective_fderiv_affLift (hB : HoloMap BV R.A Subtype.val) (x : V) (p : 
   exact hinj'.comp hT.injective
 
 /- English proof (translation)
-Take `⟨hτa, hev⟩` from `affLift_analyticAt hB x hx p hp`. Establish `hsx : (BV.chart j).symm (BV.chart j x) = x` using `(BV.chart j).left_inv hx`. Use `set G : (Fin n → ℂ) → (Σ k, ι k) → ℂ := fun u => R.lift x.1 ((BV.chart j).symm u).1 with hG`. Use `set τ : (Fin n → ℂ) → (Σ k, ι k) → ℂ := fun u => affCoord p (G u) with hτ`. Establish `hGa : ∀ q, AnalyticAt ℂ (fun u => G u q) (BV.chart j x)` using `fun q => analyticAt_pi_iff.1 (ProjRegular.lift_analyticAt hB x hx).1 q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp' : ∀ k, G (BV.chart j x) ⟨k, p k⟩ ≠ 0`. Introduce `k`. Simplify using `only [hG, hsx]`. Conclude with `hp k`. Establish `hτ1 : ∀ u, (∀ k, G u ⟨k, p k⟩ ≠ 0) → ∀ k, τ u ⟨k, p k⟩ = 1` using `fun u hu k => div_self (hu k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : (Fin n → ℂ) → ℂ` to `fun u => ∏ k, G u ⟨k, p k⟩ ^ 2`. Establish `hga : AnalyticAt ℂ g (BV.chart j x)` using `Finset.univ.analyticAt_fun_prod fun k _ => (hGa ⟨k, p k⟩).pow 2`. Establish `hg0 : g (BV.chart j x) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero 2 (hp' k)`. Establish `hC : ContDiffAt ℝ 2 fsMultiPot (τ (BV.chart j x))` using `(levi_fsMultiPot p (fun k => by rw [hτ1 _ hp' k]; exact one_ne_zero) 0).1`. Establish `hgerm : (fun u => (multiprojPot R V).φ x ((BV.chart j).symm u)) =ᶠ[𝓝 (BV.chart j x)] fun u => (fsMultiPot ∘ τ) u + Real.log ‖g u‖` using `by filter_upwards [hev] with u hu show ∑ k, Real.log (∑ i, ‖G u ⟨k, i⟩‖ ^ 2) = ∑ k, Real.log (∑ i, ‖τ u ⟨k, i⟩‖ ^ 2) + Real.log ‖∏ k, G u ⟨k, p k⟩ ^ 2‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ k, ∑ i, ‖G u ⟨k, i⟩‖ ^ 2 = ‖G u ⟨k, p k⟩‖ ^ 2 * ∑ i, ‖τ u ⟨k, i⟩‖ ^ 2`. Introduce `k`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hn : ‖G u ⟨k, p k⟩‖ ≠ 0` using `norm_ne_zero_iff.2 (hu k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Simplify using `only [hτ, affCoord, norm_div, div_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hpos : ∀ k, 0 < ∑ i, ‖τ u ⟨k, i⟩‖ ^ 2` using `fun k => lt_of_lt_of_le (by rw [hτ1 u hu k]; norm_num) (Finset.single_le_sum (f := fun i => ‖τ u ⟨k, i⟩‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ (p k)))`. Establish `hne : ∀ k ∈ (Finset.univ : Finset K), ‖G u ⟨k, p k⟩ ^ 2‖ ≠ 0` using `fun k _ => by`. Rewrite using `[norm_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.2 (hu k))`. Rewrite using `[norm_prod, Real.log_prod hne, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hs k, norm_pow, Real.log_mul (pow_ne_zero 2 (norm_ne_zero_iff.2 (hu k))) (hpos k).ne', add_comm]`. Rewrite using `[hessCGerm _ _ _ hgerm]`.
-
-Conclude with `ReciprocityTheory.AnForm.A.hessC_add_log_norm _ g _ (hC.comp _ (hτa.contDiffAt.restrict_scalars ℝ)) hga hg0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hessC_chartPot (hB : HoloMap BV R.A Subtype.val) (x : V) {j : Fin BV.n}
     (hx : x ∈ (BV.chart j).source) (p : (k : K) → ι k)
@@ -199,19 +195,17 @@ theorem hessC_chartPot (hB : HoloMap BV R.A Subtype.val) (x : V) {j : Fin BV.n}
 end ProjPotDens
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R V BV hB j y hy`. Take `⟨x, hx, rfl⟩ : ∃ x, x ∈ (BV.chart j).source ∧ BV.chart j x = y` from `⟨_, (BV.chart j).map_target hy, (BV.chart j).right_inv hy⟩`. Establish `hsx : (BV.chart j).symm (BV.chart j x) = x` using `(BV.chart j).left_inv hx`. Establish `hdens : ∀ p : (k : K) → ι k, (∀ k, R.lift x.1 x.1 ⟨k, p k⟩ ≠ 0) → locDens BV (fun _ => multiprojPot R V) j (BV.chart j x) = ReciprocityTheory.AnForm.maDens (fun _ => ProjPotDens.fsMultiPot ∘ fun u => affCoord p (R.lift x.1 ((BV.chart j).symm u).1)) (BV.chart j x)`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `locDens`. Rewrite using `[hsx]`. Conclude with `maDens_congr_hessC _ _ _ fun _ => ProjPotDens.hessC_chartPot hB x hx p hp`. Establish `hlevi : ∀ p : (k : K) → ι k, (∀ k, R.lift x.1 x.1 ⟨k, p k⟩ ≠ 0) → ContDiffAt ℝ 2 (ProjPotDens.fsMultiPot ∘ fun u => affCoord p (R.lift x.1 ((BV.chart j).symm u).1)) (BV.chart j x) ∧ ∀ w, 0 ≤ ReciprocityTheory.AnForm.levi (ProjPotDens.fsMultiPot ∘ fun u => affCoord p (R.lift x.1 ( …`. Introduce `p hp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hτa` using `(ProjPotDens.affLift_analyticAt hB x hx p hp).1`. Establish `hτ1 : ∀ k, affCoord p (R.lift x.1 ((BV.chart j).symm (BV.chart j x)).1) ⟨k, p k⟩ ≠ 0`. Introduce `k`. Use `show R.lift x.1 ((BV.chart j).symm (BV.chart j x)).1 ⟨k, p k⟩ / R.lift x.1 ((BV.chart j).symm (BV.chart j x)).1 ⟨k, p k⟩ ≠ 0`. Rewrite using `[hsx, div_self (hp k)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_ne_zero`. Establish `hC` using `(ProjPotDens.levi_fsMultiPot p hτ1 0).1`. Use `⟨hC.comp (f := fun u => affCoord p (R.lift x.1 ((BV.chart j).symm u).1)) (BV.chart j x) (hτa.contDiffAt.restrict_scalars ℝ), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.levi_comp w hτa hC]`. Take `⟨_, h1, h2⟩` from `ProjPotDens.levi_fsMultiPot p hτ1 (fderiv ℂ (fun u => affCoord p (R.lift x.1 ((BV.chart j).symm u).1)) (BV.chart j x) w)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2 fun k => ProjPotDens.fderiv_affLift_self hB x hx p hp w k⟩`. Use `⟨?_, fun hfull => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩ : ∃ p : (k : K) → ι k, ∀ k, R.lift x.1 x.1 ⟨k, p k⟩ ≠ 0` from `⟨fun k => Classical.choose ((R.mem x.1 x.1 (R.mem_U x.1)).1 k), fun k => Classical.choose_spec ((R.mem x.1 x.1 (R.mem_U x.1)).1 k)⟩`. Rewrite using `[hdens p hp]`. Take `⟨hC, hl⟩` from `hlevi p hp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ _ fun _ => hessC_posSemidef _ _ hC fun w => (hl w).1`. Rewrite `hfull` using `[hsx]`. Take `⟨p, hp, j', hj', hr⟩` from `hfull`. Establish `hinj` using `ProjPotDens.injective_fderiv_affLift hB x p hp hx hj' hr`. Rewrite using `[hdens p hp]`.
-
-Take `⟨hC, hl⟩` from `hlevi p hp`. Unfold `ReciprocityTheory.AnForm.maDens`. Use `mul_pos (mul_pos (Nat.cast_pos.2 (Nat.factorial_pos _)) (pow_pos (div_pos two_pos Real.pi_pos) _)) (ReciprocityTheory.AnForm.A.mdisc_pos_of_posDef _ fun _ => hessC_posDef _ _ hC fun w hw => (hl w).2 fun h0 => hw (hinj (h0.trans (map_zero _).symm))).2` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ProjPotDens.proof : ProjPotDens.Statement := by
   intro K _ ι _ P J n R V BV hB j y hy

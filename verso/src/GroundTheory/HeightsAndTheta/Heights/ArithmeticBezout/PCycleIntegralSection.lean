@@ -16,9 +16,9 @@ theorem cycleIntegral_eq_sum {n : ℕ} (h : HermNorm n) (Z : ProjCycle ℂ n) (e
     cycleIntegral h Z e g = Z.sum (fun W m => (m : ℝ) * coneIntegral h W e g) := rfl
 
 /- English proof (translation)
-Introduce `n h Z u e g`. Rewrite using `[cycleIntegral_eq_sum, cycleSection, ← Finsupp.sum_finsetSum_index (by intro W; simp) (by intro W a b; push_cast; ring)]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_smul_index' (by intro W'; simp), cycleIntegral_eq_sum, Finsupp.mul_sum]`. Use `Finset.sum_congr rfl fun W' _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [smul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem CycleIntegralSection.proof : CycleIntegralSection.Statement := by
   intro n h Z u e g

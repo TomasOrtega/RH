@@ -15,23 +15,19 @@ noncomputable section
 namespace GlobalTheory.IwLevel.HTTorsionFF
 
 /- English proof (translation)
-Establish `hw2 : w ^ 2 ≠ ⊥`. Rewrite using `[Ne, ← Ideal.zero_eq_bot, pow_eq_zero_iff two_ne_zero, Ideal.zero_eq_bot]`. Conclude with `hw`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_sup_span_eq (Ideal.pow_le_self two_ne_zero : w ^ 2 ≤ w) hw2`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα0, hα⟩ : ∃ α : R, α ≠ 0 ∧ w ^ 2 ⊔ Ideal.span {α} = w := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : y = 0`. Substitute `h0` using the available equality. Rewrite `hy` using `[Ideal.span_singleton_eq_bot.2 rfl, sup_bot_eq]`. Take `⟨z, hz, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hw2`. Conclude with `⟨z, hz0, by rw [sup_eq_left.2 ((Ideal.span_singleton_le_iff_mem _).2 hz), hy]⟩`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨y, h0, hy⟩`. Establish `hαw : α ∈ w`. Rewrite using `[← hα]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self α)`. Establish `hidem : IsIdempotentElem (w.map (Ideal.Quotient.mk (Ideal.span {α})))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsIdempotentElem`. Use `conv_rhs => rw [← hα]`. Rewrite using `[Ideal.map_sup, Ideal.map_quotient_self, sup_bot_eq, sq, Ideal.map_mul]`. Establish `hfg : (w.map (Ideal.Quotient.mk (Ideal.span {α}))).FG` using `Ideal.FG.map (IsNoetherian.noetherian w) _`. Take `⟨e, he, hwe⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ hfg).1 hidem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `he_mem : e ∈ w.map (Ideal.Quotient.mk (Ideal.span {α}))`. Rewrite using `[hwe]`. Conclude with `Submodule.mem_span_singleton_self e`. Take `⟨x, hxw, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 he_mem`. Use `⟨α, x, hα0, hαw, hxw, ?_, le_antisymm (fun c hc => ?_) ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, he.eq, sub_self]`. Establish `hc' : Ideal.Quotient.mk (Ideal.span {α}) c ∈ (R ⧸ Ideal.span {α}) ∙ (Ideal.Quotient.mk (Ideal.span {α}) x)`. Rewrite using `[← hwe]`. Conclude with `Ideal.mem_map_of_mem _ hc`. Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.1 hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d', rfl⟩` from `Ideal.Quotient.mk_surjective d`. Establish `h1 : c - d' * x ∈ Ideal.span {α}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ← smul_eq_mul, hd, sub_self]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `h2 : c = a * α + d' * x` using `by rw [ha]; ring`.
-
-Rewrite using `[h2]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_insert _ _))) (Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_insert_of_mem _ rfl)))`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `z (rfl | rfl)`. Conclude with `hαw`.
-
-Conclude with `hxw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_gen_idem {R : Type} [CommRing R] [IsDedekindDomain R] (w : Ideal R) (hw : w ≠ ⊥) :
     ∃ α x : R, α ≠ 0 ∧ α ∈ w ∧ x ∈ w ∧ x * x - x ∈ Ideal.span {α} ∧ w = Ideal.span {α, x} := by
@@ -77,11 +73,9 @@ theorem exists_gen_idem {R : Type} [CommRing R] [IsDedekindDomain R] (w : Ideal 
     · exact hxw
 
 /- English proof (translation)
-Use `letI := ψ.hom.toAlgebra`. Use `letI := (ψ ≫ σ).hom.toAlgebra`. Establish `hB : Module.Flat A B` using `hf`. Establish `hπσ : ∀ z, π.hom (σ.hom z) = z` using `fun z => by`. Rewrite using `[← CommRingCat.comp_apply, h, CommRingCat.id_apply]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show Module.Flat A C`. Set `s : C →ₗ[A] B` to `{ toFun := σ.hom map_add' := map_add _ map_smul' := fun a c => by`. Simplify using `only [Algebra.smul_def, RingHom.id_apply, map_mul, RingHom.algebraMap_toAlgebra, CommRingCat.hom_comp, RingHom.comp_apply] }`. Set `q : B →ₗ[A] C` to `{ toFun := π.hom map_add' := map_add _ map_smul' := fun a c => by`. Simplify using `only [Algebra.smul_def, RingHom.id_apply, map_mul, RingHom.algebraMap_toAlgebra, CommRingCat.hom_comp, RingHom.comp_apply, hπσ] }`.
-
-Conclude with `Module.Flat.of_retract s q (LinearMap.ext fun z => hπσ z)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringHom_flat_of_retract {A B C : CommRingCat.{0}} (ψ : A ⟶ C) (σ : C ⟶ B) (π : B ⟶ C)
     (h : σ ≫ π = 𝟙 C) (hf : (ψ ≫ σ).hom.Flat) : ψ.hom.Flat := by
@@ -106,13 +100,11 @@ theorem ringHom_flat_of_retract {A B C : CommRingCat.{0}} (ψ : A ⟶ C) (σ : C
   exact Module.Flat.of_retract s q (LinearMap.ext fun z => hπσ z)
 
 /- English proof (translation)
-Use `Flat.of_stalkMap f fun x => ?_` and prove the remaining obligations. Establish `hx : r (i x) = x`. Rewrite using `[← Scheme.Hom.comp_apply, h]`. Both sides reduce to the same expression. Use `haveI : IsIso (i ≫ r) := by rw [h]; infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `haveI : IsOpenImmersion (i ≫ r) := inferInstance`. Use `haveI : IsIso ((i ≫ r).stalkMap x) := inferInstance`. Establish `key : (f.stalkMap (r (i x))).hom.Flat`. Establish `e1 : r.stalkMap (i x) ≫ i.stalkMap x = (i ≫ r).stalkMap x` using `(Scheme.Hom.stalkMap_comp i r x).symm`. Use `haveI hg : IsIso (r.stalkMap (i x) ≫ i.stalkMap x) := by rw [e1]; exact this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : r.stalkMap (i x) ≫ (i.stalkMap x ≫ CategoryTheory.inv (r.stalkMap (i x) ≫ i.stalkMap x)) = 𝟙 _`. Rewrite using `[← Category.assoc, IsIso.hom_inv_id]`. Use `ringHom_flat_of_retract (f.stalkMap (r (i x))) (r.stalkMap (i x)) _ e2 ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.stalkMap_comp]`. Conclude with `Flat.stalkMap (r ≫ f) (i x)`.
-
-Rewrite `key` using `[hx]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flat_of_retract {X Y S : Scheme.{0}} (f : X ⟶ S) (i : X ⟶ Y) (r : Y ⟶ X) (h : i ≫ r = 𝟙 X)
     [Flat (r ≫ f)] : Flat f := by
@@ -135,9 +127,9 @@ theorem flat_of_retract {X Y S : Scheme.{0}} (f : X ⟶ S) (i : X ⟶ Y) (r : Y 
 open GlobalTheory.UPel.HT in
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `act.add 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[Nat.cast_zero, pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_eq_mul.1 h`. Consider the case `succ n ih => rw [Nat.cast_succ, act.add, ih, act.one, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem oActN_natCast {S : Scheme.{0}} {O : Type} [Ring O] {G : Over S} [GrpObj G] (act : OActN O G) (n : ℕ) :
     act.act (n : O) = 𝟙 G ^ n := by
@@ -152,13 +144,11 @@ theorem oActN_natCast {S : Scheme.{0}} {O : Type} [Ring O] {G : Over S} [GrpObj 
 open GlobalTheory.UPel.HT in
 
 /- English proof (translation)
-Establish `he : Ideal.absNorm (Ideal.span {c}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {c}))`. Establish `hcomp : act.act (algebraMap (𝓞 F) O c) ≫ act.act (algebraMap (𝓞 F) O a) = 𝟙 A ^ Ideal.absNorm (Ideal.span {c})`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← act.mul, ← map_mul, ha, map_natCast, oActN_natCast]`. Take `⟨hfe, -⟩` from `GlobalTheory.MulFiniteFlat.isFinite_and_flat_mul S A hA _ (Nat.one_le_iff_ne_zero.2 he)`. Establish `hpr` using `hA.proper`. Establish `hsm` using `hA.smooth`. Use `haveI : IsSeparated ((act.act (algebraMap (𝓞 F) O a)).left ≫ A.hom) := by rw [Over.w]; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsSeparated (act.act (algebraMap (𝓞 F) O a)).left := IsSeparated.of_comp _ A.hom`. Use `haveI : IsFinite ((act.act (algebraMap (𝓞 F) O c)).left ≫ (act.act (algebraMap (𝓞 F) O a)).left) := by`. Rewrite using `[← Over.comp_left, hcomp]`. Conclude with `hfe`. Establish `hf : IsFinite (act.act (algebraMap (𝓞 F) O c)).left` using `IsFinite.of_comp _ (act.act (algebraMap (𝓞 F) O a)).left`.
-
-Use `⟨hf, GlobalTheory.flat_of_isFinite_of_flat_geometric_fibres S A A _ inferInstance inferInstance hf fun K _ _ t => ?_⟩` and prove the remaining obligations. Establish `hm` using `act.hom (algebraMap (𝓞 F) O c)`. Conclude with `(GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _ (Out.TLinPf.isAb_pullback t A hA) _ inferInstance (MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseCh …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem act_finite_flat {S : Scheme.{0}} [IsLocallyNoetherian S] {F O : Type} [Field F] [NumberField F] [Ring O]
     [Algebra (𝓞 F) O] (A : Over S) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) (act : OActN O A)
@@ -188,31 +178,25 @@ theorem act_finite_flat {S : Scheme.{0}} [IsLocallyNoetherian S] {F O : Type} [F
 open KerGrp in
 
 /- English proof (translation)
-Introduce `p _ D R _ b N w S _ s o hw`. Take `⟨α, x, hα0, -, -, hxx, hwx⟩` from `exists_gen_idem w hw`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hxx`. Establish `hA` using `o.ab`. Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O α)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O x)`. Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O t)`. Establish `comm : o.act.act (algebraMap (𝓞 D.F) D.O α) ≫ o.act.act (algebraMap (𝓞 D.F) D.O x) = o.act.act (algebraMap (𝓞 D.F) D.O x) ≫ o.act.act (algebraMap (𝓞 D.F) D.O α)`. Rewrite using `[← o.act.mul, ← o.act.mul, ← map_mul, ← map_mul, mul_comm]`. Establish `idem : o.act.act (algebraMap (𝓞 D.F) D.O x) ≫ o.act.act (algebraMap (𝓞 D.F) D.O x) = o.act.act (algebraMap (𝓞 D.F) D.O x) * (o.act.act (algebraMap (𝓞 D.F) D.O α) ≫ o.act.act (algebraMap (𝓞 D.F) D.O t))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← o.act.mul, ← o.act.mul, ← o.act.add, ← map_mul, ← map_mul, ← map_add, ht]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Use `set fα := o.act.act (algebraMap (𝓞 D.F) D.O α) with hfα`. Use `set fx := o.act.act (algebraMap (𝓞 D.F) D.O x) with hfx`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ft := o.act.act (algebraMap (𝓞 D.F) D.O t) with hft`. Take `⟨hfinα, hflα⟩` from `act_finite_flat o.A hA o.act α hα0`. Use `letI gH : GrpObj (ker fα) := grp fα`. Use `haveI : IsMonHom (pullback.fst fα η[o.A]) := isMonHom_fst fα`. Establish `hPB` using `(IsPullback.of_hasPullback fα η[o.A]).map (Over.forget S)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hHfin : IsFinite (ker fα).hom`. Rewrite using `[← Over.w (pullback.snd fα η[o.A])]`. Use `haveI : IsFinite (pullback.snd fα η[o.A]).left := MorphismProperty.of_isPullback (P := @IsFinite) hPB hfinα`. Conclude with `inferInstanceAs (IsFinite (_ ≫ 𝟙 S))`. Establish `hHflat : Flat (ker fα).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (pullback.snd fα η[o.A])]`. Use `haveI : Flat (pullback.snd fα η[o.A]).left := MorphismProperty.of_isPullback (P := @Flat) hPB hflα`. Conclude with `inferInstanceAs (Flat (_ ≫ 𝟙 S))`. Use `set jH := pullback.fst fα η[o.A] with hjH`. Establish `hj : jH ≫ fα = 1` using `fst_comp fα`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : ker fα ⟶ ker fα` to `lift fα (jH ≫ fx) (by`. Rewrite using `[Category.assoc, ← comm, ← Category.assoc, hj, MonObj.one_comp])`. Establish `hg : g ≫ jH = jH ≫ fx` using `lift_fst _ _ _`. Establish `hxx' : jH ≫ fx ≫ fx = jH ≫ fx`. Rewrite using `[idem, MonObj.comp_mul, ← Category.assoc jH fα ft, hj, MonObj.one_comp, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI gK : GrpObj (ker (jH ≫ fx)) := grp (jH ≫ fx)`. Use `haveI : IsMonHom (pullback.fst (jH ≫ fx) η[o.A]) := isMonHom_fst (jH ≫ fx)`. Use `set iK := pullback.fst (jH ≫ fx) η[o.A] with hiK`. Establish `hk : iK ≫ jH ≫ fx = 1` using `fst_comp (jH ≫ fx)`. Establish `hrk : (𝟙 (ker fα) / g) ≫ jH ≫ fx = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, GrpObj.div_comp, Category.id_comp, hg, GrpObj.div_comp, Category.assoc, hxx', div_self']`. Set `r : ker fα ⟶ ker (jH ≫ fx)` to `lift (jH ≫ fx) (𝟙 (ker fα) / g) hrk`. Establish `hr : r ≫ iK = 𝟙 (ker fα) / g` using `lift_fst _ _ _`. Establish `hiKg : iK ≫ g = 1` using `hom_ext fα (by`. Rewrite using `[Category.assoc, hg, hk, MonObj.one_comp])`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hir : iK ≫ r = 𝟙 _` using `hom_ext (jH ≫ fx) (by`. Rewrite using `[Category.assoc, hr, GrpObj.comp_div, Category.comp_id, hiKg, div_one, Category.id_comp])`. Establish `hirl : iK.left ≫ r.left = 𝟙 _` using `by rw [← Over.comp_left, hir, Over.id_left]`. Establish `hKfin : IsFinite (ker (jH ≫ fx)).hom` using `by haveI : IsFinite (r.left ≫ (ker (jH ≫ fx)).hom) := by rw [Over.w r]; exact hHfin haveI : IsSeparated (r.left ≫ (ker (jH ≫ fx)).hom) := by rw [Over.w r]; infer_instance haveI : IsSeparated r.left := IsSeparated.of_comp _ (ker (jH ≫ fx)).hom haveI : IsFinite (iK.left ≫ r.left) : …`. Rewrite using `[← Over.w iK]`.
-
-Use `infer_instance`. Establish `hKflat : Flat (ker (jH ≫ fx)).hom` using `by haveI : Flat (r.left ≫ (ker (jH ≫ fx)).hom) := by rw [Over.w r]; exact hHflat`. Conclude with `flat_of_retract _ iK.left r.left hirl`. Use `⟨ker (jH ≫ fx), gK, iK ≫ jH, inferInstance, inferInstance, hKfin, hKflat, fun T z => ?_⟩` and prove the remaining obligations. Rewrite using `[hwx, Ideal.map_span, Set.image_pair, GlobalTheory.IwLevel.killedBy_span]`.
-
-Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff, forall_eq_or_imp, forall_eq, GlobalTheory.IwLevel.htAct_act]`. Use `⟨?_, fun ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ((y ≫ iK) ≫ jH) ≫ fα = 1`.
-
-Rewrite using `[Category.assoc, hj, MonObj.comp_one]`. Use `show ((y ≫ iK) ≫ jH) ≫ fx = 1`. Rewrite using `[Category.assoc, Category.assoc, hk, MonObj.comp_one]`. Use `⟨lift (jH ≫ fx) (lift fα z h1) (by rw [← Category.assoc, KerGrp.lift_fst, h2]), ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, KerGrp.lift_fst, KerGrp.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_finite_flat : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (w : Ideal (𝓞 D.F)) (S : Scheme.{0}) [IsLocallyNoetherian S]

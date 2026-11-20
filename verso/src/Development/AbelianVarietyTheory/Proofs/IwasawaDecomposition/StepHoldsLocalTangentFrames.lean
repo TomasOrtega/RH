@@ -30,7 +30,7 @@ variable {X : Scheme.{0}} {t : SAB H X} {S : Type} [CommRing S] {x : Sp S ⟶ X}
 include hB in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[GlobalTheory.LocM.tanEv_comb E H X t S x V h n b hb cf w hw hc]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hB, _root_.mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanEv_eq_mulVec {cf : Fin n → S} {w : Sp (DualNumber S) ⟶ t.G.left} (hw : IsTanAtG t x w)
     (hc : IsCombAtG t x b cf w) : (fun l => tanEv t hw h (m l)) = B.mulVec cf := by
@@ -41,7 +41,7 @@ theorem tanEv_eq_mulVec {cf : Fin n → S} {w : Sp (DualNumber S) ⟶ t.G.left} 
 include hB in
 
 /- English proof (translation)
-Rewrite using `[tanEv_eq_mulVec h hb hB hw hc, Matrix.mulVec_mulVec, hAB, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_eq (hAB : A * B = 1) {cf : Fin n → S} {w : Sp (DualNumber S) ⟶ t.G.left} (hw : IsTanAtG t x w)
     (hc : IsCombAtG t x b cf w) : cf = A.mulVec fun l => tanEv t hw h (m l) := by
@@ -50,9 +50,9 @@ theorem coeff_eq (hAB : A * B = 1) {cf : Fin n → S} {w : Sp (DualNumber S) ⟶
 include hB in
 
 /- English proof (translation)
-Establish `hc` using `(LieMet.isComb_iff (fun j => tanOf (hb j)) (A.mulVec fun l => tanEv t hw h (m l)) _).2 rfl`. Establish `e` using `tanEv_eq_mulVec h hb hB (isTan_tv _) hc`. Rewrite `e` using `[Matrix.mulVec_mulVec, hBA, Matrix.one_mulVec]`. Establish `e'` using `(GlobalTheory.TanFibre.existsUnique_tanEv E H X t S x V h n m hm fun l => tanEv t hw h (m l)).unique ⟨isTan_tv _, congrFun e⟩ ⟨hw, fun _ => rfl⟩`. Rewrite `hc` using `[e']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem isComb_dual (hm : VB.IsFrame m) (hBA : B * A = 1) {w : Sp (DualNumber S) ⟶ t.G.left} (hw : IsTanAtG t x w) :
     IsCombAtG t x b (A.mulVec fun l => tanEv t hw h (m l)) w := by
@@ -75,7 +75,7 @@ variable {X X₁ X₂ : Scheme.{0}} {t : SAB H X} {t₁ : SAB H X₁} {t₂ : SA
 include hx in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isTan_tv ((pushE m₁ x₁ hx).symm (pushE m₂ x₂ rfl (tanOf hw))), by rw [← left_pushE m₁ x₁ hx, LinearEquiv.apply_symm_apply] rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_corr {w : Sp (DualNumber S) ⟶ t₂.G.left} (hw : IsTanAtG t₂ x₂ w) :
     ∃ v, IsTanAtG t₁ x₁ v ∧ v ≫ m₁.φ = w ≫ m₂.φ :=
@@ -86,9 +86,9 @@ theorem exists_corr {w : Sp (DualNumber S) ⟶ t₂.G.left} (hw : IsTanAtG t₂ 
 include hx in
 
 /- English proof (translation)
-Establish `e` using `(LieMet.isComb_iff (fun j => tanOf (h₁ j)) cf (tanOf k₁)).1 hc`. Use `(LieMet.isComb_iff (fun j => tanOf (h₂ j)) cf (tanOf k₂)).2 ((pushE m₂ x₂ rfl).injective ?_)` and prove the remaining obligations. Establish `e₁ : pushE m₂ x₂ rfl (tanOf k₂) = pushE m₁ x₁ hx (tanOf k₁)` using `tan_ext hw.symm`. Establish `e₂ (j) : pushE m₂ x₂ rfl (tanOf (h₂ j)) = pushE m₁ x₁ hx (tanOf (h₁ j))` using `tan_ext (hb j).symm`. Rewrite using `[e₁, e, map_sum, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, map_smul, e₂]`.
+A detailed English derivation is pending.
 -/
 theorem isComb_corr {n : ℕ} {b₁ : Fin n → (Sp (DualNumber S) ⟶ t₁.G.left)} {b₂ : Fin n → (Sp (DualNumber S) ⟶ t₂.G.left)}
     (h₁ : ∀ j, IsTanAtG t₁ x₁ (b₁ j)) (h₂ : ∀ j, IsTanAtG t₂ x₂ (b₂ j)) (hb : ∀ j, b₁ j ≫ m₁.φ = b₂ j ≫ m₂.φ)
@@ -105,11 +105,11 @@ theorem isComb_corr {n : ℕ} {b₁ : Fin n → (Sp (DualNumber S) ⟶ t₁.G.le
 include hx in
 
 /- English proof (translation)
-Use `choose b hb hbe using fun j : Fin n => (GlobalTheory.TanFibre.existsUnique_tanEv E H X₁ t₁ S x₁ V h n m hm fun l => (a⁻¹).1 l j).exists`. Use `choose v hv hve using fun j => exists_corr m₂ m₁ hx.symm (hb j)`. Use `⟨v, hv, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `exists_corr m₁ m₂ hx hu`. Conclude with `⟨_, isComb_corr m₁ m₂ hx hb hv (fun j => (hve j).symm) hw hu e (isComb_dual h hb (A := a.1) (fun l j => hbe j l) hm a.inv_mul hw), fun cf hc => coeff_eq h hb (fun l j => hbe j l) a.mul_inv hw (isComb_corr m₂ m₁ hx.symm hv hb hve hu hw e.symm hc)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `k _ φ _ _ rfl rfl u hu`. Establish `hx' : (spMap φ ≫ x₁) ≫ f₁ = (spMap φ ≫ x₂) ≫ f₂` using `by rw [Category.assoc, Category.assoc, hx]`. Establish `h' : ⊤ ≤ (spMap φ ≫ x₁) ⁻¹ᵁ V` using `(spMap φ).preimage_mono h`. Take `⟨w, hw, e⟩` from `exists_corr m₁ m₂ hx' hu`. Establish `hb' (j)` using `isTan_map φ rfl (hb j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' (j)` using `isTan_map φ rfl (hv j)`. Establish `hc` using `isComb_dual h' hb' (A := a.1.map φ) (B := (a⁻¹).1.map φ) (fun l j => by`. Rewrite using `[GlobalTheory.LocM.tanEv_baseChange E H X₁ t₁ S x₁ V h (b j) (hb j) k φ, hbe]`. Use the proof step `rfl) hm (by rw [← Matrix.map_mul, a.inv_mul, Matrix.map_one _ φ.map_zero φ.map_one]) hw`. Conclude with `⟨w, hw, h', e, isComb_corr m₁ m₂ hx' hb' hv' (fun j => by rw [Category.assoc, Category.assoc, hve]) hw hu e hc⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual_basis {V : X₁.Opens} (h : ⊤ ≤ x₁ ⁻¹ᵁ V) {n : ℕ} {m : Fin n → Γ(GlobalTheory.LieVB.omega t₁.G, V)}
     (hm : VB.IsFrame m) (a : GL (Fin n) S) :
@@ -146,7 +146,7 @@ variable {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : Valua
   {i₀ : Idx H p}
 
 /- English proof (translation)
-The claim follows from `have : IsIso (Lat.top Z).N.incl := Twist.isIso_of_bijective _ fun V => ⟨(Lat.top Z).N.incl_app_injective V, fun s => ⟨⟨s, (Lat.isTop_top V).ge trivial⟩, rfl⟩⟩ hm.map_iso (Lat.top Z).N.incl`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_incl {Z : Mdl Y i₀} {V : Z.X.Opens} {n : ℕ} {m : Fin n → Γ((Lat.top Z).N.toMod, V)} (hm : VB.IsFrame m) :
     VB.IsFrame fun l => (Lat.top Z).N.incl.app V (m l) :=
@@ -155,9 +155,9 @@ theorem isFrame_incl {Z : Mdl Y i₀} {V : Z.X.Opens} {n : ℕ} {m : Fin n → �
   hm.map_iso (Lat.top Z).N.incl
 
 /- English proof (translation)
-Establish `: Nonempty Z'.X` using `⟨x⟩`. Take `⟨z, hz⟩` from `Z'.dense.nonempty`. Take `⟨τ, mu, -, htr, -⟩` from `hg.2 (Z'.X.residueField z) (Z'.X.fromSpecResidueField z) (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(Scheme.fromSpecResidueField_apply z a).symm ▸ hz)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨τ, mu, htr, CommonMod.comp_π_eq hg htr⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isTrans {Z Z' : Mdl Y i₀} {g : Z'.X ⟶ Z.X} (hg : IsMap Z' Z g) (x : Z'.X) :
     ∃ (τ : (Y Z'.i).X ⟶ (Y Z.i).X) (mu : SABMap (Y Z'.i).t (Y Z.i).t τ), LocM.IsTrans Z.i Z'.i τ mu ∧
@@ -172,13 +172,11 @@ theorem exists_isTrans {Z Z' : Mdl Y i₀} {g : Z'.X ⟶ Z.X} (hg : IsMap Z' Z g
 end Models
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z Z' σ r hr hH x`. Take `⟨-, g, hg, hS⟩` from `hH`. Simplify using `only at g hg hS`. Take `⟨U, hU, V, n, m, a, hxU, hUV, hm, hcl⟩` from `hS x`. Use `(exists_isTrans hg x).elim fun τ h₀ => h₀.elim fun mu h₁ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htr` using `h₁.1`. Establish `hπ` using `h₁.2`. Establish `h : ⊤ ≤ (hU.fromSpec ≫ g) ⁻¹ᵁ V` using `hU.fromSpec_preimage_self.ge.trans (hU.fromSpec.preimage_mono hUV)`. Establish `hx : (hU.fromSpec ≫ g) ≫ Z.π = (hU.fromSpec ≫ Z'.π) ≫ τ` using `(Category.assoc _ _ _).trans ((congrArg (hU.fromSpec ≫ ·) hπ).trans (Category.assoc _ _ _).symm)`. Establish `hm'` using `isFrame_incl hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `exists_dual_basis Z.tMap mu hx h hm' a`. Use `hd.elim fun v hv => ⟨U, hU, n, v, hxU, hv.1, hv.2.1, fun k _ φ u hu i hi => ?_⟩` and prove the remaining obligations. Establish `hu' : IsTanAtG (Y Z'.i).t ((spMap φ ≫ hU.fromSpec) ≫ Z'.π) (u σ i)`. Conclude with `hu.elim fun _ h₂ => h₂.elim fun _ hf => (hf.2.1.1 σ i).1`. Establish `hw` using `hv.2.2 k φ ((spMap φ ≫ hU.fromSpec) ≫ g) _ (Category.assoc _ _ _).symm (Category.assoc _ _ _).symm _ hu'`.
-
-Conclude with `hw.elim fun w h₂ => h₂.elim fun hw h₃ => h₃.elim fun h' e => ⟨_, hcl k φ w hw h' ⟨τ, mu, u, i, htr, hu, hi, e.1⟩, e.2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z Z' : Mdl Y i₀) (σ : E →+* ℂ) (r : ℕ) (hr : r ≤ Dw.mult σ), Step.Holds ⟨Z, Lat.top Z, σ, r, hr⟩ Z' → ∀ x : Z'.X, ∃ (U : Z'.X.Opens) (hU : IsAffineOpen U) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Z'.X, U)) ⟶ (Y Z'.i).t.G.left)), x ∈ U ∧ (∀ j, IsTanAtG (Y Z'.i).t (hU.fromSpec ≫ Z'.π) (v j)) ∧ (∀ u, IsTanAtG (Y Z'.i).t (hU.fromSpec ≫ Z'.π) u → ∃! cf, IsCombAtG (Y Z'.i).t (hU.fromSpec ≫ Z'.π) v cf u) ∧ ∀ (k : Type) [Field k] (φ : Γ(Z'.X, U) →+* k) (u : Vecs Dw (Y Z'.i).t k), Z'.FlagAt (spMap φ ≫ hU.fromSpec) u → ∀ i : Fin (Dw.mult σ), (i : ℕ) < r → ∃ cf : Fin n → k, (∀ j : Fin n, r ≤ (j : ℕ) → cf j = 0) ∧ IsCombAtG (Y Z'.i).t ((spMap φ ≫ hU.fromSpec) ≫ Z'.π) (fun j => spMap (Formalism.L2.Pj.dualMap φ) ≫ v j) cf (u σ i) := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z Z' σ r hr hH x

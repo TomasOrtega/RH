@@ -12,11 +12,11 @@ open ReciprocityTheory.ChartRestriction.G.Out
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 /- English proof (translation)
-Introduce `S A _ hA k hk`. Establish `hc` using `hA.comm`. Take `⟨h1, h2⟩` from `GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_mulA S A hA k hk`. Establish `e : (𝟙 A) ^ k = ReciprocityTheory.ChartRestriction.G.Out.mulA A k` using `rfl`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h2, GlobalTheory.AbLaw.MulN.surjective_of_geomFibres _ fun K _ _ t => ?_, inferInstance⟩` and prove the remaining obligations. Establish `hf : IsFinite ((Over.pullback t).map (ReciprocityTheory.ChartRestriction.G.Out.mulA A k)).left` using `MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t _) h1`. Rewrite `hf`, the goal using `[GlobalTheory.MulFiniteFlat.pullback_map_mulA]`. Establish `hB` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A hA`. Establish `hBc` using `hB.comm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _ hB _ (GlobalTheory.AbLaw.MulN.isMonHom_mulA _ k) hf).2`.
+A detailed English derivation is pending.
 -/
 theorem flat_surjective_qc_pow : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ k : ℕ, 0 < k → Flat ((𝟙 A) ^ k).left ∧ Surjective ((𝟙 A) ^ k).left ∧ QuasiCompact ((𝟙 A) ^ k).left := by
   intro S A _ hA k hk

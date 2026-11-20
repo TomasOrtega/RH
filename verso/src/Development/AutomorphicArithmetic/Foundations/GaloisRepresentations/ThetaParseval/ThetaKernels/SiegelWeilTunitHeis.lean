@@ -16,11 +16,11 @@ namespace PositivityTheory.SiegelWeilFormula.Tunit
 open PositivityTheory.SiegelWeilFormula.Tpar
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d Φ hΦ Z X`. Establish `h` using `d.ok.dbl`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨t0, -, hBx, hf, -⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tpar.frameData_k d`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T]`. Rewrite using `[rho_rho, map_smul, smul_eq_mul, symp_cols, frame_yy_A d.ok.frame, Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul, Matrix.trace_zero, neg_zero, map_zero, mul_zero, AddChar.map_zero_eq_one, one_mul, ← Matrix.add_mul]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.gram]`. Rewrite using `[hBx, Matrix.transpose_mul, ← Matrix.mul_assoc, rho_rho, map_smul, smul_eq_mul, add_comm, l_shift h hψ _ _ hΦ, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[darboux_anti d.dd, Matrix.mul_assoc Z, ← Matrix.transpose_mul, symp_cols, hf, Matrix.mul_one, trace_gram, map_neg]`. Take the linear combination `(Algebra.trace (AF F) (AE F E) (Matrix.trace (Z * (X.map (cA σ))ᵀ * (incM F d.A.J)ᵀ))) * (invOf_two_add_invOf_two : (⅟(2 : AF F) + ⅟2 = 1))`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tHeis_k : _root_.PositivityTheory.SiegelWeilFormula.THeis_k := by
   intro F E _ _ _ _ _ σ d Φ hΦ Z X

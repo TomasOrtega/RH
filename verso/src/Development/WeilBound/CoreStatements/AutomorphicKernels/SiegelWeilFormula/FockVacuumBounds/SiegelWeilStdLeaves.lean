@@ -38,11 +38,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula
 
 /- English proof (translation)
-Establish `hBL : EisBL` using `PositivityTheory.RgEis.Hd.eisBL`. Establish `hSK : SecK` using `Khead.secK`. Establish `hAux : AuxiliaryPrimeFunction` using `kfour.auxEx`. Establish `hRD : RDEx` using `Krd.rdEx`. Establish `hFM : FockMem` using `KFock.fockMem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLE : LiftEx` using `KFock.liftEx hT.1`. Establish `hLB : LamBd` using `kfour.lamBd`. Establish `hLS : LamSing` using `KSing.lamSing_of kfour.coefEx kfour.fourierZero Krd.denseW hAux`. Establish `hEW : EisWk` using `Aeis.eisWk`. Establish `hMain` using `KMain.mainOf hA hT hTC hRD hAux hFM hLE hLo hLI hGS hGI hGD hKP hPK hSK hLB hLS hU hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLt` using `Khead.headOf hBL hSK (Khead.eisStrong_of hBL) hMain`. Establish `hEq` using `Atop.mainEq_of hA hT hTC hRD hAux hFM hLE hLo hLI hGS hGI hGD hKP hPK hSK hLB hLS hU hEW hWE`. Establish `hVA` using `Atop.vacAllOfC hG hT hAux hFM hLE hLo hLI hGS hGI hGD hKP hPK hSK hEW`. Establish `hLe` using `Atop.mainLeOf hRD hLD hVK hPK hEq hSt hVA`. Conclude with `Atop.fieldOf hBL hSK hLt hLe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Atop.siegelWeilStd_of (hA : AbsThm) (hT : TAll) (hTC : ThetaCoef) (hLo : LocOpEx) (hLI : LocInst)
     (hGS : GSplit) (hGI : GIinv) (hGD : GIdil) (hKP : KFinPoly) (hPK : PolyKFin) (hU : Unfold)
@@ -65,7 +65,7 @@ theorem Atop.siegelWeilStd_of (hA : AbsThm) (hT : TAll) (hTC : ThetaCoef) (hLo :
   exact Atop.fieldOf hBL hSK hLt hLe
 
 /- English proof (translation)
-The claim follows from `Atop.siegelWeilStd_of AbsSt.absThm hT hTC hLo hLI hGS hGI hGD hKP hPK hU (KWhit.iwaRed hT hWL) hWE AbsSt.vacuum_generates_polynomials hLD hVK hSt`.
+A detailed English derivation is pending.
 -/
 theorem Atop.siegelWeilStd_of' (hT : TAll) (hTC : ThetaCoef) (hLo : LocOpEx) (hLI : LocInst)
     (hGS : GSplit) (hGI : GIinv) (hGD : GIdil) (hKP : KFinPoly) (hPK : PolyKFin) (hU : Unfold)
@@ -74,9 +74,9 @@ theorem Atop.siegelWeilStd_of' (hT : TAll) (hTC : ThetaCoef) (hLo : LocOpEx) (hL
     hVK hSt
 
 /- English proof (translation)
-Establish `hD : KWhit.GenDictX` using `KWhit.dictAsmX KWhit.cellFormula hRel hHD hMD hTD`. Establish `hWGL : Gen.WhitGenLt` using `Gen.whitGenLtOf hLF2 hUW hRW hFX hSD`. Establish `hWGE : Gen.WhitGenEq` using `Gen.whitGenEqOf hLFX hUWX hRWE hFX hLO hDE`. Establish `hW : WhitK` using `KWhit.whitK_of_X KWhit.iwaRedC KWhit.pureSpan KWhit.linRedC KWhit.coreX hD KWhit.kFinK hT kfour.auxEx Krd.rdEx KFock.fockMem hKP Khead.secK hU hWGL hTC kfour.lamBd hPK`. Establish `hWE : WhitEq` using `KWhit.whitEq_of_X KWhit.iwaRedC KWhit.pureSpan KWhit.linRedC KWhit.coreX hD KWhit.kFinK hT kfour.auxEx Krd.rdEx KFock.fockMem hKP Khead.secK hU Aeis.eisWk hWGE hTC kfour.lamBd hPK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Atop.siegelWeilStd_of AbsSt.absThm hT hTC hLo hLI hGS hGI hGD hKP hPK hU hW hWE AbsSt.vacuum_generates_polynomials hLD hVK hSt`.
+A detailed English derivation is pending.
 -/
 theorem Atop.siegelWeilStd_leaves (hT : TAll) (hTC : ThetaCoef) (hLo : LocOpEx) (hLI : LocInst) (hGS : GSplit)
     (hGI : GIinv) (hGD : GIdil) (hKP : KFinPoly) (hPK : PolyKFin) (hU : Unfold) (hLD : LDEx) (hVK : VacK) (hSt : Step)

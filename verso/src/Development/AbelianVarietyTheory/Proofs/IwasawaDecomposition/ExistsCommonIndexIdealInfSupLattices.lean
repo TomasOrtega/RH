@@ -8,25 +8,23 @@ namespace GlobalTheory.BetaEx
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 /- English proof (translation)
-Establish `hsub : ∀ N : Submodule (𝓞 E) (Fin n → E), N ≤ M' ⊔ M → Bdd N`. Introduce `N hN`. Take `⟨k, hk, h⟩` from `hb`. Conclude with `⟨k, hk, fun v hv => h v (hN hv)⟩`. Establish `key : ∀ s : Finset (Fin n → E), (∀ x ∈ s, x ∈ M) → ∃ 𝔞 : Ideal (𝓞 E), 𝔞 ≠ ⊥ ∧ detSpan (M ⊓ M') = 𝔞 • detSpan ((M ⊓ M') ⊔ Submodule.span (𝓞 E) (s : Set (Fin n → E))) ∧ detSpan M' = 𝔞 • detSpan (M' ⊔ Submodule.span (𝓞 E) (s : Set (Fin n → E))) ∧ Ideal.absNorm 𝔞 = (M ⊓ M').toAddSubg …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨⊤, by simp, by simp, by simp, by simp⟩`. Consider the case `insert m s _ ih`. Introduce `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨𝔞, h0, h1, h1', h2⟩` from `ih fun x hx => hs x (Finset.mem_insert_of_mem hx)`. Establish `hsM : Submodule.span (𝓞 E) (s : Set (Fin n → E)) ≤ M` using `Submodule.span_le.2 fun x hx => hs x (Finset.mem_insert_of_mem hx)`. Use `set N := (M ⊓ M') ⊔ Submodule.span (𝓞 E) (s : Set (Fin n → E)) with hN`. Use `set S := M' ⊔ Submodule.span (𝓞 E) (s : Set (Fin n → E)) with hS`. Establish `hm : m ∈ M` using `hs m (Finset.mem_insert_self _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmM : Submodule.span (𝓞 E) {m} ≤ M` using `(Submodule.span_singleton_le_iff_mem _ _).2 hm`. Establish `e : (M ⊓ M') ⊔ Submodule.span (𝓞 E) ((insert m s : Finset (Fin n → E)) : Set (Fin n → E)) = N ⊔ Submodule.span (𝓞 E) {m}`. Rewrite using `[Finset.coe_insert, Submodule.span_insert, hN, sup_assoc, sup_comm (Submodule.span _ {m})]`. Establish `e' : M' ⊔ Submodule.span (𝓞 E) ((insert m s : Finset (Fin n → E)) : Set (Fin n → E)) = S ⊔ Submodule.span (𝓞 E) {m}`. Rewrite using `[Finset.coe_insert, Submodule.span_insert, hS, sup_assoc, sup_comm (Submodule.span _ {m})]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNS : N = M ⊓ S`. Rewrite using `[hN, hS, inf_sup_assoc_of_le _ hsM]`. Establish `hb1 : Bdd (N ⊔ Submodule.span (𝓞 E) {m})` using `hsub _ (le_sup_of_le_right (sup_le (sup_le inf_le_left hsM) hmM))`. Establish `hb2 : Bdd (S ⊔ Submodule.span (𝓞 E) {m})` using `hsub _ (sup_le (sup_le_sup_left hsM _) (le_sup_of_le_right hmM))`. Establish `hc : (N.comap (LinearMap.toSpanSingleton (𝓞 E) _ m) : Ideal (𝓞 E)) = S.comap (LinearMap.toSpanSingleton (𝓞 E) _ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Rewrite using `[hNS]`. Conclude with `⟨fun h => h.2, fun h => ⟨M.smul_mem a hm, h⟩⟩`. Rewrite using `[e, e']`. Use `⟨𝔞 * (N.comap (LinearMap.toSpanSingleton (𝓞 E) _ m) : Ideal (𝓞 E)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `mul_ne_zero h0 ?_` and prove the remaining obligations. Take `⟨a, ha, ham⟩` from `ht m hm`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨a, (le_sup_left : M ⊓ M' ≤ N) ⟨M.smul_mem a hm, ham⟩, ha⟩`. Rewrite using `[h1, Submodule.mul_smul, ← detSpan_cyclic N m hb1]`. Rewrite using `[h1', hc, Submodule.mul_smul, ← detSpan_cyclic S m hb2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, h2, index_cyclic]`. Conclude with `AddSubgroup.relIndex_mul_relIndex _ _ _ (Submodule.toAddSubgroup_mono le_sup_left) (Submodule.toAddSubgroup_mono le_sup_left)`. Establish `hfg : M.FG`. Take `⟨k, hk, h⟩` from `hsub M le_sup_right`. Establish `hs : (stdLat E n).FG` using `Submodule.fg_pi fun _ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Apply `Submodule.fg_of_fg_map_injective (LinearMap.lsmul (𝓞 E) (Fin n → E) k) (fun x y hxy => smul_right_injective _ hk hxy)` to reduce the goal to its premises. Conclude with `hs.of_le (by rintro _ ⟨v, hv, rfl⟩; exact h v hv)`. Take `⟨s, rfl⟩` from `hfg`.
-
-Use `key s fun x hx => Submodule.subset_span hx` as an intermediate fact. Rewrite `this` using `[sup_eq_right.2 inf_le_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_index_ideal_inf_sup (E : Type) [Field E] [NumberField E] (n : ℕ)
     (M M' : Submodule (𝓞 E) (Fin n → E)) (hb : Bdd (M' ⊔ M))

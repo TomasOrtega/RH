@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.RealWeil
 def ee (x : ℝ) : ℂ := Complex.exp (2 * Real.pi * Complex.I * (x : ℂ))
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_add (x y : ℝ) : ee (x + y) = ee x * ee y := by
   unfold ee
@@ -21,12 +21,12 @@ theorem ee_add (x y : ℝ) : ee (x + y) = ee x * ee y := by
   ring
 
 /- English proof (translation)
-Simplify using `[ee]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem ee_zero : ee 0 = 1 := by simp [ee]
 
 /- English proof (translation)
-Unfold `ee`. Establish `: (2 * Real.pi * Complex.I * (x : ℂ)) = ((2 * Real.pi * x : ℝ) : ℂ) * Complex.I`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_ee (x : ℝ) : ‖ee x‖ = 1 := by
   unfold ee
@@ -36,7 +36,7 @@ theorem norm_ee (x : ℝ) : ‖ee x‖ = 1 := by
   rw [this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Unfold `ee`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_ee : Continuous ee := by
   unfold ee
@@ -45,14 +45,14 @@ theorem continuous_ee : Continuous ee := by
 def Fr (Φ : ℂ → ℂ) (z : ℂ) : ℂ := ∫ u, ee (2 * (conj z * u).re) * Φ u ∂volC
 
 /- English proof (translation)
-Simplify using `only [rWR, if_true, ee]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rWR_zero (a b d : ℝ) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR a b 0 d Φ z = ee (a * b * Complex.normSq z) * sgR a * ((|a| : ℝ) : ℂ) * Φ ((a : ℂ) * z) := by
   simp only [rWR, if_true, ee]
 
 /- English proof (translation)
-Simplify using `only [rWR, if_neg hc, ee]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rWR_ne (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR a b c d Φ z = Complex.I * sgR (-c) * ((|c|⁻¹ : ℝ) : ℂ) *
@@ -60,11 +60,11 @@ theorem rWR_ne (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : �
   simp only [rWR, if_neg hc, ee]
 
 /- English proof (translation)
-Rewrite using `[rWR_ne a b d hc, Fr, ← integral_const_mul (μ := volC) (ee (a / c * Complex.normSq z))]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (a * Complex.normSq z + d * Complex.normSq u - 2 * (conj z * u).re) / c = a / c * Complex.normSq z + (2 * (conj (((-c⁻¹ : ℝ) : ℂ) * z) * u).re + d / c * Complex.normSq u)`. Establish `: (conj (((-c⁻¹ : ℝ) : ℂ) * z) * u).re = -c⁻¹ * (conj z * u).re`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Complex.conj_ofReal, mul_assoc, Complex.re_ofReal_mul]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show ee _ * Φ u = ee _ * (ee _ * (ee _ * Φ u))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ee_add, ee_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rWR_fr (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR a b c d Φ z = Complex.I * sgR (-c) * ((|c|⁻¹ : ℝ) : ℂ) * (ee (a / c * Complex.normSq z) *
@@ -84,14 +84,14 @@ theorem rWR_fr (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : �
   ring
 
 /- English proof (translation)
-Rewrite using `[volC, integral_smul_measure]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_volC (f : ℂ → ℂ) : ∫ u, f u ∂volC = 2 * ∫ u, f u := by
   rw [volC, integral_smul_measure]
   simp
 
 /- English proof (translation)
-Establish `h` using `Measure.integral_comp_smul (volume : Measure ℂ) f s`. Simplify using `only [Complex.real_smul, Complex.finrank_real_complex] at h`. Rewrite using `[integral_volC, integral_volC, h, abs_of_pos (by positivity : 0 < (s ^ 2)⁻¹)]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem integral_volC_smul (f : ℂ → ℂ) {s : ℝ} (hs : s ≠ 0) :
     ∫ u, f ((s : ℂ) * u) ∂volC = (((s ^ 2)⁻¹ : ℝ) : ℂ) * ∫ u, f u ∂volC := by
@@ -101,7 +101,7 @@ theorem integral_volC_smul (f : ℂ → ℂ) {s : ℝ} (hs : s ≠ 0) :
   ring_nf
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne ha with h1 | h1` into its components or cases. Simplify using `[sgR, h1.le.not_gt, abs_of_neg h1]`. Simplify using `[sgR, h1, abs_of_pos h1]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sgR_mul_abs {a : ℝ} (ha : a ≠ 0) : sgR a * ((|a| : ℝ) : ℂ) = (a : ℂ) := by
   rcases lt_or_gt_of_ne ha with h1 | h1
@@ -109,7 +109,7 @@ theorem sgR_mul_abs {a : ℝ} (ha : a ≠ 0) : sgR a * ((|a| : ℝ) : ℂ) = (a 
   · simp [sgR, h1, abs_of_pos h1]
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne ha with h1 | h1` into its components or cases. Simplify using `[sgR, h1.le.not_gt, abs_of_neg h1]`. Simplify using `[sgR, h1, abs_of_pos h1]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sgR_mul_abs_inv {a : ℝ} (ha : a ≠ 0) : sgR a * ((|a|⁻¹ : ℝ) : ℂ) = ((a⁻¹ : ℝ) : ℂ) := by
   rcases lt_or_gt_of_ne ha with h1 | h1
@@ -124,14 +124,14 @@ open Filter Topology
 open scoped FourierTransform
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hΦ`. Conclude with `⟨k • f, by funext z; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem const_mem (k : ℂ) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : (fun z => k * Φ z) ∈ SchC := by
   obtain ⟨f, rfl⟩ := hΦ
   exact ⟨k • f, by funext z; simp⟩
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hΦ`. Set `L : ℂ ≃L[ℝ] ℂ` to `ContinuousLinearEquiv.smulLeft (Units.mk0 s hs)`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L f, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `[L, SchwartzMap.compCLMOfContinuousLinearEquiv_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dil_mem {s : ℝ} (hs : s ≠ 0) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : (fun z => Φ ((s : ℂ) * z)) ∈ SchC := by
   obtain ⟨f, rfl⟩ := hΦ
@@ -141,9 +141,9 @@ theorem dil_mem {s : ℝ} (hs : s ≠ 0) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) 
   simp [L, SchwartzMap.compCLMOfContinuousLinearEquiv_apply]
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hΦ`. Use `⟨GlobalTheory.CompanionTheory.Kloc.Fresnel.chirpS t f, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Rewrite using `[GlobalTheory.CompanionTheory.Kloc.Fresnel.chirpS_apply]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [GlobalTheory.CompanionTheory.Kloc.Fresnel.chirp, ee]`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chirp_mem (t : ℝ) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : (fun z => ee (t * Complex.normSq z) * Φ z) ∈ SchC := by
   obtain ⟨f, rfl⟩ := hΦ
@@ -158,7 +158,7 @@ theorem chirp_mem (t : ℝ) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : (fun z => e
   ring
 
 /- English proof (translation)
-Rewrite using `[Complex.inner]`. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_eq (v z : ℂ) : inner ℝ v z = (conj z * v).re := by
   rw [Complex.inner]
@@ -166,9 +166,9 @@ theorem inner_eq (v z : ℂ) : inner ℝ v z = (conj z * v).re := by
   ring
 
 /- English proof (translation)
-Rewrite using `[Fr, integral_volC, Real.fourier_eq']`. Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [ee, smul_eq_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h : inner ℝ v (((-2 : ℝ) : ℂ) * z) = -2 * (conj z * v).re`. Rewrite using `[inner_eq, map_mul, Complex.conj_ofReal, mul_assoc, Complex.re_ofReal_mul]`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Fr_eq (Φ : ℂ → ℂ) (z : ℂ) : Fr Φ z = 2 * 𝓕 Φ (((-2 : ℝ) : ℂ) * z) := by
   rw [Fr, integral_volC, Real.fourier_eq']
@@ -183,7 +183,7 @@ theorem Fr_eq (Φ : ℂ → ℂ) (z : ℂ) : Fr Φ z = 2 * 𝓕 Φ (((-2 : ℝ) 
   ring
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hΦ`. Establish `e : Fr ⇑f = fun z => 2 * 𝓕 (⇑f) (((-2 : ℝ) : ℂ) * z)` using `funext (Fr_eq _)`. Rewrite using `[e]`. Conclude with `const_mem 2 (dil_mem (by norm_num) ⟨(𝓕 f : SchwartzMap ℂ ℂ), SchwartzMap.fourier_coe f⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Fr_mem {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : Fr Φ ∈ SchC := by
   obtain ⟨f, rfl⟩ := hΦ
@@ -192,19 +192,19 @@ theorem Fr_mem {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : Fr Φ ∈ SchC := by
   exact const_mem 2 (dil_mem (by norm_num) ⟨(𝓕 f : SchwartzMap ℂ ℂ), SchwartzMap.fourier_coe f⟩)
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hΦ`. Establish `e : Fr ⇑f = fun z => 2 * 𝓕 (⇑f) (((-2 : ℝ) : ℂ) * z)` using `funext (Fr_eq _)`. Establish `hint : Integrable (𝓕 (f : ℂ → ℂ))`. Use `(𝓕 f).integrable (μ := volume)` as an intermediate fact. Rewrite `this` using `[SchwartzMap.fourier_coe]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hinv` using `congrFun (Continuous.fourierInv_fourier_eq f.continuous (f.integrable (μ := volume)) hint) (-z)`. Rewrite `hinv` using `[Real.fourierInv_eq']`. Rewrite using `[← hinv, e, Fr]`. Use `set k : ℂ → ℂ := fun v => ee (-(conj z * v).re) * (2 * 𝓕 (⇑f) v) with hk`. Establish `h` using `integral_volC_smul k (by norm_num : (-2 : ℝ) ≠ 0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∫ u, ee (2 * (conj z * u).re) * (2 * 𝓕 (⇑f) (((-2 : ℝ) : ℂ) * u)) ∂volC = ∫ u, k (((-2 : ℝ) : ℂ) * u) ∂volC`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [hk]`. Use `congr 2`. Rewrite using `[mul_left_comm, Complex.re_ofReal_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h, integral_volC, ← mul_assoc]`. Establish `h2 : (((((-2 : ℝ) ^ 2)⁻¹ : ℝ) : ℂ) * 2) = 2⁻¹`. Use `push_cast`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hk]`. Simplify using `only []`. Establish `h3 : ∀ v : ℂ, ee (-(conj z * v).re) * (2 * 𝓕 (⇑f) v) = 2 * (Complex.exp (((2 * Real.pi * inner ℝ v (-z) : ℝ) : ℂ) * Complex.I) • 𝓕 (⇑f) v)`. Introduce `v`. Establish `: inner ℝ v (-z) = -(conj z * v).re`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_neg_right, inner_eq]`. Rewrite using `[this, ee, smul_eq_mul]`. Establish `e4 : 2 * (Real.pi : ℂ) * Complex.I * ((-(conj z * v).re : ℝ) : ℂ) = ((2 * Real.pi * -(conj z * v).re : ℝ) : ℂ) * Complex.I`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3]`. Rewrite using `[integral_const_mul]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Fr_Fr {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) (z : ℂ) : Fr (Fr Φ) z = Φ (-z) := by
   obtain ⟨f, rfl⟩ := hΦ
@@ -244,17 +244,17 @@ theorem Fr_Fr {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) (z : ℂ) : Fr (Fr Φ) z = 
   simp
 
 /- English proof (translation)
-Use `set b : ℂ := (ε : ℂ) - 2 * Real.pi * t * Complex.I with hbd`. Establish `hb : 0 < b.re` using `by simpa [hbd] using hε`. Establish `hb0 : b ≠ 0`. Introduce `h`. Rewrite `hb` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hb`. Establish `h` using `fourier_gaussian_innerProductSpace (V := ℂ) hb (((-2 : ℝ) : ℂ) * w)`. Establish `e1 : ∫ y, Complex.exp (-((ε * Complex.normSq y : ℝ) : ℂ)) * ee (t * Complex.normSq y + 2 * (conj w * y).re) ∂volC = Fr (fun v : ℂ => Complex.exp (-b * (‖v‖ : ℂ) ^ 2)) w`. Rewrite using `[Fr]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Complex.exp _ * ee _ = ee _ * Complex.exp _`. Rewrite using `[ee_add]`. Simplify using `only [ee]`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add, Complex.normSq_eq_norm_sq, hbd]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Fr_eq, h, Gs, ← hbd]`. Simplify using `only [Complex.finrank_real_complex]`. Establish `e2 : (((2 : ℕ) : ℂ) / 2) = 1` using `by norm_num`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, Complex.cpow_one, norm_mul, Complex.normSq_eq_norm_sq]`. Establish `e3 : ‖((-2 : ℝ) : ℂ)‖ = 2` using `by simp`. Rewrite using `[e3]`. Rewrite using `[← mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss_int (ε t : ℝ) (hε : 0 < ε) (w : ℂ) :
     ∫ y, Complex.exp (-((ε * Complex.normSq y : ℝ) : ℂ)) * ee (t * Complex.normSq y + 2 * (conj w * y).re) ∂volC = Gs ε t w := by
@@ -290,19 +290,15 @@ theorem gauss_int (ε t : ℝ) (hε : 0 < ε) (w : ℂ) :
     ring
 
 /- English proof (translation)
-Establish `hΨi : Integrable Ψ volC`. Take `⟨f, rfl⟩` from `hΨ`. Establish `h : Integrable (⇑f) (volume : Measure ℂ)` using `f.integrable`. Conclude with `h.smul_measure (by simp)`. Establish `hΨc : Continuous Ψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `hΨ`. Conclude with `f.continuous`. Use `haveI : SFinite volC := by`. Unfold `volC`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hF : Integrable (Function.uncurry fun (y u : ℂ) => K y * ee (2 * (conj (z + u) * y).re) * Ψ u) (volC.prod volC)`. Establish `base` using `Integrable.mul_prod hK hΨi`. Use `base.mono ?_ (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Apply `Continuous.aestronglyMeasurable` to reduce the goal to its premises. Use `continuous_ee` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Function.uncurry_def]`. Use `fun_prop`. Simplify using `only [Function.uncurry_def, norm_mul, norm_ee, mul_one, le_refl]`. Establish `hsw` using `integral_integral_swap hF`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show _ * _ * (∫ u, _ ∂volC) = _`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show _ = K y * ee _ * Ψ u`.
-
-Establish `e : 2 * (conj (z + u) * y).re = 2 * (conj z * y).re + 2 * (conj y * u).re`. Simplify using `only [map_add, Complex.mul_re, Complex.add_re, Complex.add_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ee_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = ∫ u, ∫ y, K y * ee (2 * (conj (z + u) * y).re) * Ψ u ∂volC ∂volC := hsw`. Use `_ = _ := by`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Conclude with `integral_mul_const _ _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fubini_Fr {K Ψ : ℂ → ℂ} (hK : Integrable K volC) (hKc : Continuous K) (hΨ : Ψ ∈ SchC) (z : ℂ) :
     ∫ y, K y * ee (2 * (conj z * y).re) * Fr Ψ y ∂volC =
@@ -343,7 +339,7 @@ theorem fubini_Fr {K Ψ : ℂ → ℂ} (hK : Integrable K volC) (hKc : Continuou
         exact integral_mul_const _ _
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Use `Real.exp_le_one_iff.2 ?_` and prove the remaining obligations. Use `Complex.normSq_nonneg y` as an intermediate fact. Simplify using `only [Complex.neg_re, Complex.ofReal_re]`. Establish `: 0 ≤ ε * Complex.normSq y` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -356,11 +352,11 @@ theorem norm_exp_reg_le {ε : ℝ} (hε : 0 < ε) (y : ℂ) : ‖Complex.exp (-(
   linarith
 
 /- English proof (translation)
-Establish `hs` using `Complex.continuous_normSq`. Use `tendsto_integral_filter_of_dominated_convergence (fun y => ‖f y‖) ?_ ?_ hf.norm ?_` and prove the remaining obligations. Use `Eventually.of_forall fun ε => ?_` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ?_ |>.mul hf.aestronglyMeasurable` and prove the remaining obligations. Use `fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (norm_exp_reg_le hε y)`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : Continuous fun ε : ℝ => Complex.exp (-((ε * Complex.normSq y : ℝ) : ℂ)) * f y` using `by fun_prop`. Use `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_reg_left {f : ℂ → ℂ} (hf : Integrable f volC) :
     Tendsto (fun ε : ℝ => ∫ y, Complex.exp (-((ε * Complex.normSq y : ℝ) : ℂ)) * f y ∂volC) (𝓝[>] 0) (𝓝 (∫ y, f y ∂volC)) := by
@@ -380,21 +376,21 @@ theorem tendsto_reg_left {f : ℂ → ℂ} (hf : Integrable f volC) :
     simpa using this
 
 /- English proof (translation)
-Use `set b : ℂ := (ε : ℂ) - 2 * Real.pi * t * Complex.I with hbd`. Establish `hre : b.re = ε` using `by simp [hbd]`. Establish `him : b.im = -(2 * Real.pi * t)` using `by simp [hbd]`. Establish `hb0 : b ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[h]`. Simplify using `at hre`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpi` using `Real.pi_pos`. Establish `ht' : 0 < |t|` using `abs_pos.2 ht`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnb : 2 * Real.pi * |t| ≤ ‖b‖`. Establish `h1` using `Complex.abs_im_le_norm b`. Rewrite `h1` using `[him, abs_neg, abs_mul, abs_of_pos (by positivity : 0 < 2 * Real.pi)]`. Conclude with `h1`. Establish `h1 : ‖2 * (Real.pi : ℂ) / b‖ ≤ |t|⁻¹`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_div]`. Establish `: ‖2 * (Real.pi : ℂ)‖ = 2 * Real.pi`. Simplify using `[abs_of_pos hpi]`. Rewrite using `[this, div_le_iff₀ (norm_pos_iff.2 hb0)]`. Establish `: |t|⁻¹ * (2 * Real.pi * |t|) ≤ |t|⁻¹ * ‖b‖` using `mul_le_mul_of_nonneg_left hnb (by positivity)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : |t|⁻¹ * (2 * Real.pi * |t|) = 2 * Real.pi`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ‖Complex.exp (-(4 * Real.pi ^ 2 * (Complex.normSq w : ℂ)) / b)‖ ≤ 1`. Rewrite using `[Complex.norm_exp]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Real.exp_le_one_iff.2 ?_` and prove the remaining obligations. Establish `e : -(4 * (Real.pi : ℂ) ^ 2 * (Complex.normSq w : ℂ)) / b = ((-(4 * Real.pi ^ 2 * Complex.normSq w) : ℝ) : ℂ) / b`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.div_re]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Complex.ofReal_re, Complex.ofReal_im, zero_mul, zero_div, add_zero, hre]`. Establish `hN` using `Complex.normSq_nonneg w`. Establish `: 0 ≤ (4 * Real.pi ^ 2 * Complex.normSq w) * ε / Complex.normSq b` using `div_nonneg (by positivity) (Complex.normSq_nonneg _)`. Establish `e2 : -(4 * Real.pi ^ 2 * Complex.normSq w) * ε / Complex.normSq b = -((4 * Real.pi ^ 2 * Complex.normSq w) * ε / Complex.normSq b)` using `by ring`. Rewrite using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Gs, ← hbd, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_Gs_le {ε t : ℝ} (hε : 0 < ε) (ht : t ≠ 0) (w : ℂ) : ‖Gs ε t w‖ ≤ |t|⁻¹ := by
   set b : ℂ := (ε : ℂ) - 2 * Real.pi * t * Complex.I with hbd
@@ -439,15 +435,15 @@ theorem norm_Gs_le {ε t : ℝ} (hε : 0 < ε) (ht : t ≠ 0) (w : ℂ) : ‖Gs 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Establish `htc : (t : ℂ) ≠ 0` using `by exact_mod_cast ht`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `hb0 : ((0 : ℝ) : ℂ) - 2 * Real.pi * t * Complex.I ≠ 0`. Simplify using `[Real.pi_ne_zero, ht]`. Establish `hbc : Continuous fun ε : ℝ => (ε : ℂ) - 2 * Real.pi * t * Complex.I` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb` using `hbc.tendsto 0`. Establish `h1 : Tendsto (fun ε : ℝ => Gs ε t w) (𝓝 0) (𝓝 (Gs 0 t w))`. Unfold `Gs`. Conclude with `(tendsto_const_nhds.div hb hb0).mul ((tendsto_const_nhds.div hb hb0).cexp)`. Establish `hv : Gs 0 t w = (Complex.I / (t : ℂ)) * ee (-(Complex.normSq w) / t)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Gs ee`. Use `congr 1`. Rewrite using `[Complex.ofReal_zero, zero_sub, div_eq_div_iff (by simp [Real.pi_ne_zero, ht]) htc]`. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Rewrite using `[Complex.ofReal_zero, zero_sub, div_eq_iff (by simp [Real.pi_ne_zero, ht])]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hv]`. Conclude with `h1.mono_left nhdsWithin_le_nhds`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_Gs {t : ℝ} (ht : t ≠ 0) (w : ℂ) :
     Tendsto (fun ε : ℝ => Gs ε t w) (𝓝[>] 0) (𝓝 ((Complex.I / (t : ℂ)) * ee (-(Complex.normSq w) / t))) := by
@@ -478,13 +474,11 @@ theorem tendsto_Gs {t : ℝ} (ht : t ≠ 0) (w : ℂ) :
   exact h1.mono_left nhdsWithin_le_nhds
 
 /- English proof (translation)
-Rewrite using `[← integral_const_mul]`. Establish `hcont : ∀ ε : ℝ, 0 < ε → Continuous fun u => Gs ε t (z + u)`. Introduce `ε hε`. Establish `hs` using `Complex.continuous_normSq`. Unfold `Gs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`. Use `tendsto_integral_filter_of_dominated_convergence (fun u => |t|⁻¹ * ‖Ψ u‖) ?_ ?_ (hΨ.norm.const_mul _) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Conclude with `(hcont ε hε).aestronglyMeasurable.mul hΨ.aestronglyMeasurable`. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_Gs_le hε ht _) (norm_nonneg _)`. Use `Eventually.of_forall fun u => ?_` and prove the remaining obligations. Use `(tendsto_Gs ht (z + u)).mul_const (Ψ u)` as an intermediate fact.
-
-Simplify `this` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_reg_right {t : ℝ} (ht : t ≠ 0) {Ψ : ℂ → ℂ} (hΨ : Integrable Ψ volC) (z : ℂ) :
     Tendsto (fun ε : ℝ => ∫ u, Gs ε t (z + u) * Ψ u ∂volC) (𝓝[>] 0)
@@ -507,7 +501,7 @@ theorem tendsto_reg_right {t : ℝ} (ht : t ≠ 0) {Ψ : ℂ → ℂ} (hΨ : Int
     simpa [mul_assoc] using this
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `hΦ`. Establish `h : Integrable (⇑f) (volume : Measure ℂ)` using `f.integrable`. Conclude with `h.smul_measure (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sch_integrable {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : Integrable Φ volC := by
   obtain ⟨f, rfl⟩ := hΦ
@@ -515,21 +509,19 @@ theorem sch_integrable {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : Integrable Φ vo
   exact h.smul_measure (by simp)
 
 /- English proof (translation)
-Establish `hFi` using `sch_integrable (Fr_mem hΨ)`. Establish `hf : Integrable (fun y => ee (t * Complex.normSq y + 2 * (conj z * y).re) * Fr Ψ y) volC`. Use `hFi.bdd_mul (c := 1) ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_ee.comp (by fun_prop)).aestronglyMeasurable`. Conclude with `Eventually.of_forall fun y => (norm_ee _).le`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `tendsto_reg_left hf`. Establish `hR` using `tendsto_reg_right ht (sch_integrable hΨ) z`. Use `tendsto_nhds_unique (hL.congr' ?_) hR` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Establish `hε' : (0 : ℝ) < ε` using `hε`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKc : Continuous fun y : ℂ => Complex.exp (-((ε * Complex.normSq y : ℝ) : ℂ)) * ee (t * Complex.normSq y)`. Use `continuous_ee` as an intermediate fact. Use `Complex.continuous_normSq` as an intermediate fact. Use `fun_prop`. Establish `hKi : Integrable (fun y : ℂ => Complex.exp (-((ε * Complex.normSq y : ℝ) : ℂ)) * ee (t * Complex.normSq y)) volC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hb : 0 < ((ε : ℂ) - 2 * Real.pi * t * Complex.I).re` using `by simpa using hε'`. Establish `h0` using `GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) hb 0 0`. Establish `h1 : Integrable (fun y : ℂ => Complex.exp (-((ε : ℂ) - 2 * Real.pi * t * Complex.I) * (‖y‖ : ℂ) ^ 2)) (volume : Measure ℂ)`. Simplify using `using h0`. Establish `h2` using `h1.smul_measure (c := (2 : ENNReal)) (by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `h2.congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [ee, ← Complex.exp_add]`. Use `congr 1`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `fubini_Fr hKi hKc hΨ z`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [ee_add]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := h`. Use `_ = _ := by`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only []`.
-
-Rewrite using `[← gauss_int ε t hε']`. Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [ee_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss {t : ℝ} (ht : t ≠ 0) {Ψ : ℂ → ℂ} (hΨ : Ψ ∈ SchC) (z : ℂ) :
     ∫ y, ee (t * Complex.normSq y + 2 * (conj z * y).re) * Fr Ψ y ∂volC =
@@ -576,14 +568,14 @@ theorem gauss {t : ℝ} (ht : t ≠ 0) {Ψ : ℂ → ℂ} (hΨ : Ψ ∈ SchC) (z
         ring
 
 /- English proof (translation)
-Rewrite using `[rWR_zero, mul_assoc (ee _), sgR_mul_abs ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rWR_zero' {a : ℝ} (ha : a ≠ 0) (b d : ℝ) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR a b 0 d Φ z = ee (a * b * Complex.normSq z) * (a : ℂ) * Φ ((a : ℂ) * z) := by
   rw [rWR_zero, mul_assoc (ee _), sgR_mul_abs ha]
 
 /- English proof (translation)
-Establish `h` using `sgR_mul_abs_inv (neg_ne_zero.2 hc)`. Rewrite `h` using `[abs_neg, inv_neg]`. Rewrite using `[rWR_ne a b d hc, mul_assoc Complex.I, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rWR_ne' (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR a b c d Φ z = Complex.I * ((-c⁻¹ : ℝ) : ℂ) *
@@ -593,7 +585,7 @@ theorem rWR_ne' (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : �
   rw [rWR_ne a b d hc, mul_assoc Complex.I, h]
 
 /- English proof (translation)
-Establish `h` using `sgR_mul_abs_inv (neg_ne_zero.2 hc)`. Rewrite `h` using `[abs_neg, inv_neg]`. Rewrite using `[rWR_fr a b d hc, mul_assoc Complex.I, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rWR_fr' (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR a b c d Φ z = Complex.I * ((-c⁻¹ : ℝ) : ℂ) * (ee (a / c * Complex.normSq z) *
@@ -603,27 +595,27 @@ theorem rWR_fr' (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : �
   rw [rWR_fr a b d hc, mul_assoc Complex.I, h]
 
 /- English proof (translation)
-Rewrite using `[rWR_zero' one_ne_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rWR_n (x : ℝ) (F : ℂ → ℂ) (z : ℂ) : rWR 1 x 0 1 F z = ee (x * Complex.normSq z) * F z := by
   rw [rWR_zero' one_ne_zero]
   simp
 
 /- English proof (translation)
-Rewrite using `[rWR_zero' hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rWR_m {s : ℝ} (hs : s ≠ 0) (F : ℂ → ℂ) (z : ℂ) : rWR s 0 0 s⁻¹ F z = (s : ℂ) * F ((s : ℂ) * z) := by
   rw [rWR_zero' hs]
   simp
 
 /- English proof (translation)
-Rewrite using `[rWR_n]`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `had : a * d = 1` using `by simpa using h`. Rewrite using `[rWR_zero, rWR_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (a + x * 0) * (b + x * d) * Complex.normSq z = x * Complex.normSq z + a * b * Complex.normSq z`. Take the linear combination `(x * Complex.normSq z) * had`. Rewrite using `[e, ee_add]`. Simplify using `only [mul_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[rWR_ne' _ _ _ hc, rWR_ne' _ _ _ hc, mul_left_comm, ← integral_const_mul (μ := volC) (ee (x * Complex.normSq z))]`. Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show ee _ * Φ u = ee _ * (ee _ * Φ u)`. Rewrite using `[← mul_assoc, ← ee_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Pn (x a b c d : ℝ) (h : a * d - b * c = 1) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR (a + x * c) (b + x * d) c d Φ z = rWR 1 x 0 1 (rWR a b c d Φ) z := by
@@ -647,15 +639,15 @@ theorem Pn (x a b c d : ℝ) (h : a * d - b * c = 1) (Φ : ℂ → ℂ) (z : ℂ
     ring
 
 /- English proof (translation)
-Rewrite using `[rWR_m hs]`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `had : a * d = 1` using `by simpa using h`. Establish `ha : a ≠ 0` using `left_ne_zero_of_mul_eq_one had`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zero_div, rWR_zero' (mul_ne_zero hs ha), rWR_zero' ha, Complex.normSq_mul, Complex.normSq_ofReal]`. Establish `e : s * a * (s * b) * Complex.normSq z = a * b * (s * s * Complex.normSq z)` using `by ring`. Rewrite using `[e]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Establish `hcs : c / s ≠ 0` using `div_ne_zero hc hs`. Rewrite using `[rWR_ne' _ _ _ hcs, rWR_ne' _ _ _ hc]`. Establish `hI : ∫ u, ee ((s * a * Complex.normSq z + d / s * Complex.normSq u - 2 * (conj z * u).re) / (c / s)) * Φ u ∂volC = ∫ u, ee ((a * Complex.normSq ((s : ℂ) * z) + d * Complex.normSq u - 2 * (conj ((s : ℂ) * z) * u).re) / c) * Φ u ∂volC`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show ee _ * Φ u = ee _ * Φ u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : (conj ((s : ℂ) * z) * u).re = s * (conj z * u).re`. Rewrite using `[map_mul, Complex.conj_ofReal, mul_assoc, Complex.re_ofReal_mul]`. Rewrite using `[e2, Complex.normSq_mul, Complex.normSq_ofReal]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem Pm {s : ℝ} (hs : s ≠ 0) (a b c d : ℝ) (h : a * d - b * c = 1) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR (s * a) (s * b) (c / s) (d / s) Φ z = rWR s 0 0 s⁻¹ (rWR a b c d Φ) z := by
@@ -685,19 +677,19 @@ theorem Pm {s : ℝ} (hs : s ≠ 0) (a b c d : ℝ) (h : a * d - b * c = 1) (Φ 
     field_simp
 
 /- English proof (translation)
-Rewrite using `[rWR_ne' 0 1 0 (by norm_num : (-1 : ℝ) ≠ 0)]`. Use `set H : ℂ → ℂ := fun u => ee ((0 * Complex.normSq z + 0 * Complex.normSq u - 2 * (conj z * u).re) / (-1)) * rWR a b c d Φ u with hH`. Establish `hs : (-c : ℝ) ≠ 0` using `neg_ne_zero.2 hc`. Establish `h` using `integral_volC_smul H hs`. Establish `h2 : ∫ u, H u ∂volC = ((c ^ 2 : ℝ) : ℂ) * ∫ u, H (((-c : ℝ) : ℂ) * u) ∂volC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, neg_sq, ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ (pow_ne_zero 2 hc)]`. Simplify using the standard rewrite rules. Use `show Complex.I * (((-(-1 : ℝ)⁻¹ : ℝ)) : ℂ) * ∫ u, H u ∂volC = _`. Rewrite using `[h2]`. Establish `h3 : ∀ v : ℂ, H (((-c : ℝ) : ℂ) * v) = (Complex.I * ((-c⁻¹ : ℝ) : ℂ)) * (ee (a * c * Complex.normSq v + 2 * (conj (((-c : ℝ) : ℂ) * z) * v).re) * Fr (fun u => ee (d / c * Complex.normSq u) * Φ u) v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `only [hH]`. Rewrite using `[rWR_fr' a b d hc]`. Establish `e1 : (((-c⁻¹ : ℝ) : ℂ) * (((-c : ℝ) : ℂ) * v)) = v`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e2 : (conj (((-c : ℝ) : ℂ) * z) * v).re = -c * (conj z * v).re`. Rewrite using `[map_mul, Complex.conj_ofReal, mul_assoc, Complex.re_ofReal_mul]`. Establish `e3 : (conj z * (((-c : ℝ) : ℂ) * v)).re = -c * (conj z * v).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm, Complex.re_ofReal_mul]`. Rewrite using `[e1, ee_add, e2, e3, Complex.normSq_mul, Complex.normSq_ofReal]`. Establish `e4 : (0 * Complex.normSq z + 0 * (Complex.normSq ((-c : ℝ) : ℂ) * Complex.normSq v) - 2 * (-c * (conj z * v).re)) / (-1) = 2 * (-c * (conj z * v).re)` using `by ring`. Establish `e5 : (0 * Complex.normSq z + 0 * (-c * -c * Complex.normSq v) - 2 * (-c * (conj z * v).re)) / (-1) = 2 * (-c * (conj z * v).re)` using `by ring`. Establish `e6 : a / c * (-c * -c * Complex.normSq v) = a * c * Complex.normSq v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e5, e6]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3]`. Rewrite using `[integral_const_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Pw_common (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR 0 1 (-1) 0 (rWR a b c d Φ) z = (c : ℂ) * ∫ v, ee (a * c * Complex.normSq v + 2 * (conj (((-c : ℝ) : ℂ) * z) * v).re) *
@@ -739,15 +731,15 @@ theorem Pw_common (a b d : ℝ) {c : ℝ} (hc : c ≠ 0) (Φ : ℂ → ℂ) (z :
   ring
 
 /- English proof (translation)
-Establish `ha : a ≠ 0` using `left_ne_zero_of_mul_eq_one had`. Establish `ha' : -a ≠ 0` using `neg_ne_zero.2 ha`. Establish `hac : (a : ℂ) ≠ 0` using `by exact_mod_cast ha`. Rewrite using `[rWR_ne' _ _ _ ha', rWR_ne' 0 1 0 (by norm_num : (-1 : ℝ) ≠ 0)]`. Use `set f : ℂ → ℂ := fun u => ee ((0 * Complex.normSq z + -b * Complex.normSq u - 2 * (conj z * u).re) / (-a)) * Φ u with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `integral_volC_smul f ha`. Establish `h1 : ∫ u, ee ((0 * Complex.normSq z + 0 * Complex.normSq u - 2 * (conj z * u).re) / (-1)) * rWR a b 0 d Φ u ∂volC = (a : ℂ) * ∫ u, f ((a : ℂ) * u) ∂volC`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show _ * _ = (a : ℂ) * (ee _ * Φ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[rWR_zero' ha]`. Establish `e2 : (conj z * ((a : ℂ) * u)).re = a * (conj z * u).re`. Rewrite using `[mul_left_comm, Complex.re_ofReal_mul]`. Establish `e : (0 * Complex.normSq z + -b * Complex.normSq ((a : ℂ) * u) - 2 * (conj z * ((a : ℂ) * u)).re) / (-a) = (0 * Complex.normSq z + 0 * Complex.normSq u - 2 * (conj z * u).re) / (-1) + a * b * Complex.normSq u`. Rewrite using `[e2, Complex.normSq_mul, Complex.normSq_ofReal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ee_add]`. Expand and normalize the polynomial expressions, which then agree. Use `show Complex.I * _ * ∫ u, f u ∂volC = _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h1, h]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem Pw0 {a b d : ℝ} (had : a * d = 1) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR 0 d (-a) (-b) Φ z = rWR 0 1 (-1) 0 (rWR a b 0 d Φ) z := by
@@ -778,13 +770,13 @@ theorem Pw0 {a b d : ℝ} (had : a * d = 1) (Φ : ℂ → ℂ) (z : ℂ) :
   field_simp
 
 /- English proof (translation)
-Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hbc`. Establish `hΨ` using `chirp_mem (d / c) hΦ`. Rewrite using `[Pw_common 0 b d hc, rWR_zero' hc]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∫ v, ee (0 * c * Complex.normSq v + 2 * (conj (((-c : ℝ) : ℂ) * z) * v).re) * Fr (fun u => ee (d / c * Complex.normSq u) * Φ u) v ∂volC = Fr (Fr (fun u => ee (d / c * Complex.normSq u) * Φ u)) (((-c : ℝ) : ℂ) * z)`. Rewrite using `[Fr]`. Use `integral_congr_ae (Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[h1, Fr_Fr hΨ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : -(((-c : ℝ) : ℂ) * z) = (c : ℂ) * z`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.normSq_mul, Complex.normSq_ofReal]`. Establish `e2 : d / c * (c * c * Complex.normSq z) = c * d * Complex.normSq z`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Pw1 {b c d : ℝ} (hbc : b * c = -1) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) (z : ℂ) :
     rWR c d 0 (-b) Φ z = rWR 0 1 (-1) 0 (rWR 0 b c d Φ) z := by
@@ -809,15 +801,15 @@ theorem Pw1 {b c d : ℝ} (hbc : b * c = -1) {Φ : ℂ → ℂ} (hΦ : Φ ∈ Sc
   ring
 
 /- English proof (translation)
-Establish `hΨ` using `chirp_mem (d / c) hΦ`. Establish `ha' : -a ≠ 0` using `neg_ne_zero.2 ha`. Establish `hac : (a : ℂ) ≠ 0` using `by exact_mod_cast ha`. Establish `hcc : (c : ℂ) ≠ 0` using `by exact_mod_cast hc`. Rewrite using `[Pw_common a b d hc, gauss (mul_ne_zero ha hc) hΨ, rWR_ne' _ _ _ ha']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∫ u, ee (-(Complex.normSq (((-c : ℝ) : ℂ) * z + u)) / (a * c)) * (ee (d / c * Complex.normSq u) * Φ u) ∂volC = ∫ u, ee ((c * Complex.normSq z + -b * Complex.normSq u - 2 * (conj z * u).re) / (-a)) * Φ u ∂volC`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show _ * _ = _ * _`. Rewrite using `[← mul_assoc, ← ee_add]`. Use `congr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e1 : Complex.normSq (((-c : ℝ) : ℂ) * z + u) = c ^ 2 * Complex.normSq z + Complex.normSq u - 2 * c * (conj z * u).re`. Rewrite using `[Complex.normSq_add, Complex.normSq_mul, Complex.normSq_ofReal]`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : b = (a * d - 1) / c`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hb]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem Pw2 {a b c d : ℝ} (ha : a ≠ 0) (hc : c ≠ 0) (h : a * d - b * c = 1) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) (z : ℂ) :
     rWR c d (-a) (-b) Φ z = rWR 0 1 (-1) 0 (rWR a b c d Φ) z := by
@@ -848,11 +840,11 @@ theorem Pw2 {a b c d : ℝ} (ha : a ≠ 0) (hc : c ≠ 0) (h : a * d - b * c = 1
   field_simp
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `had : a * d = 1` using `by simpa using h`. Establish `ha : a ≠ 0` using `left_ne_zero_of_mul_eq_one had`. Establish `e : rWR a b 0 d Φ = fun z => (a : ℂ) * (ee (a * b * Complex.normSq z) * Φ ((a : ℂ) * z))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[rWR_zero' ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `const_mem _ (chirp_mem _ (dil_mem ha hΦ))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : rWR a b c d Φ = fun z => (Complex.I * ((-c⁻¹ : ℝ) : ℂ)) * (ee (a / c * Complex.normSq z) * Fr (fun u => ee (d / c * Complex.normSq u) * Φ u) (((-c⁻¹ : ℝ) : ℂ) * z))`. Use function extensionality and compare the values at `fun z => rWR_fr' a b d hc Φ z`. Rewrite using `[e]`. Conclude with `const_mem _ (chirp_mem _ (dil_mem (neg_ne_zero.2 (inv_ne_zero hc)) (Fr_mem (chirp_mem _ hΦ))))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rWR_mem {a b c d : ℝ} (h : a * d - b * c = 1) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : rWR a b c d Φ ∈ SchC := by
   by_cases hc : c = 0
@@ -875,20 +867,20 @@ def PL (g : Matrix (Fin 2) (Fin 2) ℝ) : Prop :=
   ∀ h : Matrix (Fin 2) (Fin 2) ℝ, h.det = 1 → ∀ Φ ∈ SchC, rWRm (g * h) Φ = rWRm g (rWRm h Φ)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_fin_two]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq {h : Matrix (Fin 2) (Fin 2) ℝ} (hd : h.det = 1) : h 0 0 * h 1 1 - h 0 1 * h 1 0 = 1 := by
   rw [← Matrix.det_fin_two]
   exact hd
 
 /- English proof (translation)
-The claim follows from `rWR_mem (det_eq hd) hΦ`.
+A detailed English derivation is pending.
 -/
 theorem mem_m {h : Matrix (Fin 2) (Fin 2) ℝ} (hd : h.det = 1) {Φ : ℂ → ℂ} (hΦ : Φ ∈ SchC) : rWRm h Φ ∈ SchC :=
   rWR_mem (det_eq hd) hΦ
 
 /- English proof (translation)
-Introduce `h hd Φ _`. Use function extensionality and compare the values at `z`. Use `Pn x _ _ _ _ (det_eq hd) Φ z` as an intermediate fact. Simplify `this` using `[rWRm, Matrix.mul_apply, Fin.sum_univ_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PL_n (x : ℝ) : PL !![1, x; 0, 1] := by
   intro h hd Φ _
@@ -897,7 +889,7 @@ theorem PL_n (x : ℝ) : PL !![1, x; 0, 1] := by
   simpa [rWRm, Matrix.mul_apply, Fin.sum_univ_two] using this
 
 /- English proof (translation)
-Introduce `h hd Φ _`. Use function extensionality and compare the values at `z`. Use `Pm hs _ _ _ _ (det_eq hd) Φ z` as an intermediate fact. Simplify `this` using `[rWRm, Matrix.mul_apply, Fin.sum_univ_two, div_eq_inv_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PL_m {s : ℝ} (hs : s ≠ 0) : PL !![s, 0; 0, s⁻¹] := by
   intro h hd Φ _
@@ -906,13 +898,11 @@ theorem PL_m {s : ℝ} (hs : s ≠ 0) : PL !![s, 0; 0, s⁻¹] := by
   simpa [rWRm, Matrix.mul_apply, Fin.sum_univ_two, div_eq_inv_mul] using this
 
 /- English proof (translation)
-Introduce `h hd Φ hΦ`. Use function extensionality and compare the values at `z`. Establish `hdd` using `det_eq hd`. Establish `e : rWRm (!![0, 1; -1, 0] * h) Φ z = rWR (h 1 0) (h 1 1) (-h 0 0) (-h 0 1) Φ z`. Simplify using `[rWRm, Matrix.mul_apply, Fin.sum_univ_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : rWRm !![0, 1; -1, 0] (rWRm h Φ) z = rWR 0 1 (-1) 0 (rWR (h 0 0) (h 0 1) (h 1 0) (h 1 1) Φ) z`. Simplify using `[rWRm]`. Rewrite using `[e, e2]`. Distinguish the cases in `hc : h 1 0 = 0`. Rewrite `hdd`, the goal using `[hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Pw0 (by simpa using hdd) Φ z`. Distinguish the cases in `ha : h 0 0 = 0`. Rewrite `hdd`, the goal using `[ha]`. Simplify using `only [neg_zero]`. Conclude with `Pw1 (by linarith) hΦ z`.
-
-Conclude with `Pw2 ha hc hdd hΦ z`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PL_w : PL !![0, 1; -1, 0] := by
   intro h hd Φ hΦ
@@ -933,22 +923,22 @@ theorem PL_w : PL !![0, 1; -1, 0] := by
     · exact Pw2 ha hc hdd hΦ z
 
 /- English proof (translation)
-Introduce `h hh Φ hΦ`. Rewrite using `[Matrix.mul_assoc, hg _ (by rw [Matrix.det_mul, hd, hh, one_mul]) Φ hΦ, hg' h hh Φ hΦ, hg g' hd _ (mem_m hh hΦ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem PL_mul {g g' : Matrix (Fin 2) (Fin 2) ℝ} (hg : PL g) (hg' : PL g') (hd : g'.det = 1) : PL (g * g') := by
   intro h hh Φ hΦ
   rw [Matrix.mul_assoc, hg _ (by rw [Matrix.det_mul, hd, hh, one_mul]) Φ hΦ, hg' h hh Φ hΦ, hg g' hd _ (mem_m hh hΦ)]
 
 /- English proof (translation)
-Establish `hdd` using `det_eq hd`. Distinguish the cases in `hc : g 1 0 = 0`. Establish `ha : g 0 0 ≠ 0`. Introduce `ha`. Rewrite `hdd` using `[ha, hc]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hdd`. Establish `hg : g = !![1, g 0 0 * g 0 1; 0, 1] * !![g 0 0, 0; 0, (g 0 0)⁻¹]`. Rewrite `hdd` using `[hc]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hg]`. Conclude with `PL_mul (PL_n _) (PL_m ha) (by simp [Matrix.det_fin_two, ha])`.
+Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : g = !![1, g 0 0 / g 1 0; 0, 1] * (!![-(g 1 0)⁻¹, 0; 0, (-(g 1 0)⁻¹)⁻¹] * (!![0, 1; -1, 0] * !![1, g 1 1 / g 1 0; 0, 1]))`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> linarith`. Establish `hs : -(g 1 0)⁻¹ ≠ 0` using `neg_ne_zero.2 (inv_ne_zero hc)`. Rewrite using `[hg]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `PL_mul (PL_n _) (PL_mul (PL_m hs) (PL_mul PL_w (PL_n _) (by simp [Matrix.det_fin_two])) ?_) ?_` and prove the remaining obligations. Simplify using `[Matrix.det_fin_two]`. Simplify using `[Matrix.det_fin_two]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem PL_all {g : Matrix (Fin 2) (Fin 2) ℝ} (hd : g.det = 1) : PL g := by
   have hdd := det_eq hd
@@ -977,7 +967,7 @@ theorem PL_all {g : Matrix (Fin 2) (Fin 2) ℝ} (hd : g.det = 1) : PL g := by
       field_simp
 
 /- English proof (translation)
-Introduce `g h hg hh Φ hΦ` and use `⟨mem_m hh hΦ, PL_all hg h hh Φ hΦ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem rwrrep : RWRREP := fun g h hg hh Φ hΦ => ⟨mem_m hh hΦ, PL_all hg h hh Φ hΦ⟩
 

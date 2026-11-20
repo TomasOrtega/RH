@@ -7,7 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.BlockIndex
 
 /- English proof (translation)
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun c => if hc : c < h then d ⟨c, hc⟩ else 0) a]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [dif_pos (b.2.trans a.2)] <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_castLE_eq_range {h : ℕ} (d : Fin h → ℕ) (a : Fin h) :
     ∑ b : Fin a, d (Fin.castLE a.2.le b) =
@@ -17,7 +17,7 @@ theorem sum_castLE_eq_range {h : ℕ} (d : Fin h → ℕ) (a : Fin h) :
   rw [dif_pos (b.2.trans a.2)] <;> rfl
 
 /- English proof (translation)
-Establish `hsub : Finset.range ((b : ℕ) + 1) ⊆ Finset.range a` using `fun x hx => Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx) (show (b : ℕ) + 1 ≤ a from hab))`. Establish `key` using `Finset.sum_le_sum_of_subset (f := fun c => if hc : c < h then d ⟨c, hc⟩ else 0) hsub`. Rewrite `key` using `[Finset.sum_range_succ, dif_pos b.2]`. Rewrite using `[GlobalTheory.CompanionTheory.BlockIndex.sum_castLE_eq_range d b, GlobalTheory.CompanionTheory.BlockIndex.sum_castLE_eq_range d a]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partial_sum_succ_le {h : ℕ} (d : Fin h → ℕ) {a b : Fin h} (hab : b < a) :
     ∑ c : Fin b, d (Fin.castLE b.2.le c) + d b ≤ ∑ c : Fin a, d (Fin.castLE a.2.le c) := by
@@ -29,7 +29,7 @@ theorem partial_sum_succ_le {h : ℕ} (d : Fin h → ℕ) {a b : Fin h} (hab : b
   exact key
 
 /- English proof (translation)
-Rewrite using `[Fin.lt_def, GlobalTheory.SmGL.stdBlocks_val, GlobalTheory.SmGL.stdBlocks_val]`. Establish `h1` using `GlobalTheory.CompanionTheory.BlockIndex.partial_sum_succ_le d hab`. Establish `h2` using `y.2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem stdBlocks_lt_of_lt {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) {a b : Fin h} (hab : b < a)
     (x : Fin (d a)) (y : Fin (d b)) : stdBlocks d hd ⟨b, y⟩ < stdBlocks d hd ⟨a, x⟩ := by
@@ -40,9 +40,9 @@ theorem stdBlocks_lt_of_lt {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
   omega
 
 /- English proof (translation)
-Introduce `h N d hd i j hij`. Assume the negation of the conclusion as `H`. Rewrite `H` using `[not_le]`. Establish `H' : ((GlobalTheory.SmGL.stdBlocks d hd).symm j).1 < ((GlobalTheory.SmGL.stdBlocks d hd).symm i).1` using `H`. Establish `key` using `GlobalTheory.CompanionTheory.BlockIndex.stdBlocks_lt_of_lt d hd H' ((GlobalTheory.SmGL.stdBlocks d hd).symm i).2 ((GlobalTheory.SmGL.stdBlocks d hd).symm j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Sigma.eta, Equiv.apply_symm_apply] at key`. Conclude with `absurd hij (not_le.mpr key)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockIdx_monotone : ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N), Monotone (Zl.JC.blockIdx d hd) := by
   intro h N d hd i j hij

@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.SiegEighth
 
 /- English proof (translation)
-Establish `hS : (W + W.transpose).transpose = W + W.transpose`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_transpose, add_comm]`. Establish `h1 : (W + W.transpose) * (W + W.transpose).adjugate = 1` using `by rw [Matrix.mul_adjugate, hW.2, one_smul]`. Establish `h2 : (W + W.transpose).adjugate * (W + W.transpose) = 1` using `by rw [Matrix.adjugate_mul, hW.2, one_smul]`. Set `e : (Fin 8 → (Fin h ⊕ Fin h → ℤ)) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))` to `{ twistSnd (W + W.transpose).adjugate with invFun := twistSnd (W + W.transpose) left_inv := twistSnd_twistSnd _ _ h1 right_inv := twistSnd_twistSnd _ _ h2 }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨(sharpReindex h).trans e, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_omegaStd_single h i j]`. Conclude with `sum_omegaStd_twistSnd _ _ hS h1 _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSharpBasis (h : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W) :
     ∃ bas : (Fin (2 * (8 * h)) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ)), IsSharpBasis W bas := by
@@ -38,13 +38,11 @@ theorem exists_isSharpBasis (h : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE
   exact sum_omegaStd_twistSnd _ _ hS h1 _ _
 
 /- English proof (translation)
-Introduce `g n _ hn hno F W hW`. Establish `hn0 : n ≠ 0` using `by omega`. Set `b` to `cycBase hn0`. Set `c : SiegPre g n (b.ζ : cycAway n) (𝟙 F.X ≫ F.s)` to `GlobalTheory.LowChart.siegPull F.univ (𝟙 F.X) (𝟙 F.X ≫ F.s) rfl`. Establish `hc : c.Principal` using `GlobalTheory.LowChart.principal_siegPull F.univ _ _ rfl F.princ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : SmoothOfRelativeDimension g c.A.hom` using `SiegSharpCover.smoothDim c (by omega) b.ζ.isUnit b.unit`. Establish `hpow : b.ζ ^ n = 1` using `Units.ext ((Units.val_pow_eq_pow_val _ _).trans (Subtype.ext (Complex.isPrimitiveRoot_exp n hn0).pow_eq_one))`. Take `⟨L₁, L₂⟩` from `abelianSchemeLaws_all`. Use `haveI : IsDedekindDomain (cycAway n) := GlobalTheory.CycAwayReg.isDedekindDomain_cycAway _`. Use `haveI : IsLocallyNoetherian (Sp (cycAway n)) := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := F.smooth`. Use `haveI : Smooth F.s := SmoothOfRelativeDimension.smooth (g * (g + 1) / 2) F.s`. Use `haveI : IsLocallyNoetherian F.X := LocallyOfFiniteType.isLocallyNoetherian F.s`. Take `⟨bas, hb⟩` from `exists_isSharpBasis g W hW`. Take `⟨a, w, w', hw, hw', hs⟩` from `EighthPowerFactor.exists_matrices hW.2`.
-
-Take `⟨t, ⟨pr, hpr, hu, hL, -, -⟩, hp⟩` from `GlobalTheory.exists_isSharp_and_prim L₁ L₂ Moduli.cube_of_isLB g (8 * g) W _ a w w' bas hW hb hw hw' hs n (cycAway n) b F.X (𝟙 F.X ≫ F.s) c hpow hno hc hd`. Take `⟨r, hr⟩` from `t.rigid`. Conclude with `⟨t.pol, r, rfl, ⟨c, GlobalTheory.LowChart.siegPB_siegPull F.univ _ _ rfl, pr, hpr, hu, hL⟩, hr, t.act w, t.act w', t.hom w, t.hom w', hp.1, hp.2.2, hp.2.1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_polAV_sharpOver : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∃ (P : PolAV F.X) (rig : LB.Gen (P.L.pull (eSec P.A))), P.g = 8 * g ∧ GlobalTheory.Poinc.SharpOver F W P (𝟙 F.X) ∧ rig.IsGen ∧ (letI := P.isAb.comm; HypS P.A P.L) := by
   intro g n _ hn hno F W hW

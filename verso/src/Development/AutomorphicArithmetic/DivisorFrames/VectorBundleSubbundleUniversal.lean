@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsFrameOfBije
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory.VB
 
 /- English proof (translation)
-Introduce `x` and use `by have : Nonempty X := ⟨x⟩ obtain ⟨_, s, hs⟩ := hu obtain rfl : n = a + s := hE.rank_unique (VBExt.isVB_and_cls_det_of_shortExact X (.mk u (cokernel.π _) (cokernel.condition _)) a s { exact := ShortComplex.exact_cokernel _ } hA hs).1 rw [Nat.add_sub_cancel_left] exact hs x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem rk_cokernel {X : Scheme.{0}} {A E : X.Modules} {u : A ⟶ E} {a n : ℕ} (hu : IsSubbundle u)
     (hA : IsVB A a) (hE : IsVB E n) : IsVB (cokernel u) (n - a) := fun x => by
@@ -18,19 +18,19 @@ private theorem rk_cokernel {X : Scheme.{0}} {A E : X.Modules} {u : A ⟶ E} {a 
 
 open GlobalTheory.LineQuot in
 /- English proof (translation)
-Introduce `H B E n m₁ m₂ hE h₁ h₂`. Take `⟨G₂, γ₂, P₂, j₂, hP₂, hm₂, hc₂, U₂⟩` from `H B E m₂ (n - m₂) (by rwa [Nat.add_sub_cancel' h₂])`. Take `⟨G₁, γ₁, S, s, hS, hm₁, hc₁, U₁⟩` from `H G₂ P₂ m₁ (m₂ - m₁) (by rwa [Nat.add_sub_cancel' h₁])`. Establish `hsub` using `SubPull.isSubbundle_pullback _ _ γ₁ _ _ j₂ m₂ hP₂ ⟨hm₂, _, hc₂⟩`. Use `hsub.mono` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcok : IsVB (cokernel ((Scheme.Modules.pullback γ₁).map j₂ ≫ (cmp γ₁ γ₂ rfl).hom.app E)) (n - m₂)` using `((hc₂.pullback γ₁).of_iso (PreservesCokernel.iso (Scheme.Modules.pullback γ₁) j₂)).of_iso (cokernelCompIsIso _ _).symm`. Use `⟨G₁, γ₁ ≫ γ₂, S, (Scheme.Modules.pullback γ₁).obj P₂, s, (Scheme.Modules.pullback γ₁).map j₂ ≫ (cmp γ₁ γ₂ rfl).hom.app E, hS, hP₂.pullback γ₁, ⟨hm₁, _, hc₁⟩, ⟨inferInstance, _, hcok⟩, hcok, ?_⟩` and prove the remaining obligations. Introduce `T g S' P' s' j' hs' hj' hS' hP'`. Use `hs'.mono` as an intermediate fact. Use `hj'.mono` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB (g' : T ⟶ G₁) (g₂ : T ⟶ G₂) (w₂ : g' ≫ γ₁ = g₂) (w₁ : g₂ ≫ γ₂ = g) (w : g' ≫ γ₁ ≫ γ₂ = g) : (Scheme.Modules.pullback g').map ((Scheme.Modules.pullback γ₁).map j₂ ≫ (cmp γ₁ γ₂ rfl).hom.app E) ≫ (cmp g' (γ₁ ≫ γ₂) w).hom.app E = (cmp g' γ₁ w₂).hom.app P₂ ≫ (Scheme.Modules.pullbac …`. Simplify using `only [Functor.map_comp, Category.assoc]`. Rewrite using `[cmp_assoc g' γ₁ γ₂ rfl w w₂ w₁, cmp_naturality_assoc]`. Take `⟨g₂, ⟨w₁, φ₂, hφ₂⟩, hu₂⟩` from `U₂ T g P' j' inferInstance (rk_cokernel hj' hP' (hE.pullback g))`. Take `⟨g₁, ⟨w₂, φ₁, hφ₁⟩, hu₁⟩` from `U₁ T g₂ S' (s' ≫ φ₂.inv) inferInstance ((rk_cokernel hs' hS' hP').of_iso (cokernelCompIsIso _ _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hφ₁`, `hφ₂` using `[← cmp_hom_app]`. Establish `w : g₁ ≫ γ₁ ≫ γ₂ = g` using `by rw [← Category.assoc, w₂, w₁]`. Use `⟨g₁, ⟨w, φ₁, (cmp g₁ γ₁ w₂).app P₂ ≪≫ φ₂, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← cmp_hom_app, hB g₁ g₂ w₂ w₁ w, ← hφ₂]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Iso.trans_hom, Iso.app_hom]`. Rewrite using `[← reassoc_of% hφ₁]`. Simplify using the standard rewrite rules. Introduce and unpack `g' ⟨w', eS, eP, heP, heS⟩`. Rewrite `heP` using `[← cmp_hom_app]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `w₂' : g' ≫ γ₁ = g₂`. Establish `w₁'` using `(Category.assoc ..).trans w'`. Use `hu₂ _ ⟨w₁', ((cmp g' γ₁ rfl).app P₂).symm ≪≫ eP, ?_⟩` and prove the remaining obligations. Rewrite using `[← cmp_hom_app, Iso.trans_hom, Category.assoc, heP, hB g' _ rfl w₁' w']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hu₁ _ ⟨w₂', eS, ?_⟩` and prove the remaining obligations. Establish `he : eP.hom = (cmp g' γ₁ w₂').hom.app P₂ ≫ φ₂.hom`. Rewrite using `[← cancel_mono j', heP, hB g' _ w₂' w₁ w', Category.assoc, hφ₂]`. Rewrite using `[← cmp_hom_app, reassoc_of% heS, he]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.vector_bundle_subbundle_universal :
     (∀ (B : Scheme.{0}) (E : B.Modules) (m r : ℕ), GlobalTheory.VB.IsVB E (m + r) →

@@ -10,7 +10,7 @@ open GlobalTheory.TopLevelInv
 open GlobalTheory.FunObj.FiniteSupport
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TopLevelInv.phase_eq_of_lastMove | exact GlobalTheory.TopLevelInv.phase_eq_of_lastMove | (intros; apply GlobalTheory.TopLevelInv.phase_eq_of_lastMove <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.fourierJacobiPhase_lastInnerVertex_invariant : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (j : ℕ) (hB : j + 2 = Γ.m) (κ : GL (Fin (topRank Γ (j + 1))) k) (x x' : ColArgs Γ) (e e' : Vars Γ),
     (∀ i, i ≠ j → i ≠ j + 1 → x' i = x i) → x' (j + 1) = x (j + 1) * κ.val →

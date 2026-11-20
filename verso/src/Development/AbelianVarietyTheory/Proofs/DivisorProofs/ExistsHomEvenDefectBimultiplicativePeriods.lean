@@ -17,7 +17,7 @@ namespace GlobalTheory.DefectHom
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `h : D.c (0 + 0) = D.c 0 * D.c 0` using `D.c_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_zero (D : DegPre R) : D.c 0 = 1 := by
   have h : D.c (0 + 0) = D.c 0 * D.c 0 := D.c_add 0 0
@@ -25,7 +25,7 @@ theorem c_zero (D : DegPre R) : D.c 0 = 1 := by
   exact (mul_eq_left.1 h.symm)
 
 /- English proof (translation)
-Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Establish `h : D.c (-a + a) = D.c (-a) * D.c a` using `D.c_add _ _`. Rewrite `h` using `[neg_add_cancel, c_zero]`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_neg (D : DegPre R) (a : D.X) : D.c (-a) = (D.c a)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
@@ -34,33 +34,33 @@ theorem c_neg (D : DegPre R) (a : D.X) : D.c (-a) = (D.c a)⁻¹ := by
   exact h.symm
 
 /- English proof (translation)
-Rewrite using `[c_neg, GrpObj.comp_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_neg (D : DegPre R) (a : D.X) : toUnit (TK R) ≫ D.c (-a) = (toUnit (TK R) ≫ D.c a)⁻¹ := by
   rw [c_neg, GrpObj.comp_inv]
 
 /- English proof (translation)
-Rewrite using `[D.c_add, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_add (D : DegPre R) (a b : D.X) :
     toUnit (TK R) ≫ D.c (a + b) = (toUnit (TK R) ≫ D.c a) * (toUnit (TK R) ≫ D.c b) := by
   rw [D.c_add, ← MonObj.comp_mul]; rfl
 
 /- English proof (translation)
-Use `show (toUnit (TK R) ≫ D.c (-a)).left = _`. Rewrite using `[pt_neg, Hom.inv_def, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_pt_left (D : DegPre R) (a : D.X) : ptK (D.c (-a)) = D.xK a ≫ (ι[D.P.A]).left := by
   show (toUnit (TK R) ≫ D.c (-a)).left = _
   rw [pt_neg, Hom.inv_def, Over.comp_left]
 
 /- English proof (translation)
-Set `t` to `LB.mulGen D.P.L _ _ _ _ (D.psi (-χ)) (LB.pullGen D.P.L _ _ D.sym (D.xK χ))`. Establish `ht : t.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen _) (DVR.pullGen_isGen _ _ _ _ D.sym_gen _)`. Establish `hf : FormEq (Sum.elim (fun _ : PUnit => ptK (D.c (-χ))) (fun k => D.xK χ ≫ ![(ι[D.P.A]).left, 𝟙 D.P.A.left] k)) (Sum.elim (fun _ => -1) ![1, -1]) (fun _ : PUnit => ptK (D.c χ)) (fun _ => -1)`. Introduce `U _ h`. Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_two, neg_pt_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id]`. Simplify using `only [zpow_neg, zpow_one]`. Use `group`. Take `⟨c, hc, H⟩` from `DVR.TWM.exists_ratio (F := FractionRing R) D.P.isLB t ht (D.psi χ) (D.psi_gen χ) hf`. Use `⟨Units.mk0 c hc, fun z J hJ => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `H _ (𝟙 _) z J hJ`. Establish `e₁ : val t (𝟙 _) z J = val (D.psi (-χ)) (𝟙 _) z J * val D.sym (D.xK χ) z J`. Use `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_pull hJ _ _ _).trans ?_))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Rewrite using `[← e₁]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext (e.trans ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← gs_unit _ z ⊤ trivial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_defect (D : DegPre R) (χ : D.X) : ∃ k : (FractionRing R)ˣ, ∀ (z : (TK R).left) J, Good D.P.L z J →
     val (D.psi (-χ)) (𝟙 _) z J * val D.sym (D.xK χ) z J =
@@ -86,7 +86,7 @@ theorem exists_defect (D : DegPre R) (χ : D.X) : ∃ k : (FractionRing R)ˣ, �
   rfl
 
 /- English proof (translation)
-Establish `hs : Subsingleton (TK R).left` using `(inferInstance : Subsingleton (PrimeSpectrum (FractionRing R)))`. Establish `e : unitOn u = unitOn v` using `unit_ext fun x _ => by rw [Subsingleton.elim x z]; exact h`. Conclude with `Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).1 e`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_unitOn_inj {u v : (FractionRing R)ˣ} (z : (TK R).left)
     (h : gm (𝟙 (TK R).left) z ⊤ (unitOn u) = gm (𝟙 (TK R).left) z ⊤ (unitOn v)) : u = v := by
@@ -96,7 +96,7 @@ theorem gm_unitOn_inj {u v : (FractionRing R)ˣ} (z : (TK R).left)
     (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).1 e
 
 /- English proof (translation)
-The claim follows from `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`.
+A detailed English derivation is pending.
 -/
 theorem val_tau (D : DegPre R) (a b : D.X) {z : (TK R).left} {J} (hJ : Good D.P.L z J) :
     val (D.tau a b) (𝟙 _) z J = val (D.psi (a + b)) (𝟙 _) z J * (val (D.psi a) (𝟙 _) z J)⁻¹ *
@@ -105,17 +105,17 @@ theorem val_tau (D : DegPre R) (a b : D.X) {z : (TK R).left} {J} (hJ : Good D.P.
     ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))
 
 /- English proof (translation)
-Introduce `R _ _ _ D hB`. Use `choose h hh using exists_defect D`. Use `⟨h, fun a b => ?_, hh⟩` and prove the remaining obligations. Set `z : (TK R).left` to `(⊥ : PrimeSpectrum (FractionRing R))`. Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt D.P.isLB z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `gm_unitOn_inj z ?_` and prove the remaining obligations. Establish `g1` using `GlobalTheory.T.symmetry_secondDifference_eq_cubical_ratio R D (TK R) (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b) z J hJ`. Establish `g2` using `GlobalTheory.T.tau_period_val_neg_cubical_ratio R D hB a b z J hJ`. Rewrite `g1` using `[← pt_neg, ← pt_neg, ← pt_add]`. Rewrite `g2` using `[val_tau D a b hJ, val_tau D (-a) (-b) hJ, ← neg_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₀` using `hh (a + b) z J hJ`. Establish `e₁` using `hh a z J hJ`. Establish `e₂` using `hh b z J hJ`. Express the relevant statement in the definitionally equal form `val D.sym (D.xK (a + b)) z J * _ = val D.sym (D.xK a) z J * val D.sym (D.xK b) z J * _ at g1`. Rewrite using `[show unitOn (h a * h b) = unitOn (h a) * unitOn (h b) from map_mul _ _ _, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `val D.sym (D.xK (a + b)) z J = s₀ at g1 e₀`. Generalize the expression as in `val D.sym (D.xK a) z J = s₁ at g1 e₁`. Generalize the expression as in `val D.sym (D.xK b) z J = s₂ at g1 e₂`. Generalize the expression as in `gm (𝟙 (TK R).left) z ⊤ (unitOn (h (a + b))) = k₀ at e₀ ⊢`. Generalize the expression as in `gm (𝟙 (TK R).left) z ⊤ (unitOn (h a)) = k₁ at e₁ ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `gm (𝟙 (TK R).left) z ⊤ (unitOn (h b)) = k₂ at e₂ ⊢`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : ((TK R).left.presheaf.stalk z)ˣ} (e : p = q) => congrArg Additive.ofMul e`. Establish `a₀` using `E e₀`. Establish `a₁` using `E e₁`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `E e₂`. Establish `b₁` using `E g1`. Establish `b₂` using `E g2`. Simplify using `only [ofMul_mul, ofMul_inv] at a₀ a₁ a₂ b₁ b₂ ⊢`. Take the linear combination `(norm := abel) -a₀ + a₁ + a₂ + b₁ - b₂`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_evenDefect_hom : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (D : DegPre R),
     D.TauBimult → ∃ h : D.X → (FractionRing R)ˣ, (∀ a b, h (a + b) = h a * h b) ∧ EvenDefect D h := by

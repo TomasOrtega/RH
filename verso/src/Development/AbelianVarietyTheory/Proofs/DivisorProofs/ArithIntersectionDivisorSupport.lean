@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CxUnfold
 
 /- English proof (translation)
-Set `e : A ≃ₐ[F] A` to `{ toFun := fun z => (u : A) * z * ((u⁻¹ : Aˣ) : A) invFun := fun z => ((u⁻¹ : Aˣ) : A) * z * u left_inv := fun z => by simp [mul_assoc] right_inv := fun z => by simp [mul_assoc] map_mul' := fun z w => by simp [mul_assoc] map_add' := fun z w => by simp [mul_add, add_mul] commutes' …`. Rewrite using `[← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one] }`. Conclude with `minpoly.algEquiv_eq e x`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minpoly_units_conj {F A : Type*} [Field F] [Ring A] [Algebra F A] (u : Aˣ) (x : A) :
     minpoly F ((u : A) * x * ((u⁻¹ : Aˣ) : A)) = minpoly F x := by
@@ -28,9 +28,9 @@ theorem minpoly_units_conj {F A : Type*} [Field F] [Ring A] [Algebra F A] (u : A
   exact minpoly.algEquiv_eq e x
 
 /- English proof (translation)
-Unfold `FixL`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd⟩`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[Matrix.mulVec_smul, smul_comm d c z]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ hc hd`. Introduce and unpack `⟨d, hd⟩`. Conclude with `⟨d, by rw [Matrix.mulVec_smul, hd, smul_comm]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixL_smul_iff {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (y : grp G β)
     (z : Fin G.n → ℂ) (c : ℂ) (hc : c ≠ 0) : FixL G v β y (c • z) ↔ FixL G v β y z := by
@@ -48,11 +48,11 @@ end GlobalTheory.CxUnfold
 namespace GlobalTheory.CxUnfold
 
 /- English proof (translation)
-Use `set w := Projectivization.rep (l : Projectivization ℂ (Fin G.n → ℂ))`. Establish `hw : w ≠ 0` using `Projectivization.rep_nonzero _`. Establish `hMw : (toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `toV_injective G v β η` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, h0, Matrix.mulVec_zero]`. Establish `hl : ((η • l : PLv G v β) : Projectivization ℂ (Fin G.n → ℂ)) = Projectivization.mk ℂ ((toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w) hMw` using `by show Projectivization.map _ _ (l : Projectivization ℂ (Fin G.n → ℂ)) = _ conv_lhs => rw [← Projectivization.mk_rep (l : Projectivization ℂ (Fin G.n → ℂ))]`. Rewrite using `[Projectivization.map_mk]`. Simplify using `only [Matrix.toLin'_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hl]`. Establish `h2` using `Projectivization.mk_rep (Projectivization.mk ℂ ((toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w) hMw)`. Take `⟨c, hc⟩` from `(Projectivization.mk_eq_mk_iff ℂ _ _ (Projectivization.rep_nonzero _) hMw).1 h2`. Conclude with `⟨c, c.ne_zero, by rw [← hc, Units.smul_def]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rep_smul {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (η : grp G β)
     (l : PLv G v β) : ∃ c : ℂ, c ≠ 0 ∧

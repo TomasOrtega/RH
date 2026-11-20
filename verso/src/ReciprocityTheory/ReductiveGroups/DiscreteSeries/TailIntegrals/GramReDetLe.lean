@@ -12,11 +12,11 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B ReciprocityTheory
 variable {n m : ℕ}
 
 /- English proof (translation)
-Rewrite `hw` using `[Fintype.not_linearIndependent_iff]`. Take `⟨g, hg, i, hi⟩` from `hw`. Apply `Matrix.exists_mulVec_eq_zero_iff.mp` to reduce the goal to its premises. Use `⟨g, fun h => hi (congrFun h i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [mulVec, dotProduct, GS.gram, Matrix.of_apply, Pi.zero_apply]`. Establish `hs : ∑ b, inner ℂ (w a) (w b) * g b = inner ℂ (w a) (∑ b, g b • w b)`. Rewrite using `[inner_sum]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, hg, inner_zero_right]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_det_zero (w : Fin m → EuclideanSpace ℂ (Fin n)) (hw : ¬ LinearIndependent ℂ w) :
     (GS.gram w).det = 0 := by
@@ -35,13 +35,11 @@ theorem gram_det_zero (w : Fin m → EuclideanSpace ℂ (Fin n)) (hw : ¬ Linear
   rw [hs, hg, inner_zero_right]
 
 /- English proof (translation)
-Distinguish the cases in `hv : LinearIndependent ℂ v`. Take `⟨u, τ, hu, hτ, -, hwe, -⟩` from `gs_fac v hv`. Rewrite using `[det_gram_of v u τ hu hτ hwe, Complex.ofReal_re]`. Establish `hτj : ∀ j, ‖τ j j‖ ≤ M`. Introduce `j`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : inner ℂ (u j) (v j) = τ j j`. Rewrite using `[hwe j]`. Conclude with `hu.inner_right_fintype (fun b => τ b j) j`. Rewrite using `[← h1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[gram_det_zero v hv, Complex.zero_re]`. Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `pow_nonneg (sq_nonneg M) m`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_re_det_le (v : Fin m → EuclideanSpace ℂ (Fin n)) (M : ℝ) (hM : ∀ j, ‖v j‖ ≤ M) :
     (GS.gram v).det.re ≤ (M ^ 2) ^ m := by
@@ -82,7 +80,7 @@ theorem linA_apply {k r : ℕ} (A : Mat k r) (x : EuclideanSpace ℂ (Fin (2 * r
     linA A x = WithLp.toLp 2 (A *ᵥ WithLp.ofLp x) := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [GS.gram, Matrix.of_apply, Matrix.one_apply]`. Conclude with `orthonormal_iff_ite.mp hu a b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_one {m n : ℕ} (u : Fin m → EuclideanSpace ℂ (Fin n)) (hu : Orthonormal ℂ u) : GS.gram u = 1 := by
   ext a b
@@ -90,17 +88,17 @@ theorem gram_one {m n : ℕ} (u : Fin m → EuclideanSpace ℂ (Fin n)) (hu : Or
   exact orthonormal_iff_ite.mp hu a b
 
 /- English proof (translation)
-Rewrite using `[ga_eq, ga_eq]`. Use `set w : Fin (l.val + 1) → EuclideanSpace ℂ (Fin (2 * r + k + 1)) := fun a => WithLp.toLp 2 (Y (Fin.castLE (by omega) a)) with hwdef`. Establish `hAw : (fun a : Fin (l.val + 1) => (WithLp.toLp 2 (A *ᵥ Y (Fin.castLE (by omega) a)) : EuclideanSpace ℂ (Fin (2 * r + k + 1)))) = fun a => linA A (w a)`. Use function extensionality and compare the values at `a`. Rewrite using `[linA_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAw]`. Distinguish the cases in `hw : LinearIndependent ℂ w`. Take `⟨u, τ, hu, hτ, -, hwe, -⟩` from `gs_fac w hw`. Establish `h1 : (fun a => linA A (w a)) = fun a => ∑ b, τ b a • linA A (u b)`. Use function extensionality and compare the values at `a`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwe a, map_sum]`. Simplify using `only [map_smul]`. Establish `hgw : (GS.gram w).det = (τᴴ).det * τ.det`. Rewrite using `[show w = (fun a => ∑ b, τ b a • u b) from funext hwe, gram_comb, gram_one u hu, Matrix.mul_one, det_mul]`. Establish `hv : ∀ b, ‖linA A (u b)‖ ≤ gN A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Use `norm_mulVec_le A (WithLp.ofLp (u b))` as an intermediate fact. Rewrite `this` using `[WithLp.toLp_ofLp, hu.1 b, mul_one]`. Rewrite using `[linA_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `gram_re_det_le (fun b => linA A (u b)) (gN A) hv`. Establish `hX` using `det_gram_of w u τ hu hτ hwe`. Rewrite using `[h1, gram_comb, det_mul, det_mul]`. Establish `e1 : (τᴴ).det * (GS.gram fun b => linA A (u b)).det * τ.det = (GS.gram w).det * (GS.gram fun b => linA A (u b)).det` using `by rw [hgw]; ring`. Rewrite using `[e1, hX, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn : (0 : ℝ) ≤ ∏ j, ‖τ j j‖ ^ 2` using `Finset.prod_nonneg fun j _ => by positivity`. Rewrite using `[Complex.ofReal_re, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hle hnn`. Establish `hw' : ¬ LinearIndependent ℂ (fun a => linA A (w a))` using `fun h => hw (h.of_comp (linA A))`. Rewrite using `[gram_det_zero _ hw', gram_det_zero _ hw, Complex.zero_re, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ga_mul_le (k r : ℕ) (A : Mat k r) (l : Fin (r + 1)) (Y : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) :
     Ga k r l (fun a => A *ᵥ Y a) ≤ (gN A ^ 2) ^ (l.val + 1) * Ga k r l Y := by

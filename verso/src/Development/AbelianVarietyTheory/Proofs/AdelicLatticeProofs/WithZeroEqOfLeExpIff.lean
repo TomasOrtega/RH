@@ -6,15 +6,13 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Establish `key : ∀ a b : ℤᵐ⁰, b ≠ 0 → b ≤ 1 → (∀ n : ℕ, b ≤ WithZero.exp (-(n : ℤ)) → a ≤ WithZero.exp (-(n : ℤ))) → a ≤ b`. Introduce `a b hb0 hb h`. Establish `e : b = WithZero.exp (WithZero.log b)` using `(WithZero.exp_log hb0).symm`. Establish `hl : WithZero.log b ≤ 0`. Rewrite `hb` using `[e, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb`. Establish `e2 : WithZero.log b = -(((-WithZero.log b).toNat : ℕ) : ℤ)` using `by omega`. Rewrite `e` using `[e2]`. Rewrite using `[e]`. Conclude with `h _ e.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key0 : ∀ a : ℤᵐ⁰, (∀ n : ℕ, a ≤ WithZero.exp (-(n : ℤ))) → a = 0`. Introduce `a h`. Assume the negation of the conclusion as `ha0`. Establish `e : a = WithZero.exp (WithZero.log a)` using `(WithZero.exp_log ha0).symm`. Use `h ((-WithZero.log a).toNat + 1)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[e, WithZero.exp_le_exp, WithZero.log_exp]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hb0 : b = 0`. Substitute `hb0` using the available equality. Conclude with `key0 a fun n => (h n).2 (by simp)`.
-
-Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Conclude with `(key0 b fun n => (h n).1 (by simp)).symm`. Conclude with `le_antisymm (key a b hb0 hb fun n => (h n).2) (key b a ha0 ha fun n => (h n).1)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem withZero_eq_of_le_exp_iff {a b : ℤᵐ⁰} (ha : a ≤ 1) (hb : b ≤ 1)
     (h : ∀ n : ℕ, a ≤ WithZero.exp (-(n : ℤ)) ↔ b ≤ WithZero.exp (-(n : ℤ))) : a = b := by
@@ -46,13 +44,11 @@ theorem withZero_eq_of_le_exp_iff {a b : ℤᵐ⁰} (ha : a ≤ 1) (hb : b ≤ 1
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Establish `hmem : ∀ n : ℕ, x ∈ w'.asIdeal ^ n ↔ e x ∈ w.asIdeal ^ n`. Introduce `n`. Rewrite using `[h, ← Ideal.map_symm, ← Ideal.map_pow, Ideal.map_symm, Ideal.mem_comap]`. Establish `hle : ∀ n : ℕ, w'.intValuation x ≤ WithZero.exp (-(n : ℤ)) ↔ w.intValuation (e x) ≤ WithZero.exp (-(n : ℤ))` using `fun n => by`. Rewrite using `[HeightOneSpectrum.intValuation_le_pow_iff_mem, HeightOneSpectrum.intValuation_le_pow_iff_mem, hmem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hex : e x ≠ 0` using `fun h0 => hx (e.injective (h0.trans (map_zero e).symm))`. Rewrite `hle`, the goal using `[HeightOneSpectrum.intValuation_if_neg _ hx, HeightOneSpectrum.intValuation_if_neg _ hex]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set a := (Associates.mk w'.asIdeal).count (Associates.mk (Ideal.span {x})).factors`. Use `set b := (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {e x})).factors`. Establish `h1` using `(hle a).1 le_rfl`. Establish `h2` using `(hle b).2 le_rfl`. Simplify using `only [WithZero.exp_le_exp, neg_le_neg_iff, Nat.cast_le] at h1 h2`.
-
-Rewrite using `[le_antisymm h1 h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QNorm.intValuation_of_eq_comap {R : Type} [CommRing R] [IsDedekindDomain R]
     (e : R ≃+* R) (w w' : HeightOneSpectrum R) (h : w'.asIdeal = w.asIdeal.comap e) (x : R) :
@@ -80,7 +76,7 @@ theorem _root_.GlobalTheory.QNorm.intValuation_of_eq_comap {R : Type} [CommRing 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) y`. Establish `hσ : ∀ r : 𝓞 E, σ (algebraMap (𝓞 E) E r) = algebraMap (𝓞 E) E (RingOfIntegers.mapRingEquiv σ r)` using `fun r => rfl`. Rewrite using `[map_div₀ σ, hσ, hσ, map_div₀, map_div₀]`. Simplify using `only [HeightOneSpectrum.valuation_of_algebraMap]`. Rewrite using `[_root_.GlobalTheory.QNorm.intValuation_of_eq_comap _ w w' h a, _root_.GlobalTheory.QNorm.intValuation_of_eq_comap _ w w' h b]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.QNorm.valuation_of_eq_comap {E : Type} [Field E] [NumberField E] (σ : E ≃+* E)
     (w w' : HeightOneSpectrum (𝓞 E))
@@ -97,7 +93,7 @@ theorem _root_.GlobalTheory.QNorm.valuation_of_eq_comap {E : Type} [Field E] [Nu
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Use `ext`. Rewrite using `[show ((algebraMap (𝓞 F) (𝓞 E) n : 𝓞 E) : E) = algebraMap F E (n : F) from rfl]`. Conclude with `σ.commutes _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ringOfIntegers_mapRingEquiv_algebraMap {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (n : 𝓞 F) :
@@ -110,11 +106,11 @@ private lemma ringOfIntegers_mapRingEquiv_algebraMap {F E : Type} [Field F] [Num
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `hq.span (x : E)`. Establish `hprod : (x : E) * σ (x : E) = algebraMap F E (a ^ 2 - b ^ 2 * δ)`. Rewrite using `[hab]`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes, hq.conj]`. Rewrite using `[map_sub, map_mul, map_pow, map_pow, ← hq.sq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hint : IsIntegral ℤ (algebraMap F E (a ^ 2 - b ^ 2 * δ))`. Rewrite using `[← hprod]`. Conclude with `(RingOfIntegers.isIntegral_coe x).mul (RingOfIntegers.isIntegral_coe (RingOfIntegers.mapRingEquiv (σ : E ≃+* E) x))`. Use `⟨⟨a ^ 2 - b ^ 2 * δ, (isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ F E) (algebraMap F E).injective).mp hint⟩, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `ext`. Conclude with `hprod.symm`.
+A detailed English derivation is pending.
 -/
 private lemma exists_algebraMap_eq_mul_conj_of_isQuad {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] {δ : F} {θ : E} {σ : E ≃ₐ[F] E}
@@ -138,19 +134,17 @@ private lemma exists_algebraMap_eq_mul_conj_of_isQuad {F E : Type} [Field F] [Nu
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ δ θ σ hq`. Use `set e := RingOfIntegers.mapRingEquiv (σ : E ≃+* E) with he`. Use `⟨fun w => ?_, fun w w' hunder => ?_⟩` and prove the remaining obligations. Use `⟨HeightOneSpectrum.comap (e : 𝓞 E →+* 𝓞 E) e.surjective w, ?_, fun y => _root_.GlobalTheory.QNorm.valuation_of_eq_comap (σ : E ≃+* E) w _ rfl y⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.under_asIdeal, HeightOneSpectrum.under_asIdeal]`. Use extensionality with `n`. Express the relevant statement in the definitionally equal form `e (algebraMap (𝓞 F) (𝓞 E) n) ∈ w.asIdeal ↔ algebraMap (𝓞 F) (𝓞 E) n ∈ w.asIdeal`. Rewrite using `[he, ringOfIntegers_mapRingEquiv_algebraMap]`. Distinguish the cases in `hw : w' = w`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl hw`. Use `right`. Use `_root_.GlobalTheory.QNorm.valuation_of_eq_comap (σ : E ≃+* E) w w' ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1 : ¬ w'.asIdeal ≤ w.asIdeal` using `fun hle => hw (HeightOneSpectrum.ext (w'.isMaximal.eq_of_le w.isPrime.ne_top hle))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ¬ w'.asIdeal ≤ w.asIdeal.comap e` using `fun hle => hne (w'.isMaximal.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) hle)`. Establish `hns : ¬ ((w'.asIdeal : Set (𝓞 E)) ⊆ (w.asIdeal : Set (𝓞 E)) ∪ (w.asIdeal.comap e))` using `fun hs => (Ideal.subset_union.mp hs).elim h1 h2`. Rewrite `hns` using `[Set.not_subset]`. Take `⟨x, hx, hxn⟩` from `hns`. Simplify using `only [Set.mem_union, SetLike.mem_coe, Ideal.mem_comap, not_or] at hxn`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `exists_algebraMap_eq_mul_conj_of_isQuad hq x`. Establish `hnw' : n ∈ (w'.under (𝓞 F)).asIdeal`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 E) n ∈ w'.asIdeal`. Rewrite using `[hn]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Ideal.mul_mem_right _ _ hx`. Rewrite `hnw'` using `[hunder, HeightOneSpectrum.under_asIdeal]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 E) n ∈ w.asIdeal at hnw'`. Rewrite `hnw'` using `[hn]`. Break down `w.isPrime.mem_or_mem hnw' with h | h` into its components or cases.
-
-Conclude with `hxn.1 h`. Conclude with `hxn.2 h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QNorm.conj_places_transitive : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (δ : F) (θ : E) (σ : E ≃ₐ[F] E), _root_.GlobalTheory.QNorm.IsQuad δ θ σ →

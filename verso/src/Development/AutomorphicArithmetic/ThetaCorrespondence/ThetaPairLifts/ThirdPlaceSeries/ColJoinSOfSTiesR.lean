@@ -45,13 +45,13 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
 def spectralRowIsometry (S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt R) (hF : FinX S.Y) : D.what₂.EE ≃ₗᵢ[ℂ] EEC S.X S.G :=
   Classical.choose (S.rowTie hF)
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (S.rowTie hF) F`.
+A detailed English derivation is pending.
 -/
 theorem eHH_sEE_eq_conjHH_isometryOfJoin (S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt R) (hF : FinX S.Y) (F : D.what₂.EE) :
     (S.hI hF).eHH (D.sEE F) = conjHH S.X S.G (_root_.Formalism.L2.SG.JoinSI.spectralRowIsometry S hF F) :=
   Classical.choose_spec (S.rowTie hF) F
 /- English proof (translation)
-Use `ext1 F`. Apply `(conjHH S.X S.G).injective` to reduce the goal to its premises. Rewrite using `[← _root_.Formalism.L2.SG.JoinSI.eHH_sEE_eq_conjHH_isometryOfJoin S hF F, hj F]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometryOfJoin_eq_of_conj_compat (S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt R) (hF : FinX S.Y) (j : D.what₂.EE ≃ₗᵢ[ℂ] EEC S.X S.G)
     (hj : ∀ F, (S.hI hF).eHH (D.sEE F) = conjHH S.X S.G (j F)) : _root_.Formalism.L2.SG.JoinSI.spectralRowIsometry S hF = j := by
@@ -59,7 +59,7 @@ theorem isometryOfJoin_eq_of_conj_compat (S : _root_.Formalism.L2.SG.SpectralTie
   apply (conjHH S.X S.G).injective
   rw [← _root_.Formalism.L2.SG.JoinSI.eHH_sEE_eq_conjHH_isometryOfJoin S hF F, hj F]
 /- English proof (translation)
-The claim follows from `colJoinS_of_pin hF (S.hI hF) S.tr S.into S.bij fun u x => (LinearEquiv.eq_symm_apply (colDict S.X (S.tr u) S.Y.hK (S.into u) (S.bij u))).2 (S.colPin hF u x)`.
+A detailed English derivation is pending.
 -/
 theorem colJoinS_of_spectral_ties_real (S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt R) (hF : FinX S.Y) : ColJoinS hF (S.hI hF) S.tr :=
   colJoinS_of_pin hF (S.hI hF) S.tr S.into S.bij fun u x =>
@@ -93,7 +93,7 @@ variable {R : _root_.Formalism.L2.RecTAlt ex} {S : _root_.Formalism.L2.SG.Spectr
   {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
   {Q : _root_.Formalism.IndefR.IndefiniteRealisation R P Dcf Spf Zscf S Ks}
 /- English proof (translation)
-The claim follows from `twist_of_mk D.what₂.embLL P.A3.A.v0 Q.Rl.hv0 a`.
+A detailed English derivation is pending.
 -/
 theorem embedding_eq_cj_twQ_embLL (Q : _root_.Formalism.IndefR.IndefiniteRealisation R P Dcf Spf Zscf S Ks) (a : D.what₂.LL) :
     P.A3.fam3.base3.v0.embedding a = Formalism.IndefR.Links.cj (twQ P) (D.what₂.embLL a) :=

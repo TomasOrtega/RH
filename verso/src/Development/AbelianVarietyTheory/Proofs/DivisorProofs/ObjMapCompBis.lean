@@ -30,7 +30,7 @@ def comp (m₁ : ObjMap o'' o' g) (m₂ : ObjMap o' o f) : ObjMap o'' o (g ≫ f
   eta y := by rw [← Category.assoc, m₁.eta, Category.assoc, m₂.eta, Category.assoc]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ m₁ m₂` and use `⟨comp m₁ m₂⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem objMap_comp : ∀ {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} [CommRing R]
     {b : GlobalTheory.UPel.HT.Base D R} {N : ℕ} {S S' S'' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {s'' : S'' ⟶ Sp R}

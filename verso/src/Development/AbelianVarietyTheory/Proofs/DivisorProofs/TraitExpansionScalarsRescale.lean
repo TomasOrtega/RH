@@ -23,12 +23,12 @@ noncomputable def gsTop (f : Z ⟶ X) (z : Z) : Γ(X, ⊤) →+* Z.presheaf.stal
   (Z.presheaf.germ (f ⁻¹ᵁ ⊤) z trivial).hom.comp (f.app ⊤).hom
 
 /- English proof (translation)
-The claim follows from `gs_eq f z ⊤ trivial a`.
+A detailed English derivation is pending.
 -/
 theorem gs_top (f : Z ⟶ X) (z : Z) (a : Γ(X, ⊤)) : gs f z ⊤ a = gsTop f z a := gs_eq f z ⊤ trivial a
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun h => h.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Simplify using `only [scal, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem scal_comp {A B : Type} [CommRing A] [CommRing B] {Y : Scheme.{0}} (q : Y ⟶ Sp B) (φ : A →+* B) (r : A) :
     scal q (φ r) = scal (q ≫ spMap φ) r := by
@@ -38,39 +38,39 @@ theorem scal_comp {A B : Type} [CommRing A] [CommRing B] {Y : Scheme.{0}} (q : Y
   rw [e]
 
 /- English proof (translation)
-Simplify using `only [scal, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_mul {A : Type} [CommRing A] {Y : Scheme.{0}} (q : Y ⟶ Sp A) (x y : A) :
     scal q (x * y) = scal q x * scal q y := by simp only [scal, map_mul]
 
 /- English proof (translation)
-Simplify using `only [scal, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_one {A : Type} [CommRing A] {Y : Scheme.{0}} (q : Y ⟶ Sp A) : scal q 1 = 1 := by
   simp only [scal, map_one]
 
 /- English proof (translation)
-The claim follows from `gs_mul f z ⊤ trivial a b`.
+A detailed English derivation is pending.
 -/
 theorem gs_top_mul (f : Z ⟶ X) (z : Z) (a b : Γ(X, ⊤)) : gs f z ⊤ (a * b) = gs f z ⊤ a * gs f z ⊤ b :=
   gs_mul f z ⊤ trivial a b
 
 /- English proof (translation)
-Rewrite using `[gs_top, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_top_one (f : Z ⟶ X) (z : Z) : gs f z ⊤ 1 = 1 := by rw [gs_top, map_one]
 
 /- English proof (translation)
-The claim follows from `gs_pull p q z ⊤ trivial _`.
+A detailed English derivation is pending.
 -/
 theorem gs_scal {A : Type} [CommRing A] {Y : Scheme.{0}} (p : Z ⟶ Y) (q : Y ⟶ Sp A) (z : Z) (r : A) :
     gs p z ⊤ (scal q r) = gs (p ≫ q) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom r) :=
   gs_pull p q z ⊤ trivial _
 
 /- English proof (translation)
-Rewrite using `[scal_comp, scal_comp, gs_scal, gs_scal]`. Establish `e : p ≫ T.G.hom ≫ spMap T.φ = p' ≫ C.A.A.hom ≫ spMap (algebraMap R (FractionRing R))`. Establish `h1 : T.β ≫ C.G.hom = T.G.hom ≫ T.ξ` using `T.cart.1.w`. Establish `h2 : C.α ≫ C.G.hom = C.A.A.hom ≫ C.gp` using `C.α_cart.1.w`. Establish `h3 : C.gp ≫ C.π = spMap (algebraMap R (FractionRing R))` using `C.gp_π`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← T.ξ_π, ← h3, ← Category.assoc T.G.hom, ← h1, ← Category.assoc C.A.A.hom, ← h2]`. Simplify using `only [← Category.assoc, h]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_scal_compat {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)}
     {C : LabCover D} {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W)
@@ -86,7 +86,7 @@ theorem gs_scal_compat {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D :
   rw [e]
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem φ r`. Unfold `sval`. Rewrite using `[show (a • s).f (fun k => J (r ≫ φ k)) = resG Y le_top a * s.f (fun k => J (r ≫ φ k)) from GlobalTheory.LB.smul_f a s _,`. Use the proof step `]`. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm a))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sval_smul {Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (a : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -102,21 +102,19 @@ end GlobalTheory.Mum.TraitRescale
 open GlobalTheory.Mum.TraitRescale in
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D C W _ _ _ T k s F a b u c₁ c₂ ha hc₂ hrel hExp`. Take `⟨σ, ⟨σ', f', hcar, hpull, hexp⟩, hagree⟩` from `hExp`. Take `⟨σ'', hcar''⟩` from `GlobalTheory.T.exists_carries_transport_uniformising_iso R D C W T k (u : W) σ'`. Use `⟨σ'', ⟨σ', f', hcar'', hpull, hexp⟩, ?_⟩` and prove the remaining obligations. Establish `hφ2 : T.φ c₂ ≠ 0` using `fun h0 => hc₂ (T.inj (h0.trans (map_zero T.φ).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hrel` using `[mul_zero]`. Conclude with `(mul_ne_zero (mul_ne_zero hφ2 u.ne_zero) ha) hrel`. Use `set c : FractionRing R := algebraMap R (FractionRing R) c₁ / algebraMap R (FractionRing R) c₂ with hc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₂K : algebraMap R (FractionRing R) c₂ ≠ 0` using `fun h0 => hc₂ (IsFractionRing.injective R (FractionRing R) (h0.trans (map_zero _).symm))`. Establish `hcc : c * algebraMap R (FractionRing R) c₂ = algebraMap R (FractionRing R) c₁` using `div_mul_cancel₀ _ hc₂K`. Establish `key : ∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ C.A.A.left), p ≫ T.β = p' ≫ C.α → ∀ z J, Good C.P.L.L z J → gs p z ⊤ (scal T.G.hom b) * sval σ'' p z J = gs p z ⊤ (scal T.G.hom b) * (gs p' z ⊤ (scal C.A.A.hom c) * sval s p' z J)`. Introduce `Z p p' h z J hJ`. Use `choose J' hJ' using fun χ : Z ⟶ T.G.left => exists_chart T.U.LG.isLB (χ z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hcar Z p z J J' hJ hJ'`. Establish `e2` using `hcar'' Z p z J J' hJ hJ'`. Establish `e3` using `hagree Z p p' h z J hJ`. Establish `m : gs p z ⊤ (scal T.G.hom (T.φ c₂)) * gs p z ⊤ (scal T.G.hom (u : W)) * gs p z ⊤ (scal T.G.hom a) = gs p z ⊤ (scal T.G.hom (T.φ c₁)) * gs p z ⊤ (scal T.G.hom b)`. Use `congrArg (fun w => gs p z ⊤ (scal T.G.hom w)) hrel` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `only [scal_mul, gs_top_mul]`. Rewrite `m` using `[gs_scal_compat T p p' h z c₁, gs_scal_compat T p p' h z c₂]`. Establish `hC : gs p' z ⊤ (scal C.A.A.hom c) * gs p' z ⊤ (scal C.A.A.hom (algebraMap R (FractionRing R) c₂)) = gs p' z ⊤ (scal C.A.A.hom (algebraMap R (FractionRing R) c₁))`. Rewrite using `[← hcc, scal_mul, gs_top_mul]`. Establish `hU : IsUnit (gs p' z ⊤ (scal C.A.A.hom (algebraMap R (FractionRing R) c₂)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `Ne.isUnit hc₂K`. Establish `: IsUnit (scal C.A.A.hom (algebraMap R (FractionRing R) c₂))` using `IsUnit.of_mul_eq_one (scal C.A.A.hom ((v⁻¹ : (FractionRing R)ˣ) : FractionRing R)) (by rw [← scal_mul, ← hv, Units.mul_inv, scal_one])`. Rewrite using `[gs_top]`. Conclude with `this.map _`. Establish `e13` using `e1.symm.trans e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e2]`. Apply `hU.mul_right_cancel` to reduce the goal to its premises. Take the linear combination `(gs p z ⊤ (scal T.G.hom (u : W)) * gs p' z ⊤ (scal C.A.A.hom (algebraMap R (FractionRing R) c₂))) * e13 + sval s p' z J * m - (gs p z ⊤ (scal T.G.hom b) * sval s p' z J) * hC`. Introduce `Z p p' h z J hJ`. Rewrite using `[scal_one, gs_top_one, _root_.one_mul, sval_smul C.P.L.L _ s p' z hJ]`.
-
-Distinguish the cases in `hF : IsField R`. Conclude with `GlobalTheory.T.trait_scalar_cancel_of_isField R hB D C W T k σ'' s b c hF hb key Z p p' h z J hJ`. Conclude with `(GlobalTheory.T.isUnit_trait_scalar_genericFibre_nonfield R D C W T Z p p' h hF b hb z).mul_left_cancel (key Z p p' h z J hJ)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.Trait.exp_rescale : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (k : ℕ) (s : SecK C.P.L.L C.α k) (F : IntFam (maximalIdeal R) D.toPre k) (a b : W) (u : Wˣ) (c₁ c₂ : R), a ≠ 0 → c₂ ≠ 0 → T.φ c₂ * (u : W) * a = T.φ c₁ * b → T.Exp a b s F → T.Exp 1 u (scal C.A.A.hom (algebraMap R (FractionRing R) c₁ / algebraMap R (FractionRing R) c₂) • s) F := by
   intro R _ _ _ hB D C W _ _ _ T k s F a b u c₁ c₂ ha hc₂ hrel hExp

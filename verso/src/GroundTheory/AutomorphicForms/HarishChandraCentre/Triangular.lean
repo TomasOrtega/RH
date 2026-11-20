@@ -28,34 +28,34 @@ Both sides reduce to the same expression.
 theorem letters_eq_blocks : letters n = lowL n ++ diagL n ++ upL n := rfl
 
 /- English proof (translation)
-Simplify using `only [allL, List.mem_flatMap, List.mem_map, List.mem_finRange, true_and]`. Conclude with `⟨a.1, a.2, rfl⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_allL (a : Fin n × Fin n) : a ∈ allL n := by
   simp only [allL, List.mem_flatMap, List.mem_map, List.mem_finRange, true_and]
   exact ⟨a.1, a.2, rfl⟩
 
 /- English proof (translation)
-Simplify using `[lowL, mem_allL, IsLower]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_lowL {a : Fin n × Fin n} : a ∈ lowL n ↔ IsLower a := by
   simp [lowL, mem_allL, IsLower]
 
 /- English proof (translation)
-Simplify using `[diagL, mem_allL, IsDiag]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_diagL {a : Fin n × Fin n} : a ∈ diagL n ↔ IsDiag a := by
   simp [diagL, mem_allL, IsDiag]
 
 /- English proof (translation)
-Simplify using `[upL, mem_allL, IsUpper]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_upL {a : Fin n × Fin n} : a ∈ upL n ↔ IsUpper a := by
   simp [upL, mem_allL, IsUpper]
 
 /- English proof (translation)
-Use `nodup_letters (n := n)` as an intermediate fact. Rewrite `this` using `[letters_eq_blocks]`. Simplify using `only [allL, List.nodup_flatMap]`. Use `⟨fun i _ => (List.nodup_finRange n).map fun j j' h => by simpa using h, ?_⟩` and prove the remaining obligations. Use `(List.nodup_finRange n).pairwise_of_forall_ne ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i _ i' _ hii'`. Simplify using `only [Function.onFun, List.disjoint_left, List.mem_map, List.mem_finRange, true_and]`. Introduce and unpack `_ ⟨j, rfl⟩ ⟨j', h⟩`. Conclude with `hii' (congrArg Prod.fst h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nodup_allL : (allL n).Nodup := by
   have := nodup_letters (n := n)
@@ -72,14 +72,14 @@ def blockW (l : List (Fin n × Fin n)) (m : Fin n × Fin n →₀ ℕ) : List (F
   l.flatMap fun a => List.replicate (m a) a
 
 /- English proof (translation)
-Simplify using `[expand, letters_eq_blocks, blockW, List.flatMap_append]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expand_eq_blocks (m : Fin n × Fin n →₀ ℕ) :
     expand m = blockW (lowL n) m ++ blockW (diagL n) m ++ blockW (upL n) m := by
   simp [expand, letters_eq_blocks, blockW, List.flatMap_append]
 
 /- English proof (translation)
-Unfold `blockW`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.flatMap_cons, List.flatMap_cons, h a (List.mem_cons_self ..), ih fun b hb => h b (List.mem_cons_of_mem _ hb)]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockW_congr {l : List (Fin n × Fin n)} {m m' : Fin n × Fin n →₀ ℕ}
     (h : ∀ a ∈ l, m a = m' a) : blockW l m = blockW l m' := by
@@ -91,7 +91,7 @@ theorem blockW_congr {l : List (Fin n × Fin n)} {m m' : Fin n × Fin n →₀ �
       ih fun b hb => h b (List.mem_cons_of_mem _ hb)]
 
 /- English proof (translation)
-Rewrite using `[blockW_congr (m' := 0) (by simpa using h)]`. Simplify using `[blockW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockW_eq_nil {l : List (Fin n × Fin n)} {m : Fin n × Fin n →₀ ℕ}
     (h : ∀ a ∈ l, m a = 0) : blockW l m = [] := by
@@ -99,7 +99,7 @@ theorem blockW_eq_nil {l : List (Fin n × Fin n)} {m : Fin n × Fin n →₀ ℕ
   simp [blockW]
 
 /- English proof (translation)
-Simplify using `only [blockW, List.mem_flatMap, List.mem_replicate] at ha`. Take `⟨b, hb, hne, rfl⟩` from `ha`. Conclude with `⟨hb, hne⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_of_mem_blockW {l : List (Fin n × Fin n)} {m : Fin n × Fin n →₀ ℕ}
     {a : Fin n × Fin n} (ha : a ∈ blockW l m) : a ∈ l ∧ m a ≠ 0 := by
@@ -108,9 +108,9 @@ theorem mem_of_mem_blockW {l : List (Fin n × Fin n)} {m : Fin n × Fin n →₀
   exact ⟨hb, hne⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `: a ∈ blockW l m`. Simplify using `only [blockW, List.mem_flatMap, List.mem_replicate]`. Conclude with `⟨a, ha, hm, rfl⟩`. Rewrite `this` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockW_ne_nil {l : List (Fin n × Fin n)} {m : Fin n × Fin n →₀ ℕ} {a : Fin n × Fin n}
     (ha : a ∈ l) (hm : m a ≠ 0) : blockW l m ≠ [] := by
@@ -122,7 +122,7 @@ theorem blockW_ne_nil {l : List (Fin n × Fin n)} {m : Fin n × Fin n →₀ ℕ
   simp at this
 
 /- English proof (translation)
-Rewrite using `[canon, expand_eq_blocks, word_append, word_append]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem canon_eq_blocks (m : Fin n × Fin n →₀ ℕ) :
     canon m = word (blockW (lowL n) m) * word (blockW (diagL n) m) * word (blockW (upL n) m) := by
@@ -135,9 +135,7 @@ def HasLower (m : Fin n × Fin n →₀ ℕ) : Prop := ∃ a, IsLower a ∧ m a 
 def IsDiagExp (m : Fin n × Fin n →₀ ℕ) : Prop := ∀ a, m a ≠ 0 → IsDiag a
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Simplify using `only [not_or, IsDiagExp, HasUpper, HasLower, not_forall, not_exists, not_and] at h`. Take `⟨⟨a, ha, hd⟩, hu, hl⟩` from `h`. Break down `lt_trichotomy a.1 a.2 with h | h | h` into its components or cases. Conclude with `hu a h ha`.
-
-Conclude with `hd h`. Conclude with `hl a h ha`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isDiagExp_or (m : Fin n × Fin n →₀ ℕ) : IsDiagExp m ∨ HasUpper m ∨ HasLower m := by
   by_contra h
@@ -149,9 +147,9 @@ theorem isDiagExp_or (m : Fin n × Fin n →₀ ℕ) : IsDiagExp m ∨ HasUpper 
   · exact hl a h ha
 
 /- English proof (translation)
-Take `⟨a, ha, hm⟩` from `h`. Introduce `hd`. Use `hd a hm` as an intermediate fact. Simplify using `only [IsUpper, IsDiag] at ha this`. Rewrite `ha` using `[this]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ ha`.
+A detailed English derivation is pending.
 -/
 theorem not_isDiagExp_of_hasUpper {m : Fin n × Fin n →₀ ℕ} (h : HasUpper m) : ¬ IsDiagExp m := by
   obtain ⟨a, ha, hm⟩ := h
@@ -161,9 +159,9 @@ theorem not_isDiagExp_of_hasUpper {m : Fin n × Fin n →₀ ℕ} (h : HasUpper 
   rw [this] at ha; exact lt_irrefl _ ha
 
 /- English proof (translation)
-Take `⟨a, ha, hm⟩` from `h`. Introduce `hd`. Use `hd a hm` as an intermediate fact. Simplify using `only [IsLower, IsDiag] at ha this`. Rewrite `ha` using `[this]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ ha`.
+A detailed English derivation is pending.
 -/
 theorem not_isDiagExp_of_hasLower {m : Fin n × Fin n →₀ ℕ} (h : HasLower m) : ¬ IsDiagExp m := by
   obtain ⟨a, ha, hm⟩ := h
@@ -175,9 +173,9 @@ theorem not_isDiagExp_of_hasLower {m : Fin n × Fin n →₀ ℕ} (h : HasLower 
 def cartanSet (n : ℕ) : Set (U n) := Set.range fun i : Fin n => e (i, i)
 
 /- English proof (translation)
-Establish `h` using `e_mul_sub_mul (i, i) (j, j)`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Both sides reduce to the same expression. Simplify using `only [hij, Ne.symm hij, if_false, sub_self] at h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem e_diag_commute (i j : Fin n) : e (i, i) * e (j, j) = e (j, j) * e (i, i) := by
   have h := e_mul_sub_mul (i, i) (j, j)
@@ -187,7 +185,7 @@ theorem e_diag_commute (i j : Fin n) : e (i, i) * e (j, j) = e (j, j) * e (i, i)
     exact sub_eq_zero.1 h
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `e_diag_commute i j`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cartanSet_commute : ∀ a ∈ cartanSet n, ∀ b ∈ cartanSet n, a * b = b * a := by
   rintro _ ⟨i, rfl⟩ _ ⟨j, rfl⟩
@@ -204,13 +202,13 @@ noncomputable def hcEmb : MvPolynomial (Fin n) ℂ →ₐ[ℂ] U n :=
   (cartanSub n).val.comp (aeval fun i => (⟨e (i, i), Algebra.subset_adjoin (s := cartanSet n) (Set.mem_range_self i)⟩ : cartanSub n))
 
 /- English proof (translation)
-Simplify using `[hcEmb]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem hcEmb_X (i : Fin n) : hcEmb (X i) = e (n := n) (i, i) := by
   simp [hcEmb]
 
 /- English proof (translation)
-Simplify using `only [hcEmb, AlgHom.comp_apply]`. Conclude with `SetLike.coe_mem _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hcEmb_mem_cartanSub (p : MvPolynomial (Fin n) ℂ) : hcEmb p ∈ cartanSub n := by
   simp only [hcEmb, AlgHom.comp_apply]
@@ -225,21 +223,21 @@ Both sides reduce to the same expression.
 @[simp] theorem diagExp_apply (m : Fin n × Fin n →₀ ℕ) (i : Fin n) : diagExp m i = m (i, i) := rfl
 
 /- English proof (translation)
-The claim follows from `Subalgebra.pow_mem _ (Algebra.subset_adjoin (s := cartanSet n) (Set.mem_range_self i)) k`.
+A detailed English derivation is pending.
 -/
 theorem e_pow_mem_cartanSub (i : Fin n) (k : ℕ) : e (n := n) (i, i) ^ k ∈ cartanSub n :=
   Subalgebra.pow_mem _ (Algebra.subset_adjoin (s := cartanSet n) (Set.mem_range_self i)) k
 
 /- English proof (translation)
-Set `g : Fin n × Fin n → cartanSub n` to `fun a => if h : a.1 = a.2 then ⟨e (a.1, a.1), Algebra.subset_adjoin (s := cartanSet n) (Set.mem_range_self a.1)⟩ ^ m a else 1`. Establish `hg : ∀ a ∈ diagL n, ((g a : cartanSub n) : U n) = e a ^ m a`. Introduce `a ha`. Establish `h : a.1 = a.2` using `mem_diagL.1 ha`. Simplify using `only [g, dif_pos h, SubmonoidClass.coe_pow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Conclude with `Prod.ext rfl h`. Establish `hnodup : (diagL n).Nodup` using `nodup_allL.filter _`. Establish `hfin : (diagL n).toFinset = Finset.univ.filter fun a : Fin n × Fin n => a.1 = a.2`. Use extensionality with `a`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[mem_diagL, IsDiag]`. Establish `h1 : word (blockW (diagL n) m) = (((diagL n).map g).prod : cartanSub n)`. Rewrite using `[blockW, word_flatMap_replicate, SubmonoidClass.coe_list_prod, List.map_map]`. Conclude with `congrArg List.prod (List.map_congr_left fun a ha => (hg a ha).symm)`. Establish `h2 : ((diagL n).map g).prod = ∏ i : Fin n, g (i, i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(List.prod_toFinset g hnodup).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hfin, Finset.prod_filter, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by simp [Ne.symm hj]) (by simp)]`. Simplify using `[g]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, hcEmb, AlgHom.comp_apply, aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `only [Subalgebra.coe_val, diagExp_apply, g]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem word_blockW_diagL (m : Fin n × Fin n →₀ ℕ) :
     word (blockW (diagL n) m) = hcEmb (monomial (diagExp m) 1) := by
@@ -270,7 +268,7 @@ theorem word_blockW_diagL (m : Fin n × Fin n →₀ ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[canon_eq_blocks, word_blockW_diagL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem canon_eq_triangular (m : Fin n × Fin n →₀ ℕ) :
     canon m = word (blockW (lowL n) m) * hcEmb (monomial (diagExp m) 1) *
@@ -284,9 +282,9 @@ def nMinusU (n : ℕ) : Submodule ℂ (U n) :=
   Submodule.span ℂ {x | ∃ (u : U n) (a : Fin n × Fin n), IsLower a ∧ e a * u = x}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, a, ha, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨v * u, a, ha, mul_assoc _ _ _⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_nPlusU (v : U n) {x : U n} (hx : x ∈ nPlusU n) : v * x ∈ nPlusU n := by
   induction hx using Submodule.span_induction with
@@ -298,9 +296,9 @@ theorem mul_mem_nPlusU (v : U n) {x : U n} (hx : x ∈ nPlusU n) : v * x ∈ nPl
   | smul r x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, a, ha, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨u * v, a, ha, (mul_assoc _ _ _).symm⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_nMinusU_mul {x : U n} (hx : x ∈ nMinusU n) (v : U n) : x * v ∈ nMinusU n := by
   induction hx using Submodule.span_induction with
@@ -312,7 +310,7 @@ theorem mem_nMinusU_mul {x : U n} (hx : x ∈ nMinusU n) (v : U n) : x * v ∈ n
   | smul r x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Take `⟨a, ha, hm⟩` from `h`. Establish `hne` using `blockW_ne_nil (mem_upL.2 ha) hm`. Rewrite using `[canon_eq_blocks, ← List.dropLast_append_getLast hne, word_append, word_singleton, ← mul_assoc]`. Use `Submodule.subset_span ⟨_, _, ?_, rfl⟩` and prove the remaining obligations. Conclude with `mem_upL.1 (mem_of_mem_blockW (List.getLast_mem hne)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem canon_mem_nPlusU {m : Fin n × Fin n →₀ ℕ} (h : HasUpper m) : canon m ∈ nPlusU n := by
   obtain ⟨a, ha, hm⟩ := h
@@ -322,9 +320,9 @@ theorem canon_mem_nPlusU {m : Fin n × Fin n →₀ ℕ} (h : HasUpper m) : cano
   exact mem_upL.1 (mem_of_mem_blockW (List.getLast_mem hne)).1
 
 /- English proof (translation)
-Take `⟨a, ha, hm⟩` from `h`. Establish `hne` using `blockW_ne_nil (mem_lowL.2 ha) hm`. Take `⟨b, l, hbl⟩` from `List.exists_cons_of_ne_nil hne`. Rewrite using `[canon_eq_blocks, hbl, word_cons, mul_assoc, mul_assoc]`. Use `Submodule.subset_span ⟨_, b, ?_, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: b ∈ blockW (lowL n) m` using `by rw [hbl]; exact List.mem_cons_self ..`. Conclude with `mem_lowL.1 (mem_of_mem_blockW this).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem canon_mem_nMinusU {m : Fin n × Fin n →₀ ℕ} (h : HasLower m) : canon m ∈ nMinusU n := by
   obtain ⟨a, ha, hm⟩ := h
@@ -342,7 +340,7 @@ noncomputable def notLower (m : Fin n × Fin n →₀ ℕ) : Fin n × Fin n →�
   m.filter fun a => ¬ IsLower a
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `ha (hm a (Finsupp.mem_support_iff.2 h))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isUpper_of_mem_support {P : Fin n × Fin n → Prop} {m : Fin n × Fin n →₀ ℕ}
     (hm : ∀ a ∈ m.support, P a) {a : Fin n × Fin n} (ha : ¬ P a) : m a = 0 := by
@@ -350,35 +348,35 @@ theorem isUpper_of_mem_support {P : Fin n × Fin n → Prop} {m : Fin n × Fin n
   exact ha (hm a (Finsupp.mem_support_iff.2 h))
 
 /- English proof (translation)
-Simplify using `only [IsLower, IsUpper] at *`. Conclude with `not_lt.2 h.le`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_upper_of_lower {a : Fin n × Fin n} (h : IsLower a) : ¬ IsUpper a := by
   simp only [IsLower, IsUpper] at *; exact not_lt.2 h.le
 
 /- English proof (translation)
-Simplify using `only [IsDiag, IsUpper] at *`. Rewrite using `[h]`. Conclude with `lt_irrefl _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_upper_of_diag {a : Fin n × Fin n} (h : IsDiag a) : ¬ IsUpper a := by
   simp only [IsDiag, IsUpper] at *; rw [h]; exact lt_irrefl _
 
 /- English proof (translation)
-Simplify using `only [IsLower, IsUpper] at *`. Conclude with `not_lt.2 h.le`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_lower_of_upper {a : Fin n × Fin n} (h : IsUpper a) : ¬ IsLower a := by
   simp only [IsLower, IsUpper] at *; exact not_lt.2 h.le
 
 /- English proof (translation)
-Simplify using `only [IsDiag, IsLower] at *`. Rewrite using `[h]`. Conclude with `lt_irrefl _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_lower_of_diag {a : Fin n × Fin n} (h : IsDiag a) : ¬ IsLower a := by
   simp only [IsDiag, IsLower] at *; rw [h]; exact lt_irrefl _
 
 /- English proof (translation)
-Establish `hlow : ∀ a ∈ lowL n, m' a = 0` using `fun a ha => isUpper_of_mem_support hm' (not_upper_of_lower (mem_lowL.1 ha))`. Establish `hdiag : ∀ a ∈ diagL n, m' a = 0` using `fun a ha => isUpper_of_mem_support hm' (not_upper_of_diag (mem_diagL.1 ha))`. Rewrite using `[canon_eq_blocks m', blockW_eq_nil hlow, blockW_eq_nil hdiag, canon_eq_blocks (notUpper m + m')]`. Simplify using `only [word_nil, one_mul]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congrArg word (blockW_congr fun a ha => ?_)` and prove the remaining obligations. Establish `h` using `mem_lowL.1 ha`. Simplify using `[notUpper, not_upper_of_lower h, hlow a ha]`. Use `congrArg word (blockW_congr fun a ha => ?_)` and prove the remaining obligations. Establish `h` using `mem_diagL.1 ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[notUpper, not_upper_of_diag h, hdiag a ha]`. Use `blockW_congr fun a ha => ?_` and prove the remaining obligations. Establish `h` using `mem_upL.1 ha`. Simplify using `[notUpper, h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem canon_notUpper_add {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m'.support, IsUpper a) :
     word (blockW (lowL n) m) * word (blockW (diagL n) m) * canon m' = canon (notUpper m + m') := by
@@ -400,11 +398,11 @@ theorem canon_notUpper_add {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m
     simp [notUpper, h]
 
 /- English proof (translation)
-Establish `hup : ∀ a ∈ upL n, m' a = 0` using `fun a ha => isUpper_of_mem_support hm' (not_lower_of_upper (mem_upL.1 ha))`. Establish `hdiag : ∀ a ∈ diagL n, m' a = 0` using `fun a ha => isUpper_of_mem_support hm' (not_lower_of_diag (mem_diagL.1 ha))`. Rewrite using `[canon_eq_blocks m', blockW_eq_nil hup, blockW_eq_nil hdiag, canon_eq_blocks (m' + notLower m)]`. Simplify using `only [word_nil, mul_one]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congrArg word (blockW_congr fun a ha => ?_)` and prove the remaining obligations. Establish `h` using `mem_lowL.1 ha`. Simplify using `[notLower, h]`. Use `congrArg word (blockW_congr fun a ha => ?_)` and prove the remaining obligations. Establish `h` using `mem_diagL.1 ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[notLower, not_lower_of_diag h, hdiag a ha]`. Use `blockW_congr fun a ha => ?_` and prove the remaining obligations. Establish `h` using `mem_upL.1 ha`. Simplify using `[notLower, not_lower_of_upper h, hup a ha]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem canon_add_notLower {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m'.support, IsLower a) :
     canon m' * word (blockW (diagL n) m) * word (blockW (upL n) m) = canon (m' + notLower m) := by
@@ -426,7 +424,7 @@ theorem canon_add_notLower {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m
     simp [notLower, not_lower_of_upper h, hup a ha]
 
 /- English proof (translation)
-Establish `: m' ≠ 0` using `by rintro rfl; simp at hdeg`. Take `⟨a, ha⟩` from `Finsupp.ne_iff.1 this`. Use `⟨a, hm' a (Finsupp.mem_support_iff.2 ha), ?_⟩` and prove the remaining obligations. Simplify using `only [Finsupp.add_apply]`. Conclude with `fun h => ha (by simp at ha ⊢; omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasUpper_notUpper_add {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m'.support, IsUpper a)
     (hdeg : 1 ≤ m'.degree) : HasUpper (notUpper m + m') := by
@@ -437,7 +435,7 @@ theorem hasUpper_notUpper_add {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a �
   exact fun h => ha (by simp at ha ⊢; omega)
 
 /- English proof (translation)
-Establish `: m' ≠ 0` using `by rintro rfl; simp at hdeg`. Take `⟨a, ha⟩` from `Finsupp.ne_iff.1 this`. Use `⟨a, hm' a (Finsupp.mem_support_iff.2 ha), ?_⟩` and prove the remaining obligations. Simplify using `only [Finsupp.add_apply]`. Conclude with `fun h => ha (by simp at ha ⊢; omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasLower_add_notLower {m m' : Fin n × Fin n →₀ ℕ} (hm' : ∀ a ∈ m'.support, IsLower a)
     (hdeg : 1 ≤ m'.degree) : HasLower (m' + notLower m) := by
@@ -454,15 +452,13 @@ def spanLower (n : ℕ) : Submodule ℂ (U n) :=
   Submodule.span ℂ {x | ∃ m : Fin n × Fin n →₀ ℕ, HasLower m ∧ canon m = x}
 
 /- English proof (translation)
-Establish `hw : ∀ b ∈ blockW (upL n) m ++ [a], IsUpper b`. Introduce `b hb`. Break down `List.mem_append.1 hb with hb | hb` into its components or cases. Conclude with `mem_upL.1 (mem_of_mem_blockW hb).1`. Rewrite using `[List.mem_singleton.1 hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ha`. Establish `hspan` using `word_mem_canonSpan closed_upper _ hw`. Rewrite `hspan` using `[List.length_append, List.length_singleton, show min 1 ((blockW (upL n) m).length + 1) = 1 by omega]`. Establish `heq : canon m * e a = word (blockW (lowL n) m) * word (blockW (diagL n) m) * word (blockW (upL n) m ++ [a])`. Rewrite using `[canon_eq_blocks, word_append, word_singleton, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Establish `: ∀ y ∈ canonSpan IsUpper 1 ((blockW (upL n) m).length + 1), word (blockW (lowL n) m) * word (blockW (diagL n) m) * y ∈ spanUpper n`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m', hm', h1, -, rfl⟩` from `hx`. Rewrite using `[canon_notUpper_add hm']`. Conclude with `Submodule.subset_span ⟨_, hasUpper_notUpper_add hm' h1, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
-
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`. Conclude with `this _ hspan`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem canon_mul_e_mem_spanUpper (m : Fin n × Fin n →₀ ℕ) {a : Fin n × Fin n} (ha : IsUpper a) :
     canon m * e a ∈ spanUpper n := by
@@ -492,15 +488,13 @@ theorem canon_mul_e_mem_spanUpper (m : Fin n × Fin n →₀ ℕ) {a : Fin n × 
   exact this _ hspan
 
 /- English proof (translation)
-Establish `hw : ∀ b ∈ a :: blockW (lowL n) m, IsLower b`. Introduce `b hb`. Break down `List.mem_cons.1 hb with rfl | hb` into its components or cases. Conclude with `ha`. Conclude with `mem_lowL.1 (mem_of_mem_blockW hb).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hspan` using `word_mem_canonSpan closed_lower _ hw`. Rewrite `hspan` using `[List.length_cons, show min 1 ((blockW (lowL n) m).length + 1) = 1 by omega]`. Rewrite using `[canon_eq_blocks, ← mul_assoc, ← mul_assoc, ← word_cons]`. Establish `: ∀ y ∈ canonSpan IsLower 1 ((blockW (lowL n) m).length + 1), y * word (blockW (diagL n) m) * word (blockW (upL n) m) ∈ spanLower n`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m', hm', h1, -, rfl⟩` from `hx`. Rewrite using `[canon_add_notLower hm']`. Conclude with `Submodule.subset_span ⟨_, hasLower_add_notLower hm' h1, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul, add_mul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [smul_mul_assoc, smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r hx`.
-
-Conclude with `this _ hspan`.
+A detailed English derivation is pending.
 -/
 theorem e_mul_canon_mem_spanLower (m : Fin n × Fin n →₀ ℕ) {a : Fin n × Fin n} (ha : IsLower a) :
     e a * canon m ∈ spanLower n := by
@@ -526,23 +520,23 @@ theorem e_mul_canon_mem_spanLower (m : Fin n × Fin n →₀ ℕ) {a : Fin n × 
   exact this _ hspan
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun _ ⟨_, h, hx⟩ => hx ▸ canon_mem_nPlusU h`.
+A detailed English derivation is pending.
 -/
 theorem spanUpper_le_nPlusU : spanUpper n ≤ nPlusU n :=
   Submodule.span_le.2 fun _ ⟨_, h, hx⟩ => hx ▸ canon_mem_nPlusU h
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun _ ⟨_, h, hx⟩ => hx ▸ canon_mem_nMinusU h`.
+A detailed English derivation is pending.
 -/
 theorem spanLower_le_nMinusU : spanLower n ≤ nMinusU n :=
   Submodule.span_le.2 fun _ ⟨_, h, hx⟩ => hx ▸ canon_mem_nMinusU h
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, a, ha, rfl⟩`. Establish `hu : u ∈ Submodule.span ℂ (Set.range (canon (n` using `n))) := by`. Rewrite using `[span_canon_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨m, rfl⟩ := hx`. Conclude with `canon_mul_e_mem_spanUpper m ha`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r hx`.
+A detailed English derivation is pending.
 -/
 theorem nPlusU_le_spanUpper : nPlusU n ≤ spanUpper n := by
   refine Submodule.span_le.2 ?_
@@ -556,11 +550,11 @@ theorem nPlusU_le_spanUpper : nPlusU n ≤ spanUpper n := by
   | smul r x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, a, ha, rfl⟩`. Establish `hu : u ∈ Submodule.span ℂ (Set.range (canon (n` using `n))) := by`. Rewrite using `[span_canon_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨m, rfl⟩ := hx`. Conclude with `e_mul_canon_mem_spanLower m ha`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`.
+A detailed English derivation is pending.
 -/
 theorem nMinusU_le_spanLower : nMinusU n ≤ spanLower n := by
   refine Submodule.span_le.2 ?_

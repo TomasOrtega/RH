@@ -8,11 +8,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie
 
 /- English proof (translation)
-Introduce `D N X Z hZ hT i hi lam`. Take `⟨ι, j, a, s, hs, u, T, hu, hTs, hEq⟩` from `hT i hi lam`. Use `⟨?_, s, hs⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ s`. Use `hs.2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `h2 : (s : ℤ) ≤ (BlochKatoReduction.Gen.NFun D.R : ℤ) + 1` using `hs.2.2`. Take `⟨Λ, -, hne, hiff⟩` from `GlobalTheory.T.exists_heckeL_eq_toricSum_ne_zero D.R D.host _ (phi D.host) s (Z.kap j a s) (cond0 D.host Z.w0) (Z.lam0 (X.l i) j a) (GlobalTheory.T.isHostDatum_kap_lam0_of_ok D Z hZ (X.l i) j a s h1 h2)`. Establish `hT0 : T ≠ 0` using `by rw [(hiff T).1 hTs]; exact hne`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hEq` using `[h0, map_zero]`. Conclude with `mul_ne_zero hu ((map_ne_zero ι).2 hT0) hEq.symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_th_empty_ne_zero : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (Z : LamDat D), Z.Ok → IsLamTie0 X Z → ∀ i, X.NonzeroIndexPlace i → ∀ lam : X.abelian₂ i, (∑ δ, X.th i ∅ lam δ) ≠ 0 ∧ ∃ s : ℤ, BlochKatoReduction.Gen.SOk X i lam s := by
   intro D N X Z hZ hT i hi lam

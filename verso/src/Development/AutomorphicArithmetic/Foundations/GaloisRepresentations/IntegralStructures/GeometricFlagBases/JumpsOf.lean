@@ -12,9 +12,9 @@ open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a dd U ρ w Q hQ hJ P AI hT A hA O _ _ _ Bw hBw τ LL' τ' hi lam J hl hJm`. Take `⟨J', h1, h2⟩` from `hJ P AI hT A hA O Bw hBw τ LL' τ' hi`. Establish `e : J = (GlobalTheory.RoadWGeo.wtJumps lam).val` using `Multiset.map_injective Int.cast_injective (hJm.trans (GlobalTheory.RoadWGeo.wtJumps_val lam).symm)`. Use `⟨J', h1, fun j hj => h2 j (hQ _ (GlobalTheory.CongL.LimAtLU.overPl_of_induced ι hA hBw hi) lam hl j ?_)⟩` and prove the remaining obligations. Rewrite `hj` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hj`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.jumpsOf :
     UpperTheory.Gal.Int.Geo.JumpsOf := by

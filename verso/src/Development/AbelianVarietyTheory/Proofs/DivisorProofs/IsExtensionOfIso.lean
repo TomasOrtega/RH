@@ -17,9 +17,9 @@ variable {X : Scheme.{0}} {O : Type} [CommRing O] {k : Type} [Field k] [Algebra 
   {κ : Type} {τ : κ → (O →+* k)}
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `zero => simp only [act, map_zero]`. Rewrite using `[zero_comp, comp_zero]`. Consider the case `tmul c a => rw [act_tensorAct_tmul, act_tensorAct_tmul, Linear.smul_comp, Linear.comp_smul, h a]`. Consider the case `add x y hx hy`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Simplify using `only [act, map_add] at hx hy ⊢`. Rewrite using `[Preadditive.add_comp, Preadditive.comp_add, hx, hy]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensorAct_comp {F G : X.Modules} {ρ : O →+* End F} {ρ' : O →+* End G} {φ : F ⟶ G}
     (h : IsEquivariant ρ ρ' φ) (x : TensorProduct ℤ k O) :
@@ -35,7 +35,7 @@ variable [DecidableEq κ] (hτ : IsSplitBy τ)
 include hτ
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (eigenι ρ' (scal X (τ j))), Category.assoc, eigenMap_ι, ← Category.assoc, IsSplitBy.proj_ι, Category.assoc, IsSplitBy.proj_ι, tensorAct_comp h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_eigenMap {F G : X.Modules} {ρ : O →+* End F} {ρ' : O →+* End G} {φ : F ⟶ G}
     (h : IsEquivariant ρ ρ' φ) (j : κ) :
@@ -44,7 +44,7 @@ theorem proj_eigenMap {F G : X.Modules} {ρ : O →+* End F} {ρ' : O →+* End 
     IsSplitBy.proj_ι, Category.assoc, IsSplitBy.proj_ι, tensorAct_comp h]
 
 /- English proof (translation)
-The claim follows from `epi_of_epi_fac (hτ.ι_proj ρ j)`.
+A detailed English derivation is pending.
 -/
 theorem epi_proj {F : X.Modules} (ρ : O →+* End F) (j : κ) : Epi (hτ.proj ρ j) :=
   epi_of_epi_fac (hτ.ι_proj ρ j)
@@ -52,11 +52,11 @@ theorem epi_proj {F : X.Modules} (ρ : O →+* End F) (j : κ) : Epi (hτ.proj �
 omit [DecidableEq κ] in
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `hτ.exists_eq σ`. Use `hS.mono_f` as an intermediate fact. Use `hS.epi_g` as an intermediate fact. Use `epi_proj hτ ρE j` as an intermediate fact. Set `ι : ShortComplex.mk _ _ w' ⟶ ShortComplex.mk f g w` to `{ τ₁ := eigenι _ _, τ₂ := eigenι _ _, τ₃ := eigenι _ _ comm₁₂ := (eigenMap_ι _ hf).symm, comm₂₃ := (eigenMap_ι _ hg).symm }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `π : ShortComplex.mk f g w ⟶ ShortComplex.mk _ _ w'` to `{ τ₁ := hτ.proj ρA j, τ₂ := hτ.proj ρB j, τ₃ := hτ.proj ρE j comm₁₂ := proj_eigenMap hτ hf j, comm₂₃ := proj_eigenMap hτ hg j }`. Establish `hιπ : ι ≫ π = 𝟙 _`. Apply the tactic sequence `ext <;> simp [ι, π]`. Use `ShortComplex.ShortExact.mk' ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[ShortComplex.exact_iff_isZero_homology, IsZero.iff_id_eq_zero, ← ShortComplex.homologyMap_id, ← hιπ, ShortComplex.homologyMap_comp, (ShortComplex.exact_iff_isZero_homology _).1 hS.exact |>.eq_zero_of_tgt (ShortComplex.homologyMap ι), zero_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mono_of_mono_fac (eigenMap_ι _ hf)`. Conclude with `epi_of_epi_fac (proj_eigenMap hτ hg j)`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_eigen [Fintype κ] {A B E : X.Modules} {ρA : O →+* End A} {ρB : O →+* End B}
     {ρE : O →+* End E} {f : A ⟶ B} {g : B ⟶ E} (hf : IsEquivariant ρA ρB f)
@@ -87,7 +87,7 @@ theorem shortExact_eigen [Fintype κ] {A B E : X.Modules} {ρA : O →+* End A} 
 end Eigen
 
 /- English proof (translation)
-Use `⟨α.hom ≫ f, g ≫ β.hom, by simp [reassoc_of% w], ShortComplex.shortExact_of_iso ?_ hS⟩` and prove the remaining obligations. Conclude with `ShortComplex.isoMk α.symm (Iso.refl _) β (by simp) (by simp)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isExtension_of_iso {X : Scheme.{0}} {A A' H B B' : X.Modules} (α : A ≅ A') (β : B' ≅ B)
     {f : A' ⟶ H} {g : H ⟶ B'} {w : f ≫ g = 0} (hS : (ShortComplex.mk f g w).ShortExact) :
@@ -100,19 +100,17 @@ end GlobalTheory.CurveRootGeometry.EigenSeq
 namespace GlobalTheory.CurveRootGeometry.EigenSeq
 
 /- English proof (translation)
-Introduce `q _ k _ _ _ O _ hs c hc C _ _ _ G _ _ i hD`. Take `⟨κ, _, τ, hτ⟩` from `hs`. Take `⟨D, g, ρ, a, b, u, v, w₁, w₂, hω, hDv, hab, huv, ea, eb, eu, ev⟩` from `hD`. Establish `h0` using `natCast_eq_zero C q k`. Establish `hL : IsVB (Lie G) g` using `hω.dual`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cc (σ : O →+* k) : (σ.comp c).comp c = σ` using `RingHom.ext fun x => congrArg σ (hc x)`. Establish `vbL (σ : O →+* k) : ∃ r, IsVB (lieSub i (scal C σ)) r`. Take `⟨j, rfl⟩` from `hτ.exists_eq σ`. Conclude with `⟨_, GlobalTheory.VB.isVB_of_retract C _ _ (eigenι _ _) (hτ.proj (lieAct i) j) g (hτ.ι_proj _ j) hL⟩`. Establish `vbH (σ : O →+* k) : ∃ r, IsVB (eigen ρ (scal C σ)) r`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨j, rfl⟩` from `hτ.exists_eq σ`. Conclude with `⟨_, GlobalTheory.VB.isVB_of_retract C _ _ (eigenι _ _) (hτ.proj ρ j) (2 * g) (hτ.ι_proj _ j) hDv⟩`. Use `choose rL hrL using vbL`. Use `choose rH hrH using vbH`. Use `⟨fun σ => eigen ρ (scal C σ), rL, rH, D, g, hrL, hrH, fun σ => ?_, fun σ => ?_, hL, hDv, ?_, ⟨u, huv.mono_f⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩` from `hτ.exists_eq σ`. Conclude with `isExtension_of_iso (omegaSubIsoOfSplit i hτ hω j).symm (eigenConjIso (lieAct i) (scal C (τ j)) hc) (shortExact_eigen hτ ea eb w₁ hab (τ j) (by`. Rewrite using `[← cancel_mono (eigenι _ _)]`. Simplify using `[w₁]))`. Take `⟨j, rfl⟩` from `hτ.exists_eq σ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hτ.isIso_frobEigenHom q h0 ((lieAct i).comp c) j` as an intermediate fact. Use `hτ.isIso_frobEigenHom q h0 (omegaAct i) j` as an intermediate fact. Conclude with `isExtension_of_iso ((frobPull q h0).mapIso (eigenConjIso (lieAct i) (scal C (τ j)) hc).symm ≪≫ asIso (frobEigenHom q h0 ((lieAct i).comp c) (τ j))) ((asIso (frobEigenHom q h0 (omegaAct i) (τ j))).symm ≪≫ (frobPull q h0).mapIso (omegaSubIsoOfSplit i hτ hω j)) (shortExact_eigen hτ …`. Rewrite using `[← cancel_mono (eigenι _ _)]`. Simplify using `[w₂]))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isExtension_of_iso (omegaIsoDualLie hω).symm (Iso.refl _) hab`. Establish `: Finite (O →+* k)` using `Finite.of_surjective τ hτ.exists_eq`. Establish `: HasBiproduct fun j => eigen (lieAct i) (scal C (τ j))` using `HasBiproduct.of_hasCoproduct _`. Set `e : κ ≃ (O →+* k)` to `Equiv.ofBijective (fun j => (τ j).comp c) ⟨fun j j' h => hτ.injective (by`. Rewrite using `[← cc (τ j), ← cc (τ j')]`.
-
-Conclude with `congrArg (fun σ : O →+* k => σ.comp c) h),`. Use `fun σ => (hτ.exists_eq (σ.comp c)).imp fun j h => by show (τ j).comp c = σ`. Rewrite using `[h, cc]⟩`. Conclude with `⟨hτ.decompose (lieAct i) ≪≫ biproduct.isoCoproduct _ ≪≫ Sigma.whiskerEquiv e fun j => eqToIso (by show lieSub i (scal C (((τ j).comp c).comp c)) = eigen (lieAct i) (scal C (τ j))`. Rewrite using `[cc])⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSeq_of_hasDieu : ∀ (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k q] (O : Type) [CommRing O], Splits O k →
   ∀ (c : O →+* O), Function.Involutive c → ∀ (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] [IsIntegral C], IsSmoothProjCurve k C →

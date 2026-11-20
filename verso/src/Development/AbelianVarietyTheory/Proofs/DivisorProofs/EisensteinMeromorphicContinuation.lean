@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.ConeSmallCT
 
 /- English proof (translation)
-The claim follows from `tendsto_nhds_unique (hf.tendsto.mono_left nhdsWithin_le_nhds) ((hh.tendsto.mono_left nhdsWithin_le_nhds).congr' (he.mono fun _ hz => hz.symm))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_continuousAt_of_eventuallyEq_nhdsNE {f h : ℂ → ℂ} {s : ℂ} (hf : ContinuousAt f s)
     (hh : ContinuousAt h s) (he : ∀ᶠ z in 𝓝[≠] s, f z = h z) : f s = h s :=
@@ -22,7 +22,7 @@ theorem eq_of_continuousAt_of_eventuallyEq_nhdsNE {f h : ℂ → ℂ} {s : ℂ} 
     ((hh.tendsto.mono_left nhdsWithin_le_nhds).congr' (he.mono fun _ hz => hz.symm))
 
 /- English proof (translation)
-Use `Filter.Eventually.and (nhdsWithin_le_nhds (Metric.isOpen_ball.mem_nhds hs)) ?_` and prove the remaining obligations. Distinguish the cases in `h : s = s₀`. Rewrite using `[← h]`. Conclude with `eventually_mem_nhdsWithin`. Conclude with `(eventually_ne_nhds h).filter_mono nhdsWithin_le_nhds`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mem_ball_ne {s₀ s : ℂ} {r : ℝ} (hs : s ∈ Metric.ball s₀ r) :
     ∀ᶠ z in 𝓝[≠] s, z ∈ Metric.ball s₀ r ∧ z ≠ s₀ := by
@@ -32,31 +32,27 @@ theorem eventually_mem_ball_ne {s₀ s : ℂ} {r : ℝ} (hs : s ∈ Metric.ball 
   · exact (eventually_ne_nhds h).filter_mono nhdsWithin_le_nhds
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hE`. Establish `hball : ∀ (s₀ : ℂ) (U : Set ℂ), U ∈ 𝓝 s₀ → ∃ r > 0, Metric.ball s₀ r ⊆ U ∧ ∀ s ∈ Metric.ball s₀ r, s ≠ s₀ → Measurable (Eis s)`. Introduce `s₀ U hU`. Establish `hh` using `(eventually_nhdsWithin_iff.1 (hmeas s₀)).and (show ∀ᶠ x in 𝓝 s₀, x ∈ U from hU)`. Take `⟨r, hr, hr'⟩` from `Metric.eventually_nhds_iff_ball.1 hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r, hr, fun s hs => (hr' s hs).2, fun s hs hne => (hr' s hs).1 hne⟩`. Establish `hinvB : ∀ (s₀ : ℂ) (r : ℝ) (k : ℕ) (H : ℂ → UA σ J → ℂ), (∀ s ∈ Metric.ball s₀ r, s ≠ s₀ → ∀ g, H s g = (s - s₀) ^ k * Eis s g) → (∀ g, DifferentiableOn ℂ (H · g) (Metric.ball s₀ r)) → ∀ s ∈ Metric.ball s₀ r, ∀ γ ∈ ratU σ J, ∀ g, H s (γ * g) = H s g`. Introduce `s₀ r k H hH hd s hs γ hγ g`. Establish `hc : ∀ g, ContinuousAt (H · g) s` using `fun g => ((hd g).differentiableAt (Metric.isOpen_ball.mem_nhds hs)).continuousAt`. Use `eq_of_continuousAt_of_eventuallyEq_nhdsNE (hc (γ * g)) (hc g) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [eventually_mem_ball_ne hs, hinv s γ hγ g] with z hz hz'`. Rewrite using `[hH z hz.1 hz.2, hH z hz.1 hz.2, hz']`. Use `⟨fun s₀ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, U, Hol, C, N, hU, hHol, hd, hb⟩` from `h1 s₀`. Take `⟨r, hr, hrU, hrm⟩` from `hball s₀ U hU`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHb : ∀ s ∈ Metric.ball s₀ r, s ≠ s₀ → ∀ g, Hol s g = (s - s₀) ^ k * Eis s g` using `fun s hs => hHol s (hrU hs)`. Establish `hdb : ∀ g, DifferentiableOn ℂ (Hol · g) (Metric.ball s₀ r)` using `fun g => (hd g).mono hrU`. Establish `hi` using `hinvB s₀ r k Hol hHb hdb`. Establish `hm : ∀ s ∈ Metric.ball s₀ r, s ≠ s₀ → Measurable (Hol s)`. Introduce `s hs hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Hol s = fun g => (s - s₀) ^ k * Eis s g` using `funext (hHb s hs hne)`. Rewrite using `[e]`. Conclude with `(hrm s hs hne).const_mul _`. Use `⟨k, r, Hol, max C 0, N, hr, hHb, hdb, fun s hs g => GlobalTheory.ThKOrthVInt.norm_le_qht_of_le_ht (g := Hol s) (hi s hs) (hb s (hrU hs)) g, fun s hs => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : s = s₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `swap`. Conclude with `hm s hs hne`. Rewrite using `[hne]`. Establish `hs0 : s₀ ∈ Metric.ball s₀ r` using `Metric.mem_ball_self hr`. Set `t : ℕ → ℂ` to `fun m => s₀ + ((r / 2 * (1 / ((m : ℝ) + 1)) : ℝ) : ℂ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpos : ∀ m : ℕ, 0 < r / 2 * (1 / ((m : ℝ) + 1))` using `fun m => by positivity`. Establish `ht_ball : ∀ m, t m ∈ Metric.ball s₀ r`. Introduce `m`. Establish `hm1 : (1 : ℝ) ≤ (m : ℝ) + 1` using `by have := m.cast_nonneg (α := ℝ); linarith`. Establish `hle : 1 / ((m : ℝ) + 1) ≤ 1` using `by rw [div_le_one (by positivity)]; exact hm1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Simplify using `only [t, add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hpos m)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `ht_ne : ∀ m, t m ≠ s₀`. Introduce `m h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : ((r / 2 * (1 / ((m : ℝ) + 1)) : ℝ) : ℂ) = 0`. Simplify `h` using `[t]`. Conclude with `(hpos m).ne' (Complex.ofReal_eq_zero.1 h')`. Establish `ht_lim : Tendsto t atTop (𝓝 s₀)`. Establish `h0 : Tendsto (fun m : ℕ => r / 2 * (1 / ((m : ℝ) + 1))) atTop (𝓝 0)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using tendsto_one_div_add_atTop_nhds_zero_nat.const_mul (r / 2)`. Establish `h3 : Tendsto t atTop (𝓝 (s₀ + ((0 : ℝ) : ℂ)))` using `tendsto_const_nhds.add ((Complex.continuous_ofReal.tendsto 0).comp h0)`. Simplify using `using h3`. Use `measurable_of_tendsto_metrizable (f := fun m => Hol (t m)) (fun m => hm _ (ht_ball m) (ht_ne m)) ?_` and prove the remaining obligations. Rewrite using `[tendsto_pi_nhds]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Conclude with `(((hdb g).differentiableAt (Metric.isOpen_ball.mem_nhds hs0)).continuousAt.tendsto).comp ht_lim`. Take `⟨U, hU, C, N, hU'⟩` from `h2`. Take `⟨r, hr, hrU, hrm⟩` from `hball _ U hU`. Establish `hdb : ∀ g, DifferentiableOn ℂ (Eis · g) (Metric.ball (-((((b + 2 : ℕ) : ℂ) - 1) / 2)) r)` using `fun g => (hU' g).1.mono hrU`.
-
-Establish `hi` using `hinvB _ r 0 Eis (fun s _ _ g => by simp) hdb`. Use `⟨r, max C 0, N, hr, hdb, fun s hs g => GlobalTheory.ThKOrthVInt.norm_le_qht_of_le_ht (g := Eis s) (hi s hs) (fun h => (hU' h).2.1 s (hrU hs)) g, fun s hs => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : s = -((((b + 2 : ℕ) : ℂ) - 1) / 2)`. Establish `e : Eis s = fun _ => 1` using `funext fun g => by rw [hne]; exact (hU' g).2.2`. Rewrite using `[e]`.
-
-Conclude with `measurable_const`. Conclude with `hrm s hs hne`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eisGood_qht_measurable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (b : ℕ) (Eis : ℂ → UA σ J → ℂ) (hE : EisGood b Eis)

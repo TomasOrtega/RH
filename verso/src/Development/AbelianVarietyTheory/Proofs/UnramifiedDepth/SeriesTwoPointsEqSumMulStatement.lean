@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.series_two_points_eq_sum_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FSeriesTwoPointsEqSumMul.lean&line=141#L141)
 -/

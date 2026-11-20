@@ -14,7 +14,7 @@ namespace PositivityTheory.RSHS.LocalComponentTwist
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `CuspSub.IsLocComp.twist hσ χ`.
+A detailed English derivation is pending.
 -/
 theorem isLocComp_twist {a : ℕ} (π : CuspSub E a) (χ : HChar E) {w : HeightOneSpectrum (𝓞 E)}
     {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} (hσ : π.IsLocComp w σ) :

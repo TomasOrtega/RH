@@ -11,11 +11,11 @@ open scoped ComplexOrder MatrixOrder
 variable {n k r : ℕ}
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ Y` using `hY.posSemidef.nonneg`. Establish `h1 : (CFC.sqrt Y).PosSemidef` using `(CFC.sqrt_nonneg Y).posSemidef`. Establish `h2 : Y = (CFC.sqrt Y)ᴴ * CFC.sqrt Y` using `by rw [h1.1.eq, CFC.sqrt_mul_sqrt_self Y h0]`. Take `⟨S, hS⟩ : ∃ S : Matrix (Fin k) (Fin k) ℝ, Y = Sᴴ * S` from `⟨_, h2⟩`. Establish `h3 : Y.map Complex.ofReal = (S.map Complex.ofReal)ᴴ * S.map Complex.ofReal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hS]`. Use extensionality with `i j`. Simplify using `[mul_apply]`. Establish `h4 : (Y.map Complex.ofReal).PosSemidef` using `by rw [h3]; exact posSemidef_conjTranspose_mul_self _`. Use `h4.posDef_iff_det_ne_zero.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5` using `Complex.ofRealHom.map_det Y`. Rewrite `h5` using `[RingHom.mapMatrix_apply]`. Establish `h6 : (Y.map Complex.ofReal).det = (Y.det : ℂ)` using `h5.symm`. Rewrite using `[h6]`. Conclude with `hY.det_pos.ne'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_ofReal {Y : Matrix (Fin k) (Fin k) ℝ} (hY : Y.PosDef) : (Y.map Complex.ofReal).PosDef := by
   have h0 : 0 ≤ Y := hY.posSemidef.nonneg
@@ -35,7 +35,7 @@ theorem posDef_ofReal {Y : Matrix (Fin k) (Fin k) ℝ} (hY : Y.PosDef) : (Y.map 
   exact_mod_cast hY.det_pos.ne'
 
 /- English proof (translation)
-Use `symm`. Use `inv_eq_left_inv ?_` and prove the remaining obligations. Establish `h` using `Matrix.map_mul (L := Y⁻¹) (M := Y) (f := Complex.ofRealHom)`. Rewrite `h` using `[nonsing_inv_mul _ (IsUnit.mk0 _ hY.det_pos.ne'), Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h.symm`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_map_ofReal {Y : Matrix (Fin k) (Fin k) ℝ} (hY : Y.PosDef) :
     Y⁻¹.map Complex.ofReal = (Y.map Complex.ofReal)⁻¹ := by
@@ -46,7 +46,7 @@ theorem inv_map_ofReal {Y : Matrix (Fin k) (Fin k) ℝ} (hY : Y.PosDef) :
   exact h.symm
 
 /- English proof (translation)
-Simplify using `only [det_apply']`. Conclude with `Finset.analyticAt_fun_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => h _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_det {m : ℕ} {A : (Fin n → ℂ) → Matrix (Fin m) (Fin m) ℂ} {t : Fin n → ℂ}
     (h : ∀ p q, AnalyticAt ℂ (fun u => A u p q) t) : AnalyticAt ℂ (fun u => (A u).det) t := by
@@ -54,9 +54,7 @@ theorem analyticAt_det {m : ℕ} {A : (Fin n → ℂ) → Matrix (Fin m) (Fin m)
   exact Finset.analyticAt_fun_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => h _ _)
 
 /- English proof (translation)
-Simplify using `only [inv_def, Ring.inverse_eq_inv, Matrix.smul_apply, smul_eq_mul, adjugate_apply]`. Use `((analyticAt_det h).inv h0).mul (analyticAt_det fun i j => ?_)` and prove the remaining obligations. Simplify using `only [updateRow_apply]`. Use `split_ifs`. Conclude with `analyticAt_const`.
-
-Conclude with `h _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_inv {A : (Fin n → ℂ) → Matrix (Fin k) (Fin k) ℂ} {t : Fin n → ℂ}
     (h : ∀ p q, AnalyticAt ℂ (fun u => A u p q) t) (h0 : (A t).det ≠ 0) (p q : Fin k) :
@@ -69,27 +67,27 @@ theorem analyticAt_inv {A : (Fin n → ℂ) → Matrix (Fin k) (Fin k) ℂ} {t :
   · exact h _ _
 
 /- English proof (translation)
-Take `⟨Y, hY⟩ : ∃ Y : (Fin n → ℂ) → Matrix (Fin k) (Fin k) ℂ, ∀ u, Y u = ((τ u).map Complex.im).map Complex.ofReal` from `⟨_, fun _ => rfl⟩`. Simplify using `only [← hY] at he`. Establish `hYp : ∀ᶠ u in 𝓝 0, (Y u).PosDef` using `hpos.mono fun u hu => by rw [hY]; exact posDef_ofReal hu`. Establish `hY0` using `hYp.self_of_nhds`. Establish `huY : IsUnit (Y 0).det` using `IsUnit.mk0 _ hY0.det_pos.ne'`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩ : ∃ C, C = (Y 0)⁻¹ * (V 0)ᴴ` from `⟨_, rfl⟩`. Take `⟨G, hG⟩ : ∃ G, G = V 0 * (Y 0)⁻¹ * (V 0)ᴴ` from `⟨_, rfl⟩`. Establish `hGp : G.PosDef` using `by rw [hG]; exact hY0.inv.mul_mul_conjTranspose_same hV0`. Establish `huG : IsUnit G.det` using `IsUnit.mk0 _ hGp.det_pos.ne'`. Establish `hVC : V 0 * C = G` using `by rw [hC, hG, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : Cᴴ * Y 0 * C = G`. Rewrite using `[hC, hG, conjTranspose_mul, conjTranspose_conjTranspose, hY0.inv.1.eq]`. Simplify using `only [Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ huY]`. Establish `hCi : Function.Injective C.mulVec`. Establish `h1 : Function.Injective G.mulVec` using `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 huG)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hxy`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← hVC, ← mulVec_mulVec, ← mulVec_mulVec, hxy]`. Establish `hF : AnalyticAt ℂ (fun u => (V u * C).det) 0` using `analyticAt_det fun p q => by`. Simplify using `only [mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.analyticAt_fun_sum _ fun i _ => (hV _ _).mul analyticAt_const`. Establish `hF0 : (V 0 * C).det ≠ 0` using `by rw [hVC]; exact huG.ne_zero`. Take `⟨Km, hK⟩ : ∃ Km, Km = C * G⁻¹ * Cᴴ` from `⟨_, rfl⟩`. Establish `hT : AnalyticAt ℂ (fun u => ∑ p, ∑ q, ((Km p q).re : ℂ) * (Complex.I * τ u q p)) 0` using `Finset.analyticAt_fun_sum _ fun p _ => Finset.analyticAt_fun_sum _ fun q _ => analyticAt_const.mul (analyticAt_const.mul (hτ _ _))`. Establish `htr : ∀ u, (∑ p, ∑ q, ((Km p q).re : ℂ) * (Complex.I * τ u q p)).re = -(G⁻¹ * (Cᴴ * Y u * C)).trace.re`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Establish `e : (G⁻¹ * (Cᴴ * Y u * C)).trace = (Km * Y u).trace`. Rewrite using `[hK, ← Matrix.mul_assoc, trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[trace, mul_apply, Complex.re_sum]`. Establish `hg` using `padd (plog_norm 2 (d - Real.log G.det.re + r) hF hF0) (pre hT)`. Use `ptouch hf hg ?_ ?_` and prove the remaining obligations. Rewrite using `[he.self_of_nhds (hG ▸ hGp), htr, hM0, hVC, ← hG, nonsing_inv_mul _ huG, trace_one]`. Establish `: ‖G.det‖ = G.det.re`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_eq_re hGp, Complex.norm_real, Complex.ofReal_re, Real.norm_of_nonneg (det_re_pos hGp).le]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [he, hYp, hF.continuousAt.eventually_ne hF0] with u h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : Cᴴ * (V u)ᴴ = (V u * C)ᴴ` using `(conjTranspose_mul _ _).symm`. Establish `hVi : Function.Injective (V u).vecMul`. Establish `h4 : Function.Injective (V u * C).vecMul` using `Matrix.vecMul_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (IsUnit.mk0 _ h3))`. Introduce `x y hxy`. Apply `h4` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxy' : x ᵥ* V u = y ᵥ* V u` using `hxy`. Use `show x ᵥ* (V u * C) = y ᵥ* (V u * C)`. Rewrite using `[← vecMul_vecMul, ← vecMul_vecMul, hxy']`. Establish `hGu` using `h2.inv.mul_mul_conjTranspose_same hVi`. Establish `hM` using `h2.conjTranspose_mul_mul_same hCi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `logdet_dual_ge h2 (V u)ᴴ C hM (by rwa [conjTranspose_conjTranspose]) (by rw [hN, det_conjTranspose]; exact star_ne_zero.2 h3)`. Rewrite `a1` using `[hN, det_conjTranspose, norm_star, conjTranspose_conjTranspose]`. Establish `a2` using `logdet_le hM hGp`. Rewrite using `[h1 hGu, htr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem psh_core {τ : (Fin n → ℂ) → Matrix (Fin k) (Fin k) ℂ} {V : (Fin n → ℂ) → Matrix (Fin r) (Fin k) ℂ}
     {f : (Fin n → ℂ) → ℝ} (d : ℝ) (hτ : ∀ p q, AnalyticAt ℂ (fun u => τ u p q) 0)

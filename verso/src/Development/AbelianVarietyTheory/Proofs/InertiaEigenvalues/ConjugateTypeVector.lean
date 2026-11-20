@@ -10,15 +10,15 @@ open Formalism.MainNotions.ArithmeticCylinders Formalism.MainNotions.PrimeDegree
 namespace GlobalTheory.GoodFree
 
 /- English proof (translation)
-Introduce `D Rw L rc cp hT hLP hCl hC hP V _ _ ρ W σ hW x hx hxW he`. Take `⟨t, a, ht, h0, hfix⟩` from `GlobalTheory.GoodTypes.exists_good D ρ hx he`. Establish `key : ∀ k v, GlobalTheory.SeriesSupportTest.dualFun D k (t k v) = D.nd.lab k σ v`. Introduce `k v`. Establish `hl : IsLabel D k (t k v)` using `(ht k).1.1 v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hfix k v`. Rewrite `h1` using `[GlobalTheory.GoodTypes.act_atPlace]`. Establish `h2` using `(hW k v).act_ne _ (D.ntypes.eSer k (dualLab D k (t k v))) (fun y => by`. Rewrite using `[← GlobalTheory.GoodTypes.labAct_conj D k hl, ← hC k _ hl, Finsupp.mapRange_apply]`. Use the proof step `rfl) (hxW a) h0 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, p3⟩` from `hP σ k v`. Establish `q1` using `((hCl k v) _ _ p1).1`. Rewrite `h2` using `[(hT k).2]`. Establish `h3` using `hLP k v D.R.r (cp σ k v) p1 _ h2`. Rewrite `h3` using `[(hT k).1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [] at h3`. Rewrite `h3`, `q1` using `[← p3]`. Rewrite `h3` using `[D.ntypes.inertiaCharpoly_type k v _ (by rw [← Rw.lab_eq, q1, (D.nd.lab_monic k σ v).2]), ← Rw.lab_eq]`. Rewrite using `[GlobalTheory.SeriesSupportTest.dualFun, if_pos hl]`. Conclude with `GlobalTheory.GoodTypes.eq_of_teich _ (GlobalTheory.Compare.TeichmullerRoots.teich_injective _ (D.ntypes.teichC_inj k)) (GlobalTheory.SeriesSupportTest.label_dual D k hl).1 (D.nd.lab_monic k σ v).1 h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd` using `GlobalTheory.SeriesSupportTest.good_dualFun D t ht`. Simplify using `only [key] at hd`. Conclude with `hd`.
+A detailed English derivation is pending.
 -/
 theorem good_of_vector_row : ∀ (D : D7) (Rw : GlobalTheory.HeightCounting.RowSide D) (L : ∀ k, LabelDatum (D.host.g k)) (rc : GlobalTheory.SerSys.Corr D) (cp : GlobalTheory.GoodTypes.Comp D), LabTie D L → LabParam D L rc → (∀ k v, IsClassMap D.naut.lpDim (rc k v)) → GlobalTheory.GoodTypes.SeriesConj D → (∀ σ k v, IrrSm (cp σ k v) ∧ Rw.locR σ (D.naut.plGw k v) = rc k v D.R.r (cp σ k v)) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (G0g D.nd) V) (W : Submodule ℂ V) (σ : D.what₂.FT), (∀ k v, GlobalTheory.GoodTypes.ConjIn ρ W (GlobalTheory.GoodTypes.facHom D k v) (cp σ k v).ρ) → ∀ x : V, x ≠ 0 → (∀ a, ρ.asAlgebraHom a x ∈ W) → ρ.asAlgebraHom D.ntypes.e0 x = x → D.nd.goodRow σ := by
   intro D Rw L rc cp hT hLP hCl hC hP V _ _ ρ W σ hW x hx hxW he

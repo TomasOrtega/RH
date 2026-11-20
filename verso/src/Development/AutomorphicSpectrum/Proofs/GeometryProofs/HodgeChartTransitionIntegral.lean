@@ -7,29 +7,25 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 namespace GlobalTheory.CompanionTheory.Ar.HT.Overlap
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ K _ J _ y E _ _ c p R N V _ _ Dc hom hh hρ hring s t σ'`. Use `set f : Ω := mseg y s.1 / mseg y t.1 with hf`. Establish `hfA : f ∈ chartRing o (mseg y) t.1` using `Algebra.subset_adjoin ⟨s.1, rfl⟩`. Establish `hfMn : ∀ n : ℕ, ∀ z ∈ (Dc t).om', f ^ n • z ∈ (Dc t).om'`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro z hz`. Simplify using `using hz`. Consider the case `succ n ih`. Introduce `z hz`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', mul_smul]`. Conclude with `(Dc t).om'.smul_mem (⟨f, hfA⟩ : chartRing o (mseg y) t.1) (ih z hz)`. Set `P : Submodule (chartRing o (mseg y) s.1) V` to `{ carrier := {z | ∃ n : ℕ, f ^ n • z ∈ (Dc t).om'} add_mem' := by`. Introduce and unpack `a b ⟨n, hn⟩ ⟨m, hm⟩`. Use `⟨n + m, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `hfMn m _ hn`. Rewrite using `[pow_add, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hfMn n _ hm`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a z ⟨n, hn⟩`. Take `⟨m, hm⟩` from `hring s t (a : Ω) a.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `e1 : f ^ (n + m) • (a • z) = (⟨f ^ m * a, hm⟩ : chartRing o (mseg y) t.1) • (f ^ n • z)` using `by show f ^ (n + m) • ((a : Ω) • z) = (f ^ m * a) • (f ^ n • z)`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e1]`. Conclude with `(Dc t).om'.smul_mem _ hn }`. Establish `hle : (Dc s).om' ≤ P`. Unfold `HTChart.om'`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨δ, rfl⟩`. Take `⟨n, w, hw, he⟩` from `hh s t δ`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `e2 : f ^ n • (Dc s).h δ = f ^ n • (Dc t).h δ + ((p : Ω) ^ R) • w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← he, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Use `add_mem (hfMn n _ ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨δ, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.mem_sup_right ⟨w, hw, ?_⟩` and prove the remaining obligations. Simplify using `[Subalgebra.smul_def]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨n, hn⟩` from `hom s t u hu`. Use `⟨n, ?_⟩` and prove the remaining obligations.
-
-Use `Submodule.mem_sup_right ⟨f ^ n • u, hn, ?_⟩` and prove the remaining obligations. Simplify using `[Subalgebra.smul_def, smul_comm ((p : Ω) ^ R) (f ^ n) u]`. Introduce `x hx`. Take `⟨z, hz, rfl⟩` from `hx`. Take `⟨n, hn⟩` from `hle hz`.
-
-Use `⟨n, ⟨f ^ n • z, hn, ?_⟩⟩` and prove the remaining obligations. Use `show eigProj (Dc t).ρΩ σ' (f ^ n • z) = f ^ n • eigProj (Dc s).ρΩ σ' z`. Rewrite using `[hρ s t, map_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omHT_pow_smul_mem : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (p R N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, HTChart (chartRing o (mseg y) s.1) Ω c p R N V), (∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}), ∀ x ∈ (Dc s).om, ∃ n : ℕ, (mseg y s.1 / mseg y t.1) ^ n • x ∈ (Dc t).om) → (∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}) (x : Fin N → 𝓞 E), ∃ n : ℕ, ∃ w ∈ (Dc t).om, (mseg y s.1 / mseg y t.1) ^ n • ((Dc s).h x - (Dc t).h x) = ((p : Ω) ^ R) • w) → (∀ s t, (Dc s).ρΩ = (Dc t).ρΩ) → (∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}), ∀ a ∈ chartRing o (mseg y) s.1, ∃ n : ℕ, (mseg y s.1 / mseg y t.1) ^ n * a ∈ chartRing o (mseg y) t.1) → ∀ (s t : {s : ∀ k, J k // mseg y s ≠ 0}) (σ' : E →+* Ω), ∀ x ∈ (Dc s).omHT σ', ∃ n : ℕ, (mseg y s.1 / mseg y t.1) ^ n • x ∈ (Dc t).omHT σ' := by
   intro o _ Ω _ _ K _ J _ y E _ _ c p R N V _ _ Dc hom hh hρ hring s t σ'

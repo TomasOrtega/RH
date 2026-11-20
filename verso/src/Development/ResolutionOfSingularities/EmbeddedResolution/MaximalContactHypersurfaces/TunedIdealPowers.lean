@@ -5,7 +5,7 @@ import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHy
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `h2 : (fun j => (c j - c' j) + c' j) = c` using `funext fun j => Nat.sub_add_cancel (h j)`. Establish `key : tuningWeight m (fun j => c j - c' j) + tuningWeight m c' = tuningWeight m c`. Rewrite using `[← tuningWeight_fun_add m (fun j => c j - c' j) c', h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tuningWeight_sub (m : ℕ) (c c' : ℕ → ℕ) (h : ∀ j, c' j ≤ c j) :
     tuningWeight m (fun j => c j - c' j) = tuningWeight m c - tuningWeight m c' := by
@@ -15,9 +15,9 @@ theorem tuningWeight_sub (m : ℕ) (c c' : ℕ → ℕ) (h : ∀ j, c' j ≤ c j
   omega
 
 /- English proof (translation)
-Simplify using `only [tuningWeight_eq_sum]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `hcon`. Conclude with `absurd hj hcon`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem tuningWeight_ite (m j q : ℕ) (hj : j ∈ Finset.range m) :
     tuningWeight m (fun i => if i = j then q else 0) = (m - j) * q := by
@@ -30,39 +30,35 @@ private theorem tuningWeight_ite (m j q : ℕ) (hj : j ∈ Finset.range m) :
     exact absurd hj hcon
 
 /- English proof (translation)
-Proceed by induction on `r generalizing c with`. Consider the case `zero`. Use `⟨fun _ => 0, fun i => Nat.zero_le _, ?_⟩` and prove the remaining obligations. Simplify using `[tuningWeight_eq_sum]`. Consider the case `succ r ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hWpos : 0 < tuningWeight m c` using `lt_of_lt_of_le (mul_pos (Nat.succ_pos r) hL) (le_trans (Nat.le_add_right _ _) hc)`. Establish `hm : 0 < m`. Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Rewrite `hWpos` using `[h0]`. Simplify using `[tuningWeight_eq_sum] at hWpos`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h0`. Establish `hlt1 : ∀ a b : ℕ, a < b → a ≤ b - 1`. Introduce `a b h`. Use linear arithmetic over natural numbers and integers. Establish `hex : ∃ j ∈ Finset.range m, L ≤ (m - j) * c j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h1 : tuningWeight m c ≤ ∑ _x ∈ Finset.range m, (L - 1)`. Rewrite using `[tuningWeight_eq_sum]`. Use `Finset.sum_le_sum ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Conclude with `hlt1 _ _ (hcon i hi)`. Establish `h2 : ∑ _x ∈ Finset.range m, (L - 1) = m * (L - 1)`. Rewrite using `[Finset.sum_const, Finset.card_range, smul_eq_mul]`. Rewrite `h1` using `[h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hA : m * (L - 1) + m = m * L`. Establish `h' : L - 1 + 1 = L` using `Nat.sub_add_cancel hL`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : (m - 1) * L + L = m * L`. Establish `h' : m - 1 + 1 = m` using `Nat.sub_add_cancel hm`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hC : L ≤ (r + 1) * L`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ X Y Z W mm p : ℕ, X + Y ≤ Z → Z + mm = W → Y + p = W → p ≤ X → 1 ≤ mm → False`. Introduce `X Y Z W mm p k1 k2 k3 k4 k5`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `key ((r + 1) * L) ((m - 1) * L) (m * (L - 1)) (m * L) m L (le_trans hc h1) hA hB hC hm`. Take `⟨j, hjmem, hjL⟩` from `hex`. Establish `hjm : j < m` using `Finset.mem_range.mp hjmem`. Establish `hw0 : 0 < m - j` using `Nat.sub_pos_of_lt hjm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw1 : 1 ≤ m - j` using `hw0`. Take `⟨q, hq⟩` from `hdvd (m - j) hw1 (Nat.sub_le m j)`. Establish `hqc : q ≤ c j`. Use `Nat.le_of_mul_le_mul_left ?_ hw0` and prove the remaining obligations. Rewrite using `[← hq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hjL`. Establish `hule : ∀ i, (if i = j then q else 0) ≤ c i`. Introduce `i`. Distinguish the cases in `hij : i = j`. Rewrite using `[if_pos hij, hij]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hqc`. Rewrite using `[if_neg hij]`. Conclude with `Nat.zero_le _`. Establish `hu : tuningWeight m (fun i => if i = j then q else 0) = L`. Rewrite using `[tuningWeight_ite m j q hjmem]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq.symm`. Establish `hd : tuningWeight m (fun i => c i - (if i = j then q else 0)) = tuningWeight m c - L`. Establish `h` using `tuningWeight_sub m c (fun i => if i = j then q else 0) hule`. Rewrite `h` using `[hu]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc2 : r * L + L + (m - 1) * L ≤ tuningWeight m c`. Combine the equalities or inequalities in the displayed calculation. Establish `hc' : r * L + (m - 1) * L ≤ tuningWeight m (fun i => c i - (if i = j then q else 0))`. Rewrite using `[hd]`. Establish `h9 : ∀ A B C W : ℕ, A + C + B ≤ W → A + B ≤ W - C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `A B C W h`. Use linear arithmetic over natural numbers and integers. Conclude with `h9 _ _ _ _ hc2`. Take `⟨e, he1, he2⟩` from `ih (fun i => c i - (if i = j then q else 0)) hc'`. Use `⟨fun i => e i + (if i = j then q else 0), ?_, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h1 : e i ≤ c i - (if i = j then q else 0)` using `he1 i`. Establish `h2 : (if i = j then q else 0) ≤ c i` using `hule i`. Use `show e i + (if i = j then q else 0) ≤ c i`. Distinguish the cases in `hij : i = j`.
-
-Rewrite `h1`, `h2`, the goal using `[if_pos hij]`. Use linear arithmetic over natural numbers and integers. Rewrite `h1`, `h2`, the goal using `[if_neg hij]`. Use linear arithmetic over natural numbers and integers. Establish `hsplit : tuningWeight m (fun i => e i + (if i = j then q else 0)) = tuningWeight m e + tuningWeight m (fun i => if i = j then q else 0)` using `tuningWeight_fun_add m e (fun i => if i = j then q else 0)`.
-
-Rewrite using `[hsplit, he2, hu]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_le_tuningWeight_eq_mul (m L r : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (c : ℕ → ℕ)
@@ -166,7 +162,7 @@ section
 variable (k : Type*) [CommRing k] {S : Type*} [CommRing S] [Algebra k S]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [tunedIdeal_zero]`. Consider the case `succ n ih`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(by ring : n * a + a = (n + 1) * a)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem tunedIdeal_pow_le (J : Ideal S) (m a n : ℕ) :
     tunedIdeal k J m a ^ n ≤ tunedIdeal k J m (n * a) := by
@@ -181,13 +177,13 @@ theorem tunedIdeal_pow_le (J : Ideal S) (m a n : ℕ) :
             rw [(by ring : n * a + a = (n + 1) * a)]
 
 /- English proof (translation)
-Use `le_antisymm (tunedIdeal_mul_le k J m _ _) ?_` and prove the remaining obligations. Rewrite using `[tunedIdeal_le_iff]`. Introduce `c hc`. Establish `hc2 : r * L + (m - 1) * L ≤ tuningWeight m c` using `le_trans (Nat.add_le_add_left ht (r * L)) hc`. Take `⟨c', hc'le, hc'w⟩` from `exists_le_tuningWeight_eq_mul m L r hL hdvd c hc2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (fun j => c' j + (c j - c' j)) = c` using `funext fun j => Nat.add_sub_cancel' (hc'le j)`. Establish `hsplit : tuningMonomial k J m c' * tuningMonomial k J m (fun j => c j - c' j) = tuningMonomial k J m c`. Rewrite using `[tuningMonomial_mul_fun_add k J m c' (fun j => c j - c' j), h2]`. Rewrite using `[← hsplit]`. Use `Ideal.mul_mono ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `tuningMonomial_le_tunedIdeal k J m (r * L) c' (le_of_eq hc'w.symm)`. Use `tuningMonomial_le_tunedIdeal k J m t _ ?_` and prove the remaining obligations. Rewrite using `[tuningWeight_sub m c c' hc'le, hc'w]`. Establish `h9 : ∀ A B W : ℕ, A + B ≤ W → B ≤ W - A`. Introduce `A B W h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h9 (r * L) t (tuningWeight m c) hc`.
+A detailed English derivation is pending.
 -/
 theorem tunedIdeal_mul_eq_tunedIdeal_add (J : Ideal S) (m L : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (r t : ℕ) (ht : (m - 1) * L ≤ t) :
@@ -213,11 +209,11 @@ theorem tunedIdeal_mul_eq_tunedIdeal_add (J : Ideal S) (m L : ℕ) (hL : 0 < L)
     exact h9 (r * L) t (tuningWeight m c) hc
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact absurd hj (by omega)`. Consider the case `succ n ih`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hn1 : 1 ≤ n` using `hn`. Establish `ihn` using `ih hn1`. Establish `hmt : (m - 1) * L ≤ n * (r * L)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(by ring : r * L + n * (r * L) = (n + 1) * (r * L))]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem tunedIdeal_pow_eq_tunedIdeal_mul (J : Ideal S) (m L : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (r : ℕ) (hr : m - 1 ≤ r) (j : ℕ) (hj : 1 ≤ j) :
@@ -244,7 +240,7 @@ theorem tunedIdeal_pow_eq_tunedIdeal_mul (J : Ideal S) (m L : ℕ) (hL : 0 < L)
               rw [(by ring : r * L + n * (r * L) = (n + 1) * (r * L))]
 
 /- English proof (translation)
-Establish `hi' : 1 ≤ r * L - i` using `Nat.one_le_iff_ne_zero.mpr (Nat.sub_ne_zero_of_lt hi)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.mul_comm (r * L) (r * L - i)]`. Use `_ = tunedIdeal k J m (r * L) ^ (r * L - i) := (tunedIdeal_pow_eq_tunedIdeal_mul k J m L hL hdvd r hr (r * L - i) hi').symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivIdealIterate_tunedIdeal_pow_le (J : Ideal S) (m L : ℕ) (hL : 0 < L)
     (hdvd : ∀ w : ℕ, 1 ≤ w → w ≤ m → w ∣ L) (r : ℕ) (hr : m - 1 ≤ r) (i : ℕ) (hi : i < r * L) :

@@ -15,7 +15,7 @@ namespace GlobalTheory.ThK.PlaneCo.LatDec
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : incM F (Matrix.vecMulVec x y) = Matrix.vecMulVec (incV F x) (incV F y)`. Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply]`. Rewrite using `[map_smul, Matrix.smul_apply, h, coefLin_vecMulVec, map_mul, RingHom.map_mulVec, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coefLin_pure {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (a : AF F) (x : Fin n → E)
     (y : Fin d → E) (k : Fin n₁ ⊕ Fin 2) (l : Fin d₁ ⊕ Fin 2) :
@@ -27,14 +27,14 @@ theorem coefLin_pure {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, planeCoef_mulVec_x_ne H hk, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem planeCoef_mulVec_smul_x_eq_zero_of_ne {n n₁ : ℕ} (H : Plane E n n₁) (s : E) {k : Fin n₁ ⊕ Fin 2} (hk : k ≠ .inr 0) :
     (planeCoef H *ᵥ (s • H.x)) k = 0 := by
   rw [Matrix.mulVec_smul, Pi.smul_apply, planeCoef_mulVec_x_ne H hk, smul_zero]
 
 /- English proof (translation)
-Use `planeCoef_mul_planeMat_ne H hk` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Establish `h : (planeCoef H *ᵥ H.y) k = 0` using `by simpa [Matrix.mulVec, dotProduct, planeMat] using this`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, h, smul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_y {n n₁ : ℕ} (H : Plane E n n₁) (s : E) {k : Fin n₁ ⊕ Fin 2} (hk : k ≠ .inr 1) :
     (planeCoef H *ᵥ (s • H.y)) k = 0 := by
@@ -44,7 +44,7 @@ theorem coef_y {n n₁ : ℕ} (H : Plane E n n₁) (s : E) {k : Fin n₁ ⊕ Fin
   rw [Matrix.mulVec_smul, Pi.smul_apply, h, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec]`. Simplify using `[Matrix.mulVec, dotProduct, planeCoef_mul_ι_inr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coef_ι {n n₁ : ℕ} (H : Plane E n n₁) (u : Fin n₁ → E) (t : Fin 2) :
     (planeCoef H *ᵥ (H.ι *ᵥ u)) (.inr t) = 0 := by
@@ -54,7 +54,7 @@ theorem coef_ι {n n₁ : ℕ} (H : Plane E n n₁) (u : Fin n₁ → E) (t : Fi
 variable (σ : E →ₐ[F] E) {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (H : Plane E n n₁) (H' : Plane E d d₁)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[planeT, hs]`. Use extensionality with `i j`. Simplify using `[planeT, hb]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem planeT_of_sI (u : Matrix (Fin n) (Fin d) (AE F E)) (hs : ∀ k, sI H H' u k = 0)
     (hb : ∀ i j, coefLin H H' u (.inl i) (.inl j) = 0) :
@@ -64,7 +64,7 @@ theorem planeT_of_sI (u : Matrix (Fin n) (Fin d) (AE F E)) (hs : ∀ k, sI H H' 
   · ext i j; simp [planeT, hb]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[planeT, pairI, ht]`. Use extensionality with `i j`. Simplify using `[planeT, hb]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem planeT_of_tI (u : Matrix (Fin n) (Fin d) (AE F E)) (ht : ∀ k, tI H H' u k = 0)
     (hb : ∀ i j, coefLin H H' u (.inl i) (.inl j) = 0) :
@@ -81,9 +81,9 @@ def Dec (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (v : Pl F) (γ : Matrix (Fin
 variable {σ X W H H'} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {v : Pl F}
 
 /- English proof (translation)
-Use `⟨⟨0, zero_mem _, ?_⟩, ⟨0, zero_mem _, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Rewrite using `[map_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dec.zero : Dec σ X W H H' X₁ W₁ v 0 := by
   refine ⟨⟨0, zero_mem _, ?_⟩, ⟨0, zero_mem _, ?_⟩, ?_⟩
@@ -92,9 +92,9 @@ theorem Dec.zero : Dec σ X W H H' X₁ W₁ v 0 := by
   · rw [map_zero]; exact zero_mem _
 
 /- English proof (translation)
-Take `⟨⟨a, ha, ea⟩, ⟨b, hb, eb⟩, hc⟩` from `h`. Take `⟨⟨a', ha', ea'⟩, ⟨b', hb', eb'⟩, hc'⟩` from `h'`. Use `⟨⟨a + a', add_mem ha ha', ?_⟩, ⟨b + b', add_mem hb hb', ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, ea, ea']`. Simplify using `only [Prod.mk_add_mk, add_zero, Prod.fst_add, Prod.snd_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add, map_add, eb, eb']`. Simplify using `only [Prod.mk_add_mk, add_zero, Prod.fst_add]`. Rewrite using `[map_add]`. Conclude with `add_mem hc hc'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dec.add {γ δ : Matrix (Fin n) (Fin d) (AE F E)} (h : Dec σ X W H H' X₁ W₁ v γ)
     (h' : Dec σ X W H H' X₁ W₁ v δ) : Dec σ X W H H' X₁ W₁ v (γ + δ) := by
@@ -106,9 +106,9 @@ theorem Dec.add {γ δ : Matrix (Fin n) (Fin d) (AE F E)} (h : Dec σ X W H H' X
   · rw [map_add]; exact add_mem hc hc'
 
 /- English proof (translation)
-Take `⟨⟨a, ha, ea⟩, ⟨b, hb, eb⟩, hc⟩` from `h`. Use `⟨⟨-a, neg_mem ha, ?_⟩, ⟨-b, neg_mem hb, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, map_neg, ea]`. Simplify using `only [Prod.neg_mk, neg_zero, Prod.fst_neg, Prod.snd_neg]`. Rewrite using `[map_neg, map_neg, eb]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Prod.neg_mk, neg_zero, Prod.fst_neg]`. Rewrite using `[map_neg]`. Conclude with `neg_mem hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dec.neg {γ : Matrix (Fin n) (Fin d) (AE F E)} (h : Dec σ X W H H' X₁ W₁ v γ) :
     Dec σ X W H H' X₁ W₁ v (-γ) := by
@@ -119,7 +119,7 @@ theorem Dec.neg {γ : Matrix (Fin n) (Fin d) (AE F E)} (h : Dec σ X W H H' X₁
   · rw [map_neg]; exact neg_mem hc
 
 /- English proof (translation)
-Use `⟨⟨γ, hγ, Prod.ext (Prod.ext h.1 rfl) h.2⟩, ⟨0, zero_mem _, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, h.1]`. Both sides reduce to the same expression. Rewrite using `[h.2]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dec.of_I {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W v)
     (h : (planeT σ X W H H' γ).1.1 = 0 ∧ (planeT σ X W H H' γ).2 = 0) : Dec σ X W H H' X₁ W₁ v γ := by
@@ -128,7 +128,7 @@ theorem Dec.of_I {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W
   · rw [h.2]; exact zero_mem _
 
 /- English proof (translation)
-Use `⟨⟨0, zero_mem _, ?_⟩, ⟨γ, hγ, Prod.ext (Prod.ext rfl h.1) h.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, h.1]`. Both sides reduce to the same expression. Rewrite using `[h.2]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dec.of_S {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W v)
     (h : (planeT σ X W H H' γ).1.2 = 0 ∧ (planeT σ X W H H' γ).2 = 0) : Dec σ X W H H' X₁ W₁ v γ := by
@@ -137,9 +137,9 @@ theorem Dec.of_S {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W
   · rw [h.2]; exact zero_mem _
 
 /- English proof (translation)
-Use `⟨⟨0, zero_mem _, ?_⟩, ⟨0, zero_mem _, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, h]`. Both sides reduce to the same expression. Rewrite using `[map_zero, h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dec.of_block {γ : Matrix (Fin n) (Fin d) (AE F E)} {z : Matrix (Fin n₁) (Fin d₁) (AE F E)}
     (hz : z ∈ latAtV X₁ W₁ v) (h : planeT σ X W H H' γ = ((0, 0), z)) : Dec σ X W H H' X₁ W₁ v γ := by
@@ -153,25 +153,25 @@ end GlobalTheory.ThK.PlaneCo.LatDec
 namespace GlobalTheory.ThK.PlaneCo.LatDec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' hB hX hW hH hH' v γ hγ`. Express the relevant statement in the definitionally equal form `Dec σ X W H H' X₁ W₁ v γ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `zero => exact Dec.zero`. Consider the case `add _ _ _ _ h h' => exact h.add h'`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `neg _ _ h => exact h.neg`. Consider the case `mem z hz`. Take `⟨a, ha, ha', x, hx, y, hy, rfl⟩` from `hz`. Take `⟨p, t, u, hp, ht, hu, ex⟩` from `hH.split x hx`. Take `⟨p', t', u', hp', ht', hu', ey⟩` from `hH'.split y hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hιu` using `(hH.low u).1 hu`. Establish `mem : ∀ x ∈ X.L, ∀ y ∈ W.L, a • incM F (Matrix.vecMulVec x y) ∈ latAtV X W v` using `fun x hx y hy => AddSubgroup.subset_closure ⟨a, ha, ha', x, hx, y, hy, rfl⟩`. Establish `key : a • incM F (Matrix.vecMulVec x y) = a • incM F (Matrix.vecMulVec (p • H.x) y) + a • incM F (Matrix.vecMulVec (t • H.y) y) + a • incM F (Matrix.vecMulVec (H.ι *ᵥ u) (p' • H'.x)) + a • incM F (Matrix.vecMulVec (H.ι *ᵥ u) (t' • H'.y)) + a • incM F (Matrix.vecMulVec (H.ι *ᵥ u) …`. Simplify using `only [← smul_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.add_apply, Matrix.vecMulVec_apply, ← map_add]`. Use `congr 1`. Establish `e1` using `congrFun ex i`. Establish `e2` using `congrFun ey j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply] at e1 e2`. Rewrite using `[e1]`. Take the linear combination `(H.ι *ᵥ u) i * e2`. Rewrite using `[key]`. Use `Dec.add (Dec.add (Dec.add (Dec.add ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Dec.of_I (mem _ hp _ hy) (planeT_of_sI σ X W H H' _ ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `rintro (k | k) <;> simp only [sI, posS, coefLin_pure] <;> rw [planeCoef_mulVec_smul_x_eq_zero_of_ne H p (by simp)] <;> simp`. Introduce `i j; rw [coefLin_pure, planeCoef_mulVec_smul_x_eq_zero_of_ne H p (by simp)]; simp`. Use `Dec.of_S (mem _ ht _ hy) (planeT_of_tI σ X W H H' _ ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `rintro (k | k) <;> simp only [tI, posT, coefLin_pure] <;> rw [coef_y H t (by simp)] <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `i j; rw [coefLin_pure, coef_y H t (by simp)]; simp`. Use `Dec.of_I (mem _ hιu _ hp') (planeT_of_sI σ X W H H' _ ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `rintro (k | k) <;> simp only [sI, posS, coefLin_pure]`. Rewrite using `[coef_ι]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[planeCoef_mulVec_smul_x_eq_zero_of_ne H' p' (by simp)]; simp`. Introduce `i j; rw [coefLin_pure, planeCoef_mulVec_smul_x_eq_zero_of_ne H' p' (by simp)]; simp`. Use `Dec.of_S (mem _ hιu _ ht') (planeT_of_tI σ X W H H' _ ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `rintro (k | k) <;> simp only [tI, posT, coefLin_pure]`. Rewrite using `[coef_ι]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[coef_y H' t' (by simp)]; simp`. Introduce `i j; rw [coefLin_pure, coef_y H' t' (by simp)]; simp`. Use `Dec.of_block (z := a • incM F (Matrix.vecMulVec u u')) (AddSubgroup.subset_closure ⟨a, ha, ha', u, hu, u', hu', rfl⟩) ?_` and prove the remaining obligations. Rewrite using `[← BlockRead.planeT_block σ B X W X₁ W₁ H H' hB hX hW hH hH']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e : Matrix.vecMulVec (H.ι *ᵥ u) (H'.ι *ᵥ u') = H.ι * Matrix.vecMulVec u u' * H'.ιᵀ`. Rewrite using `[Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`. Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latAtV_dec : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)

@@ -28,13 +28,13 @@ def cutU {R : Type} [Ring R] (e : R) (he : e * e = e) (hc : ∀ x, x * e = e * x
         rw [add_mul, mul_add, mul_add, h1, h2, h3, h4, add_zero, zero_add] }
 
 /- English proof (translation)
-Establish `hie : i e * i e = i e` using `by rw [← map_mul, he]`. Establish `h1 : (i e • (1 : Matrix (Fin n) (Fin n) A)) * (i e • 1) = i e • 1` using `by simp [smul_smul, hie]`. Establish `h2 : ∀ x : Matrix (Fin n) (Fin n) A, x * (i e • 1) = (i e • 1) * x` using `by simp`. Establish `hv : ∀ g : GL (Fin n) A, (cutU _ h1 h2 g).val = i e • g.val + (1 - i e) • 1` using `fun g => by show (i e • (1 : Matrix (Fin n) (Fin n) A)) * g.val + (1 - i e • 1) = _`. Simplify using `[sub_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨(((cutU _ h1 h2).prodMap (cutU e he fun x => mul_comm _ _)).comp (Sim σ i n).subtype).codRestrict _ fun g => ?_, fun g => hv _⟩` and prove the remaining obligations. Establish `hg` using `mem_Sim.1 g.2`. Use `mem_Sim.2 ?_` and prove the remaining obligations. Use `show ((cutU _ h1 h2 g.1.1).val.map σ)ᵀ * (cutU _ h1 h2 g.1.1).val = i (e * g.1.2.val + (1 - e)) • 1`. Establish `h3 : ((i e • g.1.1.val + (1 - i e) • (1 : Matrix (Fin n) (Fin n) A)).map σ)ᵀ = i e • (g.1.1.val.map σ)ᵀ + (1 - i e) • 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[hσ]`. Simplify using `[hσ, Matrix.one_apply, hab, Ne.symm hab]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : i e * (1 - i e) = 0` using `by rw [mul_sub, mul_one, hie, sub_self]`. Establish `h5 : (1 - i e) * (1 - i e) = 1 - i e` using `by rw [sub_mul, one_mul, h4, sub_zero]`. Rewrite using `[hv, h3, add_mul, mul_add, mul_add]`. Simplify using `only [smul_mul_smul_comm, hg, hie, h4, h5, mul_comm (1 - i e) (i e), zero_smul, add_zero, zero_add, smul_smul, mul_one, map_add, map_mul, map_sub, map_one, add_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sim_cut {A B : Type} [CommRing A] [CommRing B] (σ : A →+* A) (i : B →+* A) (n : ℕ) (e : B) (he : e * e = e)
     (hσ : σ (i e) = i e) : ∃ π : Sim σ i n →* Sim σ i n, ∀ g, (π g).1.1.val = i e • g.1.1.val + (1 - i e) • 1 := by
@@ -60,9 +60,9 @@ theorem sim_cut {A B : Type} [CommRing A] [CommRing B] (σ : A →+* A) (i : B �
     map_add, map_mul, map_sub, map_one, add_smul]
 
 /- English proof (translation)
-Establish `h` using `(CertificateRingHomMap.ZetaNonvanishing₂.conjLoc E 0 u).2.2.1 q`. Establish `key : ∀ w : Plc E, (q : 𝓞 E) ∈ w.asIdeal ↔ Valued.v ((q : ℕ) : w.adicCompletion E) < 1` using `fun w => by`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `: (((q : ℕ) : E) : w.adicCompletion E) = (q : w.adicCompletion E)` using `map_natCast (algebraMap E (w.adicCompletion E)) q`. Establish `h2 : ((q : 𝓞 E) : E) = q` using `map_natCast (algebraMap (𝓞 E) E) q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, ← h2]`. Rewrite using `[key, key, h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nat_mem_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (q : ℕ) (u : Plc E) :
     (q : 𝓞 E) ∈ (cj u).asIdeal ↔ (q : 𝓞 E) ∈ u.asIdeal := by
@@ -75,13 +75,13 @@ theorem nat_mem_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (q : ℕ) 
   rw [key, key, h]
 
 /- English proof (translation)
-Introduce `E _ _ _ n q _`. Set `e : AfQ` to `⟨fun v => if (q : 𝓞 ℚ) ∈ v.asIdeal then 1 else 0, Filter.Eventually.of_forall fun v => by show (if (q : 𝓞 ℚ) ∈ v.asIdeal then 1 else 0) ∈ v.adicCompletionIntegers ℚ split_ifs exacts [one_mem _, zero_mem _]⟩`. Establish `hev : ∀ v, e v = if (q : 𝓞 ℚ) ∈ v.asIdeal then 1 else 0` using `fun _ => rfl`. Establish `he : e * e = e` using `FiniteAdeleRing.ext (R := 𝓞 ℚ) ℚ fun v => by show e v * e v = e v`. Apply the tactic sequence `rw [hev]; split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hp : ∀ w : Plc E, pLoc E w (finiteAdeleMap ℚ E e) = if (q : 𝓞 E) ∈ w.asIdeal then 1 else 0` using `fun w => by show GroundTheory.Global.SemiLocal.completionMap (below ℚ w) w (e (below ℚ w)) = _`. Establish `: (q : 𝓞 ℚ) ∈ (below ℚ w).asIdeal ↔ (q : 𝓞 E) ∈ w.asIdeal` using `by show algebraMap (𝓞 ℚ) (𝓞 E) q ∈ w.asIdeal ↔ _`. Rewrite using `[map_natCast]`. Rewrite using `[hev]`. Apply the tactic sequence `by_cases h : (q : 𝓞 E) ∈ w.asIdeal <;> simp [h, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hσ : conjFin (GlobalTheory.SplitPts.conjE E) (finiteAdeleMap ℚ E e) = finiteAdeleMap ℚ E e` using `FiniteAdeleRing.ext (R := 𝓞 E) E fun w => by`. Establish `hq : ∀ b : Af E, b w = pLoc E w b` using `fun _ => rfl`. Rewrite using `[hq, hq, pLoc_conjFin, hp, hp]`. Use `nat_mem_cj q w` as an intermediate fact. Apply the tactic sequence `by_cases h : (q : 𝓞 E) ∈ w.asIdeal <;> simp [h, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨π, hπ⟩` from `sim_cut (conjFin (GlobalTheory.SplitPts.conjE E)) (finiteAdeleMap ℚ E) n e he hσ`. Establish `hc : ∀ (g : GUf E n) (w : Plc E) a b, (comp w g).val a b = pLoc E w (g.1.1.val a b)` using `fun _ _ _ _ => rfl`. Apply the tactic sequence `refine ⟨π, fun g w => ⟨fun h => ?_, fun h => ?_⟩⟩ <;> ext a b <;> rw [hc, hπ]`. Simplify using `[hp, h, hc]`. Apply the tactic sequence `by_cases hab : a = b <;> simp [hp, h, hab, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem primeProj_holds : PrimeProj := by
   intro E _ _ _ n q _

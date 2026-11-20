@@ -29,7 +29,7 @@ set_option maxHeartbeats 4000000
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
   {x : St P} (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x)
 /- English proof (translation)
-Use `show MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * l.c.tp.xi μ) l.c.ch.Q`. Rewrite using `[l.c.xi_eq, l.c.Q_eq]`. Conclude with `l.mt.mt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mtInput_of_levelC : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q := by
   show MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * l.c.tp.xi μ) l.c.ch.Q
@@ -53,7 +53,7 @@ structure AllLevelsData : Type 1 where
   loc : ∀ F : Formalism.L2.RowFrame (withLoc L), F.rep = repOf x.r.Y → _root_.Formalism.L2.RowLocTiedAlt (withLoc L) a.gal.lp F
 variable (al : _root_.GlobalTheory.HeightCounting.Fin3.AllLevelsData l L) (hLg : GlobalTheory.CoefDuty.Large (withLoc L))
 /- English proof (translation)
-The claim follows from `(al.exp.pl i j b k Q ψ h1 h2 hadm).trans (Prod.ext (l.b.Bs.pq i j b k Q ψ h1 h2 hadm).1 (l.b.Bs.pq i j b k Q ψ h1 h2 hadm).2)`.
+A detailed English derivation is pending.
 -/
 theorem pq_weight_eq (i j b k Q ψ) (h1 : 1 ≤ j) (h2 : j ≤ (withLoc L).R.m) (hadm : Formalism.L2.NX.AdmTw (withLoc L) i k Q ψ) :
     plsOf al.a.exp i j b k Q ψ h1 h2 hadm = (qpOf (Dof x) l.Pq Q, qpOf (Dof x) l.Pq ((Dof x).ntw.pD i)) :=
@@ -84,7 +84,7 @@ def localAtData : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL (DL x L) (cfD x L) (
 include l in
 variable (L) in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(by with_unfolding_all exact ((_root_.GlobalTheory.T.grpTie_of_levelC l).card :)), (by with_unfolding_all exact ((_root_.GlobalTheory.T.grpTie_of_levelC l).e0 :)), (by with_unfolding_all exact ((_root_.GlobalTheory.T.grpTie_of_levelC l).lvl0 :)), (by with_unfolding_all exact ((_ …`.
+Supply the required witnesses or components.
 -/
 theorem grpTie_famR : Formalism.L2.DIV.GrpTie (DL x L) (famR (w.st (oL x L).Z) w.I P.hX (usedOf w.I T P.Wt) (datL x L).Xg (datL x L).tr).A
     (datL x L).F.P0 (datL x L).F.ψ0 (datL x L).F.P1 (datL x L).F.ψ1 ((datL x L).R.eG.trans (datL x L).cG) :=
@@ -102,9 +102,9 @@ def normalizedRowDatum : _root_.GlobalTheory.Mem.Top.Bl.NormRealisationData (D :
   hL_eq := (by with_unfolding_all exact ((HEq.refl l.rat.In.hL) :))
   rep_eq := (by with_unfolding_all exact (hY.rep.symm :))
 /- English proof (translation)
-Take `⟨ad, had⟩` from `_root_.GlobalTheory.T.exists_mtAd_psiVectorLocal_of_yRel L l Y hY`. Take `⟨ser⟩` from `_root_.GlobalTheory.T.series_at_local_of_exp_relation L l al.a.exp al.exp`. Establish `e : (_root_.GlobalTheory.HeightCounting.Fin3.localAtData l Sp Au ss al hLg).all.gal.mt = _root_.GlobalTheory.HeightCounting.Fin3.localMultiplicityFamily L l` using `(by with_unfolding_all exact (al.mt :))`. Establish `H : ∃ ad' : MtAd Y (_root_.GlobalTheory.HeightCounting.Fin3.localAtData l Sp Au ss al hLg).all.gal.mt, ad'.PV = _root_.GlobalTheory.HeightCounting.Fin3.psiVectorLocal L l`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ad, had⟩`. Take `⟨ad', had'⟩` from `H`. Establish `ser' : SerAt (_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l) (datL x L).geo.v₀ (expD L al.a.exp) ad'.PV (cfD x L) (_root_.GlobalTheory.HeightCounting.Fin3.placeMapLocal L l)` using `had'.symm ▸ ser`. Conclude with `⟨{ ad := ad' fi := _root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal_fi_e_heq L l hecke := _root_.GlobalTheory.T.hecke_expansion_local_of_levelC L l cHk := (by with_unfolding_all exact ((fun i b Q => (⟨l.b.Bs.cHk i b Q, pow_one _⟩ : ∃ u : ((Dof x).ntw.O i)ˣ, (_root_.GlobalT …`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonempty_nMore_of_xdAll {xd : ThData (Dof x)} (hxd : XdAll xd) : Nonempty (_root_.GlobalTheory.HeightCounting.RealExpansionExtraData (_root_.GlobalTheory.HeightCounting.Fin3.normalizedRowDatum l Sp Au ss al hLg Y hY) (datL x L).geo (xdD L xd)) := by
   obtain ⟨ad, had⟩ := _root_.GlobalTheory.T.exists_mtAd_psiVectorLocal_of_yRel L l Y hY
@@ -140,9 +140,9 @@ def localCharacterChoiceTwist : NchT w (oL x L).Z P.Wt (_root_.GlobalTheory.Heig
   chrPsi := (_root_.GlobalTheory.HeightCounting.NchAt.tie_of_true_alt (_root_.GlobalTheory.HeightCounting.Fin3.localAtData l Sp Au ss al hLg).nt).2
 include hY in
 /- English proof (translation)
-Take `⟨hX, ⟨z, intersectionNumber_baseChange, Y', Zr, tix⟩, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩` from `t`. Establish `e : z = datL x L` using `eq_of_heq hz`. Substitute `e` using the available equality. Establish `e' : Y' = Y` using `eq_of_heq ht`. Substitute `e'` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨mo⟩` from `_root_.GlobalTheory.HeightCounting.Fin3.nonempty_nMore_of_xdAll l Sp Au ss al hLg Y' hY hxd`. Conclude with `⟨⟨_root_.GlobalTheory.HeightCounting.Fin3.localAtData l Sp Au ss al hLg, _root_.GlobalTheory.HeightCounting.Fin3.normalizedRowDatum l Sp Au ss al hLg Y' hY, (by with_unfolding_all exact (l.sel :))⟩, ⟨(mo, ⟨bkL L⟩)⟩, fun cDep h => GlobalTheory.T.toricCharacterGridList_kept_localiz …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_core_and_listPin {xd : ThData (Dof x)} (hxd : XdAll xd) (t : RowsT K w (oL x L).Z P.Wt p0) (hz : HEq t.r.z (datL x L))
     (ht : HEq t.r.Y Y) : ∃ c : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceCore hL t (_root_.GlobalTheory.HeightCounting.Fin3.localCharacterChoiceTwist l Sp Au ss al hLg),
@@ -157,7 +157,7 @@ theorem exists_core_and_listPin {xd : ThData (Dof x)} (hxd : XdAll xd) (t : Rows
   exact ⟨⟨_root_.GlobalTheory.HeightCounting.Fin3.localAtData l Sp Au ss al hLg, _root_.GlobalTheory.HeightCounting.Fin3.normalizedRowDatum l Sp Au ss al hLg Y' hY, (by with_unfolding_all exact (l.sel :))⟩, ⟨(mo, ⟨bkL L⟩)⟩, fun cDep h => GlobalTheory.T.toricCharacterGridList_kept_localizedStage x L cDep h⟩
 omit l in
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨Y₀, HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_read_heq_of_eq {Z : w.Lt} {z z' : Dat (w.st Z) w.I P.hX T P.Wt} (e : z = z') {p : BaseLevelRowSide (w.D Z)}
     (Y₀ : Read z.R.toRealDat z.F.lv2 p) : ∃ Y₁ : Read z'.R.toRealDat z'.F.lv2 p, HEq Y₁ Y₀ := by
@@ -165,7 +165,7 @@ theorem exists_read_heq_of_eq {Z : w.Lt} {z z' : Dat (w.st Z) w.I P.hX T P.Wt} (
   exact ⟨Y₀, HEq.rfl⟩
 omit l in
 /- English proof (translation)
-The claim follows from `Step.trans GlobalTheory.Mem.R3.Rw.St.exists_rowsT (Step.of_all fun _ _ _ _ _ _ _ H w hs P => H w ⟨hs.1, ⟨P⟩⟩ P)`.
+A detailed English derivation is pending.
 -/
 theorem start_at_all_pre2 : StepW Start fun K _ _ _ w => ∀ P : Pre2 K w, RowsAt P :=
   Step.trans GlobalTheory.Mem.R3.Rw.St.exists_rowsT (Step.of_all fun _ _ _ _ _ _ _ H w hs P => H w ⟨hs.1, ⟨P⟩⟩ P)

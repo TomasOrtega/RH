@@ -34,13 +34,11 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.FullLevel
 
 /- English proof (translation)
-Establish `hA` using `l.A_pos`. Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations. Introduce `x hx`. Break down `hx with rfl | hx` into its components or cases. Establish `h2 : H.rt0 ^ 2 = algebraMap ℚ ℂ (-(H.d : ℚ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules. Establish `hi : IsIntegral ℚ (H.rt0 ^ 2)` using `by rw [h2]; exact isIntegral_algebraMap`. Conclude with `IsIntegral.of_pow two_pos hi`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Establish `hz : IsPrimitiveRoot (zeta l.A) l.A`. Unfold `zeta`. Conclude with `Complex.isPrimitiveRoot_exp l.A hA.ne'`. Use `IsIntegral.of_pow hA ?_` and prove the remaining obligations.
-
-Rewrite using `[hz.pow_eq_one]`. Conclude with `isIntegral_one`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_KA {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) :
     FiniteDimensional ℚ (KA l) := by
@@ -60,34 +58,32 @@ theorem finiteDimensional_KA {E : Type} [Field E] [NumberField E] [IsCMField E] 
     rw [hz.pow_eq_one]; exact isIntegral_one
 
 /- English proof (translation)
-Simplify using `only [constPt, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem constPt_comp' {k : Type} [Field k] {X Y : Scheme.{0}} (x : Sp (DualNumber k) ⟶ X)
     (f : X ⟶ Y) : constPt (x ≫ f) = constPt x ≫ f := by
   simp only [constPt, Category.assoc]
 
 /- English proof (translation)
-Take `⟨X, p, sX, sq⟩ : ∃ (X : Scheme.{0}) (p : X ⟶ U) (sX : X ⟶ Sp (KA l)), IsPullback p sX sU (spMap (algebraMap o (KA l)))` from `⟨_, _, _, IsPullback.of_hasPullback _ _⟩`. Establish `hqX : IsQProjOver sX` using `isQProjOver_of_isPullback_spMap _ sq hq`. Establish `hlft : LocallyOfFiniteType sX` using `lft_of_qproj hqX`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian sX`. Use `haveI : FiniteDimensional ℚ (KA l) := finiteDimensional_KA l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.IsAlgebraic ℚ (KA l) := Algebra.IsAlgebraic.of_finite ℚ (KA l)`. Take `⟨tX, htX⟩` from `tObj_pull o g l.A J b U X sU (sX ≫ spMap (algebraMap o (KA l))) p tU sq.w`. Take `⟨τX, hτX⟩` from `exists_isPEL_of_tmap E H D g J a bas l.A o b ρ U X sU (sX ≫ spMap (algebraMap o (KA l))) tU tX τU p sq.w htX hτ`. Take `⟨ob, hob⟩` from `ThetaToObj.exists_obj_under hL hL2 E H D g J a bas l o b ρ X sX tX τX hMA hbas hfr hρ hζ (Or.inr inferInstance) hτX`. Establish `hsep : ∀ (R : Type) [CommRing R] [IsLocalRing R] (x1 x2 : Sp R ⟶ X) (s' : Sp R ⟶ Sp o) (t' : TObj g l.A J b s'), TMap t' tX x1 → TMap t' tX x2 → x1 ≫ sX = x2 ≫ sX → x1 = x2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `R _ _ x1 x2 s' t' h1 h2 hs`. Use `sq.hom_ext ?_ hs` and prove the remaining obligations. Use `hinj R _ _ s' t' ?_ (TMap.comp h1 htX) (TMap.comp h2 htX)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, sq.w, ← Category.assoc, hs, Category.assoc]`. Use `⟨{ X := X, s := sX, qproj := hqX, smooth := ?_, univ := ob, rep := ?_, unram := ?_ }⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `smoothOfRelativeDimension_of_dim_of_directions_le (KA l) X sX D.dim hlft ?_ ?_` and prove the remaining obligations. Introduce `R _ _ x hx _ q hq' haveI : IsOpenImmersion (x ≫ sq.isoPullback.hom) := inferInstance`. Conclude with `dim_generic_chart sU _ hdim R (x ≫ sq.isoPullback.hom) q hq'`. Introduce `K' _ _ r β x hxs hdir`. Establish `hρsq : ρ ^ 2 = -(H.d : o)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `IsFractionRing.injective o (KA l)` to reduce the goal to its premises. Rewrite using `[map_pow, hρ, (baseKA l).ρ_sq]`. Simplify using the standard rewrite rules. Establish `hb : x ≫ sX ≫ spMap (algebraMap o (KA l)) = spMap ((algebraMap K' (TrivSqZeroExt K' (Fin r → K'))).comp (β.comp (algebraMap o (KA l))))`. Rewrite using `[← Category.assoc, hxs, ← spMap_comp]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t1, ht1⟩` from `tObj_pull o g l.A J b X _ (sX ≫ spMap (algebraMap o (KA l))) _ x tX hb`. Take `⟨τ1, hτ1⟩` from `exists_isPEL_of_tmap E H D g J a bas l.A o b ρ X _ (sX ≫ spMap (algebraMap o (KA l))) _ tX t1 τX x hb ht1 hτX`. Use `haveI : CharZero K' := charZero_of_hom (spMap β)`. Use `T.tangent_le_dim_alt hL hL2 hth E H D g J a w w' bas l.A o b ρ K' r (β.comp (algebraMap o (KA l))) t1 τ1 hw hw' hρsq hτ1 ?_` and prove the remaining obligations. Introduce `lam t' h1 h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hdir lam` to reduce the goal to its premises. Rewrite using `[constPt_comp']`. Use `hsep (DualNumber K') _ _ _ t' (TMap.comp h1 ht1) (TMap.comp h2 ht1) ?_` and prove the remaining obligations. Simplify `eq_constPt ((spMap (dirMap lam) ≫ x) ≫ sX)` using `only [constPt_comp']`. Introduce `S s' hS o'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t', ht'u, ht'p⟩` from `ObjTheta.exists_tObj hL hL2 E H D g J a bas l (KA l) o (baseKA l) b ρ (algebraMap o (KA l)) S s' o' hbas hρ hζ`. Establish `hch : ∀ (K : Type) [Field K], (Sp K ⟶ S) → CharZero K` using `fun K _ y => charZero_of_hom (y ≫ s')`. Take `⟨f, ⟨hf1, hf2⟩, hfu⟩` from `hrep S (s' ≫ spMap (algebraMap o (KA l))) t' o'.t hS ht'p hch`. Establish `hiff` using `fun (f' : S ⟶ X) => UnderMap.objMap_iff_tMap hL hL2 E H D g J a bas l (KA l) o (baseKA l) b X S sX s' (sX ≫ spMap (algebraMap o (KA l))) (s' ≫ spMap (algebraMap o (KA l))) ob o' tX t' f' hMA hgen hob ht'u`. Use `⟨sq.lift f s' hf1, ⟨sq.lift_snd _ _ _, (hiff _).mpr (TMap.cancel htX (by rw [sq.lift_fst]; exact hf2))⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `f2 ⟨hf2s, hm⟩`. Establish `htm : TMap t' tX f2` using `(hiff f2).mp hm`. Apply `sq.hom_ext` to reduce the goal to its premises. Rewrite using `[sq.lift_fst]`. Apply `hfu` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, TMap.comp htm htX⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, sq.w, ← Category.assoc, hf2s]`. Rewrite using `[sq.lift_snd, hf2s]`. Introduce `k _ x o' hm1 hm2`. Take `⟨t', ht'u, -⟩` from `ObjTheta.exists_tObj hL hL2 E H D g J a bas l (KA l) o (baseKA l) b ρ (algebraMap o (KA l)) _ (x ≫ sX) o' hbas hρ hζ`.
-
-Establish `hiff` using `fun (f' : Sp (DualNumber k) ⟶ X) => UnderMap.objMap_iff_tMap hL hL2 E H D g J a bas l (KA l) o (baseKA l) b X _ sX (x ≫ sX) (sX ≫ spMap (algebraMap o (KA l))) ((x ≫ sX) ≫ spMap (algebraMap o (KA l))) ob o' tX t' f' hMA hgen hob ht'u`. Use `hsep (DualNumber k) x (constPt x) _ t' ((hiff x).mp hm1) ((hiff _).mp hm2) ?_` and prove the remaining obligations. Simplify `eq_constPt (x ≫ sX)` using `only [constPt_comp']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem moduli_of_family (hL : Out.Laws) (hL2 : Out.Laws2)
     (hth : ∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen)
@@ -175,11 +171,11 @@ theorem moduli_of_family (hL : Out.Laws) (hL2 : Out.Laws2)
     simpa only [constPt_comp'] using eq_constPt (x ≫ sX)
 
 /- English proof (translation)
-Set `bs` to `NumberField.RingOfIntegers.basis E`. Use `⟨Option (Option (Module.Free.ChooseBasisIndex ℤ (𝓞 E))), inferInstance, fun i => Option.elim i u (fun i' => Option.elim i' u' (fun k => bs k)), none, some none, rfl, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x hx0`. Use `clear hx0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : x ∈ Submodule.span ℤ (Set.range bs)` using `by rw [bs.span_eq]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Conclude with `Subring.subset_closure ⟨some (some k), rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul n y _ hy => exact zsmul_mem hy n`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_generating_family {E : Type} [Field E] [NumberField E] (u u' : 𝓞 E) :
     ∃ (J : Type) (_ : Finite J) (a : J → 𝓞 E) (w w' : J), a w = u ∧ a w' = u' ∧ Subring.closure (Set.range a) = ⊤ := by
@@ -204,27 +200,25 @@ end GlobalTheory.ZM.FullLevel
 open GlobalTheory.ZM.FullLevel in
 
 /- English proof (translation)
-Introduce `hL hL2 hth hU E _ _ _ H D n hpq hn hodd`. Take `⟨bas, hbas⟩` from `ZM.exists_isSympBasis E H D`. Take `⟨J, hJ, a, w, w', hw, hw', hgen⟩` from `exists_generating_family (E := E) H.w0 (H.bar H.w0)`. Take `⟨Mat, κ, hGood⟩` from `T.isGoodThetaComplexClass_unitaryFullLevel hL hL2 hth hU E H D _ J a w w' bas hpq hbas hw hw' hgen`. Take `⟨j₁, hj₁⟩` from `hGood n hn hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j₂, hj₂⟩` from `T.nonempty_thetaFamily_over_open_closure hL hL2 _ J Mat κ n w w' hn hodd`. Take `⟨j₃, hj₃⟩` from `T.existsUnique_map_to_thetaFamily_openPart hL hL2 _ J Mat κ n w w' hn hodd`. Use `⟨max (max j₁ j₂) (max j₃ 1), ?_⟩` and prove the remaining obligations. Introduce `l hM hA`. Establish `hj1 : j₁ ≤ max (max j₁ j₂) (max j₃ 1)` using `le_max_of_le_left (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj2 : j₂ ≤ max (max j₁ j₂) (max j₃ 1)` using `le_max_of_le_left (le_max_right _ _)`. Establish `hj3 : j₃ ≤ max (max j₁ j₂) (max j₃ 1)` using `le_max_of_le_right (le_max_left _ _)`. Establish `hj0 : 1 ≤ max (max j₁ j₂) (max j₃ 1)` using `le_max_of_le_right (le_max_right _ _)`. Generalize the expression as in `max (max j₁ j₂) (max j₃ 1) = j at hj1 hj2 hj3 hj0 hA`. Take `⟨o, _, b, em, ρ, _, har, hfr, hem, hρ, hζ⟩` from `IntegersAway.exists_tBase_fractionRing E H l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Consider the cases of `l`. Simplify using `only at hA hM`. Substitute `hA` using the available equality. Establish `hM'` using `hM.symm`. Substitute `hM'` using the available equality.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `haveI := har.1`. Establish `hemρ : em ρ = H.rt0` using `by rw [← hem, hρ]; rfl`. Establish `h3n : 3 ≤ n`. Establish `h2` using `hn.two_le`. Establish `hne : n ≠ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `(Nat.not_odd_iff_even.mpr even_two) hodd`. Use linear arithmetic over natural numbers and integers. Establish `hN3 : 3 ≤ n ^ j` using `le_trans h3n (Nat.le_self_pow (by omega) n)`. Establish `hoddN : Odd (n ^ j)` using `hodd.pow`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGd` using `hj₁ j hj1 (n ^ j) rfl o b em ρ hemρ`. Take `⟨F⟩` from `hj₂ j hj2 o b em _ D.dim har hGd`. Take `⟨hqU, -, hredU, hinjU⟩` from `T.thetaClosureOpenFamily_qproj_flat_reduced_ext hL hL2 o _ n (n ^ j) J b em _ Mat κ F hoddN`. Establish `hqU' : IsQProjOver (F.U.ι ≫ F.Y.s)` using `hqU.resolve_right (not_not.mpr inferInstance)`. Use `haveI := hredU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := lft_of_qproj hqU'`. Use `haveI : IsLocallyNoetherian F.U.toScheme := LocallyOfFiniteType.isLocallyNoetherian (F.U.ι ≫ F.Y.s)`. Take `⟨τU, hτU⟩` from `T.exists_isPELTriple_of_dense_fibres hL hL2 hth E H D _ J a bas w w' hpq hbas hw hw' hgen _ o b em ρ F.U.toScheme (F.U.ι ≫ F.Y.s) F.univ hemρ har.2.2 F.dense`. Use `moduli_of_family hL hL2 hth D a w w' bas hbas hw hw' hgen _ (dvd_pow (dvd_pow_self n (by omega)) two_ne_zero) b ρ hρ hζ (F.U.ι ≫ F.Y.s) F.univ τU hqU' hτU (T.le_ringKrullDim_thetaFamily_genericFibre hL hL2 _ n (n ^ j) J Mat κ w w' o b em _ D.dim F hN3 hoddN har hGd) hinjU ?_` and prove the remaining obligations. Introduce `S s' t τ hS hP hch`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hj₃ j hj3 o b em _ D.dim har hGd F S s' t hS ?_ ?_` and prove the remaining obligations. Use `Dense.mono ?_ dense_univ` and prove the remaining obligations. Introduce `p _`. Use `haveI := hch _ (S.fromSpecResidueField p)`. Conclude with `⟨_, inferInstance, S.fromSpecResidueField p, ⟨IsLocalRing.closedPoint _, Scheme.fromSpecResidueField_apply p _⟩, T.pelObject_fibre_from_complex_charZero hL hL2 E H D _ J a w w' bas hpq hbas hw hw' hgen (n ^ j) o b em ρ hemρ har S s' t τ hP _ _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `K _ _ x t' hT haveI := hch K x`. Take `⟨K₀, _, β, i, e, t₀, tx, tc, -, -, htx, htx0, htc0, hC⟩` from `T.pelObject_fibre_from_complex_charZero hL hL2 E H D _ J a w w' bas hpq hbas hw hw' hgen (n ^ j) o b em ρ hemρ har S s' t τ hP K x`. Establish `s1` using `(hGd.shape tc hC).1`. Establish `s2` using `((shape_prim_pull_and_descend o _ _ J b Mat κ w w' _ _ _ _ _ t₀ tc htc0).2.2 K₀ rfl inferInstance inferInstance).1 s1`. Establish `s3` using `(shape_prim_pull_and_descend o _ _ J b Mat κ w w' _ _ _ _ _ t₀ tx htx0).1 s2`.
-
-Establish `htt : TMap t' tx (𝟙 _)` using `TMap.cancel htx (by rw [Category.id_comp]; exact hT)`. Conclude with `(shape_prim_pull_and_descend o _ _ J b Mat κ w w' _ _ _ _ _ tx t' htt).1 s3`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ZM.exists_moduli_prime_power_level : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (n : ℕ), 1 ≤ D.p + D.q → n.Prime → Odd n → ∃ j : ℕ, ∀ l : Level H, l.M = n → l.A = (n ^ j) ^ 2 → Nonempty (Moduli D l) := by
   intro hL hL2 hth hU E _ _ _ H D n hpq hn hodd

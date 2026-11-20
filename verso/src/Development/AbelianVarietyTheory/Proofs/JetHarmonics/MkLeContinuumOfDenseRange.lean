@@ -8,11 +8,11 @@ open Cardinal
 namespace GlobalTheory.PadicComplexIso
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R K`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis R L`. Establish `hL : ℵ₀ < #L` using `hKL ▸ hK`. Establish `hsK : #K = #s` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ hs hR hK`. Establish `htL : #L = #t` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht hR hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e⟩ : Nonempty (s ≃ t)` from `Cardinal.eq.1 (hsK.symm.trans (hKL.trans htL))`. Set `_` to `IsAlgClosed.isAlgClosure_of_transcendence_basis _ hs`. Set `_` to `IsAlgClosed.isAlgClosure_of_transcendence_basis _ ht`. Set `e0 : Algebra.adjoin R (Set.range ((↑) : s → K)) ≃ₐ[R] Algebra.adjoin R (Set.range ((↑) : t → L))` to `hs.1.aevalEquiv.symm.trans ((MvPolynomial.renameEquiv R e).trans ht.1.aevalEquiv)`. Use `⟨IsAlgClosure.equivOfEquiv K L e0.toRingEquiv, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsScalarTower.algebraMap_apply R (Algebra.adjoin R (Set.range ((↑) : s → K))) K, IsAlgClosure.equivOfEquiv_algebraMap, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ringEquiv_over (R K L : Type) [Field R] [Field K] [Field L] [IsAlgClosed K]
     [IsAlgClosed L] [Algebra R K] [Algebra R L] (hR : #R ≤ ℵ₀) (hK : ℵ₀ < #K) (hKL : #K = #L) :
@@ -33,11 +33,11 @@ theorem exists_ringEquiv_over (R K L : Type) [Field R] [Field K] [Field L] [IsAl
     AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Establish `hex : ∀ (y : Y) (n : ℕ), ∃ x, dist (f x) y < 1 / ((n : ℝ) + 1)`. Introduce `y n`. Take `⟨x, hx⟩` from `Metric.denseRange_iff.1 hf y (1 / ((n : ℝ) + 1)) Nat.one_div_pos_of_nat`. Conclude with `⟨x, by rw [dist_comm]; exact hx⟩`. Use `choose g hg using hex`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hlim : ∀ y, Filter.Tendsto (fun n => f (g y n)) Filter.atTop (nhds y)`. Introduce `y`. Rewrite using `[tendsto_iff_dist_tendsto_zero]`. Conclude with `squeeze_zero (fun n => dist_nonneg) (fun n => (hg y n).le) tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `hinj : Function.Injective g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y y' h`. Establish `h2` using `hlim y'`. Rewrite `h2` using `[← h]`. Conclude with `tendsto_nhds_unique (hlim y) h2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mk_le_continuum_of_denseRange {X Y : Type} [MetricSpace Y] (f : X → Y)
     (hf : DenseRange f) (hX : #X ≤ 𝔠) : #Y ≤ 𝔠 := by
@@ -62,9 +62,9 @@ theorem mk_le_continuum_of_denseRange {X Y : Type} [MetricSpace Y] (f : X → Y)
     _ = 𝔠 := Cardinal.continuum_power_aleph0
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `hQp : #ℚ_[q] ≤ 𝔠` using `mk_le_continuum_of_denseRange _ (Padic.denseRange_ratCast q) (by rw [Cardinal.mkRat]; exact Cardinal.aleph0_le_continuum)`. Establish `hAl : #(PadicAlgCl q) ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[q] (PadicAlgCl q)).trans (max_le hQp Cardinal.aleph0_le_continuum)`. Conclude with `mk_le_continuum_of_denseRange _ (UniformSpace.Completion.denseRange_coe (α := PadicAlgCl q)) hAl`. Take `⟨g, -, -, hg⟩` from `(PerfectSpace.univ_perfect (α := ℂ_[q])).exists_nat_bool_injection Set.univ_nonempty`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Cardinal.power_def, Cardinal.mk_bool, Cardinal.mk_nat, Cardinal.two_power_aleph0]`. Use `_ ≤ #ℂ_[q] := Cardinal.mk_le_of_injective hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_padicComplex (q : ℕ) [Fact q.Prime] : #ℂ_[q] = 𝔠 := by
   apply le_antisymm
@@ -82,9 +82,9 @@ theorem mk_padicComplex (q : ℕ) [Fact q.Prime] : #ℂ_[q] = 𝔠 := by
       _ ≤ #ℂ_[q] := Cardinal.mk_le_of_injective hg
 
 /- English proof (translation)
-Introduce `q _ lam`. Set `_ : Algebra (algebraicClosure ℚ ℂ) ℂ_[q]` to `lam.toAlgebra`. Establish `_ : Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ)` using `algebraicClosure.isAlgebraic ℚ ℂ`. Establish `hR : #(algebraicClosure ℚ ℂ) ≤ ℵ₀` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ (algebraicClosure ℚ ℂ)).trans (by rw [Cardinal.mkRat, max_self])`. Establish `hK : ℵ₀ < #ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`. Take `⟨e, he⟩` from `exists_ringEquiv_over (algebraicClosure ℚ ℂ) ℂ ℂ_[q] hR hK (by rw [Cardinal.mk_complex, mk_padicComplex])`. Conclude with `⟨e, fun x => he x⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_extending : ∀ (q : ℕ) [Fact q.Prime]
     (lam : algebraicClosure ℚ ℂ →+* ℂ_[q]),

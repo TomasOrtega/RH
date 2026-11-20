@@ -13,9 +13,9 @@ open NumberField GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.DegCmp Glob
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU hP hV u hu hu' hB hM Z Z'`. Establish `h1 : 0 < 1 - rhoB Dw u` using `sub_pos.2 (rhoOf_lt_one hu' hu)`. Establish `h2 : ∀ la, topDeg U Z' la = topDeg U Z la` using `fun la => by rw [topDeg, topDeg, hV Z' Z]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[delPrime, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hlow` using `GlobalTheory.T.cuspFormGrowth_le_imageDegree_lowerWeight E H Dw l Xo c r U hU Z (wtOf Dw u 0) (wtOf Dw (uPrime Dw u) 0) (even_wtOf u 0) (even_wtOf _ 0) (by rw [hP Z u hu]; exact ENNReal.ofReal_ne_top) (hB Z) (hM Z)`. Rewrite `hlow` using `[hP Z _ hu', ← ENNReal.ofReal_natCast]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (Nat.cast_nonneg _)).1 hlow`. Rewrite using `[delPrime_eq U Z' (vdm_pos hu).ne', mul_div_cancel_left₀ _ h1.ne', h2]`. Conclude with `GlobalTheory.DegTop.compDeg_le hP Z hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DegVal.compDeg_between : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), UnfAll U → Proport U → EqVolume U → ∀ u : GlobalTheory.AllWt.Weight Dw, (∀ τ, StrictAnti (u τ)) → (∀ τ, StrictAnti (uPrime Dw u τ)) → (∀ Z, BirOn U Z (wtOf Dw u 0)) → (∀ Z, ValMult U Z (wtOf Dw u 0) (wtOf Dw (uPrime Dw u) 0)) → ∀ Z Z' : Comp Xo c, delPrime U Z' u ≤ compDeg U Z (wtOf Dw u 0) ∧ (compDeg U Z (wtOf Dw u 0) : ℝ) ≤ delPrime U Z' u / (1 - rhoB Dw u) := by
   intro E _ _ _ H Dw l Xo c r U hU hP hV u hu hu' hB hM Z Z'

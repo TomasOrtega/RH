@@ -14,9 +14,9 @@ variable {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [A
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `hy : f (idem hπ hH v) ∈ fixed π' H` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`. Rewrite using `[← hf, GlobalTheory.LGrp.mem_fixed.1 (idem_mem hπ hH v) k hk]`. Establish `hk : v - idem hπ hH v ∈ twKer π H 1` using `(idem_eq_zero_iff hπ hH).1 (by`. Rewrite using `[map_sub, idem_of_mem hπ hH (idem_mem hπ hH v), sub_self])`. Establish `hle : twKer π H 1 ≤ (twKer π' H 1).comap f` using `Submodule.span_le.2 (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨u, z, rfl⟩`. Conclude with `Submodule.subset_span ⟨u, f z, by rw [map_sub, map_smul, hf]⟩)`. Establish `h0 : idem hπ' hH (f (v - idem hπ hH v)) = 0` using `(idem_eq_zero_iff hπ' hH).2 (hle hk)`. Rewrite `h0` using `[map_sub, map_sub, idem_of_mem hπ' hH hy, sub_eq_zero]`. Conclude with `h0.symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_map {π : Representation ℂ G V} {π' : Representation ℂ G W} (hπ : IsSmooth π) (hπ' : IsSmooth π')
     {H : Subgroup G} (hH : IsCompact (H : Set G)) (f : V →ₗ[ℂ] W) (hf : ∀ g v, f (π g v) = π' g (f v)) (v : V) :
@@ -37,21 +37,19 @@ variable {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)] [�
   {ρ : ∀ a, Representation ℂ (Γ a) (X a)} {U : ∀ a, Subgroup (Γ a)}
 
 /- English proof (translation)
-Establish `hS` using `isSmooth_piTensor hs`. Establish `h1 : ∀ (x : ∀ a, X a) (i : α) (y : X i), idem hS hC (PiTensorProduct.tprod ℂ (Function.update x i (idem (hs i) (hc i) y))) = idem hS hC (PiTensorProduct.tprod ℂ (Function.update x i y))` using `fun x i y => by`. Set `l : X i →ₗ[ℂ] ⨂[ℂ] a, X a` to `idem hS hC ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap x i`. Establish `hk : twKer (ρ i) (U i) 1 ≤ LinearMap.ker l` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨u, z, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show l _ = 0`. Rewrite using `[map_sub, MonoidHom.one_apply, Units.val_one, one_smul, sub_eq_zero]`. Establish `hu : Pi.mulSingle i (u : Γ i) ∈ Subgroup.pi Set.univ U` using `fun a _ => by show (Pi.mulSingle i (u : Γ i) : ∀ a, Γ a) a ∈ U a`. Distinguish the cases in `e : a = i`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne e]`. Conclude with `one_mem _`. Use `Eq.trans ?_ (idem_apply_mem hS hC hu (PiTensorProduct.tprod ℂ (Function.update x i z)))` and prove the remaining obligations. Rewrite using `[piTensor_tprod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show idem hS hC (PiTensorProduct.tprod ℂ _) = _`. Use `congr 2`. Use function extensionality and compare the values at `a`. Distinguish the cases in `e : a = i`. Substitute `e` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[e])`. Establish `h2 : l (idem (hs i) (hc i) y - y) = 0` using `hk ((idem_eq_zero_iff (hs i) (hc i)).1 (by`. Rewrite using `[map_sub, idem_of_mem _ _ (idem_mem _ _ _), sub_self]))`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `h2 : ∀ (x : ∀ a, X a) (s : Finset α), idem hS hC (PiTensorProduct.tprod ℂ (s.piecewise (fun a => idem (hs a) (hc a) (x a)) x)) = idem hS hC (PiTensorProduct.tprod ℂ x)` using `fun x s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.piecewise_insert, h1, ← ih, ← Finset.piecewise_eq_of_notMem s (fun a => idem (hs a) (hc a) (x a)) x hi, Function.update_eq_self]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2 x Finset.univ, Finset.piecewise_univ, idem_of_mem]`. Use `GlobalTheory.LGrp.mem_fixed.2 fun g hg => ?_` and prove the remaining obligations. Rewrite using `[piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
-
-Conclude with `GlobalTheory.LGrp.mem_fixed.1 (idem_mem _ _ _) _ (hg a trivial)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem idem_tprod (hs : ∀ a, IsSmooth (ρ a)) (hc : ∀ a, IsCompact (U a : Set (Γ a)))
     (hC : IsCompact (Subgroup.pi Set.univ U : Set (∀ a, Γ a))) (x : ∀ a, X a) :
@@ -109,15 +107,15 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `hfix : x ∈ fixed (twist ρ (detChar (Fin n) (absPow (w.adicCompletion E) s))) (KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun g hg => by`. Rewrite using `[twist_apply, detChar_apply, absPow_det_of_mem s hg, Units.val_one, one_smul]`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hx.2.1 g hg`. Use `⟨hx.1, hfix, by rw [Multiset.card_map, hx.2.2.1], fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SphGal.satEig_map_mul, mul_smul, ← hx.2.2.2 ϖ hϖ j hj, heckeVec, heckeVec, smul_finsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : Tj ℂ n (Ov E w) ϖ j c.out = 0`. Simplify using `[hc]`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_of_indicator_ne_zero hc`. Establish `hϖ0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Matrix.GeneralLinearGroup.det c.out = Matrix.GeneralLinearGroup.det a * Units.mk0 ϖ hϖ0 ^ j * Matrix.GeneralLinearGroup.det b`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c.out.val.det = a.val.det * _ * b.val.det`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, GlobalTheory.SphGal.det_diagJ ϖ hj]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : absPow (w.adicCompletion E) s (Units.mk0 ϖ hϖ0) = z` using `Units.ext (by`. Establish `: ordV E w ϖ = 1`. Rewrite using `[GlobalTheory.LGrp.BorelCompletion.ordV_eq, show Valued.v ϖ = _ from hϖ]`. Both sides reduce to the same expression. Rewrite using `[val_absPow_completion, hz, Units.val_mk0, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Rewrite using `[twist_apply, detChar_apply, e2, map_mul, map_mul, absPow_det_of_mem s ha, absPow_det_of_mem s hb, map_pow, e3, one_mul, mul_one, smul_comm, Units.val_pow_eq_pow_val]`.
+A detailed English derivation is pending.
 -/
 theorem isSatVecGL_twist {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} {x : V} {B : Multiset ℂˣ}
     (hx : IsSatVecGL w ρ x B) (s : ℂ) {z : ℂˣ} (hz : (z : ℂ) = (qV E w : ℂ) ^ (-s)) :
@@ -150,19 +148,17 @@ theorem isSatVecGL_twist {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion 
 variable {c : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n)
 
 /- English proof (translation)
-Establish `hKO : ∀ m, KGL w m = KO (w.adicCompletion E) (Fin m)` using `fun m => (SphCompletion.KO_completion w m).symm`. Establish `hf'` using `hf`. Rewrite `hf'` using `[hKO]`. Use `choose Z iZ mZ R β l y hR hβ hyS h1 hl using fun a => exists_model (w := w) (hx a).2.2.1`. Establish `hy : ∀ a, y a ∈ fixed (R a) (KO _ _)` using `fun a => hKO _ ▸ (hyS a).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF, hF1⟩` from `exists_fixed_apply_one (stdBlocks N h) (ρ := piTensor R) (x := PiTensorProduct.tprod ℂ y) fun g hg => by`. Rewrite using `[piTensor_tprod]`. Use `congr 1`. Conclude with `funext fun a => GlobalTheory.LGrp.mem_fixed.1 (hy a) _ (hg a)`. Take `⟨Y, hYe, hY⟩` from `exists_map_isSatVecGL h h1 hl hF hF1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hY` using `[funext hβ]`. Use `⟨h0, hf, hY.2.2.1, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Establish `hϖ0 : ϖ ≠ 0` using `fun e => by simp [IsUnifV, e] at hϖ`. Establish `hT` using `Tj_mem_hecke (n := n) hϖ j`. Establish `hK : IsCommensurated (KGL w n)` using `Final.GLintComm E w n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e1` using `(map_heckeVec (ρ := multiProd (stdBlocks N h) R) hK hT Y hYe F).trans (hY.2.2.2 ϖ hϖ j hj)`. Rewrite `hT`, `hK`, `e1`, the goal using `[hKO]`. Establish `hp : ∀ q : GL (Fin n) (w.adicCompletion E) ⧸ KO (w.adicCompletion E) (Fin n), ∃ p : parab (w.adicCompletion E) (stdBlocks N h), ((p : GL (Fin n) (w.adicCompletion E)) : _ ⧸ KO _ _) = q` using `fun q => by`. Take `⟨p, hp, u, hu, e⟩` from `(LeviInt.levi_integral_facts _ _ _ _ (stdBlocks N h)).2.2.2.2.2.2.2.2 q.out`. Conclude with `⟨⟨p, hp⟩, (QuotientGroup.eq.2 (by simpa [e] using hu)).trans q.out_eq'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `choose p hp using hp`. Establish `hω : ∀ q a, ∃ t : ℂ, Tj ℂ n (Ov E w) ϖ j (p q) ≠ 0 → idem (hs a) GlobalTheory.SplitFlip.isCompact_KO (π a (leviProj _ _ (p q) a) (x a)) = t • x a ∧ idem (hR a) GlobalTheory.SplitFlip.isCompact_KO (R a (leviProj _ _ (p q) a) (y a)) = t • y a` using `fun q a => by`. Distinguish the cases in `hq : Tj ℂ n (Ov E w) ϖ j (p q) = 0`. Conclude with `⟨0, fun e => absurd hq e⟩`. Take `⟨i1, i2⟩` from `intM_of_Tj hϖ0 hϖ hq`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, hl, e⟩` from `dosetInd_eq_Tj hϖ0 hϖ (g := leviProj _ _ (p q) a) (fun s t => i1 _ _) fun s t => by`. Use `i2 (stdBlocks N h ⟨a, s⟩) (stdBlocks N h ⟨a, t⟩)` as an intermediate fact. Rewrite using `[← Pi.inv_apply, ← map_inv]`. Rewrite `this`, the goal using `[Units.val_mul, tor_val, Matrix.diagonal_mul]`. Conclude with `this`.
-
-Conclude with `⟨_, fun _ => ⟨idem_of_isSatVecGL (hs a) (hx a) hϖ hl e, idem_of_isSatVecGL (hR a) (hyS a) hϖ hl e⟩⟩`. Use `choose ω hω using hω`. Rewrite `e1` using `[heckeVec_multiProd _ hK hT hR hF (hF1.trans (one_smul ℂ _).symm) p hp ω (fun q hq a => (hω q a hq).2), map_smul]`. Rewrite using `[heckeVec_multiProd _ hK hT hs hf' hr p hp ω (fun q hq a => (hω q a hq).1), smul_left_injective ℂ hY.1 e1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSatVecGL_multiProd {X : Fin c → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
     {π : ∀ a, Representation ℂ (GL (Fin (N a)) (w.adicCompletion E)) (X a)} (hs : ∀ a, IsSmooth (π a))

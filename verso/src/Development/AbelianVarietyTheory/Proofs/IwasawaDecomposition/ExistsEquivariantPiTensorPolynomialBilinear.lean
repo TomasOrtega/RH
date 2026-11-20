@@ -20,16 +20,16 @@ def prodRename [DecidableEq ι] :
     fun i => (rename (Prod.mk i) : MvPolynomial σ ℂ →ₐ[ℂ] _).toLinearMap
 
 /- English proof (translation)
-Simplify using `[prodRename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodRename_apply [DecidableEq ι] (P : ι → MvPolynomial σ ℂ) :
     prodRename P = ∏ i, rename (Prod.mk i) (P i) := by
   simp [prodRename]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single j]`. Conclude with `Finsupp.mapDomain_apply (Prod.mk_right_injective j) _ _`. Introduce `i _ hi`. Use `Finsupp.mapDomain_notin_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `hi (congrArg Prod.fst ht)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sum_mapDomain_apply (a : ι → σ →₀ ℕ) (j : ι) (s : σ) :
     (∑ i, Finsupp.mapDomain (Prod.mk i) (a i)) (j, s) = a j s := by
@@ -43,7 +43,7 @@ theorem sum_mapDomain_apply (a : ι → σ →₀ ℕ) (j : ι) (s : σ) :
   · simp
 
 /- English proof (translation)
-Simplify using `only [rename_monomial]`. Rewrite using `[monomial_sum_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_rename_monomial (a : ι → σ →₀ ℕ) :
     (∏ i, rename (Prod.mk i) (monomial (a i) (1 : ℂ)) : MvPolynomial (ι × σ) ℂ)
@@ -55,7 +55,7 @@ def res (α : ι × σ →₀ ℕ) (i : ι) : σ →₀ ℕ :=
   Finsupp.comapDomain (Prod.mk i) α (Prod.mk_right_injective i).injOn
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use extensionality with `s`. Conclude with `sum_mapDomain_apply a j s`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem res_sum (a : ι → σ →₀ ℕ) : res (∑ i, Finsupp.mapDomain (Prod.mk i) (a i)) = a := by
   funext j
@@ -63,7 +63,7 @@ theorem res_sum (a : ι → σ →₀ ℕ) : res (∑ i, Finsupp.mapDomain (Prod
   exact sum_mapDomain_apply a j s
 
 /- English proof (translation)
-Use extensionality with `⟨j, s⟩`. Conclude with `sum_mapDomain_apply (res α) j s`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sum_res (α : ι × σ →₀ ℕ) : ∑ i, Finsupp.mapDomain (Prod.mk i) (res α i) = α := by
   ext ⟨j, s⟩
@@ -77,9 +77,9 @@ def tens (I : ∀ i, MvPolynomial σ ℂ →ₗ[ℂ] A i →ₗ[ℂ] B i) :
   (basisMonomials (ι × σ) ℂ).constr ℂ fun α => PiTensorProduct.map fun i => I i (monomial (res α i) 1)
 
 /- English proof (translation)
-Establish `key : (tens I).compMultilinearMap prodRename = (PiTensorProduct.mapMultilinear ℂ A B).compLinearMap I`. Use `Module.Basis.ext_multilinear (fun _ => basisMonomials σ ℂ) fun a => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, prodRename_apply, coe_basisMonomials, MultilinearMap.compLinearMap_apply, PiTensorProduct.mapMultilinear_apply]`. Rewrite using `[prod_rename_monomial]`. Use `(basisMonomials (ι × σ) ℂ).constr_basis ℂ (fun α => PiTensorProduct.map fun i => I i (monomial (res α i) 1)) (∑ i, Finsupp.mapDomain (Prod.mk i) (a i))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[res_sum, coe_basisMonomials]`. Conclude with `this`. Use `congrArg (fun f => f P) key` as an intermediate fact. Simplify `this` using `[prodRename_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tens_prod (I : ∀ i, MvPolynomial σ ℂ →ₗ[ℂ] A i →ₗ[ℂ] B i) (P : ι → MvPolynomial σ ℂ) :
     tens I (∏ i, rename (Prod.mk i) (P i)) = PiTensorProduct.map fun i => I i (P i) := by
@@ -100,7 +100,7 @@ theorem tens_prod (I : ∀ i, MvPolynomial σ ℂ →ₗ[ℂ] A i →ₗ[ℂ] B 
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `choose l hl using fun i => Module.Projective.exists_dual_eq_one ℂ (hv i)`. Introduce `h0`. Use `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap l)) h0` as an intermediate fact. Simplify using `[hl] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tprod_ne_zero [Finite ι] (v : ∀ i, B i) (hv : ∀ i, v i ≠ 0) :
     PiTensorProduct.tprod ℂ v ≠ 0 := by
@@ -113,7 +113,7 @@ theorem tprod_ne_zero [Finite ι] (v : ∀ i, B i) (hv : ∀ i, v i ≠ 0) :
 
 omit [Fintype ι] in
 /- English proof (translation)
-Establish `key : (substF h g).comp (rename (Prod.mk i)) = (rename (Prod.mk i)).comp (subst2 (h i) (g i))`. Use `algHom_ext fun p => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, rename_X, substF_X, subst2_X, map_sum, map_mul, rename_C]`. Conclude with `congrArg (fun f => f P) key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem substF_rename {N n : ℕ} (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : ι → Matrix (Fin n) (Fin n) ℂ)
     (i : ι) (P : MvPolynomial (Fin N × Fin n) ℂ) :
@@ -124,19 +124,17 @@ theorem substF_rename {N n : ℕ} (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : �
   exact congrArg (fun f => f P) key
 
 /- English proof (translation)
-Introduce `ι _ N n A B _ _ _ _ I hI`. Use `⟨tens I, ?_, ?_⟩` and prove the remaining obligations. Establish `hex : ∀ i, ∃ P v, I i P v ≠ 0`. Introduce `i`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hc`. Conclude with `hI i (LinearMap.ext fun P => LinearMap.ext fun v => hc P v)`. Use `choose P v hPv using hex`. Introduce `h0`. Establish `h1` using `tens_prod I P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h0]`. Establish `h2` using `congrArg (fun f => f (PiTensorProduct.tprod ℂ v)) h1`. Simplify using `only [LinearMap.zero_apply, PiTensorProduct.map_tprod] at h2`. Conclude with `tprod_ne_zero _ hPv h2.symm`. Introduce `c h g a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ Q : ι → MvPolynomial (Fin N × Fin n) ℂ, (tens I ((∏ i, c i) • substF h g (∏ i, rename (Prod.mk i) (Q i)))) ∘ₗ PiTensorProduct.map a = PiTensorProduct.map b ∘ₗ tens I (∏ i, rename (Prod.mk i) (Q i))`. Introduce `Q`. Establish `e : (∏ i, c i) • substF h g (∏ i, rename (Prod.mk i) (Q i)) = ∏ i, rename (Prod.mk i) (c i • subst2 (h i) (g i) (Q i))`. Simplify using `only [map_prod, substF_rename, map_smul, Finset.prod_smul]`. Rewrite using `[e, tens_prod, tens_prod, ← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `LinearMap.ext fun v => hab i (Q i) v`. Introduce `P x`. Proceed by induction on `P using MvPolynomial.induction_on' with`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `monomial α r`. Establish `e : (monomial α r : MvPolynomial (ι × Fin N × Fin n) ℂ) = r • ∏ i, rename (Prod.mk i) (monomial (res α i) (1 : ℂ))`. Rewrite using `[prod_rename_monomial, sum_res, smul_monomial, smul_eq_mul, mul_one]`. Use `congrArg (fun f => f x) (key fun i => monomial (res α i) 1)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`.
-
-Rewrite using `[e, map_smul (substF h g), smul_comm, map_smul (tens I), LinearMap.smul_apply, this, map_smul (tens I), LinearMap.smul_apply, map_smul]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, smul_add, map_add, LinearMap.add_apply, hp, hq, map_add (tens I), LinearMap.add_apply, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tensor : ∀ (ι : Type) [Fintype ι] (N n : ℕ) (A B : ι → Type) [∀ i, AddCommGroup (A i)] [∀ i, Module ℂ (A i)] [∀ i, AddCommGroup (B i)] [∀ i, Module ℂ (B i)] (I : ∀ i, MvPolynomial (Fin N × Fin n) ℂ →ₗ[ℂ] A i →ₗ[ℂ] B i), (∀ i, I i ≠ 0) → ∃ It : MvPolynomial (ι × Fin N × Fin n) ℂ →ₗ[ℂ] (⨂[ℂ] i, A i) →ₗ[ℂ] ⨂[ℂ] i, B i, It ≠ 0 ∧ ∀ (c : ι → ℂ) (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : ι → Matrix (Fin n) (Fin n) ℂ) (a : ∀ i, A i →ₗ[ℂ] A i) (b : ∀ i, B i →ₗ[ℂ] B i), (∀ i P v, I i (c i • subst2 (h i) (g i) P) (a i v) = b i (I i P v)) → ∀ P x, It ((∏ i, c i) • substF h g P) (PiTensorProduct.map a x) = PiTensorProduct.map b (It P x) := by
   intro ι _ N n A B _ _ _ _ I hI

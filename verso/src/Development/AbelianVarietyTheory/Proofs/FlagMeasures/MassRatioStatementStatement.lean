@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusH
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MassAtRecord.massRatio_at_record` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMassRatioStatement.lean&line=8#L8)
 -/

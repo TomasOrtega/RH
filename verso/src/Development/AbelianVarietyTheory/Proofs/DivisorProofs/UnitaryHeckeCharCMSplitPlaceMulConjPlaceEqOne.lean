@@ -9,11 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.SplitChar
 
 /- English proof (translation)
-Introduce `E _ _ _ μ e h w u hne hunder k`. Establish `hc : GlobalTheory.Mem.Chr.ConjPl (IsCMField.complexConj E).toRingEquiv u w`. Establish `hw : w ∈ aboveF (L` using `E) (maximalRealSubfield E) (u.under (𝓞 (maximalRealSubfield E))) := by`. Simplify using `[aboveF, hunder]`. Conclude with `((GlobalTheory.CuspRep.NormTriv.mem_aboveF_iff u w).1 hw).resolve_left (Ne.symm hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.CuspRep.NormTriv.normFin_loc _ μ hc k`. Use `(Eq.trans ?_ h1.symm).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.CuspRep.NormTriv.normFin, MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.id_apply, map_mul, GlobalTheory.BCT.MuProps.finId_conjFin, ← GlobalTheory.PolChar.ideleConj_eq]`. Rewrite using `[map_mul]`.
-
-Conclude with `GlobalTheory.BCT.MuProps.mu_mul_conj h _`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_mul_locK_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (μ : HChar E) (e : InfinitePlace E → ℤ), IsMu μ e → ∀ w u : Pl E, u ≠ w → u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) → ∀ k : Eˣ, μ.locK u k * μ.locK w (Units.map (MonoidHomClass.toMonoidHom (IsCMField.complexConj E)) k) = 1 := by
   intro E _ _ _ μ e h w u hne hunder k

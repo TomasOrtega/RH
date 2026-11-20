@@ -14,15 +14,15 @@ open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq cob UnrOK IsLawOfLog)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension cW wpNum wpDen uSer)
 
 /- English proof (translation)
-Introduce `K _ l hl`. Use extensionality with `n`. Unfold `Formalism.L2.Th1.CM.ltLog lgF`. Rewrite using `[PowerSeries.coeff_mk, PowerSeries.coeff_mk]`. Establish `h1 : 1 < l ^ 2` using `by nlinarith`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs with h`. Establish `hs` using `Nat.find_spec h`. Rewrite using `[Finset.sum_eq_single (Nat.find h)]`. Rewrite using `[if_pos hs]`. Introduce `j _ hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `hj'`. Conclude with `hj (Nat.pow_right_injective h1 (hj'.symm.trans hs))`. Introduce `hn`. It suffices to derive a contradiction.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hn` to reduce the goal to its premises. Rewrite using `[Finset.mem_range]`. Establish `h2 : Nat.find h < (l ^ 2) ^ Nat.find h` using `Nat.lt_pow_self h1`. Conclude with `Nat.lt_succ_of_lt (lt_of_lt_of_eq h2 hs.symm)`. Use `symm`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[if_neg]`. Introduce `hj`. Conclude with `h ⟨j, hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lubin_tate_log_is_artin_hasse : LtLogIsLgF := by
   intro K _ l hl
@@ -58,7 +58,7 @@ section Maps
 variable {K K' : Type} [Field K] [Field K'] (φ : K →+* K')
 
 /- English proof (translation)
-Unfold `cW`. Rewrite using `[Nat.strongRecOn_eq]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cW_eq (g2 g3 : K) (k : ℕ) :
     cW g2 g3 k =
@@ -72,11 +72,11 @@ theorem cW_eq (g2 g3 : K) (k : ℕ) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Rewrite using `[cW_eq, cW_eq (φ g2) (φ g3) k]`. Use `split_ifs with h2 h3 h4`. Rewrite using `[map_div₀, map_ofNat]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_ofNat]`. Rewrite using `[map_mul, map_div₀, map_mul, map_add, map_sub, map_mul, map_natCast, map_one, map_sum]`. Simplify using `only [map_ofNat]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm` using `m.isLt`. Rewrite using `[map_mul, ih (m.val + 2) (by omega), ih (k - (m.val + 2)) (by omega)]`. Conclude with `map_zero φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cW_map (g2 g3 : K) (k : ℕ) : φ (cW g2 g3 k) = cW (φ g2) (φ g3) k := by
   induction k using Nat.strong_induction_on with
@@ -94,9 +94,7 @@ theorem cW_map (g2 g3 : K) (k : ℕ) : φ (cW g2 g3 k) = cW (φ g2) (φ g3) k :=
     · exact map_zero φ
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map]`. Unfold `wpNum`. Rewrite using `[PowerSeries.coeff_mk, PowerSeries.coeff_mk]`. Use `split_ifs`.
-
-Conclude with `map_one φ`. Conclude with `cW_map φ g2 g3 _`. Conclude with `map_zero φ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wpNum_map (g2 g3 : K) : PowerSeries.map φ (wpNum g2 g3) = wpNum (φ g2) (φ g3) := by
   ext n
@@ -109,9 +107,9 @@ theorem wpNum_map (g2 g3 : K) : PowerSeries.map φ (wpNum g2 g3) = wpNum (φ g2)
   · exact map_zero φ
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map]`. Unfold `wpDen`. Rewrite using `[PowerSeries.coeff_mk, PowerSeries.coeff_mk]`. Use `split_ifs`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one φ`. Rewrite using `[map_mul, map_neg, map_sub, map_natCast, map_one, cW_map]`. Conclude with `map_zero φ`.
+A detailed English derivation is pending.
 -/
 theorem wpDen_map (g2 g3 : K) : PowerSeries.map φ (wpDen g2 g3) = wpDen (φ g2) (φ g3) := by
   ext n
@@ -124,7 +122,7 @@ theorem wpDen_map (g2 g3 : K) : PowerSeries.map φ (wpDen g2 g3) = wpDen (φ g2)
   · exact map_zero φ
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Unfold `wpDen`. Rewrite using `[PowerSeries.coeff_mk, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_wpDen (g2 g3 : K) : PowerSeries.constantCoeff (wpDen g2 g3) = 1 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
@@ -134,7 +132,7 @@ theorem cc_wpDen (g2 g3 : K) : PowerSeries.constantCoeff (wpDen g2 g3) = 1 := by
 variable [CharZero K] [CharZero K']
 
 /- English proof (translation)
-Unfold `uSer`. Rewrite using `[map_mul, map_mul, PowerSeries.map_X, Formalism.L2.Th1.B.Map.map_inv' φ (by rw [cc_wpDen]; exact one_ne_zero), wpNum_map, wpDen_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uSer_map (g2 g3 : K) : PowerSeries.map φ (uSer g2 g3) = uSer (φ g2) (φ g3) := by
   unfold uSer
@@ -142,14 +140,14 @@ theorem uSer_map (g2 g3 : K) : PowerSeries.map φ (uSer g2 g3) = uSer (φ g2) (�
     Formalism.L2.Th1.B.Map.map_inv' φ (by rw [cc_wpDen]; exact one_ne_zero), wpNum_map, wpDen_map]
 
 /- English proof (translation)
-Rewrite using `[map_mul, Pair.cc_lgF hl, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_arg {l : ℕ} (hl : 2 ≤ l) (ε : K) :
     PowerSeries.constantCoeff (PowerSeries.C ε * lgF K l) = 0 := by
   rw [map_mul, Pair.cc_lgF hl, mul_zero]
 
 /- English proof (translation)
-Unfold `thetaS`. Rewrite using `[Formalism.L2.Th1.B.Map.map_psubst' φ (cc_arg hl ε), uSer_map, map_mul, PowerSeries.map_C, Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_lgF]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaS_map {l : ℕ} (hl : 2 ≤ l) (g2 g3 ε : K) :
     PowerSeries.map φ (thetaS l g2 g3 ε) = thetaS l (φ g2) (φ g3) (φ ε) := by
@@ -158,9 +156,9 @@ theorem thetaS_map {l : ℕ} (hl : 2 ≤ l) (g2 g3 ε : K) :
     Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_lgF]
 
 /- English proof (translation)
-Establish `h1 : PowerSeries.constantCoeff (PowerSeries.subst (PowerSeries.C ε * lgF K l) (Formalism.L2.Th1.B.sigS (Formalism.L2.Th1.A.wpReg (Formalism.L2.Th1.A.shortW g2 g3)))) = 0` using `Pair.cc_ps (τ := Unit) (cc_arg hl ε) (Formalism.L2.Th1.B.Map.cc_sigS _)`. Establish `h2 : PowerSeries.constantCoeff (Formalism.L2.Th1.B.lU (lgF K l) - 1) = 0`. Rewrite using `[map_sub, map_one, ← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Unfold `Formalism.L2.Th1.B.lU`. Rewrite using `[PowerSeries.coeff_mk, zero_add, Formalism.InvariantFactorPaths.G7.FormalGroupLaws.coeff_one_lgF l hl, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : PowerSeries.constantCoeff (Formalism.L2.Th1.B.fLog (Formalism.L2.Th1.B.lU (lgF K l))) = 0` using `Pair.cc_ps (τ := Unit) h2 PowerSeries.constantCoeff_log`. Unfold `phFF`. Rewrite using `[map_sub, map_add, map_neg, map_mul, map_pow, h1, h3, cc_arg hl ε]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_phFF {l : ℕ} (hl : 2 ≤ l) (g2 g3 s2 ε : K) :
     PowerSeries.constantCoeff (phFF l g2 g3 s2 ε) = 0 := by
@@ -189,9 +187,9 @@ Both sides reduce to the same expression.
 theorem norm_coe (x : MaximalUnramifiedExtension l) : ‖(MaximalUnramifiedExtension l).subtype x‖ = ‖x‖ := rfl
 
 /- English proof (translation)
-Take `⟨g2, g3, hg⟩` from `h2 dK L hsq h4 hcm l h5 hd ι`. Take `⟨ε, hε, hε1, hc⟩` from `h3 dK L hsq h4 hcm l h5 hd hin ι g2 g3 hg`. Use `⟨⟨g2, hg.1⟩, ⟨g3, hg.2.1⟩, ⟨ε, hε⟩, hg, hε1, fun n => ?_⟩` and prove the remaining obligations. Establish `hm` using `thetaS_map (MaximalUnramifiedExtension l).subtype (l := l) (by omega) ⟨g2, hg.1⟩ ⟨g3, hg.2.1⟩ ⟨ε, hε⟩`. Establish `hn` using `(hc n).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hn` using `[lubin_tate_log_is_artin_hasse ℂ_[l] l (by omega)]`. Rewrite using `[← norm_coe, ← PowerSeries.coeff_map, hm]`. Conclude with `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model (h2 : Formalism.L2.Th1.CM.CM2) (h3 : Formalism.L2.Th1.CM.CM3) (dK : ℕ) (L : PeriodPair)
     (hsq : Squarefree dK) (h4 : dK % 4 = 3) (hcm : Formalism.L2.Th1.CM.HasCMBy dK L) (h5 : 5 ≤ l)
@@ -208,7 +206,7 @@ theorem model (h2 : Formalism.L2.Th1.CM.CM2) (h3 : Formalism.L2.Th1.CM.CM3) (dK 
   exact hn
 
 /- English proof (translation)
-Establish `h1` using `hF1 (MaximalUnramifiedExtension l) l hσ.1 hσ.2.1 hσ.2.2.1 F hF g2 g3 s2 ε hg2 hg3 hε hth`. Establish `h2` using `second_level_of_norm_holds (MaximalUnramifiedExtension l) l σ hσ F hF _ (cc_phFF hσ.1.two_le g2 g3 s2 ε) h1 hN`. Conclude with `⟨h1, h2.1, h2.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ffs (hF1 : CurveExponentCoboundaryCocycle) (g2 g3 ε : MaximalUnramifiedExtension l) (hg2 : ‖g2‖ ≤ 1) (hg3 : ‖g3‖ ≤ 1)
     (hε : ‖ε‖ = 1) (hth : ∀ n, ‖PowerSeries.coeff n (thetaS l g2 g3 ε)‖ ≤ 1)
@@ -224,9 +222,9 @@ theorem ffs (hF1 : CurveExponentCoboundaryCocycle) (g2 g3 ε : MaximalUnramified
   exact ⟨h1, h2.1, h2.2.2⟩
 
 /- English proof (translation)
-Establish `h1 : 1 < l ^ 2` using `by have := hl.out.two_le; nlinarith`. Use `kurRoots l (l ^ 2 - 1) (by omega) fun hd => ?_` and prove the remaining obligations. Establish `h2 : l ∣ l ^ 2` using `dvd_pow_self l two_ne_zero`. Establish `h3 : l ∣ 1`. Use `(Nat.dvd_sub h2 hd)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.sub_sub_self h1.le]`. Then use the resulting hypothesis. Conclude with `hl.out.one_lt.ne' (Nat.dvd_one.1 h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_root2 : ∃ ζ : MaximalUnramifiedExtension l, IsPrimitiveRoot ζ (l ^ 2 - 1) := by
   have h1 : 1 < l ^ 2 := by have := hl.out.two_le; nlinarith
@@ -238,7 +236,7 @@ theorem exists_root2 : ∃ ζ : MaximalUnramifiedExtension l, IsPrimitiveRoot ζ
   exact hl.out.one_lt.ne' (Nat.dvd_one.1 h3)
 
 /- English proof (translation)
-Establish `h1 : 1 < l ^ 2` using `by have := hl.out.two_le; nlinarith`. Conclude with `IsAlgClosed.exists_pow_nat_eq _ (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pi : ∃ ϖ : ℂ_[l], ϖ ^ (l ^ 2 - 1) = (l : ℂ_[l]) := by
   have h1 : 1 < l ^ 2 := by have := hl.out.two_le; nlinarith
@@ -249,11 +247,11 @@ end Field
 end FAux
 
 /- English proof (translation)
-Introduce `l _ h5`. Take `⟨σ, hσ, -⟩` from `kurFrob l (by omega)`. Use `⟨σ, hσ, (Formalism.InvariantFactorPaths.G7.Top.lawExists (MaximalUnramifiedExtension l) l hσ.1 hσ.2.2.1).1, ?_⟩` and prove the remaining obligations. Introduce `d _ hd`. Establish `hl2` using `hσ.1.two_le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0` using `NeZero.ne d`. Establish `h1 : 1 < l ^ d` using `Nat.one_lt_pow hd0 hσ.1.one_lt`. Take `⟨ζ, hζ⟩` from `kurRoots l (l ^ d - 1) (by omega) (fun hdv => by`. Establish `h2 : l ∣ l ^ d` using `dvd_pow_self l hd0`. Establish `h3 : l ∣ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.dvd_sub h2 hdv)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self h1.le]`. Then use the resulting hypothesis. Conclude with `hσ.1.one_lt.ne' (Nat.dvd_one.1 h3))`. Take `⟨om, oms, h1, h2⟩` from `trDualExists (MaximalUnramifiedExtension l) l d σ hσ hd ζ hζ`. Conclude with `⟨ζ, om, oms, hζ, h1, h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem complex_multiplication_field_data : FieldDataCM := by
   intro l _ h5
@@ -273,9 +271,9 @@ theorem complex_multiplication_field_data : FieldDataCM := by
   exact ⟨ζ, om, oms, hζ, h1, h2⟩
 
 /- English proof (translation)
-Introduce `h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Use `⟨g2, g3, ε, hg, hε, hth, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF s2 hN`. Take `⟨a1, a2, -⟩` from `FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `thmAEntryOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2`.
+A detailed English derivation is pending.
 -/
 theorem ThmAEntryCM_of (hF1 : CurveExponentCoboundaryCocycle) : ThmAEntryCM := by
   intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι
@@ -286,9 +284,9 @@ theorem ThmAEntryCM_of (hF1 : CurveExponentCoboundaryCocycle) : ThmAEntryCM := b
   exact thmAEntryOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2
 
 /- English proof (translation)
-Introduce `h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Use `⟨g2, g3, ε, hg, hε, hth, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF s2 hN`. Take `⟨a1, a2, -⟩` from `FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `thmAGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2`.
+A detailed English derivation is pending.
 -/
 theorem ThmAGaussCM_of (hF1 : CurveExponentCoboundaryCocycle) : ThmAGaussCM := by
   intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι
@@ -299,9 +297,9 @@ theorem ThmAGaussCM_of (hF1 : CurveExponentCoboundaryCocycle) : ThmAGaussCM := b
   exact thmAGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2
 
 /- English proof (translation)
-Introduce `h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Use `⟨g2, g3, ε, hg, hε, hth, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF s2 hN`. Take `⟨a1, a2, a3⟩` from `FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `oneLetterGaussOfF l (MaximalUnramifiedExtension l) σ hσ (MaximalUnramifiedExtension l).subtype (FAux.norm_coe l) F hF _ a1 a2 (FAux.exists_root2 l) _ a3`.
+A detailed English derivation is pending.
 -/
 theorem OneLetterGaussCM_of (hF1 : CurveExponentCoboundaryCocycle) : OneLetterGaussCM := by
   intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι
@@ -313,9 +311,9 @@ theorem OneLetterGaussCM_of (hF1 : CurveExponentCoboundaryCocycle) : OneLetterGa
     (FAux.exists_root2 l) _ a3
 
 /- English proof (translation)
-Introduce `h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `FAux.model l h2 h3 dK L hsq h4 hcm h5 hd hin ι`. Use `⟨g2, g3, ε, hg, hε, hth, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF s2 hN ν r0 r1 _ om oms`. Take `⟨a1, a2, -⟩` from `FAux.ffs l hF1 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: CompleteSpace (MaximalUnramifiedExtension l)` using `kurComplete l`. Conclude with `kernelOfF l (MaximalUnramifiedExtension l) σ hσ (FAux.exists_root2 l) F hF _ a1 a2 ℂ_[l] (MaximalUnramifiedExtension l).subtype ν r0 r1 (FAux.norm_coe l) (FAux.exists_pi l) om oms`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem KernelCM_of (hF1 : CurveExponentCoboundaryCocycle) : KernelCM := by
   intro h2 h3 dK L hsq h4 hcm l _ h5 hd hin ι

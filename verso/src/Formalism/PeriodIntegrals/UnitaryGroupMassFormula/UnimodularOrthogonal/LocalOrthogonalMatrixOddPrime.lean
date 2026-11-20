@@ -20,7 +20,7 @@ def q {n : ℕ} (H : Matrix (Fin n) (Fin n) S) (v : Fin n → S) : S :=
   ∑ l, (∑ k, v k * H k l) * star (v l)
 
 /- English proof (translation)
-Simplify using `only [q, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem q_smul {n : ℕ} (H : Matrix (Fin n) (Fin n) S) (u : S) (v : Fin n → S) :
     q H (u • v) = u * star u * q H v := by
@@ -29,14 +29,14 @@ theorem q_smul {n : ℕ} (H : Matrix (Fin n) (Fin n) S) (u : S) (v : Fin n → S
   ring
 
 /- English proof (translation)
-Rewrite using `[← conjTranspose_apply, hH]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_eq_of_herm {n : ℕ} {H : Matrix (Fin n) (Fin n) S} (hH : Hᴴ = H) (k l : Fin n) :
     star (H k l) = H l k := by
   rw [← conjTranspose_apply, hH]
 
 /- English proof (translation)
-Simplify using `only [q, star_sum, star_mul', star_star, star_eq_of_herm hH, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem q_fixed {n : ℕ} {H : Matrix (Fin n) (Fin n) S} (hH : Hᴴ = H) (v : Fin n → S) :
     star (q H v) = q H v := by
@@ -46,21 +46,21 @@ theorem q_fixed {n : ℕ} {H : Matrix (Fin n) (Fin n) S} (hH : Hᴴ = H) (v : Fi
   ring
 
 /- English proof (translation)
-Simplify using `only [mul_apply, q, conjTranspose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cong_apply_self {n : ℕ} (P H : Matrix (Fin n) (Fin n) S) (a : Fin n) :
     (P * H * Pᴴ) a a = q H (P a) := by
   simp only [mul_apply, q, conjTranspose_apply]
 
 /- English proof (translation)
-Simplify using `[conjTranspose_mul, hH, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_cong {n : ℕ} (P : Matrix (Fin n) (Fin n) S) {H : Matrix (Fin n) (Fin n) S} (hH : Hᴴ = H) :
     (P * H * Pᴴ)ᴴ = P * H * Pᴴ := by
   simp [conjTranspose_mul, hH, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[det_mul, det_mul, det_conjTranspose]`. Conclude with `(hP.mul hH).mul hP.star`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_cong {n : ℕ} {P H : Matrix (Fin n) (Fin n) S} (hP : IsUnit P.det) (hH : IsUnit H.det) :
     IsUnit (P * H * Pᴴ).det := by
@@ -68,9 +68,9 @@ theorem det_cong {n : ℕ} {P H : Matrix (Fin n) (Fin n) S} (hP : IsUnit P.det) 
   exact (hP.mul hH).mul hP.star
 
 /- English proof (translation)
-Establish `hup : (updateRow (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) S) 0 w).IsUpperTriangular`. Introduce `i j hij`. Establish `hi : i ≠ 0`. Introduce and unpack `rfl`. Conclude with `Fin.not_lt_zero _ hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[updateRow_ne hi]`. Conclude with `one_apply_ne (ne_of_lt hij).symm`. Rewrite using `[det_of_isUpperTriangular hup, Fin.prod_univ_succ]`. Simplify using `[updateRow_ne (Fin.succ_ne_zero _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_updateRow_zero {n : ℕ} (w : Fin (n + 1) → S) :
     (updateRow (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) S) 0 w).det = w 0 := by
@@ -89,11 +89,11 @@ def elim {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) S) : Matrix (Fin (n +
     fun i : Fin n => (Fin.cons (-A i.succ 0) (Pi.single i 1 : Fin n → S) : Fin (n + 1) → S))
 
 /- English proof (translation)
-Establish `hlow : (elim A).IsLowerTriangular`. Introduce `i j hij`. Establish `hij' : i < j` using `OrderDual.toDual_lt_toDual.mp hij`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨i, rfl⟩` into its components or cases. Establish `hj : j ≠ 0` using `(ne_of_lt hij').symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[elim, Pi.single_apply, hj]`. Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨j, rfl⟩` into its components or cases. Conclude with `absurd hij' (Fin.not_lt_zero _)`. Establish `: j ≠ i` using `(ne_of_lt (Fin.succ_lt_succ_iff.mp hij')).symm`. Simplify using `[elim, Pi.single_apply, this]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_of_isLowerTriangular _ hlow, Fin.prod_univ_succ]`. Simplify using `[elim]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_elim {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) S) : (elim A).det = 1 := by
   have hlow : (elim A).IsLowerTriangular := by
@@ -110,14 +110,14 @@ theorem det_elim {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) S) : (elim A)
   simp [elim]
 
 /- English proof (translation)
-Simplify using `[elim, mul_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem elimination_mul_first_row {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) S) (b : Fin (n + 1)) :
     (elim A * A) 0 b = A 0 b := by
   simp [elim, mul_apply, Pi.single_apply]
 
 /- English proof (translation)
-Break down `Fin.eq_zero_or_eq_succ a with rfl | ⟨i, rfl⟩` into its components or cases. Simplify using `[elimination_mul_first_row, h]`. Simplify using `[elim, mul_apply, Fin.sum_univ_succ, h, Pi.single_apply, Fin.succ_ne_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem elim_mul_col {n : ℕ} {A : Matrix (Fin (n + 1)) (Fin (n + 1)) S} (h : A 0 0 = 1) (a : Fin (n + 1)) :
     (elim A * A) a 0 = if a = 0 then 1 else 0 := by
@@ -126,7 +126,7 @@ theorem elim_mul_col {n : ℕ} {A : Matrix (Fin (n + 1)) (Fin (n + 1)) S} (h : A
   · simp [elim, mul_apply, Fin.sum_univ_succ, h, Pi.single_apply, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Establish `e1 : (elim A * A * (elim A)ᴴ) 0 b = (A * (elim A)ᴴ) 0 b`. Rewrite using `[mul_apply (M := elim A * A), mul_apply (M := A)]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [elimination_mul_first_row]`. Rewrite using `[e1, show A * (elim A)ᴴ = (elim A * A)ᴴ by rw [conjTranspose_mul, hA], conjTranspose_apply, elim_mul_col h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem row0 {n : ℕ} {A : Matrix (Fin (n + 1)) (Fin (n + 1)) S} (hA : Aᴴ = A) (h : A 0 0 = 1) (b : Fin (n + 1)) :
     (elim A * A * (elim A)ᴴ) 0 b = if b = 0 then 1 else 0 := by
@@ -138,7 +138,7 @@ theorem row0 {n : ℕ} {A : Matrix (Fin (n + 1)) (Fin (n + 1)) S} (hA : Aᴴ = A
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[det_succ_row_zero, Fin.sum_univ_succ]`. Simplify using `[h, Fin.succ_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_of_first_row_single {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) S) (h : ∀ b, M 0 b = if b = 0 then 1 else 0) :
     M.det = (M.submatrix Fin.succ Fin.succ).det := by
@@ -150,18 +150,18 @@ def blk {n : ℕ} (P : Matrix (Fin n) (Fin n) S) : Matrix (Fin (n + 1)) (Fin (n 
     fun i : Fin n => (Fin.cons (0 : S) (P i) : Fin (n + 1) → S))
 
 /- English proof (translation)
-Rewrite using `[det_of_first_row_single _ (fun b => by simp [blk, Pi.single_apply])]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem det_blk {n : ℕ} (P : Matrix (Fin n) (Fin n) S) : (blk P).det = P.det := by
   rw [det_of_first_row_single _ (fun b => by simp [blk, Pi.single_apply])]
   congr 1
 
 /- English proof (translation)
-Establish `hr0 : M 0 0 = 1` using `by simp [hrow]`. Establish `hrs : ∀ j : Fin n, M 0 j.succ = 0` using `fun j => by simp [hrow, Fin.succ_ne_zero]`. Establish `hcs : ∀ i : Fin n, M i.succ 0 = 0` using `fun i => by simp [hcol, Fin.succ_ne_zero]`. Use extensionality with `a b`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ a with rfl | ⟨i, rfl⟩ <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `Fin.eq_zero_or_eq_succ b with rfl | ⟨j, rfl⟩` into its components or cases. Simplify using `[blk, mul_apply, Fin.sum_univ_succ, hr0, hrs, hcs, one_apply]`. Simplify using `[blk, mul_apply, Fin.sum_univ_succ, hr0, hrs, hcs, one_apply, (Fin.succ_ne_zero j).symm]`. Simplify using `[blk, mul_apply, Fin.sum_univ_succ, hr0, hrs, hcs, one_apply]`. Use `congrFun (congrFun hP i) j` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mul_apply, submatrix_apply, conjTranspose_apply] at this`. Simplify using `[blk, mul_apply, Fin.sum_univ_succ, hr0, hrs, hcs, one_apply] at this ⊢`. Conclude with `this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_cong {n : ℕ} {M : Matrix (Fin (n + 1)) (Fin (n + 1)) S} {P : Matrix (Fin n) (Fin n) S}
     (hrow : ∀ b, M 0 b = if b = 0 then 1 else 0) (hcol : ∀ a, M a 0 = if a = 0 then 1 else 0)
@@ -181,21 +181,19 @@ theorem blk_cong {n : ℕ} {M : Matrix (Fin (n + 1)) (Fin (n + 1)) S} {P : Matri
     exact this
 
 /- English proof (translation)
-Take `⟨w, hw⟩ : ∃ w, w * q H v = 1` from `⟨_, hq.val_inv_mul⟩`. Establish `hqs : star (q H v) = q H v` using `q_fixed hH v`. Establish `hws : star w = w`. Establish `h1 : star w * q H v = 1` using `by rw [← hqs, ← star_mul', hw, star_one]`. Take the linear combination `w * h1 - (star w) * hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨u, hu⟩` from `hL.norm w hws (isUnit_iff_exists_inv.mpr ⟨_, hw⟩)`. Establish `huq : u * star u * q H v = 1` using `by rw [hu, hw]`. Establish `hu1 : IsUnit u` using `isUnit_iff_exists_inv.mpr ⟨star u * q H v, by rw [← mul_assoc, huq]⟩`. Use `set P1 : Matrix (Fin (n + 1)) (Fin (n + 1)) S := updateRow 1 0 (u • v) with hP1`. Establish `hP1d : IsUnit P1.det`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP1, det_updateRow_zero]`. Simplify `hu1` using `[hv]`. Use `set H1 := P1 * H * P1ᴴ with hH1def`. Establish `hH1 : H1ᴴ = H1` using `herm_cong P1 hH`. Establish `hH1d : IsUnit H1.det` using `det_cong hP1d hdet`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hH100 : H1 0 0 = 1`. Rewrite using `[hH1def, cong_apply_self, hP1, updateRow_self, q_smul, huq]`. Establish `hEd : IsUnit (elim H1).det` using `by rw [det_elim]; exact isUnit_one`. Use `set H2 := elim H1 * H1 * (elim H1)ᴴ with hH2def`. Establish `hH2 : H2ᴴ = H2` using `herm_cong _ hH1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH2d : IsUnit H2.det` using `det_cong hEd hH1d`. Establish `hrow : ∀ b, H2 0 b = if b = 0 then 1 else 0` using `row0 hH1 hH100`. Establish `hcol : ∀ a, H2 a 0 = if a = 0 then 1 else 0` using `fun a => by`. Rewrite using `[← star_eq_of_herm hH2 0 a, hrow]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hH3 : (H2.submatrix Fin.succ Fin.succ)ᴴ = H2.submatrix Fin.succ Fin.succ`. Rewrite using `[conjTranspose_submatrix, hH2]`. Establish `hH3d : IsUnit (H2.submatrix Fin.succ Fin.succ).det`. Rewrite using `[← det_of_first_row_single H2 hrow]`. Conclude with `hH2d`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨P3, hP3d, hP3⟩` from `IH _ hH3 hH3d`. Use `⟨blk P3 * elim H1 * P1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, det_mul, det_blk]`. Conclude with `(hP3d.mul hEd).mul hP1d`. Establish `: blk P3 * elim H1 * P1 * H * (blk P3 * elim H1 * P1)ᴴ = blk P3 * H2 * (blk P3)ᴴ`.
-
-Simplify using `only [hH2def, hH1def, conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[this]`. Conclude with `blk_cong hrow hcol hP3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hL : LocHyp S) {n : ℕ}
     (IH : ∀ H : Matrix (Fin n) (Fin n) S, Hᴴ = H → IsUnit H.det →

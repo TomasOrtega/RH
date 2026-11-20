@@ -18,7 +18,7 @@ namespace GlobalTheory.HomFixUniv
 variable {A₀ B₀ X Z T : Scheme.{0}} {N : LB A₀} {H : LB B₀} {mA mB : ℕ}
 
 /- English proof (translation)
-Simplify using `only [comb, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_comp r p z ⊤ trivial, gs_comp r φ z _ h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_pull (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c : Fin mA → Fin mB → Γ(T, ⊤))
     (r : Z ⟶ X) (z : Z) (q : N.ι) (h : φ (r z) ∈ N.U q) (j : Fin mB) :
@@ -28,7 +28,7 @@ theorem comb_pull (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c :
   rw [gs_comp r p z ⊤ trivial, gs_comp r φ z _ h]
 
 /- English proof (translation)
-Introduce `z q hz`. Take `⟨j, hj⟩` from `hg (r z) q hz`. Conclude with `⟨j, by rw [comb_pull a φ p c r z q hz]; exact hj.map _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Generates.pull {a : Fin mA → LB.Sec N} {φ : X ⟶ A₀} {p : X ⟶ T} {c : Fin mA → Fin mB → Γ(T, ⊤)}
     (hg : Generates a φ p c) (r : Z ⟶ X) : Generates a (r ≫ φ) (r ≫ p) c := by
@@ -37,7 +37,7 @@ theorem Generates.pull {a : Fin mA → LB.Sec N} {φ : X ⟶ A₀} {p : X ⟶ T}
   exact ⟨j, by rw [comb_pull a φ p c r z q hz]; exact hj.map _⟩
 
 /- English proof (translation)
-Introduce `z q k hq hk j j'`. Rewrite using `[comb_pull a φ p c r z q hq, comb_pull a φ p c r z q hq, gs_comp r Ψ z _ hk, gs_comp r Ψ z _ hk, ← map_mul, ← map_mul, hp (r z) q k hq hk j j']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Proport.pull {a : Fin mA → LB.Sec N} {b : Fin mB → LB.Sec H} {φ : X ⟶ A₀} {p : X ⟶ T} {Ψ : X ⟶ B₀}
     {c : Fin mA → Fin mB → Γ(T, ⊤)} (hp : Proport a b φ p Ψ c) (r : Z ⟶ X) :
@@ -47,7 +47,7 @@ theorem Proport.pull {a : Fin mA → LB.Sec N} {b : Fin mB → LB.Sec H} {φ : X
     ← map_mul, ← map_mul, hp (r z) q k hq hk j j']
 
 /- English proof (translation)
-Rewrite using `[← gs_comp t (𝟙 S) z ⊤ trivial, Category.comp_id]`. Establish `e` using `gs_pull (𝟙 T) t z ⊤ trivial x`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_top_comp {S : Scheme.{0}} (t : T ⟶ S) (z : T) (x : Γ(S, ⊤)) :
     (t.stalkMap z).hom (gs (𝟙 S) (t z) ⊤ x) = gs (𝟙 T) z ⊤ (t.appTop x) := by
@@ -57,11 +57,11 @@ theorem gs_top_comp {S : Scheme.{0}} (t : T ⟶ S) (z : T) (x : Γ(S, ⊤)) :
   exact e.symm
 
 /- English proof (translation)
-Introduce `z q k hq hk j j'`. Establish `hc : ∀ j, comb a (t ≫ eA) (𝟙 T) c z q j = gs (𝟙 T) z ⊤ (t.appTop (β j)) * (t.stalkMap z).hom (uA (t z) q).val`. Introduce `j`. Simplify using `only [comb]`. Establish `e : ∀ i, gs (t ≫ eA) z (N.U q) ((a i).f q) = gs (𝟙 T) z ⊤ (t.appTop (α i)) * (t.stalkMap z).hom (uA (t z) q).val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[gs_comp t eA z _ hq, ha i (t z) q hq, map_mul, gs_top_comp]`. Simplify using `only [e, hn j, gs_eq (𝟙 T) z ⊤ trivial, map_sum, map_mul, Finset.sum_mul, _root_.mul_assoc]`. Establish `hbj : ∀ j, gs (t ≫ eB) z (H.U k) ((b j).f k) = gs (𝟙 T) z ⊤ (t.appTop (β j)) * (t.stalkMap z).hom (uB (t z) k).val`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[gs_comp t eB z _ hk, hb j (t z) k hk, map_mul, gs_top_comp]`. Rewrite using `[hc, hc, hbj, hbj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem proport_zero {S : Scheme.{0}} {a : Fin mA → LB.Sec N} {b : Fin mB → LB.Sec H} {eA : S ⟶ A₀} {eB : S ⟶ B₀}
     {uA : ∀ z : S, N.ι → (S.presheaf.stalk z)ˣ} {uB : ∀ z : S, H.ι → (S.presheaf.stalk z)ˣ}
@@ -90,11 +90,11 @@ end GlobalTheory.HomFixUniv
 namespace GlobalTheory.HomFixUniv
 
 /- English proof (translation)
-Establish `key : ∀ h : B ⟶ topS Rg, snd (topS Rg) B ≫ lift h (𝟙 B) = 𝟙 _`. Introduce `h`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, lift_fst, Category.id_comp]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Mono (topS Rg).hom` using `by show Mono ((⊤ : (Sp Rg).Opens).ι ≫ 𝟙 _); infer_instance`. Apply `(cancel_mono (topS Rg).hom).1` to reduce the goal to its premises. Conclude with `(Over.w _).trans (Over.w _).symm`. Rewrite using `[Category.assoc, lift_snd, Category.comp_id, Category.id_comp]`. Rewrite using `[θ, ← Over.comp_left, key]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem snd_θ {Rg : Type} [CommRing Rg] (B : Over (Sp Rg)) : (snd (topS Rg) B).left ≫ θ B = 𝟙 _ := by
   have key : ∀ h : B ⟶ topS Rg, snd (topS Rg) B ≫ lift h (𝟙 B) = 𝟙 _ := by
@@ -111,7 +111,7 @@ theorem snd_θ {Rg : Type} [CommRing Rg] (B : Over (Sp Rg)) : (snd (topS Rg) B).
   rfl
 
 /- English proof (translation)
-Rewrite using `[θ]`. Conclude with `Over.w _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem θ_comp_structure {Rg : Type} [CommRing Rg] (B : Over (Sp Rg)) : θ B ≫ fA B = B.hom := by
   rw [θ]; exact Over.w _
@@ -119,17 +119,17 @@ theorem θ_comp_structure {Rg : Type} [CommRing Rg] (B : Over (Sp Rg)) : θ B �
 end GlobalTheory.HomFixUniv
 
 /- English proof (translation)
-Introduce `Rg _ A B _ _ L M k mA mB bA bB eA eB αA βB T t A' B' _ _ φA' φB' Ψ c hH hvA hvB hA' hB' hΨ hgen hprop hnorm`. Take `⟨hA, hB, hL, hM, -, -, -, hk, hva, -, hbB⟩` from `hH`. Establish `hA'ab : IsAbelianScheme A'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hA'`. Establish `hB'ab : IsAbelianScheme B'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB hB'`. Establish `hsnd : (snd (topS Rg) B).left ≫ B.hom = fA B` using `Over.w (snd (topS Rg) B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Φl : A'.left ⟶ B'.left` to `hB'.1.lift (Ψ ≫ (snd (topS Rg) B).left) A'.hom (by rw [Category.assoc, hsnd, hΨ])`. Establish `hΦ1 : Φl ≫ φB' = Ψ ≫ (snd (topS Rg) B).left` using `hB'.1.lift_fst _ _ _`. Establish `hΦ2 : Φl ≫ B'.hom = A'.hom` using `hB'.1.lift_snd _ _ _`. Set `Φ : A' ⟶ B'` to `Over.homMk Φl hΦ2`. Establish `hΨΦ : Φ.left ≫ φB' ≫ θ B = Ψ` using `by show Φl ≫ φB' ≫ θ B = Ψ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hΦ1, Category.assoc, snd_θ, Category.comp_id]`. Set `e' : T ⟶ A'.left` to `η[A'].left`. Establish `hEA : e' ≫ φA' = t ≫ eSec A` using `ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left hA'`. Establish `hEB : (η[B'].left : T ⟶ B'.left) ≫ φB' = t ≫ eSec B` using `ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left hB'`. Establish `hηA : e' ≫ A'.hom = 𝟙 T` using `Over.w η[A']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heB : eSec B ≫ B.hom = 𝟙 _` using `Over.w η[B]`. Establish `hzero : e' ≫ Ψ = t ≫ eSec B ≫ θ B`. Establish `hgen'` using `hgen.pull e'`. Establish `hprop'` using `hprop.pull e'`. Rewrite `hgen'`, `hprop'` using `[← Category.assoc, hEA, hηA, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.T.eq_of_pullbackSectionsProportionalToCombinations Rg _ _ T T (fA B) (LPow A L k (topS Rg)) (LPow B M k (topS Rg)) mA mB bA bB _ (𝟙 T) c _ _ (GlobalTheory.T.sectionsEmbed_of_baseChangeStableBasis Rg B M k mB bB hB hM hk hva hbB) (LB.isLB_linComb hM _ _) (LB.isLB_linC …` and prove the remaining obligations. Rewrite using `[Category.assoc, hΨ, ← Category.assoc, hηA, Category.id_comp, Category.assoc, Category.assoc, θ_comp_structure, heB]`. Conclude with `(Category.comp_id _).symm`. Establish `hz : η[A'] ≫ Φ = η[B']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hB'.1.hom_ext` to reduce the goal to its premises. Use `show e' ≫ Φl ≫ φB' = _`. Rewrite using `[hΦ1, ← Category.assoc, hzero, hEB, Category.assoc, Category.assoc, θ_snd, Category.comp_id]`. Conclude with `(Over.w _).trans (Over.w _).symm`. Conclude with `⟨Φ, GlobalTheory.rigidity_holds T A' B' hA'ab hB'ab Φ hz, hΨΦ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HomFixUniv.hom_of_proport : ∀ (Rg : Type) [CommRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left) (k mA mB : ℕ) (bA : Fin mA → LB.Sec (LPow A L (k : ℤ) (topS Rg))) (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))) (eA : LB.Gen (L.pull (eSec A))) (eB : LB.Gen (M.pull (eSec B))) (αA : Fin mA → Γ(Sp Rg, ⊤)) (βB : Fin mB → Γ(Sp Rg, ⊤)) (T : Scheme.{0}) (t : T ⟶ Sp Rg) (A' B' : Over T) [GrpObj A'] [GrpObj B'] (φA' : A'.left ⟶ A.left) (φB' : B'.left ⟶ B.left) (Ψ : A'.left ⟶ (topS Rg ⊗ B).left) (c : Fin mA → Fin mB → Γ(T, ⊤)), Hyps L M k bA bB eA eB → (∀ i, GlobalTheory.HomFixUniv.IsVal (eSec A ≫ GlobalTheory.HomFixUniv.θ A) (GlobalTheory.HomFixUniv.uFr A L k eA) (bA i) (αA i)) → (∀ j, GlobalTheory.HomFixUniv.IsVal (eSec B ≫ GlobalTheory.HomFixUniv.θ B) (GlobalTheory.HomFixUniv.uFr B M k eB) (bB j) (βB j)) → IsGrpPullback A' A t φA' → IsGrpPullback B' B t φB' → Ψ ≫ GlobalTheory.HomFixUniv.fA B = A'.hom ≫ t → GlobalTheory.HomFixUniv.Generates bA (φA' ≫ GlobalTheory.HomFixUniv.θ A) A'.hom c → GlobalTheory.HomFixUniv.Proport bA bB (φA' ≫ GlobalTheory.HomFixUniv.θ A) A'.hom Ψ c → GlobalTheory.HomFixUniv.Normal t c αA βB → ∃ Φ : A' ⟶ B', IsMonHom Φ ∧ Φ.left ≫ φB' ≫ GlobalTheory.HomFixUniv.θ B = Ψ := by
   intro Rg _ A B _ _ L M k mA mB bA bB eA eB αA βB T t A' B' _ _ φA' φB' Ψ c hH hvA hvB hA' hB' hΨ hgen hprop hnorm

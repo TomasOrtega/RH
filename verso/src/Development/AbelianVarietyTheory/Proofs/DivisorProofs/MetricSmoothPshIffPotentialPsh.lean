@@ -16,9 +16,9 @@ namespace GlobalTheory.PotSmoothPsh
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Take `⟨W, ι, hι, g, G, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `hG : 0 < G (fun a => ev Y.str σ W (g a) y)`. Establish `e` using `h₅.self_of_nhds`. Rewrite `hy` using `[e]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W, ι, hι, g, fun v => Real.log (G v), O ∩ G ⁻¹' Set.Ioi 0, h₁, h₄.continuousOn.isOpen_inter_preimage h₂ isOpen_Ioi, ⟨h₃, hG⟩, (h₄.mono Set.inter_subset_left).log fun v hv => (ne_of_gt hv.2), ?_⟩` and prove the remaining obligations. Conclude with `h₅.fun_comp Real.log`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_log {σ : F →+* ℂ} {f : Pts Y σ → ℝ} {y : Pts Y σ} (h : CInfAt f y) (hy : 0 < f y) :
     CInfAt (fun z => Real.log (f z)) y := by
@@ -35,7 +35,7 @@ theorem cInfAt_log {σ : F →+* ℂ} {f : Pts Y σ → ℝ} {y : Pts Y σ} (h :
 variable {e : ℕ} {M : Man e} (I : ManIs M Y) (a : Fin (M.n + 1)) {Δ : Y.Dv}
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.ChernWeilLine.pn_pos_of_isPot I a hQ (y := y) (CartierDiv.isEqn_iff_generatesAt_inv.1 hg)`. Establish `h2` using `Var.pn_frame (m := m) hg`. Rewrite `h2` using `[Units.val_inv_eq_inv_val]`. Rewrite using `[← h2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h_pos_of_isPot {m : (cxSt F).Met Y (I.ε a) Δ} {Q : LocPot (M.X a)} (hQ : IsPot (I.pt a) m Q)
     {g : Y.Fnˣ} {y : Pts Y (I.ε a)} (hg : y ∈ Var.eqnSet (I.ε a) Δ g) : 0 < m.h g y := by
@@ -46,11 +46,9 @@ theorem h_pos_of_isPot {m : (cxSt F).Met Y (I.ε a) Δ} {Q : LocPot (M.X a)} (hQ
   exact h1
 
 /- English proof (translation)
-Use `⟨fun y _ => h_pos_of_isPot I a hQ (Var.mem_eqnSet Δ y), fun g => ?_⟩` and prove the remaining obligations. Use `(cInfAt_iff_smoothOn (Y.an (I.ε a)) (isOpen_univ.inter (Var.isOpen_eqnSet Δ g))).1 fun y hy => ?_` and prove the remaining obligations. Establish `hgen` using `CartierDiv.isEqn_iff_generatesAt_inv.1 hy.2`. Establish `hc` using `GlobalTheory.ChernWeilLine.cInfAt_pn_of_isPot I a hQ hQ' hgen`. Use `((cInfAt_log hc (GlobalTheory.ChernWeilLine.pn_pos_of_isPot I a hQ hgen)).neg).congr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [(Var.isOpen_eqnSet Δ g).mem_nhds hy.2] with z hz`. Establish `h2` using `Var.pn_frame (m := m) hz`. Rewrite `h2` using `[Units.val_inv_eq_inv_val]`. Use `show -Real.log (m.h g z) = _`. Rewrite using `[← h2]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mSmooth_of_isPot {m : (cxSt F).Met Y (I.ε a) Δ} {Q : LocPot (M.X a)} (hQ : IsPot (I.pt a) m Q)
     (hQ' : IsPotential (M.A a) Q) : Var.mSmooth Y (I.ε a) Δ m := by
@@ -71,9 +69,9 @@ section Levi
 variable {σ : F →+* ℂ} {m : Var.Met Y σ Δ}
 
 /- English proof (translation)
-Rewrite using `[hm.mPsh_iff_levi Var.smoothOn_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `H c y hy ξ`. Simplify using `using H c (Var.eqn Δ y) y hy (Var.mem_eqnSet Δ y) ξ`. Introduce `H c g y hy hg ξ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hm.levi_frame Var.smoothOn_zero hy (Var.mem_eqnSet Δ y) hg ξ]`. Simplify using `using H c y hy ξ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mPsh_iff_chart (hm : Var.mSmooth Y σ Δ m) :
     Var.mPsh Y σ Δ m 0 ↔ ∀ (c : AlgChart Y.str σ Y.dim) (y : Pts Y σ), y ∈ c.e.source →
@@ -87,7 +85,7 @@ theorem mPsh_iff_chart (hm : Var.mSmooth Y σ Δ m) :
     simpa using H c y hy ξ
 
 /- English proof (translation)
-Establish `hS` using `Var.isOpen_eqnSet (σ := σ) Δ g`. Establish `hOn` using `(c.contDiffOn_finChart_iff _ _ (m.wt g)).2 (((hm.2 g).mono (fun _ hz => ⟨trivial, hz⟩)).chart hS c)`. Conclude with `(hOn.contDiffAt ((c.finChart.isOpen_inter_preimage_symm hS).mem_nhds ⟨c.finChart.map_source hy, by simpa [c.finChart.left_inv hy] using hg⟩)).of_le (WithTop.coe_le_coe.2 le_top)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_wt (hm : Var.mSmooth Y σ Δ m) (c : AlgChart Y.str σ Y.dim) {g : Y.Fnˣ} {y : Pts Y σ}
     (hy : y ∈ c.e.source) (hg : y ∈ Var.eqnSet σ Δ g) :
@@ -100,7 +98,7 @@ theorem contDiffAt_wt (hm : Var.mSmooth Y σ Δ m) (c : AlgChart Y.str σ Y.dim)
     (WithTop.coe_le_coe.2 le_top)
 
 /- English proof (translation)
-The claim follows from `(((((hm.2 g).mono (fun _ hz => ⟨trivial, hz⟩)).chart (Var.isOpen_eqnSet Δ g) c).contDiffAt ((isOpen_over _ (Var.isOpen_eqnSet Δ g)).mem_nhds (mem_over c.e hy hg))).of_le (WithTop.coe_le_coe.2 le_top))`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_wt' (hm : Var.mSmooth Y σ Δ m) (c : AlgChart Y.str σ Y.dim) {g : Y.Fnˣ} {y : Pts Y σ}
     (hy : y ∈ c.e.source) (hg : y ∈ Var.eqnSet σ Δ g) :
@@ -109,9 +107,9 @@ theorem contDiffAt_wt' (hm : Var.mSmooth Y σ Δ m) (c : AlgChart Y.str σ Y.dim
     ((isOpen_over _ (Var.isOpen_eqnSet Δ g)).mem_nhds (mem_over c.e hy hg))).of_le (WithTop.coe_le_coe.2 le_top))
 
 /- English proof (translation)
-Take `⟨w', -, hw⟩` from `c.exists_levi_eq c' hy hy' (contDiffAt_wt hm c' hy' hg) ξ`. Establish `e₁` using `c.leviV_re_eq (contDiffAt_wt' hm c hy hg) ξ`. Establish `e₂` using `c'.leviV_re_eq (contDiffAt_wt' hm c' hy' hg) w'`. Establish `h` using `H w'`. Express the relevant statement in the definitionally equal form `0 ≤ (ReciprocityTheory.L2DbarEstimates.leviV _ (fun v => (m.wt g (c.e.symm v) : ℂ)) (c.e y) ξ).re`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 ≤ (ReciprocityTheory.L2DbarEstimates.leviV _ (fun v => (m.wt g (c'.e.symm v) : ℂ)) (c'.e y) w').re at h`. Rewrite using `[e₁, hw, ← e₂]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_nonneg_of_chart (hm : Var.mSmooth Y σ Δ m) {c c' : AlgChart Y.str σ Y.dim} {g : Y.Fnˣ}
     {y : Pts Y σ} (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) (hg : y ∈ Var.eqnSet σ Δ g)
@@ -132,11 +130,11 @@ section Man
 variable {M' : Man Y.dim} (I' : ManIs M' Y) (a' : Fin (M'.n + 1))
 
 /- English proof (translation)
-Unfold `leviAt`. Rewrite `hy`, the goal using `[hc]`. Rewrite `hy` using `[Homeomorph.transOpenPartialHomeomorph_target]`. Establish `hq : c.finChart.symm y ∈ c.e.source` using `c.finChart.map_target hy`. Establish `key` using `GlobalTheory.AmplePos.levi_isPot_eq_curvMet hm (I'.pt a') hQ c ((I'.pt a').symm (c.finChart.symm y)) (by simpa using hq) w`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Homeomorph.apply_symm_apply, c.finChart.right_inv hy] at key`. Establish `hb : ((I'.pt a').transOpenPartialHomeomorph c.finChart).symm y = (I'.pt a').symm (c.finChart.symm y)` using `by simp`. Rewrite using `[hb, key]`. Express the relevant statement in the definitionally equal form `0 ≤ Real.pi / 2 * (c.levi (m.wt (Var.eqn Δ (c.finChart.symm y))) (c.finChart.symm y) w / Real.pi) ↔ _`. Establish `hπ` using `Real.pi_pos`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e₁ : ∀ x : ℝ, Real.pi / 2 * (x / Real.pi) = x / 2` using `fun x => by field_simp`. Rewrite using `[e₁]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem leviAt_nonneg_iff {m : Var.Met Y (I'.ε a') Δ} (hm : Var.mSmooth Y (I'.ε a') Δ m) {Q : LocPot (M'.X a')}
     (hQ : IsPot (C := cxSt F) (I'.pt a') m Q) (j : Fin (M'.A a').n) (c : AlgChart Y.str (I'.ε a') Y.dim)
@@ -160,7 +158,7 @@ theorem leviAt_nonneg_iff {m : Var.Met Y (I'.ε a') Δ} (hm : Var.mSmooth Y (I'.
   constructor <;> intro h <;> linarith
 
 /- English proof (translation)
-Use `⟨fun hp j y hy w => hp _ j y ⟨hy, P.mem_U _⟩ w, fun h x j y hy w => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LeviOnly.levi_base hP x j hy.1 hy.2]`. Conclude with `h j y hy.1 w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_iff_leviAt {e' : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e' X} {P : LocPot X}
     (hP : IsPotential A P) : IsPsh A P ↔ ∀ j, ∀ y ∈ (A.chart j).target, ∀ w, 0 ≤ leviAt A P j y w := by
@@ -169,15 +167,13 @@ theorem isPsh_iff_leviAt {e' : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolA
   exact h j y hy.1 w
 
 /- English proof (translation)
-Rewrite using `[mPsh_iff_chart hm, isPsh_iff_leviAt hQ']`. Prove the components needed by the constructor for the conclusion. Introduce `H j y hy w`. Take `⟨c, hc⟩` from `I'.alg a' j`. Rewrite using `[leviAt_nonneg_iff I' a' hm hQ j c hc hy w]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hy'` using `hy`. Rewrite `hy'` using `[hc, Homeomorph.transOpenPartialHomeomorph_target]`. Conclude with `H c _ (c.finChart.map_target hy') w`. Introduce `H c p hp ξ`. Take `⟨j, hj⟩` from `(M'.A a').cover ((I'.pt a').symm p)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc'⟩` from `I'.alg a' j`. Establish `hp' : p ∈ c'.e.source`. Rewrite `hj` using `[hc', Homeomorph.transOpenPartialHomeomorph_source]`. Simplify using `using hj`. Establish `hyt : c'.finChart p ∈ ((M'.A a').chart j).target`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', Homeomorph.transOpenPartialHomeomorph_target]`. Conclude with `c'.finChart.map_source hp'`. Establish `H' : ∀ w, 0 ≤ c'.levi (m.wt (Var.eqn Δ p)) p w` using `fun w => by`. Use `(leviAt_nonneg_iff I' a' hm hQ j c' hc' hyt w).1 (H j _ hyt w)` as an intermediate fact. Rewrite `this` using `[c'.finChart.left_inv hp']`. Then use the resulting hypothesis.
-
-Conclude with `levi_nonneg_of_chart hm hp hp' (Var.mem_eqnSet Δ p) H' ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mPsh_iff_isPsh {m : Var.Met Y (I'.ε a') Δ} (hm : Var.mSmooth Y (I'.ε a') Δ m) {Q : LocPot (M'.X a')}
     (hQ : IsPot (C := cxSt F) (I'.pt a') m Q) (hQ' : IsPotential (M'.A a') Q) :
@@ -207,7 +203,7 @@ theorem mPsh_iff_isPsh {m : Var.Met Y (I'.ε a') Δ} (hm : Var.mSmooth Y (I'.ε 
 end Man
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I he Δ a m Q hQ hQ'`. Substitute `he` using the available equality. Establish `hm` using `mSmooth_of_isPot I a hQ hQ'`. Conclude with `⟨hm, mPsh_iff_isPsh I a hm hQ hQ'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem smooth_and_mPsh_iff : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y),
     e = Y.dim → ∀ (Δ : Y.Dv) (a : Fin (M.n + 1)) (m : (cxSt F).Met Y (I.ε a) Δ) (Q : LocPot (M.X a)),

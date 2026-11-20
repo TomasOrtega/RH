@@ -18,7 +18,7 @@ def hd {a : ℕ} (i : Fin a) : HermR (Fv F v) σ a :=
     exact if_congr and_comm rfl rfl⟩
 
 /- English proof (translation)
-Use `show (Matrix.single k l c + Matrix.single l k (sigR (Fv F v) σ c)) i j = 0`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, Matrix.single_apply, if_neg h1, if_neg h2, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hm_apply_ne {a : ℕ} (hinv : ∀ y, σ (σ y) = y) {k l i j : Fin a} (c : Fv F v ⊗[F] E)
     (h1 : ¬(k = i ∧ l = j)) (h2 : ¬(l = i ∧ k = j)) :
@@ -27,7 +27,7 @@ theorem hm_apply_ne {a : ℕ} (hinv : ∀ y, σ (σ y) = y) {k l i j : Fin a} (c
   rw [Matrix.add_apply, Matrix.single_apply, Matrix.single_apply, if_neg h1, if_neg h2, add_zero]
 
 /- English proof (translation)
-Use `show Matrix.single k k (1 : Fv F v ⊗[F] E) i j = 0`. Rewrite using `[Matrix.single_apply, if_neg h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hd_apply_ne {a : ℕ} {k i j : Fin a} (h : ¬(k = i ∧ k = j)) :
     (hd σ v k : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = 0 := by
@@ -38,9 +38,9 @@ def hb {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) 
   if p.1 < p.2 then hm σ v hinv p.1 p.2 (β 0) else if p.2 < p.1 then hm σ v hinv p.2 p.1 (β 1) else hd σ v p.1
 
 /- English proof (translation)
-Take `⟨k, l⟩` from `p`. Unfold `hb`. Simplify using `only`. Use `split_ifs with hkl hlk`. Conclude with `hm_apply_ne σ v hinv _ (fun e => hp1 (Prod.ext e.1 e.2)) (fun e => hp2 (Prod.ext e.2 e.1))`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hm_apply_ne σ v hinv _ (fun e => hp2 (Prod.ext e.2 e.1)) (fun e => hp1 (Prod.ext e.1 e.2))`. Establish `hkl' : k = l` using `le_antisymm (not_lt.1 hlk) (not_lt.1 hkl)`. Substitute `hkl'` using the available equality. Conclude with `hd_apply_ne σ v (fun e => hp1 (Prod.ext e.1 e.2))`.
+A detailed English derivation is pending.
 -/
 theorem hb_zero {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) {p : Fin a × Fin a} {i j : Fin a}
     (hp1 : p ≠ (i, j)) (hp2 : p ≠ (j, i)) : (hb σ v hinv β p : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = 0 := by
@@ -55,7 +55,7 @@ theorem hb_zero {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v �
     exact hd_apply_ne σ v (fun e => hp1 (Prod.ext e.1 e.2))
 
 /- English proof (translation)
-Unfold `hb`. Rewrite using `[if_pos h]`. Use `show (Matrix.single i j (β 0) + Matrix.single j i (sigR (Fv F v) σ (β 0))) i j = β 0`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, Matrix.single_apply, if_pos ⟨rfl, rfl⟩, if_neg (fun e => h.ne e.2), add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_basis_above_first {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) {i j : Fin a} (h : i < j) :
     (hb σ v hinv β (i, j) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = β 0 := by
@@ -66,7 +66,7 @@ theorem hermitian_basis_above_first {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β 
     if_neg (fun e => h.ne e.2), add_zero]
 
 /- English proof (translation)
-Unfold `hb`. Rewrite using `[if_neg (not_lt.2 h.le), if_pos h]`. Use `show (Matrix.single i j (β 1) + Matrix.single j i (sigR (Fv F v) σ (β 1))) i j = β 1`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, Matrix.single_apply, if_pos ⟨rfl, rfl⟩, if_neg (fun e => h.ne e.2), add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_basis_above_second {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) {i j : Fin a} (h : i < j) :
     (hb σ v hinv β (j, i) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = β 1 := by
@@ -77,7 +77,7 @@ theorem hermitian_basis_above_second {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β
     if_neg (fun e => h.ne e.2), add_zero]
 
 /- English proof (translation)
-Unfold `hb`. Rewrite using `[if_neg (not_lt.2 h.le), if_pos h]`. Use `show (Matrix.single j i (β 1) + Matrix.single i j (sigR (Fv F v) σ (β 1))) i j = sigR (Fv F v) σ (β 1)`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, Matrix.single_apply, if_neg (fun e => h.ne e.1), if_pos ⟨rfl, rfl⟩, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_basis_below_first {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) {i j : Fin a} (h : j < i) :
     (hb σ v hinv β (i, j) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = sigR (Fv F v) σ (β 1) := by
@@ -88,7 +88,7 @@ theorem hermitian_basis_below_first {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β 
     if_pos ⟨rfl, rfl⟩, zero_add]
 
 /- English proof (translation)
-Unfold `hb`. Rewrite using `[if_pos h]`. Use `show (Matrix.single j i (β 0) + Matrix.single i j (sigR (Fv F v) σ (β 0))) i j = sigR (Fv F v) σ (β 0)`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, Matrix.single_apply, if_neg (fun e => h.ne e.1), if_pos ⟨rfl, rfl⟩, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_basis_below_second {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) {i j : Fin a} (h : j < i) :
     (hb σ v hinv β (j, i) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = sigR (Fv F v) σ (β 0) := by
@@ -99,7 +99,7 @@ theorem hermitian_basis_below_second {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β
     if_pos ⟨rfl, rfl⟩, zero_add]
 
 /- English proof (translation)
-Unfold `hb`. Rewrite using `[if_neg (lt_irrefl i), if_neg (lt_irrefl i)]`. Use `show Matrix.single i i (1 : Fv F v ⊗[F] E) i i = 1`. Rewrite using `[Matrix.single_apply, if_pos ⟨rfl, rfl⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hb_eq {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) (i : Fin a) :
     (hb σ v hinv β (i, i) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i i = 1 := by
@@ -109,7 +109,7 @@ theorem hb_eq {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗
   rw [Matrix.single_apply, if_pos ⟨rfl, rfl⟩]
 
 /- English proof (translation)
-Rewrite using `[AddSubmonoidClass.coe_finset_sum, Matrix.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_sum_hb {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) (c : Fin a × Fin a → Fv F v)
     (i j : Fin a) :
@@ -119,7 +119,7 @@ theorem coe_sum_hb {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F 
   rfl
 
 /- English proof (translation)
-Establish `hne : ((i, j) : Fin a × Fin a) ≠ (j, i)` using `fun e => h.ne (Prod.ext_iff.1 e).1`. Rewrite using `[coe_sum_hb, Fintype.sum_eq_add (i, j) (j, i) hne (fun p hp => by rw [hb_zero σ v hinv β hp.1 hp.2, smul_zero]), hermitian_basis_above_first σ v hinv β h, hermitian_basis_above_second σ v hinv β h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_lt {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) (c : Fin a × Fin a → Fv F v)
     {i j : Fin a} (h : i < j) :
@@ -130,7 +130,7 @@ theorem sum_lt {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v �
     (fun p hp => by rw [hb_zero σ v hinv β hp.1 hp.2, smul_zero]), hermitian_basis_above_first σ v hinv β h, hermitian_basis_above_second σ v hinv β h]
 
 /- English proof (translation)
-Establish `hne : ((i, j) : Fin a × Fin a) ≠ (j, i)` using `fun e => h.ne' (Prod.ext_iff.1 e).1`. Rewrite using `[coe_sum_hb, Fintype.sum_eq_add (i, j) (j, i) hne (fun p hp => by rw [hb_zero σ v hinv β hp.1 hp.2, smul_zero]), hermitian_basis_below_first σ v hinv β h, hermitian_basis_below_second σ v hinv β h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_gt {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) (c : Fin a × Fin a → Fv F v)
     {i j : Fin a} (h : j < i) :
@@ -141,7 +141,7 @@ theorem sum_gt {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v �
     (fun p hp => by rw [hb_zero σ v hinv β hp.1 hp.2, smul_zero]), hermitian_basis_below_first σ v hinv β h, hermitian_basis_below_second σ v hinv β h]
 
 /- English proof (translation)
-Rewrite using `[coe_sum_hb, Fintype.sum_eq_single (i, i) (fun p hp => by rw [hb_zero σ v hinv β hp hp, smul_zero]), hb_eq, sc, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_diag {a : ℕ} (hinv : ∀ y, σ (σ y) = y) (β : Fin 2 → Fv F v ⊗[F] E) (c : Fin a × Fin a → Fv F v)
     (i : Fin a) :

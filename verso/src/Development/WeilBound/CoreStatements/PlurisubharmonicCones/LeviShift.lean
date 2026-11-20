@@ -16,7 +16,7 @@ namespace LevelTowerAlt.Comparison₂
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-The claim follows from `((hP.1 x j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds ⟨hy, hU⟩)).of_le (by have h2 : ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := WithTop.coe_le_coe.2 le_top exact h2)`.
+A detailed English derivation is pending.
 -/
 theorem c2at (A : FinHolAtlas e X) {P : LocPot X} (hP : IsPotential A P) (x : X) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) (hU : (A.chart j).symm y ∈ P.U x) : ContDiffAt ℝ 2 (P.φ x ∘ (A.chart j).symm) y :=
@@ -25,7 +25,7 @@ theorem c2at (A : FinHolAtlas e X) {P : LocPot X} (hP : IsPotential A P) (x : X)
     exact h2)
 
 /- English proof (translation)
-Establish `h1` using `TailChernBound.levi_lin 1 a hF hG w`. Establish `h2` using `TailChernBound.levi_lin 1 b ((contDiffAt_const (c := (1 : ℝ))).mul hF |>.add ((contDiffAt_const (c := a)).mul hG)) (contDiffAt_const (c := (1 : ℝ))) w`. Establish `h0 : levi (fun _ : Fin e → ℂ => (1 : ℝ)) y w = 0` using `by simp [levi]`. Rewrite `h2` using `[h0, h1]`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem levi_shift {F G : (Fin e → ℂ) → ℝ} {y : Fin e → ℂ} (hF : ContDiffAt ℝ 2 F y) (hG : ContDiffAt ℝ 2 G y) (a b : ℝ)
     (w : Fin e → ℂ) : levi (fun z => F z + a * G z + b) y w = levi F y w + a * levi G y w := by
@@ -39,31 +39,27 @@ theorem levi_shift {F G : (Fin e → ℂ) → ℝ} {y : Fin e → ℂ} (hF : Con
 variable [CompactSpace X] [T2Space X]
 
 /- English proof (translation)
-Set `_ : MeasurableSpace X` to `borel X`. Establish `: BorelSpace X` using `⟨rfl⟩`. Take `⟨C, hC⟩` from `GlobalTheory.T.tail_bound_statement_holds A Θ L s m W hΘ hΘp hL hs hsnc hle`. Establish `hr : ∀ y, Real.exp 1 ≤ rW L s y` using `rW_ge L s hle`. Establish `hlog : ∀ y, 0 ≤ Real.log (rW L s y)` using `fun y => Real.log_nonneg ((Real.one_le_exp zero_le_one).trans (hr y))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M : ℝ := |C * (C₁ + 3) * Real.log (Real.exp 1) / Real.exp 1| with hM`. Establish `hM0 : 0 ≤ M` using `abs_nonneg _`. Establish `hT : Tendsto (fun R : ℝ => |C₆| * (C * (C₁ + 3)) * (Real.log R ^ 2 / R)) atTop (𝓝 0)`. Simplify using `using ((Real.isLittleO_pow_log_id_atTop (n := 2)).tendsto_div_nhds_zero).const_mul (|C₆| * (C * (C₁ + 3)))`. Rewrite using `[Metric.tendsto_nhds]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ε hε`. Take `⟨R, hR1, hR2⟩` from `((hT.eventually (gt_mem_nhds (half_pos hε))).and (eventually_ge_atTop (Real.exp 1))).exists`. Use `set δ : ℝ := ε / (2 * (M + 1)) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hK` using `GlobalTheory.CompanionTheory.Ar.Giv.isCompact_rW_sublevel A L s hL hs R`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hun` using `Metric.tendstoUniformlyOn_iff.1 (hg0 _ (fun y hy => hy.1) hK) δ hδ0`. Use `filter_upwards [hu, hg, hun] with t ⟨hu1, hu2, hu3⟩ ⟨hg1, hg2⟩ hun`. Establish `hpot : ∀ i, IsPotential A (Θ i + LocPot.ofFun (u t i))` using `fun i => isPotentialAdd A _ _ (hΘ i) (isPotential_ofFun A _ (hu1 i))`. Establish `hI` using `((maMeasure_thm A _ hpot hu2).2 (g t) hg1.measurable).2 (mIntegrableCont A _ hpot _ hg1)`. Establish `hnull` using `bdry_null A L s m W hL hs hsnc _ hpot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmass` using `(hC C₁ (u t) hC₁ hu1 hu2 hu3 (Real.exp 1) le_rfl).1`. Establish `htail` using `(hC C₁ (u t) hC₁ hu1 hu2 hu3 R hR2).2`. Use `set μ := maMeasure A fun i => Θ i + LocPot.ofFun (u t i) with hμ`. Establish `huniv : bdry s ∪ {y | Real.exp 1 ≤ rW L s y} = Set.univ` using `Set.eq_univ_of_forall fun y => Or.inr (hr y)`. Rewrite `hmass` using `[huniv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `replace hmass : μ Set.univ ≤ ENNReal.ofReal M := hmass.trans (ENNReal.ofReal_le_ofReal (le_abs_self _))`. Establish `hBo : IsOpen (bdry s)ᶜ`. Establish `h1 : (bdry s)ᶜ = ⋃ k : ℕ, {y | y ∉ bdry s ∧ rW L s y < k}`. Use extensionality with `y`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_ofPred_eq]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun h => (exists_nat_gt (rW L s y)).imp fun k hk => ⟨h, hk⟩, fun ⟨_, h, _⟩ => h⟩`. Rewrite using `[h1]`. Conclude with `isOpen_iUnion fun k => (rW_open A L s hL hs).2 k`. Establish `hE : MeasurableSet ((bdry s)ᶜ ∩ {y | R ≤ rW L s y})`. Establish `h1 : (bdry s)ᶜ ∩ {y | R ≤ rW L s y} = (bdry s)ᶜ \ {y | y ∉ bdry s ∧ rW L s y < R}`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_ofPred_eq, Set.mem_sdiff, not_and, not_lt]`. Conclude with `⟨fun h => ⟨h.1, fun _ => h.2⟩, fun h => ⟨h.1, h.2 h.1⟩⟩`. Rewrite using `[h1]`. Conclude with `hBo.measurableSet.diff ((rW_open A L s hL hs).2 R).measurableSet`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpt : ∀ᵐ y ∂μ, ENNReal.ofReal ‖g t y‖ ≤ ENNReal.ofReal δ + ENNReal.ofReal |C₆| * ((bdry s)ᶜ ∩ {y | R ≤ rW L s y}).indicator (fun y => ENNReal.ofReal (Real.log (rW L s y))) y` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hnull] with y hy`. Distinguish the cases in `h : R ≤ rW L s y`. Rewrite using `[Set.indicator_of_mem (show y ∈ (bdry s)ᶜ ∩ {y | R ≤ rW L s y} from ⟨hy, h⟩), ← ENNReal.ofReal_mul (abs_nonneg _)]`. Use `le_add_left (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Conclude with `(hg2 y hy).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (hlog y))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_add_right (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `hun y ⟨hy, (not_le.1 h).le⟩` as an intermediate fact. Rewrite `this` using `[dist_comm, dist_zero_right]`. Conclude with `this.le`. Establish `hb : ∫⁻ y, ENNReal.ofReal ‖g t y‖ ∂μ ≤ ENNReal.ofReal (δ * M + max (|C₆| * (C * (C₁ + 3) * Real.log R ^ 2 / R)) 0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(lintegral_mono_ae hpt).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_add_left measurable_const, lintegral_const, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_indicator hE, ENNReal.ofReal_add (by positivity) (le_max_right _ _), ENNReal.ofReal_mul hδ0.le]`. Use `add_le_add (by gcongr) ?_` and prove the remaining obligations. Use `le_trans ?_ (ENNReal.ofReal_le_ofReal (le_max_left _ _))` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (abs_nonneg _)]`.
-
-Use `gcongr`. Rewrite using `[hI, dist_zero_right]`. Use `(norm_integral_le_lintegral_norm _).trans_lt ?_` and prove the remaining obligations. Use `(ENNReal.toReal_le_of_le_ofReal (by positivity) hb).trans_lt ?_` and prove the remaining obligations. Establish `h1 : δ * M < ε / 2`.
-
-Establish `: δ * (M + 1) = ε / 2` using `by rw [hδ]; field_simp`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : max (|C₆| * (C * (C₁ + 3) * Real.log R ^ 2 / R)) 0 < ε / 2` using `max_lt (by convert hR1 using 1; ring) (half_pos hε)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem term_zero (A : FinHolAtlas e X) (Θ : Fin e → LocPot X) (L : LocPot X) (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ)
     (W : Fin n → Set X) (hΘ : ∀ i, IsPotential A (Θ i)) (hΘp : ∀ i, IsPosPot A (Θ i)) (hL : IsPotential A L)
@@ -149,37 +145,33 @@ theorem term_zero (A : FinHolAtlas e X) (Θ : Fin e → LocPot X) (L : LocPot X)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `choose D hD0 hD _ using fun i => TailBoundAlt.exists_psh_chern_bound A Θ (P i) hΘ hΘp (hP i)`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = ∑ i, (|C i| + D i) + 1` from `⟨_, rfl⟩`. Establish `hci : ∀ i, |C i| + D i + 1 ≤ c` using `fun i => by`. Use `Finset.single_le_sum (f := fun i => |C i| + D i) (fun i _ => add_nonneg (abs_nonneg _) (hD0 i)) (Finset.mem_univ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc0 : 0 < c`. Use `Finset.sum_nonneg (s := Finset.univ) (f := fun i => |C i| + D i) fun i _ => add_nonneg (abs_nonneg _) (hD0 i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΘ' : IsPotential A (Θ.rsmul c)` using `isPotentialRsmul A c Θ hΘ`. Establish `hΘ'p : IsPosPot A (Θ.rsmul c)` using `fun x j y hy w hw => by`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `TailChernBound.levi_smul' c (c2at A hΘ x j hy.1 hy.2) w` as an intermediate fact. Conclude with `lt_of_lt_of_eq (mul_pos hc0 (hΘp x j y hy w hw)) this.symm`. Establish `hT : ∀ i, IsPotential A (P i + Θ.rsmul c)` using `fun i => isPotentialAdd A _ _ (hP i) hΘ'`. Establish `hTp : ∀ i, IsPosPot A (P i + Θ.rsmul c)` using `fun i x j y hy w hw => by`. Establish `h1` using `hD i x j y ⟨hy.1, hy.2.2, hy.2.1⟩ w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `levi_shift (c2at A (isPotentialAdd A _ _ (isPotentialRsmul A (D i) Θ hΘ) (hP i)) x j hy.1 ⟨hy.2.2, hy.2.1⟩) (c2at A hΘ x j hy.1 hy.2.2) (c - D i) 0 w`. Establish `h3 : (P i + Θ.rsmul c).φ x ∘ (A.chart j).symm = fun z => ((Θ.rsmul (D i) + P i).φ x ∘ (A.chart j).symm) z + (c - D i) * (Θ.φ x ∘ (A.chart j).symm) z + 0`. Use function extensionality and compare the values at `z`. Use `show (P i).φ x _ + c * Θ.φ x _ = D i * Θ.φ x _ + (P i).φ x _ + (c - D i) * Θ.φ x _ + 0`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[h3, h2]`. Use `mul_pos (show 0 < c - D i by linarith [hci i, abs_nonneg (C i)]) (hΘp x j y ⟨hy.1, hy.2.2⟩ w hw)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : ∀ y, 1 ≤ Real.log (rW L s y)` using `fun y => by`. Rewrite using `[Real.le_log_iff_exp_le ((Real.exp_pos 1).trans_le (rW_ge L s hle y))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `rW_ge L s hle y`. Establish `hQ'` using `eventually_all.2 hQ`. Establish `hsm : ∀ {v : X → ℝ}, A.Smooth v → A.Smooth fun y => v y - c` using `fun hv j => (hv j).sub contDiffOn_const`. Establish `hterm : ∀ S : Finset (Fin e), Tendsto (fun t => mInt A (fun i => (if i ∈ S then P i + Θ.rsmul c else Θ.rsmul c) + LocPot.ofFun (if i ∈ S then fun y => f t i y - c else fun _ => 0)) (g t)) (𝓝[>] 0) (𝓝 0)`. Introduce `S`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `term_zero A (fun i => if i ∈ S then P i + Θ.rsmul c else Θ.rsmul c) L s m W (fun i => by split_ifs; exacts [hT i, hΘ']) (fun i => by split_ifs; exacts [hTp i, hΘ'p]) hL hs hsnc hle (2 * c) C₆ (by linarith) (fun t i => if i ∈ S then fun y => f t i y - c else fun _ => 0) g ?_ hg hg …` and prove the remaining obligations. Use `filter_upwards [hQ'] with t ht`. Use `⟨fun i => ?_, fun i => ?_, fun i y hy => ?_⟩` and prove the remaining obligations. Use `split_ifs exacts [hsm (ht i).1, fun j => contDiffOn_const]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, h2, h3, h4, h5, -⟩` from `ht i`. Introduce `x j y hy w`. Establish `hyP : (A.chart j).symm y ∈ (P i).U x` using `hy.2.1.1`. Establish `hyT : (A.chart j).symm y ∈ Θ.U x` using `hy.2.1.2`. Establish `hyQ : (A.chart j).symm y ∈ (Q t i + Θ.rsmul (C i)).U x` using `⟨(h3 x).symm ▸ hyP, hyT⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `h5 x j y ⟨hy.1, hyQ⟩ w`. Establish `a2` using `levi_shift (c2at A (isPotentialAdd A _ _ h2 (isPotentialRsmul A (C i) Θ hΘ)) x j hy.1 hyQ) (c2at A hΘ x j hy.1 hyT) (c - C i) (-c) w`. Establish `a3 : (P i + Θ.rsmul c + LocPot.ofFun fun y => f t i y - c).φ x ∘ (A.chart j).symm =ᶠ[𝓝 y] fun z => ((Q t i + Θ.rsmul (C i)).φ x ∘ (A.chart j).symm) z + (c - C i) * (Θ.φ x ∘ (A.chart j).symm) z + -c` using `by filter_upwards [((A.chart j).isOpen_inter_preimage_symm ((P i).isOpen_U x)).mem_nhds ⟨hy.1, hyP⟩] with z hz show (P i).φ x _ + c * Θ.φ x _ + (f t i _ - c) = (Q t i).φ x _ + C i * Θ.φ x _ + (c - C i) * Θ.φ x _ + -c`. Rewrite using `[h4 x _ hz.2]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[levi_congr a3, a2]`. Use `mul_nonneg (show 0 ≤ c - C i by linarith [hci i, le_abs_self (C i), hD0 i]) (TailBoundAlt.isPsh_of_isPosPot A Θ hΘp x j y ⟨hy.1, hyT⟩ w)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `TailBoundAlt.isPsh_congr A _ _ (TailBoundAlt.isPsh_of_isPosPot A _ hΘ'p) (fun x y hy => hy.1) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `add_zero _`. Establish `h1` using `hlog y split_ifs`. Take `⟨h2, h3⟩` from `(ht i).2.2.2.2.2 y hy`. Establish `h4` using `hci i`. Establish `h5` using `le_abs_self (C i)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h6` using `hD0 i`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨by nlinarith, le_rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum` using `tendsto_finsetSum Finset.univ fun S (_ : S ∈ Finset.univ) => (hterm S).const_mul ((-1 : ℝ) ^ (e - S.card))`. Simplify using `only [mul_zero, Finset.sum_const_zero] at hsum`. Use `hsum.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hQ', hg] with t ht hgt`. Establish `hΦ : ∀ i, IsPotential A (P i + Θ.rsmul c + LocPot.ofFun fun y => f t i y - c)` using `fun i => isPotentialAdd A _ _ (hT i) (isPotential_ofFun A _ (hsm (ht i).1))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `h1` using `mixed_integral_inclusion_exclusion A (Θ.rsmul c) _ hΘ' hΦ (g t) hgt.1`. Establish `h2` using `(mInt_congr_samePot e X A Set.univ (Q t) (fun i => P i + Θ.rsmul c + (LocPot.ofFun fun y => f t i y - c) + (Θ.rsmul c).rsmul (-1)) (g t) (g t) (by simp [IsNull]) (fun i x _ => ⟨(P i).U x, (P i).isOpen_U x, (P i).mem_U x, fun _ => c, fun j => analyticOnNhd_const, fun y hy => by sh …`. Rewrite using `[(ht i).2.2.2.1 x y hy]`. Use the proof step `ring⟩)`. Use the proof step `(fun i x _ => GlobalTheory.CompanionTheory.Ar.Cmp.OneModel.isC2At_of_isPotential A (isPotentialAdd A _ _ (hΦ i) (isPotentialRsmul A (-1) _ hΘ')) x) (fun _ _ => rfl)).1`.
-
-Rewrite using `[h2, h1]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `mInt integralWith locDens`. Establish `: ∀ i, ((if i ∈ S then P i + Θ.rsmul c else Θ.rsmul c) + LocPot.ofFun (if i ∈ S then fun y => f t i y - c else fun _ => 0)).φ = (if i ∈ S then P i + Θ.rsmul c + LocPot.ofFun fun y => f t i y - c else Θ.rsmul c).φ` using `fun i => by split_ifs`.
-
-Both sides reduce to the same expression. Use function extensionality and compare the values at `x y`. Conclude with `add_zero _`. Simplify using `only [this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weak_zero (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ)
     (W : Fin n → Set X) (hΘ : IsPotential A Θ) (hΘp : IsPosPot A Θ) (hL : IsPotential A L)

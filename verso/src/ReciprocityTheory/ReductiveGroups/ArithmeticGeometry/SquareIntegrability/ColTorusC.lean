@@ -33,31 +33,31 @@ Both sides reduce to the same expression.
 theorem ctY_lat (Y : GT ι) (w : EuclideanSpace ℂ ι) : lat (ctY Y w).b = lat Y.b := rfl
 
 /- English proof (translation)
-Simplify using `[Hf, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Hf_add_left_euclidean (a b c : EuclideanSpace ℂ ι) : Hf (a + b) c = Hf a c + Hf b c := by
   simp [Hf, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[Hf, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Hf_sub_leftSquareIntegrability (a b c : EuclideanSpace ℂ ι) : Hf (a - b) c = Hf a c - Hf b c := by
   simp [Hf, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[Hf, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Hf_add_right_euclidean (a b c : EuclideanSpace ℂ ι) : Hf a (b + c) = Hf a b + Hf a c := by
   simp [Hf, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[Hf, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Hf_sub_right' (a b c : EuclideanSpace ℂ ι) : Hf a (b - c) = Hf a b - Hf a c := by
   simp [Hf, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Hf_smul_right' (a b : EuclideanSpace ℂ ι) (c : ℂ) :
     Hf a (c • b) = (starRingEnd ℂ) c * Hf a b := by
@@ -66,14 +66,14 @@ private theorem Hf_smul_right' (a b : EuclideanSpace ℂ ι) (c : ℂ) :
   simp <;> ring
 
 /- English proof (translation)
-Simplify using `only [Hf, map_sum, map_mul, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Hf_swap_eq_conj' (a b : EuclideanSpace ℂ ι) : Hf b a = (starRingEnd ℂ) (Hf a b) := by
   simp only [Hf, map_sum, map_mul, Complex.conj_conj]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]`. Simplify using `only [Hf, Complex.re_sum, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem norm_sq_eq_re_Hf_self (v : EuclideanSpace ℂ ι) : ‖v‖ ^ 2 = (Hf v v).re := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
@@ -81,32 +81,32 @@ private theorem norm_sq_eq_re_Hf_self (v : EuclideanSpace ℂ ι) : ‖v‖ ^ 2 
   all_goals rfl
 
 /- English proof (translation)
-Simplify using `[Hf, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Hf_neg_left' (a c : EuclideanSpace ℂ ι) : Hf (-a) c = -Hf a c := by
   simp [Hf, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `[Hf, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Hf_neg_right' (a c : EuclideanSpace ℂ ι) : Hf a (-c) = -Hf a c := by
   simp [Hf, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `[Hf, PiLp.inner_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem Hf_eq_inner_swap_euclidean (v w : EuclideanSpace ℂ ι) : Hf v w = @inner ℂ _ _ w v := by
   simp [Hf, PiLp.inner_apply, mul_comm]
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (fun w => Hf v w) (Hf_add_right_euclidean v)) f s`.
+A detailed English derivation is pending.
 -/
 private theorem Hf_finset_sum_right {κ : Type} (s : Finset κ) (v : EuclideanSpace ℂ ι)
     (f : κ → EuclideanSpace ℂ ι) : Hf v (∑ k ∈ s, f k) = ∑ k ∈ s, Hf v (f k) :=
   map_sum (AddMonoidHom.mk' (fun w => Hf v w) (Hf_add_right_euclidean v)) f s
 
 /- English proof (translation)
-Simplify using `only [Hf, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Hf_real_smul_right (v w : EuclideanSpace ℂ ι) (r : ℝ) :
     Hf v (r • w) = (r : ℂ) * Hf v w := by
@@ -115,9 +115,9 @@ private theorem Hf_real_smul_right (v w : EuclideanSpace ℂ ι) (r : ℝ) :
   simp <;> ring
 
 /- English proof (translation)
-Introduce `γ hγ γ' hγ'`. Use `show Y.ka (γ + γ') * cexp (2 * Real.pi * (Hf (γ + γ') w).im * I) = Y.ka γ * cexp (2 * Real.pi * (Hf γ w).im * I) * (Y.ka γ' * cexp (2 * Real.pi * (Hf γ' w).im * I)) * cexp (-(Real.pi * q * (Hf γ γ').im) * I)`. Rewrite using `[h γ hγ γ' hγ', Col.Hf_add_l, Complex.add_im]`. Establish `e : cexp (2 * Real.pi * (((Hf γ w).im + (Hf γ' w).im : ℝ) : ℂ) * I) = cexp (2 * Real.pi * (Hf γ w).im * I) * cexp (2 * Real.pi * (Hf γ' w).im * I)`. Rewrite using `[← Complex.exp_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ctY_coc (Y : GT ι) (w : EuclideanSpace ℂ ι) (q : ℕ) (h : Y.Coc q) : (ctY Y w).Coc q := by
   intro γ hγ γ' hγ'
@@ -131,19 +131,19 @@ theorem ctY_coc (Y : GT ι) (w : EuclideanSpace ℂ ι) (q : ℕ) (h : Y.Coc q) 
   rw [e]; ring
 
 /- English proof (translation)
-Take `⟨hFd, hFe⟩` from `hF`. Establish `hq0 : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Generalize the expression as in `hb : -((1 / (q : ℂ)) • w) = b`. Express the relevant statement in the definitionally equal form `Differentiable ℂ (ctU q b F) ∧ ∀ γ ∈ lat Y.b, ∀ v, ctU q b F (v + γ) = Y.ka γ * cexp (q * Real.pi * Hf v γ + q * Real.pi * Hf γ γ / 2) * ctU q b F v`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : Differentiable ℂ (fun t : EuclideanSpace ℂ ι => Hf t b)`. Establish `hfun : (fun t : EuclideanSpace ℂ ι => Hf t b) = fun t => innerSL ℂ b t`. Use function extensionality and compare the values at `t`. Simplify using `[Hf_eq_inner_swap_euclidean]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(innerSL ℂ b).differentiable`. Unfold `ctU`. Conclude with `(((hd.const_mul _).sub_const _).cexp).mul (hFd.comp (differentiable_id.sub_const _))`. Introduce `γ hγ v`. Establish `hγb : Hf γ b = -(1 / (q : ℂ)) * Hf γ w`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hb, Hf_neg_right', Hf_smul_right']`. Simplify using the standard rewrite rules. Establish `hbγ : Hf b γ = -(1 / (q : ℂ)) * (starRingEnd ℂ) (Hf γ w)`. Rewrite using `[Hf_swap_eq_conj' γ b, hγb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hsub : Hf γ w - (starRingEnd ℂ) (Hf γ w) = 2 * ((Hf γ w).im : ℂ) * I`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Establish `hc : (q : ℂ) * (1 / (q : ℂ)) = 1` using `mul_one_div_cancel hq0`. Establish `key : cexp (q * Real.pi * Hf (v + γ) b - q * Real.pi * Hf b b / 2) * cexp (2 * Real.pi * (Hf γ w).im * I) * cexp (q * Real.pi * Hf (v - b) γ + q * Real.pi * Hf γ γ / 2) = cexp (q * Real.pi * Hf v γ + q * Real.pi * Hf γ γ / 2) * cexp (q * Real.pi * Hf v b - q * Real.pi * Hf b b / …`. Simplify using `only [← Complex.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Hf_add_left_euclidean, Hf_sub_leftSquareIntegrability, hγb, hbγ]`. Take the linear combination `(-(Real.pi : ℂ) * (Hf γ w - (starRingEnd ℂ) (Hf γ w))) * hc + (-(Real.pi : ℂ)) * hsub`. Establish `hka : (ctY Y w).ka γ = Y.ka γ * cexp (2 * Real.pi * (Hf γ w).im * I)` using `rfl`. Establish `hv : v + γ - b = (v - b) + γ` using `by abel`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ctU]`. Rewrite using `[hv, hFe γ hγ (v - b), hka]`. Take the linear combination `(Y.ka γ * F (v - b)) * key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ctU_mem (Y : GT ι) (w : EuclideanSpace ℂ ι) {q : ℕ} (hq : 1 ≤ q) {F : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ (ctY Y w).Sec q) : ctU q (-((1 / (q : ℂ)) • w)) F ∈ Y.Sec q := by
@@ -188,11 +188,11 @@ theorem ctU_mem (Y : GT ι) (w : EuclideanSpace ℂ ι) {q : ℕ} (hq : 1 ≤ q)
     linear_combination (Y.ka γ * F (v - b)) * key
 
 /- English proof (translation)
-Establish `e1 : ‖t - b‖ ^ 2 = ‖t‖ ^ 2 - 2 * (Hf t b).re + ‖b‖ ^ 2`. Rewrite using `[norm_sq_eq_re_Hf_self (t - b), norm_sq_eq_re_Hf_self t, norm_sq_eq_re_Hf_self b, Hf_sub_leftSquareIntegrability, Hf_sub_right', Hf_sub_right', Hf_swap_eq_conj' t b]`. Simplify using `only [Complex.sub_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ((q : ℂ) * (Real.pi : ℂ) * Hf t b - (q : ℂ) * (Real.pi : ℂ) * Hf b b / 2) = ((q * Real.pi : ℝ) : ℂ) * Hf t b - ((q * Real.pi / 2 : ℝ) : ℂ) * Hf b b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GT.ptN2, ctU]`. Rewrite using `[hA, norm_mul, Complex.norm_exp, Complex.sub_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul, ← norm_sq_eq_re_Hf_self b, e1]`. Rewrite using `[mul_pow, mul_comm (Real.exp _ ^ 2), mul_assoc]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pointNormSq_translate (Y : GT ι) (q : ℕ) (b : EuclideanSpace ℂ ι) (F : EuclideanSpace ℂ ι → ℂ)
     (t : EuclideanSpace ℂ ι) : Y.ptN2 q (ctU q b F) t = Y.ptN2 q F (t - b) := by
@@ -215,11 +215,11 @@ theorem pointNormSq_translate (Y : GT ι) (q : ℕ) (b : EuclideanSpace ℂ ι) 
   ring
 
 /- English proof (translation)
-Take `⟨_, hFe⟩` from `hF`. Establish `e1 : ‖t + γ‖ ^ 2 = ‖t‖ ^ 2 + 2 * (Hf t γ).re + ‖γ‖ ^ 2`. Rewrite using `[norm_sq_eq_re_Hf_self (t + γ), norm_sq_eq_re_Hf_self t, norm_sq_eq_re_Hf_self γ, Hf_add_left_euclidean, Hf_add_right_euclidean, Hf_add_right_euclidean, Hf_swap_eq_conj' t γ]`. Simplify using `only [Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA : ((q : ℂ) * (Real.pi : ℂ) * Hf t γ + (q : ℂ) * (Real.pi : ℂ) * Hf γ γ / 2) = ((q * Real.pi : ℝ) : ℂ) * Hf t γ + ((q * Real.pi / 2 : ℝ) : ℂ) * Hf γ γ`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GT.ptN2]`. Rewrite using `[hFe γ hγ t, hA, norm_mul, norm_mul, Y.ka_abs γ hγ, one_mul, Complex.norm_exp, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul, ← norm_sq_eq_re_Hf_self γ, e1]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, mul_comm (Real.exp _ ^ 2), mul_assoc]`. Use `congr 1`. Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pointNormSq_periodic (Y : GT ι) {q : ℕ} {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ Y.Sec q)
     {γ : EuclideanSpace ℂ ι} (hγ : γ ∈ lat Y.b) (t : EuclideanSpace ℂ ι) :
@@ -247,11 +247,11 @@ instance ctCnt (Y : GT ι) : Countable (Submodule.span ℤ (Set.range Y.b)).toAd
   inferInstanceAs (Countable (Submodule.span ℤ (Set.range Y.b)))
 
 /- English proof (translation)
-Establish `hD` using `ZSpan.isAddFundamentalDomain Y.b volume`. Establish `hT : IsAddFundamentalDomain (Submodule.span ℤ (Set.range Y.b)).toAddSubgroup ((fun u => u + a) ⁻¹' ZSpan.fundamentalDomain Y.b) volume` using `hD.preimage_of_equiv (measurePreserving_add_right volume a).quasiMeasurePreserving Function.bijective_id fun _ _ => add_assoc _ _ _`. Establish `hg : ∀ (γ : (Submodule.span ℤ (Set.range Y.b)).toAddSubgroup) (x : EuclideanSpace ℂ ι), g (γ +ᵥ x) = g x`. Introduce and unpack `⟨γ, hγ⟩ x`. Establish `h` using `hper γ hγ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h` using `[add_comm]`. Conclude with `h`. Simplify using `only [MeasureTheory.setAverage_eq]`. Use `congr 1`. Establish `h1` using `(measurePreserving_add_right volume a).setIntegral_preimage_emb (MeasurableEquiv.addRight a).measurableEmbedding (fun y => g (y - a)) (ZSpan.fundamentalDomain Y.b)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_sub_cancel_right] at h1`. Rewrite using `[← h1]`. Conclude with `hT.setIntegral_eq hD hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ct_avg_trans (Y : GT ι) (g : EuclideanSpace ℂ ι → ℝ)
     (hper : ∀ γ ∈ lat Y.b, ∀ v, g (v + γ) = g v) (a : EuclideanSpace ℂ ι) :
@@ -276,7 +276,7 @@ theorem ct_avg_trans (Y : GT ι) (g : EuclideanSpace ℂ ι → ℝ)
   exact hT.setIntegral_eq hD hg
 
 /- English proof (translation)
-Establish `hper : ∀ γ ∈ lat Y.b, ∀ v, Y.ptN2 q F (v + γ) = Y.ptN2 q F v` using `fun γ hγ v => pointNormSq_periodic (ctY Y w) hF hγ v`. Simplify using `only [GT.l2, pointNormSq_translate]`. Conclude with `ct_avg_trans Y _ hper _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem l2_ctU_eq_l2_ctY (Y : GT ι) (w : EuclideanSpace ℂ ι) {q : ℕ} {F : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ (ctY Y w).Sec q) :
@@ -299,9 +299,9 @@ noncomputable section
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `e : (q * Real.pi * Hf t b - q * Real.pi * Hf b b / 2 : ℂ) + (q * Real.pi * Hf (t - b) (-b) - q * Real.pi * Hf (-b) (-b) / 2) = 0`. Simplify using `only [Hf_sub_leftSquareIntegrability, Hf_neg_right', Hf_neg_left', neg_neg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ctU]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← Complex.exp_add, e, Complex.exp_zero, one_mul, sub_neg_eq_add, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ctU_cancel (q : ℕ) (b : EuclideanSpace ℂ ι) (F : EuclideanSpace ℂ ι → ℂ) :
     ctU q b (ctU q (-b) F) = F := by
@@ -317,7 +317,7 @@ variable {K : Submodule ℝ (EuclideanSpace ℂ ι)} (hK : ∀ a ∈ K, ∀ b �
 include hK
 
 /- English proof (translation)
-Simplify using `only [Col.uc]`. Rewrite using `[Hf_finset_sum_right]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Hf_real_smul_right]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ct_Hf_uc (v a : EuclideanSpace ℂ ι) :
     Hf v (Col.uc K a) = ∑ k, ((Col.z K k a).im : ℂ) * Col.z K k v := by
@@ -328,15 +328,15 @@ theorem ct_Hf_uc (v a : EuclideanSpace ℂ ι) :
   rfl
 
 /- English proof (translation)
-Establish `hz : ∀ k, Col.z K k (v - a) = Col.z K k v - Col.z K k a` using `fun k => Col.Hf_sub_l _ _ _`. Establish `hS : Col.S K (v - a) = ∑ k, (Col.z K k v - Col.z K k a) ^ 2`. Unfold `Col.S`. Simplify using `only [hz]`. Establish `hk : ∀ k, (q : ℂ) * Real.pi * (Col.z K k v * (starRingEnd ℂ) (Col.z K k a)) + (q * Real.pi / 2 : ℂ) * (Col.z K k v - Col.z K k a) ^ 2 = (q * Real.pi / 2 : ℂ) * Col.z K k a ^ 2 + (q * Real.pi / 2 : ℂ) * Col.z K k v ^ 2 + (-(2 * Real.pi * q : ℂ) * I) * (((Col.z K k a).im : ℂ) * Col …`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k`. Establish `hc : (starRingEnd ℂ) (Col.z K k a) = Col.z K k a - 2 * ((Col.z K k a).im : ℂ) * I`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Rewrite using `[hc]`. Put the polynomial expressions in normal form.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Establish `hsum` using `Finset.sum_congr rfl (fun k (_ : k ∈ Finset.univ) => hk k)`. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum] at hsum`. Establish `hdec` using `Col.Hf_decomp hK v a`. Establish `hw : Col.wmap K (v - a) = Col.wmap K v - Col.wmap K a` using `map_sub _ _ _`. Establish `hww` using `Col.Hf_wmap hK v a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ctU`. Rewrite using `[hw, ct_Hf_uc hK]`. Establish `E : (q : ℂ) * Real.pi * Hf v a - q * Real.pi * Hf a a / 2 + (q * Real.pi / 2 : ℂ) * Col.S K (v - a) = ((q * Real.pi / 2 : ℂ) * Col.S K a - q * Real.pi * Hf a a / 2 + q * Real.pi * Hf (Col.wmap K a) (Col.wmap K a) / 2) + -(2 * Real.pi * q : ℂ) * I * ∑ k, ((Col.z K k a).im : ℂ) * C …`. Rewrite using `[hS, hdec, hww]`. Unfold `Col.S`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take the linear combination `hsum`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [E]; simp only [Complex.exp_add, Complex.exp_sub]; ring`.
+Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem translate_zeroModeLift_formula (q : ℕ) (β : EuclideanSpace ℂ (Fin (Col.gB K)) → ℂ) (a v : EuclideanSpace ℂ ι) :
     cexp (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2) *

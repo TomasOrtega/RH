@@ -14,27 +14,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotFrames
 
 /- English proof (translation)
-Introduce `D T L sc G W i j A A' WW X Y hX hY t g' h x' y hS1 hSt1 hD1 hS2 hSt2 hD2 hfr`. Establish `hi` using `hY.is`. Establish `hW : IsWeilDatumO W.ψ A' WW (botAlpha L i j t) (botAlpha L i j t / botBeta G i j) (Y.ω' t)` using `(GlobalTheory.Grid.isWeil_false _ _ _ _ _ _).1 (hi.weil' t)`. Establish `hSA : IsSelfDualC A' Y.rA'.Λ` using `hi.rigA'.1`. Establish `hSW : IsSelfDualC WW Y.rW.Λ` using `hi.rigW.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFA : Formalism.L2.DIV.IsFrame Y.rA'.β Y.rA'.Λ` using `hi.rigA'.2.1`. Establish `hFW : Formalism.L2.DIV.IsFrame Y.rW.β Y.rW.Λ` using `hi.rigW.2.1`. Establish `eA : X.rA'.Λ = Y.rA'.Λ` using `isStd_lat_eq hX.std' hY.std'`. Establish `eW : X.rW.Λ = Y.rW.Λ` using `isStd_lat_eq hX.stdW hY.stdW`. Rewrite using `[eA, eW]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL` using `GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D A' WW Y.rA'.Λ Y.rW.Λ Y.rA'.β Y.rW.β hSA hSW hFA hFW g' h hSt1 hSt2`. Establish `hvac` using `hi.isVac'`. Establish `hIS` using `hi.idem t`. Take `⟨ι, P, es, hsp, horth, hsum⟩` from `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum hIS`. Establish `hc0 : Y.e t * cA D (Y.e t) = 0` using `hIS.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hes : ∀ k ∈ P, es k * Y.e t = es k`. Introduce `k hk`. Rewrite using `[hsum, Finset.mul_sum, Finset.sum_eq_single_of_mem k hk (fun b hb hne => horth k hk b hb hne)]`. Conclude with `(hsp k hk).1`. Establish `hecs : ∀ a ∈ P, ∀ b ∈ P, es a * cA D (es b) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Establish `h2 : cA D (es b) * cA D (Y.e t) = cA D (es b)` using `by rw [← map_mul, hes b hb]`. Rewrite using `[← hes a ha, ← h2]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : Y.ω' t (g', h) Y.vac' = ((splitFacO (botAlpha L i j t) (botAlpha L i j t / botBeta G i j) x' y : Circle) : ℂ) • Y.vac'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS1`, `hS2`, `hD1`, `hD2` using `[hsum]`. Conclude with `GlobalTheory.WeilSplit.om_latVac_sum hW hSA hSW hvac.2.theta hvac.2.lat es P hsp horth hecs g' h hS1 hS2 hL x' y hD1 hD2`. Establish `hos` using `(GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum hIS).conj`. Establish `hc : ((splitFacO (botAlpha L i j t) (botAlpha L i j t / botBeta G i j) x' y : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hΦ : (LinearMap.funLeft ℂ ℂ (actO A' WW g' h)) (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd (botAlpha L i j t / botBeta G i j) (Y.e t) (Y.ideal (locPl G) t) A.rank A' WW Y.rA'.β Y.rW.β) = GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd (botAlph …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[LinearMap.funLeft_apply]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd`. Distinguish the cases in `hu : IsHalf (cA D (Y.e t)) u`. Establish `hd : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord A' WW Y.rA'.β Y.rW.β (actO A' WW g' h u) = GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord A' WW X.rA'.β X.rW.β u`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord`. Rewrite using `[hfr u hu]`. Rewrite using `[hd, GlobalTheory.SchrMove.isHalf_actO_iff]`. Rewrite using `[if_neg, if_neg]`. Conclude with `fun hh => hu hh.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Conclude with `fun hh => hu ((GlobalTheory.SchrMove.isHalf_actO_iff g' h u).1 hh.1)`. Take `⟨⟨T₀, hT₀⟩, hall⟩` from `hi.snd t`. Use `⟨⟨T₀, hT₀⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Establish `th1` using `GlobalTheory.SchrTheta.isTheta_placeModel D W.ψ hW.std A' WW Y.rA'.Λ Y.rW.Λ hSA hSW (cA D (Y.e t)) hos.idem hos.infPart_eq Y.vac' hvac.2.theta T' hT'`. Establish `pm` using `GlobalTheory.SchrMove.isPlaceModel_move hW hL hT' th1 hc h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf'` using `hall _ pm`. Establish `omm : ∀ p q (F : WO A' WW → ℂ), Y.ω' t p (Y.ω' t q F) = Y.ω' t (p * q) F` using `fun p q F => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Use `show _ = T' _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hΦ, hf']`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, map_smul, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Rewrite using `[omm, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isThetaAt_stdSnd_move : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (i j : Fin D.R.m)
     (A A' WW : HSp D) (X Y : Tri T A A' WW), IsBottomTri W i j X → IsBottomTri W i j Y → ∀ (t : T) (g' : GA D A') (h : GA D WW) (x' y : (AE D)ˣ),

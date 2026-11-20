@@ -15,13 +15,13 @@ import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PFibreHilbertFlat
 set_option maxSynthPendingDepth 1
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.BranchImageNhdOffCentre.proof GroundTheory.Heights₂.Heights.AutoClose.CurveRegularOffCentre`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.BranchImageNhdOffCentre : GroundTheory.Heights₂.Heights.BranchImageNhdOffCentre.Statement :=
   @GroundTheory.Heights₂.Heights.BranchImageNhdOffCentre.proof GroundTheory.Heights₂.Heights.AutoClose.CurveRegularOffCentre
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.CurveCoordinateGraph.proof GroundTheory.Heights₂.Heights.AutoClose.CurveRegularOffCentre`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.CurveCoordinateGraph : GroundTheory.Heights₂.Heights.CurveCoordinateGraph.Statement :=
   @GroundTheory.Heights₂.Heights.CurveCoordinateGraph.proof GroundTheory.Heights₂.Heights.AutoClose.CurveRegularOffCentre

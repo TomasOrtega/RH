@@ -9,47 +9,43 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ ι n A w h _hl r χ x hWD hType`. Take `⟨t, _ht, φ, hφ, N, a, hMon, hFS, hax⟩` from `hWD`. Take `⟨b, hbx, hbN, hbρ⟩` from `hType`. Establish `hiso : a.Iso b` using `WD.mk_eq_mk.mp (hax.trans hbx.symm)`. Take `⟨e, he1, he2⟩` from `hiso`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_hNnil, U, hUo, hU⟩` from `hMon`. Take `⟨haN, hFS⟩` from `hFS`. Establish `htoEnd : ∀ X : Matrix (Fin n) (Fin n) (Qbar l), toEndC ι X = Matrix.toLin' (X.map ι)` using `fun X => rfl`. Establish `haN0 : a.N = 0`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v`. Establish `h0` using `he2 v`. Rewrite `h0` using `[hbN, LinearMap.zero_apply, LinearEquiv.map_eq_zero_iff]`. Conclude with `h0`. Establish `hN0 : N = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Matrix.toLin' (N.map ι) = Matrix.toLin' (0 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← htoEnd, ← haN, haN0, map_zero]`. Establish `h2` using `Matrix.toLin'.injective h0`. Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h2 i) j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3`. Establish `hpow : ∀ s : Ine (F` using `L) A, ∃ m : ℕ, 0 < m ∧ s ^ m ∈ U := by`. Introduce `s`. Establish `hUn : (U : Set (Ine (F` using `L) A)) ∈ nhds (1 : Ine (F := L) A) := hUo.mem_nhds U.one_mem`. Take `⟨u, hu, hsub⟩` from `(mem_nhds_subtype _ _ _).mp hUn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hEfin, hEu⟩` from `(krullTopology_mem_nhds_one_iff L Ω u).mp hu`. Set `f : ℕ → (E →ₐ[L] Ω)` to `fun k => ((s : G L Ω) ^ k).toAlgHom.comp E.val`. Take `⟨i, j, hij, hfij⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Establish `key : ∀ i j : ℕ, i < j → f i = f j → s ^ (j - i) ∈ U`. Introduce `i j hlt hf`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hsub` to reduce the goal to its premises. Apply `hEu` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Establish `hy'` using `congrArg (fun φ : E →ₐ[L] Ω => φ ⟨y, hy⟩) hf`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, AlgHom.comp_apply] at hy'`. Establish `hj : (s : G L Ω) ^ j = (s : G L Ω) ^ i * (s : G L Ω) ^ (j - i)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hlt.le]`. Rewrite `hy'` using `[hj]`. Establish `hy'' : ((s : G L Ω) ^ i) y = ((s : G L Ω) ^ i) (((s : G L Ω) ^ (j - i)) y)` using `hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((s : G L Ω) ^ i).injective hy''` as an intermediate fact. Use `show ((s ^ (j - i) : Ine (F := L) A) : G L Ω) • y = y`. Rewrite using `[Subgroup.coe_pow]`. Conclude with `this.symm`. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨j - i, Nat.sub_pos_of_lt hlt, key i j hlt hfij⟩`. Conclude with `⟨i - j, Nat.sub_pos_of_lt hlt, key j i hlt hfij.symm⟩`. Establish `hrs : ∀ s : Ine (F` using `L) A, Matrix.toLin' ((r (s : G L Ω) : Matrix (Fin n) (Fin n) (Qbar l)).map ι) = a.ρ (ineIncl h s) := by`. Introduce `s`. Take `⟨m, hm, hsm⟩` from `hpow s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hrm : (r (s : G L Ω)) ^ m = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `hU _ hsm`. Rewrite `h1` using `[hN0, smul_zero, IsNilpotent.exp_zero]`. Rewrite using `[← map_pow, ← Subgroup.coe_pow, h1, Units.val_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set f : Module.End ℂ (Fin n → ℂ) := Matrix.toLin' ((r (s : G L Ω) : Matrix (Fin n) (Fin n) (Qbar l)).map ι) with hf`. Establish `hfm : f ^ m = 1`. Rewrite using `[hf, ← htoEnd, ← map_pow, ← Units.val_pow_eq_pow_val, hrm, Units.val_one, map_one]`. Establish `hfss : f.IsSemisimple`. Apply `Module.End.isSemisimple_of_squarefree_aeval_eq_zero (p := Polynomial.X ^ m - Polynomial.C 1)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Polynomial.separable_X_pow_sub_C 1 (by exact_mod_cast hm.ne') one_ne_zero).squarefree`. Simplify using `[hfm]`. Take `⟨hcomm, hnil⟩` from `hFS (ineIncl h s)`. Establish `hwd : toEndC ι (wdMat t hφ r N (ineIncl h s)) = f`. Simplify using `only [wdMat, hN0, smul_zero, IsNilpotent.exp_zero, mul_one]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Simplify using `only [hwd] at hcomm hnil`. Establish `hss2 : (f - a.ρ (ineIncl h s)).IsSemisimple` using `hfss.sub_of_commute hcomm.symm (a.semisimple _)`. Conclude with `sub_eq_zero.mp (Module.End.eq_zero_of_isNilpotent_isSemisimple hnil hss2)`. Set `P : Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toMatrix' (e : Module.End ℂ (Fin n → ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Pi : Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toMatrix' (e.symm : Module.End ℂ (Fin n → ℂ))`. Establish `hPPi : P * Pi = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Rewrite using `[show (e : Module.End ℂ (Fin n → ℂ)).comp (e.symm : Module.End ℂ (Fin n → ℂ)) = LinearMap.id from LinearMap.ext fun v => by simp]`. Conclude with `LinearMap.toMatrix'_id`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPiP : Pi * P = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Rewrite using `[show (e.symm : Module.End ℂ (Fin n → ℂ)).comp (e : Module.End ℂ (Fin n → ℂ)) = LinearMap.id from LinearMap.ext fun v => by simp]`. Conclude with `LinearMap.toMatrix'_id`. Set `Φ` to `ι.symm.toRingHom.mapMatrix (m := Fin n)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : GL (Fin n) (Qbar l)` to `⟨Φ P, Φ Pi, by rw [← map_mul, hPPi, map_one], by rw [← map_mul, hPiP, map_one]⟩`. Use `⟨g, fun s => ?_⟩` and prove the remaining obligations. Establish `hA : a.ρ (ineIncl h s) = (e.symm : Module.End ℂ (Fin n → ℂ)).comp ((b.ρ (ineIncl h s)).comp (e : Module.End ℂ (Fin n → ℂ)))`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[← he1]`. Establish `hR : (r (s : G L Ω) : Matrix (Fin n) (Fin n) (Qbar l)).map ι = Pi * Matrix.diagonal (fun i => ι (χ i s : Qbar l)) * P`. Establish `h1` using `congrArg LinearMap.toMatrix' (hrs s)`. Rewrite `h1` using `[LinearMap.toMatrix'_toLin', hA, LinearMap.toMatrix'_comp, LinearMap.toMatrix'_comp, hbρ s, LinearMap.toMatrix'_toLin', ← mul_assoc]`. Rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hback : (r (s : G L Ω) : Matrix (Fin n) (Fin n) (Qbar l)) = Φ ((r (s : G L Ω) : Matrix (Fin n) (Fin n) (Qbar l)).map ι)`. Use extensionality with `i j`. Simplify using `[Φ]`. Use `show Φ P * (r (s : G L Ω) : Matrix (Fin n) (Fin n) (Qbar l)) * Φ Pi = _`.
-
-Rewrite using `[hback, hR, ← map_mul, ← map_mul]`. Rewrite using `[show P * (Pi * Matrix.diagonal (fun i => ι (χ i s : Qbar l)) * P) * Pi = Matrix.diagonal (fun i => ι (χ i s : Qbar l)) by`. Rewrite using `[← mul_assoc, ← mul_assoc, hPPi, one_mul, mul_assoc, hPPi, mul_one]]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
-
-Substitute `hij` using the available equality. Simplify using `[Φ]`. Simplify using `[Φ, Matrix.diagonal_apply_ne _ hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_conj_inertia_diagonal_of_isTypeWD :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (ι : Qbar l ≃+* ℂ) (n : ℕ) (A : ValuationSubring Ω) (w : Plc L) (h : IsPlaceOver A w), ((l : ℕ) : 𝓞 L) ∉ w.asIdeal → ∀ (r : G L Ω →* GL (Fin n) (Qbar l)) (χ : Fin n → Ine (F := L) A →* (Qbar l)ˣ) (x : WD h), IsWDOf ι r x → IsTypeWD h (fun i => W.pushCh ι.toRingHom (χ i)) x → ∃ g : GL (Fin n) (Qbar l), ∀ t : Ine (F := L) A, ((g * r t * g⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) = Matrix.diagonal fun i => (χ i t : Qbar l) := by

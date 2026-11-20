@@ -26,7 +26,7 @@ variable {B B' G G' Ge Ge' : Scheme.{0}} {M : LB B} {M' : LB B'} {L : LB G} {j :
   {h : Fin j → (Ge' ⟶ Ge)}
 
 /- English proof (translation)
-The claim follows from `(gm_linComb M pr (fun _ => 1) ψ z a b (Set.mem_iInter.2 ha) (Set.mem_iInter.2 hb)).trans (Finset.prod_congr rfl fun _ _ => zpow_one _)`.
+A detailed English derivation is pending.
 -/
 theorem gm_box_g {Z : Scheme.{0}} (ψ : Z ⟶ B') (z : Z) (a b : Fin j → M.ι) (ha : ∀ i, pr i (ψ z) ∈ M.U (a i))
     (hb : ∀ i, pr i (ψ z) ∈ M.U (b i)) :
@@ -36,7 +36,7 @@ theorem gm_box_g {Z : Scheme.{0}} (ψ : Z ⟶ B') (z : Z) (a b : Fin j → M.ι)
     (Finset.prod_congr rfl fun _ _ => zpow_one _)
 
 /- English proof (translation)
-Establish `hm : ψ z ∈ LB.wchart M pr a ⊓ M'.U k ⊓ (LB.wchart M pr b ⊓ M'.U k')` using `⟨⟨Set.mem_iInter.2 ha, hk⟩, Set.mem_iInter.2 hb, hk'⟩`. Establish `e` using `congrArg (gm ψ z (LB.wchart M pr a ⊓ M'.U k ⊓ (LB.wchart M pr b ⊓ M'.U k'))) (hw (a, k) (b, k'))`. Establish `e'` using `(gm_res ψ z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div M' (LB.LinComb M pr (fun _ => 1)) ψ z (a, k) (b, k') hm) (gm_res ψ z _ hm _))))`. Rewrite using `[← gm_box_g ψ z a b ha hb]`. Conclude with `e'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bw_change {w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))} (hw : w.IsGen) {Z : Scheme.{0}} (ψ : Z ⟶ B') (z : Z)
     (a b : Fin j → M.ι) (k k' : M'.ι) (ha : ∀ i, pr i (ψ z) ∈ M.U (a i)) (hb : ∀ i, pr i (ψ z) ∈ M.U (b i))
@@ -57,15 +57,15 @@ def germ (pG' : Ge' ⟶ B') (h : Fin j → (Ge' ⟶ Ge)) (w : LB.Iso M' (LB.LinC
   (bw w (r ≫ pG') z jM jM')⁻¹ * ∏ i, Geo.Tor.gw we (r ≫ h i) z (jM i) (fun _ => jL i)
 
 /- English proof (translation)
-Establish `p₁ : ∀ i, pG (h i (r z)) = pr i (pG' (r z))` using `fun i => congrArg (fun g => g (r z)) (e₁ i).symm`. Establish `p₂ : ∀ i, fG (h i (r z)) = prG i (fG' (r z))` using `fun i => congrArg (fun g => g (r z)) (e₂ i)`. Establish `a` using `bw_change hw (r ≫ pG') z jM kM jM' kM' a₁ b₁ a₂ b₂`. Establish `c : ∀ i, Geo.Tor.gw we (r ≫ h i) z (jM i) (fun _ => jL i) = gm ((r ≫ pG') ≫ pr i) z (M.U (jM i) ⊓ M.U (kM i)) (M.g (jM i) (kM i)) * (gm ((r ≫ fG') ≫ prG i) z (L.U (jL i) ⊓ L.U (kL i)) (L.g (jL i) (kL i)))⁻¹ * Geo.Tor.gw we (r ≫ h i) z (kM i) (fun _ => kL i)` using `fun i => by`. Establish `c₃ : fG (h i (r z)) ∈ L.U (jL i)` using `p₂ i ▸ a₃ i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₃ : fG (h i (r z)) ∈ L.U (kL i)` using `p₂ i ▸ b₃ i`. Establish `c₁ : pG (h i (r z)) ∈ M.U (jM i)` using `p₁ i ▸ a₁ i`. Establish `d₁ : pG (h i (r z)) ∈ M.U (kM i)` using `p₁ i ▸ b₁ i`. Establish `c` using `hwe Z (r ≫ h i) z (jM i) (kM i) (fun _ => jL i) (fun _ => kL i) c₁ d₁ (mem_pull.2 c₃) (mem_pull.2 d₃)`. Rewrite `c` using `[gm_pull_g L fG (r ≫ h i) z (fun _ => jL i) (fun _ => kL i) (mem_pull.2 c₃) (mem_pull.2 d₃), Category.assoc, Category.assoc, ← e₁, e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `c`. Unfold `germ`. Rewrite using `[a, Finset.prod_congr rfl fun i _ => c i, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Generalize the expression as in `(∏ i, gm ((r ≫ pG') ≫ pr i) z (M.U (jM i) ⊓ M.U (kM i)) (M.g (jM i) (kM i))) = A`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∏ i, gm ((r ≫ fG') ≫ prG i) z (L.U (jL i) ⊓ L.U (kL i)) (L.g (jL i) (kL i))) = C`. Generalize the expression as in `gm (r ≫ pG') z _ (M'.g jM' kM') = A'`. Generalize the expression as in `bw w (r ≫ pG') z kM kM' = P`. Generalize the expression as in `(∏ i, Geo.Tor.gw we (r ≫ h i) z (kM i) (fun _ => kL i)) = R`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem germ_change (e₁ : ∀ i, pG' ≫ pr i = h i ≫ pG) (e₂ : ∀ i, h i ≫ fG = fG' ≫ prG i)
     {w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))} {we : LB.Iso (L.pull fG) (M.pull pG)} (hw : w.IsGen) (hwe : PGen we)
@@ -105,13 +105,11 @@ theorem germ_change (e₁ : ∀ i, pG' ≫ pr i = h i ≫ pG) (e₂ : ∀ i, h i
   abel
 
 /- English proof (translation)
-Establish `p₁ : ∀ i x, pG (h i x) = pr i (pG' x)` using `fun i x => congrArg (fun g => g x) (e₁ i).symm`. Establish `p₂ : ∀ i x, fG (h i x) = prG i (fG' x)` using `fun i x => congrArg (fun g => g x) (e₂ i)`. Take `⟨W, hW⟩ : ∃ W : (Fin j → M.ι) → Ge'.Opens, ∀ a x, x ∈ W a ↔ (∀ i, pr i (pG' x) ∈ M.U (a i)) ∧ pG' x ∈ M'.U jM' ∧ ∀ i, prG i (fG' x) ∈ L.U (jL i)` from `⟨fun a => pG' ⁻¹ᵁ LB.wchart M pr a ⊓ (pG' ⁻¹ᵁ M'.U jM' ⊓ fG' ⁻¹ᵁ LB.wchart L prG jL), fun _ _ => and_congr Set.mem_iInter (and_congr Iff.rfl Set.mem_iInter)⟩`. Establish `l₀ : ∀ a, W a ≤ (M'.pull pG').U (fun _ => jM') ⊓ ((LB.LinComb L prG (fun _ => 1)).pull fG').U (fun _ => jL)` using `fun a x hx => ⟨mem_pull.2 ((hW a x).1 hx).2.1, mem_pull.2 (Set.mem_iInter.2 ((hW a x).1 hx).2.2)⟩`. Establish `l₁ : ∀ a, W a ≤ pG' ⁻¹ᵁ (LB.wchart M pr a ⊓ M'.U jM')` using `fun a x hx => ⟨Set.mem_iInter.2 ((hW a x).1 hx).1, ((hW a x).1 hx).2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₂ : ∀ a i, W a ≤ h i ⁻¹ᵁ ((M.pull pG).U (fun _ => a i) ⊓ (L.pull fG).U (fun _ => jL i))` using `fun a i x hx => ⟨mem_pull.2 ((p₁ i x).symm ▸ ((hW a x).1 hx).1 i), mem_pull.2 ((p₂ i x).symm ▸ ((hW a x).1 hx).2.2 i)⟩`. Take `⟨u, hu⟩ : ∃ u : ∀ a, Γ(Ge', W a)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Ge') (z : Z) (a : Fin j → M.ι), r z ∈ W a → gm r z (W a) (u a) = germ pG' h w we r z a jM' jL` from `⟨fun a => (res (l₁ a) (pullU pG' _ (w.s (a, jM'))))⁻¹ * ∏ i, res (l₂ a i) (pullU (h i) _ (we.s (fun _ => a i, fun _ => jL i))), fun Z r z a hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_inv _ _).trans (congrArg (·⁻¹) ((gm_res r z (l₁ a) hz _).trans (gm_pull r pG' z _ (l₁ a …`. Take `⟨s, hs⟩` from `glue_unit _ W l₀ (fun x hx => by choose a ha using fun i => exists_chart hM (pr i (pG' x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨a, (hW a x).2 ⟨ha, mem_pull.1 hx.1, Set.mem_iInter.1 (mem_pull.1 hx.2)⟩⟩) u`. Use the proof step `(fun a a' x hx => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(hW a x).1 hx.1`. Establish `h₂` using `(hW a' x).1 hx.2`. Establish `k` using `germ_change e₁ e₂ hw hwe (𝟙 Ge') x a a' jM' jM' jL jL h₁.1 h₁.2.1 h₁.2.2 h₂.1 h₂.2.1 h₂.2.2`. Rewrite `k` using `[gm_self hM' (𝟙 Ge' ≫ pG') x h₁.2.1, Finset.prod_eq_one fun i _ => gm_self hL ((𝟙 Ge' ≫ fG') ≫ prG i) x (h₁.2.2 i), inv_one, _root_.one_mul, _root_.one_mul]`. Conclude with `(hu _ (𝟙 Ge') x a hx.1).trans (k.trans (hu _ (𝟙 Ge') x a' hx.2).symm))`.
-
-Use `⟨s, fun Z r z jM a₁ a₂ a₃ => ?_⟩` and prove the remaining obligations. Establish `hz` using `(hW jM (r z)).2 ⟨a₁, a₂, a₃⟩`. Conclude with `(gm_res r z (l₀ jM) hz s).symm.trans ((congrArg (gm r z (W jM)) (hs jM)).trans (hu Z r z jM hz))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unit (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
     (e₁ : ∀ i, pG' ≫ pr i = h i ≫ pG) (e₂ : ∀ i, h i ≫ fG = fG' ≫ prG i)
@@ -157,11 +155,9 @@ theorem exists_unit (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
   exact (gm_res r z (l₀ jM) hz s).symm.trans ((congrArg (gm r z (W jM)) (hs jM)).trans (hu Z r z jM hz))
 
 /- English proof (translation)
-Rewrite `hwe` using `[isGen_iff]`. Use `choose s hs using exists_unit hM hM' hL e₁ e₂ hw hwe`. Use `⟨⟨fun p => s (p.1 PUnit.unit) (p.2 PUnit.unit)⟩, (isGen_iff _).2 ?_, fun Z r z jM jM' jL a₁ a₂ a₃ => ?_⟩` and prove the remaining obligations. Introduce `Z r z l l' k k' a₂ b₂ a₄ b₄ choose a ha using fun i => exists_chart hM (pr i (pG' (r z)))`. Establish `a₄' : ∀ i, prG i (fG' (r z)) ∈ L.U (k PUnit.unit i)` using `Set.mem_iInter.1 (mem_pull.1 a₄)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₄' : ∀ i, prG i (fG' (r z)) ∈ L.U (k' PUnit.unit i)` using `Set.mem_iInter.1 (mem_pull.1 b₄)`. Establish `c` using `germ_change e₁ e₂ hw hwe r z a a l l' _ _ ha a₂ a₄' ha b₂ b₄'`. Rewrite `c` using `[← hs l _ Z r z a ha a₂ a₄', ← hs l' _ Z r z a ha b₂ b₄', ← gm_box_g (r ≫ fG') z _ _ a₄' b₄']`. Rewrite using `[gm_pull_g (LB.LinComb L prG (fun _ => 1)) fG' r z k k' a₄ b₄]`. Conclude with `c`.
-
-Conclude with `(congrArg (bw w (r ≫ pG') z jM jM' * ·) (hs jM' jL Z r z jM a₁ a₂ a₃)).trans (mul_inv_cancel_left _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_box_iso (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
     (e₁ : ∀ i, pG' ≫ pr i = h i ≫ pG) (e₂ : ∀ i, h i ≫ fG = fG' ≫ prG i)
@@ -189,7 +185,7 @@ theorem exists_box_iso (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
 end General
 
 /- English proof (translation)
-Introduce `R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG e g g' hq L hL w hw`. Establish `hρ : ∀ i, rhoE I pG e i ≫ fGl I G e = fGl I G' e ≫ (pG.pr i).left` using `fun i => pullback.lift_fst _ _ _`. Conclude with `exists_box_iso (Ge := (thickObj R I e G).left) (Ge' := (thickObj R I e G').left) (h := rhoE I pG e) (pG := g.pG.left) (pG' := g'.pG.left) (fG := fGl I G e) (fG' := fGl I G' e) D.toPre.P.isLB D'.toPre.P.isLB hL hq hρ pD.w w pD.w_gen hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (j : ℕ) (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G G' : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre D.toPre j) (pA : IsPowPolAV A' A j) (pG : IsPowGrp G' G j) (e : ℕ) (g : GtCoord I D.toPre e G) (g' : GtCoord I D'.toPre e G'), (∀ i, g'.pG.left ≫ (pD.pw.pr i).left = ((Over.pullback (thick R I e)).map (pG.pr i)).left ≫ g.pG.left) → ∀ (L : LB G.left), L.IsLB → ∀ w : LB.Iso (L.pull (fstG I e G).left) (D.toPre.P.L.pull g.pG.left), w.IsGen → ∃ w' : LB.Iso ((boxLB L pG.pr).pull (fstG I e G').left) (D'.toPre.P.L.pull g'.pG.left), w'.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G').left) (z : Z) (jM : Fin j → D.toPre.P.L.ι) (jM' : D'.toPre.P.L.ι) (jL : Fin j → L.ι), (∀ i, (pD.pw.pr i).left (g'.pG.left (r z)) ∈ D.toPre.P.L.U (jM i)) → g'.pG.left (r z) ∈ D'.toPre.P.L.U jM' → (∀ i, (pG.pr i).left ((fstG I e G').left (r z)) ∈ L.U (jL i)) → bw pD.w (r ≫ g'.pG.left) z jM jM' * Geo.Tor.gw w' r z jM' (fun _ => jL) = ∏ i, Geo.Tor.gw w (r ≫ ((Over.pullback (thick R I e)).map (pG.pr i)).left) z (jM i) (fun _ => jL i) := by
   intro R _ _ I j D D' A A' G G' _ _ _ _ pD pA pG e g g' hq L hL w hw

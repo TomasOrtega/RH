@@ -15,9 +15,9 @@ set_option autoImplicit false
 namespace GlobalTheory.HSShort.GlobWord
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `zero => rw [Pi.single_eq_of_ne (Nat.succ_ne_zero j).symm]`. Both sides reduce to the same expression. Consider the case `succ i => show G.mulW i u ((Pi.single j m : Tot G) i) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne (fun h' => h (Nat.succ_injective h')), map_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_single {K : Type} [Field K] [NumberField K] (G : Geo K) (j : ℕ) (u : Fin G.N → K) (m : G.Sec j) :
     shift G u (Pi.single j m) = Pi.single (j + 1) (G.mulW j u m) := by
@@ -31,13 +31,11 @@ theorem shift_single {K : Type} [Field K] [NumberField K] (G : Geo K) (j : ℕ) 
     · rw [Pi.single_eq_of_ne h, Pi.single_eq_of_ne (fun h' => h (Nat.succ_injective h')), map_zero]
 
 /- English proof (translation)
-Introduce `K _ _ G t j`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `u x hx`. Conclude with `⟨x, hx, by simp [word], fun s hs δ Co p => by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ t ih`. Introduce `u x hx`. Take `⟨x', hx', hw, hr⟩` from `ih (fun q => u q.succ) x hx`. Use `⟨G.mulW (j + t) (u 0) x', GlobalTheory.HilbertSamuel.Model.mulW_mem_global G (j + t) _ hx', ?_, fun s hs δ Co p => ?_⟩` and prove the remaining obligations. Unfold `word at hw ⊢`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[List.ofFn_succ, List.prod_cons, Module.End.mul_apply, hw]`. Conclude with `shift_single G (j + t) (u 0) x'`. Use `show Co.ev (j + t + 1) (hs.res (j + t + 1) (G.mulW (j + t) (u 0) x')) p = _`. Rewrite using `[hs.res_mulW, Co.mul]`. Use `beta_reduce`.
-
-Rewrite using `[hr, Fin.prod_univ_succ, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_global : ∀ (K : Type) [Field K] [NumberField K] (G : Geo K) (t j : ℕ) (u : Fin t → Fin G.N → K), ∀ x ∈ G.global j, ∃ x' ∈ G.global (j + t), word (shift G) u (Pi.single j x) = Pi.single (j + t) x' ∧ ∀ (s : Fin G.D → Fin G.N → K) (hs : G.IsGood s) (δ : ℕ) (Co : Coord G hs δ) (p : Fin δ), Co.ev (j + t) (hs.res (j + t) x') p = (∏ q, ∑ k, u q k * Co.y p k) * Co.ev j (hs.res j x) p := by
   intro K _ _ G t j

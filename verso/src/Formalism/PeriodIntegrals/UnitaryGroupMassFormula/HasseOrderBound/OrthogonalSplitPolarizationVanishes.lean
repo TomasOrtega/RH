@@ -15,7 +15,7 @@ def Rep (u : WeightFamilies.Wt D j) (F : X.Forms) : Prop := ∃ g : B.Cusp j u, 
 variable {X}
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hF`. Take `⟨H, hH⟩` from `X.inc_mul wL u x g`. Conclude with `⟨H, hH.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_mul {wL u : WeightFamilies.Wt D j} (x : B.Cusp j wL) {F : X.Forms} (hF : Rep X u F) :
     Rep X (wadd wL u) (X.inc wL x * F) := by
@@ -24,13 +24,13 @@ theorem rep_mul {wL u : WeightFamilies.Wt D j} (x : B.Cusp j wL) {F : X.Forms} (
   exact ⟨H, hH.symm⟩
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `m F hF`. Simplify using `only [pow_zero, one_mul, Nat.cast_zero, zero_mul, EReal.coe_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hF, le_rfl⟩`. Consider the case `succ a ih`. Introduce `m F hF`. Take `⟨hR, hv⟩` from `ih m F hF`. Establish `hR'` using `rep_mul x hR`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hR'` using `[wadd_addL]`. Use `⟨by rw [pow_succ', mul_assoc]; exact hR', ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `hR`. Rewrite using `[pow_succ', mul_assoc, ← hg, X.vAt_mul]`. Rewrite `hv` using `[← hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : ((((a + 1 : ℕ) : ℝ) * d : ℝ)) = (a : ℝ) * d + d` using `by push_cast; ring`. Rewrite using `[e1, EReal.coe_add]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem rep_pow (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) {wL wF : WeightFamilies.Wt D j} (x : B.Cusp j wL) (d : ℝ)
     (hd : (d : EReal) ≤ X.vAt la y (X.inc wL x)) :
@@ -59,15 +59,13 @@ theorem rep_pow (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) {wL wF : Weig
       _ ≤ _ := add_le_add hd hv
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `m F hF`. Simplify using `only [Finset.prod_empty, Finset.sum_empty, one_mul, add_zero, Nat.cast_zero, zero_mul, EReal.coe_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hF, le_rfl⟩`. Consider the case `@insert a s ha ih`. Introduce `m F hF`. Take `⟨hR, hv⟩` from `ih m F hF`. Take `⟨hR2, hv2⟩` from `rep_pow la y (w a) d (hd a) (e a) _ _ hR`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, mul_assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h3 : m + (e a + ∑ k ∈ s, e k) = m + ∑ k ∈ s, e k + e a` using `by ring`. Rewrite using `[h3]`. Conclude with `hR2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_assoc, ← EReal.coe_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ _ := le_trans (add_le_add hv le_rfl) hv2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rep_prod (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) {N : ℕ} {wL wF : WeightFamilies.Wt D j}
     (w : Fin N → B.Cusp j wL) (d : ℝ) (hd : ∀ k, (d : EReal) ≤ X.vAt la y (X.inc wL (w k))) (e : Fin N → ℕ) :
@@ -101,9 +99,9 @@ theorem rep_prod (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) {N : ℕ} {w
 end
 
 /- English proof (translation)
-Introduce `D B P j X la y N wL wF w d hd m g e n hn`. Substitute `hn` using the available equality. Take `⟨⟨g', hg'⟩, hv⟩` from `rep_prod la y w d hd e Finset.univ m (X.inc _ g) ⟨g, rfl⟩`. Use `⟨g', by rw [mul_comm, hg'], ?_⟩` and prove the remaining obligations. Rewrite using `[hg']`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem orthogonalSplitPolarizationVanishes : S2 := by
   intro D B P j X la y N wL wF w d hd m g e n hn

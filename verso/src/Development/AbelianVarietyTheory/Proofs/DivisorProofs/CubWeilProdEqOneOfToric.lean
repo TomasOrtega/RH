@@ -21,14 +21,14 @@ noncomputable section
 namespace GlobalTheory.Raynaud.ProdToric
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_lift_id_one {S : Scheme.{0}} (G G' : Over S) [GrpObj G] [GrpObj G'] :
     IsMonHom (lift (𝟙 G) (1 : G ⟶ G')) := by
   rw [Hom.one_def]; infer_instance
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_lift_one_id {S : Scheme.{0}} (G G' : Over S) [GrpObj G] [GrpObj G'] :
     IsMonHom (lift (1 : G' ⟶ G) (𝟙 G')) := by

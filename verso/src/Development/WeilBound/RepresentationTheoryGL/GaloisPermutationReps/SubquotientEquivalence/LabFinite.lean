@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.DzCount
 
 /- English proof (translation)
-Establish `h : Finite (Polynomial.degreeLT K (n + 1))` using `Finite.of_equiv _ (Polynomial.degreeLTEquiv K (n + 1)).symm.toEquiv`. Use `Set.Finite.subset (Set.toFinite ((Polynomial.degreeLT K (n + 1) : Submodule K K[X]) : Set K[X])) fun P hP => ?_` and prove the remaining obligations. Use `Polynomial.mem_degreeLT.2 (lt_of_le_of_lt Polynomial.degree_le_natDegree ?_)` and prove the remaining obligations. Rewrite using `[hP.2.2.2]`. Conclude with `Nat.lt_succ_self n` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lab_finite (K : Type) [Field K] [Finite K] (n : ℕ) : (Lab K n).Finite := by
   have h : Finite (Polynomial.degreeLT K (n + 1)) :=

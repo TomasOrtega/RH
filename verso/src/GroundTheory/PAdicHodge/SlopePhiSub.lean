@@ -40,7 +40,7 @@ Both sides reduce to the same expression.
     quot Φ N h (Submodule.Quotient.mk x) = Submodule.Quotient.mk (Φ x) := rfl
 
 /- English proof (translation)
-Introduce and unpack `x ⟨r, hr, hx⟩`. Use `⟨φ r, fun h0 => hr (hφ (by rw [h0, map_zero])), ?_⟩` and prove the remaining obligations. Rewrite using `[← Φ.map_smulₛₗ]`. Conclude with `h _ hx`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsStable.saturation [IsDomain R] {Φ : M →ₛₗ[φ] M} {N : Submodule R M} (h : IsStable Φ N)
     (hφ : Function.Injective φ) : IsStable Φ (saturation N) := by
@@ -52,7 +52,7 @@ theorem IsStable.saturation [IsDomain R] {Φ : M →ₛₗ[φ] M} {N : Submodule
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[phiMatrix_apply, ← he]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem phiMatrix_map {M₂ : Type*} [AddCommGroup M₂] [Module R M₂] (b : Basis ι R M)
     (e : M ≃ₗ[R] M₂) {Φ : M →ₛₗ[φ] M} {Φ₂ : M₂ →ₛₗ[φ] M₂} (he : ∀ x, e (Φ x) = Φ₂ (e x)) :
@@ -61,7 +61,7 @@ theorem phiMatrix_map {M₂ : Type*} [AddCommGroup M₂] [Module R M₂] (b : Ba
   simp [phiMatrix_apply, ← he]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Rewrite using `[isPhiModule_iff_isUnit_det b, isPhiModule_iff_isUnit_det (b.map e), phiMatrix_map b e he]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPhiModule_congr {M₂ : Type*} [AddCommGroup M₂] [Module R M₂] [Module.Free R M]
     [Module.Finite R M] (e : M ≃ₗ[R] M₂) {Φ : M →ₛₗ[φ] M} {Φ₂ : M₂ →ₛₗ[φ] M₂}
@@ -71,9 +71,9 @@ theorem isPhiModule_congr {M₂ : Type*} [AddCommGroup M₂] [Module R M₂] [Mo
   rw [isPhiModule_iff_isUnit_det b, isPhiModule_iff_isUnit_det (b.map e), phiMatrix_map b e he]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Distinguish the cases in `h : IsPhiModule Φ`. Establish `h₂` using `(isPhiModule_congr e he).1 h`. Rewrite using `[deg_eq v b Φ h, deg_eq v (b.map e) Φ₂ h₂, degIn, degIn]`. Conclude with `v.ord_unit_eq _ _ (by rw [phiMatrix_map b e he])`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : ¬ IsPhiModule Φ₂` using `fun h₂ => h ((isPhiModule_congr e he).2 h₂)`. Rewrite using `[deg, deg, dif_neg h, dif_neg h₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_congr [Nontrivial R] (v : UnitOrd R φ) {M₂ : Type*} [AddCommGroup M₂] [Module R M₂]
     [Module.Free R M] [Module.Finite R M] [Module.Free R M₂] [Module.Finite R M₂]
@@ -96,26 +96,26 @@ variable {N N' : Submodule R M} (hc : IsCompl N N') {κ κ' : Type*} [Fintype κ
 def adaptedBasis : Basis (κ ⊕ κ') R M := (bN.prod bN').map (Submodule.prodEquivOfIsCompl N N' hc)
 
 /- English proof (translation)
-Simplify using `[adaptedBasis, Basis.prod_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adaptedBasis_inl (i : κ) : adaptedBasis hc bN bN' (Sum.inl i) = bN i := by
   simp [adaptedBasis, Basis.prod_apply]
 
 /- English proof (translation)
-Simplify using `[adaptedBasis, Basis.prod_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adaptedBasis_inr (i : κ') : adaptedBasis hc bN bN' (Sum.inr i) = bN' i := by
   simp [adaptedBasis, Basis.prod_apply]
 
 /- English proof (translation)
-Simplify using `[adaptedBasis, Basis.prod_repr_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adaptedBasis_repr_inl (x : M) (i : κ) :
     (adaptedBasis hc bN bN').repr x (Sum.inl i) = bN.repr (N.projectionOnto N' hc x) i := by
   simp [adaptedBasis, Basis.prod_repr_inl]
 
 /- English proof (translation)
-Simplify using `[adaptedBasis, Basis.prod_repr_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adaptedBasis_repr_inr (x : M) (i : κ') :
     (adaptedBasis hc bN bN').repr x (Sum.inr i) = bN'.repr (N'.projectionOnto N hc.symm x) i := by
@@ -124,22 +124,22 @@ theorem adaptedBasis_repr_inr (x : M) (i : κ') :
 def quotBasis : Basis κ' R (M ⧸ N) := bN'.map (N.quotientEquivOfIsCompl N' hc).symm
 
 /- English proof (translation)
-Simplify using `[quotBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quotBasis_apply (i : κ') : quotBasis hc bN' i = Submodule.Quotient.mk (bN' i : M) := by
   simp [quotBasis]
 
 /- English proof (translation)
-Simplify using `[quotBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quotBasis_repr_mk (x : M) (i : κ') :
     (quotBasis hc bN').repr (Submodule.Quotient.mk x) i = bN'.repr (N'.projectionOnto N hc.symm x) i := by
   simp [quotBasis]
 
 /- English proof (translation)
-Establish `e : phiMatrix (adaptedBasis hc bN bN') Φ = Matrix.fromBlocks (phiMatrix bN (restrict Φ N h)) (Matrix.of fun i j => (adaptedBasis hc bN bN').repr (Φ (bN' j)) (Sum.inl i)) 0 (phiMatrix (quotBasis hc bN') (quot Φ N h))`. Use extensionality with `(i | i) (j | j)`. Rewrite using `[phiMatrix_apply, adaptedBasis_inl, adaptedBasis_repr_inl, Matrix.fromBlocks_apply₁₁, phiMatrix_apply, ← coe_restrict_apply Φ N h, Submodule.projectionOnto_apply_left]`. Rewrite using `[phiMatrix_apply, adaptedBasis_inr, Matrix.fromBlocks_apply₁₂, Matrix.of_apply]`. Rewrite using `[phiMatrix_apply, adaptedBasis_inl, adaptedBasis_repr_inr, Matrix.fromBlocks_apply₂₁, ← coe_restrict_apply Φ N h, Submodule.projectionOnto_apply_right]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[phiMatrix_apply, adaptedBasis_inr, adaptedBasis_repr_inr, Matrix.fromBlocks_apply₂₂, phiMatrix_apply, quotBasis_apply, quot_mk, quotBasis_repr_mk]`. Rewrite using `[e, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_phiMatrix_adapted (Φ : M →ₛₗ[φ] M) (h : IsStable Φ N) :
     (phiMatrix (adaptedBasis hc bN bN') Φ).det =
@@ -165,29 +165,29 @@ section Bezout
 variable [IsDomain R] [IsBezout R] [Module.Free R M] [Module.Finite R M]
 
 /- English proof (translation)
-The claim follows from `free_of_isTorsionFree_quotient N`.
+A detailed English derivation is pending.
 -/
 theorem free_of_saturated (N : Submodule R M) [Module.IsTorsionFree R (M ⧸ N)] : Module.Free R N :=
   free_of_isTorsionFree_quotient N
 
 /- English proof (translation)
-The claim follows from `finite_of_isTorsionFree_quotient N`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_saturated (N : Submodule R M) [Module.IsTorsionFree R (M ⧸ N)] :
     Module.Finite R N :=
   finite_of_isTorsionFree_quotient N
 
 /- English proof (translation)
-The claim follows from `free_quotient_of_isTorsionFree N`.
+A detailed English derivation is pending.
 -/
 theorem free_quot_of_saturated (N : Submodule R M) [Module.IsTorsionFree R (M ⧸ N)] :
     Module.Free R (M ⧸ N) :=
   free_quotient_of_isTorsionFree N
 
 /- English proof (translation)
-Take `⟨N', hc⟩` from `exists_isCompl_of_isTorsionFree_quotient N`. Set `bN` to `Module.Free.chooseBasis R N`. Set `bQ` to `Module.Free.chooseBasis R (M ⧸ N)`. Set `bN'` to `bQ.map (N.quotientEquivOfIsCompl N' hc)`. Establish `hq : quotBasis hc bN' = bQ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[quotBasis, bN']`. Use `⟨adaptedBasis hc bN bN', ?_⟩` and prove the remaining obligations. Rewrite using `[det_phiMatrix_adapted hc bN bN' Φ h, hq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_det_eq_mul (Φ : M →ₛₗ[φ] M) (N : Submodule R M) (h : IsStable Φ N)
     [Module.IsTorsionFree R (M ⧸ N)] [Module.Free R N] [Module.Finite R N]
@@ -207,9 +207,9 @@ theorem exists_det_eq_mul (Φ : M →ₛₗ[φ] M) (N : Submodule R M) (h : IsSt
   rw [det_phiMatrix_adapted hc bN bN' Φ h, hq]
 
 /- English proof (translation)
-Use `free_of_saturated N` as an intermediate fact. Use `finite_of_saturated N` as an intermediate fact. Use `free_quot_of_saturated N` as an intermediate fact. Take `⟨b, hb⟩` from `exists_det_eq_mul Φ N h`. Rewrite `hΦ` using `[isPhiModule_iff_isUnit_det b, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[isPhiModule_iff_isUnit_det (Module.Free.chooseBasis R N)]`. Conclude with `isUnit_of_mul_isUnit_left hΦ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPhiModule_restrict {Φ : M →ₛₗ[φ] M} (hΦ : IsPhiModule Φ) {N : Submodule R M}
     (h : IsStable Φ N) [Module.IsTorsionFree R (M ⧸ N)] : IsPhiModule (restrict Φ N h) := by
@@ -223,9 +223,9 @@ theorem isPhiModule_restrict {Φ : M →ₛₗ[φ] M} (hΦ : IsPhiModule Φ) {N 
   exact isUnit_of_mul_isUnit_left hΦ
 
 /- English proof (translation)
-Use `free_of_saturated N` as an intermediate fact. Use `finite_of_saturated N` as an intermediate fact. Use `free_quot_of_saturated N` as an intermediate fact. Take `⟨b, hb⟩` from `exists_det_eq_mul Φ N h`. Rewrite `hΦ` using `[isPhiModule_iff_isUnit_det b, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[isPhiModule_iff_isUnit_det (Module.Free.chooseBasis R (M ⧸ N))]`. Conclude with `isUnit_of_mul_isUnit_right hΦ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPhiModule_quot {Φ : M →ₛₗ[φ] M} (hΦ : IsPhiModule Φ) {N : Submodule R M}
     (h : IsStable Φ N) [Module.IsTorsionFree R (M ⧸ N)] : IsPhiModule (quot Φ N h) := by
@@ -239,7 +239,7 @@ theorem isPhiModule_quot {Φ : M →ₛₗ[φ] M} (hΦ : IsPhiModule Φ) {N : Su
   exact isUnit_of_mul_isUnit_right hΦ
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_det_eq_mul Φ N h`. Establish `hN` using `isPhiModule_restrict hΦ h`. Establish `hQ` using `isPhiModule_quot hΦ h`. Rewrite using `[deg_eq v b Φ hΦ, deg_eq v (Module.Free.chooseBasis R N) _ hN, deg_eq v (Module.Free.chooseBasis R (M ⧸ N)) _ hQ, degIn, degIn, degIn, ← v.ord_unit_mul]`. Conclude with `v.ord_unit_eq _ _ hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_eq_deg_restrict_add (v : UnitOrd R φ) {Φ : M →ₛₗ[φ] M}
     (hΦ : IsPhiModule Φ) {N : Submodule R M} (h : IsStable Φ N) [Module.IsTorsionFree R (M ⧸ N)]
@@ -259,11 +259,11 @@ end Bezout
 section FullRank
 
 /- English proof (translation)
-Use extensionality with `k j`. Establish `hlin : ∀ y : I, ∑ m, bN.repr (Submodule.inclusion hIN (bI m)) k * bI.repr y m = bN.repr (Submodule.inclusion hIN y) k`. Introduce `y`. Use `congrArg (fun z => bN.repr (Submodule.inclusion hIN z) k) (bI.sum_repr y)` as an intermediate fact. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul] at this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`. Establish `e1 : Submodule.inclusion hIN (restrict Φ I hI (bI j)) = restrict Φ N hN (Submodule.inclusion hIN (bI j))` using `rfl`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, phiMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlin, e1, repr_phi]`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct, phiMatrix_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_phiMatrix_eq_of_le {Φ : M →ₛₗ[φ] M} {I N : Submodule R M} (hIN : I ≤ N)
     (hI : IsStable Φ I) (hN : IsStable Φ N) (bI : Basis ι R I) (bN : Basis ι R N) :
@@ -288,13 +288,13 @@ theorem mul_phiMatrix_eq_of_le {Φ : M →ₛₗ[φ] M} {I N : Submodule R M} (h
   simp [Matrix.mul_apply, mulVec, dotProduct, phiMatrix_apply]
 
 /- English proof (translation)
-Use `set X : Matrix ι ι R := Matrix.of fun k j => bN.repr (Submodule.inclusion hIN (bI j)) k`. Use `⟨X.det, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hc0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `key : Submodule.inclusion hIN (∑ j, c j • bI j) = 0`. Apply `bN.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Use `congrFun hc k` as an intermediate fact. Simplify using `only [mulVec, dotProduct, X, Matrix.of_apply, Pi.zero_apply] at this`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, Finsupp.coe_finsetSum, Finset.sum_apply, ← this, mul_comm]`. Establish `h2 : ∑ j, c j • bI j = 0` using `Submodule.inclusion_injective hIN (by rw [key, map_zero])`. Use `bI.linearIndependent` as an intermediate fact. Rewrite `this` using `[Fintype.linearIndependent_iff]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this c h2 j`. Rewrite using `[← det_mul, mul_phiMatrix_eq_of_le hIN hI hN bI bN, det_mul, RingHom.map_det]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_det_mul_eq_of_le [IsDomain R] {Φ : M →ₛₗ[φ] M} {I N : Submodule R M}
     (hIN : I ≤ N) (hI : IsStable Φ I) (hN : IsStable Φ N) (bI : Basis ι R I) (bN : Basis ι R N) :
@@ -331,13 +331,13 @@ def IsEquivariant (f : M →ₗ[R] M₂) (Φ : M →ₛₗ[φ] M) (Φ₂ : M₂ 
 variable {f : M →ₗ[R] M₂} {Φ : M →ₛₗ[φ] M} {Φ₂ : M₂ →ₛₗ[φ] M₂}
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [LinearMap.mem_ker] at hx ⊢; rw [hf, hx, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsEquivariant.isStable_ker (hf : IsEquivariant f Φ Φ₂) : IsStable Φ (LinearMap.ker f) :=
   fun x hx => by rw [LinearMap.mem_ker] at hx ⊢; rw [hf, hx, map_zero]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨Φ x, hf x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem IsEquivariant.isStable_range (hf : IsEquivariant f Φ Φ₂) :
     IsStable Φ₂ (LinearMap.range f) := by
@@ -345,7 +345,7 @@ theorem IsEquivariant.isStable_range (hf : IsEquivariant f Φ Φ₂) :
   exact ⟨Φ x, hf x⟩
 
 /- English proof (translation)
-The claim follows from `(saturation_eq_self_iff (N := LinearMap.ker f)).1 (le_antisymm (fun x ⟨r, hr, hx⟩ => by rw [LinearMap.mem_ker, map_smul] at hx rw [LinearMap.mem_ker] exact (smul_eq_zero.1 hx).resolve_left hr) (le_saturation _))`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_quotient_ker [IsDomain R] [Module.IsTorsionFree R M₂] (f : M →ₗ[R] M₂) :
     Module.IsTorsionFree R (M ⧸ LinearMap.ker f) :=
@@ -355,7 +355,7 @@ theorem isTorsionFree_quotient_ker [IsDomain R] [Module.IsTorsionFree R M₂] (f
     exact (smul_eq_zero.1 hx).resolve_left hr) (le_saturation _))
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[quot_mk, LinearMap.quotKerEquivRange_apply_mk, hf x]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem IsEquivariant.quotKerEquivRange (hf : IsEquivariant f Φ Φ₂) (x : M ⧸ LinearMap.ker f) :
     f.quotKerEquivRange (quot Φ _ hf.isStable_ker x) =
@@ -373,7 +373,7 @@ variable {Φ : M →ₛₗ[φ] M} {N N' : Submodule R M}
 abbrev inSub (N N' : Submodule R M) : Submodule R N' := N.comap N'.subtype
 
 /- English proof (translation)
-Introduce `_ hx` and use `h _ hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isStable_inSub (h : IsStable Φ N) (h' : IsStable Φ N') :
     IsStable (restrict Φ N' h') (inSub N N') := fun _ hx => h _ hx
@@ -383,7 +383,7 @@ def subquot (Φ : M →ₛₗ[φ] M) (N N' : Submodule R M) (h : IsStable Φ N) 
   quot (restrict Φ N' h') (inSub N N') (isStable_inSub h h')
 
 /- English proof (translation)
-Use `(saturation_eq_self_iff (N := inSub N N')).1 (le_antisymm (fun _ ⟨r, hr, hx⟩ => ?_) (le_saturation _))` and prove the remaining obligations. Establish `hsat` using `saturation_eq_self (N := N)`. Conclude with `hsat ▸ (⟨r, hr, hx⟩ : _ ∈ saturation N)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isTorsionFree_subquot [IsDomain R] [Module.IsTorsionFree R (M ⧸ N)] :
     Module.IsTorsionFree R (N' ⧸ inSub N N') := by
@@ -393,7 +393,7 @@ theorem isTorsionFree_subquot [IsDomain R] [Module.IsTorsionFree R (M ⧸ N)] :
   exact hsat ▸ (⟨r, hr, hx⟩ : _ ∈ saturation N)
 
 /- English proof (translation)
-Use `finite_of_saturated N'` as an intermediate fact. Use `isTorsionFree_subquot (N := N) (N' := N')` as an intermediate fact. Conclude with `free_quotient_of_isTorsionFree _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem free_subquot [IsDomain R] [IsBezout R] [Module.Free R M] [Module.Finite R M]
     [Module.IsTorsionFree R (M ⧸ N)] [Module.IsTorsionFree R (M ⧸ N')] :
@@ -403,7 +403,7 @@ theorem free_subquot [IsDomain R] [IsBezout R] [Module.Free R M] [Module.Finite 
   exact free_quotient_of_isTorsionFree _
 
 /- English proof (translation)
-Use `finite_of_saturated N'` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_subquot [IsDomain R] [IsBezout R] [Module.Free R M] [Module.Finite R M]
     [Module.IsTorsionFree R (M ⧸ N')] : Module.Finite R (N' ⧸ inSub N N') := by

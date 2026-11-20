@@ -23,9 +23,7 @@ def HintIS (c : ι) (sg : K →+* ℂ) (φ : (Ω c →+* ℂ) → ℝ) : Prop :=
   Integrable (d.hintSm c sg φ) (blockSphereProb d.D (d.N + 1))
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `filter_upwards [d.norm_at_sg hd h c sg] with z hz`. Take `⟨hfin, hcard, -, -⟩` from `hz`. Use `⟨hfin.toFinset, ?_, fun P hP => (hfin.mem_toFinset.1 hP).1, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcard, Set.ncard_eq_toFinset_card _ hfin]`.
-
-Conclude with `finsum_mem_eq_finite_toFinset_sum _ hfin`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_fs (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) :
     ∀ᵐ z ∂(blockSphereProb d.D (d.N + 1)), ∃ s : Finset (Ω c →+* ℂ), s.card = d.delc c ∧
@@ -38,9 +36,9 @@ theorem hint_fs (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) :
   · exact finsum_mem_eq_finite_toFinset_sum _ hfin
 
 /- English proof (translation)
-Establish `hfs` using `d.hint_fs hd h c sg`. Use `haveI : IsFiniteMeasure (blockSphereProb d.D (d.N + 1)) := by`. Unfold `blockSphereProb`. Use `infer_instance`. Unfold `HintIS at *`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(((h₁.const_mul a₁).add (h₂.const_mul a₂)).add (integrable_const (b * (d.delc c : ℝ)))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hfs] with z hz`. Take `⟨s, hs, -, hφ⟩` from `hz`. Simplify using `only [Pi.add_apply, hφ, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_const, hs, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hintIS_lin (hd : d.AxH 𝒜) (h : d.S1) {c : ι} {sg : K →+* ℂ}
     {φ₁ φ₂ : (Ω c →+* ℂ) → ℝ} (h₁ : d.HintIS c sg φ₁) (h₂ : d.HintIS c sg φ₂) (a₁ a₂ b : ℝ) :
@@ -58,7 +56,7 @@ theorem hintIS_lin (hd : d.AxH 𝒜) (h : d.S1) {c : ι} {sg : K →+* ℂ}
   ring
 
 /- English proof (translation)
-Unfold `HintIS at *`. Use `hφ.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Conclude with `finsum_mem_congr rfl fun P hP => heq P hP.1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hintIS_congr (hd : d.AxH 𝒜) (h : d.S1) {c : ι} {sg : K →+* ℂ}
     {φ ψ : (Ω c →+* ℂ) → ℝ} (hφ : d.HintIS c sg φ) (heq : ∀ P ∈ PT (Ω := Ω c) sg, φ P = ψ P) :
@@ -68,13 +66,11 @@ theorem hintIS_congr (hd : d.AxH 𝒜) (h : d.S1) {c : ι} {sg : K →+* ℂ}
   exact finsum_mem_congr rfl fun P hP => heq P hP.1
 
 /- English proof (translation)
-Establish `hfs` using `d.hint_fs hd h c sg`. Use `haveI : IsFiniteMeasure (blockSphereProb d.D (d.N + 1)) := by`. Unfold `blockSphereProb`. Use `infer_instance`. Unfold `HintIS at *`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Integrable.mono' (hψ.abs.add (integrable_const |(d.delc c : ℝ) * B|)) hm ?_` and prove the remaining obligations. Use `filter_upwards [hfs] with z hz`. Take `⟨s, hs, hsP, hφ⟩` from `hz`. Establish `h1 : d.hintSm c sg ψ z ≤ d.hintSm c sg φ z`. Rewrite using `[hφ, hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_le_sum fun P hP => hle P (hsP P hP)`. Establish `h2 : d.hintSm c sg φ z ≤ (d.delc c : ℝ) * B`. Rewrite using `[hφ, ← hs, ← nsmul_eq_mul, ← Finset.sum_const]`. Conclude with `Finset.sum_le_sum fun P hP => hB P (hsP P hP)`. Simplify using `only [Real.norm_eq_abs, Pi.add_apply]`.
-
-Use `abs_le.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Combine the linear relations using `[neg_abs_le (d.hintSm c sg ψ z), abs_nonneg ((d.delc c : ℝ) * B)]`. Combine the linear relations using `[le_abs_self ((d.delc c : ℝ) * B), abs_nonneg (d.hintSm c sg ψ z)]`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hintIS_bounds (hd : d.AxH 𝒜) (h : d.S1) {c : ι} {sg : K →+* ℂ}
     {φ ψ : (Ω c →+* ℂ) → ℝ}
@@ -100,7 +96,7 @@ theorem hintIS_bounds (hd : d.AxH 𝒜) (h : d.S1) {c : ι} {sg : K →+* ℂ}
   · linarith [le_abs_self ((d.delc c : ℝ) * B), abs_nonneg (d.hintSm c sg ψ z)]
 
 /- English proof (translation)
-Unfold `blockSphereProb`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, sphMeasure, Measure.pi_pi]`. Simplify using `only [sphereProb, ProbabilityTheory.cond_apply MeasurableSet.univ, Set.univ_inter, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hint_bsp_smul : blockSphereProb d.D (d.N + 1) =
     (((volume : Measure (EuclideanSpace ℂ (Fin (d.N + 1)))).toSphere Set.univ)⁻¹ ^ d.D) •
@@ -112,7 +108,7 @@ theorem hint_bsp_smul : blockSphereProb d.D (d.N + 1) =
     Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hnz : (⟨e, he⟩ : 𝒜 c G) ≠ 0` using `fun h0 => he0 (by simpa using congrArg Subtype.val h0)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨e, he⟩ : 𝒜 c G) hnz).mp (hd.finrank_one c G) ⟨f, hf⟩`. Establish `hex : ∃ a : Ω c, f = a • e` using `⟨a, by simpa using (congrArg Subtype.val ha).symm⟩`. Rewrite using `[ratio, dif_pos hex]`. Conclude with `hex.choose_spec`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_ratio_smul_of_mem_graded {d' : Data K ι Ω WT A} (hd : d'.AxH 𝒜) {c : ι} {G : WT} {f e : A c}
     (he : e ∈ 𝒜 c G) (he0 : e ≠ 0) (hf : f ∈ 𝒜 c G) : f = ratio (Ω := Ω c) f e • e := by
@@ -123,7 +119,7 @@ private theorem eq_ratio_smul_of_mem_graded {d' : Data K ι Ω WT A} (hd : d'.Ax
   exact hex.choose_spec
 
 /- English proof (translation)
-Rewrite using `[d.hint_bsp_smul]`. Conclude with `((hd.a13 c sg hf hf0).smul_measure _).aestronglyMeasurable`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_meas (hd : d.AxH 𝒜) (c : ι) (sg : K →+* ℂ) {G : WT} {f : A c} (hf : f ∈ 𝒜 c G)
     (hf0 : f ≠ 0) :
@@ -134,7 +130,7 @@ theorem hint_meas (hd : d.AxH 𝒜) (c : ι) (sg : K →+* ℂ) {G : WT} {f : A 
 
 variable {d} in
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `eq_ratio_smul_of_mem_graded hd he he0 hf`. Rewrite `h1` using `[h0, zero_smul]`. Conclude with `hf0 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_ratio_ne (hd : d.AxH 𝒜) {c : ι} {G : WT} {f e : A c} (he : e ∈ 𝒜 c G) (he0 : e ≠ 0)
     (hf : f ∈ 𝒜 c G) (hf0 : f ≠ 0) : ratio (Ω := Ω c) f e ≠ 0 := by
@@ -144,7 +140,7 @@ theorem hint_ratio_ne (hd : d.AxH 𝒜) {c : ι} {G : WT} {f e : A c} (he : e �
   exact hf0 h1
 
 /- English proof (translation)
-Establish `hfe` using `eq_ratio_smul_of_mem_graded hd he he0 hf`. Establish `hr` using `hint_ratio_ne hd he he0 hf hf0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hd.nrm_smul c P _ he he0 hr, Real.log_mul (norm_ne_zero_iff.mpr ((map_ne_zero P).mpr hr)) (hd.nrm_pos c P he he0).ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem hint_log_line (hd : d.AxH 𝒜) {c : ι} {G : WT} {f e : A c} (he : e ∈ 𝒜 c G) (he0 : e ≠ 0)
     (hf : f ∈ 𝒜 c G) (hf0 : f ≠ 0) (P : Ω c →+* ℂ) :
@@ -158,7 +154,7 @@ theorem hint_log_line (hd : d.AxH 𝒜) {c : ι} {G : WT} {f e : A c} (he : e �
         Real.log_mul (norm_ne_zero_iff.mpr ((map_ne_zero P).mpr hr)) (hd.nrm_pos c P he he0).ne']
 
 /- English proof (translation)
-Rewrite using `[hd.nrm_mul c P hf hg hf0 hg0, Real.log_mul (hd.nrm_pos c P hf hf0).ne' (hd.nrm_pos c P hg hg0).ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hint_log_mul (hd : d.AxH 𝒜) {c : ι} {G G' : WT} {f g : A c} (hf : f ∈ 𝒜 c G)
     (hg : g ∈ 𝒜 c G') (hf0 : f ≠ 0) (hg0 : g ≠ 0) (P : Ω c →+* ℂ) :
@@ -168,13 +164,13 @@ theorem hint_log_mul (hd : d.AxH 𝒜) {c : ι} {G G' : WT} {f g : A c} (hf : f 
     Real.log_mul (hd.nrm_pos c P hf hf0).ne' (hd.nrm_pos c P hg hg0).ne']
 
 /- English proof (translation)
-Introduce `k hk`. Use `haveI := hd.graded c`. Proceed by induction on `k with`. Consider the case `zero => exact absurd hk (lt_irrefl 0)`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨by simpa using hf, by simpa using hf0, fun P => by simp⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `ih hn`. Establish `hmem : f ^ (n + 1) ∈ 𝒜 c ((n + 1) • G)`. Rewrite using `[pow_succ, succ_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `SetLike.mul_mem_graded h1 hf`. Establish `hne : f ^ (n + 1) ≠ 0`. Rewrite using `[pow_succ]`. Conclude with `hd.mul_ne_zero c h1 hf h2 hf0`. Use `⟨hmem, hne, fun P => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[pow_succ, succ_nsmul, hd.nrm_mul c P h1 hf h2 hf0, Real.log_mul (hd.nrm_pos c P h1 h2).ne' (hd.nrm_pos c P hf hf0).ne', h3 P]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hint_pow (hd : d.AxH 𝒜) {c : ι} {G : WT} {f : A c} (hf : f ∈ 𝒜 c G) (hf0 : f ≠ 0) :
     ∀ k : ℕ, 0 < k → f ^ k ∈ 𝒜 c (k • G) ∧ f ^ k ≠ 0 ∧
@@ -198,15 +194,15 @@ theorem hint_pow (hd : d.AxH 𝒜) {c : ι} {G : WT} {f : A c} (hf : f ∈ 𝒜 
       ring
 
 /- English proof (translation)
-Establish `he` using `hd.w_mem (d.jc c) c`. Establish `he0` using `hd.w_base c`. Establish `key : ∀ j, d.nrm c d.wL (d.w j c) P = ‖P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))‖ * d.nrm c d.wL (d.w (d.jc c) c) P := by`. Introduce `j`. Distinguish the cases in `hj : d.w j c = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hr : ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c) = 0 := by`. Establish `h1` using `eq_ratio_smul_of_mem_graded hd he he0 (hd.w_mem j c)`. Establish `h2 : ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c) • d.w (d.jc c) c = 0 := by`. Rewrite using `[← h1]`. Conclude with `hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.mp h2).resolve_right he0`. Rewrite using `[hr, hj, hd.nrm_zero, map_zero, norm_zero, zero_mul]`. Rewrite using `[← hd.nrm_smul c P _ he he0 (hint_ratio_ne hd he he0 (hd.w_mem j c) hj), ← eq_ratio_smul_of_mem_graded hd he he0 (hd.w_mem j c)]`. Establish `hsum : ∑ j, d.nrm c d.wL (d.w j c) P ^ 2 = d.nrm c d.wL (d.w (d.jc c) c) P ^ 2 * ∑ j, ‖P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))‖ ^ 2 := by`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [key j]; ring`. Establish `hU : ‖d.hintU c P‖ = Real.sqrt (∑ j, ‖P (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))‖ ^ 2) := by`. Simplify using `[hintU, EuclideanSpace.norm_eq]`. Establish `hUne : ‖d.hintU c P‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `congrArg (fun x => x (d.jc c)) h0`. Conclude with `hint_ratio_ne hd he he0 he he0 (by simpa [hintU] using h1)`. Establish `hpos` using `hd.nrm_pos c P he he0`. Rewrite using `[be, hsum, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hpos.le, ← hU, Real.log_mul hpos.ne' hUne]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_log_be (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) :
     Real.log (d.be c P) =
@@ -240,7 +236,7 @@ theorem hint_log_be (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) :
   rw [be, hsum, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hpos.le, ← hU, Real.log_mul hpos.ne' hUne]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hb`. Conclude with `⟨B, fun P hP => hB ⟨⟨c, ⟨P, hP⟩⟩, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hint_bdd (sg : K →+* ℂ) (c : ι) {G : WT} {f : ∀ c, A c}
     (hb : BddAbove (Set.range fun p : (Σ c, PT (Ω := Ω c) sg) => d.nrm p.1 G (f p.1) p.2)) :
@@ -249,18 +245,18 @@ theorem hint_bdd (sg : K →+* ℂ) (c : ι) {G : WT} {f : ∀ c, A c}
   exact ⟨B, fun P hP => hB ⟨⟨c, ⟨P, hP⟩⟩, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `P hP` and use `Real.log_le_log (hd.nrm_pos c P hf hf0) (hB P hP)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hint_log_le (hd : d.AxH 𝒜) {c : ι} {G : WT} {f : A c} (hf : f ∈ 𝒜 c G) (hf0 : f ≠ 0)
     {sg : K →+* ℂ} {B : ℝ} (hB : ∀ P ∈ PT (Ω := Ω c) sg, d.nrm c G f P ≤ B) :
     ∀ P ∈ PT (Ω := Ω c) sg, Real.log (d.nrm c G f P) ≤ Real.log B := fun P hP => Real.log_le_log (hd.nrm_pos c P hf hf0) (hB P hP)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨e, he, -, h3⟩` from `hd.a4`. Take `⟨q, hq, p, hp⟩` from `h3 1`. Apply `hq c` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h4` using `hp c`. Rewrite `h4` using `[Pi.one_apply, mul_one]`. Rewrite using `[h4]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `hr : ratio (Ω` using `Ω c) (d.thp (hd.sel k) c) (e c) = 0 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hall]`. Establish `h1` using `eq_ratio_smul_of_mem_graded hd (he c).1 (he c).2 (Submodule.zero_mem _)`. Conclude with `(smul_eq_zero.mp h1.symm).resolve_right (he c).2`. Rewrite using `[hr, map_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_thp_ne (hd : d.AxH 𝒜) (c : ι) : ∃ k, d.thp k c ≠ 0 := by
   by_contra hall

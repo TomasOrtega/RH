@@ -16,7 +16,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ N hN hK`. Take `⟨Rn, Sn, r₀, s₀, act, c, c', hlie, hcomm, hU, hirr, hT, hraise, hk₁⟩` from `GlobalTheory.T.config_B_matched_theta_local hKP F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hNU : N ≤ lowPartInf B G.M R.p` using `hN.trans (twPart_le _ _ _ _ _ _ _ _ _)`. Conclude with `GlobalTheory.T.lie_commutator_action_invariant r₀ s₀ act hlie hcomm _ hU hirr c c' _ hT hraise N hN (hk₁ N hNU hK)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IndLine.twPart_irred_real_beta : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)

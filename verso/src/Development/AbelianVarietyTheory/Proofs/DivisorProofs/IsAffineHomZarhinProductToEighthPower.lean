@@ -14,7 +14,7 @@ namespace AffZphi
 variable {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
 
 /- English proof (translation)
-Unfold `mkZ pa`. Rewrite using `[lift_fst_assoc]`. Conclude with `(Out.powIsLimit A 4).fac _ ⟨i⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (i : Fin 4) :
     mkZ A B u v ≫ pa A B i = u i := by
@@ -23,7 +23,7 @@ theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) 
   exact (Out.powIsLimit A 4).fac _ ⟨i⟩
 
 /- English proof (translation)
-Unfold `mkZ pb`. Rewrite using `[lift_snd_assoc]`. Conclude with `(Out.powIsLimit B 4).fac _ ⟨j⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (j : Fin 4) :
     mkZ A B u v ≫ pb A B j = v j := by
@@ -32,7 +32,7 @@ theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) 
   exact (Out.powIsLimit B 4).fac _ ⟨j⟩
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Conclude with `(Out.powIsLimit A 4).hom_ext fun ⟨i⟩ => by simpa [pa] using ha i`. Conclude with `(Out.powIsLimit B 4).hom_ext fun ⟨j⟩ => by simpa [pb] using hb j`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem zob_ext {T : Over S} (f g : T ⟶ Zob A B) (ha : ∀ i, f ≫ pa A B i = g ≫ pa A B i)
     (hb : ∀ j, f ≫ pb A B j = g ≫ pb A B j) : f = g := by
@@ -45,12 +45,12 @@ instance pa_isMonHom (i : Fin 4) : IsMonHom (pa A B i) := by unfold pa; infer_in
 instance pb_isMonHom (j : Fin 4) : IsMonHom (pb A B j) := by unfold pb; infer_instance
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sig_castAdd (i : Fin 4) : sig (Fin.castAdd 4 i) = .inl i := by fin_cases i <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sig_natAdd (j : Fin 4) : sig (Fin.natAdd 4 j) = .inr j := by fin_cases j <;> rfl
 
@@ -59,15 +59,15 @@ end AffZphi
 open AffZphi
 
 /- English proof (translation)
-Introduce `h M d S t c B _ _ Q la mu hZ _ hu`. Establish `hB : IsAbelianScheme B` using `hZ.1`. Establish `hA : IsAbelianScheme c.A` using `c.ab`. Establish `hZab : IsAbelianScheme (Zob c.A B)` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ (AbelianSchemeGerms.isAbelianScheme_powObj c.A hA 3) (AbelianSchemeGerms.isAbelianScheme_powObj B hB 3)`. Establish `h8 : IsAbelianScheme (Out.powObj c.A 8)` using `AbelianSchemeGerms.isAbelianScheme_powObj c.A hA 7`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hZab.comm` as an intermediate fact. Use `hZab.smooth` as an intermediate fact. Use `hZab.proper` as an intermediate fact. Use `h8.proper` as an intermediate fact. Establish `hfin : IsFinite ((𝟙 (Zob c.A B)) ^ d).left` using `GlobalTheory.GrpTangent.isFinite_id_pow _ hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlm : mu ≫ la = 𝟙 B ^ d` using `hZ.2.2.2.2.2.2.1`. Set `ν : Out.powObj c.A 8 ⟶ Zob c.A B` to `mkZ c.A B (fun i => Out.powPr c.A (Fin.castAdd 4 i) ^ d) (fun j => Out.powPr c.A (Fin.natAdd 4 j) ≫ la)`. Establish `key : zphi c.A B mu ≫ ν = (𝟙 (Zob c.A B)) ^ d`. Use `zob_ext c.A B _ _ (fun i => ?_) (fun j => ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, mkZ_pa, MonObj.comp_pow, zphi_powPr, MonObj.pow_comp, Category.id_comp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[zpr, sig_castAdd]`. Rewrite using `[Category.assoc, mkZ_pb, ← Category.assoc, zphi_powPr, MonObj.pow_comp, Category.id_comp]`. Simplify using `only [zpr, sig_natAdd, Sum.elim_inr, Category.assoc, hlm, MonObj.comp_pow, Category.comp_id]`. Establish `hsep : IsSeparated ν.left`. Establish `: IsSeparated (ν.left ≫ (Zob c.A B).hom)` using `by rw [Over.w ν]; infer_instance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsSeparated.of_comp ν.left (Zob c.A B).hom`. Establish `: IsAffineHom ((zphi c.A B mu).left ≫ ν.left)`. Rewrite using `[← Over.comp_left, key]`. Use `infer_instance`. Conclude with `IsAffineHom.of_comp _ ν.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineHom_zphi : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t)
     (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A)

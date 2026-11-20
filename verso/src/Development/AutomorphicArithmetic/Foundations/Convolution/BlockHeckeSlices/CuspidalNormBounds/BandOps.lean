@@ -12,9 +12,9 @@ namespace UpperTheory.ConvolutionTheory.BW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Use `⟨toL ((y⁻¹).val * Matrix.of X * y.val), ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.CapAdInv.rt_lie y ((y⁻¹).val * Matrix.of X * y.val)`. Establish `e : y.val * ((y⁻¹).val * Matrix.of X * y.val) * (y⁻¹).val = Matrix.of X`. Simplify using `[mul_assoc]`. Rewrite `h` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : lie E n (toL (Matrix.of X)) = lie E n X` using `rfl`. Rewrite `h` using `[h']`. Rewrite using `[map_mul, ← mul_assoc, ← h, mul_assoc, mul_assoc, lie_rt_fin, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lie_right_translate_comm (X : Lie E n) (y : GL (Fin n) (Cinf E)) (k : GL (Fin n) (Af E)) :
     ∃ X' : Lie E n, lie E n X * rt E n (infGL E n y * finGL E n k) =
@@ -29,7 +29,7 @@ private theorem lie_right_translate_comm (X : Lie E n) (y : GL (Fin n) (Cinf E))
   rw [map_mul, ← mul_assoc, ← h, mul_assoc, mul_assoc, lie_rt_fin, mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `lie_right_translate_comm X (Matrix.GeneralLinearGroup.map (pInf E) g) (Matrix.GeneralLinearGroup.map (pFin E) g)`. Rewrite `h` using `[infGL_mul_finGL]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem lie_comm (X : Lie E n) (g : GA E n) :
     ∃ X' : Lie E n, lie E n X * rt E n g = rt E n g * lie E n X' := by
@@ -47,21 +47,21 @@ private def itw (g : GA E n) : Subalgebra ℂ (UC E n) where
   algebraMap_mem' r := ⟨algebraMap _ _ r, by rw [AlgHom.commutes]; exact Algebra.commutes _ _⟩
 
 /- English proof (translation)
-Take `⟨X', h⟩` from `lie_comm X g`. Conclude with `⟨ιC E n X', by rw [uC_ιC, uC_ιC]; exact h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ιC_mem (g : GA E n) (X : Lie E n) : ιC E n X ∈ itw g := by
   obtain ⟨X', h⟩ := lie_comm X g
   exact ⟨ιC E n X', by rw [uC_ιC, uC_ιC]; exact h⟩
 
 /- English proof (translation)
-Rewrite using `[genC, UpperTheory.V.AlgRepEndIrreducible.eL]`. Conclude with `(itw g).smul_mem ((itw g).sub_mem (ιC_mem g _) ((itw g).smul_mem (ιC_mem g _) _)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem genC_mem (g : GA E n) (τ : E →+* ℂ) (i j : Fin n) : genC τ i j ∈ itw g := by
   rw [genC, UpperTheory.V.AlgRepEndIrreducible.eL]
   exact (itw g).smul_mem ((itw g).sub_mem (ιC_mem g _) ((itw g).smul_mem (ιC_mem g _) _)) _
 
 /- English proof (translation)
-Establish `h : Algebra.adjoin ℂ {x : UC E n | ∃ τ i j, x = genC τ i j} ≤ itw g` using `Algebra.adjoin_le (by rintro _ ⟨τ, i, j, rfl⟩; exact genC_mem g τ i j)`. Conclude with `h (adjoin_genC (E := E) (a := n) ▸ Algebra.mem_top)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_comm (g : GA E n) (u : UC E n) :
     ∃ u', uC E n u * rt E n g = rt E n g * uC E n u' := by
@@ -70,7 +70,7 @@ private theorem exists_comm (g : GA E n) (u : UC E n) :
   exact h (adjoin_genC (E := E) (a := n) ▸ Algebra.mem_top)
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.CTFin.Slice1.commute_rt_of_mem_Zalg ?_ g` and prove the remaining obligations. Rewrite using `[Zalg_eq_map]`. Conclude with `⟨_, (evZ E n P).2, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem zop_comm_rt (P : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) (g : GA E n) :
     Commute (zop P) (rt E n g) := by
@@ -79,7 +79,7 @@ private theorem zop_comm_rt (P : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) (g :
   exact ⟨_, (evZ E n P).2, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `Subalgebra.mem_center_iff.1 (evZ E n P).2 v`. Unfold `zop`. Rewrite using `[← map_mul, ← map_mul, h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem zop_comm_uC (P : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) (v : UC E n) :
     zop P * uC E n v = uC E n v * zop P := by
@@ -88,7 +88,7 @@ private theorem zop_comm_uC (P : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) (v :
   rw [← map_mul, ← map_mul, h]
 
 /- English proof (translation)
-Establish `h1` using `AutomorphicForm.one_le_height g`. Establish `h2 : AutomorphicForm.height g ^ N ≤ AutomorphicForm.height g ^ M` using `pow_le_pow_right₀ h1 h`. Establish `h3 : 0 ≤ C ^ d` using `pow_nonneg hC d`. Establish `h4 : 0 ≤ AutomorphicForm.height g ^ N` using `pow_nonneg (zero_le_one.trans h1) N`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_right (le_abs_self B) h3) h2 h4 (mul_nonneg (abs_nonneg B) h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem bnd_mono {C : ℝ} (hC : 0 ≤ C) (B : ℝ) (d : ℕ) (g : GA E n) {N M : ℕ} (h : N ≤ M) :
     B * C ^ d * AutomorphicForm.height g ^ N ≤ |B| * C ^ d * AutomorphicForm.height g ^ M := by
@@ -99,18 +99,18 @@ private theorem bnd_mono {C : ℝ} (hC : 0 ≤ C) (B : ℝ) (d : ℕ) (g : GA E 
   exact mul_le_mul (mul_le_mul_of_nonneg_right (le_abs_self B) h3) h2 h4 (mul_nonneg (abs_nonneg B) h3)
 
 /- English proof (translation)
-The claim follows from `{ toUmg := ((umgOps E) n).1 band := ⟨0, fun u => ⟨0, fun α g => by simp⟩⟩ }`.
+A detailed English derivation is pending.
 -/
 private theorem band_zero (C : ℝ) : Band C (0 : Sm E n) :=
   { toUmg := ((umgOps E) n).1
     band := ⟨0, fun u => ⟨0, fun α g => by simp⟩⟩ }
 
 /- English proof (translation)
-Use `{ toUmg := (((umgOps E) n).2 φ h₁.toUmg).2.1 ψ h₂.toUmg, band := ?_ }` and prove the remaining obligations. Take `⟨N, hN⟩` from `h₁.band`. Take `⟨M, hM⟩` from `h₂.band`. Use `⟨max N M, fun u => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hN u`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD⟩` from `hM u`. Use `⟨|B| + |D|, fun α g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use `(hB α g).trans (bnd_mono hC B α.degree g (le_max_left N M))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hD α g).trans (bnd_mono hC D α.degree g (le_max_right N M))` as an intermediate fact. Rewrite using `[add_mul, add_mul]`. Conclude with `add_le_add ‹_› ‹_›`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem band_add {C : ℝ} (hC : 0 ≤ C) {φ ψ : Sm E n} (h₁ : Band C φ) (h₂ : Band C ψ) : Band C (φ + ψ) := by
   refine { toUmg := (((umgOps E) n).2 φ h₁.toUmg).2.1 ψ h₂.toUmg, band := ?_ }
@@ -128,11 +128,9 @@ private theorem band_add {C : ℝ} (hC : 0 ≤ C) {φ ψ : Sm E n} (h₁ : Band 
   exact add_le_add ‹_› ‹_›
 
 /- English proof (translation)
-Use `{ toUmg := (((umgOps E) n).2 φ h.toUmg).2.2.1 c, band := ?_ }` and prove the remaining obligations. Take `⟨N, hN⟩` from `h.band`. Use `⟨N, fun u => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hN u`. Use `⟨‖c‖ * B, fun α g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, map_smul]`. Use `show ‖c • (uC E n u (zop (MvPolynomial.monomial α 1) φ)).1 g‖ ≤ _`. Rewrite using `[norm_smul, mul_assoc, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg c)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
-
-Conclude with `hB α g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem band_smul {C : ℝ} {φ : Sm E n} (h : Band C φ) (c : ℂ) : Band C (c • φ) := by
   refine { toUmg := (((umgOps E) n).2 φ h.toUmg).2.2.1 c, band := ?_ }
@@ -148,9 +146,9 @@ private theorem band_smul {C : ℝ} {φ : Sm E n} (h : Band C φ) (c : ℂ) : Ba
   exact hB α g
 
 /- English proof (translation)
-Use `{ toUmg := (((umgOps E) n).2 φ h.toUmg).2.2.2.1 v, band := ?_ }` and prove the remaining obligations. Take `⟨N, hN⟩` from `h.band`. Use `⟨N, fun u => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `hN (u * v)`. Use `⟨B, fun α g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : uC E n u (zop (MvPolynomial.monomial α 1) (uC E n v φ)) = uC E n (u * v) (zop (MvPolynomial.monomial α 1) φ)`. Rewrite using `[← Module.End.mul_apply (zop _), zop_comm_uC, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hB α g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem band_uC {C : ℝ} {φ : Sm E n} (h : Band C φ) (v : UC E n) : Band C (uC E n v φ) := by
   refine { toUmg := (((umgOps E) n).2 φ h.toUmg).2.2.2.1 v, band := ?_ }
@@ -166,13 +164,13 @@ private theorem band_uC {C : ℝ} {φ : Sm E n} (h : Band C φ) (v : UC E n) : B
   exact hB α g
 
 /- English proof (translation)
-Use `{ toUmg := (((umgOps E) n).2 φ h.toUmg).2.2.2.2.1 g, band := ?_ }` and prove the remaining obligations. Take `⟨N, hN⟩` from `h.band`. Use `⟨N, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u', hu⟩` from `exists_comm g u`. Take `⟨B, hB⟩` from `hN u'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : 0 ≤ AutomorphicForm.heightConst E n * AutomorphicForm.height g` using `mul_nonneg (zero_le_one.trans AutomorphicForm.one_le_heightConst) (AutomorphicForm.height_pos g).le`. Use `⟨|B| * (AutomorphicForm.heightConst E n * AutomorphicForm.height g) ^ N, fun α x => ?_⟩` and prove the remaining obligations. Establish `e : uC E n u (zop (MvPolynomial.monomial α 1) (rt E n g φ)) = rt E n g (uC E n u' (zop (MvPolynomial.monomial α 1) φ))`. Rewrite using `[← Module.End.mul_apply (zop _), (zop_comm_rt _ g).eq, Module.End.mul_apply, ← Module.End.mul_apply (uC E n u), hu]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Use `show ‖(uC E n u' (zop (MvPolynomial.monomial α 1) φ)).1 (x * g)‖ ≤ _`. Use `(hB α (x * g)).trans ((bnd_mono hC B α.degree (x * g) le_rfl).trans ?_)` and prove the remaining obligations. Establish `h3 : 0 ≤ |B| * C ^ α.degree` using `mul_nonneg (abs_nonneg B) (pow_nonneg hC _)`. Establish `h4 : AutomorphicForm.height (x * g) ≤ AutomorphicForm.heightConst E n * AutomorphicForm.height g * AutomorphicForm.height x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `AutomorphicForm.height_mul_le x g` as an intermediate fact. Use polynomial arithmetic with `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem band_rt {C : ℝ} (hC : 0 ≤ C) {φ : Sm E n} (h : Band C φ) (g : GA E n) : Band C (rt E n g φ) := by
   refine { toUmg := (((umgOps E) n).2 φ h.toUmg).2.2.2.2.1 g, band := ?_ }
@@ -202,7 +200,7 @@ private theorem band_rt {C : ℝ} (hC : 0 ≤ C) {φ : Sm E n} (h : Band C φ) (
     _ = _ := by rw [mul_pow]; ring
 
 /- English proof (translation)
-Distinguish the cases in `h : (Function.support f).Finite`. Rewrite using `[finsum_eq_sum_of_support_subset (s := h.toFinset) _ (by simp), LinearMap.sum_apply]`. Conclude with `Finset.sum_induction _ (Band C) (fun _ _ => band_add hC) (band_zero C) fun c _ => hf c`. Rewrite using `[finsum_of_infinite_support h]`. Conclude with `band_zero C`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem band_finsum {C : ℝ} (hC : 0 ≤ C) {Q : Type*} (f : Q → Module.End ℂ (Sm E n)) {φ : Sm E n}
     (hf : ∀ c, Band C (f c φ)) : Band C ((∑ᶠ c, f c) φ) := by
@@ -214,7 +212,7 @@ private theorem band_finsum {C : ℝ} (hC : 0 ≤ C) {Q : Type*} (f : Q → Modu
     exact band_zero C
 
 /- English proof (translation)
-Unfold `hk`. Rewrite using `[LinearMap.smul_apply]`. Use `band_smul (band_finsum hC _ fun c => ?_) _` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Conclude with `band_smul (band_rt hC h _) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem band_hk {C : ℝ} (hC : 0 ≤ C) {φ : Sm E n} (h : Band C φ) (w : IsDedekindDomain.HeightOneSpectrum (𝓞 E)) (j : ℕ) :
     Band C (hk n w j φ) := by
@@ -227,7 +225,7 @@ private theorem band_hk {C : ℝ} (hC : 0 ≤ C) {φ : Sm E n} (h : Band C φ) (
 end UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `E _ _ _ n C hC`. Conclude with `⟨UpperTheory.ConvolutionTheory.BW.band_zero C, fun φ h => ⟨fun ψ h₂ => UpperTheory.ConvolutionTheory.BW.band_add hC h h₂, UpperTheory.ConvolutionTheory.BW.band_smul h, UpperTheory.ConvolutionTheory.BW.band_uC h, UpperTheory.ConvolutionTheory.BW.band_rt hC h, fun w j => UpperTheor …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.bandOps :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.BandOps E := by

@@ -11,13 +11,13 @@ namespace GlobalTheory.CompanionTheory.FibreDensityLimit
 open Set
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hFc : Continuous fun s => ENNReal.ofReal (a s)` using `ENNReal.continuous_ofReal.comp ha`. Establish `hGc : Continuous fun s => ENNReal.ofReal (b s) + ENNReal.ofReal c` using `(ENNReal.continuous_ofReal.comp hb).add continuous_const`. Establish `hopen : IsOpen {s | ENNReal.ofReal (b s) + ENNReal.ofReal c < ENNReal.ofReal (a s)}` using `isOpen_lt hGc hFc`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A, hAn, hAW, hAc⟩` from `local_compact_nhds (hopen.mem_nhds hlt)`. Establish `hAm : MeasurableSet A` using `hAc.measurableSet`. Establish `hpos : ν A ≠ 0` using `(MeasureTheory.Measure.measure_pos_of_mem_nhds ν hAn).ne'`. Establish `hsplit : ∫⁻ s in A, (ENNReal.ofReal (b s) + ENNReal.ofReal c) ∂ν = ∫⁻ s in A, ENNReal.ofReal (b s) ∂ν + ENNReal.ofReal c * ν A`. Rewrite using `[lintegral_add_right _ measurable_const, setLIntegral_const]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∫⁻ s in A, (ENNReal.ofReal (b s) + ENNReal.ofReal c) ∂ν ≠ ∞`. Establish `hbi : IntegrableOn b A ν` using `hb.continuousOn.integrableOn_compact hAc`. Rewrite using `[hsplit]`. Conclude with `ENNReal.add_ne_top.mpr ⟨hbi.lintegral_lt_top.ne, ENNReal.mul_ne_top ENNReal.ofReal_ne_top hAc.measure_lt_top.ne⟩`. Establish `hstrict` using `setLIntegral_strict_mono hAm hpos hFc.measurable hfin (Filter.Eventually.of_forall fun s hs => hAW hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hstrict` using `[hsplit]`. Conclude with `absurd (h A hAc) (not_le.mpr hstrict)`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_le_of_forall_compact {X : Type} [TopologicalSpace X] [LocallyCompactSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] (ν : Measure X) [IsLocallyFiniteMeasure ν] [ν.IsOpenPosMeasure]
@@ -49,9 +49,9 @@ theorem ofReal_le_of_forall_compact {X : Type} [TopologicalSpace X] [LocallyComp
   exact absurd (h A hAc) (not_le.mpr hstrict)
 
 /- English proof (translation)
-Take `⟨L, -, hLc, hKL, hLU⟩` from `exists_compact_closed_between hK hU hKU`. Take `⟨φ, hφ1, hφ0, hφs, hφb⟩` from `exists_continuous_one_zero_of_isCompact hK isOpen_interior.isClosed_compl (disjoint_compl_right_iff_subset.mpr hKL)`. Use `⟨φ, φ.continuous, hφs, ?_, fun v => hφb v, fun v hv => hφ1 hv⟩` and prove the remaining obligations. Use `(closure_minimal ?_ hLc).trans hLU` and prove the remaining obligations. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hvL`. Conclude with `hv (hφ0 (fun hi => hvL (interior_subset hi)))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private lemma exists_continuous_compactSupport_eq_one_on_compact {V : Type} [TopologicalSpace V] [LocallyCompactSpace V] [T2Space V]
     {K U : Set V} (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U) :
@@ -67,23 +67,21 @@ private lemma exists_continuous_compactSupport_eq_one_on_compact {V : Type} [Top
   exact hv (hφ0 (fun hi => hvL (interior_subset hi)))
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace U` using `hU.locallyCompactSpace`. Set `Kn : ℕ → Set V` to `fun n => Subtype.val '' compactCovering U n`. Establish `hKc : ∀ n, IsCompact (Kn n)` using `fun n => (isCompact_compactCovering U n).image continuous_subtype_val`. Establish `hKU : ∀ n, Kn n ⊆ U`. Introduce and unpack `n _ ⟨x, -, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `x.2`. Establish `hcov : ∀ v ∈ U, ∃ n, v ∈ Kn n`. Introduce `v hv`. Establish `hmem : (⟨v, hv⟩ : U) ∈ ⋃ n, compactCovering U n`. Rewrite using `[iUnion_compactCovering]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨n, hn⟩` from `Set.mem_iUnion.mp hmem`. Conclude with `⟨n, ⟨v, hv⟩, hn, rfl⟩`. Use `choose ψ hψc hψs hψU hψb hψ1 using fun n => exists_continuous_compactSupport_eq_one_on_compact (hKc n) hU (hKU n)`. Establish `hsup : ∀ a b : V → ℝ, HasCompactSupport a → HasCompactSupport b → tsupport (a ⊔ b) ⊆ tsupport a ∪ tsupport b`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b _ _`. Use `closure_minimal ?_ ((isClosed_tsupport a).union (isClosed_tsupport b))` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, not_or] at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hv` to reduce the goal to its premises. Simplify using `[image_eq_zero_of_notMem_tsupport hc.1, image_eq_zero_of_notMem_tsupport hc.2]`. Establish `hP : ∀ n, Continuous (partialSups ψ n) ∧ HasCompactSupport (partialSups ψ n) ∧ tsupport (partialSups ψ n) ⊆ U ∧ ∀ v, 0 ≤ partialSups ψ n v ∧ partialSups ψ n v ≤ 1`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[partialSups_zero]`. Conclude with `⟨hψc 0, hψs 0, hψU 0, hψb 0⟩`. Consider the case `succ n ih`. Take `⟨h1, h2, h3, h4⟩` from `ih`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : partialSups ψ (n + 1) = partialSups ψ n ⊔ ψ (n + 1)` using `partialSups_succ ψ n`. Rewrite using `[hs]`. Use `⟨h1.sup (hψc (n + 1)), ?_, ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `(h2.union (hψs (n + 1))).of_isClosed_subset (isClosed_tsupport _) (hsup _ _ h2 (hψs (n + 1)))`. Conclude with `(hsup _ _ h2 (hψs (n + 1))).trans (Set.union_subset h3 (hψU (n + 1)))`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨le_sup_of_le_left (h4 v).1, sup_le (h4 v).2 (hψb (n + 1) v).2⟩`. Use `⟨fun n => partialSups ψ n, fun n => (hP n).1, fun n => (hP n).2.1, fun n => (hP n).2.2.1, fun n => (hP n).2.2.2, fun v m n hmn => (partialSups ψ).monotone hmn v, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hcov v hv`. Use `⟨n, le_antisymm ((hP n).2.2.2 v).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ1 n v hn]`.
-
-Conclude with `le_partialSups ψ n v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cutoffs {V : Type} [TopologicalSpace V] [LocallyCompactSpace V] [SecondCountableTopology V]
     [T2Space V] {U : Set V} (hU : IsOpen U) :
@@ -144,15 +142,15 @@ variable {V X Y : Type} [MeasurableSpace V] [TopologicalSpace V] [TopologicalSpa
   {μ : Measure V} {ν : Measure X} {f : V → Y} {g : V → X} {ι : X → Y} {U : Set V} {fib : X → Measure V}
 
 /- English proof (translation)
-Establish `hpre : f ⁻¹' (ι '' A) = g ⁻¹' A`. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, Set.mem_image, hfg]`. Conclude with `⟨fun ⟨x, hx, he⟩ => hι he ▸ hx, fun hv => ⟨g v, hv, rfl⟩⟩`. Rewrite using `[hpre]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hgA : MeasurableSet (g ⁻¹' A)` using `hg hA`. Rewrite using `[← lintegral_indicator hgA, ← lintegral_indicator hA]`. Establish `hsupp : Function.support ((g ⁻¹' A).indicator w) ⊆ U`. Introduce `v hv`. Assume the negation of the conclusion as `hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hv` to reduce the goal to its premises. Simplify using `[Set.indicator, hw0 v hU]`. Rewrite using `[← setLIntegral_eq_of_support_subset hsupp, h.2.1 _ (hw.indicator hgA)]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ v ∂(fib s), v ∈ f ⁻¹' {ι s} ∩ U` using `(MeasureTheory.mem_ae_iff).mpr (h.1 s)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hs : s ∈ A`. Rewrite using `[Set.indicator_of_mem hs]`. Use `lintegral_congr_ae (hae.mono fun v hv => ?_)` and prove the remaining obligations. Establish `hgv : g v = s` using `hι (by rw [← hfg]; exact hv.1)`. Rewrite using `[Set.indicator_of_mem (show v ∈ g ⁻¹' A by rw [Set.mem_preimage, hgv]; exact hs)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hs]`. Use `(lintegral_congr_ae (hae.mono fun v hv => ?_)).trans lintegral_zero` and prove the remaining obligations. Establish `hgv : g v = s` using `hι (by rw [← hfg]; exact hv.1)`. Rewrite using `[Set.indicator_of_notMem (show v ∉ g ⁻¹' A by rw [Set.mem_preimage, hgv]; exact hs)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_slice (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι U ν univ fib) (hUm : MeasurableSet U)
     (hι : Function.Injective ι) (hg : Measurable g) (hfg : ∀ v, f v = ι (g v)) {w : V → ℝ≥0∞}
@@ -184,9 +182,9 @@ theorem lintegral_slice (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassV
     rw [Set.indicator_of_notMem (show v ∉ g ⁻¹' A by rw [Set.mem_preimage, hgv]; exact hs)]
 
 /- English proof (translation)
-Establish `hw0 : ∀ v, v ∉ U → ENNReal.ofReal (ψ v) = 0`. Introduce `v hv`. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h' => hv (hψU h')), ENNReal.ofReal_zero]`. Rewrite using `[lintegral_slice (w := fun v => ENNReal.ofReal (ψ v)) h hUm hι hg hfg (ENNReal.measurable_ofReal.comp hψ.measurable) hw0 hA]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ofReal_integral_eq_lintegral_ofReal ((h.2.2 ψ hψ hψc hψU).1 s (Set.mem_univ s)) (Filter.Eventually.of_forall hψ0)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_slice_test (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι U ν univ fib)
     [BorelSpace V] (hUm : MeasurableSet U)
@@ -207,31 +205,27 @@ theorem lintegral_slice_test (h : Formalism.MainNotions.GlobalTheoryTheory.Genus
 end Family
 
 /- English proof (translation)
-Introduce `V X Y _ _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ f g ι hι hgc hfg U fib hUo h φ hφ hφ0 D hD hDA hK s0`. Establish `hg : Measurable g` using `hgc.measurable`. Establish `hUm : MeasurableSet U` using `hUo.measurableSet`. Establish `htest : ∀ ψ : V → ℝ, Continuous ψ → HasCompactSupport ψ → tsupport ψ ⊆ U → (∀ v, 0 ≤ ψ v) → (∀ v, ψ v ≤ φ v) → ENNReal.ofReal (∫ v, ψ v ∂(fib s0)) ≤ ENNReal.ofReal (D s0)`. Introduce `ψ hψ hψc hψU hψ0 hψφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcont : Continuous fun s => ∫ v, ψ v ∂(fib s)` using `continuousOn_univ.mp (h.2.2 ψ hψ hψc hψU).2`. Establish `hcmp : ∀ A : Set X, IsCompact A → ∫⁻ s in A, ENNReal.ofReal (∫ v, ψ v ∂(fib s)) ∂ν ≤ ∫⁻ s in A, ENNReal.ofReal (D s) ∂ν + ENNReal.ofReal 0 * ν A`. Introduce `A hA`. Rewrite using `[ENNReal.ofReal_zero, zero_mul, add_zero, ← lintegral_slice_test h hUm hι hg hfg hψ hψc hψU hψ0 hA.measurableSet, ← hDA A hA.measurableSet]`. Conclude with `lintegral_mono fun v => ENNReal.ofReal_le_ofReal (hψφ v)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ofReal_le_of_forall_compact ν hcont hD 0 hcmp s0`. Establish `hae : ∀ᵐ v ∂(fib s0), v ∈ f ⁻¹' {ι s0} ∩ U` using `(MeasureTheory.mem_ae_iff).mpr (h.1 s0)`. Establish `hint : ∀ θ : V → ℝ, Continuous θ → HasCompactSupport θ → tsupport θ ⊆ U → (∀ v, 0 ≤ θ v) → ENNReal.ofReal (∫ v, θ v ∂(fib s0)) = ∫⁻ v, ENNReal.ofReal (θ v) ∂(fib s0)` using `fun θ hθ hθc hθU hθ0 => ofReal_integral_eq_lintegral_ofReal ((h.2.2 θ hθ hθc hθU).1 s0 (Set.mem_univ _)) (Filter.Eventually.of_forall hθ0)`. Take `⟨χ, hχc, hχs, hχU, hχb, hχm, hχ1⟩` from `exists_cutoffs hUo`. Establish `hψn : ∀ n, ∫⁻ v, ENNReal.ofReal (χ n v * φ v) ∂(fib s0) ≤ ENNReal.ofReal (D s0)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Establish `hc : Continuous fun v => χ n v * φ v` using `(hχc n).mul hφ`. Establish `hs : HasCompactSupport fun v => χ n v * φ v` using `(hχs n).mul_right`. Establish `hsU : tsupport (fun v => χ n v * φ v) ⊆ U` using `tsupport_mul_subset_left.trans (hχU n)`. Establish `h0 : ∀ v, 0 ≤ χ n v * φ v` using `fun v => mul_nonneg (hχb n v).1 (hφ0 v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hint _ hc hs hsU h0]`. Conclude with `htest _ hc hs hsU h0 fun v => mul_le_of_le_one_left (hφ0 v) (hχb n v).2`. Establish `hX : ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib s0) ≤ ENNReal.ofReal (D s0)`. Establish `heq : ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib s0) = ∫⁻ v, ⨆ n, ENNReal.ofReal (χ n v * φ v) ∂(fib s0)`. Use `lintegral_congr_ae (hae.mono fun v hv => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hχ1 v hv.2`. Use `le_antisymm (le_iSup_of_le n (by rw [hn, one_mul])) (iSup_le fun m => ?_)` and prove the remaining obligations. Conclude with `ENNReal.ofReal_le_ofReal (mul_le_of_le_one_left (hφ0 v) (hχb m v).2)`. Rewrite using `[heq, lintegral_iSup (f := fun n v => ENNReal.ofReal (χ n v * φ v)) (fun n => ENNReal.measurable_ofReal.comp ((hχc n).mul hφ).measurable) (fun m n hmn v => ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (hχm v hmn) (hφ0 v)))]`. Conclude with `iSup_le hψn`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `le_antisymm hX (ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_)` and prove the remaining obligations. Take `⟨K, hKc, hKU, hKε⟩` from `hK ε (NNReal.coe_pos.mpr hε)`. Take `⟨L, -, hLc, hKL, hLU⟩` from `exists_compact_closed_between hKc hUo hKU`. Take `⟨ψ, hψ1, hψ0', hψs, hψb⟩` from `exists_continuous_one_zero_of_isCompact hKc isOpen_interior.isClosed_compl (disjoint_compl_right_iff_subset.mpr hKL)`. Establish `hψU : tsupport ψ ⊆ U`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `(closure_minimal ?_ hLc).trans hLU` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hvL`. Conclude with `hv (hψ0' (fun hi => hvL (interior_subset hi)))`. Establish `hc : Continuous fun v => ψ v * φ v` using `ψ.continuous.mul hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : HasCompactSupport fun v => ψ v * φ v` using `hψs.mul_right`. Establish `hsU : tsupport (fun v => ψ v * φ v) ⊆ U` using `tsupport_mul_subset_left.trans hψU`. Establish `h0 : ∀ v, 0 ≤ ψ v * φ v` using `fun v => mul_nonneg (hψb v).1 (hφ0 v)`. Establish `hcont : Continuous fun s => ∫ v, ψ v * φ v ∂(fib s)` using `continuousOn_univ.mp (h.2.2 _ hc hs hsU).2`. Establish `hcmp : ∀ A : Set X, IsCompact A → ∫⁻ s in A, ENNReal.ofReal (D s) ∂ν ≤ ∫⁻ s in A, ENNReal.ofReal (∫ v, ψ v * φ v ∂(fib s)) ∂ν + ENNReal.ofReal ε * ν A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `A hA`. Establish `hAm` using `hA.measurableSet`. Rewrite using `[← hDA A hAm, ← lintegral_slice_test h hUm hι hg hfg hc hs hsU h0 hAm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun v => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ K`. Rewrite using `[Set.indicator_of_notMem (show v ∉ Kᶜ from fun h' => h' hv), add_zero, hψ1 hv, Pi.one_apply, one_mul]`. Rewrite using `[Set.indicator_of_mem hv]`. Conclude with `le_add_self`. Use `_ = ∫⁻ v in f ⁻¹' (ι '' A), ENNReal.ofReal (ψ v * φ v) ∂μ + ∫⁻ v in f ⁻¹' (ι '' A) ∩ Kᶜ, ENNReal.ofReal (φ v) ∂μ := by`.
-
-Rewrite using `[lintegral_add_left (f := fun v => ENNReal.ofReal (ψ v * φ v)) (ENNReal.measurable_ofReal.comp hc.measurable), setLIntegral_indicator hKc.measurableSet.compl, Set.inter_comm]`. Use `_ ≤ ∫⁻ v in f ⁻¹' (ι '' A), ENNReal.ofReal (ψ v * φ v) ∂μ + ENNReal.ofReal ε * ν A := by gcongr`. Conclude with `hKε A hAm`. Establish `hmain` using `ofReal_le_of_forall_compact ν hD hcont ε hcmp s0`. Rewrite `hmain` using `[hint _ hc hs hsU h0, ENNReal.ofReal_coe_nnreal]`.
-
-Use `hmain.trans (add_le_add ?_ le_rfl)` and prove the remaining obligations. Conclude with `lintegral_mono fun v => ENNReal.ofReal_le_ofReal (mul_le_of_le_one_left (hφ0 v) (hψb v).2)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fibre_lintegral_eq_density : ∀ (V X Y : Type) [TopologicalSpace V] [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V] [TopologicalSpace X] [LocallyCompactSpace X] [SecondCountableTopology X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (μ : Measure V) (ν : Measure X) [IsLocallyFiniteMeasure ν] [ν.IsOpenPosMeasure] (f : V → Y) (g : V → X) (ι : X → Y), Function.Injective ι → Continuous g → (∀ v, f v = ι (g v)) → ∀ (U : Set V) (fib : X → Measure V), IsOpen U → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι U ν Set.univ fib → ∀ φ : V → ℝ, Continuous φ → (∀ v, 0 ≤ φ v) → ∀ D : X → ℝ, Continuous D → (∀ A : Set X, MeasurableSet A → ∫⁻ v in f ⁻¹' (ι '' A), ENNReal.ofReal (φ v) ∂μ = ∫⁻ s in A, ENNReal.ofReal (D s) ∂ν) → (∀ ε : ℝ, 0 < ε → ∃ K : Set V, IsCompact K ∧ K ⊆ U ∧ ∀ A : Set X, MeasurableSet A → ∫⁻ v in f ⁻¹' (ι '' A) ∩ Kᶜ, ENNReal.ofReal (φ v) ∂μ ≤ ENNReal.ofReal ε * ν A) → ∀ s₀ : X, ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib s₀) = ENNReal.ofReal (D s₀) := by
   intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ f g ι hι hgc hfg U fib hUo h φ hφ hφ0 D hD hDA hK s0

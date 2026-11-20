@@ -39,19 +39,19 @@ theorem proj_val (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0) (
     (proj h X hX x : V) = x - coef h X x • X := rfl
 
 /- English proof (translation)
-Rewrite using `[coef_apply, inv_mul_cancel₀ hX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_self (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0) : coef h X X = 1 := by
   rw [coef_apply, inv_mul_cancel₀ hX]
 
 /- English proof (translation)
-Rewrite using `[coef_apply, LinearMap.mem_ker.mp w.2, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_ker (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (w : LinearMap.ker (h X)) : coef h X w = 0 := by
   rw [coef_apply, LinearMap.mem_ker.mp w.2, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[proj_val]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem decomp (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0) (x : V) :
     x = coef h X x • X + (proj h X hX x : V) := by
@@ -70,7 +70,7 @@ theorem ext_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0)
     ext h X hX g x = coef h X x • X + (g (proj h X hX x) : V) := rfl
 
 /- English proof (translation)
-Rewrite using `[ext_apply, map_add, map_smul, coef_self h X hX, coef_ker h X (g (proj h X hX x)), smul_eq_mul, mul_one, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_ext (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0)
     (g : LinearMap.ker (h X) ≃ₗ[K] LinearMap.ker (h X)) (x : V) :
@@ -79,7 +79,7 @@ theorem coef_ext (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0)
     mul_one, add_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[proj_val, coef_ext, ext_apply]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem proj_ext (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0)
     (g : LinearMap.ker (h X) ≃ₗ[K] LinearMap.ker (h X)) (x : V) :
@@ -89,7 +89,7 @@ theorem proj_ext (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0)
   abel
 
 /- English proof (translation)
-Rewrite using `[ext_apply, coef_ext, proj_ext, LinearEquiv.symm_apply_apply]`. Conclude with `(decomp h X hX x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_comp (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0)
     (g : LinearMap.ker (h X) ≃ₗ[K] LinearMap.ker (h X)) (x : V) :
@@ -114,14 +114,14 @@ theorem extE_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0)
     extE h X hX g x = ext h X hX g x := rfl
 
 /- English proof (translation)
-Rewrite using `[← hs X w, LinearMap.mem_ker.mp w.2, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_ker_X (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hs : ∀ u v, star (h u v) = h v u)
     (w : LinearMap.ker (h X)) : h w X = 0 := by
   rw [← hs X w, LinearMap.mem_ker.mp w.2, star_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp h X hX x, decomp h X hX y]`. Simplify using `only [LinearMap.map_add₂, map_add, LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, starRingEnd_apply, LinearMap.add_apply, LinearMap.smul_apply]`. Rewrite using `[LinearMap.mem_ker.mp (proj h X hX y).2, h_ker_X h X hs (proj h X hX x)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem h_decomp (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0) (hs : ∀ u v, star (h u v) = h v u)
     (x y : V) :
@@ -133,7 +133,7 @@ theorem h_decomp (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0) (
   ring
 
 /- English proof (translation)
-Rewrite using `[h_decomp h X hX hs, h_decomp h X hX hs x y, extE_apply, extE_apply, coef_ext, coef_ext, proj_ext, proj_ext, hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extE_isom (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0) (hs : ∀ u v, star (h u v) = h v u)
     (g : LinearMap.ker (h X) ≃ₗ[K] LinearMap.ker (h X))
@@ -145,11 +145,9 @@ theorem extE_isom (h : V →ₗ⋆[K] V →ₗ[K] K) (X : V) (hX : h X X ≠ 0) 
 variable {S : Subring K}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hc : coef h X x ∈ S`. Rewrite using `[coef_apply]`. Conclude with `S.mul_mem hXu.2.2 (hM.int X hXM x hx)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc, ?_⟩` and prove the remaining obligations. Rewrite using `[proj_val]`. Conclude with `M.sub_mem hx (hM.smul_mem _ hc X hXM)`. Introduce and unpack `⟨hc, hp⟩`. Rewrite using `[decomp h X hXu.1 x]`.
-
-Conclude with `M.add_mem (hM.smul_mem _ hc X hXM) hp`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_split {h : V →ₗ⋆[K] V →ₗ[K] K} {M : AddSubgroup V} (hM : IsSelfDualMod S h M) {X : V}
     (hXM : X ∈ M) (hXu : IsUnitIn S (h X X)) (x : V) :
@@ -167,7 +165,7 @@ theorem mem_iff_split {h : V →ₗ⋆[K] V →ₗ[K] K} {M : AddSubgroup V} (hM
     exact M.add_mem (hM.smul_mem _ hc X hXM) hp
 
 /- English proof (translation)
-Introduce `a ha m hm` and use `by change ((a • m : LinearMap.ker (h X)) : V) ∈ M rw [Submodule.coe_smul] exact hM.smul_mem a ha _ hm int := fun x hx y hy => hM.int _ hx _ hy dual := fun x hx => by change (x : V) ∈ M apply hM.dual intro m hm have hpm : ((proj h X hXu.1 m : LinearMap.ker (h X)) : V) ∈ M := ((mem …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem selfDual_restr {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : ∀ u v, star (h u v) = h v u) {M : AddSubgroup V}
     (hM : IsSelfDualMod S h M) {X : V} (hXM : X ∈ M) (hXu : IsUnitIn S (h X X)) :
@@ -194,7 +192,7 @@ theorem selfDual_restr {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : ∀ u v, star (h
     exact ⟨t, ht, by change ((t • x : LinearMap.ker (h X)) : V) ∈ M; rw [Submodule.coe_smul]; exact htx⟩
 
 /- English proof (translation)
-Use `Subtype.ext (hnd _ (fun z => ?_))` and prove the remaining obligations. Rewrite using `[decomp h X hX z, map_add, map_smul, smul_eq_mul, h_ker_X h X hs w, mul_zero, zero_add]`. Conclude with `hw (proj h X hX z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nondeg_restr {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : ∀ u v, star (h u v) = h v u)
     (hnd : ∀ x, (∀ y, h x y = 0) → x = 0) {X : V} (hX : h X X ≠ 0) (w : LinearMap.ker (h X))
@@ -204,7 +202,7 @@ theorem nondeg_restr {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : ∀ u v, star (h u
   exact hw (proj h X hX z)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact fun x y => hsy x y`. Consider the case `exact ⟨fun x y => hsy.eq x y⟩`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem symm_restr {h : V →ₗ⋆[K] V →ₗ[K] K} (hsy : h.IsSymm) (W : Submodule K V) :
     (restr h W).IsSymm := by
@@ -213,7 +211,7 @@ theorem symm_restr {h : V →ₗ⋆[K] V →ₗ[K] K} (hsy : h.IsSymm) (W : Subm
     | exact ⟨fun x y => hsy.eq x y⟩
 
 /- English proof (translation)
-Introduce `a ha m hm` and use `by change g.symm (a • m) ∈ M rw [map_smul]; exact hM.smul_mem a ha _ hm int := fun x hx y hy => by have := hM.int _ hx _ hy change h (g.symm x) (g.symm y) ∈ S at this rwa [← hg, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply] at this dual := fun x hx => by change g.sy …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem selfDual_map {h : V →ₗ⋆[K] V →ₗ[K] K} {M : AddSubgroup V} (hM : IsSelfDualMod S h M)
     (g : V ≃ₗ[K] V) (hg : ∀ x y, h (g x) (g y) = h x y) :

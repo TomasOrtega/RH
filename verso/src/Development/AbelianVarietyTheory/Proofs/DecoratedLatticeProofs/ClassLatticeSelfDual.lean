@@ -28,23 +28,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField F] [DecidableEq n] [Fintype n] in
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩ : ∃ φ : R →ₗ[F] F, φ 1 = 1` from `Module.Projective.exists_dual_eq_one F one_ne_zero`. Set `π : E ⊗[F] R →ₗ[E] E` to `(TensorProduct.AlgebraTensorModule.rid F E E).toLinearMap ∘ₗ (φ.baseChange E)`. Establish `hπ : ∀ (s : E ⊗[F] R) (a : E), π (s * inclE (F` using `F) R a) = π s * a := by`. Introduce `s a`. Establish `: s * inclE (F` using `F) R a = a • s := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`. Establish `hπ1 : π 1 = 1`. Simplify using `[π, Algebra.TensorProduct.one_def, hφ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ u ∈ latS (F` using `F) R S L, ∀ s : E ⊗[F] R, (fun i => π (s * u i)) ∈ Submodule.span E (L : Set (n → E)) := by`. Introduce `u hu`. Unfold `latS at hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨y, hy, rfl⟩` from `hu`. Introduce `s`. Establish `: (fun i => π (s * inclE (F` using `F) R (y i))) = π s • y := by`. Use function extensionality and compare the values at `i`. Rewrite using `[hπ]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `this ▸ Submodule.smul_mem _ _ (Submodule.subset_span hy)`. Consider the case `zero`. Introduce `s`. Establish `: (fun i => π (s * (0 : n → E ⊗[F] R) i)) = 0` using `by funext i; simp`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `this ▸ zero_mem _`. Consider the case `add u u' _ _ h h'`. Introduce `s`. Establish `: (fun i => π (s * (u + u') i)) = (fun i => π (s * u i)) + fun i => π (s * u' i)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[mul_add]`. Conclude with `this ▸ add_mem (h s) (h' s)`. Consider the case `smul r u _ h`. Introduce `s`. Establish `: (fun i => π (s * (r • u) i)) = fun i => π ((s * (r : E ⊗[F] R)) * u i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Conclude with `this ▸ h _`. Establish `h` using `key _ hx 1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : (fun i => π (1 * inclE (F` using `F) R (x i))) = x := by`. Use function extensionality and compare the values at `i`. Rewrite using `[hπ, hπ1, one_mul]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_mem_latS (R : Type) [CommRing R] [Algebra F R] [Nontrivial R] (S : Subring (E ⊗[F] R))
     (L : Submodule (𝓞 E) (n → E)) (x : n → E)
@@ -91,13 +91,11 @@ theorem mem_span_of_mem_latS (R : Type) [CommRing R] [Algebra F R] [Nontrivial R
   rwa [e] at h
 
 /- English proof (translation)
-Establish `: Nontrivial (FiniteAdeleRing (𝓞 F) F)`. Take `⟨p, hp⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨p, hp.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hp (RingOfIntegers.not_isField F)⟩`. Use `⟨0, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : (0 : FiniteAdeleRing (𝓞 F) F) v = (1 : FiniteAdeleRing (𝓞 F) F) v` using `by rw [h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(zero_ne_one : (0 : v.adicCompletion F) ≠ 1) h1`. Establish `hG` using `csGlob_lattice (F := F) Λ hfin hspan g`. Establish `hLs : Submodule.span E (L : Set (n → E)) = ⊤`. Rewrite using `[eq_top_iff, ← hG.span_eq_top, Submodule.span_le]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `mem_span_of_mem_latS (F := F) _ _ L x ((h _).2 hx)`. Use extensionality with `x`. Use `conv_lhs => rw [← global_lattice_one_holds F E n L hL hLs]`. Use `Iff.trans ?_ (h _)` and prove the remaining obligations. Use `show ((1⁻¹ : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix n n _) *ᵥ (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) L ↔ _`.
-
-Rewrite using `[inv_one, Units.val_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_globLat (Λ L : Submodule (𝓞 E) (n → E)) (hfin : Module.Finite (𝓞 E) Λ)
     (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) (hL : Module.Finite (𝓞 E) L)
@@ -132,9 +130,9 @@ theorem eq_globLat (Λ L : Submodule (𝓞 E) (n → E)) (hfin : Module.Finite (
 end General
 
 /- English proof (translation)
-Introduce `D u K c`. Establish `e` using `eq_globLat (F := D.host.F) K.lev.Lb (K.lat c) K.lev.Lb_fin K.lev.Lb_span (K.lat_fin c) (K.y c).1 (K.y_lat c)`. Establish `hdual : ∀ x, x ∈ K.lev.Lb ↔ ∀ y ∈ K.lev.Lb, Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramP D) y x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range`. Introduce `x`. Use `⟨fun hx => K.lev.Lb_int x hx, fun hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `K.lev.Lb_dual x hx` as an intermediate fact. Rewrite `this` using `[Nat.cast_one, one_smul]`. Then use the resulting hypothesis. Rewrite using `[e]`. Conclude with `⟨Formalism.UG.P.csGlob_lattice (F := D.host.F) _ K.lev.Lb_fin K.lev.Lb_span _, fun y => GlobalTheory.PointLattice.globLat_selfDual (sigD D) (gramP D) _ hdual K.lev.Lb_fin K.lev.Lb_span _ (K.y c).2 y⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem classLattice_selfDual : ∀ (D : D7) (u : D.what₂.Word) (K : ClsPTied u) (c : (D.fm u).clsP), Submodule.IsLattice D.host.E (K.lat c) ∧ ∀ y, y ∈ K.lat c ↔ ∀ x ∈ K.lat c, Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramP D) x y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
   intro D u K c

@@ -14,11 +14,11 @@ variable {O M ι : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [AddCommGroup M] [Module O M] [Fintype ι]
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`. Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hk : k ≤ E`. Assume the negation of the conclusion as `hk`. Apply `hc` to reduce the goal to its premises. Rewrite using `[hu]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow π (not_le.mp hk)) _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Conclude with `(Units.mul_left_dvd).mpr (pow_dvd_pow π hk)`.
+A detailed English derivation is pending.
 -/
 theorem pow_succ_dvd_of_not_dvd {π : O} (hπ : Irreducible π) {a : O} {E : ℕ}
     (h : ¬ a ∣ π ^ E) : π ^ (E + 1) ∣ a := by
@@ -38,13 +38,11 @@ theorem pow_succ_dvd_of_not_dvd {π : O} (hπ : Irreducible π) {a : O} {E : ℕ
 variable {P : Submodule O M} {n : ℕ}
 
 /- English proof (translation)
-Use `⟨S.image snf.bM, by simp, Finset.card_image_le.trans hcard, ?_⟩` and prove the remaining obligations. Introduce `x _`. Rewrite using `[← snf.bM.sum_repr x, Finset.smul_sum]`. Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Rewrite using `[smul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem _ hj)))`. Take `⟨i, rfl, t, ht⟩` from `hS j hj`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: π ^ E • (snf.bM.repr x (snf.f i) • snf.bM (snf.f i)) = (snf.bM.repr x (snf.f i) * t) • (snf.bN i : M)`. Rewrite using `[snf.snf i, smul_smul, smul_smul, ht]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ (snf.bN i).2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem down (snf : Basis.SmithNormalForm P ι n) (π : O) (g E : ℕ) (S : Finset ι)
     (hS : ∀ j, j ∉ S → ∃ i, snf.f i = j ∧ snf.a i ∣ π ^ E) (hcard : S.card ≤ g) :
@@ -70,39 +68,35 @@ theorem down (snf : Basis.SmithNormalForm P ι n) (π : O) (g E : ℕ) (S : Fins
     exact Submodule.smul_mem _ _ (snf.bN i).2
 
 /- English proof (translation)
-Take `⟨C, -, hCg, hC⟩` from `h`. Set `K : Ideal O` to `Ideal.span {π ^ (E + 1)}`. Set `φ : M →ₗ[O] (↥S → O ⧸ K)` to `LinearMap.pi (fun j : ↥S => K.mkQ ∘ₗ snf.bM.coord (j : ι))`. Establish `hφb : ∀ i, φ (snf.bN i : M) = 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [φ, LinearMap.pi_apply, LinearMap.comp_apply, Basis.coord_apply, snf.snf i, map_smul, Basis.repr_self, Pi.zero_apply]`. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs with hij`. Rewrite using `[← map_smul, smul_eq_mul, mul_one, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : snf.f i ∈ S` using `by rw [hij]; exact j.2`. Conclude with `pow_succ_dvd_of_not_dvd hπ (hS i hmem)`. Simplify using the standard rewrite rules. Establish `hφP : ∀ p ∈ P, φ p = 0`. Introduce `p hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `snf.bN.sum_repr ⟨p, hp⟩`. Establish `hp' : p = ∑ i, snf.bN.repr ⟨p, hp⟩ i • (snf.bN i : M)`. Use `congrArg Subtype.val hsum` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `using this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp', map_sum]`. Simplify using `only [map_smul, hφb, smul_zero, Finset.sum_const_zero]`. Establish `hsurj : Function.Surjective φ`. Introduce `t`. Use `choose r hr using fun j => K.mkQ_surjective (t j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `⟨snf.bM.equivFun.symm (fun k => if hk : k ∈ S then r ⟨k, hk⟩ else 0), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `hrep : snf.bM.repr (snf.bM.equivFun.symm (fun k => if hk : k ∈ S then r ⟨k, hk⟩ else 0)) (j : ι) = r j`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [φ, LinearMap.pi_apply, LinearMap.comp_apply, Basis.coord_apply, hrep, hr]`. Establish `hmemC : ∀ x : M, π ^ E • φ x ∈ Submodule.span O ((C.image φ : Finset _) : Set _)`. Introduce `x`. Take `⟨p, hp, w, hw, hpw⟩` from `Submodule.mem_sup.mp (hC x Submodule.mem_top)`. Rewrite using `[← map_smul, ← hpw, map_add, hφP p hp, zero_add, Finset.coe_image, ← Submodule.map_span]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.mem_map_of_mem hw`. Establish `hkill : ∀ w : ↥S → O ⧸ K, π ^ (E + 1) • w = 0`. Introduce `w`. Use function extensionality and compare the values at `j`. Take `⟨r, hr⟩` from `K.mkQ_surjective (w j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Pi.zero_apply, ← hr, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Ideal.mem_span_singleton]`. Conclude with `dvd_mul_right _ _`. Establish `hker : Ideal.span {π} ≤ LinearMap.ker ((π ^ E) • K.mkQ)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show (π ^ E) • K.mkQ π = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul, ← pow_succ]`. Conclude with `Ideal.mem_span_singleton_self _`. Set `g0 : (O ⧸ Ideal.span {π}) →ₗ[O] (O ⧸ K)` to `(Ideal.span {π}).liftQ ((π ^ E) • K.mkQ) hker`. Establish `hg0 : Function.Injective g0`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Submodule.ker_liftQ_eq_bot` to reduce the goal to its premises. Introduce `r hr`. Rewrite `hr` using `[LinearMap.mem_ker, LinearMap.smul_apply, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Ideal.mem_span_singleton, pow_succ]`. Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero E hπ.ne_zero)).mp hr`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `ι' : (↥S → O ⧸ Ideal.span {π}) →ₗ[O] (↥S → O ⧸ K)` to `LinearMap.pi (fun j : ↥S => g0 ∘ₗ LinearMap.proj j)`. Establish `hinj : Function.Injective ι'`. Introduce `u v huv`. Use function extensionality and compare the values at `j`. Conclude with `hg0 (congrFun huv j)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : LinearMap.range ι' ≤ Submodule.span O ((C.image φ : Finset _) : Set _)`. Introduce and unpack `_ ⟨u, rfl⟩`. Use `choose r hr using fun j => (Ideal.span {π} : Submodule O O).mkQ_surjective (u j)`. Take `⟨x, hx⟩` from `hsurj (fun j => K.mkQ (r j))`. Establish `: ι' u = π ^ E • φ x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[hx]`. Simplify using `only [ι', LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, ← hr, Pi.smul_apply, g0]`. Rewrite using `[Submodule.mkQ_apply, Submodule.liftQ_apply, LinearMap.smul_apply]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmemC x`. Establish `hs : ∀ v ∈ LinearMap.range ι', π ^ 1 • v ∈ (⊥ : Submodule O (↥S → O ⧸ K))`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Submodule.mem_bot]`. Take `⟨r, hr⟩ : ∃ w, ι' u = π ^ E • w` from `by choose r hr using fun j => (Ideal.span {π} : Submodule O O).mkQ_surjective (u j)`.
-
-Use `⟨fun j => K.mkQ (r j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [ι', LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, ← hr, Pi.smul_apply, g0]`. Rewrite using `[Submodule.mkQ_apply, Submodule.liftQ_apply, LinearMap.smul_apply]`. Rewrite using `[hr, smul_smul, ← pow_add, add_comm]`.
-
-Conclude with `hkill r`. Establish `hlay` using `LengthLayersP.layer π hπ (⊥ : Submodule O (↥S → O ⧸ K)) (LinearMap.range ι') bot_le (C.image φ) g 1 (Finset.card_image_le.trans hCg) hV hs`. Rewrite `hlay` using `[Module.length_bot, zero_add, ← (LinearEquiv.ofInjective ι' hinj).length_eq, Module.length_pi_of_fintype]`. Simplify using `only [LengthLayersP.length_residue π hπ, Finset.sum_const, Finset.card_univ, Fintype.card_coe, nsmul_eq_mul, mul_one] at hlay`. Conclude with `hlay` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem up (snf : Basis.SmithNormalForm P ι n) (π : O) (hπ : Irreducible π) (g E : ℕ)
     (S : Finset ι) (hS : ∀ i, snf.f i ∈ S → ¬ snf.a i ∣ π ^ E)
@@ -210,17 +204,15 @@ theorem up (snf : Basis.SmithNormalForm P ι n) (π : O) (hπ : Irreducible π) 
   exact_mod_cast hlay
 
 /- English proof (translation)
-Set `S : Finset ι` to `B.map snf.f ∪ (Finset.univ.map snf.f)ᶜ`. Establish `hcard : S.card = B.card + (Fintype.card ι - n)`. Rewrite using `[Finset.card_union_of_disjoint, Finset.card_map, Finset.card_compl, Finset.card_map, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Finset.disjoint_left]`. Introduce `j hj hj'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj'` using `[Finset.mem_compl]`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.mp hj`. Conclude with `hj' (Finset.mem_map_of_mem _ (Finset.mem_univ i))`. Establish `hin : ∀ i, snf.f i ∈ S → ¬ snf.a i ∣ π ^ E`. Introduce `i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_union.mp hi with h | h` into its components or cases. Take `⟨i', hi', he⟩` from `Finset.mem_map.mp h`. Rewrite `hi'` using `[snf.f.injective he]`. Conclude with `(hB i).mp hi'`. Conclude with `absurd (Finset.mem_map_of_mem _ (Finset.mem_univ i)) (Finset.mem_compl.mp h)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hout : ∀ j, j ∉ S → ∃ i, snf.f i = j ∧ snf.a i ∣ π ^ E`. Introduce `j hj`. Establish `h1 : j ∈ Finset.univ.map snf.f`. Assume the negation of the conclusion as `h`. Conclude with `hj (Finset.mem_union_right _ (Finset.mem_compl.mpr h))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_map.mp h1`. Use `⟨i, rfl, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hj (Finset.mem_union_left _ (Finset.mem_map_of_mem _ ((hB i).mpr h)))`. Rewrite using `[← hcard]`.
-
-Conclude with `⟨up snf π hπ g E S hin, down snf π g E S hout⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem key (snf : Basis.SmithNormalForm P ι n) (π : O) (hπ : Irreducible π) (g E : ℕ)
     (B : Finset (Fin n)) (hB : ∀ i, i ∈ B ↔ ¬ snf.a i ∣ π ^ E) :
@@ -257,7 +249,7 @@ theorem key (snf : Basis.SmithNormalForm P ι n) (π : O) (hπ : Irreducible π)
 end AllButLESmithP
 
 /- English proof (translation)
-Unfold `AllButLESmith`. Introduce `O M ι _ _ _ _ _ _ π hπ P n snf g E`. Conclude with `AllButLESmithP.key snf π hπ g E _ (fun i => by simp)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem all_but_le_smith : AllButLESmith := by
   unfold AllButLESmith

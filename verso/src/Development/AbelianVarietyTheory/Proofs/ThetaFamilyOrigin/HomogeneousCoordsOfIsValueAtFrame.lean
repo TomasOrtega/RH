@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.ZH.CrdDown
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Take `rfl : W = ⊤` from `top_le_iff.1 hW`. Set `φ` to `(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom`. Use `⟨(Units.map φ.toMonoidHom u)⁻¹, fun f w h => ?_⟩` and prove the remaining obligations. Establish `e : ((Sp K).presheaf.map (homOfLE (le_top : (⊤ : (Sp K).Opens) ≤ ⊤)).op).hom w = w` using `congrArg (fun φ => CommRingCat.Hom.hom φ w) ((Sp K).presheaf.map_id _)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Establish `h1 : (x.appLE U ⊤ hU).hom ((ρ.appLE V U hV).hom f) = w * u.val` using `(congrArg (fun φ => CommRingCat.Hom.hom φ f) (Scheme.Hom.appLE_comp_appLE x ρ V U ⊤ hV hU)).trans h`. Rewrite using `[CrdCalc.valR_eq x U hU, Units.eq_inv_mul_iff_mul_eq]`. Use `Eq.trans ?_ (congrArg φ h1).symm` and prove the remaining obligations. Rewrite using `[map_mul, _root_.mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -41,11 +41,11 @@ theorem val_of_rel {K : Type} [CommRing K] {X Y : Scheme.{0}} (x : Sp K ⟶ X) (
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ P N J t ρ e x τ w h`. Establish `hx : (x.left : Sp K ⟶ P.A.left) (IsLocalRing.closedPoint K) ∈ ⨆ i, P.L.U i`. Rewrite using `[P.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Establish `hi'` using `(CrdCalc.top_le_iff (x.left : Sp K ⟶ P.A.left) _).2 hi`. Use `haveI : IsIso (snd (Out.baseOver (Sp K)) P.A).left := inferInstanceAs (IsIso (pullback.snd (𝟙 (Sp K)) P.A.hom))`. Establish `hp : (x.left : Sp K ⟶ P.A.left) ≫ ρ = (Out.ptSecT P.A x).left`. Rewrite using `[← cancel_mono (snd (Out.baseOver (Sp K)) P.A).left]`. Use `(Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) e).trans ((Category.comp_id _).trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun q => q.left) (lift_snd (𝟙 (Out.baseOver (Sp K))) x)).symm`. Establish `hU : ⊤ ≤ (x.left : Sp K ⟶ P.A.left) ⁻¹ᵁ LB.wchart P.L (fun _ : PUnit => 𝟙 P.A.left) (fun _ => i)` using `fun y hy => Set.mem_iInter.2 fun _ => hi' hy`. Establish `hW : ⊤ ≤ LB.wchart P.L (fun _ : Fin 1 => x.left) (fun _ => i)` using `fun y hy => Set.mem_iInter.2 fun _ => hi' hy`. Take `⟨c, hc⟩` from `val_of_rel (x.left : Sp K ⟶ P.A.left) ρ _ hp _ _ _ hU (PowSec.chart_eq P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e (fun _ => i)).le hW (Out.val_le P.A P.L x (fun _ => i)) (τ.s (fun _ => i))`. Conclude with `⟨fun _ => i, c, hU, fun a => hc _ _ (h a (fun _ => i))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem crd_down_of_isValueAt : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N : ℕ) (J : Type) (t : J → LB.Sec (Out.LPow P.A P.L N (Out.baseOver (Sp K)))) (ρ : P.A.left ⟶ ((Out.baseOver (Sp K)) ⊗ P.A).left) (e : ρ ≫ (snd (Out.baseOver (Sp K)) P.A).left = 𝟙 P.A.left) (x : (Out.baseOver (Sp K)) ⟶ P.A) (τ : LB.Gen (LB.LinComb P.L (Y := (Out.baseOver (Sp K)).left) (K := Fin 1) (fun _ => x.left) (fun _ => (N : ℤ)))) (w : J → Γ((Out.baseOver (Sp K)).left, ⊤)), (∀ a, Out.IsValueAt P.A P.L N (t a) x τ (w a)) → Crd (lbPow P.L N) (fun a => PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e ((N : ℕ) : ℤ) (t a)) (x.left : Sp K ⟶ P.A.left) (fun a => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (w a)) := by
   intro K _ _ P N J t ρ e x τ w h

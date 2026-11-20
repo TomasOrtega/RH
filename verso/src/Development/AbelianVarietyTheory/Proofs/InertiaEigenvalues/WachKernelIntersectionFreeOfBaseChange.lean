@@ -12,37 +12,31 @@ namespace GlobalTheory.WachKernel
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h W T₀ T₁ T₂ ι π h0 h1 h2 hses hbc`. Take `⟨hinj, hex, -⟩` from `GlobalTheory.EtaleExact.DD_exact D HW F (GlobalTheory.Decompl.fontaine_and_decompletion D HW F) l K s LL h T₀ T₁ T₂ ι π hses`. Take `⟨_, -, hl⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Use `haveI := ((D.loc l).PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproj` using `(HW l).W_proj K s LL h T₁`. Use `set N₀ := (W.N T₁).comap ((W.map ι).restrictScalars (AA K LL)) with hN₀`. Use `haveI : Module.Free W.EE (W.DD T₀) := (W.DD_free T₀).1`. Use `haveI : IsNoetherianRing ↥(OL LL) := inferInstance`. Use `haveI : IsNoetherianRing (PowerSeries ↥(OL LL)) := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : IsNoetherianRing (AA K LL) := inferInstanceAs (IsNoetherianRing (ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → PowerSeries ↥(OL LL)))`. Use `haveI : Module.Finite (AA K LL) ↥(W.N T₁) := Module.Finite.iff_fg.mpr (W.N_fg T₁)`. Establish `hfin : Module.Finite (AA K LL) ↥N₀`. Set `g : ↥N₀ →ₗ[AA K LL] ↥(W.N T₁)` to `((W.map ι).restrictScalars (AA K LL)).restrict (fun x hx => hx)`. Use `haveI : IsNoetherian (AA K LL) ↥(W.N T₁) := isNoetherian_of_isNoetherianRing_of_finite _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Module.Finite.of_injective g fun a b hab => Subtype.ext (hinj (congrArg Subtype.val hab))`. Establish `hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0`. Introduce `h0`. Use `congrArg (fun x : ↥(OL LL) => (x : ↥LL.1)) h0` as an intermediate fact. Simplify using `[(Fact.out : l.Prime).ne_zero] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hX : IsSMulRegular ↥N₀ (fun _ => X : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → PowerSeries ↥(OL LL))`. Introduce `x y hxy`. Establish `h1 : (letπ : AA K LL) • (x : W.DD T₀) = (letπ : AA K LL) • (y : W.DD T₀)` using `congrArg Subtype.val hxy`. Rewrite `h1` using `[← algebraMap_smul W.EE, ← algebraMap_smul W.EE letπ (y : W.DD T₀)]`. Conclude with `Subtype.ext (W.EE_π.smul_left_cancel.mp h1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hreg : ∀ x y : ↥N₀, (fun _ => C ((l : ℕ) : ↥(OL LL)) : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → PowerSeries ↥(OL LL)) • x = (fun _ => X : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → PowerSeries ↥(OL LL)) • y → ∃ z : ↥N₀, x = (fun _ => X : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → PowerSeries …`. Introduce `x y hxy`. Establish `hinj : Function.Injective (W.map ι)` using `hinj`. Establish `hex : Function.Exact (W.map ι) (W.map π)` using `hex`. Set `mA` to `(W.map ι).restrictScalars (AA K LL)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `x' : ↥(W.N T₁)` to `⟨mA x, x.2⟩`. Set `y' : ↥(W.N T₁)` to `⟨mA y, y.2⟩`. Establish `hxy' : (fun _ => C ((l : ℕ) : ↥(OL LL)) : AA K LL) • x' = (fun _ => X : AA K LL) • y'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun w : ↥N₀ => mA (w : W.DD T₀)) hxy` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify `this` using `only [Submodule.coe_smul, map_smul]`. Establish `e1 : zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) (C ((l : ℕ) : ℤ_[l])) = fun _ => C ((l : ℕ) : ↥(OL LL))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `e2 : zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) X = fun _ => X`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[zlA]`. Take `⟨z, hz⟩` from `@GlobalTheory.WachFree.mem_X_smul_of_projective ℤ_[l] ↥(W.N T₁) _ _ _ (Module.compHom _ (zlA LL (Module.finrank ℚ_[l] ↥(K0 K)))) hproj ((l : ℕ) : ℤ_[l]) (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero) x' y' (by`. Express the relevant statement in the definitionally equal form `zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) (C ((l : ℕ) : ℤ_[l])) • x' = zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) X • y'`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hxy')`. Express the relevant statement in the definitionally equal form `x' = zlA LL (Module.finrank ℚ_[l] ↥(K0 K)) X • z at hz`. Rewrite `hz` using `[e2]`. Establish `hz' : mA x = (fun _ => X : AA K LL) • (z : W.DD T₁)` using `congrArg Subtype.val hz`. Establish `hπz : W.map π (z : W.DD T₁) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : W.map π (mA x) = 0` using `(hex _).mpr ⟨(x : W.DD T₀), rfl⟩`. Rewrite `h0` using `[hz']`. Establish `h0' : (letπ : AA K LL) • W.map π (z : W.DD T₁) = (letπ : AA K LL) • 0`. Rewrite using `[smul_zero]`. Establish `: W.map π ((letπ : AA K LL) • (z : W.DD T₁)) = (letπ : AA K LL) • W.map π (z : W.DD T₁)` using `((W.map π).restrictScalars (AA K LL)).map_smul _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `h0`. Rewrite `h0'` using `[← algebraMap_smul W.EE, ← algebraMap_smul W.EE letπ (0 : W.DD T₂)]`. Conclude with `W.EE_π.smul_left_cancel.mp h0'`. Take `⟨w, hw⟩` from `(hex (z : W.DD T₁)).mp hπz`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hwN : w ∈ N₀` using `by show W.map ι w ∈ W.N T₁`. Rewrite using `[hw]`. Conclude with `z.2`. Use `⟨⟨w, hwN⟩, Subtype.ext (hinj ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mA x = W.map ι ((fun _ => X : AA K LL) • w)`.
-
-Rewrite using `[hz', ← hw]`. Conclude with `(mA.map_smul _ _).symm`. Take `⟨b⟩` from `GlobalTheory.WachFree.basis_of_regular (ι := ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (O := ↥(OL LL)) (N := ↥N₀) (E := W.EE) (D := W.DD T₀) W.EE_inj N₀.subtype hbc ((l : ℕ) : ↥(OL LL)) hl0 hl hX hreg`. Use `⟨Module.finrank W.EE (W.DD T₀), fun j => (b j : W.DD T₀), fun j => (b j).2, fun x hx => ?_⟩` and prove the remaining obligations. Use `⟨fun j => b.repr ⟨x, hx⟩ j, ?_, ?_⟩` and prove the remaining obligations.
-
-Use `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Simplify `this.symm` using `only [Submodule.coe_sum, Submodule.coe_smul]`. Introduce `a ha`. Establish `hx' : (⟨x, hx⟩ : ↥N₀) = ∑ j, a j • b j` using `Subtype.ext (by simpa only [Submodule.coe_sum, Submodule.coe_smul] using ha)`. Use function extensionality and compare the values at `j`.
-
-Rewrite using `[hx', b.repr_sum_self]`.
+A detailed English derivation is pending.
 -/
 theorem kernel_freeA : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ (T₀ T₁ T₂ : Lt K LL) (ι : LatHom T₀.L T₁.L) (π : LatHom T₁.L T₂.L), IsCrys ((D.loc l).PD K) T₀.ρ → IsCrys ((D.loc l).PD K) T₁.ρ → IsCrys ((D.loc l).PD K) T₂.ρ → IsSESLat (Qp := ℚ_[l]) ι π → IsBaseChange W.EE ((W.N T₁).comap ((W.map ι).restrictScalars (AA K LL))).subtype → FreeA W T₀ ((W.N T₁).comap ((W.map ι).restrictScalars (AA K LL))) := by
   intro D HW F l _ K s LL h W T₀ T₁ T₂ ι π h0 h1 h2 hses hbc

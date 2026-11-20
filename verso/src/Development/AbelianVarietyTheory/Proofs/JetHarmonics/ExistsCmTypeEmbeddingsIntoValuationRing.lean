@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CharDepth
 
 /- English proof (translation)
-Establish `hint : ∀ a, ∃ x : V, algebraMap V K x = φ a`. Introduce `a`. Establish `h1 : IsIntegral ℤ a` using `Algebra.IsIntegral.isIntegral a`. Establish `h2 : IsIntegral ℤ (φ a)` using `map_isIntegral_int φ h1`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h2.tower_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose f hf using hint`. Establish `hinj` using `IsFractionRing.injective V K`. Use `⟨{ toFun := f map_one' := hinj (by rw [hf, map_one, map_one]) map_mul' := fun a b => hinj (by rw [map_mul, hf, hf, hf, map_mul]) map_zero' := hinj (by rw [hf, map_zero, map_zero]) map_add' := fun a b => hinj (by rw [map_add, hf, hf, hf, map_add]) }, hf⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_ringOfIntegers_lift {E : Type} [Field E] [NumberField E] {V K : Type} [CommRing V]
     [IsDomain V] [IsIntegrallyClosed V] [Field K] [Algebra V K] [IsFractionRing V K] (φ : 𝓞 E →+* K) :
@@ -31,17 +31,15 @@ theorem exists_ringHom_ringOfIntegers_lift {E : Type} [Field E] [NumberField E] 
             map_add' := fun a b => hinj (by rw [map_add, hf, hf, hf, map_add]) }, hf⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c T io p _ X`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`. Use `choose σV hσV using fun τ : E →+* ℂ => exists_ringHom_ringOfIntegers_lift (V := T.V) (io.comp (embK c τ))`. Establish `hσV' : ∀ τ a, algebraMap T.V T.Fr (σV τ a) = io (embK c τ a)` using `hσV`. Establish `hT : ∀ τ a, algebraMap X.O X.C (X.ι (σV τ a)) = X.ιF (io (embK c τ a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ a`. Rewrite using `[← X.comp, hσV']`. Establish `key : ∀ τ τ' (a : 𝓞 E), τ (a : E) = τ' (a : E) ↔ X.ι (σV τ a) = X.ι (σV τ' a)`. Introduce `τ τ' a`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1 : embK c τ a = embK c τ' a`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : σV τ a = σV τ' a` using `hinj (by rw [hσV', hσV', h1])`. Rewrite using `[h2]`. Introduce `h`. Establish `h1 : embK c τ a = embK c τ' a` using `io.injective (X.ιF.injective (by rw [← hT, ← hT, h]))`. Conclude with `congrArg (fun z : c.F => (z : ℂ)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σV, hσV', hT, ?_, fun τ τ' => key τ τ' H.rt, fun τ a => ?_⟩` and prove the remaining obligations. Introduce `τ τ' h`. Use `IsFractionRing.ringHom_ext (A := 𝓞 E) fun a => ?_` and prove the remaining obligations. Conclude with `(key τ τ' a).2 (RingHom.congr_fun h a)`. Establish `h : embK c (ComplexEmbedding.conjugate τ) a = embK c τ (H.bar a)`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe, ComplexEmbedding.conjugate_coe_eq, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Conclude with `hinj (by rw [hσV', hσV', h])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_types_valuationRing : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (p : ℕ) [Fact p.Prime] (X : ValExt T p), ∃ (τT : (E →+* ℂ) → (𝓞 E →+* T.V)), (∀ τ a, algebraMap T.V T.Fr (τT τ a) = io (embK c τ a)) ∧ IsTypes X io (fun τ => X.ι.comp (τT τ)) ∧ Function.Injective (fun τ => X.ι.comp (τT τ)) ∧ (∀ τ τ', τ (H.rt : E) = τ' (H.rt : E) ↔ X.ι (τT τ H.rt) = X.ι (τT τ' H.rt)) ∧ ∀ τ a, τT (ComplexEmbedding.conjugate τ) a = τT τ (H.bar a) := by
   intro E _ _ _ H l c T io p _ X

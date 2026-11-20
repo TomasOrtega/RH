@@ -16,53 +16,45 @@ set_option maxHeartbeats 8000000
 
 open RhoH in
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL`. Take `⟨𝓕, hμ⟩` from `hC.hμ`. Establish `hΨ0m : psi0 θ V n l s τ ∈ awayA θ V n l s τ` using `unitaryFinitePointsToGLFiniteAdeles_isUnitary θ V l s τ`. Establish `hl0 : ∀ τ, l τ ≠ 0` using `l_ne_zero D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl`. Establish `hmem : ∀ P : PX V.rank n, tens θ τ fr (fP (cLoc l τ) P) (psi0 θ V n l s τ) ∈ schwartzA θ V.rank n ∧ tens θ τ fr (fP (cLoc l τ) P) (psi0 θ V n l s τ) ∈ fockA θ V n l s` using `fun P => hT D n V θ l s τ ε fr hC.hθ hl0 hC.hs hC.hfr _ hΨ0m P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfP0 : fP (cLoc l τ) (0 : PX V.rank n) = 0`. Use function extensionality and compare the values at `u`. Simplify using `[fP, evX]`. Establish `htens0 : tens θ τ fr (0 : (Fin V.rank → Fin n → ℂ) → ℂ) (psi0 θ V n l s τ) = 0`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (0 : ℂ) * _ = 0`. Conclude with `zero_mul _`. Establish `hphi0 : phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) 0 = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[phiS_val (hmem 0).1, hfP0, htens0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hlin : ∀ (a : ℂ) (P Q : PX V.rank n), phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) (a • P + Q) = a • phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) P + phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) Q`. Introduce `a P Q`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_add, Submodule.coe_smul, phiS_val (hmem _).1, phiS_val (hmem _).1, phiS_val (hmem _).1, fP_add_smul, tens_add_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `jL : PX V.rank n →ₗ[ℂ] schwartzA θ V.rank n` to `{ toFun := phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) map_add' := fun P Q => by simpa using hlin 1 P Q map_smul' := fun a P => by`. Use `hlin a P 0` as an intermediate fact. Rewrite `this` using `[add_zero, hphi0, add_zero]`. Conclude with `this }`. Establish `hjinj : Function.Injective jL`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `R hR`. Establish `h1 : (jL R).1 = 0` using `by rw [hR]; rfl`. Express the relevant statement in the definitionally equal form `(phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) R).1 = 0 at h1`. Rewrite `h1` using `[phiS_val (hmem R).1, ← htens0, ← hfP0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `fP_inj _ (tensor_gaussian_vacuum_injective hC.hθ hC.hfr l h1)`. Establish `hexist : ∀ k : GR n, InK (mR k) → ∀ P, ∃ Q, L k (fP (cLoc l τ) P) = fP (cLoc l τ) Q`. Introduce `k hk P`. Establish `hΦ : (phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) P).1 ∈ fockA θ V n l s`. Rewrite using `[phiS_val (hmem P).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hmem P).2`. Establish `hst` using `fock_stable D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl s hC.hs _ hΦ (ι k) (iota_mem_K hC.hθ hC.hι k hk)`. Rewrite `hst` using `[hL k _ hΨ0m P]`. Conclude with `tens_slice hC.hθ hC.hfr l _ hst`. Establish `hLlin : ∀ k : GR n, InK (mR k) → ∀ (a : ℂ) (P Q : PX V.rank n), L k (fP (cLoc l τ) (a • P + Q)) = a • L k (fP (cLoc l τ) P) + L k (fP (cLoc l τ) Q)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k hk a P Q`. Apply `tensor_gaussian_vacuum_injective hC.hθ hC.hfr l` to reduce the goal to its premises. Rewrite using `[tens_add_smul, ← hL k _ hΨ0m, ← hL k _ hΨ0m, ← hL k _ hΨ0m, hlin, map_add, map_smul]`. Both sides reduce to the same expression. Set `ρ0 : GR n → PX V.rank n → PX V.rank n` to `fun k P => if hk : InK (mR k) then (hexist k hk P).choose else P`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hρ0 : ∀ (k : GR n) (hk : InK (mR k)) P, L k (fP (cLoc l τ) P) = fP (cLoc l τ) (ρ0 k P)`. Introduce `k hk P`. Simplify using `only [ρ0, dif_pos hk]`. Conclude with `(hexist k hk P).choose_spec`. Establish `hρlin : ∀ (k : GR n) (a : ℂ) (P Q : PX V.rank n), ρ0 k (a • P + Q) = a • ρ0 k P + ρ0 k Q`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k a P Q`. Distinguish the cases in `hk : InK (mR k)`. Apply `fP_inj (cLoc l τ)` to reduce the goal to its premises. Rewrite using `[fP_add_smul, ← hρ0 k hk, ← hρ0 k hk, ← hρ0 k hk, hLlin k hk]`. Simplify using `only [ρ0, dif_neg hk]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρ00 : ∀ k : GR n, ρ0 k 0 = 0`. Introduce `k`. Use `hρlin k 1 0 0` as an intermediate fact. Simplify using `only [one_smul, add_zero] at this`. Establish `h2 : ρ0 k 0 + ρ0 k 0 = ρ0 k 0 + 0` using `by rw [← this, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `add_left_cancel h2`. Set `ρ : GR n → PX V.rank n →ₗ[ℂ] PX V.rank n` to `fun k => { toFun := ρ0 k map_add' := fun P Q => by simpa using hρlin k 1 P Q map_smul' := fun a P => by`. Use `hρlin k a P 0` as an intermediate fact. Rewrite `this` using `[add_zero, hρ00, add_zero]`. Conclude with `this }`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ : ∀ (k : GR n) P, InK (mR k) → L k (fP (cLoc l τ) P) = fP (cLoc l τ) (ρ k P)` using `fun k P hk => hρ0 k hk P`. Establish `hjρ : ∀ (k : GR n), InK (mR k) → ∀ Q, jL (ρ k Q) = ω (ι k) (jL Q)`. Introduce `k hk Q`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) (ρ0 k Q)).1 = (ω (ι k) (phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) Q)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hL k _ hΨ0m Q, phiS_val (hmem _).1, ← hρ0 k hk Q]`. Use `⟨ρ, hρ, fun P => ?_⟩` and prove the remaining obligations. Establish `hjmem : ∀ R, (jL R).1 ∈ fockA θ V n l s`. Introduce `R`. Use `show (phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) R).1 ∈ fockA θ V n l s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[phiS_val (hmem R).1]`. Conclude with `(hmem R).2`. Establish `hfd` using `GlobalTheory.T.fockVector_schrodingerModel_isKFinite D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl s hC.hs (jL P) (hjmem P)`. Use `set S := Submodule.span ℂ {Ψ' : schwartzA θ V.rank n | ∃ k ∈ K D n, Ψ' = ω k (jL P)} with hS`. Establish `hSstab : ∀ κ ∈ K D n, ∀ x ∈ S, ω κ x ∈ S`.
+Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `κ hκ x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k', hk', rfl⟩` from `hx`. Use `Submodule.subset_span ⟨κ * k', (K D n).mul_mem hκ hk', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Module.End.mul_apply]`. Consider the case `zero => rw [map_zero]`. Conclude with `S.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `S.add_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `S.smul_mem a hx`. Set `W : Submodule ℂ (PX V.rank n)` to `S.comap jL`. Use `⟨W, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: FiniteDimensional ℂ S` using `hfd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Module.Finite.of_injective (jL.restrict (p := W) (q := S) fun x hx => hx) (fun x y h => Subtype.ext (hjinj (congrArg Subtype.val h)))`. Use `show jL P ∈ S`. Conclude with `Submodule.subset_span ⟨1, (K D n).one_mem, by rw [map_one]; rfl⟩`. Introduce `k hk Q hQ show jL (ρ k Q) ∈ S`. Rewrite using `[hjρ k hk Q]`.
-
-Conclude with `hSstab _ (iota_mem_K hC.hθ hC.hι k hk) _ hQ`. Introduce `Q _ l'`. Set `e` to `LinearEquiv.ofInjective jL hjinj`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend (l' ∘ₗ e.symm.toLinearMap)`. Establish `hΛj : ∀ R, Λ (jL R) = l' R`.
-
-Introduce `R`. Use `congrArg (fun F => F ⟨jL R, LinearMap.mem_range_self jL R⟩) hΛ` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, LinearEquiv.coe_coe] at this`. Rewrite using `[this]`. Conclude with `congrArg l' (e.symm_apply_eq.2 (Subtype.ext (LinearEquiv.ofInjective_apply jL (h := hjinj) R).symm))`.
-
-Establish `hcont` using `orbit_cont D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl s hC.hs (jL Q) (hjmem Q) Λ`. Establish `hιc : ContinuousOn (fun k : GR n => ι k) {k | InK (mR k)}` using `hC.hι.1.continuousOn`. Establish `hmaps : Set.MapsTo (fun k : GR n => ι k) {k | InK (mR k)} (K D n : Set (G D n))` using `fun k hk => iota_mem_K hC.hθ hC.hι k hk`. Use `(hcont.comp hιc hmaps).congr ?_` and prove the remaining obligations. Introduce `k hk`.
-
-Simplify using `only [Function.comp_apply]`. Rewrite using `[← hΛj, hjρ k hk Q]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lIrho : LIrho := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL

@@ -12,11 +12,11 @@ section SlopeTestRemainingChoices
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h` using `(isCompact_intMatrix (k := k) (m := Fin n) (n := Fin n)).image (f := fun A : Matrix (Fin n) (Fin n) k => ((ϖ ^ m : kˣ) : k) • A) (by fun_prop)`. Use `h using 1` and compare the differences between its conclusion and the goal. Establish `h0 : valuation k ((ϖ ^ m : kˣ) : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Units.ne_zero _)`. Use extensionality with `Z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hZ`. Use `⟨(((ϖ ^ m)⁻¹ : kˣ) : k) • Z, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, Matrix.smul_apply, smul_eq_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `inv_mul_le_one_of_le₀ (hZ i j) zero_le`. Simplify using `only [smul_smul, Units.mul_inv, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨A, hA, rfl⟩ i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hA i j))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isCompact_scaledInt (ϖ : kˣ) (n : ℕ) (m : ℤ) :
     IsCompact (GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic.scaledInt ϖ n m) := by
@@ -36,11 +36,9 @@ private theorem isCompact_scaledInt (ϖ : kˣ) (n : ℕ) (m : ℤ) :
     exact mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hA i j))
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun X => ?_, HasCompactSupport.intro (isCompact_scaledInt ϖ n m) fun x hx => ?_⟩` and prove the remaining obligations. Establish `hn : (fun Y => Y - X) ⁻¹' {A : Matrix (Fin n) (Fin n) k | ∀ i j, A i j ∈ 𝒪[k]} ∈ nhds X` using `(isOpen_intMatrix.preimage (continuous_id.sub continuous_const)).mem_nhds (by`. Introduce `i j`. Use the proof step `simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [hn] with Y hY`. Use `hP X (Y - X) (fun i j => by` as an intermediate fact. Simplify using `using (Valuation.mem_integer_iff _ _).1 (hY i j))`. Simplify using `using this`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hx (hS h)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem mem_SB_of_periodic (ϖ : kˣ) {n : ℕ} (m : ℤ) (φ : Matrix (Fin n) (Fin n) k → ℂ)
     (hS : Function.support φ ⊆ GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic.scaledInt ϖ n m) (hP : GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic.IsPeriodic ϖ 0 φ) :
@@ -59,9 +57,9 @@ private theorem mem_SB_of_periodic (ϖ : kˣ) {n : ℕ} (m : ℤ) (φ : Matrix (
     exact hx (hS h)
 
 /- English proof (translation)
-Establish `h` using `((isCompact_KO (k := k) (n := Fin n)).prod (isCompact_KO (k := k) (n := Fin n))).image (f := fun p : GL (Fin n) k × GL (Fin n) k => p.1 * (diagGL fun i => ϖ ^ m i) * p.2) (by fun_prop)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Rewrite using `[mem_shellSet]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨(x, y), ⟨hx, hy⟩, rfl⟩`. Introduce and unpack `⟨⟨x, y⟩, ⟨hx, hy⟩, rfl⟩`. Conclude with `⟨x, hx, y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem isCompact_shellSet' (ϖ : kˣ) {n : ℕ} (m : Fin n → ℤ) :
     IsCompact (shellSet ϖ m : Set (GL (Fin n) k)) := by
@@ -79,23 +77,17 @@ private theorem isCompact_shellSet' (ϖ : kˣ) {n : ℕ} (m : Fin n → ℤ) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n μ _ J hJo hJK hJμ ϖ ν e hϖ hram hcond z φ a hS hP hinv M hM`. Distinguish the cases in `hint : Integrable (fun g : GL (Fin n) k => φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z) μ`. Use `swap`. Rewrite using `[integral_undef hint]`. Conclude with `M.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hφ` using `mem_SB_of_periodic ϖ _ φ hS hP`. Take `⟨-, h2, h3, h4⟩` from `GlobalTheory.T.zetaIntegralShells_vanish_beyondPeriod_ramified k ϖ hϖ ν e hram hcond n μ φ hφ`. Use `haveI : BorelSpace (GL (Fin n) k) := borel_GL`. Use `haveI : μ.IsMulRightInvariant := isMulRightInvariant_of_haar μ`. Establish `hsh : ∀ m : Fin n → ℤ, shell μ ϖ ν z φ m ∈ M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Distinguish the cases in `hm : ∀ i, -(a : ℤ) ≤ m i ∧ m i < 0`. Use `UpperTheory.setIntegral_mem_addSubgroup_of_openSubgroup_invariant μ J hJo hJμ (shellSet ϖ m) (isCompact_shellSet' ϖ m) ?_ (fun g : GL (Fin n) k => φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z) ?_ M (hM m hm)` and prove the remaining obligations. Introduce `j hj g hg`. Take `⟨x, hx, y, hy, rfl⟩` from `mem_shellSet.1 hg`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `mem_shellSet.2 ⟨j * x, mul_mem (hJK hj) hx, y, hy, by simp only [mul_assoc]⟩`. Introduce `j hj g`. Simplify using `only [gdet_mul, apow_mul, map_mul, Units.val_mul, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO (hJK hj)), one_mul]`. Rewrite using `[← hinv j hj g]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm' : ∀ i, -(a : ℤ) ≤ m i`. Establish `: ∃ i, (0 : ℤ) ≤ m i`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hm fun i => ⟨hm' i, h i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2 0 hP m this z]`. Conclude with `M.zero_mem`. Rewrite using `[h3 a hS m hm' z]`. Conclude with `M.zero_mem`. Use `set S : {m : Fin n → ℤ // Antitone m} → Set (GL (Fin n) k) := fun m => shellSet ϖ m.1 with hSdef`.
-
-Establish `hU : ⋃ m, S m = Set.univ` using `Set.eq_univ_of_forall fun g => Set.mem_iUnion.2 (GlobalTheory.ShellSumEqv.exists_unique_shell hϖ g).exists`. Establish `hd : Pairwise (Function.onFun Disjoint S)` using `fun m m' hne => Set.disjoint_left.2 fun g h1 h2 => hne ((GlobalTheory.ShellSumEqv.exists_unique_shell hϖ g).unique h1 h2)`. Establish `hm : ∀ m, MeasurableSet (S m)` using `fun m => (GlobalTheory.ShellSumEqv.isOpen_shellSet ϖ m.1).measurableSet`. Establish `hfin : (Function.support fun m : {m : Fin n → ℤ // Antitone m} => shell μ ϖ ν z φ m.1).Finite` using `h4.subset fun m hm => ⟨z, hm⟩`. Establish `key : ∫ g, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z ∂μ = ∑ m ∈ hfin.toFinset, shell μ ϖ ν z φ m.1`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU, Measure.restrict_univ]`. Use `_ = ∑' m, ∫ g in S m, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z ∂μ := integral_iUnion hm hd hint.integrableOn`. Use `_ = ∑ᶠ m : {m : Fin n → ℤ // Antitone m}, shell μ ϖ ν z φ m.1 := tsum_eq_finsum hfin`. Use `_ = _ := finsum_eq_sum _ hfin`.
-
-Rewrite using `[key]`. Conclude with `sum_mem fun m _ => hsh m.1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integral_mem_addSubgroup_of_ramified_twisted_invariant :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n : ℕ} (μ : Measure (GL (Fin n) k)) [μ.IsHaarMeasure] (J : Subgroup (GL (Fin n) k)), IsOpen (J : Set (GL (Fin n) k)) → J ≤ KO k (Fin n) → μ (J : Set (GL (Fin n) k)) = 1 → ∀ (ϖ : kˣ) (ν : kˣ →* ℂˣ) (e : ℕ), IsUnif ϖ → ¬ IsUnram ν → CondLE ϖ e ν → ∀ (z : ℂ) (φ : Matrix (Fin n) (Fin n) k → ℂ) (a : ℕ), Function.support φ ⊆ GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic.scaledInt ϖ n (-(a : ℤ)) → GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic.IsPeriodic ϖ 0 φ → (∀ j ∈ J, ∀ g : GL (Fin n) k, φ (j.val * g.val) * (ν (gdet j) : ℂ) = φ g.val) → ∀ M : AddSubgroup ℂ, (∀ m : Fin n → ℤ, (∀ i, -(a : ℤ) ≤ m i ∧ m i < 0) → ∀ g ∈ shellSet ϖ m, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z ∈ M) → ∫ g, φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z ∂μ ∈ M := by

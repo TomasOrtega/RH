@@ -8,9 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Z.Bc
 
 /- English proof (translation)
-Establish `h0 : ∀ s, ε s = 1 → a s = b s` using `fun s hs => by`. Take `⟨x, rfl⟩` from `(h1 s).1 hs`. Conclude with `DFunLike.congr_fun hab x`. Use `MonoidHom.ext fun s => ?_` and prove the remaining obligations. Break down `h2 s with hs | hs` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h0 s hs`. Establish `e` using `h0 (t⁻¹ * s) (by simp [hs, (h2 t).resolve_left ht])`. Rewrite `e` using `[map_mul, map_mul, map_inv, map_inv, hc]`. Conclude with `mul_left_cancel e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_res {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] (φ : Γ' →* Γ) (ε : Γ →* kˣ)
     (h1 : ∀ s, ε s = 1 ↔ s ∈ φ.range) (h2 : ∀ s, ε s = 1 ∨ ε s = -1) (t : Γ) (ht : ε t ≠ 1) (a b : Γ →* kˣ)
@@ -27,11 +27,11 @@ private theorem eq_of_res {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] (φ
 
 open Classical in
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, ε t ≠ 1 := by`. Assume the negation of the conclusion as `h`. Conclude with `h3 (MonoidHom.ext fun s => by_contra fun hs => h ⟨s, hs⟩)`. Establish `key : ∀ c : kˣ, ((Finset.univ.filter fun i => RepIso r (tw r ((δ i).comp φ))).filter fun i => δ i t = c).card ≤ n ^ 2`. Introduce `c`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.card_image_of_injOn (f := fun i => (δ i).comp φ)]`. Use `Br.twCard _ _ n r hr _ fun d hd => ?_` and prove the remaining obligations. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hd`. Conclude with `(Finset.mem_filter.1 (Finset.mem_filter.1 hi).1).2`. Introduce `i hi' j hj hij`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hi (eq_of_res φ ε h1 h2 t ht _ _ hij ((Finset.mem_filter.1 hi').2.trans (Finset.mem_filter.1 hj).2.symm))`. Use `le_trans (Finset.card_le_card (t := _ ∪ _) ?_) ((Finset.card_union_le _ _).trans ((add_le_add (key 1) (key (-1))).trans (two_mul _).ge))` and prove the remaining obligations. Introduce `i hi`. Conclude with `Finset.mem_union.2 ((hδ i t).imp (fun h => Finset.mem_filter.2 ⟨hi, h⟩) fun h => Finset.mem_filter.2 ⟨hi, h⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem card_bad {Γ Γ' k I : Type} [Group Γ] [Group Γ'] [Field k] [Fintype I] {n : ℕ} (φ : Γ' →* Γ) (ε : Γ →* kˣ)
     (h1 : ∀ s, ε s = 1 ↔ s ∈ φ.range) (h2 : ∀ s, ε s = 1 ∨ ε s = -1) (h3 : ε ≠ 1) (δ : I → Γ →* kˣ)
@@ -56,7 +56,7 @@ private theorem card_bad {Γ Γ' k I : Type} [Group Γ] [Group Γ'] [Field k] [F
   exact Finset.mem_union.2 ((hδ i t).imp (fun h => Finset.mem_filter.2 ⟨hi, h⟩) fun h => Finset.mem_filter.2 ⟨hi, h⟩)
 
 /- English proof (translation)
-Establish `h` using `(Br.resTwo _ _ k n (δ.comp φ).ker.subtype (δ.comp φ) (fun s => by rw [Subgroup.range_subtype]; rfl) (fun s => h2 _) (r.comp φ)).1 hr hn`. Use `⟨h.1, fun _ _ _ => trivial, fun W hW hst => h.2.2 W hW fun s v hv => ?_⟩` and prove the remaining obligations. Conclude with `hst ⟨φ s, ⟨s, rfl⟩, (h1 _).1 s.2⟩ v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem irr_inf {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] [IsAlgClosed k] [CharZero k] {n : ℕ} (φ : Γ' →* Γ)
     (H : Subgroup Γ) (δ : Γ →* kˣ) (h1 : ∀ s, δ s = 1 ↔ s ∈ H) (h2 : ∀ s, δ s = 1 ∨ δ s = -1) (r : Γ →* GL (Fin n) k)
@@ -68,15 +68,13 @@ private theorem irr_inf {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] [IsAl
   exact hst ⟨φ s, ⟨s, rfl⟩, (h1 _).1 s.2⟩ v hv
 
 /- English proof (translation)
-Introduce `K K' Ω _ _ _ _ _ _ _ _ _ _ _ _ _ hK hK' l _ n r hr hr'`. Take `⟨K₀, _, _, _, hK2, hKc⟩` from `Br.quadFam (4 * n ^ 2 + 1)`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Set `emb : ∀ i, K₀ i →ₐ[ℚ] Ω` to `fun i => IsAlgClosed.lift`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI alg : ∀ i, Algebra (K₀ i) Ω := fun i => (emb i).toRingHom.toAlgebra`. Use `haveI tow : ∀ i, IsScalarTower ℚ (K₀ i) Ω := fun i => IsScalarTower.of_algebraMap_eq fun x => ((emb i).commutes x).symm`. Use `haveI clo : ∀ i, IsAlgClosure (K₀ i) Ω := fun i => ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `haveI : IsAlgClosure K' Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose δ _ _ hδ _ using fun i => UpperTheory.exists_quadratic_sign_character ℚ (K₀ i) Ω l (hK2 _)`. Establish `hδi : Function.Injective δ` using `fun i j hij => by`. Assume the negation of the conclusion as `hne`. Use `Br.signNe (K₀ i) (K₀ j) Ω (hK2 _) (hKc _ _ hne) (Subgroup.ext fun s => ?_)` and prove the remaining obligations. Rewrite using `[← (hδ i).1, ← (hδ j).1, hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨ε, -, e0, he, -⟩` from `UpperTheory.exists_quadratic_sign_character ℚ K Ω l hK`. Take `⟨ε', -, e0', he', -⟩` from `UpperTheory.exists_quadratic_sign_character ℚ K' Ω l hK'`. Establish `c1` using `card_bad (resG ℚ K Ω) ε he.1 he.2 e0 δ hδi (fun i => (hδ i).2) _ hr`. Establish `c2` using `card_bad (resG ℚ K' Ω) ε' he'.1 he'.2 e0' δ hδi (fun i => (hδ i).2) _ hr'`. Establish `c3` using `(Finset.card_union_le _ _).trans (add_le_add c1 c2)`.
-
-Take `⟨i, -, hi⟩` from `Finset.exists_mem_notMem_of_card_lt_card (t := Finset.univ) (c3.trans_lt (by rw [Finset.card_univ, Fintype.card_fin]; omega))`. Simplify using `only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and, not_or] at hi`. Conclude with `⟨K₀ i, inferInstance, inferInstance, inferInstance, alg i, tow i, hK2 i, irr_inf _ _ (δ i) (hδ i).1 (hδ i).2 r hr hi.1, irr_inf _ _ (δ i) (hδ i).1 (hδ i).2 r hr' hi.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Bc.third :
     Third := by

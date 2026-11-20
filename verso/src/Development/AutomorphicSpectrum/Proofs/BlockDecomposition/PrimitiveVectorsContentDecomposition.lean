@@ -15,24 +15,22 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypMass.PrimDec
 
 /- English proof (translation)
-Simplify using `[hform, Pi.single_apply, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single {A : Type} [CommRing A] (τ : A →+* A) {N : ℕ} (H : Matrix (Fin N) (Fin N) A) (a b : Fin N) :
     hform τ H (Pi.single a 1) (Pi.single b 1) = H a b := by
   simp [hform, Pi.single_apply, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Set `yO : Fin N → O` to `fun k => ⟨y k, hy k⟩`. Take `⟨x, hx⟩` from `(IsPrincipalIdealRing.principal (Ideal.span (Set.range yO))).principal`. Establish `hdiv : ∀ k, ∃ t : O, t * x = yO k` using `fun k => by`. Establish `h : yO k ∈ Ideal.span (Set.range yO)` using `Ideal.subset_span ⟨k, rfl⟩`. Rewrite `h` using `[hx]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton'.1 h`. Use `choose t ht using hdiv`. Establish `hxm : x ∈ Ideal.span (Set.range yO)`. Rewrite using `[hx]`. Conclude with `Ideal.mem_span_singleton_self x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hxm`. Establish `hyk : ∀ k, y k = (x : T) * (t k : T)` using `fun k => by`. Use `congrArg Subtype.val (ht k)` as an intermediate fact. Simplify using `only [Subring.coe_mul, yO] at this`. Rewrite using `[← this, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnz : (x : T) ∈ nonZeroDivisors T`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `c hc`. Conclude with `hfree c fun k => by rw [hyk, ← mul_assoc, hc, zero_mul]`. Establish `hu : IsUnit (x : T)` using `(IsArtinianRing.isUnit_iff_mem_nonZeroDivisors).2 hnz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨x, x.2, hu, fun k => t k, fun k => a k, fun k => (t k).2, fun k => (a k).2, hyk, ?_⟩` and prove the remaining obligations. Establish `h1 : (x : T) * ∑ k, (a k : T) * (t k : T) = x * 1`. Use `congrArg Subtype.val ha` as an intermediate fact. Simplify using `only [Subring.coe_mul, AddSubmonoidClass.coe_finset_sum, yO] at this`. Rewrite using `[mul_one, Finset.mul_sum]`.
-
-Use `conv_rhs => rw [← this]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hyk k]; ring`. Conclude with `hu.mul_left_cancel h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_content {T : Type} [CommRing T] [IsArtinianRing T] (O : Subring T) [IsPrincipalIdealRing O] {N : ℕ}
     (y : Fin N → T) (hy : ∀ k, y k ∈ O) (hfree : ∀ c : T, (∀ k, c * y k = 0) → c = 0) :
@@ -72,19 +70,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E 
   (J : Matrix (Fin M) (Fin M) E) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hy`. Use `set G : GL (Fin (M + 2)) (Fv F v ⊗[F] E) := HA.mat (Fv F v) σ (hypOne J) g with hG`. Establish `hact : ∀ (X : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) (t : Fin 1), actW (Fv F v) σ (hypOne J) g X t = (G : Matrix _ _ _) *ᵥ X t` using `fun _ _ => rfl`. Establish `hlat : ∀ X : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E, X ∈ latV b v ↔ ∀ a i, X a i ∈ O` using `fun X => GlobalTheory.CompanionTheory.SW.GoodTrans.mem_latV_iff b v O hO X`. Establish `he : (e0 (Fv F v ⊗[F] E) M) ∈ latV b v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlat]`. Introduce `a i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact O.one_mem`. Consider the case `succ i => exact O.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hy` using `(hg _).2 he`. Rewrite `hy` using `[hlat]`. Set `Gi : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)` to `((G⁻¹ : GL (Fin (M + 2)) (Fv F v ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E))`. Use `⟨hy 0, fun k => Gi 0 k, fun k => ?_, ?_⟩` and prove the remaining obligations. Set `x : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E` to `fun _ => Gi *ᵥ Pi.single k 1`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgx : actW (Fv F v) σ (hypOne J) g x ∈ latV b v`. Rewrite using `[hlat]`. Introduce `a i`. Rewrite using `[hact]`. Simplify using `only [x]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `using O.one_mem`. Simplify `O.zero_mem` using `[Pi.single_apply, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hx` using `(hg x).1 hgx`. Rewrite `hx` using `[hlat]`. Use `hx 0 0` as an intermediate fact. Simplify `this` using `[x, Matrix.mulVec_single_one]`. Establish `h0 : Gi *ᵥ ((G : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)) *ᵥ e0 (Fv F v ⊗[F] E) M 0) = e0 (Fv F v ⊗[F] E) M 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `h1` using `congrFun h0 0`. Rewrite `h1` using `[← hact]`. Simplify `h1` using `[Matrix.mulVec, dotProduct, e0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_primV (O : Subring (Fv F v ⊗[F] E))
     (hO : ∀ y, y ∈ O ↔ ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F)
@@ -129,31 +127,27 @@ theorem exists_of_mem_primV (O : Subring (Fv F v ⊗[F] E))
     simpa [Matrix.mulVec, dotProduct, e0] using h1
 
 /- English proof (translation)
-Use `set s := sigR (Fv F v) σ with hs`. Use `set H : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E) := JR (Fv F v) (hypOne J) with hH`. Set `τ : O →+* O` to `s.restrict O O hstab`. Establish `hτ : ∀ a : O, ((τ a : O) : Fv F v ⊗[F] E) = s a` using `fun a => rfl`. Set `HO : Matrix (Fin (M + 2)) (Fin (M + 2)) O` to `fun i j => ⟨H i j, hHO i j⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `HiO : Matrix (Fin (M + 2)) (Fin (M + 2)) O` to `fun i j => ⟨Hi i j, hHiO i j⟩`. Set `y0 : Fin (M + 2) → O` to `fun i => ⟨y 0 i, hy i⟩`. Set `a0 : Fin (M + 2) → O` to `fun i => ⟨a i, ha i⟩`. Establish `hcoe : ∀ p q : Fin (M + 2) → O, ((hform τ HO p q : O) : Fv F v ⊗[F] E) = hform s H (fun i => (p i : Fv F v ⊗[F] E)) (fun i => (q i : Fv F v ⊗[F] E))`. Introduce `p q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hform, hτ, HO]`. Establish `hval : ∀ g : GL (Fin (M + 2)) O, ((bc O.subtype g : GL (Fin (M + 2)) (Fv F v ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)) = (g : Matrix (Fin (M + 2)) (Fin (M + 2)) O).map O.subtype` using `fun g => rfl`. Establish `hmulO : HO * HiO = 1`. Use `Matrix.ext fun i j => Subtype.ext ?_` and prove the remaining obligations. Use `congrFun (congrFun hmul i) j` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_apply]`. Rewrite using `[Matrix.mul_apply, AddSubmonoidClass.coe_finset_sum]`. Simplify using `only [Subring.coe_mul, HO, HiO]`. Rewrite using `[this]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g0, hg0, hgx⟩` from `GlobalTheory.T.hyperbolic_pair_unitary_transitive O τ (fun z => Subtype.ext (hss z)) h2 (fun p β hβ hf => by`. Take `⟨ε, z, h1, h3⟩` from `hgood p β hβ (congrArg Subtype.val hf)`. Conclude with `⟨ε, z, Subtype.ext h1, Subtype.ext h3⟩)`. Use the proof step `(M + 2) HO HiO hmulO (fun i j => Subtype.ext (hJ i j)) (Pi.single 0 1) (Pi.single 1 1) y0 a0`. Use the proof step `(by rw [hform_single]; exact Subtype.ext (by simp [HO, H, JR, hypOne_zero_zero]))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(by rw [hform_single]; exact Subtype.ext (by simp [HO, H, JR, hypOne_one_one]))`. Use the proof step `(by rw [hform_single]; exact Subtype.ext (by simp [HO, H, JR, hypOne_zero_one]))`. Use the proof step `(Subtype.ext (by rw [hcoe]; exact hiso))`. Use the proof step `(Subtype.ext (by simpa [a0, y0] using hsum))`. Establish `hmem : bc O.subtype g0 ∈ HR (Fv F v) σ (hypOne J)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `h0 : cT τ (g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O) * HO * (g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O) = HO` using `hg0`. Establish `h1` using `congrArg (RingHom.mapMatrix O.subtype) h0`. Rewrite `h1` using `[map_mul, map_mul]`. Use `show cT s ((bc O.subtype g0 : GL (Fin (M + 2)) (Fv F v ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)) * H * ((bc O.subtype g0 : GL (Fin (M + 2)) (Fv F v ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)) = H`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `h' : HA (Fv F v) σ (hypOne J)` to `(⟨bc O.subtype g0, hmem⟩ : HR (Fv F v) σ (hypOne J))`. Establish `hact : ∀ (X : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) (t : Fin 1), actW (Fv F v) σ (hypOne J) h' X t = ((bc O.subtype g0 : GL (Fin (M + 2)) (Fv F v ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)) *ᵥ X t` using `fun _ _ => rfl`. Use `⟨h', fun X => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.SW.GoodTrans.mem_latV_iff b v O hO, GlobalTheory.CompanionTheory.SW.GoodTrans.mem_latV_iff b v O hO]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hX t i`. Establish `e : X t = ((bc O.subtype g0⁻¹ : GL (Fin (M + 2)) (Fv F v ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)) *ᵥ (((bc O.subtype g0 : GL (Fin (M + 2)) (Fv F v ⊗[F] E)) : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E)) *ᵥ X t)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e]`. Use `GlobalTheory.CompanionTheory.SW.GoodTrans.mulVec_mem O _ (fun p q => ?_) _ (fun j => ?_) i` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hval]`. Conclude with `((g0⁻¹ : GL (Fin (M + 2)) O) : Matrix (Fin (M + 2)) (Fin (M + 2)) O) p q |>.2`. Rewrite using `[← hact]`. Conclude with `hX t j`. Introduce `hX t i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hact]`. Use `GlobalTheory.CompanionTheory.SW.GoodTrans.mulVec_mem O _ (fun p q => ?_) _ (hX t) i` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `((g0 : Matrix (Fin (M + 2)) (Fin (M + 2)) O) p q).2`. Use function extensionality and compare the values at `t`.
-
-Rewrite using `[Fin.fin_one_eq_zero t, hact, hval]`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg Subtype.val (congrFun hgx i)`. Establish `he : e0 (Fv F v ⊗[F] E) M 0 = fun j => ((Pi.single 0 1 : Fin (M + 2) → O) j : Fv F v ⊗[F] E)`. Use function extensionality and compare the values at `j`.
-
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp [e0]`. Consider the case `succ j => simp [e0, Pi.single_apply, Fin.succ_ne_zero]`. Rewrite using `[he]`. Simplify `h1` using `[Matrix.mulVec, dotProduct, y0]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_primV_of (O : Subring (Fv F v ⊗[F] E))
     (hO : ∀ y, y ∈ O ↔ ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F)
@@ -250,47 +244,37 @@ theorem mem_primV_of (O : Subring (Fv F v ⊗[F] E))
 end Loc
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ d b`. Establish `hND` using `PrimMeas.isHermND_hypOne σ J hJ`. Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hσ.2.2.2, hσ.2.2.2, star_star]`. Establish `I` using `GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hσ d b`. Use `filter_upwards [PrimMeas.eventually_measurableSet_primV F E σ hσ M J hJ d b, GlobalTheory.CompanionTheory.SW.GoodRing.good_ring F E σ hσ d b, GlobalTheory.T.local_order_quadratic_almost_all F E σ hσ d b, Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => I.1 (hypOn …`. Take `⟨O, hO, hstab, -, h2, -, hgood, -⟩` from `hring`. Introduce `ι c w hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hc1, -, -, hc4, hc5⟩` from `hc`. Establish `hss : ∀ z : Fv F v ⊗[F] E, sigR (Fv F v) σ (sigR (Fv F v) σ z) = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a e => show a ⊗ₜ[F] σ (σ e) = a ⊗ₜ[F] e`. Rewrite using `[hinv]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`. Establish `hint : ∀ x, x ∈ intK b v ↔ x ∈ O` using `fun x => (hO x).symm`. Use `set Hi : Matrix (Fin (M + 2)) (Fin (M + 2)) (Fv F v ⊗[F] E) := JR (Fv F v) (hypOne J)⁻¹ with hHidef`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHO : ∀ i j, JR (Fv F v) (hypOne J) i j ∈ O` using `fun i j => (hO _).2 (hH i j)`. Establish `hHiO : ∀ i j, Hi i j ∈ O` using `fun i j => (hO _).2 (hHi i j)`. Establish `hmul : JR (Fv F v) (hypOne J) * Hi = 1`. Establish `h1 : hypOne J * (hypOne J)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hND.2)`. Establish `h3` using `congrArg (RingHom.mapMatrix (inclR (F := F) (E := E) (Fv F v))) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, map_one]`. Conclude with `h3`. Establish `hJR : ∀ i j, sigR (Fv F v) σ (JR (Fv F v) (hypOne J) j i) = JR (Fv F v) (hypOne J) i j`. Introduce `i j`. Use `show sigR (Fv F v) σ (inclR (Fv F v) (hypOne J j i)) = inclR (Fv F v) (hypOne J i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hND.1 i j]`. Both sides reduce to the same expression. Establish `hprim` using `fun y hy a ha hsum hiso => mem_primV_of σ J b v O hO hstab hss h2 hgood Hi hHO hHiO hmul hJR y hy a ha hsum hiso`. Establish `hex` using `fun {y} (hy : y ∈ primV σ J b v) => exists_of_mem_primV σ J b v O hO hy`. Establish `hlat : ∀ X : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E, X ∈ latV b v ↔ ∀ a i, X a i ∈ O` using `fun X => GlobalTheory.CompanionTheory.SW.GoodTrans.mem_latV_iff b v O hO X`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hpir : IsPrincipalIdealRing O`. Take `⟨ι', δ, D, h1, h3, h4, h5, h6⟩` from `hquad O hO`. Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Use `haveI : HenselianLocalRing (v.adicCompletionIntegers F) := GlobalTheory.henselianLocalRing_of_isAdicComplete _`. Distinguish the cases in `hsq : ∃ e, D = e * e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, rfl⟩` from `hsq`. Conclude with `GlobalTheory.T.split_quadratic_order_principal _ O ι' δ e h1 h3 h4 (isUnit_of_mul_isUnit_left h5) h6`. Conclude with `GlobalTheory.T.unramified_quadratic_order_principal _ O ι' δ D h1 h3 h4 h5 h6 hsq`. Use `haveI : Module.Finite (Fv F v) (Fv F v ⊗[F] E) := by haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num) infer_instance`. Use `haveI : IsArtinianRing (Fv F v ⊗[F] E) := IsArtinianRing.of_finite (Fv F v) _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hmeas, fun i y hy => ?_, fun i j y hy y' hy' he => ?_, fun y hli hg hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hex hy).1`. Rewrite using `[hlat]`. Introduce `a k`. Rewrite using `[Fin.fin_one_eq_zero a]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `O.mul_mem ((hint _).1 (hc1 i).2) (h1 k)`. Take `⟨h1, a, ha, hs⟩` from `hex hy`. Take `⟨h1', a', ha', hs'⟩` from `hex hy'`. Establish `hek : ∀ k, c i * y 0 k = c j * y' 0 k` using `fun k => congrFun (congrFun he 0) k`. Use `set u := ∑ k, a k * y' 0 k with hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set u' := ∑ k, a' k * y 0 k with hu'`. Establish `huO : u ∈ O` using `O.sum_mem fun k _ => O.mul_mem (ha k) (h1' k)`. Establish `hu'O : u' ∈ O` using `O.sum_mem fun k _ => O.mul_mem (ha' k) (h1 k)`. Establish `e1 : c i = c j * u`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hu, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by linear_combination (a k) * hek k`. Establish `e2 : c j = c i * u'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu', Finset.mul_sum, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by linear_combination -(a' k) * hek k`. Establish `huu : u * u' = 1`. Establish `: c i * (u * u') = c i * 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hc1 i).1.mul_left_cancel this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hc5 i j u ((hint _).2 huO) u' ((hint _).2 hu'O) huu e1`. Rewrite `hy` using `[hlat]`. Establish `hfree : ∀ t : Fv F v ⊗[F] E, (∀ k, t * y 0 k = 0) → t = 0`. Introduce `t ht`. Establish `h1` using `Fintype.linearIndependent_iff.1 hli (fun _ => t) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Simplify `ht k)` using `[Fin.sum_univ_succ]`. Conclude with `h1 0`. Take `⟨x, hxO, hxu, y₀, a, hy₀, ha, hyx, hs⟩` from `exists_content O (y 0) (hy 0) hfree`. Take `⟨i, u, huO, u', hu'O, huu, hxc⟩` from `hc4 x ((hint _).2 hxO) hxu`.
-
-Rewrite `huO`, `hu'O` using `[hint]`. Use `⟨i, fun _ k => u * y₀ k, hprim _ (fun k => O.mul_mem huO (hy₀ k)) (fun k => u' * a k) (fun k => O.mul_mem hu'O (ha k)) ?_ ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Use `_ = 1 := by rw [huu, hs, one_mul]`.
-
-Establish `h0 : hform (sigR (Fv F v) σ) (JR (Fv F v) (hypOne J)) (y 0) (y 0) = 0` using `congrFun (congrFun hg 0) 0`. Establish `hsc : ∀ (t : Fv F v ⊗[F] E) (p : Fin (M + 2) → Fv F v ⊗[F] E), hform (sigR (Fv F v) σ) (JR (Fv F v) (hypOne J)) (fun k => t * p k) (fun k => t * p k) = sigR (Fv F v) σ t * t * hform (sigR (Fv F v) σ) (JR (Fv F v) (hypOne J)) p p`. Introduce `t p`. Simplify using `only [hform, Finset.mul_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
-
-Establish `hyy : y 0 = fun k => x * y₀ k` using `funext hyx`. Rewrite `h0` using `[hyy, hsc]`. Establish `hxs : IsUnit (sigR (Fv F v) σ x * x)` using `(hxu.map (sigR (Fv F v) σ)).mul hxu`. Establish `h00` using `hxs.mul_right_eq_zero.1 h0`. Use `show hform _ _ (fun k => u * y₀ k) (fun k => u * y₀ k) = 0`.
-
-Rewrite using `[hsc, h00, mul_zero]`. Use function extensionality and compare the values at `t k`. Rewrite using `[Fin.fin_one_eq_zero t]`. Use `show y 0 k = c i * (u * y₀ k)`. Rewrite using `[hyx k, hxc]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eventually_primV_decomposition : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ (ι : Type) (c : ι → Fv F v ⊗[F] E) (w : ι → ℕ), IsContent σ b v c w → MeasurableSet (primV σ J b v) ∧ (∀ i, ∀ y ∈ primV σ J b v, scalT (c i) y ∈ latV b v) ∧ (∀ i j, ∀ y ∈ primV σ J b v, ∀ y' ∈ primV σ J b v, scalT (c i) y = scalT (c j) y' → i = j) ∧ (∀ y : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E, LinearIndependent (Fv F v ⊗[F] E) y → gramR (Fv F v) σ (hypOne J) y = 0 → y ∈ latV b v → ∃ i, ∃ y₀ ∈ primV σ J b v, y = scalT (c i) y₀) := by
   intro F E _ _ _ _ _ σ hσ M J hJ d b

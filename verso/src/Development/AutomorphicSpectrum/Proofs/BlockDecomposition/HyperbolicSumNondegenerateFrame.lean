@@ -10,9 +10,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WeilSiegel.Free
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ, Fin.sum_univ_succ]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i <;>`. Use `Fin.cases ?_ (fun j => Fin.cases ?_ (fun j => ?_) j) j` and prove the remaining obligations. Use `all_goals`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, Matrix.one_apply, ← Matrix.mul_apply, h, Fin.ext_iff]`.
+A detailed English derivation is pending.
 -/
 theorem hypOne_mul_hypOne_of_mul_eq_one {K : Type} [Field K] {M : ℕ} {A B : Matrix (Fin M) (Fin M) K}
     (h : A * B = 1) : hypOne A * hypOne B = 1 := by
@@ -26,11 +26,11 @@ theorem hypOne_mul_hypOne_of_mul_eq_one {K : Type} [Field K] {M : ℕ} {A B : Ma
       ← Matrix.mul_apply, h, Fin.ext_iff]
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i <;>`. Use `Fin.cases ?_ (fun j => Fin.cases ?_ (fun j => ?_) j) j` and prove the remaining obligations. Apply the tactic sequence `all_goals first`. Consider the case `exact hJ.1 i j`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one]`. Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hJ.2`. Establish `h1 : hypOne J * hypOne J⁻¹ = 1` using `hypOne_mul_hypOne_of_mul_eq_one (Matrix.mul_nonsing_inv J hu)`. Introduce `h0`. Establish `h2` using `congrArg Matrix.det h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h2`.
+A detailed English derivation is pending.
 -/
 theorem isHermND_hypOne {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) : IsHermND σ (hypOne J) := by
@@ -50,9 +50,9 @@ theorem isHermND_hypOne {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E �
     exact zero_ne_one h2
 
 /- English proof (translation)
-Use `⟨linearIndependent_unique_iff.2 ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[e0] at this`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[gramE, hE, hform, e0, Fin.sum_univ_succ, hypOne_zero_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem e0_mem_framesE {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) :
@@ -65,7 +65,7 @@ theorem e0_mem_framesE {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E �
     simp [gramE, hE, hform, e0, Fin.sum_univ_succ, hypOne_zero_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isHermND_hypOne σ hJ, e0_mem_framesE σ J⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypOne_isHermND_and_e0_mem (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (_hσ : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)

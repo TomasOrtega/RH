@@ -13,7 +13,7 @@ open GlobalTheory.HoweD
 namespace GlobalTheory.FockVacD
 
 /- English proof (translation)
-Simplify using `only [sumPl, LinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockVac.atPl_tprod, GlobalTheory.FockVac.atPl_tprod, GlobalTheory.FockVac.heisOp_one, MultilinearMap.map_update_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumPl_heisOp_vacuum_dep {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ι → ℕ}
     (c : ∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) :

@@ -11,9 +11,9 @@ open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity (IsLat jL Uniformiza
 open Formalism.MainNotions.TaylorLogMetric (lamConj lamOf embT meanLogOm DataIn tor0 IsCurveIdeal IsDiscriminantTwelfthRootOfIdealLattice per22 logOmVal)
 
 /- English proof (translation)
-Establish `hρ : ∀ ρ : M →ₐ[ℚ] ℂ, ρ s ≠ 0` using `fun ρ => (map_ne_zero ρ).2 hs`. Rewrite using `[← Real.log_prod (fun ρ _ => by have := hρ ρ; positivity)]`. Establish `hN` using `Algebra.norm_eq_prod_embeddings ℚ ℂ s`. Establish `h1 : ∏ ρ : M →ₐ[ℚ] ℂ, ‖ρ s‖ ^ 2 = |((Algebra.norm ℚ s : ℚ) : ℝ)| ^ 2`. Rewrite using `[Finset.prod_pow, ← norm_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun z : ℂ => ‖z‖ ^ 2) hN.symm using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Rewrite using `[h1, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem br_sum_log_norm_sq (M : IntermediateField ℚ ℂ) [NumberField M] (s : M) (hs : s ≠ 0) :
     ∑ ρ : M →ₐ[ℚ] ℂ, Real.log (‖ρ s‖ ^ 2) = 2 * Real.log |((Algebra.norm ℚ s : ℚ) : ℝ)| := by

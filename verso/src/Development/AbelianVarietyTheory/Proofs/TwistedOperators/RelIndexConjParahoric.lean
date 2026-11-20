@@ -15,11 +15,11 @@ namespace GlobalTheory.ParahoricConjugateOpen
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_inf]`. Use `IsOpen.inter ?_ hH` and prove the remaining obligations. Establish `: ((H.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G) = (fun x => g⁻¹ * x * g) ⁻¹' (H : Set G)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mul_assoc]`. Introduce `hx`. Conclude with `⟨_, hx, by simp [mul_assoc]⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hH.preimage (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_conj_inf {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G)
     (hH : IsOpen (H : Set G)) (g : G) :
@@ -37,13 +37,13 @@ theorem isOpen_conj_inf {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   exact hH.preimage (by fun_prop)
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono StepData.KOne_le_KO StepData.isOpen_KOne`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_KO (n : Type) [Fintype n] [DecidableEq n] : IsOpen (KO k n : Set (GL n k)) :=
   Subgroup.isOpen_mono StepData.KOne_le_KO StepData.isOpen_KOne
 
 /- English proof (translation)
-Use `Subgroup.isOpen_mono (H₁ := KOne k (A ⊕ D)) (fun g hg => ?_) StepData.isOpen_KOne` and prove the remaining obligations. Use `mem_parahoric.2 ⟨StepData.KOne_le_KO hg, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `using StepData.mem_KOne.1 hg (.inr i) (.inl j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_parahoric (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] :
     IsOpen (parahoric k A D : Set (GL (A ⊕ D) k)) := by
@@ -53,7 +53,7 @@ theorem isOpen_parahoric (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [D
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_torusElt]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem torusElt_zero (n : Type) [Fintype n] [DecidableEq n] (ϖ : kˣ) :
     torusElt k n ϖ (fun _ => 0) = 1 := by
@@ -62,7 +62,7 @@ theorem torusElt_zero (n : Type) [Fintype n] [DecidableEq n] (ϖ : kˣ) :
   simp
 
 /- English proof (translation)
-Establish `: (MulAut.conj (1 : G)).toMonoidHom = MonoidHom.id G` using `by ext x; simp`. Rewrite using `[this, Subgroup.map_id, inf_idem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_one_inf {G : Type} [Group G] (H : Subgroup G) :
     (H.map (MulAut.conj (1 : G)).toMonoidHom ⊓ H : Subgroup G) = H := by
@@ -70,13 +70,13 @@ theorem conj_one_inf {G : Type} [Group G] (H : Subgroup G) :
   rw [this, Subgroup.map_id, inf_idem]
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < resCard k` using `Nat.cast_pos.2 Nat.card_pos`. Establish `h1` using `GlobalTheory.T.matrixEntrywiseProductMeasure_uniformizer_power_box k ν ϖ hϖ A D (fun _ j => max 0 (-e j))`. Establish `h2` using `GlobalTheory.T.matrixEntrywiseProductMeasure_uniformizer_power_box k ν ϖ hϖ D A (fun i _ => 1 + max 0 (e i))`. Rewrite using `[GlobalTheory.T.val_twoBlockParahoric_inf_torusConj_blockwise k ϖ hϖ A D e, GlobalTheory.T.volM_blocks_eq_mul, h1, h2]`. Simplify using `only [ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_ofReal (zpow_pos hq _).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs : -((Fintype.card A : ℤ) * (Fintype.card D + sumAbs e)) = (-∑ _i : A, ∑ j : D, max 0 (-e j)) + (-∑ i : D, ∑ _j : A, (1 + max 0 (e i)))`. Establish `: sumAbs e = ∑ j : D, max 0 (-e j) + ∑ j : D, max 0 (e j)`. Rewrite using `[sumAbs, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Break down `le_total 0 (e j) with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[abs_of_nonneg h, max_eq_left (by omega), max_eq_right h]; ring`. Rewrite using `[abs_of_nonpos h, max_eq_right (by omega), max_eq_left h]; ring`. Rewrite using `[this, Finset.sum_comm (s := (Finset.univ : Finset D))]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hs, zpow_add₀ hq.ne', mul_comm (Fintype.card D) (Fintype.card A)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vol_conj_inf [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (ϖ : kˣ)
     (hϖ : valuation k (ϖ : k) = uniformizer k)
@@ -109,15 +109,15 @@ theorem vol_conj_inf [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsA
   ring
 
 /- English proof (translation)
-Use `borelize k`. Set `ν : Measure k` to `Measure.addHaar`. Establish `hq : (0 : ℝ) < resCard k` using `Nat.cast_pos.2 Nat.card_pos`. Take `⟨hp, hJ⟩` from `GlobalTheory.T.relIndex_mul_matrixVolume_open_subgroup_integralGL k ν (A ⊕ D) _ (parahoric k A D) inf_le_right (fun g hg => (mem_parahoric.1 hg).1) (isOpen_conj_inf _ (isOpen_parahoric A D) (mtor (A := A) ϖ e))`. Take `⟨-, hK⟩` from `GlobalTheory.T.relIndex_mul_matrixVolume_open_subgroup_integralGL k ν D _ (KO k D) inf_le_right le_rfl (isOpen_conj_inf _ (isOpen_KO D) (torusElt k D ϖ e))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hJ`, `hK` using `[Subgroup.inf_relIndex_right]`. Establish `h0` using `vol_conj_inf ν ϖ hϖ A D (fun _ => 0)`. Establish `hm : mtor (A` using `A) ϖ (fun _ : D => 0) = 1 := by`. Rewrite using `[← torusElt_zero (A ⊕ D) ϖ, mtor]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`. Rewrite `h0` using `[hm, torusElt_zero, conj_one_inf, conj_one_inf]`. Use `mul_right_cancel₀ hp.ne' ?_` and prove the remaining obligations. Rewrite using `[hJ, h0, ← hK, vol_conj_inf ν ϖ hϖ A D e]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : sumAbs (fun _ : D => (0 : ℤ)) = 0` using `by simp [sumAbs]`. Establish `hz : (resCard k : ℝ) ^ (-((Fintype.card A : ℤ) * (Fintype.card D + sumAbs (fun _ : D => (0 : ℤ))))) = (resCard k : ℝ) ^ ((Fintype.card A : ℤ) * sumAbs e) * (resCard k : ℝ) ^ (-((Fintype.card A : ℤ) * (Fintype.card D + sumAbs e)))`. Rewrite using `[← zpow_add₀ hq.ne', hs]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem relIndex_conj_parahoric (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k)

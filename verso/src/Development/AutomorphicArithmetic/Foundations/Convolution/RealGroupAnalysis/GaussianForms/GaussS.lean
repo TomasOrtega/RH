@@ -21,7 +21,7 @@ private noncomputable def gaussEquiv (F : Type) [Field F] [NumberField F] [IsTot
       right_inv := fun y => by ext p; rfl }
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(infPartPi v p.1).1 ⟨p.2, IsTotallyReal.isReal p.2⟩ = _`. Simplify using `only [infPartPi, homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Express the relevant statement in the definitionally equal form `_ = InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal p.2) ((v p.1).1 p.2)`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gaussEquiv_apply {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ι : Type} [Fintype ι]
     (v : ι → A F) (p : ι × InfinitePlace F) :
@@ -32,11 +32,11 @@ private theorem gaussEquiv_apply {F : Type} [Field F] [NumberField F] [IsTotally
   rw [InfinitePlace.Completion.ringEquivRealOfIsReal_apply]
 
 /- English proof (translation)
-Introduce `F _ _ _ ι _ g hg`. Establish `h` using `schwartzBruhatTensorPi_mem (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (gaussEquiv F ι) (gaussianSchwartz (EuclideanSpace ℝ (ι × InfinitePlace F)))) (finiteTensor_mem (ι := ι) fun _ => hg)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Establish `hn : ‖gaussEquiv F ι (infPartPi v)‖ ^ 2 = ∑ i, ∑ w, TR.pInf F (v i) w ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[EuclideanSpace.real_norm_sq_eq, Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun w _ => by rw [gaussEquiv_apply]`. Simplify using `only [schwartzBruhatTensorPi, finiteTensor, g1, Finset.prod_mul_distrib, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, hn]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Complex.exp_sum]`. Use `(Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Complex.exp_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.gaussS :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (ι : Type) [Fintype ι] (g : FiniteAdeleRing (𝓞 F) F → ℂ), g ∈ finiteSchwartzBruhat F → (fun v : ι → A F => ∏ i, g1 g (v i)) ∈ schwartzBruhatPi F ι := by

@@ -21,13 +21,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TautEtaleB
 
 /- English proof (translation)
-Set `B` to `AdicCompletion (maximalIdeal A) A`. Use `haveI : IsNoetherianRing B := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion A _`. Take `⟨ψ, hψl, hψ⟩` from `GlobalTheory.T.exists_isLocalHom_adicCompletion_extension_comp A R hR φ hφ`. Establish `hmap : (maximalIdeal B).map ψ = (maximalIdeal A).map φ`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map, Ideal.map_map, hψ]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hresψ : ((residue R).comp ψ).Finite`. Establish `e : ((residue R).comp ψ).comp (algebraMap A B) = (residue R).comp φ`. Rewrite using `[RingHom.comp_assoc, hψ]`. Conclude with `RingHom.Finite.of_comp_finite (e ▸ hres)`. Establish `hfin : ψ.Finite` using `GlobalTheory.T.finite_of_maximalIdeal_le_radical_complete_nakayama B R ψ inferInstance hψl (hmap ▸ hprim) hresψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdB : ringKrullDim R = ringKrullDim B` using `by rw [hdim, UpperTheory.V.CA.g_dimcpl]`. Establish `hi : Function.Injective ψ` using `GlobalTheory.T.injective_of_finite_of_ringKrullDim_eq_localDomain B R ψ hfin hdB`. Establish `hs : Function.Surjective ψ` using `GlobalTheory.T.surjective_finite_of_unique_embedding_complete_normal B R ψ inferInstance hi hfin (fun R' _ _ _ _ _ _ hR' f g hf' hg' hf hg h => hinj R' hR' f g hf' hg' hf hg (by`. Rewrite using `[← hψ, ← RingHom.comp_assoc, h, RingHom.comp_assoc]))`. Use `⟨?_, ?_, hres⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hψ]`. Use `RingHom.Flat.comp (RingHom.flat_algebraMap_iff.mpr (AdicCompletion.flat_of_isNoetherian _)) ?_` and prove the remaining obligations. Conclude with `RingHom.Flat.of_bijective ⟨hi, hs⟩`. Rewrite using `[← hmap]`. Conclude with `map_maximalIdeal_of_surjective ψ hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEtaleCompletion_of_forall_eq_inj (A R : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R]
@@ -64,11 +64,11 @@ theorem isEtaleCompletion_of_forall_eq_inj (A R : Type) [CommRing A] [IsLocalRin
     exact map_maximalIdeal_of_surjective ψ hs
 
 /- English proof (translation)
-Set `y : PrimeSpectrum K` to `f x`. Use `letI : Algebra K ((Sp K).presheaf.stalk (f x)) := StructureSheaf.stalkAlgebra _ y`. Use `haveI : IsLocalization.AtPrime ((Sp K).presheaf.stalk (f x)) y.asIdeal := StructureSheaf.IsLocalization.to_stalk _ y`. Set `φ` to `algebraMap K ((Sp K).presheaf.stalk (f x))`. Establish `h₁ : (f.stalkMap x).hom.EssFiniteType` using `LocallyOfFiniteType.stalkMap f x`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : φ.EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization _ y.asIdeal.primeCompl)`. Establish `hσ : Function.Injective ((f.stalkMap x).hom.comp φ)` using `RingHom.injective _`. Use `⟨charZero_of_injective_ringHom hσ, ?_⟩` and prove the remaining obligations. Establish `hQ : Algebra.EssFiniteType ℤ ℚ` using `Algebra.EssFiniteType.of_isLocalization ℚ (nonZeroDivisors ℤ)`. Establish `hK : Algebra.EssFiniteType ℤ K` using `Algebra.EssFiniteType.comp ℤ ℚ K`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.essFiniteType_algebraMap.1 ?_` and prove the remaining obligations. Use `(RingHom.essFiniteType_algebraMap.2 hK).comp (h₂.comp h₁) using 1` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem charZero_essFiniteType_stalk (K : Type) [Field K] [CharZero K] [FiniteDimensional ℚ K] {X : Scheme.{0}}
     (f : X ⟶ Sp K) [LocallyOfFiniteType f] (x : X) :
@@ -90,11 +90,11 @@ theorem charZero_essFiniteType_stalk (K : Type) [Field K] [CharZero K] [FiniteDi
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Establish `hg : Function.Injective ((algebraMap B (FractionRing B)).comp ψ)` using `(IsFractionRing.injective B (FractionRing B)).comp hψ`. Set `fK : FractionRing A →+* FractionRing B` to `IsFractionRing.lift (K := FractionRing A) (L := FractionRing B) (g := (algebraMap B (FractionRing B)).comp ψ) hg`. Establish `e0 : fK.comp (algebraMap A (FractionRing A)) = (algebraMap B (FractionRing B)).comp ψ`. Use extensionality with `x`. Rewrite using `[RingHom.comp_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsFractionRing.lift_algebraMap (K := FractionRing A) (L := FractionRing B) hg x`. Use `⟨fK, ?_⟩` and prove the remaining obligations. Establish `e1 : CommRingCat.ofHom (algebraMap A (FractionRing A)) ≫ CommRingCat.ofHom fK = CommRingCat.ofHom ψ ≫ CommRingCat.ofHom (algebraMap B (FractionRing B))`. Rewrite using `[← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e0]`. Establish `e2` using `congrArg Spec.map e1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[Spec.map_comp, Spec.map_comp]`. Conclude with `e2`.
+A detailed English derivation is pending.
 -/
 theorem exists_fracMap {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] (ψ : A →+* B)
     (hψ : Function.Injective ψ) : ∃ fK : FractionRing A →+* FractionRing B, spMap fK ≫ jK A = jK B ≫ spMap ψ := by
@@ -115,33 +115,25 @@ theorem exists_fracMap {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDo
   exact e2
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ hpq hpf hns Z zs i OZ N d J S π j _ BD hU hSep k _ m e C hT ξ hξ`. Take `⟨hqf, hfin⟩` from `GlobalTheory.T.quasiFinite_tautologicalChart_closedPoint Xo c φ hpq hpf hns zs i OZ N d J π j BD hU hSep C hT ξ hξ`. Establish `hdimS` using `ringKrullDim_stalk_eq_of_isTaut hU C hT.1 ξ hξ hfin`. Use `haveI hcF : CharZero (ChartRing k m e) := (C.b.charZero_iff C.b.injective).1 inferInstance`. Establish `hAdm` using `GlobalTheory.MumfordChart.admissibleBase_chartRing k m e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing (ChartRing k m e) := hAdm.1`. Use `haveI : IsIntegrallyClosed (ChartRing k m e) := hAdm.2.2.1`. Establish `hRc : IsAdicComplete (maximalIdeal (ChartRing k m e)) (ChartRing k m e)` using `hAdm.2.2.2`. Establish `hdimR : ringKrullDim (ChartRing k m e) = ((m + e : ℕ) : WithBot ℕ∞)`. Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries k (Fin m ⊕ Fin e), ringKrullDim_eq_zero_of_field]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[Nat.card_sum]`. Take `⟨⟨-, -, -, -, hizs, -⟩, -, -, -, ⟨⟨hnorm, -⟩, hproj, -, -, hji, -⟩, -⟩` from `hU`. Use `haveI : LocallyOfFiniteType (π ≫ zs) := by`. Take `⟨M, i', hi', hcomp⟩` from `hproj`. Use `haveI := hi'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str c.F M`. Rewrite using `[← hcomp]`. Use `infer_instance`. Use `haveI := c.fin`. Use `set x := ξ (closedPoint (ChartRing k m e)) with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsDomain (S.presheaf.stalk x) := hnorm.isDomain_stalk x`. Use `haveI : IsIntegrallyClosed (S.presheaf.stalk x) := hnorm.isIntegrallyClosed_stalk x`. Take `⟨hc0, hess⟩` from `charZero_essFiniteType_stalk c.F (π ≫ zs) x`. Use `haveI := hc0`. Use `haveI := hess`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `haveI : IsNoetherianRing (S.presheaf.stalk x) := Algebra.EssFiniteType.isNoetherianRing ℤ _`. Take `⟨hAd, hAn⟩` from `GlobalTheory.T.adicCompletion_isDomain_and_isIntegrallyClosed (S.presheaf.stalk x)`. Use `set ψ := (Scheme.stalkClosedPointTo ξ).hom with hψ`. Establish `eξ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Establish `hpt : ∀ p : Sp (ChartRing k m e), ξ p = S.fromSpecStalk x (Spec.map (Scheme.stalkClosedPointTo ξ) p)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p`. Use `conv_lhs => rw [← eξ]`. Both sides reduce to the same expression. Establish `hprim : maximalIdeal (ChartRing k m e) ≤ ((maximalIdeal (S.presheaf.stalk x)).map ψ).radical`. Introduce `r hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`. Introduce and unpack `P ⟨hle, hP⟩`. Establish `hc : Ideal.comap ψ P = maximalIdeal (S.presheaf.stalk x)` using `((maximalIdeal.isMaximal _).eq_of_le (Ideal.comap_ne_top _ hP.ne_top) (Ideal.map_le_iff_le_comap.1 hle)).symm`. Establish `hq : (⟨P, hP⟩ : Sp (ChartRing k m e)) = closedPoint (ChartRing k m e)`. Use `hqf _ ((hpt _).trans (Eq.trans ?_ (hpt (closedPoint _)).symm))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Use `show Ideal.comap ψ P = Ideal.comap ψ (maximalIdeal (ChartRing k m e))`. Rewrite using `[hc]`. Use `le_antisymm ?_ (le_maximalIdeal (Ideal.comap_ne_top _ (maximalIdeal.isMaximal _).ne_top))` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Conclude with `map_nonunit ψ a ha`. Establish `hP' : P = maximalIdeal (ChartRing k m e)` using `congrArg PrimeSpectrum.asIdeal hq`. Rewrite using `[hP']`. Conclude with `hr`.
-
-Establish `hinj : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] [IsNoetherianRing R'] [IsIntegrallyClosed R'] [CharZero R'], IsAdicComplete (maximalIdeal R') R' → ∀ f g : ChartRing k m e →+* R', Function.Injective f → Function.Injective g → IsLocalHom f → IsLocalHom g → f.comp …`. Introduce `R' _ _ _ _ _ _ hR' f g hfi hgi hfl hgl hfg`. Establish `hB : GlobalTheory.Mum.Base R'` using `⟨⟨inferInstance, inferInstance, inferInstance, hR'⟩, inferInstance⟩`. Take `⟨fK, hfK⟩` from `exists_fracMap f hfi`. Take `⟨gK, hgK⟩` from `exists_fracMap g hgi`.
-
-Take `⟨-, -, -, hInj, -⟩` from `hT.1`. Use `hInj R' hB f g hfi hgi hfl hgl (spMap fK) (spMap gK) hfK hgK ?_` and prove the remaining obligations. Establish `hsp : spMap f ≫ Spec.map (Scheme.stalkClosedPointTo ξ) = spMap g ≫ Spec.map (Scheme.stalkClosedPointTo ξ)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
-
-Use extensionality with `a`. Conclude with `congrArg (fun h : S.presheaf.stalk x →+* R' => h a) hfg`. Establish `hfξ : spMap f ≫ ξ = spMap g ≫ ξ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, hsp, Category.assoc]`.
-
-Use `_ = spMap g ≫ ξ := by rw [eξ]`. Rewrite using `[← cancel_mono j, Category.assoc, Category.assoc, hξ, ← Category.assoc, ← Category.assoc, hfK, hgK, Category.assoc, Category.assoc, hfξ]`. Conclude with `isEtaleCompletion_of_forall_eq_inj (S.presheaf.stalk x) (ChartRing k m e) hAd hAn hRc ψ inferInstance hprim hfin (by rw [hdimR, hdimS]) hinj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tautB_isEtaleCompletion : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ {Z : Scheme.{0}} (zs : Z ⟶ Sp c.F) (i : Xo.XF c ⟶ Z) (OZ : LB Z) (N d : ℕ) (J : Z.IdealSheafData) {S : Scheme.{0}} (π : S ⟶ Z) (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (BD : EffCartierData S), GlobalTheory.UPoinc.UPoinOnX Xo c φ zs i OZ N d J π j BD → SepB Xo c φ j → ∀ {k : Type} [Field k] {m e : ℕ} (C : MonoFam Xo c φ (ChartRing k m e)), IsTautB C → ∀ ξ : Sp (ChartRing k m e) ⟶ S, C.y ≫ j = jK _ ≫ ξ → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom := by
   intro E _ _ _ H Dw l Xo c φ hpq hpf hns Z zs i OZ N d J S π j _ BD hU hSep k _ m e C hT ξ hξ

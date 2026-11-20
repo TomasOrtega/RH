@@ -13,17 +13,17 @@ namespace GlobalTheory.SnMass.VolN.CovMul
 open GlobalTheory.HomCovolume GlobalTheory.SnMass.FrameDual
 
 /- English proof (translation)
-Take `⟨L₀, hL₀, hcov⟩` from `exists_idealLat E hE a ha`. Set `f : (InfinitePlace E → ℂ) →ₗ[ℝ] (InfinitePlace E → ℂ)` to `c⁻¹ • LinearMap.id`. Establish `hf : ∀ z, f z = c⁻¹ • z` using `fun _ => rfl`. Establish `hrank : Module.finrank ℝ (InfinitePlace E → ℂ) = 2 * Fintype.card (InfinitePlace E)`. Rewrite using `[Module.finrank_pi_fintype]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.finrank_real_complex, mul_comm]`. Establish `hdet : LinearMap.det f = (c ^ (2 * Fintype.card (InfinitePlace E)))⁻¹`. Express the relevant statement in the definitionally equal form `LinearMap.det (c⁻¹ • LinearMap.id) = _`. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one, hrank, inv_pow]`. Establish `hpos : 0 < c ^ (2 * Fintype.card (InfinitePlace E))` using `pow_pos hc _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `L : Submodule ℤ (InfinitePlace E → ℂ)` to `L₀.comap (f.restrictScalars ℤ)`. Take `⟨_, _, h⟩` from `HasCov.of_det f (L := L) (by rw [hdet]; exact (inv_pos.2 hpos).ne') (fun _ => Iff.rfl) hcov`. Establish `hL : ∀ z, z ∈ L ↔ z ∈ ideLat a c`. Introduce `z`. Express the relevant statement in the definitionally equal form `f z ∈ L₀ ↔ _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hL₀]`. Use `exists_congr fun y => and_congr Iff.rfl ⟨fun h w => ?_, fun h w => ?_⟩` and prove the remaining obligations. Establish `h1` using `h w`. Rewrite `h1` using `[hf, Pi.smul_apply, Complex.real_smul]`. Rewrite using `[← h1, Complex.ofReal_inv, mul_inv_cancel_left₀ (by exact_mod_cast hc.ne')]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, Pi.smul_apply, Complex.real_smul, h w, Complex.ofReal_inv, inv_mul_cancel_left₀ (by exact_mod_cast hc.ne')]`. Use `⟨GlobalTheory.latticeDomain L, GlobalTheory.measurableSet_latticeDomain L, fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hu⟩` from `GlobalTheory.existsUnique_add_mem_latticeDomain L v`. Use `⟨z, ⟨(hL _).1 z.2, hz⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `l ⟨hl, hlD⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg Subtype.val (hu ⟨l, (hL l).2 hl⟩ hlD)`. Rewrite `h` using `[ZLattice.covolume_eq_measure_fundamentalDomain _ _ (GlobalTheory.isAddFundamentalDomain_latticeDomain _ _), measureReal_def, hdet, abs_of_pos (inv_pos.2 hpos), div_inv_eq_mul]`. Establish `hfin : volume (GlobalTheory.latticeDomain L) ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`. Rewrite using `[← ENNReal.ofReal_toReal hfin, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDom_ideLat {E : Type} [Field E] [NumberField E] (hE : IsTotallyComplex E)
     (a : FractionalIdeal (𝓞 E)⁰ E) (ha : a ≠ 0) {c : ℝ} (hc : 0 < c) :
@@ -66,7 +66,7 @@ theorem hasDom_ideLat {E : Type} [Field E] [NumberField E] (hE : IsTotallyComple
     rw [← ENNReal.ofReal_toReal hfin, h]
 
 /- English proof (translation)
-The claim follows from `|(NumberField.discr F : ℝ)| ^ (1 - 2 * (t : ℝ) - 2 * (t' : ℝ)) := by have hD : 0 < |(NumberField.discr F : ℝ)| := abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero F)) have hdisc : |(discr E : ℝ)| = |(NumberField.discr F : ℝ)| ^ 2 := by have h1 := congrArg (Nat.cast : ℕ → ℝ) (natAbs_d …`.
+A detailed English derivation is pending.
 -/
 theorem value_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (hE : IsTotallyComplex E) (h2 : Module.finrank F E = 2)
@@ -95,7 +95,7 @@ theorem value_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ hU t t' c hc`. Establish `h` using `hasDom_ideLat hσ.2.1 (dInv E t * dInv E t') (mul_ne_zero (dInv_ne_zero t) (dInv_ne_zero t')) hc`. Rewrite `h` using `[value_eq hσ.2.1 hσ.2.2.1 t t']`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasDom_ideLat_dInv_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → Algebra.FormallyUnramified (𝓞 F) (𝓞 E) → ∀ (t t' : ℕ) (c : ℝ), 0 < c → HasDom volume (ideLat (dInv E t * dInv E t') c : Set (InfinitePlace E → ℂ)) (ENNReal.ofReal ((2⁻¹ : ℝ) ^ Fintype.card (InfinitePlace E) * |(NumberField.discr F : ℝ)| ^ (1 - 2 * (t : ℝ) - 2 * (t' : ℝ)) * c ^ (2 * Fintype.card (InfinitePlace E)))) := by
   intro F E _ _ _ _ _ σ hσ hU t t' c hc

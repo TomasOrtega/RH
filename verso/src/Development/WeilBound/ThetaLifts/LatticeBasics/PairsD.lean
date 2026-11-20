@@ -13,21 +13,19 @@ variable {R V : Type} [Ring R] [Algebra ℂ R] [AddCommGroup V] [Module ℂ V] [
   [IsScalarTower ℂ R V] [IsSimpleModule R V]
 
 /- English proof (translation)
-Proceed by induction on `hn : p.natDegree generalizing p with`. Consider the case `zero`. It suffices to derive a contradiction. Rewrite `hn` using `[Polynomial.natDegree_eq_zero]`. Take `⟨c, rfl⟩` from `hn`.
+Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc : c ≠ 0` using `fun h => hp (by rw [h, map_zero])`. Establish `hnt : Nontrivial V` using `IsSimpleModule.nontrivial R V`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Rewrite `hφ` using `[aeval_C]`. Establish `h3` using `LinearMap.congr_fun hφ v`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[Module.algebraMap_end_apply, LinearMap.zero_apply]`. Conclude with `hv ((smul_eq_zero.mp h3).resolve_left hc)`. Consider the case `succ n ih`. Establish `hdeg : p.degree ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Polynomial.degree_eq_natDegree hp]`. Normalize the coercions in `at h`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `IsAlgClosed.exists_root p hdeg`. Establish `hpq : p = (X - C a) * (p /ₘ (X - C a))` using `(Polynomial.mul_divByMonic_eq_iff_isRoot.mpr ha).symm`.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : p /ₘ (X - C a) ≠ 0`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Rewrite using `[hpq, h, mul_zero]`. Establish `hqdeg : (p /ₘ (X - C a)).natDegree = n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Polynomial.natDegree hpq`. Rewrite `h3` using `[Polynomial.natDegree_mul (Polynomial.X_sub_C_ne_zero a) hq0, Polynomial.natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Rewrite `hφ` using `[hpq, map_mul, map_sub, aeval_X, aeval_C]`. Break down `LinearMap.injective_or_eq_zero (φ - algebraMap ℂ (Module.End R V) a) with hinj | h0` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ih hq0 _ hqdeg` to reduce the goal to its premises. Use extensionality with `v`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `LinearMap.congr_fun hφ v`.
-
-Conclude with `⟨a, sub_eq_zero.mp h0⟩`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_of_aeval_eq_zero (φ : Module.End R V) {p : ℂ[X]} (hp : p ≠ 0)
     (hφ : aeval φ p = 0) : ∃ c : ℂ, φ = algebraMap ℂ (Module.End R V) c := by
@@ -69,25 +67,23 @@ theorem exists_eq_algebraMap_of_aeval_eq_zero (φ : Module.End R V) {p : ℂ[X]}
     · exact ⟨a, sub_eq_zero.mp h0⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hnt : Nontrivial V` using `IsSimpleModule.nontrivial R V`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `htr : ∀ p : ℂ[X], p ≠ 0 → aeval φ p ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp h0`. Take `⟨c, hc⟩` from `exists_eq_algebraMap_of_aeval_eq_zero φ hp h0`. Take `⟨m, hm⟩` from `hne c`. Conclude with `hm (by rw [hc, Module.algebraMap_end_apply])`. Establish `hv0 : ∀ p : ℂ[X], aeval φ p v = 0 → p = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `p hpv`. Assume the negation of the conclusion as `hp`. Break down `LinearMap.injective_or_eq_zero (aeval φ p) with hinj | h0` into its components or cases. Conclude with `hv (hinj (by rw [hpv, map_zero]))`. Conclude with `htr p hp h0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hsurj : ∀ a : ℂ, Function.Surjective (aeval φ (X - C a))`. Introduce `a`. Break down `LinearMap.bijective_or_eq_zero (aeval φ (X - C a)) with hb | h0` into its components or cases. Conclude with `hb.2`. Conclude with `absurd h0 (htr _ (Polynomial.X_sub_C_ne_zero a))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose w hw using fun a => hsurj a v`. Establish `hli : LinearIndependent ℂ w`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Establish `key : ∀ k ∈ s, aeval φ (∏ j ∈ s, (X - C j)) (w k) = aeval φ (∏ j ∈ s.erase k, (X - C j)) v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `k hk`. Rewrite using `[← Finset.prod_erase_mul _ _ hk, map_mul, Module.End.mul_apply, hw]`. Establish `h3` using `congrArg (aeval φ (∏ j ∈ s, (X - C j))) hg`. Rewrite `h3` using `[map_sum, map_zero]`. Simplify using `only [LinearMap.map_smul_of_tower] at h3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Finset.sum_congr rfl (fun k hk => by rw [key k hk])]`. Establish `h4 : aeval φ (∑ k ∈ s, C (g k) * ∏ j ∈ s.erase k, (X - C j)) v = 0`. Rewrite using `[← h3, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP` using `hv0 _ h4`. Establish `h5` using `congrArg (Polynomial.eval i) hP`. Establish `hz : ∀ k ∈ s.erase i, Polynomial.eval i (C (g k) * ∏ j ∈ s.erase k, (X - C j)) = 0`. Introduce `k hk`. Establish `hki` using `Finset.ne_of_mem_erase hk`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `him : i ∈ s.erase k` using `Finset.mem_erase_of_ne_of_mem (Ne.symm hki) hi`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_prod, Finset.prod_eq_zero him (by simp), mul_zero]`. Rewrite `h5` using `[Polynomial.eval_finsetSum, ← Finset.sum_erase_add _ _ hi, Finset.sum_eq_zero hz, zero_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_prod, Polynomial.eval_zero]`. Establish `hne2 : ∏ j ∈ s.erase i, Polynomial.eval i (X - C j) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j hj => by`. Rewrite using `[Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`.
-
-Conclude with `sub_ne_zero.mpr (Finset.ne_of_mem_erase hj).symm`. Conclude with `(mul_eq_zero.mp h5).resolve_right hne2`. Establish `hc` using `hli.cardinal_le_rank`. Rewrite `hc` using `[Cardinal.mk_complex]`. Conclude with `absurd (hc.trans hV) (not_le.mpr Cardinal.aleph0_lt_continuum)`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_of_rank_le_aleph0 (hV : Module.rank ℂ V ≤ ℵ₀) (φ : Module.End R V) :
     ∃ c : ℂ, ∀ m, φ m = c • m := by
@@ -147,13 +143,11 @@ theorem exists_smul_of_rank_le_aleph0 (hV : Module.rank ℂ V ≤ ℵ₀) (φ : 
 end Schur
 
 /- English proof (translation)
-Set `A` to `Algebra.adjoin ℂ O`. Use `haveI : IsSimpleOrder (Submodule A V) := by`. Use `⟨fun N => ?_⟩` and prove the remaining obligations. Establish `hst : ∀ T ∈ O, ∀ x ∈ N.restrictScalars ℂ, T x ∈ N.restrictScalars ℂ`. Introduce `T hT x hx`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `N.smul_mem (⟨T, Algebra.subset_adjoin hT⟩ : A) hx`. Break down `hirr (N.restrictScalars ℂ) hst with h | h` into its components or cases. Use `left`. Rewrite using `[← Submodule.restrictScalars_eq_bot_iff ℂ]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Rewrite using `[← Submodule.restrictScalars_eq_top_iff ℂ]`. Conclude with `h`. Use `haveI : IsSimpleModule A V := ⟨⟩`. Set `F : Module.End (Module.End A V) V` to `{ toFun := f map_add' := f.map_add map_smul' := fun ψ x => by`.
-
-Take `⟨c, hc⟩` from `exists_smul_of_rank_le_aleph0 (R := A) hV ψ`. Use `show f (ψ x) = ψ (f x)`. Rewrite using `[hc, hc, f.map_smul] }`. Take `⟨r, hr⟩` from `jacobson_density F s`. Conclude with `⟨r, r.2, fun x hx => (hr x hx).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_adjoin_eq {V : Type} [AddCommGroup V] [Module ℂ V] [Nontrivial V]
     (O : Set (Module.End ℂ V)) (hV : Module.rank ℂ V ≤ ℵ₀)
@@ -186,39 +180,35 @@ theorem exists_mem_adjoin_eq {V : Type} [AddCommGroup V] [Module ℂ V] [Nontriv
   exact ⟨r, r.2, fun x hx => (hr x hx).symm⟩
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype α`. Establish `hcomp : ∀ (f g : ∀ a, X a →ₗ[ℂ] X a) (y : A ⊗[ℂ] PiTensorProduct ℂ X), LinearMap.lTensor A (PiTensorProduct.map fun a => f a ∘ₗ g a) y = LinearMap.lTensor A (PiTensorProduct.map f) (LinearMap.lTensor A (PiTensorProduct.map g) y)`. Introduce `f g y`. Rewrite using `[PiTensorProduct.map_comp, LinearMap.lTensor_comp_apply]`. Set `Asub : ∀ a, Subalgebra ℂ (Module.End ℂ (X a))` to `fun i => { carrier := {T | ∀ y ∈ N, LinearMap.lTensor A (PiTensorProduct.map (Function.update (fun b => (LinearMap.id : X b →ₗ[ℂ] X b)) i T)) y ∈ N} mul_mem' := fun {a b} ha hb y hy => by`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `ha _ (hb y hy)` as an intermediate fact. Rewrite `this` using `[← hcomp]`. Use `this using 4` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hρ` using the available equality. Simplify using `[Module.End.mul_eq_comp]`. Simplify using `[Function.update_of_ne hρ]`. Use the proof step `add_mem' := fun {a b} ha hb y hy => by`. Rewrite using `[PiTensorProduct.map_update_add, LinearMap.lTensor_add]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.add_mem (ha y hy) (hb y hy)`. Use the proof step `algebraMap_mem' := fun c y hy => by`. Rewrite using `[Algebra.algebraMap_eq_smul_one, PiTensorProduct.map_update_smul, LinearMap.lTensor_smul]`. Establish `: Function.update (fun ρ => (LinearMap.id : X ρ →ₗ[ℂ] X ρ)) i (1 : Module.End ℂ (X i)) = fun ρ => (LinearMap.id : X ρ →ₗ[ℂ] X ρ)` using `Function.update_eq_self i _`. Rewrite using `[this, PiTensorProduct.map_id, LinearMap.lTensor_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `N.smul_mem c hy }`. Establish `hA : ∀ a, Algebra.adjoin ℂ (O a) ≤ Asub a` using `fun a => Algebra.adjoin_le fun T hT y hy => hN a T hT y hy`. Establish `h3 : ∀ T : ∀ a, Module.End ℂ (X a), (∀ a, T a ∈ Asub a) → ∀ y ∈ N, LinearMap.lTensor A (PiTensorProduct.map T) y ∈ N`. Introduce `T hT`. Establish `h2 : ∀ s : Finset α, ∀ y ∈ N, LinearMap.lTensor A (PiTensorProduct.map (fun a => if a ∈ s then T a else LinearMap.id)) y ∈ N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `y hy`. Simplify using `using hy`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `insert j s hj ih`. Introduce `y hy`. Use `hT j _ (ih y hy)` as an intermediate fact. Rewrite `this` using `[← hcomp]`. Use `this using 4` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = j`. Substitute `hb` using the available equality. Simplify using `[hj]`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `y hy`. Simplify using `using h2 Finset.univ y hy`. Set `b` to `fun a => Module.Free.chooseBasis ℂ (X a)`. Set `B` to `Basis.piTensorProduct b`. Set `e` to `TensorProduct.equivFinsuppOfBasisRight (M := A) B`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, e x p ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hx0 (e.map_eq_zero_iff.1 (Finsupp.ext hcon))`. Use `⟨e x p, hp, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hsum : x = (e x).sum fun q a => a ⊗ₜ[ℂ] B q`. Rewrite using `[← TensorProduct.equivFinsuppOfBasisRight_symm_apply, LinearEquiv.symm_apply_apply]`. Establish `hcoef : ∀ (t : PiTensorProduct ℂ X) (y : A ⊗[ℂ] PiTensorProduct ℂ X), LinearMap.lTensor A ((B.coord p).smulRight t) y = e y p ⊗ₜ[ℂ] t`. Introduce `t y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => simp`. Consider the case `tmul a n`. Simplify using `[e, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply, TensorProduct.smul_tmul']`. Consider the case `add y z hy hz => simp [hy, hz, TensorProduct.add_tmul]`. Establish `hpure : ∀ v : ∀ i, X i, e x p ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ v ∈ N`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `v`. Set `f : ∀ a, Module.End ℂ (X a)` to `fun a => ((b a).coord (p a)).smulRight (v a)`. Establish `hT : ∀ a, ∃ T ∈ Asub a, ∀ y ∈ (e x).support.image (fun q => b a (q a)), T y = f a y` using `fun a => by haveI := hnt a`. Take `⟨T, hT1, hT2⟩` from `exists_mem_adjoin_eq (O a) (hrank a) (hirr a) (f a) ((e x).support.image (fun q => b a (q a)))`. Conclude with `⟨T, hA a hT1, hT2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose T hTA hTf using hT`. Establish `hf : PiTensorProduct.map f = (B.coord p).smulRight (PiTensorProduct.tprod ℂ v)`. Use extensionality with `w`. Simplify using `only [LinearMap.compMultilinearMap_apply, PiTensorProduct.map_tprod, LinearMap.smulRight_apply, Module.Basis.coord_apply, B, f, Basis.piTensorProduct_repr_tprod_apply]`. Conclude with `(PiTensorProduct.tprod ℂ).map_smul_univ _ v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmap : LinearMap.lTensor A (PiTensorProduct.map T) x = LinearMap.lTensor A (PiTensorProduct.map f) x`. Rewrite using `[hsum, map_finsuppSum, map_finsuppSum]`. Use `Finsupp.sum_congr fun q hq => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, PiTensorProduct.map_tprod]`. Use `congr 2`.
-
-Use function extensionality and compare the values at `a`. Conclude with `hTf a _ (Finset.mem_image_of_mem _ hq)`. Establish `h4` using `h3 T hTA x hxN`. Rewrite `h4` using `[hmap, hf, hcoef]`. Then use the resulting hypothesis. Establish `hall : (⊤ : Submodule ℂ (PiTensorProduct ℂ X)) ≤ N.comap (TensorProduct.mk ℂ A (PiTensorProduct ℂ X) (e x p))`.
-
-Rewrite using `[← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hpure v`. Conclude with `fun y => hall (Submodule.mem_top (x := y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_tmul_mem {α : Type} [Finite α] [DecidableEq α] {A : Type} [AddCommGroup A]
     [Module ℂ A] {X : α → Type} [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)]
@@ -333,11 +323,11 @@ theorem exists_tmul_mem {α : Type} [Finite α] [DecidableEq α] {A : Type} [Add
   exact fun y => hall (Submodule.mem_top (x := y))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : (v : ι) ∈ T`. Distinguish the cases in `hvi : (v : ι) = i`. Establish `hv' : v = ⟨i, hT i.2⟩` using `Subtype.ext hvi`. Substitute `hv'` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `h1 : (⟨v, hv⟩ : T) ≠ i` using `fun h => hvi (by rw [← h])`. Establish `h2 : v ≠ ⟨i, hT i.2⟩` using `fun h => hvi (by rw [h])`. Rewrite using `[dif_pos hv, Function.update_of_ne h1, Function.update_of_ne h2, dif_pos hv]`. Establish `h2 : v ≠ ⟨i, hT i.2⟩` using `fun h => hv (by rw [h]; exact i.2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_neg hv, Function.update_of_ne h2, dif_neg hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem dite_update_eq_update_dite {ι : Type} [DecidableEq ι] {X : ι → Type} (T T₁ : Finset ι) (hT : T ⊆ T₁)
     (s : ∀ i, X i) [DecidableEq T] (m : ∀ v : T, X v) (i : T) (z : X i) :
@@ -356,11 +346,11 @@ private theorem dite_update_eq_update_dite {ι : Type} [DecidableEq ι] {X : ι 
     rw [dif_neg hv, Function.update_of_ne h2, dif_neg hv]
 
 /- English proof (translation)
-Set `f : MultilinearMap ℂ (fun v : T => X v) (PiTensorProduct ℂ fun v : T₁ => X v)` to `{ toFun := fun m => PiTensorProduct.tprod ℂ fun v : T₁ => if h : (v : ι) ∈ T then m ⟨v, h⟩ else s v map_update_add' := fun m i x y => by`. Simplify using `only [dite_update_eq_update_dite T T₁ hT s]`. Conclude with `(PiTensorProduct.tprod ℂ).map_update_add _ _ _ _`. Use the proof step `map_update_smul' := fun m i c x => by`. Simplify using `only [dite_update_eq_update_dite T T₁ hT s]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PiTensorProduct.tprod ℂ).map_update_smul _ _ _ _ }`. Use `⟨PiTensorProduct.lift f, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[PiTensorProduct.lift.tprod]`. Use `show PiTensorProduct.tprod ℂ _ = _`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : (v : ι) ∈ T`. Rewrite using `[dif_pos hv]`. Rewrite using `[dif_neg hv, hu v hv]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext {ι : Type} [DecidableEq ι] {X : ι → Type} [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)]
     (T T₁ : Finset ι) (hT : T ⊆ T₁) (s : ∀ i, X i) :

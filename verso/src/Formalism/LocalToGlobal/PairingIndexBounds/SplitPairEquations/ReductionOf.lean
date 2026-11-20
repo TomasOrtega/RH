@@ -10,20 +10,18 @@ open Formalism.MainNotions Formalism.L2.Th1.H
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {B : Ker.Base D cc δ}
 
 /- English proof (translation)
-The claim follows from `funext fun z => Iop_smul' D T La₁ La₂ c G z`.
+A detailed English derivation is pending.
 -/
 theorem Iop_smulF (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La₁ La₂ : AddSubgroup (TaylorLogMetric.VC D N N')) (c : ℂ) (G : TaylorLogMetric.VC D N N' → ℂ) :
     TaylorLogMetric.Iop D T La₁ La₂ (c • G) = c • TaylorLogMetric.Iop D T La₁ La₂ G :=
   funext fun z => Iop_smul' D T La₁ La₂ c G z
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `γ L X hLs hX`. Establish `e1 : ((1 : Matrix.unitaryGroup (Fin N') D.host.E) : Matrix (Fin N') (Fin N') D.host.E) = 1` using `rfl`. Establish `hγL` using `hSm N L γ hLs`. Establish `hγ0` using `hSm N (StandardLatticesGL3.stdL D N) γ (sd0 N)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `mvTh B hL (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' hLs (sd0 N')) h0`. Establish `p1` using `(hP N N' L L (StandardLatticesGL3.stdL D N') X γ 1 hN hN' hLs hLs (sd0 N') hX (B.thHalf N N' L) (mem_ThSp_of' _ _ _ _ hH)).2`. Establish `p2` using `(hP N N' (StandardLatticesGL3.stdL D N) L (StandardLatticesGL3.stdL D N') (StandardLatticesGL3.stdL D N') γ 1 hN hN' (sd0 N) hLs (sd0 N') (sd0 N') (B.thZero N N') (mem_ThSp_of' _ _ _ _ h0)).2`. Rewrite `p1` using `[e1, Formalism.BasicNotions.Examples₂.smulLat_one, Formalism.BasicNotions.Examples₂.smulLat_one]`. Rewrite `p2` using `[e1, Formalism.BasicNotions.Examples₂.smulLat_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `j` using `hJ N N' γ hN hN'`. Establish `t : TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) (StandardLatticesGL3.stdL D N')) (TaylorLogMetric.La D B.tor (SDLat.smulLat (γ : Matrix (Fin N) (Fin N) D.host.E) L) (StandardLatticesG …` using `hTL N N' _ _ hN hN' hγ0 hγL _ (mem_ThSp_of' _ _ _ _ h0)`. Use `show TaylorLogMetric.pull D B.tor _ _ (TaylorLogMetric.Iop D B.tor _ _ (B.thHalf N N' L)) = _ • TaylorLogMetric.Iop D B.tor _ _ (B.thHalf N N' _)`. Rewrite using `[p1]`. Use `show TaylorLogMetric.Iop D B.tor _ _ (TaylorLogMetric.pull D B.tor _ _ (TaylorLogMetric.Iop D B.tor _ _ (B.thZero N N'))) = _`.
-
-Rewrite using `[p2, j, Iop_smulF, Iop_smulF, t]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e3a (hP : PullIop D B.tor) (hTL : Tr0L D B.tor) (hSm : SmulSD D) (hL : B.LatAll) (hJ : J1 B)
     {N N' : ℕ} (hN : Even N) (hN' : Even N') (h0 : B.ThZeroMem N N') :
@@ -58,13 +56,13 @@ theorem e3a (hP : PullIop D B.tor) (hTL : Tr0L D B.tor) (hSm : SmulSD D) (hL : B
   rw [p2, j, Iop_smulF, Iop_smulF, t]
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `γ' L L' hLs h1`. Establish `e1 : ((1 : Matrix.unitaryGroup (Fin N) D.host.E) : Matrix (Fin N) (Fin N) D.host.E) = 1` using `rfl`. Establish `hγL'` using `hSm N' L' γ' h1`. Establish `hγ0` using `hSm N' (StandardLatticesGL3.stdL D N') γ' (sd0 N')`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ` using `mvTh B hL (admissible_of_integral_conj_le hN hN' (sd0 N) (sd0 N')) (admissible_of_integral_conj_le hN hN' (sd0 N) h1) h0`. Establish `p1` using `(hP N N' (StandardLatticesGL3.stdL D N) L L' L' 1 γ' hN hN' (sd0 N) hLs h1 h1 _ (mem_ThSp_of' _ _ _ _ hΦ)).2`. Establish `p2` using `(hP N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') L' 1 γ' hN hN' (sd0 N) (sd0 N) (sd0 N') h1 (B.thZero N N') (mem_ThSp_of' _ _ _ _ h0)).2`. Rewrite `p1` using `[e1, Formalism.BasicNotions.Examples₂.smulLat_one, Formalism.BasicNotions.Examples₂.smulLat_one]`. Rewrite `p2` using `[e1, Formalism.BasicNotions.Examples₂.smulLat_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `j` using `hJ N N' γ' hN hN'`. Establish `hself : ∀ M : Submodule (𝓞 D.host.E) (Fin N' → D.host.E), B.thMoved N N' (StandardLatticesGL3.stdL D N) M = TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.std …`. Introduce `M`. Use `show TaylorLogMetric.Iop D B.tor _ _ (TaylorLogMetric.Iop D B.tor _ _ (B.thZero N N')) = _`. Rewrite using `[iopSelf D B.tor N N' _ _ (mem_ThSp_of' _ _ _ _ h0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t` using `hTR N N' _ _ hN hN' hγ0 hγL' _ (mem_ThSp_of' _ _ _ _ h0)`. Rewrite using `[S1 hSq hL hN hN' h0 hLs h1, p1, p2, j, hself, Iop_smulF, Iop_smulF, t, S1 hSq hL hN hN' h0 hLs hγL']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e3b (hP : PullIop D B.tor) (hSq : SqP D B.tor) (hTR : Tr0R D B.tor) (hSm : SmulSD D) (hL : B.LatAll)
     (hJ : J2 B) {N N' : ℕ} (hN : Even N) (hN' : Even N') (h0 : B.ThZeroMem N N') :
@@ -97,13 +95,13 @@ theorem e3b (hP : PullIop D B.tor) (hSq : SqP D B.tor) (hTR : Tr0R D B.tor) (hSm
   rw [S1 hSq hL hN hN' h0 hLs h1, p1, p2, j, hself, Iop_smulF, Iop_smulF, t, S1 hSq hL hN hN' h0 hLs hγL']
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `N N' L L' hN hN' γ γ'`. Establish `h1` using `hSm N' L'.1 γ' L'.2`. Use `show TaylorLogMetric.pull D B.tor _ _ (Ker.Base.chiFac χ N N' L.1 L'.1 • B.thMoved N N' L.1 L'.1) = Ker.Base.chiFac χ N N' _ _ • B.thMoved N N' _ _`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pull_smul, pull_comp, e3b hP hSq hTR hSm hL hJ2 hN hN' (h0 N N' hN hN') γ' L.1 L'.1 L.2 L'.2, pull_smul, e3a hP hTL hSm hL hJ1 hN hN' (h0 N N' hN hN') γ L.1 _ L.2 h1, smul_smul, smul_smul, character_factor_unitary_action χ hχ hS hU hN hN' L.1 L'.1 γ γ' L.2 L'.2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `N N' L L' L'' hN hN'`. Use function extensionality and compare the values at `z`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show Ker.Base.chiFac χ N N' L.1 L''.1 * B.thMoved N N' L.1 L''.1 z = χ (TaylorLogMetric.detId D L'.1 L''.1) ^ (-((N / 2 : ℕ) : ℤ)) * TaylorLogMetric.Iop D B.tor _ _ (fun v => Ker.Base.chiFac χ N N' L.1 L'.1 * B.thMoved N N' L.1 L'.1 v) z`. Rewrite using `[Iop_smul', e1path hSq hTR hL hN hN' (h0 N N' hN hN') L.2 L'.2 L''.2, character_factor_change_right χ hχ hM hN' L.1 L'.2 L''.2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `N N' L L₁ L' hN hN'`. Use function extensionality and compare the values at `z`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show Ker.Base.chiFac χ N N' L₁.1 L'.1 * B.thMoved N N' L₁.1 L'.1 z = χ (TaylorLogMetric.detId D L.1 L₁.1) ^ (((N' / 2 : ℕ) : ℤ)) * TaylorLogMetric.Iop D B.tor _ _ (fun v => Ker.Base.chiFac χ N N' L.1 L'.1 * B.thMoved N N' L.1 L'.1 v) z`. Rewrite using `[Iop_smul', e2path hSq hTL hL hN hN' (h0 N N' hN hN') L.2 L₁.2 L'.2, character_factor_change_left χ hχ hM hN L'.1 L.2 L₁.2]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem reduction_of (hM : DetMul D) (hS : DetSmul D) (hU : NormOneUnitIdeal D) (hSm : SmulSD D)
     (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) (hL : B.LatAll)

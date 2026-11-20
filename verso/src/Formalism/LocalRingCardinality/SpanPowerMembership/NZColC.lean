@@ -19,7 +19,7 @@ abbrev stdHLat : HLat K where
   L := Submodule.span (𝓞 K) (Set.range (Pi.basisFun K ι))
 
 /- English proof (translation)
-Use `show Submodule.span K ((Submodule.span (𝓞 K) (Set.range (stdHLat K ι).b) : Submodule (𝓞 K) (ι → K)) : Set (ι → K)) = ⊤`. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `(stdHLat K ι).b.span_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdHLat_span : Submodule.span K ((stdHLat K ι).L : Set (stdHLat K ι).V) = ⊤ := by
   show Submodule.span K ((Submodule.span (𝓞 K) (Set.range (stdHLat K ι).b) : Submodule (𝓞 K) (ι → K)) : Set (ι → K)) = ⊤
@@ -27,7 +27,7 @@ theorem stdHLat_span : Submodule.span K ((stdHLat K ι).L : Set (stdHLat K ι).V
   exact (stdHLat K ι).b.span_eq
 
 /- English proof (translation)
-Use `⟨fun _ => ?_, Submodule.fg_span (Set.finite_range _), stdHLat_span K ι⟩` and prove the remaining obligations. Rewrite using `[show (stdHLat K ι).X _ = 1 from rfl, Matrix.det_one]`. Conclude with `isUnit_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdHLat_good : (stdHLat K ι).Good := by
   refine ⟨fun _ => ?_, Submodule.fg_span (Set.finite_range _), stdHLat_span K ι⟩
@@ -62,11 +62,9 @@ Both sides reduce to the same expression.
 theorem slK_apply (x : ι → K) (c : ι) (y : Unit) : slK σ x c y = σ (x c) := rfl
 
 /- English proof (translation)
-Establish `h : (fun i => slK σ ((stdHLat K ι).b i)) = ((Pi.basisFun ℂ ι).map (eF ι))`. Use function extensionality and compare the values at `i c y`. Use `show σ ((stdHLat K ι).b i c) = (Pi.basisFun ℂ ι) i c`. Use `show σ ((Pi.basisFun K ι) i c) = _`. Rewrite using `[Pi.basisFun_apply, Pi.basisFun_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hc : c = i`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hc]`. Rewrite using `[h]`.
-
-Conclude with `⟨((Pi.basisFun ℂ ι).map (eF ι)).linearIndependent, ((Pi.basisFun ℂ ι).map (eF ι)).span_eq⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem slK_basis : LinearIndependent ℂ (fun i => slK σ ((stdHLat K ι).b i)) ∧
     Submodule.span ℂ (Set.range (fun i => slK σ ((stdHLat K ι).b i))) = ⊤ := by
@@ -82,7 +80,7 @@ theorem slK_basis : LinearIndependent ℂ (fun i => slK σ ((stdHLat K ι).b i))
   exact ⟨((Pi.basisFun ℂ ι).map (eF ι)).linearIndependent, ((Pi.basisFun ℂ ι).map (eF ι)).span_eq⟩
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fcoord_std (v : InfinitePlace K) (x : ι → K) (i : ι) :
     Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K ι) (fun _ => (1 : Matrix ι ι ℂ)) v x i = v.embedding (x i) := by
@@ -90,7 +88,7 @@ theorem fcoord_std (v : InfinitePlace K) (x : ι → K) (i : ι) :
   simp [Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]
 
 /- English proof (translation)
-Use `show (∑ i : ι, star (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K ι) (fun _ => (1 : Matrix ι ι ℂ)) _ x i) * Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K ι) (fun _ => (1 : Matrix ι ι ℂ)) _ x i).re = _`. Simplify using `only [fcoord_std, Complex.star_def]`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re, InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_std (x : ι → K) :
     (Formalism.HermitianLatticesTheory.majAt (stdHLat K ι).b (stdHLat K ι).X (InfinitePlace.mk σ) x x).re = ∑ c, ‖σ (x c)‖ ^ 2 := by
@@ -103,7 +101,7 @@ theorem maj_std (x : ι → K) :
     InfinitePlace.apply]
 
 /- English proof (translation)
-Use `show Real.sqrt (∑ i : ι, ‖Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K ι) (fun _ => (1 : Matrix ι ι ℂ)) v x i‖ ^ 2) = _`. Simplify using `only [fcoord_std]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normAt_std (v : InfinitePlace K) (x : ι → K) :
     Formalism.HermitianLatticesTheory.normAt (stdHLat K ι).b (stdHLat K ι).X v x = Real.sqrt (∑ c, ‖v.embedding (x c)‖ ^ 2) := by
@@ -166,7 +164,7 @@ abbrev atTN (Dst : ℝ) (hD : 0 < Dst) (du : ℕ) (hdu : 0 < du) (Gam : ℝ) (hG
 variable (Dst : ℝ) (hD : 0 < Dst) (du : ℕ) (hdu : 0 < du) (Gam : ℝ) (hG : 1 < Gam)
 
 /- English proof (translation)
-Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Use `show (∑ c : (ZMod T)ˣ, rhoN T (K.cls 0) c) φ = 0`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [rhoN_apply]`. Rewrite using `[← Finset.sum_smul, chiU_sum T hT2, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atTN_Nm (hT2 : T ≠ 2) (v : (atTN hc K T Dst hD du hdu Gam hG).vT) :
     (atTN hc K T Dst hD du hdu Gam hG).Nm v = 0 := by
@@ -177,27 +175,27 @@ theorem atTN_Nm (hT2 : T ≠ 2) (v : (atTN hc K T Dst hD du hdu Gam hG).vT) :
   rw [← Finset.sum_smul, chiU_sum T hT2, zero_smul]
 
 /- English proof (translation)
-Unfold `ColumnsAtT.Mram`. Simplify using `only [atTN_Nm hc K T Dst hD du hdu Gam hG hT2, LinearMap.ker_zero, iInf_top, inf_top_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem atTN_Mram (hT2 : T ≠ 2) : (atTN hc K T Dst hD du hdu Gam hG).Mram = ⊤ := by
   unfold ColumnsAtT.Mram
   simp only [atTN_Nm hc K T Dst hD du hdu Gam hG hT2, LinearMap.ker_zero, iInf_top, inf_top_eq]
 
 /- English proof (translation)
-The claim follows from `((eF ι).finrank_eq).symm.trans (Module.finrank_fintype_fun_eq_card ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_FK (ι : Type) [Fintype ι] : Module.finrank ℂ (FK ι) = Fintype.card ι :=
   ((eF ι).finrank_eq).symm.trans (Module.finrank_fintype_fun_eq_card ℂ)
 
 /- English proof (translation)
-Use `show Module.finrank ℂ (⊤ : Submodule ℂ (FK (K.cls 0))) = _`. Rewrite using `[finrank_top, finrank_FK]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atTN_rank : Module.finrank ℂ (atTN hc K T Dst hD du hdu Gam hG).Mu0 = Fintype.card (K.cls 0) := by
   show Module.finrank ℂ (⊤ : Submodule ℂ (FK (K.cls 0))) = _
   rw [finrank_top, finrank_FK]
 
 /- English proof (translation)
-Unfold `ColumnsAtT.du`. Rewrite using `[atTN_Mram hc K T Dst hD du hdu Gam hG hT2, finrank_top, finrank_FK]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atTN_du (hT2 : T ≠ 2) : (atTN hc K T Dst hD du hdu Gam hG).du = Fintype.card (K.cls 0) := by
   unfold ColumnsAtT.du
@@ -223,7 +221,7 @@ variable {R : Ranks} {Tau : Type} [Fintype Tau] (hc : Tau → HCParam R) (K : Cl
   (Pl : Rows.Places LL) (hTau : Fintype.card Tau = R.f)
 
 /- English proof (translation)
-Use `K.stabFin i c` as an intermediate fact. Use `K.stabGrp i c` as an intermediate fact. Conclude with `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_stab_ne (i : ℕ) (c : K.cls i) : ((Nat.card (K.stab i c) : ℕ) : ℂ) ≠ 0 := by
   have := K.stabFin i c
@@ -325,7 +323,7 @@ def formsN : MemberForms LL embLL Pl Tau hc (chainN hc K) (atTN hc K T Dst hD du
   thFree_nonneg := fun _ _ _ _ => zero_le_one
 
 /- English proof (translation)
-Use `show ∑ c, (((Nat.card (K.stab i c) : ℕ) : ℂ))⁻¹ * (((Nat.card (K.stab i c) : ℕ) : ℂ) * (starRingEnd ℂ (φ c ()) * ψ c ())) = _`. Rewrite using `[ipS_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => inv_mul_cancel_left₀ (card_stab_ne K i c) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formsN_ipC (i : ℕ) (φ ψ : FK (K.cls i)) :
     (formsN hc K T Dst hD du hdu Gam hG Mt per embLL Pl hTau).ipC i φ ψ = ipS (K.cls i) φ ψ := by
@@ -335,7 +333,7 @@ theorem formsN_ipC (i : ℕ) (φ ψ : FK (K.cls i)) :
   exact Finset.sum_congr rfl fun c _ => inv_mul_cancel_left₀ (card_stab_ne K i c) _
 
 /- English proof (translation)
-Unfold `MemberForms.ramSub`. Rewrite using `[atTN_Mram hc K T Dst hD du hdu Gam hG hT2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem formsN_ramSub (hT2 : T ≠ 2) :
     (formsN hc K T Dst hD du hdu Gam hG Mt per embLL Pl hTau).ramSub = ⊤ := by

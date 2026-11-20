@@ -6,13 +6,13 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `F _ _ _ n hA A S gr lam hdet hform x y`. Rewrite using `[((hA F n).2.2)]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hU : IsUnit (S v).det` using `isUnit_iff_ne_zero.mpr (hdet v)`. Establish `h1 : (S v)ᴴ * (S v)⁻¹ᴴ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ hU, Matrix.conjTranspose_one]`. Establish `h2 : (S v)⁻¹ * S v = 1` using `Matrix.nonsing_inv_mul _ hU`. Establish `hAmap : A.map v.embedding = (S v)ᴴ * (lam v • gr v) * S v`. Rewrite using `[← hform v]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h1, h2, Matrix.one_mul, Matrix.mul_one]`. Use `_ = (S v)ᴴ * ((S v)⁻¹ᴴ * A.map v.embedding * (S v)⁻¹) * S v := by`. Simplify using `only [Matrix.mul_assoc]`. Establish `e1 : v.embedding ((fun i => IsCMField.complexConj F (y i)) ⬝ᵥ (A *ᵥ x)) = (star fun i => v.embedding (y i)) ⬝ᵥ (A.map v.embedding *ᵥ fun i => v.embedding (x i))`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, Pi.star_apply, IsCMField.complexEmbedding_complexConj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : v.embedding ((fun i => IsCMField.complexConj F (y i)) ⬝ᵥ (A *ᵥ x)) = lam v * hv (gr v) (S v *ᵥ fun i => v.embedding (x i)) (S v *ᵥ fun i => v.embedding (y i))`. Rewrite using `[e1, hAmap, hv, Matrix.star_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star fun i => v.embedding (y i)) (S v)ᴴ, Matrix.smul_mulVec]`. Simplify using `[Matrix.vecMul_conjTranspose, dotProduct_smul]`. Rewrite using `[e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.trace_conj_dotProduct_eq_sum_infinitePlaces :
     ∀ (F : Type) [Field F] [NumberField F] [IsCMField F] (n : ℕ), UpperTheory.Gal.W2.ArchSpan → ∀ (A : Matrix (Fin n) (Fin n) F) (S gr : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ) (lam : InfinitePlace F → ℂ), (∀ v, (S v).det ≠ 0) → (∀ v, (S v)⁻¹ᴴ * A.map v.embedding * (S v)⁻¹ = lam v • gr v) → ∀ x y : Fin n → F, ((Algebra.trace ℚ F ((fun i => IsCMField.complexConj F (y i)) ⬝ᵥ (A *ᵥ x)) : ℚ) : ℝ) = ∑ v : InfinitePlace F, 2 * (lam v * hv (gr v) (S v *ᵥ fun i => v.embedding (x i)) (S v *ᵥ fun i => v.embedding (y i))).re := by

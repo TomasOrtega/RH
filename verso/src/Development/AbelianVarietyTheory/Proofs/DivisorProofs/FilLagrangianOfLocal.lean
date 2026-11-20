@@ -25,19 +25,17 @@ namespace GlobalTheory.HTLagr
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.PDiv GlobalTheory.PtExt in
 
 /- English proof (translation)
-Establish `hHDR` using `GlobalTheory.AbCoh.abelianHodgeDeRham`. Take `⟨-, hHodge, -⟩` from `GlobalTheory.T.abelianSchemeDeRham_free_hodgeSequence_baseChange hHDR`. Take `⟨v, hv⟩` from `((hHodge R B g hB hgB).1.1 y).exists`. Take `⟨j, hj⟩` from `GlobalTheory.T.exists_isChartChoiceForPoints_of_nontrivial R A B P hLB`. Establish `horth` using `GlobalTheory.T.hodgeFiltrations_orthogonal_lineBundlePairing_product hHDR R A B g hA hB hgA hgB P hLB φ hφ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `GlobalTheory.T.cohomologous_neg_torsor_cocycle_of_orthogonal hHDR R A B g hA hB hgA hgB P hLB φ hφ horth y v hv 0 (fun h hh ↦ by rw [hy h hh, map_zero]) 0 (by simp) j hj`. Establish `hk' : IsCob (chartsA P) (tanCoc P j v) k`. Introduce `D _ _ D' _ _ ψ x hx`. Establish `e` using `hk D D' ψ x hx`. Simplify using `only [Fn1.add, Fn1.neg, fv, neg_neg] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[show ev (0 : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) (trivMap ψ x) = 0 from rfl, zero_add]`. Conclude with `e`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_pointwiseLineBundleGenerator_of_trivial_pullback R (A ⊗ B) A P hLB (AbDual.inl A B) hz`. Take `⟨T, hT⟩` from `GlobalTheory.T.exists_dualNumberGenerator_of_torsorCoboundary R A B P hLB v hv.1 j hj s hs k hk'`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_pointwiseGenerator_of_dualNumberLineBundleGenerator R A B P hLB v hv.1 T hT`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htriv` using `GlobalTheory.T.cechLineBundle_pull_trivial_of_pointwiseGenerator R (A ⊗ B) (A ⊗ epsR R) P hLB _ t ht`. Establish `hv1 : v ^ e = 1` using `hker v htriv`. Establish `hpow : ∀ n : ℕ, IsLieImage (n • y) (v ^ n)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `isLieImage_one_iff.2 (Submodule.zero_mem _)`. Consider the case `succ n ih => rw [succ_nsmul, pow_succ]`. Conclude with `ih.add hv`. Establish `h1 : (e : R) • y ∈ Fil B`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Use `hpow e` as an intermediate fact. Rewrite `this` using `[hv1]`. Conclude with `isLieImage_one_iff.1 this`. Take `⟨u, hu⟩` from `he`.
-
-Establish `hyu : y = ((u⁻¹ : Rˣ) : R) • ((e : R) • y)`. Rewrite using `[smul_smul, ← hu, Units.inv_mul, one_smul]`. Rewrite using `[hyu]`. Conclude with `Submodule.smul_mem _ _ h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_fil_of_orth_of_ker (R : Type) [CommRing R] [Nontrivial R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B]
     (g : ℕ) (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hgA : SmoothOfRelativeDimension g A.hom)
@@ -81,13 +79,13 @@ theorem mem_fil_of_orth_of_ker (R : Type) [CommRing R] [Nontrivial R] (A B : Ove
   exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Introduce `p _ D R _ b N C₀ _ s o₀ φ' ⟨g, hg⟩ hφ`. Use `⟨GlobalTheory.PtExt.HodgeOrth.fil_orthogonal GlobalTheory.AbCoh.abelianHodgeDeRham C₀ o₀.A o₀.A g o₀.ab o₀.ab hg hg o₀.P o₀.isLB φ' hφ, fun x hx ↦ ?_⟩` and prove the remaining obligations. Break down `subsingleton_or_nontrivial C₀ with hC | hC` into its components or cases. Use `haveI : Subsingleton (HdR o₀.A) := Module.subsingleton C₀ _`. Rewrite using `[Subsingleton.elim x 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨e, hep, hker⟩` from `o₀.kerP`. Establish `heu : IsUnit (e : C₀)`. Use `(b.unit e hep).map (Spec.preimage s).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : (AbDual.swap o₀.P).IsLB` using `pull_isLB o₀.isLB _`. Use `mem_fil_of_orth_of_ker C₀ o₀.A o₀.A g o₀.ab o₀.ab hg hg (AbDual.swap o₀.P) hs ?_ e heu ?_ (-φ'.flip) (GlobalTheory.SymmPoincare.isCorrForm_swap hφ) x ?_` and prove the remaining obligations. Rewrite using `[AbDual.triv_ev_iff hs, AbDual.evc_swap o₀.isLB, ← AbDual.triv_ev_iff o₀.isLB]`. Conclude with `o₀.rig₁`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hv` using `[AbDual.triv_ev_iff hs, AbDual.evc_swap o₀.isLB, ← AbDual.triv_ev_iff o₀.isLB]`. Conclude with `hker _ v hv`. Introduce `y hy`. Simplify using `[hx y hy]`.
+A detailed English derivation is pending.
 -/
 theorem fil_lagrangian : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (C₀ : Type) [CommRing C₀] (s : Sp C₀ ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N s)

@@ -8,9 +8,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrysPrism
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Assume the negation of the conclusion as `h0`. Take `⟨m, b, rfl⟩` from `WittVector.exists_eq_pow_p_mul' (p := l) (k := Fq l a) w h0`. Rewrite `hw` using `[map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : f b ≠ 0` using `(b.isUnit.map f).ne_zero`. Establish `hl : (l : K) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Conclude with `mul_ne_zero (pow_ne_zero m hl) hb hw`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_of_charZero {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {K : Type} [Field K] [CharZero K]
     (f : Wq l a →+* K) : Function.Injective f := by
@@ -24,7 +24,7 @@ theorem injective_of_charZero {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {K :
   exact mul_ne_zero (pow_ne_zero m hl) hb hw
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ t τ`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Conclude with `injective_of_charZero ((algebraMap O K).comp (emb t τ).toRingHom)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem emb_algebraMap_injective : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ τ : ZMod a, Function.Injective fun c : Wq l a => algebraMap O K (emb t τ c) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ t τ

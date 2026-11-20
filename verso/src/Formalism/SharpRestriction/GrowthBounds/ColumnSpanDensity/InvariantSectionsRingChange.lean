@@ -14,17 +14,17 @@ variable {O₁ K₁ O₂ K₂ : Type} [CommRing O₁] [Field K₁] [Algebra O₁
 abbrev Iso2.pm {σ : Type*} : MvPolynomial σ K₁ →+* MvPolynomial σ K₂ := map (J.φF : K₁ →+* K₂)
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det (J.φF : K₁ →+* K₂) g).symm`.
+A detailed English derivation is pending.
 -/
 theorem det_map (k : ℕ) (g : Matrix (Fin k) (Fin k) K₁) : (g.map J.φF).det = J.φF g.det :=
   (RingHom.map_det (J.φF : K₁ →+* K₂) g).symm
 
 /- English proof (translation)
-Unfold `nablaL at hF ⊢`. Rewrite `hF`, the goal using `[Submodule.mem_comap, Submodule.mem_map]`. Take `⟨D, hD, hDe⟩` from `hF`. Use `⟨map (J.φR : O₁ →+* O₂) D, dualWeyl_map _ hD, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, AlgHom.toLinearMap_apply] at hDe ⊢`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `key` using `rowAct_map' (n := n) (J.φF : K₁ →+* K₂) g F`. Rewrite `key` using `[RingEquiv.coe_toRingHom]`. Rewrite using `[key, ← hDe]`. Simplify using `only [mapAlgHom_apply, map_map]`. Establish `hc : (Algebra.ofId O₂ K₂ : O₂ →+* K₂).comp (J.φR : O₁ →+* O₂) = (J.φF : K₁ →+* K₂).comp (Algebra.ofId O₁ K₁ : O₁ →+* K₁)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[J.h]`. Rewrite using `[hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nablaL_tr (k n : ℕ) (ν : Fin n → ℕ) (g : Matrix (Fin k) (Fin k) K₁) (F : MvPolynomial (Fin k × Fin n) K₁)
     (hF : F ∈ nablaL O₁ K₁ k n ν g) : J.pm F ∈ nablaL O₂ K₂ k n ν (g.map J.φF) := by
@@ -44,7 +44,7 @@ theorem nablaL_tr (k n : ℕ) (ν : Fin n → ℕ) (g : Matrix (Fin k) (Fin k) K
   rw [hc]
 
 /- English proof (translation)
-Unfold `nablaLTw at hF ⊢`. Rewrite `hF`, the goal using `[Submodule.mem_map]`. Take `⟨G, hG, rfl⟩` from `hF`. Use `⟨J.pm G, nablaL_tr J _ _ _ g G hG, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, LinearMap.lsmul_apply, det_map, Iso2.pm, map_smul', map_zpow₀, RingEquiv.coe_toRingHom]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem nablaLTw_tr (m : ℕ) (lam : Fin (m + 1) → ℤ) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K₁)
     (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K₁) (hF : F ∈ nablaLTw O₁ K₁ m lam g) :
@@ -57,13 +57,13 @@ theorem nablaLTw_tr (m : ℕ) (lam : Fin (m + 1) → ℤ) (g : Matrix (Fin (m + 
     RingEquiv.coe_toRingHom]
 
 /- English proof (translation)
-Unfold `H0 at hF ⊢`. Use `split_ifs at hF ⊢ with ha`. Rewrite `hF`, the goal using `[Submodule.mem_iInf]`. Introduce `g₂`. Rewrite using `[Submodule.mem_iInf]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hu, hΛ⟩`. Establish `h1` using `hF (g₂.map J.symm.φF)`. Rewrite `h1` using `[Submodule.mem_iInf]`. Establish `h2` using `h1 ⟨by rw [det_map J.symm]; exact hu.map _, by rw [← mapSub_symm J Λ, hΛ, mapSub_colSpan]⟩`. Establish `h3` using `nablaLTw_tr J m lam _ F h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : (g₂.map J.symm.φF).map J.φF = g₂`. Use extensionality with `i j`. Simplify using `[Iso2.symm]`. Rewrite `h3` using `[hg]`. Then use the resulting hypothesis. Rewrite `hF`, the goal using `[Submodule.mem_bot]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hF]`.
+A detailed English derivation is pending.
 -/
 theorem invariant_sections_ring_change (m : ℕ) (lam : Fin (m + 1) → ℤ) (Λ : Submodule O₁ (Fin (m + 1) → K₁))
     (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K₁) (hF : F ∈ H0 O₁ m lam Λ) :
@@ -86,11 +86,11 @@ theorem invariant_sections_ring_change (m : ℕ) (lam : Fin (m + 1) → ℤ) (Λ
     simp [hF]
 
 /- English proof (translation)
-Introduce `P hP`. Unfold `tensorLat at hP ⊢`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun s => J.pm (F s), fun s => h s (F s) (hF s), ?_⟩` and prove the remaining obligations. Simplify using `only [Iso2.pm, map_prod, blockEmb, map_rename]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Iso2.pm, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[← algebraMap_smul K₁ c x, Iso2.pm, map_smul', RingEquiv.coe_toRingHom, J.h, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorLat_tr {S : Type*} [Fintype S] {k n : ℕ} (M : S → Submodule O₁ (MvPolynomial (Fin k × Fin n) K₁))
     (M' : S → Submodule O₂ (MvPolynomial (Fin k × Fin n) K₂)) (h : ∀ s F, F ∈ M s → J.pm F ∈ M' s) :
@@ -141,9 +141,9 @@ def RSIso.symm : RSIso R₂ R₁ where
     rw [← I.hw, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Proceed by induction on `s generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ s ih`. Rewrite using `[pow_succ, pow_succ]`. Use `show I.φQ ((R₁.σ ^ s) (R₁.σ x)) = (R₂.σ ^ s) (R₂.σ (I.φQ x))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih, I.hσ]`.
+A detailed English derivation is pending.
 -/
 theorem RSIso.hσs (s : ℕ) (x : R₁.Qq) : I.φQ ((R₁.σ ^ s) x) = (R₂.σ ^ s) (I.φQ x) := by
   induction s generalizing x with
@@ -154,7 +154,7 @@ theorem RSIso.hσs (s : ℕ) (x : R₁.Qq) : I.φQ ((R₁.σ ^ s) x) = (R₂.σ 
     rw [ih, I.hσ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [twistVec]`. Rewrite using `[I.hι, I.hσs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_tr (s : ℕ) {k : ℕ} (v : Fin k → R₁.Qq) :
     (fun i => I.φK (twistVec R₁.ι R₁.σ s v i)) = twistVec R₂.ι R₂.σ s (fun i => I.φQ (v i)) := by
@@ -163,11 +163,11 @@ theorem twist_tr (s : ℕ) {k : ℕ} (v : Fin k → R₁.Qq) :
   rw [I.hι, I.hσs]
 
 /- English proof (translation)
-Rewrite using `[Set.image_image]`. Use extensionality with `y`. Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i => I.φQ (v i), (map_mem_mapSub I.JW L v).2 hv, ?_⟩` and prove the remaining obligations. Conclude with `(twist_tr I s v).symm`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun i => I.φQ.symm (u i), (mem_mapSub I.JW L u).1 hu, ?_⟩` and prove the remaining obligations. Use `show (fun i => I.φK (twistVec R₁.ι R₁.σ s (fun i => I.φQ.symm (u i)) i)) = _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[twist_tr]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem img1 (s : ℕ) {k : ℕ} (L : Submodule R₁.W (Fin k → R₁.Qq)) :
     (fun (x : Fin k → R₁.Kf) i => I.JO.φF (x i)) '' (twistVec R₁.ι R₁.σ s '' (L : Set (Fin k → R₁.Qq))) =
@@ -186,7 +186,7 @@ theorem img1 (s : ℕ) {k : ℕ} (L : Submodule R₁.W (Fin k → R₁.Qq)) :
     simp
 
 /- English proof (translation)
-Unfold `extO`. Rewrite using `[mapSub_span, img1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem extO_tr (s : ℕ) {k : ℕ} (L : Submodule R₁.W (Fin k → R₁.Qq)) :
     mapSub I.JO (extO R₁.O R₁.ι R₁.σ s L) = extO R₂.O R₂.ι R₂.σ s (mapSub I.JW L) := by
@@ -194,9 +194,9 @@ theorem extO_tr (s : ℕ) {k : ℕ} (L : Submodule R₁.W (Fin k → R₁.Qq)) :
   rw [mapSub_span, img1]
 
 /- English proof (translation)
-Establish `e1 : (p : R₂.W) • (fun i => I.φQ (v i)) = fun i => I.φQ (((p : R₁.W) • v) i)`. Use function extensionality and compare the values at `j`. Simplify using `[Algebra.smul_def, I.hWQ]`. Rewrite using `[e1, ← twist_tr]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show I.φK _ = _`. Simplify using `[smul_eq_mul, map_mul, map_inv₀, I.hOK, I.hw]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem phiF_inv_smul_twistVec_eq (s : ℕ) {k : ℕ} (v : Fin k → R₁.Qq) :
     (fun i => I.JO.φF (((algebraMap R₁.O R₁.Kf R₁.w)⁻¹ • twistVec R₁.ι R₁.σ s ((p : R₁.W) • v)) i)) =
@@ -210,9 +210,9 @@ private theorem phiF_inv_smul_twistVec_eq (s : ℕ) {k : ℕ} (v : Fin k → R�
   simp [smul_eq_mul, map_mul, map_inv₀, I.hOK, I.hw]
 
 /- English proof (translation)
-Rewrite using `[Set.image_image]`. Use extensionality with `y`. Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨fun i => I.φQ (v i), (map_mem_mapSub I.JW L v).2 hv, (phiF_inv_smul_twistVec_eq I s v).symm⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun i => I.φQ.symm (u i), (mem_mapSub I.JW L u).1 hu, ?_⟩` and prove the remaining obligations. Conclude with `(phiF_inv_smul_twistVec_eq I s _).trans (by simp)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem img2 (s : ℕ) {k : ℕ} (L : Submodule R₁.W (Fin k → R₁.Qq)) :
     (fun (x : Fin k → R₁.Kf) i => I.JO.φF (x i)) ''
@@ -231,7 +231,7 @@ theorem img2 (s : ℕ) {k : ℕ} (L : Submodule R₁.W (Fin k → R₁.Qq)) :
     exact (phiF_inv_smul_twistVec_eq I s _).trans (by simp)
 
 /- English proof (translation)
-Unfold `LeAt extO`. Rewrite using `[← Submodule.span_union, mapSub_span, Set.image_union, Submodule.span_union, img1, img2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem LeAt_tr (s : ℕ) {k : ℕ} (e : Edge R₁.W R₁.Qq k) :
     mapSub I.JO (LeAt p R₁.ι R₁.σ R₁.w s e) =
@@ -240,7 +240,7 @@ theorem LeAt_tr (s : ℕ) {k : ℕ} (e : Edge R₁.W R₁.Qq k) :
   rw [← Submodule.span_union, mapSub_span, Set.image_union, Submodule.span_union, img1, img2]
 
 /- English proof (translation)
-Unfold `Hten at hP ⊢`. Conclude with `tensorLat_tr I.JO _ _ (fun s F hF => invariant_sections_ring_change I.JO m _ _ F hF) P hP`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Hten_tr {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (Λ : Fin n' → Submodule R₁.O (Fin (m + 1) → R₁.Kf))
     (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₁.Kf) (hP : P ∈ Hten R₁.O lam0 Λ) :
@@ -249,9 +249,7 @@ theorem Hten_tr {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (Λ : Fin n' �
   exact tensorLat_tr I.JO _ _ (fun s F hF => invariant_sections_ring_change I.JO m _ _ F hF) P hP
 
 /- English proof (translation)
-Unfold `Vsp at hP ⊢`. Use `tensorLat_tr I.JK _ _ (fun s F hF => ?_) P hP` and prove the remaining obligations. Use `split_ifs at hF ⊢`. Conclude with `dualWeyl_map _ hF`. Rewrite `hF`, the goal using `[Submodule.mem_bot]`.
-
-Simplify using `[hF]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Vsp_tr {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ)
     (P : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) R₁.Kf) (hP : P ∈ Vsp R₁.Kf lam0) :

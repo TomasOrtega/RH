@@ -36,11 +36,11 @@ variable {F : Type} [Field F] {K : Type} [Fintype K] [LinearOrder K] {ι : K →
 omit [Fintype K] [LinearOrder K] [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] in
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hI`. Establish `ht : (X ⟨k, i⟩ : MvPolynomial (Σ k, ι k) F) ∈ cellMon F I` using `Submonoid.subset_closure ⟨k, i, hi, rfl⟩`. Establish `hz : ∀ x : LocalizedModule (cellMon F I) (MvPolynomial (Σ k, ι k) F ⧸ V), x = 0`. Introduce `x`. Proceed by induction on `x using LocalizedModule.induction_on with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `h a s`. Rewrite using `[← LocalizedModule.zero_mk (1 : cellMon F I), LocalizedModule.mk_eq]`. Use `⟨⟨_, ht⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Simplify using `only [one_smul, smul_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submonoid.smul_def]`. Express the relevant statement in the definitionally equal form `(X ⟨k, i⟩ : MvPolynomial (Σ k, ι k) F) • Ideal.Quotient.mk V a = 0`. Rewrite using `[← Ideal.Quotient.mk_eq_mk, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `V.mul_mem_right _ (hk i)`. Conclude with `⟨fun x y => (hz x).trans (hz y).symm⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_loc_of_block {V : Ideal (MvPolynomial (Σ k, ι k) F)} {k : K}
     (hk : ∀ i, (X ⟨k, i⟩ : MvPolynomial (Σ k, ι k) F) ∈ V) (I : ∀ k, Finset (ι k)) (hI : (I k).Nonempty) :
@@ -63,9 +63,9 @@ theorem subsingleton_loc_of_block {V : Ideal (MvPolynomial (Σ k, ι k) F)} {k :
   exact ⟨fun x y => (hz x).trans (hz y).symm⟩
 
 /- English proof (translation)
-Establish `hI : ∀ I : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι n, Subsingleton (LocalizedModule (cellMon F I.1) (MvPolynomial (Σ k, ι k) F ⧸ V))` using `fun I => subsingleton_loc_of_block hk I.1 (I.2.1 k)`. Establish `: Subsingleton (CechC F ι (MvPolynomial (Σ k, ι k) F ⧸ V) n)` using `⟨fun f g => funext fun I => (hI I).elim _ _⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Subsingleton.elim x y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cechHc_subsingleton_of_block {V : Ideal (MvPolynomial (Σ k, ι k) F)} {k : K}
     (hk : ∀ i, (X ⟨k, i⟩ : MvPolynomial (Σ k, ι k) F) ∈ V) (m : K → ℤ) (n : ℕ) :
@@ -82,9 +82,9 @@ theorem cechHc_subsingleton_of_block {V : Ideal (MvPolynomial (Σ k, ι k) F)} {
 end Vanish
 
 /- English proof (translation)
-Introduce `v V`. Establish `hX : (X v : MvPolynomial (Σ _ : Unit, Fin 1) ℚ) ∈ V` using `Ideal.subset_span rfl`. Establish `hfin : ∀ W : Ideal (MvPolynomial (Σ _ : Unit, Fin 1) ℚ), (X v : MvPolynomial _ ℚ) ∈ W → ∀ (m : Unit → ℤ) (i : ℕ), FiniteDimensional ℚ (cechHc (fun _ : Unit => Fin 1) (quotPart ℚ W) m i)`. Introduce `W hW m i`. Use `cechHc_subsingleton_of_block (ι := fun _ : Unit => Fin 1) (V := W) (k := ()) (fun j : Fin 1 => by rw [Subsingleton.elim j 0]; exact hW) m i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: Finite (cechHc (fun _ : Unit => Fin 1) (quotPart ℚ W) m i)` using `Finite.of_subsingleton`. Conclude with `Module.Finite.of_finite`. Use `⟨NumbersDVR.isMultiHomogIdeal_span_singleton (isWeightedHomogeneous_X ℚ (NumbersDVR.blockWeight (fun _ : Unit => Fin 1)) v), hfin V hX, hfin _ ?_, hfin _ (Ideal.mem_sup_left hX)⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_colon_span_singleton, smul_eq_mul]`. Conclude with `V.mul_mem_left _ hX`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EulerVar.hyps :
     let v : (Σ _ : Unit, Fin 1) := ⟨(), 0⟩

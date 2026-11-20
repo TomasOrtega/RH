@@ -17,9 +17,9 @@ namespace GlobalTheory.SpecialSmall
 open Filter Real
 
 /- English proof (translation)
-Establish `h1` using `(tendsto_exp_div_rpow_atTop (s / eps)).comp (tendsto_rpow_atTop he)`. Use `filter_upwards [h1.eventually_ge_atTop K, eventually_gt_atTop (0 : ℝ)] with x hx hx0`. Simplify using `only [Function.comp] at hx`. Establish `hxs : (x ^ eps) ^ (s / eps) = x ^ s`. Rewrite using `[← Real.rpow_mul hx0.le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite `hx` using `[hxs]`. Establish `hpos : 0 < x ^ s` using `Real.rpow_pos_of_pos hx0 s`. Rewrite `hx` using `[le_div_iff₀ hpos]`. Then use the resulting hypothesis.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ev_pow_le_exp {eps : ℝ} (he : 0 < eps) (K s : ℝ) :
     ∀ᶠ x : ℝ in atTop, K * x ^ s ≤ Real.exp (x ^ eps) := by
@@ -33,13 +33,13 @@ theorem ev_pow_le_exp {eps : ℝ} (he : 0 < eps) (K s : ℝ) :
   rwa [le_div_iff₀ hpos] at hx
 
 /- English proof (translation)
-Establish `h1 : r * (b / l) ≤ b / 2`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ hl0 two_pos]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : r * (b / l + S + t + η + large₂) ≤ m * b * (3 / 4)`. Establish `: r * (b / l + S + t + η + large₂) = r * (b / l) + r * (S + t + η + large₂)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hCf : 0 ≤ C * f` using `by positivity`. Establish `h3 : C * f * (r * (b / l + S + t + η + large₂) + m * b) ≤ C * f * (m * b * (7 / 4))` using `mul_le_mul_of_nonneg_left (by linarith) hCf`. Establish `hfm : b / 4 ≤ f * m * b / 4`. Establish `: 1 ≤ f * m` using `by nlinarith`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: b ≤ f * m * b` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : C * P * large₂ ≤ C * (f * m * b / 4)`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hP.trans hfm) hC`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem midG_alg (C f r m b l S t η large₂ P : ℝ) (hC : 0 ≤ C) (hf : 1 ≤ f) (hm : 1 ≤ m) (hb : 0 ≤ b)
     (hr : 0 ≤ r) (hl : 2 * r ≤ l) (hl0 : 0 < l) (hX : r * (S + t + η + large₂) ≤ m * b / 4)
@@ -64,13 +64,13 @@ theorem midG_alg (C f r m b l S t η large₂ P : ℝ) (hC : 0 ≤ C) (hf : 1 �
 open Formalism.MainNotions.TwistedPlaces in
 
 /- English proof (translation)
-Establish `hj` using `D.host.split_small 3 Nat.prime_three (by norm_num) h`. Establish `hq : (3 : ℕ) ≠ D.host.q` using `fun e => D.host.q_ne_three e.symm`. Establish `hd21 : (21 : ℝ) < D.host.d`. Establish `h` using `D.host.qd_big.2`. Establish `h' : (4 * D.R.t * D.R.r + 1 : ℝ) < D.host.d` using `by exact_mod_cast h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t_ge_one D` as an intermediate fact. Use `k_le_r D` as an intermediate fact. Use `k_ge_five D` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hd : (3 : ℕ) ≠ D.host.d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Introduce `e`. Rewrite `hd21` using `[← e]`. Evaluate the numerical expressions using `at hd21`. Unfold `TwistedPlaces.InertK`. Simplify using `only [Host.cls, primeClass]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h3 : 3 ∈ D.host.small`. Rewrite using `[if_pos h3]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h3, if_neg hq, if_neg hd, if_pos hj]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem not_inert_three {D : D7} (h : 3 ≤ D.host.splitBound) : ¬ TwistedPlaces.InertK D 3 := by
   have hj := D.host.split_small 3 Nat.prime_three (by norm_num) h
@@ -93,19 +93,19 @@ theorem not_inert_three {D : D7} (h : 3 ≤ D.host.splitBound) : ¬ TwistedPlace
 open Formalism.MainNotions.TwistedPlaces in
 
 /- English proof (translation)
-Establish `hl1 : L.sc.b' + L.Sc + L.etaSz + L.sc.b / lStar L < lStar L` using `P.lstar1`. Establish `hpos` using `lStar_pos L`. Establish `hb'` using `b'_pos L`. Use `L.Sc_pos` as an intermediate fact. Use `L.etaSz_pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbl : L.sc.b ≤ lStar L ^ 2`. Establish `: L.sc.b / lStar L < lStar L` using `by linarith`. Rewrite `this` using `[div_lt_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsq : Real.sqrt L.sc.b ≤ lStar L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `Real.sqrt_le_sqrt hbl` as an intermediate fact. Rewrite `this` using `[Real.sqrt_sq hpos.le]`. Then use the resulting hypothesis. Establish `hc` using `P.condE_le`. Rewrite `hc` using `[← Real.sqrt_eq_rpow]`. Establish `hq1 : (1 : ℝ) ≤ D.host.q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `D.host.qd_big.1; exact_mod_cast (by omega : 1 ≤ D.host.q)` as an intermediate fact. Establish `hd1 : (1 : ℝ) ≤ D.host.d`. Use `D.host.qd_big.2; exact_mod_cast (by omega : 1 ≤ D.host.d)` as an intermediate fact. Establish `hpos' : 0 < LevelStarExponents.condE D` using `Nat.mul_pos (Nat.mul_pos D.host.QS_pos D.host.hyp.1.pos) D.host.hyp.2.1.pos`. Establish `hqE : (D.host.q : ℝ) ≤ LevelStarExponents.condE D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.le_of_dvd hpos' ((dvd_mul_left _ _).mul_right _)` after adjusting the coercions. Establish `hdE : (D.host.d : ℝ) ≤ LevelStarExponents.condE D`. Conclude with `Nat.le_of_dvd hpos' (dvd_mul_left _ _)` after adjusting the coercions. Establish `hsE : ∀ l ∈ D.host.small, (l : ℝ) ≤ LevelStarExponents.condE D` using `fun l hl => by`. Conclude with `Nat.le_of_dvd hpos' (((Nat.dvd_of_mem_primeFactors hl).mul_right _).mul_right _)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE1 : 1 ≤ (LevelStarExponents.condE D : ℝ)` using `hq1.trans hqE`. Establish `hE36 : (LevelStarExponents.condE D : ℝ) ≤ (LevelStarExponents.condE D : ℝ) ^ 36` using `le_self_pow₀ hE1 (by norm_num)`. Establish `ht : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `one_le_pow₀ (t_ge_one D)`. Establish `hE : (LevelStarExponents.condE D : ℝ) ≤ lStar L`. Establish `: (LevelStarExponents.condE D : ℝ) ^ 36 ≤ (LevelStarExponents.condE D : ℝ) ^ 36 * (D.R.t : ℝ) ^ 150`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: 0 ≤ (LevelStarExponents.condE D : ℝ) ^ 36` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨hqE.trans hE, hdE.trans hE, fun l hl => (hsE l hl).trans hE⟩`.
+Supply the required witnesses or components.
 -/
 theorem qd_le_lStar {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) :
     (D.host.q : ℝ) ≤ TwistedPlaces.lStar L ∧ (D.host.d : ℝ) ≤ TwistedPlaces.lStar L ∧
@@ -152,45 +152,43 @@ namespace GlobalTheory.SpecialSmall
 open Filter Real Formalism.MainNotions.TwistedPlaces
 
 /- English proof (translation)
-Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hx1 : 1 ≤ L.sc.x` using `by linarith`. Establish `he` using `L.sc.eps_pos`. Establish `he'` using `L.sc.eps_lt`. Establish `hLg : large₂ L = L.sc.x ^ L.sc.eps` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbe : L.sc.b = Real.exp (L.sc.x ^ L.sc.eps)` using `rfl`. Establish `h16' : 16 ≤ L.sc.x ^ L.sc.eps` using `(le_max_left _ _).trans h16`. Establish `hCx : C ≤ L.sc.x ^ L.sc.eps` using `(le_max_right _ _).trans h16`. Establish `hsb : 60 ≤ D.host.splitBound`. Use `le_trans ?_ L.split_tie` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.le_floor (by exact_mod_cast h60)`. Establish `hK` using `hS.2.2.1.2`. Establish `hT` using `hS.2.2.2.2.1.2`. Unfold `Formalism.MainNotions.szTh at hK hT`. Establish `hk5 : (D.R.k : ℝ) ≤ L.sc.x ^ (5 : ℝ)` using `hK.trans (Real.rpow_le_rpow_of_exponent_le hx1 (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : (D.R.t : ℝ) ≤ L.sc.x ^ (|L.Ct| + 1)` using `hT.trans (Real.rpow_le_rpow_of_exponent_le hx1 (by have := le_abs_self L.Ct; linarith))`. Establish `hf` using `f_le_k D`. Establish `hr` using `r_le_two_k D`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `by positivity`. Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf1 : (1 : ℝ) ≤ D.R.f` using `by rw [f_eq]; linarith [n_ge_one D]`. Establish `hm1` using `m_ge_one D`. Establish `ht0` using `t_ge_one D`. Establish `hx5 : 0 ≤ L.sc.x ^ (5 : ℝ)` using `by positivity`. Establish `hfrt : (D.R.f : ℝ) * D.R.r * D.R.t ≤ 2 * L.sc.x ^ (11 + |L.Ct|)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : L.sc.x ^ (11 + |L.Ct|) = L.sc.x ^ (5 : ℝ) * L.sc.x ^ (5 : ℝ) * L.sc.x ^ (|L.Ct| + 1)`. Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (D.R.f : ℝ) * D.R.r ≤ L.sc.x ^ (5 : ℝ) * (2 * L.sc.x ^ (5 : ℝ))` using `mul_le_mul (hf.trans hk5) (hr.trans (by linarith)) hr0 hx5`. Combine the equalities or inequalities in the displayed calculation. Establish `hP : ((D.R.f : ℝ) * D.R.r * D.R.t) ^ C * large₂ L ≤ L.sc.b / 4`. Establish `hfrt0 : (0 : ℝ) ≤ (D.R.f : ℝ) * D.R.r * D.R.t` using `by positivity`. Establish `h1 : ((D.R.f : ℝ) * D.R.r * D.R.t) ^ C ≤ 2 ^ C * L.sc.x ^ ((11 + |L.Ct|) * C)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by norm_num) (by positivity), ← Real.rpow_mul hx0.le]`. Establish `h2 : 2 ^ C * L.sc.x ^ ((11 + |L.Ct|) * C) * L.sc.x ^ L.sc.eps = 2 ^ C * L.sc.x ^ ((11 + |L.Ct|) * C + L.sc.eps)`. Rewrite using `[Real.rpow_add hx0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ large₂ L` using `Lg_nonneg L`. Combine the equalities or inequalities in the displayed calculation. Establish `hlog : 1 ≤ Real.log L.sc.x`. Establish `: Real.exp 1 ≤ L.sc.x` using `by have := Real.exp_one_lt_d9; linarith`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hb'0` using `b'_pos L`. Establish `hrb' : 16 * (D.R.r * L.sc.b') ≤ D.R.m * L.sc.b`. Establish `hA` using `lA_ge L`. Establish `h16A : 16 ≤ lA L * Real.log L.sc.x`. Establish `: 16 ≤ lA L` using `by rw [hLg] at hA; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `rb'lA_le L P` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hb0 : 0 ≤ L.sc.b` using `by rw [hbe]; positivity`. Establish `hrL : 16 * (D.R.r * large₂ L) ≤ D.R.m * L.sc.b`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr5 : (D.R.r : ℝ) ≤ 2 * L.sc.x ^ (5 : ℝ)` using `by linarith`. Establish `e : L.sc.x ^ (5 + L.sc.eps) = L.sc.x ^ (5 : ℝ) * L.sc.x ^ L.sc.eps` using `Real.rpow_add hx0 _ _`. Establish `: 16 * (D.R.r * large₂ L) ≤ 32 * L.sc.x ^ (5 + L.sc.eps)`. Rewrite using `[e, hLg]`. Use `mul_le_mul_of_nonneg_right hr5 (by positivity : (0 : ℝ) ≤ L.sc.x ^ L.sc.eps)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: L.sc.b ≤ D.R.m * L.sc.b` using `le_mul_of_one_le_left hb0 hm1`. Establish `: 32 * L.sc.x ^ (5 + L.sc.eps) ≤ L.sc.b` using `by rw [hbe]; exact hbig2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSb` using `S_le_b' L P`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heb` using `eta_le_b' L P`. Establish `htb` using `(t_le_eta L P).trans heb`. Establish `hX : (D.R.r : ℝ) * (L.Sc + D.R.t + L.etaSz + large₂ L) ≤ D.R.m * L.sc.b / 4`. Establish `: (D.R.r : ℝ) * (L.Sc + D.R.t + L.etaSz) ≤ D.R.r * (3 * L.sc.b')` using `mul_le_mul_of_nonneg_left (by linarith) hr0`. Establish `e : (D.R.r : ℝ) * (L.Sc + D.R.t + L.etaSz + large₂ L) = D.R.r * (L.Sc + D.R.t + L.etaSz) + D.R.r * large₂ L` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl2r : ∀ l : ℕ, (l = D.host.q ∨ l = D.host.d) → 2 * (D.R.r : ℝ) ≤ l ∧ (0 : ℝ) < l`. Introduce `l hl`. Establish `h : 4 * D.R.t * D.R.r + 1 < l`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hl with rfl | rfl` into its components or cases. Conclude with `D.host.qd_big.1`. Conclude with `D.host.qd_big.2`. Establish `h' : (4 * D.R.t * D.R.r + 1 : ℝ) < l` using `by exact_mod_cast h`. Establish `h4 : (0 : ℝ) ≤ 4 * D.R.t * D.R.r` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5 : (D.R.r : ℝ) ≤ D.R.t * D.R.r` using `le_mul_of_one_le_left hr0 ht0`. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsmall : Small L C`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hq, hd, hsl⟩` from `qd_le_lStar L P`. Use `⟨by linarith [seven_lt_lStar L P], hq, hd, not_inert_three (by omega), ?_, hsl⟩` and prove the remaining obligations. Introduce `l hl`. Take `⟨h2r, hl0⟩` from `hl2r l hl`. Unfold `midG`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `midG_alg C D.R.f D.R.r D.R.m L.sc.b l L.Sc D.R.t L.etaSz (large₂ L) (((D.R.f : ℝ) * D.R.r * D.R.t) ^ C) (by linarith) hf1 hm1 hb0 hr0 h2r hl0 hX hP`. Use `⟨hsmall, ?_, hsb, ?_⟩` and prove the remaining obligations. Use `show 8 ≤ L.sc.x ^ L.sc.eps`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hbe]`.
-
-Combine the linear relations using `[Real.add_one_le_exp (L.sc.x ^ L.sc.eps)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem at_one {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (hS : SizesAt L) (C : ℝ) (hC : 1 ≤ C)
     (h3 : 3 ≤ L.sc.x) (h16 : max 16 C ≤ L.sc.x ^ L.sc.eps) (h60 : 60 ≤ L.sc.x ^ (L.sc.ez / 5))
@@ -319,13 +317,13 @@ end GlobalTheory.SpecialSmall
 open Filter in
 
 /- English proof (translation)
-Introduce `eps Fm C hC`. Establish `he : 0 < eps`. Take `⟨i⟩` from `Fm.Ix_zero`. Use `(Fm.L 0 i).sc.eps_pos` as an intermediate fact. Rewrite `this` using `[Fm.L_eps]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hez : 0 < Fm.ez` using `div_pos he (lt_of_lt_of_le one_pos Fm.one_le_J)`. Establish `ev1 : ∀ᶠ x : ℝ in atTop, (3 : ℝ) ≤ x` using `eventually_ge_atTop 3`. Establish `ev2 : ∀ᶠ x : ℝ in atTop, max 16 C ≤ x ^ eps` using `(tendsto_rpow_atTop he).eventually_ge_atTop _`. Establish `ev3 : ∀ᶠ x : ℝ in atTop, (60 : ℝ) ≤ x ^ (Fm.ez / 5)` using `(tendsto_rpow_atTop (by positivity)).eventually_ge_atTop _`. Establish `ev4` using `GlobalTheory.SpecialSmall.ev_pow_le_exp he (4 * 2 ^ C) ((11 + |Fm.Ct|) * C + eps)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ev5` using `GlobalTheory.SpecialSmall.ev_pow_le_exp he 32 (5 + eps)`. Take `⟨x0, hx0⟩` from `Filter.eventually_atTop.mp (ev1.and (ev2.and (ev3.and (ev4.and ev5))))`. Use `⟨x0, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Take `⟨h3, h16, h60, hbig, hbig2⟩` from `hx0 x hx`. Establish `hLx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLe : (Fm.L x i).sc.eps = eps` using `Fm.L_eps x i`. Establish `hCt : (Fm.L x i).Ct = Fm.Ct` using `Fm.Ct_eq x i`. Conclude with `GlobalTheory.SpecialSmall.at_one (Fm.L x i) (Fm.params x hx1 i) (Fm.sizes x hx1 i) C hC (by rw [hLx]; exact h3) (by rw [hLx, hLe]; exact h16) (by rw [hLx, Fm.L_ez]; exact h60) (by rw [hLx, hLe, hCt]; exact hbig) (by rw [hLx, hLe]; exact hbig2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SpecialSmall.special_primes_small : ∀ {eps : ℝ} (Fm : FamP eps), ∀ C : ℝ, 1 ≤ C → ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, Small (Fm.L x i) C ∧ 8 ≤ (Fm.L x i).sc.L ∧ 60 ≤ (Fm.D x i).host.splitBound ∧ C ≤ (Fm.L x i).sc.b := by
   intro eps Fm C hC

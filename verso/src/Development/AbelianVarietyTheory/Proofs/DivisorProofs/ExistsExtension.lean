@@ -16,17 +16,17 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SemiAbDenseExt
 
 /- English proof (translation)
-Introduce `U S _ _ j _ hd G H _ _ hG hH A B _ _ φ ψ hA hB g hg`. Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G j) hA`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso hB (isGrpPullback_pullback H j)`. Set `f` to `a.hom ≫ g ≫ b.hom`. Establish `hf : IsMonHom f` using `by infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsDominant j` using `⟨hd⟩`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.dense_openImmersion j`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian G hG`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian H hH`. Use `hG.smooth` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hH.smooth` as an intermediate fact. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `hw : f.left ≫ pullback.snd H.hom j = pullback.snd G.hom j` using `Over.w f`. Establish `hf₀ : (f.left ≫ pullback.fst H.hom j) ≫ H.hom = pullback.fst G.hom j ≫ G.hom`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hw, pullback.condition]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨F, hF, hF'⟩` from `GlobalTheory.DedekindExt.exists_of_stalks (j := j) G.hom H.hom (IsPullback.of_hasPullback G.hom j) hf₀ fun s => by`. Take `⟨k, hk⟩ : ∃ k : Sp (FractionRing (S.presheaf.stalk s)) ⟶ U, k ≫ j = ReciprocityTheory.ChartRestriction.G.Out.jK (S.presheaf.stalk s) ≫ S.fromSpecStalk s` from `⟨IsOpenImmersion.lift j _ (GlobalTheory.T.range_genericPoint_stalk_subset_of_denseOpen j hd s), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨g', hg', hA'⟩` from `GlobalTheory.T.semiAbelian_hom_extends_at_stalk_agreeing_on_open j G H hG hH f hf s k hk`. Conclude with `⟨_, S.fromSpecStalk s, 𝟙 _, g', Category.id_comp _, hg', hA'⟩`. Use `⟨Over.homMk F hF, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : φ = a.inv.left ≫ pullback.fst G.hom j`. Rewrite using `[← ha', ← Category.assoc, ← Over.comp_left, a.inv_hom_id, Over.id_left, Category.id_comp]`. Use `show g.left ≫ ψ = φ ≫ F`. Rewrite using `[hφ, Category.assoc, hF']`. Simplify using `only [f, Over.comp_left, Category.assoc, hb']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc a.inv.left, ← Over.comp_left, a.inv_hom_id, Over.id_left, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem exists_extension : ∀ {U S : Scheme.{0}} [GlobalTheory.IsNormalScheme S] [IsLocallyNoetherian S] (j : U ⟶ S) [IsOpenImmersion j], Dense (Set.range j) → ∀ (G H : Over S) [GrpObj G] [GrpObj H], IsSemiAbelian G → IsSemiAbelian H → ∀ (A B : Over U) [GrpObj A] [GrpObj B] (φ : A.left ⟶ G.left) (ψ : B.left ⟶ H.left), IsGrpPullback A G j φ → IsGrpPullback B H j ψ → ∀ g : A ⟶ B, IsMonHom g → ∃ f : G ⟶ H, g.left ≫ ψ = φ ≫ f.left := by
   intro U S _ _ j _ hd G H _ _ hG hH A B _ _ φ ψ hA hB g hg

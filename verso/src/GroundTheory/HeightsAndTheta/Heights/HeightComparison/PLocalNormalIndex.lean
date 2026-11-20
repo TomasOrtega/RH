@@ -11,27 +11,23 @@ namespace GroundTheory.Heights₂.Heights
 open NumberField
 
 /- English proof (translation)
-Introduce `L _ _ O hft hfr m _`. Use `set A := Localization.subalgebra.ofField L m.primeCompl m.primeCompl_le_nonZeroDivisors`. Use `set C := integralClosure A L`. Establish `: Algebra.FiniteType ℤ O` using `hft`. Establish `: CharZero O` using `⟨fun a b h ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun t : O ↦ (t : L)) h` as an intermediate fact. Simplify using `using this⟩`. Establish `hfin : Module.Finite O (integralClosure O L)` using `Model.finite_integralClosure_fractionRing_of_charZero O L`. Take `⟨d, hd, hdI⟩` from `FractionalIdeal.isFractional_of_fg (S := nonZeroDivisors O) (Module.Finite.iff_fg.mp hfin : (Subalgebra.toSubmodule (integralClosure O L)).FG)`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdL : algebraMap O L d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `hdC : ∀ x ∈ C, algebraMap O L d * x ∈ A`. Introduce `x hx`. Take `⟨⟨s, hs⟩, hsx⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (R := O) (M := m.primeCompl) (Rₘ := A) x hx`. Take `⟨o, ho⟩` from `hdI _ hsx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs0 : algebraMap O L s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (m.primeCompl_le_nonZeroDivisors hs)`. Simplify using `only [Submonoid.smul_def, Algebra.smul_def] at ho`. Use `⟨o, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[ho]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAC : A.toSubring ≤ C.toSubring` using `fun x hx ↦ (isIntegral_algebraMap : IsIntegral A (algebraMap A L ⟨x, hx⟩))`. Use `set f := algebraMap O L d`. Establish `hinj : Function.Injective (AddMonoidHom.mulLeft f)` using `mul_right_injective₀ hdL`. Establish `h1 : A.toSubring.toAddSubgroup.map (AddMonoidHom.mulLeft f) ≤ C.toSubring.toAddSubgroup.map (AddMonoidHom.mulLeft f)` using `AddSubgroup.map_mono hAC`. Establish `h2 : C.toSubring.toAddSubgroup.map (AddMonoidHom.mulLeft f) ≤ A.toSubring.toAddSubgroup`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hdC y hy`. Establish `e1` using `AddSubgroup.relIndex_mul_relIndex _ _ _ h1 h2`. Rewrite `e1` using `[AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Establish `hcard : (A.toSubring.toAddSubgroup.map (AddMonoidHom.mulLeft f)).relIndex A.toSubring.toAddSubgroup ≠ 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `e : Localization.AtPrime m ≃ₐ[O] A` to `IsLocalization.algEquiv m.primeCompl _ _`. Establish `hq1 : Nat.card (Localization.AtPrime m ⧸ Ideal.span {algebraMap O (Localization.AtPrime m) d}) = Nat.card (A.toSubring ⧸ Ideal.span {(algebraMap O A d : A.toSubring)})`. Use `Nat.card_congr (Ideal.quotientEquiv _ _ e.toRingEquiv ?_).toEquiv` and prove the remaining obligations. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(e.commutes d).symm`. Establish `hfL : ((algebraMap O A d : A.toSubring) : L) = f` using `rfl`. Establish `hcq` using `card_quot_span_eq_relIndex A.toSubring (algebraMap O A d : A.toSubring)`. Rewrite `hcq` using `[hfL]`. Establish `key : Nat.card (Localization.AtPrime m ⧸ Ideal.span {algebraMap O (Localization.AtPrime m) d}) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[LocalQuotCard.proof L O hft hfr m d hd0]`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Establish `hq : Algebra.FiniteType ℤ (O ⧸ m)` using `@Algebra.FiniteType.of_surjective ℤ O (O ⧸ m) _ _ _ _ _ hft (Ideal.Quotient.mkₐ ℤ m) (Ideal.Quotient.mkₐ_surjective ℤ m)`. Set `_ : Field (O ⧸ m)` to `Ideal.Quotient.field m`. Apply the tactic sequence `obtain ⟨hp, hc⟩ := @natCard_eq_pow_length_of_finiteType (O ⧸ m) _ (by convert hq <;> rfl) (ringChar (O ⧸ m)) (ringChar.charP _)`.
-
-Rewrite using `[hc]`. Conclude with `pow_ne_zero _ hp.ne_zero`. Rewrite using `[← hcq]`. Conclude with `fun h ↦ key (hq1.trans h)`. Rewrite `hcard` using `[← e1]`.
-
-Conclude with `left_ne_zero_of_mul hcard`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalNormalIndex.proof : LocalNormalIndex.Statement := by
   intro L _ _ O hft hfr m _

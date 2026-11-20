@@ -51,9 +51,9 @@ section SUnits
 variable [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L)))
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hw' : g⁻¹ • w ∉ S` using `fun h => hw (by simpa using hS g _ h)`. Establish `h1` using `SemiLocal.valuation_smul g (g⁻¹ • w) (x : L)`. Rewrite `h1` using `[smul_inv_smul]`. Express the relevant statement in the definitionally equal form `w.valuation L (g (x : L)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1]`. Conclude with `hx _ hw'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_unit (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) (g : L ≃ₐ[K] L) {x : Lˣ}
     (hx : x ∈ S.unit L) : Units.map (g : L →+* L).toMonoidHom x ∈ S.unit L := by
@@ -102,7 +102,7 @@ theorem sUnitRep_apply (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S
   rfl
 
 /- English proof (translation)
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem ofUnits_unitsRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) (g : L ≃ₐ[K] L)
     (u : Additive (𝓞 L)ˣ) :
@@ -114,9 +114,9 @@ theorem ofUnits_unitsRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈
   rfl
 
 /- English proof (translation)
-Set `` to `stableMulAction S hS`. Use function extensionality and compare the values at `w`. Rewrite using `[funPermRep_apply, ← ofMul_toMul x, sUnitRep_apply, toMul_ofMul, SUnit.valuationVector_apply, SUnit.valuationVector_apply]`. Use `congr 1`. Rewrite using `[← WithZero.coe_inj, HeightOneSpectrum.valuationOfNeZero_eq, HeightOneSpectrum.valuationOfNeZero_eq, coe_sUnitMap]`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `SemiLocal.valuation_smul g (g⁻¹ • w.1) ((x.toMul : Lˣ) : L)`. Rewrite `h1` using `[smul_inv_smul]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuationVector_sUnitRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S)
     (g : L ≃ₐ[K] L) (x : Additive (S.unit L)) :

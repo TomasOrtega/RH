@@ -14,21 +14,19 @@ open GlobalTheory.Mum
 namespace GlobalTheory.QuotLift
 
 /- English proof (translation)
-Introduce `R₁ R _ _ _ _ _ hc π hπ U hU x₀ hx`. Take `⟨y, hy⟩ : ∃ y, x₀ (closedPoint R) = y` from `⟨_, rfl⟩`. Take `⟨α, hs, hα⟩` from `GlobalTheory.HenselZero.exists_formallySmooth_stalk (O := CommRingCat.of R₁) U.hom y`. Take `⟨χ₀, hχ₀⟩` from `GlobalTheory.HenselZero.exists_factor_stalk (T := CommRingCat.of R) x₀ (y := y) hy`. Use `letI := α.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.FormallySmooth R₁ (U.left.presheaf.stalk y) := hs`. Establish `hle : RingHom.ker π ≤ maximalIdeal R₁`. Apply `le_maximalIdeal` to reduce the goal to its premises. Introduce `h`. Establish `h1 : (1 : R₁) ∈ RingHom.ker π` using `h ▸ Submodule.mem_top`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero h1`. Use `haveI : IsAdicComplete (RingHom.ker π) R₁ := GlobalTheory.T.isAdicComplete_of_le_of_isNoetherianRing' R₁ _ _ hle hc`. Establish `e₁ : α ≫ χ₀ = CommRingCat.ofHom π`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Spec.map_comp, hα, reassoc_of% hχ₀, hx]`. Set `E` to `RingHom.quotientKerEquivOfSurjective hπ`. Set `f : U.left.presheaf.stalk y →ₐ[R₁] R₁ ⧸ RingHom.ker π` to `{ (E.symm : R →+* R₁ ⧸ RingHom.ker π).comp χ₀.hom with commutes' := fun r => by`. Apply `E.injective` to reduce the goal to its premises. Establish `h2 : χ₀.hom (α.hom r) = π r` using `congrArg (fun g => g.hom r) e₁`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `E (E.symm (χ₀.hom (α.hom r))) = E (Ideal.Quotient.mk _ r)`. Rewrite using `[RingEquiv.apply_symm_apply, h2]`. Use `rfl }`. Take `⟨g, hg⟩` from `Algebra.FormallySmooth.exists_mkₐ_comp_eq_of_isAdicComplete (I := RingHom.ker π) f`. Establish `hg' : CommRingCat.ofHom g.toRingHom ≫ CommRingCat.ofHom π = χ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `a`. Establish `h3` using `congr($hg a)`. Express the relevant statement in the definitionally equal form `π (g a) = χ₀.hom a`. Establish `h4 : E (Ideal.Quotient.mk _ (g a)) = E (f a)` using `congrArg E h3`. Rewrite `h4` using `[show f a = E.symm (χ₀.hom a) from rfl, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h4`. Use `⟨Spec.map (CommRingCat.ofHom g.toRingHom) ≫ U.left.fromSpecStalk y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hα, ← Spec.map_comp]`. Use `(congrArg Spec.map ?_).trans (Spec.map_id _)` and prove the remaining obligations. Use extensionality with `r`.
-
-Conclude with `g.commutes r`. Rewrite using `[spMap, ← Spec.map_comp_assoc, hg', hχ₀]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_lift : ∀ (R₁ R : Type) [CommRing R₁] [IsLocalRing R₁] [IsNoetherianRing R₁] [CommRing R]
     [IsLocalRing R], IsAdicComplete (maximalIdeal R₁) R₁ → ∀ π : R₁ →+* R, Function.Surjective π →

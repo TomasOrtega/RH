@@ -45,11 +45,9 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
 /- English proof (translation)
-Introduce `hAIS hMHS hMB hResK hSA hFHT hGaga hQ hZ hNef`. Establish `hLLD` using `GlobalTheory.CompanionTheory.Ar.Giv.lineOfLargeDegree_of_moriwaki hAIS hMHS hMB hResK`. Establish `hG : Top.Given` using `GlobalTheory.CompanionTheory.Ar.Link.given_of_moriwaki hAIS hMHS hMB hResK hSA hFHT hGaga hLLD`. Establish `hTC` using `GlobalTheory.CompanionTheory.Ar.Link.good_tower_and_volume_final hAIS hMHS hMB hResK hSA hFHT hGaga hLLD hQ hZ`. Establish `hHS : Prov.HS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Top.Given at hG`. Conclude with `hG.2.2.2.2.2.2.2.2.2.2.1`. Establish `hG6 : ReciprocityTheory.ChartRestriction.G.Geo.BirationalPullbackPushforwardFormula`. Unfold `Prov.HS at hHS`. Conclude with `hHS.2.2.2.2.1`.
-
-Conclude with `GlobalTheory.CompanionTheory.Ar.Plug.deepStR_of_volume hNef hG hAIS hG6 hTC.1 hTC.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem deepStR_of_hodgeTate : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → GlobalTheory.Published.SemiAbelianHomExtension → HT.FarguesHodgeTate → Flat.GagaSections → GR.QuotientByFiniteFlatStatement → GR.ZarhinStatement → Pub.NefRR → Plug.DeepStR := by
   intro hAIS hMHS hMB hResK hSA hFHT hGaga hQ hZ hNef

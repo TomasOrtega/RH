@@ -12,7 +12,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨-, -, -, hτ⟩` from `h`. Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, hτ, star_star]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨-, -, -, hτ⟩ := h
@@ -21,9 +21,9 @@ theorem conj_conj (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) 
   rw [hτ, hτ, star_star]
 
 /- English proof (translation)
-Take `⟨-, hC, -, hτ⟩` from `h`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Establish `hR : ComplexEmbedding.IsReal τ`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Conclude with `((hτ τ x).symm.trans (congrArg τ (hno x)) : _)`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (hC.isComplex (InfinitePlace.mk τ))) (InfinitePlace.isReal_mk_iff.2 hR)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_moved (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ y, σ y ≠ y := by
   obtain ⟨-, hC, -, hτ⟩ := h
@@ -38,13 +38,13 @@ theorem exists_moved (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ y, σ y ≠
     (InfinitePlace.isReal_mk_iff.2 hR)
 
 /- English proof (translation)
-Set `S : Submodule F E` to `LinearMap.eqLocus σ.toLinearMap LinearMap.id`. Establish `hS : S ≠ ⊤`. Take `⟨y, hy⟩` from `exists_moved σ h`. Introduce `hT`. Establish `hyS : y ∈ S` using `hT ▸ Submodule.mem_top`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hy hyS`. Establish `h1 : Submodule.span F {(1 : E)} ≤ S`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `map_one σ`. Establish `hlt : Module.finrank F S < 2` using `h.2.2.1 ▸ Submodule.finrank_lt hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : Module.finrank F (Submodule.span F {(1 : E)}) = 1` using `finrank_span_singleton one_ne_zero`. Establish `heq : Submodule.span F {(1 : E)} = S` using `Submodule.eq_of_le_of_finrank_le h1 (by omega)`. Establish `hmem : e + σ e ∈ S`. Express the relevant statement in the definitionally equal form `σ (e + σ e) = e + σ e`. Rewrite using `[map_add, conj_conj σ h, add_comm]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hmem` using `[← heq, Submodule.mem_span_singleton]`. Take `⟨c, hc⟩` from `hmem`. Conclude with `⟨c, by rw [← hc, Algebra.algebraMap_eq_smul_one]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem add_conj_mem (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (e : E) :
     ∃ c : F, e + σ e = algebraMap F E c := by
@@ -73,9 +73,9 @@ def halfTr (σ : E →ₐ[F] E) : E →ₗ[F] F :=
   (4⁻¹ : F) • (Algebra.trace F E ∘ₗ (LinearMap.id + σ.toLinearMap))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `add_conj_mem σ h e`. Establish `hval : halfTr σ e = 2⁻¹ * c`. Simplify using `only [halfTr, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.add_apply, LinearMap.id_apply, AlgHom.toLinearMap_apply, smul_eq_mul]`. Rewrite using `[hc, Algebra.trace_algebraMap, h.2.2.1, nsmul_eq_mul]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval, hc, Algebra.smul_def, map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_halfTr (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (e : E) :
     algebraMap F E (halfTr σ e) = (2⁻¹ : F) • (e + σ e) := by
@@ -89,7 +89,7 @@ theorem algebraMap_halfTr (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (e : E) :
   rw [hval, hc, Algebra.smul_def, map_mul]
 
 /- English proof (translation)
-Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_halfTr σ h, map_one, map_one, Algebra.smul_def, map_inv₀, map_ofNat]`. Establish `h2 : (2 : E) ≠ 0` using `two_ne_zero`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
 -/
 theorem halfTr_one (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : halfTr σ (1 : E) = 1 := by
   apply (algebraMap F E).injective
@@ -103,7 +103,7 @@ def rr (σ : E →ₐ[F] E) : AE F E →ₗ[AF F] AF F :=
     TensorProduct.AlgebraTensorModule.lTensor (AF F) (AF F) (halfTr σ)
 
 /- English proof (translation)
-Simplify using `[rr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rr_tmul (σ : E →ₐ[F] E) (a : AF F) (e : E) : rr σ (a ⊗ₜ[F] e) = halfTr σ e • a := by
   simp [rr]
@@ -114,21 +114,21 @@ Both sides reduce to the same expression.
 theorem nu_apply (x : AF F) : nuCM F E x = x ⊗ₜ[F] (1 : E) := rfl
 
 /- English proof (translation)
-Rewrite using `[nu_apply, rr_tmul, halfTr_one σ h, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rr_nu (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : AF F) : rr σ (nuCM F E x) = x := by
   rw [nu_apply, rr_tmul, halfTr_one σ h, one_smul]
 
 /- English proof (translation)
-Simplify using `[nu_apply, cA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_nu (σ : E →ₐ[F] E) (x : AF F) : cA σ (nuCM F E x) = nuCM F E x := by
   simp [nu_apply, cA]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, map_add, ← smul_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Normalize the expressions using the abelian group laws. Consider the case `tmul a e`. Establish `hc : cA σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `by simp [cA]`. Rewrite using `[rr_tmul, nu_apply, hc, ← TensorProduct.tmul_add, ← TensorProduct.tmul_smul, ← algebraMap_halfTr σ h, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+Normalize the expressions using the abelian group laws. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_rr (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (z : AE F E) :
     nuCM F E (rr σ z) = (2⁻¹ : F) • (z + cA σ z) := by
@@ -145,7 +145,7 @@ theorem nu_rr (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (z : AE F E) :
       TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Establish `h : (nuCM F E : AF F → AE F E) = fun x => x • (1 : AE F E)`. Use function extensionality and compare the values at `x`. Rewrite using `[nu_apply, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h]`. Conclude with `Continuous.smul (f := fun x : AF F => x) (g := fun _ => (1 : AE F E)) continuous_id continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_nu : Continuous (nuCM F E) := by
   have h : (nuCM F E : AF F → AE F E) = fun x => x • (1 : AE F E) := by
@@ -155,7 +155,7 @@ theorem continuous_nu : Continuous (nuCM F E) := by
   exact Continuous.smul (f := fun x : AF F => x) (g := fun _ => (1 : AE F E)) continuous_id continuous_const
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ χ c hCM _ _ _`. Use `⟨continuous_nu, Function.LeftInverse.injective (rr_nu σ hCM), cA_nu σ, rr σ, IsModuleTopology.continuous_of_linearMap (rr σ), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : cA σ x = x` using `hx`. Rewrite using `[nu_rr σ hCM, hx', ← two_smul F x, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem bFix : BFix := by
   intro F E _ _ _ _ _ σ χ c hCM _ _ _

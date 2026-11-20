@@ -6,21 +6,19 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `k _ _ _ _ V ω d hd g hg`. Establish `hex : ∃ z, ((GeneralLinearGroup.scalar (Fin 2)) z)⁻¹ * g ∈ V.DC d`. Assume the negation of the conclusion as `hn`. Conclude with `hg (by unfold Lev.fZ; rw [dif_neg hn])`. Take `⟨z, hz⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, w, hw, e⟩` from `contract k V 2 (MonoidHom.id _) (pres_id V 2) d hd _ hz`. Take `⟨c, hc, rfl⟩` from `hw`. Rewrite `e` using `[MonoidHom.id_apply]`. Establish `hsc : (GeneralLinearGroup.scalar (Fin 2)) z = diagT k (Fin 2) (fun _ => z)`. Use extensionality with `i l`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_diagT]`. Simplify using `[Matrix.diagonal_apply, Matrix.scalar_apply]`. Establish `hcomm : (GeneralLinearGroup.scalar (Fin 2)) z * j⁻¹ = j⁻¹ * (GeneralLinearGroup.scalar (Fin 2)) z`. Establish `hzc : (GeneralLinearGroup.scalar (Fin 2)) z ∈ Subgroup.center (GL (Fin 2) k)`. Rewrite using `[GeneralLinearGroup.center_eq_range_scalar]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨z, rfl⟩`. Conclude with `((Subgroup.mem_center_iff.mp hzc) j⁻¹).symm`. Use `⟨j, z * c 0 * d 0, z * c 1 * d 1, ?_, ?_⟩` and prove the remaining obligations. Establish `hdg : dg ![z * c 0 * d 0, z * c 1 * d 1] = (GeneralLinearGroup.scalar (Fin 2)) z * (diagT k (Fin 2) c * dg d)`. Rewrite using `[hsc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `dg`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hdg, ← e]`. Use `set S := (GeneralLinearGroup.scalar (Fin 2)) z`. Rewrite using `[show S * (j⁻¹ * (S⁻¹ * g) * j) = (S * j⁻¹) * (S⁻¹ * g) * j by group, hcomm]`. Use `group`. Establish `hid : z * c 0 * d 0 / (z * c 1 * d 1) / (d 0 / d 1) = c 0 / c 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_div_eq_mul_div, div_eq_div_iff_mul_eq_mul]`. Simplify using `only [div_eq_mul_inv]`. Use `ext`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[hid]`. Conclude with `div_mem (hc 0 (Set.mem_univ _)) (hc 1 (Set.mem_univ _))`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.suppZ : UpperTheory.V.Z.Sym.Sig.SuppZ := by
   intro k _ _ _ _ V ω d hd g hg

@@ -16,16 +16,14 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def bdeg (m : (Σ k, ι k) →₀ ℕ) : K → ℕ := fun k => ∑ i, m ⟨k, i⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[bdeg, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bdeg_add (m n : (Σ k, ι k) →₀ ℕ) : bdeg (m + n) = bdeg m + bdeg n := by
   funext k
   simp [bdeg, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Use function extensionality and compare the values at `k`. Conclude with `h m (mem_support_iff.mpr hm) k`. Introduce `h m hm k`.
-
-Conclude with `congrFun (h m (mem_support_iff.mp hm)) k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_iff {s : MRingOver ℂ ι} {a : K → ℕ} :
     IsMultiHomog s a ↔ ∀ m, coeff m s ≠ 0 → bdeg m = a := by
@@ -37,7 +35,7 @@ theorem isMultiHomog_iff {s : MRingOver ℂ ι} {a : K → ℕ} :
     exact congrFun (h m (mem_support_iff.mp hm)) k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Conclude with `hs m hm k`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem bdeg_of_mem {s : MRingOver ℂ ι} {a : K → ℕ} (hs : IsMultiHomog s a) {m : (Σ k, ι k) →₀ ℕ}
     (hm : m ∈ s.support) : bdeg m = a := by
@@ -45,9 +43,7 @@ theorem bdeg_of_mem {s : MRingOver ℂ ι} {a : K → ℕ} (hs : IsMultiHomog s 
   exact hs m hm k
 
 /- English proof (translation)
-Rewrite using `[isMultiHomog_iff]`. Introduce `n hn`. Rewrite `hn` using `[coeff_monomial]`. Use `split_ifs at hn with h`. Rewrite using `[h]`.
-
-Conclude with `absurd rfl hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_monomial (m : (Σ k, ι k) →₀ ℕ) (c : ℂ) :
     IsMultiHomog (monomial m c : MRingOver ℂ ι) (bdeg m) := by
@@ -60,9 +56,9 @@ theorem isMultiHomog_monomial (m : (Σ k, ι k) →₀ ℕ) (c : ℂ) :
   · exact absurd rfl hn
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[isMultiHomog_iff]`. Introduce `m hm`. Rewrite `hm` using `[coeff_mul]`. Take `⟨x, hx, hx0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hm`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hx, bdeg_add, hf x.1 (left_ne_zero_of_mul hx0), hg x.2 (right_ne_zero_of_mul hx0)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiHomog_mul {f g : MRingOver ℂ ι} {a b : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g b) : IsMultiHomog (f * g) (a + b) := by
@@ -75,9 +71,9 @@ theorem isMultiHomog_mul {f g : MRingOver ℂ ι} {a b : K → ℕ} (hf : IsMult
   rw [← hx, bdeg_add, hf x.1 (left_ne_zero_of_mul hx0), hg x.2 (right_ne_zero_of_mul hx0)]
 
 /- English proof (translation)
-Rewrite using `[isMultiHomog_iff]`. Introduce `m hm`. Rewrite `hm` using `[coeff_one]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[bdeg]`. Conclude with `absurd rfl hm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_one : IsMultiHomog (1 : MRingOver ℂ ι) 0 := by
   classical
@@ -91,7 +87,7 @@ theorem isMultiHomog_one : IsMultiHomog (1 : MRingOver ℂ ι) 0 := by
   · exact absurd rfl hm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using isMultiHomog_one`. Consider the case `succ n ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `isMultiHomog_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_pow {f : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMultiHomog f a) (n : ℕ) :
     IsMultiHomog (f ^ n) (n • a) := by
@@ -102,9 +98,9 @@ theorem isMultiHomog_pow {f : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMultiHom
     exact isMultiHomog_mul ih hf
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[isMultiHomog_iff]`. Introduce `m hm`. Rewrite `hm` using `[coeff_add]`. Distinguish the cases in `h0 : coeff m f = 0`. Rewrite `hm` using `[h0, zero_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg m hm`. Conclude with `hf m h0`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_add {f g : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g a) : IsMultiHomog (f + g) a := by
@@ -117,14 +113,14 @@ theorem isMultiHomog_add {f g : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMultiH
   · exact hf m h0
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_zero (a : K → ℕ) : IsMultiHomog (0 : MRingOver ℂ ι) a := by
   intro m hm
   simp at hm
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[isMultiHomog_iff]`. Introduce `m hm`. Rewrite `hm` using `[coeff_C_mul]`. Conclude with `hf m (right_ne_zero_of_mul hm)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_C_mul {f : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMultiHomog f a) (c : ℂ) :
     IsMultiHomog (C c * f) a := by
@@ -134,7 +130,7 @@ theorem isMultiHomog_C_mul {f : MRingOver ℂ ι} {a : K → ℕ} (hf : IsMultiH
   exact hf m (right_ne_zero_of_mul hm)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isMultiHomog_zero a`. Consider the case `@insert j s hj ih`. Rewrite using `[Finset.sum_insert hj]`. Conclude with `isMultiHomog_add (h j (Finset.mem_insert_self _ _)) (ih fun x hx => h x (Finset.mem_insert_of_mem hx))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_sum {α : Type} (s : Finset α) (f : α → MRingOver ℂ ι) {a : K → ℕ}
     (h : ∀ j ∈ s, IsMultiHomog (f j) a) : IsMultiHomog (∑ j ∈ s, f j) a := by
@@ -147,7 +143,7 @@ theorem isMultiHomog_sum {α : Type} (s : Finset α) (f : α → MRingOver ℂ �
       (ih fun x hx => h x (Finset.mem_insert_of_mem hx))
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isMultiHomog_one`. Consider the case `@insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `isMultiHomog_mul (h j (Finset.mem_insert_self _ _)) (ih fun x hx => h x (Finset.mem_insert_of_mem hx))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_prod {α : Type} (s : Finset α) (f : α → MRingOver ℂ ι) (a : α → K → ℕ)
     (h : ∀ j ∈ s, IsMultiHomog (f j) (a j)) : IsMultiHomog (∏ j ∈ s, f j) (∑ j ∈ s, a j) := by
@@ -164,7 +160,7 @@ open Classical in
 def wt (p : Σ k, ι k) : K → ℕ := fun k => if p.1 = k then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype m (fun i c => c • wt i) (fun _ => zero_smul _ _)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, wt, bdeg]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_wt (m : (Σ k, ι k) →₀ ℕ) : Finsupp.weight wt m = bdeg m := by
   classical
@@ -177,7 +173,7 @@ theorem weight_wt (m : (Σ k, ι k) →₀ ℕ) : Finsupp.weight wt m = bdeg m :
 def cmp (D : K → ℕ) : MRingOver ℂ ι →ₗ[ℂ] MRingOver ℂ ι := weightedHomogeneousComponent wt D
 
 /- English proof (translation)
-Rewrite using `[cmp, coeff_weightedHomogeneousComponent, weight_wt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_cmp (D : K → ℕ) (p : MRingOver ℂ ι) (m : (Σ k, ι k) →₀ ℕ) :
     coeff m (cmp D p) = if bdeg m = D then coeff m p else 0 := by
@@ -185,7 +181,7 @@ theorem coeff_cmp (D : K → ℕ) (p : MRingOver ℂ ι) (m : (Σ k, ι k) →�
   rw [cmp, coeff_weightedHomogeneousComponent, weight_wt]
 
 /- English proof (translation)
-Rewrite using `[isMultiHomog_iff]`. Introduce `m hm`. Rewrite `hm` using `[coeff_cmp]`. Assume the negation of the conclusion as `h`. Conclude with `hm (if_neg h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_cmp (D : K → ℕ) (p : MRingOver ℂ ι) : IsMultiHomog (cmp D p) D := by
   rw [isMultiHomog_iff]
@@ -195,9 +191,9 @@ theorem isMultiHomog_cmp (D : K → ℕ) (p : MRingOver ℂ ι) : IsMultiHomog (
   exact hm (if_neg h)
 
 /- English proof (translation)
-Rewrite `hh` using `[isMultiHomog_iff]`. Use extensionality with `m`. Rewrite using `[coeff_cmp]`. Distinguish the cases in `hm : coeff m h = 0`. Apply the tactic sequence `split_ifs <;> simp [hm]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hb : b = D`. Substitute `hb` using the available equality. Simplify using `[hh m hm]`. Rewrite using `[if_neg hb, coeff_zero, if_neg (by rw [hh m hm]; exact hb)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_of_homog {h : MRingOver ℂ ι} {b : K → ℕ} (hh : IsMultiHomog h b) (D : K → ℕ) :
     cmp D h = if b = D then h else 0 := by
@@ -214,27 +210,27 @@ theorem cmp_of_homog {h : MRingOver ℂ ι} {b : K → ℕ} (hh : IsMultiHomog h
 open Classical in
 
 /- English proof (translation)
-Rewrite `hq` using `[isMultiHomog_iff]`. Use extensionality with `m`. Rewrite using `[coeff_cmp]`. Apply the tactic sequence `by_cases hdD : d ≤ D <;> by_cases hm : bdeg m = D <;> simp only [hdD, hm, if_true, if_false]`. Rewrite using `[coeff_mul, coeff_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_cmp]`. Distinguish the cases in `hq0 : coeff x.2 q = 0`. Simplify using `[hq0]`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hq x.2 hq0`. Rewrite using `[if_pos]`. Use function extensionality and compare the values at `k`. Establish `h3` using `congrFun hm k`. Establish `h4` using `hdD k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[← hx, bdeg_add, h2]`. Simplify using `only [Pi.add_apply] at h3`. Simplify using `only [Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_cmp]`. Distinguish the cases in `hq0 : coeff x.2 q = 0`. Simplify using `[hq0]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h2` using `hq x.2 hq0`. Rewrite using `[if_neg, zero_mul]`. Introduce `h1`. Apply `hm` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `k`. Establish `h3` using `congrFun h1 k`. Establish `h4` using `hdD k`. Rewrite using `[← hx, bdeg_add, h2]`. Simplify using `only [Pi.add_apply, Pi.sub_apply] at h3 ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3]`. Conclude with `Nat.sub_add_cancel h4`. Rewrite using `[coeff_zero, coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hq0 : coeff x.2 q = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hq0]`. It suffices to derive a contradiction. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h2` using `hq x.2 hq0`. Apply `hdD` to reduce the goal to its premises.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `h3` using `congrFun hm k`. Rewrite `h3` using `[← hx, bdeg_add, h2]`. Simplify using `only [Pi.add_apply] at h3`. Rewrite using `[← h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.le_add_left _ _`. Rewrite using `[coeff_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cmp_mul {q : MRingOver ℂ ι} {d : K → ℕ} (hq : IsMultiHomog q d) (D : K → ℕ)
     (p : MRingOver ℂ ι) : cmp D (p * q) = if d ≤ D then cmp (D - d) p * q else 0 := by
@@ -293,13 +289,13 @@ theorem cmp_mul {q : MRingOver ℂ ι} {d : K → ℕ} (hq : IsMultiHomog q d) (
   · rw [coeff_zero]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `D`. Take `⟨b, hb⟩` from `hS x hx`. Rewrite using `[cmp_of_homog hb]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `hz x hx`. Simplify using the standard rewrite rules. Consider the case `zero => intro D`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => intro D`. Rewrite using `[map_add, map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx`. Introduce `D`. Rewrite using `[smul_eq_mul, as_sum a, Finset.sum_mul, map_sum, map_sum]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, cmp_mul (isMultiHomog_monomial ν _)]`. Use `split_ifs`. Rewrite using `[map_mul, hx, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_cmp_eq_zero {S : Set (MRingOver ℂ ι)} (hS : ∀ s ∈ S, ∃ a, IsMultiHomog s a)
     {z : (Σ k, ι k) → ℂ} (hz : ∀ s ∈ S, eval z s = 0) {x : MRingOver ℂ ι} (hx : x ∈ Ideal.span S) :
@@ -330,7 +326,7 @@ def spike (j : ∀ k, ι k) (f : K → ℕ) : (Σ k, ι k) →₀ ℕ :=
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [spike, Finsupp.coe_equivFunOnFinite_symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spike_apply (j : ∀ k, ι k) (f : K → ℕ) (p : Σ k, ι k) :
     spike j f p = if p.2 = j p.1 then f p.1 else 0 := by
@@ -338,7 +334,7 @@ theorem spike_apply (j : ∀ k, ι k) (f : K → ℕ) (p : Σ k, ι k) :
   simp only [spike, Finsupp.coe_equivFunOnFinite_symm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[bdeg, spike_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bdeg_spike (j : ∀ k, ι k) (f : K → ℕ) : bdeg (spike j f) = f := by
   classical
@@ -346,7 +342,7 @@ theorem bdeg_spike (j : ∀ k, ι k) (f : K → ℕ) : bdeg (spike j f) = f := b
   simp [bdeg, spike_apply]
 
 /- English proof (translation)
-Rewrite using `[eval_monomial, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single (j k) (fun i _ hi => by simp [spike_apply, hi]) (by simp)]`. Simplify using `[spike_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_spike (j : ∀ k, ι k) (f : K → ℕ) (z : (Σ k, ι k) → ℂ) :
     eval z (monomial (spike j f) 1) = ∏ k, z ⟨k, j k⟩ ^ f k := by
@@ -357,17 +353,17 @@ theorem eval_spike (j : ∀ k, ι k) (f : K → ℕ) (z : (Σ k, ι k) → ℂ) 
   simp [spike_apply]
 
 /- English proof (translation)
-Establish `key : ∀ c : (∀ k, ι k), ∃ n : ℕ, (monomial (spike c (fun _ => 1)) (1 : ℂ)) ^ n ∈ Ideal.span (insert G S)`. Introduce `c`. Establish `hmem : monomial (spike c (fun _ => 1)) (1 : ℂ) ∈ vanishingIdeal ℂ (zeroLocus ℂ (Ideal.span (insert G S)))`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[mem_zeroLocus_iff]`. Establish `hxJ : ∀ p ∈ Ideal.span (insert G S), eval x p = 0` using `fun p hp => by`. Simplify `hx p hp` using `[coe_aeval_eq_eval]`. Establish `hG` using `hxJ G (Ideal.subset_span (Set.mem_insert _ _))`. Establish `hS : ∀ s ∈ S, eval x s = 0` using `fun s hs => hxJ s (Ideal.subset_span (Set.mem_insert_of_mem _ hs))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnc : ¬ ∀ k, ∃ i, x ⟨k, i⟩ ≠ 0` using `fun hc => hcone x hc hS hG`. Use `push_neg at hnc`. Take `⟨k, hk⟩` from `hnc`. Establish `h0 : eval x (monomial (spike c (fun _ => 1)) (1 : ℂ)) = 0`. Rewrite using `[eval_spike]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (by simp [hk])`. Simplify `h0` using `[coe_aeval_eq_eval]`. Rewrite `hmem` using `[vanishingIdeal_zeroLocus_eq_radical]`. Conclude with `hmem`. Use `choose n hn using key`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨∑ c, n c, fun c => ?_⟩` and prove the remaining obligations. Establish `hle : n c ≤ ∑ c, n c` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)`. Establish `heq : monomial (spike c (fun _ => ∑ c, n c)) (1 : ℂ) = (monomial (spike c (fun _ => 1)) 1) ^ n c * (monomial (spike c (fun _ => 1)) 1) ^ (∑ c, n c - n c)`. Establish `hexp : (∑ c, n c) • spike c (fun _ => 1) = spike c (fun _ => ∑ c, n c)`. Use extensionality with `p`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.smul_apply, spike_apply, spike_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hle, monomial_pow, one_pow, hexp]`. Rewrite using `[heq]`. Conclude with `Ideal.mul_mem_right _ _ (hn c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mem {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι}
     (hcone : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → (∀ s ∈ S, eval z s = 0) → eval z G ≠ 0) :
@@ -409,23 +405,21 @@ theorem exists_pow_mem {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι}
   exact Ideal.mul_mem_right _ _ (hn c)
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_pow_mem hcone`. Use `⟨r * ∑ k, Fintype.card (ι k), fun M hM μ hμ => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ k, ∃ i, r ≤ μ ⟨k, i⟩`. Introduce `k`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hne`. Establish `h1 : bdeg μ k ≤ Fintype.card (ι k) * r`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Fintype.card (ι k) ≤ ∑ k, Fintype.card (ι k)` using `Finset.single_le_sum (f := fun k => Fintype.card (ι k)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `h3 : bdeg μ k = (M + 1) * e k` using `by rw [hμ]; simp`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `he k`. Establish `h5 : Fintype.card (ι k) * r ≤ (∑ k, Fintype.card (ι k)) * r` using `Nat.mul_le_mul_right r h2`. Establish `h6 : (M + 1) * 1 ≤ (M + 1) * e k` using `Nat.mul_le_mul_left (M + 1) h4`. Use the polynomial consequences of the given equalities and inequalities. Use `choose c hc using hc`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : spike c (fun _ => r) ≤ μ`. Rewrite using `[Finsupp.le_def]`. Introduce and unpack `⟨k, i⟩`. Rewrite using `[spike_apply]`. Use `split_ifs with h`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `hc k`. Conclude with `Nat.zero_le _`. Establish `hmem : monomial μ (1 : ℂ) ∈ Ideal.span (insert G S)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: monomial μ (1 : ℂ) = monomial (spike c (fun _ => r)) 1 * monomial (μ - spike c (fun _ => r)) 1`. Rewrite using `[monomial_mul, mul_one, add_tsub_cancel_of_le hle]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (hr c)`. Take `⟨a, s, hs, hμa⟩` from `Ideal.mem_span_insert.1 hmem`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `heD : e ≤ (M + 1) • e` using `fun k => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hDe : (M + 1) • e - e = M • e`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[add_mul, one_mul, Nat.add_sub_cancel]`. Use `⟨cmp (M • e) a, isMultiHomog_cmp _ _, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : monomial μ (1 : ℂ) = cmp ((M + 1) • e) (a * G) + cmp ((M + 1) • e) s`. Rewrite using `[← map_add, ← hμa, cmp_of_homog (isMultiHomog_monomial μ 1), if_pos hμ]`.
-
-Rewrite using `[h1, map_add, cmp_mul hG, if_pos heD, hDe, map_mul, eval_cmp_eq_zero hS hz hs, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem rel_one {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K → ℕ}
     (hS : ∀ s ∈ S, ∃ a, IsMultiHomog s a) (hG : IsMultiHomog G e) (he : ∀ k, 1 ≤ e k)
@@ -480,9 +474,9 @@ theorem rel_one {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K → �
   rw [h1, map_add, cmp_mul hG, if_pos heD, hDe, map_mul, eval_cmp_eq_zero hS hz hs, add_zero]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hM`. Use `⟨monomial μ 1 * G ^ t, ?_, fun z _ => ?_⟩` and prove the remaining obligations. Use `isMultiHomog_mul (isMultiHomog_monomial μ 1) (isMultiHomog_pow hG t)` as an intermediate fact. Rewrite `this` using `[hμ, ← add_smul]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rel_direct {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K → ℕ} (hG : IsMultiHomog G e)
     {N₀ M : ℕ} (hM : M ≤ N₀) (μ : (Σ k, ι k) →₀ ℕ) (hμ : bdeg μ = M • e) :
@@ -497,7 +491,7 @@ theorem rel_direct {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K �
     ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [as_sum p]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[eval_monomial, eval_monomial]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_eq_sum_support (p : MRingOver ℂ ι) (z : (Σ k, ι k) → ℂ) :
     eval z p = ∑ ν ∈ p.support, coeff ν p * eval z (monomial ν 1) := by
@@ -508,11 +502,11 @@ theorem eval_eq_sum_support (p : MRingOver ℂ ι) (z : (Σ k, ι k) → ℂ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => exact fun μ hμ => rel_direct hG (Nat.zero_le _) μ hμ`. Consider the case `succ M ih`. Introduce `μ hμ`. Distinguish the cases in `hM : M + 1 ≤ N₀`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `rel_direct hG hM μ hμ`. Take `⟨h₁, hh₁, hev⟩` from `hN₀ M (by omega) μ hμ choose! H hH hHev using ih`. Use `⟨∑ ν ∈ h₁.support, C (coeff ν h₁) * H ν, isMultiHomog_sum _ _ fun ν hν => isMultiHomog_C_mul (hH ν (bdeg_of_mem hh₁ hν)) _, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hev z hz, eval_eq_sum_support h₁ z, map_sum]`. Simplify using `only [map_mul, eval_C]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ν hν => ?_` and prove the remaining obligations. Use `hHev ν (bdeg_of_mem hh₁ hν) z hz` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rel_all {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K → ℕ} (hG : IsMultiHomog G e) (N₀ : ℕ)
     (hN₀ : ∀ M : ℕ, N₀ ≤ M → ∀ μ : (Σ k, ι k) →₀ ℕ, bdeg μ = (M + 1) • e →
@@ -543,9 +537,9 @@ theorem rel_all {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K → �
 def Mon (D : K → ℕ) : Set ((Σ k, ι k) →₀ ℕ) := {ν | bdeg ν = D}
 
 /- English proof (translation)
-Apply `(Set.finite_Icc (0 : (Σ k, ι k) →₀ ℕ) (Finsupp.equivFunOnFinite.symm fun p => D p.1)).subset` to reduce the goal to its premises. Introduce `ν hν`. Establish `hν' : bdeg ν = D` using `hν`. Use `⟨zero_le, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.le_def]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨k, i⟩`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[← hν']`. Conclude with `Finset.single_le_sum (f := fun i => ν ⟨k, i⟩) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mon_finite (D : K → ℕ) : (Mon (ι := ι) D).Finite := by
   classical
@@ -564,9 +558,9 @@ instance (D : K → ℕ) : Finite (Mon (ι := ι) D) := (mon_finite D).to_subtyp
 noncomputable instance (D : K → ℕ) : Fintype (Mon (ι := ι) D) := Fintype.ofFinite _
 
 /- English proof (translation)
-Rewrite using `[eval_eq_sum_support, ← Finset.sum_subtype (mon_finite D).toFinset (fun x => Set.Finite.mem_toFinset _) (fun ν => coeff ν h * eval z (monomial ν 1))]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `ν hν`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `bdeg_of_mem hh hν`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ν _ hν`. Rewrite `hν` using `[mem_support_iff, not_not]`. Rewrite using `[hν, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_eq_sum_mon {h : MRingOver ℂ ι} {D : K → ℕ} (hh : IsMultiHomog h D) (z : (Σ k, ι k) → ℂ) :
     eval z h = ∑ ν : Mon (ι := ι) D, coeff ν.1 h * eval z (monomial ν.1 1) := by
@@ -585,13 +579,13 @@ def phi (G : MRingOver ℂ ι) (e : K → ℕ) (N₀ : ℕ) (z : (Σ k, ι k) �
   fun ν => eval z (monomial ν.1 1) / eval z G ^ N₀
 
 /- English proof (translation)
-Take `⟨N₀, hN₀⟩` from `rel_one hS hG he hcone`. Use `⟨N₀, fun M F hF => ?_⟩` and prove the remaining obligations. Establish `hrel` using `rel_all hG N₀ hN₀ M`. Use `choose! H hH hHev using hrel`. Use `⟨fun ν => ∑ μ ∈ F.support, coeff μ F * coeff ν.1 (H μ), fun z hz hGz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hGM : eval z G ^ M ≠ 0` using `pow_ne_zero _ hGz`. Establish `hGN : eval z G ^ N₀ ≠ 0` using `pow_ne_zero _ hGz`. Rewrite using `[eval_eq_sum_support F, Finset.sum_div]`. Simplify using `only [phi, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hμd` using `bdeg_of_mem hF hμ`. Establish `e1 : eval z (monomial μ 1) / eval z G ^ M = eval z (H μ) / eval z G ^ N₀`. Rewrite using `[div_eq_div_iff hGM hGN]`. Conclude with `hHev μ hμd z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_div_assoc, e1, eval_eq_sum_mon (hH μ hμd), Finset.sum_div, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_rep {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K → ℕ}
     (hS : ∀ s ∈ S, ∃ a, IsMultiHomog s a) (hG : IsMultiHomog G e) (he : ∀ k, 1 ≤ e k)
@@ -619,11 +613,11 @@ theorem exists_rep {S : Set (MRingOver ℂ ι)} {G : MRingOver ℂ ι} {e : K �
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ν`. Simplify using `only [phi]`. Rewrite using `[FibreRepresentatives.eval_smul (isMultiHomog_monomial ν.1 1) r w, FibreRepresentatives.eval_smul hG r w]`. Establish `hν : bdeg ν.1 = N₀ • e` using `ν.2`. Rewrite using `[hν]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : (∏ k, r k ^ e k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hr k)`. Establish `hpow : (∏ k, r k ^ (N₀ • e) k) = (∏ k, r k ^ e k) ^ N₀`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpow, mul_pow, mul_div_mul_left _ _ (pow_ne_zero _ hP)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_smul {G : MRingOver ℂ ι} {e : K → ℕ} (hG : IsMultiHomog G e) (N₀ : ℕ) (r : K → ℂ)
     (hr : ∀ k, r k ≠ 0) (w : (Σ k, ι k) → ℂ) :
@@ -643,11 +637,11 @@ theorem phi_smul {G : MRingOver ℂ ι} {e : K → ℕ} (hG : IsMultiHomog G e) 
 open Classical in
 
 /- English proof (translation)
-Use `isMultiHomog_monomial (ι := ι) (Finsupp.single (⟨k, a⟩ : Σ k, ι k) 1) (1 : ℂ)` as an intermediate fact. Rewrite using `[show (X ⟨k, a⟩ : MRingOver ℂ ι) = monomial (Finsupp.single ⟨k, a⟩ 1) 1 from rfl]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Distinguish the cases in `h : k' = k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[bdeg, Finsupp.single_apply]`. Simplify using `only [if_neg h, bdeg]`. Use `symm`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h'`. Conclude with `h (congrArg Sigma.fst h').symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X (k : K) (a : ι k) :
     IsMultiHomog (X ⟨k, a⟩ : MRingOver ℂ ι) (fun k' => if k' = k then 1 else 0) := by
@@ -667,23 +661,21 @@ theorem isMultiHomog_X (k : K) (a : ι k) :
     exact h (congrArg Sigma.fst h').symm
 
 /- English proof (translation)
-Establish `hmin : ∃ k a b, z ⟨k, a⟩ * w ⟨k, b⟩ ≠ z ⟨k, b⟩ * w ⟨k, a⟩`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hn` to reduce the goal to its premises. Use `choose i hi using hw`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun k => z ⟨k, i k⟩ / w ⟨k, i k⟩, fun k h0 => ?_, ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[div_eq_zero_iff]`. Break down `h0 with h0 | h0` into its components or cases. Take `⟨a, ha⟩` from `hz k`. Use `hc k a (i k)` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `this` using `[h0, zero_mul]`. Conclude with `ha ((mul_eq_zero.1 this).resolve_right (hi k))`. Conclude with `hi k h0`. Use function extensionality and compare the values at `⟨k, a⟩`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hi k)]`. Conclude with `hc k a (i k)`. Take `⟨k, a, b, hab⟩` from `hmin`. Use `choose j hj using hz`. Set `δ : K → ℕ` to `fun k' => if k' = k then 1 else 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Set `L : MRingOver ℂ ι` to `C (w ⟨k, b⟩) * X ⟨k, a⟩ + C (-w ⟨k, a⟩) * X ⟨k, b⟩`. Establish `hL : IsMultiHomog L δ` using `isMultiHomog_add (isMultiHomog_C_mul (isMultiHomog_X k a) _) (isMultiHomog_C_mul (isMultiHomog_X k b) _)`. Use `⟨L * monomial (spike j (e - δ)) 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `isMultiHomog_mul hL (isMultiHomog_monomial (spike j (e - δ)) (1 : ℂ))` as an intermediate fact. Rewrite `this` using `[bdeg_spike]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k'`. Use `he k'` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.sub_apply, δ]`. Apply the tactic sequence `split_ifs <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Apply `mul_eq_zero_of_left` to reduce the goal to its premises. Simplify using `only [L, map_add, map_mul, eval_C, eval_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Simplify using `only [L, map_add, map_mul, eval_C, eval_X]`. Introduce `h`. Apply `hab` to reduce the goal to its premises. Take the linear combination `h`.
-
-Rewrite using `[eval_spike]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k' _ => pow_ne_zero _ (hj k')`.
+A detailed English derivation is pending.
 -/
 theorem exists_sep {e : K → ℕ} (he : ∀ k, 1 ≤ e k) {z w : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0)
@@ -739,29 +731,25 @@ end AvoidFormFinite
 open AvoidFormFinite in
 
 /- English proof (translation)
-Introduce `K _ ι _ S G e he hG hS hcone`. Take `⟨N₀, hrep⟩` from `exists_rep hS hG he hcone`. Set `P : ((Σ k, ι k) → ℂ) → Prop` to `fun z => (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ ∀ s ∈ S, eval z s = 0`. Set `V : Set (Mon (ι` to `ι) (N₀ • e) → ℂ) := Set.range (fun z : {z // P z} => phi G e N₀ z.1)`. Establish `horb : ∀ z t, P z → P t → phi G e N₀ z = phi G e N₀ t → ∃ r : K → ℂ, (∀ k, r k ≠ 0) ∧ z = fun p => r p.1 * t p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z t hz ht hzt`. Assume the negation of the conclusion as `hn`. Take `⟨Q, hQ, hQt, hQz⟩` from `exists_sep he hz.1 ht.1 hn`. Take `⟨d, hd⟩` from `hrep 1 Q (by rw [one_smul]; exact hQ)`. Establish `h1` using `hd z hz.2 (hcone z hz.1 hz.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hd t ht.2 (hcone t ht.1 ht.2)`. Rewrite `h1` using `[hzt, ← h2, hQt, zero_div, div_eq_zero_iff]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `hQz h1`. Conclude with `pow_ne_zero _ (hcone z hz.1 hz.2) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose pre hpre0 using fun v : V => v.2`. Establish `hpre : ∀ v : V, phi G e N₀ (pre v).1 = v` using `fun v => hpre0 v`. Establish `hli : LinearIndependent ℂ (fun v : V => (v : Mon (ι` using `ι) (N₀ • e) → ℂ)) := by`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hsum i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsep : ∀ j ∈ s.erase i, ∃ Q : MRingOver ℂ ι, IsMultiHomog Q e ∧ eval (pre j).1 Q = 0 ∧ eval (pre i).1 Q ≠ 0`. Introduce `j hj`. Use `exists_sep he (pre i).2.1 (pre j).2.1 ?_` and prove the remaining obligations. Introduce and unpack `⟨r, hr, hrz⟩`. Apply `(Finset.mem_erase.1 hj).1` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hpre j, ← hpre i, hrz, phi_smul hG N₀ r hr]`. Use `choose! Q hQe hQz hQi using hsep`. Establish `hF` using `isMultiHomog_prod (s.erase i) Q (fun _ => e) hQe`. Rewrite `hF` using `[Finset.sum_const]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `hrep _ _ hF`. Establish `hval : ∀ v : V, ∑ ν, d ν * (v : Mon (ι` using `ι) (N₀ • e) → ℂ) ν = eval (pre v).1 (∏ j ∈ s.erase i, Q j) / eval (pre v).1 G ^ (s.erase i).card := by`. Introduce `v`. Rewrite using `[hd _ (pre v).2.2 (hcone _ (pre v).2.1 (pre v).2.2), hpre v]`. Establish `h0 : ∑ v ∈ s, g v * (eval (pre v).1 (∏ j ∈ s.erase i, Q j) / eval (pre v).1 G ^ (s.erase i).card) = 0`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Repeatedly rewrite using `[← hval]`. Establish `hz : ∀ ν, ∑ v ∈ s, g v * (v : Mon (ι` using `ι) (N₀ • e) → ℂ) ν = 0 := fun ν => by`. Use `congrFun hsum ν` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Use `_ = 0 := by simp [hz]`. Rewrite using `[Finset.sum_eq_single i (fun v hv hvi => by`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h0` using `[map_prod, Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hvi, hv⟩) (hQz v (Finset.mem_erase.2 ⟨hvi, hv⟩)), zero_div, mul_zero]) (fun h => absurd hi h)]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `h` using `[div_eq_zero_iff]`.
-
-Break down `h with h | h` into its components or cases. Rewrite `h` using `[map_prod]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun j hj => hQi j hj) h`. Conclude with `pow_ne_zero _ (hcone _ (pre i).2.1 (pre i).2.2) h`. Use `haveI : Finite V := hli.finite_of_isNoetherian`.
-
-Use `haveI := Fintype.ofFinite V`. Use `⟨Finset.univ.image fun v => (pre v).1, fun z hz hzS => ?_⟩` and prove the remaining obligations. Set `v : V` to `⟨phi G e N₀ z, ⟨z, hz, hzS⟩, rfl⟩`. Conclude with `⟨(pre v).1, Finset.mem_image_of_mem _ (Finset.mem_univ v), horb z (pre v).1 ⟨hz, hzS⟩ (pre v).2 (hpre v).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem AvoidFormFinite.proof : AvoidFormFinite.Statement := by
   intro K _ ι _ S G e he hG hS hcone

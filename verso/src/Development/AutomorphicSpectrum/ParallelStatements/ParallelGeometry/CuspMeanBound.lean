@@ -44,9 +44,9 @@ def MeanUpper (Cu rd Lval : ℝ) (U : ((Σ k, J k) → ℂ) → ℝ) : Prop :=
     meanOf Hd U ≤ Cu * Dc.f * Dc.j' * abelian₂ B rd Lval
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, h₂⟩ B p q hB hp hq filter_upwards [h₁ B p q hB hp hq, h₂ B p q hB hp hq] with t a b Q hQ hP _`. Distinguish the cases in `h : ∃ z ∈ mcPts Q, z ∈ Dc.Bd`. Conclude with `b Q hQ hP h`. Conclude with `a Q hQ hP fun z hz hb => h ⟨z, hz, hb⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨fun B p q hB hp hq => (h B p q hB hp hq).mono fun _ a Q hQ hP _ => a Q hQ hP trivial, fun B p q hB hp hq => (h B p q hB hp hq).mono fun _ a Q hQ hP _ => a Q hQ hP trivial⟩`.
+A detailed English derivation is pending.
 -/
 theorem htInterior_and_htBoundary_iff (Ch rd Lval : ℝ) :
     HtInterior Hd S Ch rd Lval ∧ HtBoundary Hd S Ch rd Lval ↔ HtLower Hd S Ch rd Lval fun _ => True := by
@@ -61,7 +61,7 @@ theorem htInterior_and_htBoundary_iff (Ch rd Lval : ℝ) :
       fun B p q hB hp hq => (h B p q hB hp hq).mono fun _ a Q hQ hP _ => a Q hQ hP trivial⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem corrWeight_cuspWeight {O Lt : Type} [CommRing O] [AddCommGroup Lt] [Module O Lt] (Cd : CuspData Dc O Lt) :
     corrWeight Hd Cd.cuspWeight = cuspCorr Hd Cd ∧ meanOf Hd Cd.cuspWeight = meanU Hd Cd :=

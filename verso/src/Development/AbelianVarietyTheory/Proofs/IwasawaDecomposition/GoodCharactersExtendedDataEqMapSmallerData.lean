@@ -27,11 +27,11 @@ section GoodTransport
 open Formalism.L2.DIV
 
 /- English proof (translation)
-Take `⟨n, ρ, hρ, hχ⟩` from `h`. Introduce `h0`. Establish `h1 : ρ.character 1 = (n : AlgebraicClosure K)`. Rewrite using `[Representation.char_one]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hχ, h0, map_zero]`. Establish `hn : n = 0` using `by exact_mod_cast h1.symm`. Substitute `hn` using the available equality. Take `⟨a, b, hab⟩` from `hρ.toNontrivial.exists_pair_ne`. Apply `hab` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Conclude with `Subsingleton.elim _ _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem absIrr_one_ne_zero {K G : Type} [Field K] [CharZero K] [Group G] [Fintype G] {χ : G → K}
     (h : IsAbsIrrChar χ) : χ 1 ≠ 0 := by
@@ -48,15 +48,15 @@ theorem absIrr_one_ne_zero {K G : Type} [Field K] [CharZero K] [Group G] [Fintyp
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨χ, hχX, hχY⟩ : ∃ χ ∈ X, χ ∉ Y := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (Finset.Subset.antisymm hc hYX)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsplit : idemOf (X \ Y) + idemOf Y = idemOf X`. Unfold `idemOf`. Conclude with `Finset.sum_sdiff hYX`. Establish `h0 : idemOf (X \ Y) = 0`. Rewrite `hsplit` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hsplit`. Establish `hmem : χ ∈ X \ Y` using `Finset.mem_sdiff.2 ⟨hχX, hχY⟩`. Establish `hprod : chiIdem χ * idemOf (X \ Y) = chiIdem χ`. Unfold `idemOf`. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun χ' hχ' => chiIdem_mul (hX χ hχX) (hX χ' (Finset.mem_sdiff.1 hχ').1)]`. Rewrite using `[Finset.sum_ite_eq, if_pos hmem]`. Rewrite `hprod` using `[h0, mul_zero]`. Establish `hc` using `congrArg (fun a : MonoidAlgebra K G => a.coeff 1) hprod`. Simplify using `only [coeff_chiIdem, inv_one] at hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne1` using `absIrr_one_ne_zero (hX χ hχX)`. Establish `hcard : ((Fintype.card G : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `: χ 1 / (Fintype.card G : K) * χ 1 ≠ 0` using `mul_ne_zero (div_ne_zero hne1 hcard) hne1`. Conclude with `this (by simpa using hc.symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_idemOf_eq {K G : Type} [Field K] [CharZero K] [Group G] [Fintype G] {X Y : Finset (G → K)}
     (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (hYX : Y ⊆ X) (h : idemOf Y = idemOf X) : X = Y := by
@@ -88,21 +88,19 @@ theorem eq_of_idemOf_eq {K G : Type} [Field K] [CharZero K] [Group G] [Fintype G
   exact this (by simpa using hc.symm)
 
 /- English proof (translation)
-Establish `sup : ∀ χ ∈ X, (fun g => φ (χ (e.symm g))) ∈ X'`. Introduce `χ hχ`. Take `⟨hirr, hsum⟩` from `(hX χ).1 hχ`. Use `(hX' _).2 ⟨isAbsIrrChar_comp e.symm (GlobalTheory.T.isAbsIrrChar_map_ringHom φ χ hirr), ?_⟩` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp e.toEquiv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulEquiv.symm_apply_apply, hc, hφ, map_one]`. Conclude with `hsum`. Use `⟨fun hχ' => ?_, fun ⟨χ, hχ, he⟩ => he ▸ sup χ hχ⟩` and prove the remaining obligations. Use `set F : (G → K) → (G' → K') := fun χ g => φ (χ (e.symm g)) with hF`. Establish `hinj : Function.Injective F`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `χ₁ χ₂ h12`. Use function extensionality and compare the values at `g`. Use `congrFun h12 (e g)` as an intermediate fact. Simplify using `only [hF, MulEquiv.symm_apply_apply] at this`. Conclude with `φ.injective this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hYX : X.image F ⊆ X'`. Introduce `ψ hψ`. Take `⟨χ, hχ, rfl⟩` from `Finset.mem_image.1 hψ`. Conclude with `sup χ hχ`. Establish `hcard : (Fintype.card G' : ℂ) = (Fintype.card G : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[Fintype.card_congr e.toEquiv]`. Establish `hid : idemOf (X.image F) = idemOf X'`. Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `t`. Apply `σ'.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hX2', coeff_idemOf, Finset.sum_image fun a _ b _ h => hinj h, map_sum]`. Use `hX2 (e.symm t)` as an intermediate fact. Rewrite `this` using `[coeff_idemOf, map_sum]`. Rewrite `this` using `[← hc (e.symm t), MulEquiv.apply_symm_apply]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Simplify using `only [hF, map_mul, map_div₀, map_natCast, hφ, map_one, map_inv, hcard]`. Use `eq_of_idemOf_eq (fun ψ hψ => ((hX' ψ).1 hψ).1) hYX hid` as an intermediate fact. Rewrite `hχ'` using `[this]`. Take `⟨χ, hχ, rfl⟩` from `Finset.mem_image.1 hχ'`.
-
-Conclude with `⟨χ, hχ, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_transport {K K' G G' : Type} [Field K] [Field K'] [CharZero K] [CharZero K'] [Group G] [Fintype G]
     [Group G'] [Fintype G'] (σ : K →+* ℂ) (σ' : K' →+* ℂ) (φ : K →+* K') (hφ : ∀ x, σ' (φ x) = σ x) (e : G ≃* G')
@@ -155,11 +153,11 @@ end GlobalTheory.Mem.R3.DefLatBC
 namespace GlobalTheory.Mem.R3.DefLatBC
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Consider the cases of `h`. Take `⟨Q, hQm⟩` from `Q`. Take `⟨Q', hQm'⟩` from `Q'`. Simplify using `only at hQ`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hQ` using the available equality. Establish `hi : (i' : ZMod m →+* kP Q') = (i : ZMod m →+* kP Q')` using `Subsingleton.elim _ _`. Rewrite `hx'` using `[hi]`. Establish `h2 : Formalism.UG.bc (i : ZMod m →+* kP Q') x' = Formalism.UG.bc (i : ZMod m →+* kP Q') x` using `hx'.symm.trans hx`. Establish `hinj : Function.Injective (i : ZMod m →+* kP Q')` using `i.injective`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `s t`. Use `congrArg (fun y : GL (Fin r) (kP Q') => (y : Matrix (Fin r) (Fin r) (kP Q')) s t) h2` as an intermediate fact. Conclude with `hinj (by simpa [Formalism.UG.bc] using this)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bc_eq_of_heq {X : Type} [Group X] {E : Type} [Field E] [NumberField E] {r m : ℕ} {P P' : Finset (Pl E)} (hP : P' = P)
     (a : X ≃* Formalism.L2.DIV.G0 P r) (a' : X ≃* Formalism.L2.DIV.G0 P' r) (h : HEq a' a) (g : X) (Q : P) (Q' : P')
@@ -188,15 +186,15 @@ namespace GlobalTheory.Mem.R3.DefLatBC
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at hB`. Substitute `hB` using the available equality. Consider the cases of `hf`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Establish `hpx : w'.px = w.px` using `eq_of_heq hp`. Consider the cases of `w'`. Simplify using `only at hpx`. Substitute `hpx` using the available equality. Establish `heg : e g = g` using `eq_of_heq (he g)`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[heg]`. Take `⟨plg, iso, hpl, -, -, hbc⟩` from `z.pins.keep.grp`. Take `⟨plg', iso', hpl', -, -, hbc'⟩` from `z'.pins.keep.grp`. Use `Eq.trans ?_ (TypesTrue.typeIdempotent_coeff_across_layers hG hG' ((z.R.eG.trans z.cG) g))` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `kv'`. Take `⟨k, v'⟩` from `kv'`. Take `⟨v, rfl⟩ : ∃ v, v' = plEquiv Z.N.naut Z'.N.naut k v` from `⟨_, (Equiv.apply_symm_apply _ v').symm⟩`. Use `show _ = ((z.R.eG.trans z.cG) g) ⟨k, (plEquiv Z.N.naut Z'.N.naut k).symm (plEquiv Z.N.naut Z'.N.naut k v)⟩`. Rewrite using `[Equiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : z'.R.Pg = z.R.Pg` using `eq_of_heq hx.Pg`. Establish `hQ : (plg' ⟨k, plEquiv Z.N.naut Z'.N.naut k v⟩).1 = (plg ⟨k, v⟩).1`. Rewrite using `[hpl', hpl]`. Conclude with `TypesTrue.plGw_plEquiv hG hG' k v`. Conclude with `bc_eq_of_heq hP z.R.eG z'.R.eG hx.eG g _ _ hQ (iso ⟨k, v⟩) (iso' ⟨k, plEquiv Z.N.naut Z'.N.naut k v⟩) _ _ (hbc g ⟨k, v⟩) (hbc' g ⟨k, plEquiv Z.N.naut Z'.N.naut k v⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodIdempotents_agree_extendedData {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
@@ -235,9 +233,7 @@ theorem goodIdempotents_agree_extendedData {B B' : Base} {f : Fr B.toPre} {f' : 
 end GlobalTheory.Mem.R3.DefLatBC
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE hf _ hp Z hX Wt z hG _ _ _ Z' hX' hG' _ _ z' _ hx j j' hj φ hφ e he χ' => ?_` and prove the remaining obligations. Use `show χ' ∈ z'.Xg ↔ ∃ χ ∈ z.Xg, χ' = fun g => φ (χ (e.symm g))`. Establish `g1` using `(goodSet_iff _ _ _).1 z.good`. Establish `g2` using `(goodSet_iff _ _ _).1 z'.good`.
-
-Conclude with `GlobalTheory.Mem.R3.DefLatBC.good_transport (w.st Z).toD7.what₂.embLL (w'.st Z').toD7.what₂.embLL φ hφ e (fun g => (w.st Z).toD7.ntypes.e0.coeff ((z.R.eG.trans z.cG) g)) (fun g => (w'.st Z').toD7.ntypes.e0.coeff ((z'.R.eG.trans z'.cG) g)) (GlobalTheory.Mem.R3.DefLatBC.goodIdempot …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.DefLatBC.good_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

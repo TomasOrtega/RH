@@ -15,11 +15,11 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω
   {Ω' : Type} [Field Ω'] [Algebra o Ω'] {M' : RatModel o Ω'} {φ : Ω →ₐ[o] Ω'}
 
 /- English proof (translation)
-Use `M.sep` as an intermediate fact. Establish `: IsReduced W` using `isReduced_of_isOpenImmersion q`. Establish `: IsDominant p`. Use `⟨q.isOpenEmbedding.isInducing.dense_iff.2 fun w => ?_⟩` and prove the remaining obligations. Establish `e : q '' Set.range p = Set.range M'.pt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hp, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `M'.pt.denseRange _`. Use `ext_of_isDominant_of_isSeparated M.s (ext_of_isDominant p ?_) p (hg.trans hh.symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hg, ← Category.assoc, hh]`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_of_isOpenImmersion {W : Scheme.{0}} (q : W ⟶ M'.Z) [IsOpenImmersion q] {p : Sp Ω' ⟶ W}
     (hp : p ≫ q = M'.pt) {g h : W ⟶ M.Z} (hg : p ≫ g = spMap φ.toRingHom ≫ M.pt)
@@ -37,9 +37,9 @@ theorem hom_ext_of_isOpenImmersion {W : Scheme.{0}} (q : W ⟶ M'.Z) [IsOpenImme
   rw [← Category.assoc, hg, ← Category.assoc, hh]
 
 /- English proof (translation)
-Set `χ : M.ringOn U →+* M'.ringOn V` to `(φ.toRingHom.comp (M.ringOn U).val.toRingHom).codRestrict (M'.ringOn V) fun x => h x x.2`. Set `ψ : Γ(M.Z, U) →+* Γ(M'.Z, V)` to `(M'.sectionsEquiv V hVne).symm.toRingHom.comp (χ.comp (M.sectionsEquiv U hUne).toRingHom)`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← specMap_valMap_fromSpec hU M.pt (M.top_le_preimage_pt hUne)]`. Rewrite using `[← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use extensionality with `a`. Establish `e : (M'.sectionsEquiv V hVne (ψ a) : Ω') = φ (M.sectionsEquiv U hUne a)` using `congrArg Subtype.val ((M'.sectionsEquiv V hVne).apply_symm_apply _)`. Conclude with `e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_map_ringOn {U : M.Z.Opens} (hU : IsAffineOpen U) (hUne : (U : Set M.Z).Nonempty)
     {V : M'.Z.Opens} (hVne : (V : Set M'.Z).Nonempty) (h : ∀ x ∈ M.ringOn U, φ x ∈ M'.ringOn V) :
@@ -59,11 +59,11 @@ theorem exists_hom_of_map_ringOn {U : M.Z.Opens} (hU : IsAffineOpen U) (hUne : (
   exact e
 
 /- English proof (translation)
-Establish `h' : ∀ z : M'.Z, ∃ (V : M'.Z.Opens) (_ : IsAffineOpen V) (hz : z ∈ V) (g : Spec Γ(M'.Z, V) ⟶ M.Z), Spec.map (valMap M'.pt V (M'.top_le_preimage_pt ⟨z, hz⟩)) ≫ g = spMap φ.toRingHom ≫ M.pt` using `fun z => by`. Take `⟨V, U, hz, hU, hne, H⟩` from `h z`. Take `⟨W, hW, hzW, hle⟩` from `exists_isAffineOpen_mem_and_subset hz`. Conclude with `⟨W, hW, hzW, exists_hom_of_map_ringOn hU hne ⟨z, hzW⟩ fun x hx => ringOn_anti hle (H x hx)⟩`. Use `choose V hV hz g hg using h'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hp` using `fun z => specMap_valMap_fromSpec (hV z) M'.pt (M'.top_le_preimage_pt ⟨z, hz z⟩)`. Set `𝒰 : M'.Z.OpenCover` to `Scheme.Cover.mkOfCovers M'.Z (fun z => Spec Γ(M'.Z, V z)) (fun z => (hV z).fromSpec) fun z => by`. Establish `: z ∈ Set.range (hV z).fromSpec` using `(hV z).range_fromSpec ▸ hz z`. Conclude with `⟨z, this⟩`. Establish `hc : ∀ z w, pullback.fst (hV z).fromSpec (hV w).fromSpec ≫ g z = pullback.snd (hV z).fromSpec (hV w).fromSpec ≫ g w` using `fun z w => hom_ext_of_isOpenImmersion (φ := φ) (pullback.fst _ _ ≫ (hV z).fromSpec) (p := pullback.lift _ _ ((hp z).trans (hp w).symm)) (by rw [pullback.lift_fst_assoc, hp]) (by rw [pullback.lift_fst_assoc, hg]) (by rw [pullback.lift_snd_assoc, hg])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨𝒰.glueMorphisms g hc, ?_⟩` and prove the remaining obligations. Establish `e : (hV (genericPoint M'.Z)).fromSpec ≫ 𝒰.glueMorphisms g hc = g _` using `𝒰.ι_glueMorphisms g hc _`. Unfold `IsHom`. Rewrite using `[← hg (genericPoint M'.Z), ← e, ← Category.assoc, hp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isHom_of_local (h : ∀ z : M'.Z, ∃ (V : M'.Z.Opens) (U : M.Z.Opens), z ∈ V ∧ IsAffineOpen U ∧
     (U : Set M.Z).Nonempty ∧ ∀ x ∈ M.ringOn U, φ x ∈ M'.ringOn V) : ∃ f, M.IsHom M' φ f := by
@@ -90,7 +90,7 @@ theorem exists_isHom_of_local (h : ∀ z : M'.Z, ∃ (V : M'.Z.Opens) (U : M.Z.O
   rw [← hg (genericPoint M'.Z), ← e, ← Category.assoc, hp]
 
 /- English proof (translation)
-Use `(Algebra.adjoin_le ?_ : _ ≤ (M'.O z).comap φ) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `using h.2 j`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Div.map_mem_O_of_mem_adjoin {J : Type} {t : J → Ω} {i : J} {z : M'.Z}
     (h : M'.Div (fun j => φ (t j)) i z) {x : Ω} (hx : x ∈ Algebra.adjoin o (Set.range fun j => t j / t i)) :
@@ -100,7 +100,7 @@ theorem Div.map_mem_O_of_mem_adjoin {J : Type} {t : J → Ω} {i : J} {z : M'.Z}
   simpa using h.2 j
 
 /- English proof (translation)
-Set `χ : Algebra.adjoin o (Set.range fun j => t j / t i) →+* M'.O z` to `(φ.toRingHom.comp (Subalgebra.val _).toRingHom).codRestrict (M'.O z) fun y => h.map_mem_O_of_mem_adjoin y.2`. Establish `hi : IsIntegral (M'.O z) (φ x)` using `hx.map_of_comp_eq χ φ.toRingHom (RingHom.ext fun _ => rfl)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `hy ▸ y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Div.map_mem_O_of_isIntegral {J : Type} {t : J → Ω} {i : J} {z : M'.Z}
     (h : M'.Div (fun j => φ (t j)) i z) [IsIntegrallyClosed (M'.O z)] {x : Ω}
@@ -112,7 +112,7 @@ theorem Div.map_mem_O_of_isIntegral {J : Type} {t : J → Ω} {i : J} {z : M'.Z}
   exact hy ▸ y.2
 
 /- English proof (translation)
-Use `exists_isHom_of_local fun z => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hd z`. Establish `hi0 : t i ≠ 0` using `(map_ne_zero φ).1 hi.1`. Take `⟨U, hU, hD, hR⟩` from `h.2 i hi0`. Conclude with `⟨⟨_, M'.isOpen_setOf_div (fun j => φ (t j)) i⟩, U, hi, hU, ⟨genericPoint M.Z, hD ▸ div_genericPoint hi0⟩, fun x hx => mem_ringOn.2 fun w hw => Div.map_mem_O_of_mem_adjoin hw (hR ▸ hx)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsCl.exists_isHom {J : Type} [Finite J] {t : J → Ω} (h : M.IsCl t) (hd : M'.HasDiv fun j => φ (t j)) :
     ∃ f, M.IsHom M' φ f := by
@@ -125,7 +125,7 @@ theorem IsCl.exists_isHom {J : Type} [Finite J] {t : J → Ω} (h : M.IsCl t) (h
     fun x hx => mem_ringOn.2 fun w hw => Div.map_mem_O_of_mem_adjoin hw (hR ▸ hx)⟩
 
 /- English proof (translation)
-Use `exists_isHom_of_local fun z => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hd z`. Establish `hi0 : t i ≠ 0` using `(map_ne_zero φ).1 hi.1`. Take `⟨U, hU, hD, hR⟩` from `h.2 i hi0`. Conclude with `⟨⟨_, M'.isOpen_setOf_div (fun j => φ (t j)) i⟩, U, hi, hU, ⟨genericPoint M.Z, hD ▸ div_genericPoint hi0⟩, fun x hx => mem_ringOn.2 fun w hw => Div.map_mem_O_of_isIntegral hw ((hR x).1 hx)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsNm.exists_isHom {J : Type} [Finite J] {t : J → Ω} (h : M.IsNm t) (hd : M'.HasDiv fun j => φ (t j))
     (hn : ∀ z, IsIntegrallyClosed (M'.O z)) : ∃ f, M.IsHom M' φ f := by

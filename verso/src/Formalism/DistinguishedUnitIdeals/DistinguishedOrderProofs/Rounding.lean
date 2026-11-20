@@ -8,11 +8,11 @@ section Rounding
 variable {K D : Type} [Field K] [AddCommGroup D] [Module K D]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k : ℕ, c = a + k` from `⟨(c - a).toNat, by omega⟩`. Use `clear hac`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e1` using `ih (fun u h1 h2 => h u h1 (by omega))`. Establish `e2` using `h (a + k) (by omega) (by omega)`. Rewrite using `[e1, e2]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma filt_eq_of_no_jump (Fil : ℤ → Submodule K D) (a c : ℤ) (hac : a ≤ c)
     (h : ∀ u, a ≤ u → u < c → Fil u = Fil (u+1)) : Fil a = Fil c := by
@@ -29,7 +29,7 @@ lemma filt_eq_of_no_jump (Fil : ℤ → Submodule K D) (a c : ℤ) (hac : a ≤ 
     ring
 
 /- English proof (translation)
-Introduce `u hu`. Break down `le_or_gt u lo with hul | hul` into its components or cases. Conclude with `top_unique (by rw [← hlo]; exact hA hul)`. Rewrite using `[← filt_eq_of_no_jump Fil lo u hul.le (fun v _ h2 => h v (by omega)), hlo]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma filt_eq_top_of_no_jump_below (Fil : ℤ → Submodule K D) (hA : Antitone Fil) (lo : ℤ) (hlo : Fil lo = ⊤) (a : ℤ)
     (h : ∀ u, u < a → Fil u = Fil (u+1)) : ∀ u, u ≤ a → Fil u = ⊤ := by
@@ -39,7 +39,7 @@ lemma filt_eq_top_of_no_jump_below (Fil : ℤ → Submodule K D) (hA : Antitone 
   · rw [← filt_eq_of_no_jump Fil lo u hul.le (fun v _ h2 => h v (by omega)), hlo]
 
 /- English proof (translation)
-Introduce `u hu`. Break down `le_or_gt hi u with hul | hul` into its components or cases. Conclude with `le_bot_iff.mp (by rw [← hhi]; exact hA hul)`. Rewrite using `[filt_eq_of_no_jump Fil u hi hul.le (fun v h1 _ => h v (by omega)), hhi]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma filt_eq_bot_of_no_jump_above (Fil : ℤ → Submodule K D) (hA : Antitone Fil) (hi : ℤ) (hhi : Fil hi = ⊥) (a : ℤ)
     (h : ∀ u, a ≤ u → Fil u = Fil (u+1)) : ∀ u, a ≤ u → Fil u = ⊥ := by
@@ -49,7 +49,7 @@ lemma filt_eq_bot_of_no_jump_above (Fil : ℤ → Submodule K D) (hA : Antitone 
   · rw [filt_eq_of_no_jump Fil u hi hul.le (fun v h1 _ => h v (by omega)), hhi]
 
 /- English proof (translation)
-Introduce `u hu huc`. Conclude with `filt_eq_of_no_jump Fil u c huc (fun v h1 h2 => h v (by omega) h2)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma filt_eq_of_no_jump_between (Fil : ℤ → Submodule K D) (a c : ℤ)
     (h : ∀ u, a ≤ u → u < c → Fil u = Fil (u+1)) : ∀ u, a ≤ u → u ≤ c → Fil u = Fil c := by
@@ -57,23 +57,17 @@ lemma filt_eq_of_no_jump_between (Fil : ℤ → Submodule K D) (a c : ℤ)
   exact filt_eq_of_no_jump Fil u c huc (fun v h1 h2 => h v (by omega) h2)
 
 /- English proof (translation)
-Unfold `Rounding`. Introduce `K D _ _ _ Fil G S η g b hF hG hS hη hGg hSg hηg hgb`. Simplify using `only [IsFilt, NbThin, NbUp, NbDown] at hF ⊢`. Take `⟨hA, ⟨lo, hlo⟩, ⟨hi, hhi⟩⟩` from `hF`. Use `⟨fun hj i => ?_, fun hj i => ?_, fun hj i => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `top : ∀ u, u ≤ -G → Fil u = ⊤` using `filt_eq_top_of_no_jump_below Fil hA lo hlo (-G) (fun u hu => by_contra fun hne => by have := hj u hne; omega)`. Establish `bot : ∀ u, G + 1 ≤ u → Fil u = ⊥` using `filt_eq_bot_of_no_jump_above Fil hA hi hhi (G + 1) (fun u hu => by_contra fun hne => by have := hj u hne; omega)`. Prove the components needed by the constructor for the conclusion. Use `split_ifs with h1`. Conclude with `bot_le`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[top (-i) (by omega)]`. Use `split_ifs with h1`. Rewrite using `[bot (-i) (by omega)]`. Conclude with `le_top`. Establish `top : ∀ u, u ≤ -η → Fil u = ⊤` using `filt_eq_top_of_no_jump_below Fil hA lo hlo (-η) (fun u hu => by_contra fun hne => by have := hj u hne; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `bot : ∀ u, b + S + 1 ≤ u → Fil u = ⊥` using `filt_eq_bot_of_no_jump_above Fil hA hi hhi (b + S + 1) (fun u hu => by_contra fun hne => by have := hj u hne; omega)`. Establish `mid : ∀ u, η + 1 ≤ u → u ≤ b → Fil u = Fil b` using `filt_eq_of_no_jump_between Fil (η + 1) b (fun u hu hu' => by_contra fun hne => by have := hj u hne; omega)`. Prove the components needed by the constructor for the conclusion. Use `split_ifs with h1 h2`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hA (show -i ≤ b by omega)`. Rewrite using `[top (-i) (by omega)]`. Use `split_ifs with h1 h2`. Rewrite using `[bot (-i) (by omega)]`. Break down `le_or_gt b (-i) with h3 | h3` into its components or cases.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hA h3`. Rewrite using `[mid (-i) (by omega) (by omega)]`. Conclude with `le_top`. Establish `top : ∀ u, u ≤ -b - S → Fil u = ⊤` using `filt_eq_top_of_no_jump_below Fil hA lo hlo (-b - S) (fun u hu => by_contra fun hne => by have := hj u hne; omega)`. Establish `bot : ∀ u, η + 1 ≤ u → Fil u = ⊥` using `filt_eq_bot_of_no_jump_above Fil hA hi hhi (η + 1) (fun u hu => by_contra fun hne => by have := hj u hne; omega)`.
-
-Establish `mid : ∀ u, -b + 1 ≤ u → u ≤ -η → Fil u = Fil (-η)` using `filt_eq_of_no_jump_between Fil (-b + 1) (-η) (fun u hu hu' => by_contra fun hne => by have := hj u hne; omega)`. Prove the components needed by the constructor for the conclusion. Use `split_ifs with h1 h2`. Conclude with `bot_le`. Conclude with `hA (show -i ≤ -η by omega)`.
-
-Rewrite using `[top (-i) (by omega)]`. Use `split_ifs with h1 h2`. Rewrite using `[bot (-i) (by omega)]`. Break down `le_or_gt (-η) (-i) with h3 | h3` into its components or cases. Conclude with `hA h3`.
-
-Rewrite using `[mid (-i) (by omega) (by omega)]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filtration_rounding : Rounding := by
   unfold Rounding

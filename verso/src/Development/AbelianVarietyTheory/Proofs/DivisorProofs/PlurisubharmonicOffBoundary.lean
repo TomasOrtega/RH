@@ -8,15 +8,15 @@ open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm.M GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam
 
 /- English proof (translation)
-Introduce `hP hH D O hO hN A T H h c u hu a j y hy hZ w`. Take `⟨f, hf, hC⟩` from `GlobalTheory.T.divisor_generator_root_exp hP hH D O hO hN A T H h c a j y hy hZ u`. Rewrite using `[hC w]`. Take `⟨T', _, p, q, ι, _, U, ψ, a', b', Y', π, AW, Aω, lam, hψ, ha, hb, hAW, hAω, hlam, hyY, hF2, hF0, hL⟩` from `GlobalTheory.T.divisor_generator_dominant_root hP hH D O hO hN A T H h c a j y hy hZ u hu f hf`. Rewrite using `[hL w]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `set F := GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.pairWeightNormSq (fun τ x => (a' τ : ℂ) • GlobalTheory.HermFrame.quotGram (ψ τ x)) (fun τ x => (b' τ : ℂ) • -GlobalTheory.HermFrame.subGram (ψ τ x)) π AW Aω lam with hFdef`. Establish `hpos` using `(((GlobalTheory.T.good_reduction_statement_holds.2.2 (Fin (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y) → ℂ) ι T' p q U ψ a' b' Y' π AW Aω hψ ha hb hAW hAω lam y hyY).1 hlam) w)`. Establish `hlog : ContDiffAt ℝ 2 (fun x => Real.log (F x)) y` using `hF2.log hF0.ne'`. Establish `e1 : GlobalTheory.HermFrame.diagVal (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineChern F y) w = -(ReciprocityTheory.AnForm.levi (fun x => Real.log (F x)) y w / (2 * Real.pi))`. Rewrite using `[← GlobalTheory.HermFrame.diagVal_ddc hlog w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.HermFrame.diagVal, GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineChern]`. Rewrite using `[GlobalTheory.HermFrame.chernOne_line (f := F) hF2 hF0.ne' (Filter.Eventually.of_forall fun x => rfl)]`. Simplify using the standard rewrite rules. Establish `e0 : GlobalTheory.HermFrame.diagVal (fun _ _ : Fin (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y) → ℂ => (0 : ℂ)) w = 0`. Simplify using `[GlobalTheory.HermFrame.diagVal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hpos`. Rewrite `h1` using `[e0, e1]`. Establish `hπ` using `Real.pi_pos`. Establish `h2 : ReciprocityTheory.AnForm.levi (fun x => Real.log (F x)) y w ≤ 0`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at hc`. Establish `: 0 < ReciprocityTheory.AnForm.levi (fun x => Real.log (F x)) y w / (2 * Real.pi)` using `div_pos hc (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HodgeWeightPos.pshOff_th_ph : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∀ c u, GlobalTheory.FlagPoly.Dom u → ∀ σ, PshOff ((T.M c).A σ) ((T.M c).Z σ) ((T.F c).th u σ + ReciprocityTheory.AnForm.M.LocPot.ofFun ((T.F c).ph u σ)) := by
   intro hP hH D O hO hN A T H h c u hu a j y hy hZ w

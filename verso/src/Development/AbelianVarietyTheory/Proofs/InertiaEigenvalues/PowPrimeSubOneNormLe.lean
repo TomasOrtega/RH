@@ -4,15 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MatrixOneAddPo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ n _ _ X k hX i j`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (l : ℝ) ≠ 0` using `by positivity`. Use `set t : ℝ := (l : ℝ) ^ (-((k : ℤ) + 2)) with ht`. Establish `t0 : 0 ≤ t` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tl : t ≤ (l : ℝ)⁻¹`. Rewrite using `[ht, ← zpow_neg_one]`. Conclude with `zpow_le_zpow_right₀ hl1.le (by omega)`. Establish `t1 : t ≤ 1` using `tl.trans (inv_le_one_of_one_le₀ hl1.le)`. Establish `hrhs : (l : ℝ) ^ (-(((k + 1 : ℕ) : ℤ) + 2)) = t * (l : ℝ)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, show -(((k + 1 : ℕ) : ℤ) + 2) = -((k : ℤ) + 2) + (-1) by push_cast; ring, zpow_add₀ hl0, zpow_neg_one]`. Rewrite using `[hrhs]`. Use `set Y := X - 1 with hY`. Establish `hXY : X = 1 + Y` using `by rw [hY]; abel`. Establish `hR` using `GlobalTheory.T.norm_one_add_pow_sub_one_sub_smul_le_sq ℚ_[l] n Y t t0 t1 hX l i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsplit : (X ^ l - 1) i j = ((1 + Y) ^ l - 1 - ((l : ℕ) : ℚ_[l]) • Y) i j + (((l : ℕ) : ℚ_[l]) • Y) i j`. Rewrite using `[hXY]`. Simplify using the standard rewrite rules. Rewrite using `[hsplit]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, Padic.norm_p, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hX i j) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_prime_sub_one_norm_le : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (X : Matrix n n ℚ_[l]) (k : ℕ), (∀ i j, ‖(X - 1) i j‖ ≤ (l : ℝ) ^ (-((k : ℤ) + 2))) → ∀ i j, ‖(X ^ l - 1) i j‖ ≤ (l : ℝ) ^ (-(((k + 1 : ℕ) : ℤ) + 2)) := by
   intro l _ n _ _ X k hX i j

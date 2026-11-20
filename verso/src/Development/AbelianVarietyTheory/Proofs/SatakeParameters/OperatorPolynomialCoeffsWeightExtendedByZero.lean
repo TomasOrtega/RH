@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open MvPolynomial
 
 /- English proof (translation)
-Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `r hr`. Apply `hF` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hr ⟨⟨r.1, by omega⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_castLE_of_vanish {M : Type} [AddCommMonoid M] {a b : ℕ} (h : a ≤ b) (F : Fin b → M)
     (hF : ∀ r : Fin b, a ≤ r.1 → F r = 0) : ∑ r, F r = ∑ r : Fin a, F (Fin.castLE h r) := by
@@ -23,13 +23,13 @@ theorem sum_castLE_of_vanish {M : Type} [AddCommMonoid M] {a b : ℕ} (h : a ≤
   exact hr ⟨⟨r.1, by omega⟩, rfl⟩
 
 /- English proof (translation)
-Establish `e : (MvPolynomial.mapAlgHom (colSub β : MvPolynomial (GL3Theta.FrV D N') ℂ →ₐ[ℂ] MvPolynomial (GL3Theta.FrV D N') ℂ)).comp (aeval (fun k : GL3Theta.FrV D N => ∑ b : Fin N', C (C (s k.1) * (if h : (k.2.2 : ℕ) < N' then (X (k.1, b, ⟨k.2.2, h⟩) : MvPolynomial (GL3Theta.FrV D N') ℂ) …`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨τ, i, c⟩`. Establish `hc : (c : ℕ) < N'` using `lt_of_lt_of_le c.2 hN`. Establish `h1 : ∀ r : Fin N, (r : ℕ) < N'` using `fun r => lt_of_lt_of_le r.2 hN`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply, aeval_X, colSub, dif_pos hc, dif_pos (h1 _), map_sum, map_mul, MvPolynomial.mapAlgHom_apply, map_X, map_C, algHom_C, algebraMap_eq, Matrix.submatrix_apply]`. Simplify using `only [RingHom.coe_coe, aeval_C, aeval_X, map_sum, map_mul, algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[sum_castLE_of_vanish hN]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.castLE, MvPolynomial.algebraMap_apply, algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Introduce `r hr`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hβ τ r ⟨c, hc⟩ (Fin.lt_def.2 (lt_of_lt_of_le c.2 hr))]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `DFunLike.congr_fun e Q`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polDY_colSub (D : D7) {N N' : ℕ} (hN : N ≤ N') (s : D.what₂.Tau → ℂ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ)
     (β : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ) (hβ : ∀ τ r c, c < r → β τ r c = 0) :
@@ -61,15 +61,15 @@ theorem polDY_colSub (D : D7) {N N' : ℕ} (hN : N ≤ N') (s : D.what₂.Tau �
   exact DFunLike.congr_fun e Q
 
 /- English proof (translation)
-Introduce `D N N' hN s ν Q hQ`. Establish `hc : ∀ α, MvPolynomial.coeff α (polDY D s Q (N'` using `N')) ∈ WtPol ℂ (extNu N' ν) := by`. Introduce `α β hβ`. Establish `hβ0 : ∀ τ r c, c < r → β τ r c = 0` using `fun τ r c h => (hβ τ).1 r c h`. Establish `hB : IsBor (fun τ => (β τ).submatrix (Fin.castLE hN) (Fin.castLE hN))` using `fun τ => ⟨fun r c h => (hβ τ).1 _ _ h, fun r => (hβ τ).2 _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (MvPolynomial.coeff α) (polDY_colSub D hN s Q β hβ0)`. Establish `e2 : ∀ (c : ℂ) (P : MvPolynomial (GL3Theta.FrV D N) ℂ), polDY D s (c • P) (N'` using `N') = c • polDY D s P (N' := N') := fun c P => by unfold polDY; exact map_smul _ c P`. Rewrite `e1` using `[MvPolynomial.coeff_map, hQ _ hB, e2, MvPolynomial.coeff_smul]`. Establish `e3 : (∏ τ, ∏ r, β τ r r ^ extNu N' ν τ r) = ∏ τ, ∏ r, (β τ).submatrix (Fin.castLE hN) (Fin.castLE hN) r r ^ ν τ r`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `Fintype.prod_of_injective (Fin.castLE hN) (Fin.castLE_injective hN) _ _ ?_ ?_` and prove the remaining obligations. Introduce `r hr`. Establish `hr' : ¬ (r : ℕ) < N` using `fun h => hr ⟨⟨r, h⟩, rfl⟩`. Simplify using `only [extNu, dif_neg hr', pow_zero]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `r`. Simplify using `only [extNu, Matrix.submatrix_apply, Fin.coe_castLE, dif_pos r.2]`. Rewrite using `[e3]`. Conclude with `e1`. Use `⟨hc, fun Θ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `framePol`. Use `Submodule.sum_mem _ fun α _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ (hc α)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_polDY_framePol : ∀ (D : D7) {N N' : ℕ}, N ≤ N' → ∀ (s : D.what₂.Tau → ℂ) (ν : D.what₂.Tau → Fin N → ℕ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ), Q ∈ WtPol ℂ ν → (∀ α, MvPolynomial.coeff α (polDY D s Q (N' := N')) ∈ WtPol ℂ (extNu N' ν)) ∧ ∀ Θ : TaylorLogMetric.VC D N N' → ℂ, framePol D s Q Θ ∈ WtPol ℂ (extNu N' ν) := by
   intro D N N' hN s ν Q hQ

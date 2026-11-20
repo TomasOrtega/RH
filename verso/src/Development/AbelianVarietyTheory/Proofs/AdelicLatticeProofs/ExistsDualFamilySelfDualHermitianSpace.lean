@@ -8,13 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LatVacDual
 
 /- English proof (translation)
-Use `haveI : IsLocalizedModule (nonZeroDivisors O) Λ.subtype := { map_units := fun x => by`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hx : algebraMap O E x ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors x.2`. Use `⟨fun a b h => ?_, fun b => ⟨(algebraMap O E x)⁻¹ • b, ?_⟩⟩` and prove the remaining obligations. Establish `h' : algebraMap O E x • a = algebraMap O E x • b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Module.algebraMap_end_apply]`. Conclude with `smul_right_injective V hx h'`. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul E, smul_smul, mul_inv_cancel₀ hx, one_smul]`. Use `surj := fun y => by`. Establish `hy : y ∈ Submodule.span E (Λ : Set V)` using `hspan ▸ Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors O) E _ y hy`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Use `exists_of_eq := fun {a b} h => ⟨1, by rw [Λ.injective_subtype h]⟩ }`. Set `g : V →ₗ[O] E` to `IsLocalizedModule.lift (nonZeroDivisors O) Λ.subtype ((Algebra.linearMap O E).comp φ) (IsLocalizedModule.map_units (Algebra.linearMap O E))`.
-
-Use `⟨g.extendScalarsOfIsLocalization (nonZeroDivisors O) E, fun x => ?_⟩` and prove the remaining obligations. Conclude with `IsLocalizedModule.lift_apply (nonZeroDivisors O) Λ.subtype ((Algebra.linearMap O E).comp φ) (IsLocalizedModule.map_units (Algebra.linearMap O E)) x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_extension {O E V : Type} [CommRing O] [IsDomain O] [Field E] [Algebra O E]
     [IsFractionRing O E] [AddCommGroup V] [Module E V] [Module O V] [IsScalarTower O E V]
@@ -43,25 +41,23 @@ theorem exists_extension {O E V : Type} [CommRing O] [IsDomain O] [Field E] [Alg
     (IsLocalizedModule.map_units (Algebra.linearMap O E)) x
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hfg`. Use `haveI : Module.FinitePresentation (𝓞 E) Λ := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 E) Λ := Module.Flat.projective_of_finitePresentation`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' (𝓞 E) Λ`. Take `⟨σ, hσ⟩` from `Module.projective_lifting_property f LinearMap.id hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose ψ hψ using fun i : Fin n => exists_extension Λ hspan ((LinearMap.proj i).comp σ)`. Set `c : Fin n → Fin r → E` to `fun i j => ψ i (Pi.single j 1)`. Establish `hc : ∀ i x, ψ i x = ∑ j, x j * c i j`. Introduce `i x`. Use `conv_lhs => rw [pi_eq_sum_univ' x]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[c, map_sum]`. Set `s' : Fin n → Fin r → E` to `fun i => star (c i ᵥ* G⁻¹)`. Establish `hs' : ∀ i j, ∑ k, star (s' i k) * G k j = c i j`. Introduce `i j`. Establish `: (c i ᵥ* G⁻¹) ᵥ* G = c i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hdet, Matrix.vecMul_one]`. Rewrite using `[← congrFun this j]`. Simplify using `[s', Matrix.vecMul, dotProduct]`. Set `s : Fin n → Fin r → E` to `fun i => f (Pi.single i 1)`. Use `⟨n, s, s', fun i => ⟨(f (Pi.single i 1)).2, hsd _ fun x hx => ?_⟩, fun a j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∑ a, ∑ b, star (x a) * G a b * s' i b = star (ψ i x)`. Rewrite using `[hc, star_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hs', star_mul', star_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[star_mul', star_star, hG]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hψ i ⟨x, hx⟩`. Rewrite using `[h1]`. Use `⟨⟨star (ψ i x), ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : IsIntegral ℤ (ψ i x)`. Rewrite using `[show ψ i x = _ from h2]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Conclude with `h3.map (starRingEnd E).toIntAlgHom`. Establish `key : (∑ i, (ψ i).smulRight (s i) : (Fin r → E) →ₗ[E] (Fin r → E)) = LinearMap.id`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext_on hspan fun x hx => ?_` and prove the remaining obligations. Establish `h1 : f (σ ⟨x, hx⟩) = ⟨x, hx⟩` using `LinearMap.congr_fun hσ ⟨x, hx⟩`. Rewrite `h1` using `[pi_eq_sum_univ' (σ ⟨x, hx⟩), map_sum]`. Establish `h2` using `congrArg Λ.subtype h1`. Rewrite `h2` using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.sum_apply, LinearMap.id_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) h2` and prove the remaining obligations. Rewrite using `[LinearMap.smulRight_apply, show ψ i x = _ from hψ i ⟨x, hx⟩, algebraMap_smul, map_smul, map_smul]`. Both sides reduce to the same expression. Establish `h` using `congrFun (LinearMap.congr_fun key (Pi.single j 1)) a`.
-
-Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, LinearMap.id_apply, Pi.single_apply] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hs', mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_family {E : Type} [Field E] [NumberField E] [StarRing E] {r : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (hG : ∀ i j, star (G i j) = G j i) (hdet : IsUnit G.det)
@@ -120,7 +116,7 @@ theorem exists_dual_family {E : Type} [Field E] [NumberField E] [StarRing E] {r 
     rw [hs', mul_comm]
 
 /- English proof (translation)
-Introduce `D S Λ h`. Conclude with `exists_dual_family S.gram (gram_star S) (gram_det_isUnit S) Λ h.1.fg h.1.span_eq_top fun y hy => (h.2 y).2 hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dualFamily : ∀ (D : D7) (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)), IsSelfDualC S Λ → ∃ (n : ℕ) (s s' : Fin n → Fin S.rank → D.host.E), (∀ i, s i ∈ Λ ∧ s' i ∈ Λ) ∧ ∀ a j, ∑ i, s i a * ∑ k, star (s' i k) * S.gram k j = if a = j then 1 else 0 := by
   intro D S Λ h

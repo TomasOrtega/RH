@@ -29,7 +29,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.Eq8.StalkPow
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M j j rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_of_comp {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
@@ -37,14 +37,14 @@ theorem lbIso_pull_of_comp {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶
     (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tensor_left_hom_ext {S : Scheme.{0}} {A : Over S} {X : Scheme.{0}} {a b : X ⟶ (A ⊗ A).left}
     (h₁ : a ≫ (fst A A).left = b ≫ (fst A A).left) (h₂ : a ≫ (snd A A).left = b ≫ (snd A A).left) : a = b := by
   apply pullback.hom_ext <;> assumption
 
 /- English proof (translation)
-Establish `e₁ : ((fst G' G').left ≫ h) ≫ G.hom = ((snd G' G').left ≫ h) ≫ G.hom`. Rewrite using `[Category.assoc, w, ← Category.assoc, Over.w, Category.assoc, w, ← Category.assoc, Over.w]`. Conclude with `⟨pullback.lift _ _ e₁, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_isSquare {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {f : S' ⟶ S} (h : G'.left ⟶ G.left)
     (w : h ≫ G.hom = G'.hom ≫ f) : ∃ h₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left, IsSquare h h₂ := by
@@ -53,9 +53,7 @@ theorem exists_isSquare {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {f : S' 
   exact ⟨pullback.lift _ _ e₁, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ hA M hN V z`. Use `haveI : IsDedekindDomain o' := hA.ded`. Set `e : M.Z.presheaf.stalk (V.ι z) ≅ V.toScheme.presheaf.stalk z` to `asIso (V.ι.stalkMap z)`. Set `e' : (V.toScheme.presheaf.stalk z) ≃+* M.O (V.ι z)` to `e.commRingCatIsoToRingEquiv.symm.trans (M.stalkEquiv (V.ι z))`. Use `haveI := RatModel.isNoetherianRing_O M (V.ι z)`.
-
-Use `haveI := RatModel.isIntegrallyClosed_O hN (V.ι z)`. Conclude with `⟨MulEquiv.isDomain _ e'.toMulEquiv, isNoetherianRing_of_ringEquiv _ e'.symm, IsIntegrallyClosed.of_equiv e'.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stalk_isDomain_isNoetherian_isIntegrallyClosed : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (M : RatModel o' Ω), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z → ∀ (V : M.Z.Opens) (z : V.toScheme), IsDomain (V.toScheme.presheaf.stalk z) ∧ IsNoetherianRing (V.toScheme.presheaf.stalk z) ∧ IsIntegrallyClosed (V.toScheme.presheaf.stalk z) := by
   intro o' Ω _ _ _ hA M hN V z
@@ -67,15 +65,15 @@ theorem stalk_isDomain_isNoetherian_isIntegrallyClosed : ∀ (o' Ω : Type) [Com
   exact ⟨MulEquiv.isDomain _ e'.toMulEquiv, isNoetherianRing_of_ringEquiv _ e'.symm, IsIntegrallyClosed.of_equiv e'.symm⟩
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ M V z _`. Set `e : M.Z.presheaf.stalk (V.ι z) ≅ V.toScheme.presheaf.stalk z` to `asIso (V.ι.stalkMap z)`. Set `e' : (V.toScheme.presheaf.stalk z) ≃+* M.O (V.ι z)` to `e.commRingCatIsoToRingEquiv.symm.trans (M.stalkEquiv (V.ι z))`. Establish `hg : Function.Injective ((algebraMap (V.toScheme.presheaf.stalk z) (FractionRing (V.toScheme.presheaf.stalk z))).comp e'.symm.toRingHom)` using `(IsFractionRing.injective _ _).comp e'.symm.injective`. Set `emb : Ω →+* FractionRing (V.toScheme.presheaf.stalk z)` to `IsFractionRing.lift (A := M.O (V.ι z)) hg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hemb : ∀ r : M.O (V.ι z), emb (algebraMap (M.O (V.ι z)) Ω r) = algebraMap _ _ (e'.symm r)` using `fun r => IsFractionRing.lift_algebraMap (A := M.O (V.ι z)) hg r`. Use `⟨emb, ?_⟩` and prove the remaining obligations. Establish `key : (algebraMap (V.toScheme.presheaf.stalk z) (FractionRing (V.toScheme.presheaf.stalk z))).comp (V.ι.stalkMap z).hom = emb.comp ((M.O (V.ι z)).val.toRingHom.comp (M.stalkEquiv (V.ι z)).toRingHom)`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hemb (M.stalkEquiv (V.ι z) a)`. Establish `h2 : e'.symm (M.stalkEquiv (V.ι z) a) = (V.ι.stalkMap z).hom a`. Simplify using `[e', e]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, GlobalTheory.ValCmp.pt_eq_comp M (V.ι z)]`. Establish `L : jK (V.toScheme.presheaf.stalk z) ≫ Spec.map (V.ι.stalkMap z) = Spec.map (CommRingCat.ofHom ((algebraMap (V.toScheme.presheaf.stalk z) (FractionRing (V.toScheme.presheaf.stalk z))).comp (V.ι.stalkMap z).hom))`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `Rr : spMap emb ≫ spMap (M.O (V.ι z)).val.toRingHom ≫ spMap (M.stalkEquiv (V.ι z)).toRingHom = Spec.map (CommRingCat.ofHom (emb.comp ((M.O (V.ι z)).val.toRingHom.comp (M.stalkEquiv (V.ι z)).toRingHom)))`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, L, key, ← Rr]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_generic_stalk : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] (M : RatModel o' Ω) (V : M.Z.Opens) (z : V.toScheme) [IsDomain (V.toScheme.presheaf.stalk z)], ∃ emb : Ω →+* FractionRing (V.toScheme.presheaf.stalk z), jK (V.toScheme.presheaf.stalk z) ≫ V.toScheme.fromSpecStalk z ≫ V.ι = spMap emb ≫ M.pt := by
   intro o' Ω _ _ _ M V z _
@@ -108,9 +106,9 @@ theorem exists_generic_stalk : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Alge
   simp only [Category.assoc]
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ S ρ M U₀ EE FinalForm T B _ j φB hB x hx`. Establish `w : φB ≫ FinalForm.G.hom = (B.hom ≫ x) ≫ U₀.ι` using `by rw [hB.1.w, Category.assoc, hx]`. Use `⟨FinalForm.cart.1.lift φB (B.hom ≫ x) w, FinalForm.cart.1.lift_fst _ _ _, FinalForm.cart.1.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Establish `n : IsGrpPullback B FinalForm.G (x ≫ U₀.ι) (FinalForm.cart.1.lift φB (B.hom ≫ x) w ≫ FinalForm.φ)` using `hB.congr hx.symm (FinalForm.cart.1.lift_fst _ _ _).symm`. Establish `c` using `IsGrpPullback.cancel FinalForm.cart n (FinalForm.cart.1.lift_snd _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `c.comp (isGrpPullback_pullback ρ.P.A FinalForm.u₀)`.
+A detailed English derivation is pending.
 -/
 theorem exists_genfib_of_zhOut : ∀ {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] {S : ThetaSys o' Ω} {ρ : S.Real} {M : RatModel o' Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} (FinalForm : ZHOut ρ M U₀ EE) {T : Scheme.{0}} (B : Over T) [GrpObj B] (j : T ⟶ M.Z) (φB : B.left ⟶ FinalForm.G.left), IsGrpPullback B FinalForm.G j φB → ∀ x : T ⟶ U₀.toScheme, x ≫ U₀.ι = j → ∃ ψ : B.left ⟶ pullback ρ.P.A.hom FinalForm.u₀, ψ ≫ FinalForm.φ = φB ∧ ψ ≫ pullback.snd ρ.P.A.hom FinalForm.u₀ = B.hom ≫ x ∧ IsGrpPullback B ρ.P.A (x ≫ FinalForm.u₀) (ψ ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) := by
   intro o' Ω _ _ _ S ρ M U₀ EE FinalForm T B _ j φB hB x hx
@@ -122,19 +120,19 @@ theorem exists_genfib_of_zhOut : ∀ {o' Ω : Type} [CommRing o'] [Field Ω] [Al
   exact c.comp (isGrpPullback_pullback ρ.P.A FinalForm.u₀)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ G _ hG _ _ hN hN' h` and use `GlobalTheory.GenericDec.lbIso_of_generic G hG hN hN' h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lbIso_of_generic_fibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ N N' : LB G.left, N.IsLB → N'.IsLB → LBIso (N.pull (pullback.fst G.hom (jK R))) (N'.pull (pullback.fst G.hom (jK R))) → LBIso N N' :=
   fun _ _ _ _ _ _ G _ hG _ _ hN hN' h => GlobalTheory.GenericDec.lbIso_of_generic G hG hN hN' h
 
 /- English proof (translation)
-Introduce `h M₁ B B₁ B₂ _ _ _ ζ ζ₁ ζ₂ S S₁ S₂ S₃ s s₁ s₂ o o₁ o₂ f₁ f₂ j t hjt h₁ h₂`. Take `⟨φ₁, φ₂₁, hpb₁, hsq₁, hP₁, -⟩` from `h₁`. Take `⟨φ₂, φ₂₂, hpb₂, hsq₂, hP₂, -⟩` from `h₂`. Establish `n : IsGrpPullback ((Over.pullback j).obj o₁.A) o.A (t ≫ f₂) (pullback.fst o₁.A.hom j ≫ φ₁)` using `((isGrpPullback_pullback o₁.A j).comp hpb₁).congr hjt rfl`. Establish `w : (pullback.fst o₁.A.hom j ≫ φ₁) ≫ o.A.hom = (((Over.pullback j).obj o₁.A).hom ≫ t) ≫ f₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[n.1.w, Category.assoc]`. Establish `hχ1 : hpb₂.1.lift _ _ w ≫ φ₂ = pullback.fst o₁.A.hom j ≫ φ₁` using `hpb₂.1.lift_fst _ _ _`. Establish `hχ2 : hpb₂.1.lift _ _ w ≫ o₂.A.hom = ((Over.pullback j).obj o₁.A).hom ≫ t` using `hpb₂.1.lift_snd _ _ _`. Establish `hχ : IsGrpPullback ((Over.pullback j).obj o₁.A) o₂.A t (hpb₂.1.lift _ _ w)` using `IsGrpPullback.cancel hpb₂ (n.congr rfl hχ1.symm) hχ2`. Take `⟨χ₂, hsq⟩` from `exists_isSquare (G' := (Over.pullback j).obj o₁.A) (G := o₂.A) (f := t) (hpb₂.1.lift _ _ w) hχ2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨χ₂', hsq'⟩` from `exists_isSquare (G' := (Over.pullback j).obj o₁.A) (G := o₁.A) (f := j) (pullback.fst o₁.A.hom j) pullback.condition`. Use `⟨_, χ₂, χ₂', hχ, hsq, hsq', ?_⟩` and prove the remaining obligations. Establish `e : χ₂' ≫ φ₂₁ = χ₂ ≫ φ₂₂`. Apply `tensor_left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq₁.1, ← Category.assoc, hsq'.1, Category.assoc, Category.assoc, hsq₂.1, ← Category.assoc χ₂, hsq.1, Category.assoc, hχ1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hsq₁.2, ← Category.assoc, hsq'.2, Category.assoc, Category.assoc, hsq₂.2, ← Category.assoc χ₂, hsq.2, Category.assoc, hχ1]`. Establish `B1` using `lbIso_pull_of_comp hP₁ χ₂' rfl`. Establish `B2` using `lbIso_pull_of_comp hP₂ χ₂ e`. Conclude with `LBIso.trans (pull_isLB o₁.isLB _) (pull_isLB o.isLB _) (pull_isLB o₂.isLB _) B1 B2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_siegPB_compare : ∀ {h M₁ : ℕ} {B B₁ B₂ : Type} [CommRing B] [CommRing B₁] [CommRing B₂] {ζ : B} {ζ₁ : B₁} {ζ₂ : B₂} {S S₁ S₂ S₃ : Scheme.{0}} {s : S ⟶ Sp B} {s₁ : S₁ ⟶ Sp B₁} {s₂ : S₂ ⟶ Sp B₂} (o : SiegPre h M₁ ζ s) (o₁ : SiegPre h M₁ ζ₁ s₁) (o₂ : SiegPre h M₁ ζ₂ s₂) (f₁ : S₁ ⟶ S) (f₂ : S₂ ⟶ S) (j : S₃ ⟶ S₁) (t : S₃ ⟶ S₂), j ≫ f₁ = t ≫ f₂ → SiegPB o₁ o f₁ → SiegPB o₂ o f₂ → ∃ (χ : ((Over.pullback j).obj o₁.A).left ⟶ o₂.A.left) (χ₂ : ((Over.pullback j).obj o₁.A ⊗ (Over.pullback j).obj o₁.A).left ⟶ (o₂.A ⊗ o₂.A).left) (χ₂' : ((Over.pullback j).obj o₁.A ⊗ (Over.pullback j).obj o₁.A).left ⟶ (o₁.A ⊗ o₁.A).left), IsGrpPullback ((Over.pullback j).obj o₁.A) o₂.A t χ ∧ IsSquare χ χ₂ ∧ IsSquare (pullback.fst o₁.A.hom j) χ₂' ∧ LBIso (o₁.P.pull χ₂') (o₂.P.pull χ₂) := by
   intro h M₁ B B₁ B₂ _ _ _ ζ ζ₁ ζ₂ S S₁ S₂ S₃ s s₁ s₂ o o₁ o₂ f₁ f₂ j t hjt h₁ h₂
@@ -163,43 +161,39 @@ theorem exists_siegPB_compare : ∀ {h M₁ : ℕ} {B B₁ B₂ : Type} [CommRin
   exact LBIso.trans (pull_isLB o₁.isLB _) (pull_isLB o.isLB _) (pull_isLB o₂.isLB _) B1 B2.symm
 
 /- English proof (translation)
-Introduce `g n o _ ζ F W o' Ω _ _ _ _ S ρ u c pr hS M U₀ EE FinalForm hO V v hv z`. Take `⟨hpb, hmon, huniv, hLc⟩` from `hS`. Take `⟨hdom, hnoeth, hic⟩` from `stalk_isDomain_isNoetherian_isIntegrallyClosed o' Ω M hO.normal V z`. Use `haveI := hdom`. Use `haveI := hnoeth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hic`. Take `⟨emb, hemb⟩` from `exists_generic_stalk o' Ω M V z`. Establish `hVne : (V : Set M.Z).Nonempty` using `⟨z.1, z.2⟩`. Establish `rU : Set.range M.pt ⊆ Set.range U₀.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(top_le_preimage_iff M.pt U₀).1 (M.top_le_preimage_pt hO.ne)`. Establish `rV : Set.range M.pt ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(top_le_preimage_iff M.pt V).1 (M.top_le_preimage_pt hVne)`. Use `set x₀ := IsOpenImmersion.lift U₀.ι M.pt rU with hx₀def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set xV := IsOpenImmersion.lift V.ι M.pt rV with hxVdef`. Establish `hx₀ : x₀ ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hxV : xV ≫ V.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hx₀u : x₀ ≫ FinalForm.u₀ = spMap S.R.val.toRingHom` using `FinalForm.u₀_gen x₀ hx₀`. Establish `hxVv : xV ≫ v = spMap S.R.val.toRingHom ≫ u` using `hv xV hxV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hjξ : jK (V.toScheme.presheaf.stalk z) ≫ V.toScheme.fromSpecStalk z = spMap emb ≫ xV`. Rewrite using `[← cancel_mono V.ι, Category.assoc, hemb, Category.assoc, hxV]`. Establish `hjι : jK (V.toScheme.presheaf.stalk z) ≫ (V.toScheme.fromSpecStalk z ≫ V.ι) = (spMap emb ≫ x₀) ≫ U₀.ι`. Rewrite using `[hemb, Category.assoc, hx₀]`. Establish `htg : (spMap emb ≫ x₀) ≫ FinalForm.u₀ = spMap emb ≫ spMap S.R.val.toRingHom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc, hx₀u]`. Establish `hjv : jK (V.toScheme.presheaf.stalk z) ≫ (V.toScheme.fromSpecStalk z ≫ v) = (spMap emb ≫ spMap S.R.val.toRingHom) ≫ u`. Rewrite using `[← Category.assoc, hjξ, Category.assoc, hxVv, Category.assoc]`. Establish `hGO : IsSemiAbelian ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G)` using `IsSemiAbelian.pullback _ FinalForm.G FinalForm.semi`. Establish `hGOg` using `(isGrpPullback_pullback ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G) (jK (V.toScheme.presheaf.stalk z))).comp (isGrpPullback_pullback FinalForm.G (V.toScheme.fromSpecStalk z ≫ V.ι))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ, hψφ, hψs, hψpb⟩` from `exists_genfib_of_zhOut FinalForm _ _ _ hGOg (spMap emb ≫ x₀) hjι.symm`. Rewrite `hψpb` using `[htg]`. Establish `hid : spMap (RingHom.id o) = 𝟙 (Sp o)` using `Spec.map_id _`. Take `⟨cO, hcO⟩` from `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange g n o o ζ ζ (RingHom.id o) F.X _ F.s ((V.toScheme.fromSpecStalk z ≫ v) ≫ F.s) (V.toScheme.fromSpecStalk z ≫ v) rfl (by rw [hid, Category.comp_id])).1 F.univ`. Take `⟨χ, χ₂, χ₂', hχ, hsq, hsq', hP⟩` from `exists_siegPB_compare F.univ cO c _ u (jK (V.toScheme.presheaf.stalk z)) _ hjv hcO hpb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨pr', hpr'χ, hmon', huniv'⟩` from `GlobalTheory.T.eighthPowerProjections_groupPullback pr hψpb hχ hmon huniv`. Establish `t2` using `GlobalTheory.T.exists_eighth_power_projections_extend_from_generic (V.toScheme.presheaf.stalk z)`. Establish `t3` using `t2 ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G)`. Establish `t4` using `t3 cO.A`. Take `⟨prO, hmonO, hprOg, hunivO⟩` from `t4 hGO cO.ab pr' hmon' huniv'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨cO, prO, hcO, hmonO, hunivO, ?_, ?_⟩` and prove the remaining obligations. Establish `hLB0 : (FinalForm.L.L.pull (pullback.fst FinalForm.G.hom (V.toScheme.fromSpecStalk z ≫ V.ι))).IsLB` using `pull_isLB FinalForm.L.isLB _`. Establish `hLB1 : (LB.LinComb cO.P (K` using `Fin 8 × Fin 8) (fun ab => (lift (prO ab.1) (prO ab.2)).left) (fun ab => W ab.1 ab.2)).IsLB := LB.isLB_linComb cO.isLB _ _`. Establish `A1` using `lbIso_pull_of_comp (GlobalTheory.PolBaseChange.lbIso_refl hLB0) (pullback.fst ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G).hom (jK (V.toScheme.presheaf.stalk z))) hψφ`. Establish `A2` using `lbIso_pull_of_comp (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB FinalForm.L.isLB FinalForm.φ)) ψ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `A3` using `lbIso_pull_of_comp (L := ρ.P.L) (a := pullback.fst ρ.P.A.hom FinalForm.u₀) ⟨FinalForm.w, FinalForm.w_gen⟩ ψ rfl`. Establish `X1` using `LBIso.trans (pull_isLB hLB0 _) (pull_isLB FinalForm.L.isLB _) (pull_isLB ρ.P.isLB _) A1 (LBIso.trans (pull_isLB FinalForm.L.isLB _) (pull_isLB (pull_isLB FinalForm.L.isLB _) _) (pull_isLB ρ.P.isLB _) A2.symm A3)`. Establish `X2` using `GlobalTheory.T.lineBundleIso_eighthPower_groupPullback c.P (cO.P.pull χ₂') ρ.P.L _ pr pr' W c.isLB (pull_isLB cO.isLB _) ρ.P.isLB (pull_isLB hLB0 _) hsq hP hpr'χ X1 hLc`. Establish `X3` using `GlobalTheory.ShapePull.iso_linComb_pull (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB cO.isLB χ₂')) (K := Fin 8 × Fin 8) (fun ab => (lift (pr' ab.1) (pr' ab.2)).left) (fun ab => (lift (prO ab.1) (prO ab.2)).left) (fun ab => W ab.1 ab.2) (pullback.fst ((Over.pullback (V.toSche …`. Establish `e₁ : ∀ q, (pr' q).left ≫ pullback.fst cO.A.hom (jK (V.toScheme.presheaf.stalk z)) = pullback.fst ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G).hom (jK (V.toScheme.presheaf.stalk z)) ≫ (prO q).left`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[← hprOg q]`. Conclude with `pullback.lift_fst _ _ _`. Apply `tensor_left_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc _ χ₂', hsq'.1, ← Category.assoc (Over.Hom.left (lift (pr' ab.1) (pr' ab.2))), ← Over.comp_left, lift_fst, e₁, Category.assoc (pullback.fst _ _) (Over.Hom.left (lift (prO ab.1) (prO ab.2))), ← Over.comp_left, lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc _ χ₂', hsq'.2, ← Category.assoc (Over.Hom.left (lift (pr' ab.1) (pr' ab.2))), ← Over.comp_left, lift_snd, e₁, Category.assoc (pullback.fst _ _) (Over.Hom.left (lift (prO ab.1) (prO ab.2))), ← Over.comp_left, lift_snd])`. Establish `l4` using `lbIso_of_generic_fibre (V.toScheme.presheaf.stalk z)`. Establish `l4'` using `l4 ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G)`. Conclude with `l4' hGO _ _ hLB0 hLB1 (LBIso.trans (pull_isLB hLB0 _) (LB.isLB_linComb (pull_isLB cO.isLB _) _ _) (pull_isLB hLB1 _) X2 X3)`. Introduce `a b f hf`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hfm, f₁, hf₁, hf₁φ⟩` from `hf`. Establish `hmapf : ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).map f).left ≫ pullback.fst FinalForm.G.hom (V.toScheme.fromSpecStalk z ≫ V.ι) = pullback.fst FinalForm.G.hom (V.toScheme.fromSpecStalk z ≫ V.ι) ≫ f.left` using `pullback.lift_fst _ _ _`. Establish `hmapg : ((Over.pullback (jK (V.toScheme.presheaf.stalk z))).map ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).map f)).left ≫ pullback.fst ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G).hom (jK (V.toScheme.presheaf.stalk z)) = pullback.fst ((Over.pullba …` using `pullback.lift_fst _ _ _`. Establish `hmapf₁ : ((Over.pullback FinalForm.u₀).map f₁).left ≫ pullback.fst ρ.P.A.hom FinalForm.u₀ = pullback.fst ρ.P.A.hom FinalForm.u₀ ≫ f₁.left` using `pullback.lift_fst _ _ _`. Establish `key : ((Over.pullback (jK (V.toScheme.presheaf.stalk z))).map ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).map f)).left ≫ ψ = ψ ≫ ((Over.pullback FinalForm.u₀).map f₁).left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `FinalForm.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψφ, Category.assoc, hf₁φ, ← Category.assoc ψ, hψφ, ← Category.assoc, hmapg, Category.assoc, hmapf, Category.assoc]`. Establish `w1 : ((Over.pullback FinalForm.u₀).map f₁).left ≫ ((Over.pullback FinalForm.u₀).obj ρ.P.A).hom = ((Over.pullback FinalForm.u₀).obj ρ.P.A).hom` using `Over.w _`. Establish `w2 : ψ ≫ ((Over.pullback FinalForm.u₀).obj ρ.P.A).hom = ((Over.pullback (jK (V.toScheme.presheaf.stalk z))).obj ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G)).hom ≫ (spMap emb ≫ x₀)` using `hψs`. Rewrite using `[Category.assoc, Category.assoc, w1, w2, ← Category.assoc, Over.w]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgen : ((Over.pullback (jK (V.toScheme.presheaf.stalk z))).map ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).map f)).left ≫ (ψ ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) = (ψ ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) ≫ f₁.left`. Rewrite using `[← Category.assoc, key, Category.assoc, hmapf₁, Category.assoc]`. Establish `hME` using `GlobalTheory.T.elementaryMatrixEndomorphism_groupPullback_transport pr pr' a b f₁ _ hψpb hχ hpr'χ hgen hf₁`. Establish `hsemiC` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme cO.A cO.ab`. Establish `hone : (Over.pullback (jK (V.toScheme.presheaf.stalk z))).map (1 : ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G) ⟶ cO.A) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `GlobalTheory.MatEndPull.ext_of_pb (isGrpPullback_pullback cO.A (jK (V.toScheme.presheaf.stalk z)))` to reduce the goal to its premises. Establish `e1 : ((Over.pullback (jK (V.toScheme.presheaf.stalk z))).map (1 : ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G) ⟶ cO.A)).left ≫ pullback.fst cO.A.hom (jK (V.toScheme.presheaf.stalk z)) = pullback.fst ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj F …` using `pullback.lift_fst _ _ _`. Rewrite using `[e1, GlobalTheory.MatEndPull.one_left_eq, GlobalTheory.MatEndPull.one_left_eq, Category.assoc ((Over.pullback (jK (V.toScheme.presheaf.stalk z))).obj ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G)).hom, GlobalTheory.MatEndPull.unit_pull (isGrpPullback_pullba …`. Conclude with `Category.assoc _ _ _`. Use `haveI : IsMonHom f := hfm`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨inferInstance, fun w => ?_⟩` and prove the remaining obligations. Use `haveI := hmon' w`. Use `haveI := hmonO w`. Establish `e0` using `GlobalTheory.SemiAbExtDomain.existsUnique_hom_extension_generic (R := (V.toScheme.presheaf.stalk z)) (FractionRing (V.toScheme.presheaf.stalk z))`. Establish `e1` using `e0 ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G)`.
-
-Establish `e2` using `e1 cO.A hGO hsemiC`. Establish `ext : ∃! F : ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G) ⟶ cO.A, IsMonHom F ∧ (Over.pullback (jK (V.toScheme.presheaf.stalk z))).map F = (Over.pullback (jK (V.toScheme.presheaf.stalk z))).map ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).map f) ≫ pr …` using `e2 _`. Establish `hw` using `hME.2 w`. Apply `ext.unique ⟨inferInstance, by rw [Functor.map_comp, hprOg]⟩` to reduce the goal to its premises. Distinguish the cases in `hwa : w = a`.
-
-Rewrite `hw`, the goal using `[if_pos hwa]`. Conclude with `⟨hmonO b, by rw [hprOg, hw]⟩`. Rewrite `hw`, the goal using `[if_neg hwa]`. Conclude with `⟨inferInstanceAs (IsMonHom (toUnit _ ≫ η[cO.A])), by rw [hone, hw]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eighth_power_at_stalk : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ), ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X) c pr, SharpBy F W ρ.P u c pr → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (V : M.Z.Opens) (v : V.toScheme ⟶ F.X), (∀ x : Sp Ω ⟶ V.toScheme, x ≫ V.ι = M.pt → x ≫ v = spMap S.R.val.toRingHom ≫ u) → ∀ z : V.toScheme, ∃ (cO : SiegPre g n ζ ((V.toScheme.fromSpecStalk z ≫ v) ≫ F.s)) (prO : Fin 8 → ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G ⟶ cO.A)), SiegPB cO F.univ (V.toScheme.fromSpecStalk z ≫ v) ∧ (∀ a, IsMonHom (prO a)) ∧ (∀ (T' : Over (Spec (V.toScheme.presheaf.stalk z))) (y : Fin 8 → (T' ⟶ cO.A)), ∃! x : T' ⟶ (Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).obj FinalForm.G, ∀ a, x ≫ prO a = y a) ∧ LBIso (FinalForm.L.L.pull (pullback.fst FinalForm.G.hom (V.toScheme.fromSpecStalk z ≫ V.ι))) (LB.LinComb cO.P (K := Fin 8 × Fin 8) (fun ab => (lift (prO ab.1) (prO ab.2)).left) (fun ab => W ab.1 ab.2)) ∧ ∀ (a b : Fin 8) (f : FinalForm.G ⟶ FinalForm.G), MatOn FinalForm pr a b f → MatEnd prO a b ((Over.pullback (V.toScheme.fromSpecStalk z ≫ V.ι)).map f) := by
   intro g n o _ ζ F W o' Ω _ _ _ _ S ρ u c pr hS M U₀ EE FinalForm hO V v hv z

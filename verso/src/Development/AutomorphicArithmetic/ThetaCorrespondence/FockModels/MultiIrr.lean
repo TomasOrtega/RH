@@ -14,7 +14,7 @@ namespace UpperTheory.Lit.Dz
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hd : ∑ j : Fin m, ((fun _ : Fin m => IrrGL.ofChar χ hχ) j).1 = m` using `by simp [IrrGL.ofChar]`. Establish `hP : (prodIrr (fun _ : Fin m => IrrGL.ofChar χ hχ) hd).IsIrreducible` using `GlobalTheory.RgGu.Unl.lUnlinkedIrr_nu k (GlobalTheory.CompanionTheory.SegCoarse.lSegJacquet PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top PositivityTheory.RgGu.segmentRepresentation) PositivityTheory.Geo.geometricLemmaFiltration (GlobalTheory.RgGu.Nup2.nuPair k) m m (fun …`. Set `φ` to `multiProdEquiv (Equiv.sigmaUnique (Fin m) fun _ => Fin 1) (fun _ : Fin m => GlobalTheory.LocGL.equivRep (IrrRep.det (Fin 1) χ hχ))`. Take `⟨θ⟩` from `GlobalTheory.T.product_representation_reorder_equiv k m m (fun _ => 1) (Equiv.sigmaUnique (Fin m) fun _ => Fin 1) (stdBlocks (fun _ : Fin m => 1) hd) _ (fun _ : Fin m => (IrrGL.ofChar χ hχ).rep)`. Conclude with `(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv φ).2 ((GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv θ).2 hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem multi_irr (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m : ℕ)
     (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :

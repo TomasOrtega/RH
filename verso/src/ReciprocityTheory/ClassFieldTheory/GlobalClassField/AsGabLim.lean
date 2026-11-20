@@ -12,7 +12,7 @@ def ResCompat (hle : L ≤ L') (τ' : L' ≃ₐ[F] L') (τ : L ≃ₐ[F] L) : Pr
   ∀ x : L, τ' (IntermediateField.inclusion hle x) = IntermediateField.inclusion hle (τ x)
 
 /- English proof (translation)
-Use extensionality with `x`. Use `(h₁ x).symm.trans (h₂ x)` as an intermediate fact. Conclude with `congrArg Subtype.val ((IntermediateField.inclusion hle).toRingHom.injective this)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ResCompat.unique {hle : L ≤ L'} {τ' : L' ≃ₐ[F] L'} {τ₁ τ₂ : L ≃ₐ[F] L}
     (h₁ : ResCompat hle τ' τ₁) (h₂ : ResCompat hle τ' τ₂) : τ₁ = τ₂ := by
@@ -21,12 +21,12 @@ theorem ResCompat.unique {hle : L ≤ L'} {τ' : L' ≃ₐ[F] L'} {τ₁ τ₂ :
   exact congrArg Subtype.val ((IntermediateField.inclusion hle).toRingHom.injective this)
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem ResCompat.one (hle : L ≤ L') : ResCompat hle 1 1 := fun _ => rfl
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, h₂ x, h₁ (τ x)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ResCompat.mul {hle : L ≤ L'} {σ' τ' : L' ≃ₐ[F] L'} {σ τ : L ≃ₐ[F] L}
     (h₁ : ResCompat hle σ' σ) (h₂ : ResCompat hle τ' τ) : ResCompat hle (σ' * τ') (σ * τ) := by
@@ -34,14 +34,14 @@ theorem ResCompat.mul {hle : L ≤ L'} {σ' τ' : L' ≃ₐ[F] L'} {σ τ : L �
   rw [AlgEquiv.mul_apply, AlgEquiv.mul_apply, h₂ x, h₁ (τ x)]
 
 /- English proof (translation)
-Introduce `x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem ResCompat.refl (τ : L ≃ₐ[F] L) : ResCompat (le_refl L) τ τ := by
   intro x
   rfl
 
 /- English proof (translation)
-Introduce `x`. Establish `e : IntermediateField.inclusion (h₁.trans h₂) x = IntermediateField.inclusion h₂ (IntermediateField.inclusion h₁ x)` using `rfl`. Rewrite using `[e, c₂, c₁]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ResCompat.trans {L'' : IntermediateField F (AlgebraicClosure F)} {h₁ : L ≤ L'} {h₂ : L' ≤ L''}
     {τ'' : L'' ≃ₐ[F] L''} {τ' : L' ≃ₐ[F] L'} {τ : L ≃ₐ[F] L}
@@ -53,9 +53,9 @@ theorem ResCompat.trans {L'' : IntermediateField F (AlgebraicClosure F)} {h₁ :
   rfl
 
 /- English proof (translation)
-Introduce `x`. Apply `τ'.injective` to reduce the goal to its premises. Rewrite using `[h (τ⁻¹ x)]`. Use `show (τ' * τ'⁻¹) _ = IntermediateField.inclusion hle ((τ * τ⁻¹) x)`. Rewrite using `[mul_inv_cancel, mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ResCompat.inv {hle : L ≤ L'} {τ' : L' ≃ₐ[F] L'} {τ : L ≃ₐ[F] L}
     (h : ResCompat hle τ' τ) : ResCompat hle τ'⁻¹ τ⁻¹ := by
@@ -67,12 +67,12 @@ theorem ResCompat.inv {hle : L ≤ L'} {τ' : L' ≃ₐ[F] L'} {τ : L ≃ₐ[F]
   rfl
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem toAb_surjective : Surjective (toAb F) := QuotientGroup.mk'_surjective _
 
 /- English proof (translation)
-Use `h.isGalois` as an intermediate fact. Rewrite using `[abRestrict_mk, ← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem abRestrict_toAb_eq_one_iff (h : IsFiniteAbelian F L) (g : AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) :
     abRestrict F L h (toAb F g) = 1 ↔ g ∈ L.fixingSubgroup := by
@@ -80,18 +80,16 @@ theorem abRestrict_toAb_eq_one_iff (h : IsFiniteAbelian F L) (g : AlgebraicClosu
   rw [abRestrict_mk, ← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGalois_algebraicClosure [CharZero F] : IsGalois F (AlgebraicClosure F) := ⟨⟩
 
 /- English proof (translation)
-Use `isGalois_algebraicClosure (F := F)` as an intermediate fact. Establish `hn : L.fixingSubgroup.Normal`. Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Establish `h1 : g * n * g⁻¹ = ⁅g, n⁆ * n`. Rewrite using `[commutatorElement_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[h1]`. Conclude with `mul_mem (hc (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))) hn`. Establish `hG : IsGalois F L` using `(InfiniteGalois.normal_iff_isGalois L).1 hn`. Use `⟨hfd, hG, fun a b => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := L) (AlgebraicClosure F) a`. Take `⟨k, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := L) (AlgebraicClosure F) b`. Establish `h2 : ⁅g, k⁆ ∈ (AlgEquiv.restrictNormalHom (F` using `F) (K₁ := AlgebraicClosure F) L).ker := by`. Rewrite using `[IntermediateField.restrictNormalHom_ker]`. Conclude with `hc (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top k))`.
-
-Rewrite `h2` using `[MonoidHom.mem_ker, map_commutatorElement, commutatorElement_eq_one_iff_mul_comm]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFiniteAbelian_of_commutator_le [CharZero F] (hfd : FiniteDimensional F L)
     (hc : commutator (AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) ≤ L.fixingSubgroup) :
@@ -114,13 +112,13 @@ theorem isFiniteAbelian_of_commutator_le [CharZero F] (hfd : FiniteDimensional F
   exact h2
 
 /- English proof (translation)
-Use `isGalois_algebraicClosure (F := F)` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `hg L hL`. Establish `h1 : toAb F g = 1` using `(QuotientGroup.eq_one_iff g).2 hg`. Conclude with `(abRestrict_toAb_eq_one_iff hL g).1 (by rw [h1, map_one])`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Set `C : ClosedSubgroup (AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F)` to `⟨(commutator (AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F)).topologicalClosure, Subgroup.isClosed_topologicalClosure _⟩`. Establish `hC : (IntermediateField.fixedField C.1).fixingSubgroup = C.1` using `InfiniteGalois.fixingSubgroup_fixedField C`. Use `show g ∈ C.1`. Rewrite using `[← hC]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => ?_` and prove the remaining obligations. Establish `hint : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Establish `hfd : FiniteDimensional F (IntermediateField.adjoin F {x})` using `IntermediateField.adjoin.finiteDimensional hint`. Establish `hle : IntermediateField.adjoin F {x} ≤ IntermediateField.fixedField C.1` using `IntermediateField.adjoin_le_iff.2 (Set.singleton_subset_iff.2 hx)`. Establish `hab : IsFiniteAbelian F (IntermediateField.adjoin F {x})`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `isFiniteAbelian_of_commutator_le hfd ?_` and prove the remaining obligations. Use `le_trans ?_ (IntermediateField.fixingSubgroup_le hle)` and prove the remaining obligations. Rewrite using `[hC]`. Conclude with `Subgroup.le_topologicalClosure _`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 (hg _ hab) x (IntermediateField.mem_adjoin_simple_self F x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_commutator_iff [CharZero F] (g : Field.absoluteGaloisGroup F) :
     g ∈ (commutator (Field.absoluteGaloisGroup F)).topologicalClosure ↔
@@ -153,7 +151,7 @@ theorem mem_closure_commutator_iff [CharZero F] (g : Field.absoluteGaloisGroup F
       (IntermediateField.mem_adjoin_simple_self F x)
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `toAb_surjective x`. Use `(QuotientGroup.eq_one_iff g).2 ((mem_closure_commutator_iff g).2 fun L hL => ?_)` and prove the remaining obligations. Conclude with `(abRestrict_toAb_eq_one_iff hL g).1 (hx L hL)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem abRestrict_separates [CharZero F] (x : Field.absoluteGaloisGroupAbelianization F)
     (hx : ∀ (L : IntermediateField F (AlgebraicClosure F)) (h : IsFiniteAbelian F L), abRestrict F L h x = 1) : x = 1 := by
@@ -162,7 +160,7 @@ theorem abRestrict_separates [CharZero F] (x : Field.absoluteGaloisGroupAbeliani
   exact (abRestrict_toAb_eq_one_iff hL g).1 (hx L hL)
 
 /- English proof (translation)
-Use `abRestrict_separates (x * y⁻¹) fun L h => by rw [map_mul, map_inv, hxy L h, mul_inv_cancel]` as an intermediate fact. Conclude with `mul_inv_eq_one.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem abRestrict_ext [CharZero F] {x y : Field.absoluteGaloisGroupAbelianization F}
     (hxy : ∀ (L : IntermediateField F (AlgebraicClosure F)) (h : IsFiniteAbelian F L),

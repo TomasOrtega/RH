@@ -10,15 +10,15 @@ open scoped ContDiff ENNReal Matrix
 noncomputable section
 
 /- English proof (translation)
-Set `F : V n → V n` to `fun z => (WithLp.toLp 2 fun k => S k z / W z : V n)`. Set `e` to `PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin n => ℂ)`. Establish `hcomp : ∀ k, DifferentiableAt ℂ (fun y => S k y / W y) 0` using `fun k => ((hS k).div hW hW0).differentiableAt`. Establish `hG : DifferentiableAt ℂ (fun z k => S k z / W z) 0` using `differentiableAt_pi.2 hcomp`. Establish `hFd : DifferentiableAt ℂ F 0` using `e.symm.differentiableAt.comp 0 hG`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet' : LinearMap.det (fderiv ℂ F 0 : V n →ₗ[ℂ] V n) ≠ 0` using `hdet`. Set `L : V n ≃L[ℂ] V n` to `(LinearMap.equivOfDetNeZero (fderiv ℂ F 0 : V n →ₗ[ℂ] V n) hdet').toContinuousLinearEquiv`. Establish `hL : ∀ z, L z = fderiv ℂ F 0 z` using `fun z => rfl`. Use `⟨L, fun k z => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1'` using `((PiLp.proj 2 (fun _ : Fin n => ℂ) k).hasFDerivAt (x := F 0)).comp (0 : V n) hFd.hasFDerivAt`. Establish `h1 : HasFDerivAt (fun y => S k y / W y) ((PiLp.proj 2 (fun _ : Fin n => ℂ) k).comp (fderiv ℂ F 0)) 0` using `h1'`. Rewrite using `[h1.fderiv]`. Both sides reduce to the same expression. Establish `h2` using `hFd.hasFDerivAt.isLittleO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hF0 : F 0 = 0`. Apply `PiLp.ext` to reduce the goal to its premises. Introduce `k`. Simplify using `[F, hS0]`. Simplify using `only [hF0, sub_zero] at h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem coordL {n : ℕ} (W : V n → ℂ) (S : Fin n → V n → ℂ) (hW : AnalyticAt ℂ W 0) (hW0 : W 0 ≠ 0)
     (hS : ∀ k, AnalyticAt ℂ (S k) 0) (hS0 : ∀ k, S k 0 = 0)
@@ -54,9 +54,9 @@ theorem coordL {n : ℕ} (W : V n → ℂ) (S : Fin n → V n → ℂ) (hW : Ana
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Unfold `leadM monoM`. Establish `hs : ∀ i, AnalyticAt ℂ (fun z => Fl.s i (cpt X x z)) 0` using `fun i => anal_loc X (Fl.s_van i).1.1.1.1 hx`. Establish `hw` using `anal_loc X Fl.weightForm_vanishes.1.1.1.1 hx`. Establish `hterm : ∀ (α : Fin (nd X) → ℕ) (k : Fin δ), AnalyticAt ℂ (fun z => cc α k * (∏ i, Fl.s i (cpt X x z) ^ α i) * Fl.w0 (cpt X x z) ^ (T - ∑ q, α q) * t k (cpt X x z)) 0`. Introduce `α k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : AnalyticAt ℂ (fun z => ∏ i, Fl.s i (cpt X x z) ^ α i) 0` using `Finset.analyticAt_fun_prod _ fun i _ => (hs i).pow _`. Conclude with `((analyticAt_const.mul hp).mul (hw.pow _)).mul (anal_loc X (ht k) hx)`. Establish `hk : ∀ α : Fin (nd X) → ℕ, AnalyticAt ℂ (fun z => ∑ k, cc α k * (∏ i, Fl.s i (cpt X x z) ^ α i) * Fl.w0 (cpt X x z) ^ (T - ∑ q, α q) * t k (cpt X x z)) 0` using `fun α => Finset.analyticAt_fun_sum _ fun k _ => hterm α k`. Conclude with `Finset.analyticAt_fun_sum _ fun α _ => hk α`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem leadM_anal {r : ℕ} (X : Data E r) {Xa : ArchInM X} (Fl : FlatM X Xa) {δ : ℕ}
     (t : Fin δ → Frame X.Ψ r → ℂ) (ht : ∀ k, DifferentiableOn ℂ (t k) X.dom) (T d : ℕ)
@@ -78,21 +78,19 @@ theorem leadM_anal {r : ℕ} (X : Data E r) {Xa : ArchInM X} (Fl : FlatM X Xa) {
   exact Finset.analyticAt_fun_sum _ fun α _ => hk α
 
 /- English proof (translation)
-Use `choose b hb using hval.1`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, fun j => ?_⟩` and prove the remaining obligations. Establish `hc : (fun z => f (cpt X (Fl.xs j) z)) =O[𝓝 0] fun _ => (1 : ℝ)` using `(anal_loc X hf.1 (Fl.xs_mem j)).continuousAt.tendsto.isBigO_one ℝ`. Use `hc.congr (fun z => ?_) (fun z => by simp)` and prove the remaining obligations. Simplify using `[leadM, ReciprocityTheory.ChartRestriction.G.AR.multiLt]`. Consider the case `succ d ih`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hd`. Take `⟨cc, hcc⟩` from `ih (by omega)`. Establish `hloc : ∀ j, ∃ a : (Fin (nd X) → ℕ) → ℂ, ∀ c : (Fin (nd X) → ℕ) → Fin δ → ℂ, (∀ α ∈ Finset.Nat.antidiagonalTuple (nd X) d, ∑ k, c α k * t k (cpt X (Fl.xs j) 0) * Fl.w0 (cpt X (Fl.xs j) 0) ^ Xa.T = a α) → (fun z => (f (cpt X (Fl.xs j) z) - leadM X Fl.s Fl.w0 t Xa.T d cc (cpt X (Fl. …`. Introduce `j`. Establish `hx` using `Fl.xs_mem j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `anal_loc X Fl.weightForm_vanishes.1.1.1.1 hx`. Establish `hW0 : Fl.w0 (cpt X (Fl.xs j) 0) ≠ 0` using `by rw [cpt_zero']; exact Fl.w0_ne j`. Establish `hS` using `fun i => anal_loc X (Fl.s_van i).1.1.1.1 hx`. Establish `hS0 : ∀ i, Fl.s i (cpt X (Fl.xs j) 0) = 0` using `fun i => by`. Rewrite using `[cpt_zero']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `s_xs_zero X Fl j i`. Take `⟨L, hL, -⟩` from `coordL _ _ hW hW0 hS hS0 (Fl.coord j)`. Conclude with `DivLA.local_step (by omega) _ _ (fun k z => t k (cpt X (Fl.xs j) z)) L hW hW0 hS hS0 (fun k => anal_loc X (ht k).1 hx) hL _ ((anal_loc X hf.1 hx).sub (leadM_anal X Fl t (fun k => (ht k).1) _ _ _ hx)) (hcc j)`. Use `choose a ha using hloc`. Set `cnew : (Fin (nd X) → ℕ) → Fin δ → ℂ` to `fun α => b (fun j' => a j' α / Fl.w0 (Fl.xs j') ^ Xa.T)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `cc' : (Fin (nd X) → ℕ) → Fin δ → ℂ` to `fun α => if α ∈ Finset.Nat.antidiagonalTuple (nd X) d then cnew α else cc α`. Use `⟨cc', fun j => ?_⟩` and prove the remaining obligations. Establish `hcond : ∀ α ∈ Finset.Nat.antidiagonalTuple (nd X) d, ∑ k, cnew α k * t k (cpt X (Fl.xs j) 0) * Fl.w0 (cpt X (Fl.xs j) 0) ^ Xa.T = a j α`. Introduce `α _`. Rewrite using `[cpt_zero', ← Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (∑ k, b (fun j' => a j' α / Fl.w0 (Fl.xs j') ^ Xa.T) k * t k (Fl.xs j)) * Fl.w0 (Fl.xs j) ^ Xa.T = a j α`. Rewrite using `[hb]`. Conclude with `div_mul_cancel₀ _ (pow_ne_zero _ (Fl.w0_ne j))`. Use `(ha j cnew hcond).congr_left fun z => ?_` and prove the remaining obligations. Rewrite using `[leadM_succ X Fl.s Fl.w0 t Xa.T d cc cc' cnew (fun α hα => if_pos hα) (fun α hα => if_neg hα)]`.
-
-Simplify using `only [monoM]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lead_ind {r : ℕ} (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) {δ : ℕ}
     (t : Fin δ → Frame X.Ψ r → ℂ) (ht : ∀ k, X.IsSec Xa.Fp (t k)) (hval : IsValBasisM X Fl.xs t)
@@ -152,19 +150,17 @@ theorem lead_ind {r : ℕ} (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) {δ
     ring
 
 /- English proof (translation)
-Introduce `r X Xa Fl δ t ht hval f hf`. Take `⟨cc, hcc⟩` from `lead_ind X Xa Fl t ht hval f hf (Xa.T - nd X) (Nat.sub_le _ _)`. Use `⟨cc, fun j => ?_⟩` and prove the remaining obligations. Establish `hx` using `Fl.xs_mem j`. Establish `hW` using `anal_loc X Fl.weightForm_vanishes.1.1.1.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW0 : Fl.w0 (cpt X (Fl.xs j) 0) ≠ 0` using `by rw [cpt_zero']; exact Fl.w0_ne j`. Establish `hS` using `fun i => anal_loc X (Fl.s_van i).1.1.1.1 hx`. Establish `hS0 : ∀ i, Fl.s i (cpt X (Fl.xs j) 0) = 0` using `fun i => by`. Rewrite using `[cpt_zero']`. Conclude with `s_xs_zero X Fl j i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨L, -, hLo⟩` from `coordL _ _ hW hW0 hS hS0 (Fl.coord j)`. Take `⟨c1, hc1, hlow⟩` from `DivLA.lower_of_deriv L hLo`. Use `set w := ‖Fl.w0 (cpt X (Fl.xs j) 0)‖ with hwdef`. Establish `hw : 0 < w` using `norm_pos_iff.2 hW0`. Establish `hWev : ∀ᶠ z in 𝓝 (0 : V (nd X)), w / 2 < ‖Fl.w0 (cpt X (Fl.xs j) z)‖` using `hW.continuousAt.norm.eventually (lt_mem_nhds (by linarith))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSlow : ∀ᶠ z in 𝓝 (0 : V (nd X)), ((w / 2) ^ 2 * c1 ^ 2) * ‖z‖ ^ 2 ≤ ∑ k, ‖Fl.s k (cpt X (Fl.xs j) z)‖ ^ 2` using `by filter_upwards [hlow, hWev] with z h1 h2`. Establish `hWz : Fl.w0 (cpt X (Fl.xs j) z) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ‖(WithLp.toLp 2 fun k => Fl.s k (cpt X (Fl.xs j) z) / Fl.w0 (cpt X (Fl.xs j) z) : V (nd X))‖ ^ 2 * ‖Fl.w0 (cpt X (Fl.xs j) z)‖ ^ 2 = ∑ k, ‖Fl.s k (cpt X (Fl.xs j) z)‖ ^ 2`. Rewrite using `[EuclideanSpace.norm_sq_eq, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: ‖Fl.w0 (cpt X (Fl.xs j) z)‖ ≠ 0` using `norm_ne_zero_iff.2 hWz`. Simplify using `only [norm_div, div_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[← hnorm]`. Establish `h3 : c1 * ‖z‖ * (w / 2) ≤ ‖(WithLp.toLp 2 fun k => Fl.s k (cpt X (Fl.xs j) z) / Fl.w0 (cpt X (Fl.xs j) z) : V (nd X))‖ * ‖Fl.w0 (cpt X (Fl.xs j) z)‖` using `mul_le_mul h1 h2.le (by positivity) (norm_nonneg _)`. Establish `h4` using `pow_le_pow_left₀ (by positivity) h3 2`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hn : 1 ≤ nd X` using `le_trans (by norm_num) Xa.n_ge`. Conclude with `DivLA.vanS_int hn (hcc j) (by positivity) hSlow`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem divLead_holds : DivLeadStatement (E := E) := by
   intro r X Xa Fl δ t ht hval f hf

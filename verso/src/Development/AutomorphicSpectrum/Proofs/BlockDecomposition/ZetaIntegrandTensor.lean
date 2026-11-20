@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.RgEisTF
 open PositivityTheory.RgEis PositivityTheory.RgEis.TF GroundTheory.Global GroundTheory.Automorphic GroundTheory.Global.IdeleGroup
 
 /- English proof (translation)
-Establish `hchi : (ω.toIdele x : ℂ) = (ω.toIdele (ofFinite (toFinite k x)) : ℂ) * (ω.toIdele (ofInfinite (toInfinite k x)) : ℂ)`. Rewrite using `[← Circle.coe_mul, ← map_mul, ofFinite_mul_ofInfinite]`. Establish `hmod : ((ideleModule k x : ℝ) : ℂ) ^ s = ((ideleModule k (ofInfinite (toInfinite k x)) : ℝ) : ℂ) ^ s * ((ideleModule k (ofFinite (toFinite k x)) : ℝ) : ℂ) ^ s`. Establish `h : (ideleModule k x : ℝ) = (ideleModule k (ofInfinite (toInfinite k x)) : ℝ) * (ideleModule k (ofFinite (toFinite k x)) : ℝ)` using `by conv_lhs => rw [← ofFinite_mul_ofInfinite x, map_mul]`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (ideleModule k _).2.le (ideleModule k _).2.le]`. Rewrite using `[hchi, hmod]`. Express the relevant statement in the definitionally equal form `φ (fun _ => homeomorphMixedSpace k (x : 𝔸[k]).1) * g (fun _ => (x : 𝔸[k]).2) * _ * _ = _`. Express the relevant statement in the definitionally equal form `_ = (φ (fun _ => homeomorphMixedSpace k (x : 𝔸[k]).1) * _ * _) * (g (fun _ => (x : 𝔸[k]).2) * _ * _)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -50,9 +50,9 @@ theorem zetaIntegrand_tensor {k : Type} [Field k] [NumberField k]
   ring
 
 /- English proof (translation)
-Introduce `k _ _ φ g ω s _`. Use `set A : (InfiniteAdeleRing k)ˣ → ℂ := fun a => rd φ (fun _ => (a : InfiniteAdeleRing k)) * (ω.toIdele (ofInfinite a) : ℂ) * ((ideleModule k (ofInfinite a) : ℝ) : ℂ) ^ s with hA`. Use `set B : (FiniteAdeleRing (𝓞 k) k)ˣ → ℂ := fun b => g (fun _ => (b : FiniteAdeleRing (𝓞 k) k)) * (ω.toIdele (ofFinite b) : ℂ) * ((ideleModule k (ofFinite b) : ℝ) : ℂ) ^ s with hB`. Establish `hF : ∀ x : IdeleGroup k, GJMatrix.schwartzBruhatTensorPi φ g (fun _ => (x : 𝔸[k])) * (ω.toIdele x : ℂ) * ((ideleModule k x : ℝ) : ℂ) ^ s = (fun p => A p.1 * B p.2) (prodEquiv k x)` using `zetaIntegrand_tensor φ g ω s`. Establish `hemb : MeasurableEmbedding (prodEquiv k)` using `(prodEquiv k).toHomeomorph.measurableEmbedding`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Unfold `globalZeta zInf zFin`. Repeatedly rewrite using `[hF]`. Rewrite using `[(measurePreserving_prodEquiv (K := k)).integral_comp hemb (fun p => A p.1 * B p.2)]`. Conclude with `integral_prod_mul A B`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zSplit : ZSplit := by
   intro k _ _ φ g ω s _

@@ -8,11 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepUniqu
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module
 
 /- English proof (translation)
-Introduce `D ht h1 h2 h5 i r hr w _hwS hwg x`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨Pa, hPa⟩` from `h1 i P`. Take `⟨ρ, hc, hss, hwd, hl⟩` from `GlobalTheory.T.exists_galois_rep_base_change D ht h2 i P Pa hPa`. Take `⟨Pm, hPm⟩` from `GlobalTheory.T.galois_rep_unique_base_change D h5 i r hr x P Pa hP hPa ρ hc hss (fun w _ => hwd w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hwg`. Establish `hsp : IsSplitPl D.host w` using `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) w hk).2.2.1`. Rewrite using `[← hPa.2.2.2.1 w hsp, ← hwd w]`. Establish `hok : SumRepresentations.At.WDok D.nd D.naut i ρ w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hwl : w ∈ placesOver D.host.E (D.nd.l i)`. Conclude with `Or.inr (hl w hwl).1`. Conclude with `Or.inl hwl`. Conclude with `((ht.2.2.2.2.2 i).2.1 _ ρ _ hc Pm hPm).2.1 w hok`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HubX.lgcG_of_adm : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → GlobalTheory.HubX.LgcG D := by
   intro D ht h1 h2 h5 i r hr w _hwS hwg x

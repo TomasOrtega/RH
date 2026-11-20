@@ -27,9 +27,9 @@ def kronC (κ μ : Type) [Fintype κ] [Fintype μ] :
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `y`. Use `dMat fun p q => ?_` and prove the remaining obligations. Establish `hM : DifferentiableAt ℝ (fun z : Mat n => z * hbM q * zᴴ * hbM p) y` using `dMul (dMul (dMul differentiableAt_id (dConst _)) (dConjT differentiableAt_id)) (dConst _)`. Establish `ht : DifferentiableAt ℝ (fun z : Mat n => (z * hbM q * zᴴ * hbM p).trace) y`. Simplify using `only [Matrix.trace, Matrix.diag]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact DifferentiableAt.fun_sum fun i _ => dEntry hM i i`. Conclude with `(Complex.ofRealCLM.comp Complex.reCLM).differentiableAt.comp y ht`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_Mt : Differentiable ℝ (Mt (n := n)) := by
   intro y
@@ -50,17 +50,15 @@ open Cxf
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n lam`. Establish `hdet1 : (1 : PositivityTheory.RgTw.Mat n).det ≠ 0` using `by simp`. Establish `hopen : IsOpen (GLs n)` using `isOpen_ne_fun (differentiable_det (ι := Fin n)).continuous continuous_const`. Establish `hRm : ∀ y : PositivityTheory.RgTw.Mat n, y.det ≠ 0 → DifferentiableAt ℝ (Rm lam) y` using `fun y hy => ((hR n lam).2.2.contDiffAt (hopen.mem_nhds (show y ∈ GLs n from hy))).differentiableAt (by simp)`. Establish `hdetR : (Rm lam (1 : PositivityTheory.RgTw.Mat n)).det ≠ 0` using `by rw [(hR n lam).1]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgam : ∀ B : Matrix (Md n) (Md n) ℂ, DifferentiableAt ℝ (gamM (n` using `n)) B := fun B => (((hG n).1.differentiable (by simp)) B).restrictScalars ℝ`. Establish `hFd : DifferentiableAt ℝ (fun x : PositivityTheory.RgTw.Mat n => gamM (Mt x⁻¹)ᵀ) 1` using `(hgam _).comp (1 : PositivityTheory.RgTw.Mat n) (dT ((differentiable_Mt _).comp (1 : PositivityTheory.RgTw.Mat n) (differentiableAt_inv 1 hdet1)))`. Establish `hA : DifferentiableAt ℝ (fun x : PositivityTheory.RgTw.Mat n => (Rm lam x)⁻¹ᵀ) 1` using `dT ((differentiableAt_inv _ hdetR).comp (1 : PositivityTheory.RgTw.Mat n) (hRm 1 hdet1))`. Establish `hB : DifferentiableAt ℝ (fun x : PositivityTheory.RgTw.Mat n => (Rm lam xᴴ)ᵀ) 1` using `dT ((hRm _ (by simp)).comp (1 : PositivityTheory.RgTw.Mat n) (dConjT differentiableAt_id))`. Establish `hGd : DifferentiableAt ℝ (rhoW lam) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `((kronC _ _).hasFDerivAt_of_bilinear hA.hasFDerivAt hB.hasFDerivAt).differentiableAt`. Conclude with `h`. Establish `key : fr0 lam = fun x => kronC _ _ (gamM (Mt x⁻¹)ᵀ) (rhoW lam x)` using `rfl`. Establish `hF1 : gamM (Mt (1 : PositivityTheory.RgTw.Mat n)⁻¹)ᵀ = 1`. Rewrite using `[inv_one, (hM n).1, transpose_one, (hGm n).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG1 : rhoW lam (1 : PositivityTheory.RgTw.Mat n) = 1`. Simplify using `only [rhoW, conjTranspose_one, (hR n lam).1, inv_one, transpose_one]`. Conclude with `Matrix.one_kronecker_one`. Use `⟨?_, fun X _ => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `((kronC _ _).hasFDerivAt_of_bilinear hFd.hasFDerivAt hGd.hasFDerivAt).differentiableAt`. Establish `h` using `congrArg (fun L => L X) ((kronC _ _).fderiv_of_bilinear hFd hGd)`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.precompR_apply, ContinuousLinearMap.precompL_apply, hF1, hG1] at h`. Rewrite using `[key]`. Use `h.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[add_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fr0Der_of (hG : GamDer) (hGm : GamMul) (hM : MtLaws) (hR : RmLaws) : MatrixFrechetDerivativeAtZero := by
   intro n lam

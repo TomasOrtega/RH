@@ -18,15 +18,15 @@ open ReciprocityTheory.ChartRestriction.G.TB.ValAt
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `PrimeSpectrum.ext ((Ideal.eq_bot_of_prime p.asIdeal).trans (Ideal.eq_bot_of_prime q.asIdeal).symm)`.
+A detailed English derivation is pending.
 -/
 theorem pspec_eq (p q : PrimeSpectrum ℂ) : p = q :=
   PrimeSpectrum.ext ((Ideal.eq_bot_of_prime p.asIdeal).trans (Ideal.eq_bot_of_prime q.asIdeal).symm)
 
 /- English proof (translation)
-Set `p0 : Sp ℂ` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Establish `hmem : y p0 ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.mp hmem`. Use `⟨j, fun q _ => ?_⟩` and prove the remaining obligations. Establish `: q = p0` using `pspec_eq q p0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_pt (L : LB X) (hL : L.IsLB) (y : Sp ℂ ⟶ X) : ∃ j, ⊤ ≤ y ⁻¹ᵁ L.U j := by
   let p0 : Sp ℂ := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)
@@ -38,30 +38,30 @@ theorem chart_pt (L : LB X) (hL : L.IsLB) (y : Sp ℂ ⟶ X) : ∃ j, ⊤ ≤ y 
   exact hj
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_res x hVU h (a : Γ(X, U))`.
+A detailed English derivation is pending.
 -/
 theorem val_res_unit (x : Sp ℂ ⟶ X) {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, U)ˣ) :
     valAt' x V (res hVU a : Γ(X, V)) = valAt' x U (a : Γ(X, U)) :=
   ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_res x hVU h (a : Γ(X, U))
 
 /- English proof (translation)
-The claim follows from `map_units_inv (valHom x U h) a`.
+A detailed English derivation is pending.
 -/
 theorem val_inv_unit (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)ˣ) :
     valAt' x U ((a⁻¹ : Γ(X, U)ˣ) : Γ(X, U)) = (valAt' x U (a : Γ(X, U)))⁻¹ :=
   map_units_inv (valHom x U h) a
 
 /- English proof (translation)
-The claim follows from `(a.isUnit.map (valHom x U h)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_unit_ne (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)ˣ) :
     valAt' x U (a : Γ(X, U)) ≠ 0 :=
   (a.isUnit.map (valHom x U h)).ne_zero
 
 /- English proof (translation)
-Establish `hW : ⊤ ≤ x ⁻¹ᵁ ((L.U i ⊓ L'.U j) ⊓ (L.U i₂ ⊓ L'.U j₂))` using `fun p hp => ⟨h₁ hp, h₂ hp⟩`. Establish `E : res (show L.U i ⊓ L'.U j ⊓ (L.U i₂ ⊓ L'.U j₂) ≤ L.U i ⊓ L'.U j from inf_le_left) (w.s (i, j) : Γ(X, L.U i ⊓ L'.U j)ˣ) = (res (show L.U i ⊓ L'.U j ⊓ (L.U i₂ ⊓ L'.U j₂) ≤ L.U i ⊓ L.U i₂ from le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (L.g i i₂) * ( …` using `hw (i, j) (i₂, j₂)`. Establish `e` using `congrArg (fun a : Γ(X, (L.U i ⊓ L'.U j) ⊓ (L.U i₂ ⊓ L'.U j₂))ˣ => valAt' x _ (a : Γ(X, (L.U i ⊓ L'.U j) ⊓ (L.U i₂ ⊓ L'.U j₂)))) E`. Simplify using `only [Units.val_mul, ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_mul, val_inv_unit x _ hW, val_res_unit x _ hW] at e`. Establish `a1` using `val_res_unit x (show L.U i ⊓ L'.U j ⊓ (L.U i₂ ⊓ L'.U j₂) ≤ L.U i ⊓ L'.U j from inf_le_left) hW (w.s (i, j) : Γ(X, L.U i ⊓ L'.U j)ˣ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `a2` using `val_res_unit x (show L.U i ⊓ L'.U j ⊓ (L.U i₂ ⊓ L'.U j₂) ≤ L.U i₂ ⊓ L'.U j₂ from inf_le_right) hW (w.s (i₂, j₂) : Γ(X, L.U i₂ ⊓ L'.U j₂)ˣ)`. Conclude with `a1.symm.trans (e.trans (congrArg (fun t => _ * t) a2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_gen {L L' : LB X} (w : LB.Iso L' L) (hw : w.IsGen) (x : Sp ℂ ⟶ X) (i i₂ : L.ι) (j j₂ : L'.ι)
     (h₁ : ⊤ ≤ x ⁻¹ᵁ (L.U i ⊓ L'.U j)) (h₂ : ⊤ ≤ x ⁻¹ᵁ (L.U i₂ ⊓ L'.U j₂)) :
@@ -93,7 +93,7 @@ namespace GlobalTheory.TransportFrame
 open ReciprocityTheory.ChartRestriction.G.TB.ValAt
 
 /- English proof (translation)
-Establish `e` using `val_res_unit x (le_inf le_rfl le_rfl : L.U i ≤ L.U i ⊓ L.U i) h (L.g i i)`. Rewrite `e` using `[hL.g_self i, Units.val_one, ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_one x _ h]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_g_self {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) (i : L.ι) (h : ⊤ ≤ x ⁻¹ᵁ L.U i) :
     valAt' x (L.U i ⊓ L.U i) (L.g i i).val = 1 := by
@@ -106,7 +106,7 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ} {L L' : LB A.left}
 def chartOf (hL' : L'.IsLB) (y : Sp ℂ ⟶ A.left) : L'.ι := (chart_pt L' hL' y).choose
 
 /- English proof (translation)
-The claim follows from `(chart_pt L' hL' y).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem chartOf_spec (hL' : L'.IsLB) (y : Sp ℂ ⟶ A.left) : ⊤ ≤ y ⁻¹ᵁ L'.U (chartOf hL' y) :=
   (chart_pt L' hL' y).choose_spec
@@ -116,11 +116,11 @@ def frT (u' : HolUnif A L' g) (hL' : L'.IsLB) (w : LB.Iso L' L) (i : L.ι) (z : 
     u'.fr (chartOf hL' (u'.ex z).left) z
 
 /- English proof (translation)
-Establish `h0` using `chartOf_spec hL' (u'.ex z).left`. Establish `hij0 : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L'.U (chartOf hL' (u'.ex z).left))` using `fun p hp => ⟨hi hp, h0 hp⟩`. Establish `hij : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L'.U j)` using `fun p hp => ⟨hi hp, hj hp⟩`. Establish `h0j : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L'.U (chartOf hL' (u'.ex z).left) ⊓ L'.U j)` using `fun p hp => ⟨h0 hp, hj hp⟩`. Establish `G` using `val_gen w hw (u'.ex z).left i i (chartOf hL' (u'.ex z).left) j hij0 hij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `C` using `u'.fr_compat (chartOf hL' (u'.ex z).left) j z h0j`. Establish `hne` using `val_unit_ne (u'.ex z).left _ h0j (L'.g (chartOf hL' (u'.ex z).left) j)`. Establish `hs` using `val_g_self hL (u'.ex z).left i hi`. Unfold `frT`. Rewrite using `[G, hs, C]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `inv_mul_cancel₀ hne`. Take the linear combination `(valAt' (u'.ex z).left (L.U i ⊓ L'.U j) (w.s (i, j)).val * u'.fr j z) * hc`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem frT_eq (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' L) (hw : w.IsGen) (i : L.ι) (j : L'.ι)
     (z : Fin g → ℂ) (hi : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U i) (hj : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U j) :
@@ -139,9 +139,9 @@ theorem frT_eq (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L
   linear_combination (valAt' (u'.ex z).left (L.U i ⊓ L'.U j) (w.s (i, j)).val * u'.fr j z) * hc
 
 /- English proof (translation)
-Introduce `z0 hz0`. Take `⟨j, hj⟩` from `chart_pt L' hL' (u'.ex z0).left`. Establish `hT` using `u'.hol (L.U i ⊓ L'.U j) (w.s (i, j)).val`. Establish `hz0' : ⊤ ≤ (u'.ex z0).left ⁻¹ᵁ L.U i` using `hz0`. Establish `hz0T : z0 ∈ {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L'.U j)}` using `show ⊤ ≤ (u'.ex z0).left ⁻¹ᵁ (L.U i ⊓ L'.U j) from fun p hp => ⟨hz0' hp, hj hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : DifferentiableOn ℂ (fun z => valAt' (u'.ex z).left (L.U i ⊓ L'.U j) (w.s (i, j)).val * u'.fr j z) {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L'.U j)}` using `hT.2.mul ((u'.fr_hol j).mono fun z (hz : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L'.U j)) p hp => (hz hp).2)`. Establish `hev : frT u' hL' w i =ᶠ[nhds z0] fun z => valAt' (u'.ex z).left (L.U i ⊓ L'.U j) (w.s (i, j)).val * u'.fr j z` using `Filter.eventually_of_mem (hT.1.mem_nhds hz0T) fun z (hz : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L'.U j)) => frT_eq u' hL hL' w hw i j z (fun p hp => (hz hp).1) (fun p hp => (hz hp).2)`. Conclude with `(((hd z0 hz0T).differentiableAt (hT.1.mem_nhds hz0T)).congr_of_eventuallyEq hev).differentiableWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frT_hol (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' L) (hw : w.IsGen) (i : L.ι) :
     DifferentiableOn ℂ (frT u' hL' w i) {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U i} := by
@@ -161,7 +161,7 @@ theorem frT_hol (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso 
   exact (((hd z0 hz0T).differentiableAt (hT.1.mem_nhds hz0T)).congr_of_eventuallyEq hev).differentiableWithinAt
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `chart_pt L' hL' (u'.ex z).left`. Rewrite using `[frT_eq u' hL hL' w hw i j z hi hj]`. Establish `hij : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L'.U j)` using `fun p hp => ⟨hi hp, hj hp⟩`. Conclude with `mul_ne_zero (val_unit_ne _ _ hij (w.s (i, j) : Γ(A.left, L.U i ⊓ L'.U j)ˣ)) (u'.fr_ne j z hj)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frT_ne (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' L) (hw : w.IsGen) (i : L.ι)
     (z : Fin g → ℂ) (hi : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U i) : frT u' hL' w i z ≠ 0 := by
@@ -171,7 +171,7 @@ theorem frT_ne (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L
   exact mul_ne_zero (val_unit_ne _ _ hij (w.s (i, j) : Γ(A.left, L.U i ⊓ L'.U j)ˣ)) (u'.fr_ne j z hj)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `chart_pt L' hL' (u'.ex z).left`. Establish `hi : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U i` using `fun p hp => (h hp).1`. Establish `hi₂ : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U i₂` using `fun p hp => (h hp).2`. Rewrite using `[frT_eq u' hL hL' w hw i j z hi hj, frT_eq u' hL hL' w hw i₂ j z hi₂ hj, val_gen w hw (u'.ex z).left i i₂ j j (fun p hp => ⟨hi hp, hj hp⟩) (fun p hp => ⟨hi₂ hp, hj hp⟩), val_g_self hL' (u'.ex z).left j hj]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frT_compat (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' L) (hw : w.IsGen) (i i₂ : L.ι)
     (z : Fin g → ℂ) (h : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U i ⊓ L.U i₂)) :
@@ -200,9 +200,9 @@ def transport (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L'
   fr_compat := frT_compat u' hL hL' w hw
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, fun (l : u'.Λ) i z hz => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `chart_pt L' hL' (u'.ex z).left`. Establish `he : u'.ex (z + l) = u'.ex z` using `by rw [u'.ex_add, (u'.ker l).2 l.2, _root_.mul_one]`. Establish `hz0 : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U i` using `hz`. Establish `hz' : ⊤ ≤ (u'.ex (z + l)).left ⁻¹ᵁ L.U i` using `he ▸ hz0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : ⊤ ≤ (u'.ex (z + l)).left ⁻¹ᵁ L'.U j` using `he ▸ hj`. Use `show frT u' hL' w i z = χ' l * Complex.exp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ)))) * frT u' hL' w i (z + l)`. Rewrite using `[frT_eq u' hL hL' w hw i j z hz0 hj, frT_eq u' hL hL' w hw i j (z + l) hz' hj', h.2.2 l j z hj, he]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isFactorAH_transport (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' L) (hw : w.IsGen)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ' : u'.Λ → ℂ} (h : GlobalTheory.TorusRM.IsFactorAH u' Hm χ') :
@@ -219,7 +219,7 @@ theorem isFactorAH_transport (u' : HolUnif A L' g) (hL : L.IsLB) (hL' : L'.IsLB)
   ring
 
 /- English proof (translation)
-Introduce `A _ g L L' u' Hm χ' hL hL' hiso h`. Take `⟨w, hw⟩` from `LBIso.symm hiso`. Conclude with `⟨transport u' hL hL' w hw, χ', rfl, isFactorAH_transport u' hL hL' w hw h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_holUnif_isFactorAH_of_lbIso : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L L' : LB A.left)
     (u' : HolUnif A L' g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ' : u'.Λ → ℂ), L.IsLB → L'.IsLB → LBIso L L' →

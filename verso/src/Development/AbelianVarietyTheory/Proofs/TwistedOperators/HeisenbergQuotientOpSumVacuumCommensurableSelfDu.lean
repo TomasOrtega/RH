@@ -13,18 +13,16 @@ open scoped TensorProduct
 namespace GlobalTheory.SphTheta
 
 /- English proof (translation)
-Unfold `sumOp`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem sumOp_vec_zero {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M]
     (W : X → M →ₗ[ℂ] M) (A B : Submodule R X) : sumOp W A B 0 = 0 := by
   unfold sumOp; simp
 
 /- English proof (translation)
-Use `split_ifs with hx`. Rewrite using `[hs x hx]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, hne⟩ : ∃ a ∈ Λ, γ x a ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx ((hΛ x).2 hc)`. Establish `h1 : e (W x s) = γ a x * e (W x s)` using `by conv_lhs => rw [← he a ha (W x s)]`. Rewrite using `[h.comm a x s, hs a ha, map_smul, smul_eq_mul]`. Establish `h2 : γ a x ≠ 1`. Rewrite using `[h.swap x a]`.
-
-Introduce `h3`. Conclude with `hne (inv_eq_one.1 h3)`. Establish `h3 : (1 - γ a x) * e (W x s) = 0` using `by rw [sub_mul, one_mul, ← h1, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 (Ne.symm h2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_translate_vacuum {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M]
     {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M} (h : IsHeis σ w γ W) {Λ : Submodule R X}
@@ -47,21 +45,21 @@ theorem form_translate_vacuum {R X M : Type} [CommRing R] [AddCommGroup X] [Modu
     exact (mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 (Ne.symm h2))
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W h Λ hΛ s hs0 hs hspan Λ' hΛ' hidx`. Take `⟨hidx', hss⟩` from `sumOp_sumOp_eq_idx_smul h Λ Λ' hΛ hΛ' hidx`. Take `⟨⟨n, f, hf, ht⟩, hfix, -⟩` from `(sumOp_transversal h Λ Λ' hΛ').2.1 hidx`. Establish `hs'fix : Fixes W Λ' (sumOp W Λ Λ' s)` using `hfix s hs`. Establish `hback` using `hss s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidxC : (idx Λ Λ' : ℂ) ≠ 0` using `by exact_mod_cast hidx`. Establish `hne : sumOp W Λ Λ' s ≠ 0`. Introduce `h0`. Rewrite `hback` using `[h0, sumOp_vec_zero]`. Conclude with `hs0 ((smul_eq_zero.1 hback.symm).resolve_left hidxC)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hidx2 : idx Λ' Λ ≠ 0` using `by rw [hidx']; exact hidx`. Take `⟨⟨m, g, hg, hgt⟩, -, -⟩` from `(sumOp_transversal h Λ' Λ hΛ).2.1 hidx2`. Establish `hsum` using `((sumOp_transversal h Λ' Λ hΛ).1 _ hs'fix (Fin m) g hg hgt).1`. Establish `hsE : s = ((idx Λ Λ' : ℂ))⁻¹ • ∑ i, W (g i) (sumOp W Λ Λ' s)`. Rewrite using `[← hsum, hback, smul_smul, inv_mul_cancel₀ hidxC, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ x, W x s ∈ Submodule.span ℂ (Set.range fun y => W y (sumOp W Λ Λ' s))`. Introduce `x`. Rewrite using `[congrArg (W x) hsE, map_smul, map_sum]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[h.comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `hspan' : Submodule.span ℂ (Set.range fun y => W y (sumOp W Λ Λ' s)) = ⊤`. Rewrite using `[eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hmem x`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨hne, hs'fix, hspan'⟩, fun e he1 he v hv => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `GlobalTheory.T.heisenbergVacuum_unique_of_selfDual h Λ' hΛ' _ hne hs'fix hspan' v hv`. Establish `hes' : e (sumOp W Λ Λ' s) = 1`. Rewrite using `[((sumOp_transversal h Λ Λ' hΛ').1 s hs (Fin n) f hf ht).1, map_sum]`. Simplify using `only [form_translate_vacuum h hΛ hs e he, he1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i0, hi0, huniq⟩` from `ht 0 Λ'.zero_mem`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[if_pos (by simpa using hi0)]`. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `hjΛ`. Conclude with `hj (huniq j (by simpa using hjΛ))`. Simplify using the standard rewrite rules. Rewrite using `[map_smul, hes', smul_eq_mul, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem sumOp_vacuum_lift : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ Λ : Submodule R X, SelfDual γ Λ → ∀ s : M, s ≠ 0 → Fixes W Λ s → Submodule.span ℂ (Set.range fun x => W x s) = ⊤ → ∀ Λ' : Submodule R X, SelfDual γ Λ' → idx Λ Λ' ≠ 0 → (sumOp W Λ Λ' s ≠ 0 ∧ Fixes W Λ' (sumOp W Λ Λ' s) ∧ Submodule.span ℂ (Set.range fun x => W x (sumOp W Λ Λ' s)) = ⊤) ∧ ∀ e : M →ₗ[ℂ] ℂ, e s = 1 → (∀ a ∈ Λ, ∀ v, e (W a v) = e v) → ∀ v, Fixes W Λ' v → v = e v • sumOp W Λ Λ' s := by
   intro R X M _ _ _ _ _ σ w γ W h Λ hΛ s hs0 hs hspan Λ' hΛ' hidx

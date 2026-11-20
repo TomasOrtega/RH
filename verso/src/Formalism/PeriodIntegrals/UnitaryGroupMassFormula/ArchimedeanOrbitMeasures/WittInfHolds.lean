@@ -15,45 +15,39 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes NumberField Matri
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `set T := gramE σ J X0 with hTdef`. Set `sE : E →+* E` to `σ`. Establish `hTH : IsHerm sE T`. Use extensionality with `i j`. Conclude with `hT i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : PI.UnitaryGroupMassFormula.HermConj.IsHermForm sE (hform sE T)` using `{ add := fun x y z => by`. Rewrite using `[PIW.AdelicOrbitU.hform_eq_dot, PIW.AdelicOrbitU.hform_eq_dot, PIW.AdelicOrbitU.hform_eq_dot, mulVec_add, dotProduct_add]`. Use `smul := fun x c y => PIW.AdelicOrbitU.hform_smul_right sE T c x y`. Use `herm := fun x y => (PIW.AdelicOrbitU.hform_conj sE T hinv hTH x y).symm }`. Take `⟨v, hvli, hvo⟩` from `PI.UnitaryGroupMassFormula.HermConj.exists_orthogonal_family sE a (Fin a → E) (by simp) (hform sE T) hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set P : Matrix (Fin a) (Fin a) E := tM v with hP`. Establish `hPu : IsUnit P.det`. Establish `h1 : IsUnit (Matrix.of v)` using `Matrix.linearIndependent_rows_iff_isUnit.mp hvli`. Establish `h2 : P = (Matrix.of v)ᵀ` using `rfl`. Rewrite using `[h2, det_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp h1`. Use `set D := cT sE P * T * P with hD`. Establish `hDv : ∀ j k, hform sE T (v j) (v k) = D j k` using `fun j k => gram_tM sE T v j k`. Establish `hDoff : ∀ j k, j ≠ k → D j k = 0` using `fun j k hjk => by rw [← hDv]; exact hvo j k hjk`. Establish `hDdiag : D = Matrix.diagonal fun j => D j j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `j k`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hDoff j k hjk, Matrix.diagonal_apply_ne _ hjk]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hDdet : D.det ≠ 0`. Establish `hc : (cT sE P).det = sE P.det`. Rewrite using `[cT, det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hD, det_mul, det_mul, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `mul_ne_zero (mul_ne_zero ?_ hdet) hPu.ne_zero` and prove the remaining obligations. Conclude with `(map_ne_zero sE).mpr hPu.ne_zero`. Establish `hDne : ∀ j, D j j ≠ 0`. Introduce `j`. Rewrite `hDdet` using `[hDdiag, det_diagonal]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.mp hDdet j (Finset.mem_univ j)`. Establish `hDfix : ∀ j, σ (D j j) = D j j` using `fun j => by`. Rewrite using `[← hDv]`. Conclude with `PIW.AdelicOrbitU.hform_conj sE T hinv hTH _ _`. Set `sS` to `sigR R σ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `JS` to `JR (F := F) R J`. Establish `hsS : ∀ z, sS (sS z) = z` using `(PIW.AdelicOrbitU.stFix F E σ h2 hfix R).1`. Establish `hJS : IsHerm sS JS` using `PIW.AdelicOrbitU.isHerm_JR R σ J hJ.1`. Establish `hJSd : IsUnit JS.det` using `PIW.AdelicOrbitU.isUnit_det_JR (F := F) R J hJ.2`. Establish `hcTmap : ∀ {p q : ℕ} (N : Matrix (Fin p) (Fin q) E), cT sS (N.map (inclR (F` using `F) R)) = (cT sE N).map (inclR (F := F) R) := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `p q N`. Use extensionality with `i j`. Simplify using `only [cT, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `PIW.AdelicOrbitU.sigR_inclR (F := F) R σ _`. Use `set Xm : Matrix (Fin M) (Fin a) (R ⊗[F] E) := (tM X0).map (inclR (F := F) R) with hXm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set Pm : Matrix (Fin a) (Fin a) (R ⊗[F] E) := P.map (inclR (F := F) R) with hPm`. Establish `hTg : cT sE (tM X0) * J * tM X0 = T`. Use extensionality with `i j`. Rewrite using `[← gram_tM]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hyg : cT sS (tM y) * JS * tM y = T.map (inclR (F` using `F) R) := by`. Use extensionality with `i j`. Rewrite using `[← gram_tM]`. Conclude with `congrFun (congrFun hy i) j`. Set `x' : Fin a → Fin M → R ⊗[F] E` to `fun j r => (Xm * Pm) r j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `y' : Fin a → Fin M → R ⊗[F] E` to `fun j r => (tM y * Pm) r j`. Establish `hGx : ∀ j k, hform sS JS (x' j) (x' k) = inclR (F` using `F) R (D j k) := by`. Introduce `j k`. Rewrite using `[gram_tM]`. Establish `e : tM x' = Xm * Pm` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, gram_mul, hXm, hPm, hcTmap, hcTmap]`. Use `show ((cT sE P).map (inclR (F := F) R) * ((cT sE (tM X0)).map (inclR (F := F) R) * J.map (inclR (F := F) R) * (tM X0).map (inclR (F := F) R)) * P.map (inclR (F := F) R)) j k = _`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_mul, hTg]`. Both sides reduce to the same expression. Establish `hGy : ∀ j k, hform sS JS (y' j) (y' k) = inclR (F` using `F) R (D j k) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `j k`. Rewrite using `[gram_tM]`. Establish `e : tM y' = tM y * Pm` using `rfl`. Rewrite using `[e, gram_mul, hyg, hPm, hcTmap, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨g, hgU, hgx⟩` from `orb_orth sS JS hsS hJS hJSd a x' y' (fun j k hjk => by rw [hGx, hDoff j k hjk, map_zero]) (fun j k => by rw [hGx, hGy]) (fun j => by rw [hGx]; exact (isUnit_iff_ne_zero.mpr (hDne j)).map _) (fun j t => by`. Take `⟨β, hβ⟩` from `(hfix _).mp (hDfix j)`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl; exact hDne j (by rw [← hβ, map_zero])`. Take `⟨lam, hlam, hu⟩` from `PIW.AdelicOrbitU.stLam F E σ h2 hfix R hU t β hβ0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨lam, hlam, ?_⟩` and prove the remaining obligations. Rewrite using `[hGx, ← hβ, PIW.AdelicOrbitU.inclR_algebraMap]`. Conclude with `hu)`. Establish `hmat : (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * Xm * Pm = tM y * Pm`. Use extensionality with `r j`.
-
-Rewrite using `[Matrix.mul_assoc]`. Use `congrFun (hgx j) r` as an intermediate fact. Simplify `this` using `[x', y', Matrix.mul_apply, mulVec, dotProduct]`. Establish `hPmu : IsUnit Pm.det` using `by show IsUnit ((inclR (F := F) R).mapMatrix P).det`. Rewrite using `[← RingHom.map_det]`.
-
-Conclude with `hPu.map _`. Establish `hmat2 : (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * Xm = tM y`. Use `congrArg (fun N => N * Pm⁻¹) hmat` as an intermediate fact. Simplify `this` using `only [Matrix.mul_nonsing_inv_cancel_right _ _ hPmu]`. Use `⟨(⟨g, hgU⟩ : HR R σ J), ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `i`. Use function extensionality and compare the values at `r`. Use `show ((g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ ratTup (F := F) R X0 i) r = y i r`. Use `congrFun (congrFun hmat2 r) i` as an intermediate fact. Simplify `this` using `[Xm, tM, ratTup, Matrix.mul_apply, mulVec, dotProduct]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem witt_R {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h2 : Module.finrank F E = 2) (hfix : ∀ a : E, σ a = a ↔ a ∈ (algebraMap F E).range)
@@ -174,11 +168,11 @@ open MeasureTheory Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP y hy`. Establish `h2 : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `hfix : ∀ a : X.B.I.E, X.B.I.cm.sig a = a ↔ a ∈ (algebraMap X.B.I.F X.B.I.E).range` using `fun a => X.B.I.cm.fixed a`. Establish `hinv : ∀ x, X.B.I.cm.sig (X.B.I.cm.sig x) = x` using `fun x => star_star x`. Establish `hJ : IsHermND X.B.I.cm.sig X.B.I.J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun i j => ?_, X.B.I.J_det⟩` and prove the remaining obligations. Use `congrFun (congrFun X.B.I.J_herm i) j` as an intermediate fact. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at this`. Conclude with `this`. Establish `hdet` using `detNZ_holds X u' ψ hT μinf νinf fibInf hP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : PIW.AdelicOrbitU.UnitChoice (Ainf X.B.I.F)` using `PIW.AdelicOrbitU.uc_pi (fun v : NumberField.InfinitePlace X.B.I.F => v.Completion)`. Establish `hyG : gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J y = (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (inclR (Ainf X.B.I.F))` using `Set.mem_singleton_iff.1 (Set.mem_preimage.1 hy.1)`. Take `⟨g, hg⟩` from `PI.AprimeInfWitt.witt_R X.B.I.cm.sig h2 hfix hinv X.B.I.J hJ (tupH (frameOf X u')) hT hdet (Ainf X.B.I.F) hU y hyG`. Conclude with `⟨g, hg⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wittInf_holds : WittInf := by
   intro D X u' ψ hT μinf νinf fibInf hP y hy

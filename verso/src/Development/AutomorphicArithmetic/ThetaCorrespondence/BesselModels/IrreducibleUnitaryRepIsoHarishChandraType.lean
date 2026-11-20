@@ -10,15 +10,13 @@ noncomputable section
 namespace UpperTheory.Lit.Bur.HWSpanType
 
 /- English proof (translation)
-Introduce `k Wp _ _ _ _ ρ hρ hirr`. Take `⟨E, hgl, hun, hE⟩` from `Derived.exists_derived_action k Wp ρ hρ`. Establish `hQ : CompanionTheory.D.DSIC.KStab (PI.UpqRep.allPos k) E (⊤ : Submodule ℂ Wp)` using `fun _ _ _ _ _ => trivial`. Take `⟨μ, x, -, hx0, hx⟩` from `UpperTheory.Lit.Bur.KShift.exists_highest hgl (UpperTheory.Lit.Bur.KShift.kUnit_of hun) hQ top_ne_bot`. Establish `hlow : PI.UpqRep.lowK (PI.UpqRep.allPos k) (μ + GlobalTheory.IndefiniteRowSideFullHecke.HarishChandraRootData.rhoU k) = μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.KTypeCompare.lowK_allPos]`. Simplify using the standard rewrite rules. Establish `hΛ : Formalism.REAL.KHighest (PI.UpqRep.allPos k) E (PI.UpqRep.lowK (PI.UpqRep.allPos k) (μ + GlobalTheory.IndefiniteRowSideFullHecke.HarishChandraRootData.rhoU k)) x`. Rewrite using `[hlow]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htype` using `exists_type_of_highest hρ E hgl hun hE _ x hx0 hΛ`. Use `set S := Formalism.REAL.kSpan (PI.UpqRep.allPos k) E x with hS`. Establish `hst` using `Wt.stable_of_derived hρ E hE S (Formalism.REAL.isCompactInvariant_compactSpan x)`. Establish `hxS : x ∈ S` using `Formalism.REAL.mem_compactSpan x`. Establish `htop : S = ⊤` using `(hirr S hst).resolve_left fun h => hx0 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hxS` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 hxS)`. Use `⟨_, S, inferInstance, inferInstance, compress ρ S, (LinearEquiv.ofTop S htop).symm, htype, ?_⟩` and prove the remaining obligations. Introduce `h hh w`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[coe_compress (hst h hh _ (Subtype.property _))]`. Simplify using `[LinearEquiv.ofTop_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_hcType_of_irred : ∀ {k : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [Nontrivial Wp] {ρ : Matrix (Fin k) (Fin k) ℂ → (Wp →L[ℂ] Wp)} (hρ : PI.UpqRep.IsURepOn (PI.UpqRep.UJset (PI.UpqRep.allPos k)) ρ) (hirr : ∀ S : Submodule ℂ Wp, (∀ g ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤), ∃ (u : Fin k → ℝ) (Wq : Type) (_ : NormedAddCommGroup Wq) (_ : InnerProductSpace ℂ Wq) (ρ' : Matrix (Fin k) (Fin k) ℂ → (Wq →L[ℂ] Wq)) (T : Wp ≃ₗ[ℂ] Wq), PI.UpqRep.IsHCTypeU k u ρ' ∧ ∀ h ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ w, T (ρ h w) = ρ' h (T w) := by
   intro k Wp _ _ _ _ ρ hρ hirr
@@ -48,7 +46,7 @@ end UpperTheory.Lit.Bur.HWSpanType
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.HWSpanType.exists_hcType_of_irred | exact UpperTheory.Lit.Bur.HWSpanType.exists_hcType_of_irred | (intros; apply UpperTheory.Lit.Bur.HWSpanType.exists_hcType_of_irred <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.irreducible_unitary_rep_iso_harishChandraType : ∀ {k : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [Nontrivial Wp] {ρ : Matrix (Fin k) (Fin k) ℂ → (Wp →L[ℂ] Wp)} (hρ : PI.UpqRep.IsURepOn (PI.UpqRep.UJset (PI.UpqRep.allPos k)) ρ) (hirr : ∀ S : Submodule ℂ Wp, (∀ g ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤), ∃ (u : Fin k → ℝ) (Wq : Type) (_ : NormedAddCommGroup Wq) (_ : InnerProductSpace ℂ Wq) (ρ' : Matrix (Fin k) (Fin k) ℂ → (Wq →L[ℂ] Wq)) (T : Wp ≃ₗ[ℂ] Wq), PI.UpqRep.IsHCTypeU k u ρ' ∧ ∀ h ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ w, T (ρ h w) = ρ' h (T w) := by
   first | exact @UpperTheory.Lit.Bur.HWSpanType.exists_hcType_of_irred | exact UpperTheory.Lit.Bur.HWSpanType.exists_hcType_of_irred | (intros; apply UpperTheory.Lit.Bur.HWSpanType.exists_hcType_of_irred <;> assumption)

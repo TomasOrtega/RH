@@ -14,11 +14,11 @@ namespace GlobalTheory.SquareLocus
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `S _ A _ hA c V hV T a h`. Establish `hsq` using `GlobalTheory.T.theorem_of_square_cechPicard_translates S A hA c (A ⊗ T) (fst A T) (snd A T ≫ a)`. Establish `e1 : (snd A T ≫ a)⁻¹ = snd A T ≫ a⁻¹` using `(GrpObj.comp_inv _ _).symm`. Establish `e2 : (1 : A ⊗ T ⟶ A) = snd A T ≫ (1 : T ⟶ A)` using `(MonObj.comp_one _).symm`. Establish `h0 : pull (snd A T ≫ a).left c + pull (snd A T ≫ a)⁻¹.left c - 2 • pull (1 : A ⊗ T ⟶ A).left c = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, Over.comp_left, Over.comp_left, Over.comp_left, pull_comp, pull_comp, pull_comp, ← map_nsmul, ← map_add, ← map_sub, h, map_zero]`. Establish `h2 : pull (fst A T * (snd A T ≫ a)).left c + pull (fst A T * (snd A T ≫ a)⁻¹).left c = 2 • pull (fst A T).left c`. Rewrite using `[hsq, ← sub_eq_zero, ← h0]`. Normalize the expressions using the abelian group laws. Establish `hl` using `(GlobalTheory.T.nonvanishingLocus_pullback_and_vanish_into_locus.1 A.left (A ⊗ T).left (fst A T * (snd A T ≫ a)).left c V hV).add (GlobalTheory.T.nonvanishingLocus_pullback_and_vanish_into_locus.1 A.left (A ⊗ T).left (fst A T * (snd A T ≫ a)⁻¹).left c V hV)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite `hl` using `[h2]`. Conclude with `hl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translate_mul_inv_isLocus : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (c : Pic A.left) (V : A.left.Opens), IsLocus c V → ∀ (T : Over S) (a : T ⟶ A), GlobalTheory.CechPic.pull (a).left c + GlobalTheory.CechPic.pull ((a)⁻¹).left c - 2 • GlobalTheory.CechPic.pull (1 : T ⟶ A).left c = 0 → IsLocus (2 • GlobalTheory.CechPic.pull (fst A T).left c) ((fst A T * (snd A T ≫ a)).left ⁻¹ᵁ V ⊓ (fst A T * (snd A T ≫ a)⁻¹).left ⁻¹ᵁ V) := by
   intro S _ A _ hA c V hV T a h

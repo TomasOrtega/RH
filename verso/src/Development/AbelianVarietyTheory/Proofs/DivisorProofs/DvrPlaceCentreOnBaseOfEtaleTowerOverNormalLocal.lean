@@ -15,7 +15,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Use `⟨fun h => ?_, P.ord_eq_zero⟩` and prove the remaining obligations. Establish `hu' : (u : L) ≠ 0` using `fun e => hu (Subtype.ext e)`. Establish `hi : (u : L)⁻¹ ∈ P.ring`. Rewrite using `[← P.ord_nonneg_iff (inv_ne_zero hu'), P.ord_inv, h, neg_zero]`. Conclude with `IsUnit.of_mul_eq_one ⟨_, hi⟩ (Subtype.ext (mul_inv_cancel₀ hu'))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Place.ord_eq_zero_iff_isUnit {L : Type} [Field L] {cL : ℂ →+* L} (P : Place cL) {u : P.ring}
     (hu : u ≠ 0) : P.ord (u : L) = 0 ↔ IsUnit u := by
@@ -26,19 +26,17 @@ theorem Place.ord_eq_zero_iff_isUnit {L : Type} [Field L] {cL : ℂ →+* L} (P 
   exact IsUnit.of_mul_eq_one ⟨_, hi⟩ (Subtype.ext (mul_inv_cancel₀ hu'))
 
 /- English proof (translation)
-Introduce `L _ cL T P hP`. Establish `hC : ∀ t : T, (t : L) ∈ P.ring` using `fun t => hP.1 _ t.2`. Set `f : T →+* P.ring` to `T.subtype.codRestrict P.ring hC`. Set `q : Ideal T` to `(IsLocalRing.maximalIdeal P.ring).comap f`. Use `haveI hq : q.IsPrime := Ideal.comap_isPrime _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ t : T, t ∉ q ↔ IsUnit (f t)` using `fun t => by`. Simplify using `only [q, Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Establish `hf : ∀ t : T, ((f t : P.ring) : L) = t` using `fun t => rfl`. Establish `hord : ∀ t : T, t ≠ 0 → (P.ord (t : L) = 0 ↔ t ∉ q)` using `fun t ht => by`. Rewrite using `[hmem t]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : f t ≠ 0`. Introduce `e`. Apply `ht` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hf t, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h1` using `P.ord_eq_zero_iff_isUnit h0`. Rewrite `h1` using `[hf t]`. Conclude with `h1`. Use `letI : Algebra T P.ring := f.toAlgebra`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsLocalization.AtPrime P.ring q := { map_units := fun y => (hmem y).1 y.2 surj := fun z => by`. Take `⟨a, ha, b, hb, hb0, hbo, e⟩` from `hP.2 z z.2`. Establish `hb' : (⟨b, hb⟩ : T) ∉ q` using `(hord ⟨b, hb⟩ (fun e' => hb0 (congrArg Subtype.val e'))).1 hbo`. Conclude with `⟨(⟨a, ha⟩, ⟨⟨b, hb⟩, hb'⟩), Subtype.ext e⟩`. Use `exists_of_eq := fun {x y} e => ⟨1, by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : ((algebraMap T P.ring x : P.ring) : L) = ((algebraMap T P.ring y : P.ring) : L)` using `congrArg Subtype.val e`. Establish `: x = y` using `Subtype.ext h'`. Rewrite using `[this]⟩ }`. Establish `hd` using `IsLocalization.AtPrime.ringKrullDim_eq_height q P.ring`. Rewrite `hd` using `[IsDiscreteValuationRing.ringKrullDim_eq_one]`.
-
-Use `⟨q, hq, ?_, hord⟩` and prove the remaining obligations. Conclude with `hd.symm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Place.exists_centre_of_isPrimeOf : ∀ {L : Type} [Field L] (cL : ℂ →+* L) (T : Subring L) (P : Place cL), P.IsPrimeOf T →
     ∃ q : Ideal T, q.IsPrime ∧ q.height = 1 ∧ ∀ t : T, t ≠ 0 → (P.ord (t : L) = 0 ↔ t ∉ q) := by
@@ -84,15 +82,11 @@ end GlobalTheory.FieldPair
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Use `letI := (cK.codRestrict R h.base.const_mem).toAlgebra`. Use `haveI : Algebra.EssFiniteType ℂ R := h.base.essFiniteType`. Use `haveI hR : IsNoetherianRing R := Algebra.EssFiniteType.isNoetherianRing ℂ R`. Use `⟨hR, ?_⟩` and prove the remaining obligations. Set `B` to `MvPolynomial (Fin r) R`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `e : B →+* T` to `MvPolynomial.eval₂Hom ι τ`. Use `letI : Algebra B T := e.toAlgebra`. Use `letI : Algebra R T := ι.toAlgebra`. Use `haveI : IsScalarTower R B T := IsScalarTower.of_algebraMap_eq fun a => by show ι a = e (MvPolynomial.C a)`. Conclude with `(MvPolynomial.eval₂_C _ _ _).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.FormallyEtale B T := h.etale`. Establish `hc : (cL.codRestrict T h.top.const_mem) = e.comp ((algebraMap R B).comp (cK.codRestrict R h.base.const_mem))`. Use `RingHom.ext fun a => Subtype.ext ?_` and prove the remaining obligations. Establish `h2 : e (MvPolynomial.C (cK.codRestrict R h.base.const_mem a)) = ι ⟨cK a, h.base.const_mem a⟩` using `MvPolynomial.eval₂_C _ _ _`. Use `show cL a = ((e ((algebraMap R B) (cK.codRestrict R h.base.const_mem a)) : T) : L)`.
-
-Rewrite using `[MvPolynomial.algebraMap_eq, h2, h.const]`. Use `haveI : Algebra.EssFiniteType B T := by`. Establish `h1` using `h.top.essFiniteType`. Rewrite `h1` using `[hc]`. Conclude with `RingHom.EssFiniteType.of_comp _ h1`.
-
-Use `haveI : Module.Flat B T := GlobalTheory.SmoothDescent.flat_of_formallySmooth_of_essFiniteType B T`. Use `haveI : Module.Flat R T := Module.Flat.trans R B T`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEtTower.flat {K L : Type} [Field K] [Field L] {cK : ℂ →+* K} {cL : ℂ →+* L} {r : ℕ}
     {R : Subring K} {T : Subring L} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T}
@@ -128,21 +122,17 @@ end GlobalTheory.FieldPair
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `K L _ _ cK cL r R T ι ψ τ P h hP`. Take `⟨-, hF⟩` from `h.flat`. Take `⟨q, hq, hq1, hqo⟩` from `Place.exists_centre_of_isPrimeOf cL T P hP`. Use `letI : Algebra R T := ι.toAlgebra`. Use `haveI : Module.Flat R T := hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.HasGoingDown R T := Algebra.HasGoingDown.of_flat`. Set `p : Ideal R` to `q.comap ι`. Use `haveI : p.IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : q.LiesOver p := ⟨rfl⟩`. Establish `hinj : Function.Injective ι` using `fun a b e => by simpa [h.retr] using congrArg ψ e`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hι : ∀ g : R, g ≠ 0 → (P.ord (ι g : L) = 0 ↔ g ∉ p)` using `fun g hg => hqo (ι g) ((map_ne_zero_iff ι hinj).2 hg)`. Distinguish the cases in `hp0 : p = ⊥`. Use `left`. Introduce `g hg`. Conclude with `(hι g hg).2 (by rw [hp0]; simpa using hg)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `right`. Establish `hp1 : p.height = 1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[show (1 : ℕ∞) = ((1 : ℕ) : ℕ∞) from rfl, Ideal.height_le_iff]`. Introduce `p' hp' hlt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hp'`. Rewrite using `[Nat.cast_one, ENat.lt_one_iff_eq_zero, Ideal.height_eq_zero_iff_eq_bot]`. Assume the negation of the conclusion as `hne`. Take `⟨Q, hQq, hQ, hQo⟩` from `Ideal.exists_ideal_lt_liesOver_of_lt (S := T) q hlt`. Use `haveI := hQ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hQo.over]`. Use extensionality with `x`.
-
-Simplify using `only [Ideal.under, Ideal.mem_comap, Ideal.mem_bot]`. Conclude with `⟨fun e => hinj (e.trans (map_zero ι).symm), fun e => by simp [e]⟩`. Establish `h1 : 1 ≤ Q.height` using `ENat.one_le_iff_ne_zero.2 (mt Ideal.height_eq_zero_iff_eq_bot.1 hQ0)`. Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hQq`. Rewrite `h2` using `[hq1]`.
-
-Establish `h3 : (1 : ℕ∞) + 1 ≤ 1` using `le_trans (by gcongr) h2`. Conclude with `absurd h3 (by decide)`. Conclude with `ENat.one_le_iff_ne_zero.2 (mt Ideal.height_eq_zero_iff_eq_bot.1 hp0)`. Take `⟨P0, h0, h0o⟩` from `GlobalTheory.T.exists_place_isPrimeOf_of_height_one_normal_localModel cK R h.base h.normal p inferInstance hp1`. Conclude with `⟨P0, h0, fun g hg => (h0o g hg).trans (hι g hg).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem centre_of_isEtTower : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (P : Place cL),

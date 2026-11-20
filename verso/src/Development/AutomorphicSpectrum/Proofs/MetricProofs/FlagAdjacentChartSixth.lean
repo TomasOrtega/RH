@@ -17,9 +17,9 @@ section Values
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hn, heq⟩` from `hs`. Establish `hx` using `ValRing.aeval_ne_zero_of_notMem hb hh hn`. Establish `h0` using `ValRing.eval_ne_zero_of_notMem hh hn`. Establish `cg : Continuous fun b : (Σ k, ι k) → ℂ => eval b (map (Int.castRingHom ℂ) g)` using `MvPolynomial.continuous_eval _`. Establish `ch : Continuous fun b : (Σ k, ι k) → ℂ => eval b (map (Int.castRingHom ℂ) h)` using `MvPolynomial.continuous_eval _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ᶠ b in 𝓝 b₀, eval b (map (Int.castRingHom ℂ) h) ≠ 0` using `ch.continuousAt.eventually_ne h0`. Establish `key : valAt x s =ᶠ[𝓝[mcPts (mCoordIdeal x)] b₀] fun b => eval b (map (Int.castRingHom ℂ) g) / eval b (map (Int.castRingHom ℂ) h)` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds hne] with b hbm hbn`. Conclude with `valAt_eq hbm ⟨d, g, h, hg, hh, hx, heq, hbn, rfl⟩`. Establish `hq : ContinuousWithinAt (fun b : (Σ k, ι k) → ℂ => eval b (map (Int.castRingHom ℂ) g) / eval b (map (Int.castRingHom ℂ) h)) (mcPts (mCoordIdeal x)) b₀` using `(cg.continuousAt.div ch.continuousAt h0).continuousWithinAt`. Conclude with `hq.congr_of_eventuallyEq key (key.self_of_nhdsWithin hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousWithinAt_valAt {x : (Σ k, ι k) → Ω} {b₀ : (Σ k, ι k) → ℂ} (hb : b₀ ∈ mcPts (mCoordIdeal x)) {s : Ω}
     (hs : RegAt x (mCoordIdeal b₀) s) : ContinuousWithinAt (valAt x s) (mcPts (mCoordIdeal x)) b₀ := by
@@ -48,7 +48,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
 /- English proof (translation)
-Unfold `twMinor pluck`. Use `tendsto_finsetSum _ fun I _ => Tendsto.const_mul _ (tendsto_finsetSum _ fun m _ => Tendsto.mul ?_ ?_)` and prove the remaining obligations. Conclude with `(continuousWithinAt_valAt (hA hz₀) (hG.2.1 _ _).2).comp hbs.continuousWithinAt hA`. Conclude with `((continuous_apply _).comp hpt).continuousWithinAt`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousWithinAt_twMinor (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {Z : Type}
     [TopologicalSpace Z] {A : Set Z} {z₀ : Z} {bs : Z → (Σ k, baseIdx ι M.blk k) → ℂ} {pt : Z → (Σ k, ι k) → ℂ}
@@ -61,9 +61,9 @@ theorem continuousWithinAt_twMinor (M : FlagModel y Ψ N j) (F : FrameData ι Ψ
   · exact ((continuous_apply _).comp hpt).continuousWithinAt
 
 /- English proof (translation)
-Use `⟨Option.some_injective _, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, m⟩ ⟨k', m'⟩ e`. Simplify using `only [v₀] at e`. Take `⟨e1, e2⟩` from `Sigma.mk.inj_iff.1 e`. Take `rfl` from `Option.some_injective _ e1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_of_heq e2]`. Introduce and unpack `⟨_, m⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, m⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isBlockMap_v₀ (k₀ : K) : IsBlockMap (some : K → Option K) (v₀ (ι := ι) k₀) := by
   refine ⟨Option.some_injective _, ?_, fun _ => rfl, ?_⟩
@@ -76,25 +76,25 @@ theorem isBlockMap_v₀ (k₀ : K) : IsBlockMap (some : K → Option K) (v₀ (�
     exact ⟨⟨k, m⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun p => continuous_apply (v₀ k₀ p)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fstPt (k₀ : K) : Continuous (fstPt (ι := ι) k₀) :=
   continuous_pi fun p => continuous_apply (v₀ k₀ p)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun p => continuous_apply (v₁ k₀ p)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sndPt (k₀ : K) : Continuous (sndPt (ι := ι) k₀) :=
   continuous_pi fun p => continuous_apply (v₁ k₀ p)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun q => continuous_apply (v₀ k₀ ⟨q.1.1, q.2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_baseOf (M : FlagModel y Ψ N j) (k₀ : K) : Continuous (baseOf M k₀) :=
   continuous_pi fun q => continuous_apply (v₀ k₀ ⟨q.1.1, q.2⟩)
 
 /- English proof (translation)
-Establish `hI` using `(GlobalTheory.T.flag_adjacent_swap_varieties_arithmetic K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hba hk hca hcb hV).2.2.2.1`. Conclude with `GlobalTheory.CompanionTheory.Ar.Chg.mem_mcPts_restr (isBlockMap_v₀ k₀) hI.ge hz`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fstPt_mem (M : FlagModel y Ψ N j) {d : ℕ} {τ : Ψ} {a b : Fin N} {k₀ : K} {ca cb : Fin N}
     (hb : (b : ℕ) = a + 1) (hba : (b : ℕ) < j ∨ j ≤ (a : ℕ)) (hk : M.blk (τ, a) = some k₀)
@@ -105,17 +105,15 @@ theorem fstPt_mem (M : FlagModel y Ψ N j) {d : ℕ} {τ : Ψ} {a b : Fin N} {k�
   exact GlobalTheory.CompanionTheory.Ar.Chg.mem_mcPts_restr (isBlockMap_v₀ k₀) hI.ge hz
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h hc`. Take `⟨hb, hba, hk₀, hca, hcb, hAV, -, hBC, hr, hrc, -⟩` from `hc`. Establish `hmaps : Set.MapsTo (baseOf M k₀) (mcPts (wP M τ a k₀ ca cb)) (mcPts (mCoordIdeal M.x))` using `fun z hz => CPts.base_mem M (fstPt_mem M hb hba hk₀ hca hcb hAV hz)`. Establish `key : ∀ z₀ ∈ wO M Rb τ a k₀ ca cb F kb V r h, wO M Rb τ a k₀ ca cb F kb V r h ∈ 𝓝[mcPts (wP M τ a k₀ ca cb)] z₀`. Introduce and unpack `z₀ ⟨hz₀, hsrc, hV₀, hm₁, hm₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hbm` using `hmaps hz₀`. Establish `hG : M.GoodAt F (mCoordIdeal (baseOf M k₀ z₀))`. Take `⟨-, -, hgood, horb⟩` from `hBC.2.2.2.2 _ hV₀`. Rewrite `horb` using `[(Rb.A.chart kb).left_inv hsrc]`. Rewrite using `[CovMap.mCoordIdeal_eq_of_sameOrbit (orbit_trans (orbit_symm (hr _ hbm)) horb)]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hrb : ContinuousWithinAt (fun z => r (baseOf M k₀ z)) (mcPts (wP M τ a k₀ ca cb)) z₀` using `(hrc _ hbm).comp (continuous_baseOf M k₀).continuousWithinAt hmaps`. Establish `e₁` using `hrb.tendsto.eventually_mem ((Rb.A.chart kb).open_source.mem_nhds hsrc)`. Establish `e₂` using `(((Rb.A.chart kb).continuousAt hsrc).tendsto.comp hrb.tendsto).eventually_mem (hBC.1.mem_nhds hV₀)`. Establish `tw` using `fun (pt : _ → (Σ k, ι k) → ℂ) (hpt : Continuous pt) => continuousWithinAt_twMinor M F (continuous_baseOf M k₀) hpt hmaps hz₀ hG`. Establish `e₃ : ∀ᶠ z in 𝓝[mcPts (wP M τ a k₀ ca cb)] z₀, ∀ p k, M.blk p = some k → twMinor M F (baseOf M k₀ z) p.2 k (h p.1)⁻¹ (fstPt k₀ z) (stepCols N j p.2) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eventually_all.2 fun p => eventually_all.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hp : M.blk p = some k`. Conclude with `((tw _ (continuous_fstPt k₀) p.2 k (h p.1)⁻¹ (stepCols N j p.2)).tendsto.eventually_ne (hm₁ p k hp)).mono fun _ hz _ => hz`. Conclude with `Eventually.of_forall fun _ hp' => absurd hp' hp`. Establish `e₄` using `(tw _ (continuous_sndPt k₀) a k₀ (h τ)⁻¹ (stepCols N j a)).tendsto.eventually_ne hm₂`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [self_mem_nhdsWithin, e₁, e₂, e₃, e₄] with z h₀ h₁ h₂ h₃ h₄`. Conclude with `⟨h₀, h₁, h₂, h₃, h₄⟩`. Use `choose! U hU hmem hsub using fun z₀ (hz : z₀ ∈ wO M Rb τ a k₀ ca cb F kb V r h) => mem_nhdsWithin.1 (key z₀ hz)`. Use `⟨⋃ z₀ ∈ wO M Rb τ a k₀ ca cb F kb V r h, U z₀, isOpen_biUnion hU, Set.Subset.antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `z hz`.
-
-Conclude with `⟨Set.mem_biUnion hz (hmem z hz), hz.1⟩`. Introduce and unpack `z ⟨hz, hzA⟩`. Take `⟨z₀, h₀, hz₀⟩` from `Set.mem_iUnion₂.1 hz`. Conclude with `hsub z₀ h₀ ⟨hz₀, hzA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → ∃ O' : Set ((Σ o : Option K, ι (o.getD k₀)) → ℂ), IsOpen O' ∧ wO M Rb τ a k₀ ca cb F kb V r h = O' ∩ mcPts (wP M τ a k₀ ca cb) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb F kb V bl r h hc

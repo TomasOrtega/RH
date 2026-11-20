@@ -15,9 +15,9 @@ open scoped ContDiff
 namespace GlobalTheory.HCA
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro _; exact ⟨A k, hA k, fun _ _ => rfl, fun u x => by simp⟩`. Consider the case `succ N ih`. Introduce `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, hs, hop⟩` from `ih (by omega)`. Take `⟨a'', h1, h2, h3⟩` from `GlobalTheory.T.exists_apOp_add_smul' d (2 * k) (2 * N) U a (A N) (t N) (by omega) ha (hA N)`. Use `⟨a'', h1, fun x ξ => ?_, fun u x => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, if_neg (by omega), add_zero, hs]`. Rewrite using `[h3, hop, Finset.sum_range_succ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -41,19 +41,19 @@ theorem exists_apOp_add_lower_sum {d : ℕ} (U : Set (E d)) (k : ℕ)
     · rw [h3, hop, Finset.sum_range_succ]; ring
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h d b P hP`. Take `⟨r, hr, c, hc, hspan, hder⟩` from `GlobalTheory.T.leftInvariantVectorFields_expCoords_smooth_frame 𝔸 G 𝔤 h d b`. Use `choose A hAs hAsymb hAop using GlobalTheory.T.exists_sumSquaresRightDeriv_pow_differentialOperator 𝔸 G 𝔤 h d b r c ⟨hc, hspan, hder⟩`. Take `⟨a, ha, hsa, hopa⟩` from `exists_apOp_add_lower_sum (Metric.ball (0 : E d) r) P.natDegree A (fun i => hAs i) (fun i => P.coeff i) P.natDegree le_rfl`. Use `⟨r, hr, 2 * P.natDegree, a, ha, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx ξ hξ`. Rewrite using `[hsa, hAsymb]`. Take `⟨i, hi⟩` from `hspan x hx ξ hξ`. Establish `hpos : 0 < ∑ i, (∑ j, c (b i) j x * ξ j) ^ 2` using `lt_of_lt_of_le (by positivity : 0 < (∑ j, c (b i) j x * ξ j) ^ 2) (Finset.single_le_sum (f := fun i => (∑ j, c (b i) j x * ξ j) ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i))`. Conclude with `(pow_pos hpos P.natDegree).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f hf g`. Take `⟨f', hf'1, hf'2⟩` from `GlobalTheory.T.leftTranslate_smooth_commute_leftInvariantOps 𝔸 G 𝔤 h f g`. Use `set Δ := ∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i) with hΔdef`. Establish `hΔ : Δ ∈ Algebra.adjoin ℂ (Set.range (h.rightDerivEnd (F` using `ℂ))) := Subalgebra.sum_mem _ (fun i _ => Subalgebra.mul_mem _ (Algebra.subset_adjoin ⟨b i, rfl⟩) (Algebra.subset_adjoin ⟨b i, rfl⟩))`. Establish `hmem : Polynomial.aeval Δ P ∈ Algebra.adjoin ℂ (Set.range (h.rightDerivEnd (F` using `ℂ))) := Algebra.adjoin_le (Set.singleton_subset_iff.2 hΔ) (Polynomial.aeval_mem_adjoin_singleton ℂ Δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∀ y, (Polynomial.aeval Δ P f' : G → ℂ) y = 0`. Introduce `y`. Rewrite using `[hf'2 _ hmem y, hf]`. Both sides reduce to the same expression. Establish `hu : (fun y : E d => (f : G → ℂ) (g * h.expG (coordEquiv b y))) = fun y => (f' : G → ℂ) (h.expG (coordEquiv b y))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[hf'1]`. Use `GlobalTheory.T.weakSolution_of_smooth_solution d (2 * P.natDegree) (Metric.ball 0 r) Metric.isOpen_ball a ha _ (h.contDiff_comp_coordEquiv f.2 g b).contDiffOn ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hopa, hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key` using `hzero (h.expG (coordEquiv b x))`. Rewrite `key` using `[Polynomial.aeval_eq_sum_range]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, LinearMap.sum_apply, LinearMap.smul_apply] at key`. Rewrite using `[← key, Finset.sum_range_succ _ P.natDegree, hP.coeff_natDegree, one_mul, add_comm]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[hAop i f' x hx]`. Rewrite using `[hAop P.natDegree f' x hx]`.
+A detailed English derivation is pending.
 -/
 theorem exists_elliptic_weakSol_of_aeval_eq_zero : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) (P : Polynomial ℂ), P.Monic → ∃ r > 0, ∃ (m : ℕ) (a : (n : ℕ) → (Fin n → Fin d) → E d → ℂ), (∀ n w, ContDiffOn ℝ ∞ (a n w) (Metric.ball 0 r)) ∧ (∀ x ∈ Metric.ball (0 : E d) r, ∀ ξ : E d, ξ ≠ 0 → symb m a x ξ ≠ 0) ∧ ∀ f : h.smoothFuns (F := ℂ), Polynomial.aeval (∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) P f = 0 → ∀ g : G, WeakSol (oneSys m a) (Metric.ball 0 r) (fun y => (f : G → ℂ) (g * h.expG (coordEquiv b (y)))) := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b P hP

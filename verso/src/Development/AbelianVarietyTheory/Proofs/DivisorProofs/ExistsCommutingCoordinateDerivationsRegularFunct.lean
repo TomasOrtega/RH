@@ -15,19 +15,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Use `choose D hD using hder`. Establish `hext : ∀ x y, (∀ z ∈ P, v x z = v y z) → x = y` using `fun x y h ↦ by`. Use `sub_eq_zero.1 (hinj _ fun z hz ↦ ?_)` and prove the remaining obligations. Take `⟨e, he⟩` from `he z hz`. Rewrite using `[he, map_sub, ← he, ← he, h z hz, sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hadd : ∀ x y, ∀ z ∈ P, v (x + y) z = v x z + v y z` using `fun x y z hz ↦ by`. Take `⟨e, he⟩` from `he z hz`. Simplify using `only [he, map_add]`. Establish `hmul : ∀ x y, ∀ z ∈ P, v (x * y) z = v x z * v y z` using `fun x y z hz ↦ by`. Take `⟨e, he⟩` from `he z hz`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [he, map_mul]`. Establish `hsmul : ∀ (c : ℂ) x, ∀ z ∈ P, v (c • x) z = c • v x z` using `fun c x z hz ↦ by`. Take `⟨e, he⟩` from `he z hz`. Simplify using `only [he, map_smul]`. Establish `hat : ∀ x, ∀ z ∈ P, DifferentiableAt ℂ (v x) z` using `fun x z hz ↦ (hd x).differentiableAt (hP.mem_nhds hz)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcongr : ∀ (f k : (Fin g → ℂ) → ℂ), (∀ z ∈ P, f z = k z) → ∀ z ∈ P, fderiv ℂ f z = fderiv ℂ k z` using `fun f k h z hz ↦ Filter.EventuallyEq.fderiv_eq (Filter.eventually_of_mem (hP.mem_nhds hz) h)`. Set `Dl : (Fin g → ℂ) → R →ₗ[ℂ] R` to `fun w ↦ { toFun := fun x ↦ D x w map_add' := fun x y ↦ hext _ _ fun z hz ↦ by`. Rewrite using `[hadd _ _ z hz, ← hD _ _ z hz, ← hD _ _ z hz, ← hD _ _ z hz, hcongr _ (v x + v y) (hadd x y) z hz, fderiv_add (hat x z hz) (hat y z hz)]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c x ↦ hext _ _ fun z hz ↦ by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[RingHom.id_apply, hsmul _ _ z hz, ← hD _ _ z hz, ← hD _ _ z hz, hcongr _ (c • v x) (hsmul c x) z hz, fderiv_const_smul (hat x z hz)]`. Use `rfl }`. Establish `hL : ∀ w x y, Dl w (x * y) = x • Dl w y + y • Dl w x` using `fun w x y ↦ hext _ _ fun z hz ↦ by`. Express the relevant statement in the definitionally equal form `v (D (x * y) w) z = v (x * D y w + y * D x w) z`. Rewrite using `[hadd _ _ z hz, hmul _ _ z hz, hmul _ _ z hz, ← hD _ _ z hz, ← hD _ _ z hz, ← hD _ _ z hz, hcongr _ (v x * v y) (hmul x y) z hz, fderiv_mul (hat x z hz) (hat y z hz)]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ x w w', ∀ z ∈ P, v (D (D x w) w') z = fderiv ℂ (fderiv ℂ (v x)) z w' w` using `fun x w w' z hz ↦ by`. Establish `ha : AnalyticAt ℂ (v x) z` using `ReciprocityTheory.AnForm.Osgood.osgood g P (v x) hP (hd x) z hz`. Rewrite using `[← hD _ _ z hz, ← hcongr _ _ (hD x w) z hz, fderiv_clm_apply ha.fderiv.differentiableAt (differentiableAt_const w)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun a ↦ Derivation.mk' (Dl (Pi.single a 1)) (hL _), fun a b x ↦ hext _ _ fun z hz ↦ ?_, fun a x z hz ↦ (hD x _ z hz).symm⟩` and prove the remaining obligations. Establish `ha : AnalyticAt ℂ (v x) z` using `ReciprocityTheory.AnForm.Osgood.osgood g P (v x) hP (hd x) z hz`. Express the relevant statement in the definitionally equal form `v (D (D x _) _) z = v (D (D x _) _) z`. Rewrite using `[h2 _ _ _ z hz, h2 _ _ _ z hz]`. Conclude with `(ha.contDiffAt (n := ⊤)).isSymmSndFDerivAt le_top _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_commuting_derivations_of_values {R : Type} [CommRing R] [Algebra ℂ R] {g : ℕ} (P : Set (Fin g → ℂ))
     (v : R → (Fin g → ℂ) → ℂ) (hP : IsOpen P) (hd : ∀ x, DifferentiableOn ℂ (v x) P)
@@ -80,7 +80,7 @@ theorem exists_commuting_derivations_of_values {R : Type} [CommRing R] [Algebra 
   exact (ha.contDiffAt (n := ⊤)).isSymmSndFDerivAt le_top _ _
 
 /- English proof (translation)
-Introduce `A _ g L u hA U`. Take `⟨h1, h2, -, -, -, -, -, -, -, h10, -⟩` from `GlobalTheory.T.uniformisation_preimage_value_rules A g L u`. Conclude with `exists_commuting_derivations_of_values (R := Sec (str A) U) (pre u.ex U) (val u.ex U) (h1 U) (h2 U) (h10 U) (GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA U) (GlobalTheory.T.isRegular_fderiv_constant_vector_uniformised A g L u hA U)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_commuting_coordinate_derivations : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (U : A.left.Opens), ∃ d : Fin g → Derivation ℂ (Sec (str A) U) (Sec (str A) U), (∀ a b x, d a (d b x) = d b (d a x)) ∧ ∀ a x, ∀ z ∈ pre u.ex U, val u.ex U (d a x) z = fderiv ℂ (val u.ex U x) z (Pi.single a 1) := by
   intro A _ g L u hA U

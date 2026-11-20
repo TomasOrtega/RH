@@ -16,11 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotFormula
 
 /- English proof (translation)
-Introduce `D V n hn`. Substitute `hn` using the available equality. Use `⟨one_mem _, rfl, fun i j => ?_⟩` and prove the remaining obligations. Establish `hL : (finHom V (1 : GA D V)).val = 1`. Rewrite using `[map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hL, Fin.cast_eq_self, Fin.cast_eq_self]`. Use `show _ = toFinE D ((1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j)`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one, map_one]`. Rewrite using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinPt_one : ∀ {D : D7} (V : HSp D) {n : ℕ}, V.rank = n → IsFinPt V (1 : GA D V) (1 : Formalism.MainNotions.StandardLatticesGL3.GA D n) := by
   intro D V n hn

@@ -35,9 +35,9 @@ structure AdmPN [IsCMField F] [IsAlgClosure F Ω] (ι : Qbar l ≃+* ℂ) (M : �
   safe : Keep.SafeP l M m r
 
 /- English proof (translation)
-Use `⟨h, fun hc => ?_⟩` and prove the remaining obligations. Take `⟨π, hreg, hd, ha⟩` from `h`. Use `L.wold P F Ω l ι n hn r π hc hreg ⟨quadChar F ^ n, fun v => ?_, ?_⟩ ha` and prove the remaining obligations. Establish `e : (quadChar F ^ n).locInf v (-1) = (quadChar F).locInf v (-1) ^ n` using `rfl`. Rewrite using `[e, quadChar_locInf]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, compNorm_quadChar, one_pow]`. Conclude with `(GlobalTheory.ContraPair.dualIsConjBy_one π).2 hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csdN [IsCMField F] [IsAlgClosure F Ω] (P : Hypotheses₂) (hn : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     (h : IsAutCsd ι r) : IsAutCsdN ι r := by
@@ -49,7 +49,7 @@ theorem csdN [IsCMField F] [IsAlgClosure F Ω] (P : Hypotheses₂) (hn : 1 ≤ n
   · rw [map_pow, compNorm_quadChar, one_pow]
     exact (GlobalTheory.ContraPair.dualIsConjBy_one π).2 hd
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem csdN' [IsCMField F] [IsAlgClosure F Ω] (_ : Hypotheses₂) (_ : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     (h : IsAutCsdN ι r) : IsAutCsdN ι r := h
@@ -59,9 +59,9 @@ section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
 
 /- English proof (translation)
-Introduce `hc K _ _ _ i _ _ h2 hi`. Take `rfl : i = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Take `⟨π, hreg, ha⟩` from `h hc K h2 hi`. Take `⟨θ, hθ, hd⟩` from `hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, μ, hpol, -, -⟩` from `UpperTheory.V.Z.Bc.polK P K h2 n hn l Ω ι r wt θ π hθ hd ha`. Conclude with `⟨⟨π, hreg, ha⟩, L.wold P K Ω l ι n hn _ π (hc.comp (Af.continuous_restrictScalarsHom ℚ K Ω)) hreg ⟨χ, hpol⟩ ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem autQN (P : Hypotheses₂) (hn : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {r : G ℚ Ω →* GL (Fin n) (Qbar l)} {wt : ℤ}
     (hd : ∃ θ, IsCycWt l wt θ ∧ DualTw r θ) (h : IsAutQ ι r) : IsAutQN ι r := by
@@ -73,7 +73,7 @@ theorem autQN (P : Hypotheses₂) (hn : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {r : G 
   obtain ⟨χ, μ, hpol, -, -⟩ := UpperTheory.V.Z.Bc.polK P K h2 n hn l Ω ι r wt θ π hθ hd ha
   exact ⟨⟨π, hreg, ha⟩, L.wold P K Ω l ι n hn _ π (hc.comp (Af.continuous_restrictScalarsHom ℚ K Ω)) hreg ⟨χ, hpol⟩ ha⟩
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem autQN' (_ : Hypotheses₂) (_ : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {r : G ℚ Ω →* GL (Fin n) (Qbar l)} {wt : ℤ}
     (_ : ∃ θ, IsCycWt l wt θ ∧ DualTw r θ) (h : IsAutQN ι r) : IsAutQN ι r := h
@@ -100,7 +100,7 @@ def Adm2N (ι : Qbar l ≃+* ℂ) (e M : ℕ) (ρ : G K Ω →* GL (Fin 3) (Qbar
 
 omit [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [IsScalarTower ℚ K Ω] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.irr, csdN P (by norm_num) h.aut, h.level, ⟨1, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleRankThree_strengthen [IsCMField K] [IsAlgClosure K Ω] (P : Hypotheses₂) {ι : Qbar l ≃+* ℂ} {e N : ℕ} {ρ : G K Ω →* GL (Fin 3) (Qbar l)}
     (h : Adm3 ι e N ρ) : Adm3N ι e N ρ := ⟨h.irr, csdN P (by norm_num) h.aut, h.level, ⟨1, rfl⟩⟩

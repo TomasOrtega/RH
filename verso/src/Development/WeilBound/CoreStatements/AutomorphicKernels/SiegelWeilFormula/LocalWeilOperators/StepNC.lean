@@ -17,7 +17,7 @@ namespace RD
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;> simp [Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_blocks {R' : Type} [Semiring R'] {n : ℕ} (a : R') :
     (a • (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R')).toBlocks₁₁ = a • 1 ∧
@@ -28,29 +28,23 @@ theorem one_blocks {R' : Type} [Semiring R'] {n : ℕ} (a : R') :
     Matrix.toBlocks₂₂, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Use `set M := inFrame d.b (R.ι w y) with hM`. Establish `hw : d.cw w M = nU (R.ζ • b)` using `by rw [hM, R.cw_iota_pf w y, hy, dZ_conj_nU hζ0]`. Establish `ho : ∀ w', w' ≠ w → d.cw w' M = 1` using `fun w' h => R.off_w w w' y h`. Establish `hf : finOne F • M = finOne F • 1` using `R.off_f w y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o1` using `one_blocks (n := d.n) (1 : ℂ)`. Establish `of` using `one_blocks (n := d.n) (finOne F • (1 : AE F E))`. Simplify using `only [one_smul] at o1`. Establish `hf' : finOne F • M = (finOne F • (1 : AE F E)) • (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))`. Rewrite using `[hf, smul_one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e11 : M.toBlocks₁₁ = 1`. Apply `Place.cw_ext d` to reduce the goal to its premises. Introduce `w'`. Rewrite using `[Krd.cw_one d]`. Use `show (d.cw w' M).toBlocks₁₁ = 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : w' = w`. Rewrite using `[h, hw]`. Simplify using `[nU]`. Rewrite using `[ho w' h]`. Conclude with `o1.1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (finOne F • M).toBlocks₁₁ = _`. Rewrite using `[hf', of.1, smul_one_smul]`. Establish `e21 : M.toBlocks₂₁ = 0`. Apply `Place.cw_ext d` to reduce the goal to its premises. Introduce `w'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show d.cw w' (0 : Matrix (Fin d.n) (Fin d.n) (AE F E)) = 0 from Matrix.map_zero _ (map_zero _)]`. Use `show (d.cw w' M).toBlocks₂₁ = 0`. Distinguish the cases in `h : w' = w`. Rewrite using `[h, hw]`. Simplify using `[nU]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ho w' h]`. Conclude with `o1.2.2.1`. Use `show (finOne F • M).toBlocks₂₁ = _`. Rewrite using `[hf', of.2.2.1, smul_zero]`. Establish `e22 : M.toBlocks₂₂ = 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Place.cw_ext d` to reduce the goal to its premises. Introduce `w'`. Rewrite using `[Krd.cw_one d]`. Use `show (d.cw w' M).toBlocks₂₂ = 1`. Distinguish the cases in `h : w' = w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, hw]`. Simplify using `[nU]`. Rewrite using `[ho w' h]`. Conclude with `o1.2.2.2`. Use `show (finOne F • M).toBlocks₂₂ = _`.
-
-Rewrite using `[hf', of.2.2.2, smul_one_smul]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M]`. Rewrite using `[e11, e21, e22]`. Use `show (d.cw w M).toBlocks₁₂ = _`.
-
-Rewrite using `[hw]`. Simplify using `[nU]`. Introduce `w' h show (d.cw w' M).toBlocks₁₂ = _`. Rewrite using `[ho w' h]`. Conclude with `o1.2.1`.
-
-Use `show (finOne F • M).toBlocks₁₂ = _`. Rewrite using `[hf', of.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_nU (y : GR d.n) (b : Matrix (Fin d.n) (Fin d.n) ℂ) (hy : mR y = nU b) :
     inFrame d.b (R.ι w y) = Matrix.fromBlocks 1 (inFrame d.b (R.ι w y)).toBlocks₁₂ 0 1 ∧
@@ -108,11 +102,11 @@ theorem frame_nU (y : GR d.n) (b : Matrix (Fin d.n) (Fin d.n) ℂ) (hy : mR y = 
     rw [hf', of.2.1]
 
 /- English proof (translation)
-Introduce `y b hb hy`. Take `⟨hM, hβw, hβo, hβf⟩` from `R.frame_nU w y b hy`. Use `⟨fun f hf => ?_, fun Ψ hΨ => ⟨hΨ, fun f hf Φ hΦ hTΦ => ?_⟩⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `hf`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.schwartz_quadratic_phase_multiplication d.m d.n (((R.sg w : ℤ) : ℝ)) b hb φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ψ, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ]`. Use function extensionality and compare the values at `u`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `X`. Rewrite using `[(hT.2.1 F E σ d Φ hΦ).1 (R.ι w y) _ hM X, R.psi_nU w b hb _ hβw hβo hβf X, hTΦ]`. Simplify using `only [RD.tens, id]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stepN_pf (hT : TAll) : ∀ (y : GR d.n) (b : Matrix (Fin d.n) (Fin d.n) ℂ), bᴴ = b → mR y = nU b →
     R.StepOK w (R.ι w y) (fun f u => Complex.exp (2 * Real.pi * Complex.I * ((R.sg w : ℤ) : ℂ) *

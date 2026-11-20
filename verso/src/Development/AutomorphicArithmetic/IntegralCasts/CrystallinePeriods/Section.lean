@@ -29,7 +29,7 @@ theorem Tilt.coeff_ofPerfect (f : k →+* R ⧸ span {(p : R)}) (n : ℕ) (a : k
 
 variable {p} in
 /- English proof (translation)
-The claim follows from `Perfection.hom_ext p (S := ModP R p) h`.
+A detailed English derivation is pending.
 -/
 theorem Tilt.eq_ofPerfect (f : k →+* R ⧸ span {(p : R)}) (g : k →+* Tilt p R)
     (h : ∀ a, PreTilt.coeff 0 (g a) = f a) : g = Tilt.ofPerfect p f :=
@@ -37,7 +37,7 @@ theorem Tilt.eq_ofPerfect (f : k →+* R ⧸ span {(p : R)}) (g : k →+* Tilt p
 
 variable {p} in
 /- English proof (translation)
-The claim follows from `Tilt.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem Tilt.map_ofPerfect (e : R →+* S) (f : k →+* R ⧸ span {(p : R)}) (a : k) :
     Tilt.map p e (Tilt.ofPerfect p f a) =
@@ -49,7 +49,7 @@ def Ainf.ofWitt (f : k →+* R ⧸ span {(p : R)}) : WittVector p k →+* Ainf p
 
 variable {p} in
 /- English proof (translation)
-The claim follows from `WittVector.map_teichmuller p _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem Ainf.ofWitt_teichmuller (f : k →+* R ⧸ span {(p : R)}) (a : k) :
     Ainf.ofWitt p f (WittVector.teichmuller p a) = Ainf.teich p (Tilt.ofPerfect p f a) :=
@@ -58,7 +58,7 @@ The claim follows from `WittVector.map_teichmuller p _ a`.
 variable {p} in
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[Ainf.ofWitt, Ainf.frob_eq_map, WittVector.frobenius_eq_map_frobenius, frobenius_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Ainf.frob_ofWitt (f : k →+* R ⧸ span {(p : R)}) (x : WittVector p k) :
     Ainf.frob p R (Ainf.ofWitt p f x) = Ainf.ofWitt p f (WittVector.frobenius x) := by
@@ -68,7 +68,7 @@ theorem Ainf.frob_ofWitt (f : k →+* R ⧸ span {(p : R)}) (x : WittVector p k)
 variable {p} in
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[Ainf.ofWitt, Ainf.map, Tilt.map_ofPerfect]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Ainf.map_ofWitt (e : R →+* S) (f : k →+* R ⧸ span {(p : R)}) (x : WittVector p k) :
     Ainf.map p e (Ainf.ofWitt p f x) =
@@ -85,7 +85,7 @@ def wittResidueMap (g : WittVector p k →+* R) : k →+* R ⧸ span {(p : R)} :
 omit [Fact ¬IsUnit (p : R)] in
 variable {p} in
 /- English proof (translation)
-Establish `: (WittVector.quotientPEquiv (p` using `p) (k := k)).symm (x.coeff 0) = Ideal.Quotient.mk _ x := by`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Ideal.quotientMap _ g (span_natCast_le_comap p g) ((WittVector.quotientPEquiv (p := p) (k := k)).symm _) = _`. Rewrite using `[this, Ideal.quotientMap_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem wittResidueMap_coeff_zero (g : WittVector p k →+* R) (x : WittVector p k) :
     wittResidueMap p g (x.coeff 0) = Ideal.Quotient.mk _ (g x) := by
@@ -100,7 +100,7 @@ def Ainf.liftWitt (g : WittVector p k →+* R) : WittVector p k →+* Ainf p R :
 
 variable {p} in
 /- English proof (translation)
-Rewrite using `[Ainf.liftWitt, Ainf.map_ofWitt, Ainf.liftWitt]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem Ainf.map_liftWitt (e : R →+* S) (g : WittVector p k →+* R) (x : WittVector p k) :
     Ainf.map p e (Ainf.liftWitt p g x) = Ainf.liftWitt p (e.comp g) x := by
@@ -109,7 +109,7 @@ theorem Ainf.map_liftWitt (e : R →+* S) (g : WittVector p k →+* R) (x : Witt
 
 variable {p} in
 /- English proof (translation)
-The claim follows from `Ainf.frob_ofWitt _ x`.
+A detailed English derivation is pending.
 -/
 theorem Ainf.frob_liftWitt (g : WittVector p k →+* R) (x : WittVector p k) :
     Ainf.frob p R (Ainf.liftWitt p g x) = Ainf.liftWitt p g (WittVector.frobenius x) :=
@@ -118,11 +118,11 @@ theorem Ainf.frob_liftWitt (g : WittVector p k →+* R) (x : WittVector p k) :
 variable {p} in
 
 /- English proof (translation)
-Establish `key (a : k) : PreTilt.untilt (Tilt.ofPerfect p (wittResidueMap p g) a) = g (WittVector.teichmuller p a)`. Use `Perfection.teichmuller_spec fun n => ?_` and prove the remaining obligations. Use `⟨g (WittVector.teichmuller p ((frobeniusEquiv k p).symm^[n] a)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← wittResidueMap_coeff_zero, WittVector.teichmuller_coeff_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← map_pow, ← map_pow, ← iterate_frobenius, Function.RightInverse.iterate (frobenius_apply_frobeniusEquiv_symm k p) n]`. Rewrite using `[IsHausdorff.eq_iff_smodEq (I := span {(p : R)})]`. Introduce `n`. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq]`. Use `WittVector.eq_of_apply_teichmuller_eq ((Ideal.Quotient.mk (span {(p : R)} ^ n)).comp ((Ainf.theta p R).comp (Ainf.liftWitt p g))) ((Ideal.Quotient.mk (span {(p : R)} ^ n)).comp g) (by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk (span {(p : R)} ^ n)), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow (mem_span_singleton_self _) _)`. Use the proof step `(by intro y; simp [Ainf.liftWitt, key])`. Conclude with `RingHom.congr_fun this x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ainf.theta_liftWitt [IsAdicComplete (span {(p : R)}) R] (g : WittVector p k →+* R)
     (x : WittVector p k) : Ainf.theta p R (Ainf.liftWitt p g x) = g x := by
@@ -164,7 +164,7 @@ def fracWittLift {B : Type*} [CommRing B] (f : WittVector p k →+* B) (h : IsUn
     exact (h.pow _).mul ((Units.isUnit _).map f))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem fracWittLift_algebraMap {B : Type*} [CommRing B] (f : WittVector p k →+* B)
     (h : IsUnit (p : B)) (a : WittVector p k) : fracWittLift p f h (algebraMap _ _ a) = f a :=
@@ -172,7 +172,7 @@ The claim follows from `IsLocalization.lift_eq _ a`.
 
 variable {p} in
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (WittVector p k)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem fracWitt_hom_ext {B : Type*} [CommRing B] {f g : FractionRing (WittVector p k) →+* B}
     (h : ∀ a : WittVector p k, f (algebraMap _ _ a) = g (algebraMap _ _ a)) : f = g :=
@@ -185,7 +185,7 @@ def AinfInv.liftFracWitt (g : WittVector p k →+* R) :
 
 variable {p} in
 /- English proof (translation)
-The claim follows from `fracWittLift_algebraMap p _ _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem AinfInv.liftFracWitt_algebraMap (g : WittVector p k →+* R) (a : WittVector p k) :
     AinfInv.liftFracWitt p g (algebraMap _ _ a) = algebraMap _ _ (Ainf.liftWitt p g a) :=
@@ -193,7 +193,7 @@ The claim follows from `fracWittLift_algebraMap p _ _ a`.
 
 variable {p} in
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (fracWitt_hom_ext (f := (AinfInv.map p e).comp (AinfInv.liftFracWitt p g)) (g := AinfInv.liftFracWitt p (e.comp g)) (by simp [Ainf.map_liftWitt])) x`.
+A detailed English derivation is pending.
 -/
 theorem AinfInv.map_liftFracWitt (e : R →+* S) (g : WittVector p k →+* R)
     (x : FractionRing (WittVector p k)) :
@@ -203,7 +203,7 @@ theorem AinfInv.map_liftFracWitt (e : R →+* S) (g : WittVector p k →+* R)
 
 variable {p} in
 /- English proof (translation)
-Simplify using `[Ainf.theta_liftWitt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem AinfInv.theta_liftFracWitt [IsAdicComplete (span {(p : R)}) R] (g : WittVector p k →+* R)
     (a : WittVector p k) :
@@ -217,9 +217,9 @@ variable [IsAdicComplete (span {(p : R)}) R]
 variable {p} in
 
 /- English proof (translation)
-Rewrite using `[IsHausdorff.eq_iff_smodEq (I := span {(p : R)})]`. Introduce `n`. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq.sub_mem]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n a)`. Establish `ha : a = (PadicInt.appr a n : ℤ_[p]) + c * (p : ℤ_[p]) ^ n` using `by rw [hc]; ring`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ha, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Conclude with `⟨Ainf.theta p R (algebraMap ℤ_[p] _ c) - g c, by ring⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem Ainf.theta_algebraMap_padicInt (g : ℤ_[p] →+* R) (a : ℤ_[p]) :
     Ainf.theta p R (algebraMap ℤ_[p] _ a) = g a := by
@@ -235,7 +235,7 @@ theorem Ainf.theta_algebraMap_padicInt (g : ℤ_[p] →+* R) (a : ℤ_[p]) :
 variable {p} in
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (padic_hom_ext (f := (AinfInv.theta p R).comp (algebraMap ℚ_[p] _)) (g := j) (fun a => by rw [RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[p] (Ainf p R) (AinfInv p R), AinfInv.theta_algebraMap, Ainf.theta_algebraMap_pad …`.
+A detailed English derivation is pending.
 -/
 theorem AinfInv.theta_algebraMap_padic (g : ℤ_[p] →+* R) (j : ℚ_[p] →+* Localization.Away (p : R))
     (hj : ∀ a : ℤ_[p], j (algebraMap _ _ a) = algebraMap R _ (g a)) (x : ℚ_[p]) :
@@ -247,9 +247,9 @@ theorem AinfInv.theta_algebraMap_padic (g : ℤ_[p] →+* R) (j : ℚ_[p] →+* 
         Ainf.theta_algebraMap_padicInt g, hj])) x
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Rewrite using `[Subsingleton.elim (h := Ideal.Quotient.subsingleton_iff.2 (by simp)) (AdicCompletion.evalₐ I 0 y) 0]`. Conclude with `zero_mem _`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I (n + 1) y)`. Establish `h1` using `factorPow_evalₐ I (show 1 ≤ n + 1 by omega) y`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[← AdicCompletion.factorₐ_evalₐ_one, ← h1, ← ha]`. Simplify using `only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem] at hy`. Rewrite using `[← ha]`. Conclude with `Ideal.mem_map_of_mem _ hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalₐ_mem_map_of_evalOne {A : Type*} [CommRing A] (I : Ideal A) {y : AdicCompletion I A}
     (hy : AdicCompletion.evalOneₐ I y = 0) (n : ℕ) :
@@ -271,9 +271,9 @@ namespace BdRPlus
 variable {p}
 
 /- English proof (translation)
-Establish `h1 : RingHom.ker (theta p R) ≤ ((AinfInv.kerTheta p R).map (Ideal.Quotient.mk (AinfInv.kerTheta p R ^ n))).comap (eval p R n)`. Introduce `y hy`. Rewrite `hy` using `[RingHom.mem_ker, theta_eq_zero_iff]`. Conclude with `evalₐ_mem_map_of_evalOne _ hy n`. Establish `h2` using `pow_le_comap_pow h1 n hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← Ideal.map_pow, Ideal.map_quotient_self, Ideal.mem_comap, Ideal.mem_bot]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem eval_eq_zero_of_mem_ker_theta_pow {n : ℕ} {x : BdRPlus p R} (hx : x ∈ fil p R n) :
     eval p R n x = 0 := by
@@ -288,7 +288,7 @@ theorem eval_eq_zero_of_mem_ker_theta_pow {n : ℕ} {x : BdRPlus p R} (hx : x �
   exact h2
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_iInf]`. Conclude with `ext_eval fun n => by rw [eval_eq_zero_of_mem_ker_theta_pow (hx n), map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iInf_ker_theta_pow : ⨅ n, fil p R n = ⊥ := by
   rw [eq_bot_iff]
@@ -299,7 +299,7 @@ theorem iInf_ker_theta_pow : ⨅ n, fil p R n = ⊥ := by
 variable {F : Type v} {L : Type w} [CommRing F] [CommRing L] [Algebra F L]
 
 /- English proof (translation)
-Use `letI : Algebra F (BdRPlus p R) := (s₁.comp (algebraMap F L)).toAlgebra`. Use `Algebra.FormallyUnramified.ext_of_iInf (R := F) (I := RingHom.ker (theta p R)) iInf_ker_theta_pow (g₁ := { s₁ with commutes' := fun _ => rfl }) (g₂ := { s₂ with commutes' := fun a => (hF a).symm }) (fun x => by` as an intermediate fact. Rewrite using `[Ideal.Quotient.eq, RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `hθ x)`. Conclude with `RingHom.ext fun x => AlgHom.congr_fun this x`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_formallyUnramified [Algebra.FormallyUnramified F L] {s₁ s₂ : L →+* BdRPlus p R}
     (hF : ∀ a : F, s₁ (algebraMap F L a) = s₂ (algebraMap F L a))
@@ -313,11 +313,11 @@ theorem hom_ext_of_formallyUnramified [Algebra.FormallyUnramified F L] {s₁ s�
   exact RingHom.ext fun x => AlgHom.congr_fun this x
 
 /- English proof (translation)
-Use `letI : Algebra F (AinfInv p R) := ι.toAlgebra`. Set `e` to `RingHom.quotientKerEquivOfSurjective hθ`. Set `f : L →ₐ[F] AinfInv p R ⧸ AinfInv.kerTheta p R` to `{ e.symm.toRingHom.comp j with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `e.symm (j (algebraMap F L a)) = Ideal.Quotient.mk _ (ι a)`. Rewrite using `[RingEquiv.symm_apply_eq, hj]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Take `⟨g, hg⟩` from `Algebra.FormallySmooth.exists_adicCompletionEvalOneₐ_comp_eq f`. Use `⟨g.toRingHom, fun x => ?_, fun a => g.commutes a⟩` and prove the remaining obligations. Establish `h1 : AdicCompletion.evalOneₐ (AinfInv.kerTheta p R) (g x) = e.symm (j x)` using `AlgHom.congr_fun hg x`. Express the relevant statement in the definitionally equal form `e (AdicCompletion.evalOneₐ (AinfInv.kerTheta p R) (g x)) = j x`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_section [Algebra.FormallySmooth F L]
     (hθ : Function.Surjective (AinfInv.theta p R)) (ι : F →+* AinfInv p R)
@@ -347,7 +347,7 @@ def «section» [Algebra.FormallySmooth F L]
   (exists_section hθ ι j hj).choose
 
 /- English proof (translation)
-The claim follows from `(exists_section hθ ι j hj).choose_spec.1 x`.
+A detailed English derivation is pending.
 -/
 theorem theta_section [Algebra.FormallySmooth F L]
     (hθ : Function.Surjective (AinfInv.theta p R)) (ι : F →+* AinfInv p R)
@@ -356,7 +356,7 @@ theorem theta_section [Algebra.FormallySmooth F L]
     theta p R («section» hθ ι j hj x) = j x := (exists_section hθ ι j hj).choose_spec.1 x
 
 /- English proof (translation)
-The claim follows from `(exists_section hθ ι j hj).choose_spec.2 a`.
+A detailed English derivation is pending.
 -/
 theorem section_algebraMap [Algebra.FormallySmooth F L]
     (hθ : Function.Surjective (AinfInv.theta p R)) (ι : F →+* AinfInv p R)
@@ -366,7 +366,7 @@ theorem section_algebraMap [Algebra.FormallySmooth F L]
   (exists_section hθ ι j hj).choose_spec.2 a
 
 /- English proof (translation)
-The claim follows from `hom_ext_of_formallyUnramified (F := F) (fun a => by rw [h₂, section_algebraMap]) (fun x => by rw [h₁, theta_section])`.
+A detailed English derivation is pending.
 -/
 theorem eq_section [Algebra.FormallyEtale F L]
     (hθ : Function.Surjective (AinfInv.theta p R)) (ι : F →+* AinfInv p R)
@@ -381,16 +381,16 @@ theorem eq_section [Algebra.FormallyEtale F L]
 end BdRPlus
 
 /- English proof (translation)
-The claim follows from `Algebra.FormallyEtale.of_isSeparable F L`.
+A detailed English derivation is pending.
 -/
 theorem formallyEtale_of_isAlgebraic (F : Type v) (L : Type w) [Field F] [Field L] [Algebra F L]
     [CharZero F] [Algebra.IsAlgebraic F L] : Algebra.FormallyEtale F L :=
   Algebra.FormallyEtale.of_isSeparable F L
 
 /- English proof (translation)
-Introduce `y`. Take `⟨⟨a, _, n, rfl⟩, h⟩` from `IsLocalization.surj (Submonoid.powers (p : R)) y`. Take `⟨b, rfl⟩` from `surjective_fontaineTheta hF a`. Take `⟨u, hu⟩` from `(AinfInv.isUnit_p p (R := R)).pow n`. Use `⟨algebraMap _ _ b * ↑u⁻¹, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_pow, map_natCast] at h`. Establish `h2 : AinfInv.theta p R ↑u = (p : Localization.Away (p : R)) ^ n`. Rewrite using `[hu, map_pow, map_natCast]`. Rewrite using `[map_mul, AinfInv.theta_algebraMap, Ainf.theta, ← h, ← h2, mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem AinfInv.theta_surjective_of_frobenius
     (hF : Function.Surjective (frobenius (ModP R p) p)) :

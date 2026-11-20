@@ -22,9 +22,9 @@ section Coord
 variable {R M ι : Type*} [CommRing R] [AddCommGroup M] [Module R M] [Fintype ι]
 
 /- English proof (translation)
-Establish `key : (J • ⊤ : Submodule R M) ≤ Submodule.comap (b.coord i) J`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr m _`. Rewrite using `[Submodule.mem_comap, map_smul, smul_eq_mul]`. Conclude with `J.mul_mem_right _ hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key hx`.
+A detailed English derivation is pending.
 -/
 lemma coord_mem_of_mem (b : Module.Basis ι R M) (J : Ideal R) {x : M}
     (hx : x ∈ (J • ⊤ : Submodule R M)) (i : ι) : b.repr x i ∈ J := by
@@ -36,7 +36,7 @@ lemma coord_mem_of_mem (b : Module.Basis ι R M) (J : Ideal R) {x : M}
   simpa using key hx
 
 /- English proof (translation)
-Rewrite using `[← b.sum_repr x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_of_coord_mem (b : Module.Basis ι R M) (J : Ideal R) {x : M}
     (h : ∀ i, b.repr x i ∈ J) : x ∈ (J • ⊤ : Submodule R M) := by
@@ -44,17 +44,17 @@ lemma mem_of_coord_mem (b : Module.Basis ι R M) (J : Ideal R) {x : M}
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top
 
 /- English proof (translation)
-Establish `hI : ∀ n : ℕ, (I ^ n • ⊤ : Submodule R R) = I ^ n` using `fun n => by`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, ∃ L : R, ∀ n, b.repr (f n) i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `IsPrecomplete.prec' (I := I) (fun n => b.repr (f n) i) ?_` and prove the remaining obligations. Introduce `m n hmn`. Establish `h0` using `coord_mem_of_mem b (I ^ m) (SModEq.sub_mem.mp (hf hmn)) i`. Rewrite using `[SModEq.sub_mem, hI]`. Simplify using `using h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose L hL using key`. Use `⟨∑ i, L i • b i, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem]`. Apply `mem_of_coord_mem b` to reduce the goal to its premises. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hL i n`. Rewrite `h1` using `[SModEq.sub_mem, hI]`. Establish `hs : b.repr (f n - ∑ j, L j • b j) i = b.repr (f n) i - L i`. Rewrite using `[map_sub, Finsupp.sub_apply, map_sum, Finsupp.finset_sum_apply]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Finsupp.single_apply, hj, Ne.symm hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 lemma isPrecomplete_of_basis (I : Ideal R) [IsPrecomplete I R] (b : Module.Basis ι R M) :
     IsPrecomplete I M := by
@@ -92,7 +92,7 @@ section Step
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Polynomial.map_surjective (residue V) residue_surjective g`. Conclude with `lifts_and_natDegree_eq_and_monic ((mem_lifts g).2 ⟨q, hq⟩) hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma exists_monic_lift (g : (ResidueField V)[X]) (hg : g.Monic) :
     ∃ f : V[X], f.map (residue V) = g ∧ f.natDegree = g.natDegree ∧ f.Monic := by
@@ -103,33 +103,33 @@ variable (f : V[X]) (hf : f.Monic) (hg : Irreducible (f.map (residue V)))
 include hf hg
 
 /- English proof (translation)
-Conclude with `Polynomial.Monic.irreducible_of_irreducible_map (residue V) f hf hg`.
+A detailed English derivation is pending.
 -/
 lemma irr : Irreducible f := by
   exact Polynomial.Monic.irreducible_of_irreducible_map (residue V) f hf hg
 
 /- English proof (translation)
-Conclude with `AdjoinRoot.isDomain_of_prime (UniqueFactorizationMonoid.irreducible_iff_prime.mp (irr f hf hg))`.
+A detailed English derivation is pending.
 -/
 lemma isDomain : IsDomain (AdjoinRoot f) := by
   exact AdjoinRoot.isDomain_of_prime (UniqueFactorizationMonoid.irreducible_iff_prime.mp (irr f hf hg))
 
 omit hg in
 /- English proof (translation)
-Conclude with `(AdjoinRoot.powerBasis' hf).finite`.
+A detailed English derivation is pending.
 -/
 lemma finite : Module.Finite V (AdjoinRoot f) := by
   exact (AdjoinRoot.powerBasis' hf).finite
 
 /- English proof (translation)
-Rewrite using `[← hf.natDegree_map (residue V)]`. Conclude with `natDegree_pos_iff_degree_pos.mpr (degree_pos_of_irreducible hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma natDeg_pos : 0 < f.natDegree := by
   rw [← hf.natDegree_map (residue V)]
   exact natDegree_pos_iff_degree_pos.mpr (degree_pos_of_irreducible hg)
 
 /- English proof (translation)
-Rewrite using `[AdjoinRoot.algebraMap_eq]`. Use `AdjoinRoot.of.injective_of_degree_ne_zero ?_` and prove the remaining obligations. Rewrite using `[degree_eq_natDegree hf.ne_zero]`. Conclude with `(natDeg_pos f hf hg).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inj : Function.Injective (algebraMap V (AdjoinRoot f)) := by
   rw [AdjoinRoot.algebraMap_eq]
@@ -138,7 +138,7 @@ lemma inj : Function.Injective (algebraMap V (AdjoinRoot f)) := by
   exact_mod_cast (natDeg_pos f hf hg).ne'
 
 /- English proof (translation)
-Use `haveI : Fact (Irreducible (f.map (residue V))) := ⟨hg⟩`. Establish `e` using `(AdjoinRoot.quotEquivQuotMap f (maximalIdeal V)).toRingEquiv`. Use `first`. Consider the case `exact MulEquiv.isField (Field.toIsField (AdjoinRoot (f.map (residue V)))) e.toMulEquiv`. Consider the case `exact MulEquiv.isField (Field.toIsField (AdjoinRoot (f.map (residue V)))) e.symm.toMulEquiv`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma quot_isField : IsField (AdjoinRoot f ⧸ (maximalIdeal V).map (AdjoinRoot.of f)) := by
   haveI : Fact (Irreducible (f.map (residue V))) := ⟨hg⟩
@@ -148,16 +148,14 @@ lemma quot_isField : IsField (AdjoinRoot f ⧸ (maximalIdeal V).map (AdjoinRoot.
   | exact MulEquiv.isField (Field.toIsField (AdjoinRoot (f.map (residue V)))) e.symm.toMulEquiv
 
 /- English proof (translation)
-Rewrite using `[AdjoinRoot.algebraMap_eq]`. Conclude with `Ideal.Quotient.maximal_of_isField _ (quot_isField f hf hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma J_max : ((maximalIdeal V).map (algebraMap V (AdjoinRoot f))).IsMaximal := by
   rw [AdjoinRoot.algebraMap_eq]
   exact Ideal.Quotient.maximal_of_isField _ (quot_isField f hf hg)
 
 /- English proof (translation)
-Use `haveI := finite f hf`. Use `IsLocalRing.of_unique_max_ideal ⟨_, J_max f hf hg, fun P hP => ?_⟩` and prove the remaining obligations. Use `haveI := hP`. Establish `hc : P.comap (algebraMap V (AdjoinRoot f)) = maximalIdeal V` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal P)`. Establish `hle : (maximalIdeal V).map (algebraMap V (AdjoinRoot f)) ≤ P`.
-
-Rewrite using `[← hc]`. Conclude with `Ideal.map_comap_le`. Conclude with `((J_max f hf hg).eq_of_le hP.ne_top hle).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isLocal : IsLocalRing (AdjoinRoot f) := by
   haveI := finite f hf
@@ -171,16 +169,16 @@ lemma isLocal : IsLocalRing (AdjoinRoot f) := by
   exact ((J_max f hf hg).eq_of_le hP.ne_top hle).symm
 
 /- English proof (translation)
-Conclude with `(IsLocalRing.eq_maximalIdeal (J_max f hf hg)).symm`.
+A detailed English derivation is pending.
 -/
 lemma maxEq [IsLocalRing (AdjoinRoot f)] :
     maximalIdeal (AdjoinRoot f) = (maximalIdeal V).map (algebraMap V (AdjoinRoot f)) := by
   exact (IsLocalRing.eq_maximalIdeal (J_max f hf hg)).symm
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hm : a ∈ maximalIdeal V` using `(IsLocalRing.mem_maximalIdeal a).mpr (mem_nonunits_iff.mpr h)`. Establish `h2 : algebraMap V (AdjoinRoot f) a ∈ maximalIdeal (AdjoinRoot f)`. Rewrite using `[maxEq f hf hg]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ hm`. Conclude with `mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp h2) ha`.
+A detailed English derivation is pending.
 -/
 lemma locHom [IsLocalRing (AdjoinRoot f)] : IsLocalHom (algebraMap V (AdjoinRoot f)) := by
   refine ⟨fun a ha => ?_⟩
@@ -192,11 +190,11 @@ lemma locHom [IsLocalRing (AdjoinRoot f)] : IsLocalHom (algebraMap V (AdjoinRoot
   exact mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp h2) ha
 
 /- English proof (translation)
-Use `haveI := finite f hf`. Use `haveI : IsNoetherianRing (AdjoinRoot f) := isNoetherian_of_tower V inferInstance`. Take `⟨w, hw⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hmV : maximalIdeal V = Ideal.span {w}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer w).mp hw`. Establish `hmA : maximalIdeal (AdjoinRoot f) = Ideal.span {algebraMap V (AdjoinRoot f) w}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[maxEq f hf hg, hmV, Ideal.map_span, Set.image_singleton]`. Establish `hne : algebraMap V (AdjoinRoot f) w ≠ 0`. Rewrite using `[← map_zero (algebraMap V (AdjoinRoot f))]`. Conclude with `fun h => hw.ne_zero (inj f hf hg h)`. Establish `hnf : ¬IsField (AdjoinRoot f)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, hmA, Ideal.span_singleton_eq_bot]`. Conclude with `hne`. Establish `hpr : (maximalIdeal (AdjoinRoot f)).IsPrincipal` using `⟨⟨_, hmA⟩⟩`. Conclude with `((IsDiscreteValuationRing.TFAE (AdjoinRoot f) hnf).out 0 4).mpr hpr`.
+A detailed English derivation is pending.
 -/
 lemma dvr [IsDomain (AdjoinRoot f)] [IsLocalRing (AdjoinRoot f)] :
     IsDiscreteValuationRing (AdjoinRoot f) := by
@@ -217,15 +215,13 @@ lemma dvr [IsDomain (AdjoinRoot f)] [IsLocalRing (AdjoinRoot f)] :
   exact ((IsDiscreteValuationRing.TFAE (AdjoinRoot f) hnf).out 0 4).mpr hpr
 
 /- English proof (translation)
-Set `b` to `(AdjoinRoot.powerBasis' hf).basis`. Establish `key : ∀ (n : ℕ) (x : AdjoinRoot f), x ∈ (maximalIdeal (AdjoinRoot f) ^ n • ⊤ : Submodule (AdjoinRoot f) (AdjoinRoot f)) ↔ x ∈ ((maximalIdeal V) ^ n • ⊤ : Submodule V (AdjoinRoot f))`. Introduce `n x`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, maxEq f hf hg, ← Ideal.map_pow, Ideal.smul_top_eq_map, Submodule.restrictScalars_mem]`. Establish `hP : IsPrecomplete (maximalIdeal V) (AdjoinRoot f)` using `isPrecomplete_of_basis _ b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hH : IsHausdorff (maximalIdeal (AdjoinRoot f)) (AdjoinRoot f)`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ n, x ∈ ((maximalIdeal V) ^ n • ⊤ : Submodule V (AdjoinRoot f))` using `fun n => (key n x).mp (by simpa using SModEq.sub_mem.mp (hx n))`. Establish `h2 : ∀ i, b.repr x i = 0` using `fun i => IsHausdorff.haus' (I := maximalIdeal V) (b.repr x i) fun n => by`. Rewrite using `[SModEq.sub_mem, sub_zero, Ideal.smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `coord_mem_of_mem b _ (h1 n) i`. Rewrite using `[← b.sum_repr x]`. Simplify using `[h2]`. Establish `hC : IsPrecomplete (maximalIdeal (AdjoinRoot f)) (AdjoinRoot f)`. Use `⟨fun g hg' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `hP.prec' g fun {a c} hac => by`. Rewrite using `[SModEq.sub_mem, ← key]`. Conclude with `SModEq.sub_mem.mp (hg' hac)`. Conclude with `⟨L, fun n => by`. Rewrite using `[SModEq.sub_mem, key]`.
-
-Conclude with `SModEq.sub_mem.mp (hL n)⟩`. Conclude with `IsAdicComplete.mk`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma complete [IsLocalRing (AdjoinRoot f)] [IsAdicComplete (maximalIdeal V) V] :
     IsAdicComplete (maximalIdeal (AdjoinRoot f)) (AdjoinRoot f) := by
@@ -263,7 +259,7 @@ noncomputable def resEquiv [IsLocalRing (AdjoinRoot f)] :
     (AdjoinRoot.quotEquivQuotMap f (maximalIdeal V)).toRingEquiv
 
 /- English proof (translation)
-Introduce `hl`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `residue_surjective x`. Use `(AdjoinRoot.quotEquivQuotMap_apply_mk f (C y) (maximalIdeal V)).trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -282,27 +278,21 @@ end Step
 section Main
 
 /- English proof (translation)
-Use `Nat.strong_induction_on n fun n ih => ?_` and prove the remaining obligations. Introduce `V' _ _ _ _ k'' _ _ _ hn`. Distinguish the cases in `hs : Function.Surjective (algebraMap (ResidueField V') k'')`. Set `e0 : ResidueField V' ≃+* k''` to `RingEquiv.ofBijective (algebraMap (ResidueField V') k'') ⟨(algebraMap (ResidueField V') k'').injective, hs⟩`. Use `⟨V', inferInstance, inferInstance, inferInstance, inferInstance, Algebra.id V', Module.Finite.self V', fun x y h => h, ⟨fun x hx => hx⟩, e0.symm, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `residue_surjective x`. Rewrite using `[RingHom.comp_apply, ResidueField.map_residue]`. Conclude with `e0.symm_apply_apply (residue V' y)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : k'', a ∉ (algebraMap (ResidueField V') k'').range := by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hs fun x => RingHom.mem_range.mp (h x)`. Establish `hint : IsIntegral (ResidueField V') a` using `Algebra.IsIntegral.isIntegral a`. Take `⟨f, hfg, -, hf⟩` from `exists_monic_lift (minpoly (ResidueField V') a) (minpoly.monic hint)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : Irreducible (f.map (residue V'))`. Rewrite using `[hfg]`. Conclude with `minpoly.irreducible hint`. Use `haveI := isLocal f hf hg`. Use `haveI := isDomain f hf hg`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := locHom f hf hg`. Use `haveI := dvr f hf hg`. Use `haveI := complete f hf hg`. Use `haveI := finite f hf`. Establish `hroot : (f.map (residue V')).eval₂ (algebraMap (ResidueField V') k'') a = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfg, ← aeval_def]`. Conclude with `minpoly.aeval _ a`. Use `letI : Algebra (ResidueField (AdjoinRoot f)) k'' := RingHom.toAlgebra ((AdjoinRoot.lift (f := f.map (residue V')) (algebraMap (ResidueField V') k'') a hroot).comp (resEquiv f hf hg).toRingHom)`. Establish `htow_eq : algebraMap (ResidueField V') k'' = (algebraMap (ResidueField (AdjoinRoot f)) k'').comp (algebraMap (ResidueField V') (ResidueField (AdjoinRoot f)))`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (resEquiv f hf hg) (ResidueField.map (algebraMap V' (AdjoinRoot f)) x) = AdjoinRoot.of (f.map (residue V')) x` using `RingHom.congr_fun (resEquiv_comp f hf hg) x`. Express the relevant statement in the definitionally equal form `_ = AdjoinRoot.lift (f := f.map (residue V')) (algebraMap (ResidueField V') k'') a hroot ((resEquiv f hf hg) (ResidueField.map (algebraMap V' (AdjoinRoot f)) x))`. Rewrite using `[hc, AdjoinRoot.lift_of]`. Use `haveI : IsScalarTower (ResidueField V') (ResidueField (AdjoinRoot f)) k'' := IsScalarTower.of_algebraMap_eq' htow_eq`. Use `haveI : FiniteDimensional (ResidueField (AdjoinRoot f)) k'' := Module.Finite.of_restrictScalars_finite (ResidueField V') (ResidueField (AdjoinRoot f)) k''`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `hdim : 2 ≤ Module.finrank (ResidueField V') (ResidueField (AdjoinRoot f))`. Set `E : ResidueField (AdjoinRoot f) ≃ₐ[ResidueField V'] AdjoinRoot (f.map (residue V'))` to `AlgEquiv.ofRingEquiv (f := resEquiv f hf hg) fun x => RingHom.congr_fun (resEquiv_comp f hf hg) x`. Rewrite using `[E.toLinearEquiv.finrank_eq, (AdjoinRoot.powerBasis hg.ne_zero).finrank, AdjoinRoot.powerBasis_dim, hfg]`. Establish `h1 : (minpoly (ResidueField V') a).natDegree ≠ 1` using `fun h => ha (minpoly.natDegree_eq_one_iff.mp h)`. Establish `h2` using `minpoly.natDegree_pos hint`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hlt : Module.finrank (ResidueField (AdjoinRoot f)) k'' < n`. Establish `h1` using `Module.finrank_mul_finrank (ResidueField V') (ResidueField (AdjoinRoot f)) k''`. Establish `h2 : 0 < Module.finrank (ResidueField (AdjoinRoot f)) k''` using `Module.finrank_pos`. Rewrite `h1` using `[hn]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨V2, i1, i2, i3, i4, i5, hfin, hinj, hloc, e, he⟩` from `ih _ hlt (AdjoinRoot f) k'' rfl`. Use `letI : Algebra V' V2 := ((algebraMap (AdjoinRoot f) V2).comp (algebraMap V' (AdjoinRoot f))).toAlgebra`. Use `haveI : IsScalarTower V' (AdjoinRoot f) V2 := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI hl2 : IsLocalHom (algebraMap V' V2) := by show IsLocalHom ((algebraMap (AdjoinRoot f) V2).comp (algebraMap V' (AdjoinRoot f))) infer_instance`.
-
-Use `⟨V2, i1, i2, i3, i4, inferInstance, Module.Finite.trans (AdjoinRoot f) V2, hinj.comp (inj f hf hg), hl2, e, ?_⟩` and prove the remaining obligations. Rewrite using `[htow_eq, ← RingHom.comp_assoc, he]`. Use `first`. Consider the case `exact (ResidueField.map_comp (algebraMap V' (AdjoinRoot f)) (algebraMap (AdjoinRoot f) V2)).symm`. Consider the case `exact (ResidueField.map_comp (algebraMap (AdjoinRoot f) V2) (algebraMap V' (AdjoinRoot f))).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nbMain (n : ℕ) : ∀ (V' : Type) [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V']
     [IsAdicComplete (maximalIdeal V') V']
@@ -392,7 +382,7 @@ end Main
 end Nb
 
 /- English proof (translation)
-Unfold `NbSt`. Introduce `V' _ _ _ _ k'' _ _ _`. Conclude with `Nb.nbMain _ V' k'' rfl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nb : NbSt := by
   unfold NbSt

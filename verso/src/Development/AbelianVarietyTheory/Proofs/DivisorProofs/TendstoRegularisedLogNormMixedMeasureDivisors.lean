@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.Mix.LogLim
 
 /- English proof (translation)
-Take `⟨m, i, hi, rfl⟩` from `h`. Use `isProper_str R m` as an intermediate fact. Establish `: IsProper (i ≫ PSpace.str R m)` using `inferInstance`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_of_proj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : CompactSpace X := by
@@ -34,21 +34,21 @@ theorem compactSpace_of_proj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶
   exact QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)
 
 /- English proof (translation)
-Unfold `Weight.nsq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem nsq_nonneg {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     (N : MLine p σ) (t : N.B.Sec) (y : CxPts p σ) : 0 ≤ N.φ.nsq (secVal p σ t) y := by
   unfold Weight.nsq; positivity
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun y => ((GlobalTheory.T.smoothWeightedLineBundle_logSectionNorm_properties k X p σ N t).2.2.1 y).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nsq {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     (N : MLine p σ) (t : N.B.Sec) : Continuous (N.φ.nsq (secVal p σ t)) :=
   continuous_iff_continuousAt.2 fun y => ((GlobalTheory.T.smoothWeightedLineBundle_logSectionNorm_properties k X p σ N t).2.2.1 y).continuousAt
 
 /- English proof (translation)
-Use `haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ hp`. Take `⟨C, hC⟩` from `(isCompact_univ.image (continuous_nsq N t)).bddAbove`. Conclude with `⟨C, fun y => hC ⟨y, Set.mem_univ _, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nsq_le {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     (hp : IsProjOver p) (N : MLine p σ) (t : N.B.Sec) : ∃ C : ℝ, ∀ y, N.φ.nsq (secVal p σ t) y ≤ C := by
@@ -61,25 +61,23 @@ end GlobalTheory.Mix.LogLim
 open GlobalTheory.Mix.LogLim in
 
 /- English proof (translation)
-Introduce `hP F _ X _ _ p σ e hp hdim N t`. Use `set w := N.φ.nsq (secVal p σ t) with hw_def`. Establish `hbasic` using `GlobalTheory.T.smoothWeightedLineBundle_logSectionNorm_properties F X p σ N t`. Establish `hcont : Continuous w` using `continuous_nsq N t`. Take `⟨C, hC⟩` from `exists_nsq_le hp N t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwC : ∀ y, 0 ≤ w y ∧ w y ≤ C` using `fun y => ⟨nsq_nonneg N t y, hC y⟩`. Use `⟨fun hgen L => ?_, fun L Δ hΔ => ?_⟩` and prove the remaining obligations. Establish `hfin` using `(GlobalTheory.T.mixedChernMeasure_finite_integrable_projective hP F X p σ (e + 1) hp hdim L).1`. Establish `hint` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective hP F X p σ (e + 1) hp hdim L N t hgen`. Establish `one (ε : ℤˣ) (hi : Integrable (N.logSec t) (part L ε)) : Tendsto (fun n : ℕ => ∫ y, Real.log (w y + 1 / ((n : ℝ) + 1)) ∂part L ε) atTop (𝓝 (2 * ∫ y, Real.log (w y) / 2 ∂part L ε))` using `by haveI := hfin ε`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnull` using `GlobalTheory.T.mixedChernFormSignedPartMeasure_compl_open_genericPoint_eq_zero F X p σ σ.injective hp (e + 1) L ε (nonzeroLocus t) hgen`. Use `GlobalTheory.T.tendsto_integral_log_add_inv_succ _ (part L ε) w C hcont.measurable hwC ?_ hi` and prove the remaining obligations. Use `ae_iff.2 (measure_mono_null (fun y hy => ?_) hnull)` and prove the remaining obligations. Conclude with `fun h => hy ((hbasic.2.1 y).2 h)`. Establish `h1` using `one 1 hint.1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `one (-1) hint.2`. Simplify using `only [Mix.int, MLine.logSec, mul_sub]`. Conclude with `h1.sub h2`. Use `haveI : CompactSpace X := compactSpace_of_proj hp`. Establish `hS` using `Δ.finite_support_mult`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsub (f : X → ℝ) : Function.support (fun z => (Δ.mult z : ℝ) * f z) ⊆ ↑hS.toFinset`. Introduce `z hz`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support]`. Introduce `h0`. Apply `hz` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[h0]`. Establish `hrw : (fun n : ℕ => ∑ᶠ z, (Δ.mult z : ℝ) * cycInt L (fun y => Real.log (w y + 1 / ((n : ℝ) + 1))) z) = fun n : ℕ => ∑ z ∈ hS.toFinset, (Δ.mult z : ℝ) * cycInt L (fun y => Real.log (w y + 1 / ((n : ℝ) + 1))) z`. Use function extensionality and compare the values at `fun n => finsum_eq_sum_of_support_subset _ (hsub _)`. Rewrite using `[hrw, finsum_eq_sum_of_support_subset _ (hsub _), Finset.mul_sum]`. Use `tendsto_finset_sum _ fun z hz => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : Δ.mult z ≠ 0` using `by simpa using hz`. Establish `hcoh` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hz0`. Establish `hdz` using `(GlobalTheory.T.coheight_eq_one_iff_closure_dim_projective F X p e hp hdim z).1 hcoh`. Take `⟨hfin, -, hnull, hlog⟩` from `GlobalTheory.T.mixedChernForm_finite_integrable_pointClosure hP F X p σ hp e L z hdz`. Establish `hzt` using `hΔ z hz0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint` using `hlog N t hzt`. Use `set π := ptMap (closι z) rfl σ with hπ`. Establish `hπc : Continuous π` using `continuous_of_comp (f := closι z) fun _ => rfl`. Establish `one (ε : ℤˣ) (hi : Integrable (fun y => N.logSec t (π y)) (part (fun i => (L i).pull (closι z) rfl) ε)) : Tendsto (fun n : ℕ => ∫ y, Real.log (w (π y) + 1 / ((n : ℝ) + 1)) ∂part (fun i => (L i).pull (closι z) rfl) ε) atTop (𝓝 (2 * ∫ y, Real.log (w (π y)) / 2 ∂part (fun i => (L i) …` using `by haveI := hfin ε`. Use `GlobalTheory.T.tendsto_integral_log_add_inv_succ _ _ (fun y => w (π y)) C (hcont.comp hπc).measurable (fun y => hwC (π y)) ?_ hi` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ae_iff.2 (measure_mono_null (fun y hy => ?_) (hnull (nonzeroLocus t) hzt ε))` and prove the remaining obligations. Conclude with `fun h => hy ((hbasic.2.1 (π y)).2 h)`. Establish `h1` using `one 1 hint.1`. Establish `h2` using `one (-1) hint.2`. Use `(h1.sub h2).const_mul (Δ.mult z : ℝ)` as an intermediate fact.
-
-Simplify using `only [cycInt, Mix.int, MLine.logSec] at this ⊢`. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mix.tendsto_logReg : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ (N : MLine p σ) (t : N.B.Sec), (genericPoint X ∈ nonzeroLocus t → ∀ L : Fin (e + 1) → MLine p σ, Tendsto (fun n : ℕ => Mix.int L fun y => Real.log (N.φ.nsq (secVal p σ t) y + 1 / ((n : ℝ) + 1))) atTop (𝓝 (2 * Mix.int L (N.logSec t)))) ∧ ∀ (L : Fin e → MLine p σ) (Δ : CartierDiv X), (∀ z, Δ.mult z ≠ 0 → z ∈ nonzeroLocus t) → Tendsto (fun n : ℕ => ∑ᶠ z, (Δ.mult z : ℝ) * cycInt L (fun y => Real.log (N.φ.nsq (secVal p σ t) y + 1 / ((n : ℝ) + 1))) z) atTop (𝓝 (2 * ∑ᶠ z, (Δ.mult z : ℝ) * cycInt L (N.logSec t) z)) := by
   intro hP F _ X _ _ p σ e hp hdim N t

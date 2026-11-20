@@ -21,16 +21,16 @@ def evW (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : Lev.EAf D →+* Fv D.ho
   (complEquiv τ (splitPrime_under τ)).symm.toRingHom.comp (cpt (D := D) (splitPrime τ))
 
 /- English proof (translation)
-Conclude with `(complEquiv τ (splitPrime_under τ)).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem complEquiv_evW (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (z : Lev.EAf D) :
     complEquiv τ (splitPrime_under τ) (evW τ z) = cpt (D := D) (splitPrime τ) z := by
   exact (complEquiv τ (splitPrime_under τ)).apply_symm_apply _
 
 /- English proof (translation)
-Apply `(complEquiv τ (splitPrime_under τ)).injective` to reduce the goal to its premises. Rewrite using `[complEquiv_evW]`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[FlipMatch.cpt_tmul, FlipMatch.piW_tmul, map_mul, complEquiv_apply, complEquiv_apply, complMap_apply_emb, mul_comm]`. Use `congr 1`. Rewrite using `[← FlipMatch.complMap_apply_under (splitPrime_under τ)]`. Both sides reduce to the same expression. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem evW_toEAf (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (a : AE D) : evW τ (toEAf D a) = piW τ a := by
   apply (complEquiv τ (splitPrime_under τ)).injective

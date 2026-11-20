@@ -11,11 +11,11 @@ section
 variable {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E)
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨Q, hQ⟩` from `hp`. Take `⟨R, hR⟩` from `hq`. Use `⟨Q + R, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_mul, ← hQ, ← hR, map_add, add_tmul, tmul_add]`. Normalize the expressions using the abelian group laws. Consider the case `monomial k a`. Establish `hc : Commute ((X : A[X]) ⊗ₜ[A] (1 : E)) (1 ⊗ₜ x)`. Simplify using `[Commute, SemiconjBy]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨G, h⟩ : ∃ G, G * _ = _` from `⟨_, hc.geom_sum₂_mul k⟩`. Use `⟨a • G, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, h, Algebra.TensorProduct.tmul_pow, Algebra.TensorProduct.tmul_pow, one_pow, one_pow, smul_sub, aeval_monomial, ← Algebra.smul_def, tmul_smul, ← smul_X_eq_monomial, ← smul_tmul']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem chk_div (x : E) (p : A[X]) : ∃ Q : A[X] ⊗[A] E,
     p ⊗ₜ[A] (1 : E) - 1 ⊗ₜ aeval x p = Q * (X ⊗ₜ 1 - 1 ⊗ₜ x) := by
@@ -35,13 +35,13 @@ private theorem chk_div (x : E) (p : A[X]) : ∃ Q : A[X] ⊗[A] E,
         smul_sub, aeval_monomial, ← Algebra.smul_def, tmul_smul, ← smul_X_eq_monomial, ← smul_tmul']
 
 /- English proof (translation)
-Use `nontriviality A`. Take `⟨h0, -, -, -, hm, -, -⟩` from `d_chi D x`. Take `⟨-, -, -, -, hm', hd', -⟩` from `d_chi D (x - y * aeval x (D.chi x))`. Establish `hn : n ≤ (D.chi x).natDegree`. Apply `le_natDegree_of_ne_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: (D.chi x).coeff n = 1` using `by simpa [Det.lam] using h0`. Rewrite using `[this]`. Conclude with `one_ne_zero`. Use `eq_of_monic_of_dvd_of_natDegree_le hm hm' ?_ (hd'.trans hn)` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `chk_div x (D.chi x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `π` to `Ideal.Quotient.mkₐ A (Ideal.span {D.chi x})`. Establish `hπ : π (D.chi x) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Establish `e : ((X : A[X]) ⊗ₜ[A] (1 : E) - 1 ⊗ₜ (x - y * aeval x (D.chi x))) = (1 - (1 ⊗ₜ y) * Q) * (X ⊗ₜ 1 - 1 ⊗ₜ x) + D.chi x ⊗ₜ y`. Rewrite using `[sub_mul, mul_assoc, ← hQ, one_mul, mul_sub, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, mul_one, tmul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `π (D.D A[X] _) = 0`. Rewrite using `[e, ← D.nat, map_add, Algebra.TensorProduct.map_tmul, hπ, zero_tmul, add_zero, D.nat, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `_ * π (D.chi x) = 0`. Rewrite using `[hπ, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chk_chi (x y : E) : D.chi (x - y * aeval x (D.chi x)) = D.chi x := by
   nontriviality A
@@ -67,9 +67,9 @@ private theorem chk_chi (x y : E) : D.chi (x - y * aeval x (D.chi x)) = D.chi x 
   rw [hπ, mul_zero]
 
 /- English proof (translation)
-Set `ev : S[X] →ₐ[A] S` to `(Polynomial.aeval (R := S) s).restrictScalars A`. Establish `h` using `D.nat S[X] S ev (X ⊗ₜ 1 - Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) y)`. Establish `hev : Algebra.TensorProduct.map ev (AlgHom.id A E) (Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S S[X]) (AlgHom.id A E) y) = y` using `by clear h`. Proceed by induction on `y with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul b z => simp [ev]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite `h` using `[map_sub, hev]`. Simplify `h.symm` using `[ev, Det.chiS, coe_aeval_eq_eval]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem chk_eval (S : Type) [CommRing S] [Algebra A S] (s : S) (y : S ⊗[A] E) :
     (D.chiS S y).eval s = D.D S (s ⊗ₜ 1 - y) := by
@@ -87,13 +87,13 @@ private theorem chk_eval (S : Type) [CommRing S] [Algebra A S] (s : S) (y : S �
   simpa [ev, Det.chiS, coe_aeval_eq_eval] using h.symm
 
 /- English proof (translation)
-Take `⟨-, -, h3, h4⟩` from `d_bc D A[X]`. Establish `h1` using `chk_chi (D.baseChange A[X]) (1 ⊗ₜ x) ((X ⊗ₜ 1 - 1 ⊗ₜ x) * (1 ⊗ₜ h))`. Establish `h2 : aeval ((1 : A[X]) ⊗ₜ[A] x) ((D.baseChange A[X]).chi (1 ⊗ₜ x)) = 1 ⊗ₜ aeval x (D.chi x)`. Rewrite using `[(h4 x).1, aeval_map_algebraMap]`. Conclude with `aeval_algHom_apply (Algebra.TensorProduct.includeRight : E →ₐ[A] A[X] ⊗[A] E) x _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, h3, h3]`. Establish `h5` using `congrArg (eval X) h1`. Rewrite `h5` using `[chk_eval, chk_eval]`. Establish `e : ((X : A[X]) ⊗ₜ[A] (1 : E) - (1 ⊗ₜ x - (X ⊗ₜ 1 - 1 ⊗ₜ x) * (1 ⊗ₜ h) * 1 ⊗ₜ aeval x (D.chi x))) = (X ⊗ₜ 1 - 1 ⊗ₜ x) * (1 ⊗ₜ (1 + h * aeval x (D.chi x)))`. Rewrite using `[tmul_add, ← Algebra.TensorProduct.one_def, mul_add, mul_one, mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite `h5` using `[e, map_mul]`. Establish `hm : (D.chi x).Monic` using `(d_chi D x).2.2.2.2.1`. Establish `h6 : D.D A[X] (1 ⊗ₜ (1 + h * aeval x (D.chi x))) = 1` using `hm.isRegular.left (h5.trans (mul_one _).symm)`. Establish `h7` using `D.nat A[X] A (aeval (0 : A)) (1 ⊗ₜ (1 + h * aeval x (D.chi x)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h7` using `[h6, map_one, Algebra.TensorProduct.map_tmul, map_one]`. Conclude with `h7`.
+A detailed English derivation is pending.
 -/
 private theorem chk_val (x h : E) : D.val (1 + h * aeval x (D.chi x)) = 1 := by
   obtain ⟨-, -, h3, h4⟩ := d_bc D A[X]
@@ -118,11 +118,11 @@ private theorem chk_val (x h : E) : D.val (1 + h * aeval x (D.chi x)) = 1 := by
   exact h7
 
 /- English proof (translation)
-Establish `h` using `D.nat (Polynomial S) (Polynomial T) (Polynomial.mapAlgHom f) (Polynomial.X ⊗ₜ 1 - Algebra.TensorProduct.map (IsScalarTower.toAlgHom A S (Polynomial S)) (AlgHom.id A E) y)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Unfold `Det.chiS`. Use `congr 1`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Use `clear h`. Proceed by induction on `y with`. Consider the case `zero => simp`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul s x => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem chk_chiS_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
     (y : S ⊗[A] E) :
@@ -142,9 +142,9 @@ private theorem chk_chiS_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T
     | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Rewrite using `[chk_chiS_map]`. Generalize the expression as in `D.chiS S y = p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [Polynomial.map_add, map_add, hp, hq]`. Consider the case `monomial k a`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `[Polynomial.aeval_monomial, Algebra.TensorProduct.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem chk_F_map (S T : Type) [CommRing S] [Algebra A S] [CommRing T] [Algebra A T] (f : S →ₐ[A] T)
     (y : S ⊗[A] E) :
@@ -163,7 +163,7 @@ private def chkK (B : Type) [CommRing B] [Algebra A B] (w : B ⊗[A] E) : Prop :
     D.D S (1 + h * Algebra.TensorProduct.map f (AlgHom.id A E) w) = 1
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul s x => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem chk_comp {B S T : Type} [CommRing B] [Algebra A B] [CommRing S] [Algebra A S] [CommRing T]
     [Algebra A T] (f : B →ₐ[A] S) (g : S →ₐ[A] T) (w : B ⊗[A] E) :
@@ -175,7 +175,7 @@ private theorem chk_comp {B S T : Type} [CommRing B] [Algebra A B] [CommRing S] 
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Introduce `S _ _ f h`. Take `⟨-, h2, h3, -⟩` from `d_bc D S`. Rewrite using `[← chk_F_map, ← h2, ← h3]`. Conclude with `chk_val _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chkK_ch (B : Type) [CommRing B] [Algebra A B] (y : B ⊗[A] E) :
     chkK D B (aeval y (D.chiS B y)) := by
@@ -185,7 +185,7 @@ private theorem chkK_ch (B : Type) [CommRing B] [Algebra A B] (y : B ⊗[A] E) :
   exact chk_val _ _ _
 
 /- English proof (translation)
-Introduce `S _ _ f h`. Rewrite using `[chk_comp]`. Conclude with `hw S _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chkK_map {B T : Type} [CommRing B] [Algebra A B] [CommRing T] [Algebra A T] (g : B →ₐ[A] T)
     {w : B ⊗[A] E} (hw : chkK D B w) : chkK D T (Algebra.TensorProduct.map g (AlgHom.id A E) w) := by
@@ -194,15 +194,15 @@ private theorem chkK_map {B T : Type} [CommRing B] [Algebra A B] [CommRing T] [A
   exact hw S _ h
 
 /- English proof (translation)
-Introduce `S _ _ f h`. Set `L` to `Localization.Away (X : S[X])`. Set `i : S[X] →ₐ[A] L` to `IsScalarTower.toAlgHom A S[X] L`. Establish `hi : Function.Injective i` using `IsLocalization.injective L ((Submonoid.powers_le (P := nonZeroDivisors S[X])).2 X_mem_nonzeroDivisors)`. Set `g : A[X] →ₐ[A] S[X]` to `mapAlgHom (Algebra.ofId A S)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c : S →ₐ[A] S[X]` to `IsScalarTower.toAlgHom A S S[X]`. Set `ev : S[X] →ₐ[A] S` to `(aeval (R := S) (f X)).restrictScalars A`. Establish `h1 : ev.comp g = f`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `[ev, g]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `h2 : ev.comp c = AlgHom.id A S`. Use extensionality with `s`. Simplify using `[ev, c]`. Establish `h3` using `hw L (i.comp g) (Algebra.TensorProduct.map (i.comp c) (AlgHom.id A E) h * (IsLocalization.Away.invSelf (X : S[X]) ⊗ₜ 1))`. Establish `h4 : IsLocalization.Away.invSelf (X : S[X]) * (i.comp g) X = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Simplify `IsLocalization.Away.mul_invSelf (S := L) (X : S[X])` using `[i, g]`. Rewrite `h3` using `[map_mul, Algebra.TensorProduct.map_tmul, mul_assoc, ← mul_assoc (_ ⊗ₜ _), Algebra.TensorProduct.tmul_mul_tmul, h4, map_one, mul_one, ← Algebra.TensorProduct.one_def, one_mul, ← chk_comp, ← chk_comp, ← map_mul, ← map_one (Algebra.TensorProduct.map i (AlgHom.id A E)), ← map_add, D …`. Establish `h5` using `congrArg ev (hi h3)`. Rewrite `h5` using `[← D.nat, map_add, map_one, map_mul, chk_comp, chk_comp, h1, h2, map_one]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h5`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem chkK_sat {w : A[X] ⊗[A] E} (hw : chkK D A[X] (((X : A[X]) ⊗ₜ[A] (1 : E)) * w)) :
     chkK D A[X] w := by
@@ -234,13 +234,13 @@ private theorem chkK_sat {w : A[X] ⊗[A] E} (hw : chkK D A[X] (((X : A[X]) ⊗�
   simpa using h5
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => intro z _ k hk`. Use linear arithmetic over natural numbers and integers. Consider the case `succ M ih`. Introduce `z hz`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz` using `[Finset.sum_range_succ']`. Establish `h0 : z 0 ∈ D.ker`. Use `(d_ker D _).1.2 fun S _ _ h => ?_` and prove the remaining obligations. Use `hz S (aeval 0) h` as an intermediate fact. Simplify `this` using `[map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : chkK D A[X] (∑ k ∈ Finset.range M, ((X : A[X]) ^ k) ⊗ₜ[A] z (k + 1))`. Apply `chkK_sat` to reduce the goal to its premises. Introduce `S _ _ f h`. Use `hz S f h` as an intermediate fact. Rewrite `this` using `[map_add (Algebra.TensorProduct.map f _), mul_add, ← add_assoc, pow_zero, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply, ← mul_one (h * 1 ⊗ₜ _), D.mem_ker.1 h0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this, Finset.mul_sum]`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul, pow_succ']`. Introduce and unpack `(_ | k) hk`. Conclude with `h0`. Conclude with `ih _ h1 k (by omega)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem chkK_coef (M : ℕ) : ∀ z : ℕ → E,
     chkK D A[X] (∑ k ∈ Finset.range M, ((X : A[X]) ^ k) ⊗ₜ[A] z k) → ∀ k < M, z k ∈ D.ker := by
@@ -266,11 +266,11 @@ private theorem chkK_coef (M : ℕ) : ∀ z : ℕ → E,
     · exact ih _ h1 k (by omega)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `zero => exact ⟨∅, by simp⟩`. Consider the case `add a b ha hb`. Take `⟨s, hs⟩` from `ha`. Take `⟨s', hs'⟩` from `hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s ∪ s', fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, tmul_add, Finset.sum_add_distrib]`. Rewrite using `[← hs t (Finset.subset_union_left.trans ht), ← hs' t (Finset.subset_union_right.trans ht)]`. Consider the case `tmul p z`. Use `⟨p.support, fun t ht => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, MvPolynomial.lcoeff_apply, ← smul_tmul, ← sum_tmul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Use `congr 1`. Use `conv_lhs => rw [p.as_sum]`. Use `Finset.sum_subset ht fun α _ hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.1 hα, map_zero]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chk_expand {ι : Type} (w : MvPolynomial ι A ⊗[A] E) :
     ∃ s : Finset (ι →₀ ℕ), ∀ t, s ⊆ t → w = ∑ α ∈ t, (MvPolynomial.monomial α (1 : A)) ⊗ₜ[A]
@@ -294,9 +294,9 @@ private theorem chk_expand {ι : Type} (w : MvPolynomial ι A ⊗[A] E) :
     rw [MvPolynomial.notMem_support_iff.1 hα, map_zero]
 
 /- English proof (translation)
-Establish `hb : ∀ α ∈ t, ∀ i, α i < t.sup (fun γ => ∑ j, γ j) + 1` using `fun α hα i => Nat.lt_succ_of_le ((Finset.single_le_sum (f := fun j => α j) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)).trans (Finset.le_sup (f := fun γ : Fin k →₀ ℕ => ∑ j, γ j) hα))`. Use `⟨t.sup (fun γ => ∑ j, γ j) + 1, fun α hα β hβ h => ?_⟩` and prove the remaining obligations. Establish `: finFunctionFinEquiv (fun i => (⟨α i, hb α hα i⟩ : Fin _)) = finFunctionFinEquiv (fun i => (⟨β i, hb β hβ i⟩ : Fin _))`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[finFunctionFinEquiv_apply, finFunctionFinEquiv_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use extensionality with `i`. Conclude with `congrArg Fin.val (congrFun (finFunctionFinEquiv.injective this) i)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem chk_kron {k : ℕ} (t : Finset (Fin k →₀ ℕ)) :
     ∃ N : ℕ, ∀ α ∈ t, ∀ β ∈ t, ∑ i, α i * N ^ (i : ℕ) = ∑ i, β i * N ^ (i : ℕ) → α = β := by
@@ -313,15 +313,15 @@ private theorem chk_kron {k : ℕ} (t : Finset (Fin k →₀ ℕ)) :
   exact congrArg Fin.val (congrFun (finFunctionFinEquiv.injective this) i)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `chk_expand w`. Establish `h1` using `hs (insert α s) (Finset.subset_insert _ _)`. Establish `hα : α ∈ insert α s` using `Finset.mem_insert_self _ _`. Generalize the expression as in `insert α s = t at h1 hα`. Take `⟨c, hc⟩ : ∃ c : (Fin k →₀ ℕ) → E, ∀ β, TensorProduct.lid A E ((MvPolynomial.lcoeff A β).rTensor E w) = c β` from `⟨_, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hc] at h1 ⊢`. Take `⟨N, hN⟩` from `chk_kron t`. Set `φ : (Fin k →₀ ℕ) → ℕ` to `fun β => ∑ i, β i * N ^ (i : ℕ)`. Establish `h2` using `chkK_map D (MvPolynomial.aeval fun i : Fin k => (X : A[X]) ^ N ^ (i : ℕ)) hw`. Establish `hlt : ∀ β ∈ t, φ β ∈ Finset.range (t.sup φ + 1)` using `fun β hβ => Finset.mem_range.2 (Nat.lt_succ_of_le (Finset.le_sup hβ))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Algebra.TensorProduct.map (MvPolynomial.aeval fun i : Fin k => (X : A[X]) ^ N ^ (i : ℕ)) (AlgHom.id A E) w = ∑ j ∈ Finset.range (t.sup φ + 1), ((X : A[X]) ^ j) ⊗ₜ[A] ∑ β ∈ t with φ β = j, c β`. Rewrite using `[h1, map_sum, ← Finset.sum_fiberwise_of_maps_to hlt]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[tmul_sum]`. Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (Finset.mem_filter.1 hβ).2, Algebra.TensorProduct.map_tmul, MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.prod_fintype _ _ (by simp), ← Finset.prod_pow_eq_pow_sum]`. Simplify using `only [← pow_mul, mul_comm, AlgHom.id_apply]`. Rewrite `h2` using `[h3]`. Establish `h4` using `chkK_coef D _ _ h2 (φ α) (Finset.mem_range.1 (hlt α hα))`. Establish `h5 : ∑ β ∈ t with φ β = φ α, c β = c α` using `Finset.sum_eq_single_of_mem α (Finset.mem_filter.2 ⟨hα, rfl⟩) fun β hβ hne => absurd (hN β (Finset.mem_filter.1 hβ).1 α hα (Finset.mem_filter.1 hβ).2) hne`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[h5]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem chkK_mv {k : ℕ} (w : MvPolynomial (Fin k) A ⊗[A] E) (hw : chkK D _ w) (α : Fin k →₀ ℕ) :
     TensorProduct.lid A E ((MvPolynomial.lcoeff A α).rTensor E w) ∈ D.ker := by
@@ -358,7 +358,7 @@ private theorem chkK_mv {k : ℕ} (w : MvPolynomial (Fin k) A ⊗[A] E) (hw : ch
 end
 
 /- English proof (translation)
-Introduce `n A E _ _ _ D`. Use `TwoSidedIdeal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, x, α, rfl⟩`. Conclude with `chkK_mv D _ (chkK_ch D _ _) α`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_ch_ker :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E), D.CH ≤ D.ker := by

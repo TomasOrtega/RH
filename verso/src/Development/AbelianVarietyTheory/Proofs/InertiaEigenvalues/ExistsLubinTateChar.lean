@@ -20,21 +20,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LTExt
 
 /- English proof (translation)
-Set `Γ : Subgroup (D × B)` to `(i.prod χ).range.topologicalClosure`. Establish `hΓ : IsCompact (Γ : Set (D × B))`. Use `(isCompact_univ.prod hC).of_isClosed_subset (Subgroup.isClosed_topologicalClosure _) ?_` and prove the remaining obligations. Use `closure_minimal ?_ (isCompact_univ.prod hC).isClosed` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨trivial, hχ σ⟩`. Use `haveI : CompactSpace Γ := isCompact_iff_compactSpace.1 hΓ`. Set `p : Γ →* D` to `(MonoidHom.fst D B).comp Γ.subtype`. Establish `hp : Continuous p` using `continuous_fst.comp continuous_subtype_val`. Establish `hmem : ∀ σ, (i σ, χ σ) ∈ Γ` using `fun σ => Subgroup.le_topologicalClosure _ ⟨σ, rfl⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective p`. Rewrite using `[injective_iff_map_eq_one]`. Introduce and unpack `⟨⟨d, k⟩, hk⟩ hd`. Take `rfl : d = 1` from `hd`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hk1 : (1 : B) ≠ k`. Introduce and unpack `rfl`. Conclude with `hne rfl`. Take `⟨V, V', hV, hV', hVV⟩` from `t2_separation_nhds hk1`. Take `⟨U, hU, H⟩` from `h1 V hV`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, ⟨h2, h3⟩, σ, rfl⟩` from `mem_closure_iff_nhds.1 hk _ (prod_mem_nhds hU hV')`. Conclude with `Set.disjoint_left.1 hVV (H σ h2) h3`. Establish `hsurj : Function.Surjective p`. Establish `h2 : IsClosed (Set.range p)` using `(isCompact_range hp).isClosed`. Establish `h3 : Set.range i ⊆ Set.range p`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨σ, rfl⟩`. Conclude with `⟨⟨_, hmem σ⟩, rfl⟩`. Introduce `d`. Conclude with `closure_minimal h3 h2 (hi d)`. Set `e : Γ ≃* D` to `MulEquiv.ofBijective p ⟨hinj, hsurj⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : Continuous e.symm` using `Continuous.continuous_symm_of_equiv_compact_to_t2 (f := e.toEquiv) hp`. Use `⟨((MonoidHom.snd D B).comp Γ.subtype).comp e.symm.toMonoidHom, ⟨continuous_snd.comp (continuous_subtype_val.comp he), fun σ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: e.symm (i σ) = ⟨_, hmem σ⟩` using `e.symm_apply_eq.2 rfl show (e.symm (i σ)).1.2 = _`. Rewrite using `[this]`. Introduce and unpack `κ ⟨hκ, H⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `DFunLike.coe_injective (hi.equalizer hκ (continuous_snd.comp (continuous_subtype_val.comp he)) ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `σ`. Establish `: e.symm (i σ) = ⟨_, hmem σ⟩` using `e.symm_apply_eq.2 rfl`. Use `show κ (i σ) = (e.symm (i σ)).1.2`. Rewrite using `[this, H]`.
+A detailed English derivation is pending.
 -/
 theorem ext_dense {W D B : Type} [Group W] [Group D] [TopologicalSpace D] [IsTopologicalGroup D]
     [CompactSpace D] [T2Space D] [Group B] [TopologicalSpace B] [IsTopologicalGroup B] [T2Space B]
@@ -99,15 +99,13 @@ def unitSub (w : HeightOneSpectrum (𝓞 E)) : Subgroup (w.adicCompletion E)ˣ w
     simp [hx]
 
 /- English proof (translation)
-Use `isCompact_iff_compactSpace.1 (?_ : IsCompact (unitSub w : Set (w.adicCompletion E)ˣ))` and prove the remaining obligations. Rewrite using `[Units.isEmbedding_val₀.isCompact_iff]`. Establish `h1 : IsCompact (w.adicCompletionIntegers E : Set (w.adicCompletion E))` using `isCompact_iff_compactSpace.2 (Formalism.MainNotions.Gaps.LevGap.compact_Ov w)`. Establish `h2 : Units.val '' (unitSub w : Set (w.adicCompletion E)ˣ) = {x | Valued.v x = 1}`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Establish `hx' : Valued.v x = 1` using `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : x ≠ 0` using `fun h => by simp [h] at hx'`. Conclude with `⟨Units.mk0 x h0, hx', rfl⟩`. Rewrite using `[h2]`. Use `h1.of_isClosed_subset ?_ fun x hx => le_of_eq hx` and prove the remaining obligations. Establish `h3 : IsOpen {x : w.adicCompletion E | Valued.v x < 1}`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Valued.isOpen_ball (w.adicCompletion E) 1`. Establish `h4 : {x : w.adicCompletion E | Valued.v x = 1} = (w.adicCompletionIntegers E : Set (w.adicCompletion E)) \ {x | Valued.v x < 1}`. Use extensionality with `x`. Conclude with `⟨fun hx => ⟨le_of_eq hx, fun h => (ne_of_lt h) hx⟩, fun hx => le_antisymm hx.1 (not_lt.1 hx.2)⟩`. Rewrite using `[h4]`.
-
-Conclude with `h1.isClosed.sdiff h3`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compactSpace_unitSub (w : HeightOneSpectrum (𝓞 E)) : CompactSpace (unitSub w) := by
   refine isCompact_iff_compactSpace.1 (?_ : IsCompact (unitSub w : Set (w.adicCompletion E)ˣ))
@@ -137,23 +135,19 @@ theorem compactSpace_unitSub (w : HeightOneSpectrum (𝓞 E)) : CompactSpace (un
 variable {Ω : Type} [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Use `haveI : IsGalois E Ω := IsAlgClosure.isGalois E Ω`. Use `haveI : CompactSpace (Dec (F := E) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Establish `hd : DenseRange (Subgroup.inclusion (Weil_le_Dec h))`. Establish `h1` using `GlobalTheory.TameQuot.closure_frob_sup_Ine E Ω A w h (Subgroup.inclusion (Weil_le_Dec h) (frob h)) (isFrob_frob (h := h))`. Establish `h2 : Subgroup.zpowers (Subgroup.inclusion (Weil_le_Dec h) (frob h)) ⊔ (Ine (F` using `E) A).subgroupOf (Dec (F := E) A) ≤ (Subgroup.inclusion (Weil_le_Dec h)).range := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le ?_ fun σ hσ => ⟨⟨σ, Ine_le_Weil h hσ⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `⟨_, rfl⟩`. Introduce `d`. Establish `h3 : d ∈ (⊤ : Subgroup (Dec (F` using `E) A)) := trivial`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[← h1]`. Conclude with `closure_mono h2 h3`. Use `⟨hd, (ext_dense (Subgroup.inclusion (Weil_le_Dec h)) hd χ Set.univ isCompact_univ (fun _ => trivial) fun V hV => ?_).exists⟩` and prove the remaining obligations. Take `⟨V', hVV, hV', h1V⟩` from `mem_nhds_iff.1 hV`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV' h1V`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := H.toSubgroup.quotient_finite_of_isOpen H.isOpen`. Take `⟨N, hN, -, hNH⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := H.toSubgroup)) (χ (frob h))`. Establish `hM` using `(H.isOpen.preimage hI).mem_nhds (x := 1) (by simpa using H.toSubgroup.one_mem)`. Rewrite `hM` using `[nhds_subtype_eq_comap, Filter.mem_comap]`. Take `⟨U, hU, hUM⟩` from `hM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, hLU⟩` from `(krullTopology_mem_nhds_one_iff E Ω U).1 hU`. Establish `hLo : IsOpen (L.fixingSubgroup : Set (G E Ω))` using `L.fixingSubgroup_isOpen`. Use `haveI := L.fixingSubgroup.quotient_finite_of_isOpen hLo`. Take `⟨m, hm, -, hmL⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := L.fixingSubgroup)) (frob h : G E Ω)`. Take `⟨ζ, hζ⟩` from `GlobalTheory.exists_fixed_dvd_deg E Ω A w h (m * N) (Nat.mul_pos hm hN)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hζo : IsOpen (MulAction.stabilizer (G E Ω) ζ : Set (G E Ω))` using `stabilizer_isOpen_of_isIntegral ζ`. Use `⟨_, continuous_subtype_val.continuousAt.preimage_mem_nhds ((hLo.inter hζo).mem_nhds ⟨L.fixingSubgroup.one_mem, (MulAction.stabilizer (G E Ω) ζ).one_mem⟩), fun σ hσ => hVV (hH ?_)⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hζ σ hσ.2`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul deg_frob σ`. Establish `h1 : ((frob h ^ deg σ : Weil h) : G E Ω) ∈ L.fixingSubgroup`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, Subgroup.coe_zpow, Nat.cast_mul, mul_assoc, zpow_mul, zpow_natCast]`. Conclude with `L.fixingSubgroup.zpow_mem hmL _`. Establish `h2 : (τ : G E Ω) ∈ L.fixingSubgroup`. Establish `h3 : (σ : G E Ω) ∈ L.fixingSubgroup` using `hσ.1`. Rewrite `h3` using `[hτ, Subgroup.coe_mul]`.
-
-Conclude with `(L.fixingSubgroup.mul_mem_cancel_left h1).1 h3`. Use `show χ σ ∈ H.toSubgroup`. Rewrite using `[hτ, map_mul, map_zpow]`. Use `H.toSubgroup.mul_mem ?_ (hUM (hLU h2))` and prove the remaining obligations. Rewrite using `[hk, Nat.cast_mul, mul_comm (m : ℤ), mul_assoc, zpow_mul, zpow_natCast]`.
-
-Conclude with `H.toSubgroup.zpow_mem hNH _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_profinite (h : IsPlaceOver A w) {B : Type} [Group B] [TopologicalSpace B] [IsTopologicalGroup B]
     [CompactSpace B] [T2Space B] [TotallyDisconnectedSpace B] (χ : Weil h →* B)
@@ -210,15 +204,13 @@ theorem ext_profinite (h : IsPlaceOver A w) {B : Type} [Group B] [TopologicalSpa
   exact H.toSubgroup.zpow_mem hNH _
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ w A h a ha π hπ`. Set `u : Weil h →* (w.adicCompletion E)ˣ` to `a * (zpowersHom _ π).comp (degHom h)`. Establish `hu : ∀ σ, u σ = a σ * π ^ deg σ` using `fun _ => rfl`. Establish `hunit : ∀ σ, u σ ∈ unitSub w`. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `ha.ord_eq σ`. Rewrite `h1` using `[GlobalTheory.SmGL.SphCompletion.ord_completion, neg_inj]`. Establish `h0 : Valued.v ((a σ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≠ 0` using `by simp`. Use `show Valued.v ((a σ * π ^ deg σ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Unfold `IsUnifAt at hπ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hπ, ← WithZero.exp_log h0, h1, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Use `haveI := compactSpace_unitSub w`. Use `haveI : TotallyDisconnectedSpace (w.adicCompletion E)ˣ := Units.isEmbedding_val₀.isTotallyDisconnected_range.1 (isTotallyDisconnected_of_totallyDisconnectedSpace _)`. Take `⟨hd, κ, hκ, hκu⟩` from `ext_profinite h (u.codRestrict _ hunit) (by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Simplify `ha.cont)` using `[hu]`. Establish `hc : Continuous fun g => (((unitSub w).subtype.comp κ g : (w.adicCompletion E)ˣ) : w.adicCompletion E)` using `Units.continuous_val.comp (continuous_subtype_val.comp hκ)`. Establish `hv : ∀ σ : Weil h, (unitSub w).subtype.comp κ ⟨σ, Weil_le_Dec h σ.2⟩ = a σ * π ^ deg σ` using `fun σ => congrArg Subtype.val (hκu σ)`. Use `⟨(unitSub w).subtype.comp κ, hc, hv, fun g => (κ g).2, fun c' hc' H => ?_⟩` and prove the remaining obligations.
-
-Use `hd.equalizer hc' hc (funext fun σ => congrArg Units.val ((H σ).trans (hv σ).symm))` as an intermediate fact. Conclude with `MonoidHom.ext fun g => Units.ext (congrFun this g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lubinTate_char : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w)

@@ -8,21 +8,19 @@ open scoped ComplexConjugate Classical InnerProductSpace
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ k n μ _ θ hθ D s hs hposition νE _ νF _ b a aE aF hA q w₀ T`. Take `⟨tp1, -, tp3⟩` from `twistPerm F E σ hσ k n μ θ hθ`. Use `⟨?_, tp3 q w₀ T (nsS T : Set (Pl F))⟩` and prove the remaining obligations. Take `⟨-, -, ag3, -⟩` from `archBasic F E σ k D n`. Set `O : Fin (k + 1) → LL μ →L[ℂ] LL μ` to `fun i => OComponent μ (s i) (hs i) νF a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hOi : Oinf μ νE aE = (List.ofFn O).prod` using `tensOp F E σ k D n νE νF hA.meas s hs hposition (LL μ) _ (fun _ => a) aE hA.tens`. Establish `hss : ∀ i j, i ≠ j → ∀ g h, Commute (s i g) (s j h)` using `fun i j hij g h => by`. Rewrite using `[hposition, hposition]`. Use `show _ * _ = _ * _`. Rewrite using `[← ag3, ← ag3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg _ (Pi.mulSingle_commute (f := fun _ : Fin (k + 1) => archGroup F n) hij g h).eq`. Establish `hOc : ∀ (B : LL μ →L[ℂ] LL μ) i, (∀ g, Commute B (rightRegularRep (rationalGLOne E n) μ (archP E n (s i g)))) → Commute B (O i)` using `fun B i h => ContinuousLinearMap.ext fun v => UpperTheory.ConvolutionTheory.L1.TY.operatorAt_int μ (hs i) (hs i) νF a B (fun x u => DFunLike.congr_fun (h x).eq u) v`. Establish `hrep : ∀ x y : normOneGL E n, Commute x y → Commute (rightRegularRep (rationalGLOne E n) μ x) (rightRegularRep (rationalGLOne E n) μ y)` using `fun x y h => ContinuousLinearMap.ext fun v => by`. Simplify using `only [ContinuousLinearMap.mul_apply]`. Rewrite using `[← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, h.eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOa : ∀ i j, i ≠ j → ∀ g, Commute (O i) (rightRegularRep (rationalGLOne E n) μ (archP E n (s j g)))` using `fun i j hij g => (hOc _ i fun x => hrep _ _ ((hss j i hij.symm g x).map _)).symm`. Establish `hOO : ∀ i j, Commute (O i) (O j)` using `fun i j => by`. Distinguish the cases in `e : i = j`. Rewrite using `[e]`. Conclude with `hOc _ j (hOa i j e)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUO : ∀ i, θ.U * O (i + 1) = O i * θ.U` using `fun i => ContinuousLinearMap.ext fun v => UpperTheory.ConvolutionTheory.L1.TY.operatorAt_int μ (hs _) (hs _) νF a θ.U (tp1 D s hposition i) v`. Establish `key : ∀ l : List (Fin (k + 1)), θ.U * (l.map fun i => O (i + 1)).prod = (l.map O).prod * θ.U`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons x l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[← mul_assoc, hUO, mul_assoc, ih, mul_assoc]`. Establish `hperm : (List.ofFn fun i => O (i + 1)).prod = (List.ofFn O).prod`. Use `List.Perm.prod_eq' (Equiv.Perm.ofFn_comp_perm (Equiv.addRight (1 : Fin (k + 1))) O) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[List.ofFn_eq_map, List.pairwise_map]`. Conclude with `List.pairwise_of_forall fun x y => hOO _ _`. Establish `h` using `key (List.finRange (k + 1))`. Rewrite `h` using `[← List.ofFn_eq_map, ← List.ofFn_eq_map, hperm]`. Rewrite using `[hOi]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galoisTwist_commute_archOperator_and_offProjection :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E), (∀ τ, τ ∈ Subgroup.zpowers σ) → ∀ k n : ℕ,

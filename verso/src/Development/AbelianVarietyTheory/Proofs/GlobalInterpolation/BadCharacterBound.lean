@@ -22,15 +22,15 @@ def BadOfBase (B : Arith.Base) (h : ℕ → B.H) (Cb : ℝ) : Prop :=
     4 * (Cb * B.sc.x ^ (-2 : ℝ)) * B.sc.delta1 * B.R.n * ∑ p ∈ PR, Real.log p / p
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem badOK_iff_badOfBase {R : Ranks} (s : Scale) (Cb : ℝ) (H : Host R) :
     BadOK s Cb H ↔ BadOfBase (baseOf s 0 0 H) (hPH H) Cb := Iff.rfl
 
 /- English proof (translation)
-Establish `hb : X.bs = fun h t => Arith.bsH h t` using `funext fun h => funext fun t => hX h t`. Unfold `ChBad_at badTops`. Take `⟨bs, h1, h2, off, h3, h4, h5, kap, ep⟩` from `X`. Simplify using `only at hb`. Substitute `hb` using the available equality.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem chBad_iff_badOfBase {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (hX : ∀ h t, X.bs h t = Arith.bsH h t) (Cb : ℝ) :
     ChBad_at X Cb ↔ BadOfBase (baseOf L.sc 0 0 D.host) (G.hP D) Cb := by
@@ -42,9 +42,9 @@ theorem chBad_iff_badOfBase {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (hX : 
   exact Iff.rfl
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Establish `hT' : H'.TT = H.TT` using `Finset.image_injective (Formalism.HC.Frame.A.val_injective _) hT`. Establish `hh' : h' = h` using `funext fun l => Formalism.HC.Frame.A.val_injective _ (hh l)`. Substitute `hh'` using the available equality. Unfold `baseOf at hb ⊢`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Rewrite using `[hT', hq, hd, hc]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem badOfBase_of_host {R R' : Ranks} (hR : R' = R) (s : Scale) (H : Host R) (H' : Host R')
     (h : ℕ → R.A) (h' : ℕ → R'.A) (Cb : ℝ)
@@ -61,7 +61,7 @@ theorem badOfBase_of_host {R R' : Ranks} (hR : R' = R) (s : Scale) (H : Host R) 
   exact hb
 
 /- English proof (translation)
-Introduce `C p R H a b M c u0 Cb hF hC hB`. Establish `hc` using `hF.cls_eq`. Take `⟨hR, hT, -, hq, hd, -, -, -, -, -, hh, -⟩` from `hF`. Conclude with `(chBad_iff_badOfBase _ hC.1 Cb).2 (badOfBase_of_host hR p.L.sc H p.D.host (hPH H) (G.hP p.D) Cb hT hq hd hc hh ((badOK_iff_badOfBase _ _ _).1 hB))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chBad_of_from : ∀ (C : FC) (p : Pt C) (R : Ranks) (H : Host R) (a b : R.A → ℤ) (M : ℕ)
     (c : Fin M → Fin (R.k - 2) → Bool) (u0 : ℕ) (Cb : ℝ),

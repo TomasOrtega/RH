@@ -4,13 +4,13 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `e` to `Module.finBasis R L`. Set `b` to `Algebra.TensorProduct.basis B e`. Set `σ` to `Algebra.TensorProduct.map f (AlgHom.id R L)`. Establish `hrepr : ∀ z : B ⊗[R] L, ∀ i, b.repr (σ z) i = f (b.repr z i)`. Introduce `z i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Simplify using `only [σ, b, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hb : ∀ j, σ (b j) = b j`. Introduce `j`. Simplify using `[σ, b, Algebra.TensorProduct.basis_apply]`. Establish `hmat : Algebra.leftMulMatrix b (σ w) = (Algebra.leftMulMatrix b w).map f`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, ← hb j, ← map_mul, hb j, hrepr]`. Rewrite using `[Algebra.norm_eq_matrix_det b, Algebra.norm_eq_matrix_det b, hmat]`. Conclude with `(AlgHom.map_det f _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tensorProduct_map_left {R B L : Type} [Field R] [CommRing B] [Algebra R B] [Field L]
     [Algebra R L] [FiniteDimensional R L] (f : B →ₐ[R] B) (w : B ⊗[R] L) :

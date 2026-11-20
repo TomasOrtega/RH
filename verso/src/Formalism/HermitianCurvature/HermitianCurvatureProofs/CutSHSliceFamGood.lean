@@ -8,7 +8,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutSH_SFG_PtSmooth
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `CutSH.cutSH_sliceFamGood_of CutSH.SFG.gram_function_induction CutSH.SFG.radial_proper CutSH.SFG.parameter_smooth CutSH.SFG.point_smooth`.
+A detailed English derivation is pending.
 -/
 theorem slice_family_good : CutSH.SliceFamGood :=
   CutSH.cutSH_sliceFamGood_of CutSH.SFG.gram_function_induction CutSH.SFG.radial_proper

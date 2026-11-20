@@ -8,17 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 /- English proof (translation)
-Introduce `V _ _ _ C _ _ hC a ha`. Establish `key : ∀ x : V, ‖algebraMap (FractionRing V) C (algebraMap V _ x)‖ = 1 → IsUnit x`. Introduce `x hx`. Assume the negation of the conclusion as `hu`. Establish `hm : x ∈ IsLocalRing.maximalIdeal V` using `(IsLocalRing.mem_maximalIdeal x).2 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `hC.2 x hm` as an intermediate fact. Rewrite `this` using `[hx]`. Conclude with `lt_irrefl _ this`. Break down `ValuationRing.isInteger_or_isInteger V a with ⟨x, hx⟩ | ⟨x, hx⟩` into its components or cases. Establish `hu` using `key x (by rw [hx]; exact ha)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hu.unit, by simp [hx]⟩`. Establish `hx' : ‖algebraMap (FractionRing V) C (algebraMap V _ x)‖ = 1`. Rewrite using `[hx, map_inv₀, norm_inv, ha, inv_one]`. Establish `hu` using `key x hx'`. Use `⟨hu.unit⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Establish `h1 : algebraMap V (FractionRing V) (↑hu.unit⁻¹ : V) * algebraMap V (FractionRing V) x = 1`. Rewrite using `[← map_mul]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (↑hu.unit⁻¹ : V) * x = 1`. Use `hu.unit.inv_mul` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, map_one]`. Rewrite `h1` using `[hx]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `at h1` for the nonvanishing conditions. Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KeyEven.fractionRing_norm_one_unit : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (C : Type) [NormedField C] [Algebra (FractionRing V) C], CExt V (IsLocalRing.maximalIdeal V) C → ∀ a : FractionRing V, ‖algebraMap (FractionRing V) C a‖ = 1 → ∃ u : Vˣ, a = algebraMap V (FractionRing V) u := by
   intro V _ _ _ C _ _ hC a ha

@@ -3,21 +3,19 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B _ _ K τ τ' hle htor`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian τ' : τ'.FG)`. Establish `hrad : K ≤ (τ.colon (s : Set B)).radical`. Introduce `f hf`. Establish `hm : ∀ b ∈ s, ∃ m : ℕ, f ^ m * b ∈ τ` using `fun b hb => htor b (hs ▸ Submodule.subset_span hb) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose! m hm using hm`. Use `⟨∑ b ∈ s, m b, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_colon]`. Introduce `b hb`. Establish `hb' : b ∈ s` using `hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : m b ≤ ∑ b ∈ s, m b` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hb'`. Rewrite using `[smul_eq_mul, ← Nat.sub_add_cancel hle', pow_add, mul_assoc]`. Conclude with `τ.mul_mem_left _ (hm b hb')`. Take `⟨m, hm⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian K)`. Establish `hKm : K ^ m * τ' ≤ τ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.mul_le]`. Introduce `r hr t ht`. Establish `hr'` using `Submodule.mem_colon.mp (hm hr)`. Rewrite `ht` using `[← hs]`. Proceed by induction on `ht using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => simpa [smul_eq_mul] using hr' x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `τ.add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_left_comm]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `τ.mul_mem_left a hx`. Take `⟨c, hc⟩` from `Ideal.exists_pow_inf_eq_pow_smul K (M := B) (τ' : Submodule B B)`. Use `⟨c + m, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hAR : K ^ k ⊓ τ' ≤ τ`. Establish `h` using `hc k (by omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [smul_eq_mul, Ideal.mul_top] at h`. Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[inf_comm, sup_inf_assoc_of_le _ hle]`.
-
-Conclude with `sup_le le_rfl hAR`. Conclude with `le_inf hle le_sup_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_sup_pow_eq_of_torsion : ∀ (B : Type) [CommRing B] [IsNoetherianRing B]
     (K τ τ' : Ideal B), τ ≤ τ' → (∀ b ∈ τ', ∀ f ∈ K, ∃ m : ℕ, f ^ m * b ∈ τ) →

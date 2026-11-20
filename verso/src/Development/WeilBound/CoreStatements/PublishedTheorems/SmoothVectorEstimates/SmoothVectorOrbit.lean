@@ -10,7 +10,7 @@ namespace PositivityTheory.jumpWindows
 namespace SmoothVectorOrbit
 
 /- English proof (translation)
-Use function extensionality and compare the values at `M`. Simplify using `only [PositivityTheory.jumpWindows.orb, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem orb_smul {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
     (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (c : ℂ) (v : X) :
@@ -20,7 +20,7 @@ theorem orb_smul {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGro
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `PositivityTheory.jumpWindows.SmV at h ⊢`. Rewrite using `[PositivityTheory.jumpWindows.SmoothVectorOrbit.orb_smul]`. Conclude with `h.const_smul c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smV_smul {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
     (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) (c : ℂ) (v : X) (h : SmV ρ v) : SmV ρ (c • v) := by
@@ -31,15 +31,15 @@ theorem smV_smul {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGro
 end SmoothVectorOrbit
 
 /- English proof (translation)
-Introduce `hAC hSW hSP hWS hWV`. Unfold `PositivityTheory.jumpWindows.G8 PositivityTheory.jumpWindows.ForE`. Introduce `E _ _ _ a ψ hψ S hS Y hY φ hφY hφ0 hφsm hφsph hφeig`. Take `⟨-, -, -, -, -, -, -, -, -, -, hreg, -⟩` from `hAC E a`. Take `⟨hΛ, htr, -, hW⟩` from `hSW E a ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hsmooth, hsph, hsph_smul, -, -⟩` from `hSP E a S`. Take `⟨-, hYtr, hYmir⟩` from `hY`. Take `⟨hWcont, hWne, -⟩` from `hW φ (hYmir φ hφY)`. Take `⟨g, hg⟩` from `hWne hφ0`. Take `⟨g₀, harch, hloc, hsupp⟩` from `hreg S g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hg₀ : PositivityTheory.jumpWindows.Wh ψ φ g₀ ≠ 0`. Introduce `h0`. Use `hg (hWV E a S _ hWcont ?_ g g₀ harch hloc hsupp h0)` and prove the remaining obligations. Introduce `w hw h hh h0' u`. Take `⟨B, hB⟩` from `hφeig w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hWS E a ψ hψ w (hS w hw) B φ (hYmir φ hφY) hB h hh h0' u`. Establish `hφ'Y : PositivityTheory.jumpWindows.Rt E a g₀ φ ∈ Y` using `hYtr g₀ hsupp φ hφY`. Establish `hW1 : PositivityTheory.jumpWindows.Wh ψ (PositivityTheory.jumpWindows.Rt E a g₀ φ) 1 ≠ 0`. Rewrite using `[htr, one_mul]`. Conclude with `hg₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(PositivityTheory.jumpWindows.Wh ψ (PositivityTheory.jumpWindows.Rt E a g₀ φ) 1)⁻¹ • PositivityTheory.jumpWindows.Rt E a g₀ φ, Y.smul_mem _ hφ'Y, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `PositivityTheory.jumpWindows.SmoothVectorOrbit.smV_smul _ _ _ (hsmooth g₀ φ hφsm)`. Conclude with `hsph_smul _ _ (hsph g₀ φ hφsph)`. Take `⟨Λ, hΛ1⟩` from `hΛ 1`. Rewrite using `[← hΛ1 _ (hYmir _ (Y.smul_mem _ hφ'Y)), map_smul, hΛ1 _ (hYmir _ hφ'Y), smul_eq_mul, inv_mul_cancel₀ hW1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_vector_orbit_invariance : G0 → G5 → G5b → G9 → PlacewiseToOutsideS → G8 := by
   intro hAC hSW hSP hWS hWV

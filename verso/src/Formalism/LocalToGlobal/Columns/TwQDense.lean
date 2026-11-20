@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (hvP : IsOver v P)
 
 /- English proof (translation)
-Take `⟨r, y, hy, e⟩` from `integral_adele_approximation_holds F D hD (afsplitI v x) (afsplitI_mem_intAd v _ hx)`. Use `⟨r, y v, hy v, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : Formalism.L2.Herm.Af F => z v) e` as an intermediate fact. Rewrite `this` using `[afsplitI_self]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qsp_approx (D : 𝓞 F) (hD : D ≠ 0) (x : v.adicCompletion F) (hx : x ∈ v.adicCompletionIntegers F) :
     ∃ (r : 𝓞 F) (y : v.adicCompletion F), y ∈ v.adicCompletionIntegers F ∧
@@ -30,9 +30,9 @@ theorem qsp_approx (D : 𝓞 F) (hD : D ≠ 0) (x : v.adicCompletion F) (hx : x 
   exact this
 
 /- English proof (translation)
-Introduce `i _`. Establish `h : ∀ j, x j ∈ (1 : Submodule (𝓞 E) E)` using `fun j => hx j trivial`. Use `show (M.map (algebraMap (𝓞 F) E)).mulVec x i ∈ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Matrix.mulVec, dotProduct]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `Submodule.mem_one.1 (h j)`. Use `Submodule.mem_one.2 ⟨algebraMap (𝓞 F) (𝓞 E) (M i j) * a, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, ← ha, map_mul, ← IsScalarTower.algebraMap_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qsp_std_mulVec {M : Matrix (Fin n) (Fin n) (𝓞 F)} {x : Sp E n} (hx : x ∈ stdLat E n) :
     (M.map (algebraMap (𝓞 F) E)).mulVec x ∈ stdLat E n := by
@@ -49,43 +49,37 @@ set_option maxHeartbeats 4000000 in
 include hint hPv hF hvP in
 
 /- English proof (translation)
-Use `choose r y hy e using fun i j => qsp_approx D hD ((k : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) (hk i j)`. Set `R : Matrix (Fin n) (Fin n) (𝓞 F)` to `fun i j => r i j`. Set `ME : Matrix (Fin n) (Fin n) E` to `R.map (algebraMap (𝓞 F) E)`. Set `O` to `v.adicCompletionIntegers F`. Establish `hDval : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) D) < 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[csApprox_val_int]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v D).2 hDv`. Set `kO : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨_, hk i j⟩`. Set `kiO : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨_, hk' i j⟩`. Set `RO : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨_, glo_algMap_int v (r i j)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkk : kO * kiO = 1`. Establish `h1 : (O.subtype).mapMatrix (kO * kiO) = (O.subtype).mapMatrix 1`. Rewrite using `[map_mul, map_one]`. Use `show ((k : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((k⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F))) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Matrix.ext fun i j => Subtype.ext (congrFun (congrFun h1 i) j)`. Establish `hdetk : IsUnit kO.det` using `Matrix.isUnit_det_of_right_inverse hkk`. Establish `hres : (IsLocalRing.residue O).mapMatrix kO = (IsLocalRing.residue O).mapMatrix RO`. Use extensionality with `i j`. Use `show IsLocalRing.residue O (kO i j) = IsLocalRing.residue O (RO i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `glo_res_zero v` to reduce the goal to its premises. Use `show Valued.v ((k : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j - algebraMap (𝓞 F) (v.adicCompletion F) (r i j)) < 1`. Rewrite using `[e i j, add_sub_cancel_left, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hy i j))) hDval`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hRO : IsLocalRing.residue O RO.det ≠ 0`. Rewrite using `[RingHom.map_det, ← hres, ← RingHom.map_det]`. Conclude with `(hdetk.map (IsLocalRing.residue O)).ne_zero`. Establish `hROval : ((RO.det : O) : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) R.det`. Establish `h1 : (O.subtype).mapMatrix RO = (algebraMap (𝓞 F) (v.adicCompletion F)).mapMatrix R` using `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `RingHom.map_det (O.subtype) RO`. Rewrite `h2` using `[h1, ← RingHom.map_det]`. Conclude with `h2`. Establish `hdetv : R.det ∉ v.asIdeal` using `fun h => by`. Apply `hRO` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `glo_res_zero v` to reduce the goal to its premises. Rewrite using `[hROval, csApprox_val_int]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v _).2 h`. Establish `hdetE : ME.det = algebraMap (𝓞 F) E R.det` using `(RingHom.map_det _ R).symm`. Establish `hdet0 : ME.det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hdetE]`. Introduce `h0`. Apply `hdetv` to reduce the goal to its premises. Establish `: R.det = 0`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) E)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[IsScalarTower.algebraMap_eq (𝓞 F) F E]`. Conclude with `(algebraMap F E).injective.comp (IsFractionRing.injective (𝓞 F) F)`. Conclude with `hinj (by rw [h0, map_zero])`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdetP : algebraMap (𝓞 F) (𝓞 E) R.det ∉ P.asIdeal` using `fun h => hdetv (by rw [hvP]; exact h)`. Set `Mu : GL (Fin n) E` to `Matrix.GeneralLinearGroup.mkOfDetNeZero ME hdet0`. Set `g : Sp E n ≃ₗ[E] Sp E n` to `(toGLm E n).symm Mu`. Establish `hgx : ∀ x, g x = ME.mulVec x` using `fun x => rfl`. Establish `hg : g ∈ GLint E n P`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hgx]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, hs, hsx⟩` from `(qsp_mem_locP P).1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(qsp_mem_locP P).2 ⟨s * algebraMap (𝓞 F) (𝓞 E) R.det, P.asIdeal.primeCompl.mul_mem hs hdetP, ?_⟩` and prove the remaining obligations. Establish `h1 : (ME.adjugate).mulVec (s • ME.mulVec x) = (s * algebraMap (𝓞 F) (𝓞 E) R.det) • x`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec, hdetE, mul_smul]`. Use `congr 1`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hadj : ME.adjugate = R.adjugate.map (algebraMap (𝓞 F) E)` using `(RingHom.map_adjugate _ R).symm`. Rewrite using `[hadj]`. Conclude with `qsp_std_mulVec hsx`. Introduce `hx`. Take `⟨s, hs, hsx⟩` from `(qsp_mem_locP P).1 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(qsp_mem_locP P).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `qsp_std_mulVec hsx`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Establish `hιg : ∀ i j, ((qbIota P φ ⟨g, hg⟩ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j = algebraMap (𝓞 F) (v.adicCompletion F) (r i j)` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[qbIota_apply]`. Establish `hM : toGLm E n g = Mu` using `(toGLm E n).apply_symm_apply Mu`. Rewrite using `[show ((⟨g, hg⟩ : ↥(GLint E n P)) : Sp E n ≃ₗ[E] Sp E n) = g from rfl, hM]`. Use `show φ (ME i j) = _`. Use `show φ (algebraMap (𝓞 F) E (r i j)) = _`.
-
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F E, hF, ← IsScalarTower.algebraMap_apply]`. Establish `hι1` using `qbIota_int P φ hint hPv ⟨g, hg⟩`. Establish `hι2` using `qbIota_int_inv P φ hint hPv ⟨g, hg⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul]`.
-
-Conclude with `qbInt_mul hι2 hk`. Rewrite using `[mul_inv_rev, inv_inv, Units.val_mul]`. Conclude with `qbInt_mul hk' hι1`. Establish `hh : (((qbIota P φ ⟨g, hg⟩)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((qbIota P φ ⟨g, hg⟩ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
-
-Establish `e2 : (((qbIota P φ ⟨g, hg⟩)⁻¹ * k : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) - 1 = (((qbIota P φ ⟨g, hg⟩)⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((k : Matrix (Fin n) (Fin n) (v.adicCompletion F) …`. Rewrite using `[Units.val_mul, _root_.mul_sub, hh]`. Rewrite using `[e2]`. Use `qbDiv_mul_left hι2 fun i j => ⟨y i j, hy i j, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, hιg, e i j, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qsp_dense (D : 𝓞 F) (hD : D ≠ 0) (hDv : D ∈ v.asIdeal) (k : GL (Fin n) (v.adicCompletion F))
     (hk : qbInt (k : Matrix (Fin n) (Fin n) (v.adicCompletion F)))

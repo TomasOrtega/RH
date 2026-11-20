@@ -14,32 +14,30 @@ namespace GlobalTheory.TopsChoice
 open Formalism.FrobeniusOrbits Finset
 
 /- English proof (translation)
-Simplify using `[bern, Finset.card_univ_diff]`.
+Simplify using the standard rewrite rules.
 -/
 lemma bern_eq_prod {α : Type} [Fintype α] [DecidableEq α] (δ : ℝ) (T : Finset α) :
     bern δ T = (∏ _a ∈ T, δ) * ∏ _a ∈ univ \ T, (1 - δ) := by
   simp [bern, Finset.card_univ_diff]
 
 /- English proof (translation)
-Use `set g : α → ℝ := fun a => if a ∈ (univ \ S).image f then 0 else δ with hg`. Use `set h : α → ℝ := fun a => if a ∈ S.image f then 0 else 1 - δ with hh`. Establish `h1` using `Finset.prod_add g h (univ : Finset α)`. Rewrite `h1` using `[powerset_univ]`. Establish `h2 : ∏ a, (g a + h a) = bern δ S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_subset (subset_univ ((univ : Finset β).image f)), prod_image hf.injOn]`. Rewrite using `[bern_eq_prod, ← prod_sdiff (subset_univ S), mul_comm]`. Use `congr 1`. Use `prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `[hg, hh, hf.eq_iff, hi]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ∉ S` using `(mem_sdiff.mp hi).2`. Simplify using `[hg, hh, hf.eq_iff, hi']`. Introduce `a _ ha`. Establish `ha1 : a ∉ (univ \ S).image f` using `fun h' => ha (image_subset_image (subset_univ _) h')`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha2 : a ∉ S.image f` using `fun h' => ha (image_subset_image (subset_univ _) h')`. Simplify using `only [hg, hh, if_neg ha1, if_neg ha2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2, h1]`. Use `sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs with hT`. Rewrite using `[bern_eq_prod]`. Use `congr 1`. Use `prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a ∉ (univ \ S).image f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `h'`. Take `⟨i, hi, rfl⟩` from `mem_image.mp h'`. Conclude with `(mem_sdiff.mp hi).2 (hT ▸ mem_filter.mpr ⟨mem_univ _, ha⟩)`. Simplify using `only [hg, if_neg this]`. Use `prod_congr rfl fun a ha => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: a ∉ S.image f`. Introduce `h'`. Take `⟨i, hi, rfl⟩` from `mem_image.mp h'`. Rewrite `hi` using `[← hT]`. Conclude with `(mem_sdiff.mp ha).2 (mem_filter.mp hi).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hh, if_neg this]`. Establish `: ∃ i, ¬ (f i ∈ T ↔ i ∈ S)`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hT (by ext i; simp [hc i])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨i, hi⟩` from `this`. Distinguish the cases in `hiS : i ∈ S`. Establish `hT' : f i ∉ T` using `fun h' => hi ⟨fun _ => hiS, fun _ => h'⟩`. Rewrite using `[prod_eq_zero (s := univ \ T) (i := f i) (by simp [hT']), mul_zero]`. Simplify using `only [hh, if_pos (mem_image_of_mem f hiS)]`.
-
-Establish `hT' : f i ∈ T`. Assume the negation of the conclusion as `h'`. Conclude with `hi ⟨fun h'' => absurd h'' h', fun h'' => absurd h'' hiS⟩`. Rewrite using `[prod_eq_zero (s := T) (i := f i) hT', zero_mul]`. Simplify using `only [hg, if_pos (mem_image_of_mem f (mem_sdiff.mpr ⟨mem_univ i, hiS⟩))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma fibre_sum {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β] (δ : ℝ)
     (f : β → α) (hf : Function.Injective f) (S : Finset β) :
@@ -97,11 +95,9 @@ lemma fibre_sum {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [Decid
       simp only [hg, if_pos (mem_image_of_mem f (mem_sdiff.mpr ⟨mem_univ i, hiS⟩))]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Use `_ = ∑ S : Finset β, if A S then bern δ S else 0 := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_comm]`. Use `sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Distinguish the cases in `hA : A S`. Simplify using `only [if_pos hA]`. Conclude with `fibre_sum δ f hf S`.
-
-Simplify using `[hA]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma marginal {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β] (δ : ℝ)
     (f : β → α) (hf : Function.Injective f) (A : Finset β → Prop) [DecidablePred A] :
@@ -123,17 +119,17 @@ lemma marginal {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] [Decida
 
 open Classical in
 /- English proof (translation)
-Unfold `Formalism.G0.condProbAt`. Rewrite using `[sum_mul]`. Use `Finset.sum_bij (fun S _ => S.map Fin.valEmbedding) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `S _`. Rewrite using `[mem_powerset]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨i, _, rfl⟩` from `mem_map.mp hx`. Simplify using the standard rewrite rules. Introduce `S _ S' _ h`. Conclude with `Finset.map_injective _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT`. Use `⟨univ.filter (fun i : Fin n => (i : ℕ) ∈ T), mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Fin.valEmbedding_apply]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `hi`. Introduce `hx`. Conclude with `⟨⟨x, mem_range.mp (mem_powerset.mp hT hx)⟩, hx, rfl⟩`. Introduce `S _`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : (i₀ : ℕ) ∈ S.map Fin.valEmbedding ↔ i₀ ∈ S` using `Finset.mem_map' Fin.valEmbedding`. Simplify using `only [hm]`. Use `split_ifs with h`. Establish `hc : 1 ≤ S.card` using `card_pos.mpr ⟨i₀, h.1⟩`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [bern, card_map, Fintype.card_fin, hk, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma fin_sum_eq (n : ℕ) (δ : ℝ) (i₀ : Fin n) (A : Finset ℕ → Prop) :
     (∑ S : Finset (Fin n), if i₀ ∈ S ∧ A (S.map Fin.valEmbedding) then bern δ S else 0) =
@@ -170,11 +166,11 @@ lemma fin_sum_eq (n : ℕ) (δ : ℝ) (i₀ : Fin n) (A : Finset ℕ → Prop) :
 open Classical in
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `ht`. Establish `hpos : 0 < addOrderOf h` using `addOrderOf_pos h`. Establish `hlt : i % addOrderOf h < addOrderOf h` using `Nat.mod_lt _ hpos`. Use `⟨i % addOrderOf h, hlt, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (fun j : Fin (addOrderOf h) => b + (j : ℕ) • h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `j k hjk`. Use `add_left_cancel hjk` as an intermediate fact. Conclude with `Fin.ext (nsmul_injOn_Iio_addOrderOf j.2 k.2 this)`. Rewrite using `[← fin_sum_eq (addOrderOf h) δ ⟨_, hlt⟩ A, ← marginal δ _ hinj (fun S => (⟨_, hlt⟩ : Fin (addOrderOf h)) ∈ S ∧ A (S.map Fin.valEmbedding))]`. Use `sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: t ∈ T ↔ (⟨_, hlt⟩ : Fin (addOrderOf h)) ∈ univ.filter (fun i : Fin (addOrderOf h) => b + (i : ℕ) • h ∈ T)`. Simplify using `[mod_addOrderOf_nsmul, hi]`. Simplify using `only [this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma orbit_sum {α : Type} [Fintype α] [DecidableEq α] [AddCommGroup α] (δ : ℝ) (b h t : α)
     (ht : ∃ i : ℕ, b + i • h = t) (A : Finset ℕ → Prop) :
@@ -205,21 +201,21 @@ namespace GlobalTheory
 open GlobalTheory.TopsChoice
 
 /- English proof (translation)
-Introduce `eps he he'`. Take `⟨Cb, x₀, hCb, hnum⟩` from `GlobalTheory.T.parameter_inequalities_good eps he he'`. Use `⟨Cb, max x₀ 32, hCb, ?_⟩` and prove the remaining obligations. Introduce `s hs hx e L₂ hlo hhi hL bs hbs _ PP hp ω hω hPP`. Establish `hx1 : 1 < s.x` using `s.one_lt_alt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hx32 : 32 ≤ s.x` using `le_trans (le_max_right _ _) hx`. Establish `hδ : 0 < s.delta1` using `Real.rpow_pos_of_pos hx0 _`. Establish `hδ1 : s.delta1 ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1.le (by have := s.eps_pos; linarith)`. Use `haveI : NeZero (2 ^ e) := ⟨by positivity⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (ZMod (2 ^ e)) = 2 ^ e` using `ZMod.card _`. Establish `h16 : 16 ≤ s.delta1 * (Fintype.card (ZMod (2 ^ e)) : ℝ)`. Rewrite using `[hcard]`. Establish `h1 : s.x ≤ s.delta1 * s.x ^ Formalism.MainNotions.G.hG s`. Unfold `Scale.delta1 Formalism.MainNotions.G.hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_add hx0]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left hlo hδ.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hβ : 0 ≤ Cb * s.x ^ (-2 : ℝ)` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT1, hT2, hT3⟩` from `Formalism.FrobeniusOrbits.hostTops (ZMod (2 ^ e)) PP s.delta1 (Cb * s.x ^ (-2 : ℝ)) (fun p => ω p) (fun p t T => ¬ Formalism.MainNotions.G.IsGoodOrbit (addOrderOf (hp p)) (Finset.univ.filter (fun i : Fin (addOrderOf (hp p)) => bs (hp p) t + (i : ℕ) • hp p ∈ T)) L₂ (Formalism.Main …`. Introduce `p t`. Establish `hn : ((addOrderOf (hp p) : ℕ) : ℝ) ≤ 2 * s.x ^ Formalism.MainNotions.G.hG s`. Use `le_trans ?_ hhi` and prove the remaining obligations. Conclude with `Nat.cast_le.mpr (addOrderOf_le_card_univ.trans hcard.le)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hnum s hs (le_trans (le_max_left _ _) hx) (addOrderOf (hp p)) L₂ (hPP p p.2) hn hL`. Take `⟨i₀, hi₀, hsum⟩` from `orbit_sum s.delta1 (bs (hp p) t) (hp p) t (hbs _ _) (fun T => ¬ Formalism.G0.GoodOrbitIntervalTileCondition (addOrderOf (hp p)) T L₂ (Formalism.MainNotions.G.KG s) (Formalism.MainNotions.G.rG s) (Formalism.MainNotions.G.goodU s.delta1) (Formalism.MainNotions.G.orbitSmallMultiplic …`. Establish `hu : 1 ≤ Formalism.MainNotions.G.goodU s.delta1` using `Nat.ceil_pos.mpr (by positivity)`. Establish `h3` using `GlobalTheory.T.choice_of_tops (addOrderOf (hp p)) s.delta1 L₂ (Formalism.MainNotions.G.KG s) (Formalism.MainNotions.G.rG s) (Formalism.MainNotions.G.goodU s.delta1) (Formalism.MainNotions.G.orbitSmallMultiplicity (Formalism.MainNotions.G.rG s) (Formalism.MainNotions.G.hG s) s.x) …`. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_right (h3.trans h2) hδ.le)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hsum]`. Unfold `Formalism.MainNotions.G.IsGoodOrbit`. Use `rfl)` and compare the differences between its conclusion and the goal. Rewrite `hT1`, `hT2`, `hT3` using `[hcard]`. Use `⟨T, hT1, hT2, ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_coe_sort PP, ← Finset.sum_coe_sort PP ω]`. Use `le_trans (le_of_eq ?_) hT3` and prove the remaining obligations. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[← Set.ncard_coe_finset, Finset.coe_filter]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topsChoice : ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ Cb x₀ : ℝ, 0 < Cb ∧ ∀ s : Scale, s.eps = eps → x₀ ≤ s.x → ∀ e L₂ : ℕ, s.x ^ Formalism.MainNotions.G.hG s / 2 ≤ ((2 ^ e : ℕ) : ℝ) → ((2 ^ e : ℕ) : ℝ) ≤ 2 * s.x ^ Formalism.MainNotions.G.hG s → (L₂ : ℝ) ≤ 1242 / eps → ∀ bs : ZMod (2 ^ e) → ZMod (2 ^ e) → ZMod (2 ^ e), (∀ h t, ∃ i : ℕ, bs h t + i • h = t) → (∀ h t, bs h (t + h) = bs h t) → ∀ (PP : Finset ℕ) (hp : ℕ → ZMod (2 ^ e)) (ω : ℕ → ℝ), (∀ p, 0 ≤ ω p) → (∀ p ∈ PP, s.x ^ (eps / 4) ≤ (addOrderOf (hp p) : ℝ)) → ∃ TT : Finset (ZMod (2 ^ e)), s.delta1 * ((2 ^ e : ℕ) : ℝ) / 2 ≤ (TT.card : ℝ) ∧ (TT.card : ℝ) ≤ 2 * s.delta1 * ((2 ^ e : ℕ) : ℝ) ∧ ∑ p ∈ PP, ω p * (({t : ZMod (2 ^ e) | t ∈ TT ∧ ¬ Formalism.MainNotions.G.IsGoodOrbit (addOrderOf (hp p)) (Finset.univ.filter (fun i : Fin (addOrderOf (hp p)) => bs (hp p) t + (i : ℕ) • hp p ∈ TT)) L₂ (Formalism.MainNotions.G.KG s) (Formalism.MainNotions.G.rG s) s.delta1 (Formalism.MainNotions.G.hG s) s.x}.ncard : ℕ) : ℝ) ≤ 4 * (Cb * s.x ^ (-2 : ℝ)) * s.delta1 * ((2 ^ e : ℕ) : ℝ) * ∑ p ∈ PP, ω p := by
   classical

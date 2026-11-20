@@ -28,14 +28,14 @@ Both sides reduce to the same expression.
 theorem rdzLd_apply {j : ℕ} (x : MJ j) (q : rdzPZ j) : rdzLd x q = (0, fun a b => ∑ c, q.2 a c * x c b) := rfl
 
 /- English proof (translation)
-Rewrite using `[rdzLd_apply]`. Conclude with `Prod.ext rfl (by funext a b; simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdzLd_inl {j : ℕ} (x : MJ j) (v : ℂ) : rdzLd x ((v, 0) : rdzPZ j) = 0 := by
   rw [rdzLd_apply]
   exact Prod.ext rfl (by funext a b; simp)
 
 /- English proof (translation)
-Use `HasDerivAt.congr_deriv ((hasDerivAt_const (0 : ℝ) τ).prodMk (hasDerivAt_mul_exp_smul_zero Z x)) ?_` and prove the remaining obligations. Rewrite using `[rdzLd_apply]`. Conclude with `Prod.ext rfl (funext fun a => funext fun b => Matrix.mul_apply)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdz_curve {j : ℕ} (x : MJ j) (τ : ℂ) (Z : MJ j) :
     HasDerivAt (fun t : ℝ => ((τ, (Z * NormedSpace.exp ((t : ℂ) • x) : MJ j)) : rdzPZ j)) (rdzLd x (τ, Z)) 0 := by
@@ -46,14 +46,14 @@ theorem rdz_curve {j : ℕ} (x : MJ j) (τ : ℂ) (Z : MJ j) :
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-The claim follows from `(hh.contDiffAt (hV.mem_nhds hZ)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem rdz_da {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] {h : F → E} {V : Set F} (hV : IsOpen V)
     (hh : ContDiffOn ℝ ∞ h V) {Z : F} (hZ : Z ∈ V) : DifferentiableAt ℝ h Z :=
   (hh.contDiffAt (hV.mem_nhds hZ)).differentiableAt (by simp)
 
 /- English proof (translation)
-Establish `h0 : ((τ, (Z * NormedSpace.exp (((0 : ℝ) : ℂ) • x) : MJ j)) : rdzPZ j) = (τ, Z)` using `by (simp [NormedSpace.exp_zero]; rfl)`. Conclude with `(hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (rdz_curve x τ Z) h0.symm).deriv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rdz_rd {j : ℕ} (x : MJ j) (G : rdzPZ j → E) (τ : ℂ) (Z : MJ j) (hd : DifferentiableAt ℝ G (τ, Z)) :
     RdV x (fun Z' : MJ j => G (τ, Z')) Z = fderiv ℝ G (τ, Z) (rdzLd x (τ, Z)) := by
@@ -62,9 +62,7 @@ theorem rdz_rd {j : ℕ} (x : MJ j) (G : rdzPZ j → E) (τ : ℂ) (Z : MJ j) (h
   exact (hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (rdz_curve x τ Z) h0.symm).deriv
 
 /- English proof (translation)
-Establish `ht : Tendsto (fun t : ℝ => Z * NormedSpace.exp ((t : ℂ) • x)) (𝓝 0) (𝓝 Z)`. Use `(hasDerivAt_mul_exp_smul_zero Z x).continuousAt.tendsto` as an intermediate fact. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, mul_one] at this`. Conclude with `this`. Unfold `RdV`.
-
-Conclude with `Filter.EventuallyEq.deriv_eq (ht.eventually h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rdz_loc {j : ℕ} (x : MJ j) (h₁ h₂ : MJ j → E) (Z : MJ j) (h : h₁ =ᶠ[𝓝 Z] h₂) :
     RdV x h₁ Z = RdV x h₂ Z := by
@@ -76,7 +74,7 @@ theorem rdz_loc {j : ℕ} (x : MJ j) (h₁ h₂ : MJ j → E) (Z : MJ j) (h : h�
   exact Filter.EventuallyEq.deriv_eq (ht.eventually h)
 
 /- English proof (translation)
-Establish `h0 : Z * NormedSpace.exp (((0 : ℝ) : ℂ) • x) = Z` using `by simp [NormedSpace.exp_zero]`. Conclude with `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (hasDerivAt_mul_exp_smul_zero Z x) h0.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rdz_hd {j : ℕ} (x : MJ j) {h : MJ j → E} {Z : MJ j} (hd : DifferentiableAt ℝ h Z) :
     HasDerivAt (fun t : ℝ => h (Z * NormedSpace.exp ((t : ℂ) • x))) (fderiv ℝ h Z (Z * x)) 0 := by
@@ -86,7 +84,7 @@ theorem rdz_hd {j : ℕ} (x : MJ j) {h : MJ j → E} {Z : MJ j} (hd : Differenti
 def rdzK {j : ℕ} (κ : ℂ → MJ j → E) : rdzPZ j → E := fun q => κ q.1 (Matrix.of q.2)
 
 /- English proof (translation)
-Establish `hι : HasFDerivAt (fun τ : ℂ => ((τ, Z₀) : rdzPZ j)) ((ContinuousLinearMap.id ℝ ℂ).prod 0) τ₀` using `(hasFDerivAt_id τ₀).prodMk (hasFDerivAt_const _ τ₀)`. Establish `h2` using `(hd.hasFDerivAt.comp τ₀ hι).fderiv`. Rewrite using `[show (fun τ : ℂ => κ τ Z₀) = rdzK κ ∘ (fun τ : ℂ => ((τ, Z₀) : rdzPZ j)) from rfl, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rdz_slice {j : ℕ} (κ : ℂ → MJ j → E) (τ₀ : ℂ) (Z₀ : MJ j)
     (hd : DifferentiableAt ℝ (rdzK κ) (τ₀, Z₀)) (v : ℂ) :
@@ -101,7 +99,7 @@ def rdzH {j : ℕ} (κ : ℂ → MJ j → E) (c s : ℂ) : rdzPZ j → E := fun 
   c • (fderiv ℝ (rdzK κ) p (1, 0) + s • fderiv ℝ (rdzK κ) p (Complex.I, 0))
 
 /- English proof (translation)
-Simplify using `only [PBP.dz, neg_smul, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rdz_dz_eq (f : ℂ → E) (τ : ℂ) :
     PBP.dz f τ = (1 / 2 : ℂ) • (fderiv ℝ f τ 1 + (-Complex.I) • fderiv ℝ f τ Complex.I) := by
@@ -114,7 +112,7 @@ theorem rdz_dzb_eq (f : ℂ → E) (τ : ℂ) :
     PBP.dzb f τ = (1 / 2 : ℂ) • (fderiv ℝ f τ 1 + Complex.I • fderiv ℝ f τ Complex.I) := rfl
 
 /- English proof (translation)
-Rewrite using `[rdz_slice κ τ₀ Z₀ hd, rdz_slice κ τ₀ Z₀ hd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rdz_H_eq {j : ℕ} (κ : ℂ → MJ j → E) (c s : ℂ) (τ₀ : ℂ) (Z₀ : MJ j)
     (hd : DifferentiableAt ℝ (rdzK κ) (τ₀, Z₀)) :
@@ -124,7 +122,7 @@ theorem rdz_H_eq {j : ℕ} (κ : ℂ → MJ j → E) (c s : ℂ) (τ₀ : ℂ) (
   rfl
 
 /- English proof (translation)
-Establish `hK1 : ContDiffOn ℝ ∞ (fderiv ℝ (rdzK κ)) U` using `hK.fderiv_of_isOpen (m := ∞) hU withTop_enat_infty_add_one_le_infty`. Conclude with `((hK1.clm_apply contDiffOn_const).add ((hK1.clm_apply contDiffOn_const).const_smul s)).const_smul c`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rdz_H_smooth {j : ℕ} (κ : ℂ → MJ j → E) (c s : ℂ) {U : Set (rdzPZ j)} (hU : IsOpen U)
     (hK : ContDiffOn ℝ ∞ (rdzK κ) U) : ContDiffOn ℝ ∞ (rdzH κ c s) U := by
@@ -132,21 +130,19 @@ theorem rdz_H_smooth {j : ℕ} (κ : ℂ → MJ j → E) (c s : ℂ) {U : Set (r
   exact ((hK1.clm_apply contDiffOn_const).add ((hK1.clm_apply contDiffOn_const).const_smul s)).const_smul c
 
 /- English proof (translation)
-Introduce `U κ hU _ hK`. Establish `hKc : ContDiffOn ℝ ∞ (rdzK κ) U` using `hK`. Establish `hKd : ∀ q ∈ U, DifferentiableAt ℝ (rdzK κ) q` using `fun q hq => rdz_da hU hKc hq`. Establish `hK1 : ContDiffOn ℝ ∞ (fderiv ℝ (rdzK κ)) U` using `hKc.fderiv_of_isOpen (m := ∞) hU withTop_enat_infty_add_one_le_infty`. Establish `hG1 : ContDiffOn ℝ ∞ (fun q => fderiv ℝ (rdzK κ) q (rdzLd x q)) U` using `hK1.clm_apply (rdzLd x).contDiff.contDiffOn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd : ∀ q ∈ U, RdV x (κ q.1) (Matrix.of q.2) = fderiv ℝ (rdzK κ) q (rdzLd x q)` using `fun q hq => rdz_rd x (rdzK κ) q.1 (Matrix.of q.2) (hKd q hq)`. Use `⟨hG1.congr fun q hq => hrd q hq, fun q hq => ?_⟩` and prove the remaining obligations. Establish `hKa : ContDiffAt ℝ ∞ (rdzK κ) q` using `hKc.contDiffAt (hU.mem_nhds hq)`. Establish `hc : DifferentiableAt ℝ (fderiv ℝ (rdzK κ)) q` using `(hKa.fderiv_right (m := ∞) withTop_enat_infty_add_one_le_infty).differentiableAt (by simp)`. Establish `hsym : IsSymmSndFDerivAt ℝ (rdzK κ) q` using `hKa.isSymmSndFDerivAt (by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `hG1d : HasFDerivAt (fun p => fderiv ℝ (rdzK κ) p (rdzLd x p)) ((fderiv ℝ (rdzK κ) q).comp (rdzLd x) + (fderiv ℝ (fderiv ℝ (rdzK κ)) q).flip (rdzLd x q)) q` using `hc.hasFDerivAt.clm_apply (rdzLd x).hasFDerivAt`. Establish `hL : ∀ v : ℂ, fderiv ℝ (fun τ => RdV x (κ τ) (Matrix.of q.2)) q.1 v = fderiv ℝ (fderiv ℝ (rdzK κ)) q (v, 0) (rdzLd x q)`. Introduce `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hev : (fun τ => RdV x (κ τ) (Matrix.of q.2)) =ᶠ[𝓝 q.1] (fun τ => fderiv ℝ (rdzK κ) (τ, q.2) (rdzLd x (τ, q.2)))`. Establish `hc' : ContinuousAt (fun τ : ℂ => ((τ, q.2) : rdzPZ j)) q.1` using `(continuous_id.prodMk continuous_const).continuousAt`. Use `filter_upwards [hc'.preimage_mem_nhds (hU.mem_nhds hq)] with τ hτ`. Conclude with `hrd (τ, q.2) hτ`. Establish `hι : HasFDerivAt (fun τ : ℂ => ((τ, q.2) : rdzPZ j)) ((ContinuousLinearMap.id ℝ ℂ).prod 0) q.1` using `(hasFDerivAt_id q.1).prodMk (hasFDerivAt_const _ q.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hev.fderiv_eq, show (fun τ => fderiv ℝ (rdzK κ) (τ, q.2) (rdzLd x (τ, q.2))) = (fun p => fderiv ℝ (rdzK κ) p (rdzLd x p)) ∘ (fun τ : ℂ => ((τ, q.2) : rdzPZ j)) from rfl, (hG1d.comp q.1 hι).fderiv]`. Simplify using `[rdzLd_inl]`. Establish `hR : ∀ c s : ℂ, RdV x (fun Z => c • (fderiv ℝ (fun τ : ℂ => κ τ Z) q.1 1 + s • fderiv ℝ (fun τ : ℂ => κ τ Z) q.1 Complex.I)) (Matrix.of q.2) = c • (fderiv ℝ (fderiv ℝ (rdzK κ)) q (rdzLd x q) (1, 0) + s • fderiv ℝ (fderiv ℝ (rdzK κ)) q (rdzLd x q) (Complex.I, 0))`. Introduce `c s`. Establish `hev : (fun Z : MJ j => c • (fderiv ℝ (fun τ : ℂ => κ τ Z) q.1 1 + s • fderiv ℝ (fun τ : ℂ => κ τ Z) q.1 Complex.I)) =ᶠ[𝓝 (Matrix.of q.2)] (fun Z : MJ j => rdzH κ c s (q.1, Z))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : ContinuousAt (fun Z : MJ j => ((q.1, Z) : rdzPZ j)) (Matrix.of q.2)` using `(continuous_const.prodMk continuous_id).continuousAt`. Use `filter_upwards [hc'.preimage_mem_nhds (hU.mem_nhds hq)] with Z hZ`. Conclude with `rdz_H_eq κ c s q.1 Z (hKd _ hZ)`. Establish `hH : HasFDerivAt (rdzH κ c s) (c • (((fderiv ℝ (rdzK κ) q).comp 0 + (fderiv ℝ (fderiv ℝ (rdzK κ)) q).flip ((1, 0) : rdzPZ j)) + s • ((fderiv ℝ (rdzK κ) q).comp 0 + (fderiv ℝ (fderiv ℝ (rdzK κ)) q).flip ((Complex.I, 0) : rdzPZ j)))) q` using `((hc.hasFDerivAt.clm_apply (hasFDerivAt_const ((1, 0) : rdzPZ j) q)).add ((hc.hasFDerivAt.clm_apply (hasFDerivAt_const ((Complex.I, 0) : rdzPZ j) q)).const_smul s)).const_smul c`. Rewrite using `[rdz_loc x _ _ _ hev, rdz_rd x (rdzH κ c s) q.1 (Matrix.of q.2) hH.differentiableAt, show ((q.1, Matrix.of q.2) : rdzPZ j) = q from rfl, hH.fderiv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hS : ∀ v : ℂ, fderiv ℝ (fderiv ℝ (rdzK κ)) q (v, 0) (rdzLd x q) = fderiv ℝ (fderiv ℝ (rdzK κ)) q (rdzLd x q) (v, 0)` using `fun v => hsym _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [rdz_dz_eq]`. Rewrite using `[hR, hL, hL, hS, hS]`.
-
-Simplify using `only [rdz_dzb_eq]`. Rewrite using `[hR, hL, hL, hS, hS]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdz_par {j : ℕ} (x : MJ j) : ParamCommF (E := E) (fun h => RdV x h) := by
   intro U κ hU _ hK
@@ -217,11 +213,11 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.FourierDecayAlt.P.WirtingerOperators
 
 /- English proof (translation)
-Introduce `j E _ _ x`. Use `⟨fun h₁ h₂ Z h => rdz_loc x h₁ h₂ Z h, ?_, ?_, rdz_par x⟩` and prove the remaining obligations. Introduce `V h₁ h₂ hV _ c1 c2 Z hZ`. Establish `d1` using `rdz_hd x (rdz_da hV c1 hZ)`. Establish `d2` using `rdz_hd x (rdz_da hV c2 hZ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RdV]`. Rewrite using `[d1.deriv, d2.deriv]`. Conclude with `(d1.add d2).deriv`. Introduce `V c h hV _ ch Z hZ`. Establish `d` using `rdz_hd x (rdz_da hV ch hZ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RdV]`. Rewrite using `[d.deriv]`. Conclude with `(d.const_smul c).deriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_derivative_operator_class : WirtingerOperators.ZOpRd := by
   intro j E _ _ x
@@ -239,11 +235,9 @@ theorem right_derivative_operator_class : WirtingerOperators.ZOpRd := by
     exact (d.const_smul c).deriv
 
 /- English proof (translation)
-Introduce `j E _ _ U κ hU hK τ₀`. Establish `hKc : ContDiffOn ℝ ∞ (rdzK κ) U` using `hK`. Establish `hι : ContDiff ℝ ∞ (fun Z : MJ j => ((τ₀, Z) : rdzPZ j))` using `contDiff_const.prodMk contDiff_id`. Establish `key : ∀ c s : ℂ, ContDiffOn ℝ ∞ (fun Z : MJ j => c • (fderiv ℝ (fun τ : ℂ => κ τ Z) τ₀ 1 + s • fderiv ℝ (fun τ : ℂ => κ τ Z) τ₀ Complex.I)) {Z : MJ j | (τ₀, (Z : Fin j → Fin j → ℂ)) ∈ U}`. Introduce `c s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `((rdz_H_smooth κ c s hU hKc).comp hι.contDiffOn (fun Z hZ => hZ)).congr fun Z hZ => ?_` and prove the remaining obligations. Conclude with `rdz_H_eq κ c s τ₀ Z (rdz_da hU hKc hZ)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [rdz_dz_eq]`. Conclude with `key _ _`.
-
-Simplify using `only [rdz_dzb_eq]`. Conclude with `key _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wirtinger_slice_smooth : WirtingerOperators.DzSlice := by
   intro j E _ _ U κ hU hK τ₀

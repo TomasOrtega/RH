@@ -9,7 +9,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimension
   [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Use `haveI : ProperSpace E := FiniteDimensional.proper_real E`. Use `haveI : DiscreteTopology L.toAddSubgroup := ‹DiscreteTopology L›`. Establish `hc : IsClosed (L : Set E)` using `AddSubgroup.isClosed_of_discrete (H := L.toAddSubgroup)`. Conclude with `Metric.finite_isBounded_inter_isClosed ⟨(‹DiscreteTopology L› : DiscreteTopology L)⟩ hb hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_inter_lattice (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L] (S : Set E)
     (hb : Bornology.IsBounded S) : (S ∩ (L : Set E)).Finite := by
@@ -19,19 +19,17 @@ theorem finite_inter_lattice (L : Submodule ℤ E) [DiscreteTopology L] [IsZLatt
   exact Metric.finite_isBounded_inter_isClosed ⟨(‹DiscreteTopology L› : DiscreteTopology L)⟩ hb hc
 
 /- English proof (translation)
-Distinguish the cases in `hx : ∃ g0 : L, x ∈ g0 +ᵥ ((2⁻¹ : ℝ) • S)`. Use `swap`. Use `push_neg at hx`. Simplify using `[Set.indicator_of_notMem (hx _)]`. Take `⟨g0, hg0⟩` from `hx`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ g : L, x ∈ g +ᵥ ((2⁻¹ : ℝ) • S) → ((g : E) - g0) ∈ S`. Introduce `g hg`. Rewrite `hg`, `hg0` using `[Set.mem_vadd_set]`. Take `⟨a, ha, hax⟩` from `hg`. Take `⟨c, hc, hcx⟩` from `hg0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `ha`, `hc` using `[Set.mem_smul_set]`. Take `⟨s1, hs1, rfl⟩` from `ha`. Take `⟨s2, hs2, rfl⟩` from `hc`. Rewrite `hax`, `hcx` using `[Submodule.vadd_def, vadd_eq_add]`. Establish `e : (g : E) - g0 = (2⁻¹ : ℝ) • s2 + (2⁻¹ : ℝ) • (-s1)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[smul_neg, eq_sub_of_add_eq hax, eq_sub_of_add_eq hcx]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hconv hs2 (hsymm s1 hs1) (by norm_num) (by norm_num) (by norm_num)`. Establish `hfin : {g : L | ((g : E) - g0) ∈ S}.Finite`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (fun g : L => (g : E) - g0)` using `fun a b h => Subtype.ext (sub_left_injective h)`. Use `((finite_inter_lattice L S hb).preimage hinj.injOn).subset ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `Set.mem_inter hg (sub_mem g.2 g0.2)`. Rewrite using `[tsum_eq_sum (s := hfin.toFinset) (fun g hg => Set.indicator_of_notMem (fun h => hg (hfin.mem_toFinset.2 (key g h))) _)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun g _ => ?_` and prove the remaining obligations. Apply the tactic sequence `unfold Set.indicator; split_ifs <;> simp`. Use `_ = (hfin.toFinset.card : ENNReal) := by simp`. Use `_ ≤ ((S ∩ (L : Set E)).ncard : ENNReal) := by`.
-
-Rewrite using `[← Set.ncard_eq_toFinset_card _ hfin]`. Establish `hh` using `Set.ncard_le_ncard_of_injOn (s := {g : L | ((g : E) - g0) ∈ S}) (t := S ∩ (L : Set E)) (fun g : L => (g : E) - g0) (fun g hg => Set.mem_inter hg (sub_mem g.2 g0.2)) (fun a _ b _ h => Subtype.ext (sub_left_injective h)) (finite_inter_lattice L S hb)`. Conclude with `hh` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fiber_count_le_ncard_inter_lattice (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L]
     (S : Set E) (hconv : Convex ℝ S) (hsymm : ∀ x ∈ S, -x ∈ S) (hb : Bornology.IsBounded S)
@@ -79,15 +77,15 @@ theorem fiber_count_le_ncard_inter_lattice (L : Submodule ℤ E) [DiscreteTopolo
         exact_mod_cast hh
 
 /- English proof (translation)
-Use `haveI : MeasureTheory.VAddInvariantMeasure L E μ := ⟨fun g s _ => by simp only [Submodule.vadd_def, vadd_eq_add]; exact measure_preimage_add μ (g : E) s⟩`. Establish `hF : MeasureTheory.IsAddFundamentalDomain L (ZSpan.fundamentalDomain ((Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L)) μ` using `ZLattice.isAddFundamentalDomain (Module.Free.chooseBasis ℤ L) μ`. Establish `hcov` using `ZLattice.covolume_eq_measure_fundamentalDomain L μ hF`. Establish `hpos : 0 < ZLattice.covolume L μ` using `ZLattice.covolume_pos L μ`. Establish `hTm : MeasurableSet ((2⁻¹ : ℝ) • S)` using `hm.const_smul₀ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : μ ((2⁻¹ : ℝ) • S) ≤ ((S ∩ (L : Set E)).ncard : ENNReal) * μ (ZSpan.fundamentalDomain ((Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L))`. Rewrite using `[hF.measure_eq_tsum ((2⁻¹ : ℝ) • S)]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_indicator_one (hTm.const_vadd g), Measure.restrict_apply (hTm.const_vadd g)]`. Use `_ = ∫⁻ y in ZSpan.fundamentalDomain ((Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L), ∑' g : L, ((g +ᵥ (2⁻¹ : ℝ) • S).indicator 1 y : ENNReal) ∂μ := (lintegral_tsum fun g => (measurable_one.indicator (hTm.const_vadd g)).aemeasurable).symm`. Use `_ ≤ ∫⁻ _ in ZSpan.fundamentalDomain ((Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L), ((S ∩ (L : Set E)).ncard : ENNReal) ∂μ := lintegral_mono fun y => fiber_count_le_ncard_inter_lattice L S hconv hsymm hb y`. Use `_ = _ := setLIntegral_const _ _`. Establish `hFfin : μ (ZSpan.fundamentalDomain ((Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L)) ≠ ⊤`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hpos` using `[hcov, Measure.real, h]`. Simplify using `at hpos`. Establish `hreal` using `ENNReal.toReal_mono (ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) hFfin) hle`. Rewrite `hreal` using `[Measure.addHaar_smul, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (abs_nonneg _), abs_of_nonneg (by positivity), inv_pow, ENNReal.toReal_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : (0 : ℝ) < 2 ^ finrank ℝ E` using `by positivity`. Rewrite `hreal` using `[inv_mul_le_iff₀ h2]`. Rewrite using `[div_le_iff₀ (mul_pos h2 hpos), hcov, Measure.real]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem measure_div_le_ncard_inter_lattice (μ : Measure E) [μ.IsAddHaarMeasure]
     (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L] (S : Set E)

@@ -17,11 +17,11 @@ namespace GlobalTheory.FunObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(N : 𝓞 E) • l, Submodule.smul_mem_smul hN hl, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Nat.cast_smul_eq_nsmul, ← nsmul_eq_mul, TensorProduct.smul_tmul']`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+A detailed English derivation is pending.
 -/
 theorem natCast_smul_mem_hatL {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) {𝔪 : Ideal (𝓞 E)} {N : ℕ} (hN : (N : 𝓞 E) ∈ 𝔪) {z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F}
@@ -38,17 +38,15 @@ theorem natCast_smul_mem_hatL {F E : Type} [Field F] [NumberField F] [Field E] [
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Establish `ho` using `(GlobalTheory.Mass.intTens_open_compact F E).1`. Use `set s := GlobalTheory.Mass.swapTens F E (Af F)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `β' : GL (Fin n) (Af F ⊗[F] E)` to `Formalism.UG.bc (s.symm : _ →+* _) β`. Establish `hβ : Formalism.UG.bc (s : _ →+* _) β' = β` using `Units.ext (Matrix.ext fun i j => s.apply_symm_apply _)`. Set `m : X → GL (Fin n) (Af F ⊗[F] E)` to `fun κ => β'⁻¹ * φ κ * β'`. Establish `hm : Continuous m` using `(continuous_const.mul hf).mul continuous_const`. Establish `hm1 : m x₀ = 1` using `by simp only [m, h₀, mul_one, inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : ∀ κ, β⁻¹ * Formalism.UG.bc (s : _ →+* _) (φ κ) * β = Formalism.UG.bc (s : _ →+* _) (m κ)` using `fun κ => by`. Simplify using `only [m, map_mul, map_inv, hβ]`. Set `c : Af F ⊗[F] E` to `algebraMap F _ (N : F)⁻¹`. Establish `hc : (N : Af F ⊗[F] E) * c = 1`. Rewrite using `[← map_natCast (algebraMap F (Af F ⊗[F] E)), ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN), map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e3 : ∀ᶠ κ in 𝓝 x₀, ∀ i j, c * ((m κ).1 i j - (1 : Matrix (Fin n) (Fin n) _) i j) ∈ GlobalTheory.Mass.intTens F E`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`. Establish `h : Continuous fun κ => c * ((m κ).1 i j - (1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j)` using `continuous_const.mul (((Units.continuous_val.comp hm).matrix_elem i j).sub continuous_const)`. Use `(ho.preimage h).mem_nhds ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Set.mem_preimage, hm1, Units.val_one, sub_self, mul_zero]`. Conclude with `(GlobalTheory.Mass.intTens F E).zero_mem`. Use `filter_upwards [e3] with κ h3`. Use `⟨Matrix.of fun i j => s (c * ((m κ).1 i j - (1 : Matrix (Fin n) (Fin n) _) i j)), h3, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hs, Matrix.smul_apply, Matrix.of_apply, ← map_nsmul, nsmul_eq_mul, ← mul_assoc, hc, one_mul, Matrix.sub_apply, map_sub]`.
-
-Use `congr 1`. Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eventually_cong_mat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Af F)) {N : ℕ} (hN : N ≠ 0) {X : Type} [TopologicalSpace X] {x₀ : X}
@@ -85,11 +83,11 @@ theorem eventually_cong_mat {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   simp only [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h3` using `(GlobalTheory.LevSplit.mem_St_iff β Λ hβ _).1 h2`. Use `⟨h1, fun y => ⟨h3.1 y, fun hy => ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `h3.2 _ hy` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, Units.inv_mul, one_mulVec]`. Then use the resulting hypothesis. Establish `e1 : x.1 *ᵥ y - y = N • (β.1 *ᵥ (z *ᵥ ((β⁻¹).1 *ᵥ y)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← mulVec_smul, ← smul_mulVec, ← e, mulVec_mulVec, mulVec_mulVec, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Units.mul_inv, ← Units.val_mul, ← Units.val_mul, sub_mulVec, one_mulVec]`. Use `congr 3`. Use `group`. Rewrite using `[e1]`. Use `natCast_smul_mem_hatL Λ hN ((hβ _).2 fun i => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec]`. Use `show ∑ j : Fin n, _ * _ ∈ _`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hz i j) ((hβ y).1 hy j)`.
+A detailed English derivation is pending.
 -/
 theorem mem_congLev_of_cong {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
     {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {Λ : Submodule (𝓞 E) (Fin n → E)} {𝔪 : Ideal (𝓞 E)} {N : ℕ}
@@ -114,11 +112,9 @@ theorem mem_congLev_of_cong {F E : Type} [Field F] [NumberField F] [Field E] [Nu
 variable {D : D7}
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Take `⟨β, hβ⟩` from `frame_exists_alt D.host.F D.host.E V.rank Λ hΛ`. Establish `ho : IsOpen (((congLev D.sp.cm V.gram Λ 𝔪).comap (finE V) : Subgroup (GA D V)) : Set (GA D V))`. Take `⟨π, hπ, -⟩` from `GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig V.gram`. Establish `hf : Continuous (finHom V)` using `(continuous_subtype_val.comp hπ.continuous).congr fun κ => hπ κ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ V β ∅, eventually_cong_mat β (Ideal.absNorm_eq_zero_iff.not.2 h𝔪) hf (map_one _)] with κ ⟨h1, h2, _⟩ ⟨z, hz, e⟩`. Conclude with `mem_congLev_of_cong (Ideal.absNorm_mem 𝔪) hβ h1 h2 hz e`. Use `⟨ho, ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hCm⟩` from `GlobalTheory.ParahoricCompact.exists_compact V β`.
-
-Conclude with `hC.of_isClosed_subset ((GlobalTheory.Ker.CongTop.isClosed_GfC V).inter (Subgroup.isClosed_of_isOpen _ ho)) fun k hk => hCm k hk.1 ((GlobalTheory.LevSplit.mem_St_iff β Λ hβ _).2 ⟨fun y => (hk.2.2.1 y).1, fun y => (Subgroup.inv_mem _ hk.2.2.1 y).1⟩)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem congLev_open_compact (V : HSp D) {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hΛ : Submodule.IsLattice D.host.E Λ) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) :
@@ -140,9 +136,9 @@ theorem congLev_open_compact (V : HSp D) {Λ : Submodule (𝓞 D.host.E) (Fin V.
       ⟨fun y => (hk.2.2.1 y).1, fun y => (Subgroup.inv_mem _ hk.2.2.1 y).1⟩)
 
 /- English proof (translation)
-Use `split_ifs with h`. Use `choose ν hν hg using fun ρ : D.what₂.Tau => GlobalTheory.Mem.DefiniteMeasure.exists_probHaar (V.sig (tauE D ρ)).1 _ (Or.inr ((hq (tauE D ρ)).trans h))`. Take `⟨μ, hμ⟩` from `GlobalTheory.LevelMeasure.exists_isMeasLevW D V hV K hK.1 hK.2 (fun _ m => m.IsHaarMeasure ∧ IsProbabilityMeasure m) ν hν (fun ρ => (hg ρ _).2 rfl) fun ρ _ => (hg ρ _).1`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ.1`. Conclude with `⟨μ, 𝓕, hμ, h𝓕⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose m hm using GlobalTheory.MinfMeasure.exists_isMinf`. Take `⟨μ, hμ⟩` from `GlobalTheory.LevelMeasure.exists_isMeasLevW D V hV K hK.1 hK.2 (fun _ m => IsMinf m) (fun _ => m _ _) (fun _ => (hm _ _).1) (fun _ => hm _ _) fun _ _ h => GlobalTheory.LevelMeasure.isMinf_unique (hm _ _) h`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ.1`. Conclude with `⟨μ, 𝓕, hμ, h𝓕⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_meas (V : HSp D) (hV : V.SigOK) {q : ℕ} (hq : ∀ τ, (V.sig τ).2 = q) (K : Subgroup (GL (Fin V.rank) (EAf D)))
     (hK : IsOpen ((K.comap (finE V) : Subgroup (GA D V)) : Set (GA D V)) ∧

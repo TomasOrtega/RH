@@ -3,6 +3,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.BorelHeckeBounds.HeckeShiftSums.TruncCpt
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cix_of UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.kernX UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.truncCpt`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cix : UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.CIx := UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cix_of UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.kernX UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.truncCpt

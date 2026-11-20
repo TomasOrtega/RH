@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.UnifJac
 
 /- English proof (translation)
-Unfold `valT`. Distinguish the cases in `h : ⊤ ≤ w ⁻¹ᵁ (φ ⁻¹ᵁ U)`. Rewrite using `[dif_pos h, dif_pos (show ⊤ ≤ (w ≫ φ) ⁻¹ᵁ U from h)]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_neg (show ¬ ⊤ ≤ (w ≫ φ) ⁻¹ᵁ U from h)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem valT_comp {T : Type} [CommRing T] {X Y : Scheme.{0}} (w : Sp T ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
     (f : Γ(Y, U)) : valT (w ≫ φ) U f = valT w (φ ⁻¹ᵁ U) ((φ.app U).hom f) := by
@@ -35,18 +35,18 @@ theorem valT_comp {T : Type} [CommRing T] {X Y : Scheme.{0}} (w : Sp T ⟶ X) (�
 variable {A : Over (Sp ℂ)} [GrpObj A]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_left {T : Over (Sp ℂ)} (z : 𝟙_ (Over (Sp ℂ)) ⟶ A) (v : T ⟶ A) :
     ((toUnit T ≫ z) * v).left = v.left ≫ ((toUnit A ≫ z) * 𝟙 A).left := by
   rw [← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Introduce `p _`. Establish `hp : p = spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom (IsLocalRing.closedPoint ℂ)`. Establish `: Subsingleton (PrimeSpectrum (DualNumber ℂ))`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `hn : ∀ c : PrimeSpectrum (DualNumber ℂ), c.asIdeal = IsLocalRing.maximalIdeal _` using `fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm (IsLocalRing.le_maximalIdeal c.isPrime.ne_top) ?_` and prove the remaining obligations. Rewrite using `[DualNumber.maximalIdeal_eq_span_singleton_eps, Ideal.span_singleton_le_iff_mem]`. Conclude with `c.isPrime.mem_of_pow_mem 2 (by rw [sq, DualNumber.eps_mul_eps]; exact zero_mem _)`. Conclude with `PrimeSpectrum.ext ((hn a).trans (hn b).symm)`. Conclude with `Subsingleton.elim (α := PrimeSpectrum (DualNumber ℂ)) _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : η[A].left (IsLocalRing.closedPoint ℂ) ∈ U` using `h (show _ ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Rewrite `h1` using `[← hv]`. Rewrite using `[hp]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem le_of_isTangent {v : epsR ℂ ⟶ A} (hv : IsTangent v) (U : A.left.Opens)
     (h : ⊤ ≤ η[A].left ⁻¹ᵁ U) : ⊤ ≤ v.left ⁻¹ᵁ U := by
@@ -68,25 +68,25 @@ theorem le_of_isTangent {v : epsR ℂ ⟶ A} (hv : IsTangent v) (U : A.left.Open
 variable {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
 /- English proof (translation)
-The claim follows from `(u.ker 0).2 u.Λ.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem ex_zero : u.ex 0 = 1 := (u.ker 0).2 u.Λ.zero_mem
 
 /- English proof (translation)
-Rewrite using `[← translate_left, u.ex_add, toUnit_unique (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_translate (z w : Fin g → ℂ) :
     (u.ex w).left ≫ ((toUnit A ≫ u.ex z) * 𝟙 A).left = (u.ex (z + w)).left := by
   rw [← translate_left, u.ex_add, toUnit_unique (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _), Category.id_comp]
 
 /- English proof (translation)
-Establish `h0 : ⊤ ≤ η[A].left ⁻¹ᵁ (((toUnit A ≫ u.ex z) * 𝟙 A).left ⁻¹ᵁ U)`. Establish `e` using `ex_translate u z 0`. Rewrite `e` using `[add_zero, ex_zero]`. Rewrite `hz` using `[← e]`. Establish `e1 : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A) = η[A]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Hom.one_def, toUnit_unique (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _), Category.id_comp]`. Rewrite `hz` using `[e1]`. Conclude with `hz`. Establish `h1` using `le_of_isTangent hv _ h0`. Rewrite using `[translate_left]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg _ (valT_comp _ _ _ _)).trans ?_` and prove the remaining obligations. Use `(congrArg TrivSqZeroExt.snd (dif_pos h1)).trans ((hd _ h1 _).trans ?_)` and prove the remaining obligations. Establish `e : (fun y => valAt' (u.ex y).left (((toUnit A ≫ u.ex z) * 𝟙 A).left ⁻¹ᵁ U) ((((toUnit A ≫ u.ex z) * 𝟙 A).left.app U).hom f)) = fun y => valAt' (u.ex (z + y)).left U f`. Use function extensionality and compare the values at `y`. Rewrite using `[← ex_translate]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(valT_comp (T := ℂ) _ _ _ _).symm`. Rewrite using `[e, fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left U f), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem snd_valT_translate {v : epsR ℂ ⟶ A} (hv : IsTangent v) {w : Fin g → ℂ} (hd : u.IsDiff w v)
     (z : Fin g → ℂ) (U : A.left.Opens) (hz : ⊤ ≤ (u.ex z).left ⁻¹ᵁ U) (f : Γ(A.left, U)) :
@@ -112,7 +112,7 @@ theorem snd_valT_translate {v : epsR ℂ ⟶ A} (hv : IsTangent v) {w : Fin g �
   rw [e, fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left U f), add_zero]
 
 /- English proof (translation)
-Establish `hn` using `(u.hol (L.U c) f).1.mem_nhds hz`. Establish `e : (fun y => valAt' (u.ex y).left (L.U c) f) =ᶠ[nhds z] fun y => F y * u.fr c y ^ n` using `Filter.eventually_of_mem hn hf`. Establish `hd : DifferentiableAt ℂ (fun y => u.fr c y ^ n) z` using `((u.fr_hol c).differentiableAt hn).pow n`. Rewrite using `[e.fderiv_eq, fderiv_fun_mul (hF z) hd, h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_val (c : L.ι) (f : Γ(A.left, L.U c)) (F : (Fin g → ℂ) → ℂ) (hF : Differentiable ℂ F) (n : ℕ)
     (hf : ∀ y, ⊤ ≤ (u.ex y).left ⁻¹ᵁ L.U c → valAt' (u.ex y).left (L.U c) f = F y * u.fr c y ^ n)
@@ -132,25 +132,23 @@ namespace GlobalTheory
 open UnifJac in
 
 /- English proof (translation)
-Introduce `_ g x h u τ a b n s F z c hW hF hz`. Use `⟨fun i => (hF i).2 c z hz, fun h0 => ?_, fun d zs hzs y hy => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Unfold `jac`. Rewrite using `[mul_comm x.P.g n, pow_mul, show (u.fr c z ^ n) ^ x.P.g = (u.fr c z ^ n) ^ Fintype.card (Fin x.P.g) by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.card_fin], ← Matrix.det_smul]`. Use `congr 1`. Use extensionality with `i k`. Establish `hd` using `hW.2.2.2.2.2 k`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(snd_valT_translate u (x.basis.1 k) hd z _ hz _).trans ?_` and prove the remaining obligations. Use `(fderiv_val u c _ (F i) (hF i).1 n ((hF i).2 c) z hz (h0 i) _).trans ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single k (2 * Real.pi * Complex.I)⁻¹ : Fin x.P.g → ℂ) = (2 * Real.pi * Complex.I : ℂ)⁻¹ • Pi.single k 1 by rw [← Pi.single_smul, smul_eq_mul, _root_.mul_one], map_smul]`. Both sides reduce to the same expression. Use `haveI := x.P.isAb.smooth`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hcl : IsClosed {y : x.P.A.left | ∃ a, ∃ p : Sp ℂ, (u.ex (zs a)).left p = y}`. Establish `: {y : x.P.A.left | ∃ a, ∃ p : Sp ℂ, (u.ex (zs a)).left p = y} = ⋃ a, Set.range (u.ex (zs a)).left`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `isClosed_iUnion_of_finite fun a => ?_` and prove the remaining obligations. Use `haveI := x.P.isAb.proper`. Establish `: IsClosedImmersion (u.ex (zs a)).left`. Establish `hw : (u.ex (zs a)).left ≫ x.P.A.hom = 𝟙 _` using `Over.w _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion ((u.ex (zs a)).left ≫ x.P.A.hom)` using `by rw [hw]; infer_instance`. Conclude with `IsClosedImmersion.of_comp _ x.P.A.hom`. Conclude with `(u.ex (zs a)).left.isClosedEmbedding.isClosed_range`. Establish `hcz : IsClosed {y : x.P.A.left | ∀ i, y ∉ Out.nonzeroLocus (s i)}`. Rewrite using `[Set.setOf_forall]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `isClosed_iInter fun i => (Out.nonzeroLocus (s i)).isOpen.isClosed_compl`. Take `⟨q, hq, hqZ⟩` from `ComplexPoints.exists_point_mem x.P.A.hom (hcz.isLocallyClosed.inter hcl.isOpen_compl.isLocallyClosed) ⟨y, hy, hne⟩`. Take `⟨w, hw⟩` from `u.ex_onto (Over.homMk q hq)`. Establish `hw' : (u.ex w).left = q` using `congrArg (fun φ => φ.left) hw`. Set `p : Sp ℂ` to `IsLocalRing.closedPoint ℂ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj⟩ : ∃ j, q p ∈ x.P.L.U j` from `TopologicalSpace.Opens.mem_iSup.1 (by rw [x.P.isLB.cover]; trivial)`. Establish `hj' : ⊤ ≤ q ⁻¹ᵁ x.P.L.U j` using `(ComplexPoints.top_le_preimage_iff q _ p).2 hj`. Take `⟨a', e, he, hwe⟩` from `hzs w fun i => by`. Assume the negation of the conclusion as `hi`. Use `(hqZ p).1 i (TopologicalSpace.Opens.mem_iSup.2 ⟨j, ?_⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(ComplexPoints.top_le_preimage_iff q _ p).1 ((ComplexPoints.top_le_preimage_basicOpen_iff q _ hj' _).2 ?_)` and prove the remaining obligations. Establish `hv` using `(hF i).2 j w (by rw [hw']; exact hj')`. Rewrite `hv` using `[hw']`. Conclude with `((dif_pos hj').symm.trans hv).trans_ne (mul_ne_zero hi (pow_ne_zero _ (u.fr_ne j w (by rw [hw']; exact hj'))))`. Use `(hqZ p).2 ⟨a', p, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hw', hwe, u.ex_add, (u.ker e).2 he, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem unif_value_jac_zeros : ThetaUnifAV → ∀ (g : ℕ) (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (n : ℕ) (s : Fin x.P.g → RR x n) (F : Fin x.P.g → (Fin g → ℂ) → ℂ) (z : Fin g → ℂ) (c : x.P.L.ι), Wit x h u τ a b → (∀ i, Differentiable ℂ (F i) ∧ FnPw x u (s i) (F i)) → ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U c → (∀ i, valT (T := ℂ) (u.ex z).left (x.P.L.U c) ((s i).f c) = F i z * u.fr c z ^ n) ∧ ((∀ i, F i z = 0) → jac x s (u.ex z) c = u.fr c z ^ (g * n) * (Matrix.of fun i k : Fin x.P.g => (2 * Real.pi * Complex.I)⁻¹ * fderiv ℂ (F i) z (Pi.single (k.cast h) 1)).det) ∧ ∀ (d : ℕ) (zs : Fin d → Fin g → ℂ), (∀ y, (∀ i, F i y = 0) → ∃ a, ∃ e ∈ u.Λ, y = zs a + e) → ∀ y : x.P.A.left, (∀ i, y ∉ Out.nonzeroLocus (s i)) → ∃ a, ∃ p : Sp ℂ, (u.ex (zs a)).left p = y := by
   intro _ g x h u τ a b n s F z c hW hF hz

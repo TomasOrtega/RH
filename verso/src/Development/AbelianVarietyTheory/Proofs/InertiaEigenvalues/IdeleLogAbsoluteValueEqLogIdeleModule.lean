@@ -20,9 +20,9 @@ theorem ord_eq_ord_vw (d : (AdeleRing (𝓞 E) E)ˣ) (v : HeightOneSpectrum (�
     GroundTheory.Global.IdeleGroup.ord v d = GlobalTheory.Idele.ord_vw (finPart E d) v := rfl
 
 /- English proof (translation)
-Rewrite using `[infiniteModule, Real.log_prod]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow]`. Both sides reduce to the same expression. Introduce `w _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (infinite_ne_zero d w))`.
+A detailed English derivation is pending.
 -/
 theorem logInf_eq (d : (AdeleRing (𝓞 E) E)ˣ) :
     logInf E (infPart E d) = Real.log (infiniteModule d) := by
@@ -34,17 +34,15 @@ theorem logInf_eq (d : (AdeleRing (𝓞 E) E)ˣ) :
     exact pow_ne_zero _ (norm_ne_zero_iff.2 (infinite_ne_zero d w))
 
 /- English proof (translation)
-Establish `hfin` using `Filter.eventually_cofinite.1 (GlobalTheory.Idele.ord_vw_eventually_zero (finPart E d))`. Set `S` to `hfin.toFinset`. Establish `hS : ∀ v, v ∉ S → GlobalTheory.Idele.ord_vw (finPart E d) v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv (hfin.mem_toFinset.2 h)`. Establish `hI : GlobalTheory.Idele.idealOf (finPart E d) = ∏ v ∈ S, (v.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ^ GlobalTheory.Idele.ord_vw (finPart E d) v`. Unfold `GlobalTheory.Idele.idealOf`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv (by show (v.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ^ GlobalTheory.Idele.ord_vw (finPart E d) v = 1`. Rewrite using `[hS v h, zpow_zero])`. Establish `hM : finiteModule d = ∏ v ∈ S, ‖(d : AdeleRing (𝓞 E) E).2 v‖`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hv ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(d : AdeleRing (𝓞 E) E).2 v‖ = 1`. Rewrite using `[norm_finite_eq_rpow, ord_eq_ord_vw, hS v h, Int.cast_zero, neg_zero, Real.rpow_zero]`. Establish `hN : ∀ v : HeightOneSpectrum (𝓞 E), (Ideal.absNorm v.asIdeal : ℝ) ≠ 0` using `fun v => (absNorm_asIdeal_pos v).ne'`. Rewrite using `[logFin, hI, hM, map_prod, Rat.cast_prod, Real.log_prod, Real.log_prod, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm, Rat.cast_zpow, Rat.cast_natCast, Real.log_zpow, norm_finite_eq_rpow, Real.log_rpow (absNorm_asIdeal_pos v), ord_eq_ord_vw]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v _`. Conclude with `norm_ne_zero_iff.2 (finite_ne_zero d v)`.
-
-Introduce `v _`. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm, Rat.cast_zpow, Rat.cast_natCast]`. Conclude with `zpow_ne_zero _ (hN v)`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logFin_eq (d : (AdeleRing (𝓞 E) E)ˣ) :
     logFin E (finPart E d) = -Real.log (finiteModule d) := by
@@ -82,7 +80,7 @@ theorem logFin_eq (d : (AdeleRing (𝓞 E) E)ˣ) :
     exact zpow_ne_zero _ (hN v)
 
 /- English proof (translation)
-Rewrite using `[logNorm, logInf_eq, logFin_eq, ideleModule_apply, Real.log_mul (infiniteModule_pos d).ne' (finiteModule_pos d).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logNorm_eq_log_ideleModule (d : (AdeleRing (𝓞 E) E)ˣ) :
     logNorm E d = Real.log (GroundTheory.Global.IdeleGroup.ideleModule E d : ℝ) := by

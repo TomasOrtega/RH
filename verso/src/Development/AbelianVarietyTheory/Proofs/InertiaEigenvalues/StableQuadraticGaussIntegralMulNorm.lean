@@ -7,29 +7,27 @@ open scoped Pointwise ENNReal NNReal
 namespace GlobalTheory.JR.WeilQuad.GaussTrans
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ U A ψ x μ ω hH t s ⟨ℓ, hℓ⟩ G ⟨Λ₀, ho₀, hc₀, hG⟩`. Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Establish `: ProperSpace F` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `EtMeas.finite_L A` as an intermediate fact. Take `⟨⟨b⟩, hinj, hN, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.K`. Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.L`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: ContinuousStar A.L` using `⟨IsModuleTopology.continuous_of_linearMap (EtMeas.starF A)⟩`. Establish `hμ : μ.IsAddHaarMeasure` using `hH.2.2.2.1.1`. Establish `hs' : algebraMap A.K A.L (s : A.K) = ℓ * star ℓ` using `by rw [← hℓ, hN]`. Establish `hu : IsUnit ℓ` using `isUnit_of_mul_isUnit_left (hs' ▸ (s.isUnit.map (algebraMap A.K A.L)))`. Use `set u : A.Lˣ := hu.unit with hu_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hul : (u : A.L) = ℓ` using `hu.unit_spec`. Establish `hmod : distribHaarChar A.L u = distribHaarChar A.K s` using `GlobalTheory.JR.ModuleNorm.distribHaarChar_eq_norm A.K A.L b.equivFun.symm (IsModuleTopology.continuous_of_linearMap (b.equivFun.symm.toLinearMap.restrictScalars F)) (IsModuleTopology.continuous_of_linearMap (b.equivFun.toLinearMap.restrictScalars F)) u s (by rw [hul]; exact hs')`. Establish `hmap : μ.map (fun y => u • y) = (distribHaarChar A.L u⁻¹ : ℝ≥0∞) • μ`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply (measurable_const_smul u) hS, Set.preimage_smul, Measure.smul_apply, smul_eq_mul, distribHaarChar_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hemb : MeasurableEmbedding (fun y : A.L => u • y)` using `(Homeomorph.smul u).measurableEmbedding`. Establish `key : ∀ Λ : AddSubgroup A.L, gaussInt A ψ x μ ((t * s : A.Kˣ) : A.K) Λ = ((A.absK s : ℂ))⁻¹ * gaussInt A ψ x μ t (u • Λ : AddSubgroup A.L)`. Introduce `Λ`. Establish `h1 : gaussInt A ψ x μ ((t * s : A.Kˣ) : A.K) Λ = ∫ y in (Λ : Set A.L), A.psiK ψ ((t : A.K) * x * A.NL (u • y)) ∂μ`. Unfold `gaussInt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hNm : A.NL (u • y) = s * A.NL y`. Rewrite using `[Units.smul_def, hul, smul_eq_mul]`. Unfold `Et.NL`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (· * _) hℓ`. Simplify using `only`. Rewrite using `[hNm]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hemb.setIntegral_map (μ := μ) (fun z => A.psiK ψ ((t : A.K) * x * A.NL z)) ((u • Λ : AddSubgroup A.L) : Set A.L)`. Establish `hpre : (fun y => u • y) ⁻¹' ((u • Λ : AddSubgroup A.L) : Set A.L) = Λ`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Conclude with `⟨fun h => by simpa using (AddSubgroup.mem_pointwise_smul_iff_inv_smul_mem.1 h), fun h => AddSubgroup.smul_mem_pointwise_smul _ _ _ h⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hpre, hmap, Measure.restrict_smul, integral_smul_measure]`. Rewrite using `[h1, ← h2]`. Unfold `gaussInt`. Rewrite using `[Complex.real_smul, EtMeas.absK_unit, ENNReal.coe_toReal, map_inv, hmod]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hcoe : ∀ (v : A.Lˣ) (M : AddSubgroup A.L), ((v • M : AddSubgroup A.L) : Set A.L) = v • (M : Set A.L)` using `fun v M => AddSubgroup.coe_pointwise_smul v M`. Use `⟨u⁻¹ • Λ₀, ?_, ?_, fun Λ hoΛ hcΛ hle => ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ho₀.smul _`. Rewrite using `[hcoe]`. Conclude with `hc₀.smul _`. Rewrite using `[key, hG (u • Λ) (by rw [hcoe]; exact hoΛ.smul _) (by rw [hcoe]; exact hcΛ.smul _) ?_, mul_comm]`. Introduce `z hz`.
-
-Establish `: u⁻¹ • z ∈ Λ` using `hle (AddSubgroup.smul_mem_pointwise_smul _ _ _ hz)`. Conclude with `AddSubgroup.mem_pointwise_smul_iff_inv_smul_mem.2 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ), Hyp A ψ x μ ω → ∀ (t s : A.Kˣ), (∃ ℓ : A.L, A.NL ℓ = s) → ∀ G : ℂ, IsStableGauss A ψ x μ t G → IsStableGauss A ψ x μ ((t * s : A.Kˣ) : A.K) (G * ((A.absK s : ℂ))⁻¹) := by
   intro F E _ _ _ _ U A ψ x μ ω hH t s ⟨ℓ, hℓ⟩ G ⟨Λ₀, ho₀, hc₀, hG⟩

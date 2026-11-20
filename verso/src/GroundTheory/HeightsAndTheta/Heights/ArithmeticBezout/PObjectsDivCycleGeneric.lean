@@ -18,13 +18,11 @@ variable {A A' : Type*} [CommRing A] [CommRing A'] [Algebra A A'] (S : Submonoid
   [IsLocalization S A']
 
 /- English proof (translation)
-Use `set W' := W.map (algebraMap A A')`. Use `set L := Localization.AtPrime W'`. Establish `hc : W'.comap (algebraMap A A') = W` using `IsLocalization.under_map_of_isPrime_disjoint S A' ‹_› hW`. Establish `hL : IsLocalization.AtPrime L W`. Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization S L W'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Introduce a local definition for the expression.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Conclude with `hc.symm`. Set `e : Localization.AtPrime W ≃ₐ[A] L` to `IsLocalization.algEquiv W.primeCompl _ _`. Set `_ : Algebra (Localization.AtPrime W) L` to `e.toAlgHom.toRingHom.toAlgebra`. Establish `: IsScalarTower A (Localization.AtPrime W) L` using `IsScalarTower.of_algebraMap_eq fun a => (e.commutes a).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g` to `(J : Submodule A A).toLocalizedQuotient' L W.primeCompl (Algebra.linearMap A L)`. Establish `h1` using `((IsLocalizedModule.iso W.primeCompl g).extendScalarsOfIsLocalization W.primeCompl (Localization.AtPrime W)).length_eq`. Establish `h2` using `Module.length_eq_of_surjective (S := Localization.AtPrime W) (R := L) (M := L ⧸ (J : Submodule A A).localized' L W.primeCompl (Algebra.linearMap A L)) e.surjective`. Establish `h3 : (J : Submodule A A).localized' L W.primeCompl (Algebra.linearMap A L) = (J.map (algebraMap A A')).map (algebraMap A' L)`. Rewrite using `[Submodule.localized'_eq_span, Ideal.map_map, ← IsScalarTower.algebraMap_eq, Ideal.map]`.
-
-Both sides reduce to the same expression. Rewrite using `[h1, h2, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_eq (J W : Ideal A) [W.IsPrime] (hW : Disjoint (S : Set A) W)
     [(W.map (algebraMap A A')).IsPrime] :
@@ -101,9 +99,9 @@ theorem algebraMap_generic :
       toGeneric n := rfl
 
 /- English proof (translation)
-Establish `h : IndefiniteRowSideFullHecke.ArithBezout.finIdeal W = W.map (renameEquiv ℤ (blkEquiv n)).toRingEquiv`. Rewrite using `[IndefiniteRowSideFullHecke.ArithBezout.finIdeal, ← Ideal.comap_symm]`. Both sides reduce to the same expression. Rewrite using `[genericIdeal, h]`. Use `show Ideal.map _ (Ideal.map (rename (R := ℤ) (blkEquiv n)).toRingHom W) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_map, algebraMap_generic]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genericIdeal_eq (W : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n))) :
     genericIdeal W = W.map (algebraMap _ (MvPolynomial (Fin n) ℚ)) := by
@@ -116,9 +114,9 @@ theorem genericIdeal_eq (W : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRi
   rfl
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal, Set.disjoint_left, eq_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Rewrite using `[Ideal.mem_bot]`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h ⟨m, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩ hm`. Introduce and unpack `h _ ⟨m, hm, rfl⟩ hW`. Conclude with `nonZeroDivisors.ne_zero hm (Ideal.mem_bot.mp (h hW))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem disjoint_iff_isHorizontal (W : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n))) :
     Disjoint (intUnits n : Set (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n)))
@@ -133,7 +131,7 @@ theorem disjoint_iff_isHorizontal (W : Ideal (ReciprocityTheory.ChartRestriction
     exact nonZeroDivisors.ne_zero hm (Ideal.mem_bot.mp (h hW))
 
 /- English proof (translation)
-Simplify using `[algebraMap_generic, toGeneric, IndefiniteRowSideFullHecke.ArithBezout.linForm, linForm, blkEquiv_apply, ReciprocityTheory.ChartRestriction.G.Geo.Xc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_linForm (u : Fin n → ℤ) :
     algebraMap _ (MvPolynomial (Fin n) ℚ) (IndefiniteRowSideFullHecke.ArithBezout.linForm u) = linForm fun j => (u j : ℚ) := by
@@ -141,7 +139,7 @@ theorem algebraMap_linForm (u : Fin n → ℤ) :
     ReciprocityTheory.ChartRestriction.G.Geo.Xc]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.under_map_of_isPrime_disjoint (intUnits n) (MvPolynomial (Fin n) ℚ) hW ((disjoint_iff_isHorizontal W).mpr hh)`.
+A detailed English derivation is pending.
 -/
 theorem map_comap_horizontal (W : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n)))
     (hW : W.IsPrime) (hh : ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal W) :
@@ -152,27 +150,25 @@ theorem map_comap_horizontal (W : Ideal (ReciprocityTheory.ChartRestriction.G.Ge
 open Classical in
 
 /- English proof (translation)
-Introduce `n e P u _ _`. Use `set J := P ⊔ Ideal.span {IndefiniteRowSideFullHecke.ArithBezout.linForm u}`. Establish `hJ : genericIdeal P ⊔ Ideal.span {linForm fun j => (u j : ℚ)} = J.map (algebraMap _ (MvPolynomial (Fin n) ℚ))`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, algebraMap_linForm, genericIdeal_eq]`. Establish `hX : ∀ j : Fin n, algebraMap _ (MvPolynomial (Fin n) ℚ) (X ⟨(), j⟩ : ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n)) = X j` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[algebraMap_generic, toGeneric, blkEquiv_apply]`. Establish `hsub : (↑((ReciprocityTheory.ChartRestriction.G.Geo.divCycle P (IndefiniteRowSideFullHecke.ArithBezout.linForm u)).filter ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal).support : Set (Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestrictio …`. Introduce `W hW`. Rewrite `hW` using `[Finset.mem_coe, Finsupp.mem_support_iff, Finsupp.filter_apply]`. Use `split_ifs at hW with hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨?_, hh⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hp`. Apply `hW` to reduce the goal to its premises. Use `show (if W ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P (IndefiniteRowSideFullHecke.ArithBezout.linForm u) then _ else 0) = 0`. Rewrite using `[if_neg fun h => hp h.1.1.1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl hW`. Establish `hinj : Set.InjOn genericIdeal {W : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n)) | W.IsPrime ∧ ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal W}`. Introduce `W₁ h₁ W₂ h₂ h`. Rewrite `h` using `[genericIdeal_eq, genericIdeal_eq]`. Use `congrArg (Ideal.comap (algebraMap (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n)) (MvPolynomial (Fin n) ℚ))) h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `this` using `[map_comap_horizontal W₁ h₁.1 h₁.2, map_comap_horizontal W₂ h₂.1 h₂.2]`. Then use the resulting hypothesis. Use extensionality with `W'`. Rewrite using `[divCycle, fundCycle, Finsupp.onFinset_apply, hJ]`. Distinguish the cases in `hW' : W'.IsPrime`. Choose the witnesses or unpack the hypotheses as in `⟨W, hWp, hWd, rfl⟩ : ∃ W : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n)), W.IsPrime ∧ Disjoint (intUnits n : Set (ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n))) (W : Set …`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hW'` using `[IsLocalization.isPrime_iff_isPrime_disjoint (intUnits n) (MvPolynomial (Fin n) ℚ)]`. Conclude with `⟨_, hW'.1, hW'.2, IsLocalization.map_under (intUnits n) (MvPolynomial (Fin n) ℚ) W'⟩`. Establish `hh` using `(disjoint_iff_isHorizontal W).mp hWd`. Establish `hc` using `map_comap_horizontal W hWp hh`. Use `conv_rhs => rw [← genericIdeal_eq W, Finsupp.mapDomain_apply' _ _ hsub hinj ⟨hWp, hh⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.filter_apply, if_pos hh]`. Use `show _ = if W ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P (IndefiniteRowSideFullHecke.ArithBezout.linForm u) then ReciprocityTheory.ChartRestriction.G.Geo.multAt J W else 0`. Establish `hmem : W.map (algebraMap _ (MvPolynomial (Fin n) ℚ)) ∈ relComps (J.map (algebraMap _ (MvPolynomial (Fin n) ℚ))) ↔ W ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P (IndefiniteRowSideFullHecke.ArithBezout.linForm u)`. Establish `hrel : IsRelevant (W.map (algebraMap _ (MvPolynomial (Fin n) ℚ))) ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant W`. Establish `hXm : ∀ j : Fin n, X j ∈ W.map (algebraMap _ (MvPolynomial (Fin n) ℚ)) ↔ (X ⟨(), j⟩ : ReciprocityTheory.ChartRestriction.G.Geo.MRing (ReciprocityTheory.ChartRestriction.G.Geo.PBlk n)) ∈ W` using `fun j => by`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hX, ← Ideal.mem_comap, hc]`. Simplify using `only [IsRelevant, ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant, hXm]`. Conclude with `⟨fun ⟨j, hj⟩ k => ⟨j, by cases k; exact hj⟩, fun h => h ()⟩`. Simplify using `only [relComps, ReciprocityTheory.ChartRestriction.G.Geo.divSupp, Set.mem_ofPred_eq, hrel, IsLocalization.minimalPrimes_map (intUnits n) (MvPolynomial (Fin n) ℚ), Set.mem_preimage]`. Rewrite using `[show Ideal.under _ (W.map (algebraMap _ (MvPolynomial (Fin n) ℚ))) = W from hc]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `: (W.map (algebraMap _ (MvPolynomial (Fin n) ℚ))).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint (intUnits n) _ W hWp hWd`. Distinguish the cases in `hm : W ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P (IndefiniteRowSideFullHecke.ArithBezout.linForm u)`. Rewrite using `[if_pos (hmem.mpr hm), if_pos hm, localMult, dif_pos this, ReciprocityTheory.ChartRestriction.G.Geo.multAt, dif_pos hWp, length_eq (A' := MvPolynomial (Fin n) ℚ) (intUnits n) J W hWd]`. Rewrite using `[if_neg (fun h => hm (hmem.mp h)), if_neg hm]`. Rewrite using `[if_neg fun h => hW' h.1.1.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `symm`. Rewrite using `[Finsupp.mapDomain, Finsupp.sum_apply]`. Use `Finset.sum_eq_zero fun W hW => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finsupp.single_apply, if_neg]`.
-
-Introduce and unpack `rfl`. Take `⟨hWp, hh⟩` from `hsub hW`. Apply `hW'` to reduce the goal to its premises. Rewrite using `[genericIdeal_eq]`. Conclude with `IsLocalization.isPrime_of_isPrime_disjoint (intUnits n) _ W hWp ((disjoint_iff_isHorizontal W).mpr hh)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : Statement := by
   intro n e P u _ _

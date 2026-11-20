@@ -16,7 +16,7 @@ def muZ (lam : Fin n → ℤ) (lev : Fin n → ℕ) : Fin n → ℤ := fun a =>
   2 * lam a + (((univ.filter fun b => lev a < lev b).card : ℤ) - ((univ.filter fun b => lev b < lev a).card : ℤ))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [wtR, muZ, muQ, rhoU]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wtR_muZ (lam : Fin n → ℤ) (lev : Fin n → ℕ) : wtR (muZ lam lev) = muQ lam lev := by
   funext a
@@ -25,7 +25,7 @@ theorem wtR_muZ (lam : Fin n → ℤ) (lev : Fin n → ℕ) : wtR (muZ lam lev) 
   ring
 
 /- English proof (translation)
-Introduce `x y h` and use `by funext a have := congrFun h a simpa [wtR] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wtR_injective : Function.Injective (wtR : (Fin n → ℤ) → Fin n → ℝ) := fun x y h => by
   funext a
@@ -40,7 +40,7 @@ def harmZ (lam : Fin n → ℤ) : Finset (Fin n → ℤ) :=
 
 open Classical in
 /- English proof (translation)
-Unfold `harmSet harmZ`. Rewrite using `[Finset.image_image]`. Use `Finset.image_congr fun lev _ => ?_` and prove the remaining obligations. Conclude with `(wtR_muZ lam _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem harmSet_eq (lam : Fin n → ℤ) : harmSet lam = (harmZ lam).image wtR := by
   unfold harmSet harmZ

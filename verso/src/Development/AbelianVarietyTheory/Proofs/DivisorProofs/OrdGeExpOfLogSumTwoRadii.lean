@@ -14,7 +14,7 @@ def WtBelow (v : AddValuation C (WithTop ℝ)) (ρ : Fin M → ℝ) (D : ℕ)
     (((r - ∑ m, ρ m * (α m : ℝ) : ℝ)) : WithTop ℝ) ≤ v (coeff α g)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, Nat.cast_add, mul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_add_index (ρ : Fin M → ℝ) (β γ : Fin M →₀ ℕ) :
     ∑ m, ρ m * ((β + γ) m : ℝ) = (∑ m, ρ m * (β m : ℝ)) + ∑ m, ρ m * (γ m : ℝ) := by
@@ -23,13 +23,13 @@ theorem wt_add_index (ρ : Fin M → ℝ) (β γ : Fin M →₀ ℕ) :
   rw [Finsupp.add_apply, Nat.cast_add, mul_add]
 
 /- English proof (translation)
-Introduce `α hα`. Rewrite using `[coeff_mul]`. Use `v.map_le_sum fun q hq => ?_` and prove the remaining obligations. Establish `hq' : q.1 + q.2 = α` using `by simpa using hq`. Distinguish the cases in `h1 : q.1 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h1, coeff_zero_eq_constantCoeff_apply, hg0, zero_mul, v.map_zero]`. Conclude with `le_top`. Distinguish the cases in `h2 : q.2 = 0`. Rewrite using `[h2, coeff_zero_eq_constantCoeff_apply, hh0, mul_zero, v.map_zero]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : Finsupp.degree q.1 + Finsupp.degree q.2 = Finsupp.degree α`. Rewrite using `[← hq', map_add]`. Establish `d1 : Finsupp.degree q.1 ≠ 0` using `fun e => h1 ((Finsupp.degree_eq_zero_iff _).1 e)`. Establish `d2 : Finsupp.degree q.2 ≠ 0` using `fun e => h2 ((Finsupp.degree_eq_zero_iff _).1 e)`. Rewrite using `[v.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (le_of_eq ?_) (add_le_add (hg q.1 (by omega)) (hh q.2 (by omega)))` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add, ← hq', wt_add_index]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem WtBelow.mul {v : AddValuation C (WithTop ℝ)} {ρ : Fin M → ℝ} {D : ℕ}
     {g h : MvPowerSeries (Fin M) C} {r s : ℝ} (hg0 : constantCoeff g = 0)
@@ -55,9 +55,9 @@ theorem WtBelow.mul {v : AddValuation C (WithTop ℝ)} {ρ : Fin M → ℝ} {D :
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hg`. Consider the case `succ k ih`. Establish `h` using `WtBelow.mul (by simp [hg0]) hg0 ih hg`. Introduce `α hα`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `h α (by omega)`. Rewrite using `[_root_.pow_succ g (k + 1)]`. Use `le_trans (le_of_eq ?_) h'` and prove the remaining obligations. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -78,7 +78,7 @@ theorem WtBelow.pow_succ {v : AddValuation C (WithTop ℝ)} {ρ : Fin M → ℝ}
     ring
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, N = k + 1 + 1` from `⟨N - 2, by omega⟩`. Establish `h` using `WtBelow.mul (by simp [hg0]) hg0 (hg.pow_succ hg0 k) hg`. Rewrite using `[_root_.pow_succ g (k + 1)]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -94,35 +94,33 @@ theorem WtBelow.pow {v : AddValuation C (WithTop ℝ)} {ρ : Fin M → ℝ} {D :
   ring
 
 /- English proof (translation)
-Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hp1 : (p : ℝ) - 1 ≠ 0` using `by linarith`. Establish `hp0 : (p : ℝ) ≠ 0` using `by linarith`. Use `set g' : ℝ := 2 / ((p : ℝ) - 1) with hg'`. Establish `hg'1 : g' * ((p : ℝ) - 1) = 2` using `by rw [hg']; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hg'0 : 0 < g' := by rw [hg']; apply div_pos <;> linarith`. Establish `hgp : 2 / ((p : ℝ) * (p - 1)) * p = g'` using `by rw [hg']; field_simp`. Establish `hγ0 : 0 ≤ 2 / ((p : ℝ) * (p - 1))`. Apply the tactic sequence `apply div_nonneg (by norm_num); apply mul_nonneg <;> linarith`. Establish `hγg : 2 / ((p : ℝ) * (p - 1)) ≤ g'`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left (show (1 : ℝ) ≤ p by linarith) hγ0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : ∀ e, r e ≤ g'`. Apply the tactic sequence `intro e; rw [hr e]; split_ifs <;> linarith`. Establish `hnum : ∀ (a e : Fin d) (n : ℕ) (L : ℝ), (good a → -(n : ℝ) ≤ L) → (-((n : ℝ) + 1) ≤ L) → r e ≤ L + (p : ℝ) ^ (n + 1) * r a`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a e n L hLg hL`. Establish `hb` using `one_add_mul_sub_le_pow (a := (p : ℝ)) (by linarith) n`. Establish `hb'` using `mul_le_mul_of_nonneg_left hb hg'0.le`. Establish `hb1` using `one_add_mul_sub_le_pow (a := (p : ℝ)) (by linarith) (n + 1)`. Establish `hb1'` using `mul_le_mul_of_nonneg_left hb1 hg'0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : g' * (1 + (n : ℝ) * ((p : ℝ) - 1)) = g' + 2 * n`. Take the linear combination `(n : ℝ) * hg'1`. Establish `e2 : g' * (1 + ((n + 1 : ℕ) : ℝ) * ((p : ℝ) - 1)) = g' + 2 * ((n : ℝ) + 1)` using `by push_cast; linear_combination ((n : ℝ) + 1) * hg'1`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hre'` using `hre e`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr a]`. Use `split_ifs with hga`. Establish `hL'` using `hLg hga`. Establish `e3 : (p : ℝ) ^ (n + 1) * (2 / ((p : ℝ) * (p - 1))) = g' * (p : ℝ) ^ n`. Rewrite using `[_root_.pow_succ, ← hgp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : (p : ℝ) ^ (n + 1) * g' = g' * (p : ℝ) ^ (n + 1)` using `by ring`. Rewrite using `[e4]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `step : ∀ D : ℕ, ∀ a, WtBelow v ρ D (t a) (r a)`. Introduce `D`. Proceed by induction on `D with`. Consider the case `zero => intro a α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ D ih`. Introduce `e α hα`. Establish `h1 : coeff α (lgSum p c t e) = coeff α (z e)` using `by rw [hlg e]`. Establish `h2 : coeff α (lgSum p c t e) = ∑ n ∈ Finset.range (Finsupp.degree α + 1), ∑ a, c a n e * coeff α (t a ^ (p ^ n))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[h2, Finset.sum_range_succ']`. Establish `h3 : ∑ a, c a 0 e * coeff α (t a ^ (p ^ 0)) = coeff α (t e)`. Simplify using `[h0, Pi.single_apply]`. Rewrite `h1` using `[h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_sub_of_add_eq' h1]`. Use `v.map_le_sub (hz e α) ?_` and prove the remaining obligations. Use `v.map_le_sum fun n _ => v.map_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `hN : 2 ≤ p ^ (n + 1)` using `le_trans hp.two_le (Nat.le_self_pow (by omega) p)`. Establish `h4` using `(ih a).pow (ht a) hN α hα`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[v.map_mul]`. Distinguish the cases in `hga : good a`. Establish `hc1` using `hgood a hga (n + 1) e (by omega)`. Use `le_trans ?_ (add_le_add hc1 h4)` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add, WithTop.coe_le_coe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `hnum a e n (1 - ((n + 1 : ℕ) : ℝ)) (fun _ => by push_cast; linarith) (by push_cast; linarith)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc1` using `hc a (n + 1) e`. Use `le_trans ?_ (add_le_add hc1 h4)` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← WithTop.coe_add, WithTop.coe_le_coe]`. Use `hnum a e n (-((n + 1 : ℕ) : ℝ)) (fun h => absurd h hga) (by push_cast; linarith)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `b α`.
-
-Conclude with `step (Finsupp.degree α + 1) b α (by omega)`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ordGe_of_lgSum_radii (v : AddValuation C (WithTop ℝ)) (p : ℕ) (hp : p.Prime)
     {d : ℕ} (good : Fin d → Prop) [DecidablePred good] (c : Fin d → ℕ → Fin d → C)
@@ -208,7 +206,7 @@ theorem ordGe_of_lgSum_radii (v : AddValuation C (WithTop ℝ)) (p : ℕ) (hp : 
   exact step (Finsupp.degree α + 1) b α (by omega)
 
 /- English proof (translation)
-Introduce `C _ _ v p hp _ d M good _ c h0 hc hgood ρ z t hz ht hlg`. Conclude with `ordGe_of_lgSum_radii v p hp good c h0 hc hgood ρ z t (fun b => if good b then 2 / ((p : ℝ) * (p - 1)) else 2 / ((p : ℝ) - 1)) (fun _ => rfl) hz ht hlg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ordGe_of_lgSum_twoRadii :
     ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime → v (p : C) = 1 → ∀ (d M : ℕ) (good : Fin d → Prop) [DecidablePred good] (c : Fin d → ℕ → Fin d → C), (∀ a, c a 0 = Pi.single a 1) → (∀ a (n : ℕ) b, ((-(n : ℝ) : ℝ) : WithTop ℝ) ≤ v (c a n b)) → (∀ a, good a → ∀ (n : ℕ) b, 1 ≤ n → ((1 - (n : ℝ) : ℝ) : WithTop ℝ) ≤ v (c a n b)) → ∀ (ρ : Fin M → ℝ) (z t : Fin d → MvPowerSeries (Fin M) C), (∀ b, OrdGe v ρ (z b) (if good b then 2 / ((p : ℝ) * (p - 1)) else 2 / ((p : ℝ) - 1))) → (∀ b, constantCoeff (t b) = 0) → (∀ b, lgSum p c t b = z b) → ∀ b, OrdGe v ρ (t b) (if good b then 2 / ((p : ℝ) * (p - 1)) else 2 / ((p : ℝ) - 1)) := by

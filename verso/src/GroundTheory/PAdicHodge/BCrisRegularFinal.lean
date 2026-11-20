@@ -20,7 +20,7 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
 include hζ in
 
 /- English proof (translation)
-The claim follows from `isUnit_of_forall_galB_eq_mul hε hζ senTateCharacters hb0 hb`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_galB_eigen {K : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[p] K]
     {b : BCris hε} (hb0 : b ≠ 0)
@@ -33,7 +33,7 @@ set_option maxHeartbeats 3200000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `smulCommClass_galBAction (K := K) hε IsRegular Gal(PadicAlgCl p/K) ℚ_[p] (BCris hε) := isRegular_bCris hε hζ senTateCharacters`.
+A detailed English derivation is pending.
 -/
 theorem bCris_isRegular {K : IntermediateField ℚ_[p] (PadicAlgCl p)} [FiniteDimensional ℚ_[p] K] :
     letI := isDomain_bCris hε hζ

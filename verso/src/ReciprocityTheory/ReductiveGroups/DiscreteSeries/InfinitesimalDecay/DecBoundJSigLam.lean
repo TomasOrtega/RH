@@ -11,39 +11,35 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hM`. Take `⟨Ws, C', hWs, hNE⟩` from `NE_le_nuJ (rreg_isURepOn ε) N`. Establish `hU : IsURepOn (UJset ε) (sigLam ε Ψ v₀)` using `sigLam_isURepOn hgap hP hv₀`. Establish `hWsG : ∀ w ∈ Ws, ∀ X ∈ w, inG ε X` using `fun w hw => (hWs w hw).2`. Establish `hVs : ∀ w ∈ ([] :: Ws), w.length ≤ N ∧ ∀ X ∈ w, inG ε X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Break down `List.mem_cons.1 hw with rfl | hw` into its components or cases. Simplify using the standard rewrite rules. Conclude with `hWs w hw`. Establish `hVsG : ∀ w ∈ ([] :: Ws), ∀ X ∈ w, inG ε X` using `fun w hw => (hVs w hw).2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn : ∀ z : Hlam ε Ψ v₀, 0 ≤ nuJ (sigLam ε Ψ v₀) ([] :: Ws) z` using `fun z => nuJ_nonneg _ _ _`. Establish `hnorm : ∀ z : Hlam ε Ψ v₀, ‖z‖ ≤ nuJ (sigLam ε Ψ v₀) ([] :: Ws) z`. Introduce `z`. Rewrite using `[nuJ_cons_nil]`. Combine the linear relations using `[nuJ_nonneg (sigLam ε Ψ v₀) Ws z]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hC₁ : 0 ≤ max C' 0` using `le_max_right _ _`. Establish `hK : 0 ≤ max C 0 * max C' 0 * max C' 0` using `mul_nonneg (mul_nonneg (le_max_right _ _) hC₁) hC₁`. Establish `hNE' : ∀ (x : smD ε (rreg ε)) (hx : ((x : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀), NE (smE ε (rreg ε)) N x ≤ max C' 0 * nuJ (sigLam ε Ψ v₀) ([] :: Ws) (⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ : Hlam ε Ψ v₀)`. Introduce `x hx`. Establish `h1` using `hNE x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : nuJ (rreg ε) Ws ((x : smD ε (rreg ε)) : L2 ε) = nuJ (sigLam ε Ψ v₀) Ws (⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ : Hlam ε Ψ v₀)` using `nuJ_sigLam_coe hgap hP hv₀ hWsG (⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ : Hlam ε Ψ v₀)`. Establish `h3` using `nuJ_nonneg (rreg ε) Ws ((x : smD ε (rreg ε)) : L2 ε)`. Establish `h4 : nuJ (sigLam ε Ψ v₀) ([] :: Ws) (⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ : Hlam ε Ψ v₀) = ‖(⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ : Hlam ε Ψ v₀)‖ + nuJ (sigLam ε Ψ v₀) Ws (⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ : Hlam ε Ψ v₀)` using `nuJ_cons_nil _ _ _`. Rewrite using `[h4, ← h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hfin : ∀ (x : smD ε (rreg ε)), x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀) → ∀ (hx : ((x : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀), ∀ (y : smD ε (rreg ε)), y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀) → ∀ (hy : ((y : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀), ∀ g ∈ UJset ε, Real.sqrt …`. Introduce `x hxg hx y hyg hy g hg`. Establish `he : inner ℂ (⟨((y : smD ε (rreg ε)) : L2 ε), hy⟩ : Hlam ε Ψ v₀) (sigLam ε Ψ v₀ g ⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩) = inner ℂ ((y : smD ε (rreg ε)) : L2 ε) (rreg ε g ((x : smD ε (rreg ε)) : L2 ε))`. Rewrite using `[Submodule.coe_inner, sigLam_coe hgap hP hv₀ hg]`. Rewrite using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `hC x hxg y hyg g hg`. Establish `hx0` using `NE_nonneg' (smE ε (rreg ε)) N x`. Establish `hy0` using `NE_nonneg' (smE ε (rreg ε)) N y`. Establish `hxb` using `hNE' x hx`. Establish `hyb` using `hNE' y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hm` using `le_max_right C 0`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left hxb hm) hyb hy0 (mul_nonneg hm (mul_nonneg hC₁ (hnn _)))`. Use `_ = _ := by ring`. Use `⟨max C 0 * max C' 0 * max C' 0, [] :: Ws, hVs, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u v hu hv g hg`. Establish `hA : 0 ≤ Real.sqrt (S7.hs g) ^ m` using `pow_nonneg (Real.sqrt_nonneg _) _`. Establish `hiso : ∀ z : Hlam ε Ψ v₀, ‖sigLam ε Ψ v₀ g z‖ = ‖z‖` using `fun z => hU.2.1 g hg z`. Establish `hnear : ∀ (w : Hlam ε Ψ v₀), IsSmoothVecU ε (sigLam ε Ψ v₀) w → ∀ (e : ℝ), 0 < e → ∃ (x : smD ε (rreg ε)) (_ : x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)) (hx : ((x : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀), ‖w - ⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩‖ ≤ e ∧ nuJ (sigLam ε Ψ v₀) ([] …`. Introduce `w hw e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hxg, hx, hlt⟩` from `exists_near_smooth hlam hgap hP hv₀ ([] :: Ws) hVsG w hw he`. Use `⟨x, hxg, hx, (hnorm _).trans hlt.le, ?_⟩` and prove the remaining obligations. Establish `hxs` using `sigLam_smooth_of_genSub (ε := ε) (Ψ := Ψ) (v₀ := v₀) hx`. Establish `htri` using `nuJ_le_add_of (sigLam ε Ψ v₀) ⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ w (w - ⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩) ([] :: Ws) (by`. Introduce `W hW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[dSW_sub hU (hVsG W hW) hw hxs]`. Use `set a := dSW (sigLam ε Ψ v₀) W w`. Use `set b := dSW (sigLam ε Ψ v₀) W ⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbound : ∀ e : ℝ, 0 < e → Real.sqrt (S7.hs g) ^ m * ‖inner ℂ v (sigLam ε Ψ v₀ g u)‖ ≤ Real.sqrt (S7.hs g) ^ m * (e * ‖u‖ + (‖v‖ + e) * e) + max C 0 * max C' 0 * max C' 0 * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) u + e) * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) v + e)`. Introduce `e he`. Take `⟨x, hxg, hx, hux, hnx⟩` from `hnear u hu e he`. Take `⟨y, hyg, hy, hvy, hny⟩` from `hnear v hv e he`. Use `set x' : Hlam ε Ψ v₀ := ⟨((x : smD ε (rreg ε)) : L2 ε), hx⟩ with hx'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `set y' : Hlam ε Ψ v₀ := ⟨((y : smD ε (rreg ε)) : L2 ε), hy⟩ with hy'`. Establish `hsplit : inner ℂ v (sigLam ε Ψ v₀ g u) = inner ℂ (v - y') (sigLam ε Ψ v₀ g u) + (inner ℂ y' (sigLam ε Ψ v₀ g (u - x')) + inner ℂ y' (sigLam ε Ψ v₀ g x'))`. Rewrite using `[map_sub, inner_sub_left, inner_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖inner ℂ (v - y') (sigLam ε Ψ v₀ g u)‖ ≤ e * ‖u‖`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hy'n : ‖y'‖ ≤ ‖v‖ + e`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖inner ℂ y' (sigLam ε Ψ v₀ g (u - x'))‖ ≤ (‖v‖ + e) * e`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hfin x hxg hx y hyg hy g hg`. Establish `h3' : Real.sqrt (S7.hs g) ^ m * ‖inner ℂ y' (sigLam ε Ψ v₀ g x')‖ ≤ max C 0 * max C' 0 * max C' 0 * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) u + e) * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) v + e)`. Use `h3.trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left hnx hK) hny (hnn _) (mul_nonneg hK (by linarith [hnn u]))`. Rewrite using `[hsplit]`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Filter.Tendsto (fun e : ℝ => Real.sqrt (S7.hs g) ^ m * (e * ‖u‖ + (‖v‖ + e) * e) + max C 0 * max C' 0 * max C' 0 * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) u + e) * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) v + e)) (nhdsWithin 0 (Set.Ioi 0)) (nhds (max C 0 * max C' 0 * max C' 0 * nuJ (sigLam …`. Establish `hc : Continuous (fun e : ℝ => Real.sqrt (S7.hs g) ^ m * (e * ‖u‖ + (‖v‖ + e) * e) + max C 0 * max C' 0 * max C' 0 * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) u + e) * (nuJ (sigLam ε Ψ v₀) ([] :: Ws) v + e))` using `by fun_prop`. Use `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `ge_of_tendsto hlim (eventually_nhdsWithin_of_forall fun e he => hbound e he)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem decBoundJ_sigLam {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}

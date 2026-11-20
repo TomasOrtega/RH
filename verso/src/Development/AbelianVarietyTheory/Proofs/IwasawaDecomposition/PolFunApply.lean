@@ -24,7 +24,7 @@ theorem polFun_apply {K ι : Type} [CommRing K] {n : ℕ} (P : MvPolynomial (ι 
 
 open MvPolynomial in
 /- English proof (translation)
-Rewrite using `[← aeval_eq_eval, ← aeval_eq_eval, aeval_bind₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma eval_bind_eq_eval_comp {K σ τ : Type} [CommRing K] (f : σ → MvPolynomial τ K)
     (x : τ → K) (P : MvPolynomial σ K) :
@@ -33,7 +33,7 @@ private lemma eval_bind_eq_eval_comp {K σ τ : Type} [CommRing K] (f : σ → M
 
 open MvPolynomial in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.IntegralityCompare.twSub, map_mul, eval_C, eval_bind_eq_eval_comp]`. Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mul_apply, eval_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IntegralityCompare.eval_twSub {E ι : Type} [Field E] [Fintype ι] {n : ℕ}
     (emb : ι → E →+* ℂ) (M : GL (Fin n) E) (s : ι → ℤ)

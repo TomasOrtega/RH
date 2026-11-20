@@ -35,9 +35,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Rec
 
 /- English proof (translation)
-Unfold `Small.latExp Small.htExp`. Distinguish the cases in `h : p ∈ SS`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Evaluate the numerical expressions.
 
-Simplify using `[h, h2]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem latExp_eq (E : Type) [Field E] [NumberField E] (SS : Finset ℕ) (p : ℕ) :
     Small.latExp E SS p = if p ∈ SS then 1 / ((p : ℝ) - 1) + (if p = 2 then 1 else 0) +
@@ -51,13 +51,13 @@ theorem latExp_eq (E : Type) [Field E] [NumberField E] (SS : Finset ℕ) (p : �
   · simp [h]
 
 /- English proof (translation)
-Introduce `hG E _ _ _ _ H Dw l Xo c r U h e hL hUn O _ β Y SS RM Sys Fx Or Fr Z Rd hOm hram`. Use `haveI : CharZero RM.Ω := charZero_of_injective_ringHom Or.𝔐.cst.injective`. Take `⟨B, hB⟩` from `GlobalTheory.T.root_origin_frame_height E H Dw l Xo c O β Y SS RM Sys Fx Or Fr`. Take `⟨u, hu, hA⟩` from `GlobalTheory.T.form_off_specialization_ring RM.K RM.ι RM.Ω RM.y RM.birational (by classical exact B ∪ Finset.univ.image (fun x : Σ k : RM.K, RM.ι k × RM.ι k => RM.y ⟨x.1, x.2.1⟩ / RM.y ⟨x.1, x.2.2⟩))`. Use `⟨u, hu, fun p _ z hz hzu => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨A, ev, hBA, hQ, hev⟩` from `hA (PadicAlgCl p) z hz.1 hzu`. Establish `hGood` using `hB A (fun x hx => hBA (by classical exact Finset.mem_coe.2 (Finset.mem_union_left _ hx))) hQ`. Establish `hrat : ∀ (k : RM.K) (i j : RM.ι k), RM.y ⟨k, j⟩ ≠ 0 → RM.y ⟨k, i⟩ / RM.y ⟨k, j⟩ ∈ A` using `fun k i j _ => hBA (by classical exact Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image.2 ⟨⟨k, i, j⟩, Finset.mem_univ _, rfl⟩)))`. Take `⟨la, T, io, e', y, evT, zT, t, hI⟩` from `GlobalTheory.T.root_origin_generic_frame_bound E H Dw l Xo c O β Y SS RM Sys Fx Or Fr hL.intAll hUn A p z ev hz hev hGood`. Take `⟨hp, ho, hy, ⟨τ, hτ⟩, -⟩` from `id hI`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `x : (Ref.pjSys Xo c).Pt la` to `(show Ref.PtU Xo c la from PtV.mk la ho y hy τ hτ)`. Establish `hval : ∀ f, (Ref.pjSys Xo c).val x f = nval T.V e' (evI y f)` using `fun f => Ref.pjSys_val_mk Xo c la ho y hy τ hτ f`. Establish `hS` using `GlobalTheory.T.root_origin_frame_section_bound E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hev la T io e' y evT zT t hI x hval`. Establish `hR` using `GlobalTheory.T.root_origin_frame_degree_bound hG E H Dw l Xo c O β Y SS RM Sys Fx Or Fr hOm hram A p z ev hz hev hGood hrat la T io e' y evT zT t hI`. Take `⟨rec, h1, h2⟩` from `FinRd.read_of_reads hz.1 x (FinRd.tOf_pos la T e' t) hS hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨la, x, rec, hp, FinRd.val_indicator hL Rd hz.1 (FinRd.ram_pos hp) x hS, fun r' => ⟨(h1 r').1, ?_⟩, h2⟩` and prove the remaining obligations. Rewrite using `[← latExp_eq]`. Conclude with `(h1 r').2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_fin : (Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → Ref.UnifAll Xo c → ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (Z : Comp Xo c) (Rd : Reading Fr h Z), Or.𝔐.OmVB → (∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ SS) → ∃ u : MRing RM.ι, Small.IsFormOff (mCoordIdeal RM.y) u ∧ ∀ (p : ℕ) [Fact p.Prime], ∀ z ∈ Small.algPts p (mCoordIdeal RM.y), MvPolynomial.aeval z u ≠ 0 → ∃ (la : HeightOneSpectrum (𝓞 c.F)) (y : (Ref.pjSys Xo c).Pt la) (rec : RootIx Dw → ℝ), (p : 𝓞 c.F) ∈ la.asIdeal ∧ (Ref.pjSys Xo c).val y (e Z) = 0 ∧ (∀ r', 0 < rec r' ∧ |Real.log (Small.supMet (RM.xdeg r') z) - Real.log (rec r')| ≤ (if p ∈ SS then 1 / ((p : ℝ) - 1) + (if p = 2 then 1 else 0) + (padicValInt p (discr E) : ℝ) / Module.finrank ℚ E else 0) * Real.log p) ∧ ∀ (a : WZ E) (n' : Option (RootIx Dw) → ℤ), (∀ j, (n' j : ℝ) = RM.coef (towerWt Dw a) 0 j) → ∀ f ∈ secZ Xo c a, ∃ v, Small.HasVal RM.y (Top.combLine (RM.line 1) n').a (Fr.rd f * (∏ r', Or.e r' ^ (-n' (some r')))) z v ∧ ((Ref.pjSys Xo c).val y f = ⊤ → v = 0) ∧ ∀ s : ℝ, (Ref.pjSys Xo c).val y f = ((ramOverZ la * s : ℝ) : EReal) → ‖v‖ = (p : ℝ) ^ (-s) * ∏ r', rec r' ^ n' (some r')) := by
   intro hG E _ _ _ _ H Dw l Xo c r U h e hL hUn O _ β Y SS RM Sys Fx Or Fr Z Rd hOm hram

@@ -9,23 +9,23 @@ open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas
 variable {N r K : ℕ}
 
 /- English proof (translation)
-Unfold `glueT`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem glueT_lt (t : ℕ) (be : ℤ) (τ : Fin (K + t) → ℤ) (m : Fin (r + K)) (h : m.val < r - t) :
     glueT t be τ m = be := by
   unfold glueT; rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `glueT; rw [dif_neg (by omega), dif_pos]`.
+Replace the relevant objects with their definitions.
 -/
 theorem glueT_ge (t : ℕ) (ht : t ≤ r) (be : ℤ) (τ : Fin (K + t) → ℤ) (m : Fin (r + K)) (h : r - t ≤ m.val) :
     glueT t be τ m = τ ⟨m.val - (r - t), by have := m.2; omega⟩ := by
   unfold glueT; rw [dif_neg (by omega), dif_pos]
 
 /- English proof (translation)
-Introduce `m m' hmm`. Break down `eq_or_lt_of_le hmm with he | hlt` into its components or cases. Rewrite using `[he]`. Establish `hm1 : (m'.val - 1) + 1 < n` using `by have := m'.2; have : m.val < m'.val := hlt; omega`. Establish `h2` using `h.2.1 ⟨m'.val - 1, by have := m'.2; omega⟩ hm1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hme : (⟨(m'.val - 1) + 1, hm1⟩ : Fin n) = m'` using `Fin.ext (by simp only; have : m.val < m'.val := hlt; omega)`. Rewrite `h2` using `[hme]`. Establish `h3 : ν ⟨m'.val - 1, by have` using `m'.2; omega⟩ ≤ ν m := hν (by rw [Fin.le_def]; simp only; have : m.val < m'.val := hlt; omega)`. Conclude with `le_trans h2 (le_trans h3 (h.1 m))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dom_of_strip_up {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (h : HStrip ν μ b) (hν : Dominant ν) : Dominant μ := by
   intro m m' hmm
@@ -40,9 +40,9 @@ theorem dom_of_strip_up {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (h : HStrip 
     exact le_trans h2 (le_trans h3 (h.1 m))
 
 /- English proof (translation)
-Introduce `m m' hmm`. Break down `eq_or_lt_of_le hmm with he | hlt` into its components or cases. Rewrite using `[he]`. Establish `hlt' : m.val < m'.val` using `hlt`. Establish `hm1 : m.val + 1 < n` using `by have := m'.2; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h.2.1 m hm1`. Establish `h3 : ν m' ≤ ν ⟨m.val + 1, hm1⟩` using `hν (by rw [Fin.le_def]; simp only; omega)`. Conclude with `le_trans (h.1 m') (le_trans h3 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dom_of_strip_down {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (h : HStrip μ ν b) (hν : Dominant ν) : Dominant μ := by
   intro m m' hmm
@@ -59,63 +59,57 @@ variable {n0 : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} {od : Fin N → F
 
 open Classical in
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `s hst _ μ0 hv`. Establish `hsN : s = N` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hsN` using the available equality. Establish `hμ : μ0 ∈ SP (r` using `r) (K := K) LL n0 B := (sp_iff H μ0).2 hv`. Establish `hA : Af hfin s μ0 = (finite_St (tanPart μ0)).toFinset.image (fun I => (μ0, I))`. Use extensionality with `q`. Unfold `Af`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h2⟩, h3'⟩`. Establish `hq : q.1 = μ0` using `funext fun t => h3' t (by have := t.2; omega)`. Conclude with `⟨q.2, by rw [← hq]; exact h2, Prod.ext hq.symm rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨I, hI, rfl⟩`. Conclude with `⟨⟨hμ, hI⟩, fun t _ => rfl⟩`. Establish `hdom : Dominant (pEnd (tanPart μ0))`. Introduce `x y hxy`. Conclude with `hv.2.1 (Fin.last s) (by simp) (by rw [Fin.le_def] at hxy ⊢; simp; omega)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, Finset.card_image_of_injective _ (fun x y h => (Prod.ext_iff.1 h).2), ← Set.ncard_eq_toFinset_card _ (finite_St (tanPart μ0)), wt_eq D h3 _ hdom]`. Use `show stCount K _ = stCount K _`. Use `congr 1`. Use function extensionality and compare the values at `l`. Use `tailT_apply (r := r) (K := K) 0 (Nat.zero_le r) (μ0 ⟨s, by omega⟩) l` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (tailT 0 (μ0 ⟨s, by omega⟩) : Fin (K + 0) → ℤ) l = _ from this]`. Unfold `pEnd tanPart`. Use `congr 1`. Consider the case `succ t ih`. Introduce `s hst ht μ0 hv`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : s < N` using `by omega`. Establish `hN` using `H.hN`. Establish `hn0 : n0 ≤ s` using `by omega`. Establish `hla : ∀ m, μ0 (⟨s, hs⟩ : Fin N).castSucc m ≤ (beA n0 B : ℤ)` using `fun m => vp_le hv s (by omega) le_rfl m`. Establish `hlad : Dominant (μ0 (⟨s, hs⟩ : Fin N).castSucc)` using `hv.2.1 _ (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `hlaeq : μ0 (⟨s, hs⟩ : Fin N).castSucc = la at hla hlad`. Establish `hheads : ∀ m : Fin (r + K), m.val + 1 < r - t → la m = (beA n0 B : ℤ)`. Introduce `m hm`. Establish `hs1 : s - 1 < N` using `by omega`. Establish `h1` using `((hv.2.2 ⟨s - 1, hs1⟩ (by simp only; omega)).2 (by simp only; omega)).2 m (by simp only; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he : (⟨s - 1, hs1⟩ : Fin N).succ = (⟨s, hs⟩ : Fin N).castSucc` using `Fin.ext (by simp; omega)`. Rewrite `h1` using `[he, hlaeq]`. Conclude with `h1`. Establish `hν : ∀ l : Fin (K + t + 1), (tailT (t + 1) la : Fin (K + t + 1) → ℤ) l = la ⟨(r - (t + 1)) + l.val, by have` using `l.2; omega⟩ := fun l => tailT_apply (t + 1) ht la l`. Establish `hνdom : Dominant (tailT (t + 1) la : Fin (K + t + 1) → ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y hxy`. Rewrite using `[hν, hν]`. Conclude with `hlad (by rw [Fin.le_def] at hxy ⊢; simp only; omega)`. Use `set ν : Fin (K + t + 1) → ℤ := tailT (t + 1) la with hνdef`. Use `set T := Fintype.piFinset (fun l : Fin (K + t) => Finset.Icc (ν l.succ) (ν l.castSucc)) with hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hτ : ∀ τ ∈ T, ∀ l : Fin (K + t), ν l.succ ≤ τ l ∧ τ l ≤ ν l.castSucc`. Introduce `τ hτ l`. Rewrite `hτ` using `[hT, Fintype.mem_piFinset]`. Conclude with `Finset.mem_Icc.mp (hτ l)`. Establish `hinj : Set.InjOn (glueT (r` using `r) t (beA n0 B : ℤ)) (T : Set (Fin (K + t) → ℤ)) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `τ _ τ' _ h`. Rewrite using `[← tailT_glueT (r := r) t (by omega) (beA n0 B : ℤ) τ, h, tailT_glueT (r := r) t (by omega)]`. Establish `hE : ∀ q ∈ Af hfin s μ0, q.1 (⟨s, hs⟩ : Fin N).succ ∈ T.image (glueT (r` using `r) t (beA n0 B : ℤ)) := by`. Introduce `q hq`. Take `⟨_, hstq⟩` from `Af_step H hfin s hs μ0 q hq`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hstq` using `[hlaeq]`. Take `⟨⟨d, hS⟩, hh⟩` from `hstq.2 hn0`. Generalize the expression as in `q.1 (⟨s, hs⟩ : Fin N).succ = la' at hS hh`. Rewrite using `[Finset.mem_image]`. Use `⟨tailT t la', ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT, Fintype.mem_piFinset]`. Introduce `l`. Establish `hl` using `l.2`. Rewrite using `[Finset.mem_Icc, hν, hν, tailT_apply t (by omega)]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hS.1 ⟨(r - t) + l.val, by omega⟩` as an intermediate fact. Establish `he : (⟨(r - (t + 1)) + (l.succ : Fin (K + t + 1)).val, by simp; omega⟩ : Fin (r + K)) = ⟨(r - t) + l.val, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[he]`. Conclude with `this`. Use `hS.2.1 ⟨(r - (t + 1)) + l.val, by omega⟩ (by simp only; omega)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `he : (⟨(r - (t + 1)) + l.val + 1, by omega⟩ : Fin (r + K)) = ⟨(r - t) + l.val, by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite `this` using `[he]`. Conclude with `this`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m.val < r - t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[glueT_lt t _ _ m hm, hh m (by simp only; omega)]`. Rewrite using `[glueT_ge t (by omega) _ _ m (by omega), tailT_apply t (by omega)]`. Use `congr 1`. Conclude with `Fin.ext (by simp only; omega)`. Establish `hterm : ∀ τ ∈ T, (Af hfin (s + 1) (Function.update μ0 (⟨s, hs⟩ : Fin N).succ (glueT (r` using `r) t (beA n0 B : ℤ) τ))).card = stCount (K + t) τ := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `τ hτT`. Establish `hb` using `hτ τ hτT`. Establish `hτanti : ∀ l l' : Fin (K + t), l ≤ l' → τ l' ≤ τ l`. Introduce `l l' hll`. Break down `eq_or_lt_of_le hll with he | hlt` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Establish `h1` using `(hb l').2`. Establish `h2` using `(hb l).1`. Establish `h3 : ν l'.castSucc ≤ ν l.succ` using `hνdom (by rw [Fin.le_def]; simp; exact hlt)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hτbe : ∀ l : Fin (K + t), τ l ≤ (beA n0 B : ℤ)`. Introduce `l`. Use `le_trans (hb l).2 ?_` and prove the remaining obligations. Rewrite using `[hν]`. Conclude with `hla _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd' : Dominant (glueT (r` using `r) t (beA n0 B : ℤ) τ) := by`. Introduce `m m' hmm`. Establish `hmm' : m.val ≤ m'.val` using `hmm`. Distinguish the cases in `h1 : m'.val < r - t`. Rewrite using `[glueT_lt t _ _ m' h1, glueT_lt t _ _ m (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[glueT_ge t (by omega) _ _ m' (by omega)]`. Distinguish the cases in `h2 : m.val < r - t`. Rewrite using `[glueT_lt t _ _ m h2]`. Conclude with `hτbe _`. Rewrite using `[glueT_ge t (by omega) _ _ m (by omega)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hτanti _ _ (by rw [Fin.le_def]; simp only; omega)`. Establish `hS1 : ∀ x, la x ≤ glueT (r` using `r) t (beA n0 B : ℤ) τ x := by`. Introduce `x`. Distinguish the cases in `h1 : x.val < r - t`. Rewrite using `[glueT_lt t _ _ x h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hla x`. Rewrite using `[glueT_ge t (by omega) _ _ x (by omega)]`. Establish `h2` using `(hb ⟨x.val - (r - t), by have := x.2; omega⟩).1`. Rewrite `h2` using `[hν]`. Establish `he : (⟨(r - (t + 1)) + ((⟨x.val - (r - t), by have` using `x.2; omega⟩ : Fin (K + t)).succ : Fin (K + t + 1)).val, by have := x.2; simp; omega⟩ : Fin (r + K)) = x := Fin.ext (by simp; omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[he]`. Conclude with `h2`. Establish `hst' : StepOK LL n0 B ⟨s, hs⟩ (μ0 (⟨s, hs⟩ : Fin N).castSucc) (glueT (r` using `r) t (beA n0 B : ℤ) τ) := by`. Rewrite using `[hlaeq]`. Use `⟨fun h => absurd h (by simp only; omega), fun _ => ⟨⟨(∑ x, (glueT (r := r) t (beA n0 B : ℤ) τ x - la x)).toNat, hS1, ?_, ?_⟩, fun m hm => glueT_lt t _ _ m (by simp only at hm; omega)⟩⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Distinguish the cases in `h1 : x.val + 1 < r - t`. Rewrite using `[glueT_lt t _ _ _ (by simp only; exact h1), hheads x h1]`. Rewrite using `[glueT_ge t (by omega) _ _ _ (by simp only; omega)]`. Establish `h2` using `(hb ⟨x.val + 1 - (r - t), by have := x.2; omega⟩).2`.
-
-Rewrite `h2` using `[hν]`. Establish `he : (⟨(r - (t + 1)) + ((⟨x.val + 1 - (r - t), by have` using `x.2; omega⟩ : Fin (K + t)).castSucc : Fin (K + t + 1)).val, by have := x.2; simp; omega⟩ : Fin (r + K)) = x := Fin.ext (by simp; omega)`. Rewrite `h2` using `[he]`. Conclude with `h2`. Conclude with `(Int.toNat_of_nonneg (Finset.sum_nonneg fun x _ => sub_nonneg.mpr (hS1 x))).symm`.
-
-Establish `hv'` using `vp_update hs hv _ hd' hst'`. Rewrite using `[ih (s + 1) (by omega) (by omega) _ hv']`. Use `congr 1`. Use `show tailT t (Function.update μ0 (⟨s, hs⟩ : Fin N).succ (glueT (r := r) t (beA n0 B : ℤ) τ) (⟨s, hs⟩ : Fin N).succ) = τ`. Rewrite using `[Function.update_self, tailT_glueT t (by omega)]`.
-
-Rewrite using `[Af_card_sum hfin s hs μ0 _ hE, Finset.sum_image hinj, Finset.sum_congr rfl hterm]`. Establish `h4'` using `h4 (K + t) ν hνdom`. Use `show _ = stCount (K + t + 1) (tailT (t + 1) (μ0 (⟨s, hs⟩ : Fin N).castSucc))`. Rewrite using `[hlaeq]`. Conclude with `h4'.symm`.
+A detailed English derivation is pending.
 -/
 theorem tau_count (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (h4 : ColumnFamilyLowerSet D) (H : HypT N n0 r K LL B od bb a La p)
     (hfin : (SAll (r := r) (K := K) LL n0 B).Finite) :

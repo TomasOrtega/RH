@@ -21,11 +21,11 @@ open Formalism.L2.Pj.Crude
 variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Establish `hl` using `resCharOf_prime la`. Establish `hmax : (Ideal.span {((resCharOf la : ℕ) : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl).irreducible`. Establish `hle : Ideal.span {((resCharOf la : ℕ) : ℤ)} ≤ la.asIdeal.under ℤ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 K) ((resCharOf la : ℕ) : ℤ) ∈ la.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast]`. Conclude with `crv_char_mem la`. Establish `hne : la.asIdeal.under ℤ ≠ ⊤`. Introduce `h`. Apply `la.isPrime.ne_top` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : ℤ) ∈ la.asIdeal.under ℤ` using `by rw [h]; trivial`. Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 K) 1 ∈ la.asIdeal at h1`. Rewrite `h1` using `[map_one]`. Then use the resulting hypothesis. Conclude with `⟨hmax.eq_of_le hne hle⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liesOver_resChar : la.asIdeal.LiesOver (Ideal.span {((resCharOf la : ℕ) : ℤ)}) := by
   have hl := resCharOf_prime la
@@ -46,14 +46,14 @@ theorem liesOver_resChar : la.asIdeal.LiesOver (Ideal.span {((resCharOf la : ℕ
   exact ⟨hmax.eq_of_le hne hle⟩
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `(resCharOf_prime la).ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_resChar_ne_bot : Ideal.span {((resCharOf la : ℕ) : ℤ)} ≠ ⊥ := by
   rw [Ne, Ideal.span_singleton_eq_bot]
   exact_mod_cast (resCharOf_prime la).ne_zero
 
 /- English proof (translation)
-Use `liesOver_resChar la` as an intermediate fact. Unfold `eWL ramOverZ`. Conclude with `(Ideal.ramificationIdx'_eq_ramificationIdx _ _ (span_resChar_ne_bot la)).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eWL_eq : eWL K la = ramOverZ la := by
   have := liesOver_resChar la
@@ -61,16 +61,16 @@ theorem eWL_eq : eWL K la = ramOverZ la := by
   exact (Ideal.ramificationIdx'_eq_ramificationIdx _ _ (span_resChar_ne_bot la)).symm
 
 /- English proof (translation)
-Use `liesOver_resChar la` as an intermediate fact. Conclude with `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver la.asIdeal (span_resChar_ne_bot la)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ramOverZ_ne_zero : ramOverZ la ≠ 0 := by
   have := liesOver_resChar la
   exact Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver la.asIdeal (span_resChar_ne_bot la)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Assume the negation of the conclusion as `hne`. Establish `hnd : ¬ resCharOf la ∣ p` using `fun hd => hne ((Nat.prime_dvd_prime_iff_eq (resCharOf_prime la) hp).1 hd)`. Conclude with `crv_not_mem la hnd hm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[← h]`. Conclude with `crv_char_mem la`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_mem_iff {p : ℕ} (hp : p.Prime) : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal ↔ resCharOf la = p := by
   constructor
@@ -85,9 +85,7 @@ theorem prime_mem_iff {p : ℕ} (hp : p.Prime) : ((p : ℕ) : 𝓞 K) ∈ la.asI
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `τ i i' hii`. Unfold `wtA`. Use `Finset.sum_le_sum fun t _ => add_le_add ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `partitionExtendByZero_antitone (w.aPlus_antitone t) hii`.
-
-Conclude with `le_rfl`. Use `split_ifs`. Conclude with `partitionExtendByZero_antitone (w.aM_anti t) hii`. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem domW_wtA {j : ℕ} {Hh : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum Hh)
     (w : WeightFamilies.Wt D j) : DomW Dw (wtA w) := by
@@ -112,43 +110,41 @@ end H1algLink
 open H1algLink in
 
 /- English proof (translation)
-Introduce `hR hG L P Tp hK T h hinj EX H C2 A2 CR j hj hjm hE hS hMb hemb hH3 hRR hPP hnW hDF la y`. Distinguish the cases in `hg : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 T.Q.c.F) ∈ la.asIdeal`. Establish `hres : resCharOf la = D.host.g 0 ∨ resCharOf la = D.host.g 1`. Take `⟨i, hi⟩` from `hg`. Rewrite `hi` using `[prime_mem_iff la (D.host.g_prime i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `fin_cases i`. Conclude with `Or.inl hi`. Conclude with `Or.inr hi`. Conclude with `hG L P Tp hK T h hinj EX H C2 A2 CR j hj hjm hE hS hMb hemb hH3 hRR hPP hnW hDF la hres y`. Establish `hg' : ∀ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 T.Q.c.F) ∉ la.asIdeal` using `fun i hi => hg ⟨i, hi⟩`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpins` using `h.toLawsCore.pins`. Establish `hM : (T.Q.l.M : ℕ) = D.host.g 0 * D.host.g 1` using `hpins.2.1.1`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hrd : D.host.rdE ^ 2 = |(NumberField.discr D.host.E : ℝ)| ^ ((2 : ℝ) / Module.finrank ℚ D.host.E)` using `by show (|(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ D.host.E : ℝ))) ^ 2 = _`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _)]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hRR' : D.host.rdE ^ 2 / (4 * D.R.f) ≤ WeightFamilies.RRv D CR`. Rewrite using `[hrd]`. Rewrite `hRR`, the goal using `[hfr]`. Establish `e4 : (4 * (D.R.f : ℝ)) = 2 * ((2 * D.R.f : ℕ) : ℝ)` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e4]`. Conclude with `hRR`. Establish `hPP' : ((2 * D.R.f * D.R.m : ℕ) : ℝ) ^ 3 ≤ WeightFamilies.PPv D L C2 A2`. Establish `h0 : (0 : ℝ) ≤ (2 * D.R.f * D.R.m : ℝ) ^ 4 * Tp.nWn` using `by positivity`. Establish `h3 : (0 : ℝ) ≤ (2 * D.R.f * D.R.m : ℝ) ^ 3` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqpos : 0 < WeightAlgebra.qq D`. Unfold `WeightAlgebra.qq`. Conclude with `lt_min (D.host.g_prime 0).pos (D.host.g_prime 1).pos`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (0 : ℝ) < (WeightAlgebra.qq D : ℝ)` using `by exact_mod_cast hqpos`. Establish `hqg : WeightAlgebra.qq D ≤ D.host.g 0` using `min_le_left _ _`. Establish `hg01 : D.host.g 0 ≤ D.host.g 0 * D.host.g 1` using `Nat.le_mul_of_pos_right _ (D.host.g_prime 1).pos`. Establish `hqle : (WeightAlgebra.qq D : ℝ) ≤ ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)` using `by exact_mod_cast hqg.trans hg01`. Establish `hDF' : (WeightAlgebra.DF (lR Tp hK j) : ℝ) * 2 * Real.sqrt ((2 * D.R.f * D.R.m : ℕ) : ℝ) < ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1` using `hDF 0`. Establish `h2 : (D.host.g 0 : ℝ) ≤ ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)` using `by exact_mod_cast hg01`. Move the coercions through the operations in `at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 4 * WeightAlgebra.DF (lR Tp hK j) + 4 ≤ D.host.g 0 * D.host.g 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hH3.2.2.2.2.2`. Establish `hd : (0 : ℝ) ≤ (WeightFamilies.dimY D j : ℝ)` using `Nat.cast_nonneg _`. Establish `hf : (0 : ℝ) ≤ (WeightAlgebra.DF (lR Tp hK j) : ℝ)` using `Nat.cast_nonneg _`. Establish `hr : (4 * (WeightAlgebra.DF (lR Tp hK j) : ℝ) + 2) ≤ (WeightAlgebra.qq D : ℝ)` using `by nlinarith`. Establish `hn : 4 * WeightAlgebra.DF (lR Tp hK j) + 2 ≤ WeightAlgebra.qq D` using `by exact_mod_cast hr`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : WeightAlgebra.qq D * 2 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_le_mul hqg (D.host.g_prime 1).two_le`. Use linear arithmetic over natural numbers and integers. Set `_` to `T.Q.H.starRing`. Establish `hr : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`. Rewrite using `[(hpins.2.2.2 j hj).1, (hpins.2.2.2 j hj).2.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hn : Fintype.card (Lt1 (T.Q.Dw j)) ≤ Tp.nWn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `card_Lt1_le_finrank_mul.trans ?_` and prove the remaining obligations. Rewrite using `[hfr, hr]`. Establish `: 2 * D.R.f * D.R.r ≤ D.R.f * D.R.r * (D.R.r + 1)`. Break down `Nat.eq_zero_or_pos D.R.r with h0 | h0` into its components or cases. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Establish `hfin` using `nuW_le_crude hE hS la T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn (domW_wtA _ _) hn`. Establish `hne_top : nuW (T.Q.Xo j) T.Q.c la T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn ≠ ⊤`. Use `ne_top_of_le_ne_top ?_ hfin` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `le_total (0 : EReal) (crudeBd la (DF (T.Q.Dw j) (wtA (lR Tp hK j))) : EReal) with h0 | h0` into its components or cases. Rewrite using `[max_eq_right h0]`. Conclude with `EReal.coe_ne_top _`. Rewrite using `[max_eq_left h0]`. Conclude with `EReal.zero_ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hne_bot : nuW (T.Q.Xo j) T.Q.c la T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn ≠ ⊥` using `ne_bot_of_le_ne_bot EReal.zero_ne_bot (le_max_left _ _)`. Establish `hcoe : nuW (T.Q.Xo j) T.Q.c la T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn = (((nuW (T.Q.Xo j) T.Q.c la T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn).toReal : ℝ) : EReal)` using `(EReal.coe_toReal hne_top hne_bot).symm`. Establish `he : (eWL (recB h.toLawsCore).KO la : ℝ) = ramOverZ la` using `by exact_mod_cast eWL_eq la`. Establish `hr0 : (ramOverZ la : ℝ) ≠ 0` using `by exact_mod_cast ramOverZ_ne_zero la`. Establish `hnus : (runOf Tp hK (recB h.toLawsCore) hinj EX (nuWWOf T Tp hK) j).nus la = (nuW (T.Q.Xo j) T.Q.c la T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn).toReal + (ramOverZ la : ℝ) * clOf (lR Tp hK j) la` using `by show nusOf (recB h.toLawsCore) (lR Tp hK j) (nuWWOf T Tp hK j) la = _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Unfold `nusOf`. Use `split`. Use `next hh => exact absurd hh hg`. Rewrite using `[he]`. Unfold `nuWWOf`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[reduce_aux _ _ _ hr0]`. Both sides reduce to the same expression. Take `⟨T', io, e, ho, z, hz, eta, heta, hq⟩` from `(show T.PtA j la from y).2`. Establish `key` using `hR L P Tp hK T h hinj EX (nuWWOf T Tp hK) j hj (WeightFamilies.RRv D CR) (WeightFamilies.PPv D L C2 A2) (WeightAlgebra.qq D) hjm hE hM hRR' hPP' hq0 hqle hDF' h4 la hg' y T' io e ho z hz eta heta hq`. Establish `hle1 : nuLoc z e T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn ≤ nuW (T.Q.Xo j) T.Q.c la T.Q.l.M (wtA (lR Tp hK j)) Tp.nWn` using `le_max_of_le_right (le_iSup_of_le T' (le_iSup_of_le io (le_iSup_of_le e (le_iSup_of_le ho (le_iSup_of_le z (le_iSup_of_le hz le_rfl))))))`.
-
-Use `key.trans ((add_le_add hle1 le_rfl).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[hcoe, ← EReal.coe_add, hnus]`. Use `congr 1`. Unfold `WeightAlgebra.cc`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem h1alg_of (D : D7) : H1algLinkStatement D := by
   intro hR hG L P Tp hK T h hinj EX H C2 A2 CR j hj hjm hE hS hMb hemb hH3 hRR hPP hnW hDF la y

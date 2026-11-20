@@ -23,7 +23,7 @@ namespace GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd
 variable {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_orbit_iff {x y : X.left} : y ∈ orbit G X x ↔
     ∃ z, (snd G X).left z = x ∧ (γ[G, X] : G ⊗ X ⟶ X).left z = y := by
@@ -32,7 +32,7 @@ theorem mem_orbit_iff {x y : X.left} : y ∈ orbit G X x ↔
   · rintro ⟨z, hz, rfl⟩; exact ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Take `⟨σ, -, h1, h2⟩` from `GlobalTheory.T.shear_iso_action_projection G X`. Take `⟨z, rfl, rfl⟩` from `(mem_orbit_iff G X).1 h`. Use `(mem_orbit_iff G X).2 ⟨σ.left z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, h1]`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbit_symm {x y : X.left} (h : y ∈ orbit G X x) : x ∈ orbit G X y := by
   obtain ⟨σ, -, h1, h2⟩ := GlobalTheory.T.shear_iso_action_projection G X
@@ -42,7 +42,7 @@ theorem orbit_symm {x y : X.left} (h : y ∈ orbit G X x) : x ∈ orbit G X y :=
   · rw [← Scheme.Hom.comp_apply, ← Over.comp_left, h2]
 
 /- English proof (translation)
-Take `⟨z, rfl, rfl⟩` from `(mem_orbit_iff G X).1 h`. Establish `e : (γ[G, X] : G ⊗ X ⟶ X).left ≫ X.hom = (snd G X).left ≫ X.hom` using `(Over.w _).trans (Over.w _).symm`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbit_hom {x y : X.left} (h : y ∈ orbit G X x) : X.hom y = X.hom x := by
   obtain ⟨z, rfl, rfl⟩ := (mem_orbit_iff G X).1 h
@@ -50,9 +50,7 @@ theorem orbit_hom {x y : X.left} (h : y ∈ orbit G X x) : X.hom y = X.hom x := 
   rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, e]
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `h _ hz (orbit_symm G X ((mem_orbit_iff G X).2 ⟨z, rfl, rfl⟩))`. Introduce `hz`.
-
-Conclude with `h _ hz ((mem_orbit_iff G X).2 ⟨z, rfl, rfl⟩)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stable_of_forall (V : X.left.Opens) (h : ∀ y ∈ V, orbit G X y ⊆ V) :
     (γ[G, X] : G ⊗ X ⟶ X).left ⁻¹ᵁ V = (snd G X).left ⁻¹ᵁ V := by
@@ -65,7 +63,7 @@ theorem stable_of_forall (V : X.left.Opens) (h : ∀ y ∈ V, orbit G X y ⊆ V)
 
 variable {G X} in
 /- English proof (translation)
-Use `hG.1` as an intermediate fact. Establish `h : IsFinite (pullback.snd G.hom X.hom)` using `inferInstance`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFinite_snd (hG : IsFiniteLocallyFree G.hom) : IsFinite (snd G X).left := by
   have := hG.1
@@ -74,7 +72,7 @@ theorem isFinite_snd (hG : IsFiniteLocallyFree G.hom) : IsFinite (snd G X).left 
 
 variable {G X} in
 /- English proof (translation)
-Use `isFinite_snd (X := X) hG` as an intermediate fact. Conclude with `((snd G X).left.finite_preimage_singleton x).image _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orbit_finite (hG : IsFiniteLocallyFree G.hom) (x : X.left) : (orbit G X x).Finite := by
   have := isFinite_snd (X := X) hG
@@ -82,11 +80,11 @@ theorem orbit_finite (hG : IsFiniteLocallyFree G.hom) (x : X.left) : (orbit G X 
 
 variable {G X} in
 /- English proof (translation)
-Use `isFinite_snd (X := X) hG` as an intermediate fact. Establish `hc : IsClosed ((snd G X).left '' ((γ[G, X] : G ⊗ X ⟶ X).left ⁻¹' (O : Set X.left)ᶜ))` using `(snd G X).left.isClosedMap _ (O.isOpen.isClosed_compl.preimage (γ[G, X] : G ⊗ X ⟶ X).left.continuous)`. Use `hc.isOpen_compl using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_image, Set.mem_preimage, not_exists, not_and]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h z hz hy`. Conclude with `hz (h ((mem_orbit_iff G X).2 ⟨z, hy, rfl⟩))`. Introduce `h w hw`. Take `⟨z, hz, rfl⟩` from `(mem_orbit_iff G X).1 hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Conclude with `h z hn hz`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_saturated (hG : IsFiniteLocallyFree G.hom) (O : X.left.Opens) :
     IsOpen {y : X.left | orbit G X y ⊆ O} := by
@@ -105,7 +103,7 @@ theorem isOpen_saturated (hG : IsFiniteLocallyFree G.hom) (O : X.left.Opens) :
     exact h z hn hz
 
 /- English proof (translation)
-Establish `key : P.basicOpen ((c.appLE U ⊤ hc).hom f) = c ⁻¹ᵁ Y.basicOpen f`. Rewrite using `[Scheme.preimage_basicOpen, Scheme.Hom.appLE, CommRingCat.comp_apply, Scheme.basicOpen_res, top_inf_eq]`. Rewrite using `[key]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_basicOpen_appLE' {P Y : Scheme.{0}} (c : P ⟶ Y) (U : Y.Opens) (hc : ⊤ ≤ c ⁻¹ᵁ U) (f : Γ(Y, U)) (z : P) :
     z ∈ P.basicOpen ((c.appLE U ⊤ hc).hom f) ↔ c z ∈ Y.basicOpen f := by
@@ -115,9 +113,9 @@ theorem mem_basicOpen_appLE' {P Y : Scheme.{0}} (c : P ⟶ Y) (U : Y.Opens) (hc 
   rfl
 
 /- English proof (translation)
-Use `letI := v.appTop.hom.toAlgebra`. Establish `h1 : Module.Free Γ(D, ⊤) Γ(P, ⊤)` using `hv.1`. Establish `h2 : Module.Finite Γ(D, ⊤) Γ(P, ⊤)` using `hv.2`. Use `⟨Algebra.norm Γ(D, ⊤) e, GlobalTheory.T.basic_open_norm_fibre_iff v _ e fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.norm_not_mem_prime_iff e p.asIdeal p.isPrime]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Conclude with `h q.asIdeal q.isPrime hq`. Introduce `h q hq hq'`. Conclude with `h ⟨q, hq⟩ hq'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_norm {P D : Scheme.{0}} [IsAffine P] [IsAffine D] (v : P ⟶ D)
     (hv : FiniteFreeHom v.appTop.hom) (e : Γ(P, ⊤)) :
@@ -134,29 +132,25 @@ theorem exists_norm {P D : Scheme.{0}} [IsAffine P] [IsAffine D] (v : P ⟶ D)
     exact h ⟨q, hq⟩ hq'
 
 /- English proof (translation)
-Introduce `S G X _ _ hG x U hU hxU`. Establish `hfl` using `hG.1`. Establish `hfl2` using `hG.2.1`. Establish `hfl3` using `hG.2.2`. Take `⟨W, hsW, hW, hfree⟩` from `GlobalTheory.T.finite_flat_locally_free_affine G.hom (X.hom x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htrans : ∀ {y w : X.left}, y ∈ orbit G X x → w ∈ orbit G X y → w ∈ orbit G X x` using `fun {y w} => GlobalTheory.T.mem_orbit_trans G X x y w`. Set `O : X.left.Opens` to `U ⊓ X.hom ⁻¹ᵁ W`. Establish `hxO : orbit G X x ⊆ O` using `fun y hy => ⟨hxU hy, by show X.hom y ∈ W`. Rewrite using `[orbit_hom G X hy]`. Conclude with `hsW⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `V₀ : X.left.Opens` to `⟨{y | orbit G X y ⊆ O}, isOpen_saturated hG O⟩`. Establish `hV₀O : V₀ ≤ O` using `fun y hy => hy (GlobalTheory.T.mem_orbit_self' G X y)`. Establish `hV₀U : V₀ ≤ U` using `hV₀O.trans inf_le_left`. Establish `hxV₀ : orbit G X x ⊆ V₀` using `fun y hy w hw => hxO (htrans hy hw)`. Take `⟨f, hKf, hfV⟩` from `GlobalTheory.T.finite_set_basic_open_affine U V₀ hU hV₀U _ (orbit_finite hG x) hxV₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `D : X.left.Opens` to `X.left.basicOpen f`. Establish `hD : IsAffineOpen D` using `hU.basicOpen f`. Establish `hDW : D ≤ X.hom ⁻¹ᵁ W` using `(hfV.trans hV₀O).trans inf_le_right`. Establish `hsq : IsPullback (fst G X).left (snd G X).left G.hom X.hom` using `IsPullback.of_hasPullback G.hom X.hom`. Take `⟨h, u, hpb⟩` from `GlobalTheory.T.pullback_restrict_open hsq W D hDW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `isFinite_snd (X := X) hG` as an intermediate fact. Use `haveI : IsAffine D.toScheme := hD`. Use `haveI : IsAffine W.toScheme := hW`. Use `haveI : IsAffine (G.hom ⁻¹ᵁ W).toScheme := hW.preimage G.hom`. Use `haveI : IsAffine ((snd G X).left ⁻¹ᵁ D).toScheme := hD.preimage (snd G X).left`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hfree'` using `GlobalTheory.T.finite_free_pullback_affine hpb hfree`. Set `P' : (G ⊗ X).left.Opens` to `(snd G X).left ⁻¹ᵁ D`. Set `c : P'.toScheme ⟶ X.left` to `P'.ι ≫ (γ[G, X] : G ⊗ X ⟶ X).left`. Establish `hc : ⊤ ≤ c ⁻¹ᵁ U`. Introduce and unpack `z -`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : (snd G X).left z.1 ∈ D` using `z.2`. Establish `h1 : (γ[G, X] : G ⊗ X ⟶ X).left z.1 ∈ orbit G X ((snd G X).left z.1)` using `(mem_orbit_iff G X).2 ⟨z.1, rfl, rfl⟩`. Conclude with `(hfV hz h1).1`. Take `⟨N, hN⟩` from `exists_norm ((snd G X).left ∣_ D) hfree' ((c.appLE U ⊤ hc).hom f)`. Set `V : X.left.Opens` to `D.ι ''ᵁ (D.toScheme.basicOpen N)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hVmem : ∀ y, y ∈ V ↔ y ∈ D ∧ orbit G X y ⊆ D`. Introduce `y`. Use `show y ∈ D.ι '' (D.toScheme.basicOpen N : Set D.toScheme) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y'.2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `(mem_orbit_iff G X).1 hw`. Establish `hzP : z ∈ P'` using `by show (snd G X).left z ∈ D`. Rewrite using `[hz]`. Conclude with `y'.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hN y').1 hy' ⟨z, hzP⟩ (Subtype.ext ((morphismRestrict_base_coe _ _ _).trans hz))`. Conclude with `(mem_basicOpen_appLE' c U hc f _).1 h1`. Introduce and unpack `⟨hyD, ho⟩`. Use `⟨⟨y, hyD⟩, (hN ⟨y, hyD⟩).2 fun z hz => ?_, rfl⟩` and prove the remaining obligations. Use `(mem_basicOpen_appLE' c U hc f _).2 ?_` and prove the remaining obligations.
-
-Establish `h2 : (snd G X).left z.1 = y` using `(morphismRestrict_base_coe _ _ z).symm.trans (congrArg Subtype.val hz)`. Conclude with `ho ((mem_orbit_iff G X).2 ⟨z.1, h2, rfl⟩)`. Use `⟨V, W, (hVmem x).2 ⟨hKf (GlobalTheory.T.mem_orbit_self' G X x), fun y hy => hKf hy⟩, ?_, hW, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((isAffineOpen_top D.toScheme).basicOpen N).image_of_isOpenImmersion D.ι`. Conclude with `fun y hy => hDW ((hVmem y).1 hy).1`.
-
-Use `stable_of_forall G X V fun y hy w hw => (hVmem w).2 ⟨((hVmem y).1 hy).2 hw, fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `((hVmem y).1 hy).2 (GlobalTheory.T.mem_orbit_trans G X y w t hw ht)`.
+A detailed English derivation is pending.
 -/
 theorem exists_stable_affine_nbhd : ∀ {S : Scheme.{0}} (G X : Over S) [GrpObj G] [ModObj G X], IsFiniteLocallyFree G.hom → ∀ (x : X.left) (U : X.left.Opens), IsAffineOpen U → orbit G X x ⊆ U → ∃ (V : X.left.Opens) (W : S.Opens), x ∈ V ∧ IsAffineOpen V ∧ IsAffineOpen W ∧ V ≤ X.hom ⁻¹ᵁ W ∧ (γ[G, X] : G ⊗ X ⟶ X).left ⁻¹ᵁ V = (snd G X).left ⁻¹ᵁ V := by
   intro S G X _ _ hG x U hU hxU

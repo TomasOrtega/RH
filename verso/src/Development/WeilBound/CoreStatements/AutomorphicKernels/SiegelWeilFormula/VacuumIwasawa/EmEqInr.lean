@@ -19,9 +19,7 @@ variable {ι κ R : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableE
 def IdI (S : Set ι) (H : Matrix ι ι R) : Prop := ∀ u ∈ S, ∀ v, H u v = (1 : Matrix ι ι R) u v ∧ H v u = (1 : Matrix ι ι R) v u
 
 /- English proof (translation)
-Introduce `u hu v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_row_one (fun v => (h u hu v).1)]`. Conclude with `(h' u hu v).1`. Rewrite using `[mul_col_one (fun v => (h' u hu v).2)]`.
-
-Conclude with `(h u hu v).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdI.mul {S : Set ι} {H H' : Matrix ι ι R} (h : IdI S H) (h' : IdI S H') : IdI S (H * H') := by
   intro u hu v
@@ -30,9 +28,9 @@ theorem IdI.mul {S : Set ι} {H H' : Matrix ι ι R} (h : IdI S H) (h' : IdI S H
   · rw [mul_col_one (fun v => (h' u hu v).2)]; exact (h u hu v).2
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `(Fintype.sum_of_injective e he _ _ (fun c hc => ?_) (fun c => rfl)).symm` and prove the remaining obligations. Establish `hcS : c ∈ S` using `by by_contra h'; exact hc ((hr c).1 h')`. Establish `hne : e a ≠ c` using `by rintro rfl; exact (hr _).2 ⟨a, rfl⟩ hcS`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(h c hcS (e a)).2, Matrix.one_apply_ne hne, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IdI.sub_mul {S : Set ι} {H : Matrix ι ι R} (h : IdI S H) (H' : Matrix ι ι R) {e : κ → ι} (he : Function.Injective e)
     (hr : ∀ c, c ∉ S ↔ c ∈ Set.range e) : (H * H').submatrix e e = H.submatrix e e * H'.submatrix e e := by
@@ -44,11 +42,11 @@ theorem IdI.sub_mul {S : Set ι} {H : Matrix ι ι R} (h : IdI S H) (H' : Matrix
   rw [(h c hcS (e a)).2, Matrix.one_apply_ne hne, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `u v`. Distinguish the cases in `hu : u ∈ S`. Conclude with `(h u hu v).1`. Distinguish the cases in `hv : v ∈ S`. Conclude with `(h v hv u).2`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `(hr u).1 hu`. Take `⟨b, rfl⟩` from `(hr v).1 hv`. Use `congrFun (congrFun h1 a) b` as an intermediate fact. Rewrite `this` using `[Matrix.submatrix_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne (he.ne hab)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdI.eq_one {S : Set ι} {X : Matrix ι ι R} (h : IdI S X) {e : κ → ι} (he : Function.Injective e)
     (hr : ∀ c, c ∉ S ↔ c ∈ Set.range e) (h1 : X.submatrix e e = 1) : X = 1 := by
@@ -69,7 +67,7 @@ theorem IdI.eq_one {S : Set ι} {X : Matrix ι ι R} (h : IdI S X) {e : κ → �
 end Gen
 
 /- English proof (translation)
-Introduce `u hu v`. Simplify using `only [Matrix.map_apply, (h u hu v).1, (h u hu v).2, Matrix.one_apply]`. Apply the tactic sequence `constructor <;> split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IdI.map {ι R R' : Type} [Fintype ι] [DecidableEq ι] [Semiring R] [Semiring R'] {S : Set ι} {H : Matrix ι ι R}
     (h : IdI S H) (f : R →+* R') : IdI S (H.map f) := by
@@ -78,9 +76,9 @@ theorem IdI.map {ι R R' : Type} [Fintype ι] [DecidableEq ι] [Semiring R] [Sem
   constructor <;> split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `u hu v`. Simplify using `only [Matrix.conjTranspose_apply, (h u hu v).1, (h u hu v).2]`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne huv, Matrix.one_apply_ne (Ne.symm huv)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem IdI.ct {ι : Type} [Fintype ι] [DecidableEq ι] {S : Set ι} {H : Matrix ι ι ℂ} (h : IdI S H) : IdI S Hᴴ := by
   intro u hu v
@@ -112,9 +110,9 @@ Both sides reduce to the same expression.
 theorem emEq_inr {d : SD σ} (L : LD d) (u : Unit) : emEq L (Sum.inr u) = L.i₀ := rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self (emEq L) N]`. Establish `hne : ∀ a, L.em a ≠ L.i₀` using `fun a => (L.rng (L.em a)).2 ⟨a, rfl⟩`. Establish `: N.submatrix (emEq L) (emEq L) = Matrix.fromBlocks N' 0 0 1`. Use extensionality with `(a | a) (b | b)`. Rewrite using `[Matrix.submatrix_apply, emEq_inl, emEq_inl, Matrix.fromBlocks_apply₁₁, ← h1, Matrix.submatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.submatrix_apply, emEq_inl, emEq_inr, Matrix.fromBlocks_apply₁₂, (h0 (L.em a)).2, Matrix.one_apply_ne (hne a), Matrix.zero_apply]`. Rewrite using `[Matrix.submatrix_apply, emEq_inl, emEq_inr, Matrix.fromBlocks_apply₂₁, (h0 (L.em b)).1, Matrix.one_apply_ne (hne b).symm, Matrix.zero_apply]`. Rewrite using `[Matrix.submatrix_apply, emEq_inr, Matrix.fromBlocks_apply₂₂, (h0 L.i₀).1, Matrix.one_apply_eq, Matrix.one_apply_eq]`. Rewrite using `[this, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_emb {d : SD σ} (L : LD d) (N : Matrix (Fin d.n) (Fin d.n) (AE F E)) (N' : Matrix (Fin L.n) (Fin L.n) (AE F E))
     (h0 : ∀ k, N L.i₀ k = (1 : Matrix (Fin d.n) (Fin d.n) (AE F E)) L.i₀ k ∧
@@ -134,18 +132,18 @@ theorem det_emb {d : SD σ} (L : LD d) (N : Matrix (Fin d.n) (Fin d.n) (AE F E))
   rw [this, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-The claim follows from `Sum.map_injective.2 ⟨L.inj, L.inj⟩`.
+A detailed English derivation is pending.
 -/
 theorem emm_inj {d : SD σ} (L : LD d) : Function.Injective (Sum.map L.em L.em) := Sum.map_injective.2 ⟨L.inj, L.inj⟩
 
 /- English proof (translation)
-Introduce and unpack `(c | c)`. Simplify using `only [I0, Set.mem_insert_iff, Set.mem_singleton_iff, Sum.inl.injEq, reduceCtorEq, or_false]`. Rewrite using `[show (¬c = L.i₀) ↔ c ∈ Set.range L.em from L.rng c]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨Sum.inl a, rfl⟩`. Introduce and unpack `⟨(a | a), h⟩`. Conclude with `⟨a, Sum.inl_injective h⟩`. Simplify using `at h`. Simplify using `only [I0, Set.mem_insert_iff, Set.mem_singleton_iff, Sum.inr.injEq, reduceCtorEq, false_or]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (¬c = L.i₀) ↔ c ∈ Set.range L.em from L.rng c]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨Sum.inr a, rfl⟩`. Introduce and unpack `⟨(a | a), h⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify using `at h`. Conclude with `⟨a, Sum.inr_injective h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem emm_rng {d : SD σ} (L : LD d) : ∀ c, c ∉ I0 L.i₀ ↔ c ∈ Set.range (Sum.map L.em L.em) := by
   rintro (c | c)
@@ -165,20 +163,18 @@ theorem emm_rng {d : SD σ} (L : LD d) : ∀ c, c ∉ I0 L.i₀ ↔ c ∈ Set.ra
       · exact ⟨a, Sum.inr_injective h⟩
 
 /- English proof (translation)
-Introduce `u hu v` and use `L.j_out g u hu v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idI_j {d : SD σ} (L : LD d) (g : L.sd.G) : IdI (I0 L.i₀) (inFrame d.b (L.j g)) := fun u hu v => L.j_out g u hu v
 
 /- English proof (translation)
-Establish `hL` using `(L.ok.stdK k).1 hk`. Use `(d.ok.stdK (L.j k)).2 ⟨fun w => ?_, fun k'' hk'' i j => ?_⟩` and prove the remaining obligations. Establish `hI` using `(idI_j L k).map (piInf (d.B.emb w))`. Use `(hI.mul hI.ct).eq_one (emm_inj L) (emm_rng L) ?_` and prove the remaining obligations. Rewrite using `[hI.sub_mul _ (emm_inj L) (emm_rng L), ← Matrix.conjTranspose_submatrix, Matrix.submatrix_map, L.j_in]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL.1 w`. Choose the witnesses or unpack the hypotheses as in `⟨k₀, hk₀, rfl⟩ : ∃ k₀ ∈ ({k, k⁻¹} : Set L.sd.G), k'' = L.j k₀ := by`. Break down `hk'' with rfl | rfl` into its components or cases. Conclude with `⟨k, Or.inl rfl, rfl⟩`. Conclude with `⟨k⁻¹, Or.inr rfl, (map_inv L.j k).symm⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i ∈ I0 L.i₀`. Rewrite using `[(idI_j L k₀ i hi j).1]`. Conclude with `KSplitW.finOne_one_mem d i j`. Distinguish the cases in `hj : j ∈ I0 L.i₀`. Rewrite using `[(idI_j L k₀ j hj i).2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `KSplitW.finOne_one_mem d i j`. Take `⟨a, rfl⟩` from `(emm_rng L i).1 hi`. Take `⟨b, rfl⟩` from `(emm_rng L j).1 hj`. Establish `e` using `congrFun (congrFun (L.j_in k₀) a) b`. Rewrite `e` using `[Matrix.submatrix_apply]`.
-
-Rewrite using `[e]`. Conclude with `hL.2 k₀ hk₀ a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_K {d : SD σ} (L : LD d) {k : L.sd.G} (hk : k ∈ L.sd.K) : L.j k ∈ d.K := by
   have hL := (L.ok.stdK k).1 hk
@@ -203,21 +199,21 @@ theorem j_K {d : SD σ} (L : LD d) {k : L.sd.G} (hk : k ∈ L.sd.K) : L.j k ∈ 
     exact hL.2 k₀ hk₀ a b
 
 /- English proof (translation)
-Take `⟨p', t', hp', k', hk', rfl⟩` from `L.ok.hgt.iwa h`. Establish `h21L` using `KWhit.parabolic_lower_block_zero L.sd p' t' hp'`. Take `⟨t₂, hp₂, hdet₂⟩` from `isPar_of_frame L.sd p' h21L`. Establish `hI` using `idI_j L p'`. Establish `h21 : (inFrame d.b (L.j p')).toBlocks₂₁ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply]`. Distinguish the cases in `ha : Sum.inr a ∈ I0 L.i₀`. Rewrite using `[(hI _ ha _).1]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hb : Sum.inl b ∈ I0 L.i₀`. Rewrite using `[(hI _ hb _).2]`. Simplify using the standard rewrite rules. Take `⟨a', ha'⟩` from `(emm_rng L _).1 ha`. Take `⟨b', hb'⟩` from `(emm_rng L _).1 hb`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `a' with a' | a'` into its components or cases. Simplify using `at ha'`. Break down `b' with b' | b'` into its components or cases. Establish `e` using `congrFun (congrFun (L.j_in p') (Sum.inr a')) (Sum.inl b')`. Simplify using `only [Matrix.submatrix_apply] at e`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ha', ← hb', e]`. Use `congrFun (congrFun h21L a') b'` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₂₁]`. Simplify using `at hb'`. Take `⟨t₁, hp₁, hdet₁⟩` from `isPar_of_frame d (L.j p') h21`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hdet : Matrix.GeneralLinearGroup.det t₁ = Matrix.GeneralLinearGroup.det t₂`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hdet₁, hdet₂]`. Use `det_emb L _ _ (fun k => ⟨?_, ?_⟩) ?_` and prove the remaining obligations. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hI _ (Or.inl rfl) _).1]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply]`. Rewrite using `[(hI _ (Or.inl rfl) _).2]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Establish `e` using `congrFun (congrFun (L.j_in p') (Sum.inl a)) (Sum.inl b)`. Simplify `e` using `[Matrix.toBlocks₁₁]`. Rewrite using `[map_mul, d.ok.hgt.val _ _ hp₁ _ (j_K L hk'), L.ok.hgt.val _ _ hp₂ _ hk', hdet]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem a_j {d : SD σ} (L : LD d) (h : L.sd.G) : d.a (L.j h) = L.a h := by
   obtain ⟨p', t', hp', k', hk', rfl⟩ := L.ok.hgt.iwa h
@@ -257,7 +253,7 @@ theorem a_j {d : SD σ} (L : LD d) (h : L.sd.G) : d.a (L.j h) = L.a h := by
   rw [map_mul, d.ok.hgt.val _ _ hp₁ _ (j_K L hk'), L.ok.hgt.val _ _ hp₂ _ hk', hdet]
 
 /- English proof (translation)
-Take `⟨t, hp, hdet⟩` from `isPar_of_frame d q (isQ_21 hq)`. Establish `e : Matrix.GeneralLinearGroup.det t = lam` using `Units.ext (by rw [hdet, det_row (isQ_11 hq).1, (isQ_11 hq).2])`. Rewrite using `[a_mul_par d hp, e, a_j L h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_ht' {d : SD σ} (L : LD d) {q : d.G} {lam : (AE F E)ˣ} (hq : IsQ F E L.i₀ (inFrame d.b q) lam) (h : L.sd.G) :
     d.a (q * L.j h) = (absE F E lam : ℝ) * L.a h := by

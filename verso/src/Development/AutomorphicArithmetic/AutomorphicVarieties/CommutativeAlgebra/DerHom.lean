@@ -3,19 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `O A B Q _ _ _ _ _ _ _ _ _ _ _ _ _ _ x D`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨D', hD', rfl⟩`. Establish `hL : ∀ f g : A, D' (f * g) = x f • D' g + x g • D' f` using `hD'`. Establish `h1 : D' 1 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hL 1 1`. Simplify using `only [mul_one, map_one, one_smul] at h`. Conclude with `left_eq_add.mp h`. Use `⟨{ toFun := fun f => TrivSqZeroExt.inl (x f) + TrivSqZeroExt.inr (D' f) map_one' := ?_ map_mul' := ?_ map_zero' := ?_ map_add' := ?_ commutes' := ?_ }, fun f => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [TrivSqZeroExt.snd_mul, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, zero_add, op_smul_eq_smul, hL]`. Apply the tactic sequence `ext <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g`. Apply the tactic sequence `ext <;> simp [add_add_add_comm]`. Introduce `r`. Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl']`. Establish `h0 : D' (algebraMap O A r) = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, D'.map_smul, h1, smul_zero]`. Apply the tactic sequence `ext <;> simp [h0]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨y, hy⟩`. Establish `hD : ∀ f, D f = (y f).snd` using `fun f => (hy f).2.symm`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ f, x f = (y f).fst` using `fun f => (hy f).1.symm`. Use `⟨{ toFun := D map_add' := ?_ map_smul' := ?_ }, ?_, rfl⟩` and prove the remaining obligations. Introduce `f g`. Simplify using `only [hD, map_add, TrivSqZeroExt.snd_add]`. Introduce `r f`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hD, map_smul, TrivSqZeroExt.snd_smul, RingHom.id_apply]`. Use `show ∀ f g : A, _ = _`. Introduce `f g`. Use `show D (f * g) = x f • D g + x g • D f`. Rewrite using `[hD, hD, hD, hX, hX, map_mul, TrivSqZeroExt.snd_mul, op_smul_eq_smul, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.der_hom :
     ∀ (O A B Q : Type) [CommRing O] [CommRing A] [Algebra O A] [CommRing B] [Algebra O B] [AddCommGroup Q] [Module O Q] [Module B Q] [Module Bᵐᵒᵖ Q] [IsCentralScalar B Q] [IsScalarTower O B Q] [Module Oᵐᵒᵖ Q] [IsCentralScalar O Q] [IsScalarTower O Bᵐᵒᵖ Q] (x : A →ₐ[O] B) (D : A → Q),

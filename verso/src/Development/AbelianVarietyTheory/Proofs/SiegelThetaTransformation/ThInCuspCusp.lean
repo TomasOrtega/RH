@@ -22,21 +22,19 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Introduce `hC E _ _ _ H Dw l Xo c r U hr hU _ nab hnab`. Unfold `Formalism.L2.Pj.ThInCusp`. Introduce `a n hDom hLast f hf`. Establish `hsec : f ∈ Formalism.L2.Pj.sec Xo c a n` using `GlobalTheory.thetaRule_mem_sec GlobalTheory.abelianSchemeLaws_all.1 hC E H Dw l Xo c nab hnab a n f hf`. Take `⟨xs, P, hP, hfP⟩` from `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Formalism.L2.PjFree.mem_cusp]`. Use `⟨hsec, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hUσ` using `hU σ hσ`. Take `⟨W⟩` from `GlobalTheory.Dict.nonempty_uw hUσ`. Establish `hU'` using `hUσ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Formalism.L2.PjFree.IsUnf at hU'`. Take `⟨hrpq, hcomp, -, -, hsecU, -⟩` from `hU'`. Apply `Formalism.L2.PjFree.holCusp_mem_holSub` to reduce the goal to its premises. Introduce `k`. Take `⟨hp0, hΨ⟩` from `hcomp k`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hself` using `(GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ r (U σ) hσ hUσ hr W k).2.1`. Take `⟨Dc, hDce, hrow⟩` from `GlobalTheory.Dict.exists_dic E H Dw l c σ r W.g n ((U σ).X k) a W.e hσ hrpq hp0 hΨ hself hDom`. Take `⟨-, φ, hφ, hread⟩` from `GlobalTheory.Dict.ThRead.reading_eq_thP hC E H Dw l Xo c σ r (U σ) hσ hUσ hr nab hnab n W k a hDom Dc hDce xs P hP f hfP`. Establish `hHH : P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (Formalism.L2.Pj.InPsi H) (fun τ i => a (τ, i))`. Unfold `Formalism.L2.Pj.harmA HaO at hP`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hP.1`. Establish `hev : Even n`. Unfold `Dom at hDom`. Conclude with `hDom.2`. Establish `hsecQ` using `hsecU a n hDom f hsec k`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : wtOf ((U σ).X k) Dc.hr Dc.k Dc.k' n = Formalism.L2.PjFree.laU (U σ) a n k`. Rewrite using `[Dc.wt_eq]`. Both sides reduce to the same expression. Rewrite using `[← hw]`. Use `GlobalTheory.Dict.CuspAny.mem_SS_of_eq_thP E r ((U σ).X k) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hev Dc.k Dc.k' ?_ φ hφ _ (Dc.mem P hHH) _ hread ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Break down `Nat.eq_zero_or_pos Dw.p with h0 | hpos` into its components or cases. Conclude with `Or.inr h0`. Conclude with `Or.inl (hrow hLast hpos)`. Introduce `ga hga x hx`. Rewrite using `[hw]`.
-
-Conclude with `hsecQ.2.2 ga hga x hx`.
+Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thInCusp_cusp : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), 1 ≤ r → (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ThInCusp Xo c nab (Formalism.L2.PjFree.cusp Xo c U) := by
   intro hC E _ _ _ H Dw l Xo c r U hr hU _ nab hnab

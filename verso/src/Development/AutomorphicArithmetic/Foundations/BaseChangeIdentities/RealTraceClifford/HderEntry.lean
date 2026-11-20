@@ -9,7 +9,7 @@ open PositivityTheory.RgTw (Mat G th IsThetaOp)
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD UpperTheory.RealTr
 
 /- English proof (translation)
-Use `letI : NormedRing (Mat n) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Mat n) := Matrix.linftyOpNormedAlgebra`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X t`. Establish `hL` using `((Matrix.entryLinearMap ℝ ℂ i j).toContinuousLinearMap).hasFDerivAt (x := NormedSpace.exp (t • X))`. Conclude with `hL.comp_hasDerivAt t h`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hder_entry {n : ℕ} (X : Mat n) (t : ℝ) (i j : Fin n) :
     HasDerivAt (fun s : ℝ => (NormedSpace.exp (s • X) : Mat n) i j) ((NormedSpace.exp (t • X) * X : Mat n) i j) t := by
@@ -22,25 +22,23 @@ private theorem hder_entry {n : ℕ} (X : Mat n) (t : ℝ) (i j : Fin n) :
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n`. Establish `hmem : ∀ g : Mat n, g ∈ GLs n ↔ IsUnit g`. Introduce `g`. Simplify using `only [GLs, Set.mem_setOf_eq]`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : ∀ {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] (π : G n →* (U →L[ℂ] U)) (g : G n), piM π g.val = π g`. Introduce `U _ _ π g`. Simplify using `only [piM, dif_pos g.isUnit]`. Use `congr 1`. Conclude with `Units.ext rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hmem, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`. Introduce `X`. Conclude with `(hmem _).2 (Matrix.isUnit_exp X)`. Introduce `X g t`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hasDerivAt_pi (φ := fun s : ℝ => (g * NormedSpace.exp (s • X) : Mat n))).2 fun i => ?_` and prove the remaining obligations. Use `(hasDerivAt_pi (φ := fun s : ℝ => (g * NormedSpace.exp (s • X) : Mat n) i)).2 fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `have hs : HasDerivAt (fun s : ℝ => ∑ k, g i k * (NormedSpace.exp (s • X) : Mat n) k j) (∑ k, g i k * ((NormedSpace.exp (t • X) * X : Mat n) k j)) t := HasDerivAt.fun_sum (fun k _ => (hder_entry X t k j).const_mul (g i k))`. Establish `e1 : (fun s : ℝ => (g * NormedSpace.exp (s • X) : Mat n) i j) = fun s : ℝ => ∑ k, g i k * (NormedSpace.exp (s • X) : Mat n) k j`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : (g * NormedSpace.exp (t • X) * X : Mat n) i j = ∑ k, g i k * ((NormedSpace.exp (t • X) * X : Mat n) k j)`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression. Use `show HasDerivAt (fun s : ℝ => (g * NormedSpace.exp (s • X) : Mat n) i j) ((g * NormedSpace.exp (t • X) * X : Mat n) i j) t`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Conclude with `hs`. Introduce `U _ _ π`. Establish `hone : piM π 1 = 1`. Use `hval π 1` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Use `⟨hval π, ?_, hone, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg h hh`. Establish `ug` using `(hmem g).1 hg`. Establish `uh` using `(hmem h).1 hh`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hval π (ug.unit * uh.unit)` as an intermediate fact. Simplify using `only [Units.val_mul, IsUnit.unit_spec, map_mul] at this`. Rewrite using `[this, ← hval π ug.unit, ← hval π uh.unit]`. Simplify using the standard rewrite rules. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hval π (uG k)`. Introduce `v v' h`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Use `h w` as an intermediate fact.
-
-Simplify `this` using `[coef, hone]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.basic :
     ∀ n : ℕ, IsOpen (GLs n) ∧ (∀ g : Mat n, g ∈ GLs n ↔ IsUnit g) ∧ (∀ X : Mat n, NormedSpace.exp X ∈ GLs n) ∧

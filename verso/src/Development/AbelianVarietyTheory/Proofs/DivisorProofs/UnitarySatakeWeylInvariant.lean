@@ -35,9 +35,7 @@ namespace GlobalTheory.SatakeWeyl
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {ϖ : L} {q n m : ℕ}
 
 /- English proof (translation)
-Use `⟨fun h => ⟨fun i j hij => ?_, fun i => ?_⟩, fun h i j hij => ?_⟩` and prove the remaining obligations. Conclude with `(h i j (le_of_lt hij)).trans (Matrix.one_apply_ne (ne_of_gt hij))`. Conclude with `(h i i le_rfl).trans (Matrix.one_apply_eq i)`. Break down `hij.eq_or_lt with e | e` into its components or cases. Take `rfl : j = i` from `Fin.ext e`.
-
-Conclude with `(h.2 j).trans (Matrix.one_apply_eq j).symm`. Conclude with `(h.1 i j e).trans (Matrix.one_apply_ne (ne_of_gt (show j < i from e))).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_radU_iff (u : GU σ n) : u ∈ radU σ (Fin.val : Fin n → ℕ) ↔ IsUnipU u := by
   refine ⟨fun h => ⟨fun i j hij => ?_, fun i => ?_⟩, fun h i j hij => ?_⟩
@@ -49,11 +47,11 @@ theorem mem_radU_iff (u : GU σ n) : u ∈ radU σ (Fin.val : Fin n → ℕ) ↔
     · exact (h.1 i j e).trans (Matrix.one_apply_ne (ne_of_gt (show j < i from e))).symm
 
 /- English proof (translation)
-Unfold `SatU cellSum`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, pow_zero, one_mul, mul_assoc]`. Use `congr 2`. Use `finsum_congr fun x => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `propext ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, k, hk, e⟩`. Conclude with `⟨u, (mem_radU_iff u).2 hu, k, hk, mat_injective (by rw [mat_mul, mat_mul, hT]; exact e)⟩`. Introduce and unpack `⟨u, hu, k, hk, e⟩`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨u, (mem_radU_iff u).1 hu, k, hk, ?_⟩` and prove the remaining obligations. Use `congrArg mat e` as an intermediate fact. Rewrite `this` using `[mat_mul, mat_mul, hT]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satU_eq (T : (Fin m → ℤ) → GU σ n) (hT : ∀ a, mat (T a) = tMat ϖ n m a) (h : GU σ n → ℂ) (α : Fin m → ℂ) :
     SatU ϖ q h α = ∑ᶠ a : Fin m → ℤ, (∏ i, α i ^ a i) *
@@ -75,9 +73,9 @@ theorem satU_eq (T : (Fin m → ℤ) → GU σ n) (hT : ∀ a, mat (T a) = tMat 
     exact this
 
 /- English proof (translation)
-Rewrite using `[← finsum_comp_equiv (Equiv.arrowCongr π.symm (Equiv.refl ℤ))]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Establish `e : (Equiv.arrowCongr π.symm (Equiv.refl ℤ)) a = a ∘ π` using `by ext i; simp`. Rewrite using `[e, hS]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Equiv.prod_comp π (fun i => α i ^ a i)`.
+A detailed English derivation is pending.
 -/
 theorem sum_perm (S : (Fin m → ℤ) → ℂ) (π : Equiv.Perm (Fin m)) (hS : ∀ a, S (a ∘ π) = S a) (α : Fin m → ℂ) :
     ∑ᶠ a : Fin m → ℤ, (∏ i, (α ∘ π) i ^ a i) * S a = ∑ᶠ a : Fin m → ℤ, (∏ i, α i ^ a i) * S a := by
@@ -89,9 +87,9 @@ theorem sum_perm (S : (Fin m → ℤ) → ℂ) (π : Equiv.Perm (Fin m)) (hS : �
   exact Equiv.prod_comp π (fun i => α i ^ a i)
 
 /- English proof (translation)
-Establish `hinv : Function.Involutive fun a : Fin m → ℤ => Function.update a j (-a j)` using `fun a => by simp`. Rewrite using `[← finsum_comp_equiv hinv.toPerm]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[Function.Involutive.coe_toPerm, hS]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hi, Function.update_of_ne hi]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_neg (S : (Fin m → ℤ) → ℂ) (j : Fin m) (hS : ∀ a, S (Function.update a j (-a j)) = S a) (α : Fin m → ℂ) :
     ∑ᶠ a : Fin m → ℤ, (∏ i, Function.update α j (α j)⁻¹ i ^ a i) * S a =
@@ -108,13 +106,13 @@ theorem sum_neg (S : (Fin m → ℤ) → ℂ) (j : Fin m) (hS : ∀ a, S (Functi
   · rw [Function.update_of_ne hi, Function.update_of_ne hi]
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero => intro a`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately.
 
-Consider the case `succ m`. Establish `hπ : π ∈ Submonoid.closure (Set.range fun i : Fin m => Equiv.swap i.castSucc i.succ)`. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hπ using Submonoid.closure_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx; exact hS _ _ (by simp)`. Consider the case `one => intro a`. Both sides reduce to the same expression. Consider the case `mul x y _ _ hx hy => intro a`. Rewrite using `[← hx a, ← hy (a ∘ x)]`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem perm_of_swap (S : (Fin m → ℤ) → ℂ)
     (hS : ∀ (i j : Fin m), j.val = i.val + 1 → ∀ a, S (a ∘ Equiv.swap i j) = S a) (π : Equiv.Perm (Fin m)) :
@@ -130,23 +128,21 @@ theorem perm_of_swap (S : (Fin m → ℤ) → ℂ)
     | mul x y _ _ hx hy => intro a; rw [← hx a, ← hy (a ∘ x)]; rfl
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n m hU hm hm' α _ h hh`. Use `choose T hT using fun a : Fin m → ℤ => P.fSatake_tMat_exists (n := n) hU hm a`. Establish `hq : (q : ℂ) ≠ 0`. Use `hU.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp : ∀ f : Fin m → ℤ, ∏ i, (q : ℂ) ^ f i = (q : ℂ) ^ ∑ i, f i` using `fun f => (map_prod (zpowersHom ℂˣ (Units.mk0 (q : ℂ) hq)) (fun i => Multiplicative.ofAdd (f i)) Finset.univ) |> congrArg (Units.coeHom ℂ) |> fun e => by`. Simplify `e.symm` using `[map_prod, ← ofAdd_sum]`. Use `set S : (Fin m → ℤ) → ℂ := fun a => (q : ℂ) ^ 0 * (∏ i : Fin m, (q : ℂ) ^ (-(a i) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))) * cellSum (KU σ n) (radU σ Fin.val) h (T a) with hSdef`. Establish `h1 : ∀ π : Equiv.Perm (Fin m), ∀ a, S (a ∘ π) = S a`. Use `perm_of_swap S fun i j hij a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; omega`. Simplify using `only [hSdef]`. Rewrite using `[hswap L ϖ σ q n m hU hm hm' h hh a i j hij _ _ (hT a) (hT _), ← mul_assoc, hp, hp, pow_zero, one_mul, one_mul, ← zpow_add₀ hq]`. Use `congr 2`. Rewrite using `[← sub_eq_iff_eq_add', ← Finset.sum_sub_distrib, Finset.sum_eq_add_of_mem i j (by simp) (by simp) hne]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Function.comp, Equiv.swap_apply_left, Equiv.swap_apply_right, hij]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `c - ⟨hc, hc'⟩`. Simplify using `only [Function.comp, Equiv.swap_apply_of_ne_of_ne hc hc', sub_self]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ j : Fin m, j.val + 1 = m → ∀ a, S (Function.update a j (-a j)) = S a`. Introduce `j hj a`. Simplify using `only [hSdef]`. Rewrite using `[hneg L ϖ σ q n m hU hm hm' h hh a j hj _ _ (hT a) (hT _), ← mul_assoc, hp, hp, pow_zero, one_mul, one_mul, ← zpow_add₀ hq]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← sub_eq_iff_eq_add', ← Finset.sum_sub_distrib, Finset.sum_eq_single j]`. Rewrite using `[Function.update_self]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c _ hc`. Rewrite using `[Function.update_of_ne hc, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `h3 : ∀ j : Fin m, ∀ a, S (Function.update a j (-a j)) = S a`. Introduce `j a`. Establish `hj` using `j.2`. Set `l : Fin m` to `⟨m - 1, by omega⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1 (Equiv.swap j l) a, ← h2 l (by show m - 1 + 1 = m; omega) (a ∘ Equiv.swap j l), ← h1 (Equiv.swap j l) (Function.update a j (-a j))]`. Use `congr 1`. Rewrite using `[Function.update_comp_equiv]`. Simplify using the standard rewrite rules. Use `⟨fun π => ?_, fun i => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[satU_eq T hT, satU_eq T hT]`. Conclude with `sum_perm S π (h1 π) α`. Rewrite using `[satU_eq T hT, satU_eq T hT]`. Conclude with `sum_neg S i (h3 i) α`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satWeyl_of_coeff (hswap : CoeffSwap) (hneg : CoeffNeg) : SatWeyl := by
   intro L _ _ _ ϖ σ q n m hU hm hm' α _ h hh
@@ -202,7 +198,7 @@ theorem satWeyl_of_coeff (hswap : CoeffSwap) (hneg : CoeffNeg) : SatWeyl := by
     exact sum_neg S i (h3 i) α
 
 /- English proof (translation)
-Establish `hr : RankOne` using `GlobalTheory.T.cellSumRankOneReflectionSymmetry_of_steps GlobalTheory.T.cell_sum_two_stage_descent_unipotent GlobalTheory.T.cell_sum_left_right_invariance_normaliser (GlobalTheory.T.contractingAutChainCosetSumScaling_of_unimodularity (GlobalTheory.T.relIndexCosetSumUnimodularity_ …`. Establish `hl : LeviStep` using `GlobalTheory.T.unitaryCellSumLeviReduction_of_steps hr GlobalTheory.T.exists_smaller_unitary_group_embedding GlobalTheory.T.smaller_unitary_embedding_preserves_integral_parts GlobalTheory.T.unitary_diagonal_factorization_along_embedding GlobalTheory.T.unitary_levi_normalizes_unip …`. Establish `hi : IntIndex` using `GlobalTheory.T.card_integers_mod_uniformizer_eq_q_sq`. Establish `ht : TraceZeroIndex` using `GlobalTheory.T.traceZeroIntegersModUniformizerCard_of_cardSq hi`. Conclude with `satWeyl_of_coeff (GlobalTheory.T.unitarySatakeCoeff_adjacentSwap_of_leviReduction hl (GlobalTheory.T.unitaryFourLeviGL2RootIndex_of_cardSq hi) GlobalTheory.T.unitaryFourLeviGL2_cartan_doubleCosets) (GlobalTheory.T.unitarySatakeCoeff_lastSignChange_of_leviReduction hl (GlobalTheor …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem satWeyl : SatWeyl := by
   have hr : RankOne := GlobalTheory.T.cellSumRankOneReflectionSymmetry_of_steps GlobalTheory.T.cell_sum_two_stage_descent_unipotent GlobalTheory.T.cell_sum_left_right_invariance_normaliser

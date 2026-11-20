@@ -19,9 +19,9 @@ namespace GlobalTheory.ClosedLimit
 universe u
 
 /- English proof (translation)
-Establish `h₁ : (⊤ : Subring B) ≤ f'.hom.range.comap b.hom`. Rewrite using `[← hs, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | hx)`. Conclude with `⟨a.hom y, congr($(po.w.symm).hom y)⟩`. Conclude with `h _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.range_eq_top, ← top_le_iff, ← CommRingCat.closure_range_union_range_eq_top_of_isPushout po, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | hx)`. Conclude with `h₁ (Subring.mem_top y)`. Conclude with `hx`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem surjective_of_isPushout {A B A' B' : CommRingCat.{u}} {f : A ⟶ B} {a : A ⟶ A'} {b : B ⟶ B'}
     {f' : A' ⟶ B'} (po : IsPushout f a b f') (s : Set B)
@@ -39,25 +39,23 @@ theorem surjective_of_isPushout {A B A' B' : CommRingCat.{u}} {f : A ⟶ B} {a :
   · exact hx
 
 /- English proof (translation)
-Establish `: IsAffine d.pt` using `Scheme.isAffine_of_isLimit _ hd`. Take `⟨_, hsurj⟩` from `IsClosedImmersion.isAffine_surjective_of_isAffine g`. Take `⟨i, hi⟩` from `Scheme.exists_isAffine_of_isLimit D c hc`. Establish `one (x : Γ(D.obj i, ⊤)) : ∃ (j : I) (f : j ⟶ i), (D.map f).appTop.hom x ∈ (α.app j).appTop.hom.range`. Take `⟨y, hy⟩` from `hsurj ((c.π.app i).appTop x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, y, rfl⟩` from `exists_appTop_π_eq_of_isAffine_of_isLimit E d hd y`. Set `m` to `IsCofiltered.min i j`. Set `a : m ⟶ i` to `IsCofiltered.minToLeft i j`. Set `b : m ⟶ j` to `IsCofiltered.minToRight i j`. Establish `e₁ : c.π.app m ≫ D.map a = c.π.app i` using `c.w a`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂ : c.π.app m ≫ α.app m ≫ E.map b = g ≫ d.π.app j`. Rewrite using `[← reassoc_of% hg, d.w b]`. Take `⟨l, f, hl⟩` from `exists_app_map_eq_map_of_isLimit D c hc (U := ⊤) isCompact_univ ((D.map a).appTop x) ((α.app m ≫ E.map b).appTop y) (by`. Establish `h₁ : (c.π.app m).appTop ((D.map a).appTop x) = (c.π.app i).appTop x` using `congr(($e₁).appTop x)`. Establish `h₂ : (c.π.app m).appTop ((α.app m ≫ E.map b).appTop y) = g.appTop ((d.π.app j).appTop y)` using `congr(($e₂).appTop y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h₁.trans (hy.symm.trans h₂.symm))`. Use `⟨l, f ≫ a, (E.map f ≫ E.map b).appTop y, ?_⟩` and prove the remaining obligations. Establish `e₃ : α.app l ≫ E.map f ≫ E.map b = D.map f ≫ α.app m ≫ E.map b`. Rewrite using `[α.naturality_assoc]`. Establish `h₃ : (α.app l).appTop ((E.map f ≫ E.map b).appTop y) = (D.map f).appTop ((α.app m ≫ E.map b).appTop y)` using `congr(($e₃).appTop y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄ : (D.map (f ≫ a)).appTop x = (D.map f).appTop ((D.map a).appTop x)` using `congr(($(D.map_comp f a)).appTop x)`. Conclude with `h₃.trans (hl.symm.trans h₄.symm)`. Establish `mono {j l : I} (f : j ⟶ i) (h : l ⟶ j) (x : Γ(D.obj i, ⊤)) (hx : (D.map f).appTop.hom x ∈ (α.app j).appTop.hom.range) : (D.map (h ≫ f)).appTop.hom x ∈ (α.app l).appTop.hom.range`. Take `⟨y, hy⟩` from `hx`. Use `⟨(E.map h).appTop y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : (α.app l).appTop ((E.map h).appTop y) = (D.map h).appTop ((α.app j).appTop y)` using `congr(($((α.naturality h).symm)).appTop y)`. Establish `h₄ : (D.map (h ≫ f)).appTop x = (D.map h).appTop ((D.map f).appTop x)` using `congr(($(D.map_comp h f)).appTop x)`. Conclude with `h₃.trans ((congrArg _ hy).trans h₄.symm)`. Establish `many (s : Finset Γ(D.obj i, ⊤)) : ∃ (j : I) (f : j ⟶ i), ∀ x ∈ s, (D.map f).appTop.hom x ∈ (α.app j).appTop.hom.range`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `empty => exact ⟨i, 𝟙 i, by simp⟩`. Consider the case `insert x s _ ih`. Take `⟨j₁, f₁, h₁⟩` from `ih`. Take `⟨j₂, f₂, h₂⟩` from `one x`. Take `⟨l, g₁, g₂, eg⟩` from `IsCofiltered.cospan f₁ f₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `⟨l, g₁ ≫ f₁, fun y hy ↦ ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hy with rfl | hy` into its components or cases. Rewrite using `[eg]`. Conclude with `mono _ _ _ h₂`. Conclude with `mono _ _ _ (h₁ y hy)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hft : (α.app i).appTop.hom.FiniteType` using `HasRingHomProperty.appTop (P := @LocallyOfFiniteType) _ inferInstance`. Set `_` to `(α.app i).appTop.hom.toAlgebra`. Take `⟨s, hs⟩` from `hft.out`. Take `⟨j, f, hj⟩` from `many s`. Establish `: IsAffine (D.obj j)` using `isAffine_of_isAffineHom (D.map f)`.
-
-Use `⟨j, IsClosedImmersion.of_surjective_of_isAffine _ ?_⟩` and prove the remaining obligations. Use `surjective_of_isPushout (isPushout_appTop_of_isPullback (hα f)) s ?_ hj` and prove the remaining obligations. Conclude with `(Algebra.adjoin_eq_ring_closure (s : Set Γ(D.obj i, ⊤))).symm.trans (congrArg Subalgebra.toSubring hs)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isClosedImmersion_of_isLimit {I : Type u} [Category.{u} I] [IsCofiltered I]
     (D E : I ⥤ Scheme.{u}) (α : D ⟶ E) (c : Cone D) (d : Cone E) (hc : IsLimit c) (hd : IsLimit d)
@@ -139,20 +137,20 @@ noncomputable def bcHom {T : Scheme.{0}} (t : T ⟶ Sp k) : pullback (g₀ ≫ q
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _ @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem bcHom_fst {T : Scheme.{0}} (t : T ⟶ Sp k) :
     bcHom g₀ q t ≫ pullback.fst _ _ = pullback.fst _ _ ≫ g₀ := pullback.lift_fst _ _ _
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bcHom_snd {T : Scheme.{0}} (t : T ⟶ Sp k) :
     bcHom g₀ q t ≫ pullback.snd _ _ = pullback.snd _ _ := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `IsPullback.of_bot (v₂₁ := pullback.snd q t) (v₂₂ := q) (h₃₁ := t) ?_ (bcHom_fst g₀ q t).symm (.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[bcHom_snd]`. Conclude with `.of_hasPullback _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_bcHom {T : Scheme.{0}} (t : T ⟶ Sp k) :
     IsPullback (pullback.fst (g₀ ≫ q) t) (bcHom g₀ q t) g₀ (pullback.fst q t) := by
@@ -162,9 +160,9 @@ theorem isPullback_bcHom {T : Scheme.{0}} (t : T ⟶ Sp k) :
   exact .of_hasPullback _ _
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.fst _ _) (v₁₃ := g₀) (h₂₂ := pullback.fst _ _) ?_ ?_ (isPullback_bcHom g₀ q _)` and prove the remaining obligations. Rewrite using `[bcMap_fst, bcMap_fst]`. Conclude with `isPullback_bcHom g₀ q _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcHom_fst, bcMap_fst_assoc, Category.assoc, bcMap_fst, bcHom_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, bcHom_snd, bcMap_snd, Category.assoc, bcMap_snd, bcHom_snd_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_bcMap_bcHom {R A : Type} [CommRing R] [CommRing A] [Algebra k R] [Algebra k A]
     (f : R →ₐ[k] A) :
@@ -178,7 +176,7 @@ theorem isPullback_bcMap_bcHom {R A : Type} [CommRing R] [CommRing A] [Algebra k
     · rw [Category.assoc, bcHom_snd, bcMap_snd, Category.assoc, bcMap_snd, bcHom_snd_assoc]
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `: IsPullback (h.lift πX' (g' ≫ m) (by rw [Category.assoc, h'.w])) g' g m` using `IsPullback.of_right (by rw [h.lift_fst]; exact h') (h.lift_snd _ _ _) h`. Conclude with `MorphismProperty.of_isPullback this inferInstance`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_of_isPullback {X Y X' Y' : Scheme.{0}} {g : X ⟶ Y} {πX : X ⟶ X₀}
     {πY : Y ⟶ Y₀} {g' : X' ⟶ Y'} {πX' : X' ⟶ X₀} {πY' : Y' ⟶ Y₀}
@@ -190,9 +188,9 @@ theorem isClosedImmersion_of_isPullback {X Y X' Y' : Scheme.{0}} {g : X ⟶ Y} {
   exact MorphismProperty.of_isPullback this inferInstance
 
 /- English proof (translation)
-Set `α : bcDiagram (g₀ ≫ q) A ⟶ bcDiagram q A` to `{ app s := bcHom g₀ q _ naturality s t f := (isPullback_bcMap_bcHom g₀ q _).w }`. Establish `(s : (Finset A)ᵒᵖ) : IsAffine ((bcDiagram q A).obj s)` using `inferInstanceAs (IsAffine (pullback q (spMap (algebraMap k (Algebra.adjoin k (s.unop : Set A))))))`. Establish `(s : (Finset A)ᵒᵖ) : LocallyOfFiniteType (α.app s)` using `MorphismProperty.of_isPullback (isPullback_bcHom g₀ q _) inferInstance`. Establish `: @IsClosedImmersion (bcCone (g₀ ≫ q) A).pt (bcCone q A).pt (bcHom g₀ q (spMap (algebraMap k A)))` using `‹_›`. Take `⟨s, hs⟩` from `exists_isClosedImmersion_of_isLimit _ _ α (bcCone (g₀ ≫ q) A) (bcCone q A) (isLimitBcCone _ _) (isLimitBcCone _ _) (fun f ↦ isPullback_bcMap_bcHom g₀ q _) (bcHom g₀ q (spMap (algebraMap k A))) (fun s ↦ (isPullback_bcMap_bcHom g₀ q _).w.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s.unop, hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_finset_bcHom (A : Type) [CommRing A] [Algebra k A] [IsAffine Y₀]
     [QuasiCompact g₀] [QuasiSeparated g₀] [LocallyOfFiniteType g₀]
@@ -218,13 +216,13 @@ theorem exists_finset_bcHom (A : Type) [CommRing A] [Algebra k A] [IsAffine Y₀
 end
 
 /- English proof (translation)
-Establish `hY' : IsPullback πY p q (spMap (algebraMap R₀ S))` using `hY`. Use `isClosedImmersion_of_isPullback g₀ hX (isPullback_bcHom g₀ q (spMap (algebraMap R₀ S))) hY'.isoPullback.inv hY'.isoPullback_inv_fst` as an intermediate fact. Take `⟨s, hs'⟩` from `exists_finset_bcHom g₀ q S`. Use `⟨s, fun R₁ h hs X₁ Y₁ g₁ πX₁ πY₁ p₁ hY₁ hX₁ ↦ ?_⟩` and prove the remaining obligations. Establish `hle : (Algebra.adjoin R₀ (s : Set S)).toSubring ≤ R₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs hx`. Consider the case `algebraMap r => exact h r.2`. Consider the case `add x y _ _ hx hy => exact R₁.add_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => exact R₁.mul_mem hx hy`. Set `i : Algebra.adjoin R₀ (s : Set S) →+* R₁` to `Subring.inclusion hle`. Establish `hi : spMap i ≫ spMap (algebraMap R₀ (Algebra.adjoin R₀ (s : Set S))) = spMap (Subring.inclusion h)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `isClosedImmersion_of_isPullback g₀ (isPullback_bcHom g₀ q (spMap (algebraMap R₀ (Algebra.adjoin R₀ (s : Set S))))) hX₁ (pullback.lift πY₁ (p₁ ≫ spMap i) (by rw [Category.assoc, hi, hY₁])) (pullback.lift_fst _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem descends_of_isAffine (S : Type) [CommRing S] (R₀ : Subring S) (X₀ Y₀ X Y : Scheme.{0})
     (g₀ : X₀ ⟶ Y₀) (q : Y₀ ⟶ Sp R₀) [IsAffine Y₀] [QuasiCompact g₀] [QuasiSeparated g₀]
@@ -257,7 +255,7 @@ theorem descends_of_isAffine (S : Type) [CommRing S] (R₀ : Subring S) (X₀ Y�
     (pullback.lift πY₁ (p₁ ≫ spMap i) (by rw [Category.assoc, hi, hY₁])) (pullback.lift_fst _ _ _)
 
 /- English proof (translation)
-Establish `h` using `(IsPullback.of_hasPullback g (pullback.fst πY j)).paste_horiz hX`. Rewrite `h` using `[pullback.condition (f := πY)]`. Use `⟨pullback.lift (pullback.fst _ _ ≫ πX) (pullback.snd _ _ ≫ pullback.snd πY j) (by rw [h.w, Category.assoc]), ?_⟩` and prove the remaining obligations. Conclude with `IsPullback.of_right (by rw [pullback.lift_fst]; exact h) (pullback.lift_snd _ _ _) (.of_hasPullback _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isPullback_restrict {X₀ Y₀ X Y V : Scheme.{0}} {g₀ : X₀ ⟶ Y₀} {g : X ⟶ Y}
     {πX : X ⟶ X₀} {πY : Y ⟶ Y₀} (hX : IsPullback πX g g₀ πY) (j : V ⟶ Y₀) :
@@ -277,9 +275,9 @@ namespace GlobalTheory
 open ClosedLimit in
 
 /- English proof (translation)
-Introduce `S _ R₀ X₀ Y₀ X Y g₀ q _ _ _ _ g πX πY p hY hX hg`. Establish `: CompactSpace Y₀` using `QuasiCompact.compactSpace_of_compactSpace q`. Set `𝒰` to `Y₀.affineCover.finiteSubcover`. Establish `(i : 𝒰.I₀) : IsAffine (𝒰.X i)` using `inferInstance`. Establish `key (i : 𝒰.I₀)` using `descends_of_isAffine S R₀ _ _ _ _ (pullback.snd g₀ (𝒰.f i)) (𝒰.f i ≫ q) _ _ _ _ ((IsPullback.of_hasPullback πY (𝒰.f i)).flip.paste_vert hY) (exists_isPullback_restrict hX (𝒰.f i)).choose_spec inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose F hF using key`. Use `⟨Finset.univ.biUnion F, fun R₁ h hs X₁ Y₁ g₁ πX₁ πY₁ p₁ hY₁ hX₁ ↦ ?_⟩` and prove the remaining obligations. Use `(IsZariskiLocalAtTarget.iff_of_openCover (P := @IsClosedImmersion) (𝒰.pullback₁ πY₁)).mpr fun i ↦ ?_` and prove the remaining obligations. Conclude with `hF i R₁ h ((Finset.coe_subset.mpr (Finset.subset_biUnion_of_mem F (Finset.mem_univ (α := 𝒰.I₀) i))).trans hs) _ _ _ _ _ _ ((IsPullback.of_hasPullback πY₁ (𝒰.f i)).flip.paste_vert hY₁).w (exists_isPullback_restrict hX₁ (𝒰.f i)).choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_descends_to_subring :
     ∀ (S : Type) [CommRing S] (R₀ : Subring S) (X₀ Y₀ X Y : Scheme.{0}) (g₀ : X₀ ⟶ Y₀) (q : Y₀ ⟶ Sp R₀) [QuasiCompact q] [QuasiCompact g₀] [QuasiSeparated g₀] [LocallyOfFiniteType g₀] (g : X ⟶ Y) (πX : X ⟶ X₀) (πY : Y ⟶ Y₀) (p : Y ⟶ Sp S), IsPullback πY p q (spMap R₀.subtype) → IsPullback πX g g₀ πY → IsClosedImmersion g → ∃ F : Finset S, ∀ (R₁ : Subring S) (h : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (X₁ Y₁ : Scheme.{0}) (g₁ : X₁ ⟶ Y₁) (πX₁ : X₁ ⟶ X₀) (πY₁ : Y₁ ⟶ Y₀) (p₁ : Y₁ ⟶ Sp R₁), IsPullback πY₁ p₁ q (spMap (Subring.inclusion h)) → IsPullback πX₁ g₁ g₀ πY₁ → IsClosedImmersion g₁ := by

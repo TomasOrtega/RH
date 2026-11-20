@@ -14,14 +14,14 @@ section Gen
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-The claim follows from `(contDiffAt_of_isPotential A P hP _ j ⟨hy, P.mem_U _⟩).of_le (by norm_cast)`.
+A detailed English derivation is pending.
 -/
 theorem potential_chart_contDiffAt_two (A : FinHolAtlas e X) {P : LocPot X} (hP : IsPotential A P) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) : ContDiffAt ℝ 2 (P.φ ((A.chart j).symm y) ∘ (A.chart j).symm) y :=
   (contDiffAt_of_isPotential A P hP _ j ⟨hy, P.mem_U _⟩).of_le (by norm_cast)
 
 /- English proof (translation)
-Establish `h` using `levi_add_smul 1 (potential_chart_contDiffAt_two A hP j hy) (potential_chart_contDiffAt_two A hQ j hy) w`. Simplify using `only [one_mul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviAt_add (A : FinHolAtlas e X) {P Q : LocPot X} (hP : IsPotential A P) (hQ : IsPotential A Q) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (w : Fin e → ℂ) :
@@ -31,7 +31,7 @@ theorem leviAt_add (A : FinHolAtlas e X) {P Q : LocPot X} (hP : IsPotential A P)
   exact h
 
 /- English proof (translation)
-Unfold `leviAt`. Establish `he : (P.rsmul c).φ ((A.chart j).symm y) ∘ (A.chart j).symm = c • (P.φ ((A.chart j).symm y) ∘ (A.chart j).symm)` using `rfl`. Rewrite using `[he]`. Simplify using `only [levi, fderiv_const_smul_field, Pi.smul_apply]`. Simplify using `only [FunLike.coe_smul, Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -46,7 +46,7 @@ theorem leviAt_rsmul (A : FinHolAtlas e X) (P : LocPot X) (c : ℝ) (j : Fin A.n
   ring
 
 /- English proof (translation)
-Unfold `leviAt`. Establish `he : (LocPot.ofFun (X` using `X) fun _ => c).φ ((A.chart j).symm y) ∘ (A.chart j).symm = fun _ => c := rfl`. Rewrite using `[he]`. Simplify using `[levi]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leviAt_const (A : FinHolAtlas e X) (c : ℝ) (j : Fin A.n) (y w : Fin e → ℂ) :
     leviAt A (LocPot.ofFun fun _ => c) j y w = 0 := by
@@ -56,16 +56,16 @@ theorem leviAt_const (A : FinHolAtlas e X) (c : ℝ) (j : Fin A.n) (y w : Fin e 
   simp [levi]
 
 /- English proof (translation)
-Introduce `_` and use `contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_const (A : FinHolAtlas e X) (c : ℝ) : A.Smooth fun _ => c := fun _ => contDiffOn_const
 
 /- English proof (translation)
-Introduce `y j t ht w`. Take `⟨k, hk⟩` from `A.cover (h ((B.chart j).symm t))`. Establish `hO : IsOpen ((B.chart j).target ∩ (B.chart j).symm ⁻¹' (h ⁻¹' (A.chart k).source))` using `(B.chart j).isOpen_inter_preimage_symm ((A.chart k).open_source.preimage hh.1)`. Establish `htO : t ∈ (B.chart j).target ∩ (B.chart j).symm ⁻¹' (h ⁻¹' (A.chart k).source)` using `⟨ht.1, hk⟩`. Establish `han` using `hh.2 j k t htO`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin : (A.chart k ∘ h ∘ (B.chart j).symm) t ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' P.U (h y)`. Use `⟨(A.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp, Set.mem_preimage, (A.chart k).left_inv hk]`. Conclude with `ht.2`. Establish `h1 : ContDiffAt ℝ 2 (P.φ (h y) ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (B.chart j).symm) t)` using `(contDiffAt_of_isPotential A P hP (h y) k hin).of_le (by norm_cast)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : (P.pullback h hh.1).φ y ∘ (B.chart j).symm =ᶠ[𝓝 t] (P.φ (h y) ∘ (A.chart k).symm) ∘ (A.chart k ∘ h ∘ (B.chart j).symm)` using `by filter_upwards [hO.mem_nhds htO] with t' ht' show P.φ (h y) (h ((B.chart j).symm t')) = P.φ (h y) ((A.chart k).symm ((A.chart k) (h ((B.chart j).symm t'))))`. Rewrite using `[(A.chart k).left_inv ht'.2]`. Rewrite using `[levi_congr heq, levi_comp w han h1]`. Conclude with `hp _ k _ hin _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psh_pullback {e' : ℕ} {Y : Type} [TopologicalSpace Y] (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) (h : Y → X)
     (hh : HoloMap B A h) {P : LocPot X} (hP : IsPotential A P) (hp : IsPsh A P) : IsPsh B (P.pullback h hh.1) := by
@@ -92,9 +92,9 @@ theorem psh_pullback {e' : ℕ} {Y : Type} [TopologicalSpace Y] (A : FinHolAtlas
   exact hp _ k _ hin _
 
 /- English proof (translation)
-Rewrite using `[← mIntSymm A (Function.update Φ i P) (Equiv.swap 0 i) g]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: Equiv.swap 0 i k.succ ≠ i`. Introduce `h`. Establish `h2 : Equiv.swap 0 i k.succ = Equiv.swap 0 i 0` using `by rw [h]; simp`. Conclude with `Fin.succ_ne_zero k ((Equiv.swap 0 i).injective h2)`. Simplify using `[Function.update_of_ne this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_update {n : ℕ} (A : FinHolAtlas (n + 1) X) (Φ : Fin (n + 1) → LocPot X) (i : Fin (n + 1)) (P : LocPot X)
     (g : X → ℝ) :
@@ -111,7 +111,7 @@ theorem mInt_update {n : ℕ} (A : FinHolAtlas (n + 1) X) (Φ : Fin (n + 1) → 
     simp [Function.update_of_ne this]
 
 /- English proof (translation)
-Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `using hP`. Simplify using `using hΦ k`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pot_cons {n : ℕ} (A : FinHolAtlas e X) {P : LocPot X} {Φ : Fin n → LocPot X} (hP : IsPotential A P)
     (hΦ : ∀ i, IsPotential A (Φ i)) (i : Fin (n + 1)) : IsPotential A ((Fin.cons P Φ : Fin (n + 1) → LocPot X) i) := by
@@ -120,7 +120,7 @@ theorem pot_cons {n : ℕ} (A : FinHolAtlas e X) {P : LocPot X} {Φ : Fin n → 
   · simpa using hΦ k
 
 /- English proof (translation)
-Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `using hP`. Simplify `hΦ k` using `[Function.update_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pot_update (A : FinHolAtlas e X) {P : LocPot X} {Φ : Fin e → LocPot X} (hP : IsPotential A P)
     (hΦ : ∀ i, IsPotential A (Φ i)) (i k : Fin e) : IsPotential A (Function.update Φ i P k) := by
@@ -131,13 +131,13 @@ theorem pot_update (A : FinHolAtlas e X) {P : LocPot X} {Φ : Fin e → LocPot X
 variable [CompactSpace X] [T2Space X]
 
 /- English proof (translation)
-Use `choose B hB using sncInducedAtlas A L s m W hL hs hW`. Establish `h` using `poincareLelong A L s m W B hL hs hW hB (fun _ => 1) (smooth_const A 1) Φ hΦ`. Establish `h1` using `isPotential_ofFun A _ (smooth_const A 1)`. Establish `h0 : mInt A (Fin.cons (LocPot.ofFun fun _ => 1) Φ) (logNormSec L s) = 0`. Use `(GlobalTheory.LeviOnly.mInt_eq_of_leviEq _ X A (Fin.cons (LocPot.ofFun fun _ => 1) Φ) (Fin.cons ((LocPot.ofFun fun _ => 1).rsmul 0) Φ) (logNormSec L s) (pot_cons A h1 hΦ) (pot_cons A (isPotentialRsmul A 0 _ h1) hΦ) ?_).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mIntRsmul A 0 _ Φ h1 hΦ, zero_mul]`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Introduce `j y _ w`. Simplify using `only [Fin.cons_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviAt_rsmul, leviAt_const, mul_zero]`. Introduce `j y _ w`. Simplify using `only [Fin.cons_succ]`. Rewrite `h` using `[h0]`. Establish `h2 : 0 ≤ ∑ k, (m k : ℝ) * mInt (B k) (fun i => (Φ i).pullback Subtype.val continuous_subtype_val) ((fun _ => (1 : ℝ)) ∘ Subtype.val)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_nonneg fun k _ => mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations. Conclude with `mIntNonneg (B k) _ (fun i => isPotentialPullback A (B k) _ (hB k) _ (hΦ i)) (fun i => psh_pullback A (B k) _ (hB k) (hΦ i) (hp i)) _ fun _ => zero_le_one`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eff_nonneg {n : ℕ} (A : FinHolAtlas (n + 1) X) (L : LocPot X) (s : X → X → ℂ) {r : ℕ} (m : Fin r → ℕ)
     (W : Fin r → Set X) (hL : IsPotential A L) (hs : IsSection A L s) (hW : IsSNC A L s m W)
@@ -169,15 +169,15 @@ theorem eff_nonneg {n : ℕ} (A : FinHolAtlas (n + 1) X) (L : LocPot X) (s : X �
 variable {V : Type} [AddCommGroup V] [Module ℝ V]
 
 /- English proof (translation)
-Establish `key : ∀ (x : Fin e → V) (i : Fin e) (v : V) (P : LocPot X), IsPotential A P → LeviEq A (c v) P → mInt A (fun k => c (Function.update x i v k)) (fun _ => 1) = mInt A (Function.update (fun k => c (x k)) i P) fun _ => 1`. Introduce `x i v P hP hl`. Use `(GlobalTheory.LeviOnly.mInt_eq_of_leviEq _ X A _ _ _ (fun k => hc _) (pot_update A hP (fun k => hc _) i) fun k => ?_).1` and prove the remaining obligations. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hl`. Simplify using `only [Function.update_of_ne h]`. Introduce `_ _ _ _`. Both sides reduce to the same expression. Use `⟨MultilinearMap.mk' (fun x => mInt A (fun i => c (x i)) fun _ => 1) ?_ ?_, fun _ => rfl⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x i v w`. Rewrite using `[key x i _ _ (isPotentialAdd A _ _ (hc v) (hc w)) (hadd v w), key x i v _ (hc v) (fun _ _ _ _ => rfl), key x i w _ (hc w) (fun _ _ _ _ => rfl)]`. Consider the cases of `e with`. Consider the case `zero => exact i.elim0`. Consider the case `succ n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Simplify using `only [mInt_update]`. Conclude with `mIntAdd A _ _ _ (hc v) (hc w) (fun _ => hc _) _ (mIntegrableCont A _ (pot_cons A (hc v) fun _ => hc _) _ continuous_const) (mIntegrableCont A _ (pot_cons A (hc w) fun _ => hc _) _ continuous_const)`. Introduce `x i a v`. Rewrite using `[key x i _ _ (isPotentialRsmul A a _ (hc v)) (hsmul a v), key x i v _ (hc v) (fun _ _ _ _ => rfl)]`. Consider the cases of `e with`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero => exact i.elim0`. Consider the case `succ n`. Simplify using `only [mInt_update]`. Conclude with `mIntRsmul A a _ _ (hc v) (fun _ => hc _) _`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_form (A : FinHolAtlas e X) (c : V → LocPot X) (hc : ∀ v, IsPotential A (c v))
     (hadd : ∀ v w, LeviEq A (c (v + w)) (c v + c w)) (hsmul : ∀ (a : ℝ) v, LeviEq A (c (a • v)) ((c v).rsmul a)) :
@@ -214,7 +214,7 @@ def Rep (A : FinHolAtlas e X) (Q P : LocPot X) : Prop :=
   IsPotential A P ∧ ∃ g, A.Smooth g ∧ LeviEq A P (Q + LocPot.ofFun g)
 
 /- English proof (translation)
-Use `choose hP g hg hl using h`. Rewrite using `[← massIndep A Q g hQ hg]`. Conclude with `(GlobalTheory.LeviOnly.mInt_eq_of_leviEq _ X A _ _ _ hP (fun i => isPotentialAdd A _ _ (hQ i) (isPotential_ofFun A _ (hg i))) hl).1.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mInt_rep (A : FinHolAtlas e X) {Q P : Fin e → LocPot X} (hQ : ∀ i, IsPotential A (Q i))
     (h : ∀ i, Rep A (Q i) (P i)) : mInt A Q (fun _ => 1) = mInt A P fun _ => 1 := by
@@ -226,13 +226,13 @@ theorem mInt_rep (A : FinHolAtlas e X) {Q P : Fin e → LocPot X} (hQ : ∀ i, I
 end Gen
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Fin e), I (fun _ => M) ≤ I (S.piecewise (fun _ => M + s • b) fun _ => M)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i S hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.piecewise_insert, I.map_update_add, I.map_update_smul]`. Establish `h1 : Function.update (S.piecewise (fun _ => M + s • b) fun _ => M) i M = S.piecewise (fun _ => M + s • b) fun _ => M`. Rewrite using `[Function.update_eq_self_iff, Finset.piecewise_eq_of_notMem _ _ _ hi]`. Establish `h2` using `hb (S.piecewise (fun _ => M + s • b) fun _ => M) i fun k => by`. Distinguish the cases in `hk : k ∈ S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hk]`. Conclude with `hL`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hk]`. Conclude with `hM`. Rewrite using `[h1, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `mul_nonneg hs h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using key Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tele {e : ℕ} {V : Type} [AddCommGroup V] [Module ℝ V] (I : MultilinearMap ℝ (fun _ : Fin e => V) ℝ)
     (N : Set V) (b M : V) (s : ℝ) (hs : 0 ≤ s) (hM : M ∈ N) (hL : M + s • b ∈ N)
@@ -257,11 +257,11 @@ theorem tele {e : ℕ} {V : Type} [AddCommGroup V] [Module ℝ V] (I : Multiline
   simpa using key Finset.univ
 
 /- English proof (translation)
-Establish `h : (fun t : ℝ => I fun i => x i + t • y i) = fun t : ℝ => ∑ S : Finset (Fin e), (∏ i, if i ∈ S then 1 else t) * I (S.piecewise x y)`. Use function extensionality and compare the values at `t`. Establish `h1` using `I.map_add_univ x (t • y)`. Use `Eq.trans h1 (Finset.sum_congr rfl fun S _ => ?_)` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← I.map_smul_univ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i ∈ S <;> simp [Finset.piecewise, hi]`. Rewrite using `[h]`. Use `continuous_finset_sum _ fun S _ => Continuous.mul ?_ continuous_const` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ S`. Conclude with `(continuous_const (y := (1 : ℝ))).congr fun t => by simp [hi]`. Conclude with `continuous_id.congr fun t => by simp [hi]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem cont_line {e : ℕ} {V : Type} [AddCommGroup V] [Module ℝ V] (I : MultilinearMap ℝ (fun _ : Fin e => V) ℝ)
     (x y : Fin e → V) : Continuous fun t : ℝ => I fun i => x i + t • y i := by
@@ -282,7 +282,7 @@ theorem cont_line {e : ℕ} {V : Type} [AddCommGroup V] [Module ℝ V] (I : Mult
   · exact continuous_id.congr fun t => by simp [hi]
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun t : ℝ => I fun i => x i + t • y i) (𝓝[>] 0) (𝓝 (I x))`. Use `((cont_line I x y).tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))` as an intermediate fact. Simplify using `using this`. Conclude with `ge_of_tendsto h1 (eventually_nhdsWithin_of_forall h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nonneg_of_line {e : ℕ} {V : Type} [AddCommGroup V] [Module ℝ V] (I : MultilinearMap ℝ (fun _ : Fin e => V) ℝ)
     (x y : Fin e → V) (h : ∀ t : ℝ, 0 < t → 0 ≤ I fun i => x i + t • y i) : 0 ≤ I x := by
@@ -292,37 +292,33 @@ theorem nonneg_of_line {e : ℕ} {V : Type} [AddCommGroup V] [Module ℝ V] (I :
   exact ge_of_tendsto h1 (eventually_nhdsWithin_of_forall h)
 
 /- English proof (translation)
-Establish `pA` using `fun P Q => isPotentialAdd A P Q`. Establish `pS` using `fun t P => isPotentialRsmul A t P`. Establish `pF` using `isPotential_ofFun A`. Use `set c : W × ℝ × ℝ → LocPot X := fun v => th v.1 + a.rsmul v.2.1 + Om.rsmul v.2.2 with hcdef`. Establish `hc : ∀ v, IsPotential A (c v)` using `fun v => pA _ _ (pA _ _ (hth _) (pS _ _ ha)) (pS _ _ hOm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lc : ∀ v j, ∀ y ∈ (A.chart j).target, ∀ w, leviAt A (c v) j y w = leviAt A (th v.1) j y w + v.2.1 * leviAt A a j y w + v.2.2 * leviAt A Om j y w`. Introduce `v j y hy w`. Simplify using `only [hcdef]`. Rewrite using `[leviAt_add A (pA _ _ (hth _) (pS _ _ ha)) (pS _ _ hOm) j hy, leviAt_add A (hth _) (pS _ _ ha) j hy, leviAt_rsmul, leviAt_rsmul]`. Take `⟨I, hI⟩` from `exists_form A c hc (fun v w j y hy z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviAt_add A (hc _) (hc _) j hy, lc _ j y hy, lc _ j y hy, lc _ j y hy, Prod.fst_add, hadd _ _ j y hy, leviAt_add A (hth _) (hth _) j hy]`. Simplify using `only [Prod.fst_add, Prod.snd_add]`. Use the proof step `ring)`. Use the proof step `(fun t v j y hy z => by`. Rewrite using `[leviAt_rsmul, lc _ j y hy, lc _ j y hy, Prod.smul_fst, hsmul _ _ j y hy, leviAt_rsmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul]`. Use the proof step `ring)`. Establish `hrep : ∀ (x : Fin e → W × ℝ × ℝ) (P : Fin e → LocPot X), (∀ i, Rep A (c (x i)) (P i)) → I x = mInt A P fun _ => 1` using `fun x P h => by rw [hI, mInt_rep A (fun i => hc _) h]`. Set `o : W × ℝ × ℝ` to `(0, 0, 1)`. Set `N : Set (W × ℝ × ℝ)` to `{v | ∀ ε : ℝ, 0 < ε → ∃ P, Rep A (c (v + ε • o)) P ∧ IsPsh A P}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN : ∀ (v : W) (s : ℝ), 0 ≤ s → Dm v → (v, s, 0) ∈ N`. Introduce `v s hs0 hv ε hε`. Take `⟨f, hf, hp⟩` from `hnef v hv ε hε`. Establish `p1` using `pA _ _ (pA _ _ (hth v) (pS ε _ hOm)) (pF _ hf)`. Use `⟨_, ⟨pA _ _ p1 (pS s _ ha), f, hf, fun j y hy z => ?_⟩, isPshAdd A _ _ p1 (pS s _ ha) hp (isPshRsmul A s _ hs0 ha hap)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[leviAt_add A p1 (pS s _ ha) j hy, leviAt_add A (pA _ _ (hth v) (pS ε _ hOm)) (pF _ hf) j hy, leviAt_add A (hth v) (pS ε _ hOm) j hy, leviAt_add A (hc _) (pF _ hf) j hy, lc _ j y hy, leviAt_rsmul, leviAt_rsmul]`. Simplify using `only [o, Prod.smul_mk, Prod.mk_add_mk, smul_zero, add_zero, smul_eq_mul, mul_one, zero_add, mul_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : ∀ x : Fin e → W × ℝ × ℝ, (∀ i, x i ∈ N) → 0 ≤ I x`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `nonneg_of_line I x (fun _ => o) fun t ht => ?_` and prove the remaining obligations. Use `choose P hP hp using fun i => hx i t ht`. Rewrite using `[hrep _ P hP]`. Conclude with `mIntNonneg A P (fun i => (hP i).1) hp _ fun _ => zero_le_one`. Set `b : W × ℝ × ℝ` to `(d, -1, 0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hb : Rep A (c (k • b)) L`. Use `⟨hL, g, hg, fun j y hy z => ?_⟩` and prove the remaining obligations. Rewrite using `[hl j y hy, leviAt_add A (pS _ _ (pA _ _ (hth _) (pS _ _ ha))) (pF _ hg) j hy, leviAt_rsmul, leviAt_add A (hth _) (pS _ _ ha) j hy, leviAt_rsmul, leviAt_add A (hc _) (pF _ hg) j hy, lc _ j y hy]`. Simplify using `only [b, Prod.smul_mk, smul_eq_mul, mul_zero]`. Rewrite using `[hsmul _ _ j y hy, leviAt_rsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `heff : ∀ (x : Fin e → W × ℝ × ℝ) i, (∀ l, x l ∈ N) → 0 ≤ I (Function.update x i b)`. Introduce `x i hx`. Establish `h1 : 0 ≤ I (Function.update x i (k • b))`. Use `nonneg_of_line I _ (Function.update (fun _ => o) i 0) fun t ht => ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `choose P hP hp using fun i => hx i t ht`. Rewrite using `[hrep _ (Function.update P i L) fun l => ?_]`. Consider the cases of `e with`. Consider the case `zero => exact i.elim0`. Consider the case `succ e`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mInt_update]`. Conclude with `eff_nonneg A L sc m Z hL hs hZ _ (fun _ => (hP _).1) fun _ => hp _`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using `using hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify `hP l` using `[Function.update_of_ne h]`. Rewrite `h1` using `[I.map_update_smul, smul_eq_mul]`. Conclude with `nonneg_of_mul_nonneg_right (by linarith [mul_comm k (I (Function.update x i b))]) hk`. Establish `e1 : ∀ s : ℝ, mInt A (fun _ => th (u - s • d) + a.rsmul s + LocPot.ofFun fun _ => 0) (fun _ => 1) = I fun _ => (u - s • d, s, 0)`. Introduce `s`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `p1` using `pA _ _ (hth (u - s • d)) (pS s _ ha)`. Establish `p0` using `pF _ (smooth_const A 0)`. Use `(hrep _ _ fun _ => ⟨pA _ _ p1 p0, _, smooth_const A 0, fun j y hy z => ?_⟩).symm` and prove the remaining obligations. Rewrite using `[leviAt_add A p1 p0 j hy, leviAt_add A (hc _) p0 j hy, lc _ j y hy, leviAt_add A (hth _) (pS s _ ha) j hy, leviAt_rsmul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e2 : mInt A (fun _ => th u) (fun _ => 1) = I fun _ => (u, 0, 0)`. Use `(hrep _ _ fun _ => ⟨hth u, _, smooth_const A 0, fun j y hy z => ?_⟩).symm` and prove the remaining obligations. Rewrite using `[leviAt_add A (hc _) (pF _ (smooth_const A 0)) j hy, lc _ j y hy, leviAt_const]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, e2]`.
-
-Use `⟨fun s hs0 hu hu' => ⟨hpos _ fun _ => hN _ _ hs0 hu', ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e3 : ((u - s • d, s, 0) : W × ℝ × ℝ) + s • b = (u, 0, 0)` using `by simp [b]`. Use `tele I N b (u - s • d, s, 0) s hs0 (hN _ _ hs0 hu') (by rw [e3]; exact hN _ _ le_rfl hu) heff` as an intermediate fact. Rewrite `this` using `[e3]`. Then use the resulting hypothesis. Use `(cont_line I (fun _ => (u, 0, 0)) fun _ => -b).tendsto 0` as an intermediate fact.
-
-Simplify `this` using `[b, sub_eq_add_neg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem one {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     {W : Type} [AddCommGroup W] [Module ℝ W] (th : W → LocPot X) (a Om : LocPot X) (hth : ∀ u, IsPotential A (th u))
@@ -425,15 +421,15 @@ theorem one {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space 
     simpa [b, sub_eq_add_neg] using this
 
 /- English proof (translation)
-Establish `hsh : ∀ (u : Wt Y) (s : ℝ), A.sh u s = u - s • A.dir` using `fun u s => by`. Use function extensionality and compare the values at `τ i`. Simplify using `[SlopeTestRemainingChoices.sh]`. Establish `key : ∀ c σ (u : Wt Y), (∀ s : ℝ, 0 ≤ s → Dom u → Dom (A.sh u s) → 0 ≤ mInt ((T.M c).A σ) (fun _ => (T.F c).form (A.sh u s) s 0 σ) (fun _ => 1) ∧ mInt ((T.M c).A σ) (fun _ => (T.F c).form (A.sh u s) s 0 σ) (fun _ => 1) ≤ mInt ((T.M c).A σ) (fun _ => (T.F c).th u σ) fun _ => 1) ∧ …`. Introduce `c σ u`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hap, k, g, L, sc, n, m, Z, hk, hg, hL, hs, hZ, hl⟩` from `hQ c σ`. Simplify using `only [hsh]`. Use `one ((T.M c).A σ) (fun u => (T.F c).th u σ) ((T.F c).a σ) ((T.M c).Om σ) (fun u => T.th_pot c u σ) (T.a_pot c σ) ((T.M c).bd σ).2.2.1 ?_ ?_ Dom (fun u hu ε hε => hN c u hu ε hε σ) hap A.dir k g L sc n m Z hk hg hL hs hZ hl u` and prove the remaining obligations. Introduce `v w j y hy z`. Rewrite using `[← T.c1_L 2 c _ σ j y hy, map_add, (T.K 2 c).isOneCochain_add _ _ σ j y hy, leviAt_add _ ((T.K 2 c).firstChern_isPotential _ σ) ((T.K 2 c).firstChern_isPotential _ σ) j hy, leviAt_add _ (T.th_pot c _ σ) (T.th_pot c _ σ) j hy, T.c1_L 2 c _ σ j y hy, T.c1_L 2 c _ σ j y hy]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t v j y hy z`. Rewrite using `[← T.c1_L 2 c _ σ j y hy, map_smul, (T.K 2 c).firstChern_smul_leviEq _ _ σ j y hy, leviAt_rsmul, leviAt_rsmul, T.c1_L 2 c _ σ j y hy]`. Use `⟨fun c => (hP c).1, hv, fun Λ => ⟨1, one_pos, fun B hB u s hr _ hs _ hu hu' c => ?_⟩, fun B hB u hr c => ?_⟩` and prove the remaining obligations. Establish `hs' : (0 : ℝ) ≤ s` using `by exact_mod_cast hs.le`. Rewrite using `[(hM B hB u s hr hs).1 c, ← (hP c).2 u]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Man.int`. Conclude with `⟨mul_nonneg (T.M c).κ_pos.le (Finset.sum_nonneg fun σ _ => ((key c σ u).1 s hs' hu hu').1), mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun σ _ => ((key c σ u).1 s hs' hu hu').2) (T.M c).κ_pos.le⟩`. Rewrite using `[← (hP c).2 u]`. Establish `hc : Tendsto (fun s : ℚ => (s : ℝ)) (𝓝[>] 0) (𝓝 0)`. Use `(Rat.continuous_coe_real.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))` as an intermediate fact.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h` using `((tendsto_finset_sum Finset.univ fun σ _ => (key c σ u).2).const_mul (T.M c).κ).comp hc`. Use `h.congr' (eventually_nhdsWithin_of_forall fun s hs => ?_)` and prove the remaining obligations. Conclude with `((hM B hB u s hr hs).1 c).symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem degrees (D : D7) (Y : ShimX D.what₂.Tau) (T : Real0 Y) (A : SlopeTestRemainingChoices Y) (_hS : ∀ c, (T.F c).FamS)
     (hN : ∀ c, (T.F c).NefAn) (hQ : ∀ c, (T.F c).QPol A.dir) (hP : ∀ c, (T.F c).Prop4 (A.w c))

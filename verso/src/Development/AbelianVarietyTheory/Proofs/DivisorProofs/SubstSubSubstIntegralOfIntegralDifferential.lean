@@ -8,9 +8,9 @@ namespace GlobalTheory.Katz
 open CategoryTheory TensorProduct MvPowerSeries in
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p] in
 /- English proof (translation)
-Distinguish the cases in `hxy : x - y = 0`. Conclude with `⟨0, by rw [hxy, mul_zero]⟩`. Take `⟨m, z, hz, hxyz⟩` from `WittVector.exists_eq_pow_p_mul (x - y) hxy`. Break down `m with _ | m` into its components or cases. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Apply `hz` to reduce the goal to its premises. Establish `h1` using `congrArg WittVector.constantCoeff hxyz`. Rewrite `h1` using `[map_sub, h, sub_self, pow_zero, one_mul]`. Conclude with `h1.symm`. Conclude with `⟨p ^ m * z, by rw [hxyz, pow_succ]; ring⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_sub_eq_p_mul_of_constantCoeff_eq {x y : WittVector p k}
     (h : WittVector.constantCoeff x = WittVector.constantCoeff y) : ∃ z, x - y = p * z := by
@@ -27,9 +27,9 @@ private theorem exists_sub_eq_p_mul_of_constantCoeff_eq {x y : WittVector p k}
 open CategoryTheory TensorProduct MvPowerSeries in
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p] in
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert i S hi ih`. Take `⟨Y1, hY1⟩` from `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`. Take `⟨Y2, hY2⟩` from `h i (Finset.mem_insert_self i S)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U i ^ e i * Y1 + Y2 * ∏ j ∈ S, V j ^ e j, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Simplify using `only [Algebra.smul_def, map_sub, map_mul, map_add, map_pow, map_prod] at hY1 hY2 ⊢`. Take the linear combination `(MvPowerSeries.map (algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)) (U i)) ^ e i * hY1 + (∏ j ∈ S, (MvPowerSeries.map (algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)) (V j)) ^ e j) * hY2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem prod_sub_prod_divisible_lemma_2 {σ τ : Type} (c : _root_.GlobalTheory.Katz.Fr p k)
     (U V : σ → MvPowerSeries τ (WittVector p k)) (e : σ → ℕ) (S : Finset σ)
@@ -57,21 +57,19 @@ private theorem prod_sub_prod_divisible_lemma_2 {σ τ : Type} (c : _root_.Globa
 open CategoryTheory TensorProduct MvPowerSeries in
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p] in
 /- English proof (translation)
-Establish `hp` using `(Fact.out : p.Prime)`. Take `⟨e, j', hj', hjeq⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (by omega : j ≠ 0) p hp.ne_one`. Establish `hj'0 : j' ≠ 0` using `by rintro rfl; simp at hj'`. Establish `hej : e < j`. Establish `h1 : p ^ e ≤ j` using `by rw [hjeq]; exact Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hj'0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_of_lt_of_le (Nat.lt_pow_self hp.one_lt) h1`. Take `⟨q, rfl⟩ : ∃ q, j = q + e + 1` from `⟨j - e - 1, by omega⟩`. Take `⟨n', rfl⟩ : ∃ n', n = n' + 1` from `⟨n - 1, by omega⟩`. Establish `hunit : IsUnit (j' : WittVector p k)`. Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : (j' : WittVector p k).coeff 0 = (j' : k)` using `map_natCast (WittVector.constantCoeff (p := p) (R := k)) j'`. Rewrite using `[h2]`. Conclude with `(CharP.cast_eq_zero_iff k p j').not.2 hj'`. Take `⟨s, hs⟩` from `hunit.exists_right_inv`. Use `⟨m * (n'.choose (q + e) : WittVector p k) * (p : WittVector p k) ^ q * s, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ι := algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)`. Establish `hs' : (j' : _root_.GlobalTheory.Katz.Fr p k) * ι s = 1`. Rewrite using `[← map_natCast ι, ← map_mul, hs, map_one]`. Establish `hjK : ((q + e + 1 : ℕ) : _root_.GlobalTheory.Katz.Fr p k) = (p : _root_.GlobalTheory.Katz.Fr p k) ^ e * j'`. Rewrite using `[hjeq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hchoose : ((n' + 1).choose (q + e + 1) : _root_.GlobalTheory.Katz.Fr p k) * ((q + e + 1 : ℕ) : _root_.GlobalTheory.Katz.Fr p k) = ((n' + 1 : ℕ) : _root_.GlobalTheory.Katz.Fr p k) * (n'.choose (q + e) : _root_.GlobalTheory.Katz.Fr p k)`. Use `Nat.add_one_mul_choose_eq n' (q + e)` as an intermediate fact. Rewrite using `[← Nat.cast_mul, ← Nat.cast_mul, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj0 : ((q + e + 1 : ℕ) : _root_.GlobalTheory.Katz.Fr p k) ≠ 0`. Rewrite using `[hjK]`. Establish `hinj : Function.Injective ι` using `IsFractionRing.injective _ _`. Use `mul_ne_zero (pow_ne_zero _ ?_) ?_` and prove the remaining obligations. Rewrite using `[← map_natCast ι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `(map_ne_zero_iff ι hinj).2 (WittVector.p_nonzero p k)`. Rewrite using `[← map_natCast ι]`. Conclude with `(map_ne_zero_iff ι hinj).2 hunit.ne_zero`. Apply `mul_right_cancel₀ hj0` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_natCast]`.
-
-Take the linear combination `(c * (p : _root_.GlobalTheory.Katz.Fr p k) ^ (q + e + 1)) * hchoose + ((p : _root_.GlobalTheory.Katz.Fr p k) ^ (q + e + 1) * (n'.choose (q + e) : _root_.GlobalTheory.Katz.Fr p k)) * hc - ((p : _root_.GlobalTheory.Katz.Fr p k) * ι m * (n'.choose (q + e) : _root_.GlobalTheory.Katz. …`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_choose_mul_p_pow_mul_eq_p_mul (c : _root_.GlobalTheory.Katz.Fr p k) (m : WittVector p k)
     {n : ℕ} (hc : (n : _root_.GlobalTheory.Katz.Fr p k) * c = algebraMap (WittVector p k) _ m)
@@ -120,7 +118,7 @@ private theorem exists_choose_mul_p_pow_mul_eq_p_mul (c : _root_.GlobalTheory.Ka
 open CategoryTheory TensorProduct MvPowerSeries in
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p] in
 /- English proof (translation)
-Use extensionality with `β`. Simplify using `only [MvPowerSeries.coeff_map, map_smul, smul_eq_mul, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_algebraMap_smul' {τ : Type} (a : WittVector p k) (Y : MvPowerSeries τ (WittVector p k)) :
     MvPowerSeries.map (algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)) (a • Y) =
@@ -132,15 +130,15 @@ private theorem map_algebraMap_smul' {τ : Type} (a : WittVector p k) (Y : MvPow
 open CategoryTheory TensorProduct MvPowerSeries in
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p] in
 /- English proof (translation)
-Rewrite using `[add_pow, Finset.sum_range_succ, Nat.sub_self, pow_zero, Nat.choose_self, Nat.cast_one, mul_one, mul_one, add_sub_cancel_right, map_sum, Finset.smul_sum]`. Establish `key : ∀ j ∈ Finset.range n, ∃ Y, c • MvPowerSeries.map (algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)) (V ^ j * ((p : MvPowerSeries τ (WittVector p k)) * H) ^ (n - j) * (n.choose j : MvPowerSeries τ (WittVector p k))) = algebraMap (WittVector p k) (_root_.GlobalTh …`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`. Take `⟨t, ht⟩` from `exists_choose_mul_p_pow_mul_eq_p_mul c m hc (n - j) (by omega) (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `ht` using `[Nat.choose_symm (by omega)]`. Use `⟨t • (V ^ j * H ^ (n - j)), ?_⟩` and prove the remaining obligations. Establish `e1 : V ^ j * ((p : MvPowerSeries τ (WittVector p k)) * H) ^ (n - j) * (n.choose j : MvPowerSeries τ (WittVector p k)) = ((n.choose j * p ^ (n - j) : ℕ) : WittVector p k) • (V ^ j * H ^ (n - j))`. Rewrite using `[Algebra.smul_def, map_natCast]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_algebraMap_smul', map_algebraMap_smul', smul_smul, smul_smul, map_natCast]`. Use `congr 1`. Rewrite using `[← map_mul, ← ht]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∀ S : Finset ℕ, (∀ j ∈ S, ∃ Y, c • MvPowerSeries.map (algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)) (V ^ j * ((p : MvPowerSeries τ (WittVector p k)) * H) ^ (n - j) * (n.choose j : MvPowerSeries τ (WittVector p k))) = algebraMap (WittVector p k) (_root_.Glo …`. Introduce `S hS`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert j S hj ih`. Take `⟨Y1, hY1⟩` from `ih fun i hi => hS i (Finset.mem_insert_of_mem hi)`. Take `⟨Y2, hY2⟩` from `hS j (Finset.mem_insert_self j S)`. Conclude with `⟨Y2 + Y1, by rw [Finset.sum_insert hj, hY1, hY2, map_add, smul_add]⟩`. Conclude with `hsum _ key`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem map_add_p_mul_pow_sub_pow_eq_p_smul {τ : Type} (c : _root_.GlobalTheory.Katz.Fr p k) (m : WittVector p k)
     {n : ℕ} (hc : (n : _root_.GlobalTheory.Katz.Fr p k) * c = algebraMap (WittVector p k) _ m)
@@ -188,23 +186,19 @@ open CategoryTheory TensorProduct MvPowerSeries in
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p] in
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ σ τ _ u v w f hu0 hv0 hu hv hf`. Use `choose a ha using fun i β => hu i β`. Use `choose b hb using fun i β => hv i β`. Use `choose hh hhh using fun i β => exists_sub_eq_p_mul_of_constantCoeff_eq ((ha i β).2.trans (hb i β).2.symm)`. Set `U : σ → MvPowerSeries τ (WittVector p k)` to `fun i β => a i β`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `V : σ → MvPowerSeries τ (WittVector p k)` to `fun i β => b i β`. Set `Hs : σ → MvPowerSeries τ (WittVector p k)` to `fun i β => hh i β`. Establish `hUV : ∀ i, U i = V i + (p : MvPowerSeries τ (WittVector p k)) * Hs i`. Introduce `i`. Use `MvPowerSeries.ext fun β => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (p : MvPowerSeries τ (WittVector p k)) * Hs i = (p : WittVector p k) • Hs i`. Rewrite using `[Algebra.smul_def, map_natCast]`. Rewrite using `[e, map_add, map_smul, smul_eq_mul]`. Use `show a i β = b i β + p * hh i β`. Rewrite using `[← hhh]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `huM : u = fun i => MvPowerSeries.map (algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)) (U i)`. Use function extensionality and compare the values at `i`. Use extensionality with `β`. Rewrite using `[MvPowerSeries.coeff_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ha i β).1`. Establish `hvM : v = fun i => MvPowerSeries.map (algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k)) (V i)`. Use function extensionality and compare the values at `i`. Use extensionality with `β`. Rewrite using `[MvPowerSeries.coeff_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hb i β).1`. Establish `hf' : ∀ (α : σ →₀ ℕ) (i : σ), ∃ m, ((α i : ℕ) : _root_.GlobalTheory.Katz.Fr p k) * MvPowerSeries.coeff α f = algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k) m` using `hf`. Establish `hsu` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hu0`. Establish `hsv` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hv0`. Unfold `_root_.GlobalTheory.Katz.intBy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `fun β => ?_` and prove the remaining obligations. Rewrite using `[map_sub, MvPowerSeries.coeff_subst hsu, MvPowerSeries.coeff_subst hsv, ← finsum_sub_distrib (MvPowerSeries.coeff_subst_finite hsu f β) (MvPowerSeries.coeff_subst_finite hsv f β)]`. Use `finsum_induction (fun x => ∃ w, x = algebraMap (WittVector p k) (_root_.GlobalTheory.Katz.Fr p k) (p * w)) ⟨0, by simp⟩ (fun x y ⟨w1, h1⟩ ⟨w2, h2⟩ => ⟨w1 + w2, by rw [h1, h2, mul_add, map_add]⟩) fun α => ?_` and prove the remaining obligations. Take `⟨Y, hY⟩` from `prod_sub_prod_divisible_lemma_2 (MvPowerSeries.coeff α f) U V α α.support fun i _ => by`. Take `⟨mi, hmi⟩` from `hf' α i`.
-
-Rewrite using `[hUV i]`. Conclude with `map_add_p_mul_pow_sub_pow_eq_p_smul _ mi hmi (V i) (Hs i)`. Use `⟨MvPowerSeries.coeff β Y, ?_⟩` and prove the remaining obligations. Rewrite using `[huM, hvM]`. Simplify using `only [Finsupp.prod, ← map_pow, ← map_prod]`.
-
-Rewrite using `[smul_eq_mul, smul_eq_mul, ← mul_sub, ← map_sub, ← map_sub, ← smul_eq_mul, ← map_smul, hY, map_smul, MvPowerSeries.coeff_map, smul_eq_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Katz.subst_sub_subst_mem_intBy : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (σ τ : Type) [Finite σ] (u v : σ → MvPowerSeries (τ) (_root_.GlobalTheory.Katz.Fr p k)) (w : σ → MvPowerSeries τ k) (f : MvPowerSeries (σ) (_root_.GlobalTheory.Katz.Fr p k)), (∀ i, constantCoeff (u i) = 0) → (∀ i, constantCoeff (v i) = 0) → (∀ i, _root_.GlobalTheory.Katz.Red p (u i) (w i)) → (∀ i, _root_.GlobalTheory.Katz.Red p (v i) (w i)) → f ∈ _root_.GlobalTheory.Katz.quasiInt p k σ → subst u f - subst v f ∈ _root_.GlobalTheory.Katz.intBy p k τ p := by
   intro p _ k _ _ _ σ τ _ u v w f hu0 hv0 hu hv hf

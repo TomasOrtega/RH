@@ -7,11 +7,9 @@ open scoped ComplexConjugate NNReal
 namespace GlobalTheory.CompanionTheory.LagFun
 
 /- English proof (translation)
-Use `set f : large₂ →ₗ[k] (κ → k) := LinearMap.fst k _ _ ∘ₗ large₂.subtype with hf`. Take `⟨s, hs⟩` from `f.rangeRestrict.exists_rightInverse_of_surjective f.range_rangeRestrict`. Use `set e := (Module.finBasis k (LinearMap.range f)).equivFun.symm`. Use `set j := (LinearMap.range f).subtype ∘ₗ e.toLinearMap with hj`. Establish `hinj : LinearMap.ker j = ⊥`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `Subtype.val_injective.comp e.injective`. Take `⟨p, hp⟩` from `j.exists_leftInverse_of_injective hinj`. Use `⟨_, j, LinearMap.snd k _ _ ∘ₗ large₂.subtype ∘ₗ s ∘ₗ e.toLinearMap, p, fun t => LinearMap.congr_fun hp t, fun t => ?_, fun w hw => ⟨e.symm ⟨w.1, ⟨w, hw⟩, rfl⟩, by simp [hj]⟩⟩` and prove the remaining obligations. Establish `h1 : (s (e t) : (κ → k) × (κ → k)).1 = j t` using `congrArg Subtype.val (LinearMap.congr_fun hs (e t))`.
-
-Rewrite using `[← h1]`. Conclude with `(s (e t)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_param {k : Type} [Field k] {κ : Type} [Fintype κ] (large₂ : Submodule k ((κ → k) × (κ → k))) :
     ∃ (n : ℕ) (j σ : (Fin n → k) →ₗ[k] (κ → k)) (p : (κ → k) →ₗ[k] (Fin n → k)),
@@ -31,35 +29,31 @@ theorem exists_param {k : Type} [Field k] {κ : Type} [Fintype κ] (large₂ : S
   exact (s (e t)).2
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ κ _ ψ hψ _ large₂ hL`. Take `⟨n, j, σ, p, hp, hσ, hj⟩` from `exists_param large₂`. Establish `hT2 : T2Space k`. Set `` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hlc : LocallyCompactSpace k` using `inferInstance`. Establish `htd : TotallyDisconnectedSpace k`. Set `` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NonarchimedeanAddGroup k` using `⟨fun U hU => by`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hU`. Conclude with `⟨⟨(Valued.v (R := k)).restrict.ltAddSubgroup γ, by`. Simplify `Valued.isOpen_ball k γ⟩, hγ⟩⟩` using `[Valuation.ltAddSubgroup]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `: MeasurableSpace (Fin n → k)` to `borel _`. Establish `: BorelSpace (Fin n → k)` using `⟨rfl⟩`. Use `set μ : Measure (Fin n → k) := Measure.addHaar`. Establish `cj : Continuous j` using `j.continuous_on_pi`. Establish `cσ : Continuous σ` using `σ.continuous_on_pi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cp : Continuous p` using `p.continuous_on_pi`. Establish `hce : Topology.IsClosedEmbedding j` using `Function.LeftInverse.isClosedEmbedding hp cp cj`. Use `set g : (Fin n → k) → ℂ := fun t => ψ (⅟(2 : k) * (j t ⬝ᵥ σ t)) with hg`. Establish `cg : Continuous g` using `hψ.comp (continuous_const.mul (cj.dotProduct cσ))`. Use `set S : Submodule ℂ ((κ → k) → ℂ) := { carrier := {φ | Integrable (fun t => g t * φ (j t)) μ} zero_mem' := by simp add_mem' := fun {a b} ha hb => by`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_ofPred_eq, Pi.add_apply, mul_add]`. Conclude with `Integrable.add ha hb`. Use the proof step `smul_mem' := fun c a ha => by`. Simplify `Integrable.const_mul ha c }` using `only [Set.mem_ofPred_eq, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Establish `memS : ∀ φ, φ ∈ S ↔ Integrable (fun t => g t * φ (j t)) μ` using `fun _ => Iff.rfl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set l₀ : S →ₗ[ℂ] ℂ := { toFun := fun φ => ∫ t, g t * φ.1 (j t) ∂μ map_add' := fun a b => by`. Rewrite using `[← integral_add a.2 b.2]`. Simplify using `[mul_add]`. Use the proof step `map_smul' := fun c a => by`. Simplify using `[← integral_const_mul, mul_left_comm] }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `l₀.exists_extend`. Establish `hl' : ∀ φ ∈ S, l φ = ∫ t, g t * φ (j t) ∂μ` using `fun φ hφ => LinearMap.congr_fun hl ⟨φ, hφ⟩`. Establish `cc : ∀ φ ∈ SB (κ → k), Continuous (fun t => g t * φ (j t)) ∧ HasCompactSupport (fun t => g t * φ (j t))` using `fun φ hφ => ⟨cg.mul (hφ.1.continuous.comp cj), (hφ.2.comp_isClosedEmbedding hce).mul_left⟩`. Establish `hSB : ∀ φ ∈ SB (κ → k), φ ∈ S` using `fun φ hφ => (cc φ hφ).1.integrable_of_hasCompactSupport (cc φ hφ).2`. Use `⟨l, ?_, fun w hw φ hφ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ho : IsOpen {x : κ → k | 0 < (g (p x)).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp (cg.comp cp))`. Establish `h0 : (0 : κ → k) ∈ {x : κ → k | 0 < (g (p x)).re}` using `by simp [hg]`. Take `⟨K, hK, hK0, hKs⟩` from `exists_compact_subset ho h0`. Take `⟨U, hU, hU0, hUs⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := κ → k)).exists_subset_of_mem_open hK0 isOpen_interior`. Establish `hU : IsClopen U` using `hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hUK : U ⊆ K` using `hUs.trans interior_subset`. Establish `hφ : U.indicator (fun _ => (1 : ℂ)) ∈ SB (κ → k)` using `⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) hU).isLocallyConstant, HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem (fun h => hx (hUK h)) _⟩`. Use `⟨_, hφ, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hl' _ (hSB _ hφ)]`. Establish `h2` using `congrArg Complex.re h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[← RCLike.re_to_complex, ← integral_re ((memS _).1 (hSB _ hφ))]`. Use `ne_of_gt ?_ h2` and prove the remaining obligations. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 0) (RCLike.continuous_re.comp (cc _ hφ).1) ((cc _ hφ).2.comp_left (g := RCLike.re) (map_zero _)) (fun t => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `ht : j t ∈ U`. Use `hKs (hUK ht)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq, hp] at this`. Simplify `this.le` using `[ht]`. Simplify using `[ht]`. Simplify using `[hU0, hg]`. Take `⟨t₁, ht₁⟩` from `hj w hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `key : (fun t => g t * schr ψ w φ (j t)) = fun t => g (t + t₁) * φ (j (t + t₁))`. Use function extensionality and compare the values at `t`. Establish `e1` using `hL _ (hσ t) w hw`. Establish `e2` using `hL _ (hσ t₁) w hw`. Establish `e3` using `hL _ (hσ t) _ (hσ t₁)`.
-
-Simplify using `only [← ht₁] at e1 e2 e3`. Simplify using `only [hg, schr, ← ht₁, map_add, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, dotProduct_add]`. Use `congr 2`. Establish `h2 : ⅟(2 : k) * 2 = 1` using `invOf_mul_self _`. Take the linear combination `e1 + ⅟(2 : k) * e2 - ⅟(2 : k) * e3 - (j t₁ ⬝ᵥ σ t) * h2`.
-
-Establish `hi` using `(memS _).1 (hSB _ hφ)`. Rewrite using `[hl' _ (hSB _ hφ), hl' _ ((memS _).2 (key ▸ hi.comp_add_right t₁)), key]`. Conclude with `integral_add_right_eq_self (fun t => g t * φ (j t)) t₁`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_form : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Invertible (2 : k)] (κ : Type) [Fintype κ] (ψ : AddChar k ℂ), Continuous ψ → ψ ≠ 1 → ∀ large₂ : Submodule k ((κ → k) × (κ → k)), (∀ w ∈ large₂, ∀ w' ∈ large₂, w.1 ⬝ᵥ w'.2 = w'.1 ⬝ᵥ w.2) → ∃ l : ((κ → k) → ℂ) →ₗ[ℂ] ℂ, (∃ φ ∈ SB (κ → k), l φ ≠ 0) ∧ ∀ w ∈ large₂, ∀ φ ∈ SB (κ → k), l (schr ψ w φ) = l φ := by
   intro k _ _ _ _ _ κ _ ψ hψ _ large₂ hL

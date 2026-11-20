@@ -15,15 +15,15 @@ namespace GeneralLinearInduction
 variable {E : Type} [Field E] [NumberField E] {a : ℕ} {ψ : AddChar (Ad E) ℂ}
 
 /- English proof (translation)
-Introduce `g₀ hg`. Establish `hPer : Per (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (fun x => f (blkU x * g₀))` using `per_blk hG.cont (fun c g => hG.left _ (isMir_blkU c) g) g₀`. Establish `hΦ : (fun x : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E => f (blkU x * g₀)) = 0`. Use `_root_.GlobalTheory.T.periodic_eq_zero_of_fourier_coefficients_zero E _ ψ hψ _ hPer fun ξ => ?_` and prove the remaining obligations. Distinguish the cases in `hξ0 : ξ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hξ0` using the available equality. Establish `hv` using `hG.van (m + 1) (Nat.succ_pos m) le_rfl g₀`. Establish `e : ∀ x : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E, ψ (-dot (0 : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E) x) = 1`. Introduce `x`. Simplify using `[dot]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, one_mul]`. Conclude with `hv`. Take `⟨γ, hγ, hγξ⟩` from `_root_.GlobalTheory.T.exists_rationalMirabolic_moving_row_to_last E a m hma ξ hξ0`. Establish `h1` using `hc _ (hZ γ hγ g₀ hg)`. Simplify using `only [colT] at h1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[_root_.GlobalTheory.T.whittakerCoefficient_rationalMirabolic_mul E a ψ hψ m f hG.cont hG.left γ hγ (eLast a (m + 1)) g₀]`. Establish `e : (fun t : UnipotentBlockColumnIndex a (m + 1) (m + 1) => ∑ s : UnipotentBlockColumnIndex a (m + 1) (m + 1), eLast a (m + 1) s * γ.val s.1.1 t.1.1) = ξ` using `funext hγξ`. Rewrite `h1` using `[e]`. Conclude with `h1`. Establish `h1` using `congrFun hΦ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.zero_apply] at h1`. Establish `e : (blkU (0 : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) : GA E a) = 1` using `posU_zero _`. Rewrite `h1` using `[e, one_mul]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hψ : StdPsi ψ) (m : ℕ) (f : GA E a → ℂ) (hma : m + 1 < a) (hG : Good ψ (m + 1) f)
     (Z : Set (GA E a)) (hZ : ∀ γ, IsMir (m + 1) γ → ∀ g ∈ Z, ratGL E a γ * g ∈ Z)
@@ -57,9 +57,9 @@ theorem step (hψ : StdPsi ψ) (m : ℕ) (f : GA E a → ℂ) (hma : m + 1 < a) 
   exact h1
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => intro f _ _ Z _ hw`. Conclude with `hw`. Consider the case `succ m ih`. Introduce `f hm hG Z hZ hw`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hma : m + 1 < a` using `by omega`. Use `step hψ m f hma hG Z hZ ?_` and prove the remaining obligations. Use `ih _ (Or.inl (by omega)) (_root_.GlobalTheory.CuspRep.Generic.good_colT hψ hma hG) Z (fun γ hγ g hg => hZ γ (fun i k h => hγ i k (by omega)) g hg) ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `hw g hg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main (hψ : StdPsi ψ) (m : ℕ) : ∀ (f : GA E a → ℂ), (m < a ∨ m = 0) → Good ψ m f →
     ∀ Z : Set (GA E a), (∀ γ, IsMir m γ → ∀ g ∈ Z, ratGL E a γ * g ∈ Z) →
@@ -78,7 +78,7 @@ theorem main (hψ : StdPsi ψ) (m : ℕ) : ∀ (f : GA E a → ℂ), (m < a ∨ 
 end GeneralLinearInduction
 
 /- English proof (translation)
-Introduce `E _ _ _ a ψ hψ m f hm hG Z hZ _ hw`. Conclude with `GeneralLinearInduction.main hψ m f hm hG Z hZ hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem induction_g11_holds : FourierUniquenessMirabolic := by
   intro E _ _ _ a ψ hψ m f hm hG Z hZ _ hw

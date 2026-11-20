@@ -6,9 +6,9 @@ namespace PI.Mk
 open Polynomial Matrix
 
 /- English proof (translation)
-Establish `hcomm : Commute (scalar (Fin N) (X : R[X])) ((C : R →+* R[X]).mapMatrix A)` using `scalar_commute (r := (X : R[X])) (fun r' => Commute.all _ r') _`. Establish `hMn : ((C : R →+* R[X]).mapMatrix A) ^ n = 1` using `by rw [← map_pow, h, map_one]`. Establish `key : (∑ i ∈ Finset.range n, scalar (Fin N) (X : R[X]) ^ i * ((C : R →+* R[X]).mapMatrix A) ^ (n - 1 - i)) * (scalar (Fin N) (X : R[X]) - (C : R →+* R[X]).mapMatrix A) = scalar (Fin N) ((X : R[X]) ^ n - 1)`. Rewrite using `[hcomm.geom_sum₂_mul, hMn, map_sub, map_pow, map_one]`. Establish `hs : ∀ c : R[X], (scalar (Fin N) c).det = c ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[scalar_apply, det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `Dvd.intro_left (∑ i ∈ Finset.range n, scalar (Fin N) (X : R[X]) ^ i * ((C : R →+* R[X]).mapMatrix A) ^ (n - 1 - i)).det ?_` and prove the remaining obligations. Rewrite using `[← hs ((X : R[X]) ^ n - 1), ← key, det_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charpoly_dvd_of_pow_eq_one {R : Type*} [CommRing R] {N : ℕ} (A : Matrix (Fin N) (Fin N) R)
     (n : ℕ) (h : A ^ n = 1) : A.charpoly ∣ (X ^ n - 1 : R[X]) ^ N := by
@@ -33,17 +33,17 @@ def Good (ℓ : ℕ) (p : ℚ[X]) : Prop :=
     -p.nextCoeff = (p.natDegree : ℚ) - (ℓ : ℚ) * (y : ℚ) ∧ (y = 0 → p = (X - 1) ^ p.natDegree)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨monic_one, 0, by simp, by simp [nextCoeff], fun _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_one (ℓ : ℕ) : Good ℓ 1 :=
   ⟨monic_one, 0, by simp, by simp [nextCoeff], fun _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨hpm, y, hy1, hy2, hy3⟩` from `hp`. Take `⟨hqm, z, hz1, hz2, hz3⟩` from `hq`. Establish `hdeg : (p * q).natDegree = p.natDegree + q.natDegree` using `hpm.natDegree_mul hqm`. Use `⟨hpm.mul hqm, y + z, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdeg, mul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_le_add hy1 hz1`. Rewrite using `[hpm.nextCoeff_mul hqm, hdeg]`. Use `push_cast`. Take the linear combination `hy2 + hz2`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : y = 0` using `by omega`. Establish `hz : z = 0` using `by omega`. Rewrite using `[hdeg, pow_add]`. Use `conv_lhs => rw [hy3 hy, hz3 hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_mul (ℓ : ℕ) (p q : ℚ[X]) (hp : Good ℓ p) (hq : Good ℓ q) : Good ℓ (p * q) := by
   obtain ⟨hpm, y, hy1, hy2, hy3⟩ := hp
@@ -59,9 +59,9 @@ theorem good_mul (ℓ : ℕ) (p q : ℚ[X]) (hp : Good ℓ p) (hq : Good ℓ q) 
     conv_lhs => rw [hy3 hy, hz3 hz]
 
 /- English proof (translation)
-Establish `hdeg : (X ^ n - 1 : ℚ[X]).natDegree = n`. Simplify using `using natDegree_X_pow_sub_C (R := ℚ) (n := n) (r := 1)`. Rewrite using `[nextCoeff_of_natDegree_pos (by rw [hdeg]; exact hn), hdeg]`. Use `split_ifs with h1`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2 : n - 1 ≠ n` using `by omega`. Establish `h3 : n - 1 ≠ 0` using `by omega`. Simplify using `[coeff_X_pow, coeff_one, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nextCoeff_X_pow_sub_one (n : ℕ) (hn : 0 < n) :
     (X ^ n - 1 : ℚ[X]).nextCoeff = if n = 1 then -1 else 0 := by
@@ -75,7 +75,7 @@ theorem nextCoeff_X_pow_sub_one (n : ℕ) (hn : 0 < n) :
     simp [coeff_X_pow, coeff_one, h2, h3]
 
 /- English proof (translation)
-Rewrite using `[cyclotomic_one, ← C_1]`. Use `⟨monic_X_sub_C 1, 0, by simp, ?_, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[natDegree_X_sub_C, nextCoeff_X_sub_C]`. Simplify using the standard rewrite rules. Rewrite using `[natDegree_X_sub_C, pow_one, C_1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_cyclotomic_one (ℓ : ℕ) : Good ℓ (cyclotomic 1 ℚ) := by
   rw [cyclotomic_one, ← C_1]
@@ -84,19 +84,19 @@ theorem good_cyclotomic_one (ℓ : ℕ) : Good ℓ (cyclotomic 1 ℚ) := by
   · rw [natDegree_X_sub_C, pow_one, C_1]
 
 /- English proof (translation)
-Use `Fact.mk hℓ` as an intermediate fact. Establish `h2 : 2 ≤ ℓ` using `hℓ.two_le`. Establish `hmon : (cyclotomic (ℓ ^ (j + 1)) ℚ).Monic` using `cyclotomic.monic _ ℚ`. Establish `hdeg : (cyclotomic (ℓ ^ (j + 1)) ℚ).natDegree = ℓ ^ j * (ℓ - 1)`. Rewrite using `[natDegree_cyclotomic, Nat.totient_prime_pow_succ hℓ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm1 : ((X : ℚ[X]) ^ ℓ ^ j - 1).Monic`. Simplify using `using monic_X_pow_sub_C (1 : ℚ) (pow_pos hℓ.pos j).ne'`. Establish `hnc` using `congrArg nextCoeff (cyclotomic_prime_pow_mul_X_pow_sub_one (R := ℚ) (p := ℓ) (k := j))`. Rewrite `hnc` using `[hmon.nextCoeff_mul hm1, nextCoeff_X_pow_sub_one _ (pow_pos hℓ.pos j), nextCoeff_X_pow_sub_one _ (pow_pos hℓ.pos (j + 1))]`. Establish `hne : ℓ ^ (j + 1) ≠ 1` using `(Nat.one_lt_pow (by omega) hℓ.one_lt).ne'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hnc` using `[if_neg hne]`. Break down `j with _ | k` into its components or cases. Rewrite `hnc` using `[pow_zero, if_pos rfl]`. Use `⟨hmon, 1, ?_, ?_, fun h => absurd h one_ne_zero⟩` and prove the remaining obligations. Rewrite using `[hdeg]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hc : (((ℓ ^ 0 * (ℓ - 1) : ℕ)) : ℚ) = (ℓ : ℚ) - 1`. Rewrite using `[pow_zero, one_mul, Nat.cast_sub (by omega), Nat.cast_one]`. Rewrite using `[hdeg, hc]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne' : ℓ ^ (k + 1) ≠ 1` using `(Nat.one_lt_pow (by omega) hℓ.one_lt).ne'`. Rewrite `hnc` using `[if_neg hne']`. Establish `hz : nextCoeff (cyclotomic (ℓ ^ (k + 1 + 1)) ℚ) = 0` using `by linarith`. Use `⟨hmon, ℓ ^ k * (ℓ - 1), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hdeg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdeg, hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `h`. Conclude with `absurd h (mul_ne_zero (pow_ne_zero _ hℓ.ne_zero) (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem good_cyclotomic_succ (ℓ : ℕ) (hℓ : ℓ.Prime) (j : ℕ) :
     Good ℓ (cyclotomic (ℓ ^ (j + 1)) ℚ) := by
@@ -133,7 +133,7 @@ theorem good_cyclotomic_succ (ℓ : ℕ) (hℓ : ℓ.Prime) (j : ℕ) :
       exact absurd h (mul_ne_zero (pow_ne_zero _ hℓ.ne_zero) (by omega))
 
 /- English proof (translation)
-Break down `j with _ | j` into its components or cases. Rewrite using `[pow_zero]`. Conclude with `good_cyclotomic_one ℓ`. Conclude with `good_cyclotomic_succ ℓ hℓ j`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_cyclotomic (ℓ : ℕ) (hℓ : ℓ.Prime) (j : ℕ) : Good ℓ (cyclotomic (ℓ ^ j) ℚ) := by
   rcases j with _ | j
@@ -141,15 +141,15 @@ theorem good_cyclotomic (ℓ : ℕ) (hℓ : ℓ.Prime) (j : ℕ) : Good ℓ (cyc
   · exact good_cyclotomic_succ ℓ hℓ j
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n : ℕ, ∀ q : ℚ[X], q.natDegree = n → q.Monic → q ∣ (X ^ (ℓ ^ a) - 1 : ℚ[X]) ^ M → Good ℓ q from H _ p rfl hp hd`. Introduce `n`. Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih q hqn hq hqd`. Distinguish the cases in `h1 : q = 1`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h1]`. Conclude with `good_one ℓ`. Establish `hq0 : q ≠ 0` using `hq.ne_zero`. Establish `hqu : ¬ IsUnit q` using `fun hu => h1 (hq.eq_one_of_isUnit hu)`. Take `⟨r, hr, hrq⟩` from `WfDvdMonoid.exists_irreducible_factor hqu hq0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrd : r ∣ (X ^ (ℓ ^ a) - 1 : ℚ[X])` using `hr.prime.dvd_of_dvd_pow (hrq.trans hqd)`. Rewrite `hrd` using `[← prod_cyclotomic_eq_X_pow_sub_one (pow_pos hℓ.pos a) (R := ℚ)]`. Take `⟨d, hdm, hdr⟩` from `hr.prime.exists_mem_finset_dvd hrd`. Take `⟨i, -, rfl⟩` from `(Nat.dvd_prime_pow hℓ).1 (Nat.dvd_of_mem_divisors hdm)`. Establish `hirr` using `cyclotomic.irreducible_rat (pow_pos hℓ.pos i)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `(hr.dvd_symm hirr hdr).trans hrq`. Establish `hcm : (cyclotomic (ℓ ^ i) ℚ).Monic` using `cyclotomic.monic _ ℚ`. Establish `hs : s.Monic` using `hcm.of_mul_monic_left hq`. Establish `hdeg : (cyclotomic (ℓ ^ i) ℚ * s).natDegree = (cyclotomic (ℓ ^ i) ℚ).natDegree + s.natDegree` using `hcm.natDegree_mul hs`. Establish `hpos : 0 < (cyclotomic (ℓ ^ i) ℚ).natDegree`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[natDegree_cyclotomic]`. Conclude with `Nat.totient_pos.2 (pow_pos hℓ.pos i)`. Apply `good_mul` to reduce the goal to its premises. Conclude with `good_cyclotomic ℓ hℓ i`. Conclude with `ih s.natDegree (by omega) s rfl hs ((Dvd.intro_left _ rfl).trans hqd)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem good_of_dvd (ℓ : ℕ) (hℓ : ℓ.Prime) (a M : ℕ) (p : ℚ[X]) (hp : p.Monic)
     (hd : p ∣ (X ^ (ℓ ^ a) - 1 : ℚ[X]) ^ M) : Good ℓ p := by
@@ -181,13 +181,13 @@ theorem good_of_dvd (ℓ : ℕ) (hℓ : ℓ.Prime) (a M : ℕ) (p : ℚ[X]) (hp 
   · exact ih s.natDegree (by omega) s rfl hs ((Dvd.intro_left _ rfl).trans hqd)
 
 /- English proof (translation)
-Take `⟨S, hSdef⟩ : ∃ S : Matrix (Fin N) (Fin N) ℚ, S = ∑ i ∈ Finset.range n, A ^ i` from `⟨_, rfl⟩`. Take `⟨T, hTdef⟩ : ∃ T : Matrix (Fin N) (Fin N) ℚ, T = ∑ i ∈ Finset.range n, ∑ j ∈ Finset.range i, A ^ j` from `⟨_, rfl⟩`. Establish `hSB : S * (A - 1) = 0` using `by rw [hSdef, geom_sum_mul, h, sub_self]`. Establish `hST : S = (n : Matrix (Fin N) (Fin N) ℚ) + T * (A - 1)`. Rewrite using `[hSdef, hTdef, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[geom_sum_mul]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Normalize the expressions using the abelian group laws. Establish `hcomm : Commute T (A - 1)`. Rewrite using `[hTdef]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Commute.sum_left _ _ _ (fun i _ => Commute.sum_left _ _ _ (fun j _ => ?_))` and prove the remaining obligations. Conclude with `((Commute.refl A).sub_right (Commute.one_right A)).pow_left j`. Establish `hnil : IsNilpotent (T * (A - 1))` using `⟨N, by rw [hcomm.mul_pow, hu, mul_zero]⟩`. Establish `hnu : IsUnit (n : Matrix (Fin N) (Fin N) ℚ)`. Establish `: IsUnit (n : ℚ)` using `(Nat.cast_ne_zero.2 hn.ne').isUnit`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.map (algebraMap ℚ (Matrix (Fin N) (Fin N) ℚ))`. Establish `hSu : IsUnit S`. Rewrite using `[hST]`. Conclude with `hnil.isUnit_add_left_of_commute hnu (Nat.cast_commute n _).symm`. Conclude with `sub_eq_zero.1 (hSu.mul_right_eq_zero.1 hSB)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_unipotent {N : ℕ} (A : Matrix (Fin N) (Fin N) ℚ) (n : ℕ) (hn : 0 < n)
     (h : A ^ n = 1) (hu : (A - 1) ^ N = 0) : A = 1 := by
@@ -215,19 +215,19 @@ theorem eq_one_of_unipotent {N : ℕ} (A : Matrix (Fin N) (Fin N) ℚ) (n : ℕ)
   exact sub_eq_zero.1 (hSu.mul_right_eq_zero.1 hSB)
 
 /- English proof (translation)
-Introduce `N ℓ a hℓ g hg`. Establish `h2 : 2 ≤ ℓ` using `hℓ.two_le`. Take `⟨A, hA⟩ : ∃ A : Matrix (Fin N) (Fin N) ℚ, A = (Int.castRingHom ℚ).mapMatrix g` from `⟨_, rfl⟩`. Establish `hAn : A ^ (ℓ ^ a) = 1` using `by rw [hA, ← map_pow, hg, map_one]`. Establish `hdvd` using `charpoly_dvd_of_pow_eq_one A _ hAn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy1, hy2, hy3⟩` from `(good_of_dvd ℓ hℓ a N A.charpoly (charpoly_monic A) hdvd).2`. Establish `hdeg : A.charpoly.natDegree = N`. Rewrite using `[charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `htr : A.trace = -A.charpoly.nextCoeff`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hN` using the available equality. Simplify using `[Matrix.trace, nextCoeff]`. Establish `: Nonempty (Fin N)` using `⟨⟨0, hN⟩⟩`. Rewrite using `[trace_eq_neg_charpoly_coeff, nextCoeff_of_natDegree_pos (by rw [hdeg]; exact hN), hdeg, Fintype.card_fin]`. Establish `htrg : A.trace = ((g.trace : ℤ) : ℚ)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA]`. Simplify using `[Matrix.trace, Matrix.diag, RingHom.mapMatrix_apply]`. Establish `hT : ((g.trace : ℤ) : ℚ) = (N : ℚ) - (ℓ : ℚ) * (y : ℚ)`. Rewrite using `[← htrg, htr, hy2, hdeg]`. Use `⟨y, ?_, by exact_mod_cast hT, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy1` using `[hdeg]`. Conclude with `(Nat.le_div_iff_mul_le (by omega)).2 (by rw [mul_comm]; exact hy1)`. Introduce `hy0`. Establish `hcp` using `hy3 hy0`. Rewrite `hcp` using `[hdeg]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hch` using `aeval_self_charpoly A`. Rewrite `hch` using `[hcp]`. Simplify using `only [map_pow, map_sub, aeval_X, map_one] at hch`. Establish `hA1` using `eq_one_of_unipotent A (ℓ ^ a) (pow_pos hℓ.pos a) hAn hch`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hij` using `congrFun (congrFun hA1 i) j`. Rewrite `hij` using `[hA, RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite `hij`, the goal using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs at hij ⊢ <;> simpa using hij`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem traceStep : TraceStep := by
   intro N ℓ a hℓ g hg

@@ -6,7 +6,7 @@ namespace PositivityTheory.Rg.BcB.F.Eig.CSD
 open PositivityTheory.Rg.BcB.F.Eig
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.split_dictionary_holds`.
+A detailed English derivation is pending.
 -/
 theorem splitDict : SplitDict := GlobalTheory.T.split_dictionary_holds
 

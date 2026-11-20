@@ -27,7 +27,7 @@ def ChainUp (D : D7) : Prop :=
         ∃ x : s.CC c, (∀ y, ip y x = ip₀ (Θ y) u) ∧ IsPar x (chainPar c B k)
 
 /- English proof (translation)
-Simplify using `[Com.eps]`.
+Simplify using the standard rewrite rules.
 -/
 example {D : D7} (c : Com D) : c.eps 0 = 1 := by simp [Com.eps]
 

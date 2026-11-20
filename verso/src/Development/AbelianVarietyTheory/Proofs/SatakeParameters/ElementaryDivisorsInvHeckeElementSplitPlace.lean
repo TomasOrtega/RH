@@ -23,9 +23,9 @@ section Algebra
 variable {R : Type} [CommRing R] {n : ℕ} {ε : R} {A B C : Matrix (Fin n) (Fin n) R}
 
 /- English proof (translation)
-Establish `h3 : Matrix.diagonal d * Matrix.diagonal d' = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Conclude with `congrArg _ (funext hd)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ε • (B * (Matrix.diagonal d * Matrix.diagonal d') * C) := by`. Rewrite using `[h2]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = _ := by rw [h3, Matrix.mul_one, h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_diag_inv (h1 : ε • (B * C) = ε • (1 : Matrix (Fin n) (Fin n) R))
     (h2 : ε • (C * B) = ε • (1 : Matrix (Fin n) (Fin n) R)) (d d' : Fin n → R) (hd : ∀ i, d i * d' i = 1) :
@@ -41,7 +41,7 @@ theorem conj_diag_inv (h1 : ε • (B * C) = ε • (1 : Matrix (Fin n) (Fin n) 
     _ = _ := by rw [h3, Matrix.mul_one, h1]
 
 /- English proof (translation)
-Establish `h' : ε • y = ε • B.mulVec z` using `h`. Establish `h3 : (fun i => d i * z i) = (Matrix.diagonal d).mulVec z` using `funext fun i => (Matrix.mulVec_diagonal d z i).symm`. Use `show ε • A.mulVec y = ε • B.mulVec (fun i => d i * z i)`. Rewrite using `[← Matrix.smul_mulVec, hA, Matrix.smul_mulVec, ← Matrix.mulVec_smul, h', Matrix.mulVec_smul, h3, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.smul_mulVec, ← Matrix.smul_mulVec, Matrix.mul_assoc _ C, ← Matrix.mul_smul, h2, Matrix.mul_smul, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_diag_mulVec (h2 : ε • (C * B) = ε • (1 : Matrix (Fin n) (Fin n) R)) (d : Fin n → R)
     (hA : ε • A = ε • (B * Matrix.diagonal d * C)) {y z : Fin n → R}
@@ -55,9 +55,9 @@ theorem conj_diag_mulVec (h2 : ε • (C * B) = ε • (1 : Matrix (Fin n) (Fin 
     ← Matrix.mul_smul, h2, Matrix.mul_smul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[conj_diag_mulVec h2 d hA (z := fun i => d' i * z i) (funext fun a => by rw [← mul_assoc, hε])]`. Establish `h1 : (fun i => d i * (d' i * z i)) = x • z` using `funext fun i => by`. Rewrite using `[← mul_assoc, hd, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h1, Matrix.mulVec_smul]`. Use function extensionality and compare the values at `a`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_left_comm, congrFun h a, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_diag_scale (hε : ε * ε = ε) (h2 : ε • (C * B) = ε • (1 : Matrix (Fin n) (Fin n) R)) (d d' : Fin n → R)
     (x : R) (hd : ∀ i, d i * d' i = x) (hA : ε • A = ε • (B * Matrix.diagonal d * C)) {y z : Fin n → R}
@@ -71,7 +71,7 @@ theorem conj_diag_scale (hε : ε * ε = ε) (h2 : ε • (C * B) = ε • (1 : 
   rw [Pi.smul_apply, smul_eq_mul, mul_left_comm, congrFun h a, mul_left_comm]
 
 /- English proof (translation)
-Establish `h1 : ε * ε ^ Fintype.card (Fin n) = ε`. Rewrite using `[← pow_succ']`. Conclude with `IsIdempotentElem.pow_succ_eq _ hε`. Establish `h2` using `congrArg (fun M => ε * Matrix.det M) h`. Simplify `h2` using `only [Matrix.det_smul, ← mul_assoc, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_congr (hε : ε * ε = ε) (h : ε • A = ε • B) : ε * A.det = ε * B.det := by
   have h1 : ε * ε ^ Fintype.card (Fin n) = ε := by
@@ -80,7 +80,7 @@ theorem det_congr (hε : ε * ε = ε) (h : ε • A = ε • B) : ε * A.det = 
   simpa only [Matrix.det_smul, ← mul_assoc, h1] using h2
 
 /- English proof (translation)
-Establish `h2` using `det_congr hε h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_one]`. Rewrite using `[det_congr hε hA, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`. Take the linear combination `(∏ i, d i) * h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conj_diag_det (hε : ε * ε = ε) (h1 : ε • (B * C) = ε • (1 : Matrix (Fin n) (Fin n) R)) (d : Fin n → R)
     (hA : ε • A = ε • (B * Matrix.diagonal d * C)) : ε * A.det = ε * ∏ i, d i := by
@@ -92,9 +92,9 @@ theorem conj_diag_det (hε : ε * ε = ε) (h1 : ε • (B * C) = ε • (1 : Ma
 end Algebra
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[List.getD_append _ _ _ _ (by simpa using h)]`. Simplify using `[List.getD_eq_getElem?_getD, h]`. Rewrite using `[List.getD_append_right _ _ _ _ (by simpa using h)]`. Simplify using `only [List.getD_eq_getElem?_getD, List.getElem?_replicate]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem getD_label (n k i : ℕ) :
     (List.replicate k (1 : ℤ) ++ List.replicate (n - k) 0).getD i 0 = if i < k then 1 else 0 := by
@@ -106,24 +106,24 @@ theorem getD_label (n k i : ℕ) :
     split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `[dualLab, splitLab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualLab_label (n k : ℕ) : dualLab (List.replicate k (1 : ℤ) ++ List.replicate (n - k) 0) = splitLab n k := by
   simp [dualLab, splitLab]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const, Fin.card_filter_val_lt, min_eq_right h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_label {R : Type} [CommRing R] (x : R) {n k : ℕ} (h : k ≤ n) :
     (∏ i : Fin n, if i.1 < k then x else 1) = x ^ k := by
   rw [Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const, Fin.card_filter_val_lt, min_eq_right h]
 
 /- English proof (translation)
-Use `AddSubgroup.closure_induction (p := fun y _ => finPart D (incA D (u : D.host.E)) * y ∈ intAE D) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, v, rfl⟩`. Use `AddSubgroup.subset_closure ⟨b, hb, u * v, ?_⟩` and prove the remaining obligations. Use `show ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (u : D.host.E)) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y _ _ h1 h2`. Rewrite using `[mul_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem h1 h2`. Introduce `x _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`.
+A detailed English derivation is pending.
 -/
 theorem int_mul_mem (D : D7) (u : 𝓞 D.host.E) {y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D) :
     finPart D (incA D (u : D.host.E)) * y ∈ intAE D := by
@@ -137,7 +137,7 @@ theorem int_mul_mem (D : D7) (u : 𝓞 D.host.E) {y : Formalism.MainNotions.Glob
   · intro x _ h; rw [mul_neg]; exact neg_mem h
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, 1, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_int (D : D7) : (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, 1, rfl⟩
@@ -145,29 +145,21 @@ theorem one_mem_int (D : D7) : (1 : Formalism.MainNotions.GlobalTheoryTheory.Gen
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨B, hB1, hB2⟩` from `GlobalTheory.T.exists_completedLattice_basis_at_prime V P e he`. Establish `hε : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, he.1.1]`. Take `⟨C, hC1, hC2⟩` from `(GlobalTheory.T.completedLattice_integrality V).2.2 (finPart D e) B hε fun y hy => (hB2 y hy).imp fun _ h => h.2`. Take `⟨d, hd⟩ : ∃ d : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, ∀ i, d i = if i.1 < k then finPart D (incA D (ϖ : D.host.E)) else 1` from `⟨_, fun _ => rfl⟩`. Establish `hdc : ∀ i : Fin V.rank, finPart D (incA D ((ϖ : D.host.E) ^ ((List.replicate k (1 : ℤ) ++ List.replicate (V.rank - k) 0).getD i.1 0))) = d i` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[getD_label, hd]`. Use `split_ifs`. Rewrite using `[zpow_one]`. Rewrite using `[zpow_zero, RingHom.map_one, RingHom.map_one]`. Take `⟨α, hs, hα⟩` from `GlobalTheory.T.exists_adelic_unitary_split_place_component V e he.1 (B * Matrix.diagonal d * C) _ (conj_diag_inv hC1 hC2 d (fun i => if i.1 < k then finPart D (incA D (ϖ : D.host.E)⁻¹) else 1) fun i => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Use `split_ifs`. Rewrite using `[← RingHom.map_mul, ← RingHom.map_mul, mul_inv_cancel₀ h0, RingHom.map_one, RingHom.map_one]`. Conclude with `mul_one _)`. Establish `idem : ∀ y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, (fun a => finPart D e * (finPart D e * y a)) = fun a => finPart D e * y a` using `fun y =>`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `fun a => by rw [← mul_assoc, hε]`. Use `⟨α, ⟨((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e (e + cA D e) (Or.inl ⟨he, rfl⟩)).2.2.1 α hs, hs, fun y hy => ?_, fun y hy => ?_, 1, 1, ?_, ?_, ?_, ?_⟩, ?_, B, hB1, hB2, fun y hy => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, h⟩` from `hB2 y hy`. Rewrite using `[conj_diag_mulVec hC2 d hα h]`. Use `hB1 _ fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hd]`. Use `split_ifs`. Conclude with `int_mul_mem D ϖ (hz i)`. Rewrite using `[one_mul]`. Conclude with `hz i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, h⟩` from `hB2 y hy`. Use `⟨_, hB1 (fun i => (if i.1 < k then 1 else finPart D (incA D (ϖ : D.host.E))) * z i) fun i => ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce split_ifs`. Rewrite using `[one_mul]`. Conclude with `hz i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `int_mul_mem D ϖ (hz i)`. Use `conj_diag_scale hε hC2 d _ _ (fun i => ?_) hα h` and prove the remaining obligations. Rewrite using `[hd]`. Use `split_ifs`. Conclude with `mul_one _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Conclude with `one_mul _`. Rewrite using `[RingHom.map_one]`. Conclude with `one_mem_int D`. Rewrite using `[RingHom.map_one]`. Conclude with `one_mem_int D`.
-
-Rewrite using `[mul_one, mul_one]`. Use `GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [RingHom.map_mul, GlobalTheory.SplitScalar.infPart_splitIdem he.1, zero_mul]`. Establish `h1` using `conj_diag_det hε hC1 d hα`. Rewrite `h1` using `[funext hd, prod_label _ hk]`.
-
-Rewrite using `[mul_one, (finPart D).map_mul, (finPart D).map_mul, (finPart D).map_pow, (finPart D).map_det]`. Conclude with `h1`. Rewrite using `[List.length_append, List.length_replicate, List.length_replicate]`. Use linear arithmetic over natural numbers and integers. Take `⟨z, hz, h⟩` from `hB2 y hy`.
-
-Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Simplify using `only [hdc]`. Conclude with `conj_diag_mulVec hC2 d hα h`. Use `⟨_, hB1 z hz, ?_⟩` and prove the remaining obligations. Simplify using `only [hdc]`.
-
-Conclude with `conj_diag_mulVec hC2 d hα (idem _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_model {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e : Formalism.L2.Theta.AE D)
     (ϖ : 𝓞 D.host.E) (k : ℕ) (he : IsIdemAt e P) (h0 : (ϖ : D.host.E) ≠ 0) (hk : k ≤ V.rank) :
@@ -232,9 +224,9 @@ theorem exists_model {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)
     exact conj_diag_mulVec hC2 d hα (idem _)
 
 /- English proof (translation)
-Introduce `D V P e ϖ k α he h1 h2 hk hα`. Establish `h0 : (ϖ : D.host.E) ≠ 0` using `fun h => h2 (by`. Rewrite using `[show ϖ = 0 from Subtype.ext h]`. Conclude with `zero_mem _)`. Take `⟨α₀, hH, hD⟩` from `exists_model V P e ϖ k he h0 hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `(((GlobalTheory.T.involution_spherical_hecke_anti V P e he).2.2 ϖ h1 h2).2 k α₀ hH).2 ϖ α h1 h2 hα`. Rewrite using `[← dualLab_label]`. Conclude with `(GlobalTheory.T.divisorsAt_inv_dualLabel_and_stabilizer_mul V e _ _ _ he.1.1 h0 ((GlobalTheory.T.divisorsAt_inv_dualLabel_and_stabilizer_mul V e _ _ _ he.1.1 h0 hD).2 a ha.1 b hb.1)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divAt_inv_of_isHeckeElt : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e : Formalism.L2.Theta.AE D) (ϖ : 𝓞 D.host.E) (k : ℕ) (α : GA D V), IsIdemAt e P → ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → k ≤ V.rank → IsHeckeElt V e (ϖ : D.host.E) k α → DivAt V e (ϖ : D.host.E) (splitLab V.rank k) α⁻¹ := by
   intro D V P e ϖ k α he h1 h2 hk hα

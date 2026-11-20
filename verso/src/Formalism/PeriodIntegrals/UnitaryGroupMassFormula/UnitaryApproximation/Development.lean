@@ -13,7 +13,7 @@ def CayleyStep : Prop := ApproxE → BddR → UnitS → CayleyFin
 def ApproxEStep : Prop := WeakApproxF → ApproxE
 
 /- English proof (translation)
-The claim follows from `h1 (h2 (h3 hW) hB hU) hE`.
+A detailed English derivation is pending.
 -/
 theorem unitaryApproxFin_of (h1 : TopStep) (h2 : CayleyStep) (h3 : ApproxEStep)
     (hW : WeakApproxF) (hB : BddR) (hU : UnitS) (hE : EigAvoid) :

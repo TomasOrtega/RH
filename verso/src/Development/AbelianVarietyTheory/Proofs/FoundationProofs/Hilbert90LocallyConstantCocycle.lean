@@ -7,11 +7,11 @@ open GlobalTheory.NeedB Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ w hw hc`. Establish `h1 : w 1 = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `hc 1 1`. Rewrite `h` using `[mul_one, AlgEquiv.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : ((w 1 : Ωˣ) : Ω) * 1 = (w 1 : Ω) * (w 1 : Ω)` using `by rw [mul_one]; exact h`. Conclude with `(mul_left_cancel₀ (w 1).ne_zero h').symm`. Establish `hopen : IsOpen (w ⁻¹' {1})` using `hw _`. Take `⟨E, hfin, hE⟩` from `(krullTopology_mem_nhds_one_iff K Ω _).1 (hopen.mem_nhds (by simp [h1]))`. Use `haveI := hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β, hβ⟩` from `ReciprocityTheory.DiscreteGroups.LocalClassField.exists_units_of_cocycle (⊤ : Subgroup (Ω ≃ₐ[K] Ω)) (fun h => w h.1) E (fun h hh => hE hh) (fun g h => Units.ext (by simp [hc]))`. Use `⟨β, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (hβ ⟨g, Subgroup.mem_top g⟩)` as an intermediate fact. Simplify `this` using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hilbert90_locallyConstant_cocycle :
     ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (w : (Ω ≃ₐ[K] Ω) → Ωˣ),

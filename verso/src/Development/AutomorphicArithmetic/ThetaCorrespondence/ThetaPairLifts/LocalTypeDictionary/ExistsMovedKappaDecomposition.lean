@@ -18,15 +18,15 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 noncomputable section
 namespace GlobalTheory.MovedKappaDec
 /- English proof (translation)
-Introduce `_ _ D Γ _ _ Pl0 T A Ks _ _ _ R ch _ X hX Q hQ x`. Take `⟨r, s, k, hr, hs, hk, e⟩` from `GlobalTheory.RatSplitLat.exists_rat_split_lat (ch.G.V X) (ch.S.N.fr X) (∏ q ∈ Q, q) (Finset.prod_pos fun q hq => (hQ q hq).pos) (x * ch.S.N.u X)`. Establish `hs'` using `GlobalTheory.MovedKappaEx.mem_splitOff_of_suppSplit _ Q s hs`. Establish `hB` using `GlobalTheory.LatStdStab.latAt_mul_inv_eq_stdL ch.S.toGridChoice X hX k hk`. Use `⟨r, s, k * (ch.S.N.u X)⁻¹, hr, hs', hB, fun q hq => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ s' ∈ GlobalTheory.MovedKappaEx.splitOff (ch.G.V X) Q, ∀ y : FinPt ch.G X, EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice X (s' * y)) (GlobalTheory.SumSize.latAt ch.S.toGridChoice X y)`. Introduce `s' hs'`. Proceed by induction on `hs' using Subgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨e, he, hoff, hsupp⟩` from `hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `fun y => GlobalTheory.MovedSplitEq.eqAt_latAt_mul ch.S.toGridChoice X hX q (hQ q hq) e he (hoff q hq) g y hsupp`. Consider the case `one => exact fun y => by rw [one_mul]; exact eqAt_refl q _`. Consider the case `mul a b _ _ ha hb => exact fun y => by rw [mul_assoc]; exact eqAt_trans (ha (b * y)) (hb y)`. Consider the case `inv a _ ha`. Introduce `y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ha (a⁻¹ * y)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `eqAt_symm this`. Use `key s hs' (k * (ch.S.N.u X)⁻¹)` as an intermediate fact. Rewrite `this` using `[hB]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[← mul_assoc, ← e, mul_inv_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem exists_movedKappa_decomposition : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
@@ -75,7 +75,7 @@ open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedKappaDec.exists_movedKappa_decomposition | exact _root_.GlobalTheory.MovedKappaDec.exists_movedKappa_decomposition | (intros; apply _root_.GlobalTheory.MovedKappaDec.exists_movedKappa_decomposition <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.movedKappa_decomposition_exists : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}

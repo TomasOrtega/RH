@@ -18,11 +18,11 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ M`. Use `b.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Establish `e : ∀ (m : ℕ) (y : M), x = p ^ m • y → b.repr x i = (p : ℤ) ^ m * b.repr y i`. Introduce `m y hy`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hy` using the available equality. Rewrite using `[map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨y, hy⟩` from `h (b.repr x i).natAbs`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hd : ((p : ℤ) ^ (b.repr x i).natAbs) ∣ b.repr x i` using `⟨b.repr y i, e _ y hy⟩`. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs hd ?_` and prove the remaining obligations. Rewrite using `[Int.natAbs_pow, Int.natAbs_natCast]`. Conclude with `Nat.lt_pow_self hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_pow_dvd {M : Type} [AddCommGroup M] [Module.Free ℤ M] {p : ℕ}
     (hp : 1 < p) (x : M) (h : ∀ n : ℕ, ∃ y : M, x = p ^ n • y) : x = 0 := by
@@ -42,17 +42,15 @@ theorem eq_zero_of_forall_pow_dvd {M : Type} [AddCommGroup M] [Module.Free ℤ M
   exact Nat.lt_pow_self hp
 
 /- English proof (translation)
-Introduce `p _ k _ A B G H t t' f`. Establish `hp : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `key : ∀ (n : ℕ) (g : G ⟶ H), t.map t' f.hom = (p : ℤ_[p]) ^ n • g → ∃ f' : A ⟶ B, f = p ^ n • f'`. Introduce `n g hg`. Establish `happ : (t.map t' f.hom).app n = (0 : G ⟶ H).app n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Hom.conv (t.map t' f.hom) n = Hom.conv (0 : G ⟶ H) n`. Rewrite using `[hg, pow_smul_conv, zero_conv]`. Conclude with `congrArg (fun c => c.ofConv) h1`. Establish `hy : t.y n ≫ f.hom = 1`. Rewrite using `[← t.map_y t' f.hom n, happ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `_root_.map_one (t'.pts n _)`. Establish `hpn : ((p ^ n : ℕ) : ℤ) ≠ 0`. Conclude with `(pow_pos (by omega : 0 < p) n).ne'` after adjusting the coercions. Establish `hiso : IsIsogeny ((p ^ n : ℕ) • 𝟙 A)`. Use `(GlobalTheory.MulIsogeny.mul_isogeny k A ((p ^ n : ℕ) : ℤ) hpn).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[natCast_zsmul]`. Then use the resulting hypothesis. Take `⟨f', hf'⟩` from `exists_factor_of_isogeny k A A B ((p ^ n : ℕ) • 𝟙 A) f hiso (fun T x hx => by`. Establish `hx' : x ≫ mulN A.X (p ^ n) = SemiCartesianMonoidalCategory.toUnit T ≫ MonObj.one`. Rewrite `hx` using `[nsmul_hom, id_hom, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[GrpTangent.comp_mulN, hx, CategoryTheory.Hom.one_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hP` using `TorsionTower.isPullback_y p k G A.X t n`. Rewrite using `[← hP.lift_fst x (SemiCartesianMonoidalCategory.toUnit T) hx', Category.assoc, hy, MonObj.comp_one])`. Conclude with `⟨f', by rw [← hf', Preadditive.nsmul_comp, Category.id_comp]⟩`. Use `⟨key, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hfree` using `(GlobalTheory.T.hom_finite_free_finrank_le_four_mul_dim k A B).2.1`.
-
-Use `eq_zero_of_forall_pow_dvd hp f fun n => key n 0 ?_` and prove the remaining obligations. Rewrite using `[h0, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_pow_smul_of_torsionTower_map : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (A B : AbVar k)
     (G H : PDivGroup p k) (t : G.TorsionTower A.X) (t' : H.TorsionTower B.X) (f : A ⟶ B),
@@ -93,7 +91,7 @@ theorem eq_pow_smul_of_torsionTower_map : ∀ (p : ℕ) [Fact p.Prime] (k : Type
 end GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AV.AbVar.eq_pow_smul_of_torsionTower_map`.
+A detailed English derivation is pending.
 -/
 example : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (A B : AbVar k) (G H : PDivGroup p k) (t : G.TorsionTower A.X) (t' : H.TorsionTower B.X) (f : A ⟶ B), (∀ (n : ℕ) (g : G ⟶ H), t.map t' f.hom = (p : ℤ_[p]) ^ n • g → ∃ f' : A ⟶ B, f = p ^ n • f') ∧ (t.map t' f.hom = 0 → f = 0) :=
   GlobalTheory.AV.AbVar.eq_pow_smul_of_torsionTower_map

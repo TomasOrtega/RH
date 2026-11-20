@@ -3,6 +3,6 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import CompanionTheory.AutomorphicTheory.PlaceSeparation.IsOpenQuotientMapArt0
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.FamInh.globalArtin`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.globalArtinReciprocity_holds : GlobalTheory.Published.GlobalArtinReciprocity := CompanionTheory.FamInh.globalArtin

@@ -15,7 +15,7 @@ open Classical in
 def blkWtZ (k : K) : (Σ k, ι k) → ℤ := fun q => if q.1 = k then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intro; simp), Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[blkWtZ]`. Introduce `b _ hb`. Simplify using `[blkWtZ, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_blkWtZ (k : K) (m : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (blkWtZ (ι := ι) k) m = ∑ i, (m ⟨k, i⟩ : ℤ) := by
@@ -28,7 +28,7 @@ theorem weight_blkWtZ (k : K) (m : (Σ k, ι k) →₀ ℕ) :
   · simp
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[weight_blkWtZ, ← h d (mem_support_iff.mpr hd) k]`. Use `push_cast`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem isWeightedHomogeneous_blkWtZ {f : MRingOver R ι} {a : K → ℕ} (h : IsMultiHomog f a)
     (k : K) : IsWeightedHomogeneous (blkWtZ (ι := ι) k) f (a k : ℤ) := by
@@ -38,7 +38,7 @@ theorem isWeightedHomogeneous_blkWtZ {f : MRingOver R ι} {a : K → ℕ} (h : I
   rfl
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `e` using `h k (mem_support_iff.mp hm)`. Rewrite `e` using `[weight_blkWtZ, ← Nat.cast_sum]`. Use `show _ = (n k).toNat`. Rewrite using `[← e, Int.toNat_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_of_blkWtZ {f : MRingOver R ι} {n : K → ℤ}
     (h : ∀ k, IsWeightedHomogeneous (blkWtZ (ι := ι) k) f (n k)) :
@@ -50,9 +50,9 @@ theorem isMultiHomog_of_blkWtZ {f : MRingOver R ι} {n : K → ℤ}
   rw [← e, Int.toNat_natCast]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[coeff_pderiv]`. Establish `h1 : coeff (m + Finsupp.single q 1) f ≠ 0` using `fun h0 => hm (by rw [h0, zero_mul])`. Establish `h2` using `h h1`. Rewrite `h2` using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : Finsupp.weight w (Finsupp.single q 1) = w q`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_single_index (by simp), one_smul]`. Rewrite `h2` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem isWeightedHomogeneous_pderiv_int {σ : Type*} {w : σ → ℤ} {f : MvPolynomial σ R} {d : ℤ}
     (h : IsWeightedHomogeneous w f d) (q : σ) :

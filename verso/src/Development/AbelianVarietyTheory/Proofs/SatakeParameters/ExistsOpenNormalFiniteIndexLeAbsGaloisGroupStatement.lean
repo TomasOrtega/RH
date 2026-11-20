@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.AboveL
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OpenNormal.exists_open_normal_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsOpenNormalFiniteIndexLeAbsGaloisGroup.lean&line=12#L12)
 -/

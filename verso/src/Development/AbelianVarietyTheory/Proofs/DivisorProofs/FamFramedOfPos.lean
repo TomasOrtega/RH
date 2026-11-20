@@ -11,11 +11,11 @@ open Module NumberField IsDedekindDomain
 open scoped Matrix ComplexOrder
 
 /- English proof (translation)
-Establish `hs : ∀ c, ((P c)ᴴ * G c * P c).PosSemidef` using `fun c => (hG c).posSemidef.conjTranspose_mul_mul_same (P c)`. Establish `hS` using `Matrix.posSemidef_sum (s := Finset.univ) (fun c _ => hs c)`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hS.1 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sum_mulVec, dotProduct_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, P c *ᵥ x ≠ 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hx (hinj x hcon)`. Use `Finset.sum_pos' (fun c _ => (hs c).dotProduct_mulVec_nonneg x) ⟨c, Finset.mem_univ c, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hG c).dotProduct_mulVec_pos hc`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : star x ⬝ᵥ (((P c)ᴴ * G c * P c) *ᵥ x) = star (P c *ᵥ x) ⬝ᵥ (G c *ᵥ (P c *ᵥ x))`. Simplify using `only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul]`. Rewrite using `[h2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_sum_dep {ι γ : Type} {κ : γ → Type} [Fintype ι] [Fintype γ] [∀ c, Fintype (κ c)]
     (G : ∀ c, Matrix (κ c) (κ c) ℂ) (hG : ∀ c, (G c).PosDef) (P : ∀ c, Matrix (κ c) ι ℂ)
@@ -43,9 +43,9 @@ open Formalism.L2.GlobalTheoryTheory.HLatOps Formalism.HermitianLatticesTheory
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Introduce `v`. Use `⟨fun x x' y => ?_, fun x y y' => ?_, fun a x y => ?_, fun a x y => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, fun c => (hH c v).1, Finset.sum_add_distrib]`. Simplify using `only [Pi.add_apply, fun c => (hH c v).2.1, Finset.sum_add_distrib]`. Simplify using `only [Pi.smul_apply, fun c => (hH c v).2.2.1, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, fun c => (hH c v).2.2.2, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isSesq_pi {γ : Type} [Fintype γ] {V : γ → Type} [∀ c, AddCommGroup (V c)] [∀ c, Module K (V c)]
     (H : ∀ c, InfinitePlace K → V c → V c → ℂ) (hH : ∀ c, IsSesq (H c)) :
@@ -58,15 +58,15 @@ theorem isSesq_pi {γ : Type} [Fintype γ] {V : γ → Type} [∀ c, AddCommGrou
   · simp only [Pi.smul_apply, fun c => (hH c v).2.2.2, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `v`. Set `P : ∀ c, Matrix (κ c) (Σ c, κ c) ℂ` to `fun c => Matrix.of fun i s => vecAt (b c) v (Pi.basis b s c) i`. Establish `hgram : gramOf (Pi.basis b) (fun (x y : ∀ c, V c) => ∑ c, H c v (x c) (y c)) = ∑ c, (P c)ᴴ * gramOf (b c) (H c v) * P c`. Use extensionality with `s t`. Simplify using `only [Matrix.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[gramOf, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[sesq_eq_sum (hH c) (b c) v]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, P, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hgram]`. Use `posDef_sum_dep _ (fun c => hP c v) P fun x hx => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `⟨c, i⟩`. Establish `h1` using `congrFun (hx c) i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2 : ∀ s, P c i s = if s = ⟨c, i⟩ then 1 else 0`. Introduce `s`. Establish `: P c i s = v.embedding ((Pi.basis b).repr (Pi.basis b s) ⟨c, i⟩)`. Rewrite using `[Pi.basis_repr]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, Basis.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify `h1` using `[Matrix.mulVec, dotProduct, h2]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem posAt_pi {γ : Type} [Fintype γ] [DecidableEq γ] {V : γ → Type} [∀ c, AddCommGroup (V c)] [∀ c, Module K (V c)]
     {κ : γ → Type} [∀ c, Fintype (κ c)] [∀ c, DecidableEq (κ c)] (b : ∀ c, Basis (κ c) K (V c))
@@ -98,11 +98,11 @@ theorem posAt_pi {γ : Type} [Fintype γ] [DecidableEq γ] {V : γ → Type} [�
   simpa [Matrix.mulVec, dotProduct, h2] using h1
 
 /- English proof (translation)
-Set `e : (Fin (Fintype.card ι) → K) ≃ₗ[K] V` to `(b.reindex (Fintype.equivFin ι)).equivFun.symm`. Set `c` to `Pi.basisFun K (Fin (Fintype.card ι))`. Establish `hH'` using `isSesq_comp hH e.toLinearMap`. Establish `hP'` using `posAt_comp b c hH hP e.toLinearMap e.injective`. Establish `hs` using `fun v => frameOf_spec (hP' v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, e, fun v => frameOf (gramOf c fun x y => H v (e x) (e y)), fun v => (hs v).1, fun v x => ?_⟩` and prove the remaining obligations. Rewrite using `[← majAt_self]`. Establish `e1` using `sesq_eq_sum (isSesq_maj c (fun v => frameOf (gramOf c fun x y => H v (e x) (e y)))) c v x x`. Establish `e2` using `sesq_eq_sum hH' c v x x`. Rewrite `e1` using `[gramOf_maj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Establish `e3` using `(hs v).2`. Simplify using `only [LinearEquiv.coe_coe] at e3 ⊢`. Rewrite using `[e3]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frames {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
     (H : InfinitePlace K → V → V → ℂ) (hH : IsSesq H) (hP : PosAt b H) :
@@ -124,7 +124,7 @@ theorem exists_frames {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [
   rw [e3]
 
 /- English proof (translation)
-The claim follows from `exists_frames (Pi.basis fun b => (F.mem b).hB (h b)) _ (isSesq_pi (fun b v (φ ψ : (F.mem b).EqFun) => (F.mem b).ipAt (h b) v φ ψ) fun b => (F.mem b).isSesq_ipAt (h b)) (posAt_pi _ (fun b v (φ ψ : (F.mem b).EqFun) => (F.mem b).ipAt (h b) v φ ψ) (fun b => (F.mem b).isSesq_ipAt (h b …`.
+A detailed English derivation is pending.
 -/
 theorem famFramed_of_pos (F : Formalism.L2.Col.GFam K) (h : F.Ok)
     (hpos : ∀ b (v : InfinitePlace K), ((F.mem b).gramV.map v.embedding).PosDef) : GlobalTheory.ColRows.FamFramed F h :=
@@ -138,7 +138,7 @@ end Generic
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColRows
 
 /- English proof (translation)
-Introduce `X hX Pr R W _ sel Sg mu I u j h`. Conclude with `famFramed_of_pos _ h fun _ v => (roundPk_ratP (W.lamTrue u j) (fun d : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs => d.1.Lsh) hX).pos v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem famFramed_chF : ∀ (X : Fields) (hX : X.Ok) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (I : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (u : Pr.Word) (j : ℕ) (h : (chF W sel mu I u j).Ok), FamFramed (chF W sel mu I u j) h := by
   intro X hX Pr R W _ sel Sg mu I u j h

@@ -10,7 +10,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.CocycleCount
 
 /- English proof (translation)
-Establish `h1 : Finite (A →ₗ[ZMod N] ZMod N)` using `DFunLike.finite _`. Establish `h2 : Finite (A →+ ZMod N)` using `DFunLike.finite _`. Use `⟨h1, le_trans ?_ (GlobalTheory.natCard_addMonoidHom_zmod_le N A)⟩` and prove the remaining obligations. Conclude with `Nat.card_le_card_of_injective (fun f => f.toAddMonoidHom) LinearMap.toAddMonoidHom_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_linear_le (N : ℕ) [NeZero N] (A : Type) [AddCommGroup A] [Module (ZMod N) A]
     [Finite A] : Finite (A →ₗ[ZMod N] ZMod N) ∧ Nat.card (A →ₗ[ZMod N] ZMod N) ≤ Nat.card A := by
@@ -20,11 +20,11 @@ theorem card_linear_le (N : ℕ) [NeZero N] (A : Type) [AddCommGroup A] [Module 
   exact Nat.card_le_card_of_injective (fun f => f.toAddMonoidHom) LinearMap.toAddMonoidHom_injective
 
 /- English proof (translation)
-Establish `hT` using `card_linear_le N M`. Establish `hTf : Finite (ReciprocityTheory.Gal.TDual (ZMod N) M)` using `hT.1`. Establish `hTc : Nat.card (ReciprocityTheory.Gal.TDual (ZMod N) M) ≤ Nat.card M` using `hT.2`. Set `A : Type` to `ReciprocityTheory.Gal.H0 ((ReciprocityTheory.Gal.twDual χ rho).comp (MonoidHom.id G))`. Establish `hA` using `card_linear_le N A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAc : Nat.card A ≤ Nat.card (ReciprocityTheory.Gal.TDual (ZMod N) M)` using `Nat.card_le_card_of_injective _ Subtype.val_injective`. Set `E : ReciprocityTheory.Gal.H2 rho ≃ (A →ₗ[ZMod N] ZMod N)` to `(Equiv.ofBijective _ hb).trans (LinearEquiv.congrRight e).toEquiv`. Use `hA.1` as an intermediate fact. Use `⟨Finite.of_equiv _ E.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr E]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA.2.trans (hAc.trans hTc)`.
+A detailed English derivation is pending.
 -/
 theorem card_H2_le (N : ℕ) [NeZero N] (G : Type) [Group G] [TopologicalSpace G]
     (M : Type) [AddCommGroup M] [Module (ZMod N) M] [Finite M] [TopologicalSpace M]
@@ -47,13 +47,13 @@ theorem card_H2_le (N : ℕ) [NeZero N] (G : Type) [Group G] [TopologicalSpace G
   exact hA.2.trans (hAc.trans hTc)
 
 /- English proof (translation)
-Establish `hle : ReciprocityTheory.Gal.B1 rho ≤ ReciprocityTheory.Gal.Z1 rho`. Introduce and unpack `_ ⟨m, rfl⟩`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Conclude with `(hrho.comp (continuous_id.prodMk continuous_const)).sub continuous_const`. Simplify using `only [ReciprocityTheory.Gal.amitsur_d0_apply, map_mul, Module.End.mul_apply, map_sub]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card ((ReciprocityTheory.Gal.B1 rho).comap (ReciprocityTheory.Gal.Z1 rho).subtype)`. Establish `h2 : Nat.card ((ReciprocityTheory.Gal.B1 rho).comap (ReciprocityTheory.Gal.Z1 rho).subtype) = Nat.card (ReciprocityTheory.Gal.B1 rho)` using `Nat.card_congr (Submodule.comapSubtypeEquivOfLe hle).toEquiv`. Establish `hk : LinearMap.ker (ReciprocityTheory.Gal.d0 rho) = ReciprocityTheory.Gal.H0 rho`. Use extensionality with `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, ReciprocityTheory.Gal.mem_riemannRochSpace_iff_regularAt_everywhere, funext_iff]`. Simplify using `only [ReciprocityTheory.Gal.amitsur_d0_apply, Pi.zero_apply, sub_eq_zero]`. Establish `h3` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker (ReciprocityTheory.Gal.d0 rho))`. Establish `h4 : Nat.card (M ⧸ LinearMap.ker (ReciprocityTheory.Gal.d0 rho)) = Nat.card (ReciprocityTheory.Gal.B1 rho)` using `Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv`. Rewrite `h3` using `[h4, hk]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_cocycles_mul_invariants_discrete (R : Type) [CommRing R] (G : Type) [Group G] [TopologicalSpace G]
     (M : Type) [AddCommGroup M] [Module R M] [TopologicalSpace M]
@@ -89,15 +89,13 @@ def repOfAction (N : ℕ) {G M : Type} [Monoid G] [AddCommGroup M] [Module (ZMod
   map_mul' g h := LinearMap.ext (hmul g h)
 
 /- English proof (translation)
-Take `⟨hf2, hc2⟩` from `card_H2_le _ _ M _ rho e hb`. Establish `hZ` using `card_cocycles_mul_invariants_discrete _ _ M rho hrho`. Establish `h0 : 0 < Nat.card (ReciprocityTheory.Gal.H0 rho)` using `Nat.card_pos`. Establish `h2 : 0 < Nat.card (ReciprocityTheory.Gal.H2 rho)` using `Nat.card_pos`. Establish `hM : 0 < Nat.card M` using `Nat.card_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ' : Nat.card (ReciprocityTheory.Gal.Z1 rho) = Nat.card (ReciprocityTheory.Gal.H2 rho) * Nat.card M ^ (d + 1)`. Apply `Nat.eq_of_mul_eq_mul_right h0` to reduce the goal to its premises. Rewrite using `[hZ, hEu]`. Expand and normalize the polynomial expressions, which then agree. Set `E : ↥{c : G' → M | IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)} ≃ ↥(ReciprocityTheory.Gal.Z1 rho)` to `{ toFun := fun c => ⟨fun g => c.1 (φ.symm g), c.2.1.continuous.comp hφ.2, fun g h => by beta_reduce`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Rewrite using `[ha, map_mul, c.2.2]⟩`. Use `invFun := fun c => ⟨fun g => c.1 (φ g), (IsLocallyConstant.iff_continuous _).2 (c.2.1.comp hφ.1), fun g h => by`. Use `c.2.2 (φ g) (φ h)` as an intermediate fact. Rewrite `this` using `[ha, φ.symm_apply_apply, ← map_mul]`. Conclude with `this⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `left_inv := fun c => Subtype.ext (funext fun g => congrArg c.1 (φ.symm_apply_apply g))`. Use `right_inv := fun c => Subtype.ext (funext fun g => congrArg c.1 (φ.apply_symm_apply g)) }`. Establish `hfin : Finite (ReciprocityTheory.Gal.Z1 rho)` using `Nat.finite_of_card_ne_zero (by rw [hZ']; positivity)`. Use `⟨Set.finite_coe_iff.1 (Finite.of_equiv _ E.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_coe_set_eq, Nat.card_congr E, hZ', pow_succ' _ (_ + 1)]`.
-
-Conclude with `Nat.mul_le_mul_right _ hc2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_of_euler (N : ℕ) [NeZero N] (G G' : Type) [Group G] [TopologicalSpace G]
     [Group G'] [TopologicalSpace G'] (φ : G' ≃* G) (hφ : Continuous φ ∧ Continuous φ.symm)
@@ -141,13 +139,13 @@ theorem count_of_euler (N : ℕ) [NeZero N] (G G' : Type) [Group G] [Topological
   exact Nat.mul_le_mul_right _ hc2
 
 /- English proof (translation)
-Introduce `hT hE l _ K r M _ _ a h1 hmul hr hlc`. Establish `hK : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Set `_ : TopologicalSpace M` to `⊥`. Establish `_ : DiscreteTopology M` using `⟨rfl⟩`. Establish `hr' : ∀ m : M, l ^ (r + 1) • m = 0` using `fun m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', mul_smul, hr, smul_zero]`. Establish `_ : NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Set `_ : Module (ZMod (l ^ (r + 1))) M` to `AddCommGroup.zmodModule hr'`. Set `φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `IntermediateField.fixingSubgroupEquiv K.1`. Establish `hφ : Continuous φ ∧ Continuous φ.symm` using `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `rho : Representation (ZMod (l ^ (r + 1))) (Formalism.GaloisCohomology.GK l K.1) M` to `repOfAction _ (fun g => a (φ.symm g)) (fun m => by rw [map_one, h1]) (fun g h m => by rw [map_mul, hmul])`. Establish `hrho : ReciprocityTheory.Gal.ContAction rho`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Conclude with `(hlc m).continuous.comp hφ.2`. Take `⟨⟨e⟩, -, -, -, hb⟩` from `hT l K.1 hK (r + 1) M rho (Nat.succ_pos r) hrho`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEu` using `hE l K.1 hK (r + 1) M rho (Nat.succ_pos r) hrho`. Conclude with `count_of_euler _ _ _ φ hφ M _ rho hrho e hb _ hEu a fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem cocycles_finite_ncard_le :
     Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (r : ℕ) (M : Type) [AddCommGroup M] [Finite M] (a : ↥(GK K) → M →+ M), (∀ m, a 1 m = m) → (∀ g h m, a (g * h) m = a g (a h m)) → (∀ m : M, l ^ r • m = 0) → (∀ m, IsLocallyConstant fun g => a g m) → {c : ↥(GK K) → M | IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)}.Finite ∧ {c : ↥(GK K) → M | IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)}.ncard ≤ Nat.card M ^ (Module.finrank ℚ_[l] ↥K.1 + 2) := by

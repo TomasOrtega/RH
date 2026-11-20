@@ -14,13 +14,13 @@ def HaarUniqueSF : Prop :=
     Formalism.MainNotions.S.IsHaarOn U μ → ∃ c : ℝ≥0, c ≠ 0 ∧ μ = c • μ₀
 
 /- English proof (translation)
-Introduce `k r U μ₀ μ hU h₀ hμ`. Establish `: Fact (IsClosedSubgroup U)` using `⟨hU⟩`. Take `⟨hσ, hne, hconc, hleft⟩` from `hμ`. Establish `: IsFiniteMeasureOnCompacts μ₀` using `⟨h₀.finite_compact⟩`. Establish `hcμ : μ (HaarSigmaFiniteUniqueness.Aset U)ᶜ = 0` using `hconc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcν : μ₀ (HaarSigmaFiniteUniqueness.Aset U)ᶜ = 0` using `h₀.conc`. Use `HaarSigmaFiniteUniqueness.sigmaFinite_comap (U := U) μ` as an intermediate fact. Use `HaarSigmaFiniteUniqueness.sigmaFinite_comap (U := U) μ₀` as an intermediate fact. Use `HaarSigmaFiniteUniqueness.isMulLeftInvariant_comap (U := U) μ hcμ hleft` as an intermediate fact. Use `HaarSigmaFiniteUniqueness.isMulLeftInvariant_comap (U := U) μ₀ hcν h₀.left` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμS : μ.comap (Subtype.val : HaarSigmaFiniteUniqueness.Aset U → Mt k r) ≠ 0` using `fun h0 => hne (by`. Rewrite using `[← HaarSigmaFiniteUniqueness.map_comap_val (U := U) μ hcμ, h0, Measure.map_zero])`. Establish `hνS : μ₀.comap (Subtype.val : HaarSigmaFiniteUniqueness.Aset U → Mt k r) ≠ 0` using `fun h0 => h₀.ne_zero (by`. Rewrite using `[← HaarSigmaFiniteUniqueness.map_comap_val (U := U) μ₀ hcν, h0, Measure.map_zero])`. Take `⟨c, hc0, hc⟩` from `HaarSigmaFiniteUniqueness.eq_smul_of_sigmaFinite _ _ hμS hνS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Rewrite using `[← HaarSigmaFiniteUniqueness.map_comap_val (U := U) μ hcμ, hc, Measure.map_smul, HaarSigmaFiniteUniqueness.map_comap_val (U := U) μ₀ hcν]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem haarUniqueSF' : HaarUniqueSF := by
   intro k r U μ₀ μ hU h₀ hμ
@@ -43,7 +43,7 @@ theorem haarUniqueSF' : HaarUniqueSF := by
     HaarSigmaFiniteUniqueness.map_comap_val (U := U) μ₀ hcν]
 
 /- English proof (translation)
-The claim follows from `haarUniqueSF'`.
+A detailed English derivation is pending.
 -/
 theorem haarUniqueSF (_h : UnitaryGroupStructuralFacts) : HaarUniqueSF := haarUniqueSF'
 

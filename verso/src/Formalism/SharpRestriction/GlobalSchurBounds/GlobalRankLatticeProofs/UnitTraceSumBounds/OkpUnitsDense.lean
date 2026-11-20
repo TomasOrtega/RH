@@ -22,41 +22,37 @@ def OkpTwoUnits2 (D : D7) : Prop :=
       ‖β.1‖ = 1 ∧ ‖β.2‖ = 1 ∧ ‖γ.1‖ = 1 ∧ ‖γ.2‖ = 1 ∧ α = β + γ
 
 /- English proof (translation)
-Establish `hsqK : D.host.conj D.host.sqd ∈ D.host.K`. Unfold `Formalism.HC.HostRaw.K`. Rewrite using `[D.host.gal_sqd]`. Conclude with `mul_mem (intCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _)`. Establish `hsq : D.host.conj (D.host.conj D.host.sqd) = D.host.sqd`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ u : ℤˣ, (u : ℤ) * u = 1` using `fun u => by first`. Consider the case `exact Int.units_coe_mul_self u`. Consider the case `(rw [← Units.val_mul, Int.units_mul_self, Units.val_one])`. Consider the case `(rcases Int.units_eq_one_or u with h | h <;> simp [h])`. Rewrite using `[D.host.gal_sqd, map_mul, map_intCast, D.host.gal_sqd, ← mul_assoc, ← Int.cast_mul, hu, Int.cast_one, one_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmemK : ∀ y : D.host.E, y ∈ D.host.K → D.host.conj y ∈ D.host.K ∧ D.host.conj (D.host.conj y) = y` using `by clear H1 H2 hOK hd hU ht hN he ha hB`. Unfold `Formalism.HC.HostRaw.K at hsqK ⊢`. Introduce `y hy`. Proceed by induction on `hy using IntermediateField.adjoin_induction`. Apply the tactic sequence `all_goals simp_all [Set.mem_singleton_iff, map_add, map_mul, map_inv₀, map_neg, AlgEquiv.commutes, add_mem, mul_mem, inv_mem, neg_mem, IntermediateField.algebraMap_mem]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : ∀ x : D.host.E, D.host.φ₀ x ∈ Qbar`. Introduce `x`. Establish `hx : IsIntegral ℚ (D.host.φ₀ x)` using `(Algebra.IsIntegral.isIntegral (R := ℚ) x).map D.host.φ₀.toRatAlgHom`. Use `first`. Consider the case `exact hx`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact (mem_algebraicClosure_iff' (F := ℚ)).2 hx`. Consider the case `exact mem_algebraicClosure_iff.2 hx.isAlgebraic`. Establish `hL : ∀ {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (x : D.host.E), lamC lam (D.host.φ₀ x) = lam ⟨D.host.φ₀ x, hQ x⟩`. Introduce `p _ lam x`. Unfold `lamC`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_pos (hQ x)]`. Establish `key : ∀ {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), (∀ α ∈ OKp D lam, ∀ β ∈ OKp D lam, α + β ∈ OKp D lam) ∧ (∀ α ∈ OKp D lam, ∀ β ∈ OKp D lam, α * β ∈ OKp D lam) ∧ ((2 : ℂ_[p]), (2 : ℂ_[p])) ∈ OKp D lam ∧ (∀ α ∈ OKp D lam, α.swap ∈ OKp D lam)`. Introduce `p _ lam`. Set `ψ : D.host.E →+* Qbar` to `D.host.φ₀.codRestrict Qbar hQ`. Set `ι : 𝓞 D.host.K →+* D.host.E` to `(algebraMap D.host.K D.host.E).comp (algebraMap (𝓞 D.host.K) D.host.K)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `F : 𝓞 D.host.K →+* ℂ_[p] × ℂ_[p]` to `RingHom.prod ((lam.comp ψ).comp ι) ((lam.comp ψ).comp ((D.host.conj : D.host.E →+* D.host.E).comp ι))`. Establish `hF : ∀ a : 𝓞 D.host.K, F a = (tauK D lam (a : D.host.K), tauKc D lam (a : D.host.K))`. Introduce `a`. Unfold `tauK tauKc`. Rewrite using `[hL, hL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Establish `hR : OKp D lam = closure ((F.range : Subring (ℂ_[p] × ℂ_[p])) : Set (ℂ_[p] × ℂ_[p]))`. Unfold `OKp`. Use `congr 1`. Use extensionality with `x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_range, SetLike.mem_coe, RingHom.mem_range, hF]`. Establish `hcl : OKp D lam = ((F.range.topologicalClosure : Subring _) : Set (ℂ_[p] × ℂ_[p]))`. Rewrite using `[hR]`. Use `first`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact (Subring.coe_topologicalClosure _).symm`. Consider the case `exact (Subring.topologicalClosure_coe _).symm`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `α hα β hβ`. Rewrite `hα`, `hβ`, the goal using `[hcl]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `add_mem hα hβ`. Introduce `α hα β hβ`. Rewrite `hα`, `hβ`, the goal using `[hcl]`. Conclude with `mul_mem hα hβ`. Establish `e : ((2 : ℂ_[p]), (2 : ℂ_[p])) = 1 + 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `ext <;> norm_num`. Rewrite using `[hcl, e]`. Conclude with `add_mem (one_mem _) (one_mem _)`. Introduce `α hα`. Rewrite `hα`, the goal using `[hR]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `map_mem_closure continuous_swap hα ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[SetLike.mem_coe, RingHom.mem_range]`. Take `⟨a, rfl⟩` from `hx`. Take `⟨hc, hcc⟩` from `hmemK ((a : D.host.K) : D.host.E) (a : D.host.K).2`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `z : D.host.K` to `⟨D.host.conj ((a : D.host.K) : D.host.E), hc⟩`. Establish `h1 : IsIntegral ℤ (a : D.host.K)` using `by first`. Consider the case `exact a.2`. Consider the case `exact NumberField.RingOfIntegers.isIntegral_coe a`. Establish `h2` using `h1.map (((D.host.conj : D.host.E →+* D.host.E).comp (algebraMap D.host.K D.host.E)).toIntAlgHom)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz : IsIntegral ℤ z` using `(isIntegral_algHom_iff (x := z) ((algebraMap D.host.K D.host.E).toIntAlgHom) (algebraMap D.host.K D.host.E).injective).1 h2`. Use `⟨⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hF a]`. Use `(hF _).trans (Prod.ext rfl ?_)` and prove the remaining obligations. Use `show lamC lam (D.host.φ₀ (D.host.conj (D.host.conj ((a : D.host.K) : D.host.E)))) = lamC lam (D.host.φ₀ ((a : D.host.K) : D.host.E))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcc]`. Introduce `p _ cc δ g hAt hp`. Take `⟨hadd, hmul, htwo, hswap⟩` from `key g.lam`. Establish `hOk : g.Ok` using `hAt.2.2.2.2`. Apply `H1 p g (OKp D g.lam) hOk hp htwo hswap hadd hmul (he p cc δ g hAt) (ha p cc δ g hAt).1 (ht p g.lam) (hN p g.lam) (hU p g.lam hp) (hB p cc δ g hAt).1` to reduce the goal to its premises.
-
-Introduce `α hα h1 h2`. Establish `hcl` using `hd p g.lam hp α hα h1 h2`. Use `H2 p g _ hOk ?_ ?_ α hcl` and prove the remaining obligations. Introduce and unpack `_ ⟨a, _, rfl⟩`. Apply `he p cc δ g hAt` to reduce the goal to its premises.
-
-Unfold `OKp`. Conclude with `subset_closure ⟨a, rfl⟩`. Introduce and unpack `_ ⟨a, hcop, rfl⟩`. Conclude with `hOK p cc δ g hAt hp a hcop`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem phNorm_of (H1 : PhNormOfUnits) (H2 : PhNormClosed) (D : D7) (hOK : PhNormOK D) (hd : OkpUnitsDense D)
     (hU : OkpTwoUnits2 D) (ht : OkpTrace D) (hN : OkpNorm D) (he : endInt D) (ha : addInt D) (hB : beBiadd D) :

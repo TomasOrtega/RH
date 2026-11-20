@@ -13,42 +13,42 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.RealTr.cfBasic n).1 x y`.
+A detailed English derivation is pending.
 -/
 private theorem ex_add' {n : ℕ} (x y : Wt n) : ex (x + y) = ex x * ex y := (UpperTheory.RealTr.cfBasic n).1 x y
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.RealTr.cfBasic n).2.1`.
+A detailed English derivation is pending.
 -/
 private theorem ex_zero' {n : ℕ} : ex (0 : Wt n) = 1 := (UpperTheory.RealTr.cfBasic n).2.1
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.RealTr.cfBasic n).2.2.1 f g h`.
+A detailed English derivation is pending.
 -/
 private theorem fr_ext {n : ℕ} (f g : FR n) (h : ∀ x, cf f x = cf g x) : f = g :=
   (UpperTheory.RealTr.cfBasic n).2.2.1 f g h
 
 /- English proof (translation)
-The claim follows from `((UpperTheory.RealTr.cfBasic n).2.2.2.1 f g 0 x).1`.
+A detailed English derivation is pending.
 -/
 private theorem cf_add' {n : ℕ} (f g : FR n) (x : Wt n) : cf (f + g) x = cf f x + cf g x :=
   ((UpperTheory.RealTr.cfBasic n).2.2.2.1 f g 0 x).1
 
 /- English proof (translation)
-The claim follows from `((UpperTheory.RealTr.cfBasic n).2.2.2.1 f f c x).2`.
+A detailed English derivation is pending.
 -/
 private theorem cf_smul' {n : ℕ} (c : ℂ) (f : FR n) (x : Wt n) : cf (c • f) x = c * cf f x :=
   ((UpperTheory.RealTr.cfBasic n).2.2.2.1 f f c x).2
 
 /- English proof (translation)
-Use `cf_smul' (0 : ℂ) (0 : FR n) x` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cf_zero' {n : ℕ} (x : Wt n) : cf (0 : FR n) x = 0 := by
   have := cf_smul' (0 : ℂ) (0 : FR n) x
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [cf_zero']`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, cf_add', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem cf_sum' {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → FR n) (x : Wt n) :
     cf (∑ i ∈ s, f i) x = ∑ i ∈ s, cf (f i) x := by
@@ -58,14 +58,14 @@ private theorem cf_sum' {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → FR n) 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, cf_add', ih]
 
 /- English proof (translation)
-Simplify using `[cf, ex, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cf_ex {n : ℕ} (y x : Wt n) : cf (ex y) x = if y = x then 1 else 0 := by
   classical
   simp [cf, ex, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ex_zero']`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, ex_add']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem ex_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → Wt n) :
     ∏ i ∈ s, ex (f i) = ex (∑ i ∈ s, f i) := by
@@ -75,7 +75,7 @@ private theorem ex_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → Wt n) :
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, ex_add']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [wtB, rt, Finset.sum_apply, Pi.sub_apply, Finset.sum_sub_distrib, Pi.single_apply]`. Simplify using `[Finset.sum_boole, eq_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem wtB_sum {n : ℕ} (B : Finset (Fin n × Fin n)) : wtB B = ∑ p ∈ B, rt p.1 p.2 := by
   funext c
@@ -83,15 +83,15 @@ private theorem wtB_sum {n : ℕ} (B : Finset (Fin n × Fin n)) : wtB B = ∑ p 
   simp [Finset.sum_boole, eq_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `h1 : ((posP n).filter fun p => p.1 = c).card = n - 1 - (c : ℕ)`. Establish `: ((posP n).filter fun p => p.1 = c) = (Finset.Ioi c).image (fun b => (c, b))`. Use extensionality with `⟨a, b⟩`. Simplify using `[posP]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨h, rfl⟩`. Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[this, Finset.card_image_of_injective _ (fun a b h => by simpa using h), Fin.card_Ioi]`. Establish `h2 : ((posP n).filter fun p => p.2 = c).card = (c : ℕ)`. Establish `: ((posP n).filter fun p => p.2 = c) = (Finset.Iio c).image (fun a => (a, c))`. Use extensionality with `⟨a, b⟩`. Simplify using `[posP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨h, rfl⟩`. Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[this, Finset.card_image_of_injective _ (fun a b h => by simpa using h), Fin.card_Iio]`. Establish `hc : (c : ℕ) + 1 ≤ n` using `c.2`. Establish `h3 : ((n - 1 - (c : ℕ) : ℕ) : ℝ) = (n : ℝ) - 1 - (c : ℕ)`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]; simp`. Simplify using `only [wtB, h1, h2, h3, Pi.smul_apply, smul_eq_mul, rhoV]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -120,7 +120,7 @@ private theorem wtB_pos (n : ℕ) : wtB (posP n) = (2 : ℝ) • rhoV n := by
   ring
 
 /- English proof (translation)
-Rewrite using `[chR, Finset.prod_one_add, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Rewrite using `[ex_sum, ← ex_add', wtB_sum, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem chR_eq (n : ℕ) : chR n = ∑ B ∈ (posP n).powerset, ex (rhoV n - wtB B) := by
   rw [chR, Finset.prod_one_add, Finset.mul_sum]
@@ -134,15 +134,15 @@ private def tw {n : ℕ} (w : Equiv.Perm (Fin n)) : FR n →ₐ[ℂ] FR n :=
       map_mul' := fun x y => by rw [← ex_add']; rfl }
 
 /- English proof (translation)
-Simplify using `[tw, ex, AddMonoidAlgebra.lift_single]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tw_ex {n : ℕ} (w : Equiv.Perm (Fin n)) (y : Wt n) : tw w (ex y) = ex (y ∘ w) := by
   simp [tw, ex, AddMonoidAlgebra.lift_single]
 
 /- English proof (translation)
-Proceed by induction on `f using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp [cf_zero']`. Consider the case `add f g hf hg => rw [map_add, cf_add', cf_add', hf, hg]`. Consider the case `single a b`. Establish `h : AddMonoidAlgebra.single a b = b • (ex a : FR n)` using `by simp [ex]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[h, map_smul, cf_smul', cf_smul', tw_ex, cf_ex, cf_ex]`. Simplify using `[w.surjective.injective_comp_right.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cf_tw {n : ℕ} (w : Equiv.Perm (Fin n)) (f : FR n) (x : Wt n) :
     cf (tw w f) (x ∘ w) = cf f x := by
@@ -155,15 +155,15 @@ private theorem cf_tw {n : ℕ} (w : Equiv.Perm (Fin n)) (f : FR n) (x : Wt n) :
     simp [w.surjective.injective_comp_right.eq_iff]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign w) with h | h <;> simp [sg, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sg_ne {n : ℕ} (w : Equiv.Perm (Fin n)) : sg w ≠ 0 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign w) with h | h <;> simp [sg, h]
 
 /- English proof (translation)
-Use `fr_ext _ _ fun x => ?_` and prove the remaining obligations. Establish `h1` using `cf_tw w g (x ∘ (w⁻¹ : Equiv.Perm (Fin n)))`. Establish `h2` using `hg w⁻¹ x`. Establish `h3 : (x ∘ (w⁻¹ : Equiv.Perm (Fin n))) ∘ w = x` using `by funext a; simp`. Rewrite `h1` using `[h3]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, cf_smul', h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tw_asym {n : ℕ} (w : Equiv.Perm (Fin n)) (g : FR n) (hg : ASym g) :
     tw w g = sg w⁻¹ • g := by
@@ -175,9 +175,9 @@ private theorem tw_asym {n : ℕ} (w : Equiv.Perm (Fin n)) (g : FR n) (hg : ASym
   rw [h1, cf_smul', h2]
 
 /- English proof (translation)
-Introduce `w x`. Establish `h1 : tw w e = tw w d * tw w h` using `by rw [hm, map_mul]`. Rewrite `h1` using `[tw_asym w e he, tw_asym w d hd, hm, smul_mul_assoc]`. Establish `h2 : d * h = d * tw w h` using `smul_right_injective _ (sg_ne w⁻¹) h1`. Establish `h3 : h = tw w h` using `mul_left_cancel₀ hd0 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [h3]`. Conclude with `cf_tw w h x`.
+A detailed English derivation is pending.
 -/
 private theorem sym_of_mul {n : ℕ} (d e h : FR n) (hd : ASym d) (he : ASym e) (hd0 : d ≠ 0)
     (hm : e = d * h) : Sym h := by
@@ -190,7 +190,7 @@ private theorem sym_of_mul {n : ℕ} (d e h : FR n) (hd : ASym d) (he : ASym e) 
   exact cf_tw w h x
 
 /- English proof (translation)
-Introduce `h`. Use `((UpperTheory.RealTr.cfBasic n).2.2.2.2.2.2.2.2.2.2.2.1 x hx).1` as an intermediate fact. Rewrite `this` using `[h, cf_zero']`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem alt_ne {n : ℕ} (x : Wt n) (hx : StrictAnti x) : alt x ≠ 0 := by
   intro h
@@ -199,11 +199,11 @@ private theorem alt_ne {n : ℕ} (x : Wt n) (hx : StrictAnti x) : alt x ≠ 0 :=
   exact zero_ne_one this
 
 /- English proof (translation)
-Establish `h2` using `UpperTheory.RealTr.denom n 2`. Establish `h1` using `UpperTheory.RealTr.denom n 1`. Simplify using `only [one_smul] at h1`. Rewrite using `[h2, h1, chR]`. Establish `e : ex ((2 : ℝ) • rhoV n) = ex (rhoV n) * ex (rhoV n)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ex_add', two_smul]`. Establish `f : ∀ p ∈ posP n, (1 - ex (-((2 : ℝ) • rt p.1 p.2)) : FR n) = (1 - ex (-rt p.1 p.2)) * (1 + ex (-rt p.1 p.2))`. Introduce `p _`. Establish `: ex (-((2 : ℝ) • rt p.1 p.2)) = ex (-rt p.1 p.2) * ex (-rt p.1 p.2)`. Rewrite using `[← ex_add', two_smul, neg_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl f, Finset.prod_mul_distrib, e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem denom_mul (n : ℕ) : alt ((2 : ℝ) • rhoV n) = alt (rhoV n) * chR n := by
   have h2 := UpperTheory.RealTr.denom n 2
@@ -222,15 +222,15 @@ private theorem denom_mul (n : ℕ) : alt ((2 : ℝ) • rhoV n) = alt (rhoV n) 
   ring
 
 /- English proof (translation)
-Rewrite using `[chR_eq, cf_sum', cf_sum']`. Use `Finset.sum_nbij' (fun B => posP n \ B) (fun B => posP n \ B) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `B _`. Simplify using the standard rewrite rules. Introduce `B _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `B hB`. Simplify using `using Finset.inter_eq_right.2 (Finset.mem_powerset.1 hB)`. Introduce `B hB`. Simplify using `using Finset.inter_eq_right.2 (Finset.mem_powerset.1 hB)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `B hB`. Establish `hs : wtB (posP n \ B) + wtB B = (2 : ℝ) • rhoV n`. Rewrite using `[← wtB_pos, wtB_sum, wtB_sum, wtB_sum]`. Conclude with `Finset.sum_sdiff (Finset.mem_powerset.1 hB)`. Establish `hy : rhoV n - wtB (posP n \ B) = -(rhoV n - wtB B)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: wtB (posP n \ B) = (2 : ℝ) • rhoV n - wtB B` using `eq_sub_of_add_eq hs`. Rewrite using `[this, two_smul]`. Normalize the expressions using the abelian group laws. Establish `hi : (rhoV n - wtB B = -x) ↔ (-(rhoV n - wtB B) = x)` using `⟨fun e => by rw [e, neg_neg], fun e => by rw [← e, neg_neg]⟩`. Rewrite using `[hy, cf_ex, cf_ex]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi]`.
+A detailed English derivation is pending.
 -/
 private theorem even_chR (n : ℕ) (x : Wt n) : cf (chR n) (-x) = cf (chR n) x := by
   classical
@@ -253,9 +253,9 @@ private theorem even_chR (n : ℕ) (x : Wt n) : cf (chR n) (-x) = cf (chR n) x :
     simp only [hi]
 
 /- English proof (translation)
-Rewrite `h` using `[chR_eq, cf_sum']`. Take `⟨B, hB, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Use `⟨B, Finset.mem_powerset.1 hB, ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[cf_ex]`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne (if_neg fun e => hc e.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem supp_chR (n : ℕ) (x : Wt n) (h : cf (chR n) x ≠ 0) :
     ∃ B ⊆ posP n, x = rhoV n - wtB B := by
@@ -267,35 +267,35 @@ private theorem supp_chR (n : ℕ) (x : Wt n) (h : cf (chR n) x ≠ 0) :
   exact hne (if_neg fun e => hc e.symm)
 
 /- English proof (translation)
-Simplify using `[rt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_self {n : ℕ} (a : Fin n) : rt a a = 0 := by simp [rt]
 
 /- English proof (translation)
-Simplify using `[rt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_swap {n : ℕ} (a b : Fin n) : rt b a = -rt a b := by simp [rt]
 
 /- English proof (translation)
-Use `set g : Fin n × Fin n → FR n := fun p => 1 + ex (rt p.1 p.2) with hg`. Establish `h0 : ∏ a, ∏ b, (1 + ex (rt a b)) = ∏ p : Fin n × Fin n, g p`. Rewrite using `[Fintype.prod_prod_type]`. Establish `hsplit : ∏ p : Fin n × Fin n, g p = (∏ p ∈ posP n, g p) * ((∏ a : Fin n, g (a, a)) * ∏ p ∈ posP n, g (p.2, p.1))`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun p : Fin n × Fin n => p.1 < p.2) g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not (Finset.univ.filter fun p : Fin n × Fin n => ¬ p.1 < p.2) (fun p => p.1 = p.2) g]`. Use `congr 1`. Use `Finset.prod_nbij' (fun p => p.1) (fun a => (a, a)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a _`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a, b⟩ h`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h.2]`. Introduce `a _`. Both sides reduce to the same expression. Introduce and unpack `⟨a, b⟩ h`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h.2]`. Use `Finset.prod_nbij' (fun p => (p.2, p.1)) (fun p => (p.2, p.1)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ h`. Simplify using `at h`. Simplify using `only [posP, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_of_le_of_ne h.1 (Ne.symm h.2)`. Introduce and unpack `⟨a, b⟩ h`. Simplify using `only [posP, Finset.mem_filter, Finset.mem_univ, true_and] at h`. Simplify using `[h.le, h.ne']`. Introduce `p _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `p _`. Both sides reduce to the same expression. Introduce `p _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : ∏ a : Fin n, g (a, a) = (2 : FR n) ^ n`. Simplify using `[hg, rt_self, ex_zero', one_add_one_eq_two]`. Establish `hs : ∀ p ∈ posP n, g (p.2, p.1) = 1 + ex (-rt p.1 p.2)`. Introduce `p _`. Simplify using `only [hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[rt_swap p.1 p.2]`. Establish `hq : ∏ p ∈ posP n, g p = ex ((2 : ℝ) • rhoV n) * ∏ p ∈ posP n, (1 + ex (-rt p.1 p.2))`. Establish `: ∀ p ∈ posP n, g p = ex (rt p.1 p.2) * (1 + ex (-rt p.1 p.2))`. Introduce `p _`. Rewrite using `[mul_add, mul_one, ← ex_add', add_neg_cancel, ex_zero', add_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_congr rfl this, Finset.prod_mul_distrib, ex_sum, ← wtB_sum, wtB_pos]`. Establish `e2 : ex ((2 : ℝ) • rhoV n) = ex (rhoV n) * ex (rhoV n)` using `by rw [← ex_add', two_smul]`. Rewrite using `[h0, hsplit, hd, Finset.prod_congr rfl hs, hq, e2, Algebra.smul_def, chR]`. Simplify using `only [map_pow, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem prod_all (n : ℕ) :
     ∏ a, ∏ b, (1 + ex (rt a b)) = (2 : ℂ) ^ n • (chR n * chR n) := by
@@ -348,11 +348,11 @@ private theorem prod_all (n : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `n`. Establish `hρ : StrictAnti (rhoV n)` using `(UpperTheory.RealTr.rearr n).2.2.1`. Establish `h2ρ : StrictAnti ((2 : ℝ) • rhoV n)` using `fun a b h => by`. Use `hρ h` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA` using `(UpperTheory.RealTr.cfBasic n).2.2.2.2.2.2.2.2.1`. Establish `hm` using `denom_mul n`. Establish `hd` using `alt_ne _ hρ`. Use `⟨hm, hd, ?_, sym_of_mul _ _ _ (hA _) (hA _) hd hm, even_chR n, supp_chR n, prod_all n, wtB_pos n, wtB_sum⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Rewrite `hm` using `[h0, mul_zero]`. Conclude with `alt_ne _ h2ρ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.chRF :
     ∀ n : ℕ, alt ((2 : ℝ) • rhoV n) = alt (rhoV n) * chR n ∧ alt (rhoV n) ≠ 0 ∧ chR n ≠ 0 ∧ Sym (chR n) ∧ (∀ x, cf (chR n) (-x) = cf (chR n) x) ∧

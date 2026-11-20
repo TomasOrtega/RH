@@ -8,7 +8,7 @@ namespace LateralTheory.KummerTheory.IndPf
 open LateralTheory.KummerTheory.ContCut
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, isPullback_opens_inf U V, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Establish `hx : x ∈ (U ⊔ V)` using `by rw [h]; trivial`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMV_opens {Y : Scheme.{0}} (U V : Y.Opens) (h : U ⊔ V = ⊤) :
     IsMV (Y.homOfLE inf_le_left) (Y.homOfLE inf_le_right) U.ι V.ι := by
@@ -18,16 +18,14 @@ theorem isMV_opens {Y : Scheme.{0}} (U V : Y.Opens) (h : U ⊔ V = ⊤) :
   exact hx
 
 /- English proof (translation)
-The claim follows from `(isAffineHom_diagonal_iff (f := q)).mp inferInstance ⊤ (isAffineOpen_top _) V₁ (by simp) V₂ (by simp) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem inf_affine {Y : Scheme.{0}} {R : CommRingCat.{0}} (q : Y ⟶ Spec R) [IsSeparated q]
     {V₁ V₂ : Y.Opens} (h1 : IsAffineOpen V₁) (h2 : IsAffineOpen V₂) : IsAffineOpen (V₁ ⊓ V₂) :=
   (isAffineHom_diagonal_iff (f := q)).mp inferInstance ⊤ (isAffineOpen_top _) V₁ (by simp) V₂ (by simp) h1 h2
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `le_sup_right`. Conclude with `le_sup_of_le_left (le_iSup (fun j : Fin n => V j.castSucc) j)`.
-
-Conclude with `sup_le (iSup_le fun j => le_iSup V j.castSucc) (le_iSup V _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iSup_fin_succ_eq {Y : Scheme.{0}} {n : ℕ} (V : Fin (n + 1) → Y.Opens) :
     (⨆ i, V i) = (⨆ i : Fin n, V i.castSucc) ⊔ V (Fin.last n) := by
@@ -39,17 +37,15 @@ theorem iSup_fin_succ_eq {Y : Scheme.{0}} {n : ℕ} (V : Fin (n + 1) → Y.Opens
   · exact sup_le (iSup_le fun j => le_iSup V j.castSucc) (le_iSup V _)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Y q _ V _ hV`. Establish `: IsEmpty Y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ (⊤ : Y.Opens)` using `trivial`. Rewrite `hx` using `[← hV]`. Take `⟨i, _⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `i.elim0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsAffine Y` using `inferInstance`. Conclude with `hA Y q`. Consider the case `succ n ih`. Introduce `Y q _ V hA' hV`. Use `set U : Y.Opens := ⨆ i : Fin n, V i.castSucc with hUdef`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `set V' : Y.Opens := V (Fin.last n)`. Establish `hUV : U ⊔ V' = ⊤` using `by rw [← hV, iSup_fin_succ_eq]`. Use `hM _ _ U.ι V'.ι q (isMV_opens U V' hUV) ?_ ?_ ?_` and prove the remaining obligations. Use `ih U (U.ι ≫ q) (fun i => U.ι ⁻¹ᵁ V i.castSucc) (fun i => ?_) ?_` and prove the remaining obligations. Conclude with `(hA' _).preimage_of_isOpenImmersion U.ι (by rw [Scheme.Opens.opensRange_ι]; exact le_iSup (fun j : Fin n => V j.castSucc) i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.preimage_iSup, Scheme.Opens.ι_preimage_self]`. Establish `: IsAffine V'` using `hA' (Fin.last n)`. Conclude with `hA _ _`. Rewrite using `[← Category.assoc, Scheme.homOfLE_ι]`. Use `ih _ ((U ⊓ V').ι ≫ q) (fun i => (U ⊓ V').ι ⁻¹ᵁ (V i.castSucc ⊓ V')) (fun i => ?_) ?_` and prove the remaining obligations.
-
-Conclude with `(inf_affine q (hA' _) (hA' _)).preimage_of_isOpenImmersion _ (by rw [Scheme.Opens.opensRange_ι]`. Conclude with `inf_le_inf_right _ (le_iSup (fun j : Fin n => V j.castSucc) i))`. Rewrite using `[← Scheme.Hom.preimage_iSup, ← iSup_inf_eq, Scheme.Opens.ι_preimage_self]`.
+A detailed English derivation is pending.
 -/
 theorem main (R : CommRingCat.{0}) (P : ∀ X : Scheme.{0}, (X ⟶ Spec R) → Prop)
     (hA : ∀ (X : Scheme.{0}) [IsAffine X] (p : X ⟶ Spec R), P X p)
@@ -91,11 +87,11 @@ theorem main (R : CommRingCat.{0}) (P : ∀ X : Scheme.{0}, (X ⟶ Spec R) → P
       · rw [← Scheme.Hom.preimage_iSup, ← iSup_inf_eq, Scheme.Opens.ι_preimage_self]
 
 /- English proof (translation)
-Introduce `R P hA hM X p _ _`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Take `⟨s, hs, hU⟩` from `(isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens (X := X) (U := Set.univ)).mp ⟨isCompact_univ, isOpen_univ⟩`. Establish `: Finite s` using `hs`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `main R P hA hM n X p (fun i => ((e.symm i : s) : X.affineOpens)) (fun i => (e.symm i : s).1.2) ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`. Establish `hx : x ∈ (Set.univ : Set X)` using `trivial`. Rewrite `hx` using `[hU]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.mp hx`. Use `TopologicalSpace.Opens.mem_iSup.mpr ⟨e ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hxa`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Ind_of : LateralTheory.KummerTheory.ContCut.Ind := by
   intro R P hA hM X p _ _

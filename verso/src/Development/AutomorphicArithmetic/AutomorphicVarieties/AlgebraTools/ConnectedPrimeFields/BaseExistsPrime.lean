@@ -9,13 +9,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hk : Ring.KrullDimLE 0 (R ⧸ b)`. Rewrite using `[Ring.krullDimLE_zero_iff]`. Introduce `p hp`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective (Ideal.Quotient.mk b)` using `Ideal.Quotient.mk_surjective`. Establish `h1 : (p.comap (Ideal.Quotient.mk b)).IsMaximal`. Use `hc _ (Ideal.comap_isPrime _ _) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `p.zero_mem`. Establish `h2` using `Ideal.map_eq_top_or_isMaximal_of_surjective _ hs h1`. Rewrite `h2` using `[Ideal.map_comap_of_surjective _ hs]`. Conclude with `h2.resolve_left hp.ne_top`. Rewrite `hk` using `[Ring.krullDimLE_iff]`.
-
-Conclude with `absurd h (not_lt.2 (by simpa using hk))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem base_exists_prime {R : Type} [CommRing R] (b : Ideal R)
     (h : 0 < ringKrullDim (R ⧸ b)) : ∃ P : Ideal R, P.IsPrime ∧ b ≤ P ∧ ¬ P.IsMaximal := by
@@ -37,9 +35,9 @@ private theorem base_exists_prime {R : Type} [CommRing R] (b : Ideal R)
   exact absurd h (not_lt.2 (by simpa using hk))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI := hP`. Establish `hle : maximalIdeal A ≤ P.comap (algebraMap A R)` using `fun y hy => hcon y hy`. Establish `hne : P.comap (algebraMap A R) ≠ ⊤` using `(Ideal.comap_isPrime (algebraMap A R) P).ne_top`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : P.comap (algebraMap A R) = maximalIdeal A` using `((maximalIdeal.isMaximal A).eq_of_le hne hle).symm`. Establish `hmax : (P.comap (algebraMap A R)).IsMaximal`. Rewrite using `[heq]`. Conclude with `maximalIdeal.isMaximal A`. Conclude with `hm (Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hmax)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem base_exists_out {A R : Type} [CommRing A] [IsLocalRing A] [CommRing R]
     [Algebra A R] [Module.Finite A R] (P : Ideal R) (hP : P.IsPrime) (hm : ¬ P.IsMaximal) :
@@ -57,37 +55,35 @@ private theorem base_exists_out {A R : Type} [CommRing A] [IsLocalRing A] [CommR
   exact hm (Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hmax)
 
 /- English proof (translation)
-The claim follows from `Ideal.span_le.2 fun x hx => h x hx`.
+A detailed English derivation is pending.
 -/
 private theorem base_ofList_le {A : Type} [CommRing A] {xs : List A} {I : Ideal A}
     (h : ∀ x ∈ xs, x ∈ I) : Ideal.ofList xs ≤ I :=
   Ideal.span_le.2 fun x hx => h x hx
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span h`.
+A detailed English derivation is pending.
 -/
 private theorem base_mem_ofList {A : Type} [CommRing A] {xs : List A} {x : A}
     (h : x ∈ xs) : x ∈ Ideal.ofList xs :=
   Ideal.subset_span h
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ _ _ _ _ hCM xs b c hxs hdim h2 hrad hsup hb hc`. Use `haveI : IsNoetherianRing A := hCM.1`. Establish `hIm : Ideal.ofList xs ≤ maximalIdeal A` using `base_ofList_le hxs`. Establish `hIne : Ideal.ofList xs ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal A).ne_top hIm`. Use `haveI : IsAdicComplete (Ideal.ofList xs) A := cplFinite (A := A) (B := A) (Ideal.ofList xs) hIne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, v, hv, hreg⟩` from `reg2 hCM xs hxs hdim h2`. Take `⟨P, hP, hbP, hPm⟩` from `base_exists_prime b hb`. Take `⟨Q, hQ, hcQ, hQm⟩` from `base_exists_prime c hc`. Take `⟨y, hy, hyP⟩` from `base_exists_out (A := A) P hP hPm`. Take `⟨z, hz, hzQ⟩` from `base_exists_out (A := A) Q hQ hQm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcom : (maximalIdeal R).comap (algebraMap A R) = maximalIdeal A` using `by haveI := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := A) (maximalIdeal R)`. Conclude with `IsLocalRing.eq_maximalIdeal this`. Establish `hmem : ∀ a ∈ maximalIdeal A, algebraMap A R a ∈ (b ⊔ c).radical`. Introduce `a ha`. Rewrite using `[hsup, ← Ideal.mem_comap, hcom]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ha`. Establish `hmapI : ∀ {X : Ideal R}, X.IsPrime → b ⊓ c ≤ X → Ideal.map (algebraMap A R) (Ideal.ofList xs) ≤ X`. Introduce `X hX hbc`. Combine the equalities or inequalities in the displayed calculation. Use `core (Ideal.ofList xs) (fun m => Ideal.ofList (xs.map (fun x => x ^ (m + 1)))) u v b c P Q y z ?_ ?_ (fun m K => hreg m K) ?_ ?_ (hmem u hu) (hmem v hv) hP hQ hbP hcQ (hmapI hP (inf_le_left.trans hbP)) (hmapI hQ (inf_le_right.trans hcQ)) (hmem y hy) (hmem z hz) hyP hzQ` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m n hmn`. Apply `base_ofList_le` to reduce the goal to its premises. Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hw`. Establish `he : x ^ (n + 1) = x ^ (n - m) * x ^ (m + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[he]`. Conclude with `Ideal.mul_mem_left _ _ (base_mem_ofList (List.mem_map.2 ⟨x, hx, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Apply `base_ofList_le` to reduce the goal to its premises. Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hw`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ m) (Ideal.pow_mem_pow (base_mem_ofList hx) (m + 1))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m`. Apply `Ideal.exists_pow_le_of_le_radical_of_fg` to reduce the goal to its premises. Apply `base_ofList_le` to reduce the goal to its premises. Introduce `x hx`. Conclude with `⟨m + 1, base_mem_ofList (List.mem_map.2 ⟨x, hx, rfl⟩)⟩`.
-
-Use `⟨xs.toFinset, ?_⟩` and prove the remaining obligations. Rewrite using `[List.coe_toFinset]`. Conclude with `Ideal.mul_le_inf.trans (Ideal.le_radical.trans hrad.le)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.base :
     ∀ {A R : Type} [CommRing A] [IsLocalRing A] [IsDomain A] [CommRing R] [IsLocalRing R] [IsDomain R] [Algebra A R] [Module.Finite A R] [FaithfulSMul A R] [IsAdicComplete (maximalIdeal A) A], ReciprocityTheory.CA.IsCM A → ∀ (xs : List A) (b c : Ideal R),

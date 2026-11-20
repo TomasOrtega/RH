@@ -18,7 +18,7 @@ section Gen
 variable {A : Type} [CommRing A] {M : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_two {B : Type} [AddCommMonoid B] (f : Fin (M + 2) → B) :
     ∑ i, f i = f 0 + (f 1 + ∑ i : Fin M, f i.succ.succ) := by
@@ -72,7 +72,7 @@ Both sides reduce to the same expression.
 end DgEntries
 
 /- English proof (translation)
-Use `Fin.cases h0 (fun i => ?_) i` and prove the remaining obligations. Conclude with `Fin.cases h1 h2 i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finset_fin_two_eq_cases {p : Fin (M + 2) → Prop} (h0 : p 0) (h1 : p 1) (h2 : ∀ i : Fin M, p i.succ.succ)
     (i : Fin (M + 2)) : p i := by
@@ -80,7 +80,7 @@ theorem finset_fin_two_eq_cases {p : Fin (M + 2) → Prop} (h0 : p 0) (h1 : p 1)
   exact Fin.cases h1 h2 i
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `finset_fin_two_eq_cases (p := fun i => P i j = Q i j) ?_ ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `finset_fin_two_eq_cases (p := fun j => P 0 j = Q 0 j) h00 h01 h0r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => P 1 j = Q 1 j) h10 h11 h1r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => P i.succ.succ j = Q i.succ.succ j) (hr0 i) (hr1 i) (hrr i) j`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mat_ext2 {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
     (h00 : P 0 0 = Q 0 0) (h01 : P 0 1 = Q 0 1) (h10 : P 1 0 = Q 1 0) (h11 : P 1 1 = Q 1 1)
@@ -100,46 +100,46 @@ Both sides reduce to the same expression.
 -/
 @[simp] theorem one_zero_zero : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 0 0 = 1 := rfl
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_eq _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem one_one_one : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 1 = 1 :=
   Matrix.one_apply_eq _
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem one_zero_one : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 0 1 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem one_one_zero : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 0 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem one_zero_rest (j : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 0 j.succ.succ = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem one_one_rest (j : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 j.succ.succ = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem one_rest_zero (i : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ 0 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
 /- English proof (translation)
-The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem one_rest_one (i : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ 1 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne]`. Simplify using `using h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 @[simp] theorem one_rest_rest (i j : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ j.succ.succ =
@@ -150,13 +150,13 @@ Distinguish the cases in `h : i = j`. Substitute `h` using the available equalit
     simpa using h
 
 /- English proof (translation)
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_one : dg (1 : Matrix (Fin M) (Fin M) A) = 1 := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[Matrix.mul_apply, sum_two]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dg_mul (u v : Matrix (Fin M) (Fin M) A) : dg (u * v) = dg u * dg v := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>
@@ -169,7 +169,7 @@ def hv (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (x y : Fin M → A) : A :=
   ∑ b, rowv s J x b * y b
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, sum_two, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, mul_zero, mul_one, zero_mul, Finset.sum_const …`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_entry (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) (i j : Fin (M + 2)) :
@@ -185,7 +185,7 @@ def ColE (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) : Prop :=
   ∀ i, P i 0 = (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hQ _]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_col {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hQ : ColE Q) (i : Fin (M + 2)) :
     (P * Q) i 0 = P i 0 := by
@@ -194,9 +194,9 @@ theorem mul_col {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hQ : ColE Q) (i : 
   rw [← Matrix.mul_apply, Matrix.mul_one]
 
 /- English proof (translation)
-Apply the tactic sequence `have h := gram_entry s J P 0 j`. Rewrite `h` using `[hU]`. Establish `h00 : P 0 0 = 1` using `hC 0`. Establish `h10 : P 1 0 = 0` using `hC 1`. Establish `hr : (fun a : Fin M => P a.succ.succ 0) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Conclude with `hC _`. Rewrite `h` using `[h00, h10, hr]`. Simplify `h.symm` using `[hv, rowv]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem row_one (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hU : cT s P * hypOne J * P = hypOne J)
@@ -211,7 +211,7 @@ theorem row_one (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
   simpa [hv, rowv] using h.symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk, Matrix.mul_apply, sum_two, hP, hQ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_mul {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
     (hP : ∀ i : Fin M, P i.succ.succ 0 = 0) (hQ : ∀ j : Fin M, Q 1 j.succ.succ = 0) :
@@ -220,21 +220,21 @@ theorem blk_mul {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
   simp [blk, Matrix.mul_apply, sum_two, hP, hQ]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_one : blk (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) = 1 := by
   ext i j; simp [blk]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_dg (u : Matrix (Fin M) (Fin M) A) : blk (dg u) = u := by
   ext i j; simp [blk]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `have h := gram_entry s J P i.succ.succ j.succ.succ`. Rewrite `h` using `[hU, row_one s J hU hC j.succ.succ, hypOne_zero_rest, hypOne_rest_rest]`. Establish `h2 : P 1 i.succ.succ = 0` using `by rw [row_one s J hU hC]; rfl`. Rewrite `h` using `[h2]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_zero, mul_zero, zero_mul, add_zero, zero_add] at h`. Rewrite using `[h]`. Simplify using `[Matrix.mul_apply, cT, blk, hv, rowv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blk_unitary (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hU : cT s P * hypOne J * P = hypOne J)
@@ -249,9 +249,9 @@ theorem blk_unitary (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
   simp [Matrix.mul_apply, cT, blk, hv, rowv]
 
 /- English proof (translation)
-Establish `key : ∀ i j : Fin M, hv s J (fun a => u a i) (fun b => u b j) = J i j`. Introduce `i j`. Use `congrFun (congrFun hu i) j` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Matrix.mul_apply, cT, hv, rowv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> rw [gram_entry] <;>`. Simplify using `[key, hv, rowv, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest]`. Apply the tactic sequence `all_goals exact key _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_unitary (s : A →+* A) (J u : Matrix (Fin M) (Fin M) A) (hu : cT s u * J * u = J) :
     cT s (dg u) * hypOne J * dg u = hypOne J := by
@@ -283,33 +283,33 @@ def stabG (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) : Subgroup (GL (Fin (M 
 variable {s : A →+* A} {J : Matrix (Fin M) (Fin M) A}
 
 /- English proof (translation)
-The claim follows from `hg.1`.
+A detailed English derivation is pending.
 -/
 theorem stabG_unit {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) :
     cT s (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) * hypOne J * (g : Matrix _ _ A) = hypOne J := hg.1
 
 /- English proof (translation)
-The claim follows from `hg.2`.
+A detailed English derivation is pending.
 -/
 theorem stabG_col {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) :
     ColE (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) := hg.2
 
 /- English proof (translation)
-Rewrite using `[stabG_col hg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stabG_rest_zero {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) (i : Fin M) :
     (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ 0 = 0 := by
   rw [stabG_col hg]; simp
 
 /- English proof (translation)
-Rewrite using `[row_one s J (stabG_unit hg) (stabG_col hg)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stabG_row {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) (j : Fin M) :
     (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 j.succ.succ = 0 := by
   rw [row_one s J (stabG_unit hg) (stabG_col hg)]; rfl
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul]`. Conclude with `blk_mul (stabG_rest_zero hg) (stabG_row hh)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_mul_stabG {g h : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) (hh : h ∈ stabG s J) :
     blk ((g * h : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) =
@@ -339,7 +339,7 @@ theorem piG_val (g : stabG s J) :
       blk ((g : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) := rfl
 
 /- English proof (translation)
-The claim follows from `blk_unitary s J (stabG_unit g.2) (stabG_col g.2)`.
+A detailed English derivation is pending.
 -/
 theorem piG_mem (g : stabG s J) : piG s J g ∈ UJ s J :=
   blk_unitary s J (stabG_unit g.2) (stabG_col g.2)
@@ -359,7 +359,7 @@ theorem dgGL_val (u : GL (Fin M) A) :
       dg (u : Matrix (Fin M) (Fin M) A) := rfl
 
 /- English proof (translation)
-Use `⟨dg_unitary s J _ hu, fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => dg (u : Matrix (Fin M) (Fin M) A) i 0 = (1 : Matrix _ _ A) i 0) ?_ ?_ (fun i => ?_) i <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dgGL_mem {u : GL (Fin M) A} (hu : u ∈ UJ s J) : dgGL u ∈ stabG s J := by
   refine ⟨dg_unitary s J _ hu, fun i => ?_⟩
@@ -414,55 +414,55 @@ Both sides reduce to the same expression.
 end NEntries
 
 /- English proof (translation)
-Simplify using `[rowv, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowv_add (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) (b : Fin M) :
     rowv s J (w + w') b = rowv s J w b + rowv s J w' b := by
   simp [rowv, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[rowv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowv_neg (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w : Fin M → A) (b : Fin M) :
     rowv s J (-w) b = -rowv s J w b := by
   simp [rowv]
 
 /- English proof (translation)
-Simplify using `[rowv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowv_zero (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (b : Fin M) :
     rowv s J (0 : Fin M → A) b = 0 := by
   simp [rowv]
 
 /- English proof (translation)
-Simplify using `[hv, rowv_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hv_neg_left (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) :
     hv s J (-w) w' = -hv s J w w' := by
   simp [hv, rowv_neg]
 
 /- English proof (translation)
-Simplify using `[hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hv_neg_right (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) :
     hv s J w (-w') = -hv s J w w' := by
   simp [hv]
 
 /- English proof (translation)
-Simplify using `[hv, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hv_single (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w : Fin M → A) (j : Fin M) :
     hv s J w (fun b => (1 : Matrix (Fin M) (Fin M) A) b j) = rowv s J w j := by
   simp [hv, Matrix.one_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp [rowv_zero]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nM_zero (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) : nM s J 0 0 = 1 := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp [rowv_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[Matrix.mul_apply, sum_two, rowv_add, Matrix.one_apply, hv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nM_mul (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) (z z' : A) :
     nM s J w z * nM s J w' z' = nM s J (w + w') (z + z' - hv s J w w') := by
@@ -471,7 +471,7 @@ theorem nM_mul (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → 
   ring
 
 /- English proof (translation)
-Simplify using `only [rowv, map_sum, map_mul, hs]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [hJ, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem s_rowv (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w : Fin M → A) (i : Fin M) :
     s (rowv s J w i) = ∑ b, J i b * w b := by
@@ -479,17 +479,17 @@ theorem s_rowv (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w : 
   exact Finset.sum_congr rfl fun b _ => by rw [hJ, mul_comm]
 
 /- English proof (translation)
-Use `mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_zero_zero]`. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_zero_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_one_zero]`. Rewrite using `[gram_entry]`. Simplify using `only [nM_zero_one, nM_one_one, nM_rest_one, map_one, one_mul, mul_one, hypOne_one_one]`. Rewrite using `[← hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `j`. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_zero_rest]`. Introduce `j`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[gram_entry]`. Simplify using `only [nM_zero_one, nM_one_one, nM_one_rest, nM_zero_rest, nM_rest_one, nM_rest_rest, map_one, one_mul, mul_zero, zero_add, hypOne_one_rest, hv_single]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Rewrite using `[gram_entry]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hv, rowv, hypOne_rest_zero]`. Introduce `i`. Rewrite using `[gram_entry]`. Simplify using `only [nM_zero_rest, nM_one_rest, nM_one_one, nM_zero_one, nM_rest_one, nM_rest_rest, map_neg, map_zero, s_rowv hs hJ, mul_one, zero_mul, add_zero, hypOne_rest_one]`. Simplify using `[hv, rowv, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_rest_rest, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nM_unitary (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w : Fin M → A) (z : A)
     (hz : z + s z + hv s J w w = 0) : cT s (nM s J w z) * hypOne J * nM s J w z = hypOne J := by
@@ -536,7 +536,7 @@ theorem nGL_val (hs : ∀ x, s (s x) = x) (w : Fin M → A) (z : A) (hz : z + s 
     ((nGL hs w z hz : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) = nM s J w z := rfl
 
 /- English proof (translation)
-Use `⟨nM_unitary hs hJ w z hz, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[nGL_val]`. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => nM s J w z i 0 = (1 : Matrix _ _ A) i 0) ?_ ?_ (fun i => ?_) i <;>`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem nGL_mem (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w : Fin M → A) (z : A)
     (hz : z + s z + hv s J w w = 0) : nGL hs w z hz ∈ stabG s J := by
@@ -546,27 +546,27 @@ theorem nGL_mem (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w :
     simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_nM (w : Fin M → A) (z : A) : blk (nM s J w z) = 1 := by
   ext i j; simp [blk]
 
 /- English proof (translation)
-Establish `h00 : P 0 0 = 1` using `hC 0`. Establish `h10 : P 1 0 = 0` using `hC 1`. Establish `hr0 : ∀ i : Fin M, P i.succ.succ 0 = 0` using `fun i => by rw [hC]; simp`. Establish `h11 : P 1 1 = 1` using `row_one s J hU hC 1`. Establish `h1r : ∀ j : Fin M, P 1 j.succ.succ = 0` using `fun j => row_one s J hU hC j.succ.succ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrr : ∀ i j : Fin M, P i.succ.succ j.succ.succ = (1 : Matrix (Fin M) (Fin M) A) i j` using `fun i j => congrFun (congrFun hb i) j`. Establish `e1 : ∀ j : Fin M, P 0 j.succ.succ = -rowv s J (fun i => P i.succ.succ 1) j`. Introduce `j`. Apply the tactic sequence `have h := gram_entry s J P 1 j.succ.succ`. Rewrite `h` using `[hU, hypOne_one_rest, h1r, h11]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_zero, map_one, one_mul, zero_add] at h`. Establish `e : (fun b : Fin M => P b.succ.succ j.succ.succ) = fun b => (1 : Matrix (Fin M) (Fin M) A) b j`. Use function extensionality and compare the values at `b`. Conclude with `hrr b j`. Rewrite `h` using `[e, hv_single]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eq_neg_of_add_eq_zero_left h.symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `using h00`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h10`. Simplify using `using h11`. Introduce `j`. Simplify using `using e1 j`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h1r j`. Introduce `i`. Simplify using `using hr0 i`. Introduce `i`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j`. Simplify using `using hrr i j`. Apply the tactic sequence `have h := gram_entry s J P 1 1`. Rewrite `h` using `[hU, hypOne_one_one, h11]`. Simplify using `only [map_one, one_mul, mul_one] at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eq_nM {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hU : cT s P * hypOne J * P = hypOne J)
     (hC : ColE P) (hb : blk P = 1) :
@@ -611,7 +611,7 @@ section Map
 variable {B : Type} [CommRing B] (φ : A →+* B)
 
 /- English proof (translation)
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_map (u : Matrix (Fin M) (Fin M) A) : (dg u).map φ = dg (u.map φ) := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp
@@ -622,21 +622,21 @@ Both sides reduce to the same expression.
 theorem blk_map (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) : blk (P.map φ) = (blk P).map φ := rfl
 
 /- English proof (translation)
-Simplify using `[rowv, hφ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowv_map {s' : B →+* B} (hφ : ∀ x, φ (s x) = s' (φ x)) (w : Fin M → A) (b : Fin M) :
     φ (rowv s J w b) = rowv s' (J.map φ) (fun i => φ (w i)) b := by
   simp [rowv, hφ]
 
 /- English proof (translation)
-Simplify using `[hv, rowv_map φ hφ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hv_map {s' : B →+* B} (hφ : ∀ x, φ (s x) = s' (φ x)) (w w' : Fin M → A) :
     φ (hv s J w w') = hv s' (J.map φ) (fun i => φ (w i)) (fun i => φ (w' i)) := by
   simp [hv, rowv_map φ hφ]
 
 /- English proof (translation)
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[rowv_map φ hφ, Matrix.one_apply, apply_ite φ]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem nM_map {s' : B →+* B} (hφ : ∀ x, φ (s x) = s' (φ x)) (w : Fin M → A) (z : A) :
     (nM s J w z).map φ = nM s' (J.map φ) (fun i => φ (w i)) (φ z) := by
@@ -650,7 +650,7 @@ section Vec
 variable {k : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => (dg u *ᵥ (Fin.cons x (Fin.cons y v) : Fin (M + 2) → A)) i = (Fin.cons x (Fin.cons y (u *ᵥ v)) : Fin (M + 2) → A) i) ?_ ?_ (fun i => ?_) i <;>`. Simplify using `[Matrix.mulVec, dotProduct, sum_two]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dg_mulVec_cons (u : Matrix (Fin M) (Fin M) A) (x y : A) (v : Fin M → A) :
     dg u *ᵥ (Fin.cons x (Fin.cons y v) : Fin (M + 2) → A) = Fin.cons x (Fin.cons y (u *ᵥ v)) := by
@@ -663,9 +663,9 @@ def topRow (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) (v : Fin M → A) : A :=
   ∑ i, P 0 i.succ.succ * v i
 
 /- English proof (translation)
-Establish `hrr : ∀ i j : Fin M, P i.succ.succ j.succ.succ = (1 : Matrix (Fin M) (Fin M) A) i j` using `fun i j => congrFun (congrFun hb i) j`. Use function extensionality and compare the values at `i`. Use `finset_fin_two_eq_cases (p := fun i => (P *ᵥ (Fin.cons x (Fin.cons 0 v) : Fin (M + 2) → A)) i = (Fin.cons (x + topRow P v) (Fin.cons 0 v) : Fin (M + 2) → A) i) ?_ ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct, sum_two, h00, topRow]`. Simplify using `[Matrix.mulVec, dotProduct, sum_two, h10, h1r]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, sum_two, hr0, hrr, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_cons_of_blk {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
     (h00 : P 0 0 = 1) (h10 : P 1 0 = 0) (hr0 : ∀ i : Fin M, P i.succ.succ 0 = 0)
@@ -682,7 +682,7 @@ theorem mulVec_cons_of_blk {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
   · simp [Matrix.mulVec, dotProduct, sum_two, hr0, hrr, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hrr : ∀ i j : Fin M, Q i.succ.succ j.succ.succ = (1 : Matrix (Fin M) (Fin M) A) i j` using `fun i j => congrFun (congrFun hQb i) j`. Simplify using `only [topRow, Matrix.mul_apply, sum_two, hP0, hQ, hrr, Finset.sum_add_distrib, add_mul, mul_zero, zero_add, one_mul, Matrix.one_apply, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem topRow_mul {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hP0 : P 0 0 = 1)
     (hQ : ∀ j : Fin M, Q 1 j.succ.succ = 0) (hQb : blk Q = 1) (v : Fin M → A) :
@@ -703,7 +703,7 @@ section Over
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[JR, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem JR_hypOne {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     JR (F := F) R (hypOne J) = hypOne (JR (F := F) R J) := by
@@ -722,13 +722,13 @@ theorem mat_mkH (g : GL (Fin M) (R ⊗[F] E)) (hg : g ∈ HR R σ J) :
     HA.mat R σ J (mkH R σ J g hg) = g := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.property (show HR R σ J from h)`.
+A detailed English derivation is pending.
 -/
 theorem mat_mem (h : HA R σ J) : HA.mat R σ J h ∈ HR R σ J :=
   Subtype.property (show HR R σ J from h)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (p := fun x => x ∈ HR R σ J) e`.
+A detailed English derivation is pending.
 -/
 theorem HA_ext {g h : HA R σ J} (e : HA.mat R σ J g = HA.mat R σ J h) : g = h :=
   Subtype.ext (p := fun x => x ∈ HR R σ J) e
@@ -744,14 +744,14 @@ Both sides reduce to the same expression.
 theorem mat_one' : HA.mat R σ J 1 = 1 := rfl
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_first (P : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) (i : Fin (M + 2)) :
     (P *ᵥ (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E)) i = P i 0 := by
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) i = (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem first_eq_one (i : Fin (M + 2)) :
     (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) i =
@@ -760,11 +760,9 @@ theorem first_eq_one (i : Fin (M + 2)) :
       (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e i`. Use `congrFun (congrFun e 0) i` as an intermediate fact. Express the relevant statement in the definitionally equal form `(((HA.mat R σ (hypOne J) h : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) *ᵥ (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E)) i = (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E) i at this`. Rewrite `this` using `[mulVec_first, first_eq_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `c`. Use function extensionality and compare the values at `a i`. Express the relevant statement in the definitionally equal form `(((HA.mat R σ (hypOne J) h : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) *ᵥ (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E)) i = (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E) i`. Rewrite using `[mulVec_first, first_eq_one]`.
-
-Conclude with `c i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colE_iff (h : HA R σ (hypOne J)) :
     actW R σ (hypOne J) h (e0 _ M) = e0 _ M ↔
@@ -786,7 +784,7 @@ theorem colE_iff (h : HA R σ (hypOne J)) :
     exact c i
 
 /- English proof (translation)
-Use `⟨?_, (colE_iff R σ J p.1).1 p.2⟩` and prove the remaining obligations. Rewrite using `[← JR_hypOne]`. Conclude with `mat_mem R σ (hypOne J) p.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_mem_stabG (p : stabilizer₂ R σ J) :
     HA.mat R σ (hypOne J) p.1 ∈ stabG (sigR R σ) (JR R J) := by
@@ -828,7 +826,7 @@ theorem mat_iotaR (u : HA R σ J) :
       dg ((HA.mat R σ J u : GL _ _) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) := rfl
 
 /- English proof (translation)
-The claim follows from `HA_ext R σ J (Units.ext (blk_dg _))`.
+A detailed English derivation is pending.
 -/
 theorem piR_iotaR (u : HA R σ J) : piR R σ J (iotaR R σ J u) = u :=
   HA_ext R σ J (Units.ext (blk_dg _))
@@ -841,7 +839,7 @@ theorem actW_eq {n : ℕ} (h : HA R σ (hypOne J)) (X : Fin n → Fin (M + 2) �
       ((HA.mat R σ (hypOne J) h : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) *ᵥ X a := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) i = (Fin.cons 1 (Fin.cons 0 (0 : Fin M → R ⊗[F] E)) : Fin (M + 2) → R ⊗[F] E) i) ?_ ?_ (fun i => ?_) i <;>`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem first_cons :
     (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) = Fin.cons 1 (Fin.cons 0 (0 : Fin M → R ⊗[F] E)) := by
@@ -851,9 +849,9 @@ theorem first_cons :
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Rewrite using `[actW_eq, mat_iotaR]`. Use `Fin.cases ?_ (fun j => ?_) r` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dg _ *ᵥ (Fin.cons 1 fun _ => 0) = (Fin.cons 1 fun _ => 0)`. Rewrite using `[first_cons, dg_mulVec_cons, Matrix.mulVec_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `dg _ *ᵥ Fin.cons (a 0 j) (Fin.cons 0 (Y j)) = Fin.cons (a 0 j) (Fin.cons 0 _)`. Rewrite using `[dg_mulVec_cons]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actW_iotaR (k : ℕ) (u : HA R σ J) (a : Fin 1 → Fin k → R ⊗[F] E)
     (Y : Fin k → Fin M → R ⊗[F] E) :
@@ -872,7 +870,7 @@ abbrev matP (p : stabilizer₂ R σ J) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R �
   ((HA.mat R σ (hypOne J) p.1 : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (HA_ext R σ (hypOne J) (Units.ext e))`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_ext {p q : stabilizer₂ R σ J} (e : matP R σ J p = matP R σ J q) : p = q :=
   Subtype.ext (HA_ext R σ (hypOne J) (Units.ext e))
@@ -883,36 +881,36 @@ Both sides reduce to the same expression.
 theorem toMatrix_mul₂ (p q : stabilizer₂ R σ J) : matP R σ J (p * q) = matP R σ J p * matP R σ J q := rfl
 
 /- English proof (translation)
-The claim follows from `(stab_mem_stabG R σ J p).1`.
+A detailed English derivation is pending.
 -/
 theorem toMatrix_unitary₂ (p : stabilizer₂ R σ J) :
     cT (sigR R σ) (matP R σ J p) * hypOne (JR R J) * matP R σ J p = hypOne (JR R J) :=
   (stab_mem_stabG R σ J p).1
 
 /- English proof (translation)
-The claim follows from `(stab_mem_stabG R σ J p).2`.
+A detailed English derivation is pending.
 -/
 theorem toMatrix_col (p : stabilizer₂ R σ J) : ColE (matP R σ J p) := (stab_mem_stabG R σ J p).2
 
 /- English proof (translation)
-The claim follows from `stabG_row (stab_mem_stabG R σ J p) j`.
+A detailed English derivation is pending.
 -/
 theorem toMatrix_row (p : stabilizer₂ R σ J) (j : Fin M) : matP R σ J p 1 j.succ.succ = 0 :=
   stabG_row (stab_mem_stabG R σ J p) j
 
 /- English proof (translation)
-Rewrite using `[← mat_piR, MonoidHom.mem_ker.1 hm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_blk {m : stabilizer₂ R σ J} (hm : m ∈ (piR R σ J).ker) : blk (matP R σ J m) = 1 := by
   rw [← mat_piR, MonoidHom.mem_ker.1 hm]
   rfl
 
 /- English proof (translation)
-Establish `hc` using `toMatrix_col R σ J m.1`. Establish `h00 : matP R σ J m.1 0 0 = 1` using `hc 0`. Establish `h10 : matP R σ J m.1 1 0 = 0` using `hc 1`. Establish `hr0 : ∀ i : Fin M, matP R σ J m.1 i.succ.succ 0 = 0` using `fun i => by rw [hc]; simp`. Establish `key` using `mulVec_cons_of_blk h00 h10 hr0 (toMatrix_row R σ J m.1) (ker_blk R σ J m.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `r`. Rewrite using `[actW_eq]`. Use `Fin.cases ?_ (fun j => ?_) r` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `matP R σ J m.1 *ᵥ (Fin.cons 1 fun _ => 0) = (Fin.cons 1 fun _ => 0)`. Rewrite using `[first_cons, key]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[topRow]`. Express the relevant statement in the definitionally equal form `matP R σ J m.1 *ᵥ Fin.cons (a 0 j) (Fin.cons 0 (Y j)) = Fin.cons (a 0 j + topRow (matP R σ J m.1) (Y j)) (Fin.cons 0 (Y j))`. Rewrite using `[key]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem actW_ker {k : ℕ} (m : (piR R σ J).ker) (a : Fin 1 → Fin k → R ⊗[F] E)
     (Y : Fin k → Fin M → R ⊗[F] E) :
@@ -934,7 +932,7 @@ theorem actW_ker {k : ℕ} (m : (piR R σ J).ker) (a : Fin 1 → Fin k → R ⊗
     rw [key]
 
 /- English proof (translation)
-The claim follows from `topRow_mul (toMatrix_col R σ J x.1 0) (toMatrix_row R σ J y.1) (ker_blk R σ J y.2) v`.
+A detailed English derivation is pending.
 -/
 theorem topRow_ker_mul (x y : (piR R σ J).ker) (v : Fin M → R ⊗[F] E) :
     topRow (matP R σ J ((x * y : (piR R σ J).ker) : stabilizer₂ R σ J)) v =
@@ -944,7 +942,7 @@ theorem topRow_ker_mul (x y : (piR R σ J).ker) (v : Fin M → R ⊗[F] E) :
 section Rat
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `exists_ratH R σ J u hu`. Use `(mem_HFinIn_iff R σ (hypOne J) _).2 ⟨dgGL (g : GL (Fin M) E), (dgGL_mem (s := (σ : E →+* E)) g.2).1, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `dg_map (inclR R) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iotaR_rat {u : HA R σ J} (hu : u ∈ HFinIn R σ J) : iotaR R σ J u ∈ ratP R σ J := by
   obtain ⟨g, rfl⟩ := exists_ratH R σ J u hu
@@ -953,7 +951,7 @@ theorem iotaR_rat {u : HA R σ J} (hu : u ∈ HFinIn R σ J) : iotaR R σ J u �
   exact dg_map (inclR R) _
 
 /- English proof (translation)
-Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => inclR (F := F) (E := E) R ((1 : Matrix (Fin (M + 2)) (Fin (M + 2)) E) i 0) = (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incl_one_entry (i : Fin (M + 2)) :
     inclR (F := F) (E := E) R ((1 : Matrix (Fin (M + 2)) (Fin (M + 2)) E) i 0) =
@@ -962,13 +960,13 @@ theorem incl_one_entry (i : Fin (M + 2)) :
       (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_ratH R σ (hypOne J) p.1 hp`. Establish `hm : matP R σ J p = ((g : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E).map (inclR R)`. Express the relevant statement in the definitionally equal form `((HA.mat R σ (hypOne J) p.1 : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) = _`. Rewrite using `[hg, mat_ratH]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : ColE ((g : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E)`. Introduce `i`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `toMatrix_col R σ J p i`. Rewrite `h` using `[hm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[incl_one_entry]`. Conclude with `h`. Establish `hS : (g : GL (Fin (M + 2)) E) ∈ stabG (σ : E →+* E) J` using `⟨g.2, hc⟩`. Use `(mem_HFinIn_iff R σ J _).2 ⟨piG _ _ ⟨_, hS⟩, piG_mem _, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(blk ((g : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E)).map (inclR R) = blk (matP R σ J p)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem piR_rat (hinj : Function.Injective (inclR (F := F) (E := E) R)) {p : stabilizer₂ R σ J}
     (hp : p ∈ ratP R σ J) : piR R σ J p ∈ HFinIn R σ J := by
@@ -1000,7 +998,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   [TopologicalSpace R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Establish `h : Continuous f ↔ Continuous (fun x => HA.mat R σ J (f x))` using `(Topology.IsInducing.subtypeVal (t := (HR R σ J : Set (GL (Fin M) (R ⊗[F] E))))).continuous_iff`. Rewrite using `[h, Units.continuous_iff]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem continuous_HA_iff {X : Type} [TopologicalSpace X] {f : X → HA R σ J} :
     Continuous f ↔
@@ -1012,7 +1010,7 @@ theorem continuous_HA_iff {X : Type} [TopologicalSpace X] {f : X → HA R σ J} 
   rfl
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `finset_fin_two_eq_cases (p := fun i => Continuous fun x => f x i j) ?_ ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x 0 j) h00 h01 h0r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x 1 j) h10 h11 h1r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x i.succ.succ j) (hr0 i) (hr1 i) (hrr i) j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_mat2 {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f : X → Matrix (Fin (M + 2)) (Fin (M + 2)) A}
@@ -1030,14 +1028,14 @@ theorem continuous_mat2 {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
   · exact finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x i.succ.succ j) (hr0 i) (hr1 i) (hrr i) j
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun _ _ => continuous_id.matrix_elem _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_blk {A : Type} [CommRing A] [TopologicalSpace A] :
     Continuous (blk : Matrix (Fin (M + 2)) (Fin (M + 2)) A → Matrix (Fin M) (Fin M) A) :=
   continuous_matrix fun _ _ => continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-Use `continuous_mat2 ?_ ?_ ?_ ?_ (fun _ => ?_) (fun _ => ?_) (fun _ => ?_) (fun _ => ?_) (fun i j => ?_)` and prove the remaining obligations. Use `any_goals exact continuous_const`. Conclude with `continuous_id.matrix_elem i j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_dg {A : Type} [CommRing A] [TopologicalSpace A] :
     Continuous (dg : Matrix (Fin M) (Fin M) A → Matrix (Fin (M + 2)) (Fin (M + 2)) A) := by
@@ -1047,7 +1045,7 @@ theorem continuous_dg {A : Type} [CommRing A] [TopologicalSpace A] :
   exact continuous_id.matrix_elem i j
 
 /- English proof (translation)
-The claim follows from `(continuous_HA_iff R σ (hypOne J)).1 continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matStab :
     Continuous (fun p : stabilizer₂ R σ J => matP R σ J p) ∧
@@ -1055,14 +1053,14 @@ theorem continuous_matStab :
   (continuous_HA_iff R σ (hypOne J)).1 continuous_subtype_val
 
 /- English proof (translation)
-Rewrite using `[continuous_HA_iff]`. Conclude with `⟨continuous_blk.comp (continuous_matStab R σ J).1, continuous_blk.comp (continuous_matStab R σ J).2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_piR : Continuous (piR R σ J) := by
   rw [continuous_HA_iff]
   exact ⟨continuous_blk.comp (continuous_matStab R σ J).1, continuous_blk.comp (continuous_matStab R σ J).2⟩
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[continuous_HA_iff]`. Establish `h` using `(continuous_HA_iff R σ J).1 (continuous_id (X := HA R σ J))`. Conclude with `⟨continuous_dg.comp h.1, continuous_dg.comp h.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem continuous_iotaR : Continuous (iotaR R σ J) := by
   refine Continuous.subtype_mk ?_ _
@@ -1078,13 +1076,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_incl (x : E) : sigR R σ (inclR R x) = inclR R (σ x) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Simplify using `only [JR, Matrix.map_apply, sigR_incl, hJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem JR_herm (hJ : ∀ i j, σ (J j i) = J i j) (i j : Fin M) :
     sigR R σ (JR R J j i) = JR R J i j := by
@@ -1115,7 +1113,7 @@ theorem toMatrix_unipotent_inv (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J
     matP R σ J (nP hσ hJ w z hz)⁻¹ = nM (sigR R σ) (JR R J) (-w) (sigR R σ z) := rfl
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker.2 (HA_ext R σ J (Units.ext (blk_nM w z)))`.
+A detailed English derivation is pending.
 -/
 theorem nP_mem_ker (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → R ⊗[F] E)
     (z : R ⊗[F] E) (hz : z + sigR R σ z + hv (sigR R σ) (JR R J) w w = 0) :
@@ -1123,7 +1121,7 @@ theorem nP_mem_ker (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i 
   MonoidHom.mem_ker.2 (HA_ext R σ J (Units.ext (blk_nM w z)))
 
 /- English proof (translation)
-Establish `h` using `(eq_nM (toMatrix_unitary₂ R σ J p) (toMatrix_col R σ J p) (ker_blk R σ J hp)).2`. Rewrite `h` using `[e]`. Conclude with `⟨h, stabilizer_ext R σ J e⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nM_form (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {p : stabilizer₂ R σ J}
     (hp : p ∈ (piR R σ J).ker) {w : Fin M → R ⊗[F] E} {z : R ⊗[F] E}
@@ -1134,7 +1132,7 @@ theorem nM_form (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) 
   exact ⟨h, stabilizer_ext R σ J e⟩
 
 /- English proof (translation)
-Take `⟨hz, e⟩` from `nM_form hσ hJ hp (eq_nM (toMatrix_unitary₂ R σ J p) (toMatrix_col R σ J p) (ker_blk R σ J hp)).1`. Conclude with `⟨_, _, hz, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {p : stabilizer₂ R σ J}
     (hp : p ∈ (piR R σ J).ker) :
@@ -1145,7 +1143,7 @@ theorem exists_nP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j
   exact ⟨_, _, hz, e⟩
 
 /- English proof (translation)
-Use `(mem_HFinIn_iff R σ (hypOne J) _).2 ⟨nGL (s := (σ : E →+* E)) hσ w z hz, (nGL_mem (s := (σ : E →+* E)) hσ hJ w z hz).1, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `nM_map (inclR R) (fun x => (sigR_incl R σ x).symm) w z`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nP_mem_ratP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → E) (z : E)
     (hz : z + σ z + hv (σ : E →+* E) J w w = 0)
@@ -1164,7 +1162,7 @@ section Half
 variable {A : Type} [CommRing A] {M : ℕ} {s : A →+* A} {J : Matrix (Fin M) (Fin M) A}
 
 /- English proof (translation)
-Simplify using `only [hv, rowv, map_sum, map_mul, hs, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem s_hv (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (x y : Fin M → A) :
     s (hv s J x y) = hv s J y x := by
@@ -1175,7 +1173,7 @@ theorem s_hv (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (x y : 
   ring
 
 /- English proof (translation)
-Simplify using `only [map_sub, map_mul, hh, s_hv hs hJ, ht]`. Take the linear combination `(-hv s J w w) * h2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem z_half (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) {half t : A}
     (h2 : half + half = 1) (hh : s half = half) (ht : s t = -t) (w : Fin M → A) :
@@ -1184,7 +1182,7 @@ theorem z_half (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) {half
   linear_combination (-hv s J w w) * h2
 
 /- English proof (translation)
-Simplify using `[topRow, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem topRow_nM (w v : Fin M → A) (z : A) : topRow (nM s J w z) v = -hv s J w v := by
   simp [topRow, hv]
@@ -1199,24 +1197,24 @@ def halfR (F E : Type) [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
   inclR R (2⁻¹ : E)
 
 /- English proof (translation)
-Establish `h : (2⁻¹ : E) + 2⁻¹ = 1` using `by norm_num`. Rewrite using `[halfR, ← map_add, h, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem halfR_add [CharZero E] : halfR F E R + halfR F E R = 1 := by
   have h : (2⁻¹ : E) + 2⁻¹ = 1 := by norm_num
   rw [halfR, ← map_add, h, map_one]
 
 /- English proof (translation)
-Rewrite using `[halfR, sigR_incl, map_inv₀, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_halfR (σ : E →ₐ[F] E) [CharZero E] : sigR R σ (halfR F E R) = halfR F E R := by
   rw [halfR, sigR_incl, map_inv₀, map_ofNat]
 
 /- English proof (translation)
-Establish `hind : LinearIndependent F ![(1 : E), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a b hab`. Rewrite `hab` using `[Algebra.smul_def, Algebra.smul_def]`. Establish `h1` using `congrArg σ hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, AlgHom.commutes, map_one, hσδ, map_zero] at h1`. Establish `ha : (2 : E) * algebraMap F E a = 0` using `by linear_combination hab + h1`. Establish `ha0 : a = 0` using `by simpa using ha`. Substitute `ha0` using the available equality. Establish `hb : algebraMap F E b * δ = 0` using `by simpa using hab`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `⟨rfl, by simpa [hδ] using hb⟩`. Establish `hspan` using `hind.span_eq_top_of_card_eq_finrank (by simp [h2])`. Establish `he : e ∈ Submodule.span F (Set.range ![(1 : E), δ])` using `by rw [hspan]; trivial`. Simplify using `only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union] at he`. Conclude with `Submodule.mem_span_pair.1 he`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0)
     (hσδ : σ δ = -δ) (e : E) : ∃ x y : F, x • (1 : E) + y • δ = e := by
@@ -1237,11 +1235,11 @@ theorem exists_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E 
   exact Submodule.mem_span_pair.1 he
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul r e`. Take `⟨x, y, rfl⟩` from `exists_coord h2 hδ hσδ e`. Use `⟨x • r, y • r, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Consider the case `add u v hu hv`. Take `⟨a, b, rfl⟩` from `hu`. Take `⟨a', b', rfl⟩` from `hv`. Use `⟨a + a', b + b', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.add_tmul, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_tensor_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E = 2) {δ : E}
     (hδ : δ ≠ 0) (hσδ : σ δ = -δ) (t : R ⊗[F] E) :
@@ -1261,9 +1259,9 @@ theorem exists_tensor_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finra
     abel
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `exists_tensor_coord R h2 hδ hσδ t`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[map_add, HaarCoord.sigR_tmul, HaarCoord.sigR_tmul, map_one, hσδ, TensorProduct.tmul_neg]`. Establish `h0 : a ⊗ₜ[F] (1 : E) + a ⊗ₜ[F] (1 : E) = 0` using `by linear_combination ht`. Establish `h1 : a ⊗ₜ[F] (1 : E) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `halfR_add (F := F) (E := E) R`. Take the linear combination `(a ⊗ₜ[F] (1 : E)) * (-h3) + halfR F E R * h0`. Rewrite using `[h1, zero_add]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_tmul_of_skew {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E = 2) {δ : E}
     (hδ : δ ≠ 0) (hσδ : σ δ = -δ) {t : R ⊗[F] E} (ht : sigR R σ t = -t) :

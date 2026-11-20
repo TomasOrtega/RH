@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `m hm k`. Establish `: m = 0`. Assume the negation of the conclusion as `h`. Rewrite `hm` using `[mem_support_iff, coeff_one, if_neg (Ne.symm h)]`. Conclude with `hm rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem ialg_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] :
     IsMultiHomog (1 : MRing ι) 0 := by
@@ -22,7 +22,7 @@ theorem ialg_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)
   simp [this]
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.1 (support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m₁ h₁ k, hg m₂ h₂ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ialg_mul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {f g : MRing ι} {a b : K → ℕ}
     (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) : IsMultiHomog (f * g) (a + b) := by
@@ -32,19 +32,19 @@ theorem ialg_mul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m₁ h₁ k, hg m₂ h₂ k]
 
 /- English proof (translation)
-Introduce `m' hm' k'`. Rewrite `hm'` using `[support_rename_of_injective hv.2.1]`. Take `⟨m, hm, rfl⟩` from `Finset.mem_image.1 hm'`. Distinguish the cases in `hk : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hv.1.extend_apply, ← hf m hm k]`. Establish `hc : ∀ i : ι k, ∃ j : ι' (κ k), v ⟨k, i⟩ = ⟨κ k, j⟩`. Introduce `i`. Establish `h1` using `hv.2.2.1 ⟨k, i⟩`. Generalize the expression as in `v ⟨k, i⟩ = q at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨k₁, j⟩` from `q`. Take `rfl : k₁ = κ k` from `h1`. Conclude with `⟨j, rfl⟩`. Use `choose e he using hc`. Establish `hb : Function.Bijective e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `i i' h`. Establish `: v ⟨k, i⟩ = v ⟨k, i'⟩` using `by rw [he, he, h]`. Conclude with `sigma_mk_injective (β := ι) (hv.2.1 this)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨k₀, i⟩, hq⟩` from `hv.2.2.2 ⟨κ k, j⟩ ⟨k, rfl⟩`. Establish `hk : κ k₀ = κ k`. Use `hv.2.2.1 ⟨k₀, i⟩` as an intermediate fact. Rewrite `this` using `[hq]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `hv.1 hk`. Conclude with `⟨i, sigma_mk_injective (β := ι') ((he i).symm.trans hq)⟩`. Use `(Fintype.sum_bijective e hb _ _ fun i => ?_).symm` and prove the remaining obligations. Rewrite using `[← he, Finsupp.mapDomain_apply hv.2.1]`. Rewrite using `[Function.extend_apply' _ _ _ hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => Finsupp.mapDomain_notin_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨p, hp⟩`. Use `hk ⟨p.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hv.2.2.1 p, hp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ialg_rename {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {κ : K → K'}
@@ -87,27 +87,25 @@ theorem ialg_rename {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι
     rw [← hv.2.2.1 p, hp]
 
 /- English proof (translation)
-Introduce `K _ ι _ P hP`. Establish `hp : P.IsPrime` using `hP.1`. Establish `tens : ∀ f g f' g' : MRing ι, UnitRatio P f g → UnitRatio P f' g' → UnitRatio P (f * f') (g * g')`. Introduce and unpack `f g f' g' ⟨hf, hg, h⟩ ⟨hf', hg', h'⟩`. Use `⟨fun hh => (hp.mem_or_mem hh).elim hf hf', fun hh => (hp.mem_or_mem hh).elim hg hg', fun W hW hPW hr => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, v, hu, hv, huv⟩` from `h W hW hPW hr`. Take `⟨u', v', hu', hv', huv'⟩` from `h' W hW hPW hr`. Use `⟨u * u', v * v', fun hh => (hW.mem_or_mem hh).elim hu hu', fun hh => (hW.mem_or_mem hh).elim hv hv', ?_⟩` and prove the remaining obligations. Use `P.add_mem (P.mul_mem_left (u' * f') huv) (P.mul_mem_left (v * g) huv')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun a => ⟨⟨0, 0, ialg_one, ialg_one, by simp⟩, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : MRing ι) ∉ P` using `(Ideal.ne_top_iff_one P).1 hp.ne_top`. Conclude with `⟨h1, h1, fun W hW _ _ => ⟨1, 1, (Ideal.ne_top_iff_one W).1 hW.ne_top, (Ideal.ne_top_iff_one W).1 hW.ne_top, by simp⟩⟩`. Introduce and unpack `a b f g ⟨⟨α, γ, h1, h2, h3⟩, hf, hg, h⟩`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨γ, α, h2, h1, fun k => by linarith [h3 k]⟩, hg, hf, fun W hW hPW hr => ?_⟩` and prove the remaining obligations. Take `⟨u, v, hu, hv, huv⟩` from `h W hW hPW hr`. Conclude with `⟨v, u, hv, hu, by simpa using P.neg_mem huv⟩`. Introduce and unpack `a b c f g f' g' ⟨⟨α, γ, h1, h2, h3⟩, h⟩ ⟨⟨α', γ', h1', h2', h3'⟩, h'⟩`. Use `⟨⟨α + α', γ + γ', ialg_mul h1 h1', ialg_mul h2 h2', fun k => ?_⟩, tens _ _ _ _ h h'⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, Nat.cast_add]`. Combine the linear relations using `[h3 k, h3' k]`. Introduce and unpack `a b a' b' f g f' g' ⟨⟨α, γ, h1, h2, h3⟩, h⟩ ⟨⟨α', γ', h1', h2', h3'⟩, h'⟩`. Use `⟨⟨α + α', γ + γ', ialg_mul h1 h1', ialg_mul h2 h2', fun k => ?_⟩, tens _ _ _ _ h h'⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Nat.cast_add]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[h3 k, h3' k]`. Introduce and unpack `K' _ ι' _ κ v P' hv rfl a b f g ⟨⟨α, γ, h1, h2, h3⟩, hf, hg, h⟩`. Use `⟨⟨Function.extend κ α 0, Function.extend κ γ 0, ialg_rename hv h1, ialg_rename hv h2, fun k' => ?_⟩, hf, hg, fun W hW hPW hr => ?_⟩` and prove the remaining obligations. Unfold `pullDeg`. Distinguish the cases in `hk : ∃ k, κ k = k'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Take `⟨k, rfl⟩` from `hk`. Simplify using `only [hv.1.extend_apply]`. Conclude with `h3 k`. Simplify using `only [Function.extend_apply' _ _ _ hk]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr' : IsRelevant (imageZ v W)`. Introduce `k`. Take `⟨i, hi⟩` from `hr (κ k)`. Take `⟨⟨k₀, j⟩, hq⟩` from `hv.2.2.2 ⟨κ k, i⟩ ⟨k, rfl⟩`. Establish `hk : κ k₀ = κ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hv.2.2.1 ⟨k₀, j⟩` as an intermediate fact. Rewrite `this` using `[hq]`. Conclude with `this.symm`. Take `rfl` from `hv.1 hk`. Use `⟨j, fun hh => hi ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: rename v (X ⟨k₀, j⟩ : MRing ι) ∈ W` using `hh`. Rewrite `this` using `[rename_X, hq]`. Then use the resulting hypothesis. Take `⟨u, w, hu, hw, huw⟩` from `h (imageZ v W) (Ideal.comap_isPrime _ W) (Ideal.comap_mono hPW) hr'`. Use `⟨rename v u, rename v w, hu, hw, ?_⟩` and prove the remaining obligations. Establish `: rename v (u * f - w * g) ∈ P'` using `huw`.
-
-Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem i_algebra : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)), IsMultiProjPrime P → (∀ a, IsLineIso P a a 1 1) ∧ (∀ a b f g, IsLineIso P a b f g → IsLineIso P b a g f) ∧ (∀ a b c f g f' g', IsLineIso P a b f g → IsLineIso P b c f' g' → IsLineIso P a c (f * f') (g * g')) ∧ (∀ a b a' b' f g f' g', IsLineIso P a b f g → IsLineIso P a' b' f' g' → IsLineIso P (a + a') (b + b') (f * f') (g * g')) ∧ ∀ (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) (P' : Ideal (MRing ι')), IsBlockMap κ v → imageZ v P' = P → ∀ a b f g, IsLineIso P a b f g → IsLineIso P' (pullDeg κ a) (pullDeg κ b) (rename v f) (rename v g) := by
   intro K _ ι _ P hP

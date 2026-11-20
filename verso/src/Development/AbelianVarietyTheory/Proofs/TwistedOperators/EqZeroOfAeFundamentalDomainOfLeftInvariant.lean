@@ -5,13 +5,13 @@ open MeasureTheory Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set U : Set G := {x | F x ≠ 0} with hUdef`. Establish `hUo : IsOpen U` using `isOpen_ne_fun hF continuous_const`. Establish `hUinv : ∀ g : Γ, g • U = U`. Introduce `g`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_smul_set_iff_inv_smul_mem, hUdef, Set.mem_setOf_eq, Subgroup.smul_def, smul_eq_mul]`. Rewrite using `[hinv _ (Γ.inv_mem g.2)]`. Establish `hU𝓕 : μ (U ∩ 𝓕) = 0`. Rewrite `hae` using `[ae_iff, Measure.restrict_apply hUo.measurableSet]`. Simplify `hae` using `[hUdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hU0 : μ U = 0` using `h𝓕.measure_zero_of_invariant U hUinv hU𝓕`. Establish `hUe : U = ∅`. Assume the negation of the conclusion as `hne`. Conclude with `(hUo.measure_pos μ (Set.nonempty_iff_ne_empty.mpr hne)).ne' hU0`. Introduce `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx`. Establish `: x ∈ U` using `hx`. Rewrite `this` using `[hUe]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ae_fundamentalDomain_of_leftInvariant
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]

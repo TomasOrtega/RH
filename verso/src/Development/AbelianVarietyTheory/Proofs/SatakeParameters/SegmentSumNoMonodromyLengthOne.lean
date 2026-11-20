@@ -16,13 +16,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SegSumOne
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h rc hrc l hm`. Take `⟨a, ha, H⟩` from `hrc`. Establish `hlen : ∀ Δ ∈ l, Δ.len = 1`. Introduce `Δ hΔ`. Establish `hirr : IsIrrWD ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← H.nu]`. Conclude with `(H.cusp _ (Δ.isCusp_first.nu _))`. Establish `hmi : (((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).mono0` using `GlobalTheory.UnlinkedMono.noMonodromy_of_mem_weilDeligneListSum _ hm _ (List.mem_map.2 ⟨Δ, hΔ, rfl⟩)`. Establish `hpos` using `Δ.len_pos`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.SegLen.not_mono0_lpChar_lpSp hirr (by omega) hmi`. Use `⟨hlen, ?_⟩` and prove the remaining obligations. Unfold `segSum`. Use `congr 1`. Use `List.map_congr_left fun Δ hΔ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hlen Δ hΔ, GlobalTheory.SegLen.lpChar_lpSp_one']`. Simplify using `[WD.lpTw_zero]`.
+A detailed English derivation is pending.
 -/
 theorem segSum_of_mono0 : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}

@@ -22,7 +22,7 @@ theorem psi_apply (x : Ad E) : psi E x = (GroundTheory.Global.adelicChar E x : �
 variable {E}
 
 /- English proof (translation)
-Rewrite using `[psi_apply, GroundTheory.Global.localAdelicChar_apply]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem psi_loc (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     psi E (sFin E (sLoc E w y)) = (GroundTheory.Global.localAdelicChar E w y : ℂ) := by
@@ -31,7 +31,7 @@ theorem psi_loc (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
   congr 2
 
 /- English proof (translation)
-Rewrite using `[psi_loc]`. Conclude with `Circle.coe_eq_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_loc_eq_one_iff (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     psi E (sFin E (sLoc E w y)) = 1 ↔ GroundTheory.Global.localAdelicChar E w y = 1 := by
@@ -39,7 +39,7 @@ theorem psi_loc_eq_one_iff (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletio
   exact Circle.coe_eq_one
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `GroundTheory.Global.localAdelicChar_ne_one (K := E) w (DFunLike.ext _ _ fun y => ?_)` and prove the remaining obligations. Rewrite using `[AddChar.one_apply]`. Conclude with `(psi_loc_eq_one_iff w y).1 (h y)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi_loc_ne_one (w : HeightOneSpectrum (𝓞 E)) :
     ∃ y : w.adicCompletion E, psi E (sFin E (sLoc E w y)) ≠ 1 := by
@@ -52,11 +52,11 @@ theorem exists_psi_loc_ne_one (w : HeightOneSpectrum (𝓞 E)) :
 variable (E) in
 
 /- English proof (translation)
-Establish `hc : Continuous (psi E)` using `continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar (K := E))`. Establish `hr : ∀ c : E, psi E (algebraMap E (Ad E) c) = 1` using `fun c => by`. Rewrite using `[psi_apply, GroundTheory.Global.adelicChar_algebraMap]`. Both sides reduce to the same expression. Establish `hne : psi E ≠ 1` using `fun h => GroundTheory.Global.adelicChar_ne_one (K := E) (DFunLike.ext _ _ fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `DFunLike.congr_fun h x` as an intermediate fact. Rewrite `this` using `[psi_apply, AddChar.one_apply]`. Rewrite using `[AddChar.one_apply]`. Conclude with `Circle.coe_eq_one.1 this)`. Use `letI : Invertible (2 : E) := invertibleOfNonzero two_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Invertible (2 : Ad E) := (Invertible.map (algebraMap E (Ad E)) 2).copy 2 (map_ofNat _ 2).symm`. Establish `h` using `GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq E (psi E) hc hne hr`. Conclude with `⟨hc, h.1, hr, h.2, exists_psi_loc_ne_one⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stdPsi_psi : StdPsi (psi E) := by
   have hc : Continuous (psi E) := continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar (K := E))

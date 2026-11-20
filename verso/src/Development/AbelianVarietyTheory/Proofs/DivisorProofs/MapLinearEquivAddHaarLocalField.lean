@@ -13,23 +13,17 @@ open scoped NNReal ENNReal
 namespace GlobalTheory.KSp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ V _ _ _ _ _ _ _ μ _ T`. Use `letI : MeasurableSpace F := borel F`. Use `haveI : BorelSpace F := ⟨rfl⟩`. Use `haveI := GlobalTheory.SplitWeil.secondCountable F`. Use `haveI := GlobalTheory.SplitWeil.t2Space F`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set n := Module.finrank F V`. Use `set b := Module.finBasis F V`. Use `set e : V ≃ₗ[F] (Fin n → F) := b.equivFun`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd F V`. Use `haveI : IsTopologicalAddGroup V := IsModuleTopology.topologicalAddGroup F V`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hec : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `hes : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Set `E : V ≃L[F] (Fin n → F)` to `{ e with continuous_toFun := hec, continuous_invFun := hes }`. Set `Em : V ≃ᵐ (Fin n → F)` to `E.toHomeomorph.toMeasurableEquiv`. Establish `hEm : (Em : V → Fin n → F) = e` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEms : (Em.symm : (Fin n → F) → V) = e.symm` using `rfl`. Set `P : Measure (Fin n → F)` to `Measure.pi fun _ => (Measure.addHaar : Measure F)`. Use `set X := μ.map Em with hX`. Use `haveI : X.IsAddHaarMeasure := E.isAddHaarMeasure_map μ`. Use `set M := LinearMap.toMatrix b b T.toLinearMap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ y, M.mulVec (e y) = e (T y)` using `fun y => by`. Simplify using `[M, e, LinearMap.toMatrix_mulVec_repr]`. Establish `hdet : ((LinearEquiv.det T : Fˣ) : F) = M.det`. Simplify using `[M, LinearMap.det_toMatrix]`. Use `set d := distribHaarChar F (LinearEquiv.det T)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : (d : ℝ≥0∞) • P.map M.mulVec = P` using `GlobalTheory.WeilM.smul_map_mulVec_pi (Measure.addHaar : Measure F) M (LinearEquiv.det T) hdet`. Establish `hd0 : (d : ℝ≥0∞) ≠ 0` using `by simpa using (distribHaarChar_pos (A := F) (g := LinearEquiv.det T)).ne'`. Establish `hPM : P.map M.mulVec = ((d⁻¹ : ℝ≥0) : ℝ≥0∞) • P` using `by conv_rhs => rw [← key]`. Rewrite using `[smul_smul, ENNReal.coe_inv (by simpa using hd0), ENNReal.inv_mul_cancel hd0 ENNReal.coe_ne_top, one_smul]`. Establish `hXP : X = (Measure.addHaarScalarFactor X P : ℝ≥0∞) • P` using `Measure.isAddLeftInvariant_eq_smul X P`.
-
-Establish `hmv : Measurable M.mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Establish `hXM : X.map M.mulVec = ((d⁻¹ : ℝ≥0) : ℝ≥0∞) • X`. Rewrite using `[hXP, Measure.map_smul, hPM, smul_comm]`. Establish `hμ : μ = X.map Em.symm` using `by rw [hX, Measure.map_map Em.symm.measurable Em.measurable]; simp`. Establish `hcomp : (T : V → V) ∘ Em.symm = Em.symm ∘ M.mulVec`.
-
-Use function extensionality and compare the values at `x`. Use `show T (e.symm x) = e.symm (M.mulVec x)`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← hM, e.apply_symm_apply, e.apply_symm_apply]`. Establish `hTm : Measurable (T : V → V)`.
-
-Establish `: Continuous (T : V → V)` using `IsModuleTopology.continuous_of_linearMap T.toLinearMap`. Conclude with `this.measurable`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem map_linearEquiv_haar : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V]

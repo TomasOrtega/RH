@@ -32,14 +32,14 @@ Both sides reduce to the same expression.
 @[simp] theorem ofM_toM (y : α × β → k) : ofM (toM y) = y := rfl
 
 /- English proof (translation)
-Simplify using `only [dotProduct, ofM, Fintype.sum_prod_type, trace, diag, mul_apply, transpose_apply]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dot_ofM (Y Z : Matrix α β k) : ofM Y ⬝ᵥ ofM Z = trace (Yᵀ * Z) := by
   simp only [dotProduct, ofM, Fintype.sum_prod_type, trace, diag, mul_apply, transpose_apply]
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, add_dotProduct, dotProduct_add]`. Use `congr 2`. Establish `h : ⅟(2 : R) + ⅟(2 : R) = 1` using `invOf_two_add_invOf_two`. Take the linear combination `(a.1 ⬝ᵥ b.2) * (-h)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ] (a b : (κ → R) × (κ → R))
     (φ : (κ → R) → ℂ) : schr ψ a (schr ψ b φ) = ψ (⅟(2 : R) * (a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2)) • schr ψ (a + b) φ := by
@@ -53,7 +53,7 @@ theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
 variable [TopologicalSpace k] [ValuativeRel k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `haveI := nonarch_field k`. Establish `hl` using `GlobalTheory.WeilM.isLocallyConstant_addChar ψ hψ`. Use `⟨(hl.comp_continuous (by fun_prop)).mul (h.1.comp_continuous (by fun_prop)), ?_⟩` and prove the remaining obligations. Conclude with `(h.2.comp_homeomorph (Homeomorph.addRight w.1)).mul_left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem schr_mem [Invertible (2 : k)] {ψ : AddChar k ℂ} (hψ : Continuous ψ) {κ : Type} [Fintype κ] (w : (κ → k) × (κ → k))
     {φ : (κ → k) → ℂ} (h : φ ∈ SB (κ → k)) : schr ψ w φ ∈ SB (κ → k) := by
@@ -80,19 +80,19 @@ Both sides reduce to the same expression.
 theorem rmL_apply (g : GL β k) (Φ : (α × β → k) → ℂ) (y) : rmL g Φ y = Φ (ofM (toM y * g.1)) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp_continuous (rm g).continuous, h.2.comp_homeomorph (rm g)⟩`.
+Supply the required witnesses or components.
 -/
 theorem rmL_mem (g : GL β k) {Φ : (α × β → k) → ℂ} (h : Φ ∈ SB (α × β → k)) : rmL g Φ ∈ SB (α × β → k) :=
   ⟨h.1.comp_continuous (rm g).continuous, h.2.comp_homeomorph (rm g)⟩
 
 /- English proof (translation)
-The claim follows from `funext fun y => by simp only [rmL_apply, toM_ofM, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, ofM_toM]`.
+A detailed English derivation is pending.
 -/
 theorem rmL_inv (g : GL β k) (Φ : (α × β → k) → ℂ) : rmL g⁻¹ (rmL g Φ) = Φ := funext fun y => by
   simp only [rmL_apply, toM_ofM, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, ofM_toM]
 
 /- English proof (translation)
-The claim follows from `funext fun y => by have e1 : ofM (toM y * g.1) ⬝ᵥ w.2 = y ⬝ᵥ ofM (toM w.2 * (g.1)ᵀ) := by rw [← ofM_toM w.2, ← ofM_toM y, dot_ofM, dot_ofM] simp only [toM_ofM, transpose_mul, Matrix.mul_assoc] rw [trace_mul_comm, Matrix.mul_assoc] have e2 : w.1 ⬝ᵥ w.2 = ofM (toM w.1 * (g⁻¹).1) ⬝ᵥ …`.
+A detailed English derivation is pending.
 -/
 theorem rmL_schr [Invertible (2 : k)] (ψ : AddChar k ℂ) (g : GL β k) (w) (Φ : (α × β → k) → ℂ) :
     rmL g (schr ψ w Φ) = schr ψ (ofM (toM w.1 * (g⁻¹).1), ofM (toM w.2 * (g.1)ᵀ)) (rmL g Φ) := funext fun y => by
@@ -111,9 +111,9 @@ theorem rmL_schr [Invertible (2 : k)] (ψ : AddChar k ℂ) (g : GL β k) (w) (Φ
 
 omit [DecidableEq β] [ValuativeRel k] [IsNonarchimedeanLocalField k] [Field k] in
 /- English proof (translation)
-Set `e : SB X ≃ₗ[ℂ] SB Y` to `LinearEquiv.ofBijective (ι.restrict fun φ h => hb.1 h) ⟨fun a b h => Subtype.ext (hb.2.1 a.2 b.2 (congrArg Subtype.val h)), fun b => by`. Take `⟨a, ha, e⟩` from `hb.2.2 b.2`. Conclude with `⟨⟨a, ha⟩, Subtype.ext e⟩⟩`. Take `⟨j, hj⟩` from `LinearMap.exists_extend ((SB X).subtype ∘ₗ e.symm.toLinearMap)`. Establish `h1 : ∀ Φ (h : Φ ∈ SB Y), j Φ = (e.symm ⟨Φ, h⟩).1` using `fun Φ h => LinearMap.congr_fun hj ⟨Φ, h⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ Φ ∈ SB Y, j Φ ∈ SB X ∧ ι (j Φ) = Φ` using `fun Φ h => by`. Rewrite using `[h1 Φ h]`. Conclude with `⟨(e.symm _).2, congrArg Subtype.val (e.apply_symm_apply ⟨Φ, h⟩)⟩`. Conclude with `⟨j, h2, fun φ h => hb.2.1 (h2 _ (hb.1 h)).1 h (h2 _ (hb.1 h)).2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem kd_exists_inv {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {ι : (X → ℂ) →ₗ[ℂ] (Y → ℂ)}
     (hb : Set.BijOn ι (SB X : Set _) (SB Y : Set _)) : ∃ j : (Y → ℂ) →ₗ[ℂ] (X → ℂ),
@@ -149,17 +149,15 @@ def coord (u : Matrix α β (AE F E)) : (α × β → Fv F v) × (α × β → F
   (ofM (-(JA.map (piW t) * u.map (piW (t.comp σ)) * (JB.map (piW t))ᵀ)), ofM (-u.map (piW t)))
 
 /- English proof (translation)
-Take `⟨ε, hε, hA, hB⟩` from `hG.sym`. Establish `e : hTens (cA σ) JA JB u u' = trace (JAᵀ * u * JB * (u'.map (cA σ))ᵀ)`. Simplify using `only [hTens, trace, diag, mul_apply, transpose_apply, map_apply, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Establish `ha : At (evFin F v) (-1 * hTens (cA σ) JA JB u u')` using `fun a ha => by`. Rewrite using `[e, ← mul_smul_comm, ← trace_smul, (((hu.kd_mul_left JAᵀ).kd_mul_right JB).kd_mul_right _) a ha, trace_zero, mul_zero]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symp, h.trace _ ha, e]`. Use `congr 1`. Simplify using `only [map_mul, map_neg, map_one, AddMonoidHom.map_trace, Matrix.map_mul, transpose_map, h.conj1, h.conj2, hA, hB, coord, dot_ofM, transpose_smul, transpose_transpose, Matrix.smul_mul, Matrix.mul_smul, smul_smul, trace_smul, smul_eq_mul, transpose_neg, transpose_mul, Matrix.neg_mu …`. Use `set A := JA.map (piW t)`. Use `set B := JB.map (piW t)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set P := u.map (piW t)`. Use `set Q := u.map (piW (t.comp σ))`. Use `set P' := u'.map (piW t)`. Use `set Q' := u'.map (piW (t.comp σ))`. Establish `e1 : trace (B * (Q'ᵀ * Aᵀ) * P) = trace (Aᵀ * P * B * Q'ᵀ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Matrix.mul_assoc (Aᵀ * P), trace_mul_comm (Aᵀ * P)]`. Simplify using `only [Matrix.mul_assoc]`. Establish `e2 : trace (B * (Qᵀ * Aᵀ) * P') = trace (A * Q * Bᵀ * P'ᵀ)`. Rewrite using `[← trace_transpose, transpose_mul, trace_mul_comm]`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
-
-Rewrite using `[e1, e2]`. Take the linear combination `(trace (A * Q * Bᵀ * P'ᵀ)) * hε`.
+A detailed English derivation is pending.
 -/
 theorem symp_eq (h : IsSec σ t sec) (hG : Grams σ t JA JB) {u : Matrix α β (AE F E)} (hu : At (evFin F v) u)
     (u' : Matrix α β (AE F E)) : symp (R := AF F) (cA σ) (-1) JA JB u u' = sgl v

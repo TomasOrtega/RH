@@ -30,7 +30,7 @@ def ecL (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (h
   map_smul' c Z := ((elementary_lie_elements Wp k r z π hπ Z.1 Z.1 Z.2 Z.2).2.1 c).2
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons T l ih`. Simplify using `only [List.map_cons, List.foldr_cons, ContinuousLinearMap.comp_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem foldr_apply (l : List (Wp →L[ℂ] Wp)) (v : Wp) :
     List.foldr (fun (T : Wp → Wp) h => T h) v (List.map (fun T : Wp →L[ℂ] Wp => (⇑T : Wp → Wp)) l) =
@@ -41,9 +41,9 @@ theorem foldr_apply (l : List (Wp →L[ℂ] Wp)) (v : Wp) :
     simp only [List.map_cons, List.foldr_cons, ContinuousLinearMap.comp_apply, ih]
 
 /- English proof (translation)
-Establish `hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : (Wp →L[ℂ] Wp) × (Wp →L[ℂ] Wp) => p.1.comp p.2)` using `(isBoundedBilinearMap_comp (𝕜 := ℂ) (E := Wp) (F := Wp) (G := Wp)).contDiff.restrict_scalars ℝ`. Proceed by induction on `l with`. Consider the case `nil => simpa using contDiff_const`. Consider the case `cons f l ih`. Establish `hf` using `h f (List.mem_cons_self ..)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hl` using `ih fun g hg => h g (List.mem_cons_of_mem _ hg)`. Simplify using `only [List.map_cons, List.foldr_cons]`. Conclude with `hc.comp (hf.prodMk hl)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem foldr_contDiff {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] (l : List (X → (Wp →L[ℂ] Wp)))
     (h : ∀ f ∈ l, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f) :
@@ -60,7 +60,7 @@ theorem foldr_contDiff {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] (l
     exact hc.comp (hf.prodMk hl)
 
 /- English proof (translation)
-Unfold `unitB`. Use `contDiff_pi.2 fun p => contDiff_pi.2 fun q => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, herm, dotProduct, Pi.star_apply]`. Use `ContDiff.mul (contDiff_apply_apply ℝ ℂ a p) (ContDiff.sum fun i _ => ?_)` and prove the remaining obligations. Conclude with `(Complex.conjCLE.contDiff.comp (contDiff_apply_apply ℝ ℂ b i)).mul contDiff_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unitB_contDiff {m : ℕ} (a b : Fin m) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Bs : Fin m → Fin (2 * r + k + 1) → ℂ => unitB (Hpk k r) Bs a b) := by
@@ -74,19 +74,19 @@ end CapSm
 
 open CapSm in
 /- English proof (translation)
-Introduce `Wp _ _ _ k r m z π hπ w`. Take `⟨G', hG'⟩` from `Submodule.exists_isCompl (glW k r z π hπ)`. Set `Lext : Mx k r →ₗ[ℂ] (Wp →L[ℂ] Wp)` to `(ecL z π hπ).comp (Submodule.linearProjOfIsCompl _ _ hG')`. Establish `hLext : ∀ Z (hZ : Qr.InGlW k r z Z), Lext Z = QrD.ecOp π Z`. Introduce `Z hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : Z ∈ glW k r z π hπ` using `hZ`. Establish `e` using `Submodule.linearProjOfIsCompl_apply_left hG' ⟨Z, hmem⟩`. Use `show ecL z π hπ (Submodule.linearProjOfIsCompl _ _ hG' Z) = _`. Use `erw [e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Lc : Mx k r →L[ℂ] (Wp →L[ℂ] Wp)` to `LinearMap.toContinuousLinearMap Lext`. Establish `hLc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Z : Mx k r => Lc Z)` using `(Lc.restrictScalars ℝ).contDiff`. Set `T : Equiv.Perm (Fin m) → Fin m → (Fin m → Fin (2 * r + k + 1) → ℂ) → (Wp →L[ℂ] Wp)` to `fun σ t Bs => (if σ t = t then (w - ((t : ℕ) : ℂ)) • (1 : Wp →L[ℂ] Wp) else 0) + Lc (unitB (Hpk k r) Bs (σ t) t)`. Use `⟨fun Bs => ∑ σ : Equiv.Perm (Fin m), (((Equiv.Perm.sign σ : ℤ) : ℂ)) • ((List.ofFn fun t => T σ t).map fun f => f Bs).foldr (fun (T acc : Wp →L[ℂ] Wp) => T.comp acc) 1, ?_, ?_⟩` and prove the remaining obligations. Use `ContDiff.sum fun σ _ => ContDiff.const_smul _ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `foldr_contDiff _ fun f hf => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `List.mem_ofFn.1 hf`. Conclude with `contDiff_const.add (hLc.comp (unitB_contDiff _ _))`. Introduce `Bs hB v`. Unfold `capRep qmF`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ← foldr_apply]`. Use `congr 2`. Simplify using `only [List.map_ofFn]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `t y`. Establish `hl` using `QrD.frame_lie hB (σ t) t`. Establish `hgl : Qr.InGlW k r z (unitB (Hpk k r) Bs (σ t) t)` using `hl`. Simplify using `only [Function.comp_apply, T, id]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[ContinuousLinearMap.add_apply, QrD.ecRep_eq hπ.1 hπ.2 hl.1 hl.2 (k := k) (r := r), ← hLext _ hgl]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem capacity_smoothness_holds : CapSmooth := by
   intro Wp _ _ _ k r m z π hπ w

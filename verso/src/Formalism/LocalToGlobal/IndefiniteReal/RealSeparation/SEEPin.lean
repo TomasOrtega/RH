@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Apply the tactic sequence `cases t <;> simp [cj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_cj (t : Bool) (z : ℂ) : star (cj t z) = cj t (star z) := by
   cases t <;> simp [cj]

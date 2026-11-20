@@ -32,15 +32,15 @@ def StepL_prodIrr : Prop :=
 
 open CuspidalSupport₂ in
 /- English proof (translation)
-Introduce `hL k _ _ _ _ d X _ _ σ hs hi η hη hdv`. Take `⟨v, hv0, hv⟩` from `hdv`. Use `set τ := twist σ (detChar (Fin d) η⁻¹) with hτ`. Establish `hτs : IsSmooth τ` using `isSmooth_twist hs hη.inv.detChar`. Establish `hτi : τ.IsIrreducible` using `isIrreducible_twist hi _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadm : IsAdmissible τ` using `(hL.bz k).1 (Fin d) X τ hτs hτi`. Establish `hI : fixed τ (iwahori k (Fin d)) ≠ ⊥`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun h => ?_, hv0⟩` and prove the remaining obligations. Establish `hg` using `hv h.1 (iwahori_le_KO k _ h.2)`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (detChar (Fin d) η⁻¹ h.1 : ℂ) • σ h.1 v = v`. Rewrite using `[hg, smul_smul, detChar_apply, MonoidHom.inv_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.exists_isSubquotient_prinSeries hadm hτi hI`. Set `χ : Fin d → kˣ →* ℂˣ` to `fun i => unrChar k (α i)`. Establish `h1` using `hα.trans (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k d χ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `isSubquotient_twist h1 (detChar (Fin d) η)`. Rewrite `h2` using `[hτ, twist_twist_inv]`. Establish `hχs : ∀ i, IsSmoothChar (χ i)` using `fun i => isSmoothChar_of_isUnram (isUnram_unrChar (k := k) (α i))`. Set `φ` to `multiProdTwistEquiv (Equiv.sigmaUnique (Fin d) fun _ => Fin 1) (fun i => detRep (Fin 1) (χ i)) hη`. Establish `h3` using `h2.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfam : (fun i => twist (detRep (Fin 1) (χ i)) (detChar (Fin 1) η)) = fun i => detRep (Fin 1) (η * χ i)` using `funext fun i => twist_detRep_one _ _`. Rewrite `h3` using `[hfam]`. Use `⟨fun j => η * χ j, fun j => ⟨hη.mul (hχs j), fun u hu => ?_⟩, hi, fun j => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hη.mul (hχs j))⟩, _, h3⟩` and prove the remaining obligations. Use `show η u * unrChar k (α j) u = η u`. Rewrite using `[isUnram_unrChar (k := k) (α j) u hu, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepL_cuspSupp : StepL_cuspSupp := by
   intro hL k _ _ _ _ d X _ _ σ hs hi η hη hdv
@@ -78,15 +78,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 open ProductIrreducible₂ in
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`. Use `intros`. Conclude with `GlobalTheory.SmGL.MultiIrr.isIrreducible_multiProd_zero _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs and assume the hypotheses. Treat this case separately.
 
-Consider the case `succ s ih`. Introduce `N d hd X _ _ σ hs hi η hη μ hμ hcs`. Establish `e : N = d 0 + ∑ i : Fin s, d i.succ` using `hd.symm.trans (Fin.sum_univ_succ _)`. Substitute `e` using the available equality. Take `⟨E⟩` from `GlobalTheory.SmGL.MultiIrr.nonempty_prod₂_equiv_multiProd_succ d hd σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτi : (multiProd (stdBlocks (fun i : Fin s => d i.succ) rfl) fun i => σ i.succ).IsIrreducible` using `ih _ (fun i => d i.succ) rfl (fun i => X i.succ) (fun i => σ i.succ) (fun i => hs _) (fun i => hi _) (fun i => η i.succ) (fun b c hbc => hη _ _ fun h => hbc (Fin.succ_injective _ h)) (fun i => μ i.succ) (fun i => hμ _) (fun i => hcs _)`. Establish `hτs : IsSmooth (multiProd (stdBlocks (fun i : Fin s => d i.succ) rfl) fun i => σ i.succ)` using `isSmooth_parInd _ _`. Take `⟨h', x, hx, hxc⟩` from `GlobalTheory.LocGL.SupportRing.hasSupport_multiProd hL.zel (d := fun i : Fin s => d i.succ) rfl (fun i => σ i.succ) (fun i => hs _) (fun i => hi _) (fun i => hasSupport_of_isCuspSupport (hcs i.succ)) hτi`. Establish `hP` using `hL.disj k (d 0) (∑ i : Fin s, d i.succ) (d 0) h' { V := X 0, π := σ 0, smooth := hs 0, irr := hi 0 } { V := _, π := multiProd (stdBlocks (fun i : Fin s => d i.succ) rfl) fun i => σ i.succ, smooth := hτs, irr := hτi } (fun _ => 1) (fun b => (x b).1) (fun a => GlobalTheory.SplitRea …`. Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv E hP`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b hab j _ hφ`. Establish `hxb : x b ∈ ∑ i : Fin s, Finset.univ.val.map fun a => IrrGL.of (detRep (Fin 1) (μ i.succ a)) ((hcs i.succ).2.1 a).2.2.1 ((hcs i.succ).2.1 a).2.1`. Rewrite using `[← hx]`. Conclude with `Multiset.mem_map_of_mem x (Finset.mem_univ_val b)`. Take `⟨c, -, hc⟩` from `Multiset.mem_sum.1 hxb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨j', -, hj'⟩` from `Multiset.mem_map.1 hc`. Take `⟨u, hu, hne⟩` from `hη 0 c.succ (Fin.succ_ne_zero c).symm`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← (hμ 0 a).2 u hu, ← (hμ c.succ j').2 u hu]`. Conclude with `eq_on_units (x b) hab (μ 0 a) (μ c.succ j') (hμ 0 a).1 _ _ hj' j hφ u hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiProd_irreducible_of_distinct_unitCharacters (hL : UpperTheory.Gal.TypesAndIwahori.Loc) :
     ∀ (s N : ℕ) (d : Fin s → ℕ) (hd : ∑ b, d b = N) (X : Fin s → Type) [∀ b, AddCommGroup (X b)]
@@ -137,7 +137,7 @@ theorem multiProd_irreducible_of_distinct_unitCharacters (hL : UpperTheory.Gal.T
 end
 
 /- English proof (translation)
-Unfold `StepL_prodIrr`. Introduce `hC hL k _ _ _ _ s N d hd X _ _ σ hs hi η hη hdv hne`. Establish `H` using `fun b => hC hL k (d b) (X b) (σ b) (hs b) (hi b) (η b) (hη b) (hdv b)`. Use `choose μ hμ hcs using H`. Conclude with `multiProd_irreducible_of_distinct_unitCharacters hL s N d hd X σ hs hi η hne μ hμ hcs`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepL_prodIrr : StepL_prodIrr := by
   unfold StepL_prodIrr
@@ -203,7 +203,7 @@ end
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `L V _ _ π hπ hirr`. Conclude with `⟨isSmooth_jacU G.e hπ, JacquetFiniteLength₂.hasFiniteLength_jacU G L.loc.bz π hπ (hasFiniteLength_of_isIrreducible hirr)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem stepL_jacFin {n : ℕ} (G : Grp k n) : G.StepL_jacFin := by
   intro L V _ _ π hπ hirr
@@ -211,17 +211,15 @@ theorem stepL_jacFin {n : ℕ} (G : Grp k n) : G.StepL_jacFin := by
     JacquetFiniteLength₂.hasFiniteLength_jacU G L.loc.bz π hπ (hasFiniteLength_of_isIrreducible hirr)⟩
 
 /- English proof (translation)
-Introduce `hN X _ _ σ hs hirr hη`. Take `⟨y, hy0, hy⟩` from `hη`. Take `⟨s, ⟨E⟩⟩` from `GlobalTheory.LeviFactor.exists_equiv_piTensor_levi hN.loc.bz k (Fin G.s) (fun a => Fin (G.d a)) { V := X, ρ := σ, smooth := hs, irr := hirr }`. Use `⟨fun a => (s a).V, fun a => inferInstance, fun a => inferInstance, fun a => (s a).ρ, fun a => (s a).smooth, fun a => (s a).irr, fun a => ?_, ⟨E⟩⟩` and prove the remaining obligations. Establish `hE : ∀ m, E (σ m y) = piTensor (fun b => (s b).ρ) m (E y)` using `fun m => LinearMap.congr_fun (E.toIntertwiningMap.isIntertwining' m) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hEy : E y ≠ 0` using `(map_ne_zero_iff E (EquivLike.injective E)).2 hy0`. Establish `hK : ∀ g ∈ (KO k (Fin (G.d a)) : Set (GL (Fin (G.d a)) k)), piTensor (fun b => (s b).ρ) (Pi.mulSingle a g) (E y) = ((G.μ a (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • E y`. Introduce `g hg`. Establish `hm : (Pi.mulSingle a g : Levi k fun b : Fin G.s => Fin (G.d b)) ∈ leviK k (m` using `fun b : Fin G.s => Fin (G.d b)) := by`. Rewrite using `[leviK, Subgroup.mem_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hb]`. Conclude with `one_mem _`. Rewrite using `[← hE, hy _ hm, map_smul]`. Use `congr 1`. Rewrite using `[eta, Finset.prod_eq_single a]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Introduce `b _ hb`. Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one, map_one, Units.val_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
-
-Conclude with `Tensor₂.exists_factor_vec (fun b => (s b).ρ) a (E y) hEy _ _ hK`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepL_tensor {n : ℕ} (G : Grp k n) : G.StepL_tensor := by
   intro hN X _ _ σ hs hirr hη
@@ -260,21 +258,19 @@ theorem stepL_tensor {n : ℕ} (G : Grp k n) : G.StepL_tensor := by
 open P_spCount in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `hL c hc hres`. Establish `hE : G.etaSp (jacU G.e (prinSeries c)) = eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))` using `eS_jacU_eq G.e (parInd (points (Fin n)) (ρc c)) G.eta`. Take `⟨N, b, hb⟩` from `(hL.loc.geo k).1 (Fin n) (Fin G.s) (Fin n) (fun _ => Unit) (fun a => Fin (G.d a)) (points (Fin n)) G.e`. Take `⟨S, hmono, h0, hN, hS⟩` from `hb ℂ (ρc c) (isSmooth_ρc c hc)`. Take `⟨fr⟩ : Nonempty (∀ t : Fin N, ∀ i, (Σ j, Fin ((b t).1 i j)) ≃ (fun _ : Fin n => Unit) i)` from `⟨fun t => (b t).nonempty_rows.some⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨gc⟩ : Nonempty (∀ t : Fin N, ∀ j, (Σ i, Fin ((b t).1 i j)) ≃ (fun a : Fin G.s => Fin (G.d a)) j)` from `⟨fun t => (b t).nonempty_cols.some⟩`. Establish `hr : ∀ t : Fin N, Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (subQuot (S t.succ) (S t.castSucc))) ≤ Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t))))`. Introduce `t`. Establish `e : Nonempty ((subQuot (S t.succ) (S t.castSucc)).Equiv (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t))))` using `hS t (fr t) (gc t)`. Conclude with `rank_eS_le_of_equiv _ _ e.some`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : ∀ t, Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (smInd (relParab k (gc t)) (cellRep G c (b t) (fr t) (gc t)))) ≤ ((if Good G (b t) then 1 else 0 : ℕ) : Cardinal)`. Introduce `t`. Use `split_ifs with hP`. Use `(rank_eS_le (gc t) (cellRep G c (b t) (fr t) (gc t)) G.eta).trans ((rank_quotient_le _).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Module.rank_self, Nat.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(rank_eS_eq_zero _ _ _ ?_).trans_le zero_le` and prove the remaining obligations. Introduce `F hF`. Assume the negation of the conclusion as `hne`. Apply `hP` to reduce the goal to its premises. Introduce `i a h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hab`. Apply `G.dist a (G.bl i) hab` to reduce the goal to its premises. Use `MonoidHom.ext fun w => ?_` and prove the remaining obligations. Establish `h1` using `cell_char G c (b t) (fr t) (gc t) F hF hne i a h w`. Establish `h2 : c i (unitIncl k w) = G.μ (G.bl i) (unitIncl k w)` using `DFunLike.congr_fun (hres i) w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm.trans h2`. Establish `hsum : ∑ t : Fin N, (if Good G (b t) then 1 else 0 : ℕ) ≤ 1`. Rewrite using `[← Finset.card_filter]`. Use `Finset.card_le_one.2 fun t ht t' ht' => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ht'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `b.injective (good_unique G ht ht')`. Establish `hrank : Module.rank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : Module.Free ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) := Module.Free.of_divisionRing ℂ _`. Establish `hfin : FiniteDimensional ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c))))` using `Module.rank_lt_aleph0_iff.1 (hrank.trans_lt Cardinal.one_lt_aleph0)`.
-
-Establish `hfr : Module.finrank ℂ ↥(eS (leviK k (fun a : Fin G.s => Fin (G.d a))) G.eta (jac G.e (parInd (points (Fin n)) (ρc c)))) ≤ 1` using `Module.finrank_le_of_rank_le (n := 1) (by rw [Nat.cast_one]; exact hrank)`. Rewrite using `[hE]`. Conclude with `⟨hfin, hfr⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepL_spCount {n : ℕ} (G : Grp k n) : G.StepL_spCount := by
   intro hL c hc hres
@@ -340,15 +336,15 @@ theorem stepL_spCount {n : ℕ} (G : Grp k n) : G.StepL_spCount := by
 
 open P_spPiSub in
 /- English proof (translation)
-Introduce `hOrd hL Y _ _ τ _ _ ν hν hc hI`. Set `χ : Fin G.s → kˣ →* ℂˣ` to `fun a => absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2))`. Establish `hχ : ∀ a, IsSmoothChar (χ a)` using `fun a => isSmoothChar_absPow _`. Establish `hsupp : ∀ a, HasSupport (G.twD τ a) (Finset.univ.val.map fun j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a)))`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hasSupport_of_isCuspSupport (hc a)).tw (χ a) (hχ a)`. Rewrite `h1` using `[Multiset.map_map]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Name the introduced variables `j _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(IrrGL.tw_ofChar (ν a j) (χ a) (hν a j) (hχ a)).symm`. Establish `hcOf : ∀ i, IsSmoothChar (G.cOf ν i)` using `fun i => (hν _ _).mul (isSmoothChar_absPow _)`. Establish `hS` using `SupportRing.hasSupport_multiProd hL.loc.zel G.hd (G.twD τ) (fun a => (hsupp a).isSmooth) (fun a => (hsupp a).isIrreducible) hsupp hI`. Establish `hsum : (∑ a, Finset.univ.val.map fun j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a))) = Finset.univ.val.map fun i => IrrGL.ofChar (G.cOf ν i) (hcOf i)` using `sum_map_univ G.e (fun a j => IrrGL.ofChar (ν a j * χ a) ((hν a j).mul (hχ a)))`. Take `⟨h, x, hx, -, -, e', he⟩` from `hS`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hsum]`. Take `⟨σ, hσ⟩` from `exists_equiv_of_map_eq x (fun i => IrrGL.ofChar (G.cOf ν i) (hcOf i)) hx`. Take `rfl : x = fun b => IrrGL.ofChar (G.cOf ν (σ b)) (hcOf _)` from `funext fun b => (hσ b).symm`. Establish `hn : h = n` using `by simpa using Fintype.card_congr σ`. Substitute `hn` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ` to `multiProdEquiv e' fun b => (equivRep (IrrRep.det (Fin 1) (G.cOf ν (σ b)) (hcOf _))).symm`. Establish `hsq : IsSubquotient (multiProd G.e (G.twD τ)) (prinSeries fun b => G.cOf ν (σ b))` using `(he.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)).trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries e' _)`. Conclude with `hOrd hL _ _ (isSmooth_parInd _ _) hI _ hcOf σ hsq`.
+A detailed English derivation is pending.
 -/
 theorem stepL_spPiSub {n : ℕ} (G : Grp k n) : G.StepL_spPiSub := by
   intro hOrd hL Y _ _ τ _ _ ν hν hc hI
@@ -386,11 +382,11 @@ variable {n : ℕ}
 
 open UpperTheory.TNZ.Grp.P_spOrd GlobalTheory.LocGL.SupportRing in
 /- English proof (translation)
-Introduce `hL V _ _ π hs hi c hc σ h`. Take `⟨Z, Ψ, -, hΨ, -⟩` from `hL.loc.zel k`. Take `⟨hp1, e1⟩` from `multiProd_cls (Ψ := Ψ) hΨ (d := fun _ : Fin n => 1) (X := fun _ => ℂ) (sum_one n) (fun i => detRep (Fin 1) (c (σ i))) (fun i => isSmooth_detRep1 (hc (σ i))) (fun i => hasFiniteLength_detRep1 (c (σ i)))`. Take `⟨hp2, e2⟩` from `multiProd_cls (Ψ := Ψ) hΨ (d := fun _ : Fin n => 1) (X := fun _ => ℂ) (sum_one n) (fun i => detRep (Fin 1) (c i)) (fun i => isSmooth_detRep1 (hc i)) (fun i => hasFiniteLength_detRep1 (c i))`. Establish `hcl : clsGL _ hp1 = clsGL _ hp2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Ψ.injective` to reduce the goal to its premises. Rewrite using `[e1, e2]`. Conclude with `Equiv.prod_comp σ (fun i => Ψ (clsGL (detRep (Fin 1) (c i)) (hasFiniteLength_detRep1 (c i))))`. Establish `h1` using `h.trans (prin_sub_multi (fun i => c (σ i)))`. Establish `h2` using `clsGL_of_pos hp1 hs hi h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hcl]`. Conclude with `(isSubquotient_of_clsGL_ne hp2 hs hi h2.ne').trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries _ c)`.
+A detailed English derivation is pending.
 -/
 theorem stepL_spOrd : StepL_spOrd (k := k) (n := n) := by
   intro hL V _ _ π hs hi c hc σ h
@@ -413,23 +409,21 @@ theorem stepL_spOrd : StepL_spOrd (k := k) (n := n) := by
 
 open P_spSupp in
 /- English proof (translation)
-Introduce `hOrd hLit V _ _ π hπs hπi Y _ _ τ hτs hτi ν hν hcs hjac`. Establish `hG` using `hLit.loc.geo`. Establish `hZ` using `hLit.loc.zel`. Establish `hBZ` using `hLit.loc.bz`. Establish `hs' : ∀ a, IsSmooth (G.twD τ a)` using `fun a => isSmooth_twist (hτs a) (isSmoothChar_absPow _).detChar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : ∀ a, (G.twD τ a).IsIrreducible` using `fun a => GlobalTheory.LocGL.isIrreducible_twist (hτi a) _`. Establish `hτJ : (piTensor (G.twD τ)).IsIrreducible` using `isIrreducible_piTensor_twD G hBZ τ hs' hi'`. Establish `hJs : IsSubquotient (piTensor (G.twD τ)) (jac G.e π)`. Rewrite using `[piTensor_twD_eq]`. Conclude with `GlobalTheory.LocGL.isSubquotient_twist hjac _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsπ⟩` from `GlobalTheory.LocGL.SupportRing.exists_hasSupport hZ (IrrGL.of π hπs hπi)`. Establish `hsπ' : HasSupport π s` using `hsπ.of_equiv (IrrGL.equivOf π hπs hπi).symm`. Establish `hy : ∀ j, ∃ y : IrrRep (GL (Fin (G.d j)) k), IsSubquotient y.ρ ((piTensor (G.twD τ)).comp (MonoidHom.mulSingle (fun j => GL (Fin (G.d j)) k) j) : Representation ℂ (GL (Fin (G.d j)) k) _) ∧ Nonempty ((G.twD τ j).Equiv y.ρ)`. Introduce `j`. Take `⟨X, _, _, υ, hυ, hυs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ ((piTensor (G.twD τ)).comp (MonoidHom.mulSingle (fun j => GL (Fin (G.d j)) k) j)) (GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hτJ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : IsSubquotient υ (G.twD τ j)` using `GlobalTheory.LocGL.SupportUnique.isSubquotient_factor (G.twD τ) j hυ hυs`. Conclude with `⟨⟨X, υ, h1.isSmooth (hs' j), hυ⟩, hυs, GlobalTheory.LocGL.SupportUnique.nonempty_equiv_of_isSubquotient hυ (hi' j) h1⟩`. Use `choose y hy hyE using hy`. Take `⟨t, ht, hst⟩` from `GlobalTheory.LocGL.SupportUnique.exists_sum_of_jac hG hZ hsπ' G.e hτJ hJs y hy`. Establish `hsm : ∀ a j, IsSmoothChar (ν a j * absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2)))` using `fun a j => (hν a j).mul (isSmoothChar_absPow _)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htj : ∀ j, t j = Finset.univ.val.map fun i => IrrGL.ofChar _ (hsm j i)`. Introduce `j`. Take `⟨φ⟩` from `hyE j`. Use `GlobalTheory.LocGL.SupportUnique.eq_of_hasSupport hG hZ (G.d j) (IrrGL.of (G.twD τ j) (hs' j) (hi' j)) rfl _ _ ?_ ?_` and prove the remaining obligations. Conclude with `((ht j).of_equiv φ.symm).of_equiv (IrrGL.equivOf _ _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hasSupport_twD G τ ν hν hcs j (hsm j)).of_equiv (IrrGL.equivOf _ _ _)`. Establish `hc : ∀ i, IsSmoothChar (G.cOf ν i)` using `fun i => (hν _ _).mul (isSmoothChar_absPow _)`. Establish `hsF : s = Finset.univ.val.map fun i => IrrGL.ofChar (G.cOf ν i) (hc i)`. Rewrite using `[hst, Finset.sum_congr rfl fun j _ => htj j]`. Conclude with `sum_map_univ G.e _ _ fun a j => IrrGL.ofChar_inj.2 (by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `Grp.cOf`. Rewrite using `[Equiv.symm_apply_apply])`. Take `⟨h, x, hx, -, -, e, he⟩` from `hsπ'`. Rewrite `hx` using `[hsF]`. Take `⟨σ, hσ⟩` from `exists_equiv_of_map_eq x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl : x = fun a => IrrGL.ofChar (G.cOf ν (σ a)) (hc (σ a))` from `funext hσ`. Take `rfl : h = n` from `by simpa using Fintype.card_congr σ`. Set `φ` to `multiProdEquiv e fun a => (GlobalTheory.LocGL.equivRep (IrrRep.det (Fin 1) (G.cOf ν (σ a)) (hc (σ a)))).symm`. Establish `h1 : IsSubquotient π (multiProd e fun a => detRep (Fin 1) (G.cOf ν (σ a)))` using `he.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`. Establish `h2` using `h1.trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries e fun a => G.cOf ν (σ a))`.
-
-Conclude with `hOrd hLit V π hπs hπi (G.cOf ν) hc σ h2`.
+A detailed English derivation is pending.
 -/
 theorem stepL_spSupp (G : Grp k n) : G.StepL_spSupp := by
   intro hOrd hLit V _ _ π hπs hπi Y _ _ τ hτs hτi ν hν hcs hjac
@@ -491,19 +485,19 @@ theorem stepL_spSupp (G : Grp k n) : G.StepL_spSupp := by
   exact hOrd hLit V π hπs hπi (G.cOf ν) hc σ h2
 
 /- English proof (translation)
-Establish `hLat` using `UpperTheory.TNZ.step_spLat`. Establish `hUniq` using `step_spUniq G`. Establish `hCount` using `stepL_spCount G`. Establish `hLift` using `step_spLift G`. Establish `hTw` using `step_spTwBasic G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRes` using `step_spRes G`. Establish `hPiEta` using `step_spPiEta G`. Establish `hOrd` using `stepL_spOrd (k := k) (n := n)`. Establish `hPiSub` using `stepL_spPiSub G`. Establish `hSupp` using `stepL_spSupp G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCusp` using `UpperTheory.TNZ.stepL_cuspSupp`. Establish `hProd` using `UpperTheory.TNZ.stepL_prodIrr`. Establish `hTen` using `UpperTheory.TNZ.step_tensorVec`. Introduce `L V _ _ π hπs hπi Y iY mY τ hτs hτi hτd hsub`. Establish `hc : ∀ a, ∃ μ' : Fin (G.d a) → kˣ →* ℂˣ, (∀ j, IsSmoothChar (μ' j) ∧ ∀ u : kˣ, valuation k (u : k) = 1 → μ' j u = G.μ a u) ∧ IsCuspSupport (τ a) (fun _ => 1) (fun j => detRep (Fin 1) (μ' j))` using `fun a => hCusp L.loc k (G.d a) (Y a) (τ a) (hτs a) (hτi a) (G.μ a) (G.smooth a) (hτd a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose ν hν hνc using hc`. Establish `hνs : ∀ a j, IsSmoothChar (ν a j)` using `fun a j => (hν a j).1`. Establish `hνr : ∀ a j, res (ν a j) = res (G.μ a)` using `fun a j => P_spTop.res_eq (hν a j).2`. Establish `htw` using `fun a => hTw Y τ a (hτs a) (hτi a) (hτd a)`. Establish `hPi : (multiProd G.e (G.twD τ)).IsIrreducible` using `hProd hCusp L.loc k G.s n G.d G.hd Y (G.twD τ) (fun a => (htw a).1) (fun a => (htw a).2.1) G.μ G.smooth (fun a => (htw a).2.2) (fun b c hbc => P_spTop.exists_unit_ne (G.dist b c hbc))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπI` using `hSupp hOrd L V π hπs hπi Y τ hτs hτi ν hνs hνc hsub`. Establish `hPI` using `hPiSub hOrd L Y τ hτs hτi ν hνs hνc hPi`. Take `⟨hfd, hle⟩` from `hCount L (G.cOf ν) (P_spTop.isSmoothChar_cOf G ν hνs) (hRes ν hνr)`. Establish `hπη : G.HasEtaVec (jacU G.e π)`. Take `⟨v, hv0, hv⟩` from `hTen k G.s G.d Y τ G.μ hτd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hLift _ _ (jacU G.e π) (piTensor τ) (isSmooth_jacU G.e hπs) hsub ⟨v, hv0, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hm'` using `hm`. Rewrite `hm'` using `[leviK, Subgroup.mem_pi]`. Conclude with `hv m fun a => hm' a (Set.mem_univ a)`. Establish `hPη` using `hPiEta hLift Y τ hτs hτd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e⟩` from `hUniq hLat _ (prinSeries (G.cOf ν)) (P_spTop.isSmooth_prinSeries _) hfd hle _ _ π (multiProd G.e (G.twD τ)) hπi hPi hπI hPI hπη hPη`. Conclude with `⟨Y, iY, mY, G.twD τ, fun a => (htw a).1, fun a => (htw a).2.1, fun a => (htw a).2.2, ⟨e⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem stepL_suppProd (G : Grp k n) : G.StepL_suppProd := by
   have hLat := UpperTheory.TNZ.step_spLat
@@ -554,9 +548,9 @@ namespace UpperTheory.Gal.TypesAndIwahori
 open UpperTheory.TNZ UpperTheory.TNZ.Grp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N G V _ _ π hs hirr hy`. Take `⟨hsm, hfl⟩` from `stepL_jacFin G ⟨L⟩ V π hs hirr`. Take `⟨X, _, _, σ, hσs, hσi, hsq, hση⟩` from `step_subq G _ (jacU G.e π) hsm hfl hy`. Take `⟨Y, _, _, τ, hτs, hτi, hτd, ⟨eqv⟩⟩` from `stepL_tensor G ⟨L⟩ X σ hσs hσi hση`. Use `stepL_suppProd G ⟨L⟩ V π hs hirr Y τ hτs hτi hτd ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S, f, hf⟩` from `hsq`. Conclude with `⟨S, (eqv.toIntertwiningMap).comp f, eqv.toLinearEquiv.surjective.comp hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jacProd (L : Loc) : JacProd := by
   intro k _ _ _ _ N G V _ _ π hs hirr hy

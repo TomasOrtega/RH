@@ -11,7 +11,7 @@ namespace GlobalTheory.KapLat.ModelOfBasis
 variable {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.InvAlg K)
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnitLemma.InvAlg.herm`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_left (x z : B.A) {ι : Type} (s : Finset ι) (f : ι → B.A) :
     B.herm x (∑ k ∈ s, f k) z = ∑ k ∈ s, B.herm x (f k) z := by
@@ -19,7 +19,7 @@ theorem herm_sum_left (x z : B.A) {ι : Type} (s : Finset ι) (f : ι → B.A) :
   rw [Finset.mul_sum, Finset.sum_mul, map_sum]
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnitLemma.InvAlg.herm`. Rewrite using `[map_sum, Finset.mul_sum, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_sum_right (x y : B.A) {ι : Type} (s : Finset ι) (f : ι → B.A) :
     B.herm x y (∑ k ∈ s, f k) = ∑ k ∈ s, B.herm x y (f k) := by
@@ -27,11 +27,9 @@ theorem herm_sum_right (x y : B.A) {ι : Type} (s : Finset ι) (f : ι → B.A) 
   rw [map_sum, Finset.mul_sum, map_sum]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr y, ← b.sum_repr z]`. Rewrite using `[herm_sum_left]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[herm_sum_right, Finset.sum_eq_single k]`. Rewrite using `[GlobalTheory.UnitLemma.Basic.herm_smul_left, GlobalTheory.UnitLemma.Basic.herm_smul_right, hb, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `l _ hl`. Rewrite using `[GlobalTheory.UnitLemma.Basic.herm_smul_left, GlobalTheory.UnitLemma.Basic.herm_smul_right, hb, if_neg (Ne.symm hl)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ k) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem herm_eq_sum {n : ℕ} (x : B.A) (b : Module.Basis (Fin n) K.E B.A)
     (hb : ∀ i j, B.herm x (b i) (b j) = if i = j then 1 else 0) (y z : B.A) :
@@ -49,23 +47,21 @@ end GlobalTheory.KapLat.ModelOfBasis
 
 open GlobalTheory.KapLat.ModelOfBasis in
 /- English proof (translation)
-Introduce `E _ _ _ w hw K e hbr n B u x hu b hb`. Set `ψ : B.A ≃+ (Fin n → w.adicCompletion E)` to `b.equivFun.toAddEquiv.trans (AddEquiv.piCongrRight fun _ => e.toAddEquiv)`. Establish `hψ : ∀ y k, ψ y k = e (b.repr y k)` using `fun y k => rfl`. Establish `hstd : ∀ y z, stdH w (ψ y) (ψ z) = e (B.herm x y z)`. Introduce `y z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[herm_eq_sum B x b hb, map_sum]`. Unfold `stdH`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hψ, hψ, map_mul, hbr.1]`. Set `M : Matrix (Fin n) (Fin n) (w.adicCompletion E)` to `Matrix.of fun k i => e (b.repr (u * b i) k)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hM : ∀ y, ψ (u * y) = M *ᵥ ψ y`. Introduce `y`. Use function extensionality and compare the values at `k`. Establish `hy : u * y = ∑ i, b.repr y i • (u * b i)` using `by conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_smul_comm _ _ _`. Rewrite using `[hψ, hy, map_sum, Finsupp.coe_finsetSum, Finset.sum_apply, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, M, Matrix.of_apply, hψ, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hunit : cT (cj w) M * M = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `h` using `hstd (u * b j) (u * b i)`. Rewrite `h` using `[← GlobalTheory.UnitLemma.Basic.herm_norm, hu, mul_one, hb]`. Simplify using `only [stdH, hψ] at h`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, M, Matrix.of_apply]`. Rewrite using `[Finset.sum_congr rfl fun k _ => mul_comm _ _, h]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (Ne.symm hij), if_neg hij, map_zero]`. Establish `hunit' : M * cT (cj w) M = 1` using `mul_eq_one_comm.mp hunit`. Set `γ : GLw n w` to `⟨M, cT (cj w) M, hunit', hunit⟩`. Use `⟨γ, ?_, ψ, ?_, hM, hstd⟩` and prove the remaining obligations. Unfold `UL`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hw]`. Use `show cT (cj w) M * 1 * M = 1`. Rewrite using `[Matrix.mul_one, hunit]`. Introduce `c y`. Use function extensionality and compare the values at `k`.
-
-Rewrite using `[hψ, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Pi.smul_apply, hψ, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KapLat.exists_model_of_orthonormal_basis :
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w →

@@ -20,19 +20,17 @@ namespace GlobalTheory
 namespace HomExtension
 
 /- English proof (translation)
-Set `Ω : Type` to `AlgebraicClosure (Z.residueField z)`. Set `q : Sp Ω ⟶ Z` to `Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField z) Ω)) ≫ Z.fromSpecResidueField z`. Use `hG.comm` as an intermediate fact. Establish `h1` using `(semiAbelian_torsion_finite_and_closedPoint_finiteOrder hab).1 Ω ((Over.pullback q).obj G) (hG.fibres Ω q) n hn`. Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback (isGrpPullback_pullback G q) (𝟙 (Sp Ω)) q (Category.id_comp _).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : Finite {x : Over.mk q ⟶ G // x ^ n = 1}`. Establish `: Finite {x : Over.mk (𝟙 (Sp Ω)) ⟶ (Over.pullback q).obj G // x ^ n = 1}` using `h1`. Use `Finite.of_injective (β := {x : Over.mk (𝟙 (Sp Ω)) ⟶ (Over.pullback q).obj G // x ^ n = 1}) (fun x => ⟨e.symm x.1, by rw [← map_pow, x.2, map_one]⟩) fun x y h => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val h))`. Set `pt : Sp Ω` to `(⊥ : PrimeSpectrum Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.finite_range fun x : {x : Over.mk q ⟶ G // x ^ n = 1} => x.1.left pt).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, k, _, _, t, x, hx, s, rfl⟩`. Take `⟨⟨z', ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField k Z).symm.surjective t`. Establish `hz : z' = z`. Rewrite using `[← hw, ← Scheme.Hom.comp_apply, Over.w x]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `(Z.fromSpecResidueField_apply z' _).symm`. Substitute `hz` using the available equality. Use `letI : Algebra (Z.residueField z') k := ψ.hom.toAlgebra`. Set `τ : k →ₐ[Z.residueField z'] Ω` to `IsAlgClosed.lift`. Establish `hτ : spMap τ.toRingHom ≫ Spec.map ψ = Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField z') Ω))`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `τ.commutes a`. Set `u : Over.mk q ⟶ Over.mk ((Scheme.SpecToEquivOfField k Z).symm ⟨z', ψ⟩)` to `Over.homMk (spMap τ.toRingHom) (by`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `spMap τ.toRingHom ≫ Spec.map ψ ≫ _ = _`. Rewrite using `[reassoc_of% hτ]`. Use the proof step `rfl)`. Use `⟨⟨u ≫ x, by rw [← SemiAbTorsion.comp_pow_points, hx, MonObj.comp_one]⟩, ?_⟩` and prove the remaining obligations. Establish `: Subsingleton (Sp k)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`.
-
-Express the relevant statement in the definitionally equal form `(spMap τ.toRingHom ≫ x.left) pt = _`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `congrArg _ (Subsingleton.elim (α := Sp k) _ _)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_torsion_images
     (hab : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B →
@@ -80,23 +78,21 @@ theorem finite_torsion_images
   exact congrArg _ (Subsingleton.elim (α := Sp k) _ _)
 
 /- English proof (translation)
-Set `y : Sp V ⟶ Z` to `a ≫ G.hom`. Set `g : Sp K ⟶ Sp V` to `spMap (algebraMap V K)`. Set `y₀ : Sp K ⟶ U` to `a₀ ≫ pullback.snd G.hom j`. Establish `hy : y₀ ≫ j = g ≫ y`. Rewrite using `[Category.assoc, ← pullback.condition, reassoc_of% ha]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α, hα, hα'⟩` from `grpPullback_iso ((isGrpPullback_pullback ((Over.pullback y).obj G) g).comp (isGrpPullback_pullback G y)) (((isGrpPullback_pullback ((Over.pullback j).obj G) y₀).comp (isGrpPullback_pullback G j)).congr hy rfl)`. Take `⟨β, hβ, hβ'⟩` from `grpPullback_iso (((isGrpPullback_pullback ((Over.pullback j).obj G') y₀).comp (isGrpPullback_pullback G' j)).congr hy rfl) ((isGrpPullback_pullback ((Over.pullback y).obj G') g).comp (isGrpPullback_pullback G' y))`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `hext V K _ _ (IsSemiAbelian.pullback y G hG) (IsSemiAbelian.pullback y G' hG') (α.hom ≫ (Over.pullback y₀).map φ ≫ β.hom) inferInstance`. Set `a' : Sp V ⟶ pullback G.hom y` to `pullback.lift a (𝟙 _) (Category.id_comp _).symm`. Establish `ha1 : a' ≫ pullback.fst G.hom y = a` using `pullback.lift_fst _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha2 : a' ≫ pullback.snd G.hom y = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hFw : F.left ≫ pullback.snd G'.hom y = pullback.snd G.hom y` using `Over.w F`. Use `⟨a' ≫ F.left ≫ pullback.fst G'.hom y, ?_, ?_, fun T r t x n hx hn => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, reassoc_of% hFw, reassoc_of% ha2]`. Set `c : Sp K ⟶ pullback (pullback.snd G.hom y) g` to `pullback.lift (g ≫ a') (𝟙 _) (by rw [Category.assoc, ha2, Category.comp_id, Category.id_comp])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hc1 : c ≫ pullback.fst _ _ = g ≫ a'` using `pullback.lift_fst _ _ _`. Establish `hc2 : c ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `h₁` using `ExtUnique.pullback_map_left_fst g F`. Establish `h₂` using `ExtUnique.pullback_map_left_fst y₀ φ`. Establish `hαw : α.hom.left ≫ pullback.snd (pullback.snd G.hom j) y₀ = pullback.snd (pullback.snd G.hom y) g` using `Over.w α.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : c ≫ α.hom.left ≫ pullback.fst (pullback.snd G.hom j) y₀ = a₀`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [Category.assoc, Category.assoc, hα', reassoc_of% hc1, ha1, ha]`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, reassoc_of% hαw, reassoc_of% hc2]`. Use `erw [hF'] at h₁`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h₁` using `[Over.comp_left, Over.comp_left]`. Express the relevant statement in the definitionally equal form `g ≫ _ = _`. Rewrite using `[← reassoc_of% hc1]`. Use `erw [← reassoc_of% h₁, hβ', reassoc_of% h₂, reassoc_of% h₃]`. Establish `ht : t = r ≫ y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc, ← hx]`. Conclude with `(Over.w x).symm`. Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback (isGrpPullback_pullback G y) r t ht`. Take `⟨e', he'⟩` from `exists_mulEquiv_of_isGrpPullback (isGrpPullback_pullback G' y) r t ht`. Establish `h₁ : (e.symm x).left = r ≫ a'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [← he, e.apply_symm_apply, hx, Category.assoc, ha1]`. Rewrite using `[Category.assoc, ha2, Category.comp_id]`. Conclude with `Over.w (e.symm x)`. Use `⟨e' (e.symm x ≫ F), ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[he', Over.comp_left, h₁]`. Simplify using `only [Category.assoc]`. Rewrite using `[← map_pow, ← MonObj.pow_comp, ← map_pow, hn, map_one, MonObj.one_comp, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_image_point_dvr
     (hext : ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K]
@@ -165,7 +161,7 @@ theorem exists_image_point_dvr
     · rw [← map_pow, ← MonObj.pow_comp, ← map_pow, hn, map_one, MonObj.one_comp, map_one]
 
 /- English proof (translation)
-Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful ℤ_[p] ℚ_[p] L` as an intermediate fact. Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalHom ℤ_[p] L` as an intermediate fact. Establish `: Finite (IsLocalRing.ResidueField ℤ_[p])` using `Finite.of_equiv _ (PadicInt.residueField).symm.toEquiv`. Conclude with `Module.finite_of_finite (IsLocalRing.ResidueField ℤ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_residueField_integralClosure_padicInt (p : ℕ) [Fact p.Prime]
     (L : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] L] :
@@ -177,21 +173,21 @@ theorem finite_residueField_integralClosure_padicInt (p : ℕ) [Fact p.Prime]
   exact Module.finite_of_finite (IsLocalRing.ResidueField ℤ_[p])
 
 /- English proof (translation)
-Use `hG.smooth` as an intermediate fact. Take `⟨K, hK, H⟩` from `padicAlgCl_integral_points.2 G.left (G.hom ≫ π) p a`. Take `⟨i, a₁, hi, hloc, rfl⟩` from `H K le_rfl`. Set `V : Type` to `integralClosure ℤ_[p] K`. Set `g : Sp K ⟶ Sp V` to `spMap (algebraMap V K)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `d : Sp (PadicAlgCl p) ⟶ Sp K` to `spMap K.val.toRingHom`. Establish `hd : d ≫ g = gPt p ≫ spMap i`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `(hi x).symm`. Establish `hsub : Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Establish `hr : Set.range (g ≫ a₁) ⊆ Set.range (pullback.fst G.hom j)`. Introduce and unpack `_ ⟨s, rfl⟩`. Set `pt : Sp (PadicAlgCl p)` to `(⊥ : PrimeSpectrum (PadicAlgCl p))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a₀ pt, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ha, ← reassoc_of% hd, Scheme.Hom.comp_apply d]`. Conclude with `congrArg _ (Subsingleton.elim _ _)`. Set `a₂ : Sp K ⟶ pullback G.hom j` to `IsOpenImmersion.lift (pullback.fst G.hom j) (g ≫ a₁) hr`. Establish `ha₂ : a₂ ≫ pullback.fst G.hom j = g ≫ a₁` using `IsOpenImmersion.lift_fac _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hda : d ≫ a₂ = a₀`. Rewrite using `[← cancel_mono (pullback.fst G.hom j), Category.assoc, ha₂, reassoc_of% hd, ha]`. Take `⟨b, hb₁, hb₂, hb₃⟩` from `exists_image_point_dvr hext j hG hG' φ V K a₁ a₂ ha₂`. Establish `hcl : spMap i (cPt p) = IsLocalRing.closedPoint V` using `IsLocalRing.comap_closedPoint i`. Set `k : Type` to `IsLocalRing.ResidueField V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : Sp k ⟶ Sp V` to `spMap (IsLocalRing.residue V)`. Establish `hrc : ∀ s, r s = IsLocalRing.closedPoint V` using `fun s => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum k) s (IsLocalRing.closedPoint k)]`. Conclude with `IsLocalRing.comap_closedPoint (IsLocalRing.residue V)`. Establish `hkey : ∀ {Y : Scheme.{0}} (c : Sp V ⟶ Y) (s : Sp k), (r ≫ c) s = (spMap i ≫ c) (cPt p)` using `fun c s => (Scheme.Hom.comp_apply _ _ _).trans ((congrArg c ((hrc s).trans hcl.symm)).trans (Scheme.Hom.comp_apply _ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `x : Over.mk ((r ≫ a₁) ≫ G.hom) ⟶ G` to `Over.homMk (r ≫ a₁) rfl`. Establish `hx : x ^ n = 1` using `hn k _ x (by`. Use extensionality with `w`. Express the relevant statement in the definitionally equal form `w ∈ Set.range (r ≫ a₁) ↔ _`. Conclude with `⟨fun ⟨s, h⟩ => h.symm.trans (hkey a₁ s), fun h => ⟨IsLocalRing.closedPoint k, (hkey a₁ _).trans h.symm⟩⟩)`.
+Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x', hx', hx''⟩` from `hb₃ _ r _ x n rfl hx`. Use `⟨spMap i ≫ b, by rw [Category.assoc, hb₁, Category.assoc], ?_, k, inferInstance, finite_residueField_integralClosure_padicInt p K, _, x', hx'', IsLocalRing.closedPoint k, ?_⟩` and prove the remaining obligations. Rewrite using `[← reassoc_of% hd, hb₂, reassoc_of% hda]`. Rewrite using `[hx']`. Conclude with `hkey b _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_image_point_padic
     (hext : ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K]
@@ -261,23 +257,23 @@ end HomExtension
 open HomExtension
 
 /- English proof (translation)
-Introduce `hext hab Z _ π _ _ _ hZ G G' P' _ _ κ hG hG' hP hκ U hU φ hφ`. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG'.separated` as an intermediate fact. Establish `: IsIntegral G.left` using `isIntegral_left_of_isSemiAbelian G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme G.left` using `forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth G.hom hZ`. Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian π`. Take `⟨_, _⟩` from `ExtUnique.dense_open U (U.isOpen.dense hU)`. Set `ν : pullback G.hom U.ι ⟶ G.left` to `pullback.fst G.hom U.ι`. Establish `hκw : κ.left ≫ P'.hom = G'.hom` using `Over.w κ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφw : φ.left ≫ pullback.snd G'.hom U.ι = pullback.snd G.hom U.ι` using `Over.w φ`. Establish `hνe : ν.isoOpensRange.inv ≫ ν = ν.opensRange.ι` using `ν.isoOpensRange_inv_comp`. Establish `hne : (ν.opensRange : Set G.left).Nonempty`. Take `⟨z, hz⟩` from `hU`. Use `⟨(η : 𝟙_ (Over Z) ⟶ G).left z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ ∈ Set.range (pullback.fst G.hom U.ι)`. Rewrite using `[Scheme.Pullback.range_fst, Set.mem_preimage, ← Scheme.Hom.comp_apply, Over.w]`. Conclude with `⟨⟨z, hz⟩, rfl⟩`. Take `⟨Φ, ⟨hΦ₁, hΦ₂⟩, -⟩` from `existsUnique_extension_of_finite_specializations G.left (G.hom ≫ π) hnorm Z P'.left G.hom P'.hom κ.left.opensRange ν.opensRange (ν.isoOpensRange.inv ≫ φ.left ≫ pullback.fst G'.hom U.ι ≫ κ.left) hne (by`. Rewrite using `[Category.assoc, Category.assoc, Category.assoc, hκw, pullback.condition, reassoc_of% hφw, ← pullback.condition, reassoc_of% hνe])`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun σ hσ => by`. Take `⟨n, hn, hn'⟩` from `(semiAbelian_torsion_finite_and_closedPoint_finiteOrder hab).2 Z π G σ hσ`. Use `⟨_, (finite_torsion_images hab G' hG' (G.hom σ) hn).image κ.left, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, -, rfl⟩`. Conclude with `⟨w, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `p _ a a₀ b rfl ha hb hb'`. Take `⟨c, hc₁, hc₂, hc₃⟩` from `exists_image_point_padic hext π U.ι hG hG' φ p a (a₀ ≫ ν.isoOpensRange.inv) (by rw [Category.assoc, hνe, ha]) n hn'`. Establish `: IsSchemeTheoreticallyDominant (gPt p)` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ Subtype.val_injective`. Establish `hbc : b = c ≫ κ.left` using `ExtUnique.hom_ext_of_dominant P'.hom (by rw [Category.assoc, hκw, hb', hc₁]) (gPt p) (by rw [hb, reassoc_of% hc₂])`. Use `⟨c (cPt p), ⟨?_, hc₃⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Scheme.Hom.comp_apply c G'.hom _).symm.trans ((congrArg (fun f => f (cPt p)) hc₁).trans (Scheme.Hom.comp_apply a G.hom _))`. Rewrite using `[hbc]`. Conclude with `(Scheme.Hom.comp_apply c κ.left _).symm)`. Establish `hκe : κ.left.isoOpensRange.inv ≫ κ.left = κ.left.opensRange.ι` using `κ.left.isoOpensRange_inv_comp`. Set `F : G ⟶ G'` to `Over.homMk (Φ ≫ κ.left.isoOpensRange.inv) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hκw, Category.assoc, reassoc_of% hκe, hΦ₂])`. Establish `hF : (Over.pullback U.ι).map F = φ`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(ExtUnique.pullback_map_left_fst U.ι F).trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ν ≫ Φ ≫ κ.left.isoOpensRange.inv = _`. Rewrite using `[← cancel_mono κ.left, ← cancel_epi ν.isoOpensRange.inv, Category.assoc, Category.assoc, hκe, reassoc_of% hνe, hΦ₁, Category.assoc]`. Conclude with `(Over.w _).trans (Over.w _).symm`. Use `⟨F, ⟨ExtUnique.isMonHom_of_pullback U.ι F (hF ▸ hφ), hF⟩, fun F' hF' => ?_⟩` and prove the remaining obligations. Conclude with `ExtUnique.pullback_map_injective U.ι G G' (hF'.2.trans hF.symm)`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_hom_extension_semiAbelian_normal_base : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → (∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, 1 ≤ n → Finite {x : 𝟙_ (Over (Sp K)) ⟶ B // x ^ n = 1}) → ∀ (Z : Scheme.{0}) [IsIntegral Z] (π : Z ⟶ Sp ℤ) [Flat π] [LocallyOfFiniteType π] [QuasiCompact π], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → ∀ (G G' P' : Over Z) [GrpObj G] [GrpObj G'] (κ : G' ⟶ P'), IsSemiAbelian G → IsSemiAbelian G' → IsProper P'.hom → IsOpenImmersion κ.left → ∀ (U : Z.Opens), (U : Set Z).Nonempty → ∀ φ : (Over.pullback U.ι).obj G ⟶ (Over.pullback U.ι).obj G', IsMonHom φ → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback U.ι).map F = φ := by
   intro hext hab Z _ π _ _ _ hZ G G' P' _ _ κ hG hG' hP hκ U hU φ hφ

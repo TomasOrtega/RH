@@ -13,7 +13,7 @@ section Semilocal
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Take `⟨m, hm, hxm⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hx)`. Conclude with `h ⟨m, hm⟩ (Ideal.Quotient.eq_zero_iff_mem.2 hxm)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isUnit_of_forall_maximalSpectrum_mk_ne_zero {x : R}
     (h : ∀ m : MaximalSpectrum R, Ideal.Quotient.mk m.asIdeal x ≠ 0) : IsUnit x := by
@@ -22,7 +22,7 @@ theorem isUnit_of_forall_maximalSpectrum_mk_ne_zero {x : R}
   exact h ⟨m, hm⟩ (Ideal.Quotient.eq_zero_iff_mem.2 hxm)
 
 /- English proof (translation)
-Use `choose s hs using Ideal.pi_quotient_surjective (I := fun m : MaximalSpectrum R => m.asIdeal) fun _ _ => MaximalSpectrum.isCoprime_of_ne`. Conclude with `⟨s, hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_maximalSpectrum_pi [Finite (MaximalSpectrum R)] :
     ∃ s : (∀ m : MaximalSpectrum R, R ⧸ m.asIdeal) → R,
@@ -32,7 +32,7 @@ theorem exists_lift_maximalSpectrum_pi [Finite (MaximalSpectrum R)] :
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_lift_maximalSpectrum_pi (R := R)`. Conclude with `⟨Matrix.of fun i j => s fun p => Y p i j, fun p => Matrix.ext fun i j => by simp [hs]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_matrix_lift_maximalSpectrum [Finite (MaximalSpectrum R)] {m n : Type*}
     (Y : ∀ p : MaximalSpectrum R, Matrix m n (R ⧸ p.asIdeal)) :
@@ -53,19 +53,19 @@ def LiftsToDetOne (f : S →+* R) (A : Matrix n n R) : Prop :=
 namespace LiftsToDetOne
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, det_one, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one : LiftsToDetOne f (1 : Matrix n n R) := ⟨1, det_one, by simp⟩
 
 /- English proof (translation)
-Take `⟨B, hB, rfl⟩` from `h`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, hB, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_eq {A : Matrix n n R} (h : LiftsToDetOne f A) : A.det = 1 := by
   obtain ⟨B, hB, rfl⟩ := h
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, hB, map_one]
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hA`. Take `⟨B, hB, rfl⟩` from `hB`. Conclude with `⟨A * B, by simp [hA, hB], Matrix.map_mul⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mul {A B : Matrix n n R} (hA : LiftsToDetOne f A) (hB : LiftsToDetOne f B) :
     LiftsToDetOne f (A * B) := by
@@ -74,14 +74,14 @@ theorem mul {A B : Matrix n n R} (hA : LiftsToDetOne f A) (hB : LiftsToDetOne f 
   exact ⟨A * B, by simp [hA, hB], Matrix.map_mul⟩
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hA`. Conclude with `⟨A.adjugate, by simp [det_adjugate, hA], f.map_adjugate A⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adjugate {A : Matrix n n R} (hA : LiftsToDetOne f A) : LiftsToDetOne f A.adjugate := by
   obtain ⟨A, hA, rfl⟩ := hA
   exact ⟨A.adjugate, by simp [det_adjugate, hA], f.map_adjugate A⟩
 
 /- English proof (translation)
-Use `hE.adjugate.mul h` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, adjugate_mul, hE.det_eq, one_smul, Matrix.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem of_mul_left {E A : Matrix n n R} (hE : LiftsToDetOne f E) (h : LiftsToDetOne f (E * A)) :
     LiftsToDetOne f A := by
@@ -89,7 +89,7 @@ theorem of_mul_left {E A : Matrix n n R} (hE : LiftsToDetOne f E) (h : LiftsToDe
   rwa [← Matrix.mul_assoc, adjugate_mul, hE.det_eq, one_smul, Matrix.one_mul] at this
 
 /- English proof (translation)
-Take `⟨B, hB, h⟩` from `h`. Use `⟨reindex e.symm e.symm B, by simpa using hB, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `using congrFun (congrFun h (e i)) (e j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem of_reindex {A : Matrix n n R} (e : n ≃ m) (h : LiftsToDetOne f (reindex e e A)) :
     LiftsToDetOne f A := by
@@ -99,7 +99,7 @@ theorem of_reindex {A : Matrix n n R} (e : n ≃ m) (h : LiftsToDetOne f (reinde
   simpa using congrFun (congrFun h (e i)) (e j)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hf.hasRightInverse`. Use `⟨fromBlocks 1 (X.map s) 0 1, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[fromBlocks_map, hs.comp_eq_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem upper (hf : Surjective f) (X : Matrix n m R) :
     LiftsToDetOne f (fromBlocks (1 : Matrix n n R) X 0 (1 : Matrix m m R)) := by
@@ -108,7 +108,7 @@ theorem upper (hf : Surjective f) (X : Matrix n m R) :
   simp [fromBlocks_map, hs.comp_eq_id]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hf.hasRightInverse`. Use `⟨fromBlocks 1 0 (X.map s) 1, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[fromBlocks_map, hs.comp_eq_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lower (hf : Surjective f) (X : Matrix m n R) :
     LiftsToDetOne f (fromBlocks (1 : Matrix n n R) 0 X (1 : Matrix m m R)) := by
@@ -117,7 +117,7 @@ theorem lower (hf : Surjective f) (X : Matrix m n R) :
   simp [fromBlocks_map, hs.comp_eq_id]
 
 /- English proof (translation)
-Take `⟨D, hD, rfl⟩` from `h`. Conclude with `⟨fromBlocks 1 0 0 D, by simp [hD], by simp [fromBlocks_map]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem block {D : Matrix m m R} (h : LiftsToDetOne f D) :
     LiftsToDetOne f (fromBlocks (1 : Matrix n n R) 0 0 D) := by
@@ -125,7 +125,7 @@ theorem block {D : Matrix m m R} (h : LiftsToDetOne f D) :
   exact ⟨fromBlocks 1 0 0 D, by simp [hD], by simp [fromBlocks_map]⟩
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hf c`. Use `⟨Matrix.transvection i j c, det_transvection_of_ne _ _ hij _, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.transvection, Matrix.map_add, Matrix.map_single]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem transvection (hf : Surjective f) {i j : n} (hij : i ≠ j) (c : R) :
     LiftsToDetOne f (Matrix.transvection i j c) := by
@@ -136,13 +136,13 @@ theorem transvection (hf : Surjective f) {i j : n} (hij : i ≠ j) (c : R) :
 end LiftsToDetOne
 
 /- English proof (translation)
-Establish `key : ∀ p : MaximalSpectrum R, ∃ t : Matrix Unit m (R ⧸ p.asIdeal), Ideal.Quotient.mk p.asIdeal (A (.inl ()) (.inl ())) + ∑ j, t () j * Ideal.Quotient.mk p.asIdeal (A (.inr j) (.inl ())) ≠ 0`. Introduce `p`. Use `p.isMaximal` as an intermediate fact. Distinguish the cases in `h0 : Ideal.Quotient.mk p.asIdeal (A (.inl ()) (.inl ())) = 0`. Use `by_contra! hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hcol : ∀ i, (A.map (Ideal.Quotient.mk p.asIdeal)) i (.inl ()) = 0`. Introduce and unpack `(i | i)`. Conclude with `h0`. Simplify `hne (Matrix.of fun _ => Pi.single i 1)` using `[h0, Pi.single_apply]`. Establish `hdet` using `det_eq_zero_of_column_eq_zero _ hcol`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hdet` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(hA.map _).ne_zero hdet`. Conclude with `⟨0, by simpa using h0⟩`. Use `choose t ht using key`. Take `⟨T, hT⟩` from `exists_matrix_lift_maximalSpectrum t`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨T, isUnit_of_forall_maximalSpectrum_mk_ne_zero fun p => ?_⟩` and prove the remaining obligations. Use `ht p` as an intermediate fact. Rewrite `this` using `[← hT p]`. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isUnit_corner [Finite (MaximalSpectrum R)] {A : Matrix (Unit ⊕ m) (Unit ⊕ m) R}
     (hA : IsUnit A.det) : ∃ t : Matrix Unit m R,
@@ -170,9 +170,9 @@ theorem exists_isUnit_corner [Finite (MaximalSpectrum R)] {A : Matrix (Unit ⊕ 
   simpa [Matrix.mul_apply, Fintype.sum_sum_type] using this
 
 /- English proof (translation)
-Establish `ha : A.toBlocks₁₁ = 1`. Use extensionality with `⟨⟩ ⟨⟩`. Simplify `h1` using `[toBlocks₁₁]`. Establish `hdec : A = fromBlocks 1 0 A.toBlocks₂₁ 1 * fromBlocks 1 0 0 (A.toBlocks₂₂ - A.toBlocks₂₁ * A.toBlocks₁₂) * fromBlocks 1 A.toBlocks₁₂ 0 1` using `by conv_lhs => rw [← A.fromBlocks_toBlocks, ha]`. Simplify using `[fromBlocks_multiply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hD : (A.toBlocks₂₂ - A.toBlocks₂₁ * A.toBlocks₁₂).det = 1`. Rewrite `hA` using `[hdec]`. Simplify `hA` using `only [det_mul, det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂, det_one, one_mul, mul_one]`. Rewrite using `[hdec]`. Conclude with `((LiftsToDetOne.lower hf _).mul (ih _ hD).block).mul (LiftsToDetOne.upper hf _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftsToDetOne_of_corner_eq_one (hf : Surjective f)
     (ih : ∀ D : Matrix m m R, D.det = 1 → LiftsToDetOne f D)
@@ -194,9 +194,9 @@ theorem liftsToDetOne_of_corner_eq_one (hf : Surjective f)
   exact ((LiftsToDetOne.lower hf _).mul (ih _ hD).block).mul (LiftsToDetOne.upper hf _)
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty m with hm | ⟨⟨j⟩⟩` into its components or cases. Use `liftsToDetOne_of_corner_eq_one hf ih hA ?_` and prove the remaining obligations. Apply the tactic sequence `have : Subsingleton (Unit ⊕ m) := ⟨by rintro (i | i) (j | j) <;> first | rfl | exact hm.elim ‹_›⟩`. Rewrite using `[← hA, det_eq_elem_of_subsingleton A (.inl ())]`. Take `⟨a, ha⟩` from `h1.exists_left_inv`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e₁` using `LiftsToDetOne.transvection (i := (.inr j : Unit ⊕ m)) (j := .inl ()) hf (by simp) ((1 - A (.inr j) (.inl ())) * a)`. Establish `e₂` using `LiftsToDetOne.transvection (i := (.inl () : Unit ⊕ m)) (j := .inr j) hf (by simp) (1 - A (.inl ()) (.inl ()))`. Use `e₁.of_mul_left (e₂.of_mul_left (liftsToDetOne_of_corner_eq_one hf ih ?_ ?_))` and prove the remaining obligations. Rewrite using `[det_mul, det_mul, e₁.det_eq, e₂.det_eq, hA, one_mul, one_mul]`. Rewrite using `[transvection_mul_apply_same, transvection_mul_apply_same, transvection_mul_apply_of_ne _ _ _ _ (by simp), mul_assoc, ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -220,11 +220,11 @@ theorem liftsToDetOne_of_isUnit_corner (hf : Surjective f)
     ring
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (A : Matrix (Fin k) (Fin k) R), A.det = 1 → LiftsToDetOne f A`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro A _`. Rewrite using `[Subsingleton.elim A 1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `.one`. Consider the case `succ k ih`. Introduce `A hA`. Set `e : Fin (k + 1) ≃ Unit ⊕ Fin k` to `Fintype.equivOfCardEq (by simp [add_comm])`. Use `.of_reindex e ?_` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hA' : (reindex e e A).det = 1` using `by simpa using hA`. Take `⟨t, ht⟩` from `exists_isUnit_corner (A := reindex e e A) (by simp [hA])`. Use `(LiftsToDetOne.upper hf t).of_mul_left (liftsToDetOne_of_isUnit_corner hf ih ?_ ht)` and prove the remaining obligations. Rewrite using `[det_mul, hA', (LiftsToDetOne.upper hf t).det_eq, one_mul]`. Conclude with `.of_reindex (Fintype.equivFin n) (key _ _ (by simpa using hA))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftsToDetOne_of_det_eq_one [Finite (MaximalSpectrum R)] (hf : Surjective f)
     {A : Matrix n n R} (hA : A.det = 1) : LiftsToDetOne f A := by
@@ -243,7 +243,7 @@ theorem liftsToDetOne_of_det_eq_one [Finite (MaximalSpectrum R)] (hf : Surjectiv
   exact .of_reindex (Fintype.equivFin n) (key _ _ (by simpa using hA))
 
 /- English proof (translation)
-Introduce `A` and use `by obtain ⟨B, hB, h⟩ := liftsToDetOne_of_det_eq_one hf A.2 exact ⟨⟨B, hB⟩, Subtype.ext h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem specialLinearGroup_map_surjective [Finite (MaximalSpectrum R)] (hf : Surjective f) :
     Surjective (SpecialLinearGroup.map (n := n) f) := fun A => by
@@ -275,7 +275,7 @@ def LiftsToSymplectic (f : S →+* R) (A : Matrix (l ⊕ l) (l ⊕ l) R) : Prop 
 
 omit [Fintype l] [DecidableEq l] in
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hf.hasRightInverse`. Conclude with `⟨X.map s, hX.map s, Matrix.ext fun i j => hs (X i j)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isSymm_map_eq (hf : Surjective f) {X : Matrix l l R} (hX : X.IsSymm) :
     ∃ Y : Matrix l l S, Y.IsSymm ∧ Y.map f = X := by
@@ -285,7 +285,7 @@ theorem exists_isSymm_map_eq (hf : Surjective f) {X : Matrix l l R} (hX : X.IsSy
 namespace LiftsToSymplectic
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `hA`. Take `⟨B, hB, rfl⟩` from `hB`. Conclude with `⟨A * B, mul_mem hA hB, Matrix.map_mul⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mul {A B : Matrix (l ⊕ l) (l ⊕ l) R} (hA : LiftsToSymplectic f A)
     (hB : LiftsToSymplectic f B) : LiftsToSymplectic f (A * B) := by
@@ -294,13 +294,13 @@ theorem mul {A B : Matrix (l ⊕ l) (l ⊕ l) R} (hA : LiftsToSymplectic f A)
   exact ⟨A * B, mul_mem hA hB, Matrix.map_mul⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.J l S, SymplecticGroup.J_mem _ _, map_J _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem J : LiftsToSymplectic f (Matrix.J l R) :=
   ⟨Matrix.J l S, SymplecticGroup.J_mem _ _, map_J _ _⟩
 
 /- English proof (translation)
-Take `⟨Y, hY, rfl⟩` from `exists_isSymm_map_eq hf hX`. Conclude with `⟨fromBlocks 1 Y 0 1, by simp [SymplecticGroup.fromBlocks_mem_iff, hY.eq], by simp [fromBlocks_map]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem upper (hf : Surjective f) {X : Matrix l l R} (hX : X.IsSymm) :
     LiftsToSymplectic f (fromBlocks 1 X 0 1) := by
@@ -309,7 +309,7 @@ theorem upper (hf : Surjective f) {X : Matrix l l R} (hX : X.IsSymm) :
     by simp [fromBlocks_map]⟩
 
 /- English proof (translation)
-Take `⟨Y, hY, rfl⟩` from `exists_isSymm_map_eq hf hX`. Conclude with `⟨fromBlocks 1 0 Y 1, by simp [SymplecticGroup.fromBlocks_mem_iff, hY.eq], by simp [fromBlocks_map]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lower (hf : Surjective f) {X : Matrix l l R} (hX : X.IsSymm) :
     LiftsToSymplectic f (fromBlocks 1 0 X 1) := by
@@ -318,7 +318,7 @@ theorem lower (hf : Surjective f) {X : Matrix l l R} (hX : X.IsSymm) :
     by simp [fromBlocks_map]⟩
 
 /- English proof (translation)
-Establish `h' : Y * X = 1` using `mul_eq_one_comm.1 h`. Use `(((upper hf hX).mul (lower hf hY.neg)).mul (upper hf hX)).mul J` as an intermediate fact. Simplify `this` using `[fromBlocks_multiply, Matrix.J, h, h']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem levi_of_isSymm (hf : Surjective f) {X Y : Matrix l l R} (hX : X.IsSymm) (hY : Y.IsSymm)
     (h : X * Y = 1) : LiftsToSymplectic f (fromBlocks X 0 0 Y) := by
@@ -327,9 +327,9 @@ theorem levi_of_isSymm (hf : Surjective f) {X Y : Matrix l l R} (hX : X.IsSymm) 
   simpa [fromBlocks_multiply, Matrix.J, h, h'] using this
 
 /- English proof (translation)
-Take `⟨A, hA, rfl⟩` from `liftsToDetOne_of_det_eq_one hf hX`. Establish `hA' : Aᵀ * Aᵀ.adjugate = 1` using `by simp [mul_adjugate, hA]`. Use `⟨fromBlocks A 0 0 Aᵀ.adjugate, by simp [SymplecticGroup.fromBlocks_mem_iff, hA'], ?_⟩` and prove the remaining obligations. Establish `: Aᵀ.adjugate.map f = Y`. Use `right_inv_eq_right_inv ?_ h` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← transpose_map, ← Matrix.map_mul, hA']`. Simplify using the standard rewrite rules. Simplify using `[fromBlocks_map, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem levi_of_det_eq_one [Finite (MaximalSpectrum R)] (hf : Surjective f) {X Y : Matrix l l R}
     (hX : X.det = 1) (h : Xᵀ * Y = 1) : LiftsToSymplectic f (fromBlocks X 0 0 Y) := by
@@ -343,15 +343,15 @@ theorem levi_of_det_eq_one [Finite (MaximalSpectrum R)] (hf : Surjective f) {X Y
   simp [fromBlocks_map, this]
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty l with hl | ⟨⟨i⟩⟩` into its components or cases. Conclude with `levi_of_det_eq_one hf det_isEmpty h`. Establish `hd : X.det * Y.det = 1` using `by simpa using congrArg det h`. Set `D : Matrix l l R` to `diagonal (Function.update 1 i X.det)`. Set `E : Matrix l l R` to `diagonal (Function.update 1 i Y.det)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hDE : D * E = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hj, hd]`. Simplify using `[hj]`. Establish `hED : E * D = 1` using `mul_eq_one_comm.1 hDE`. Establish `h₁` using `levi_of_isSymm hf (isSymm_diagonal _) (isSymm_diagonal _) hDE`. Establish `h₂ : LiftsToSymplectic f (fromBlocks (E * X) 0 0 (D * Y))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `levi_of_det_eq_one hf ?_ ?_` and prove the remaining obligations. Rewrite using `[det_mul, det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`. Simplify using `[mul_comm, hd]`. Rewrite using `[transpose_mul, diagonal_transpose, Matrix.mul_assoc, ← Matrix.mul_assoc _ D, hED, Matrix.one_mul, h]`. Use `h₁.mul h₂` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[fromBlocks_multiply]`. Simplify `this` using `[← Matrix.mul_assoc, D, E, hDE, hED, -diagonal_mul_diagonal]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levi [Finite (MaximalSpectrum R)] (hf : Surjective f) {X Y : Matrix l l R}
     (h : Xᵀ * Y = 1) : LiftsToSymplectic f (fromBlocks X 0 0 Y) := by
@@ -382,15 +382,13 @@ theorem levi [Finite (MaximalSpectrum R)] (hf : Surjective f) {X Y : Matrix l l 
 end LiftsToSymplectic
 
 /- English proof (translation)
-Establish `key : ∀ p : MaximalSpectrum R, ∃ Y : Matrix l l (R ⧸ p.asIdeal), Y.IsSymm ∧ IsUnit (A.map (Ideal.Quotient.mk p.asIdeal) + Y * C.map (Ideal.Quotient.mk p.asIdeal))`. Introduce `p`. Use `p.isMaximal` as an intermediate fact. Set `_` to `Ideal.Quotient.field p.asIdeal`. Establish `h'` using `SymplecticGroup.map_mem h (Ideal.Quotient.mk p.asIdeal)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h'` using `[fromBlocks_map]`. Use `exists_symmetric_X_invertible_add_mul_of_ker_inter_eq_bot (fun x h₁ h₂ => ?_) (SymplecticGroup.fromBlocks_mem_iff.1 h').1` and prove the remaining obligations. Establish `hu` using `(isUnit_iff_isUnit_det _).2 (SymplecticGroup.symplectic_det h')`. Use `mulVec_injective_iff_isUnit.2 hu (a₁ := Sum.elim x 0) (a₂ := Sum.elim 0 0) (by` as an intermediate fact. Rewrite `h₁`, `h₂` using `[smul_eq_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[fromBlocks_mulVec, h₁, h₂])`. Conclude with `(Sum.elim_eq_iff.1 this).1`. Use `choose Y hY hu using key`. Take `⟨s, hs⟩` from `exists_lift_maximalSpectrum_pi (R := R)`. Use `⟨Matrix.of fun i j => s fun p => Y p i j, ?_, isUnit_of_forall_maximalSpectrum_mk_ne_zero fun p => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [transpose_apply, of_apply]`. Conclude with `congrArg s (funext fun p => (hY p).apply i j)`. Use `p.isMaximal` as an intermediate fact. Establish `hX : (Matrix.of fun i j => s fun p => Y p i j).map (Ideal.Quotient.mk p.asIdeal) = Y p` using `Matrix.ext fun i j => by simp [hs]`.
-
-Rewrite using `[RingHom.map_det, map_add, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hX]`. Conclude with `((isUnit_iff_isUnit_det _).1 (hu p)).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSymm_isUnit_add_mul [Finite (MaximalSpectrum R)] {A B C D : Matrix l l R}
     (h : fromBlocks A B C D ∈ symplecticGroup l R) :
@@ -424,11 +422,11 @@ theorem exists_isSymm_isUnit_add_mul [Finite (MaximalSpectrum R)] {A B C D : Mat
     exact ((isUnit_iff_isUnit_det _).1 (hu p)).ne_zero
 
 /- English proof (translation)
-Use `A.invertibleOfIsUnitDet hA` as an intermediate fact. Take `⟨h₁, h₂, h₃⟩` from `SymplecticGroup.fromBlocks_mem_iff.1 h`. Take `⟨h₄, -, -⟩` from `SymplecticGroup.fromBlocks_mem_iff.1 (fromBlocks_transpose A B C D ▸ SymplecticGroup.transpose_mem h)`. Simplify using `only [transpose_transpose] at h₄`. Establish `hC : (C * A⁻¹).IsSymm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: Cᵀ = Aᵀ * C * A⁻¹` using `by rw [h₁, mul_inv_cancel_right_of_invertible]`. Rewrite using `[Matrix.IsSymm, transpose_mul, this, transpose_nonsing_inv, Matrix.mul_assoc, inv_mul_cancel_left_of_invertible]`. Establish `hB : (A⁻¹ * B).IsSymm`. Establish `: Bᵀ = A⁻¹ * (B * Aᵀ)` using `by rw [← h₄, inv_mul_cancel_left_of_invertible]`. Rewrite using `[Matrix.IsSymm, transpose_mul, this, transpose_nonsing_inv, ← Matrix.mul_assoc, mul_inv_cancel_right_of_invertible]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : Aᵀ * (D - C * A⁻¹ * B) = 1`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h₁, mul_inv_cancel_right_of_invertible, h₃]`. Use `((LiftsToSymplectic.lower hf hC).mul (LiftsToSymplectic.levi hf hD)).mul (LiftsToSymplectic.upper hf hB)` as an intermediate fact. Simplify `this` using `[fromBlocks_multiply, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem liftsToSymplectic_of_isUnit [Finite (MaximalSpectrum R)] (hf : Surjective f)
     {A B C D : Matrix l l R} (h : fromBlocks A B C D ∈ symplecticGroup l R) (hA : IsUnit A.det) :
@@ -454,9 +452,9 @@ theorem liftsToSymplectic_of_isUnit [Finite (MaximalSpectrum R)] (hf : Surjectiv
   simpa [fromBlocks_multiply, Matrix.mul_assoc] using this
 
 /- English proof (translation)
-Rewrite `hM`, the goal using `[← M.fromBlocks_toBlocks]`. Take `⟨X, hX, hu⟩` from `exists_isSymm_isUnit_add_mul hM`. Establish `hmem : fromBlocks 1 X 0 1 ∈ symplecticGroup l R`. Simplify using `[SymplecticGroup.fromBlocks_mem_iff, hX.eq]`. Establish `h` using `mul_mem hmem hM`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [fromBlocks_multiply, Matrix.one_mul, Matrix.zero_mul, zero_add] at h`. Use `(LiftsToSymplectic.upper hf hX.neg).mul (liftsToSymplectic_of_isUnit hf h hu)` as an intermediate fact. Simplify `this` using `only [fromBlocks_multiply, Matrix.one_mul, Matrix.zero_mul, zero_add, Matrix.neg_mul, add_neg_cancel_right]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem liftsToSymplectic_of_mem [Finite (MaximalSpectrum R)] (hf : Surjective f)
     {M : Matrix (l ⊕ l) (l ⊕ l) R} (hM : M ∈ symplecticGroup l R) : LiftsToSymplectic f M := by
@@ -471,7 +469,7 @@ theorem liftsToSymplectic_of_mem [Finite (MaximalSpectrum R)] (hf : Surjective f
     add_neg_cancel_right] using this
 
 /- English proof (translation)
-Introduce `A` and use `by obtain ⟨B, hB, h⟩ := liftsToSymplectic_of_mem hf A.2 exact ⟨⟨B, hB⟩, Subtype.ext h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem symplecticGroupMap_surjective [Finite (MaximalSpectrum R)] (hf : Surjective f) :
     Surjective (symplecticGroupMap l f) := fun A => by
@@ -486,9 +484,9 @@ variable {R : Type*} [CommRing R] {l n : Type*} [Fintype l] [DecidableEq l] [Fin
   [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨U, V, e, -, -, heq⟩` from `exists_rank_normal_form G`. Take `⟨k⟩ : Nonempty (l ↪ Fin G.rank)` from `Function.Embedding.nonempty_of_card_le (by simpa)`. Set `σ : l → n` to `fun i => e.symm (.inl (k i))`. Use `⟨U.submatrix σ id, V.submatrix id σ, ?_⟩` and prove the remaining obligations. Establish `: U.submatrix σ id * G * V.submatrix id σ = (U * G * V).submatrix σ σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, heq]`. Use extensionality with `i j`. Simplify using `[σ, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_mul_mul_eq_one_of_card_le_rank {K : Type*} [Field K] (G : Matrix n n K)
     (h : Fintype.card l ≤ G.rank) : ∃ (U : Matrix l n K) (V : Matrix n l K), U * G * V = 1 := by
@@ -505,7 +503,7 @@ theorem exists_mul_mul_eq_one_of_card_le_rank {K : Type*} [Field K] (G : Matrix 
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Use `le_trans (Submodule.finrank_mono ?_) (Submodule.finrank_add_le_finrank_add_finrank (LinearMap.range A.mulVecLin) (LinearMap.range B.mulVecLin))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[mulVecLin_apply, sub_mulVec]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left ⟨x, rfl⟩) (Submodule.mem_sup_right ⟨x, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_rank_sub_le {K : Type*} [Field K] (A B : Matrix n n K) :
     (A - B).rank ≤ A.rank + B.rank := by
@@ -516,13 +514,13 @@ theorem matrix_rank_sub_le {K : Type*} [Field K] (A B : Matrix n n K) :
   exact Submodule.sub_mem _ (Submodule.mem_sup_left ⟨x, rfl⟩) (Submodule.mem_sup_right ⟨x, rfl⟩)
 
 /- English proof (translation)
-Establish `key : ∀ p : MaximalSpectrum R, ∃ (U : Matrix l (l ⊕ l) (R ⧸ p.asIdeal)) (V : Matrix (l ⊕ l) l (R ⧸ p.asIdeal)), U * G.map (Ideal.Quotient.mk p.asIdeal) * V = 1`. Introduce `p`. Use `p.isMaximal` as an intermediate fact. Set `_` to `Ideal.Quotient.field p.asIdeal`. Use `exists_mul_mul_eq_one_of_card_le_rank _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁` using `h.map (Ideal.Quotient.mk p.asIdeal)`. Rewrite `h₁` using `[RingHom.map_det, map_sub, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, transpose_map, ← isUnit_iff_isUnit_det]`. Establish `h₂` using `matrix_rank_sub_le (G.map (Ideal.Quotient.mk p.asIdeal)) (G.map (Ideal.Quotient.mk p.asIdeal))ᵀ`. Rewrite `h₂` using `[rank_of_isUnit _ h₁, rank_transpose, Fintype.card_sum]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `choose U V hUV using key`. Take `⟨U', hU⟩` from `exists_matrix_lift_maximalSpectrum U`. Take `⟨V', hV⟩` from `exists_matrix_lift_maximalSpectrum V`. Establish `hu : IsUnit (U' * G * V').det` using `isUnit_of_forall_maximalSpectrum_mk_ne_zero fun p => by`. Use `p.isMaximal` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_mul, Matrix.map_mul, hU, hV, hUV, det_one]`. Conclude with `one_ne_zero`. Conclude with `⟨U', V' * (U' * G * V')⁻¹, by rw [← Matrix.mul_assoc, mul_nonsing_inv _ hu]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul_mul_eq_one_of_isUnit_sub_transpose [Finite (MaximalSpectrum R)]
     {G : Matrix (l ⊕ l) (l ⊕ l) R} (h : IsUnit (G - Gᵀ).det) :
@@ -559,11 +557,11 @@ variable {R M l : Type*} [CommRing R] [AddCommGroup M] [Module R M] [Fintype l] 
 
 omit [Fintype l] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `(i | i) (j | j)`. Simplify `h.left_left i j` using `[Matrix.J]`. Simplify `h.left_right i j` using `[Matrix.J, Matrix.one_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h.right_left hB i j` as an intermediate fact. Simplify using `only [of_apply, Matrix.J, Matrix.neg_apply, fromBlocks_apply₂₁, Matrix.one_apply, this]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify `h.right_right i j` using `[Matrix.J]`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i j => ?_, fun i j => ?_, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify `congrFun (congrFun h (.inl i)) (.inl j)` using `[Matrix.J]`. Simplify `congrFun (congrFun h (.inr i)) (.inr j)` using `[Matrix.J]`. Simplify `congrFun (congrFun h (.inl i)) (.inr i)` using `[Matrix.J]`. Simplify `congrFun (congrFun h (.inl i)) (.inr j)` using `[Matrix.J, hij]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isSymplecticFamily_iff_gram (hB : B.IsAlt) (v : l ⊕ l → M) :
     IsSymplecticFamily B (fun i => v (.inl i)) (fun i => v (.inr i)) (fun _ => 1) ↔
@@ -585,9 +583,9 @@ theorem isSymplecticFamily_iff_gram (hB : B.IsAlt) (v : l ⊕ l → M) :
     · simpa [Matrix.J, hij] using congrFun (congrFun h (.inl i)) (.inr j)
 
 /- English proof (translation)
-Establish `h : (Matrix.of fun i j => B (v i) (v j)) = (b.toMatrix v)ᵀ * (-Matrix.J l R) * b.toMatrix v`. Use extensionality with `i j`. Rewrite using `[← hb.toMatrix_eq hB, of_apply]`. Use `conv_lhs => rw [← b.sum_toMatrix_smul_self v i, ← b.sum_toMatrix_smul_self v j]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.mul_apply, transpose_apply, LinearMap.BilinForm.toMatrix_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Rewrite using `[isSymplecticFamily_iff_gram hB, h, SymplecticGroup.mem_iff', Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+A detailed English derivation is pending.
 -/
 theorem IsSymplecticBasis.isSymplecticFamily_iff_toMatrix_mem {b : Basis (l ⊕ l) R M}
     (hb : IsSymplecticBasis B b) (hB : B.IsAlt) (v : l ⊕ l → M) :
@@ -605,14 +603,14 @@ theorem IsSymplecticBasis.isSymplecticFamily_iff_toMatrix_mem {b : Basis (l ⊕ 
     neg_inj]
 
 /- English proof (translation)
-The claim follows from `(hb.isSymplecticFamily_iff_toMatrix_mem hB c).1 hc`.
+A detailed English derivation is pending.
 -/
 theorem IsSymplecticBasis.toMatrix_mem {b c : Basis (l ⊕ l) R M} (hb : IsSymplecticBasis B b)
     (hc : IsSymplecticBasis B c) (hB : B.IsAlt) : b.toMatrix c ∈ symplecticGroup l R :=
   (hb.isSymplecticFamily_iff_toMatrix_mem hB c).1 hc
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `(b.is_basis_iff_det (v := v)).2 (SymplecticGroup.symplectic_det hv)`. Use `⟨Basis.mk h₁ h₂.ge, ?_, Basis.coe_mk _ _⟩` and prove the remaining obligations. Simplify `(hb.isSymplecticFamily_iff_toMatrix_mem hB v).2 hv` using `[IsSymplecticBasis, IsSymplecticBasisOfType]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsSymplecticBasis.exists_basis_of_toMatrix_mem {b : Basis (l ⊕ l) R M}
     (hb : IsSymplecticBasis B b) (hB : B.IsAlt) {v : l ⊕ l → M}
@@ -626,7 +624,7 @@ theorem IsSymplecticBasis.exists_basis_of_toMatrix_mem {b : Basis (l ⊕ l) R M}
 omit [DecidableEq l] in
 
 /- English proof (translation)
-Use `⟨fun hx i => by rw [← hb.apply_left, hP _ (h i) _ hx], fun hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← b.sum_repr x, Fintype.sum_sum_type]`. Simplify `P.sum_mem fun i _ => P.smul_mem _ (h i)` using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsSymplecticBasis.mem_iff_repr_inr {b : Basis (l ⊕ l) R M} (hb : IsSymplecticBasis B b)
     {P : Submodule R M} (hP : ∀ x ∈ P, ∀ y ∈ P, B x y = 0) (h : ∀ i, b (.inl i) ∈ P) (x : M) :
@@ -637,7 +635,7 @@ theorem IsSymplecticBasis.mem_iff_repr_inr {b : Basis (l ⊕ l) R M} (hb : IsSym
 
 omit [DecidableEq l] in
 /- English proof (translation)
-Use `⟨fun hx i => by rw [← hb.apply_right, hQ _ hx _ (h i)], fun hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← b.sum_repr x, Fintype.sum_sum_type]`. Simplify `Q.sum_mem fun i _ => Q.smul_mem _ (h i)` using `[hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsSymplecticBasis.mem_iff_repr_inl {b : Basis (l ⊕ l) R M} (hb : IsSymplecticBasis B b)
     {Q : Submodule R M} (hQ : ∀ x ∈ Q, ∀ y ∈ Q, B x y = 0) (h : ∀ i, b (.inr i) ∈ Q) (x : M) :
@@ -648,7 +646,7 @@ theorem IsSymplecticBasis.mem_iff_repr_inl {b : Basis (l ⊕ l) R M} (hb : IsSym
 
 omit [DecidableEq l] in
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 (Set.range_subset_iff.2 h)) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← b.sum_repr x, Fintype.sum_sum_type]`. Simplify `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i))` using `[(hb.mem_iff_repr_inr hP h x).1 hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsSymplecticBasis.span_inl_eq {b : Basis (l ⊕ l) R M} (hb : IsSymplecticBasis B b)
     {P : Submodule R M} (hP : ∀ x ∈ P, ∀ y ∈ P, B x y = 0) (h : ∀ i, b (.inl i) ∈ P) :
@@ -660,7 +658,7 @@ theorem IsSymplecticBasis.span_inl_eq {b : Basis (l ⊕ l) R M} (hb : IsSymplect
 
 omit [DecidableEq l] in
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 (Set.range_subset_iff.2 h)) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← b.sum_repr x, Fintype.sum_sum_type]`. Simplify `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i))` using `[(hb.mem_iff_repr_inl hQ h x).1 hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsSymplecticBasis.span_inr_eq {b : Basis (l ⊕ l) R M} (hb : IsSymplecticBasis B b)
     {Q : Submodule R M} (hQ : ∀ x ∈ Q, ∀ y ∈ Q, B x y = 0) (h : ∀ i, b (.inr i) ∈ Q) :
@@ -673,13 +671,13 @@ theorem IsSymplecticBasis.span_inr_eq {b : Basis (l ⊕ l) R M} (hb : IsSymplect
 omit [DecidableEq l] in
 
 /- English proof (translation)
-Establish `: ∀ i, ∃ p ∈ P, ∃ q ∈ Q, p + q = b i` using `fun i => Submodule.mem_sup.1 (hPQ ▸ Submodule.mem_top)`. Use `choose p hp q hq hpq using this`. Set `G : Matrix (l ⊕ l) (l ⊕ l) R` to `Matrix.of fun i j => B (p i) (q j)`. Establish `hG : G - Gᵀ = -Matrix.J l R`. Rewrite using `[← hb.toMatrix_eq hB]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[LinearMap.BilinForm.toMatrix_apply, ← hpq, ← hpq]`. Simplify using `[G, hP _ (hp i) _ (hp j), hQ _ (hq i) _ (hq j), ← hB.neg_eq (p j), sub_eq_add_neg, add_comm]`. Take `⟨U, V, hUV⟩` from `exists_mul_mul_eq_one_of_isUnit_sub_transpose (G := G) (hG ▸ SymplecticGroup.symplectic_det (SymplecticGroup.neg_mem (SymplecticGroup.J_mem l R)))`. Set `x : l → M` to `fun i => ∑ k, U i k • p k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `y : l → M` to `fun j => ∑ k, V k j • q k`. Establish `hx : ∀ i, x i ∈ P` using `fun i => P.sum_mem fun k _ => P.smul_mem _ (hp k)`. Establish `hy : ∀ i, y i ∈ Q` using `fun i => Q.sum_mem fun k _ => Q.smul_mem _ (hq k)`. Establish `hxy : ∀ i j, B (x i) (y j) = (1 : Matrix l l R) i j` using `fun i j => by`. Rewrite using `[← hUV]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [x, y, G, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.mul_apply, of_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Take `⟨c, hc, hcv⟩` from `hb.exists_basis_of_toMatrix_mem hB ((hb.isSymplecticFamily_iff_toMatrix_mem hB (Sum.elim x y)).1 ⟨fun i j => hP _ (hx i) _ (hx j), fun i j => hQ _ (hy i) _ (hy j), fun i => by simp [hxy], fun i j hij => by simp [hxy, hij]⟩)`. Conclude with `⟨c, hc, fun i => hcv ▸ hx i, fun i => hcv ▸ hy i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsSymplecticBasis.exists_adapted [Finite (MaximalSpectrum R)] {b : Basis (l ⊕ l) R M}
     (hb : IsSymplecticBasis B b) (hB : B.IsAlt) {P Q : Submodule R M}
@@ -724,7 +722,7 @@ variable {S R Λ M l : Type*} [CommRing S] [CommRing R] [Finite (MaximalSpectrum
 
 omit [Finite (MaximalSpectrum R)] in
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [map_sum φ, φ.map_smulₛₗ, h, c.repr_sum_self]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_semilinear_of_map_basis {ι : Type*} [Fintype ι] (φ : Λ →ₛₗ[f] M) {b : Basis ι S Λ}
     {c : Basis ι R M} (h : ∀ i, φ (b i) = c i) (x : Λ) (i : ι) :
@@ -733,9 +731,9 @@ theorem repr_semilinear_of_map_basis {ι : Type*} [Fintype ι] (φ : Λ →ₛ�
   simp only [map_sum φ, φ.map_smulₛₗ, h, c.repr_sum_self]
 
 /- English proof (translation)
-Take `⟨T, hT, hT'⟩` from `liftsToSymplectic_of_mem hf (hb'.toMatrix_mem hc' hB')`. Establish `hv : b.toMatrix (fun j => ∑ k, T k j • b k) = T`. Use extensionality with `i j`. Rewrite using `[Basis.toMatrix_apply, b.repr_sum_self]`. Take `⟨c, hc, hcv⟩` from `hb.exists_basis_of_toMatrix_mem hB (hv.symm ▸ hT)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hcv, ← b'.sum_toMatrix_smul_self c' j, ← hT']`. Simplify using `only [map_sum φ, φ.map_smulₛₗ, h, map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsSymplecticBasis.exists_lift (hf : Surjective f) (hB : B.IsAlt) (hB' : B'.IsAlt)
     (φ : Λ →ₛₗ[f] M) {b : Basis (l ⊕ l) S Λ} {b' : Basis (l ⊕ l) R M}
@@ -753,9 +751,9 @@ theorem IsSymplecticBasis.exists_lift (hf : Surjective f) (hB : B.IsAlt) (hB' : 
   simp only [map_sum φ, φ.map_smulₛₗ, h, map_apply]
 
 /- English proof (translation)
-Take `⟨c', hc', h₁, h₂⟩` from `hb'.exists_adapted hB' hP hQ hPQ`. Take `⟨c, hc, hcc⟩` from `hb.exists_lift hf hB hB' φ hb' h hc'`. Use `⟨c, hc, ?_, ?_, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify `hc'.span_inl_eq hP h₁` using `only [hcc]`. Simplify `hc'.span_inr_eq hQ h₂` using `only [hcc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hc'.mem_iff_repr_inr hP h₁, repr_semilinear_of_map_basis φ hcc]`. Simplify using `only [hc'.mem_iff_repr_inl hQ h₂, repr_semilinear_of_map_basis φ hcc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem IsSymplecticBasis.exists_lift_adapted (hf : Surjective f) (hB : B.IsAlt) (hB' : B'.IsAlt)
     (φ : Λ →ₛₗ[f] M) {b : Basis (l ⊕ l) S Λ} {b' : Basis (l ⊕ l) R M}
@@ -787,7 +785,7 @@ variable {S R Λ l : Type*} [CommRing S] [CommRing R] [AddCommGroup Λ] [Module 
 omit [Fintype l] in
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun i j => ?_, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `[hb.left_left]`. Simplify using `[hb.right_right]`. Simplify using `[IsSymplecticFamily.left_right_self hb i]`. Simplify using `[IsSymplecticFamily.left_right_ne hb i j hij]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem IsSymplecticBasis.baseChange [Algebra S R] {b : Basis (l ⊕ l) S Λ}
     (hb : IsSymplecticBasis B b) : IsSymplecticBasis (B.baseChange R) (b.baseChange R) := by
@@ -798,11 +796,11 @@ theorem IsSymplecticBasis.baseChange [Algebra S R] {b : Basis (l ⊕ l) S Λ}
   · simp [IsSymplecticFamily.left_right_ne hb i j hij]
 
 /- English proof (translation)
-Establish `: RingHomSurjective f` using `⟨hf⟩`. Set `φ : Λ →ₛₗ[f] (l ⊕ l → R)` to `{ toFun := fun x i => f (b.repr x i) map_add' := fun x y => by ext; simp map_smul' := fun a x => by ext; simp }`. Establish `hφ : ∀ x y, standardAltForm (fun _ : l => (1 : R)) (φ x) (φ y) = f (B x y)` using `fun x y => by`. Simplify using `[standardAltForm_apply, hb.apply_eq_sum hB, φ]`. Establish `hker : LinearMap.ker φ ≤ RingHom.ker f • ⊤` using `fun x hx => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← b.sum_repr x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (congrFun hx i) Submodule.mem_top`. Establish `hsurj : Surjective φ` using `fun y => by choose z hz using fun i => hf (y i)`. Conclude with `⟨∑ i, z i • b i, funext fun i => (congrArg f (congrFun (b.repr_sum_self z) i)).trans (hz i)⟩`. Establish `hmem : ∀ {T : Submodule S Λ}, RingHom.ker f • ⊤ ≤ T → ∀ x, φ x ∈ T.map φ ↔ x ∈ T` using `fun hT x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.mem_comap, Submodule.comap_map_eq, sup_eq_left.2 (hker.trans hT)]`. Take `⟨c, hc, -, -, h₁, h₂⟩` from `hb.exists_lift_adapted hf hB (isAlt_standardAltForm _) φ (isSymplecticBasisOfType_standardAltForm fun _ : l => (1 : R)) (fun i => by ext j; simp [φ, Finsupp.single_apply, Pi.single_apply, eq_comm]) (P := P.map φ) (Q := Q.map φ) (by rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩; rw [hφ, hP …`. Conclude with `⟨c, hc, fun x => by rw [← h₁, hmem hIP], fun x => by rw [← h₂, hmem hIQ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsSymplecticBasis.exists_adapted_mod [Finite (MaximalSpectrum R)] {f : S →+* R}
     (hf : Surjective f) (hB : B.IsAlt) {b : Basis (l ⊕ l) S Λ} (hb : IsSymplecticBasis B b)
@@ -846,7 +844,7 @@ section Int
 open TensorProduct
 
 /- English proof (translation)
-Break down `eq_or_ne N 0 with rfl | hN` into its components or cases. Conclude with `fun A => ⟨A, Subtype.ext (Matrix.ext fun _ _ => rfl)⟩`. Establish `: NeZero N` using `⟨hN⟩`. Conclude with `specialLinearGroup_map_surjective (ZMod.ringHom_surjective _)`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem specialLinearGroup_map_zmod_surjective (n : Type*) [Fintype n] [DecidableEq n] (N : ℕ) :
     Surjective (SpecialLinearGroup.map (n := n) (Int.castRingHom (ZMod N))) := by
@@ -856,7 +854,7 @@ theorem specialLinearGroup_map_zmod_surjective (n : Type*) [Fintype n] [Decidabl
     exact specialLinearGroup_map_surjective (ZMod.ringHom_surjective _)
 
 /- English proof (translation)
-Break down `eq_or_ne N 0 with rfl | hN` into its components or cases. Conclude with `fun A => ⟨A, Subtype.ext (Matrix.ext fun _ _ => rfl)⟩`. Establish `: NeZero N` using `⟨hN⟩`. Conclude with `symplecticGroupMap_surjective (ZMod.ringHom_surjective _)`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem symplecticGroupMap_zmod_surjective (l : Type*) [Fintype l] [DecidableEq l] (N : ℕ) :
     Surjective (symplecticGroupMap l (Int.castRingHom (ZMod N))) := by
@@ -869,9 +867,9 @@ variable {Λ : Type*} [AddCommGroup Λ] [Module.Free ℤ Λ] [Module.Finite ℤ 
   {B : LinearMap.BilinForm ℤ Λ}
 
 /- English proof (translation)
-Establish `: NeZero N` using `⟨hN⟩`. Take `⟨b, hb⟩` from `exists_isSymplecticBasis_of_finrank hB hp hg`. Establish `key : ∀ {T : Submodule ℤ Λ}, (∀ x, (N : ℤ) • x ∈ T) → RingHom.ker (Int.castRingHom (ZMod N)) • ⊤ ≤ T` using `fun hT => Submodule.smul_le.2 fun r hr x _ => by`. Take `⟨k, rfl⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd r N).1 hr`. Rewrite using `[mul_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT _`. Simplify `hb.exists_adapted_mod (f := Int.castRingHom (ZMod N)) (ZMod.ringHom_surjective _) hB (key hNP) (key hNQ) (by simpa only [eq_intCast, ZMod.intCast_zmod_eq_zero_iff_dvd] using hP) (by simpa only [eq_intCast, ZMod.intCast_zmod_eq_zero_iff_dvd] using hQ) hPQ` using `only [eq_intCast, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isSymplecticBasis_adapted_dvd (hB : B.IsAlt) (hp : Bijective B) {g : ℕ}
     (hg : finrank ℤ Λ = 2 * g) {N : ℕ} (hN : N ≠ 0) {P Q : Submodule ℤ Λ}

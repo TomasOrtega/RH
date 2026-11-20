@@ -20,15 +20,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowLatXS
 
 /- English proof (translation)
-Introduce `D T G Z A hA Λ hΛ hloc`. Establish `hdd : ddS D ≠ 0`. Unfold `ddS`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective]`. Conclude with `differentIdeal_ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `FaithfulSMul.algebraMap_injective _ _`. Establish `hJ : ∀ a : Fin D.R.rS, GlobalTheory.RowLatXS.Ia Λ G.fl a = ((ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `a`. Use `GlobalTheory.T.fractional_ideal_eq_of_local_spans_eq D Z _ _ (GlobalTheory.T.flagCoeffIdealOfLattice_fg_and_mem_iff _ _ _ G.fl Λ a hΛ.fg).1 (FractionalIdeal.fg_of_isNoetherianRing le_rfl _) (fun p => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.span_coefficientIdeal_eq_span_frameScale D T G Z A hA Λ hΛ hloc p a]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `Formalism.L2.SG.Pf.locDiffC_holds D Z p a.castSucc`. Simplify using `only [Fin.coe_castSucc] at h`. Conclude with `h.symm`. Take `⟨e', he, hX⟩` from `GlobalTheory.T.lattice_inf_isotropic_eq_sum_fractionalIdeal_smul (VS D) D.R.rS T G Λ (fun a => ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ)))) (fun a => zpow_ne_zero _ hdd) (fun a x hx hxa => by`. Establish `h1 : G.fl.coefX x a ∈ GlobalTheory.RowLatXS.Ia Λ G.fl a` using `((GlobalTheory.T.flagCoeffIdealOfLattice_fg_and_mem_iff _ _ _ G.fl Λ a hΛ.fg).2 _).2 ⟨x, hx, hxa, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `h1` using `[hJ a]`. Conclude with `h1)`. Use the proof step `(fun a t ht => by`. Establish `h1 : t ∈ GlobalTheory.RowLatXS.Ia Λ G.fl a` using `by rw [hJ a]; exact ht`. Conclude with `((GlobalTheory.T.flagCoeffIdealOfLattice_fg_and_mem_iff _ _ _ G.fl Λ a hΛ.fg).2 t).1 h1)`.
-
-Conclude with `⟨e', he, hX⟩`.
+A detailed English derivation is pending.
 -/
 theorem xlam_eq_span_scaled : ∀ (D : D7) (T : D.host.E) (G : LFlag (VS D) D.R.rS T) (Z : LocDat D) (A : ∀ p : PlF D, LocNG.FrameD (locH Z p) D.R.rS), (∀ p, (A p).f = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) → ∀ Λ : LV D, Submodule.IsLattice D.host.E Λ → (∀ p, ∃ n ∈ (A p).N, ∃ L, (A p).IsInner L ∧ lattice₂ D Z.M p Λ = LocNG.img n ((A p).LamStd L)) → ∃ e' : Fin D.R.rS → (VS D).V, (∀ a, e' a - G.fl.e a ∈ G.fl.Xa a.val) ∧ XLam Λ G = Submodule.span (𝓞 D.host.E) {y | ∃ (a : Fin D.R.rS) (x : D.host.E), x ∈ (ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ∧ y = x • e' a} := by
   intro D T G Z A hA Λ hΛ hloc

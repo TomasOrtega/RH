@@ -11,7 +11,7 @@ namespace GlobalTheory.AmbNormTie
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Simplify using `only [Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, starRingEnd_apply, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_eq_sum {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (x y : Fin n → K) :
     Formalism.DivisionValues.hform H x y = ∑ i, ∑ j, star (x i) * H i j * y j := by
@@ -20,9 +20,9 @@ theorem hform_eq_sum {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (x y : Fin n → K
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.univ_sum_single x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (Pi.single i (x i) : Fin n → K) = x i • Pi.single i 1`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, LinearMap.map_smulₛₗ]`.
+A detailed English derivation is pending.
 -/
 theorem j_eq_sum {σ : K →+* ℂ} {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ}
     (j : (Fin n → K) →ₛₗ[σ] W) (x : Fin n → K) :
@@ -35,9 +35,9 @@ theorem j_eq_sum {σ : K →+* ℂ} {W : Type} [AddCommGroup W] [Module ℂ W] {
   rw [this, LinearMap.map_smulₛₗ]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite `h0` using `[j_eq_sum]`. Use `Fintype.linearIndependent_iff.mp hli (fun i => σ (x i)) h0 i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem j_ne_zero {σ : K →+* ℂ} {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ}
     (j : (Fin n → K) →ₛₗ[σ] W) (hli : LinearIndependent ℂ fun i => j (Pi.single i 1))
@@ -50,7 +50,7 @@ theorem j_ne_zero {σ : K →+* ℂ} {W : Type} [AddCommGroup W] [Module ℂ W] 
   simpa using this
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _), Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem normAt_sq {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι]
     [DecidableEq ι] (b : Module.Basis ι K V) (Xf : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K) (x : V) :
@@ -61,9 +61,9 @@ theorem normAt_sq {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι]
   rw [Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
 
 /- English proof (translation)
-Break down `InfinitePlace.embedding_mk_eq σ with he | he` into its components or cases. Use `left`. Introduce `x y`. Rewrite using `[hin, hform_eq_sum, hAt, he]`. Simplify using `only [map_sum, map_mul, hσ]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `right`. Introduce `x y`. Rewrite using `[hin, hform_eq_sum, hAt, he]`. Simplify using `only [map_sum, map_mul, hσ, star_sum, star_mul', ComplexEmbedding.conjugate_coe_eq, Complex.star_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hAt_mk {σ : K →+* ℂ} (hσ : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {n : ℕ} (j : (Fin n → K) →ₛₗ[σ] W) (H : Matrix (Fin n) (Fin n) K)
@@ -82,13 +82,11 @@ theorem hAt_mk {σ : K →+* ℂ} (hσ : ∀ a, σ (star a) = starRingEnd ℂ (�
     simp only [map_sum, map_mul, hσ, star_sum, star_mul', ComplexEmbedding.conjugate_coe_eq, Complex.star_def]
 
 /- English proof (translation)
-Establish `hd : ∀ x, hAt H (InfinitePlace.mk σ) x x = ((‖j x‖ ^ 2 : ℝ) : ℂ)`. Introduce `x`. Break down `hAt_mk hσ j H hT.inner with h | h` into its components or cases. Rewrite using `[h, inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[h, inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Simplify using `[Complex.star_def]`. Use `⟨⟨fun x y => ?_, fun x hx => ?_⟩, hd⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hAt_mk hσ j H hT.inner with h | h` into its components or cases. Rewrite using `[h, h]`. Conclude with `(inner_conj_symm (j y) (j x)).symm`. Rewrite using `[h, h, star_star]`. Conclude with `inner_conj_symm (j x) (j y)`.
-
-Rewrite using `[hd, Complex.ofReal_re]`. Conclude with `pow_pos (norm_pos_iff.mpr (j_ne_zero j hT.li hx)) 2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posAt_mk {σ : K →+* ℂ} (hσ : ∀ a, σ (star a) = starRingEnd ℂ (σ a)) {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {n : ℕ} (j : (Fin n → K) →ₛₗ[σ] W) (H E : Matrix (Fin n) (Fin n) K)
@@ -111,9 +109,9 @@ end GlobalTheory.AmbNormTie
 open GlobalTheory.AmbNormTie in
 
 /- English proof (translation)
-Introduce `K _ _ _ _ σ hσ W _ _ n j H E op hT x`. Take `⟨hP, hd⟩` from `posAt_mk hσ j H E op hT`. Establish `hPD` using `GlobalTheory.T.posDef_map_embedding_of_positiveAtPlace H (InfinitePlace.mk σ) hP`. Establish `hmaj : Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) (GlobalTheory.AmbCrd.frm H) (InfinitePlace.mk σ) x x = hAt H (InfinitePlace.mk σ) x x`. Rewrite using `[Formalism.L2.DIV.majAt_eq, GlobalTheory.AmbCrd.frm_of_posDef H _ hPD, (Formalism.L2.DIV.frameOfSpec _ _ hPD).2, GlobalTheory.Core.AmbTieStep.hAt_eq_dot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `normAt_sq (Pi.basisFun K (Fin n)) (GlobalTheory.AmbCrd.frm H) (InfinitePlace.mk σ) x`. Rewrite `h2` using `[hmaj, hd, Complex.ofReal_re]`. Establish `h0 : 0 ≤ Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) (GlobalTheory.AmbCrd.frm H) (InfinitePlace.mk σ) x` using `Real.sqrt_nonneg _`. Conclude with `(pow_left_inj₀ h0 (norm_nonneg _) two_ne_zero).mp h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AmbNormTie.normAt_frm_mk : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (σ : K →+* ℂ), (∀ a, σ (star a) = starRingEnd ℂ (σ a)) → ∀ {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {n : ℕ} (j : (Fin n → K) →ₛₗ[σ] W) (H E : Matrix (Fin n) (Fin n) K) (op : W →ₗ[ℂ] W), Formalism.L2.DIV.FormsTie σ j H E op → ∀ x : Fin n → K, Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) (GlobalTheory.AmbCrd.frm H) (InfinitePlace.mk σ) x = ‖j x‖ := by
   intro K _ _ _ _ σ hσ W _ _ n j H E op hT x

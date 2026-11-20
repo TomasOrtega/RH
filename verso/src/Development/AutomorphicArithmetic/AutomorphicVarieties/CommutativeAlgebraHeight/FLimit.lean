@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `top_le_iff.1 (ih.ge.trans (sup_le le_sup_left ?_))` and prove the remaining obligations. Establish `e : I ^ n • (⊤ : Submodule B M) = I ^ n • (P ⊔ I ^ 1 • ⊤)` using `by rw [h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, Submodule.smul_sup, pow_one, ← Submodule.mul_smul, ← pow_succ]`. Conclude with `sup_le_sup_right Submodule.smul_le_right _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.fl_nak {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] (I : Ideal B)
     (P : Submodule B M) (h : P ⊔ I ^ 1 • ⊤ = ⊤) (N : ℕ) : P ⊔ I ^ N • ⊤ = ⊤ := by
@@ -18,15 +18,15 @@ private theorem UpperTheory.V.CA.fl_nak {B M : Type} [CommRing B] [AddCommGroup 
     exact sup_le_sup_right Submodule.smul_le_right _
 
 /- English proof (translation)
-Set `f : (σ → B ⧸ I) → M ⧸ P` to `fun a => Submodule.Quotient.mk (∑ i, (a i).out • v i)`. Establish `hf : Function.Surjective f`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective P y`. Establish `hy : y ∈ Submodule.span B (Set.range v) ⊔ P` using `h ▸ Submodule.mem_top`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, p, hp, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun B).1 hz`. Use `⟨fun i => Ideal.Quotient.mk I (a i), ?_⟩` and prove the remaining obligations. Simplify using `only [f]`. Rewrite using `[Submodule.Quotient.eq, ← sub_sub, ← Finset.sum_sub_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `P.sub_mem (P.sum_mem fun i _ => ?_) hp` and prove the remaining obligations. Rewrite using `[← sub_smul]`. Use `hI (Submodule.smul_mem_smul ?_ Submodule.mem_top)` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `Ideal.Quotient.mk_out _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : Finite (M ⧸ P)` using `Finite.of_surjective f hf`. Establish `e : P.toAddSubgroup.index = Nat.card (M ⧸ P)` using `rfl`. Rewrite using `[e]`. Use `⟨Nat.card_pos.ne', ?_⟩` and prove the remaining obligations. Use `Nat.card_le_card_of_surjective f hf` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Nat.card_fun, Nat.card_eq_fintype_card (α := σ)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.fl_card {B M σ : Type} [CommRing B] [AddCommGroup M] [Module B M] [Fintype σ] (I : Ideal B)
     [Finite (B ⧸ I)] (v : σ → M) (P : Submodule B M) (hI : I • ⊤ ≤ P)
@@ -56,15 +56,15 @@ private theorem UpperTheory.V.CA.fl_card {B M σ : Type} [CommRing B] [AddCommGr
   rwa [Nat.card_fun, Nat.card_eq_fintype_card (α := σ)] at this
 
 /- English proof (translation)
-Establish `hb : BddAbove (Set.range fun U => (J U).toAddSubgroup.index)` using `⟨C, by`. Introduce and unpack `_ ⟨U, rfl⟩`. Conclude with `(h U).2⟩`. Take `⟨U₀, hU₀⟩` from `Nat.sSup_mem (Set.range_nonempty _) hb`. Use `⟨U₀, fun U => le_trans ?_ (hJ (inf_le_right : U₀ ⊓ U ≤ U))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : (J (U₀ ⊓ U)).toAddSubgroup ≤ (J U₀).toAddSubgroup` using `fun x hx => hJ inf_le_left hx`. Establish `h1` using `AddSubgroup.relIndex_mul_index hle`. Establish `h2 : (J (U₀ ⊓ U)).toAddSubgroup.index ≤ (J U₀).toAddSubgroup.index`. Simplify using `only at hU₀`. Rewrite using `[hU₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_csSup hb ⟨_, rfl⟩`. Establish `h3` using `(h (U₀ ⊓ U)).1`. Establish `h4` using `(h U₀).1`. Establish `h5 : (J (U₀ ⊓ U)).toAddSubgroup.relIndex (J U₀).toAddSubgroup = 1`. Generalize the expression as in `(J (U₀ ⊓ U)).toAddSubgroup.relIndex (J U₀).toAddSubgroup = r at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(J (U₀ ⊓ U)).toAddSubgroup.index = a at *`. Generalize the expression as in `(J U₀).toAddSubgroup.index = b at *`. Substitute `h1` using the available equality. Establish `: r ≠ 0` using `by rintro rfl; simp at h3`. Establish `: r * b ≤ 1 * b` using `by simpa using h2`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Nat.le_of_mul_le_mul_right this (Nat.pos_of_ne_zero h4)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `fun x hx => AddSubgroup.relIndex_eq_one.1 h5 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.fl_stab {B M ι : Type} [CommRing B] [AddCommGroup M] [Module B M] [SemilatticeInf ι]
     [Nonempty ι] (J : ι → Submodule B M) (hJ : Monotone J) (C : ℕ)
@@ -93,29 +93,27 @@ private theorem UpperTheory.V.CA.fl_stab {B M ι : Type} [CommRing B] [AddCommGr
   exact fun x hx => AddSubgroup.relIndex_eq_one.1 h5 hx
 
 /- English proof (translation)
-Establish `step : ∀ (n : ℕ) (y : M), ∃ a : σ → B, (∀ i, a i ∈ I ^ n) ∧ (y ∈ L n → y - ∑ i, a i • v i ∈ L (n + 1)) ∧ (y ∈ L (n + 1) → a = 0)`. Introduce `n y`. Distinguish the cases in `h1 : y ∈ L (n + 1)`. Conclude with `⟨0, fun i => zero_mem _, fun _ => by simpa using h1, fun _ => rfl⟩`. Distinguish the cases in `h2 : y ∈ L n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Conclude with `⟨0, fun i => zero_mem _, fun h => (h2 h).elim, fun _ => rfl⟩`. Establish `h3 : L n ≤ L (n + 1) ⊔ I ^ n • Submodule.span B (Set.range v)`. Use `(hs n).trans (sup_le le_sup_left ?_)` and prove the remaining obligations. Rewrite using `[← h (n + 1), Submodule.smul_sup]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sup_le le_sup_right (Submodule.smul_le_right.trans le_sup_left)`. Take `⟨p, hp, z, hz, rfl⟩` from `Submodule.mem_sup.1 (h3 h2)`. Take `⟨a, ha, rfl⟩` from `(Submodule.mem_ideal_smul_span_iff_exists_sum _ v z).1 hz`. Use `⟨a, ha, fun _ => ?_, fun h => (h1 h).elim⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using hp`. Use `choose g hg1 hg2 hg3 using step`. Set `f : ℕ → σ → B` to `fun n => Nat.rec 0 (fun n a => a + g n (x - ∑ i, a i • v i)) n`. Establish `f0 : f 0 = 0` using `rfl`. Establish `fs : ∀ n, f (n + 1) = f n + g n (x - ∑ i, f n i • v i)` using `fun n => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : L 0 = ⊤` using `by simpa using hI 0`. Establish `hf : ∀ n, x - ∑ i, f n i • v i ∈ L n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [h0]`.
+Proceed by induction. Treat this case separately. Check the elementary cases of the proposition. Treat this case separately. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Consider the case `succ n ih`. Use `hg2 n _ ih` as an intermediate fact. Rewrite using `[fs]`. Simplify `this` using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, sub_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hz : ∀ n, n ≤ N → f n = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Introduce `hn`. Rewrite using `[fs, ih (by omega), hg3 n _ (by simpa using hL hn hx), add_zero]`. Establish `hc : ∀ i, ∃ a : B, ∀ n, f n i - a ∈ I ^ n`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `IsPrecomplete.prec (I := I) (M := B) inferInstance (f := fun n => f n i) (by`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ n hmn ih`. Rewrite using `[fs, Pi.add_apply, ← sub_sub]`. Conclude with `sub_mem ih (Ideal.pow_le_pow_right hmn (hg1 n _ i)))`. Use `⟨a, fun n => ?_⟩` and prove the remaining obligations. Use `ha n` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis. Use `choose a ha using hc`. Use `⟨a, fun i => ?_, fun n => ?_⟩` and prove the remaining obligations. Use `ha i N` as an intermediate fact. Rewrite `this` using `[hz N le_rfl]`.
-
-Simplify using `using this`. Establish `: ∑ i, (f n i - a i) • v i ∈ L n` using `Submodule.sum_mem _ fun i _ => hI n (Submodule.smul_mem_smul (ha i n) Submodule.mem_top)`. Use `add_mem (hf n) this` as an intermediate fact. Simplify `this` using `only [sub_smul, Finset.sum_sub_distrib, sub_add_sub_cancel]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.fl_approx {B M σ : Type} [CommRing B] [AddCommGroup M] [Module B M] [Fintype σ]
     (I : Ideal B) [IsPrecomplete I B] (v : σ → M) (L : ℕ → Submodule B M) (hL : Antitone L)
@@ -184,19 +182,17 @@ private theorem UpperTheory.V.CA.fl_approx {B M σ : Type} [CommRing B] [AddComm
     simpa only [sub_smul, Finset.sum_sub_distrib, sub_add_sub_cancel] using this
 
 /- English proof (translation)
-Establish `hr : ∀ s : Finset G, v '' (s : Set G) = Set.range fun i : s => v i` using `fun s => Set.image_eq_range _ _`. Establish `hst : ∀ n : ℕ, ∃ U₀, ∀ U, K U₀ ⊔ I ^ n • ⊤ ≤ K U ⊔ I ^ n • ⊤`. Introduce `n`. Use `hfin n` as an intermediate fact. Use `fl_stab (fun U => K U ⊔ I ^ n • ⊤) (fun U V hUV => sup_le_sup_right (hK hUV) _) (Nat.card (B ⧸ I ^ n) ^ c) fun U => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, h1⟩` from `h U`. Rewrite `h1` using `[← sup_assoc]`. Establish `h2` using `fl_nak I _ h1 n`. Rewrite `h2` using `[sup_assoc, hr]`. Take `⟨h3, h4⟩` from `fl_card (I ^ n) _ _ le_sup_right h2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨h3, h4.trans (Nat.pow_le_pow_right Nat.card_pos (by simpa using hs))⟩` and prove the remaining obligations. Use `choose U hU using hst`. Take `⟨s, hs, h1⟩` from `h (U 1)`. Set `L : ℕ → Submodule B M` to `fun n => K (U n) ⊔ I ^ n • ⊤`. Establish `hpow : ∀ {m n : ℕ}, m ≤ n → I ^ n • (⊤ : Submodule B M) ≤ I ^ m • ⊤` using `fun hmn => Submodule.smul_mono_left (Ideal.pow_le_pow_right hmn)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Antitone L` using `fun m n hmn => (hU n (U m)).trans (sup_le_sup_left (hpow hmn) _)`. Establish `hstep : ∀ n, L n ≤ L (n + 1) ⊔ I ^ n • ⊤` using `fun n => (hU n (U (n + 1))).trans (sup_le_sup_right le_sup_left _)`. Establish `hsp : ∀ n, Submodule.span B (Set.range fun i : s => v i) ⊔ L n = ⊤`. Introduce `n`. Establish `h2 : Submodule.span B (v '' (s : Set G)) ⊔ (K (U n) ⊔ I ^ 1 • ⊤) = ⊤` using `top_le_iff.1 (h1.ge.trans (sup_le_sup_left (hU 1 (U n)) _))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← sup_assoc]`. Establish `h3` using `fl_nak I _ h2 n`. Rewrite `h3` using `[sup_assoc, hr]`. Then use the resulting hypothesis. Establish `key` using `fl_approx I (fun i : s => v i) L hL (fun n => le_sup_right) hstep hsp`. Use `⟨s, hs, fun y => ?_, fun N => ⟨U N, fun y hy => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, ha⟩` from `key 0 y (Submodule.mem_sup_right (by simp))`. Use `⟨_, ?_, fun n V => hU n V (ha n)⟩` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨a, ha', ha⟩` from `key N y (Submodule.mem_sup_left hy)`.
-
-Conclude with `⟨_, Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (ha' i) Submodule.mem_top, fun n V => hU n V (ha n)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.fl_abs {B M ι G : Type} [CommRing B] [AddCommGroup M] [Module B M] [SemilatticeInf ι]
     [Nonempty ι] (I : Ideal B) [IsPrecomplete I B] (hfin : ∀ n, Finite (B ⧸ I ^ n)) (K : ι → Submodule B M)
@@ -245,21 +241,19 @@ private theorem UpperTheory.V.CA.fl_abs {B M ι G : Type} [CommRing B] [AddCommG
       fun n V => hU n V (ha n)⟩
 
 /- English proof (translation)
-Establish `hl : ∀ (a z : MonoidAlgebra B G), z ∈ I • (⊤ : Submodule B (MonoidAlgebra B G)) → a * z ∈ I • (⊤ : Submodule B (MonoidAlgebra B G)) ∧ z * a ∈ I • (⊤ : Submodule B (MonoidAlgebra B G))`. Introduce `a z hz`. Use `Submodule.smul_induction_on hz (fun r hr n _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Conclude with `⟨Submodule.smul_mem_smul hr trivial, Submodule.smul_mem_smul hr trivial⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[mul_add, add_mul]`. Conclude with `⟨add_mem hx.1 hy.1, add_mem hx.2 hy.2⟩`. Establish `hm : ∀ z, z ∈ (TwoSidedIdeal.span (S ∪ T)).asIdeal.restrictScalars B ↔ z ∈ TwoSidedIdeal.span (S ∪ T)` using `fun z => Iff.rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hx using TwoSidedIdeal.span_induction with`. Consider the case `mem x hx`. Break down `hx with (hx | ⟨a, ha, rfl⟩) | hx` into its components or cases. Conclude with `Submodule.mem_sup_left ((hm _).2 (TwoSidedIdeal.subset_span (Or.inl hx)))`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.smul_mem_smul ha (Submodule.mem_top (x := MonoidAlgebra.single (1 : G) (1 : B)))` as an intermediate fact. Simplify using `using this`. Conclude with `Submodule.mem_sup_left ((hm _).2 (TwoSidedIdeal.subset_span (Or.inr hx)))`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg x _ hx => exact neg_mem hx`. Consider the case `left_absorb a x _ hx`. Take `⟨p, hp, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem_sup ((hm _).2 (TwoSidedIdeal.mul_mem_left _ _ _ ((hm _).1 hp))) (hl a z hz).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `right_absorb a x _ hx`. Take `⟨p, hp, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem_sup ((hm _).2 (TwoSidedIdeal.mul_mem_right _ _ _ ((hm _).1 hp))) (hl a z hz).2`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨p, hp, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Use `add_mem (TwoSidedIdeal.span_mono (Set.union_subset_union_left _ Set.subset_union_left) ((hm _).1 hp)) ?_` and prove the remaining obligations. Use `Submodule.smul_induction_on hz (fun r hr n _ => ?_) (fun x y hx hy => add_mem hx hy)` and prove the remaining obligations. Establish `e : r • n = MonoidAlgebra.single 1 r * n`. Rewrite using `[Algebra.smul_def]`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `TwoSidedIdeal.mul_mem_right _ _ _ (TwoSidedIdeal.subset_span (Or.inl (Or.inr ⟨r, hr, rfl⟩)))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.CA.fl_mem {B G : Type} [CommRing B] [Group G] (S T : Set (MonoidAlgebra B G)) (I : Ideal B)
     (x : MonoidAlgebra B G) :
@@ -306,15 +300,15 @@ private theorem UpperTheory.V.CA.fl_mem {B G : Type} [CommRing B] [Group G] (S T
     exact TwoSidedIdeal.mul_mem_right _ _ _ (TwoSidedIdeal.subset_span (Or.inl (Or.inr ⟨r, hr, rfl⟩)))
 
 /- English proof (translation)
-Introduce `B G _ _ _ _ _ _ _ _ _ _ S c h`. Establish `hfin : ∀ n, Finite (B ⧸ maximalIdeal B ^ n)` using `fun n => haveI : Finite (B ⧸ maximalIdeal B) := ‹Finite (ResidueField B)› Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n`. Establish `: Nonempty (OpenNormalSubgroup G)` using `⟨⟨⊤, Subgroup.normal_top⟩⟩`. Take `⟨s, hs, h1, h2⟩` from `fl_abs (maximalIdeal B) hfin (fun U : OpenNormalSubgroup G => (TwoSidedIdeal.span (S ∪ {z | ∃ u ∈ U, z = MonoidAlgebra.single u 1 - 1})).asIdeal.restrictScalars B) (fun U V hUV x hx => TwoSidedIdeal.span_mono (Set.union_subset_union_right _ (by`. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u, hUV hu, rfl⟩)) hx)`. Use the proof step `(fun g => MonoidAlgebra.single g (1 : B)) c (fun U => by`. Take `⟨s, hs, hy⟩` from `h U`. Use `⟨s, hs, top_le_iff.1 fun y _ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hyz⟩` from `hy y`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Submodule.add_mem_sup hz ((fl_mem _ _ _ _).1 hyz)` as an intermediate fact. Simplify using `using this)`. Establish `hcl : ∀ x : MonoidAlgebra B G, (∀ (n : ℕ) (U : OpenNormalSubgroup G), x ∈ (TwoSidedIdeal.span (S ∪ {z | ∃ u ∈ U, z = MonoidAlgebra.single u 1 - 1})).asIdeal.restrictScalars B ⊔ maximalIdeal B ^ n • ⊤) → x ∈ closureIdeal (maximalIdeal B) S`. Introduce `x hx`. Simplify using `only [closureIdeal, TwoSidedIdeal.mem_iInf]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun n U => (fl_mem _ _ _ _).2 (hx n U)`. Use `⟨s, hs, fun y => ?_, fun N => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hyz⟩` from `h1 y`. Conclude with `⟨z, hz, hcl _ hyz⟩`. Take `⟨U, hU⟩` from `h2 N`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hyz⟩` from `hU (MonoidAlgebra.single u 1 - 1) (TwoSidedIdeal.subset_span (Or.inr ⟨u, hu, rfl⟩))`. Conclude with `⟨z, hz, hcl _ hyz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.f_limit :
     ∀ {B G : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Finite (ResidueField B)] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (S : Set (MonoidAlgebra B G)) (c : ℕ), (∀ U : OpenNormalSubgroup G, ∃ s : Finset G, s.card ≤ c ∧ ∀ y : MonoidAlgebra B G, ∃ z ∈ Submodule.span B ((fun g => MonoidAlgebra.single g (1 : B)) '' (s : Set G)), y - z ∈ TwoSidedIdeal.span (S ∪ {z | ∃ a ∈ maximalIdeal B ^ 1, z = MonoidAlgebra.single 1 a} ∪ {z | ∃ u ∈ U, z = MonoidAlgebra.single u 1 - 1})) → ∃ s : Finset G, s.card ≤ c ∧ (∀ y : MonoidAlgebra B G, ∃ z ∈ Submodule.span B ((fun g => MonoidAlgebra.single g (1 : B)) '' (s : Set G)), y - z ∈ closureIdeal (maximalIdeal B) S) ∧ ∀ N : ℕ, ∃ U : OpenNormalSubgroup G, ∀ u ∈ U, ∃ z ∈ (maximalIdeal B ^ N) • (⊤ : Submodule B (MonoidAlgebra B G)), MonoidAlgebra.single u 1 - 1 - z ∈ closureIdeal (maximalIdeal B) S := by

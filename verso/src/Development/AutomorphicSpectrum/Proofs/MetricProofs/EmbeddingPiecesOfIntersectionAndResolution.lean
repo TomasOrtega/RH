@@ -19,7 +19,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-The claim follows from `have hInt : PtsIntegrableStatement := GlobalTheory.T.points_integrable_of_resolution_statement hR have hRes : ResExistsStatement := GlobalTheory.T.resolution_exists_of_resolution_statement hR GroundTheory.Heights₂.Heights.HilbertSamuel.EmbeddingPieces.proof (GroundTheory.Heights₂ …`.
+A detailed English derivation is pending.
 -/
 theorem embeddingPieces_of_resK (hA : ArithIntersectionSystemStatement)
     (hR : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) :

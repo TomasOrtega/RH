@@ -9,25 +9,23 @@ namespace GlobalTheory.K4.LevNormal
 open GlobalTheory.KZ
 
 /- English proof (translation)
-Rewrite using `[normal_iff]`. Introduce `x`. Establish `hx : IsIntegral F x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `hfin : (Set.range fun σ : L ≃ₐ[F] L => σ x).Finite`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `((minpoly F x).rootSet_finite L).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`. Rewrite using `[mem_rootSet]`. Use `⟨minpoly.ne_zero hx, ?_⟩` and prove the remaining obligations. Use `show aeval (σ x) (minpoly F x) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_algHom_apply, minpoly.aeval, map_zero]`. Use `set O := hfin.toFinset with hO`. Use `set P : L[X] := ∏ g ∈ O, (X - C g) with hP`. Establish `hmap : ∀ σ : L ≃ₐ[F] L, P.map (σ : L →+* L) = P`. Introduce `σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hP, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, map_X, map_C]`. Use `Finset.prod_bijective σ σ.bijective ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `g`. Simplify using `only [hO, Set.Finite.mem_toFinset, Set.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Conclude with `⟨σ * τ, rfl⟩`. Introduce and unpack `⟨τ, hτ⟩`. Use `⟨σ⁻¹ * τ, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show σ.symm (τ x) = g`. Rewrite using `[hτ, σ.symm_apply_apply]`. Establish `hl : P ∈ lifts (algebraMap F L)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `h` to reduce the goal to its premises. Introduce `σ`. Use `congrArg (fun Q => coeff Q n) (hmap σ)` as an intermediate fact. Simplify `this` using `[coeff_map]`. Establish `hmon : P.Monic` using `monic_prod_of_monic _ _ fun g _ => monic_X_sub_C g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Q, hQ⟩` from `(mem_lifts P).1 hl`. Establish `h0 : aeval x Q = 0`. Rewrite using `[aeval_def, ← eval_map, hQ, hP, eval_prod]`. Use `Finset.prod_eq_zero (i := x) ?_ (by simp)` and prove the remaining obligations. Simplify using `only [hO, Set.Finite.mem_toFinset, Set.mem_range]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨1, rfl⟩`. Establish `hd : (minpoly F x).map (algebraMap F L) ∣ P`. Rewrite using `[← hQ]`. Conclude with `Polynomial.map_dvd _ (minpoly.dvd F x h0)`. Establish `hs : P.Splits` using `Splits.prod fun g _ => Splits.X_sub_C g`.
-
-Conclude with `hs.of_dvd hmon.ne_zero hd`.
+A detailed English derivation is pending.
 -/
 theorem normal_of_fixed (F L : Type) [Field F] [Field L] [Algebra F L] [Algebra.IsAlgebraic F L]
     (h : ∀ x : L, (∀ σ : L ≃ₐ[F] L, σ x = x) → x ∈ Set.range (algebraMap F L)) : Normal F L := by
@@ -82,13 +80,11 @@ theorem normal_of_fixed (F L : Type) [Field F] [Field L] [Algebra F L] [Algebra.
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : CharZero X.K := charZero_of_injective_algebraMap (algebraMap Ω X.K).injective`. Set `A : IntermediateField F X.K` to `algebraicClosure F X.K`. Establish `hc : ∀ c : Ω, algebraMap Ω X.K c ∈ A`. Introduce `c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_algebraicClosure_iff]`. Establish `h1 : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic c)`. Establish `h2 : IsAlgebraic ℤ (algebraMap Ω X.K c)` using `h1.algHom (algebraMap Ω X.K).toIntAlgHom`. Conclude with `h2.extendScalars (R := ℤ) (S := F) (RingHom.injective_int _)`. Set `B : IntermediateField Ω X.K` to `A.toSubfield.toIntermediateField hc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : IntermediateField.adjoin Ω {X.jK} ≤ B`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `A.algebraMap_mem ⟨X.jK, hj⟩`. Establish `h3 : IsAlgebraic A f`. Take `⟨p, hp, h0⟩` from `X.alg_j f`.
-
-Set `φ : IntermediateField.adjoin Ω {X.jK} →+* A` to `(IntermediateField.adjoin Ω {X.jK}).toSubfield.subtype.codRestrict A fun y => hle y.2`. Use `⟨p.map φ, (Polynomial.map_ne_zero_iff φ.injective).2 hp, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_map]`. Conclude with `h0`. Conclude with `h3.restrictScalars F`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_jK_mem [Algebra.IsAlgebraic ℚ Ω] (X : Tower Ω ε) (F : Subfield X.K) (hj : X.jK ∈ F) (f : X.K) :
     IsAlgebraic F f := by
@@ -115,7 +111,7 @@ theorem isAlgebraic_of_jK_mem [Algebra.IsAlgebraic ℚ Ω] (X : Tower Ω ε) (F 
   exact h3.restrictScalars F
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[mem_lev_iff]`. Introduce `γ hγ`. Use `X.recip m f hm (fun δ hδ => hf δ (hΓ hδ)) ζ hζ s 1 (by simpa using hs) γ γ (by simp)` as an intermediate fact. Rewrite using `[← this, hf γ hγ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_mem_lev (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (m : ℕ) (ζ : Ω) (hm : 0 < m) (hζ : IsPrimitiveRoot ζ m)
     (hΓ : CongruenceSubgroup.Gamma m ≤ Γ') (s : Ω ≃ₐ[ℚ] Ω) (hs : s ζ = ζ) (f : X.K) (hf : f ∈ lev X Γ') :
@@ -126,11 +122,9 @@ theorem gal_mem_lev (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (m : ℕ) (ζ 
   rw [← this, hf γ hγ]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X Γ' m ζ hm hζ hΓ`. Use `set S := (IntermediateField.adjoin ℚ {ζ}).fixingSubgroup with hS`. Use `letI := algMdl X Γ' S`. Use `haveI := isScalarTower_mdl X Γ' S`. Use `haveI : Algebra.IsAlgebraic (mdl X Γ' S) (lev X Γ') := ⟨fun f => (isAlgebraic_algebraMap_iff (A := X.K) (lev X Γ').subtype.injective).1 (isAlgebraic_of_jK_mem X _ (jK_mem_mdl X Γ' S) (f : X.K))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `normal_of_fixed` to reduce the goal to its premises. Introduce `x hx`. Use `⟨⟨x, (mem_mdl_iff X Γ' S _).2 ⟨x.2, fun s hs => ?_⟩⟩, rfl⟩` and prove the remaining obligations. Establish `hsζ : s ζ = ζ` using `hs ⟨ζ, IntermediateField.subset_adjoin ℚ {ζ} rfl⟩`. Set `φ : lev X Γ' →ₐ[mdl X Γ' S] lev X Γ'` to `{ ((X.gal s).toRingHom.comp (lev X Γ').subtype).codRestrict (lev X Γ') (fun f => gal_mem_lev X Γ' m ζ hm hζ hΓ s hsζ f f.2) with commutes' := fun y => Subtype.ext (((mem_mdl_iff X Γ' S _).1 y.2).2 s hs) }`.
-
-Conclude with `congrArg Subtype.val (hx (AlgEquiv.ofBijective φ (Algebra.IsAlgebraic.algHom_bijective φ)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem normal : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [Algebra.IsAlgebraic ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (m : ℕ) (ζ : Ω), 0 < m → IsPrimitiveRoot ζ m → CongruenceSubgroup.Gamma m ≤ Γ' → letI := GlobalTheory.K4.algMdl X Γ' (IntermediateField.adjoin ℚ {ζ}).fixingSubgroup; Normal (GlobalTheory.K4.mdl X Γ' (IntermediateField.adjoin ℚ {ζ}).fixingSubgroup) (GlobalTheory.K4.lev X Γ') := by
   intro Ω _ _ _ ε X Γ' m ζ hm hζ hΓ

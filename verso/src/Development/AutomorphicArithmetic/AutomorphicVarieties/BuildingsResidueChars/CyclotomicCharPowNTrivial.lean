@@ -5,13 +5,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
 
 /- English proof (translation)
-Establish `hcs` using `UpperTheory.V.Chr.cls_spec (k := ℚ) (Ω := Ω) N s`. Break down `Nat.lt_or_ge 1 N with hN | hN` into its components or cases. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ haveI : NeZero (N : Ω) := ⟨by exact_mod_cast NeZero.ne N⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Establish `h1 : ζ ^ 1 = ζ ^ (UpperTheory.V.Chr.cls ℚ Ω N s : ZMod N).val`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one, ← hcs ζ hζ.pow_eq_one, hs ζ hζ.pow_eq_one]`. Establish `hv` using `hζ.pow_inj hN (ZMod.val_lt _) h1`. Use `haveI : Fact (1 < N) := ⟨hN⟩`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `ZMod.val_injective` to reduce the goal to its premises. Rewrite using `[ZMod.val_one, ← hv]`. Establish `hN1 : N = 1`. Use `NeZero.pos N` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Substitute `hN1` using the available equality. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem cls_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (s : G ℚ Ω)
     (hs : ∀ ζ : Ω, ζ ^ N = 1 → s ζ = ζ) : UpperTheory.V.Chr.cls ℚ Ω N s = 1 := by
@@ -35,17 +33,15 @@ private theorem cls_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD`. Unfold `Ctx3 at hD`. Take `⟨hg, h, t, e, ψ, hb, he0, het, hX, hIII, hA⟩` from `hD`. Consider the cases of `hA with`. Consider the case `mk he hpsi hS hxi`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Take `⟨x, ξ', ξ₀, -, -, -, hξ⟩` from `hxi`. Establish `hl2 : l ≠ 2` using `UpperTheory.V.GradeZeroInterpolatingElement.Raw.Good.l_odd hg`. Establish `hlp : Nat.Prime l` using `Fact.out`. Unfold `Host.CaseIII at hIII`. Establish `hne : l ≠ UpperTheory.V.pOne h.chi` using `((UpperTheory.V.HV.bchiFacts h t hb).2.2.2.2 l hlp hl2 hIII.1).2.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hP : Nat.Prime (UpperTheory.V.pOne h.chi)` using `(UpperTheory.V.pK_pOne_prime_conditions h.chi).2.1.1`. Use `⟨UpperTheory.V.pOne h.chi * 2 ^ h.nIII l ψ, Nat.mul_pos hP.pos (by positivity), ?_, ?_⟩` and prove the remaining obligations. Introduce `hd`. Break down `(Nat.Prime.dvd_mul hlp).1 hd with h1 | h1` into its components or cases. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq hlp hP).1 h1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions.
 
-Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hlp Nat.prime_two).1 (hlp.dvd_of_dvd_pow h1))`. Unfold `KillsMu`. Introduce `s hs`. Establish `key : ∀ (M : ℕ) [NeZero M], M ∣ UpperTheory.V.pOne h.chi * 2 ^ h.nIII l ψ → UpperTheory.V.Chr.cls ℚ Ω M s = 1`. Introduce `M _ hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `cls_one M s (fun ζ hζ => hs ζ ?_)` and prove the remaining obligations. Take `⟨k, hk⟩` from `hM`. Rewrite using `[hk, pow_mul, hζ, one_pow]`. Rewrite using `[hξ, MonoidHom.mul_apply]`. Simplify using `only [UpperTheory.V.Chr.dirG, MonoidHom.comp_apply]`.
-
-Rewrite using `[key _ (dvd_mul_right _ _), key _ (dvd_mul_left _ _), map_one, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cyclotomicChar_pow_N_trivial :
     UpperTheory.V.Sd.S3.KillsN := by

@@ -16,11 +16,11 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 namespace GlobalTheory.SiegelConnected
 
 /- English proof (translation)
-Introduce and unpack `x ⟨hx, hx'⟩ y ⟨hy, hy'⟩ a b ha hb hab`. Use `⟨(hx.smul a).add (hy.smul b), ?_⟩` and prove the remaining obligations. Establish `e : (a • x + b • y).map Complex.im = a • x.map Complex.im + b • y.map Complex.im`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Break down `ha.eq_or_lt with rfl | ha'` into its components or cases. Establish `: b = 1` using `by simpa using hab`. Substitute `this` using the available equality. Simplify using `using hy'`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `(hx'.smul ha').add_posSemidef (hy'.posSemidef.smul hb)`.
+A detailed English derivation is pending.
 -/
 theorem convex_siegel (h : ℕ) :
     Convex ℝ {τ : Matrix (Fin h) (Fin h) ℂ | τ.IsSymm ∧ (τ.map Complex.im).PosDef} := by
@@ -39,7 +39,7 @@ theorem convex_siegel (h : ℕ) :
 variable {o : Type} [CommRing o] {S : Scheme.{0}} {s : S ⟶ Sp o} {σ : o →+* ℂ}
 
 /- English proof (translation)
-Take `⟨hp, hq, H⟩` from `h`. Use `⟨hq, hp, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← connectedComponent_eq (H z)]`. Conclude with `mem_connectedComponent`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameComp_symm {p q : Sp ℂ ⟶ S} (h : SameComp s σ p q) : SameComp s σ q p := by
   obtain ⟨hp, hq, H⟩ := h
@@ -48,7 +48,7 @@ theorem sameComp_symm {p q : Sp ℂ ⟶ S} (h : SameComp s σ p q) : SameComp s 
   exact mem_connectedComponent
 
 /- English proof (translation)
-Take `⟨hp, hq, H⟩` from `h`. Take `⟨hq', hr, H'⟩` from `h'`. Use `⟨hp, hr, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[connectedComponent_eq (H' z)]`. Conclude with `H z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameComp_trans {p q r : Sp ℂ ⟶ S} (h : SameComp s σ p q) (h' : SameComp s σ q r) :
     SameComp s σ p r := by
@@ -59,7 +59,7 @@ theorem sameComp_trans {p q r : Sp ℂ ⟶ S} (h : SameComp s σ p q) (h' : Same
   exact H z
 
 /- English proof (translation)
-Take `⟨P, lev, φ, hP, -⟩` from `H`. Conclude with `⟨hP.2.1, hP.2.2.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_siegel_of_ptAt {h k : ℕ} {ζ : o} {c : SiegPre h k ζ s} {p : Sp ℂ ⟶ S}
     {τ : Matrix (Fin h) (Fin h) ℂ} (H : PtAt c p τ) : τ.IsSymm ∧ (τ.map Complex.im).PosDef := by
@@ -67,15 +67,15 @@ theorem mem_siegel_of_ptAt {h k : ℕ} {ζ : o} {c : SiegPre h k ζ s} {p : Sp �
   exact ⟨hP.2.1, hP.2.2.1⟩
 
 /- English proof (translation)
-Introduce `hL hL2 hT hA h k K _ ζ σ F hh hk hodd hζ τ τ' p q hp hq hpτ hqτ`. Establish `hopen` using `GlobalTheory.T.siegelFamily_nearbyPeriods_same_component hL hL2 hT h k K ζ σ F hh hk hodd hζ`. Establish `hex : ∀ t : Matrix (Fin h) (Fin h) ℂ, t.IsSymm ∧ (t.map Complex.im).PosDef → ∃ r : Sp ℂ ⟶ F.X, r ≫ F.s = spMap σ ∧ PtAt F.univ r t`. Introduce and unpack `t ⟨ht, ht'⟩`. Take `⟨P, lev, hP⟩` from `GlobalTheory.T.exists_periodLevel_of_siegel_point hT hA h k t ht ht'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨r, φ, hr, hsq, hlev⟩` from `GlobalTheory.KeyFam.exists_point_of_perLev hL h k K ζ σ F hh hk hodd hζ P t lev hP`. Conclude with `⟨r, hr, P, lev, φ, hP, hsq, hlev⟩`. Establish `key` using `(convex_siegel h).isPreconnected.induction₂' (fun t t' => ∀ r : Sp ℂ ⟶ F.X, r ≫ F.s = spMap σ → PtAt F.univ r t → ∃ r' : Sp ℂ ⟶ F.X, r' ≫ F.s = spMap σ ∧ PtAt F.univ r' t' ∧ SameComp F.s σ r r') (by`. Introduce `x hx`. Take `⟨r₀, hr₀, hr₀x⟩` from `hex x hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, HN⟩` from `hopen x r₀ hr₀ hr₀x`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hN, self_mem_nhdsWithin] with y hyN hy`. Use `⟨fun r hr hrx => ?_, fun r hr hry => ⟨r₀, hr₀, hr₀x, HN y hyN r hr hry⟩⟩` and prove the remaining obligations. Take `⟨r', hr', hr'y⟩` from `hex y hy`. Conclude with `⟨r', hr', hr'y, sameComp_trans (HN x (mem_of_mem_nhds hN) r hr hrx) (sameComp_symm (HN y hyN r' hr' hr'y))⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(by`. Introduce `x y z _ _ _ hxy hyz r hr hrx`. Take `⟨r', hr', hr'y, h₁⟩` from `hxy r hr hrx`. Take `⟨r'', hr'', hr''z, h₂⟩` from `hyz r' hr' hr'y`. Conclude with `⟨r'', hr'', hr''z, sameComp_trans h₁ h₂⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(mem_siegel_of_ptAt hpτ) (mem_siegel_of_ptAt hqτ)`. Take `⟨q', hq', hq'τ, h₁⟩` from `key p hp hpτ`. Take `⟨N, hN, HN⟩` from `hopen τ' q hq hqτ`. Conclude with `sameComp_trans h₁ (HN τ' (mem_of_mem_nhds hN) q' hq' hq'τ)`.
+A detailed English derivation is pending.
 -/
 theorem sameComp_of_ptAt : Out.Laws → Out.Laws2 → ThetaUnifAV → GlobalTheory.TorusAlgebraic → ∀ (h k : ℕ) (K : Type) [Field K] (ζ : K) (σ : K →+* ℂ) (F : SFam h k ζ), 1 ≤ h → 3 ≤ k → Odd k → σ ζ = Complex.exp (-(2 * Real.pi * Complex.I) / k) → ∀ (τ τ' : Matrix (Fin h) (Fin h) ℂ) (p q : Sp ℂ ⟶ F.X), p ≫ F.s = spMap σ → q ≫ F.s = spMap σ → PtAt F.univ p τ → PtAt F.univ q τ' → SameComp F.s σ p q := by
   intro hL hL2 hT hA h k K _ ζ σ F hh hk hodd hζ τ τ' p q hp hq hpτ hqτ

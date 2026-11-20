@@ -28,7 +28,7 @@ def unscale {P : Type} (κ : ℝ) (B : S3.MassData P) : S3.MassData P :=
 def kapU (D : D7) : ℝ := if 0 < Formalism.L2.SG.MassDataConc.kapN D then Formalism.L2.SG.MassDataConc.kapN D else 1
 
 /- English proof (translation)
-Unfold `kapU`. Use `split_ifs with h`. Conclude with `h`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kapU_pos (D : D7) : 0 < kapU D := by
   unfold kapU
@@ -37,11 +37,11 @@ theorem kapU_pos (D : D7) : 0 < kapU D := by
   · exact one_pos
 
 /- English proof (translation)
-Take `⟨hp, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `h`. Establish `hk : κ ≠ 0` using `hκ.ne'`. Use `⟨?_, ?_, ?_, h4, h5, h6, h7, h8, h9, h10, h11⟩` and prove the remaining obligations. Unfold `S3.MassData.Pos at hp ⊢`. Conclude with `⟨hp.1, hp.2.1, hp.2.2.1, hp.2.2.2.1, hp.2.2.2.2.1, hp.2.2.2.2.2.1, hp.2.2.2.2.2.2.1, hp.2.2.2.2.2.2.2.1, hp.2.2.2.2.2.2.2.2.1, hp.2.2.2.2.2.2.2.2.2.1, hp.2.2.2.2.2.2.2.2.2.2.1, hp.2.2.2.2.2.2.2.2.2.2.2.1, hp.2.2.2.2.2.2.2.2.2.2.2.2.1, hp.2.2.2.2.2.2.2.2.2.2.2.2.2.1, hp.2.2.2.2.2. …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Use `show B.IntN * κ = B.volZZ / (B.unitLevelVolume * B.volPP) * (B.volPP * (B.IntC * κ))`. Establish `e : B.IntN = B.volZZ / (B.unitLevelVolume * B.volPP) * (B.volPP * B.IntC)` using `h2`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Use `show B.IntOO = B.Coo / κ * (B.IntC * κ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : B.IntOO = B.Coo * B.IntC` using `h3`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem normInputs_unscale {P : Type} [Fintype P] {κ : ℝ} (hκ : 0 < κ) {B : S3.MassData P} (h : PN.NormInputs B) :
     PN.NormInputs (unscale κ B) := by
@@ -60,9 +60,9 @@ theorem normInputs_unscale {P : Type} [Fintype P] {κ : ℝ} (hκ : 0 < κ) {B :
     field_simp
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Use `⟨h1, h2, h3, ?_, ?_⟩` and prove the remaining obligations. Use `show (B.c0 * B.c0')⁻¹ * (B.IntC * κ) = 2 ^ (f * (r + 1)) * (Irat * κ)`. Rewrite using `[← mul_assoc, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frameInputs_unscale {P : Type} [Fintype P] {κ : ℝ} {B : S3.MassData P} {rd g : ℝ} {r k f : ℕ} {Irat Ire : ℝ}
     (h : PN.FrameInputs B rd g r k f Irat Ire) : PN.FrameInputs (unscale κ B) rd g r k f (Irat * κ) (Ire * κ) := by
@@ -75,7 +75,7 @@ theorem frameInputs_unscale {P : Type} [Fintype P] {κ : ℝ} {B : S3.MassData P
     ring
 
 /- English proof (translation)
-Unfold `MassDataAdmissible at h ⊢`. Take `⟨h1, h2, h3, h4⟩` from `h`. Conclude with `⟨h1, h2, normInputs_unscale hκ h3, frameInputs_unscale h4⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem massDataValid_unscale {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word} {P : Type} [Fintype P]
     {κ : ℝ} (hκ : 0 < κ) {B : S3.MassData P} {Irat Ire : ℝ} (h : MassDataAdmissible X Y u u' B Irat Ire) :
@@ -119,15 +119,15 @@ def StepAnalyticConstants : Prop :=
         AnaAt CSt CB C1 C0n A large₂ Y u u' B Ire
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C0n, hA1⟩` from `hM Cg cb Cw cT CT C0`. Take `⟨CB, CSt, hCB, hCSt, a₀, b₀, hA2⟩` from `hA1 (C1 + C0n + 38)`. Take `⟨Cgs, CTs, hCg, hCT, s₀, t₀, hS2⟩` from `hS Cg cb Cw cT CT C0`. Take `⟨n₀, m₀, hN2⟩` from `hN Cg cb Cw cT CT C0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p₀, q₀, hP2⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨h₀, j₀, hH2⟩` from `hH Cg cb Cw cT CT C0`. Use `⟨C1, C0n, C1 + C0n + 38, CB, CSt, Cgs, CTs, hCB, hCSt, hCg, hCT, le_refl _, max a₀ (max s₀ (max n₀ (max p₀ h₀))), max b₀ (max t₀ (max m₀ (max q₀ j₀))), fun C' Cl h1 h2 D large₂ X Y u u' h0 hs hT => ?_⟩` and prove the remaining obligations. Establish `hc : Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u'` using `⟨h0, hs, hT⟩`. Establish `e1' : a₀ ≤ C'` using `le_trans (by simp) h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2' : b₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `f1 : s₀ ≤ C'` using `le_trans (by simp) h1`. Establish `f2 : t₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `i1 : n₀ ≤ C'` using `le_trans (by simp) h1`. Establish `i2 : m₀ ≤ Cl` using `le_trans (by simp) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j1 : p₀ ≤ C'` using `le_trans (by simp) h1`. Establish `j2 : q₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `k1 : h₀ ≤ C'` using `le_trans (by simp) h1`. Establish `k2 : j₀ ≤ Cl` using `le_trans (by simp) h2`. Take `⟨P, iP, B, Irat, Ire, hBk, νL, νB, ng, cSt, e1, hL, hBq, c1, c2, c3, c4, hV, hLoc, hGen, hMeas, hSum⟩` from `hA2 C' Cl e1' e2' D large₂ X Y u u' hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hG, hdd, hNI, hFI⟩` from `hBk`. Use `⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, hL, hBq, hG, hdd, hNI, hFI, ngSizes_of (hS2 C' Cl f1 f2 D large₂ X Y u u' hc) c1 c2 c3 c4, ?_, hMeas, hSum⟩` and prove the remaining obligations. Conclude with `⟨hC D X Y u u' hT νL νB ng, ampInput_of_vanish Y u u' νL νB ng hV, hN2 C' Cl i1 i2 D large₂ X Y u u' hc νL νB ng, hP2 C' Cl j1 j2 D large₂ X Y u u' hc νL νB ng, hLoc, hGen, hH2 C' Cl k1 k2 D large₂ X Y u u' hc νL νB ng⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem ngCut2C_of_merged (hM : StepAnalyticConstants) (hS : StepSizes) (hC : StepClass) (hN : StepNormals)
     (hP : StepPoints) (hH : StepHeight) : NGCut2C := by
@@ -162,7 +162,7 @@ theorem ngCut2C_of_merged (hM : StepAnalyticConstants) (hS : StepSizes) (hC : St
     hH2 C' Cl k1 k2 D large₂ X Y u u' hc νL νB ng⟩
 
 /- English proof (translation)
-The claim follows from `counting_bound_of_joint_chain hR hCh (ngCut2C_of_merged hM sizes_of_hypotheses (stepClass_of_equiv hE) hN hP (stepHeight_of_normOne hO))`.
+A detailed English derivation is pending.
 -/
 theorem rowNGC_of_merged (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hM : StepAnalyticConstants) (hE : CorankOneEquivalence)
     (hN : StepNormals) (hP : StepPoints) (hO : StepNormOne) : RowNGC :=
@@ -181,9 +181,9 @@ def NondegenerateGramTuple : Prop :=
     (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.gramE X.B.I.cm.sig X.B.I.J X0).det ≠ 0
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hctx => ?_⟩` and prove the remaining obligations. Unfold `Ctx at hctx`. Take `⟨_, _, hct⟩` from `hctx`. Unfold `ConcTie at hct`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨_, _, _, _, _, _, ⟨hb, ψ, h1, h2, h3, h4, h5, h6⟩, _⟩` from `hct`. Take `⟨X0, hX0⟩` from `hX D X`. Conclude with `⟨hb, X0, ψ, by unfold MassDataTie; exact ⟨h1, h2, h3, h4, h5, h6, hX0⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tieOfCtx_of (hX : NondegenerateGramTuple) : TieOfCtx := by
   intro Cg cb Cw cT CT C0
@@ -222,11 +222,11 @@ def StepAnalyticC : Prop :=
         AnaAt CSt CB C1 C0n A large₂ Y u u' (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq) Ire
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C0n, hA1⟩` from `hA Cg cb Cw cT CT C0`. Use `⟨C1, C0n, fun A => ?_⟩` and prove the remaining obligations. Take `⟨CB, CSt, hCB, hCSt, Ca, La, hA2⟩` from `hA1 A`. Take `⟨Ct, Lt, hT⟩` from `hTi Cg cb Cw cT CT C0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Cb, Lb, hB1⟩` from `hB Cg cb Cw cT CT C0`. Use `⟨CB, CSt, hCB, hCSt, max Ca (max Ct Cb), max La (max Lt Lb), fun C' Cl hC' hCl D large₂ X Y u u' hctx => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hC' hCl`. Take `⟨hb, X0, ψ, htie⟩` from `hT C' Cl hC'.2.1 hCl.2.1 D large₂ X Y u u' hctx`. Take `⟨sd, C, Th, F0, what₂, vR, Q, i0, i0', νq, Irat, Ire, hok⟩` from `hB1 C' Cl hC'.2.2 hCl.2.2 D large₂ X Y u u' hctx hb X0 ψ htie`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hok'` using `massDataValid_unscale (kapU_pos D) hok`. Conclude with `⟨_, inferInstance, bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq, Irat * kapU D, Ire * kapU D, hok', hA2 C' Cl hC'.1 hCl.1 D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq _ _ hok'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem merged_of (hTi : TieOfCtx) (hB : StepChoiceConstantsC) (hA : StepAnalyticC) : StepAnalyticConstants := by
   intro Cg cb Cw cT CT C0
@@ -258,7 +258,7 @@ def sc {G : Type*} [MeasurableSpace G] (s : G → NNReal) (ν : G → Measure G)
 variable {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
 
 /- English proof (translation)
-Simplify using `only [Jw, sc, Formalism.L2.SG.TermOp.OO, Measure.restrict_smul, integral_smul_measure, ENNReal.coe_toReal]`. Rewrite using `[← Complex.coe_smul, smul_smul, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Jw_sc (s : X.B.I.Ginf → NNReal) (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (w : Point D.host.E (D.R.rS + 1)) :
     Jw Y u u' (sc s ν) w = ((s (Formalism.L2.SG.RealObj.gamW X u u' w) : ℝ) : ℂ) • Jw Y u u' ν w := by
@@ -266,7 +266,7 @@ theorem Jw_sc (s : X.B.I.Ginf → NNReal) (ν : X.B.I.Ginf → Measure X.B.I.Gin
   rw [← Complex.coe_smul, smul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Unfold `J2of`. Use `split_ifs with hh`. Use `⟨Formalism.L2.SG.RealObj.gamW X u u' hh.choose, ?_⟩` and prove the remaining obligations. Rewrite using `[Jw_sc, map_smul, norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, NNReal.abs_eq]`. Conclude with `⟨1, by rw [mul_zero]⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem J2of_sc (s : X.B.I.Ginf → NNReal) (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (γ : PN.Pts D.host.E D.R.rS) :
     ∃ g, J2of Y u u' (sc s ν) γ = ((s g : ℝ)) ^ 2 * J2of Y u u' ν γ := by
@@ -277,7 +277,7 @@ theorem J2of_sc (s : X.B.I.Ginf → NNReal) (ν : X.B.I.Ginf → Measure X.B.I.G
   · exact ⟨1, by rw [mul_zero]⟩
 
 /- English proof (translation)
-Unfold `J2of`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_refl 0`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem J2of_nonneg (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (γ : PN.Pts D.host.E D.R.rS) : 0 ≤ J2of Y u u' ν γ := by
   unfold J2of
@@ -286,9 +286,9 @@ theorem J2of_nonneg (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (γ : PN.Pts D.host
   · exact le_refl 0
 
 /- English proof (translation)
-Introduce `c γ ν' h0`. Apply `h c γ ν'` to reduce the goal to its premises. Take `⟨g, hg⟩` from `J2of_sc Y u u' s ν γ`. Rewrite `h0` using `[hg]`. Establish `h1 : (0 : ℝ) < (s g : ℝ)` using `NNReal.coe_pos.mpr (hs g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < (s g : ℝ) ^ 2` using `pow_pos h1 2`. Break down `mul_eq_zero.mp h0 with h2 | h2` into its components or cases. Conclude with `absurd h2 (ne_of_gt hpos)`. Conclude with `h2`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ampVanish_sc (s : X.B.I.Ginf → NNReal) (hs : ∀ γ, 0 < s γ) (ν : X.B.I.Ginf → Measure X.B.I.Ginf)
     (h : AmpVanish Y u u' ν) : AmpVanish Y u u' (sc s ν) := by
@@ -303,9 +303,7 @@ theorem ampVanish_sc (s : X.B.I.Ginf → NNReal) (hs : ∀ γ, 0 < s γ) (ν : X
   · exact h2
 
 /- English proof (translation)
-Introduce `γ _`. Use `⟨J2of_nonneg Y u u' ν γ, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `J2of_sc Y u u' s ν γ`. Use `show J2of Y u u' (sc s ν) γ ≤ c * J2of Y u u' ν γ`. Rewrite using `[hg]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hs g) (J2of_nonneg Y u u' ν γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measureInput_sc (s : X.B.I.Ginf → NNReal) (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (c : ℝ)
     (hs : ∀ γ, (s γ : ℝ) ^ 2 ≤ c) (ng : PN.Pts D.host.E D.R.rS → ℝ) :
@@ -318,13 +316,13 @@ theorem measureInput_sc (s : X.B.I.Ginf → NNReal) (ν : X.B.I.Ginf → Measure
   exact mul_le_mul_of_nonneg_right (hs g) (J2of_nonneg Y u u' ν γ)
 
 /- English proof (translation)
-Introduce `γ`. Take `⟨hreg, μR, ⟨hsf, hne, hcpl, hinv⟩, hQ⟩` from `h γ`. Establish `hs0' : s γ ≠ 0` using `(hs0 γ).ne'`. Use `⟨fun hr => ?_, (s γ)⁻¹ • μR, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ((s γ : NNReal) : ENNReal) • ν γ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs1 γ hr, ENNReal.coe_one, one_smul]`. Conclude with `hreg hr`. Use `haveI := hsf infer_instance`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg (fun m => (s γ) • m) h0`. Simplify `h1` using `[smul_smul, mul_inv_cancel₀ hs0']`. Simplify using `[hcpl]`. Introduce `g hg`. Rewrite using `[Measure.map_smul, hinv g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `f hf show _ = ∫⁻ x, (∫⁻ a, f (a * x) ∂((s γ)⁻¹ • μR)) ∂(((s γ : NNReal) : ENNReal) • ν γ)`. Rewrite using `[hQ f hf, lintegral_smul_measure]`. Simplify using `only [lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul, mul_inv_cancel₀ hs0', ENNReal.coe_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuQOK_sc (s : X.B.I.Ginf → NNReal) (hs1 : ∀ γ, Formalism.L2.SG.RealObj.RegX X u u' γ → s γ = 1)
     (hs0 : ∀ γ, 0 < s γ) (ν : X.B.I.Ginf → Measure X.B.I.Ginf) (h : Formalism.L2.SG.RealObj.NuQOK X u u' ν) :
@@ -402,11 +400,11 @@ def StepThmBPinnedC : Prop :=
           (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C0n, CSt, hCSt, Cl0, Ll0, hL1⟩` from `hL Cg cb Cw cT CT C0`. Use `⟨C1, C0n, fun A => ?_⟩` and prove the remaining obligations. Take `⟨CB, hCB, Cb0, Lb0, hB1⟩` from `hB Cg cb Cw cT CT C0 A`. Take `⟨Ce0, Le0, hE1⟩` from `hE Cg cb Cw cT CT C0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Cv0, Lv0, hV1⟩` from `hV Cg cb Cw cT CT C0`. Use `⟨CB, CSt, hCB, hCSt, max Cl0 (max Cb0 (max Ce0 Cv0)), max Ll0 (max Lb0 (max Le0 Lv0)), fun C' Cl hC' hCl D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hC' hCl`. Take `⟨ν, hν⟩` from `hE1 C' Cl hC'.2.2.1 hCl.2.2.1 D large₂ X Y u u' hctx`. Take `⟨s, ng, e1, hs1, hs0, hs2, he0, he2, hloc, hgen⟩` from `hL1 C' Cl hC'.1 hCl.1 D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok ν hν`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hvan` using `hV1 C' Cl hC'.2.2.2 hCl.2.2.2 D large₂ X Y u u' hctx ν hν`. Establish `hpt` using `hB1 C' Cl hC'.2.1 hCl.2.1 D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok ν hν (sc s ν) ng`. Use `⟨sc s ν, ν, ng, large₂.sc.b ^ (CSt * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 * D.R.f), e1, nuQOK_sc u u' s hs1 hs0 ν hν.1, hν.1, ?_, le_refl _, he0, he2, ampVanish_sc Y u u' s hs0 ν hvan, hloc, hgen, measureInput_sc Y u u' s ν _ hs2 ng, hpt⟩` and prove the remaining obligations. Conclude with `le_trans (sq_nonneg _) (hs2 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stepAnalyticC_of_steps (hE : StepPinExists) (hV : StepVanishPinned) (hL : StepLocGenPinnedC)
     (hB : StepThmBPinnedC) : StepAnalyticC := by
@@ -431,7 +429,7 @@ theorem stepAnalyticC_of_steps (hE : StepPinExists) (hV : StepVanishPinned) (hL 
   exact le_trans (sq_nonneg _) (hs2 1)
 
 /- English proof (translation)
-The claim follows from `rowNGC_of_merged hR hCh (merged_of (tieOfCtx_of hX) hB (stepAnalyticC_of_steps hE hV hL hT)) hQ hN hP hO`.
+A detailed English derivation is pending.
 -/
 theorem rowNGC_of_pinned (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hX : NondegenerateGramTuple) (hB : StepChoiceConstantsC)
     (hE : StepPinExists)
@@ -445,11 +443,11 @@ def StepTermVanish : Prop :=
       ∀ ν, Pinned X u u' ν → ∀ t ∈ (Y.tO u u').ngSet, J2of Y u u' ν (ptPN t) = 0 → (Y.tO u u').vec t = 0
 
 /- English proof (translation)
-Introduce `c γ ν' h0`. Establish `hz : ∀ t, ((Y.tO u u').ngSet ∩ {t | clsOf Y u u' t = c ∧ ptPN t = γ ∧ nmlOf Y u u' t = ν'}).indicator (Y.tO u u').vec t = 0`. Introduce `t`. Rewrite using `[Set.indicator_apply]`. Use `split_ifs with ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq] at ht`. Apply `h t ht.1` to reduce the goal to its premises. Rewrite using `[ht.2.2.1]`. Conclude with `h0`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `grpC`. Simplify using `only [hz, tsum_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ampVanish_of_term {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word) (ν : X.B.I.Ginf → Measure X.B.I.Ginf)
     (h : ∀ t ∈ (Y.tO u u').ngSet, J2of Y u u' ν (ptPN t) = 0 → (Y.tO u u').vec t = 0) : AmpVanish Y u u' ν := by
@@ -468,7 +466,7 @@ theorem ampVanish_of_term {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.wh
   simp only [hz, tsum_zero]
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C'₀, Cl₀, h1⟩` from `h Cg cb Cw cT CT C0`. Conclude with `⟨C'₀, Cl₀, fun C' Cl hC hL D large₂ X Y u u' hctx ν hν => ampVanish_of_term Y u u' ν (h1 C' Cl hC hL D large₂ X Y u u' hctx ν hν)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stepVanishPinned_of_term (h : StepTermVanish) : StepVanishPinned := by
   intro Cg cb Cw cT CT C0
@@ -488,13 +486,13 @@ def LocalInputLe {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [Inn
     0 < L.ngenTot ∧ L.ngenTot ≤ AAre * 2 * N.Hh γ ^ PN.eN r * N.n γ
 
 /- English proof (translation)
-Introduce `γ hγ S`. Take `⟨L, hB, hNG, hMR, hU, ha2, hH, hpos, hle⟩` from `h γ hγ S`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = N.ngen γ / L.ngenTot` from `⟨_, rfl⟩`. Establish `hng' : L.ngenTot ≤ N.ngen γ` using `by rw [hng γ]; exact hle`. Establish `ht1 : 1 ≤ t` using `by rw [ht, le_div_iff₀ hpos, one_mul]; exact hng'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b1, b2, b3, b4, b5, b6, b7⟩` from `hB`. Use `⟨{ L with V0 := L.V0 * t }, ⟨b1, b2, b3, b4, b5, mul_nonneg b6 (by linarith), b7⟩, hNG, hMR, fun d S' hS' => ?_, fun x hx => by` and prove the remaining obligations. Rewrite using `[ha2 x hx]`. Apply the tactic sequence `cases hd : L.dat x.1 x.2 <;> simp [PN.LocalNG.a2, PN.LocalNG.ampNG, hd], hH, ?_⟩`. Establish `h0 : 0 ≤ L.V0 * ∏ p, L.wt p (d p)` using `mul_nonneg b6 (Finset.prod_nonneg fun p _ => b1 p (d p))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `show N.ngen γ = L.V0 * t * ∏ p, L.ngen p`. Establish `e : L.V0 * t * ∏ p, L.ngen p = t * L.ngenTot`. Unfold `PN.LocalNG.ngenTot`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ht, div_mul_cancel₀ _ hpos.ne']`.
+A detailed English derivation is pending.
 -/
 theorem localInput_of_le {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : PB.Terms τ Rw I H H₁) {E : Type} [Field E] {r : ℕ}
@@ -521,7 +519,7 @@ theorem localInput_of_le {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup
     rw [e, ht, div_mul_cancel₀ _ hpos.ne']
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.RowsConc.nPt`. Use `Finset.prod_nonneg fun w _ => mul_nonneg (pow_nonneg (mul_nonneg (by positivity) (w.1.nonneg _)) _) (Finset.prod_nonneg fun a _ => pow_nonneg (mul_nonneg (by positivity) (w.1.nonneg _)) _)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem nPt_nonneg {E : Type} [Field E] [NumberField E] [StarRing E] {r : ℕ} (rd : ℝ) (hrd : 0 < rd) (k TT : ℕ)
     (γ : PN.Pts E r) : 0 ≤ Formalism.L2.SG.RowsConc.nPt rd k TT γ := by
@@ -548,11 +546,11 @@ def StepLocPinnedC : Prop :=
           (PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).AA)
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C0n, CSt, hCSt, C'₀, Cl₀, h1⟩` from `h Cg cb Cw cT CT C0`. Use `⟨C1, C0n, CSt, hCSt, C'₀, Cl₀, fun C' Cl hC hL D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok ν hν => ?_⟩` and prove the remaining obligations. Take `⟨s, hs1, hs0, hs2, hle⟩` from `h1 C' Cl hC hL D large₂ X Y u u' hctx hb X0 ψ htie sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hok ν hν`. Establish `hrd : 0 < D.host.rdE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero _)) _`. Set `AAre` to `PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).AA`. Set `N0` to `NOf2 Y u u' (sc s ν) ν (fun _ => 0)`. Set `ng : PN.Pts D.host.E D.R.rS → ℝ` to `fun γ => AAre * 2 * N0.Hh γ ^ PN.eN D.R.rS * N0.n γ`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, ng, 2, hs1, hs0, hs2, by norm_num, le_refl _, localInput_of_le (Y.tO u u') (NOf2 Y u u' (sc s ν) ν ng) C1 C0n D.R.k AAre hle (fun γ => rfl), fun γ _ => ⟨?_, le_refl _⟩⟩` and prove the remaining obligations. Conclude with `nPt_nonneg D.host.rdE hrd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem stepLocGenPinnedC_of_loc (h : StepLocPinnedC) : StepLocGenPinnedC := by
   intro Cg cb Cw cT CT C0
@@ -575,7 +573,7 @@ theorem stepLocGenPinnedC_of_loc (h : StepLocPinnedC) : StepLocGenPinnedC := by
 end LocLe
 
 /- English proof (translation)
-The claim follows from `rowNGC_of_pinned hR hCh hX hB hE (stepVanishPinned_of_term hT0) (stepLocGenPinnedC_of_loc hL) hT hQ hN hP hO`.
+A detailed English derivation is pending.
 -/
 theorem rowNGC_of_loc (hR : PN.RowNGJoint) (hCh : PN.NGChain) (hX : NondegenerateGramTuple) (hB : StepChoiceConstantsC) (hE : StepPinExists)
     (hT0 : StepTermVanish) (hL : StepLocPinnedC) (hT : StepThmBPinnedC) (hQ : CorankOneEquivalence) (hN : StepNormals)

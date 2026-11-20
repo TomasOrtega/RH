@@ -6,9 +6,9 @@ namespace GlobalTheory
 open Polynomial IsDiscreteValuationRing
 
 /- English proof (translation)
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `haveI : NeZero (l ^ (k + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `h1` using `Polynomial.eval_one_cyclotomic_prime_pow (R := O) (p := l) k`. Rewrite `h1` using `[Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hζ, Polynomial.eval_prod]`. Rewrite using `[← h1, ← hζ.card_primitiveRoots, ← Finset.prod_const]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Associated.prod _ _ _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hμ' : IsPrimitiveRoot μ (l ^ (k + 1))` using `(mem_primitiveRoots (pow_pos hl.pos _)).1 hμ`. Take `⟨i, -, hi, rfl⟩` from `(hζ.isPrimitiveRoot_iff).1 hμ'`. Simplify using `using (hζ.associated_sub_one_pow_sub_one_of_coprime hi).neg_right`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem associated_primitiveRoot_sub_one_pow_totient_prime_pow {O : Type} [CommRing O] [IsDomain O]
     {l k : ℕ} (hl : l.Prime) {ζ : O} (hζ : IsPrimitiveRoot ζ (l ^ (k + 1))) :
@@ -26,17 +26,17 @@ theorem associated_primitiveRoot_sub_one_pow_totient_prime_pow {O : Type} [CommR
   simpa using (hζ.associated_sub_one_pow_sub_one_of_coprime hi).neg_right
 
 /- English proof (translation)
-Introduce `O _ _ _ l k hl hk hl0 hlu ζ hζ`. Take `⟨k, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `hass` using `associated_primitiveRoot_sub_one_pow_totient_prime_pow hl hζ`. Establish `hφ : 0 < Nat.totient (l ^ (k + 1))` using `Nat.totient_pos.2 (pow_pos hl.pos _)`. Establish `hne : ζ - 1 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hass` using `[h, zero_pow hφ.ne']`. Conclude with `hl0 ((associated_zero_iff_eq_zero _).1 hass.symm)`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hv : addVal O ((ζ - 1) ^ Nat.totient (l ^ (k + 1))) = addVal O (l : O)` using `(addVal_eq_iff_associated _ _).2 hass`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[addVal_pow]`. Establish `ht : addVal O (ζ - 1) ≠ ⊤` using `fun h => hne (addVal_eq_top_iff.1 h)`. Take `⟨a, ha⟩` from `ENat.ne_top_iff_exists.1 ht`. Establish `hl1 : addVal O (l : O) ≠ 0` using `fun h => hlu (addVal_eq_zero_iff.1 h)`. Establish `hv' : addVal O (l : O) = ((Nat.totient (l ^ (k + 1)) * a : ℕ) : ℕ∞)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv, ← ha]`. Simplify using the standard rewrite rules. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hl1` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv']`. Simplify using the standard rewrite rules. Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Rewrite using `[hv', ← ha, ENat.toNat_coe, ENat.toNat_coe]`. Establish `: (a : ℝ) ≠ 0` using `by exact_mod_cast ha0`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Nat.totient (l ^ (k + 1)) : ℝ) ≠ 0` using `by exact_mod_cast hφ.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem nval_primitiveRoot_prime_pow_sub_one :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l k : ℕ), l.Prime → 1 ≤ k → (l : O) ≠ 0 → ¬ IsUnit (l : O) → ∀ ζ : O, IsPrimitiveRoot ζ (l ^ k) → ζ - 1 ≠ 0 ∧ Formalism.MainNotions.BlochKatoReduction.Gen.nval O l (ζ - 1) = 1 / (Nat.totient (l ^ k) : ℝ) := by

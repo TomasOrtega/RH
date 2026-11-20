@@ -8,19 +8,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ N _ K _ _ _ φ l _ v A hv hA u hu`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ F Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : IsAlgClosure ℚ Ω := ⟨inferInstance, inferInstance⟩`. Take `⟨h, ⟨hF, hI⟩, hh⟩` from `KStar.TotallyRealRoots.mem_levelGroup.mp hu`. Establish `hl : A.valuation (l : Ω) < 1`. Use `(hA (l : 𝓞 F)).mpr hv` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσI, hσu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hl u`. Establish `hcop : (N / l ^ N.factorization l).Coprime l` using `(Nat.coprime_ordCompl (Fact.out : l.Prime) (NeZero.ne N)).symm`. Establish `hpos : 0 < N / l ^ N.factorization l` using `Nat.ordCompl_pos l (NeZero.ne N)`. Establish `hfixm : ∀ ζ : Ω, ζ ^ (N / l ^ N.factorization l) = 1 → σ ζ = ζ` using `fun ζ hζ => (ineFixRoots ℚ Ω l A hl _ hcop ζ hζ).2 σ hσI`. Establish `hroots : ∀ ζ : Ω, ζ ^ N = 1 → σ.toRingEquiv ζ = ζ ^ (h : ZMod N).val`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[classIff Ω l N σ.toRingEquiv h]`. Use `⟨fun ζ hζ => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (ZMod.unitsMap (Nat.ordCompl_dvd N l)) h = 1` using `hI`. Establish `e : σ.toRingEquiv ζ = ζ` using `hfixm ζ hζ`. Rewrite using `[e, h1, Units.val_one]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.lt_or_ge 1 (N / l ^ N.factorization l) with hm | hm` into its components or cases. Use `haveI : Fact (1 < N / l ^ N.factorization l) := ⟨hm⟩`. Rewrite using `[ZMod.val_one, pow_one]`. Establish `hm1 : N / l ^ N.factorization l = 1` using `by omega`. Rewrite `hζ` using `[hm1, pow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hζ, one_pow]`. Rewrite using `[hh]`. Use `congr 1`. Conclude with `hσu.symm`. Establish `hfixF : ∀ x : F, σ.toRingEquiv (algebraMap F Ω x) = algebraMap F Ω x` using `(classFix F Ω N K φ σ.toRingEquiv h hroots).mpr hF`.
-
-Set `τ : Ω ≃ₐ[F] Ω` to `{ σ.toRingEquiv with commutes' := hfixF }`. Use `⟨τ, ⟨?_, fun x hx => hσI.2 x hx⟩, ?_⟩` and prove the remaining obligations. Conclude with `hσI.1`. Rewrite using `[← hσu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.levelLeIne :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (N : ℕ) [NeZero N] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {N} ℚ K] (φ : F →ₐ[ℚ] K) (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), v ∈ Above F l → IsPlaceOver A v → KStar.TotallyRealRoots.levelGroup l N (KStar.TotallyRealRoots.fieldSubgroup N K φ.fieldRange ⊓ KStar.TotallyRealRoots.levelInertia l N) ≤ ineImage F l A := by

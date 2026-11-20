@@ -8,9 +8,7 @@ namespace Formalism.MainNotions.N.Ln03.K8
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.MainNotions.WachCoordinates Formalism.MainNotions.WachCoordinates.Br Formalism.ExponentWindows Formalism.ExponentWindows.G TensorProduct
 
 /- English proof (translation)
-Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Take `⟨⟨x, s⟩, hx⟩` from `IsLocalization.surj (nonZeroDivisors O) a`. Use `⟨s, x, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite using `[mul_comm]`.
-
-Conclude with `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hfrac_of {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] [IsFractionRing O LL] (a : LL) :
     ∃ y o : O, algebraMap O LL y ≠ 0 ∧ algebraMap O LL y * a = algebraMap O LL o := by
@@ -33,13 +31,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n}
 
 /- English proof (translation)
-Set `hBasis : Module.Basis (Fin r) (PowerSeries O) ↥((latOf C).N c)` to `(Module.Basis.span hind).map (LinearEquiv.ofEq _ _ hspan)`. Establish `hBasis_e : ∀ k, (hBasis k : C.V) = e k` using `fun k => by`. Simplify using `[hBasis, Module.Basis.span_apply]`. Establish `hcmpLI` using `Pf.lvBasis_cmp_ind hP3 hmod hfrac_of hBasis hBasis_e`. Set `w : Fin r → Dc W T c` to `fun k => ⟨W.cmp T ⟨C.t c (e k), Pf.lvBasis_e_mem hBasis hBasis_e k⟩, Pf.lvBasis_cmp_e_letter hBasis hBasis_e k⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hwLI : LinearIndependent LL w` using `LinearIndependent.of_comp (DcrisL PD T.ρ (W.emb c)).subtype hcmpLI`. Establish `hwsp : ⊤ ≤ Submodule.span LL (Set.range w)`. Introduce `x _`. Establish `hx` using `Pf.lvBasis_letter_le hP3 hmod hBasis hBasis_e x.2`. Establish `hr : (Set.range fun k => W.cmp T ⟨C.t c (e k), Pf.lvBasis_e_mem hBasis hBasis_e k⟩) = (DcrisL PD T.ρ (W.emb c)).subtype '' Set.range w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hx` using `[hr, Submodule.span_image, Submodule.mem_map]`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `: y = x` using `Subtype.ext hyx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← this]` and apply the resulting hypothesis. Set `bD` to `Module.Basis.mk hwLI hwsp`. Establish `hFD : FiniteDimensional LL (Dc W T c)` using `Module.Finite.of_basis bD`. Use `⟨hFD, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_eq_card_basis bD, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_eq [IsFractionRing O LL] (hP3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T) (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀)
     {r : ℕ} (e : Fin r → C.V)

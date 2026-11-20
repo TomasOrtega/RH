@@ -17,15 +17,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatJet
 
 /- English proof (translation)
-Introduce `E _ _ I _ φ L 𝔠 X₀ X p U v₀ v a hpb hv`. Use `haveI := Obj.invertible_detOmega X₀`. Take `⟨d, -, hd⟩` from `finrank_eq_one_iff'.1 (Module.Invertible.finrank_eq_one Qb X₀.DetOmega)`. Set `δ₀ : X₀.DetGen` to `⟨d, eq_top_iff.2 fun w _ ↦ Submodule.mem_span_singleton.2 (hd w)⟩`. Take `⟨δ, hδ, -⟩` from `hpb.existsUnique_detGen (algebraMap Qb ℂ) δ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ₁, hδ₁⟩` from `Obj.exists_detGen_holUnif (FR E) 𝔠 X _ U.u 1 one_ne_zero`. Establish `hmem : δ.1 ∈ Submodule.span ℂ {δ₁.1}` using `by rw [δ₁.2]; exact Submodule.mem_top`. Take `⟨C, hC⟩` from `Submodule.mem_span_singleton.1 hmem`. Establish `hdet : U.IsDet δ.1 C` using `fun w W hW ↦ by`. Rewrite using `[← hC, AlternatingMap.smul_apply, hδ₁ w W hW, smul_eq_mul, _root_.one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ₀, δ, C, hδ, hdet, ?_⟩` and prove the remaining obligations. Establish `hW : ∀ j, U.u.IsDiff ((Matrix.diagonal fun j ↦ a (U.e j)) j) (v (U.e j)).hom` using `fun j ↦ by`. Establish `h` using `(hv (U.e j)).2`. Rewrite `h` using `[Equiv.symm_apply_apply]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `[Matrix.diagonal_apply, Pi.single_apply, eq_comm]`. Establish `h1` using `hdet (fun j ↦ v (U.e j)) _ hW`. Establish `h2` using `hδ (fun j ↦ v₀ (U.e j)) (fun j ↦ v (U.e j)) fun j ↦ (hv (U.e j)).1`. Rewrite `h1` using `[Matrix.det_diagonal, Equiv.prod_comp U.e a]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, h2]`. Conclude with `(mem_algebraicClosure_iff.1 (δ₀.1 fun j ↦ v₀ (U.e j)).2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_detGen_coeff_algebraic : ∀ (E : Type) [Field E] [NumberField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E) (𝔠 : FracId (FR E))
     (X₀ : Obj (FR E) 𝔠 (Sp Qb)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (p : X.A.left ⟶ X₀.A.left) (U : Unif φ L 0 X)

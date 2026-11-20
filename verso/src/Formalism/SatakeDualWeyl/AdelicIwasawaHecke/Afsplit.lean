@@ -12,9 +12,9 @@ section Lat
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp ((Submodule.mem_pi.mp h) i (Set.mem_univ i))`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `Submodule.mem_pi.mpr fun i _ => LinearMap.mem_range.mpr ⟨⟨x i, h i⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem afsplit_mem_stdLat (S : Subring A) (x : n → A) :
     x ∈ stdLat (n := n) (A := A) S ↔ ∀ i, x i ∈ S := by
@@ -27,7 +27,7 @@ theorem afsplit_mem_stdLat (S : Subring A) (x : n → A) :
     exact Submodule.mem_pi.mpr fun i _ => LinearMap.mem_range.mpr ⟨⟨x i, h i⟩, rfl⟩
 
 /- English proof (translation)
-Use `show ∑ j, M i j * x j ∈ S`. Conclude with `sum_mem fun j _ => mul_mem (hM i j) (hx j)`.
+A detailed English derivation is pending.
 -/
 theorem afsplit_mulVec_mem (S : Subring A) (M : Matrix n n A) (hM : ∀ i j, M i j ∈ S) (x : n → A)
     (hx : ∀ i, x i ∈ S) (i : n) : (M *ᵥ x) i ∈ S := by
@@ -35,23 +35,21 @@ theorem afsplit_mulVec_mem (S : Subring A) (M : Matrix n n A) (hM : ∀ i j, M i
   exact sum_mem fun j _ => mul_mem (hM i j) (hx j)
 
 /- English proof (translation)
-Establish `hmem` using `fun x : n → A => afsplit_mem_stdLat (n := n) S x`. Establish `hinv : ∀ x : n → A, ((g⁻¹ : GL n A) : Matrix n n A) *ᵥ ((g : Matrix n n A) *ᵥ x) = x`. Introduce `x`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `hinv' : ∀ x : n → A, (g : Matrix n n A) *ᵥ (((g⁻¹ : GL n A) : Matrix n n A) *ᵥ x) = x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hsingle : ∀ j : n, (Pi.single j (1 : A) : n → A) ∈ stdLat (n` using `n) (A := A) S := by`. Introduce `j`. Rewrite using `[hmem]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.zero_mem`. Establish `hcol : ∀ (M : Matrix n n A) (i j : n), (M *ᵥ Pi.single j (1 : A)) i = M i j`. Introduce `M i j`. Use `first`. Consider the case `simp [Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Matrix.mulVec, dotProduct, Pi.single_apply]`. Consider the case `simp [Matrix.mulVec, Matrix.dotProduct, Pi.single_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg' : ∀ x : n → A, x ∈ stdLat (n` using `n) (A := A) S ↔ (g : Matrix n n A) *ᵥ x ∈ stdLat (n := n) (A := A) S := hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `((hmem _).mp ((hg' _).mp (hsingle j))) i`. Rewrite `h1` using `[hcol]`. Then use the resulting hypothesis. Establish `h1 : (g : Matrix n n A) *ᵥ (((g⁻¹ : GL n A) : Matrix n n A) *ᵥ Pi.single j 1) ∈ stdLat (n` using `n) (A := A) S := by`. Rewrite using `[hinv']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hsingle j`. Establish `h2` using `((hmem _).mp ((hg' _).mpr h1)) i`. Rewrite `h2` using `[hcol]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩ show ∀ x : n → A, x ∈ stdLat (n := n) (A := A) S ↔ (g : Matrix n n A) *ᵥ x ∈ stdLat (n := n) (A := A) S`. Introduce `x`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmem, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Conclude with `afsplit_mulVec_mem S _ h1 x hx i`. Introduce `hx i`.
-
-Establish `h3` using `afsplit_mulVec_mem S _ h2 _ hx i`. Rewrite `h3` using `[hinv]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem afsplit_stab_iff (S : Subring A) (g : GL n A) :
     g ∈ stabGL (stdLat (n := n) (A := A) S) ↔
@@ -104,7 +102,7 @@ theorem afsplit_stab_iff (S : Subring A) (g : GL n A) :
       rwa [hinv] at h3
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afsplit_one_mem (S : Subring A) (i j : n) : (1 : Matrix n n A) i j ∈ S := by
   rw [Matrix.one_apply]
@@ -121,7 +119,7 @@ variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [NumberField 
 local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [prV, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]; done)`. Consider the case `(simp only [prV, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]; rfl)`. Consider the case `simp [prV, evalV]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma prV_tmul_lemma_12 (a : E) (y : 𝔸) : prV (E := E) v (a ⊗ₜ[F] y) = a ⊗ₜ[F] (y v) := by
   first
@@ -132,7 +130,7 @@ private lemma prV_tmul_lemma_12 (a : E) (y : 𝔸) : prV (E := E) v (a ⊗ₜ[F]
     | simp [prV, evalV]
 
 /- English proof (translation)
-Use `show LinearMap.lTensor E (afsplitI v) (a ⊗ₜ[F] b) = _`. Rewrite using `[LinearMap.lTensor_tmul]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma IE_tmul_lemma_10 (a : E) (b : v.adicCompletion F) :
     afsplitIE v (a ⊗ₜ[F] b) = a ⊗ₜ[F] afsplitF v b := by
@@ -141,14 +139,14 @@ private lemma IE_tmul_lemma_10 (a : E) (b : v.adicCompletion F) :
   try rfl
 
 /- English proof (translation)
-Use `show afsplitIE v ((1 : E) ⊗ₜ[F] (1 : v.adicCompletion F)) = _`. Conclude with `IE_tmul_lemma_10 v 1 1`.
+A detailed English derivation is pending.
 -/
 private lemma eps_eq_lemma_2 : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitF v 1 := by
   show afsplitIE v ((1 : E) ⊗ₜ[F] (1 : v.adicCompletion F)) = _
   exact IE_tmul_lemma_10 v 1 1
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rw [IE_tmul_lemma_10, prV_tmul_lemma_12, afsplitF_self]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma prV_IE_lemma (x : E ⊗[F] v.adicCompletion F) : prV (E := E) v (afsplitIE v x) = x := by
   induction x using TensorProduct.induction_on with
@@ -157,11 +155,11 @@ private lemma prV_IE_lemma (x : E ⊗[F] v.adicCompletion F) : prV (E := E) v (a
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Rewrite using `[prV_tmul_lemma_12, IE_tmul_lemma_10, eps_eq_lemma_2, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `w`. Use `congr 1`. Apply the tactic sequence `rw [show (afsplitF v 1 * y) w = afsplitF v 1 w * y w from by first | rfl | simp]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[afsplitF_self, afsplitF_self, one_mul]`. Rewrite using `[afsplitF_ne v w h, afsplitF_ne v w h, zero_mul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private lemma IE_prV_lemma_3 (x : E ⊗[F] 𝔸) : afsplitIE v (prV (E := E) v x) = afsplitEps E v * x := by
   induction x using TensorProduct.induction_on with
@@ -179,15 +177,15 @@ private lemma IE_prV_lemma_3 (x : E ⊗[F] 𝔸) : afsplitIE v (prV (E := E) v x
   | add x y hx hy => rw [map_add, map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Rewrite using `[show afsplitEps E v = afsplitIE v 1 from rfl, prV_IE_lemma]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma prV_eps_lemma_4 : prV (E := E) v (afsplitEps E v) = 1 := by
   rw [show afsplitEps E v = afsplitIE v 1 from rfl, prV_IE_lemma]
 
 /- English proof (translation)
-Use `show ∀ w, (afsplitF v y) w ∈ w.adicCompletionIntegers F`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[afsplitF_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Rewrite using `[afsplitF_ne v w h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 private lemma F_int_lemma_9 (y : v.adicCompletion F) (hy : y ∈ v.adicCompletionIntegers F) :
     afsplitF v y ∈ intAd F := by
@@ -201,15 +199,13 @@ private lemma F_int_lemma_9 (y : v.adicCompletion F) (hy : y ∈ v.adicCompletio
     exact zero_mem _
 
 /- English proof (translation)
-Unfold `tensInt at hx ⊢`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem z hz`. Break down `hz with ⟨a, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Apply `Subring.subset_closure` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Set.mem_union_left _ ⟨a, ?_⟩` and prove the remaining obligations. Simplify using `[prV_tmul_lemma_12]`. Both sides reduce to the same expression. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `Set.mem_union_right _ ⟨⟨(b : 𝔸) v, b.2 v⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[prV_tmul_lemma_12]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `one => rw [map_one]`. Conclude with `one_mem _`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
-
-Conclude with `mul_mem hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem afsplit_prV_int (x : E ⊗[F] 𝔸) (hx : x ∈ tensInt (F := F) 𝔸 (intOE E) (intAd F)) :
     prV (E := E) v x ∈ tensInt (F := F) (v.adicCompletion F) (intOE E)
@@ -232,15 +228,11 @@ theorem afsplit_prV_int (x : E ⊗[F] 𝔸) (hx : x ∈ tensInt (F := F) 𝔸 (i
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 /- English proof (translation)
-Unfold `tensInt at hx ⊢`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem z hz`. Break down `hz with ⟨a, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Establish `h1 : afsplitIE v ((a : E) ⊗ₜ[F] (1 : v.adicCompletion F)) = ((a : E) ⊗ₜ[F] (1 : 𝔸)) * ((1 : E) ⊗ₜ[F] afsplitF v 1)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[IE_tmul_lemma_10, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Simplify using `only [h1]`. Conclude with `mul_mem (Subring.subset_closure (Set.mem_union_left _ ⟨a, rfl⟩)) (Subring.subset_closure (Set.mem_union_right _ ⟨⟨afsplitF v 1, F_int_lemma_9 v 1 (one_mem _)⟩, rfl⟩))`. Use `show afsplitIE v ((1 : E) ⊗ₜ[F] ((b : v.adicCompletion F))) ∈ _`. Rewrite using `[IE_tmul_lemma_10]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Subring.subset_closure (Set.mem_union_right _ ⟨⟨afsplitF v b, F_int_lemma_9 v b b.2⟩, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `one`. Rewrite using `[show afsplitIE v 1 = afsplitEps E v from rfl, eps_eq_lemma_2]`.
-
-Conclude with `Subring.subset_closure (Set.mem_union_right _ ⟨⟨afsplitF v 1, F_int_lemma_9 v 1 (one_mem _)⟩, rfl⟩)`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
-
-Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem afsplit_IE_int (x : E ⊗[F] v.adicCompletion F)
     (hx : x ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) :
@@ -267,7 +259,7 @@ theorem afsplit_IE_int (x : E ⊗[F] v.adicCompletion F)
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 /- English proof (translation)
-Unfold `tensInt`. Rewrite using `[eps_eq_lemma_2]`. Conclude with `Subring.subset_closure (Set.mem_union_right _ ⟨⟨afsplitF v 1, F_int_lemma_9 v 1 (one_mem _)⟩, rfl⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afsplit_eps_int : afsplitEps E v ∈ tensInt (F := F) 𝔸 (intOE E) (intAd F) := by
   unfold tensInt
@@ -277,7 +269,7 @@ theorem afsplit_eps_int : afsplitEps E v ∈ tensInt (F := F) 𝔸 (intOE E) (in
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `only [afsplitC, Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `add_mem (afsplit_IE_int v _ (hM i j)) (mul_mem (sub_mem (one_mem _) (afsplit_eps_int (E := E) v)) (hN i j))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem afsplitC_int (M : Matrix n n (E ⊗[F] v.adicCompletion F)) (N : Matrix n n (E ⊗[F] 𝔸))
     (hM : ∀ i j, M i j ∈ tensInt (F := F) (v.adicCompletion F) (intOE E)
@@ -300,14 +292,14 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 def afsplitKer : Subgroup (GL n (E ⊗[F] 𝔸)) := UPts σ J 𝔸 ⊓ (bc (n := n) (prV (E := E) v)).ker
 
 /- English proof (translation)
-Simplify using `[sigR]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma sig_tmul_lemma_13 {R : Type} [CommRing R] [Algebra F R] (a : E) (y : R) :
     sigR σ R (a ⊗ₜ[F] y) = σ a ⊗ₜ[F] y := by
   simp [sigR]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y => simp only [prV_tmul_lemma_12, sig_tmul_lemma_13]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma prV_sig_lemma_8 (x : E ⊗[F] 𝔸) :
     prV (E := E) v (sigR σ 𝔸 x) = sigR σ (v.adicCompletion F) (prV (E := E) v x) := by
@@ -317,11 +309,11 @@ private lemma prV_sig_lemma_8 (x : E ⊗[F] 𝔸) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hg' : cT (sigR σ 𝔸) (g : Matrix n n (E ⊗[F] 𝔸)) * J.map (inclE (F` using `F) 𝔸) * (g : Matrix n n (E ⊗[F] 𝔸)) = J.map (inclE (F := F) 𝔸) := hg`. Use `show cT (sigR σ (v.adicCompletion F)) ((g : Matrix n n (E ⊗[F] 𝔸)).map (prV (E := E) v)) * J.map (inclE (F := F) (v.adicCompletion F)) * (g : Matrix n n (E ⊗[F] 𝔸)).map (prV (E := E) v) = J.map (inclE (F := F) (v.adicCompletion F))`. Establish `hJ : (J.map (inclE (F` using `F) 𝔸)).map (prV (E := E) v) = J.map (inclE (F := F) (v.adicCompletion F)) := by`. Use extensionality with `i j`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [Matrix.map_apply, inclE, Algebra.TensorProduct.includeLeftRingHom_apply, prV_tmul_lemma_12]; rfl)`. Consider the case `simp [inclE, prV_tmul_lemma_12]`. Consider the case `simp [inclE, prV, evalV]`. Establish `hc : (cT (sigR σ 𝔸) (g : Matrix n n (E ⊗[F] 𝔸))).map (prV (E` using `E) v) = cT (sigR σ (v.adicCompletion F)) ((g : Matrix n n (E ⊗[F] 𝔸)).map (prV (E := E) v)) := by`. Use extensionality with `i j`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cT, Matrix.map_apply, Matrix.transpose_apply, prV_sig_lemma_8]`. Rewrite using `[← hc, ← hJ, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+A detailed English derivation is pending.
 -/
 theorem afsplit_bc_mem (g : GL n (E ⊗[F] 𝔸)) (hg : g ∈ UPts σ J 𝔸) :
     bc (prV (E := E) v) g ∈ UPts σ J (v.adicCompletion F) := by
@@ -350,7 +342,7 @@ theorem afsplit_coe_bc_prV (g : GL n (E ⊗[F] 𝔸)) (w : HeightOneSpectrum (�
       (g : Matrix n n (E ⊗[F] 𝔸)).map (prV (E := E) w) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [afsplitC, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, prV_IE_lemma, prV_eps_lemma_4, sub_self, zero_mul, add_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma C_map_prV_lemma_5 (M : Matrix n n (E ⊗[F] v.adicCompletion F)) (N : Matrix n n (E ⊗[F] 𝔸)) :
     (afsplitC v M N).map (prV (E := E) v) = M := by
@@ -359,7 +351,7 @@ private lemma C_map_prV_lemma_5 (M : Matrix n n (E ⊗[F] v.adicCompletion F)) (
     map_sub, map_one, prV_IE_lemma, prV_eps_lemma_4, sub_self, zero_mul, add_zero]
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.mpr ⟨afsplitU_mem v σ J 1 g (Subgroup.one_mem _) hg, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[afsplit_coe_bc_prV]`. Conclude with `C_map_prV_lemma_5 v (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) (g : Matrix n n (E ⊗[F] 𝔸))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afsplit_ker_mem (g : GL n (E ⊗[F] 𝔸)) (hg : g ∈ UPts σ J 𝔸) :
     afsplitU v 1 g ∈ afsplitKer σ J v := by
@@ -370,7 +362,7 @@ theorem afsplit_ker_mem (g : GL n (E ⊗[F] 𝔸)) (hg : g ∈ UPts σ J 𝔸) :
   exact C_map_prV_lemma_5 v (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) (g : Matrix n n (E ⊗[F] 𝔸))
 
 /- English proof (translation)
-Establish `h2` using `(Subgroup.mem_inf.mp hk).2`. Rewrite `h2` using `[MonoidHom.mem_ker]`. Rewrite using `[← afsplit_coe_bc_prV, h2, Units.val_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem afsplit_ker_map (k : GL n (E ⊗[F] 𝔸)) (hk : k ∈ afsplitKer σ J v) :
     (k : Matrix n n (E ⊗[F] 𝔸)).map (prV (E := E) v) = 1 := by
@@ -379,20 +371,20 @@ theorem afsplit_ker_map (k : GL n (E ⊗[F] 𝔸)) (hk : k ∈ afsplitKer σ J v
   rw [← afsplit_coe_bc_prV, h2, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[show afsplitEps E v = afsplitIE v 1 from rfl, ← map_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma IE_eps_lemma_6 (x : E ⊗[F] v.adicCompletion F) :
     afsplitIE v x = afsplitEps E v * afsplitIE v x := by
   rw [show afsplitEps E v = afsplitIE v 1 from rfl, ← map_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[show afsplitEps E v = afsplitIE v 1 from rfl, ← map_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma eps_idem_lemma_7 : afsplitEps E v * afsplitEps E v = afsplitEps E v := by
   rw [show afsplitEps E v = afsplitIE v 1 from rfl, ← map_mul, one_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show afsplitC v ((g : Matrix n n (E ⊗[F] 𝔸)).map (prV (E := E) v)) (afsplitC v (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) (g : Matrix n n (E ⊗[F] 𝔸))) = (g : Matrix n n (E ⊗[F] 𝔸))`. Use extensionality with `i j`. Simplify using `only [afsplitC, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, IE_prV_lemma_3]`. Take the linear combination `IE_eps_lemma_6 v ((1 : Matrix n n (E ⊗[F] v.adicCompletion F)) i j) + (g : Matrix n n (E ⊗[F] 𝔸)) i j * eps_idem_lemma_7 (E := E) v`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem afsplit_left (g : GL n (E ⊗[F] 𝔸)) :
     afsplitU v (bc (prV (E := E) v) g) (afsplitU v 1 g) = g := by
@@ -406,7 +398,7 @@ theorem afsplit_left (g : GL n (E ⊗[F] 𝔸)) :
     (g : Matrix n n (E ⊗[F] 𝔸)) i j * eps_idem_lemma_7 (E := E) v
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[afsplit_coe_bc_prV]`. Conclude with `C_map_prV_lemma_5 v (h : Matrix n n (E ⊗[F] v.adicCompletion F)) (k : Matrix n n (E ⊗[F] 𝔸))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afsplit_right1 (h : GL n (E ⊗[F] v.adicCompletion F)) (k : GL n (E ⊗[F] 𝔸)) :
     bc (prV (E := E) v) (afsplitU v h k) = h := by
@@ -415,9 +407,9 @@ theorem afsplit_right1 (h : GL n (E ⊗[F] v.adicCompletion F)) (k : GL n (E ⊗
   exact C_map_prV_lemma_5 v (h : Matrix n n (E ⊗[F] v.adicCompletion F)) (k : Matrix n n (E ⊗[F] 𝔸))
 
 /- English proof (translation)
-Establish `hK` using `afsplit_ker_map σ J v k hk`. Apply `Units.ext` to reduce the goal to its premises. Use `show afsplitC v (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) (afsplitC v (h : Matrix n n (E ⊗[F] v.adicCompletion F)) (k : Matrix n n (E ⊗[F] 𝔸))) = (k : Matrix n n (E ⊗[F] 𝔸))`. Use extensionality with `i j`. Establish `e1 : (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) i j = prV (E` using `E) v ((k : Matrix n n (E ⊗[F] 𝔸)) i j) := by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hK, Matrix.map_apply]`. Simplify using `only [afsplitC, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Rewrite using `[e1, IE_prV_lemma_3]`. Take the linear combination `IE_eps_lemma_6 v ((h : Matrix n n (E ⊗[F] v.adicCompletion F)) i j) + (k : Matrix n n (E ⊗[F] 𝔸)) i j * eps_idem_lemma_7 (E := E) v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem afsplit_right2 (h : GL n (E ⊗[F] v.adicCompletion F)) (k : GL n (E ⊗[F] 𝔸))
     (hk : k ∈ afsplitKer σ J v) : afsplitU v 1 (afsplitU v h k) = k := by
@@ -469,7 +461,7 @@ theorem afsplitE_symm (p : UPts σ J (v.adicCompletion F) × afsplitKer σ J v) 
       afsplitU v (p.1 : GL n (E ⊗[F] v.adicCompletion F)) (p.2 : GL n (E ⊗[F] 𝔸)) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rw [IE_tmul_lemma_10, prV_tmul_lemma_12, afsplitF_ne v w hw, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma prV_IE_ne_lemma_16 (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v) (x : E ⊗[F] v.adicCompletion F) :
     prV (E := E) w (afsplitIE v x) = 0 := by
@@ -479,14 +471,14 @@ private lemma prV_IE_ne_lemma_16 (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v)
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[show afsplitEps E v = afsplitIE v 1 from rfl]`. Conclude with `prV_IE_ne_lemma_16 v w hw 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eps_ne_lemma_17 (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v) : prV (E := E) w (afsplitEps E v) = 0 := by
   rw [show afsplitEps E v = afsplitIE v 1 from rfl]
   exact prV_IE_ne_lemma_16 v w hw 1
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [afsplitC, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, prV_IE_ne_lemma_16 v w hw, eps_ne_lemma_17 v w hw, sub_zero, one_mul, zero_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma C_map_ne_lemma_15 (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v)
     (M : Matrix n n (E ⊗[F] v.adicCompletion F)) (N : Matrix n n (E ⊗[F] 𝔸)) :
@@ -496,19 +488,17 @@ private lemma C_map_ne_lemma_15 (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v)
     map_sub, map_one, prV_IE_ne_lemma_16 v w hw, eps_ne_lemma_17 v w hw, sub_zero, one_mul, zero_add]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_left (Module.Basis.ofVectorSpace F E) z`. Establish `hcw : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → ∀ i, (c i) w = 0`. Introduce `w hw i`. Establish `h0` using `hz w hw`. Establish `hmap : prV (E` using `E) w (c.sum fun i n => (Module.Basis.ofVectorSpace F E) i ⊗ₜ[F] n) = (Finsupp.mapRange (evalV F w) (map_zero _) c).sum (fun i n => (Module.Basis.ofVectorSpace F E) i ⊗ₜ[F] n) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.sum_mapRange_index (fun i => by simp)]`. Apply the tactic sequence `first | rw [map_finsuppSum] | rw [map_finsupp_sum]`. Simplify using `only [prV_tmul_lemma_12]`. Apply the tactic sequence `try rfl`. Rewrite `h0` using `[hmap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `TensorProduct.sum_tmul_basis_left_eq_zero (Module.Basis.ofVectorSpace F E) _ h0`. Establish `h2` using `DFunLike.congr_fun h1 i`. Establish `h3 : (evalV F w) (c i) = 0` using `by simpa using h2`. Conclude with `h3`. Establish `key : ∀ i, (1 - afsplitF v 1) * c i = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `i`. Use extensionality with `w`. Use `congr 1`. Apply the tactic sequence `rw [show ((1 - afsplitF v 1) * c i) w = (1 - afsplitF v 1 w) * (c i) w from by first | rfl | simp]`. Apply the tactic sequence `rw [show (0 : 𝔸) w = 0 from by first | rfl | simp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[afsplitF_self, sub_self, zero_mul]`. Rewrite using `[hcw w h i, mul_zero]`. Establish `h1 : (1 : E ⊗[F] 𝔸) - afsplitEps E v = (1 : E) ⊗ₜ[F] (1 - afsplitF v 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[eps_eq_lemma_2, TensorProduct.tmul_sub, Algebra.TensorProduct.one_def]`. Rewrite using `[h1, Finsupp.mul_sum]`. Unfold `Finsupp.sum`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
-
-Simplify using `only`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, key i, TensorProduct.tmul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma Z_lemma_14 (z : E ⊗[F] 𝔸)
     (hz : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → prV (E := E) w z = 0) :
@@ -550,19 +540,17 @@ private lemma Z_lemma_14 (z : E ⊗[F] 𝔸)
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, key i, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Establish `e : (afsplitE σ J v g).2 = 1 ↔ afsplitU v 1 (g : GL n (E ⊗[F] 𝔸)) = 1`. Rewrite using `[← afsplitE_snd σ J v g]`. Apply the tactic sequence `exact ⟨fun h => by simp [h], fun h => by first | exact Subtype.ext h | exact OneMemClass.coe_eq_one.mp h | simpa using h⟩`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h w hw`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[afsplit_coe_bc_prV]`. Rewrite using `[← C_map_ne_lemma_15 v w hw (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) ((g : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸))]`. Establish `h' : afsplitC v (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) ((g : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun M : GL n (E ⊗[F] 𝔸) => (M : Matrix n n (E ⊗[F] 𝔸))) h`. Conclude with `h3`. Rewrite using `[h', Matrix.map_one _ (map_zero _) (map_one _), Units.val_one]`. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `show afsplitC v (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) ((g : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸)) = 1`. Use extensionality with `i j`. Establish `hz : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → prV (E` using `E) w (((g : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸)) i j - (1 : Matrix n n (E ⊗[F] 𝔸)) i j) = 0 := by`. Introduce `w hw`. Establish `hw'` using `congrArg (fun M : GL n (E ⊗[F] w.adicCompletion F) => (M : Matrix n n (E ⊗[F] w.adicCompletion F)) i j) (h w hw)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [afsplit_coe_bc_prV, Matrix.map_apply, Units.val_one] at hw'`. Rewrite using `[map_sub, hw', Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hZ` using `Z_lemma_14 v _ hz`. Establish `hI : afsplitIE v ((1 : Matrix n n (E ⊗[F] v.adicCompletion F)) i j) = afsplitEps E v * (1 : Matrix n n (E ⊗[F] 𝔸)) i j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `(mul_one (afsplitEps E v)).symm`. Rewrite using `[map_zero, mul_zero]`. Simplify using `only [afsplitC, Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[hI]`. Take the linear combination `hZ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem afsplitE_snd_eq_one (g : UPts σ J 𝔸) :
     (afsplitE σ J v g).2 = 1 ↔ ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v →
@@ -605,17 +593,15 @@ theorem afsplitE_snd_eq_one (g : UPts σ J 𝔸) :
     linear_combination hZ
 
 /- English proof (translation)
-Establish `hAf : ∀ x : GL n (E ⊗[F] 𝔸), x ∈ levelAf σ J ↔ x ∈ UPts σ J 𝔸 ∧ ((∀ i j, (x : Matrix n n (E ⊗[F] 𝔸)) i j ∈ tensInt (F` using `F) 𝔸 (intOE E) (intAd F)) ∧ (∀ i j, ((x⁻¹ : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸)) i j ∈ tensInt (F := F) 𝔸 (intOE E) (intAd F))) := fun x => Subgroup.mem_inf.trans (and_congr Iff.rfl (afsplit_stab_iff _ x))`. Establish `hV : ∀ x : GL n (E ⊗[F] v.adicCompletion F), x ∈ levelV σ J v ↔ x ∈ UPts σ J (v.adicCompletion F) ∧ ((∀ i j, (x : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈ tensInt (F` using `F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) ∧ (∀ i j, ((x⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring)) := fun x => Subgr …`. Use extensionality with `p`. Take `⟨⟨h, hh⟩, ⟨k, hk⟩⟩` from `p`. Simplify using `only [Subgroup.mem_map_equiv, Subgroup.mem_prod, Subgroup.mem_subgroupOf, afsplitE_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hAf, hV, hAf]`. Establish `hkU` using `(Subgroup.mem_inf.mp hk).1`. Establish `h1mem : ∀ i j, (1 : Matrix n n (E ⊗[F] v.adicCompletion F)) i j ∈ tensInt (F` using `F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring := fun i j => afsplit_one_mem _ i j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hC, hCi⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hki : k⁻¹ ∈ afsplitKer σ J v` using `inv_mem hk`. Establish `eh : ∀ i j, prV (E` using `E) v (afsplitC v (h : Matrix n n (E ⊗[F] v.adicCompletion F)) (k : Matrix n n (E ⊗[F] 𝔸)) i j) = (h : Matrix n n (E ⊗[F] v.adicCompletion F)) i j := fun i j => congrFun (congrFun (C_map_prV_lemma_5 v (h : Matrix n n (E ⊗[F] v.adicCompletion F)) (k : Matrix n n (E ⊗[F] 𝔸))) i) j`. Establish `ehi : ∀ i j, prV (E` using `E) v (afsplitC v ((h⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) ((k⁻¹ : GL n (E ⊗[F] 𝔸)) : Matrix n n (E ⊗[F] 𝔸)) i j) = ((h⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) i j := fun i j => congrFun (congrFun ( …`. Establish `ek : afsplitU v 1 (afsplitU v h k) = k` using `afsplit_right2 σ J v h k hk`. Establish `eki : afsplitU v 1 (afsplitU v h⁻¹ k⁻¹) = k⁻¹` using `afsplit_right2 σ J v h⁻¹ k⁻¹ hki`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨hh, fun i j => ?_, fun i j => ?_⟩, ⟨hkU, fun i j => ?_, fun i j => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← eh]`. Conclude with `afsplit_prV_int v _ (hC i j)`. Rewrite using `[← ehi]`. Conclude with `afsplit_prV_int v _ (hCi i j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ek]`. Conclude with `afsplitC_int v _ _ h1mem hC i j`. Rewrite using `[← eki]`. Conclude with `afsplitC_int v _ _ h1mem hCi i j`. Introduce and unpack `⟨⟨-, hh1, hh2⟩, ⟨-, hk1, hk2⟩⟩`.
-
-Conclude with `⟨afsplitU_mem v σ J h k hh hkU, fun i j => afsplitC_int v _ _ hh1 hk1 i j, fun i j => afsplitC_int v _ _ hh2 hk2 i j⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem afsplitE_level :
     ((levelAf σ J).subgroupOf (UPts σ J 𝔸)).map (afsplitE σ J v).toMonoidHom =
@@ -671,7 +657,7 @@ theorem afsplitE_level :
 end Iso
 
 /- English proof (translation)
-Unfold `AfSplitOff`. Introduce `F E _ _ _ _ _ n _ _ σ J v`. Conclude with `⟨↥(afsplitKer σ J v), inferInstance, (levelAf σ J).subgroupOf (afsplitKer σ J v), afsplitE σ J v, fun g => afsplitE_fst σ J v g, fun g => afsplitE_snd_eq_one σ J v g, afsplitE_level σ J v⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem finite_adele_split_off_holds : Formalism.UG.AfSplitOff := by
   unfold AfSplitOff

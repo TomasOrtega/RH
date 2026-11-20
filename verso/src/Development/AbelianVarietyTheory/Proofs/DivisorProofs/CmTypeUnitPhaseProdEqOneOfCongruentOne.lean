@@ -8,19 +8,19 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ h emb q hq hq2 ht u hu`. Establish `hr` using `GlobalTheory.T.unit_real_of_sub_one_mem_span_prime E q hq ht u hu`. Establish `hs` using `GlobalTheory.T.prod_arg_real_unit_eq_one' E q hq hq2 u hu hr`. Take `⟨hF, hE, h2, -⟩` from `h`. Set `f : InfinitePlace F → InfinitePlace E` to `fun w => InfinitePlace.mk (emb w).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hcomap : ∀ w, (f w).comap (algebraMap F E) = w`. Introduce `w`. Simplify using `only [f]`. Rewrite using `[InfinitePlace.comap_mk, (emb w).2, InfinitePlace.mk_embedding]`. Establish `hinj : Function.Injective f` using `fun a b hab => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcomap a, ← hcomap b, hab]`. Establish `hcard : Fintype.card (InfinitePlace F) = Fintype.card (InfinitePlace E)`. Establish `a1` using `InfinitePlace.card_add_two_mul_card_eq_rank F`. Establish `a2` using `InfinitePlace.card_add_two_mul_card_eq_rank E`. Establish `b1` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := F)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := E)`. Establish `c1` using `IsTotallyReal.nrComplexPlaces_eq_zero F`. Establish `c2` using `IsTotallyComplex.nrRealPlaces_eq_zero E`. Establish `d` using `Module.finrank_mul_finrank ℚ F E`. Rewrite `d` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hbij : Function.Bijective f` using `(Fintype.bijective_iff_injective_and_card f).2 ⟨hinj, hcard⟩`. Establish `hfac : ∀ w, (emb w).1 ((u : 𝓞 E) : E) = (f w).embedding ((u : 𝓞 E) : E)`. Introduce `w`. Break down `InfinitePlace.embedding_mk_eq (emb w).1 with h' | h'` into its components or cases.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [f]`. Rewrite using `[h']`. Simplify using `only [f]`. Rewrite using `[h', ComplexEmbedding.conjugate_coe_eq, hr]`. Rewrite using `[← hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fintype.prod_bijective f hbij (fun w => ((emb w).1 ((u : 𝓞 E) : E) / ((‖(emb w).1 ((u : 𝓞 E) : E)‖ : ℝ) : ℂ))) (fun v => (v.embedding ((u : 𝓞 E) : E) / ((‖v.embedding ((u : 𝓞 E) : E)‖ : ℝ) : ℂ))) (fun w => by rw [hfac w])]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem weil_unit_phase_prod : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsCMField E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w) (q : ℕ), q.Prime → 2 < q → ¬ q ∣ Nat.card (Units.torsion E) → ∀ u : (𝓞 E)ˣ, (u : 𝓞 E) - 1 ∈ Ideal.span {((q : ℕ) : 𝓞 E)} → ∏ w : InfinitePlace F, ((emb w).1 ((u : 𝓞 E) : E) / ((‖(emb w).1 ((u : 𝓞 E) : E)‖ : ℝ) : ℂ)) = 1 := by
   intro F E _ _ _ _ _ _ σ h emb q hq hq2 ht u hu

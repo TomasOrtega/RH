@@ -13,7 +13,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 namespace P_Jmul
 
 /- English proof (translation)
-Take `⟨g', rfl⟩` from `hg`. Conclude with `⟨(g' : Matrix (Fin n) (Fin n) 𝒪[k]) i j, by simp, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_zero_of_KO {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) (i j : Fin n) :
     InPow 0 ((g : Matrix (Fin n) (Fin n) k) i j) := by
@@ -21,14 +21,14 @@ theorem inPow_zero_of_KO {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) 
   exact ⟨(g' : Matrix (Fin n) (Fin n) 𝒪[k]) i j, by simp, rfl⟩
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨y, Ideal.pow_le_pow_right hab hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_mono {a b : ℕ} (hab : a ≤ b) {x : k} (hx : InPow b x) : InPow a x := by
   obtain ⟨y, hy, rfl⟩ := hx
   exact ⟨y, Ideal.pow_le_pow_right hab hy, rfl⟩
 
 /- English proof (translation)
-Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' * y', by rw [pow_add]; exact Ideal.mul_mem_mul hx' hy', map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_mul {a b : ℕ} {x y : k} (hx : InPow a x) (hy : InPow b y) : InPow (a + b) (x * y) := by
   obtain ⟨x', hx', rfl⟩ := hx
@@ -36,7 +36,7 @@ theorem inPow_mul {a b : ℕ} {x y : k} (hx : InPow a x) (hy : InPow b y) : InPo
   exact ⟨x' * y', by rw [pow_add]; exact Ideal.mul_mem_mul hx' hy', map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' + y', add_mem hx' hy', map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inPow_add {a : ℕ} {x y : k} (hx : InPow a x) (hy : InPow a y) : InPow a (x + y) := by
   obtain ⟨x', hx', rfl⟩ := hx
@@ -44,12 +44,12 @@ theorem inPow_add {a : ℕ} {x y : k} (hx : InPow a x) (hy : InPow a y) : InPow 
   exact ⟨x' + y', add_mem hx' hy', map_add _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, map_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inPow_zero (a : ℕ) : InPow a (0 : k) := ⟨0, zero_mem _, map_zero _⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simpa using inPow_zero (k := k) a`. Consider the case `cons i s hi ih`. Rewrite using `[Finset.sum_cons]`. Conclude with `inPow_add (h i (by simp)) (ih fun j hj => h j (by simp [hj]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inPow_sum {a : ℕ} {ι : Type} (s : Finset ι) (f : ι → k) (h : ∀ i ∈ s, InPow a (f i)) :
     InPow a (∑ i ∈ s, f i) := by
@@ -62,13 +62,13 @@ theorem inPow_sum {a : ℕ} {ι : Type} (s : Finset ι) (f : ι → k) (h : ∀ 
 end P_Jmul
 
 /- English proof (translation)
-Introduce `hcc0 hcb g hg h hh`. Establish `hcc` using `fun a b c => hcc0 G.s G.μ (fun a b => ⟨cc G.μ a b, hcb.2.2.2 a b⟩) a b c`. Simplify using `only [Grp.JSet, Set.mem_ofPred_eq] at hg hh ⊢`. Take `⟨hg1, hg2⟩` from `hg`. Take `⟨hh1, hh2⟩` from `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨mul_mem hg1 hh1, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `P_Jmul.inPow_sum _ _ fun l _ => ?_` and prove the remaining obligations. Break down `le_or_gt (G.bl l) (G.bl j) with hl | hl` into its components or cases. Establish `hp` using `P_Jmul.inPow_mul (hg2 i l (lt_of_le_of_lt hl hij)) (P_Jmul.inPow_zero_of_KO hh1 l j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `hp` using `[add_zero]`. Conclude with `P_Jmul.inPow_mono (G.ball _ _ _ _ hl hij le_rfl) hp`. Break down `le_or_gt (G.bl i) (G.bl l) with hl' | hl'` into its components or cases. Establish `hp` using `P_Jmul.inPow_mul (P_Jmul.inPow_zero_of_KO hg1 i l) (hh2 l j (lt_of_lt_of_le hij hl'))`. Rewrite `hp` using `[zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `P_Jmul.inPow_mono (G.ball _ _ _ _ le_rfl hij hl') hp`. Establish `hp` using `P_Jmul.inPow_mul (hg2 i l hl') (hh2 l j hl)`. Use `P_Jmul.inPow_mono ?_ hp` and prove the remaining obligations. Conclude with `le_trans (hcc (G.bl j) (G.bl l) (G.bl i)).2.2 (max_le (Nat.le_add_left _ _) (Nat.le_add_right _ _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step_Jmul {n : ℕ} (G : Grp k n) : JacquetMultiplicativeProp G := by
   intro hcc0 hcb g hg h hh

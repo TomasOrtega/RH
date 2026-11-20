@@ -8,9 +8,9 @@ variable {K : Type} [Field K] [NumberField K] (D N : ℕ)
   (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : (MvPolynomial.C s : ReciprocityTheory.ChartRestriction.G.T0.OT K D N) ∈ Ideal.map (MvPolynomial.C : 𝓞 K →+* ReciprocityTheory.ChartRestriction.G.T0.OT K D N) la.asIdeal` using `h`. Establish `h0` using `(MvPolynomial.mem_map_C_iff.mp h') 0`. Simplify using `using h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `Ideal.mem_map_of_mem _ h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gauss_C_mem_iff (s : 𝓞 K) :
     (MvPolynomial.C s : OT K D N) ∈ laT D N la ↔ s ∈ la.asIdeal := by
@@ -24,17 +24,15 @@ theorem gauss_C_mem_iff (s : 𝓞 K) :
     exact Ideal.mem_map_of_mem _ h
 
 /- English proof (translation)
-Establish `hp0 : la.asIdeal ≠ ⊥` using `la.ne_bot`. Establish `hp1 : la.asIdeal ≠ ⊤` using `la.isPrime.ne_top`. Establish `hlt : la.asIdeal ^ 2 < la.asIdeal`. Use `Ideal.pow_right_strictAnti la.asIdeal hp0 hp1 (show 1 < 2 by norm_num)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨π, hπ, hπ2⟩` from `SetLike.exists_of_lt hlt`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Conclude with `hπ2 (Ideal.zero_mem _)`. Take `⟨J, hJ⟩ : la.asIdeal ∣ Ideal.span {π}` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hπ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJp : ¬ J ≤ la.asIdeal`. Introduce `hle`. Apply `hπ2` to reduce the goal to its premises. Establish `h1 : π ∈ la.asIdeal * J`. Rewrite using `[← hJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_span_singleton_self π`. Establish `h2 : la.asIdeal * J ≤ la.asIdeal ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `h2 h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hsJ, hsp⟩` from `SetLike.not_le_iff_exists.mp hJp`. Use `⟨π, hπ, hπ0, s, hsp, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hmem : a * s ∈ Ideal.span {π}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul ha hsJ`.
-
-Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp hmem`. Conclude with `⟨b, by rw [mul_comm s a, ← hb, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gauss_unif : ∃ π ∈ la.asIdeal, π ≠ 0 ∧ ∃ s ∉ la.asIdeal,
     ∀ a ∈ la.asIdeal, ∃ b, s * a = π * b := by
@@ -65,20 +63,20 @@ theorem gauss_unif : ∃ π ∈ la.asIdeal, π ≠ 0 ∧ ∃ s ∉ la.asIdeal,
   exact ⟨b, by rw [mul_comm s a, ← hb, mul_comm]⟩
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective (M := (ReciprocityTheory.ChartRestriction.G.T0.laT D N la).primeCompl) (S := ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (Ideal.primeCompl_le_nonZeroDivisors _)`.
+A detailed English derivation is pending.
 -/
 theorem gauss_inj : Function.Injective (algebraMap (OT K D N) (Op D N la)) :=
   IsLocalization.injective (M := (ReciprocityTheory.ChartRestriction.G.T0.laT D N la).primeCompl)
     (S := ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (Ideal.primeCompl_le_nonZeroDivisors _)
 
 /- English proof (translation)
-Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal (I := ReciprocityTheory.ChartRestriction.G.T0.laT D N la)]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap] show Ideal.map (MvPolynomial.C : 𝓞 K →+* ReciprocityTheory.ChartRestriction.G.T0.OT K D N) la.asIdeal ≤ _`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `h a ha`. Establish `hsP : (MvPolynomial.C s : ReciprocityTheory.ChartRestriction.G.T0.OT K D N) ∈ (ReciprocityTheory.ChartRestriction.G.T0.laT D N la).primeCompl` using `fun hm => hs ((gauss_C_mem_iff D N la s).mp hm)`. Take `⟨u, hu⟩` from `IsLocalization.map_units (S := ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (⟨_, hsP⟩ : (ReciprocityTheory.ChartRestriction.G.T0.laT D N la).primeCompl)`. Establish `key` using `congrArg (fun t => algebraMap (ReciprocityTheory.ChartRestriction.G.T0.OT K D N) (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (MvPolynomial.C t)) hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_mul] at key`. Establish `hu' : (u : ReciprocityTheory.ChartRestriction.G.T0.Op D N la) = algebraMap (ReciprocityTheory.ChartRestriction.G.T0.OT K D N) (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (MvPolynomial.C s)` using `hu`. Use `⟨(↑u⁻¹ : ReciprocityTheory.ChartRestriction.G.T0.Op D N la) * algebraMap (ReciprocityTheory.ChartRestriction.G.T0.OT K D N) (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (MvPolynomial.C b), ?_⟩` and prove the remaining obligations. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_assoc, Units.inv_mul, one_mul]`. Use `_ = _ := by rw [hu', key]; ring`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ ((gauss_C_mem_iff D N la π).mpr hπ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_maximalIdeal {π : 𝓞 K} (hπ : π ∈ la.asIdeal) {s : 𝓞 K} (hs : s ∉ la.asIdeal)
     (h : ∀ a ∈ la.asIdeal, ∃ b, s * a = π * b) :
@@ -113,13 +111,13 @@ theorem gauss_maximalIdeal {π : 𝓞 K} (hπ : π ∈ la.asIdeal) {s : 𝓞 K} 
     exact Ideal.mem_map_of_mem _ ((gauss_C_mem_iff D N la π).mpr hπ)
 
 /- English proof (translation)
-Take `⟨π, hπ, hπ0, s, hs, h⟩` from `gauss_unif la`. Establish `hmax` using `gauss_maximalIdeal D N la hπ hs h`. Establish `: IsDomain (ReciprocityTheory.ChartRestriction.G.T0.Op D N la)` using `IsLocalization.isDomain_localization (Ideal.primeCompl_le_nonZeroDivisors _)`. Establish `: IsNoetherianRing (ReciprocityTheory.ChartRestriction.G.T0.Op D N la)` using `IsLocalization.isNoetherianRing (ReciprocityTheory.ChartRestriction.G.T0.laT D N la).primeCompl _ inferInstance`. Establish `hne : algebraMap (ReciprocityTheory.ChartRestriction.G.T0.OT K D N) (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (MvPolynomial.C π) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hπ0` to reduce the goal to its premises. Establish `h1` using `gauss_inj D N la (h0.trans (map_zero _).symm)`. Simplify using `using h1`. Establish `hnf : ¬ IsField (ReciprocityTheory.ChartRestriction.G.T0.Op D N la)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `hF`. Establish `hmem : algebraMap (ReciprocityTheory.ChartRestriction.G.T0.OT K D N) (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (MvPolynomial.C π) ∈ maximalIdeal (ReciprocityTheory.ChartRestriction.G.T0.Op D N la)`. Rewrite using `[hmax]`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨y, hy⟩` from `hF.mul_inv_cancel hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem (isUnit_iff_exists_inv.mpr ⟨y, hy⟩)`. Establish `hprin : (maximalIdeal (ReciprocityTheory.ChartRestriction.G.T0.Op D N la)).IsPrincipal` using `⟨⟨_, hmax⟩⟩`. Conclude with `((IsDiscreteValuationRing.TFAE (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) hnf).out 0 4).mpr hprin`.
+A detailed English derivation is pending.
 -/
 theorem gauss_dvr : IsDiscreteValuationRing (Op D N la) := by
   obtain ⟨π, hπ, hπ0, s, hs, h⟩ := gauss_unif la
@@ -145,7 +143,7 @@ theorem gauss_dvr : IsDiscreteValuationRing (Op D N la) := by
   exact ((IsDiscreteValuationRing.TFAE (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) hnf).out 0 4).mpr hprin
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.T0.OpToKT, IsLocalization.lift_eq, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gauss_lift (x : OT K D N) :
     OpToKT D N la (algebraMap (OT K D N) (Op D N la) x) =
@@ -153,9 +151,9 @@ theorem gauss_lift (x : OT K D N) :
   rw [ReciprocityTheory.ChartRestriction.G.T0.OpToKT, IsLocalization.lift_eq, RingHom.comp_apply]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (p.support.image fun v => p.coeff v)`. Establish `hint_r : ∀ v ∈ p.support, ∃ r : 𝓞 K, algebraMap (𝓞 K) K r = (b : 𝓞 K) • p.coeff v`. Introduce `v hv`. Conclude with `RingHom.mem_rangeS.mp (hb _ (Finset.mem_image_of_mem _ hv))`. Use `choose! g hg using hint_r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ v ∈ p.support, MvPolynomial.monomial v (g v), b, nonZeroDivisors.coe_ne_zero b, ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.G.T0.OTtoKT, map_sum, MvPolynomial.map_C]`. Use `conv_rhs => rw [p.as_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, MvPolynomial.C_mul_monomial, hg v hv, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_clear (p : KTp K D N) :
     ∃ x : OT K D N, ∃ n : 𝓞 K, n ≠ 0 ∧
@@ -174,23 +172,21 @@ theorem gauss_clear (p : KTp K D N) :
   rw [MvPolynomial.map_monomial, MvPolynomial.C_mul_monomial, hg v hv, Algebra.smul_def]
 
 /- English proof (translation)
-Use `letI := (ReciprocityTheory.ChartRestriction.G.T0.OpToKT D N la).toAlgebra`. Establish `: IsDomain (ReciprocityTheory.ChartRestriction.G.T0.Op D N la)` using `IsLocalization.isDomain_localization (Ideal.primeCompl_le_nonZeroDivisors _)`. Establish `intInj : Function.Injective (ReciprocityTheory.ChartRestriction.G.T0.OTtoKT K D N)` using `MvPolynomial.map_injective _ (IsFractionRing.injective (𝓞 K) K)`. Establish `fracInj : Function.Injective (algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp K D N) (ReciprocityTheory.ChartRestriction.G.T0.KTf K D N))` using `IsFractionRing.injective (ReciprocityTheory.ChartRestriction.G.T0.KTp K D N) (ReciprocityTheory.ChartRestriction.G.T0.KTf K D N)`. Establish `hCinj : ∀ k : 𝓞 K, k ≠ 0 → (MvPolynomial.C k : ReciprocityTheory.ChartRestriction.G.T0.OT K D N) ≠ 0` using `fun k hk hC => hk (by simpa using hC)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinj : Function.Injective (ReciprocityTheory.ChartRestriction.G.T0.OpToKT D N la)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨⟨a, t⟩, rfl⟩` from `IsLocalization.mk'_surjective (ReciprocityTheory.ChartRestriction.G.T0.laT D N la).primeCompl x`. Establish `h1` using `congrArg (ReciprocityTheory.ChartRestriction.G.T0.OpToKT D N la) (IsLocalization.mk'_spec (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) a t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, hx, zero_mul, gauss_lift]`. Establish `ha : a = 0`. Apply `intInj` to reduce the goal to its premises. Apply `fracInj` to reduce the goal to its premises. Rewrite using `[map_zero, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm`. Substitute `ha` using the available equality. Use `show IsLocalization.mk' (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (0 : ReciprocityTheory.ChartRestriction.G.T0.OT K D N) t = 0`. Rewrite using `[IsLocalization.mk'_zero]`. Use `⟨fun y => ?_, fun z => ?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `isUnit_iff_ne_zero.mpr` to reduce the goal to its premises. Introduce `h0`. Conclude with `nonZeroDivisors.coe_ne_zero y (hfinj (h0.trans (map_zero _).symm))`. Take `⟨P, Q, hQ, rfl⟩` from `IsFractionRing.div_surjective (A := ReciprocityTheory.ChartRestriction.G.T0.KTp K D N) z`. Take `⟨a, n, hn, ha⟩` from `gauss_clear D N P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, m, hm, hb⟩` from `gauss_clear D N Q`. Establish `hQ0 : Q ≠ 0` using `nonZeroDivisors.ne_zero hQ`. Establish `hQ' : algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp K D N) (ReciprocityTheory.ChartRestriction.G.T0.KTf K D N) Q ≠ 0` using `fun h0 => hQ0 (fracInj (h0.trans (map_zero _).symm))`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hb` using `[map_zero]`. Establish `hc : ReciprocityTheory.ChartRestriction.G.T0.OTtoKT K D N (MvPolynomial.C m) = 0`. Break down `mul_eq_zero.mp hb.symm with hc | hc` into its components or cases. Conclude with `hc`. Conclude with `absurd hc hQ0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hCinj m hm (intInj (hc.trans (map_zero _).symm))`. Establish `hden : algebraMap (ReciprocityTheory.ChartRestriction.G.T0.OT K D N) (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (b * MvPolynomial.C n) ∈ nonZeroDivisors (ReciprocityTheory.ChartRestriction.G.T0.Op D N la)` using `mem_nonZeroDivisors_of_ne_zero fun h0 => (mul_ne_zero hb0 (hCinj n hn)) (gauss_inj D N la (h0.trans (map_zero _).symm))`. Use `⟨⟨algebraMap (ReciprocityTheory.ChartRestriction.G.T0.OT K D N) (ReciprocityTheory.ChartRestriction.G.T0.Op D N la) (a * MvPolynomial.C m), ⟨_, hden⟩⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp K D N) (ReciprocityTheory.ChartRestriction.G.T0.KTf K D N) P / algebraMap (ReciprocityTheory.ChartRestriction.G.T0.KTp K D N) (ReciprocityTheory.ChartRestriction.G.T0.KTf K D N) Q * ReciprocityTheory.ChartRestriction.G. …`. Rewrite using `[gauss_lift, gauss_lift]`.
-
-Simplify using `only [map_mul, ha, hb]`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hQ']`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨1, by rw [hfinj hxy]⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gauss_frac :
     letI := (OpToKT D N la).toAlgebra

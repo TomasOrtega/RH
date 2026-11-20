@@ -21,15 +21,15 @@ namespace GlobalTheory.HeightCounting.Up
 open Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.TwistChoice GlobalTheory.Mem.R3.Rw.Bare
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hP hD`. Use `StepW.of_all fun K B' f' T' w' hO _ _ P' X f hB hf hg => ?_` and prove the remaining obligations. Take `⟨B₀, C₀, W₀, V₀, S₀, N₀, G₀⟩` from `X`. Consider the cases of `B'`. Consider the cases of `B₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Simplify using `only at hB`. Substitute `hB` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `⟨N, hE, hN, hN', hL, h1, h2, h3, h4, h5, h6⟩` from `exists_bare_over P' N₀.nd N₀.naut hg.pl N₀.toLocStage`. Take `⟨V, hV, -, -, hη, -, hB⟩` from `exists_divStage_of_pk _ w'.C (Gc _ w'.px) P'.q.p P'.q.e P'.q.W₀ P'.q.n (fun _ _ => 0) (fun _ _ => le_rfl) (frames_unit P'.q.t) (fun u => ((w'.C.fm u).lat 0).L) (fun _ => 0) (6 * K.s.x ^ (-K.C.P.CF))`.
+Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, -⟩` from `GlobalTheory.Mem.SProv.exists_sStage_true K _ w'.C (P'.q.W (fun _ _ => 0) fun _ _ => le_rfl) P'.Z₀.G.cd hO (GlobalTheory.Mem.Df.cols_pos w'.I w'.ok w'.pins w'.l P'.hX) (rows_le P'.q.t)`. Take `⟨x, hx⟩` from `GlobalTheory.T.fittingLaterStages_row_is_constructionState GlobalTheory.weilRepresentationUnitaryPair hD hP.hc hP.decay K _ _ T' w' P' ⟨_, _, V, S, N, P'.Z₀.G⟩ ⟨hV, hN, (hN' V S P'.Z₀.G).1, (hN' V S P'.Z₀.G).2⟩ rfl hη (fun hr => hB hr)`. Establish `hDx : Dof x = (w'.st (RowPk.Over.Z (q` using `P'.q) ⟨_, _, V, S, N, P'.Z₀.G⟩)).toD7 := by`. Unfold `Dof`. Rewrite using `[hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hE' : IsEmpty x.o.N.nd.Loc`. Rewrite using `[hx]`. Conclude with `hE`. Use `⟨x, hE', ?_⟩` and prove the remaining obligations. Rewrite using `[hDx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨rfl, HEq.rfl, congrArg LocStage.loc hL.symm, h1.symm, h2.symm, h3.symm, h4.symm, h5.symm⟩, h6.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem minimal_ktype_of_local_components_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → GlobalTheory.Published.DiscreteSeriesExists → BareK := by
   intro hP hD
@@ -65,7 +65,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.minimal_ktype_of_local_components_alt | exact _root_.GlobalTheory.HeightCounting.Up.minimal_ktype_of_local_components_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.minimal_ktype_of_local_components_alt <;> assumpti …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bareK_of_discreteSeriesExists : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → GlobalTheory.Published.DiscreteSeriesExists → BareK := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.minimal_ktype_of_local_components_alt | exact _root_.GlobalTheory.HeightCounting.Up.minimal_ktype_of_local_components_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.minimal_ktype_of_local_components_alt <;> assumption)

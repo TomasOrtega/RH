@@ -6,16 +6,16 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 
 namespace UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Rewrite using `[ZMod.castHom_apply, ZMod.natCast_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem xs_cast {d M : ℕ} [NeZero M] (h : d ∣ M) (z : ZMod M) :
     ((z.val : ℕ) : ZMod d) = ZMod.castHom h (ZMod d) z := by
   rw [ZMod.castHom_apply, ZMod.natCast_val]
 
 /- English proof (translation)
-Establish `h1 : k - k' ∈ (idl l) ^ n`. Rewrite using `[Ideal.span_singleton_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, h, sub_self]`. Rewrite using `[← sub_smul, map_smul]`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (idl l) (X.Kl l) n a)`. Rewrite using `[← hv, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul h1 Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 private theorem xs_eval {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ)
     (k k' : ℤ_[l]) (a : X.Khat l) (h : PadicInt.toZModPow n k = PadicInt.toZModPow n k') :
@@ -28,13 +28,13 @@ private theorem xs_eval {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* �
   exact Submodule.smul_mem_smul h1 Submodule.mem_top
 
 /- English proof (translation)
-Establish `hM₀ : M₀ ∣ M` using `⟨N, by rw [hM, mul_comm]⟩`. Establish `key : ∀ z : ZMod M, ((c * z).val : ZMod M₀) = (c.val : ZMod M₀) * (z.val : ZMod M₀)`. Introduce `z`. Rewrite using `[xs_cast hM₀, xs_cast hM₀, xs_cast hM₀, map_mul]`. Take `⟨q, hq⟩` from `(ZMod.natCast_eq_zero_iff _ _).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `h10 : (c * m 1 0).val / N = c.val * q % M₀`. Rewrite using `[ZMod.val_mul, hq]`. Generalize the expression as in `c.val = cv`. Rewrite using `[hM, mul_left_comm, Nat.mul_mod_mul_left, Nat.mul_div_cancel_left _ hN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Establish `hq' : (m 1 0).val / N = q`. Rewrite using `[hq, Nat.mul_div_cancel_left _ hN]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using `only [cD, Matrix.smul_apply, smul_eq_mul, key, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Fin.zero_eta, Fin.isValue]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [cD, Matrix.smul_apply, smul_eq_mul, key, Nat.cast_mul, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Fin.zero_eta, Fin.isValue, Fin.mk_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cD, Matrix.smul_apply, smul_eq_mul, h10, hq', ZMod.natCast_mod, Nat.cast_mul, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Fin.zero_eta, Fin.isValue, Fin.mk_one]`. Simplify using `only [cD, Matrix.smul_apply, smul_eq_mul, key, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Fin.zero_eta, Fin.isValue, Fin.mk_one]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem xs_cD (N M₀ M : ℕ) [NeZero N] [NeZero M] (hM : M = N * M₀) (c : ZMod M)
     (m : Matrix (Fin 2) (Fin 2) (ZMod M)) (h : ((m 1 0).val : ZMod N) = 0) :
@@ -60,11 +60,11 @@ private theorem xs_cD (N M₀ M : ℕ) [NeZero N] [NeZero M] (hM : M = N * M₀)
   · simp only [cD, Matrix.smul_apply, smul_eq_mul, key, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Fin.zero_eta, Fin.isValue, Fin.mk_one]
 
 /- English proof (translation)
-Establish `key : ∀ z : ZMod M, (((ν : ZMod M) * z).val : ZMod N) = (z.val : ZMod N)`. Introduce `z`. Rewrite using `[xs_cast hN, xs_cast hN, map_mul, ← xs_cast hN, hν, one_mul]`. Establish `key' : ∀ z : ZMod M, (((ν : ZMod M) * z).val : ZMod l) = ZMod.castHom hl (ZMod l) (ν : ZMod M) * (z.val : ZMod l)`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[xs_cast hl, xs_cast hl, map_mul]`. Establish `hu : IsUnit (ZMod.castHom hl (ZMod l) (ν : ZMod M))` using `(ν.isUnit).map _`. Simplify using `only [Cnd, Matrix.smul_apply, smul_eq_mul, key, key']`. Use `and_congr Iff.rfl (and_congr Iff.rfl ?_)` and prove the remaining obligations. Rewrite using `[mul_left_comm, mul_left_comm (↑(en g 0 0) : ZMod l)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.mul_right_inj`.
+A detailed English derivation is pending.
 -/
 private theorem xs_Cnd (l N M : ℕ) [Fact l.Prime] [NeZero M] (hN : N ∣ M) (hl : l ∣ M) (g : SL(2, ℤ)) (ν : (ZMod M)ˣ)
     (hν : ((ν : ZMod M).val : ZMod N) = 1) (m : Matrix (Fin 2) (Fin 2) (ZMod M)) :
@@ -82,7 +82,7 @@ private theorem xs_Cnd (l N M : ℕ) [Fact l.Prime] [NeZero M] (hN : N ∣ M) (h
   exact hu.mul_right_inj
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_equiv e (t := t) (g := g) h (fun _ _ => rfl), ← Finset.sum_sub_distrib, map_sum]`. Conclude with `Finset.sum_eq_zero h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem xs_sum {R ι A B : Type} [CommRing R] [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B]
     (L : A →ₗ[R] B) (e : ι ≃ ι) (s t : Finset ι) (f g : ι → A) (h : ∀ i, i ∈ s ↔ e i ∈ t)
@@ -93,21 +93,21 @@ private theorem xs_sum {R ι A B : Type} [CommRing R] [AddCommGroup A] [AddCommG
 end UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ n N M₀ M w _ _ _ g hL x y P a ν hν`. Establish `hM` using `hL.eq`. Establish `hNM : N ∣ M` using `⟨M₀, hM⟩`. Establish `hM₀M : M₀ ∣ M` using `⟨N, by rw [hM, mul_comm]⟩`. Establish `hlM₀ : l ^ n ∣ M₀` using `hL.dl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlM : l ∣ M` using `(dvd_pow_self l (by have := hL.pos; omega)).trans (hlM₀.trans hM₀M)`. Establish `hlnM : l ^ n ∣ M` using `hlM₀.trans hM₀M`. Set `U : GL (Fin 2) (ZMod M)` to `Units.map (Matrix.scalar (Fin 2) : ZMod M →+* Matrix (Fin 2) (Fin 2) (ZMod M)).toMonoidHom ν`. Establish `hU : ∀ m : GL (Fin 2) (ZMod M), ((U * m : GL (Fin 2) (ZMod M)) : Matrix (Fin 2) (Fin 2) (ZMod M)) = (ν : ZMod M) • (m : Matrix _ _ _)`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `[U]`. Establish `hdet : ∀ m : GL (Fin 2) (ZMod M), Matrix.GeneralLinearGroup.det (U * m) = ν ^ 2 * Matrix.GeneralLinearGroup.det m`. Introduce `m`. Use `ext`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, hU, Matrix.det_smul, Fintype.card_fin]`. Unfold `CgF`. Introduce `u`. Simplify using `only [Xi, Pi.smul_apply, Finset.smul_sum, smul_smul]`. Use `xs_sum (AdicCompletion.eval (idl l) (X.Kl l) n) (Equiv.mulLeft U) _ _ _ _ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m`. Establish `hP : ν ^ 2 * Matrix.GeneralLinearGroup.det m * ν⁻¹ ^ 2 = Matrix.GeneralLinearGroup.det m`. Rewrite using `[inv_pow, mul_right_comm, mul_inv_cancel, one_mul]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Equiv.coe_mulLeft, hU, hdet, hP, xs_Cnd l N M hNM hlM g ν hν]`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm`. Simplify using `only [Equiv.coe_mulLeft, hU, hdet]`. Rewrite using `[xs_cD N M₀ M hM _ _ hm.1.1, Matrix.vecMul_smul, Matrix.vecMul_smul, Matrix.smul_vecMul, Matrix.smul_vecMul]`. Apply `xs_eval` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_add, map_natCast, Matrix.smul_apply, smul_eq_mul, xs_cast hlnM]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_inv, Units.val_mul, map_mul, ← inv_pow, Units.val_pow_eq_pow_val, map_pow]`. Establish `hee : ZMod.castHom hlnM (ZMod (l ^ n)) (ν : ZMod M) * ZMod.castHom hlnM (ZMod (l ^ n)) ((ν⁻¹ : (ZMod M)ˣ) : ZMod M) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `set e := ZMod.castHom hlnM (ZMod (l ^ n)) (ν : ZMod M)`. Use `set e' := ZMod.castHom hlnM (ZMod (l ^ n)) ((ν⁻¹ : (ZMod M)ˣ) : ZMod M)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[mul_assoc e, mul_assoc e, ← mul_add, mul_pow]`. Use `set D := ZMod.castHom hlnM (ZMod (l ^ n)) ((Matrix.GeneralLinearGroup.det m)⁻¹ : (ZMod M)ˣ)`. Use `set A := ZMod.castHom hlnM (ZMod (l ^ n)) ((m : Matrix (Fin 2) (Fin 2) (ZMod M)) 0 0) * PadicInt.toZModPow n (u 0) + ZMod.castHom hlnM (ZMod (l ^ n)) ((m : Matrix (Fin 2) (Fin 2) (ZMod M)) 0 1) * PadicInt.toZModPow n (u 1)`. Take the linear combination `(-(e ^ w * D * A ^ w * (e * e' + 1))) * hee`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sXiScal :
     UpperTheory.V.Z.Kato.Nb.SXiScal := by

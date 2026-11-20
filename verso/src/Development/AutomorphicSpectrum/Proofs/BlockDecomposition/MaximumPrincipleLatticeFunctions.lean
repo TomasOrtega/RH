@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.BZCore.MaxPrin
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {d : ℕ}
 
 /- English proof (translation)
-Establish `: MulArchimedean (ValuativeRel.ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hϖ (Units.mk0 γ hγ)`. Conclude with `⟨n, fun m hm => lt_of_le_of_lt (pow_le_pow_right_of_le_one' hϖ.le hm) hn⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_val_lt {ϖ : k} (hϖ : ValuativeRel.valuation k ϖ < 1) (γ : ValuativeRel.ValueGroupWithZero k)
     (hγ : γ ≠ 0) : ∃ N : ℕ, ∀ n : ℕ, N ≤ n → ValuativeRel.valuation k ϖ ^ n < γ := by
@@ -22,13 +22,13 @@ theorem exists_pow_val_lt {ϖ : k} (hϖ : ValuativeRel.valuation k ϖ < 1) (γ :
   exact ⟨n, fun m hm => lt_of_le_of_lt (pow_le_pow_right_of_le_one' hϖ.le hm) hn⟩
 
 /- English proof (translation)
-Rewrite using `[latZ, latZ, COSub.act_act, _root_.zpow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latZ_add (z : GL (Fin d) k) (a b : ℤ) : latZ z (a + b) = (latZ z b).act (z ^ a) := by
   rw [latZ, latZ, COSub.act_act, _root_.zpow_add]
 
 /- English proof (translation)
-Rewrite using `[latZ_add, ← zpow_mulVec z ϖ hz hϖ0 a w]`. Conclude with `COSub.mulVec_mem_act _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_latZ (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k)) (hϖ0 : ϖ ≠ 0) (a b : ℤ)
@@ -37,7 +37,7 @@ theorem smul_mem_latZ (z : GL (Fin d) k) (ϖ : k)
   exact COSub.mulVec_mem_act _
 
 /- English proof (translation)
-Establish `h` using `hS (latZ z r) x`. Establish `e : (latZ z r).act z = latZ z (r + 1)`. Rewrite using `[add_comm, latZ_add, zpow_one]`. Rewrite `h` using `[e, hz, Matrix.smul_mulVec, one_mulVec]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_step (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
@@ -51,11 +51,11 @@ theorem scale_step (z : GL (Fin d) k) (ϖ : k)
   exact h
 
 /- English proof (translation)
-Proceed by induction on `r using Int.induction_on with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[zpow_add₀ hϖ0, zpow_one, mul_comm, mul_smul, scale_step z ϖ hz F hS, ih]`. Consider the case `pred n ih`. Introduce `x`. Establish `h` using `scale_step z ϖ hz F hS (-(n : ℤ) - 1) (ϖ ^ (-(n : ℤ) - 1) • x)`. Rewrite `h` using `[sub_add_cancel, smul_smul, ← zpow_one_add₀ hϖ0, add_sub_cancel, ih]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem scale (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k)) (hϖ0 : ϖ ≠ 0)
@@ -74,7 +74,7 @@ theorem scale (z : GL (Fin d) k) (ϖ : k)
     exact h.symm
 
 /- English proof (translation)
-Rewrite using `[← scale z ϖ hz hϖ0 F hS r, smul_smul, ← zpow_add₀ hϖ0, add_neg_cancel, zpow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_inv (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k)) (hϖ0 : ϖ ≠ 0)
@@ -84,9 +84,9 @@ theorem scale_inv (z : GL (Fin d) k) (ϖ : k)
   rw [← scale z ϖ hz hϖ0 F hS r, smul_smul, ← zpow_add₀ hϖ0, add_neg_cancel, zpow_zero, one_smul]
 
 /- English proof (translation)
-Establish `hK : IsCompact (((latZ z 0).sub : Set (Fin d → k)) \ ((latZ z 1).sub : Set (Fin d → k)))` using `(latZ z 0).isCompact.diff (latZ z 1).isOpen`. Establish `h` using `hK.induction_on (p := fun A => ∃ s : ℕ, ∀ y ∈ A, ∀ r : ℕ, s ≤ r → F (latZ z (r : ℤ)) y = c) ⟨0, by simp⟩ (fun A B hAB ⟨s, hs⟩ => ⟨s, fun y hy => hs y (hAB hy)⟩) (fun A B ⟨s, hs⟩ ⟨t, ht⟩ => ⟨max s t, fun y hy r hr => hy.elim (fun h => hs y h r (le_trans (le_max_left _ _) hr)) (fun …`. Introduce `x hx`. Establish `hx0 : x ≠ 0` using `fun h => hx.2 (h ▸ (latZ z 1).sub.zero_mem)`. Take `⟨s, hs⟩` from `hN x hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨{y | y - x ∈ (latZ z (s : ℤ)).sub}, mem_nhdsWithin_of_mem_nhds ((isClopen_coset _ x).isOpen.mem_nhds (by simp [(latZ z (s : ℤ)).sub.zero_mem])), s, fun y hy r hr => hs y hy r hr⟩)`. Take `⟨s, hs⟩` from `h`. Conclude with `⟨s, fun y h0 h1 r hr => hs y ⟨h0, h1⟩ r hr⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem shell_unif (z : GL (Fin d) k) (F : COSub k d → (Fin d → k) → ℂ) (c : ℂ)
     (hN : ∀ x : Fin d → k, x ≠ 0 → ∃ s : ℕ, ∀ y : Fin d → k, y - x ∈ (latZ z (s : ℤ)).sub → ∀ r : ℕ, s ≤ r →
@@ -113,15 +113,15 @@ theorem shell_unif (z : GL (Fin d) k) (F : COSub k d → (Fin d → k) → ℂ) 
   exact ⟨s, fun y h0 h1 r hr => hs y ⟨h0, h1⟩ r hr⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hw`. Establish `hvi : ValuativeRel.valuation k (w i) ≠ 0` using `by simpa using hi`. Establish `hv : 0 < ValuativeRel.valuation k ϖ` using `zero_lt_iff.2 (by simpa using hϖ0)`. Establish `hbdd : ∃ b : ℤ, ∀ m : ℤ, w ∈ (latZ z m).sub → m ≤ b`. Take `⟨N, hN⟩` from `exists_pow_val_lt hϖ _ hvi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun m hm => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `hm0 : 0 ≤ m` using `by omega`. Use `lift m to ℕ using hm0`. Establish `h1` using `(mem_latZ z ϖ hz hϖ0 _ w).1 hm i`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[zpow_natCast]`. Conclude with `absurd h1 (not_le.2 (hN m (by omega)))`. Establish `hinh : ∃ m : ℤ, w ∈ (latZ z m).sub`. Establish `hall : ∀ᶠ n : ℕ in Filter.atTop, ∀ j, ValuativeRel.valuation k (w j) ≤ (ValuativeRel.valuation k ϖ ^ n)⁻¹`. Use `Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hj : ValuativeRel.valuation k (w j) = 0`. Conclude with `Filter.Eventually.of_forall fun n => by rw [hj]; exact zero_le'`. Take `⟨N, hN⟩` from `exists_pow_val_lt hϖ _ (inv_ne_zero hj) filter_upwards [Filter.eventually_ge_atTop N] with n hn`. Conclude with `(le_inv_comm₀ (zero_lt_iff.2 hj) (pow_pos hv n)).2 (hN n hn).le`. Take `⟨n, hn⟩` from `hall.exists`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨-(n : ℤ), (mem_latZ z ϖ hz hϖ0 _ w).2 fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, zpow_natCast]`. Conclude with `hn j`. Take `⟨m, hm, hmax⟩` from `Int.exists_greatest_of_bdd hbdd hinh`. Conclude with `⟨m, hm, fun h => absurd (hmax _ h) (by omega)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_shell (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
@@ -156,13 +156,11 @@ theorem exists_shell (z : GL (Fin d) k) (ϖ : k)
   exact ⟨m, hm, fun h => absurd (hmax _ h) (by omega)⟩
 
 /- English proof (translation)
-Establish `hw0 : w ≠ 0` using `fun h => hw (h ▸ (latZ z (-(r₁ : ℤ))).sub.zero_mem)`. Take `⟨m, hm, hm1⟩` from `exists_shell z ϖ hz hϖ hϖ0 w hw0`. Establish `hlt : m < -(r₁ : ℤ)`. Assume the negation of the conclusion as `hge`. Conclude with `hw (latZ_anti z ϖ hz hϖ hϖ0 _ _ (not_lt.1 hge) hm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : ϖ ^ (-m) • w ∈ (latZ z 0).sub`. Use `(smul_mem_latZ z ϖ hz hϖ0 (-m) m w).2 hm` as an intermediate fact. Rewrite `this` using `[neg_add_cancel]`. Then use the resulting hypothesis. Establish `h1 : ϖ ^ (-m) • w ∉ (latZ z 1).sub`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (1 : ℤ) = -m + (m + 1)` using `by ring`. Rewrite `h` using `[e]`. Conclude with `hm1 ((smul_mem_latZ z ϖ hz hϖ0 (-m) (m + 1) w).1 h)`. Take `⟨t, ht⟩ : ∃ t : ℕ, (t : ℤ) = -m` from `⟨(-m).toNat, by omega⟩`. Establish `h2` using `hr₁ _ h0 h1 t (by omega)`.
-
-Rewrite `h2` using `[ht, scale z ϖ hz hϖ0 F hS]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem far (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
@@ -191,7 +189,7 @@ theorem far (z : GL (Fin d) k) (ϖ : k)
   exact h2
 
 /- English proof (translation)
-Use `⟨Pi.single ⟨0, hd⟩ 1, (mem_latZ z ϖ hz hϖ0 _ _).2 fun j => ?_, fun h => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [zpow_zero, Pi.single_apply] split_ifs <;> simp`. Establish `h1` using `(mem_latZ z ϖ hz hϖ0 _ _).1 h ⟨0, hd⟩`. Rewrite `h1` using `[zpow_one, Pi.single_eq_same, map_one]`. Conclude with `absurd h1 (not_le.2 hϖ)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vector_standard_lattice_not_sub {hd : 0 < d} (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
@@ -206,27 +204,23 @@ theorem exists_vector_standard_lattice_not_sub {hd : 0 < d} (z : GL (Fin d) k) (
     exact absurd h1 (not_le.2 hϖ)
 
 /- English proof (translation)
-Establish `hcont : Continuous (F (latZ z 0))`. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_)` and prove the remaining obligations. Use `filter_upwards [(isClopen_coset (latZ z 0) x).isOpen.mem_nhds (by simp [(latZ z 0).sub.zero_mem])] with y hy`. Establish `h` using `hP (latZ z 0) x (y - x) hy`. Rewrite `h` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨xs, -, hmax⟩` from `(latZ z (-(r₁ : ℤ))).isCompact.exists_isMaxOn ⟨0, (latZ z (-(r₁ : ℤ))).sub.zero_mem⟩ (f := fun x => ‖F (latZ z 0) x - c‖) (hcont.sub continuous_const).norm.continuousOn`. Use `set M : ℝ := ‖F (latZ z 0) xs - c‖ with hM`. Establish `hall : ∀ x, ‖F (latZ z 0) x - c‖ ≤ M`. Introduce `x`. Distinguish the cases in `hx : x ∈ (latZ z (-(r₁ : ℤ))).sub`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmax hx`. Rewrite using `[hfar x hx, sub_self, norm_zero]`. Conclude with `norm_nonneg _`. Establish `hle : (latZ z ((r₁ + 1 : ℕ) : ℤ)).sub ≤ (latZ z 0).sub` using `latZ_anti z ϖ hz hϖ hϖ0 _ _ (by positivity)`. Establish `hle1 : (latZ z ((r₁ + 1 : ℕ) : ℤ)).sub ≤ (latZ z 1).sub` using `latZ_anti z ϖ hz hϖ hϖ0 _ _ (by push_cast; omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S, hSr⟩` from `exists_reps _ _ hle`. Establish `hsum` using `hR _ _ S hle hSr xs`. Take `⟨e, he0, he1⟩` from `exists_vector_standard_lattice_not_sub (hd := hd) z ϖ hz hϖ hϖ0`. Establish `hex : ∃ s ∈ S, xs + s ∉ (latZ z 1).sub`. Assume the negation of the conclusion as `hcon`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `push_neg at hcon`. Take `⟨s0, ⟨hs0, h0⟩, -⟩` from `hSr.2 0 (latZ z 0).sub.zero_mem`. Take `⟨s1, ⟨hs1, h1⟩, -⟩` from `hSr.2 e he0`. Apply `he1` to reduce the goal to its premises. Establish `e' : e = (e - s1) + (xs + s1) - (xs + s0) - (0 - s0)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e']`. Conclude with `(latZ z 1).sub.sub_mem ((latZ z 1).sub.sub_mem ((latZ z 1).sub.add_mem (hle1 h1) (hcon s1 hs1)) (hcon s0 hs0)) (hle1 h0)`. Take `⟨ss, hss, hss1⟩` from `hex`. Set `t : (Fin d → k) → ℂ` to `fun s => F (latZ z 0) (ϖ ^ (-((r₁ + 1 : ℕ) : ℤ)) • (xs + s)) - c`. Establish `hts : t ss = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ϖ ^ (-((r₁ + 1 : ℕ) : ℤ)) • (xs + ss) ∉ (latZ z (-(r₁ : ℤ))).sub`. Introduce `h`. Establish `e' : -(r₁ : ℤ) = -((r₁ + 1 : ℕ) : ℤ) + 1` using `by push_cast; ring`. Rewrite `h` using `[e']`. Conclude with `hss1 ((smul_mem_latZ z ϖ hz hϖ0 _ 1 _).1 h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [t]`. Rewrite using `[hfar _ hn, sub_self]`. Establish `hid : (S.card : ℂ) * (F (latZ z 0) xs - c) = ∑ s ∈ S, t s`. Simplify using `only [t, Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[mul_sub, hsum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun s _ => scale_inv z ϖ hz hϖ0 F hS _ _`. Establish `h1 : (S.card : ℝ) * M ≤ ∑ s ∈ S, ‖t s‖`. Use `norm_sum_le S t` as an intermediate fact. Rewrite `this` using `[← hid, norm_mul, Complex.norm_natCast]`.
-
-Conclude with `this`. Establish `h2 : M ≤ ∑ s ∈ S, (M - ‖t s‖)`. Use `Finset.single_le_sum (f := fun s => M - ‖t s‖) (fun s _ => sub_nonneg.2 (hall _)) hss` as an intermediate fact. Simplify `this` using `[hts]`. Rewrite `h2` using `[Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`.
-
-Establish `hM0 : M ≤ 0` using `by linarith`. Use `(hall x).trans hM0` as an intermediate fact. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_const_standard_lattice_refining (hd : 0 < d) (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
@@ -298,7 +292,7 @@ theorem eq_const_standard_lattice_refining (hd : 0 < d) (z : GL (Fin d) k) (ϖ :
   exact sub_eq_zero.1 (norm_le_zero_iff.1 this)
 
 /- English proof (translation)
-Take `⟨r₁, hr₁⟩` from `shell_unif z F c hN`. Rewrite using `[scale_inv z ϖ hz hϖ0 F hS]`. Conclude with `eq_const_standard_lattice_refining hd z ϖ hz hϖ hϖ0 F c hR hP hS r₁ (far z ϖ hz hϖ hϖ0 F c hS r₁ hr₁) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_const (hd : 0 < d) (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))

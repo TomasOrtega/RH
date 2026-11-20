@@ -14,17 +14,17 @@ namespace GlobalTheory.HessPull
 open ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.ChartWirtingerDerivatives ReciprocityTheory.L2DbarEstimates.Y ReciprocityTheory.ChartRestriction.G.AR.Up.RGF in
 
 /- English proof (translation)
-Establish `hFd : ∀ y ∈ U, HasFDerivAt F (fderiv ℂ F y) y` using `fun y hy => (((hF.differentiableOn (by norm_num)) y hy).differentiableAt (hU.mem_nhds hy)).hasFDerivAt`. Establish `hgev : ∀ᶠ y in 𝓝 v, ContDiffAt ℝ 2 g (F y)` using `(hFd v hv).continuousAt.eventually (hg.eventually (by simp))`. Establish `hwdb : ∀ k, wdb n k (g ∘ F) =ᶠ[𝓝 v] fun y => ∑ a, wdb d a g (F y) * (starRingEnd ℂ) (fderiv ℂ F y (bas n k) a)`. Introduce `k`. Use `filter_upwards [hgev, hU.mem_nhds hv] with y hy hyU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `gc_wdb_comp n d g F _ y (hy.differentiableAt (by simp)) (hFd y hyU) k`. Establish `hD : DifferentiableAt ℝ (fderiv ℝ g) (F v)` using `(hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hWg : ∀ a, DifferentiableAt ℝ (wdb d a g) (F v)`. Introduce `a`. Use `show DifferentiableAt ℝ (fun y => (fderiv ℝ g y (bas d a) + Complex.I * fderiv ℝ g y (Complex.I • bas d a)) / 2) (F v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hD.clm_apply (differentiableAt_const (bas d a))`. Establish `h2` using `hD.clm_apply (differentiableAt_const (Complex.I • bas d a))`. Establish `h3` using `(h1.add (h2.const_mul Complex.I)).mul_const ((2 : ℂ)⁻¹)`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWa : ∀ a, DifferentiableAt ℝ (fun y => wdb d a g (F y)) v` using `fun a => (hWg a).comp v ((hFd v hv).restrictScalars ℝ).differentiableAt`. Establish `hDF : DifferentiableAt ℂ (fun y => fderiv ℂ F y) v` using `((hF.fderiv_of_isOpen hU (m := 1) (by norm_num)).contDiffAt (hU.mem_nhds hv)).differentiableAt (by norm_num)`. Establish `hPa : ∀ k a, DifferentiableAt ℂ (fun y => fderiv ℂ F y (bas n k) a) v` using `fun k a => (differentiableAt_piLp 2).1 (hDF.clm_apply (differentiableAt_const _)) a`. Establish `hCa : ∀ k a, DifferentiableAt ℝ (fun y => (starRingEnd ℂ) (fderiv ℂ F y (bas n k) a)) v`. Introduce `k a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Complex.conjCLE.differentiableAt.comp v ((hPa k a).restrictScalars ℝ)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Use `show wd n j (wdb n k (g ∘ F)) v = _`. Rewrite using `[wd_congr n j _ _ v (hwdb k), fc_wd_sum n j Finset.univ (fun a y => wdb d a g (F y) * (starRingEnd ℂ) (fderiv ℂ F y (bas n k) a)) v (fun a _ => (hWa a).mul (hCa k a))]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[wd_mul' n j _ _ v (hWa a) (hCa k a), wd_conj', fc_wdb_holo n _ v (hPa k a) j, map_zero, mul_zero, add_zero]`. Use `gc_wd_comp n d (wdb d a g) F (fderiv ℂ F v) v (hWg a) (hFd v hv) j` as an intermediate fact. Rewrite using `[show (fun y => wdb d a g (F y)) = wdb d a g ∘ F from rfl, this, Finset.sum_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cHess_comp_apply (n d : ℕ) (g : V d → ℂ) (F : V n → V d) (U : Set (V n)) (hU : IsOpen U)
     (v : V n) (hv : v ∈ U) (hF : ContDiffOn ℂ 2 F U) (hg : ContDiffAt ℝ 2 g (F v)) (j k : Fin n) :
@@ -82,17 +82,15 @@ open ReciprocityTheory.L2DbarEstimates (V cHess bas)
 open GlobalTheory.ChartGlue
 
 /- English proof (translation)
-Introduce `k _ B Y q p f w σ D d c c' y hy hy'`. Use `set m := PtsOver.map f w (spMap σ)`. Establish `hm : ∀ z, (m z).1 = z.1 ≫ f` using `fun _ => rfl`. Use `set F : V D → V d := c'.e ∘ m ∘ c.e.symm with hFdef`. Use `set U := c.e.target ∩ c.e.symm ⁻¹' (m ⁻¹' c'.e.source)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsOpen U` using `isOpen_over c.e (c'.e.open_source.preimage (continuous_of_comp hm))`. Establish `hyU : c.e y ∈ U` using `mem_over c.e hy hy'`. Establish `hF0 : DifferentiableOn ℂ F U` using `AlgChart.holo_map hm c c'`. Establish `hF : ContDiffOn ℂ 2 F U` using `(contDiffOn_piLp 2).2 fun a => (ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ U hU (differentiableOn_euclidean.1 hF0 a)).of_le (by norm_cast)`. Establish `hFy : F (c.e y) = c'.e (m y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hFdef, Function.comp_apply, c.e.left_inv hy]`. Use `⟨Matrix.of fun j b => fderiv ℂ F (c.e y) (bas D j) b, Matrix.of fun a k => (starRingEnd ℂ) (fderiv ℂ F (c.e y) (bas D k) a), ?_⟩` and prove the remaining obligations. Introduce `A i hi`. Establish `him : m y ∈ ptsIn q σ (A.B.U (i PUnit.unit))` using `mem_of_mem_linComb (m := fun _ => m y) (fun _ => rfl) hi PUnit.unit`. Use `set g : V d → ℂ := fun v => ((A.φ σ).φ (i PUnit.unit) (c'.e.symm v) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hg : ContDiffAt ℝ 2 g (F (c.e y))` using `hFy ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ ((A.cInf σ).contDiffAt c' hy' him)`. Establish `e : (fun v => (((A.pull f w).φ σ).φ i (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] g ∘ F` using `by filter_upwards [hU.mem_nhds hyU] with v hv`. Use `Weight.pull_φ (A.φ σ) f w i (c.e.symm v)` as an intermediate fact. Simplify using `only [g, hFdef, Function.comp_apply, c'.e.left_inv hv.2]`. Conclude with `congrArg _ this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨cHess d g (F (c.e y)), ?_⟩` and prove the remaining obligations. Use `show cHess D _ (c.e y) = _`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e]`. Use extensionality with `j k`. Rewrite using `[cHess_comp_apply D d g F U hU _ hyU hF hg j k, Matrix.mul_apply]`.
-
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem hess_pull_factor : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k)
     (f : Y ⟶ B) (w : f ≫ q = p) (σ : k →+* ℂ) (D d : ℕ) (c : AlgChart p σ D) (c' : AlgChart q σ d)

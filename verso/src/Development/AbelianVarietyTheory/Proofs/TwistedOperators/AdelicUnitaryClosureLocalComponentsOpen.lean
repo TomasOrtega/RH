@@ -16,7 +16,7 @@ namespace GlobalTheory.PlaceGen
 open GlobalTheory.AdelicU
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.noncommPiCoprod_apply]`. Conclude with `Submonoid.noncommProd_mem _ _ _ _ fun i _ => hM i (x i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piCoprod_mem {ι G : Type} [Fintype ι] [Monoid G] {N : ι → Type} [∀ i, Monoid (N i)] (φ : ∀ i, N i →* G)
     (h : Pairwise fun i j => ∀ x y, Commute (φ i x) (φ j y)) (M : Submonoid G) (hM : ∀ i x, φ i x ∈ M)
@@ -31,7 +31,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Introduce `g hg` and use `by rw [mem_levelOff] at hg ⊢ refine ⟨hg.1, fun v hv => hg.2.1 v (h hv), fun v _ => ?_⟩ by_cases hv : v ∈ S' · rw [hg.2.1 v hv]; exact one_mem _ · exact hg.2.2 v hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levelOff_anti {S S' : Finset (HeightOneSpectrum (𝓞 F))} (h : S ⊆ S') :
     levelOff σ J L S' ≤ levelOff σ J L S := fun g hg => by
@@ -42,9 +42,7 @@ theorem levelOff_anti {S S' : Finset (HeightOneSpectrum (𝓞 F))} (h : S ⊆ S'
   · exact hg.2.2 v hv
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed (fun S : Finset (HeightOneSpectrum (𝓞 F)) => (levelOff σ J L S : Set (GAd σ J)) \ (U : Set (GAd σ J))) (fun S S' => ⟨S ∪ S', Set.diff_subset_diff_left (levelOff_anti σ J L Finset.subset_union_left), Set.diff_subset …`. Rewrite `hg` using `[Set.mem_iInter]`. Establish `h1 : g = 1` using `GAd_ext σ J (fun w => by rw [mem_finPts_iff_forall.1 (mem_levelOff.1 (hg ∅).1).1 w, map_one]) fun v => by rw [(mem_levelOff.1 (hg {v}).1).2.1 v (Finset.mem_singleton_self v), map_one]`.
-
-Conclude with `(hg ∅).2 (h1 ▸ one_mem U)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_levelOff_le [Submodule.IsLattice E L] (U : Subgroup (GAd σ J)) (hU : IsOpen (U : Set (GAd σ J))) :
     ∃ S, levelOff σ J L S ≤ U := by
@@ -66,7 +64,7 @@ theorem exists_levelOff_le [Submodule.IsLattice E L] (U : Subgroup (GAd σ J)) (
 
 omit [NumberField E] in
 /- English proof (translation)
-Distinguish the cases in `hv : v ∈ S`. Rewrite using `[(mem_levelOff.1 hk).2.1 v hv, map_one]`. Conclude with `one_mem _`. Conclude with `emb_mem_levelOff hv ((mem_levelOff.1 hk).2.2 v hv)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_proj_mem_levelOff {S : Finset (HeightOneSpectrum (𝓞 F))} {k : GAd σ J} (hk : k ∈ levelOff σ J L S)
     (v : HeightOneSpectrum (𝓞 F)) : emb σ J v (proj σ J v k) ∈ levelOff σ J L S := by
@@ -75,15 +73,13 @@ theorem emb_proj_mem_levelOff {S : Finset (HeightOneSpectrum (𝓞 F))} {k : GAd
   · exact emb_mem_levelOff hv ((mem_levelOff.1 hk).2.2 v hv)
 
 /- English proof (translation)
-Use `top_unique fun g _ => ?_` and prove the remaining obligations. Establish `hinf : ∀ y, ofInf σ J y ∈ M` using `fun y => by`. Rewrite using `[← (infEquivPi σ J).symm_apply_apply y]`. Generalize the expression as in `infEquivPi σ J y = x`. Establish `: embArchPi σ J x ∈ M.comap (ofInf σ J)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Conclude with `piCoprod_mem (fun w => embArchInf σ J w) _ _ (fun w y => h2 w y) x`. Conclude with `this`. Establish `hat : ∀ S' x, embAt σ J S' x ∈ M` using `fun S' x => by`. Conclude with `piCoprod_mem (fun v : S' => emb σ J v) _ _ (fun v y => h1 v y) x`. Establish `hf` using `Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ J L g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g' := ofFin σ J (projFin σ J g) with hg'`. Use `set S' := S ∪ hf.toFinset with hS'`. Establish `hfin : g' ∈ finPts σ J` using `mem_finPts.2 (by simp [hg'])`. Establish `hx` using `mem_atPts.1 (embAt_mem σ J S' (projAt σ J S' g'))`. Establish `hrest : (partAway σ J S' g' : GAd σ J) ∈ levelOff σ J L S'`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `mem_levelOff.2 ⟨mul_mem (inv_mem hx.1) hfin, mem_awayPts.1 (partAway σ J S' g').2, fun v hv => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `proj σ J v ((embAt σ J S' (projAt σ J S' g'))⁻¹ * g') ∈ _`. Rewrite using `[map_mul, map_inv, hx.2 v hv, inv_one, one_mul, hg', proj_ofFin, projFinLoc_projFin]`. Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hf.mem_toFinset.2 hc))`.
-
-Rewrite using `[← ofInf_projInf_mul_ofFin_projFin σ J g, ← hg', ← embAt_mul_partAway σ J S' g']`. Conclude with `mul_mem (hinf _) (mul_mem (hat _ _) (h3 _ (levelOff_anti σ J L Finset.subset_union_left hrest)))`.
+A detailed English derivation is pending.
 -/
 theorem eq_top_of_local [Submodule.IsLattice E L] (M : Submonoid (GAd σ J)) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (h1 : ∀ v x, emb σ J v x ∈ M) (h2 : ∀ w x, embArch σ J w x ∈ M) (h3 : ∀ k ∈ levelOff σ J L S, k ∈ M) :
@@ -115,15 +111,15 @@ theorem eq_top_of_local [Submodule.IsLattice E L] (M : Submonoid (GAd σ J)) (S 
 end General
 
 /- English proof (translation)
-Introduce `D V U hU`. Use `haveI hL : Submodule.IsLattice D.host.E (stdLattice D.host.E V.rank) := isLattice_stdLattice`. Take `⟨S, hS⟩` from `exists_levelOff_le D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) U hU`. Establish `hG : ∀ k ∈ levelOff D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) S, k ∈ U ∧ k ∈ GfC V` using `fun k hk => ⟨hS hk, (mem_levelOff.1 hk).1⟩`. Use `⟨fun g => ?_, eq_top_of_local D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) _ S (fun v x => Submonoid.subset_closure (Or.inl ⟨.inl v, by simp [gAt]⟩)) (fun w x => ?_) fun k hk => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf` using `Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) g) haveI : Finite D.what₂.Tau := Finite.of_injective _ (placeOf_bijective D).1`. Use `(((hf.union S.finite_toSet).image Sum.inl).union (Set.finite_range Sum.inr)).subset ?_` and prove the remaining obligations. Introduce and unpack `(v | τ) hp`. Use `Or.inl ⟨v, ?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[Set.mem_union, not_or]`. Conclude with `hp (hG _ (emb_mem_levelOff hc.2 (not_not.1 hc.1)))`. Conclude with `Or.inr ⟨τ, rfl⟩`. Take `⟨τ, rfl⟩ : ∃ τ, plTau D τ = w` from `(placeOf_bijective D).2 w`. Use `Submonoid.subset_closure (Or.inl ⟨.inr τ, ?_⟩)` and prove the remaining obligations.
+Prove the second alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [gAt, projArch_embArch_self]`. Use `Submonoid.subset_closure (Or.inr ⟨(hG k hk).1, (hG k hk).2, ?_⟩)` and prove the remaining obligations. Introduce and unpack `(v | τ)`. Conclude with `hG _ (emb_proj_mem_levelOff _ _ _ hk v)`. Establish `: gAt V (.inr τ) k = 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `only [gAt, mem_finPts_iff_forall.1 (mem_levelOff.1 hk).1 _, map_one]`. Rewrite using `[this]`. Conclude with `⟨one_mem _, one_mem _⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_by_local : ∀ (D : D7) (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → (∀ g : GA D V, {p : Place D | ¬ (gAt V p g ∈ U ∧ gAt V p g ∈ GfC V)}.Finite) ∧ Submonoid.closure ({g : GA D V | ∃ p, gAt V p g = g} ∪ {k : GA D V | k ∈ U ∧ k ∈ GfC V ∧ ∀ p, gAt V p k ∈ U ∧ gAt V p k ∈ GfC V}) = ⊤ := by
   intro D V U hU

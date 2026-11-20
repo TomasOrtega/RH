@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Numb
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `eps Fm _ _ hT hG`. Take `⟨Cn, hN⟩` from `J.numsL_wtsL_fam Fm hT (Formalism.L2.GlobalTheoryTheory.Places.dlSize eps Fm)`. Take `⟨x0, hN⟩` from `hN Cn le_rfl 3 le_rfl`. Take `⟨CG, x1, hG⟩` from `hG`. Use `⟨4 * max CG 0, max x0 x1, by positivity, fun x hx _ i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `J.gammaDiscriminant_budget_of_sizes (by norm_num) (le_max_right _ _) (hN x (le_trans (le_max_left _ _) hx) i).1 (J.factDGam_mono (hG x (le_trans (le_max_right _ _) hx) i) (le_max_left _ _))`.
+A detailed English derivation is pending.
 -/
 theorem exists_nonneg_const_discriminant_term_le_budget_family : ∀ {eps : ℝ} (Fm : FamP eps), 0 < eps → eps < 1 / 52 → TuSize Fm → DGamSize Fm →
     ∃ C x0 : ℝ, 0 ≤ C ∧ ∀ x, x0 ≤ x → ∀ hx : Fm.x1 < x, ∀ i : Fm.Ix x,

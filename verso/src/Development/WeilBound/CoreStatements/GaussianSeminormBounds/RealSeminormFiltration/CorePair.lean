@@ -8,21 +8,19 @@ open scoped InnerProductSpace
 namespace PositivityTheory.KReal
 
 /- English proof (translation)
-Set `μ : Ix p q → ℚ` to `Sum.elim (fun _ => u + cPair r s) (fun _ => v - cPair r s)`. Establish `hS : JointShape p q r s μ (PI.FJM.wtOf2 p q r s a b c d)`. Take `⟨g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12⟩` from `hd`. Use `⟨a, b, c, d, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the cases of `i with`. Consider the case `inl i => simp only [shiftNu, ofBlocks, μ, Sum.elim_inl, hu]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inr i => simp only [shiftNu, ofBlocks, μ, Sum.elim_inr, hv]`. Expand and normalize the polynomial expressions, which then agree.
+Split into cases according to the possible forms of the given data. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `inl i => simp only [shiftNu, PI.FJM.wtOf2, PI.FJM.sh2, Sum.elim_inl]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inr i => simp only [shiftNu, PI.FJM.wtOf2, PI.FJM.sh2, Sum.elim_inr]`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `(fock_joint_multiplicity p q r s μ _).1 hS`. Establish `hne : hwSub (fockAct1 p q r s) μ ⊓ hwSub (fockAct2 p q r s) (PI.FJM.wtOf2 p q r s a b c d) ⊓ Submodule.span ℂ (Jset p q r s) ≠ ⊥`. Introduce `h0`. Rewrite `h1` using `[h0]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Take `⟨P, hP, hP0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hPJ : P ∈ Jset p q r s` using `PI.FJMF.span_jset P (Submodule.mem_inf.1 hP).2`. Establish `hP1 : P ∈ hwSub (fockAct1 p q r s) μ` using `(Submodule.mem_inf.1 (Submodule.mem_inf.1 hP).1).1`. Establish `hex : ∃ e, homogeneousComponent e P ≠ 0`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[← sum_homogeneousComponent P]`. Conclude with `Finset.sum_eq_zero fun e _ => hcon e`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he⟩` from `hex`. Use `⟨homogeneousComponent e P, e, he, homogeneousComponent_mem e P, PI.FJMF.jset_hc P hPJ e, ?_⟩` and prove the remaining obligations. Introduce `a' b' hab`. Use `scalar_of_hw (μ := μ) ?_ (PI.FJMF.hc_mem_hwSub1 μ P hP1 e) a' b' hab` and prove the remaining obligations. Introduce `x y hxy`.
-
-Apply the tactic sequence `cases x <;> cases y <;> simp_all [μ, sameBlock]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_blk {p q r s : ℕ} (a b c d : List ℤ) (hd : PI.FJM.ShapeData p q r s a b c d) (u v : ℚ)
     (hu : ∀ i : Fin p, (pad a (p - a.length - b.length) b).getD i 0 = u)
@@ -65,9 +63,9 @@ theorem exists_blk {p q r s : ℕ} (a b c d : List ℤ) (hd : PI.FJM.ShapeData p
   cases x <;> cases y <;> simp_all [μ, sameBlock]
 
 /- English proof (translation)
-Establish `h` using `((PI.FJM.jointHarmonicsIffLaplacians p q r 0 x).1 hx).2.1 i j`. Rewrite using `[PI.FJM.leftOffDiagonalActionFormula p q r 0 _ _ (by simp)]`. Simplify using `only [PI.FJM.rai1, PI.FJM.lapB, PI.FJM.dd, LinearMap.sum_apply, Fintype.sum_sum_type, Finset.univ_eq_empty, Finset.sum_empty, add_zero, Module.End.mul_apply, raiB, lowB, linePos] at h ⊢`. Simplify using `only [Bool.false_eq_true, if_false, if_true, LinearMap.neg_apply, Finset.sum_neg_distrib, neg_eq_zero]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => PI.FockOneDegW.Core.pd_comm _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fockAct1_Eab_inr_inl_eq_zero_of_mem_Jset {p q r : ℕ} {x : Pol p q r 0} (hx : x ∈ Jset p q r 0) (i : Fin p) (j : Fin q) :
     fockAct1 p q r 0 (Eab (.inr j) (.inl i)) x = 0 := by
@@ -80,7 +78,7 @@ theorem fockAct1_Eab_inr_inl_eq_zero_of_mem_Jset {p q r : ℕ} {x : Pol p q r 0}
   exact Finset.sum_congr rfl fun k _ => PI.FockOneDegW.Core.pd_comm _ _ _
 
 /- English proof (translation)
-Establish `h` using `((PI.FJM.jointHarmonicsIffLaplacians p q 0 s y).1 hy).1 i j`. Rewrite using `[PI.FJM.leftOffDiagonalActionFormula p q 0 s _ _ (by simp)]`. Simplify using `only [PI.FJM.rai1, PI.FJM.lapA, PI.FJM.dd, LinearMap.sum_apply, Fintype.sum_sum_type, Finset.univ_eq_empty, Finset.sum_empty, zero_add, Module.End.mul_apply, raiB, lowB, linePos] at h ⊢`. Simplify using `only [Bool.false_eq_true, if_false, if_true, LinearMap.neg_apply, Finset.sum_neg_distrib, neg_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cross_y {p q s : ℕ} {y : Pol p q 0 s} (hy : y ∈ Jset p q 0 s) (i : Fin p) (j : Fin q) :
     fockAct1 p q 0 s (Eab (.inl i) (.inr j)) y = 0 := by
@@ -92,7 +90,7 @@ theorem cross_y {p q s : ℕ} {y : Pol p q 0 s} (hy : y ∈ Jset p q 0 s) (i : F
   exact h
 
 /- English proof (translation)
-Take `⟨x, dx, x0, xh, xJ, xK⟩` from `hx`. Take `⟨y, dy, y0, -, yJ, yK⟩` from `hy`. Use `⟨fun a => (((Sum.elim (fun _ => u + cPair r 0) (fun _ => v - cPair r 0) a : ℚ)) : ℂ), x, y, dx, x0, y0, xh, xK, fockAct1_Eab_inr_inl_eq_zero_of_mem_Jset xJ, fun a b hab => ?_, cross_y yJ⟩` and prove the remaining obligations. Rewrite using `[yK a b hab, h1, h2]`. Apply the tactic sequence `cases a <;> simp only [Sum.elim_inl, Sum.elim_inr, Rat.cast_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pair_of {p q r s : ℕ} (c0 u v u' v' : ℚ) (h1 : u' + cPair 0 s = c0 - (u + cPair r 0))
     (h2 : v' - cPair 0 s = c0 - (v - cPair r 0))
@@ -111,39 +109,39 @@ theorem pair_of {p q r s : ℕ} (c0 u v u' v' : ℚ) (h1 : u' + cPair 0 s = c0 -
   cases a <;> simp only [Sum.elim_inl, Sum.elim_inr, Rat.cast_sub]
 
 /- English proof (translation)
-Simplify using `[pad, List.getD_eq_getElem?_getD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pad_l (k : ℕ) (z : ℤ) (i : Fin k) :
     (pad (List.replicate k z) (k - (List.replicate k z).length - ([] : List ℤ).length) []).getD i 0 = (z : ℚ) := by
   simp [pad, List.getD_eq_getElem?_getD]
 
 /- English proof (translation)
-Simplify using `[pad, List.getD_eq_getElem?_getD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pad_r (k : ℕ) (z : ℤ) (i : Fin k) :
     (pad [] (k - ([] : List ℤ).length - (List.replicate k z).length) (List.replicate k z)).getD i 0 = (z : ℚ) := by
   simp [pad, List.getD_eq_getElem?_getD]
 
 /- English proof (translation)
-Simplify using `[pad, List.getD_eq_getElem?_getD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pad_nil_getD_zero (k : ℕ) (i : Fin k) :
     (pad [] (k - ([] : List ℤ).length - ([] : List ℤ).length) []).getD i 0 = (0 : ℚ) := by
   simp [pad, List.getD_eq_getElem?_getD]
 
 /- English proof (translation)
-Rewrite using `[List.pairwise_replicate]`. Conclude with `Or.inr le_rfl`.
+Rewrite the conclusion using the stated equalities. Prove the second alternative.
 -/
 theorem pw_rep (k : ℕ) (z : ℤ) : (List.replicate k z).Pairwise (· ≥ ·) := by
   rw [List.pairwise_replicate]
   exact Or.inr le_rfl
 
 /- English proof (translation)
-Use `pair_of c0 ((n : ℤ) : ℚ) 0 0 ((m : ℤ) : ℚ) ?_ ?_ (exists_blk (List.replicate p (n : ℤ)) [] [] [] ?_ _ _ (pad_l p _) (pad_nil_getD_zero q)) (exists_blk [] [] (List.replicate q (m : ℤ)) [] ?_ _ _ (pad_nil_getD_zero p) (pad_l q _))` and prove the remaining obligations. Simplify using `only [cPair] at *`. Move the coercions through the operations in `at *`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [cPair] at *`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at *`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, by simp, by simp, by simp, pw_rep _ _, by simp, by simp, by simp, by simp, by simp, by simpa using hp, by simp⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[List.eq_of_mem_replicate hv]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn` after adjusting the coercions. Use `⟨by simp, ?_, by simp, by simp, by simp, by simp, pw_rep _ _, by simp, by simp, by simp, by simp, by simpa using hq⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[List.eq_of_mem_replicate hv]`. Conclude with `hm` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_pos {p q r s n m : ℕ} (hp : p ≤ r) (hq : q ≤ s) (hn : 0 < n) (hm : 0 < m) (c0 : ℚ)
     (h1 : c0 = n + cPair r s) (h2 : c0 = m - cPair r s) : PairData p q r s (c0 : ℂ) := by
@@ -160,11 +158,11 @@ theorem pair_pos {p q r s n m : ℕ} (hp : p ≤ r) (hq : q ≤ s) (hn : 0 < n) 
     intro v hv; rw [List.eq_of_mem_replicate hv]; exact_mod_cast hm
 
 /- English proof (translation)
-Use `pair_of c0 0 ((-(n : ℤ) : ℤ) : ℚ) ((-(m : ℤ) : ℤ) : ℚ) 0 ?_ ?_ (exists_blk [] [] [] (List.replicate q (-(n : ℤ))) ?_ _ _ (pad_nil_getD_zero p) (pad_r q _)) (exists_blk [] (List.replicate p (-(m : ℤ))) [] [] ?_ _ _ (pad_r p _) (pad_nil_getD_zero q))` and prove the remaining obligations. Simplify using `only [cPair] at *`. Move the coercions through the operations in `at *`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [cPair] at *`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at *`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨by simp, by simp, by simp, ?_, by simp, by simp, by simp, pw_rep _ _, by simp, by simp, by simpa using hq, by simp⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[List.eq_of_mem_replicate hv]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨by simp, by simp, ?_, by simp, by simp, pw_rep _ _, by simp, by simp, by simp, by simp, by simp, by simpa using hp⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[List.eq_of_mem_replicate hv]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pair_neg {p q r s n m : ℕ} (hq : q ≤ r) (hp : p ≤ s) (hn : 0 < n) (hm : 0 < m) (c0 : ℚ)
     (h1 : c0 = -m + cPair r s) (h2 : c0 = -n - cPair r s) : PairData p q r s (c0 : ℂ) := by

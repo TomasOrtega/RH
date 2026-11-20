@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.MixWChar
 
 /- English proof (translation)
-Set `G : Matrix β β A` to `((g : GL β A) : Matrix β β A)`. Set `Gi : Matrix β β A` to `(((g⁻¹ : UG c J) : GL β A) : Matrix β β A)`. Establish `h1 : G * Gi = 1` using `by show ((g : GL β A) : Matrix β β A) * (((g : GL β A)⁻¹ : GL β A) : Matrix β β A) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : Gi * G = 1` using `by show (((g : GL β A)⁻¹ : GL β A) : Matrix β β A) * ((g : GL β A) : Matrix β β A) = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Set `u : GL (β ⊕ β) A` to `⟨Matrix.fromBlocks G 0 0 1, Matrix.fromBlocks Gi 0 0 1, by`. Rewrite using `[Matrix.fromBlocks_multiply]; simp [h1, Matrix.fromBlocks_one], by`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[h2, Matrix.fromBlocks_one]⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hg : Gᵀ * J * G.map c = J` using `g.2`. Use `⟨⟨u, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show (Matrix.fromBlocks G 0 0 1)ᵀ * dbl J * (Matrix.fromBlocks G 0 0 1).map c = dbl J`. Rewrite using `[dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hg, Matrix.map_one _ (map_zero c) (map_one c)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dbl_left {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) {β : Type} [Fintype β] [DecidableEq β]
     (J : Matrix β β A) (g : UG c J) :
@@ -43,9 +43,9 @@ theorem exists_dbl_left {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c 
   simp [hg, Matrix.map_one _ (map_zero c) (map_one c)]
 
 /- English proof (translation)
-Take `⟨x₁, hx₁⟩` from `Function.ne_iff.mp h₁`. Take `⟨x₂, hx₂⟩` from `Function.ne_iff.mp h₂`. Introduce `h`. Use `congrFun h (Sum.elim x₁ x₂)` as an intermediate fact. Simplify using `only [boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, Pi.zero_apply] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero hx₁ hx₂ this`.
+A detailed English derivation is pending.
 -/
 theorem boxFun_ne_zero {R κ κ' : Type} {φ₁ : (κ → R) → ℂ} {φ₂ : (κ' → R) → ℂ} (h₁ : φ₁ ≠ 0) (h₂ : φ₂ ≠ 0) :
     boxFun φ₁ φ₂ ≠ 0 := by
@@ -57,9 +57,9 @@ theorem boxFun_ne_zero {R κ κ' : Type} {φ₁ : (κ → R) → ℂ} {φ₂ : (
   exact mul_ne_zero hx₁ hx₂ this
 
 /- English proof (translation)
-Take `⟨x₁, hx₁⟩` from `Function.ne_iff.mp h₁`. Take `⟨x₂, hx₂⟩` from `Function.ne_iff.mp h₂`. Use `congrFun h (Sum.elim x₁ x₂)` as an intermediate fact. Simplify using `only [boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Establish `hne : φ₁ x₁ * φ₂ x₂ ≠ 0` using `mul_ne_zero hx₁ hx₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (a - 1) * (φ₁ x₁ * φ₂ x₂) = 0` using `by linear_combination this`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hne)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_boxFun {R κ κ' : Type} {φ₁ : (κ → R) → ℂ} {φ₂ : (κ' → R) → ℂ} (h₁ : φ₁ ≠ 0) (h₂ : φ₂ ≠ 0) {a : ℂ}
     (h : boxFun (a • φ₁) φ₂ = boxFun φ₁ φ₂) : a = 1 := by
@@ -72,21 +72,19 @@ theorem eq_one_of_boxFun {R κ κ' : Type} {φ₁ : (κ → R) → ℂ} {φ₂ :
   exact sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hne)
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he c _hc hce`. Take `⟨hUS, dd, omd, hDC, hSpl, hbox⟩` from `hP.weil.1`. Take `⟨-, dd₁, omd₁, hDC₁, hSpl₁, hbox₁⟩` from `hP₁.weil.1`. Take `⟨Ed, e₂, hEa, hEb, hEc, hEd, hEe, he₂s, Φ₂, hΦ₂, he₂Φ⟩` from `GlobalTheory.T.adapted_plane_restriction_pair_third hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he dd dd₁ hDC hDC₁`. Take `⟨Φ₁, hΦ₁, heΦ⟩` from `GlobalTheory.T.eigen_intertwiner_restriction F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hEne : ∃ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), Ed Φ ≠ 0` using `⟨boxFun Φ₁ Φ₂, GlobalTheory.T.tensor_product_schwartz_adelic F _ _ Φ₁ Φ₂ hΦ₁ hΦ₂, by rw [hEe Φ₁ hΦ₁ Φ₂ hΦ₂]; exact boxFun_ne_zero heΦ he₂Φ⟩`. Establish `key` using `GlobalTheory.T.restriction_omd_intertwines_of_fixes_incV hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ dd omd hDC hSpl dd₁ omd₁ hDC₁ hSpl₁ Ed hEa hEb hEc hEd hEne`. Use extensionality with `h₁`. Take `⟨m, hm, -⟩` from `GlobalTheory.T.exists_unique_levi_element F E σ B d d₁ W W₁ H' i₀ i₁ r' s' r₁ s₁ (GlobalTheory.AdelicU.cm_conj_conj hP.base.cm) hP.skew hP₁.skew hH h₁`. Take `⟨md, hmd⟩` from `exists_dbl_left (cA σ) (incM F W.J) m`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hd, hhd⟩` from `exists_dbl_left (cA σ) (incM F W₁.J) h₁`. Take `⟨hmx, hmy, hmι⟩` from `hm`. Establish `hmx' : mat m *ᵥ incV F H'.x = incV F H'.x` using `by rw [hmx, Units.val_one, one_smul]`. Establish `hmy' : mat m *ᵥ incV F H'.y = incV F H'.y` using `by rw [hmy, inv_one, Units.val_one, map_one, one_smul]`. Establish `hmd' : (md.1.1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) = Matrix.fromBlocks (mat m) 0 0 1` using `hmd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhd' : (hd.1.1 : Matrix (Fin d₁ ⊕ Fin d₁) (Fin d₁ ⊕ Fin d₁) (AE F E)) = Matrix.fromBlocks (mat h₁) 0 0 1` using `hhd`. Establish `k` using `key hd md (by`. Rewrite using `[hmd', hhd', Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hmι])`. Use the proof step `(by rw [hmd', Matrix.fromBlocks_mulVec]; simp [hmx'])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(by rw [hmd', Matrix.fromBlocks_mulVec]; simp)`. Use the proof step `(by rw [hmd', Matrix.fromBlocks_mulVec]; simp [hmy'])`. Use the proof step `(by rw [hmd', Matrix.fromBlocks_mulVec]; simp)`. Use the proof step `(boxFun Φ₁ Φ₂) (GlobalTheory.T.tensor_product_schwartz_adelic F _ _ Φ₁ Φ₂ hΦ₁ hΦ₂)`. Establish `hpres : om (1, m) Φ₁ ∈ schA F (Fin n × Fin d)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hUS.toIsSplitting.pres m Φ₁ hΦ₁` as an intermediate fact. Conclude with `this`. Rewrite `k` using `[hbox m md hmd Φ₁ hΦ₁ Φ₂ hΦ₂]`. Rewrite `k` using `[show (om.comp (MonoidHom.inr _ _)) m Φ₁ = om (1, m) Φ₁ from rfl, hEe _ hpres Φ₂ hΦ₂, hEe Φ₁ hΦ₁ Φ₂ hΦ₂, hbox₁ h₁ hd hhd (e Φ₁) (he.maps Φ₁ hΦ₁) (e₂ Φ₂) (he₂s Φ₂ hΦ₂), hce h₁ m ⟨hmx, hmy, hmι⟩ Φ₁ hΦ₁]`. Establish `hA : om₁ (1, h₁) (e Φ₁) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `heΦ` to reduce the goal to its premises. Establish `: om₁ (1, h₁⁻¹) (om₁ (1, h₁) (e Φ₁)) = e Φ₁`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, inv_mul_cancel, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[← this, h0, map_zero]`.
-
-Rewrite using `[MonoidHom.one_apply, Units.val_one]`. Conclude with `eq_one_of_boxFun hA he₂Φ k`.
+A detailed English derivation is pending.
 -/
 theorem char_eq_one : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

@@ -14,7 +14,7 @@ namespace GlobalTheory.RealWeilF.CMChart
 open Formalism.L2.Fam.ThC
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB θ hθ`. Use `exists_chart_of_cm hB.cm (fun w => (B.emb w).1) (fun w => ?_) θ hθ` and prove the remaining obligations. Use `show InfinitePlace.mk ((B.emb w).1.comp (algebraMap F E)) = w`. Rewrite using `[(B.emb w).2, InfinitePlace.mk_embedding]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chartF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),

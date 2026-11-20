@@ -9,7 +9,7 @@ namespace GlobalTheory
 open NumberField in
 
 /- English proof (translation)
-The claim follows from `(_root_.ReciprocityTheory.ChartRestriction.G.FD.emb_herm τ G u v).symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.hermC_emb_eq_map_herm {E : Type} [Field E] [NumberField E]
     [IsCMField E] {r : ℕ}
@@ -20,7 +20,7 @@ theorem _root_.GlobalTheory.hermC_emb_eq_map_herm {E : Type} [Field E] [NumberFi
 open NumberField in
 
 /- English proof (translation)
-Establish `h` using `congrArg τ X.ξ0_im`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc at h`. Rewrite `h` using `[NumberField.IsCMField.complexEmbedding_complexConj, map_neg]`. Establish `h2` using `congrArg Complex.re h`. Simplify using `only [Complex.conj_re, Complex.neg_re] at h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -37,9 +37,9 @@ theorem _root_.GlobalTheory.re_map_xi_eq_zero {E : Type} [Field E] [NumberField 
 open NumberField in
 
 /- English proof (translation)
-Establish `hre` using `_root_.GlobalTheory.re_map_xi_eq_zero X τ.1`. Establish `hz : τ.1 X.ξ0 = ((τ.1 X.ξ0).im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.c`. Use `conv_lhs => rw [hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.norm_real]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.c_eq_two_mul_abs_im {E : Type} [Field E] [NumberField E] [IsCMField E]
     {r : ℕ}

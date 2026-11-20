@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg
 
 /- English proof (translation)
-Unfold `minorIJ`. Use `split_ifs with e`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Conclude with `(map_zero f).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem minorIJ_map {R S : Type} [CommRing R] [CommRing S] {N : ℕ} (f : R →+* S) (A : Matrix (Fin N) (Fin N) R)
     (I J : Finset (Fin N)) : minorIJ (A.map f) I J = f (minorIJ A I J) := by
@@ -26,7 +26,7 @@ theorem minorIJ_map {R S : Type} [CommRing R] [CommRing S] {N : ℕ} (f : R →+
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hn, heq⟩` from `hs`. Use `⟨d, -g, h, fun m hm k => hg m (by rwa [support_neg] at hm) k, hh, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, heq, neg_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem regAt_neg {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} {s : Ω} (hs : RegAt x (mCoordIdeal z) s) :
     RegAt x (mCoordIdeal z) (-s) := by
@@ -55,9 +55,9 @@ def valMat {N : ℕ} (x : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (A : M
 variable {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 
 /- English proof (translation)
-Use `revert hf`. Use `Finset.induction_on s ?_ (fun a s ha ih hf => ?_)` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨(ValRing.regAt_valAt_ring K ι Ω x z hz).1, (ValRing.regAt_valAt_ring K ι Ω x z hz).2.2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `hfa` using `hf a (Finset.mem_insert_self a s)`. Take `⟨h1, h2⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))`. Take `⟨-, hadd, -, hval⟩` from `(ValRing.regAt_valAt_ring K ι Ω x z hz).2.2.2.2 _ _ hfa h1`. Conclude with `⟨hadd, by rw [hval, h2]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reg_sum (hz : z ∈ mcPts (mCoordIdeal x)) {σ : Type} (s : Finset σ) (f : σ → Ω)
     (hf : ∀ i ∈ s, RegAt x (mCoordIdeal z) (f i)) :
@@ -74,7 +74,7 @@ theorem reg_sum (hz : z ∈ mcPts (mCoordIdeal x)) {σ : Type} (s : Finset σ) (
     exact ⟨hadd, by rw [hval, h2]⟩
 
 /- English proof (translation)
-Take `⟨hm, -, hv, -⟩` from `(ValRing.regAt_valAt_ring K ι Ω x z hz).2.2.2.2 s t hs ht`. Conclude with `⟨hm, hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem reg_mul (hz : z ∈ mcPts (mCoordIdeal x)) {s t : Ω} (hs : RegAt x (mCoordIdeal z) s)
     (ht : RegAt x (mCoordIdeal z) t) :
@@ -83,11 +83,9 @@ theorem reg_mul (hz : z ∈ mcPts (mCoordIdeal x)) {s t : Ω} (hs : RegAt x (mCo
   exact ⟨hm, hv⟩
 
 /- English proof (translation)
-Establish `key : ∀ a b, RegAt x (mCoordIdeal z) ((A * B) a b) ∧ valAt x ((A * B) a b) z = ∑ c, valAt x (A a c) z * valAt x (B c b) z`. Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Take `⟨h1, h2⟩` from `reg_sum hz Finset.univ (fun c => A a c * B c b) (fun c _ => (reg_mul hz (hA a c) (hB c b)).1)`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Conclude with `Finset.sum_congr rfl fun c _ => (reg_mul hz (hA a c) (hB c b)).2`. Use `⟨fun a b => (key a b).1, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [valMat, Matrix.of_apply, Matrix.mul_apply]`.
-
-Conclude with `(key a b).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem regMat_mul {N : ℕ} (hz : z ∈ mcPts (mCoordIdeal x)) {A B : Matrix (Fin N) (Fin N) Ω}
     (hA : ∀ a b, RegAt x (mCoordIdeal z) (A a b)) (hB : ∀ a b, RegAt x (mCoordIdeal z) (B a b)) :
@@ -107,13 +105,11 @@ theorem regMat_mul {N : ℕ} (hz : z ∈ mcPts (mCoordIdeal x)) {A B : Matrix (F
   exact (key a b).2
 
 /- English proof (translation)
-Set `A' : Matrix (Fin N) (Fin N) (regRing x z)` to `fun a b => ⟨A a b, hA a b⟩`. Establish `hmap : A'.map (regRing x z).subtype = A`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `h1 : minorIJ A I J = ((minorIJ A' I J : regRing x z) : Ω)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h` using `minorIJ_map (regRing x z).subtype A' I J`. Rewrite `h` using `[hmap]`. Conclude with `h`. Establish `h2 : valMat x z A = A'.map (regVal x hz)`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(minorIJ A' I J).2`. Rewrite using `[h2, minorIJ_map, h1]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reg_minor {N : ℕ} (hz : z ∈ mcPts (mCoordIdeal x)) {A : Matrix (Fin N) (Fin N) Ω}
     (hA : ∀ a b, RegAt x (mCoordIdeal z) (A a b)) (I J : Finset (Fin N)) :

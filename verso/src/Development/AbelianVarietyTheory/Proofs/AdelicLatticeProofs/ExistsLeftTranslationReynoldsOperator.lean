@@ -12,9 +12,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [evC, ltr]`. Consider the case `add p q hp hq`. Simplify using `only [evC, map_add] at hp hq ⊢`. Rewrite using `[hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mul_X p i hp`. Simplify using `only [evC, map_mul] at hp ⊢`. Rewrite using `[hp]`. Simplify using `[ltr, Matrix.mul_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) :
     evC (ltr g f) y = evC f (g * y) := by
@@ -31,9 +31,9 @@ theorem evC_ltr (g y : Matrix ι ι ℂ) (f : MvPolynomial (ι × ι) ℂ) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g hg`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `evC_ltr g (Matrix.of fun i j => x (i, j)) f`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[h g hg]`. Simplify `h1` using `[evC]`. Introduce `h g hg y`. Rewrite using `[← evC_ltr, h g hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isInv_iff (Γ : Set (Matrix ι ι ℂ)) (f : MvPolynomial (ι × ι) ℂ) :
     IsInv Γ f ↔ ∀ g ∈ Γ, ltr g f = f := by
@@ -48,17 +48,15 @@ theorem isInv_iff (Γ : Set (Matrix ι ι ℂ)) (f : MvPolynomial (ι × ι) ℂ
     rw [← evC_ltr, h g hg]
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ hss`. Take `⟨Rey, h1, h2, -, -, h5, h6⟩` from `GlobalTheory.T.exists_reynolds_of_completelyReducible' (MvPolynomial (ι × ι) ℂ) ((fun g => (ltr g).toLinearMap) '' Γ) (by`. Introduce `U hU`. Take `⟨U', hU', hc⟩` from `GlobalTheory.T.leftTranslateMatrixPoly_completelyReducible ι Γ hΓ hss U (fun g hg f hf => hU _ ⟨g, hg, rfl⟩ f hf)`. Use `⟨U', ?_, hc⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩ f hf`. Conclude with `hU' g hg f hf)`. Use `⟨Rey, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Rewrite using `[isInv_iff]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Conclude with `h1 f _ ⟨g, hg, rfl⟩`. Introduce `f hf`. Rewrite `hf` using `[isInv_iff]`. Apply `h2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hf g hg`. Introduce `a f ha`. Rewrite `ha` using `[isInv_iff]`. Use `h5 (LinearMap.mulLeft ℂ a) ?_ f` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩ v`. Simplify using `only [LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply, map_mul, ha g hg]`. Introduce `U hU`. Apply `h6` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩ f hf`.
-
-Conclude with `hU g hg f hf`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_isReynolds : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → SS Γ → ∃ Rey, IsReynolds Γ Rey := by
   intro ι _ _ Γ hΓ hss

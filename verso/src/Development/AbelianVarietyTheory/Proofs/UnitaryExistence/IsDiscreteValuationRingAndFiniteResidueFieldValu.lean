@@ -8,9 +8,7 @@ namespace GlobalTheory
 open IsLocalRing IsDedekindDomain NumberField in
 
 /- English proof (translation)
-Set `S` to `Localization.subalgebra.ofField K _ v.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsLocalization.AtPrime S v.asIdeal := Localization.subalgebra.isLocalization_ofField K _ _`. Establish `hD : IsDiscreteValuationRing S` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot S`. Use `haveI : IsLocalRing S := inferInstance`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`.
-
-Establish `hS : Finite (ResidueField S)` using `Finite.of_equiv _ (IsLocalization.AtPrime.equivQuotMaximalIdeal v.asIdeal S).toEquiv`. Conclude with `⟨hD, hS⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isDiscreteValuationRing_and_finite_residueField_valuationSubringAtPrime
     {R : Type*} [CommRing R] [IsDedekindDomain R] (K : Type*) [Field K] [Algebra R K]
@@ -31,13 +29,13 @@ theorem _root_.GlobalTheory.isDiscreteValuationRing_and_finite_residueField_valu
 
 open IsLocalRing IsDedekindDomain NumberField in
 /- English proof (translation)
-Establish `hmem : ∀ (B : ValuationSubring K) (hB : A ≤ B) (x : A), x ∈ A.idealOfLE B hB ↔ (x : K) ∈ B.nonunits`. Introduce `B hB x`. Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Unfold `ValuationSubring.idealOfLE`. Rewrite using `[Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hmax : ∀ (B : ValuationSubring K) (hB : A ≤ B), (a : K) ∈ B.nonunits → A.idealOfLE B hB = maximalIdeal A`. Introduce `B hB haB`. Establish `hne : A.idealOfLE B hB ≠ ⊥`. Introduce `hbot`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: a ∈ A.idealOfLE B hB` using `(hmem B hB a).2 haB`. Rewrite `this` using `[hbot, Ideal.mem_bot]`. Conclude with `ha0 this`. Use `(inferInstance : (A.idealOfLE B hB).IsPrime).isMaximal hne` as an intermediate fact. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haA : (a : K) ∈ A.nonunits` using `(ValuationSubring.nonunits_le_nonunits.2 h) haW`. Establish `hcongr : ∀ (P Q : Ideal A) [P.IsPrime] [Q.IsPrime], P = Q → A.ofPrime P = A.ofPrime Q`. Introduce and unpack `P Q _ _ rfl`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem eq_of_le_of_mem_nonunits_of_dvr {K : Type*} [Field K]
     (A W : ValuationSubring K) (h : A ≤ W) [IsDiscreteValuationRing A]
@@ -69,27 +67,25 @@ private theorem eq_of_le_of_mem_nonunits_of_dvr {K : Type*} [Field K]
 open IsLocalRing IsDedekindDomain NumberField in
 
 /- English proof (translation)
-Establish `hnW` using `hW`. Establish `hint : ∀ x : 𝓞 L, algebraMap (𝓞 L) L x ∈ W`. Introduce `x`. Establish `h : IsIntegral W (x : L)` using `(RingOfIntegers.isIntegral_coe x).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show (x : L) ∈ W`. Rewrite using `[← hy]`. Conclude with `y.2`. Set `f : 𝓞 L →+* W` to `(algebraMap (𝓞 L) L).codRestrict W hint`. Establish `hf : ∀ x : 𝓞 L, ((f x : W) : L) = (x : L)` using `fun x => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : Ideal (𝓞 L)` to `(maximalIdeal W).comap f`. Establish `hPmem : ∀ x : 𝓞 L, x ∈ P ↔ (x : L) ∈ W.nonunits`. Introduce `x`. Rewrite using `[Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff, ValuationSubring.mem_nonunits_iff, hf]`. Establish `hnP : (n : 𝓞 L) ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hPmem]`. Simplify using `using hnW`. Establish `hPne : P ≠ ⊥`. Introduce `hbot`. Rewrite `hnP` using `[hbot, Ideal.mem_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hn (by exact_mod_cast hnP)`. Set `v : HeightOneSpectrum (𝓞 L)` to `⟨P, Ideal.comap_isPrime f (maximalIdeal W), hPne⟩`. Establish `hfin : Finite (𝓞 L ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hPne`. Set `A` to `HeightOneSpectrum.valuationSubringAtPrime L v`. Establish `hAW : A ≤ W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Set `S` to `Localization.subalgebra.ofField L _ v.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsLocalization.AtPrime S v.asIdeal := Localization.subalgebra.isLocalization_ofField L _ _`. Take `⟨⟨a, s⟩, hy⟩` from `IsLocalization.mk'_surjective v.asIdeal.primeCompl (⟨x, hx⟩ : S)`. Establish `hspec` using `congrArg Subtype.val (IsLocalization.mk'_spec S a s)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Simplify using `only at hy`. Rewrite `hspec` using `[hy]`. Express the relevant statement in the definitionally equal form `x * ((s : 𝓞 L) : L) = (a : L) at hspec`. Establish `hsu : IsUnit (f s)`. Assume the negation of the conclusion as `hns`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `s.2 (show (s : 𝓞 L) ∈ P from (IsLocalRing.mem_maximalIdeal _).2 hns)`. Take `⟨t, ht⟩` from `hsu.exists_right_inv`. Establish `h1 : ((s : 𝓞 L) : L) * (t : L) = 1`. Rewrite using `[← hf]`. Conclude with `congrArg Subtype.val ht`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x = (a : L) * (t : L)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx']`. Conclude with `mul_mem (hint a) t.2`. Take `⟨hD, hF⟩` from `_root_.GlobalTheory.isDiscreteValuationRing_and_finite_residueField_valuationSubringAtPrime L v hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hnA : (n : L) ∈ A` using `natCast_mem A n`. Establish `heq : A = W` using `eq_of_le_of_mem_nonunits_of_dvr A W hAW ⟨(n : L), hnA⟩ (by`. Introduce `h0`. Use `congrArg Subtype.val h0` as an intermediate fact. Simplify using `only [ZeroMemClass.coe_zero] at this`.
-
-Conclude with `hn (by exact_mod_cast this)) hnW`. Rewrite using `[← heq]`. Conclude with `⟨hD, hF⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isDiscreteValuationRing_and_finite_residueField_of_numberField {L : Type*} [Field L]
     [NumberField L] (W : ValuationSubring L) {n : ℕ} (hn : n ≠ (0 : ℕ))

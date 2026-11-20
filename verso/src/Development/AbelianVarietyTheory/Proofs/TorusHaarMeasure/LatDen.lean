@@ -11,13 +11,13 @@ namespace GlobalTheory.LatDen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X`. Establish `hsq : ∀ k : ℤ, (((k.natAbs * k.natAbs : ℕ)) : E) = (k : E) * (k : E)`. Introduce `k`. Establish `h : ((k.natAbs * k.natAbs : ℕ) : ℤ) = k * k`. Rewrite using `[Nat.cast_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Int.natAbs_mul_self' k`. Rewrite using `[← Int.cast_natCast, h, Int.cast_mul]`. Establish `hpos : ∀ k : ℤ, k ≠ 0 → 0 < k.natAbs * k.natAbs` using `fun k hk => Nat.mul_pos (Int.natAbs_pos.2 hk) (Int.natAbs_pos.2 hk)`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hm⟩` from `GlobalTheory.LatFin.exists_int_smul_mem X.Λ X.Λ_span v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hpos k hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hsq, mul_smul, Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem hm k`. Take `⟨k, hk, hi⟩` from `GlobalTheory.LatFin.exists_common_den X.Λ X.Λ_fg`. Use `⟨_, hpos k hk, fun v hv a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsq, mul_assoc]`. Establish `h1 : IsIntegral ℤ (k : E)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := E) (x := k))`. Conclude with `h1.mul (hi v hv a)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem latDen : (∀ (r : ℕ) (X : Data E r), (∀ v : Fin r → E, ∃ n : ℕ, 0 < n ∧ (n : E) • v ∈ X.Λ) ∧ ∃ n : ℕ, 0 < n ∧ ∀ v ∈ X.Λ, ∀ k, IsIntegral ℤ ((n : E) * v k)) := by
   intro r X

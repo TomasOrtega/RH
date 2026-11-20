@@ -17,7 +17,7 @@ section Maps
 variable {α β : Type*}
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact .nil`. Consider the case `left _ ih => exact .left ih`. Consider the case `right _ ih => exact .right ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem interleave_map (f : α → β) {u v w : List α} (h : Comb.Interleave u v w) :
     Comb.Interleave (u.map f) (v.map f) (w.map f) := by
@@ -27,7 +27,7 @@ theorem interleave_map (f : α → β) {u v w : List α} (h : Comb.Interleave u 
   | right _ ih => exact .right ih
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => exact .nil`. Consider the case `cons _ hi ih => exact .cons ih (interleave_map f hi)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem shuffle_map (f : α → β) {us : List (List α)} {w : List α} (h : Comb.Shuffle us w) :
     Comb.Shuffle (us.map (List.map f)) (w.map f) := by
@@ -40,9 +40,9 @@ end Maps
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply']`. Use `show (sNu^[j] x).1.nu 1 = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih, IrrGL.nu_nu]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_sNu_iterate (x : CuspT k) (j : ℕ) : (sNu^[j] x).1 = x.1.nu j := by
   induction j with
@@ -55,7 +55,7 @@ theorem val_sNu_iterate (x : CuspT k) (j : ℕ) : (sNu^[j] x).1 = x.1.nu j := by
     rfl
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h1 : x.1.nu 1 = y.1.nu 1` using `congrArg Subtype.val h`. Establish `h2` using `congrArg (fun r => IrrGL.nu r (-1)) h1`. Simplify using `only [IrrGL.nu_nu, add_neg_cancel, IrrGL.nu_zero] at h2`. Conclude with `Subtype.ext h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sNu_injective : Function.Injective (sNu (k := k)) := by
   intro x y h
@@ -65,7 +65,7 @@ theorem sNu_injective : Function.Injective (sNu (k := k)) := by
   exact Subtype.ext h2
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : t.1.nu j = t.1` using `(val_sNu_iterate t j).symm.trans (congrArg Subtype.val h)`. Establish `h2 : t.1.nu ((j : ℝ) : ℂ) = t.1` using `by simpa using h1`. Establish `h3 : (j : ℝ) = 0` using `(IrrGL.nu_ofReal_eq_self t.2.1).1 h2`. Establish `h4 : j = 0` using `by exact_mod_cast h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -78,7 +78,7 @@ theorem sNu_aperiodic (t : CuspT k) (j : ℕ) (hj : 0 < j) : sNu^[j] t ≠ t := 
   omega
 
 /- English proof (translation)
-Introduce `Δ Δ' h`. Establish `h1 : Δ.first = Δ'.first` using `congrArg (fun a => (Comb.ASeg.start a).1) h`. Establish `h2 : Δ.len = Δ'.len` using `congrArg Comb.ASeg.len h`. Conclude with `Segment.ext_first h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toA_injective : Function.Injective (toA (k := k)) := by
   intro Δ Δ' h
@@ -87,9 +87,9 @@ theorem toA_injective : Function.Injective (toA (k := k)) := by
   exact Segment.ext_first h1 h2
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Segment.mem_carrier]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨i, hi, rfl⟩, rfl⟩`. Conclude with `⟨i, hi, (val_sNu_iterate (toA Δ).start i).symm⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨sNu^[a] (toA Δ).start, ⟨a, ha, rfl⟩, val_sNu_iterate (toA Δ).start a⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem image_carrier (Δ : Segment k) : Subtype.val '' ((toA Δ).carrier sNu) = Δ.carrier := by
   ext x
@@ -101,14 +101,14 @@ theorem image_carrier (Δ : Segment k) : Subtype.val '' ((toA Δ).carrier sNu) =
     exact ⟨sNu^[a] (toA Δ).start, ⟨a, ha, rfl⟩, val_sNu_iterate (toA Δ).start a⟩
 
 /- English proof (translation)
-The claim follows from `(Set.image_subset_image_iff Subtype.val_injective).1 (by rwa [image_carrier, image_carrier])`.
+A detailed English derivation is pending.
 -/
 theorem carrier_subset {Δ Δ' : Segment k} (h : Δ.carrier ⊆ Δ'.carrier) :
     (toA Δ).carrier sNu ⊆ (toA Δ').carrier sNu :=
   (Set.image_subset_image_iff Subtype.val_injective).1 (by rwa [image_carrier, image_carrier])
 
 /- English proof (translation)
-Take `⟨⟨⟨Γ, hΓ⟩, h1, h2⟩, j, hj, hs⟩` from `h`. Use `⟨⟨⟨Segment.ofFirst Γ.start.1 Γ.start.2 Γ.len Γ.len_pos, ?_⟩, fun e => h1 (carrier_subset e), fun e => h2 (carrier_subset e)⟩, j, hj, ?_⟩` and prove the remaining obligations. Establish `e : toA (Segment.ofFirst Γ.start.1 Γ.start.2 Γ.len Γ.len_pos) = Γ` using `rfl`. Rewrite using `[← image_carrier, e, hΓ, Set.image_union, image_carrier, image_carrier]`. Conclude with `(congrArg Subtype.val hs).trans (val_sNu_iterate _ j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem precedes_of_aPrecedes {Δ Δ' : Segment k} (h : Comb.APrecedes sNu (toA Δ) (toA Δ')) : Δ.Precedes Δ' := by
   obtain ⟨⟨⟨Γ, hΓ⟩, h1, h2⟩, j, hj, hs⟩ := h
@@ -119,9 +119,9 @@ theorem precedes_of_aPrecedes {Δ Δ' : Segment k} (h : Comb.APrecedes sNu (toA 
   · exact (congrArg Subtype.val hs).trans (val_sNu_iterate _ j)
 
 /- English proof (translation)
-Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using `[decW, Comb.ASeg.dec, toA]`. Introduce `i h1 h2`. Establish `hl : i < Δ.len` using `by simpa [decW] using h1`. Simplify using `only [decW, Comb.ASeg.dec, List.getElem_ofFn, List.getElem_map, List.getElem_reverse, List.getElem_range, Segment.term, val_sNu_iterate, Fin.val_rev]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [toA, List.length_range]`. Rewrite using `[show Δ.len - 1 - i = Δ.len - (i + 1) by omega]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem decW_eq (Δ : Segment k) : decW Δ = ((toA Δ).dec sNu).map Subtype.val := by
   apply List.ext_getElem
@@ -134,7 +134,7 @@ theorem decW_eq (Δ : Segment k) : decW Δ = ((toA Δ).dec sNu).map Subtype.val 
     rw [show Δ.len - 1 - i = Δ.len - (i + 1) by omega]
 
 /- English proof (translation)
-Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `i h1 h2`. Simplify using `[Fin.rev]`. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -148,7 +148,7 @@ theorem reverse_ofFn {α : Type*} {h : ℕ} (f : Fin h → α) :
     omega
 
 /- English proof (translation)
-Rewrite using `[wtW, Comb.wt, List.map_flatten, ← List.map_reverse, reverse_ofFn, List.map_map, List.map_map, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `decW_eq _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem wtW_eq {h : ℕ} (Δ : Fin h → Segment k) :
     wtW Δ = (Comb.wt sNu ((List.ofFn Δ).map toA)).map Subtype.val := by
@@ -161,11 +161,11 @@ instance : Nonempty (CuspT k) :=
   ⟨⟨IrrGL.ofChar 1 isSmoothChar_one, IrrGL.isCusp_ofChar 1 isSmoothChar_one⟩⟩
 
 /- English proof (translation)
-Take `⟨Ls, rfl, hS⟩` from `H`. Establish `hg : Function.LeftInverse (Function.invFun (Subtype.val : CuspT k → IrrGL k)) Subtype.val` using `Function.leftInverse_invFun Subtype.val_injective`. Establish `hback : ∀ l : List (CuspT k), (l.map Subtype.val).map (Function.invFun (Subtype.val : CuspT k → IrrGL k)) = l` using `fun l => by`. Rewrite using `[List.map_map, hg.comp_eq_id, List.map_id]`. Use `⟨Ls.map toA, by simp, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `shuffle_map (Function.invFun (Subtype.val : CuspT k → IrrGL k)) hS`. Rewrite `h1` using `[wtW_eq, hback, List.map_map]`. Establish `h2 : (List.map (Function.invFun (Subtype.val : CuspT k → IrrGL k))) ∘ decW = Comb.ASeg.dec sNu ∘ toA`. Use function extensionality and compare the values at `D`. Simplify using `only [Function.comp, decW_eq, hback]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2, ← List.map_map]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inSh_of_inShW {𝔫 : Multiset (Segment k)} {h : ℕ} {Δ : Fin h → Segment k} (H : InShW 𝔫 (wtW Δ)) :
     Comb.InSh sNu (𝔫.map toA) (Comb.wt sNu ((List.ofFn Δ).map toA)) := by
@@ -185,7 +185,7 @@ theorem inSh_of_inShW {𝔫 : Multiset (Segment k)} {h : ℕ} {Δ : Fin h → Se
   exact h1
 
 /- English proof (translation)
-Rewrite using `[Comb.AOrdered, List.pairwise_map, List.pairwise_ofFn]`. Conclude with `fun i j hij hp => H.2 i j hij (precedes_of_aPrecedes hp)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem aOrdered_of_isOrderedForm {h : ℕ} {Δ : Fin h → Segment k} {𝔪 : Multiset (Segment k)}
     (H : IsOrderedForm Δ 𝔪) : Comb.AOrdered sNu ((List.ofFn Δ).map toA) := by
@@ -193,16 +193,16 @@ theorem aOrdered_of_isOrderedForm {h : ℕ} {Δ : Fin h → Segment k} {𝔪 : M
   exact fun i j hij hp => H.2 i j hij (precedes_of_aPrecedes hp)
 
 /- English proof (translation)
-Rewrite using `[← H.1, Fin.univ_val_map, Multiset.map_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_map_ofFn {h : ℕ} {Δ : Fin h → Segment k} {𝔪 : Multiset (Segment k)} (H : IsOrderedForm Δ 𝔪) :
     (((List.ofFn Δ).map toA : List _) : Multiset _) = 𝔪.map toA := by
   rw [← H.1, Fin.univ_val_map, Multiset.map_coe]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ 𝔪 𝔫 h h' Δ Γ hΔ hΓ h1 h2`. Establish `hL` using `coe_map_ofFn hΔ`. Establish `hM` using `coe_map_ofFn hΓ`. Establish `key` using `GlobalTheory.T.shuffle_weight_antisymmetric_eq sNu sNu_injective sNu_aperiodic ((List.ofFn Δ).map toA) ((List.ofFn Γ).map toA) (aOrdered_of_isOrderedForm hΔ) (aOrdered_of_isOrderedForm hΓ) (by rw [hM]; exact inSh_of_inShW h1) (by rw [hL]; exact inSh_of_inShW h2)`. Rewrite `key` using `[hL, hM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Multiset.map_injective toA_injective key`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_inShW_wtW : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL), ∀ (𝔪 𝔫 : Multiset (Segment k)) (h h' : ℕ) (Δ : Fin h → Segment k)

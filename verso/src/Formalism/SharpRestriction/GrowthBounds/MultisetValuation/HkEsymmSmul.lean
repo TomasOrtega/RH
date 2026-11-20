@@ -10,11 +10,11 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
   Formalism.MainNotions.G.GAtP.algOK
 
 /- English proof (translation)
-Establish `e1 : P ^ (-(h * i * ((N + g) - i))) * P ^ (vm * i) * P ^ (h * N * i) * P ^ (2 * h * ((i - l) * (g - l))) * P ^ (h * (l * (g - l))) * (P ^ (vm * (i - l)))⁻¹ * (P ^ (h * (N + g) * (i - l)))⁻¹ = P ^ (vm * l) * P ^ (-(h * (i - l) * (N - (i - l))))`. Rewrite using `[← zpow_neg, ← zpow_neg]`. Simplify using `only [← zpow_add₀ hP]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (a ^ (i - l))⁻¹ = (a ^ i)⁻¹ * a ^ l`. Rewrite using `[zpow_sub₀ ha, inv_div, div_eq_mul_inv, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`. Use `_ = _ := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_zpow, mul_zpow, mul_zpow, ← zpow_mul, mul_inv, zpow_neg a' i]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hk_scal {K : Type} [Field K] (P a a' e : K) (hP : P ≠ 0) (ha : a ≠ 0) (h vm N g i l : ℤ) :
     P ^ (-(h * i * ((N + g) - i))) * (P ^ (vm * i) * (a' ^ (-i) * P ^ (h * N * i))) *
@@ -40,7 +40,7 @@ theorem hk_scal {K : Type} [Field K] (P a a' e : K) (hP : P ≠ 0) (ha : a ≠ 0
       ring
 
 /- English proof (translation)
-Simplify using `only [MvPolynomial.esymm, map_sum, map_prod, MvPolynomial.eval_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, (Finset.mem_powersetCard.1 ht).2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_esymm_smul {K σ : Type} [Field K] [Fintype σ] (c : K) (f : σ → K) (l : ℕ) :
     MvPolynomial.eval (fun x => c * f x) (MvPolynomial.esymm σ K l) =
@@ -50,7 +50,7 @@ theorem hk_esymm_smul {K σ : Type} [Field K] [Fintype σ] (c : K) (f : σ → K
   rw [Finset.prod_mul_distrib, Finset.prod_const, (Finset.mem_powersetCard.1 ht).2]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.esymm, Finset.powersetCard_eq_empty.2 (by rwa [Finset.card_univ]), Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_esymm_zero {K σ : Type} [Field K] [Fintype σ] (l : ℕ) (h : Fintype.card σ < l) :
     MvPolynomial.esymm σ K l = 0 := by
@@ -62,15 +62,15 @@ def eBe (v : X.Pl) (l : ℕ) : X.G.Kf :=
   MvPolynomial.eval (fun x : Fin (X.t + 1) => X.qh v x.val) (MvPolynomial.esymm (Fin (X.t + 1)) X.G.Kf l)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(X.std v).even`. Establish `h1 : X.G.P.n' v / 2 = k` using `by omega`. Establish `h2 : p ^ X.G.P.n' v = (p ^ k) ^ 2` using `by rw [← pow_mul]; congr 1; omega`. Establish `hQ : (((p ^ k : ℕ) : ℕ) : X.G.Kf) ≠ 0` using `by push_cast; exact pow_ne_zero _ hp`. Establish `hG` using `Formalism.InvariantFactorPaths.G7.gauss_elementary_symmetric X.G.Kf (p ^ k) (X.t + 1) l hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Formalism.InvariantFactorPaths.G7.beFam ((p : X.G.Kf) ^ k) (X.t + 1) = fun x => X.qh v x.val` using `funext fun x => by`. Use `beFam_eq X v x` as an intermediate fact. Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Establish `hb : Formalism.InvariantFactorPaths.G7.eF (Formalism.InvariantFactorPaths.G7.beFam ((p : X.G.Kf) ^ k) (X.t + 1)) l = eBe X v l`. Unfold `Formalism.InvariantFactorPaths.G7.eF eBe`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hf]`. Unfold `nC`. Rewrite using `[h2]`. Move the coercions through the operations in `at hG ⊢`. Rewrite using `[hG, hb]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Unfold `hv`. Rewrite using `[h1]`. Use `congr 1`. Rewrite using `[← pow_mul, ← pow_mul, ← zpow_natCast]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Rewrite using `[← pow_mul, ← zpow_natCast]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem nC_cast (hp : (p : X.G.Kf) ≠ 0) (v : X.Pl) (i l : ℕ) :
     (nC X v i l : X.G.Kf) = (p : X.G.Kf) ^ (2 * hv X v * (((i - l : ℕ) : ℤ) * ((X.t + 1 - l : ℕ) : ℤ))) *
@@ -102,7 +102,7 @@ theorem nC_cast (hp : (p : X.G.Kf) ≠ 0) (v : X.Pl) (i l : ℕ) :
     congr 1
 
 /- English proof (translation)
-Unfold `NN`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem NN_succ (k1 t j : ℕ) : (NN k1 t (j + 1) : ℤ) = (NN k1 t j : ℤ) + ((t + 1 : ℕ) : ℤ) := by
   unfold NN
@@ -110,11 +110,11 @@ theorem NN_succ (k1 t j : ℕ) : (NN k1 t (j + 1) : ℤ) = (NN k1 t j : ℤ) + (
   ring
 
 /- English proof (translation)
-Rewrite using `[hk_esymm_smul, nC_cast X hp]`. Use `show _ = ((a * a')⁻¹) ^ i * ((a * (p : X.G.Kf) ^ (X.vm v (j + 1))) ^ l * eBe X v l) * _`. Distinguish the cases in `hg : l ≤ X.t + 1`. Use `hk_scal (p : X.G.Kf) a a' (eBe X v l) hp ha (hv X v) (X.vm v (j + 1)) (NN X.G.P.m X.t j : ℤ) ((X.t + 1 : ℕ) : ℤ) i l` as an intermediate fact. Unfold `cA cC`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[NN_succ, Nat.cast_sub hl, Nat.cast_sub hg, ← zpow_natCast ((a * a')⁻¹) i, ← zpow_natCast (a * (p : X.G.Kf) ^ (X.vm v (j + 1))) l]`. Conclude with `this`. Establish `h0 : eBe X v l = 0`. Unfold `eBe`. Rewrite using `[hk_esymm_zero l (by simpa using not_le.1 hg), map_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hk_coef (hp : (p : X.G.Kf) ≠ 0) (a a' : X.G.Kf) (ha : a ≠ 0) (v : X.Pl) (j i l : ℕ) (hl : l ≤ i) :
     (p : X.G.Kf) ^ (-(hv X v * i * ((NN X.G.P.m X.t (j + 1) : ℤ) - i))) * cA X a' v j i * (nC X v i l : X.G.Kf) *

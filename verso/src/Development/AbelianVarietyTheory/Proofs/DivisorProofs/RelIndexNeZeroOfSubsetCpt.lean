@@ -8,15 +8,15 @@ open scoped Classical TensorProduct Pointwise
 namespace GlobalTheory.LocFinU
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hΩ.elim_finite_subcover (fun g : Ω => (g : G) • (U : Set G)) (fun g => hU.smul _) (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, ⟨1, U.one_mem, mul_one x⟩⟩)`. Establish `hmem : ∀ q : P ⧸ U.subgroupOf P, ∃ i : s, ((Quotient.out q : P) : G) ∈ ((i : Ω) : G) • (U : Set G)`. Introduce `q`. Use `hs (hP (Quotient.out q).2)` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨i, hi, h⟩` from `this`. Conclude with `⟨⟨i, hi⟩, h⟩`. Use `choose f hf using hmem`. Establish `hinj : Function.Injective f`. Introduce `q q' h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hf q`. Establish `h2` using `hf q'`. Rewrite `h1` using `[h]`. Take `⟨u, hu, hu'⟩` from `h1`. Take `⟨u', hu2, hu2'⟩` from `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Quotient.out_eq q, ← Quotient.out_eq q']`. Express the relevant statement in the definitionally equal form `QuotientGroup.mk _ = QuotientGroup.mk _`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[← hu', ← hu2']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Conclude with `U.mul_mem (U.inv_mem hu) hu2`. Use `haveI : Finite (P ⧸ U.subgroupOf P) := Finite.of_injective f hinj`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_subset_cpt {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (U P : Subgroup G) (hU : IsOpen (U : Set G)) (Ω : Set G) (hΩ : IsCompact Ω) (hP : (P : Set G) ⊆ Ω) :
@@ -52,7 +52,7 @@ end GlobalTheory.LocFinU
 namespace GlobalTheory.LocFinU
 
 /- English proof (translation)
-Unfold `cj`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `continuous_id`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) : Continuous (cj w) := by
   unfold cj
@@ -61,7 +61,7 @@ theorem continuous_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl
   · exact continuous_id
 
 /- English proof (translation)
-Unfold `UL`. Use `split_ifs`. Conclude with `isClosed_univ`. Establish `hc : Continuous fun g : GLw n w => cT (cj w) (g : Matrix (Fin n) (Fin n) _) * 1 * (g : Matrix (Fin n) (Fin n) _)` using `((Units.continuous_val.matrix_map (continuous_cj w)).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val`. Conclude with `isClosed_eq hc continuous_const`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_UL {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) :
     IsClosed (UL n w : Set (GLw n w)) := by
@@ -74,11 +74,11 @@ theorem isClosed_UL {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     exact isClosed_eq hc continuous_const
 
 /- English proof (translation)
-Rewrite using `[Subtype.isCompact_iff]`. Establish `hK : IsCompact (GlobalTheory.LFun.KGL w n : Set (GLw n w))` using `GlobalTheory.LFun.IntPtsUnitary.isCompact_GLint _ (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers E w)`. Establish `: (Subtype.val '' (KL n w : Set (UL n w))) = (GlobalTheory.LFun.KGL w n : Set (GLw n w)) ∩ (UL n w : Set (GLw n w))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨hx, x.2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨g, h2⟩, h1, rfl⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK.inter_right (isClosed_UL n w)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KL {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) :
     IsCompact (KL n w : Set (UL n w)) := by
@@ -100,13 +100,13 @@ end GlobalTheory.LocFinU
 namespace GlobalTheory.LocFinU
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one`. Use `⟨T.one_mem, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.zpowers_one_eq_bot, Subgroup.coe_bot, closure_singleton]`. Conclude with `isCompact_singleton`. Consider the case `mul x y _ _ hx hy`. Use `⟨T.mul_mem hx.1 hy.1, ?_⟩` and prove the remaining obligations. Establish `hxy : Commute x y` using `hc x hx.1 y hy.1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp : IsCompact (closure (Subgroup.zpowers x : Set G) * closure (Subgroup.zpowers y : Set G))` using `hx.2.mul hy.2`. Use `hcp.of_isClosed_subset isClosed_closure (closure_minimal ?_ hcp.isClosed)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨x ^ k, subset_closure ⟨k, rfl⟩, y ^ k, subset_closure ⟨k, rfl⟩, (hxy.mul_zpow k).symm⟩`. Consider the case `inv x _ hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T.inv_mem hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_inv]`. Conclude with `hx.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cptPart_subset_of_comm {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     (T : Subgroup G) (hc : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a) :

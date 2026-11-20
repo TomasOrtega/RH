@@ -3,7 +3,7 @@ import Formalism.HyperbolicPlaceProducts.Statement
 namespace Formalism.SLP.P
 
 /- English proof (translation)
-Establish `hprod` using `Nat.prod_primeFactorsList (show j ≠ 0 by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem two_pow_length_primeFactorsList_le (j : ℕ) (hj : 1 ≤ j) :
     2 ^ (Nat.primeFactorsList j).length ≤ j := by
@@ -13,11 +13,11 @@ theorem two_pow_length_primeFactorsList_le (j : ℕ) (hj : 1 ≤ j) :
     _ = j := hprod
 
 /- English proof (translation)
-Introduce `n j hn hj`. Use `set k := (Nat.primeFactorsList j).length`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hj0 : (0 : ℝ) < j` using `by exact_mod_cast hj`. Establish `hk : (2 : ℝ) ^ k ≤ j` using `by exact_mod_cast two_pow_length_primeFactorsList_le j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hklog : (k : ℝ) ≤ Real.logb 2 j`. Rewrite using `[Real.le_logb_iff_rpow_le (by norm_num) hj0]`. Simplify `hk` using `[Real.rpow_natCast]`. Establish `hlogn : 0 ≤ Real.logb 2 n` using `Real.logb_nonneg (by norm_num) (by exact_mod_cast hn)`. Establish `e1 : (n : ℝ) ^ k = (2 : ℝ) ^ ((k : ℝ) * Real.logb 2 n)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, Real.rpow_mul (by norm_num), Real.rpow_logb (by norm_num) (by norm_num) hn0, Real.rpow_natCast]`. Establish `e2 : (j : ℝ) ^ Real.logb 2 n = (2 : ℝ) ^ (Real.logb 2 j * Real.logb 2 n)`. Rewrite using `[Real.rpow_mul (by norm_num), Real.rpow_logb (by norm_num) (by norm_num) hj0]`. Rewrite using `[e1, e2]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by norm_num) (mul_le_mul_of_nonneg_right hklog hlogn)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_primeFactors_length_le : Formalism.SLP.OmegaPow := by
   intro n j hn hj

@@ -12,9 +12,9 @@ variable {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
 variable {S : Type*} [SetLike S Ω] [SubringClass S Ω]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro e he`. Simplify using `using he`. Consider the case `succ k ih => intro e he`. Rewrite using `[pow_succ, mul_smul]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih _ (hYu e he)`.
+A detailed English derivation is pending.
 -/
 theorem inv_pow_smul_mem (Y : AddSubgroup E) {u : Ω} (hYu : ∀ e ∈ Y, u⁻¹ • e ∈ Y) (k : ℕ) :
     ∀ e ∈ Y, (u⁻¹) ^ k • e ∈ Y := by
@@ -23,13 +23,13 @@ theorem inv_pow_smul_mem (Y : AddSubgroup E) {u : Ω} (hYu : ∀ e ∈ Y, u⁻¹
   | succ k ih => intro e he; rw [pow_succ, mul_smul]; exact ih _ (hYu e he)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h1 : f ^ n • e = ((u⁻¹) ^ ((j + 1) * n)) • ((u ^ (j + 1) * f) ^ n • e)`. Rewrite using `[smul_smul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[mul_pow, ← pow_mul, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ hu0, one_pow, one_mul]`. Rewrite using `[h1]`. Conclude with `inv_pow_smul_mem Y hYu _ _ (hXY hn)`. Introduce and unpack `⟨n, hn⟩`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hYX _ hn`. Use `⟨n + k, ?_⟩` and prove the remaining obligations. Establish `h1 : (u ^ (j + 1) * f) ^ (n + k) • e = ((u ^ j * f) ^ k * u ^ ((j + 1) * n)) • (u ^ k • f ^ n • e)`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `hXA _ (mul_mem (pow_mem hg _) (pow_mem huA _)) _ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_iff_of_loc (A : S) (X Y : AddSubgroup E) {u f : Ω} (j : ℕ)
     (hu0 : u ≠ 0) (huA : u ∈ A) (hg : u ^ j * f ∈ A) (hXA : ∀ a ∈ A, ∀ e ∈ X, a • e ∈ X)
@@ -56,11 +56,11 @@ theorem exists_pow_smul_mem_iff_of_loc (A : S) (X Y : AddSubgroup E) {u f : Ω} 
     exact hXA _ (mul_mem (pow_mem hg _) (pow_mem huA _)) _ hk
 
 /- English proof (translation)
-Set `f' : Fin k → A` to `fun l => ⟨f l, hf l⟩`. Establish `hspan : Ideal.span (Set.range f') = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : A) = ∑ l, (⟨c l, hc l⟩ : A) * f' l` using `Subtype.ext (by simp [f', h1])`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨l, rfl⟩)`. Establish `hpow` using `Ideal.span_pow_eq_top _ hspan N`. Rewrite `hpow` using `[← Set.range_comp]`. Establish `h1' : (1 : A) ∈ Ideal.span (Set.range ((fun y => y ^ N) ∘ f'))`. Rewrite using `[hpow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_top`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 h1'`. Use `⟨fun l => d l, fun l => (d l).2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hd` as an intermediate fact. Simplify `this` using `[f']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sum_mul_pow_eq_one (A : S) {k : ℕ} (f c : Fin k → Ω) (hf : ∀ l, f l ∈ A)
     (hc : ∀ l, c l ∈ A) (h1 : ∑ l, c l * f l = 1) (N : ℕ) :
@@ -81,9 +81,9 @@ theorem exists_sum_mul_pow_eq_one (A : S) {k : ℕ} (f c : Fin k → Ω) (hf : �
   simpa [f'] using this
 
 /- English proof (translation)
-Use `choose t ht n hn using h`. Use `⟨∏ l, t l, prod_mem fun l _ => ht l, Finset.univ.sup n, fun l n' hn' => ?_⟩` and prove the remaining obligations. Establish `hle : n l ≤ n'` using `le_trans (Finset.le_sup (Finset.mem_univ l)) hn'`. Establish `: (((∏ l, t l : ℤ) : Ω) * ζ ^ n') = (((∏ l' ∈ Finset.univ.erase l, t l' : ℤ) : Ω) * ζ ^ (n' - n l)) * ((t l : Ω) * ζ ^ n l)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ t (Finset.mem_univ l), Int.cast_mul, ← pow_sub_mul_pow ζ hle]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_smul]`. Conclude with `hLA _ (mul_mem (intCast_mem A _) (pow_mem hζ _)) _ (hn l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniform_mul (T : Submonoid ℤ) (A : S) (L : AddSubgroup E)
     (hLA : ∀ a ∈ A, ∀ e ∈ L, a • e ∈ L) {ζ : Ω} (hζ : ζ ∈ A) {ι : Type*} [Fintype ι] (w : ι → E)
@@ -109,28 +109,24 @@ variable {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
 variable {R : Type*} [CommRing R] [Algebra R Ω] {τ : Type*} {x : τ → Ω} {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `B.stable i _ (pow_mem ha m) e he`.
+A detailed English derivation is pending.
 -/
 theorem chartBundle_pow_smul_mem (B : ChartBundle R x r E) {i : τ} {a : Ω}
     (ha : a ∈ chartRing R x i) (m : ℕ) {e : E} (he : e ∈ B.lat i) : a ^ m • e ∈ B.lat i :=
   B.stable i _ (pow_mem ha m) e he
 
 /- English proof (translation)
-Take `⟨k, f, c, hf, hc, hsum, hb⟩` from `B.frame i hi`. Use `choose b _ _ hiff using hb`. Establish `hbsat : ∀ l q, ∃ n : ℕ, f l ^ n • b l q ∈ B.lat i`. Introduce `l q`. Use `(hiff l (b l q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, by simp [Pi.single_apply]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, one_mul]`. Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `one_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Use `choose n hn using hbsat`. Use `set n₀ := Finset.univ.sup fun lq : Fin k × Fin r => n lq.1 lq.2 with hn₀`. Establish `hle : ∀ l q, n l q ≤ n₀` using `fun l q => Finset.le_sup (f := fun lq : Fin k × Fin r => n lq.1 lq.2) (Finset.mem_univ (l, q))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨k, fun lq => f lq.1 ^ n₀ • b lq.1 lq.2, fun lq => ?_, fun e he => ?_⟩` and prove the remaining obligations. Establish `: f lq.1 ^ n₀ • b lq.1 lq.2 = f lq.1 ^ (n₀ - n lq.1 lq.2) • f lq.1 ^ n lq.1 lq.2 • b lq.1 lq.2`. Rewrite using `[smul_smul, pow_sub_mul_pow _ (hle _ _)]`. Use `show f lq.1 ^ n₀ • b lq.1 lq.2 ∈ B.lat i`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `chartBundle_pow_smul_mem B (hf _) _ (hn _ _)`. Establish `hco : ∀ l, ∃ a : Fin r → Ω, (∀ q, ∃ n : ℕ, f l ^ n * a q ∈ chartRing R x i) ∧ e = ∑ q, a q • b l q` using `fun l => (hiff l e).1 ⟨0, by simpa using he⟩ choose a ha he' using hco choose m hm using ha set M := Finset.univ.sup fun lq : Fin k × Fin r => m lq.1 lq.2 with hM`. Establish `hleM : ∀ l q, m l q ≤ M` using `fun l q => Finset.le_sup (f := fun lq : Fin k × Fin r => m lq.1 lq.2) (Finset.mem_univ (l, q))`. Establish `hfa : ∀ l q, f l ^ M * a l q ∈ chartRing R x i` using `fun l q => by`. Rewrite using `[← pow_sub_mul_pow _ (hleM l q), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (pow_mem (hf l) _) (hm l q)`. Take `⟨d, hd, hd1⟩` from `exists_sum_mul_pow_eq_one (chartRing R x i) f c hf hc hsum (M + n₀)`. Use `⟨fun lq => d lq.1 * (f lq.1 ^ M * a lq.1 lq.2), fun lq => mul_mem (hd _) (hfa _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_smul]; exact Finset.sum_congr rfl fun l _ => by rw [mul_smul]`. Use `_ = ∑ l, ∑ q, (d l * (f l ^ M * a l q)) • f l ^ n₀ • b l q := by`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [he' l]`. Rewrite using `[Finset.smul_sum, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chartBundle_exists_gens (B : ChartBundle R x r E) {i : τ} (hi : x i ≠ 0) :
     ∃ (k : ℕ) (G : Fin k × Fin r → E), (∀ j, G j ∈ B.lat i) ∧

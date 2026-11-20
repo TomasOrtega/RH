@@ -14,9 +14,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.NRows.Parts
 
 /- English proof (translation)
-Introduce `D t0 a2 a5 i x P Pa hP hPa ρ hρ`. Take `⟨ρ0, hc, hs, hw, hl⟩` from `GlobalTheory.T.exists_semisimple_galois_rep_weights D t0 a2 i P Pa hPa`. Take `⟨Pm, hPm⟩` from `GlobalTheory.T.heckeGaloisRepQbar_conjugate_unique D a5 i x ρ0 ρ (GlobalTheory.T.hecke_galois_of_unramified_match D i x P Pa hP hPa ρ0 hc hs hw) hρ`. Take `⟨c1, c2, c3⟩` from `(t0.2.2.2.2.2 i).2.1 _ ρ0 ρ hc Pm hPm`. Use `⟨fun w h => (c2 w (Or.inl h)).trans (hw w h), fun w h => ⟨(c1 w h).2 (hl w h).1, (c2 w (Or.inr (hl w h).1)).trans (hl w h).2.1, fun τ hτ => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[c3 τ, (hl w h).2.2 τ hτ]`. Introduce `w' hw'`. Take `rfl : w' = w` from `HeightOneSpectrum.ext (Ideal.ext fun y => (hw' y).symm.trans (hτ y))`. Conclude with `(hl _ h).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lgc : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → ∀ (i : D.nd.Loc) (x : D.nd.X i) (P : D.naut.AV i) (Pa : List (Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa → ∀ ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (Qbar (D.nd.l i)), SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ → (∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.wdOf i ρ w = D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2)) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i ρ w ∧ D.naut.wdOf i ρ w = D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2) ∧ ∀ τ, InducesW D.nd i τ w → D.naut.jumpsW i ρ τ = D.naut.locAutHodgeTateWeightsLevelZero i τ := by
   intro D t0 a2 a5 i x P Pa hP hPa ρ hρ
@@ -30,11 +30,11 @@ theorem lgc : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm2 
   exact (hl _ h).1
 
 /- English proof (translation)
-Take `⟨⟨t0, hO, a1, a2, a3, a4, a5⟩, a7⟩` from `a`. Establish `ex : ∀ (i : D.nd.Loc) (x : D.nd.X i), ∃ ρ, SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ` using `fun i x => by`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨Pa, hPa⟩` from `a1 i P`. Take `⟨ρ, hc, hs, hw, -⟩` from `GlobalTheory.T.exists_semisimple_galois_rep_weights D t0 a2 i P Pa hPa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ρ, GlobalTheory.T.hecke_galois_of_unramified_match D i x P Pa hP hPa ρ hc hs hw⟩`. Establish `lg` using `lgc D t0 a2 a5`. Introduce `i`. Use `⟨⟨fun x => (ex i x).choose, fun x => (ex i x).choose_spec⟩, GlobalTheory.T.unramified_match_of_hecke_galois D a1 a5 ex lg i, fun r hr => ?_⟩` and prove the remaining obligations. Establish `he` using `fun x => GlobalTheory.T.isHeckeGaloisQ_of_isHeckeGalois' D i x (r x) (hr x)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨(GlobalTheory.T.hecke_galois_local_weights D t0 a1 lg i r he).1, GlobalTheory.T.hecke_galois_local_weights_de_rham D t0 a1 lg i r he, (GlobalTheory.T.hecke_galois_local_weights D t0 a1 lg i r he).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem h41 (D : D7) (a : SumRepresentations.AdmAt D) : SumRepresentations.ReducedFamilyProposition D := by
   obtain ⟨⟨t0, hO, a1, a2, a3, a4, a5⟩, a7⟩ := a
@@ -50,9 +50,9 @@ theorem h41 (D : D7) (a : SumRepresentations.AdmAt D) : SumRepresentations.Reduc
   exact ⟨(GlobalTheory.T.hecke_galois_local_weights D t0 a1 lg i r he).1, GlobalTheory.T.hecke_galois_local_weights_de_rham D t0 a1 lg i r he, (GlobalTheory.T.hecke_galois_local_weights D t0 a1 lg i r he).2⟩
 
 /- English proof (translation)
-Take `⟨⟨t0, hO, a1, a2, a3, a4, a5⟩, a7⟩` from `a`. Introduce `i σ hσ`. Take `⟨P, hP⟩` from `th i σ hσ`. Take `⟨Pa, hPa⟩` from `a1 i P`. Take `⟨Sig, h1, h2⟩` from `GlobalTheory.T.row_param_of_thetaLift_baseChange D t0 a3 a4 a5 i σ P Pa hP hPa (GlobalTheory.T.twisted_mu_part_in_base_change D t0 a3 a5 a7 s hk i σ P Pa hσ hP hPa)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨⟨_, (l i σ).2 hσ, (l i σ).1⟩, P, hP⟩, Sig, h1, fun P' hP' => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : P = P' := by`. Assume the negation of the conclusion as `hne`. Conclude with `hP.1 (le_bot_iff.1 ((le_inf hP.2 hP'.2).trans ((D.naut.typeV_indep i).pairwiseDisjoint hne).le_bot))`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem h42 (D : D7) (a : SumRepresentations.AdmAt D) (s : GlobalTheory.RowCopy.RowSize D) (hk : GlobalTheory.RowCopy.HeckeSplitOne D)
     (l : ∀ i : D.nd.Loc, GlobalTheory.RowCopy.LamPos D (D.nd.mu i) (D.nd.j i)) (th : GlobalTheory.RowCopy.ThetaOne D) : SumRepresentations.ReducedParameterProposition D := by
@@ -68,7 +68,7 @@ theorem h42 (D : D7) (a : SumRepresentations.AdmAt D) (s : GlobalTheory.RowCopy.
   exact h2
 
 /- English proof (translation)
-Introduce `D` and use `GlobalTheory.NRows.partsGive_of (h41 D) (h42 D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, GlobalTheory.NRows.PartsGive D := fun D => GlobalTheory.NRows.partsGive_of (h41 D) (h42 D)
 end GlobalTheory.NRows.Parts

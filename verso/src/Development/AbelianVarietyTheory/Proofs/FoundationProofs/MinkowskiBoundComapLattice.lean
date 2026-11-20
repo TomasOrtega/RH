@@ -49,9 +49,9 @@ def blk {F I : Type} [Zero F] (e : Fin N ≃ C × I) (M : Matrix I I F) : Matrix
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[pairK_apply, pairP_eq_pairB, pairBK_apply, rhoK_coe]`. Use `congr 2`. Rewrite using `[bVV_coe]`. Take `⟨Q, hQ⟩` from `bVVfun_int K lam i`. Rewrite using `[hQ, MvPolynomial.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `RingHom.ext_int _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pairK_basis [StarRing K] (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (i j : VVIdx lam) :
     pairK lam (fun τ => (g τ : Matrix (Fin n) (Fin n) K)) (bVV K lam i) (bVV K lam j) =
@@ -69,7 +69,7 @@ def gramB (K : Type) [Field K] (lam : ι → DomWeight n) : Matrix (VVIdx lam) (
 
 omit [NumberField K] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramB, Matrix.transpose_apply, Matrix.of_apply, pairBK_apply]`. Conclude with `pairingBSymm_holds K ι n lam _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramB_transpose (lam : ι → DomWeight n) : (gramB K lam)ᵀ = gramB K lam := by
   ext i j
@@ -77,7 +77,7 @@ theorem gramB_transpose (lam : ι → DomWeight n) : (gramB K lam)ᵀ = gramB K 
   exact pairingBSymm_holds K ι n lam _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ y ∈ M, y ⬝ᵥ (P *ᵥ x) ∈ (1 : Submodule (𝓞 K) K)) ↔ ∀ y ∈ M, (P *ᵥ x) ⬝ᵥ y ∈ (1 : Submodule (𝓞 K) K)`. Simplify using `only [dotProduct_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem hdualFr_triv {m : ℕ} (P : Matrix (Fin m) (Fin m) K) (M : Submodule (𝓞 K) (Fin m → K)) (x : Fin m → K) :
     x ∈ @hdualFr K _ m starRingOfComm P M ↔ P *ᵥ x ∈ dualFr M := by

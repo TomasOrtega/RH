@@ -19,7 +19,7 @@ variable {D : D7}
 abbrev badInt (D : D7) : ℕ := D.host.QS * D.host.q * Ideal.absNorm D.host.ccK
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Use `haveI : Finite (𝓞 K ⧸ P.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Use `⟨ringChar (𝓞 K ⧸ P.asIdeal), CharP.char_is_prime (𝓞 K ⧸ P.asIdeal) _, fun N => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ringChar.spec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_under {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) :
     ∃ p : ℕ, p.Prime ∧ ∀ N : ℕ, (N : 𝓞 K) ∈ P.asIdeal ↔ p ∣ N := by
@@ -29,7 +29,7 @@ theorem exists_prime_under {K : Type} [Field K] [NumberField K] (P : HeightOneSp
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ringChar.spec]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Use `push_cast`. Conclude with `J.mul_mem_right _ hp`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem mem_of_dvd {R : Type} [CommRing R] {J : Ideal R} {p N : ℕ} (hp : (p : R) ∈ J) (h : p ∣ N) : (N : R) ∈ J := by
   obtain ⟨c, rfl⟩ := h
@@ -37,7 +37,7 @@ theorem mem_of_dvd {R : Type} [CommRing R] {J : Ideal R} {p N : ℕ} (hp : (p : 
   exact J.mul_mem_right _ hp
 
 /- English proof (translation)
-Introduce `ha`. Take `⟨p, hp, hP⟩` from `exists_prime_under P`. Conclude with `hp.one_lt.ne' (Nat.eq_one_of_dvd_coprimes h ((hP a).1 ha) ((hP b).1 hb))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_mem_of_coprime {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) {a b : ℕ}
     (h : Nat.Coprime a b) (hb : (b : 𝓞 K) ∈ P.asIdeal) : (a : 𝓞 K) ∉ P.asIdeal := by
@@ -46,9 +46,9 @@ theorem not_mem_of_coprime {K : Type} [Field K] [NumberField K] (P : HeightOneSp
   exact hp.one_lt.ne' (Nat.eq_one_of_dvd_coprimes h ((hP a).1 ha) ((hP b).1 hb))
 
 /- English proof (translation)
-Take `⟨P, hP, hu, hd⟩` from `Ideal.exists_isMaximal_dvd_of_dvd_absNorm' hp J h`. Establish `hm : (p : 𝓞 K) ∈ P`. Establish `: (p : ℤ) ∈ P.under ℤ` using `by rw [hu]; exact Ideal.mem_span_singleton_self _`. Simplify `this` using `[Ideal.mem_comap]`. Use `⟨⟨P, hP.isPrime, ?_⟩, hm, hd⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Conclude with `hp.ne_zero (by simpa using hm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_place_of_dvd_absNorm {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) (J : Ideal (𝓞 K))
     (h : p ∣ Ideal.absNorm J) : ∃ P : HeightOneSpectrum (𝓞 K), (p : 𝓞 K) ∈ P.asIdeal ∧ P.asIdeal ∣ J := by
@@ -61,7 +61,7 @@ theorem exists_place_of_dvd_absNorm {K : Type} [Field K] [NumberField K] {p : �
   exact hp.ne_zero (by simpa using hm)
 
 /- English proof (translation)
-Establish `h : p ∣ Ideal.absNorm (Ideal.span {(p : 𝓞 K)})`. Rewrite using `[Ideal.absNorm_span_natCast]`. Conclude with `dvd_pow_self _ Module.finrank_pos.ne'`. Conclude with `(exists_place_of_dvd_absNorm hp _ h).imp fun _ h => h.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place_over {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) :
     ∃ P : HeightOneSpectrum (𝓞 K), (p : 𝓞 K) ∈ P.asIdeal := by
@@ -71,26 +71,26 @@ theorem exists_place_over {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p
   exact (exists_place_of_dvd_absNorm hp _ h).imp fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `D.host.prime_dvd_absNorm_half_iff hp`.
+A detailed English derivation is pending.
 -/
 theorem prime_dvd_absNorm_halfDifferent (D : D7) {p : ℕ} (hp : p.Prime) :
     p ∣ Ideal.absNorm D.host.𝔟 ↔ p ∣ D.host.QS * D.host.q :=
   D.host.prime_dvd_absNorm_half_iff hp
 
 /- English proof (translation)
-The claim follows from `Nat.Coprime.mul_right D.host.ccK_coprimeS (D.host.ccK_coprime _ (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem coprime_ccK (D : D7) : Nat.Coprime (Ideal.absNorm D.host.ccK) (D.host.QS * D.host.q) :=
   Nat.Coprime.mul_right D.host.ccK_coprimeS (D.host.ccK_coprime _ (by simp))
 
 /- English proof (translation)
-Introduce `h` and use `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ccE_ne_bot (D : D7) : D.host.ccE ≠ ⊥ := fun h =>
   D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)).1 h)
 
 /- English proof (translation)
-Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.ccK)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `Ideal.le_of_dvd h this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_ccK_mem {P : Place D} (h : P.asIdeal ∣ D.host.ccE) :
     ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal := by
@@ -99,16 +99,16 @@ theorem absNorm_ccK_mem {P : Place D} (h : P.asIdeal ∣ D.host.ccE) :
   exact Ideal.le_of_dvd h this
 
 /- English proof (translation)
-Take `⟨p, hp, hP⟩` from `exists_prime_under P`. Conclude with `(hP _).2 ((prime_dvd_absNorm_halfDifferent D hp).1 ((hP _).1 (Ideal.le_of_dvd h (Ideal.absNorm_mem _))))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem two_q_mem {P : Place D} (h : P.asIdeal ∣ D.host.𝔟) : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal := by
   obtain ⟨p, hp, hP⟩ := exists_prime_under P
   exact (hP _).2 ((prime_dvd_absNorm_halfDifferent D hp).1 ((hP _).1 (Ideal.le_of_dvd h (Ideal.absNorm_mem _))))
 
 /- English proof (translation)
-Establish `hb` using `D.host.half_ne_bot`. Establish `hc` using `ccE_ne_bot D`. Establish `hnot : ¬ (P.asIdeal ∣ D.host.ccE ∧ P.asIdeal ∣ D.host.𝔟)` using `fun h => not_mem_of_coprime P (coprime_ccK D) (two_q_mem h.2) (absNorm_ccK_mem h.1)`. Unfold `PrimeToAA Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0`. Rewrite using `[FractionalIdeal.count_mul _ _ (FractionalIdeal.coeIdeal_ne_zero.2 hc) (inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hb)), FractionalIdeal.count_inv, FractionalIdeal.count_coe _ _ hc, FractionalIdeal.count_coe _ _ hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hnot`, the goal using `[← Associates.count_ne_zero_iff_dvd hc P.irreducible, ← Associates.count_ne_zero_iff_dvd hb P.irreducible]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem primeToAA_iff (P : Place D) : PrimeToAA D P ↔ ¬ P.asIdeal ∣ D.host.ccE ∧ ¬ P.asIdeal ∣ D.host.𝔟 := by
   classical
@@ -124,7 +124,7 @@ theorem primeToAA_iff (P : Place D) : PrimeToAA D P ↔ ¬ P.asIdeal ∣ D.host.
   omega
 
 /- English proof (translation)
-The claim follows from `(primeToAA_iff P).2 ⟨fun hc => h (mem_of_dvd (absNorm_ccK_mem hc) (Dvd.intro_left _ rfl)), fun hb => h (mem_of_dvd (two_q_mem hb) (Dvd.intro _ rfl))⟩`.
+A detailed English derivation is pending.
 -/
 theorem primeToAA_of_not_mem {P : Place D} (h : ((badInt D : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) : PrimeToAA D P :=
   (primeToAA_iff P).2 ⟨fun hc => h (mem_of_dvd (absNorm_ccK_mem hc) (Dvd.intro_left _ rfl)),
@@ -139,7 +139,7 @@ def LevelClauses (l : Level H) (pd : ℕ) (I : Ideal (𝓞 D.host.E)) (l₂ : Le
     I ⊔ I.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = ⊤
 
 /- English proof (translation)
-Establish `h2` using `l₂.prod`. Rewrite `h2` using `[h.2.2.2.1, h.2.1, Ideal.map_mul, mul_mul_mul_comm, l.prod, Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton]`. Use `mul_left_cancel₀ ?_ h2` and prove the remaining obligations. Use `l.three_le` as an intermediate fact. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -153,16 +153,16 @@ theorem LevelClauses.norm {l l₂ : Level H} {pd : ℕ} {I : Ideal (𝓞 D.host.
   omega
 
 /- English proof (translation)
-Rewrite using `[conjIdeal, Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_natCast, conjIdeal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sup_span (I : Ideal (𝓞 D.host.E)) (n : ℕ) :
     conjIdeal H (I ⊔ Ideal.span {(n : 𝓞 D.host.E)}) = conjIdeal H I ⊔ Ideal.span {(n : 𝓞 D.host.E)} := by
   rw [conjIdeal, Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_natCast, conjIdeal]
 
 /- English proof (translation)
-Rewrite using `[conj_sup_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup, h]`. Conclude with `sup_le (sup_le (Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast hn)) Ideal.mul_le_right) Ideal.mul_le_left`. Use `conv_lhs => rw [← Ideal.mul_top (Ideal.span {(n : 𝓞 D.host.E)}), ← hc, Ideal.mul_sup]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le ?_ (Ideal.mul_mono le_sup_right le_sup_left)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Ideal.mul_mono le_sup_left le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem sup_span_norm {I : Ideal (𝓞 D.host.E)} {pd n : ℕ} (h : I * conjIdeal H I = Ideal.span {(pd : 𝓞 D.host.E)})
     (hc : I ⊔ conjIdeal H I = ⊤) (hn : n ∣ pd) :

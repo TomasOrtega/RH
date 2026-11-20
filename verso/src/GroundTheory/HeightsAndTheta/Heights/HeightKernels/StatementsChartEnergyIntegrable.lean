@@ -15,7 +15,7 @@ def ChartEnergyIntegrable.Statement : Prop :=
       maDensity (fun j : Fin e => if (j : ℕ) < k then hermChartPot M else hermChartPot N) y)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one, fun h => by have h1 := congrFun (congrFun h 0) 0 simp at h1⟩`.
+Supply the required witnesses or components.
 -/
 example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧
     (1 : Matrix (Fin (1 + 1)) (Fin (1 + 1)) ℂ).PosDef ∧

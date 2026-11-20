@@ -13,11 +13,11 @@ open scoped ContDiff ComplexOrder Classical
 namespace GlobalTheory.ChartShrink
 
 /- English proof (translation)
-Introduce `k _ B q σ c₀ y hy V hV`. Establish `hy0 : y ∈ ptsIn q σ c₀.U` using `c₀.source_subset hy`. Take `⟨f, hfV, hf⟩` from `c₀.affine.exists_basicOpen_le (V := V) ⟨_, mem_ptsIn.1 hV⟩ (mem_ptsIn.1 hy0)`. Establish `hle : B.basicOpen f ≤ c₀.U` using `B.basicOpen_le f`. Establish `hE : (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a))).Etale`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a)) = (resG B hle).comp (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q c₀.U) c₀.x)`. Rewrite using `[MvPolynomial.comp_eval₂Hom, GlobalTheory.TopForm.resG_comp_algX]`. Rewrite using `[e]`. Establish `hR : (resG B hle).Etale`. Use `letI : Algebra Γ(B, c₀.U) Γ(B, B.basicOpen f) := (resG B hle).toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : IsLocalization.Away f Γ(B, B.basicOpen f) := c₀.affine.isLocalization_basicOpen f`. Conclude with `RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway f)`. Conclude with `RingHom.Etale.stableUnderComposition _ _ c₀.etale hR`. Take `⟨c, hc, hU, -⟩` from `AlgChart.exists_of_etale (c₀.affine.basicOpen f) _ hE (mem_ptsIn.2 hf)`. Conclude with `⟨c, hc, hU ▸ hfV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_le : ∀ (k : Type) [CommRing k] (B : Scheme.{0}) (q : B ⟶ Sp k) (σ : k →+* ℂ) (c₀ : AlgChart q σ 1) (y : CxPts q σ), y ∈ c₀.e.source → ∀ V : B.Opens, y ∈ ptsIn q σ V → ∃ c : AlgChart q σ 1, y ∈ c.e.source ∧ c.U ≤ V := by
   intro k _ B q σ c₀ y hy V hV

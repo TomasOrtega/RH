@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup | exact GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup | (intros; apply GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.schwartzBruhat_matrix_exists_open_addSubgroup_invariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : Type) [Fintype a] [Fintype b], ∀ Φ ∈ SB (Matrix a b k), ∃ Λ : AddSubgroup (Matrix a b k), IsOpen (Λ : Set (Matrix a b k)) ∧ ∀ x, ∀ y ∈ Λ, Φ (x + y) = Φ x := by
   first | exact @GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup | exact GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup | (intros; apply GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup <;> assumption)

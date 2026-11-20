@@ -20,13 +20,13 @@ def trF (y : E) : F :=
   Classical.choose (hfix (y + σ y) (by rw [map_add, hσ, add_comm]))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hfix (y + σ y) (by rw [map_add, hσ, add_comm]))`.
+A detailed English derivation is pending.
 -/
 theorem trF_spec (y : E) : algebraMap F E (trF σ hσ hfix y) = y + σ y :=
   Classical.choose_spec (hfix (y + σ y) (by rw [map_add, hσ, add_comm]))
 
 /- English proof (translation)
-Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[map_add, trF_spec, trF_spec, trF_spec, map_add]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem trF_add (y z : E) : trF σ hσ hfix (y + z) = trF σ hσ hfix y + trF σ hσ hfix z := by
   apply (algebraMap F E).injective
@@ -34,7 +34,7 @@ theorem trF_add (y z : E) : trF σ hσ hfix (y + z) = trF σ hσ hfix y + trF σ
   abel
 
 /- English proof (translation)
-Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[map_mul, trF_spec, trF_spec, Algebra.smul_def, map_mul, AlgHom.commutes, mul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem trF_smul (c : F) (y : E) : trF σ hσ hfix (c • y) = c * trF σ hσ hfix y := by
   apply (algebraMap F E).injective
@@ -54,7 +54,7 @@ section D1
 variable (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) (hfix : ∀ y : E, σ y = y → y ∈ (algebraMap F E).range)
 
 /- English proof (translation)
-Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, IsScalarTower.algebraMap_apply (𝓞 F) F E]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_algebraMap_int (t : 𝓞 F) :
     algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) t) = algebraMap F E (t : F) := by

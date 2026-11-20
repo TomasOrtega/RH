@@ -7,9 +7,9 @@ namespace PositivityTheory.ThKG.Fub
 open MeasureTheory Topology Filter
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(hK.image hf).bddAbove`. Establish `key : ∀ y : G, (∀ n : ℕ, y ^ n ∈ K) → f y ≤ 1` using `fun y hy => by`. Assume the negation of the conclusion as `h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C (not_le.1 h)`. Conclude with `absurd (hC ⟨_, hy n, map_pow f y n⟩) (not_le.2 hn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `key x fun n => by simpa using hx n`. Establish `h2` using `key x⁻¹ fun n => by simpa using hx (-n)`. Establish `h3 : f x * f x⁻¹ = 1` using `by rw [← map_mul]; simp`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem one_of_compact {G : Type} [Group G] [TopologicalSpace G] (f : G →* NNReal) (hf : Continuous f) {K : Set G} (hK : IsCompact K)
     {x : G} (hx : ∀ n : ℤ, x ^ n ∈ K) : f x = 1 := by
@@ -27,15 +27,15 @@ theorem one_of_compact {G : Type} [Group G] [TopologicalSpace G] (f : G →* NNR
     _ = f x := mul_one _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `h0 : (z : ℂ) - 1 ≠ 0` using `fun e => hz (Circle.coe_eq_one.1 (sub_eq_zero.1 e))`. Establish `hre : ∀ n : ℕ, 1 / 2 < ((z : ℂ) ^ n).re` using `fun n => by`. Establish `h1` using `h n`. Rewrite `h1` using `[Circle.coe_pow]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ‖(z : ℂ) ^ n‖ = 1` using `by rw [norm_pow, Circle.norm_coe, one_pow]`. Establish `h3` using `Complex.sq_norm ((z : ℂ) ^ n - 1)`. Establish `h4` using `Complex.sq_norm ((z : ℂ) ^ n)`. Rewrite `h3`, `h4` using `[Complex.normSq_apply]`. Simplify using `only [Complex.sub_re, Complex.one_re, Complex.sub_im, Complex.one_im, sub_zero] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use polynomial arithmetic with `[norm_nonneg ((z : ℂ) ^ n - 1)]`. Take `⟨N, hN⟩` from `exists_nat_gt (4 / ‖(z : ℂ) - 1‖)`. Establish `hp : 0 < ‖(z : ℂ) - 1‖` using `norm_pos_iff.2 h0`. Establish `e : (∑ i ∈ Finset.range N, (z : ℂ) ^ i) * (z - 1) = z ^ N - 1` using `geom_sum_mul _ _`. Establish `h1 : (N : ℝ) / 2 ≤ ‖∑ i ∈ Finset.range N, (z : ℂ) ^ i‖`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ (Complex.re_le_norm _)` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`. Use `Finset.card_nsmul_le_sum (Finset.range N) (fun i => ((z : ℂ) ^ i).re) (1 / 2) fun i _ => (hre i).le` as an intermediate fact. Simplify `this` using `[div_eq_mul_inv]`. Establish `h2 : ‖(z : ℂ) ^ N - 1‖ < 1` using `by simpa using h N`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[← e, norm_mul]`. Rewrite `hN` using `[div_lt_iff₀ hp]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem circle_one {z : Circle} (h : ∀ n : ℕ, ‖((z ^ n : Circle) : ℂ) - 1‖ < 1) : z = 1 := by
   by_contra hz
@@ -63,9 +63,9 @@ theorem circle_one {z : Circle} (h : ∀ n : ℕ, ‖((z ^ n : Circle) : ℂ) - 
   nlinarith
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ U) := QuotientGroup.discreteTopology hU`. Establish `hf : ((QuotientGroup.mk : G → G ⧸ U) '' K).Finite` using `(hK.image QuotientGroup.continuous_mk).finite_of_discrete`. Take `⟨i, j, hij, e⟩` from `Set.Finite.exists_lt_map_eq_of_forall_mem (f := fun n : ℕ => (QuotientGroup.mk (x ^ n) : G ⧸ U)) (fun n => Set.mem_image_of_mem _ (hx n)) hf`. Use `⟨j - i, by omega, ?_⟩` and prove the remaining obligations. Use `QuotientGroup.eq.1 e` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show x ^ j = x ^ i * x ^ (j - i) by rw [← pow_add]; congr 1; omega, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (U : Subgroup G) (hU : IsOpen (U : Set G))
     {K : Set G} (hK : IsCompact K) {x : G} (hx : ∀ n : ℕ, x ^ n ∈ K) : ∃ k : ℕ, 0 < k ∧ x ^ k ∈ U := by
@@ -78,25 +78,23 @@ theorem pow_mem_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologi
   rwa [show x ^ j = x ^ i * x ^ (j - i) by rw [← pow_add]; congr 1; omega, inv_mul_cancel_left] at this
 
 /- English proof (translation)
-Set `O : H →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => Multiplicative.ofAdd (o x)) fun x y => by rw [ho]; rfl`. Establish `oz : ∀ (k : ℤ) x, o (ϖ ^ k * x) = k + o x` using `fun k x => by`. Use `map_zpow O ϖ k` as an intermediate fact. Establish `h2 : o (ϖ ^ k) = k`. Establish `h3` using `congrArg Multiplicative.toAdd this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h3` using `[O, hϖ]`. Rewrite using `[ho, h2]`. Establish `h0 : χ ϖ ≠ 0` using `fun e => by`. Use `map_mul χ ϖ ϖ⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, map_one, e, zero_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero this`. Set `A : ℕ → Set H` to `fun k => {x | o x = m + k}`. Establish `hA : ∀ k, A k = (fun x => ϖ ^ (-(m + k)) * x) ⁻¹' {x | o x = 0}` using `fun k => Set.ext fun x => by`. Simplify using `only [A, Set.mem_setOf_eq, Set.mem_preimage, oz]`. Use linear arithmetic over natural numbers and integers.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `mA : ∀ k, MeasurableSet (A k)` using `fun k => by`. Rewrite using `[hA]`. Conclude with `(hU.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `vA : ∀ k, γ (A k) = 1` using `fun k => by rw [hA, measure_preimage_mul, h1]`. Establish `cA : ∀ k, ∀ x ∈ A k, χ x = χ ϖ ^ m * χ ϖ ^ k` using `fun k x hx => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hχ _ ((hA k ▸ hx : x ∈ (fun x => ϖ ^ (-(m + k)) * x) ⁻¹' {x | o x = 0}))` as an intermediate fact. Rewrite `this` using `[map_mul, map_zpow, zpow_neg, inv_mul_eq_one₀ (zpow_ne_zero _ h0)]`. Rewrite using `[← this, zpow_add₀ h0, zpow_natCast]`. Establish `dA : Pairwise (Function.onFun Disjoint A)` using `fun i j hij => Set.disjoint_left.2 fun x h h' => hij (by`. Simplify using `only [A, Set.mem_setOf_eq] at h h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use the proof step `omega)`. Establish `eU : (fun x => (if m ≤ o x then (1 : ℂ) else 0) * χ x) = (⋃ k, A k).indicator χ` using `funext fun x => by`. Distinguish the cases in `h : m ≤ o x`. Rewrite using `[if_pos h, one_mul, Set.indicator_of_mem (Set.mem_iUnion.2 ⟨(o x - m).toNat, by simp only [A, Set.mem_setOf_eq]; omega⟩)]`. Rewrite using `[if_neg h, zero_mul, Set.indicator_of_notMem fun h' => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `Set.mem_iUnion.1 h'`. Simplify using `only [A, Set.mem_setOf_eq] at hk`. Use the proof step `omega]`. Establish `iA : ∀ k, IntegrableOn χ (A k) γ` using `fun k => (integrableOn_const (C := χ ϖ ^ m * χ ϖ ^ k) (by rw [vA]; simp)).congr_fun (fun x hx => (cA k x hx).symm) (mA k)`. Establish `sA : ∀ k, ∫ x in A k, χ x ∂γ = χ ϖ ^ m * χ ϖ ^ k` using `fun k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[setIntegral_congr_fun (mA k) (cA k), setIntegral_const, Measure.real, vA]`. Simplify using the standard rewrite rules. Establish `nA : ∀ k, ∫ x in A k, ‖χ x‖ ∂γ = ‖χ ϖ ^ m‖ * ‖χ ϖ‖ ^ k` using `fun k => by`. Rewrite using `[setIntegral_congr_fun (mA k) (g := fun _ => ‖χ ϖ ^ m‖ * ‖χ ϖ‖ ^ k) fun x hx => by simp only [cA k x hx, norm_mul, norm_pow], setIntegral_const, Measure.real, vA]; simp`. Establish `iU : IntegrableOn χ (⋃ k, A k) γ` using `integrableOn_iUnion_of_summable_integral_norm iA (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [nA]`. Conclude with `(summable_geometric_of_lt_one (norm_nonneg _) ht).mul_left _)`. Rewrite using `[eU, integrable_indicator_iff (MeasurableSet.iUnion mA), integral_indicator (MeasurableSet.iUnion mA)]`. Use `⟨iU, (hasSum_integral_iUnion mA dA iU).unique ?_⟩` and prove the remaining obligations. Simplify using `only [sA]`.
-
-Conclude with `(hasSum_geometric_of_norm_lt_one ht).mul_left _`.
+A detailed English derivation is pending.
 -/
 theorem tate {H : Type} [CommGroup H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H] [BorelSpace H]
     (γ : Measure H) [γ.IsMulLeftInvariant] (o : H → ℤ) (ho : ∀ x y, o (x * y) = o x + o y) (hU : IsOpen {x | o x = 0})

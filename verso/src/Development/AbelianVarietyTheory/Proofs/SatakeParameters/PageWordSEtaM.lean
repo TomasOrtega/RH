@@ -8,9 +8,9 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Introduce `D L j ε τ φ`. Use `⟨?_, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Nat.floor_le L.Sc_pos.le`. Establish `h` using `Nat.floor_le L.etaSz_pos.le show ((⌊L.etaSz⌋₊ + D.R.t + 2 : ℕ) : ℝ) ≤ _`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem pageWord_S_eta_m : ∀ {D : D7} (L : SizeData₂ D) (j : Fin D.R.m) (ε : ℤˣ) (τ φ : D.R.GG), ((pageWord L j ε τ φ).S : ℝ) ≤ L.Sc ∧ ((pageWord L j ε τ φ).η : ℝ) ≤ L.etaSz + D.R.t + 2 ∧ (pageWord L j ε τ φ).m = D.R.m := by
   intro D L j ε τ φ

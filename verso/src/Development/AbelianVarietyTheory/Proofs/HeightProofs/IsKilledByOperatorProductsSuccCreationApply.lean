@@ -9,9 +9,9 @@ open GlobalTheory.FockCompare
 variable {I M : Type} [AddCommGroup M] [Module ℂ M] {a : I → Module.End ℂ M}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i l hl`. Use `h (l ++ [i]) (by simp [hl])` as an intermediate fact. Simplify `this` using `[List.foldr_append]`. Introduce `h l hl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `List.eq_nil_or_concat l with rfl | ⟨l', i, rfl⟩` into its components or cases. Simplify using `at hl`. Use `h i l' (by simpa using hl)` as an intermediate fact. Simplify `this` using `[List.foldr_append]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem killed_succ_iff (N : ℕ) (m : M) : Killed a (N + 1) m ↔ ∀ i, Killed a N (a i m) := by
   constructor
@@ -25,7 +25,7 @@ theorem killed_succ_iff (N : ℕ) (m : M) : Killed a (N + 1) m ↔ ∀ i, Killed
       simpa [List.foldr_append] using this
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.foldr_cons, ih, map_add, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_add_smul (l : List I) (β : ℂ) (x y : M) :
     l.foldr (fun i x => a i x) (x + β • y) =
@@ -35,7 +35,7 @@ theorem foldr_add_smul (l : List I) (β : ℂ) (x y : M) :
   | cons i l ih => simp only [List.foldr_cons, ih, map_add, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.foldr_cons, ih, map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_zero (l : List I) : l.foldr (fun i x => a i x) (0 : M) = 0 := by
   induction l with
@@ -43,13 +43,13 @@ theorem foldr_zero (l : List I) : l.foldr (fun i x => a i x) (0 : M) = 0 := by
   | cons i l ih => simp only [List.foldr_cons, ih, map_zero]
 
 /- English proof (translation)
-Introduce `I M _ _ a c hc N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `m hm l _`. Establish `h0 : m = 0` using `hm [] rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero]`. Conclude with `foldr_zero l`. Consider the case `succ N ih`. Introduce `m hm`. Rewrite using `[killed_succ_iff]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Take `⟨β, hβ⟩` from `hc i`. Establish `e : a i (c m) = c (a i m) + β • m`. Use `LinearMap.congr_fun hβ m` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Establish `h1` using `ih (a i m) ((killed_succ_iff N m).1 hm i)`. Introduce `l hl`. Rewrite using `[e, foldr_add_smul, h1 l hl, hm l hl, smul_zero, add_zero]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killed_create : ∀ (I M : Type) [AddCommGroup M] [Module ℂ M] (a : I → Module.End ℂ M) (c : Module.End ℂ M),
     (∀ i, ∃ β : ℂ, a i * c - c * a i = β • (1 : Module.End ℂ M)) →

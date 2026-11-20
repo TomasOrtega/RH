@@ -23,53 +23,51 @@ section General
 variable {V : Type} [AddCommGroup V] [Module ℂ V] [Module ℝ V] [IsScalarTower ℝ ℂ V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Simplify using `[altE, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_add_left' (H : Sesq V) (x y z : V) : altE H (x + y) z = altE H x z + altE H y z := by
   simp [altE, map_add]
 
 /- English proof (translation)
-Simplify using `[altE, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_add_right' (H : Sesq V) (x y z : V) : altE H x (y + z) = altE H x y + altE H x z := by
   simp [altE, map_add]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul ℂ r x]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem real_smul_eq (r : ℝ) (x : V) : r • x = (r : ℂ) • x := by
   rw [← algebraMap_smul ℂ r x]; rfl
 
 /- English proof (translation)
-Rewrite using `[real_smul_eq]`. Simplify using `[altE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem altE_smul_left' (H : Sesq V) (r : ℝ) (x y : V) : altE H (r • x) y = r * altE H x y := by
   rw [real_smul_eq]; simp [altE]
 
 /- English proof (translation)
-Rewrite using `[real_smul_eq]`. Unfold `altE`. Rewrite using `[(H x).map_smulₛₗ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem altE_smul_right' (H : Sesq V) (r : ℝ) (x y : V) : altE H x (r • y) = r * altE H x y := by
   rw [real_smul_eq]; unfold altE; rw [(H x).map_smulₛₗ]; simp
 
 /- English proof (translation)
-Establish `hK : ∀ x : V, (∀ y ∈ Λ, altE H x y = 0) → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Establish `hmem : ∀ t : ℝ, t • x ∈ Λ` using `fun t => by`. Establish `h1 : t • x ∈ dualLat H Λ` using `fun y hy => ⟨0, by rw [altE_smul_left', hx y hy]; simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hΛ]`. Then use the resulting hypothesis. Set `f : ℝ → Λ` to `fun t => ⟨t • x, hmem t⟩`. Establish `hf : Function.Injective f` using `fun s t h => by`. Establish `: s • x = t • x` using `congrArg Subtype.val h`. Conclude with `smul_left_injective ℝ hx0 this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `not_countable (α := ℝ) hf.countable`. Take `⟨b, hbΛ, hbspan, hbli⟩` from `exists_linearIndependent ℝ (Λ : Set V)`. Use `haveI : Finite b := hbli.setFinite.to_subtype`. Establish `hint : ∀ x ∈ Λ, ∀ e ∈ b, ((⌊altE H x e⌋ : ℤ) : ℝ) = altE H x e`. Introduce `x hx e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x ∈ dualLat H Λ` using `by rw [hΛ]; exact hx`. Take `⟨m, hm⟩` from `hx' e (hbΛ he)`. Rewrite using `[hm, Int.floor_intCast]`. Set `g : Λ →+ (b → ℤ)` to `{ toFun := fun x e => ⌊altE H (x : V) e⌋ map_zero' := by funext e; simp [altE] map_add' := fun x y => by`. Use function extensionality and compare the values at `e`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, Int.cast_add]`. Rewrite using `[hint _ (x + y).2 _ e.2, hint _ x.2 _ e.2, hint _ y.2 _ e.2]`. Simplify using `[altE_add_left'] }`. Establish `hg : Function.Injective g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h0 : ∀ e ∈ b, altE H (x : V) e = 0` using `fun e he => by`. Establish `h2 : ⌊altE H (x : V) e⌋ = 0` using `congrFun hx ⟨e, he⟩`. Rewrite using `[← hint _ x.2 _ he, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hspan : ∀ y ∈ Submodule.span ℝ b, altE H (x : V) y = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h0 y hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp [altE]`. Consider the case `add y z _ _ hy hz => rw [altE_add_right', hy, hz, add_zero]`. Consider the case `smul r y _ hy => rw [altE_smul_right', hy, mul_zero]`. Conclude with `Subtype.ext (hK x fun y hy => hspan y (hbspan ▸ Submodule.subset_span hy))`. Use `haveI : IsNoetherian ℤ Λ := isNoetherian_of_injective g.toIntLinearMap hg`.
-
-Establish `: AddGroup.FG Λ` using `Module.Finite.iff_addGroup_fg.1 inferInstance`. Conclude with `(AddGroup.fg_iff_addSubgroup_fg Λ).1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fg_of_selfDual (H : Sesq V) (Λ : AddSubgroup V) (hc : Countable Λ) (hΛ : IsSelfDual H Λ) : Λ.FG := by
   classical
@@ -125,9 +123,9 @@ namespace GlobalTheory.PeriodReps
 open Formalism.L2.Th1.H
 
 /- English proof (translation)
-Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin b) (Fin a) E) := inferInstanceAs (Countable (Fin b → Fin a → E))`. Use `haveI : Countable (Formalism.L2.Col.HomE E a b) := (LinearMap.toMatrix' : ((Fin a → E) →ₗ[E] (Fin b → E)) ≃ₗ[E] Matrix (Fin b) (Fin a) E).injective.countable`. Establish `hsub : ((Formalism.L2.Ker.LamC emb δ AA0 N N' : AddSubgroup _) : Set (Formalism.L2.Ker.VV ι a b)) ⊆ Set.range (Formalism.L2.Ker.embH emb δ)`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [Formalism.L2.Ker.LamC, Formalism.L2.Ker.laV, SetLike.mem_coe, AddSubgroup.mem_map] at hy`. Take `⟨x, -, rfl⟩` from `hy`. Conclude with `⟨x, rfl⟩`. Conclude with `((Set.countable_range _).mono hsub).to_subtype`.
+A detailed English derivation is pending.
 -/
 theorem countable_lamC {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype ι] {a b : ℕ} (emb : ι → E →+* ℂ) (δ : ℂ)
     (AA0 : Submodule (𝓞 E) E) (N : Submodule (𝓞 E) (Formalism.L2.Col.Sp E a)) (N' : Submodule (𝓞 E) (Formalism.L2.Col.Sp E b)) :
@@ -145,7 +143,7 @@ theorem countable_lamC {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype
   exact ((Set.countable_range _).mono hsub).to_subtype
 
 /- English proof (translation)
-Introduce `D ψ θ S T a b hS hT δ sc hSP e SS hSS N N' c hc hcS hSS2 hLa`. Establish `hfg` using `fg_of_selfDual _ _ (countable_lamC _ _ _ _ _) hLa.1`. Take `⟨i1, i2, i3⟩` from `Formalism.L2.Ker.finite_index_of_fg _ _ _ _ (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c hc hfg`. Conclude with `⟨Formalism.L2.Ker.repsOf_spec _ _ i1, Formalism.L2.Ker.repsOf_spec _ _ i2, Formalism.L2.Ker.repsOf_spec _ _ i3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem reps_genuine : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (c : ℕ), 0 < c → Odd c → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → LaFacts (tauE D) δ D.host.d sc (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N' → Formalism.L2.Th1.H.IsReps (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) (repsOf (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c)) ∧ Formalism.L2.Th1.H.IsReps (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) ((LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') ⊓ (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c)) (repsOf (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) ((LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') ⊓ (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c))) ∧ Formalism.L2.Th1.H.IsReps (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) (repsOf (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (BC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c)) := by
   intro D ψ θ S T a b hS hT δ sc hSP e SS hSS N N' c hc hcS hSS2 hLa

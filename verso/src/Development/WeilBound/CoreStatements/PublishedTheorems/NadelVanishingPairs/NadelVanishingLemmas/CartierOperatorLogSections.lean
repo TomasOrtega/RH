@@ -13,16 +13,16 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [logSec, latSec, AddSubgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_logSec_iff {X : Scheme.{0}} [IsIntegral X] {Z : Set X} {G : CartierDiv X} {a : ℕ}
     {U : X.Opens} {η : abelian₂ X.functionField} : η ∈ logSec Z G a U ↔ ∀ y ∈ U, η ∈ logAt Z G a y := by
   simp only [logSec, latSec, AddSubgroup.mem_iInf]
 
 /- English proof (translation)
-Unfold `inter`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.inf_insert]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h i (Finset.mem_insert_self i s), ih fun k hk => h k (Finset.mem_insert_of_mem hk)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_inter_of_forall {X : Scheme.{0}} [IsIntegral X] {ι : Type} (U : ι → X.Opens) (s : Finset ι)
     (y : X) (h : ∀ i ∈ s, y ∈ U i) : y ∈ inter U s := by
@@ -35,25 +35,23 @@ theorem mem_inter_of_forall {X : Scheme.{0}} [IsIntegral X] {ι : Type} (U : ι 
     exact ⟨h i (Finset.mem_insert_self i s), ih fun k hk => h k (Finset.mem_insert_of_mem hk)⟩
 
 /- English proof (translation)
-Establish `key : ∀ a (c : K), c ∈ M → ∀ v : Fin a → Ω[K⁄ℤ], (∀ i, v i ∈ AddSubgroup.closure {w | ∃ b ∈ A, ∃ h' ∈ H', w = b • h'}) → c • ExteriorAlgebra.ιMulti K a v ∈ spanForms M H' a`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `c hc v _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `AddSubgroup.subset_closure ⟨c, hc, v, fun i => i.elim0, rfl⟩`. Consider the case `succ a ih`. Introduce `c hc v hv`. Establish `hpre : ∀ h' ∈ H', ∀ z ∈ spanForms M H' a, ExteriorAlgebra.ι K h' * z ∈ spanForms M H' (a + 1)`. Introduce `h' hh' z hz`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c', hc', v', hv', rfl⟩` from `hz`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨c', hc', Fin.cons h' v', ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `Fin.cases hh' (fun k => ?_) i` and prove the remaining obligations. Simplify using `using hv' k`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, mul_smul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add z1 z2 _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg z _ h1 => rw [mul_neg]`. Conclude with `neg_mem h1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `claim : ∀ w ∈ AddSubgroup.closure {w | ∃ b ∈ A, ∃ h' ∈ H', w = b • h'}, ∀ c ∈ M, c • (ExteriorAlgebra.ι K w * ExteriorAlgebra.ιMulti K a (Matrix.vecTail v)) ∈ spanForms M H' (a + 1)`. Introduce `w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨b, hb, h', hh', rfl⟩` from `hw`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `c hc`. Rewrite using `[map_smul, smul_mul_assoc, smul_smul, ← mul_smul_comm]`. Conclude with `hpre h' hh' _ (ih (c * b) (hM c hc b hb) _ (fun i => hv i.succ))`. Consider the case `zero => intro c _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add w1 w2 _ _ h1 h2`. Introduce `c hc`. Rewrite using `[map_add, add_mul, smul_add]`. Conclude with `add_mem (h1 c hc) (h2 c hc)`. Consider the case `neg w _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc`. Rewrite using `[map_neg, neg_mul, smul_neg]`. Conclude with `neg_mem (h1 c hc)`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply]`. Conclude with `claim _ (hv 0) c hc`.
-
-Introduce `a`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, v, hv, rfl⟩`. Conclude with `key a c hc v (fun i => hH _ (hv i))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem spanForms_le_of_mem_closure_smul {K : Type} [Field K] (M : Set K) (A : Subring K)
     (hM : ∀ c ∈ M, ∀ b ∈ A, c * b ∈ M) (H H' : Set Ω[K⁄ℤ])
@@ -112,7 +110,7 @@ private theorem spanForms_le_of_mem_closure_smul {K : Type} [Field K] (M : Set K
   exact key a c hc v (fun i => hH _ (hv i))
 
 /- English proof (translation)
-Simplify using `only [dlog, dK, Units.val_mul, Derivation.leibniz, smul_add, smul_smul]`. Rewrite using `[add_comm]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> simp only [Units.val_inv_eq_inv_val, Units.val_mul, mul_inv_rev] <;> field_simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dlog_mul' {K : Type} [Field K] (u v : Kˣ) : dlog (u * v) = dlog u + dlog v := by
   simp only [dlog, dK, Units.val_mul, Derivation.leibniz, smul_add, smul_smul]
@@ -120,13 +118,13 @@ private theorem dlog_mul' {K : Type} [Field K] (u v : Kˣ) : dlog (u * v) = dlog
   congr 1 <;> congr 1 <;> simp only [Units.val_inv_eq_inv_val, Units.val_mul, mul_inv_rev] <;> field_simp
 
 /- English proof (translation)
-Simplify using `[dlog, dK]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dlog_one' {K : Type} [Field K] : dlog (1 : Kˣ) = 0 := by
   simp [dlog, dK]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [dlog_one']`. Consider the case `succ k ih => rw [pow_succ, dlog_mul', ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem dlog_pow' {K : Type} [Field K] (u : Kˣ) (k : ℕ) : dlog (u ^ k) = k • dlog u := by
   induction k with
@@ -134,7 +132,7 @@ private theorem dlog_pow' {K : Type} [Field K] (u : Kˣ) (k : ℕ) : dlog (u ^ k
   | succ k ih => rw [pow_succ, dlog_mul', ih, succ_nsmul]
 
 /- English proof (translation)
-Establish `h` using `dlog_mul' u u⁻¹`. Rewrite `h` using `[mul_inv_cancel, dlog_one']`. Conclude with `(neg_eq_of_add_eq_zero_right h.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dlog_inv' {K : Type} [Field K] (u : Kˣ) : dlog u⁻¹ = - dlog u := by
   have h := dlog_mul' u u⁻¹
@@ -142,7 +140,7 @@ private theorem dlog_inv' {K : Type} [Field K] (u : Kˣ) : dlog u⁻¹ = - dlog 
   exact (neg_eq_of_add_eq_zero_right h.symm).symm
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `ofNat k => rw [Int.ofNat_eq_coe, zpow_natCast, dlog_pow', natCast_zsmul]`. Consider the case `negSucc k => rw [zpow_negSucc, dlog_inv', dlog_pow', negSucc_zsmul]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem dlog_zpow' {K : Type} [Field K] (u : Kˣ) (m : ℤ) : dlog (u ^ m) = m • dlog u := by
   cases m with
@@ -150,7 +148,7 @@ private theorem dlog_zpow' {K : Type} [Field K] (u : Kˣ) (m : ℤ) : dlog (u ^ 
   | negSucc k => rw [zpow_negSucc, dlog_inv', dlog_pow', negSucc_zsmul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [dlog_one']`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, dlog_mul', dlog_zpow', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem dlog_prod_zpow {K : Type} [Field K] {n : ℕ} (s : Finset (Fin n)) (x : Fin n → Kˣ) (m : Fin n → ℤ) :
     dlog (∏ j ∈ s, x j ^ m j) = ∑ j ∈ s, m j • dlog (x j) := by
@@ -160,13 +158,13 @@ private theorem dlog_prod_zpow {K : Type} [Field K] {n : ℕ} (s : Finset (Fin n
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, dlog_mul', dlog_zpow', ih]
 
 /- English proof (translation)
-Simplify using `[dlog, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dK_units_eq_smul_dlog {K : Type} [Field K] (u : Kˣ) : dK (u : K) = (u : K) • dlog u := by
   simp [dlog, smul_smul]
 
 /- English proof (translation)
-Take `⟨V, hyV, hV⟩` from `h.exists_nhds`. Introduce `z hz _`. Conclude with `hV z (hz.mem_open V.isOpen hyV)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem logUnit_of_unitAt {X : Scheme.{0}} [IsIntegral X] (Z : Set X) {y : X}
     {g : X.functionFieldˣ} (h : UnitAt y (g : X.functionField)) : LogUnit Z y g := by
@@ -175,11 +173,11 @@ private theorem logUnit_of_unitAt {X : Scheme.{0}} [IsIntegral X] (Z : Set X) {y
   exact hV z (hz.mem_open V.isOpen hyV)
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `ha`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self s with hs | hs` into its components or cases. Use `⟨(hs.map (algebraMap _ X.functionField)).unit, ⟨s, hs, rfl⟩, _, ⟨s, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `dK_units_eq_smul_dlog (hs.map (algebraMap _ X.functionField)).unit`. Rewrite `h` using `[IsUnit.unit_spec]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Use `⟨(hs.map (algebraMap _ X.functionField)).unit, ⟨1 - s, hs, rfl⟩, _, ⟨-(1 - s), rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `dK_units_eq_smul_dlog (hs.map (algebraMap _ X.functionField)).unit`. Rewrite `h` using `[IsUnit.unit_spec]`. Rewrite using `[map_neg, neg_smul, ← h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dK, map_sub]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_unitAt_dK_eq_smul_dlog_of_regAt {X : Scheme.{0}} [IsIntegral X] {y : X} {a : X.functionField} (ha : RegAt y a) :
     ∃ u : X.functionFieldˣ, UnitAt y (u : X.functionField) ∧ ∃ b, RegAt y b ∧ dK a = b • dlog u := by
@@ -196,21 +194,17 @@ private theorem exists_unitAt_dK_eq_smul_dlog_of_regAt {X : Scheme.{0}} [IsInteg
     simp [dK, map_sub]
 
 /- English proof (translation)
-Establish `hM : {c : X.functionField | D.RegularAt y c} = {c | c * (t : X.functionField) ∈ locRing y}` using `Set.ext fun c => (ht.regularAt_iff).trans mem_locRing.symm`. Use `show spanForms {c | D.RegularAt y c} _ a ≤ spanForms {c | c * (t : X.functionField) ∈ locRing y} _ a`. Rewrite using `[hM]`. Use `spanForms_le_of_mem_closure_smul _ (locRing y) (fun c hc b hb => ?_) _ _ ?_ a` and prove the remaining obligations. Use `show c * b * (t : X.functionField) ∈ locRing y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mul_right_comm]`. Conclude with `(locRing y).mul_mem hc hb`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨u, m, hu, rfl⟩` from `(hc.logUnit y hy g).1 hg`. Establish `hch` using `hc.chart y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfr : ∀ k, ∀ b ∈ locRing y, b • frame x J k ∈ AddSubgroup.closure {w : Ω[X.functionField⁄ℤ] | ∃ b ∈ locRing y, ∃ h' ∈ Set.range (frame x J), w = b • h'}` using `fun k b hb => AddSubgroup.subset_closure ⟨b, hb, _, ⟨k, rfl⟩, rfl⟩`. Establish `hdK : ∀ k, ∀ b ∈ locRing y, b • dK (x k : X.functionField) ∈ AddSubgroup.closure {w : Ω[X.functionField⁄ℤ] | ∃ b ∈ locRing y, ∃ h' ∈ Set.range (frame x J), w = b • h'}`. Introduce `k b hb`. Distinguish the cases in `hk : k ∈ J`. Establish `h1 : dK (x k : X.functionField) = (x k : X.functionField) • frame x J k`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[frame, if_pos hk, dK_units_eq_smul_dlog]`. Rewrite using `[h1, smul_smul]`. Conclude with `hfr k _ ((locRing y).mul_mem hb (hch.mem k))`. Establish `h1 : dK (x k : X.functionField) = frame x J k` using `by rw [frame, if_neg hk]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hfr k b hb`. Rewrite using `[dlog_mul', dlog_prod_zpow]`. Use `add_mem ?_ (sum_mem fun k hk => zsmul_mem ?_ _)` and prove the remaining obligations. Take `⟨a1, _, ha1⟩` from `hu.inv`. Take `⟨a0, _, ha0⟩` from `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `huA : (u : X.functionField) ∈ locRing y` using `mem_locRing.2 ⟨a0, ha0⟩`. Establish `huiA : ((u⁻¹ : X.functionFieldˣ) : X.functionField) ∈ locRing y`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `mem_locRing.2 ⟨a1, ha1⟩`. Take `⟨cf, hcf, hdu⟩` from `hch.deriv _ huA`.
-
-Rewrite using `[dlog, hdu, Finset.smul_sum]`. Conclude with `sum_mem fun k _ => by`. Rewrite using `[smul_smul]`. Conclude with `hdK k _ ((locRing y).mul_mem huiA (hcf k))`. Establish `h1 : dlog (x k) = (1 : X.functionField) • frame x J k` using `by rw [frame, if_pos hk, one_smul]`.
-
-Rewrite using `[h1]`. Conclude with `hfr k 1 (locRing y).one_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem logAt_le_chartForms_of_isLogChart {X : Scheme.{0}} [IsIntegral X] {Z : Set X} {U : X.Opens} {n : ℕ}
     {x : Fin n → X.functionFieldˣ} {J : Finset (Fin n)} (hc : IsLogChart Z U x J) {y : X} (hy : y ∈ U)
@@ -259,13 +253,11 @@ private theorem logAt_le_chartForms_of_isLogChart {X : Scheme.{0}} [IsIntegral X
     exact hfr k 1 (locRing y).one_mem
 
 /- English proof (translation)
-Establish `hM : {c : X.functionField | D.RegularAt y c} = {c | c * (t : X.functionField) ∈ locRing y}` using `Set.ext fun c => (ht.regularAt_iff).trans mem_locRing.symm`. Use `show spanForms {c | c * (t : X.functionField) ∈ locRing y} _ a ≤ spanForms {c | D.RegularAt y c} _ a`. Rewrite using `[hM]`. Use `spanForms_le_of_mem_closure_smul _ (locRing y) (fun c hc b hb => ?_) _ _ ?_ a` and prove the remaining obligations. Use `show c * b * (t : X.functionField) ∈ locRing y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mul_right_comm]`. Conclude with `(locRing y).mul_mem hc hb`. Introduce and unpack `_ ⟨k, rfl⟩`. Distinguish the cases in `hk : k ∈ J`. Establish `hlu : LogUnit Z y (x k)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(hc.logUnit y hy (x k)).2 ⟨1, fun i => if i = k then 1 else 0, ⟨1, isUnit_one, by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, Finset.prod_eq_single k (fun b _ hb => by simp [hb]) (fun h => absurd hk h)]`. Simplify using the standard rewrite rules. Rewrite using `[frame, if_pos hk, ← one_smul X.functionField (dlog (x k))]`. Conclude with `AddSubgroup.subset_closure ⟨1, (locRing y).one_mem, _, ⟨x k, hlu, rfl⟩, rfl⟩`.
-
-Rewrite using `[frame, if_neg hk]`. Take `⟨u, hu, b, hb, hd⟩` from `exists_unitAt_dK_eq_smul_dlog_of_regAt (mem_locRing.1 ((hc.chart y hy).mem k))`. Rewrite using `[hd]`. Conclude with `AddSubgroup.subset_closure ⟨b, mem_locRing.2 hb, _, ⟨u, logUnit_of_unitAt Z hu, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartForms_le_logAt_of_isLogChart {X : Scheme.{0}} [IsIntegral X] {Z : Set X} {U : X.Opens} {n : ℕ}
     {x : Fin n → X.functionFieldˣ} {J : Finset (Fin n)} (hc : IsLogChart Z U x J) {y : X} (hy : y ∈ U)
@@ -294,15 +286,13 @@ private theorem chartForms_le_logAt_of_isLogChart {X : Scheme.{0}} [IsIntegral X
     exact AddSubgroup.subset_closure ⟨b, mem_locRing.2 hb, _, ⟨u, logUnit_of_unitAt Z hu, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hs : ∀ s : Finset C, (∑ c ∈ s, r c • E c).IsEqn y (∏ c ∈ s, ((e c).elim 1 x) ^ r c)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `((hE a).nsmul (r a)).add ih`. Establish `hprod : ∏ j ∈ J, x j ^ (∑ c ∈ Finset.univ.filter (fun c => e c = some j), r c) = ∏ c, ((e c).elim 1 x) ^ r c`. Establish `h1 : ∀ j, x j ^ (∑ c ∈ Finset.univ.filter (fun c => e c = some j), r c) = ∏ c, (if e c = some j then x j ^ r c else 1)`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_pow_eq_pow_sum, Finset.prod_filter]`. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Break down `hc : e c with _ | j0` into its components or cases.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hj0 : j0 ∈ J` using `(hJ j0).2 ⟨c, hc⟩`. Simplify using `only [Option.some.injEq, Option.elim_some]`. Rewrite using `[Finset.prod_ite_eq J j0 (fun j => x j ^ r c), if_pos hj0]`. Rewrite using `[hprod]`.
-
-Conclude with `(ht.nsmul p).add (hs _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isEqn_smul_add_sum_smul {X : Scheme.{0}} [IsIntegral X] {C : Type} [Fintype C] (E : C → CartierDiv X)
     (G : CartierDiv X) (r : C → ℕ) (p : ℕ) {n : ℕ} (x : Fin n → X.functionFieldˣ) (J : Finset (Fin n))
@@ -336,25 +326,21 @@ private theorem isEqn_smul_add_sum_smul {X : Scheme.{0}} [IsIntegral X] {C : Typ
   exact (ht.nsmul p).add (hs _)
 
 /- English proof (translation)
-Introduce `p _ X _ _ C _ E n ι _ 𝒜 G r hr s j hj γ hγ`. Take `⟨e, he_inj, hJ, heqn⟩` from `𝒜.snc j`. Establish `hW : ∀ w ∈ inter 𝒜.U s, w ∈ 𝒜.U j` using `fun w hw => (Finset.inf_le hj : inter 𝒜.U s ≤ 𝒜.U j) hw`. Establish `hcoord : IsCoord (𝒜.x j)` using `((𝒜.chart j).chart _ (𝒜.gen j)).coord`. Establish `hR : ∀ j', (∑ c ∈ Finset.univ.filter (fun c => e c = some j'), r c) < p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j'`. Distinguish the cases in `hne : ∃ c, e c = some j'`. Take `⟨c0, hc0⟩` from `hne`. Establish `h1 : Finset.univ.filter (fun c => e c = some j') = {c0}`. Use extensionality with `c`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Conclude with `⟨fun h => he_inj c c0 j' h hc0, fun h => h ▸ hc0⟩`. Rewrite using `[h1, Finset.sum_singleton]`. Conclude with `hr c0`. Establish `h1 : Finset.univ.filter (fun c => e c = some j') = ∅`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Conclude with `fun h => hne ⟨c, h⟩`. Rewrite using `[h1, Finset.sum_empty]`. Conclude with `(Fact.out : p.Prime).pos`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose tG htG using fun w : X => G.exists_isEqn w`. Establish `hLe : ∀ (D : CartierDiv X) (w : X), w ∈ 𝒜.U j → ∀ (t : X.functionFieldˣ), D.IsEqn w t → ∀ a, logAt (suppAll E) D a w = chartForms (locRing w) (𝒜.x j) (𝒜.J j) t a` using `fun D w hw t ht a => le_antisymm (logAt_le_chartForms_of_isLogChart (𝒜.chart j) hw ht a) (chartForms_le_logAt_of_isLogChart (𝒜.chart j) hw ht a)`. Establish `hG' : ∀ w ∈ 𝒜.U j, (p • G + ∑ c, r c • E c).IsEqn w (tG w ^ p * ∏ j' ∈ 𝒜.J j, 𝒜.x j j' ^ (∑ c ∈ Finset.univ.filter (fun c => e c = some j'), r c))` using `fun w hw => isEqn_smul_add_sum_smul E G r p (𝒜.x j) (𝒜.J j) e hJ w (tG w) (htG w) (fun c => heqn c w hw)`. Use `haveI hY : Nonempty {w : X // w ∈ inter 𝒜.U s} := ⟨⟨genericPoint X, mem_inter_of_forall _ _ _ (fun i _ => 𝒜.gen i)⟩⟩`. Establish `hfam` using `fun a η => logCartier_rounding_family X.functionField p n (𝒜.x j) (𝒜.J j) γ {w : X // w ∈ inter 𝒜.U s} (fun w => locRing w.1) (fun w => tG w.1) (fun _ j' => ∑ c ∈ Finset.univ.filter (fun c => e c = some j'), r c) (fun w => (𝒜.chart j).chart w.1 (hW _ w.2)) (fun _ => hR) hγ a η`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _ h0`. Conclude with `cartierMap_eq_extD_imp_eq_zero _ p n (𝒜.x j) γ hcoord hγ x 0 (by rw [h0, map_zero])`. Introduce `a x _ z _ h`. Conclude with `cartierMap_eq_extD_imp_eq_zero _ p n (𝒜.x j) γ hcoord hγ x z h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy hd`. Take `⟨ζ, ξ, hζ, _, h0, hyeq⟩` from `hfam 0 y (fun w => by`. Rewrite using `[← hLe _ _ (hW _ w.2) _ (hG' _ (hW _ w.2))]`. Conclude with `(mem_logSec_iff.1 hy) w.1 w.2) hd`. Use `⟨ζ, mem_logSec_iff.2 fun w hw => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLe _ _ (hW _ hw) _ (htG w)]`. Conclude with `hζ ⟨w, hw⟩`. Rewrite using `[hyeq, h0 rfl, map_zero, add_zero]`. Introduce `a y hy hd`. Take `⟨ζ, ξ, hζ, hξ, _, hyeq⟩` from `hfam (a + 1) y (fun w => by`.
-
-Rewrite using `[← hLe _ _ (hW _ w.2) _ (hG' _ (hW _ w.2))]`. Conclude with `(mem_logSec_iff.1 hy) w.1 w.2) hd`. Use `⟨ζ, mem_logSec_iff.2 fun w hw => ?_, ξ, mem_logSec_iff.2 fun w hw => ?_, hyeq⟩` and prove the remaining obligations. Rewrite using `[hLe _ _ (hW _ hw) _ (htG w)]`. Conclude with `hζ ⟨w, hw⟩`.
-
-Rewrite using `[hLe _ _ (hW _ hw) _ (hG' _ (hW _ hw))]`. Conclude with `hξ ⟨w, hw⟩ a rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartierAt_atlas_inter : ∀ (p : ℕ) [Fact p.Prime] {X : Scheme.{0}} [IsIntegral X]
     [CharP X.functionField p] {C : Type} [Fintype C] {E : C → CartierDiv X} {n : ℕ} {ι : Type}

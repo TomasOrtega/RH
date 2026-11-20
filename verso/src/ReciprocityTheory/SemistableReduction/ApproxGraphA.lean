@@ -23,14 +23,14 @@ Both sides reduce to the same expression.
 lemma euc_smul {r : ℕ} (c : ℂ) (u : Fin r → ℂ) : euc (c • u) = c • euc u := rfl
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `[normSq, euc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma normSq_eq_euc {r : ℕ} (u : Fin r → ℂ) : normSq u = ‖euc u‖ ^ 2 := by
   rw [EuclideanSpace.norm_sq_eq]
   simp [normSq, euc]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq]`. Unfold `posSq`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [euc, posPart, PiLp.toLp_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posSq_eq (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posSq p u = ‖euc (posPart p u)‖ ^ 2 := by
   rw [EuclideanSpace.norm_sq_eq]
@@ -40,7 +40,7 @@ lemma posSq_eq (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posSq p u = ‖euc (pos
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq]`. Unfold `negSq`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [euc, negPart, PiLp.toLp_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma negSq_eq (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : negSq p u = ‖euc (negPart p u)‖ ^ 2 := by
   rw [EuclideanSpace.norm_sq_eq]
@@ -50,7 +50,7 @@ lemma negSq_eq (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : negSq p u = ‖euc (neg
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `normSq posSq negSq`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma normSq_split (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : normSq u = posSq p u + negSq p u := by
   unfold normSq posSq negSq
@@ -59,7 +59,7 @@ lemma normSq_split (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : normSq u = posSq p 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [posPart, negPart, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posPart_add_negPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posPart p u + negPart p u = u := by
   funext k
@@ -67,7 +67,7 @@ lemma posPart_add_negPart (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : posPart p u 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [posPart, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posPart_add (p : ℕ) {r : ℕ} (u v : Fin r → ℂ) :
     posPart p (u + v) = posPart p u + posPart p v := by
@@ -76,7 +76,7 @@ lemma posPart_add (p : ℕ) {r : ℕ} (u v : Fin r → ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [negPart, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma negPart_add (p : ℕ) {r : ℕ} (u v : Fin r → ℂ) :
     negPart p (u + v) = negPart p u + negPart p v := by
@@ -85,7 +85,7 @@ lemma negPart_add (p : ℕ) {r : ℕ} (u v : Fin r → ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [posPart, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma posPart_smul (p : ℕ) {r : ℕ} (c : ℂ) (u : Fin r → ℂ) :
     posPart p (c • u) = c • posPart p u := by
@@ -94,7 +94,7 @@ lemma posPart_smul (p : ℕ) {r : ℕ} (c : ℂ) (u : Fin r → ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [negPart, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma negPart_smul (p : ℕ) {r : ℕ} (c : ℂ) (u : Fin r → ℂ) :
     negPart p (c • u) = c • negPart p u := by
@@ -103,13 +103,13 @@ lemma negPart_smul (p : ℕ) {r : ℕ} (c : ℂ) (u : Fin r → ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[euc, PiLp.inner_apply, RCLike.inner_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma inner_euc {r : ℕ} (x y : Fin r → ℂ) : inner ℂ (euc x) (euc y) = ∑ k, conj (x k) * y k := by
   simp [euc, PiLp.inner_apply, RCLike.inner_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[inner_euc, inner_euc, ← Finset.sum_sub_distrib]`. Unfold `jForm`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [sgn, posPart, negPart]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma jForm_eq (p : ℕ) {r : ℕ} (x y : Fin r → ℂ) :
     jForm p x y = inner ℂ (euc (posPart p x)) (euc (posPart p y)) -
@@ -121,9 +121,9 @@ lemma jForm_eq (p : ℕ) {r : ℕ} (x y : Fin r → ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `jForm posSq negSq`. Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_mul']`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma jForm_self (p : ℕ) {r : ℕ} (y : Fin r → ℂ) :
     jForm p y y = ((posSq p y - negSq p y : ℝ) : ℂ) := by
@@ -136,9 +136,9 @@ lemma jForm_self (p : ℕ) {r : ℕ} (y : Fin r → ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1` using `posSq_eq p u`. Establish `h2` using `normSq_eq_euc u`. Establish `h3` using `normSq_split p u`. Apply the tactic sequence `have hn : 0 ≤ negSq p u := Finset.sum_nonneg fun k _ => by split_ifs <;> positivity`. Establish `ha` using `norm_nonneg (euc (posPart p u))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hb` using `norm_nonneg (euc u)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma norm_posPart_le (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : ‖euc (posPart p u)‖ ≤ ‖euc u‖ := by
   have h1 := posSq_eq p u
@@ -152,9 +152,9 @@ lemma norm_posPart_le (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : ‖euc (posPart 
   nlinarith
 
 /- English proof (translation)
-Establish `h1` using `negSq_eq p u`. Establish `h2` using `normSq_eq_euc u`. Establish `h3` using `normSq_split p u`. Apply the tactic sequence `have hn : 0 ≤ posSq p u := Finset.sum_nonneg fun k _ => by split_ifs <;> positivity`. Establish `ha` using `norm_nonneg (euc (negPart p u))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hb` using `norm_nonneg (euc u)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma norm_negPart_le (p : ℕ) {r : ℕ} (u : Fin r → ℂ) : ‖euc (negPart p u)‖ ≤ ‖euc u‖ := by
   have h1 := negSq_eq p u
@@ -174,7 +174,7 @@ lemma euc_zero {r : ℕ} : euc (0 : Fin r → ℂ) = 0 := by
   rfl
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `euc_zero`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, euc_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma euc_sum {r : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) :
     euc (∑ j ∈ s, f j) = ∑ j ∈ s, euc (f j) := by
@@ -186,14 +186,14 @@ lemma euc_sum {r : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ) 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, euc_add, ih]
 
 /- English proof (translation)
-Establish `h'` using `congrArg WithLp.ofLp h`. Simplify `h'` using `[euc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma euc_eq_zero {r : ℕ} {w : Fin r → ℂ} (h : euc w = 0) : w = 0 := by
   have h' := congrArg WithLp.ofLp h
   simpa [euc] using h'
 
 /- English proof (translation)
-Establish `h` using `Real.sum_mul_le_sqrt_mul_sqrt Finset.univ (fun _ : Fin r => (1 : ℝ)) (fun j => ‖w j‖)`. Rewrite using `[EuclideanSpace.norm_eq]`. Simplify `h` using `[euc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma sum_norm_le_sqrt {r : ℕ} (w : Fin r → ℂ) : ∑ j, ‖w j‖ ≤ √(r : ℝ) * ‖euc w‖ := by
   have h := Real.sum_mul_le_sqrt_mul_sqrt Finset.univ (fun _ : Fin r => (1 : ℝ)) (fun j => ‖w j‖)
@@ -201,7 +201,7 @@ lemma sum_norm_le_sqrt {r : ℕ} (w : Fin r → ℂ) : ∑ j, ‖w j‖ ≤ √(
   simpa [euc] using h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`. Simplify using `[Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sum_smul_eq {r : ℕ} (X : Fin r → Fin r → ℂ) (w : Fin r → ℂ) (c : ℂ) :
     ∑ j, w j • X j = c • w + ∑ j, w j • (X j - c • (Pi.single j 1 : Fin r → ℂ)) := by
@@ -212,15 +212,13 @@ lemma sum_smul_eq {r : ℕ} (X : Fin r → Fin r → ℂ) (w : Fin r → ℂ) (c
   ring
 
 /- English proof (translation)
-Establish `he : ∀ j : Fin r, ‖w j‖ * ‖euc (X j - (R : ℂ) • (Pi.single j 1 : Fin r → ℂ))‖ ≤ ‖w j‖ * μ`. Introduce `j`. Distinguish the cases in `hj : (j : ℕ) < p`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `h1` using `hX j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[normSq_eq_euc]`. Establish `ha` using `norm_nonneg (euc (X j - (R : ℂ) • (Pi.single j 1 : Fin r → ℂ)))`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw j (not_lt.mp hj)]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[euc_sum]`. Simplify using `only [euc_smul]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ ≤ ∑ j, ‖w j • euc (X j - (R : ℂ) • (Pi.single j 1 : Fin r → ℂ))‖ := norm_sum_le _ _`. Use `_ = ∑ j, ‖w j‖ * ‖euc (X j - (R : ℂ) • (Pi.single j 1 : Fin r → ℂ))‖ := by`. Simplify using `only [norm_smul]`. Use `_ ≤ ∑ j, ‖w j‖ * μ := Finset.sum_le_sum fun j _ => he j`. Use `_ = μ * ∑ j, ‖w j‖ := by`.
-
-Rewrite using `[Finset.mul_sum]`. Simplify using `only [mul_comm]`. Use `_ ≤ μ * (√(r : ℝ) * ‖euc w‖) := mul_le_mul_of_nonneg_left (sum_norm_le_sqrt w) hμ`. Use `_ = √(r : ℝ) * μ * ‖euc w‖ := by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma norm_err_le {r p : ℕ} {μ R : ℝ} (X : Fin r → Fin r → ℂ)
     (hX : ∀ j : Fin r, (j : ℕ) < p → normSq (X j - (R : ℂ) • (Pi.single j 1 : Fin r → ℂ)) ≤ μ ^ 2)

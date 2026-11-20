@@ -3,7 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.HolomorphicDiscreteSeries.Wo
 namespace PositivityTheory.RgHe.SM
 
 /- English proof (translation)
-The claim follows from `model_walk_of_inputs`.
+A detailed English derivation is pending.
 -/
 theorem stepM : PositivityTheory.RgHe.Models → PositivityTheory.RgHe.OfInt → PositivityTheory.RgHe.Seed → PositivityTheory.RgHe.DecEx2 → PositivityTheory.RgHe.StepM := model_walk_of_inputs
 

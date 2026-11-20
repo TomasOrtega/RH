@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Unfold `cotSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.V.Alg.M.main_cotSpan {O A ι : Type} [CommRing O] [IsDomain O] [CommRing A] [Algebra O A]
     (x : A →ₐ[O] O) (F : ι → A) : cotSpan x F = (Submodule.span O (Set.range F)).map (satSq x).mkQ := by
@@ -19,9 +19,9 @@ private theorem UpperTheory.V.Alg.M.main_cotSpan {O A ι : Type} [CommRing O] [I
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ {G G' : ι → A}, Submodule.span O (Set.range G') ≤ Submodule.span O (Set.range G) → Ideal.span (Set.range G') ≤ Ideal.span (Set.range G)`. Introduce `G G' hle`. Rewrite using `[Ideal.span_le]`. Introduce `y hy`. Establish `h1 : y ∈ Submodule.span O (Set.range G)` using `hle (Submodule.subset_span hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : Submodule.span O (Set.range G) ≤ (Ideal.span (Set.range G)).restrictScalars O` using `Submodule.span_le.mpr Ideal.subset_span`. Conclude with `h2 h1`. Conclude with `le_antisymm (key h.le) (key h.ge)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Alg.M.main_span {O A ι : Type} [CommRing O] [CommRing A] [Algebra O A]
     {F F' : ι → A} (h : Submodule.span O (Set.range F') = Submodule.span O (Set.range F)) :
@@ -38,19 +38,17 @@ private theorem UpperTheory.V.Alg.M.main_span {O A ι : Type} [CommRing O] [Comm
   exact le_antisymm (key h.le) (key h.ge)
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ v hv A _ _ 𝒜 _ x hW r s r' s' m Q a h1 h2 h3 h4 h5`. Use `haveI := hW.co`. Take `⟨hr, hsm, hF, hG, hZ⟩` from `h1`. Take `⟨hfin, hrk⟩` from `rk_holds O A 𝒜 x hW _ hsm`. Establish `hrk' : Module.finrank O (cotLat x 𝒜 (-1)) = r` using `by rw [hrk]; simp [mDims]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨F', y, c, hspan, hy, hlast, hlen⟩` from `sm_holds O A 𝒜 x (hW.fixed _ (by norm_num)) r Q.F Q.hF hfin hrk' hF ϖ hϖ`. Establish `hF'mem : ∀ i, F' i ∈ 𝒜 (-1)` using `fun i => by`. Establish `: F' i ∈ Submodule.span O (Set.range Q.F)` using `hspan ▸ Submodule.subset_span ⟨i, rfl⟩`. Conclude with `(Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact Q.hF j)) this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Q' : Eqns 𝒜 x r s r' s' m` to `{ Q with F := F', hF := hF'mem }`. Establish `hI : Q'.ideal = Q.ideal`. Simplify using `only [Eqns.ideal, Ideal.span_union]`. Rewrite using `[show Ideal.span (Set.range Q'.F) = Ideal.span (Set.range Q.F) from main_span hspan]`. Establish `hF' : SpansCot x 𝒜 (-1) Q'.F`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p hp`. Take `⟨d, hd, hp'⟩` from `hF p hp`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Rewrite `hp'`, the goal using `[main_cotSpan]`. Conclude with `hspan ▸ hp'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1' : M1 Q'` using `⟨hr, hsm, hF', hG, hZ⟩`. Take `⟨τ, _, wt, φ, hφ, hφZ, hcard⟩` from `cut_holds O A 𝒜 x hW r s r' s' m Q' h1'`. Take `⟨a', ha'0, ha'I, ha'x, ha'φ⟩` from `nz_holds O A 𝒜 x hW r s r' s' m Q' τ wt φ hφ (by rw [hcard]; simpa [mDims] using hr) (by rw [hcard]; simp [mDims]) hF' a h5.1`. Rewrite `ha'I` using `[hI]`. Establish `hval : ∀ ξ : A →ₐ[O] K, OnS Q.ideal ξ → ξ a' = ξ a` using `fun ξ hξ => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hξ _ ha'I` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h5' : M5 𝒜 K x Q.ideal a'` using `⟨ha'0, ha'x.trans h5.2.1, fun ξ hξ ht => by rw [hval ξ hξ]; exact h5.2.2 ξ hξ ht⟩`. Use `⟨?_, by rw [hlen]; exact ENat.coe_ne_top _, fun T hT => ?_⟩` and prove the remaining obligations. Conclude with `fin_holds O K A 𝒜 x hW _ (hom_holds O A 𝒜 x hW r s r' s' m Q).1 h2 h4`.
-
-Use `core_holds O K v hv A 𝒜 x hW r s r' s' m Q' τ wt φ hφ hφZ hr hcard ϖ hϖ y c hy hlast hF' hG (hI ▸ h2) (hI ▸ h3) (hI ▸ h4) a' (hI ▸ h5') ha'φ T (hI ▸ hT)` as an intermediate fact. Rewrite using `[hlen, ENat.toNat_coe]`. Rewrite `this` using `[Finset.sum_congr rfl fun ξ hξ => congrArg v (hval ξ (hT.1 ξ hξ).1)]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.main_holds :
     LemmaM := by

@@ -14,9 +14,9 @@ variable {M : Model F E} {g : SplitG M.L}
 section Rtools
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.Loc.Model.R`. Rewrite using `[hs]`. Simplify using `only [Subring.mem_comap, Subring.mem_map]`. Use `⟨(a, b), ?_, ?_⟩` and prove the remaining obligations. Use `show (Ideal.Quotient.mk (Ideal.span {g.q})) a = (Ideal.Quotient.mk (Ideal.span {g.q})) b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `⟨c, Subtype.ext (by push_cast; exact h)⟩`. Use `show ((a : F), (b : F)) = g.e x`. Rewrite using `[hx]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_R_of (hs : M.split = some g) (x : E) (a b c : 𝒪[F]) (hx : g.e x = ((a : F), (b : F)))
     (h : (a : F) - b = (g.q : F) * c) : x ∈ M.R := by
@@ -43,7 +43,7 @@ Both sides reduce to the same expression.
 theorem dgR_coe (hs : M.split = some g) (c : 𝒪[F]) : ((dgR hs c : M.R) : E) = algebraMap F E c := rfl
 
 /- English proof (translation)
-Rewrite using `[dgR_coe, AlgEquiv.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_dgR (hs : M.split = some g) (c : 𝒪[F]) : g.e ((dgR hs c : M.R) : E) = ((c : F), (c : F)) := by
   rw [dgR_coe, AlgEquiv.commutes]
@@ -70,14 +70,14 @@ def q2 (hs : M.split = some g) : M.R :=
   ⟨g.e.symm (0, (g.q : F)), mem_R_of hs _ 0 g.q (-1) (by simp) (by simp)⟩
 
 /- English proof (translation)
-Use `show g.e (g.e.symm (0, (g.q : F))) = _`. Conclude with `g.e.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem embedding_uniformizer (hs : M.split = some g) : g.e ((q2 hs : M.R) : E) = (0, (g.q : F)) := by
   show g.e (g.e.symm (0, (g.q : F))) = _
   exact g.e.apply_symm_apply _
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[trO_coe]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trO_one (hs : M.split = some g) : trO hs 1 = 0 := by
   apply Subtype.ext
@@ -85,7 +85,7 @@ theorem trO_one (hs : M.split = some g) : trO hs 1 = 0 := by
   simp
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[trO_coe, MulMemClass.coe_mul, MulMemClass.coe_mul, trO_coe, map_mul, e_dgR, Prod.fst_mul, Prod.snd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trO_dgR_mul (hs : M.split = some g) (c : 𝒪[F]) (x : M.R) :
     trO hs (dgR hs c * x) = c * trO hs x := by
@@ -94,9 +94,9 @@ theorem trO_dgR_mul (hs : M.split = some g) (c : 𝒪[F]) (x : M.R) :
   ring
 
 /- English proof (translation)
-Take `⟨h1, -, c, hc⟩` from `comp_of_mem_R hs s.2`. Use `⟨⟨(g.e s).1, h1⟩, -c, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[AddMemClass.coe_add, MulMemClass.coe_mul, map_add, map_mul, e_dgR, e_dgR, embedding_uniformizer]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [Prod.snd_add, Prod.snd_mul]`. Use `push_cast`. Take the linear combination `(-1 : F) * hc`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem R_decomp (hs : M.split = some g) (s : M.R) :
     ∃ a b : 𝒪[F], s = dgR hs a + dgR hs b * q2 hs := by

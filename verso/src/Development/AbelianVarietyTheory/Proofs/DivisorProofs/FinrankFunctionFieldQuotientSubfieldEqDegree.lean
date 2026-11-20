@@ -15,11 +15,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `hA k _ X _ p D hX P hamp e x hg`. Use `haveI := hX.isDomain`. Use `haveI := hX.finite`. Use `haveI := hX.charZero_base`. Take `⟨hI, π, hπ, hgen, hr0, hr, hiso⟩` from `GlobalTheory.T.exists_projectiveSpace_morphism_of_generating_sections k X p D hX P hamp e x hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, -, hB⟩` from `GlobalTheory.T.exists_fubiniStudyWeights_bounded_difference k X p D hX P e x hg`. Take `⟨u, hu, -⟩` from `hB 1 le_rfl`. Establish `h1` using `(hiso u hu).gdeg_eq D`. Take `⟨hPV, hdeg, hcard⟩` from `GlobalTheory.T.projectiveSpace_order_arithVariety_fubiniStudyDegree k D`. Establish `h2` using `(GlobalTheory.T.geometricDegree_projectionFormula_selfInter_pow hA k (PSpace k D) (PSpace.str k D) D hPV).1 X p hX π hπ hgen hr0 (ProjSpace.hermitianTwistingSheaf k D)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : gdeg ((up P.L u).pow e) D = (e : ℝ) ^ D * gdeg (up P.L u) D` using `GlobalTheory.T.chernFormPowerIntegral_hermLineBundle_pow k X p D hX (up P.L u) e fun _ _ => 1`. Establish `h4` using `GlobalTheory.T.hermLineBundleGeometricDegree_raiseWeight hA k X p D hX P.L u`. Rewrite using `[← hr]`. Use `push_cast`. Rewrite using `[← hcard, ← hdeg, ← h2, ← h1, h3, h4]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_ratF_eq_gdeg : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → (Module.finrank (ratF x) X.functionField : ℝ) = (e : ℝ) ^ D * gdeg P.L D := by
   intro hA k _ X _ p D hX P hamp e x hg

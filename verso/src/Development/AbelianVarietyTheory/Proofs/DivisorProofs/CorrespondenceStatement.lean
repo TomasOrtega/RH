@@ -14,7 +14,7 @@ set_option autoImplicit false
 namespace GlobalTheory.ShFam.GalCarry.Corr
 
 /- English proof (translation)
-Take `⟨i', p', hp's, hrel⟩` from `GlobalTheory.T.side_generic_point_lift F I I' Y Y' Rel h i`. Establish `hloc : ∀ y : (Y i).X, ∃ l : Sp ((Y i).X.presheaf.stalk y) ⟶ (Y' i').X, spMap (algebraMap ((Y i).X.presheaf.stalk y) (Y i).Fn) ≫ l = p'` using `fun y => GlobalTheory.T.valuative_lift_unique_closed_point F (Y i) (Y' i') p' hp's y (GlobalTheory.T.side_generic_point_relation F I I' Y Y' Rel h i i' p' hrel y)`. Take `⟨φ, hφ, hφs⟩` from `GlobalTheory.T.extend_generic_point_morphism_of_stalks F (Y i) (Y' i') p' hp's hloc`. Substitute `hφ` using the available equality. Conclude with `⟨i', φ, hφs, GlobalTheory.T.generic_point_relation_of_morphism F I I' Y Y' Rel h i i' φ hφs hrel⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem side_exists {F : Type} [Field F] [CharZero F] {I I' : Type} {Y : I → Var F} {Y' : I' → Var F}
     (Rel : ∀ (K : Type) [Field K] (i : I) (i' : I'), (Sp K ⟶ (Y i).X) → (Sp K ⟶ (Y' i').X) → Prop) (h : Side Y Y' Rel) (i : I) :
@@ -35,21 +35,19 @@ namespace GlobalTheory.ShFam.GalCarry
 open GlobalTheory.ShFam.GalCarry.Corr in
 
 /- English proof (translation)
-Introduce `F _ _ I I' Y Y' Rel hs hb hu hu' hv`. Establish `h1 : Side Y Y' Rel` using `⟨hs, hb, hu, hv⟩`. Establish `h2 : Side Y' Y (fun (K : Type) [Field K] i' i p' p => Rel K i i' p p')` using `⟨fun K _ i' i p' p h => (hs K i i' p p' h).symm, fun K K' _ _ ν i' i p' p h => hb K K' ν i i' p p' h, fun K _ _ i' p' => hu' K i' p', fun V _ _ _ L _ ν k _ r i' i q' q hν hr h => hv V L ν k r i i' q q' hν hr h⟩`. Use `choose f φ hφs hφ using side_exists Rel h1`. Use `choose g ψ hψs hψ using side_exists _ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `gf : ∀ i, g (f i) = i`. Introduce `i`. Set `p : Sp (AlgebraicClosure (Y i).Fn) ⟶ (Y i).X` to `spMap (algebraMap (Y i).Fn (AlgebraicClosure (Y i).Fn)) ≫ genericPt (Y i)`. Take `⟨_, _, huq⟩` from `hu' _ (f i) (p ≫ φ i)`. Establish `e` using `(huq ⟨i, p⟩ (hφ i _ p)).trans (huq ⟨g (f i), _⟩ (hψ (f i) _ (p ≫ φ i))).symm`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(congrArg Sigma.fst e).symm`. Establish `fg : ∀ i', f (g i') = i'`. Introduce `i'`. Set `p' : Sp (AlgebraicClosure (Y' i').Fn) ⟶ (Y' i').X` to `spMap (algebraMap (Y' i').Fn (AlgebraicClosure (Y' i').Fn)) ≫ genericPt (Y' i')`. Take `⟨_, _, huq⟩` from `hu _ (g i') (p' ≫ ψ i')`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `(huq ⟨f (g i'), _⟩ (hφ (g i') _ (p' ≫ ψ i'))).trans (huq ⟨i', p'⟩ (hψ i' _ p')).symm`. Conclude with `congrArg Sigma.fst e`. Use `⟨⟨f, g, gf, fg⟩, fun i => ?_⟩` and prove the remaining obligations. Establish `hbij : ∀ (K : Type) [Field K] [IsAlgClosed K], Function.Bijective (fun p : Sp K ⟶ (Y i).X => p ≫ φ i)`. Introduce `K _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun p₁ p₂ (e : p₁ ≫ φ i = p₂ ≫ φ i) => ?_, fun p' => ?_⟩` and prove the remaining obligations. Take `⟨_, _, huq⟩` from `hu' K (f i) (p₁ ≫ φ i)`. Establish `r2` using `hφ i K p₂`. Rewrite `r2` using `[← e]`. Establish `e'` using `(huq ⟨i, p₁⟩ (hφ i K p₁)).trans (huq ⟨i, p₂⟩ r2).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 e').2`. Take `⟨⟨j, p⟩, hr, -⟩` from `hu' K (f i) p'`. Take `⟨_, _, huq⟩` from `hu K j p`. Establish `e'` using `(huq ⟨f i, p'⟩ hr).trans (huq ⟨f j, p ≫ φ j⟩ (hφ j K p)).symm`. Establish `hij : j = i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `congrArg g (congrArg Sigma.fst e')` as an intermediate fact. Rewrite `this` using `[gf, gf]`. Conclude with `this.symm`. Substitute `hij` using the available equality. Conclude with `⟨p, (eq_of_heq (Sigma.mk.inj_iff.1 e').2).symm⟩`.
-
-Use `GlobalTheory.BijPointsIso.isIso_of_bijective_points F (Y i) (Y' (f i)) (φ i) (hφs i) hbij` as an intermediate fact. Conclude with `⟨asIso (φ i), fun K _ _ p => hφ i K p⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem corrSt : CorrSt := by
   intro F _ _ I I' Y Y' Rel hs hb hu hu' hv

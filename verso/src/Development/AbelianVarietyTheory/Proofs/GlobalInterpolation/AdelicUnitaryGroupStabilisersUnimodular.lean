@@ -16,21 +16,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `herm` using `hf_herm (σ : E →+* E) J (conj_invol h) hJ.1`. Take `⟨a, ha⟩` from `exists_of_fixed h (hE σ J (x 0) (x 0)) (herm _ _)`. Set `φ` to `hfLin (σ : E →+* E) J (x 0)`. Establish `hφ : φ ≠ 0` using `fun h0 => hx (LinearMap.congr_fun h0 (x 0))`. Establish `hk : Module.finrank E (LinearMap.ker φ) = M`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Module.Dual.finrank_ker_add_one_of_ne_zero hφ` as an intermediate fact. Rewrite `this` using `[Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Set `b` to `Module.finBasisOfFinrankEq E _ hk`. Set `B : Matrix (Fin (M + 1)) (Fin M) E` to `Matrix.of fun i j => (b j : Fin (M + 1) → E) i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hG : ∀ i j, (Formalism.UG.cT (σ : E →+* E) B * J * B) i j = Formalism.UG.hform (σ : E →+* E) J (b i) (b j)` using `fun i j => by`. Simplify using `only [Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression. Use `⟨a, B, _, hJ, ?_, ha.symm, fun j => (b j).2, rfl, fun i j => ?_, fun hd => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Conclude with `hx (by rw [← ha, map_zero])`. Rewrite using `[hG, hG]`. Conclude with `herm _ _`. Take `⟨c, hc, hc0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `y : LinearMap.ker φ` to `∑ j, c j • b j`. Establish `h1 : ∀ i, hfLin (σ : E →+* E) J y (b i) = 0` using `fun i => by`. Establish `h2 : hfLin (σ : E →+* E) J (b i) y = 0`. Rewrite using `[← show _ = (0 : E) from congrFun hc0 i]`. Simplify using `only [y, Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul, Matrix.mulVec, dotProduct, hG, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Conclude with `(herm _ _).symm.trans ((congrArg _ h2).trans (map_zero _))`. Establish `h3 : ∀ z : LinearMap.ker φ, hfLin (σ : E →+* E) J y z = 0` using `fun z => LinearMap.congr_fun (b.ext (f₁ := hfLin (σ : E →+* E) J y ∘ₗ Submodule.subtype _) (f₂ := 0) h1) z`. Establish `h4 : hfLin (σ : E →+* E) J y (x 0) = 0` using `(herm _ _).symm.trans ((congrArg _ (show Formalism.UG.hform _ J (x 0) y = 0 from y.2)).trans (map_zero _))`. Take `⟨t, p, hp, -⟩` from `exists_proj (σ : E →+* E) J (x 0) hx.isUnit (LinearMap.ker φ) fun _ => Iff.rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : ∀ z, Formalism.UG.hform (σ : E →+* E) J z y = 0` using `fun z => by`. Establish `: hfLin (σ : E →+* E) J y z = 0`. Rewrite using `[hp z, map_add, map_smul, h3, h4, smul_zero, add_zero]`. Conclude with `(herm _ _).symm.trans ((congrArg _ this).trans (map_zero _))`. Establish `h6 : J *ᵥ (y : Fin (M + 1) → E) = 0` using `funext fun i => by`.
-
-Use `h5 (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[hf_eq]`. Simplify `this` using `[dotProduct, Pi.single_apply, apply_ite]`. Establish `h7 : y = 0` using `Subtype.ext (Matrix.eq_zero_of_mulVec_eq_zero hJ.2 h6)`. Conclude with `hc (funext (Fintype.linearIndependent_iff.1 b.linearIndependent c h7))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_stepData (h : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E}
     (hJ : IsHermND σ J) (x : Fin 1 → Fin (M + 1) → E) (hx : hE σ J (x 0) (x 0) ≠ 0) :
@@ -82,11 +80,11 @@ theorem exists_stepData (h : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin (M + 1))
     exact hc (funext (Fintype.linearIndependent_iff.1 b.linearIndependent c h7))
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, -, hH⟩` from `hH`. Set `e' : G ≃ₜ H` to `⟨e.toEquiv, h1, h2⟩`. Use `haveI := e'.isEmbedding.t2Space`. Use `haveI := e'.isClosedEmbedding.locallyCompactSpace`. Use `haveI := e'.secondCountableTopology`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ⟨Measure.haar, inferInstance⟩, fun μ hμ => ⟨fun g => ?_⟩⟩` and prove the remaining obligations. Use `haveI := hH _ (MulEquiv.isHaarMeasure_map μ e h1 h2)`. Establish `h3` using `congrArg (Measure.map e.symm) (map_mul_right_eq_self (μ.map e) (e g))`. Rewrite `h3` using `[Measure.map_map h2.measurable h1.measurable, Measure.map_map (measurable_mul_const _) h1.measurable, Measure.map_map h2.measurable ((measurable_mul_const _).comp h1.measurable)]`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite using `[show e.symm ∘ e = id from funext fun y => by simp, Measure.map_id]`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodularLC_of_equiv {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H] [MeasurableSpace H]
@@ -111,9 +109,9 @@ theorem isUnimodularLC_of_equiv {G H : Type} [Group G] [TopologicalSpace G] [IsT
   · rw [show e.symm ∘ e = id from funext fun y => by simp, Measure.map_id]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `key : ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → IsUnimodularLC (HA R σ J)` using `fun M J hJ => ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ⟨Measure.haar, inferInstance⟩, hR M J hJ⟩`. Use `⟨key M J hJ, fun x hx => ?_⟩` and prove the remaining obligations. Consider the cases of `M with`. Consider the case `zero => exact absurd (by simp [hE, Formalism.UG.hform]) hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ M`. Take `⟨a, B, J', hS⟩` from `exists_stepData h hJ x hx`. Use `borelize R`. Take `⟨-, ⟨e, he, -⟩, hc⟩` from `GlobalTheory.FrameStep.frameStep F E σ h R M J x a B J' hS`. Conclude with `isUnimodularLC_of_equiv (key M J' hS.2.2.2.2.2) e (hc e he).1 (hc e he).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unimodularOver_of_forall (h : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R]
@@ -135,7 +133,7 @@ theorem unimodularOver_of_forall (h : IsCMExt F E σ) (R : Type) [CommRing R] [A
     exact isUnimodularLC_of_equiv (key M J' hS.2.2.2.2.2) e (hc e he).1 (hc e he).2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h`. Take `⟨d, hd⟩` from `exists_conj_ne h`. Conclude with `unimodularOver_of_forall h (AF F) fun M J hJ μ _ => GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_adelic σ (conj_invol h) (sub_ne_zero.2 hd) (by rw [map_sub, conj_invol h, neg_sub]) hJ μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unimodularOver_adele : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → UnimodularOver (AF F) σ J := by
   intro F E _ _ _ _ _ σ h

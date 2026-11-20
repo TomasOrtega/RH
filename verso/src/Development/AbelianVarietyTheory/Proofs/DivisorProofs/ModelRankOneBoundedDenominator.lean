@@ -12,43 +12,41 @@ noncomputable section
 namespace GlobalTheory.DarbouxDenom
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_add {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {m n : Type}
     (A B : Matrix m n E) : incM F (A + B) = incM F A + incM F B := by
   ext i j; simp [incM]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_zero {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {m n : Type} :
     incM F (0 : Matrix m n E) = 0 := by
   ext i j; simp [incM]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ hM x`. Set `f : (Fin n → 𝓞 E) →+ (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `{ toFun := fun β => M.co.e (incM F (Matrix.vecMulVec (fun i => (β i : E)) x)) map_zero' := by`. Establish `h0 : (fun i => ((0 : Fin n → 𝓞 E) i : E)) = 0` using `by funext i; simp`. Simplify using `only [h0, Matrix.zero_vecMulVec, incM_zero, map_zero]`. Use the proof step `map_add' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β γ`. Establish `: (fun i => ((β + γ) i : E)) = (fun i => (β i : E)) + (fun i => (γ i : E))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [this, Matrix.add_vecMulVec, incM_add, map_add] }`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : ∀ β, f β = M.co.e (incM F (Matrix.vecMulVec (fun i => (β i : E)) x))` using `fun _ => rfl`. Take `⟨g, hg⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ (Fin n → 𝓞 E)).FG)`. Use `choose Y Z hYZ using fun β : Fin n → 𝓞 E => hM.rat (Matrix.vecMulVec (fun i => (β i : E)) x)`. Set `s : Finset F` to `g.biUnion (fun β => Finset.univ.image (Y β) ∪ Finset.univ.image (Z β))`. Take `⟨a, ha, hint⟩` from `exists_integral_multiples ℤ ℚ s`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := a.natAbs with hD`. Establish `hD1 : 1 ≤ D` using `Nat.one_le_iff_ne_zero.mpr (Int.natAbs_ne_zero.mpr ha)`. Establish `hDF : (D : F) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.mp hD1)`. Establish `key : ∀ c ∈ s, IsIntegral ℤ ((D : F) * c)`. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h` using `hint c hc`. Rewrite `h` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq a with h' | h'` into its components or cases. Rewrite `h` using `[h']`. Simplify `h` using `[hD]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[h']`. Use `h.neg` as an intermediate fact. Simplify `this` using `[hD]`. Use `⟨D, hD1, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `let S : AddSubgroup (Fin n → 𝓞 E) := { carrier := {β | ∃ y z : Fin n × Fin d → 𝓞 F, f β = (fun k => algebraMap F (AF F) ((y k : F) / D), fun k => algebraMap F (AF F) ((z k : F) / D))} zero_mem' := ⟨0, 0, by ext k <;> simp⟩ add_mem' := by`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `β γ ⟨y, z, h1⟩ ⟨y', z', h2⟩`. Use `⟨y + y', z + z', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h1, h2]`. Apply the tactic sequence `ext k <;> simp [add_div]`. Use the proof step `neg_mem' := by`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce and unpack `β ⟨y, z, h1⟩`. Use `⟨-y, -z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, h1]`. Apply the tactic sequence `ext k <;> simp [neg_div] }`. Establish `hgS : ∀ β ∈ g, β ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `β hβ`. Establish `hy : ∀ k, IsIntegral ℤ ((D : F) * Y β k)` using `fun k => key _ (Finset.mem_biUnion.mpr ⟨β, hβ, Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))⟩)`. Establish `hz : ∀ k, IsIntegral ℤ ((D : F) * Z β k)` using `fun k => key _ (Finset.mem_biUnion.mpr ⟨β, hβ, Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))⟩)`. Use `⟨fun k => ⟨(D : F) * Y β k, hy k⟩, fun k => ⟨(D : F) * Z β k, hz k⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hYZ β]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `k`. Use `show algebraMap F (AF F) (Y β k) = algebraMap F (AF F) (((D : F) * Y β k) / D)`. Rewrite using `[mul_div_cancel_left₀ _ hDF]`. Use `show algebraMap F (AF F) (Z β k) = algebraMap F (AF F) (((D : F) * Z β k) / D)`. Rewrite using `[mul_div_cancel_left₀ _ hDF]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `β`. Establish `hmem : β ∈ (Submodule.span ℤ (g : Set (Fin n → 𝓞 E))).toAddSubgroup`. Rewrite using `[hg]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hmem` using `[Submodule.span_int_eq_addSubgroupClosure]`.
-
-Establish `hle : AddSubgroup.closure (g : Set (Fin n → 𝓞 E)) ≤ S` using `(AddSubgroup.closure_le S).mpr hgS`. Conclude with `hle hmem`.
+A detailed English derivation is pending.
 -/
 theorem exists_uniform_denom : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (hM : M.IsGood ψ) (x : Fin d → E), ∃ D : ℕ, 1 ≤ D ∧ ∀ β : Fin n → 𝓞 E, ∃ y z : Fin n × Fin d → 𝓞 F,

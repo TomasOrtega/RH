@@ -25,13 +25,11 @@ section
 variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
   {w : Plc L} {A : ValuationSubring Ω} {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion L)ˣ}
 /- English proof (translation)
-Introduce `j hj e he hE`. Establish `e1 : absPow k (((1 : ℤ) : ℂ)) = absPow k 1` using `by simp`. Establish `e2 : absPow k (((-1 : ℤ) : ℂ)) = (absPow k 1)⁻¹`. Rewrite using `[show (((-1 : ℤ) : ℂ)) = -1 by simp, absPow_neg]`. Apply the tactic sequence `rcases hj with rfl | rfl <;> rcases he with rfl | rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hE` using `[pow_one, e1]`. Conclude with `(H 0 1 (by decide)).2 (by simpa using hE)`. Rewrite `hE` using `[pow_one, e2]`. Conclude with `(H 1 0 (by decide)).2 (by simp [hE])`. Rewrite `hE` using `[e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(H 0 2 (by decide)).2 ?_` and prove the remaining obligations. Simplify using `[← hE, pow_two]`. Rewrite `hE` using `[e2]`. Use `(H 2 0 (by decide)).2 ?_` and prove the remaining obligations. Establish `hp : absPow k 1 = (u ^ 2)⁻¹` using `by rw [hE, inv_inv]`.
-
-Simplify using `[hp, pow_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem noLk_of {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (u : kˣ →* ℂˣ) (H : ∀ i j : Fin 3, i ≠ j → (![u, 1, u⁻¹] : Fin 3 → kˣ →* ℂˣ) i ≠ (![u, 1, u⁻¹] : Fin 3 → kˣ →* ℂˣ) j ∧
@@ -54,23 +52,21 @@ private theorem noLk_of {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
     have hp : absPow k 1 = (u ^ 2)⁻¹ := by rw [hE, inv_inv]
     simp [hp, pow_two]
 /- English proof (translation)
-Set `u` to `ω₀ / ω₁`. Set `c : Fin 3 → ℤ` to `![m, 0, -m]`. Set `ψ : Fin 3 → Dec (F` to `L) A →* (Qbar l)ˣ := ![κ₀ / κ₁, 1, κ₁ / κ₀]`. Set `hh : Fin 3 → (L →+* Qbar l) → ℤ` to `fun i _ => (![-(m : ℤ), 0, (m : ℤ)] : Fin 3 → ℤ) i`. Establish `hq : ∀ {p q y : (Qbar l)ˣ} {e f : ℤ}, p ^ k = (y ^ e) ^ k → q ^ k = (y ^ f) ^ k → (p / q) ^ k = (y ^ (e - f)) ^ k` using `fun h1 h2 => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[div_pow, h1, h2, ← div_pow, zpow_sub, div_eq_mul_inv]`. Establish `hp : ∀ (i : Fin 3) (s : ↥(Dec (F` using `L) A)), (s : G L Ω) ∈ Ine (F := L) A → ψ i s ^ k = (cycBar L Ω l s ^ c i) ^ k := fun i s hs => by`. Take `⟨h1, h2⟩` from `hκ s hs`. Use `fin_cases i`. Use `hq h1 h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ψ, c]`. Simplify using `[ψ, c]`. Use `hq h2 h1` as an intermediate fact. Simplify `this` using `[ψ, c]`. Establish `hne : ∀ i j, ψ i ≠ ψ j * (cycBar L Ω l).comp (Dec (F` using `L) A).subtype := fun i j => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `not_link hv hk (hp i) (hp j) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [c] <;> omega`. Establish `H0 : OrdChar ι a u (fun _ => -(m : ℤ)) (κ₀ / κ₁)`. Use `ord_div h₀ h₁` as an intermediate fact. Establish `e : ((fun _ => -(b + m)) - fun _ => -b : (L →+* Qbar l) → ℤ) = fun _ => -(m : ℤ)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `H1 : OrdChar ι a (1 : (w.adicCompletion L)ˣ →* ℂˣ) (fun _ => 0) (1 : Dec (F` using `L) A →* (Qbar l)ˣ) := by`. Use `ord_div h₀ h₀` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[div_self', div_self', sub_self]`. Conclude with `this`. Establish `H2 : OrdChar ι a u⁻¹ (fun _ => (m : ℤ)) (κ₁ / κ₀)`. Use `ord_div h₁ h₀` as an intermediate fact. Establish `e : ((fun _ => -b) - fun _ => -(b + m) : (L →+* Qbar l) → ℤ) = fun _ => (m : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite `this` using `[e]`. Rewrite using `[show u⁻¹ = ω₁ / ω₀ from inv_div _ _]` and apply the resulting hypothesis. Establish `hO : ∀ i, OrdChar ι a ((![u, 1, u⁻¹] : Fin 3 → (w.adicCompletion L)ˣ →* ℂˣ) i) (hh i) (ψ i)` using `fun i => by fin_cases i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `H0`. Conclude with `H1`. Conclude with `H2`. Establish `hmono : ∀ t : L →+* Qbar l, StrictMono fun j : Fin 3 => hh j t` using `fun t => by`. Use `Fin.strictMono_iff_lt_succ.2 fun i => ?_` and prove the remaining obligations.
-
-Apply the tactic sequence `fin_cases i <;> simp [hh] <;> omega`. Conclude with `noLk_of u (not_linked H ι hw ha hmono hO hne)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem noLk_above (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) (hw : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal)
     (ha : IsLocalArtin h a) (hv : A.valuation (l : Ω) < 1) {m : ℕ} (hm : 2 ≤ m) {b : ℤ} {k : ℕ} (hk : 0 < k)
@@ -125,11 +121,11 @@ private theorem noLk_above (H : GlobalTheory.Published.GlobalArtinReciprocity) (
     fin_cases i <;> simp [hh] <;> omega
   exact noLk_of u (not_linked H ι hw ha hmono hO hne)
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, IsLocalArtin h a := by`. Take `⟨a, ha, -⟩` from `hrc`. Conclude with `⟨a, ha⟩`. Establish `hc : Continuous (ρ.comp (Dec (F` using `L) A).subtype) := hρ.comp continuous_subtype_val`. Use `choose ω hω using fun i => (Loc.ordCharIff P.litN.aut.art h ι _ ha (hh i) (ψ i)).1.2 ⟨flag_cont' hc hf i, hψ i⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : DRat ι h (ρ.comp (Dec (F` using `L) A).subtype) HT fun s => (rc (algNorm τ)).charPol s := fun O _ _ _ Bw hj =>`. Establish `h1` using `HG A h O Bw hj`. Use the proof step `⟨h1.1, h1.2, fun s => by rw [((H A h rc hrc).2 O Bw hj hg).2]⟩`. Establish `hD'` using `_root_.UpperTheory.V.Loc.flag_weil_deligne_of_literal_automorphy_n P.litN L Ω l hl ι n w hw A h _ ha _ hc _ ω ψ hω hf _ _ hD`. Use `⟨a, ha, ⟨ω, ?_, hω⟩, jumps_eq h hw hD hD'⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : IsSubquotient τ.ρ (PS ω)`. Take `⟨O, _, _, _, Bw, hj⟩` from `Af.exists_bridge (l := l) h hw`. Conclude with `_root_.UpperTheory.V.Z.Desc.W.pseudo_local_langlands_descent P.litN L Ω n w A h _ ha rc hrc τ hp ω (fun i => (hω i).smooth) fun s => ((hD O Bw hj).2.2 s).symm.trans ((hD' O Bw hj).2.2 s)`. Conclude with `(_root_.UpperTheory.V.Hi.prin_series_irreducible_and_unique_subquotient P.litN _ n ω (fun i => (hω i).smooth) (not_linked P.litN.aut.art ι hw ha (fun t i j hij => hm t hij) hω hne)).2 _ τ.ρ τ.irred hs`.
+A detailed English derivation is pending.
 -/
 private theorem above' (P : _root_.UpperTheory.V.Af.Hypotheses') (hl : l ≠ 2) {n : ℕ} {ι : Qbar l ≃+* ℂ} {ρ : G L Ω →* GL (Fin n) (Qbar l)}
     {HT : (L →+* Qbar l) → Multiset ℤ} (hρ : Continuous ρ) (HG : HasHTAt ρ HT w) (h : IsPlaceOver A w)
@@ -162,19 +158,17 @@ private theorem above' (P : _root_.UpperTheory.V.Af.Hypotheses') (hl : l ≠ 2) 
 end
 end
 /- English proof (translation)
-Introduce `P L Ω _ _ _ _ _ l _ ι hl r hr m hm w hw HT hHT A h ⟨b, k, κ, hk, hf, hκ⟩ τ H hPT`. Establish `hv : A.valuation (l : Ω) < 1`. Use `(h ((l : ℕ) : 𝓞 L)).2 hw` as an intermediate fact. Simplify using `using this`. Set `c : Fin 2 → ℤ` to `![b + m, b]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hκ' : ∀ (i : Fin 2) (s : ↥(Dec (F` using `L) A)), (s : G L Ω) ∈ Ine (F := L) A → κ i s ^ k = (cycBar L Ω l s ^ c i) ^ k := by`. Introduce `i s hs`. Use `fin_cases i`. Conclude with `(hκ s hs).1`. Conclude with `(hκ s hs).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous (r.comp (Dec (F` using `L) A).subtype) := hr.comp continuous_subtype_val`. Establish `hfc : ∀ i, Continuous (κ i)` using `flag_cont' hcont hf`. Establish `hmono : ∀ t : L →+* Qbar l, StrictMono fun j : Fin 2 => (fun (i : Fin 2) (_ : L →+* Qbar l) => -c i) j t`. Introduce `t`. Use `Fin.strictMono_iff_lt_succ.2 fun i => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `fin_cases i`. Simplify using `[c]`. Use linear arithmetic over natural numbers and integers. Establish `hne : ∀ i j, κ i ≠ κ j * (cycBar L Ω l).comp (Dec (F` using `L) A).subtype := by`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `not_link hv hk (hκ' i) (hκ' j) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [c] <;> omega`. Take `⟨rc, hrc⟩` from `_root_.UpperTheory.V.Z.Win.exRec'_alt P.litN h`. Establish `hg : Gd (rc (algNorm τ))` using `UpperTheory.V.Z.Win.Gu.plainGd L Ω A w h rc hrc 2 τ hPT`. Take `⟨a, ha, ⟨ω, he, hO⟩, hj⟩` from `above' P hl hr hHT h hw H hrc hPT hg hmono (fun i => locAlg P.litN.aut.art h hw (κ i) (hfc i) hk (c i) (hκ' i)) hf hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, fun i => (hO i).smooth.mul (isSmoothChar_of_isUnram (isUnram_absPow _ _)), he, ?_⟩, -(b + m), fun j => ?_⟩` and prove the remaining obligations. Use `noLk_above P.litN.aut.art ι hw ha hv hm hk (hO 0) (hO 1) hκ` as an intermediate fact. Simplify `this` using `[mul_div_mul_right_eq_div]`. Rewrite using `[hj j]`. Simplify using `[c]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.W.above_w_statement : _root_.UpperTheory.V.Z.Sym.W.AboveWAlt := by
   intro P L Ω _ _ _ _ _ l _ ι hl r hr m hm w hw HT hHT A h ⟨b, k, κ, hk, hf, hκ⟩ τ H hPT

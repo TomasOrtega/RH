@@ -5,7 +5,7 @@ namespace GlobalTheory.CMScalar
 open Matrix Polynomial
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpolyRev, ← coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b : 2`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, mul_comm w, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_charpolyRev_neg {K : Type} [Field K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) (w : K) :
     (-A).charpolyRev.eval w = (1 + w • A).det := by
@@ -15,31 +15,27 @@ theorem eval_charpolyRev_neg {K : Type} [Field K] {n : ℕ} (A : Matrix (Fin n) 
   by_cases h : a = b <;> simp [h, mul_comm w, sub_eq_add_neg]
 
 /- English proof (translation)
-Use `set c : L →+* L := (IsCMField.complexConj L : L →+* L) with hc`. Establish `hcc : ∀ x, c (c x) = x` using `fun x => IsCMField.complexConj_apply_apply L x`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : L, c y ≠ y := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `IsCMField.complexConj_ne_one L` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `h x`. Use `set i : L := y - c y with hi`. Establish `hi0 : i ≠ 0` using `sub_ne_zero.2 (Ne.symm hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hci : c i = -i` using `by rw [hi, map_sub, hcc]; ring`. Establish `hden : ∀ t : ℚ, (1 : L) + (t : L) * i ≠ 0`. Introduce `t h`. Establish `h1 : (t : L) * i = -1` using `by linear_combination h`. Establish `h2` using `congrArg c h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, map_ratCast, hci, map_neg, map_one]`. Establish `: (2 : L) = 0` using `by linear_combination h1 + h2`. Conclude with `two_ne_zero this`. Set `f : ℚ → L` to `fun t => (1 - (t : L) * i) / (1 + (t : L) * i)`. Establish `hfu : ∀ t, f t * c (f t) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t`. Establish `hd` using `hden t`. Establish `hd' : (1 : L) - (t : L) * i ≠ 0`. Introduce `h`. Apply `hden (-t)` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `push_cast`. Take the linear combination `h`. Establish `e : c (f t) = (1 + (t : L) * i) / (1 - (t : L) * i)`. Simplify using `only [f, map_div₀, map_sub, map_add, map_one, map_mul, map_ratCast, hci]`. Apply the tactic sequence `congr 1 <;> ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, div_mul_div_comm]`. Conclude with `(div_eq_one_iff_eq (mul_ne_zero hd hd')).2 (by ring)`. Establish `hfinj : Function.Injective f`. Introduce `s t hst`. Simplify using `only [f] at hst`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `hst` using `[div_eq_div_iff (hden s) (hden t)]`. Establish `h2 : (2 : L) * ((t : L) - s) * i = 0` using `by linear_combination hst`. Establish `: ((t : L) - s) = 0`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `absurd h two_ne_zero`. Conclude with `h`. Conclude with `absurd h hi0`. Establish `: ((t - s : ℚ) : L) = 0` using `by push_cast; exact this`. Conclude with `(sub_eq_zero.1 (Rat.cast_eq_zero.1 this)).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp : ∀ σ : L →+* K, (-(M σ)).charpolyRev ≠ 0`. Introduce `σ h`. Use `Matrix.eval_charpolyRev (M := -(M σ))` as an intermediate fact. Rewrite `this` using `[h, Polynomial.eval_zero]`. Conclude with `zero_ne_one this`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `B : Set L` to `⋃ σ : L →+* K, σ ⁻¹' ((-(M σ)).charpolyRev.roots.toFinset : Set K)`. Establish `hB : B.Finite`. Apply `Set.finite_iUnion` to reduce the goal to its premises. Introduce `σ`. Conclude with `(Finset.finite_toSet _).preimage σ.injective.injOn`.
-
-Establish `hS : (f ⁻¹' B).Finite` using `hB.preimage hfinj.injOn`. Take `⟨t, ht⟩` from `(Set.infinite_univ (α := ℚ)).diff hS |>.nonempty`. Use `⟨f t, hfu t, fun σ hσ => ht.2 ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, B, Set.mem_iUnion]`. Use `⟨σ, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset]`. Rewrite using `[Polynomial.mem_roots (hp σ), Polynomial.IsRoot, eval_charpolyRev_neg]`. Conclude with `hσ`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_norm_one_det_ne_zero (L : Type) [Field L] [NumberField L] [IsCMField L] (K : Type) [Field K]
     [CharZero K] (n : ℕ) (M : (L →+* K) → Matrix (Fin n) (Fin n) K) :

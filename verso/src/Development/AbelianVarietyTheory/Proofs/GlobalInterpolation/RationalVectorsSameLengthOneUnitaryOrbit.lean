@@ -12,7 +12,7 @@ open scoped ENNReal TensorProduct
 namespace GlobalTheory.RatOrbit
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, transpose_apply, Function.comp, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_eq {A : Type} [CommRing A] {n : Type} [Fintype n] (s : A →+* A) (J : Matrix n n A) (a b : n → A) :
     Formalism.UG.hform s J a b = b ⬝ᵥ Jᵀ *ᵥ (⇑s ∘ a) := by
@@ -22,9 +22,9 @@ theorem hform_eq {A : Type} [CommRing A] {n : Type} [Fintype n] (s : A →+* A) 
   ring
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT s (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`. Establish `h1 : ⇑s ∘ ((g : Matrix n n A) *ᵥ a) = ((g : Matrix n n A).map s) *ᵥ (⇑s ∘ a)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec s _ _ i`. Rewrite using `[hform_eq, hform_eq, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_rhs => rw [← h]`. Simplify using `only [Formalism.UG.cT, transpose_mul, transpose_transpose, ← mulVec_mulVec]`. Rewrite using `[mulVec_transpose (g : Matrix n n A), dotProduct_comm b, ← dotProduct_mulVec, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_mem {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (s : A →+* A) (J : Matrix n n A)
     (g : GL n A) (hg : g ∈ Formalism.UG.UJ s J) (a b : n → A) :
@@ -39,7 +39,7 @@ theorem hform_mem {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
   rw [mulVec_transpose (g : Matrix n n A), dotProduct_comm b, ← dotProduct_mulVec, dotProduct_comm]
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT s (g : Matrix n n R) * J * (g : Matrix n n R) = J` using `hg`. Use `show Formalism.UG.cT t ((g : Matrix n n R).map p) * J.map p * (g : Matrix n n R).map p = J.map p`. Rewrite using `[← GlobalTheory.UnitarySplit.map_cond p s t hp, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_mem {R A : Type} [CommRing R] [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     (p : R →+* A) (s : R →+* R) (t : A →+* A) (hp : ∀ x, p (s x) = t (p x)) (J : Matrix n n R)
@@ -49,7 +49,7 @@ theorem bc_mem {R A : Type} [CommRing R] [CommRing A] {n : Type} [Fintype n] [De
   rw [← GlobalTheory.UnitarySplit.map_cond p s t hp, h]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
@@ -58,14 +58,14 @@ theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`.
+A detailed English derivation is pending.
 -/
 theorem inclR_injective (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] :
     Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Use `show (((γ : HR R σ J).1 : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ (ratTup (F := F) R x a)) i = _`. Rewrite using `[← hg]`. Conclude with `(RingHom.map_mulVec (inclR (F := F) R) _ _ i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (γ : HA R σ J) (g : GL (Fin M) E)
@@ -77,13 +77,13 @@ theorem smul_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [C
   exact (RingHom.map_mulVec (inclR (F := F) R) _ _ i).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ x hx`. Use `⟨?_, fun y => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `a b hab`. Use function extensionality and compare the values at `k i`. Conclude with `inclR_injective F E (congrFun (congrFun hab k) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x', hx', rfl⟩`. Simplify using `only [hE, hform_eq] at hx hx'`. Take `⟨g, hg, hgx, -⟩` from `GlobalTheory.HermWitt.exists_gl_isometry_mulVec_eq (c := (σ : E →+* E)) (G := Jᵀ) two_ne_zero (sigma_sigma σ hCM) (fun a b => hJ.1 a b) hx'.symm hx`. Establish `hU : g ∈ Formalism.UG.UJ (σ : E →+* E) J` using `GlobalTheory.UnitarySplit.mem_of_form _ _ _ fun z w => by rw [hform_eq, hform_eq, hg]`. Establish `hH : Formalism.UG.bc (inclR (F` using `F) (AF F)) g ∈ HR (AF F) σ J := bc_mem (inclR (F := F) (AF F)) (σ : E →+* E) (sigR (AF F) σ) (fun t => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[inclR, sigR]) J g hU`. Use `⟨(⟨_, hH⟩ : HR (AF F) σ J), ⟨g, hU, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(smul_ratTup (AF F) σ J (⟨_, hH⟩ : HR (AF F) σ J) g rfl x).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `rfl : a = 0` from `Subsingleton.elim _ _`. Conclude with `hgx`. Introduce and unpack `⟨γ, ⟨g, hU, hg⟩, rfl⟩`. Conclude with `⟨fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ x a, hform_mem _ J g hU _ _, (smul_ratTup (AF F) σ J γ g hg x).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rational_sphere_orbit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ x : Fin 1 → Fin M → E, hE σ J (x 0) (x 0) ≠ 0 → Function.Injective (ratTup (F := F) (AF F) : (Fin 1 → Fin M → E) → _) ∧ ∀ y : Fin 1 → Fin M → AF F ⊗[F] E, (∃ x' : Fin 1 → Fin M → E, hE σ J (x' 0) (x' 0) = hE σ J (x 0) (x 0) ∧ ratTup (F := F) (AF F) x' = y) ↔ ∃ γ ∈ ratPts (AF F) σ J, γ • ratTup (F := F) (AF F) x = y := by
   intro F E _ _ _ _ _ σ hCM M J hJ x hx

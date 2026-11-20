@@ -6,7 +6,7 @@ open GlobalTheory.PMonE
 namespace GlobalTheory.PMonE
 
 /- English proof (translation)
-Proceed by induction on `m generalizing y with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply, pow_succ, pow_mul, ih, frobeniusEquiv_symm_pow_p]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_frobSymm_pow {F : Type*} [CommRing F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p]
     (m : ℕ) (y : F) : (((frobeniusEquiv F p).symm)^[m] y) ^ p ^ m = y := by
@@ -16,11 +16,9 @@ theorem iter_frobSymm_pow {F : Type*} [CommRing F] (p : ℕ) [Fact p.Prime] [Cha
     rw [Function.iterate_succ_apply, pow_succ, pow_mul, ih, frobeniusEquiv_symm_pow_p]
 
 /- English proof (translation)
-Unfold `pw`. Use `split_ifs with hk`. Rewrite using `[norm_pow, norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hy _`. Use `set m := (-k).toNat`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : p ^ m ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `e1` using `iter_frobSymm_pow p m y`. Establish `e2` using `iter_frobSymm_pow p m y'`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
-
-Use `pow_lt_pow_left₀ hc (norm_nonneg _) hN` as an intermediate fact. Rewrite `this` using `[← norm_pow, ← norm_pow, e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_pw_mono {F : Type*} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p]
     (k : ℤ) (y y' : F) (hy : ‖y‖ ≤ ‖y'‖) : ‖pw p k y‖ ≤ ‖pw p k y'‖ := by
@@ -38,7 +36,7 @@ theorem norm_pw_mono {F : Type*} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP
     linarith
 
 /- English proof (translation)
-Introduce `F _ p _ _ _ h ϖ lam π x hx r j n`. Unfold `term`. Rewrite using `[norm_mul, norm_mul (lam j * _)]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pw_mono p _ _ _ (hx j)) (norm_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_norm_mono : ∀ (F : Type) [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p] (h : ℕ) (ϖ : F) (lam π x : Fin h → F), (∀ j, ‖x j‖ ≤ ‖π j‖) → ∀ (r j : Fin h) (n : ℤ), ‖term p ϖ lam x r j n‖ ≤ ‖term p ϖ lam π r j n‖ := by
   intro F _ p _ _ _ h ϖ lam π x hx r j n

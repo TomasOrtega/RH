@@ -11,7 +11,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hW'` using `((GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μW).2.2 z hz hT hk).2 hW`. Establish `hN'` using `(GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μN).2.1.2 hN`. Establish `hG'` using `(GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r μG).1.2 hG`. Take `⟨νq, hν⟩` from `GlobalTheory.T.exists_quotientMeasure_besselPeriodSubgroup_unitary k r z μW μN μG hz hT hW' hN' hG'`. Conclude with `⟨νq, hz, hT, GlobalTheory.T.exists_harishChandraParam_of_typeOfUnitaryW k r Wp z π u hz hT hπ, hπ.2.2.2.2.2, hW', hN', hG', hν⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem besselSide_of_isType (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
@@ -28,9 +28,9 @@ theorem besselSide_of_isType (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [In
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 /- English proof (translation)
-Establish `hW' : _root_.PI.BesselPeriodGGP.IsHaarOn (_root_.Formalism.QuantumDeterminants.UWset k r z) μW` using `((_root_.GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μW).2.2 z hz hT hk).2 hW`. Establish `hN' : _root_.PI.BesselPeriodGGP.IsHaarOn (_root_.Formalism.QuantumDeterminants.Nset k r) μN` using `((_root_.GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μN).2.1).2 hN`. Establish `hG' : _root_.PI.BesselPeriodGGP.IsHaarOn (_root_.BranchingSupport.GG k r) μG` using `((_root_.GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μG).1).2 hG`. Take `⟨ν, hν⟩` from `_root_.GlobalTheory.exists_isQuotMeas_bessel_subgroup k r z μW μN μG hz hT hW' hN' hG'`. Take `⟨u₀, hu₀⟩` from `_root_.GlobalTheory.besType_hcParam k r W z π u hz hT hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ν, hz, hT, ⟨u₀, hu₀⟩, hπ.2.2.2.2.2, hW', hN', hG', hν⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_quotient_side_of_isType_lemma (k r : ℕ) (W : Type) [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (hk : 1 ≤ k)
@@ -54,7 +54,7 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Introduce `k r Wp _ _ _ _ Wq _ _ _ _ D u u' hp hq`. Take `⟨z, z', π, π', μG, μW, μN, μW', _, _, hk, hz, hz', hT, hT', _, _, _, _, _, _, hG, hW, hN, hW', _, _, _, _⟩` from `D`. Take `⟨ν, hν⟩` from `exists_quotient_side_of_isType_lemma k r Wp hk z π u μW μN μG hz hT hW hN hG hp`. Take `⟨ν', hν'⟩` from `exists_quotient_side_of_isType_lemma k r Wq hk z' π' u' μW' μN μG hz' hT' hW' hN hG hq`. Conclude with `⟨ν, ν', hν, hν'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.exists_sideG_both_of_isType : ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type)

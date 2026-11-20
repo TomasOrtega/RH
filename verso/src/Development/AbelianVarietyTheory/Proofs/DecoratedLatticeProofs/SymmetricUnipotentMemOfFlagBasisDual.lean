@@ -5,20 +5,20 @@ open scoped TensorProduct
 namespace GlobalTheory.FlagDual
 
 /- English proof (translation)
-Apply the tactic sequence `unfold dualIdx; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualIdx_lt {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) {i : ℕ} (hi : i < n) : dualIdx ρ k i < n := by
   unfold dualIdx; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold dualIdx; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualIdx_dualIdx {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) {i : ℕ} (hi : i < n) :
     dualIdx ρ k (dualIdx ρ k i) = i := by
   unfold dualIdx; split_ifs <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `unfold dualIdx; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualIdx_eq_self_iff {n ρ k i : ℕ} (hn : n = 2 * ρ + k + 1) (hi : i < n) : dualIdx ρ k i = ρ + k ↔ i = ρ + k := by
   unfold dualIdx; split_ifs <;> omega
@@ -28,19 +28,19 @@ def tau {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) (i : Fin n) : Fin n := ⟨dualI
 def sgn (K : Type) [CommRing K] (ρ k : ℕ) {n : ℕ} (i : Fin n) : K := if i.val = ρ + k then -1 else 1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sgn; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self (K : Type) [CommRing K] (ρ k : ℕ) {n : ℕ} (i : Fin n) : sgn K ρ k i * sgn K ρ k i = 1 := by
   unfold sgn; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hi` using `dualIdx_dualIdx hn i.2`. Establish `hj` using `dualIdx_dualIdx hn j.2`. Unfold `flagGram sgn`. Distinguish the cases in `h1 : j.val = dualIdx ρ k i.val`. Establish `h2 : i = tau hn j` using `by ext; show i.val = dualIdx ρ k j.val; rw [h1, hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h1, if_pos h2]`. Establish `h3 : (i.val = ρ + k ↔ j.val = ρ + k)`. Rewrite using `[h1, dualIdx_eq_self_iff hn i.2]`. Distinguish the cases in `h4 : i.val = ρ + k`. Rewrite using `[if_pos h4, if_pos (h3.1 h4)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h4, if_neg (fun h => h4 (h3.2 h))]`. Establish `h2 : i ≠ tau hn j`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show j.val = dualIdx ρ k (dualIdx ρ k j.val)`. Rewrite using `[hj]`. Rewrite using `[if_neg h1, if_neg h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_col (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) (i j : Fin n) :
     flagGram K n ρ k i j = if i = tau hn j then sgn K ρ k j else 0 := by
@@ -61,7 +61,7 @@ theorem gram_col (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1
     rw [if_neg h1, if_neg h2]
 
 /- English proof (translation)
-Unfold `flagGram sgn`. Distinguish the cases in `h1 : j.val = dualIdx ρ k i.val`. Rewrite using `[if_pos h1, if_pos (Fin.ext h1)]`. Rewrite using `[if_neg h1, if_neg (fun h => h1 (congrArg Fin.val h))]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_row (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) (i j : Fin n) :
     flagGram K n ρ k i j = if j = tau hn i then sgn K ρ k i else 0 := by
@@ -71,13 +71,13 @@ theorem gram_row (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1
   · rw [if_neg h1, if_neg (fun h => h1 (congrArg Fin.val h))]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_apply, Finset.sum_eq_single (tau hn i)]`. Rewrite using `[gram_row K hn i (tau hn i), if_pos rfl, gram_row K hn (tau hn i) j]`. Establish `hii : tau hn (tau hn i) = i` using `Fin.ext (dualIdx_dualIdx hn i.2)`. Rewrite using `[hii]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, one_apply_eq]`. Establish `: sgn K ρ k (tau hn j) = sgn K ρ k j`. Unfold `sgn tau`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [dualIdx_eq_self_iff hn j.2]`. Rewrite using `[this, sgn_mul_self]`. Rewrite using `[if_neg hij, mul_zero, one_apply_ne (Ne.symm hij)]`. Introduce `b _ hb`. Rewrite using `[gram_row K hn i b, if_neg hb, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_mul_gram (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) :
     flagGram K n ρ k * flagGram K n ρ k = 1 := by
@@ -96,11 +96,11 @@ theorem gram_mul_gram (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Finset.sum_eq_single (tau hn j)]`. Rewrite using `[gram_col K hn (tau hn j) j, if_pos rfl, mul_apply, Finset.sum_eq_single (tau hn i)]`. Rewrite using `[gram_row K hn i (tau hn i), if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[gram_row K hn i b, if_neg hb, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Rewrite using `[gram_col K hn b j, if_neg hb, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem gram_conj_apply (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1)
     (A : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
@@ -118,9 +118,9 @@ end GlobalTheory.FlagDual
 namespace GlobalTheory.FlagDual
 
 /- English proof (translation)
-Use `set G := flagGram K n ρ k`. Establish `h1 : (M' : Matrix (Fin n) (Fin n) K)ᵀ * G = G * ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Establish `hM : (M : Matrix (Fin n) (Fin n) K) * ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : (M' : Matrix (Fin n) (Fin n) K)ᵀ = G * ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * G`. Rewrite using `[← h1, Matrix.mul_assoc, gram_mul_gram K hn, Matrix.mul_one]`. Establish `h3` using `congrFun (congrFun h2 j) i`. Rewrite `h3` using `[transpose_apply]`. Rewrite using `[h3, gram_conj_apply K hn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_apply (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k + 1) (M M' : GL (Fin n) K)
     (h : (M' : Matrix (Fin n) (Fin n) K)ᵀ * flagGram K n ρ k * (M : Matrix (Fin n) (Fin n) K) = flagGram K n ρ k)
@@ -144,15 +144,15 @@ theorem dual_apply (K : Type) [CommRing K] {n ρ k : ℕ} (hn : n = 2 * ρ + k +
 end GlobalTheory.FlagDual
 
 /- English proof (translation)
-Introduce `K _ n ρ k hn M M' h hM`. Establish `hN : M⁻¹ ∈ unipSym K n ρ k` using `Subgroup.inv_mem _ hM`. Take `⟨⟨hNl, hNd⟩, hNc⟩` from `hN`. Establish `hd` using `GlobalTheory.FlagDual.dual_apply K hn M M' h`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j hji`. Establish `hji' : j.val < i.val` using `hji`. Rewrite using `[hd i j]`. Distinguish the cases in `hi : i.val = ρ + k`. Distinguish the cases in `hj : j.val < ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hNl (show (GlobalTheory.FlagDual.tau hn i).val < (GlobalTheory.FlagDual.tau hn j).val by show dualIdx ρ k i.val < dualIdx ρ k j.val`. Apply the tactic sequence `unfold dualIdx; split_ifs <;> omega), mul_zero]`. Apply the tactic sequence `rw [hNc (GlobalTheory.FlagDual.tau hn j) (GlobalTheory.FlagDual.tau hn i) (by show ρ ≤ dualIdx ρ k j.val; unfold dualIdx; split_ifs <;> omega) (by show dualIdx ρ k j.val < ρ + k; unfold dualIdx; split_ifs <;> omega) (by show dualIdx ρ k i.val = ρ + k; unfold dualIdx; split_ifs <; …`. Rewrite using `[hNl (show (GlobalTheory.FlagDual.tau hn i).val < (GlobalTheory.FlagDual.tau hn j).val by`. Use `i.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `j.2` as an intermediate fact. Use `show dualIdx ρ k i.val < dualIdx ρ k j.val`. Apply the tactic sequence `unfold dualIdx; split_ifs <;> omega), mul_zero]`. Introduce `i`. Rewrite using `[hd i i, hNd, mul_one, GlobalTheory.FlagDual.sgn_mul_self]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j h0 h1 h2`. Rewrite using `[hd i j, hNl (show (GlobalTheory.FlagDual.tau hn i).val < (GlobalTheory.FlagDual.tau hn j).val by show dualIdx ρ k i.val < dualIdx ρ k j.val`. Apply the tactic sequence `unfold dualIdx; split_ifs <;> omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagDual.unipSym_of_dual :
     ∀ (K : Type) [CommRing K] (n ρ k : ℕ), n = 2 * ρ + k + 1 → ∀ M M' : GL (Fin n) K,

@@ -13,13 +13,13 @@ noncomputable def rhoPerm (N : ℕ) (σ : Equiv.Perm (Fin N)) : Unit × Fin N �
   Finsupp.equivFunOnFinite.symm fun p => N - 1 - (σ p.2 : ℕ)
 
 /- English proof (translation)
-Unfold `flagInt antisym`. Rewrite using `[coeff_sum, ← (Equiv.funUnique Unit (Equiv.Perm (Fin N))).symm.sum_comp]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[weylSign]`. Establish `hinj : Function.Injective (weylAct Unit N ((Equiv.funUnique Unit _).symm σ))`. Introduce and unpack `⟨⟨⟩, a⟩ ⟨⟨⟩, b⟩ h`. Simplify `h` using `[weylAct]`. Establish `hρ : rhoMono Unit N = Finsupp.mapDomain (weylAct Unit N ((Equiv.funUnique Unit _).symm σ)) (rhoPerm N σ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use extensionality with `⟨⟨⟩, k⟩`. Take `⟨i, rfl⟩` from `σ.surjective k`. Establish `: ((), σ i) = weylAct Unit N ((Equiv.funUnique Unit _).symm σ) ((), i)` using `rfl`. Rewrite using `[this, Finsupp.mapDomain_apply hinj]`. Simplify using `[rhoMono, rhoPerm, weylAct]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hρ, coeff_rename_mapDomain _ hinj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flagInt_unit_eq (N : ℕ) (P : RootPoly Unit N) :
     flagInt Unit N P =
@@ -43,7 +43,7 @@ theorem flagInt_unit_eq (N : ℕ) (P : RootPoly Unit N) :
     rw [hρ, coeff_rename_mapDomain _ hinj]
 
 /- English proof (translation)
-Unfold `muPoly`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem muPoly_eq_sum (N j : ℕ) :
     muPoly Unit N j = ∑ p, (if (p.2 : ℕ) < j then (0 : ℚ) else 1) • X p := by
@@ -53,35 +53,33 @@ theorem muPoly_eq_sum (N j : ℕ) :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use `set d := rhoPerm (j + m) σ with hd`. Use `set s := rhoBlock Unit (j + m) j with hs`. Establish `hdv : ∀ i : Fin (j + m), d ((), i) = j + m - 1 - (σ i : ℕ)` using `fun i => rfl`. Establish `hsv : ∀ i : Fin (j + m), s ((), i) = if (i : ℕ) < j then j - 1 - (i : ℕ) else j + m - 1 - (i : ℕ)` using `fun i => rfl`. Establish `hpt : ∀ i : Fin (j + m), flagMat j m i (σ i) = if s ((), i) ≤ d ((), i) ∧ ((i : ℕ) < j → d ((), i) - s ((), i) = 0) then (((d ((), i) - s ((), i)).factorial : ℚ))⁻¹ else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hi` using `i.isLt`. Establish `hσ` using `(σ i).isLt`. Simplify using `only [flagMat, Matrix.of_apply, hdv, hsv]`. Distinguish the cases in `hij : (i : ℕ) < j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hij, if_true, forall_const]`. Distinguish the cases in `h : (σ i : ℕ) = m + i`. Rewrite using `[if_pos h, if_pos (by omega), show j + m - 1 - (σ i : ℕ) - (j - 1 - i) = 0 by omega]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hij, if_false, false_implies, and_true]`. Distinguish the cases in `h : (σ i : ℕ) ≤ i`. Rewrite using `[if_pos h, if_pos (by omega), show j + m - 1 - (σ i : ℕ) - (j + m - 1 - i) = i - σ i by omega]`. Rewrite using `[if_neg h, if_neg (by omega)]`. Rewrite using `[coeff_mul_monomial', muPoly_eq_sum, coeff_linearCombination_X_pow_of_fintype]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hall : ∀ i : Fin (j + m), s ((), i) ≤ d ((), i) ∧ ((i : ℕ) < j → d ((), i) - s ((), i) = 0)`. Establish `hle : s ≤ d`. Introduce `p`. Take `⟨⟨⟩, i⟩` from `p`. Conclude with `(hall i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hev : ∀ i : Fin (j + m), ((d - s) ((), i) : ℤ) = (i : ℤ) - (σ i : ℤ) + (if (i : ℕ) < j then (m : ℤ) else 0)`. Introduce `i`. Establish `hi` using `i.isLt`. Establish `hσ` using `(σ i).isLt`. Use `hall i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `*` using `[Finsupp.tsub_apply, hdv, hsv]`. Apply the tactic sequence `split_ifs at * with hij <;> omega`. Establish `hsumN : ∑ i : Fin (j + m), (d - s) ((), i) = j * m`. Establish `hz : ((∑ i : Fin (j + m), (d - s) ((), i) : ℕ) : ℤ) = ((j * m : ℕ) : ℤ)`. Establish `hσsum : ∑ i : Fin (j + m), ((σ i : ℕ) : ℤ) = ∑ i : Fin (j + m), ((i : ℕ) : ℤ)` using `Equiv.sum_comp σ (fun i => ((i : ℕ) : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_sum, Finset.sum_congr rfl (fun i _ => hev i), Finset.sum_add_distrib, Finset.sum_sub_distrib, hσsum, sub_self, zero_add, Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Conclude with `hz` after adjusting the coercions. Establish `hsum : (d - s).sum (fun _ k => k) = j * m`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hsumN`. Establish `hprod : ((d - s).prod fun r k => (if (r.2 : ℕ) < j then (0 : ℚ) else 1) ^ k) = 1`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Use `Finset.prod_eq_one fun p _ => ?_` and prove the remaining obligations. Take `⟨⟨⟩, i⟩` from `p`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : (i : ℕ) < j`. Simplify using `only [Finsupp.tsub_apply]`. Rewrite using `[(hall i).2 hij, pow_zero]`. Simplify using `[hij]`. Establish `hmult : (((d - s).multinomial : ℕ) : ℚ) = ((j * m).factorial : ℚ) / ∏ i : Fin (j + m), (((d - s) ((), i)).factorial : ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h` using `Nat.multinomial_spec (Finset.univ : Finset (Unit × Fin (j + m))) (DFunLike.coe (d - s))`. Rewrite `h` using `[← Finsupp.multinomial_eq_of_support_subset (Finset.subset_univ _)]`. Rewrite `h` using `[Fintype.sum_prod_type, Fintype.prod_prod_type]`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, Finset.prod_singleton, PUnit.default_eq_unit] at h`. Rewrite `h` using `[hsumN]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hP : (∏ i : Fin (j + m), (((d - s) ((), i)).factorial : ℚ)) ≠ 0` using `prod_ne_zero_iff.mpr fun i _ => by positivity`. Rewrite using `[eq_div_iff hP, mul_comm]`. Conclude with `h` after adjusting the coercions. Rewrite using `[if_pos hle, if_pos hsum, hprod, mul_one, mul_one, hmult, div_eq_mul_inv, ← prod_inv_distrib]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hpt, if_pos (hall i), Finsupp.tsub_apply]`. Use `push Not at hall`. Take `⟨i, hi⟩` from `hall`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by rw [hpt, if_neg (by tauto)]), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hle hsum`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), mul_one]`. Use `mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ ((), i)) ?_)` and prove the remaining obligations. Take `⟨hij, hne⟩` from `hi (hle ((), i))`. Simplify using `[hij, Finsupp.tsub_apply, hne]`.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem coeff_muPow_rhoBlock (j m : ℕ) (σ : Equiv.Perm (Fin (j + m))) :
     coeff (rhoPerm (j + m) σ)

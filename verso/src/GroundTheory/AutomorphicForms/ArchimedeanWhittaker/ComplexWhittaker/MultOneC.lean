@@ -20,18 +20,18 @@ Both sides reduce to the same expression.
     ((transposeU k : U2) : Matrix (Fin 2) (Fin 2) ℂ) = (k : Matrix (Fin 2) (Fin 2) ℂ)ᵀ := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem transposeU_transposeU (k : U2) : transposeU (transposeU k) = k := Subtype.ext (by simp)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [Matrix.transpose_mul])`.
+A detailed English derivation is pending.
 -/
 theorem transposeU_mul (k l : U2) : transposeU (k * l) = transposeU l * transposeU k :=
   Subtype.ext (by simp [Matrix.transpose_mul])
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_subtype_val.matrix_transpose) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_transposeU : Continuous transposeU :=
   Continuous.subtype_mk (continuous_subtype_val.matrix_transpose) _
@@ -45,11 +45,9 @@ def transposeHomeo : U2 ≃ₜ U2 where
   continuous_invFun := continuous_transposeU
 
 /- English proof (translation)
-Establish `hmeas : Measurable transposeU` using `continuous_transposeU.measurable`. Use `haveI : (Measure.map transposeU μK).IsMulLeftInvariant := by`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_const_mul g) hmeas]`. Establish `e : (fun k => g * k) ∘ transposeU = transposeU ∘ (fun k => k * transposeU g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[transposeU_mul, transposeU_transposeU]`. Rewrite using `[e, ← Measure.map_map hmeas (measurable_mul_const _), map_mul_right_eq_self]`. Use `haveI : (Measure.map transposeU μK).IsHaarMeasure := { lt_top_of_isCompact := fun K hK => measure_lt_top _ _ toIsOpenPosMeasure := ⟨fun U hU hne => by`. Rewrite using `[Measure.map_apply hmeas hU.measurableSet]`.
-
-Conclude with `(hU.preimage continuous_transposeU).measure_ne_zero μK (by obtain ⟨u, hu⟩ := hne; exact ⟨transposeU u, by simpa [transposeU_transposeU] using hu⟩)⟩ }`. Use `haveI : IsProbabilityMeasure (Measure.map transposeU μK) := Measure.isProbabilityMeasure_map hmeas.aemeasurable`. Conclude with `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_transpose_μK : Measure.map transposeU μK = μK := by
   have hmeas : Measurable transposeU := continuous_transposeU.measurable
@@ -70,7 +68,7 @@ theorem map_transpose_μK : Measure.map transposeU μK = μK := by
   exact Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _
 
 /- English proof (translation)
-Use `integral_map_equiv (μ := μK) (transposeHomeo.toMeasurableEquiv) f` as an intermediate fact. Establish `e : ((transposeHomeo.toMeasurableEquiv : U2 ≃ᵐ U2) : U2 → U2) = transposeU` using `rfl`. Rewrite `this` using `[e, map_transpose_μK]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_transpose_K {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : U2 → E) :
     ∫ k, f (transposeU k) ∂μK = ∫ k, f k ∂μK := by
@@ -80,13 +78,13 @@ theorem integral_transpose_K {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
   exact this.symm
 
 /- English proof (translation)
-Simplify using `[psi, Matrix.det_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_transposeU_self (n : ℕ) (q : ℤ) (k : U2) : psi n q n (transposeU k) = psi n q n k := by
   simp [psi, Matrix.det_transpose]
 
 /- English proof (translation)
-Simplify using `only [psi, coe_inv_U2, det_star_U2, coe_transposeU, map_mul, map_pow, map_zpow₀, starRingEnd_self_apply, Matrix.transpose_apply, Matrix.det_transpose]`. Simplify using `[Matrix.star_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conj_psi_inv (n : ℕ) (q : ℤ) (i : ℕ) (k : U2) :
     conj (psi n q i k⁻¹) = psi n q i (transposeU k) := by
@@ -95,7 +93,7 @@ theorem conj_psi_inv (n : ℕ) (q : ℤ) (i : ℕ) (k : U2) :
   simp [Matrix.star_apply]
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 (g : GL (Fin 2) ℂ).isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero_GL2C (g : GL2C) : ((g : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 (g : GL (Fin 2) ℂ).isUnit).ne_zero
@@ -104,28 +102,28 @@ noncomputable def iotaC (g : GL2C) : GL2C :=
   toGLC ((g : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ)ᵀ (by rw [Matrix.det_transpose]; exact det_ne_zero_GL2C g)
 
 /- English proof (translation)
-Apply `GL2C_ext` to reduce the goal to its premises. Simplify using `[iotaC, Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem iotaC_mul (g h : GL2C) : iotaC (g * h) = iotaC h * iotaC g := by
   apply GL2C_ext; simp [iotaC, Matrix.transpose_mul]
 
 /- English proof (translation)
-Apply `GL2C_ext` to reduce the goal to its premises. Simplify using `[iotaC]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem iotaC_kC (k : U2) : iotaC (kC k) = kC (transposeU k) := by
   apply GL2C_ext; simp [iotaC]
 
 /- English proof (translation)
-Apply `GL2C_ext` to reduce the goal to its premises. Simplify using `only [iotaC, coe_toGLC, coe_dC]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem iotaC_dC (d₁ d₂ : ℝ) (h₁ : 0 < d₁) (h₂ : 0 < d₂) : iotaC (dC d₁ d₂ h₁ h₂) = dC d₁ d₂ h₁ h₂ := by
   apply GL2C_ext; simp only [iotaC, coe_toGLC, coe_dC]
   ext i j; fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Take `⟨k₁, k₂, a, ha, hg⟩` from `exists_KAK (g : GL (Fin 2) ℂ)`. Use `⟨k₁, k₂, a 0, a 1, ha 0, ha 1, GL2C_ext ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, coe_kC, coe_dC]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_kakC (g : GL2C) : ∃ (k₁ k₂ : U2) (d₁ d₂ : ℝ) (h₁ : 0 < d₁) (h₂ : 0 < d₂),
     g = kC k₁ * dC d₁ d₂ h₁ h₂ * kC k₂ := by
@@ -137,7 +135,7 @@ theorem exists_kakC (g : GL2C) : ∃ (k₁ k₂ : U2) (d₁ d₂ : ℝ) (h₁ : 
   ext i j; fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Apply `GL2C_ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Units.val_mul, coe_kC, coe_tC, coe_dC]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tC_dC_comm (a b d₁ d₂ : ℝ) (h₁ : 0 < d₁) (h₂ : 0 < d₂) :
     kC (tC a b) * dC d₁ d₂ h₁ h₂ = dC d₁ d₂ h₁ h₂ * kC (tC a b) := by
@@ -149,11 +147,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable (σ : UnitaryRep GL2C H)
 
 /- English proof (translation)
-Establish `hne : ((i : ℝ) - j) ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast hij)`. Use `set a : ℝ := Real.pi / ((i : ℝ) - j) with ha`. Establish `h1 : ⟪σ (kC (tC a 0)) (Q σ n q j y), σ (kC (tC a 0)) (σ (dC d₁ d₂ h₁ h₂) (Q σ n q i x))⟫_ℂ = ⟪Q σ n q j y, σ (dC d₁ d₂ h₁ h₂) (Q σ n q i x)⟫_ℂ`. Rewrite using `[UnitaryRep.inner_map_left, ← UnitaryRep.map_mul_apply, inv_mul_cancel, UnitaryRep.map_one, ContinuousLinearMap.one_apply]`. Establish `h2 : ⟪σ (kC (tC a 0)) (Q σ n q j y), σ (kC (tC a 0)) (σ (dC d₁ d₂ h₁ h₂) (Q σ n q i x))⟫_ℂ = -⟪Q σ n q j y, σ (dC d₁ d₂ h₁ h₂) (Q σ n q i x)⟫_ℂ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← UnitaryRep.map_mul_apply, tC_dC_comm, UnitaryRep.map_mul_apply, map_tC_Q σ n q hj, map_tC_Q σ n q hi, map_smul, inner_smul_left, inner_smul_right, ← mul_assoc, conj_exp_mul_exp]`. Establish `: (((i : ℝ) + q) * a + ((n : ℝ) - i + q) * 0 - (((j : ℝ) + q) * a + ((n : ℝ) - j + q) * 0)) = Real.pi`. Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this, show Complex.exp (I * (Real.pi : ℂ)) = -1 by rw [mul_comm, Complex.exp_pi_mul_I]]`. Expand and normalize the polynomial expressions, which then agree. Establish `: (2 : ℂ) * ⟪Q σ n q j y, σ (dC d₁ d₂ h₁ h₂) (Q σ n q i x)⟫_ℂ = 0`. Take the linear combination `h1.symm.trans h2`. Simplify using `using this`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inner_Q_map_dC_eq_zero (n : ℕ) (q : ℤ) {i j : ℕ} (hi : i ≤ n) (hj : j ≤ n) (hij : i ≠ j)
     (d₁ d₂ : ℝ) (h₁ : 0 < d₁) (h₂ : 0 < d₂) (x y : H) :
@@ -179,7 +177,7 @@ theorem inner_Q_map_dC_eq_zero (n : ℕ) (q : ℤ) {i j : ℕ} (hi : i ≤ n) (h
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[map_sum, sum_inner]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_left, inner_smul_right, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_sum_smul_sum {ι : Type*} (s : Finset ι) (a b : ι → ℂ) (u v : ι → H) (T : H →L[ℂ] H) :
     ⟪∑ j ∈ s, a j • u j, T (∑ i ∈ s, b i • v i)⟫_ℂ =
@@ -191,7 +189,7 @@ theorem inner_sum_smul_sum {ι : Type*} (s : Finset ι) (a b : ι → ℂ) (u v 
   rw [map_smul, inner_smul_left, inner_smul_right, mul_assoc]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (mem_W σ).1 hx]`. Rewrite using `[map_P]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_kC_of_mem {n : ℕ} {q : ℤ} {x : H} (hx : x ∈ W σ n q) (l : U2) :
     σ (kC l) x = ∑ i ∈ range (n + 1),
@@ -200,11 +198,11 @@ theorem map_kC_of_mem {n : ℕ} {q : ℤ} {x : H} (hx : x ∈ W σ n q) (l : U2)
   rw [map_P]
 
 /- English proof (translation)
-Rewrite using `[UnitaryRep.map_mul_apply, UnitaryRep.map_mul_apply, UnitaryRep.inner_map_right, ← map_inv, map_kC_of_mem σ hx, map_kC_of_mem σ hy]`. Rewrite using `[show (σ (dC d₁ d₂ h₁ h₂)) = (σ (dC d₁ d₂ h₁ h₂) : H →L[ℂ] H) from rfl, inner_sum_smul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[map_mul, conj_psi_inv, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `i hi hij`. Rewrite using `[map_smul, inner_smul_left, inner_smul_right, inner_Q_map_dC_eq_zero σ n q (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)) hij]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hj h`.
+A detailed English derivation is pending.
 -/
 theorem inner_map_kak {n : ℕ} {q : ℤ} {x y : H} (hx : x ∈ W σ n q) (hy : y ∈ W σ n q)
     (k₁ k₂ : U2) (d₁ d₂ : ℝ) (h₁ : 0 < d₁) (h₂ : 0 < d₂) :
@@ -226,7 +224,7 @@ theorem inner_map_kak {n : ℕ} {q : ℤ} {x y : H} (hx : x ∈ W σ n q) (hy : 
   · intro h; exact absurd hj h
 
 /- English proof (translation)
-Take `⟨k₁, k₂, d₁, d₂, h₁, h₂, rfl⟩` from `exists_kakC g`. Rewrite using `[iotaC_mul, iotaC_mul, iotaC_kC, iotaC_kC, iotaC_dC, ← mul_assoc, inner_map_kak σ hx hy, inner_map_kak σ hx hy, transposeU_transposeU]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_map_iotaC {n : ℕ} {q : ℤ} {x y : H} (hx : x ∈ W σ n q) (hy : y ∈ W σ n q) (g : GL2C) :
     ⟪y, σ (iotaC g) x⟫_ℂ = ⟪y, σ g x⟫_ℂ := by
@@ -250,14 +248,14 @@ Both sides reduce to the same expression.
     ((compr σ n q g v : W σ n q) : H) = P σ n q (σ g v) := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_compr_apply, inner_P_of_mem σ w.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_compr (n : ℕ) (q : ℤ) (g : GL2C) (v w : W σ n q) :
     ⟪(w : H), (compr σ n q g v : H)⟫_ℂ = ⟪(w : H), σ g v⟫_ℂ := by
   rw [coe_compr_apply, inner_P_of_mem σ w.2]
 
 /- English proof (translation)
-Rewrite using `[inner_compr, coe_compr_apply, UnitaryRep.inner_map_right, P, inner_smul_right, Q, inner_Kint_right σ (continuous_conj_psi n q n)]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[UnitaryRep.inner_map_left, inv_inv, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_compr_compr (n : ℕ) (q : ℤ) (g h : GL2C) (v w : W σ n q) :
     ⟪(w : H), (compr σ n q g (compr σ n q h v) : H)⟫_ℂ = ((normSqInt n q)⁻¹ : ℂ) *
@@ -270,7 +268,7 @@ theorem inner_compr_compr (n : ℕ) (q : ℤ) (g h : GL2C) (v w : W σ n q) :
     mul_assoc]
 
 /- English proof (translation)
-Use `ext1 v`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, inner_compr, inner_compr, inner_map_iotaC σ v.2 w.2]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compr_iotaC (n : ℕ) (q : ℤ) (g : GL2C) : compr σ n q (iotaC g) = compr σ n q g := by
   ext1 v
@@ -280,11 +278,11 @@ theorem compr_iotaC (n : ℕ) (q : ℤ) (g : GL2C) : compr σ n q (iotaC g) = co
     inner_map_iotaC σ v.2 w.2]
 
 /- English proof (translation)
-Use `ext1 v`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, inner_compr_compr, ← compr_iotaC σ n q h, ← compr_iotaC σ n q g, inner_compr_compr]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `set F : U2 → ℂ := fun k => conj (psi n q n k) * ⟪(w : H), σ (iotaC h * kC k * iotaC g) v⟫_ℂ with hF`. Rewrite using `[← integral_transpose_K F]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [hF]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[psi_transposeU_self, ← iotaC_kC, ← inner_map_iotaC σ v.2 w.2 (g * kC k * h), iotaC_mul, iotaC_mul]`. Simplify using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem compr_comm (n : ℕ) (q : ℤ) (g h : GL2C) :
     compr σ n q g * compr σ n q h = compr σ n q h * compr σ n q g := by

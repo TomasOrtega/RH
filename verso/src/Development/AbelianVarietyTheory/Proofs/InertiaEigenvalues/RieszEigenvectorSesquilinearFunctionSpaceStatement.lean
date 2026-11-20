@@ -4,7 +4,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HermitianAdjointExistsUniqueOfPosDef
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.riesz_and_eigenvector_of_sesq_on_fun_space` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRieszEigenvectorSesquilinearFunctionSpace.lean&line=37#L37)
 -/

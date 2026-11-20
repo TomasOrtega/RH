@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BCT.MassU.mass_unitary | (intros; apply GlobalTheory.BCT.MassU.mass_unitary <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unitary_mass_formula : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ γ : UE E n, γ.1.val.charpoly ∈ Ell E n → mass (MonoidHom.id _) (ratFinU E n) (finPt γ) = kap γ.1.val.charpoly * 2 ^ nfac γ.1.val.charpoly := by
   first | exact @GlobalTheory.BCT.MassU.mass_unitary | (intros; apply GlobalTheory.BCT.MassU.mass_unitary <;> assumption)

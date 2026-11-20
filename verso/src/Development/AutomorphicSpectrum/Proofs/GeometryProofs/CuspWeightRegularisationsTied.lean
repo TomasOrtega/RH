@@ -25,13 +25,11 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 open ReciprocityTheory.AnForm (levi)
 
 /- English proof (translation)
-Introduce `hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or`. Take `⟨U, hU, h0, hT, hC, -⟩` from `GlobalTheory.T.intersection_system_weight_left hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or`. Take `⟨hp1, -, hp2, hc2⟩` from `GlobalTheory.T.cusp_intersection_positive hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U hU`. Take `⟨hb, -⟩` from `GlobalTheory.T.cusp_chart_log_growth_bounds hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U hU`. Take `⟨-, -, hL, hO⟩` from `GlobalTheory.CompanionTheory.Relay.hodge_metric_frame_properties K J II (CMType H) Ω W Dc Hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M⟩` from `GlobalTheory.CompanionTheory.Relay.exists_compactified_model K J II (CMType H) Ω W Dc`. Take `⟨S, hS⟩` from `GlobalTheory.T.exists_regularization_of_hodge_metric K J II (CMType H) Ω W Dc Hd M hp1`. Take `⟨S', hS', hJ⟩` from `GlobalTheory.T.exists_regularization_setting K J II (CMType H) Ω W Dc Hd M (corrW Hd U) (fun z hz a ha => by`. Use `hL z hz a ha` as an intermediate fact. Simplify using `only [corrW, hT z a ha, this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `ring)`. Use `hp2 hc2 hb`. Use the proof step `(fun z hz => by`. Use `hO z hz` as an intermediate fact. Simplify using `only [corrW, hC z, this])`.
-
-Conclude with `⟨U, M, S, S', hU, h0, fun z _ t ht => hT z t ht, hS, hS', hJ⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.cusp_weight_regularisations_tied : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd), ∃ (U : ((Σ k, J k) → ℂ) → ℝ) (M : XModel Dc) (S : LogLogRegularisationSetting M Dc.Xo (muLine Hd)) (S' : BoundedRegularisationSetting M Dc.Xo Hd.aMu (corrW Hd U)), Or.𝔐.IsCuspWeight Or.sm U ∧ (∀ z, 0 ≤ U z) ∧ (∀ z ∈ Dc.Xo, ∀ t : K → ℂ, (∀ k, t k ≠ 0) → U (torusSmul t z) = U z) ∧ S.IsTied ∧ S'.IsTied ∧ ConjU S' := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or

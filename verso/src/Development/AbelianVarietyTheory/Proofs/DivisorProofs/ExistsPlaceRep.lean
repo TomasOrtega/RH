@@ -25,7 +25,7 @@ def matDer (τ : T) (X : Matrix (Fin n) (Fin n) ℂ) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `MvPolynomial.mkDerivation_X _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem matDer_X (τ : T) (X : Matrix (Fin n) (Fin n) ℂ) (p : T × Fin n × Fin n) :
     matDer τ X (MvPolynomial.X p) =
@@ -33,7 +33,7 @@ theorem matDer_X (τ : T) (X : Matrix (Fin n) (Fin n) ℂ) (p : T × Fin n × Fi
   MvPolynomial.mkDerivation_X _ _ _
 
 /- English proof (translation)
-Use `MvPolynomial.derivation_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[Derivation.add_apply, matDer_X, matDer_X, matDer_X]`. Use `split_ifs`. Simplify using `[mul_add, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matDer_add (τ : T) (X Y : Matrix (Fin n) (Fin n) ℂ) : matDer τ (X + Y) = matDer τ X + matDer τ Y := by
   classical
@@ -44,9 +44,9 @@ theorem matDer_add (τ : T) (X Y : Matrix (Fin n) (Fin n) ℂ) : matDer τ (X + 
   · simp
 
 /- English proof (translation)
-Use `MvPolynomial.derivation_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[Derivation.smul_apply, matDer_X, matDer_X]`. Use `split_ifs`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.C_mul, MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matDer_smul (τ : T) (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) : matDer τ (c • X) = c • matDer τ X := by
   classical
@@ -59,9 +59,9 @@ theorem matDer_smul (τ : T) (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) : matDer
   · simp
 
 /- English proof (translation)
-Use `MvPolynomial.derivation_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[Derivation.commutator_apply, matDer_X, matDer_X, matDer_X]`. Use `split_ifs with h`. Simplify using `only [map_sum, Derivation.leibniz, MvPolynomial.derivation_C, smul_zero, zero_add, matDer_X, if_true, smul_eq_mul, Finset.sum_mul, Matrix.sub_apply, Matrix.mul_apply, map_sub, map_sum, MvPolynomial.C_mul, Finset.mul_sum, mul_sub, Finset.sum_sub_distrib, mul_zero, zero_add]`. Apply the tactic sequence `refine congrArg₂ (· - ·) ?_ ?_ <;> rw [Finset.sum_comm] <;>`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem matDer_bracket (τ : T) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     ⁅matDer τ X, matDer τ Y⁆ = matDer τ (X * Y - Y * X) := by
@@ -77,7 +77,7 @@ theorem matDer_bracket (τ : T) (X Y : Matrix (Fin n) (Fin n) ℂ) :
   · simp
 
 /- English proof (translation)
-Use `MvPolynomial.derivation_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[Derivation.commutator_apply, matDer_X, matDer_X, Derivation.zero_apply]`. Apply the tactic sequence `by_cases h1 : p.1 = τ <;> by_cases h2 : p.1 = τ' <;>`. Simplify using `[h1, h2, h, Ne.symm h, map_sum, Derivation.leibniz, MvPolynomial.derivation_C, matDer_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem matDer_comm {τ τ' : T} (h : τ ≠ τ') (X Y : Matrix (Fin n) (Fin n) ℂ) :
     ⁅matDer τ X, matDer τ' Y⁆ = 0 := by
@@ -88,7 +88,7 @@ theorem matDer_comm {τ τ' : T} (h : τ ≠ τ') (X Y : Matrix (Fin n) (Fin n) 
     simp [h1, h2, h, Ne.symm h, map_sum, Derivation.leibniz, MvPolynomial.derivation_C, matDer_X]
 
 /- English proof (translation)
-Use `LinearMap.ext fun a => ?_` and prove the remaining obligations. Use `congrArg (fun D : Derivation ℂ _ _ => D a) (matDer_comm h X Y)` as an intermediate fact. Simplify using `only [Derivation.commutator_apply, Derivation.zero_apply, sub_eq_zero] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matDer_commute {τ τ' : T} (h : τ ≠ τ') (X Y : Matrix (Fin n) (Fin n) ℂ) :
     Commute (matDer τ X : Module.End ℂ (MvPolynomial (T × Fin n × Fin n) ℂ)) (matDer τ' Y) := by
@@ -113,11 +113,11 @@ def polyFun (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* 
   fun g => MvPolynomial.eval (realEntries θ V g) P
 
 /- English proof (translation)
-Use `GlobalTheory.EnvelopingExtension.exists_algHom_unitary _ _ _ (fun X : LieAt V τ => (matDer τ X.1 : Module.End ℂ (PolyE V))) (fun X Y => LinearMap.ext fun a => ?_) (fun c X => LinearMap.ext fun a => ?_) (fun X Y Z h => LinearMap.ext fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `matDer τ (X.1 + Y.1) a = matDer τ X.1 a + matDer τ Y.1 a`. Rewrite using `[matDer_add]`. Both sides reduce to the same expression. Establish `e : ((c • X : LieAt V τ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) = (c : ℂ) • X.1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Complex.real_smul]`. Express the relevant statement in the definitionally equal form `matDer τ ((c • X : LieAt V τ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) a = (c : ℂ) • matDer τ X.1 a`. Rewrite using `[e, matDer_smul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `matDer τ Z.1 a = matDer τ X.1 (matDer τ Y.1 a) - matDer τ Y.1 (matDer τ X.1 a)`. Rewrite using `[h, ← matDer_bracket, Derivation.commutator_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_placeRep (V : HSp D) (τ : D.what₂.Tau) : ∃ π : EnvAt V τ →ₐ[ℂ] Module.End ℂ (PolyE V),
     ∀ X : LieAt V τ, π (UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)) = (matDer τ X.1 : Module.End ℂ (PolyE V)) := by
@@ -135,14 +135,14 @@ theorem exists_placeRep (V : HSp D) (τ : D.what₂.Tau) : ∃ π : EnvAt V τ �
 def placeRep (V : HSp D) (τ : D.what₂.Tau) : EnvAt V τ →ₐ[ℂ] Module.End ℂ (PolyE V) := (exists_placeRep V τ).choose
 
 /- English proof (translation)
-The claim follows from `(exists_placeRep V τ).choose_spec X`.
+A detailed English derivation is pending.
 -/
 theorem placeRep_ι (V : HSp D) (τ : D.what₂.Tau) (X : LieAt V τ) :
     placeRep V τ (UniversalEnvelopingAlgebra.ι ℂ ((1 : ℂ) ⊗ₜ[ℝ] X)) = (matDer τ X.1 : Module.End ℂ (PolyE V)) :=
   (exists_placeRep V τ).choose_spec X
 
 /- English proof (translation)
-Rewrite using `[show c ⊗ₜ[ℝ] X = c • ((1 : ℂ) ⊗ₜ[ℝ] X) by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one], map_smul, map_smul, placeRep_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem placeRep_tmul (V : HSp D) (τ : D.what₂.Tau) (c : ℂ) (X : LieAt V τ) :
     placeRep V τ (UniversalEnvelopingAlgebra.ι ℂ (c ⊗ₜ[ℝ] X)) = c • (matDer τ X.1 : Module.End ℂ (PolyE V)) := by
@@ -150,11 +150,9 @@ theorem placeRep_tmul (V : HSp D) (τ : D.what₂.Tau) (c : ℂ) (X : LieAt V τ
     placeRep_ι]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [map_add, map_add]`. Conclude with `hx.add_left hx'`. Consider the case `tmul c X`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => rw [map_add, map_add]`. Conclude with `hy.add_right hy'`. Consider the case `tmul c' Y`.
-
-Rewrite using `[placeRep_tmul, placeRep_tmul]`. Conclude with `((matDer_commute h X.1 Y.1).smul_left c).smul_right c'`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeRep_comm (V : HSp D) {τ τ' : D.what₂.Tau} (h : τ ≠ τ') (x : ℂ ⊗[ℝ] LieAt V τ) (y : ℂ ⊗[ℝ] LieAt V τ') :
     Commute (placeRep V τ (UniversalEnvelopingAlgebra.ι ℂ x)) (placeRep V τ' (UniversalEnvelopingAlgebra.ι ℂ y)) := by
@@ -182,7 +180,7 @@ def polyRep (V : HSp D) : GlobalTheory.AutFinLit.Env V →ₐ[ℂ] Module.End �
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[polyRep, UniversalEnvelopingAlgebra.lift_ι_apply, polyLie]`. Conclude with `DirectSum.toModule_lof ℂ (M := fun τ => ℂ ⊗[ℝ] LieAt V τ) τ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyRep_ι_of (V : HSp D) (τ : D.what₂.Tau) (x : ℂ ⊗[ℝ] LieAt V τ) :
     polyRep V (UniversalEnvelopingAlgebra.ι ℂ (DirectSum.of (fun τ => ℂ ⊗[ℝ] LieAt V τ) τ x)) =

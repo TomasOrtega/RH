@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.SplitPow
 
 /- English proof (translation)
-Introduce `R _ G₀ _ _ I ⟨E, ⟨D⟩⟩`. Use `letI := E.grpB`. Use `haveI := E.free`. Use `haveI := E.finite`. Take `⟨p, -⟩` from `GlobalTheory.isPowGrp_baseChange _ _ (spMap (Ideal.Quotient.mk I)) (powObj G₀ 8) G₀ 8 (powIsPowGrp G₀ 8)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨pT, -⟩` from `GlobalTheory.exists_isPowGrp_splitTorus (Sp (R ⧸ I)) E.X (Fin 8 → E.X) 8 (AddEquiv.refl _)`. Take `⟨q', hq, hq1, hq2, hq3, hq4, -⟩` from `GlobalTheory.PowMap.main _ _ _ (powObj E.B 8) E.B 8 p (powIsPowGrp E.B 8) D.q`. Take `⟨i', hi, hi1, -⟩` from `GlobalTheory.PowMap.main _ _ _ _ _ 8 pT p D.i`. Establish `hB : IsAbelianScheme (powObj E.B 8)` using `(GlobalTheory.PowGrp.powers _ _ _ 8 (powIsPowGrp E.B 8)).2.2.2.1 E.isAbelian`. Establish `hk` using `GlobalTheory.PowKernel.main _ _ _ _ _ _ _ 8 pT p (powIsPowGrp E.B 8) D.i D.q i' q' hi hq D.isKernel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsCommMonObj ((Over.pullback (spMap (Ideal.Quotient.mk I))).obj G₀) := inferInstance`. Use `haveI : IsCommMonObj ((Over.pullback (spMap (Ideal.Quotient.mk I))).obj (powObj G₀ 8)) := inferInstance`. Establish `hqc : QuasiCompact D.q.left`. Use `D.q_affine` as an intermediate fact. Use `infer_instance`.
-
-Take `⟨O, h₁, h₂, h₃, h⟩` from `GlobalTheory.exists_gtDatum_of_splitTorus_extension _ (Fin 8 → E.X) _ (powObj E.B 8) hB q' i' (hq1 D.q_hom) (hi1 D.i_hom) (hq2 D.q_flat) (hq3 D.q_surjective) (hq4 hqc) hk`. Take `⟨d, -, -⟩` from `h hB`. Conclude with `⟨_, ⟨d⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splitExtensionModuloIdeal_eighth_power : ∀ (R : Type) [CommRing R] (G₀ : Over (Sp R)) [GrpObj G₀] [IsCommMonObj G₀] (I : Ideal R),
     GlobalTheory.LN.SplitOver G₀ I → GlobalTheory.LN.SplitOver (powObj G₀ 8) I := by

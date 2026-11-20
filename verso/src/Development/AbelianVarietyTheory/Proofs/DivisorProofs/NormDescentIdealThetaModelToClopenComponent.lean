@@ -16,9 +16,9 @@ open GlobalTheory.Poinc
 namespace GlobalTheory.NormDown
 
 /- English proof (translation)
-Break down `ValuationRing.dvd_total x y with hd | ⟨c, rfl⟩` into its components or cases. Conclude with `hd`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Take `⟨e, he⟩` from `hxy`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : h y ≠ 0` using `fun h0 => hy (hi (by rw [h0, map_zero]))`. Establish `h1 : h y * 1 = h y * (h c * e)` using `by rw [mul_one, ← mul_assoc, ← map_mul, ← he]`. Establish `hu : IsUnit (h c)` using `isUnit_iff_exists_inv.2 ⟨e, (mul_left_cancel₀ hy' h1).symm⟩`. Establish `hc : IsUnit c` using `(isUnit_map_iff h c).1 hu`. Conclude with `⟨↑hc.unit⁻¹, by rw [mul_assoc, IsUnit.mul_val_inv, mul_one]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_map_dvd {V V' : Type} [CommRing V] [IsDomain V] [ValuationRing V] [CommRing V'] [IsDomain V']
     (h : V →+* V') (hi : Function.Injective h) [IsLocalHom h] {x y : V} (hxy : h x ∣ h y) : x ∣ y := by
@@ -34,7 +34,7 @@ theorem dvd_of_map_dvd {V V' : Type} [CommRing V] [IsDomain V] [ValuationRing V]
     exact ⟨↑hc.unit⁻¹, by rw [mul_assoc, IsUnit.mul_val_inv, mul_one]⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩ : ∃ x, I = Ideal.span {x}` from `⟨_, (Submodule.IsPrincipal.span_singleton_generator I).symm⟩`. Take `⟨y, rfl⟩ : ∃ y, I' = Ideal.span {y}` from `⟨_, (Submodule.IsPrincipal.span_singleton_generator I').symm⟩`. Rewrite `e` using `[Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, Ideal.span_singleton_eq_span_singleton]`. Rewrite using `[Ideal.span_singleton_eq_span_singleton]`. Conclude with `associated_of_dvd_dvd (dvd_of_map_dvd h hi e.dvd) (dvd_of_map_dvd h hi e.symm.dvd)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_injective {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CommRing V'] [IsDomain V']
     (h : V →+* V') (hi : Function.Injective h) [IsLocalHom h] {I I' : Ideal V} (e : I.map h = I'.map h) : I = I' := by
@@ -46,7 +46,7 @@ theorem map_injective {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuati
   exact associated_of_dvd_dvd (dvd_of_map_dvd h hi e.dvd) (dvd_of_map_dvd h hi e.symm.dvd)
 
 /- English proof (translation)
-Simplify using `only [jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `a`. Conclude with `(hc a).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem jK_spMap {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (fK : FractionRing R →+* FractionRing S)
     (hc : ∀ a, fK (algebraMap R _ a) = algebraMap S _ (f a)) : jK S ≫ spMap f = spMap fK ≫ jK R := by
@@ -56,19 +56,17 @@ theorem jK_spMap {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (fK : Fr
   exact (hc a).symm
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F Z z i hZ φ hφ W hWc hWi W8 X₁ ι J₁ hι hπ hsupp hord`. Establish `hne : ((⊤ : X₁.M.Z.Opens) : Set X₁.M.Z).Nonempty` using `Set.univ_nonempty`. Use `haveI : CharZero X₁.Ω₁ := X₁.ar.char`. Use `haveI hchar : CharZero Γ(X₁.M.Z, ⊤) := RingHom.charZero (X₁.M.res ⊤ hne)`. Use `haveI : IsDedekindDomain X₁.o₁ := X₁.ar.ded`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := X₁.M.lft`. Establish `hLN : IsLocallyNoetherian X₁.M.Z` using `LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Take `⟨d, J, hd, hJs, hJl⟩` from `GlobalTheory.T.norm_descent_idealSheaf_finite_open_closed_image X₁.M.Z Z X₁.π X₁.fin inferInstance hLN X₁.normal hZ.2.1 (by rw [hπ]; exact hWc.isOpen) hchar J₁`. Use `⟨d, J, hd, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hJs x hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `⟨hπ ▸ ⟨y, rfl⟩, hsupp y hy⟩`. Introduce `T ξ₁ hgen`. Take `⟨V', _, _, _, _, f, ψ, hc', hfi, hfl, hψ, hprod⟩` from `hJl T.V T.complete (ξ₁ ≫ X₁.π) ⟨ξ₁ (closedPoint T.V), rfl⟩`. Set `fK : FractionRing T.V →+* FractionRing V'` to `IsLocalization.map (FractionRing V') f (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective f hfi)`. Establish `hfK : ∀ a, fK (algebraMap T.V _ a) = algebraMap V' _ (f a)` using `fun a => IsLocalization.map_eq _ a`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : GlobalTheory.Mum.Base V'` using `⟨⟨inferInstance, inferInstance, inferInstance, hc'⟩, inferInstance⟩`. Take `⟨T₂, f₂, fK₂, hi₂, hl₂, -, hc₂, hy₂⟩` from `GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR g n _ _ F V' hB inferInstance (spMap fK ≫ T.y)`. Establish `hover : ∀ χ : Sp V' ⟶ X₁.M.Z, χ ≫ X₁.π = spMap f ≫ ξ₁ ≫ X₁.π → jK T₂.V ≫ (spMap f₂ ≫ χ) ≫ X₁.π = T₂.y ≫ i`. Introduce `χ hχ`. Rewrite using `[Category.assoc, hχ, ← Category.assoc, jK_spMap f₂ fK₂ hc₂, Category.assoc, ← Category.assoc (jK V'), jK_spMap f fK hfK, Category.assoc, hgen, hy₂]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Category.assoc]`. Take `⟨a₀, ha₀, h₀⟩` from `hord T₂ _ (hover (spMap f ≫ ξ₁) (Category.assoc _ _ _))`. Establish `hj : ∀ j, idlAlong J₁ (spMap f₂ ≫ ψ j) = Ideal.span {T₂.ϖ ^ a₀}`. Introduce `j`. Take `⟨a, ha, h⟩` from `hord T₂ _ (hover (ψ j) (hψ j))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, show a = a₀ from by exact_mod_cast ha.trans ha₀.symm]`. Establish `hcomp : spMap (f₂.comp f) = spMap f₂ ≫ spMap f`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `haveI : IsLocalHom (f₂.comp f) := RingHom.isLocalHom_comp f₂ f`. Apply `map_injective (f₂.comp f) (hi₂.comp hfi)` to reduce the goal to its premises.
-
-Establish `hmp` using `map_prod (Ideal.mapHom f₂) (fun j => idlAlong J₁ (ψ j)) Finset.univ`. Simplify using `only [Ideal.mapHom_apply] at hmp`. Rewrite using `[← Ideal.map_map, hprod, Ideal.map_pow, ← GlobalTheory.TraitOrder.idlAlong_comp, hcomp, Category.assoc, h₀, hmp]`. Simplify using `only [← GlobalTheory.TraitOrder.idlAlong_comp, hj, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normDescent : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z), IsThetaCompact F z i → ∀ φ : InvFun ℤ, IsPolFan id g φ → ∀ W : Set Z, IsClopen W → IsIrreducible W → ∀ (W8 : Matrix (Fin 8) (Fin 8) ℤ) (X₁ : Setup F W8 i) (ι : ℕ) (J₁ : X₁.M.Z.IdealSheafData), 1 ≤ ι → Set.range X₁.π = W → (∀ x ∈ J₁.support, X₁.π x ∉ Set.range i) → (∀ (T : Trait F) (ξ₁ : Sp T.V ⟶ X₁.M.Z), jK T.V ≫ ξ₁ ≫ X₁.π = T.y ≫ i → ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.β ∧ idlAlong J₁ ξ₁ = Ideal.span {T.ϖ ^ a}) → ∃ (k : ℕ) (J : Z.IdealSheafData), 1 ≤ k ∧ (∀ x ∈ J.support, x ∈ W ∧ x ∉ Set.range i) ∧ ∀ (T : Trait F) (ξ₁ : Sp T.V ⟶ X₁.M.Z), jK T.V ≫ ξ₁ ≫ X₁.π = T.y ≫ i → idlAlong J (ξ₁ ≫ X₁.π) = idlAlong J₁ ξ₁ ^ k := by
   intro g n hg hn hodd F Z z i hZ φ hφ W hWc hWi W8 X₁ ι J₁ hι hπ hsupp hord

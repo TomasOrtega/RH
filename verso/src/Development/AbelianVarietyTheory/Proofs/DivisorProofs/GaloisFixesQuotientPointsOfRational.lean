@@ -18,11 +18,11 @@ namespace GlobalTheory.Mum.GalFixQ
 open GlobalTheory.TorusExt
 
 /- English proof (translation)
-Introduce `R₂ _ _ _ D₂ n hrat σ p p' hpp'`. Establish `hB` using `D₂.tau_bimult`. Establish `hf : σ.toRingHom.comp (algebraMap (FractionRing R₂) (Kb R₂)) = algebraMap (FractionRing R₂) (Kb R₂)` using `σ.comp_algebraMap`. Establish `ha : (algebraMap (FractionRing R₂) (Kb R₂)).comp (algebraMap (FractionRing R₂) (FractionRing R₂)) = algebraMap (FractionRing R₂) (Kb R₂)`. Rewrite using `[Algebra.algebraMap_self, RingHom.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p₀, p₁, e₁, h₁⟩` from `hrat p`. Establish `hq : QkExt σ.toRingHom p₁ (qkExt hB σ.toRingHom hf p₁)` using `(qkExt_iff hB _ hf _ _).2 rfl`. Establish `e₂` using `GlobalTheory.LabTrans.qkExt_trans e₁ hq`. Rewrite `e₂` using `[hf]`. Establish `hfix : qkExt hB σ.toRingHom hf p₁ = p₁` using `((qkExt_iff hB _ ha _ _).1 e₂).trans ((qkExt_iff hB _ ha _ _).1 e₁).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hq` using `[hfix]`. Conclude with `equiv_trans hB (equiv_symm hB h₁) (equiv_of_qkExt hB σ.toRingHom hf hq hpp' h₁)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qkExt_equiv_of_rational : ∀ (R₂ : Type) [CommRing R₂] [IsDomain R₂] [IsLocalRing R₂] (D₂ : DegData R₂ (maximalIdeal R₂)) (n : ℕ), (∀ p : QkPt D₂.toPre (Kb R₂) n, ∃ (p₀ : QkPt D₂.toPre (FractionRing R₂) n) (p₁ : QkPt D₂.toPre (Kb R₂) n), QkExt (algebraMap (FractionRing R₂) (Kb R₂)) p₀ p₁ ∧ QkPt.Equiv D₂.toPre (Kb R₂) p₁ p) → ∀ σ : Kb R₂ →ₐ[FractionRing R₂] Kb R₂, ∀ p p' : QkPt D₂.toPre (Kb R₂) n, QkExt σ.toRingHom p p' → QkPt.Equiv D₂.toPre (Kb R₂) p p' := by
   intro R₂ _ _ _ D₂ n hrat σ p p' hpp'

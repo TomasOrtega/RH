@@ -10,20 +10,20 @@ open Polynomial
 def μc (q : ℕ) : ℂ := Complex.exp (2 * Real.pi * Complex.I / q)
 
 /- English proof (translation)
-The claim follows from `Complex.isPrimitiveRoot_exp q (NeZero.ne q)`.
+A detailed English derivation is pending.
 -/
 lemma μc_prim (q : ℕ) [NeZero q] : IsPrimitiveRoot (μc q) q :=
   Complex.isPrimitiveRoot_exp q (NeZero.ne q)
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma aeval_cyc {R : Type*} [CommRing R] (n : ℕ) (x : R) :
     aeval x (cyclotomic n ℤ) = eval x (cyclotomic n R) := by
   rw [aeval_def, eval₂_eq_eval_map, map_cyclotomic]
 
 /- English proof (translation)
-Establish `hμ` using `μc_prim q`. Establish `h1 : cyclotomic q ℤ = minpoly ℤ (μc q)` using `cyclotomic_eq_minpoly hμ (NeZero.pos q)`. Establish `hd : cyclotomic q ℤ ∣ P` using `h1 ▸ minpoly.isIntegrallyClosed_dvd (hμ.isIntegral (NeZero.pos q)) hP`. Take `⟨Q, rfl⟩` from `hd`. Rewrite using `[map_mul, ζ.2.2, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma transfer {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) (P : ℤ[X])
     (hP : aeval (μc q) P = 0) : aeval ζ.1 P = 0 := by
@@ -34,7 +34,7 @@ lemma transfer {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) (P :
   rw [map_mul, ζ.2.2, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[coeff_map, coeff_zero]`. Apply `transfer ζ` to reduce the goal to its premises. Use `congrArg (fun G => coeff G k) hF` as an intermediate fact. Simplify `this` using `[coeff_map]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma transfer2 {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) (F : (ℤ[X])[X])
     (hF : F.map (aeval (μc q)).toRingHom = 0) : F.map (aeval ζ.1).toRingHom = 0 := by
@@ -45,9 +45,9 @@ lemma transfer2 {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) (F 
   simpa [coeff_map] using this
 
 /- English proof (translation)
-Establish `hμ` using `μc_prim q`. Use extensionality with `z`. Rewrite using `[mem_nthRootsFinset (NeZero.pos q), Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi, rfl⟩` from `hμ.eq_pow_of_pow_eq_one hz`. Conclude with `⟨i, Finset.mem_range.2 hi, rfl⟩`. Introduce and unpack `⟨a, -, rfl⟩`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hμ.pow_eq_one, one_pow]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 lemma nthRoots_eq (q : ℕ) [NeZero q] :
     nthRootsFinset q (1 : ℂ) = (Finset.range q).image (fun a => μc q ^ a) := by
@@ -62,9 +62,9 @@ lemma nthRoots_eq (q : ℕ) [NeZero q] :
     rw [← pow_mul, mul_comm, pow_mul, hμ.pow_eq_one, one_pow]
 
 /- English proof (translation)
-Establish `hμ` using `μc_prim q`. Use extensionality with `z`. Rewrite using `[mem_primitiveRoots (NeZero.pos q), Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi, rfl⟩` from `hμ.eq_pow_of_pow_eq_one hz.pow_eq_one`. Conclude with `⟨i, Finset.mem_filter.2 ⟨Finset.mem_range.2 hi, (hμ.pow_iff_coprime (NeZero.pos q) i).1 hz⟩, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `hμ.pow_of_coprime a (Finset.mem_filter.1 ha).2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma primRoots_eq (q : ℕ) [NeZero q] :
     primitiveRoots q ℂ = ((Finset.range q).filter (fun a => Nat.Coprime a q)).image (fun a => μc q ^ a) := by
@@ -79,7 +79,7 @@ lemma primRoots_eq (q : ℕ) [NeZero q] :
     exact hμ.pow_of_coprime a (Finset.mem_filter.1 ha).2
 
 /- English proof (translation)
-Introduce `i hi j hj h`. Conclude with `(μc_prim q).pow_inj (Finset.mem_range.1 (hs hi)) (Finset.mem_range.1 (hs hj)) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma injOn (q : ℕ) [NeZero q] (s : Finset ℕ) (hs : s ⊆ Finset.range q) :
     Set.InjOn (fun a => μc q ^ a) s := by
@@ -87,7 +87,7 @@ lemma injOn (q : ℕ) [NeZero q] (s : Finset ℕ) (hs : s ⊆ Finset.range q) :
   exact (μc_prim q).pow_inj (Finset.mem_range.1 (hs hi)) (Finset.mem_range.1 (hs hj)) h
 
 /- English proof (translation)
-Rewrite using `[X_pow_sub_one_eq_prod (NeZero.pos q) (μc_prim q), nthRoots_eq, Finset.prod_image (injOn q _ (subset_refl _))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma C_prod_range (q : ℕ) [NeZero q] :
     ∏ a ∈ Finset.range q, (X - C (μc q ^ a)) = (X ^ q - 1 : ℂ[X]) := by
@@ -95,7 +95,7 @@ lemma C_prod_range (q : ℕ) [NeZero q] :
     Finset.prod_image (injOn q _ (subset_refl _))]
 
 /- English proof (translation)
-Rewrite using `[cyclotomic_eq_prod_X_sub_primitiveRoots (μc_prim q), primRoots_eq, Finset.prod_image (injOn q _ (Finset.filter_subset _ _))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma C_prod_coprime (q : ℕ) [NeZero q] :
     ∏ a ∈ (Finset.range q).filter (fun a => Nat.Coprime a q), (X - C (μc q ^ a)) = cyclotomic q ℂ := by
@@ -103,9 +103,9 @@ lemma C_prod_coprime (q : ℕ) [NeZero q] :
     Finset.prod_image (injOn q _ (Finset.filter_subset _ _))]
 
 /- English proof (translation)
-Establish `h0 : 0 ∈ Finset.range q` using `Finset.mem_range.2 (NeZero.pos q)`. Establish `h` using `Finset.mul_prod_erase (Finset.range q) (fun a => (X - C (μc q ^ a) : ℂ[X])) h0`. Establish `hne : (X - C (1 : ℂ) : ℂ[X]) ≠ 0` using `X_sub_C_ne_zero 1`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_one, mul_comm, geom_sum_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma C_prod_erase (q : ℕ) [NeZero q] :
     ∏ a ∈ (Finset.range q).erase 0, (X - C (μc q ^ a)) = ∑ i ∈ Finset.range q, (X ^ i : ℂ[X]) := by
@@ -125,16 +125,16 @@ namespace GlobalTheory.EtC.PrimBasic
 open Polynomial
 
 /- English proof (translation)
-Establish `h` using `transfer ζ (X ^ q - 1) (by simp [(μc_prim q).pow_eq_one])`. Simplify `h` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma prim_pow_q {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   have h := transfer ζ (X ^ q - 1) (by simp [(μc_prim q).pow_eq_one])
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `h` using `transfer2 ζ (∏ a ∈ Finset.range q, (X - C X ^ a) - (X ^ q - 1 : (ℤ[X])[X])) (by`. Simplify using `only [Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_sum, Polynomial.map_pow, map_X, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_pow, aeval_X, Polynomial.map_one, map_cyclotomic]`. Simplify using `only [← C_pow]`. Rewrite using `[C_prod_range, sub_self])`. Simplify using `only [Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_sum, Polynomial.map_pow, map_X, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_pow, aeval_X, Polynomial.map_one, map_cyclotomic] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `h` using `only [← C_pow, sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma prod_range {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) :
     ∏ a ∈ Finset.range q, (X - C (ζ.1 ^ a)) = (X ^ q - 1 : A[X]) := by
@@ -147,9 +147,9 @@ lemma prod_range {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) :
   simpa only [← C_pow, sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `h` using `transfer2 ζ (∏ a ∈ (Finset.range q).filter (fun a => Nat.Coprime a q), (X - C X ^ a) - cyclotomic q (ℤ[X])) (by`. Simplify using `only [Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_sum, Polynomial.map_pow, map_X, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_pow, aeval_X, Polynomial.map_one, map_cyclotomic]`. Simplify using `only [← C_pow]`. Rewrite using `[C_prod_coprime, sub_self])`. Simplify using `only [Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_sum, Polynomial.map_pow, map_X, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_pow, aeval_X, Polynomial.map_one, map_cyclotomic] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `h` using `only [← C_pow, sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma prod_coprime {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) :
     ∏ a ∈ (Finset.range q).filter (fun a => Nat.Coprime a q), (X - C (ζ.1 ^ a)) = cyclotomic q A := by
@@ -163,9 +163,9 @@ lemma prod_coprime {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) 
   simpa only [← C_pow, sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `h` using `transfer2 ζ (∏ a ∈ (Finset.range q).erase 0, (X - C X ^ a) - ∑ i ∈ Finset.range q, (X ^ i : (ℤ[X])[X])) (by`. Simplify using `only [Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_sum, Polynomial.map_pow, map_X, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_pow, aeval_X, Polynomial.map_one, map_cyclotomic]`. Simplify using `only [← C_pow]`. Rewrite using `[C_prod_erase, sub_self])`. Simplify using `only [Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_sum, Polynomial.map_pow, map_X, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_pow, aeval_X, Polynomial.map_one, map_cyclotomic] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (eval (1 : A)) h`. Simplify using `only [eval_sub, eval_prod, eval_finset_sum, eval_X, eval_C, eval_pow, one_pow, eval_zero, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, sub_eq_zero] at h2`. Simplify `h2` using `[← C_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma prod_erase {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) :
     ∏ a ∈ (Finset.range q).erase 0, (1 - ζ.1 ^ a) = (q : A) := by
@@ -186,7 +186,7 @@ namespace GlobalTheory.EtC.PrimBasic
 open Polynomial
 
 /- English proof (translation)
-Establish `hmem : c % q ∈ (Finset.range q).erase 0` using `Finset.mem_erase.2 ⟨hc, Finset.mem_range.2 (Nat.mod_lt _ (NeZero.pos q))⟩`. Establish `hd : (1 - ζ.1 ^ (c % q)) ∣ (q : A)` using `(Finset.dvd_prod_of_mem (fun a => 1 - ζ.1 ^ a) hmem).trans (dvd_of_eq (prod_erase ζ))`. Rewrite using `[pow_eq_pow_mod c (prim_pow_q ζ)]`. Conclude with `isUnit_of_dvd_unit hd ζ.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isUnit_one_sub {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) (c : ℕ)
     (hc : c % q ≠ 0) : IsUnit (1 - ζ.1 ^ c) := by
@@ -198,16 +198,16 @@ lemma isUnit_one_sub {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A
   exact isUnit_of_dvd_unit hd ζ.2.1
 
 /- English proof (translation)
-Use `isUnit_iff_exists_inv.2 ⟨ζ.1 ^ (q - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_succ', Nat.sub_add_cancel (NeZero.pos q), prim_pow_q ζ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma isUnit_val {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) : IsUnit ζ.1 := by
   refine isUnit_iff_exists_inv.2 ⟨ζ.1 ^ (q - 1), ?_⟩
   rw [← pow_succ', Nat.sub_add_cancel (NeZero.pos q), prim_pow_q ζ]
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hle`. Establish `hd : d % q ≠ 0`. Introduce `h0`. Apply `hab` to reduce the goal to its premises. Conclude with `(Nat.modEq_iff_dvd' hle).2 (by simpa using Nat.dvd_of_mod_eq_zero h0) |>.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : ζ.1 ^ (b + d) - ζ.1 ^ b = -(ζ.1 ^ b * (1 - ζ.1 ^ d))` using `by ring`. Rewrite using `[e]`. Conclude with `(((isUnit_val ζ).pow b).mul (isUnit_one_sub ζ d hd)).neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isUnit_pow_sub_pow_of_le {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) (a b : ℕ)
     (hab : ¬ a ≡ b [MOD q]) (hle : b ≤ a) : IsUnit (ζ.1 ^ a - ζ.1 ^ b) := by
@@ -221,21 +221,19 @@ lemma isUnit_pow_sub_pow_of_le {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ 
   exact (((isUnit_val ζ).pow b).mul (isUnit_one_sub ζ d hd)).neg
 
 /- English proof (translation)
-Introduce `q _ A _`. Use `⟨fun ζ => prim_pow_q ζ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ζ a ha`. Establish `h : aeval (ζ.1 ^ a) (cyclotomic q ℤ) = 0`. Rewrite using `[← aeval_X_pow (R := ℤ), ← aeval_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `transfer ζ` to reduce the goal to its premises. Rewrite using `[aeval_comp, aeval_X_pow, aeval_cyc]`. Conclude with `((μc_prim q).pow_of_coprime a ha).isRoot_cyclotomic (NeZero.pos q)`. Conclude with `⟨(⟨ζ.1 ^ a, ζ.2.1, h⟩ : {z : A // IsUnit (q : A) ∧ aeval z (cyclotomic q ℤ) = 0}), rfl⟩`. Introduce `ζ a b hab`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total b a with hle | hle` into its components or cases. Conclude with `isUnit_pow_sub_pow_of_le ζ a b hab hle`. Use `isUnit_pow_sub_pow_of_le ζ b a (fun h => hab h.symm) hle` as an intermediate fact. Establish `e : ζ.1 ^ a - ζ.1 ^ b = -(ζ.1 ^ b - ζ.1 ^ a)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this.neg`. Introduce `ζ x hx`. Establish `h` using `congrArg (eval x) (prod_range ζ)`. Simplify `h` using `[eval_prod, hx]`. Introduce `ζ ξ`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg (eval ξ.1) (prod_coprime ζ)`. Rewrite `h` using `[← aeval_cyc, ξ.2.2]`. Simplify `h` using `[eval_prod]`. Introduce `r hr ζ`. Establish `hq0 : q ≠ 0` using `NeZero.ne q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : r ≠ 0` using `by rintro rfl; exact hq0 (Nat.eq_zero_of_zero_dvd hr)`. Establish `hk0 : q / r ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd (NeZero.pos q) hr) (Nat.pos_of_ne_zero hr0)).ne'`. Establish `hunit : IsUnit (r : A)`. Take `⟨k, hk⟩` from `hr`. Establish `: IsUnit ((r : A) * k)` using `by rw [← Nat.cast_mul, ← hk]; exact ζ.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `isUnit_of_mul_isUnit_left this`. Establish `h : aeval (ζ.1 ^ (q / r)) (cyclotomic r ℤ) = 0`. Rewrite using `[← aeval_X_pow (R := ℤ), ← aeval_comp]`. Apply `transfer ζ` to reduce the goal to its premises. Rewrite using `[aeval_comp, aeval_X_pow, aeval_cyc]`.
-
-Establish `hp` using `(μc_prim q).pow_of_dvd hk0 (Nat.div_dvd_of_dvd hr)`. Rewrite `hp` using `[Nat.div_div_self hr hq0]`. Conclude with `hp.isRoot_cyclotomic (Nat.pos_of_ne_zero hr0)`. Conclude with `⟨(⟨ζ.1 ^ (q / r), hunit, h⟩ : {z : A // IsUnit (r : A) ∧ aeval z (cyclotomic r ℤ) = 0}), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem prim_basic : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], (∀ ζ : Prim q A, ζ.1 ^ q = 1) ∧ (∀ (ζ : Prim q A) (a : ℕ), Nat.Coprime a q → ∃ ξ : Prim q A, ξ.1 = ζ.1 ^ a) ∧ (∀ (ζ : Prim q A) (a b : ℕ), ¬ a ≡ b [MOD q] → IsUnit (ζ.1 ^ a - ζ.1 ^ b)) ∧ (∀ (ζ : Prim q A) (x : A), x ^ q = 1 → ∏ a ∈ Finset.range q, (x - ζ.1 ^ a) = 0) ∧ (∀ (ζ ξ : Prim q A), ∏ a ∈ (Finset.range q).filter (fun a => Nat.Coprime a q), (ξ.1 - ζ.1 ^ a) = 0) ∧ ∀ (r : ℕ), r ∣ q → ∀ ζ : Prim q A, ∃ ξ : Prim r A, ξ.1 = ζ.1 ^ (q / r) := by
   intro q _ A _

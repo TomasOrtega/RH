@@ -15,9 +15,9 @@ namespace GlobalTheory.TameIwahori.JacquetNonzero
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PointStabilizer.mk_ne_zero`. Consider the case `exact _root_.GlobalTheory.PointStabilizer.mk_ne_zero`. Consider the case `(apply _root_.GlobalTheory.PointStabilizer.mk_ne_zero <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PointStabilizer.mk_ne_zero <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PointStabilizer.mk_ne_zero <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PointStabilizer.mk_ne_zero ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jacquet_mk_ne_zero (hp : GlobalTheory.Published.DepthZeroJacquetInjective)
     (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)

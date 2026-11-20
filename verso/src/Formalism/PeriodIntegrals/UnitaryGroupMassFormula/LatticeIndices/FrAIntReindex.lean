@@ -11,9 +11,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h : ∀ i, ((Matrix.reindex e.symm e.symm A) *ᵥ w) i = (A *ᵥ (w ∘ e.symm)) (e i)`. Introduce `i`. Simplify using `only [mulVec, dotProduct, reindex_apply, submatrix_apply, Equiv.symm_symm, Function.comp_apply]`. Conclude with `Fintype.sum_equiv e _ _ (fun j => by simp)`. Simplify using `only [h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H j`. Simplify using `using H (e.symm j)`. Introduce `H i`. Conclude with `H (e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frA_int_reindex {F : Type} [Field F] (O : ValuationSubring F) {m n : Type} [Fintype m] [DecidableEq m]
     [Fintype n] [DecidableEq n] (e : m ≃ n) (A : Matrix n n F) (w : m → F) :
@@ -35,11 +35,11 @@ variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p]
   (Q : GL (IdxD D) (FpX X p))
 
 /- English proof (translation)
-Establish `hPi : (((reindex₂ X p Q)⁻¹ : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) = Matrix.reindex (idxEquiv X).symm (idxEquiv X).symm (((Q⁻¹ : GL (IdxD D) (FpX X p))) : Matrix (IdxD D) (IdxD D) (FpX X p))` using `rfl`. Establish `hP : ((reindex₂ X p Q : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) = Matrix.reindex (idxEquiv X).symm (idxEquiv X).symm ((Q : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p))` using `rfl`. Establish `hJ : J1 X p θ = jm1 X.B.I.J θ` using `rfl`. Establish `hv : ∀ w : Fin X.B.I.n → FpX X p, (Matrix.reindex (idxEquiv X) (idxEquiv X) (jm1 X.B.I.J θ))ᵀ *ᵥ (w ∘ (idxEquiv X).symm) = ((jm1 X.B.I.J θ)ᵀ *ᵥ w) ∘ (idxEquiv X).symm`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.transpose_reindex, Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[hL x]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `IntVec crd1 crd2`. Rewrite using `[hPi, frA_int_reindex, ← Matrix.mulVec_mulVec, hP, Matrix.transpose_reindex, frA_int_reindex, hJ, ← hv]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latCrd_of (hL : LatBasis X p θ (reindex₂ X p Q)) (x : Fin X.B.I.n → TpX X p) :
     x ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) ↔

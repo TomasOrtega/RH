@@ -13,17 +13,15 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {A : Type*} [CommRing A] [Algebra O A] {ϖ : O}
 
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem enat_map_natCast_int_eq_top_iff (a : ℕ∞) : a.map (Nat.cast : ℕ → ℤ) = ⊤ ↔ a = ⊤ := by
   cases a <;> simp
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `h.denom x`. Establish `hy : (⟨ϖ ^ n • x, hn⟩ : ↥(As O A)) = 0`. Use `eq_zero_of_localization _ (fun J hJ => ?_)` and prove the remaining obligations. Establish `hv : vL (⟨J, hJ⟩ : Pts O A) ⟨ϖ ^ n • x, hn⟩ = ⊤`. Use `hx ⟨J, hJ⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ord_eq (ζ := (⟨J, hJ⟩ : Pts O A)) h hn, ordAt, WithTop.add_eq_top]`. Break down `this with h1 | h1` into its components or cases. Conclude with `(enat_map_natCast_int_eq_top_iff _).mp h1`. Conclude with `absurd h1 WithTop.coe_ne_top`. Conclude with `(vL_eq_top_iff (ζ := (⟨J, hJ⟩ : Pts O A)) _).mp hv`.
-
-Establish `h0 : ϖ ^ n • x = 0` using `congrArg Subtype.val hy`. Rewrite `h0` using `[Algebra.smul_def, map_pow]`. Conclude with `(h.isUnit.pow n).mul_right_eq_zero.mp h0`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ord_top [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) {x : A}
     (hx : ∀ ζ : Pts O A, ord ϖ ζ x = ⊤) : x = 0 := by
@@ -42,11 +40,9 @@ theorem eq_zero_of_ord_top [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) {x :
   exact (h.isUnit.pow n).mul_right_eq_zero.mp h0
 
 /- English proof (translation)
-Establish `hnz : x ∈ nonZeroDivisors A`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `y hy`. Use `eq_zero_of_ord_top h (fun ζ => ?_)` and prove the remaining obligations. Use `ord_mul (ζ := ζ) h x y` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm x y, hy, ord_zero (ζ := ζ) h]`. Break down `WithTop.add_eq_top.mp this.symm with h1 | h1` into its components or cases. Conclude with `absurd h1 (hx ζ)`. Conclude with `h1`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite K A`.
-
-Conclude with `IsArtinianRing.isUnit_of_mem_nonZeroDivisors hnz`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isUnit_of_ord_ne_top (K : Type*) [Field K] [Algebra K A] [FiniteDimensional K A]
     [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) {x : A} (hx : ∀ ζ : Pts O A, ord ϖ ζ x ≠ ⊤) :
@@ -64,29 +60,23 @@ theorem isUnit_of_ord_ne_top (K : Type*) [Field K] [Algebra K A] [FiniteDimensio
   exact IsArtinianRing.isUnit_of_mem_nonZeroDivisors hnz
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (Pts O A)`. Use `haveI : IsDomain (Loc ζ₀) := IsDVRAt.isDomain`. Use `haveI : IsDiscreteValuationRing (Loc ζ₀) := IsDVRAt.isDVR`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible (Loc ζ₀)`. Take `⟨⟨a, s⟩, has⟩` from `IsLocalization.mk'_surjective ζ₀.asIdeal.primeCompl π`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hva : vL ζ₀ a = 1`. Rewrite using `[vL_eq_addVal]`. Establish `e1 : algebraMap _ (Loc ζ₀) a = π * algebraMap _ (Loc ζ₀) (s : ↥(As O A))`. Rewrite using `[← has, IsLocalization.mk'_spec]`. Take `⟨u, hu⟩` from `IsLocalization.map_units (Loc ζ₀) s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_uniformizer hπ, ← hu, IsDiscreteValuationRing.addVal_eq_zero_of_unit, add_zero]`. Establish `h1 : ∀ x ∈ ζ₀.asIdeal, 1 ≤ vL ζ₀ x`. Introduce `x hx`. Rewrite using `[ENat.one_le_iff_ne_zero]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((vL_eq_zero_iff (ζ := ζ₀) x).mp h0) hx`. Establish `h2 : ∀ x ∈ ζ₀.asIdeal ^ 2, 2 ≤ vL ζ₀ x`. Introduce `x hx`. Rewrite `hx` using `[sq]`. Use `Submodule.mul_induction_on hx (fun p hp q hq => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[vL_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_trans (le_min hx hy) (vL_add (ζ := ζ₀) x y)`. Establish `hcop : ζ₀.asIdeal ^ 2 ⊔ ⨅ ζ ∈ (Finset.univ.filter (· ≠ ζ₀)), ζ.asIdeal = ⊤`. Use `Ideal.sup_iInf_eq_top (fun ζ hζ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ζ₀.asIdeal ≠ ζ.asIdeal`. Introduce `heq`. Conclude with `(Finset.mem_filter.mp hζ).2 (MaximalSpectrum.ext heq).symm`. Establish `hc : IsCoprime ζ₀.asIdeal ζ.asIdeal` using `Ideal.isCoprime_iff_sup_eq.mpr (ζ₀.isMaximal.coprime_of_ne ζ.isMaximal hne)`. Conclude with `Ideal.isCoprime_iff_sup_eq.mp (hc.pow_left (m := 2))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hone : (1 : ↥(As O A)) ∈ ζ₀.asIdeal ^ 2 ⊔ ⨅ ζ ∈ (Finset.univ.filter (· ≠ ζ₀)), ζ.asIdeal`. Rewrite using `[hcop]`. Conclude with `Submodule.mem_top`. Take `⟨i, hi, j, hj, hij⟩` from `Submodule.mem_sup.mp hone`. Establish `hjmem : ∀ ζ : Pts O A, ζ ≠ ζ₀ → j ∈ ζ.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `ζ hz`. Simplify using `only [Submodule.mem_iInf] at hj`. Conclude with `hj ζ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hz⟩)`. Use `⟨a * j + i, ?_, ?_⟩` and prove the remaining obligations. Establish `hj' : j = 1 - i` using `eq_sub_of_add_eq' hij`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : a * j + i = a + i * (1 - a)` using `by rw [hj']; ring`. Establish `hr : 2 ≤ vL ζ₀ (i * (1 - a))`. Rewrite using `[vL_mul]`. Conclude with `le_trans (h2 i hi) le_self_add`. Establish `hlt : vL ζ₀ a < vL ζ₀ (i * (1 - a))`.
-
-Rewrite using `[hva]`. Conclude with `lt_of_lt_of_le (by norm_num) hr`. Rewrite using `[ht, vL_eq_addVal, map_add, AddValuation.map_add_of_distinct_val, ← vL_eq_addVal, ← vL_eq_addVal, min_eq_left hlt.le, hva]`. Rewrite using `[← vL_eq_addVal, ← vL_eq_addVal]`. Conclude with `hlt.ne`.
-
-Introduce `ζ hz ht`. Establish `hi' : i ∈ ζ.asIdeal`. Use `ζ.asIdeal.sub_mem ht (ζ.asIdeal.mul_mem_left a (hjmem ζ hz))` as an intermediate fact. Simplify using `using this`. Establish `: (1 : ↥(As O A)) ∈ ζ.asIdeal`.
-
-Rewrite using `[← hij]`. Conclude with `ζ.asIdeal.add_mem hi' (hjmem ζ hz)`. Conclude with `ζ.isMaximal.ne_top ((Ideal.eq_top_iff_one _).mpr this)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_param [Finite (Pts O A)] (ζ₀ : Pts O A) [IsDVRAt ζ₀] :
     ∃ t : ↥(As O A), vL ζ₀ t = 1 ∧ ∀ ζ : Pts O A, ζ ≠ ζ₀ → t ∉ ζ.asIdeal := by
@@ -157,11 +147,11 @@ theorem exists_param [Finite (Pts O A)] (ζ₀ : Pts O A) [IsDVRAt ζ₀] :
 open Classical in
 
 /- English proof (translation)
-Take `⟨t, ht1, ht2⟩` from `exists_param ζ₀`. Establish `hord : ∀ ζ : Pts O A, ord ϖ ζ (t : A) = (((if ζ = ζ₀ then 1 else 0 : ℤ)) : WithTop ℤ)`. Introduce `ζ`. Rewrite using `[ord_of_mem (ζ := ζ) h t.2]`. Use `split_ifs with hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hz` using the available equality. Rewrite using `[show (⟨(t : A), t.2⟩ : ↥(As O A)) = t from rfl, ht1]`. Both sides reduce to the same expression. Rewrite using `[show (⟨(t : A), t.2⟩ : ↥(As O A)) = t from rfl, (vL_eq_zero_iff (ζ := ζ) t).mpr (ht2 ζ hz)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hu : IsUnit (t : A)` using `isUnit_of_ord_ne_top K h (fun ζ => by rw [hord]; exact WithTop.coe_ne_top)`. Conclude with `⟨hu.unit, fun ζ => by rw [hu.unit_spec]; exact hord ζ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_param (K : Type*) [Field K] [Algebra K A] [FiniteDimensional K A]
     [Finite (Pts O A)] [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (ζ₀ : Pts O A) :
@@ -181,7 +171,7 @@ theorem exists_unit_param (K : Type*) [Field K] [Algebra K A] [FiniteDimensional
   exact ⟨hu.unit, fun ζ => by rw [hu.unit_spec]; exact hord ζ⟩
 
 /- English proof (translation)
-Use `coe_ordZ (ζ := ζ) h (one_mem (nonZeroDivisors A))` as an intermediate fact. Rewrite `this` using `[ord_one (ζ := ζ) h]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ordZ_one (h : IsUnif A ϖ) (ζ : Pts O A) [IsDVRAt ζ] : ordZ ϖ ζ (1 : A) = 0 := by
   have := coe_ordZ (ζ := ζ) h (one_mem (nonZeroDivisors A))
@@ -189,7 +179,7 @@ private theorem ordZ_one (h : IsUnif A ϖ) (ζ : Pts O A) [IsDVRAt ζ] : ordZ ϖ
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hv` using `coe_ordZ (ζ := ζ) h v.isUnit.mem_nonZeroDivisors`. Establish `hw` using `coe_ordZ (ζ := ζ) h w.isUnit.mem_nonZeroDivisors`. Establish `hvw` using `coe_ordZ (ζ := ζ) h (v * w).isUnit.mem_nonZeroDivisors`. Rewrite `hvw` using `[Units.val_mul, ord_mul (ζ := ζ) h, ← hv, ← hw]`. Conclude with `hvw` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ordZ_units_mul (h : IsUnif A ϖ) (ζ : Pts O A) [IsDVRAt ζ] (v w : Aˣ) :
     ordZ ϖ ζ ((v : A) * w) = ordZ ϖ ζ v + ordZ ϖ ζ w := by
@@ -200,11 +190,11 @@ private theorem ordZ_units_mul (h : IsUnif A ϖ) (ζ : Pts O A) [IsDVRAt ζ] (v 
   exact_mod_cast hvw
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (Pts O A)`. Use `choose t ht using exists_unit_param K h`. Set `φ : Pts O A → Aˣ →* Multiplicative ℤ` to `fun ζ => { toFun := fun v => Multiplicative.ofAdd (ordZ ϖ ζ (v : A)) map_one' := by simp only [Units.val_one, ordZ_one h ζ]; rfl map_mul' := fun v w => by simp only [Units.val_mul, ordZ_units_mul h ζ v w]; rfl }`. Use `⟨∏ ζ', t ζ' ^ d ζ', fun ζ => ?_⟩` and prove the remaining obligations. Establish `e2 : ∀ ζ', Multiplicative.toAdd (φ ζ (t ζ')) = if ζ = ζ' then 1 else 0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ζ'`. Use `show ordZ ϖ ζ (t ζ' : A) = _`. Use `coe_ordZ (ζ := ζ) h (t ζ').isUnit.mem_nonZeroDivisors` as an intermediate fact. Rewrite `this` using `[ht ζ' ζ]`. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hz : ordZ ϖ ζ ((∏ ζ', t ζ' ^ d ζ' : Aˣ) : A) = d ζ`. Establish `e1 : Multiplicative.toAdd (φ ζ (∏ ζ', t ζ' ^ d ζ')) = ordZ ϖ ζ ((∏ ζ', t ζ' ^ d ζ' : Aˣ) : A)` using `rfl`. Rewrite using `[← e1, map_prod, toAdd_prod]`. Simplify using `only [map_zpow, toAdd_zpow, e2, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← coe_ordZ (ζ := ζ) h (Units.isUnit _).mem_nonZeroDivisors, hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_ord (K : Type*) [Field K] [Algebra K A] [FiniteDimensional K A]
     [Finite (Pts O A)] [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (d : Pts O A → ℤ) :
@@ -232,9 +222,9 @@ theorem exists_unit_ord (K : Type*) [Field K] [Algebra K A] [FiniteDimensional K
   rw [← coe_ordZ (ζ := ζ) h (Units.isUnit _).mem_nonZeroDivisors, hz]
 
 /- English proof (translation)
-Rewrite using `[ord_of_mem (ζ := ζ) h x.2]`. Establish `e` using `vL_eq_zero_iff (ζ := ζ) x`. Rewrite using `[← not_not (a := x ∈ ζ.asIdeal), ← e]`. Use `show 0 ≤ (vL ζ x).map (Nat.cast : ℕ → ℤ) + ((-1 : ℤ) : WithTop ℤ) ↔ ¬ vL ζ x = 0`. Generalize the expression as in `vL ζ x = v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `v using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe n`. Simplify using `only [ENat.map_coe, ← WithTop.coe_add, WithTop.coe_nonneg, Nat.cast_eq_zero]`. Apply the tactic sequence `constructor <;> intro hh <;> omega`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ord_sub_one_nonneg_iff (h : IsUnif A ϖ) (ζ : Pts O A) [IsDVRAt ζ] (x : ↥(As O A)) :
     0 ≤ ord ϖ ζ (x : A) + ((-1 : ℤ) : WithTop ℤ) ↔ x ∈ ζ.asIdeal := by
@@ -250,17 +240,17 @@ theorem ord_sub_one_nonneg_iff (h : IsUnif A ϖ) (ζ : Pts O A) [IsDVRAt ζ] (x 
     constructor <;> intro hh <;> omega
 
 /- English proof (translation)
-Establish `hle1 : N.comap P.subtype ≤ (N.comap Q.subtype).comap (Submodule.inclusion h2)`. Introduce `x hx`. Simplify using `using hx`. Establish `hle2 : N.comap Q.subtype ≤ (P.comap Q.subtype).comap LinearMap.id`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 hx`. Use `Module.length_eq_add_of_exact (Submodule.mapQ _ _ (Submodule.inclusion h2) hle1) (Submodule.mapQ _ _ LinearMap.id hle2) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.eq] at hxy ⊢`. Simplify using `using hxy`. Introduce `y`. Take `⟨q, rfl⟩` from `Submodule.mkQ_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk q, by simp⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨q, rfl⟩` from `Submodule.mkQ_surjective _ y`. Simplify using `only [Submodule.mkQ_apply, Submodule.mapQ_apply, LinearMap.id_apply, Set.mem_range, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hq`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Submodule.Quotient.mk ⟨q, hq⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mapQ_apply]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx⟩`. Take `⟨p, rfl⟩` from `Submodule.mkQ_surjective _ x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.eq]`. Establish `h3` using `h1 hx`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_inclusion] at h3`. Establish `h4` using `P.sub_mem p.2 h3`. Simplify using `using h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem length_quot_add {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
     {N P Q : Submodule R M} (h1 : N ≤ P) (h2 : P ≤ Q) :
@@ -301,9 +291,9 @@ theorem length_quot_add {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
       simpa using h4
 
 /- English proof (translation)
-Rewrite using `[Module.length_eq_zero_iff]`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.mkQ_surjective _ b`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (a - b).2`.
+A detailed English derivation is pending.
 -/
 theorem length_zero_of_le {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
     {N P : Submodule R M} (h : P ≤ N) : Module.length R (↥P ⧸ N.comap P.subtype) = 0 := by
@@ -317,11 +307,9 @@ theorem length_zero_of_le {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `haveI : ζ.asIdeal.IsMaximal := ζ.isMaximal`. Use `haveI : Algebra.IsIntegral O ↥(As O A) := Algebra.IsIntegral.of_finite O _`. Establish `hmax : (ζ.asIdeal.comap (algebraMap O ↥(As O A))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal ζ.asIdeal`. Establish `hp : ζ.asIdeal.comap (algebraMap O ↥(As O A)) = IsLocalRing.maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hmax`. Use `haveI : ζ.asIdeal.LiesOver (IsLocalRing.maximalIdeal O) := ⟨hp.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `hf : fdeg ζ = Module.finrank (O ⧸ IsLocalRing.maximalIdeal O) (↥(As O A) ⧸ ζ.asIdeal)`. Rewrite using `[fdeg_eq_inertiaDeg, ← Ideal.inertiaDeg'_eq_inertiaDeg (IsLocalRing.maximalIdeal O) ζ.asIdeal, Ideal.inertiaDeg_algebraMap]`. Use `letI : Field (O ⧸ IsLocalRing.maximalIdeal O) := Ideal.Quotient.field _`. Use `haveI : Module.Finite O (↥(As O A) ⧸ ζ.asIdeal) := Module.Finite.of_surjective ((ζ.asIdeal.restrictScalars O).mkQ) (Submodule.mkQ_surjective _)`. Use `haveI : Module.Finite (O ⧸ IsLocalRing.maximalIdeal O) (↥(As O A) ⧸ ζ.asIdeal) := Module.Finite.of_restrictScalars_finite O _ _`.
-
-Set `b` to `Module.finBasis (O ⧸ IsLocalRing.maximalIdeal O) (↥(As O A) ⧸ ζ.asIdeal)`. Set `eqv` to `b.equivFun.restrictScalars O`. Establish `h1 : Module.length O (O ⧸ IsLocalRing.maximalIdeal O) = 1` using `Module.length_eq_one_iff.mpr (isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal O)))`. Rewrite using `[hf, eqv.length_eq, Module.length_pi, h1, mul_one, ENat.card_eq_coe_fintype_card, Fintype.card_fin]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_residue (hfin : Module.Finite O ↥(As O A)) (ζ : Pts O A) :
     Module.length O (↥(As O A) ⧸ ζ.asIdeal) = (fdeg ζ : ℕ∞) := by
@@ -351,7 +339,7 @@ theorem length_residue (hfin : Module.Finite O ↥(As O A)) (ζ : Pts O A) :
 variable {V : Type*} [AddCommGroup V] [Module A V] [Module O V] [IsScalarTower O A V] {e : V}
 
 /- English proof (translation)
-Introduce `v hv` and use `ball_mono h he hc hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ballO_mono [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen A e)
     {c c' : Pts O A → ℤ} (hc : ∀ ζ, c ζ ≤ c' ζ) : ballO ϖ e c ≤ ballO ϖ e c' := fun v hv => ball_mono h he hc hv
@@ -359,33 +347,27 @@ theorem ballO_mono [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (he : IsGen 
 open Classical in
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_unit_ord K h (fun ζ => -d ζ)`. Establish `hwi : ∀ ζ, ord ϖ ζ ((w⁻¹ : Aˣ) : A) = ((d ζ : ℤ) : WithTop ℤ)`. Introduce `ζ`. Establish `e` using `ord_units_add_inv (ζ := ζ) h w`. Take `⟨k, hk⟩` from `WithTop.ne_top_iff_exists.mp (ord_ne_top (ζ := ζ) h (w⁻¹).isUnit.mem_nonZeroDivisors)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[← hk, hw ζ]`. Rewrite using `[← hk]`. Establish `e' : -d ζ + k = 0` using `by exact_mod_cast e`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Establish `hov : ∀ (c' : Pts O A → ℤ) (b : ↥(As O A)) (ζ : Pts O A), ordV ϖ ζ e c' (((b : A) * w) • e) = ord ϖ ζ (b : A) + ((c' ζ - d ζ : ℤ) : WithTop ℤ)`. Introduce `c' b ζ`. Simplify using `only [ordV]`. Rewrite using `[coord_smul_gen he, ord_mul (ζ := ζ) h, hw ζ, add_assoc, ← WithTop.coe_add]`. Rewrite using `[show -d ζ + c' ζ = c' ζ - d ζ by ring]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemd : ∀ b : ↥(As O A), ((b : A) * w) • e ∈ ballO ϖ e d`. Introduce `b`. Use `show ((b : A) * w) • e ∈ ball ϖ e d`. Rewrite using `[mem_ball_iff (h := h) (he := he)]`. Introduce `ζ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hov, sub_self, WithTop.coe_zero, add_zero]`. Conclude with `ord_nonneg (ζ := ζ) h b.2`. Set `f : ↥(As O A) →ₗ[O] ↥(ballO ϖ e d)` to `{ toFun := fun b => ⟨((b : A) * w) • e, hmemd b⟩ map_add' := fun x y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_add, add_mul, add_smul, Submodule.coe_add]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun r x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_smul, RingHom.id_apply, Submodule.coe_smul, smul_mul_assoc, smul_assoc] }`. Set `G` to `((ballO ϖ e c).comap (ballO ϖ e d).subtype).mkQ ∘ₗ f`. Establish `hsurj : Function.Surjective G`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨v, rfl⟩` from `Submodule.mkQ_surjective _ y`. Establish `hv : ∀ ζ : Pts O A, 0 ≤ ordV ϖ ζ e d (v : V)` using `(mem_ball_iff (c := d) (h := h) (he := he) (v := (v : V))).mp v.2`. Establish `hb : (coord e (v : V) : A) * ((w⁻¹ : Aˣ) : A) ∈ As O A`. Rewrite using `[mem_As_iff h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ζ`. Rewrite using `[ord_mul (ζ := ζ) h, hwi ζ]`. Conclude with `hv ζ`. Use `⟨⟨_, hb⟩, ?_⟩` and prove the remaining obligations. Use `show Submodule.mkQ _ (f ⟨_, hb⟩) = Submodule.mkQ _ v`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((coord e (v : V) : A) * ((w⁻¹ : Aˣ) : A) * w) • e = v`. Rewrite using `[mul_assoc, Units.inv_mul, mul_one, coord_smul_self he]`. Establish `hker : LinearMap.ker G = ζ₀.asIdeal.restrictScalars O`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `b`. Rewrite using `[LinearMap.mem_ker, Submodule.restrictScalars_mem]`. Use `show Submodule.mkQ _ (f b) = 0 ↔ b ∈ ζ₀.asIdeal`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Use `show ((b : A) * w) • e ∈ ball ϖ e c ↔ b ∈ ζ₀.asIdeal`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[mem_ball_iff (h := h) (he := he)]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H ζ₀` as an intermediate fact. Rewrite `this` using `[hov, hd ζ₀, if_pos rfl, show c ζ₀ - (c ζ₀ + 1) = (-1 : ℤ) by ring]`.
-
-Conclude with `(ord_sub_one_nonneg_iff h ζ₀ b).mp this`. Introduce `hb ζ`. Rewrite using `[hov, hd ζ]`. Distinguish the cases in `hz : ζ = ζ₀`. Substitute `hz` using the available equality.
-
-Rewrite using `[if_pos rfl, show c ζ - (c ζ + 1) = (-1 : ℤ) by ring]`. Conclude with `(ord_sub_one_nonneg_iff h ζ b).mpr hb`. Rewrite using `[if_neg hz, show c ζ - (c ζ + 0) = (0 : ℤ) by ring, WithTop.coe_zero, add_zero]`. Conclude with `ord_nonneg (ζ := ζ) h b.2`. Rewrite using `[← (G.quotKerEquivOfSurjective hsurj).length_eq, (Submodule.quotEquivOfEq _ _ hker).length_eq, (Submodule.Quotient.restrictScalarsEquiv O ζ₀.asIdeal).length_eq]`.
-
-Conclude with `length_residue hfin ζ₀`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_step (K : Type*) [Field K] [Algebra K A] [FiniteDimensional K A]
     [Finite (Pts O A)] [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ) (hfin : Module.Finite O ↥(As O A))
@@ -469,21 +451,21 @@ theorem length_step (K : Type*) [Field K] [Algebra K A] [FiniteDimensional K A]
   exact length_residue hfin ζ₀
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `c m hm`. Establish `hm0 : ∀ ζ, m ζ = 0` using `fun ζ => (Finset.sum_eq_zero_iff.mp hm) ζ (Finset.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hm0, Nat.cast_zero, add_zero, zero_mul, Finset.sum_const_zero]`. Conclude with `length_zero_of_le (ballO_mono h he (fun ζ => by simp [hm0 ζ]))`. Consider the case `succ n ih`. Introduce `c m hm`. Choose the witnesses or unpack the hypotheses as in `⟨ζ₀, hζ₀⟩ : ∃ ζ₀, m ζ₀ ≠ 0 := by`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Simplify using `[hcon] at hm`. Set `m' : Pts O A → ℕ` to `fun ζ => if ζ = ζ₀ then m ζ - 1 else m ζ`. Establish `hmm : ∀ ζ, m ζ = m' ζ + if ζ = ζ₀ then 1 else 0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `ζ`. Distinguish the cases in `hz : ζ = ζ₀`. Substitute `hz show m ζ = (if ζ = ζ then m ζ - 1 else m ζ) + if ζ = ζ then 1 else 0` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show m ζ = (if ζ = ζ₀ then m ζ - 1 else m ζ) + if ζ = ζ₀ then 1 else 0`. Rewrite using `[if_neg hz, if_neg hz, add_zero]`. Establish `hsum : ∑ ζ, m ζ = ∑ ζ, m' ζ + 1`. Rewrite using `[Finset.sum_congr rfl (fun ζ _ => hmm ζ), Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : ∑ ζ, m' ζ = n` using `by omega`. Establish `hle1 : ballO ϖ e c ≤ ballO ϖ e (fun ζ => c ζ + (m' ζ : ℤ))` using `ballO_mono h he (fun ζ => le_add_of_nonneg_right (Nat.cast_nonneg _))`. Establish `hle2 : ballO ϖ e (fun ζ => c ζ + (m' ζ : ℤ)) ≤ ballO ϖ e (fun ζ => c ζ + (m ζ : ℤ))` using `ballO_mono h he (fun ζ => show c ζ + (m' ζ : ℤ) ≤ c ζ + (m ζ : ℤ) by`. Establish `h5 : (m' ζ : ℤ) ≤ (m ζ : ℤ)` using `Nat.cast_le.mpr (le_trans (Nat.le_add_right _ _) (hmm ζ).symm.le)`. Use the proof step `linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hd : ∀ ζ, (fun ζ => c ζ + (m ζ : ℤ)) ζ = (fun ζ => c ζ + (m' ζ : ℤ)) ζ + if ζ = ζ₀ then 1 else 0`. Introduce `ζ`. Use `beta_reduce`. Rewrite using `[hmm ζ]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ ζ, m ζ * fdeg ζ = ∑ ζ, m' ζ * fdeg ζ + fdeg ζ₀`. Rewrite using `[Finset.sum_congr rfl (fun ζ _ => by rw [hmm ζ, add_mul]), Finset.sum_add_distrib]`. Use `congr 1`. Simplify using `[ite_mul]`. Rewrite using `[length_quot_add hle1 hle2, ih c m' hm', length_step K h hfin he _ _ ζ₀ hd, hs, Nat.cast_add]`.
+A detailed English derivation is pending.
 -/
 theorem length_ball_quotient_eq_sum_mul_fdeg (K : Type*) [Field K] [Algebra K A] [FiniteDimensional K A]
     [Fintype (Pts O A)] [∀ ζ : Pts O A, IsDVRAt ζ] (h : IsUnif A ϖ)
@@ -542,15 +524,13 @@ theorem length_ball_quotient_eq_sum_mul_fdeg (K : Type*) [Field K] [Algebra K A]
 end Gen
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ _ A _ _ _ _ _ _ ϖ hϖ hfin _ V _ _ _ _ _ _ e he c m`. Use `haveI : Module.Finite O ↥(As O A) := hfin`. Use `haveI : Finite (Pts O A) := PI.UnitaryGroupMassFormula.EfRankSum.finite_pts O A`. Use `letI : Fintype (Pts O A) := Fintype.ofFinite _`. Establish `h : IsUnif A ϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hϖ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply O K A]`. Use `IsUnit.map _ (isUnit_iff_ne_zero.mpr ?_)` and prove the remaining obligations. Introduce `h0`. Conclude with `hϖ.ne_zero ((IsFractionRing.injective O K) (h0.trans (map_zero _).symm))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Establish `halg : IsAlgebraic O x` using `(IsFractionRing.isAlgebraic_iff O K A).mpr (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy0, hyx⟩` from `halg.exists_integral_multiple`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hϖ`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ϖ ^ k • x = ((u⁻¹ : Oˣ) : O) • (((u : O) * ϖ ^ k) • x)`. Rewrite using `[smul_smul, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e1]`. Conclude with `IsIntegral.smul _ hyx`. Rewrite using `[finsum_eq_sum_of_fintype]`.
-
-Conclude with `length_ball_quotient_eq_sum_mul_fdeg K h hfin he (∑ ζ, m ζ) c m rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballQuotLen_main : PI.BallQuotLen := by
   intro O _ _ _ K _ _ _ A _ _ _ _ _ _ ϖ hϖ hfin _ V _ _ _ _ _ _ e he c m

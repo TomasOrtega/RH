@@ -7,9 +7,9 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
 open scoped Matrix MatrixGroups
 
 /- English proof (translation)
-Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) x`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Establish `hs : (s : R) ≠ 0` using `nonZeroDivisors.coe_ne_zero s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hspan : FractionalIdeal.spanSingleton (nonZeroDivisors R) (IsLocalization.mk' L a s) = FractionalIdeal.spanSingleton (nonZeroDivisors R) ((algebraMap R L) (s : R))⁻¹ * ↑(Ideal.span {a})`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.spanSingleton_mul_spanSingleton, IsFractionRing.mk'_eq_div, div_eq_inv_mul]`. Rewrite using `[FractionalIdeal.count_well_defined L v (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx) hspan, IsDedekindDomain.HeightOneSpectrum.valuation_of_mk', v.intValuation_if_neg ha, v.intValuation_if_neg hs, ← WithZero.exp_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem valuation_eq_exp_neg_count_spanSingleton {R L : Type*} [CommRing R] [IsDedekindDomain R] [Field L]
     [Algebra R L] [IsFractionRing R L] (v : IsDedekindDomain.HeightOneSpectrum R) {x : L}
@@ -34,9 +34,9 @@ private theorem valuation_eq_exp_neg_count_spanSingleton {R L : Type*} [CommRing
   ring
 
 /- English proof (translation)
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hy`. Establish `h1 : y ∈ (v.valuation L).valuationSubring` using `(ValuationSubring.valuation_le_one_iff _ y).mp hy.le`. Establish `h2 : y⁻¹ ∈ (v.valuation L).valuationSubring` using `(ValuationSubring.valuation_le_one_iff _ _).mp (by rw [map_inv₀, hy, inv_one])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[Valuation.mem_valuationSubring_iff]`. Rewrite `h2` using `[map_inv₀]`. Establish `hv0 : v.valuation L y ≠ 0` using `by simpa using hy0`. Conclude with `le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.mpr hv0)).mp h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem valuation_eq_one_of_valuationSubring_eq_one {R L : Type*} [CommRing R] [IsDedekindDomain R] [Field L]
     [Algebra R L] [IsFractionRing R L] (v : IsDedekindDomain.HeightOneSpectrum R) {y : L}
@@ -54,9 +54,9 @@ private theorem valuation_eq_one_of_valuationSubring_eq_one {R L : Type*} [CommR
   exact le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.mpr hv0)).mp h2)
 
 /- English proof (translation)
-Take `⟨p, hpm, hp⟩` from `x.2`. Set `φ : k[X] →+* B` to `(algebraMap k[X] K).codRestrict B hB`. Establish `hc : (algebraMap B K).comp φ = algebraMap k[X] K` using `RingHom.ext fun _ => rfl`. Establish `hint : IsIntegral B (x : K)`. Use `⟨p.map φ, hpm.map φ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.eval₂_map, hc]`. Conclude with `hp`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ringOfIntegers_mem_of_polynomial_mem (k K : Type) [Field k] [Field K] [Algebra k[X] K]
     [Algebra (RatFunc k) K] [IsScalarTower k[X] (RatFunc k) K] (B : ValuationSubring K)
@@ -74,9 +74,9 @@ private theorem ringOfIntegers_mem_of_polynomial_mem (k K : Type) [Field k] [Fie
   exact y.2
 
 /- English proof (translation)
-Establish `h2` using `congrArg (ClassGroup.equiv L) h`. Rewrite `h2` using `[ClassGroup.equiv_mk, ClassGroup.equiv_mk, QuotientGroup.mk'_eq_mk']`. Take `⟨z, ⟨x, rfl⟩, hz⟩` from `h2`. Use `⟨x, x.ne_zero, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg Units.val hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h3` using `[FractionalIdeal.canonicalEquiv_self]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem exists_mul_spanSingleton_eq_of_classGroup_mk_eq {R L : Type*} [CommRing R] [IsDedekindDomain R] [Field L]
     [Algebra R L] [IsFractionRing R L] (I J : (FractionalIdeal (nonZeroDivisors R) L)ˣ)
@@ -91,19 +91,19 @@ private theorem exists_mul_spanSingleton_eq_of_classGroup_mk_eq {R L : Type*} [C
   simpa [FractionalIdeal.canonicalEquiv_self] using h3
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ _ _ _ m m' f hm hm' hf hloc`. Establish `hF : FractionalIdeal.spanSingleton (nonZeroDivisors (FunctionField.ringOfIntegers k K)) f ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.mpr hf`. Establish `hdiv : ∀ v : IsDedekindDomain.HeightOneSpectrum (FunctionField.ringOfIntegers k K), (m : ℤ) ∣ FractionalIdeal.count K v (FractionalIdeal.spanSingleton (nonZeroDivisors (FunctionField.ringOfIntegers k K)) f)`. Introduce `v`. Take `⟨c, hc, hcv⟩` from `hloc ((v.valuation K).valuationSubring) (fun p => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Valuation.mem_valuationSubring_iff, IsScalarTower.algebraMap_apply k[X] (FunctionField.ringOfIntegers k K) K]`. Conclude with `v.valuation_le_one _)`. Establish `h1` using `valuation_eq_one_of_valuationSubring_eq_one v hcv`. Establish `hc0 : v.valuation K c ^ m ≠ 0` using `pow_ne_zero _ ((Valuation.ne_zero_iff _).mpr hc)`. Rewrite `h1` using `[map_div₀, map_pow, div_eq_one_iff_eq hc0, valuation_eq_exp_neg_count_spanSingleton v hf, valuation_eq_exp_neg_count_spanSingleton v hc, ← WithZero.exp_nsmul, WithZero.exp_inj, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨FractionalIdeal.count K v (FractionalIdeal.spanSingleton _ c), by linarith⟩`. Take `⟨I, hIdef⟩ : ∃ I : FractionalIdeal (nonZeroDivisors (FunctionField.ringOfIntegers k K)) K, I = ∏ᶠ v : IsDedekindDomain.HeightOneSpectrum (FunctionField.ringOfIntegers k K), (v.asIdeal : FractionalIdeal (nonZeroDivisors (FunctionField.ringOfIntegers k K)) K) ^ (FractionalIdeal.cou …` from `⟨_, rfl⟩`. Establish `he : ∀ᶠ v : IsDedekindDomain.HeightOneSpectrum (FunctionField.ringOfIntegers k K) in Filter.cofinite, FractionalIdeal.count K v (FractionalIdeal.spanSingleton (nonZeroDivisors (FunctionField.ringOfIntegers k K)) f) / m = 0` using `(FractionalIdeal.finite_factors _).mono fun v hv => by rw [hv, Int.zero_ediv]`. Establish `hI0 : I ≠ 0`. Rewrite using `[hIdef]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finprod_induction (fun J => J ≠ 0) one_ne_zero (fun a b ha hb => mul_ne_zero ha hb) ?_` and prove the remaining obligations. Introduce `v`. Conclude with `zpow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.mpr v.ne_bot)`. Establish `hIm : I ^ m = FractionalIdeal.spanSingleton _ f`. Rewrite using `[← FractionalIdeal.finprod_heightOneSpectrum_factorization' K (pow_ne_zero m hI0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← FractionalIdeal.finprod_heightOneSpectrum_factorization' K hF]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.count_pow, hIdef, FractionalIdeal.count_finprod K v _ he, Int.mul_ediv_cancel' (hdiv v)]`. Take `⟨d, hd⟩` from `GlobalTheory.T.classGroup_affineCurve_divisible_charZero k K m' hm' (ClassGroup.mk K (Units.mk0 I hI0))`. Take `⟨Ju, rfl⟩ : ∃ Ju : (FractionalIdeal (nonZeroDivisors (FunctionField.ringOfIntegers k K)) K)ˣ, ClassGroup.mk K Ju = d` from `ClassGroup.induction K (P := fun d => ∃ Ju, ClassGroup.mk K Ju = d) (fun J => ⟨J, rfl⟩) d`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[← map_pow]`. Take `⟨x, hx, hxJ⟩` from `exists_mul_spanSingleton_eq_of_classGroup_mk_eq _ _ hd`. Rewrite `hxJ` using `[Units.val_mk0, Units.val_pow_eq_pow_val]`. Use `⟨x⁻¹, inv_ne_zero hx, fun B hB => ?_⟩` and prove the remaining obligations. Establish `hJ : ((Ju : FractionalIdeal (nonZeroDivisors (FunctionField.ringOfIntegers k K)) K) : Submodule (FunctionField.ringOfIntegers k K) K) ^ (m * m') = (FunctionField.ringOfIntegers k K) ∙ (f / x⁻¹ ^ m)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← FractionalIdeal.coe_pow, ← FractionalIdeal.coe_spanSingleton (nonZeroDivisors _), pow_mul', ← hxJ, mul_pow, hIm, FractionalIdeal.spanSingleton_pow, FractionalIdeal.spanSingleton_mul_spanSingleton, inv_pow, div_inv_eq_mul]`. Establish `hw : f / x⁻¹ ^ m ≠ 0` using `div_ne_zero hf (pow_ne_zero _ (inv_ne_zero hx))`. Take `⟨c, hc, hcv⟩` from `GlobalTheory.T.exists_valuation_div_pow_eq_one_of_pow_eq_span K K (FunctionField.ringOfIntegers k K) B _ (m * m') (Nat.mul_pos hm hm') (fun r => ringOfIntegers_mem_of_polynomial_mem k K B hB r) (f / x⁻¹ ^ m) hw hJ`. Conclude with `⟨c, hc, by simpa using hcv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.cdAbs :
     ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k[X] K] [Algebra (RatFunc k) K] [IsScalarTower k[X] (RatFunc k) K] [FiniteDimensional (RatFunc k) K] (m m' : ℕ) (f : K), 0 < m → 0 < m' → f ≠ 0 →

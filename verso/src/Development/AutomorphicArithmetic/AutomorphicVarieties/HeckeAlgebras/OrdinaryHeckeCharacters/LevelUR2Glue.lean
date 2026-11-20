@@ -10,25 +10,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `A R P κ _ _ _ _ _ N μ hcov hdir hcomp`. Establish `key : ∀ t (z : P) k k' (hk : z ∈ N k) (hk' : z ∈ N k'), ((μ k t ⟨z, hk⟩ : N k) : P) = ((μ k' t ⟨z, hk'⟩ : N k') : P)`. Introduce `t z k k' hk hk'`. Take `⟨k'', h1, h2⟩` from `hdir k k'`. Establish `e1` using `hcomp k k'' h1 t ⟨z, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `hcomp k' k'' h2 t ⟨z, hk'⟩`. Establish `e3 : Submodule.inclusion h1 ⟨z, hk⟩ = Submodule.inclusion h2 ⟨z, hk'⟩` using `Subtype.ext rfl`. Rewrite using `[← e1, ← e2, e3]`. Set `f : R → P → P` to `fun t z => ((μ (hcov z).choose t ⟨z, (hcov z).choose_spec⟩ : N _) : P)`. Establish `hf : ∀ t k (y : N k), f t y = ((μ k t y : N k) : P)` using `fun t k y => key t y _ k _ y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `two : ∀ z w : P, ∃ k, z ∈ N k ∧ w ∈ N k`. Introduce `z w`. Take `⟨k1, h1⟩` from `hcov z`. Take `⟨k2, h2⟩` from `hcov w`. Take `⟨k, hk1, hk2⟩` from `hdir k1 k2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, hk1 h1, hk2 h2⟩`. Set `L : R → Module.End A P` to `fun t => { toFun := f t map_add' := by`. Introduce `z w`. Take `⟨k, hz, hw⟩` from `two z w`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_add, Submodule.coe_add]`. Use `_ = f t z + f t w := by rw [← hf t k ⟨z, hz⟩, ← hf t k ⟨w, hw⟩]`. Use the proof step `map_smul' := by`. Introduce `a z`. Take `⟨k, hz⟩` from `hcov z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨{ toFun := L, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨k, hz⟩` from `hcov z`. Use `show f 1 z = z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hf 1 k ⟨z, hz⟩).trans (by simp)`. Introduce `s t`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨k, hz⟩` from `hcov z`. Use `show f (s * t) z = f s (f t z)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨k, hz⟩` from `hcov z`. Use `show f 0 z = 0`. Conclude with `(hf 0 k ⟨z, hz⟩).trans (by simp)`.
-
-Introduce `s t`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨k, hz⟩` from `hcov z`. Use `show f (s + t) z = f s z + f t z`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add]`. Use `_ = f s z + f t z := by rw [← hf s k ⟨z, hz⟩, ← hf t k ⟨z, hz⟩]`. Introduce `k t y`. Conclude with `hf t k y`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.levelUR2Glue :
     ∀ (A R P κ : Type) [CommRing A] [CommRing R] [AddCommGroup P] [Module A P] [Nonempty κ] (N : κ → Submodule A P) (μ : ∀ k, R →+* Module.End A (N k)), (∀ z, ∃ k, z ∈ N k) → (∀ k k', ∃ k'', N k ≤ N k'' ∧ N k' ≤ N k'') → (∀ k k' (h : N k ≤ N k') t (y : N k), ((μ k' t (Submodule.inclusion h y) : N k') : P) = (μ k t y : N k)) → ∃ α : R →+* Module.End A P, ∀ k t (y : N k), α t y = (μ k t y : N k) := by

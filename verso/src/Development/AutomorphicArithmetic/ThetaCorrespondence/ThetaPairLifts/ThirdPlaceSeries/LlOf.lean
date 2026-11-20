@@ -16,7 +16,7 @@ namespace Old
 end Old
 namespace New
 /- English proof (translation)
-Introduce `h _ _ _ _ _ _ _ _ _ _ _` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem llOf_alt : RecTExists → LocalConverseGL → DepthZeroInduction →
     BrauerDegreeZero → ChevalleyUnits → GlobalArtinReciprocity → LanglandsExhaustionGL → LanglandsMultisegments →

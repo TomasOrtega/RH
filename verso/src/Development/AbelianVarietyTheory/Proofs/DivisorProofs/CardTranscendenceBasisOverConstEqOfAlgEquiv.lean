@@ -9,11 +9,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `K κ _ _ _ _ e n k x z hx hz`. Establish `eK : (algebraMap ℂ K).toAlgebra = (inferInstance : Algebra ℂ K)` using `Algebra.algebra_ext _ _ fun _ => rfl`. Establish `eκ : (algebraMap ℂ κ).toAlgebra = (inferInstance : Algebra ℂ κ)` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `TrBasis at hx hz`. Rewrite `hx` using `[eK]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[eκ]`. Establish `h1` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hx`. Establish `h2` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hz`. Rewrite `h1` using `[Cardinal.mk_fin, e.trdeg_eq]`. Rewrite `h2` using `[Cardinal.mk_fin, ← h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.trBasis_card_eq_of_algEquiv : ∀ {K κ : Type} [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ] (e : K ≃ₐ[ℂ] κ)
   (n k : ℕ) (x : Fin n → K) (z : Fin k → κ),

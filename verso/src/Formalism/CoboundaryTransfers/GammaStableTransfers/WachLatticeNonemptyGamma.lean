@@ -19,23 +19,23 @@ def γA : A p →ₐ[ℤ_[p]] A p := aeval (-X)
 def φA : A p →ₐ[ℤ_[p]] A p := expand ℤ_[p] p
 
 /- English proof (translation)
-Simplify using `[γA]`.
+Simplify using the standard rewrite rules.
 -/
 lemma γA_X : γA p X = -X := by simp [γA]
 
 /- English proof (translation)
-Simplify using `[φA]`.
+Simplify using the standard rewrite rules.
 -/
 lemma φA_X : φA p X = X ^ p := by simp [φA]
 
 /- English proof (translation)
-Rewrite using `[φA_X, ← pow_succ', Nat.sub_add_cancel (Fact.out : p.Prime).one_le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma φA_X_eq : φA p X = X * X ^ (p - 1) := by
   rw [φA_X, ← pow_succ', Nat.sub_add_cancel (Fact.out : p.Prime).one_le]
 
 /- English proof (translation)
-Establish `h : (γA p).comp (γA p) = AlgHom.id ℤ_[p] (A p)`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `[γA_X]`. Conclude with `AlgHom.congr_fun h f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma γA_γA (f : A p) : γA p (γA p f) = f := by
   have h : (γA p).comp (γA p) = AlgHom.id ℤ_[p] (A p) := by
@@ -44,18 +44,18 @@ lemma γA_γA (f : A p) : γA p (γA p f) = f := by
   exact AlgHom.congr_fun h f
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (γA_γA p)`.
+A detailed English derivation is pending.
 -/
 lemma γA_inj : Function.Injective (γA p) :=
   Function.LeftInverse.injective (γA_γA p)
 
 /- English proof (translation)
-The claim follows from `expand_injective (Fact.out : p.Prime).pos`.
+A detailed English derivation is pending.
 -/
 lemma φA_inj : Function.Injective (φA p) := expand_injective (Fact.out : p.Prime).pos
 
 /- English proof (translation)
-Establish `hodd : Odd p` using `(Fact.out : p.Prime).odd_of_ne_two hp2`. Establish `h : (φA p).comp (γA p) = (γA p).comp (φA p)`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `only [AlgHom.comp_apply, γA_X, φA_X, map_neg, map_pow, hodd.neg_pow]`. Conclude with `AlgHom.congr_fun h a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma comm_A (hp2 : p ≠ 2) (a : A p) : φA p (γA p a) = γA p (φA p a) := by
   have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two hp2
@@ -65,7 +65,7 @@ lemma comm_A (hp2 : p ≠ 2) (a : A p) : φA p (γA p a) = γA p (φA p a) := by
   exact AlgHom.congr_fun h a
 
 /- English proof (translation)
-Rewrite using `[X_dvd_iff, coeff_sub, coeff_zero_eq_eval_zero, coeff_zero_eq_eval_zero, γA, ← comp_eq_aeval, eval_comp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma γA_sub (a : A p) : X ∣ γA p a - a := by
   rw [X_dvd_iff, coeff_sub, coeff_zero_eq_eval_zero, coeff_zero_eq_eval_zero, γA,
@@ -81,7 +81,7 @@ def liftK (f : A p →ₐ[ℤ_[p]] A p) (hf : Function.Injective f) : K p →ₐ
 variable {p}
 
 /- English proof (translation)
-Unfold `liftK`. Rewrite using `[IsFractionRing.coe_liftAlgHom, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma liftK_alg (f : A p →ₐ[ℤ_[p]] A p) (hf : Function.Injective f) (a : A p) :
     liftK p f hf (algebraMap (A p) (K p) a) = algebraMap (A p) (K p) (f a) := by
@@ -90,14 +90,14 @@ lemma liftK_alg (f : A p →ₐ[ℤ_[p]] A p) (hf : Function.Injective f) (a : A
   rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul, liftK_alg, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma liftK_smul (f : A p →ₐ[ℤ_[p]] A p) (hf : Function.Injective f) (a : A p) (x : K p) :
     liftK p f hf (a • x) = f a • liftK p f hf x := by
   rw [Algebra.smul_def, map_mul, liftK_alg, Algebra.smul_def]
 
 /- English proof (translation)
-Establish `h : ((liftK p (φA p) (φA_inj p)).toRingHom.comp (liftK p (γA p) (γA_inj p)).toRingHom) = ((liftK p (γA p) (γA_inj p)).toRingHom.comp (liftK p (φA p) (φA_inj p)).toRingHom)`. Apply `IsFractionRing.ringHom_ext (A := A p)` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, liftK_alg, comm_A p hp2]`. Conclude with `RingHom.congr_fun h x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma liftK_comm (hp2 : p ≠ 2) (x : K p) :
     liftK p (φA p) (φA_inj p) (liftK p (γA p) (γA_inj p) x)
@@ -123,20 +123,20 @@ def base (hp2 : p ≠ 2) : Base ℤ_[p] (A p) where
   φX := ⟨X ^ (p - 1), φA_X_eq p⟩
 
 /- English proof (translation)
-Introduce `h`. Conclude with `X_ne_zero ((IsFractionRing.injective (A p) (K p)) (h.trans (map_zero _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma algX_ne : algebraMap (A p) (K p) X ≠ 0 := by
   intro h
   exact X_ne_zero ((IsFractionRing.injective (A p) (K p)) (h.trans (map_zero _).symm))
 
 /- English proof (translation)
-Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ (algX_ne p)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma algQ_ne : algebraMap (A p) (K p) (X ^ (p - 1)) ≠ 0 := by
   rw [map_pow]; exact pow_ne_zero _ (algX_ne p)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `γA_sub p a`. Use `⟨algebraMap (A p) (K p) t, ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[liftK_alg, ← map_sub, ht, map_mul, Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma γN (a : A p) : ∃ x' ∈ LinearMap.range (Algebra.linearMap (A p) (K p)),
     liftK p (γA p) (γA_inj p) (algebraMap (A p) (K p) a) - algebraMap (A p) (K p) a
@@ -180,15 +180,13 @@ end ExG
 
 open Polynomial ExG in
 /- English proof (translation)
-Introduce `p _ hp2`. Establish `hp` using `(Fact.out : p.Prime)`. Use `⟨base p hp2, W p hp2, rfl, ?_, ?_, ?_, φA_X_eq p, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1 : (1 : K p) ∈ (W p hp2).N` using `by show (1 : K p) ∈ LinearMap.range (Algebra.linearMap (A p) (K p))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨1, by simp⟩`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Conclude with `one_ne_zero h1`. Conclude with `not_isUnit_X`. Use `show ¬ IsUnit ((X : A p) ^ (p - 1))`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[isUnit_pow_iff (by have := hp.two_le; omega)]`. Conclude with `not_isUnit_X`. Use `⟨0, ?_⟩ show γA p X = X * (algebraMap ℤ_[p] (A p) (-1) + X * 0)` and prove the remaining obligations. Simplify using `[γA_X]`. Use `⟨1, isUnit_one, ⟨0, by simp⟩, ?_⟩ show γA p (X ^ (p - 1)) = 1 * X ^ (p - 1)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_pow, γA_X, (hp.even_sub_one hp2).neg_pow, one_mul]`. Use `⟨algebraMap (A p) (K p) X, fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [W, AlgHom.toLinearMap_apply] at h`. Rewrite `h` using `[liftK_alg, γA_X]`. Establish `h2` using `congrArg (fun f : A p => f.coeff 1) ((IsFractionRing.injective (A p) (K p)) h)`.
-
-Simplify using `only [coeff_neg, coeff_X_one] at h2`. Establish `h3 : (2 : ℤ_[p]) = 0` using `by linear_combination -h2`. Conclude with `two_ne_zero h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wach_lattice_nonempty_gamma : NonemptyG := by
   intro p _ hp2

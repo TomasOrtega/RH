@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.GroupLattices.JointServices.LevelOperatorFixesIma
 open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Indef NumberField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.V0_map_iota_eq_top_of_definite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FV0MapIotaEqTopDefinite.lean&line=8#L8)
 -/

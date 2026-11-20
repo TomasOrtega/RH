@@ -6,12 +6,12 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Etal
 namespace UpperTheory.Gal.Mod
 
 /- English proof (translation)
-The claim follows from `spSpecIf UpperTheory.Et.proper_base_change UpperTheory.Et.etale_base_change_of_duality`.
+A detailed English derivation is pending.
 -/
 theorem specGood : GlobalTheory.EtC.SpecGood := spSpecIf UpperTheory.Et.proper_base_change UpperTheory.Et.etale_base_change_of_duality
 
 /- English proof (translation)
-The claim follows from `esGen_holds specGood`.
+A detailed English derivation is pending.
 -/
 theorem esGen_all : ESGen := esGen_holds specGood
 

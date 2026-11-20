@@ -16,16 +16,16 @@ def dedekindZetaReal (s : ℝ) : ℝ :=
   ∑' n, dedekindZetaTerm K s n
 
 /- English proof (translation)
-Unfold `dedekindZetaTerm`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem dedekindZetaTerm_nonneg (s : ℝ) (n : ℕ) : 0 ≤ dedekindZetaTerm K s n := by
   unfold dedekindZetaTerm
   positivity
 
 /- English proof (translation)
-Rewrite using `[dedekindZeta, LSeries, dedekindZetaReal, Complex.ofReal_tsum]`. Use `congr 1`. Use extensionality with `n`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using `[dedekindZetaTerm, Real.zero_rpow (neg_ne_zero.mpr hs)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[LSeries.term_of_ne_zero hn, dedekindZetaTerm, Complex.ofReal_mul, Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.ofReal_neg, Complex.cpow_neg, div_eq_mul_inv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dedekindZeta_ofReal {s : ℝ} (hs : s ≠ 0) :
     dedekindZeta K s = (dedekindZetaReal K s : ℂ) := by
@@ -40,9 +40,9 @@ theorem dedekindZeta_ofReal {s : ℝ} (hs : s ≠ 0) :
     simp
 
 /- English proof (translation)
-Establish `h` using `(Complex.continuous_re.tendsto _).comp (tendsto_sub_one_mul_dedekindZeta_nhdsGT K)`. Rewrite `h` using `[Complex.ofReal_re]`. Use `h.congr' (eventually_nhdsWithin_of_forall fun s hs => ?_)` and prove the remaining obligations. Establish `hs0 : s ≠ 0` using `by simp only [mem_Ioi] at hs; linarith`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dedekindZeta_ofReal K hs0, ← Complex.ofReal_one, ← Complex.ofReal_sub, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tendsto_sub_one_mul_dedekindZetaReal :
     Tendsto (fun s : ℝ => (s - 1) * dedekindZetaReal K s) (𝓝[>] 1)
@@ -56,7 +56,7 @@ theorem tendsto_sub_one_mul_dedekindZetaReal :
     ← Complex.ofReal_mul, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `: {I : Ideal (𝓞 K) | absNorm I < N} = ⋃ n ∈ Set.Iio N, {I | absNorm I = n}`. Use extensionality with `I`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(Set.finite_Iio N).biUnion fun n _ => Ideal.finite_setOfPred_absNorm_eq n`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_absNorm_lt (N : ℕ) : {I : Ideal (𝓞 K) | absNorm I < N}.Finite := by
   have : {I : Ideal (𝓞 K) | absNorm I < N} = ⋃ n ∈ Set.Iio N, {I | absNorm I = n} := by
@@ -66,11 +66,11 @@ theorem finite_absNorm_lt (N : ℕ) : {I : Ideal (𝓞 K) | absNorm I < N}.Finit
   exact (Set.finite_Iio N).biUnion fun n _ => Ideal.finite_setOfPred_absNorm_eq n
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := fun I : Ideal (𝓞 K) => absNorm I) (t := Finset.range N) (fun I hI => by simpa using hI)]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun I hI => by rw [(Finset.mem_filter.mp hI).2]), Finset.sum_const, nsmul_eq_mul, dedekindZetaTerm]`. Use `congr 2`. Establish `hfin` using `Ideal.finite_setOfPred_absNorm_eq (S := 𝓞 K) n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `: ((finite_absNorm_lt K N).toFinset.filter fun I => absNorm I = n) = hfin.toFinset`. Use extensionality with `I`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `h`. Conclude with `⟨h ▸ Finset.mem_range.mp hn, h⟩`. Rewrite using `[this, ← Nat.card_eq_card_finite_toFinset]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_range_dedekindZetaTerm (s : ℝ) (N : ℕ) :
     ∑ n ∈ Finset.range N, dedekindZetaTerm K s n =
@@ -94,9 +94,9 @@ theorem sum_range_dedekindZetaTerm (s : ℝ) (N : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : ∑ k ∈ Finset.range M, x ^ k ≤ 1 / (1 - x)`. Rewrite using `[Finset.range_eq_Ico]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 1 / (1 - x) ≤ 1 + x + 2 * x ^ 2`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg (sq_nonneg x) (by linarith : (0 : ℝ) ≤ 1 - 2 * x)]`. Establish `h3` using `Real.add_one_le_exp (x + 2 * x ^ 2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem geom_sum_le_exp {x : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ 1 / 2) (M : ℕ) :
     ∑ k ∈ Finset.range M, x ^ k ≤ Real.exp (x + 2 * x ^ 2) := by
@@ -112,7 +112,7 @@ theorem geom_sum_le_exp {x : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ 1 / 2) (M : ℕ) :
   linarith
 
 /- English proof (translation)
-Establish `hy0 : 0 ≤ x - x ^ 2` using `by nlinarith`. Establish `hy1 : x - x ^ 2 ≤ x` using `by nlinarith`. Apply the tactic sequence `have h := Real.abs_exp_sub_one_sub_id_le (x := x - x ^ 2) (by rw [abs_le]; constructor <;> linarith)`. Establish `h'` using `(abs_le.mp h).2`. Use polynomial arithmetic with `[mul_le_mul hy1 hy1 hy0 hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exp_sub_sq_le_one_add {x : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ 1 / 2) :
     Real.exp (x - x ^ 2) ≤ 1 + x := by
@@ -125,9 +125,9 @@ theorem exp_sub_sq_le_one_add {x : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ 1 / 2) :
 variable {K}
 
 /- English proof (translation)
-Establish `h0 : absNorm p ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hp.ne_zero`. Establish `h1 : absNorm p ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(Ideal.isPrime_of_prime hp).ne_top`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem two_le_absNorm_of_prime {p : Ideal (𝓞 K)} (hp : Prime p) : 2 ≤ absNorm p := by
   have h0 : absNorm p ≠ 0 := by
@@ -139,7 +139,7 @@ theorem two_le_absNorm_of_prime {p : Ideal (𝓞 K)} (hp : Prime p) : 2 ≤ absN
   omega
 
 /- English proof (translation)
-Establish `h2 : (2 : ℝ) ≤ absNorm p` using `by exact_mod_cast two_le_absNorm_of_prime hp`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem rpow_neg_absNorm_le_half {p : Ideal (𝓞 K)} (hp : Prime p) {s : ℝ} (hs : 1 ≤ s) :
     (absNorm p : ℝ) ^ (-s) ≤ 1 / 2 := by
@@ -153,7 +153,7 @@ def heightOneOfPrime {p : Ideal (𝓞 K)} (hp : Prime p) : HeightOneSpectrum (�
   ⟨p, Ideal.isPrime_of_prime hp, hp.ne_zero⟩
 
 /- English proof (translation)
-Establish `hprod : (UniqueFactorizationMonoid.normalizedFactors I).prod = I` using `associated_iff_eq.mp (UniqueFactorizationMonoid.prod_normalizedFactors hI)`. Use `conv_lhs => rw [← hprod]`. Rewrite using `[map_multiset_prod, Finset.prod_multiset_map_count]`. Use `Finset.prod_subset hP fun p _ hp => ?_` and prove the remaining obligations. Rewrite using `[Multiset.count_eq_zero.mpr (fun h => hp (Multiset.mem_toFinset.mpr h)), pow_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_eq_prod_count {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) (P : Finset (Ideal (𝓞 K)))
     (hP : (UniqueFactorizationMonoid.normalizedFactors I).toFinset ⊆ P) :
@@ -167,29 +167,23 @@ theorem absNorm_eq_prod_count {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) (P : Finset 
   rw [Multiset.count_eq_zero.mpr (fun h => hp (Multiset.mem_toFinset.mpr h)), pow_zero]
 
 /- English proof (translation)
-Use `set x : Ideal (𝓞 K) → ℝ := fun p => (absNorm p : ℝ) ^ (-s) with hxdef`. Establish `hx0 : ∀ p, 0 ≤ x p` using `fun p => by positivity`. Establish `hs0 : -s ≠ 0` using `by intro h; linarith`. Establish `hbot : x ⊥ = 0` using `by simp [x, Real.zero_rpow hs0]`. Use `set nf := fun I : Ideal (𝓞 K) => UniqueFactorizationMonoid.normalizedFactors I with hnf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set T' := T.erase ⊥ with hT'`. Use `set P : Finset (Ideal (𝓞 K)) := T'.biUnion fun I => (nf I).toFinset with hP`. Use `set M : ℕ := T'.sup (fun I => Multiset.card (nf I)) + 1 with hM`. Establish `hPprime : ∀ p ∈ P, Prime p`. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨I, _, hpI⟩` from `Finset.mem_biUnion.mp hp`. Conclude with `UniqueFactorizationMonoid.prime_of_normalized_factor p (Multiset.mem_toFinset.mp hpI)`. Establish `hxI : ∀ I ∈ T', x I = ∏ p : P, x p.1 ^ (nf I).count p.1`. Introduce `I hI`. Establish `hI0 : I ≠ ⊥` using `(Finset.mem_erase.mp hI).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.prod_coe_sort P (fun p => x p ^ (nf I).count p)]`. Simplify using `only [x]`. Rewrite using `[absNorm_eq_prod_count hI0 P (Finset.subset_biUnion_of_mem (fun I => (nf I).toFinset) hI), Nat.cast_prod, ← Real.finsetProd_rpow _ _ (fun _ _ => by positivity)]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _), ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _), mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `E : Ideal (𝓞 K) → (P → ℕ)` to `fun I p => (nf I).count p.1`. Establish `hE : Set.InjOn E T'`. Introduce `I hI J hJ hIJ`. Establish `hI0 : I ≠ ⊥` using `(Finset.mem_erase.mp hI).1`. Establish `hJ0 : J ≠ ⊥` using `(Finset.mem_erase.mp hJ).1`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnfeq : nf I = nf J`. Use extensionality with `q`. Distinguish the cases in `hq : q ∈ P`. Conclude with `congrFun hIJ ⟨q, hq⟩`. Establish `hqI : q ∉ nf I` using `fun h => hq (Finset.mem_biUnion.mpr ⟨I, hI, Multiset.mem_toFinset.mpr h⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hqJ : q ∉ nf J` using `fun h => hq (Finset.mem_biUnion.mpr ⟨J, hJ, Multiset.mem_toFinset.mpr h⟩)`. Rewrite using `[Multiset.count_eq_zero.mpr hqI, Multiset.count_eq_zero.mpr hqJ]`. Rewrite using `[← associated_iff_eq.mp (UniqueFactorizationMonoid.prod_normalizedFactors hI0), ← associated_iff_eq.mp (UniqueFactorizationMonoid.prod_normalizedFactors hJ0)]`. Conclude with `congrArg Multiset.prod hnfeq`. Establish `hEM : ∀ I ∈ T', E I ∈ Fintype.piFinset (fun _ : P => Finset.range M)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `I hI`. Use `Fintype.mem_piFinset.mpr fun p => Finset.mem_range.mpr ?_` and prove the remaining obligations. Conclude with `Nat.lt_succ_of_le ((Multiset.count_le_card _ _).trans (Finset.le_sup (f := fun I => Multiset.card (nf I)) hI))`. Establish `hxhalf : ∀ p : P, x p.1 ≤ 1 / 2` using `fun p => rpow_neg_absNorm_le_half (hPprime p.1 p.2) hs.le`. Set `ι : P → HeightOneSpectrum (𝓞 K)` to `fun p => heightOneOfPrime (hPprime p.1 p.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hι : Function.Injective ι` using `fun a b h => Subtype.ext (congrArg HeightOneSpectrum.asIdeal h)`. Establish `hsum : Summable fun w : HeightOneSpectrum (𝓞 K) => (absNorm w.asIdeal : ℝ) ^ (-s) + 2 * ((absNorm w.asIdeal : ℝ) ^ (-s)) ^ 2`. Establish `h1` using `summable_absNorm_rpow_neg (L := K) hs`. Use `Summable.of_nonneg_of_le (fun _ => by positivity) (fun w => ?_) (h1.mul_left 3)` and prove the remaining obligations. Establish `hw0 : (0 : ℝ) ≤ (absNorm w.asIdeal : ℝ) ^ (-s)` using `by positivity`.
-
-Establish `hw1` using `rpow_neg_absNorm_le_half w.prime hs.le`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum_of_subset_of_nonneg (fun e he => ?_) (fun _ _ _ => Finset.prod_nonneg fun _ _ => pow_nonneg (hx0 _) _)` and prove the remaining obligations. Take `⟨I, hI, rfl⟩` from `Finset.mem_image.mp he`.
-
-Conclude with `hEM I hI`. Use `_ = ∏ p : P, ∑ k ∈ Finset.range M, x p.1 ^ k := (Finset.prod_univ_sum (fun _ : P => Finset.range M) (fun p k => x p.1 ^ k)).symm`. Use `_ ≤ ∏ p : P, Real.exp (x p.1 + 2 * x p.1 ^ 2) := Finset.prod_le_prod (fun _ _ => Finset.sum_nonneg fun _ _ => pow_nonneg (hx0 _) _) (fun p _ => geom_sum_le_exp (hx0 _) (hxhalf p) M)`. Use `_ = Real.exp (∑ p : P, (x p.1 + 2 * x p.1 ^ 2)) := (Real.exp_sum Finset.univ fun p : P => x p.1 + 2 * x p.1 ^ 2).symm`. Use `_ ≤ _ := by`.
-
-Use `Real.exp_le_exp.mpr ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_rpow_neg_le_exp_tsum (T : Finset (Ideal (𝓞 K))) {s : ℝ} (hs : 1 < s) :
     ∑ I ∈ T, (absNorm I : ℝ) ^ (-s) ≤
@@ -279,11 +273,11 @@ theorem sum_rpow_neg_le_exp_tsum (T : Finset (Ideal (𝓞 K))) {s : ℝ} (hs : 1
           _ ≤ _ := hsum.sum_le_tsum _ (fun _ _ => by positivity)
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn (fun A : Finset (HeightOneSpectrum (𝓞 K)) => ∏ w ∈ A, w.asIdeal) P.powerset`. Establish `key : ∀ A B : Finset (HeightOneSpectrum (𝓞 K)), ∏ w ∈ A, w.asIdeal = ∏ w ∈ B, w.asIdeal → A ⊆ B`. Introduce `A B hAB w hw`. Establish `hle : ∏ w ∈ B, w.asIdeal ≤ w.asIdeal`. Rewrite using `[← hAB]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hw)`. Take `⟨w', hw', hle'⟩` from `(Ideal.IsPrime.prod_le w.isPrime).mp hle`. Establish `: w' = w` using `HeightOneSpectrum.ext (w'.isMaximal.eq_of_le w.isPrime.ne_top hle')`. Conclude with `this ▸ hw'`. Introduce `A _ B _ hAB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_antisymm (key A B hAB) (key B A hAB.symm)`. Rewrite using `[Finset.prod_one_add, Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod, Nat.cast_prod, Real.finsetProd_rpow _ _ (fun _ _ => by positivity)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_one_add_rpow_neg_eq_sum (P : Finset (HeightOneSpectrum (𝓞 K))) (s : ℝ) :
     ∏ w ∈ P, (1 + (absNorm w.asIdeal : ℝ) ^ (-s)) =
@@ -307,9 +301,7 @@ theorem prod_one_add_rpow_neg_eq_sum (P : Finset (HeightOneSpectrum (𝓞 K))) (
   rw [map_prod, Nat.cast_prod, Real.finsetProd_rpow _ _ (fun _ _ => by positivity)]
 
 /- English proof (translation)
-Use `set N := T.sup (fun I => absNorm I) + 1`. Establish `hsub : T ⊆ (finite_absNorm_lt K N).toFinset`. Introduce `I hI`. Rewrite using `[Set.Finite.mem_toFinset, mem_ofPred_eq]`. Conclude with `Nat.lt_succ_of_le (Finset.le_sup (f := fun I => absNorm I) hI)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_rpow_neg_le_dedekindZetaReal (T : Finset (Ideal (𝓞 K))) {s : ℝ}
     (hζ : Summable (dedekindZetaTerm K s)) :
@@ -328,7 +320,7 @@ theorem sum_rpow_neg_le_dedekindZetaReal (T : Finset (Ideal (𝓞 K))) {s : ℝ}
         hζ.sum_le_tsum _ (fun n _ => dedekindZetaTerm_nonneg K s n)
 
 /- English proof (translation)
-Use `sum_rpow_neg_le_dedekindZetaReal {(⊤ : Ideal (𝓞 K))} hζ` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_le_dedekindZetaReal {s : ℝ} (hζ : Summable (dedekindZetaTerm K s)) :
     1 ≤ dedekindZetaReal K s := by
@@ -336,7 +328,7 @@ theorem one_le_dedekindZetaReal {s : ℝ} (hζ : Summable (dedekindZetaTerm K s)
   simpa using this
 
 /- English proof (translation)
-Use `Real.tsum_le_of_sum_range_le (fun n => dedekindZetaTerm_nonneg K s n) fun N => ?_` and prove the remaining obligations. Rewrite using `[sum_range_dedekindZetaTerm]`. Conclude with `sum_rpow_neg_le_exp_tsum _ hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dedekindZetaReal_le_exp {s : ℝ} (hs : 1 < s) :
     dedekindZetaReal K s ≤
@@ -347,7 +339,7 @@ theorem dedekindZetaReal_le_exp {s : ℝ} (hs : 1 < s) :
   exact sum_rpow_neg_le_exp_tsum _ hs
 
 /- English proof (translation)
-The claim follows from `|Real.log (dedekindZetaReal K s) - ∑' w : HeightOneSpectrum (𝓞 K), (absNorm w.asIdeal : ℝ) ^ (-s)| ≤ 2 * ∑' w : HeightOneSpectrum (𝓞 K), (absNorm w.asIdeal : ℝ) ^ (-(2 : ℝ)) := by set x := fun w : HeightOneSpectrum (𝓞 K) => (absNorm w.asIdeal : ℝ) ^ (-s) with hx set y := fun w : …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_dedekindZetaReal_sub_tsum_le {s : ℝ} (hs : 1 < s)
     (hζ : Summable (dedekindZetaTerm K s)) :
@@ -389,7 +381,7 @@ theorem abs_log_dedekindZetaReal_sub_tsum_le {s : ℝ} (hs : 1 < s)
 variable (K) in
 
 /- English proof (translation)
-Establish `h` using `(tendsto_sub_one_mul_dedekindZetaReal K).eventually (lt_mem_nhds (dedekindZeta_residue_pos K))`. Use `filter_upwards [h] with s hs`. Assume the negation of the conclusion as `hns`. Rewrite `hs` using `[dedekindZetaReal, tsum_eq_zero_of_not_summable hns, mul_zero]`. Conclude with `lt_irrefl _ hs`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_summable_dedekindZetaTerm :
     ∀ᶠ s in 𝓝[>] (1 : ℝ), Summable (dedekindZetaTerm K s) := by
@@ -401,7 +393,7 @@ theorem eventually_summable_dedekindZetaTerm :
   exact lt_irrefl _ hs
 
 /- English proof (translation)
-Rewrite using `[Set.primeIdealZetaSum_def]`. Conclude with `tsum_univ (f := fun w : HeightOneSpectrum (𝓞 K) => (absNorm w.asIdeal : ℝ) ^ (-s))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeIdealZetaSum_univ (s : ℝ) :
     (univ : Set (HeightOneSpectrum (𝓞 K))).primeIdealZetaSum s =
@@ -412,7 +404,7 @@ theorem primeIdealZetaSum_univ (s : ℝ) :
 variable (K) in
 
 /- English proof (translation)
-The claim follows from `|(univ : Set (HeightOneSpectrum (𝓞 K))).primeIdealZetaSum s + Real.log (s - 1)| ≤ C := by set R := dedekindZeta_residue K set Y := ∑' w : HeightOneSpectrum (𝓞 K), (absNorm w.asIdeal : ℝ) ^ (-(2 : ℝ)) have hlog : Tendsto (fun s : ℝ => Real.log ((s - 1) * dedekindZetaReal K s)) (𝓝[ …`.
+A detailed English derivation is pending.
 -/
 theorem exists_abs_primeIdealZetaSum_add_log_le :
     ∃ C : ℝ, ∀ᶠ s in 𝓝[>] (1 : ℝ),
@@ -447,11 +439,9 @@ theorem exists_abs_primeIdealZetaSum_add_log_le :
 variable (K) in
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_abs_primeIdealZetaSum_add_log_le K`. Establish `h1 : Tendsto (fun s : ℝ => s - 1) (𝓝[>] 1) (𝓝[>] 0)`. Use `tendsto_nhdsWithin_iff.mpr ⟨?_, eventually_nhdsWithin_of_forall fun s (hs : 1 < s) => show 0 < s - 1 by linarith⟩` and prove the remaining obligations. Establish `: Tendsto (fun s : ℝ => s - 1) (𝓝 1) (𝓝 0)`. Simplify using `using (continuous_sub_right (1 : ℝ)).tendsto 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this.mono_left nhdsWithin_le_nhds`. Establish `hlog : Tendsto (fun s : ℝ => -Real.log (s - 1) + -C) (𝓝[>] 1) atTop` using `tendsto_atTop_add_const_right _ (-C) (tendsto_neg_atBot_atTop.comp (Real.tendsto_log_nhdsGT_zero.comp h1))`. Use `tendsto_atTop_mono' _ ?_ hlog` and prove the remaining obligations. Use `filter_upwards [hC] with s hs`. Use `(abs_le.mp hs).1` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tendsto_primeIdealZetaSum_univ_atTop :
     Tendsto (fun s => (univ : Set (HeightOneSpectrum (𝓞 K))).primeIdealZetaSum s)

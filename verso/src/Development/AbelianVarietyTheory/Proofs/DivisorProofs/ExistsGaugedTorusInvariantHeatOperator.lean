@@ -34,7 +34,7 @@ namespace GlobalTheory.Heat.Gauge
 open GlobalTheory.KS
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gauged_local_heat_operator_power_mul _ G n X m m₁ L dd D h₁ e hdd c hc p k O hO f`.
+A detailed English derivation is pending.
 -/
 theorem gauge_op {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {n : ℕ} {X : Scheme.{0}}
     (m m₁ : G.left ⟶ X) (L : LB X) (dd : Fin n → Fld G.left) (D : R → R) (h₁ : Heat G m₁ L dd D)
@@ -45,7 +45,7 @@ theorem gauge_op {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMon
   GlobalTheory.T.gauged_local_heat_operator_power_mul _ G n X m m₁ L dd D h₁ e hdd c hc p k O hO f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gauge_units_transition_relation_on_overlaps _ G n X m m₁ L dd D h₁ e hL he p p' O hO`.
+A detailed English derivation is pending.
 -/
 theorem gauge_cocycle {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {n : ℕ} {X : Scheme.{0}}
     (m m₁ : G.left ⟶ X) (L : LB X) (dd : Fin n → Fld G.left) (D : R → R) (h₁ : Heat G m₁ L dd D)
@@ -56,7 +56,7 @@ theorem gauge_cocycle {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCo
   GlobalTheory.T.gauge_units_transition_relation_on_overlaps _ G n X m m₁ L dd D h₁ e hL he p p' O hO
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gauged_chart_function_eq_gauge_power_mul _ G n X m m₁ L dd D h₁ e hL he k σ ρ hρ p`.
+A detailed English derivation is pending.
 -/
 theorem gauge_chart {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {n : ℕ} {X : Scheme.{0}}
     (m m₁ : G.left ⟶ X) (L : LB X) (dd : Fin n → Fld G.left) (D : R → R) (h₁ : Heat G m₁ L dd D)
@@ -69,7 +69,7 @@ theorem gauge_chart {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsComm
   GlobalTheory.T.gauged_chart_function_eq_gauge_power_mul _ G n X m m₁ L dd D h₁ e hL he k σ ρ hρ p
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gauge_unit_has_generator_weight_on_preimages _ Q O oa Y n dd D x h₁ e β hwe p V hV`.
+A detailed English derivation is pending.
 -/
 theorem gauge_wt {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {O : Type} [CommRing O] [StarRing O]
     [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) {n : ℕ} (dd : Fin n → Fld Y.H.left) (D : R → R)
@@ -89,9 +89,9 @@ variable {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {
   (e : LB.Gen (LB.LinComb L ![m, m₁] ![1, -1]))
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Establish `hy : y ∈ ⨆ i, h₁.W i` using `by rw [h₁.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨a, ha⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL (m y)`. Take `⟨b, hb⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL (m₁ y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, ![a, b]), hi, Set.mem_iInter.2 (Fin.forall_fin_two.2 ⟨ha, hb⟩)⟩`.
+A detailed English derivation is pending.
 -/
 theorem gauge_cover (hL : L.IsLB) : ⨆ p, W m h₁ p = ⊤ := by
   refine eq_top_iff.2 fun y _ => ?_
@@ -102,7 +102,7 @@ theorem gauge_cover (hL : L.IsLB) : ⨆ p, W m h₁ p = ⊤ := by
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨(i, ![a, b]), hi, Set.mem_iInter.2 (Fin.forall_fin_two.2 ⟨ha, hb⟩)⟩
 
 /- English proof (translation)
-Establish `hd₁` using `h₁.lift p.1`. Use `⟨GlobalTheory.Heat.Adjust.isField_add_comb (h₁.d p.1) dd (fun a => gY m h₁ e a p) (isField_mono hd₁.1 (heatGaugeCoverOpen_le_heatOperatorOpen m h₁ p)) hF, fun O' hO r => ?_⟩` and prove the remaining obligations. Use `show h₁.d p.1 O' (constFn G.hom O' r) + ∑ a, rsT (gY m h₁ e a p) O' * dd a O' (constFn G.hom O' r) = _`. Rewrite using `[hd₁.2 O' (hO.trans (heatGaugeCoverOpen_le_heatOperatorOpen m h₁ p)) r]`. Simplify using `[h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauge_lift (hF : ∀ a, IsField ⊤ (dd a)) (h0 : ∀ a O r, dd a O (constFn G.hom O r) = 0)
     (p : h₁.J × (Fin 2 → L.ι)) : IsLift G D (W m h₁ p) (gD m h₁ e p) := by
@@ -114,11 +114,11 @@ theorem gauge_lift (hF : ∀ a, IsField ⊤ (dd a)) (h0 : ∀ a O r, dd a O (con
   simp [h0]
 
 /- English proof (translation)
-Establish `hOp : O' ≤ W m h₁ p` using `hO.trans inf_le_left`. Establish `hOp' : O' ≤ W m h₁ p'` using `hO.trans inf_le_right`. Establish `hco` using `gauge_cocycle G m m₁ L dd D h₁ e hL he p p' O' hO`. Establish `hA' : rsT (gU m h₁ e p').val O' * rsT (gU m h₁ e p')⁻¹.val O' = 1`. Rewrite using `[← GlobalTheory.KS.rsT_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, GlobalTheory.KS.rsT_one hOp']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `congrArg (· ^ k) hco`. Establish `hk'` using `congrArg (· ^ k) hA'`. Simplify using `only [one_pow, mul_pow] at hk hk'`. Establish `e1 : pbT m (L.g (p.2 0) (p'.2 0)).val O' ^ k * f = rsT (gU m h₁ e p).val O' ^ k * (pbT m₁ (L.g (h₁.j p.1) (h₁.j p'.1)).val O' ^ k * (rsT (gU m h₁ e p')⁻¹.val O' ^ k * f))`. Take the linear combination `(-(pbT m (L.g (p.2 0) (p'.2 0)).val O' ^ k * f)) * hk' + (rsT (gU m h₁ e p')⁻¹.val O' ^ k * f) * hk`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `ef : f = rsT (gU m h₁ e p').val O' ^ k * (rsT (gU m h₁ e p')⁻¹.val O' ^ k * f)`. Take the linear combination `(-f) * hk'`. Rewrite using `[e1, gauge_op G m m₁ L dd D h₁ e hF c hc p k O' hOp, h₁.glue k p.1 p'.1 O' (le_inf (hOp.trans (heatGaugeCoverOpen_le_heatOperatorOpen m h₁ p)) (hOp'.trans (heatGaugeCoverOpen_le_heatOperatorOpen m h₁ p')))]`. Use `conv_rhs => rw [ef, gauge_op G m m₁ L dd D h₁ e hF c hc p' k O' hOp']`. Take the linear combination `(-(op G dd h₁.Θ h₁.u (h₁.d p'.1) (h₁.p p'.1) (h₁.p' p'.1) k O' (rsT (gU m h₁ e p')⁻¹.val O' ^ k * f))) * hk`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gauge_glue (hL : L.IsLB) (he : e.IsGen) (hF : ∀ a, IsField ⊤ (dd a)) (c : R) (hc : 2 * c = 1) (k : ℕ)
     (p p' : h₁.J × (Fin 2 → L.ι)) (O' : G.left.Opens) (hO : O' ≤ W m h₁ p ⊓ W m h₁ p') (f : Γ(G.left, O')) :
@@ -149,9 +149,9 @@ theorem gauge_glue (hL : L.IsLB) (he : e.IsGen) (hF : ∀ a, IsField ⊤ (dd a))
 end General
 
 /- English proof (translation)
-Establish `c1` using `gauge_chart G m m₁ L dd D h₁ e hL he k σ ρ hρ p`. Establish `c2` using `gauge_chart G m m₁ L dd D h₁ e hL he k σ' ρ' hρ' p`. Establish `hU : rsT (gU m h₁ e p).val (W m h₁ p) = (gU m h₁ e p).val` using `GlobalTheory.KS.rsT_self _`. Rewrite using `[c1, c2, ← hU, gauge_op G m m₁ L dd D h₁ e hF c hc p k _ le_rfl, hU]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hWc : h₁.W p.1 ≤ (LB.LinComb L (K` using `Fin 1) (fun _ => m₁) fun _ => (k : ℤ)).U (fun _ => h₁.j p.1) := GlobalTheory.Heat.Glue.le_wchart _ (h₁.le p.1)`. Rewrite using `[← GlobalTheory.KS.rsT_rsT hWc (heatGaugeCoverOpen_le_heatOperatorOpen m h₁ p) (σ'.f fun _ => h₁.j p.1), hA p.1, op_rsT G dd hF _ _ _ _ _ k (h₁.lift p.1).1 le_rfl (heatGaugeCoverOpen_le_heatOperatorOpen m h₁ p), GlobalTheory.KS.rsT_rsT hWc (heatGaugeCoverOpen_le_heatOperatorOpen …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gauge_acts {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {n : ℕ} {X : Scheme.{0}}
     (m m₁ : G.left ⟶ X) (L : LB X) (dd : Fin n → Fld G.left) (D : R → R) (h₁ : Heat G m₁ L dd D)
@@ -176,21 +176,19 @@ theorem gauge_acts {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommM
     GlobalTheory.KS.rsT_rsT hWc (heatGaugeCoverOpen_le_heatOperatorOpen m h₁ p)]
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `trans_factor Q oa Y x`. Take `⟨⟨V₁, hV₁⟩, hp₁, hp₁', hd₁⟩` from `hB₁ p.1`. Set `Vp : Q.P.A.left.Opens` to `V₁ ⊓ (Q.P.L.U (p.2 0) ⊓ τ ⁻¹ᵁ Q.P.L.U (p.2 1))`. Establish `hm₁ : ∀ y, ((𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left) y = τ (Y.q.left y)` using `fun y => by`. Rewrite using `[hτ, Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hWp : W Y.q.left h₁ p = Y.q.left ⁻¹ᵁ Vp`. Use `TopologicalSpace.Opens.ext (Set.ext fun y => ⟨fun hy => ?_, fun hy => ?_⟩)` and prove the remaining obligations. Establish `h1 : y ∈ Y.q.left ⁻¹ᵁ V₁` using `hV₁ ▸ hy.1`. Establish `h2` using `Set.mem_iInter.1 hy.2`. Use `⟨h1, h2 0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show τ (Y.q.left y) ∈ Q.P.L.U (p.2 1)`. Rewrite using `[← hm₁]`. Conclude with `h2 1`. Establish `h1 : y ∈ h₁.W p.1` using `hV₁ ▸ hy.1`. Use `⟨h1, Set.mem_iInter.2 (Fin.forall_fin_two.2 ⟨hy.2.1, ?_⟩)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left) y ∈ Q.P.L.U (p.2 1)`. Rewrite using `[hm₁]`. Conclude with `hy.2.2`. Establish `tr : ∀ (α : Q.X) (W₀ : Y.H.left.Opens), W₀ = Y.q.left ⁻¹ᵁ Vp → ∀ f : Γ(Y.H.left, W₀), IsWt Y α (Y.q.left ⁻¹ᵁ Vp) (rsT f (Y.q.left ⁻¹ᵁ Vp)) → IsWt Y α W₀ f`. Introduce and unpack `α W₀ rfl f h`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[GlobalTheory.KS.rsT_self]`. Then use the resulting hypothesis. Establish `hU : IsWt Y β (W Y.q.left h₁ p) (gU Y.q.left h₁ e p).val` using `tr β _ hWp _ (gauge_wt Q oa Y dd D x h₁ e β hwe p Vp hWp.ge)`. Establish `hdW : ∀ α f, IsWt Y α (W Y.q.left h₁ p) f → IsWt Y α (W Y.q.left h₁ p) (h₁.d p.1 (W Y.q.left h₁ p) f)`. Establish `hle : Y.q.left ⁻¹ᵁ Vp ≤ h₁.W p.1` using `hWp ▸ heatGaugeCoverOpen_le_heatOperatorOpen Y.q.left h₁ p`. Rewrite using `[hWp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun α => hd₁ α Vp hle`. Establish `hinvU : (gU Y.q.left h₁ e p).val * (gU Y.q.left h₁ e p)⁻¹.val = 1` using `Units.mul_inv _`. Establish `hL0 : ∀ a, IsWt Y 0 (W Y.q.left h₁ p) (gL Y.q.left h₁ e a p)` using `fun a => GlobalTheory.Heat.WtPres.isWt_div (GlobalTheory.Heat.IsInv.isWt Y (v a) (dd a) (hinv a) β _ _ hU) hU hinvU`. Establish `hE0 : IsWt Y 0 (W Y.q.left h₁ p) (gE Y.q.left h₁ e p)` using `GlobalTheory.Heat.WtPres.isWt_div (hdW β _ hU) hU hinvU`. Establish `hY0 : ∀ a, IsWt Y 0 (W Y.q.left h₁ p) (gY Y.q.left h₁ e a p)` using `fun a => GlobalTheory.Heat.WtAlg.isWt_sum _ _ fun b _ => GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.WtAlg.isWt_constFn _ _) (hL0 b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Vp, hWp⟩, ?_, ?_, fun α V hV f hf => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.Heat.WtAlg.isWt_sub (GlobalTheory.Heat.WtAlg.isWt_sub (GlobalTheory.Heat.Adjust.isWt_rsT Y (heatGaugeCoverOpen_le_heatOperatorOpen Y.q.left h₁ p) hp₁) hE0) ?_` and prove the remaining obligations. Use `GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.WtAlg.isWt_constFn _ _) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.Heat.WtAlg.isWt_sum _ _ fun a _ => GlobalTheory.Heat.WtAlg.isWt_sum _ _ fun b _ => GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.WtAlg.isWt_constFn _ _) (hL0 …`. Use `GlobalTheory.Heat.WtAlg.isWt_sub (GlobalTheory.Heat.WtAlg.isWt_add (GlobalTheory.Heat.Adjust.isWt_rsT Y (heatGaugeCoverOpen_le_heatOperatorOpen Y.q.left h₁ p) hp₁') ?_) ?_` and prove the remaining obligations.
-
-Use `GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.WtAlg.isWt_constFn _ _) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.Heat.WtAlg.isWt_sum _ _ fun a _ => GlobalTheory.Heat.WtAlg.isWt_sum _ _ fun b _ => GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.WtAlg.isWt_constFn _ _) (GlobalTheory.Heat.IsInv.isWt Y (v a) (dd a) (hinv a) 0 _ _ (hL0 b))`. Conclude with `GlobalTheory.Heat.WtAlg.isWt_sum _ _ fun a _ => GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.WtAlg.isWt_constFn _ _) (hL0 a)`. Use `show IsWt Y α _ (h₁.d p.1 _ f + ∑ a, rsT (gY Y.q.left h₁ e a p) _ * dd a _ f)`. Conclude with `GlobalTheory.Heat.WtAlg.isWt_add (hd₁ α V (hV.trans (heatGaugeCoverOpen_le_heatOperatorOpen Y.q.left h₁ p)) f hf) (GlobalTheory.Heat.WtAlg.isWt_sum _ _ fun a _ => GlobalTheory.Heat.WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (GlobalTheory.Heat.Adjust.isWt_rsT Y hV (hY0 a)) …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gauge_basic {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {O : Type} [CommRing O] [StarRing O]
     [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) {n : ℕ} (v : Fin n → TanM (𝟙 (Sp R)) Y.H) (dd : Fin n → Fld Y.H.left)
@@ -261,9 +259,9 @@ theorem gauge_basic {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) {O : Typ
         (GlobalTheory.Heat.Adjust.isWt_rsT Y hV (hY0 a)) (GlobalTheory.Heat.IsInv.isWt Y (v a) (dd a) (hinv a) α _ _ hf))
 
 /- English proof (translation)
-Introduce `R _ _ _ Q O _ _ _ oa Y n v dd hinv D x h₁ hB₁ e β he hwe`. Establish `hL : Q.P.L.IsLB` using `Q.P.isLB`. Establish `hF : ∀ a, IsField ⊤ (dd a)` using `fun a => (hinv a).1`. Establish `hc : 2 * algebraMap ℚ R (1 / 2) = 1`. Rewrite using `[← map_ofNat (algebraMap ℚ R) 2, ← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Use `⟨⟨h₁.Θ, h₁.symm, h₁.u, h₁.J × (Fin 2 → Q.P.L.ι), W Y.q.left h₁, fun p => p.2 0, gD Y.q.left h₁ e, gP Y.q.left h₁ e (algebraMap ℚ R (1 / 2)), gP' Y.q.left h₁ e (algebraMap ℚ R (1 / 2)), gauge_cover Y.H _ _ Q.P.L dd _ h₁ hL, fun p => W_le_m Y.q.left h₁ p, gauge_lift Y.H _ _ Q.P.L d …` and prove the remaining obligations. Introduce `k σ σ' ρ ρ' hρ hρ' hA p`. Conclude with `gauge_acts Y.H _ _ Q.P.L dd _ h₁ e hL he hF _ hc k σ σ' ρ ρ' hρ hρ' hA p`.
+Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_gauge_heat : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra ℚ R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (n : ℕ) (v : Fin n → TanM (𝟙 (Sp R)) Y.H) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (x : 𝟙_ (Over (Sp R)) ⟶ Y.H) (h₁ : Heat Y.H ((𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left) Q.P.L dd ⇑D), (∀ i, (∃ V : Q.P.A.left.Opens, h₁.W i = Y.q.left ⁻¹ᵁ V) ∧ IsWt Y 0 _ (h₁.p i) ∧ IsWt Y 0 _ (h₁.p' i) ∧ ∀ (α : Q.X) (V : Q.P.A.left.Opens), Y.q.left ⁻¹ᵁ V ≤ h₁.W i → ∀ f, IsWt Y α (Y.q.left ⁻¹ᵁ V) f → IsWt Y α (Y.q.left ⁻¹ᵁ V) (h₁.d i _ f)) → ∀ (e : LB.Gen (LB.LinComb Q.P.L (K := Fin 2) ![Y.q.left, (𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left] ![1, -1])) (β : Q.X), e.IsGen → (∀ (j : Fin 2 → Q.P.L.ι) (V : Q.P.A.left.Opens), Y.q.left ⁻¹ᵁ V ≤ LB.wchart Q.P.L ![Y.q.left, (𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left] j → IsWt Y β (Y.q.left ⁻¹ᵁ V) (rsT (e.s j).val (Y.q.left ⁻¹ᵁ V))) → ∃ h' : Heat Y.H Y.q.left Q.P.L dd ⇑D, IsBasic Y h' ∧ h'.Θ = h₁.Θ ∧ h'.u = h₁.u ∧ ∀ (k : ℕ) (σ σ' : SecM ((𝟙 Y.H * (toUnit Y.H ≫ x)).left ≫ Y.q.left) Q.P.L k) (ρ ρ' : SecM Y.q.left Q.P.L k), (∀ (Z : Scheme.{0}) (r : Z ⟶ Y.H.left) (z : Z) (J : (Z ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → sval ρ r z J = sval σ r z J * ((val e r z J) ^ k).val) → (∀ (Z : Scheme.{0}) (r : Z ⟶ Y.H.left) (z : Z) (J : (Z ⟶ Q.P.A.left) → Q.P.L.ι), Good Q.P.L z J → sval ρ' r z J = sval σ' r z J * ((val e r z J) ^ k).val) → h₁.Acts k σ σ' → h'.Acts k ρ ρ' := by
   intro R _ _ _ Q O _ _ _ oa Y n v dd hinv D x h₁ hB₁ e β he hwe

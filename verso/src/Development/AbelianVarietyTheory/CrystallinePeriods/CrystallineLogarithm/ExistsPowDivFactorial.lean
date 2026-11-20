@@ -18,13 +18,13 @@ open scoped Nat
 namespace Bridge.CrisLoc.PowMulEqZeroLemmas
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (Polynomial.X : Polynomial ℤ) 1`. Establish `h1` using `congrArg (fun f => Polynomial.coeff f 1) hr`. Establish `e : (p : Polynomial ℤ) * Polynomial.X * 1 * r = Polynomial.C (p : ℤ) * (Polynomial.X * r)`. Simplify using `[mul_assoc]`. Simplify using `only [e, Polynomial.coeff_X_add_one_pow, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, one_pow, Nat.choose_one_right, Polynomial.coeff_one] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[show (1 : ℕ) = 0 + 1 from rfl, Polynomial.coeff_X_mul]`. Establish `hp1 : ¬ (1 = p)` using `hp.one_lt.ne`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `h2 : r.coeff 0 = 1`. Simplify using `[hp1] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises. Apply the tactic sequence `first | simpa using h1.symm | simpa using h1 | (rcases h1 with h1 | h1 <;> simp_all)`. Take `⟨s, hs⟩` from `Polynomial.X_dvd_sub_C (p := r)`. Rewrite `hs` using `[h2, sub_eq_iff_eq_add]`. Use `⟨Polynomial.aeval m s, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `congrArg (Polynomial.aeval m) hr`. Rewrite `h3` using `[hs]`. Simplify using `at h3`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expand {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime) (m : A) :
     ∃ h : A, (m + 1) ^ p = m ^ p + 1 + p * m * (1 + m * h) := by
@@ -50,9 +50,9 @@ theorem expand {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime) (m : A) :
   rw [h3]; ring
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', mul_assoc, padicValNat_factorial_mul]`. Take `⟨q, hq⟩ : ∃ q, p = q + 1` from `⟨p - 1, by have := hp.out.pos; omega⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : p - 1 = q` using `by omega`. Rewrite `ih`, the goal using `[h1]`. Establish `: p * p ^ j = p ^ j * q + p ^ j`. Generalize the expression as in `p ^ j = t`. Rewrite using `[hq]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
 -/
@@ -74,7 +74,7 @@ variable {p : ℕ} [Fact p.Prime]
 variable {R : Type*} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
 /- English proof (translation)
-Establish `h1 : (span {(p : Acris p R)}).radical ≤ Ideal.jacobson ⊥` using `(Ideal.isRadical_jacobson ⊥).radical_le_iff.2 (IsAdicComplete.le_jacobson_bot _)`. Use `Ideal.mem_jacobson_bot.1 (h1 hy) 1` as an intermediate fact. Rewrite `this` using `[mul_one, add_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_of_mem {y : Acris p R} (hy : y ∈ (span {(p : Acris p R)}).radical) :
     IsUnit (1 + y) := by
@@ -84,13 +84,13 @@ theorem isUnit_of_mem {y : Acris p R} (hy : y ∈ (span {(p : Acris p R)}).radic
   rwa [mul_one, add_comm] at this
 
 /- English proof (translation)
-The claim follows from `Ideal.le_radical (mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem p_mem : (p : Acris p R) ∈ (span {(p : Acris p R)}).radical :=
   Ideal.le_radical (mem_span_singleton_self _)
 
 /- English proof (translation)
-Use `congrArg (algebraMap (AcrisZero p R) (Acris p R)) (AcrisZero.factorial_mul_gamma n a ha)` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_pow]`. Conclude with `⟨_, this.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fact_dvd (a : Ainf p R) (ha : Ainf.theta p R a = 0) (n : ℕ) :
     (n ! : Acris p R) ∣ algebraMap (Ainf p R) (Acris p R) a ^ n := by
@@ -99,7 +99,7 @@ theorem fact_dvd (a : Ainf p R) (ha : Ainf.theta p R a = 0) (n : ℕ) :
   exact ⟨_, this.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p, Ideal.mem_span_singleton.2 ((Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)).trans (fact_dvd a ha p))⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_rad (a : Ainf p R) (ha : Ainf.theta p R a = 0) :
     algebraMap (Ainf p R) (Acris p R) a ∈ (span {(p : Acris p R)}).radical :=
@@ -107,15 +107,13 @@ theorem mem_rad (a : Ainf p R) (ha : Ainf.theta p R a = 0) :
     (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)).trans (fact_dvd a ha p))⟩
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨N, hN⟩` from `hb`. Rewrite `hN` using `[Ideal.mem_span_singleton]`. Use `⟨p ^ (N * 2), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm (p - 1), mul_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (p : Acris p R) ^ padicValNat p (p ^ (N * 2) * (p - 1))! ∣ algebraMap (Ainf p R) (Acris p R) a ^ (p ^ (N * 2) * (p - 1))`. Use `Dvd.dvd.trans ?_ (fact_dvd a ha _)` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow]`. Conclude with `Nat.cast_dvd_cast pow_padicValNat_dvd`. Establish `h2 : (p : Acris p R) ^ 2 ∣ b ^ (p ^ (N * 2) * (p - 1))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(pow_dvd_pow_of_dvd hN 2).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Use `pow_dvd_pow _ ?_` and prove the remaining obligations. Establish `h3 : N * 2 < p ^ (N * 2)` using `Nat.lt_pow_self hp.one_lt`. Establish `h4 : 1 ≤ p - 1` using `by have := hp.two_le; omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h3.le.trans (Nat.le_mul_of_pos_right _ h4)`. Use `Dvd.dvd.trans ?_ (mul_dvd_mul h1 h2)` and prove the remaining obligations. Rewrite using `[← pow_add]`. Use `pow_dvd_pow _ ?_` and prove the remaining obligations. Use `val_fact p (N * 2)` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_prod (a : Ainf p R) (ha : Ainf.theta p R a = 0) {b : Acris p R}
     (hb : b ∈ (span {(p : Acris p R)}).radical) :
@@ -145,19 +143,17 @@ theorem pow_dvd_of_prod (a : Ainf p R) (ha : Ainf.theta p R a = 0) {b : Acris p 
   omega
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨w, hw⟩ : ∃ w : Ainf p R, w ^ p = Ainf.teich p e` from `⟨Ainf.teich p ((frobeniusEquiv (Tilt p R) p).symm e), by`. Rewrite using `[← map_pow, frobeniusEquiv_symm_pow_p]⟩`. Establish `hg : (∑ i ∈ Finset.range p, w ^ i) * (w - 1) = Ainf.teich p e - 1`. Rewrite using `[geom_sum_mul, hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Ainf.theta p R (Ainf.teich p e - 1) = 0`. Rewrite using `[map_sub, Ainf.theta_teich, he, map_one, sub_self]`. Establish `hm` using `mem_rad _ h0`. Establish `hw1 : algebraMap (Ainf p R) (Acris p R) (w - 1) ∈ (span {(p : Acris p R)}).radical`. Take `⟨h, hh⟩` from `expand hp (w - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hh` using `[sub_add_cancel, hw]`. Apply `Ideal.mem_radical_of_pow_mem (m := p)` to reduce the goal to its premises. Establish `: (w - 1) ^ p = (Ainf.teich p e - 1) - p * ((w - 1) * (1 + (w - 1) * h))`. Take the linear combination `-hh`. Rewrite using `[← map_pow, this, map_sub, map_mul, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem hm (Ideal.mul_mem_right _ _ p_mem)`. Establish `hs : algebraMap (Ainf p R) (Acris p R) (∑ i ∈ Finset.range p, w ^ i) ∈ (span {(p : Acris p R)}).radical`. Establish `: (∑ i ∈ Finset.range p, w ^ i) = p + ∑ i ∈ Finset.range p, (w ^ i - 1)`. Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[this, map_add, map_natCast, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem p_mem (Ideal.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `sub_one_dvd_pow_sub_one w i`. Rewrite using `[hc, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ hw1`. Establish `hg' : algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e) - 1 = algebraMap (Ainf p R) (Acris p R) (∑ i ∈ Finset.range p, w ^ i) * algebraMap (Ainf p R) (Acris p R) (w - 1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_mul, hg, map_sub, map_one]`. Rewrite `h0` using `[← hg, map_mul]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Rewrite using `[hg']`. Conclude with `pow_dvd_of_prod _ h hw1`.
-
-Rewrite using `[hg', mul_comm]`. Conclude with `pow_dvd_of_prod _ h hs`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_dvd [IsDomain R] (e : Tilt p R) (he : PreTilt.untilt e = 1) :
     ∃ k : ℕ, (p : Acris p R) ^ (k + 1) ∣
@@ -198,13 +194,13 @@ theorem exists_pow_dvd [IsDomain R] (e : Tilt p R) (he : PreTilt.untilt e = 1) :
   · rw [hg', mul_comm]; exact pow_dvd_of_prod _ h hs
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨k, c, hc⟩` from `exists_pow_dvd e he`. Establish `hm : algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e) - 1 ∈ (span {(p : Acris p R)}).radical`. Use `mem_rad (Ainf.teich p e - 1) (by rw [map_sub, Ainf.theta_teich, he, map_one, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨m, hmu⟩ : ∃ m, algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e) = m + 1` from `⟨_, (sub_add_cancel _ 1).symm⟩`. Rewrite `hz` using `[hmu]`. Rewrite `hc`, `hm`, the goal using `[hmu, add_sub_cancel_right]`. Take `⟨h, hh⟩` from `expand hp m`. Establish `hpp : m ^ p = m ^ (p - 1) * m` using `by rw [pow_sub_one_mul hp.ne_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (p * (1 + m * h) - (-m ^ (p - 1))) * (m * z) = 0`. Rewrite `hz` using `[hh, hpp]`. Take the linear combination `hz`. Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow (p * (1 + m * h)) (-m ^ (p - 1)) k`. Take `⟨g, hg⟩` from `sub_one_dvd_pow_sub_one (1 + m * h) k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (p : Acris p R) ^ k * ((1 + (m * (h * g) - p * ((-1) ^ k * c))) * (m * z)) = p ^ k * 0`. Rewrite `hd` using `[neg_pow, hc, mul_pow]`. Take the linear combination `(m * z) * hd + d * h1 - (p : Acris p R) ^ k * (m * z) * hg`. Conclude with `(isUnit_of_mem (sub_mem (Ideal.mul_mem_right _ _ hm) (Ideal.mul_mem_right _ _ p_mem))).mul_right_eq_zero.1 (Acris.p_pow_mul_cancel k h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem step [IsDomain R] (e : Tilt p R) (he : PreTilt.untilt e = 1) {z : Acris p R}
     (hz : (algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e) ^ p - 1) * z = 0) :
@@ -234,9 +230,9 @@ theorem step [IsDomain R] (e : Tilt p R) (he : PreTilt.untilt e = 1) {z : Acris 
     (Ideal.mul_mem_right _ _ p_mem))).mul_right_eq_zero.1 (Acris.p_pow_mul_cancel k h2)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`. Take `⟨c, hc⟩` from `ih`. Take `⟨r, hr⟩` from `Polynomial.powAddExpansion (1 : A) (u ^ p ^ n - 1) p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hr` using `[add_sub_cancel, ← pow_mul, ← pow_succ, one_pow, one_pow, hc]`. Use `⟨c + r * p ^ n * y * (1 + p * c) ^ 2, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tower {A : Type*} [CommRing A] (p : ℕ) (u y : A) (hy : u - 1 = p ^ 2 * y) (n : ℕ) :
     ∃ c : A, u ^ p ^ n - 1 = p ^ n * (u - 1) * (1 + p * c) := by
@@ -250,15 +246,15 @@ theorem tower {A : Type*} [CommRing A] (p : ℕ) (u y : A) (hy : u - 1 = p ^ 2 *
     rw [hr, hy]; ring
 
 /- English proof (translation)
-Establish `he : PreTilt.untilt e.1 = 1` using `e.2`. Establish `hu : Ainf.theta p R (Ainf.teich p e.1) = 1` using `by rw [Ainf.theta_teich, he]`. Establish `hq : ∀ n, ∃ l d : Acris p R, (p : Acris p R) ^ n * l = algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e.1) ^ p ^ n - 1 ∧ Acris.logTeich e = l + p ^ n * d` using `fun n => by`. Take `⟨l, h1, h2⟩` from `Acris.exists_quot _ hu n`. Take `⟨d, hd⟩` from `(Acris.eval_eq_zero_iff n (Acris.logTeich e - algebraMap _ _ l)).1 (by rw [map_sub, Acris.eval_algebraMap, sub_eq_zero]; exact h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨algebraMap _ _ l, d, ?_, by linear_combination hd⟩` and prove the remaining obligations. Use `congrArg (algebraMap (AcrisZero p R) (Acris p R)) h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_natCast, map_sub, map_pow, map_one]`. Conclude with `this`. Apply `step e.1 he` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `@step p _ R _ _ _ _ (e.1 ^ p) (by rw [map_pow, he, one_pow]) z`. Rewrite `h2` using `[map_pow, map_pow, ← pow_mul, ← sq]`. Apply `h2` to reduce the goal to its premises. Generalize the expression as in `algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e.1) = u at hq ⊢`. Use `Acris.eq_zero_of_forall_dvd fun n => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, -, hy, -⟩` from `hq 2`. Take `⟨c, hc⟩` from `tower p (u ^ p ^ 2) y hy.symm n`. Take `⟨l, d, hl, hd⟩` from `hq (2 + n)`. Rewrite `hl` using `[pow_add p 2 n, pow_mul, hc]`. Establish `h3 : (p : Acris p R) ^ 2 * l = (u ^ p ^ 2 - 1) * (1 + p * c)` using `Acris.p_pow_mul_cancel n (by linear_combination hl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hun : IsUnit (1 + (p : Acris p R) * c)` using `isUnit_of_mem (Ideal.mul_mem_right _ _ p_mem)`. Rewrite using `[← hun.dvd_mul_left]`. Use `⟨-(p ^ 4 * d * z), ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hd]`. Take the linear combination `(p : Acris p R) ^ 2 * hz - z * h3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem of_log [IsDomain R] (e : tateModule p R) {z : Acris p R}
     (hz : Acris.logTeich e * z = 0) :
@@ -294,9 +290,9 @@ theorem of_log [IsDomain R] (e : tateModule p R) {z : Acris p R}
   linear_combination (p : Acris p R) ^ 2 * hz - z * h3
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hε.padicPow_surjective e`. Use `Acris.eq_zero_of_forall_dvd fun k => ?_` and prove the remaining obligations. Take `⟨η, hη⟩` from `tateModule.exists_padicPow_eq ε (Ideal.mem_span_singleton.1 (PadicInt.appr_spec k a))`. Use `⟨Acris.logTeich η * z, ?_⟩` and prove the remaining obligations. Rewrite using `[hη, Acris.logTeich_mul, Acris.logTeich_pow, Acris.logTeich_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `(a.appr k : Acris p R) * hz`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem log_change [IsDomain R] (e : tateModule p R) {ε : tateModule p R} (hε : IsPrimitive ε)
     {z : Acris p R} (hz : Acris.logTeich ε * z = 0) : Acris.logTeich e * z = 0 := by
@@ -310,11 +306,11 @@ theorem log_change [IsDomain R] (e : tateModule p R) {ε : tateModule p R} (hε 
   linear_combination (a.appr k : Acris p R) * hz
 
 /- English proof (translation)
-Proceed by induction on `hm using Submonoid.closure_induction_left with`. Consider the case `one`. Introduce `x hx`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `BcrisPlus.algebraMap_injective (by rw [map_zero]; simpa using hx)`. Consider the case `mul_left a ha b hb ih`. Introduce `x hx`. Take `⟨ε, hε, rfl⟩` from `ha`. Take `⟨n, hn⟩` from `ih (Acris.logTeich ε * x) (by rw [map_mul]; linear_combination hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n + 1, ?_⟩` and prove the remaining obligations. Use `of_log e (log_change e hε (z := _ ^ n * x) (by rw [mul_left_comm]; exact hn))` as an intermediate fact. Rewrite using `[pow_succ', mul_assoc]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main [IsDomain R] (e : tateModule p R) {m : BcrisPlus p R} (hm : m ∈ BcrisPlus.periods p R) :
     ∀ x : Acris p R, m * algebraMap _ _ x = 0 →
@@ -337,7 +333,7 @@ theorem main [IsDomain R] (e : tateModule p R) {m : BcrisPlus p R} (hm : m ∈ B
 end Bridge.CrisLoc.PowMulEqZeroLemmas
 
 /- English proof (translation)
-Introduce `l _ e he _ x hx`. Rewrite `hx` using `[IsScalarTower.algebraMap_apply _ (BcrisPlus l ↥(PadicComplexInt l)), IsLocalization.map_eq_zero_iff (BcrisPlus.periods l ↥(PadicComplexInt l))]`. Take `⟨m, hm⟩` from `hx`. Take `⟨n, hn⟩` from `Bridge.CrisLoc.PowMulEqZeroLemmas.main ⟨e, he⟩ m.2 x hm`. Conclude with `⟨n, by rw [map_sub, map_one]; exact hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Bridge.CrisLoc.exists_pow_mul_eq_zero : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : e.untilt = 1) (hne : e ≠ 1) {x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))} (hx : algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x = 0), ∃ n : ℕ, algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) (WittVector.teichmuller l e - 1) ^ n * x = 0 := by
   intro l _ e he _ x hx
@@ -358,13 +354,13 @@ open scoped Nat
 namespace Bridge.CrisLoc.CrisAwayLemmas
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (1 : Polynomial ℤ) Polynomial.X`. Take `⟨k, hk⟩` from `Polynomial.powAddExpansion (1 : Polynomial ℤ) Polynomial.X p`. Take `⟨m, rfl⟩ : ∃ m, p = m + 2` from `⟨p - 2, by have := hp.two_le; omega⟩`. Establish `h1 : ((m + 2 : ℕ) : Polynomial ℤ) * (r - 1) = Polynomial.X * (k - Polynomial.X ^ m)`. Apply `mul_left_cancel₀ (Polynomial.X_ne_zero (R := ℤ))` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [one_pow] at hr hk`. Take the linear combination `hk - hr`. Establish `h2 : Polynomial.X ∣ r - 1`. Rewrite using `[Polynomial.X_dvd_iff]`. Use `congrArg (fun f => Polynomial.coeff f 0) h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Polynomial.mul_coeff_zero, Polynomial.coeff_X_zero, zero_mul, Polynomial.coeff_natCast_ite, if_true, mul_eq_zero] at this`. Conclude with `this.resolve_left (by simp; omega)`. Take `⟨h, hh⟩` from `h2`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, eq_add_of_sub_eq hh]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem binom_poly {p : ℕ} (hp : p.Prime) :
     ∃ h : Polynomial ℤ, (1 + Polynomial.X) ^ p =
@@ -388,7 +384,7 @@ theorem binom_poly {p : ℕ} (hp : p.Prime) :
   ring
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `binom_poly hp`. Use `⟨Polynomial.aeval x h, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (Polynomial.aeval x) hh`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem binom {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime) (x : A) :
     ∃ h : A, (1 + x) ^ p = 1 + x ^ p + (p : A) * x * (1 + x * h) := by
@@ -401,7 +397,7 @@ variable {p : ℕ} [Fact p.Prime]
 variable {R : Type u} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
 /- English proof (translation)
-Establish `hj` using `IsAdicComplete.le_jacobson_bot (span {(p : Acris p R)})`. Conclude with `Ideal.isRadical_jacobson _ ⟨n, hj (mem_span_singleton.2 h)⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_jac {z : Acris p R} {n : ℕ} (h : (p : Acris p R) ∣ z ^ n) :
     z ∈ (⊥ : Ideal (Acris p R)).jacobson := by
@@ -409,7 +405,7 @@ theorem mem_jac {z : Acris p R} {n : ℕ} (h : (p : Acris p R) ∣ z ^ n) :
   exact Ideal.isRadical_jacobson _ ⟨n, hj (mem_span_singleton.2 h)⟩
 
 /- English proof (translation)
-Use `congrArg (algebraMap (AcrisZero p R) (Acris p R)) (AcrisZero.factorial_mul_gamma n x hx)` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_pow, ← IsScalarTower.algebraMap_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fact_gamma (n : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (n ! : Acris p R) * algebraMap _ _ (AcrisZero.gamma n x hx) =
@@ -418,7 +414,7 @@ theorem fact_gamma (n : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   rwa [map_mul, map_natCast, map_pow, ← IsScalarTower.algebraMap_apply] at this
 
 /- English proof (translation)
-Rewrite using `[← fact_gamma p x hx]`. Conclude with `Dvd.dvd.mul_right (Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_dvd_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (p : Acris p R) ∣ algebraMap (Ainf p R) (Acris p R) x ^ p := by
@@ -427,11 +423,11 @@ theorem p_dvd_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)) _
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `h : AcrisZero.gamma p x hx ^ p = (p ! : AcrisZero p R) * ((Nat.uniformBell p p : ℕ) * AcrisZero.gamma (p * p) x hx)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, SubringClass.coe_natCast, AcrisZero.coe_gamma]`. Establish `hu : IsUnit (p ! : AinfInv p R)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap ℚ (AinfInv p R))]`. Conclude with `(IsUnit.mk0 _ (by exact_mod_cast Nat.factorial_ne_zero _)).map _`. Apply `(hu.pow p).mul_left_cancel` to reduce the goal to its premises. Establish `h1` using `AinfInv.factorial_mul_gamma (p * p) (algebraMap (Ainf p R) (AinfInv p R) x)`. Rewrite `h1` using `[← Nat.uniformBell_mul_eq p hp.ne_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1`. Rewrite using `[← mul_pow, AinfInv.factorial_mul_gamma, ← pow_mul, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← map_pow, h, map_mul, map_natCast]`. Conclude with `Dvd.dvd.mul_right (Nat.cast_dvd_cast (Nat.dvd_factorial hp.pos le_rfl)) _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_dvd_gamma_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (p : Acris p R) ∣ algebraMap _ (Acris p R) (AcrisZero.gamma p x hx) ^ p := by
@@ -454,7 +450,7 @@ theorem p_dvd_gamma_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact Dvd.dvd.mul_right (Nat.cast_dvd_cast (Nat.dvd_factorial hp.pos le_rfl)) _
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_one, Ainf.theta_teich, show PreTilt.untilt η.1 = 1 from η.2, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_mu (η : tateModule p R) : Ainf.theta p R (Ainf.teich p η.1 - 1) = 0 := by
   rw [map_sub, map_one, Ainf.theta_teich, show PreTilt.untilt η.1 = 1 from η.2, sub_self]
@@ -462,15 +458,15 @@ theorem theta_mu (η : tateModule p R) : Ainf.theta p R (Ainf.teich p η.1 - 1) 
 variable [IsDomain R] [CharZero R]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `e1 : ∀ y : Tilt p R, WittVector.constantCoeff (Ainf.teich p y) = y` using `fun y => by simp`. Establish `e2 : η.1 - 1 = (tateRoot η - 1) ^ p` using `by rw [sub_pow_char, tateRoot_pow, one_pow]`. Distinguish the cases in `hη : IsPrimitive η`. Use `⟨Ainf.omega η, 1, Ainf.theta_omega hη, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ainf.p_dvd_iff]`. Rewrite using `[← WittVector.constantCoeff_apply]`. Establish `h` using `congrArg (WittVector.constantCoeff (p := p) (R := Tilt p R)) (Ainf.omega_mul η)`. Rewrite `h` using `[map_mul, map_sub, map_sub, map_one, e1, e1, e2]`. Establish `hne : tateRoot η - 1 ≠ 0` using `fun h0 => hη (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `PreTilt.untilt (tateRoot η) = 1`. Rewrite using `[sub_eq_zero.1 h0, map_one])`. Establish `h3 : WittVector.constantCoeff (Ainf.omega η) = (tateRoot η - 1) ^ (p - 1)`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[h, ← pow_succ, Nat.sub_add_cancel hp.pos]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, map_sub, map_pow, map_pow, h3, map_sub, map_one, e1, e2, ← pow_mul, ← pow_mul, mul_comm, sub_self]`. Establish `h1 : PreTilt.untilt (tateRoot η) = 1` using `not_not.1 hη`. Use `⟨Ainf.teich p (tateRoot η) - 1, ((Ainf.teich p (tateRoot η) - 1) ^ p) ^ (p - 2), by rw [map_sub, map_one, Ainf.theta_teich, h1, sub_self], ?_⟩` and prove the remaining obligations. Rewrite using `[Ainf.p_dvd_iff]`. Rewrite using `[← WittVector.constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_succ', show p - 2 + 1 = p - 1 by have := hp.two_le; omega]`. Simplify using `only [map_sub, map_pow, map_one, e1, e2, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_congr (η : tateModule p R) : ∃ x c : Ainf p R, Ainf.theta p R x = 0 ∧
     (p : Ainf p R) ∣ (Ainf.teich p η.1 - 1) ^ (p - 1) - x ^ p * c := by
@@ -500,11 +496,11 @@ theorem exists_congr (η : tateModule p R) : ∃ x c : Ainf p R, Ainf.theta p R 
     simp only [map_sub, map_pow, map_one, e1, e2, sub_self]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨x, c, hx, a, ha⟩` from `exists_congr η`. Establish `h0 : Ainf.theta p R a = 0`. Use `congrArg (Ainf.theta p R) ha` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, theta_mu, map_mul, map_pow, hx, zero_pow hp.ne_zero, zero_pow (by have := hp.two_le; omega), zero_mul, sub_zero, map_mul, map_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this.symm).resolve_left (Nat.cast_ne_zero.2 hp.ne_zero)`. Use `⟨algebraMap _ _ a + algebraMap _ _ (AcrisZero.gamma p x hx) * (((p - 1)! : ℕ) * algebraMap _ _ c), add_mem (mem_jac (p_dvd_pow a h0)) (Ideal.mul_mem_right _ _ (mem_jac (p_dvd_gamma_pow x hx))), ?_⟩` and prove the remaining obligations. Establish `h1` using `fact_gamma p x hx`. Rewrite `h1` using `[← Nat.mul_factorial_pred hp.ne_zero, Nat.cast_mul]`. Rewrite using `[← map_pow, eq_add_of_sub_eq ha, map_add, map_mul, map_mul, map_pow, map_natCast, ← h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_p_mul (η : tateModule p R) : ∃ y ∈ (⊥ : Ideal (Acris p R)).jacobson,
     algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1 - 1) ^ (p - 1) = p * y := by
@@ -524,11 +520,11 @@ theorem exists_pow_eq_p_mul (η : tateModule p R) : ∃ y ∈ (⊥ : Ideal (Acri
   ring
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨y, hy, e⟩` from `exists_pow_eq_p_mul η`. Establish `hm` using `mem_jac (p_dvd_pow _ (theta_mu η))`. Rewrite `e`, `hm` using `[map_sub, map_one]`. Generalize the expression as in `algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1) = U at *`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨h, hh⟩` from `binom hp (U - 1)`. Establish `hu` using `Ideal.mem_jacobson_bot.1 (add_mem hy (Ideal.mul_mem_right h _ hm)) 1`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Establish `e' : (U - 1) ^ p = (U - 1) * (p * y)`. Rewrite using `[← e, ← pow_succ', Nat.sub_add_cancel hp.pos]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hh` using `[add_sub_cancel]`. Rewrite using `[IsUnit.unit_spec, hh, e']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem assoc_pow (η : tateModule p R) :
     Associated ((p : Acris p R) * (algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1) - 1))
@@ -549,23 +545,23 @@ theorem assoc_pow (η : tateModule p R) :
 
 omit [IsDomain R] [CharZero R] in
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `h : ∀ n, ∃ l : Acris p R, (p : Acris p R) ^ n * l = algebraMap (Ainf p R) _ u ^ p ^ n - 1 ∧ (p : Acris p R) ^ n ∣ Acris.log u hu - l` using `fun n => by`. Take `⟨l, h1, h2⟩` from `Acris.exists_quot u hu n`. Use `⟨algebraMap _ _ l, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap (AcrisZero p R) (Acris p R)) h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_pow, map_natCast, map_sub, map_pow, map_one, ← IsScalarTower.algebraMap_apply]`. Then use the resulting hypothesis. Rewrite using `[← Acris.eval_eq_zero_iff, map_sub, h2, Acris.eval_algebraMap, sub_self]`. Use `choose l hl ht using h`. Generalize the expression as in `Acris.log u hu = t at *`. Generalize the expression as in `algebraMap (Ainf p R) (Acris p R) u = U at *`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `step : ∀ n, ∃ c, l (n + 3) = l (n + 2) * (1 + p ^ (n + 1) * c)` using `fun n => by`. Take `⟨h, hh⟩` from `binom hp ((p : Acris p R) ^ (n + 2) * l (n + 2))`. Establish `e' : ((p : Acris p R) ^ (n + 2) * l (n + 2)) ^ p = ((p : Acris p R) ^ (n + 2) * l (n + 2)) ^ 2 * (p ^ (n + 2) * l (n + 2)) ^ (p - 2)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hp.two_le]`. Use `⟨l (n + 2) * (p ^ (n + 2) * l (n + 2)) ^ (p - 2) + p * l (n + 2) * h, Acris.p_pow_mul_cancel (n + 3) ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : U ^ p ^ (n + 3) = (1 + (p : Acris p R) ^ (n + 2) * l (n + 2)) ^ p`. Rewrite using `[hl, add_sub_cancel, ← pow_mul, ← pow_succ]`. Rewrite using `[hl (n + 3), e2, hh, e']`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : ∀ n, l 2 ∣ l (n + 2)` using `fun n => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => exact dvd_rfl`. Consider the case `succ n ih`. Take `⟨c, hc⟩` from `step n`. Rewrite using `[show n + 1 + 2 = n + 3 from rfl, hc]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ih.mul_right _`. Use `⟨l 2, hl 2, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `ht 2`. Establish `hm : (p : Acris p R) * z ∈ span {l 2}`. Use `mem_span_of_approx (p : Acris p R) (l 2) {x | ∃ n, (p : Acris p R) ^ (n + 1) * x = t - l (n + 2)} ?_ ⟨0, by rw [hz]; ring⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `x ⟨n, hx⟩`. Take `⟨c, hc⟩` from `step n`. Take `⟨W, hW⟩` from `hd n`. Take `⟨z, hz⟩` from `ht (n + 3)`. Use `⟨W * c, p * z, ⟨n + 1, ?_⟩, Acris.p_pow_mul_cancel (n + 1) ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show n + 1 + 2 = n + 3 from rfl, hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx]`. Take the linear combination `hz + hc + (p : Acris p R) ^ (n + 1) * c * hW`. Take `⟨a, ha⟩` from `mem_span_singleton.1 hm`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu` using `Ideal.mem_jacobson_bot.1 (mem_jac (p := p) (R := R) (z := p) (n := 1) (by simp)) a`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Take the linear combination `-hz - (p : Acris p R) * ha`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_assoc_log (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     ∃ l : Acris p R, (p : Acris p R) ^ 2 * l = algebraMap (Ainf p R) _ u ^ p ^ 2 - 1 ∧
@@ -620,9 +616,9 @@ theorem exists_assoc_log (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
   linear_combination -hz - (p : Acris p R) * ha
 
 /- English proof (translation)
-Take `⟨l, hl, hl'⟩` from `exists_assoc_log (Ainf.teich p η.1) (by rw [Ainf.theta_teich]; exact η.2)`. Use `Associated.trans ?_ hl'` and prove the remaining obligations. Take `⟨v, hv⟩` from `assoc_pow η`. Take `⟨w, hw⟩` from `assoc_pow (η ^ p)`. Rewrite `hw` using `[SubmonoidClass.coe_pow, map_pow, map_pow, ← pow_mul, ← sq, ← hl, ← hv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨v * w, Acris.p_pow_mul_cancel 2 ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, map_sub, map_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem assoc_log (η : tateModule p R) :
     Associated (algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1 - 1)) (Acris.logTeich η) := by
@@ -639,9 +635,9 @@ theorem assoc_log (η : tateModule p R) :
 
 omit [CharZero R] in
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hε.padicPow_surjective η`. Establish `ha : a ≠ 0` using `fun h => hη (by rw [h, tateModule.padicPow_zero])`. Establish `hu : IsUnit (g (algebraMap ℤ_[p] (Acris p R) a))`. Rewrite using `[PadicInt.unitCoeff_spec ha]`. Simplify using `only [map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(((Units.isUnit _).map _).map g).mul (hp.pow _)`. Rewrite using `[Acris.logTeich_padicPow, map_mul, IsUnit.mul_iff]`. Conclude with `and_iff_right hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_log_iff {B : Type*} [CommRing B] (g : Acris p R →+* B) (hp : IsUnit (p : B))
     {ε η : tateModule p R} (hε : IsPrimitive ε) (hη : η ≠ 1) :
@@ -656,15 +652,15 @@ theorem isUnit_log_iff {B : Type*} [CommRing B] (g : Acris p R →+* B) (hp : Is
   exact and_iff_right hu
 
 /- English proof (translation)
-Establish `h1` using `assoc_log η`. Establish `h2` using `p_dvd_pow _ (theta_mu η)`. Generalize the expression as in `algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1 - 1) = μ at *`. Establish `hμ : IsUnit (algebraMap (Acris p R) (Localization.Away μ) μ)` using `IsLocalization.Away.algebraMap_isUnit μ`. Establish `hp : IsUnit (p : Localization.Away μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `map_dvd (algebraMap (Acris p R) (Localization.Away μ)) h2` as an intermediate fact. Rewrite `this` using `[map_natCast, map_pow]`. Conclude with `isUnit_of_dvd_unit this (hμ.pow _)`. Establish `hB : IsUnit (algebraMap (Acris p R) (Bcris p R) μ)` using `isUnit_of_dvd_unit (map_dvd _ h1.dvd) ((isUnit_log_iff _ Bcris.isUnit_p (isPrimitive_eps p R) hη).2 (Bcris.isUnit_logTeich (isPrimitive_eps p R)))`. Set `f : Bcris p R →+* Localization.Away μ` to `Bcris.lift (BcrisPlus.lift (algebraMap _ _) hp) fun ε hε => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[BcrisPlus.lift_algebraMap]`. Conclude with `(isUnit_log_iff _ hp hε hη).1 (isUnit_of_dvd_unit (map_dvd _ h1.symm.dvd) hμ)`. Establish `hf : ∀ x : Acris p R, f (algebraMap _ _ x) = algebraMap _ _ x` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (Acris p R) (BcrisPlus p R) (Bcris p R)]`. Conclude with `(Bcris.lift_algebraMap _ _ _).trans (BcrisPlus.lift_algebraMap _ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : Localization.Away μ →+* Bcris p R` to `IsLocalization.Away.lift μ hB`. Establish `hg : ∀ x : Acris p R, g (algebraMap _ _ x) = algebraMap _ _ x` using `fun x => IsLocalization.Away.lift_eq _ _ x`. Establish `hfg : f.comp g = RingHom.id _` using `IsLocalization.ringHom_ext (Submonoid.powers μ) (RingHom.ext fun x => by`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, hg, hf])`. Establish `hgf : g.comp f = RingHom.id _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Bcris.hom_ext fun y => ?_` and prove the remaining obligations. Use `RingHom.congr_fun (BcrisPlus.hom_ext (f := (g.comp f).comp (algebraMap (BcrisPlus p R) (Bcris p R))) (g := algebraMap (BcrisPlus p R) (Bcris p R)) fun x => ?_) y` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, RingHom.comp_apply, hf, hg]`. Conclude with `IsLocalization.isLocalization_of_algEquiv (Submonoid.powers μ) (AlgEquiv.ofRingEquiv (f := RingEquiv.ofRingHom g f hgf hfg) hg)`.
+A detailed English derivation is pending.
 -/
 theorem away [ValuationRing R] [IsAlgClosed (FractionRing R)] (η : tateModule p R) (hη : η ≠ 1) :
     IsLocalization.Away (algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1 - 1))
@@ -707,7 +703,7 @@ theorem away [ValuationRing R] [IsAlgClosed (FractionRing R)] (η : tateModule p
 end Bridge.CrisLoc.CrisAwayLemmas
 
 /- English proof (translation)
-Introduce `l _ e he hne`. Conclude with `Bridge.CrisLoc.CrisAwayLemmas.away (p := l) (R := PadicComplexInt l) ⟨e, he⟩ fun h => hne (congrArg Subtype.val h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.bcris_away : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : e.untilt = 1) (hne : e ≠ 1), IsLocalization.Away (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) (WittVector.teichmuller l e - 1)) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) := by
   intro l _ e he hne
@@ -729,7 +725,7 @@ section General
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce `J hJ`. Conclude with `hJ.2.isPrime.mem_of_pow_mem n (h hJ)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_jac_of_pow {x : A} {n : ℕ} (h : x ^ n ∈ jacobson (⊥ : Ideal A)) :
     x ∈ jacobson (⊥ : Ideal A) := by
@@ -738,17 +734,17 @@ theorem mem_jac_of_pow {x : A} {n : ℕ} (h : x ^ n ∈ jacobson (⊥ : Ideal A)
   exact hJ.2.isPrime.mem_of_pow_mem n (h hJ)
 
 /- English proof (translation)
-Simplify using `using Ideal.mem_jacobson_bot.1 h 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_of_sub_one_mem {x : A} (h : x - 1 ∈ jacobson (⊥ : Ideal A)) : IsUnit x := by
   simpa using Ideal.mem_jacobson_bot.1 h 1
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (x : A), x ∈ (span {a} ^ n • ⊤ : Submodule A A) ↔ a ^ n ∣ x`. Introduce `n x`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := span {a}) d (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Use `dvd_sub ih ((pow_dvd_pow a hmn).trans (h n))` as an intermediate fact. Rewrite using `[sub_sub, add_sub_cancel] at this)` and apply the resulting hypothesis.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨L, fun n => (key n _).1 (SModEq.sub_mem.1 (hL n))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_limit (a : A) [IsAdicComplete (span {a}) A] (d : ℕ → A)
     (h : ∀ n, a ^ n ∣ d (n + 1) - d n) : ∃ L, ∀ n, a ^ n ∣ d n - L := by
@@ -765,7 +761,7 @@ theorem exists_limit (a : A) [IsAdicComplete (span {a}) A] (d : ℕ → A)
   exact ⟨L, fun n => (key n _).1 (SModEq.sub_mem.1 (hL n))⟩
 
 /- English proof (translation)
-Establish `: v - 1 ∣ ∑ i ∈ Finset.range n, (v ^ i - 1)` using `Finset.dvd_sum fun i _ => by simpa using sub_dvd_pow_sub_pow v 1 i`. Take `⟨g, hg⟩` from `this`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem geom_sum_eq (n : ℕ) (v : A) : ∃ g, ∑ i ∈ Finset.range n, v ^ i = n + (v - 1) * g := by
   have : v - 1 ∣ ∑ i ∈ Finset.range n, (v ^ i - 1) :=
@@ -777,15 +773,15 @@ theorem geom_sum_eq (n : ℕ) (v : A) : ∃ g, ∑ i ∈ Finset.range n, v ^ i =
 
 open Polynomial in
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `set F : ℤ[X] := ∑ i ∈ Finset.range p, X ^ i with hF`. Establish `h1 : C (p : ℤ) ∣ expand ℤ p F - F ^ p`. Rewrite using `[C_dvd_iff_dvd_coeff]`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (expand ℤ p F - F ^ p).map (Int.castRingHom (ZMod p)) = 0`. Rewrite using `[Polynomial.map_sub, map_expand, ZMod.expand_card, Polynomial.map_pow, sub_self]`. Establish `h2` using `congrArg (fun f => coeff f i) this`. Simplify using `only [coeff_map, coeff_zero, eq_intCast] at h2`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨D, hD⟩` from `h1`. Establish `h3 : D.eval 1 = 1 - p ^ (p - 1)`. Use `congrArg (eval 1) hD` as an intermediate fact. Simplify using `[hF, eval_finset_sum] at this`. Apply `mul_left_cancel₀ (show (p : ℤ) ≠ 0 by exact_mod_cast hp.ne_zero)` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← this, mul_sub, mul_one, ← pow_succ', Nat.sub_add_cancel hp.one_le]`. Take `⟨G, hG⟩` from `X_sub_C_dvd_sub_C_eval (a := 1) (p := D)`. Use `⟨aeval v G, ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg (aeval v) hD`. Establish `h5` using `congrArg (aeval v) hG`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h5` using `[h3]`. Simplify using `[hF] at h4 h5`. Take the linear combination `h4 + p * h5`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem geom_sum_frob (p : ℕ) [Fact p.Prime] (v : A) : ∃ g,
     ∑ i ∈ Finset.range p, (v ^ p) ^ i =
@@ -820,13 +816,13 @@ variable {p : ℕ} [Fact p.Prime]
 variable {R : Type*} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
 /- English proof (translation)
-The claim follows from `IsAdicComplete.le_jacobson_bot (span {(p : Acris p R)}) (mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem p_mem_jac : (p : Acris p R) ∈ jacobson (⊥ : Ideal (Acris p R)) :=
   IsAdicComplete.le_jacobson_bot (span {(p : Acris p R)}) (mem_span_singleton_self _)
 
 /- English proof (translation)
-Use `congrArg (algebraMap (AcrisZero p R) (Acris p R)) (AcrisZero.factorial_mul_gamma n x hx)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_natCast, ← IsScalarTower.algebraMap_apply]`. Conclude with `⟨_, this.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem factorial_dvd (n : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (n ! : Acris p R) ∣ algebraMap (Ainf p R) (Acris p R) x ^ n := by
@@ -835,7 +831,7 @@ theorem factorial_dvd (n : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact ⟨_, this.symm⟩
 
 /- English proof (translation)
-The claim follows from `(Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)).trans (factorial_dvd p x hx)`.
+A detailed English derivation is pending.
 -/
 theorem p_dvd_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (p : Acris p R) ∣ algebraMap (Ainf p R) (Acris p R) x ^ p :=
@@ -843,7 +839,7 @@ theorem p_dvd_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (factorial_dvd p x hx)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `p_dvd_pow x hx`. Conclude with `mem_jac_of_pow (n := p) (by rw [hc]; exact mul_mem_right _ _ p_mem_jac)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_jac_of_theta (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     algebraMap (Ainf p R) (Acris p R) x ∈ jacobson (⊥ : Ideal (Acris p R)) := by
@@ -851,11 +847,11 @@ theorem mem_jac_of_theta (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact mem_jac_of_pow (n := p) (by rw [hc]; exact mul_mem_right _ _ p_mem_jac)
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨c, hc⟩` from `p_dvd_pow x hx`. Use `⟨c, mem_jac_of_pow (n := p) ?_, hc⟩` and prove the remaining obligations. Establish `h1 : p ^ (p + 1) ∣ (p * p)!`. Rewrite using `[padicValNat_dvd_iff_le (Nat.factorial_ne_zero _), padicValNat_factorial_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 1 ≤ padicValNat p p !`. Rewrite using `[← padicValNat_dvd_iff_le (Nat.factorial_ne_zero _), pow_one]`. Conclude with `Nat.dvd_factorial hp.pos le_rfl`. Use linear arithmetic over natural numbers and integers. Take `⟨d, hd⟩` from `(Nat.cast_dvd_cast (α := Acris p R) h1).trans (factorial_dvd (p * p) x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[pow_mul, hc, mul_pow, Nat.cast_pow, pow_succ, mul_assoc]`. Rewrite using `[Acris.p_pow_mul_cancel p hd]`. Conclude with `mul_mem_right _ _ p_mem_jac`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_mul (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     ∃ c ∈ jacobson (⊥ : Ideal (Acris p R)), algebraMap (Ainf p R) (Acris p R) x ^ p = p * c := by
@@ -874,21 +870,21 @@ theorem exists_pow_eq_mul (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact mul_mem_right _ _ p_mem_jac
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_one, Ainf.theta_teich, tateModule.untilt_eq_one, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_teich_sub_one (η : tateModule p R) : Ainf.theta p R (Ainf.teich p η.1 - 1) = 0 := by
   rw [map_sub, map_one, Ainf.theta_teich, tateModule.untilt_eq_one, sub_self]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `set v := algebraMap (Ainf p R) (Acris p R) (Ainf.teich p (tateRoot ε)) with hv`. Establish `h1 : algebraMap (Ainf p R) (Acris p R) (Ainf.teich p ε.1) = v ^ p`. Rewrite using `[hv, ← map_pow, ← map_pow, tateRoot_pow]`. Take `⟨g, hg⟩` from `geom_sum_frob p v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hc'⟩` from `exists_pow_eq_mul _ (Ainf.theta_omega hε)`. Establish `h2 : algebraMap (Ainf p R) (Acris p R) (Ainf.omega ε) = ∑ i ∈ Finset.range p, v ^ i`. Simplify using `[Ainf.omega, hv]`. Establish `h3 : v - 1 ∈ jacobson (⊥ : Ideal (Acris p R))`. Establish `h4` using `mem_jac_of_theta _ (theta_teich_sub_one ε)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[map_sub, map_one, h1]`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (v - 1) 1`. Use `mem_jac_of_pow (n := p) ?_` and prove the remaining obligations. Establish `: (v - 1) ^ p = (v ^ p - 1) - p * ((v - 1) * r)`. Rewrite `hr` using `[sub_add_cancel, one_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hr`. Rewrite using `[this]`. Conclude with `sub_mem h4 (mul_mem_right _ _ p_mem_jac)`. Use `⟨c + (1 - p ^ (p - 1) + (v - 1) * g), isUnit_of_sub_one_mem ?_, ?_⟩` and prove the remaining obligations. Establish `: c + (1 - p ^ (p - 1) + (v - 1) * g) - 1 = c - p ^ (p - 1) + (v - 1) * g` using `by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `add_mem (sub_mem hc ?_) (mul_mem_right _ _ h3)` and prove the remaining obligations. Conclude with `Ideal.pow_mem_of_mem _ p_mem_jac _ (by have := hp.two_le; omega)`. Rewrite using `[h1, hg, ← h2, hc']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_unit [IsDomain R] {ε : tateModule p R} (hε : IsPrimitive ε) :
     ∃ w : Acris p R, IsUnit w ∧
@@ -920,23 +916,21 @@ theorem exists_unit [IsDomain R] {ε : tateModule p R} (hε : IsPrimitive ε) :
     ring
 
 /- English proof (translation)
-Use `set U := algebraMap (Ainf p R) (Acris p R) u with hU`. Establish `h0 : ∀ n, ∃ l : Acris p R, (p : Acris p R) ^ n * l = U ^ p ^ n - 1 ∧ (p : Acris p R) ^ n ∣ Acris.log u hu - l`. Introduce `n`. Take `⟨l, hl, hl'⟩` from `Acris.exists_quot u hu n`. Use `⟨algebraMap _ _ l, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (algebraMap (AcrisZero p R) (Acris p R)) hl` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_natCast, map_sub, map_one, map_pow, ← IsScalarTower.algebraMap_apply]`. Then use the resulting hypothesis. Rewrite using `[← Acris.eval_eq_zero_iff, map_sub, hl', Acris.eval_algebraMap, sub_self]`. Use `choose l hl hl' using h0`. Establish `h1 : ∀ n, ∃ c, l (n + 3) = l (n + 2) * (1 + (p : Acris p R) ^ (n + 1) * c)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n`. Take `⟨g, hg⟩` from `geom_sum_eq p (U ^ p ^ (n + 2))`. Use `⟨l (n + 2) * g, Acris.p_pow_mul_cancel (n + 3) ?_⟩` and prove the remaining obligations. Establish `h2` using `mul_geom_sum (U ^ p ^ (n + 2)) p`. Rewrite `h2` using `[hg, ← pow_mul, ← pow_succ, ← hl, ← hl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree. Use `choose c hc using h1`. Set `d : ℕ → Acris p R` to `fun n => ∏ i ∈ Finset.range n, (1 + (p : Acris p R) ^ (i + 1) * c i)`. Establish `hd : ∀ n, d (n + 1) = d n * (1 + (p : Acris p R) ^ (n + 1) * c n)` using `fun n => Finset.prod_range_succ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hld : ∀ n, l (n + 2) = l 2 * d n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [d]`. Consider the case `succ n ih => rw [hd, ← mul_assoc, ← ih]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hc n`. Take `⟨D, hD⟩` from `exists_limit (p : Acris p R) d fun n => ⟨d n * p * c n, by rw [hd]; ring⟩`. Use `⟨l 2, D, isUnit_of_sub_one_mem ?_, hl 2, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hD 1`. Establish `: D - 1 = p * (c 0 - z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : d 1 = 1 + p * c 0` using `by simp [d]`. Rewrite `hz` using `[h3]`. Take the linear combination `-hz`. Rewrite using `[this]`. Conclude with `mul_mem_right _ _ p_mem_jac`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← sub_eq_zero]`. Use `Acris.eq_zero_of_forall_dvd fun n => ?_` and prove the remaining obligations. Establish `: Acris.log u hu - l 2 * D = (Acris.log u hu - l (n + 2)) + l 2 * (d n - D)`. Rewrite using `[hld n]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Conclude with `dvd_add ((pow_dvd_pow _ (by omega)).trans (hl' (n + 2))) ((hD n).mul_left _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_log_eq (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     ∃ l d : Acris p R, IsUnit d ∧
@@ -988,11 +982,9 @@ theorem exists_log_eq (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     exact dvd_add ((pow_dvd_pow _ (by omega)).trans (hl' (n + 2))) ((hD n).mul_left _)
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `exists_unit hε`. Take `⟨l, d, hd, hl, hlog⟩` from `exists_log_eq (Ainf.teich p ε.1) (by rw [Ainf.theta_teich]; exact ε.2)`. Establish `h'` using `congrArg (Acris.frob p R) h`. Simplify using `only [map_sum, map_pow, map_mul, map_natCast, Acris.frob_algebraMap, Ainf.frob_teich] at h'`. Use `set U := algebraMap (Ainf p R) (Acris p R) (Ainf.teich p ε.1) with hU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `mul_geom_sum U p`. Establish `h2` using `mul_geom_sum (U ^ p) p`. Rewrite `h2` using `[h', ← h1, h, ← pow_mul, ← sq, ← hl]`. Establish `h3 : l = (U - 1) * (w * Acris.frob p R w)` using `Acris.p_pow_mul_cancel 2 (by rw [← h2]; ring)`. Rewrite using `[Acris.logTeich, hlog, h3, mul_assoc]`.
-
-Conclude with `((hw.mul (hw.map _)).mul hd).mul_right_dvd.2 dvd_rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logTeich_dvd [IsDomain R] {ε : tateModule p R} (hε : IsPrimitive ε) :
     Acris.logTeich ε ∣ algebraMap (Ainf p R) (Acris p R) (Ainf.teich p ε.1) - 1 := by
@@ -1011,9 +1003,9 @@ theorem logTeich_dvd [IsDomain R] {ε : tateModule p R} (hε : IsPrimitive ε) :
   exact ((hw.mul (hw.map _)).mul hd).mul_right_dvd.2 dvd_rfl
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (Acris.eq_zero_of_forall_dvd fun k => ?_)` and prove the remaining obligations. Establish `h : (p : ℤ_[p]) ^ k ∣ a - (a.appr k : ℕ)` using `mem_span_singleton.1 (PadicInt.appr_spec k a)`. Take `⟨ζ, hζ⟩` from `tateModule.exists_padicPow_eq η h`. Establish `h2` using `map_dvd (algebraMap ℤ_[p] (Acris p R)) h`. Rewrite `h2` using `[map_pow, map_natCast, map_sub, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `dvd_sub (dvd_mul_right ((p : Acris p R) ^ k) (Acris.logTeich ζ)) (h2.mul_right (Acris.logTeich η))`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hζ, Acris.logTeich_mul, Acris.logTeich_pow, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_linear (η : tateModule p R) (a : ℤ_[p]) :
     Acris.logTeich (tateModule.padicPow η a) =
@@ -1030,9 +1022,9 @@ theorem log_linear (η : tateModule p R) (a : ℤ_[p]) :
   ring
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hε.padicPow_surjective η`. Establish `ha : a ≠ 0` using `by rintro rfl; exact hη (tateModule.padicPow_zero ε)`. Establish `h1` using `logTeich_dvd ((hε.padicPow_iff (PadicInt.unitCoeff ha)).2 (Units.isUnit _))`. Rewrite `h1` using `[log_linear]`. Use `((dvd_mul_left _ _).trans h1).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [PadicInt.unitCoeff_spec ha, tateModule.padicPow_mul, ← Nat.cast_pow, tateModule.padicPow_natCast, SubmonoidClass.coe_pow, map_pow, map_sub, map_one, map_pow]`. Conclude with `sub_one_dvd_pow_sub_one _ _`.
+A detailed English derivation is pending.
 -/
 theorem logTeich_dvd_of_ne_one [IsDomain R] {ε : tateModule p R} (hε : IsPrimitive ε)
     (η : tateModule p R) (hη : η ≠ 1) :
@@ -1047,15 +1039,15 @@ theorem logTeich_dvd_of_ne_one [IsDomain R] {ε : tateModule p R} (hε : IsPrimi
   exact sub_one_dvd_pow_sub_one _ _
 
 /- English proof (translation)
-Use `set μ := algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1 - 1) with hμ`. Take `⟨⟨x, s, hs⟩, hb⟩` from `IsLocalization.surj (BcrisPlus.periods p R) b`. Establish `h1 : ∃ (n : ℕ) (y : Acris p R), algebraMap (Acris p R) (BcrisPlus p R) μ ^ n = s * algebraMap (Acris p R) (BcrisPlus p R) y` using `by clear hb`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, rfl⟩` from `hs`. Take `⟨y, hy⟩` from `logTeich_dvd_of_ne_one hε η hη`. Conclude with `⟨1, y, by rw [pow_one, ← map_mul, ← hy]⟩`. Consider the case `one => exact ⟨0, 1, by simp⟩`. Consider the case `mul s t _ _ hs ht`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, y, hy⟩` from `hs`. Take `⟨n, z, hz⟩` from `ht`. Conclude with `⟨m + n, y * z, by rw [pow_add, hy, hz, map_mul]; ring⟩`. Take `⟨n, y, hy⟩` from `h1`. Take `⟨k, z, hz⟩` from `IsLocalization.Away.surj (S := BcrisPlus p R) (p : Acris p R) x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `p_dvd_pow _ (theta_teich_sub_one η)`. Rewrite `hg` using `[← hμ]`. Use `⟨n + p * k, z * y * g ^ k, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (algebraMap (BcrisPlus p R) (Bcris p R)) hy`. Establish `e2` using `congrArg (algebraMap (BcrisPlus p R) (Bcris p R)) hz`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `congrArg (algebraMap (Acris p R) (Bcris p R)) hg`. Simplify using `only [map_mul, map_pow, ← IsScalarTower.algebraMap_apply] at e1 e2 e3 hb ⊢`. Rewrite using `[pow_add, pow_mul, e1, e3, ← e2, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main [IsDomain R] (η : tateModule p R) (hη : η ≠ 1) (b : Bcris p R) :
     ∃ (n : ℕ) (x : Acris p R), b * algebraMap (Acris p R) (Bcris p R)
@@ -1091,7 +1083,7 @@ theorem main [IsDomain R] (η : tateModule p R) (hη : η ≠ 1) (b : Bcris p R)
 end Bridge.CrisLoc.MulPowEqLemmas
 
 /- English proof (translation)
-Introduce `l _ e he hne b`. Conclude with `Bridge.CrisLoc.MulPowEqLemmas.main ⟨e, he⟩ (fun h => hne (congrArg Subtype.val h)) b`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.exists_mul_pow_eq : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : e.untilt = 1) (hne : e ≠ 1) (b : (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))), ∃ (n : ℕ) (x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))), b * algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) (WittVector.teichmuller l e - 1)) ^ n = algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) x := by
   intro l _ e he hne b
@@ -1110,9 +1102,9 @@ open scoped Nat
 namespace Bridge.CrisLoc.unitOfRootSeries
 
 /- English proof (translation)
-Break down `le_or_gt v (n + 2) with h | h` into its components or cases. Conclude with `(Nat.mul_le_mul_left p (by omega)).trans hk`. Take `⟨w, rfl⟩ : ∃ w, v = w + 2` from `⟨v - 2, by omega⟩`. Establish `h1 : w + 1 ≤ p ^ w` using `Nat.lt_pow_self (by omega)`. Establish `h2 : w + 2 + n + 1 ≤ p ^ w * p` using `(by omega : w + 2 + n + 1 ≤ (w + 1) * 2).trans (Nat.mul_le_mul h1 hp)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : p * (w + 2 + n + 1) ≤ p ^ (w + 2)`. Rewrite using `[pow_succ, pow_succ, mul_comm]`. Conclude with `Nat.mul_le_mul_right p h2`. Establish `h4 : p * (w + 2 + n + 1) = p * (w + 2 + n) + p` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem bound {p v n k : ℕ} (hp : 2 ≤ p) (hv : p ^ v ≤ k + 1) (hk : p * (2 * n + 2) ≤ k) :
     p * (v + n) ≤ k := by
@@ -1129,13 +1121,13 @@ theorem bound {p v n k : ℕ} (hp : 2 ≤ p) (hv : p ^ v ≤ k + 1) (hk : p * (2
     omega
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨v, m, hm, h⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.succ_ne_zero k) p hp.ne_one`. Establish `hv : p ^ v ≤ k + 1` using `Nat.le_of_dvd k.succ_pos ⟨m, h⟩`. Establish `hu : IsUnit (m : A)`. Establish `: IsUnit (m : ℤ_[p])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `hp.coprime_iff_not_dvd.2 hm`. Simplify using `using this.map f`. Establish `hd : (p : A) ^ (v + n) ∣ x ^ k`. Use `(pow_dvd_pow_of_dvd hx (v + n)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul]`. Conclude with `pow_dvd_pow x (bound hp.two_le hv hk)`. Take `⟨c, hc'⟩` from `hd`. Rewrite using `[← hu.dvd_mul_left]`. Use `⟨c, hc v _ _ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h' : ((k + 1 : ℕ) : A) = (p : A) ^ v * m`. Rewrite using `[show k + 1 = p ^ v * m from h, Nat.cast_mul, Nat.cast_pow]`. Rewrite using `[← mul_assoc, ← h', ha, pow_succ, hc']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem term_dvd {p : ℕ} [Fact p.Prime] {A : Type*} [CommRing A] (f : ℤ_[p] →+* A)
     (hc : ∀ (m : ℕ) (y z : A), (p : A) ^ m * y = (p : A) ^ m * z → y = z)
@@ -1169,7 +1161,7 @@ def term (u : Ainf p R) (hu : Ainf.theta p R u = 1) (k : ℕ) : Acris p R :=
     ((k ! : AcrisZero p R) * AcrisZero.gamma (k + 1) (u - 1) (by simp [hu]))
 
 /- English proof (translation)
-Rewrite using `[term, ← map_natCast (algebraMap (AcrisZero p R) (Acris p R)), ← map_mul, ← mul_assoc, ← Nat.cast_mul, ← Nat.factorial_succ, AcrisZero.factorial_mul_gamma, map_pow, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem succ_mul_term (u : Ainf p R) (hu : Ainf.theta p R u = 1) (k : ℕ) :
     ((k + 1 : ℕ) : Acris p R) * term u hu k =
@@ -1179,7 +1171,7 @@ theorem succ_mul_term (u : Ainf p R) (hu : Ainf.theta p R u = 1) (k : ℕ) :
     ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[Acris.logPartial, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[term, mul_assoc, map_mul, map_pow, map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem partial_eq (u : Ainf p R) (hu : Ainf.theta p R u = 1) (N : ℕ) :
     algebraMap (AcrisZero p R) (Acris p R) (Acris.logPartial N u hu) =
@@ -1189,7 +1181,7 @@ theorem partial_eq (u : Ainf p R) (hu : Ainf.theta p R u = 1) (N : ℕ) :
   rw [term, mul_assoc, map_mul, map_pow, map_neg, map_one]
 
 /- English proof (translation)
-Establish `h` using `congrArg (algebraMap (AcrisZero p R) (Acris p R)) (AcrisZero.factorial_mul_gamma p (u - 1) (by simp [hu]))`. Rewrite `h` using `[map_mul, map_natCast, map_pow, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[← h]`. Conclude with `(Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)).mul_right _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_dvd_pow (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     (p : Acris p R) ∣ algebraMap (Ainf p R) (Acris p R) (u - 1) ^ p := by
@@ -1200,13 +1192,13 @@ theorem p_dvd_pow (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
   exact (Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)).mul_right _
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Set `M : ℕ → ℕ` to `fun n => p ^ n + p * (2 * n + 2)`. Establish `hM : ∀ n, M n ≤ M (n + 1)` using `fun n => Nat.add_le_add (Nat.pow_le_pow_right hp.pos n.le_succ) (Nat.mul_le_mul_left p (by omega))`. Set `s : ℕ → Acris p R` to `fun n => ∑ k ∈ Finset.range (M n), (-1) ^ k * term u hu k`. Establish `h1 : ∀ n, (p : Acris p R) ^ n ∣ Acris.log u hu - s n` using `fun n => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Acris.eval_eq_zero_iff, map_sub, Acris.eval_log u hu (Nat.le_add_right _ _ : p ^ n ≤ M n)]`. Simplify using `only [s]`. Rewrite using `[← partial_eq, Acris.eval_algebraMap, sub_self]`. Establish `h2 : ∀ n, algebraMap (Ainf p R) (Acris p R) (u - 1) * (p : Acris p R) ^ n ∣ s (n + 1) - s n` using `fun n => by`. Simplify using `only [s]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_Ico_eq_sub _ (hM n)]`. Use `Finset.dvd_sum fun k hk => Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Conclude with `term_dvd (algebraMap ℤ_[p] (Acris p R)) (fun m _ _ h => Acris.p_pow_mul_cancel m h) (p_dvd_pow u hu) ((Nat.le_add_left _ _).trans (Finset.mem_Ico.1 hk).1) (succ_mul_term u hu k)`. Use `⟨M 0, mem_span_singleton.1 (mem_span_of_approx (p : Acris p R) _ {y | ∃ n, (p : Acris p R) ^ n * y = Acris.log u hu - s n} ?_ ⟨0, by simp [s]⟩)⟩` and prove the remaining obligations. Introduce and unpack `y ⟨n, hy⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `h1 (n + 1)`. Take `⟨b, hb⟩` from `h2 n`. Use `⟨b, z, ⟨n + 1, hz.symm⟩, Acris.p_pow_mul_cancel n ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[pow_succ]`. Take the linear combination `hy + hz + hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dvd_tail (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     ∃ N, algebraMap (Ainf p R) (Acris p R) (u - 1) ∣
@@ -1238,11 +1230,11 @@ theorem dvd_tail (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
   linear_combination hy + hz + hb
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `dvd_tail u hu`. Establish `h` using `map_dvd (algebraMap (Acris p R) (Bcris p R)) hN`. Rewrite `h` using `[map_sub _ (Acris.log u hu)]`. Rewrite using `[← sub_add_cancel (algebraMap (Acris p R) (Bcris p R) (Acris.log u hu)) (algebraMap (Acris p R) (Bcris p R) (∑ k ∈ Finset.range N, (-1) ^ k * term u hu k))]`. Use `dvd_add h ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.dvd_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Establish `hk : IsUnit ((k + 1 : ℕ) : Bcris p R)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap ℚ_[p] (Bcris p R))]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 k.succ_ne_zero)).map _`. Rewrite using `[← hk.dvd_mul_left, ← map_natCast (algebraMap (Acris p R) (Bcris p R)), ← map_mul, succ_mul_term, map_pow]`. Conclude with `dvd_pow_self _ k.succ_ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_log (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
     algebraMap (Acris p R) (Bcris p R) (algebraMap (Ainf p R) (Acris p R) (u - 1)) ∣
@@ -1265,9 +1257,7 @@ theorem dvd_log (u : Ainf p R) (hu : Ainf.theta p R u = 1) :
   exact dvd_pow_self _ k.succ_ne_zero
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(isPrimitive_eps p R).padicPow_surjective η`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `h (tateModule.padicPow_zero _)`. Rewrite using `[PadicInt.unitCoeff_spec ha, tateModule.padicPow_mul, ← Nat.cast_pow, tateModule.padicPow_natCast, Bcris.logTeich_pow, Nat.cast_pow]`.
-
-Conclude with `(Bcris.isUnit_p.pow _).mul (Bcris.isUnit_logTeich (((isPrimitive_eps p R).padicPow_iff _).2 (Units.isUnit _)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_logTeich [IsDomain R] [ValuationRing R] [IsAlgClosed (FractionRing R)] [CharZero R]
     (η : tateModule p R) (h : η ≠ 1) : IsUnit (Bcris.logTeich η) := by
@@ -1283,7 +1273,7 @@ theorem isUnit_logTeich [IsDomain R] [ValuationRing R] [IsAlgClosed (FractionRin
 end Bridge.CrisLoc.unitOfRootSeries
 
 /- English proof (translation)
-Introduce `l _ e he hne`. Establish `h` using `Bridge.CrisLoc.unitOfRootSeries.isUnit_logTeich (⟨e, he⟩ : tateModule l ↥(PadicComplexInt l)) (fun h => hne (congrArg Subtype.val h))`. Conclude with `isUnit_of_dvd_unit (Bridge.CrisLoc.unitOfRootSeries.dvd_log _ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.unit_of_root : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : e.untilt = 1) (hne : e ≠ 1), IsUnit (algebraMap ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l))) (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) (WittVector.teichmuller l e - 1))) := by
   intro l _ e he hne
@@ -1298,15 +1288,15 @@ namespace PowDivFactorialAlt
 section
 
 /- English proof (translation)
-Introduce `l hl n`. Take `⟨m, hm⟩ : l ^ padicValNat l n.factorial ∣ n.factorial` from `pow_padicValNat_dvd`. Establish `hle : padicValNat l n.factorial ≤ n` using `padicValNat_factorial_le l n`. Establish `hnd : ¬ l ∣ m`. Introduce and unpack `⟨k, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `pow_succ_padicValNat_not_dvd (p := l) (Nat.factorial_ne_zero n)` to reduce the goal to its premises. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_assoc, ← hk]`. Conclude with `hm`. Establish `hu : IsUnit ((m : ℕ) : ℤ_[l])`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PadicInt.isUnit_iff]`. Apply `le_antisymm (PadicInt.norm_le_one _)` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Establish `h' : ‖(((m : ℕ) : ℤ) : ℤ_[l])‖ < 1` using `by simpa using not_le.mp h`. Rewrite `h'` using `[PadicInt.norm_int_lt_one_iff_dvd]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hnd (by exact_mod_cast h')`. Take `⟨u, hu'⟩` from `hu.exists_right_inv`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hle`. Generalize the expression as in `padicValNat l n.factorial = v at hm hd`. Use `⟨u * ((l : ℕ) : ℤ_[l]) ^ d, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hm]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem Bridge.RingBasics.exists_pow_div_factorial : ∀ (l : ℕ) [Fact l.Prime] (n : ℕ), ∃ c : ℤ_[l], ((n.factorial : ℕ) : ℤ_[l]) * c = ((l : ℕ) : ℤ_[l]) ^ n := by
   intro l hl n
@@ -1348,13 +1338,13 @@ open scoped Nat
 namespace Bridge.CrisLoc.CrisExtensionLemmas
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, p = m + 2` from `⟨p - 2, by have := hp.two_le; omega⟩`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (1 : Polynomial ℤ) Polynomial.X`. Take `⟨k, hk⟩` from `Polynomial.powAddExpansion (1 : Polynomial ℤ) Polynomial.X (m + 2)`. Establish `h1 : ((m + 2 : ℕ) : Polynomial ℤ) * (r - 1) = Polynomial.X * (k - Polynomial.X ^ m)`. Apply `mul_left_cancel₀ (Polynomial.X_ne_zero (R := ℤ))` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [one_pow, mul_one] at hr hk`. Take the linear combination `hk - hr`. Establish `h2 : Polynomial.eval 0 (r - 1) = 0`. Establish `h3` using `congrArg (Polynomial.eval 0) h1`. Rewrite `h3` using `[Polynomial.eval_mul, Polynomial.eval_mul, Polynomial.eval_X, zero_mul, Polynomial.eval_natCast]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h3).resolve_left (by positivity)`. Establish `h4 : Polynomial.X ∣ r - 1`. Rewrite using `[Polynomial.X_dvd_iff, Polynomial.coeff_zero_eq_eval_zero, h2]`. Take `⟨s, hs⟩` from `h4`. Use `⟨Polynomial.aeval y s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[eq_add_of_sub_eq hs]`. Establish `h5` using `congrArg (Polynomial.aeval y) hr`. Simplify using `only [map_pow, map_add, map_mul, map_one, Polynomial.aeval_X, map_natCast] at h5`. Rewrite using `[show m + 2 - 1 = m + 1 from rfl]`. Take the linear combination `h5`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_one_add_pow {p : ℕ} (hp : p.Prime) {A : Type*} [CommRing A] (y : A) :
     ∃ s : A, (1 + y) ^ p - 1 = y * (y ^ (p - 1) + p * (1 + y * s)) := by
@@ -1382,14 +1372,14 @@ theorem exists_one_add_pow {p : ℕ} (hp : p.Prime) {A : Type*} [CommRing A] (y 
   linear_combination h5
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_sInf.2 fun _ hJ => hJ.2.isPrime.mem_of_pow_mem n (Ideal.mem_sInf.1 h hJ)`.
+A detailed English derivation is pending.
 -/
 theorem mem_jac_of_pow {A : Type*} [CommRing A] {x : A} {n : ℕ}
     (h : x ^ n ∈ jacobson (⊥ : Ideal A)) : x ∈ jacobson (⊥ : Ideal A) :=
   Ideal.mem_sInf.2 fun _ hJ => hJ.2.isPrime.mem_of_pow_mem n (Ideal.mem_sInf.1 h hJ)
 
 /- English proof (translation)
-Use `Ideal.mem_jacobson_bot.1 h 1` as an intermediate fact. Rewrite `this` using `[mul_one, add_comm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_one_add {A : Type*} [CommRing A] {x : A} (h : x ∈ jacobson (⊥ : Ideal A)) :
     IsUnit (1 + x) := by
@@ -1400,15 +1390,15 @@ variable {p : ℕ} [Fact p.Prime]
 variable {R : Type} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
 /- English proof (translation)
-The claim follows from `IsAdicComplete.le_jacobson_bot (span {(p : Acris p R)}) (mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem p_mem_jac : (p : Acris p R) ∈ jacobson (⊥ : Ideal (Acris p R)) :=
   IsAdicComplete.le_jacobson_bot (span {(p : Acris p R)}) (mem_span_singleton_self _)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, SubringClass.coe_natCast, AcrisZero.coe_gamma]`. Establish `hq : ((a ! : ℚ)⁻¹ * (b ! : ℚ)⁻¹) = ((a + b).choose a : ℚ) * ((a + b)! : ℚ)⁻¹`. Rewrite using `[Nat.cast_choose ℚ (Nat.le_add_right a b), Nat.add_sub_cancel_left]`. Establish `: ((a + b)! : ℚ) ≠ 0` using `by positivity`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Unfold `AinfInv.gamma`. Rewrite using `[smul_mul_smul_comm, hq, ← pow_add, mul_smul, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`.
+Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamma_mul (a b : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     AcrisZero.gamma a x hx * AcrisZero.gamma b x hx =
@@ -1423,9 +1413,9 @@ theorem gamma_mul (a b : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   rw [smul_mul_smul_comm, hq, ← pow_add, mul_smul, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨1, by simp⟩`. Consider the case `succ k ih`. Take `⟨c, hc⟩` from `ih`. Use `⟨c * ((p + p * (k + 1)).choose p : ℕ), ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ', hc, mul_left_comm, gamma_mul, show p * (k + 1 + 1) = p + p * (k + 1) by ring, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem gamma_pow (k : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     ∃ c : AcrisZero p R, AcrisZero.gamma p x hx ^ (k + 1) =
@@ -1439,11 +1429,11 @@ theorem gamma_pow (k : ℕ) (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
       mul_assoc]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨c, hc⟩` from `gamma_pow (p - 2) x hx`. Establish `h2` using `hp.two_le`. Establish `e1 : AcrisZero.gamma p x hx ^ p = AcrisZero.gamma p x hx * AcrisZero.gamma p x hx ^ (p - 2 + 1)`. Rewrite using `[← pow_succ']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `e2 : p + p * (p - 2 + 1) = p ^ 2`. Take `⟨m, hm⟩ : ∃ m, p = m + 2` from `⟨p - 2, by omega⟩`. Rewrite using `[show p - 2 = m by omega, hm]; ring`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hc, mul_left_comm, gamma_mul]`. Use `Dvd.dvd.mul_left (Dvd.dvd.mul_right (Nat.cast_dvd_cast ?_) _) _` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `hp.dvd_choose_pow hp.ne_zero (by nlinarith)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_dvd_gamma_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (p : AcrisZero p R) ∣ AcrisZero.gamma p x hx ^ p := by
@@ -1462,9 +1452,9 @@ theorem p_dvd_gamma_pow (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact hp.dvd_choose_pow hp.ne_zero (by nlinarith)
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `⟨((p - 1)! : ℕ) * algebraMap (AcrisZero p R) _ (AcrisZero.gamma p x hx), ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.mul_mem_left _ _ (mem_jac_of_pow (n := p) ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `p_dvd_gamma_pow x hx`. Rewrite using `[← map_pow, hc, map_mul, map_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ p_mem_jac`. Establish `h` using `congrArg (algebraMap (AcrisZero p R) (Acris p R)) (AcrisZero.factorial_mul_gamma p x hx)`. Rewrite `h` using `[map_mul, map_pow, map_natCast, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[← h, ← mul_assoc, ← Nat.cast_mul, Nat.mul_factorial_pred hp.ne_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_p_mul (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     ∃ z ∈ jacobson (⊥ : Ideal (Acris p R)), algebraMap (Ainf p R) (Acris p R) x ^ p = p * z := by
@@ -1480,7 +1470,7 @@ theorem exists_pow_eq_p_mul (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     rw [← h, ← mul_assoc, ← Nat.cast_mul, Nat.mul_factorial_pred hp.ne_zero]
 
 /- English proof (translation)
-Take `⟨z, hz, h⟩` from `exists_pow_eq_p_mul x hx`. Conclude with `mem_jac_of_pow (n := p) (by rw [h]; exact Ideal.mul_mem_left _ _ hz)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_jac_of_theta (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     algebraMap (Ainf p R) (Acris p R) x ∈ jacobson (⊥ : Ideal (Acris p R)) := by
@@ -1488,25 +1478,23 @@ theorem mem_jac_of_theta (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact mem_jac_of_pow (n := p) (by rw [h]; exact Ideal.mul_mem_left _ _ hz)
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `set U := algebraMap (Ainf p R) (Acris p R) u with hU`. Establish `step : ∀ (n : ℕ) (w : Acris p R), ∃ c : Acris p R, U ^ p ^ n - 1 = (p : Acris p R) ^ n * (p * a * w) → U ^ p ^ (n + 1) - 1 = (p : Acris p R) ^ (n + 1) * (p * a * (w + p ^ n * (a * c)))`. Introduce `n w`. Take `⟨s, hs⟩` from `exists_one_add_pow hp (U ^ p ^ n - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w * (w * (U ^ p ^ n - 1) ^ (p - 2) + p * w * s), fun hy => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[add_sub_cancel, ← pow_mul, ← pow_succ, show p - 1 = (p - 2) + 1 by have := hp.two_le; omega, pow_succ _ (p - 2)]`. Rewrite using `[hs]`. Generalize the expression as in `(U ^ p ^ n - 1) ^ (p - 2) = t`. Rewrite using `[hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose c hc using step`. Set `W : ℕ → Acris p R` to `fun n => Nat.rec 1 (fun n w => w + p ^ n * (a * c n w)) n`. Establish `W0 : W 0 = 1` using `rfl`. Establish `WS : ∀ n, W (n + 1) = W n + p ^ n * (a * c n (W n))` using `fun n => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hW : ∀ n, U ^ p ^ n - 1 = (p : Acris p R) ^ n * (p * a * W n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [W0]`. Simplify using `using h`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `succ n ih => rw [WS]`. Conclude with `hc n _ ih`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := span {(p : Acris p R)}) W (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Proceed by induction on `n, hmn using Nat.le_induction with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `base => simp`. Consider the case `succ n hn ih`. Rewrite using `[WS, ← sub_sub]`. Conclude with `dvd_sub ih ((pow_dvd_pow _ hn).mul_right _))`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at hL`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨L, ?_, ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `hL 1`. Rewrite `hd` using `[show W 1 = _ from WS 0, W0]`. Establish `: L = 1 + (a * c 0 1 - p * d)` using `by linear_combination -hd`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isUnit_one_add (sub_mem (Ideal.mul_mem_right _ _ ha) (Ideal.mul_mem_right _ _ p_mem_jac))`. Rewrite using `[← sub_eq_zero]`. Use `Acris.eq_zero_of_forall_dvd fun n => ?_` and prove the remaining obligations. Take `⟨l, hl, hl'⟩` from `Acris.exists_quot u hu n`. Establish `h1` using `congrArg (algebraMap (AcrisZero p R) (Acris p R)) hl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_pow, map_natCast, map_sub, map_pow, map_one, ← IsScalarTower.algebraMap_apply, ← hU, hW]`. Establish `h2` using `Acris.p_pow_mul_cancel n h1`. Establish `h3 : (p : Acris p R) ^ n ∣ Acris.log u hu - algebraMap (AcrisZero p R) _ l` using `(Acris.eval_eq_zero_iff n _).1 (by rw [map_sub, hl', Acris.eval_algebraMap, sub_self])`. Establish `: Acris.log u hu - p * a * L = (Acris.log u hu - algebraMap (AcrisZero p R) _ l) + p * a * (W n - L)`. Rewrite using `[h2]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_add h3 ((hL n).mul_left _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_eq (u : Ainf p R) (hu : Ainf.theta p R u = 1) (a : Acris p R)
     (ha : a ∈ jacobson (⊥ : Ideal (Acris p R)))
@@ -1567,23 +1555,21 @@ theorem log_eq (u : Ainf p R) (hu : Ainf.theta p R u = 1) (a : Acris p R)
     exact dvd_add h3 ((hL n).mul_left _)
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Use `set v : Ainf p R := Ainf.teich p ((frobeniusEquiv (Tilt p R) p).symm e) with hv`. Establish `hvp : v ^ p = Ainf.teich p e` using `by rw [hv, ← map_pow, frobeniusEquiv_symm_pow_p]`. Establish `hθv : Ainf.theta p R (v - 1) ≠ 0`. Rewrite using `[map_sub, map_one, hv, Ainf.theta_teich, ← Tilt.seq_zero, Tilt.seq_frobeniusEquiv_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_ne_zero.2 h1`. Take `⟨s, hs⟩` from `exists_one_add_pow hp (v - 1)`. Rewrite `hs` using `[add_sub_cancel, hvp]`. Use `set ξ : Ainf p R := (v - 1) ^ (p - 1) + p * (1 + (v - 1) * s) with hξ`. Establish `hθx : Ainf.theta p R (Ainf.teich p e - 1) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_one, Ainf.theta_teich, he, sub_self]`. Establish `hθξ : Ainf.theta p R ξ = 0`. Use `hθx` as an intermediate fact. Rewrite `this` using `[hs, map_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hθv`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz, hz'⟩` from `exists_pow_eq_p_mul ξ hθξ`. Establish `hξJ` using `mem_jac_of_theta ξ hθξ`. Establish `hxJ` using `mem_jac_of_theta _ hθx`. Establish `key : (Ainf.teich p e - 1) ^ (p - 1) = ξ ^ p - p * (ξ * (ξ ^ (p - 2) * (1 + (v - 1) * s)))`. Establish `e1 : (v - 1) ^ (p - 1) = ξ - p * (1 + (v - 1) * s)` using `by rw [hξ]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e2 : ξ ^ (p - 1) = ξ * ξ ^ (p - 2)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e3 : ξ ^ p = ξ * (ξ * ξ ^ (p - 2))`. Rewrite using `[← pow_succ', ← pow_succ']`. Use `congr 1`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hs, mul_pow, e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree. Establish `key'` using `congrArg (algebraMap (Ainf p R) (Acris p R)) key`. Rewrite `key'` using `[map_pow, map_sub _ (ξ ^ p), map_pow, hz', map_mul, map_natCast, map_mul]`. Use `set x := algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e - 1) with hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨t, ht⟩` from `exists_one_add_pow hp x`. Use `⟨1 + (x * t + z - algebraMap (Ainf p R) (Acris p R) ξ * algebraMap (Ainf p R) (Acris p R) (ξ ^ (p - 2) * (1 + (v - 1) * s))), isUnit_one_add (sub_mem (add_mem (Ideal.mul_mem_right _ _ hxJ) hz) (Ideal.mul_mem_right _ _ hξJ)), ?_⟩` and prove the remaining obligations. Establish `hx' : algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e) = 1 + x`. Rewrite using `[hx, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hx', ht, key']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem teich_pow_sub_one [IsDomain R] (e : Tilt p R) (he : e.untilt = 1)
     (h1 : Tilt.seq 1 e ≠ 1) : ∃ w : Acris p R, IsUnit w ∧
@@ -1629,9 +1615,9 @@ theorem teich_pow_sub_one [IsDomain R] (e : Tilt p R) (he : e.untilt = 1)
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro e he h; exact absurd (by rw [Tilt.seq_zero, he]) h`. Consider the case `succ n ih`. Introduce `e he h`. Distinguish the cases in `h1 : Tilt.seq 1 e = 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨e', k, hk, h2, h3⟩` from `ih ((frobeniusEquiv (Tilt p R) p).symm e) (by rw [← Tilt.seq_zero, Tilt.seq_frobeniusEquiv_symm]; exact h1) (by rw [Tilt.seq_frobeniusEquiv_symm]; exact h)`. Conclude with `⟨e', k * p, by rw [pow_mul, ← hk, frobeniusEquiv_symm_pow_p], h2, h3⟩`. Conclude with `⟨e, 1, (pow_one e).symm, he, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_primitive (n : ℕ) : ∀ e : Tilt p R, e.untilt = 1 → Tilt.seq n e ≠ 1 →
     ∃ (e' : Tilt p R) (k : ℕ), e = e' ^ k ∧ e'.untilt = 1 ∧ Tilt.seq 1 e' ≠ 1 := by
@@ -1647,9 +1633,9 @@ theorem exists_primitive (n : ℕ) : ∀ e : Tilt p R, e.untilt = 1 → Tilt.seq
     · exact ⟨e, 1, (pow_one e).symm, he, h1⟩
 
 /- English proof (translation)
-Use `⟨algebraMap ℤ_[p] (Acris p R) a, sub_eq_zero.1 (Acris.eq_zero_of_forall_dvd fun k => ?_)⟩` and prove the remaining obligations. Establish `h` using `Ideal.mem_span_singleton.1 (PadicInt.appr_spec k a)`. Take `⟨η', hη'⟩` from `tateModule.exists_padicPow_eq η h`. Establish `h2` using `map_dvd (algebraMap ℤ_[p] (Acris p R)) h`. Rewrite `h2` using `[map_pow, map_natCast, map_sub, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `h2`. Rewrite using `[hη', Acris.logTeich_mul, Acris.logTeich_pow, Acris.logTeich_pow, eq_add_of_sub_eq hb, Nat.cast_pow]`. Conclude with `⟨Acris.logTeich η' - Acris.logTeich η * b, by ring⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem logTeich_padicPow' (η : tateModule p R) (a : ℤ_[p]) :
     Acris.logTeich η ∣ Acris.logTeich (tateModule.padicPow η a) := by
@@ -1664,19 +1650,17 @@ theorem logTeich_padicPow' (η : tateModule p R) (a : ℤ_[p]) :
   exact ⟨Acris.logTeich η' - Acris.logTeich η * b, by ring⟩
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, Tilt.seq n e ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (Tilt.ext_seq fun n => by rw [hc, map_one])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e', k, rfl, he', h1⟩` from `exists_primitive n e he hn`. Establish `hg' : IsUnit (g (algebraMap (Ainf p R) (Acris p R) (Ainf.teich p e' - 1)))`. Use `isUnit_of_dvd_unit (map_dvd g (map_dvd _ ?_)) hg` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `sub_one_dvd_pow_sub_one _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hθx : Ainf.theta p R (Ainf.teich p e' - 1) = 0`. Rewrite using `[map_sub, map_one, Ainf.theta_teich, he', sub_self]`. Establish `hpu : IsUnit (p : B)`. Take `⟨z, -, hz⟩` from `exists_pow_eq_p_mul _ hθx`. Use `hg'.pow p` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `this` using `[← map_pow, hz, map_mul, map_natCast]`. Conclude with `isUnit_of_mul_isUnit_left this`. Take `⟨w, hw, hw'⟩` from `teich_pow_sub_one e' he' h1`. Set `η : tateModule p R` to `⟨e', he'⟩`. Establish `hlog : IsUnit (g (Acris.logTeich η))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨L, hL, hL'⟩` from `log_eq (Ainf.teich p (η ^ p).1) (by rw [Ainf.theta_teich]; exact (η ^ p).2) _ (Ideal.mul_mem_right w _ (mem_jac_of_theta _ hθx)) (by rw [← hw', SubmonoidClass.coe_pow, map_pow, map_pow])`. Express the relevant statement in the definitionally equal form `Acris.logTeich (η ^ p) = _ at hL'`. Rewrite `hL'` using `[Acris.logTeich_pow]`. Establish `h2` using `congrArg g hL'`. Simplify using `only [map_mul, map_natCast] at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : IsUnit ((p : B) * g (Acris.logTeich η))`. Rewrite using `[h2]`. Conclude with `(hpu.mul (hg'.mul (hw.map g))).mul (hL.map g)`. Conclude with `isUnit_of_mul_isUnit_right h3`. Use `⟨Bcris.lift (BcrisPlus.lift g hpu) (fun ε hε => ?_), fun x => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[BcrisPlus.lift_algebraMap]`. Take `⟨a, ha⟩` from `hε.padicPow_surjective η`. Rewrite `hlog` using `[← ha]`. Conclude with `isUnit_of_dvd_unit (map_dvd g (logTeich_padicPow' ε a)) hlog`. Rewrite using `[IsScalarTower.algebraMap_apply (Acris p R) (BcrisPlus p R) (Bcris p R), Bcris.lift_algebraMap, BcrisPlus.lift_algebraMap]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main [IsDomain R] (e : Tilt p R) (he : e.untilt = 1) (hne : e ≠ 1) {B : Type} [CommRing B]
     (g : Acris p R →+* B)
@@ -1725,7 +1709,7 @@ theorem main [IsDomain R] (e : Tilt p R) (he : e.untilt = 1) (hne : e ≠ 1) {B 
 end Bridge.CrisLoc.CrisExtensionLemmas
 
 /- English proof (translation)
-Introduce `l _ e he hne R _ g hg`. Conclude with `Bridge.CrisLoc.CrisExtensionLemmas.main e he hne g hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Bridge.CrisLoc.exists_extension : ∀ (l : ℕ) [Fact l.Prime] (e : (Reformulated.AutPerF.Tilt l ↥(PadicComplexInt l))) (he : e.untilt = 1) (hne : e ≠ 1) {R : Type} [CommRing R] (g : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)) →+* R) (hg : IsUnit (g (algebraMap ((Reformulated.AutPerF.Ainf l ↥(PadicComplexInt l))) ((Reformulated.AutPerF.Acris l ↥(PadicComplexInt l))) (WittVector.teichmuller l e - 1)))), ∃ F : (Reformulated.AutPerF.Bcris l ↥(PadicComplexInt l)) →+* R, ∀ x : (Reformulated.AutPerF.Acris l ↥(PadicComplexInt l)), F (algebraMap _ _ x) = g x := by
   intro l _ e he hne R _ g hg

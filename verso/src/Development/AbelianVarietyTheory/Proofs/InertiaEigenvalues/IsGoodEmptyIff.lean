@@ -25,13 +25,13 @@ def dcoef {a b : ℕ} (σ : CG E a) (σ' : CG E b) (w : HeightOneSpectrum (𝓞 
 def dexp (w : HeightOneSpectrum (𝓞 E)) (r : ℕ) : ℝ := ((r : ℝ) + 1) * Real.log (Ideal.absNorm w.asIdeal)
 
 /- English proof (translation)
-The claim follows from `div_nonneg (sq_nonneg _) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem dcoef_nonneg {a b : ℕ} (σ : CG E a) (σ' : CG E b) (w : HeightOneSpectrum (𝓞 E)) (r : ℕ) :
     0 ≤ dcoef σ σ' w r := div_nonneg (sq_nonneg _) (by positivity)
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (by positivity) (Real.log_nonneg (by have := NumberField.HeightOneSpectrum.one_lt_absNorm w exact_mod_cast this.le))`.
+A detailed English derivation is pending.
 -/
 theorem dexp_nonneg (w : HeightOneSpectrum (𝓞 E)) (r : ℕ) : 0 ≤ dexp w r :=
   mul_nonneg (by positivity) (Real.log_nonneg (by

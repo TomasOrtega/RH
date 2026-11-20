@@ -21,19 +21,19 @@ open GlobalTheory.SplitScalar GlobalTheory.LatVac
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Rewrite using `[wAt_eq_smul, wAt_eq_smul, smul_smul, (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wAt_wAt (p : Place D) (w : WO S T) : wAt p (wAt p w) = wAt p w := by
   rw [wAt_eq_smul, wAt_eq_smul, smul_smul, (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 p]
 
 /- English proof (translation)
-Rewrite using `[wAt_eq_smul, wAt_eq_smul, smul_smul, (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q h, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wAt_wAt_ne {p q : Place D} (h : p ≠ q) (w : WO S T) : wAt p (wAt q w) = 0 := by
   rw [wAt_eq_smul, wAt_eq_smul, smul_smul, (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q h, zero_smul]
 
 /- English proof (translation)
-Establish `e : wAt p w = wAt p (∑ q ∈ P, wAt q w + r)` using `by rw [← h]`. Simplify using `only [wAt_eq_smul, smul_add, Finset.smul_sum, smul_smul] at e ⊢`. Rewrite using `[e, Finset.sum_eq_zero, zero_add]`. Introduce `q hq`. Rewrite using `[(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q (fun hpq => hp (hpq ▸ hq)), zero_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem wAt_off {P : Finset (Place D)} {w r : WO S T} (h : w = ∑ q ∈ P, wAt q w + r) {p : Place D} (hp : p ∉ P) :
     wAt p w = wAt p r := by
@@ -44,7 +44,7 @@ theorem wAt_off {P : Finset (Place D)} {w r : WO S T} (h : w = ∑ q ∈ P, wAt 
   rw [(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q (fun hpq => hp (hpq ▸ hq)), zero_smul]
 
 /- English proof (translation)
-Establish `e : wAt p w = wAt p (∑ q ∈ P, wAt q w + r)` using `by rw [← h]`. Simplify using `only [wAt_eq_smul, smul_add, Finset.smul_sum, smul_smul] at e ⊢`. Rewrite `e` using `[Finset.sum_eq_single p (fun q _ hqp => by rw [(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.1 p q (Ne.symm hqp), zero_smul]) (fun hn => absurd hp hn), (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 p]`. Conclude with `add_left_cancel (e.symm.trans (add_zero _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wAt_on {P : Finset (Place D)} {w r : WO S T} (h : w = ∑ q ∈ P, wAt q w + r) {p : Place D} (hp : p ∈ P) :
     wAt p r = 0 := by
@@ -55,13 +55,13 @@ theorem wAt_on {P : Finset (Place D)} {w r : WO S T} (h : w = ∑ q ∈ P, wAt q
   exact add_left_cancel (e.symm.trans (add_zero _).symm)
 
 /- English proof (translation)
-Rewrite using `[wAt_eq_smul, wAt_eq_smul, GlobalTheory.SplitScalar.symplO_smul, (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.2.1 p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_wAt (p : Place D) (x y : WO S T) : symplO S T (wAt p x) y = symplO S T x (wAt p y) := by
   rw [wAt_eq_smul, wAt_eq_smul, GlobalTheory.SplitScalar.symplO_smul, (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.2.1 p]
 
 /- English proof (translation)
-Proceed by induction on `P using Finset.cons_induction with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, GlobalTheory.SplitScalar.symplO_zero_left]`. Consider the case `cons a s ha ih`. Rewrite using `[Finset.sum_cons, Finset.sum_cons, GlobalTheory.LatVac.symplO_add_left, ih, ← symplO_wAt, wAt_wAt]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem symplO_sum_wAt_left (P : Finset (Place D)) (x y : WO S T) :
     symplO S T (∑ q ∈ P, wAt q x) y = ∑ q ∈ P, symplO S T (wAt q x) (wAt q y) := by
@@ -71,17 +71,17 @@ private theorem symplO_sum_wAt_left (P : Finset (Place D)) (x y : WO S T) :
     rw [Finset.sum_cons, Finset.sum_cons, GlobalTheory.LatVac.symplO_add_left, ih, ← symplO_wAt, wAt_wAt]
 
 /- English proof (translation)
-Rewrite using `[wAt_eq_smul, wAt_eq_smul, wAt_eq_smul, smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem wAt_add' (p : Place D) (x y : WO S T) : wAt p (x + y) = wAt p x + wAt p y := by
   rw [wAt_eq_smul, wAt_eq_smul, wAt_eq_smul, smul_add]
 
 /- English proof (translation)
-Establish `hr : ∀ q ∈ P, wAt q r = 0` using `fun q hq => wAt_on h hq`. Establish `hr' : ∀ q ∈ P, wAt q r' = 0` using `fun q hq => wAt_on h' hq`. Establish `hB : ∀ q ∈ P, wAt q (∑ q' ∈ P, wAt q' w') = wAt q w'`. Introduce `q hq`. Establish `e : wAt q w' = wAt q (∑ q' ∈ P, wAt q' w' + r')` using `by rw [← h']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[wAt_add', hr' q hq, add_zero]`. Conclude with `e.symm`. Establish `s1 : ∑ q ∈ P, symplO S T (wAt q w) (wAt q (∑ q' ∈ P, wAt q' w')) = ∑ q ∈ P, symplO S T (wAt q w) (wAt q w')` using `Finset.sum_congr rfl fun q hq => by rw [hB q hq]`. Establish `s2 : ∑ q ∈ P, symplO S T (wAt q w) (wAt q r') = 0` using `Finset.sum_eq_zero fun q hq => by rw [hr' q hq, GlobalTheory.SplitScalar.symplO_zero_right]`. Establish `s3 : ∑ q ∈ P, symplO S T (wAt q w') (wAt q r) = 0` using `Finset.sum_eq_zero fun q hq => by rw [hr q hq, GlobalTheory.SplitScalar.symplO_zero_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [h, h']`. Rewrite using `[GlobalTheory.LatVac.symplO_add_left, GlobalTheory.LatVac.symplO_add_right, GlobalTheory.LatVac.symplO_add_right, symplO_sum_wAt_left, symplO_sum_wAt_left, GlobalTheory.SplitScalar.symplO_skew S T (∑ q ∈ P, wAt q w') r, symplO_sum_wAt_left, s1, s2, s3, add_zero, neg_zero, zero_ad …`.
+A detailed English derivation is pending.
 -/
 theorem symplO_split {P : Finset (Place D)} {w r w' r' : WO S T} (h : w = ∑ q ∈ P, wAt q w + r)
     (h' : w' = ∑ q ∈ P, wAt q w' + r') :
@@ -109,7 +109,7 @@ variable {ψ : AddChar (AF D.host.F) ℂ}
   {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Establish `hd : ψ (symplO S T u u') = 1` using `((GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ hS hT).1 u (GlobalTheory.SplitScalar.latO_fin hu)).mp hu u' hu'`. Rewrite using `[two_nsmul, two_nsmul, GlobalTheory.SplitScalar.symplOH_add_left, GlobalTheory.SplitScalar.symplOH_add_right, GlobalTheory.SplitScalar.symplOH_add_self, AddChar.map_add_eq_mul, hd, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cocycle_two (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {u u' : WO S T}
     (hu : u ∈ latO S T ΛS ΛT fun _ => True) (hu' : u' ∈ latO S T ΛS ΛT fun _ => True) :
@@ -120,20 +120,20 @@ theorem cocycle_two (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : I
     GlobalTheory.SplitScalar.symplOH_add_self, AddChar.map_add_eq_mul, hd, one_mul]
 
 /- English proof (translation)
-The claim follows from `latO_mono (fun _ _ => trivial) (GlobalTheory.T.weilMatrixComponentAtPlace_mem_completedLattice D S T ΛS ΛT _ u hu p).1`.
+A detailed English derivation is pending.
 -/
 theorem wAt_mem {u : WO S T} (hu : u ∈ latO S T ΛS ΛT fun _ => True) (p : Place D) :
     wAt p u ∈ latO S T ΛS ΛT fun _ => True :=
   latO_mono (fun _ _ => trivial) (GlobalTheory.T.weilMatrixComponentAtPlace_mem_completedLattice D S T ΛS ΛT _ u hu p).1
 
 /- English proof (translation)
-Rewrite using `[two_nsmul, two_nsmul, wAt_eq_smul, wAt_eq_smul, smul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wAt_two (p : Place D) (u : WO S T) : wAt p (2 • u) = 2 • wAt p u := by
   rw [two_nsmul, two_nsmul, wAt_eq_smul, wAt_eq_smul, smul_add]
 
 /- English proof (translation)
-Establish `h2 : IsUnit (2 : AF D.host.F)`. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2]`. Conclude with `(IsUnit.mk0 (2 : D.host.F) two_ne_zero).map _`. Rewrite `h` using `[← two_mul]`. Conclude with `h2.mul_right_eq_zero.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_add_self_eq_zero_AF {a : AF D.host.F} (h : a + a = 0) : a = 0 := by
   have h2 : IsUnit (2 : AF D.host.F) := by
@@ -143,7 +143,7 @@ private theorem eq_zero_of_add_self_eq_zero_AF {a : AF D.host.F} (h : a + a = 0)
   exact h2.mul_right_eq_zero.mp h
 
 /- English proof (translation)
-Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `eq_zero_of_add_self_eq_zero_AF` to reduce the goal to its premises. Rewrite using `[sub_add_sub_comm, GlobalTheory.SplitScalar.symplOH_add_self, add_add_add_comm, ← Finset.sum_add_distrib]`. Simplify using `only [GlobalTheory.SplitScalar.symplOH_add_self]`. Rewrite using `[symplO_split h h', sub_self]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem symplOH_eq_sum_wAt_add_of_decomp {P : Finset (Place D)} {w r w' r' : WO S T} (h : w = ∑ q ∈ P, wAt q w + r)
     (h' : w' = ∑ q ∈ P, wAt q w' + r') :
@@ -155,7 +155,7 @@ private theorem symplOH_eq_sum_wAt_add_of_decomp {P : Finset (Place D)} {w r w' 
   rw [symplO_split h h', sub_self]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty, AddChar.map_zero_eq_one]`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.prod_cons, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem addChar_sum_eq_prod' (ψ : AddChar (AF D.host.F) ℂ) (s : Finset (Place D)) (g : Place D → AF D.host.F) :
     ψ (∑ p ∈ s, g p) = ∏ p ∈ s, ψ (g p) := by
@@ -164,9 +164,9 @@ private theorem addChar_sum_eq_prod' (ψ : AddChar (AF D.host.F) ℂ) (s : Finse
   | cons a s ha ih => rw [Finset.sum_cons, Finset.prod_cons, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Take `⟨P₀, hP₀⟩` from `GlobalTheory.T.exists_eq_sum_weilComponents_add_two_smul_lattice D S T ΛS ΛT hS hT w`. Take `⟨P₁, hP₁⟩` from `GlobalTheory.T.exists_eq_sum_weilComponents_add_two_smul_lattice D S T ΛS ΛT hS hT w'`. Take `⟨u, hu, hw⟩` from `hP₀ (P₀ ∪ P₁) (fun _ hx => Finset.mem_union_left _ hx)`. Take `⟨u', hu', hw'⟩` from `hP₁ (P₀ ∪ P₁) (fun _ hx => Finset.mem_union_right _ hx)`. Use `⟨P₀ ∪ P₁, fun p hp => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[wAt_off hw hp, wAt_off hw' hp, wAt_two, wAt_two]`. Conclude with `cocycle_two hψ hS hT (wAt_mem hu p) (wAt_mem hu' p)`. Rewrite using `[symplOH_eq_sum_wAt_add_of_decomp hw hw', AddChar.map_add_eq_mul, cocycle_two hψ hS hT hu hu', mul_one, addChar_sum_eq_prod']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_prod (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (w w' : WO S T) :
     ∃ P : Finset (Place D), (∀ p ∉ P, ψ (symplOH S T (wAt p w) (wAt p w')) = 1) ∧
@@ -183,31 +183,29 @@ theorem cocycle_prod (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : 
       addChar_sum_eq_prod']
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x f hx w`. Establish `hψ` using `base_std hB`. Establish `hθ` using `base_inf hB`. Establish `hf₀` using `base_theta hB`. Establish `hB'` using `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `IsBase at hB'`. Establish `hS : IsSelfDualC S ΛS` using `hB'.2.2.1`. Establish `hT : IsSelfDualC T ΛT` using `hB'.2.2.2.1`. Establish `laws` using `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Unfold `IsPure IsRestricted at hx ⊢`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨⟨hloc, hfin⟩, hf, hprod⟩` from `hx`. Establish `hxθ : ∀ p, IsThetaFunO ψ S T (x p)` using `fun p => by`. Establish `hl` using `hloc p`. Unfold `IsLocal at hl`. Conclude with `hl.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hneg : ∀ (p : Place D) (a : WO S T), wAt p (-a) = -wAt p a` using `fun p a => by`. Rewrite using `[wAt_eq_smul, wAt_eq_smul, smul_neg]`. Establish `hadd : ∀ (p : Place D) (a b : WO S T), wAt p (a + b) = wAt p a + wAt p b` using `fun p a b => by`. Rewrite using `[wAt_eq_smul, wAt_eq_smul, wAt_eq_smul, smul_add]`. Take `⟨P₀, hP₀⟩` from `GlobalTheory.T.exists_eq_sum_weilComponents_add_two_smul_lattice D S T ΛS ΛT hS hT w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hwu⟩` from `hP₀ P₀ (Finset.Subset.refl _)`. Establish `hvac : ∀ p, p ∉ P₀ → (∀ τ, p ≠ .inr τ) → heisO ψ S T (wAt p w) f₀ = f₀`. Introduce `p hp hτ`. Break down `p with v | τ` into its components or cases. Establish `hv : IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun u => u = v) f₀` using `base_vacAt hB (.inl v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wAt_off hwu hp, wAt_two]`. Use `hv.1 _ (latO_mono ?_ (GlobalTheory.T.weilMatrixComponentAtPlace_mem_completedLattice D S T ΛS ΛT _ u hu (.inl v)).1)` and prove the remaining obligations. Introduce and unpack `v' ⟨-, hv'⟩`. Conclude with `Sum.inl_injective hv'`. Conclude with `absurd rfl (hτ τ)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfinV : {p : Place D | heisO ψ S T (wAt p w) f₀ ≠ f₀}.Finite`. Use `((P₀.finite_toSet).union (Set.finite_range (Sum.inr : D.what₂.Tau → Place D))).subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_range, not_or, not_exists] at hc`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp (hvac p hc.1 fun τ h => hc.2 τ h.symm)`. Use `⟨⟨fun p => ((GlobalTheory.T.fockVacua_localFactors_stable_heisenberg_away D ψ θ S T sS sT ΛS ΛT hψ hθ (x p) (hxθ p)).2 p (hloc p)).1 w, ?_⟩, laws.1 w f hf, fun w' => ?_⟩` and prove the remaining obligations. Use `(hfin.union hfinV).subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Apply `hp` to reduce the goal to its premises. Use `show heisO ψ S T (wAt p w) (x p) = f₀`. Rewrite using `[hc.1, hc.2]`. Establish `hfac : ∀ p, ipO μ 𝓕 (heisO ψ S T (wAt p w) (x p)) (heisO ψ S T (wAt p w') f₀) = (starRingEnd ℂ) (ψ (symplOH S T (wAt p (-w)) (wAt p w'))) * ipO μ 𝓕 (x p) (heisO ψ S T (wAt p (-w + w')) f₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `p`. Establish `I` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ (x p) (heisO ψ S T (wAt p (-w + w')) f₀) (hxθ p) (laws.1 _ f₀ hf₀)`. Establish `J` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ (x p) (heisO ψ S T (wAt p w') f₀) (hxθ p) (laws.1 _ f₀ hf₀)`. Rewrite using `[(J.2.2.2.2.2.2.1 (wAt p w)).2, laws.2.1, ← hneg, ← hadd, (I.2.2.1 _).2]`. Take `⟨P, hP1, hP2⟩` from `cocycle_prod hψ hS hT (-w) w'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcfin : (Function.mulSupport fun p => (starRingEnd ℂ) (ψ (symplOH S T (wAt p (-w)) (wAt p w')))) ⊆ ↑P`. Introduce `p hp`. Assume the negation of the conclusion as `hc`. Simplify using `only [Function.mem_mulSupport] at hp`. Conclude with `hp (by rw [hP1 p (fun h => hc (Finset.mem_coe.mpr h)), map_one])`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgfin` using `(hprod (-w + w')).1`. Use `beta_reduce`. Simplify using `only [hfac]`. Use `⟨((P.finite_toSet.subset hcfin).union hgfin).subset (Function.mulSupport_mul _ _), ?_⟩` and prove the remaining obligations. Establish `K0` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ f (heisO ψ S T w' f₀) hf (laws.1 _ _ hf₀)`.
-
-Establish `K1` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ f (heisO ψ S T (-w + w') f₀) hf (laws.1 _ _ hf₀)`. Rewrite using `[(K0.2.2.2.2.2.2.1 w).2, laws.2.1, (K1.2.2.1 _).2, (hprod (-w + w')).2, hP2, map_prod, finprod_mul_distrib (P.finite_toSet.subset hcfin) hgfin, finprod_eq_prod_of_mulSupport_subset _ hcfin]`.
+A detailed English derivation is pending.
 -/
 theorem isPure_heisO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (x : Place D → WO S T → ℂ) (f : WO S T → ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f → ∀ w : WO S T, IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ (fun p => heisO ψ S T (wAt p w) (x p)) (heisO ψ S T w f) := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x f hx w

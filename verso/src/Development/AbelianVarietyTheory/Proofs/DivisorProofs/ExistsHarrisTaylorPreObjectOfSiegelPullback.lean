@@ -17,7 +17,7 @@ variable {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] 
   {φ : A'.left ⟶ A.left} {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left}
 
 /- English proof (translation)
-Establish `e : (1 : A' ⟶ A').left ≫ φ = (1 : Over.mk (A'.hom ≫ f) ⟶ A).left` using `congrArg (fun q => q.left) (map_one (pushHom h A'))`. Rewrite using `[e, Hom.one_def, Hom.one_def, Over.comp_left, Over.comp_left, Over.toUnit_left, Over.toUnit_left, ← Category.assoc, h.1.w]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left (h : IsGrpPullback A' A f φ) : (1 : A' ⟶ A').left ≫ φ = φ ≫ (1 : A ⟶ A).left := by
   have e : (1 : A' ⟶ A').left ≫ φ = (1 : Over.mk (A'.hom ≫ f) ⟶ A).left :=
@@ -27,7 +27,7 @@ theorem one_left (h : IsGrpPullback A' A f φ) : (1 : A' ⟶ A').left ≫ φ = �
   rfl
 
 /- English proof (translation)
-Use `GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ ≫ A.hom)) (T' := A') (𝟙 A'.left) (1 : A' ⟶ A') (𝟙 A') (Z := A) φ (1 : A ⟶ A) (𝟙 A) (by exact (Category.id_comp _).trans (one_left h)) (by simp)` as an intermediate fact. Conclude with `(Category.id_comp _).symm.trans this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_one_id (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂) :
     (lift (1 : A' ⟶ A') (𝟙 A')).left ≫ φ₂ = φ ≫ (lift (1 : A ⟶ A) (𝟙 A)).left := by
@@ -36,7 +36,7 @@ theorem lift_one_id (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂) :
   exact (Category.id_comp _).symm.trans this
 
 /- English proof (translation)
-Use `GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ ≫ A.hom)) (T' := A') (𝟙 A'.left) (𝟙 A') (1 : A' ⟶ A') (Z := A) φ (𝟙 A) (1 : A ⟶ A) (by simp) (by exact (Category.id_comp _).trans (one_left h))` as an intermediate fact. Conclude with `(Category.id_comp _).symm.trans this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_id_one (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂) :
     (lift (𝟙 A') (1 : A' ⟶ A')).left ≫ φ₂ = φ ≫ (lift (𝟙 A) (1 : A ⟶ A)).left := by
@@ -47,7 +47,7 @@ theorem lift_id_one (h : IsGrpPullback A' A f φ) (sq : IsSquare φ φ₂) :
 omit [GrpObj A] [GrpObj A'] in
 
 /- English proof (translation)
-Use `GlobalTheory.SiegelPull.lift_sq sq (T := Over.mk (φ₂ ≫ (A ⊗ A).hom)) (T' := A' ⊗ A') (𝟙 _) (snd A' A') (fst A' A') (Z := A ⊗ A) φ₂ (snd A A) (fst A A) (by exact (Category.id_comp _).trans sq.2.symm) (by exact (Category.id_comp _).trans sq.1.symm)` as an intermediate fact. Conclude with `(Category.id_comp _).symm.trans this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_swap (sq : IsSquare φ φ₂) :
     (lift (snd A' A') (fst A' A')).left ≫ φ₂ = φ₂ ≫ (lift (snd A A) (fst A A)).left := by
@@ -63,13 +63,9 @@ namespace GlobalTheory.UPel.HT
 open GlobalTheory.PreEtaPull
 
 /- English proof (translation)
-Introduce `p _ D R _ b N h M B _ ζ S s₁ t c e he hK X πX AX _ _ φX φ₂X actX ηX hpb hsq hros heta`. Establish `hP : (c.P.pull φ₂X).IsLB` using `pull_isLB c.isLB φ₂X`. Establish `H : LBIso (c.P.pull φ₂X) (c.P.pull φ₂X)` using `ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gen_refl _ hP`. Use `⟨{ A := AX ab := GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback c.ab hpb act := actX P := c.P.pull φ₂X isLB := hP rig₁ := by` and prove the remaining obligations. Take `⟨t₁, ht₁⟩` from `c.rig₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `gen_chartPull (chartPullLinComb c.P φ₂X _ _ _ φX fun _ => lift_one_id hpb hsq) t₁ ht₁`. Use `rig₂ := by`. Take `⟨t₂, ht₂⟩` from `c.rig₂`. Conclude with `gen_chartPull (chartPullLinComb c.P φ₂X _ _ _ φX fun _ => lift_id_one hpb hsq) t₂ ht₂`. Use symmetry as in `:= LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull c.P _ _ rfl) (chartPullLinComb c.P _ _ _ _ φ₂X fun _ => lift_swap hsq) c.symm`.
-
-Use `ample := (GlobalTheory.pol_pull S X c.A AX πX φX c.diag _ (pull_isLB c.isLB _) (pull_isLB hP _) c.ab hpb (GlobalTheory.SiegelPull.diag_iso hsq H)).2.1 hK.1`. Use `kerP := ⟨e, he, kerBy_pull hpb hsq c.isLB hP H e hK.2⟩`. Use `rosati := hros`. Use `eta := ηX`. Use `eta_add := heta.1`.
-
-Use `eta_lin := heta.2.1`. Use `eta_ker := heta.2.2 }, fun k _ x => Iff.rfl⟩`.
+Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem exists_preEta_of_siegPull : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N h M : ℕ) (B : Type) [CommRing B] (ζ : B) (S : Scheme.{0}) (s₁ : S ⟶ Sp B) (t : S ⟶ Sp R) (c : SiegPre h M ζ s₁) (e : ℕ), e.Coprime p → SiegKerBy c e → ∀ (X : Scheme.{0}) (πX : X ⟶ S) (AX : Over X) [GrpObj AX] [IsCommMonObj AX] (φX : AX.left ⟶ c.A.left) (φ₂X : (G2 AX).left ⟶ (G2 c.A).left) (actX : OActN D.O AX) (ηX : D.La → (𝟙_ (Over X) ⟶ AX)), IsGrpPullback AX c.A πX φX → IsSquare φX φ₂X → RosatiFor D actX (c.P.pull φ₂X) → EtaOK D N actX ηX → ∃ o : PreEta b N (πX ≫ t), ∀ (k : Type) [Field k] (x : Sp k ⟶ X), (o.GeomAt k x ↔ GeomAt D N actX (c.P.pull φ₂X) ηX k x) := by
   intro p _ D R _ b N h M B _ ζ S s₁ t c e he hK X πX AX _ _ φX φ₂X actX ηX hpb hsq hros heta

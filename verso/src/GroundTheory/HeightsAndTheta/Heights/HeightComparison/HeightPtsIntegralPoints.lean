@@ -27,7 +27,7 @@ def PtsIntegralPoints.Statement : Prop :=
       ∑ᶠ q : projPts P, g (Quot.out q : Geo.mcPts P)
 
 /- English proof (translation)
-Use `⟨(Nat.card_pos_iff.mp (OrbitDegree.full Unit _ samplePoint samplePoint_blockNonzero)).2, fun c z hc _ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [norm_mul]`. Conclude with `mul_div_mul_left _ _ (norm_ne_zero_iff.mpr (hc ()))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example : Finite (projPts (ι := blockIdx (fun _ : Unit ↦ 1)) (orbitIdeal samplePoint)) ∧
     ∀ (c : Unit → ℂ) (z : Coord (fun _ : Unit ↦ 1) → ℂ), (∀ k, c k ≠ 0) →

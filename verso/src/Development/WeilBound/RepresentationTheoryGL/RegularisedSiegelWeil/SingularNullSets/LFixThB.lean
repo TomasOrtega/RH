@@ -34,7 +34,7 @@ section GlobalTheory
 variable {R : Type}
 
 /- English proof (translation)
-Use `delta GlobalTheory.StdUnn.blk4`. Rewrite using `[Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Matrix.fromBlocks_apply₁₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_matrix_apply_top_right (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (Fin.castAdd n i) (Fin.natAdd n j) = b i j := by
@@ -43,7 +43,7 @@ theorem block_matrix_apply_top_right (a b c d : Matrix (Fin n) (Fin n) R) (i j :
     Matrix.fromBlocks_apply₁₂]
 
 /- English proof (translation)
-Use `delta GlobalTheory.StdUnn.blk4`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem submatrix_fromBlocks_mul [Ring R] (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
@@ -52,7 +52,7 @@ theorem submatrix_fromBlocks_mul [Ring R] (a b c d a' b' c' d' : Matrix (Fin n) 
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Use `delta GlobalTheory.StdUnn.blk4`. Rewrite using `[Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_matrix_one [Ring R] : blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 1 = 1 := by
   delta GlobalTheory.StdUnn.blk4
@@ -61,7 +61,7 @@ theorem block_matrix_one [Ring R] : blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 1 = 
 end GlobalTheory
 
 /- English proof (translation)
-Use `show (Matrix.map (-1 : Mx D n n) ⇑(Formalism.L2.Theta.cA D)).transpose = -1`. Rewrite using `[show Matrix.map (-1 : Mx D n n) ⇑(Formalism.L2.Theta.cA D) = (Formalism.L2.Theta.cA D).mapMatrix (-1) from rfl, map_neg, map_one, Matrix.transpose_neg, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_neg_one : adj (-1 : Mx D n n) = -1 := by
   show (Matrix.map (-1 : Mx D n n) ⇑(Formalism.L2.Theta.cA D)).transpose = -1
@@ -69,7 +69,7 @@ theorem adj_neg_one : adj (-1 : Mx D n n) = -1 := by
     map_neg, map_one, Matrix.transpose_neg, Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[← block_matrix_one (R := R) (n := n)]`. Use `delta GlobalTheory.StdUnn.blk4`. Rewrite using `[show Matrix.fromBlocks (-1 : Matrix (Fin n) (Fin n) R) 0 0 (-1) = -Matrix.fromBlocks 1 0 0 1 by`. Rewrite using `[Matrix.fromBlocks_neg, neg_zero]]`. Conclude with `congrFun (congrFun (Matrix.submatrix_neg _) _) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem blk4_neg_one_lemma {R : Type} [Ring R] :
     blk4 (-1 : Matrix (Fin n) (Fin n) R) 0 0 (-1) = -1 := by
@@ -80,9 +80,9 @@ private theorem blk4_neg_one_lemma {R : Type} [Ring R] :
   exact congrFun (congrFun (Matrix.submatrix_neg _) _) _
 
 /- English proof (translation)
-Establish `hM : mat (w * w) = -1`. Rewrite using `[mat_mul, show mat w = blk4 0 1 (-1) 0 from hw, submatrix_fromBlocks_mul]`. Simplify using `only [zero_mul, mul_zero, one_mul, mul_one, zero_add, add_zero]`. Conclude with `blk4_neg_one_lemma`. Establish `h1` using `mat_mul_inv (w * w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hM, neg_one_mul, neg_eq_iff_eq_neg]`. Rewrite using `[h1, inv_neg_one, Units.val_neg, Units.val_one, adj_neg_one, blk4_neg_one_lemma]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_ww {w : G D p} (hw : IsW w) :
     mat (w * w)⁻¹ = blk4 ((-1 : GL (Fin p) (AE D)) : Matrix _ _ _) 0 0 (adj (((-1 : GL (Fin p) (AE D))⁻¹ : GL _ _) : Matrix _ _ _)) := by
@@ -95,11 +95,11 @@ theorem mat_ww {w : G D p} (hw : IsW w) :
   rw [h1, inv_neg_one, Units.val_neg, Units.val_one, adj_neg_one, blk4_neg_one_lemma]
 
 /- English proof (translation)
-Use `delta PositivityTheory.Rg.Rsw.L.Good at hf ⊢`. Introduce `x`. Use `beta_reduce`. Establish `hi : IntOff S (-x) ↔ IntOff S x` using `by delta PositivityTheory.Rg.Rsw.L.IntOff`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `H v hv i j`. Establish `h1` using `neg_mem (H v hv i j)`. Rewrite `h1` using `[Matrix.neg_apply, map_neg, neg_neg]`. Then use the resulting hypothesis. Introduce `H v hv i j`. Rewrite using `[Matrix.neg_apply, map_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `neg_mem (H v hv i j)`. Establish `h` using `hf (-x)`. Distinguish the cases in `hx : IntOff S x`. Rewrite using `[if_pos hx, h, if_pos (hi.2 hx), smul_neg]`. Rewrite using `[if_neg hx, h, if_neg (fun H => hx (hi.1 H)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_neg {S : Finset (Pl D)} {e : AE D} {f : Mx D ρ p → ℂ} (hf : Good S e f) (c : ℂ) :
     Good S e (fun z => c * f (-z)) := by
@@ -121,7 +121,7 @@ theorem good_neg {S : Finset (Pl D)} {e : AE D} {f : Mx D ρ p → ℂ} (hf : Go
   · rw [if_neg hx, h, if_neg (fun H => hx (hi.1 H)), mul_zero]
 
 /- English proof (translation)
-Conclude with `⟨fun w => kOff_inf hg w k l, fun v hv => kOff_at hg hv k l, fun v hv => (kOff_int hg hv k l).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem kOff_entry {S : Finset (Pl D)} {g : G D n} (hg : g ∈ KOff D n S) (k l : Fin (n + n)) :
     (∀ w, compInf D.host.F D.host.E w (mat g k l) = (1 : Matrix (Fin (n + n)) (Fin (n + n)) _) k l) ∧

@@ -18,37 +18,33 @@ noncomputable section
 open GlobalTheory.SchurCharV in
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT v t ι hι H`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Establish `herm : ∀ i j, σ (G.V.J j i) = algebraMap F E 1 * G.V.J i j` using `fun i j => by`. Rewrite using `[map_one, one_mul]`. Conclude with `hT.geo.hV.herm i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ : IsUnit (G.V.J.map t).det`. Establish `w` using `Classical.arbitrary (InfinitePlace F)`. Conclude with `GlobalTheory.SplitUnitLift.isUnit_det_of_cartan G.V.J t (B.emb w).1 1 one_ne_zero (G.V.θ w) (by rw [one_smul]; exact hT.geo.hV.cartan w)`. Use `set L := GlobalTheory.SplitUnitLift.liftU hcm t G.V.J 1 herm hJ with hLdef`. Establish `hLmem : ∀ x, L x ∈ UAt σ G.V (evFin F v)` using `fun x => GlobalTheory.SplitUnitLift.liftU_mem_UAt hcm t G.V 1 herm hJ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLt : ∀ x, (mat (L x)).map (piW t) = x.val` using `fun x => GlobalTheory.SplitUnitLift.liftU_piW hcm t G.V.J 1 herm hJ x`. Establish `hEx` using `(GlobalTheory.T.theta_action_exists hP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ (GlobalTheory.ThK.Check.isPair_of_isTriple hT).1 v).1`. Establish `h1mem : (1 : UA σ G.W.J) ∈ UAt σ G.W (evFin F v)`. Introduce `u _`. Use `show u • (mat (1 : UA σ G.W.J) - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show mat (1 : UA σ G.W.J) = 1 from rfl, sub_self, smul_zero]`. Establish `hpres : ∀ p : UA σ G.V.J × UA σ G.W.J, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), om p Φ ∈ schA F (Fin a × Fin (a + a'))` using `fun p Φ hΦ => (GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil).pres p Φ hΦ`. Establish `hvac` using `hT.geo.hM.vac v`. Use `set φv := G.M.vac v`. Establish `hφv : φv ∈ SB (Fin a × Fin (a + a') → Fv F v)` using `hvac.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbij` using `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.IsLin.bij hι`. Establish `hιv : ι φv ≠ 0` using `fun h0 => hvac.2.1 (hbij.injOn hφv (Submodule.zero_mem _) (by rw [h0, map_zero]))`. Take `⟨Y₀, hY₀⟩` from `Function.ne_iff.mp hιv`. Use `choose c hc using fun x : GL (Fin a) (Fv F v) => H (L x) (hLmem x)`. Establish `hrel : ∀ x, ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (L x, 1)) φ φ₁ → ∀ Y, ι φ₁ Y = c x * ι φ ((x⁻¹ : GL (Fin a) (Fv F v)).val * Y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x φ hφ φ₁ hφ₁ hA Y`. Rewrite using `[hc x φ hφ φ₁ hφ₁ hA Y, hLt x, Matrix.coe_units_inv]`. Establish `hmul : ∀ x y, c (x * y) = c x * c y`. Introduce `x y`. Take `⟨φ₂, ⟨hφ₂, hA₂⟩, -⟩` from `hEx (L y) (hLmem y) 1 h1mem φv hφv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨φ₃, ⟨hφ₃, hA₃⟩, -⟩` from `hEx (L x) (hLmem x) 1 h1mem φ₂ hφ₂`. Establish `hA : Acts (evFin F v) (om (L (x * y), 1)) φv φ₃`. Establish `e : ((L (x * y), 1) : UA σ G.V.J × UA σ G.W.J) = (L x, 1) * (L y, 1)`. Rewrite using `[Prod.mk_mul_mk, map_mul, one_mul]`. Rewrite using `[e, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.InertAvgDual.acts_comp v _ _ (hpres _) hA₂ hA₃`. Establish `e1` using `hrel (x * y) φv hφv φ₃ hφ₃ hA ((x * y).val * Y₀)`. Establish `e2` using `hrel x φ₂ hφ₂ φ₃ hφ₃ hA₃ ((x * y).val * Y₀)`. Establish `e3` using `hrel y φv hφv φ₂ hφ₂ hA₂ (y.val * Y₀)`. Establish `k1 : ((x * y)⁻¹ : GL (Fin a) (Fv F v)).val * ((x * y).val * Y₀) = Y₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `k2 : (x⁻¹ : GL (Fin a) (Fv F v)).val * ((x * y).val * Y₀) = y.val * Y₀`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel_left]`. Establish `k3 : (y⁻¹ : GL (Fin a) (Fv F v)).val * (y.val * Y₀) = Y₀`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[k1]`. Rewrite `e2` using `[k2]`. Rewrite `e3` using `[k3]`. Rewrite `e1` using `[e2, e3]`. Conclude with `mul_right_cancel₀ hY₀ (e1.symm.trans (mul_assoc _ _ _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hone : c 1 = 1`. Establish `hA : Acts (evFin F v) (om (L 1, 1)) φv φv`. Rewrite using `[map_one, show ((1 : UA σ G.V.J), (1 : UA σ G.W.J)) = 1 from rfl, map_one]`. Conclude with `GlobalTheory.InertAvgDual.acts_one v φv`. Establish `e` using `hrel 1 φv hφv φv hφv hA Y₀`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[inv_one, Units.val_one, Matrix.one_mul]`. Conclude with `(mul_eq_right₀ hY₀).mp e.symm`. Set `cH : GL (Fin a) (Fv F v) →* ℂ` to `⟨⟨c, hone⟩, hmul⟩`. Take `⟨χ, hχ⟩` from `GlobalTheory.ghom_factors_through_det (two_ne_zero_Fv v) cH.toHomUnits`. Establish `hcχ : ∀ x, c x = (χ (Matrix.GeneralLinearGroup.det x) : ℂ)` using `fun x => by rw [← hχ x]; rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `A : (Fv F v)ˣ →* ℂˣ` to `{ toFun := fun x => Units.mk0 (GlobalTheory.SplitFlip.apow x (((a + a' : ℕ) : ℂ) / 2)) (GlobalTheory.SplitFlip.apow_ne_zero _ _) map_one' := Units.ext (GlobalTheory.SplitFlip.apow_one _) map_mul' := fun x y => Units.ext (GlobalTheory.SplitFlip.apow_mul x y _) }`. Use `⟨(χ * A)⁻¹, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use `set g' := Matrix.GeneralLinearGroup.map (piW t) g.1 with hg'`. Use `⟨g', rfl, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `φ hφ φ₁ hφ₁ hA`. Establish `hgL : g = L g'` using `eq_liftU_of_UAt hcm t G.V herm hJ g hg`. Rewrite `hA` using `[hgL]`. Use function extensionality and compare the values at `Y`. Rewrite using `[hrel g' φ hφ φ₁ hφ₁ hA Y, hcχ g']`.
-
-Establish `hpow : ∀ d : (Fv F v)ˣ, GlobalTheory.SplitFlip.apow d (((a + a' : ℕ) : ℂ) / 2) * GlobalTheory.SplitFlip.apow d (-((a + a' : ℕ) : ℂ) / 2) = 1` using `fun d => by`. Rewrite using `[← GlobalTheory.SplitFlip.apow_add, show ((a + a' : ℕ) : ℂ) / 2 + -((a + a' : ℕ) : ℂ) / 2 = 0 by ring, GlobalTheory.SplitFlip.apow_zero]`. Simplify using `only [GlobalTheory.SplitFlip.omA, MonoidHom.inv_apply, inv_inv, MonoidHom.mul_apply, Units.val_mul, map_one, MonoidHom.one_apply, Units.val_one, GlobalTheory.SplitFlip.apow_one, Matrix.mul_one, mul_one, Fintype.card_fin]`. Establish `hAv : ∀ d, ((A d : ℂˣ) : ℂ) = GlobalTheory.SplitFlip.apow d (((a + a' : ℕ) : ℂ) / 2)` using `fun d => rfl`. Rewrite using `[hAv]`.
-
-Take the linear combination `(-(χ (GlobalTheory.SplitFlip.gdet g') : ℂ) * ι φ ((g'⁻¹ : GL (Fin a) (Fv F v)).val * Y)) * hpow (GlobalTheory.SplitFlip.gdet g')`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SchurCharV.exists_char_of_schur_any : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

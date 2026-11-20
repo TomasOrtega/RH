@@ -14,16 +14,16 @@ namespace GlobalTheory.CompanionTheory.SW.GBall
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Conclude with `⟨((π : v.adicCompletion F) : Fv F v), by rw [v.valuedAdicCompletion_eq_valuation', hπ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) : ∃ π : Fv F v, Valued.v π = WithZero.exp (-1 : ℤ) := by
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
   exact ⟨((π : v.adicCompletion F) : Fv F v), by rw [v.valuedAdicCompletion_eq_valuation', hπ]⟩
 
 /- English proof (translation)
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Conclude with `zero_le`. Rewrite `h`, the goal using `[← WithZero.exp_log ha]`. Establish `h' : WithZero.log a < 0`. Rewrite using `[← WithZero.exp_lt_exp, WithZero.exp_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_of_lt_one {a : WithZero (Multiplicative ℤ)} (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) := by
   rcases eq_or_ne a 0 with rfl | ha
@@ -37,13 +37,13 @@ theorem le_exp_of_lt_one {a : WithZero (Multiplicative ℤ)} (h : a < 1) : a ≤
 variable {v : HeightOneSpectrum (𝓞 F)} {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_int {x : Fv F v} : x ∈ v.adicCompletionIntegers F ↔ Valued.v x ≤ 1 := by
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hmem : y ⬝ᵥ (B *ᵥ y) ∈ v.adicCompletionIntegers F`. Simplify using `only [dotProduct, Matrix.mulVec]`. Conclude with `sum_mem fun i _ => mul_mem (hy i) (sum_mem fun j _ => mul_mem (hB i j) (hy j))`. Rewrite using `[map_mul, map_inv₀, h2, inv_one, one_mul]`. Conclude with `hmem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_int (h2 : Valued.v (2 : Fv F v) = 1) {B : Matrix ι ι (Fv F v)}
     (hB : ∀ i j, B i j ∈ v.adicCompletionIntegers F) {y : ι → Fv F v}
@@ -56,7 +56,7 @@ theorem q_int (h2 : Valued.v (2 : Fv F v) = 1) {B : Matrix ι ι (Fv F v)}
   exact hmem
 
 /- English proof (translation)
-Establish `hf : (fun i => π * y i) = π • y` using `rfl`. Rewrite using `[hf, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem q_smul (B : Matrix ι ι (Fv F v)) (π : Fv F v) (y : ι → Fv F v) :
     (2 : Fv F v)⁻¹ * ((fun i => π * y i) ⬝ᵥ (B *ᵥ fun i => π * y i)) =
@@ -66,13 +66,13 @@ theorem q_smul (B : Matrix ι ι (Fv F v)) (π : Fv F v) (y : ι → Fv F v) :
   ring
 
 /- English proof (translation)
-Conclude with `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem borel_Fv : BorelSpace (Fv F v) := by
   exact ⟨rfl⟩
 
 /- English proof (translation)
-Use `⟨⟨⟨spanningSets ν, fun _ => trivial, fun i => ?_, iUnion_spanningSets ν⟩⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (measure_spanningSets_lt_top ν i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sigmaFinite_nnreal_smul {X : Type} [MeasurableSpace X] (ν : Measure X) [SigmaFinite ν]
     (c : ℝ≥0) : SigmaFinite ((c : ℝ≥0∞) • ν) := by
@@ -81,7 +81,7 @@ private theorem sigmaFinite_nnreal_smul {X : Type} [MeasurableSpace X] (ν : Mea
   exact ENNReal.mul_lt_top ENNReal.coe_lt_top (measure_spanningSets_lt_top ν i)
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_nnreal_smul ν c`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi, smul_eq_mul]`. Simplify using `only [Measure.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_const_smul (ι : Type) [Fintype ι] {X : Type} [MeasurableSpace X] (ν : Measure X) [SigmaFinite ν]
     (c : ℝ≥0) :
@@ -93,23 +93,21 @@ theorem pi_const_smul (ι : Type) [Fintype ι] {X : Type} [MeasurableSpace X] (�
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]
 
 /- English proof (translation)
-Use `haveI := borel_Fv (F := F) (v := v)`. Take `⟨π, hπ⟩` from `exists_unif v`. Take `⟨-, hmap, -, -⟩` from `GlobalTheory.T.standard_local_haar_properties F v lam hstd`. Establish `hm` using `hmap π hπ`. Establish `hO : MeasurableSet (v.adicCompletionIntegers F : Set (Fv F v))` using `(Valued.isOpen_valuationSubring (Fv F v)).measurableSet`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpk : ∀ k : ℕ, Valued.v (π ^ k) = WithZero.exp (-(k : ℤ))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ihk`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, map_mul, ihk, hπ, ← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `S : ℕ → Set (Fv F v)` to `fun n => (fun x => π ^ n * x) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hSmeas : ∀ n, MeasurableSet (S n)` using `fun n => (measurable_const_mul _) hO`. Establish `hSfin : ∀ n, lam (S n) = (Ideal.absNorm v.asIdeal : ℝ≥0∞) ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => show lam ((fun x => π ^ 0 * x) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_zero, one_mul, Set.preimage_id', hstd.2]`. Consider the case `succ n ihn`. Establish `hS : S (n + 1) = (fun t => π * t) ⁻¹' S n`. Use extensionality with `x`. Simplify using `only [S, Set.mem_preimage, pow_succ, mul_assoc]`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, ← Measure.map_apply (measurable_const_mul π) (hSmeas n), hm, Measure.smul_apply, ihn, smul_eq_mul, pow_succ, mul_comm]`. Use `⟨⟨⟨S, fun _ => trivial, fun n => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[hSfin]`. Conclude with `ENNReal.pow_lt_top (ENNReal.natCast_lt_top _)`. Use `Set.eq_univ_of_forall fun x => Set.mem_iUnion.mpr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Use `⟨0, ?_⟩ show Valued.v (π ^ 0 * 0) ≤ 1` and prove the remaining obligations. Rewrite using `[mul_zero, map_zero]`. Conclude with `zero_le`. Establish `hvx : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(WithZero.log (Valued.v x)).toNat, ?_⟩` and prove the remaining obligations. Use `show Valued.v (π ^ (WithZero.log (Valued.v x)).toNat * x) ≤ 1`. Rewrite using `[map_mul, hpk, ← WithZero.exp_log hvx, ← WithZero.exp_add]`. Use `(WithZero.exp_le_exp.mpr ?_).trans_eq WithZero.exp_zero` and prove the remaining obligations. Rewrite using `[WithZero.log_exp]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sigmaFinite_of_isStdV {lam : Measure (Fv F v)} (hstd : IsStdV v lam) :
     SigmaFinite lam := by
@@ -160,13 +158,11 @@ private theorem sigmaFinite_of_isStdV {lam : Measure (Fv F v)} (hstd : IsStdV v 
       omega
 
 /- English proof (translation)
-Use `haveI := borel_Fv (F := F) (v := v)`. Use `haveI := sigmaFinite_of_isStdV hstd`. Establish `hπ0 : π ≠ 0`. Introduce `h0`. Rewrite `hπ` using `[h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `WithZero.exp_ne_zero hπ.symm`. Take `⟨-, hmap, -, -⟩` from `GlobalTheory.T.standard_local_haar_properties F v lam hstd`. Establish `hm` using `hmap π hπ`. Establish `hN : (Ideal.absNorm v.asIdeal : ℝ≥0∞) = ((Ideal.absNorm v.asIdeal : ℝ≥0) : ℝ≥0∞)` using `(ENNReal.coe_natCast _).symm`. Set `e : (ι → Fv F v) ≃ᵐ (ι → Fv F v)` to `MeasurableEquiv.piCongrRight (fun _ : ι => MeasurableEquiv.mulLeft₀ π hπ0)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpre : {y : ι → Fv F v | (fun i => π * y i) ∈ T} = e ⁻¹' T` using `rfl`. Use `haveI hsf : SigmaFinite (lam.map (fun t => π * t)) := by`. Rewrite using `[hm, hN]`. Conclude with `sigmaFinite_nnreal_smul lam _`. Establish `hmapPi : (Measure.pi fun _ : ι => lam).map (fun x i => π * x i) = Measure.pi (fun _ : ι => lam.map (fun t => π * t))` using `Measure.pi_map_pi (fun _ => (measurable_const_mul π).aemeasurable)`.
-
-Rewrite using `[hpre, ← MeasurableEquiv.map_apply]`. Establish `he : (⇑e : (ι → Fv F v) → ι → Fv F v) = fun x i => π * x i` using `rfl`. Rewrite using `[he, hmapPi, hm, hN, pi_const_smul ι lam, Measure.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_scale {lam : Measure (Fv F v)} (hstd : IsStdV v lam) {π : Fv F v}
     (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) (T : Set (ι → Fv F v)) :
@@ -195,9 +191,9 @@ theorem pi_scale {lam : Measure (Fv F v)} (hstd : IsStdV v lam) {π : Fv F v}
   rw [he, hmapPi, hm, hN, pi_const_smul ι lam, Measure.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `haveI := borel_Fv (F := F) (v := v)`. Establish `hmeas : Measurable (fun z : Fv F v => π * (π * z))` using `(measurable_const_mul π).comp (measurable_const_mul π)`. Use `⟨hmeas hA, ?_⟩` and prove the remaining obligations. Take `⟨-, hmap, -, -⟩` from `GlobalTheory.T.standard_local_haar_properties F v lam hstd`. Establish `hm` using `hmap π hπ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (lam.map (fun t => π * t)).map (fun t => π * t) A = lam {z | π * (π * z) ∈ A}`. Rewrite using `[Measure.map_map (measurable_const_mul π) (measurable_const_mul π), Measure.map_apply ((measurable_const_mul π).comp (measurable_const_mul π)) hA]`. Both sides reduce to the same expression. Rewrite using `[← h1, hm, Measure.map_smul, hm, Measure.smul_apply, Measure.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_assoc, sq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_scale {lam : Measure (Fv F v)} (hstd : IsStdV v lam) {π : Fv F v}
     (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) {A : Set (Fv F v)} (hA : MeasurableSet A) :
@@ -216,15 +212,13 @@ theorem lam_scale {lam : Measure (Fv F v)} (hstd : IsStdV v lam) {π : Fv F v}
     smul_eq_mul, ← mul_assoc, sq]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `exists_unif v`. Establish `hπ0 : π ≠ 0`. Introduce `h0`. Rewrite `hπ` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hO : IsOpen {x : Fv F v | Valued.v x ≤ 1}` using `Valued.isOpen_valuationSubring (Fv F v)`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Use `⟨(fun y => π⁻¹ * (y - x)) ⁻¹' {x : Fv F v | Valued.v x ≤ 1}, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hy hx ⊢`. Establish `h1 : Valued.v (y - x) < Valued.v x`. Establish `he : y - x = π * (π⁻¹ * (y - x))`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hπ0, one_mul]`. Rewrite using `[he, map_mul, hπ, hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `(WithZero.exp_lt_exp.mpr (by norm_num : (-1 : ℤ) < 0)).trans_eq WithZero.exp_zero`. Rewrite using `[← hx]`. Conclude with `Valuation.map_eq_of_sub_lt _ h1`.
-
-Conclude with `hO.preimage (continuous_const.mul (continuous_id.sub continuous_const))`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, sub_self, mul_zero, map_zero]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_unit_sphere : IsOpen {x : Fv F v | Valued.v x = 1} := by
   obtain ⟨π, hπ⟩ := exists_unif v
@@ -254,9 +248,7 @@ theorem isOpen_unit_sphere : IsOpen {x : Fv F v | Valued.v x = 1} := by
     exact zero_le
 
 /- English proof (translation)
-Use `haveI := borel_Fv (F := F) (v := v)`. Establish `he : {x : ι → Fv F v | ∃ i, Valued.v (x i) = 1} = ⋃ i, (fun x : ι → Fv F v => x i) ⁻¹' {z | Valued.v z = 1}`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[he]`.
-
-Conclude with `MeasurableSet.iUnion fun i => isOpen_unit_sphere.measurableSet.preimage (measurable_pi_apply i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_prim : MeasurableSet {x : ι → Fv F v | ∃ i, Valued.v (x i) = 1} := by
   haveI := borel_Fv (F := F) (v := v)
@@ -267,14 +259,14 @@ theorem meas_prim : MeasurableSet {x : ι → Fv F v | ∃ i, Valued.v (x i) = 1
   exact MeasurableSet.iUnion fun i => isOpen_unit_sphere.measurableSet.preimage (measurable_pi_apply i)
 
 /- English proof (translation)
-Rewrite using `[map_inv₀, hπ, ← WithZero.exp_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_inv {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) :
     Valued.v π⁻¹ = WithZero.exp (1 : ℤ) := by
   rw [map_inv₀, hπ, ← WithZero.exp_neg, neg_neg]
 
 /- English proof (translation)
-Introduce `h0`. Rewrite `hπ` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_ne_zero {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) : π ≠ 0 := by
   intro h0
@@ -282,7 +274,7 @@ theorem pi_ne_zero {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) :
   exact WithZero.exp_ne_zero hπ.symm
 
 /- English proof (translation)
-Establish `hlt : Valued.v a < 1` using `lt_of_le_of_ne h1 h2`. Establish `hle` using `le_exp_of_lt_one hlt`. Rewrite using `[map_mul, val_inv hπ]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem div_int {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) {a : Fv F v}
     (h1 : Valued.v a ≤ 1) (h2 : Valued.v a ≠ 1) : Valued.v (π⁻¹ * a) ≤ 1 := by
@@ -294,7 +286,7 @@ theorem div_int {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) {a :
     _ = 1 := by rw [← WithZero.exp_add]; simp
 
 /- English proof (translation)
-Rewrite using `[map_mul, hπ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `(WithZero.exp_lt_exp.mpr (by norm_num : (-1 : ℤ) < 0)).trans_eq WithZero.exp_zero`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_mul_lt {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) {a : Fv F v}
     (h1 : Valued.v a ≤ 1) : Valued.v (π * a) < 1 := by
@@ -305,7 +297,7 @@ theorem pi_mul_lt {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) {a
       exact (WithZero.exp_lt_exp.mpr (by norm_num : (-1 : ℤ) < 0)).trans_eq WithZero.exp_zero
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, hπ, ← mul_assoc, ← WithZero.exp_add]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem val_pp {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) (a : Fv F v) :
     Valued.v (π * (π * a)) = WithZero.exp (-2 : ℤ) * Valued.v a := by
@@ -313,9 +305,9 @@ theorem val_pp {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) (a : 
   norm_num
 
 /- English proof (translation)
-Establish `hlt : ∀ i, Valued.v (x i) ≠ 1` using `fun i h => hnp ⟨i, h⟩`. Take `⟨y, hy, rfl⟩ : ∃ y : ι → Fv F v, (∀ i, y i ∈ v.adicCompletionIntegers F) ∧ x = fun i => π * y i` from `⟨fun i => π⁻¹ * x i, fun i => div_int hπ (hx i) (hlt i), by`. Use function extensionality and compare the values at `i`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (pi_ne_zero hπ), one_mul]⟩`. Rewrite using `[q_smul, val_pp hπ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem q_nonprim (h2 : Valued.v (2 : Fv F v) = 1) {B : Matrix ι ι (Fv F v)}
     (hB : ∀ i j, B i j ∈ v.adicCompletionIntegers F) {π : Fv F v}
@@ -333,7 +325,7 @@ theorem q_nonprim (h2 : Valued.v (2 : Fv F v) = 1) {B : Matrix ι ι (Fv F v)}
     _ = WithZero.exp (-2 : ℤ) := mul_one _
 
 /- English proof (translation)
-The claim follows from `|Dp + q ^ 2 / q ^ (2 * M) * D' - 1| ≤ 2 / q ^ (M - 1) := by have hq0 : 0 < q := by linarith obtain ⟨k, rfl⟩ : ∃ k, M = k + 3 := ⟨M - 3, by omega⟩ have e1 : k + 3 - 1 = k + 2 := by omega have e2 : 2 * (k + 3) - 1 = 2 * (k + 2) + 1 := by omega have e3 : 2 * (k + 3) = 2 * (k + 2) + …`.
+A detailed English derivation is pending.
 -/
 theorem bound_step {q : ℝ} {M : ℕ} (hq : 2 ≤ q) (hM : 3 ≤ M) {Dp D' : ℝ}
     (hD' : |D' - 1| ≤ 2 / q ^ (M - 1))
@@ -381,55 +373,51 @@ theorem bound_step {q : ℝ} {M : ℕ} (hq : 2 ≤ q) (hM : 3 ≤ M) {Dp D' : �
   constructor <;> nlinarith
 
 /- English proof (translation)
-Use `haveI := borel_Fv (F := F) (v := v)`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `s hs hs0 hsn`. Take `⟨π, hπ⟩` from `exists_unif v`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπ0 : π ≠ 0` using `pi_ne_zero hπ`. Establish `hN1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)`. Establish `hN0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hq2 : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)`. Establish `: 2 ≤ Ideal.absNorm v.asIdeal` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this` after adjusting the coercions. Take `⟨Dp, hDpb, hP⟩` from `GlobalTheory.T.local_quadratic_density_near_one F v lam hstd h2 ι B hsym hB hdet M hc (by omega) s hs`. Establish `hvs0 : Valued.v s ≠ 0` using `(Valuation.ne_zero_iff _).mpr hs0`. Establish `hL : Valued.v s = WithZero.exp (WithZero.log (Valued.v s))` using `(WithZero.exp_log hvs0).symm`. Establish `hLn : -(n : ℤ) ≤ WithZero.log (Valued.v s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hsn`. Rewrite `h` using `[hL, WithZero.exp_le_exp]`. Conclude with `h`. Establish `hvs1 : Valued.v s ≤ 1` using `hs`. Establish `hmeasPrim : MeasurableSet {x : ι → Fv F v | ∃ i, Valued.v (x i) = 1}` using `meas_prim`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hinter : ∀ A : Set (Fv F v), {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} ∩ {x | ∃ i, Valued.v (x i) = 1} = {x | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (∃ i, Valued.v (x i) = 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A}`. Introduce `A`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : ∀ A : Set (Fv F v), (Measure.pi fun _ : ι => lam) {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} = (Measure.pi fun _ : ι => lam) ({x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x …` using `fun A => (measure_inter_add_diff _ hmeasPrim).symm`. Break down `le_or_gt (-1 : ℤ) (WithZero.log (Valued.v s)) with hbig | hsmall` into its components or cases. Use `⟨Dp, ?_, fun A hA hA' => ?_⟩` and prove the remaining obligations. Establish `hpow : (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) ≤ (Ideal.absNorm v.asIdeal : ℝ) ^ (2 * M - 1)` using `pow_le_pow_right₀ (by linarith) (by omega)`. Establish `hpos : 0 < (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ (2 * M - 1) ≤ 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1)` using `one_div_le_one_div_of_le hpos hpow`. Establish `h2' : 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) = 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) + 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1)` using `by ring`. Rewrite using `[h2']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub1 : A ⊆ {z | Valued.v (z - s) < 1}` using `fun z hz => lt_of_lt_of_le (hA' hz) hvs1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hempty : {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} \ {x | ∃ i, Valued.v (x i) = 1} = ∅`. Use `Set.subset_empty_iff.mp (fun x hx => ?_)` and prove the remaining obligations. Take `⟨⟨hint, hQ⟩, hnp⟩` from `hx`. Establish `hle` using `q_nonprim h2 hB hπ hint hnp`. Establish `heq : Valued.v ((2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x))) = Valued.v s` using `Valuation.map_eq_of_sub_lt _ (hA' hQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hle` using `[heq, hL, WithZero.exp_le_exp]`. Conclude with `absurd hle (by omega)`. Rewrite using `[hsplit A, hempty, measure_empty, add_zero, hinter A, hP A hA hsub1]`. Take `⟨s', hss⟩ : ∃ s' : Fv F v, π * (π * s') = s` from `⟨π⁻¹ * (π⁻¹ * s), by rw [mul_inv_cancel_left₀ hπ0, mul_inv_cancel_left₀ hπ0]⟩`. Establish `hrel : Valued.v s = WithZero.exp (-2 : ℤ) * Valued.v s'` using `by rw [← hss, val_pp hπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hvs'0 : Valued.v s' ≠ 0`. Introduce `h0`. Apply `hvs0` to reduce the goal to its premises. Rewrite using `[hrel, h0, mul_zero]`. Establish `hL' : Valued.v s' = WithZero.exp (WithZero.log (Valued.v s'))` using `(WithZero.exp_log hvs'0).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hLL : WithZero.log (Valued.v s) = -2 + WithZero.log (Valued.v s')`. Establish `h` using `hrel`. Rewrite `h` using `[hL, hL', ← WithZero.exp_add]`. Establish `h1` using `WithZero.exp_le_exp.mp h.le`. Establish `h2''` using `WithZero.exp_le_exp.mp h.ge`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hs'int : s' ∈ v.adicCompletionIntegers F` using `by show Valued.v s' ≤ 1`. Rewrite using `[hL']`. Conclude with `(WithZero.exp_le_exp.mpr (by omega : WithZero.log (Valued.v s') ≤ 0)).trans_eq WithZero.exp_zero`. Establish `hs'0 : s' ≠ 0` using `(Valuation.ne_zero_iff _).mp hvs'0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hn2 : 2 ≤ n` using `by omega`. Establish `hs'n : WithZero.exp (-((n - 2 : ℕ) : ℤ)) ≤ Valued.v s'`. Rewrite using `[hL', WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Take `⟨D', hD'b, hD'P⟩` from `ih (n - 2) (by omega) s' hs'int hs'0 hs'n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set K : ℝ≥0 := (Ideal.absNorm v.asIdeal : ℝ≥0) ^ (2 * M) with hK`. Establish `hK0 : K ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hN0)`. Use `set c : ℝ≥0 := (Ideal.absNorm v.asIdeal : ℝ≥0) ^ 2 / K with hc'`. Establish `hcK : K * c = (Ideal.absNorm v.asIdeal : ℝ≥0) ^ 2`. Rewrite using `[hc', mul_div_assoc', mul_div_cancel_left₀ _ hK0]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Dp + c * D', ?_, fun A hA hA' => ?_⟩` and prove the remaining obligations. Establish `hcast : ((Dp + c * D' : ℝ≥0) : ℝ) = (Dp : ℝ) + (Ideal.absNorm v.asIdeal : ℝ) ^ 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ (2 * M) * (D' : ℝ)`. Rewrite using `[hc', hK]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcast]`. Conclude with `bound_step hq2 hM hD'b hDpb`. Establish `hsub1 : A ⊆ {z | Valued.v (z - s) < 1}` using `fun z hz => lt_of_lt_of_le (hA' hz) hvs1`. Take `⟨hA'meas, hlamA'⟩` from `lam_scale hstd hπ hA`. Establish `hA'sub : {z | π * (π * z) ∈ A} ⊆ {z | Valued.v (z - s') < Valued.v s'}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `h` using `hA' hz`. Simplify using `only [Set.mem_setOf_eq] at h ⊢`. Establish `he : π * (π * z) - s = π * (π * (z - s'))` using `by rw [← hss]; ring`. Rewrite `h` using `[he, val_pp hπ, hrel]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hcon`. Use `mul_le_mul_of_nonneg_left (not_lt.mp hcon) (zero_le : (0 : WithZero (Multiplicative ℤ)) ≤ WithZero.exp (-2 : ℤ))` as an intermediate fact. Conclude with `absurd h (not_lt.mpr this)`. Establish `hD'A` using `hD'P _ hA'meas hA'sub`. Establish `hset : {y : ι → Fv F v | (fun i => π * y i) ∈ ({x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} \ {x | ∃ i, Valued.v (x i) = 1})} = {y | (∀ i, y i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ {z | π * (π * z) …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_diff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hint, hQ⟩, hnp⟩`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : Valued.v (π * y i) ≤ 1` using `hint i`. Establish `h2' : Valued.v (π * y i) ≠ 1` using `fun h => hnp ⟨i, h⟩`. Establish `h3` using `div_int hπ h1 h2'`. Rewrite `h3` using `[← mul_assoc, inv_mul_cancel₀ hπ0, one_mul]`. Then use the resulting hypothesis. Rewrite using `[← q_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `hQ`. Introduce and unpack `⟨hyint, hQ⟩`. Use `⟨⟨fun i => (pi_mul_lt hπ (hyint i)).le, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[q_smul]`. Conclude with `hQ`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨i, hi⟩`. Conclude with `absurd hi (pi_mul_lt hπ (hyint i)).ne`. Establish `hscale` using `pi_scale hstd hπ ({x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} \ {x | ∃ i, Valued.v (x i) = 1})`. Rewrite `hscale` using `[hset, hD'A, hlamA', hc]`. Establish `hKe : (Ideal.absNorm v.asIdeal : ℝ≥0∞) ^ (2 * M) = (K : ℝ≥0∞)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hK]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hscale` using `[hKe]`. Establish `hnp : (Measure.pi fun _ : ι => lam) ({x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} \ {x | ∃ i, Valued.v (x i) = 1}) = ((c * D' : ℝ≥0) : ℝ≥0∞) * lam A`.
-
-Apply `(ENNReal.mul_right_inj (a := (K : ℝ≥0∞)) (by exact_mod_cast hK0) ENNReal.coe_ne_top).mp` to reduce the goal to its premises. Rewrite using `[← hscale, ← mul_assoc (K : ℝ≥0∞), ← ENNReal.coe_mul, ← mul_assoc K c D', hcK]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit A, hnp, hinter A, hP A hA hsub1]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem local_quadratic_density_bound_at_level {lam : Measure (Fv F v)} (hstd : IsStdV v lam) (h2 : Valued.v (2 : Fv F v) = 1)
     [DecidableEq ι] (B : Matrix ι ι (Fv F v)) (hsym : B.IsSymm)
@@ -591,11 +579,9 @@ theorem local_quadratic_density_bound_at_level {lam : Measure (Fv F v)} (hstd : 
       ring
 
 /- English proof (translation)
-Introduce `F _ _ v lam hstd h2 ι _ _ B hsym hB hdet M hc hM s hs hs0`. Establish `hvs0 : Valued.v s ≠ 0` using `(Valuation.ne_zero_iff _).mpr hs0`. Establish `hL : Valued.v s = WithZero.exp (WithZero.log (Valued.v s))` using `(WithZero.exp_log hvs0).symm`. Establish `hle : WithZero.log (Valued.v s) ≤ 0`. Establish `h1 : WithZero.exp (WithZero.log (Valued.v s)) ≤ WithZero.exp (0 : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hL, WithZero.exp_zero]`. Conclude with `hs`. Conclude with `WithZero.exp_le_exp.mp h1`. Use `local_quadratic_density_bound_at_level hstd h2 B hsym hB hdet M hc hM (WithZero.log (Valued.v s)).natAbs s hs hs0 ?_` and prove the remaining obligations. Rewrite using `[hL, WithZero.exp_le_exp, WithZero.log_exp]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem density_near_value : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → Valued.v (2 : Fv F v) = 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι (Fv F v)), B.IsSymm → (∀ i j, B i j ∈ v.adicCompletionIntegers F) → Valued.v B.det = 1 → ∀ M : ℕ, Fintype.card ι = 2 * M → 3 ≤ M → ∀ s : Fv F v, s ∈ v.adicCompletionIntegers F → s ≠ 0 → ∃ D : ℝ≥0, |(D : ℝ) - 1| ≤ 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) ∧ ∀ A : Set (Fv F v), MeasurableSet A → A ⊆ {z | Valued.v (z - s) < Valued.v s} → (Measure.pi fun _ : ι => lam) {x | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} = (D : ℝ≥0∞) * lam A := by
   intro F _ _ v lam hstd h2 ι _ _ B hsym hB hdet M hc hM s hs hs0

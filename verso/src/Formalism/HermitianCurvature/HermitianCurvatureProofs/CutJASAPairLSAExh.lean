@@ -4,7 +4,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASAPairLACSmoot
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 
 /- English proof (translation)
-The claim follows from `avgCutoff_of_smooth averaging_smoothness_holds`.
+A detailed English derivation is pending.
 -/
 theorem average_one_cutoff_on_orbits : Formalism.FourierDecayAlt.P.JFxI.AvgCutoff := avgCutoff_of_smooth averaging_smoothness_holds
 

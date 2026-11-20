@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.ThKCtFin
 
 /- English proof (translation)
-Establish `ex` using `fun t => GlobalTheory.T.exists_levi_element_adapted F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA t`. Take `⟨t1, t2, t3⟩` from `isLevi_leviElt (ex t)`. Take `⟨s1, s2, s3⟩` from `isLevi_leviElt (ex s)`. Establish `hm : ∀ {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g g' : UA σ J), mat (g * g') = mat g * mat g'` using `fun _ _ => rfl`. Use `GlobalTheory.T.levi_element_unique F E σ B _ _ _ G.W hT.geo.hW d₁ W₁ H' i₀ i₁ hA (t * s) _ _ (isLevi_leviElt (ex (t * s))) ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, ← Matrix.mulVec_mulVec, s1, Matrix.mulVec_smul, t1, smul_smul, Units.val_mul, mul_comm]`. Rewrite using `[hm, ← Matrix.mulVec_mulVec, s2, Matrix.mulVec_smul, t2, smul_smul, mul_inv_rev, Units.val_mul, map_mul]`. Rewrite using `[hm, Matrix.mul_assoc, s3, ← Matrix.mul_assoc, t3, Matrix.mul_assoc, ← hm, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviElt_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
@@ -40,13 +40,13 @@ theorem leviElt_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   · rw [hm, Matrix.mul_assoc, s3, ← Matrix.mul_assoc, t3, Matrix.mul_assoc, ← hm, mul_one]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA hσ c hc hcs f hf μ 𝓕 h1 h2 h3 h`. Establish `htr : ∀ b t, ctLevi σ G.W W₁ H' μ 𝓕 f h (b * t) = ctLevi σ G.W W₁ H' μ 𝓕 f (leviElt σ G.W W₁ H' b * h) t`. Introduce `b t`. Rewrite using `[ctLevi_apply, ctLevi_apply, mul_comm b t, leviElt_mul hT hA, mul_assoc]`. Take `⟨U, hUo, hU⟩` from `GlobalTheory.T.automorphic_function_maximal_compact_twist F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA hσ c hc hcs f hf μ 𝓕 h1 h2 h3 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `GlobalTheory.T.idele_finite_decomposition F E U hUo`. Use `GlobalTheory.T.finite_dimensional_translates_decomposition (AE F E)ˣ (ctLevi σ G.W W₁ H' μ 𝓕 f h) (Set.range (Units.map (inclR (F := F) (AF F)).toMonoidHom)) {u | u ∈ U ∧ u ∈ idelesFin F E} (idelesInf F E) C ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩ t`. Conclude with `GlobalTheory.T.adapted_plane_automorphic_function_twist hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA hσ c hc hcs f hf μ 𝓕 h1 h2 h3 h γ t`. Introduce and unpack `u ⟨hu, hu'⟩ t`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hU u hu hu' t`. Introduce `t`. Take `⟨γ, c, hcC, a, ha, u, hu, hu', e⟩` from `hC t`. Conclude with `⟨_, ⟨γ, rfl⟩, c, hcC, a, ha, u, ⟨hu, hu'⟩, e⟩`. Introduce `b`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun a : idelesInf F E => fun a' : idelesInf F E => ctLevi σ G.W W₁ H' μ 𝓕 f h (b * a' * a)) = fun a : idelesInf F E => fun a' : idelesInf F E => ctLevi σ G.W W₁ H' μ 𝓕 f (leviElt σ G.W W₁ H' b * h) ((a' : (AE F E)ˣ) * a)`. Use function extensionality and compare the values at `a a'`. Rewrite using `[mul_assoc, htr]`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.automorphic_function_twist_bounded hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA hσ c hc hcs f hf μ 𝓕 h1 h2 h3 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctFinDim : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ (hσ : ∀ x, σ (σ x) = x) (c : E) (hc : c ≠ 0), σ c = -c → ∀ f : UA σ G.W.J → ℂ, (∃ K, IsMaxCpt σ (c • G.W.J.map σ) K ∧ IsAut σ (c • G.W.J.map σ) K (fun x => f ((toGAd hσ G.W.J hc).symm x))) → ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ h : UA σ G.W.J, FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun s : (AE F E)ˣ => fun t => ctLevi σ G.W W₁ H' μ 𝓕 f h (t * s))) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA hσ c hc hcs f hf μ 𝓕 h1 h2 h3 h

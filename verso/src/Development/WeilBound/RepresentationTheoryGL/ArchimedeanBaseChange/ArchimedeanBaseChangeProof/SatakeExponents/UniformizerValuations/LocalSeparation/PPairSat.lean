@@ -15,17 +15,15 @@ section Gen
 variable {G₁ G₂ V : Type} [Group G₁] [Group G₂] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Set `e : (G₁ × G₂) ⧸ K₁.prod K₂ ≃ (G₁ ⧸ K₁) × (G₂ ⧸ K₂)` to `{ toFun := fun c => ((c.out.1 : G₁ ⧸ K₁), (c.out.2 : G₂ ⧸ K₂)) invFun := fun p => (((p.1.out, p.2.out) : G₁ × G₂) : (G₁ × G₂) ⧸ K₁.prod K₂) left_inv := fun c => by conv_rhs => rw [← c.out_eq']`. Conclude with `QuotientGroup.eq.2 (Subgroup.mem_prod.2 ⟨QuotientGroup.eq.1 (QuotientGroup.out_eq' _), QuotientGroup.eq.1 (QuotientGroup.out_eq' _)⟩)`. Use `right_inv := fun p => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (K₁.prod K₂) ((p.1.out, p.2.out) : G₁ × G₂)`. Simplify using `only [hk, Prod.fst_mul, Prod.snd_mul]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[QuotientGroup.mk_mul_of_mem _ (Subgroup.mem_prod.1 k.2).1, QuotientGroup.mk_mul_of_mem _ (Subgroup.mem_prod.1 k.2).2, QuotientGroup.out_eq', QuotientGroup.out_eq'] }`. Establish `hbi : IsBiInv (K₁.prod K₂) (fun g : G₁ × G₂ => h₁ g.1 * h₂ g.2)` using `fun a b g => by`. Establish `e1` using `hh₁.1 ⟨_, (Subgroup.mem_prod.1 a.2).1⟩ ⟨_, (Subgroup.mem_prod.1 b.2).1⟩ g.1`. Establish `e2` using `hh₂.1 ⟨_, (Subgroup.mem_prod.1 a.2).2⟩ ⟨_, (Subgroup.mem_prod.1 b.2).2⟩ g.2`. Conclude with `congrArg₂ (· * ·) e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf1` using `Formalism.UG.P.finite_support_cosets hK₁ hh₁.2`. Establish `hf2` using `Formalism.UG.P.finite_support_cosets hK₂ hh₂.2`. Set `F : (G₁ ⧸ K₁) × (G₂ ⧸ K₂) → V` to `fun p => (h₁ p.1.out * h₂ p.2.out) • ρ (p.1.out, p.2.out) x`. Establish `hF : Function.HasFiniteSupport F`. Use `(hf1.prod hf2).subset fun p hp => ⟨fun h0 => hp ?_, fun h0 => hp ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[F, h0]`. Simplify using `[F, h0]`. Rewrite using `[heckeVec_eq_of_section hbi hx (fun c => ((e c).1.out, (e c).2.out)) (fun c => e.left_inv c)]`. Rewrite using `[show (∑ᶠ c, (fun g : G₁ × G₂ => h₁ g.1 * h₂ g.2) ((e c).1.out, (e c).2.out) • ρ ((e c).1.out, (e c).2.out) x) = ∑ᶠ c, F (e c) from rfl, finsum_comp_equiv e, finsum_curry F hF]`. Simplify using `only [heckeVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `finsum_congr fun c₁ => ?_` and prove the remaining obligations. Establish `hm` using `((h₁ c₁.out • (ρ.comp (MonoidHom.inl G₁ G₂)) c₁.out : V →ₗ[ℂ] V).toAddMonoidHom.map_finsum (finite_heckeVec hK₂ hh₂ (ρ.comp (MonoidHom.inr G₁ G₂)) x))`. Simplify using `only [LinearMap.toAddMonoidHom_coe, LinearMap.smul_apply] at hm`. Rewrite using `[hm]`. Use `finsum_congr fun c₂ => ?_` and prove the remaining obligations.
-
-Simplify using `only [F, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.inl_apply, MonoidHom.inr_apply, map_smul, smul_smul]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_pairProd (ρ : Representation ℂ (G₁ × G₂) V) {K₁ : Subgroup G₁} {K₂ : Subgroup G₂}
     (hK₁ : IsCommensurated K₁) (hK₂ : IsCommensurated K₂) {h₁ : G₁ → ℂ} {h₂ : G₂ → ℂ}
@@ -70,7 +68,7 @@ theorem heckeVec_pairProd (ρ : Representation ℂ (G₁ × G₂) V) {K₁ : Sub
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]
 
 /- English proof (translation)
-Use `map_heckeVec (ρ := ρ) hK hh (c • LinearMap.id) (ρ' := ρ) (fun g y => by simp) x` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem heckeVec_smul_pair (ρ : Representation ℂ G₁ V) {K : Subgroup G₁} (hK : IsCommensurated K) {h : G₁ → ℂ}
     (hh : h ∈ Hecke ℂ K) (c : ℂ) (x : V) : heckeVec ρ K h (c • x) = c • heckeVec ρ K h x := by
@@ -78,7 +76,7 @@ theorem heckeVec_smul_pair (ρ : Representation ℂ G₁ V) {K : Subgroup G₁} 
   simpa using this.symm
 
 /- English proof (translation)
-Simplify using `[heckeVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeVec_zero_pair (ρ : Representation ℂ G₁ V) (K : Subgroup G₁) (h : G₁ → ℂ) : heckeVec ρ K h 0 = 0 := by
   simp [heckeVec]
@@ -90,11 +88,11 @@ section Pair
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `hF`. Conclude with `⟨φ₂.1 y • φ₁, U₁.smul_mem _ h₁, fun x => by simp [mul_comm]⟩`. Consider the case `zero => exact ⟨0, U₁.zero_mem, fun x => rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add F F' _ _ hF hF'`. Take `⟨φ, hφ, e⟩` from `hF`. Take `⟨φ', hφ', e'⟩` from `hF'`. Conclude with `⟨φ + φ', U₁.add_mem hφ hφ', fun x => by simp [e, e']⟩`. Consider the case `smul c F _ hF`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨φ, hφ, e⟩` from `hF`. Conclude with `⟨c • φ, U₁.smul_mem c hφ, fun x => by simp [e]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairSlice₁ {U₁ : Submodule ℂ (Sm E a)} {U₂ : Submodule ℂ (Sm E b)} {G : H E a b → ℂ}
     (hG : G ∈ pairSpace U₁ U₂) (y : GA E b) : ∃ φ ∈ U₁, ∀ x, φ.1 x = G (x, y) := by
@@ -112,11 +110,11 @@ theorem pairSlice₁ {U₁ : Submodule ℂ (Sm E a)} {U₂ : Submodule ℂ (Sm E
     exact ⟨c • φ, U₁.smul_mem c hφ, fun x => by simp [e]⟩
 
 /- English proof (translation)
-Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `hF`. Conclude with `⟨φ₁.1 x • φ₂, U₂.smul_mem _ h₂, fun y => by simp⟩`. Consider the case `zero => exact ⟨0, U₂.zero_mem, fun y => rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add F F' _ _ hF hF'`. Take `⟨φ, hφ, e⟩` from `hF`. Take `⟨φ', hφ', e'⟩` from `hF'`. Conclude with `⟨φ + φ', U₂.add_mem hφ hφ', fun y => by simp [e, e']⟩`. Consider the case `smul c F _ hF`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨φ, hφ, e⟩` from `hF`. Conclude with `⟨c • φ, U₂.smul_mem c hφ, fun y => by simp [e]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairSlice₂ {U₁ : Submodule ℂ (Sm E a)} {U₂ : Submodule ℂ (Sm E b)} {G : H E a b → ℂ}
     (hG : G ∈ pairSpace U₁ U₂) (x : GA E a) : ∃ φ ∈ U₂, ∀ y, φ.1 y = G (x, y) := by
@@ -138,7 +136,7 @@ def pairSatEvA (y : GA E b) : (H E a b → ℂ) →ₗ[ℂ] (GA E a → ℂ) := 
 def pairSatEvB (x : GA E a) : (H E a b → ℂ) →ₗ[ℂ] (GA E b → ℂ) := LinearMap.funLeft ℂ ℂ fun y : GA E b => ((x, y) : H E a b)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show F ((x, y) * (embW a w g, embW b w 1)) = F (x * embW a w g, y)`. Rewrite using `[map_one, Prod.mk_mul_mk, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairSatEvA_equiv (w : Pl E) (y : GA E b) (g : GLw a w) (F : H E a b → ℂ) :
     pairSatEvA y (((pairRt a b w).comp (MonoidHom.inl _ _)) g F) =
@@ -148,7 +146,7 @@ theorem pairSatEvA_equiv (w : Pl E) (y : GA E b) (g : GLw a w) (F : H E a b → 
   rw [map_one, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Use `show F ((x, y) * (embW a w 1, embW b w g)) = F (x, y * embW b w g)`. Rewrite using `[map_one, Prod.mk_mul_mk, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairSatEvB_equiv (w : Pl E) (x : GA E a) (g : GLw b w) (F : H E a b → ℂ) :
     pairSatEvB x (((pairRt a b w).comp (MonoidHom.inr _ _)) g F) =
@@ -160,31 +158,29 @@ theorem pairSatEvB_equiv (w : Pl E) (x : GA E a) (g : GLw b w) (F : H E a b → 
 end Pair
 
 /- English proof (translation)
-Introduce `hT E _ _ _ a b s₁ s₂ Pa Pb w G g₁ g₂ u₁ u₂ t₁ t₂ hG h0 hf`. Choose the witnesses or unpack the hypotheses as in `⟨⟨x₀, y₀⟩, hp⟩ : ∃ p, G p ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h0 (funext hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `fixA : ∀ y (φ : Sm E a), (∀ x, φ.1 x = G (x, y)) → ∀ k ∈ KGL w a, finRep E a (locGL E a w k) φ = φ`. Introduce `y φ e k hk`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show φ.1 (x * finGL E a (locGL E a w k)) = φ.1 x`. Use `congrFun (GlobalTheory.LGrp.mem_fixed.1 hf (k, 1) (Subgroup.mem_prod.2 ⟨hk, one_mem _⟩)) (x, y)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `G ((x, y) * (embW a w k, embW b w 1)) = G (x, y) at this`. Rewrite `this` using `[map_one, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, e]`. Conclude with `this`. Establish `fixB : ∀ x (φ : Sm E b), (∀ y, φ.1 y = G (x, y)) → ∀ k ∈ KGL w b, finRep E b (locGL E b w k) φ = φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `x φ e k hk`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show φ.1 (y * finGL E b (locGL E b w k)) = φ.1 y`. Use `congrFun (GlobalTheory.LGrp.mem_fixed.1 hf (1, k) (Subgroup.mem_prod.2 ⟨one_mem _, hk⟩)) (x, y)` as an intermediate fact. Express the relevant statement in the definitionally equal form `G ((x, y) * (embW a w 1, embW b w k)) = G (x, y) at this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, e]`. Conclude with `this`. Take `⟨φa, hφa, ea⟩` from `pairSlice₁ hG y₀`. Take `⟨φb, hφb, eb⟩` from `pairSlice₂ hG x₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `na : φa ≠ 0` using `fun h => hp (by rw [← ea x₀, h]; rfl)`. Establish `nb : φb ≠ 0` using `fun h => hp (by rw [← eb y₀, h]; rfl)`. Take `⟨Ba, sa, hBa⟩` from `hT E a s₁ Pa w g₁ u₁ t₁ ⟨φa, hφa, na, fixA y₀ φa ea⟩`. Take `⟨Bb, sb, hBb⟩` from `hT E b s₂ Pb w g₂ u₂ t₂ ⟨φb, hφb, nb, fixB x₀ φb eb⟩`. Establish `eigA : ∀ ϖ, IsUnifV E w ϖ → ∀ i ≤ a, heckeVec ((pairRt a b w).comp (MonoidHom.inl _ _)) (KGL w a) (Tj ℂ a (Ov E w) ϖ i) G = satEig (qV E w) a Ba i • G`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `ϖ hϖ i hi`. Use function extensionality and compare the values at `⟨x, y⟩`. Take `⟨φ, hφ, e⟩` from `pairSlice₁ hG y`. Establish `key` using `congrFun (map_heckeVec (Final.GLintComm E w a) (Tj_mem_hecke hϖ i) (pairSatEvA y) (ρ := (pairRt a b w).comp (MonoidHom.inl _ _)) (ρ' := (rightReg ℂ (GA E a) ℂ).comp (embW a w)) (pairSatEvA_equiv w y) G) x`. Establish `hev : pairSatEvA y G = φ.1` using `funext fun x => (e x).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[hev]`. Express the relevant statement in the definitionally equal form `heckeVec ((pairRt a b w).comp (MonoidHom.inl _ _)) (KGL w a) (Tj ℂ a (Ov E w) ϖ i) G (x, y) = _ at key`. Rewrite using `[key, Pi.smul_apply, ← e x]`. Distinguish the cases in `hz : φ = 0`. Substitute `hz` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[heckeVec_zero_pair]`. Establish `hs` using `(hBa φ hφ hz (fixA y φ e)).map (Sm E a).subtype (ρ' := (rightReg ℂ (GA E a) ℂ).comp (embW a w)) (fun g z => rfl) (by simpa using hz)`. Establish `he : heckeVec ((rightReg ℂ (GA E a) ℂ).comp (embW a w)) (KGL w a) (Tj ℂ a (Ov E w) ϖ i) φ.1 = satEig (qV E w) a Ba i • φ.1` using `hs.2.2.2 ϖ hϖ i hi`. Rewrite using `[he]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eigB : ∀ ϖ, IsUnifV E w ϖ → ∀ j ≤ b, heckeVec ((pairRt a b w).comp (MonoidHom.inr _ _)) (KGL w b) (Tj ℂ b (Ov E w) ϖ j) G = satEig (qV E w) b Bb j • G`. Introduce `ϖ hϖ j hj`. Use function extensionality and compare the values at `⟨x, y⟩`. Take `⟨φ, hφ, e⟩` from `pairSlice₂ hG x`. Establish `key` using `congrFun (map_heckeVec (Final.GLintComm E w b) (Tj_mem_hecke hϖ j) (pairSatEvB x) (ρ := (pairRt a b w).comp (MonoidHom.inr _ _)) (ρ' := (rightReg ℂ (GA E b) ℂ).comp (embW b w)) (pairSatEvB_equiv w x) G) y`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hev : pairSatEvB x G = φ.1` using `funext fun y => (e y).symm`. Rewrite `key` using `[hev]`. Express the relevant statement in the definitionally equal form `heckeVec ((pairRt a b w).comp (MonoidHom.inr _ _)) (KGL w b) (Tj ℂ b (Ov E w) ϖ j) G (x, y) = _ at key`. Rewrite using `[key, Pi.smul_apply, ← e y]`. Distinguish the cases in `hz : φ = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Substitute `hz` using the available equality. Simplify using `[heckeVec_zero_pair]`. Establish `hs` using `(hBb φ hφ hz (fixB x φ e)).map (Sm E b).subtype (ρ' := (rightReg ℂ (GA E b) ℂ).comp (embW b w)) (fun g z => rfl) (by simpa using hz)`. Establish `he : heckeVec ((rightReg ℂ (GA E b) ℂ).comp (embW b w)) (KGL w b) (Tj ℂ b (Ov E w) ϖ j) φ.1 = satEig (qV E w) b Bb j • φ.1` using `hs.2.2.2 ϖ hϖ j hj`. Rewrite using `[he]`.
-
-Both sides reduce to the same expression. Use `⟨Ba, Bb, sa, sb, hf, (hBa φa hφa na (fixA y₀ φa ea)).2.2.1, (hBb φb hφb nb (fixB x₀ φb eb)).2.2.1, fun ϖ hϖ i hi j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[heckeVec_pairProd _ (Final.GLintComm E w a) (Final.GLintComm E w b) (Tj_mem_hecke hϖ i) (Tj_mem_hecke hϖ j) hf, eigB ϖ hϖ j hj, heckeVec_smul_pair _ (Final.GLintComm E w a) (Tj_mem_hecke hϖ i), eigA ϖ hϖ i hi, smul_smul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairSat_holds : PairSat := by
   intro hT E _ _ _ a b s₁ s₂ Pa Pb w G g₁ g₂ u₁ u₂ t₁ t₂ hG h0 hf

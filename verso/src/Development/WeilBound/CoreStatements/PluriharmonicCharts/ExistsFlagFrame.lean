@@ -15,7 +15,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {y : (Σ k, ι k) → Φ} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} (M : FlagModel y Ψ N j)
 
 /- English proof (translation)
-Unfold `detFac`. Rewrite using `[CPts.minorIJ_map, CPts.minorIJ_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem detFac_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (i : Fin N) (T : Matrix (Fin N) (Fin N) R) :
     detFac j i (T.map f) = f (detFac j i T) := by
@@ -24,7 +24,7 @@ theorem detFac_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (i : F
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `muI`. Rewrite using `[CPts.minorIJ_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem muI_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (i : Fin N) (T : Matrix (Fin N) (Fin N) R) :
     muI N j i (T.map f) = f (muI N j i T) := by
@@ -33,7 +33,7 @@ theorem muI_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (i : Fin 
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_sum' {σ : Type} (S : Finset σ) {x : L} (hx : x ≠ 0) (n : σ → ℤ) : x ^ (∑ p ∈ S, n p) = ∏ p ∈ S, x ^ n p := by
   induction S using Finset.induction_on with
@@ -41,17 +41,17 @@ theorem zpow_sum' {σ : Type} (S : Finset σ) {x : L} (hx : x ≠ 0) (n : σ →
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc k)`.
+A detailed English derivation is pending.
 -/
 theorem chartMono_ne {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) (e : K → ℤ) :
     chartMono z c e ≠ 0 := Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc k)
 
 /- English proof (translation)
-Rewrite using `[← prod_xi_pair τ a fun p => chartMono z c (M.dy p)]`. Establish `e1 : ∏ p, chartMono z c (M.dy p) ^ xiCoef τ a p = ∏ k, z ⟨k, c k⟩ ^ ∑ p, xiCoef τ a p * M.dy p k`. Simplify using `only [chartMono, ← Finset.prod_zpow]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zpow_sum' _ (hc k)]`. Conclude with `Finset.prod_congr rfl fun p _ => by rw [← _root_.zpow_mul, mul_comm]`. Establish `e2 : z ⟨k₀, c k₀⟩ ^ 2 = ∏ k, z ⟨k, c k⟩ ^ (if k = k₀ then (2 : ℤ) else 0)`. Rewrite using `[Finset.prod_eq_single k₀ (fun k _ h => by rw [if_neg h, zpow_zero]) (by simp), if_pos rfl, zpow_ofNat]`. Rewrite using `[e1, e2, chartMono, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hc k), ← zpow_add₀ (hc k), eDeg]`. Rewrite using `[show -(∑ p, xiCoef τ a p * M.dy p k) - (if k = k₀ then 2 else 0) + ((if k = k₀ then 2 else 0) + ∑ p, xiCoef τ a p * M.dy p k) = 0 by ring, zpow_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartMono_eDeg {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) (τ : Ψ) (a : Fin N) (k₀ : K) :
     chartMono z c (eDeg M τ a k₀) * (z ⟨k₀, c k₀⟩ ^ 2 * ∏ i, chartMono z c (M.dy (τ, i)) ^ xiCoef τ a (τ, i)) = 1 := by
@@ -71,13 +71,11 @@ theorem chartMono_eDeg {z : (Σ k, ι k) → L} {c : ∀ k, ι k} (hc : ∀ k, z
     ∑ p, xiCoef τ a p * M.dy p k) = 0 by ring, zpow_zero]
 
 /- English proof (translation)
-Rewrite using `[chartMono, ← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun k => ∀ p', M.blk p' ≠ some k)]`. Use `congr 1`. Rewrite using `[Finset.prod_subtype (p := fun k => ∀ p', M.blk p' ≠ some k) _ (by simp)]`. Use `Finset.prod_congr (by congr) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[FlagModel.dy, dif_pos k.2, _root_.zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `hp : M.blk p with`. Consider the case `none`. Use `Finset.prod_eq_one fun k hk => ?_` and prove the remaining obligations. Rewrite using `[FlagModel.dy, dif_neg (Finset.mem_filter.1 hk).2, hp, if_neg (by simp), zpow_zero]`. Consider the case `some k₁`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hk₁ : ¬ ∀ p', M.blk p' ≠ some k₁` using `fun h => h p hp`. Rewrite using `[Finset.prod_eq_single k₁ (fun k hk h => by`. Rewrite using `[FlagModel.dy, dif_neg (Finset.mem_filter.1 hk).2, hp, if_neg (by simpa using h.symm), zpow_zero])`. Use the proof step `(fun h => (h (Finset.mem_filter.2 ⟨Finset.mem_univ k₁, hk₁⟩)).elim), FlagModel.dy, dif_neg hk₁, if_pos hp,`. Use the proof step `zpow_one]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chartMono_dy (z : (Σ k, ι k) → L) (c : ∀ k, ι k) (p : Ψ × Fin N) :
     chartMono z c (M.dy p) = (∏ k : NonPluckerBlocks M.blk, (z ⟨k.1, c k.1⟩ ^ M.b p k)⁻¹) *
@@ -100,55 +98,53 @@ theorem chartMono_dy (z : (Σ k, ι k) → L) (c : ∀ k, ι k) (p : Ψ × Fin N
       rfl
 
 /- English proof (translation)
-The claim follows from `Option.ne_none_iff_exists'.1 fun h => (M.blk_none _).1 h hi`.
+A detailed English derivation is pending.
 -/
 theorem blk_some {i : Fin N} (τ : Ψ) (hi : IsProperStep N j i) : ∃ k, M.blk (τ, i) = some k :=
   Option.ne_none_iff_exists'.1 fun h => (M.blk_none _).1 h hi
 
 /- English proof (translation)
-The claim follows from `hz.comp (CPts.blockMap_base M) (algebraMap M.Ω Φ) (funext M.y_base)`.
+A detailed English derivation is pending.
 -/
 theorem isPt_base {z : (Σ k, ι k) → L} (hz : IsPt y z) : IsPt M.x (basePart M.blk z) :=
   hz.comp (CPts.blockMap_base M) (algebraMap M.Ω Φ) (funext M.y_base)
 
 /- English proof (translation)
-The claim follows from `HasVal.pull (CPts.blockMap_base M) (algebraMap M.Ω Φ) (funext M.y_base) h`.
+A detailed English derivation is pending.
 -/
 theorem hasVal_base {z : (Σ k, ι k) → L} {s : M.Ω} {v : L} (h : HasVal M.x (basePart M.blk z) s v) :
     HasVal y z (algebraMap M.Ω Φ s) v :=
   HasVal.pull (CPts.blockMap_base M) (algebraMap M.Ω Φ) (funext M.y_base) h
 
 /- English proof (translation)
-Introduce `h` and use `hG.1 k ((mem_iff_of_homog (isMultiHomog_X _)).2 (by rw [aeval_X]; exact h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_ne {z : (Σ k, ι k) → L} {F : FrameData ι Ψ N M.Ω M.blk}
     (hG : M.GoodAt F (mCoordIdeal (basePart M.blk z))) (k : NonPluckerBlocks M.blk) : z ⟨k.1, F.c k⟩ ≠ 0 := fun h =>
   hG.1 k ((mem_iff_of_homog (isMultiHomog_X _)).2 (by rw [aeval_X]; exact h))
 
 /- English proof (translation)
-Use `haveI := isLocalRing_regO hz`. Set `am` to `algebraMap M.Ω Φ`. Set `h` to `(F.T τ)⁻¹.map am * M.g τ`. Establish `hTh : (F.T τ).map am * h = M.g τ` using `CPts.map_mul_inv_map am (hF.1 τ).2 _`. Establish `hhb : IsBlockDiag j h` using `(((hF.1 τ).1.inv (hF.1 τ).2.isUnit).map am).mul (M.g_block τ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhd : h.det ≠ 0` using `fun e => (M.isUnit_det_g τ).ne_zero (by rw [← hTh, det_mul, e, mul_zero])`. Establish `hu : ∀ q I, am (F.u q I) ∈ regO y z` using `fun q I => (exists_hasVal_of_regAt (hG.2.1 q I).1).imp fun _ => hasVal_base M`. Establish `hu' : ∀ I q, am (F.u' I q) ∈ regO y z` using `fun I q => (exists_hasVal_of_regAt (hG.2.1 q I).2).imp fun _ => hasVal_base M`. Take `⟨b, hb, hbt, hbd, hO, hO'⟩` from `exists_local_frame (regO y z) M.j_le h hhb hhd fun i hi => by`. Take `⟨k, hk⟩` from `blk_some M τ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hz.1 k`. Establish `hyc` using `hz.coord_ne hc`. Establish `hdet : am (detFac j i (F.T τ)) ≠ 0` using `(map_ne_zero am).2 (CPts.detFac_ne_zero M.j_le i (hF.1 τ).1 (hF.1 τ).2)`. Establish `hE : am (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, i) k') ≠ 0` using `(map_ne_zero am).2 (Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (M.x_chart_ne (isPt_base M hz).le hG k'))`. Set `η` to `am (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b (τ, i) k') / (am (detFac j i (F.T τ)) * y ⟨k, c⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `rel : ∀ m, η * ∑ I, am (F.u ⟨k, m⟩ I) * minorIJ h I (stepCols N j i) = y ⟨k, m⟩ / y ⟨k, c⟩` using `fun m => by`. Use `CPts.frame_gen M hF (RingHom.id Φ) hk m hhb isBlockDiag_one blockTriangular_one (by rw [mul_one]; exact hTh)` as an intermediate fact. Simplify using `only [RingHom.id_apply, Matrix.one_apply_eq, Finset.prod_const_one, mul_one] at this`. Simplify using `only [η]`. Rewrite using `[div_mul_eq_mul_div, ← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_div_mul_left _ _ hdet`. Establish `hO : ∀ I, η * minorIJ h I (stepCols N j i) ∈ regO y z` using `fun I => by`. Distinguish the cases in `hI : IsStepRows N j i I`. Rewrite using `[← dual_sum i (fun m I => am (F.u ⟨k, m⟩ I)) (fun I m => am (F.u' I ⟨k, m⟩)) (fun I I' h1 h2 => by`. Use `congrArg am (hF.2.2.1 (τ, i) k hk I I' h1 h2)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[map_sum]`. Simplify using `only [map_mul] at this`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp) (fun I => minorIJ h I (stepCols N j i))`. Use the proof step `(fun I hI => minor_stepCols_eq_zero M.j_le h I hhb hI) I hI, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, rel]`. Conclude with `mul_mem (hu' _ _) ⟨_, hasVal_ratio hz m c hc⟩`. Rewrite using `[minor_stepCols_eq_zero M.j_le h I hhb hI, mul_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨η, div_ne_zero hE (mul_ne_zero hdet hyc), hO, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ I, (⟨_, hu ⟨k, c⟩ I⟩ : regO y z) * ⟨_, hO I⟩ = 1` using `Subtype.ext (by`. Use `rel c` as an intermediate fact. Rewrite `this` using `[div_self hyc, Finset.mul_sum]`. Simplify using `only [AddSubmonoidClass.coe_finsetSum, Subring.coe_mul, Subring.coe_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun I _ => by ring)`. Establish `h2` using `congrArg (valO hz) h1`. Rewrite `h2` using `[map_sum, map_one]`. Take `⟨I, -, hI⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (h2.trans_ne one_ne_zero)`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hI` using `[map_mul]`. Establish `h3` using `hasVal_valO hz ⟨_, hO I⟩`. Conclude with `⟨I, h3.ne_zero hz (right_ne_zero_of_mul hI), _, h3.inv hz (right_ne_zero_of_mul hI)⟩`. Establish `hd : (h * b).det ≠ 0`. Rewrite using `[det_mul, det_of_upperTriangular hbt]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero hhd (Finset.prod_ne_zero_iff.2 fun a _ => hbd a)`. Set `H : Matrix (Fin N) (Fin N) (regO y z)` to `Matrix.of fun a c => ⟨_, hO a c⟩`. Set `H' : Matrix (Fin N) (Fin N) (regO y z)` to `Matrix.of fun a c => ⟨_, hO' a c⟩`. Establish `e1 : H.map (regO y z).subtype = h * b` using `by ext; rfl`. Establish `e2 : H'.map (regO y z).subtype = (h * b)⁻¹` using `by ext; rfl`.
-
-Use `⟨b, H, H', hb, hbt, hbd, fun a c e => Subtype.ext ((hhb.mul hb) a c e), ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.map_injective (f := (regO y z).subtype) Subtype.val_injective ?_ show (H' * H).map _ = (1 : Matrix (Fin N) (Fin N) (regO y z)).map _` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, e1, e2, Matrix.nonsing_inv_mul _ hd.isUnit, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e1, ← Matrix.mul_assoc, hTh]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_flag_frame (τ : Ψ) {z : (Σ k, ι k) → L} (hz : IsPt y z) {F : FrameData ι Ψ N M.Ω M.blk}
     (hF : M.IsFrame F) (hG : M.GoodAt F (mCoordIdeal (basePart M.blk z))) :

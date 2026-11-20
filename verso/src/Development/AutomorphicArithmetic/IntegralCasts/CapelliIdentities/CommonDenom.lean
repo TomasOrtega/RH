@@ -6,11 +6,11 @@ noncomputable def UpperTheory.Reformulated.B.Qn19.AIC :
       ∀ (p : Polynomial A), p.Monic → (0 : ℕ) < p.natDegree → ∃ (a : A), Polynomial.eval a p = (0 : A)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, by simp⟩`. Consider the case `insert x s _ ih`. Take `⟨b, hb, hs⟩` from `ih`. Take `⟨a, c, hc, hx⟩` from `h x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b * c, by rw [map_mul]; exact hb.mul hc, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `⟨a * b, by rw [map_mul, map_mul, ← hx]; ring⟩`. Take `⟨d, hd⟩` from `hs z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d * c, by rw [map_mul, map_mul, hd]; ring⟩`.
+Supply the required witnesses or components.
 -/
 private theorem UpperTheory.Reformulated.B.Qn19.commonDenom {R L : Type} [CommRing R] [CommRing L] (φ : R →+* L)
     (h : ∀ z : L, ∃ a b : R, IsUnit (φ b) ∧ z * φ b = φ a) (s : Finset L) :
@@ -29,17 +29,17 @@ private theorem UpperTheory.Reformulated.B.Qn19.commonDenom {R L : Type} [CommRi
       exact ⟨d * c, by rw [map_mul, map_mul, hd]; ring⟩
 
 /- English proof (translation)
-Introduce `R L _ _ φ hR h p hp hdeg`. Take `⟨b, hb, hs⟩` from `UpperTheory.Reformulated.B.Qn19.commonDenom φ h p.coeffs`. Establish `hmon : (p.scaleRoots (φ b)).Monic` using `(Polynomial.monic_scaleRoots_iff _).2 hp`. Establish `hlift : p.scaleRoots (φ b) ∈ Polynomial.lifts φ`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Polynomial.coeff_scaleRoots]`. Break down `lt_trichotomy i p.natDegree with hi | hi | hi` into its components or cases. Distinguish the cases in `h0 : p.coeff i = 0`. Conclude with `⟨0, by simp [h0]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `hs _ (Polynomial.coeff_mem_coeffs h0)`. Take `⟨k, hk⟩ : ∃ k, p.natDegree - i = k + 1` from `⟨p.natDegree - i - 1, by omega⟩`. Conclude with `⟨a * b ^ k, by rw [map_mul, map_pow, ha, hk]; ring⟩`. Substitute `hi` using the available equality. Conclude with `⟨1, by simp [hp.coeff_natDegree]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [Polynomial.coeff_eq_zero_of_natDegree_lt hi]⟩`. Take `⟨q, hq, hqd, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift hmon`. Rewrite `hqd` using `[Polynomial.natDegree_scaleRoots]`. Take `⟨a, ha⟩` from `hR q hqm (by rw [hqd]; exact hdeg)`. Take `⟨u, hu⟩` from `hb`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(↑u⁻¹ : L) * φ a, ?_⟩` and prove the remaining obligations. Establish `h1 : Polynomial.eval (φ a) (p.scaleRoots (φ b)) = 0`. Rewrite using `[← hq, Polynomial.eval_map, Polynomial.eval₂_hom, ha, map_zero]`. Establish `h2` using `Polynomial.scaleRoots_eval_mul p ((↑u⁻¹ : L) * φ a) (φ b)`. Establish `h3 : φ b * ((↑u⁻¹ : L) * φ a) = φ a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hu, ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite `h2` using `[h3, h1, ← hu]`. Conclude with `((u.isUnit.pow p.natDegree).mul_right_eq_zero).1 h2.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qn19.aicFrac :
     ∀ (R L : Type) [inst : CommRing R] [inst_1 : CommRing L] (φ : R →+* L),

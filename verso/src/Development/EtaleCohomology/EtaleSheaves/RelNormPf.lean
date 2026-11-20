@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace LateralTheory.E.RelNormPf
 
 /- English proof (translation)
-Introduce `b hb`. Take `⟨p, hm, hp⟩` from `hb`. Take `⟨a', ha'⟩` from `h b ⟨p.map (k'.app V).hom, hm.map _, (Polynomial.eval₂_map (p := p) (k'.app V).hom (c'.app (k' ⁻¹ᵁ V)).hom b).trans hp⟩`. Take `⟨a, rfl⟩` from `hs a'`. Conclude with `⟨a, ha'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem closedAt_comp {X N T : Scheme.{0}} (c' : X ⟶ N) (k' : N ⟶ T) (V : T.Opens)
     (h : ClosedAt c' (k' ⁻¹ᵁ V)) (hs : Function.Surjective (k'.app V)) : ClosedAt (c' ≫ k') V := by
@@ -17,11 +17,11 @@ theorem closedAt_comp {X N T : Scheme.{0}} (c' : X ⟶ N) (k' : N ⟶ T) (V : T.
   exact ⟨a, ha'⟩
 
 /- English proof (translation)
-Introduce `Z S g _ _ _ V hV`. Establish `H : g = g.toNormalization.toNormalization ≫ (g.toNormalization.fromNormalization ≫ g.fromNormalization)`. Rewrite using `[← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, Scheme.Hom.toNormalization_fromNormalization]`. Set `h` to `g.normalizationDesc _ _ H`. Establish `e1 : g.toNormalization ≫ h = g.toNormalization.toNormalization` using `g.toNormalization_normalizationDesc _ _ H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : h ≫ g.toNormalization.fromNormalization ≫ g.fromNormalization = g.fromNormalization` using `g.normalizationDesc_comp _ _ H`. Establish `i1 : h ≫ g.toNormalization.fromNormalization = 𝟙 _` using `Scheme.Hom.normalization.hom_ext g _ _ g.fromNormalization (by rw [reassoc_of% e1, Scheme.Hom.toNormalization_fromNormalization, Category.comp_id]) (by rw [Category.assoc, e2]) (Category.id_comp _)`. Establish `i2 : g.toNormalization.fromNormalization ≫ h = 𝟙 _` using `Scheme.Hom.normalization.hom_ext g.toNormalization _ _ g.toNormalization.fromNormalization (by rw [Scheme.Hom.toNormalization_fromNormalization_assoc, e1, Category.comp_id]) (by rw [Category.assoc, i1, Category.comp_id]) (Category.id_comp _)`. Establish `: IsIso g.toNormalization.fromNormalization` using `⟨h, i2, i1⟩`. Establish `e` using `g.toNormalization.toNormalization_fromNormalization`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `closedAt_comp _ _ V (closedAt_preimage _ V hV) (ConcreteCategory.bijective_of_isIso (g.toNormalization.fromNormalization.app V)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normClosed : NormClosed := by
   intro Z S g _ _ _ V hV
@@ -49,7 +49,7 @@ theorem normClosed : NormClosed := by
     (ConcreteCategory.bijective_of_isIso (g.toNormalization.fromNormalization.app V)).2
 
 /- English proof (translation)
-The claim follows from `RelNorm_of_closed normClosed`.
+A detailed English derivation is pending.
 -/
 theorem RelNorm_of : LateralTheory.E.SteinPf.RelNorm := RelNorm_of_closed normClosed
 

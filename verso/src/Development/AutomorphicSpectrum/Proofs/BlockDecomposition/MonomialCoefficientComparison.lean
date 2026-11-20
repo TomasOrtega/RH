@@ -6,15 +6,15 @@ open Finset GlobalTheory.CompanionTheory.CoefId
 namespace GlobalTheory.CompanionTheory.CoefId
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun k : ℕ => ((1 + (k : ℂ) * Complex.I) / (1 - (k : ℂ) * Complex.I)))`. Introduce `s t hst`. Establish `h1 : ∀ k : ℕ, (1 - (k : ℂ) * Complex.I) ≠ 0`. Introduce `k h0`. Use `congrArg Complex.re h0` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Establish `h2` using `(div_eq_div_iff (h1 s) (h1 t)).mp hst`. Establish `h3` using `congrArg Complex.im h2`. Simplify using `at h3`. Establish `h4 : (s : ℝ) = t` using `by linarith`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h4` after adjusting the coercions. Use `Set.infinite_of_injective_forall_mem hinj fun k => ?_` and prove the remaining obligations. Establish `h5 : ‖(1 + (k : ℂ) * Complex.I)‖ = ‖(1 - (k : ℂ) * Complex.I)‖`. Rewrite using `[← Complex.norm_conj (1 + (k : ℂ) * Complex.I)]`. Simplify using `[sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h6 : ‖(1 - (k : ℂ) * Complex.I)‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Introduce `h0`. Use `congrArg Complex.re h0` as an intermediate fact. Simplify using `at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_ofPred_eq, norm_div, h5]`. Conclude with `div_self h6`.
+A detailed English derivation is pending.
 -/
 theorem unitCircle_infinite : {z : ℂ | ‖z‖ = 1}.Infinite := by
   have hinj : Function.Injective (fun k : ℕ => ((1 + (k : ℂ) * Complex.I) / (1 - (k : ℂ) * Complex.I))) := by
@@ -41,15 +41,15 @@ theorem unitCircle_infinite : {z : ℂ | ‖z‖ = 1}.Infinite := by
   exact div_self h6
 
 /- English proof (translation)
-Use `set D : MvPolynomial (Fin n) ℂ := ∏ q ∈ prs n, (MvPolynomial.X q.1 ^ 2 - MvPolynomial.X q.2 ^ 2) with hD`. Establish `hD0 : D ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun q hq => ?_` and prove the remaining obligations. Establish `hlt : q.1 < q.2` using `(mem_filter.mp hq).2`. Introduce `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (MvPolynomial.X q.1 ^ 2 : MvPolynomial (Fin n) ℂ) = MvPolynomial.X q.2 ^ 2` using `sub_eq_zero.mp h0`. Use `congrArg (MvPolynomial.eval (fun a => if a = q.1 then (1 : ℂ) else 0)) h1` as an intermediate fact. Simplify using `[hlt.ne'] at this`. Establish `hz : p * D = 0`. Apply `MvPolynomial.funext_set (fun _ => {z : ℂ | ‖z‖ = 1}) (fun _ => unitCircle_infinite)` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : ∀ a, ‖x a‖ = 1` using `fun a => hx a (Set.mem_univ a)`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hi : Function.Injective (fun a => x a ^ 2)`. Rewrite using `[h x hx' hi, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, hne⟩ : ∃ a b, x a ^ 2 = x b ^ 2 ∧ a ≠ b := by`. Simplify `hi` using `[Function.Injective]`. Establish `: MvPolynomial.eval x D = 0`. Rewrite using `[hD, map_prod]`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (i := (a, b)) (by simp [prs, hlt]) (by simp [hab])`. Conclude with `Finset.prod_eq_zero (i := (b, a)) (by simp [prs, hlt]) (by simp [hab])`. Rewrite using `[this, mul_zero]`. Conclude with `(mul_eq_zero.mp hz).resolve_right hD0`.
+A detailed English derivation is pending.
 -/
 theorem poly_zero_of_torus {n : ℕ} (p : MvPolynomial (Fin n) ℂ)
     (h : ∀ z : Fin n → ℂ, (∀ a, ‖z a‖ = 1) → Function.Injective (fun a => z a ^ 2) →
@@ -83,23 +83,23 @@ theorem poly_zero_of_torus {n : ℕ} (p : MvPolynomial (Fin n) ℂ)
   exact (mul_eq_zero.mp hz).resolve_right hD0
 
 /- English proof (translation)
-Use `set N : ℕ := ∑ m ∈ S, ∑ a, (m a).natAbs with hNdef`. Establish `hN : ∀ m ∈ S, ∀ a, 0 ≤ m a + (N : ℤ)`. Introduce `m hm a`. Establish `h1 : (m a).natAbs ≤ ∑ a, (m a).natAbs` using `Finset.single_le_sum (f := fun a => (m a).natAbs) (fun _ _ => Nat.zero_le _) (mem_univ a)`. Establish `h2 : ∑ a, (m a).natAbs ≤ N` using `Finset.single_le_sum (f := fun m : Fin n → ℤ => ∑ a, (m a).natAbs) (fun _ _ => Nat.zero_le _) hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((m a).natAbs : ℤ) ≤ N` using `by exact_mod_cast h1.trans h2`. Establish `h4 : -((m a).natAbs : ℤ) ≤ m a`. Use `abs_nonneg (m a)` as an intermediate fact. Rewrite using `[Int.natCast_natAbs]`. Conclude with `neg_abs_le (m a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Set `s : (Fin n → ℤ) → (Fin n →₀ ℕ)` to `fun m => Finsupp.equivFunOnFinite.symm (fun a => (m a + (N : ℤ)).toNat)`. Establish `hs : ∀ m ∈ S, ∀ a, ((s m a : ℕ) : ℤ) = m a + N`. Introduce `m hm a`. Simplify using `only [s, Finsupp.equivFunOnFinite_symm_apply_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Int.toNat_of_nonneg (hN m hm a)`. Establish `hinj : ∀ m ∈ S, ∀ m' ∈ S, s m = s m' → m = m'`. Introduce `m hm m' hm' hss`. Use function extensionality and compare the values at `a`. Establish `h1` using `hs m hm a`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `hs m' hm' a`. Rewrite `h1` using `[hss]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp : (∑ m ∈ S, MvPolynomial.monomial (s m) (h m) : MvPolynomial (Fin n) ℂ) = 0`. Use `poly_zero_of_torus _ fun z hz hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz0 : ∀ a, z a ≠ 0`. Introduce `a h0`. Use `hz a` as an intermediate fact. Simplify using `[h0] at this`. Establish `hterm : ∀ m ∈ S, MvPolynomial.eval z (MvPolynomial.monomial (s m) (h m)) = (∏ a, z a ^ N) * (h m * mon m z)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m hm`. Rewrite using `[MvPolynomial.eval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), mon]`. Establish `: ∀ a, z a ^ (s m a) = z a ^ N * z a ^ (m a)`. Introduce `a`. Rewrite using `[← zpow_natCast, hs m hm a, ← zpow_natCast, ← zpow_add₀ (hz0 a), add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [this, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sum, Finset.sum_congr rfl hterm, ← Finset.mul_sum, H z hz hi, mul_zero]`. Introduce `m hm`. Establish `h1` using `congrArg (MvPolynomial.coeff (s m)) hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[MvPolynomial.coeff_sum, Finset.sum_eq_single m]`. Simplify `h1` using `[MvPolynomial.coeff_monomial]`. Introduce `b hb hne`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg fun e => hne (hinj b hb m hm e)]`. Conclude with `fun h' => absurd hm h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem coeff_zero_of_torus {n : ℕ} (S : Finset (Fin n → ℤ)) (h : (Fin n → ℤ) → ℂ)
     (H : ∀ z : Fin n → ℂ, (∀ a, ‖z a‖ = 1) → Function.Injective (fun a => z a ^ 2) →
@@ -157,13 +157,13 @@ theorem coeff_zero_of_torus {n : ℕ} (S : Finset (Fin n → ℤ)) (h : (Fin n �
   · exact fun h' => absurd hm h'
 
 /- English proof (translation)
-Use `set S : Finset (Fin n → ℤ) := insert m (I.image e ∪ J.image e') with hS`. Use `set h : (Fin n → ℤ) → ℂ := fun m => ∑ i ∈ I.filter (fun i => e i = m), f i - ∑ j ∈ J.filter (fun j => e' j = m), g j with hh`. Establish `hI : ∀ i ∈ I, e i ∈ S` using `fun i hi => mem_insert_of_mem (mem_union_left _ (mem_image_of_mem e hi))`. Establish `hJ : ∀ j ∈ J, e' j ∈ S` using `fun j hj => mem_insert_of_mem (mem_union_right _ (mem_image_of_mem e' hj))`. Establish `key` using `coeff_zero_of_torus S h (fun z hz hi => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ i ∈ I, f i * mon (e i) z = ∑ m ∈ S, (∑ i ∈ I.filter (fun i => e i = m), f i) * mon m z`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hI]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(mem_filter.mp hi).2]`. Establish `h2 : ∑ j ∈ J, g j * mon (e' j) z = ∑ m ∈ S, (∑ j ∈ J.filter (fun j => e' j = m), g j) * mon m z`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hJ]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[(mem_filter.mp hj).2]`. Simplify using `only [hh, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[← h1, ← h2, H z hz hi, sub_self]) m (mem_insert_self _ _)`. Conclude with `sub_eq_zero.mp key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem laurent_indep_torus {n : ℕ} {ι κ : Type} (I : Finset ι) (J : Finset κ) (f : ι → ℂ)
     (g : κ → ℂ) (e : ι → Fin n → ℤ) (e' : κ → Fin n → ℤ)

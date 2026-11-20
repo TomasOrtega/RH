@@ -20,7 +20,7 @@ open GlobalTheory.FlagZ
 namespace GlobalTheory.FlagZ.Univ
 
 /- English proof (translation)
-The claim follows from `isIso_incl_last`.
+A detailed English derivation is pending.
 -/
 theorem isIso_incl_last_step : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι), IsIso (GlobalTheory.FlagZ.Univ.incl ι N τ (Fin.last N)) :=
   isIso_incl_last

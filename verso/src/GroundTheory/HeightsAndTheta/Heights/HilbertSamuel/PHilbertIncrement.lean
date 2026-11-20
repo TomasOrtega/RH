@@ -17,7 +17,7 @@ namespace HilbertIncrement
 variable {K : Type} [DecidableEq K] {ι : K → Type} {F : Type u} [Field F]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Nat.cast_sum, Nat.cast_mul, intWeight, unitDeg, blockWeight]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : k = v.1 <;> simp [h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weight_intWeight (e : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (intWeight (ι := ι)) e =
@@ -29,9 +29,9 @@ theorem weight_intWeight (e : (Σ k, ι k) →₀ ℕ) :
   by_cases h : k = v.1 <;> simp [h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h e he`. Use function extensionality and compare the values at `k`. Establish `e1 : ((Finsupp.weight (blockWeight ι) e k : ℕ) : ℤ) = (a k : ℤ)`. Use `congrFun (h he) k` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[weight_intWeight]`. Conclude with `this`. Conclude with `e1` after adjusting the coercions. Introduce `h e he`. Rewrite using `[weight_intWeight, h he]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_intWeight_iff {f : MRing ι F} {a : K → ℕ} :
     IsWeightedHomogeneous (intWeight (ι := ι)) f (fun k => (a k : ℤ)) ↔
@@ -48,7 +48,7 @@ theorem isWeightedHomogeneous_intWeight_iff {f : MRing ι F} {a : K → ℕ} :
     rw [weight_intWeight, h he]
 
 /- English proof (translation)
-Use extensionality with `f`. Simplify using `only [ringPiece, mem_weightedHomogeneousSubmodule]`. Conclude with `isWeightedHomogeneous_intWeight_iff`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringPiece_natCast (a : K → ℕ) :
     ringPiece (F := F) (ι := ι) (fun k => (a k : ℤ)) =
@@ -58,19 +58,17 @@ theorem ringPiece_natCast (a : K → ℕ) :
   exact isWeightedHomogeneous_intWeight_iff
 
 /- English proof (translation)
-Distinguish the cases in `hm : ∀ k, 0 ≤ m k`. Establish `e : weightedHomogeneousComponent (intWeight (ι` using `ι)) m f = weightedHomogeneousComponent (blockWeight ι) (fun k => (m k).toNat) f := by`. Use extensionality with `e`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent, weight_intWeight]`. Establish `hiff : ((fun k => ((Finsupp.weight (blockWeight ι) e k : ℕ) : ℤ)) = m) ↔ Finsupp.weight (blockWeight ι) e = fun k => (m k).toNat`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `k`. Establish `e1 : ((Finsupp.weight (blockWeight ι) e k : ℕ) : ℤ) = m k` using `congrFun h k`. Use `hm k` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show _ = (m k).toNat`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Use function extensionality and compare the values at `k`. Establish `e1 : Finsupp.weight (blockWeight ι) e k = (m k).toNat` using `congrFun h k`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm k` as an intermediate fact. Use `show ((Finsupp.weight (blockWeight ι) e k : ℕ) : ℤ) = m k`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hiff]`. Rewrite using `[e]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hJ f hf _`. Use `push Not at hm`. Take `⟨k, hk⟩` from `hm`. Establish `e : weightedHomogeneousComponent (intWeight (ι` using `ι)) m f = 0 := by`. Use extensionality with `e`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[coeff_weightedHomogeneousComponent, weight_intWeight, coeff_zero, if_neg]`. Introduce `h`. Establish `e1 : ((Finsupp.weight (blockWeight ι) e k : ℕ) : ℤ) = m k` using `congrFun h k`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
-
-Conclude with `J.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem component_intWeight_mem {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J)
     {f : MRing ι F} (hf : f ∈ J) (m : K → ℤ) :
@@ -111,9 +109,9 @@ theorem component_intWeight_mem {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal
     exact J.zero_mem
 
 /- English proof (translation)
-Introduce `f hf n`. Take `⟨p, hp, y, hy, rfl⟩` from `Submodule.mem_sup.mp hf`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Establish `hX : IsMultiHomog (X v : MRing ι F) (blockWeight ι v)` using `isWeightedHomogeneous_X F (blockWeight ι) v`. Rewrite using `[map_add, GroundTheory.Heights₂.Heights.FieldNumbers.HilbExactDivide.component_mul_form hX t n]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.add_mem _ (Ideal.mem_sup_left (hq p hp n)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨_, rfl⟩)`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_sup_X {q : Ideal (MRing ι F)} (hq : IsMultiHomogIdeal q)
     (v : Σ k, ι k) : IsMultiHomogIdeal (q ⊔ Ideal.span {(X v : MRing ι F)}) := by
@@ -133,26 +131,24 @@ def quotPiece (J : Ideal (MRing ι F)) (m : K → ℤ) : Submodule F (MRing ι F
   (ringPiece m).map (Ideal.Quotient.mkₐ F J).toLinearMap
 
 /- English proof (translation)
-Rewrite using `[quotPiece, gradedPiece, ringPiece_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quotPiece_natCast (J : Ideal (MRing ι F)) (a : K → ℕ) :
     quotPiece J (fun k => (a k : ℤ)) = gradedPiece J a := by
   rw [quotPiece, gradedPiece, ringPiece_natCast]
 
 /- English proof (translation)
-Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]`. Introduce `s v hv hsum m hm`. Establish `hex : ∀ i ∈ s, ∃ y ∈ ringPiece (F` using `F) (ι := ι) i, (Ideal.Quotient.mkₐ F J).toLinearMap y = v i := fun i hi => Submodule.mem_map.mp (hv i hi)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose! x hx hxv using hex`. Establish `hy : (∑ i ∈ s, x i) ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sum]`. Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxv i hi]`. Both sides reduce to the same expression. Establish `hc` using `component_intWeight_mem hJ hy m`. Rewrite `hc` using `[map_sum]`. Establish `hcs : (∑ i ∈ s, weightedHomogeneousComponent (intWeight (ι` using `ι)) m (x i)) = x m := by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single m]`. Rewrite using `[weightedHomogeneousComponent_of_mem (hx m hm), if_pos rfl]`. Introduce `j hj hjm`. Rewrite using `[weightedHomogeneousComponent_of_mem (hx j hj), if_neg (Ne.symm hjm)]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hm h`. Rewrite `hc` using `[hcs]`. Rewrite using `[← hxv m hm]`. Simplify `hc` using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `show (⨆ m, (ringPiece (F := F) (ι := ι) m).map (Ideal.Quotient.mkₐ F J).toLinearMap) = ⊤`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.map_iSup]`. Use `show Submodule.map _ (⨆ i, weightedHomogeneousSubmodule F (intWeight (ι := ι)) i) = ⊤`. Rewrite using `[(weightedDecomposition F (intWeight (ι := ι))).isInternal.submodule_iSup_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `Ideal.Quotient.mkₐ_surjective F J`. Use `smul_mem := by`.
-
-Introduce `v m x hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Use `Submodule.mem_map.mpr ⟨(X v : MRing ι F) • y, isMultigrading_ring.smul_mem v m y hy, ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk, smul_eq_mul, map_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isMultigrading_quotPiece [Fintype K] {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J) :
     IsMultigrading ι (MRing ι F ⧸ J) (quotPiece J) where
@@ -197,15 +193,15 @@ theorem isMultigrading_quotPiece [Fintype K] {J : Ideal (MRing ι F)} (hJ : IsMu
     rfl
 
 /- English proof (translation)
-Introduce `d hmod F _ K _ _ ι _ q hq hdim b`. Take `⟨i, hi⟩` from `hq.relevant b`. Establish `hJ : IsMultiHomogIdeal (q ⊔ Ideal.span {(X ⟨b, i⟩ : MRing ι F)})` using `isMultiHomogIdeal_sup_X hq.multiHomog ⟨b, i⟩`. Take `⟨hstep, hsupp⟩` from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HilbertSamuel.HilbertIncrement.closed.{u} F K ι (d + 1) q b i hq hdim (by omega) hi`. Take `⟨a₀, C, hbd⟩` from `hmod F K ι (MRing ι F ⧸ (q ⊔ Ideal.span {(X ⟨b, i⟩ : MRing ι F)})) (quotPiece _) (isMultigrading_quotPiece hJ) (fun W hW hann => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hann` using `[Ideal.annihilator_quotient]`. Simplify using `using hsupp W hW hann)`. Use `⟨a₀, C, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : hilbFn q (fun k => (a k : ℤ)) - hilbFn q ((fun k => (a k : ℤ)) - unitDeg b) = (Module.finrank F (quotPiece (q ⊔ Ideal.span {(X ⟨b, i⟩ : MRing ι F)}) fun k => (a k : ℤ)) : ℤ)`. Rewrite using `[show unitDeg b = Pi.single b 1 from rfl, hstep, hilbFn, if_pos (fun k => Nat.cast_nonneg _), quotPiece_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : (fun k => ((a k : ℤ)).toNat) = a` using `funext fun k => by omega`. Rewrite using `[ha']`. Establish `h2 : intNum F q (Matrix.vecCons (unitDeg b) fun _ : Fin d => fun k => (a k : ℤ)) = topCycleNum F ι (MRing ι F ⧸ (q ⊔ Ideal.span {(X ⟨b, i⟩ : MRing ι F)})) d (fun _ => fun k => (a k : ℤ))`. Rewrite using `[hrec F K ι q d hq hdim b i hi]`. Unfold `topCycleNum`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `finsum_congr fun W => ?_` and prove the remaining obligations. Establish `hann : Module.annihilator (MRing ι F) (MRing ι F ⧸ (q ⊔ Ideal.span {(X ⟨b, i⟩ : MRing ι F)})) = q ⊔ Ideal.span {(X ⟨b, i⟩ : MRing ι F)}` using `Ideal.annihilator_quotient`. Distinguish the cases in `hc : IsMultiProjPrime W ∧ q ⊔ Ideal.span {(X ⟨b, i⟩ : MRing ι F)} ≤ W ∧ ringKrullDim (MRing ι F ⧸ W) = ((d + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[dif_pos hc, dif_pos (by rw [hann]; exact hc)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dif_neg hc, dif_neg (by rw [hann]; exact hc)]`. Rewrite using `[h1, h2]`. Simplify using `using hbd a ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem proof (hrec : IntersectionRecursion.Statement.{u}) : HilbertIncrement.Statement.{u} := by
   intro d hmod F _ K _ _ ι _ q hq hdim b

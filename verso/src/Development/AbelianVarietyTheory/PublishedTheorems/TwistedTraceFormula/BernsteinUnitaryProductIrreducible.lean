@@ -21,7 +21,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `H k r t V W π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ind₂_stdSum (H : BernsteinUnitaryProductIrreducible) {r t N : ℕ} (h : r + t = N)
     {π₁ : Representation ℂ (GL (Fin r) k) V} {π₂ : Representation ℂ (GL (Fin t) k) W}
@@ -32,7 +32,7 @@ theorem ind₂_stdSum (H : BernsteinUnitaryProductIrreducible) {r t N : ℕ} (h 
   exact H k r t V W π₁ π₂ s₁ i₁ u₁ s₂ i₂ u₂
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 hs.detChar, isIrreducible_ofChar _, (isUnitarisable_ofChar_iff _).2 fun _ => hu _⟩`.
+Supply the required witnesses or components.
 -/
 theorem detRep_hyp (t : ℕ) {χ : kˣ →* ℂˣ} (hs : IsSmoothChar χ) (hu : IsUnitaryChar χ) :
     IsSmooth (detRep (Fin t) χ) ∧ (detRep (Fin t) χ).IsIrreducible ∧
@@ -41,7 +41,7 @@ theorem detRep_hyp (t : ℕ) {χ : kˣ →* ℂˣ} (hs : IsSmoothChar χ) (hu : 
     (isUnitarisable_ofChar_iff _).2 fun _ => hu _⟩
 
 /- English proof (translation)
-The claim follows from `have h := detRep_hyp t hs hu H k r t V ℂ π _ s i u h.1 h.2.1 h.2.2`.
+A detailed English derivation is pending.
 -/
 theorem prod₂_detRep (H : BernsteinUnitaryProductIrreducible) {r : ℕ} (t : ℕ)
     {π : Representation ℂ (GL (Fin r) k) V} (s : IsSmooth π) (i : π.IsIrreducible)

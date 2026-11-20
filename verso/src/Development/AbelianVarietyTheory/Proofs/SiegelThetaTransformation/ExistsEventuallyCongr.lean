@@ -6,9 +6,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 namespace GlobalTheory.IsoTower
 
 /- English proof (translation)
-Establish `: AddGroup.FG M` using `Module.Finite.iff_addGroup_fg.1 inferInstance`. Use `AddCommGroup.finite_of_fg_torsion _ fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_quot_nsmul (M : Type) [AddCommGroup M] [Module.Finite ℤ M] {n : ℕ} (hn : 0 < n) :
     Finite (M ⧸ (nsmulAddMonoidHom n : M →+ M).range) := by
@@ -20,13 +20,13 @@ theorem finite_quot_nsmul (M : Type) [AddCommGroup M] [Module.Finite ℤ M] {n :
   exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hSf⟩` from `AddGroup.fg_iff.1 (Module.Finite.iff_addGroup_fg.1 (inferInstance : Module.Finite ℤ L))`. Use `hSf.to_subtype` as an intermediate fact. Use `finite_quot_nsmul M hn` as an intermediate fact. Set `φ : ℕ → S → M ⧸ (nsmulAddMonoidHom n : M →+ M).range` to `fun j s => QuotientAddGroup.mk (g j s)`. Take `⟨v, hv⟩` from `Ultrafilter.eq_pure_of_finite (U.map φ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hv' : ∀ᶠ j in U, φ j = v`. Establish `: {v} ∈ U.map φ`. Rewrite using `[hv]`. Conclude with `rfl`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hPi⟩` from `(hv'.and hP).exists`. Use `⟨i, hPi, hv'.mono fun j hj a => ?_⟩` and prove the remaining obligations. Establish `h` using `AddMonoidHom.eq_of_eqOn_dense hS (f := (QuotientAddGroup.mk' (nsmulAddMonoidHom n : M →+ M).range).comp (g i)) (g := (QuotientAddGroup.mk' (nsmulAddMonoidHom n : M →+ M).range).comp (g j)) (fun s hs => congrFun (hi.trans hj.symm) ⟨s, hs⟩)`. Take `⟨e, he⟩` from `QuotientAddGroup.eq.1 (DFunLike.congr_fun h a)`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he' : n • e = -g i a + g j a` using `he`. Rewrite using `[he']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_eventually_congr {L M : Type} [AddCommGroup L] [AddCommGroup M]
     [Module.Finite ℤ L] [Module.Finite ℤ M] (U : Ultrafilter ℕ) (g : ℕ → L →+ M) {n : ℕ} (hn : 0 < n)
@@ -55,21 +55,21 @@ theorem exists_eventually_congr {L M : Type} [AddCommGroup L] [AddCommGroup M]
   abel
 
 /- English proof (translation)
-Introduce `E _ _ _ H D D' hex`. Use `D.fin` as an intermediate fact. Use `D'.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite ℤ D'.La` using `Module.Finite.trans (𝓞 E) D'.La`. Establish `: Module.Flat ℤ D.La` using `Module.Flat.trans ℤ (𝓞 E) D.La`. Establish `hc : ∀ {r : ℕ}, 0 < r → ∀ {a c : D.La}, r • a = r • c → a = c` using `fun {r} hr a c h => by`. Establish `h' : (r : ℤ) • a = (r : ℤ) • c` using `by simpa only [natCast_zsmul] using h`. Conclude with `smul_right_injective D.La (by exact_mod_cast hr.ne' : (r : ℤ) ≠ 0) h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose g hg using fun j : ℕ => hex _ j.factorial_pos`. Set `U : Ultrafilter ℕ` to `Ultrafilter.of Filter.atTop`. Establish `hU : ∀ n, 0 < n → ∀ᶠ j : ℕ in U, n ∣ j.factorial` using `fun n hn => Ultrafilter.of_le _ ((Filter.eventually_ge_atTop n).mono fun j hj => Nat.dvd_factorial hn hj)`. Establish `hs : ∀ n : ℕ, ∃ i : ℕ, 0 < n → (n ∣ i.factorial ∧ ∀ᶠ j in U, ∀ a, ∃ e, g j a = g i a + n • e)` using `fun n => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, fun h => absurd h (lt_irrefl 0)⟩`. Take `⟨i, hi⟩` from `exists_eventually_congr U (fun j => (g j).toAddMonoidHom) hn _ (hU n hn)`. Conclude with `⟨i, fun _ => hi⟩`. Use `choose s hs using hs`. Use `⟨fun n => g (s n), fun n m hn hm a => ?_, fun n hn => ?_, fun n hn a a' => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, h1, h2⟩` from `((hs _ (Nat.mul_pos hn hm)).2.and (hs n hn).2).exists`. Take `⟨e1, h1⟩` from `h1 a`. Take `⟨e2, h2⟩` from `h2 a`. Use `⟨e2 - m • e1, ?_⟩` and prove the remaining obligations. Use `show g (s (n * m)) a = g (s n) a + _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_sub, ← mul_smul, ← add_sub_assoc, ← h2, h1, add_sub_cancel_right]`. Take `⟨r, hr⟩` from `(hs n hn).1`. Establish `hr0 : 0 < r` using `Nat.pos_of_mul_pos_left (hr ▸ (s n).factorial_pos)`. Take `⟨⟨h1, h2⟩, -⟩` from `hg (s n)`. Rewrite `h1`, `h2` using `[hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a => ⟨?_, ?_⟩, fun a' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨e, he⟩`. Establish `he' : g (s n) a = n • e` using `he`. Take `⟨b, hb⟩` from `(h1 (r • a)).1 ⟨e, by rw [map_nsmul, he', mul_comm, mul_smul]⟩`. Conclude with `⟨b, hc hr0 (by rw [hb, mul_comm, mul_smul])⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨e, rfl⟩`. Conclude with `⟨_, map_nsmul _ _ _⟩`. Take `⟨a, e, h⟩` from `h2 a'`. Conclude with `⟨a, r • e, by rw [h, mul_smul]⟩`. Conclude with `(Int.natCast_dvd_natCast.2 (hs n hn).1).trans ((hg (s n)).2 a a')`.
+A detailed English derivation is pending.
 -/
 theorem exists_tower : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (D D' : Datum H), (∀ n : ℕ, 0 < n → ∃ f : D.La →ₗ[𝓞 E] D'.La, ((∀ a, (∃ e, f a = n • e) ↔ ∃ e, a = n • e) ∧ ∀ a', ∃ a e, a' = f a + n • e) ∧ ∀ a a', (n : ℤ) ∣ D'.EF (f a) (f a') - D.EF a a') → ∃ f : ℕ → D.La →ₗ[𝓞 E] D'.La, (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ e, f (n * m) a = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → (∀ a, (∃ e, f n a = n • e) ↔ ∃ e, a = n • e) ∧ ∀ a', ∃ a e, a' = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → ∀ a a', (n : ℤ) ∣ D'.EF (f n a) (f n a') - D.EF a a') := by
   intro E _ _ _ H D D' hex

@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D hD` and use `GlobalTheory.T.iteratedThetaUnfolding_of_doubleStep_lastTwoSteps D (GlobalTheory.T.besselPeriod_double_step_unfolding_of_descent D hD) (GlobalTheory.T.doubleLiftPeriod_rankZero_fubini_compactQuotient D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Unf.iteratedUnfolding_of_descent : ∀ D : D7, Descent D → IT D :=
   fun D hD => GlobalTheory.T.iteratedThetaUnfolding_of_doubleStep_lastTwoSteps D (GlobalTheory.T.besselPeriod_double_step_unfolding_of_descent D hD) (GlobalTheory.T.doubleLiftPeriod_rankZero_fubini_compactQuotient D)

@@ -19,31 +19,27 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.Dbl GlobalTheory.PRep Formalism.BasicNotions
 namespace UpperTheory.TP
 /- English proof (translation)
-Establish `P` using `fun g₁ g₂ c₁ c₂ l₁ l₂ => UpperTheory.innerProduct_integral_fundamentalDomain_of_compact μ Γ 𝓕 h𝓕 hfin Ω hΩ hcov g₁ g₂ c₁ c₂ l₁ l₂`. Establish `hpet : ∀ g₁ g₂ : H → ℂ, pet μ 𝓕 g₁ g₂ = ∫ h in 𝓕, g₁ h * starRingEnd ℂ (g₂ h) ∂μ` using `fun _ _ => rfl`. Establish `addL : ∀ g₁ g₂ g₃ : H → ℂ, Continuous g₁ → Continuous g₂ → Continuous g₃ → (∀ γ ∈ Γ, ∀ h, g₁ (γ * h) = g₁ h) → (∀ γ ∈ Γ, ∀ h, g₂ (γ * h) = g₂ h) → (∀ γ ∈ Γ, ∀ h, g₃ (γ * h) = g₃ h) → pet μ 𝓕 (g₁ + g₂) g₃ = pet μ 𝓕 g₁ g₃ + pet μ 𝓕 g₂ g₃` using `fun g₁ g₂ g₃ c₁ c₂ c₃ l₁ l₂ l₃ => by`. Simplify using `only [hpet, Pi.add_apply, add_mul]`. Conclude with `integral_add (P _ _ c₁ c₃ l₁ l₃).1 (P _ _ c₂ c₃ l₂ l₃).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `addR : ∀ g₁ g₂ g₃ : H → ℂ, Continuous g₁ → Continuous g₂ → Continuous g₃ → (∀ γ ∈ Γ, ∀ h, g₁ (γ * h) = g₁ h) → (∀ γ ∈ Γ, ∀ h, g₂ (γ * h) = g₂ h) → (∀ γ ∈ Γ, ∀ h, g₃ (γ * h) = g₃ h) → pet μ 𝓕 g₃ (g₁ + g₂) = pet μ 𝓕 g₃ g₁ + pet μ 𝓕 g₃ g₂` using `fun g₁ g₂ g₃ c₁ c₂ c₃ l₁ l₂ l₃ => by`. Simplify using `only [hpet, Pi.add_apply, map_add, mul_add]`. Conclude with `integral_add (P _ _ c₃ c₁ l₃ l₁).1 (P _ _ c₃ c₂ l₃ l₂).1`. Establish `smL : ∀ (c : ℂ) (g₁ g₂ : H → ℂ), pet μ 𝓕 (c • g₁) g₂ = c * pet μ 𝓕 g₁ g₂` using `fun c g₁ g₂ => by`. Simplify using `only [hpet, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `integral_const_mul _ _`. Establish `smR : ∀ (c : ℂ) (g₁ g₂ : H → ℂ), pet μ 𝓕 g₁ (c • g₂) = starRingEnd ℂ c * pet μ 𝓕 g₁ g₂` using `fun c g₁ g₂ => by`. Simplify using `only [hpet, Pi.smul_apply, smul_eq_mul, map_mul, mul_left_comm _ (starRingEnd ℂ c)]`. Conclude with `integral_const_mul _ _`. Set `B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => pet μ 𝓕 (f a) (f b)) (fun a b c => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_add]`. Conclude with `addL _ _ _ (hfc a) (hfc b) (hfc c) (hfl a) (hfl b) (hfl c))`. Use the proof step `(fun c a b => by rw [map_smul]; exact smL _ _ _)`. Use the proof step `(fun a b c => by`. Rewrite using `[map_add]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `addR _ _ _ (hfc b) (hfc c) (hfc a) (hfl b) (hfl c) (hfl a))`. Use the proof step `(fun c a b => by rw [map_smul]; exact smR _ _ _)`. Establish `hB : ∀ a b, B a b = pet μ 𝓕 (f a) (f b)` using `fun _ _ => rfl`. Establish `hh : ∀ a b, B b a = star (B a b)` using `fun a b => by`. Simplify using `only [hB, hpet]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[show star (∫ h in 𝓕, f a h * starRingEnd ℂ (f b h) ∂μ) = starRingEnd ℂ (∫ h in 𝓕, f a h * starRingEnd ℂ (f b h) ∂μ) from rfl, ← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[mul_comm]`. Establish `hp : ∀ a, a ≠ 0 → 0 < (B a a).re` using `fun a ha => (P _ _ (hfc a) (hfc a) (hfl a) (hfl a)).2.2 fun h => ha (hf0 a h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ g a b, B (π g a) (π g b) = B a b` using `fun g a b => by`. Simplify using `only [hB, hpet, hfr]`. Conclude with `(P _ _ (hfc a) (hfc b) (hfl a) (hfl b)).2.1 (ι g)`. Take `⟨c', hc'⟩` from `UpperTheory.invariant_sesquilinearForm_eq_smul_of_irreducible π hI B hh hp hinv B₁ hB₁`. Set `L : V →ₗ⋆[ℂ] ℂ` to `{ toFun := fun b => pet μ 𝓕 u (f b) map_add' := fun a b => by rw [map_add]; exact addR _ _ _ (hfc a) (hfc b) huc (hfl a) (hfl b) hul map_smul' := fun c a => by rw [map_smul]; exact smR _ _ _ }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨u₀, hu₀⟩` from `UpperTheory.riesz_representation_sesquilinear B hh hp L`. Establish `hL : ∀ b, pet μ 𝓕 u (f b) = B u₀ b` using `hu₀`. Establish `key : ∀ x, pet μ 𝓕 (fun y => u (y * ι x)) (f x₀) = B (π x u₀) x₀` using `fun x => by`. Establish `e1` using `(P (fun y => u (y * ι x)) (f x₀) (huc.comp (continuous_mul_right _)) (hfc x₀) (fun γ hγ h => by simp only [mul_assoc, hul γ hγ]) (hfl x₀)).2.1 (ι x⁻¹)`. Establish `e2 : ∀ h, f x₀ (h * ι x⁻¹) = f (π x⁻¹ x₀) h` using `fun h => (hfr _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : ∀ h, u (h * ι x⁻¹ * ι x) = u h` using `fun h => by`. Rewrite using `[mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`. Simplify using `only [e2, e3] at e1`. Rewrite using `[hpet, ← e1, ← hpet, hL, ← hinv x u₀]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hm : ∀ a b, Measurable fun g => B (π g a) b` using `fun a b => by`. Set `l : H → V →ₗ[ℂ] ℂ` to `fun y => (LinearMap.proj y).comp f`. Set `Lb : V →ₗ[ℂ] ℂ` to `{ toFun := fun a => B a b map_add' := fun a a' => by simp map_smul' := fun c a => by simp }`. Use `UpperTheory.measurable_of_separating_functionals l (fun a h => hf0 a (funext h)) (fun g => π g a) (fun y => ?_) Lb` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show Measurable fun g => f (π g a) y`. Simplify using `only [hfr]`. Conclude with `(hfc a).measurable.comp (measurable_const_mul y |>.comp hι)`. Establish `hO` using `UpperTheory.irreducible_hermitian_form_unique μA π hI B hh hp hinv hm x₀ x₀ u₀ x₀`. Simplify using `only [key, hc']`.
-
-Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul]`. Simplify using `only [← mul_assoc] at hO ⊢`. Rewrite using `[hO, hL x₀, hh x₀ u₀, star_star]`. Establish `: star (B x₀ x₀) = B x₀ x₀` using `(hh x₀ x₀).symm`.
-
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem assemble_pk {H A V : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H] [BorelSpace H]
     (μ : Measure H) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [μ.IsOpenPosMeasure] (Γ : Subgroup H) [Countable Γ] (𝓕 : Set H)
@@ -134,45 +130,37 @@ private theorem assemble_pk {H A V : Type} [Group H] [TopologicalSpace H] [IsTop
   ring
 end UpperTheory.TP
 /- English proof (translation)
-Introduce `T E _ _ _ B n d X W M χX χW om P hn e e' he he' U hU f₀ hf₀ φ hφ hS ν hν φf hfin μA hμA`. Take `⟨V, _, _, _, ρ, i, j, x₀, hirr, hi, hj, hjU, hA, hR⟩` from `hS`. Establish `C` using `T.cpt _ E (UpperTheory.TP.cj E) B n X n 0 P.base (Or.inl P.herm) (by simp)`. Establish `D` using `_root_.UpperTheory.TP.decomp_k T _ E (UpperTheory.TP.cj E) B n X P.base P.herm ∅`. Use `haveI := C.lc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := C.sc`. Use `haveI := C.t2`. Use `haveI := C.cnt`. Use `haveI : BorelSpace (UA (UpperTheory.TP.cj E) X.J) := ⟨rfl⟩`. Use `haveI hHaar : M.μ.IsHaarMeasure := P.good.haar`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := C.right _ hHaar`. Use `haveI : CompactSpace (UpperTheory.TP.gInf (UpperTheory.TP.cj E) X) := isCompact_iff_compactSpace.1 D.2.1`. Use `haveI : IsFiniteMeasure μA := inferInstance`. Establish `hx₀ : x₀ ≠ 0` using `fun h => hφ (by rw [← hj, h, map_zero])`. Use `haveI : Nontrivial V := ⟨x₀, 0, hx₀⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Establish `hsymm : ∀ x : UpperTheory.TP.gInf (UpperTheory.TP.cj E) X, e.symm x.1 ∈ GlobalTheory.UnitaryBC.infU E n` using `fun x => (he.inf _).1 (by simpa using x.2)`. Set `p : UpperTheory.TP.gInf (UpperTheory.TP.cj E) X →* GlobalTheory.UnitaryBC.infU E n` to `{ toFun := fun x => ⟨e.symm x.1, hsymm x⟩ map_one' := Subtype.ext (by simp) map_mul' := fun x y => Subtype.ext (by simp) }`. Establish `hpe : ∀ x, e (p x).1 = x.1` using `fun x => e.apply_symm_apply _`. Establish `hpsurj : ∀ k : GlobalTheory.UnitaryBC.infU E n, ∃ x, p x = k` using `fun k => ⟨⟨e k.1, (he.inf _).2 k.2⟩, Subtype.ext (e.symm_apply_apply _)⟩`. Set `π : UpperTheory.TP.gInf (UpperTheory.TP.cj E) X →* Module.End ℂ V` to `ρ.comp p`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : ∀ W' : Submodule ℂ V, (∀ g, ∀ w ∈ W', π g w ∈ W') → W' = ⊥ ∨ W' = ⊤` using `fun W' h => by`. Set `S : Subrepresentation ρ` to `⟨W', fun k v hv => by`. Take `⟨x, rfl⟩` from `hpsurj k`. Conclude with `h x v hv⟩`. Break down `hirr.eq_bot_or_eq_top S with h1 | h1` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule h1)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule h1)`. Establish `hj0 : ∀ a, j a = 0 → a = 0` using `fun a ha => by`. Establish `hk` using `hI (LinearMap.ker j) (fun g w hw => by`. Establish `hw' : j w = 0` using `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `show j (ρ (p g) w) = 0`. Rewrite using `[hR, hw', map_zero])`. Break down `hk with h1 | h1` into its components or cases. Establish `: a ∈ LinearMap.ker j` using `ha`. Rewrite `this` using `[h1, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: x₀ ∈ LinearMap.ker j` using `by rw [h1]; trivial`. Conclude with `absurd ((LinearMap.mem_ker.1 this).symm.trans (by rw [hj]) |>.symm) hφ`. Set `f : V →ₗ[ℂ] (UA (UpperTheory.TP.cj E) X.J → ℂ)` to `(LinearMap.funLeft ℂ ℂ e.symm).comp j`. Establish `hfa : ∀ a y, f a y = j a (e.symm y)` using `fun _ _ => rfl`. Establish `hf0 : ∀ a, f a = 0 → a = 0` using `fun a ha => hj0 a (funext fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congrFun ha (e y)` as an intermediate fact. Rewrite using `[hfa, e.symm_apply_apply] at this)` and apply the resulting hypothesis. Establish `hleft : ∀ a, ∀ γ ∈ ratU (UpperTheory.TP.cj E) X.J, ∀ h, j a (e.symm (γ * h)) = j a (e.symm h)` using `fun a γ hγ h => by`. Rewrite using `[map_mul]`. Conclude with `(hU.aut _ (hjU a)).left _ ((he.rat _).1 (by simpa using hγ)) _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : ∀ a, Continuous (f a)` using `fun a => (hU.aut _ (hjU a)).cont.comp e.symm.continuous`. Establish `hfr : ∀ x a y, f (π x a) y = f a (y * (UpperTheory.TP.gInf (UpperTheory.TP.cj E) X).subtype x)` using `fun x a y => by show j (ρ (p x) a) (e.symm y) = j a (e.symm (y * x.1))`. Rewrite using `[hR, map_mul]`. Both sides reduce to the same expression. Establish `h2 : ∀ᶠ v in cofinite, φf v = Set.indicator {x | ∀ i, x i ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers _ v} 1` using `(hfin.2.and P.good.std).mono fun v h => h.1.trans h.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrest` using `fun s => PositivityTheory.ThKG.Loc.Bump.rest_pure s φf hfin.1 h2`. Set `Ψ : V →ₗ[ℂ] ((Fin n × Fin d → AF (maximalRealSubfield E)) → ℂ)` to `{ toFun := fun a => pure (i a) φf map_add' := fun a b => by`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`. Use the proof step `map_smul' := fun c a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc] }`. Establish `hΨa : ∀ a, Ψ a = pure (i a) φf` using `fun _ => rfl`. Establish `hΨ : ∀ a, Ψ a ∈ schA _ (Fin n × Fin d)` using `fun a => (hrest (i a)).2`. Establish `hact : ∀ x a, om (x.1, 1) (Ψ a) = Ψ (π x a)` using `fun x a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hA (p x) a _ (hrest (i a))`. Rewrite `h` using `[hpe]`. Conclude with `h`. Establish `hsp` using `IsUWeilPair.isUSplitting P.weil`. Set `B₁ : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => lD _ (Fin n × Fin d) (boxFun (Ψ a) (star (Ψ b)))) (fun a b c => by rw [map_add, GlobalTheory.SchwartzBox.boxFun_add_left, map_add]) (fun c a b => by rw [map_smul, GlobalTheory.SchwartzBox.boxFun_smul_left, map_smul]; rfl …`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB₁a : ∀ a b, B₁ a b = lD _ (Fin n × Fin d) (boxFun (Ψ a) (star (Ψ b)))` using `fun _ _ => rfl`. Establish `hB₁ : ∀ g a b, B₁ (π g a) (π g b) = B₁ a b` using `fun g a b => by`. Rewrite using `[hB₁a, hB₁a, ← hact, ← hact]`. Conclude with `lD_unit hsp.unit hsp.pres (g.1, 1) (hΨ a) (hΨ b)`. Take `⟨c, c0, hc⟩` from `lD_haar ν hν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc0 : (c : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 c0.ne'`. Establish `hΦ : pure f₀ φf = Ψ x₀` using `by rw [hΨa, hi]`. Establish `hco : ∀ x : UpperTheory.TP.gInf (UpperTheory.TP.cj E) X, coef om ν (pure f₀ φf) x.1 = (c : ℂ)⁻¹ * B₁ (π x x₀) x₀` using `fun x => by`. Rewrite using `[hB₁a, hc _ (hΨ _) _ (hΨ _), inv_mul_cancel_left₀ hc0, ← hact, hΦ]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hco1 : coef om ν (pure f₀ φf) 1 = (c : ℂ)⁻¹ * B₁ x₀ x₀`. Use `hco 1` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `hφU : φ ∈ U` using `hj ▸ hjU x₀`. Establish `hform` using `hU.aut φ hφU`.
-
-Take `⟨Ω, hΩ, hcov⟩` from `C.cov`. Use `⟨((μA.real Set.univ / (Module.finrank ℂ V : ℝ) : ℝ) : ℂ), ?_, fun cc _ => ?_⟩` and prove the remaining obligations. Establish `h1 : 0 < μA.real Set.univ` using `ENNReal.toReal_pos (IsOpen.measure_pos μA isOpen_univ Set.univ_nonempty).ne' (measure_ne_top _ _)`. Establish `h3 : (0 : ℝ) < Module.finrank ℂ V` using `by exact_mod_cast Module.finrank_pos`. Conclude with `Complex.ofReal_ne_zero.2 (div_pos h1 h3).ne'`.
-
-Establish `hmain` using `UpperTheory.TP.assemble_pk M.μ (ratU (UpperTheory.TP.cj E) X.J) M.dom P.good.dom (C.fin _ _ hHaar P.good.dom) Ω hΩ hcov μA π hI (UpperTheory.TP.gInf (UpperTheory.TP.cj E) X).subtype measurable_subtype_coe f hf0 hfc hleft hfr B₁ hB₁ x₀ (fun y => φ (e.symm (y * cc))) (hform.cont.co …`. Rewrite using `[mul_assoc, map_mul]`. Conclude with `hform.left _ ((he.rat _).1 (by simpa using hγ)) _)`. Establish `hfx : f x₀ = φ ∘ e.symm` using `funext fun y => by rw [hfa, hj]; rfl`. Rewrite `hmain` using `[hfx]`.
-
-Establish `e1 : ∀ x : UpperTheory.TP.gInf (UpperTheory.TP.cj E) X, coef om ν (pure f₀ φf) x.1 * star (UpperTheory.TP.mc M (φ ∘ e.symm) (x.1 * cc)) = (c : ℂ)⁻¹ * (B₁ (π x x₀) x₀ * star (pet M.μ M.dom (fun y => φ (e.symm (y * (UpperTheory.TP.gInf (UpperTheory.TP.cj E) X).subtype x * cc))) (φ …` using `fun x => by`. Rewrite using `[hco, mul_assoc]`. Simplify using `only [UpperTheory.TP.mc, Function.comp_apply, mul_assoc, Subgroup.subtype_apply]`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_const_mul, hmain, hco1]`.
-
-Establish `e2 : UpperTheory.TP.mc M (φ ∘ e.symm) cc = pet M.μ M.dom (fun y => φ (e.symm (y * cc))) (φ ∘ e.symm)` using `rfl`. Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.TP.schurStep_k : _root_.UpperTheory.TP.Tools_k → _root_.UpperTheory.TP.SchurStep_k := by
   intro T E _ _ _ B n d X W M χX χW om P hn e e' he he' U hU f₀ hf₀ φ hφ hS ν hν φf hfin μA hμA

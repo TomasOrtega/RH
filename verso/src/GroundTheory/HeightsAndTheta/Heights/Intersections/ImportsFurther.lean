@@ -11,17 +11,17 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' J' n Ψ hv hP' hP hΨ hJ hJP`. Take `⟨h, a, hha, hhP, hvan⟩` from `hElim K ι K' ι' κ v P' J' n hv hP' hP hJ hJP`. Establish `hJh : IsMultiHomogIdeal (Ideal.span {h})` using `⟨{h}, fun f hf => ⟨a, (Set.mem_singleton_iff.mp hf) ▸ hha⟩, rfl⟩`. Establish `hJhP : ¬ Ideal.span {h} ≤ imageZ v P'` using `fun hle => hhP (hle (Ideal.subset_span rfl))`. Use `measure_mono_null ?_ (projB_null Ψ hP hΨ hJh hJhP)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y ⟨z', hz'P, hz'J, -, -, -, hΨy⟩`. Use `set w : (Σ k, ι k) → ℂ := fun p => z' (v p) with hw`. Establish `hw1 : (Ψ (segre w) 0)⁻¹ * Ψ (segre w) 0 = 1`. Use `congrFun hΨy 0` as an intermediate fact. Simplify `this` using `[map_smul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0 : Ψ (segre w) 0 ≠ 0` using `fun h0 => by simp [h0] at hw1`. Take `⟨k0⟩` from `hP.1`. Set `c : K → ℂ` to `Function.update (fun _ => (1 : ℂ)) k0 (Ψ (segre w) 0)⁻¹`. Establish `hc : ∀ k, c k ≠ 0`. Introduce `k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality. Simplify using `[c, h0]`. Simplify using `[c, Function.update_of_ne hk]`. Establish `hpc : ∏ k, c k = (Ψ (segre w) 0)⁻¹`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[c, Finset.prod_update_of_mem (Finset.mem_univ k0)]`. Establish `hwP : w ∈ mcPts (imageZ v P')` using `IntersectionWithSection.comp_mem_mcPts hv hz'P`. Establish `hwh : w ∈ mcPts (Ideal.span {h})`. Use `⟨hwP.1, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hvan z' hz'P hz'J, mul_zero]`. Use `⟨fun p => c p.1 * w p, mcPts_smul hP.2.1.2.1 c hc hwP, mcPts_smul hJh c hc hwh, ?_⟩` and prove the remaining obligations. Rewrite using `[segre_smul, hpc]`. Conclude with `hΨy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PullbackVanishingOfNullCycle.proof (hElim : PullbackEliminationOfVariable.Statement) : PullbackVanishingOfNullCycle.Statement := by
   classical

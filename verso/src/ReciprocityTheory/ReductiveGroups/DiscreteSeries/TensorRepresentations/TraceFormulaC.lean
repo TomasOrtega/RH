@@ -26,7 +26,7 @@ theorem tfRdiag_apply (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (v 
     tfRdiag ε g v c = rreg ε g (v c) := rfl
 
 /- English proof (translation)
-Apply `WithLp.ofLp_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Conclude with `h c`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem vectorL2_ext {ε : Fin n → Bool} {v w : tfL2n ε} (h : ∀ c, v c = w c) : v = w := by
   apply WithLp.ofLp_injective
@@ -34,13 +34,13 @@ theorem vectorL2_ext {ε : Fin n → Bool} {v w : tfL2n ε} (h : ∀ c, v c = w 
   exact h c
 
 /- English proof (translation)
-Establish `hr` using `rreg_isURepOn ε`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun v => vectorL2_ext fun c => ?_` and prove the remaining obligations. Rewrite using `[tfRdiag_apply, hr.1.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a ha b hb`. Use `ContinuousLinearMap.ext fun v => vectorL2_ext fun c => ?_` and prove the remaining obligations. Rewrite using `[tfRdiag_apply, hr.1.2 a ha b hb, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, tfRdiag_apply, tfRdiag_apply]`. Introduce `g hg v`. Establish `h1` using `PiLp.norm_sq_eq_of_L2 (fun _ : Fin n => L2 ε) (tfRdiag ε g v)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `PiLp.norm_sq_eq_of_L2 (fun _ : Fin n => L2 ε) v`. Simplify using `only [tfRdiag_apply, hr.2.1 g hg] at h1`. Rewrite `h1` using `[← h2]`. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 h1`. Introduce `v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (fun g => tfRdiag ε g v) = fun g => (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin n => L2 ε)).symm (fun c => rreg ε g (v c))` using `rfl`. Rewrite using `[e]`. Conclude with `(PiLp.continuousLinearEquiv 2 ℂ _).symm.continuous.comp_continuousOn (continuousOn_pi.2 fun c => hr.2.2 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tfRdiag_isURepOn (ε : Fin n → Bool) : IsURepOn (UJset ε) (tfRdiag ε) := by
   have hr := rreg_isURepOn ε
@@ -65,9 +65,9 @@ theorem tfRdiag_isURepOn (ε : Fin n → Bool) : IsURepOn (UJset ε) (tfRdiag ε
       (continuousOn_pi.2 fun c => hr.2.2 _)
 
 /- English proof (translation)
-Rewrite using `[mem_smD_iff]`. Establish `hc : ∀ c, S7.SmoothOnGV ε (fun g => rreg ε g (v c))` using `fun c => (mem_smD_iff ε (rreg ε) _).1 (hv c)`. Introduce `g₀ hg₀`. Use `choose U F hU hg hF hEq using fun c => hc c g₀ hg₀`. Use `⟨⋂ c, U c, fun g => WithLp.toLp 2 (fun c => F c g), isOpen_iInter_of_finite hU, Set.mem_iInter.2 hg, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin n => L2 ε)).symm.contDiff.comp_contDiffOn (contDiffOn_pi.2 fun c => (hF c).mono (Set.iInter_subset _ c))`. Introduce `g hgU hgJ`. Use `vectorL2_ext fun c => ?_` and prove the remaining obligations. Conclude with `hEq c g (Set.mem_iInter.1 hgU c) hgJ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tfRdiag_smooth {ε : Fin n → Bool} {v : tfL2n ε} (hv : ∀ c, v c ∈ smD ε (rreg ε)) :
     v ∈ smD ε (tfRdiag ε) := by
@@ -84,9 +84,9 @@ theorem tfRdiag_smooth {ε : Fin n → Bool} {v : tfL2n ε} (hv : ∀ c, v c ∈
     exact hEq c g (Set.mem_iInter.1 hgU c) hgJ
 
 /- English proof (translation)
-Establish `hd : ∀ c, HasDerivAt (fun t : ℝ => rreg ε (NormedSpace.exp ((t : ℂ) • X)) (v c)) (dS (rreg ε) X (v c)) 0`. Introduce `c`. Establish `h` using `(isDerivedOn_smE (rreg_isURepOn ε)).deriv X hX ⟨v c, hv c⟩`. Rewrite using `[dS_eq_actM (isDerivedOn_smE (rreg_isURepOn ε)) hX ⟨v c, hv c⟩]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : HasDerivAt (fun t : ℝ => fun c => rreg ε (NormedSpace.exp ((t : ℂ) • X)) (v c)) (fun c => dS (rreg ε) X (v c)) 0` using `hasDerivAt_pi.2 hd`. Conclude with `(PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin n => L2 ε)).symm.hasFDerivAt.comp_hasDerivAt 0 hp`.
+A detailed English derivation is pending.
 -/
 theorem tfRdiag_hasDerivAt {ε : Fin n → Bool} {v : tfL2n ε} (hv : ∀ c, v c ∈ smD ε (rreg ε))
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
@@ -103,7 +103,7 @@ theorem tfRdiag_hasDerivAt {ε : Fin n → Bool} {v : tfL2n ε} (hv : ∀ c, v c
   exact (PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin n => L2 ε)).symm.hasFDerivAt.comp_hasDerivAt 0 hp
 
 /- English proof (translation)
-Establish `h` using `(tfRdiag_hasDerivAt hv hX).deriv`. Establish `h2` using `congrArg (fun w : tfL2n ε => w c) h`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tfRdiag_dS {ε : Fin n → Bool} {v : tfL2n ε} (hv : ∀ c, v c ∈ smD ε (rreg ε))
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (c : Fin n) :
@@ -113,7 +113,7 @@ theorem tfRdiag_dS {ε : Fin n → Bool} {v : tfL2n ε} (hv : ∀ c, v c ∈ smD
   exact h2
 
 /- English proof (translation)
-Rewrite using `[smE_apply (tfRdiag_isURepOn ε), smE_apply (rreg_isURepOn ε)]`. Simplify using `only [PiLp.add_apply, PiLp.smul_apply]`. Rewrite using `[tfRdiag_dS hv (SmDerA.inG_cpart1 ε _), tfRdiag_dS hv (SmDerA.inG_cpart2 ε _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tfRdiag_smE {ε : Fin n → Bool} {v : tfL2n ε} (hv : ∀ c, v c ∈ smD ε (rreg ε)) (a b c : Fin n) :
     ((smE ε (tfRdiag ε) a b ⟨v, tfRdiag_smooth hv⟩ : smD ε (tfRdiag ε)) : tfL2n ε) c =
@@ -133,16 +133,16 @@ Both sides reduce to the same expression.
 theorem tfJ_apply (ε : Fin n → Bool) (v : tfL2n ε) (c : Fin n) : tfJ ε v c = tfSgn ε c • v c := rfl
 
 /- English proof (translation)
-The claim follows from `vectorL2_ext fun c => by rw [tfRdiag_apply, tfJ_apply, tfJ_apply, tfRdiag_apply, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem tfRdiag_tfJ (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (v : tfL2n ε) :
     tfRdiag ε g (tfJ ε v) = tfJ ε (tfRdiag ε g v) :=
   vectorL2_ext fun c => by rw [tfRdiag_apply, tfJ_apply, tfJ_apply, tfRdiag_apply, map_smul]
 
 /- English proof (translation)
-Establish `e : (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) = fun g => F' (Formalism.MainNotions.S.umat g)`. Use function extensionality and compare the values at `fun g => h _ (umat_mem_UJset ε g)`. Unfold `toL2`. Simplify using `only [e]`. Use `split_ifs with h1 h2 h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `absurd (e ▸ h1) h2`. Conclude with `absurd (e.symm ▸ h2) h1`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toL2_congr_of_eq_on_UJset {ε : Fin n → Bool} {F F' : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : ∀ g ∈ UJset ε, F g = F' g) : toL2 ε F = toL2 ε F' := by

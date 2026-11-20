@@ -8,16 +8,16 @@ section
 variable {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A]
 
 /- English proof (translation)
-Rewrite using `[Ring.krullDimLE_iff, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem krullDimLE_one_of_krullDim_eq (h : ringKrullDim A = 1) : Ring.KrullDimLE 1 A := by
   rw [Ring.krullDimLE_iff, h]
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hq`. Assume the negation of the conclusion as `hne`. Establish `hmax : p.asIdeal.IsMaximal` using `Ideal.IsPrime.isMaximal_of_ne_bot p.isPrime hne`. Establish `h0` using `ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient _).mp hmax)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hq` using `[h0]`. Conclude with `zero_ne_one hq`. Introduce `hp`. Rewrite using `[ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq hp).trans (RingEquiv.quotientBot A)), h]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem krullDim_quotient_eq_one_iff_eq_bot [Ring.KrullDimLE 1 A] (h : ringKrullDim A = 1) (p : PrimeSpectrum A) :
     ringKrullDim (A ⧸ p.asIdeal) = 1 ↔ p.asIdeal = ⊥ := by
@@ -33,19 +33,15 @@ theorem krullDim_quotient_eq_one_iff_eq_bot [Ring.KrullDimLE 1 A] (h : ringKrull
     rw [ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq hp).trans (RingEquiv.quotientBot A)), h]
 
 /- English proof (translation)
-Establish `htors : Module.IsTorsionBy A (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) x`. Introduce `n`. Use `Submodule.Quotient.induction_on _ n (fun m => ?_)` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨m, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `htors' : Module.IsTorsionBySet A (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) (Ideal.span {x} : Set A)` using `(Module.isTorsionBySet_span_singleton_iff x).mpr htors`. Use `letI : Module (A ⧸ Ideal.span {x}) (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) := htors'.module`. Use `haveI : IsScalarTower A (A ⧸ Ideal.span {x}) (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) := htors'.isScalarTower`. Use `haveI : Ring.KrullDimLE 0 (A ⧸ Ideal.span {x}) := by`. Rewrite using `[Ring.krullDimLE_zero_iff]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P hP`. Establish `hc : (Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P).IsPrime` using `Ideal.IsPrime.comap _`. Establish `hne : Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P ≠ ⊥`. Introduce `h0`. Establish `hxm : x ∈ Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self x)]`. Conclude with `P.zero_mem`. Rewrite `hxm` using `[h0, Ideal.mem_bot]`. Conclude with `hx hxm`. Use `haveI hm := Ideal.IsPrime.isMaximal_of_ne_bot hc hne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective (Ideal.Quotient.mk (Ideal.span {x}))` using `Ideal.Quotient.mk_surjective`. Establish `hmap` using `Ideal.IsMaximal.map_of_surjective_of_ker_le hsurj (m := Ideal.comap (Ideal.Quotient.mk (Ideal.span {x})) P) (by`. Introduce `a ha`. Rewrite `ha` using `[RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap, ha]`.
-
-Conclude with `P.zero_mem)`. Rewrite `hmap` using `[Ideal.map_comap_of_surjective _ hsurj]`. Then use the resulting hypothesis. Use `haveI : IsArtinianRing (A ⧸ Ideal.span {x}) := isArtinianRing_iff_krullDimLE_zero.mpr inferInstance`. Use `haveI : Module.Finite (A ⧸ Ideal.span {x}) (M ⧸ LinearMap.range (LinearMap.lsmul A M x)) := Module.Finite.of_restrictScalars_finite A _ _`. Establish `hs : Function.Surjective (algebraMap A (A ⧸ Ideal.span {x}))` using `Ideal.Quotient.mk_surjective`.
-
-Rewrite using `[Module.length_eq_of_surjective hs, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem length_coker_ne_top (M : Type*) [AddCommGroup M] [Module A M] [Module.Finite A M]
     [Ring.KrullDimLE 1 A] {x : A} (hx : x ≠ 0) :
@@ -89,7 +85,7 @@ theorem length_coker_ne_top (M : Type*) [AddCommGroup M] [Module A M] [Module.Fi
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Rewrite using `[Module.length_eq_zero_iff]`. Establish `hreg : IsSMulRegular M x` using `IsSMulRegular.of_ne_zero hx`. Establish `hker : LinearMap.ker (LinearMap.lsmul A M x) = ⊥` using `LinearMap.ker_eq_bot.mpr (fun a b hab => hreg (by simpa using hab))`. Rewrite using `[hker]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_ker_eq_zero_of_torsionFree (M : Type*) [AddCommGroup M] [Module A M] [Module.IsTorsionFree A M]
     {x : A} (hx : x ≠ 0) :
@@ -102,9 +98,9 @@ theorem length_ker_eq_zero_of_torsionFree (M : Type*) [AddCommGroup M] [Module A
   infer_instance
 
 /- English proof (translation)
-Establish `hfield : IsField (Localization.AtPrime (⊥ : Ideal A))`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, ← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_bot]`. Use `letI : Field (Localization.AtPrime (⊥ : Ideal A)) := hfield.toField`. Establish `hle : (⊥ : Ideal A).primeCompl ≤ nonZeroDivisors A`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mem_nonZeroDivisors_of_ne_zero (fun h0 => ha (by rw [h0]; exact Submodule.zero_mem _))`. Use `haveI : Module.Finite (Localization.AtPrime (⊥ : Ideal A)) (LocalizedModule (⊥ : Ideal A).primeCompl M) := Module.Finite.of_isLocalizedModule (⊥ : Ideal A).primeCompl (LocalizedModule.mkLinearMap (⊥ : Ideal A).primeCompl M)`. Rewrite using `[Module.length_of_free_of_finite, Module.length_eq_one, mul_one]`. Rewrite using `[IsLocalization.finrank_eq (Localization.AtPrime (⊥ : Ideal A)) (⊥ : Ideal A).primeCompl hle, IsLocalizedModule.finrank_eq (⊥ : Ideal A).primeCompl (LocalizedModule.mkLinearMap (⊥ : Ideal A).primeCompl M) hle]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_localization_bot_eq_finrank (M : Type*) [AddCommGroup M] [Module A M] [Module.Finite A M] :
     length (Localization.AtPrime (⊥ : Ideal A)) (LocalizedModule (⊥ : Ideal A).primeCompl M) =
@@ -124,9 +120,9 @@ theorem length_localization_bot_eq_finrank (M : Type*) [AddCommGroup M] [Module 
       (LocalizedModule.mkLinearMap (⊥ : Ideal A).primeCompl M) hle]
 
 /- English proof (translation)
-Unfold `ordMod Ring.ord`. Simplify using `only`. Establish `hs : Function.Surjective (algebraMap A (A ⧸ (⊥ : Ideal A)))` using `Ideal.Quotient.mk_surjective`. Rewrite using `[← Module.length_eq_of_surjective hs]`. Establish `h1 : Ideal.map (Ideal.Quotient.mkₐ A (⊥ : Ideal A)) (Ideal.span {x}) = Ideal.span {Ideal.Quotient.mk (⊥ : Ideal A) x}`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.Quotient.mkₐ_eq_mk]`. Establish `e1` using `(Ideal.quotientEquivAlgOfEq A h1).symm.trans ((DoubleQuot.quotQuotEquivQuotSupₐ A ⊥ (Ideal.span {x})).trans (Ideal.quotientEquivAlgOfEq A (bot_sup_eq (Ideal.span {x}))))`. Conclude with `e1.toLinearEquiv.length_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ordQuotient_bot (x : A) :
     ordMod ⟨⊥, Ideal.isPrime_bot⟩ x = Ring.ord A x := by
@@ -145,13 +141,13 @@ theorem ordQuotient_bot (x : A) :
 end
 
 /- English proof (translation)
-Introduce `A _ _ _ _ M _ _ _ _ x h hx`. Use `haveI : Ring.KrullDimLE 1 A := krullDimLE_one_of_krullDim_eq h`. Take `⟨-, heq⟩` from `dimOneFormula A M x h (length_coker_ne_top M hx)`. Rewrite using `[heq, length_ker_eq_zero_of_torsionFree M hx, zero_add]`. Establish `hset : {p : PrimeSpectrum A | ringKrullDim (A ⧸ p.asIdeal) = 1} = {⟨⊥, Ideal.isPrime_bot⟩}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Rewrite using `[krullDim_quotient_eq_one_iff_eq_bot h p]`. Prove the components needed by the constructor for the conclusion. Introduce `hp ext1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp`. Introduce `hp`. Rewrite using `[hp]`. Express the relevant statement in the definitionally equal form `∑ᶠ p ∈ {p : PrimeSpectrum A | ringKrullDim (A ⧸ p.asIdeal) = 1}, _ = _`. Rewrite using `[hset, finsum_mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[length_localization_bot_eq_finrank, ordQuotient_bot]`.
+A detailed English derivation is pending.
 -/
 theorem dimOneTorsionFreeFormula : LocalLengthAdditivityTorsionFree := by
   intro A _ _ _ _ M _ _ _ _ x h hx

@@ -11,19 +11,19 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Relabel
 namespace GlobalTheory.Relabel
 
 /- English proof (translation)
-Take `⟨P', β, hβ, -, hm, -⟩` from `hL.polBaseChange S _ t P`. Establish `hD` using `PrimePowerTorsion.dense_torsion hL.ample hL.kerPow hL.irred F P' n hn hF`. Use `polAV_isIntegral_of_isAlgClosed F P'` as an intermediate fact. Set `X : Over S` to `Over.mk (P'.A.hom ≫ t)`. Establish `: AlgebraicGeometry.IsReduced X.left` using `inferInstanceAs (AlgebraicGeometry.IsReduced P'.A.left)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s : X ⟶ Over.mk t` to `Over.homMk P'.A.hom rfl`. Set `c : X ⟶ P.A` to `Over.homMk β hβ.w`. Set `m : X ⟶ Over.mk t ⊗ P.A` to `lift s c`. Establish `hpt : ∀ (y : Sp F ⟶ P'.A.left) (b : Over.mk t ⟶ P.A), y ≫ P'.A.hom = 𝟙 _ → b.left = y ≫ β → (lift (𝟙 _) b).left = y ≫ m.left` using `fun y b hy hb => by`. Set `y' : Over.mk t ⟶ X` to `Over.homMk y (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `y ≫ P'.A.hom ≫ t = t`. Rewrite using `[← Category.assoc, hy, Category.id_comp])`. Establish `e : lift (𝟙 _) b = y' ≫ m`. Rewrite using `[comp_lift]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Over.OverMorphism.ext hy.symm`. Conclude with `Over.OverMorphism.ext hb`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `key : m.left ≫ f.left = m.left ≫ g.left`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-It suffices to establish `IsDominant (equalizer.ι (m.left ≫ f.left) (m.left ≫ g.left)) from ext_of_isDominant_of_isSeparated Y.hom ((Over.w (m ≫ f)).trans (Over.w (m ≫ g)).symm) (equalizer.ι (m.left ≫ f.left) (m.left ≫ g.left)) (equalizer.condition _ _)`. Use `⟨Dense.mono (fun y hy => ?_) hD⟩` and prove the remaining obligations. Take `⟨x, ⟨j, hx⟩, q, rfl⟩` from `Set.mem_iUnion₂.1 hy`. Set `ρ : Over.mk t ⟶ Over.mk ((𝟙_ (Over (Sp F))).hom ≫ t)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.id_comp _))`. Set `Φ : (𝟙_ (Over (Sp F)) ⟶ P'.A) →* (Over.mk t ⟶ P.A)` to `MonoidHom.mk' (fun y => ρ ≫ toBase hβ.w y) (fun a b => by rw [hm, MonObj.comp_mul])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : (Φ x).left = x.left ≫ β` using `Category.id_comp _`. Establish `e` using `hpt x.left (Φ x) (Over.w x) hΦ`. Establish `h₁` using `congrArg Over.Hom.left (h j (Φ x) (by rw [← map_pow, hx, map_one]))`. Rewrite `h₁` using `[Over.comp_left, Over.comp_left, e, Category.assoc, Category.assoc]`. Conclude with `⟨equalizer.lift (f := m.left ≫ f.left) (g := m.left ≫ g.left) x.left h₁ q, by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, equalizer.lift_ι]⟩`. Establish `hb : b.left ≫ P.A.hom = 𝟙 _ ≫ t` using `(Over.w b).trans (Category.id_comp _).symm`. Establish `e` using `hpt (hβ.lift b.left (𝟙 _) hb) b (hβ.lift_snd _ _ _) (hβ.lift_fst _ _ _).symm`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, e, Category.assoc, Category.assoc, key]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_ext_of_torsion (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {F : Type} [Field F] [IsAlgClosed F]
     (t : Sp F ⟶ S) {n : ℕ} (hn : 2 ≤ n) (hF : (n : F) ≠ 0) {Y : Over S} [IsSeparated Y.hom]
@@ -71,11 +71,11 @@ theorem fibre_ext_of_torsion (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {F : Typ
   rw [Over.comp_left, Over.comp_left, e, Category.assoc, Category.assoc, key]
 
 /- English proof (translation)
-Introduce `hL R _ _ D D' F _ _ _ N N' ν ν' I ⟨φ, _, _, _, _, hφ, _⟩ O _ _ oa oa' n hn hF x h b`. Use `D'.P.isAb.proper` as an intermediate fact. Establish `e₁ : ∀ b, lift (𝟙 _) (ν.eA b) ≫ (_ ◁ oa.act x) ≫ φ.hom ≫ snd _ _ = ν'.eA (I.φ (actV ν oa x b))` using `fun b => by`. Rewrite using `[lift_whiskerLeft_assoc, ← ν.eA.apply_symm_apply (ν.eA b ≫ oa.act x), reassoc_of% hφ, lift_snd]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₂ : ∀ b, lift (𝟙 _) (ν.eA b) ≫ φ.hom ≫ snd _ _ ≫ oa'.act x = ν'.eA (actV ν' oa' x (I.φ b))` using `fun b => by`. Rewrite using `[reassoc_of% hφ, lift_snd_assoc, actV, MulEquiv.apply_symm_apply]`. Use `ν'.eA.injective ?_` and prove the remaining obligations. Rewrite using `[← e₁, ← e₂]`. Use `fibre_ext_of_torsion hL D.P _ hn.two_le hF _ _ (fun j c hc => ?_) _` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, rfl⟩` from `ν.eA.surjective c`. Conclude with `(e₁ c).trans ((congrArg ν'.eA (h j c (ν.eA.injective (by rw [map_pow, hc, map_one])))).trans (e₂ c).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem actV_compat_of_torsion : Laws → ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D F N) (ν' : NumOf D' F N') (I : NumB.Iso N.toNumB N'.toNumB), GeoIso ν ν' I → ∀ (O : Type) [CommRing O] [StarRing O] (oa : D.P.OAct O) (oa' : D'.P.OAct O) (n : ℕ), n.Prime → (n : F) ≠ 0 → ∀ x : O, (∀ (j : ℕ) (b : N.A), b ^ n ^ j = 1 → I.φ (actV ν oa x b) = actV ν' oa' x (I.φ b)) → ∀ b, I.φ (actV ν oa x b) = actV ν' oa' x (I.φ b) := by
   intro hL R _ _ D D' F _ _ _ N N' ν ν' I ⟨φ, _, _, _, _, hφ, _⟩ O _ _ oa oa' n hn hF x h b

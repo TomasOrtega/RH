@@ -14,7 +14,7 @@ section Gen
 variable {E : Type} [Field E] {N : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ (K : Matrix (Fin N) (Fin N) E) (v w : Fin N → E), hform σ K v w = (σ ∘ v) ⬝ᵥ (K *ᵥ w)`. Introduce `K v w`. Simplify using `[hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `h1 : σ ∘ (B *ᵥ x) = (B.map σ) *ᵥ (σ ∘ x)` using `funext fun l => RingHom.map_mulVec σ B x l`. Rewrite using `[key, key, h1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (σ ∘ x), cT, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_hform_mulVec (σ : E →+* E) (J B : Matrix (Fin N) (Fin N) E) (x y : Fin N → E) :
     hform σ J (B *ᵥ x) (B *ᵥ y) = hform σ (cT σ B * J * B) x y := by
@@ -26,13 +26,13 @@ theorem unit_hform_mulVec (σ : E →+* E) (J B : Matrix (Fin N) (Fin N) E) (x y
     Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Simplify using `[hform, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unit_hform_one (σ : E →+* E) (x y : Fin N → E) : hform σ 1 x y = ∑ a, σ (x a) * y a := by
   simp [hform, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `p q`. Establish `h1` using `h (Pi.single p 1) (Pi.single q 1)`. Rewrite `h1` using `[unit_hform_mulVec, Matrix.mul_one]`. Simplify `h1` using `[hform, Pi.single_apply, apply_ite σ]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cT_mul_self_of_hform (σ : E →+* E) (M : Matrix (Fin N) (Fin N) E)
     (h : ∀ x y, hform σ 1 (M *ᵥ x) (M *ᵥ y) = hform σ 1 x y) : cT σ M * M = 1 := by
@@ -48,13 +48,13 @@ section Gen2
 variable {E : Type} [Field E] {N : ℕ}
 
 /- English proof (translation)
-Establish `hc : IsOrthCo σ J (toLE co)`. Introduce `x y`. Establish `h` using `unit_hform_mulVec σ 1 co.1 x y`. Rewrite `h` using `[Matrix.mul_one, hco, unit_hform_one]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : IsOrthCo σ J (stdCo σ J)` using `Classical.epsilon_spec (p := IsOrthCo σ J) ⟨_, hc⟩`. Establish `hγ' : cT σ γ.1 * J * γ.1 = J` using `hγ`. Apply `cT_mul_self_of_hform` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec, unit_hform_one, unit_hform_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `(toLE co).surjective x`. Take `⟨y, rfl⟩` from `(toLE co).surjective y`. Rewrite using `[hc]`. Simplify using `only [toStdCo, stdG, LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `unit_hform_mulVec σ J γ.1 x y`. Rewrite `h` using `[hγ']`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cT_mul_self_toStdCo_stdG (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (co γ : GL (Fin N) E)
     (hco : cT σ co.1 * co.1 = J) (hγ : γ ∈ UJ σ J) :
@@ -82,7 +82,7 @@ theorem cT_mul_self_toStdCo_stdG (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E)
 end Gen2
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP _ i hi γ hγ`. Establish `h` using `cT_mul_self_toStdCo_stdG (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) (A.crd i hi) γ (hP.crd_orth i hi) hγ`. Rewrite `h` using `[mul_eq_one_comm]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratIsometry_unitary : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ i (hi : i ≤ D.R.m), ∀ γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi), (LinearMap.toMatrix' ((toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) (A.crd i hi)).trans (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) γ)).toLinearMap) * star (LinearMap.toMatrix' ((toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) (A.crd i hi)).trans (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) γ)).toLinearMap) = 1) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP _ i hi γ hγ

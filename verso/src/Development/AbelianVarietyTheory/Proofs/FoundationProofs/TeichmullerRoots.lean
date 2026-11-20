@@ -15,13 +15,13 @@ section Roots
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-The claim follows from `Subsingleton.elim _ _`.
+A detailed English derivation is pending.
 -/
 theorem frob_comp : (frobenius (Fbar g) g).comp (algebraMap (ZMod g) (Fbar g)) = algebraMap (ZMod g) (Fbar g) :=
   Subsingleton.elim _ _
 
 /- English proof (translation)
-Establish `h` using `Polynomial.roots_map_of_injective_of_card_eq_natDegree (p := f.map (algebraMap (ZMod g) (Fbar g))) (f := frobenius (Fbar g) g) (RingHom.injective _) IsAlgClosed.card_roots_eq_natDegree`. Rewrite `h` using `[Polynomial.map_map, frob_comp]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootsBar_frob (f : (ZMod g)[X]) : (rootsBar f).map (fun x => x ^ g) = rootsBar f := by
   have h := Polynomial.roots_map_of_injective_of_card_eq_natDegree
@@ -31,14 +31,14 @@ theorem rootsBar_frob (f : (ZMod g)[X]) : (rootsBar f).map (fun x => x ^ g) = ro
   exact h
 
 /- English proof (translation)
-Unfold `rootsBar`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, natDegree_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_rootsBar (f : (ZMod g)[X]) : (rootsBar f).card = f.natDegree := by
   unfold rootsBar
   rw [IsAlgClosed.card_roots_eq_natDegree, natDegree_map]
 
 /- English proof (translation)
-Unfold `rootsBar`. Rewrite using `[mem_roots (hf.map _).ne_zero, IsRoot, ← coeff_zero_eq_eval_zero, coeff_map]`. Conclude with `map_eq_zero_iff _ (RingHom.injective _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mem_rootsBar {f : (ZMod g)[X]} (hf : f.Monic) : 0 ∈ rootsBar f ↔ f.coeff 0 = 0 := by
   unfold rootsBar
@@ -46,15 +46,13 @@ theorem zero_mem_rootsBar {f : (ZMod g)[X]} (hf : f.Monic) : 0 ∈ rootsBar f �
   exact map_eq_zero_iff _ (RingHom.injective _)
 
 /- English proof (translation)
-Use `set P : (Fbar g)[X] := (S.map fun x => X - C x).prod with hP`. Establish `hm : P.Monic` using `monic_multiset_prod_of_monic _ _ fun x _ => monic_X_sub_C x`. Establish `hfix : P.map (frobenius (Fbar g) g) = P`. Rewrite using `[hP, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `conv_rhs => rw [← hS, Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `x _`. Simplify using `[frobenius_def]`. Establish `hl : P ∈ lifts (algebraMap (ZMod g) (Fbar g))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`. Establish `h1 : P.coeff n ^ g = P.coeff n`. Use `congrArg (fun q => q.coeff n) hfix` as an intermediate fact. Simplify `this` using `[frobenius_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : P.coeff n ∈ (⊥ : Subfield (Fbar g))` using `(Subfield.mem_bot_iff_pow_eq_self _ g).2 h1`. Rewrite `h2` using `[Subfield.bot_eq_of_zMod_algebra g]`. Conclude with `h2`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic hl hm`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
-
-Unfold `rootsBar`. Rewrite using `[hq, hP, roots_multiset_prod_X_sub_C]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monic_of_stable (S : Multiset (Fbar g)) (hS : S.map (fun x => x ^ g) = S) :
     ∃ f : (ZMod g)[X], f.Monic ∧ rootsBar f = S := by
@@ -82,15 +80,15 @@ theorem exists_monic_of_stable (S : Multiset (Fbar g)) (hS : S.map (fun x => x ^
   rw [hq, hP, roots_multiset_prod_X_sub_C]
 
 /- English proof (translation)
-Establish `hx0 : x ≠ 0` using `fun h => hf.2.2 ((zero_mem_rootsBar hf.1).1 (h ▸ hx))`. Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Establish `hroot : aeval x f = 0`. Use `(mem_roots (hf.1.map _).ne_zero).1 hx` as an intermediate fact. Rewrite `this` using `[IsRoot, eval_map_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hd : (minpoly (ZMod g) x).natDegree ≤ N`. Rewrite using `[← hf.2.1]`. Conclude with `natDegree_le_of_dvd (minpoly.dvd _ _ hroot) hf.1.ne_zero`. Establish `hd1 : 1 ≤ (minpoly (ZMod g) x).natDegree` using `minpoly.natDegree_pos hint`. Use `set K := IntermediateField.adjoin (ZMod g) ({x} : Set (Fbar g))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional (ZMod g) K := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `letI : Fintype K := Fintype.ofFinite K`. Establish `hc : Fintype.card K = g ^ (minpoly (ZMod g) x).natDegree`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, IntermediateField.adjoin.finrank hint]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `y : K` to `⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩`. Establish `hy : y ≠ 0` using `fun h => hx0 (congrArg Subtype.val h)`. Establish `h1` using `FiniteField.pow_card_sub_one_eq_one y hy`. Rewrite `h1` using `[hc]`. Establish `h2 : x ^ (g ^ (minpoly (ZMod g) x).natDegree - 1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val h1` as an intermediate fact. Simplify `this` using `[y]`. Take `⟨c, hc⟩ : g ^ (minpoly (ZMod g) x).natDegree - 1 ∣ rootExp N g` from `Finset.dvd_lcm (f := fun d => g ^ d - 1) (Finset.mem_Icc.2 ⟨hd1, hd⟩)`. Rewrite using `[hc, pow_mul, h2, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem root_pow_rootExp {N : ℕ} {f : (ZMod g)[X]} (hf : IsLabel N f) {x : Fbar g} (hx : x ∈ rootsBar f) :
     x ^ rootExp N g = 1 := by
@@ -121,13 +119,13 @@ theorem root_pow_rootExp {N : ℕ} {f : (ZMod g)[X]} (hf : IsLabel N f) {x : Fba
   rw [hc, pow_mul, h2, one_pow]
 
 /- English proof (translation)
-Proceed by induction on `S using Multiset.induction_on with`. Consider the case `empty => simp [reverse]`. Consider the case `cons x S ih`. Establish `hx : x ≠ 0` using `fun h => hS (h ▸ Multiset.mem_cons_self _ _)`. Establish `hS' : 0 ∉ S` using `fun h => hS (Multiset.mem_cons_of_mem h)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (S.map fun x => X - C x).prod.Monic` using `monic_multiset_prod_of_monic _ _ fun x _ => monic_X_sub_C x`. Establish `e : (X - C x).reverse = C (-x) * (X - C x⁻¹)`. Establish `: (X - C x) = X + C (-x)` using `by simp [sub_eq_add_neg]`. Rewrite using `[this, reverse_add_C, natDegree_X]`. Establish `hX : (X : F[X]).reverse = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `reverse_mul_X (1 : F[X])` as an intermediate fact. Simplify `this` using `[reverse]`. Rewrite using `[hX, mul_sub, ← C_mul, neg_mul, mul_inv_cancel₀ hx]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Multiset.map_cons, Multiset.prod_cons, reverse_mul_of_domain, roots_mul, ih hS', e, roots_C_mul _ (neg_ne_zero.2 hx), roots_X_sub_C, Multiset.map_cons, Multiset.singleton_add]`. Conclude with `mul_ne_zero (by rw [Ne, reverse_eq_zero]; exact X_sub_C_ne_zero x) (by rw [Ne, reverse_eq_zero]; exact hm.ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem roots_reverse_prod {F : Type} [Field F] (S : Multiset F) (hS : 0 ∉ S) :
     ((S.map fun x => X - C x).prod.reverse).roots = S.map fun x => x⁻¹ := by
@@ -152,11 +150,11 @@ theorem roots_reverse_prod {F : Type} [Field F] (S : Multiset F) (hS : 0 ∉ S) 
       (by rw [Ne, reverse_eq_zero]; exact hm.ne_zero)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `monic_C_mul_of_mul_leadingCoeff_eq_one` to reduce the goal to its premises. Rewrite using `[reverse_leadingCoeff, trailingCoeff_eq_coeff_zero h0, inv_mul_cancel₀ h0]`. Establish `e : f.map (algebraMap (ZMod g) (Fbar g)) = ((rootsBar f).map fun x => X - C x).prod` using `(Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (hm.map _) (IsAlgClosed.card_roots_eq_natDegree)).symm`. Establish `e2 : f.reverse.map (algebraMap (ZMod g) (Fbar g)) = (f.map (algebraMap (ZMod g) (Fbar g))).reverse`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[reverse, reverse, natDegree_map, reflect_map]`. Unfold `IsPowLabel`. Simplify using `only [zpow_neg_one]`. Rewrite using `[← roots_reverse_prod _ (fun h => h0 ((zero_mem_rootsBar hm).1 h)), ← e, ← e2]`. Unfold `rootsBar`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Polynomial.map_mul, map_C, roots_C_mul]`. Conclude with `(_root_.map_ne_zero _).2 (inv_ne_zero h0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_spec {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     (C (f.coeff 0)⁻¹ * f.reverse).Monic ∧ IsPowLabel (-1) f (C (f.coeff 0)⁻¹ * f.reverse) := by
@@ -176,11 +174,11 @@ theorem dual_spec {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     exact (_root_.map_ne_zero _).2 (inv_ne_zero h0)
 
 /- English proof (translation)
-Establish `hne : ∀ x, x ≠ 0 → t x ≠ 0` using `fun x hx => ((IsUnit.mk0 x hx).map t).ne_zero`. Establish `h0 : t 0 = 0` using `by classical`. Take `⟨y, hy⟩` from `Infinite.exists_notMem_finset ({0, 1} : Finset (Fbar g))`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hy`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: t 0 * t y = t 0 * t 1` using `by rw [← map_mul, ← map_mul, zero_mul, zero_mul]`. Conclude with `hy.2 (ht _ _ hy.1 one_ne_zero (mul_left_cancel₀ h this))`. Introduce `x y h`. Distinguish the cases in `hx : x = 0`. Distinguish the cases in `hy : y = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hy]`. Conclude with `absurd (by rw [← h, hx, h0]) (hne y hy)`. Distinguish the cases in `hy : y = 0`. Conclude with `absurd (by rw [h, hy, h0]) (hne x hx)`. Conclude with `ht x y hx hy h`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem teich_injective (t : Fbar g →* ℂ) (ht : ∀ x y, x ≠ 0 → y ≠ 0 → t x = t y → x = y) :
     Function.Injective t := by
@@ -202,7 +200,7 @@ theorem teich_injective (t : Fbar g →* ℂ) (ht : ∀ x y, x ≠ 0 → y ≠ 0
     · exact ht x y hx hy h
 
 /- English proof (translation)
-Establish `h1 : t ((Units.mk0 x hx ^ a : (Fbar g)ˣ) : Fbar g) = ((Units.map t (Units.mk0 x hx) ^ a : ℂˣ) : ℂ)`. Rewrite using `[← map_zpow]`. Both sides reduce to the same expression. Rewrite `h1` using `[Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich_zpow (t : Fbar g →* ℂ) {x : Fbar g} (hx : x ≠ 0) (a : ℤ) : t (x ^ a) = t x ^ a := by
   have h1 : t ((Units.mk0 x hx ^ a : (Fbar g)ˣ) : Fbar g) = ((Units.map t (Units.mk0 x hx) ^ a : ℂˣ) : ℂ) := by
@@ -213,9 +211,9 @@ theorem teich_zpow (t : Fbar g →* ℂ) {x : Fbar g} (hx : x ≠ 0) (a : ℤ) :
 end Roots
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM⟩`. Establish `hp` using `Complex.isPrimitiveRoot_exp M hM`. Take `⟨a, -, ha⟩` from `hp.eq_pow_of_pow_eq_one (ξ := α (Complex.exp (2 * Real.pi * Complex.I / M))) (by rw [← map_pow, hp.pow_eq_one, map_one])`. Use `⟨a, fun ζ hζ => ?_⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hp.eq_pow_of_pow_eq_one hζ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, ← ha, zpow_natCast, ← pow_mul, ← pow_mul, mul_comm a i]`.
+A detailed English derivation is pending.
 -/
 theorem exists_exponent (α : ℂ ≃+* ℂ) {M : ℕ} (hM : M ≠ 0) :
     ∃ a : ℤ, ∀ ζ : ℂ, ζ ^ M = 1 → α ζ = ζ ^ a := by
@@ -230,9 +228,9 @@ theorem exists_exponent (α : ℂ ≃+* ℂ) {M : ℕ} (hM : M ≠ 0) :
 variable (D : D7)
 
 /- English proof (translation)
-Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hinj` using `teich_injective (D.ntypes.teichC k) (D.ntypes.teichC_inj k)`. Establish `e : (rootsBar f).map (fun x => Function.invFun (D.ntypes.teichC k) (α (D.ntypes.teichC k x))) = (rootsBar f).map fun x => x ^ a`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx0 : x ≠ 0` using `fun h => hf.2.2 ((zero_mem_rootsBar hf.1).1 (h ▸ hx))`. Rewrite using `[ha _ (by rw [← map_pow, root_pow_rootExp hf hx, map_one]), ← teich_zpow _ hx0]`. Conclude with `Function.leftInverse_invFun hinj _`. Establish `hs` using `Classical.epsilon_spec (p := fun q : (ZMod (D.host.g k))[X] => q.Monic ∧ rootsBar q = (rootsBar f).map (fun x => Function.invFun (D.ntypes.teichC k) (α (D.ntypes.teichC k x)))) ⟨f', hm, hp.trans e.symm⟩`. Conclude with `IsPowLabel.unique (a := a) (f := f) (hs.2.trans e) hp hs.1 hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem labAct_eq (k : Fin 2) (α : ℂ ≃+* ℂ) (a : ℤ)
     (ha : ∀ ζ : ℂ, ζ ^ rootExp D.R.r (D.host.g k) = 1 → α ζ = ζ ^ a)
@@ -256,9 +254,7 @@ theorem labAct_eq (k : Fin 2) (α : ℂ ≃+* ℂ) (a : ℤ)
   exact IsPowLabel.unique (a := a) (f := f) (hs.2.trans e) hp hs.1 hm
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ArithmeticCylinders.atPlace serAt atFactor`. Express the relevant statement in the definitionally equal form `_ = MonoidAlgebra.ofCoeff (Finsupp.mapDomain _ _)`. Use `congr!`. Use function extensionality and compare the values at `h`. Simplify using `only [MonoidHom.mulSingle_apply, MonoidHom.coe_coe]`.
-
-Use `congr!`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atPlace_eq (k : Fin 2) (v : D.nd.PlG k) (f : (ZMod (D.host.g k))[X]) :
     Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (D.ntypes.eSer k f) = (serAt D k v f).1 := by

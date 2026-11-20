@@ -12,14 +12,14 @@ noncomputable def FiniteFibreCentredEquation.centredPoly (a : ℂ) {k : ℕ} (c 
   (X - C a) ^ k + ∑ j : Fin k, C (c j) * (X - C a) ^ (j : ℕ)
 
 /- English proof (translation)
-Simplify using `[FiniteFibreCentredEquation.centredPoly, eval_finsetSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem FiniteFibreCentredEquation.centredPoly_eval (a : ℂ) {k : ℕ} (c : Fin k → ℂ) (T : ℂ) :
     (FiniteFibreCentredEquation.centredPoly a c).eval T = (T - a) ^ k + ∑ j, c j * (T - a) ^ (j : ℕ) := by
   simp [FiniteFibreCentredEquation.centredPoly, eval_finsetSum]
 
 /- English proof (translation)
-Simplify using `[FiniteFibreCentredEquation.centredPoly, finsetSum_coeff, coeff_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem FiniteFibreCentredEquation.centredPoly_coeff (a : ℂ) {k : ℕ} (c : Fin k → ℂ) (m : ℕ) :
     (FiniteFibreCentredEquation.centredPoly a c).coeff m =
@@ -27,7 +27,7 @@ theorem FiniteFibreCentredEquation.centredPoly_coeff (a : ℂ) {k : ℕ} (c : Fi
   simp [FiniteFibreCentredEquation.centredPoly, finsetSum_coeff, coeff_C_mul]
 
 /- English proof (translation)
-Use `Nat.lt_succ_of_le (natDegree_add_le_of_degree_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[(monic_X_sub_C a).natDegree_pow, natDegree_X_sub_C, mul_one]`. Use `natDegree_sum_le_of_forall_le _ _ fun j _ => (natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[(monic_X_sub_C a).natDegree_pow, natDegree_X_sub_C, mul_one]`. Conclude with `j.isLt.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteFibreCentredEquation.centredPoly_natDegree_lt (a : ℂ) {k : ℕ} (c : Fin k → ℂ) :
     (FiniteFibreCentredEquation.centredPoly a c).natDegree < k + 1 := by
@@ -38,9 +38,9 @@ theorem FiniteFibreCentredEquation.centredPoly_natDegree_lt (a : ℂ) {k : ℕ} 
     exact j.isLt.le
 
 /- English proof (translation)
-Rewrite using `[FiniteFibreCentredEquation.centredPoly_coeff]`. Establish `h1 : ((X - C a) ^ k).coeff k = 1`. Establish `h` using `((monic_X_sub_C a).pow k).coeff_natDegree`. Rewrite `h` using `[(monic_X_sub_C a).natDegree_pow, natDegree_X_sub_C, mul_one]`. Then use the resulting hypothesis. Establish `h2 : ∀ j : Fin k, ((X - C a) ^ (j : ℕ)).coeff k = 0` using `fun j => coeff_eq_zero_of_natDegree_lt (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[(monic_X_sub_C a).natDegree_pow, natDegree_X_sub_C, mul_one]`. Conclude with `j.isLt)`. Simplify using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FiniteFibreCentredEquation.centredPoly_coeff_top (a : ℂ) {k : ℕ} (c : Fin k → ℂ) : (FiniteFibreCentredEquation.centredPoly a c).coeff k = 1 := by
   rw [FiniteFibreCentredEquation.centredPoly_coeff]
@@ -53,7 +53,7 @@ theorem FiniteFibreCentredEquation.centredPoly_coeff_top (a : ℂ) {k : ℕ} (c 
   simp [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[eval_eq_sum_range' (FiniteFibreCentredEquation.centredPoly_natDegree_lt a c), Finset.sum_range_succ, FiniteFibreCentredEquation.centredPoly_coeff_top, Finset.sum_range (fun m => (FiniteFibreCentredEquation.centredPoly a c).coeff m * T ^ m)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem FiniteFibreCentredEquation.centredPoly_eval_expand (a : ℂ) {k : ℕ} (c : Fin k → ℂ) (T : ℂ) :
     (FiniteFibreCentredEquation.centredPoly a c).eval T = T ^ k + ∑ m : Fin k, (FiniteFibreCentredEquation.centredPoly a c).coeff m * T ^ (m : ℕ) := by
@@ -62,25 +62,21 @@ theorem FiniteFibreCentredEquation.centredPoly_eval_expand (a : ℂ) {k : ℕ} (
   ring
 
 /- English proof (translation)
-Introduce `σ _ S w d A hS hfib g hg`. Take `⟨N, a, ha, hrel⟩` from `hI σ S w d A hS hfib (fun z => g z - g w) (hg.sub analyticAt_const)`. Use `set f : (Option (Fin d) → ℂ) → ℂ := fun x => x none ^ N + ∑ j, a j (A w + fun i => x (some i)) * x none ^ (j : ℕ) with hf_def`. Establish `hlast : AnalyticAt ℂ (fun x : Option (Fin d) → ℂ => x none) 0` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Option (Fin d) => ℂ) none).analyticAt 0`. Establish `hfirst : AnalyticAt ℂ (fun x : Option (Fin d) → ℂ => A w + fun i => x (some i)) 0` using `analyticAt_const.add ((ContinuousLinearMap.pi fun i : Fin d => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Option (Fin d) => ℂ) (some i)).analyticAt 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfan : AnalyticAt ℂ f 0`. Use `(hlast.pow N).add (Finset.analyticAt_fun_sum _ fun j _ => ?_)` and prove the remaining obligations. Conclude with `((ha j).comp_of_eq hfirst (show A w + (0 : Fin d → ℂ) = A w from add_zero _)).mul (hlast.pow _)`. Use `set p : ℂ[X] := X ^ N + ∑ j : Fin N, C (a j (A w)) * X ^ (j : ℕ) with hp_def`. Establish `hpm : p.Monic` using `monic_X_pow_add (degree_sum_fin_lt _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hpe : (fun t => f (pointWithLast 0 t)) = fun t => p.eval t`. Use function extensionality and compare the values at `t`. Establish `h0 : (fun i => pointWithLast (0 : Fin d → ℂ) t (some i)) = 0` using `rfl`. Simplify using `only [hf_def, hp_def, h0, add_zero, eval_add, eval_pow, eval_X, eval_finsetSum, eval_mul, eval_C]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : analyticOrderAt (fun t => f (pointWithLast 0 t)) 0 ≠ ⊤`. Rewrite using `[hpe]`. Introduce `htop`. Establish `hpan : AnalyticOnNhd ℂ (fun t => p.eval t) Set.univ` using `fun t _ => (Polynomial.differentiable p).analyticAt t`. Establish `hall : Set.EqOn (fun t => p.eval t) 0 Set.univ` using `hpan.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) (analyticOrderAt_eq_top.1 htop)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hpm.ne_zero (Polynomial.funext fun t => by simpa using hall (Set.mem_univ t))`. Take `⟨k, hk⟩ : ∃ k : ℕ, analyticOrderAt (fun t => f (pointWithLast 0 t)) 0 = k` from `⟨_, (Nat.cast_analyticOrderNatAt hne).symm⟩`. Take `⟨e, c, he, he0, hc, hc0, hfe⟩` from `hW (Fin d) k f hfan hk`. Use `⟨k, fun m y => (FiniteFibreCentredEquation.centredPoly (g w) fun j => c j (y - A w)).coeff m, fun m => ?_, fun T => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [FiniteFibreCentredEquation.centredPoly_coeff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `analyticAt_const.add (Finset.analyticAt_fun_sum _ fun j _ => ?_)` and prove the remaining obligations. Conclude with `((hc j).comp_of_eq (f := fun y : Fin d → ℂ => y - A w) (analyticAt_id.sub analyticAt_const) (sub_self _)).mul analyticAt_const`. Rewrite using `[← FiniteFibreCentredEquation.centredPoly_eval_expand, FiniteFibreCentredEquation.centredPoly_eval]`. Simplify using `[hc0]`. Use `set φ : (σ → ℂ) → (Option (Fin d) → ℂ) := fun z => pointWithLast (A z - A w) (g z - g w) with hφ_def`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hφc : ContinuousAt φ w`. Use `continuousAt_pi.2 fun o => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact hg.continuousAt.sub continuousAt_const`. Consider the case `some i => exact ((continuous_apply i).comp A.continuous).continuousAt.sub continuousAt_const`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφw : φ w = 0`. Apply the tactic sequence `funext o; cases o <;> simp [hφ_def, pointWithLast]`. Establish `hφt : Tendsto φ (𝓝 w) (𝓝 0)` using `hφw ▸ hφc.tendsto`. Use `filter_upwards [hφt.eventually hfe, hφt.eventually (he.continuousAt.eventually_ne he0), hrel] with z h1 h2 h3 hzX`. Establish `hf0 : f (φ z) = 0` using `by show (g z - g w) ^ N + ∑ j, a j (A w + (A z - A w)) * (g z - g w) ^ (j : ℕ) = 0`.
-
-Rewrite using `[add_sub_cancel]`. Conclude with `h3 hzX`. Establish `hω : (g z - g w) ^ k + ∑ j, c j (A z - A w) * (g z - g w) ^ (j : ℕ) = 0`. Rewrite `h1` using `[hf0]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left h2`.
-
-Rewrite using `[← FiniteFibreCentredEquation.centredPoly_eval_expand, FiniteFibreCentredEquation.centredPoly_eval]`. Conclude with `hω`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteFibreCentredEquation.proof (hI : FiniteFibreGermIntegral.Statement)
     (hW : WeierstrassPreparation.Statement) : FiniteFibreCentredEquation.Statement := by

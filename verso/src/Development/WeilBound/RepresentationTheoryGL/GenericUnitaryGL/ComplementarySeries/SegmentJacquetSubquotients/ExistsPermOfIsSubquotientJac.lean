@@ -19,21 +19,19 @@ namespace PositivityTheory.Pf1.SegRepC.Perm
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `i j`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨h0, hdj⟩` from `hne`. Establish `hcusp : IsCuspidal (segTerm σ.ρ l i)` using `GlobalTheory.LocGL.isCuspidal_twist hσ (GlobalTheory.LocGL.isSmoothChar_absPow _)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `b.2.1 i`. Simplify using `only [Fintype.card_fin] at hsum`. Choose the witnesses or unpack the hypotheses as in `⟨j', hj'ne, hj'0⟩ : ∃ j', j' ≠ j ∧ b.1 i j' ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hdj` to reduce the goal to its premises. Rewrite `hsum` using `[Finset.sum_eq_single j (fun j' _ hj' => hall j' hj') (by simp)]`. Conclude with `hsum`. Establish `hpos : 0 < b.1 i j` using `Nat.pos_of_ne_zero h0`. Establish `hpos' : 0 < b.1 i j'` using `Nat.pos_of_ne_zero hj'0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hbot : unipRad k (f i) ≠ ⊥`. Rewrite using `[GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff]`. Break down `lt_or_gt_of_ne hj'ne with h | h` into its components or cases. Conclude with `⟨f i ⟨j', ⟨0, hpos'⟩⟩, f i ⟨j, ⟨0, hpos⟩⟩, by rw [blk_apply, blk_apply]; exact h⟩`. Conclude with `⟨f i ⟨j, ⟨0, hpos⟩⟩, f i ⟨j', ⟨0, hpos'⟩⟩, by rw [blk_apply, blk_apply]; exact h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsub` using `hcusp.2 l (b.1 i) (f i) hbot`. Take `⟨S, g, hg⟩` from `hs i`. Establish `hnt : ∀ j, Nontrivial (s i j).V`. Introduce `j`. Use `haveI := (s i j).irr`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation (s i j).ρ) ≠ ⊤)` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[Subsingleton.elim x 0]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`. Use `haveI := GlobalTheory.ProdSupport.nontrivial_piTensor (fun j => (s i j).V) hnt`. Take `⟨x, y, hxy⟩` from `exists_pair_ne (PiTensorProduct ℂ fun j => (s i j).V)`. Take `⟨x', rfl⟩` from `hg x`. Take `⟨y', rfl⟩` from `hg y`.
-
-Apply `hxy` to reduce the goal to its premises. Establish `: x' = y'` using `Subtype.ext (Subsingleton.elim _ _)`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_zero_or_d {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ)
     (b : SizeMatrix (fun _ : Fin l => Fin d) (fun _ : Fin l => Fin d))
@@ -84,9 +82,9 @@ theorem entries_zero_or_d {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) 
 open GlobalTheory.LocGL in
 
 /- English proof (translation)
-Substitute `hcd` using the available equality. Establish `h1` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun j => (s j).ρ) (fun j => (s j).irr) j₀`. Establish `h2` using `h1.trans (SupportUnique.isSubquotient_comp hs (MonoidHom.mulSingle (fun j => GL (Fin (c j)) k) j₀))`. Establish `h3` using `h2.trans (SupportUnique.isSubquotient_jac_single j₀ h0 f τ)`. Take `⟨φ⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient (s j₀).irr hτ h3`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `IrrGL.of_eq_of.2 ⟨φ.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem row_of_eq {d r : ℕ} (c : Fin r → ℕ) (j₀ : Fin r) (h0 : ∀ j, j ≠ j₀ → c j = 0) (hcd : c j₀ = d)
     (f : (Σ j, Fin (c j)) ≃ Fin d) {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -104,7 +102,7 @@ theorem row_of_eq {d r : ℕ} (c : Fin r → ℕ) (j₀ : Fin r) (h0 : ∀ j, j 
 open GlobalTheory.LocGL in
 
 /- English proof (translation)
-Establish `hcd : c i₀ = d` using `congrArg Sigma.fst h`. Substitute `hcd` using the available equality. Take `⟨φ⟩` from `IrrGL.of_eq_of.1 h`. Take `⟨ψ⟩` from `GlobalTheory.CompanionTheory.WordProd.OneBlockProd.multiProd_single c i₀ h0 t g`. Conclude with `⟨ψ.trans φ⟩`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem col_of_eq {d r : ℕ} (c : Fin r → ℕ) (i₀ : Fin r) (h0 : ∀ i, i ≠ i₀ → c i = 0)
     (g : (Σ i, Fin (c i)) ≃ Fin d) (t : ∀ i, IrrRep (GL (Fin (c i)) k)) {V : Type} [AddCommGroup V]
@@ -118,7 +116,7 @@ theorem col_of_eq {d r : ℕ} (c : Fin r → ℕ) (i₀ : Fin r) (h0 : ∀ i, i 
   exact ⟨ψ.trans φ⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h` using `Finset.sum_le_sum_of_subset (f := c) (Finset.subset_univ {j, j'})`. Rewrite `h` using `[Finset.sum_pair hne, hsum, hj, hj']`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_of_eq_d {d l : ℕ} (hd : 0 < d) (c : Fin l → ℕ) (hsum : ∑ j, c j = d) {j j' : Fin l}
     (hj : c j = d) (hj' : c j' = d) : j = j' := by
@@ -129,7 +127,7 @@ theorem eq_of_eq_d {d l : ℕ} (hd : 0 < d) (c : Fin l → ℕ) (hsum : ∑ j, c
   omega
 
 /- English proof (translation)
-Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := c) (by omega)`. Conclude with `⟨j, (h01 j).resolve_left hj⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_d {d l : ℕ} (hd : 0 < d) (c : Fin l → ℕ) (hsum : ∑ j, c j = d)
     (h01 : ∀ j, c j = 0 ∨ c j = d) : ∃ j, c j = d := by
@@ -139,13 +137,11 @@ theorem exists_eq_d {d l : ℕ} (hd : 0 < d) (c : Fin l → ℕ) (hsum : ∑ j, 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hr : ∀ i, ∑ j, b.1 i j = d` using `fun i => by simpa using b.2.1 i`. Establish `hc : ∀ j, ∑ i, b.1 i j = d` using `fun j => by simpa using b.2.2 j`. Use `choose v hv using fun j => exists_eq_d hd (fun i => b.1 i j) (hc j) (fun i => h01 i j)`. Establish `hvinj : Function.Injective v` using `fun j j' e => eq_of_eq_d hd (b.1 (v j)) (hr (v j)) (hv j) (e ▸ hv j')`. Set `w : Equiv.Perm (Fin l)` to `Equiv.ofBijective v (Finite.injective_iff_bijective.1 hvinj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `hE : ∀ j, Nonempty ((multiProd (g j) fun i => (s i j).ρ).Equiv (segTerm σ.ρ l (v j)))`. Introduce `j`. Use `col_of_eq (fun i => b.1 i j) (v j) (fun i hi => ?_) (g j) (fun i => s i j) _ (MultOne.isSmooth_segTerm σ _) (MultOne.isIrreducible_segTerm σ _) ?_` and prove the remaining obligations. Conclude with `(h01 i j).resolve_right fun h => hi (eq_of_eq_d hd (fun i => b.1 i j) (hc j) h (hv j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `row_of_eq (b.1 (v j)) j (fun j' hj' => (h01 (v j) j').resolve_right fun h => hj' (eq_of_eq_d hd _ (hr (v j)) h (hv j))) (hv j) (f (v j)) _ _ _ (s (v j)) (hs (v j))`. Set `E` to `GlobalTheory.LocGL.piTensorEquiv fun j => (hE j).some`. Establish `hT : (piTensor fun j => segTerm σ.ρ l (v j)).IsIrreducible` using `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun a => MultOne.isIrreducible_segTerm σ _) fun a φ hφ => GlobalTheory.CompanionTheory.SocleFrob.exists_eq_smul_id _ (MultOne.isSmooth_segTerm σ _) (MultOne.isIrreducible_segTerm σ _) φ hφ`. Establish `h'` using `h.trans (IsSubquotient.of_injective E.toIntertwiningMap E.toLinearEquiv.injective)`. Take `⟨φ⟩` from `GlobalTheory.LocGL.SupportUnique.nonempty_equiv_of_isSubquotient hπ hT h'`.
-
-Conclude with `⟨φ.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_cell {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ)
     (b : SizeMatrix (fun _ : Fin l => Fin d) (fun _ : Fin l => Fin d))
@@ -185,7 +181,7 @@ theorem exists_perm_of_cell {d l : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨b, f, g, s, hs, hπs⟩` from `exists_cell_of_isSubquotient (hG k).1 (hG k).2 (consecBlocks l d) (consecBlocks l d) (MultOne.isSmooth_segTerm σ) (MultOne.hasFiniteLength_segTerm σ) hπ h`. Conclude with `exists_perm_of_cell hd σ hσ b (entries_zero_or_d hd σ hσ b f s hs) f g s hs π hπ hπs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_isSubquotient_jac (hG : GeometricLemma) {d l : ℕ} (hd : 0 < d) (hl : 0 < l)
     (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ)

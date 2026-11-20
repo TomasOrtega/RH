@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Surjective
 open scoped ComplexConjugate
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ChainOnto.surjective_of_adjoint_separates` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FSurjectiveOfAdjointSeparatesLabelledParts.lean&line=109#L109)
 -/

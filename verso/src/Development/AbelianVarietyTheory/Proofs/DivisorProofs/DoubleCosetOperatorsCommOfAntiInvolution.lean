@@ -11,7 +11,7 @@ variable {G : Type} [Group G]
 def InDoubleCoset (J : Subgroup G) (a y : G) : Prop := ∃ k₁ ∈ J, ∃ k₂ ∈ J, y = k₁ * a * k₂
 
 /- English proof (translation)
-Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `h`. Conclude with `⟨j₁ * k₁, J.mul_mem h₁ hk₁, k₂ * j₂, J.mul_mem hk₂ h₂, by rw [hz]; group⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InDoubleCoset.mul {J : Subgroup G} {a y z j₁ j₂ : G} (h : InDoubleCoset J a y)
     (h₁ : j₁ ∈ J) (h₂ : j₂ ∈ J) (hz : z = j₁ * y * j₂) : InDoubleCoset J a z := by
@@ -21,25 +21,23 @@ theorem InDoubleCoset.mul {J : Subgroup G} {a y z j₁ j₂ : G} (h : InDoubleCo
 open Classical in
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective c`. Establish `hone : τ 1 = 1`. Use `hmul 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.mp this.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hτinv : ∀ a, τ a⁻¹ = (τ a)⁻¹` using `fun a => by`. Use `hmul a a⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, hone]`. Conclude with `eq_inv_of_mul_eq_one_left this.symm`. Establish `hτdc : ∀ a y, InDoubleCoset J a y → InDoubleCoset J a (τ y)` using `fun a y h => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `hdc y`. Conclude with `h.mul hk₁ hk₂ e`. Take `⟨k₁, hk₁, k₂, hk₂, hx⟩` from `hdc x`. Use `Finset.card_le_card_of_forall_subsingleton (fun p q => q.1⁻¹ * (x * k₂ * (τ p.1)⁻¹) ∈ J) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨γ, δ⟩ hp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_product, QuotientGroup.eq] at hp`. Take `⟨⟨hγ, hδ⟩, hj⟩` from `hp`. Establish `h1 : τ x = τ ((γ * δ)⁻¹ * x) * τ δ * τ γ`. Rewrite using `[← hmul, ← hmul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `group`. Establish `h2 : InDoubleCoset J β (x * k₂ * (τ γ)⁻¹)`. Use `(hτdc _ _ (hS δ hδ)).mul (J.mul_mem (J.inv_mem hk₁) (hJ _ hj)) J.one_mem ?_` and prove the remaining obligations. Establish `: x * k₂ = k₁⁻¹ * τ x` using `by rw [hx]; group`. Rewrite using `[this, h1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Take `⟨δ', ⟨hδ', hj'⟩, -⟩` from `hS' _ h2`. Establish `h3 : InDoubleCoset J α (δ'⁻¹ * x)` using `(hτdc _ _ (hR γ hγ)).mul hj' (J.inv_mem hk₂) (by group)`. Take `⟨γ', ⟨hγ', hj''⟩, -⟩` from `hR' _ h3`. Use `⟨(δ', γ'), ?_, hj'⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_product, QuotientGroup.eq]`. Use `⟨⟨hδ', hγ'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_rev, mul_assoc]` and apply the resulting hypothesis. Introduce and unpack `⟨δ', γ'⟩ - ⟨γ₁, δ₁⟩ h₁ ⟨γ₂, δ₂⟩ h₂`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_filter, Finset.mem_product, QuotientGroup.eq, Finset.mem_coe] at h₁ h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨⟨hγ₁, hδ₁⟩, hj₁⟩, hr₁⟩` from `h₁`. Take `⟨⟨⟨hγ₂, hδ₂⟩, hj₂⟩, hr₂⟩` from `h₂`. Establish `h4 : γ₂⁻¹ * γ₁ ∈ J`. Use `hJ _ (J.mul_mem (J.inv_mem hr₁) hr₂)` as an intermediate fact. Establish `e : (δ'⁻¹ * (x * k₂ * (τ γ₁)⁻¹))⁻¹ * (δ'⁻¹ * (x * k₂ * (τ γ₂)⁻¹)) = τ (γ₂⁻¹ * γ₁)` using `by rw [hmul, hτinv]; group`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, hinv]`. Then use the resulting hypothesis. Establish `hγ : γ₁ = γ₂` using `(hR' γ₁ (hR γ₁ hγ₁)).unique ⟨hγ₁, by simpa using J.one_mem⟩ ⟨hγ₂, h4⟩`. Substitute `hγ` using the available equality. Establish `h5 : InDoubleCoset J β (γ₁⁻¹ * x)` using `(hS δ₁ hδ₁).mul J.one_mem hj₁ (by group)`. Establish `hδ : δ₁ = δ₂` using `(hS' _ h5).unique ⟨hδ₁, by rwa [mul_inv_rev, mul_assoc] at hj₁⟩ ⟨hδ₂, by rwa [mul_inv_rev, mul_assoc] at hj₂⟩`.
-
-Rewrite using `[hδ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_pairs_le (J : Subgroup G) (τ : G → G) (hmul : ∀ a b, τ (a * b) = τ b * τ a)
     (hinv : ∀ a, τ (τ a) = a) (hdc : ∀ g : G, ∃ k₁ ∈ J, ∃ k₂ ∈ J, τ g = k₁ * g * k₂)

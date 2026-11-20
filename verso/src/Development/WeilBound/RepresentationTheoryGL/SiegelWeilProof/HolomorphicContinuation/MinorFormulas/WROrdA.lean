@@ -7,17 +7,17 @@ open Function
 namespace PositivityTheory.Rg.Sw.SP
 
 /- English proof (translation)
-Establish `hdiff : ∀ k : ℕ, Differentiable ℂ ((swap dslope (0 : ℂ))^[k] f)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hf`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply']`. Use `(Complex.differentiableOn_dslope (f := (swap dslope (0 : ℂ))^[k] f) (s := Set.univ) (c := 0) Filter.univ_mem).2 ih.differentiableOn` as an intermediate fact. Simplify `this` using `[swap, differentiableOn_univ]`. Take `⟨p, hp⟩` from `hf.analyticAt 0`. Take `⟨R, hR⟩` from `hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcoeff : ∀ k < r, p.coeff k = 0`. Introduce `k hk`. Establish `h1` using `hR.factorial_smul (y := (1 : ℂ)) k`. Establish `h2 : iteratedDeriv k f 0 = iteratedFDeriv ℂ k f 0 (fun _ => 1)`. Rewrite using `[iteratedDeriv_eq_iteratedFDeriv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← h2, h k hk]`. Establish `h3 : p.coeff k = p k (fun _ => 1)` using `rfl`. Rewrite using `[h3]`. Rewrite `h1` using `[nsmul_eq_mul]`. Break down `mul_eq_zero.1 h1 with h4 | h4` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h4 (by exact_mod_cast Nat.factorial_ne_zero k)`. Conclude with `h4`. Establish `hzero : ∀ k < r, (swap dslope (0 : ℂ))^[k] f 0 = 0`. Introduce `k hk`. Use `(hR.hasFPowerSeriesAt.has_fpower_series_iterate_dslope_fslope k).coeff_zero 1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← this, ← FormalMultilinearSeries.coeff, FormalMultilinearSeries.coeff_iterate_fslope, zero_add]`. Conclude with `hcoeff k hk`. Use `⟨(swap dslope (0 : ℂ))^[r] f, hdiff r, fun z => ?_⟩` and prove the remaining obligations. Use `pow_sub_smul_iterate_dslope_of_zero r hzero z` as an intermediate fact. Simplify `this.symm` using `[smul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem entire_factor (f : ℂ → ℂ) (hf : Differentiable ℂ f) (r : ℕ)
     (h : ∀ j < r, iteratedDeriv j f 0 = 0) : ∃ g : ℂ → ℂ, Differentiable ℂ g ∧ ∀ z, f z = z ^ r * g z := by

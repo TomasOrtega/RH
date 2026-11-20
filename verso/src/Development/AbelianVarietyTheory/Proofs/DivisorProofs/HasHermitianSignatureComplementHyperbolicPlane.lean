@@ -14,11 +14,11 @@ namespace GlobalTheory.PlaneSig
 open Matrix
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Establish `hc` using `Fintype.card_congr e`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at hc`. Use `⟨hc.symm, (P : Matrix _ _ ℂ).submatrix e id, ?_⟩` and prove the remaining obligations. Establish `hG : G.map (starRingEnd ℂ) = ((G.map (starRingEnd ℂ)).submatrix e.symm e.symm).submatrix e e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hL : ((P : Matrix _ _ ℂ).submatrix e id)ᵀ * G.map (starRingEnd ℂ) * ((P : Matrix _ _ ℂ).submatrix e id).map star = ((P : Matrix _ _ ℂ)ᵀ * (G.map (starRingEnd ℂ)).submatrix e.symm e.symm * (P : Matrix _ _ ℂ).map star)` using `by conv_lhs => rw [hG, transpose_submatrix, submatrix_mul_equiv, ← Matrix.submatrix_map, submatrix_mul_equiv, submatrix_id_id]`. Establish `h3 : (P : Matrix _ _ ℂ)ᵀ * (G.map (starRingEnd ℂ)).submatrix e.symm e.symm * (P : Matrix _ _ ℂ).map star = (Formalism.UG.cT (starRingEnd ℂ) (P : Matrix _ _ ℂ) * G.reindex e e * (P : Matrix _ _ ℂ)).map (starRingEnd ℂ)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply, map_sum, Formalism.UG.cT]`. Rewrite using `[hL, h3, hP]`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.one_apply] <;> split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasSig_map_conj_of_hasSignature {n r s : ℕ} {G : Matrix (Fin n) (Fin n) ℂ}
     (h : Formalism.UG.HasSignature G r s) : HasSig (G.map (starRingEnd ℂ)) r s := by
@@ -39,7 +39,7 @@ theorem hasSig_map_conj_of_hasSignature {n r s : ℕ} {G : Matrix (Fin n) (Fin n
   ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.one_apply] <;> split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_conj {k l : Type} [Fintype k] [Fintype l] {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ)
     (A : Matrix (Fin n) k ℂ) (B : Matrix (Fin n) l ℂ) :
@@ -49,7 +49,7 @@ theorem gram_conj {k l : Type} [Fintype k] [Fintype l] {n : ℕ} (M : Matrix (Fi
 abbrev colM {n : ℕ} (x : Fin n → ℂ) : Matrix (Fin n) (Fin 1) ℂ := Matrix.of fun i _ => x i
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, dotProduct, mulVec, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_col {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     (colM x)ᵀ * M * (colM y).map star = Matrix.of fun _ _ => x ⬝ᵥ M *ᵥ star y := by
@@ -58,7 +58,7 @@ theorem gram_col {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, dotProduct, mulVec, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_col_right {n m : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (ι : Matrix (Fin n) (Fin m) ℂ) (x : Fin n → ℂ) :
     ιᵀ * M * (colM x).map star = Matrix.of fun j _ => (ιᵀ *ᵥ (M *ᵥ star x)) j := by
@@ -67,35 +67,31 @@ theorem gram_col_right {n m : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (ι : Matrix
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `n n₁ M X Yv ι P r s hn hM hXX hYY hXY hιX hιY hP hs`. Use `set J := M.map (starRingEnd ℂ) with hJdef`. Establish `hJJ : J.map (starRingEnd ℂ) = M` using `by ext i j; simp [J]`. Establish `hJ : Jᴴ = J`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrFun (congrFun hM i) j` as an intermediate fact. Simplify using `[conjTranspose_apply] at this`. Simplify using `[J, conjTranspose_apply, ← this]`. Establish `hJs : Formalism.UG.HasSignature J r s` using `GlobalTheory.FunObj.hasSignature_of_hasSig_conj (by rw [hJJ]; exact hs)`. Use `set T := colM X`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set T' := colM Yv`. Establish `h1 : Tᴴ * J * T = 0`. Rewrite using `[gram_conj, gram_col, hXX]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h2 : T'ᴴ * J * T' = 0`. Rewrite using `[gram_conj, gram_col, hYY]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h3 : Tᴴ * J * T' = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[gram_conj, gram_col, hXY]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4' : ιᴴ * J * T = 0`. Rewrite using `[gram_conj, gram_col_right, hιX]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h5' : ιᴴ * J * T' = 0`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gram_conj, gram_col_right, hιY]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h4 : Tᴴ * J * ι = 0` using `by rw [GlobalTheory.AdaptedExists.gram_swap hJ, h4', conjTranspose_zero]`. Establish `h5 : T'ᴴ * J * ι = 0` using `by rw [GlobalTheory.AdaptedExists.gram_swap hJ, h5', conjTranspose_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3' : T'ᴴ * J * T = 1` using `by rw [GlobalTheory.AdaptedExists.gram_swap hJ, h3, conjTranspose_one]`. Establish `hGι : ιᴴ * J * ι = (ιᵀ * M * ι.map star).map (starRingEnd ℂ)` using `gram_conj M ι ι`. Use `set Q : Matrix (Fin n) ((Fin 1 ⊕ Fin 1) ⊕ Fin n₁) ℂ := fromCols (fromCols T T') ι with hQ`. Use `set L : Matrix ((Fin 1 ⊕ Fin 1) ⊕ Fin n₁) (Fin n) ℂ := fromRows (fromRows (T'ᴴ * J) (Tᴴ * J)) (P * (1 - T * (T'ᴴ * J) - T' * (Tᴴ * J))) with hL`. Establish `hLQ : L * Q = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h2`, `h3`, `h4`, `h5`, `h3'` using `[Matrix.mul_assoc]`. Simplify using `only [hL, hQ, fromRows_mul, mul_fromCols, Matrix.mul_assoc, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, h1, h2, h3, h4, h5, h3', hP, Matrix.mul_zero, sub_zero, sub_self, zero_sub]`. Apply the tactic sequence `ext ((a | a) | a) ((b | b) | b) <;> simp [Matrix.one_apply]`. Take `⟨f⟩ : Nonempty (Fin n ≃ (Fin 1 ⊕ Fin 1) ⊕ Fin n₁)` from `Fintype.card_eq.1 (by simp; omega)`. Use `set Q' : Matrix (Fin n) (Fin n) ℂ := Q.submatrix id f with hQ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hLQ' : L.submatrix f id * Q' = 1`. Use `Matrix.submatrix_mul_equiv L Q f (Equiv.refl (Fin n)) f` as an intermediate fact. Rewrite `this` using `[hLQ, submatrix_one_equiv]`. Conclude with `this`. Establish `hdQ : Matrix.det Q' ≠ (0 : ℂ)` using `Matrix.det_ne_zero_of_left_inverse hLQ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hdM : M.det ≠ 0` using `GlobalTheory.LeviUnitary.det_ne_zero_of_hasSig hs`. Establish `hdJ : J.det ≠ 0`. Rewrite using `[hJdef, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Simplify using `using hdM`. Establish `hQJQ : Qᴴ * J * Q = fromBlocks (fromBlocks 0 1 1 0) 0 0 (ιᴴ * J * ι)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, `h2`, `h3`, `h4`, `h5`, `h3'`, `h4'`, `h5'` using `[Matrix.mul_assoc]`. Simplify using `only [hQ, conjTranspose_fromCols_eq_fromRows_conjTranspose, Matrix.mul_assoc, mul_fromCols, fromRows_mul, h1, h2, h3, h4, h5, h3', h4', h5']`. Apply the tactic sequence `ext ((a | a) | a) ((b | b) | b) <;> simp [Matrix.mul_assoc]`. Establish `h6 : (ιᴴ * J * ι).det ≠ 0`. Establish `h7 : (Q'ᴴ * J * Q').det ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[det_mul, det_mul, det_conjTranspose]`. Conclude with `mul_ne_zero (mul_ne_zero (by simpa using hdQ) hdJ) hdQ`. Establish `h8 : Q'ᴴ * J * Q' = (Qᴴ * J * Q).submatrix f f`. Use extensionality with `i j`. Simplify using `[Q', Matrix.mul_apply]`.
-
-Establish `: (Qᴴ * J * Q).det ≠ 0` using `by rwa [h8, det_submatrix_equiv_self] at h7`. Rewrite `this` using `[hQJQ, det_fromBlocks_zero₂₁]`. Conclude with `right_ne_zero_of_mul this`. Establish `hc` using `GlobalTheory.AdaptedExists.hasSignature_complement n n₁ r s (Fin 1) J T T' ι hJ hJs (by simp; omega) h1 h2 h3 h4 h5 h6`. Simplify using `only [Fintype.card_fin] at hc`.
-
-Use `hasSig_map_conj_of_hasSignature hc` as an intermediate fact. Rewrite `this` using `[hGι, Matrix.map_map, show (starRingEnd ℂ) ∘ (starRingEnd ℂ) = id from funext fun z => Complex.conj_conj z, Matrix.map_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasSig_complement_plane : ∀ (n n₁ : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (X Yv : Fin n → ℂ) (ι : Matrix (Fin n) (Fin n₁) ℂ)
     (P : Matrix (Fin n₁) (Fin n) ℂ) (r s : ℕ), n = n₁ + 2 → Mᴴ = M →

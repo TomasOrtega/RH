@@ -5,11 +5,11 @@ namespace PI.EF.PK
 open Complex MeasureTheory intervalIntegral Real
 
 /- English proof (translation)
-Establish `hz : ∀ y : ℝ, ((b : ℂ) + y * I - w) ∈ Complex.slitPlane` using `fun y => by`. Rewrite using `[Complex.mem_slitPlane_iff]`. Use `left`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, mul_zero, mul_one, sub_zero, add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hne : ∀ y : ℝ, ((b : ℂ) + y * I - w) ≠ 0` using `fun y => Complex.slitPlane_ne_zero (hz y)`. Establish `hd : ∀ y : ℝ, HasDerivAt (fun y : ℝ => Complex.log ((b : ℂ) + y * I - w)) (I * (1 / ((b : ℂ) + y * I - w))) y`. Introduce `y`. Establish `h1 : HasDerivAt (fun y : ℝ => (b : ℂ) + y * I - w) I y`. Simplify using `using (((hasDerivAt_id y).ofReal_comp.mul_const I).const_add (b : ℂ)).sub_const w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `h1.clog_real (hz y)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[one_div, div_eq_mul_inv]`. Rewrite using `[smul_eq_mul, ← intervalIntegral.integral_const_mul, intervalIntegral.integral_eq_sub_of_hasDerivAt (fun y _ => hd y)]`. Conclude with `(continuous_const.mul (continuous_const.div (by fun_prop) hne)).intervalIntegrable _ _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vert_inv_right (c d b : ℝ) (w : ℂ) (hb : w.re < b) :
     I • ∫ y : ℝ in c..d, 1 / (((b : ℂ) + y * I) - w) =

@@ -12,27 +12,25 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.TwGen
 
 /- English proof (translation)
-Use `letI : Algebra A Γ(X, ⊤) := GroundTheory.Arith.SchemeCoh.overAlgebra (CommRingCat.of A)`. Establish `fac : ∀ a ∈ I ^ m, ∃ ψ : P ⟶ GroundTheory.Arith.SchemeCoh.idealPow I P m, ψ ≫ GroundTheory.Arith.SchemeCoh.idealPowι I P m = GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a)`. Introduce `a ha`. Rewrite `ha` using `[← GroundTheory.Arith.SchemeCoh.span_idealGen (I ^ m)]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp ha`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `u : P ⟶ ⨁ fun _ : Fin (GroundTheory.Arith.SchemeCoh.idealGenNum (I ^ m)) => P` to `biproduct.lift fun k => GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) (c k))`. Establish `hu : u ≫ GroundTheory.Arith.SchemeCoh.idealSumMap P (I ^ m) = GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a)`. Rewrite using `[← hc]`. Simplify using `only [u, GroundTheory.Arith.SchemeCoh.idealSumMap, biproduct.lift_desc, GroundTheory.Arith.SchemeCoh.smulHom_comp_smulHom, map_sum, GroundTheory.Arith.SchemeCoh.smulHom_sum, smul_eq_mul, map_mul]`. Use `⟨kernel.lift (cokernel.π (GroundTheory.Arith.SchemeCoh.idealSumMap P (I ^ m))) (u ≫ GroundTheory.Arith.SchemeCoh.idealSumMap P (I ^ m)) (by rw [Category.assoc, cokernel.condition, comp_zero]), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hu]`. Conclude with `kernel.lift_ι _ _ _`. Establish `act : ∀ (r : Γ(X, ⊤)) (s : Γ(GlobalTheory.twistZ P H n, ⊤)), ConcreteCategory.hom (Scheme.Modules.Hom.app (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (GroundTheory.Arith.SchemeCoh.smulHom P r)) ⊤) s = GroundTheory.Arith.SchemeCoh.restrictTop ⊤ r • s`. Introduce `r s`. Rewrite using `[GlobalTheory.Twist.sec_ext_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[GlobalTheory.Twist.coord_map_app, GroundTheory.Arith.SchemeCoh.smulHom_app_apply, GlobalTheory.Twist.coord_smul]`. Use `congr 1`. Conclude with `(GroundTheory.Arith.SchemeCoh.restrictTop_restrict _ r).symm`. Establish `base : ∀ a ∈ I ^ m, ∀ s : Γ(GlobalTheory.twistZ P H n, ⊤), GroundTheory.Arith.SchemeCoh.toFunctions (X` using `X) ⊤ a • s ∈ Set.range (ConcreteCategory.hom (Scheme.Modules.Hom.app (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (powSub I P m).arrow) ⊤)) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a ha s`. Take `⟨ψ, hψ⟩` from `fac a ha`. Establish `e : (ψ ≫ (Subobject.underlyingIso (GroundTheory.Arith.SchemeCoh.idealPowι I P m)).inv) ≫ (powSub I P m).arrow = GroundTheory.Arith.SchemeCoh.smulHom P (algebraMap A Γ(X, ⊤) a)` using `by show (ψ ≫ (Subobject.underlyingIso (GroundTheory.Arith.SchemeCoh.idealPowι I P m)).inv) ≫ (Subobject.mk (GroundTheory.Arith.SchemeCoh.idealPowι I P m)).arrow = _`. Rewrite using `[Category.assoc, Subobject.underlyingIso_arrow, hψ]`. Use `⟨ConcreteCategory.hom (Scheme.Modules.Hom.app (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (ψ ≫ (Subobject.underlyingIso (GroundTheory.Arith.SchemeCoh.idealPowι I P m)).inv)) ⊤) s, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `act (algebraMap A Γ(X, ⊤) a) s`. Rewrite `h2` using `[← e]`. Use `erw [GlobalTheory.Twist.map_comp, Scheme.Modules.Hom.comp_app] at h2`. Apply the tactic sequence `try erw [ConcreteCategory.comp_apply] at h2`. Conclude with `h2`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `K : Ideal Γ(X, ⊤)` to `{ carrier := {r | ∀ s : Γ(GlobalTheory.twistZ P H n, ⊤), r • s ∈ Set.range (ConcreteCategory.hom (Scheme.Modules.Hom.app (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (powSub I P m).arrow) ⊤))} add_mem' := by`. Introduce `x y hx hy s`. Take `⟨u, hu⟩` from `hx s`. Take `⟨v, hv⟩` from `hy s`. Conclude with `⟨u + v, by rw [map_add, hu, hv, add_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := by`. Introduce `s`. Conclude with `⟨0, by rw [map_zero, zero_smul]⟩`. Use the proof step `smul_mem' := by`. Introduce `t x hx s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨u, hu⟩` from `hx (t • s)`. Conclude with `⟨u, by rw [hu, smul_eq_mul, mul_comm, mul_smul]⟩ }`. Establish `hJ : Ideal.map (GroundTheory.Arith.SchemeCoh.toFunctions (X` using `X) ⊤) (I ^ m) ≤ K := by`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `base a ha`. Introduce `c hc`. Simplify using `only [twPow, SetLike.mem_coe] at hc`. Use `Submodule.smul_induction_on (p := fun x => x ∈ Set.range (ConcreteCategory.hom (Scheme.Modules.Hom.app (GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (powSub I P m).arrow) ⊤))) hc ?_ ?_` and prove the remaining obligations. Introduce `r hr s _`.
-
-Conclude with `hJ hr s`. Introduce `x y hx hy`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`. Conclude with `⟨u + v, by rw [map_add, hu, hv]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_twSecs_of_mem_twPow {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (P : X.Modules)
@@ -109,7 +107,7 @@ theorem mem_twSecs_of_mem_twPow {A : Type} [CommRing A] [IsNoetherianRing A] (I 
     exact ⟨u + v, by rw [map_add, hu, hv]⟩
 
 /- English proof (translation)
-Introduce `A _ _ I X _ H hH P _ n m c hc`. Conclude with `genSub_le hH (powSub I P m) n c (mem_twSecs_of_mem_twPow I H P n m hc)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genSub_le_powSub : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] {H : ReciprocityTheory.ChartRestriction.G.Semi.LB X} (hH : H.IsLB)

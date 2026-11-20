@@ -20,7 +20,7 @@ section Gen
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Establish `iX` using `GlobalTheory.ContractionLocal.integrable_contr hψ l S vL h₁ hΞ u v`. Establish `iY` using `GlobalTheory.ContractionLocal.integrable_contr hψ l S vL h₁ hΞ' u v`. Simplify using `only [GlobalTheory.Unf.contr, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul]`. Rewrite using `[integral_add (by simpa only [mul_assoc] using iX.const_mul c) iY, ← integral_const_mul]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem contr_lin_right (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ}
     (l : Link B B'.L B'.ζ) (S : HSp D) (vL : VolM D B'.L.rank S.rank) {Ξ₁ : WO B.V₀ S → ℂ}
@@ -34,7 +34,7 @@ theorem contr_lin_right (hψ : IsStdChar D ψ (-1)) {ρ σ : ℕ} {B : BesLev D 
   simp only [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.FlatAdd.flatFB_add_smul D (GlobalTheory.Unf.Flat.flatLaw D) ψ hψ σ J B st (c • X) Y (GlobalTheory.OrientedHeis.theta_smul c hX) hY).1, (GlobalTheory.FlatAdd.flatFB_add_smul D (GlobalTheory.Unf.Flat.flatLaw D) ψ hψ σ J B st X X hX hX).2 c]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flatFB_lin (hψ : IsStdChar D ψ (-1)) {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (st : StepFB ψ J B)
     {X Y : WO J.W B.V → ℂ} (c : ℂ) (hX : IsThetaFunO ψ J.W B.V X) (hY : IsThetaFunO ψ J.W B.V Y) :
@@ -44,14 +44,14 @@ theorem flatFB_lin (hψ : IsStdChar D ψ (-1)) {σ : ℕ} {J : JacLev D (σ + 1)
     (GlobalTheory.FlatAdd.flatFB_add_smul D (GlobalTheory.Unf.Flat.flatLaw D) ψ hψ σ J B st X X hX hX).2 c]
 
 /- English proof (translation)
-The claim follows from `(((GlobalTheory.FinPl.flatLaws_all D) ψ (fun _ => True)).2 σ J B st).Heisenberg₂.theta X hX`.
+A detailed English derivation is pending.
 -/
 theorem theta_flatFB {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (st : StepFB ψ J B) {X : WO J.W B.V → ℂ}
     (hX : IsThetaFunO ψ J.W B.V X) : IsThetaFunO ψ J.W₀ B.V₀ (flatFB st X) :=
   (((GlobalTheory.FinPl.flatLaws_all D) ψ (fun _ => True)).2 σ J B st).Heisenberg₂.theta X hX
 
 /- English proof (translation)
-The claim follows from `(((GlobalTheory.FinPl.flatLaws_all D) ψ (fun _ => True)).1 ρ B J st).Heisenberg₂.theta X hX`.
+A detailed English derivation is pending.
 -/
 theorem theta_flatBF {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (st : StepBF ψ B J) {X : WO B.V J.W → ℂ}
     (hX : IsThetaFunO ψ B.V J.W X) : IsThetaFunO ψ B.V₀ J.W₀ (flatBF st X) :=
@@ -63,7 +63,7 @@ section Grid
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil)
 
 /- English proof (translation)
-Simplify using `only [GridData.Weil.fock]`. Rewrite using `[GlobalTheory.SpecFac.pureTensorO_add W.ψ_std W.θ_is _ _ _ _ (GlobalTheory.OrientedHeis.theta_smul c hφ) hφ' Q, GlobalTheory.FiniteFock.pureTensorO_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_lin (p : Pair T) {φ φ' : WO (G.pS p) (G.pT p) → ℂ} (c : ℂ) (hφ : IsThetaFunO W.ψ _ _ φ)
     (hφ' : IsThetaFunO W.ψ _ _ φ') (Q : PolF D (G.pT p).rank (G.pS p).rank) :
@@ -73,7 +73,7 @@ theorem fock_lin (p : Pair T) {φ φ' : WO (G.pS p) (G.pT p) → ℂ} (c : ℂ) 
     GlobalTheory.FiniteFock.pureTensorO_smul]
 
 /- English proof (translation)
-The claim follows from `(W.om_is p hp).om_pres g _ (GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hφ Q)`.
+A detailed English derivation is pending.
 -/
 theorem om_fock_theta (p : Pair T) (hp : p.InRange D.R.m) (g : GA D (G.pS p) × GA D (G.pT p))
     {φ : WO (G.pS p) (G.pT p) → ℂ} (hφ : IsThetaFunO W.ψ _ _ φ) (Q : PolF D (G.pT p).rank (G.pS p).rank) :
@@ -90,19 +90,17 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Introduce `j hj hjm hm t M hM P h Φ a ha φ φ' c hΦ hφ hφ' u v`. Take `⟨a, ha'⟩` from `a`. Simplify using `only at ha`. Substitute `ha` using the available equality. Establish `h0 : ¬ (j + 2 * 0 + 2 = D.R.m)` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hj' : j + 2 * ((D.R.m - 4 - j) / 2 + 1) + 2 = D.R.m`. Take `⟨r, hr⟩` from `hj`. Take `⟨s, hs⟩` from `hm`. Use linear arithmetic over natural numbers and integers. Establish `hne : (⟨j, by omega⟩ : Fin D.R.m) ≠ ⟨j + 1, ha'⟩` using `by simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hin0 : (Pair.mu t D.R.m j : Pair T).InRange D.R.m`. Simplify using `only [Pair.InRange, Pair.big, Node.InRange]`. Use linear arithmetic over natural numbers and integers. Establish `hin1 : (Pair.mu t D.R.m (j + 1) : Pair T).InRange D.R.m`. Simplify using `only [Pair.InRange, Pair.big, Node.InRange]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [conAt, h0, hj', dite_false, dite_true, ↓reduceDIte]`. Simplify using `only [fockD, Function.update_of_ne hne, Function.update_self]`. Simplify using `only [fock_lin ch.W (Pair.mu t D.R.m (j + 1)) c hφ hφ', map_add, map_smul]`. Use `erw [flatFB_lin ch.W.ψ_std, contr_lin_right ch.W.ψ_std]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `case hX => exact om_fock_theta ch.W _ hin1 _ hφ _`. Use `case hY => exact om_fock_theta ch.W _ hin1 _ hφ' _`. Use `case h₁ =>`. Use `theta_flatBF (B := besAt ch.G hM j ((D.R.m - 4 - j) / 2 + 1) hj' (GlobalTheory.Unf.Inhab.nonempty_volN _).some) (J := jacAt ch.G hM (j + 1) ((D.R.m - 4 - j) / 2 + 1) (by omega)) _ ?_` and prove the remaining obligations. Conclude with `om_fock_theta ch.W _ hin0 _ (hΦ ⟨j, by omega⟩) _`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `case hΞ =>`. Use `theta_flatFB (J := jacAt ch.G hM (j + 1) ((D.R.m - 4 - j) / 2 + 1) (by omega)) (B := besAt ch.G hM (j + 1 + 1) ((D.R.m - 4 - j) / 2) (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN _).some) _ ?_` and prove the remaining obligations. Conclude with `om_fock_theta ch.W _ hin1 _ hφ _`. Use `case hΞ' =>`. Use `theta_flatFB (J := jacAt ch.G hM (j + 1) ((D.R.m - 4 - j) / 2 + 1) (by omega)) (B := besAt ch.G hM (j + 1 + 1) ((D.R.m - 4 - j) / 2) (by omega) (GlobalTheory.Unf.Inhab.nonempty_volN _).some) _ ?_` and prove the remaining obligations.
-
-Conclude with `om_fock_theta ch.W _ hin1 _ hφ' _`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contrLin_one_of (ch : Choice R) : ContrLin ch 1 := by
   intro j hj hjm hm t M hM P h Φ a ha φ φ' c hΦ hφ hφ' u v
@@ -139,7 +137,7 @@ theorem contrLin_one_of (ch : Choice R) : ContrLin ch 1 := by
 end Main
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => contrLin_one_of ch⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem contrLin_one_big : Big fun ch => GlobalTheory.ConnectionLinear.ContrLin ch 1 :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => contrLin_one_of ch⟩⟩

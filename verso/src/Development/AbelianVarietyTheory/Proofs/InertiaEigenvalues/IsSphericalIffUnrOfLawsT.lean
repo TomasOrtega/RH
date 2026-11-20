@@ -37,7 +37,7 @@ def consEquiv (n : ℕ) : ((Fin 1 → ℂ) × (Fin n → ℂ)) ≃ₗ[ℂ] (Fin 
   right_inv f := funext fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp [Fin.tail]
 
 /- English proof (translation)
-Use `⟨consEquiv n, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [consEquiv]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [consEquiv]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_sum_iso {n : ℕ} (c : Fin (n + 1) → ℂˣ) :
     ((WDRep.diag h fun _ : Fin 1 => c 0).sum (WDRep.diag h fun i : Fin n => c i.succ)).Iso (WDRep.diag h c) := by
@@ -53,7 +53,7 @@ Both sides reduce to the same expression.
 theorem sumList_cons (x : WD h) (l : List (WD h)) : sumList (x :: l) = x.lpSum (sumList l) := rfl
 
 /- English proof (translation)
-The claim follows from `| 0, c => by rw [List.ofFn_zero] show WD.lpZero h = _ unfold WD.lpZero congr 2 funext i exact i.elim0 | n + 1, c => by rw [List.ofFn_succ] rw [sumList_cons] rw [sumList_ofFn_diag n (fun i => c i.succ), WD.lpSum_mk] exact WD.sound (diag_sum_iso c)`.
+A detailed English derivation is pending.
 -/
 theorem sumList_ofFn_diag : ∀ (n : ℕ) (c : Fin n → ℂˣ),
     sumList (List.ofFn fun i => WD.mk (WDRep.diag h fun _ : Fin 1 => c i)) = WD.mk (WDRep.diag h c)
@@ -71,14 +71,14 @@ theorem sumList_ofFn_diag : ∀ (n : ℕ) (c : Fin n → ℂˣ),
       exact WD.sound (diag_sum_iso c)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.zelevinskyPolynomialRing_of_parts GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.segmentRepresentation' GlobalTheory.grothendieckRingPolynomial_outright`.
+A detailed English derivation is pending.
 -/
 theorem zelevinskyPolynomialRing : GlobalTheory.Published.ZelevinskyPolynomialRing :=
   GlobalTheory.zelevinskyPolynomialRing_of_parts GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.segmentRepresentation'
     GlobalTheory.grothendieckRingPolynomial_outright
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.geometricLemmaFiltration_holds`.
+A detailed English derivation is pending.
 -/
 theorem geometricLemma : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.geometricLemmaFiltration_holds
@@ -86,9 +86,9 @@ theorem geometricLemma : GlobalTheory.Published.GeometricLemma :=
 variable {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hL` using `GlobalTheory.LocLanglands.SatakeL.isL_single_unrChar GlobalTheory.langlandsExhaustionGL_holds GlobalTheory.langlandsMultisegments_outright GlobalTheory.standardCosocleGL_holds zelevinskyPolynomialRing geometricLemma GlobalTheory.bernsteinZelevinskyFiniteness_holds (w.adicCompleti …`. Rewrite `hL` using `[Fin.univ_val_map]`. Rewrite using `[H.langlands _ x hL, segSum, List.map_ofFn, ← sumList_ofFn_diag]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `List.ofFn_inj.mpr (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Segment.single, Segment.first_ofFirst, Segment.len_ofFirst, Nat.cast_one, sub_self, zero_div, WD.lpTw_zero, Test.lpChar_lpSp_one, H.one]`. Conclude with `Test.lpOfChar_unrChar ha (α i) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sat (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) (α : Fin x.1 → ℂˣ) (hα : HasSatake x.rep α) :
     rc x = WD.mk (WDRep.diag h fun i => (α i)⁻¹) := by
@@ -109,13 +109,13 @@ end GlobalTheory.RecT.SphLaw
 namespace GlobalTheory.RecT
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha rc H x`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.main GlobalTheory.bernsteinZelevinskyFiniteness_holds (w.adicCompletion E) x.1 ⟨x.2.rep.V, x.2.rep.ρ, x.2.rep.smooth, x.2.rep.irr⟩ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SphLaw.sat H x α hα]`. Conclude with `(WD.unr_mk _).2 (WDRep.unr_diag _)`. Introduce `hu`. Take `⟨α, hα⟩` from `GlobalTheory.LocLanglands.unr_eq_diag_inv E Ω A w h (rc x) hu`. Take `⟨π, hπ⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake (k := w.adicCompletion E) α`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `φ` using `equivRep π`. Establish `hπ' : HasSatake (cls π).rep α` using `⟨IrrRep.irr _, fixed_ne_bot_of_equiv φ hπ.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hπ.2.2⟩`. Establish `e1` using `SphLaw.sat H (cls π) α hπ'`. Establish `hsupp` using `GlobalTheory.LocLanglands.hasSupport_of_isSubquotient_prinSeries (w.adicCompletion E) _ (fun i => unrChar (w.adicCompletion E) (α i)) (fun i => isSmoothChar_of_isUnram (isUnram_unrChar _ _)) (cls π).2.rep hπ'.2.2`. Establish `hg : Good (cls π)` using `Model.good_of_toral ⟨_, hsupp, fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Use the proof step `rfl⟩`. Establish `e2 : x = cls π` using `H.inj x (cls π) hg (hα.trans e1.symm)`. Rewrite using `[e2]`. Conclude with `hπ'.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSpherical_iff_unr_of_lawsT : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (rc : IrrGL (w.adicCompletion E) → WD h), LawsT a ha rc → ∀ x : IrrGL (w.adicCompletion E), IsSpherical x.rep ↔ (rc x).unr := by
   intro E Ω _ _ _ _ _ A w h a ha rc H x

@@ -21,7 +21,7 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.GermBasic
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -33,9 +33,7 @@ variable {V : Type} [CommRing V] [IsDomain V] {G : Over (Sp V)} [GrpObj G] [IsCo
   {F : Type} [Field F] [Algebra (FractionRing V) F]
 
 /- English proof (translation)
-Establish `w : (snd (TFK (R` using `V) F) ((Over.pullback (jK V)).obj G)).left ≫ pullback.snd G.hom (jK V) = (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left ≫ jFK (R := V) F := (Over.w (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G))).trans (Over.w (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G …`. Establish `h₃ : a ≫ (snd (TFK (R` using `V) F) ((Over.pullback (jK V)).obj G)).left = b ≫ (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left := by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans (h₂.trans (Category.assoc _ _ _).symm)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (a ≫ ·) w).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ jFK (R := V) F) h₁).trans ((Category.assoc _ _ _).trans ((congrArg (b ≫ ·) w).symm.trans (Category.assoc _ _ _).symm)))))`.
-
-Conclude with `pullback.hom_ext h₁ h₃`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gf_ext {Z : Scheme.{0}} {a b : Z ⟶ (UnifPre.GF (R := V) (G := G) F).left}
     (h₁ : a ≫ (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left =
@@ -55,7 +53,7 @@ theorem gf_ext {Z : Scheme.{0}} {a b : Z ⟶ (UnifPre.GF (R := V) (G := G) F).le
   exact pullback.hom_ext h₁ h₃
 
 /- English proof (translation)
-Set `T : Over (TK V).left` to `Over.mk (p ≫ jFK (R := V) F)`. Set `u : T ⟶ TFK (R` to `V) F := Over.homMk p rfl`. Set `v : T ⟶ (Over.pullback (jK V)).obj G` to `Over.homMk (pullback.lift g (p ≫ jFK (R := V) F) (h.trans (Category.assoc _ _ _).symm)) (pullback.lift_snd _ _ _)`. Use `⟨(lift u v).left, congrArg (fun q => q.left) (lift_fst u v), ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun q => q.left ≫ pullback.fst G.hom (jK V)) (lift_snd u v)).trans (pullback.lift_fst _ _ _))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gf_exists {Z : Scheme.{0}} (p : Z ⟶ Sp F) (g : Z ⟶ G.left) (h : g ≫ G.hom = p ≫ jFK (R := V) F ≫ jK V) :
     ∃ a : Z ⟶ (UnifPre.GF (R := V) (G := G) F).left,
@@ -72,7 +70,7 @@ theorem gf_exists {Z : Scheme.{0}} (p : Z ⟶ Sp F) (g : Z ⟶ G.left) (h : g �
 variable [Algebra V F] [IsScalarTower V (FractionRing V) F]
 
 /- English proof (translation)
-Use `gf_exists _ _ ?_` and prove the remaining obligations. Establish `w : (z m).left ≫ G.hom = spMap (algebraMap V (Jet V κ m)) ≫ 𝟙 _` using `Over.w (z m)`. Establish `e : jFK (R` using `V) F ≫ jK V = spMap (algebraMap V F) := (spMap_comp_eq (algebraMap V (FractionRing V)) (algebraMap (FractionRing V) F)).trans (congrArg spMap (IsScalarTower.algebraMap_eq V (FractionRing V) F).symm)`. Rewrite using `[Category.assoc, w, e, Category.comp_id, spMap_comp_eq, spMap_comp_eq, JetTr.jetCoef_alg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_jetPt {κ : Type} (z : JetPts G κ) (m : ℕ) :
     ∃ zF : Sp (Jet F κ m) ⟶ (UnifPre.GF (R := V) (G := G) F).left,
@@ -88,7 +86,7 @@ theorem exists_jetPt {κ : Type} (z : JetPts G κ) (m : ℕ) :
 end Point
 
 /- English proof (translation)
-Establish `h : psTrunc m (∑ i, c i • f i) = ∑ i, MvPolynomial.C (c i) * psTrunc m (f i)`. Simplify using `only [psTrunc, map_sum, Finset.mul_sum, MvPolynomial.C_mul_monomial, map_smul, smul_eq_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[psJet, h, map_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psJet_sum {F κ : Type} [CommRing F] [Fintype κ] [DecidableEq κ] (m : ℕ) {l : ℕ} (c : Fin l → F)
     (f : Fin l → MvPowerSeries κ F) :
@@ -100,7 +98,7 @@ theorem psJet_sum {F κ : Type} [CommRing F] [Fintype κ] [DecidableEq κ] (m : 
   rfl
 
 /- English proof (translation)
-Establish `hc : LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ t h) (LB.pullGen L _ _ t' h')` using `corr_of_val hL fun y J hJ => by rw [val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp, H y J hJ]`. Rewrite using `[← val_pull hJ, ← val_pull hJ, val_corr hJ hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_congr {X Y Y' Z Z' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {φ : Y ⟶ X} {φ' : Y' ⟶ X}
     (t : LB.Gen (LB.LinComb L (K := Fin 1) (fun _ => φ) (fun _ => (1 : ℤ))))
@@ -112,27 +110,25 @@ theorem val_congr {X Y Y' Z Z' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {φ : Y �
   rw [← val_pull hJ, ← val_pull hJ, val_corr hJ hc]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ D A G _ _ U κ _ _ z hz τ hτ F _ _ _ _ q`. Establish `hL` using `U.LG.isLB`. Use `⟨fun σ' f f' hf hf' => ?_, fun l c σ f σ' hf hσ m => ?_, fun htr σ' => ?_⟩` and prove the remaining obligations. Use `GermFun.psJet_inj fun m => ?_` and prove the remaining obligations. Take `⟨a, a₁, a₂, ha⟩` from `hf m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, b₁, b₂, hb⟩` from `hf' m`. Take `rfl : a = b` from `gf_ext (a₁.trans b₁.symm) (a₂.trans b₂.symm)`. Use `H1.cst_ext fun y => ?_` and prove the remaining obligations. Take `⟨J, hJ, -⟩` from `exists_good U.LG.L hL y (K := PEmpty) PEmpty.elim PEmpty.elim (fun k => k.elim) (fun k => k.elim)`. Conclude with `(Units.mul_left_inj _).1 ((ha y J hJ).symm.trans (hb y J hJ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, a₁, a₂⟩` from `exists_jetPt (F := F) z m`. Use `⟨a, a₁, a₂, fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(SectionScalarValuation.sval_lin _ σ hσ a y hJ).trans ?_` and prove the remaining obligations. Establish `e : gs (𝟙 _) y ⊤ (toΓ _ (psJet m (∑ i, c i • f i))) = ∑ i, cst (𝟙 _) y (algebraMap F (Jet F κ m) (c i)) * cst (𝟙 _) y (psJet m (f i))`. Use `(congrArg (cst (𝟙 _) y) (psJet_sum m c f)).trans ((ExpansionValueZero.cst_sum _ _ _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => H1.cst_mul _ _ _ _`. Rewrite using `[e, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨b, b₁, b₂, hb⟩` from `hf i m`. Take `rfl : a = b` from `gf_ext (a₁.trans b₁.symm) (a₂.trans b₂.symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb y J hJ, _root_.mul_assoc]`. Use `congrArg₂ (· * ·) ?_ rfl` and prove the remaining obligations. Use `(gs_pull a _ y ⊤ trivial _).trans ?_` and prove the remaining obligations. Rewrite using `[a₁, ← ExpansionValueZero.cst_comp, Category.id_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose a a₁ a₂ using exists_jetPt (F := F) z`. Establish `hv : ∀ m, ∃ v : Jet F κ m, ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp (Jet F κ m)) (y : Z) (J), Good U.LG.L y J → sval σ' (r ≫ a m) y J = cst r y v * (val (τ m) (r ≫ spMap (jetCoef (algebraMap V F) κ m)) y J ^ q).val`. Introduce `m`. Take `⟨v, hv⟩` from `ExpansionValueZero.exists_coeff (A := Jet F κ m) hL σ' (a m) (GeneratorPullback.powGen U.LG.L _ _ (LB.pullGen U.LG.L _ _ (τ m) (spMap (jetCoef (algebraMap V F) κ m))) q) (powGen_isGen_of_isGen _ (pullGen_isGen _ _ _ _ (hτ m) _) q) (fun W _ h => by simp only [a₂ m, _root_.mul_one] …`. Use `⟨v, fun Z r y J hJ => (hv Z r y J hJ).trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← val_pull hJ]`. Conclude with `congrArg (fun u => cst r y v * Units.val u) (map_pow _ _ _)`. Use `choose v hv using hv`. Establish `hc : ∀ m, (jetTrunc : Jet F κ (m + 1) →ₐ[F] Jet F κ m) (v (m + 1)) = v m`. Introduce `m`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ρ` to `spMap ((jetTrunc : Jet F κ (m + 1) →ₐ[F] Jet F κ m) : Jet F κ (m + 1) →+* Jet F κ m)`. Set `ρV` to `spMap ((jetTrunc : Jet V κ (m + 1) →ₐ[V] Jet V κ m) : Jet V κ (m + 1) →+* Jet V κ m)`. Establish `hρ : ρ ≫ spMap (jetCoef (algebraMap V F) κ (m + 1)) = spMap (jetCoef (algebraMap V F) κ m) ≫ ρV`. Rewrite using `[spMap_comp_eq, spMap_comp_eq, JetTr.jetCoef_trunc]`. Establish `hzt : ρV ≫ (z (m + 1)).left = (z m).left` using `congrArg (fun q => q.left) (hz.1 m)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ρ ≫ a (m + 1) = a m` using `gf_ext (by rw [Category.assoc, a₁, a₁]; exact spMap_comp_alg _) (by rw [Category.assoc, a₂, a₂, ← Category.assoc, hρ, Category.assoc, hzt])`. Use `H1.cst_ext fun y => ?_` and prove the remaining obligations. Take `⟨J, hJ, -⟩` from `exists_good U.LG.L hL y (K := PEmpty) PEmpty.elim PEmpty.elim (fun k => k.elim) (fun k => k.elim)`. Establish `e₁` using `hv (m + 1) _ ρ y J hJ`. Establish `e₀` using `hv m _ (𝟙 _) y J hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e₀` using `[Category.id_comp, Category.id_comp]`. Rewrite `e₁` using `[ha, hρ, val_congr hL (τ (m + 1)) (τ m) ρV (𝟙 _) (htr m) _ y J hJ, Category.comp_id]`. Use `Eq.trans ?_ ((Units.mul_left_inj _).1 (e₁.symm.trans e₀))` and prove the remaining obligations. Conclude with `(ExpansionValueZero.cst_comp (𝟙 _) _ y _).symm.trans (congrArg (fun r => cst r y (v (m + 1))) (Category.id_comp _))`. Take `⟨f, hf⟩` from `GermD.exists_ps_of_jets v hc`.
-
-Use `⟨f, fun m => ⟨a m, a₁ m, a₂ m, fun y J hJ => ?_⟩⟩` and prove the remaining obligations. Establish `e₀` using `hv m _ (𝟙 _) y J hJ`. Rewrite `e₀` using `[Category.id_comp, Category.id_comp, ← hf m]`. Conclude with `e₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : AGermSt := by
   intro V _ _ _ _ D A G _ _ U κ _ _ z hz τ hτ F _ _ _ _ q

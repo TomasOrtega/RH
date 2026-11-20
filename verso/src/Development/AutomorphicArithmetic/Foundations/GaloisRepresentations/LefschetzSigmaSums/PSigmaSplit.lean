@@ -5,25 +5,23 @@ open UpperTheory.Gal.LocalSmoothExtension
 open AlgebraicGeometry CategoryTheory Limits
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`.
+A detailed English derivation is pending.
 -/
 private lemma UpperTheory.Gal.LocalSmoothExtension.sp_subsingleton (Ω : Type) [Field Ω] : Subsingleton (UpperTheory.Gal.G3.sp Ω) :=
   inferInstanceAs (Subsingleton (PrimeSpectrum Ω))
 
 /- English proof (translation)
-Introduce `hF hSP hPS Y Z W s _ _ I _ c Δ _ σ hs`. Take `⟨hF1, hF2⟩` from `hF Y Z s I`. Take `⟨hsc, hiso⟩` from `hs`. Establish `hne : ∀ (Ω : Type) [Field Ω], Nonempty (UpperTheory.Gal.G3.sp Ω)` using `fun Ω _ => inferInstanceAs (Nonempty (PrimeSpectrum Ω))`. Establish `hpt : ∀ (Ω : Type) [Field Ω] (y : UpperTheory.Gal.G3.sp Ω ⟶ ∐ fun _ : I => Y), ∃ i : I, ∃ y' : UpperTheory.Gal.G3.sp Ω ⟶ Y, y' ≫ Sigma.ι (fun _ : I => Y) i = y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Ω _ y`. Use `haveI := UpperTheory.Gal.LocalSmoothExtension.sp_subsingleton Ω`. Take `⟨p⟩` from `hne Ω`. Take `⟨⟨i, a⟩, ha⟩` from `(sigmaMk (fun _ : I => Y)).surjective (y.base p)`. Rewrite `ha` using `[sigmaMk_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, IsOpenImmersion.lift (Sigma.ι (fun _ : I => Y) i) y ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨a, by rw [Subsingleton.elim q p]; exact ha⟩`. Use `hSP _ c (I × Δ) _ ?_ ?_` and prove the remaining obligations. Introduce `z`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hsc]`. Introduce `Ω _ _ x y hy`. Take `⟨i, y', rfl⟩` from `hpt Ω y`. Establish `hy' : y' ≫ s = x ≫ c` using `by simpa using hy`. Take `⟨δ, hδ, hδu⟩` from `hPS s c Δ σ ⟨hsc, hiso⟩ Ω x y' hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(i, δ), ?_, ?_⟩` and prove the remaining obligations. Use `show x ≫ (σ δ ≫ _) = _`. Rewrite using `[← hδ, Category.assoc]`. Introduce and unpack `⟨i', δ'⟩ h`. Express the relevant statement in the definitionally equal form `x ≫ (σ δ' ≫ Sigma.ι (fun _ : I => Y) i') = y' ≫ Sigma.ι (fun _ : I => Y) i at h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hii : i' = i`. Substitute `hii` using the available equality. Establish `hx : x ≫ σ δ' = y'`. Rewrite `h` using `[← Category.assoc]`. Conclude with `(cancel_mono _).1 h`.
-
-Rewrite using `[hδu δ' hx]`. Use `haveI := isEmpty_of_commSq_sigmaι_of_ne (g := fun _ : I => Y) (a := x ≫ σ δ') (b := y') ⟨by rw [Category.assoc]; exact h⟩ hii`. Take `⟨p⟩` from `hne Ω`. Conclude with `isEmptyElim p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.sigmaSplit_of :
     SigmaFEt → UpperTheory.Gal.G3.SplitsPts → UpperTheory.Gal.G3.PtsOfSplits → SigmaSplit := by

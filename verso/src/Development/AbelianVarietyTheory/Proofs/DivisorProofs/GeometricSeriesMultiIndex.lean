@@ -6,11 +6,11 @@ namespace GlobalTheory
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨Summable.of_finite, by simp⟩`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `ih (fun k => f k.succ) fun k => hf _`. Establish `e : ∀ q : α × (Fin n → α), ∏ k, f k ((Fin.consEquiv fun _ => α) q k) = f 0 q.1 * ∏ k : Fin n, f k.succ (q.2 k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[Fin.prod_univ_succ]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Rewrite using `[← (Fin.consEquiv fun _ : Fin (n + 1) => α).summable_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `(hf 0).mul_norm h1` as an intermediate fact. Simplify `this` using `only [Function.comp_def, e]`. Rewrite using `[← (Fin.consEquiv fun _ : Fin (n + 1) => α).tsum_eq, Fin.prod_univ_succ, ← h2, tsum_mul_tsum_of_summable_norm (hf 0) h1]`. Simplify using `only [e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem summable_norm_and_tsum_prod_fin (α : Type) (n : ℕ) (f : Fin n → α → ℂ)
     (hf : ∀ k, Summable fun a => ‖f k a‖) :
@@ -32,11 +32,11 @@ theorem summable_norm_and_tsum_prod_fin (α : Type) (n : ℕ) (f : Fin n → α 
       simp only [e]
 
 /- English proof (translation)
-Use `set e := (Fintype.equivFin κ).symm`. Take `⟨h1, h2⟩` from `summable_norm_and_tsum_prod_fin α _ (fun k => f (e k)) fun k => hf _`. Set `E : (Fin (Fintype.card κ) → α) ≃ (κ → α)` to `e.arrowCongr (Equiv.refl α)`. Establish `h : ∀ m : Fin (Fintype.card κ) → α, ∏ k, f k (E m k) = ∏ k, f (e k) (m k)`. Introduce `m`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.prod_comp]`. Simplify using `[E, Equiv.arrowCongr_apply]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← E.summable_iff]`. Simplify `h1` using `only [Function.comp_def, h]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← E.tsum_eq]`. Simplify using `only [h]`. Rewrite using `[h2, ← e.prod_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_norm_and_tsum_prod_fintype (κ α : Type) [Fintype κ] (f : κ → α → ℂ)
     (hf : ∀ k, Summable fun a => ‖f k a‖) :
@@ -52,13 +52,13 @@ theorem summable_norm_and_tsum_prod_fintype (κ α : Type) [Fintype κ] (f : κ 
   · rw [← E.tsum_eq]; simp only [h]; rw [h2, ← e.prod_comp]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun n : ℕ => a + (n : ℤ))`. Introduce `m n h`. Simplify using `using h`. Establish `hout : ∀ k : ℤ, k ∉ Set.range (fun n : ℕ => a + (n : ℤ)) → ¬ a ≤ k`. Introduce `k hk hak`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hk ⟨(k - a).toNat, by simp [Int.toNat_of_nonneg (sub_nonneg.2 hak)]⟩`. Establish `hcomp : ∀ n : ℕ, (if a ≤ a + (n : ℤ) then r ^ (a + (n : ℤ)) else 0) = r ^ a * r ^ n`. Introduce `n`. Rewrite using `[if_pos (by omega), zpow_add₀ hr0, zpow_natCast]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinj.summable_iff (fun k hk => by simp [hout k hk])]`. Establish `: Summable fun n : ℕ => ‖r‖ ^ a * ‖r‖ ^ n` using `(summable_geometric_of_lt_one (norm_nonneg _) hr).mul_left _`. Use `this.congr fun n => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hcomp, norm_mul, norm_zpow, norm_pow]`. Rewrite using `[← hinj.hasSum_iff (fun k hk => by simp [hout k hk])]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hasSum_geometric_of_norm_lt_one hr).mul_left (r ^ a)` as an intermediate fact. Use `this.congr_fun fun n => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hcomp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geom_zpow_ge (a : ℤ) (r : ℂ) (hr0 : r ≠ 0) (hr : ‖r‖ < 1) :
     Summable (fun k : ℤ => ‖if a ≤ k then r ^ k else 0‖) ∧
@@ -83,11 +83,9 @@ theorem geom_zpow_ge (a : ℤ) (r : ℂ) (hr0 : r ≠ 0) (hr : ‖r‖ < 1) :
     simp only [Function.comp_apply, hcomp]
 
 /- English proof (translation)
-Introduce `ι _ a r hr0 hr`. Establish `hg` using `fun i => geom_zpow_ge (a i) (r i) (hr0 i) (hr i)`. Take `⟨h1, h2⟩` from `summable_norm_and_tsum_prod_fintype ι ℤ (fun i k => if a i ≤ k then r i ^ k else 0) fun i => (hg i).1`. Establish `hprod : ∀ k : ι → ℤ, (∏ i, (if a i ≤ k i then r i ^ k i else 0)) = if (∀ i, a i ≤ k i) then ∏ i, r i ^ k i else 0`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Conclude with `Finset.prod_congr rfl fun i _ => if_pos (h i)`. Use `push_neg at h`. Take `⟨i, hi⟩` from `h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg (not_le.2 hi))`.
-
-Use `⟨by simpa only [hprod] using h1, ?_⟩` and prove the remaining obligations. Simplify using `only [hprod] at h2`. Rewrite using `[h2]`. Conclude with `Finset.prod_congr rfl fun i _ => (hg i).2.tsum_eq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_prod_geom_zpow_ge : ∀ {ι : Type} [Fintype ι] (a : ι → ℤ) (r : ι → ℂ), (∀ i, r i ≠ 0) → (∀ i, ‖r i‖ < 1) →
     Summable (fun k : ι → ℤ => ‖if (∀ i, a i ≤ k i) then ∏ i, r i ^ k i else 0‖) ∧

@@ -10,13 +10,13 @@ open scoped TensorProduct Matrix Topology Classical
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨d, hd, hdp⟩` from `euler_prod (ι := {v // v ∉ S}) (fun v => Ideal.absNorm v.1.asIdeal) (fun v => NumberField.HeightOneSpectrum.one_lt_absNorm v.1) (fun s hs => (ReciprocityTheory.Cheb.summable_absNorm_rpow_ideal F hs).comp_injective (HeightOneSpectrum.asIdeal_injective.comp Subtype.val_injective)) …`. Establish `hZd : ∀ s : ℂ, 1 < s.re → Z s = d ((s - 1) / 2)`. Introduce `s hs`. Establish `h1 : 0 < ((s - 1) / 2).re` using `by simp; linarith`. Use `(hp s hs).unique ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hdp _ h1 using 3 with v` and compare the differences between its conclusion and the goal. Use `push_cast`. Put the polynomial expressions in normal form. Establish `ho : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hcd : ContinuousAt (fun s : ℂ => d ((s - 1) / 2)) j`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 < ((j - 1) / 2).re` using `by simp; linarith`. Establish `hdo : IsOpen {z : ℂ | 0 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `(hd.differentiableAt (hdo.mem_nhds h1)).continuousAt` as an intermediate fact. Conclude with `ContinuousAt.comp (g := d) (f := fun s : ℂ => (s - 1) / 2) this ((continuous_id.sub continuous_const).div_const 2).continuousAt`. Establish `hev : H =ᶠ[𝓝[≠] j] fun s => d ((s - 1) / 2)` using `by filter_upwards [he, nhdsWithin_le_nhds (ho.mem_nhds hj)] with s hs hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hZd s hs']`. Establish `t1 : Tendsto H (𝓝[≠] j) (𝓝 (H j))` using `hH.continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Establish `t2 : Tendsto H (𝓝[≠] j) (𝓝 (d ((j - 1) / 2)))` using `(hcd.tendsto.mono_left nhdsWithin_le_nhds).congr' hev.symm`. Rewrite using `[tendsto_nhds_unique t1 t2, hZd j hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_gt (S : Finset (HeightOneSpectrum (𝓞 F))) (c : HeightOneSpectrum (𝓞 F) → ℂ) (hc : ∀ v, ‖c v‖ ≤ 1)
     (Z H : ℂ → ℂ)
@@ -51,13 +51,13 @@ theorem val_gt (S : Finset (HeightOneSpectrum (𝓞 F))) (c : HeightOneSpectrum 
   rw [tendsto_nhds_unique t1 t2, hZd j hj]
 
 /- English proof (translation)
-Establish `hofR : Tendsto (fun s : ℝ => (s : ℂ)) (𝓝[>] 1) (𝓝[≠] (1 : ℂ))`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ((Complex.continuous_ofReal.tendsto 1).mono_left nhdsWithin_le_nhds |>.trans (by simp)) (eventually_nhdsWithin_of_forall fun s hs => ?_)` and prove the remaining obligations. Use `show (s : ℂ) ≠ 1`. Conclude with `ne_of_gt (show (1 : ℝ) < s from hs)` after adjusting the coercions. Establish `hH1 : Tendsto (fun s : ℝ => H s) (𝓝[>] 1) (𝓝 (H 1))` using `(hH.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).comp hofR`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Tendsto (fun s : ℝ => ∏ v ∈ S, (1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-(s : ℂ)))) (𝓝[>] 1) (𝓝 (∏ v ∈ S, (1 - eSp E v / (Ideal.absNorm v.asIdeal : ℂ))))`. Establish `hc : Continuous (fun s : ℝ => ∏ v ∈ S, (1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-(s : ℂ))))`. Use `continuous_finsetProd S fun v _ => continuous_const.sub (continuous_const.mul ?_)` and prove the remaining obligations. Establish `hq : (Ideal.absNorm v.asIdeal : ℂ) ≠ 0`. Use `NumberField.HeightOneSpectrum.one_lt_absNorm v` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `(by omega : Ideal.absNorm v.asIdeal ≠ 0)` after adjusting the coercions. Conclude with `Continuous.const_cpow (Complex.continuous_ofReal.neg) (Or.inl hq)`. Use `(hc.tendsto 1).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (1 : ℝ)))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[Complex.cpow_neg_one, div_eq_mul_inv]`. Use `(hfin.mul hH1).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, hofR.eventually he] with s hs hs'`. Establish `hs1 : 1 < ((s : ℂ)).re` using `by simpa using hs`. Rewrite using `[((hasProd_split' (fun v => 1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-(s : ℂ))) S _ (hp s hs1)).tprod_eq), hs']`.
+A detailed English derivation is pending.
 -/
 theorem lam_tendsto (S : Finset (HeightOneSpectrum (𝓞 F))) (Z H : ℂ → ℂ)
     (hp : ∀ s : ℂ, 1 < s.re →

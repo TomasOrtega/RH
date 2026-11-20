@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨fun p => ?_, dehomogenising_eq_zero_iff ι R N 𝒩 i B π P (ε.comp ψ) hπ ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hε p`. Take `⟨k, y, hy⟩` from `h₂ z`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hy, LinearMap.map_smulₛₗ, map_pow, hπ, one_pow, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n y hy h`. Take `⟨k, hk⟩` from `hk n _ (hψ hy) h`. Take `⟨j, hj⟩` from `h₁ _ ((map_smul ψ _ y).trans hk)`. Conclude with `⟨j + k, by rw [pow_add, mul_smul, hj]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dehomogenising_comp_of_saturating {ι : Type} [LinearOrder ι] [Fintype ι] {R : Type}
     [CommRing R] {N : Type} [AddCommGroup N] [Module R N] [Module (MvPolynomial ι R) N]
@@ -47,23 +47,21 @@ theorem dehomogenising_comp_of_saturating {ι : Type} [LinearOrder ι] [Fintype 
     exact ⟨j + k, by rw [pow_add, mul_smul, hj]⟩
 
 /- English proof (translation)
-Take `⟨a, b, d, e, Φ, ψ, hΦ, hψ, hsat⟩` from `exists_graded_presentation_saturating ι R G 𝒢 fun i => by`. Take `⟨B, iB, iA, π, P, iP, iM, ε, hs, hfp, -, h⟩` from `H i`. Conclude with `(finite_quotSMulTop_X_sub_one_of_chart ι R G 𝒢 i B iB iA π P iP iM ε h).2 inferInstance hfp`. Set `` to `grQuotDecomposition (grFree ι R d) (isHomogeneous_range_mulVecLin ι R a b d e Φ hΦ)`. Take `⟨R₀, Φ₀, hN, hmap, hΦ₀, hflat⟩` from `exists_noetherian_subring_homogeneous_matrix_flat_charts ι R a b d e Φ hΦ fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, iB, iA, π, P, iP, iM, ε, hs, -, hp, hπs, hπ, hε, hk⟩` from `H i`. Take `⟨k₁, k₂⟩` from `dehomogenising_comp_of_saturating (grQuot (grFree ι R d) (LinearMap.range Φ.mulVecLin)) 𝒢 hψ i (hsat i).1 (hsat i).2 (π : MvPolynomial ι R →+* B) ε hπ hε hk`. Use `⟨B, iB, iA, π, P, iP, iM, (ε.comp ψ).comp (LinearMap.range Φ.mulVecLin).mkQ, hs, hp, hπs, hπ, k₁.comp (Submodule.mkQ_surjective _), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, k₂]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, hw⟩`. Take `⟨w', rfl⟩` from `Submodule.mkQ_surjective _ w`. Rewrite `hw` using `[← map_smul, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨v, hv⟩` from `hw`. Conclude with `⟨v, w', by rw [← Matrix.mulVecLin_apply, hv, sub_add_cancel]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨v, w', rfl⟩`. Use `⟨Submodule.mkQ _ w', ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `⟨v, by rw [Matrix.mulVecLin_apply, add_sub_cancel_right]⟩`. Set `` to `grQuotDecomposition (grFree ι R₀ d) (isHomogeneous_range_mulVecLin ι R₀ a b d e Φ₀ hΦ₀)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₀, hbc, hψ₀⟩` from `isBaseChange_coker_matrix_mvPolynomial ι R₀ R a b Φ₀ Φ hmap`. Take `⟨iso⟩` from `nonempty_baseChange_grCube_iso ι R₀ R _ (grQuot (grFree ι R₀ d) (LinearMap.range Φ₀.mulVecLin)) _ (grQuot (grFree ι R d) (LinearMap.range Φ.mulVecLin)) ψ₀ 0 hbc (fun i y => by`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_smul, hψ₀, hψ₀, ← Submodule.Quotient.mk_smul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components.
 
-Use `ext1 l`. Use the proof step `simp)`. Use the proof step `(by`. Introduce and unpack `j _ ⟨y, hy, rfl⟩`. Use `mem_grQuot.2 ⟨_, mem_grPi.2 fun l => ?_, (hψ₀ y).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_polyGrading_iff.1 (mem_grPi.1 hy l)` as an intermediate fact. Use `mem_polyGrading_iff.2 fun c hc => this c fun h0 => hc ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, h0, map_zero])`. Use `⟨R₀, hN, grCube ι (grQuot (grFree ι R₀ d) (LinearMap.range Φ₀.mulVecLin)) 0, iso.hom ≫ grCubeMap hψ 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `I ⟨i, hi⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f⟩` from `nonempty_homLoc_singleton_equiv_quotSMulTop ι R₀ _ (grQuot (grFree ι R₀ d) (LinearMap.range Φ₀.mulVecLin)) i`. Use `hflat i` as an intermediate fact. Conclude with `flat_homLoc_of_flat_homLoc_singleton ι R₀ _ _ i I 0 hi (Module.Flat.of_linearEquiv f)`. Conclude with `finite_grCech_homology ι R₀ _ _ inferInstance 0`. Introduce and unpack `I ⟨i, hi⟩`.
-
-Rewrite using `[NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.coe_comp]`. Conclude with `(homLocMap_bijective_of_X hψ hi (hsat i).1 (hsat i).2 0).comp (ConcreteCategory.bijective_of_isIso (iso.hom.app I))`.
+A detailed English derivation is pending.
 -/
 theorem exists_noetherian_model_grCube (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type)
     [CommRing R] (G : Type) [AddCommGroup G] [Module R G] [Module (MvPolynomial ι R) G]

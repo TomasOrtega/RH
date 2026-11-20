@@ -7,7 +7,7 @@ namespace Formalism.FG.FormalGroupSubstitution
 open MvPowerSeries
 
 /- English proof (translation)
-Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero h`. Rewrite using `[subst_add ha, subst_X ha, subst_X ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_X_add_X {σ τ : Type*} [Finite σ] {R : Type*} [CommRing R]
     (a : σ → MvPowerSeries τ R) (h : ∀ s, constantCoeff (a s) = 0) (p q : σ) :
@@ -16,7 +16,7 @@ theorem subst_X_add_X {σ τ : Type*} [Finite σ] {R : Type*} [CommRing R]
   rw [subst_add ha, subst_X ha, subst_X ha]
 
 /- English proof (translation)
-The claim follows from `subst_X (hasSubst_of_constantCoeff_zero h) p`.
+A detailed English derivation is pending.
 -/
 theorem subst_X' {σ τ : Type*} [Finite σ] {R : Type*} [CommRing R]
     (a : σ → MvPowerSeries τ R) (h : ∀ s, constantCoeff (a s) = 0) (p : σ) :
@@ -24,7 +24,7 @@ theorem subst_X' {σ τ : Type*} [Finite σ] {R : Type*} [CommRing R]
   subst_X (hasSubst_of_constantCoeff_zero h) p
 
 /- English proof (translation)
-Unfold `Formalism.FG.atXv`. Conclude with `subst_X' _ (fun s => by simp) j`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atXv_X (j : Fin 2) :
     Formalism.FG.atXv (MvPowerSeries.X j : MvPowerSeries (Fin 2) ℤ) = Formalism.FG.vX j := by
@@ -32,7 +32,7 @@ theorem atXv_X (j : Fin 2) :
   exact subst_X' _ (fun s => by simp) j
 
 /- English proof (translation)
-Unfold `Formalism.FG.atYv`. Conclude with `subst_X' _ (fun s => by simp) j`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atYv_X (j : Fin 2) :
     Formalism.FG.atYv (MvPowerSeries.X j : MvPowerSeries (Fin 2) ℤ) = Formalism.FG.vY j := by
@@ -46,19 +46,19 @@ namespace Formalism.FG
 open MvPowerSeries Formalism.FG.FormalGroupSubstitution
 
 /- English proof (translation)
-Unfold `AddLawExample`. Establish `hF : ∀ i : Fin 2, constantCoeff (vX i + vY i : MvPowerSeries (Fin 2 × Fin 2) ℤ) = 0` using `fun i => by simp`. Use `⟨⟨hF, ?_, ?_, ?_, ?_⟩, ?_, ⟨fun i => by simp, ?_⟩, ⟨hF, ⟨fun j => by simp, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `i x`. Take `⟨a, b⟩` from `x`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases i <;> simp [coeff_X, Finsupp.single_eq_single_iff]`. Introduce `i`. Apply the tactic sequence `rw [subst_X_add_X _ (fun s => by split_ifs <;> simp)]`. Simplify using the standard rewrite rules. Introduce `i`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `rw [subst_X_add_X _ (fun s => by split_ifs <;> simp)]`. Simplify using the standard rewrite rules. Introduce `i`. Establish `hin : ∀ j : Fin 2, subst (fun y : Fin 2 × Fin 2 => (v3 (Fin.castSucc y.1) y.2 : MvPowerSeries (Fin 3 × Fin 2) ℤ)) (vX j + vY j : MvPowerSeries (Fin 2 × Fin 2) ℤ) = v3 0 j + v3 1 j` using `fun j => by`. Rewrite using `[subst_X_add_X _ (fun s => by simp)]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hin' : ∀ j : Fin 2, subst (fun y : Fin 2 × Fin 2 => (v3 y.1.succ y.2 : MvPowerSeries (Fin 3 × Fin 2) ℤ)) (vX j + vY j : MvPowerSeries (Fin 2 × Fin 2) ℤ) = v3 1 j + v3 2 j` using `fun j => by`. Rewrite using `[subst_X_add_X _ (fun s => by simp)]`. Both sides reduce to the same expression. Simplify using `only [hin, hin']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rw [subst_X_add_X _ (fun s => by split_ifs <;> simp), subst_X_add_X _ (fun s => by split_ifs <;> simp)]`. Simplify using `only [show ((1 : Fin 2) = 0) = False from by decide, if_true, if_false]`. Rewrite using `[add_assoc]`. Introduce `i`. Rewrite using `[subst_X_add_X _ (fun s => by simp)]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Fin.rev (0 : Fin 2) = 1 from rfl, show Fin.rev (1 : Fin 2) = 0 from rfl, add_comm]`. Introduce `i`. Rewrite using `[subst_X' _ hF]`. Apply the tactic sequence `rw [subst_X_add_X _ (fun s => by split_ifs <;> simp [atXv_X, atYv_X])]`. Simplify using `[atXv_X, atYv_X]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Introduce `j i`. Simplify using `[coeff_X, Finsupp.single_eq_single_iff]`. Introduce `j`. Rewrite using `[subst_X' _ hF, atXv_X, atYv_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem additive_law_example : Formalism.FG.AddLawExample := by
   unfold AddLawExample
@@ -104,9 +104,9 @@ theorem additive_law_example : Formalism.FG.AddLawExample := by
     rw [subst_X' _ hF, atXv_X, atYv_X]
 
 /- English proof (translation)
-Unfold `NotLawExample`. Introduce `h`. Establish `h2` using `h.2.1 0 ((1 : Fin 2), (0 : Fin 1))`. Simplify using `only at h2`. Rewrite `h2` using `[two_mul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[coeff_X, Finsupp.single_eq_single_iff] at h2`.
+Simplify using the standard rewrite rules.
 -/
 theorem not_a_law_example : Formalism.FG.NotLawExample := by
   unfold NotLawExample

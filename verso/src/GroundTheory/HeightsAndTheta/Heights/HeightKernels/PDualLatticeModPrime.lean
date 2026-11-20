@@ -18,15 +18,15 @@ abbrev locAt (𝔭 : Ideal (𝓞 K)) [𝔭.IsPrime] : Subalgebra (𝓞 K) K :=
   Localization.subalgebra.ofField K 𝔭.primeCompl 𝔭.primeCompl_le_nonZeroDivisors
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, 𝔭.primeCompl.one_mem, by rwa [one_smul]⟩`. Consider the case `zero => exact ⟨1, 𝔭.primeCompl.one_mem, by rw [smul_zero]; exact L.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s₁, hs₁, hx⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s₂, hs₂, hy⟩` from `hy`. Use `⟨s₁ * s₂, 𝔭.primeCompl.mul_mem hs₁ hs₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.smul_mem _ hx`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hy`. Consider the case `smul a x _ hx`. Take `⟨s, hs, hx⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨p, q⟩, rfl⟩` from `IsLocalization.mk'_surjective 𝔭.primeCompl a`. Use `⟨q * s, 𝔭.primeCompl.mul_mem q.2 hs, ?_⟩` and prove the remaining obligations. Establish `hq : (q : 𝓞 K) • (IsLocalization.mk' (locAt 𝔭) p q) = algebraMap (𝓞 K) (locAt 𝔭) p`. Rewrite using `[Algebra.smul_def, mul_comm, IsLocalization.mk'_spec]`. Establish `e : (q * s) • (IsLocalization.mk' (locAt 𝔭) p q • x) = p • (s • x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_smul, ← smul_assoc (q : 𝓞 K), hq, algebraMap_smul, smul_comm]`. Rewrite using `[e]`. Conclude with `L.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (𝔭 : Ideal (𝓞 K)) [𝔭.IsPrime] (L : Submodule (𝓞 K) (Fin i → K)) {x : Fin i → K}
     (hx : x ∈ Submodule.span (locAt 𝔭) (L : Set (Fin i → K))) :
@@ -56,15 +56,15 @@ theorem exists_smul_mem (𝔭 : Ideal (𝓞 K)) [𝔭.IsPrime] (L : Submodule (�
     exact L.smul_mem _ hx
 
 /- English proof (translation)
-Take `⟨e, he0, hle⟩` from `DualLatticeIndexAlt.exists_le_box F.lattice F.fg`. Establish `heK : algebraMap (𝓞 K) K e ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.mpr he0`. Establish `hbox : DualLatticeIndexAlt.box (i` using `i) (algebraMap (𝓞 K) K e) ≤ DualLatticeIndexAlt.dual F.lattice := by`. Use `DualLatticeIndexAlt.dual_anti hle` as an intermediate fact. Rewrite `this` using `[DualLatticeIndexAlt.dual_box (inv_ne_zero heK), inv_inv]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin i)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `hj : (Pi.single j (algebraMap (𝓞 K) K e) : Fin i → K) ∈ DualLatticeIndexAlt.dual F.lattice`. Use `hbox (DualLatticeIndexAlt.mem_box.mpr fun l => ?_)` and prove the remaining obligations. Distinguish the cases in `hl : l = j`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hl` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [hl]⟩`. Establish `e1 : Pi.basisFun K (Fin i) j = (algebraMap (𝓞 K) K e)⁻¹ • (Pi.single j (algebraMap (𝓞 K) K e) : Fin i → K)`. Use extensionality with `l`.
+Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Simplify using `[heK]`. Simplify using `[Pi.basisFun_apply, hl]`. Rewrite using `[SetLike.mem_coe, e1]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hj)`.
+A detailed English derivation is pending.
 -/
 theorem span_dual_eq_top (F : HermLattice K i) :
     Submodule.span K (DualLatticeIndexAlt.dual F.lattice : Set (Fin i → K)) = ⊤ := by
@@ -91,11 +91,9 @@ theorem span_dual_eq_top (F : HermLattice K i) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span hj)
 
 /- English proof (translation)
-Take `⟨e, he0, hle⟩` from `DualLatticeIndexAlt.exists_box_le F.lattice F.span_eq`. Establish `heK : algebraMap (𝓞 K) K e ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.mpr he0`. Use `⟨fun j => Pi.single j (algebraMap (𝓞 K) K e)⁻¹, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx'` using `DualLatticeIndexAlt.dual_anti hle hx`. Rewrite `hx'` using `[DualLatticeIndexAlt.dual_box heK, DualLatticeIndexAlt.mem_box]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `choose a ha using hx'`. Establish `e1 : x = ∑ j, a j • (Pi.single j (algebraMap (𝓞 K) K e)⁻¹ : Fin i → K)`. Use extensionality with `l`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `(ha l).symm`.
-
-Rewrite using `[e1]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_le_span (F : HermLattice K i) :
     ∃ u : Fin i → Fin i → K, DualLatticeIndexAlt.dual F.lattice ≤ Submodule.span (𝓞 K) (Set.range u) := by
@@ -118,31 +116,29 @@ end DualLatticeModPrimeAlt
 open DualLatticeModPrimeAlt in
 
 /- English proof (translation)
-Introduce `K _ _ i F 𝔭 h𝔭`. Establish `hbot : 𝔭 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (RingOfIntegers.not_isField K)`. Establish `: IsDiscreteValuationRing (locAt 𝔭)` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) hbot (locAt 𝔭)`. Use `set D := DualLatticeIndexAlt.dual F.lattice`. Use `set DA := Submodule.span (locAt 𝔭) (D : Set (Fin i → K))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `dual_le_span F`. Establish `hDA : DA ≤ Submodule.span (locAt 𝔭) (Set.range u)` using `Submodule.span_le.mpr fun x hx => Submodule.span_le_restrictScalars (𝓞 K) (locAt 𝔭) _ (hu hx)`. Use `isNoetherian_of_fg_of_noetherian _ (Submodule.fg_span (Set.finite_range u)) (R := locAt 𝔭)` as an intermediate fact. Establish `: Module.Finite (locAt 𝔭) DA` using `Module.Finite.iff_fg.mpr (isNoetherian_submodule.mp this DA hDA)`. Establish `: Module.IsTorsionFree (locAt 𝔭) DA` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `Module.Free.chooseBasis (locAt 𝔭) DA`. Establish `hspan : Submodule.span K (Set.range fun j => (b j : Fin i → K)) = ⊤`. Rewrite using `[eq_top_iff, ← span_dual_eq_top F, Submodule.span_le]`. Introduce `d hd`. Establish `e0 : d = ∑ j, ((b.repr ⟨d, Submodule.subset_span hd⟩ j • b j : DA) : Fin i → K)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.coe_sum, b.sum_repr]`. Rewrite using `[e0, SetLike.mem_coe]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul]`. Conclude with `Submodule.span_le_restrictScalars (locAt 𝔭) K _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcard : Fintype.card (Fin i) ≤ Fintype.card (Module.Free.ChooseBasisIndex (locAt 𝔭) DA)`. Use `finrank_range_le_card (R := K) fun j => (b j : Fin i → K)` as an intermediate fact. Rewrite `this` using `[Set.finrank, hspan, finrank_top, Module.finrank_fin_fun]`. Simplify using `using this`. Take `⟨g⟩` from `Function.Embedding.nonempty_of_card_le hcard`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `ρ : locAt 𝔭 →+* 𝓞 K ⧸ 𝔭` to `IsLocalization.lift (M := 𝔭.primeCompl) (g := Ideal.Quotient.mk 𝔭) fun s => by`. Take `⟨c, hc⟩` from `Ideal.Quotient.exists_inv (I := 𝔭) (a := Ideal.Quotient.mk 𝔭 s) fun h => s.2 (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Conclude with `⟨⟨_, c, hc, by rw [mul_comm]; exact hc⟩, rfl⟩`. Establish `hρ : ∀ a, ρ (algebraMap (𝓞 K) (locAt 𝔭) a) = Ideal.Quotient.mk 𝔭 a` using `fun a => IsLocalization.lift_eq _ _`. Establish `incl : ∀ φ : dualLattice F, (φ : Fin i → K) ∈ DA` using `fun φ => Submodule.subset_span φ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι : dualLattice F →+ DA` to `AddMonoidHom.mk' (fun φ => ⟨φ, incl φ⟩) fun _ _ => rfl`. Set `τ : DA →+ (Fin i → 𝓞 K ⧸ 𝔭)` to `AddMonoidHom.mk' (fun x l => ρ (b.repr x (g l))) fun x y => by funext l; simp [map_add]`. Establish `hsmul : ∀ (μ : 𝓞 K) (x : DA), ((algebraMap (𝓞 K) (locAt 𝔭) μ • x : DA) : Fin i → K) = algebraMap (𝓞 K) K μ • (x : Fin i → K)` using `fun μ x => by`. Rewrite using `[Submodule.coe_smul, algebraMap_smul, algebraMap_smul]`. Use `⟨τ.comp ι, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `v`. Set `w : Module.Free.ChooseBasisIndex (locAt 𝔭) DA → 𝓞 K ⧸ 𝔭` to `Function.extend g v 0`. Use `choose a ha using fun j => Ideal.Quotient.mk_surjective (I := 𝔭) (w j)`. Set `x : DA` to `∑ j, algebraMap (𝓞 K) (locAt 𝔭) (a j) • b j`. Establish `hx : ∀ j, b.repr x j = algebraMap (𝓞 K) (locAt 𝔭) (a j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `only [x, map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Take `⟨s, hs, hsx⟩` from `exists_smul_mem 𝔭 D x.2`. Establish `hs0 : Ideal.Quotient.mk 𝔭 s ≠ 0` using `fun h => hs (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Take `⟨c, hc⟩` from `Ideal.Quotient.exists_inv hs0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective (I := 𝔭) c`. Use `⟨⟨t • s • (x : Fin i → K), D.smul_mem t hsx⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : ι ⟨t • s • (x : Fin i → K), D.smul_mem t hsx⟩ = algebraMap (𝓞 K) (locAt 𝔭) (t * s) • x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hsmul, algebraMap_smul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `l`. Establish `key : ∀ y : DA, τ y l = ρ (b.repr y (g l))` using `fun _ => rfl`. Rewrite using `[AddMonoidHom.comp_apply, e1, key, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, hρ, hx, hρ, map_mul, ht, mul_comm c, hc, one_mul, ha]`. Conclude with `g.injective.extend_apply _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `μ φ ψ h`. Establish `e1 : ι ψ = algebraMap (𝓞 K) (locAt 𝔭) μ • ι φ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hsmul]`. Conclude with `h`.
-
-Use function extensionality and compare the values at `l`. Establish `key : ∀ x : DA, τ x l = ρ (b.repr x (g l))` using `fun _ => rfl`. Rewrite using `[Pi.smul_apply, AddMonoidHom.comp_apply, AddMonoidHom.comp_apply, e1, key, key, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, hρ, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualLatticeModPrime.proof : DualLatticeModPrime.Statement := by
   intro K _ _ i F 𝔭 h𝔭

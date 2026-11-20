@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.CM.LieLoc
 
 /- English proof (translation)
-Use `choose e₀ h₁ h₂ using hM`. Take `⟨u', hu', -⟩` from `existsUnique_isVecOver hφ.1 u`. Take `⟨a, ha, -⟩` from `he.2 u' (hu'.isTangent hφ hu)`. Establish `h₃` using `(lieComb_baseChange R K g G A ψ hψ m e u' a e₀ w h₁ ha).1 (EllComp.isVecOver_cancel hφ.1 hψ.1 hu' hw)`. Take `⟨-, ht, hcomp, -⟩` from `LieComb.lieComb_algebra K A n v hv.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, (hv.2 w (ht _ _ hc)).unique hc (hcomp m M e₀ _ w h₂ h₃)⟩`.
+A detailed English derivation is pending.
 -/
 theorem coord_eq_sum {R₀ R K : Type} [CommRing R₀] [CommRing R] [CommRing K] {f : R₀ →+* R} {g : R →+* K}
     {A₀ : Over (Sp R₀)} {G : Over (Sp R)} {A : Over (Sp K)} [GrpObj A₀] [GrpObj G] [GrpObj A] [IsCommMonObj A]
@@ -35,9 +35,9 @@ theorem coord_eq_sum {R₀ R K : Type} [CommRing R₀] [CommRing R] [CommRing K]
   exact ⟨a, (hv.2 w (ht _ _ hc)).unique hc (hcomp m M e₀ _ w h₂ h₃)⟩
 
 /- English proof (translation)
-Take `⟨⟨_, k, rfl⟩, hk⟩` from `IsLocalization.exist_integer_multiples_of_finite (Submonoid.powers (algebraMap O R r)) b`. Use `choose x hx using hk`. Take `⟨⟨s, hs⟩, h⟩` from `IsLocalization.exist_integer_multiples_of_finite N x`. Use `choose a ha using h`. Use `⟨s, hs, k, a, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hg, ha, Algebra.smul_def, Algebra.smul_def, map_mul (algebraMap R R'), hx, ← hg, Algebra.smul_def, ← map_mul]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_denom {O R R' K : Type} [CommRing O] [CommRing R] [CommRing R'] [CommRing K] [Algebra O R]
     [Algebra R R'] [Algebra O K] (N : Submonoid O) [IsLocalization N R] (r : O)
@@ -55,25 +55,23 @@ theorem exists_denom {O R R' K : Type} [CommRing O] [CommRing R] [CommRing R'] [
   ring
 
 /- English proof (translation)
-Introduce `K _ _ P F R _ _ _ _ N _ G _ φ ψ e e₀ M hφ hψ hF he hM`. Use `⟨fun i => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨n, r, M', -, hr, hL, hb⟩` from `GlobalTheory.T.lie_lattice_local_basis_description K P F`. Establish `key : ∀ j, ∃ s ∈ N, ∃ (k : ℕ) (a : Fin F.P₀.g → 𝓞 K), (r j ^ k * s) • M i = ∑ l, a l • M' j l`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `R'` to `Localization.Away (algebraMap (𝓞 K) R (r j))`. Establish `hu : IsUnit (algebraMap R K (algebraMap (𝓞 K) R (r j)))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `IsUnit.mk0 _ (by simpa using (hr j).1)`. Set `g : R' →+* K` to `IsLocalization.Away.lift (algebraMap (𝓞 K) R (r j)) hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : g.comp (algebraMap R R') = algebraMap R K` using `IsLocalization.Away.lift_comp _ hu`. Establish `hg' : ∀ x, g (algebraMap R R' (algebraMap (𝓞 K) R x)) = algebraMap (𝓞 K) K x` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 K) R K, ← hg]`. Both sides reduce to the same expression. Set `_ : Algebra R' K` to `g.toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower (𝓞 K) R' K` using `IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 K) R R']`. Conclude with `(hg' x).symm`. Establish `h'` using `isGrpPullback_pullback G (spMap (algebraMap R R'))`. Establish `n' : IsGrpPullback F.P₀.A G (spMap g ≫ spMap (algebraMap R R')) ψ` using `hψ.congr (by rw [spMap_comp_spMap, hg]) rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w : ψ ≫ G.hom = (F.P₀.A.hom ≫ spMap g) ≫ spMap (algebraMap R R')` using `n'.1.w.trans (Category.assoc _ _ _).symm`. Establish `e₁` using `h'.1.lift_fst _ _ w`. Establish `hψ'` using `h'.cancel (n'.congr rfl e₁.symm) (h'.1.lift_snd _ _ w)`. Take `⟨e', he', hM'⟩` from `hb j R' _ _ _ (by rw [IsScalarTower.algebraMap_apply (𝓞 K) R R']; exact IsLocalization.Away.algebraMap_isUnit _) ((h'.comp hφ).congr (by rw [spMap_comp_spMap, ← IsScalarTower.algebraMap_eq]) rfl) hψ' (by rw [← Category.assoc, e₁, hF])`. Take `⟨b, hb⟩` from `coord_eq_sum h' hψ' F.basis he' hM' (he.1 i) (by rw [e₁, hg]; exact (hM i).1) (hM i).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, k, a, ha⟩` from `exists_denom N (r j) g hg' b`. Use `⟨s, hs, k, a, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← smul_assoc, ha, algebraMap_smul]`. Use `choose s hs k a h using key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Use `⟨∏ j, s j, prod_mem fun j _ => hs j, (hL _).2 fun j => ⟨k j, (∏ l ∈ Finset.univ.erase j, s l) • a j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ j), smul_smul, ← _root_.mul_assoc, _root_.mul_comm, ← smul_smul, h, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [smul_smul]; rfl`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, w, hw, hc⟩` from `hc`. Conclude with `coord_eq_sum hφ hψ F.basis he (fun i => ⟨_, hM i⟩) hu (by rw [hF, ← IsScalarTower.algebraMap_eq]; exact hw) hc`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul t x _ hx`. Take `⟨a, rfl⟩` from `hx`. Use `⟨algebraMap (𝓞 K) R t • a, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, ← IsScalarTower.algebraMap_apply, mul_smul, algebraMap_smul K t]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieLat_localization : ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P) (R : Type) [CommRing R] [Algebra (𝓞 K) R] [Algebra R K] [IsScalarTower (𝓞 K) R K] (N : Submonoid (𝓞 K)) [IsLocalization N R] (G : Over (Sp R)) [GrpObj G] (φ : G.left ⟶ P.A.left) (ψ : F.P₀.A.left ⟶ G.left) (e : Fin F.P₀.g → (epsR R ⟶ G)) (e₀ : Fin F.P₀.g → (epsR K ⟶ F.P₀.A)) (M : Matrix (Fin F.P₀.g) (Fin F.P₀.g) K), IsGrpPullback G P.A (spMap (algebraMap (𝓞 K) R)) φ → IsGrpPullback F.P₀.A G (spMap (algebraMap R K)) ψ → ψ ≫ φ = F.φ → IsLieBasis e → (∀ i, IsVecOver (algebraMap R K) ψ (e i) (e₀ i) ∧ IsLieComb (M i) F.v (e₀ i)) →
   (∀ i, ∃ s ∈ N, s • M i ∈ F.lieLat) ∧ ∀ c ∈ F.lieLat, ∃ a : Fin F.P₀.g → R, c = ∑ i, algebraMap R K (a i) • M i := by

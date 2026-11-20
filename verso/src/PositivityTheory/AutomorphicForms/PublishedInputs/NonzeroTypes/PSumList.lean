@@ -15,11 +15,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP m b`. Rewrite using `[WD.lpSum_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.sum_N]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hN`. Use `⟨LinearMap.ext fun v => ?_, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Use `congrArg Prod.fst (LinearMap.congr_fun hN (v, 0))` as an intermediate fact. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Prod.snd (LinearMap.congr_fun hN (0, v))` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨ha, hb⟩`. Rewrite using `[ha, hb, LinearMap.prodMap_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem monomial_sum_iff_alt (x y : WD h) : (WD.lpSum x y).mono0 ↔ x.mono0 ∧ y.mono0 := by
   induction x using WD.ind with
@@ -38,7 +38,7 @@ theorem monomial_sum_iff_alt (x y : WD h) : (WD.lpSum x y).mono0 ↔ x.mono0 ∧
         rw [ha, hb, LinearMap.prodMap_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP m b`. Rewrite using `[WD.lpSum_mk, WD.charPol_mk, WD.charPol_mk, WD.charPol_mk, WDRep.sum_ρ, LinearMap.charpoly_prodMap]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_lpSum (x y : WD h) (σ : Weil h) :
     (WD.lpSum x y).charPol σ = x.charPol σ * y.charPol σ := by
@@ -50,13 +50,13 @@ theorem charPol_lpSum (x y : WD h) (σ : Weil h) :
         LinearMap.charpoly_prodMap]
 
 /- English proof (translation)
-Rewrite using `[WD.lpZero, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.diag_N]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem monomial_zero_alt : (WD.lpZero h).mono0 := by
   rw [WD.lpZero, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.diag_N]
 
 /- English proof (translation)
-Use `Polynomial.eq_one_of_monic_natDegree_zero (WD.charPol_monic _ σ) ?_` and prove the remaining obligations. Rewrite using `[WD.charPol_natDegree, WD.lpZero, WD.lpDim_mk]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem charPol_lpZero (σ : Weil h) : (WD.lpZero h).charPol σ = 1 := by
   refine Polynomial.eq_one_of_monic_natDegree_zero (WD.charPol_monic _ σ) ?_
@@ -67,11 +67,11 @@ end P_sumList
 
 open P_sumList in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h l`. Use `⟨?_, fun σ => ?_⟩` and prove the remaining obligations. Proceed by induction on `l with`. Consider the case `nil => simp [sumList, monomial_zero_alt]`. Consider the case `cons y l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[sumList, List.foldr_cons, ← sumList, monomial_sum_iff_alt, ih]`. Simplify using the standard rewrite rules. Proceed by induction on `l with`. Consider the case `nil => simp [sumList, charPol_lpZero]`. Consider the case `cons y l ih`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[sumList, List.foldr_cons, ← sumList, charPol_lpSum, ih, List.map_cons, List.prod_cons]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem step_sumList : SumOverListProp := by
   intro E Ω _ _ _ _ _ A w h l

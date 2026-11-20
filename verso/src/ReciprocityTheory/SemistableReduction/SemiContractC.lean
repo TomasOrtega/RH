@@ -6,7 +6,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix NumberField Module
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_second.goal1 .. | (apply Bl.general_b_fact_second.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sc_scale {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (𝓞 K) (Fin r → K))
     (hL : Submodule.span K (L : Set (Fin r → K)) = ⊤) (x : Fin r → K) :
@@ -14,7 +14,7 @@ theorem sc_scale {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (
   first | exact Bl.general_b_fact_second.goal1 .. | (apply Bl.general_b_fact_second.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second.goal1 <;> assumption)
 
 /- English proof (translation)
-Use `hv.units_smul (fun i => Units.mk0 (a i) (ha i))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Units.smul_def]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sc_li_scale {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V] {v : ι → V}
     (hv : LinearIndependent K v) (a : ι → K) (ha : ∀ i, a i ≠ 0) :
@@ -25,17 +25,13 @@ theorem sc_li_scale {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V] {v 
   simp [Units.smul_def]
 
 /- English proof (translation)
-Use `set b0 := Module.finBasis K (LinearMap.ker N.mulVecLin)`. Use `choose d hd0 hdL using fun i => sc_scale L hL (b0 i : Fin r → K)`. Establish `hinj` using `FaithfulSMul.algebraMap_injective (𝓞 K) K`. Establish `ha : ∀ i, algebraMap (𝓞 K) K (d i) ≠ 0` using `fun i h => hd0 i (hinj (by rw [h, map_zero]))`. Use `⟨fun i => algebraMap (𝓞 K) K (d i) • (b0 i : Fin r → K), fun i => ?_, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show algebraMap (𝓞 K) K (d i) • (b0 i : Fin r → K) ∈ L`. Rewrite using `[algebraMap_smul]`. Conclude with `hdL i`. Establish `h` using `(b0 i).2`. Rewrite `h` using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_smul, h, smul_zero]`. Conclude with `sc_li_scale (b0.linearIndependent.map' _ (Submodule.ker_subtype _)) _ ha`. Introduce `y hy`. Establish `hy' : y ∈ LinearMap.ker N.mulVecLin`. Rewrite using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Establish `hsum` using `b0.sum_repr ⟨y, hy'⟩`. Establish `hsum' : y = ∑ i, b0.repr ⟨y, hy'⟩ i • (b0 i : Fin r → K)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum]`.
-
-Use `_ = _ := by rw [Submodule.coe_sum]; simp only [Submodule.coe_smul]`. Rewrite using `[hsum']`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hb : (b0 i : Fin r → K) = (algebraMap (𝓞 K) K (d i))⁻¹ • (algebraMap (𝓞 K) K (d i) • (b0 i : Fin r → K))`. Rewrite using `[inv_smul_smul₀ (ha i)]`.
-
-Rewrite using `[hb]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_kerfam {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (𝓞 K) (Fin r → K))
     (hL : Submodule.span K (L : Set (Fin r → K)) = ⊤) (N : Matrix (Fin r) (Fin r) K) :
@@ -72,13 +68,11 @@ theorem sc_kerfam {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule 
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `set e := Module.finBasis K (LinearMap.range N.mulVecLin)`. Establish `hex : ∀ j, ∃ y, N *ᵥ y = (e j : Fin r → K)`. Introduce `j`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp (e j).2`. Conclude with `⟨y, by rw [← Matrix.mulVecLin_apply]; exact hy⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose y hy using hex`. Use `choose d hd0 hdL using fun j => sc_scale L hL (y j)`. Establish `hinj` using `FaithfulSMul.algebraMap_injective (𝓞 K) K`. Establish `ha : ∀ j, algebraMap (𝓞 K) K (d j) ≠ 0` using `fun j h => hd0 j (hinj (by rw [h, map_zero]))`. Use `⟨fun j => algebraMap (𝓞 K) K (d j) • y j, fun j => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show algebraMap (𝓞 K) K (d j) • y j ∈ L`. Rewrite using `[algebraMap_smul]`. Conclude with `hdL j`. Use `sc_li_scale (e.linearIndependent.map' _ (Submodule.ker_subtype _)) _ ha` as an intermediate fact. Establish `heq : (fun j => N *ᵥ (algebraMap (𝓞 K) K (d j) • y j)) = fun j => algebraMap (𝓞 K) K (d j) • ((LinearMap.range N.mulVecLin).subtype ∘ e) j`.
-
-Use function extensionality and compare the values at `j`. Simplify using `[mulVec_smul, hy]`. Rewrite using `[heq]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_imfam {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (𝓞 K) (Fin r → K))
     (hL : Submodule.span K (L : Set (Fin r → K)) = ⊤) (N : Matrix (Fin r) (Fin r) K) :
@@ -104,11 +98,11 @@ theorem sc_imfam {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (
     rw [heq]; exact this
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right] at hg`. Establish `h1 : ∑ j, g (Fin.natAdd k j) • (N *ᵥ c j) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg N.mulVecLin hg` as an intermediate fact. Simplify `this` using `[map_add, map_sum, map_smul, Matrix.mulVecLin_apply, hbN]`. Establish `hc0` using `Fintype.linearIndependent_iff.mp hc _ h1`. Establish `hb0 : ∀ i, g (Fin.castAdd m i) = 0`. Apply `Fintype.linearIndependent_iff.mp hb` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hg` using `[hc0]`. Introduce `i`. Conclude with `Fin.addCases (fun i => hb0 i) (fun j => hc0 j) i`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sc_append_li {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (N : Matrix (Fin r) (Fin r) K) (b : Fin k → Fin r → K) (c : Fin m → Fin r → K)
@@ -129,7 +123,7 @@ theorem sc_append_li {K : Type} [Field K] [NumberField K] {r k m : ℕ}
   exact Fin.addCases (fun i => hb0 i) (fun j => hc0 j) i
 
 /- English proof (translation)
-Use `Nat.pos_of_ne_zero fun h0 => hN ?_` and prove the remaining obligations. Rewrite `h0` using `[Submodule.finrank_eq_zero, LinearMap.range_eq_bot]`. Use `LinearMap.toMatrix'_toLin' N` as an intermediate fact. Rewrite `this` using `[Matrix.toLin'_apply', h0, map_zero]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_rank_pos {K : Type} [Field K] [NumberField K] {r : ℕ}
     (N : Matrix (Fin r) (Fin r) K) (hN : N ≠ 0) : 0 < finrank K (LinearMap.range N.mulVecLin) := by
@@ -140,21 +134,19 @@ theorem sc_rank_pos {K : Type} [Field K] [NumberField K] {r : ℕ}
   exact this.symm
 
 /- English proof (translation)
-Use `set f := N.mulVecLin.restrictScalars (𝓞 K) with hf`. Establish `hfx : ∀ x, f x = N *ᵥ x` using `fun x => rfl`. Establish `hspanb : Submodule.span K (Set.range b) ≤ LinearMap.ker N.mulVecLin`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[hbN i]`. Establish `hspanc : Submodule.span (𝓞 K) (Set.range c) ≤ (Submodule.span (𝓞 K) (Set.range fun j => N *ᵥ c j)).comap f`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Submodule.subset_span ⟨j, (hfx (c j)).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Submodule.map_toAddSubgroup, ← AddSubgroup.relIndex_comap, ← AddSubgroup.inf_relIndex_right (AddSubgroup.comap _ _), ← AddSubgroup.inf_relIndex_right (Submodule.toAddSubgroup _)]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup, AddMonoidHom.coe_coe]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hx, hxL⟩`. Use `⟨?_, hxL⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.mem_span_range_iff_exists_fun (𝓞 K) |>.mp hx`. Use `set z := ∑ j, a j • c j with hz`. Establish `hzc : z ∈ Submodule.span (𝓞 K) (Set.range c)` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzL : z ∈ L` using `Submodule.sum_mem _ fun j _ => L.smul_mem _ (hcL j)`. Establish `hfz : f (x - z) = 0`. Rewrite using `[map_sub, hz, map_sum]`. Simplify using `only [map_smul]`. Simplify using `only [hfx] at ha ⊢`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha, sub_self]`. Establish `hsat : x - z ∈ satSub L b`. Use `⟨L.sub_mem hxL hzL, ?_⟩` and prove the remaining obligations. Conclude with `hker _ (by rw [← hfx]; exact hfz)`. Conclude with `Submodule.mem_sup.mpr ⟨x - z, hsat, z, hzc, sub_add_cancel x z⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨hx, hxL⟩`. Use `⟨?_, hxL⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx`. Establish `hy0 : f y = 0`. Establish `h` using `hspanb hy.2`.
-
-Rewrite `h` using `[LinearMap.mem_ker]`. Conclude with `h`. Rewrite using `[map_add, hy0, zero_add]`. Conclude with `hspanc hz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_index {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (L : Submodule (𝓞 K) (Fin r → K)) (N : Matrix (Fin r) (Fin r) K)

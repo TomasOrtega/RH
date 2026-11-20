@@ -25,7 +25,7 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 namespace GlobalTheory.KeyTf
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m n : ℕ} (e : m = n)
     {v : Fin n → (epsR R ⟶ G)} (hv : IsLieBasis v) : IsLieBasis (fun i : Fin m => v (i.cast e)) := by
@@ -33,15 +33,15 @@ theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m 
   exact hv
 
 /- English proof (translation)
-Introduce `R R' _ _ f x P' φ hg e h ⟨w, hw₀⟩`. Establish `hL'` using `P'.isLB`. Establish `hw` using `(isGen_iff _).1 hw₀`. Establish `he : eSec P'.A ≫ φ = spMap f ≫ eSec x.P.A` using `PolBaseChange.eSec_comm h`. Establish `hr₀ : (rigPullOf φ (spMap f) he x.P.L x.rig).IsGen` using `Out.LBxP.isGen_pullAlong x.P.L φ (spMap f) (fun _ : PUnit => eSec x.P.A) (fun _ => 1) (fun _ => eSec P'.A) (fun _ => he) x.rig x.rig_gen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨rig, hr, hm⟩` from `Transport.exists_transport (pull_isLB hL' (eSec P'.A)) (pull_isLB (pull_isLB x.P.isLB φ) (eSec P'.A)) (LB.linCombIso w (K := PUnit) (fun _ => eSec P'.A) (fun _ => 1)) (DVR.linCombIso_isGen w hw₀ _ _) _ hr₀`. Take `⟨th', hth'⟩` from `sec_pull_down hw x.P.isLB hL' x.th`. Establish `c₁ : IsCommMonObj x.P.A` using `x.P.isAb.comm`. Establish `c₂ : IsCommMonObj P'.A` using `P'.isAb.comm`. Take `⟨v', hb', hv'⟩` from `exists_isLieBasis_baseChange R R' f x.P.A P'.A φ h x.P.isAb.smooth x.P.g x.v x.basis`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨rig, hr, th', fun s => ?_, fun i => v' (i.cast e), isLieBasis_cast e hb', φ, he, w, e, Chart.dualMapR f, h, hw₀, hm, appLE_eq_of_stalk _ x.th th' (hth' _ (𝟙 _)), fun a => ?_, ?_, fun i => hv' _⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `x.th_ne (spMap f s)`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback h.1 z s hz`. Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hz'`. Take `⟨k', hk'⟩` from `exists_chart hL' y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y, hy, (mem_nonzeroLocus _ _).2 ⟨k', hk', ?_⟩⟩` and prove the remaining obligations. Establish `u₁ : IsUnit (gs φ y _ (x.th.f k))` using `by rw [gs_stalkMap φ y _ hk]; exact u.map _`. Establish `e'` using `hth' _ (𝟙 _) y k k' hk hk'`. Rewrite `e'` using `[Category.id_comp]`. Conclude with `isUnit_of_mul_isUnit_right (e' ▸ u₁)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_keyPB_on : ∀ (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (y : KeyIn R) (P' : Out.PolAV (Sp R')) (φ : P'.A.left ⟶ y.P.A.left) (hg : 1 ≤ P'.g), P'.g = y.P.g → IsGrpPullback P'.A y.P.A (spMap f) φ → LBIso P'.L (y.P.L.pull φ) → ∃ rig hr th hth v hv, KeyPB ⟨P', hg, rig, hr, th, hth, v, hv⟩ y f := by
   intro R R' _ _ f x P' φ hg e h ⟨w, hw₀⟩

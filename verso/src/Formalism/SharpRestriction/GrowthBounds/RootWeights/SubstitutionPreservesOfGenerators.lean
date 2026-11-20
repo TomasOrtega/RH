@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Unfold `weightComponent`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_filter, MvPolynomial.mem_support_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h1 : wtS LL S m = nu <;> by_cases h2 : coeff m F = 0 <;> simp [h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_weightComponent {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (nu : Fin n → ℤ) (F : MvPolynomial (ι × Fin n) R) (m : ι × Fin n →₀ ℕ) :
@@ -25,9 +25,9 @@ theorem coeff_weightComponent {R : Type*} [CommRing R] {ι : Type*} [Fintype ι]
   by_cases h1 : wtS LL S m = nu <;> by_cases h2 : coeff m F = 0 <;> simp [h1, h2]
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [coeff_weightComponent]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `h (Finset.mem_image_of_mem _ (MvPolynomial.mem_support_iff.2 hne))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sum_weightComponents {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (F : MvPolynomial (ι × Fin n) R) :
@@ -54,13 +54,13 @@ def SubstitutionPreservesExtension (h h' : Matrix (Fin n) (Fin n) L) : Prop :=
   ∀ x ∈ scalarExtension φ W, matrixSubst LL S (RingHom.id L) h h' x ∈ scalarExtension φ W
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hwW, rfl⟩` from `hy`. Establish `e : matrixSubst LL S (RingHom.id L) h h' (MvPolynomial.map φ w) = matrixSubst LL S φ h h' w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [matrixSubst, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_map]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hw w hwW`. Consider the case `zero => rw [map_zero]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : matrixSubst LL S (RingHom.id L) h h' (MvPolynomial.C c) = MvPolynomial.C c`. Simplify using `[matrixSubst]`. Rewrite using `[e, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ c hy`.
+A detailed English derivation is pending.
 -/
 theorem substitution_preserves_of_generators (h h' : Matrix (Fin n) (Fin n) L)
     (hw : ∀ w ∈ W, matrixSubst LL S φ h h' w ∈ scalarExtension φ W) : SubstitutionPreservesExtension LL S φ W h h' := by
@@ -83,11 +83,11 @@ theorem substitution_preserves_of_generators (h h' : Matrix (Fin n) (Fin n) L)
     exact Submodule.smul_mem _ c hy
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[matrixSubst]`. Introduce and unpack `⟨l, a⟩`. Distinguish the cases in `hl : l ∈ S`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : LL.vec l = true`. Simplify using `[matrixSubst, hl, hv, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, map_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[matrixSubst, hl, hv, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, map_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[matrixSubst, hl]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem v1r_act_mul_lemma (h1 h1' h2 h2' : Matrix (Fin n) (Fin n) L) :
     matrixSubst LL S (RingHom.id L) (h1 * h2) (h2' * h1') =
@@ -107,7 +107,7 @@ private theorem v1r_act_mul_lemma (h1 h1' h2 h2' : Matrix (Fin n) (Fin n) L) :
     · simp [matrixSubst, hl]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[v1r_act_mul_lemma, RingHom.comp_apply]`. Conclude with `H1 _ (H2 x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem substitution_preserves_mul {h1 h1' h2 h2' : Matrix (Fin n) (Fin n) L} (H1 : SubstitutionPreservesExtension LL S φ W h1 h1')
     (H2 : SubstitutionPreservesExtension LL S φ W h2 h2') : SubstitutionPreservesExtension LL S φ W (h1 * h2) (h2' * h1') := by
@@ -116,9 +116,9 @@ theorem substitution_preserves_mul {h1 h1' h2 h2' : Matrix (Fin n) (Fin n) L} (H
   exact H1 _ (H2 x hx)
 
 /- English proof (translation)
-Apply `substitution_preserves_of_generators` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[hT R L ι LL n S φ a b hab t w (w.totalDegree + 1) (Nat.lt_succ_self _)]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPolynomial.smul_eq_C_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hW a b k hab w hw, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem substitution_preserves_transvection (hT : TransvectionExpansion) (hW : ∀ a b k, a ≠ b → ∀ x ∈ W, divPow R LL S a b k x ∈ W)
     (a b : Fin n) (hab : a ≠ b) (t : L) :
@@ -131,11 +131,11 @@ theorem substitution_preserves_transvection (hT : TransvectionExpansion) (hW : �
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hW a b k hab w hw, rfl⟩)
 
 /- English proof (translation)
-Apply `substitution_preserves_of_generators` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[sum_weightComponents LL S w, map_sum]`. Use `Submodule.sum_mem _ fun nu _ => ?_` and prove the remaining obligations. Establish `hc : weightComponent LL S nu w ∈ W` using `hGr R ι LL n S W hW w hw nu`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : matrixSubst LL S φ (Matrix.diagonal fun a => ((D a : Lˣ) : L)) (Matrix.diagonal fun a => (((D a)⁻¹ : Lˣ) : L)) (weightComponent LL S nu w) = MvPolynomial.C (((∏ a, D a ^ (nu a) : Lˣ) : L)) * MvPolynomial.map φ (weightComponent LL S nu w)`. Rewrite using `[weightComponent, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hm' : wtS LL S m = nu` using `(Finset.mem_filter.1 hm).2`. Rewrite using `[hTo R L ι LL n S φ D m, MvPolynomial.map_monomial, MvPolynomial.C_mul_monomial, hm', mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hc, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem substitution_preserves_diagonal (hTo : TorusActsThroughWeight) (hGr : BinomialStableContainsComponents) (hW : ∀ a k, ∀ x ∈ W, binomPol R LL S a k x ∈ W)
     (D : Fin n → Lˣ) :
@@ -156,19 +156,17 @@ theorem substitution_preserves_diagonal (hTo : TorusActsThroughWeight) (hGr : Bi
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hc, rfl⟩)
 
 /- English proof (translation)
-Establish `hdet : h.det ≠ 0`. Introduce `h0`. Establish `e` using `congrArg Matrix.det hh`. Rewrite `e` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : h' = h⁻¹` using `(Matrix.inv_eq_right_inv hh).symm`. Substitute `hinv` using the available equality. Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun M => SubstitutionPreservesExtension LL S φ W M M⁻¹) h hdet ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD`. Establish `hD' : ∀ a, D a ≠ 0`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Apply `hD` to reduce the goal to its premises. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) ha`. Establish `hmul : Matrix.diagonal D * Matrix.diagonal (fun a => (D a)⁻¹) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `mul_inv_cancel₀ (hD' a)`. Use `show SubstitutionPreservesExtension LL S φ W (Matrix.diagonal D) (Matrix.diagonal D)⁻¹`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.inv_eq_right_inv hmul]`. Establish `e` using `substitution_preserves_diagonal LL S φ W hTo hGr hW2 (fun a => Units.mk0 (D a) (hD' a))`. Simplify using `using e`. Introduce `t`. Establish `hmul : t.toMatrix * Matrix.transvection t.i t.j (-t.c) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.TransvectionStruct.toMatrix, Matrix.transvection_mul_transvection_same _ _ t.hij, add_neg_cancel, Matrix.transvection_zero]`. Use `show SubstitutionPreservesExtension LL S φ W t.toMatrix t.toMatrix⁻¹`. Rewrite using `[Matrix.inv_eq_right_inv hmul]`. Conclude with `substitution_preserves_transvection LL S φ W hT hW1 t.i t.j t.hij t.c`. Introduce `A B _ _ HA HB show SubstitutionPreservesExtension LL S φ W (A * B) (A * B)⁻¹`.
-
-Rewrite using `[Matrix.mul_inv_rev]`. Conclude with `substitution_preserves_mul LL S φ W HA HB`.
+A detailed English derivation is pending.
 -/
 theorem substitution_preserves_extension_all (hT : TransvectionExpansion) (hTo : TorusActsThroughWeight) (hGr : BinomialStableContainsComponents)
     (hW1 : ∀ a b k, a ≠ b → ∀ x ∈ W, divPow R LL S a b k x ∈ W)
@@ -211,17 +209,15 @@ theorem substitution_preserves_extension_all (hT : TransvectionExpansion) (hTo :
     exact substitution_preserves_mul LL S φ W HA HB
 
 /- English proof (translation)
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm' : m ∈ w.support` using `MvPolynomial.support_map_subset φ w hm`. Simplify using `only [polWts, Set.mem_setOf_eq]`. Use `⟨weightComponent LL S (wtS LL S m) w, hGr R ι LL n S W hW2 w hw _, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `e` using `congrArg (MvPolynomial.coeff m) h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[coeff_weightComponent, if_pos rfl, MvPolynomial.coeff_zero]`. Conclude with `(MvPolynomial.mem_support_iff.1 hm') e`. Introduce `m' hm''`. Rewrite `hm''` using `[MvPolynomial.mem_support_iff, coeff_weightComponent]`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Treat this case separately.
 
-Conclude with `hm'' (if_neg hne)`. Consider the case `zero => intro m hm`. Simplify using `at hm`. Consider the case `add x y _ _ hx hy => classical`. Introduce `m hm`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Break down `Finset.mem_union.1 (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hx m h`. Conclude with `hy m h`. Consider the case `smul c x _ hx`. Introduce `m hm`.
-
-Conclude with `hx m (MvPolynomial.support_smul hm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem scalarExtension_monomial_weights (hGr : BinomialStableContainsComponents) (hW2 : ∀ a k, ∀ x ∈ W, binomPol R LL S a k x ∈ W) :
     ∀ z ∈ scalarExtension φ W, ∀ m ∈ z.support, wtS LL S m ∈ polWts LL S W := by

@@ -6,9 +6,9 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [star_prod, ← Finset.prod_mul_distrib]`. Rewrite using `[← Fintype.prod_sum (fun k y => A k (T k) y * star (A k (T'' k) y))]`. Rewrite using `[Finset.prod_congr rfl (fun k _ => hA k (T k) (T'' k)), Finset.prod_boole]`. Distinguish the cases in `hT : T = T''`. Substitute `hT` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hT, if_neg]`. Introduce `hall`. Conclude with `hT (funext fun k => hall k (Finset.mem_univ k))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pi_prod_rows_orthonormal {K : Type} [Fintype K] [DecidableEq K] {κ : K → Type}
     [∀ k, Fintype (κ k)] [∀ k, DecidableEq (κ k)] [DecidableEq (∀ k, κ k)]
@@ -27,11 +27,11 @@ theorem pi_prod_rows_orthonormal {K : Type} [Fintype K] [DecidableEq K] {κ : K 
     exact hT (funext fun k => hall k (Finset.mem_univ k))
 
 /- English proof (translation)
-Introduce `J ι _ _ _ _ n C hC`. Establish `hC' : ∀ j (a b : ι), ∑ y, C j a y * star (C j b y) = if a = b then 1 else 0`. Introduce `j a b`. Use `congrFun (congrFun ((mem_unitaryGroup_iff).1 (hC j)) a) b` as an intermediate fact. Rewrite `this` using `[mul_apply, one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [star_apply] at this`. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `hD : ∀ j (S S'' : Fin (n j) → ι), ∑ y : Fin (n j) → ι, (∏ r, C j (S r) (y r)) * star (∏ r, C j (S'' r) (y r)) = if S = S'' then 1 else 0` using `fun j => pi_prod_rows_orthonormal (κ := fun _ => ι) (fun _ => C j) (fun _ => hC' j)`. Establish `key` using `pi_prod_rows_orthonormal (κ := fun j => Fin (n j) → ι) (fun j => of fun S S' : Fin (n j) → ι => ∏ r, C j (S r) (S' r)) (fun j a b => by simpa only [of_apply] using hD j a b)`. Rewrite using `[mem_unitaryGroup_iff]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `T T''`. Rewrite using `[mul_apply, one_apply]`. Simplify using `only [star_apply, of_apply]`. Simplify using `only [of_apply] at key`. Conclude with `key T T''`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_tensor_places_positions : ∀ (J ι : Type) [Fintype J] [DecidableEq J] [Fintype ι]
     [DecidableEq ι] (n : J → ℕ) (C : J → Matrix ι ι ℂ), (∀ j, C j ∈ Matrix.unitaryGroup ι ℂ) →

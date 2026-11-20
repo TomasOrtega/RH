@@ -8,19 +8,19 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.EdgeStair
 
 /- English proof (translation)
-Introduce `R _ C _ F T hG`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k z`. Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • ((T.K 0).map (GlobalTheory.CatH.toLast i s)).hom (T.ι _ (z (GlobalTheory.CatH.face i s))) = T.ι _ (∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (GlobalTheory.CatH.toLast i s)).hom (z (GlobalTheory.CatH.face i s)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hG.ι_nat]`. Introduce `s k a`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • ((T.K (s + 1)).map (GlobalTheory.CatH.toLast i t)).hom (T.dv s _ (a (GlobalTheory.CatH.face i t))) = T.dv s _ (∑ i : Fin (k + 2), (-1 : ℤ) ^ (i : ℕ) • ((T.K s).map (GlobalTheory.CatH.toLast i t)).hom (a (GlobalTheory.CatH.face i t)))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hG.dv_nat]`. Introduce `k x y h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `s`. Conclude with `hG.inj _ (congrFun h s)`. Introduce `k x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : ∀ s, ∃ z, T.ι _ z = x s` using `fun s => (hG.ex0 _ (x s)).1 (congrFun h s)`. Use `choose z hz using hz`. Conclude with `⟨z, funext hz⟩`. Introduce and unpack `⟨z, rfl⟩`. Use function extensionality and compare the values at `s`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `(hG.ex0 _ _).2 ⟨_, rfl⟩`. Introduce `s k x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hz : ∀ t, ∃ a, T.dv s _ a = x t` using `fun t => (hG.ex s _ (x t)).1 (congrFun h t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose a ha using hz`. Conclude with `⟨a, funext ha⟩`. Introduce and unpack `⟨a, rfl⟩`. Use function extensionality and compare the values at `t`. Conclude with `(hG.ex s _ _).2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem stCol : CrystallineSemistableComparison.E.StCol := by
   intro R _ C _ F T hG

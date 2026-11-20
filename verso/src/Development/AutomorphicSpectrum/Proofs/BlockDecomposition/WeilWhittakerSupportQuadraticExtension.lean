@@ -18,9 +18,9 @@ namespace GlobalTheory.CompanionTheory.LatticeChoice
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hf' : (0 : ℤ) < f` using `by exact_mod_cast hf`. Establish `h1` using `Int.emod_add_mul_ediv (-a) (f : ℤ)`. Establish `h2` using `Int.emod_nonneg (-a) hf'.ne'`. Establish `h3` using `Int.emod_lt_of_pos (-a) hf'`. Use `⟨-((-a) / (f : ℤ)), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (f : ℤ) * (-((-a) / (f : ℤ))) = -((f : ℤ) * ((-a) / (f : ℤ)))` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (f : ℤ) * (-((-a) / (f : ℤ)) - 1) = -((f : ℤ) * ((-a) / (f : ℤ))) - f` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -46,9 +46,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 variable (F E) in
 
 /- English proof (translation)
-Establish `h` using `FiltrationCocycleLiftCriterion.WeilRep.residueCard_eq_pow (K := F) (E := E)`. Establish `h1` using `one_lt_residueCard (K := E)`. Break down `Nat.eq_zero_or_pos (residueDegree F E) with h0 | h0` into its components or cases. Rewrite `h` using `[h0, pow_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem residueDegree_pos' : 0 < residueDegree F E := by
   have h := FiltrationCocycleLiftCriterion.WeilRep.residueCard_eq_pow (K := F) (E := E)
@@ -58,9 +58,9 @@ theorem residueDegree_pos' : 0 < residueDegree F E := by
   · exact h0
 
 /- English proof (translation)
-Break down `eq_or_ne r 0 with rfl | hr0` into its components or cases. Simplify using the standard rewrite rules. Establish `hN : Algebra.norm F r ≠ 0` using `Algebra.norm_ne_zero_iff.2 hr0`. Use `isTrivialOn_addCharConductor hχ hχ1 _ ((mem_valBall_iff_le_ord (mul_ne_zero hκ hN)).2 ?_)` and prove the remaining obligations. Rewrite using `[ord_mul hκ hN, ord_norm (K := F) (L := E) r]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : n ≤ ord r` using `(mem_valBall_iff_le_ord hr0).1 hr`. Establish `h2 : (residueDegree F E : ℤ) * n ≤ (residueDegree F E : ℤ) * ord r` using `mul_le_mul_of_nonneg_left h1 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem char_norm_eq_one {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1)
     {κ : F} (hκ : κ ≠ 0) {n : ℤ}
@@ -77,9 +77,9 @@ theorem char_norm_eq_one {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : �
   linarith
 
 /- English proof (translation)
-Use `(isTrivialOn_iff (continuous_traceChar hχ hχ1) (traceChar_ne_one hχ hχ1) _).1 ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : y ∈ x • (valBall E n : Set E)`. Rewrite using `[smul_valBall hx]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, rfl⟩` from `hy'`. Conclude with `h r hr`.
+A detailed English derivation is pending.
 -/
 theorem conductor_le_of_forall {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1)
     {x : E} (hx : x ≠ 0) {n : ℤ}
@@ -93,13 +93,13 @@ theorem conductor_le_of_forall {χ : AddChar F Circle} (hχ : Continuous χ) (h�
   exact h r hr
 
 /- English proof (translation)
-Establish `hp : (1 : ℝ) < residueCard F` using `by exact_mod_cast one_lt_residueCard (K := F)`. Establish `hQ : (1 : ℝ) < residueCard E` using `by exact_mod_cast one_lt_residueCard (K := E)`. Establish `hp0 : (residueCard F : ℝ) ≠ 0` using `by positivity`. Establish `hQ0 : (residueCard E : ℝ) ≠ 0` using `by positivity`. Establish `hQp : (residueCard E : ℝ) = (residueCard F : ℝ) ^ (residueDegree F E : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[FiltrationCocycleLiftCriterion.WeilRep.residueCard_eq_pow (K := F) (E := E)]`. Use `push_cast`. Rewrite using `[zpow_natCast]`. Establish `hmod : (modulus κ : ℝ) = (residueCard F : ℝ) ^ (-ord κ)`. Rewrite using `[modulus_of_ne_zero hκ]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `h1 : (residueCard E : ℝ) ^ (n - 1) ≤ (residueCard F : ℝ) ^ (c - ord κ)` using `by conv_lhs => rw [hQp, ← zpow_mul]`. Conclude with `zpow_le_zpow_right₀ hp.le hn.le`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub_one₀ hQ0]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (residueCard E : ℝ) * (residueCard F : ℝ) ^ (c - ord κ) := mul_le_mul_of_nonneg_left h1 (by positivity)`. Use `_ = _ := by rw [hmod, sub_eq_add_neg, zpow_add₀ hp0]; ring`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem residueCard_zpow_le {κ : F} (hκ : κ ≠ 0) {c n : ℤ}
     (hn : (residueDegree F E : ℤ) * (n - 1) < c - ord κ) :
@@ -129,23 +129,21 @@ theorem residueCard_zpow_le {κ : F} (hκ : κ ≠ 0) {c n : ℤ}
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 Φ hlc hcs`. Take `⟨n₀, -, hinv, -⟩` from `exists_invariant_of_mem_schwartzBruhat (K := E) (f := Φ) ⟨hlc, hcs⟩`. Establish `hQ : (1 : ℝ) < residueCard E` using `by exact_mod_cast one_lt_residueCard (K := E)`. Establish `hp : (1 : ℝ) < residueCard F` using `by exact_mod_cast one_lt_residueCard (K := F)`. Establish `hQ0 : (0 : ℝ) < residueCard E` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (0 : ℝ) < residueCard F` using `by linarith`. Take `⟨A, hA⟩ : ∃ A : ℝ, A = max ((residueCard E : ℝ) ^ n₀) ((residueCard E : ℝ) * (residueCard F : ℝ) ^ addCharConductor χ)` from `⟨_, rfl⟩`. Establish `hA1 : (residueCard E : ℝ) ^ n₀ ≤ A` using `hA ▸ le_max_left _ _`. Establish `hA2 : (residueCard E : ℝ) * (residueCard F : ℝ) ^ addCharConductor χ ≤ A` using `hA ▸ le_max_right _ _`. Establish `hApos : 0 < A` using `lt_of_lt_of_le (zpow_pos hQ0 _) hA1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(residueCard E : ℝ) ^ (-addCharConductor (traceChar E χ)) * A, mul_pos (zpow_pos hQ0 _) hApos, fun κ => ?_⟩` and prove the remaining obligations. Establish `hn : ∃ n : ℤ, n₀ ≤ n ∧ (∀ r ∈ valBall E n, χ (κ * Algebra.norm F r) = 1) ∧ (residueCard E : ℝ) ^ n ≤ A * max 1 (modulus κ : ℝ)`. Break down `eq_or_ne κ 0 with rfl | hκ` into its components or cases. Use `⟨n₀, le_rfl, fun r _ => by simp, ?_⟩` and prove the remaining obligations. Simplify using `using hA1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨n₁, hn₁, hn₁'⟩` from `exists_ceil_div (residueDegree F E) (residueDegree_pos' F E) (addCharConductor χ - ord κ)`. Establish `hf : (0 : ℤ) ≤ residueDegree F E` using `by positivity`. Use `⟨max n₀ n₁, le_max_left _ _, fun r hr => ?_, ?_⟩` and prove the remaining obligations. Conclude with `char_norm_eq_one hχ hχ1 hκ (hn₁.trans (mul_le_mul_of_nonneg_left (le_max_right _ _) hf)) hr`. Establish `hm : (1 : ℝ) ≤ max 1 (modulus κ : ℝ)` using `le_max_left _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `max_cases n₀ n₁ with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases. Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn0, hχr, hQn⟩` from `hn`. Use `⟨valBall E n, isCompact_valBall n, isOpen_valBall n, fun r hr u => hinv u r (valBall_antitone hn0 hr), hχr, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hbound : 0 ≤ (residueCard E : ℝ) ^ (-addCharConductor (traceChar E χ)) * A * max 1 (modulus κ : ℝ)` using `by positivity`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Simplify using `using hbound`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc` using `conductor_le_of_forall hχ hχ1 hx0 hx`. Establish `hmod : (modulus x : ℝ) = (residueCard E : ℝ) ^ (-ord x)`. Rewrite using `[modulus_of_ne_zero hx0]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_add₀ hQ0.ne']`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`.
-
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hQn (zpow_pos hQ0 _).le`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lattice_adapted : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → χ ≠ 1 → ∀ (Φ : E → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ → ∃ C : ℝ, 0 < C ∧ ∀ κ : F, ∃ M : AddSubgroup E, IsCompact (M : Set E) ∧ IsOpen (M : Set E) ∧ (∀ r ∈ M, ∀ u, Φ (u + r) = Φ u) ∧ (∀ r ∈ M, χ (κ * Algebra.norm F r) = 1) ∧ ∀ x : E, (∀ r ∈ M, χ (Algebra.trace F E (x * r)) = 1) → (modulus x : ℝ) ≤ C * max 1 (modulus κ : ℝ) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 Φ hlc hcs

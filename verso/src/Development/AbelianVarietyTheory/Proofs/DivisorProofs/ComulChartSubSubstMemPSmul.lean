@@ -9,19 +9,17 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p O _ G d c n F`. Establish `hμ : HasSubst c.μ` using `hasSubst_of_constantCoeff_zero c.isLaw.const`. Set `φ₁ : MvPowerSeries (Fin d) O →ₐ[O] G.A n ⊗[O] G.A n` to `(Bialgebra.comulAlgHom O (G.A n)).comp (c.ev n)`. Set `φ₂ : MvPowerSeries (Fin d) O →ₐ[O] G.A n ⊗[O] G.A n` to `(c.ev₂ n).comp (substAlgHom hμ)`. Establish `h1 : ∀ f, φ₁ f = Coalgebra.comul (R` using `O) (c.ev n f) := fun f => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : ∀ f, φ₂ f = c.ev₂ n (subst c.μ f)` using `fun f => by`. Simplify using `only [φ₂, AlgHom.comp_apply, coe_substAlgHom]`. Establish `hpoly : φ₁.comp (MvPolynomial.coeToMvPowerSeries.algHom O) = φ₂.comp (MvPolynomial.coeToMvPowerSeries.algHom O)`. Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, MvPolynomial.coeToMvPowerSeries.algHom_apply, MvPolynomial.coe_X, Algebra.algebraMap_self, MvPowerSeries.map_id, RingHom.id_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, (c.isEval n).1 i, subst_X hμ, c.comul]`. Take `⟨N₁, hN₁⟩` from `(c.isEval n).2 1`. Take `⟨N₂, hN₂⟩` from `(c.isEval₂ n).2 1`. Use `set N := max N₁ N₂`. Use `set P := trunc' O (Finsupp.equivFunOnFinite.symm fun _ => N) F`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set T := F - (P : MvPowerSeries (Fin d) O)`. Establish `hT : ∀ α : Fin d →₀ ℕ, α.degree < N → coeff α T = 0`. Introduce `α hα`. Simplify using `only [T, P, map_sub, MvPolynomial.coeff_coe, coeff_trunc']`. Rewrite using `[if_pos, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `show α i ≤ N`. Conclude with `le_of_lt (lt_of_le_of_lt (Finsupp.le_degree i α) hα)`. Establish `hPe : φ₁ (P : MvPowerSeries (Fin d) O) = φ₂ (P : MvPowerSeries (Fin d) O)`. Use `congrArg (fun ψ => ψ P) hpoly` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[MvPolynomial.coeToMvPowerSeries.algHom_apply]`. Take `⟨a, ha⟩` from `hN₁ T fun α hα => hT α (lt_of_lt_of_le hα (le_max_left _ _))`. Take `⟨b, hb⟩` from `hN₂ (subst c.μ T) fun β hβ => coeff_subst_eq_zero_of_degree_lt O (Fin d) (Fin d ⊕ Fin d) c.μ T N c.isLaw.const hT β (lt_of_lt_of_le hβ (le_max_right _ _))`. Rewrite `ha`, `hb` using `[pow_one]`. Use `⟨Coalgebra.comul (R := O) a - b, ?_⟩` and prove the remaining obligations.
-
-Establish `hF : F = (P : MvPowerSeries (Fin d) O) + T` using `by simp [T]`. Rewrite using `[← h1, ← h2, hF, map_add, map_add, hPe, add_sub_add_left_eq_sub, h1, h2, ha, hb, ← Bialgebra.comulAlgHom_apply, map_mul, map_natCast, Bialgebra.comulAlgHom_apply, ← mul_sub, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comul_ev_sub_ev₂_subst_mem :
     ∀ (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (n : ℕ)

@@ -21,7 +21,7 @@ open GlobalTheory.LatVac
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1` using `h (1 - liftV v 1) (by rw [map_sub, map_one, evFin_liftV, sub_self])`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_of_at {M : Type} [AddCommGroup M] [Module (AF D.host.F) M] {v : Pl D.host.F} {z : M}
     (h : At (evFin D.host.F v) z) : liftV v (1 : Fv D.host.F v) • z = z := by
@@ -30,22 +30,22 @@ theorem smul_eq_of_at {M : Type} [AddCommGroup M] [Module (AF D.host.F) M] {v : 
   exact h1.symm
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_smul, ← smul_eq_mul u, at_liftV v 1 u hu, zero_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_smul {M : Type} [AddCommGroup M] [Module (AF D.host.F) M] (v : Pl D.host.F) (z : M) :
     At (evFin D.host.F v) (liftV v (1 : Fv D.host.F v) • z) := fun u hu => by
   rw [smul_smul, ← smul_eq_mul u, at_liftV v 1 u hu, zero_smul]
 
 /- English proof (translation)
-The claim follows from `map_smul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) c z`.
+A detailed English derivation is pending.
 -/
 theorem cA_smul (c : AF D.host.F) (z : AE D) : cA D (c • z) = c • cA D z :=
   map_smul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) c z
 
 /- English proof (translation)
-Establish `h : hO S T x (c • y) = hO S T (c • x) y`. Unfold `hO`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, cA_smul, mul_smul_comm, smul_mul_assoc, smul_mul_assoc, mul_smul_comm]`. Unfold `symplO`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_swap (S T : HSp D) (c : AF D.host.F) (x y : WO S T) : symplO S T x (c • y) = symplO S T (c • x) y := by
   have h : hO S T x (c • y) = hO S T (c • x) y := by
@@ -57,7 +57,7 @@ theorem symplO_swap (S T : HSp D) (c : AF D.host.F) (x y : WO S T) : symplO S T 
   rw [h]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, RingHom.map_mul]`. Establish `: infPart D (algebraMap (AF D.host.F) (AE D) (liftV v (1 : Fv D.host.F v))) = 0` using `infPart_pair _ _`. Rewrite using `[this, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_smul (v : Pl D.host.F) (z : AE D) : infPart D (liftV v (1 : Fv D.host.F v) • z) = 0 := by
   rw [Algebra.smul_def, RingHom.map_mul]
@@ -65,15 +65,13 @@ theorem infPart_smul (v : Pl D.host.F) (z : AE D) : infPart D (liftV v (1 : Fv D
   rw [this, zero_mul]
 
 /- English proof (translation)
-Use `latO_induction (p := fun u => liftV v (1 : Fv D.host.F v) • u ∈ latO S T LS LT fun _ => True) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce `α hα M hM`. Establish `h : liftV v (1 : Fv D.host.F v) • finTens α M = finTens (singleFin v 1 * α) M`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 (singleFin v 1) * pairA D.host.F 0 α) ⊗ₜ[D.host.F] M i j = _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[pair_mul]`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `finTens_mem_latO (mul_mem_intAf (fun w => ?_) hα) hM` and prove the remaining obligations. Distinguish the cases in `hw : w = v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[evalV_singleFin_self]`. Conclude with `one_mem _`. Rewrite using `[evalV_singleFin_ne hw]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_zero]`. Conclude with `zero_mem _`. Introduce `x y hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`.
-
-Introduce `x hx`. Rewrite using `[smul_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)} (v : Pl D.host.F)
     {u : WO S T} (hu : u ∈ latO S T LS LT fun _ => True) :
@@ -98,13 +96,13 @@ theorem smul_mem {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (F
   · intro x hx; rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, mul_smul_comm, hu]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_smul {m n : ℕ} {ε : AE D} (c : AF D.host.F) {u : Mx D m n} (hu : IsHalf ε u) : IsHalf ε (c • u) :=
   fun i j => by rw [Matrix.smul_apply, mul_smul_comm, hu]
 
 /- English proof (translation)
-Introduce `_ _` and use `mul_zero _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_zero {m n : ℕ} (ε : AE D) : IsHalf ε (0 : Mx D m n) := fun _ _ => mul_zero _
 
@@ -114,13 +112,11 @@ variable {S T S' T' : HSp D} {P : Type} [AddCommGroup P] [Module (AF D.host.F) P
   (m : P ≃ₗ[AF D.host.F] WO S T × WO S' T') (v : Pl D.host.F) (Λ : AddSubgroup P)
 
 /- English proof (translation)
-Set `f : WO S T × WO S' T' →ₗ[AF D.host.F] P` to `liftV v (1 : Fv D.host.F v) • m.symm.toLinearMap`. Establish `hf : ∀ x, f x = liftV v (1 : Fv D.host.F v) • m.symm x` using `fun _ => rfl`. Establish `hm : ∀ x, m (f x) = liftV v (1 : Fv D.host.F v) • x` using `fun x => by rw [hf, map_smul, m.apply_symm_apply]`. Establish `hin : ∀ x : WO S T × WO S' T', x.1 ∈ latO S T LS LT (fun _ => True) → x.2 ∈ latO S' T' LS' LT' (fun _ => True) → f x ∈ Λ` using `fun x h1 h2 => (hΛ _).2 ⟨at_smul v _, by rw [hm]; exact smul_mem v h1, by rw [hm]; exact smul_mem v h2⟩`. Introduce `u hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ha, h1, h1'⟩` from `(hΛ u).1 hu`. Establish `e : u = f ((m u).1, 0) + f (0, (m u).2)`. Rewrite using `[← map_add, Prod.mk_add_mk, add_zero, zero_add, hf, Prod.mk.eta, m.symm_apply_apply, smul_eq_of_at ha]`. Rewrite using `[e]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_two_of_half (H.comap (f ∘ₗ LinearMap.inl _ _ _).toAddMonoidHom) (fun x hx => ?_) (fun ε hε x hx hx' => ?_) h1` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_comap, map_nsmul]`. Conclude with `h2 _ (hin (x, 0) hx (zero_mem _))`. Conclude with `hh ε hε (f (x, 0)) (hin (x, 0) hx (zero_mem _)) (by rw [hm]; exact isHalf_smul _ hx') (by rw [hm]; exact isHalf_smul _ (isHalf_zero ε))`. Use `le_of_two_of_half (H.comap (f ∘ₗ LinearMap.inr _ _ _).toAddMonoidHom) (fun x hx => ?_) (fun ε hε x hx hx' => ?_) h1'` and prove the remaining obligations.
-
-Rewrite using `[AddSubgroup.mem_comap, map_nsmul]`. Conclude with `h2 _ (hin (0, x) (zero_mem _) hx)`. Conclude with `hh ε hε (f (0, x)) (hin (0, x) (zero_mem _) hx) (by rw [hm]; exact isHalf_smul _ (isHalf_zero ε)) (by rw [hm]; exact isHalf_smul _ hx')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_gen {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {LS' : Set (Fin S'.rank → D.host.E)} {LT' : Set (Fin T'.rank → D.host.E)}
@@ -151,15 +147,15 @@ theorem le_of_gen {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank →
         (by rw [hm]; exact isHalf_smul _ hx')
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h γ hγ`. Take `⟨-, a, b⟩` from `(hΛ z).1 h`. Take `⟨-, a', b'⟩` from `(hΛ γ).1 hγ`. Rewrite using `[hB, AddChar.map_add_eq_mul, char_sympl_eq_one hψ hS hT a a', char_sympl_eq_one hψ hS' hT' b b', one_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `hm : ∀ x, m (liftV v (1 : Fv D.host.F v) • m.symm x) = liftV v (1 : Fv D.host.F v) • x` using `fun x => by`. Rewrite using `[map_smul, m.apply_symm_apply]`. Establish `hz' : liftV v (1 : Fv D.host.F v) • m z = m z` using `by rw [← map_smul, smul_eq_of_at hz]`. Establish `hz1 : liftV v (1 : Fv D.host.F v) • (m z).1 = (m z).1` using `congrArg Prod.fst hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz2 : liftV v (1 : Fv D.host.F v) • (m z).2 = (m z).2` using `congrArg Prod.snd hz'`. Establish `key : ∀ x : WO S T × WO S' T', x.1 ∈ latO S T ΛS ΛT (fun _ => True) → x.2 ∈ latO S' T' ΛS' ΛT' (fun _ => True) → ψ (symplO S T (m z).1 x.1 + symplO S' T' (m z).2 x.2) = 1` using `fun x h1 h2 => by`. Use `h _ ((hΛ (liftV v (1 : Fv D.host.F v) • m.symm x)).2 ⟨at_smul v _, by rw [hm]; exact smul_mem v h1, by rw [hm]; exact smul_mem v h2⟩)` as an intermediate fact. Rewrite `this` using `[hB, hm, Prod.smul_fst, Prod.smul_snd, symplO_swap, symplO_swap, hz1, hz2]`. Then use the resulting hypothesis. Use `(hΛ z).2 ⟨hz, mem_of_char hψ hS hT ?_ fun x hx => ?_, mem_of_char hψ hS' hT' ?_ fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hz1]`. Conclude with `Matrix.ext fun _ _ => infPart_smul v _`. Establish `h0 : symplO S' T' (m z).2 0 = 0` using `(symplHom S' T' (m z).2).map_zero`. Use `key (x, 0) hx (zero_mem _)` as an intermediate fact. Rewrite `this` using `[h0, add_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz2]`. Conclude with `Matrix.ext fun _ _ => infPart_smul v _`. Establish `h0 : symplO S T (m z).1 0 = 0` using `(symplHom S T (m z).1).map_zero`. Use `key (0, x) (zero_mem _) hx` as an intermediate fact. Rewrite `this` using `[h0, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_iff_char {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     {ΛS' : Submodule (𝓞 D.host.E) (Fin S'.rank → D.host.E)} {ΛT' : Submodule (𝓞 D.host.E) (Fin T'.rank → D.host.E)}
@@ -199,7 +195,7 @@ theorem mem_iff_char {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
 end Pair
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W i j e Γ hW hWW v`. Establish `a` using `(node_isV G hL (X := .grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).sd`. Use `⟨le_of_gen (maps e) v _ (fun _ => Iff.rfl) _ (fun u hu => AddSubgroup.subset_closure (Or.inl ⟨u, hu, rfl⟩)) fun ε hε u hu h1 h2 => AddSubgroup.subset_closure (Or.inr ⟨hu, ε, hε, h1, h2⟩), fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `mem_iff_char (maps e) v _ (isSelfDualC_neg a) (node_isV G hL (X := .grid i (j + 1)) ⟨i.2.le, j.2⟩).sd (node_isV G hL (X := .grid (i + 1) j) ⟨i.2, j.2.le⟩).sd a (fun _ => Iff.rfl) W.ψ_std (sympPt Γ) (symp_eq e Γ hW hWW) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem latPt_le_closure_and_selfDual : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (i j : Fin D.R.m) (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j),
     Γ.V.J = (1 : D.host.E) • (spW G i j).gram → Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e → ∀ v : Pl D.host.F, latPt e v ≤ AddSubgroup.closure (genPt e v) ∧

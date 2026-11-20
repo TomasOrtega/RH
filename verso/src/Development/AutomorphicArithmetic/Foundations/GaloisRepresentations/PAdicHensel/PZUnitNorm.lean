@@ -5,17 +5,17 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hP v D hv u hu`. Use `haveI : Fact (Rat.HeightOneSpectrum.primesEquiv v : ℕ).Prime := ⟨(Rat.HeightOneSpectrum.primesEquiv v).2⟩`. Establish `hint : ∀ z : v.adicCompletion ℚ, Valued.v z ≤ 1 → ‖Rat.HeightOneSpectrum.adicCompletion.padicEquiv v z‖ ≤ 1`. Introduce `z hz`. Conclude with `(Rat.HeightOneSpectrum.adicCompletion.padicEquiv_bijOn v).mapsTo ((HeightOneSpectrum.mem_adicCompletionIntegers ℤ ℚ v).2 hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, map_zero]`. Conclude with `zero_ne_one hu`. Establish `hn : ‖Rat.HeightOneSpectrum.adicCompletion.padicEquiv v u‖ = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `le_antisymm (hint u hu.le)` to reduce the goal to its premises. Establish `h1` using `hint u⁻¹ (by rw [map_inv₀, hu, inv_one])`. Rewrite `h1` using `[map_inv₀, norm_inv]`. Establish `hne : Rat.HeightOneSpectrum.adicCompletion.padicEquiv v u ≠ 0` using `fun h => hu0 ((Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).injective (h.trans (map_zero _).symm))`. Conclude with `(inv_le_one₀ (norm_pos_iff.2 hne)).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hdiv : ¬ ((Rat.HeightOneSpectrum.primesEquiv v : ℕ) : ℤ) ∣ 2 * D`. Introduce `hd`. Apply `hv` to reduce the goal to its premises. Establish `hm : 2 * D ∈ Ideal.span {((Rat.HeightOneSpectrum.natGenerator v : ℕ) : ℤ)}` using `Ideal.mem_span_singleton.2 hd`. Rewrite `hm` using `[Rat.HeightOneSpectrum.span_natGenerator, Ideal.mem_map_of_equiv]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx, hxe⟩` from `hm`. Establish `hid : Rat.IsIntegralClosure.intEquiv ℤ x = x`. Simplify using `using eq_intCast (Rat.IsIntegralClosure.intEquiv ℤ : ℤ →+* ℤ) x`. Rewrite `hxe` using `[hid]`. Rewrite using `[← hxe]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hx`. Take `⟨x, y, hxy⟩` from `hP _ D hdiv _ hn`. Use `⟨(Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).symm x, (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).symm y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).symm hxy`. Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G1.pZUnitNorm :
     PadicUnitNorm → ZUnitNorm := by

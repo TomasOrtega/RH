@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.SecGlue.Pair
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -19,7 +19,7 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec x hV (isAffineOpen_top (Sp S)) hx.ge`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Establish `e : CommRingCat.ofHom (chartHom V x hx) = x.appLE V ⊤ hx.ge ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).hom` using `rfl`. Use `show Spec.map (CommRingCat.ofHom (chartHom V x hx)) ≫ hV.fromSpec = x`. Rewrite using `[e, Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_rebuild {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : Type} [CommRing S]
     (x : Sp S ⟶ Y) (hx : x ⁻¹ᵁ V = ⊤) : spMap (chartHom V x hx) ≫ hV.fromSpec = x := by
@@ -32,14 +32,14 @@ theorem chart_rebuild {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : 
     Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun _ _ => hV.range_fromSpec.subset ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem fromSpec_comp_top {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : Type} [CommRing S]
     (χ : Γ(Y, V) →+* S) : (spMap χ ≫ hV.fromSpec) ⁻¹ᵁ V = ⊤ :=
   top_le_iff.1 fun _ _ => hV.range_fromSpec.subset ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `e` using `chart_rebuild hV (spMap χ ≫ hV.fromSpec) hc`. Rewrite `e` using `[cancel_mono]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartHom_fromSpec {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : Type} [CommRing S]
     (χ : Γ(Y, V) →+* S) (hc : (spMap χ ≫ hV.fromSpec) ⁻¹ᵁ V = ⊤) :
@@ -49,7 +49,7 @@ theorem chartHom_fromSpec {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective e)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem chartHom_congr {Y : Scheme.{0}} (V : Y.Opens) {S : Type} [CommRing S] {x x' : Sp S ⟶ Y}
     (e : x = x') (h : x ⁻¹ᵁ V = ⊤) (h' : x' ⁻¹ᵁ V = ⊤) : chartHom V x h = chartHom V x' h' := by
@@ -59,7 +59,7 @@ def strHom {R : Type} [CommRing R] (X : Over (Sp R)) (V : X.left.Opens) : R →+
   ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ X.hom.appLE ⊤ V (le_top : V ≤ X.hom ⁻¹ᵁ ⊤)).hom
 
 /- English proof (translation)
-Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec X.hom (isAffineOpen_top (Sp R)) hV (le_top : V ≤ X.hom ⁻¹ᵁ ⊤)`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[← h, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fromSpec_over {R : Type} [CommRing R] (X : Over (Sp R)) {V : X.left.Opens} (hV : IsAffineOpen V) :
     hV.fromSpec ≫ X.hom = spMap (strHom X V) := by
@@ -69,7 +69,7 @@ theorem fromSpec_over {R : Type} [CommRing R] (X : Over (Sp R)) {V : X.left.Open
   rw [← h, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `e : spMap ((chartHom V u hu).comp (strHom X V)) = spMap f`. Rewrite using `[spMap_comp', ← fromSpec_over X hV, ← Category.assoc, chart_rebuild, hf]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartHom_comp_strHom {R : Type} [CommRing R] (X : Over (Sp R)) {V : X.left.Opens}
     (hV : IsAffineOpen V) {S : Type} [CommRing S] (f : R →+* S) (u : Sp S ⟶ X.left) (hu : u ⁻¹ᵁ V = ⊤)
@@ -79,7 +79,7 @@ theorem chartHom_comp_strHom {R : Type} [CommRing R] (X : Over (Sp R)) {V : X.le
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective e)
 
 /- English proof (translation)
-Establish `h1 : RingHom.Smooth (X.hom.appLE ⊤ V le_top).hom` using `X.hom.smooth_appLE (isAffineOpen_top (Sp R)) hV le_top`. Establish `h2 : RingHom.Smooth (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` using `RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.bijective`. Conclude with `h2.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_strHom {R : Type} [CommRing R] (X : Over (Sp R)) [Smooth X.hom] {V : X.left.Opens}
     (hV : IsAffineOpen V) : (strHom X V).Smooth := by
@@ -90,7 +90,7 @@ theorem smooth_strHom {R : Type} [CommRing R] (X : Over (Sp R)) [Smooth X.hom] {
   exact h2.comp h1
 
 /- English proof (translation)
-The claim follows from `(IsLocalization.Away.map_surjective_iff _ _ π c).2 fun y => let ⟨x, hx⟩ := hπ y; ⟨x, 0, by simp [hx]⟩`.
+A detailed English derivation is pending.
 -/
 theorem awayMap_surjective {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hπ : Function.Surjective π) (c : R) : Function.Surjective (Localization.awayMap π c) :=
@@ -98,7 +98,7 @@ theorem awayMap_surjective {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R 
     let ⟨x, hx⟩ := hπ y; ⟨x, 0, by simp [hx]⟩
 
 /- English proof (translation)
-Conclude with `IsLocalization.ker_map (S := Localization.Away c) (Localization.Away (π c)) π (M := Submonoid.powers c) (Submonoid.map_powers π c)`.
+A detailed English derivation is pending.
 -/
 theorem ker_awayMap {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀) (c : R) :
     RingHom.ker (Localization.awayMap π c) = (RingHom.ker π).map (algebraMap R (Localization.Away c)) := by
@@ -106,14 +106,14 @@ theorem ker_awayMap {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R
     (M := Submonoid.powers c) (Submonoid.map_powers π c)
 
 /- English proof (translation)
-Rewrite using `[ker_awayMap, ← Ideal.map_pow, hsq, Ideal.map_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_awayMap_sq {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hsq : RingHom.ker π ^ 2 = ⊥) (c : R) : RingHom.ker (Localization.awayMap π c) ^ 2 = ⊥ := by
   rw [ker_awayMap, ← Ideal.map_pow, hsq, Ideal.map_bot]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_comp _`.
+A detailed English derivation is pending.
 -/
 theorem awayMap_comp_algebraMap {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀) (c : R) :
     (Localization.awayMap π c).comp (algebraMap R (Localization.Away c)) =
@@ -125,9 +125,9 @@ end GlobalTheory.SecGlue.Pair
 namespace GlobalTheory.SecGlue.Pair
 
 /- English proof (translation)
-Establish `hu : IsUnit (algebraMap R₀ (Localization.Away (π d)) (π c))` using `isUnit_of_dvd_unit (map_dvd _ (map_dvd π hcd)) (IsLocalization.Away.algebraMap_isUnit (π d))`. Set `h : Localization.Away (π c) →+* Localization.Away (π d)` to `IsLocalization.Away.lift (π c) hu`. Establish `e1 : (Localization.awayMap π d).comp r = h.comp (Localization.awayMap π c)`. Apply `IsLocalization.ringHom_ext (Submonoid.powers c)` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, hr, awayMap_comp_algebraMap, RingHom.comp_assoc, awayMap_comp_algebraMap, ← RingHom.comp_assoc, IsLocalization.Away.lift_comp]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← spMap_comp', e1, spMap_comp', Category.assoc, he, ← Category.assoc, ← spMap_comp', IsLocalization.Away.lift_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_comp {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀) {Y : Scheme.{0}} (g₀ : Sp R₀ ⟶ Y)
     (c d : R) (hcd : c ∣ d) (e : Sp (Localization.Away c) ⟶ Y)
@@ -151,7 +151,7 @@ end GlobalTheory.SecGlue.Pair
 namespace GlobalTheory.SecGlue.Pair
 
 /- English proof (translation)
-Establish `e : (eP.toAlgHom : Localization.Away (a * b) →+* _).comp ρ = algebraMap (Localization.Away a) (Localization.Away (algebraMap R (Localization.Away a) b))`. Apply `IsLocalization.ringHom_ext (Submonoid.powers a)` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, hρ, eP.toAlgHom.comp_algebraMap]`. Conclude with `IsScalarTower.algebraMap_eq _ _ _`. Conclude with `RingHom.congr_fun e y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_restrict {R : Type} [CommRing R] (a b : R)
     (eP : Localization.Away (a * b) ≃ₐ[R] Localization.Away (algebraMap R (Localization.Away a) b))
@@ -167,7 +167,7 @@ theorem equiv_restrict {R : Type} [CommRing R] (a b : R)
   exact RingHom.congr_fun e y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsLocalization.algEquiv (Submonoid.powers (a * b)) _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_awayEquiv {R : Type} [CommRing R] (a b : R) :
     Nonempty (Localization.Away (a * b) ≃ₐ[R] Localization.Away (algebraMap R (Localization.Away a) b)) :=
@@ -178,7 +178,7 @@ end GlobalTheory.SecGlue.Pair
 namespace GlobalTheory.SecGlue.Pair
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, he, ← spMap_comp', hr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_over {Y : Scheme.{0}} {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (e : Sp B ⟶ Y)
     (p : Y ⟶ Sp A) (f : A →+* B) (he : e ≫ p = spMap f) (r : B →+* C) (g : A →+* C) (hr : r.comp f = g) :
@@ -193,27 +193,23 @@ open GlobalTheory.SecGlue.Pair in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π hπ hsq X hX g₀ hg₀ a b V hV ea hea hea₀ heaV eb heb heb₀`. Use `haveI := hX`. Use `letI : Algebra R Γ(X.left, V) := (strHom X V).toAlgebra`. Use `haveI : Algebra.Smooth R Γ(X.left, V) := smooth_strHom X hV`. Establish `hρ : (IsLocalization.Away.awayToAwayRight (S` using `Localization.Away a) (P := Localization.Away (a * b)) a b).comp (algebraMap R (Localization.Away a)) = algebraMap R (Localization.Away (a * b)) := RingHom.ext (IsLocalization.Away.awayToAwayRight_eq a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hρ' : (IsLocalization.Away.awayToAwayLeft (S` using `Localization.Away b) (P := Localization.Away (a * b)) b a).comp (algebraMap R (Localization.Away b)) = algebraMap R (Localization.Away (a * b)) := RingHom.ext (IsLocalization.Away.awayToAwayLeft_eq b a)`. Generalize the expression as in `IsLocalization.Away.awayToAwayRight (S := Localization.Away a) (P := Localization.Away (a * b)) a b = ρ at hρ ⊢`. Generalize the expression as in `IsLocalization.Away.awayToAwayLeft (S := Localization.Away b) (P := Localization.Away (a * b)) b a = ρ' at hρ' ⊢`. Establish `hred : spMap (Localization.awayMap π (a * b)) ≫ spMap ρ' ≫ eb = spMap (Localization.awayMap π (a * b)) ≫ spMap ρ ≫ ea` using `(red_comp π g₀ b (a * b) (dvd_mul_left b a) eb heb₀ ρ' hρ').trans (red_comp π g₀ a (a * b) (dvd_mul_right a b) ea hea₀ ρ hρ).symm`. Establish `h2 : (spMap ρ ≫ ea) ⁻¹ᵁ V = ⊤` using `preimage_spMap_comp_eq_top ρ heaV`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbV : (spMap ρ' ≫ eb) ⁻¹ᵁ V = ⊤` using `(GlobalTheory.T.preimage_eq_of_square_zero_thickening (Localization.Away (a * b)) (Localization.Away (π (a * b))) (Localization.awayMap π (a * b)) (awayMap_surjective π hπ _) (ker_awayMap_sq π hsq _) X.left (spMap ρ' ≫ eb) (spMap ρ ≫ ea) hred V).trans h2`. Set `φ : Γ(X.left, V) →ₐ[R] Localization.Away a` to `{ chartHom V ea heaV with commutes' := fun r => RingHom.congr_fun (chartHom_comp_strHom X hV _ ea heaV hea) r }`. Take `⟨eP⟩` from `exists_awayEquiv a b`. Establish `hePc : (eP.toAlgHom : Localization.Away (a * b) →+* Localization.Away (algebraMap R (Localization.Away a) b)).comp (algebraMap R (Localization.Away (a * b))) = algebraMap R (Localization.Away (algebraMap R (Localization.Away a) b))` using `eP.toAlgHom.comp_algebraMap`. Establish `heP` using `equiv_restrict a b eP ρ hρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `heb' : (spMap ρ' ≫ eb) ≫ X.hom = spMap (algebraMap R (Localization.Away (a * b)))` using `comp_over eb X.hom _ heb ρ' _ hρ'`. Set `ψ : Γ(X.left, V) →ₐ[R] Localization.Away (algebraMap R (Localization.Away a) b)` to `{ (eP : Localization.Away (a * b) →+* Localization.Away (algebraMap R (Localization.Away a) b)).comp (chartHom V (spMap ρ' ≫ eb) hbV) with commutes' := fun r => by show eP (chartHom V (spMap ρ' ≫ eb) hbV (strHom X V r)) = _`. Rewrite using `[← RingHom.comp_apply, chartHom_comp_strHom X hV _ _ hbV heb', AlgEquiv.commutes] }`. Establish `hJ : RingHom.ker (Localization.awayMap π a) ^ 2 = ⊥` using `ker_awayMap_sq π hsq a`. Establish `hcond : ∀ x, ψ x - algebraMap (Localization.Away a) (Localization.Away (algebraMap R (Localization.Away a) b)) (φ x) ∈ (RingHom.ker (Localization.awayMap π a)).map (algebraMap (Localization.Away a) (Localization.Away (algebraMap R (Localization.Away a) b)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `hd : chartHom V (spMap ρ' ≫ eb) hbV x - chartHom V (spMap ρ ≫ ea) h2 x ∈ RingHom.ker (Localization.awayMap π (a * b))`. Rewrite using `[RingHom.mem_ker, map_sub, sub_eq_zero, ← chartHom_spMap_comp V _ _ hbV (preimage_spMap_comp_eq_top _ hbV), ← chartHom_spMap_comp V _ _ h2 (preimage_spMap_comp_eq_top _ h2)]`. Conclude with `RingHom.congr_fun (chartHom_congr V hred _ _) x`. Rewrite `hd` using `[ker_awayMap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `Ideal.mem_map_of_mem (eP : Localization.Away (a * b) →+* Localization.Away (algebraMap R (Localization.Away a) b)) hd`. Rewrite `h3` using `[Ideal.map_map, show (eP : Localization.Away (a * b) →+* Localization.Away (algebraMap R (Localization.Away a) b)).comp (algebraMap R (Localization.Away (a * b))) = algebraMap R (Localization.Away (algebraMap R (Localization.Away a) b)) from RingHom.ext fun r => eP.commutes r, ma …`. Rewrite using `[ker_awayMap, Ideal.map_map, ← IsScalarTower.algebraMap_eq]`. Establish `e2 : algebraMap (Localization.Away a) (Localization.Away (algebraMap R (Localization.Away a) b)) (φ x) = eP (chartHom V (spMap ρ ≫ ea) h2 x)`. Rewrite using `[chartHom_spMap_comp V ρ ea heaV h2 x, heP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `h3`. Take `⟨N₀, hN⟩` from `GlobalTheory.T.exists_sqZero_extend_localizationAway_pow R Γ(X.left, V) (Localization.Away a) (RingHom.ker (Localization.awayMap π a)) hJ (algebraMap R (Localization.Away a) b) φ ψ hcond`. Use `⟨N₀, fun N hN' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨χ, hχJ, hχ⟩` from `hN N hN'`. Establish `htop` using `fromSpec_comp_top hV (χ : Γ(X.left, V) →+* Localization.Away a)`. Use `⟨spMap (χ : Γ(X.left, V) →+* Localization.Away a) ≫ hV.fromSpec, ?_, ?_, htop, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, fromSpec_over, ← spMap_comp']`. Conclude with `congrArg spMap (RingHom.ext fun r => χ.commutes r)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hea₀, ← chart_rebuild hV ea heaV, ← Category.assoc, ← Category.assoc, ← spMap_comp', ← spMap_comp']`. Use `congrArg (fun f => spMap f ≫ hV.fromSpec) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Use `hχJ x` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this`.
-
-Use `⟨h2, preimage_spMap_comp_eq_top ρ htop, fun i => by rw [Matrix.cons_val_fin_one]; exact hbV, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_one, Matrix.cons_val_zero]`. Rewrite using `[chartHom_spMap_comp V ρ _ htop, chartHom_fromSpec hV _ htop, chartHom_spMap_comp V ρ ea heaV]`. Apply `eP.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_sub, map_pow, heP, heP, AlgEquiv.commutes, IsScalarTower.algebraMap_apply R (Localization.Away a) (Localization.Away (algebraMap R (Localization.Away a) b))]`.
-
-Conclude with `hχ x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair_lift_comb : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
     ∀ (X : Over (Sp R)), Smooth X.hom → ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →

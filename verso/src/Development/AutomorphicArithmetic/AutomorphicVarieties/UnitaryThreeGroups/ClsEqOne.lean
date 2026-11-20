@@ -15,9 +15,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero ((N : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr (NeZero.ne N)⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Establish `h1` using `Chr.cls_spec N g ζ hζ.pow_eq_one`. Rewrite `h1` using `[hg ζ hζ.pow_eq_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ζ ^ (1 : ZMod N).val = ζ`. Rewrite using `[ZMod.val_one_eq_one_mod, hζ.eq_orderOf, pow_mod_orderOf, pow_one]`. Apply `Units.ext` to reduce the goal to its premises. Apply `ZMod.val_injective` to reduce the goal to its premises. Conclude with `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h1.symm.trans h2.symm)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem cls_eq_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (g : G ℚ Ω)
     (hg : ∀ ζ : Ω, ζ ^ N = 1 → g ζ = ζ) : Chr.cls ℚ Ω N g = 1 := by
@@ -33,9 +33,9 @@ private theorem cls_eq_one {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h1.symm.trans h2.symm)
 
 /- English proof (translation)
-Substitute `hY` using the available equality. Establish `e01` using `hb 0 1 (by decide)`. Establish `e10` using `hb 1 0 (by decide)`. Establish `e12` using `hb 1 2 (by decide)`. Establish `e21` using `hb 2 1 (by decide)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [corner, e01, e10, e12, e21, h1]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem block_form {k : Type} [Field k] (X : Matrix (Fin 3) (Fin 3) k) (Y : Matrix (Fin 2) (Fin 2) k)
     (hb : ∀ a b, Odd (wt a b) → X a b = 0) (h1 : X 1 1 = 1) (hY : Y = corner X) :
@@ -49,16 +49,16 @@ private theorem block_form {k : Type} [Field k] (X : Matrix (Fin 3) (Fin 3) k) (
   fin_cases i <;> fin_cases j <;> simp [corner, e01, e10, e12, e21, h1]
 
 /- English proof (translation)
-Simplify using `[conjBy, GG.mat, hg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_mat {Γ k : Type} [Group Γ] [Field k] (M : GL (Fin 3) k) (r : Γ →* GG 3 k) (g : Γ)
     (hg : (r g).right = 1) : (conjBy M r g).mat = (M : Matrix (Fin 3) (Fin 3) k) * (r g).mat * ((M⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k) := by
   simp [conjBy, GG.mat, hg]
 
 /- English proof (translation)
-Establish `e : ((M : Matrix (Fin 3) (Fin 3) k) * X * ((M⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k)) *ᵥ Pi.single 0 1 = a • Pi.single 0 1`. Rewrite using `[Matrix.mulVec_single_one]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `using h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h 1 0 (by decide)`. Simplify using `using h 2 0 (by decide)`. Rewrite using `[← Matrix.mulVec_smul, ← e, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eigvec {k : Type} [Field k] (M : GL (Fin 3) k) (X : Matrix (Fin 3) (Fin 3) k) (a : k)
     (h0 : ((M : Matrix (Fin 3) (Fin 3) k) * X * ((M⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k)) 0 0 = a)
@@ -77,11 +77,11 @@ private theorem eigvec {k : Type} [Field k] (M : GL (Fin 3) k) (X : Matrix (Fin 
     Units.inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hu : IsUnit ((2 : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes hl.out Nat.prime_two).2 h2`. Take `⟨u, hu⟩` from `hu`. Take `⟨s, hs, e⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, hs, fun n hn => ?_⟩` and prove the remaining obligations. Establish `e2 : ((cycBar ℚ Ω l s : (Qbar l)ˣ) : Qbar l) = ((2 : ℚ) : Qbar l)` using `by show ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom) (cycZ ℚ Ω l s : ℤ_[l]) = _`. Rewrite using `[e, hu, map_natCast]`. Simplify using the standard rewrite rules. Establish `e3` using `congrArg Units.val hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[Units.val_zpow_eq_zpow_val, e2, Units.val_one, ← Rat.cast_zpow]`. Establish `e4 : (2 : ℚ) ^ n = 1` using `by exact_mod_cast e3`. Conclude with `(zpow_eq_one_iff_right₀ (by norm_num) (by norm_num)).1 e4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_two {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [hl : Fact l.Prime] (h2 : l ≠ 2)
     (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
@@ -102,51 +102,45 @@ private theorem exists_two {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact (zpow_eq_one_iff_right₀ (by norm_num) (by norm_num)).1 e4
 
 /- English proof (translation)
-Introduce `hC Ω _ _ _ K _ _ _ l hl c N _ e ψ D U g₁ hM r h hII W hext hcont hdet`. Take `⟨h11, -, -⟩` from `typeII_facts hC D hM h hII`. Take `⟨-, -, -, -, -, -, -, -, -, -, hl1⟩` from `dat_facts D`. Set `ψQ : G ℚ Ω →* (Qbar l)ˣ` to `(Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom).comp (Chr.dirG ℚ Ω ψ)`. Establish `hΨ : ∀ g, D.ΨQ g = cycBar ℚ Ω l g ^ (e : ℤ) * ψQ g` using `fun g => by show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (chiO ℚ Ω l c.O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_zpow]`. Both sides reduce to the same expression. Establish `hfin : ∀ g, ψQ g ^ Nat.card (ZMod N)ˣ = 1` using `fun g => by show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (ψ.toUnitHom (Chr.cls ℚ Ω N g)) ^ _ = 1`. Rewrite using `[← map_pow, ← map_pow, pow_card_eq_one', map_one, map_one]`. Establish `hodd : Odd (discr K).natAbs` using `Nat.coprime_two_right.1 (D.gd.cop.coprime_dvd_right D.gd.N_even.two_dvd)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkill : ∀ g : G ℚ Ω, (∀ ζ : Ω, ζ ^ (N * (discr K).natAbs) = 1 → g ζ = ζ) → ψQ g = 1 ∧ D.η g = 1` using `fun g hg => by`. Prove the components needed by the constructor for the conclusion. Use `show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (ψ.toUnitHom (Chr.cls ℚ Ω N g)) = 1`. Rewrite using `[cls_eq_one N g fun ζ hζ => hg ζ (by rw [pow_mul, hζ, one_pow]), map_one, map_one]`. Rewrite using `[← MonoidHom.mem_ker, D.η_ker]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `UpperTheory.mem_galOf_quadratic_of_fixes_discr_roots_of_unity Ω K D.gd.quad hodd g fun ζ hζ => hg ζ (by rw [pow_mul', hζ, one_pow])`. Establish `hblk : ∀ g ∈ D.η.ker, (r g).mat = !![W g 0 0, 0, W g 0 1; 0, 1, 0; W g 1 0, 0, W g 1 1]` using `fun g hg => block_form _ _ (hII.1 g hg) (h11 g hg) (hext.1 g hg)`. Use `⟨⟨hcont, fun w hw => ?_, fun w hw => ?_⟩, fun A hAl s hs hfix => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Establish `hAl : ¬ A.valuation (l : Ω) < 1` using `fun h' => hw (((places ℚ Ω l A).2.2.1 w hA).1 h')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hMM⟩` from `pt_inertia_away D hM h A hAl`. Establish `h1` using `UpperTheory.diagonal_on_subgroup_of_conjugate (Ine (F := ℚ) A ⊓ D.η.ker) W ψQ M fun g hg => by`. Establish `hc : cycZ ℚ Ω l g = 1` using `(places ℚ Ω l A).2.2.2 hAl hg.1`. Establish `hc' : cycBar ℚ Ω l g = 1`. Rewrite using `[cycBar, MonoidHom.comp_apply, hc, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hblk g hg.2, hMM g hg.1 hg.2, GG.mat, unitaryThreeReflection_left, tor_val, hΨ, hc', _root_.one_zpow, one_mul]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [wt1]`. Take `⟨χ, hχ, hd⟩` from `UpperTheory.exists_isDiagOn_of_isDiagOn_inf_ker_sign _ _ W ψQ h1`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, hA, χ, fun i s hs => hχ i s (hkill s hs).1 (hkill s hs).2, hd⟩`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Establish `hAl : A.valuation (l : Ω) < 1` using `((places ℚ Ω l A).2.2.1 w hA).2 hw`. Take `⟨-, M, hup, hdiag⟩` from `pt_inertia_above hC D hM h A hAl`. Take `⟨hIk, s₀, hs₀, hu⟩` from `hl1 A hAl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hnorm, hID, -⟩` from `Chr.decCyc Ω l A hl.out hAl`. Establish `hs₀' : (D.ΨQ s₀ : Qbar l) ^ 2 ≠ 1`. Use `(hu.map (algebraMap c.O (PadicAlgCl l))).ne_zero` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, map_one, sub_ne_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set v : Fin 3 → Qbar l := ((M⁻¹ : GL (Fin 3) (Qbar l)) : Matrix (Fin 3) (Fin 3) (Qbar l)) *ᵥ Pi.single 0 1 with hv`. Establish `hv0 : v ≠ 0` using `fun h0 => by`. Use `congrArg (fun x => ((M : Matrix (Fin 3) (Fin 3) (Qbar l)) *ᵥ x) 0) (hv.symm.trans h0)` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Simplify using `at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ s ∈ Ine (F` using `ℚ) A, !![W s 0 0, 0, W s 0 1; 0, 1, 0; W s 1 0, 0, W s 1 1] *ᵥ v = (D.ΨQ s : Qbar l) • v := fun s hs => by`. Establish `hr : (r s).right = 1` using `(h.mult s).trans (hIk hs)`. Rewrite using `[← hblk s (hIk hs)]`. Use `eigvec M _ _ ?_ fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[← conj_mat M r s hr, hdiag s hs 0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[GG.mat, tor_val, wt1]`. Rewrite using `[← conj_mat M r s hr]`. Conclude with `hup s (hID hs) (hIk hs) i j hij`. Establish `hv1 : v 1 = 0`. Use `congrFun (hev s₀ hs₀) 1` as an intermediate fact.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_three] at this`. Assume the negation of the conclusion as `hne`. Establish `h3 : (D.ΨQ s₀ : Qbar l) = 1` using `(mul_right_cancel₀ hne ((one_mul _).trans this)).symm`. Conclude with `hs₀' (by rw [h3, one_pow])`. Take `⟨κ, hflag, hκ⟩` from `UpperTheory.exists_isFlagOn_of_eigenvector_normal_subgroup (Dec (F := ℚ) A) (Ine (F := ℚ) A) W D.ΨQ ![v 0, v 2] (fun d hd s hs => hnorm.conj_mem' ⟨s, hID hs⟩ hs ⟨d, hd⟩) (fun h0 => hv0 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `congrFun h0 0`. Conclude with `hv1`. Conclude with `congrFun h0 1))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun s hs => by`. Establish `a0` using `congrFun (hev s hs) 0`. Establish `a2` using `congrFun (hev s hs) 2`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `a0` using `[Matrix.mulVec, dotProduct, Fin.sum_univ_three, Fin.sum_univ_two]`. Simplify `a2)` using `[Matrix.mulVec, dotProduct, Fin.sum_univ_three, Fin.sum_univ_two]`. Use the proof step `(fun s hs => by rw [hdet, show D.η s = 1 from hIk hs]; simp)`. Use the proof step `⟨s₀, hs₀, hs₀'⟩`. Establish `hκ' : ∀ i (s : ↥(Dec (F` using `ℚ) A)), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ i s = cycBar ℚ Ω l s ^ (![(e : ℤ), -(e : ℤ)] i) * (![ψQ, ψQ⁻¹] i) s := fun i s hs => by fin_cases i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hκ s hs).1.trans (hΨ s)`. Use `(hκ s hs).2.trans ?_` and prove the remaining obligations. Rewrite using `[hΨ, mul_inv, ← _root_.zpow_neg]`. Both sides reduce to the same expression. Use `⟨A, hA, ![ψQ, ψQ⁻¹], κ, fun i s hs => ?_, hflag, hκ', Or.inl fun i j hij => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases i <;> simp [(hkill s hs).1]`. Take `⟨s, hs, hn⟩` from `exists_two D.gd.l_odd A hAl`. Establish `h1` using `DFunLike.congr_fun hij ⟨s, hID hs⟩`. Rewrite `h1` using `[MonoidHom.mul_apply, hκ' i _ hs, hκ' j _ hs]`. Establish `hf : ∀ i, ((![ψQ, ψQ⁻¹] i) s) ^ Nat.card (ZMod N)ˣ = 1` using `fun i => by fin_cases i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfin s`. Use `show (ψQ s)⁻¹ ^ _ = 1`. Rewrite using `[inv_pow, hfin, inv_one]`. Establish `h2` using `congrArg (· ^ Nat.card (ZMod N)ˣ) h1`. Simplify using `only [mul_pow, hf, mul_one] at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(cycBar ℚ Ω l s ^ _) ^ _ = (cycBar ℚ Ω l s ^ _) ^ _ * cycBar ℚ Ω l s ^ _ at h2`. Rewrite `h2` using `[← mul_pow, ← _root_.zpow_add_one, ← mul_inv_eq_one, ← inv_pow, ← mul_pow, ← _root_.zpow_sub, ← _root_.zpow_natCast, ← _root_.zpow_mul]`. Establish `h3` using `(mul_eq_zero.1 (hn _ h2)).resolve_right (by exact_mod_cast Nat.card_pos.ne')`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at h3 <;> omega`. Take `⟨hch, -⟩` from `pt_inertia_above hC D hM h A hAl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hk : s ∈ D.η.ker` using `(hl1 A hAl).1 hs`. Establish `hψ : ψQ s = 1` using `by show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (ψ.toUnitHom (Chr.cls ℚ Ω N s)) = 1`. Rewrite using `[cls_eq_one N s hfix, map_one, map_one]`. Establish `htr : (r s).mat.trace = (r0 D.η D.ΨQ s).mat.trace`. Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, hch s hs]`.
-
-Establish `hd : (W s : Matrix (Fin 2) (Fin 2) (PadicAlgCl l)).det = 1`. Rewrite using `[hdet, show D.η s = 1 from hk]`. Simplify using the standard rewrite rules. Establish `hu : ((cycBar ℚ Ω l s ^ (e : ℤ) : (Qbar l)ˣ) : Qbar l) * ((cycBar ℚ Ω l s ^ (-(e : ℤ)) : (Qbar l)ˣ) : Qbar l) = 1`. Rewrite using `[← Units.val_mul, ← _root_.zpow_add, add_neg_cancel, _root_.zpow_zero, Units.val_one]`.
-
-Establish `ht : (W s : Matrix (Fin 2) (Fin 2) (PadicAlgCl l)).trace = ((cycBar ℚ Ω l s ^ (e : ℤ) : (Qbar l)ˣ) : Qbar l) + ((cycBar ℚ Ω l s ^ (-(e : ℤ)) : (Qbar l)ˣ) : Qbar l)`. Rewrite `htr` using `[hblk s hk, GG.mat, unitaryThreeReflection_left, tor_val, hΨ, hψ, mul_one, Matrix.trace_diagonal, Matrix.trace_fin_three, Fin.sum_univ_three]`. Rewrite using `[Matrix.trace_fin_two, _root_.zpow_neg]`. Establish `w0 : wt1 0 = 1` using `by decide`. Establish `w1 : wt1 1 = 0` using `by decide`.
-
-Establish `w2 : wt1 2 = -1` using `by decide`. Simplify using `only [w0, w1, w2, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.cons_val_fin_one, _root_.zpow_one, _root_.zpow_zero, _root_.zpow_neg, Units.val_one] at htr`. Take the linear combination `htr`. Rewrite using `[Matrix.charpoly_fin_two, ht, hd, ← hu, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.typeII_ord :
     CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

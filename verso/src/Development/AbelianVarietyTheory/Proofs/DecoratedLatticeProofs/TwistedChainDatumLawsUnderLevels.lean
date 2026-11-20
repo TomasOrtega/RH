@@ -26,7 +26,7 @@ namespace GlobalTheory.ChainTw.TwLaw
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Lev.levChi levFn`. Use `congr 3`. Simplify using `only [Lev.flagL, Lev.withP, Lev.datY, LevelP.full, LevelP.triv, if_true]`. Conclude with `(Lev.subgroupCharExtension_one_apply _ _).trans (Lev.subgroupCharExtension_one_apply _ _).symm`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levChi_flag (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (r t j : ℕ) (hr : r ≤ V.rank)
     (Pg Q : Finset (Pl D.host.E)) (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
@@ -39,7 +39,7 @@ theorem levChi_flag (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (r t j : ℕ)
   exact (Lev.subgroupCharExtension_one_apply _ _).trans (Lev.subgroupCharExtension_one_apply _ _).symm
 
 /- English proof (translation)
-Use `⟨(Subgroup.mem_inf.1 hκ).1, hκ.2.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hκ.2.2`. Simplify using `only [Lev.datY, LevelP.triv, if_true] at h2`. Conclude with `Subgroup.mem_bot.1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_one_of_mem (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (r t j : ℕ) (hr : r ≤ V.rank)
     (Pg Q : Finset (Pl D.host.E)) (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
@@ -51,14 +51,14 @@ theorem lift_one_of_mem (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (r t j : 
   exact Subgroup.mem_bot.1 h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem lift_one_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     Lev.IsLevelLift V β L 1 1 :=
   ⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩
 
 /- English proof (translation)
-Unfold `Lev.levChi`. Rewrite using `[map_one]`. Establish `: levFn β L 1 = 1` using `(levChar D.sp.cm V.gram β L).map_one`. Rewrite using `[this, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem levChi_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     Lev.levChi V β L 1 = 1 := by
@@ -71,17 +71,15 @@ set_option maxHeartbeats 1000000 in
 open Classical in
 
 /- English proof (translation)
-Take `⟨hr, hL, hfs⟩` from `hs`. Take `⟨hr', hL', hfs'⟩` from `hs'`. Take `⟨f₀, hv⟩` from `hp.vec`. Take `⟨hres, uS, uT⟩` from `GlobalTheory.ChainOnto.levRes_step D c hw.com k hk`. Rewrite `hres`, `uS`, `uT` using `[hw.union]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG : ∀ PP ∈ w.Pg, GlobalTheory.StepLaw.ResAt (c.chS (k + 1)) PP (w.chi (k + 1) PP)⁻¹ ∧ GlobalTheory.StepLaw.ResAt (c.chT (k + 1)) PP (w.chi (k + 1) PP)⁻¹` using `fun PP hP => by`. Rewrite using `[← hw.chiPg (k + 1) PP hP]`. Conclude with `hres PP (Finset.mem_union_left _ hP)`. Establish `hQ : ∀ PP ∈ w.Q, GlobalTheory.StepLaw.ResAt (c.chS (k + 1)) PP (w.ξ PP) ∧ GlobalTheory.StepLaw.ResAt (c.chT (k + 1)) PP (w.ξ PP)` using `fun PP hP => by`. Use `hres PP (Finset.mem_union_right _ hP)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hw.chiQ (k + 1) PP hP, inv_inv]`. Then use the resulting hypothesis. Rewrite `hv` using `[hL]`. Establish `ea : s.V.rank = D.R.r + k * D.R.t` using `hfs.rank`. Establish `eb : s'.V.rank = D.R.r + (k + 1) * D.R.t` using `hfs'.rank`. Establish `law` using `fun {g0 : G0 w.Pg D.R.r} {g : GA D s.V} {h : GA D s'.V} => @GlobalTheory.StepVecLaw.step_law D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω (cart s.M) (cart s'.M) s.Λ s'.Λ s.β s'.β f₀ p.f hp.weil hfs.sigOK hfs'.sigOK (GlobalTheory.Chain.VacVec.cart_isCartanInv s.M) (Globa …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun κ hκ => ?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite `hκ`, the goal using `[hL]`. Establish `h1` using `law (lift_one_of_mem _ _ _ _ _ _ _ _ _ _ κ hκ) (lift_one_one _ _ _)`. Rewrite `h1` using `[levChi_flag, levChi_flag, levChi_one, inv_one, one_smul]`. Establish `hne : Lev.levChi s.V s.β (Lev.datY s.V.rank D.R.r D.R.t k hr w.Pg w.Q (LevelP.triv w.Pg D.R.r ℂ) w.chi w.ξ Lev.Frm.B) κ ≠ 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Lev.levChi`. Conclude with `Units.ne_zero _`. Conclude with `(inv_smul_eq_iff₀ hne).1 h1`. Rewrite `hκ`, the goal using `[hL']`. Establish `h1` using `law (lift_one_one _ _ _) (lift_one_of_mem _ _ _ _ _ _ _ _ _ _ κ hκ)`.
-
-Rewrite `h1` using `[levChi_flag, levChi_flag, levChi_one, inv_one, one_smul]`. Conclude with `h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecLawQ (D : D7) (c : Com D) (w : Twist D) (hw : w.Is c) (k : ℕ) (hk : k < D.R.m) (s s' : PiLocalization₂ D)
     (hs : IsStage c w k s) (hs' : IsStage c w (k + 1) s') (p : Step c s s') (hp : IsStep w (k + 1) p) :
@@ -119,7 +117,7 @@ theorem vecLawQ (D : D7) (c : Com D) (w : Twist D) (hw : w.Is c) (k : ℕ) (hk :
     exact h1
 
 /- English proof (translation)
-Introduce `D _ c w hw k hk s s' hs hs' p hp φ`. Take `⟨h1, h2⟩` from `vecLawQ D c w hw k hk s s' hs hs' p hp`. Use `⟨fun κ hκ => ?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.FiniteFock.om_pureTensorO_of_finite c.ψ c.θ s.V s'.V _ _ p.ω hw.com.inf hp.weil _ _ _ _ p.f hp.theta κ (Subgroup.mem_inf.1 hκ).1 1 (one_mem _) _ (h1 κ hκ) φ`. Conclude with `GlobalTheory.FiniteFock.om_pureTensorO_of_finite c.ψ c.θ s.V s'.V _ _ p.ω hw.com.inf hp.weil _ _ _ _ p.f hp.theta 1 (one_mem _) κ (Subgroup.mem_inf.1 hκ).1 _ (h2 κ hκ) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levelLawQ : ∀ D : D7, LevelLawQ D := by
   intro D _ c w hw k hk s s' hs hs' p hp φ

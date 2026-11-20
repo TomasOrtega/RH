@@ -10,11 +10,9 @@ open _root_.Neutral.B1 ReciprocityTheory.Coh Function
 variable {p : ℕ} [Fact p.Prime] {K L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Establish `hnt : ∃ x : K, 1 < ‖x‖`. Take `⟨x, hx⟩` from `NormedField.exists_one_lt_norm ℚ_[p]`. Use `⟨algebraMap ℚ_[p] K x, ?_⟩` and prove the remaining obligations. Use `show 1 < ‖algebraMap ℚ_[p] (PadicAlgCl p) x‖`. Rewrite using `[norm_algebraMap']` and apply the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `_ : NontriviallyNormedField K` to `{ (inferInstance : NormedField K) with non_trivial := hnt }`. Establish `: CompleteSpace K` using `FiniteDimensional.complete ℚ_[p] K`. Set `_ : NormedAlgebra K E` to `{ (inferInstance : Algebra K E) with norm_smul_le := fun a x => le_of_eq (by show ‖(a : PadicAlgCl p) * (x : PadicAlgCl p)‖ = _`. Rewrite using `[norm_mul]`. Use the proof step `rfl) }`.
-
-Conclude with `UnitsFilt.exists_units_subgroup (K := K) (L := E)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_units_subgroup_padic (hK : FiniteDimensional ℚ_[p] K) (E : IntermediateField K (PadicAlgCl p))
     [FiniteDimensional K E] [IsGalois K E] : ∃ S : Subgroup Eˣ,

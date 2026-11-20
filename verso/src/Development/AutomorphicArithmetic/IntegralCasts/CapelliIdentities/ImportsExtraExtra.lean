@@ -3,25 +3,23 @@ import Mathlib
 open Filter Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ _ K S hK hSK h1 Ψ φ hΨ hΨS hφS hrel l _ hconv`. Establish `hφ1 : φ 1 = 1`. Use `hrel 1 1` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, inv_one, one_mul]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hΨx : ∀ y, Ψ y = Ψ 1 * φ y` using `fun y => by`. Use `hrel 1 y` as an intermediate fact. Rewrite `this` using `[inv_one, one_mul]`. Rewrite using `[← this, mul_inv_cancel_left]`. Establish `hd : ∀ x y, φ (x⁻¹ * y) = (φ x)⁻¹ * φ y` using `fun x y => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hrel x y, hΨx x, hΨx y, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Establish `hmul : ∀ p q, φ (p * q) = φ p * φ q`. Introduce `p q`. Establish `hinv : φ p⁻¹ = (φ p)⁻¹`. Use `hd p 1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_one, hφ1, mul_one]`. Conclude with `this`. Use `hd p⁻¹ q` as an intermediate fact. Rewrite `this` using `[inv_inv, hinv, inv_inv]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hit : ∀ n x, Ψ^[n] x = Ψ^[n] 1 * φ^[n] x`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Introduce `x`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', Function.iterate_succ_apply', ih x, hΨx (Ψ^[n] 1 * φ^[n] x), hΨx (Ψ^[n] 1), hmul, mul_assoc]`. Establish `ha : Ψ 1 ∈ S` using `hΨS 1 h1`. Establish `hPS : ∀ n, Ψ^[n] 1 ∈ S` using `fun n => (Set.MapsTo.iterate (f := Ψ) hΨS n) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφa : ∀ n, φ^[n] (Ψ 1) ∈ S` using `fun n => (Set.MapsTo.iterate (f := φ) hφS n) ha`. Establish `hstep : ∀ n, Ψ (Ψ^[n] 1) = Ψ^[n] 1 * φ^[n] (Ψ 1)` using `fun n => by`. Rewrite using `[← Function.iterate_succ_apply' Ψ n 1, Function.iterate_succ_apply, hit]`. Establish `hlim : Tendsto (fun m : ℕ => φ^[l * m] (Ψ 1)) atTop (𝓝 1)`. Rewrite using `[(nhds_basis_opens (1 : G)).tendsto_right_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `U ⟨h1U, hU⟩`. Take `⟨m₀, hm₀⟩` from `hconv U hU h1U`. Conclude with `eventually_atTop.2 ⟨m₀, fun m hm => hm₀ m hm _ ha⟩`. Take `⟨v, hvK, hv⟩` from `hK.exists_mapClusterPt (f := (atTop : Filter ℕ)) (u := fun m : ℕ => Ψ^[l * m] 1) (by`. Rewrite using `[le_principal_iff, mem_map]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `univ_mem' fun m => hSK (hPS (l * m)))`. Take `⟨𝒰, h𝒰, hu⟩` from `mapClusterPt_iff_ultrafilter.1 hv`. Use `⟨v, hvK, ?_⟩` and prove the remaining obligations. Establish `h₁ : Tendsto (fun m : ℕ => Ψ (Ψ^[l * m] 1)) 𝒰 (𝓝 (Ψ v))` using `(hΨ.tendsto v).comp hu`. Establish `h₂ : Tendsto (fun m : ℕ => Ψ (Ψ^[l * m] 1)) 𝒰 (𝓝 (v * 1))`.
-
-Repeatedly rewrite using `[hstep]`. Conclude with `hu.mul (hlim.mono_left h𝒰)`. Rewrite `h₂` using `[mul_one]`. Conclude with `tendsto_nhds_unique h₁ h₂`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ydb1.main :
     ∀ {G : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] {K S : Set G},

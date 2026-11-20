@@ -5,7 +5,7 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RestrSchA.mem_schA_comp_extend | exact fun _ => @GlobalTheory.RestrSchA.mem_schA_comp_extend | exact GlobalTheory.RestrSchA.mem_schA_comp_extend | exact @GlobalTheory.RestrSchA.mem_schA_comp_extend trivial`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.Mix.T.extend_by_zero_mem_schA : ∀ (F : Type) [Field F] [NumberField F] {κ₁ κ : Type} [Fintype κ₁] [Fintype κ] (j : κ₁ → κ), Function.Injective j →
     ∀ Φ ∈ schA F κ, (fun y => Φ (Function.extend j y 0)) ∈ schA F κ₁ := by

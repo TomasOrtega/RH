@@ -8,9 +8,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.CayleySignature.eps48`. Use `split_ifs with h1`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem parabolicSign_false_iff (k r : ℕ) (hk : 1 ≤ k) (i : Fin (2 * r + k + 1)) :
     Formalism.MainNotions.CayleySignature.eps48 k r i = false ↔ k ≤ i.val ∧ (i.val - k) % 2 = 0 := by
@@ -20,13 +20,13 @@ theorem parabolicSign_false_iff (k r : ℕ) (hk : 1 ≤ k) (i : Fin (2 * r + k +
   · simp; omega
 
 /- English proof (translation)
-Unfold `qOf`. Establish `hs : (Finset.univ.filter fun a : Fin (2 * r + k + 1) => Formalism.MainNotions.CayleySignature.eps48 k r a = false) = Finset.univ.image (fun j : Fin (r + 1) => (⟨k + 2 * j.val, by omega⟩ : Fin (2 * r + k + 1)))`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, parabolicSign_false_iff k r hk]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨(i.val - k) / 2, by omega⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce and unpack `⟨j, rfl⟩`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, Finset.card_image_of_injective]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y hxy`. Simplify using `only [Fin.mk.injEq] at hxy`. Use `ext`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers.
 -/
 theorem noncompactCount_parabolicSign (k r : ℕ) (hk : 1 ≤ k) : qOf (Formalism.MainNotions.CayleySignature.eps48 k r) = r + 1 := by
   unfold qOf
@@ -48,7 +48,7 @@ theorem noncompactCount_parabolicSign (k r : ℕ) (hk : 1 ≤ k) : qOf (Formalis
     ext; omega
 
 /- English proof (translation)
-Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin (2 * r + k + 1)))) (fun a => Formalism.MainNotions.CayleySignature.eps48 k r a = true)` as an intermediate fact. Simplify using `only [Finset.card_univ, Fintype.card_fin, Bool.not_eq_true] at this`. Establish `hq` using `noncompactCount_parabolicSign k r hk`. Unfold `qOf at hq`. Unfold `pOf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -63,7 +63,7 @@ theorem compactCount_parabolicSign (k r : ℕ) (hk : 1 ≤ k) :
   omega
 
 /- English proof (translation)
-Unfold `hNeed hNum`. Rewrite using `[compactCount_parabolicSign k r hk, noncompactCount_parabolicSign k r hk]`. Simplify using `only [Nat.cast_min]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gapBound_parabolicSign (k r : ℕ) (hk : 1 ≤ k) :
     hNeed (Formalism.MainNotions.CayleySignature.eps48 k r) = hNum (2 * r + k + 1) (r + 1) := by
@@ -72,9 +72,9 @@ theorem gapBound_parabolicSign (k r : ℕ) (hk : 1 ≤ k) :
   simp only [Nat.cast_min]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.CayleySignature.lam48`. Rewrite using `[dif_neg (by simp only; omega), dif_neg (by omega)]`. Establish `e1 : b ⟨y.val - 1 - (k - 1), by omega⟩ = b ⟨y.val - k, by omega⟩` using `congrArg b (Fin.ext (by simp only; omega))`. Establish `e2 : b ⟨y.val - (k - 1), by omega⟩ = b ⟨y.val - k + 1, by omega⟩` using `congrArg b (Fin.ext (by simp only; omega))`. Simplify using `only at e1 e2 ⊢`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem parabolicWeight_sub_succ (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ) (hk : 1 ≤ k)
     (y : Fin (2 * r + k + 1)) (hy : k ≤ y.val) :
@@ -90,17 +90,17 @@ theorem parabolicWeight_sub_succ (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin 
   rw [e1, e2]; ring
 
 /- English proof (translation)
-Establish `key : ∀ x y : Fin (2 * r + k + 1), x < y → Formalism.MainNotions.CayleySignature.eps48 k r x ≠ Formalism.MainNotions.CayleySignature.eps48 k r y → h ≤ Formalism.MainNotions.CayleySignature.lam48 k r v b x - Formalism.MainNotions.CayleySignature.lam48 k r v b y`. Introduce `x y hxy hne`. Establish `hy : k ≤ y.val`. Assume the negation of the conclusion as `hcon`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx : ¬ (Formalism.MainNotions.CayleySignature.eps48 k r x = false)`. Rewrite using `[parabolicSign_false_iff k r hk]`. Use `Fin.lt_def.mp hxy` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hy' : ¬ (Formalism.MainNotions.CayleySignature.eps48 k r y = false)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[parabolicSign_false_iff k r hk]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Bool.not_eq_false] at hx hy'`. Rewrite using `[hx, hy']`. Establish `hst` using `parabolicWeight_sub_succ k r v b hk y hy`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Formalism.MainNotions.CayleySignature.lam48 k r v b ⟨y.val - 1, by omega⟩ ≤ Formalism.MainNotions.CayleySignature.lam48 k r v b x` using `hanti.antitone (show x ≤ (⟨y.val - 1, by omega⟩ : Fin (2 * r + k + 1)) from by`. Rewrite using `[Fin.le_def]`. Use `Fin.lt_def.mp hxy` as an intermediate fact. Simplify using `only`. Use the proof step `omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl` using `hlow ⟨y.val - k, by omega⟩ (by simp only; omega)`. Simplify using `only at hl`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a a' hne`. Break down `lt_trichotomy a a' with h1 | h1 | h1` into its components or cases.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (key a a' h1 hne) (le_abs_self _)`. Conclude with `absurd (h1 ▸ rfl) hne`. Rewrite using `[abs_sub_comm]`. Conclude with `le_trans (key a' a h1 (Ne.symm hne)) (le_abs_self _)`.
+A detailed English derivation is pending.
 -/
 theorem gapAtLeast_parabolicWeight (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fin (2 * r + 2) → ℝ) (hk : 1 ≤ k) (h : ℝ)
     (hanti : StrictAnti (Formalism.MainNotions.CayleySignature.lam48 k r v b)) (hlow : Formalism.MainNotions.CayleySignature.LowGapGe h r b) :
@@ -132,13 +132,13 @@ theorem gapAtLeast_parabolicWeight (k r : ℕ) (v : Fin (k - 1) → ℝ) (b : Fi
   · rw [abs_sub_comm]; exact le_trans (key a' a h1 (Ne.symm hne)) (le_abs_self _)
 
 /- English proof (translation)
-Introduce `k r z c u v b hS`. Take `⟨hk, hev, hz, hT, hc, hu, hlam, hint, hhalf, t, ht, htn, ht1801, hgap⟩` from `hS`. Set `g : Fin (2 * r + 1) → ℝ` to `fun j => b ⟨j.val + 1, by omega⟩ - b ⟨j.val, by omega⟩`. Set `h : ℝ` to `Finset.univ.inf' Finset.univ_nonempty g`. Establish `hlow : Formalism.MainNotions.CayleySignature.LowGapGe h r b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j hj`. Conclude with `Finset.inf'_le g (Finset.mem_univ (⟨j.val, by omega⟩ : Fin (2 * r + 1)))`. Establish `hX : 2 * ((Formalism.MainNotions.CayleySignature.rk48 k r + (2 * r + 2) * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3 < h`. Rewrite using `[Finset.lt_inf'_iff]`. Introduce `j _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hgap ⟨j.val, by omega⟩ (by simp only; omega)`. Establish `hN : hNeed (Formalism.MainNotions.CayleySignature.eps48 k r) < h`. Rewrite using `[gapBound_parabolicSign k r hk]`. Use `gapNum (2 * r + k + 1) (r + 1) t h (by omega) (by omega) (by omega) (by unfold Formalism.MainNotions.CayleySignature.rk48 at htn; omega) ?_` and prove the remaining obligations. Establish `e : (2 * r + k + 1 + 2 * (r + 1) * t : ℕ) = Formalism.MainNotions.CayleySignature.rk48 k r + (2 * r + 2) * t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `Formalism.MainNotions.CayleySignature.rk48`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hX`. Conclude with `⟨h, hk, hev, hz, hT, hc, hu, hlam, hint, hhalf, hlow, hlam.1, gapAtLeast_parabolicWeight k r v b hk h hlam.1 hlow, hN⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gapBig_gapLap : GapBigLapStatement := by
   intro k r z c u v b hS

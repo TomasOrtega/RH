@@ -18,17 +18,17 @@ section General
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Use `GlobalTheory.countable_of_discrete_subgroup Γ` as an intermediate fact. Take `⟨D, hD, hu, -⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup Γ`. Take `⟨c, hc⟩` from `exists_injective_nat Γ`. Set `S : Set G` to `K ∩ ⋃ g : Γ, ((fun y => g • y) ⁻¹' D ∩ ⋂ h : Γ, ⋂ _ : c h < c g, ((fun y => (h⁻¹ * g) • y) ⁻¹' K)ᶜ)`. Establish `hS : ∀ y, y ∈ S ↔ y ∈ K ∧ ∃ g : Γ, g • y ∈ D ∧ ∀ h : Γ, c h < c g → (h⁻¹ * g) • y ∉ K` using `fun y => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [S, Set.mem_inter_iff, Set.mem_iUnion, Set.mem_iInter, Set.mem_preimage, Set.mem_compl_iff]`. Use `⟨S, Set.inter_subset_left, IsFundamentalDomain.mk' (MeasurableSet.nullMeasurableSet ?_) fun x => ?_⟩` and prove the remaining obligations. Conclude with `hK.measurableSet.inter <| MeasurableSet.iUnion fun g => (measurable_const_smul g hD).inter <| MeasurableSet.iInter fun h => MeasurableSet.iInter fun _ => (measurable_const_smul _ hK.measurableSet).compl`. Take `⟨d, hd, hdu⟩` from `hu x`. Establish `hex : ∃ n, ∃ g : Γ, c g = n ∧ (g⁻¹ * d) • x ∈ K`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, h⟩` from `hcov x`. Use `⟨_, d * (⟨γ, hγ⟩ : Γ)⁻¹, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv, inv_mul_cancel_right]`. Conclude with `h`. Take `⟨g, hg, hgK⟩` from `Nat.find_spec hex`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g⁻¹ * d, (hS _).2 ⟨hgK, g, ?_, fun h hh hK' => ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel_left]`. Conclude with `hd`. Use `Nat.find_min hex (hg ▸ hh) ⟨h, rfl, ?_⟩` and prove the remaining obligations. Rewrite `hK'` using `[smul_smul, mul_assoc, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hkK, g', h1, h2⟩` from `(hS _).1 hk`. Rewrite `h1` using `[smul_smul]`. Establish `e : g' * k = d` using `hdu _ h1`. Establish `ek : k = g'⁻¹ * d` using `by rw [← e, inv_mul_cancel_left]`. Establish `hle : Nat.find hex ≤ c g'` using `Nat.find_min' hex ⟨g', rfl, ek ▸ hkK⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hle.eq_or_lt with h | h` into its components or cases. Rewrite using `[ek, hc (hg.trans h)]`. Use `(h2 g (hg ▸ h) ?_).elim` and prove the remaining obligations. Rewrite using `[smul_smul, mul_assoc, e]`. Conclude with `hgK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fundamentalDomain_subset [SecondCountableTopology G] (Γ : Subgroup G) [DiscreteTopology Γ] {K : Set G}
     (hK : IsClosed K) (hcov : ∀ x : G, ∃ γ ∈ Γ, γ * x ∈ K) (μ : Measure G) :
@@ -68,9 +68,9 @@ theorem exists_fundamentalDomain_subset [SecondCountableTopology G] (Γ : Subgro
 open Pointwise in
 
 /- English proof (translation)
-Establish `hsub : F ⊆ ⋃ γ : Γ, ((γ • K) ∩ F)`. Introduce `g hg`. Take `⟨γ, hγ, hk⟩` from `hcov g`. Use `Set.mem_iUnion.2 ⟨(⟨γ, hγ⟩ : Γ)⁻¹, ?_, hg⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv_smul_set_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Use `ne_of_lt ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem measure_ne_top_of_cocompact (Γ : Subgroup G) [Countable Γ] {K : Set G} (hK : IsCompact K)
     (hcov : ∀ x : G, ∃ γ ∈ Γ, γ * x ∈ K) (μ : Measure G) [μ.IsHaarMeasure] {F : Set G}
@@ -90,13 +90,13 @@ theorem measure_ne_top_of_cocompact (Γ : Subgroup G) [Countable Γ] {K : Set G}
 end General
 
 /- English proof (translation)
-Take `⟨K, hK, hx⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Set `H : AddSubgroup (AF F)` to `(algebraMap F (AF F)).toAddMonoidHom.range ⊔ W`. Establish `hH : IsOpen (H : Set (AF F))` using `AddSubgroup.isOpen_mono le_sup_right hW`. Establish `hd : DiscreteTopology (AF F ⧸ H)` using `QuotientAddGroup.discreteTopology hH`. Establish `hf : Finite (AF F ⧸ H)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (QuotientAddGroup.mk '' K : Set (AF F ⧸ H)).Finite` using `(hK.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Use `Set.finite_univ_iff.1 (h1.subset fun q _ => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨x, h⟩` from `hx b`. Use `⟨_, h, QuotientAddGroup.eq.2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: -(b - algebraMap F (AF F) x) + b = algebraMap F (AF F) x` using `by ring`. Rewrite using `[this]`. Conclude with `AddSubgroup.mem_sup_left ⟨x, rfl⟩`. Establish `hn : (H.index : F) ≠ 0` using `Nat.cast_ne_zero.2 H.index_ne_zero_of_finite`. Establish `hm` using `H.nsmul_index_mem ((H.index : F)⁻¹ • a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[← Nat.cast_smul_eq_nsmul F, smul_smul, mul_inv_cancel₀ hn, one_smul]`. Take `⟨_, ⟨x, rfl⟩, w, hw, e⟩` from `AddSubgroup.mem_sup.1 hm`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`. Simplify using `using hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_of_isOpen (F : Type) [Field F] [NumberField F] (W : AddSubgroup (AF F))
     (hW : IsOpen (W : Set (AF F))) (a : AF F) : ∃ x : F, a - algebraMap F (AF F) x ∈ W := by
@@ -123,21 +123,21 @@ theorem exists_sub_mem_of_isOpen (F : Type) [Field F] [NumberField F] (W : AddSu
   simpa using hw
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro h <;> ext i j <;> by_cases hij : i = j <;> simp [h, Matrix.one_apply, hij]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_proj {R A n : Type} [CommRing R] [CommRing A] [DecidableEq n] (f : R →+* A) (ε : R) (M : Matrix n n R) :
     (f ε = 0 → (1 + ε • (M - 1)).map f = 1) ∧ (f ε = 1 → (1 + ε • (M - 1)).map f = M.map f) := by
   constructor <;> intro h <;> ext i j <;> by_cases hij : i = j <;> simp [h, Matrix.one_apply, hij]
 
 /- English proof (translation)
-The claim follows from `continuous_const.add ((h.sub continuous_const).const_smul ε)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_proj {X R n : Type} [TopologicalSpace X] [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [DecidableEq n] (ε : R) {M : X → Matrix n n R} (h : Continuous M) : Continuous fun x => 1 + ε • (M x - 1) :=
   continuous_const.add ((h.sub continuous_const).const_smul ε)
 
 /- English proof (translation)
-Rewrite using `[h, ha, add_sub_cancel_left, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_smul {R n : Type} [CommRing R] [DecidableEq n] (ε a : R) {M M' N : Matrix n n R}
     (h : M' = 1 + ε • (M - 1)) (ha : M - 1 = a • N) : M' - 1 = (ε * a) • N := by
@@ -146,9 +146,7 @@ theorem proj_smul {R n : Type} [CommRing R] [DecidableEq n] (ε a : R) {M M' N :
 variable {D : D7}
 
 /- English proof (translation)
-Use `choose q h1 h2 using fun g : GA D V => GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V g)`. Take `⟨ε, e1, e2⟩` from `GlobalTheory.UnitarySplit.parts_surj D 0 1`. Use `⟨MonoidHom.mk' q fun a b => GlobalTheory.UnitarySplit.ga_ext V (by rw [map_mul, h1, h1, h1, mul_one]) (by rw [h2, map_mul, map_mul, h2, h2]), ε, h1, h2, fun g => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.UnitarySplit.mat_ext (infPart D) (finPart D) (GlobalTheory.UnitarySplit.parts_inj D) ?_ ?_` and prove the remaining obligations. Conclude with `(congrArg Units.val (h1 g)).trans ((map_proj (infPart D) ε _).1 e1).symm`.
-
-Conclude with `(congrArg Units.val (h2 g)).trans ((map_proj (finPart D) ε _).2 e2).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finite_projection_mat (V : HSp D) : ∃ (p : GA D V →* GA D V) (ε : AE D), (∀ g, infHom V (p g) = 1) ∧
     (∀ g, finHom V (p g) = finHom V g) ∧ ∀ g, (matHom V (p g)).1 = 1 + ε • ((matHom V g).1 - 1) := by
@@ -162,13 +160,13 @@ theorem exists_finite_projection_mat (V : HSp D) : ∃ (p : GA D V →* GA D V) 
   · exact (congrArg Units.val (h2 g)).trans ((map_proj (finPart D) ε _).2 e2).symm
 
 /- English proof (translation)
-Take `⟨p, ε, h1, h2, hm⟩` from `exists_finite_projection_mat V`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `i0` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hc : Continuous fun h : GA D V => (matHom V h).1` using `Units.continuous_val.comp (continuous_subtype_val (p := (· ∈ HR (AF D.host.F) D.sp.cm.sig V.gram)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : Continuous fun g : GA D V => (matHom V (p g)).1` using `(continuous_proj (R := AE D) ε hc).congr fun g => (hm g).symm`. Use `⟨p, ?_, h1, fun g => ?_, fun ξ g hg => ?_⟩` and prove the remaining obligations. Establish `h3 : Continuous fun g : GA D V => matHom V (p g)`. Use `Units.continuous_iff.2 ⟨hc', (hc'.comp (continuous_inv (G := GA D V))).congr fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Function.comp_apply, map_inv, map_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_induced_rng.2 h3`. Express the relevant statement in the definitionally equal form `finHom V (g * (p g)⁻¹) = 1`. Rewrite using `[map_mul, map_inv, h2 g, mul_inv_cancel]`. Establish `: ZI V ξ ≤ (ZI V ξ).comap p`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g ⟨a, ha⟩`. Conclude with `Subgroup.subset_closure ⟨ε * a, proj_smul ε a (hm g) ha⟩`. Conclude with `this hg`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_projection (V : HSp D) : ∃ p : GA D V →* GA D V, Continuous p ∧ (∀ g, p g ∈ GfC V) ∧
     (∀ g, g * (p g)⁻¹ ∈ GinfC V) ∧ ∀ ξ, ∀ g ∈ ZI V ξ, p g ∈ ZI V ξ := by
@@ -194,25 +192,25 @@ theorem exists_finite_projection (V : HSp D) : ∃ p : GA D V →* GA D V, Conti
     exact this hg
 
 /- English proof (translation)
-Introduce `D θ V hθ ξ hξ`. Take `⟨⟨e, he⟩, -⟩` from `GlobalTheory.T.adelicTransvectionSubgroup_eq_adeles_closed D θ V hθ ξ hξ`. Establish `i0` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `i4` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram`. Take `⟨-, i2, i3⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: LocallyCompactSpace (Multiplicative (AF D.host.F))` using `GlobalTheory.AdelicUnitaryTop.locallyCompact_adele _`. Establish `: LocallyCompactSpace (ZI V ξ)` using `e.toHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Establish `: BorelSpace (ZI V ξ)` using `Subtype.borelSpace _`. Establish `: SecondCountableTopology (ZI V ξ)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hd : DiscreteTopology ((GQ V).subgroupOf (ZI V ξ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU, hx⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero D.host.F`. Use `discreteTopology_of_isOpen_singleton_one ?_` and prove the remaining obligations. Rewrite using `[isOpen_singleton_iff_nhds_eq_pure]`. Use `le_antisymm (Filter.le_pure_iff.2 ?_) (pure_le_nhds _)` and prove the remaining obligations. Establish `hc : ContinuousAt (fun x : (GQ V).subgroupOf (ZI V ξ) => Multiplicative.toAdd (e.symm x)) 1` using `(continuous_toAdd.comp (e.symm.continuous.comp continuous_subtype_val)).continuousAt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Filter.mem_of_superset (hc.preimage_mem_nhds (by simpa using hU)) ?_` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩ hy`. Take `⟨a, rfl⟩` from `e.surjective z`. Take `⟨x, hxa⟩` from `(he a).1 hz`. Establish `hy' : Multiplicative.toAdd a ∈ U` using `by simpa using hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : x = 0` using `hx x (hxa ▸ hy')`. Establish `: a = 1`. Rewrite `hxa` using `[h0, map_zero]`. Conclude with `Multiplicative.toAdd.injective hxa.symm`. Substitute `this` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (map_one e)`. Use `GlobalTheory.countable_of_discrete_subgroup ((GQ V).subgroupOf (ZI V ξ))` as an intermediate fact. Take `⟨K, hK, hKx⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele D.host.F`. Establish `hK' : IsCompact ((fun a => e (Multiplicative.ofAdd a)) '' K)` using `hK.image (e.continuous.comp continuous_ofAdd)`. Establish `hcov : ∀ z : ZI V ξ, ∃ γ ∈ (GQ V).subgroupOf (ZI V ξ), γ * z ∈ (fun a => e (Multiplicative.ofAdd a)) '' K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Take `⟨a, rfl⟩` from `e.surjective z`. Take `⟨x, hx⟩` from `hKx a.toAdd`. Use `⟨e (Multiplicative.ofAdd (algebraMap _ _ (-x))), (he _).2 ⟨-x, rfl⟩, _, hx, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, map_neg, sub_eq_neg_add]`. Both sides reduce to the same expression. Use `⟨?_, fun μ 𝓕 hμ h𝓕 => ⟨h𝓕.measure_ne_zero (NeZero.ne μ), measure_ne_top_of_cocompact _ hK' hcov μ h𝓕⟩, fun U hU z hz => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, h⟩` from `exists_fundamentalDomain_subset _ hK'.isClosed hcov Measure.haar`. Conclude with `⟨Measure.haar, S, inferInstance, h, hK'.closure_of_subset hS⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨p, hp, h1, h2, h3⟩` from `exists_finite_projection V`. Set `f : Multiplicative (AF D.host.F) →* GA D V` to `p.comp ((ZI V ξ).subtype.comp e.toMulEquiv.toMonoidHom)`. Establish `hf : Continuous f` using `hp.comp (continuous_subtype_val.comp e.continuous)`. Take `⟨a, ha⟩` from `e.surjective ⟨z, hz⟩`. Take `⟨x, hx⟩` from `exists_sub_mem_of_isOpen D.host.F (Subgroup.toAddSubgroup' (U.comap f)) (hU.preimage (hf.comp continuous_ofAdd)) a.toAdd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set k : ZI V ξ := e (Multiplicative.ofAdd (a.toAdd - algebraMap _ _ x)) with hk`. Establish `hkU : p k ∈ U` using `hx`. Use `⟨e (Multiplicative.ofAdd (algebraMap _ _ x)), SetLike.coe_mem _, (he _).2 ⟨x, rfl⟩, k * (p k)⁻¹, mul_mem k.2 (inv_mem (h3 ξ _ k.2)), h2 _, p k, h3 ξ _ k.2, h1 _, hkU, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, inv_mul_cancel_right, hk, ← Subgroup.coe_mul, ← map_mul, ← ofAdd_add, add_sub_cancel, ofAdd_toAdd, ha]`.
+A detailed English derivation is pending.
 -/
 theorem transvection_measure : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ ξ, IsoVec V ξ → (∃ (μ : Measure (ZI V ξ)) (𝓕 : Set (ZI V ξ)), μ.IsHaarMeasure ∧ IsFundamentalDomain ((GQ V).subgroupOf (ZI V ξ)) 𝓕 μ ∧ IsCompact (closure 𝓕)) ∧ (∀ (μ : Measure (ZI V ξ)) (𝓕 : Set (ZI V ξ)), μ.IsHaarMeasure → IsFundamentalDomain ((GQ V).subgroupOf (ZI V ξ)) 𝓕 μ → μ 𝓕 ≠ 0 ∧ μ 𝓕 ≠ ⊤) ∧ ∀ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) → ∀ z ∈ ZI V ξ, ∃ γ ∈ ZI V ξ, γ ∈ GQ V ∧ ∃ u ∈ ZI V ξ, u ∈ GinfC V ∧ ∃ k ∈ ZI V ξ, k ∈ GfC V ∧ k ∈ U ∧ z = γ * u * k := by
   intro D θ V hθ ξ hξ

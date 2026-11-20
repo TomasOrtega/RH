@@ -8,13 +8,13 @@ open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _`. Use `⟨fun F => ?_, fun C hC => ?_⟩` and prove the remaining obligations. Rewrite using `[MeasureTheory.locallyIntegrable_iff]`. Introduce `K hK`. Conclude with `(GlobalTheory.AutomorphicL2Local.memLp_restrict_compact G Γ μ F K hK).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin` using `GlobalTheory.AutomorphicL2Unitary.finite_mem_compact (Γ := Γ) (hC.mul hC.inv)`. Use `⟨hfin.toFinset.card, fun g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : {γ : Γ | ↑γ * g ∈ C}.Nonempty`. Take `⟨γ0, hγ0⟩` from `hne`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Set.encard_le_encard_of_injOn (f := fun γ => γ * γ0⁻¹)` to reduce the goal to its premises. Introduce `γ hγ`. Use `⟨↑γ * g, hγ, (↑γ0 * g)⁻¹, Set.inv_mem_inv.2 hγ0, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Introduce `a _ b _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Use `_ = hfin.toFinset.card := hfin.encard_eq_coe_toFinset_card`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.locInt :
     UpperTheory.V.Cj.H.LocInt := by

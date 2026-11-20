@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.PshTrans
 
 /- English proof (translation)
-Establish `e1 : (FinChart.toV Y.dim).symm (c.e y) = c.finChart y`. Rewrite using `[← AlgChart.toV_finChart]`. Conclude with `(FinChart.toV Y.dim).symm_apply_apply _`. Rewrite `hf` using `[← e1]`. Establish `h2` using `hf.comp (c.e y) (FinChart.toV Y.dim).symm.contDiff.contDiffAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, AlgChart.finChart_symm_apply, ContinuousLinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_e_of_finChart {F : Type} [Field F] [NumberField F] {Y : Var F} {σ : F →+* ℂ}
     (c : AlgChart Y.str σ Y.dim) {f : Pts Y σ → ℝ} {y : Pts Y σ}
@@ -37,29 +37,29 @@ theorem contDiffAt_e_of_finChart {F : Type} [Field F] [NumberField F] {Y : Var F
   simp only [Function.comp_apply, AlgChart.finChart_symm_apply, ContinuousLinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I he a ι _ Δ m hm t P hP hPp g hg κ hL`. Establish `hGs : (M.A a).Smooth (fun z => g (I.pt a z))`. Establish `h1` using `GlobalTheory.HodgeChgSmooth.smoothOn_of_manIs I he a isOpen_univ hg (f := fun z => g (I.pt a z)) (fun _ _ => rfl)`. Simplify `h1` using `[FinHolAtlas.Smooth]`. Establish `hO : IsPotential (M.A a) (M.Om a)` using `(M.bd a).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Substitute `he` using the available equality. Introduce `x j y hy w`. Take `⟨hyt, ⟨⟨hPx, -⟩, hOx⟩⟩` from `hy`. Take `⟨cj, hcj⟩` from `I.alg a j`. Take `⟨p, hp⟩ : ∃ p, I.pt a (((M.A a).chart j).symm y) = p` from `⟨_, rfl⟩`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hzs : ((M.A a).chart j).symm y ∈ ((M.A a).chart j).source` using `((M.A a).chart j).map_target hyt`. Establish `hsp : (I.pt a).symm p = ((M.A a).chart j).symm y` using `by rw [← hp]; simp`. Establish `hyeq : y = (M.A a).chart j ((I.pt a).symm p)` using `by rw [hsp, ((M.A a).chart j).right_inv hyt]`. Substitute `hyeq` using the available equality. Use `clear hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hj : (I.pt a).symm p ∈ ((M.A a).chart j).source` using `by rw [hsp]; exact hzs`. Establish `hvz : ((M.A a).chart j).symm ((M.A a).chart j ((I.pt a).symm p)) = (I.pt a).symm p` using `((M.A a).chart j).left_inv hj`. Rewrite `hPx`, `hOx` using `[hvz]`. Establish `hyj : p ∈ cj.e.source`. Rewrite `hj` using `[hcj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hj` using `[Homeomorph.transOpenPartialHomeomorph_source]`. Establish `hvc : (M.A a).chart j ((I.pt a).symm p) = cj.finChart p`. Rewrite using `[hcj]`. Simplify using the standard rewrite rules. Take `⟨Q, hQ, hlev⟩` from `hP a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPs` using `potSmoothAt (M.A a) (P a) hPp x j ⟨hyt, by rw [Set.mem_preimage, hvz]; exact hPx⟩`. Establish `hGc` using `GlobalTheory.ShellMass.smoothOn_contDiffAt isOpen_univ hGs j hyt trivial`. Establish `hOs` using `potSmoothAt (M.A a) (M.Om a) hO x j ⟨hyt, by rw [Set.mem_preimage, hvz]; exact hOx⟩`. Establish `hsplit : levi ((P a + LocPot.ofFun (fun z => g (I.pt a z)) + (M.Om a).rsmul κ).φ x ∘ ((M.A a).chart j).symm) ((M.A a).chart j ((I.pt a).symm p)) w = (levi ((P a).φ x ∘ ((M.A a).chart j).symm) ((M.A a).chart j ((I.pt a).symm p)) w + 1 * levi ((fun z => g (I.pt a z)) ∘ ((M.A a).cha …`. Rewrite using `[← levi_add_smul 1 hPs hGc w, ← levi_add_smul κ (hPs.add (contDiffAt_const.mul hGc)) hOs w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp_apply, one_mul]`. Both sides reduce to the same expression. Establish `eP : levi ((P a).φ x ∘ ((M.A a).chart j).symm) ((M.A a).chart j ((I.pt a).symm p)) w = ∑ i, t i * (Real.pi / 2 * curvMet (m i (I.ε a)) cj p w)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ShellMass.levi_base hPp x j hyt (by rw [hvz]; exact hPx) w, hlev j _ hyt w]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← GlobalTheory.ShellMass.levi_base (hQ i).2 ((I.pt a).symm p) j hyt (by rw [hvz]; exact (Q i).mem_U _) w]`. Establish `key` using `GlobalTheory.AmplePos.levi_isPot_eq_curvMet (hm i) (I.pt a) (hQ i).1 cj ((I.pt a).symm p) (by simpa using hyj) w`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Homeomorph.apply_symm_apply] at key`. Rewrite using `[hvc, ← key, hcj]`. Establish `hsm : (Y.an (I.ε a)).SmoothOn Set.univ g` using `hg`. Establish `hG' : ContDiffAt ℝ 2 (g ∘ cj.e.symm) (cj.e p)` using `hsm.contDiffAt_two isOpen_univ hyj trivial`. Establish `eG : levi ((fun z => g (I.pt a z)) ∘ ((M.A a).chart j).symm) ((M.A a).chart j ((I.pt a).symm p)) w = cj.levi g p w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvc, AlgChart.levi, cj.leviV_re_eq hG' w, hcj]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Simplify using `[Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Establish `hOf : ContDiffAt ℝ 2 ((fun z => (M.Om a).φ x ((I.pt a).symm z)) ∘ cj.finChart.symm) (cj.finChart p)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hOs`. Rewrite `h1` using `[hvc, hcj]`. Simplify `h1` using `[Function.comp_def, Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Establish `hO'` using `contDiffAt_e_of_finChart cj hOf`. Establish `eO : levi ((M.Om a).φ x ∘ ((M.A a).chart j).symm) ((M.A a).chart j ((I.pt a).symm p)) w = cj.levi (fun z => (M.Om a).φ x ((I.pt a).symm z)) p w`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvc, AlgChart.levi, cj.leviV_re_eq hO' w, hcj]`. Use `congr 1`. Establish `hfin` using `hL cj p hyj x hOx w`. Rewrite using `[hsplit, eP, eG, eO, one_mul]`. Conclude with `hfin`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_of_levi_algChart : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y),
     Y.dim = e → ∀ (a : Fin (M.n + 1)) {ι : Type} [Fintype ι] {Δ : ι → Y.Dv}

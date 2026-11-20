@@ -8,9 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.SplitConj
 
 /- English proof (translation)
-Introduce `E _ _ _ n P hP w hw γ γ' h h'`. Establish `hs : (atPl w P).Separable` using `hP.2.2.1.map`. Take `⟨g, hg⟩` from `GlobalTheory.BCT.ClsFin.conj_of_charpoly γ.1 γ'.1 (by rw [h]; exact hs) (h.trans h'.symm)`. Establish `hmem : g ∈ UL n w`. Rewrite using `[UL, if_pos hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mem_top g`. Conclude with `⟨⟨g, hmem⟩, Subtype.ext hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj_of_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), ∀ P ∈ Ell E n,
     ∀ w : Pl E, IsSplitAt w → ∀ γ γ' : UL n w, γ.1.val.charpoly = atPl w P → γ'.1.val.charpoly = atPl w P →

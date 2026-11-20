@@ -20,9 +20,9 @@ def S1 (t : ℝ) (z : V (nd X)) : V (nd X) := WithLp.toLp 2 fun i => if isW X i 
 def S2 (t : ℝ) (z : V (nd X)) : V (nd X) := WithLp.toLp 2 fun i => if isW X i then 0 else (t : ℂ) * z i
 
 /- English proof (translation)
-Use extensionality with `m c`. Establish `hc` using `c.isLt`. Establish `hlt : Fin.castLE X.p0_le c < ExF.qI X m`. Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.coe_castLE, ExF.qI]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [ExF.Wm, ExF.n1, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, WithLp.ofLp_toLp, PiLp.toLp_apply, S1, dif_pos hlt]`. Rewrite using `[if_pos]`. Simplify using `only [isW, Equiv.symm_apply_apply, ExF.qI, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem scaledWm_linear (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Wm X (S1 X t z) τ = (t : ℂ) • ExF.Wm X z τ := by
   ext m c
@@ -37,9 +37,9 @@ theorem scaledWm_linear (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Wm X (S1 X t 
   omega
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `ha` using `a.isLt`. Simplify using `only [ExF.Wm, ExF.n1, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, WithLp.ofLp_toLp, PiLp.toLp_apply, S1]`. Apply the tactic sequence `split_ifs with h1 h2 <;> first`. Consider the case `rfl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `(exfalso`. Simplify using `only [isW, Equiv.symm_apply_apply, Fin.coe_castLE] at *`. Use the proof step `omega)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unipotentFrame_scaling_invariant (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.n1 X (S1 X t z) τ = ExF.n1 X z τ := by
   ext a b
@@ -53,9 +53,9 @@ theorem unipotentFrame_scaling_invariant (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : 
        omega)
 
 /- English proof (translation)
-Use extensionality with `m c`. Establish `hc` using `c.isLt`. Establish `hlt : Fin.castLE X.p0_le c < ExF.qI X m`. Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.coe_castLE, ExF.qI]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [ExF.Wm, ExF.n1, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, WithLp.ofLp_toLp, PiLp.toLp_apply, S2, dif_pos hlt, Matrix.zero_apply]`. Rewrite using `[if_pos]`. Simplify using `only [isW, Equiv.symm_apply_apply, ExF.qI, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem retractedWm_eq_zero (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Wm X (S2 X t z) τ = 0 := by
   ext m c
@@ -70,27 +70,25 @@ theorem retractedWm_eq_zero (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Wm X (S2 
   omega
 
 /- English proof (translation)
-Simplify using `only [ExF.Zt, scaledWm_linear, unipotentFrame_scaling_invariant, Matrix.smul_mul, Matrix.transpose_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaledZt_linear (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Zt X (S1 X t z) τ = (t : ℂ) • ExF.Zt X z τ := by
   simp only [ExF.Zt, scaledWm_linear, unipotentFrame_scaling_invariant, Matrix.smul_mul, Matrix.transpose_smul]
 
 /- English proof (translation)
-Simplify using `only [ExF.Zt, retractedWm_eq_zero, Matrix.zero_mul, Matrix.transpose_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem retractedZt_eq_zero (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Zt X (S2 X t z) τ = 0 := by
   simp only [ExF.Zt, retractedWm_eq_zero, Matrix.zero_mul, Matrix.transpose_zero]
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[ExF.mem_OmF_iff X x0 ho]`. Introduce `τ`. Establish `hA` using `hz τ`. Establish `heq : ExF.Am X (S1 X t z) τ = ((1 - t ^ 2 : ℝ) : ℂ) • (1 : Matrix (Fin X.p0) (Fin X.p0) ℂ) + ((t ^ 2 : ℝ) : ℂ) • ExF.Am X z τ`. Simplify using `only [ExF.Am, scaledZt_linear, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : ((1 - t ^ 2 : ℝ) : ℂ) = 1 - (t : ℂ) * t`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((t ^ 2 : ℝ) : ℂ) = (t : ℂ) * t`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, sub_smul, one_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[heq]`. Break down `ht0.lt_or_eq with htpos | rfl` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : (0 : ℂ) < ((t ^ 2 : ℝ) : ℂ)`. Conclude with `pow_pos htpos 2` after adjusting the coercions. Establish `h1 : (0 : ℂ) ≤ ((1 - t ^ 2 : ℝ) : ℂ)`. Establish `: t ^ 2 ≤ 1` using `by nlinarith`. Conclude with `sub_nonneg.2 this` after adjusting the coercions.
-
-Conclude with `(hA.smul h2).posSemidef_add ((Matrix.PosSemidef.one).smul h1)`. Simplify using `using Matrix.PosDef.one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem S1_mem_OmF (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz : z ∈ OmF X x0) {t : ℝ}
     (ht0 : 0 ≤ t) (ht1 : t ≤ 1) : S1 X t z ∈ OmF X x0 := by
@@ -120,7 +118,7 @@ theorem S1_mem_OmF (x0 : Frame X.Ψ r) (ho : IsOrth X x0) {z : V (nd X)} (hz : z
   · simpa using Matrix.PosDef.one
 
 /- English proof (translation)
-Rewrite using `[ExF.mem_OmF_iff X x0 ho]`. Introduce `τ`. Simplify using `only [ExF.Am, retractedZt_eq_zero, Matrix.zero_mul, sub_zero]`. Conclude with `Matrix.PosDef.one`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem radialRetraction_mem_chart (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (z : V (nd X)) (t : ℝ) : S2 X t z ∈ OmF X x0 := by
   rw [ExF.mem_OmF_iff X x0 ho]
@@ -129,7 +127,7 @@ theorem radialRetraction_mem_chart (x0 : Frame X.Ψ r) (ho : IsOrth X x0) (z : V
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : isW X i`. Simplify using `only [h, if_true] fun_prop`. Simplify using `only [h, if_false] fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem continuous_linearScaling (z : V (nd X)) : Continuous fun t : ℝ => S1 X t z := by
   refine (PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_)
@@ -140,7 +138,7 @@ theorem continuous_linearScaling (z : V (nd X)) : Continuous fun t : ℝ => S1 X
     fun_prop
 
 /- English proof (translation)
-Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h : isW X i`. Simplify using `only [h, if_true] fun_prop`. Simplify using `only [h, if_false] fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem continuous_radialRetraction (z : V (nd X)) : Continuous fun t : ℝ => S2 X t z := by
   refine (PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => ?_)
@@ -151,7 +149,7 @@ theorem continuous_radialRetraction (z : V (nd X)) : Continuous fun t : ℝ => S
     fun_prop
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [S1, S2, WithLp.ofLp_toLp, PiLp.toLp_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem linearScaling_zero_eq_retraction (z : V (nd X)) : S1 X 0 z = S2 X 1 z := by
   ext i
@@ -159,7 +157,7 @@ theorem linearScaling_zero_eq_retraction (z : V (nd X)) : S1 X 0 z = S2 X 1 z :=
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [S2, WithLp.ofLp_toLp, PiLp.toLp_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem radialRetraction_at_zero (z : V (nd X)) : S2 X 0 z = 0 := by
   ext i
@@ -167,7 +165,7 @@ theorem radialRetraction_at_zero (z : V (nd X)) : S2 X 0 z = 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [S1, WithLp.ofLp_toLp, PiLp.toLp_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem linearScaling_at_one (z : V (nd X)) : S1 X 1 z = z := by
   ext i
@@ -177,11 +175,9 @@ theorem linearScaling_at_one (z : V (nd X)) : S1 X 1 z = z := by
 end
 
 /- English proof (translation)
-Introduce `r X x0 ho`. Use `isPreconnected_of_forall 0 fun y hy => ?_` and prove the remaining obligations. Use `⟨(fun t => S2 X t y) '' Set.Icc 0 1 ∪ (fun t => S1 X t y) '' Set.Icc 0 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `w (⟨t, -, rfl⟩ | ⟨t, ⟨ht0, ht1⟩, rfl⟩)`. Conclude with `radialRetraction_mem_chart X x0 ho y t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `S1_mem_OmF X x0 ho hy ht0 ht1`. Conclude with `Or.inl ⟨0, ⟨le_rfl, zero_le_one⟩, radialRetraction_at_zero X y⟩`. Conclude with `Or.inr ⟨1, ⟨zero_le_one, le_rfl⟩, linearScaling_at_one X y⟩`. Use `IsPreconnected.union (S2 X 1 y) ⟨1, ⟨zero_le_one, le_rfl⟩, rfl⟩ ⟨0, ⟨le_rfl, zero_le_one⟩, linearScaling_zero_eq_retraction X y⟩ ?_ ?_` and prove the remaining obligations. Conclude with `isPreconnected_Icc.image _ (continuous_radialRetraction X y).continuousOn`.
-
-Conclude with `isPreconnected_Icc.image _ (continuous_linearScaling X y).continuousOn`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem omFConn_of_cm {E : Type} [Field E] [NumberField E] [IsCMField E] : OmFConnStatement (E := E) := by
   intro r X x0 ho
@@ -204,7 +200,7 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.Up
 open NumberField
 
 /- English proof (translation)
-The claim follows from `OFC.omFConn_of_cm`.
+A detailed English derivation is pending.
 -/
 theorem OmFConnStatement_holds {E : Type} [Field E] [NumberField E] [IsCMField E] :
     OmFConnStatement (E := E) :=

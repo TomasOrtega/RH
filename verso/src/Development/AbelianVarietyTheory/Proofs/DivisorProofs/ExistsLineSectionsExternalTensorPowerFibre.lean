@@ -14,21 +14,19 @@ open scoped LaurentSeries
 namespace GlobalTheory.BoxLine
 
 /- English proof (translation)
-Set `ψ : Over.mk (B.hom ≫ g) ⟶ pow G N` to `Pi.lift fun k => Over.homMk ((q k).left ≫ φ₀) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[h.w, ← Category.assoc, Over.w])`. Establish `hψ : ∀ k, ψ.left ≫ pr G N k = (q k).left ≫ φ₀` using `fun k => by`. Establish `: ψ ≫ Pi.π (fun _ => G) k = _` using `Pi.lift_π _ k`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun t => Over.Hom.left t) this`. Establish `hw : ψ.left ≫ (pow G N).hom = B.hom ≫ g` using `Over.w ψ`. Establish `hpr : ∀ k, pr G N k ≫ G.hom = (pow G N).hom` using `fun k => Over.w (Pi.π (fun _ => G) k)`. Use `⟨ψ.left, ⟨⟨hw⟩, ⟨?_⟩⟩, hψ⟩` and prove the remaining obligations. Set `c : ∀ s : PullbackCone (pow G N).hom g, Fin N → (Over.mk s.snd ⟶ A)` to `fun s k => Over.homMk (h.lift (s.fst ≫ pr G N k) s.snd (by rw [Category.assoc, hpr, s.condition])) (h.lift_snd _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : ∀ s k, (c s k).left ≫ φ₀ = s.fst ≫ pr G N k` using `fun s k => h.lift_fst _ _ _`. Set `m : ∀ s : PullbackCone (pow G N).hom g, Over.mk s.snd ⟶ B` to `fun s => hl.lift (Fan.mk _ (c s))`. Establish `hm : ∀ s k, (m s).left ≫ (q k).left = (c s k).left` using `fun s k => congrArg (fun t => Over.Hom.left t) (hl.fac (Fan.mk _ (c s)) ⟨k⟩)`. Use `PullbackCone.IsLimit.mk _ (fun s => (m s).left) ?_ ?_ ?_` and prove the remaining obligations. Introduce `s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : (m s).left ≫ B.hom = s.snd` using `Over.w (m s)`. Set `u : Over.mk (s.snd ≫ g) ⟶ pow G N` to `Over.homMk ((m s).left ≫ ψ.left) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[hw, ← Category.assoc, hs])`. Set `v : Over.mk (s.snd ≫ g) ⟶ pow G N` to `Over.homMk s.fst s.condition`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `huv : u = v`. Use `Pi.hom_ext _ _ fun k => ?_` and prove the remaining obligations. Use `ext1`. Express the relevant statement in the definitionally equal form `((m s).left ≫ ψ.left) ≫ pr G N k = s.fst ≫ pr G N k`. Rewrite using `[Category.assoc, hψ, ← Category.assoc, hm, hc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (fun t => Over.Hom.left t) huv`. Introduce `s`. Conclude with `Over.w (m s)`. Introduce `s t h1 h2`. Set `u : Over.mk s.snd ⟶ B` to `Over.homMk t h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: u = m s`. Use `hl.uniq (Fan.mk _ (c s)) u ?_` and prove the remaining obligations. Introduce and unpack `⟨k⟩`. Use `ext1`. Express the relevant statement in the definitionally equal form `t ≫ (q k).left = (c s k).left`.
-
-Use `h.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hc, Category.assoc, ← hψ, ← Category.assoc, h1]`. Rewrite using `[Category.assoc, Over.w, h2]`. Conclude with `(Over.w (c s k)).symm`. Conclude with `congrArg (fun t => Over.Hom.left t) this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullback_pow {S S' : Scheme.{0}} (g : S' ⟶ S) (G : Over S) (A B : Over S')
     (φ₀ : A.left ⟶ G.left) (h : IsPullback φ₀ A.hom G.hom g) (N : ℕ) (q : Fin N → (B ⟶ A))
@@ -84,7 +82,7 @@ theorem exists_isPullback_pow {S S' : Scheme.{0}} (g : S' ⟶ S) (G : Over S) (A
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Rewrite using `[cls_pull (LB.isLB_linComb hL _ _), cls_linComb hL, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[one_smul, pull_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_pull_box {S : Scheme.{0}} (G : Over S) (L : LB G.left) (hL : L.IsLB) (N : ℕ)
     {X : Scheme.{0}} (φ : X ⟶ (pow G N).left) (h : ((boxLB G L N).pull φ).IsLB) :
@@ -94,7 +92,7 @@ theorem cls_pull_box {S : Scheme.{0}} (G : Over S) (L : LB G.left) (hL : L.IsLB)
   rw [one_smul, pull_comp]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, fun _ => map_one _, fun _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLB_triv (X : Scheme.{0}) : (LB.triv X).IsLB :=
   ⟨by simp, fun _ => map_one _, fun _ _ _ => by simp⟩
@@ -102,17 +100,17 @@ theorem isLB_triv (X : Scheme.{0}) : (LB.triv X).IsLB :=
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `V K _ _ f G _ _ L rig θ n w x hL hx N`. Take `⟨φ₀, he, e, hg, F, hpb, hegen, -⟩` from `hx`. Establish `hbox : ∀ {X : Scheme.{0}} (φ : X ⟶ (pow G N).left), ((boxLB G L N).pull φ).IsLB` using `fun φ => LB.isLB_linComb (LB.isLB_linComb hL _ _) _ _`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Take `⟨φ, hφ, -⟩` from `exists_isPullback_pow (spMap f) G x.P.A (Over.mk (𝟙 (Sp K))) φ₀ hpb.1 0 (fun k => k.elim0) (Fan.IsLimit.mk _ (fun s => Over.mkIdTerminal.from _) (fun _ k => k.elim0) (fun _ _ _ => Over.mkIdTerminal.hom_ext _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨Sp K, 𝟙 _, φ, LB.triv _, ⟨fun _ => 1, fun _ _ => by simp⟩, hφ, isLB_triv _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[iso_triv_iff, ← cls_eq_zero_iff (hbox φ), cls_pull_box G L hL]`. Simplify using the standard rewrite rules. Introduce `s`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (s.f PUnit.unit), fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : i = PUnit.unit` from `rfl`. Establish `h0 : ∀ (h : (⊤ : (Sp K).Opens) ≤ ⊤) (t : Γ(Sp K, ⊤)), ((Sp K).presheaf.map (homOfLE h).op).hom t = t` using `fun h t => by`. Rewrite using `[show homOfLE h = 𝟙 _ from rfl, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Simplify using `[constFn, Scheme.Hom.appLE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Conclude with `(h0 _ _).symm`. Take `⟨y, p, -⟩` from `GlobalTheory.KeyPow.exists_isKeyPow K x N hN`. Take `⟨φ, hφ, hc⟩` from `exists_isPullback_pow (spMap f) G x.P.A y.P.A φ₀ hpb.1 N p.pr p.lim`. Take `⟨b, hb⟩` from `principalPolarisation_exists_unique_section GlobalTheory.firstFiveLaws.2.1.secTwist y.P`. Use `⟨y.P.A.left, y.P.A.hom, φ, y.P.L, b, hφ, y.P.isLB, ?_, fun s => (hb s).exists⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : cls x.P.L x.P.isLB = pull φ₀ (cls L hL)`. Rewrite using `[← cls_pull hL φ₀ (LB.isLB_linComb hL _ _), cls_eq_iff]`. Conclude with `⟨e, hegen⟩`. Establish `h2 : cls y.P.L y.P.isLB = cls (Out.boxLB x.P.L p.pr) (LB.isLB_linComb x.P.isLB _ _)`. Rewrite using `[cls_eq_iff]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨p.w, p.w_gen⟩`. Rewrite using `[← cls_eq_iff y.P.isLB (hbox φ), cls_pull_box G L hL, h2, cls_linComb x.P.isLB]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[one_smul, hc, pull_comp, h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sections_line : ∀ (V K : Type) [CommRing V] [Field K] (f : V →+* K) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (rig : LB.Gen (L.pull (eSec G))) (θ : L.Sec) (n : ℕ) (w : Fin n → (epsR V ⟶ G)) (x : KeyIn K), L.IsLB → IsFibreOf x G L rig θ w f → ∀ N : ℕ, ∃ (X' : Scheme.{0}) (p' : X' ⟶ Sp K) (φ : X' ⟶ (pow G N).left) (L' : LB X') (b : L'.Sec), IsPullback φ p' (pow G N).hom (spMap f) ∧ L'.IsLB ∧ LBIso L' ((boxLB G L N).pull φ) ∧ ∀ s : L'.Sec, ∃ a : K, ∀ i, s.f i = constFn p' _ a * b.f i := by
   intro V K _ _ f G _ _ L rig θ n w x hL hx N

@@ -16,21 +16,19 @@ section General
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Take `⟨hW, -⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff σ).1 hσ`. Take `⟨-, hρ'⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff ρ).1 hρ`. Establish `hS : S.toSubmodule = ⊤`. Break down `hρ' S.toSubmodule (fun g v hv => S.apply_mem_toSubmodule g hv) with e | e` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Take `⟨x, hx⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `hf x`. Establish `hv : v = 0`. Conclude with `Subtype.ext ((Submodule.eq_bot_iff _).1 e v v.2)`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Conclude with `hx (map_zero f.toLinearMap)`. Conclude with `e`. Set `g : V →ₗ[ℂ] W` to `f.toLinearMap ∘ₗ (LinearEquiv.ofTop S.toSubmodule hS).symm.toLinearMap`. Establish `hg : ∀ x v, g (ρ x v) = σ x (g v)` using `fun x v => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `LinearMap.congr_fun (f.isIntertwining' x) ((LinearEquiv.ofTop S.toSubmodule hS).symm v)` as an intermediate fact. Conclude with `this`. Establish `gsurj : Function.Surjective g` using `fun y => by`. Take `⟨v, rfl⟩` from `hf y`. Use `⟨(v : V), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Express the relevant statement in the definitionally equal form `f ((LinearEquiv.ofTop S.toSubmodule hS).symm (v : V)) = f v`. Use `congr 1`. Establish `ginj : Function.Injective g`. Break down `hρ' (LinearMap.ker g) (fun x v hv => by` into its components or cases. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hg, hv, map_zero]) with e | e`. Conclude with `LinearMap.ker_eq_bot.1 e`. It suffices to derive a contradiction. Take `⟨y, hy⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `gsurj y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy (LinearMap.mem_ker.1 (e ▸ Submodule.mem_top))`. Set `e0` to `LinearEquiv.ofBijective g ⟨ginj, gsurj⟩`. Use `⟨e0.symm, fun x y => e0.injective ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `σ x y = g (ρ x (e0.symm y))`.
-
-Rewrite using `[hg]`. Express the relevant statement in the definitionally equal form `σ x y = σ x (e0 (e0.symm y))`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_isSubquotient {σ : Representation ℂ G W} {ρ : Representation ℂ G V}
     (hσ : σ.IsIrreducible) (hρ : ρ.IsIrreducible) (h : GlobalTheory.SmGL.IsSubquotient σ ρ) :
@@ -77,7 +75,7 @@ theorem exists_equiv_of_isSubquotient {σ : Representation ℂ G W} {ρ : Repres
 variable {H : Type} [Group H]
 
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨e x, GlobalTheory.LGrp.mem_fixed.2 fun k hk => by rw [← he, GlobalTheory.LGrp.mem_fixed.1 hx k hk], by simpa using h0⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSpherical_of_equiv {σ : Representation ℂ H W} {ρ : Representation ℂ H V} (e : W ≃ₗ[ℂ] V)
     (he : ∀ g x, e (σ g x) = ρ g (e x)) {K : Subgroup H} (h : GlobalTheory.LGrp.IsSpherical σ K) :
@@ -87,7 +85,7 @@ theorem isSpherical_of_equiv {σ : Representation ℂ H W} {ρ : Representation 
     by simpa using h0⟩
 
 /- English proof (translation)
-The claim follows from `e.injective (by rw [LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply])`.
+A detailed English derivation is pending.
 -/
 theorem symm_equivariant {σ : Representation ℂ H W} {ρ : Representation ℂ H V} (e : W ≃ₗ[ℂ] V)
     (he : ∀ g x, e (σ g x) = ρ g (e x)) (g : H) (y : V) : e.symm (ρ g y) = σ g (e.symm y) :=
@@ -101,9 +99,9 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `⟨isSpherical_of_equiv e he h.1, fun y hy h0 => ?_⟩` and prove the remaining obligations. Establish `hx : e.symm y ∈ GlobalTheory.PRep.fixed σ (GlobalTheory.LFun.KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`. Rewrite using `[← symm_equivariant e he, GlobalTheory.LGrp.mem_fixed.1 hy k hk]`. Establish `h0' : e.symm y ≠ 0` using `by simpa using h0`. Use `(h.2 _ hx h0').map e.toLinearMap he (by simpa using h0)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSatGL_of_equiv {σ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) W}
     {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} (e : W ≃ₗ[ℂ] V) (he : ∀ g x, e (σ g x) = ρ g (e x))
@@ -123,7 +121,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨-, f, h0, hf, hfi⟩` from `h`. Use `⟨hρ, f ∘ₗ e.symm.toLinearMap, fun h1 => h0 ?_, fun v => hf _, fun x v => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun h1 (e y)`. Simplify using `[symm_equivariant e he, hfi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem isCompAlong_of_equiv {π : Submodule ℂ (UA E n → ℂ)} {Gv : Subgroup (UA E n)} {H : Type} [Group H]
     {p : Gv →* H} {σ : Representation ℂ H W} {ρ : Representation ℂ H V} (e : W ≃ₗ[ℂ] V)
@@ -140,11 +138,9 @@ end CM
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hBC hB E _ _ _ hun n hn π hπ`. Take `⟨c, N, h, V, σ, m, P, H⟩` from `hBC E hun n hn π hπ`. Use `⟨c, N, h, V, σ, m, ?_⟩` and prove the remaining obligations. Establish `hirr : ∀ w, (locProd h w (σ · w)).IsIrreducible` using `fun w => ((GlobalTheory.SmGL.MultiIrr.products_irreducible hB (w.adicCompletion E)).1 c N (Fin n) (GlobalTheory.SmGL.stdBlocks N h) (fun i => (σ i w).V) (fun i => (σ i w).ρ) (fun i => (σ i w).smooth) (fun i => (σ i w).irred) (fun i => GlobalTheory.DiscreteUnit.isUnitarisable_of_i …`. Conclude with `{ pos := H.pos discrete := H.discrete csd := H.csd loc := H.loc inf := H.inf unram := fun w hw => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `exists_equiv_of_isSubquotient (P w).irred (hirr w) (H.sub w)`. Conclude with `isSpherical_of_equiv e he (H.unram w hw)`. Use `inert := fun w s ϖ q hs hq α hα => by`. Take `⟨e, he⟩` from `exists_equiv_of_isSubquotient (P w).irred (hirr w) (H.sub w)`. Conclude with `hasSatGL_of_equiv e he (H.inert w s ϖ q hs hq α hα)`.
-
-Use `split := fun w hw => by`. Take `⟨e, he⟩` from `exists_equiv_of_isSubquotient (P w).irred (hirr w) (H.sub w)`. Conclude with `isCompAlong_of_equiv e he (hirr w) (H.split w hw)`. Use `weight := H.weight }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.BaseChangeIsobaric → GlobalTheory.Published.BernsteinUnitaryProductIrreducible →
     GlobalTheory.Published.BaseChangeDefiniteUnitary := by

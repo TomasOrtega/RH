@@ -12,14 +12,14 @@ section Rev
 variable {K : Type*} [Field K]
 
 /- English proof (translation)
-Establish `ht : q.natTrailingDegree = 0` using `natTrailingDegree_eq_zero.mpr (Or.inr h)`. Rewrite using `[reverse_natDegree, ht, Nat.sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rev_natDegree {q : K[X]} (h : q.coeff 0 ≠ 0) : q.reverse.natDegree = q.natDegree := by
   have ht : q.natTrailingDegree = 0 := natTrailingDegree_eq_zero.mpr (Or.inr h)
   rw [reverse_natDegree, ht, Nat.sub_zero]
 
 /- English proof (translation)
-Establish `hn` using `rev_natDegree h`. Use `show (q.reverse).reflect q.reverse.natDegree = q`. Rewrite using `[hn]`. Use `show (reflect q.natDegree q).reflect q.natDegree = q`. Conclude with `reflect_reflect`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rev_rev {q : K[X]} (h : q.coeff 0 ≠ 0) : q.reverse.reverse = q := by
   have hn := rev_natDegree h

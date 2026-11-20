@@ -17,20 +17,20 @@ open scoped Matrix
 namespace GlobalTheory.KZGlobAsm
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Rc8.norm_le_one_of_mem c hx`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem {l : ℕ} [Fact l.Prime] (c : Coef l) {x : Qbar l} (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.Rc8.norm_le_one_of_mem c hx
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.PadicInversePower.inv_pow_mem l c e r x`.
+A detailed English derivation is pending.
 -/
 theorem inv_pow_val_mem (l : ℕ) [Fact l.Prime] (c : Coef l) (e r : ℕ) (x : (ZMod (l ^ r))ˣ) :
     ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ ∈ c.O :=
   _root_.GlobalTheory.PadicInversePower.inv_pow_mem l c e r x
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.PadicNormCastBounds.twist_compat l c e χ hχ hχc r x`.
+A detailed English derivation is pending.
 -/
 theorem eta_compat (l : ℕ) [Fact l.Prime] (c : Coef l) (e : ℕ) (χ : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l)
     (hχ : ∀ r x, χ r x ∈ c.O)

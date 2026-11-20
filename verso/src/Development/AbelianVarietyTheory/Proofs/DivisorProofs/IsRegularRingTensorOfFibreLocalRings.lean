@@ -4,19 +4,15 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S T K _ _ _ _ _ _ Q hQ hfrac hreg`. Use `haveI : Q.IsPrime := hQ ▸ RingHom.ker_isPrime (algebraMap S K)`. Set `φ : Q.ResidueField →ₐ[S] K` to `Ideal.ResidueField.liftₐ Q (Algebra.ofId S K) hQ.ge (by`. Introduce `x hx`. Simplify using `only [Submonoid.mem_comap, IsUnit.mem_submonoid_iff, isUnit_iff_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Conclude with `hx (hQ ▸ h0))`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Take `⟨a, b, hb, hy⟩` from `hfrac y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb0 : algebraMap S K b ≠ 0` using `fun h0 => hb (hQ ▸ h0)`. Use `⟨algebraMap S Q.ResidueField a * (algebraMap S Q.ResidueField b)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, AlgHom.commutes, AlgHom.commutes]`. Rewrite using `[← hy, mul_assoc, mul_inv_cancel₀ hb0, mul_one]`. Set `e : Q.ResidueField ≃ₐ[S] K` to `AlgEquiv.ofBijective φ ⟨φ.toRingHom.injective, hsurj⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `E : Q.Fiber T ≃ₐ[S] T ⊗[S] K` to `(Algebra.TensorProduct.congr e AlgEquiv.refl).trans (Algebra.TensorProduct.comm S K T)`. Use `haveI : IsNoetherianRing (Q.Fiber T) := by`. Use `letI : Algebra T (Q.Fiber T) := Algebra.TensorProduct.rightAlgebra`. Set `Sp` to `Localization (Algebra.algebraMapSubmonoid T Q.primeCompl)`. Use `haveI : IsNoetherianRing Sp := IsLocalization.isNoetherianRing (Algebra.algebraMapSubmonoid T Q.primeCompl) Sp inferInstance`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `isNoetherianRing_of_ringEquiv _ (Ideal.Fiber.algEquivAux₁ Q (S := T)).toRingEquiv.symm`. Use `haveI : IsRegularRing (Q.Fiber T) := by`. Rewrite using `[isRegularRing_iff]`. Introduce `q hq`. Set `n : Ideal T` to `q.comap (Algebra.TensorProduct.includeRight : T →ₐ[S] Q.Fiber T)`.
-
-Use `haveI : n.IsPrime := Ideal.comap_isPrime _ _`. Establish `hn : n.comap (algebraMap S T) = Q`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap S T) (Ideal.comap ((Algebra.TensorProduct.includeRight : T →ₐ[S] Q.Fiber T) : T →+* Q.Fiber T) q) = Q`. Rewrite using `[Ideal.comap_comap, AlgHom.comp_algebraMap]`. Conclude with `(Ideal.over_def q Q).symm`.
-
-Use `haveI := hreg n hn`. Conclude with `IsRegularLocalRing.of_ringEquiv (Ideal.Fiber.algEquivAux₂ Q q).toRingEquiv.symm`. Conclude with `IsRegularRing.of_ringEquiv E.toRingEquiv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegularRing_tensor_of_fibre_localRings :
     ∀ (S T K : Type) [CommRing S] [CommRing T] [Algebra S T] [IsNoetherianRing T] [Field K]

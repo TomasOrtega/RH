@@ -12,13 +12,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `contDiff_apply_apply (𝕜 := ℂ) (E := ℂ) i j`.
+A detailed English derivation is pending.
 -/
 theorem pb_cd_entry (i j : Fin n) : ContDiff ℂ (⊤ : ℕ∞) (fun b : Mc n => b i j) :=
   contDiff_apply_apply (𝕜 := ℂ) (E := ℂ) i j
 
 /- English proof (translation)
-Establish `e : (fun b => (f b).det) = fun b => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, f b (σ i) i`. Use function extensionality and compare the values at `b`. Rewrite using `[Matrix.det_apply']`. Rewrite using `[e]`. Conclude with `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => hf _ _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_cd_det {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : ℕ∞) (fun b => f b i j)) :
     ContDiff ℂ (⊤ : ℕ∞) (fun b => (f b).det) := by
@@ -29,7 +29,7 @@ theorem pb_cd_det {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : ℕ∞)
   exact ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => hf _ _)
 
 /- English proof (translation)
-Establish `h : (fun b : Mc n => (1 + (e * a) • b) i j) = fun b => (1 : Mc n) i j + (e * a) * b i j`. Use function extensionality and compare the values at `b`. Simplify using `[Matrix.add_apply, Matrix.smul_apply]`. Rewrite using `[h]`. Apply the tactic sequence `exact contDiff_const.add (contDiff_const.mul (pb_cd_entry i j))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_cd_affine (a : ℂ) (e : ℂ) (i j : Fin n) :
     ContDiff ℂ (⊤ : ℕ∞) (fun b : Mc n => (1 + (e * a) • b) i j) := by
@@ -38,9 +38,9 @@ theorem pb_cd_affine (a : ℂ) (e : ℂ) (i j : Fin n) :
   rw [h]; exact contDiff_const.add (contDiff_const.mul (pb_cd_entry i j))
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply]`. Apply `pb_cd_det` to reduce the goal to its premises. Introduce `r c`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Matrix.updateRow_self]`. Conclude with `contDiff_const`. Simplify using `only [Matrix.updateRow_ne h]`. Conclude with `hf r c`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pb_cd_adj {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : ℕ∞) (fun b => f b i j)) (i j : Fin n) :
     ContDiff ℂ (⊤ : ℕ∞) (fun b => (f b).adjugate i j) := by
@@ -52,9 +52,9 @@ theorem pb_cd_adj {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : ℕ∞)
   · simp only [Matrix.updateRow_ne h]; exact hf r c
 
 /- English proof (translation)
-Establish `e : (fun b => (f b)⁻¹ i j) = fun b => ((f b).det)⁻¹ * (f b).adjugate i j`. Use function extensionality and compare the values at `b`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv]`. Simplify using `[Matrix.smul_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((pb_cd_det hf).contDiffOn.inv hs).mul (pb_cd_adj hf i j).contDiffOn`.
+A detailed English derivation is pending.
 -/
 theorem pb_cdOn_inv {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : ℕ∞) (fun b => f b i j)) (s : Set (Mc n))
     (hs : ∀ b ∈ s, (f b).det ≠ 0) (i j : Fin n) : ContDiffOn ℂ (⊤ : ℕ∞) (fun b => (f b)⁻¹ i j) s := by
@@ -64,7 +64,7 @@ theorem pb_cdOn_inv {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : ℕ�
   exact ((pb_cd_det hf).contDiffOn.inv hs).mul (pb_cd_adj hf i j).contDiffOn
 
 /- English proof (translation)
-Establish `e : (fun b => (f b)⁻¹.det) = fun b => ((f b).det)⁻¹`. Use function extensionality and compare the values at `b`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv]`. Rewrite using `[e]`. Conclude with `(pb_cd_det hf).contDiffOn.inv hs`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_cdOn_detInv {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : ℕ∞) (fun b => f b i j)) (s : Set (Mc n))
     (hs : ∀ b ∈ s, (f b).det ≠ 0) : ContDiffOn ℂ (⊤ : ℕ∞) (fun b => (f b)⁻¹.det) s := by
@@ -73,7 +73,7 @@ theorem pb_cdOn_detInv {f : Mc n → Mc n} (hf : ∀ i j, ContDiff ℂ (⊤ : �
   rw [e]; exact (pb_cd_det hf).contDiffOn.inv hs
 
 /- English proof (translation)
-Proceed by induction on `R using MvPolynomial.induction_on with`. Consider the case `C a => simpa using (contDiffOn_const : ContDiffOn ℂ (⊤ : ℕ∞) (fun _ : Mc n => a) s)`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p k hp => simpa using hp.mul (hv k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pb_cdOn_eval {ι : Type} (R : MvPolynomial ι ℂ) (v : ι → Mc n → ℂ) (s : Set (Mc n))
     (hv : ∀ k, ContDiffOn ℂ (⊤ : ℕ∞) (v k) s) :
@@ -84,11 +84,11 @@ theorem pb_cdOn_eval {ι : Type} (R : MvPolynomial ι ℂ) (v : ι → Mc n → 
   | mul_X p k hp => simpa using hp.mul (hv k)
 
 /- English proof (translation)
-Proceed by induction on `R using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨‖a‖, fun v _ => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨C1, h1⟩` from `hp`. Take `⟨C2, h2⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C1 + C2, fun v hv => by`. Simplify using `only [map_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h1 v hv) (h2 v hv))⟩`. Consider the case `mul_X p k hp`. Take `⟨C1, h1⟩` from `hp`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨max C1 0 * max B 0, fun v hv => by`. Simplify using `only [map_mul, MvPolynomial.eval_X, norm_mul]`. Conclude with `mul_le_mul ((h1 v hv).trans (le_max_left _ _)) ((hv k).trans (le_max_left _ _)) (norm_nonneg _) (le_max_right _ _)⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pb_eval_bound {ι : Type} (R : MvPolynomial ι ℂ) (B : ℝ) :
     ∃ C : ℝ, ∀ v : ι → ℂ, (∀ k, ‖v k‖ ≤ B) → ‖MvPolynomial.eval v R‖ ≤ C := by
@@ -106,9 +106,9 @@ theorem pb_eval_bound {ι : Type} (R : MvPolynomial ι ℂ) (B : ℝ) :
         (norm_nonneg _) (le_max_right _ _)⟩
 
 /- English proof (translation)
-Establish `hsq : ‖1 - a * (l : ℂ)‖ ^ 2 = 1 + l ^ 2`. Rewrite using `[Complex.sq_norm]`. Apply the tactic sequence `rcases ha with rfl | rfl <;> simp [Complex.normSq_apply] <;> ring`. Establish `h2 : ((1 + |l|) / Real.sqrt 2) ^ 2 ≤ ‖1 - a * (l : ℂ)‖ ^ 2`. Rewrite using `[hsq, div_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ (by norm_num : (0:ℝ) < 2)]`. Use polynomial arithmetic with `[sq_abs l, sq_nonneg (1 - |l|), abs_nonneg l]`. Conclude with `(pow_le_pow_iff_left₀ (by positivity) (norm_nonneg _) two_ne_zero).1 h2`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem pb_norm_one_sub (a : ℂ) (ha : a = Complex.I ∨ a = -Complex.I) (l : ℝ) :
     (1 + |l|) / Real.sqrt 2 ≤ ‖1 - a * (l : ℂ)‖ := by
@@ -124,44 +124,42 @@ theorem pb_norm_one_sub (a : ℂ) (ha : a = Complex.I ∨ a = -Complex.I) (l : �
 def pbwt (lam : Fin n → ℝ) (i : Fin n) : ℝ := Real.sqrt (1 + |lam i|)
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_pos.2 (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem pbwt_pos (lam : Fin n → ℝ) (i : Fin n) : 0 < pbwt lam i := Real.sqrt_pos.2 (by positivity)
 
 /- English proof (translation)
-Unfold `pbwt`. Rewrite using `[Real.one_le_sqrt]`. Combine the linear relations using `[abs_nonneg (lam i)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pb_one_le_wt (lam : Fin n → ℝ) (i : Fin n) : 1 ≤ pbwt lam i := by
   unfold pbwt; rw [Real.one_le_sqrt]; linarith [abs_nonneg (lam i)]
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem pbwt_sq (lam : Fin n → ℝ) (i : Fin n) : pbwt lam i ^ 2 = 1 + |lam i| :=
   Real.sq_sqrt (by positivity)
 
 /- English proof (translation)
-Introduce `i`. Take `⟨i0, -, hi0⟩` from `Finset.exists_max_image Finset.univ (fun j => pbwt lam j * ‖x j‖) ⟨i, Finset.mem_univ _⟩`. Use `set m := pbwt lam i0 * ‖x i0‖ with hmdef`. Establish `hm : ∀ j, pbwt lam j * ‖x j‖ ≤ m` using `fun j => hi0 j (Finset.mem_univ _)`. Establish `hm0 : 0 ≤ m` using `mul_nonneg (pbwt_pos lam i0).le (norm_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have ha1 : ‖a‖ = 1 := by rcases ha with rfl | rfl <;> simp`. Establish `hD : ∑ j, Matrix.diagonal (fun i => (lam i : ℂ)) i0 j * x j = (lam i0 : ℂ) * x i0`. Rewrite using `[Finset.sum_eq_single i0]`. Simplify using `[Matrix.diagonal_apply_eq]`. Introduce `j _ hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.diagonal_apply_ne _ (Ne.symm hj)]`. Simplify using the standard rewrite rules. Establish `row : ((1 - a • b) *ᵥ x) i0 = (1 - a * (lam i0 : ℂ)) * x i0 - a * ∑ j, (b i0 j - Matrix.diagonal (fun i => (lam i : ℂ)) i0 j) * x j`. Establish `e1 : ((1 - a • b) *ᵥ x) i0 = x i0 - a * ∑ j, b i0 j * x j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, Finset.mul_sum, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, hD]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ‖∑ j, (b i0 j - Matrix.diagonal (fun i => (lam i : ℂ)) i0 j) * x j‖ ≤ (n : ℝ) * (c₀ * pbwt lam i0 * m)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (n : ℝ) * (c₀ * pbwt lam i0 * m) := by simp`. Establish `hlow : (pbwt lam i0 / Real.sqrt 2) * m ≤ ‖(1 - a * (lam i0 : ℂ)) * x i0‖`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Establish `h1` using `pb_norm_one_sub a ha (lam i0)`. Establish `: (pbwt lam i0 / Real.sqrt 2) * m = ((1 + |lam i0|) / Real.sqrt 2) * ‖x i0‖`. Rewrite using `[hmdef, ← pbwt_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right h1 (norm_nonneg _)`. Establish `hup : ‖(1 - a * (lam i0 : ℂ)) * x i0‖ ≤ B * pbwt lam i0 + (n : ℝ) * (c₀ * pbwt lam i0 * m)`. Establish `e : (1 - a * (lam i0 : ℂ)) * x i0 = ((1 - a • b) *ᵥ x) i0 + a * ∑ j, (b i0 j - Matrix.diagonal (fun i => (lam i : ℂ)) i0 j) * x j`. Rewrite using `[row]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(norm_add_le _ _).trans (add_le_add (hy i0) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, ha1, one_mul]`. Conclude with `hsum`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `key : pbwt lam i0 * (m / Real.sqrt 2) ≤ pbwt lam i0 * (B + (n : ℝ) * c₀ * m)`. Use `hlow.trans hup` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `key2` using `le_of_mul_le_mul_left key (pbwt_pos lam i0)`. Establish `hs2 : Real.sqrt 2 ≤ 10 / 7`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_le_left (by norm_num)]; norm_num`. Establish `hsp : 0 < Real.sqrt 2` using `Real.sqrt_pos.2 (by norm_num)`. Establish `hmd : m * (7 / 10) ≤ m / Real.sqrt 2`. Rewrite using `[le_div_iff₀ hsp]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `hnc : (n : ℝ) * c₀ * m ≤ m / 4` using `by nlinarith`. Establish `hfin : m ≤ 3 * B` using `by nlinarith`. Conclude with `(hm i).trans hfin`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pb_dom (a : ℂ) (ha : a = Complex.I ∨ a = -Complex.I) (lam : Fin n → ℝ) (c₀ : ℝ) (hc : 0 ≤ c₀)
     (hc₀ : (n : ℝ) * c₀ ≤ 1 / 4) (b : Mc n)
@@ -225,17 +223,17 @@ theorem pb_dom (a : ℂ) (ha : a = Complex.I ∨ a = -Complex.I) (lam : Fin n �
   exact (hm i).trans hfin
 
 /- English proof (translation)
-Establish `hdet : IsUnit (1 - a • b).det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hv0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Use `pb_dom a ha lam c₀ hc hc₀ b hb v 0 (fun i => by simp [hv]) i` as an intermediate fact. Establish `hw` using `pbwt_pos lam i`. Establish `: ‖v i‖ ≤ 0` using `by nlinarith [norm_nonneg (v i)]`. Simplify using `using le_antisymm this (norm_nonneg _)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hdet, fun i j => ?_⟩` and prove the remaining obligations. Use `set Y := 1 - a • b`. Establish `hx : Y *ᵥ (Y⁻¹ *ᵥ Pi.single j 1) = Pi.single j 1`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hwj` using `pbwt_pos lam j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `pb_dom a ha lam c₀ hc hc₀ b hb (Y⁻¹ *ᵥ Pi.single j 1) (1 / pbwt lam j) (fun k => by`. Rewrite using `[hx]`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[inv_mul_cancel₀ hwj.ne']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hk]; exact mul_nonneg (by positivity) (pbwt_pos lam k).le) i`. Establish `e : (Y⁻¹ *ᵥ Pi.single j 1) i = Y⁻¹ i j`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite `key` using `[e]`. Establish `hwi` using `pbwt_pos lam i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ (mul_pos hwi hwj)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pb_inv (a : ℂ) (ha : a = Complex.I ∨ a = -Complex.I) (lam : Fin n → ℝ) (c₀ : ℝ) (hc : 0 ≤ c₀)
     (hc₀ : (n : ℝ) * c₀ ≤ 1 / 4) (b : Mc n)
@@ -271,9 +269,9 @@ theorem pb_inv (a : ℂ) (ha : a = Complex.I ∨ a = -Complex.I) (lam : Fin n �
     _ = 3 := by field_simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Establish `hterm : ∀ σ : Equiv.Perm (Fin n), ‖((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, A (σ i) i‖ ≤ K ^ n / (∏ i, f i) ^ 2`. Introduce `σ`. Establish `hs : ‖((Equiv.Perm.sign σ : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[norm_mul, hs, one_mul, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_mul_distrib, Equiv.prod_comp σ f, sq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem pb_det_le (A : Mc n) (f : Fin n → ℝ) (K : ℝ)
     (hA : ∀ i j, ‖A i j‖ ≤ K / (f i * f j)) : ‖A.det‖ ≤ (Nat.factorial n : ℝ) * (K ^ n / (∏ i, f i) ^ 2) := by
@@ -296,16 +294,16 @@ theorem pb_det_le (A : Mc n) (f : Fin n → ℝ) (K : ℝ)
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.1 hk, by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.1 hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem pb_kk (k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) : k * kᴴ = 1 ∧ kᴴ * k = 1 :=
   ⟨by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.1 hk,
    by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.1 hk⟩
 
 /- English proof (translation)
-Establish `h2 : k.det * star k.det = 1`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_mul, (pb_kk k hk).1, Matrix.det_one]`. Establish `h3 : Complex.normSq k.det = 1`. Use `h2` as an intermediate fact. Rewrite `this` using `[Complex.star_def, Complex.mul_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `h4 : ‖k.det‖ ^ 2 = 1` using `by rw [Complex.sq_norm, h3]`. Use polynomial arithmetic with `[norm_nonneg k.det, sq_nonneg (‖k.det‖ - 1)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem pb_norm_det_unitary (k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) : ‖k.det‖ = 1 := by
   have h2 : k.det * star k.det = 1 := by
@@ -316,14 +314,14 @@ theorem pb_norm_det_unitary (k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) �
   nlinarith [norm_nonneg k.det, sq_nonneg (‖k.det‖ - 1)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, (pb_kk k hk).1, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pb_conj (c : ℂ) (k b : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     1 - c • (k * b * kᴴ) = k * (1 - c • b) * kᴴ := by
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, (pb_kk k hk).1, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem pb_conj_inv (Y k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : IsUnit Y.det) :
     (k * Y * kᴴ)⁻¹ = k * Y⁻¹ * kᴴ := by
@@ -332,7 +330,7 @@ theorem pb_conj_inv (Y k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (h
     _ = 1 := by rw [(pb_kk k hk).2, Matrix.mul_one, Matrix.mul_nonsing_inv _ hY, Matrix.mul_one, (pb_kk k hk).1]
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero, Matrix.det_mul, Matrix.det_mul]`. Establish `h1 : k.det ≠ 0` using `fun h => by simpa [h] using pb_norm_det_unitary k hk`. Establish `h2 : kᴴ.det ≠ 0`. Rewrite using `[Matrix.det_conjTranspose]; exact fun h => h1 (by simpa using h)`. Conclude with `mul_ne_zero (mul_ne_zero h1 (isUnit_iff_ne_zero.1 hY)) h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_conj_unit (Y k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : IsUnit Y.det) :
     IsUnit (k * Y * kᴴ).det := by
@@ -343,13 +341,13 @@ theorem pb_conj_unit (Y k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (
   exact mul_ne_zero (mul_ne_zero h1 (isUnit_iff_ne_zero.1 hY)) h2
 
 /- English proof (translation)
-Establish `hk' : kᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ`. Simplify `Unitary.star_mem hk` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Matrix.mul_apply]`. Establish `e2 : ‖kᴴ b j‖ ≤ 1` using `entry_norm_bound_of_unitary hk' b j`. Establish `e1 : ‖∑ a, k i a * M a b‖ ≤ (n : ℝ) * K`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (n : ℝ) * K := by simp`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = (n : ℝ) * ((n : ℝ) * K) := by simp`.
+A detailed English derivation is pending.
 -/
 theorem pb_conj_entry (M k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (K : ℝ)
     (hM : ∀ a b, ‖M a b‖ ≤ K) (i j : Fin n) : ‖(k * M * kᴴ) i j‖ ≤ (n : ℝ) * ((n : ℝ) * K) := by
@@ -376,7 +374,7 @@ theorem pb_conj_entry (M k : Mc n) (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) 
     _ = (n : ℝ) * ((n : ℝ) * K) := by simp
 
 /- English proof (translation)
-Establish `h : (fun b : Mc n => (1 - c • b) i j) = fun b => (1 + ((-1) * c) • b) i j`. Use function extensionality and compare the values at `b`. Simplify using `[sub_eq_add_neg, neg_smul]`. Rewrite using `[h]`. Conclude with `pb_cd_affine c (-1) i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_cd_oneSub (c : ℂ) (i j : Fin n) : ContDiff ℂ (⊤ : ℕ∞) (fun b : Mc n => (1 - c • b) i j) := by
   have h : (fun b : Mc n => (1 - c • b) i j) = fun b => (1 + ((-1) * c) • b) i j := by
@@ -384,43 +382,37 @@ theorem pb_cd_oneSub (c : ℂ) (i j : Fin n) : ContDiff ℂ (⊤ : ℕ∞) (fun 
   rw [h]; exact pb_cd_affine c (-1) i j
 
 /- English proof (translation)
-Introduce `n s hs p q R`. Apply the tactic sequence `have ha : Complex.I * s = Complex.I ∨ Complex.I * s = -Complex.I := by rcases hs with rfl | rfl <;> simp`. Establish `ham : -(Complex.I * s) = Complex.I ∨ -(Complex.I * s) = -Complex.I`. Apply the tactic sequence `rcases ha with h | h <;> simp [h]`. Establish `hplus : ∀ b : Mc n, (1 + (Complex.I * s) • b) = 1 - (-(Complex.I * s)) • b`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[neg_smul, sub_neg_eq_add]`. Establish `he1 : ∀ i j, ContDiff ℂ (⊤ : ℕ∞) (fun b : Mc n => (1 - (Complex.I * s) • b) i j)` using `fun i j => pb_cd_oneSub _ i j`. Establish `he2 : ∀ i j, ContDiff ℂ (⊤ : ℕ∞) (fun b : Mc n => (1 + (Complex.I * s) • b) i j)` using `fun i j => by`. Simplify `pb_cd_affine (Complex.I * s) 1 i j` using `[one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hd1` using `pb_cd_det he1`. Establish `hd2` using `pb_cd_det he2`. Establish `hopen : IsOpen (Ugood (n` using `n) s) := by`. Establish `e : Ugood (n` using `n) s = {b | (1 - (Complex.I * s) • b).det ≠ 0} ∩ {b | (1 + (Complex.I * s) • b).det ≠ 0} := by`. Use extensionality with `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Ugood, isUnit_iff_ne_zero]`. Rewrite using `[e]`. Conclude with `(isOpen_ne_fun hd1.continuous continuous_const).inter (isOpen_ne_fun hd2.continuous continuous_const)`. Establish `hne1 : ∀ b ∈ Ugood (n` using `n) s, (1 - (Complex.I * s) • b).det ≠ 0 := fun b hb => isUnit_iff_ne_zero.1 hb.1`. Establish `hne2 : ∀ b ∈ Ugood (n` using `n) s, (1 + (Complex.I * s) • b).det ≠ 0 := fun b hb => isUnit_iff_ne_zero.1 hb.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmooth : ContDiffOn ℂ (⊤ : ℕ∞) (Fr s p q R) (Ugood s)`. Establish `hv : ∀ k : Bool × Fin n × Fin n, ContDiffOn ℂ (⊤ : ℕ∞) (fun b : Mc n => if k.1 then (1 + (Complex.I * s) • b)⁻¹ k.2.1 k.2.2 else (1 - (Complex.I * s) • b)⁻¹ k.2.1 k.2.2) (Ugood s)`. Introduce and unpack `⟨t, i, j⟩`. Consider the cases of `t`. Simplify using `using pb_cdOn_inv he1 _ hne1 i j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using pb_cdOn_inv he2 _ hne2 i j`. Conclude with `(((pb_cdOn_detInv he1 _ hne1).pow p).mul ((pb_cdOn_detInv he2 _ hne2).pow q)).mul (pb_cdOn_eval R _ _ hv)`. Take `⟨CR, hCR⟩` from `pb_eval_bound R ((n : ℝ) * ((n : ℝ) * 3))`. Use `⟨hopen, hsmooth, 1 / (4 * (n : ℝ) + 4), ((Nat.factorial n : ℝ) * 3 ^ n) ^ p * ((Nat.factorial n : ℝ) * 3 ^ n) ^ q * CR, by positivity, ?_⟩` and prove the remaining obligations. Introduce `k hk lam b hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set K1 : ℝ := (Nat.factorial n : ℝ) * 3 ^ n with hK1def`. Establish `hc₀ : (n : ℝ) * (1 / (4 * (n : ℝ) + 4)) ≤ 1 / 4`. Rewrite using `[mul_one_div, div_le_iff₀ (by positivity)]; linarith`. Establish `hb' : ∀ i j, ‖b i j - Matrix.diagonal (fun i => (lam i : ℂ)) i j‖ ≤ (1 / (4 * (n : ℝ) + 4)) * (pbwt lam i * pbwt lam j)`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `hb i j` as an intermediate fact. Simplify `this` using `[pbwt, Real.sqrt_mul (by positivity : (0:ℝ) ≤ 1 + |lam i|)]`. Take `⟨hu1, hY1⟩` from `pb_inv _ ha lam _ (by positivity) hc₀ b hb'`. Take `⟨hu2, hY2⟩` from `pb_inv _ ham lam _ (by positivity) hc₀ b hb'`. Establish `c1 : 1 - (Complex.I * s) • (k * b * kᴴ) = k * (1 - (Complex.I * s) • b) * kᴴ` using `pb_conj _ k b hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c2 : 1 + (Complex.I * s) • (k * b * kᴴ) = k * (1 - (-(Complex.I * s)) • b) * kᴴ`. Rewrite using `[hplus]`. Conclude with `pb_conj _ k b hk`. Use `⟨⟨by rw [c1]; exact pb_conj_unit _ k hk hu1, by rw [c2]; exact pb_conj_unit _ k hk hu2⟩, ?_⟩` and prove the remaining obligations. Establish `i1 : (1 - (Complex.I * s) • (k * b * kᴴ))⁻¹ = k * (1 - (Complex.I * s) • b)⁻¹ * kᴴ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[c1]`. Conclude with `pb_conj_inv _ k hk hu1`. Establish `i2 : (1 + (Complex.I * s) • (k * b * kᴴ))⁻¹ = k * (1 - (-(Complex.I * s)) • b)⁻¹ * kᴴ`. Rewrite using `[c2]`. Conclude with `pb_conj_inv _ k hk hu2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set P : ℝ := ∏ i, (1 + |lam i|) with hPdef`. Establish `hP : 0 < P` using `Finset.prod_pos fun i _ => by positivity`. Establish `hPw : (∏ i, pbwt lam i) ^ 2 = P`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun i _ => pbwt_sq lam i`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdetY : ∀ (Y : Mc n), (∀ i j, ‖Y i j‖ ≤ 3 / (pbwt lam i * pbwt lam j)) → ‖Y.det‖ ≤ K1 / P`. Introduce `Y hYb`. Use `pb_det_le Y (pbwt lam) 3 hYb` as an intermediate fact. Rewrite `this` using `[hPw]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdc : ∀ (Y : Mc n), ‖(k * Y * kᴴ).det‖ = ‖Y.det‖`. Introduce `Y`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, norm_mul, norm_mul, pb_norm_det_unitary k hk, Matrix.det_conjTranspose, norm_star, pb_norm_det_unitary k hk, one_mul, mul_one]`. Establish `hdet1 : ‖(1 - (Complex.I * s) • (k * b * kᴴ))⁻¹.det‖ ≤ K1 / P`. Rewrite using `[i1, hdc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `hdetY _ hY1`. Establish `hdet2 : ‖(1 + (Complex.I * s) • (k * b * kᴴ))⁻¹.det‖ ≤ K1 / P`. Rewrite using `[i2, hdc]`. Conclude with `hdetY _ hY2`. Establish `hent : ∀ (Y : Mc n), (∀ i j, ‖Y i j‖ ≤ 3 / (pbwt lam i * pbwt lam j)) → ∀ i j, ‖(k * Y * kᴴ) i j‖ ≤ (n : ℝ) * ((n : ℝ) * 3)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y hYb i j`. Apply the tactic sequence `refine pb_conj_entry Y k hk 3 (fun a c => (hYb a c).trans ?_) i j`. Rewrite using `[div_le_iff₀ (mul_pos (pbwt_pos lam a) (pbwt_pos lam c))]`. Use polynomial arithmetic with `[pb_one_le_wt lam a, pb_one_le_wt lam c]`. Establish `hev : ‖MvPolynomial.eval (fun k' : Bool × Fin n × Fin n => if k'.1 then (1 + (Complex.I * s) • (k * b * kᴴ))⁻¹ k'.2.1 k'.2.2 else (1 - (Complex.I * s) • (k * b * kᴴ))⁻¹ k'.2.1 k'.2.2) R‖ ≤ CR`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hCR` to reduce the goal to its premises. Introduce and unpack `⟨t, i, j⟩`. Consider the cases of `t`. Simplify using `only [Bool.false_eq_true, if_false]`. Rewrite using `[i1]`.
-
-Conclude with `hent _ hY1 i j`. Simplify using `only [if_true]`. Rewrite using `[i2]`. Conclude with `hent _ hY2 i j`. Establish `hrp : P ^ (-((p + q : ℕ) : ℝ)) = (P ^ (p + q))⁻¹`.
-
-Rewrite using `[Real.rpow_neg hP.le, Real.rpow_natCast]`. Use `show ‖(1 - (Complex.I * s) • (k * b * kᴴ))⁻¹.det ^ p * (1 + (Complex.I * s) • (k * b * kᴴ))⁻¹.det ^ q * MvPolynomial.eval (fun k' : Bool × Fin n × Fin n => if k'.1 then (1 + (Complex.I * s) • (k * b * kᴴ))⁻¹ k'.2.1 k'.2.2 else (1 - (Complex.I * s) • (k * b * kᴴ))⁻¹ k'.2.1 k'.2.2) …`. Rewrite using `[hrp, norm_mul, norm_mul, norm_pow, norm_pow]`. Establish `hK1 : 0 ≤ K1` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[div_pow, div_pow, pow_add, mul_inv, div_eq_mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pBound : PBound := by
   intro n s hs p q R

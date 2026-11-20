@@ -13,20 +13,20 @@ variable {ι : Type} [DecidableEq ι] {X : Type}
 def splitY (w : ι) (t : X) (z : {v // v ≠ w} → X) : ι → X := fun v => if h : v = w then t else z ⟨v, h⟩
 
 /- English proof (translation)
-The claim follows from `dif_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem splitY_self (w : ι) (t : X) (z : {v // v ≠ w} → X) : splitY w t z w = t := dif_pos rfl
 
 /- English proof (translation)
-Simplify using `[splitY, v.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem splitY_ne (w : ι) (t : X) (z : {v // v ≠ w} → X) (v : {v // v ≠ w}) : splitY w t z v = z v := by
   simp [splitY, v.2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [Function.update_apply, splitY]`. Distinguish the cases in `h : v = w`. Rewrite using `[if_pos h, dif_pos h]`. Rewrite using `[if_neg h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem update_splitY_self (w : ι) (t t' : X) (z : {v // v ≠ w} → X) :
     Function.update (splitY w t z) w t' = splitY w t' z := by
@@ -37,11 +37,11 @@ theorem update_splitY_self (w : ι) (t t' : X) (z : {v // v ≠ w} → X) :
   · rw [if_neg h]; simp [h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Function.update_apply, splitY]`. Distinguish the cases in `h : x = w`. Establish `h' : x ≠ (v : ι)` using `fun e => v.2 (e ▸ h)`. Rewrite using `[if_neg h', dif_pos h, dif_pos h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_neg h]`. Distinguish the cases in `h' : x = v`. Establish `: (⟨x, h⟩ : {v // v ≠ w}) = v` using `Subtype.ext h'`. Rewrite using `[if_pos h', if_pos this]`. Establish `: (⟨x, h⟩ : {v // v ≠ w}) ≠ v` using `fun e => h' (congrArg Subtype.val e)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h', if_neg this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem update_splitY_ne (w : ι) (t : X) (z : {v // v ≠ w} → X) (v : {v // v ≠ w}) (s : X) :
     Function.update (splitY w t z) v s = splitY w t (Function.update z v s) := by
@@ -58,14 +58,14 @@ theorem update_splitY_ne (w : ι) (t : X) (z : {v // v ≠ w} → X) (v : {v // 
       rw [if_neg h', if_neg this]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply the tactic sequence `by_cases h : v = w <;> simp [splitY, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem splitY_one [One X] (w : ι) : splitY w (1 : X) (1 : {v // v ≠ w} → X) = 1 := by
   funext v
   by_cases h : v = w <;> simp [splitY, h]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun v => by by_cases h : v = w · simp only [splitY, dif_pos h]; exact continuous_id · simp only [splitY, dif_neg h]; exact continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_splitY_left [TopologicalSpace X] (w : ι) (z : {v // v ≠ w} → X) :
     Continuous fun t : X => splitY w t z :=
@@ -75,7 +75,7 @@ theorem continuous_splitY_left [TopologicalSpace X] (w : ι) (z : {v // v ≠ w}
     · simp only [splitY, dif_neg h]; exact continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun v => by by_cases h : v = w · simp only [splitY, dif_pos h]; exact continuous_const · simp only [splitY, dif_neg h]; exact continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_splitY_right [TopologicalSpace X] (w : ι) (t : X) :
     Continuous fun z : {v // v ≠ w} → X => splitY w t z :=
@@ -92,29 +92,29 @@ Both sides reduce to the same expression.
 theorem psa_apply (w : ι) (J : ∀ v, Idx v) : Equiv.piSplitAt w Idx J = (J w, fun v : {v // v ≠ w} => J v) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg Prod.fst ((Equiv.piSplitAt w Idx).apply_symm_apply (j, J'))`.
+A detailed English derivation is pending.
 -/
 theorem psa_symm_self (w : ι) (j : Idx w) (J' : ∀ v : {v // v ≠ w}, Idx v) :
     (Equiv.piSplitAt w Idx).symm (j, J') w = j :=
   congrArg Prod.fst ((Equiv.piSplitAt w Idx).apply_symm_apply (j, J'))
 
 /- English proof (translation)
-The claim follows from `congrFun (congrArg Prod.snd ((Equiv.piSplitAt w Idx).apply_symm_apply (j, J'))) v`.
+A detailed English derivation is pending.
 -/
 theorem psa_symm_ne (w : ι) (j : Idx w) (J' : ∀ v : {v // v ≠ w}, Idx v) (v : {v // v ≠ w}) :
     (Equiv.piSplitAt w Idx).symm (j, J') v = J' v :=
   congrFun (congrArg Prod.snd ((Equiv.piSplitAt w Idx).apply_symm_apply (j, J'))) v
 
 /- English proof (translation)
-The claim follows from `(Equiv.piSplitAt w Idx).symm_apply_apply J`.
+A detailed English derivation is pending.
 -/
 theorem psa_symm_apply_self (w : ι) (J : ∀ v, Idx v) : (Equiv.piSplitAt w Idx).symm (J w, fun v : {v // v ≠ w} => J v) = J :=
   (Equiv.piSplitAt w Idx).symm_apply_apply J
 
 /- English proof (translation)
-Apply `(Equiv.piSplitAt w Idx).injective` to reduce the goal to its premises. Rewrite using `[Equiv.apply_symm_apply, psa_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `Function.update_self _ _ _`. Use function extensionality and compare the values at `v show Function.update _ w j' (v : ι) = J' v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne v.2, psa_symm_ne]`.
+A detailed English derivation is pending.
 -/
 theorem update_psa_self (w : ι) (j j' : Idx w) (J' : ∀ v : {v // v ≠ w}, Idx v) :
     Function.update ((Equiv.piSplitAt w Idx).symm (j, J')) w j' = (Equiv.piSplitAt w Idx).symm (j', J') := by
@@ -127,9 +127,9 @@ theorem update_psa_self (w : ι) (j j' : Idx w) (J' : ∀ v : {v // v ≠ w}, Id
     rw [Function.update_of_ne v.2, psa_symm_ne]
 
 /- English proof (translation)
-Apply `(Equiv.piSplitAt w Idx).injective` to reduce the goal to its premises. Rewrite using `[Equiv.apply_symm_apply, psa_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show Function.update _ (v : ι) x w = j`. Rewrite using `[Function.update_of_ne (Ne.symm v.2), psa_symm_self]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v' show Function.update _ (v : ι) x (v' : ι) = Function.update J' v x v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne (fun e => h (Subtype.ext e)), Function.update_of_ne h, psa_symm_ne]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem update_psa_ne (w : ι) (j : Idx w) (J' : ∀ v : {v // v ≠ w}, Idx v) (v : {v // v ≠ w}) (x : Idx v) :
     Function.update ((Equiv.piSplitAt w Idx).symm (j, J')) (v : ι) x =
@@ -155,7 +155,7 @@ Both sides reduce to the same expression.
 theorem splitM_apply [MeasurableSpace X] (w : ι) (y : ι → X) : splitM w y = (y w, fun v : {v // v ≠ w} => y v) := rfl
 
 /- English proof (translation)
-Rewrite using `[MeasurableEquiv.symm_apply_eq, splitM_apply]`. Use `Prod.ext (splitY_self w t z).symm ?_` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Conclude with `(splitY_ne w t z v).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem splitM_symm [MeasurableSpace X] (w : ι) (t : X) (z : {v // v ≠ w} → X) :
     (splitM w).symm (t, z) = splitY w t z := by
@@ -165,7 +165,7 @@ theorem splitM_symm [MeasurableSpace X] (w : ι) (t : X) (z : {v // v ≠ w} →
   exact (splitY_ne w t z v).symm
 
 /- English proof (translation)
-The claim follows from `((@measurePreserving_piUnique {v // v = w} (Subtype.fintype _) (fun _ => X) _ _ (fun _ => μ)).prod (MeasurePreserving.id _)).comp (measurePreserving_piEquivPiSubtypeProd (fun _ : ι => μ) (· = w))`.
+A detailed English derivation is pending.
 -/
 theorem splitM_mp [MeasurableSpace X] [Fintype ι] (μ : Measure X) [SigmaFinite μ] (w : ι) :
     MeasurePreserving (splitM w) (Measure.pi fun _ : ι => μ) (μ.prod (Measure.pi fun _ : {v // v ≠ w} => μ)) :=
@@ -179,11 +179,9 @@ section Iter
 variable {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Use `⟨continuous_finsetSum _ fun J _ => Continuous.mul ?_ (hu J), ?_⟩` and prove the remaining obligations. Conclude with `continuous_finsetProd (f := fun v (y : ι → X) => e v (y v) (I v) (J v)) _ fun v _ => (he v (I v) (J v)).1.comp (continuous_apply v)`. Set `K : ι → Set X` to `fun v => ⋃ a, ⋃ b, tsupport (fun t => e v t a b)`. Establish `hK : ∀ v, IsCompact (K v)` using `fun v => isCompact_iUnion fun a => isCompact_iUnion fun b => (he v a b).2`. Use `HasCompactSupport.intro (isCompact_univ_pi hK) fun y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[Set.mem_univ_pi]`. Use `push_neg at hy`. Take `⟨v, hv⟩` from `hy`. Use `Finset.sum_eq_zero fun J _ => ?_` and prove the remaining obligations. Establish `h0 : e v (y v) (I v) (J v) = 0` using `image_eq_zero_of_notMem_tsupport (f := fun t => e v t (I v) (J v)) fun h => hv (Set.mem_iUnion.2 ⟨I v, Set.mem_iUnion.2 ⟨J v, h⟩⟩)`.
-
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ v) h0, zero_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_cont_supp {ι : Type} [Fintype ι] [DecidableEq ι] {Idx : ι → Type} [∀ v, Fintype (Idx v)]
     (e : ∀ v, X → Idx v → Idx v → ℂ) (u : (∀ v, Idx v) → (ι → X) → ℂ) (I : ∀ v, Idx v)
@@ -206,7 +204,7 @@ theorem pi_cont_supp {ι : Type} [Fintype ι] [DecidableEq ι] {Idx : ι → Typ
   rw [Finset.prod_eq_zero (Finset.mem_univ v) h0, zero_mul]
 
 /- English proof (translation)
-The claim follows from `(pi_cont_supp e u I he hu).1.integrable_of_hasCompactSupport (pi_cont_supp e u I he hu).2`.
+A detailed English derivation is pending.
 -/
 theorem pi_integrable (μ : Measure X) [SigmaFinite μ] [IsFiniteMeasureOnCompacts μ] {ι : Type} [Fintype ι] [DecidableEq ι]
     {Idx : ι → Type} [∀ v, Fintype (Idx v)]
@@ -219,29 +217,29 @@ theorem pi_integrable (μ : Measure X) [SigmaFinite μ] [IsFiniteMeasureOnCompac
 variable [One X]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `ι _ _ Idx _ _ e val u I hn he hu hloc`. Establish `: IsEmpty ι` using `Fintype.card_eq_zero_iff.1 hn`. Rewrite using `[Measure.pi_of_empty (fun _ : ι => μ) (1 : ι → X), integral_dirac, Fintype.sum_unique, Subsingleton.elim (default : ∀ v, Idx v) I]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `ι _ _ Idx _ _ e val u I hn he hu hloc`. Take `⟨w⟩ : Nonempty ι` from `Fintype.card_pos_iff.1 (by omega)`. Establish `hn' : Fintype.card {v // v ≠ w} = n`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_eq]`. Use linear arithmetic over natural numbers and integers. Establish `hmp` using `splitM_mp μ w`. Establish `hF` using `pi_integrable μ e u I he hu`. Establish `hsplit : ∀ (t : X) (z : {v // v ≠ w} → X), (∑ J, (∏ v, e v (splitY w t z v) (I v) (J v)) * u J (splitY w t z)) = ∑ j, ∑ J' : (∀ v : {v // v ≠ w}, Idx v), (∏ v : {v // v ≠ w}, e v (z v) (I v) (J' v)) * (e w t (I w) j * u ((Equiv.piSplitAt w Idx).symm (j, J')) (splitY w t z))`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t z`. Rewrite using `[← Fintype.sum_equiv (Equiv.piSplitAt w Idx).symm (fun p => (∏ v, e v (splitY w t z v) (I v) ((Equiv.piSplitAt w Idx).symm p v)) * u ((Equiv.piSplitAt w Idx).symm p) (splitY w t z)) _ (fun _ => rfl), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun J' _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ w, splitY_self, psa_symm_self]`. Simplify using `only [splitY_ne, psa_symm_ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ (z : {v // v ≠ w} → X) (j : Idx w) (J' : ∀ v : {v // v ≠ w}, Idx v), Integrable (fun t => e w t (I w) j * u ((Equiv.piSplitAt w Idx).symm (j, J')) (splitY w t z)) μ` using `fun z j J' => ((he w (I w) j).1.mul ((hu _).comp (continuous_splitY_left w z))).integrable_of_hasCompactSupport (HasCompactSupport.mul_right (he w (I w) j).2)`. Set `u' : (∀ v : {v // v ≠ w}, Idx v) → ({v // v ≠ w} → X) → ℂ` to `fun J' z => val w * u ((Equiv.piSplitAt w Idx).symm (I w, J')) (splitY w 1 z)`. Establish `hinner : ∀ z : {v // v ≠ w} → X, ∫ t, (∑ J, (∏ v, e v ((splitM w).symm (t, z) v) (I v) (J v)) * u J ((splitM w).symm (t, z))) ∂μ = ∑ J' : (∀ v : {v // v ≠ w}, Idx v), (∏ v : {v // v ≠ w}, e v (z v) (I v) (J' v)) * u' J' z`. Introduce `z`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [splitM_symm, hsplit]`. Rewrite using `[integral_finset_sum _ fun j _ => integrable_finset_sum _ fun J' _ => (hint z j J').const_mul _]`. Establish `hj : ∀ j : Idx w, ∫ t, ∑ J' : (∀ v : {v // v ≠ w}, Idx v), (∏ v : {v // v ≠ w}, e v (z v) (I v) (J' v)) * (e w t (I w) j * u ((Equiv.piSplitAt w Idx).symm (j, J')) (splitY w t z)) ∂μ = ∑ J' : (∀ v : {v // v ≠ w}, Idx v), (∏ v : {v // v ≠ w}, e v (z v) (I v) (J' v)) * ∫ t, e w t ( …` using `fun j => by`. Rewrite using `[integral_finset_sum _ fun J' _ => (hint z j J').const_mul _]`. Simplify using `only [integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun j _ => hj j]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun J' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `hloc w ((Equiv.piSplitAt w Idx).symm (I w, J')) (splitY w 1 z)`. Rewrite `h1` using `[psa_symm_self]`. Simplify using `only [update_psa_self, update_splitY_self] at h1`. Conclude with `h1`. Establish `he' : ∀ (v : {v // v ≠ w}) a b, Continuous (fun t => e v t a b) ∧ HasCompactSupport (fun t => e v t a b)` using `fun v => he v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : ∀ J', Continuous (u' J')` using `fun J' => continuous_const.mul ((hu _).comp (continuous_splitY_right w 1))`. Establish `hloc' : ∀ (v : {v // v ≠ w}) (J' : ∀ v : {v // v ≠ w}, Idx v) (z : {v // v ≠ w} → X), ∑ j, ∫ t, e v t (J' v) j * u' (Function.update J' v j) (Function.update z v t) ∂μ = val v * u' J' (Function.update z v 1)`. Introduce `v J' z`. Establish `h1` using `hloc v ((Equiv.piSplitAt w Idx).symm (I w, J')) (splitY w 1 z)`. Rewrite `h1` using `[psa_symm_ne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [update_psa_ne, update_splitY_ne] at h1`. Simplify using `only [u']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h1]; ring`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hIH` using `ih {v // v ≠ w} (fun v => Idx v) (fun v => e v) (fun v => val v) u' (fun v => I v) hn' he' hu' hloc'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [u', psa_symm_apply_self, splitY_one]`. Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ w]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pi_iterated_integral_continuous (μ : Measure X) [SigmaFinite μ] [IsFiniteMeasureOnCompacts μ] (n : ℕ) :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Idx : ι → Type) [∀ v, Fintype (Idx v)] [∀ v, DecidableEq (Idx v)]
@@ -345,7 +343,7 @@ theorem pi_iterated_integral_continuous (μ : Measure X) [SigmaFinite μ] [IsFin
           ring
 
 /- English proof (translation)
-The claim follows from `pi_iterated_integral_continuous μ _ ι Idx e val u I rfl he hu hloc`.
+A detailed English derivation is pending.
 -/
 theorem pi_iter (μ : Measure X) [SigmaFinite μ] [IsFiniteMeasureOnCompacts μ] {ι : Type} [Fintype ι] [DecidableEq ι]
     (Idx : ι → Type) [∀ v, Fintype (Idx v)] [∀ v, DecidableEq (Idx v)]

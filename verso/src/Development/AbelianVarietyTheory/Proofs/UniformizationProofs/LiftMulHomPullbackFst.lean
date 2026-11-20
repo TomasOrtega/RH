@@ -12,13 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SmoothLocusBaseChange
 
 /- English proof (translation)
-Establish `key : (lift a b).left = i ≫ (lift x y).left ≫ (Functor.LaxMonoidal.μ (Over.pullback φ) G G).left ≫ pullback.fst (G ⊗ G).hom φ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h1 : (lift a b).left ≫ pullback.fst _ _ = a.left` using `congrArg (·.left) (lift_fst a b)`. Establish `h2 : (lift x y).left ≫ pullback.fst _ _ = x.left` using `congrArg (·.left) (lift_fst x y)`. Use `(h1.trans ha).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h2]`. Simplify using `only [Category.assoc]`. Use `erw [Over.μ_pullback_left_fst_fst]`. Establish `h1 : (lift a b).left ≫ pullback.snd _ _ = b.left` using `congrArg (·.left) (lift_snd a b)`. Establish `h2 : (lift x y).left ≫ pullback.snd _ _ = y.left` using `congrArg (·.left) (lift_snd x y)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1.trans hb).trans ?_` and prove the remaining obligations. Rewrite using `[← h2]`. Simplify using `only [Category.assoc]`. Use `erw [Over.μ_pullback_left_fst_snd]`. Rewrite using `[Over.comp_left, key]`.
-
-Simplify using `only [Functor.obj.μ_def, Over.comp_left, Category.assoc, Over.pullback_map_left]`. Use `erw [pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_mul_pullback_fst {S S' : Scheme.{0}} (φ : S' ⟶ S) (G : Over S) [GrpObj G]
     {Z : Over S'} (x y : Z ⟶ (Over.pullback φ).obj G) {Z₀ : Over S} (i : Z₀.left ⟶ Z.left)
@@ -46,7 +44,7 @@ theorem lift_mul_pullback_fst {S S' : Scheme.{0}} (φ : S' ⟶ S) (G : Over S) [
   erw [pullback.lift_fst]
 
 /- English proof (translation)
-Rewrite using `[lift_mul_pullback_fst φ G (x ≫ q) (y ≫ q) i a b (by simpa using ha) (by simpa using hb)]`. Establish `: lift (x ≫ q) (y ≫ q) ≫ μ[(Over.pullback φ).obj G] = (lift x y ≫ μ[E]) ≫ q`. Rewrite using `[Category.assoc, IsMonHom.mul_hom, lift_map_assoc]`. Rewrite using `[this, Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_mul_hom_pullback_fst {S S' : Scheme.{0}} (φ : S' ⟶ S) (G : Over S) [GrpObj G]
     {E : Over S'} [MonObj E] (q : E ⟶ (Over.pullback φ).obj G) [IsMonHom q]
@@ -63,21 +61,19 @@ theorem lift_mul_hom_pullback_fst {S S' : Scheme.{0}} (φ : S' ⟶ S) (G : Over 
 open GlobalTheory.WeierstrassCurve in
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ f W U hU _ _ _ hmul`. Set `φ` to `Spec.map (CommRingCat.ofHom f)`. Set `U' : (scheme (W.map f)).Opens` to `mapHom W f rfl ⁻¹ᵁ U`. Establish `hpb : IsPullback (mapHom W f rfl ∣_ U) (U'.ι ≫ toSpec (W.map f)) (U.ι ≫ toSpec W) φ` using `(isPullback_morphismRestrict (mapHom W f rfl) U).paste_vert (isPullback_mapHom W f rfl)`. Set `e : Over.mk (U'.ι ≫ toSpec (W.map f)) ≅ (Over.pullback φ).obj (Over.mk (U.ι ≫ toSpec W))` to `Over.isoMk hpb.isoPullback hpb.isoPullback_hom_snd`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : e.hom.left ≫ pullback.fst (U.ι ≫ toSpec W) φ = mapHom W f rfl ∣_ U` using `hpb.isoPullback_hom_fst`. Establish `he' : e.hom.left ≫ pullback.fst (U.ι ≫ toSpec W) φ ≫ U.ι = U'.ι ≫ mapHom W f rfl`. Rewrite using `[← Category.assoc, he]`. Conclude with `morphismRestrict_ι _ _`. Set `: GrpObj (Over.mk (U'.ι ≫ toSpec (W.map f)))` to `GrpObj.ofIso e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinv : IsMonHom e.symm.hom` using `isMonHom_ofIso e.symm`. Establish `hhom : IsMonHom e.hom` using `inferInstanceAs (IsMonHom e.symm.inv)`. Use `⟨U', inferInstance, e, hhom, he', ?_, ?_⟩` and prove the remaining obligations. Introduce `k _ ρ P h`. Use `hU k (ρ.comp f) P (h.comp_of_map_eq rfl)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← ptHom_mapHom W f rfl ρ P h, Scheme.Hom.comp_preimage]`. Conclude with `this`. Introduce `k _ ρ x y P Q hP hQ hx hy`. Establish `hw : ∀ z : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ Over.mk (U'.ι ≫ toSpec (W.map f)), (z.left ≫ e.hom.left ≫ pullback.fst (U.ι ≫ toSpec W) φ) ≫ U.ι ≫ toSpec W = Spec.map (CommRingCat.ofHom (ρ.comp f))`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : z.left ≫ U'.ι ≫ toSpec (W.map f) = Spec.map (CommRingCat.ofHom ρ)` using `Over.w z`. Rewrite using `[he, Category.assoc, hpb.w, ← Category.assoc]`. Use `erw [hz]`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hι : ∀ z : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ Over.mk (U'.ι ≫ toSpec (W.map f)), (z.left ≫ e.hom.left ≫ pullback.fst (U.ι ≫ toSpec W) φ) ≫ U.ι = (z.left ≫ U'.ι) ≫ mapHom W f rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Introduce `z`. Simplify using `only [Category.assoc]`. Use `erw [he']`. Set `a : Over.mk (Spec.map (CommRingCat.ofHom (ρ.comp f))) ⟶ Over.mk (U.ι ≫ toSpec W)` to `Over.homMk _ (hw x)`. Set `b : Over.mk (Spec.map (CommRingCat.ofHom (ρ.comp f))) ⟶ Over.mk (U.ι ≫ toSpec W)` to `Over.homMk _ (hw y)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨h, hab⟩` from `hmul k (ρ.comp f) a b P Q (hP.comp_of_map_eq rfl) (hQ.comp_of_map_eq rfl) ((hι x).trans (by rw [hx]; exact ptHom_mapHom W f rfl ρ P hP)) ((hι y).trans (by rw [hy]; exact ptHom_mapHom W f rfl ρ Q hQ))`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `hl` using `lift_mul_hom_pullback_fst φ (Over.mk (U.ι ≫ toSpec W)) e.hom x y (Z₀ := Over.mk (Spec.map (CommRingCat.ofHom (ρ.comp f)))) (𝟙 _) a b (Category.id_comp _).symm (Category.id_comp _).symm`. Apply `(isPullback_mapHom W f rfl).hom_ext` to reduce the goal to its premises. Use `(hι _).symm.trans ?_` and prove the remaining obligations.
-
-Use `Eq.trans ?_ (hab.trans (ptHom_mapHom W f rfl ρ _ h).symm)` and prove the remaining obligations. Rewrite using `[hl]`. Use `erw [Category.id_comp]`. Both sides reduce to the same expression. Conclude with `(Category.assoc _ _ _).trans ((Over.w (lift x y ≫ μ[Over.mk (U'.ι ≫ toSpec (W.map f))])).trans (ptHom_toSpec (W.map f) ρ _ h).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] [IsDomain R'] [IsNoetherianRing R'] (f : R →+* R') (W : WeierstrassCurve R) (U : (GlobalTheory.WeierstrassCurve.scheme W).Opens), (∀ (k : Type) [Field k] (ρ : R →+* k) (P : Fin 3 → k) (h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P), ⊤ ≤ GlobalTheory.WeierstrassCurve.ptHom W ρ P h ⁻¹ᵁ U ↔ (W.map ρ).toProjective.Nonsingular P) → Smooth (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W) → GeometricallyIntegral (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W) → ∀ [GrpObj (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))], (∀ (k : Type) [Field k] (ρ : R →+* k) (x y : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))) (P Q : Fin 3 → k) (hP : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P) (hQ : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) Q), x.left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ P hP → y.left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ Q hQ → ∃ h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) ((W.map ρ).toProjective.add P Q), (lift x y ≫ μ[(Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))]).left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ _ h) → ∃ (U' : (GlobalTheory.WeierstrassCurve.scheme (W.map f)).Opens) (_ : GrpObj (Over.mk (U'.ι ≫ GlobalTheory.WeierstrassCurve.toSpec (W.map f)))) (e : (Over.mk (U'.ι ≫ GlobalTheory.WeierstrassCurve.toSpec (W.map f))) ≅ (Over.pullback (Spec.map (CommRingCat.ofHom f))).obj (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))), IsMonHom e.hom ∧ e.hom.left ≫ pullback.fst _ _ ≫ U.ι = U'.ι ≫ GlobalTheory.WeierstrassCurve.mapHom W f rfl ∧ (∀ (k : Type) [Field k] (ρ : R' →+* k) (P : Fin 3 → k) (h : GlobalTheory.WeierstrassCurve.IsUnimodularSol ((W.map f).map ρ) P), ⊤ ≤ GlobalTheory.WeierstrassCurve.ptHom (W.map f) ρ P h ⁻¹ᵁ U' ↔ ((W.map f).map ρ).toProjective.Nonsingular P) ∧ (∀ (k : Type) [Field k] (ρ : R' →+* k) (x y : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ (Over.mk (U'.ι ≫ GlobalTheory.WeierstrassCurve.toSpec (W.map f)))) (P Q : Fin 3 → k) (hP : GlobalTheory.WeierstrassCurve.IsUnimodularSol ((W.map f).map ρ) P) (hQ : GlobalTheory.WeierstrassCurve.IsUnimodularSol ((W.map f).map ρ) Q), x.left ≫ U'.ι = GlobalTheory.WeierstrassCurve.ptHom (W.map f) ρ P hP → y.left ≫ U'.ι = GlobalTheory.WeierstrassCurve.ptHom (W.map f) ρ Q hQ → ∃ h : GlobalTheory.WeierstrassCurve.IsUnimodularSol ((W.map f).map ρ) (((W.map f).map ρ).toProjective.add P Q), (lift x y ≫ μ[(Over.mk (U'.ι ≫ GlobalTheory.WeierstrassCurve.toSpec (W.map f)))]).left ≫ U'.ι = GlobalTheory.WeierstrassCurve.ptHom (W.map f) ρ _ h) := by
   intro R R' _ _ _ _ f W U hU _ _ _ hmul

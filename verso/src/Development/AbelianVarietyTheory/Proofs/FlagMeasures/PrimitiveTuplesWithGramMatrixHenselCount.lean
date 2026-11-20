@@ -34,21 +34,21 @@ def henselDiff (c : A →+* A) {m n : ℕ} (q : A) (x : Fin m → Fin n → A) :
     ring
 
 /- English proof (translation)
-Take `⟨θ, -, hθ, -, -⟩` from `exists_trace_one c hc hω`. Establish `hq : c (p ^ (i + 1)) = p ^ (i + 1)` using `by rw [map_pow, hp]`. Use `GlobalTheory.henselStep_count (DistribSMul.toAddMonoidHom (Fin m → Fin n → A) (p ^ (i + 1))) (henselGram c) _ _ _ G ?_ ?_ ?_` and prove the remaining obligations. Introduce `H hH`. Conclude with `⟨hH.1, fun a b => (pow_dvd_pow p (by omega)).trans (hH.2 a b)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `x ⟨y, hy⟩ w`. Use `prim_of_sub_mem c hc (Ideal.span {p}) ?_ _ y fun a b => ?_` and prove the remaining obligations. Introduce `u hu`. Take `⟨v, rfl⟩` from `Ideal.mem_span_singleton.1 hu`. Conclude with `IsNilpotent.isUnit_one_add ((Commute.all _ _).isNilpotent_mul_right hn)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨p ^ i * ip c (w a) (y b), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, DistribSMul.toAddMonoidHom_apply, Pi.smul_apply, ip_add_left, ip_smul_left, hy]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x ⟨y, hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨henselDiff c (p ^ (i + 1)) x, fun w => ⟨fun a b => ?_, fun a b => ?_⟩, ?_, fun w => ⟨fun a b => ?_, fun a b => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [henselDiff, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.of_apply, map_mul, map_add, hq, cj_ip c hc]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Dvd.intro _ rfl`. Introduce `H hH choose u hu using hH.2`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy' : ∀ a b, ip c (y b) (x a) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[← cj_ip c hc, hy]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun b => ∑ e, (θ * u e b) • y e, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: henselDiff c (p ^ (i + 1)) x (fun b => ∑ e, (θ * u e b) • y e) = H`. Use extensionality with `a b`. Establish `h1 : p ^ (i + 1) * c (u b a) = H a b`. Rewrite using `[← hH.1 a b, hu b a, map_mul, hq]`. Simplify using `only [henselDiff, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.of_apply, ip_sum_left, ip_sum_right, ip_smul_left, ip_smul_right, hy, hy', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(c θ) * h1 - θ * hu a b + H a b * hθ`. Rewrite using `[this, sub_self]`. Conclude with `zero_mem _`. Simplify using `only [henselDiff, henselGram, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.of_apply, Matrix.sub_apply, map_mul, map_sub, map_add, hq, cj_ip c hc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨p ^ i * ip c (w b) (w a), ?_⟩` and prove the remaining obligations. Simplify using `only [henselDiff, henselGram, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.of_apply, Matrix.sub_apply, Pi.add_apply, DistribSMul.toAddMonoidHom_apply, Pi.smul_apply, ip_add_left, ip_add_right, ip_smul_left, ip_smul_right, hq]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hensel_step [Finite A] (c : A →+* A) (hc : ∀ u, c (c u) = u) {ω : A}
     (hω : IsUnit (ω - c ω)) {p : A} (hp : c p = p) (hn : IsNilpotent p) (m n : ℕ)
@@ -108,9 +108,9 @@ theorem hensel_step [Finite A] (c : A →+* A) (hc : ∀ u, c (c u) = u) {ω : A
       ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Establish `h` using `hensel_step c hc hω hp hn m n G k`. Establish `hpos : 0 < Nat.card (henselHerm c m (p ^ (k + 1)))` using `Nat.card_pos`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.eq_of_mul_eq_mul_right hpos ?_` and prove the remaining obligations. Rewrite using `[show k + 1 + 1 = k + 2 from rfl]`. Rewrite using `[mul_right_comm, ih, mul_right_comm, h, mul_right_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hensel_iter [Finite A] (c : A →+* A) (hc : ∀ u, c (c u) = u) {ω : A}
     (hω : IsUnit (ω - c ω)) {p : A} (hp : c p = p) (hn : IsNilpotent p) (m n : ℕ)
@@ -131,15 +131,15 @@ theorem hensel_iter [Finite A] (c : A →+* A) (hc : ∀ u, c (c u) = u) {ω : A
     rw [mul_right_comm, ih, mul_right_comm, h, mul_right_comm]
 
 /- English proof (translation)
-Introduce `A _ _ c hc ω hω p hp hn m n G hG`. Take `⟨k, hk⟩` from `id hn`. Establish `h` using `hensel_iter c hc hω hp hn m n G k`. Establish `hk' : p ^ (k + 1) = 0` using `by rw [pow_succ, hk, zero_mul]`. Establish `hbot : henselHerm c m (p ^ (k + 1)) = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk', eq_bot_iff]`. Introduce `H hH`. Rewrite using `[AddSubgroup.mem_bot]`. Use extensionality with `a b`. Simplify using `using hH.2 a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[hbot, zero_add, pow_one, AddSubgroup.card_bot, mul_one]`. Establish `e1 : {x : Fin m → Fin n → A | x ∈ {x | Prim c x} ∧ henselGram c x - G ∈ henselHerm c m p} = {x : Fin m → Fin n → A | Prim c x ∧ ∀ a b, p ∣ ip c (x b) (x a) - G a b}`. Use extensionality with `x`. Use `and_congr_right fun _ => ⟨fun h => h.2, fun h => ⟨fun a b => ?_, h⟩⟩` and prove the remaining obligations. Simplify using `only [henselGram, Matrix.sub_apply, Matrix.of_apply, map_sub, cj_ip c hc, hG]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e2 : {x : Fin m → Fin n → A | x ∈ {x | Prim c x} ∧ henselGram c x - G ∈ (⊥ : AddSubgroup (Matrix (Fin m) (Fin m) A))} = sols c n G`. Use extensionality with `x`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_bot, sub_eq_zero, ← Matrix.ext_iff]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h` using `[e1, e2]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hensel_count : ∀ {A : Type} [CommRing A] [Finite A] (c : A →+* A), (∀ u, c (c u) = u) → ∀ (ω : A), IsUnit (ω - c ω) → ∀ (p : A), c p = p → IsNilpotent p → ∀ (m n : ℕ) (G : Matrix (Fin m) (Fin m) A), (∀ a b, c (G b a) = G a b) → Set.ncard (sols c n G) * Nat.card {H : Matrix (Fin m) (Fin m) A // (∀ a b, c (H b a) = H a b) ∧ ∀ a b, p ∣ H a b} = Set.ncard {x : Fin m → Fin n → A | Prim c x ∧ ∀ a b, p ∣ ip c (x b) (x a) - G a b} := by
   intro A _ _ c hc ω hω p hp hn m n G hG

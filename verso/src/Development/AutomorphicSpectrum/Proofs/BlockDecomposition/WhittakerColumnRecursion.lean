@@ -14,17 +14,15 @@ def colEntries {d j : ℕ} (hj : j < d) (u : GL (Fin d) K) : Fin j → K :=
   fun i => (u : Matrix (Fin d) (Fin d) K) ⟨i, i.2.trans hj⟩ ⟨j, hj⟩
 
 /- English proof (translation)
-Establish `inner : ∀ i : Fin d, ∑ l : Fin d, (if h : (l : ℕ) = j ∧ (i : ℕ) < j then r ⟨i, h.2⟩ else 0) * M i l = if h : (i : ℕ) < j then r ⟨i, h⟩ * M i ⟨j, hj⟩ else 0`. Introduce `i`. Rewrite using `[Finset.sum_eq_single ⟨j, hj⟩]`. Distinguish the cases in `h : (i : ℕ) < j`. Rewrite using `[dif_pos ⟨rfl, h⟩, dif_pos h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (fun h' => h h'.2), dif_neg h, zero_mul]`. Introduce `l _ hl`. Establish `hl' : ¬ ((l : ℕ) = j ∧ (i : ℕ) < j)` using `fun h => hl (Fin.ext h.1)`. Rewrite using `[dif_neg hl', zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [inner]`. Rewrite using `[show (∑ i : Fin d, if h : (i : ℕ) < j then r ⟨i, h⟩ * M i ⟨j, hj⟩ else 0) = ∑ i ∈ (Finset.univ : Finset (Fin j)).map (Fin.castLEEmb hj.le), (if h : (i : ℕ) < j then r ⟨i, h⟩ * M i ⟨j, hj⟩ else 0) from ?_]`. Rewrite using `[Finset.sum_map]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Simplify using `only [Fin.castLEEmb_apply, Fin.val_castLE, dif_pos i.2]`. Both sides reduce to the same expression. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _ hi`. Establish `hij : ¬ (i : ℕ) < j`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Conclude with `Finset.mem_map.mpr ⟨⟨i, h⟩, Finset.mem_univ _, Fin.ext rfl⟩`.
-
-Rewrite using `[dif_neg hij]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_dite_col {d j : ℕ} (hj : j < d) (r : Fin j → K) (M : Matrix (Fin d) (Fin d) K) :
     ∑ i : Fin d, ∑ l : Fin d, (if h : (l : ℕ) = j ∧ (i : ℕ) < j then r ⟨i, h.2⟩ else 0) * M i l =
@@ -60,9 +58,9 @@ theorem sum_dite_col {d j : ℕ} (hj : j < d) (r : Fin j → K) (M : Matrix (Fin
     rw [dif_neg hij]
 
 /- English proof (translation)
-Unfold `patChar`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Rewrite using `[show (∑ i, r i * colEntries hj u i) = ∑ i : Fin j, r i * (u : Matrix (Fin d) (Fin d) K) ⟨i, i.2.trans hj⟩ ⟨j, hj⟩ from rfl, ← sum_dite_col hj r (u : Matrix (Fin d) (Fin d) K), ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Unfold `colGeR`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -84,19 +82,17 @@ theorem patChar_colGeR {d j : ℕ} (hj : j < d) (r : Fin j → K) (ψ₀ : AddCh
   ring
 
 /- English proof (translation)
-Simplify using `only [patSet, Set.mem_setOf_eq, colGe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i l => ⟨(h i l).1, fun hne hn => (h i l).2 hne (fun hc => hn ⟨hc.1, by` and prove the remaining obligations. Establish `h2` using `hc.2`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `omega⟩)⟩, ?_⟩`. Use function extensionality and compare the values at `i`. Establish `hi2` using `i.2`. Establish `hi : (⟨i, i.2.trans hj⟩ : Fin d) ≠ ⟨j, hj⟩`. Introduce `h'`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Fin.val h'`. Simplify using `only [Fin.val_mk] at h3`. Use linear arithmetic over natural numbers and integers. Conclude with `(h _ _).2 hi (fun hc => by`. Establish `h2` using `hc.2`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Fin.val_mk] at h2`. Use the proof step `omega)`. Introduce and unpack `⟨h, hc⟩ i l`. Use `⟨(h i l).1, fun hne hn => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hlj : (l : ℕ) = j ∧ i < l`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (i : ℕ) < l` using `hlj.2`. Establish `hij : (i : ℕ) < j` using `by omega`. Establish `h4` using `congrFun hc ⟨i, hij⟩`. Establish `hl : l = ⟨j, hj⟩` using `Fin.ext hlj.1`. Substitute `hl` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h4`. Apply `(h i l).2 hne` to reduce the goal to its premises. Introduce and unpack `⟨h1, h2⟩`. Apply `hn` to reduce the goal to its premises. Use `⟨h1, ?_⟩` and prove the remaining obligations.
-
-Establish `h5 : (l : ℕ) ≠ j` using `fun h3 => hlj ⟨h3, h1⟩`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_patSet_succ_iff {d j : ℕ} (hj : j < d) (u : GL (Fin d) K) :
     u ∈ patSet K (colGe d (j + 1)) ↔ u ∈ patSet K (colGe d j) ∧ colEntries hj u = 0 := by
@@ -133,17 +129,17 @@ theorem mem_patSet_succ_iff {d j : ℕ} (hj : j < d) (u : GL (Fin d) K) :
       omega
 
 /- English proof (translation)
-Establish `hq : (Fintype.card K : ℂ) ^ j ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr Fintype.card_ne_zero)`. Establish `hN : ((patSet K (colGe d j)).ncard : ℂ)⁻¹ * (Fintype.card K : ℂ) ^ j = ((patSet K (colGe d (j + 1))).ncard : ℂ)⁻¹`. Rewrite using `[hc, Nat.cast_mul, Nat.cast_pow, mul_inv, mul_comm (((Fintype.card K : ℂ) ^ j)⁻¹), mul_assoc, inv_mul_cancel₀ hq, mul_one]`. Establish `hu : ∀ u : GL (Fin d) K, (∑ r : Fin j → K, if u ∈ patSet K (colGe d j) then (patChar (colGeR K d j r) ψ₀ u)⁻¹ * χ u else 0) = (Fintype.card K : ℂ) ^ j * (if u ∈ patSet K (colGe d (j + 1)) then (patChar (colGeE K d (j + 1)) ψ₀ u)⁻¹ * χ u else 0)`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hP : u ∈ patSet K (colGe d j)`. Rewrite using `[Finset.sum_congr rfl (fun r _ => if_pos hP)]`. Simplify using `only [patChar_colGeR hj, mul_inv]`. Rewrite using `[show (∑ r : Fin j → K, (patChar (colGeE K d (j + 1)) ψ₀ u)⁻¹ * (ψ₀ (∑ i, r i * colEntries hj u i))⁻¹ * χ u) = ((patChar (colGeE K d (j + 1)) ψ₀ u)⁻¹ * χ u) * ∑ r : Fin j → K, (ψ₀ (∑ i, r i * colEntries hj u i))⁻¹ by`. Rewrite using `[Finset.mul_sum]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `r _`. Use the proof step `ring]`. Rewrite using `[ho (colEntries hj u)]`. Distinguish the cases in `hx : colEntries hj u = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hmem : u ∈ patSet K (colGe d (j + 1))` using `(mem_patSet_succ_iff hj u).mpr ⟨hP, hx⟩`. Rewrite using `[if_pos hx, if_pos hmem]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : u ∉ patSet K (colGe d (j + 1))` using `fun h => hx ((mem_patSet_succ_iff hj u).mp h).2`. Rewrite using `[if_neg hx, if_neg hmem]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmem : u ∉ patSet K (colGe d (j + 1))` using `fun h => hP ((mem_patSet_succ_iff hj u).mp h).1`. Rewrite using `[if_neg hmem, mul_zero]`. Conclude with `Finset.sum_eq_zero (fun r _ => if_neg hP)`. Unfold `wh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [hu]`. Rewrite using `[← Finset.mul_sum, ← mul_assoc, hN]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wh_colGe_succ_eq_sum (K : Type) [Field K] [Fintype K] [DecidableEq K] (d j : ℕ)
     (ψ₀ : AddChar K ℂ) (χ : GL (Fin d) K → ℂ) (hj : j < d)

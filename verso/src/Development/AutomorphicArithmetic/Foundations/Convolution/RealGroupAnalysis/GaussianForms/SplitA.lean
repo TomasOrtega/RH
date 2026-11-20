@@ -15,9 +15,9 @@ private noncomputable def hI (F : Type) [Field F] [NumberField F] [IsTotallyReal
       (continuous_apply w)
 
 /- English proof (translation)
-Establish `hH : ((infiniteAdeleMeasure F).map (hI F).symm).IsAddHaarMeasure` using `(TR.infEq F).symm.toAddEquiv.isAddHaarMeasure_map (infiniteAdeleMeasure F) (hI F).symm.continuous (hI F).continuous`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul ((infiniteAdeleMeasure F).map (hI F).symm) (volume : Measure (InfinitePlace F → ℝ))`. Take `⟨c, hν⟩ : ∃ c : NNReal, (infiniteAdeleMeasure F).map (hI F).symm = c • (volume : Measure (InfinitePlace F → ℝ))` from `⟨_, h⟩`. Use `⟨(c : ENNReal), hν.trans ?_⟩` and prove the remaining obligations. Use extensionality with `s _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Measure.smul_apply, Measure.smul_apply, ENNReal.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_inf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ∃ c : ENNReal, (infiniteAdeleMeasure F).map (hI F).symm =
@@ -34,7 +34,7 @@ private theorem map_inf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
   rw [Measure.smul_apply, Measure.smul_apply, ENNReal.smul_def]
 
 /- English proof (translation)
-Rewrite using `[adelicChar_infiniteAdeleInl, ← Finset.sum_neg_distrib, addChar_map_finsetSum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[infiniteAdelicChar_apply_of_isReal (IsTotallyReal.isReal w)]`. Establish `e2 : InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w) (TR.infEq F y w) = y w` using `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply (y w)`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem psi_inf (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (y : InfinitePlace F → ℝ) :
@@ -48,15 +48,13 @@ private theorem psi_inf (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
   rw [e2]
 
 /- English proof (translation)
-Introduce `F _ _ _`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `map_inf F`. Set `e : A F ≃ᵐ (InfinitePlace F → ℝ) × FiniteAdeleRing (𝓞 F) F` to `MeasurableEquiv.prodCongr (hI F).symm.toMeasurableEquiv (MeasurableEquiv.refl _)`. Use `⟨e, c, fun x => rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((infiniteAdeleMeasure F).map (hI F).symm).prod ((finiteAdeleMeasure F).map id) = ((infiniteAdeleMeasure F).prod (finiteAdeleMeasure F)).map (Prod.map (hI F).symm id)` using `Measure.map_prod_map _ _ (hI F).symm.measurable measurable_id`. Rewrite `h1` using `[Measure.map_id, hc, Measure.prod_smul_left]`. Conclude with `h1.symm`. Establish `hx : x = infiniteAdeleInl (TR.infEq F (TR.pInf F x)) + finiteAdeleInr x.2`. Establish `h0 : TR.infEq F (TR.pInf F x) = x.1` using `(TR.infEq F).apply_symm_apply x.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `(infiniteAdeleInl_add_finiteAdeleInr x).symm`. Establish `h1 : ψ x = ((Real.fourierChar (-∑ w, TR.pInf F x w) : Circle) : ℂ) * ((finiteAdelicChar F x.2 : Circle) : ℂ)`. Rewrite using `[ψ]`. Use `conv_lhs => rw [hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[AddChar.map_add_eq_mul, Circle.coe_mul, psi_inf, finiteAdelicChar_apply]`. Rewrite using `[h1, Real.fourierChar_apply, ← Complex.exp_sum]`. Use `congr 2`. Use `push_cast`. Rewrite using `[← Finset.mul_sum]`.
-
-Put the polynomial expressions in normal form.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.splitA :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], (∃ (e : A F ≃ᵐ (InfinitePlace F → ℝ) × FiniteAdeleRing (𝓞 F) F) (c : ENNReal), (∀ x, e x = (TR.pInf F x, x.2)) ∧

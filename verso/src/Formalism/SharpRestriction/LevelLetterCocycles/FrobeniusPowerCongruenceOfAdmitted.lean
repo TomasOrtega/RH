@@ -29,15 +29,15 @@ def PhiSeq (PD : PeriodData G Qp K₀ K B BdR) (T : LocLat G Qp LL O) (d : ℤ �
   fun k => ((PD.p : LL) ^ k) • φVB PD (LL := LL) (V := T.V) (d k)
 
 /- English proof (translation)
-Introduce `k hk` and use `by simp [PhiSeq, hd k hk]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LB_PhiSeq {T : LocLat G Qp LL O} {m : ℤ} {d : ℤ → T.V ⊗[Qp] B} (hd : LB m d) :
     LB m (PhiSeq PD T d) := fun k hk => by simp [PhiSeq, hd k hk]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩ : ∃ N : ℕ, k - m < N` from `⟨Int.toNat (k - m) + 1, by have := Int.self_le_toNat (k - m); push_cast; omega⟩`. Rewrite using `[smulS_eq_sum (LB_PhiSeq hd) _ k N hN]`. Simplify using `only [PhiSeq]`. Rewrite using `[smulS_eq_sum hd g k N hN, map_sum, Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_smul, PowerSeries.coeff_rescale, smul_smul]`. Use `congr 1`. Rewrite using `[← zpow_natCast (PD.p : LL) j, mul_right_comm, ← zpow_add₀ hp, add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem PhiSeq_smulS (hp : (PD.p : LL) ≠ 0) {T : LocLat G Qp LL O} {m : ℤ} {d : ℤ → T.V ⊗[Qp] B}
     (hd : LB m d) (g : PowerSeries LL) :
@@ -56,7 +56,7 @@ theorem PhiSeq_smulS (hp : (PD.p : LL) ≠ 0) {T : LocLat G Qp LL O} {m : ℤ} {
 variable (C : CmpTie W E ιdR p1 tS zS)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `rk_ιV_inj PD (LL := LL) (V := T.V) ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `C.levB_supp T i ζ x`. Rewrite using `[← C.levN_eq, smulS_linMap (ιV PD (LL := LL) (V := T.V)) hm, W.levN_smul]`. Simplify using `only [smulS, C.levN_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levB_smul (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (a : LetA O n) (x : ↥(W.N T)) :
     C.levB T i ζ (a • x) = smulS (W.lev i ζ a) (C.levB T i ζ x) := by
@@ -67,23 +67,23 @@ theorem levB_smul (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (a : LetA O n) (
   simp only [smulS, C.levN_eq]
 
 /- English proof (translation)
-The claim follows from `map_add _ x y`.
+A detailed English derivation is pending.
 -/
 theorem levB_add (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x y : ↥(W.N T)) :
     C.levB T i ζ (x + y) = C.levB T i ζ x + C.levB T i ζ y := map_add _ x y
 
 /- English proof (translation)
-The claim follows from `map_sub _ x y`.
+A detailed English derivation is pending.
 -/
 theorem levB_sub (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x y : ↥(W.N T)) :
     C.levB T i ζ (x - y) = C.levB T i ζ x - C.levB T i ζ y := map_sub _ x y
 
 /- English proof (translation)
-Introduce `k hk`. Establish `hX : W.X = letπ` using `by simp [LocWach.X, hs]`. Take `⟨F, hF0, -, hF⟩` from `W.lev_π i 1 ⟨0, by simpa using IsPrimitiveRoot.one⟩`. Establish `hcc : PowerSeries.constantCoeff (W.lev i 1 W.X) = 0`. Rewrite using `[hX]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg PowerSeries.constantCoeff hF` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hF0, one_mul]`. Take the linear combination `this`. Establish `h0` using `((h4.1 i 1 ⟨0, by simp⟩ hcc).1 x k).2 hk`. Use `rk_ιV_inj PD (LL := LL) (V := T.V) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← C.levN_eq, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem laurentBounded_zero_of_trivial_twist (hs : W.s = 1) {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {T : LocLat G Qp LL O}
     (h4 : Formalism.MainNotions.DeltaInvariantLattices.p4 W Pt T) (i : ZMod n) (x : ↥(W.N T)) : LB 0 (C.levB T i 1 x) := by
@@ -100,7 +100,7 @@ theorem laurentBounded_zero_of_trivial_twist (hs : W.s = 1) {Pt : ZMod n → LL 
   rw [← C.levN_eq, h0, map_zero]
 
 /- English proof (translation)
-Establish `hv : ((0 : ℕ) : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ W.gam : O) - ((1 : ℕ) : LL))`. Rewrite using `[Nat.cast_one, W.gam_gen, hs]`. Conclude with `Nat.zero_le 1` after adjusting the coercions. Use `C.levB_Γ T hT W.gam i 1 1 0 1 (by simpa using IsPrimitiveRoot.one) hv (by simp) x hx k` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levB_γ1 (hs : W.s = 1) {T : LocLat G Qp LL O} (hT : IsCrys PD T.ρ) (i : ZMod n) (x : ↥(W.N T))
     (hx : W.γD T W.gam (x : W.DD T) ∈ W.N T) (k : ℤ) :
@@ -134,9 +134,9 @@ open Formalism.MainNotions.WachCoordinates.Br Formalism.MainNotions.UnusedSlot80
 variable (C : CmpTie W E ιdR p1 tS zS)
 
 /- English proof (translation)
-Introduce `h`. Apply `hf` to reduce the goal to its premises. Use extensionality with `j`. Use `congrArg (PowerSeries.coeff j) h` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_rescale, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using (mul_eq_zero.1 this).resolve_left (pow_ne_zero _ hp)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rescale_ne_zero (hp : (PD.p : LL) ≠ 0) {f : PowerSeries LL} (hf : f ≠ 0) :
     PowerSeries.rescale (PD.p : LL) f ≠ 0 := by
@@ -148,7 +148,7 @@ theorem rescale_ne_zero (hp : (PD.p : LL) ≠ 0) {f : PowerSeries LL} (hf : f �
   simpa using (mul_eq_zero.1 this).resolve_left (pow_ne_zero _ hp)
 
 /- English proof (translation)
-Take `⟨F, hF0, -, hF⟩` from `W.lev_π i 1 ⟨0, by simpa using IsPrimitiveRoot.one⟩`. Use `congrArg PowerSeries.constantCoeff hF` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hF0, one_mul]`. Take the linear combination `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cc_levπ1 (i : ZMod n) : PowerSeries.constantCoeff (W.lev i 1 letπ) = 0 := by
   obtain ⟨F, hF0, -, hF⟩ := W.lev_π i 1 ⟨0, by simpa using IsPrimitiveRoot.one⟩
@@ -157,7 +157,7 @@ theorem cc_levπ1 (i : ZMod n) : PowerSeries.constantCoeff (W.lev i 1 letπ) = 0
   linear_combination this
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.1`. Rewrite using `[hw, map_mul, map_mul, map_pow, map_pow, cc_levπ1, zero_pow (by omega), mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_levπ₀1 (hR : RingA W) (h2 : 2 ≤ PD.p) (i : ZMod n) :
     PowerSeries.constantCoeff (W.lev i 1 W.π₀) = 0 := by
@@ -165,13 +165,11 @@ theorem cc_levπ₀1 (hR : RingA W) (h2 : 2 ≤ PD.p) (i : ZMod n) :
   rw [hw, map_mul, map_mul, map_pow, map_pow, cc_levπ1, zero_pow (by omega), mul_zero]
 
 /- English proof (translation)
-Establish `hs : W.s = 1` using `hA.2.1`. Establish `hp` using `p_ne_zero_LL W`. Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[Eat_q]`. Establish `hQ : W.Q = (w : LetA O n) * Formalism.MainNotions.LiftingTheory.qp W` using `by rw [Q_eq_q hs, hw]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQ, map_mul]`. Use `mul_ne_zero ((w.isUnit.map (W.lev i ζ)).ne_zero) ?_` and prove the remaining obligations. Break down `hζ with rfl | hζ` into its components or cases. Introduce `h0`. Use `congrArg PowerSeries.constantCoeff h0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Formalism.MainNotions.LiftingTheory.qp W = W.π₀ + ((PD.p : ℕ) : LetA O n)` using `rfl`. Rewrite `this` using `[e, map_add, map_natCast, map_add, cc_levπ₀1 hR PD.hp.two_le, map_natCast, map_zero, zero_add]`. Conclude with `hp this`. Take `⟨⟨u, hu, he⟩, -, -⟩` from `expRing_of W hR hA i ζ hζ`. Rewrite using `[he]`.
-
-Conclude with `mul_ne_zero hu.ne_zero PowerSeries.X_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levQ_ne (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hR : RingA W) (i : ZMod n) (ζ : LL)
     (hζ : ζ = 1 ∨ IsPrimitiveRoot ζ PD.p) : W.lev i ζ W.Q ≠ 0 := by
@@ -193,13 +191,13 @@ theorem levQ_ne (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hR : RingA W
     exact mul_ne_zero hu.ne_zero PowerSeries.X_ne_zero
 
 /- English proof (translation)
-Take `⟨mq, hmq⟩` from `W.N_φ T (b • y) hy`. Establish `hmq' : W.Q ^ mq • W.φD T (b • y) ∈ W.N T` using `hmq`. Establish `e1 : W.Q ^ mq • W.φD T (b • y) = (W.Q ^ mq * W.φA b) • W.φD T y`. Rewrite using `[φD_smulA, mul_smul]`. Establish `hb' : (W.Q ^ mq * W.φA b) • W.φD T y ∈ W.N T` using `e1 ▸ hmq'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlevφ : W.lev (i' + 1) ζ (W.φA b) = PowerSeries.rescale (PD.p : LL) (W.lev i' 1 b)`. Use `C.lev_φ (i' + 1) ζ hζr b` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right, hζ1]`. Then use the resulting hypothesis. Use `⟨W.Q ^ mq * W.φA b, hb', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hlevφ, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ hQ) (rescale_ne_zero hp hb)`. Establish `hsub : (⟨(W.Q ^ mq * W.φA b) • W.φD T y, hb'⟩ : ↥(W.N T)) = ⟨_, hmq'⟩` using `Subtype.ext e1.symm`. Rewrite using `[hsub]`. Use function extensionality and compare the values at `k`. Use `C.levB_φ T hT (i' + 1) ζ hζr ⟨b • y, hy⟩ mq hmq' k` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_sub_cancel_right, hζ1]`. Rewrite using `[this, map_mul, hlevφ, smulS_mul (LB_PhiSeq hd), ← PhiSeq_smulS hp hd, ← hE, map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stepφ {T : LocLat G Qp LL O} (hT : IsCrys PD T.ρ) (i' : ZMod n) (ζ : LL) (hζ1 : ζ ^ PD.p = 1)
     (hζr : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) (hQ : W.lev (i' + 1) ζ W.Q ≠ 0)
@@ -228,7 +226,7 @@ theorem stepφ {T : LocLat G Qp LL O} (hT : IsCrys PD T.ρ) (i' : ZMod n) (ζ : 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using hd`. Consider the case `succ j ih => rw [Function.iterate_succ_apply']`. Conclude with `LB_PhiSeq ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem LB_iter {T : LocLat G Qp LL O} {m : ℤ} {d : ℤ → T.V ⊗[Qp] B} (hd : LB m d) (j : ℕ) :
     LB m ((PhiSeq PD T)^[j] d) := by
@@ -237,13 +235,13 @@ theorem LB_iter {T : LocLat G Qp LL O} {m : ℤ} {d : ℤ → T.V ⊗[Qp] B} (hd
   | succ j ih => rw [Function.iterate_succ_apply']; exact LB_PhiSeq ih
 
 /- English proof (translation)
-Establish `hp` using `p_ne_zero_LL W`. Take `⟨m, hm⟩` from `C.levB_supp T i 1 x`. Proceed by induction on `j with`. Consider the case `zero`. Use `⟨1, by simpa using x.2, by simp, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Nat.cast_zero, add_zero, Function.iterate_zero, id, map_one]`. Rewrite using `[smulS_one hm]`. Use `congr 1`. Conclude with `Subtype.ext (by simp)`. Consider the case `succ j ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb0, hE⟩` from `ih`. Establish `e : i + ((j + 1 : ℕ) : ZMod n) = i + j + 1` using `by push_cast; ring`. Establish `hφ : ((W.φD T) ^ (j + 1)) (x : W.DD T) = W.φD T (((W.φD T) ^ j) (x : W.DD T))`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Take `⟨b', hb', hb'0, hE'⟩` from `stepφ C hT (i + j) 1 (one_pow _) ⟨0, by simpa using IsPrimitiveRoot.one⟩ (levQ_ne hA hR _ 1 (Or.inl rfl)) hp _ b hb _ (LB_iter hm j) hE hb0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hφ]`. Use `⟨b', hb', hb'0, ?_⟩` and prove the remaining obligations. Rewrite using `[hE', Function.iterate_succ_apply']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain1 (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hR : RingA W) {T : LocLat G Qp LL O} (hT : IsCrys PD T.ρ)
     (i : ZMod n) (x : ↥(W.N T)) (j : ℕ) :
@@ -291,13 +289,13 @@ open Formalism.MainNotions.WachCoordinates.Br Formalism.MainNotions.UnusedSlot80
 variable (C : CmpTie W E ιdR p1 tS zS)
 
 /- English proof (translation)
-Establish `hp` using `p_ne_zero_LL W`. Take `⟨m, hm⟩` from `C.levB_supp T i 1 x`. Take `⟨b, hb, hb0, hE⟩` from `chain1 C hA hR hT i x j'`. Establish `hζ1 : ζ ^ PD.p = 1`. Break down `hζ with rfl | hζ` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `one_pow _`. Conclude with `hζ.pow_eq_one`. Establish `hζr : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)`. Break down `hζ with rfl | hζ` into its components or cases. Conclude with `⟨0, by simpa using IsPrimitiveRoot.one⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨1, by rwa [pow_one]⟩`. Establish `e : i + ((j' + 1 : ℕ) : ZMod n) = i + j' + 1` using `by push_cast; ring`. Establish `hφ : ((W.φD T) ^ (j' + 1)) (x : W.DD T) = W.φD T (((W.φD T) ^ j') (x : W.DD T))`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Take `⟨b', hb', hb'0, hE'⟩` from `stepφ C hT (i + j') ζ hζ1 hζr (levQ_ne hA hR _ ζ hζ) hp _ b hb _ (LB_iter hm j') hE hb0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, hφ]`. Use `⟨b', hb', hb'0, ?_⟩` and prove the remaining obligations. Rewrite using `[hE', Function.iterate_succ_apply']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chainζ (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hR : RingA W) {T : LocLat G Qp LL O} (hT : IsCrys PD T.ρ)
     (i : ZMod n) (x : ↥(W.N T)) (j' : ℕ) (ζ : LL) (hζ : ζ = 1 ∨ IsPrimitiveRoot ζ PD.p) :
@@ -326,9 +324,9 @@ theorem chainζ (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hR : RingA W
   rw [hE', Function.iterate_succ_apply']
 
 /- English proof (translation)
-Establish `h : (c * b₀) • y ∈ W.N T` using `by rw [mul_smul]; exact Submodule.smul_mem _ _ hb₀`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(c * b₀) • y, h⟩ : ↥(W.N T)) = c • (⟨b₀ • y, hb₀⟩ : ↥(W.N T))` using `Subtype.ext (by`. Simplify using `only [SetLike.val_smul]`. Rewrite using `[mul_smul])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, levB_smul, hE, map_mul, smulS_mul hD]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chain_mul {T : LocLat G Qp LL O} (i' : ZMod n) (ζ : LL) (y : W.DD T) (b₀ c : LetA O n)
     (hb₀ : b₀ • y ∈ W.N T) {m : ℤ} (D : ℤ → T.V ⊗[Qp] B) (hD : LB m D)
@@ -347,9 +345,9 @@ section SeqAlg
 variable {LL : Type} [Field LL] {V : Type} [AddCommGroup V] [Module LL V]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use function extensionality and compare the values at `k`. Simplify using `[smulS]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hs : LB m (∑ y ∈ s, f y)` using `fun k hk => by`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun y hy => hf y (Finset.mem_insert_of_mem hy) k hk`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, smulS_add (hf a (Finset.mem_insert_self a s)) hs, ih fun y hy => hf y (Finset.mem_insert_of_mem hy)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulS_sum {m : ℤ} (s : Finset ℕ) (f : ℕ → ℤ → V) (hf : ∀ y ∈ s, LB m (f y))
     (g : PowerSeries LL) : smulS g (∑ y ∈ s, f y) = ∑ y ∈ s, smulS g (f y) := by
@@ -366,7 +364,7 @@ theorem smulS_sum {m : ℤ} (s : Finset ℕ) (f : ℕ → ℤ → V) (hf : ∀ y
       ih fun y hy => hf y (Finset.mem_insert_of_mem hy)]
 
 /- English proof (translation)
-Introduce `k hk` and use `by rw [Finset.sum_apply] exact Finset.sum_eq_zero fun y hy => hf y hy k hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LB_sum {m : ℤ} (s : Finset ℕ) (f : ℕ → ℤ → V) (hf : ∀ y ∈ s, LB m (f y)) :
     LB m (∑ y ∈ s, f y) := fun k hk => by
@@ -374,7 +372,7 @@ theorem LB_sum {m : ℤ} (s : Finset ℕ) (f : ℕ → ℤ → V) (hf : ∀ y �
   exact Finset.sum_eq_zero fun y hy => hf y hy k hk
 
 /- English proof (translation)
-Rewrite using `[smulS_mul hf, smulS_X_pow (LB_smulS hf g)]`. Introduce `k hk`. Conclude with `LB_smulS hf g _ (by omega)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LB_smulS_X {m : ℤ} {f : ℤ → V} (hf : LB m f) (e : ℕ) (g : PowerSeries LL) :
     LB (m + e) (smulS (PowerSeries.X ^ e * g) f) := by
@@ -383,9 +381,9 @@ theorem LB_smulS_X {m : ℤ} {f : ℤ → V} (hf : LB m f) (e : ℕ) (g : PowerS
   exact LB_smulS hf g _ (by omega)
 
 /- English proof (translation)
-Establish `hL : LB 0 (Pi.single (0 : ℤ) c : ℤ → V)` using `fun k hk => by`. Rewrite using `[Pi.single_apply, if_neg (by omega)]`. Rewrite using `[smulS_eq_sum hL g r (r + 1) (by omega), Finset.sum_eq_single r]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_apply, if_neg (by omega), smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.self_mem_range_succ r) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smulS_single (g : PowerSeries LL) (c : V) (r : ℕ) :
     smulS g (Pi.single (0 : ℤ) c) (r : ℤ) = PowerSeries.coeff r g • c := by
@@ -417,13 +415,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 open Formalism.MainNotions.WachCoordinates.Br Formalism.MainNotions.UnusedSlot80.SatW
 
 /- English proof (translation)
-Use `set L : LetA O n := ((PD.p : ℕ) : LetA O n)`. Establish `hΦL : ∀ (k : ℕ) (x : W.DD T), Φ (L ^ k • x) = L ^ k • Φ x` using `fun k x => by`. Rewrite using `[hΦ, map_pow, map_natCast]`. Establish `hφ : ∀ y, Φ (L ^ (J - e y) • (W.π₀ ^ y • cc y)) = L ^ (J - e y) • (ψ W.π₀ ^ y • Φ (cc y))` using `fun y => by`. Rewrite using `[hΦL, hΦ, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : ∀ y ∈ Finset.range K, L ^ J • (s y • Φ (cc y)) = L ^ (σ + (J - e y)) • (r y • Φ (cc y))`. Introduce `y hy`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel (he y hy)]`. Use `_ = L ^ (σ + (J - e y)) * r y := by rw [hrs y, pow_add]; ring`. Establish `hs : ∀ y ∈ Finset.range K, L ^ (σ + (J - e y)) • ((ψ W.π₀ ^ y - r y) • Φ (cc y)) = L ^ σ • (L ^ (J - e y) • (ψ W.π₀ ^ y • Φ (cc y))) - L ^ (σ + (J - e y)) • (r y • Φ (cc y))`. Introduce `y _`. Rewrite using `[sub_smul, smul_sub, smul_smul (L ^ σ), ← pow_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[lO_smul, map_sub, map_sum, hΦL, Finset.sum_congr rfl fun y _ => hφ y, smul_sub, smul_sub, Finset.smul_sum, Finset.smul_sum, Finset.sum_congr rfl ht, Finset.sum_congr rfl hs, Finset.sum_sub_distrib, smul_smul, smul_smul, mul_comm (L ^ J)]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem key_idJ {T : LocLat G Qp LL O} (Φ : W.DD T →ₗ[O] W.DD T) (ψ : LetA O n →ₐ[O] LetA O n)
     (hΦ : ∀ (a : LetA O n) (x : W.DD T), Φ (a • x) = ψ a • Φ x)
@@ -461,7 +459,7 @@ theorem key_idJ {T : LocLat G Qp LL O} (Φ : W.DD T →ₗ[O] W.DD T) (ψ : LetA
   abel
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, ih, φD_smulA, pow_succ', AlgHom.mul_apply, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem φpow_smulA {T : LocLat G Qp LL O} (j : ℕ) (a : LetA O n) (x : W.DD T) :
     ((W.φD T) ^ j) (a • x) = (W.φA ^ j) a • ((W.φD T) ^ j) x := by
@@ -473,7 +471,7 @@ theorem φpow_smulA {T : LocLat G Qp LL O} (j : ℕ) (a : LetA O n) (x : W.DD T)
 variable (C : CmpTie W E ιdR p1 tS zS)
 
 /- English proof (translation)
-Rewrite using `[smulS_eq_sum hf g 0 1 (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smulSeries_apply_zero {V : Type} [AddCommGroup V] [Module LL V] {f : ℤ → V} (hf : LB 0 f)
     (g : PowerSeries LL) : smulS g f 0 = PowerSeries.constantCoeff g • f 0 := by
@@ -481,7 +479,7 @@ theorem smulSeries_apply_zero {V : Type} [AddCommGroup V] [Module LL V] {f : ℤ
   simp
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.1`. Take `⟨g, hg⟩` from `PowerSeries.X_dvd_iff.2 (cc_levπ1 (W := W) i)`. Use `⟨W.lev i 1 (w : LetA O n) * g ^ (PD.p - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[hw, map_mul, map_pow, hg, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levπ₀_dvd (hR : RingA W) (i : ZMod n) :
     ∃ g : PowerSeries LL, W.lev i 1 W.π₀ = PowerSeries.X ^ (PD.p - 1) * g := by
@@ -492,19 +490,19 @@ theorem levπ₀_dvd (hR : RingA W) (i : ZMod n) :
   ring
 
 /- English proof (translation)
-Establish `hs : W.s = 1` using `hA.2.1`. Use `⟨laurentBounded_zero_of_trivial_twist C hs h4 i _, fun k hk0 hkK => ?_, ?_⟩` and prove the remaining obligations. Establish `hγN : W.γD T W.gam h ∈ W.N T` using `W.N_Γ T _ h hhN`. Establish `hsub : (⟨W.γD T W.gam h, hγN⟩ : ↥(W.N T)) - ⟨h, hhN⟩ = W.π₀ ^ K • (⟨ν, hν⟩ : ↥(W.N T))` using `Subtype.ext hγh`. Establish `e2` using `congrFun (congrArg (C.levB T i 1) hsub) k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[levB_sub, levB_smul, Pi.sub_apply, levB_γ1 C hs hT i ⟨h, hhN⟩ hγN]`. Take `⟨g, hg⟩` from `levπ₀_dvd hR i`. Establish `hz : smulS (W.lev i 1 (W.π₀ ^ K)) (C.levB T i 1 ⟨ν, hν⟩) k = 0`. Rewrite using `[map_pow, hg, mul_pow, ← pow_mul]`. Conclude with `LB_smulS_X (laurentBounded_zero_of_trivial_twist C hs h4 i _) _ _ k (by push_cast at hkK ⊢; omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[hz, ← one_smul LL (C.levB T i 1 ⟨h, hhN⟩ k), smul_smul, mul_one, ← sub_smul]`. Break down `smul_eq_zero.1 e2 with h1 | h1` into its components or cases. It suffices to derive a contradiction. Establish `hk' : k = (k.toNat : ℤ)` using `(Int.toNat_of_nonneg hk0.le).symm`. Rewrite `h1` using `[hk', zpow_natCast, ← map_pow, sub_eq_zero]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hχ k.toNat (by omega)` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, h1, map_one]`. Conclude with `h1`. Establish `hhsub : (⟨h, hhN⟩ : ↥(W.N T)) = ((PD.p : ℕ) : LetA O n) ^ J • (⟨w, hw⟩ : ↥(W.N T)) - ∑ y ∈ Finset.range K, (((PD.p : ℕ) : LetA O n) ^ (J - e y) * W.π₀ ^ y) • (⟨cc y, hcc y⟩ : ↥(W.N T))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hh, Submodule.coe_sub, Submodule.coe_smul, Submodule.coe_sum, smul_smul]`. Rewrite using `[hhsub, levB_sub, map_sum, Pi.sub_apply, Finset.sum_apply, levB_smul, smulSeries_apply_zero (laurentBounded_zero_of_trivial_twist C hs h4 i _)]`. Establish `h0 : ∀ y ∈ Finset.range K, C.levB T i 1 ((((PD.p : ℕ) : LetA O n) ^ (J - e y) * W.π₀ ^ y) • (⟨cc y, hcc y⟩ : ↥(W.N T))) 0 = 0`. Introduce `y _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos y with rfl | hy` into its components or cases. Establish `: (⟨cc 0, hcc 0⟩ : ↥(W.N T)) = 0` using `Subtype.ext hc0`. Rewrite using `[this, smul_zero, map_zero, Pi.zero_apply]`. Rewrite using `[levB_smul, smulSeries_apply_zero (laurentBounded_zero_of_trivial_twist C hs h4 i _), map_mul, map_mul, map_pow (W.lev i 1) W.π₀ y, map_pow PowerSeries.constantCoeff, cc_levπ₀1 hR PD.hp.two_le, zero_pow (by omega), mul_zero, zero_smul]`. Rewrite using `[Finset.sum_eq_zero h0, sub_zero, map_pow, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlet : (letE i : LetA O n) • (⟨w, hw⟩ : ↥(W.N T)) = ⟨w, hw⟩` using `Subtype.ext hDL`. Rewrite using `[← C.cmp_eq T hT i, hlet]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expH (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hR : RingA W) (hinj : Function.Injective (algebraMap O LL))
     (hχ : ∀ N : ℕ, 0 < N → (((W.χΓ W.gam) ^ N : Oˣ) : O) ≠ 1)
@@ -581,7 +579,7 @@ open Formalism.MainNotions.WachCoordinates.Br Formalism.MainNotions.UnusedSlot80
 variable (C : CmpTie W E ιdR p1 tS zS)
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_natCast]`. Establish `e : ((PD.p : ℕ) : PowerSeries LL) = PowerSeries.C (PD.p : LL)` using `by simp`. Rewrite using `[e, ← map_pow, smulS_C hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem smulS_lpow {V : Type} [AddCommGroup V] [Module LL V] (i : ZMod n) (ζ : LL) (m : ℕ) {b : ℤ}
     {f : ℤ → V} (hf : LB b f) :
@@ -591,14 +589,14 @@ theorem smulS_lpow {V : Type} [AddCommGroup V] [Module LL V] (i : ZMod n) (ζ : 
   rw [e, ← map_pow, smulS_C hf]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[PhiSeq, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem PhiSeq_add {T : LocLat G Qp LL O} (f g : ℤ → T.V ⊗[Qp] B) :
     PhiSeq PD T (f + g) = PhiSeq PD T f + PhiSeq PD T g := by
   funext k; simp [PhiSeq, smul_add]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => simp only [Function.iterate_succ_apply', ih, PhiSeq_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_add {T : LocLat G Qp LL O} (j : ℕ) (f g : ℤ → T.V ⊗[Qp] B) :
     (PhiSeq PD T)^[j] (f + g) = (PhiSeq PD T)^[j] f + (PhiSeq PD T)^[j] g := by
@@ -607,9 +605,9 @@ theorem iter_add {T : LocLat G Qp LL O} (j : ℕ) (f g : ℤ → T.V ⊗[Qp] B) 
   | succ j ih => simp only [Function.iterate_succ_apply', ih, PhiSeq_add]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply', ih, Function.iterate_succ_apply']`. Use function extensionality and compare the values at `k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Simplify using `[PhiSeq]`. Simplify using `[PhiSeq, Pi.single_apply, hk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem iter_single {T : LocLat G Qp LL O} (j : ℕ) (c : T.V ⊗[Qp] B) :
     (PhiSeq PD T)^[j] (Pi.single (0 : ℤ) c) = Pi.single (0 : ℤ) ((φVB PD (LL := LL) (V := T.V))^[j] c) := by
@@ -623,65 +621,61 @@ theorem iter_single {T : LocLat G Qp LL O} (j : ℕ) (c : T.V ⊗[Qp] B) :
     · simp [PhiSeq, Pi.single_apply, hk]
 
 /- English proof (translation)
-Introduce `hA hl j M X σ hc T hT i w z hw hwI htr ζ R k a hk hζR`. Establish `hs : W.s = 1` using `hA.2.1`. Establish `hp` using `p_ne_zero_LL W`. Take `⟨hR, -⟩` from `(h9 T hT hA.2.1 hA.2.2).2.2 (finrank_one_of_bij hA.1)`. Apply the tactic sequence `have hj1 : 1 ≤ j := by rcases hc with ⟨rfl, -, -⟩ | ⟨rfl, -, -⟩ <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `hζ : ζ = 1 ∨ IsPrimitiveRoot ζ PD.p` using `hζR.elim (fun h => Or.inr h.1) (fun h => Or.inl h.1)`. Take `⟨hDL, -, -⟩` from `hwI`. Take `⟨cc, r, s, ⟨hc0, hcc, hser⟩, hrs, hz⟩` from `htr`. Take `⟨jj, ν, hν, -, hνe⟩` from `hser (max M X + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl1 : (0 : ℝ) ≤ (PD.p : ℝ) - 1`. Establish `: (11 : ℝ) ≤ PD.p` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `heK : ∀ y ∈ Finset.range (max M X + 1), eY PD.p y ≤ eY PD.p (max M X + 1)`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Nat.ceil_mono` to reduce the goal to its premises. Apply `div_le_div_of_nonneg_right _ hl1` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Conclude with `(Finset.mem_range.1 hy).le` after adjusting the coercions. Establish `hJe : ∀ y ∈ Finset.range (max M X + 1), eY PD.p y ≤ jj + eY PD.p (max M X + 1)` using `fun y hy => (heK y hy).trans (Nat.le_add_left _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hhdef⟩ : ∃ h : W.DD T, h = ((PD.p : ℕ) : LetA O n) ^ (jj + eY PD.p (max M X + 1)) • w - ∑ y ∈ Finset.range (max M X + 1), ((PD.p : ℕ) : LetA O n) ^ (jj + eY PD.p (max M X + 1) - eY PD.p y) • (W.π₀ ^ y • cc y)` from `⟨_, rfl⟩`. Establish `hhN : h ∈ W.N T`. Rewrite using `[hhdef]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ hw) (Submodule.sum_mem _ fun y _ => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (hcc y).2))`. Establish `hγh : W.γ T h - h = W.π₀ ^ (max M X + 1) • ν`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : ∀ y ∈ Finset.range (max M X + 1), jj + (eY PD.p (max M X + 1) - eY PD.p y) = jj + eY PD.p (max M X + 1) - eY PD.p y` using `fun y hy => by have := heK y hy; omega`. Rewrite using `[← hνe, hhdef, lin_id (W.γ T) γ'_lA, natCast_pow_smul_sub_sum_eq, p_power_smul_sub_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun y hy => by rw [hs' y hy]`. Take `⟨hEh0, hEhK, hEh00⟩` from `expH Ct hA hR hinj (hχ hA) (h4 T hT) hT i (max M X + 1) w hw hDL.1 cc hc0 (fun y => (hcc y).2) (jj + eY PD.p (max M X + 1)) (eY PD.p) h hhdef hhN ν hν hγh`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hφiter : ∀ (m : ℕ) (c : LL) (x : T.V ⊗[Qp] B), (φVB PD (LL` using `LL) (V := T.V))^[m] (c • x) = c • (φVB PD (LL := LL) (V := T.V))^[m] x := by`. Introduce `m c x`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', ih, map_smul, Function.iterate_succ_apply']`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨bh, hbh, hbh0, hEh'⟩` from `chainζ Ct hA hR hT i ⟨h, hhN⟩ j' ζ hζ`. Use `choose bc hbc hbc0 hEc using fun y => chainζ Ct hA hR hT i ⟨cc y, (hcc y).2⟩ j' ζ hζ`. Take `⟨Bb, hBb⟩ : ∃ Bb : LetA O n, Bb = (∏ y ∈ Finset.range (max M X + 1), bc y) * bh` from `⟨_, rfl⟩`. Establish `hBb0 : W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ Bb ≠ 0`. Rewrite using `[hBb, map_mul, map_prod]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun y _ => hbc0 y) hbh0`. Choose the witnesses or unpack the hypotheses as in `⟨hBh, hEBh⟩ : ∃ hB : Bb • ((W.φD T) ^ (j' + 1)) h ∈ W.N T, Ct.levB T (i + ((j' + 1 : ℕ) : ZMod n)) ζ ⟨_, hB⟩ = smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ Bb) ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨h, hhN⟩)) := by`. Rewrite using `[hBb]`. Conclude with `chain_mul Ct (i + ((j' + 1 : ℕ) : ZMod n)) ζ (((W.φD T) ^ (j' + 1)) h) bh (∏ y ∈ Finset.range (max M X + 1), bc y) hbh _ (LB_iter hEh0 _) hEh'`. Establish `hΦc : ∀ y, LB 0 ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨cc y, (hcc y).2⟩))` using `fun y => LB_iter (laurentBounded_zero_of_trivial_twist Ct hs (h4 T hT) i _) _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hΦh : LB 0 ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨h, hhN⟩))` using `LB_iter hEh0 _`. Establish `hBc : ∀ y ∈ Finset.range (max M X + 1), ∃ hB : Bb • ((W.φD T) ^ (j' + 1)) (cc y) ∈ W.N T, Ct.levB T (i + ((j' + 1 : ℕ) : ZMod n)) ζ ⟨_, hB⟩ = smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ Bb) ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨cc y, (hcc y).2⟩))`. Introduce `y hy`. Establish `e : Bb = ((∏ y' ∈ (Finset.range (max M X + 1)).erase y, bc y') * bh) * bc y`. Rewrite using `[hBb, ← Finset.prod_erase_mul _ _ hy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `chain_mul Ct _ ζ _ (bc y) _ (hbc y) _ (hΦc y) (hEc y)`. Establish `hkey` using `key_idJ ((W.φD T) ^ (j' + 1)) (W.φA ^ (j' + 1)) (φpow_smulA (j' + 1)) σ (jj + eY PD.p (max M X + 1)) (max M X + 1) (eY PD.p) hJe w cc r s (fun y => (hrs y).2)`. Rewrite `hkey` using `[← hz, ← hhdef]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Set `xcF : ℕ → ↥(W.N T)` to `fun y => if hy : y ∈ Finset.range (max M X + 1) then ⟨Bb • ((W.φD T) ^ (j' + 1)) (cc y), (hBc y hy).1⟩ else 0`. Establish `hxcF : ∀ y ∈ Finset.range (max M X + 1), (xcF y : W.DD T) = Bb • ((W.φD T) ^ (j' + 1)) (cc y)` using `fun y hy => by simp only [xcF, dif_pos hy]`. Establish `hLxc : ∀ y ∈ Finset.range (max M X + 1), Ct.levB T (i + ((j' + 1 : ℕ) : ZMod n)) ζ (xcF y) = smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ Bb) ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨cc y, (hcc y).2⟩))` using `fun y hy => by simp only [xcF, dif_pos hy]; exact (hBc y hy).2`. Set `U : ↥(W.N T)` to `(Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • (((PD.p : ℕ) : LetA O n) ^ σ • (⟨Bb • ((W.φD T) ^ (j' + 1)) h, hBh⟩ : ↥(W.N T)) + ∑ y ∈ Finset.range (max M X + 1), (((PD.p : ℕ) : LetA O n) ^ (σ + (jj + eY PD.p (max M X + 1) - eY PD.p y)) * ((W.φA ^ (j' + 1)) W.π₀ ^ y - r y)) …`. Establish `hU : (Bb * ((PD.p : ℕ) : LetA O n) ^ (jj + eY PD.p (max M X + 1))) • (⟨(Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • z, hk⟩ : ↥(W.N T)) = U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [U, Submodule.coe_smul, Submodule.coe_add, Submodule.coe_sum]`. Rewrite using `[Finset.sum_congr rfl fun y hy => by rw [hxcF y hy]]`. Establish `e1 : (Bb * ((PD.p : ℕ) : LetA O n) ^ (jj + eY PD.p (max M X + 1))) • ((Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • z) = (Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • (Bb • (((PD.p : ℕ) : LetA O n) ^ (jj + eY PD.p (max M X + 1)) • z))`. Rewrite using `[smul_smul, smul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hkey, smul_add, smul_comm Bb (((PD.p : ℕ) : LetA O n) ^ σ), Finset.smul_sum]`. Use `congr 2`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨mZ, hmZ⟩` from `Ct.levB_supp T (i + ((j' + 1 : ℕ) : ZMod n)) ζ ⟨(Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • z, hk⟩`. Take `⟨Stuff, hStuff⟩ : ∃ S : ℤ → T.V ⊗[Qp] B, S = smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (((PD.p : ℕ) : LetA O n) ^ σ)) ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨h, hhN⟩)) + ∑ y ∈ Finset.range (max M X + 1), smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (((PD.p : ℕ) : LetA O n) ^ ( …` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hSumLB : LB 0 (∑ y ∈ Finset.range (max M X + 1), smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (((PD.p : ℕ) : LetA O n) ^ (σ + (jj + eY PD.p (max M X + 1) - eY PD.p y)) * ((W.φA ^ (j' + 1)) W.π₀ ^ y - r y))) ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨cc y, (hcc y).2⟩)))` using `LB_sum _ _ fun y _ => LB_smulS (hΦc y) _`. Establish `hStuffLB : LB 0 Stuff` using `by rw [hStuff]; exact LB_add (LB_smulS hΦh _) hSumLB`. Establish `hlev1 : Ct.levB T (i + ((j' + 1 : ℕ) : ZMod n)) ζ ((Bb * ((PD.p : ℕ) : LetA O n) ^ (jj + eY PD.p (max M X + 1))) • (⟨(Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • z, hk⟩ : ↥(W.N T))) = smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ Bb) (smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod …`. Rewrite using `[levB_smul, map_mul, smulS_mul hmZ]`. Establish `hlev2 : Ct.levB T (i + ((j' + 1 : ℕ) : ZMod n)) ζ U = smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ Bb) (smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (Formalism.MainNotions.LiftingTheory.qp W ^ k * a)) Stuff)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [U]`. Rewrite using `[levB_smul, levB_add, map_sum, levB_smul, hEBh, Finset.sum_congr rfl fun y hy => by rw [levB_smul, hLxc y hy]]`. Rewrite using `[smulS_comm hΦh, Finset.sum_congr rfl fun y _ => smulS_comm (hΦc y) _ _, ← smulS_sum _ _ (fun y _ => LB_smulS (hΦc y) _), ← smulS_add (LB_smulS hΦh _) hSumLB, ← hStuff, smulS_comm hStuffLB]`. Establish `heq` using `smulS_inj (LB_mono (LB_smulS hmZ _) (min_le_left mZ 0)) (LB_mono (LB_smulS hStuffLB _) (min_le_right mZ 0)) _ hBb0 (by rw [← hlev1, hU, hlev2])`. Rewrite `heq` using `[smulS_lpow _ _ _ hmZ]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Establish `hK1 : 1 ≤ PD.p - 1` using `by omega`. Choose the witnesses or unpack the hypotheses as in `⟨R₀, hF1, hF2, hF3⟩ : ∃ R₀ : ℕ, R₀ ≤ (PD.p - 1) * (max M X + 1) ∧ (∀ y, ∃ g : PowerSeries LL, W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (((PD.p : ℕ) : LetA O n) ^ (σ + (jj + eY PD.p (max M X + 1) - eY PD.p y)) * ((W.φA ^ (j' + 1)) W.π₀ ^ y - r y)) = PowerSeries.X ^ R₀ * g) ∧ (∀ Er : …`. Break down `hζR with ⟨hprim, hRd⟩ | ⟨hz1, hRd⟩` into its components or cases. Take `⟨⟨u, -, hqp⟩, -, -⟩` from `expRing_of W hR hA (i + ((j' + 1 : ℕ) : ZMod n)) ζ hprim`. Use `⟨X, ?_, fun y => ?_, fun Er hEr r hr => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨-, g, hg⟩` from `(hrs y).1`. Use `⟨W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (((PD.p : ℕ) : LetA O n) ^ (σ + (jj + eY PD.p (max M X + 1) - eY PD.p y))) * W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ W.π₀ ^ M * u ^ X * W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ g, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hg, fMX]`. Simplify using `only [map_mul, map_pow, hqp]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_pow, hqp, mul_pow, mul_comm (u ^ k), mul_assoc]`. Conclude with `LB_smulS_X hEr k _ r (by push_cast; omega)`. Substitute `hz1` using the available equality. Take `⟨g₁, hg₁⟩` from `levπ₀_dvd hR (i + ((j' + 1 : ℕ) : ZMod n))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(PD.p - 1) * M, Nat.mul_le_mul le_rfl (by omega), fun y => ?_, fun Er hEr r hr => ?_⟩` and prove the remaining obligations. Take `⟨-, g, hg⟩` from `(hrs y).1`. Use `⟨W.lev (i + ((j' + 1 : ℕ) : ZMod n)) 1 (((PD.p : ℕ) : LetA O n) ^ (σ + (jj + eY PD.p (max M X + 1) - eY PD.p y))) * g₁ ^ M * W.lev (i + ((j' + 1 : ℕ) : ZMod n)) 1 (Formalism.MainNotions.LiftingTheory.qp W) ^ X * W.lev (i + ((j' + 1 : ℕ) : ZMod n)) 1 g, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hg, fMX]`. Simplify using `only [map_mul, map_pow, hg₁]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `LB_smulS hEr _ r (by push_cast; omega)`. Establish `hEh'LB : LB (((PD.p - 1) * (max M X + 1) : ℕ) : ℤ) (Ct.levB T i 1 ⟨h, hhN⟩ - Pi.single (0 : ℤ) ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) • W.cmp T ⟨w, hw⟩))`. Introduce `kk hkk`. Rewrite using `[Pi.sub_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_trichotomy kk 0 with hk0 | rfl | hk0` into its components or cases. Rewrite using `[hEh0 kk hk0, Pi.single_apply, if_neg (ne_of_lt hk0), sub_zero]`. Rewrite using `[hEh00, Pi.single_eq_same, sub_self]`. Rewrite using `[hEhK kk hk0 hkk, Pi.single_apply, if_neg (ne_of_gt hk0), sub_zero]`. Establish `hpt : ∀ kk : ℤ, kk < R₀ → Stuff kk = (Pi.single (0 : ℤ) ((PD.p : LL) ^ σ • ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) • (φVB PD (LL` using `LL) (V := T.V))^[j' + 1] (W.cmp T ⟨w, hw⟩))) : ℤ → T.V ⊗[Qp] B) kk := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `kk hkk`. Establish `hSig : (∑ y ∈ Finset.range (max M X + 1), smulS (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (((PD.p : ℕ) : LetA O n) ^ (σ + (jj + eY PD.p (max M X + 1) - eY PD.p y)) * ((W.φA ^ (j' + 1)) W.π₀ ^ y - r y))) ((PhiSeq PD T)^[j' + 1] (Ct.levB T i 1 ⟨cc y, (hcc y).2⟩))) kk = 0`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `hF2 y`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Conclude with `LB_smulS_X (hΦc y) R₀ g kk (by push_cast; omega)`. Establish `hdec : Ct.levB T i 1 ⟨h, hhN⟩ = Pi.single (0 : ℤ) ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) • W.cmp T ⟨w, hw⟩) + (Ct.levB T i 1 ⟨h, hhN⟩ - Pi.single (0 : ℤ) ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) • W.cmp T ⟨w, hw⟩))` using `(add_sub_cancel _ _).symm`. Rewrite using `[hStuff, Pi.add_apply, hSig, add_zero, smulS_lpow _ _ _ hΦh, Pi.smul_apply, hdec, iter_add, iter_single, Pi.add_apply, LB_iter hEh'LB _ kk (lt_of_lt_of_le hkk (by exact_mod_cast hF1)), add_zero, hφiter]`. Distinguish the cases in `h0 : kk = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h0]`. Establish `hErr : LB (R₀ : ℤ) (Stuff - Pi.single (0 : ℤ) ((PD.p : LL) ^ σ • ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) • (φVB PD (LL` using `LL) (V := T.V))^[j' + 1] (W.cmp T ⟨w, hw⟩)))) := fun kk hkk => by`. Rewrite using `[Pi.sub_apply, hpt kk hkk, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsingLB : LB 0 (Pi.single (0 : ℤ) ((PD.p : LL) ^ σ • ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) • (φVB PD (LL` using `LL) (V := T.V))^[j' + 1] (W.cmp T ⟨w, hw⟩))) : ℤ → T.V ⊗[Qp] B) := fun kk hkk => by`. Rewrite using `[Pi.single_apply, if_neg (by omega)]`. Establish `hpos : ∀ r : ℕ, r < R → Ct.levB T (i + ((j' + 1 : ℕ) : ZMod n)) ζ ⟨(Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • z, hk⟩ r = PowerSeries.coeff r (W.lev (i + ((j' + 1 : ℕ) : ZMod n)) ζ (Formalism.MainNotions.LiftingTheory.qp W ^ k * a)) • ((PD.p : LL) ^ σ • (φVB PD (LL` using `LL) (V := T.V))^[j' + 1] (W.cmp T ⟨w, hw⟩)) := by`. Introduce `r hr`. Establish `h1` using `congrFun heq r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Pi.smul_apply, ← add_sub_cancel (Pi.single (0 : ℤ) ((PD.p : LL) ^ σ • ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) • (φVB PD (LL := LL) (V := T.V))^[j' + 1] (W.cmp T ⟨w, hw⟩)))) Stuff, smulS_add hsingLB (LB_mono hErr (by omega)), Pi.add_apply, smulS_single, hF3 _ hErr r hr, add_z …`. Apply `smul_right_injective _ (pow_ne_zero (jj + eY PD.p (max M X + 1)) hp)` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[h1, smul_comm ((PD.p : LL) ^ σ), smul_comm (PowerSeries.coeff r _)]`. Establish `hneg : ∀ r : ℤ, r < 0 → Ct.levB T (i + ((j' + 1 : ℕ) : ZMod n)) ζ ⟨(Formalism.MainNotions.LiftingTheory.qp W ^ k * a) • z, hk⟩ r = 0`.
-
-Introduce `r hr`. Establish `h1` using `congrFun heq r`. Rewrite `h1` using `[Pi.smul_apply, LB_smulS hStuffLB _ r hr]`. Conclude with `(smul_eq_zero.1 h1).resolve_left (pow_ne_zero _ hp)`. Use `⟨fun r hr => ?_, fun r hr => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Ct.levN_eq, hneg r hr, map_zero]`. Rewrite using `[Ct.levN_eq, hpos r hr, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tHor_of (Ct : CmpTie W E ιdR p1 tS zS) (hinj : Function.Injective (algebraMap O LL))
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4W W Pt) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
@@ -917,7 +911,7 @@ section Rows
 open Formalism.MainNotions.UnusedSlot80
 
 /- English proof (translation)
-Introduce `l _ K LL hg _`. Conclude with `tHor_of ((Cm l).C K 1 LL hg).tie Subtype.val_injective (h1 l K 1 LL hg).2.2.2.1 (h1 l K 1 LL hg).2.2.2.2.2.2.2.2.1 (fun hCA => χ_pow_ne_one (RToolNum_holds (D.loc l) (HW l) K LL hg hCA))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frobenius_power_congruence_local (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h1 : Formalism.MainNotions.RamifiedCoefficientChains.adm1 D HW F Cm) : FrobeniusExpansionCongruence D HW F Cm := by
@@ -927,7 +921,7 @@ theorem frobenius_power_congruence_local (D : D7) (HW : HWOf D.loc) (F : FonOf D
     (fun hCA => χ_pow_ne_one (RToolNum_holds (D.loc l) (HW l) K LL hg hCA))
 
 /- English proof (translation)
-The claim follows from `frobenius_power_congruence_local D HW F Cm hA.1`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_power_congruence_of_admitted (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     {CR CA CB CK : ℝ} (hA : Formalism.MainNotions.RamifiedCoefficientChains.admitted D HW F Cm CR CA CB CK) : FrobeniusExpansionCongruence D HW F Cm :=

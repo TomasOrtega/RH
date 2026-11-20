@@ -8,7 +8,7 @@ open scoped Classical MatrixGroups nonZeroDivisors
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Unfold `word`. Rewrite using `[List.count_flatMap]`. Simplify using `[List.count_replicate, Function.comp_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem count_word_eq (I : Type) [Fintype I] [DecidableEq I] (κ : I → ℕ) (i : I) :
     (word κ).count i = κ i := by

@@ -11,7 +11,7 @@ namespace GlobalTheory.CMEquiv
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, RingHom.coe_comp, Function.comp_apply, Subfield.subtype_apply]`. Rewrite using `[← IsCMField.complexEmbedding_complexConj, (IsCMField.complexConj_eq_self_iff E _).2 x.2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isReal_res (σ : E →+* ℂ) : ComplexEmbedding.IsReal (σ.comp (maximalRealSubfield E).subtype) := by
   ext x
@@ -21,13 +21,13 @@ theorem isReal_res (σ : E →+* ℂ) : ComplexEmbedding.IsReal (σ.comp (maxima
 def res (σ : E →+* ℂ) : FR E →+* ℝ := (isReal_res σ).embedding
 
 /- English proof (translation)
-The claim follows from `ComplexEmbedding.IsReal.coe_embedding_apply _ x`.
+A detailed English derivation is pending.
 -/
 theorem res_apply (σ : E →+* ℂ) (x : FR E) : ((res σ x : ℝ) : ℂ) = σ (x : E) :=
   ComplexEmbedding.IsReal.coe_embedding_apply _ x
 
 /- English proof (translation)
-Use `letI : Algebra (FR E) ℂ := ψ.toAlgebra`. Set `f : E →ₐ[FR E] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨f.toRingHom, fun x => f.commutes x⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_ext (ψ : FR E →+* ℂ) : ∃ σ : E →+* ℂ, ∀ x : FR E, σ (x : E) = ψ x := by
   letI : Algebra (FR E) ℂ := ψ.toAlgebra
@@ -35,19 +35,17 @@ theorem exists_ext (ψ : FR E →+* ℂ) : ∃ σ : E →+* ℂ, ∀ x : FR E, �
   exact ⟨f.toRingHom, fun x => f.commutes x⟩
 
 /- English proof (translation)
-Use `set c := IsCMField.complexConj E with hc`. Take `⟨y, hy⟩ : ∃ y, c y ≠ y` from `by by_contra! H`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext H)`. Establish `cc : ∀ z, c (c z) = z` using `IsCMField.complexConj_apply_apply E`. Use `set α := y - c y with hα`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα0 : α ≠ 0` using `sub_ne_zero.2 (Ne.symm hy)`. Establish `hcα : c α = -α` using `by rw [hα, map_sub, cc]; ring`. Establish `mem : ∀ z, c z = z → σ' z = σ z` using `fun z hz => h ⟨z, (IsCMField.complexConj_eq_self_iff E z).1 hz⟩`. Establish `hsq : σ' α ^ 2 = σ α ^ 2`. Rewrite using `[← map_pow, ← map_pow]; exact mem _ (by rw [map_pow, hcα]; ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `dec : ∀ z, ∃ a b, c a = a ∧ c b = b ∧ z = a + b * α ∧ c z = a - b * α`. Introduce `z`. Use `⟨(z + c z) / 2, (z - c z) / (2 * α), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_add, cc, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_div₀, map_sub, cc, map_mul, map_ofNat, hcα]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hsq' : (σ' α - σ α) * (σ' α + σ α) = 0` using `by linear_combination hsq`. Break down `mul_eq_zero.1 hsq' with h1 | h1` into its components or cases. Use `left`.
+Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Take `⟨a, b, ha, hb, hz, -⟩` from `dec z`. Rewrite using `[hz, map_add, map_add, map_mul, map_mul, mem a ha, mem b hb, sub_eq_zero.1 h1]`. Use `right`. Use extensionality with `z`.
-
-Take `⟨a, b, ha, hb, hz, hcz⟩` from `dec z`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← IsCMField.complexEmbedding_complexConj, ← hc, hcz, hz, map_add, map_sub, map_mul, map_mul, mem a ha, mem b hb, eq_neg_of_add_eq_zero_left h1]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_conj (σ σ' : E →+* ℂ) (h : ∀ x : FR E, σ' (x : E) = σ (x : E)) :
     σ' = σ ∨ σ' = ComplexEmbedding.conjugate σ := by
@@ -86,21 +84,19 @@ theorem eq_or_eq_conj (σ σ' : E →+* ℂ) (h : ∀ x : FR E, σ' (x : E) = σ
     ring
 
 /- English proof (translation)
-Establish `hRC : Function.Bijective (fun τ : FR E →+* ℝ => Complex.ofRealHom.comp τ)`. Prove the components needed by the constructor for the conclusion. Introduce `τ τ' hτ`. Use extensionality with `x`. Conclude with `Complex.ofReal_injective (RingHom.congr_fun hτ x)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ψ`. Take `⟨σ, hσ⟩` from `exists_ext ψ`. Use `⟨res σ, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, Complex.ofRealHom_eq_coe]`. Rewrite using `[res_apply, hσ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `eRC` to `Equiv.ofBijective _ hRC`. Set `e' : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ)` to `(Fintype.equivFinOfCardEq (Embeddings.card (FR E) ℂ)).symm.trans eRC.symm`. Establish `hb : Function.Bijective (fun i => res (φ i))`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : ∀ x : FR E, φ j (x : E) = φ i (x : E)` using `fun x => by`. Rewrite using `[← res_apply, ← res_apply]`. Conclude with `congrArg (fun τ : FR E →+* ℝ => ((τ x : ℝ) : ℂ)) hij.symm`. Take `⟨k, -, hk⟩` from `hφ (φ j)`. Conclude with `(hk i (eq_or_eq_conj (φ i) (φ j) hx)).trans (hk j (Or.inl rfl)).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `τ`. Take `⟨σ, hσ⟩` from `exists_ext (Complex.ofRealHom.comp τ)`. Take `⟨i, hi, -⟩` from `hφ σ`. Use `⟨i, RingHom.ext fun x => Complex.ofReal_injective ?_⟩` and prove the remaining obligations. Rewrite using `[res_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Break down `hi with h | h` into its components or cases. Rewrite using `[← h, hσ]`. Both sides reduce to the same expression. Establish `h' : φ i = ComplexEmbedding.conjugate σ`. Use extensionality with `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`. Rewrite using `[h', ComplexEmbedding.conjugate_coe_eq, hσ]`. Simplify using the standard rewrite rules. Set `b` to `Equiv.ofBijective _ hb`. Use `⟨e'.trans b.symm, e', fun j x => ?_⟩` and prove the remaining obligations.
-
-Establish `hj : res (φ ((e'.trans b.symm) j)) = e' j` using `b.apply_symm_apply (e' j)`. Rewrite using `[← hj, res_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmType_equiv (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ)
     (hφ : IsCMType φ) :

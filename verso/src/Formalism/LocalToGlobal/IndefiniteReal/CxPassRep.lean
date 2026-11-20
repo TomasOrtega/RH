@@ -28,7 +28,7 @@ theorem toF_eq (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (y : Fin (B.dZ ℓ Z)
     B.toF ℓ Z y = B.S.basis.equivFun.symm (cv B ℓ Z y) := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Conclude with `(subspace_image_spec K _ (B.Z0 ℓ Z)).1 ((image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ))).1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cv_injective (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) : Function.Injective (cv B ℓ Z) := by
   intro x y h
@@ -36,23 +36,23 @@ theorem cv_injective (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) : Function.Inje
     ((image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ))).1 h)
 
 /- English proof (translation)
-Simplify using `only [cv, Matrix.mulVec_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cv_add (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (x y : Fin (B.dZ ℓ Z) → K) :
     cv B ℓ Z (x + y) = cv B ℓ Z x + cv B ℓ Z y := by
   simp only [cv, Matrix.mulVec_add]
 
 /- English proof (translation)
-Simplify using `only [cv, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cv_mulVec (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) {n : ℕ} (M : Matrix (Fin (B.dZ ℓ Z)) (Fin n) K)
     (x : Fin n → K) : cv B ℓ Z (M.mulVec x) = (B.vE ℓ * B.zE ℓ Z * M).mulVec x := by
   simp only [cv, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `BlockDat.coord`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Simplify using `using hf`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, B.S.basis.equivFun.apply_symm_apply w⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_coord (Z : Submodule K B.S.Forms) (w : Fin B.S.dim → K) :
     w ∈ B.coord Z ↔ B.S.basis.equivFun.symm w ∈ Z := by
@@ -64,11 +64,11 @@ theorem mem_coord (Z : Submodule K B.S.Forms) (w : Fin B.S.dim → K) :
     exact ⟨_, h, B.S.basis.equivFun.apply_symm_apply w⟩
 
 /- English proof (translation)
-Establish `hs` using `(subspace_image_spec K _ (B.Z0 ℓ Z)).2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `hy : (B.zE ℓ Z).mulVec y ∈ B.Z0 ℓ Z`. Rewrite using `[← hs]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, rfl⟩`. Conclude with `⟨hy, ⟨_, rfl⟩⟩`. Introduce and unpack `⟨hZ, u, rfl⟩`. Establish `hu : u ∈ B.Z0 ℓ Z` using `hZ`. Rewrite `hu` using `[← hs]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, rfl⟩` from `hu`. Conclude with `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem range_cv (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (w : Fin B.S.dim → K) :
     (∃ y, cv B ℓ Z y = w) ↔ w ∈ B.coord Z ∧ w ∈ LinearMap.range (B.vE ℓ).mulVecLin := by
@@ -86,9 +86,9 @@ theorem range_cv (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (w : Fin B.S.dim �
     exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `(image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt X (⊥ : Subgroup G) 1))).2`. Establish `hb : goodAt X (⊥ : Subgroup G) (1 : (⊥ : Subgroup G) →* Kˣ) = idemOf X`. Unfold `goodAt`. Rewrite using `[level_idempotent_bot K G, mul_one]`. Rewrite using `[← hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem range_vE_bot (X : Finset (G → K)) :
     LinearMap.range (B.vE ⟨X, ⊥, 1⟩).mulVecLin = LinearMap.range (B.S.gaMat B.r (idemOf X)).mulVecLin := by
@@ -100,9 +100,9 @@ theorem range_vE_bot (X : Finset (G → K)) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[range_vE_bot]`. Establish `h` using `(image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt X P ψ))).2`. Express the relevant statement in the definitionally equal form `LinearMap.range (imE (B.S.gaMat B.r (goodAt X P ψ))).mulVecLin ≤ _`. Rewrite using `[h]`. Unfold `goodAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[(group_action_matrix_hom K B.S G B.r).2, Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_vE_le (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ) :
     LinearMap.range (B.vE ⟨X, P, ψ⟩).mulVecLin ≤ LinearMap.range (B.vE ⟨X, ⊥, 1⟩).mulVecLin := by
@@ -115,7 +115,7 @@ theorem range_vE_le (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ) :
   exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-The claim follows from `good_part_spec K B.S G B.r X hX P ψ`.
+A detailed English derivation is pending.
 -/
 theorem range_vE_lvl (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (P : Subgroup G) (ψ : P →* Kˣ) :
     LinearMap.range (B.vE ⟨X, P, ψ⟩).mulVecLin =
@@ -123,7 +123,7 @@ theorem range_vE_lvl (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ)
   good_part_spec K B.S G B.r X hX P ψ
 
 /- English proof (translation)
-Take `⟨hZ, hV⟩` from `(range_cv B ⟨X, P, ψ⟩ Z _).1 ⟨x, rfl⟩`. Take `⟨y, hy⟩` from `(range_cv B ⟨X, ⊥, 1⟩ Z _).2 ⟨hZ, range_vE_le B X P ψ hV⟩`. Conclude with `⟨y, by rw [toF_eq, toF_eq, hy]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toF_sub (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ) (Z : Submodule K B.S.Forms)
     (x : Fin (B.dZ ⟨X, P, ψ⟩ Z) → K) :
@@ -133,9 +133,9 @@ theorem toF_sub (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ) (Z : S
   exact ⟨y, by rw [toF_eq, toF_eq, hy]⟩
 
 /- English proof (translation)
-Establish `h` using `LinearMap.toMatrix_mulVec_repr B.S.basis B.S.basis (B.r g) (B.S.basis.equivFun.symm w)`. Establish `hx : (B.S.basis.repr (B.S.basis.equivFun.symm w) : Fin B.S.dim → K) = w`. Rewrite using `[← Basis.equivFun_apply]`. Conclude with `B.S.basis.equivFun.apply_symm_apply w`. Rewrite `h` using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `CSD.actMat`. Rewrite using `[h, Basis.equivFun_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actMat_coord (g : G) (w : Fin B.S.dim → K) :
     (B.S.actMat B.r g).mulVec w = B.S.basis.equivFun (B.r g (B.S.basis.equivFun.symm w)) := by
@@ -148,7 +148,7 @@ theorem actMat_coord (g : G) (w : Fin B.S.dim → K) :
   rw [h, Basis.equivFun_apply]
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[mem_coord]`. Rewrite using `[actMat_coord, LinearEquiv.symm_apply_apply]`. Conclude with `hZ _ hw`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_act (Z : Submodule K B.S.Forms) (g : G) (hZ : ∀ f ∈ Z, B.r g f ∈ Z) (w : Fin B.S.dim → K)
     (hw : w ∈ B.coord Z) : (B.S.actMat B.r g).mulVec w ∈ B.coord Z := by
@@ -157,14 +157,14 @@ theorem coord_act (Z : Submodule K B.S.Forms) (g : G) (hZ : ∀ f ∈ Z, B.r g f
   exact hZ _ hw
 
 /- English proof (translation)
-Rewrite using `[CSD.gaMat_eq_lift, MonoidAlgebra.lift_single, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gaMat_single (g : G) : B.S.gaMat B.r (MonoidAlgebra.single g 1) = B.S.actMat B.r g := by
   rw [CSD.gaMat_eq_lift, MonoidAlgebra.lift_single, one_smul]
   rfl
 
 /- English proof (translation)
-Establish `hm` using `(group_action_matrix_hom K B.S G B.r).2`. Rewrite using `[← hm, ← hm, (idempotent_central K G X hX).2 a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_idem (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (a : MonoidAlgebra K G) :
     B.S.gaMat B.r a * B.S.gaMat B.r (idemOf X) = B.S.gaMat B.r (idemOf X) * B.S.gaMat B.r a := by
@@ -172,11 +172,11 @@ theorem comm_idem (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (a
   rw [← hm, ← hm, (idempotent_central K G X hX).2 a]
 
 /- English proof (translation)
-Take `⟨hZx, hV⟩` from `(range_cv B ⟨X, ⊥, 1⟩ Z _).1 ⟨x, rfl⟩`. Rewrite `hV` using `[range_vE_bot]`. Take `⟨w, hw⟩` from `hV`. Establish `h1 : (B.S.actMat B.r g).mulVec (cv B ⟨X, ⊥, 1⟩ Z x) ∈ LinearMap.range (B.vE ⟨X, ⊥, 1⟩).mulVecLin`. Rewrite using `[range_vE_bot]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(B.S.actMat B.r g).mulVec w, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply] at hw ⊢`. Rewrite using `[← hw, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← gaMat_single, comm_idem B X hX]`. Take `⟨y, hy⟩` from `(range_cv B ⟨X, ⊥, 1⟩ Z _).2 ⟨coord_act B Z g hZ _ hZx, h1⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[toF_eq, toF_eq, hy, actMat_coord, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toF_act (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (Z : Submodule K B.S.Forms) (g : G)
     (hZ : ∀ f ∈ Z, B.r g f ∈ Z) (x : Fin (B.dZ ⟨X, ⊥, 1⟩ Z) → K) :
@@ -200,18 +200,18 @@ section Rel
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i = k <;> simp [cpt, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpt_single (σ : K →+* ℂ) {n : ℕ} (k : Fin n) : cpt σ (Pi.single k (1 : K)) = Pi.single k 1 := by
   funext i
   by_cases h : i = k <;> simp [cpt, h]
 
 /- English proof (translation)
-Establish `hk : ∀ k, g (Pi.single k 1) ∈ LinearMap.range f` using `fun k => by`. Take `⟨y, hy⟩` from `hg (Pi.single k 1)`. Rewrite `hy` using `[cpt_single]`. Conclude with `⟨_, hy⟩`. Establish `hrat : IsRat σ (relMat f g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `i k`. Take `⟨y, hy⟩` from `hg (Pi.single k 1)`. Rewrite `hy` using `[cpt_single]`. Establish `hs : solve f (g (Pi.single k 1)) = cpt σ y` using `hf (by rw [solve_spec f (hk k), hy])`. Conclude with `⟨y i, by simp only [relMat, Matrix.of_apply, hs, cpt]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨hrat, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[cpt_mulVec, kMat_map σ hrat, relMat_spec f g hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relK (σ : K →+* ℂ) {E : Type} [AddCommGroup E] [Module ℂ E] {D n : ℕ} (f : (Fin D → ℂ) →ₗ[ℂ] E)
     (g : (Fin n → ℂ) →ₗ[ℂ] E) (hf : Function.Injective f)
@@ -231,7 +231,7 @@ theorem relK (σ : K →+* ℂ) {E : Type} [AddCommGroup E] [Module ℂ E] {D n 
   rw [cpt_mulVec, kMat_map σ hrat, relMat_spec f g hk]
 
 /- English proof (translation)
-Establish `hx : x = ∑ k, x k • (Pi.single k 1 : Fin ((lv (fc X.zs) b).dQ t) → K)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hx]`. Simplify using `only [map_sum, map_smul, LinearMap.map_smulₛₗ, CxData.iC, lin_apply, cpt]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iC_cpt {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc)
     (b : Bool) (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dQ t) → K) :
@@ -243,7 +243,7 @@ theorem iC_cpt {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A �
   simp only [map_sum, map_smul, LinearMap.map_smulₛₗ, CxData.iC, lin_apply, cpt]
 
 /- English proof (translation)
-Rewrite using `[cpt_mulVec, CxData.rowMat, kMat_map _ (hq t)]`. Use `relMat_spec _ _ (fun k => ?_) _` and prove the remaining obligations. Rewrite using `[← hr t]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem key_row' {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (cr : Crd A fc)
     (b : Bool) (hr : ∀ t, LinearMap.range (X.iC cr b t) = LinearMap.range (X.iC cr b Bs.μ0)) (hq : X.RATmu cr b)
@@ -257,7 +257,7 @@ theorem key_row' {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A 
 end Rel
 
 /- English proof (translation)
-The claim follows from `Matrix.toLin'.injective (LinearMap.ext fun x => by simpa only [Matrix.toLin'_apply] using h x)`.
+A detailed English derivation is pending.
 -/
 theorem mat_ext {K : Type} [Field K] {n k : ℕ} (M N : Matrix (Fin n) (Fin k) K) (h : ∀ x, M.mulVec x = N.mulVec x) :
     M = N :=
@@ -269,31 +269,31 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (B : BlockDat K G Pl0)
 
 /- English proof (translation)
-Simplify using `only [cv, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cv_eq (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (y : Fin (B.dZ ℓ Z) → K) :
     cv B ℓ Z y = (B.vE ℓ * B.zE ℓ Z).mulVec y := by
   simp only [cv, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-The claim follows from `B.S.basis.equivFun.symm.injective h`.
+A detailed English derivation is pending.
 -/
 theorem cv_of_toF {ℓ ℓ' : Lvl K G} {Z : Submodule K B.S.Forms} {x : Fin (B.dZ ℓ Z) → K} {y : Fin (B.dZ ℓ' Z) → K}
     (h : B.toF ℓ Z x = B.toF ℓ' Z y) : cv B ℓ Z x = cv B ℓ' Z y :=
   B.S.basis.equivFun.symm.injective h
 
 /- English proof (translation)
-Establish `hinj` using `cv_injective B ⟨X, ⊥, 1⟩ Z`. Establish `hlvl` using `range_vE_lvl B X hX P ψ`. Use extensionality with `z`. Simplify using `only [LinearMap.mem_range, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Use `⟨J.mulVec x, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hE, hJ]`. Establish `hx : cv B ⟨X, P, ψ⟩ Z x ∈ B.S.lvlPart B.r P ψ`. Use `((range_cv B ⟨X, P, ψ⟩ Z _).1 ⟨x, rfl⟩).2` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hlvl, Submodule.mem_inf]`. Conclude with `this.2`. Conclude with `B.S.lvlIdem_mulVec_of_mem B.r P ψ _ hx`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨hZ, -⟩` from `(range_cv B ⟨X, ⊥, 1⟩ Z _).1 ⟨Ep.mulVec y, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : cv B ⟨X, ⊥, 1⟩ Z (Ep.mulVec y) ∈ LinearMap.range (B.vE ⟨X, P, ψ⟩).mulVecLin`. Rewrite using `[hlvl, hE, Submodule.mem_inf]`. Take `⟨-, hy⟩` from `(range_cv B ⟨X, ⊥, 1⟩ Z _).1 ⟨y, rfl⟩`. Rewrite `hy` using `[range_vE_bot]`. Take `⟨u, hu⟩` from `hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨(B.S.gaMat B.r (lvlIdem P ψ)).mulVec u, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply] at hu ⊢`. Rewrite using `[← hu, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, comm_idem B X hX]`. Rewrite using `[← level_part_spec K B.S G B.r P ψ]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `(range_cv B ⟨X, P, ψ⟩ Z _).2 ⟨hZ, hV⟩`. Conclude with `⟨x, hinj (by rw [hJ, hx])⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_eq_block (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (P : Subgroup G) (ψ : P →* Kˣ)
     (Z : Submodule K B.S.Forms)
@@ -332,7 +332,7 @@ theorem range_eq_block (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar �
     exact ⟨x, hinj (by rw [hJ, hx])⟩
 
 /- English proof (translation)
-The claim follows from `Fintype.ofFinite P cv B ⟨X, ⊥, 1⟩ Z ((((Nat.card P : K)⁻¹) • ∑ h : P, (((ψ h)⁻¹ : Kˣ) : K) • ρ (h : G)).mulVec y) = (B.S.gaMat B.r (lvlIdem P ψ)).mulVec (cv B ⟨X, ⊥, 1⟩ Z y) := by classical have hC : ∀ g : G, B.vE ⟨X, ⊥, 1⟩ * B.zE ⟨X, ⊥, 1⟩ Z * ρ g = B.S.actMat B.r g * (B.vE ⟨X, …`.
+A detailed English derivation is pending.
 -/
 theorem cv_typeProj (X : Finset (G → K)) (Z : Submodule K B.S.Forms)
     (ρ : G → Matrix (Fin (B.dZ ⟨X, ⊥, 1⟩ Z)) (Fin (B.dZ ⟨X, ⊥, 1⟩ Z)) K)
@@ -362,7 +362,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (I : In K G Pl0 T m)
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `toF_sub (I.A.fam.R t) I.A.fam.X I.P0 I.ψ0 (I.X.zs.Z t) x`. Conclude with `toF_sub (I.A.fam.R t) I.A.fam.X I.P1 I.ψ1 (I.X.zs.Z t) x`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem sub_lvl (b : Bool) (t : I.A.fam.base.Tup)
     (x : Fin ((lv (faceOf I.A I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).dQ t) → K) :
@@ -372,11 +372,11 @@ theorem sub_lvl (b : Bool) (t : I.A.fam.base.Tup)
   · exact toF_sub (I.A.fam.R t) I.A.fam.X I.P1 I.ψ1 (I.X.zs.Z t) x
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (I.X.iC I.cg false t)` using `(h2g.2 t).1`. Establish `h1 : ∀ x, I.X.iC I.cg false t (cpt I.A.fam.base.v0.embedding ((I.Jt b t).mulVec x)) = I.X.iC I.cr b t (cpt I.A.fam.base.v0.embedding x)` using `(relK _ (I.X.iC I.cg false t) (I.X.iC I.cr b t) hinj fun x => by`. Take `⟨y, hy⟩` from `sub_lvl I b t x`. Conclude with `⟨y, by rw [iC_cpt, iC_cpt, hy]⟩).2`. Use `⟨h1, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `sub_lvl I b t x`. Establish `e : (I.Jt b t).mulVec x = y`. Apply `cpt_injective I.A.fam.base.v0.embedding` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h1, iC_cpt, iC_cpt, hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jt_spec (h2g : PrincipalInjectiveCommonRange I.A I.X (P1 := I.P1) (ψ1 := I.ψ1) (Dc := I.Dc) (Sp := I.Sp) (Zsc := I.Zsc)) (b : Bool) (t : I.A.fam.base.Tup) :
     (∀ x, I.X.iC I.cg false t (cpt I.A.fam.base.v0.embedding ((I.Jt b t).mulVec x)) =
@@ -397,7 +397,7 @@ theorem jt_spec (h2g : PrincipalInjectiveCommonRange I.A I.X (P1 := I.P1) (ψ1 :
   rw [e, hy]
 
 /- English proof (translation)
-Establish `hZ : ∀ f ∈ I.X.zs.Z I.A.fam.base.μ0, (I.A.fam.R I.A.fam.base.μ0).r g f ∈ I.X.zs.Z I.A.fam.base.μ0` using `fun f hf => H.stable.1 _ (Sum.inr g) (Submodule.mem_map_of_mem hf)`. Conclude with `toF_act (I.A.fam.R I.A.fam.base.μ0) I.A.fam.X H.ok.irr (I.X.zs.Z I.A.fam.base.μ0) g hZ x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_y {s : ℕ} (H : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
     ∃ y : Fin I.Sg.D → K, I.cg.toR I.X.zs false I.A.fam.base.μ0 y =
@@ -407,7 +407,7 @@ theorem rho_y {s : ℕ} (H : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
   exact toF_act (I.A.fam.R I.A.fam.base.μ0) I.A.fam.X H.ok.irr (I.X.zs.Z I.A.fam.base.μ0) g hZ x
 
 /- English proof (translation)
-The claim follows from `(iC_cpt I.X I.cg false _ y).trans ((congrArg (fun f => I.X.Θ I.A.fam.base.μ0 (I.X.jR I.A.fam.base.μ0 f)) hy).trans ((H.gequiv _ g _).trans (congrArg (I.gE g) (iC_cpt I.X I.cg false _ x).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem iCg_of_y {s : ℕ} (H : I.Hyp s) (g : G) (x y : Fin I.Sg.D → K)
     (hy : I.cg.toR I.X.zs false I.A.fam.base.μ0 y =
@@ -417,7 +417,7 @@ theorem iCg_of_y {s : ℕ} (H : I.Hyp s) (g : G) (x y : Fin I.Sg.D → K)
     ((H.gequiv _ g _).trans (congrArg (I.gE g) (iC_cpt I.X I.cg false _ x).symm)))
 
 /- English proof (translation)
-The claim follows from `(relK _ I.iCg ((I.gE g).comp I.iCg) H.h2g.1 fun x => by obtain ⟨y, hy⟩ := rho_y I H g x exact ⟨y, iCg_of_y I H g x y hy⟩).2 x`.
+A detailed English derivation is pending.
 -/
 theorem rho_spec {s : ℕ} (H : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
     I.iCg (cpt I.A.fam.base.v0.embedding ((I.ρf g).mulVec x)) =
@@ -427,7 +427,7 @@ theorem rho_spec {s : ℕ} (H : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
     exact ⟨y, iCg_of_y I H g x y hy⟩).2 x
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `rho_y I H g x`. Establish `e : (I.ρf g).mulVec x = y` using `cpt_injective _ (H.h2g.1 ((rho_spec I H g x).trans (iCg_of_y I H g x y hy).symm))`. Rewrite using `[e, actMat_coord]`. Establish `hy' : (I.A.fam.R I.A.fam.base.μ0).S.basis.equivFun.symm (cv (I.A.fam.R I.A.fam.base.μ0) ⟨I.A.fam.X, ⊥, 1⟩ (I.X.zs.Z I.A.fam.base.μ0) y) = (I.A.fam.R I.A.fam.base.μ0).r g ((I.A.fam.R I.A.fam.base.μ0).S.basis.equivFun.symm (cv (I.A.fam.R I.A.fam.base.μ0) ⟨I.A.fam.X, ⊥, 1⟩ (I.X.zs.Z …` using `hy`. Rewrite using `[← hy', LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_cv {s : ℕ} (H : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
     cv (I.A.fam.R I.A.fam.base.μ0) ⟨I.A.fam.X, ⊥, 1⟩ (I.X.zs.Z I.A.fam.base.μ0) ((I.ρf g).mulVec x) =
@@ -444,7 +444,7 @@ theorem rho_cv {s : ℕ} (H : I.Hyp s) (g : G) (x : Fin I.Sg.D → K) :
   rw [← hy', LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `cv_typeProj (I.A.fam.R I.A.fam.base.μ0) I.A.fam.X (I.X.zs.Z I.A.fam.base.μ0) I.ρf (rho_cv I H) P ψ y`.
+A detailed English derivation is pending.
 -/
 theorem cv_epM {s : ℕ} (H : I.Hyp s) (P : Subgroup G) (ψ : P →* Kˣ) (y : Fin I.Sg.D → K) :
     cv (I.A.fam.R I.A.fam.base.μ0) ⟨I.A.fam.X, ⊥, 1⟩ (I.X.zs.Z I.A.fam.base.μ0) ((I.epM P ψ).mulVec y) =
@@ -464,9 +464,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (I : In K G Pl0 T m)
 
 /- English proof (translation)
-Introduce `s H b t`. Take `⟨h1, h2⟩` from `jt_spec I H.h2g b t`. Use `⟨h1, h2, fun x => ?_⟩` and prove the remaining obligations. Apply `cpt_injective I.A.fam.base.v0.embedding` to reduce the goal to its premises. Apply `H.h2g.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `((jt_spec I H.h2g b I.A.fam.base.μ0).1 _).trans ((CxData.key_row I.X I.cr b (H.h2 b) (H.ratMu b) t x).trans ((h1 x).symm.trans (key_row' I.X I.cg false (fun t => (H.h2g.2 t).2) H.ratMug t _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem pJt : I.PJt := by
   intro s H b t
@@ -479,7 +479,7 @@ theorem pJt : I.PJt := by
       ((h1 x).symm.trans (key_row' I.X I.cg false (fun t => (H.h2g.2 t).2) H.ratMug t _).symm))
 
 /- English proof (translation)
-Introduce `s H`. Establish `hinj : ∀ y y' : Fin I.Sg.D → K, I.iCg (cpt I.A.fam.base.v0.embedding y) = I.iCg (cpt I.A.fam.base.v0.embedding y') → y = y'` using `fun y y' h => cpt_injective _ (H.h2g.1 h)`. Use `⟨mat_ext _ _ fun x => hinj _ _ ?_, fun g h => mat_ext _ _ fun x => hinj _ _ ?_, rho_spec I H⟩` and prove the remaining obligations. Conclude with `(rho_spec I H 1 x).trans (by rw [Matrix.one_mulVec, map_one]; rfl)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pRho : I.PRho := by
   intro s H
@@ -498,9 +498,9 @@ theorem pRho : I.PRho := by
       _ = I.iCg (cpt I.A.fam.base.v0.embedding ((I.ρf g * I.ρf h).mulVec x)) := by rw [Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `s H b`. Establish `h` using `(jt_spec I H.h2g b I.A.fam.base.μ0).1`. Use `⟨fun x => h x, fun x y hxy => ?_⟩` and prove the remaining obligations. Apply `cpt_injective I.A.fam.base.v0.embedding` to reduce the goal to its premises. Apply `(H.h2 b).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(h x).symm.trans ((congrArg (fun v : Fin I.Sg.D → K => I.iCg (cpt I.A.fam.base.v0.embedding v)) hxy).trans (h y))`.
+A detailed English derivation is pending.
 -/
 theorem pJ : I.PJ := by
   intro s H b
@@ -511,7 +511,7 @@ theorem pJ : I.PJ := by
   exact (h x).symm.trans ((congrArg (fun v : Fin I.Sg.D → K => I.iCg (cpt I.A.fam.base.v0.embedding v)) hxy).trans (h y))
 
 /- English proof (translation)
-Introduce `s H b`. Consider the cases of `b`. Conclude with `range_eq_block (I.A.fam.R I.A.fam.base.μ0) I.A.fam.X H.ok.irr I.P0 I.ψ0 (I.X.zs.Z I.A.fam.base.μ0) (I.Jm false) (fun x => cv_of_toF _ ((jt_spec I H.h2g false I.A.fam.base.μ0).2 x)) (I.epM I.P0 I.ψ0) (cv_epM I H I.P0 I.ψ0)`. Conclude with `range_eq_block (I.A.fam.R I.A.fam.base.μ0) I.A.fam.X H.ok.irr I.P1 I.ψ1 (I.X.zs.Z I.A.fam.base.μ0) (I.Jm true) (fun x => cv_of_toF _ ((jt_spec I H.h2g true I.A.fam.base.μ0).2 x)) (I.epM I.P1 I.ψ1) (cv_epM I H I.P1 I.ψ1)`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem pRange : I.PRange := by
   intro s H b

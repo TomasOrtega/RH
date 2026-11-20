@@ -41,9 +41,9 @@ def wW (ℓ : Fin a) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af 
     Real.toNNReal ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single ℓ]`. Rewrite using `[hh, Matrix.one_apply_eq, one_mul]`. Introduce `b _ hb`. Rewrite using `[hh, Matrix.one_apply_ne hb.symm, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `(h (Finset.mem_univ _)).elim`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem row_mul {ℓ : Fin a} {h : GA E a} (hh : ∀ k, h.val ℓ k = (1 : Matrix (Fin a) (Fin a) (Ad E)) ℓ k)
     (g : GA E a) : (h * g).val ℓ = g.val ℓ := by
@@ -56,7 +56,7 @@ theorem row_mul {ℓ : Fin a} {h : GA E a} (hh : ∀ k, h.val ℓ k = (1 : Matri
     exact (h (Finset.mem_univ _)).elim
 
 /- English proof (translation)
-Unfold `yInf`. Rewrite using `[row_mul hh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem yInf_mul {ℓ : Fin a} {h : GA E a} (hh : ∀ k, h.val ℓ k = (1 : Matrix (Fin a) (Fin a) (Ad E)) ℓ k)
     (g : GA E a) : yInf ℓ (h * g) = yInf ℓ g := by
@@ -64,7 +64,7 @@ theorem yInf_mul {ℓ : Fin a} {h : GA E a} (hh : ∀ k, h.val ℓ k = (1 : Matr
   rw [row_mul hh]
 
 /- English proof (translation)
-Unfold `sInv`. Rewrite using `[yInf_mul hh]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sInv_mul {ℓ : Fin a} {h : GA E a} (hh : ∀ k, h.val ℓ k = (1 : Matrix (Fin a) (Fin a) (Ad E)) ℓ k)
     (g : GA E a) : sInv ℓ (h * g) = sInv ℓ g := by
@@ -72,7 +72,7 @@ theorem sInv_mul {ℓ : Fin a} {h : GA E a} (hh : ∀ k, h.val ℓ k = (1 : Matr
   rw [yInf_mul hh]
 
 /- English proof (translation)
-Unfold `fW`. Rewrite using `[sInv_mul hh, yInf_mul hh, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fW_mul {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} {G : GA E a → ℂ} {h : GA E a}
     (hh : ∀ k, h.val ℓ k = (1 : Matrix (Fin a) (Fin a) (Ad E)) ℓ k) (g : GA E a) :
@@ -81,9 +81,9 @@ theorem fW_mul {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} {G : GA E a → �
   rw [sInv_mul hh, yInf_mul hh, mul_assoc]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val x : Matrix (Fin a) (Fin a) (Ad E)) ℓ k = _`. Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply, Finset.sum_eq_zero, add_zero]`. Introduce `t _`. Establish `h1` using `t.2`. Establish `h2` using `t.1.2.isLt`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨e1, -⟩`. Establish `: (t.1.1 : ℕ) = ℓ` using `congrArg Fin.val e1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem blkU_row {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {r m : ℕ} (x : UnipotentBlockColumnIndex a r m → Ad E) (k : Fin a) :
     (blkU x : GA E a).val ℓ k = (1 : Matrix (Fin a) (Fin a) (Ad E)) ℓ k := by
@@ -98,7 +98,7 @@ theorem blkU_row {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {r m : ℕ} (x : Uni
   omega
 
 /- English proof (translation)
-Establish `h` using `hγ ℓ k (by omega) (by have := k.isLt; omega)`. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (γ.val ℓ k) = _`. Rewrite using `[h, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ratGL_row {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {γ : GL (Fin a) E} (hγ : γ ∈ mirU E a (a - 1)) (k : Fin a) :
     (ratGL E a γ).val ℓ k = (1 : Matrix (Fin a) (Fin a) (Ad E)) ℓ k := by
@@ -108,7 +108,7 @@ theorem ratGL_row {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {γ : GL (Fin a) E}
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `hγ ℓ k (Or.inl (by omega))`. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (γ.val ℓ k) = _`. Rewrite using `[h, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ratGL_row_of_isMir {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {γ : GL (Fin a) E} (hγ : IsMir (a - 1) γ) (k : Fin a) :
     (ratGL E a γ).val ℓ k = (1 : Matrix (Fin a) (Fin a) (Ad E)) ℓ k := by
@@ -118,13 +118,13 @@ theorem ratGL_row_of_isMir {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {γ : GL (
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro F ρ c _ g`. Both sides reduce to the same expression. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `F ρ c h g`. Rewrite using `[whit_succ, whit_succ]`. Establish `e : colT ψ (m + 1) (fun g => F (g * ρ g) * c g) = fun g => colT ψ (m + 1) F (g * ρ g) * c g`. Use function extensionality and compare the values at `g`. Simplify using `only [colT, coefF]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm, ← avg_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[(h (m + 1) (Nat.succ_pos m) le_rfl y g).1, (h (m + 1) (Nat.succ_pos m) le_rfl y g).2, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `ih _ ρ c (fun k hk hkm y g => h k hk (by omega) y g) g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_transport (ψ : AddChar (Ad E) ℂ) : ∀ (m : ℕ) (F : GA E a → ℂ) (ρ : GA E a → GA E a) (c : GA E a → ℂ),
     (∀ k, 0 < k → k ≤ m → ∀ (y : UnipotentBlockColumnIndex a k k → Ad E) g, ρ (blkU y * g) = ρ g ∧ c (blkU y * g) = c g) →
@@ -147,15 +147,15 @@ theorem whit_transport (ψ : AddChar (Ad E) ℂ) : ∀ (m : ℕ) (F : GA E a →
     exact ih _ ρ c (fun k hk hkm y g => h k hk (by omega) y g) g
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GeneralLinearGroup.val_det_apply, Units.val_one]`. Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val y : Matrix (Fin a) (Fin a) (Ad E)).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply, Finset.sum_eq_zero, add_zero, Matrix.one_apply_eq]`. Introduce `t _`. Use `t.2` as an intermediate fact. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨e1, e2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `congrArg Fin.val e1`. Establish `h2` using `congrArg Fin.val e2`. Use linear arithmetic over natural numbers and integers. Introduce `i j hij`. Establish `h3 : (j : ℕ) < i` using `hij`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply, Finset.sum_eq_zero, add_zero, Matrix.one_apply_ne (show i ≠ j from fun h => by subst h; omega)]`. Introduce `t _`. Use `t.2` as an intermediate fact. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨e1, e2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `congrArg Fin.val e1`. Establish `h2` using `congrArg Fin.val e2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem det_blkU {r m : ℕ} (y : UnipotentBlockColumnIndex a r m → Ad E) : GeneralLinearGroup.det (blkU y : GA E a) = 1 := by
   refine Units.ext ?_
@@ -183,18 +183,18 @@ theorem det_blkU {r m : ℕ} (y : UnipotentBlockColumnIndex a r m → Ad E) : Ge
     omega
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => GlobalTheory.ShortVecDecay.continuous_pInf.comp (Units.continuous_val.matrix_elem ℓ i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_yInf (ℓ : Fin a) : Continuous (yInf ℓ : GA E a → Fin a → Cinf E) :=
   continuous_pi fun i => GlobalTheory.ShortVecDecay.continuous_pInf.comp
     (Units.continuous_val.matrix_elem ℓ i)
 
 /- English proof (translation)
-Establish `key : ‖G (g * sInv ℓ g) * conj (G (g * sInv ℓ g)) * Φ (yInf ℓ g)‖ = ‖G (g * sInv ℓ g) * ((Real.sqrt ‖Φ (yInf ℓ g)‖ : ℝ) : ℂ)‖ ^ 2`. Rewrite using `[norm_mul, norm_mul, norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), mul_pow, Real.sq_sqrt (norm_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree. Establish `key' : ‖G (g * sInv ℓ g) * conj (G (g * sInv ℓ g)) * Φ (yInf ℓ g)‖₊ = ‖G (g * sInv ℓ g) * ((Real.sqrt ‖Φ (yInf ℓ g)‖ : ℝ) : ℂ)‖₊ ^ 2` using `NNReal.eq (by simpa using key)`. Simplify using `only [GlobalTheory.RSTheta.rsPsi, thetaFn, GlobalTheory.RSTheta.rsInf, fW, wW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `‖G (g * sInv ℓ g) * conj (G (g * sInv ℓ g)) * Φ (yInf ℓ g) * _‖ₑ * _ = _`. Distinguish the cases in `hm : ((fun i => pFin E (g.val ℓ i)) - η) ∈ latt a J`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem hm]`. Simplify using `only [Pi.one_apply, mul_one, one_mul, enorm_eq_nnnorm, key', ENNReal.coe_pow]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem hm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem enorm_rsPsi_row (ℓ : Fin a) (G : GA E a → ℂ) (Φ : (Fin a → Cinf E) → ℂ) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ)
     (η : Fin a → Af E) (x : ℝ) (g : GA E a) :
@@ -217,15 +217,13 @@ theorem enorm_rsPsi_row (ℓ : Fin a) (G : GA E a → ℂ) (Φ : (Fin a → Cinf
     simp
 
 /- English proof (translation)
-Establish `hy` using `continuous_yInf (E := E) ℓ`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hp : yInf ℓ g ∈ tsupport Φ`. Establish `h1 : ContinuousAt (fun g => g * sInv ℓ g) g` using `continuousAt_id.mul (((GlobalTheory.RSTheta.continuousOn_inv_rowGL ℓ).continuousAt ((GlobalTheory.RSTheta.isOpen_rowSet ℓ).mem_nhds (hΦt hp))).comp hy.continuousAt)`. Conclude with `(hc.continuousAt.comp h1).mul (Complex.continuous_ofReal.comp (Real.continuous_sqrt.comp (continuous_norm.comp (hΦc.comp hy)))).continuousAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuousAt_const (y := (0 : ℂ))).congr ?_ filter_upwards [hy.continuousAt.eventually (notMem_tsupport_iff_eventuallyEq.1 hp)] with q hq` and prove the remaining obligations. Simplify using `[fW, hq]`. Use `left γ hγ g := by`. Rewrite using `[fW_mul (ratGL_row_of_isMir hℓ hγ), hl]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `law k hk y g := by`. Establish `: IsEmpty (UnipotentBlockColumnIndex a k k)` using `⟨fun t => by have := t.2; have := t.1.2.isLt; omega⟩`. Establish `hy : y = 0` using `Subsingleton.elim _ _`. Substitute `hy` using the available equality. Establish `e1 : (blkU (0 : UnipotentBlockColumnIndex a k k → Ad E) : GA E a) = 1` using `posU_zero _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e1, one_mul]`. Simplify using `[dot]`. Use `van r hr hra g := by`. Establish `e : (fun x : UnipotentBlockColumnIndex a r (a - 1) → Ad E => fW ℓ Φ F ((blkU x : GA E a) * g)) = fun x => ((Real.sqrt ‖Φ (yInf ℓ g)‖ : ℝ) : ℂ) * F ((blkU x : GA E a) * (g * sInv ℓ g))`. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[fW_mul (blkU_row hℓ x), mul_comm]`. Rewrite using `[e, avg_const_mul, hv r hr hra, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_fW {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) (ψ : AddChar (Ad E) ℂ) {F : GA E a → ℂ} (hc : Continuous F)
     (hl : ∀ γ g, F (ratGL E a γ * g) = F g)
@@ -263,7 +261,7 @@ theorem good_fW {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) (ψ : AddChar (Ad E) 
     rw [e, avg_const_mul, hv r hr hra, mul_zero]
 
 /- English proof (translation)
-Unfold `ratMirU GlobalTheory.CellDec.NE`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[GlobalTheory.MirTower.mem_mirU_zero, GlobalTheory.SmGL.mem_unipB]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratMirU_zero (E : Type) [Field E] [NumberField E] (a : ℕ) : ratMirU E a 0 = GlobalTheory.CellDec.NE E a := by
   unfold ratMirU GlobalTheory.CellDec.NE
@@ -272,7 +270,7 @@ theorem ratMirU_zero (E : Type) [Field E] [NumberField E] (a : ℕ) : ratMirU E 
   rw [GlobalTheory.MirTower.mem_mirU_zero, GlobalTheory.SmGL.mem_unipB]
 
 /- English proof (translation)
-Establish `hcd : Continuous fun g : GA E a => (ideleModule E (GeneralLinearGroup.det g) : ℝ)` using `continuous_subtype_val.comp (continuous_ideleModule.comp GeneralLinearGroup.continuous_det)`. Establish `hr : Continuous fun g : GA E a => (fun i => pFin E (g.val ℓ i)) - η` using `Continuous.sub (continuous_pi fun i => (continuous_snd : Continuous (pFin E)).comp (Units.continuous_val.matrix_elem ℓ i : Continuous fun g : GA E a => g.val ℓ i)) continuous_const`. Conclude with `((measurable_const.indicator (GlobalTheory.RSTheta.isClosed_latt J).measurableSet).comp hr.measurable).mul (measurable_real_toNNReal.comp (hcd.measurable.pow_const x))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_wW (ℓ : Fin a) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E) (x : ℝ) :
     Measurable (wW ℓ J η x : GA E a → ℝ≥0) := by
@@ -289,23 +287,21 @@ end GlobalTheory.RSUnfoldW
 open GlobalTheory.RSUnfoldW GlobalTheory.CuspGeneric GlobalTheory.MirTower in
 
 /- English proof (translation)
-Introduce `E _ _ _ a ℓ hℓ π hπ F hF Φ hΦc hΦs hΦt J η μ _ 𝓕 𝓕₀ h𝓕 h𝓕₀ x`. Establish `ha : 0 < a` using `by omega`. Take `⟨φ, hφ, hφF⟩` from `GlobalTheory.JSW.mspanR_le GlobalTheory.CuspOrth.cuspFormsBounded hπ hF`. Establish `hB : IsBCC F`. Establish `h` using `(GlobalTheory.JSW.mem_dSub.1 hφ []).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[GlobalTheory.JSW.word_nil]`. Rewrite using `[← hφF]`. Conclude with `h`. Use `haveI : DiscreteTopology (ratMirU E a (a - 1)) := GlobalTheory.MirTower.discrete_of_le_range (Subgroup.map_le_range _ _)`. Take `⟨𝓕P, h𝓕P⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratMirU E a (a - 1)) μ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hℓ' : (⟨a - 1, Nat.sub_lt ha Nat.one_pos⟩ : Fin a) = ℓ` using `Fin.ext (by simp only; omega)`. Establish `hdet : ∀ (γ : GL (Fin a) E) (g : GA E a), (ideleModule E (GeneralLinearGroup.det (ratGL E a γ * g)) : ℝ) = ideleModule E (GeneralLinearGroup.det g)`. Introduce `γ g`. Rewrite using `[map_mul, map_mul, GlobalTheory.ShortVecDecay.ideleModule_det_rat, one_mul]`. Establish `hcd : Continuous fun g : GA E a => (ideleModule E (GeneralLinearGroup.det g) : ℝ)` using `continuous_subtype_val.comp (continuous_ideleModule.comp GeneralLinearGroup.continuous_det)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmeas : ∀ v : Fin a → E, Measurable fun g : GA E a => ‖GlobalTheory.RSTheta.rsPsi ℓ F F Φ J η g (Matrix.vecMul (fun i => algebraMap E (Ad E) (v i)) g.val)‖ₑ * ENNReal.ofReal ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x)`. Introduce `v`. Establish `hv : Continuous fun g : GA E a => Matrix.vecMul (fun i => algebraMap E (Ad E) (v i)) g.val` using `continuous_const.matrix_vecMul Units.continuous_val`. Conclude with `(((GlobalTheory.RSTheta.continuous_rsPsi hB.cont hB.cont hΦc hΦt J η).comp (continuous_id.prodMk hv)).enorm.measurable).mul (ENNReal.measurable_ofReal.comp (hcd.measurable.pow_const x))`. Establish `e1` using `GlobalTheory.T.lintegral_theta_series_unfold_mirabolic E a ha μ 𝓕 𝓕P h𝓕 h𝓕P (fun g y => ‖GlobalTheory.RSTheta.rsPsi ℓ F F Φ J η g y‖ₑ * ENNReal.ofReal ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x)) hmeas (fun γ g y => by simp only [GlobalTheory.RSTheta.rsPsi_ratGL_mul ℓ hB …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[← ENNReal.tsum_mul_right]`. Rewrite using `[e1, hℓ']`. Repeatedly rewrite using `[enorm_rsPsi_row]`. Use `set ψC : AddChar (Ad E) ℂ := Circle.coeHom.compAddChar (GroundTheory.Global.adelicChar E) with hψC`. Establish `h𝓕₀' : IsFundamentalDomain (ratMirU E a 0) 𝓕₀ μ` using `by rw [ratMirU_zero]; exact h𝓕₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hwl : ∀ γ ∈ mirU E a (a - 1), ∀ g, wW ℓ J η x (ratGL E a γ * g) = wW ℓ J η x g`. Introduce `γ hγ g`. Unfold `wW`. Rewrite using `[row_mul (ratGL_row hℓ hγ), hdet]`. Establish `hwu : ∀ (k : ℕ) (y : UnipotentBlockColumnIndex a k k → Ad E) (g : GA E a), wW ℓ J η x (blkU y * g) = wW ℓ J η x g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k y g`. Unfold `wW`. Rewrite using `[row_mul (blkU_row hℓ y), map_mul, det_blkU, one_mul]`. Establish `hgood : Good ψC (a - 1) (fW ℓ Φ F)` using `good_fW hℓ ψC hB.cont hB.left (fun r hr hra g => GlobalTheory.T.cuspidal_blockAverage_lastColumn_eq_zero E a F hB.cont hB.left hB.cusp r hr hra g) hΦc hΦt`. Establish `e2` using `(GlobalTheory.T.unfold_mirabolic_alt E a μ ψC (GlobalTheory.T.isStandardAdelicAddChar_global_adelicChar E) 𝓕P 𝓕₀ h𝓕P h𝓕₀' (wW ℓ J η x) (measurable_wW ℓ J η x) hwl hwu).1 (fW ℓ Φ F) hgood`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `hA : GlobalTheory.CuspGeneric.whit ψC (a - 1) (fW ℓ Φ F) g = fW ℓ Φ (GlobalTheory.JSW.whit F) g`. Use `whit_transport ψC (a - 1) F (sInv ℓ) (fun g => ((Real.sqrt ‖Φ (yInf ℓ g)‖ : ℝ) : ℂ)) (fun k _ _ y g => ⟨sInv_mul (blkU_row hℓ y) g, by simp only [yInf_mul (blkU_row hℓ y)]⟩) g` as an intermediate fact. Rewrite using `[show fW ℓ Φ F = fun g => F (g * sInv ℓ g) * ((Real.sqrt ‖Φ (yInf ℓ g)‖ : ℝ) : ℂ) from rfl, this, GlobalTheory.T.iteratedColumnTransform_eq_globalWhittaker E a F ha hB.cont hB.left]`.
-
-Both sides reduce to the same expression. Rewrite using `[hA]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RSUnfold.lintegral_theta_eq_whit : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a), (ℓ : ℕ) + 1 = a →
     ∀ (π : CuspSub E a), π.IsUnitary → ∀ (F : GA E a → ℂ), F ∈ GlobalTheory.JSW.mspanR π →

@@ -19,11 +19,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D C`. Take `⟨k₁, hk₁⟩` from `GlobalTheory.T.exists_weightZero_section_nonzero_at_origin R hR D`. Use `⟨max k₁ 1, fun k hk Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨b₀, hb₀⟩` from `hk₁ k (le_of_max_le_left hk)`. Establish `hk1 : 1 ≤ k` using `le_of_max_le_right hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F₀, hF₀⟩` from `(GlobalTheory.T.exists_integralThetaFamily_prescribed_leadingTerm R hR D).2 k hk1 b₀`. Take `⟨c₁, c₂, hc₂, hc⟩` from `GlobalTheory.T.exists_thetaNormalisationConstant_origin R hR D C k hk1 b₀ hb₀ F₀ hF₀ (Φ F₀)`. Use `⟨fun F => scal C.A.A.hom (algebraMap R (FractionRing R) c₁ / algebraMap R (FractionRing R) c₂) • Φ F, fun W _ _ _ T => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, hE⟩` from `hΦ W T`. Take `⟨u, hu⟩` from `hc W T a b ha hb (hE F₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, fun F => GlobalTheory.T.trait_expansionScalars_rescale R hR D C W T k (Φ F) F a b u c₁ c₂ ha hc₂ hu (hE F)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_unit_normalisation : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D), ∃ k₀ : ℕ, ∀ k ≥ k₀, ∀ Φ : IntFam (maximalIdeal R) D.toPre k → SecK C.P.L.L C.α k, (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ a b : W, a ≠ 0 ∧ b ≠ 0 ∧ ∀ F, T.Exp a b (Φ F) F) → ∃ Φ' : IntFam (maximalIdeal R) D.toPre k → SecK C.P.L.L C.α k, ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ u : Wˣ, ∀ F, T.Exp 1 u (Φ' F) F := by
   intro R _ _ _ hR D C

@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BmuExpMem
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hs : HasSum (fun m : ℕ => ((m.factorial : ℂ)⁻¹) • A ^ m) (NormedSpace.exp A)` using `NormedSpace.exp_series_hasSum_exp' A`. Establish `hL : Continuous L` using `LinearMap.continuous_of_finiteDimensional L`. Establish `h1` using `hs.map L hL`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasSum (fun m : ℕ => L (((m.factorial : ℂ)⁻¹) • A ^ m)) (L 1)`. Establish `e : (fun m : ℕ => L (((m.factorial : ℂ)⁻¹) • A ^ m)) = fun m => if m = 0 then L 1 else 0`. Use function extensionality and compare the values at `m`. Consider the cases of `m with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ m => rw [map_smul, h m, smul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hasSum_ite_eq 0 (L 1)`. Conclude with `h1.unique h2`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_exp_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ)
     (h : ∀ m : ℕ, L (A ^ (m + 1)) = 0) : L (NormedSpace.exp A) = L 1 := by
@@ -36,11 +36,11 @@ theorem lin_exp_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (L : Matrix (Fin n
   exact h1.unique h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hsm : ∀ (c : ℂ) (M : Matrix (Fin n) (Fin n) ℂ), (c • M) *ᵥ v = c • (M *ᵥ v)`. Introduce `c M`. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ` to `{ toFun := fun M => (M *ᵥ v) i map_add' := fun M N => by simp [Matrix.add_mulVec] map_smul' := fun c M => by simp [hsm] }`. Establish `hA : ∀ m : ℕ, L (((t : ℂ) • X) ^ (m + 1)) = 0`. Introduce `m`. Use `show ((((t : ℂ) • X) ^ (m + 1)) *ᵥ v) i = 0`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, hsm, hv, smul_zero, Matrix.mulVec_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e` using `lin_exp_eq ((t : ℂ) • X) L hA`. Establish `e' : ((NormedSpace.exp ((t : ℂ) • X)) *ᵥ v) i = ((1 : Matrix (Fin n) (Fin n) ℂ) *ᵥ v) i` using `e`. Use `show ((NormedSpace.exp ((t : ℂ) • X)) *ᵥ v) i = v i`. Rewrite using `[e', Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_mulVec {n : ℕ} (X : Mat n) (t : ℝ) (v : Fin n → ℂ) (hv : X *ᵥ v = 0) : ex X t *ᵥ v = v := by
   funext i
@@ -63,15 +63,13 @@ theorem ex_mulVec {n : ℕ} (X : Mat n) (t : ℝ) (v : Fin n → ℂ) (hv : X *�
   rw [e', Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hpow : ∀ m : ℕ, ∀ i' : Fin n, a ≤ i'.val → (X ^ (m + 1)) i' j = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro i' hi'`. Simplify using `using h2 i' hi'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih`. Introduce `i' hi'`. Rewrite using `[pow_succ', Matrix.mul_apply]`. Use `Finset.sum_eq_zero (fun l _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hl : l.val < a`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h1 i' l hi' hl, zero_mul]`. Rewrite using `[ih l (not_lt.1 hl), mul_zero]`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ` to `{ toFun := fun M => M i j map_add' := fun M N => rfl map_smul' := fun c M => rfl }`. Establish `hA : ∀ m : ℕ, L (((t : ℂ) • X) ^ (m + 1)) = 0`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (((t : ℂ) • X) ^ (m + 1)) i j = 0`. Rewrite using `[smul_pow, Matrix.smul_apply, hpow m i hi, smul_zero]`. Establish `e` using `lin_exp_eq ((t : ℂ) • X) L hA`. Establish `e' : (NormedSpace.exp ((t : ℂ) • X)) i j = (1 : Matrix (Fin n) (Fin n) ℂ) i j` using `e`. Use `show (NormedSpace.exp ((t : ℂ) • X)) i j = _`.
-
-Rewrite using `[e', Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_entry {n : ℕ} (X : Mat n) (t : ℝ) (a : ℕ) (j : Fin n)
     (h1 : ∀ i l : Fin n, a ≤ i.val → l.val < a → X i l = 0) (h2 : ∀ i : Fin n, a ≤ i.val → X i j = 0)
@@ -101,11 +99,11 @@ theorem ex_entry {n : ℕ} (X : Mat n) (t : ℝ) (a : ℕ) (j : Fin n)
   rw [e', Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hp : ∀ m : ℕ, B ^ m * H = H * C ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, mul_assoc, h, ← mul_assoc, ih, mul_assoc, ← pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e1` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) B).mul_right H`. Establish `e2` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) C).mul_left H`. Establish `hf : (fun m : ℕ => ((m.factorial : ℂ)⁻¹ • B ^ m) * H) = fun m => H * (((m.factorial : ℂ)⁻¹) • C ^ m)`. Use function extensionality and compare the values at `m`. Rewrite using `[smul_mul_assoc, hp m, mul_smul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[hf]`. Conclude with `e1.unique e2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exp_mul_eq_mul_exp_of_semiconj {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℂ 𝔸] [CompleteSpace 𝔸]
     (B C H : 𝔸) (h : B * H = H * C) : NormedSpace.exp B * H = H * NormedSpace.exp C := by
@@ -124,15 +122,15 @@ private theorem exp_mul_eq_mul_exp_of_semiconj {𝔸 : Type*} [NormedRing 𝔸] 
   exact e1.unique e2
 
 /- English proof (translation)
-Introduce `k r z X t`. Establish `hint : ∀ B C H : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, B * H = H * C → NormedSpace.exp B * H = H * NormedSpace.exp C`. Introduce `B C H h`. Use `letI : NormedRing (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) := Matrix.linftyOpNormedAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `exp_mul_eq_mul_exp_of_semiconj B C H h`. Establish `hU : Lie (Formalism.QuantumDeterminants.Hpk k r) X → ex X t ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`. Introduce `hX`. Establish `hX' : Xᴴ * Formalism.QuantumDeterminants.Hpk k r = -(Formalism.QuantumDeterminants.Hpk k r * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `hAH : ((t : ℂ) • X)ᴴ * Formalism.QuantumDeterminants.Hpk k r = Formalism.QuantumDeterminants.Hpk k r * (-((t : ℂ) • X))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.smul_mul, hX', Matrix.mul_neg, Matrix.mul_smul, smul_neg]`. Simplify using `[Complex.star_def, Complex.conj_ofReal]`. Use `show (NormedSpace.exp ((t : ℂ) • X))ᴴ * Formalism.QuantumDeterminants.Hpk k r * NormedSpace.exp ((t : ℂ) • X) = Formalism.QuantumDeterminants.Hpk k r`. Rewrite using `[← Matrix.exp_conjTranspose, hint _ _ _ hAH, mul_assoc, ← Matrix.exp_add_of_commute (-((t : ℂ) • X)) ((t : ℂ) • X) (Commute.neg_left (Commute.refl _)), neg_add_cancel, NormedSpace.exp_zero, mul_one]`. Use `⟨fun h => ⟨hU h.1, fun a => ⟨ex_mulVec X t _ (h.2.1 a).1, ex_mulVec X t _ (h.2.1 a).2⟩, ex_mulVec X t z h.2.2⟩, fun h => ⟨hU h.1, fun a i hi => ?_, fun i j hj1 hj2 hi => ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ex_entry X t (a : ℕ) (Formalism.QuantumDeterminants.eI k r a) (fun i' l hi' hl => ?_) (fun i' hi' => h.2.1 a i' hi') i hi`. Establish `hlr : l.val < r` using `lt_trans hl a.isLt`. Use `h.2.1 ⟨l.val, hlr⟩ i' (le_of_lt (lt_of_lt_of_le hl hi'))` as an intermediate fact. Simplify `this` using `[Formalism.QuantumDeterminants.eI]`. Apply the tactic sequence `refine ex_entry X t r j (fun i' l hi' hl => ?_) (fun i' hi' => h.2.2 i' j hj1 hj2 hi') i hi`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h.2.1 ⟨l.val, hl⟩ i' (le_of_lt (lt_of_lt_of_le hl hi'))` as an intermediate fact. Simplify `this` using `[Formalism.QuantumDeterminants.eI]`.
+A detailed English derivation is pending.
 -/
 theorem expMem : ExpMem := by
   intro k r z X t

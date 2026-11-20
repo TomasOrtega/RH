@@ -14,7 +14,7 @@ section Field
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Simplify using `only [blk4]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem submatrix_fromBlocks_mul {n : ℕ} (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) K) :
     blk4 a b c d * blk4 a' b' c' d' =
@@ -23,28 +23,28 @@ theorem submatrix_fromBlocks_mul {n : ℕ} (a b c d a' b' c' d' : Matrix (Fin n)
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[extB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extB_castAdd {r s : ℕ} (b : Matrix (Fin r) (Fin r) K) (i j : Fin r) :
     (extB b : Matrix (Fin (r + s)) (Fin (r + s)) K) (Fin.castAdd s i) (Fin.castAdd s j) = b i j := by
   simp [extB]
 
 /- English proof (translation)
-Simplify using `[extB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extB_natAdd_left {r s : ℕ} (b : Matrix (Fin r) (Fin r) K) (i : Fin s) (j : Fin (r + s)) :
     (extB b : Matrix (Fin (r + s)) (Fin (r + s)) K) (Fin.natAdd r i) j = 0 := by
   simp [extB]
 
 /- English proof (translation)
-Simplify using `[extB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extB_natAdd_right {r s : ℕ} (b : Matrix (Fin r) (Fin r) K) (i : Fin (r + s)) (j : Fin s) :
     (extB b : Matrix (Fin (r + s)) (Fin (r + s)) K) i (Fin.natAdd r j) = 0 := by
   simp [extB]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[eId, Matrix.diagonal_mul]`. Distinguish the cases in `h : (i : ℕ) < r`. Simplify using `[h]`. Simplify using `[h, extB]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eId_mul_extB {r s : ℕ} (b : Matrix (Fin r) (Fin r) K) :
     eId K (r + s) r * extB b = extB b := by
@@ -55,9 +55,9 @@ theorem eId_mul_extB {r s : ℕ} (b : Matrix (Fin r) (Fin r) K) :
   · simp [h, extB]
 
 /- English proof (translation)
-Simplify using `only [repMat, wr, nB, mA]`. Rewrite using `[submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Establish `h : -eId K (r + s) r * extB b + (1 - eId K (r + s) r) * 1 = 1 - eId K (r + s) r - extB b`. Rewrite using `[Matrix.neg_mul, eId_mul_extB, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem representation_matrix_block_form (σ : K →+* K) {r s : ℕ} (b : Matrix (Fin r) (Fin r) K)
     (a : Matrix (Fin (r + s)) (Fin (r + s)) K) :
@@ -79,7 +79,7 @@ end Field
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_matrix_map {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) D.host.E) :
     (blk4 a b c d).map (incA D) = blk4 (a.map (incA D)) (b.map (incA D)) (c.map (incA D)) (d.map (incA D)) := by
@@ -88,7 +88,7 @@ theorem block_matrix_map {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) D.host.E) :
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [xPart, zy, blk4, Matrix.of_apply, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Rewrite using `[Fintype.sum_equiv finSumFinEquiv.symm _ (fun t => Sum.elim (fun _ => (0 : AE D)) (y i) t * Matrix.fromBlocks A B C E' t (Sum.inl j)) (fun _ => rfl), Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem xPart_zy_mul {m n : ℕ} (y : Mx D m n) (A B C E' : Mx D n n) :
     xPart (HMul.hMul (zy y) (blk4 A B C E') : Mx D m (n + n)) = HMul.hMul y C := by
@@ -101,7 +101,7 @@ theorem xPart_zy_mul {m n : ℕ} (y : Mx D m n) (A B C E' : Mx D n n) :
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [yPart, zy, blk4, Matrix.of_apply, Matrix.mul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Rewrite using `[Fintype.sum_equiv finSumFinEquiv.symm _ (fun t => Sum.elim (fun _ => (0 : AE D)) (y i) t * Matrix.fromBlocks A B C E' t (Sum.inr j)) (fun _ => rfl), Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem yPart_zy_mul {m n : ℕ} (y : Mx D m n) (A B C E' : Mx D n n) :
     yPart (HMul.hMul (zy y) (blk4 A B C E') : Mx D m (n + n)) = HMul.hMul y E' := by
@@ -114,7 +114,7 @@ theorem yPart_zy_mul {m n : ℕ} (y : Mx D m n) (A B C E' : Mx D n n) :
   simp
 
 /- English proof (translation)
-Use extensionality with `i k`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) k` and prove the remaining obligations. Simplify using `[eId, Matrix.mul_apply, Matrix.diagonal_apply, Matrix.map_apply]`. Simplify using `[eId, Matrix.mul_apply, Matrix.diagonal_apply, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colJoin_mul_eId {m r s : ℕ} (y₁ : Mx D m r) (y₂ : Mx D m s) :
     (HMul.hMul (colJoin y₁ y₂) ((eId D.host.E (r + s) r).map (incA D)) : Mx D m (r + s)) =
@@ -125,7 +125,7 @@ theorem colJoin_mul_eId {m r s : ℕ} (y₁ : Mx D m r) (y₂ : Mx D m s) :
   · simp [eId, Matrix.mul_apply, Matrix.diagonal_apply, Matrix.map_apply]
 
 /- English proof (translation)
-Use extensionality with `i k`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) k` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, extB_castAdd, extB_natAdd_left, rat]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, extB_natAdd_right]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colJoin_mul_extB {m r s : ℕ} (y₁ : Mx D m r) (y₂ : Mx D m s) (b : Matrix (Fin r) (Fin r) D.host.E) :
     (HMul.hMul (colJoin y₁ y₂) ((extB b : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E).map (incA D)) : Mx D m (r + s)) =
@@ -136,13 +136,13 @@ theorem colJoin_mul_extB {m r s : ℕ} (y₁ : Mx D m r) (y₂ : Mx D m s) (b : 
   · simp [Matrix.mul_apply, Fin.sum_univ_add, extB_natAdd_right]
 
 /- English proof (translation)
-Introduce `D m r s b a y₁ y₂`. Use `set e := eId D.host.E (r + s) r with he`. Use `set y : Mx D m (r + s) := colJoin y₁ y₂ with hy`. Establish `hmap : ∀ X : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E, X.map (incA D) = (incA D).mapMatrix X` using `fun _ => rfl`. Rewrite using `[representation_matrix_block_form, block_matrix_map, xPart_zy_mul, yPart_zy_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `h1 : (-(e * a)).map (incA D) = -(e.map (incA D) * rat a)`. Simplify using `only [hmap, map_neg, map_mul]`. Both sides reduce to the same expression. Rewrite using `[h1, Matrix.mul_neg, ← Matrix.mul_assoc, colJoin_mul_eId]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ((1 - e - extB b) * (cT (D.sp.cm.sig : D.host.E →+* D.host.E) a)⁻¹).map (incA D) = (1 - e.map (incA D) - (extB b : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E).map (incA D)) * rat (cT (D.sp.cm.sig : D.host.E →+* D.host.E) a)⁻¹`. Simplify using `only [hmap, map_sub, map_mul, map_one]`. Both sides reduce to the same expression. Rewrite using `[h2, ← Matrix.mul_assoc, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, hy, colJoin_mul_eId, colJoin_mul_extB, ← colJoin_sub, ← colJoin_sub]`. Use `congr 2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem parts : ∀ (D : D7) (m r s : ℕ) (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E)
     (y₁ : Mx D m r) (y₂ : Mx D m s),

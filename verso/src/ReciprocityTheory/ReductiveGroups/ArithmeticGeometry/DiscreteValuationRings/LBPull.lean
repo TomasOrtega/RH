@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [pullU, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma pullU_comp {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (x : Γ(X, U)ˣ) :
     pullU (f ≫ g) U x = pullU f (g ⁻¹ᵁ U) (pullU g U x) := by
@@ -21,13 +21,11 @@ lemma pullU_comp {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens) 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hW : (LB.LinComb L (fun k => h ≫ φ k) ε).U i ⊓ (LB.LinComb L (fun k => h ≫ φ k) ε).U j ≤ h ⁻¹ᵁ ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j)` using `fun z hz => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.1 k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.2 k⟩`. Establish `h1` using `congrArg (fun z : Γ(Y, ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j))ˣ => res hW (pullU h ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j) z)) (ht i j)`. Simplify using `only [map_mul, pullU_res, res_res'] at h1`. Establish `e0 : (LB.LinComb L φ ε).g i j = ∏ k, (res (le_inf (inf_le_left.trans (LB.wchart_le L φ i k)) (inf_le_right.trans (LB.wchart_le L φ j k)) : ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j) ≤ φ k ⁻¹ᵁ (L.U (i k) ⊓ L.U (j k))) (pullU (φ k) _ (L.g (i k) (j k)))) ^ (ε k)` using `rfl`. Establish `e1 : (LB.LinComb L (fun k => h ≫ φ k) ε).g i j = ∏ k, (res hW (pullU h ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j) (res (le_inf (inf_le_left.trans (LB.wchart_le L φ i k)) (inf_le_right.trans (LB.wchart_le L φ j k)) : ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j) ≤ φ k ⁻ …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `erw [pullU_res, res_res']`. Apply the tactic sequence `try rfl`. Take `⟨a, ha0, ha1⟩ : ∃ a : K → Γ(Y, ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j))ˣ, (LB.LinComb L φ ε).g i j = ∏ k, a k ^ ε k ∧ (LB.LinComb L (fun k => h ≫ φ k) ε).g i j = ∏ k, (res hW (pullU h ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j) (a k))) ^ ε k` from `⟨_, e0, e1⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : (LB.LinComb L (fun k => h ≫ φ k) ε).g i j = res hW (pullU h ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j) ((LB.LinComb L φ ε).g i j))`. Rewrite using `[ha1, ha0]`. Use `first`. Consider the case `(rw [map_prod, map_prod]; exact Finset.prod_congr rfl fun k _ => by rw [map_zpow, map_zpow])`. Consider the case `simp only [map_prod, map_zpow]`.
-
-Rewrite using `[hg]`. Use `erw [res_res', res_res']`. Conclude with `h1`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pullback_generator_isGenerator {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (h : Z ⟶ Y) (i j : K → L.ι) :
@@ -69,15 +67,15 @@ lemma pullback_generator_isGenerator {X Y Z : Scheme.{0}} (L : LB X) {K : Type} 
   exact h1
 
 /- English proof (translation)
-Introduce `i j` and use `pullback_generator_isGenerator L φ ε t ht h i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullGen_isGen {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (h : Z ⟶ Y) : (LB.pullGen L φ ε t h).IsGen := fun i j => pullback_generator_isGenerator L φ ε t ht h i j
 
 /- English proof (translation)
-Establish `h1` using `ht i j`. Apply the tactic sequence `have hg : (LB.LinComb L φ (fun k => -ε k)).g i j = ((LB.LinComb L φ ε).g i j)⁻¹ := by (simp only [LB.LinComb, zpow_neg, Finset.prod_inv_distrib]) <;> rfl`. Establish `h2` using `congrArg (fun z => z⁻¹) h1`. Simplify using `only [mul_inv, ← map_inv] at h2`. Rewrite using `[hg]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 lemma inverse_generator_isGenerator {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (i j : K → L.ι) :
@@ -95,22 +93,20 @@ lemma inverse_generator_isGenerator {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fi
   exact h2
 
 /- English proof (translation)
-Introduce `i j` and use `inverse_generator_isGenerator L φ ε t ht i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem invGen_isGen {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : (LB.invGen L φ ε t).IsGen := fun i j => inverse_generator_isGenerator L φ ε t ht i j
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hA : (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).U i ⊓ (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).U j ≤ (LB.LinComb L φ ε).U (i ∘ Sum.inl) ⊓ (LB.LinComb L φ ε).U (j ∘ Sum.inl)` using `fun z hz => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.1 (Sum.inl k), Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.2 (Sum.inl k)⟩`. Establish `hB : (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).U i ⊓ (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).U j ≤ (LB.LinComb L φ' ε').U (i ∘ Sum.inr) ⊓ (LB.LinComb L φ' ε').U (j ∘ Sum.inr)` using `fun z hz => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.1 (Sum.inr k), Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.2 (Sum.inr k)⟩`. Establish `hg : (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).g i j = res hA ((LB.LinComb L φ ε).g (i ∘ Sum.inl) (j ∘ Sum.inl)) * res hB ((LB.LinComb L φ' ε').g (i ∘ Sum.inr) (j ∘ Sum.inr))`. Establish `e0 : (LB.LinComb L φ ε).g (i ∘ Sum.inl) (j ∘ Sum.inl) = ∏ k, (res (le_inf (inf_le_left.trans (LB.wchart_le L φ (i ∘ Sum.inl) k)) (inf_le_right.trans (LB.wchart_le L φ (j ∘ Sum.inl) k)) : (LB.LinComb L φ ε).U (i ∘ Sum.inl) ⊓ (LB.LinComb L φ ε).U (j ∘ Sum.inl) ≤ φ k ⁻¹ᵁ (L.U (i (Su …` using `rfl`. Establish `e0' : (LB.LinComb L φ' ε').g (i ∘ Sum.inr) (j ∘ Sum.inr) = ∏ k, (res (le_inf (inf_le_left.trans (LB.wchart_le L φ' (i ∘ Sum.inr) k)) (inf_le_right.trans (LB.wchart_le L φ' (j ∘ Sum.inr) k)) : (LB.LinComb L φ' ε').U (i ∘ Sum.inr) ⊓ (LB.LinComb L φ' ε').U (j ∘ Sum.inr) ≤ φ' k ⁻¹ᵁ ( …` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).g i j = (∏ k, (res hA (res (le_inf (inf_le_left.trans (LB.wchart_le L φ (i ∘ Sum.inl) k)) (inf_le_right.trans (LB.wchart_le L φ (j ∘ Sum.inl) k)) : (LB.LinComb L φ ε).U (i ∘ Sum.inl) ⊓ (LB.LinComb L φ ε).U (j ∘ Sum.inl) ≤ φ k ⁻¹ …`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun k _ => ?_ <;> congr 1 <;> erw [res_res'] <;> rfl`. Take `⟨a, a', ha, ha', hb⟩ : ∃ (a : K → Γ(Y, ((LB.LinComb L φ ε).U (i ∘ Sum.inl) ⊓ (LB.LinComb L φ ε).U (j ∘ Sum.inl)))ˣ) (a' : K' → Γ(Y, ((LB.LinComb L φ' ε').U (i ∘ Sum.inr) ⊓ (LB.LinComb L φ' ε').U (j ∘ Sum.inr)))ˣ), (LB.LinComb L φ ε).g (i ∘ Sum.inl) (j ∘ Sum.inl) = ∏ k, a k ^ ε k …` from `⟨_, _, e0, e0', e1⟩`. Rewrite using `[hb, ha, ha']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `(rw [map_prod, map_prod]`. Apply the tactic sequence `congr 1 <;> exact Finset.prod_congr rfl fun k _ => by rw [map_zpow])`. Consider the case `simp only [map_prod, map_zpow]`. Establish `h1` using `congrArg (fun z : Γ(Y, (LB.LinComb L φ ε).U (i ∘ Sum.inl) ⊓ (LB.LinComb L φ ε).U (j ∘ Sum.inl))ˣ => res hA z) (ht (i ∘ Sum.inl) (j ∘ Sum.inl))`.
+Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z : Γ(Y, (LB.LinComb L φ' ε').U (i ∘ Sum.inr) ⊓ (LB.LinComb L φ' ε').U (j ∘ Sum.inr))ˣ => res hB z) (ht' (i ∘ Sum.inr) (j ∘ Sum.inr))`. Simplify using `only [map_mul, res_res'] at h1 h2`. Rewrite using `[hg]`. Use `erw [map_mul, map_mul]`. Use `erw [res_res', res_res', res_res', res_res']`.
-
-Rewrite using `[mul_mul_mul_comm (res hA _) (res hB _)]`. Use `erw [h1, h2]`. Apply the tactic sequence `try rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma product_generator_isGenerator {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
@@ -176,7 +172,7 @@ lemma product_generator_isGenerator {X Y : Scheme.{0}} (L : LB X) {K K' : Type} 
   try rfl
 
 /- English proof (translation)
-Introduce `i j` and use `product_generator_isGenerator L φ ε φ' ε' t t' ht ht' i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulGen_isGen {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)

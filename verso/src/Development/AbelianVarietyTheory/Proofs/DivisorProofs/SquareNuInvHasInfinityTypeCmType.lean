@@ -13,15 +13,15 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 namespace GlobalTheory.FunObj.SqNum
 
 /- English proof (translation)
-Introduce `D T L sc μ₀ hL G i j k`. Establish `a1 : 1 ≤ D.R.m - i` using `by have := i.2; omega`. Establish `a2 : D.R.m - i ≤ D.R.m` using `by omega`. Take `⟨n', hn', hinf⟩` from `(L.C.isMu0 j).inf`. Establish `hk : ∀ τ, Formalism.L2.Host.embTau D τ (k : D.host.E) ≠ 0` using `fun τ => by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[nuH, hL.xi_base, mul_one, div_eq_mul_inv, HChar.inf_inv, HChar.inf_mul, HChar.inf_inv, Units.val_inv_eq_inv_val, Units.val_mul, Units.val_inv_eq_inv_val, hinf k, G.ch.inf _ a1 a2 k, ← D.eTau.prod_comp, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_inv_distr …`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1 : n' (D.eTau τ) = -(2 * (num D sc.cGap τ).e (j + 1))`. Use `hn' (D.eTau τ)` as an intermediate fact. Use `beta_reduce at this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Formalism.L2.Host.eExp, Equiv.symm_apply_apply, (GlobalTheory.SignedHC.GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D sc.cGap) (cen D sc.cGap τ)).2.2]`. Establish `h2 : ((n' (D.eTau τ) : ℤ) : ℚ) = ((-(2 * (num D sc.cGap τ).e (j + 1)) : ℤ) : ℚ)`. Rewrite using `[this]`. Use `push_cast`. Unfold `num`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions. Establish `hne : (Formalism.L2.Host.embTau D τ (k : D.host.E) / ((‖Formalism.L2.Host.embTau D τ (k : D.host.E)‖ : ℝ) : ℂ)) ≠ 0` using `div_ne_zero (hk τ) (by simpa using hk τ)`. Use `beta_reduce`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `((Formalism.L2.Host.embTau D τ (k : D.host.E) / ((‖Formalism.L2.Host.embTau D τ (k : D.host.E)‖ : ℝ) : ℂ)) ^ _ * _)⁻¹ = _`. Rewrite using `[← zpow_neg, ← zpow_add₀ hne, ← zpow_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nuH_inv_hasInf : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (i j : Fin D.R.m), (nuH G μ₀ i j)⁻¹.HasInf (Formalism.L2.Host.embTau D) (fun τ => 2 * ((GlobalTheory.ChiGrid.num D sc.cGap τ).e (j + 1) + GlobalTheory.ChiGrid.cen D sc.cGap τ (D.R.m - i))) := by
   intro D T L sc μ₀ hL G i j k

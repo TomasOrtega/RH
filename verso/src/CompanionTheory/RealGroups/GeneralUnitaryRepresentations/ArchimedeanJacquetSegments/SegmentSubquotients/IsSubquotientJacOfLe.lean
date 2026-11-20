@@ -19,9 +19,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hρ` using `CompanionTheory.Lit1.SegRep.PIrr.isIrreducible_piTensor_segTerm σ l`. Establish `hsρ : IsSmooth (piTensor (segTerm σ.ρ l))` using `isSmooth_piTensor fun a => isSmooth_twist σ.smooth (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _))`. Establish `hfl : HasFiniteLength (multiProd (consecBlocks l d) (segTerm σ.ρ l))` using `GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k _ _ _ _ _ _ hsρ (hasFiniteLength_of_isIrreducible hρ)`. Establish `hT' : T ≠ ⊥` using `fun h => hT (by rw [h]; rfl)`. Take `⟨S, hS, hle⟩` from `GlobalTheory.CompanionTheory.JacExp.exists_atom_le hfl hT'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨S, GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom _ hS, hle⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_irred_le {d l : ℕ} (hd : 0 < d) (hl : 0 < l) (σ : IrrRep (GL (Fin d) k))
     (hσ : IsCuspidal σ.ρ) (T : Subrepresentation (multiProd (consecBlocks l d) (segTerm σ.ρ l)))
@@ -40,7 +40,7 @@ theorem exists_irred_le {d l : ℕ} (hd : 0 < d) (hl : 0 < l) (σ : IrrRep (GL (
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `h.trans (GlobalTheory.JacquetExact.isSubquotient_jac (d := fun _ => d) (consecBlocks l d) (GlobalTheory.CompanionTheory.JacExp.isSmooth_sub (isSmooth_parInd _ _) T) (IsSubquotient.of_injective ⟨Submodule.inclusion hST, fun _ => rfl⟩ (Submodule.inclusion_injective hST)))`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_jac_of_le {d l : ℕ} (σ : IrrRep (GL (Fin d) k))
     {S T : Subrepresentation (multiProd (consecBlocks l d) (segTerm σ.ρ l))} (hST : S.toSubmodule ≤ T.toSubmodule)

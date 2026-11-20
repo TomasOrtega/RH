@@ -11,17 +11,17 @@ noncomputable section
 namespace RootFieldNumerics.HH
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `m hm`. Use `⟨Fin.elim0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Finsupp.degree_eq_zero_iff m).1 hm]`. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `m hm`. Establish `hne : m ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hm`. Take `⟨j, hj⟩` from `Finsupp.ne_iff.mp hne`. Establish `hle : Finsupp.single j 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hj`. Use linear arithmetic over natural numbers and integers. Establish `hsplit : m = Finsupp.single j 1 + (m - Finsupp.single j 1)` using `(add_tsub_cancel_of_le hle).symm`. Establish `hdeg : Finsupp.degree (m - Finsupp.single j 1) = d`. Establish `h2` using `congrArg Finsupp.degree hsplit`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_add, Finsupp.degree_single, hm]`. Use linear arithmetic over natural numbers and integers. Take `⟨w', hw'⟩` from `ih _ hdeg`. Use `⟨Fin.cons j w', ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← hw']`. Conclude with `hsplit`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_word {J : Type} : ∀ (d : ℕ) (m : J →₀ ℕ), m.degree = d →
     ∃ w : Fin d → J, m = ∑ k, Finsupp.single (w k) 1 := by
@@ -58,9 +58,9 @@ theorem exists_word {J : Type} : ∀ (d : ℕ) (m : J →₀ ℕ), m.degree = d 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Establish `hdeg : (∑ i, Finsupp.single (w i) (1 : ℕ)).degree = dimFl Ψ N + 1`. Rewrite using `[map_sum]`. Simplify using `[Finsupp.degree_single]`. Rewrite using `[HhModel.hhFl_monomial, hdeg]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.hFlMono_sum_single Ψ N II hII hP w`.
+A detailed English derivation is pending.
 -/
 theorem hhFl_word (II : IntersectionSystem) (hII : IsIntersectionSystem II)
     (hP : IsArithVar (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1))

@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.StabProper
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma sum_mul_conj_eq_conj_dotProduct {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     ∑ a, ∑ b, x a * conj (G b a) * conj (y b) = conj (y ⬝ᵥ (G *ᵥ star x)) := by
@@ -28,15 +28,15 @@ private lemma sum_mul_conj_eq_conj_dotProduct {n : ℕ} (G : Matrix (Fin n) (Fin
   ring
 
 /- English proof (translation)
-Establish `h1 : ∀ v : Fin n → ℂ, star (g.map conj *ᵥ v) = g *ᵥ star v`. Introduce `v`. Use extensionality with `i`. Simplify using `[mulVec, dotProduct]`. Establish `key : ∀ v w : Fin n → ℂ, ∑ a, ∑ b, (g.map conj *ᵥ v) a * conj (G b a) * conj ((g.map conj *ᵥ w) b) = conj (w ⬝ᵥ ((gᴴ * G * g) *ᵥ star v))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v w`. Rewrite using `[sum_mul_conj_eq_conj_dotProduct, h1]`. Use `congr 1`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec w gᴴ]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `j`. Simplify using `[vecMul, mulVec, dotProduct, conjTranspose_apply, mul_comm]`. Prove the components needed by the constructor for the conclusion. Introduce `h v w`. Rewrite using `[key, h, sum_mul_conj_eq_conj_dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use extensionality with `i j`. Establish `hs : ∀ k : Fin n, star (Pi.single k 1 : Fin n → ℂ) = Pi.single k 1`. Apply the tactic sequence `intro k; ext l; by_cases hl : l = k <;> simp [hl]`. Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `this` using `[key, sum_mul_conj_eq_conj_dotProduct, hs]`. Use `(starRingEnd ℂ).injective this` as an intermediate fact. Simplify `this` using `[mulVec, dotProduct, Pi.single_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitary_iff_form {n : ℕ} (G g : Matrix (Fin n) (Fin n) ℂ) :
     gᴴ * G * g = G ↔ ∀ v w : Fin n → ℂ,
@@ -75,9 +75,9 @@ theorem compAt_eq (θ : InfFam D) (τ : D.what₂.Tau) {m n : ℕ} (w : Mx D m n
     compAt θ τ w = w.map ((θ τ).comp (infPart D)) := rfl
 
 /- English proof (translation)
-Unfold `hermC gramAt`. Establish `he` using `C.m.e_emb (C.m.e.symm σ)`. Rewrite `he` using `[Equiv.apply_symm_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[C.m.gT, he]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermC_eq {S T : HSp D} (C : Ctx S T) (σ : C.X.Ψ) (v w : Fin T.rank → ℂ) :
     hermC σ.1 C.X.Gm v w = ∑ a, ∑ b, v a * conj (gramAt D T (C.m.e.symm σ) b a) * conj (w b) := by

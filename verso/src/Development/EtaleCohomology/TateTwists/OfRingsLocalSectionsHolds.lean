@@ -28,9 +28,9 @@ theorem ι_comp_apply {X U : Scheme.{0}} (f : X ⟶ U) (W : X.Opens) (y : X) (h 
 omit [CommRing R] in
 
 /- English proof (translation)
-Take `⟨𝒰, hle⟩` from `(Scheme.mem_grothendieckTopology_iff (P := @Etale)).1 hS`. Establish `: Scheme.JointlySurjective (Scheme.precoverage.{0} @Etale)` using `Scheme.instJointlySurjectivePrecoverage`. Take `⟨i, y, hy⟩` from `𝒰.exists_eq u`. Take `⟨_, ⟨W, hW, rfl⟩, hyW, -⟩` from `(𝒰.X i).isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Establish `: IsAffine W` using `hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Etale (𝒰.f i)` using `𝒰.mem₀.2 ⟨i⟩`. Use `⟨W, Scheme.Opens.ι W ≫ 𝒰.f i, ⟨y, hyW⟩, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ι_comp_apply (𝒰.f i) W y hyW).trans hy`. Conclude with `S.downward_closed (hle _ _ (Presieve.ofArrows.mk i)) (Scheme.Opens.ι W)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cov_pt {U : Scheme.{0}} (S : Sieve U) (hS : S ∈ Scheme.etaleTopology U) (u : U) :
     ∃ (V : Scheme.{0}) (j : V ⟶ U) (v : V), IsAffine V ∧ Etale j ∧ j v = u ∧ S.arrows j := by
@@ -46,7 +46,7 @@ theorem cov_pt {U : Scheme.{0}} (S : Sieve U) (hS : S ∈ Scheme.etaleTopology U
   · exact (ι_comp_apply (𝒰.f i) W y hyW).trans hy
   · exact S.downward_closed (hle _ _ (Presieve.ofArrows.mk i)) (Scheme.Opens.ι W)
 /- English proof (translation)
-Take `⟨V, j, v, hV, hj, hv, hS⟩` from `cov_pt _ (Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) (U := op U) x) u`. Take `⟨t, ht⟩` from `hS`. Conclude with `⟨V, j, v, t, hV, hj, hv, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_surj {U : Scheme.{0}} (x : Sec (ofRings R M) U) (u : U) :
     ∃ (V : Scheme.{0}) (j : V ⟶ U) (v : V) (m : M.obj Γ(V, ⊤)),
@@ -58,9 +58,9 @@ theorem loc_surj {U : Scheme.{0}} (x : Sec (ofRings R M) U) (u : U) :
   exact ⟨V, j, v, t, hV, hj, hv, ht⟩
 
 /- English proof (translation)
-Establish `h0 : ConcreteCategory.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).app (op U)) m = ConcreteCategory.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).app (op U)) 0`. Rewrite using `[map_zero]`. Conclude with `hm`. Take `⟨V, j, v, hV, hj, hv, hS⟩` from `cov_pt _ (Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) m 0 h0) u`. Use `⟨V, j, v, hV, hj, hv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ConcreteCategory.hom ((Scheme.Γ ⋙ M).map j.op) m = ConcreteCategory.hom ((Scheme.Γ ⋙ M).map j.op) 0` using `hS`. Rewrite `h1` using `[map_zero]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_inj {U : Scheme.{0}} (m : M.obj Γ(U, ⊤)) (hm : ofRings.sec M U m = 0) (u : U) :
     ∃ (V : Scheme.{0}) (j : V ⟶ U) (v : V),

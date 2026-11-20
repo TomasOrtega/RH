@@ -17,7 +17,7 @@ namespace PositivityTheory.Rg.Rsw.L.LMajor
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_map {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] [CommRing R']
     [Algebra F R'] (φ : R →ₐ[F] R') (b : Module.Basis ι F E) (z : R ⊗[F] E) (k : ι) :
@@ -31,11 +31,9 @@ theorem repr_map {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRin
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace D.host.F D.host.E`. Use `show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) e = Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) e'`. Apply `(Algebra.TensorProduct.basis (Ainf D.host.F) b).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[repr_map, repr_map]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Establish `h1` using `repr_map (evInf D.host.F w) b e k`. Establish `h2` using `repr_map (evInf D.host.F w) b e' k`. Establish `hw : Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) e = Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) e'` using `h w`. Rewrite `h1` using `[hw, h2]`.
-
-Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_eq_of {e e' : AE D}
     (h : ∀ w, compInf D.host.F D.host.E w e = compInf D.host.F D.host.E w e') : infPart D e = infPart D e' := by
@@ -54,7 +52,7 @@ theorem infPart_eq_of {e e' : AE D}
   exact h1.symm
 
 /- English proof (translation)
-The claim follows from `(infPart_eq_of (e' := 1) fun w => (he.1 w).trans (map_one _).symm).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem infPart_idem {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) : infPart D e = 1 :=
   (infPart_eq_of (e' := 1) fun w => (he.1 w).trans (map_one _).symm).trans (map_one _)
@@ -62,7 +60,7 @@ theorem infPart_idem {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) : infPart 
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, hx, hy, RingHom.map_add, map_add]`. Consider the case `tmul x y => show Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) (x ⊗ₜ[D.host.F] y) = Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v) (AlgHom.id D.host.F D.host.E) (Algebra.TensorProduct.map (sndA D …`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -80,7 +78,7 @@ theorem cv_eq (v : Pl D) (a : AE D) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[cv_eq, cv_eq, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_congr (v : Pl D) {a a' : AE D} (h : finPart D a = finPart D a') : cv D v a = cv D v a' := by
   rw [cv_eq, cv_eq, h]
@@ -102,7 +100,7 @@ def sF (D : D7) : AE D := afF D ⊗ₜ[D.host.F] (1 : D.host.E)
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (afF D ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, fstA_afF, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_sF : infPart D (sF D) = 0 := by
   show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)
@@ -112,7 +110,7 @@ theorem infPart_sF : infPart D (sF D) = 0 := by
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (afF D ⊗ₜ[D.host.F] (1 : D.host.E)) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, sndA_afF]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finPart_sF : finPart D (sF D) = 1 := by
   show Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)
@@ -121,7 +119,7 @@ theorem finPart_sF : finPart D (sF D) = 1 := by
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[compAt, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_smul (θ : InfFam D) (τ : D.what₂.Tau) {m n : ℕ} (c : AE D) (x : Mx D m n) :
     compAt θ τ (c • x) = θ τ (infPart D c) • compAt θ τ x := by

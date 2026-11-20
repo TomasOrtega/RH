@@ -20,7 +20,7 @@ open GlobalTheory.RowMoveAt
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Simplify using `only [actO, GridData.toPair, inv_inv, map_one, inv_one]`. Rewrite using `[show mt (G.pS (.chi i D.R.m : Pair T)) 1 = 1 from rfl, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_chi_small (i : ℕ) (M : GA D (G.V (.grid i D.R.m)))
     (x : WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T))) :
@@ -30,17 +30,15 @@ theorem actO_chi_small (i : ℕ) (M : GA D (G.V (.grid i D.R.m)))
   rw [show mt (G.pS (.chi i D.R.m : Pair T)) 1 = 1 from rfl, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t ht w hw k ys`. Establish `hX : DefNode D.R.m (.grid 0 D.R.m)` using `⟨Nat.zero_le _, rfl⟩`. Take `⟨P, e, he, hsupp, hoff⟩` from `S.N.u_supp _ hX`. Establish `hn` using `notOff S ht hw`. Establish `hu` using `map_mt_eq_one hn he hoff hsupp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'` using `map_mt_eq_one hn he hoff (GlobalTheory.StdHalfLat.suppAt_inv' hsupp)`. Establish `hM' : (mt _ ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1⁻¹).map ((cpt w).comp (toEAf D)) = (loc w (finG (G.V (.grid 0 D.R.m)) k⁻¹)).val`. Rewrite using `[show mt _ ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1⁻¹ = mt _ (S.N.u (.grid 0 D.R.m)).1⁻¹ * mt _ k.1⁻¹ * mt _ (S.N.u (.grid 0 D.R.m)).1 from by`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_rev, inv_inv, mul_assoc]`. Use the proof step `rfl,`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use the proof step `Matrix.map_mul, Matrix.map_mul, hu, hu', Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Establish `h0 : 0 < D.R.m` using `(GlobalTheory.FirstRowVertex.firstIx D).2`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h1 : i = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h1` using the available equality. Rewrite using `[Function.update_self]`. Simplify using `only [GridChoice.rowAt, dif_pos h0, Frames.coord]`. Use `erw [Function.update_self, actO_chi_small 0, Matrix.map_mul, hM']`. Use `erw [Matrix.transpose_transpose, Matrix.transpose_transpose]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.FirstRowTermLaw.kapAt]`. Use `erw [← map_inv (inBasis _ (S.B.β 0 D.R.m) w)]`. Rewrite using `[map_inv (finG (G.V (Node.grid 0 D.R.m))) k]`. Use `erw [inBasis_val, mul_sub_cast]`. Both sides reduce to the same expression.
-
-Rewrite using `[Function.update_of_ne h1]`. Simplify using `only [GridChoice.rowAt]`. Distinguish the cases in `hi : i < D.R.m`. Rewrite using `[dif_pos hi, dif_pos hi, Function.update_of_ne (fun h => h1 (congrArg Fin.val h))]`. Rewrite using `[dif_neg hi, dif_neg hi]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowAt_first_move : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T},
     t ∈ U → ∀ w ∈ locPl G t, ∀ (k : FinPt G (.grid 0 D.R.m))

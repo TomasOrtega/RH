@@ -20,9 +20,9 @@ def rowM {ι : Type} [DecidableEq ι] (ρ : ι → k) (c j : ι) : Matrix ι ι 
   ((1 : Matrix ι ι k).updateRow c ρ).submatrix (Equiv.swap c j) id
 
 /- English proof (translation)
-Establish `hT : ((1 : Matrix ι ι k).updateRow c ρ).det = ρ c`. Establish `h` using `Matrix.cramer_transpose_apply (1 : Matrix ι ι k) ρ c`. Rewrite `h` using `[Matrix.transpose_one, Matrix.cramer_one]`. Simplify using `using h.symm`. Establish `h` using `Matrix.det_permute (Equiv.swap c j) ((1 : Matrix ι ι k).updateRow c ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : (rowM ρ c j).det = _` using `h`. Rewrite using `[h2, hT]`. Use `mul_ne_zero ?_ hc` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap c j)) with e | e <;> simp [e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowM_det_ne {ι : Type} [Fintype ι] [DecidableEq ι] (ρ : ι → k) (c j : ι) (hc : ρ c ≠ 0) :
     (rowM ρ c j).det ≠ 0 := by
@@ -37,7 +37,7 @@ theorem rowM_det_ne {ι : Type} [Fintype ι] [DecidableEq ι] (ρ : ι → k) (c
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap c j)) with e | e <;> simp [e]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show ((1 : Matrix ι ι k).updateRow c ρ) (Equiv.swap c j j) x = ρ x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowM_row {ι : Type} [DecidableEq ι] (ρ : ι → k) (c j : ι) : rowM ρ c j j = ρ := by
   ext x
@@ -45,7 +45,7 @@ theorem rowM_row {ι : Type} [DecidableEq ι] (ρ : ι → k) (c j : ι) : rowM 
   simp
 
 /- English proof (translation)
-Establish `hrc : r ≠ c` using `fun e => hr (e ▸ hc)`. Establish `hrj : r ≠ j` using `fun e => hr (e ▸ hj)`. Establish `hrx : r ≠ x` using `fun e => hr (e ▸ hx)`. Use `show ((1 : Matrix ι ι k).updateRow c ρ) (Equiv.swap c j r) x = 0`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hrc hrj, Matrix.updateRow_ne hrc, Matrix.one_apply_ne hrx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowM_zero {ι : Type} [DecidableEq ι] (s : ι → Prop) (ρ : ι → k) (c j : ι) (hc : s c) (hj : s j)
     (r x : ι) (hr : ¬ s r) (hx : s x) : rowM ρ c j r x = 0 := by
@@ -61,7 +61,7 @@ def rowB {ι : Type} [Fintype ι] [DecidableEq ι] (ρ : ι → k) (c j : ι) : 
   if h : (rowM ρ c j).det ≠ 0 then Matrix.GeneralLinearGroup.mkOfDetNeZero _ h else 1
 
 /- English proof (translation)
-Rewrite using `[rowB, dif_pos (rowM_det_ne ρ c j hc)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rowB_val {ι : Type} [Fintype ι] [DecidableEq ι] (ρ : ι → k) (c j : ι) (hc : ρ c ≠ 0) :
     (rowB ρ c j).val = rowM ρ c j := by
@@ -75,9 +75,9 @@ section Top
 variable {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalDivisionRing k]
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[continuousOn_iff_continuous_restrict]`. Use `Units.continuous_iff.2 ⟨hf, ?_⟩` and prove the remaining obligations. Establish `hdet : Continuous fun x : V => ((f x).val).det` using `hf.matrix_det`. Establish `hne : ∀ x : V, ((f x).val).det ≠ 0` using `fun x => (Matrix.GeneralLinearGroup.det (f x)).ne_zero`. Establish `e : (fun x : V => (((f x)⁻¹ : GL ι k)).val) = fun x : V => (((f x).val).det)⁻¹ • ((f x).val).adjugate`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, Ring.inverse_eq_inv']`. Use `show Continuous (fun x : V => (((f x)⁻¹ : GL ι k)).val)`. Rewrite using `[e]`. Conclude with `(hdet.inv₀ hne).smul hf.matrix_adjugate`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_GL {X ι : Type} [TopologicalSpace X] [Fintype ι] [DecidableEq ι] (f : X → GL ι k) (V : Set X)
     (hf : ContinuousOn (fun x => (f x).val) V) : ContinuousOn f V := by
@@ -93,9 +93,7 @@ theorem continuousOn_GL {X ι : Type} [TopologicalSpace X] [Fintype ι] [Decidab
   exact (hdet.inv₀ hne).smul hf.matrix_adjugate
 
 /- English proof (translation)
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Use `show Continuous fun x => ((1 : Matrix ι ι k).updateRow c (ρ x)) (Equiv.swap c j a) b`. Distinguish the cases in `h : Equiv.swap c j a = c`. Simplify using `only [h, Matrix.updateRow_self]`. Conclude with `(continuous_apply b).comp hρ`.
-
-Simplify using `only [Matrix.updateRow_ne h]`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_rowM {X ι : Type} [TopologicalSpace X] [DecidableEq ι] (ρ : X → ι → k) (c j : ι)
     (hρ : Continuous ρ) : Continuous fun x => rowM (ρ x) c j := by
@@ -114,31 +112,27 @@ section Group
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `set g : GL (Fin ((i + 1) + t + 1)) k := mirabolicProjection k _ p with hg`. Establish `hginv : mirabolicProjection k _ p⁻¹ = g⁻¹` using `map_inv _ _`. Rewrite `hBj` using `[hginv]`. Establish `hM : (X⁻¹ * B * g) ∈ Mir k ((i + 1) + t)`. Establish `h1 : (g⁻¹ * (B⁻¹ * X)) ∈ Mir k ((i + 1) + t)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_Mir_iff, Units.val_mul, Matrix.mul_apply_eq_vecMul, ← hBj, ← Matrix.mul_apply_eq_vecMul, ← Units.val_mul, mul_inv_cancel_left, hX]`. Establish `h2` using `(Mir k ((i + 1) + t)).inv_mem h1`. Simplify `h2` using `[mul_assoc]`. Set `v : Fin ((i + 1) + (t + 1)) → k` to `fun r => (p : GL (Fin ((i + 1) + t + 1 + 1)) k).val (Fin.castSucc r) (Fin.last _)`. Set `v' : Fin ((i + 1) + (t + 1)) → k` to `B.val.mulVec v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a : Fin ((i + 1) + (t + 1)) → k` to `Fin.append (fun x => v' (Fin.castAdd (t + 1) x)) (0 : Fin (t + 1) → k)`. Set `d : Fin (t + 1) → k` to `fun x => v' (Fin.natAdd (i + 1) x)`. Set `b : Fin ((i + 1) + (t + 1)) → k` to `Fin.append (0 : Fin (i + 1) → k) d`. Establish `hsum : a + b = v'`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Proceed by induction on `x using Fin.addCases with`. Consider the case `left x => simp [a, b]`. Consider the case `right x => simp [a, b, d]`. Set `ua : Mir k ((i + 1) + t + 1)` to `⟨unip k ((i + 1) + (t + 1)) (Multiplicative.ofAdd a), MirU_le_Mir k _ ⟨_, rfl⟩⟩`. Establish `hua : ua ∈ HPG k (i + 1) (t + 1)`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_HPG_of (I := i + 1) (T := t + 1) ua ?_ ?_` and prove the remaining obligations. Introduce `x y`. Use `unip_castSucc_castSucc _ a _ _ ?_` and prove the remaining obligations. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Introduce `x`. Use `(unip_apply_castSucc_last k _ _ _).trans ?_` and prove the remaining obligations. Use `show a (Fin.natAdd (i + 1) x) = 0`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[a]`. Establish `hlB : levi k _ B⁻¹ ∈ HPG k (i + 1) (t + 1)`. Establish `: levi k _ B ∈ HPG k (i + 1) (t + 1)`. Use `mem_HPG_of (I := i + 1) (T := t + 1) _ ?_ ?_` and prove the remaining obligations. Introduce `x y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(glEmb_castSucc_castSucc _ B _ _).trans ?_` and prove the remaining obligations. Conclude with `hB _ _ (by simp; omega) (by simp; omega)`. Introduce `x`. Conclude with `glEmb_castSucc_last _ B _`. Rewrite using `[map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(HPG k (i + 1) (t + 1)).inv_mem this`. Use `⟨hM, levi k _ B⁻¹ * ua, (HPG k (i + 1) (t + 1)).mul_mem hlB hua, d, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hp : (p : GL (Fin ((i + 1) + t + 1 + 1)) k) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v) * glEmb k _ g` using `eq_unip_glEmb p`. Establish `e1 : unip k ((i + 1) + t + 1) (Multiplicative.ofAdd a) * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd b) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_mul, ← ofAdd_add, hsum]`. Establish `e2 : glEmb k _ B * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v) = unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v') * glEmb k _ B` using `glEmb_mul_unip' k _ B _`. Establish `e3 : glEmb k _ X * glEmb k _ (X⁻¹ * B * g) = glEmb k _ B * glEmb k _ g`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Use `show (p : GL (Fin ((i + 1) + t + 1 + 1)) k) = glEmb k _ B⁻¹ * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd a) * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd b) * glEmb k _ X * glEmb k _ (X⁻¹ * B * g)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hp]`. Use `group`.
-
-Use `_ = (glEmb k _ B)⁻¹ * unip k ((i + 1) + t + 1) (Multiplicative.ofAdd v') * (glEmb k _ B * glEmb k _ g) := by`. Rewrite using `[e2]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by`. Rewrite using `[← e3, ← e1, map_inv]`.
-
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core' (i t : ℕ) (p : Mir k ((i + 1) + t + 1)) (X B : GL (Fin ((i + 1) + t + 1)) k) (j : Fin ((i + 1) + t + 1))
     (hX : X.val j = eLast k ((i + 1) + t))
@@ -217,23 +211,19 @@ theorem core' (i t : ℕ) (p : Mir k ((i + 1) + t + 1)) (X B : GL (Fin ((i + 1) 
 end Group
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t p₀ h₀`. Establish `hp' : ¬ _` using `fun h => h₀ ((Cl_iff i t p₀).2 h)`. Use `push_neg at hp'`. Take `⟨c, hcs, hc⟩` from `hp'`. Establish `hj : (piPerm i t (Fin.last ((i + 1) + t))).val < i + 1` using `by rw [piPerm_last_val]; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set j := piPerm i t (Fin.last ((i + 1) + t)) with hjdef`. Set `ρ : Mir k ((i + 1) + t + 1) → Fin ((i + 1) + t + 1) → k` to `fun p => (mirabolicProjection k _ p⁻¹ : GL (Fin ((i + 1) + t + 1)) k).val (Fin.last ((i + 1) + t))`. Establish `hG : Continuous fun p : Mir k ((i + 1) + t + 1) => mirabolicProjection k _ p` using `GlobalTheory.CompanionTheory.BZMirFun.continuous_mirProj k _`. Establish `hρ : Continuous ρ`. Establish `hv : Continuous fun p : Mir k ((i + 1) + t + 1) => ((mirabolicProjection k _ p⁻¹ : GL (Fin ((i + 1) + t + 1)) k) : Matrix (Fin ((i + 1) + t + 1)) (Fin ((i + 1) + t + 1)) k)` using `Units.continuous_val.comp (hG.comp continuous_inv)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `continuous_pi fun x => hv.matrix_elem _ _`. Set `V : Set (Mir k ((i + 1) + t + 1))` to `{p | ρ p c ≠ 0}`. Establish `hV : IsOpen V` using `isOpen_ne_fun ((continuous_apply c).comp hρ) continuous_const`. Set `W : Mir k ((i + 1) + t + 1) → GL (Fin ((i + 1) + t + 1)) k` to `fun p => (wGL k i t)⁻¹ * rowB (ρ p) c j * mirabolicProjection k _ p`. Set `μ : Mir k ((i + 1) + t + 1) → Mir k ((i + 1) + t)` to `fun p => if h : W p ∈ Mir k ((i + 1) + t) then ⟨W p, h⟩ else 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ p ∈ V, ∃ hM : W p ∈ Mir k ((i + 1) + t), ∃ h ∈ HPG k (i + 1) (t + 1), ∃ d : Fin (t + 1) → k, p = h * dEmb k i t d * levi k _ (wGL k i t) * sEmb k ((i + 1) + t) ⟨_, hM⟩`. Introduce `p hp`. Use `core' i t p (wGL k i t) (rowB (ρ p) c j) j (wGL_row i t) ?_ ?_` and prove the remaining obligations. Rewrite using `[rowB_val _ _ _ hp, rowM_row]`. Introduce `r x hr hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[rowB_val _ _ _ hp]`. Conclude with `rowM_zero (fun x : Fin ((i + 1) + t + 1) => x.val < i + 1) _ c j hcs hj r x hr hx`. Use `⟨V, hV.mem_nhds hc, μ, ?_, ?_⟩` and prove the remaining obligations. Establish `hB : ContinuousOn (fun p => rowB (ρ p) c j) V`. Use `continuousOn_GL _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuousOn_rowM ρ c j hρ).continuousOn.congr ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `rowB_val _ _ _ hp`. Establish `hW : ContinuousOn W V` using `(continuousOn_const.mul hB).mul hG.continuousOn`. Use `(Topology.IsEmbedding.subtypeVal.isInducing.continuousOn_iff).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hW.congr ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨hM, -⟩` from `key p hp`. Use `show ((μ p : Mir k ((i + 1) + t)) : GL _ k) = W p`. Simplify using `only [μ, dif_pos hM]`.
-
-Introduce `p hp`. Take `⟨hM, h, hh, d, e⟩` from `key p hp`. Use `⟨h, hh, d, ?_⟩` and prove the remaining obligations. Establish `hμ : μ p = ⟨W p, hM⟩` using `dif_pos hM`. Rewrite using `[hμ]`.
-
-Conclude with `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ)

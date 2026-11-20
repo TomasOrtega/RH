@@ -4,23 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsSign
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ c hc`. Take `⟨j, hj⟩` from `hc`. Use `haveI : CharZero Ω := j.charZero`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : NeZero (l : Ω) := ⟨by exact_mod_cast (Fact.out : Nat.Prime l).ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinv : ∀ (x : Ω) (m : ℕ), m ≠ 0 → x ^ m = 1 → c x = x⁻¹`. Introduce `x m hm hx`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, map_inv₀]`. Establish `hn : ‖j x‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hx, map_one]) hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hs : Complex.normSq (j x) = 1`. Rewrite using `[Complex.normSq_eq_norm_sq, hn]`. Evaluate the numerical expressions. Rewrite using `[Complex.inv_def, hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set g : Ω ≃+* Ω := MulSemiringAction.toRingAut (Formalism.ConjugateSelfDual.G F Ω) Ω c with hg`. Establish `hcyc : cyclotomicCharacter Ω l g = -1` using `by ext1`. Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Rewrite using `[cyclotomicCharacter.toZModPow]`. Establish `hk : NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : Nat.Prime l).ne_zero⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← modularCyclotomicCharacter.unique Ω _ g (c := -1)]`. Simplify using the standard rewrite rules. Introduce `t ht`. Establish `ht' : (t : Ω) ^ (l ^ n) = 1`. Rewrite `ht` using `[mem_rootsOfUnity]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `using congrArg Units.val ht`. Establish `hdvd : l ^ n ∣ (-1 : ZMod (l ^ n)).val + 1`. Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨m, hm⟩` from `hdvd`. Establish `hne : (t : Ω) ≠ 0` using `t.ne_zero`. Establish `key : (t : Ω) ^ (-1 : ZMod (l ^ n)).val = (t : Ω)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ, hm, pow_mul, ht', one_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[key]`. Conclude with `hinv _ (l ^ n) (NeZero.ne _) ht'`. Use `show Units.map _ (ReciprocityTheory.Gal.cycZ F Ω l c) = -1`. Establish `: ReciprocityTheory.Gal.cycZ F Ω l c = -1` using `hcyc`. Rewrite using `[this]`.
-
-Use `ext`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cyclotomic_char_conj_invariant :
     UpperTheory.V.Af.Sol.CycConj := by

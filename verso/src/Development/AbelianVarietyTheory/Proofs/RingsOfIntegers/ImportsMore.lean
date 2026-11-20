@@ -20,7 +20,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.PelUnifPowerDvr
 
 /- English proof (translation)
-Introduce `hL hT V _ _ _ E _ _ _ H t P j`. Take `⟨A', pA, -⟩` from `GlobalTheory.exists_powPolAV _ P.A j`. Conclude with `GlobalTheory.exists_pelUnif_pow hL.globalFns V _ E H t P j (GlobalTheory.UnifPower.main hL (GlobalTheory.UnitBallFree.main hL.globalFns hT) V) (GlobalTheory.PowDegData.main hL.globalFns V _ P.D j) ⟨A', ⟨pA⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : Laws → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (j : ℕ), ∃ (t' : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P' : Geo.Tor.PELUnif (maximalIdeal V) t') (pG : IsPowGrp t'.G t.G j) (pD : IsPowDeg P'.D.toPre P.D.toPre j) (pA : IsPowPolAV P'.A P.A j), Nonempty (UnifPowOf3 pD pA pG P'.U P.U) ∧ (∀ a i, t'.act.act a ≫ pG.pr i = pG.pr i ≫ t.act.act a) ∧ ∀ (a : NumberField.RingOfIntegers E) (x : P'.D.toPre.X), pD.xe (a • x) = a • pD.xe x := by
   intro hL hT V _ _ _ E _ _ _ H t P j

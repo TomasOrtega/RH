@@ -11,11 +11,11 @@ section gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Break down `hdef with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `hw : (Matrix.of fun i j => B.hT (ι (A.frame i)) (ι (A.frame j))) = A.gram`. Use extensionality with `i j`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hι _ _`. Establish `hsA` using `hA τ`. Rewrite `hsA` using `[h, ← hw]`. Establish `key` using `(sig_family B τ hτ _ hsA (hB τ)).2`. Establish `hs` using `sig_sum B hB τ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only at key`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem HSpace.pos_of_isomEmb (A B : HSpace E) (ι : A.V →ₗ[E] B.V) (hι : HSpace.IsIsomEmb A B ι)
     (hA : A.SigOK) (hB : B.SigOK) (τ : E →+* ℂ) (hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a))
@@ -34,27 +34,23 @@ theorem HSpace.pos_of_isomEmb (A B : HSpace E) (ι : A.V →ₗ[E] B.V) (hι : H
     omega
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Establish `hJ : Formalism.UG.Jpq S.rank 0 = 1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Use `set Pm : Matrix (Fin S.rank ⊕ Fin 0) (Fin S.rank ⊕ Fin 0) ℂ := P.val with hPm`. Use `set Qm : Matrix (Fin S.rank ⊕ Fin 0) (Fin S.rank ⊕ Fin 0) ℂ := (P⁻¹).val with hQm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hPQ : Pm * Qm = 1` using `by rw [hPm, hQm, ← Units.val_mul, mul_inv_cancel]; rfl`. Establish `hcT : Formalism.UG.cT (starRingEnd ℂ) Pm = Pm.conjTranspose`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Rewrite `hP` using `[hcT, hJ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set G : Matrix (Fin S.rank) (Fin S.rank) ℂ := S.gram.map σ with hG`. Establish `hGr : G.reindex e e = Qm.conjTranspose * Qm`. Establish `h1 : Qm.conjTranspose * (Pm.conjTranspose * G.reindex e e * Pm) * Qm = Qm.conjTranspose * Qm`. Rewrite using `[hP, Matrix.mul_one]`. Establish `h2 : Qm.conjTranspose * Pm.conjTranspose = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Rewrite using `[← h1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, hPQ, Matrix.one_mul, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `Y : Matrix (Fin S.rank) (Fin S.rank) ℂ` to `Qm.submatrix e e`. Establish `hGY : G = Y.conjTranspose * Y`. Establish `: G = (G.reindex e e).submatrix e e` using `by ext i j; simp`. Rewrite using `[this, hGr]`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Y, Matrix.submatrix_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Conclude with `(Equiv.sum_comp e _).symm`. Use `⟨Y, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `: Y.det = Qm.det` using `Matrix.det_submatrix_equiv_self e Qm`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp ⟨P⁻¹, rfl⟩`. Use `set z : Fin S.rank → ℂ := fun j => σ (S.frame.repr y j) with hz`. Establish `h1 : ∑ i, ‖(Y.mulVec z) i‖ ^ 2 = (star (Y.mulVec z) ⬝ᵥ Y.mulVec z).re`. Simplify using `[dotProduct, Complex.mul_re, Complex.sq_norm, Complex.normSq_apply]`. Establish `h2 : star (Y.mulVec z) ⬝ᵥ Y.mulVec z = star z ⬝ᵥ G.mulVec z`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hGY, Matrix.star_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star z)]`. Establish `h3 : σ (S.hT y y) = star z ⬝ᵥ G.mulVec z`. Use `LinearMap.sum_repr_mul_repr_mulₛₗ S.frame S.frame (B := S.hT) y y` as an intermediate fact. Rewrite using `[← this, Finsupp.sum_fintype _ _ (by intro i; simp)]`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (by intro j; simp), map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, map_mul, RingHom.id_apply, hG, hz, Matrix.map_apply, HSpace.gram, Pi.star_apply]`. Rewrite using `[starRingEnd_apply, hσ]`.
-
-Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HSpace.frame_of_pos (S : HSpace E) (σ : E →+* ℂ)
     (hσ : ∀ a, σ (star a) = (starRingEnd ℂ) (σ a)) (h : Formalism.UG.HasSignature (S.gram.map σ) S.rank 0) :
@@ -114,19 +110,19 @@ theorem HSpace.frame_of_pos (S : HSpace E) (σ : E →+* ℂ)
     rw [h1, h2, h3]
 
 /- English proof (translation)
-Establish `hsig` using `hS τ`. Rewrite `hsig` using `[h]`. Take `⟨Y, hY, hsum⟩` from `S.frame_of_pos τ hτ hsig`. Establish `hz : (fun j => τ (S.frame.repr x j)) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Apply `S.frame.repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Use `congrFun h0 j` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hYz : Y.mulVec (fun j => τ (S.frame.repr x j)) ≠ 0`. Introduce `h0`. Apply `hz` to reduce the goal to its premises. Establish `hinj : Function.Injective Y.mulVec` using `Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det Y).mpr hY)`. Conclude with `hinj (by rw [h0, Matrix.mulVec_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hYz`. Establish `hpos : 0 < (τ (S.hT x x)).re`. Rewrite using `[← hsum x]`. Use `Finset.sum_pos' (fun j _ => by positivity) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `: 0 < ‖(Y.mulVec fun j => τ (S.frame.repr x j)) i‖` using `norm_pos_iff.mpr hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hre : τ (S.hT x x) = starRingEnd ℂ (τ (S.hT x x))`. Rewrite using `[← hτ]`. Use `congr 1`. Conclude with `((S.herm.eq x x)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(τ (S.hT x x)).re, hpos, ?_⟩` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `congrArg Complex.im hre` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem HSpace.form_pos (S : HSpace E) (hS : S.SigOK) (τ : E →+* ℂ)
     (hτ : ∀ a, τ (star a) = (starRingEnd ℂ) (τ a)) (h : S.sig τ = (S.rank, 0)) (x : S.V) (hx : x ≠ 0) :
@@ -173,9 +169,9 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   [Algebra F E]
 
 /- English proof (translation)
-Introduce `τ`. Establish `hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)` using `S.cm.cmUnram.2.1 τ`. Use `HSpace.pos_of_isomEmb S.X' (S.Y R.m) S.eYm.toLinearMap S.eYm_isom S.X'_sig (S.Y_sig R.m) τ hτ ((factXmDef R F S).1 τ) ?_` and prove the remaining obligations. Rewrite using `[hYm τ, S.X'_rank]`. Simplify using `only [sigYD, Nat.sub_self, Nat.zero_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Ranks.rankX' Ranks.r`. Use `R.k_ge` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Spaces.X'_posDef (S : Spaces R F E) (hYm : ∀ τ : E →+* ℂ, (S.Y R.m).sig τ = sigYD R R.m) :
     S.X'.IsPosDef := by
@@ -190,11 +186,11 @@ theorem Spaces.X'_posDef (S : Spaces R F E) (hYm : ∀ τ : E →+* ℂ, (S.Y R.
   omega
 
 /- English proof (translation)
-Introduce `τ`. Establish `hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)` using `S.cm.cmUnram.2.1 τ`. Break down `Nat.lt_or_ge j R.m with hjm | hjm` into its components or cases. Use `HSpace.pos_of_isomEmb (S.X j) (S.Y j) (S.iXY j) (S.iXY_isom j hjm) (S.X_sig j) (S.Y_sig j) τ hτ (S.X_def j hj τ) ?_` and prove the remaining obligations. Rewrite using `[hY j hj τ, S.X_rank j hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sigYD, Ranks.N]`. Establish `h1` using `R.m_add_three_le_k`. Establish `h2 : (R.m - j) / 2 < R.k` using `by omega`. Conclude with `lt_of_lt_of_le h2 (Nat.le_add_right _ _)`. Establish `hjm' : j = R.m` using `le_antisymm hj hjm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hjm'` using the available equality. Establish `hX'` using `Spaces.X'_posDef S (hY R.m le_rfl) τ`. Rewrite `hX'` using `[S.X'_rank]`. Rewrite using `[S.X_rank R.m le_rfl]`. Conclude with `((factXmDef R F S).2.2 τ).2 hX'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Spaces.X_posDef (S : Spaces R F E)
     (hY : ∀ j, j ≤ R.m → ∀ τ : E →+* ℂ, (S.Y j).sig τ = sigYD R j) (j : ℕ) (hj : j ≤ R.m) :
@@ -217,7 +213,7 @@ theorem Spaces.X_posDef (S : Spaces R F E)
     exact ((factXmDef R F S).2.2 τ).2 hX'
 
 /- English proof (translation)
-The claim follows from `HSpace.form_pos (S.X j) (S.X_sig j) τ (S.cm.cmUnram.2.1 τ) (S.X_posDef hY j hj τ) x hx`.
+A detailed English derivation is pending.
 -/
 theorem Spaces.X_form_pos (S : Spaces R F E)
     (hY : ∀ j, j ≤ R.m → ∀ τ : E →+* ℂ, (S.Y j).sig τ = sigYD R j) (j : ℕ) (hj : j ≤ R.m)
@@ -231,19 +227,19 @@ namespace D7
 variable (D : D7)
 
 /- English proof (translation)
-The claim follows from `letI := D.host.cmStar; D.sp.X_posDef D.Y_sigval j hj`.
+A detailed English derivation is pending.
 -/
 theorem X_posDef (j : ℕ) (hj : j ≤ D.R.m) : letI := D.host.cmStar; (D.sp.X j).IsPosDef :=
   letI := D.host.cmStar; D.sp.X_posDef D.Y_sigval j hj
 
 /- English proof (translation)
-The claim follows from `letI := D.host.cmStar; D.sp.X'_posDef (D.Y_sigval D.R.m le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem X'_posDef : letI := D.host.cmStar; D.sp.X'.IsPosDef :=
   letI := D.host.cmStar; D.sp.X'_posDef (D.Y_sigval D.R.m le_rfl)
 
 /- English proof (translation)
-The claim follows from `letI := D.host.cmStar; fun x hx => D.sp.X_form_pos D.Y_sigval j hj τ x hx`.
+A detailed English derivation is pending.
 -/
 theorem X_form_pos (j : ℕ) (hj : j ≤ D.R.m) (τ : D.host.E →+* ℂ) :
     letI := D.host.cmStar; ∀ x : (D.sp.X j).V, x ≠ 0 → ∃ c : ℝ, 0 < c ∧ τ ((D.sp.X j).hT x x) = (c : ℂ) :=

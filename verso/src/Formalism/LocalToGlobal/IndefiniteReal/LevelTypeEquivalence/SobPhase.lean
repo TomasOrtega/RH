@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨⟨θ, hθ⟩, hall⟩` from `hψ.2`. Establish `hf` using `hall θ hθ`. Set `Λ : Ainf D.host.F →+ ℂ` to `{ toFun := fun y => 2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ) * ∑ ρ, θ ρ (y ⊗ₜ[D.host.F] (1 : D.host.E)) map_zero' := by simp map_add' := fun y y' => by simp only [TensorProduct.add_tmul, map_add, Finset.sum_add_distrib]; ring }`. Use `⟨Λ, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `show Continuous fun y => 2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ) * ∑ ρ, θ ρ (y ⊗ₜ[D.host.F] (1 : D.host.E))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `continuous_const.mul (continuous_finset_sum _ fun ρ _ => (hθ ρ).2)`. Establish `hz' : z = pairA D.host.F z.1 0` using `Prod.ext rfl hz`. Rewrite using `[hz']`. Conclude with `hf z.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_real (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) :
     ∃ Λ : Ainf D.host.F →+ ℂ, Continuous Λ ∧ ∀ z : AF D.host.F, z.2 = 0 → ψ z = Complex.exp (Λ z.1) := by
@@ -34,13 +34,13 @@ theorem psi_real (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) :
     exact hf z.1
 
 /- English proof (translation)
-Establish `hp : ContDiff ℝ ∞ (fun v => Complex.exp (ℓ v))` using `(Complex.contDiff_exp (𝕜 := ℝ)).comp ℓ.contDiff`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro u`. Simplify using `[norm_iteratedFDeriv_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ i ih`. Introduce `u`. Rewrite using `[← norm_iteratedFDeriv_fderiv]`. Set `T : ℂ →L[ℝ] (V →L[ℝ] ℂ)` to `ContinuousLinearMap.smulRight (ContinuousLinearMap.id ℝ ℂ) ℓ`. Establish `hT : ∀ a : ℂ, T a = a • ℓ` using `fun a => rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfd : fderiv ℝ (fun v => Complex.exp (ℓ v)) = T ∘ (fun v => Complex.exp (ℓ v))`. Use function extensionality and compare the values at `v`. Rewrite using `[Function.comp_apply, hT, ((ℓ.hasFDerivAt (x := v)).cexp).fderiv]`. Rewrite using `[hfd]`. Use `(T.norm_iteratedFDeriv_comp_left hp.contDiffAt (natCast_lt_inf' i).le).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTn : ‖T‖ ≤ ‖ℓ‖`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun a => ?_` and prove the remaining obligations. Rewrite using `[hT, norm_smul, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_iter_exp {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (ℓ : V →L[ℝ] ℂ) :
     ∀ (i : ℕ) (u : V), ‖iteratedFDeriv ℝ i (fun v => Complex.exp (ℓ v)) u‖ ≤ ‖Complex.exp (ℓ u)‖ * ‖ℓ‖ ^ i := by

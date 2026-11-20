@@ -15,11 +15,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB Filter Topology Metric
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Establish `e : ∀ B : HermLine J, Real.log (B.h fun p => c p.1 * z' p) = ∑ k, (B.a k : ℝ) * Real.log ‖c k‖ + Real.log (B.h z')` using `fun B => by`. Rewrite using `[B.smul c z' hc, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))) (B.pos z' hz).ne', Real.log_prod fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))]`. Simplify using `only [Real.log_zpow]`. Simplify using `only [e, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: ∑ k, (((fsHerm J (-∑ k ∈ S, (A k).a)).a k : ℤ) : ℝ) * Real.log ‖c k‖ = -∑ j ∈ S, ∑ k, ((A j).a k : ℝ) * Real.log ‖c k‖`. Establish `e2 : ∀ k, (fsHerm J (-∑ j ∈ S, (A j).a)).a k = -∑ j ∈ S, (A j).a k` using `fun k => by show (-∑ j ∈ S, (A j).a : K → ℤ) k = _`. Simplify using `[Finset.sum_apply]`. Simplify using `only [e2]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_mul]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_orbit {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {σ : Type} (S : Finset σ)
     (A : σ → HermLine J) {z z' : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0) (h : SameOrbit z z') :
@@ -44,9 +44,9 @@ theorem weight_orbit {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J 
   ring
 
 /- English proof (translation)
-Establish `h1 : Fintype.card (CMType H) = Module.finrank ℚ E / 2`. Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `GlobalTheory.PeriodCoord.card_cmType H`. Establish `h2 : 2 ≤ Module.finrank ℚ E`. Use `IsTotallyComplex.finrank E` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Establish `h3 : 2 * 1 ≤ N * (N - 1)` using `Nat.mul_le_mul hN (by omega)`. Unfold `Top.dimFl`. Conclude with `Nat.mul_pos (by omega) (by omega)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_dimFl {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {N : ℕ} (hN : 2 ≤ N) :
     1 ≤ Top.dimFl (CMType H) N := by
@@ -61,39 +61,33 @@ theorem one_le_dimFl {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Hos
   exact Nat.mul_pos (by omega) (by omega)
 
 /- English proof (translation)
-Establish `harith` using `GlobalTheory.T.isArithVar_of_snc_model G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y _ G.bd (one_le_dimFl H (by omega)) G.𝔐.tie G.snc`. Take `⟨y1, y2, y3⟩` from `GlobalTheory.T.boundary_points_closed G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y (abLocus G.𝔐.t.G) G.bd G.𝔐.tie G.bd_iff`. Take `⟨R, L, s, nb, m, W, hL, hs, snc, hn, hbd, hrc⟩` from `GlobalTheory.T.lowerBound_height_on_boundary G.K G.J G.Ω G.y _ G.bd G.snc harith y1 y2 y3`. Establish `hmem : ∀ x, R.lift x x ∈ mcPts (mCoordIdeal G.y)` using `fun x => R.mem x x (R.mem_U x)`. Establish `horb : ∀ z ∈ mcPts (mCoordIdeal G.y), ∀ z', SameOrbit z' z → z ∈ mcPts G.bd → z' ∈ mcPts G.bd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `z hz z' ⟨c, hc, rfl⟩ h`. Conclude with `(y2 z ⟨hz, h⟩ c hc).2`. Establish `hBd : ∀ x₀, ∀ x ∈ R.U x₀, R.lift x₀ x ∈ mcPts G.bd ↔ x ∈ bdry s` using `fun x₀ x hx => by`. Rewrite using `[hbd]`. Conclude with `⟨horb _ (R.mem _ _ hx) _ (R.compat _ _ _ ⟨R.mem_U _, hx⟩), horb _ (hmem x) _ (R.compat _ _ _ ⟨hx, R.mem_U _⟩)⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hcb1 : ∀ x x', SameOrbit (R.lift x' x') (Cj.cj (R.lift x x)) → x ∈ bdry s → x' ∈ bdry s` using `fun x x' h hx => by`. Rewrite `hx`, the goal using `[hbd]`. Use `y3 _ ⟨hmem x, hx⟩` as an intermediate fact. Conclude with `horb _ this.1 _ h this.2`. Establish `hcb : ∀ x x', SameOrbit (R.lift x' x') (Cj.cj (R.lift x x)) → (x' ∈ bdry s ↔ x ∈ bdry s) ∧ rW L s x' = rW L s x` using `fun x x' h => ⟨⟨hcb1 x' x (by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Cj.sameOrbit_symm (Cj.sameOrbit_cj h)` as an intermediate fact. Rewrite using `[Cj.cj_cj] at this), hcb1 x x' h⟩, hrc x x' h⟩` and apply the resulting hypothesis. Establish `hemb : Cmp.IsEmbedded R.A (mCoordIdeal G.y) R.U R.lift` using `⟨R.isOpen_U, R.mem_U, R.holo, R.mem, R.compat, fun z hz => R.surj z hz (not_mem_top _), fun x x' h => R.inj x x' (not_mem_top _) h, fun x p hp j hj => R.immersion x (not_mem_top _) p hp j hj⟩`. Establish `hpos : IsPosPot R.A (potOf R (fsHerm G.J (Pi.single G.k₀ 1)))` using `isPosPot_block R G.k₀ fun x p hp j hj => (GlobalTheory.T.holomorphic_atlas_coord_compat G.𝔐.X G.Ω G.𝔐.ξ G.K G.J G.y G.k₀ G.𝔐.tie G.embeds _ R.X R.A R.U R.lift hemb (G.J G.k₀) (Equiv.refl _) x p hp j hj).2`. Set `d : RootIx D → G.K → ℤ` to `fun r => -∑ k ∈ Finset.Iic r.2, (sing (r.1, k)).a`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `wt : RootIx D → ((Σ k, G.J k) → ℂ) → ℝ` to `fun r z => -∑ k ∈ Finset.Iic r.2, Real.log ((sing (r.1, k)).h z) - Real.log ((fsHerm G.J (d r)).h z)`. Establish `hwt : ∀ r z z', (∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0) → SameOrbit z z' → wt r z = wt r z'` using `fun r z z' hz h => weight_orbit (Finset.Iic r.2) (fun k => sing (r.1, k)) hz h`. Set `u : RootIx D → R.X → ℝ` to `fun r x => wt r (R.lift x x)`. Establish `hu : ∀ r x₀, ∀ x ∈ R.U x₀, u r x = wt r (R.lift x₀ x)` using `fun r x₀ x hx => hwt r _ _ (R.mem _ _ hx).1 (R.compat _ _ _ ⟨R.mem_U _, hx⟩)`. Establish `hball : ∀ᶠ t in 𝓝 (0 : Fin (Top.dimFl (CMType H) (D.p + D.q)) → ℂ), t ∈ ball 0 1` using `isOpen_ball.mem_nhds (mem_ball_self one_pos)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsome : ∀ r : RootIx D, ∃ ph phT line C₅ C t₀, IsMember R L s (d r) (u r) ((r.2 : ℕ) + 1 = D.p + D.q) ph phT line C₅ C t₀`. Introduce `r`. Use `exists_member hI.regGlobal R L s m W hL hs snc hn hcb _ _ _ (fun x x' h => ?_) (fun x => ?_) fun x hx => ?_` and prove the remaining obligations. Use `show wt r _ = wt r _`. Rewrite using `[hwt r _ _ (Cj.cj_nonzero (hmem x).1) h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [wt]`. Rewrite using `[Cj.fs_conj (d r) (R.lift x x)]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun k _ => congrArg Real.log (hconj _ _)`. Take `⟨ψ, a, M, h⟩` from `exists_nchart R.A L s hL hs snc x (R.U x) (R.isOpen_U x) (R.mem_U x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨ψ, a, M, h, ?_⟩` and prove the remaining obligations. Establish `t1 : Tame a _` using `(hloc (h.snc R _ (hBd x)) r.1 r.2).1`. Establish `t2 : Tame a fun t => Real.log ((fsHerm G.J (d r)).h (R.lift x (ψ.symm t)))` using `tame_smooth a fun t ht => by`. Take `⟨h1, h2, -⟩` from `h.2.2.2.2 t ht`. Establish `hz` using `(R.mem _ _ h2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hopen : {z : (Σ k, G.J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} ∈ 𝓝 (R.lift x (ψ.symm t))`. Use `Filter.eventually_all.mpr fun k => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz k`. Conclude with `Filter.mem_of_superset (((continuous_apply _).isOpen_preimage _ isOpen_ne).mem_nhds hi) fun y hy => ⟨i, hy⟩`. Establish `h3` using `((StepW.fsHerm_isSmoothHerm G.K G.J (d r)).contDiffAt hopen).log ((fsHerm G.J (d r)).pos _ hz).ne'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h3.comp t ((analyticAt_lift R h.1 x h1 h2).restrictScalars (𝕜 := ℝ)).contDiffAt`. Use `(t1.add (t2.const_mul (-1))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hball] with t ht _`. Rewrite using `[hu r x _ (h.2.2.2.2 t ht).2.1]`. Use `show _ - _ = -∑ k ∈ Finset.Iic r.2, Real.log ((sing (r.1, k)).h (R.lift x (ψ.symm t))) + _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨ψ, a, M, h⟩` from `exists_nchart R.A L s hL hs snc x (R.U x) (R.isOpen_U x) (R.mem_U x)`. Take `⟨p1, p2⟩` from `(hloc (h.snc R _ (hBd x)) r.1 r.2).2 (h.zero_of_not_mem hx)`. Use `⟨ψ, h.1, h.2.1, h.2.2.1, p1.congr ?_, fun hc => (p2 hc).congr ?_⟩` and prove the remaining obligations. Use `filter_upwards [hball] with t ht`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hu r x _ (h.2.2.2.2 t ht).2.1]`. Use `show _ + (_ - _) = -∑ k ∈ Finset.Iic r.2, Real.log ((sing (r.1, k)).h (R.lift x (ψ.symm t)))`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [hball] with t ht`. Rewrite using `[hu r x _ (h.2.2.2.2 t ht).2.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 
-Use `show -1 * (_ + (-∑ k ∈ Finset.Iic r.2, Real.log ((sing (r.1, k)).h (R.lift x (ψ.symm t))) - _)) = ∑ k ∈ Finset.Iic r.2, Real.log ((sing (r.1, k)).h (R.lift x (ψ.symm t)))`. Expand and normalize the polynomial expressions, which then agree. Use `choose ph phT line hm using hsome`. Take `⟨C₅, C, T, hM⟩` from `common_members (σ := Option (RootIx D)) (R := R) hL hs snc hn (d := fun o => o.elim (Pi.single G.k₀ 1) d) (u := fun o => o.elim 0 u) (cen := fun o => o.elim False fun r => (r.2 : ℕ) + 1 = D.p + D.q) (ph := fun o => o.elim 0 ph) (phT := fun o => o.elim (fun _ => 0) phT) (line := f …`. Introduce and unpack `(_ | r)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `member_zero R hL hs snc hn _ hpos`. Conclude with `hm r)`. Take `⟨hA, hfs, hΘ⟩` from `fs_pos_potential G.K G.J _ _ R`. Set `S : AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))` to `{ X := R.X A := R.A Θ := potOf R (fsHerm G.J fun _ => 1) L := L s := s nb := nb m := m W := W potΘ := hA _ hfs posΘ := hΘ potL := hL sec := hs snc := snc norm_le := hn th := fun o => potOf R (fsHerm G.J (o.elim (Pi.single G.k₀ 1) d)) ph := fun o => o.elim 0 ph phT := fun o => o.e …`. Set `Re : Realis S (mCoordIdeal G.y)` to `{ arith := harith J := ⊤ R := R π := id holo := ⟨continuous_id, fun jj k => R.A.holo jj k⟩ deg := 1 deg_pos := one_pos br := ∅ degree := FA.degree_id_self R.A ref := fun o => fsHerm G.J (o.elim (Pi.single G.k₀ 1) d) ref_smooth := fun o => StepW.fsHerm_isSmoothHerm G.K G.J _ ref_p …`.
-
-Establish `hnd : (Pi.single G.k₀ 1 : G.K → ℤ) G.k₀ = 1 ∧ ∀ k, k ≠ G.k₀ → (Pi.single G.k₀ 1 : G.K → ℤ) k = 0` using `⟨by simp, fun k hk => by simp [hk]⟩`. Use `⟨{ sing := sing, sing_deg := hdeg, hodge := hhodge, Sys := S, Re := Re, J_top := rfl, deg_one := rfl π_bij := Function.bijective_id, embedded := hemb, interior := fun x z hz => ?_ fund_deg := fun τ i => ?_, fund_sing := fun τ i x hx => ?_ conj := fun o t => ((hM o).2.2.2.2.1 t).2 …` and prove the remaining obligations. Establish `h1` using `G.bd_iff z _ hz show _ ↔ ¬ x ∈ bdry s`. Rewrite using `[hbd]`. The claim follows by propositional logic.
-
-Use `show d (τ, i) = _`. Simplify using `only [d, hdeg]`. Establish `h1 : ph (τ, i) x = u (τ, i) x` using `(hM (some (τ, i))).2.2.2.1 x hx show Real.log ((fsHerm G.J (d (τ, i))).h (R.lift x x)) + ph (τ, i) x = -∑ k ∈ Finset.Iic i, Real.log ((sing (τ, k)).h (R.lift x x))`. Rewrite using `[h1]`. Simplify using `only [u, wt]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem of_local (hI : PB.Inputs) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)}

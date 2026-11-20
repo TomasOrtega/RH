@@ -3,7 +3,7 @@ import Mathlib
 namespace Bl.FirstBlockLemmaC
 
 /- English proof (translation)
-Introduce `p _ m hm ζ h`. Establish `h1 : ‖ζ‖ ^ m = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm).mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {p : Nat} [inst : Fact (Nat.Prime p)] {m : Nat},

@@ -6,7 +6,7 @@ namespace Formalism.L2.SG.Pf.Cnt
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `glueExists_of_last last_unit_holds`.
+A detailed English derivation is pending.
 -/
 theorem glueExists_holds : GlueExists :=
   glueExists_of_last last_unit_holds

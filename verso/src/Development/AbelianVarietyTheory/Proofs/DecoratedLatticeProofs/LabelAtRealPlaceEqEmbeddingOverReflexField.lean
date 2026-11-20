@@ -11,7 +11,7 @@ open GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLe
 namespace GlobalTheory.LabAtRealPlace
 
 /- English proof (translation)
-Establish `h1 : D.host.galE (D.host.sigmaOf ((D.eTau τ).1 : D.R.GG)) ∈ D.R.Psi`. Rewrite using `[show D.host.galE (D.host.sigmaOf ((D.eTau τ).1 : D.R.GG)) = (D.eTau τ).1 from D.host.gal.apply_symm_apply _]`. Conclude with `(D.eTau τ).2`. Conclude with `(D.host.galE_mem_Psi_iff _).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaOf_sqrt (D : D7) (τ : D.what₂.Tau) :
     D.host.sigmaOf ((D.eTau τ).1 : D.R.GG) D.host.sqrtMinusD = D.host.sqrtMinusD := by
@@ -22,9 +22,9 @@ theorem sigmaOf_sqrt (D : D7) (τ : D.what₂.Tau) :
   exact (D.host.galE_mem_Psi_iff _).1 h1
 
 /- English proof (translation)
-Establish `hm : D.host.sqrtMinusD ∈ D.host.K` using `IntermediateField.mem_adjoin_simple_self ℚ _`. Establish `e1 : Formalism.IndefR.Links.labE σ τ D.host.sqrtMinusD = σ (D.embE D.host.sqrtMinusD)` using `by show σ (D.embE (D.host.sigmaOf ((D.eTau τ).1 : D.R.GG) D.host.sqrtMinusD)) = _`. Rewrite using `[sigmaOf_sqrt]`. Establish `e2 : Formalism.IndefR.Conj.labE D.what₂.embLL ρ D.host.sqrtMinusD = D.what₂.embLL (D.embE D.host.sqrtMinusD)` using `by show D.what₂.embLL (D.embE (D.host.sigmaOf ((D.eTau ρ).1 : D.R.GG) D.host.sqrtMinusD)) = _`. Rewrite using `[sigmaOf_sqrt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, h.2 _ hm, ← e2, Formalism.IndefR.Conj.labE_base]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem labE_sqrt (D : D7) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) (h : IsEmbOverK D σ s) (τ ρ : D.what₂.Tau) :
     Formalism.IndefR.Links.labE σ τ D.host.sqrtMinusD = tauE D ρ D.host.sqrtMinusD := by
@@ -38,13 +38,13 @@ theorem labE_sqrt (D : D7) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) (h 
   rw [e1, h.2 _ hm, ← e2, Formalism.IndefR.Conj.labE_base]
 
 /- English proof (translation)
-Establish `hex : ∃ τ, Formalism.IndefR.Links.labE σ τ = tauE D ρ ∨ Formalism.IndefR.Links.labE σ τ = (starRingEnd ℂ).comp (tauE D ρ)`. Take `⟨B, hB⟩` from `Formalism.IndefR.Conj.labExists σ`. Establish `h'` using `hB (B.perm.symm ρ)`. Rewrite `h'` using `[Formalism.IndefR.Conj.ArchLab.emb, Equiv.apply_symm_apply]`. Use `⟨B.perm.symm ρ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs at h'`. Use `exacts [Or.inl h', Or.inr h']`. Rewrite using `[Formalism.IndefR.Links.lab, dif_pos hex]`. Use `hex.choose_spec.resolve_right fun h' => ?_` and prove the remaining obligations. Establish `h2` using `labE_sqrt D σ s h hex.choose ρ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[h', RingHom.comp_apply]`. Take `⟨x, hx⟩` from `Complex.conj_eq_iff_real.1 h2`. Establish `h3 : (tauE D ρ D.host.sqrtMinusD) ^ 2 = -(D.host.d : ℂ)`. Rewrite using `[← map_pow, Formalism.BasicNotions.Host.sqrtMinusD_sq D.host, map_neg, map_natCast]`. Rewrite `h3` using `[hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : x ^ 2 = -(D.host.d : ℝ)` using `by exact_mod_cast h3`. Establish `h5 : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`. Use polynomial arithmetic with `[sq_nonneg x]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem labE_lab (D : D7) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) (h : IsEmbOverK D σ s) (ρ : D.what₂.Tau) :
     Formalism.IndefR.Links.labE σ (Formalism.IndefR.Links.lab σ ρ) = tauE D ρ := by
@@ -69,7 +69,7 @@ theorem labE_lab (D : D7) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ) (h :
   nlinarith [sq_nonneg x]
 
 /- English proof (translation)
-Introduce `D σ s h ρ` and use `labE_lab D σ s h ρ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ), IsEmbOverK D σ s → ∀ ρ, Formalism.IndefR.Links.labE σ (Formalism.IndefR.Links.lab σ ρ) = tauE D ρ := fun D σ s h ρ => labE_lab D σ s h ρ
 

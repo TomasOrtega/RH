@@ -11,9 +11,7 @@ open Formalism.MainNotions.S (AutInst uMat)
 open Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `hi I` to reduce the goal to its premises. Rewrite using `[theta_apply, theta_apply]`. Use `Prod.ext (funext fun v => ?_) ?_` and prove the remaining obligations. Conclude with `congrArg (fun M => M i j) (hv v)`.
-
-Conclude with `congrArg (fun M => M i j) hf`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem matEq_of_inj (hi : ThetaInj) (I : AutInst)
     {A B : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E)}

@@ -12,31 +12,27 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ρ : Representation ℂ (Levi k fun a => Fin (d a)) W}
 
 /- English proof (translation)
-Establish `hcont : Continuous fun g : GL (Fin N) k => a * g * a⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Establish `hmem1 : ∀ x : GL (Fin N) k, x ∈ L₀.map (MulAut.conj a).toMonoidHom ↔ a⁻¹ * x * a ∈ L₀`. Introduce `x`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy' : a⁻¹ * ((MulAut.conj a).toMonoidHom y) * a = y`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`. Rewrite using `[hy']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy`. Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hback : ∀ x : GL (Fin N) k, x = a * (a⁻¹ * x * a) * a⁻¹` using `fun x => by group`. Use `⟨?_, PositivityTheory.RgUd.CellA.translate_mem_openFns d hd ρ a l hl haB hF, ?_⟩` and prove the remaining obligations. Use `(hV L₀ hL₀U hc hO).2 ⟨F, hF⟩ v ?_ hF0` and prove the remaining obligations. Introduce `u hb hu`. Rewrite using `[hθ u hb hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hF1 u hu`. Establish `hL₁U : L₀.map (MulAut.conj a).toMonoidHom ≤ unipU k d hd`. Introduce `x hx`. Rewrite `hx` using `[hmem1]`. Rewrite using `[hback x]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `haU _ (hL₀U hx)`. Establish `hL₁c : IsCompact ((L₀.map (MulAut.conj a).toMonoidHom : Subgroup (GL (Fin N) k)) : Set (GL (Fin N) k))`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hc.image hcont`. Establish `hL₁O : ∃ O : Set (GL (Fin N) k), IsOpen O ∧ O ∩ (unipU k d hd : Set (GL (Fin N) k)) = (L₀.map (MulAut.conj a).toMonoidHom : Subgroup (GL (Fin N) k))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨O, hOo, hOeq⟩` from `hO`. Establish `hc2 : Continuous fun g : GL (Fin N) k => a⁻¹ * g * a` using `(continuous_const.mul continuous_id).mul continuous_const`. Use `⟨(fun g : GL (Fin N) k => a⁻¹ * g * a) ⁻¹' O, hOo.preimage hc2, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hmem1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxO, hxU⟩`. Establish `: a⁻¹ * x * a ∈ O ∩ (unipU k d hd : Set (GL (Fin N) k))` using `⟨hxO, haU' x hxU⟩`. Rewrite `this` using `[hOeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Introduce `hx`. Establish `hx' : a⁻¹ * x * a ∈ O ∩ (unipU k d hd : Set (GL (Fin N) k))`. Rewrite using `[hOeq]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hx'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hback x]`. Conclude with `haU _ hx'.2`. Use `(hV _ hL₁U hL₁c hL₁O).2 _ _ ?_ ?_` and prove the remaining obligations. Introduce `u hb hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu0 : a⁻¹ * u * a ∈ L₀` using `(hmem1 u).1 hu`. Establish `huL₀ : u ∈ L₀`. Rewrite using `[hback u]`. Conclude with `hstab _ hu0`. Establish `key : ((parInd (stdBlocks d hd) ρ a) F).1.1 (pm k (wOpen d hd) * u) = (deltaHalf k (fun a => Fin (d a)) l : ℂ) • ρ l v`.
-
-Rewrite using `[PositivityTheory.RgUd.CellA.translate_apply d hd ρ a l hl F u, hF1 _ hu0]`. Rewrite using `[hθ u hb huL₀]`. Simplify using `using key`. Introduce `u hu hnot show ((parInd (stdBlocks d hd) ρ a) F).1.1 (pm k (wOpen d hd) * u) = 0`. Rewrite using `[PositivityTheory.RgUd.CellA.translate_apply d hd ρ a l hl F u]`.
-
-Establish `hn : a⁻¹ * u * a ∉ L₀` using `fun h => hnot ((hmem1 u).2 h)`. Rewrite using `[hF0 _ (haU' u hu) hn, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem J_translate (ψ : AddChar k Circle) (J : openFns d hd ρ →ₗ[ℂ] W) (vol : Subgroup (GL (Fin N) k) → ℝ)
     (hV : ∀ L₀ : Subgroup (GL (Fin N) k), L₀ ≤ unipU k d hd → IsCompact (L₀ : Set (GL (Fin N) k)) →

@@ -21,11 +21,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Establish `hl' : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `hx : 0 ≤ (((Formalism.MainNotions.CrystallineLiftingInputs.Mpar l h : ℕ) : ℝ) + (η : ℝ)) / ((l : ℝ) - 1) + 1`. Establish `: 0 ≤ (((Formalism.MainNotions.CrystallineLiftingInputs.Mpar l h : ℕ) : ℝ) + (η : ℝ)) / ((l : ℝ) - 1)` using `div_nonneg (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc` using `Nat.ceil_lt_add_one hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `S9.ExtensionLemmaAlt.B2 Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig`. Unfold `S9.sigC`. Unfold `Formalism.MainNotions.CrystallineLiftingInputs.Mpar`. Use `push_cast`. Unfold `Formalism.MainNotions.CrystallineLiftingInputs.Mpar at hc`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions.
 
-Move the coercions through the operations in `at hc`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sigma_bound_le (l h η : ℕ) (hl : 11 ≤ l) :
     ((2 * S9.sigC l h η : ℕ) : ℝ) ≤ S9.ExtensionLemmaAlt.B2 l h η := by
@@ -44,7 +44,7 @@ theorem sigma_bound_le (l h η : ℕ) (hl : 11 ≤ l) :
   linarith
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.CrystallineLiftingInputs.Mpar`. Use `Nat.lt_mul_div_succ h (by omega : 0 < l - 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eta_le_parameter (l h η : ℕ) (hl : 2 ≤ l) (hη : η ≤ h) : η ≤ (l - 1) * Formalism.MainNotions.CrystallineLiftingInputs.Mpar l h := by
   unfold Formalism.MainNotions.CrystallineLiftingInputs.Mpar
@@ -52,13 +52,13 @@ theorem eta_le_parameter (l h η : ℕ) (hl : 2 ≤ l) (hη : η ≤ h) : η ≤
   omega
 
 /- English proof (translation)
-Establish `hn : Even n` using `hS.2.2.1`. Establish `hwin : ∀ i a, a ∈ Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS d b S η i → -((hpar n b S : ℕ) : ℤ) ≤ a`. Introduce `i a ha`. Establish `hbi : b i ≤ Finset.univ.sup b` using `Finset.le_sup (Finset.mem_univ i)`. Establish `hη` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_eta_lt W hS i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS at ha`. Unfold `hpar`. Apply the tactic sequence `split_ifs at ha <;> simp only [Set.mem_union, Set.mem_Icc] at ha <;> push_cast at ha ⊢ <;> omega`. Establish `hwinU : ∀ c' : ZMod n, (c'.val + d) % 2 = 0 → ∀ a, a ∈ Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS d b S η (c' + 1) → -(η : ℤ) ≤ a`. Introduce `c' hc' a ha`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpar'` using `S9.parity_succ hn d c'`. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS at ha`. Rewrite `ha` using `[if_neg (by omega)]`. Simplify using `only [Set.mem_union, Set.mem_Icc] at ha`. Move the coercions through the operations in `at ha`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨fun i τ hτ a ha => hwin i a (Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hEx hCs hDq hS i τ hτ a ha), fun c' τ hc' hτ a ha => hwinU c' hc' a (Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hEx hCs hDq hS (c' + 1) τ hτ a ha)⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 -/
 theorem jumps_bounds_of_set [NeZero n] (W : LocWach PD LL O v n) {d : ℕ} {T₁ T₂ : LocLat G Qp LL O}
     {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ} (hEx : DcrisExactStrict PD LL)
@@ -87,7 +87,7 @@ theorem jumps_bounds_of_set [NeZero n] (W : LocWach PD LL O v n) {d : ℕ} {T₁
     fun c' τ hc' hτ a ha => hwinU c' hc' a (Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hEx hCs hDq hS (c' + 1) τ hτ a ha)⟩
 
 /- English proof (translation)
-Establish `et' : t' = t - f0 • p₃` using `by rw [← e₃]; abel`. Establish `etw' : tw = f0 • p₁ + ((1 : O) • t₁ + (-l) • t')` using `by rw [← etw]; abel`. Rewrite using `[etw', e₂, et']`. Simplify using `only [one_smul, neg_smul, smul_sub, smul_add, smul_neg]`. Rewrite using `[smul_comm l f0 p₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -103,9 +103,9 @@ theorem difference_of_factorisations {M' : Type} [AddCommGroup M'] [Module O M']
   abel
 
 /- English proof (translation)
-Set `Ks : ↥(latticeCocycles T.L)` to `∑ c ∈ ev, ⟨κ c, hκ c⟩`. Establish `hK : (Submodule.Quotient.mk Ks : LatticeCohomology T.L) = ∑ c ∈ ev, W.clK T (xc c)`. Combine the equalities or inequalities in the displayed calculation. Establish `hgf0 : (Submodule.Quotient.mk (((PD.p : ℕ) : O) ^ e • (⟨gf, hgf⟩ : ↥(latticeCocycles T.L)) - Ks) : LatticeCohomology T.L) = 0`. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, hK, hcls, hcl0, sub_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem` using `(Submodule.Quotient.mk_eq_zero _).1 hgf0`. Rewrite `hmem` using `[Submodule.mem_comap]`. Simplify `hmem` using `[Ks, Submodule.coe_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_smul_cocycle_sub_sum_mem_latticeCoboundaries (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (ev : Finset (ZMod n))
     (xc : ZMod n → ↥(W.wachCocyclesDelta T)) (κ : ZMod n → G → T.V) (hκ : ∀ c, κ c ∈ latticeCocycles T.L)
@@ -145,7 +145,7 @@ Both sides reduce to the same expression.
 variable {W T}
 
 /- English proof (translation)
-Unfold `liftCorrection`. Simplify using `only [map_sub, map_smul, smul_add, smul_sub, smul_smul, ← pow_add]`. Simplify using `only [add_comm, add_left_comm, add_assoc]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem frobenius_lift_identity (N s₁ σ : ℕ) (yv : W.DD T) (ms t μ : ZMod n → W.DD T) (c : ZMod n) :
     ((PD.p : ℕ) : O) ^ N • liftCorrection W T s₁ σ yv ms t c - ((PD.p : ℕ) : O) ^ (s₁ + σ) • μ (c + 1) =
@@ -158,7 +158,7 @@ theorem frobenius_lift_identity (N s₁ σ : ℕ) (yv : W.DD T) (ms t μ : ZMod 
   abel
 
 /- English proof (translation)
-Unfold `gammaDefectOfLiftCorrection`. Simplify using `only [map_sub, map_smul, smul_add, smul_sub, smul_smul, ← pow_add]`. Simplify using `only [add_comm, add_left_comm, add_assoc]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem gamma_difference_identity (N s₁ σ : ℕ) (yv zv : W.DD T) (ms t μ : ZMod n → W.DD T) (c : ZMod n) :
     W.γ T (((PD.p : ℕ) : O) ^ N • liftCorrection W T s₁ σ yv ms t c -
@@ -173,7 +173,7 @@ theorem gamma_difference_identity (N s₁ σ : ℕ) (yv zv : W.DD T) (ms t μ : 
   abel
 
 /- English proof (translation)
-Unfold `frobeniusShiftDefectOfLiftCorrection`. Simplify using `only [map_sub, map_add, map_smul, smul_add, smul_sub, smul_smul, ← pow_add]`. Simplify using `only [add_comm, add_left_comm, add_assoc]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem frobenius_difference_identity (N s₁ σ : ℕ) (yv : W.DD T) (ms t μ : ZMod n → W.DD T) (c : ZMod n) :
     ((PD.p : ℕ) : O) ^ N • frobeniusShiftDefectOfLiftCorrection W T s₁ σ yv ms t c =

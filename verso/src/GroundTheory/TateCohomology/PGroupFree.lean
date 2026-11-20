@@ -16,7 +16,7 @@ section Naturality
 variable {k G : Type u} [CommRing k] [Group G] {A B : Rep.{u} k G} (f : A ⟶ B)
 
 /- English proof (translation)
-Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Consider the case `single g a`. Rewrite using `[Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, d₁₀_single, d₁₀_single, map_sub, Rep.hom_comm_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -31,7 +31,7 @@ theorem d₁₀_mapRange (y : G →₀ A) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add c₁ c₂ h₁ h₂ => simp only [map_add, h₁, h₂]`. Consider the case `single g a`. Rewrite using `[Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, d₂₁_single, d₂₁_single, map_add, map_sub, Finsupp.mapRange.linearMap_apply, Finsupp.mapRange.linearMap_apply, Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, Finsupp.mapRange_single, Finsupp.mapRange_single, s …`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem d₂₁_mapRange (c : G × G →₀ A) :
     d₂₁ B (Finsupp.mapRange.linearMap f.hom.toLinearMap c) =
@@ -54,7 +54,7 @@ section Chains
 variable {k G : Type u} [CommRing k] [Group G] {A B : Rep.{u} k G}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Finsupp.lsum k fun g => A.ρ g⁻¹ - LinearMap.id) z = _`. Rewrite using `[Finsupp.lsum_apply, Finsupp.sum]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem d₁₀_apply_eq_sum (z : G →₀ A) :
     d₁₀ A z = ∑ g ∈ z.support, (A.ρ g⁻¹ (z g) - z g) := by
@@ -63,15 +63,15 @@ theorem d₁₀_apply_eq_sum (z : G →₀ A) :
   rfl
 
 /- English proof (translation)
-Establish `hsurj' : Function.Surjective f.hom.toLinearMap` using `hsurj`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : x ∈ LinearMap.range (d₁₀ A).hom := by`. Rewrite using `[range_d₁₀_eq_coinvariantsKer]`. Conclude with `hxI`. Set `L` to `Finsupp.mapRange.linearMap (α := G) f.hom.toLinearMap`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hY : L y ∈ cycles₁ B`. Express the relevant statement in the definitionally equal form `d₁₀ B (L y) = 0`. Rewrite using `[d₁₀_mapRange f y]`. Express the relevant statement in the definitionally equal form `f.hom (d₁₀ A y) = 0`. Rewrite using `[show d₁₀ A y = x from hy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `h0 : H1π B ⟨L y, hY⟩ = 0` using `@Subsingleton.elim _ (ModuleCat.subsingleton_of_isZero hB) _ _`. Take `⟨c, hc⟩` from `(H1π_eq_zero_iff _).mp h0`. Take `⟨c', rfl⟩` from `Finsupp.mapRange_surjective f.hom.toLinearMap (map_zero _) hsurj' c`. Use `⟨y - d₂₁ A c', fun g => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : L (d₂₁ A c') = L y` using `(d₂₁_mapRange f c').symm.trans hc`. Establish `h4 : L (y - d₂₁ A c') = 0`. Establish `h5 : L (y - d₂₁ A c') = L y - L (d₂₁ A c')` using `map_sub L y _`. Rewrite using `[h5, h2, sub_self]`. Use `congrArg (fun w => w g) h4` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[L]`. Establish `h3 : d₁₀ A (d₂₁ A c') = 0` using `by simp`. Establish `h5 : d₁₀ A (y - d₂₁ A c') = d₁₀ A y - d₁₀ A (d₂₁ A c')` using `map_sub (d₁₀ A).hom y _`. Rewrite using `[h5, h3, sub_zero]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chain_ker_of_isZero_groupHomology_one (f : A ⟶ B)
     (hsurj : Function.Surjective f.hom) (hB : IsZero (groupHomology B 1)) {x : A}
@@ -111,17 +111,17 @@ section PGroup
 variable {k G : Type u} [Field k] [Group G] [Fintype G] {p : ℕ} [Fact p.Prime] [CharP k p]
 
 /- English proof (translation)
-Set `K` to `LinearMap.ker f.hom.toLinearMap`. Establish `hK : ∀ g, K ≤ K.comap (A.ρ g)` using `fun g x hx => by`. Establish `hx' : f.hom x = 0` using `LinearMap.mem_ker.mp hx`. Use `LinearMap.mem_ker.mpr ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f.hom (A.ρ g x) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Rep.hom_comm_apply, hx', map_zero]`. Set `ρK : @Representation k G K _ _ AddCommGroup.toAddCommMonoid _` to `A.ρ.subrepresentation K hK`. Establish `hKI : Coinvariants.ker (k` using `k) (G := G) (V := K) ρK = ⊤ := by`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hx0 : f.hom x = 0` using `LinearMap.mem_ker.mp hx`. Take `⟨z, hz, hdz⟩` from `exists_chain_ker_of_isZero_groupHomology_one f hsurj hB hx0 (hker x hx0)`. Establish `hzK : ∀ g, z g ∈ K` using `fun g => LinearMap.mem_ker.mpr (hz g)`. Establish `hmem : (⟨x, hx⟩ : K) = ∑ g ∈ z.support, (ρK g⁻¹ ⟨z g, hzK g⟩ - ⟨z g, hzK g⟩)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.coe_sum]`. Express the relevant statement in the definitionally equal form `x = _`. Rewrite using `[← hdz, d₁₀_apply_eq_sum]`. Both sides reduce to the same expression. Rewrite using `[hmem]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun g _ => Coinvariants.sub_mem_ker g⁻¹ _`. Establish `hKs : Subsingleton K`. Apply `subsingleton_of_coinvariantsKer_eq_top hG ρK` to reduce the goal to its premises. Conclude with `hKI`. Introduce `x y hxy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hxy' : x - y ∈ K` using `LinearMap.mem_ker.mpr (by`. Express the relevant statement in the definitionally equal form `f.hom (x - y) = 0`. Rewrite using `[map_sub, hxy, sub_self])`. Conclude with `sub_eq_zero.mp (congrArg Subtype.val (Subsingleton.elim (⟨x - y, hxy'⟩ : K) 0))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_of_isZero_groupHomology_one (hG : IsPGroup p G) {A B : Rep.{u} k G} (f : A ⟶ B)
     (hsurj : Function.Surjective f.hom) (hB : IsZero (groupHomology B 1))
@@ -157,25 +157,21 @@ theorem injective_of_isZero_groupHomology_one (hG : IsPGroup p G) {A B : Rep.{u}
   exact sub_eq_zero.mp (congrArg Subtype.val (Subsingleton.elim (⟨x - y, hxy'⟩ : K) 0))
 
 /- English proof (translation)
-Set `ι` to `Module.Free.ChooseBasisIndex k (Coinvariants M.ρ)`. Set `b : Module.Basis ι k (Coinvariants M.ρ)` to `Module.Free.chooseBasis k (Coinvariants M.ρ)`. Use `choose e he using fun i => Coinvariants.mk_surjective M.ρ (b i)`. Set `π : Rep.free k G ι ⟶ M` to `Rep.freeLift (k := k) (G := G) (A := M) e`. Establish `hπ : ∀ i g r, π.hom (single i (MonoidAlgebra.single g r)) = r • M.ρ g (e i)` using `fun i g r => by simp [π]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective π.hom`. Establish `hr : LinearMap.range π.hom.toLinearMap = ⊤`. Apply `eq_top_of_sup_coinvariantsKer_eq_top hG M.ρ` to reduce the goal to its premises. Introduce and unpack `g _ ⟨y, rfl⟩`. Conclude with `LinearMap.mem_range.mpr ⟨(Rep.free k G ι).ρ g y, Rep.hom_comm_apply π g y⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : Coinvariants.mk M.ρ x ∈ Submodule.span k (Set.range b)` using `b.span_eq ▸ Submodule.mem_top`. Establish `hmap : Submodule.span k (Set.range b) ≤ (LinearMap.range π.hom.toLinearMap).map (Coinvariants.mk M.ρ)`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_map.mpr ⟨e i, LinearMap.mem_range.mpr ⟨single i (MonoidAlgebra.single 1 1), by simpa using hπ i 1 1⟩, he i⟩`. Take `⟨w, hw, hwx⟩` from `Submodule.mem_map.mp (hmap hx)`. Establish `hxw : x - w ∈ Coinvariants.ker M.ρ` using `(Coinvariants.mk_eq_iff M.ρ).mp hwx.symm`. Rewrite using `[show x = w + (x - w) by abel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem_sup hw hxw`. Conclude with `LinearMap.range_eq_top.mp hr`. Set `lam : M.V →ₗ[k] (ι →₀ k)` to `b.repr.toLinearMap ∘ₗ Coinvariants.mk M.ρ`. Set `s : (ι →₀ k) →ₗ[k] (ι →₀ k[G])` to `Finsupp.mapRange.linearMap (MonoidAlgebra.lsingle 1)`. Establish `hlam : ∀ y, y - s (lam (π.hom y)) ∈ Coinvariants.ker (Representation.free k G ι)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂`. Rewrite using `[map_add, map_add, map_add, add_sub_add_comm]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem h₁ h₂`. Consider the case `single i a`. Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a₁ a₂ h₁ h₂`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.single_add, map_add, map_add, map_add, add_sub_add_comm]`. Conclude with `add_mem h₁ h₂`. Consider the case `single g r`. Use `Coinvariants.mem_ker_of_eq g (single i (MonoidAlgebra.single 1 r)) _ ?_` and prove the remaining obligations. Rewrite using `[hπ]`.
-
-Simplify using `[lam, s, he]`. Establish `hker : ∀ x, π.hom x = 0 → x ∈ Coinvariants.ker (Rep.free k G ι).ρ` using `fun x hx => by`. Simplify `hlam x` using `[hx]`. Establish `hinj : Function.Injective π.hom` using `injective_of_isZero_groupHomology_one hG π hsurj hM hker`. Set `eqv : (Representation.free k G ι).Equiv M.ρ` to `Representation.Equiv.mk (LinearEquiv.ofBijective π.hom.toLinearMap ⟨hinj, hsurj⟩) fun g => LinearMap.ext fun y => Rep.hom_comm_apply π g y`.
-
-Conclude with `⟨ι, ⟨Rep.mkIso eqv⟩⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_iso_free_of_isZero_groupHomology_one (hG : IsPGroup p G) (M : Rep.{u} k G)
     (hM : IsZero (groupHomology M 1)) : ∃ ι : Type u, Nonempty (Rep.free k G ι ≅ M) := by
@@ -239,7 +235,7 @@ theorem exists_iso_free_of_isZero_groupHomology_one (hG : IsPGroup p G) (M : Rep
   exact ⟨ι, ⟨Rep.mkIso eqv⟩⟩
 
 /- English proof (translation)
-Set `φ` to `Representation.equivOfIso e`. Use `Representation.free_asModule_free k G ι` as an intermediate fact. Conclude with `Module.Free.of_equiv (LinearEquiv.ofLinearMap (IntertwiningMap.equivLinearMapAsModule (ρ := (Rep.free k G ι).ρ) (σ := M.ρ) φ.toIntertwiningMap) (IntertwiningMap.equivLinearMapAsModule (ρ := M.ρ) (σ := (Rep.free k G ι).ρ) φ.symm.toIntertwiningMap) (LinearMap.ext fun x => φ.apply_s …`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem free_asModule_of_iso_free {k G : Type u} [CommRing k] [Group G] {M : Rep.{u} k G}
     {ι : Type u} (e : Rep.free k G ι ≅ M) : Module.Free k[G] M.ρ.asModule := by

@@ -25,7 +25,7 @@ def IsReAn (z₀ : Fin e → ℂ) (h : (Fin e → ℂ) → ℝ) : Prop :=
   ∃ G : (Fin e → ℂ) → ℂ, AnalyticAt ℂ G z₀ ∧ h =ᶠ[𝓝 z₀] fun z => (G z).re
 
 /- English proof (translation)
-Take `⟨F, hF, h1⟩` from `hf`. Take `⟨G, hG, h2⟩` from `hg`. Use `⟨fun z => F z + G z, hF.add hG, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1, h2] with z a b`. Simplify using `[a, b]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsReAn.add {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : IsReAn z₀ f) (hg : IsReAn z₀ g) :
     IsReAn z₀ (fun z => f z + g z) := by
@@ -36,7 +36,7 @@ theorem IsReAn.add {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : 
   simp [a, b]
 
 /- English proof (translation)
-Take `⟨F, hF, h1⟩` from `hf`. Take `⟨G, hG, h2⟩` from `hg`. Use `⟨fun z => F z - G z, hF.sub hG, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1, h2] with z a b`. Simplify using `[a, b]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsReAn.sub {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : IsReAn z₀ f) (hg : IsReAn z₀ g) :
     IsReAn z₀ (fun z => f z - g z) := by
@@ -47,13 +47,13 @@ theorem IsReAn.sub {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : 
   simp [a, b]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 0, analyticAt_const, Eventually.of_forall fun _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsReAn.zero (z₀ : Fin e → ℂ) : IsReAn z₀ (fun _ => 0) :=
   ⟨fun _ => 0, analyticAt_const, Eventually.of_forall fun _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨F, hF, h1⟩` from `hf`. Conclude with `⟨F, hF, h.trans h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsReAn.congr {z₀ : Fin e → ℂ} {f g : (Fin e → ℂ) → ℝ} (hf : IsReAn z₀ f) (h : g =ᶠ[𝓝 z₀] f) :
     IsReAn z₀ g := by

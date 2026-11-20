@@ -12,7 +12,7 @@ namespace GlobalTheory.HeckeUOps
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : embT D τ (a : D.host.E) ≠ 0` using `(map_ne_zero _).2 a.ne_zero`. Conclude with `div_ne_zero h (by exact_mod_cast (norm_ne_zero_iff.2 h))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem phase_ne_zero (τ : D.what₂.Tau) (a : D.host.Eˣ) :
     embT D τ (a : D.host.E) / (‖embT D τ (a : D.host.E)‖ : ℂ) ≠ 0 := by

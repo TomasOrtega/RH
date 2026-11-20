@@ -17,11 +17,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `e1 : ∫⁻ x, ∫⁻ y, F (x⁻¹ * y) ∂ν' ∂ν = ∫⁻ y, F y ∂ν'`. Rewrite using `[lintegral_congr_ae (g := fun _ => ∫⁻ y, F y ∂ν')]`. Simplify using the standard rewrite rules. Use `filter_upwards [h] with x hx`. Conclude with `(hi' _ (U.inv_mem hx)).lintegral_comp hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∫⁻ y, ∫⁻ x, F (x⁻¹ * y) ∂ν ∂ν' = ∫⁻ x, F x⁻¹ ∂ν`. Rewrite using `[lintegral_congr_ae (g := fun _ => ∫⁻ x, F x⁻¹ ∂ν)]`. Simplify using the standard rewrite rules. Use `filter_upwards [h'] with y hy`. Use `(hi _ (U.inv_mem hy)).lintegral_comp (f := fun x => F x⁻¹) (hF.comp measurable_inv)` as an intermediate fact.
-
-Simplify `this` using `[mul_inv_rev]`. Rewrite using `[← e1, ← e2]`. Conclude with `lintegral_lintegral_swap (hF.comp (measurable_fst.inv.mul measurable_snd)).aemeasurable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lintegral_inv_unique_haar {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     (U : Subgroup G) (ν ν' : Measure G) [IsProbabilityMeasure ν] [IsProbabilityMeasure ν']
@@ -43,13 +41,13 @@ private theorem lintegral_inv_unique_haar {G : Type} [Group G] [MeasurableSpace 
   exact lintegral_lintegral_swap (hF.comp (measurable_fst.inv.mul measurable_snd)).aemeasurable
 
 /- English proof (translation)
-Use `D.prob` as an intermediate fact. Establish `hm : Measurable e` using `e.continuous.measurable`. Establish `hemb : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `: IsProbabilityMeasure (D.ν.map e)` using `Measure.isProbabilityMeasure_map hm.aemeasurable`. Establish `hp : MeasurePreserving e D.ν (D.ν.map e)` using `⟨hm, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ᵐ k ∂(D.ν.map e), k ∈ D.U`. Rewrite using `[hemb.ae_map_iff]`. Use `filter_upwards [D.supp] with k hk using (he k).2 hk`. Establish `hi : ∀ k ∈ D.U, MeasurePreserving (k * ·) (D.ν.map e) (D.ν.map e)`. Introduce `k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk' : e.symm k ∈ D.U` using `(he _).1 (by simpa using hk)`. Use `⟨measurable_const_mul k, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_const_mul k) hm]`. Use `conv_rhs => rw [← (D.inv _ hk').map_eq, Measure.map_map hm (measurable_const_mul _)]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `⟨hm, Measure.ext_of_lintegral _ fun F hF => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_inv_unique_haar D.U D.ν _ D.supp hs D.inv hi F hF, lintegral_inv_unique_haar D.U D.ν _ D.supp D.supp D.inv D.inv F hF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nu_pres {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n) (e : G1 K n ≃ₜ* G1 K n)
     (he : ∀ k, e k ∈ D.U ↔ k ∈ D.U) : MeasurePreserving e D.ν D.ν := by
@@ -74,9 +72,9 @@ private theorem nu_pres {K : Type} [Field K] [NumberField K] {n : ℕ} (D : Type
   rw [lintegral_inv_unique_haar D.U D.ν _ D.supp hs D.inv hi F hF, lintegral_inv_unique_haar D.U D.ν _ D.supp D.supp D.inv D.inv F hF]
 
 /- English proof (translation)
-Introduce `g`. Establish `hemb : MeasurableEmbedding θ.e` using `θ.e.toHomeomorph.measurableEmbedding`. Rewrite using `[← (nu_pres D θ.e hs.1).integral_comp hemb]`. Use `Eq.trans (integral_congr_ae ?_) (hf (θ.e.symm g))` and prove the remaining obligations. Use `filter_upwards [D.supp] with k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hs.2 k hk]`.
+A detailed English derivation is pending.
 -/
 private theorem fix_tw {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure]
     (D : TypeDat K n) (θ : Twist μ) (hs : Stable D θ) (f : G1 K n → ℂ) (hf : D.Fix f) :
@@ -89,7 +87,7 @@ private theorem fix_tw {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Meas
   simp [hs.2 k hk]
 
 /- English proof (translation)
-Use `Lp.ext ?_` and prove the remaining obligations. Establish `h : ∀ᵐ y ∂μ, (v : RightCosetSpace (Gam K n) → ℂ) (mk (Gam K n) y) = (w : RightCosetSpace (Gam K n) → ℂ) (mk (Gam K n) y)` using `by filter_upwards [hv, hw] with y a b using a.trans b.symm`. Establish `hm : MeasurableSet {y | (v : RightCosetSpace (Gam K n) → ℂ) y = (w : RightCosetSpace (Gam K n) → ℂ) y}` using `measurableSet_eq_fun (Lp.stronglyMeasurable v).measurable (Lp.stronglyMeasurable w).measurable`. Conclude with `(ae_map_iff (measurable_mk (Gam K n)).aemeasurable hm).2 (ae_restrict_of_ae h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem reps_uniq {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure]
     {v w : L2 μ} {φ : G1 K n → ℂ} (hv : Reps μ v φ) (hw : Reps μ w φ) : v = w := by
@@ -101,11 +99,9 @@ private theorem reps_uniq {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : M
   exact (ae_map_iff (measurable_mk (Gam K n)).aemeasurable hm).2 (ae_restrict_of_ae h)
 
 /- English proof (translation)
-Establish `hp : MeasurePreserving θ.e.symm μ μ` using `θ.pres.symm θ.e.toHomeomorph.toMeasurableEquiv`. Establish `h1` using `hp.quasiMeasurePreserving.ae hv`. Establish `h2` using `(quasiMeasurePreserving_mk (Gam K n) μ).ae (θ.U_spec v)`. Use `filter_upwards [h1, h2] with y a b`. Rewrite using `[b, ← a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Take `⟨γ, hγ⟩` from `(mk_eq_mk_iff (Γ := Gam K n)).1 (Quotient.out_eq (mk (Gam K n) y))`. Rewrite using `[← hγ]`. Establish `: θ.e.symm (γ • y) = θ.e.symm γ * θ.e.symm y` using `map_mul _ _ _`. Rewrite using `[this]`.
-
-Conclude with `mk_mul_of_mem ((θ.mem_gam _).1 (by simp)) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reps_tw {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure]
     (θ : Twist μ) {v : L2 μ} {φ : G1 K n → ℂ} (hv : Reps μ v φ) : Reps μ (θ.U v) fun x => φ (θ.e.symm x) := by
@@ -122,13 +118,13 @@ private theorem reps_tw {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Mea
   exact mk_mul_of_mem ((θ.mem_gam _).1 (by simp)) _
 
 /- English proof (translation)
-Establish `hm : ∀ γ : Gam K (2 + 2), (γ : G1 K (2 + 2)) ∈ PK K ↔ γ ∈ ParΓ K 2 2` using `fun γ => Subgroup.mem_map_iff_mem (f := (Gam K (2 + 2)).subtype) Subtype.val_injective`. Set `ε : Gam K (2 + 2) ≃ Gam K (2 + 2)` to `e.toEquiv.subtypeEquiv fun a => (hG a).symm`. Establish `hε : ∀ a, ((ε a : Gam K (2 + 2)) : G1 K (2 + 2)) = e a` using `fun a => rfl`. Set `Q : Cos K ≃ Cos K` to `Quotient.congr ε fun a b => by`. Rewrite using `[QuotientGroup.rightRel_apply, QuotientGroup.rightRel_apply, ← hm, ← hm, ← hP]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hε]`. Unfold `th`. Rewrite using `[← finsum_comp_equiv Q]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `h1 : Q q = Quotient.mk _ (ε q.out)` using `by conv_lhs => rw [← Quotient.out_eq q]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2 : (QuotientGroup.rightRel (ParΓ K 2 2)) (ε q.out) (Q q).out`. Use `Quotient.exact ?_` and prove the remaining obligations. Rewrite using `[Quotient.out_eq, h1]`. Rewrite `h2` using `[QuotientGroup.rightRel_apply, ← hm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(hP (e.symm _)).1 (by rw [e.apply_symm_apply]; exact h2)`. Rewrite using `[← hF _ h3 (_ * e.symm g)]`. Use `congr 1`. Simplify using `[hε, mul_assoc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem th_tw {K : Type} [Field K] [NumberField K] (e : G1 K (2 + 2) ≃ₜ* G1 K (2 + 2))
     (hG : ∀ g, e g ∈ Gam K (2 + 2) ↔ g ∈ Gam K (2 + 2)) (hP : ∀ γ, e γ ∈ PK K ↔ γ ∈ PK K)
@@ -157,13 +153,13 @@ private theorem th_tw {K : Type} [Field K] [NumberField K] (e : G1 K (2 + 2) ≃
   simp [hε, mul_assoc]
 
 /- English proof (translation)
-Establish `hx` using `fix_tw D θ hs f hf.2`. Take `⟨g1, g2, -⟩` from `galLaws μ μ₂ σ θ θ₂ h h₂`. Establish `g3 : ∀ a b t, θ.e.symm (lv a b t) = lv (θ₂.e.symm a) (θ₂.e.symm b) t` using `fun a b t => by`. Apply `θ.e.injective` to reduce the goal to its premises. Simplify using `[g1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take `⟨c, ⟨C, hC⟩, hn, hr, hl⟩` from `(secCrit μ₂ τ₁ τ₂ D i₁ i₂ f hf.2).1 hf.1`. Use `⟨(secCrit μ₂ τ₂ τ₁ D i₂ i₁ _ hx).2 ⟨c.comp θ.e.symm.continuous, ⟨C, fun g => hC _⟩, fun X g => ?_, fun t g => ?_, fun g => ⟨fun b => ?_, fun a => ?_⟩⟩, hx⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `(g2 X).2`. Simplify using `only [map_mul, hY, hn]`. Simplify using `only [map_mul, g3, map_one, hr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv, hv'⟩` from `(hl (θ.e.symm g)).1 (θ₂.e.symm b)`. Use `⟨θ₂.U v, m₁ ▸ Submodule.mem_map_of_mem hv, ?_⟩` and prove the remaining obligations. Simplify `reps_tw θ₂ hv'` using `only [map_mul, g3]`. Take `⟨v, hv, hv'⟩` from `(hl (θ.e.symm g)).2 (θ₂.e.symm a)`. Use `⟨θ₂.U v, m₂ ▸ Submodule.mem_map_of_mem hv, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `reps_tw θ₂ hv'` using `only [map_mul, g3]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem sec_tw {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {μ : Measure (G1 K (2 + 2))} [μ.IsHaarMeasure]
     {μ₂ : Measure (G1 K 2)} [μ₂.IsHaarMeasure] {τ₁ τ₂ : Submodule ℂ (L2 μ₂)} (i₁ : CuspIrr μ₂ τ₁) (i₂ : CuspIrr μ₂ τ₂)
@@ -190,9 +186,9 @@ private theorem sec_tw {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
     simpa only [map_mul, g3] using reps_tw θ₂ hv'
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `A'.sec.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 A'.inj)`. Establish `key : ∀ v, A'.sec ((r ∘ₗ LinearMap.funLeft ℂ ℂ e ∘ₗ A.sec) v) = fun x => A.sec v (e x)` using `fun v => by`. Take `⟨w, hw⟩` from `(A'.onto _).2 (h _ ((A.onto _).1 ⟨v, rfl⟩))`. Establish `: (r ∘ₗ LinearMap.funLeft ℂ ℂ e ∘ₗ A.sec) v = r (A'.sec w)` using `by rw [hw]; rfl`. Rewrite using `[this, ← hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (LinearMap.congr_fun hr w)`. Use `⟨_, fun v w hvw => A.inj (funext fun x => ?_), key⟩` and prove the remaining obligations. Use `congrFun ((key v).symm.trans ((congrArg A'.sec hvw).trans (key w))) (e.symm x)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem lin_tw {K : Type} [Field K] [NumberField K] {μ : Measure (G1 K (2 + 2))}
     {μ₂ : Measure (G1 K 2)} {τ₁ τ₂ ρ₁ ρ₂ : Submodule ℂ (L2 μ₂)} {D : TypeDat K (2 + 2)} {d d' : ℕ} (A : Line μ τ₁ τ₂ D d)
@@ -210,23 +206,23 @@ private theorem lin_tw {K : Type} [Field K] [NumberField K] {μ : Measure (G1 K 
   simpa using this
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' σ θ θ₂ h h₂ hs m₁ m₂`. Take `⟨s, hsi, hsec⟩` from `lin_tw A A' θ.e.symm.toEquiv (sec_tw hp.irr₁ hp.irr₂ h h₂ hs m₁ m₂)`. Take `⟨s', hsi', -⟩` from `lin_tw A' A θ.e.symm.toEquiv (sec_tw hp.irr₂ hp.irr₁ h h₂ hs m₂ m₁)`. Establish `hd : Module.finrank ℂ (Eu d) = Module.finrank ℂ (Eu d')` using `le_antisymm (LinearMap.finrank_le_finrank_of_injective hsi) (LinearMap.finrank_le_finrank_of_injective hsi')`. Take `⟨-, -, -, gP, gH⟩` from `galLaws μ μ₂ σ θ θ₂ h h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, -⟩` from `UpperTheory.ConvolutionTheory.C.twistUnitary K _ μ θ`. Set `S : L (Eu d) →L[ℂ] L (Eu d')` to `(LinearMap.toContinuousLinearMap s).compLpL 2 volume`. Establish `hS : ∀ u, ∀ᵐ x : ℝ, S u x = s (u x)` using `fun u => (LinearMap.toContinuousLinearMap s).coeFn_compLpL u`. Establish `hcomm : θ.U ∘L A.J.toContinuousLinearMap = A'.J.toContinuousLinearMap ∘L S`. Use `ContinuousLinearMap.ext_on (denseCc d).1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `u ⟨β, v, hβ, hβc, hu⟩`. Establish `hv` using `(A.onto _).1 ⟨v, rfl⟩`. Establish `hb` using `(bfFun _ β (secFun μ₂ τ₁ τ₂ D hp.irr₁ hp.irr₂ _ hv.1 hv.2) hβ hβc).1.rat`. Establish `r1` using `reps_tw θ (A.spec β v u hβ hβc hu)`. Establish `r2` using `A'.spec β (s v) (S u) hβ hβc (by filter_upwards [hS u, hu] with x a b`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[a, b, map_smul])`. Use `reps_uniq r1 ?_` and prove the remaining obligations. Establish `: theta β (A'.sec (s v)) = fun x => theta β (A.sec v) (θ.e.symm x)`. Use function extensionality and compare the values at `x`. Rewrite using `[theta_eq, theta_eq, ← th_tw θ.e θ.mem_gam gP _ hb, hsec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `: HP 2 2 (θ.e.symm y) = HP 2 2 y` using `by simpa using (gH (θ.e.symm y)).symm`. Simplify using `only [bf, this]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[← this]`. Conclude with `r2`. Establish `hc : ∀ (u : L (Eu d)) (v : L (Eu d')), (∀ᵐ x : ℝ, v x = s (u x)) → θ.U (A.J u) = A'.J v` using `fun u v huv => by`. Establish `: v = S u` using `Lp.ext (by filter_upwards [huv, hS u] with x a b using a.trans b.symm)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun T : L (Eu d) →L[ℂ] L2 μ => T u) hcomm`. Establish `hn : ∀ v, ‖s v‖ = ‖v‖` using `fun v => by`. Establish `hI : (volume : Measure ℝ) (Icc 0 1) ≠ ∞` using `by simp`. Use `hc (indicatorConstLp 2 measurableSet_Icc hI v) (indicatorConstLp 2 measurableSet_Icc hI (s v)) (by filter_upwards [indicatorConstLp_coeFn (p := 2) (hs := measurableSet_Icc) (hμs := hI) (c := v), indicatorConstLp_coeFn (p := 2) (hs := measurableSet_Icc) (hμs := hI) (c := s v)] wit …` as an intermediate fact. Rewrite using `[a, b]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hx : x ∈ Icc (0 : ℝ) 1 <;> simp [hx])`. Establish `h2` using `congrArg norm this`. Rewrite `h2` using `[← hU]`. Simplify using `only [ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.norm_map, LinearIsometry.norm_map] at h2`. Rewrite `h2` using `[norm_indicatorConstLp (by simp) (by simp), norm_indicatorConstLp (by simp) (by simp)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Simplify using `using h2.symm`. Conclude with `⟨LinearIsometry.toLinearIsometryEquiv ⟨s, hn⟩ hd, fun v x => congrFun (hsec v) x, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.convU :
     ConvUC := by

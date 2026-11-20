@@ -18,13 +18,11 @@ open Classical
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g n o _ ζ F V _ _ _ hB hD y`. Take `⟨V₁, _, _, _, f, fK, hC₁, hinj₁, hloc₁, hfin₁, hK₁, A, α, α₂, hcart, hsq, hlb, G, _, _, gen, hsemi, hmon⟩` from `h₁ g n o ζ F V hB hD y`. Take `⟨W, _, _, _, f', fK', hCW, hinj₂, hloc₂, hfin₂, hK₂, G', _, _, D, A', U, α', α₂', hsemi', hcart', hsq', hlb'⟩` from `h₂ g n o ζ F V₁ hC₁ (spMap fK ≫ y) A α α₂ hcart hsq hlb G gen hsemi hmon`. Take `⟨hdvr, hcpl, hchar⟩` from `hCW`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβs, hβm⟩` from `h₃ W ⟨hdvr, hcpl, hchar⟩ ϖ hϖ D`. Establish `hsp : spMap (fK'.comp fK) = spMap fK' ≫ spMap fK`. Unfold `spMap`. Simplify using the standard rewrite rules. Use `⟨ { V := W complete := hcpl ϖ := ϖ irr := hϖ y := spMap (fK'.comp fK) ≫ y G := G' semi := hsemi' D := D A := A' U := U α := α' α₂ := α₂' cart := ?_ sq := hsq' lb := hlb' β := β` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use symmetry as in `:= hβs`. Use `mono := hβm },`. Use the proof step `f'.comp f, fK'.comp fK, hinj₂.comp hinj₁, ?_, hfin₂.comp hfin₁, ?_, rfl⟩`. Rewrite using `[hsp, Category.assoc]`. Conclude with `hcart'`.
-
-Conclude with `RingHom.isLocalHom_comp f' f`. Introduce `a`. Simplify using `[hK₁, hK₂]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem traitExtSt_of (h₁ : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V],
       GlobalTheory.Mum.Base V → IsDiscreteValuationRing V → ∀ y : Sp (FractionRing V) ⟶ F.X,
@@ -90,7 +88,7 @@ theorem traitExtSt_of (h₁ : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (
     simp [hK₁, hK₂]
 
 /- English proof (translation)
-The claim follows from `traitExtSt_of GlobalTheory.T.exists_polarisedAbelian_semiAbelian_siegelPoint GlobalTheory.T.exists_uniformisation_finiteExtension_siegelFamily GlobalTheory.T.exists_monomialPeriods_symmetric_exponentForm`.
+A detailed English derivation is pending.
 -/
 theorem traitExtSt : TraitExtSt :=
   traitExtSt_of GlobalTheory.T.exists_polarisedAbelian_semiAbelian_siegelPoint GlobalTheory.T.exists_uniformisation_finiteExtension_siegelFamily GlobalTheory.T.exists_monomialPeriods_symmetric_exponentForm

@@ -7,14 +7,14 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar.Fl.LogNorms
 
 /- English proof (translation)
-The claim follows from `HT.LatBasic.val_le_one (NormedField.valuation (K := ℂ_[p])) ι a`.
+A detailed English derivation is pending.
 -/
 theorem norm_integer_le_one (p : ℕ) [Fact p.Prime] {k : Type} [Field k] (ι : k →+* ℂ_[p])
     (a : 𝓞 k) : ‖ι (a : k)‖ ≤ 1 :=
   HT.LatBasic.val_le_one (NormedField.valuation (K := ℂ_[p])) ι a
 
 /- English proof (translation)
-Establish `h1 : ‖(z : ℚ_[p])‖ = 1` using `Padic.norm_intCast_eq_one_iff.2 ((Prime.coprime_iff_not_dvd (Nat.prime_iff_prime_int.1 hp.out)).2 h).symm`. Rewrite using `[← map_intCast (algebraMap ℚ_[p] ℂ_[p]) z, norm_algebraMap', h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_intCast_eq_one (p : ℕ) [hp : Fact p.Prime] {z : ℤ} (h : ¬ (p : ℤ) ∣ z) :
     ‖(z : ℂ_[p])‖ = 1 := by
@@ -23,7 +23,7 @@ theorem norm_intCast_eq_one (p : ℕ) [hp : Fact p.Prime] {z : ℤ} (h : ¬ (p :
   rw [← map_intCast (algebraMap ℚ_[p] ℂ_[p]) z, norm_algebraMap', h1]
 
 /- English proof (translation)
-Take `⟨d, hd, h⟩` from `exists_integral_multiples ℤ ℚ (L := k) {x}`. Conclude with `⟨d, hd, ⟨d • x, h x (Finset.mem_singleton_self x)⟩, zsmul_eq_mul x d⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_mul_eq_integer {k : Type} [Field k] [NumberField k] (x : k) :
     ∃ n : ℤ, n ≠ 0 ∧ ∃ a : 𝓞 k, (a : k) = n * x := by
@@ -31,7 +31,7 @@ theorem exists_int_mul_eq_integer {k : Type} [Field k] [NumberField k] (x : k) :
   exact ⟨d, hd, ⟨d • x, h x (Finset.mem_singleton_self x)⟩, zsmul_eq_mul x d⟩
 
 /- English proof (translation)
-Establish `h` using `norm_integer_le_one p ι a`. Rewrite `h` using `[ha, map_mul, map_intCast, norm_mul, norm_intCast_eq_one p hp, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_le_one_of_mul {k : Type} [Field k] (p : ℕ) [Fact p.Prime] (ι : k →+* ℂ_[p])
     {x : k} {n : ℤ} {a : 𝓞 k} (ha : (a : k) = n * x) (hp : ¬ (p : ℤ) ∣ n) : ‖ι x‖ ≤ 1 := by
@@ -39,13 +39,13 @@ theorem norm_le_one_of_mul {k : Type} [Field k] (p : ℕ) [Fact p.Prime] (ι : k
   rwa [ha, map_mul, map_intCast, norm_mul, norm_intCast_eq_one p hp, one_mul] at h
 
 /- English proof (translation)
-Take `⟨n, hn, a, ha⟩` from `exists_int_mul_eq_integer x`. Take `⟨m, hm, b, hb⟩` from `exists_int_mul_eq_integer x⁻¹`. Establish `hfin : {p : Nat.Primes | (p : ℕ) ∣ (n * m).natAbs}.Finite`. Use `Set.Finite.of_injOn (f := fun p : Nat.Primes => (p : ℕ)) (t := ((n * m).natAbs.primeFactors : Set ℕ)) ?_ (fun _ _ _ _ h => Subtype.ext h) (Finset.finite_toSet _)` and prove the remaining obligations. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_coe.2 (Nat.mem_primeFactors.2 ⟨p.2, hp, Int.natAbs_ne_zero.2 (mul_ne_zero hn hm)⟩)`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨ι, hι⟩`. Assume the negation of the conclusion as `hp`. Establish `hnm : ¬ ((p : ℕ) : ℤ) ∣ n * m` using `fun h => hp (Int.natCast_dvd.1 h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpn : ¬ ((p : ℕ) : ℤ) ∣ n` using `fun h => hnm (h.mul_right m)`. Establish `hpm : ¬ ((p : ℕ) : ℤ) ∣ m` using `fun h => hnm (h.mul_left n)`. Establish `h1 : ‖ι x‖ ≤ 1` using `norm_le_one_of_mul p ι ha hpn`. Establish `h2 : ‖ι x⁻¹‖ ≤ 1` using `norm_le_one_of_mul p ι hb hpm`. Establish `h0 : 0 < ‖ι x‖` using `norm_pos_iff.2 ((map_ne_zero ι).2 hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `h3 : ‖ι x‖ = 1` using `le_antisymm h1 ((inv_le_one₀ h0).1 h2)`. Apply `hι` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Real.log ‖ι x‖ = 0`. Rewrite using `[h3, Real.log_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdelic_ofElt (k : Type) [Field k] [NumberField k] (x : k) (hx : x ≠ 0) :
     (LogNorms.ofElt x).IsAdelic := by

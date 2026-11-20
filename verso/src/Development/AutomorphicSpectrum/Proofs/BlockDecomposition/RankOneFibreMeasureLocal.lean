@@ -21,39 +21,39 @@ section Alg
 variable {A : Type} [CommRing A] (s : A →+* A) {ι : Type} [Fintype ι] (J : Matrix ι ι A)
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (x y z : ι → A) : hform s J x (y + z) = hform s J x y + hform s J x z := by
   simp only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_left (x y z : ι → A) : hform s J (x + y) z = hform s J x z + hform s J y z := by
   simp only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_smul_right (a : A) (x y : ι → A) : hform s J x (a • y) = a * hform s J x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_smul_left (a : A) (x y : ι → A) : hform s J (a • x) y = s a * hform s J x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero_right (x : ι → A) : hform s J x 0 = 0 := by
   simp [hform]
 
 /- English proof (translation)
-Simplify using `only [hform, map_sum, map_mul, hs, hJ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hf_swap (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j) (x y : ι → A) :
     s (hform s J x y) = hform s J y x := by
@@ -62,7 +62,7 @@ theorem hf_swap (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j) (x y
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[hf_add_left, hf_add_right, hf_add_right, hf_smul_left, hf_smul_left, hf_smul_right, hf_smul_right, hxx, hf_swap s J hs hJ x u]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_shift (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j) (u x : ι → A) (c : A)
     (hxx : hform s J x x = 0) :
@@ -93,7 +93,7 @@ def Tm (h r : K) (Y : Fin 1 → Fin M → K) : Fin 1 → Fin M → K := Y + jx x
 variable {s J x}
 
 /- English proof (translation)
-Use `show hform s J x (Y 0 + a • x) = hform s J x (Y 0)`. Rewrite using `[hf_add_right, hf_smul_right, hxx, mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bet_add_jx (hxx : hform s J x x = 0) (Y : Fin 1 → Fin M → K) (a : K) :
     bet s J x (Y + jx x a) = bet s J x Y := by
@@ -101,21 +101,21 @@ theorem bet_add_jx (hxx : hform s J x x = 0) (Y : Fin 1 → Fin M → K) (a : K)
   rw [hf_add_right, hf_smul_right, hxx, mul_zero, add_zero]
 
 /- English proof (translation)
-Simplify using `only [cS, bet_add_jx hxx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cS_add_jx (hxx : hform s J x x = 0) (h r : K) (Y : Fin 1 → Fin M → K) (a : K) :
     cS s J x h r (Y + jx x a) = cS s J x h r Y := by
   simp only [cS, bet_add_jx hxx]
 
 /- English proof (translation)
-The claim follows from `bet_add_jx hxx _ _`.
+A detailed English derivation is pending.
 -/
 theorem bet_Tm (hxx : hform s J x x = 0) (h r : K) (Y : Fin 1 → Fin M → K) :
     bet s J x (Tm s J x h r Y) = bet s J x Y :=
   bet_add_jx hxx _ _
 
 /- English proof (translation)
-Establish `h1 : cS s J x h (-r) (Tm s J x h r Y) = -cS s J x h r Y`. Simplify using `only [cS, bet_Tm hxx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Tm, h1, Tm, map_neg, add_neg_cancel_right]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tm_neg (hxx : hform s J x x = 0) (h r : K) (Y : Fin 1 → Fin M → K) :
     Tm s J x h (-r) (Tm s J x h r Y) = Y := by
@@ -125,9 +125,9 @@ theorem Tm_neg (hxx : hform s J x x = 0) (h r : K) (Y : Fin 1 → Fin M → K) :
   rw [Tm, h1, Tm, map_neg, add_neg_cancel_right]
 
 /- English proof (translation)
-Establish `hT : Tm s J x h r Y 0 = Y 0 + cS s J x h r Y • x` using `rfl`. Establish `hsb : IsUnit (s (bet s J x Y))` using `hY.map s`. Establish `e1 : Ring.inverse (s (bet s J x Y)) * s (bet s J x Y) = 1` using `Ring.inverse_mul_cancel _ hsb`. Establish `e2 : s (Ring.inverse (s (bet s J x Y))) * bet s J x Y = 1`. Use `congrArg s e1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, hs, map_one]`. Then use the resulting hypothesis. Establish `hb : hform s J x (Y 0) = bet s J x Y` using `rfl`. Rewrite using `[hT, hf_shift s J hs hJ _ _ _ hxx, hb]`. Simplify using `only [cS, map_mul, hh, hr]`. Take the linear combination `(h * r) * e1 + (h * r) * e2 + r * h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hf_Tm (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j)
     (hxx : hform s J x x = 0) {h r : K} (h2 : h + h = 1) (hh : s h = h) (hr : s r = r)
@@ -146,9 +146,9 @@ theorem hf_Tm (hs : ∀ a, s (s a) = a) (hJ : ∀ i j, s (J j i) = J i j)
   linear_combination (h * r) * e1 + (h * r) * e2 + r * h2
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `h0 : c 0 • Y 0 = 0` using `by simpa using hc`. Establish `h1 : c 0 * bet s J x Y = 0`. Use `congrArg (hform s J x) h0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hf_smul_right, hf_zero_right]`. Then use the resulting hypothesis. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `hY.mul_left_eq_zero.1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linIndep_of_isUnit {Y : Fin 1 → Fin M → K} (hY : IsUnit (bet s J x Y)) :
     LinearIndependent K Y := by
@@ -168,7 +168,7 @@ section Top
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
 /- English proof (translation)
-Unfold `bet hform`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply j).comp (continuous_apply 0))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_bet (s : K →+* K) {M : ℕ} (J : Matrix (Fin M) (Fin M) K) (x : Fin M → K) :
     Continuous (bet s J x) := by
@@ -177,14 +177,14 @@ theorem continuous_bet (s : K →+* K) {M : ℕ} (J : Matrix (Fin M) (Fin M) K) 
   exact continuous_const.mul ((continuous_apply j).comp (continuous_apply 0))
 
 /- English proof (translation)
-Use `continuous_pi fun _ => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `continuous_id.mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_jx {M : ℕ} (x : Fin M → K) : Continuous (jx x) := by
   refine continuous_pi fun _ => continuous_pi fun i => ?_
   exact continuous_id.mul continuous_const
 
 /- English proof (translation)
-Use `hU.isOpen_range` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `r`. Simplify using `[IsUnit]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_isUnit (hU : IsOpenEmbedding (Units.val : Kˣ → K)) : IsOpen {r : K | IsUnit r} := by
   have := hU.isOpen_range
@@ -193,7 +193,7 @@ theorem isOpen_isUnit (hU : IsOpenEmbedding (Units.val : Kˣ → K)) : IsOpen {r
   simp [IsUnit]
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (fun Y => Ring.inverse (s (bet s J x Y))) {Y | IsUnit (bet s J x Y)}` using `(GlobalTheory.CompanionTheory.SW.KUnits.continuousOn_ringInverse hU).comp (hsc.comp (continuous_bet s J x)).continuousOn (fun Y hY => IsUnit.map s hY)`. Establish `h2 : ContinuousOn (cS s J x h r) {Y | IsUnit (bet s J x Y)}` using `continuousOn_const.mul h1`. Conclude with `continuousOn_id.add ((continuous_jx x).comp_continuousOn h2)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_Tm (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K →+* K}
     (hsc : Continuous s) {M : ℕ} (J : Matrix (Fin M) (Fin M) K) (x : Fin M → K) (h r : K) :
@@ -208,9 +208,9 @@ theorem continuousOn_Tm (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K �
 variable [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Establish `h1 : Measurable (({r : K | IsUnit r}).piecewise (Ring.inverse : K → K) (fun _ => 0))` using `(GlobalTheory.CompanionTheory.SW.KUnits.continuousOn_ringInverse hU).measurable_piecewise continuousOn_const (isOpen_isUnit hU).measurableSet`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Distinguish the cases in `hr : IsUnit r`. Simplify using `[Set.piecewise, hr]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[Set.piecewise, hr, Ring.inverse_non_unit]`.
+Simplify using the standard rewrite rules.
 -/
 theorem measurable_ringInverse (hU : IsOpenEmbedding (Units.val : Kˣ → K)) :
     Measurable (Ring.inverse : K → K) := by
@@ -227,11 +227,11 @@ theorem measurable_ringInverse (hU : IsOpenEmbedding (Units.val : Kˣ → K)) :
 end Top
 
 /- English proof (translation)
-Establish `hT : Measurable fun v => v + j (f v)` using `measurable_id.add (hj.comp hf)`. Use extensionality with `B hB`. Rewrite using `[Measure.map_apply hT hB]`. Establish `key` using `GlobalTheory.T.quotient_measure_by_invariant_subgroup V A μ lam j hj f hf hinv C hC h0 h1 (B.indicator 1) (measurable_one.indicator hB)`. Rewrite `key` using `[lintegral_indicator_one hB]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← key, ← lintegral_indicator_one (hT hB)]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v + j (f v) ∈ B`. Rewrite using `[Set.indicator_of_mem hv, Set.indicator_of_mem (show v ∈ (fun v => v + j (f v)) ⁻¹' B from hv)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem hv, Set.indicator_of_notMem (show v ∉ (fun v => v + j (f v)) ⁻¹' B from hv)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_shift_eq {V A : Type} [AddCommGroup V] [AddCommGroup A] [MeasurableSpace V]
     [MeasurableSpace A] [MeasurableAdd₂ V] [MeasurableAdd₂ A] [MeasurableNeg A] [MeasurableNeg V]
@@ -258,7 +258,7 @@ variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [Loc
   [SecondCountableTopology K] [T2Space K] [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-The claim follows from `((measurable_ringInverse hU).comp (hsc.comp (continuous_bet s J x)).measurable).const_mul _`.
+A detailed English derivation is pending.
 -/
 theorem measurable_cS (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K →+* K}
     (hsc : Continuous s) {M : ℕ} (J : Matrix (Fin M) (Fin M) K) (x : Fin M → K) (h r : K) :
@@ -266,7 +266,7 @@ theorem measurable_cS (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K →+
   ((measurable_ringInverse hU).comp (hsc.comp (continuous_bet s J x)).measurable).const_mul _
 
 /- English proof (translation)
-The claim follows from `measurable_id.add ((continuous_jx x).measurable.comp (measurable_cS hU hsc J x h r))`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Tm (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K →+* K}
     (hsc : Continuous s) {M : ℕ} (J : Matrix (Fin M) (Fin M) K) (x : Fin M → K) (h r : K) :
@@ -274,7 +274,7 @@ theorem measurable_Tm (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K →+
   measurable_id.add ((continuous_jx x).measurable.comp (measurable_cS hU hsc J x h r))
 
 /- English proof (translation)
-Take `⟨C, hCc, hC0⟩` from `exists_compact_mem_nhds (0 : K)`. Set `lam : Measure K` to `Measure.addHaar`. Conclude with `map_shift_eq μ lam (jx x) (continuous_jx x).measurable (cS s J x h r) (measurable_cS hU hsc J x h r) (fun Y a => cS_add_jx hxx h r Y a) C hCc.measurableSet (Measure.measure_pos_of_mem_nhds lam hC0).ne' hCc.measure_lt_top.ne`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem map_Tm (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K →+* K}
     (hsc : Continuous s) {M : ℕ} (J : Matrix (Fin M) (Fin M) K) (x : Fin M → K)
@@ -289,25 +289,17 @@ theorem map_Tm (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {s : K →+* K}
 end Meas
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hL μ ν m hμ hν hm X hX hX0 S`. Use `haveI : IsTopologicalRing R := hL.1`. Use `haveI : LocallyCompactSpace R := hL.2.1`. Use `haveI : SecondCountableTopology R := hL.2.2.1`. Use `haveI : T2Space R := hL.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨tK1, tK2, tK3, tK4, tsc, -, -, tK8, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI := tK1`. Use `haveI := tK2`. Use `haveI := tK3`. Use `haveI := tK4`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin 1 → Fin M → R ⊗[F] E) := tK8 1 M`. Take `⟨h1, h2, h3, h4, h5⟩` from `HermTop.herm_top F E σ hσ R 1`. Use `haveI := h1`. Use `haveI := h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := h3`. Use `haveI := h4`. Take `⟨g, hgc, hg⟩` from `h5 M J hJ`. Establish `hU` using `GlobalTheory.T.units_open_embedding_local_tensor F E σ hσ R hL`. Establish `hss : ∀ a, sigR R σ (sigR R σ a) = a` using `HermTop.sigR_sigR R (HermTop.sigma_sigma hσ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJJ : ∀ i j, sigR R σ (JR R J j i) = JR R J i j`. Introduce `i j`. Simplify using `only [JR, Matrix.map_apply, HermTop.sigR_inclR, hJ.1]`. Choose the witnesses or unpack the hypotheses as in `⟨hf, hf2, hfs⟩ : ∃ hf : R ⊗[F] E, hf + hf = 1 ∧ sigR R σ hf = hf := by`. Use `⟨inclR R (algebraMap F E (1 / 2)), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← map_add, ← map_add]`. Evaluate the numerical expressions. Rewrite using `[HermTop.sigR_inclR, σ.commutes]`. Establish `hxx : hform (sigR R σ) (JR R J) (X 0) (X 0) = 0` using `congrFun (congrFun hX0 0) 0`. Establish `hXeq : (fun _ : Fin 1 => X 0) = X`.
-
-Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0]`. Take `⟨y, hy⟩` from `GlobalTheory.T.hermitian_form_primitive_vector_pairing F E σ hσ M J hJ R hL (X 0) (by rw [hXeq]; exact hX)`. Establish `hgen` using `GlobalTheory.T.disintegration_haar_base (Fin 1 → Fin M → R ⊗[F] E) (HermR R σ 1) (Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) μ ν (gramR R σ J) g Subtype.val Subtype.val_injective hgc hg {Y | LinearIndependent (R ⊗[F] E) Y} {Y | IsUnit (bet (sigR R σ) (JR R J) (X 0) Y)} ((isOpen_isUnit hU …`. Rewrite using `[hy]`.
-
-Conclude with `isUnit_one⟩`. Use `m hm (fun S Y => Tm (sigR R σ) (JR R J) (X 0) hf ((S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0) Y)`. Use the proof step `(fun S => measurable_Tm hU tsc _ _ _ _)`. Use the proof step `(fun S => map_Tm hU tsc _ _ hxx _ _ μ)`. Use the proof step `(fun S => continuousOn_Tm hU tsc _ _ _ _)`.
-
-Use the proof step `(fun S Y => by show IsUnit (bet _ _ _ _) ↔ IsUnit (bet _ _ _ _)`. Rewrite using `[bet_Tm hxx])`. Use the proof step `(fun S Y _ => Tm_neg hxx _ _ Y)`. Use the proof step `(fun S Y hY => by`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[← hg, AddSubgroup.coe_add, ← hg]`. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Conclude with `hf_Tm hss hJJ hxx hf2 hfs (S.2 0 0) hY)`. Conclude with `hgen S`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (μ : Measure (Fin 1 → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ 1)) (m : HermR R σ 1 → Measure (Fin 1 → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFibFree R σ J 1 μ ν m → ∀ X : Fin 1 → Fin M → R ⊗[F] E, LinearIndependent (R ⊗[F] E) X → gramR R σ J X = 0 → ∀ S : HermR R σ 1, m S ≠ 0 := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hL μ ν m hμ hν hm X hX hX0 S

@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.IndexComapCosets
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_eq_card, Subgroup.index_eq_card]`. Set `φ : A ⧸ H.comap f → B ⧸ H` to `Quotient.map' f (fun a a' hr => by`. Rewrite `hr`, the goal using `[QuotientGroup.leftRel_apply]`. Simplify using `using hr)`. Establish `hφ : ∀ a : A, φ (a : A ⧸ H.comap f) = (f a : B ⧸ H)` using `fun a => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective φ`. Introduce `x y hxy`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨a', rfl⟩` from `QuotientGroup.mk_surjective y`. Rewrite `hxy` using `[hφ, hφ, QuotientGroup.eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_comap, map_mul, map_inv]`. Conclude with `hxy`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h b`. Conclude with `⟨a, by rw [hφ, QuotientGroup.eq]; exact ha⟩`. Conclude with `Nat.card_congr (Equiv.ofBijective φ ⟨hinj, hsurj⟩)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem index_comap_eq_of_cosets_hit {A B : Type} [Group A] [Group B] (f : A →* B)
     (H : Subgroup B) (h : ∀ b : B, ∃ a : A, (f a)⁻¹ * b ∈ H) :

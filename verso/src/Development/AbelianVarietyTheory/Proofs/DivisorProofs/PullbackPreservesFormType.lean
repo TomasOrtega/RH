@@ -17,7 +17,7 @@ def scale (n : ℕ) (s t : ℂ) : Alt n →ₐ[ℂ] Alt n :=
   ExteriorAlgebra.map (Matrix.toLin' (Matrix.fromBlocks (s • 1) 0 0 (t • 1)))
 
 /- English proof (translation)
-Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Rewrite using `[bas_singleton, ← map_smul]`. Use `(ExteriorAlgebra.map_apply_ι _ _).trans (congrArg _ (funext ?_))` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rintro (b | b) <;> simp [Pi.single_apply, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_single (s t : ℂ) (i : Fin (n + n)) :
     scale n s t (bas n {i}) = (if i.val < n then s else t) • bas n {i} := by
@@ -27,11 +27,11 @@ theorem scale_single (s t : ℂ) (i : Fin (n + n)) :
   rcases i with i | i <;> rintro (b | b) <;> simp [Pi.single_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [bas_empty]`. Consider the case `insert a S ha ih`. Take `⟨ε, h⟩` from `bas_mul (n := n) (S := {a}) (T := S) (by simpa using ha)`. Establish `h' : bas n (insert a S) = ε • (bas n {a} * bas n S)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h, smul_smul, Int.units_mul_self, one_smul, Finset.insert_eq]`. Rewrite using `[h', Units.smul_def, map_zsmul, map_mul, scale_single, ih, smul_mul_smul_comm, smul_comm]`. Use `congr 1`. Rewrite using `[Finset.filter_insert, Finset.filter_insert]`. Distinguish the cases in `hn : a.val < n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hn, if_pos hn, if_neg (not_le.2 hn), Finset.card_insert_of_notMem (by simp [ha])]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hn, if_neg hn, if_pos (not_lt.1 hn), Finset.card_insert_of_notMem (by simp [ha])]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem scale_bas (s t : ℂ) (S : Finset (Fin (n + n))) :
     scale n s t (bas n S) = (s ^ (S.filter (·.val < n)).card * t ^ (S.filter (n ≤ ·.val)).card) • bas n S := by
@@ -51,7 +51,7 @@ theorem scale_bas (s t : ℂ) (S : Finset (Fin (n + n))) :
       ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bas n).sum_repr α]`. Simplify using `only [map_sum, map_smul, scale_bas, Module.Basis.repr_self, Finsupp.finset_sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem repr_scale (s t : ℂ) (α : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (scale n s t α) S =
@@ -62,13 +62,13 @@ theorem repr_scale (s t : ℂ) (α : Alt n) (S : Finset (Fin (n + n))) :
   ring
 
 /- English proof (translation)
-Establish `h2 {a b : ℕ} (h : (2 : ℂ) ^ a = 2 ^ b) : a = b`. Establish `: (2 : ℕ) ^ a = 2 ^ b` using `by exact_mod_cast h`. Conclude with `Nat.pow_right_injective le_rfl this`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> refine (bas n).ext_elem fun S => ?_ <;>`. Apply the tactic sequence `rw [repr_scale, map_smul, Finsupp.smul_apply, smul_eq_mul] <;>`. Distinguish the cases in `hS : (bas n).repr α S = 0`. Simplify using `[hS]`. Simplify using `[(h S hS).1]`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hS]`. Simplify using `[(h S hS).2]`. Introduce and unpack `⟨h₁, h₂⟩ S hS`. Establish `e₁` using `congrArg (fun β => (bas n).repr β S) h₁`. Establish `e₂` using `congrArg (fun β => (bas n).repr β S) h₂`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [repr_scale, map_smul, Finsupp.smul_apply, smul_eq_mul, one_pow, mul_one, one_mul] at e₁ e₂`. Conclude with `⟨h2 (mul_right_cancel₀ hS e₁), h2 (mul_right_cancel₀ hS e₂)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isType_iff (p q : ℕ) (α : Alt n) :
     IsType p q α ↔ scale n 2 1 α = (2 : ℂ) ^ p • α ∧ scale n 1 2 α = (2 : ℂ) ^ q • α := by
@@ -91,7 +91,7 @@ theorem isType_iff (p q : ℕ) (α : Alt n) :
     exact ⟨h2 (mul_right_cancel₀ hS e₁), h2 (mul_right_cancel₀ hS e₂)⟩
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply, scale, scale, pull, ExteriorAlgebra.map_comp_map, ExteriorAlgebra.map_comp_map, ← Matrix.toLin'_mul, ← Matrix.toLin'_mul]`. Simplify using `[Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_pull (L : V n →L[ℂ] V m) (s t : ℂ) (α : Alt m) :
     scale n s t (pull L α) = pull L (scale m s t α) := by
@@ -104,7 +104,7 @@ end GlobalTheory.CxForm.PullType
 namespace GlobalTheory.CxForm
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[PullType.isType_iff]`. Rewrite using `[PullType.scale_pull, PullType.scale_pull, h.1, h.2, map_smul, map_smul]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isType_pull_linear (n m : ℕ) (L : V n →L[ℂ] V m) (p q : ℕ) (α : Alt m) (h : IsType p q α) :
     IsType p q (pull L α) := by

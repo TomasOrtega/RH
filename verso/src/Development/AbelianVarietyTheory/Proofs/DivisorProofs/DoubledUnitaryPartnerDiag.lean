@@ -21,7 +21,7 @@ namespace GlobalTheory.WeilSchrodinger.PresImpl
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congrArg (· * f (x + (x₁ + x₀))) (congrArg ψ ?_)` and prove the remaining obligations. Establish `h2 : (2 : R) * ⅟2 = 1` using `mul_invOf_self 2`. Simplify using `only [dotProduct_add, add_dotProduct]`. Take the linear combination `(-(x₁ ⬝ᵥ y₀)) * h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_schr_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (x x₁ x₀ y₁ y₀ : κ → R) (f : (κ → R) → ℂ) :
@@ -34,9 +34,9 @@ theorem schr_schr_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddCh
   linear_combination (-(x₁ ⬝ᵥ y₀)) * h2
 
 /- English proof (translation)
-Establish `h1 : mt S g⁻¹ * mt S g = 1`. Simplify using `only [Formalism.L2.Theta.mt, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `h2 : mt S g * (b.1.1)ᵀ = 1`. Rewrite using `[hg, ← Matrix.transpose_mul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : mt S g⁻¹ = (b.1.1)ᵀ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Formalism.IndefR.Datum.actO, GlobalTheory.WeilM.actAB, hh, h3]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 theorem actO_eq (S T : HSp D) {JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E}
     {JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E}
@@ -55,9 +55,9 @@ theorem actO_eq (S T : HSp D) {JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E}
   simp only [Formalism.IndefR.Datum.actO, GlobalTheory.WeilM.actAB, hh, h3]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `hhalf : algebraMap D.host.F (AF D.host.F) (1 / 2) = ⅟(2 : AF D.host.F)`. Use `(invOf_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hf` using `co.form v w`. Simplify using `only [thetaTr, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, Formalism.IndefR.Datum.heisO, GlobalTheory.WeilM.schr, Formalism.IndefR.Datum.symplOH, ← hs, hf, hhalf, map_add, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun x => schr_schr_apply ψ _ _ _ _ _ φ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaTr_rho (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E}
     {JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E} {ξ : AF D.host.F ⊗[D.host.F] D.host.E}
@@ -81,17 +81,17 @@ theorem thetaTr_rho (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {JA : Matrix 
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hB κ _ co hco ω hω om htr`. Establish `key : ∀ p : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JA) × GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JB), ∃ (g : GA D S) (h : GA D T), mt T h …` using `fun p => GlobalTheory.T.unitaryPair_of_transposedGram_inverseGram D S T JA JB ξ hA hB p.1 p.2`. Establish `pres : ∀ p, ∀ φ ∈ GlobalTheory.WeilM.schA D.host.F κ, om p φ ∈ GlobalTheory.WeilM.schA D.host.F κ`. Introduce `p φ hφ`. Take `⟨g, h, hh, hg⟩` from `key p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(htr p.1 p.2 g h hh hg φ hφ).1`. Use `⟨pres, fun p w φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `p`. Take `⟨g, h, hh, hg⟩` from `key (a, b)`. Establish `hs` using `GlobalTheory.T.traceSymplecticForm_eq_orientedHomSymplecticForm D S T JA JB ξ hA hB`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrho : ∀ w', ∀ φ' ∈ GlobalTheory.WeilM.schA D.host.F κ, co.rho ψ w' φ' ∈ GlobalTheory.WeilM.schA D.host.F κ` using `fun w' φ' h' => GlobalTheory.T.schrodingerOperator_mem_adelicSchwartz_stdChar D ψ hψ κ _ φ' h'`. Establish `h1` using `htr a b g h hh hg _ (hrho w φ hφ)`. Establish `h2` using `htr a b g h hh hg _ hφ`. Establish `hF` using `GlobalTheory.T.isThetaFunction_thetaTransform_rationalDarboux D ψ hψ S T JA JB ξ hA hB κ co hco φ hφ`. Establish `E1` using `hω.om_heis g h w _ hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E2` using `thetaTr_rho ψ S T hs co w φ`. Establish `E3` using `thetaTr_rho ψ S T hs co (GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (a, b) w) (om (a, b) φ)`. Establish `E4` using `actO_eq S T a b g h hh hg w`. Establish `E : thetaTr D.host.F co ψ (om (a, b) (co.rho ψ w φ)) = thetaTr D.host.F co ψ (co.rho ψ (GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (a, b) w) (om (a, b) φ))`. Use `h1.2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (ω (g, h)) E2).trans ?_` and prove the remaining obligations. Use `E1.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ E3.symm` and prove the remaining obligations. Conclude with `congrArg₂ (Formalism.IndefR.Datum.heisO ψ S T) E4 h2.2.symm`. Unfold `thetaTr GlobalTheory.WeilM.Darboux.rho at E`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.adelicSchwartz_determined_by_schrodingerThetaValues D ψ hψ κ _ h1.1 _ (hrho _ _ h2.1) fun v => ?_` and prove the remaining obligations. Take `⟨v', rfl⟩` from `co.e.surjective v`. Conclude with `congrFun E v'`.
+A detailed English derivation is pending.
 -/
 theorem pres_impl : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →

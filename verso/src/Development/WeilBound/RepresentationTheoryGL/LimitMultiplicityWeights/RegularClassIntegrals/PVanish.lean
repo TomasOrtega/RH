@@ -10,7 +10,7 @@ namespace MainStatements.WeightKernel.PVanish
 def mul3 {n : ℕ} (A B C : MainStatements.WeightKernel.Mx n) : MainStatements.WeightKernel.Mx n := fun a b => (of A * of B * of C) a b
 
 /- English proof (translation)
-Establish `e : ∀ (u : E → Mx n), ContDiff ℝ ∞ u → ∀ a b : Fin n, ContDiff ℝ ∞ fun x => u x a b` using `fun u hu a b => contDiff_pi.1 (contDiff_pi.1 hu a) b`. Use `contDiff_pi.2 fun a => contDiff_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [mul3, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `ContDiff.sum fun j _ => (ContDiff.sum fun k _ => (e f hf a k).mul (e g hg k j)).mul (e h hh j b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_triple_matrix_product {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {f g h : E → MainStatements.WeightKernel.Mx n}
     (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (hh : ContDiff ℝ ∞ h) :
@@ -23,7 +23,7 @@ theorem contDiff_triple_matrix_product {n : ℕ} {E : Type} [NormedAddCommGroup 
     (ContDiff.sum fun k _ => (e f hf a k).mul (e g hg k j)).mul (e h hh j b)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Use `show (ι g * ι h * ι l) a b = ι (g * h * l) a b`. Rewrite using `[map_mul, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triple_product_matrix_coordinates {H : Type} [Group H] {n : ℕ} (ι : H →* Matrix (Fin n) (Fin n) ℂ) (g h l : H) :
     mul3 (matCoord ι g) (matCoord ι h) (matCoord ι l) = matCoord ι (g * h * l) := by
@@ -35,57 +35,53 @@ end MainStatements.WeightKernel.PVanish
 
 open MainStatements.WeightKernel.PVanish in
 /- English proof (translation)
-Introduce `hSwap hOne hTwo H _ _ _ _ _ _ _ _ n ι hemb s B hB μ _ _ dt _ _ Ω I _ _ m _ c q hK hq hInv φ hφ hOrb`. Take `⟨hφc, Φφ, hΦφ, hφeq⟩` from `hφ`. Establish `hmc : Continuous (matCoord ι)` using `hemb.continuous`. Establish `hφcont : Continuous φ`. Rewrite using `[show φ = fun g => Φφ (matCoord ι g) from funext hφeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΦφ.continuous.comp hmc`. Set `bp : ContDiffBump (matCoord ι s)` to `⟨1, 2, one_pos, one_lt_two⟩`. Set `ψ : H → ℝ` to `fun y => bp (matCoord ι y)`. Establish `hψc : Continuous ψ` using `bp.continuous.comp hmc`. Establish `hψcs : HasCompactSupport ψ` using `bp.hasCompactSupport.comp_isClosedEmbedding hemb`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψs : 0 < ψ s`. Establish `: ψ s = 1` using `bp.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)`. Rewrite using `[this]`. Conclude with `one_pos`. Take `⟨a, ha0, ha⟩` from `hOne H n ι hmc s B hB μ dt ψ hψc hψcs (fun y => bp.nonneg) hψs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨Kset, hKc, hKprop⟩` from `hB.proper (tsupport φ) (tsupport ψ) hφc.isCompact hψcs.isCompact`. Set `p : H → Mx n × Mx n` to `fun k => (matCoord ι k, matCoord ι k⁻¹)`. Establish `hp : Continuous p` using `hmc.prodMk (hmc.comp continuous_inv)`. Set `W₁ : Mx n × (Mx n × Mx n) → ℂ` to `fun z => Φφ z.1 * ((B (z.1, z.2.1) : ℝ) : ℂ) * ((bp (mul3 z.2.2 z.1 z.2.1) : ℝ) : ℂ)`. Set `W₂ : Mx n × (Mx n × Mx n) → ℂ` to `fun z => Φφ (mul3 z.2.1 z.1 z.2.2) * ((B (mul3 z.2.1 z.1 z.2.2, z.2.1) : ℝ) : ℂ) * ((bp z.1 : ℝ) : ℂ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfst : ContDiff ℝ ∞ fun z : Mx n × (Mx n × Mx n) => z.1` using `contDiff_fst`. Establish `hA : ContDiff ℝ ∞ fun z : Mx n × (Mx n × Mx n) => z.2.1` using `contDiff_fst.comp contDiff_snd`. Establish `hC : ContDiff ℝ ∞ fun z : Mx n × (Mx n × Mx n) => z.2.2` using `contDiff_snd.comp contDiff_snd`. Establish `hM1` using `contDiff_triple_matrix_product hC hfst hA`. Establish `hM2` using `contDiff_triple_matrix_product hA hfst hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW₁ : ContDiff ℝ ∞ W₁` using `((hΦφ.comp hfst).mul (Complex.ofRealCLM.contDiff.comp (hB.smooth.comp (hfst.prodMk hA)))).mul (Complex.ofRealCLM.contDiff.comp (bp.contDiff.comp hM1))`. Establish `hW₂ : ContDiff ℝ ∞ W₂` using `((hΦφ.comp hM2).mul (Complex.ofRealCLM.contDiff.comp (hB.smooth.comp (hM2.prodMk hA)))).mul (Complex.ofRealCLM.contDiff.comp (bp.contDiff.comp hfst))`. Establish `hW₁pt : ∀ y k : H, W₁ (matCoord ι y, p k) = φ y * ((B (matCoord ι y, matCoord ι k) : ℂ) * (ψ (k⁻¹ * y * k) : ℂ))`. Introduce `y k`. Simplify using `only [W₁, p, ψ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[triple_product_matrix_coordinates, hφeq, mul_assoc]`. Establish `hW₂pt : ∀ y k : H, W₂ (matCoord ι y, p k) = φ (k * y * k⁻¹) * (B (matCoord ι (k * y * k⁻¹), matCoord ι k) : ℂ) * (ψ y : ℂ)`. Introduce `y k`. Simplify using `only [W₂, p, ψ]`. Rewrite using `[triple_product_matrix_coordinates, hφeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvan1 : ∀ z k : H, k ∉ Kset → W₁ (matCoord ι (z⁻¹ * s * z), p k) = 0`. Introduce `z k hk`. Rewrite using `[hW₁pt]`. Assume the negation of the conclusion as `hne`. Apply `hk` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : φ (z⁻¹ * s * z) ≠ 0` using `left_ne_zero_of_mul hne`. Establish `h23` using `right_ne_zero_of_mul hne`. Establish `h2 : (B (matCoord ι (z⁻¹ * s * z), matCoord ι k) : ℂ) ≠ 0` using `left_ne_zero_of_mul h23`. Establish `h3 : (ψ (k⁻¹ * (z⁻¹ * s * z) * k) : ℂ) ≠ 0` using `right_ne_zero_of_mul h23`. Establish `e : (z * k)⁻¹ * s * (z * k) = k⁻¹ * (z⁻¹ * s * z) * k` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hKprop z k (subset_tsupport _ h1) ?_ (fun h0 => h2 (by simp [h0]))` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `subset_tsupport _ (Function.mem_support.2 (fun h0 => h3 (by simp [h0])))`. Establish `hvan2 : ∀ w k : H, k ∉ Kset → W₂ (matCoord ι (w⁻¹ * s * w), p k) = 0`. Introduce `w k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hW₂pt]`. Assume the negation of the conclusion as `hne`. Apply `hk` to reduce the goal to its premises. Establish `h12` using `left_ne_zero_of_mul hne`. Establish `h3 : (ψ (w⁻¹ * s * w) : ℂ) ≠ 0` using `right_ne_zero_of_mul hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : φ (k * (w⁻¹ * s * w) * k⁻¹) ≠ 0` using `left_ne_zero_of_mul h12`. Establish `h2 : (B (matCoord ι (k * (w⁻¹ * s * w) * k⁻¹), matCoord ι k) : ℂ) ≠ 0` using `right_ne_zero_of_mul h12`. Establish `e1 : (w * k⁻¹)⁻¹ * s * (w * k⁻¹) = k * (w⁻¹ * s * w) * k⁻¹` using `by group`. Establish `e2 : (w * k⁻¹ * k)⁻¹ * s * (w * k⁻¹ * k) = w⁻¹ * s * w` using `by group`. Use `hKprop (w * k⁻¹) k ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `subset_tsupport _ h1`. Rewrite using `[e2]`. Conclude with `subset_tsupport _ (Function.mem_support.2 (fun h0 => h3 (by simp [h0])))`. Rewrite using `[e1]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `fun h0 => h2 (by simp [h0])`. Establish `h1` using `hSwap H n ι hemb μ Ω I m c q hK (Mx n × Mx n) W₁ p Kset (tsupport φ) hW₁ hp hKc hφc.isCompact (by`. Introduce `k _ y hy`. Establish `: φ y = 0`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hy (subset_tsupport _ h0)`. Rewrite using `[hW₁pt, this, zero_mul])`. Establish `h2` using `hSwap H n ι hemb μ Ω I m c q hK (Mx n × Mx n) W₂ p Kset (tsupport ψ) hW₂ hp hKc hψcs.isCompact (by`. Introduce `k _ y hy`. Establish `: ψ y = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hy (subset_tsupport _ h0)`. Rewrite using `[hW₂pt, this]`. Use the proof step `simp)`. Establish `hR1 : ∫ x, ker c q (fun y => ∫ k in Kset, W₁ (matCoord ι y, p k) ∂μ) x ∂m = a * ∫ x, ker c q φ x ∂m`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [MainStatements.WeightKernel.ker]`. Rewrite using `[← tsum_mul_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Take `⟨z, hz⟩` from `hq i x`. Rewrite using `[hz, setIntegral_eq_integral_of_forall_compl_eq_zero (hvan1 z)]`. Simplify using `only [hW₁pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[integral_const_mul, ha z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hstep : ∀ k : H, ∫ x, ker c q (fun y => W₁ (matCoord ι y, p k)) x ∂m = ∫ x, ker c q (fun y => W₂ (matCoord ι y, p k)) x ∂m`. Introduce `k`. Establish `hmem : (fun y => W₂ (matCoord ι y, p k)) ∈ CcMat ι`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, fun Y => W₂ (Y, p k), hW₂.comp (contDiff_id.prodMk contDiff_const), fun g => rfl⟩` and prove the remaining obligations. Use `hψcs.mono ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy`, the goal using `[Function.mem_support]`. Introduce `h0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[hW₂pt, h0]`. Simplify using the standard rewrite rules. Establish `hfun : (fun y => W₁ (matCoord ι y, p k)) = fun y => W₂ (matCoord ι (k⁻¹ * y * k⁻¹⁻¹), p k)`. Use function extensionality and compare the values at `y`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hW₂pt, hW₁pt]`. Establish `e : k * (k⁻¹ * y * k⁻¹⁻¹) * k⁻¹ = y` using `by group`. Rewrite using `[e, inv_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hInv _ hmem k⁻¹`. Establish `hR2 : ∫ x, ker c q (fun y => ∫ k in Kset, W₂ (matCoord ι y, p k) ∂μ) x ∂m = 0`. Establish `hz : ∀ x, ker c q (fun y => ∫ k in Kset, W₂ (matCoord ι y, p k) ∂μ) x = 0`. Introduce `x`. Simplify using `only [MainStatements.WeightKernel.ker]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(tsum_congr fun i => ?_).trans tsum_zero` and prove the remaining obligations. Take `⟨w, hw⟩` from `hq i x`. Rewrite using `[hw, setIntegral_eq_integral_of_forall_compl_eq_zero (hvan2 w)]`. Simplify using `only [hW₂pt]`. Rewrite using `[integral_mul_const, hTwo H n ι hmc s B hB μ dt φ hφcont hφc hOrb w]`.
-
-Simplify using the standard rewrite rules. Simplify using `[hz]`. Establish `key : a * ∫ x, ker c q φ x ∂m = 0`. Rewrite using `[← hR1, ← h1]`. Simplify using `only [hstep]`.
-
-Rewrite using `[h2]`. Conclude with `hR2`. Conclude with `(mul_eq_zero.1 key).resolve_left ha0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MainStatements.WeightKernel.vanish : KerSwap → IdentOne → IdentTwo → Vanish := by
   intro hSwap hOne hTwo H _ _ _ _ _ _ _ _ n ι hemb s B hB μ _ _ dt _ _ Ω I _ _ m _ c q hK hq hInv φ hφ hOrb

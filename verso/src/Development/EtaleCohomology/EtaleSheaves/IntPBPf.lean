@@ -14,9 +14,9 @@ def IntFib : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] {X : Scheme.{0}
     Eqv _ (sch.map (pullback.fst p (LateralTheory.E.t_E2Cut.cpt A))) (tw q i)
 
 /- English proof (translation)
-Introduce `hyp q i A _ _ hSH hq X p hp`. Take `⟨hA, -⟩` from `hSH`. Take `⟨B, _, φ, hφ, hE⟩` from `hF A p hp`. Establish `: HenselianRing B ((IsLocalRing.maximalIdeal A).map φ)` using `hH A B φ hφ`. Establish `hqB : IsUnit ((q : ℕ) : B)` using `by simpa using hq.map φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hE q i (hyp.e1 q B _ hqB i)`.
+A detailed English derivation is pending.
 -/
 theorem IntPB_of (hH : IntHens) (hF : IntFib) : LateralTheory.E.t_E2Cut.IntPB := by
   intro hyp q i A _ _ hSH hq X p hp

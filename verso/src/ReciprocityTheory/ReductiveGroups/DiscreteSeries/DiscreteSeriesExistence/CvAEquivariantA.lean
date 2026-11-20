@@ -22,15 +22,15 @@ def kUJA (ε : Fin n → Bool) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset
       Matrix.mem_unitaryGroup_iff'.1 hk.1, Matrix.one_mul]⟩
 
 /- English proof (translation)
-Use `set κ := kUJA ε hk with hκdef`. Establish `hκ : Formalism.MainNotions.S.umat κ = k` using `rfl`. Establish `: (Formalism.REAL.muG ε).IsMulRightInvariant` using `⟨fun y => (measurePreserving_mul_right ε y).map_eq⟩`. Establish `hmul : ∀ a b : Formalism.REAL.UJ ε, σ (Formalism.MainNotions.S.umat (a * b)) = (σ (Formalism.MainNotions.S.umat a)).comp (σ (Formalism.MainNotions.S.umat b))` using `fun a b => hσ.1.2 _ (umat_mem_UJset ε a) _ (umat_mem_UJset ε b)`. Use `set F : Formalism.REAL.UJ ε → H := fun g => α (Formalism.MainNotions.S.umat g) • σ (Formalism.MainNotions.S.umat (g * κ)) v with hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hR : cvA ε σ α (σ k v) = ∫ g, F g ∂(Formalism.REAL.muG ε)`. Unfold `cvA`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[hF]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hmul, ContinuousLinearMap.comp_apply, hκ]`. Establish `hL : σ k (cvA ε σ α v) = ∫ g, F (κ * g * κ⁻¹) ∂(Formalism.REAL.muG ε)`. Unfold `cvA`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (integrable_cvA hσ hα hαc v)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `hc : Formalism.MainNotions.S.umat (κ * g * κ⁻¹) = k * Formalism.MainNotions.S.umat g * star k` using `rfl`. Rewrite using `[hF]`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel_right, hc, hαK k hk, hmul, ContinuousLinearMap.comp_apply, hκ, map_smul]`. Rewrite using `[hL, hR]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cvA_equivariantA (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hα : Continuous α) (hαc : HasCompactSupport α) (hαK : ∀ k ∈ Kset ε, ∀ g, α (k * g * star k) = α g)
@@ -66,27 +66,23 @@ theorem cvA_equivariantA (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fi
     _ = ∫ g, F g ∂(Formalism.REAL.muG ε) := integral_mul_right_eq_self F κ⁻¹
 
 /- English proof (translation)
-Take `⟨hfin, hstab, hirr, ⟨w, hwS, hw0, hwt⟩, hdom⟩` from `hS`. Establish `hstab0 : Formalism.MainNotions.S.IsKStableOn ε σ (S ⊓ LinearMap.ker T)`. Introduce `g hg v hv`. Rewrite `hv`, the goal using `[Submodule.mem_inf, LinearMap.mem_ker]`. Conclude with `⟨hstab g hg v hv.1, by rw [← hT g hg v, hv.2, _root_.map_zero]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Break down `hirr _ inf_le_left hstab0 with h0 | h0` into its components or cases. Establish `hinj : ∀ x ∈ S, T x = 0 → x = 0` using `fun x hx hTx => by`. Establish `hx' : x ∈ S ⊓ LinearMap.ker T` using `Submodule.mem_inf.2 ⟨hx, LinearMap.mem_ker.2 hTx⟩`. Rewrite `hx'` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hx'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_sSup` to reduce the goal to its premises. Use `show Formalism.MainNotions.S.IsKTypeOf ε σ μ (S.map T)`. Unfold `Formalism.MainNotions.S.IsKTypeOf`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional ℂ S := hfin infer_instance`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Rewrite using `[hT g hg x]`. Conclude with `Submodule.mem_map_of_mem (hstab g hg x hx)`. Introduce `S' hS' hS'st`. Establish `hst : Formalism.MainNotions.S.IsKStableOn ε σ (S ⊓ S'.comap T)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `g hg v hv`. Rewrite `hv`, the goal using `[Submodule.mem_inf, Submodule.mem_comap]`. Conclude with `⟨hstab g hg v hv.1, by rw [← hT g hg v]; exact hS'st g hg _ hv.2⟩`. Break down `hirr _ inf_le_left hst with h1 | h1` into its components or cases. Use `left`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `hS' hy`. Establish `hx' : x ∈ S ⊓ S'.comap T` using `Submodule.mem_inf.2 ⟨hx, Submodule.mem_comap.2 hy⟩`. Rewrite `hx'` using `[h1, Submodule.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx', _root_.map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`. Use `le_antisymm hS' ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hx' : x ∈ S ⊓ S'.comap T` using `by rw [h1]; exact hx`. Conclude with `Submodule.mem_comap.1 (Submodule.mem_inf.1 hx').2`. Establish `hTw : T w ≠ 0` using `fun h => hw0 (hinj w hwS h)`. Use `⟨T w, Submodule.mem_map_of_mem hwS, hTw, ?_⟩` and prove the remaining obligations. Introduce `θ hθ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT _ hθ w, hwt θ hθ, _root_.map_smul]`. Introduce and unpack `μ' _ ⟨x, hx, rfl⟩ hne hwt'`. Establish `hx0 : x ≠ 0` using `fun h => hne (by rw [h, _root_.map_zero])`. Use `hdom μ' x hx hx0 ?_` and prove the remaining obligations. Introduce `θ hθ`.
-
-Establish `h1` using `hwt' θ hθ`. Rewrite `h1` using `[hT _ hθ x]`. Use `sub_eq_zero.1 (hinj _ (Submodule.sub_mem _ (hstab _ hθ x hx) (Submodule.smul_mem _ _ hx)) ?_)` and prove the remaining obligations. Rewrite using `[_root_.map_sub, h1, _root_.map_smul, sub_self]`. Introduce and unpack `y ⟨x, hx, rfl⟩`.
-
-Establish `hx' : x ∈ S ⊓ LinearMap.ker T` using `by rw [h0]; exact hx`. Rewrite using `[LinearMap.mem_ker.1 (Submodule.mem_inf.1 hx').2]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_le_isoA (T : H →ₗ[ℂ] H) (hT : ∀ k ∈ Formalism.REAL.Kset ε, ∀ v, σ k (T v) = T (σ k v))
     {μ : Fin n → ℝ} {S : Submodule ℂ H} (hS : Formalism.MainNotions.S.IsKTypeOf ε σ μ S) :
@@ -147,27 +143,25 @@ theorem map_le_isoA (T : H →ₗ[ℂ] H) (hT : ∀ k ∈ Formalism.REAL.Kset ε
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Set `T : ∀ α, AdmA ε U α → H →ₗ[ℂ] H` to `fun α hα => { toFun := cvA ε σ α map_add' := cvA_add_vec hσ hα.1.continuous hα.2.1 map_smul' := fun c v => cvA_smul_vec α c v }`. Establish `hTK : ∀ α (hα : AdmA ε U α), ∀ k ∈ Formalism.REAL.Kset ε, ∀ v, σ k (T α hα v) = T α hα (σ k v)` using `fun α hα k hk v => cvA_equivariantA hσ hα.1.continuous hα.2.1 hα.2.2.2 (by rw [← mir_Kset_eq]; exact hk) v`. Establish `hWc : IsCompactElement W` using `(Submodule.fg_iff_compact W).1 (Module.Finite.iff_fg.1 hWf)`. Take `⟨t, hts, hWt⟩` from `(CompleteLattice.isCompactElement_iff_exists_le_sSup_of_le_sSup (k := W)).1 hWc _ hWsum`. Set `iso : Submodule ℂ H → Submodule ℂ H` to `fun S => if h : ∃ μ, Formalism.MainNotions.S.IsKTypeOf ε σ μ S then sSup {S' | Formalism.MainNotions.S.IsKTypeOf ε σ h.choose S'} else ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI hisoF : ∀ S, FiniteDimensional ℂ (iso S) := by`. Introduce `S`. Distinguish the cases in `h : ∃ μ, Formalism.MainNotions.S.IsKTypeOf ε σ μ S`. Establish `e : iso S = sSup {S' | Formalism.MainNotions.S.IsKTypeOf ε σ h.choose S'}` using `dif_pos h`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hadm _`. Establish `e : iso S = ⊥` using `dif_neg h`. Rewrite using `[e]`. Use `infer_instance`. Set `W2` to `t.sup iso`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS_le : ∀ S ∈ t, S ≤ iso S ∧ ∀ α (hα : AdmA ε U α), S.map (T α hα) ≤ iso S`. Introduce `S hS`. Establish `h : ∃ μ, Formalism.MainNotions.S.IsKTypeOf ε σ μ S` using `hts hS`. Simplify using `only [iso, dif_pos h]`. Conclude with `⟨le_sSup h.choose_spec, fun α hα => map_le_isoA (T α hα) (hTK α hα) h.choose_spec⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWW2 : W ≤ W2` using `hWt.trans (Finset.sup_le fun S hS => (hS_le S hS).1.trans (Finset.le_sup (f := iso) hS))`. Establish `hmapW : ∀ α (hα : AdmA ε U α), ∀ w ∈ W, cvA ε σ α w ∈ W2`. Introduce `α hα w hw`. Establish `: W ≤ W2.comap (T α hα)` using `hWt.trans (Finset.sup_le fun S hS => Submodule.map_le_iff_le_comap.1 (((hS_le S hS).2 α hα).trans (Finset.le_sup (f := iso) hS)))`. Conclude with `this hw`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `b` to `Module.finBasis ℂ W`. Set `bw : Fin (Module.finrank ℂ W) → H` to `fun i => (b i : H)`. Set `R : Submodule ℂ (Fin (Module.finrank ℂ W) → W2)` to `{ carrier := {p | ∃ α, AdmA ε U α ∧ ∀ i, cvA ε σ α (bw i) = (p i : H)} add_mem' := by`. Introduce and unpack `p q ⟨α, hα, hp⟩ ⟨β, hβ, hq⟩`. Conclude with `⟨α + β, hα.add hβ, fun i => by`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[cvA_add_fun hσ hα.1.continuous hα.2.1 hβ.1.continuous hβ.2.1, hp, hq]`. Use the proof step `rfl⟩`. Use the proof step `zero_mem' := ⟨0, AdmA.zero U, fun i => by rw [cvA_zero_fun]; rfl⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c p ⟨α, hα, hp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c • α, hα.smul c, fun i => by rw [cvA_smul_fun, hp]; rfl⟩ }`. Establish `hRc : IsClosed (R : Set (Fin (Module.finrank ℂ W) → W2))` using `R.closed_of_finiteDimensional`. Set `p0 : Fin (Module.finrank ℂ W) → W2` to `fun i => ⟨bw i, hWW2 (b i).2⟩`. Establish `hp0 : p0 ∈ closure (R : Set (Fin (Module.finrank ℂ W) → W2))`. Rewrite using `[Metric.mem_closure_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `η hη`. Take `⟨α, hα, hnear⟩` from `exists_nearA hσ hU h1 bw (half_pos hη)`. Use `⟨fun i => ⟨cvA ε σ α (bw i), hmapW α hα _ (b i).2⟩, ⟨α, hα, fun i => rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dist_pi_lt_iff hη]`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show dist (bw i) (cvA ε σ α (bw i)) < η`. Rewrite using `[dist_comm, dist_eq_norm]`. Combine the linear relations using `[hnear i]`. Rewrite `hp0` using `[hRc.closure_eq]`. Take `⟨α, hα, hfix⟩` from `hp0`.
-
-Use `⟨α, hα, ?_⟩` and prove the remaining obligations. Establish `hext : (T α hα).comp W.subtype = W.subtype` using `b.ext fun i => hfix i`. Introduce `w hw`. Conclude with `LinearMap.congr_fun hext ⟨w, hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cvA_idA (hσ : IsURepOn (UJset ε) σ)
     (hadm : ∀ μ : Fin n → ℝ, FiniteDimensional ℂ

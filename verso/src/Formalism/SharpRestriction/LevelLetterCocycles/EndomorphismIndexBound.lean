@@ -28,19 +28,19 @@ section Quot
 variable {O : Type*} [CommRing O] {V : Type*} [AddCommGroup V] [Module O V]
 
 /- English proof (translation)
-Establish `hmem : ∀ v : ↥L, P v ∈ (L ⊔ B) ⊓ A`. Introduce `v`. Use `Submodule.mem_inf.mpr ⟨?_, hPA v⟩` and prove the remaining obligations. Establish `h1 : (v : V) ∈ L ⊔ B` using `Submodule.mem_sup_left v.2`. Establish `h2 : (v : V) - P v ∈ L ⊔ B` using `Submodule.mem_sup_right (hPB v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Submodule.sub_mem _ h1 h2`. Simplify using `using h3`. Set `g : ↥L →ₗ[O] ↥((L ⊔ B) ⊓ A)` to `LinearMap.codRestrict ((L ⊔ B) ⊓ A) (P ∘ₗ L.subtype) hmem`. Set `q` to `(Submodule.mkQ ((L ⊓ A).comap ((L ⊔ B) ⊓ A).subtype)) ∘ₗ g`. Establish `hK : ((A ⊓ L) ⊔ (B ⊓ L)).comap L.subtype ≤ LinearMap.ker q`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_comap]`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Use `show P v ∈ L ⊓ A`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv' : (v : V) = a + b` using `hab.symm`. Rewrite using `[hv', map_add, hA a (Submodule.mem_inf.mp ha).1, hB b (Submodule.mem_inf.mp hb).1, add_zero]`. Conclude with `Submodule.mem_inf.mpr ⟨(Submodule.mem_inf.mp ha).2, (Submodule.mem_inf.mp ha).1⟩`. Establish `hq : Function.Surjective q`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨hwLB, hwA⟩` from `Submodule.mem_inf.mp w.2`. Take `⟨l, hl, b, hb, hlb⟩` from `Submodule.mem_sup.mp hwLB`. Use `⟨⟨l, hl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show P l = (w : V)`. Establish `hPw : P (w : V) = w` using `hA w hwA`. Rewrite using `[← hPw, ← hlb, map_add, hB b hb, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Module.length_le_of_surjective (Submodule.liftQ _ q hK) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨v, rfl⟩` from `hq y`. Conclude with `⟨Submodule.Quotient.mk v, Submodule.liftQ_apply _ _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quot_le (L A B : Submodule O V) (P : V →ₗ[O] V) (hA : ∀ v ∈ A, P v = v)
     (hB : ∀ v ∈ B, P v = 0) (hPA : ∀ v, P v ∈ A) (hPB : ∀ v, v - P v ∈ B) :
@@ -90,7 +90,7 @@ variable {O : Type*} [CommRing O] [IsDomain O] {X : Type*} [Fintype X] [Decidabl
   (T : Subalgebra O (X → O))
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [SubmonoidClass.coe_finsetProd, Finset.prod_apply]`. Consider the case `simp [Finset.prod_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coe_prod' {ι : Type*} (s : Finset ι) (h : ι → T) (z : X) :
     ((∏ y ∈ s, h y : T) : X → O) z = ∏ y ∈ s, ((h y : T) : X → O) z := by
@@ -99,7 +99,7 @@ theorem coe_prod' {ι : Type*} (s : Finset ι) (h : ι → T) (z : X) :
   | simp [Finset.prod_apply]
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`. Consider the case `simp [Finset.sum_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coe_sum' {ι : Type*} (s : Finset ι) (h : ι → T) (z : X) :
     ((∑ y ∈ s, h y : T) : X → O) z = ∑ y ∈ s, ((h y : T) : X → O) z := by
@@ -108,11 +108,9 @@ theorem coe_sum' {ι : Type*} (s : Finset ι) (h : ι → T) (z : X) :
   | simp [Finset.sum_apply]
 
 /- English proof (translation)
-Use `choose f hfT hf using fun y : {y : X // y ≠ x} => hsep x y.1 (Ne.symm y.2)`. Set `h : {y : X // y ≠ x} → T` to `fun y => ⟨f y, hfT y⟩ - algebraMap O T (f y y.1)`. Establish `hev : ∀ y z, ((h y : T) : X → O) z = f y z - f y y.1`. Introduce `y z`. Simplify using `[h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ y, h y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_prod' T]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun y _ => by rw [hev]; exact sub_ne_zero.mpr (hf y)`. Introduce `y hy`. Rewrite using `[coe_prod' T]`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ ⟨y, hy⟩) (by rw [hev]; exact sub_self _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bump (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (x : X) :
     ∃ g : T, (g : X → O) x ≠ 0 ∧ ∀ y, y ≠ x → (g : X → O) y = 0 := by
@@ -130,11 +128,11 @@ theorem exists_bump (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (
     exact Finset.prod_eq_zero (Finset.mem_univ ⟨y, hy⟩) (by rw [hev]; exact sub_self _)
 
 /- English proof (translation)
-Use `choose g hgx hgy using fun x => exists_bump T hsep x`. Use `⟨∏ x, (g x : X → O) x, Finset.prod_ne_zero_iff.mpr fun x _ => hgx x, fun S => ?_⟩` and prove the remaining obligations. Use `⟨∑ x ∈ S, g x * algebraMap O T (∏ x' ∈ Finset.univ.erase x, (g x' : X → O) x'), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_sum' T]`. Establish `hterm : ∀ x, ((g x * algebraMap O T (∏ x' ∈ Finset.univ.erase x, (g x' : X → O) x') : T) : X → O) y = if y = x then ∏ x, (g x : X → O) x else 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hc : ((g x * algebraMap O T (∏ x' ∈ Finset.univ.erase x, (g x' : X → O) x') : T) : X → O) y = (g x : X → O) y * ∏ x' ∈ Finset.univ.erase x, (g x' : X → O) x'`. Simplify using the standard rewrite rules. Rewrite using `[hc]`. Use `split_ifs with hxy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hxy` using the available equality. Conclude with `Finset.mul_prod_erase Finset.univ (fun x' => (g x' : X → O) x') (Finset.mem_univ _)`. Rewrite using `[hgy x y hxy, zero_mul]`. Simplify using `only [hterm]`. Rewrite using `[Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ind (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) :
     ∃ C : O, C ≠ 0 ∧ ∀ S : Finset X, ∃ e : T, ∀ y, (e : X → O) y = if y ∈ S then C else 0 := by
@@ -176,7 +174,7 @@ Both sides reduce to the same expression.
 theorem actK_apply (f : T) : actK T act f = (act f).baseChange (FractionRing O) := rfl
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.heckeEig Formalism.NG.Vx`. Use `iInf_congr fun f => ?_` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[Module.End.mem_eigenspace_iff, LinearMap.mem_ker]`. Simplify using `[actK_apply, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem heckeEig_eq (x : X) :
     heckeEig T act x = Vx T (actK T act).toRingHom x := by
@@ -187,9 +185,9 @@ theorem heckeEig_eq (x : X) :
   simp [actK_apply, sub_eq_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show (f : X → O) y * (e : X → O) y = (f : X → O) x * (e : X → O) y`. Rewrite using `[he y]`. Use `split_ifs with h`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mem_singleton.mp h]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mul_ind [DecidableEq X] {C : O} {x : X} {e : T}
     (he : ∀ y, (e : X → O) y = if y ∈ ({x} : Finset X) then C else 0) (f : T) :
@@ -203,15 +201,15 @@ theorem mul_ind [DecidableEq X] {C : O} {x : X} {e : T}
   · simp
 
 /- English proof (translation)
-Take `⟨C, hC, hind⟩` from `exists_ind T hsep`. Use `choose e he using fun x : X => hind {x}`. Establish `hsum : ∑ x, e x = algebraMap O T C`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_sum' T]`. Simplify using `[he]`. Establish `hmemV : ∀ x (v : TensorProduct O (FractionRing O) M), actK T act (e x) v ∈ Vx T (actK T act).toRingHom x`. Introduce `x v`. Unfold `Formalism.NG.Vx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_iInf _ |>.mpr fun f => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker]`. Establish `hm` using `mul_ind T (he x) f`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hm, map_smul, LinearMap.smul_apply, algebraMap_smul, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hCK : algebraMap O (FractionRing O) C ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr hC`. Establish `hv : algebraMap O (FractionRing O) C • v = ∑ x, actK T act (e x) v`. Rewrite using `[← LinearMap.sum_apply, ← map_sum, hsum, AlgHom.commutes, Module.algebraMap_end_apply, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : algebraMap O (FractionRing O) C • v ∈ ⨆ x, Vx T (actK T act).toRingHom x`. Rewrite using `[hv]`. Conclude with `Submodule.sum_mem _ fun x _ => Submodule.mem_iSup_of_mem x (hmemV x v)`. Establish `h2` using `Submodule.smul_mem _ (algebraMap O (FractionRing O) C)⁻¹ h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hCK, one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eigSpan (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) :
     (⨆ x, Vx T (actK T act).toRingHom x) = ⊤ := by
@@ -248,37 +246,33 @@ theorem eigSpan (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) :
   rwa [smul_smul, inv_mul_cancel₀ hCK, one_smul] at h2
 
 /- English proof (translation)
-Take `⟨C, hC, hind⟩` from `exists_ind T hsep`. Use `choose e he using fun x : X => hind {x}`. Establish `hsumAll : ∑ x, e x = algebraMap O T C`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_sum' T]`. Simplify using `[he]`. Establish `hfun : ∀ (s : Finset X) y, ((∑ x ∈ s, e x : T) : X → O) y = if y ∈ s then C else 0`. Introduce `s y`. Rewrite using `[coe_sum' T]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[he]`. Establish `hmemV : ∀ x (v : TensorProduct O (FractionRing O) M), actK T act (e x) v ∈ Vx T (actK T act).toRingHom x`. Introduce `x v`. Unfold `Formalism.NG.Vx`. Use `Submodule.mem_iInf _ |>.mpr fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker]`. Establish `hm` using `mul_ind T (he x) f`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hm, map_smul, LinearMap.smul_apply, algebraMap_smul, sub_self]`. Establish `hvx : ∀ x (f : T) (v : TensorProduct O (FractionRing O) M), v ∈ Vx T (actK T act).toRingHom x → actK T act f v = algebraMap O (FractionRing O) ((f : X → O) x) • v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x f v hv`. Unfold `Formalism.NG.Vx at hv`. Establish `h` using `(Submodule.mem_iInf _).mp hv f`. Rewrite `h` using `[LinearMap.mem_ker]`. Simplify `h` using `[sub_eq_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcK : algebraMap O (FractionRing O) C ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr hC`. Establish `hAle : VS T (actK T act).toRingHom (S : Set X) ≤ LinearMap.ker (actK T act (∑ x ∈ S, e x) - algebraMap O (FractionRing O) C • LinearMap.id)`. Unfold `Formalism.NG.VS`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hvx x _ v hv, hfun S x, if_pos (Finset.mem_coe.mp hx)]`. Simplify using the standard rewrite rules. Establish `hBle : VS T (actK T act).toRingHom ((S : Set X)ᶜ) ≤ LinearMap.ker (actK T act (∑ x ∈ S, e x))`. Unfold `Formalism.NG.VS`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `hx' : x ∉ S` using `fun h => hx (Finset.mem_coe.mpr h)`. Rewrite using `[LinearMap.mem_ker, hvx x _ v hv, hfun S x, if_neg hx']`. Simplify using the standard rewrite rules. Establish `hPA' : ∀ v, actK T act (∑ x ∈ S, e x) v ∈ VS T (actK T act).toRingHom (S : Set X)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun x hx => ?_` and prove the remaining obligations. Unfold `Formalism.NG.VS`. Conclude with `Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem (Finset.mem_coe.mpr hx) (hmemV x v))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrest : ∀ v, actK T act (∑ x ∈ Finset.univ \ S, e x) v ∈ VS T (actK T act).toRingHom ((S : Set X)ᶜ)`. Introduce `v`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ∈ ((S : Set X)ᶜ)` using `fun h => (Finset.mem_sdiff.mp hx).2 (Finset.mem_coe.mp h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Formalism.NG.VS`. Conclude with `Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem hx' (hmemV x v))`. Establish `hcv : ∀ v, algebraMap O (FractionRing O) C • v = actK T act (∑ x ∈ Finset.univ \ S, e x) v + actK T act (∑ x ∈ S, e x) v`. Introduce `v`. Rewrite using `[← LinearMap.add_apply, ← map_add, Finset.sum_sdiff (Finset.subset_univ S), hsumAll, AlgHom.commutes, Module.algebraMap_end_apply, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hPB' : ∀ v, v - (algebraMap O (FractionRing O) C)⁻¹ • actK T act (∑ x ∈ S, e x) v ∈ VS T (actK T act).toRingHom ((S : Set X)ᶜ)`. Introduce `v`. Establish `h1 : v - (algebraMap O (FractionRing O) C)⁻¹ • actK T act (∑ x ∈ S, e x) v = (algebraMap O (FractionRing O) C)⁻¹ • actK T act (∑ x ∈ Finset.univ \ S, e x) v`. Rewrite using `[eq_inv_smul_iff₀ hcK, smul_sub, hcv v, smul_smul, mul_inv_cancel₀ hcK, one_smul, add_sub_cancel_right]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ (hrest v)`. Set `P : TensorProduct O (FractionRing O) M →ₗ[O] TensorProduct O (FractionRing O) M` to `((algebraMap O (FractionRing O) C)⁻¹ • actK T act (∑ x ∈ S, e x)).restrictScalars O`. Use `quot_le L _ _ P ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `v hv`. Establish `h` using `hAle hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Use `show (algebraMap O (FractionRing O) C)⁻¹ • actK T act (∑ x ∈ S, e x) v = v`. Rewrite using `[h, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, inv_mul_cancel₀ hcK, one_smul]`. Introduce `v hv`. Establish `h` using `LinearMap.mem_ker.mp (hBle hv)`.
-
-Use `show (algebraMap O (FractionRing O) C)⁻¹ • actK T act (∑ x ∈ S, e x) v = 0`. Rewrite using `[h, smul_zero]`. Introduce `v show (algebraMap O (FractionRing O) C)⁻¹ • actK T act (∑ x ∈ S, e x) v ∈ VS T (actK T act).toRingHom (S : Set X)`. Conclude with `Submodule.smul_mem _ _ (hPA' v)`. Introduce `v`.
-
-Conclude with `hPB' v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem len_le (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y)
     (L : Submodule O (TensorProduct O (FractionRing O) M)) (S : Finset X) :
@@ -386,9 +380,9 @@ theorem len_le (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y)
     exact hPB' v
 
 /- English proof (translation)
-Simplify using `only [Formalism.BasicNotions.ccIdeal, Formalism.NG.ccIdeal, Formalism.NG.resOff, RingHom.mem_ker]`. Rewrite using `[funext_iff, funext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`. Conclude with `h ⟨y.1, y.2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y`. Conclude with `h ⟨y.1, y.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_ccIdeal_iff (Z : Finset X) (f : T) :
     f ∈ Formalism.BasicNotions.ccIdeal T Z ↔ f ∈ Formalism.NG.ccIdeal T (Z : Set X) := by
@@ -401,11 +395,9 @@ theorem mem_ccIdeal_iff (Z : Finset X) (f : T) :
     exact h ⟨y.1, y.2⟩
 
 /- English proof (translation)
-Take `⟨c, hc, hval⟩` from `vcc_attain (T := T) (Z : Set X) π`. Establish `h : ccAt T Z π = Ideal.span {(c : X → O) π}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[ccAt, Ideal.map_le_iff_le_comap]`. Introduce `f hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Use `show (c : X → O) π ∣ (f : X → O) π`. Rewrite using `[← addVal_le_iff_dvd, hval]`. Conclude with `iInf₂_le f ((mem_ccIdeal_iff T Z f).mp hf)`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`.
-
-Conclude with `Ideal.mem_map_of_mem _ ((mem_ccIdeal_iff T Z c).mpr hc)`. Rewrite using `[h, IdempotentNormalFormsLenFacts.length_quot_span, hval]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_ccAt (Z : Finset X) (π : X) :
     Module.length O (O ⧸ ccAt T Z π) = vcc T (Z : Set X) π := by
@@ -423,11 +415,11 @@ theorem length_ccAt (Z : Finset X) (π : X) :
   rw [h, IdempotentNormalFormsLenFacts.length_quot_span, hval]
 
 /- English proof (translation)
-Take `⟨C, hC, hind⟩` from `exists_ind T hsep`. Take `⟨e, he⟩` from `hind {π}`. Establish `heI : e ∈ Formalism.NG.ccIdeal T (Z : Set X)`. Simplify using `only [Formalism.NG.ccIdeal, RingHom.mem_ker]`. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hy : y.1 ≠ π` using `fun h => y.2 (by rw [Finset.mem_coe, h]; exact hπ)`. Use `show (e : X → O) y.1 = 0`. Rewrite using `[he, if_neg (by simpa using hy)]`. Establish `hle : vcc T (Z : Set X) π ≤ IsDiscreteValuationRing.addVal O ((e : X → O) π)`. Unfold `Formalism.NG.vcc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `iInf₂_le e heI`. Introduce `htop`. Rewrite `hle` using `[htop, top_le_iff, he, if_pos (Finset.mem_singleton_self π)]`. Conclude with `hC ((IsDiscreteValuationRing.addVal_eq_top_iff).mp hle)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vcc_ne_top (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (Z : Finset X) (π : X)
     (hπ : π ∈ Z) : vcc T (Z : Set X) π ≠ ⊤ := by
@@ -448,13 +440,13 @@ theorem vcc_ne_top (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (Z
   exact hC ((IsDiscreteValuationRing.addVal_eq_top_iff).mp hle)
 
 /- English proof (translation)
-Establish `hlp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp (Fact.out)`. Take `⟨m, hm⟩ : (l : ℤ) ^ padicValInt l A ∣ A` from `(padicValInt_dvd_iff _ A).mpr (Or.inr le_rfl)`. Establish `hnd : ¬ (l : ℤ) ∣ m`. Introduce and unpack `⟨m', hm'⟩`. Establish `h2 : (l : ℤ) ^ (padicValInt l A + 1) ∣ A` using `Dvd.intro m' (by rw [pow_succ, mul_assoc, ← hm']; exact hm.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Break down `(padicValInt_dvd_iff (padicValInt l A + 1) A).mp h2 with h | h` into its components or cases. Conclude with `hA h`. Use linear arithmetic over natural numbers and integers. Establish `hcop : IsCoprime (l : ℤ) m` using `(Irreducible.coprime_iff_not_dvd hlp.irreducible).mpr hnd`. Take `⟨u, v, huv⟩` from `hcop.map (Int.castRingHom O)`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmu : IsUnit (m : O)`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one huv with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_right h) (by simpa using hl)`. Simplify using `using isUnit_of_mul_isUnit_right h`. Take `⟨w, hw⟩` from `hmu`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hm]`. Use `push_cast`. Rewrite using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_pow, ← hw, IsDiscreteValuationRing.addVal_eq_zero_of_unit, add_zero, nsmul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem addVal_int (l : ℕ) [Fact l.Prime] (hl : ¬ IsUnit (l : O)) (A : ℤ) (hA : A ≠ 0) :
     addVal O (A : O) = (padicValInt l A : ℕ∞) * addVal O (l : O) := by
@@ -484,7 +476,7 @@ def latIn (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] :
   LinearMap.range (TensorProduct.mk O (FractionRing O) M 1)
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨m, rfl⟩` from `LinearMap.mem_range.mp hv`. Conclude with `LinearMap.mem_range.mpr ⟨β m, by simp [LinearMap.baseChange_tmul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem baseChange_latIn (β : Module.End O M) :
     ∀ v ∈ latIn O M, β.baseChange (FractionRing O) v ∈ latIn O M := by
@@ -493,9 +485,9 @@ theorem baseChange_latIn (β : Module.End O M) :
   exact LinearMap.mem_range.mpr ⟨β m, by simp [LinearMap.baseChange_tmul]⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul a m`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `ht : a ⊗ₜ[O] m = a • ((1 : FractionRing O) ⊗ₜ[O] m)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[ht]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (LinearMap.mem_range.mpr ⟨m, rfl⟩ : (1 : FractionRing O) ⊗ₜ[O] m ∈ latIn O M))`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_latIn : Submodule.span (FractionRing O) (latIn O M : Set (TensorProduct O (FractionRing O) M)) = ⊤ := by
   rw [eq_top_iff]
@@ -511,7 +503,7 @@ theorem span_latIn : Submodule.span (FractionRing O) (latIn O M : Set (TensorPro
   | add x y hx hy => exact add_mem hx hy
 
 /- English proof (translation)
-Unfold `latIn`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_latIn : (latIn O M).FG := by
   unfold latIn
@@ -519,21 +511,19 @@ theorem fg_latIn : (latIn O M).FG := by
   exact (Module.Finite.fg_top).map _
 
 /- English proof (translation)
-Distinguish the cases in `he : (Module.length O (O ⧸ Ideal.span {(l : O)})).toNat = 0`. Simplify using `only [lenUnit, he, Nat.cast_zero, div_zero, zero_add]`. Conclude with `Finset.sum_nonneg fun π _ => by positivity`. Establish `heO : Module.length O (O ⧸ Ideal.span {(l : O)}) = addVal O (l : O)` using `IdempotentNormalFormsLenFacts.length_quot_span _`. Choose the witnesses or unpack the hypotheses as in `⟨e, hee⟩ : ∃ e : ℕ, addVal O (l : O) = (e : ℕ∞) := by`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[heO]`. Conclude with `⟨(addVal O (l : O)).toNat, (ENat.natCast_toNat (fun h => he (by rw [h]; rfl))).symm⟩`. Establish `he0 : e ≠ 0`. Rewrite `he` using `[heO, hee]`. Simplify using `using he`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hlu : ¬ IsUnit (l : O)`. Introduce `h`. Rewrite `hee` using `[addVal_eq_zero_iff.mpr h]`. Conclude with `he0 (by exact_mod_cast hee.symm)`. Establish `hcore` using `etaBound O X T hsep (TensorProduct O (FractionRing O) M) (actK T act).toRingHom (eigSpan T act hsep) (latIn O M) fg_latIn span_latIn (fun f v hv => baseChange_latIn (act f) v hv) Z Z' hZ' (α.baseChange (FractionRing O)) A (baseChange_latIn α) (fun f => by show Module.End.baseChan …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, hcomm f])`. Use the proof step `(fun x hx v hv => h1 x hx v (by rw [heckeEig_eq]; exact hv))`. Use the proof step `(fun x hx hx' v hv => h0 x hx hx' v (by rw [heckeEig_eq]; exact hv))`. Use the proof step `(fun x => vcc T (Z : Set X) x) (fun x _ => le_rfl)`. Establish `hlen` using `(len_le T act hsep (latIn O M) Z').trans hcore`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : heckeEig T act = Vx T (actK T act).toRingHom` using `funext (heckeEig_eq T act)`. Simplify using `only [heckeMult, lenUnit, length_ccAt, heO, hee, ENat.toNat_natCast]`. Rewrite using `[hE]`. Rewrite `hlen` using `[addVal_int l hlu A hA, hee]`. Establish `hfin : ∀ π ∈ Z', vcc T (Z : Set X) π = ((vcc T (Z : Set X) π).toNat : ℕ∞)` using `fun π hπ => (ENat.natCast_toNat (vcc_ne_top T hsep Z π (hZ' hπ))).symm`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum : ∑ x ∈ Z', (Module.finrank (FractionRing O) (Vx T (actK T act).toRingHom x) : ℕ∞) * (vcc T (Z : Set X) x + (padicValInt l A : ℕ∞) * (e : ℕ∞)) = ((∑ x ∈ Z', Module.finrank (FractionRing O) (Vx T (actK T act).toRingHom x) * ((vcc T (Z : Set X) x).toNat + padicValInt l A * e) …`. Use `push_cast`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← hfin x hx]`. Rewrite `hlen` using `[hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Establish `hnat` using `ENat.toNat_le_of_le_natCast hlen`. Establish `heq : (0 : ℚ) < e` using `by exact_mod_cast Nat.pos_of_ne_zero he0`. Rewrite using `[div_le_iff₀ heq, Finset.sum_mul]`. Use `(Nat.cast_le (α := ℚ).mpr hnat).trans (le_of_eq ?_)` and prove the remaining obligations. Use `push_cast`.
-
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hecke_length_bound [IsLocalRing T] (l : ℕ) [Fact l.Prime]
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (Z Z' : Finset X) (hZ' : Z' ⊆ Z)
@@ -603,7 +593,7 @@ theorem hecke_length_bound [IsLocalRing T] (l : ℕ) [Fact l.Prime]
 end Main
 
 /- English proof (translation)
-Use `N.T_local i` as an intermediate fact. Conclude with `hecke_length_bound (N.T i) (N.act i) (N.l i) (N.T_sep i) (N.Z i) Z' hZ' α A hA hcomm h1 h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hecke_length_bound_localised {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc)
     (Z' : Finset (N.X i)) (hZ' : Z' ⊆ N.Z i) (α : Module.End (N.O i) (N.Mt i)) (A : ℤ) (hA : A ≠ 0)
@@ -619,9 +609,9 @@ theorem hecke_length_bound_localised {R : Ranks} {H : Host R} {what₂ : Rows.Da
   exact hecke_length_bound (N.T i) (N.act i) (N.l i) (N.T_sep i) (N.Z i) Z' hZ' α A hA hcomm h1 h0
 
 /- English proof (translation)
-Introduce `i`. Establish `h` using `eigSpan (N.T i) (N.act i) (N.T_sep i)`. Establish `hE : heckeEig (N.T i) (N.act i) = Formalism.NG.Vx (N.T i) (actK (N.T i) (N.act i)).toRingHom`. Use function extensionality and compare the values at `(heckeEig_eq (N.T i) (N.act i))`. Rewrite using `[hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem EigSpan_holds {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) :
     N.EigSpan := by
@@ -633,7 +623,7 @@ theorem EigSpan_holds {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NDat
   exact h
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.NData.etaLoc Formalism.BasicNotions.NData.MtUp Formalism.BasicNotions.NData.MtLow Formalism.MainNotions.N.MtUp Formalism.MainNotions.N.MtLow`. Rewrite using `[inf_comm (Submodule.restrictScalars (N.O i) (N.eigSum i ((N.Zgood i : Finset (N.X i)) : Set (N.X i))))]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem etaLoc_eq {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc) :
     N.etaLoc i = lenUnit (O := N.O i) (N.l i)
@@ -649,9 +639,9 @@ section Unit
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ((N.l i : ℕ) : what₂.LL) ≠ 0`. Introduce `h0`. Establish `h2` using `congrArg what₂.embLL h0`. Rewrite `h2` using `[map_natCast, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(N.lPrime i).out.ne_zero (by exact_mod_cast h2)`. Establish `h3 : N.embK i ((N.l i : ℕ) : what₂.LL) = 0`. Rewrite using `[map_natCast, ← map_natCast (algebraMap (N.O i) (FractionRing (N.O i))), h, map_zero]`. Conclude with `h1 ((map_eq_zero (N.embK i)).mp h3)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_ne_zero : ((N.l i : ℕ) : N.O i) ≠ 0 := by
   intro h
@@ -665,9 +655,9 @@ theorem l_ne_zero : ((N.l i : ℕ) : N.O i) ≠ 0 := by
   exact h1 ((map_eq_zero (N.embK i)).mp h3)
 
 /- English proof (translation)
-Introduce `hu`. Establish `hker : RingHom.ker (algebraMap ℤ_[N.l i] (N.O i)) ≤ IsLocalRing.maximalIdeal ℤ_[N.l i]` using `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _)`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := N.O i) (IsLocalRing.maximalIdeal ℤ_[N.l i]) hker`. Establish `hl : ((N.l i : ℕ) : ℤ_[N.l i]) ∈ IsLocalRing.maximalIdeal ℤ_[N.l i]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `hl` using `[← hQc, Ideal.mem_comap, map_natCast]`. Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hl hu)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_not_unit : ¬ IsUnit ((N.l i : ℕ) : N.O i) := by
   intro hu
@@ -682,9 +672,9 @@ theorem l_not_unit : ¬ IsUnit ((N.l i : ℕ) : N.O i) := by
   exact hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hl hu)
 
 /- English proof (translation)
-Establish `h0` using `l_ne_zero N i`. Establish `h1` using `l_not_unit N i`. Establish `htop : addVal (N.O i) ((N.l i : ℕ) : N.O i) ≠ ⊤` using `fun h => h0 ((IsDiscreteValuationRing.addVal_eq_top_iff).mp h)`. Use `⟨(addVal (N.O i) ((N.l i : ℕ) : N.O i)).toNat, ?_, (ENat.coe_toNat htop).symm⟩` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `ENat.toNat_eq_zero.mp h with h | h` into its components or cases. Conclude with `h1 ((IsDiscreteValuationRing.addVal_eq_zero_iff).mp h)`. Conclude with `htop h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_eO : ∃ e : ℕ, e ≠ 0 ∧ addVal (N.O i) ((N.l i : ℕ) : N.O i) = (e : ℕ∞) := by
   have h0 := l_ne_zero N i
@@ -698,9 +688,9 @@ theorem exists_eO : ∃ e : ℕ, e ≠ 0 ∧ addVal (N.O i) ((N.l i : ℕ) : N.O
   · exact htop h
 
 /- English proof (translation)
-Take `⟨e, he0, he⟩` from `exists_eO N i`. Unfold `lenUnit`. Rewrite using `[Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, ha, he]`. Establish `h : ((m : ℕ∞) * (e : ℕ∞)).toNat = m * e`. Rewrite using `[← Nat.cast_mul, ENat.toNat_natCast]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ENat.toNat_natCast]`. Establish `: (e : ℚ) ≠ 0` using `by exact_mod_cast he0`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem lenUnit_span {a : N.O i} {m : ℕ}
     (ha : addVal (N.O i) a = (m : ℕ∞) * addVal (N.O i) ((N.l i : ℕ) : N.O i)) :
@@ -722,29 +712,27 @@ section Del
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Use `set y : ℤ_[l] := 1 + (l : ℤ_[l]) ^ s₀ * (u : ℤ_[l]) with hy`. Use `set m : ℕ := s₀ + padicValNat l k with hm`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton.mp (PadicInt.appr_spec (m + 1) y)`. Use `set x : ℤ := ((y.appr (m + 1) : ℕ) : ℤ) with hx`. Establish `hyx : y = (x : ℤ_[l]) + (l : ℤ_[l]) ^ (m + 1) * z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (x : ℤ_[l]) = ((y.appr (m + 1) : ℕ) : ℤ_[l])` using `by rw [hx]; push_cast; rfl`. Rewrite using `[this, ← hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hms : m + 1 = s₀ + (padicValNat l k + 1)` using `by omega`. Establish `hx1 : ((x - 1 : ℤ) : ℤ_[l]) = (l : ℤ_[l]) ^ s₀ * ((u : ℤ_[l]) - (l : ℤ_[l]) ^ (padicValNat l k + 1) * z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (x : ℤ_[l]) = y - (l : ℤ_[l]) ^ (m + 1) * z` using `by rw [hyx]; ring`. Use `push_cast`. Rewrite using `[h, hy, hms, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd1 : (l : ℤ) ^ s₀ ∣ x - 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PadicInt.pow_p_dvd_int_iff, hx1]`. Conclude with `Dvd.intro _ rfl`. Establish `hd2 : ¬ (l : ℤ) ^ (s₀ + 1) ∣ x - 1`. Rewrite using `[← PadicInt.pow_p_dvd_int_iff, hx1, pow_succ]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (l : ℤ_[l]) ^ s₀ ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `h3` using `(mul_dvd_mul_iff_left hp0).mp h`. Establish `h4 : (l : ℤ_[l]) ∣ (u : ℤ_[l])`. Establish `h5 : (l : ℤ_[l]) ∣ (l : ℤ_[l]) ^ (padicValNat l k + 1) * z` using `Dvd.dvd.mul_right (dvd_pow_self _ (Nat.succ_ne_zero _)) _`. Use `dvd_add h3 h5` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `PadicInt.prime_p.not_isUnit (isUnit_of_dvd_unit h4 u.isUnit)`. Establish `hcore` using `Formalism.NG.character_column_kernel_length_bound l s₀ h1 h2 x hd1 hd2 0 k hk`. Rewrite `hcore` using `[pow_zero, Nat.sub_zero]`. Establish `hne : x ^ k - 1 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hcore` using `[h0, padicValInt.zero]`. Use linear arithmetic over natural numbers and integers. Establish `hA` using `addVal_int (O := O) l hlu (x ^ k - 1) hne`. Rewrite `hA` using `[hcore]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨q, hq⟩ : (algebraMap ℤ_[l] O y - (x : O)) ∣ (algebraMap ℤ_[l] O y) ^ k - (x : O) ^ k` from `sub_dvd_pow_sub_pow _ _ _`. Establish `hyO : algebraMap ℤ_[l] O y - (x : O) = (l : O) ^ (m + 1) * algebraMap ℤ_[l] O z`. Rewrite using `[hyx, map_add, map_mul, map_pow, map_natCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : (algebraMap ℤ_[l] O y) ^ k - 1 = ((x ^ k - 1 : ℤ) : O) + (l : O) ^ (m + 1) * (algebraMap ℤ_[l] O z * q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `: (algebraMap ℤ_[l] O y) ^ k = (x : O) ^ k + (l : O) ^ (m + 1) * algebraMap ℤ_[l] O z * q`. Rewrite using `[← hyO, ← hq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he⟩ : ∃ e : ℕ, addVal O (l : O) = (e : ℕ∞)` from `⟨(addVal O (l : O)).toNat, (ENat.natCast_toNat (fun h => hl0 (addVal_eq_top_iff.mp h))).symm⟩`. Establish `he0 : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. Rewrite `he` using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd (addVal_eq_zero_iff.mp (by simpa using he)) hlu`. Conclude with `h`. Establish `hlt : addVal O ((x ^ k - 1 : ℤ) : O) < addVal O ((l : O) ^ (m + 1) * (algebraMap ℤ_[l] O z * q))`. Rewrite using `[hA, addVal_mul, addVal_pow, he]`. Establish `h6 : ((m : ℕ) : ℕ∞) * (e : ℕ∞) < (m + 1) • (e : ℕ∞)`.
-
-Rewrite using `[nsmul_eq_mul]`. Establish `: m * e < (m + 1) * e` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Conclude with `lt_of_lt_of_le h6 le_self_add`. Rewrite using `[hsplit, AddValuation.map_add_eq_of_lt_left _ hlt, hA]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addVal_pow_sub_one (l : ℕ) [Fact l.Prime] [Algebra ℤ_[l] O] (hl0 : (l : O) ≠ 0)
     (hlu : ¬ IsUnit (l : O)) (s₀ : ℕ) (h1 : 1 ≤ s₀) (h2 : l = 2 → 2 ≤ s₀) (u : ℤ_[l]ˣ) (k : ℕ)
@@ -823,7 +811,7 @@ end Del
 end Br
 
 /- English proof (translation)
-Unfold `EndomorphismIndexBound`. Introduce `Z' hZ' α A hA hcomm h1 h0`. Conclude with `Br.hecke_length_bound_localised D.nd i Z' hZ' α A hA hcomm h1 h0`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem endomorphism_index_bound {D : Formalism.BasicNotions.D7} (i : D.nd.Loc) : EndomorphismIndexBound i := by
   unfold EndomorphismIndexBound
@@ -831,7 +819,7 @@ theorem endomorphism_index_bound {D : Formalism.BasicNotions.D7} (i : D.nd.Loc) 
   exact Br.hecke_length_bound_localised D.nd i Z' hZ' α A hA hcomm h1 h0
 
 /- English proof (translation)
-Unfold `HodgeTateFromSandwich`. Conclude with `fun i => endomorphism_index_bound i`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem second_statement (D : Formalism.BasicNotions.D7) : HodgeTateFromSandwich D := by
   unfold HodgeTateFromSandwich

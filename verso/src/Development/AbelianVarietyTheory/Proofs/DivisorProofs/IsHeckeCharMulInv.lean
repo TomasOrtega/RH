@@ -32,23 +32,23 @@ def WeilChange (D : D7) : Prop :=
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hχ.1.mul hη.1.inv, fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hχ.2, hη.2, inv_one, mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeckeChar_mul_inv {χ η : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : IsHeckeChar D η) :
     IsHeckeChar D (χ * η⁻¹) :=
   ⟨hχ.1.mul hη.1.inv, fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hχ.2, hη.2, inv_one, mul_one]⟩
 
 /- English proof (translation)
-Unfold `IsDetRoot`. Rewrite using `[map_one, Units.val_one, Units.val_one, Matrix.det_one, map_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDetRoot_one (V : HSp D) : IsDetRoot V 1 1 := by
   unfold IsDetRoot
   rw [map_one, Units.val_one, Units.val_one, Matrix.det_one, map_one, one_mul]
 
 /- English proof (translation)
-Take `⟨o, h1, h2⟩` from `hC ψ ho.std S T χS χT (χS' * χS⁻¹) (χT' * χT⁻¹) om ho (isHeckeChar_mul_inv ho'.hecS ho.hecS) (isHeckeChar_mul_inv ho'.hecT ho.hecT) (resEta_parity (resEta_mul ho'.resS (resEta_inv ho.resS)) (by omega)) (resEta_parity (resEta_mul ho'.resT (resEta_inv ho.resT)) (by omega))`. Establish `e : ∀ a b : (AE D)ˣ →* Circle, a * (b * a⁻¹) = b` using `fun a b => by ext1 z`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply]`. Rewrite using `[mul_comm (b z), mul_inv_cancel_left]`. Rewrite `h1` using `[e, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hU ψ ho.std S T χS' χT' om' o ho' h1 _ f hf, h2 g h x y hx hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weil_ratio (hU : WeilUnique D) (hC : WeilChange D) {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
     {χS χT χS' χT' : (AE D)ˣ →* Circle} {om om' : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
@@ -68,7 +68,7 @@ theorem weil_ratio (hU : WeilUnique D) (hC : WeilChange D) {ψ : AddChar (AF D.h
   rfl
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨⟨p, hp⟩, hn⟩` from `h.2.norm`. Use `hn p hp` as an intermediate fact. Simplify using `[nrm2] at this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem vac_ne_zero {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -83,7 +83,7 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Rewrite using `[weil_ratio hU hC (hω i t) (hω i t') (isDetRoot_one _) hx hf, smul_smul, ← Circle.coe_mul]`. Use `congr 2`. Use `show R.xi t x * (_ * (R.mu0 _ x * R.xi t' x * (R.mu0 _ x * R.xi t x)⁻¹)) = _`. Rewrite using `[map_one, map_one, mul_inv_cancel, inv_one, one_mul, mul_inv, mul_mul_mul_comm, mul_inv_cancel, one_mul, mul_comm (R.xi t' x), mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_ratio (hU : WeilUnique D) (hC : WeilChange D) (hω : R.thP_ωP) (i : Fin D.R.m) (t t' : T0)
     {h : GA D (Wc D i)} {x : (AE D)ˣ} (hx : IsDetRoot (Wc D i) h x) {f : WO (Vc D i) (Wc D i) → ℂ}

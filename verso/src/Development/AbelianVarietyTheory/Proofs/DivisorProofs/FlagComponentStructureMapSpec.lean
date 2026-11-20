@@ -24,11 +24,11 @@ section MatCarry
 variable {m : ℕ}
 
 /- English proof (translation)
-Take `⟨L, hL, e⟩` from `h`. Establish `hb : T.BlockTriangular OrderDual.toDual` using `fun i j hij => hT i j (OrderDual.toDual_lt_toDual.1 hij)`. Establish `hd : T.det ≠ 0`. Rewrite using `[Matrix.det_of_lowerTriangular T hb]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hTd i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI := Matrix.invertibleOfIsUnitDet T (isUnit_iff_ne_zero.2 hd)`. Establish `hbN : (T⁻¹ * L).BlockTriangular OrderDual.toDual` using `(Matrix.blockTriangular_inv_of_blockTriangular hb).mul hL.blockTriangular`. Use `⟨T⁻¹ * L, ⟨fun i j hij => hbN (OrderDual.toDual_lt_toDual.2 hij), fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hdN : (T⁻¹ * L).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (inv_ne_zero hd) (isUnit_det_of_isLowInv hL).ne_zero`. Rewrite `hdN` using `[Matrix.det_of_lowerTriangular _ hbN]`. Conclude with `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.1 hdN i (Finset.mem_univ i))`. Establish `e1 : (T * M).submatrix id w = T * M.submatrix id w` using `rfl`. Rewrite using `[Matrix.mul_assoc, ← e, e1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hd), Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inCell_of_mul_left {K : Type} [Field K] {T M : Matrix (Fin m) (Fin m) K} {w : Equiv.Perm (Fin m)}
     {a : Above m → K} (hT : ∀ i j, i < j → T i j = 0) (hTd : ∀ i, T i i ≠ 0) (h : InCell (T * M) w a) :
@@ -52,15 +52,15 @@ theorem inCell_of_mul_left {K : Type} [Field K] {T M : Matrix (Fin m) (Fin m) K}
       Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨L, hL, e⟩` from `h`. Rewrite using `[e]`. Establish `hlt : ∀ i j : Fin k, i < j → Fin.castLE hk i < Fin.castLE hk j` using `fun i j hij => by`. Rewrite `hij`, the goal using `[Fin.lt_def]`. Simplify using `using hij`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsub : (L * upMat a).submatrix (Fin.castLE hk) (Fin.castLE hk) = L.submatrix (Fin.castLE hk) (Fin.castLE hk) * (upMat a).submatrix (Fin.castLE hk) (Fin.castLE hk)`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `((Finset.sum_map Finset.univ (Fin.castLEEmb hk) (fun l => L (Fin.castLE hk i) l * upMat a l (Fin.castLE hk j))).symm).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_subset (Finset.subset_univ _) fun l _ hl => ?_` and prove the remaining obligations. Establish `hkl : k ≤ (l : ℕ)`. Assume the negation of the conclusion as `hlk`. Conclude with `hl (Finset.mem_map.2 ⟨⟨l, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Establish `hil : Fin.castLE hk i < l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hL.1 _ _ hil, zero_mul]`. Rewrite using `[hsub, Matrix.det_mul]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.mul (isUnit_det_of_isLowInv ⟨fun i j hij => hL.1 _ _ (hlt i j hij), fun i => hL.2 _⟩) ?_` and prove the remaining obligations. Establish `hb : ((upMat a).submatrix (Fin.castLE hk) (Fin.castLE hk)).BlockTriangular id` using `fun i j hij => upMat_blockTriangular a (show Fin.castLE hk j < Fin.castLE hk i from hlt j i hij)`. Rewrite using `[Matrix.det_of_isUpperTriangular hb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem InCell.isUnit_minor {R : Type} [CommRing R] {M : Matrix (Fin m) (Fin m) R} {w : Equiv.Perm (Fin m)}
     {a : Above m → R} (h : InCell M w a) (k : ℕ) (hk : k ≤ m) :
@@ -105,15 +105,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] {e : F ≃+* c.F}
 
 /- English proof (translation)
-Take `⟨t, htri⟩` from `GlobalTheory.VarFlag.tri_of_carries C hh hg`. Take `⟨T, ⟨-, -, hT⟩, hTd, hTl⟩` from `(h.tri_iff (RingHom.id Ω) g t).1 htri`. Take `⟨f₁, hf₁⟩` from `Spread.exists_bc f₀ ψ rfl hx`. Establish `hid : spMap (dualMap (RingHom.id Ω)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Use `⟨T, hTl, fun τ i => by rw [hTd]; exact Units.ne_zero _, fun τ => ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Establish `e1 : g.vec τ i = ∑ j, T τ i j • h.vec τ j`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `hT τ i` as an intermediate fact. Simplify using `only [hid, Category.id_comp] at this`. Conclude with `(GlobalTheory.LieMet.isComb_iff (h.vec τ) (T τ i) (g.vec τ i)).1 this`. Establish `e2 : g.vec τ i = ∑ k, (T τ * M τ) i k • f₁.vec τ k`. Rewrite using `[e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hM, hf₁, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `e3 : g.vec τ i = ∑ k, A τ i k • f₁.vec τ k`. Rewrite using `[hA]`. Simplify using `only [hf₁]`.
-
-Conclude with `congrFun ((f₁.existsUnique_sum τ (g.vec τ i) (g.act_vec τ i)).unique e3 e2) k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_mul_of_carries (C : FlagCpt Z e) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)}
     (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) {Ω : Type} [Field Ω] (ψ : Γ(gen Z, V) →+* Ω) {x : Sp Ω ⟶ gen Z}
@@ -154,47 +152,43 @@ open GlobalTheory.LieLocFrame (res res_sum res_res)
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (spMap_comp_spMap)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C V hV φV f₀ hs₀ w u hu Ω _ ψ x hx g a hFI p hpx hcar`. Take `⟨Ag, hAg, hAgc⟩` from `hFI`. Establish `hxg : spMap ψ ≫ hV.fromSpec ≫ genι Z = x ≫ genι Z` using `by rw [← Category.assoc, hx]`. Use `set z := p (IsLocalRing.closedPoint Ω) with hz_def`. Establish `hzV : C.π z ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (p ≫ C.π) (IsLocalRing.closedPoint Ω) ∈ (V : Set (gen Z))`. Rewrite using `[hpx, ← hx, ← hV.range_fromSpec]`. Conclude with `⟨spMap ψ (IsLocalRing.closedPoint Ω), rfl⟩`. Conclude with `h1`. Take `⟨U, hU, hzU, φ, fr, t, hUV, hs, htri, -⟩` from `Spread.exists_frame_nhds E H Dw l Xo c O β Z F e C z (C.π ⁻¹ᵁ V) hzV`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp : spMap (C.π.appLE V U hUV).hom ≫ hV.fromSpec = hU.fromSpec ≫ C.π` using `IsAffineOpen.SpecMap_appLE_fromSpec C.π hV hU hUV`. Establish `hxU : spMap (C.π.appLE V U hUV).hom ≫ hV.fromSpec ≫ genι Z = (hU.fromSpec ≫ C.π) ≫ genι Z`. Rewrite using `[← Category.assoc, hsp]`. Establish `hφ : (C.π.appLE V U hUV).hom.comp φV = φ`. Establish `h1 : spMap ((C.π.appLE V U hUV).hom.comp φV) = spMap φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← spMap_comp_spMap, ← hs₀, ← hs, ← Category.assoc, hsp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Take `⟨g₀, hg₀⟩` from `Spread.exists_bc f₀ (C.π.appLE V U hUV).hom hφ hxU`. Use `choose A B hBA hA using Spread.exists_coord g₀ fr`. Set `ψz : C.Y.X.presheaf.stalk z →+* Ω` to `(Scheme.stalkClosedPointTo (R := .of Ω) p).hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `gm : Γ(C.Y.X, U) →+* C.Y.X.presheaf.stalk z` to `(C.Y.X.presheaf.germ U z hzU).hom`. Set `θ : Γ(C.Y.X, U) →+* Ω` to `ψz.comp gm`. Set `ρ : Γ(gen Z, V) →+* Γ(C.Y.X, U)` to `(C.π.appLE V U hUV).hom`. Establish `hP' : spMap ψz ≫ C.Y.X.fromSpecStalk z = p` using `GlobalTheory.FlagBundle.spMap_stalkClosedPointTo p`. Establish `hθ : spMap θ ≫ (show Sp Γ(C.Y.X, U) ⟶ C.Y.X from hU.fromSpec) = p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp_spMap, Category.assoc, GlobalTheory.ShFam.Spread.spMap_germ hU hzU]`. Conclude with `hP'`. Establish `hθρ : θ.comp ρ = ψ`. Establish `h1 : spMap (θ.comp ρ) ≫ hV.fromSpec = spMap ψ ≫ hV.fromSpec`. Rewrite using `[← spMap_comp_spMap, Category.assoc, hsp, ← Category.assoc, hθ, hpx, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono hV.fromSpec).1 h1))`. Establish `hxθ : spMap θ ≫ ((show Sp Γ(C.Y.X, U) ⟶ C.Y.X from hU.fromSpec) ≫ C.π) ≫ genι Z = x ≫ genι Z`. Rewrite using `[← hpx, ← hθ]`. Simplify using `only [Category.assoc]`. Take `⟨frΩ, hfrΩ⟩` from `Spread.exists_bc fr θ rfl hxθ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfrv : ∀ τ i, frΩ.vec τ i = ∑ k, (A τ).map θ i k • res ψ hxg (f₀.vec τ k)`. Introduce `τ i`. Rewrite using `[hfrΩ, hA τ i, res_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hg₀, res_res ρ hxU θ hxθ hθρ hxg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hxS : spMap gm ≫ ((show Sp Γ(C.Y.X, U) ⟶ C.Y.X from hU.fromSpec) ≫ C.π) ≫ genι Z = stalkPt C.Y z ≫ C.π ≫ genι Z`. Rewrite using `[Category.assoc, ← Category.assoc, GlobalTheory.ShFam.Spread.spMap_germ hU hzU]`. Both sides reduce to the same expression. Establish `hxψ : spMap ψz ≫ stalkPt C.Y z ≫ C.π ≫ genι Z = x ≫ genι Z` using `by show spMap ψz ≫ C.Y.X.fromSpecStalk z ≫ C.π ≫ genι Z = _`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hpx, ← hP']`. Simplify using `only [Category.assoc]`. Take `⟨fS, hfS⟩` from `GlobalTheory.ShFam.Spread.exists_bc fr gm rfl hxS`. Establish `hcarΩ : C.Carries p frΩ`. Use `⟨z, ψz, gm.comp φ, fS, t, 1, hP'.symm, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `tri_bc fr gm rfl hxS fS hfS _ (RingHom.ext fun s => GlobalTheory.Cartier.algebraMap_germ hzU s) htri`. Use `tri_of_comb fS ψz rfl hxψ frΩ (fun _ => 1) (fun τ i j hij => Matrix.one_apply_ne hij.ne) 1 (fun τ i => by simp) fun τ i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hfrΩ, hfS, res_res gm hxS ψz hxψ rfl hxθ]`. Take `⟨T, hT0, hTd, hTM⟩` from `eq_mul_of_carries C hV f₀ ψ hxg p g frΩ hcar hcarΩ Ag (fun τ => (A τ).map θ) hAg hfrv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hcellθ : ∀ τ, InCell ((A τ).map θ) (w τ) (fun q => a ⟨τ, q⟩)` using `fun τ => inCell_of_mul_left (hT0 τ) (hTd τ) (by rw [← hTM τ]; exact hAgc τ)`. Set `mn : (Σ τ : E →+* ℂ, Fin (Dw.mult τ + 1)) → Γ(C.Y.X, U)` to `fun q => (((A q.1).submatrix id (w q.1)).submatrix (Fin.castLE (Nat.lt_succ_iff.mp q.2.is_lt)) (Fin.castLE (Nat.lt_succ_iff.mp q.2.is_lt))).det`. Establish `hmn : ∀ q, IsUnit (gm (mn q))` using `fun q => by`. Establish `h1` using `(hcellθ q.1).isUnit_minor q.2 (Nat.lt_succ_iff.mp q.2.is_lt)`. Establish `h2 : IsUnit (ψz (gm (mn q)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify `h1` using `[mn, θ, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.submatrix_map]`. Conclude with `isUnit_of_map_unit ψz _ h2`. Set `f` to `∏ q, mn q`. Establish `hzf : z ∈ C.Y.X.basicOpen f`. Rewrite using `[Scheme.mem_basicOpen _ _ _ hzU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show IsUnit (gm f)`. Rewrite using `[map_prod]`. Conclude with `IsUnit.prod_univ_iff.mpr hmn`. Establish `hle : C.Y.X.basicOpen f ≤ U` using `Scheme.basicOpen_le _ f`. Set `r` to `(C.Y.X.presheaf.map (homOfLE hle).op).hom`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hfu : IsUnit (r f)` using `RingedSpace.isUnit_res_basicOpen C.Y.X.toRingedSpace f`. Establish `hmu : ∀ q, IsUnit (r (mn q))` using `fun q => isUnit_of_dvd_unit (map_dvd r (Finset.dvd_prod_of_mem mn (Finset.mem_univ q))) hfu`. Establish `hc : ∀ τ, ∃ a', InCell ((A τ).map r) (w τ) a'` using `fun τ => by`. Use `GlobalTheory.T.exists_cell_of_leading_minors _ _ fun k hk => ?_` and prove the remaining obligations. Use `hmu ⟨τ, ⟨k, Nat.lt_succ_of_le hk⟩⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `this` using `[mn, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.submatrix_map]`. Use `choose a' ha' using hc`. Establish `hcell` using `GlobalTheory.T.flag_component_eigenframe_on_affine_open C hV f₀ hU hUV (gen_mem hzU) fr t hxU A hs htri (fun τ i => by rw [hA τ i]; simp only [hg₀]) (hU.basicOpen f) hle (gen_mem hzf) w a' ha'`. Establish `hzc : z ∈ cellOpen C hV f₀ w` using `le_sSup (show C.Y.X.basicOpen f ∈ {U | ∃ a, CellAt C hV f₀ w U a} from ⟨a', hcell⟩) hzf`. Establish `hrange : Set.range p ⊆ Set.range (cellOpen C hV f₀ w).ι`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hs' : s = IsLocalRing.closedPoint Ω` using `Subsingleton.elim _ _`. Rewrite using `[hs']`. Conclude with `hzc`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `q` to `IsOpenImmersion.lift (cellOpen C hV f₀ w).ι p hrange`. Establish `hq : q ≫ (cellOpen C hV f₀ w).ι = p` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Take `⟨ω, hω, φΩ, M, hωx, hφx, hM, ⟨g', hg'⟩, hcar'⟩` from `point_data C hV f₀ w u hu Ω q x (by rw [hq, hpx])`. Establish `hωψ : ω = ψ` using `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono hV.fromSpec).1 (hωx.trans hx.symm)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφΩ : φΩ = ψ.comp φV`. Establish `h1 : spMap φΩ = spMap (ψ.comp φV)`. Rewrite using `[← hφx, ← hx, Category.assoc, hs₀, spMap_comp_spMap]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Substitute `hφΩ` using the available equality.
-
-Substitute `hωψ` using the available equality. Establish `hcarg' : C.Carries p g'`. Establish `h1` using `hcar' g' (fun τ => 1) (fun _ _ => 1) (fun τ i j hij => Matrix.one_apply_ne hij.ne) (fun τ i => by simp) fun τ i => by`. Rewrite using `[hg']`. Simplify using `[Matrix.one_apply]`.
-
-Rewrite `h1` using `[hq]`. Then use the resulting hypothesis. Take `⟨T', hT0', hTd', hTM'⟩` from `eq_mul_of_carries C hV f₀ _ hxg p g g' hcar hcarg' Ag M hAg hg'`. Introduce `i`. Establish `hMa : InCell (M i.1) (w i.1) (fun q => a ⟨i.1, q⟩)` using `inCell_of_mul_left (hT0' i.1) (hTd' i.1) (by rw [← hTM' i.1]; exact hAgc i.1)`. Conclude with `congrFun (InCell.unique (hM i.1) hMa) i.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_cellOpen_of_carries : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F}, ∀ (C : FlagCpt Z e) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)} (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)), hV.fromSpec ≫ genStr Z = spMap φV → ∀ (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) (u : Cell.Coord Dw → Γ(C.Y.X, Cell.cellOpen C hV f₀ w)), Cell.IsCoord C hV f₀ w u → ∀ (Ω : Type) [Field Ω] (ψ : Γ(gen Z, V) →+* Ω) (x : Sp Ω ⟶ gen Z) (hx : spMap ψ ≫ hV.fromSpec = x) (g : EigFrame Z (ψ.comp φV) (x ≫ genι Z)) (a : Cell.Coord Dw → Ω), Cell.FrameIn hV f₀ w ψ hx g a → ∀ p : Sp Ω ⟶ C.Y.X, p ≫ C.π = x → C.Carries p g → ∃ q : Sp Ω ⟶ (Cell.cellOpen C hV f₀ w).toScheme, q ≫ (Cell.cellOpen C hV f₀ w).ι = p ∧ ∀ i, (Scheme.ΓSpecIso (.of Ω)).hom (q.appTop (Cell.coordTop C hV f₀ w u i)) = a i := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e C V hV φV f₀ hs₀ w u hu Ω _ ψ x hx g a hFI p hpx hcar

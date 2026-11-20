@@ -23,11 +23,11 @@ namespace GlobalTheory.UseLoc.Cases
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Introduce `D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hSet hGood hπ hDec hCont z hz`. Establish `h5' : 5 ≤ (Br.PD D.loc D.nbr i w hw).p` using `by rw [Br.PD_p]; exact h5`. Establish `hT` using `hTop h5' D.R.t h w' η typ U (Fin D.R.r → ↥C.LL.1) (repV C (twistM (locOC C (WpO D.nd i ρ π)) θ)) (latC C (twistM (locOC C (WpO D.nd i ρ π)) θ)) (chiT C θ) hSet.1`. Take `⟨a, hZ, hk⟩` from `GlobalTheory.T.cutCocycles_locallyConstant_killed_by_uniformiserPow D i r w hw C lam hlam hGood hCont (WpO D.nd i ρ π) z hz`. Use `haveI := GlobalTheory.T.finite_lambdaPowerTorsionFieldModInt C.LL lam hlam a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hcoc, hz'⟩` from `GlobalTheory.T.exists_integralTensorTorsion_cocycle_of_torsion_localCocycle D i w hw C lam hlam (locOC C (WpO D.nd i ρ π)) θ a (fun g => liftQ C.le D.R.r (z g)) hZ hk`. Establish `hz'' : ∀ g, iotaW ↥C.LL.1 lam a D.R.r (z' g) = liftQ C.le D.R.r (z g)` using `hz'`. Establish `hadm` using `GlobalTheory.T.cocycleExtension_twistedWeilCoefficients_admissible D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hSet hGood hπ hDec hCont z hz a z' hcoc hz''`. Establish `hin` using `((hT ↥(Xq ↥C.LL.1 lam a)).1 (repV C (locOC C (WpO D.nd i ρ π))) (latC C (locOC C (WpO D.nd i ρ π))) (GlobalTheory.T.representationOfIntegralMatrices_eq_inv_twistedChar_smul D i w hw C (locOC C (WpO D.nd i ρ π)) θ) rfl z' hcoc).1 hadm`. Establish `hr` using `GlobalTheory.T.isBlochKato_read_of_tensor_selmer_add_coboundary D i w hw C lam (locOC C (WpO D.nd i ρ π)) θ a z' hin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun g => liftQ C.le D.R.r (z g)) = fun g => iotaW ↥C.LL.1 lam a D.R.r (z' g)`. Use function extensionality and compare the values at `fun g => (hz'' g).symm`. Rewrite using `[e]`. Conclude with `hr`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partW : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
@@ -63,11 +63,11 @@ theorem partW : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Introduce `D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hSet hGood hπ hDec hCont c hc z hz`. Establish `h5' : 5 ≤ (Br.PD D.loc D.nbr i w hw).p` using `by rw [Br.PD_p]; exact h5`. Establish `hT` using `hTop h5' D.R.t h w' η typ U (Fin D.R.r → ↥C.LL.1) (repV C (twistM (locOC C (WpO D.nd i ρ π)) θ)) (latC C (twistM (locOC C (WpO D.nd i ρ π)) θ)) (chiT C θ) hSet.1`. Take `⟨a, hZ, hk⟩` from `GlobalTheory.T.cutCocycles_locallyConstant_killed_by_uniformiserPow D i r w hw C lam hlam hGood hCont (chiRatO D.nd i c) z hz`. Use `haveI := GlobalTheory.T.finite_lambdaPowerTorsionFieldModInt C.LL lam hlam a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hcoc, hz'⟩` from `GlobalTheory.T.exists_twistedCharacter_cocycle_of_torsion_localCocycle D i w hw C lam hlam θ c a (fun g => liftQ C.le 1 (z g)) hZ hk`. Establish `hz'' : ∀ g, iotaC ↥C.LL.1 lam a (z' g) = liftQ C.le 1 (z g)` using `hz'`. Establish `hc1 : c ∈ Finset.Icc 1 D.R.t` using `Finset.mem_Icc.2 ⟨by have := (Finset.mem_Icc.1 hc).1; omega, (Finset.mem_Icc.1 hc).2⟩`. Establish `hadm` using `GlobalTheory.T.cocycleExtension_conductorTwistedCharacter_admissible D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hSet hGood hπ hDec hCont c hc1 z hz a z' hcoc hz''`. Establish `hin` using `((hT ↥(Xq ↥C.LL.1 lam a)).2.1 c hc (latOne (LL := ↥C.LL.1) Subtype.val_injective (chiT C θ c)) z' hcoc).1 hadm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.isCoboundary_read_of_twistedCharacter_coboundary D i w hw C lam θ c a z' hin`. Establish `e : (fun g => liftQ C.le 1 (z g)) = fun g => iotaC ↥C.LL.1 lam a (z' g)`. Use function extensionality and compare the values at `fun g => (hz'' g).symm`. Rewrite using `[e]`. Conclude with `hr`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partC : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
@@ -105,11 +105,11 @@ theorem partC : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Introduce `D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hSet hGood hπ hDec hCont z hz`. Establish `h5' : 5 ≤ (Br.PD D.loc D.nbr i w hw).p` using `by rw [Br.PD_p]; exact h5`. Establish `hT` using `hTop h5' D.R.t h w' η typ U (Fin D.R.r → ↥C.LL.1) (repV C (twistM (locOC C (WpO D.nd i ρ π)) θ)) (latC C (twistM (locOC C (WpO D.nd i ρ π)) θ)) (chiT C θ) hSet.1`. Take `⟨a, hZ, hk⟩` from `GlobalTheory.T.cutCocycles_locallyConstant_killed_by_uniformiserPow D i r w hw C lam hlam hGood hCont (chiRatO D.nd i 1) z hz`. Use `haveI := GlobalTheory.T.finite_lambdaPowerTorsionFieldModInt C.LL lam hlam a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hcoc, hz'⟩` from `GlobalTheory.T.exists_twistedCharacter_cocycle_of_torsion_localCocycle D i w hw C lam hlam θ 1 a (fun g => liftQ C.le 1 (z g)) hZ hk`. Establish `hz'' : ∀ g, iotaC ↥C.LL.1 lam a (z' g) = liftQ C.le 1 (z g)` using `hz'`. Establish `hc1 : 1 ∈ Finset.Icc 1 D.R.t` using `Finset.mem_Icc.2 ⟨le_rfl, hSet.1.1⟩`. Establish `hadm` using `GlobalTheory.T.cocycleExtension_conductorTwistedCharacter_admissible D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hSet hGood hπ hDec hCont 1 hc1 z hz a z' hcoc hz''`. Establish `hin` using `((hT ↥(Xq ↥C.LL.1 lam a)).2.2 (latOne (LL := ↥C.LL.1) Subtype.val_injective (chiT C θ 1)) z' hcoc).1 hadm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.isUnramified_read_of_trivialTwist_coboundary_on_subgroup D i w hw C lam θ a _ z' hin`. Establish `e : (fun g => liftQ C.le 1 (z g)) = fun g => iotaC ↥C.LL.1 lam a (z' g)`. Use function extensionality and compare the values at `fun g => (hz'' g).symm`. Rewrite using `[e]`. Conclude with `hr`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partU : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))
@@ -145,7 +145,7 @@ theorem partU : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
   exact hr
 
 /- English proof (translation)
-Introduce `D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hSet hGood hπ hDec hCont`. Conclude with `⟨partW D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hSet hGood hπ hDec hCont, partC D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hSet hGood hπ hDec hCont, partU D HW i r ρ π w hw C hA lam hlam θ h w' η typ U hTop h5 hSet hGood hπ hDec hCont⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i)))

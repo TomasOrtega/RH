@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.HTRealise
 
 /- English proof (translation)
-Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, h₁, h₂, h₃, h₄, smul_eq_mul]`. Substitute `ha` using the available equality. Use `ext`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `hbc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pairing_eps_eq_zero {k : Type} [Field k] {M : Type*} [AddCommGroup M] [Module (DualNumber k) M]
     (χ : M →ₗ[DualNumber k] M →ₗ[DualNumber k] DualNumber k) {X Z X' Z' : M} {a b c e : k}
@@ -36,17 +36,17 @@ theorem pairing_eps_eq_zero {k : Type} [Field k] {M : Type*} [AddCommGroup M] [M
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `k _ A₀ _ hA P hP φ hφ f hf φ' hφ' d hd d' hd'`. Use `hA.smooth` as an intermediate fact. Take `⟨g, hg⟩` from `GlobalTheory.SerreDim.exists_dim_of_grpObj A₀`. Establish `iso` using `GlobalTheory.PrincipalPolPairing.isotropic GlobalTheory.abelianDeRham hA hg hP hφ`. Establish `C` using `GlobalTheory.PolFormNabla.cupSquare_eps (AbelianSchemeGerms.isAbelianScheme_tensor A₀ A₀ hA hA) (GlobalTheory.AbDual.smooth_prod hg hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : LBIso (P.pull (𝟙 _)) P` using `(CechPic.cls_eq_iff (pull_isLB hP _) hP).1 (by rw [CechPic.cls_pull hP, CechPic.pull_id])`. Take `⟨χ, hχ, hk⟩` from `hφ.pull hP (constMor A₀) (constMor A₀) (h := 𝟙 _) (by simp) (by simp) hP e`. Take `rfl` from `hχ.unique C hP hφ'`. Establish `hm` using `isBC_constMor hA`. Take `⟨x, hx, y, hy, ed⟩` from `mem_graphFil.1 hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', y', hy', ed'⟩` from `mem_graphFil.1 hd'`. Take `⟨X, hX⟩` from `hm.exists x`. Take `⟨Z, hZ⟩` from `hm.exists (f x + y)`. Take `⟨X', hX'⟩` from `hm.exists x'`. Take `⟨Z', hZ'⟩` from `hm.exists (f x' + y')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `dE : d = X + (DualNumber.eps : DualNumber k) • Z` using `crys_ext hA fun c => by`. Rewrite using `[ed c, LinearMap.add_apply, LinearMap.smul_apply, hX c, hZ c]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `dE' : d' = X' + (DualNumber.eps : DualNumber k) • Z'` using `crys_ext hA fun c => by`. Rewrite using `[ed' c, LinearMap.add_apply, LinearMap.smul_apply, hX' c, hZ' c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `h₁ : φ x x' = 0` using `iso x hx x' hx'`. Establish `h₂ : φ x (f x' + y') + φ (f x + y) x' = 0`. Rewrite using `[map_add, map_add, LinearMap.add_apply, iso x hx y' hy', iso y hy x' hx', add_zero, add_zero, add_comm]`. Conclude with `hf x hx x' hx'`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dE, dE']`. Conclude with `pairing_eps_eq_zero χ (hk _ _ _ _ hX hX') (hk _ _ _ _ hX hZ') (hk _ _ _ _ hZ hX') (hk _ _ _ _ hZ hZ') h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem graphFil_isotropic : ∀ (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀], IsAbelianScheme A₀ →
     ∀ (P : LB (A₀ ⊗ A₀).left), P.IsLB → ∀ (φ : LinearMap.BilinForm k (HdR A₀)),

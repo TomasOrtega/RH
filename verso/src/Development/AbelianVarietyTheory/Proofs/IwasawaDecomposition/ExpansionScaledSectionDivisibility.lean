@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ U k σ σ' f f' r hr hσ hf hE`. Use `hR` as an intermediate fact. Conclude with `expandsAt_cancel_of_ne_zero R (maximalIdeal R) D A G U k r hr σ σ' f f' hσ hf hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expandsAt_cancel_local : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]

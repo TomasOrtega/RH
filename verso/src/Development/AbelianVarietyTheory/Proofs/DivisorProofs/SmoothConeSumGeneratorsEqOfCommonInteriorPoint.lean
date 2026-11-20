@@ -14,41 +14,37 @@ namespace GlobalTheory.TInj
 open GlobalTheory.Poinc
 
 /- English proof (translation)
-Take `⟨k, d, hk, hd⟩` from `intCone_absorb hζ.mem hζ.nonneg hζ.linear hζ' c c' he j (hc j)`. Establish `hd' : ∑ i, d i • ζ' i = ∑ l, (Pi.single j k : Fin r → ℕ) l • ζ l`. Rewrite using `[← hd, Finset.sum_eq_single j (fun l _ hl => by simp [Pi.single_apply, hl]) (by simp)]`. Simplify using the standard rewrite rules. Establish `habs : ∀ i, 0 < d i → ∃ (k' : ℕ) (e : Fin r → ℕ), 0 < k' ∧ k' • ζ' i = ∑ l, e l • ζ l` using `fun i hi => intCone_absorb hζ'.mem hζ'.nonneg hζ'.linear hζ d _ hd' i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `hζ.basis.exists_dual`. Take `⟨g, hg⟩` from `hζ'.basis.exists_dual`. Set `G : Fin r → balForms bar X` to `fun l => ⟨ζ l, hζ.mem l⟩`. Set `G' : Fin r' → balForms bar X` to `fun i => ⟨ζ' i, hζ'.mem i⟩`. Establish `hfG : ∀ l m, f l (G m) = if l = m then 1 else 0` using `hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgG : ∀ i m, g i (G' m) = if i = m then 1 else 0` using `hg`. Establish `hdG : k • G j = ∑ i, d i • G' i` using `Subtype.ext (by simp [G, G', hd])`. Establish `hpos : ∀ i, 0 < d i → ∀ l, 0 ≤ f l (G' i)`. Introduce `i hi l`. Take `⟨k', e, hk', he'⟩` from `habs i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : k' • G' i = ∑ m, e m • G m` using `Subtype.ext (by simp [G, G', he'])`. Establish `h1` using `congrArg (f l) h0`. Rewrite `h1` using `[map_nsmul, map_sum]`. Simplify using `only [map_nsmul, hfG, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, nsmul_eq_mul, _root_.mul_one] at h1`. Establish `hk'' : (0 : ℤ) < k'` using `by exact_mod_cast hk'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `: (k' : ℤ) * f l (G' i) < 0` using `mul_neg_of_pos_of_neg hk'' hneg`. Combine the linear relations using `[Int.natCast_nonneg (e l)]`. Establish `hex : ∃ i, 0 < d i`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `h0 : k • ζ j = 0`. Rewrite using `[hd]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [Nat.le_zero.1 (hno i), zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hζ.linearIndependent.ne_zero j (LinearMap.ext₂ fun x y => ?_)` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun₂ h0 x y`. Simplify using `only [LinearMap.smul_apply, LinearMap.zero_apply, nsmul_eq_mul] at h1`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (by exact_mod_cast hk.ne')`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h2`. Take `⟨i, hi⟩` from `hex`. Establish `hzero : ∀ l, l ≠ j → f l (G' i) = 0`. Introduce `l hl`. Establish `h1` using `congrArg (f l) hdG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[map_nsmul, map_sum, hfG, if_neg hl, smul_zero]`. Simplify using `only [map_nsmul, nsmul_eq_mul] at h1`. Establish `hnn : ∀ i' ∈ Finset.univ, 0 ≤ (d i' : ℤ) * f l (G' i')` using `fun i' _ => by`. Break down `Nat.eq_zero_or_pos (d i') with h | h` into its components or cases. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (Int.natCast_nonneg _) (hpos i' h l)`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h1.symm i (Finset.mem_univ _)`. Conclude with `(mul_eq_zero.1 h2).resolve_left (by exact_mod_cast hi.ne')`. Take `⟨k', e, hk', he'⟩` from `habs i hi`. Establish `hE : k' • G' i = ∑ m, e m • G m` using `Subtype.ext (by simp [G, G', he'])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hem : ∀ m, (e m : ℤ) = k' * f m (G' i)`. Introduce `m`. Establish `h1` using `congrArg (f m) hE`. Rewrite `h1` using `[map_nsmul, map_sum]`. Simplify using `only [map_nsmul, hfG, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, nsmul_eq_mul, _root_.mul_one] at h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm`. Establish `hEj : k' • G' i = e j • G j`. Rewrite using `[hE]`. Use `Finset.sum_eq_single j (fun m _ hm => ?_) (by simp)` and prove the remaining obligations. Establish `h1` using `hem m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hzero m hm, mul_zero]`. Rewrite using `[show e m = 0 by exact_mod_cast h1, zero_smul]`. Establish `h1` using `congrArg (g i) hEj`. Simplify using `only [map_nsmul, hgG, if_true, nsmul_eq_mul, _root_.mul_one] at h1`. Establish `h2` using `hem j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hk'' : (0 : ℤ) < k'` using `by exact_mod_cast hk'`. Establish `hu : f j (G' i) * g i (G j) = 1`. Establish `h3 : (k' : ℤ) * (f j (G' i) * g i (G j) - 1) = 0`. Rewrite using `[mul_sub, ← _root_.mul_assoc, ← h2, _root_.mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left hk''.ne')`. Establish `hf1 : f j (G' i) = 1`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one hu with h | h` into its components or cases. Conclude with `h`. Use `Int.natCast_nonneg (e j)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h2, h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hej : e j = k'`. Use `h2` as an intermediate fact. Rewrite `this` using `[hf1, _root_.mul_one]`.
-
-Conclude with `this` after adjusting the coercions. Rewrite `hEj` using `[hej]`. Use `⟨i, LinearMap.ext₂ fun x y => ?_⟩` and prove the remaining obligations. Establish `h3` using `LinearMap.congr_fun₂ (congrArg Subtype.val hEj) x y`. Simplify using `only [G, G', Submodule.coe_smul, LinearMap.smul_apply, nsmul_eq_mul] at h3`.
-
-Conclude with `(mul_left_cancel₀ (by exact_mod_cast hk'.ne' : (k' : ℤ) ≠ 0) h3).symm`.
+A detailed English derivation is pending.
 -/
 theorem cone_gen_mem_of_common {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] {r r' : ℕ} {ζ : Fin r → LinearMap.BilinForm ℤ X}
@@ -146,13 +142,13 @@ theorem cone_gen_mem_of_common {O : Type} [CommRing O] {bar : O → O} {φ : Inv
   exact (mul_left_cancel₀ (by exact_mod_cast hk'.ne' : (k' : ℤ) ≠ 0) h3).symm
 
 /- English proof (translation)
-Introduce `φ X _ _ m m' δ δ' hδ hδ' c c' hc hc' he`. Establish `h1 : ∀ k, ∃ j, δ k = δ' j` using `cone_gen_mem_of_common hδ hδ' c c' hc he`. Establish `h2 : ∀ j, ∃ k, δ' j = δ k` using `cone_gen_mem_of_common hδ' hδ c' c hc' he.symm`. Establish `himg : Finset.univ.image δ = Finset.univ.image δ'`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Take `⟨j, hj⟩` from `h1 k`. Conclude with `⟨j, hj.symm⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨j, rfl⟩`. Take `⟨k, hk⟩` from `h2 j`. Conclude with `⟨k, hk.symm⟩`. Establish `e1 : ∑ x ∈ Finset.univ.image δ, x = ∑ k, δ k` using `Finset.sum_image fun a _ b _ h => hδ.injective h`. Establish `e2 : ∑ x ∈ Finset.univ.image δ', x = ∑ k, δ' k` using `Finset.sum_image fun a _ b _ h => hδ'.injective h`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1, ← e2, himg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coneSum_eq : ∀ (φ : InvFun ℤ) (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (m m' : ℕ)
     (δ : Fin m → LinearMap.BilinForm ℤ X) (δ' : Fin m' → LinearMap.BilinForm ℤ X), IsCone id φ δ → IsCone id φ δ' →

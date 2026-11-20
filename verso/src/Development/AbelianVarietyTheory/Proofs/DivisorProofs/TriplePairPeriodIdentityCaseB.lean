@@ -23,9 +23,9 @@ open scoped Classical
 namespace GlobalTheory.ConeEulerConst
 
 /- English proof (translation)
-Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => mul_ne_zero (Units.ne_zero _) (npow_ne_zero w _)) (Finset.prod_ne_zero_iff.2 fun w _ => inv_ne_zero (eulerPoly_ne_zero fun b hb => ?_))` and prove the remaining obligations. Establish `hb1 : ‖(b : ℂ)‖ = 1`. Unfold `charFam at hb`. Use `split_ifs at hb`. Rewrite using `[Multiset.mem_singleton.1 hb, norm_val]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hb`. Rewrite using `[norm_mul, hb1, one_mul, norm_npow]`. Use `Real.rpow_lt_one_of_one_lt_of_neg ?_ (by simpa using hs)` and prove the remaining obligations. Conclude with `one_lt_absNorm w` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unrFac_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ν : Chr F E) (𝔞 : FractionalIdeal (𝓞 E)⁰ E) {s : ℂ} (hs : 0 < s.re) (v : HeightOneSpectrum (𝓞 F)) :
@@ -42,37 +42,31 @@ theorem unrFac_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   exact_mod_cast one_lt_absNorm w
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e' he' ei' ev' hei' hev' hpure' K hK μK μ hμK hμ μKv μv μKI μI hμKv hμv hμKI hμI T hXT`. Take `⟨κ, hκ, hM⟩` from `GlobalTheory.T.hermitian_stabilizer_normalized_haar_factor B hT.base hT.geo.hV' hK μK μ hμK hμ μKI μI hμKI hμI μKv μv hμKv hμv`. Establish `hne : ∏' v : {v : Pl F // v ∉ T}, unrFac X.ν (H.𝔟⁻¹ * conjI σ H'.𝔟) ((((a - (b + 2)) / 2 + 1 : ℕ) : ℂ)) v.1 ≠ 0`. Establish `hs` using `(GlobalTheory.T.seesaw_triple_implicit_unfolding hKP B hC hT hT₁ he' ei' ev' hei' hev' hpure' hK μv hμv T hXT 0).2.2.2.2.2`. Establish `h` using `tprod_one_add_ne_zero_of_summable (f := fun v : {v : Pl F // v ∉ T} => unrFac X.ν (H.𝔟⁻¹ * conjI σ H'.𝔟) ((((a - (b + 2)) / 2 + 1 : ℕ) : ℂ)) v.1 - 1) (fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_sub_cancel]`. Use `unrFac_ne_zero _ _ ?_ _` and prove the remaining obligations. Rewrite using `[Complex.natCast_re]`. Conclude with `Nat.succ_pos _) hs` after adjusting the coercions. Simplify `h` using `only [add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(κ : ℂ) * ∏' v : {v : Pl F // v ∉ T}, unrFac X.ν (H.𝔟⁻¹ * conjI σ H'.𝔟) ((((a - (b + 2)) / 2 + 1 : ℕ) : ℂ)) v.1, mul_ne_zero (Complex.ofReal_ne_zero.2 hκ.ne') hne, fun f' φ' hφ' hvac => ?_⟩` and prove the remaining obligations. Establish `hP` using `(Check.isPair_of_isTriple hT).2`. Establish `hν : Continuous X.ν`. Establish `h1` using `hT.chars.heckeα.1`. Establish `h2` using `hT.chars.heckeβ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Continuous fun l => X.α l / X.β l`. Conclude with `h1.div' h2`. Establish `hfix : ∀ v ∉ T, ∀ k ∈ KAt K (evFin F v), Acts (evFin F v) (om' (k, 1)) (G.M'.vac v) (G.M'.vac v)` using `fun v hv => (GlobalTheory.T.unramified_vacuum_fixed_by_stabilizer B G X om om' hT v (fun h => hv (hXT h))).2 K hK`. Establish `hfac` using `GlobalTheory.T.stabilizer_pair_model_good_descent hKP B G.M' G₁.M' hP hT₁.geo.hM' hK e' ei' ev' hev' hpure' (cA σ) (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) (shiftB σ H H') (fun _ => rfl) X.ν hν ((a - (b + 2)) / 2 + 1) T f' φ' hφ' hvac hfix`. Take `⟨hloc, hinf⟩` from `GlobalTheory.T.seesaw_triple_implicit_identity hKP B hC hT hT₁ he' ei' ev' hei' hev' hpure' hK μKI μI hμKI hμI μKv μv hμKv hμv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpol1` using `GlobalTheory.T.exists_schwartz_eq_coneInfFun_shiftB hKP.base B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei' ev' hei' hev' hpure' μKI μI hμKI hμI f'`. Establish `hU` using `fun y => GlobalTheory.T.seesaw_triple_implicit_unfolding hKP B hC hT hT₁ he' ei' ev' hei' hev' hpure' hK μv hμv T hXT y`. Establish `hMy` using `fun y : Fin b × Fin (a + b) → AF F => hM T (fun k l => coneInfInt B G.M' om' ei' (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) f' k l (fun i => evI F (y i))) (fun v k l => coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (φ' v) k l (fun i => evFin F v (y …`. Establish `hI` using `fun (k : K) (y : Fin b × Fin (a + b) → AF F) => funext fun l => hfac k.1 k.2 l y`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨-, -, -, -, hg, hUs⟩` from `hU y`. Establish `hcone` using `(integral_congr_ae (μ := μK) (ae_of_all _ fun k : K => congrArg (fun g : (AE F E)ˣ → ℂ => ∫ l, g l ∂μ) (hI k y))).trans (hMy y).2.2`. Express the relevant statement in the definitionally equal form `cone B G.M' om' e' K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (pure f' φ') y = _ at hcone`. Establish `hVfin : (Function.mulSupport fun v : Pl F => G₁.M'.vac v (fun i => evFin F v (y i))).Finite`. Establish `hev : ∀ᶠ v in cofinite, G₁.M'.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ ∀ i, evFin F v (y i) ∈ v.adicCompletionIntegers F` using `hT₁.geo.hM'.std.and (Filter.eventually_all.2 fun i => (y i).2.2.mono fun _ hv => hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Filter.eventually_cofinite.1 hev).subset fun v hv hP => hv ?_` and prove the remaining obligations. Use `show G₁.M'.vac v _ = 1`. Rewrite using `[hP.1]`. Conclude with `Set.indicator_of_mem (show (fun i => evFin F v (y i)) ∈ {z : Fin b × Fin (a + b) → Fv F v | ∀ i, z i ∈ v.adicCompletionIntegers F} from hP.2) 1`. Use `set S := hVfin.toFinset with hS`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set U : {v : Pl F // v ∉ T} → ℂ := fun w => unrFac X.ν (H.𝔟⁻¹ * conjI σ H'.𝔟) ((((a - (b + 2)) / 2 + 1 : ℕ) : ℂ)) w.1 with hUdef`. Use `set V : Pl F → ℂ := fun v => G₁.M'.vac v (fun i => evFin F v (y i)) with hVdef`. Establish `hUm : Multipliable U`. Use `multipliable_one_add_of_summable (f := fun w => U w - 1) hUs` as an intermediate fact. Simplify using `using this`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVt : ∏' w : {v : Pl F // v ∉ T}, V w.1 = ∏ v ∈ S \ T, V v`. Rewrite using `[tprod_eq_prod (s := (S \ T).subtype (fun v => v ∉ T)) ?_]`. Rewrite using `[Finset.prod_subtype_eq_prod_filter]`. Use `congr 1`. Use extensionality with `v`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_sdiff]`. The claim follows by propositional logic. Introduce `w hw`. Assume the negation of the conclusion as `hne`. Apply `hw` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_subtype, Finset.mem_sdiff, hS, Set.Finite.mem_toFinset]`. Conclude with `⟨hne, w.2⟩`. Establish `hVm : Multipliable fun w : {v : Pl F // v ∉ T} => V w.1`. Use `multipliable_of_finite_mulSupport ?_` and prove the remaining obligations. Conclude with `hVfin.preimage Subtype.val_injective.injOn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hgl : ∏' w : {v : Pl F // v ∉ T}, ∫ l : idelesAt E (evFin F w.1), coneFinInt B G.M' om' w.1 (ev' w.1) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (G.M'.vac w.1) 1 l.1 (fun i => evFin F w.1 (y i)) ∂(μv w.1) = (∏' w, U w) * ∏ v ∈ S \ T, V v`. Use `(tprod_congr (fun w : {v : Pl F // v ∉ T} => hg w.1 w.2)).trans ?_` and prove the remaining obligations. Rewrite using `[← hVt]`. Conclude with `hUm.tprod_mul hVm`. Establish `hpsi : ∏ᶠ v : Pl F, (if v ∈ T then coneFin B G.M' om' v (ev' v) K (μKv v) (μv v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (φ' v) else G₁.M'.vac v) (fun i => evFin F v (y i)) = (∏ v ∈ T, coneFin B G.M' om' v (ev' v) K (μKv v) (μv v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) ( …`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := T ∪ S)]`. Rewrite using `[← Finset.union_sdiff_self_eq_union, Finset.prod_union Finset.disjoint_sdiff]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v hv => by rw [if_pos hv]`. Conclude with `Finset.prod_congr rfl fun v hv => by rw [if_neg (Finset.mem_sdiff.1 hv).2]`.
-
-Introduce `v hv`. Rewrite using `[Finset.coe_union, Set.mem_union]`. Distinguish the cases in `hvT : v ∈ T`. Conclude with `Or.inl hvT`. Use `right`.
-
-Rewrite using `[hS, Set.Finite.coe_toFinset]`. Simplify `hv` using `[if_neg hvT]`. Rewrite using `[hcone, hgl, Pi.smul_apply, smul_eq_mul]`. Unfold `IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Rewrite using `[hpsi, congrFun (coe_coneInf hpol1)]`.
-
-Simplify using `only [coneInfFun, coneFin]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cone_pure_eq_const_smul : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b))

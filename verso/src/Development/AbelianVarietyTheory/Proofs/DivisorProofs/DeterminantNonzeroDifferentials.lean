@@ -21,21 +21,19 @@ namespace GlobalTheory.LatJet
 open ReciprocityTheory.ChartRestriction.G.Chart (isTan_iff) in
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 X L u δ v W hW hdet`. Take `⟨h1, h2⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u X.dim`. Establish `hsm : Smooth X.A.hom` using `by haveI := X.dim`. Conclude with `SmoothOfRelativeDimension.smooth (Module.finrank ℚ F) X.A.hom`. Take `⟨v₀, hv₀, -⟩` from `GlobalTheory.exists_lieBasis_of_holUnif X.A L _ u hsm h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `b` to `Serre.Lie.basis X.rm hv₀`. Establish `hsmul : ∀ (c : ℂ) (w : Fin (Module.finrank ℚ F) → ℂ) (x : X.Lie), u.IsDiff w x.hom → u.IsDiff (c • w) (c • x).hom`. Introduce `c w x h`. Use `GlobalTheory.UnifLieBasis.isDiff_smul u ((isTan_iff _).2 x.isTangent) h c` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hsum : ∀ a : Fin (Module.finrank ℚ F) → ℂ, u.IsDiff (∑ j, a j • W j) (∑ j, a j • v j).hom`. Introduce `a`. Rewrite using `[Serre.Lie.hom_sum, ← List.prod_ofFn]`. Conclude with `(GlobalTheory.UnifLieBasis.isDiff_list_prod u _ _ (fun j ↦ (isTan_iff _).2 (a j • v j).isTangent) (fun j ↦ hsmul _ _ _ (hW j))).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent ℂ v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`. Establish `h0` using `hsum a`. Rewrite `h0` using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : u.IsDiff 0 (0 : X.Lie).hom`. Rewrite using `[Serre.Lie.hom_zero]`. Conclude with `GlobalTheory.UnifLieBasis.isDiff_zero u`. Establish `heq : ∑ j, a j • W j = 0` using `(h1 _ (0 : X.Lie).isTangent).unique h0 hz`. Rewrite `heq` using `[← Matrix.vecMul_eq_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨i, hi⟩` from `hne`. Conclude with `hdet (Matrix.exists_vecMul_eq_zero_iff.1 ⟨a, fun h ↦ hi (by rw [h]; rfl), heq⟩)`. Use `haveI : Nonempty (Fin (Module.finrank ℚ F)) := Fin.pos_iff_nonempty.1 Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [Fintype.card_fin, Module.finrank_eq_card_basis b, Fintype.card_fin])`. Establish `hB : (B : Fin (Module.finrank ℚ F) → X.Lie) = v` using `coe_basisOfLinearIndependentOfCardEqFinrank _ _`. Establish `hmem : B.det ∈ Submodule.span ℂ {δ.1}` using `by rw [δ.2]; exact Submodule.mem_top`. Take `⟨t, ht⟩` from `Submodule.mem_span_singleton.1 hmem`. Introduce `h0`.
-
-Establish `h1'` using `B.det_self`. Rewrite `h1'` using `[← ht, hB, AlternatingMap.smul_apply, h0, smul_zero]`. Conclude with `zero_ne_one h1'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detGen_apply_ne_zero_of_isDiff : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (L : LB X.A.left)
     (u : HolUnif X.A L (Module.finrank ℚ F)) (δ : X.DetGen) (v : Fin (Module.finrank ℚ F) → X.Lie)

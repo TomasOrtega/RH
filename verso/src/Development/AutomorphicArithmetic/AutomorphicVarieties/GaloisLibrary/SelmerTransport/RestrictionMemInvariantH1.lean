@@ -15,7 +15,7 @@ def eig (π : Representation R Q N) (ψ : Q →* Rˣ) : Submodule R N :=
   ⨅ g, LinearMap.ker (π g - ((ψ g : Rˣ) : R) • LinearMap.id)
 
 /- English proof (translation)
-Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {π : Representation R Q N} {ψ : Q →* Rˣ} {x : N} :
     x ∈ eig π ψ ↔ ∀ g, π g x = ((ψ g : Rˣ) : R) • x := by
@@ -23,7 +23,7 @@ theorem mem_eig {π : Representation R Q N} {ψ : Q →* Rˣ} {x : N} :
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_eig, Representation.mem_invariants]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eig_one (π : Representation R Q N) : eig π 1 = π.invariants := by
   ext x
@@ -50,14 +50,14 @@ def resU (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) : H1U ρ
   pairH1DecompositionMap _ _ (Subgroup.inclusion h) (continuous_inclusion h) LinearMap.id continuous_id fun _ _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem resU_mk (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) (z : Z1U ρ U) :
     ∃ z' : Z1U ρ U', resU ρ h (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' ∧
       ∀ u : U', z'.1 u = z.1 ⟨u.1, h u.2⟩ := ⟨_, rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mk_eq_mk (ρ : Representation R G M) (U : Subgroup G) (z z' : Z1U ρ U) :
     (Submodule.Quotient.mk z : H1U ρ U) = Submodule.Quotient.mk z' ↔
@@ -66,7 +66,7 @@ theorem mk_eq_mk (ρ : Representation R G M) (U : Subgroup G) (z z' : Z1U ρ U) 
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨z', e, f⟩` from `resU_mk ρ h z`. Rewrite using `[e, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Conclude with `exists_congr fun m => forall_congr' fun u => by rw [f u]; rfl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resU_mk_eq_zero (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) (z : Z1U ρ U) :
     resU ρ h (Submodule.Quotient.mk z) = 0 ↔ ∃ m, ∀ u : U', z.1 ⟨u.1, h u.2⟩ = ρ u m - m := by
@@ -75,9 +75,9 @@ theorem resU_mk_eq_zero (ρ : Representation R G M) {U' U : Subgroup G} (h : U' 
   exact exists_congr fun m => forall_congr' fun u => by rw [f u]; rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z₁, e₁, f₁⟩` from `resU_mk ρ h z`. Take `⟨z₂, e₂, f₂⟩` from `resU_mk ρ h' z₁`. Take `⟨z₃, e₃, f₃⟩` from `resU_mk ρ (h'.trans h) z`. Rewrite using `[e₁, e₂, e₃]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Rewrite using `[f₂, f₁, f₃]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resU_resU (ρ : Representation R G M) {U'' U' U : Subgroup G} (h' : U'' ≤ U') (h : U' ≤ U) (x : H1U ρ U) :
     resU ρ h' (resU ρ h x) = resU ρ (h'.trans h) x := by
@@ -94,16 +94,16 @@ def LocSel (ρ : Representation R G M) (U : Subgroup G) (𝒟 : Set (Subgroup G)
   ⨅ D ∈ 𝒟, LinearMap.ker (resU ρ (inf_le_left : U ⊓ D ≤ U))
 
 /- English proof (translation)
-Simplify using `only [LocSel, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_locSel {ρ : Representation R G M} {U : Subgroup G} {𝒟 : Set (Subgroup G)} {x : H1U ρ U} :
     x ∈ LocSel ρ U 𝒟 ↔ ∀ D ∈ 𝒟, resU ρ (inf_le_left : U ⊓ D ≤ U) x = 0 := by
   simp only [LocSel, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[mem_locSel]`. Use `forall₂_congr fun D _ => ?_` and prove the remaining obligations. Rewrite using `[resU_mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, fun u hu => hm ⟨u.1, Subgroup.mem_inf.mpr ⟨u.2, hu⟩⟩⟩`. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, fun u => hm ⟨u.1, (Subgroup.mem_inf.mp u.2).1⟩ (Subgroup.mem_inf.mp u.2).2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mk_mem_locSel {ρ : Representation R G M} {U : Subgroup G} {𝒟 : Set (Subgroup G)} {z : Z1U ρ U} :
     Submodule.Quotient.mk z ∈ LocSel ρ U 𝒟 ↔ ∀ D ∈ 𝒟, ∃ m, ∀ u : U, u.1 ∈ D → z.1 u = ρ u m - m := by
@@ -117,7 +117,7 @@ theorem mk_mem_locSel {ρ : Representation R G M} {U : Subgroup G} {𝒟 : Set (
     exact ⟨m, fun u => hm ⟨u.1, (Subgroup.mem_inf.mp u.2).1⟩ (Subgroup.mem_inf.mp u.2).2⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_locSel]`. Introduce `D hD`. Establish `hle : U' ⊓ D ≤ U ⊓ D` using `inf_le_inf_right D h`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem resU_mem_locSel {ρ : Representation R G M} {U' U : Subgroup G} (h : U' ≤ U) {𝒟 : Set (Subgroup G)}
     {x : H1U ρ U} (hx : x ∈ LocSel ρ U 𝒟) : resU ρ h x ∈ LocSel ρ U' 𝒟 := by
@@ -149,7 +149,7 @@ def conjHom (U : Subgroup G) [hU : U.Normal] (g : G) : U →* U where
   map_mul' a b := Subtype.ext (by simp [mul_assoc])
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_conjHom (U : Subgroup G) [U.Normal] (g : G) : Continuous (conjHom U g) := by
   refine continuous_induced_rng.2 ?_
@@ -162,7 +162,7 @@ def conjU (ρ : Representation R G M) (U : Subgroup G) [U.Normal] (g : G) : H1U 
     simp [mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem conjU_mk (ρ : Representation R G M) (U : Subgroup G) [U.Normal] (g : G) (z : Z1U ρ U) :
     ∃ z' : Z1U ρ U, conjU ρ U g (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' ∧
@@ -196,11 +196,11 @@ theorem conjRep_apply (ρ : Representation R G M) (U : Subgroup G) [U.Normal] (g
     conjRep ρ U g = conjU ρ U g := rfl
 
 /- English proof (translation)
-Establish `hz : ∀ a b : U, z.1 (a * b) = z.1 a + ρ a (z.1 b)` using `((mem_Z1_iff_cocycle _ _).mp z.2).2`. Establish `h1 : z.1 1 = 0` using `by simpa using hz 1 1`. Establish `hinv : ρ γ (z.1 γ⁻¹) = - z.1 γ`. Use `hz γ γ⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_right this.symm`. Establish `hmul : ∀ w : M, ρ γ (ρ (γ⁻¹ : U) w) = w`. Introduce `w`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, hz, map_add, hmul, hinv]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem cocycle_conj_identity (ρ : Representation R G M) (U : Subgroup G) (z : Z1U ρ U) (γ v : U) :
     ρ γ (z.1 (γ⁻¹ * (v * γ))) - z.1 v = ρ v (z.1 γ) - z.1 γ := by
@@ -218,9 +218,9 @@ private theorem cocycle_conj_identity (ρ : Representation R G M) (U : Subgroup 
   abel
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z', e, f⟩` from `conjU_mk ρ U g z`. Rewrite using `[conjRep_apply, e, mk_eq_mk]`. Use `⟨z.1 ⟨g, hg⟩, fun u => ?_⟩` and prove the remaining obligations. Establish `hc : conjHom U g u = (⟨g, hg⟩ : U)⁻¹ * (u * ⟨g, hg⟩)` using `Subtype.ext (by simp [conjHom, mul_assoc])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[f u, hc]`. Conclude with `cocycle_conj_identity ρ U z ⟨g, hg⟩ u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjRep_of_mem (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {g : G} (hg : g ∈ U) (x : H1U ρ U) :
     conjRep ρ U g x = x := by
@@ -234,9 +234,9 @@ theorem conjRep_of_mem (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {
   exact cocycle_conj_identity ρ U z ⟨g, hg⟩ u
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z₁, e₁, f₁⟩` from `conjU_mk ρ U g z`. Take `⟨z₂, e₂, f₂⟩` from `resU_mk ρ h z₁`. Take `⟨z₃, e₃, f₃⟩` from `resU_mk ρ h z`. Take `⟨z₄, e₄, f₄⟩` from `conjU_mk ρ U' g z₃`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[conjRep_apply, conjRep_apply, e₁, e₂, e₃, e₄]`. Use `congr 1`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Rewrite using `[f₂, f₁, f₄, f₃]`. Conclude with `congrArg (fun t => ρ g (z.1 t)) (Subtype.ext (by simp [conjHom]))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resU_conjRep (ρ : Representation R G M) {U' U : Subgroup G} [U.Normal] [U'.Normal] (h : U' ≤ U) (g : G)
     (x : H1U ρ U) : resU ρ h (conjRep ρ U g x) = conjRep ρ U' g (resU ρ h x) := by
@@ -252,11 +252,11 @@ theorem resU_conjRep (ρ : Representation R G M) {U' U : Subgroup G} [U.Normal] 
   exact congrArg (fun t => ρ g (z.1 t)) (Subtype.ext (by simp [conjHom]))
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z', e, f⟩` from `conjU_mk ρ U g z`. Rewrite using `[conjRep_apply, e, mk_mem_locSel]`. Rewrite `hx` using `[mk_mem_locSel]`. Introduce `D hD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨D', hD', hiff⟩` from `h𝒟 D hD g`. Take `⟨m, hm⟩` from `hx D' hD'`. Use `⟨ρ g m, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[f u, hm (conjHom U g u) ((hiff u).mp hu), map_sub]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Simplify using `[conjHom, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem conjRep_mem_locSel (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟 : Set (Subgroup G)}
     (h𝒟 : ConjStable 𝒟) (g : G) {x : H1U ρ U} (hx : x ∈ LocSel ρ U 𝒟) : conjRep ρ U g x ∈ LocSel ρ U 𝒟 := by
@@ -285,7 +285,7 @@ theorem coe_selRep (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟
     (g : G) (x : LocSel ρ U 𝒟) : (selRep ρ U h𝒟 g x : H1U ρ U) = conjRep ρ U g x := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_selRep, conjRep_of_mem ρ U hg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem selRep_of_mem (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟 : Set (Subgroup G)}
     (h𝒟 : ConjStable 𝒟) {g : G} (hg : g ∈ U) (x : LocSel ρ U 𝒟) : selRep ρ U h𝒟 g x = x := by
@@ -293,7 +293,7 @@ theorem selRep_of_mem (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {�
   rw [coe_selRep, conjRep_of_mem ρ U hg]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show resU ρ h (conjRep ρ U g x) = conjRep ρ U' g (resU ρ h x)`. Conclude with `resU_conjRep ρ h g x`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem selRes_selRep (ρ : Representation R G M) {U' U : Subgroup G} [U.Normal] [U'.Normal] (h : U' ≤ U)
     {𝒟 : Set (Subgroup G)} (h𝒟 : ConjStable 𝒟) (g : G) (x : LocSel ρ U 𝒟) :
@@ -313,11 +313,11 @@ abbrev resCoker (ρ : Representation R G M) {U' U : Subgroup G} [U'.Normal] (h :
   invariantsUnderSubgroupH1 ρ U U' ⧸ (LinearMap.range (resU ρ h)).comap (invariantsUnderSubgroupH1 ρ U U').subtype
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z₁, e₁, f₁⟩` from `resU_mk ρ h z`. Rewrite using `[e₁, Representation.mem_invariants]`. Introduce `u`. Use `show conjRep ρ U' (u : G) (Submodule.Quotient.mk z₁) = Submodule.Quotient.mk z₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z₂, e₂, f₂⟩` from `conjU_mk ρ U' (u : G) z₁`. Rewrite using `[conjRep_apply, e₂, mk_eq_mk]`. Use `⟨z.1 u, fun v => ?_⟩` and prove the remaining obligations. Establish `hc : (⟨(conjHom U' (u : G) v).1, h (conjHom U' (u : G) v).2⟩ : U) = u⁻¹ * (⟨v.1, h v.2⟩ * u)` using `Subtype.ext (by simp [conjHom, mul_assoc])`. Establish `key` using `cocycle_conj_identity ρ U z u ⟨v.1, h v.2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[← hc]`. Rewrite using `[f₂ v, f₁, f₁ v]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restriction_mem_invariant_H1 (ρ : Representation R G M) {U' U : Subgroup G} [U'.Normal] (h : U' ≤ U) (x : H1U ρ U) :
     resU ρ h x ∈ invariantsUnderSubgroupH1 ρ U U' := by

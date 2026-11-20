@@ -10,14 +10,14 @@ namespace GlobalTheory.KZ
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `(h.2.2.2.2.2.1 i).2.1`.
+A detailed English derivation is pending.
 -/
 theorem HTPres.eval_ne_zero {A : ValuationSubring Ω} {c : Coef l} {m : ℕ} {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} {ζ : Ω}
     {ι : Type} [Fintype ι] {P : ι → Polynomial Ω} {o : ι → Qbar l} (h : HTPres A c m Z ζ P o) (i : ι) : (P i).eval ζ ≠ 0 :=
   (h.2.2.2.2.2.1 i).2.1
 
 /- English proof (translation)
-Introduce `h0`. Conclude with `h.eval_ne_zero i (by rw [h0, Polynomial.eval_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem HTPres.ne_zero {A : ValuationSubring Ω} {c : Coef l} {m : ℕ} {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} {ζ : Ω}
     {ι : Type} [Fintype ι] {P : ι → Polynomial Ω} {o : ι → Qbar l} (h : HTPres A c m Z ζ P o) (i : ι) : P i ≠ 0 := by
@@ -25,7 +25,7 @@ theorem HTPres.ne_zero {A : ValuationSubring Ω} {c : Coef l} {m : ℕ} {Z : ∀
   exact h.eval_ne_zero i (by rw [h0, Polynomial.eval_zero])
 
 /- English proof (translation)
-Introduce `m hm'` and use `h m (hm.trans hm')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HTLawAt.mono {A : ValuationSubring Ω} {c : Coef l} {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} {j : Ω →+* Qbar l}
     {m₀ m₁ c₀ : ℕ} {Rhs : ∀ m : ℕ, DirichletCharacter (Qbar l) (l ^ m) → Qbar l → Qbar l} (h : HTLawAt A c Z j m₀ c₀ Rhs)
@@ -33,7 +33,7 @@ theorem HTLawAt.mono {A : ValuationSubring Ω} {c : Coef l} {Z : ∀ r : ℕ, G 
   fun m hm' => h m (hm.trans hm')
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range' hN]`. Simplify using `only [tval, Polynomial.coeff_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tval_coe (Q : Polynomial (Qbar l)) {N : ℕ} (hN : Q.natDegree < N) (z : Qbar l) :
     tval (Q : PowerSeries (Qbar l)) N z = Q.eval (z - 1) := by
@@ -41,7 +41,7 @@ theorem tval_coe (Q : Polynomial (Qbar l)) {N : ℕ} (hN : Q.natDegree < N) (z :
   simp only [tval, Polynomial.coeff_coe]
 
 /- English proof (translation)
-Establish `h : (((1 + Polynomial.X) ^ y : Polynomial (Qbar l)) : PowerSeries (Qbar l)) = (1 + PowerSeries.X) ^ y` using `by simp`. Rewrite using `[← h, tval_coe _ (lt_of_le_of_lt _ hN)]`. Simplify using the standard rewrite rules. Use `Polynomial.natDegree_pow_le.trans ?_` and prove the remaining obligations. Rewrite using `[add_comm, ← Polynomial.C_1, Polynomial.natDegree_X_add_C, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tval_dirac {y N : ℕ} (hN : y < N) (z : Qbar l) : tval ((1 + PowerSeries.X) ^ y) N z = z ^ y := by
   have h : (((1 + Polynomial.X) ^ y : Polynomial (Qbar l)) : PowerSeries (Qbar l)) = (1 + PowerSeries.X) ^ y := by simp
@@ -51,13 +51,11 @@ theorem tval_dirac {y N : ℕ} (hN : y < N) (z : Qbar l) : tval ((1 + PowerSerie
     rw [add_comm, ← Polynomial.C_1, Polynomial.natDegree_X_add_C, mul_one]
 
 /- English proof (translation)
-Establish `h0 : ξ ≠ 0` using `hξ.ne_zero (by omega)`. Establish `hy' : y < l ^ (3 * r)` using `hy.trans_le (Nat.pow_le_pow_right (Fact.out : l.Prime).pos (by omega))`. Establish `e : ∀ k, ξ ^ (l ^ r - (k * x) % l ^ r) * tval ((1 + PowerSeries.X) ^ y) (l ^ (3 * r)) (ξ ^ k) = (ξ ^ y / ξ ^ x) ^ k`. Introduce `k`. Rewrite using `[tval_dirac hy', pow_sub₀ _ h0 (Nat.mod_lt _ (by omega)).le, hξ.pow_eq_one, ← pow_eq_pow_mod _ hξ.pow_eq_one, div_pow, ← pow_mul, ← pow_mul, ← pow_mul, mul_comm x k, mul_comm y k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [mass, e]`. Use `split_ifs with h1`. Substitute `h1` using the available equality. Simplify using `[h0]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : ξ ^ y / ξ ^ x ≠ 1`. Introduce `h`. Rewrite `h` using `[div_eq_one_iff_eq (pow_ne_zero _ h0)]`. Conclude with `h1 (hξ.pow_inj hx hy h.symm)`. Use `mul_geom_sum (ξ ^ y / ξ ^ x) (l ^ r)` as an intermediate fact.
-
-Rewrite `this` using `[div_pow, ← pow_mul, ← pow_mul, mul_comm x, mul_comm y, pow_mul, pow_mul, hξ.pow_eq_one, one_pow, one_pow, div_one, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_dirac {r : ℕ} {ξ : Qbar l} (hξ : IsPrimitiveRoot ξ (l ^ r)) {x y : ℕ} (hx : x < l ^ r) (hy : y < l ^ r) :
     mass ((1 + PowerSeries.X) ^ y) r ξ x = if x = y then ((l : ℕ) : Qbar l) ^ r else 0 := by
@@ -81,14 +79,14 @@ theorem mass_dirac {r : ℕ} {ξ : Qbar l} (hξ : IsPrimitiveRoot ξ (l ^ r)) {x
     exact (mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne)
 
 /- English proof (translation)
-Simplify using `[htv, hζ]`.
+Simplify using the standard rewrite rules.
 -/
 example (j : Ω →+* Qbar l) (ζ : Ω) (hζ : ζ ≠ 0) (b : ℕ) :
     htv j ζ (fun _ : Unit => Polynomial.X) (fun _ => 1) b = 1 := by
   simp [htv, hζ]
 
 /- English proof (translation)
-Simplify using `[htv]`.
+Simplify using the standard rewrite rules.
 -/
 example (j : Ω →+* Qbar l) (ζ : Ω) (b : ℕ) :
     htv j ζ (fun _ : Unit => 1 + Polynomial.X) (fun _ => 1) b = j (ζ ^ b / (1 + ζ ^ b)) := by

@@ -10,14 +10,14 @@ open Complex Matrix
 noncomputable section
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => thetaThreeSec_mem i, thetaThreeFam_linearIndependent, thetaThreeFam_span⟩`.
+Supply the required witnesses or components.
 -/
 theorem rigSymFormTauI_isBasisOf :
     rigSymFormTauI.IsBasisOf 3 (r := 2) thetaThreeFam :=
   ⟨fun i => thetaThreeSec_mem i, thetaThreeFam_linearIndependent, thetaThreeFam_span⟩
 
 /- English proof (translation)
-Use `⟨rfl, le_rfl, rigSymFormTauI_isBasisOf, le_rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `J _`. Conclude with `⟨0, 0, Submodule.zero_mem _, fun z _ => by simp⟩`. Introduce `J _ z _`. Simplify using `[cechD]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem vanishingCech_hyps :
     rigSymFormTauI.g = 1 ∧ 3 ≤ 3 ∧ rigSymFormTauI.IsBasisOf 3 (r := 2) thetaThreeFam ∧ 1 ≤ 1 ∧
@@ -29,7 +29,7 @@ theorem vanishingCech_hyps :
     simp [cechD]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[RigSymForm.formSec, thetaThreeFam]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma formSec_X_zero :
     rigSymFormTauI.formSec (r := 2) thetaThreeFam (MvPolynomial.X 0) = thetaThreeSec 0 := by
@@ -37,13 +37,11 @@ lemma formSec_X_zero :
   simp [RigSymForm.formSec, thetaThreeFam]
 
 /- English proof (translation)
-Use `⟨rfl, le_rfl, le_rfl, rigSymFormTauI_isBasisOf, fun _ => MvPolynomial.isHomogeneous_X _ _, ?_⟩` and prove the remaining obligations. Take `⟨W, hW⟩` from `thetaThree_zero_finite`. Use `⟨W.image (fun w => (fun _ => w : Fin 1 → ℂ)), fun z hz => ?_⟩` and prove the remaining obligations. Establish `h0 : thetaThree 0 (z (0 : Fin 1)) = 0`. Use `hz (0 : Fin 1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [formSec_X_zero] at this`. Conclude with `this`. Take `⟨w', hw', m, k, hz0⟩` from `hW (z (0 : Fin 1)) h0`. Use `⟨fun _ => w', Finset.mem_image.mpr ⟨w', hw', rfl⟩, fun _ => k, fun _ => m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hi : i = (0 : Fin 1)` using `Subsingleton.elim (α := Fin 1) _ _`. Substitute `hi` using the available equality. Use `show z (0 : Fin 1) = w' + (tauI.τ *ᵥ intVec (fun _ : Fin 1 => k)) 0 + ((m : ℤ) : ℂ)`. Establish `hτ : (tauI.τ *ᵥ intVec (fun _ : Fin 1 => k)) 0 = (k : ℂ) * I`. Simplify using `[tauI, Matrix.mulVec, dotProduct, intVec, mul_comm]`.
-
-Rewrite using `[hz0, hτ]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exactField_hyps :
     rigSymFormTauI.g = 1 ∧ 3 ≤ 3 ∧ 1 ≤ 1 ∧ rigSymFormTauI.IsBasisOf 3 (r := 2) thetaThreeFam ∧

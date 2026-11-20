@@ -11,9 +11,9 @@ universe u
 noncomputable section
 
 /- English proof (translation)
-Apply `isIso_of_isOpenImmersion_of_opensRange_eq_top` to reduce the goal to its premises. Apply `le_antisymm le_top` to reduce the goal to its premises. Introduce `x _`. Use `⟨⟨x, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `O.ι x ∈ O`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `x.2`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `morphismRestrict_base_coe O.ι O ⟨x, _⟩`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma isIso_opens_ι_restrict {Z : Scheme.{u}} (O : Z.Opens) : IsIso (O.ι ∣_ O) := by
   apply isIso_of_isOpenImmersion_of_opensRange_eq_top
@@ -26,15 +26,13 @@ lemma isIso_opens_ι_restrict {Z : Scheme.{u}} (O : Z.Opens) : IsIso (O.ι ∣_ 
     exact morphismRestrict_base_coe O.ι O ⟨x, _⟩
 
 /- English proof (translation)
-Take `⟨z⟩` from `‹Nonempty Z›`. Establish `hC` using `irreducibleComponent_mem_irreducibleComponents z`. Use `set C := irreducibleComponent z`. Use `set O := Z.irreducibleComponentOpen C`. Use `⟨Z.irreducibleComponent C hC, Z.irreducibleComponentι C hC, O, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨o, ho, hne, hoC⟩` from `NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent C hC`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`. Establish `hcl` using `closure_sUnion_irreducibleComponents_sdiff_singleton NoetherianSpace.finite_irreducibleComponents C hC`. Establish `: (O : Set Z) = (⋃₀ (irreducibleComponents Z \ {C}))ᶜ` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[this, Set.compl_empty_iff]`. Rewrite `hcl` using `[h, Set.compl_univ, closure_empty]`. Conclude with `hC.1.nonempty.ne_empty hcl.symm`. Establish `hI` using `Z.irreducibleComponentIdeal_def C hC`. Establish `: IsIso (O.ι ∣_ O)` using `isIso_opens_ι_restrict O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `SchemeImage.imageRestrictLift_fac O.ι O`. Express the relevant statement in the definitionally equal form `IsIso ((Z.irreducibleComponentIdeal C hC).subschemeι ∣_ O)`. Rewrite using `[hI]`. Express the relevant statement in the definitionally equal form `IsIso (O.ι.imageι ∣_ O)`. Rewrite using `[← key]`.
-
-Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_irreducible_isIso_restrict (Z : Scheme.{u}) [IsNoetherian Z] [Nonempty Z] :
     ∃ (Z₁ : Scheme.{u}) (c : Z₁ ⟶ Z) (O : Z.Opens), IsClosedImmersion c ∧ IrreducibleSpace Z₁ ∧

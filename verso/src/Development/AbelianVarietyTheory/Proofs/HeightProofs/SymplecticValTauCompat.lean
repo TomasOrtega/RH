@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FockCompare.SymplVal
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [h2]; norm_num)`. Take `⟨a, ha⟩` from `hf (e + σ e) (by rw [map_add, hσ, add_comm])`. Establish `h1 : Algebra.trace F E (σ e) = Algebra.trace F E e` using `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)) e`. Establish `h3` using `congrArg (Algebra.trace F E) ha`. Rewrite `h3` using `[Algebra.trace_algebraMap, h2, map_add, h1, two_smul, ← two_mul, ← two_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha, mul_left_cancel₀ two_ne_zero h3]`.
+A detailed English derivation is pending.
 -/
 theorem trace_field {F E : Type} [Field F] [Field E] [Algebra F E] [CharZero F] (h2 : Module.finrank F E = 2)
     (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) (hf : ∀ e, σ e = e → ∃ f, algebraMap F E f = e) (e : E) :
@@ -24,11 +24,11 @@ theorem trace_field {F E : Type} [Field F] [Field E] [Algebra F E] [CharZero F] 
   rw [← ha, mul_left_cancel₀ two_ne_zero h3]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [h2]; norm_num)`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `tmul a e`. Establish `h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h3 : Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e)`. Rewrite using `[h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : sigR R σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `rfl`. Rewrite using `[h3, h4, ← TensorProduct.tmul_add, ← trace_field h2 σ hσ hf, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_tensor {F E : Type} [Field F] [Field E] [Algebra F E] [CharZero F] (h2 : Module.finrank F E = 2)
     (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) (hf : ∀ e, σ e = e → ∃ f, algebraMap F E f = e)
@@ -50,14 +50,14 @@ theorem trace_tensor {F E : Type} [Field F] [Field E] [Algebra F E] [CharZero F]
       Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-The claim follows from `trace_tensor D.sp.cm.deg2 D.sp.cm.sig (fun e => star_star e) (fun e he => (D.sp.cm.fixed e).1 he) _ z`.
+A detailed English derivation is pending.
 -/
 theorem trace_AE (D : D7) (z : AE D) :
     algebraMap (AF D.host.F) (AE D) (Algebra.trace (AF D.host.F) (AE D) z) = z + cA D z :=
   trace_tensor D.sp.cm.deg2 D.sp.cm.sig (fun e => star_star e) (fun e he => (D.sp.cm.fixed e).1 he) _ z
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_mul, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_sum4 {A : Type} [CommRing A] (φ : A →+* ℂ) (c : A →+* A) (hc : ∀ a, φ (c a) = starRingEnd ℂ (φ a))
     {m n : ℕ} (x y : Fin m → Fin n → A) (P Q : Fin m → Fin n → Fin m → Fin n → A) :
@@ -66,9 +66,9 @@ theorem map_sum4 {A : Type} [CommRing A] (φ : A →+* ℂ) (c : A →+* A) (hc 
   simp only [map_sum, map_mul, hc]
 
 /- English proof (translation)
-Establish `hi : ∀ e, ((θ τ).comp (infPart D)) (incA D e) = tauE D τ e` using `comp_incA hθ τ`. Unfold `hHom hC`. Use `split_ifs`. Use `(map_sum4 ((θ τ).comp (infPart D)) (cA D) (comp_cA hθ τ) x y (fun i j k l => incA D (V.gram k i)) (fun i j k l => incA D (W.gram j l))).trans ?_` and prove the remaining obligations. Simplify using `only [hi]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `(map_sum4 ((θ τ).comp (infPart D)) (cA D) (comp_cA hθ τ) x y (fun i j k l => incA D (V.gram i k)) (fun i j k l => incA D (W.gram l j))).trans ?_` and prove the remaining obligations. Simplify using `only [hi]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comp_hHom {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (V W : HSp D) (τ : D.what₂.Tau) (x y : WA V W) :
     θ τ (infPart D (hHom V W x y)) = hC V W τ (wAt θ V W τ x) (wAt θ V W τ y) := by
@@ -85,7 +85,7 @@ theorem comp_hHom {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (V W : HSp D) (τ
     rfl
 
 /- English proof (translation)
-Introduce `D θ hθ V W τ x y`. Unfold `valTau sympl symplC`. Rewrite using `[trace_AE, RingHom.map_add, RingHom.map_add, comp_cA hθ, RingHom.map_mul, RingHom.map_mul, comp_incA hθ, comp_hHom hθ, Complex.add_re, Complex.conj_re, two_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valTau_sympl : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V W : HSp D) (τ : D.what₂.Tau) (x y : WA V W),
     valTau θ τ (sympl V W x y) = symplC V W τ (wAt θ V W τ x) (wAt θ V W τ y) := by

@@ -11,16 +11,16 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid.MarkEll
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, dotProduct_mulVec, vecMul_vecMul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mulVec_dot {n : ℕ} (M A : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n → ℂ) :
     star (M *ᵥ a) ⬝ᵥ (A *ᵥ (M *ᵥ b)) = star a ⬝ᵥ ((Mᴴ * A * M) *ᵥ b) := by
   rw [star_mulVec, mulVec_mulVec, dotProduct_mulVec, dotProduct_mulVec, vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `star_mulVec_dot Γ A x x`. Rewrite `h` using `[hΓ, hx]`. Simplify using `only [Matrix.smul_mulVec, mulVec_smul, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at h`. Rewrite `h` using `[← mul_assoc]`. Establish `h2 : w * star w = (c : ℂ)` using `mul_right_cancel₀ h0 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((‖w‖ ^ 2 : ℝ) : ℂ) = (c : ℂ)`. Rewrite using `[← h2, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normSq_eq_of_form {n : ℕ} (Γ A : Matrix (Fin n) (Fin n) ℂ) (c : ℝ) (hΓ : Γᴴ * A * Γ = (c : ℂ) • A)
     (x : Fin n → ℂ) (w : ℂ) (hx : Γ *ᵥ x = w • x) (h0 : star x ⬝ᵥ (A *ᵥ x) ≠ 0) : ‖w‖ ^ 2 = c := by
@@ -34,13 +34,11 @@ theorem normSq_eq_of_form {n : ℕ} (Γ A : Matrix (Fin n) (Fin n) ℂ) (c : ℝ
   exact_mod_cast h3
 
 /- English proof (translation)
-Use `set x : K ⊗[F] A := (1 : K) ⊗ₜ[F] g with hx`. Establish `hli : LinearIndependent K (fun j : Fin (minpoly F g).natDegree => x ^ (j : ℕ))`. Establish `h` using `Module.Flat.linearIndependent_one_tmul (S := K) (linearIndependent_pow (K := F) g)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, Algebra.TensorProduct.tmul_pow]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hsum` using `Polynomial.aeval_eq_sum_range' hlt x`. Rewrite `hsum` using `[minpoly.aeval, ← Fin.sum_univ_eq_sum_range (fun i => (minpoly K x).coeff i • x ^ i)]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc` using `Fintype.linearIndependent_iff.mp hli (fun i => (minpoly K x).coeff i) hsum.symm`. Apply `minpoly.ne_zero hK` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[Polynomial.coeff_zero]`. Distinguish the cases in `hi : i < (minpoly F g).natDegree`.
-
-Conclude with `hc ⟨i, hi⟩`. Conclude with `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_le_tmul {F A : Type} [Field F] [Ring A] [Algebra F A] (K : Type)
     [Field K] [Algebra F K] (g : A) (hK : IsIntegral K ((1 : K) ⊗ₜ[F] g)) :
@@ -64,23 +62,21 @@ theorem natDegree_minpoly_le_tmul {F A : Type} [Field F] [Ring A] [Algebra F A] 
   · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
 
 /- English proof (translation)
-Introduce `p _ G g v z hdeg hz`. Use `letI alg : Algebra G.F ℂ := v.embedding.toAlgebra`. Establish `halg : ∀ a : G.F, algebraMap G.F ℂ a = v.embedding a` using `fun a => rfl`. Set `ψF : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) ℂ` to `{ G.psi v with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `G.psi v (algebraMap G.F G.C a) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[G.psi_F]`. Use extensionality with `i j`. Simplify using `[Matrix.algebraMap_matrix_apply, Matrix.scalar_apply, Matrix.diagonal_apply, halg] }`. Set `Θ : ℂ ⊗[G.F] G.C →ₐ[ℂ] Matrix (Fin G.n) (Fin G.n) ℂ` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ _) ψF (fun a _ => Algebra.commute_algebraMap_left a _)`. Establish `hinj : Function.Injective Θ` using `(IsSimpleRing.injective_ringHom_or_subsingleton_codomain Θ.toRingHom).resolve_right (by haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩; exact not_subsingleton _)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set x : ℂ ⊗[G.F] G.C := (1 : ℂ) ⊗ₜ[G.F] g with hx`. Establish `hxi : IsIntegral ℂ x` using `IsIntegral.of_finite ℂ x`. Establish `hge` using `natDegree_minpoly_le_tmul ℂ g hxi`. Establish `hΘx : Θ x = G.psi v g`. Rewrite using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `(erw [Algebra.TensorProduct.lift_tmul, map_one, one_mul]; rfl)`. Consider the case `(show (Algebra.ofId ℂ (Matrix (Fin G.n) (Fin G.n) ℂ)) 1 * ψF g = G.psi v g`. Rewrite using `[map_one, one_mul]`. Use the proof step `rfl)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `simp [Θ, ψF]`. Establish `hmin : minpoly ℂ (G.psi v g) = minpoly ℂ x` using `by rw [← hΘx]; exact minpoly.algHom_eq Θ hinj x`. Establish `hgi : IsIntegral G.F g` using `IsIntegral.of_finite G.F g`. Establish `hdvd : minpoly ℂ (G.psi v g) ∣ (minpoly G.F g).map (algebraMap G.F ℂ)`. Apply `minpoly.dvd` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_map_algebraMap]`. Express the relevant statement in the definitionally equal form `Polynomial.aeval (ψF g) (minpoly G.F g) = 0`. Rewrite using `[Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hmon : ((minpoly G.F g).map (algebraMap G.F ℂ)).Monic` using `(minpoly.monic hgi).map _`. Establish `heq : (minpoly G.F g).map (algebraMap G.F ℂ) = minpoly ℂ (G.psi v g)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic ?_) hmon hdvd ?_` and prove the remaining obligations. Conclude with `IsIntegral.of_finite ℂ _`. Rewrite using `[Polynomial.natDegree_map, hmin]`. Conclude with `hge`. Establish `hroot : (minpoly ℂ (Matrix.toLin' (G.psi v g))).IsRoot z`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Matrix.minpoly_toLin', ← heq, Polynomial.IsRoot, Polynomial.eval_map]`. Conclude with `hz`. Take `⟨y, hy⟩` from `(Module.End.hasEigenvalue_iff_isRoot.mpr hroot).exists_hasEigenvector`. Use `⟨y, hy.2, ?_⟩` and prove the remaining obligations. Use `hy.apply_eq_smul` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.toLin'_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem eigA : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (g : G.C) (v : InfinitePlace G.F) (z : ℂ),
     (minpoly G.F g).natDegree = G.n → (minpoly G.F g).eval₂ v.embedding z = 0 →
@@ -131,29 +127,27 @@ theorem eigA : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (g : G.C) (v : Infin
   rwa [Matrix.toLin'_apply] at this
 
 /- English proof (translation)
-Take `⟨-, -, hΓ⟩` from `GlobalTheory.LKMid.pair_form_laws p G P v`. Take `⟨Z, hZ⟩` from `GlobalTheory.LKMid.Pair.gram_psi_inv_congr p G P v`. Use `set A := G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C) with hAdef`. Use `set Γ := G.psi v P.γ with hΓdef`. Establish `hΓ' : Γᴴ * A * Γ = ((((P.c : ℚ) : ℝ)) : ℂ) • A` using `by rw [hΓ]; push_cast; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `cong : ∀ a b : Fin G.n → ℂ, star a ⬝ᵥ (A *ᵥ b) = star ((Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a) ⬝ᵥ (G.gram v *ᵥ ((Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ b))`. Introduce `a b`. Rewrite using `[star_mulVec_dot, ← hZ]`. Establish `Zne : ∀ a : Fin G.n → ℂ, a ≠ 0 → (Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a ≠ 0`. Introduce `a ha h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ha` to reduce the goal to its premises. Use `congrArg (fun y => ((Z⁻¹ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ y) h` as an intermediate fact. Simplify `this` using `only [mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec, mulVec_zero]`. Establish `hc0 : ((((P.c : ℚ) : ℝ)) : ℂ) ≠ 0`. Establish `: ((P.c : ℚ)) ≠ 0` using `P.c.ne_zero`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `this` after adjusting the coercions. Break down `G.sig v with ⟨h1, -⟩ | ⟨h0, -⟩` into its components or cases. Take `⟨v0, hv0, x0, hx0e, hpos⟩` from `hm`. Establish `hv : v = v0`. Establish `hcard : Fintype.card {v : InfinitePlace G.F // sigPosH (G.gram_herm v) = 1} ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use `ha` as an intermediate fact. Unfold `HTGroup.a at this`. Use linear arithmetic over natural numbers and integers. Use `haveI := Fintype.card_le_one_iff_subsingleton.mp hcard`. Conclude with `congrArg Subtype.val (Subsingleton.elim (⟨v, h1⟩ : {v : InfinitePlace G.F // sigPosH (G.gram_herm v) = 1}) ⟨v0, hv0⟩)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Substitute `hv` using the available equality. Establish `hS0 : star x0 ⬝ᵥ (A *ᵥ x0) ≠ 0` using `fun h => by rw [h] at hpos; simp at hpos`. Establish `hμ : ‖μ‖ ^ 2 = ((P.c : ℚ) : ℝ)` using `normSq_eq_of_form Γ A _ hΓ' x0 μ hx0e hS0`. Distinguish the cases in `hw : w = μ`. Rewrite using `[hw]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hμ`. Establish `hS : star x0 ⬝ᵥ (A *ᵥ x) = 0`. Assume the negation of the conclusion as `hne`. Establish `h` using `star_mulVec_dot Γ A x0 x`. Rewrite `h` using `[hΓ', hx0e, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_mulVec, mulVec_smul, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at h`. Rewrite `h` using `[← mul_assoc]`. Establish `h2` using `mul_right_cancel₀ hne h`. Establish `hμ2 : μ * star μ = ((((P.c : ℚ) : ℝ)) : ℂ)`. Rewrite using `[← hμ, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hμ0 : star μ ≠ 0`. Introduce `h0`. Apply `hc0` to reduce the goal to its premises. Rewrite using `[← hμ2, h0, mul_zero]`. Apply `hw` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_right_cancel₀ hμ0` to reduce the goal to its premises. Rewrite using `[hμ2]`. Apply the tactic sequence `first | exact h2 | (rw [mul_comm]; exact h2)`. Apply `normSq_eq_of_form Γ A _ hΓ' x w hx` to reduce the goal to its premises. Introduce `h`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hneg` using `GlobalTheory.re_form_neg_of_orth_of_sigPosH_eq_one (G.gram v) (G.gram_herm v) (G.gram_det v) h1 _ _ (by rw [← cong]; exact hpos) (by rw [← cong]; exact hS) (Zne x hx0)`. Rewrite `hneg` using `[← cong, h]`. Simplify using `at hneg`. Apply `normSq_eq_of_form Γ A _ hΓ' x w hx` to reduce the goal to its premises. Introduce `h`.
-
-Establish `hneg` using `GlobalTheory.herm_negDef_of_sigPosH_eq_zero (G.gram v) (G.gram_herm v) (G.gram_det v) h0 _ (Zne x hx0)`. Rewrite `hneg` using `[← cong, h]`. Simplify using `at hneg`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normSq_of_eigenvector {p : ℕ} [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ : ℂ) (ha : G.a = 1)
     (hm : P.Mark μ) (v : InfinitePlace G.F) (x : Fin G.n → ℂ) (hx0 : x ≠ 0) (w : ℂ)
@@ -214,13 +208,13 @@ theorem normSq_of_eigenvector {p : ℕ} [Fact p.Prime] (G : HTGroup p) (P : Pair
     rw [← cong, h] at hneg; simp at hneg
 
 /- English proof (translation)
-Introduce `p _ G P μ ha hm φ z hz`. Establish `hdeg : (minpoly G.F (P.γ : G.C)).natDegree = G.n` using `P.reg.1`. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Take `⟨x, hx0, hx⟩` from `eigA p G (P.γ : G.C) (InfinitePlace.mk φ) z hdeg (by rw [h]; exact hz)`. Conclude with `normSq_of_eigenvector G P μ ha hm _ x hx0 z hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : (minpoly G.F (P.γ : G.C)).eval₂ (InfinitePlace.mk φ).embedding (star z) = 0`. Establish `e : (InfinitePlace.mk φ).embedding = (starRingEnd ℂ).comp φ`. Rewrite using `[h]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Polynomial.hom_eval₂ P.pol φ (starRingEnd ℂ) z` as an intermediate fact. Rewrite `this` using `[hz, map_zero]`. Rewrite using `[e]`. Conclude with `this.symm`. Take `⟨x, hx0, hx⟩` from `eigA p G (P.γ : G.C) (InfinitePlace.mk φ) (star z) hdeg hz'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `normSq_of_eigenvector G P μ ha hm _ x hx0 (star z) hx` as an intermediate fact. Rewrite `this` using `[norm_star]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mark_ell : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (μ : ℂ), G.a = 1 → P.Mark μ →
     ∀ (φ : G.F →+* ℂ) (z : ℂ), P.pol.eval₂ φ z = 0 → ‖z‖ ^ 2 = ((P.c : ℚ) : ℝ) := by

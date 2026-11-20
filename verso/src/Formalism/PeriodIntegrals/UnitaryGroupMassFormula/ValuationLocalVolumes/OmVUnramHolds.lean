@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocVol F
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Rewrite using `[← IsFractionRing.finrank_eq (𝓞 X.B.I.F) X.B.I.F (𝓞 X.B.I.E) X.B.I.E]`. Conclude with `X.B.I.cm.deg2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_OE : Module.finrank (𝓞 X.B.I.F) (𝓞 X.B.I.E) = 2 := by
   rw [← IsFractionRing.finrank_eq (𝓞 X.B.I.F) X.B.I.F (𝓞 X.B.I.E) X.B.I.E]
@@ -26,7 +26,7 @@ theorem tau_coe (x : 𝓞 X.B.I.E) :
     algebraMap (𝓞 X.B.I.E) X.B.I.E (tau X x) = star (algebraMap (𝓞 X.B.I.E) X.B.I.E x) := rfl
 
 /- English proof (translation)
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[tau_coe, ← IsScalarTower.algebraMap_apply (𝓞 X.B.I.F) (𝓞 X.B.I.E) X.B.I.E, IsScalarTower.algebraMap_apply (𝓞 X.B.I.F) X.B.I.F X.B.I.E]`. Conclude with `(X.B.I.cm.fixed _).2 ⟨_, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_alg (a : 𝓞 X.B.I.F) :
     tau X (algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) a) = algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) a := by
@@ -36,9 +36,9 @@ theorem tau_alg (a : 𝓞 X.B.I.F) :
   exact (X.B.I.cm.fixed _).2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `v.isMaximal` as an intermediate fact. Rewrite `hf` using `[Ideal.inertiaDeg_eq_of_isMaximal v.asIdeal P]`. Set `: Field (𝓞 X.B.I.F ⧸ v.asIdeal)` to `Ideal.Quotient.field _`. Set `: Field (𝓞 X.B.I.E ⧸ P)` to `Ideal.Quotient.field _`. Establish `htop : (⊥ : Subalgebra (𝓞 X.B.I.F ⧸ v.asIdeal) (𝓞 X.B.I.E ⧸ P)) = ⊤` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.mpr hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx : Ideal.Quotient.mk P x ∈ (⊥ : Subalgebra (𝓞 X.B.I.F ⧸ v.asIdeal) (𝓞 X.B.I.E ⧸ P))` using `htop ▸ Algebra.mem_top`. Take `⟨y, hy⟩` from `Algebra.mem_bot.mp hx`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, ← hy]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -60,27 +60,25 @@ theorem approx (v : HeightOneSpectrum (𝓞 X.B.I.F)) (P : Ideal (𝓞 X.B.I.E))
   rfl
 
 /- English proof (translation)
-Introduce `v P hP hPb hPv`. Establish `: P.IsMaximal` using `hP.isMaximal hPb`. Use `v.isPrime` as an intermediate fact. Establish `: P.LiesOver v.asIdeal` using `⟨hPv.symm⟩`. Establish `: Fintype (v.asIdeal.primesOver (𝓞 X.B.I.E))` using `Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 X.B.I.E)`. Rewrite `hsum` using `[finrank_OE X]`. Establish `he` using `Ideal.ramificationIdx_pos P (𝓞 X.B.I.F)`. Establish `hf` using `Ideal.inertiaDeg_pos P (𝓞 X.B.I.F)`. Establish `hmem : P ∈ v.asIdeal.primesOver (𝓞 X.B.I.E)` using `⟨hP, inferInstance⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `Finset.single_le_sum (f := fun q : v.asIdeal.primesOver (𝓞 X.B.I.E) => q.1.ramificationIdx (𝓞 X.B.I.F) * q.1.inertiaDeg (𝓞 X.B.I.F)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ⟨P, hmem⟩)`. Simplify using `only at hle`. Assume the negation of the conclusion as `hne`. Establish `h2 : 2 * P.inertiaDeg (𝓞 X.B.I.F) ≤ P.ramificationIdx (𝓞 X.B.I.F) * P.inertiaDeg (𝓞 X.B.I.F)` using `Nat.mul_le_mul_right _ (by omega)`. Establish `hf1 : P.inertiaDeg (𝓞 X.B.I.F) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `P.ramificationIdx (𝓞 X.B.I.F) * P.inertiaDeg (𝓞 X.B.I.F) = m at *`. Use linear arithmetic over natural numbers and integers. Establish `hττ : ∀ x, tau X (tau X x) = x` using `fun x => by`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[tau_coe, tau_coe, star_star]`.
+Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : (P.comap (tau X)).IsPrime` using `Ideal.comap_isPrime (tau X) P`. Establish `hQv : (P.comap (tau X)).comap (algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E)) = v.asIdeal`. Use extensionality with `a`. Simplify using `only [Ideal.mem_comap, tau_alg]`. Rewrite using `[← Ideal.mem_comap, hPv]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (P.comap (tau X)).LiesOver v.asIdeal` using `⟨hQv.symm⟩`. Establish `hQP : P.comap (tau X) = P`. Assume the negation of the conclusion as `hQP`. Establish `hQmem : P.comap (tau X) ∈ v.asIdeal.primesOver (𝓞 X.B.I.E)` using `⟨hQ, inferInstance⟩`. Establish `hneq : (⟨P, hmem⟩ : v.asIdeal.primesOver (𝓞 X.B.I.E)) ≠ ⟨P.comap (tau X), hQmem⟩` using `fun h => hQP (congrArg Subtype.val h).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Finset.sum_le_sum_of_subset (f := fun q : v.asIdeal.primesOver (𝓞 X.B.I.E) => q.1.ramificationIdx (𝓞 X.B.I.F) * q.1.inertiaDeg (𝓞 X.B.I.F)) (Finset.subset_univ {⟨P, hmem⟩, ⟨P.comap (tau X), hQmem⟩})`. Rewrite `h3` using `[Finset.sum_pair hneq]`. Establish `heQ` using `Ideal.ramificationIdx_pos (P.comap (tau X)) (𝓞 X.B.I.F)`. Establish `hfQ` using `Ideal.inertiaDeg_pos (P.comap (tau X)) (𝓞 X.B.I.F)`. Simplify using `only at h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4 : 1 ≤ (P.comap (tau X)).ramificationIdx (𝓞 X.B.I.F) * (P.comap (tau X)).inertiaDeg (𝓞 X.B.I.F)` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `h5 : 2 ≤ P.ramificationIdx (𝓞 X.B.I.F) * P.inertiaDeg (𝓞 X.B.I.F)` using `by omega`. Use linear arithmetic over natural numbers and integers. Take `⟨θ, t, htθ, hnot⟩` from `X.B.I.cm.cmUnram.2.2 P inferInstance`. Take `⟨a, ha⟩` from `approx X v P hf1 θ`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hτθ : tau X θ = t`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[tau_coe]`. Conclude with `htθ.symm`. Establish `hb : tau X (θ - algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) a) ∈ P`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: θ - algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) a ∈ P.comap (tau X)` using `by rw [hQP]; exact ha`. Conclude with `this`. Rewrite `hb` using `[map_sub, hτθ, tau_alg]`. Apply `hnot` to reduce the goal to its premises. Establish `h6 : θ - t = (θ - algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) a) - (t - algebraMap (𝓞 X.B.I.F) (𝓞 X.B.I.E) a)` using `by ring`.
-
-Rewrite using `[h6]`. Conclude with `sub_mem ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omVUnram_holds : OmVUnram X := by
   intro v P hP hPb hPv

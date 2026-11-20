@@ -15,7 +15,7 @@ def twFD (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) : FDRep ℂ (
   FDRep.of (twist τ.ρ (detChar (Fin n) χ₀))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ τ (((detChar (Fin n) χ₀ y : ℂˣ) : ℂ) • τ.ρ y) = ((χ₀ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ) * LinearMap.trace ℂ τ (τ.ρ y)`. Rewrite using `[map_smul, smul_eq_mul, detChar_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem character_twFD (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) (y : Gn g n) :
     (twFD τ χ₀).character y = ((χ₀ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ) * τ.character y := by
@@ -24,9 +24,9 @@ theorem character_twFD (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ)
   rw [map_smul, smul_eq_mul, detChar_apply]
 
 /- English proof (translation)
-Establish `hc : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hc' : (Fintype.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_pos.ne'`. Use `invertibleOfNonzero hc` as an intermediate fact. Use `invertibleOfNonzero hc'` as an intermediate fact. Rewrite `hV`, the goal using `[FDRep.simple_iff_char_is_norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify `hV` using `only [h]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem simple_of_char {G : Type} [Group G] [Fintype G] {V W : FDRep ℂ G} (hV : Simple V)
     (h : ∀ x, W.character x * W.character x⁻¹ = V.character x * V.character x⁻¹) : Simple W := by
@@ -38,7 +38,7 @@ theorem simple_of_char {G : Type} [Group G] [Fintype G] {V W : FDRep ℂ G} (hV 
   simpa only [h] using hV
 
 /- English proof (translation)
-Establish `hu : ((χ₀ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) * ((χ₀ (Matrix.GeneralLinearGroup.det x⁻¹) : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one, Units.val_one]`. Rewrite using `[character_twFD, character_twFD]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem char_twFD_mul (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) (x : Gn g n) :
     (twFD τ χ₀).character x * (twFD τ χ₀).character x⁻¹ = τ.character x * τ.character x⁻¹ := by
@@ -50,13 +50,13 @@ theorem char_twFD_mul (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) 
     _ = _ := by rw [hu, one_mul]
 
 /- English proof (translation)
-Establish `hu'` using `GlobalTheory.FiniteGL.mem_unipRadical.1 hu`. Establish `hmono : ∀ i j : Fin N, j < i → GlobalTheory.FiniteGL.twoBlocks N a j ≤ GlobalTheory.FiniteGL.twoBlocks N a i`. Introduce `i j hij`. Establish `: (j : ℕ) < i` using `hij`. Simplify using `only [GlobalTheory.FiniteGL.twoBlocks]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> omega`. Establish `hT : (u : Matrix (Fin N) (Fin N) (ZMod g)).BlockTriangular id`. Introduce `i j hij`. Establish `h` using `hu' i j (hmono i j hij)`. Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; exact lt_irrefl _ hij`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.sub_apply, Matrix.one_apply_ne hne, sub_zero]`. Then use the resulting hypothesis. Establish `hd : ∀ i, (u : Matrix (Fin N) (Fin N) (ZMod g)) i i = 1`. Introduce `i`. Establish `h` using `hu' i i le_rfl`. Rewrite `h` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular hT]`. Simplify using `[hd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_eq_one_of_mem {N a : ℕ} {u : GL (Fin N) (ZMod g)}
     (hu : u ∈ GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks N a)) : Matrix.GeneralLinearGroup.det u = 1 := by
@@ -80,9 +80,9 @@ theorem det_eq_one_of_mem {N a : ℕ} {u : GL (Fin N) (ZMod g)}
   simp [hd]
 
 /- English proof (translation)
-Unfold `res`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : InPar a (x : Mt g n) ∧ tl a (x : Mt g n) = ((1 : Gn g a) : Mt g a) ∧ br a (n - a) (x : Mt g n) = ((1 : Gn g (n - a)) : Mt g (n - a))`. Rewrite using `[if_pos hx, if_pos hx, character_twFD, det_eq_one_of_mem ((GlobalTheory.SerSys.TameGen.mem_unipRadical_iff ha x).2 hx), map_one, Units.val_one, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hx, if_neg hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_twFD (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) {a : ℕ} (ha : a < n) :
     res a (n - a) (twFD τ χ₀).character 1 1 = res a (n - a) τ.character 1 1 := by
@@ -96,7 +96,7 @@ theorem res_twFD (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) {a : 
   · rw [if_neg hx, if_neg hx]
 
 /- English proof (translation)
-Take `⟨hn, ⟨V, hV, hVc⟩, hres⟩` from `hτ`. Establish `hsτ : Simple τ` using `simple_of_char hV (fun x => by rw [hVc, hVc])`. Use `⟨hn, ⟨twFD τ χ₀, simple_of_char hsτ (fun x => char_twFD_mul τ χ₀ x), fun _ => rfl⟩, fun a h0 ha => ?_⟩` and prove the remaining obligations. Rewrite using `[res_twFD τ χ₀ ha]`. Conclude with `hres a h0 ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCusp_twFD (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) (hτ : IsCusp τ.character) :
     IsCusp (twFD τ χ₀).character := by
@@ -107,17 +107,17 @@ theorem isCusp_twFD (τ : FDRep ℂ (Gn g n)) (χ₀ : (ZMod g)ˣ →* ℂˣ) (h
   exact hres a h0 ha
 
 /- English proof (translation)
-Establish `hg : 1 < g` using `(Fact.out : g.Prime).one_lt`. Use `haveI : Finite K := Nat.finite_of_card_ne_zero (by rw [hK]; exact pow_ne_zero _ (by omega))`. Use `letI : Fintype K := Fintype.ofFinite K`. Use `haveI : Module.Finite (ZMod g) K := by first`. Consider the case `exact Module.finite_of_finite (ZMod g)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact inferInstance`. Establish `hfr : Module.finrank (ZMod g) K = n`. Establish `h1 : Fintype.card K = Fintype.card (ZMod g) ^ Module.finrank (ZMod g) K` using `by first`. Consider the case `exact Module.card_eq_pow_finrank`. Consider the case `exact card_eq_pow_finrank`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[ZMod.card]`. Establish `h2 : Fintype.card K = g ^ n` using `by rw [← Nat.card_eq_fintype_card, hK]`. Conclude with `Nat.pow_right_injective hg (h1.symm.trans h2)`. Establish `hmon : ((y : Mt g n).charpoly).Monic` using `Matrix.charpoly_monic _`. Establish `hdeg : ((y : Mt g n).charpoly).natDegree = n` using `by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : (y : Mt g n).charpoly = minpoly (ZMod g) (z : K)` using `minpoly.eq_of_irreducible_of_monic hy hz hmon`. Establish `hint : IsIntegral (ZMod g) (z : K)` using `Algebra.IsIntegral.isIntegral _`. Establish `hfr2 : Module.finrank (IntermediateField.adjoin (ZMod g) {(z : K)}) K = 1`. Establish `h3` using `IntermediateField.adjoin.finrank hint`. Establish `h4` using `Module.finrank_mul_finrank (ZMod g) (IntermediateField.adjoin (ZMod g) {(z : K)}) K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[h3, ← hmin, hdeg, hfr]`. Conclude with `Nat.eq_of_mul_eq_mul_left hn (h4.trans (mul_one n).symm)`. Establish `hnorm : Algebra.norm (ZMod g) (z : K) = (-1) ^ n * ((y : Mt g n).charpoly).coeff 0`. Rewrite using `[Algebra.norm_eq_norm_adjoin (ZMod g) (z : K), hfr2, pow_one]`. Use `Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly (IntermediateField.adjoin.powerBasis hint)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[IntermediateField.adjoin.powerBasis_gen, IntermediateField.adjoin.powerBasis_dim, IntermediateField.minpoly_gen]`. Rewrite using `[this, ← hmin, hdeg]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.coe_map, Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin]`. Conclude with `hnorm.symm`.
+A detailed English derivation is pending.
 -/
 theorem det_eq_norm (K : Type) [Field K] [Algebra (ZMod g) K] (hK : Nat.card K = g ^ n) (hn : 0 < n) (y : Gn g n)
     (hy : Irreducible (y : Mt g n).charpoly) (z : Kˣ) (hz : aeval (z : K) (y : Mt g n).charpoly = 0) :
@@ -157,13 +157,13 @@ theorem det_eq_norm (K : Type) [Field K] [Algebra (ZMod g) K] (hK : Nat.card K =
   exact hnorm.symm
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [Units.val_pow_eq_pow_val, ZMod.pow_card_pow])`.
+A detailed English derivation is pending.
 -/
 theorem units_pow_card_pow (u : (ZMod g)ˣ) (j : ℕ) : u ^ g ^ j = u :=
   Units.ext (by rw [Units.val_pow_eq_pow_val, ZMod.pow_card_pow])
 
 /- English proof (translation)
-Use `MonoidHom.ext fun z => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply]`. Use `show (χ₀ (Units.map (Algebra.norm (ZMod g) : K →* ZMod g) z)) ^ g ^ j = χ₀ (Units.map (Algebra.norm (ZMod g) : K →* ZMod g) z)`. Rewrite using `[← map_pow, units_pow_card_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nmChar_pow (K : Type) [Field K] [Algebra (ZMod g) K] (χ₀ : (ZMod g)ˣ →* ℂˣ) (j : ℕ) :
     (DiscreteGroups.sglob.DzType.nmChar K χ₀) ^ g ^ j = DiscreteGroups.sglob.DzType.nmChar K χ₀ := by
@@ -174,7 +174,7 @@ theorem nmChar_pow (K : Type) [Field K] [Algebra (ZMod g) K] (χ₀ : (ZMod g)ˣ
   rw [← map_pow, units_pow_card_pow]
 
 /- English proof (translation)
-Introduce `i j hi hj h`. Apply `hθ i j hi hj` to reduce the goal to its premises. Rewrite `h` using `[mul_pow, mul_pow, nmChar_pow, nmChar_pow]`. Conclude with `mul_right_cancel h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRegularChar_mul (K : Type) [Field K] [Algebra (ZMod g) K] (χ₀ : (ZMod g)ˣ →* ℂˣ) {θ : Kˣ →* ℂˣ}
     (hθ : GlobalTheory.Published.IsRegularChar g n θ) : GlobalTheory.Published.IsRegularChar g n (θ * DiscreteGroups.sglob.DzType.nmChar K χ₀) := by
@@ -184,9 +184,9 @@ theorem isRegularChar_mul (K : Type) [Field K] [Algebra (ZMod g) K] (χ₀ : (ZM
   exact mul_right_cancel h
 
 /- English proof (translation)
-Introduce `y hy z hz`. Establish `hN : ∀ j, DiscreteGroups.sglob.DzType.nmChar K χ₀ (z ^ g ^ j) = χ₀ (Matrix.GeneralLinearGroup.det y)`. Introduce `j`. Rewrite using `[det_eq_norm K hK hn y hy z hz, map_pow, ← MonoidHom.pow_apply, nmChar_pow]`. Apply the tactic sequence `try rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[character_twFD, hτ y hy z hz]`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul, hN]`. Rewrite using `[← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem char_twFD (K : Type) [Field K] [Algebra (ZMod g) K] (hK : Nat.card K = g ^ n) (hn : 0 < n)
     (χ₀ : (ZMod g)ˣ →* ℂˣ) (θ : Kˣ →* ℂˣ) (τ : FDRep ℂ (Gn g n))

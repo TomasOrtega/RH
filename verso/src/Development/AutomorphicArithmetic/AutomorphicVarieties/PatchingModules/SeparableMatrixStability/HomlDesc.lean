@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ Γ Γ' _ _ _ _ _ _ _ _ _ _ f H hf hsurj hfin`. Set `g : (H.comap f) →* H` to `f.subgroupComap H`. Establish `hg : Continuous g` using `(hf.comp continuous_subtype_val).subtype_mk _`. Establish `hgs : Function.Surjective g`. Introduce and unpack `⟨y, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨x, rfl⟩` from `hsurj y`. Conclude with `⟨⟨x, hy⟩, rfl⟩`. Set `Φ : HomL l H → HomL l (H.comap f)` to `fun φ => ⟨φ.1.comp g, by show IsOpen (g ⁻¹' (φ.1.ker : Set H))`. Conclude with `φ.2.preimage hg⟩`. Establish `hinj : Function.Injective Φ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ ψ h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `y`. Take `⟨x, rfl⟩` from `hgs y`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (fun χ : HomL l (H.comap f) => χ.1 x) h` as an intermediate fact. Simplify `this` using `[Φ]`. Establish `hF : Finite (HomL l H)` using `Finite.of_injective Φ hinj`. Conclude with `⟨hF, Nat.card_le_card_of_injective Φ hinj⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.homl_desc :
     ∀ (l : ℕ) [Fact l.Prime] (Γ Γ' : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] [Group Γ'] [TopologicalSpace Γ'] [IsTopologicalGroup Γ'] [CompactSpace Γ'] [TotallyDisconnectedSpace Γ'] (f : Γ →* Γ') (H : Subgroup Γ'), Continuous f → Function.Surjective f → Finite (HomL l (H.comap f)) → Finite (HomL l H) ∧ Nat.card (HomL l H) ≤ Nat.card (HomL l (H.comap f)) := by

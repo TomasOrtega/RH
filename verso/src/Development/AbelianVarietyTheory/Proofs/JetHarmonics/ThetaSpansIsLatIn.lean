@@ -21,15 +21,13 @@ variable {F : Type} [Field F] {K : Type} [Field K] [NumberField K] [Algebra F K]
   [Module F C] {n : ℕ} (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hN`. Establish `hle : spanK z s ≤ spanK z (t : Set C)`. Unfold `spanK`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hf' : f ∈ Submodule.span (𝓞 F) (t : Set C)` using `ht ▸ hs hf`. Use `clear hf`. Proceed by induction on `hf' using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Simplify using `only [TensorProduct.tmul_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Establish `e : z.symm (1 ⊗ₜ[F] (a • x)) = (RingOfIntegers.mapRingHom (algebraMap F K) a) • z.symm (1 ⊗ₜ[F] x)`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← algebraMap_smul F a x, TensorProduct.tmul_smul, ← algebraMap_smul K, map_smul, ← algebraMap_smul K (RingOfIntegers.mapRingHom (algebraMap F K) a)]`. Both sides reduce to the same expression. Use `beta_reduce`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`.
-
-Establish `hfg : (spanK z (t : Set C)).FG` using `Submodule.fg_span (t.finite_toSet.image _)`. Conclude with `hfg.of_le hle`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spanK_fg_of_subset [Module (𝓞 F) C] [IsScalarTower (𝓞 F) F C] (N : Submodule (𝓞 F) C) (hN : N.FG)
     (s : Set C) (hs : s ⊆ N) : (spanK z s).FG := by
@@ -60,15 +58,15 @@ theorem spanK_fg_of_subset [Module (𝓞 F) C] [IsScalarTower (𝓞 F) F C] (N :
   exact hfg.of_le hle
 
 /- English proof (translation)
-Establish `h1 : ∀ f : C, z.symm (1 ⊗ₜ[F] f) ∈ Submodule.span K (spanK z s : Set (Fin n → K))`. Introduce `f`. Establish `hf : f ∈ Submodule.span F s` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (Submodule.subset_span ⟨x, hx, rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [TensorProduct.tmul_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul K, map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨y, rfl⟩` from `z.symm.surjective x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a f`. Establish `e : a ⊗ₜ[F] f = a • ((1 : K) ⊗ₜ[F] f)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e, map_smul]`. Conclude with `Submodule.smul_mem _ _ (h1 f)`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (hx trivial) (hy trivial)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_spanK_eq_top (s : Set C) (hs : Submodule.span F s = ⊤) :
     Submodule.span K (spanK z s : Set (Fin n → K)) = ⊤ := by
@@ -101,9 +99,7 @@ theorem span_spanK_eq_top (s : Set C) (hs : Submodule.span F s = ⊤) :
 end General
 
 /- English proof (translation)
-Take `⟨σ⟩ : Nonempty (B.KO →+* ℂ)` from `inferInstance`. Establish `h1` using `fun w => (GlobalTheory.log_norm_normaliser D B hinj EX j w σ).1`. Establish `h2` using `fun a b c => ((GlobalTheory.RunIn.pPow_size D j ka).2.2.2.2.2 a b c).1`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ (h1 _))) (h1 _)) ?_` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.2 (pow_ne_zero _ hp.ne')`.
-
-Conclude with `Nat.cast_ne_zero.2 (Nat.one_le_iff_ne_zero.1 (h2 _ _ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem scalOfP_sK_ne_zero {D : D7} (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D)
     {j : ℕ} (p : ℕ) (hp : 0 < p) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) :
@@ -116,15 +112,13 @@ theorem scalOfP_sK_ne_zero {D : D7} (B : WeightFamilies.Prov D) (hinj : Function
   · exact Nat.cast_ne_zero.2 (Nat.one_le_iff_ne_zero.1 (h2 _ _ _))
 
 /- English proof (translation)
-Introduce `D B P6 j X hinj EX p ka wL wF T K _ _ _ _ Bs Df S P _ _ oc O v i z act ht hp hF hn hD hM hSp h2`. Establish `hle` using `Formalism.MainNotions.Gaps.T0.theta_le_msup X _ h2 hF rfl hn hD`. Use `⟨⟨?_, ?_⟩, ht.ThK_fg, ?_⟩` and prove the remaining obligations. Rewrite using `[ht.Th_eq]`. Use `spanK_fg_of_subset z (B.Mlat j ka) hM.fg _ fun f hf => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, e⟩` from `Submodule.mem_map.1 (hle hf)`. Conclude with `X.inc_inj ka e ▸ hg`. Rewrite using `[ht.Th_eq]`. Apply `span_spanK_eq_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hSp, Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Use `set c : 𝓞 B.KO := (scalOfP B hinj EX p ka wL wF T).sK * ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 B.KO) ^ (D.R.f * D.R.r * ka.n) with hc`. Establish `hc0 : c ≠ 0` using `mul_ne_zero (scalOfP_sK_ne_zero B hinj EX p hp ka wL wF T) (pow_ne_zero _ (Nat.cast_ne_zero.2 (Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)))`. Establish `hc1 : algebraMap (𝓞 B.KO) B.KO c ≠ 0` using `fun h0 => hc0 (RingOfIntegers.coe_eq_zero_iff.1 h0)`. Establish `hmem : c • g ∈ X.Thc (scalOfP B hinj EX p ka wL wF T).sK ka` using `⟨_, ⟨g, hg, rfl⟩, by rw [hc, mul_smul]; rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : g = (algebraMap (𝓞 B.KO) B.KO c)⁻¹ • (c • g)`. Rewrite using `[← algebraMap_smul B.KO c g, smul_smul, inv_mul_cancel₀ hc1, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.mem_sup_right ⟨_, hmem, rfl⟩))`. Rewrite using `[eq_top_iff, ← span_spanK_eq_top z {F | X.inc ka F ∈ thetaPlain X ka wL wF T}]`.
-
-Conclude with `Submodule.span_mono ht.ThK_ge`. Rewrite using `[eq_top_iff, ← hSp]`. Conclude with `Submodule.span_mono fun g hg => Submodule.mem_sup_right ⟨g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_spans_isLatIn : ∀ (D : D7) (B : WeightFamilies.Prov D) (P6 : ModuliIntegralCharts.Prov D) (j : ℕ) (X : WeightAlgebra.PJ D B P6 j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) (K : Type) [Field K] [NumberField K] [StarRing K] [Algebra B.KO K] (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (P : Type) [Group P] [Finite P] (oc : OnConst) (O : OnObj S P oc) (v : HeightOneSpectrum (𝓞 K)) (i : Bs.J) (z : (Fin (O.nZ i) → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j ka) (act : P → B.Cusp j ka → B.Cusp j ka), FormTie X hinj EX p ka wL wF T O v i z act → 0 < p → WeightAlgebra.IsF' ka wL wF T wF.n → ka.n = wF.n + T * wL.n → WeightFamilies.dimY D j ≤ T → Submodule.IsLattice B.KO (B.Mlat j ka) → ReciprocityTheory.ChartRestriction.G.PullbackSections.SpanAt X ka → WeightAlgebra.H2 X (scalOfP B hinj EX p ka wL wF T) ka wL wF → Formalism.EigenvalueLevelCeiling.IsLatIn ⊤ (O.Th v i) ∧ Formalism.EigenvalueLevelCeiling.IsLatIn ⊤ (O.ThK v i) := by
   intro D B P6 j X hinj EX p ka wL wF T K _ _ _ _ Bs Df S P _ _ oc O v i z act ht hp hF hn hD hM hSp h2

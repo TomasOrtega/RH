@@ -7,7 +7,7 @@ section SlopeTestRemainingChoices
 variable {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Establish `h` using `(UpperTheory.V.Hi.dcSum A G M ρ I I x (hI x)).2.1`. Unfold `hk hk2`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hkEv_coe (ρ : Representation A G M) (I : Subgroup G) (hI : HeckePair I) (x : G)
     (v : fixd ρ I) : (hk ρ I x v : M) = dc ρ I I x v := by
@@ -21,9 +21,9 @@ private noncomputable def hkEv_phi (ρ : Representation A G M) (I : Subgroup G) 
   Finsupp.linearCombination A (fun q : G ⧸ I => ρ q.out m) ∘ₗ (MonoidAlgebra.coeffLinearEquiv A).toLinearMap
 
 /- English proof (translation)
-Establish `h1 : g⁻¹ * (g : G ⧸ I).out ∈ I` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' _).symm`. Establish `h2 : ρ (g⁻¹ * (g : G ⧸ I).out) m = m` using `m.2 _ h1`. Establish `h3 : ρ (g : G ⧸ I).out m = ρ g m`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hkEv_phi]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hkEv_phi_single (ρ : Representation A G M) (I : Subgroup G) (m : fixd ρ I) (g : G) (c : A) :
     hkEv_phi ρ I m (MonoidAlgebra.single (g : G ⧸ I) c) = c • ρ g m := by
@@ -37,9 +37,9 @@ private theorem hkEv_phi_single (ρ : Representation A G M) (I : Subgroup G) (m 
   simp [hkEv_phi]
 
 /- English proof (translation)
-Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single q c`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Representation.ofMulAction_single]`. Establish `: h • (g : G ⧸ I) = ((h * g : G) : G ⧸ I)` using `rfl`. Rewrite using `[this, hkEv_phi_single, hkEv_phi_single, map_smul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem hkEv_phi_equiv (ρ : Representation A G M) (I : Subgroup G) (m : fixd ρ I) (h : G)
     (a : MonoidAlgebra A (G ⧸ I)) : hkEv_phi ρ I m (permRep A I h a) = ρ h (hkEv_phi ρ I m a) := by
@@ -58,7 +58,7 @@ private noncomputable def hkEv_psi (ρ : Representation A G M) (I : Subgroup G) 
   (hkEv_phi ρ I m).restrict (fun a ha u hu => by rw [← hkEv_phi_equiv, ha u hu])
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hkEv_coe ρ I hI]`. Express the relevant statement in the definitionally equal form `hkEv_phi ρ I m (hk (permRep A I) I x a : MonoidAlgebra A (G ⧸ I)) = dc ρ I I x (hkEv_phi ρ I m a)`. Rewrite using `[hkEv_coe _ I hI]`. Conclude with `(UpperTheory.V.Hi.dcSum A G _ (permRep A I) I I x (hI x)).2.2.2 A M ρ (hkEv_phi ρ I m).toAddMonoidHom (hkEv_phi_equiv ρ I m) a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hkEv_psi_hk (ρ : Representation A G M) (I : Subgroup G) (hI : HeckePair I) (m : fixd ρ I)
     (x : G) (a : fixd (permRep A I) I) :
@@ -71,9 +71,9 @@ private theorem hkEv_psi_hk (ρ : Representation A G M) (I : Subgroup G) (hI : H
     (hkEv_phi ρ I m).toAddMonoidHom (hkEv_phi_equiv ρ I m) a
 
 /- English proof (translation)
-Use `⟨⟨MonoidAlgebra.single ((1 : G) : G ⧸ I) 1, fun u hu => ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Representation.ofMulAction_single]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `((u * 1 : G) : G ⧸ I) = _`. Conclude with `QuotientGroup.eq.mpr (by simpa using hu)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `hkEv_phi ρ I m (MonoidAlgebra.single ((1 : G) : G ⧸ I) 1) = m`. Rewrite using `[hkEv_phi_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hkEv_psi_surj (ρ : Representation A G M) (I : Subgroup G) (m : fixd ρ I) :
     ∃ a, hkEv_psi ρ I m a = m := by
@@ -91,7 +91,7 @@ private def hkEv_R (ρ : Representation A G M) (I : Subgroup G)
   ∀ m a, hkEv_psi ρ I m (T a) = E (hkEv_psi ρ I m a)
 
 /- English proof (translation)
-Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hkEv_psi_surj ρ I m`. Rewrite using `[← ha, ← h, ← h']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hkEv_uniq {ρ : Representation A G M} {I : Subgroup G}
     {T : Module.End A (fixd (permRep A I) I)} {E E' : Module.End A (fixd ρ I)}
@@ -101,14 +101,14 @@ private theorem hkEv_uniq {ρ : Representation A G M} {I : Subgroup G}
   rw [← ha, ← h, ← h']
 
 /- English proof (translation)
-Introduce `m a` and use `by simp only [Module.algebraMap_end_apply, map_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hkEv_alg (ρ : Representation A G M) (I : Subgroup G) (c : A) :
     hkEv_R ρ I (algebraMap A _ c) (algebraMap A _ c) := fun m a => by
   simp only [Module.algebraMap_end_apply, map_smul]
 
 /- English proof (translation)
-Introduce `m a` and use `by rw [LinearMap.add_apply, LinearMap.add_apply, map_add, h, h']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hkEv_add {ρ : Representation A G M} {I : Subgroup G}
     {T T' : Module.End A (fixd (permRep A I) I)} {E E' : Module.End A (fixd ρ I)}
@@ -116,7 +116,7 @@ private theorem hkEv_add {ρ : Representation A G M} {I : Subgroup G}
   rw [LinearMap.add_apply, LinearMap.add_apply, map_add, h, h']
 
 /- English proof (translation)
-Introduce `m a` and use `by rw [Module.End.mul_apply, Module.End.mul_apply, h, h']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hkEv_mul {ρ : Representation A G M} {I : Subgroup G}
     {T T' : Module.End A (fixd (permRep A I) I)} {E E' : Module.End A (fixd ρ I)}
@@ -124,11 +124,11 @@ private theorem hkEv_mul {ρ : Representation A G M} {I : Subgroup G}
   rw [Module.End.mul_apply, Module.End.mul_apply, h, h']
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `T`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem T h`. Take `⟨x, rfl⟩` from `h`. Conclude with `⟨hk ρ I x, fun m a => hkEv_psi_hk ρ I hI m x a⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap c => exact ⟨_, hkEv_alg ρ I c⟩`. Consider the case `add T T' _ _ h h'`. Take `⟨E, h⟩` from `h`. Take `⟨E', h'⟩` from `h'`. Conclude with `⟨_, hkEv_add h h'⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul T T' _ _ h h'`. Take `⟨E, h⟩` from `h`. Take `⟨E', h'⟩` from `h'`. Conclude with `⟨_, hkEv_mul h h'⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem hkEv_ex (ρ : Representation A G M) (I : Subgroup G) (hI : HeckePair I) (T : HkAlg A I) :
     ∃ E, hkEv_R ρ I T.1 E := by
@@ -150,7 +150,7 @@ private theorem hkEv_ex (ρ : Representation A G M) (I : Subgroup G) (hI : Hecke
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `A G M _ _ _ _ ρ I hI`. Use `choose f hf using hkEv_ex ρ I hI`. Establish `halg : ∀ c : A, f (algebraMap A _ c) = algebraMap A _ c` using `fun c => hkEv_uniq (hf _) (hkEv_alg ρ I c)`. Use `⟨{ toFun := f map_one' := by simpa using halg 1 map_mul' := fun T T' => hkEv_uniq (hf _) (hkEv_mul (hf T) (hf T')) map_zero' := by simpa using halg 0 map_add' := fun T T' => hkEv_uniq (hf _) (hkEv_add (hf T) (hf T')) commutes' := halg }, fun x => ?_⟩` and prove the remaining obligations. Conclude with `hkEv_uniq (hf _) (fun m a => hkEv_psi_hk ρ I hI m x a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.hkEv :
     ∀ (A G M : Type) [CommRing A] [Group G] [AddCommGroup M] [Module A M] (ρ : Representation A G M) (I : Subgroup G), HeckePair I → ∃ ev : HkAlg A I →ₐ[A] Module.End A (fixd ρ I), ∀ x : G, ev (hT A I x) = hk ρ I x := by

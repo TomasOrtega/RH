@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinalJoin2
 
 /- English proof (translation)
-Introduce `D V hs`. Establish `h` using `GlobalTheory.Mem.Vol.volIs_trueVol _ _ D.sp.cm _ (tauE D) D.cd V (GlobalTheory.Mem.Vol.isCMFam_host _ D.host _ D.eTau) hs`. Take `⟨⟨μ, hμ⟩, hall⟩` from `h`. Establish `hex : VolPairEx V`. Take `⟨⟨𝓕, h𝓕⟩, -⟩` from `hall μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(μ, 𝓕), hμ, h𝓕⟩`. Use `⟨hex, ?_⟩` and prove the remaining obligations. Establish `hp` using `volPair_isVolPair V hex`. Establish `hm : (volPair V).1 (volPair V).2 = ENNReal.ofReal (GlobalTheory.Mem.Vol.trueVol D.sp.cm (tauE D) D.cd V)` using `(hall _ hp.1).2 _ hp.2`. Unfold `Formalism.L2.Pj.FinVol`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[muQ_univ, hm]`. Conclude with `⟨(ENNReal.ofReal_pos.2 (GlobalTheory.Mem.Vol.trueVol_pos _ _ _ _)).ne', ENNReal.ofReal_ne_top⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem volPairEx_and_finVol : ∀ (D : D7) (V : HSp D), V.SigOK → VolPairEx V ∧ Formalism.L2.Pj.FinVol V := by
   intro D V hs

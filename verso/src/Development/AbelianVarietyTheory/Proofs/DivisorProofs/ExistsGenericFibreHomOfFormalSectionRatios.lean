@@ -22,9 +22,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.GenericRatio
 
 /- English proof (translation)
-Set `O : Type` to `T.presheaf.stalk t`. Establish `: IsNoetherianRing O` using `inferInstanceAs (IsNoetherianRing (T.presheaf.stalk t))`. Use `⟨AdicCompletion (maximalIdeal O) O, inferInstance, inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap O (AdicCompletion (maximalIdeal O) O))) ≫ T.fromSpecStalk t, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Flat (T.fromSpecStalk t)` using `GenericExt.flat_fromSpecStalk T t`. Establish `h2 : Flat (Spec.map (CommRingCat.ofHom (algebraMap O (AdicCompletion (maximalIdeal O) O))))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`. Conclude with `Flat.comp _ _`. Establish `: IsLocalHom (CommRingCat.ofHom (algebraMap O (AdicCompletion (maximalIdeal O) O))).hom` using `inferInstanceAs (IsLocalHom (algebraMap O (AdicCompletion (maximalIdeal O) O)))`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg (T.fromSpecStalk t) Spec_closedPoint).trans Scheme.fromSpecStalk_closedPoint)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_complete_point (T : Scheme.{0}) [IsLocallyNoetherian T] (t : T) :
     ∃ (B : Type) (_ : CommRing B) (_ : IsLocalRing B), IsAdicComplete (maximalIdeal B) B ∧
@@ -44,9 +44,9 @@ theorem exists_complete_point (T : Scheme.{0}) [IsLocallyNoetherian T] (t : T) :
       Scheme.fromSpecStalk_closedPoint)
 
 /- English proof (translation)
-Establish `top : ∀ w : Sp B ⟶ X, ∃ i : Fin 1 → L.ι, ⊤ ≤ w ⁻¹ᵁ secChart L i` using `fun w => by`. Take `⟨i, hi⟩` from `exists_chart hL (w (closedPoint B))`. Establish `: closedPoint B ∈ w ⁻¹ᵁ secChart L (fun _ => i)` using `Set.mem_iInter.2 fun _ => hi`. Conclude with `⟨fun _ => i, ((IsLocalRing.closedPoint_mem_iff _).1 this).ge⟩`. Take `⟨i, hi⟩` from `top u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨i', hi'⟩` from `top v`. Establish `key : ∀ (s : H0 L k) (t : H0 L k') (Z : Scheme.{0}) (r : Z ⟶ Sp B) (z : Z), gs r z ⊤ ((u.appLE _ ⊤ hi).hom (s.f i) * (v.appLE _ ⊤ hi').hom (t.f i')) = secGerm (r ≫ u) z s i * secGerm (r ≫ v) z t i'` using `fun s t Z r z => (gs_mul r z ⊤ trivial _ _).trans (congrArg₂ (· * ·) (gs_appLE u _ ⊤ hi r z trivial _) (gs_appLE v _ ⊤ hi' r z trivial _))`. Establish `E` using `GlobalTheory.FormalGeneric.fn_ext_germs (maximalIdeal B) (a := (u.appLE _ ⊤ hi).hom (s₁.f i) * (v.appLE _ ⊤ hi').hom (t₂.f i')) (b := (u.appLE _ ⊤ hi).hom (s₂.f i) * (v.appLE _ ⊤ hi').hom (t₁.f i')) fun e z => (key _ _ _ _ z).trans ((secRatioEq_iff_germ.1 (h e) z i i' (hi trivial …`. Use `secRatioEq_of_exists_germ fun y => ⟨i, i', hi trivial, hi' trivial, ?_⟩` and prove the remaining obligations. Conclude with `(key s₁ t₂ _ (𝟙 _) y).symm.trans ((congrArg _ E).trans (key s₂ t₁ _ (𝟙 _) y))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem secRatioEq_of_levels {B : Type} [CommRing B] [IsLocalRing B] [IsHausdorff (maximalIdeal B) B]
     {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {k k' : ℕ} {u v : Sp B ⟶ X} {s₁ s₂ : H0 L k} {t₁ t₂ : H0 L k'}
@@ -71,11 +71,11 @@ theorem secRatioEq_of_levels {B : Type} [CommRing B] [IsLocalRing B] [IsHausdorf
   exact (key s₁ t₂ _ (𝟙 _) y).symm.trans ((congrArg _ E).trans (key s₂ t₁ _ (𝟙 _) y))
 
 /- English proof (translation)
-Set `ξ : Sp R` to `jK R (closedPoint (FractionRing R))`. Establish `hξ : ξ ⤳ f y`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 fun r hr => ?_` and prove the remaining obligations. Establish `h1 : algebraMap R (FractionRing R) r ∈ maximalIdeal (FractionRing R)` using `hr`. Rewrite `h1` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot, map_eq_zero_iff _ (IsFractionRing.injective R (FractionRing R))]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `Ideal.zero_mem _`. Take `⟨y', h1, h2⟩` from `Flat.generalizingMap f hξ`. Establish `: y' ∈ Set.range (pullback.fst f (jK R))`. Rewrite using `[Scheme.Pullback.range_fst]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, h2.symm⟩`. Take `⟨a, ha⟩` from `this`. Conclude with `⟨a, ha ▸ h1.mem_open W.isOpen hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generic_mem {R : Type} [CommRing R] [IsDomain R] {Y : Scheme.{0}} (f : Y ⟶ Sp R) [Flat f]
     (W : Y.Opens) {y : Y} (hy : y ∈ W) : ∃ a : (pullback f (jK R) :), pullback.fst f (jK R) a ∈ W := by
@@ -95,7 +95,7 @@ theorem exists_generic_mem {R : Type} [CommRing R] [IsDomain R] {Y : Scheme.{0}}
   exact ⟨a, ha ▸ h1.mem_open W.isOpen hy⟩
 
 /- English proof (translation)
-Take `⟨y', -, h2⟩` from `Flat.generalizingMap f (genericPoint_specializes (f y))`. Use `⟨Dense.mono (Set.singleton_subset_iff.2 ⟨y', h2⟩) ?_⟩` and prove the remaining obligations. Conclude with `dense_iff_closure_eq.2 (genericPoint_spec X)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isDominant_of_flat {X Y : Scheme.{0}} [IrreducibleSpace X] (f : Y ⟶ X) [Flat f] (y : Y) : IsDominant f := by
   obtain ⟨y', -, h2⟩ := Flat.generalizingMap f (genericPoint_specializes (f y))
@@ -103,11 +103,11 @@ theorem isDominant_of_flat {X Y : Scheme.{0}} [IrreducibleSpace X] (f : Y ⟶ X)
   exact dense_iff_closure_eq.2 (genericPoint_spec X)
 
 /- English proof (translation)
-Establish `: LocallyOfFiniteType (G ⊗ G).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.fst G.hom G.hom ≫ G.hom))`. Establish `: IsLocallyNoetherian (G ⊗ G).left` using `LocallyOfFiniteType.isLocallyNoetherian (G ⊗ G).hom`. Set `o : 𝟙_ (Over (Sp R)) ⟶ G ⊗ G` to `lift 1 1`. Take `⟨B, _, _, hB, q, hq, hqt⟩` from `exists_complete_point (G ⊗ G).left (o.left (closedPoint R))`. Establish `hs : (q ≫ (G ⊗ G).hom) (closedPoint B) ∈ Set.range (thick R (maximalIdeal R) 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (q ≫ (G ⊗ G).hom) (closedPoint B) = closedPoint R` using `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg (G ⊗ G).hom hqt).trans ((Scheme.Hom.comp_apply _ _ _).symm.trans (congrArg (fun g => g (closedPoint R)) (Over.w o))))`. Conclude with `⟨_, (GlobalTheory.adicLevelι_closedPoint (maximalIdeal.isMaximal R).ne_top 0).trans h1.symm⟩`. Take `⟨Φ, hΦ, hr⟩` from `GlobalTheory.T.exists_additive_action_thickeningEndos_completePoints R (maximalIdeal R) G b hb hc B (q ≫ (G ⊗ G).hom) hs`. Set `q' : Over.mk (q ≫ (G ⊗ G).hom) ⟶ G ⊗ G` to `Over.homMk q rfl`. Use `⟨Over.mk (q ≫ (G ⊗ G).hom), q' ≫ fst G G, q' ≫ snd G G, Φ, ⟨closedPoint B⟩, ?_, hΦ, fun x k k' s₁ s₂ t₁ t₂ h => secRatioEq_of_levels hL fun e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lift_comp_fst_snd]`. Conclude with `hq`. Take `⟨r, h1, h2⟩` from `hr x e`. Establish `h3` using `(h e).comp r`. Conclude with `h1 ▸ h2 ▸ h3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_formal_pair {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     (G : Over (Sp R)) [GrpObj G] [LocallyOfFiniteType G.hom]
@@ -139,35 +139,31 @@ theorem exists_formal_pair {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] 
     exact h1 ▸ h2 ▸ h3
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U a a' h h' _ b hb N S _ hS hnd`. Use `hR.1.1` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG.geomConnected` as an intermediate fact. Set `F` to `Over.pullback (jK R)`. Set `π : (F.obj G).left ⟶ G.left` to `pullback.fst G.hom (jK R)`. Establish `hA : GlobalTheory.SS.SmConn (F.obj G)` using `⟨inferInstance, inferInstanceAs (Smooth (pullback.snd G.hom (jK R))), inferInstanceAs (IsSeparated (pullback.snd G.hom (jK R))), inferInstanceAs (QuasiCompact (pullback.snd G.hom (jK R))), inferInstanceAs (GeometricallyConnected (pullback.snd G.hom (jK R)))⟩`. Use `hA.2.1` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA.2.2.2.2` as an intermediate fact. Establish `hint : IsIntegral (F.obj G).left` using `GlobalTheory.isIntegral_of_smooth_of_geometricallyConnected (F.obj G).hom`. Take `⟨m, σ, hσ⟩` from `GlobalTheory.T.exists_veryAmple_fourth_power_uniformised_group R (maximalIdeal R) D A G U`. Take `⟨s₀, y₀, i₀, i₀', -, hy₀⟩` from `hnd 4 (by norm_num)`. Establish `ht₀ : ∃ p : (F.obj G).left, π p ∈ nonzeroLocus (S 4 s₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `exists_generic_mem G.hom _ (y := (fstG (maximalIdeal R) 0 G).left y₀) ?_` and prove the remaining obligations. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i₀', (Scheme.preimage_basicOpen _ _).ge hy₀⟩`. Take `⟨Y, x₁, x₂, Φ, ⟨y⟩, hfl, hΦ, hrat⟩` from `exists_formal_pair G b hb.1 hb.2.1 U.LG.isLB`. Establish `hπ : ∀ x : Y ⟶ G, (F.map x).left ≫ π = pullback.fst Y.hom (jK R) ≫ x.left` using `fun x => pullback.lift_fst _ _ _`. Establish `hratK : ∀ (x : Y ⟶ G) (k : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L ((F.map (Φ x)).left ≫ π) ((F.map x).left ≫ π) s₁ s₂ (S k s₁) (S k s₂)` using `fun x k s₁ s₂ => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hπ, hπ]`. Conclude with `(hrat x k _ s₁ s₂ _ _ fun e => hS k e s₁ s₂).comp _`. Establish `hflK : Flat (lift (F.map x₁) (F.map x₂)).left`. Rewrite using `[← Functor.OplaxMonoidal.lift_δ, Over.comp_left]`. Establish `h1 : Flat (F.map (lift x₁ x₂)).left` using `MorphismProperty.overPullbackMap (P := @Flat) (jK R) _ hfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsIso (Functor.OplaxMonoidal.δ F G G).left` using `inferInstanceAs (IsIso ((Over.forget _).map (Functor.OplaxMonoidal.δ F G G)))`. Use `infer_instance`. Establish `hYfl : Flat Y.hom`. Establish `: Flat (G ⊗ G).hom` using `inferInstanceAs (Flat (pullback.fst G.hom G.hom ≫ G.hom))`. Rewrite using `[← Over.w (lift x₁ x₂)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Take `⟨yK, -⟩` from `exists_generic_mem Y.hom ⊤ (y := y) trivial`. Establish `: Smooth (fst (F.obj G) (F.obj G)).left` using `inferInstanceAs (Smooth (pullback.fst (F.obj G).hom (F.obj G).hom))`. Establish `: GeometricallyConnected (fst (F.obj G) (F.obj G)).left` using `inferInstanceAs (GeometricallyConnected (pullback.fst (F.obj G).hom (F.obj G).hom))`. Establish `: IsIntegral (F.obj G ⊗ F.obj G).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.isNormalScheme_of_smooth (S := Sp (FractionRing R)) (F.obj G).hom` as an intermediate fact. Establish `: IsLocallyNoetherian (F.obj G).left` using `LocallyOfFiniteType.isLocallyNoetherian (F.obj G).hom`. Conclude with `GlobalTheory.isIntegral_of_smooth_of_geometricallyConnected (fst (F.obj G) (F.obj G)).left`. Establish `hdom : IsDominant (lift (F.map x₁) (F.map x₂)).left` using `isDominant_of_flat _ yK`. Establish `hfl₁ : Flat (F.map x₁).left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lift_fst (F.map x₁) (F.map x₂), Over.comp_left]`. Use `infer_instance`. Establish `hdom₁ : IsDominant (F.map x₁).left` using `isDominant_of_flat _ yK`. Take `⟨V, j, f, hj, hV, hf⟩` from `GlobalTheory.T.exists_morphism_of_sectionRatios_veryAmple (FractionRing R) (F.obj G) G.left U.LG.L U.LG.isLB π 4 _ m σ hσ s₀ (S 4 s₀) (fun i => S 4 (σ i)) ht₀ (F.obj Y) (F.map x₁) (F.map (Φ x₁)) hdom₁ fun i => hratK x₁ 4 _ _`. Establish `hpt : ∀ (x : Y ⟶ G) (Z : Over (Sp (FractionRing R))) (w : Z ⟶ F.obj Y) (u : Z ⟶ V), u ≫ j = w ≫ F.map x → u ≫ f = w ≫ F.map (Φ x)` using `fun x Z w u e => hf Z u _ fun i => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[e, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `(hratK x 4 _ _).comp _`. Establish `hadd` using `GlobalTheory.T.mul_of_mul_at_dominant_pair_commGroup (FractionRing R) (F.obj G) hA V j f hj (F.obj Y) _ _ _ _ hdom (hpt x₁) (hpt x₂) (by rw [← Functor.map_mul, ← Functor.map_mul, ← hΦ]; exact hpt (x₁ * x₂))`. Take `⟨φ, hφ, hjφ⟩` from `GlobalTheory.T.exists_monHom_extension_openPart_field (FractionRing R) (F.obj G) (F.obj G) V hA hA j f hj hV hadd`. Use `⟨φ, hφ, fun k s₁ s₂ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Z : Over (Sp (FractionRing R))` to `Over.mk (pullback.fst (F.map x₁).left j.left ≫ (F.obj Y).hom)`. Set `w : Z ⟶ F.obj Y` to `Over.homMk (pullback.fst (F.map x₁).left j.left) rfl`. Set `u : Z ⟶ V` to `Over.homMk (pullback.snd (F.map x₁).left j.left) (by`. Establish `e` using `congrArg (· ≫ (F.obj G).hom) (pullback.condition (f := (F.map x₁).left) (g := j.left))`. Simplify using `only [Category.assoc, Over.w] at e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `e.symm)`. Establish `huw : u ≫ j = w ≫ F.map x₁` using `Over.OverMorphism.ext pullback.condition.symm`. Establish `e : (w ≫ F.map x₁) ≫ φ = w ≫ F.map (Φ x₁)` using `by rw [← huw, Category.assoc, hjφ, hpt x₁ Z w u huw]`. Choose the witnesses or unpack the hypotheses as in `⟨z⟩ : Nonempty Z.left := by`. Take `⟨v⟩` from `hV`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, v', hp⟩` from `(F.map x₁).left.denseRange.exists_mem_open (IsOpenImmersion.isOpen_range j.left) ⟨_, v, rfl⟩`. Take `⟨z, -⟩` from `Scheme.Pullback.exists_preimage_pullback p v' hp.symm`. Conclude with `⟨z⟩`. Establish `: Flat (w ≫ F.map x₁).left` using `inferInstanceAs (Flat (pullback.fst (F.map x₁).left j.left ≫ (F.map x₁).left))`. Use `isDominant_of_flat (w ≫ F.map x₁).left z` as an intermediate fact.
-
-Use `SecRatioEq.of_isDominant (Y := (F.obj G).left) (w ≫ F.map x₁).left ?_` and prove the remaining obligations. Establish `e' : (w ≫ F.map x₁).left ≫ φ.left ≫ π = w.left ≫ (F.map (Φ x₁)).left ≫ π`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc]`. Establish `h3` using `(hratK x₁ k s₁ s₂).comp w.left`. Rewrite `h3` using `[← e', ← Category.assoc w.left]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic_hom : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ b, FormalEnd U.toUnifPre a h' b → ∀ (N : ℕ) (S : ∀ k : ℕ, H0 U.LG.L k → H0 U.LG.L (N * k)), 1 ≤ N → (∀ (k e : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L ((b e).left ≫ (fstG (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left s₁ s₂ (S k s₁) (S k s₂)) → (∀ k : ℕ, 3 ≤ k → ∃ s₀ : H0 U.LG.L k, SecCoNonzero U.LG.L ((b 0).left ≫ (fstG (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left s₀ (S k s₀)) → ∃ φ : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G, IsMonHom φ ∧ (∀ (k : ℕ) (s₁ s₂ : H0 U.LG.L k), SecRatioEq U.LG.L (φ.left ≫ pullback.fst G.hom (jK R)) (pullback.fst G.hom (jK R)) s₁ s₂ (S k s₁) (S k s₂)) := by
   intro R _ _ _ hR D A G _ _ hG U a a' h h' _ b hb N S _ hS hnd

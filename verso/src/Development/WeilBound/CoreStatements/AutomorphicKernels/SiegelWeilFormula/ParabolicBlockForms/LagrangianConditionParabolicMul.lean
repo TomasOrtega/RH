@@ -20,7 +20,7 @@ variable {d : SD σ} (L : LD d)
 namespace Bq
 
 /- English proof (translation)
-Use `Matrix.ext fun r c => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with i | i <;> rcases c with j | j <;>`. Apply the tactic sequence `simp [Afc.QA, QE, incM, Matrix.one_apply, Matrix.smul_apply, kfour.inclR_int] <;> split_ifs <;> simp [kfour.inclR_int]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem QA_eq {n : ℕ} (ε : ℤˣ) : Afc.QA (F := F) (E := E) n ε = incM F (QE n ε) := by
   refine Matrix.ext fun r c => ?_
@@ -28,7 +28,7 @@ theorem QA_eq {n : ℕ} (ε : ℤˣ) : Afc.QA (F := F) (E := E) n ε = incM F (Q
     simp [Afc.QA, QE, incM, Matrix.one_apply, Matrix.smul_apply, kfour.inclR_int] <;> split_ifs <;> simp [kfour.inclR_int]
 
 /- English proof (translation)
-Establish `h1` using `Afc.frame_form hb g`. Rewrite `h1` using `[hM, QA_eq, Afc.incM_transpose, Afc.incM_map_cA, ← kfour.incM_mul', ← kfour.incM_mul']`. Conclude with `kfour.incM_injective h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_E {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} {ε : ℤˣ} (hb : kfour.FrameEq σ Y b ε) (g : G2 σ Y)
     {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E} (hM : inFrame b g = incM F M) :
@@ -38,11 +38,11 @@ theorem form_E {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} {ε : ℤ�
   exact kfour.incM_injective h1
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hM (Sum.inl i₀)) c`. Establish `h2 : ∀ s, (Mᵀ * QE (E` using `E) n ε) (Sum.inl i₀) s = QE (E := E) n ε (Sum.inl i₀) s := by`. Introduce `s`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply, hx, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [h2] at h`. Establish `h3 : QE (E` using `E) n ε (Sum.inl i₀) c = 0 := by`. Break down `c with j | j` into its components or cases. Simplify using `[QE]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `: i₀ ≠ j` using `fun e => hc (by rw [e])`. Simplify using `[QE, Matrix.one_apply, this]`. Rewrite `h` using `[h3, Fintype.sum_sum_type]`. Simplify using `[QE, Matrix.one_apply] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem yrow_zero {n : ℕ} {ε : ℤˣ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E}
     (hM : Mᵀ * QE n ε * M.map σ = QE n ε) (hx : ∀ r, M r (Sum.inl i₀) = (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) r (Sum.inl i₀))
@@ -65,9 +65,9 @@ theorem yrow_zero {n : ℕ} {ε : ℤˣ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ F
   exact h
 
 /- English proof (translation)
-Introduce `i`. Establish `hP` using `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame p).1 hp`. Establish `e1 : ∀ j, inFrame d.b p (Sum.inr i) (Sum.inl j) = 0` using `fun j => by`. Use `congrFun (congrFun hP i) j` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₂₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[e1, hγ _]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lagrangian_condition_parabolic_mul {d : SD σ} (L : LD d) {p γ : d.G} (hp : p ∈ par2 σ d.Y) (hγ : LagrangianCondition L γ) : LagrangianCondition L (p * γ) := by
   intro i
@@ -79,16 +79,16 @@ theorem lagrangian_condition_parabolic_mul {d : SD σ} (L : LD d) {p γ : d.G} (
   simp [e1, hγ _]
 
 /- English proof (translation)
-Introduce `i`. Conclude with `(L.j_out g (Sum.inl L.i₀) (by simp) (Sum.inr i)).2.trans (by simp [Matrix.one_apply])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lagrangian_condition_embedding {d : SD σ} (L : LD d) (g : G2 σ L.Y) : LagrangianCondition L (L.j g) := by
   intro i
   exact (L.j_out g (Sum.inl L.i₀) (by simp) (Sum.inr i)).2.trans (by simp [Matrix.one_apply])
 
 /- English proof (translation)
-Rewrite using `[ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block L.ok.frame]`. Rewrite `h` using `[ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame, inFrame_j]`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h (L.em a)) (L.em c)`. Establish `h2` using `padM_emS L (inFrame L.b g) (Sum.inr a) (Sum.inl c)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [emS, Sum.map_inr, Sum.map_inl] at h2`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at h1 ⊢`. Rewrite using `[← h2]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_of_j {d : SD σ} (L : LD d) {g : G2 σ L.Y} (h : L.j g ∈ par2 σ d.Y) : g ∈ par2 σ L.Y := by
   rw [ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block L.ok.frame]

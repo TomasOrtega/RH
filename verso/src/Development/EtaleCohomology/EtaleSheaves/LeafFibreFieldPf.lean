@@ -7,37 +7,31 @@ namespace LateralTheory.E.LeafFibreFieldPf
 
 open Cardinal IntermediateField in
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_isTranscendenceBasis k K`. Establish `hcard : #B = ((d + 1 : ℕ) : Cardinal)`. Rewrite using `[hB.cardinalMk_eq_trdeg, hd]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Take `⟨T, hTB, hTc⟩` from `Cardinal.mk_set_eq_nat_iff_finset.mp hcard`. Take `⟨a, haT⟩ : T.Nonempty` from `Finset.card_pos.mp (by omega)`. Use `set T' := T.erase a with hT'`. Set `F : IntermediateField k K` to `IntermediateField.adjoin k (T' : Set K)`. Set `sF : Finset F` to `T'.attach.image fun x => ⟨x.1, IntermediateField.subset_adjoin k _ x.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsF : (F.val '' (sF : Set F)) = (T' : Set K)`. Use extensionality with `y`. Simplify using `[sF]`. Introduce `h`. Conclude with `IntermediateField.subset_adjoin k _ (Finset.mem_coe.mpr h)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F, sF, a, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(Finset.card_image_le).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_attach, Finset.card_erase_of_mem haT, hTc]`. Simplify using the standard rewrite rules. Establish `hmem : ∀ y : F, y ∈ IntermediateField.adjoin k (sF : Set F)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `: (y : K) ∈ (IntermediateField.adjoin k (sF : Set F)).map F.val`. Rewrite using `[IntermediateField.adjoin_map, hsF]`. Conclude with `y.2`. Rewrite `this` using `[← SetLike.mem_coe, IntermediateField.coe_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨z, hz, hzy⟩` from `this`. Establish `: z = y` using `Subtype.ext hzy`. Conclude with `this ▸ hz`. Conclude with `⟨fun y => by`. Use `isAlgebraic_algebraMap (R := IntermediateField.adjoin k (sF : Set F)) (A := F) ⟨y, hmem y⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this⟩`. Establish `hind` using `hB.1`. Establish `hnot : (⟨a, hTB ▸ haT⟩ : B) ∉ {i : B | (i : K) ≠ a}` using `by simp`. Establish `htr` using `hind.transcendental_adjoin hnot`. Establish `himg : (Subtype.val '' {i : B | (i : K) ≠ a}) = (T' : Set K)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Subtype.exists, exists_and_right, exists_eq_right, hT', Finset.coe_erase, Set.mem_diff, Set.mem_singleton_iff, ← hTB]`. The claim follows by propositional logic. Rewrite `htr` using `[himg, ← IntermediateField.transcendental_adjoin_iff]`. Conclude with `htr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set L := IntermediateField.adjoin F {a} with hL`. Establish `hBT : (B : Set K) = (T : Set K)` using `hTB.symm`. Establish `halgB` using `hB.isAlgebraic_field`. Rewrite `halgB` using `[Subtype.range_coe]`. Use `set E := IntermediateField.adjoin k B with hE`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hEL : ∀ x ∈ E, x ∈ L`. Introduce `x hx`. Establish `hle : E ≤ L.restrictScalars k`. Rewrite using `[hE, IntermediateField.adjoin_le_iff]`. Introduce `b hb`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hb` using `[← hTB]`. Distinguish the cases in `hba : b = a`. Substitute `hba` using the available equality. Conclude with `IntermediateField.mem_adjoin_simple_self F b`. Establish `hbF : b ∈ F` using `IntermediateField.subset_adjoin k _ (by simp [hT', hba, hb])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(IntermediateField.algebraMap_mem L (⟨b, hbF⟩ : F))`. Conclude with `hle hx`. Set `g : E →+* L` to `{ toFun := fun x => ⟨x.1, hEL x.1 x.2⟩, map_one' := rfl, map_mul' := fun _ _ => rfl, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Set `_ : Algebra E L` to `g.toAlgebra`. Establish `: IsScalarTower E L K` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ x : K, IsIntegral L x` using `fun x => ((halgB.isAlgebraic x).extendScalars g.injective).isIntegral`. Establish `hfd` using `IntermediateField.finiteDimensional_adjoin (K := L) (S := (S : Set K)) (fun x _ => hint x)`. Establish `htop : IntermediateField.adjoin L (S : Set K) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
-
-Establish `hx : x ∈ IntermediateField.adjoin k (S : Set K)` using `hgen ▸ trivial`. Set `M : IntermediateField k K` to `{ carrier := (IntermediateField.adjoin L (S : Set K) : Set K) mul_mem' := fun ha hb => (IntermediateField.adjoin L (S : Set K)).mul_mem ha hb add_mem' := fun ha hb => (IntermediateField.adjoin L (S : Set K)).add_mem ha hb inv_mem' := fun _ hx => (IntermediateField.adjoin L (S : S …`. Establish `h1` using `IntermediateField.algebraMap_mem (IntermediateField.adjoin L (S : Set K)) (⟨algebraMap F K (algebraMap k F c), IntermediateField.algebraMap_mem L _⟩ : L)`. Rewrite using `[IsScalarTower.algebraMap_apply k F K]`. Conclude with `h1 }`.
-
-Establish `hle : IntermediateField.adjoin k (S : Set K) ≤ M`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `y hy`. Use `show y ∈ (IntermediateField.adjoin L (S : Set K) : Set K)`. Conclude with `IntermediateField.subset_adjoin L _ hy`.
-
-Conclude with `(hle hx : x ∈ (IntermediateField.adjoin L (S : Set K) : Set K))`. Rewrite `hfd` using `[htop]`. Conclude with `LinearEquiv.finiteDimensional (IntermediateField.topEquiv (F := L) (E := K)).toLinearEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_part (k K : Type) [Field k] [Field K] [Algebra k K] (S : Finset K)
     (hgen : IntermediateField.adjoin k (S : Set K) = ⊤) (d : ℕ) (hd : Algebra.trdeg k K = d + 1) :
@@ -127,11 +121,11 @@ theorem alg_part (k K : Type) [Field k] [Field K] [Algebra k K] (S : Finset K)
     exact LinearEquiv.finiteDimensional (IntermediateField.topEquiv (F := L) (E := K)).toLinearEquiv
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(‹Algebra.FiniteType k A›).out`. Use `⟨s.image (algebraMap A (FractionRing A)), ?_⟩` and prove the remaining obligations. Establish `hA : ∀ a : A, algebraMap A (FractionRing A) a ∈ IntermediateField.adjoin k ((s.image (algebraMap A (FractionRing A)) : Finset _) : Set (FractionRing A))`. Introduce `a`. Establish `ha : a ∈ Algebra.adjoin k (s : Set A)` using `hs ▸ Algebra.mem_top`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : algebraMap A (FractionRing A) a ∈ (Algebra.adjoin k (s : Set A)).map (IsScalarTower.toAlgHom k A (FractionRing A))` using `Subalgebra.mem_map.mpr ⟨a, ha, rfl⟩`. Rewrite `h1` using `[AlgHom.map_adjoin]`. Use `IntermediateField.algebra_adjoin_le_adjoin k _ ?_` and prove the remaining obligations. Simplify `h1` using `[Finset.coe_image]`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`. Conclude with `div_mem (hA a) (hA b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gen_top (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A] [Algebra.FiniteType k A] :
     ∃ S : Finset (FractionRing A), IntermediateField.adjoin k (S : Set (FractionRing A)) = ⊤ := by
@@ -153,9 +147,9 @@ theorem gen_top (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A] [
   exact div_mem (hA a) (hA b)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.topologicalKrullDim_eq_of_forall_exists_isOpen (Z := (Set.univ : Set X)) ⟨genericPoint X, trivial⟩ (d := (e : WithBot ℕ∞)) (fun x _ => by`. Take `⟨A, _, _, _, _, _, j, _, hx, -, htr⟩` from `GlobalTheory.exists_affine_chart_trdeg_eq p x`. Use `⟨Set.range j, j.isOpenEmbedding.isOpen_range, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.inter_univ, GlobalTheory.topologicalKrullDim_eq_of_isEmbedding j.isOpenEmbedding.isEmbedding rfl]`. Establish `hA` using `GlobalTheory.ringKrullDim_eq_of_trdeg_eq k A (htr.trans he)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hA]`. Conclude with `PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim A)`. Rewrite using `[← h]`. Conclude with `(GlobalTheory.topologicalKrullDim_eq_of_isEmbedding (e := (id : X → X)) IsEmbedding.id (Set.range_id)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dimX_eq (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Spec (.of k))
     [LocallyOfFiniteType p] (e : ℕ)
@@ -174,23 +168,21 @@ theorem dimX_eq (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ 
   exact (GlobalTheory.topologicalKrullDim_eq_of_isEmbedding (e := (id : X → X)) IsEmbedding.id (Set.range_id)).symm
 
 /- English proof (translation)
-Introduce `k _ X _ p _ hd`. Use `letI := (Spec.preimage (X.fromSpecStalk (genericPoint X) ≫ p)).hom.toAlgebra`. Take `⟨A, _, _, _, _, _, j, _, hx, hj, htr⟩` from `GlobalTheory.exists_affine_chart_trdeg_eq p (genericPoint X)`. Take `⟨e, -, he2⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq k A`. Establish `hdim` using `dimX_eq k p e (htr.symm.trans he2)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨d, rfl⟩ : ∃ d, e = d + 1 := by`. Consider the cases of `e with`. Consider the case `zero => rw [hdim] at hd`. Simplify using `at hd`. Consider the case `succ d => exact ⟨d, rfl⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `: Algebra.IsAlgebraic A (FractionRing A)` using `IsLocalization.isAlgebraic _ (nonZeroDivisors A)`. Establish `htrK : Algebra.trdeg k (FractionRing A) = d + 1`. Rewrite using `[GlobalTheory.trdeg_eq_of_isAlgebraic_top k A (FractionRing A), he2]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Take `⟨S, hS⟩` from `gen_top k A`. Take `⟨F, s, t, hs, halg, ht, hfin⟩` from `alg_part k (FractionRing A) S hS d htrK`. Use `⟨F, inferInstance, inferInstance, FractionRing A, inferInstance, inferInstance, d, s, t, Spec.map (CommRingCat.ofHom (algebraMap A (FractionRing A))) ≫ j, ?_, hs, halg, ht, hfin, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdim]`. Conclude with `Nat.lt_succ_self d` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hj, ← Spec.map_comp]`. Use `congr 1`. Take `⟨q, hq⟩` from `hx`. Take `⟨pt⟩ : Nonempty (Spec (.of (FractionRing A)))` from `inferInstance`. Use `⟨pt, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : (Spec.map (CommRingCat.ofHom (algebraMap A (FractionRing A)))) pt ⤳ q`. Use `(PrimeSpectrum.le_iff_specializes _ _).mp ?_` and prove the remaining obligations. Use `show Ideal.comap (algebraMap A (FractionRing A)) pt.asIdeal ≤ q.asIdeal`. Establish `hbot : pt.asIdeal = ⊥`. Break down `Ideal.eq_bot_or_top pt.asIdeal with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Conclude with `absurd h pt.isPrime.ne_top`. Introduce `a ha`. Rewrite `ha` using `[Ideal.mem_comap, hbot, Ideal.mem_bot]`. Rewrite using `[(IsFractionRing.injective A (FractionRing A)) (ha.trans (map_zero _).symm)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `h1` using `hz.map j.continuous`. Rewrite `h1` using `[hq]`. Establish `h2` using `(genericPoint_spec X).specializes (Set.mem_univ (j ((Spec.map (CommRingCat.ofHom (algebraMap A (FractionRing A)))) pt)))`. Rewrite using `[Scheme.Hom.comp_apply]`.
-
-Conclude with `(h1.antisymm h2).eq`.
+A detailed English derivation is pending.
 -/
 theorem LeafFibreField_of : LateralTheory.E.LeafCurveVCut.LeafFibreField := by
   intro k _ X _ p _ hd

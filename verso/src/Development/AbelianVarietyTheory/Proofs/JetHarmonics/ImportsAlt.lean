@@ -3,27 +3,27 @@ import Mathlib
 namespace GlobalTheory.JetConstSq
 
 /- English proof (translation)
-Introduce `C₃ CΛ C₀ C₂ h3 hΛ h0 h2`. Use `⟨40 + CΛ + C₂ + 2 * C₃ * (C₀ + 9), ?_⟩` and prove the remaining obligations. Introduce `b Λ r n₀ p₀ hb hΛ1 hΛb hn hp`. Establish `hb1 : (1 : ℝ) ≤ b` using `by linarith`. Establish `hb0 : (0 : ℝ) < b` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnR : (n₀ : ℝ) ≤ 30 * ((r : ℝ) + 1) ^ 2 + 6` using `by exact_mod_cast hn`. Establish `hm : ((2 * r + 2 : ℕ) : ℝ) = 2 * ((r : ℝ) + 1)` using `by push_cast; ring`. Establish `hq : ((2 * p₀ + n₀ : ℕ) : ℝ) = 2 * (p₀ : ℝ) + n₀` using `by push_cast; ring`. Establish `hr : ((r + 1 : ℕ) : ℝ) = (r : ℝ) + 1` using `by push_cast; ring`. Rewrite `hΛb` using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hm, hq]`. Establish `hs : (1 : ℝ) ≤ (r : ℝ) + 1` using `by have := Nat.cast_nonneg (α := ℝ) r; linarith`. Establish `hC2 : C₂ ≤ b ^ C₂`. Establish `h1 : (1 : ℝ) ≤ Real.log b`. Rewrite using `[Real.le_log_iff_exp_le hb0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.rpow_def_of_pos hb0]`. Establish `h4 : C₂ ≤ Real.log b * C₂` using `by nlinarith`. Use `Real.add_one_le_exp (Real.log b * C₂)` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (2 : ℝ) ≤ b ^ (1 : ℝ)` using `by rw [Real.rpow_one]; linarith`. Establish `e2 : (3 * b) ^ (2 * n₀) ≤ b ^ (4 * (n₀ : ℝ))`. Establish `: (3 * b) ^ (2 * n₀) ≤ (b * b) ^ (2 * n₀)` using `pow_le_pow_left₀ (by positivity) (by nlinarith) _`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (4 * (n₀ : ℝ)) = ((4 * n₀ : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : 1 * (C₂ * Λ ^ 2) ^ (r + 1) ≤ b ^ ((C₂ + 2 * (CΛ * (2 * ((r : ℝ) + 1)))) * ((r : ℝ) + 1))`. Rewrite using `[one_mul, Real.rpow_mul hb0.le, ← hr, Real.rpow_natCast]`. Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.rpow_add hb0, mul_comm (2 : ℝ) (CΛ * _), Real.rpow_mul hb0.le, Real.rpow_two, hr]`. Conclude with `mul_le_mul hC2 (pow_le_pow_left₀ (by linarith) hΛb 2) (by positivity) (by positivity)`. Generalize the expression as in `((r : ℝ) + 1) = s at *`. Establish `hn0 : (0 : ℝ) ≤ n₀` using `Nat.cast_nonneg _`. Establish `hs2 : 1 ≤ s ^ 2` using `one_le_pow₀ hs`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs12 : s ≤ s ^ 2` using `by nlinarith`. Establish `hs4 : s ^ 2 ≤ s ^ 4` using `pow_le_pow_right₀ hs (by norm_num)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_add hb0, Real.rpow_add hb0, Real.rpow_add hb0]`. Use `_ ≤ _ := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises. Establish `a1 : 1 + 4 * (n₀ : ℝ) ≤ 40 * (2 * s) ^ 4` using `by nlinarith`. Establish `a2 : C₂ * s ≤ C₂ * (2 * s) ^ 4`. Apply `mul_le_mul_of_nonneg_left _ h2.le` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `a3 : CΛ * (4 * s ^ 2) ≤ CΛ * (2 * s) ^ 4`. Apply `mul_le_mul_of_nonneg_left _ hΛ` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `a4 : 2 * (p₀ : ℝ) + n₀ ≤ (C₀ + 9) * (2 * s) ^ 2`. Establish `: 0 ≤ C₀ * s ^ 2` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `a5 : 2 * C₃ * (2 * s) ^ 2 * (2 * (p₀ : ℝ) + n₀) ≤ 2 * C₃ * (2 * s) ^ 2 * ((C₀ + 9) * (2 * s) ^ 2)` using `mul_le_mul_of_nonneg_left a4 (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ C₃ CΛ C₀ C₂ : ℝ, 0 ≤ C₃ → 0 ≤ CΛ → 0 ≤ C₀ → 0 < C₂ → ∃ C₄ : ℝ, ∀ (b Λ : ℝ) (r n₀ p₀ : ℕ), 3 ≤ b → 1 ≤ Λ → Λ ≤ b ^ (CΛ * ((2 * r + 2 : ℕ) : ℝ)) → n₀ ≤ 30 * (r + 1) ^ 2 + 6 → (p₀ : ℝ) ≤ C₀ * ((r : ℝ) + 1) ^ 2 → 2 * (3 * b) ^ (2 * n₀) * (1 * (C₂ * Λ ^ 2) ^ (r + 1)) * b ^ (2 * C₃ * ((2 * r + 2 : ℕ) : ℝ) ^ 2 * ((2 * p₀ + n₀ : ℕ) : ℝ)) ≤ b ^ (C₄ * ((2 * r + 2 : ℕ) : ℝ) ^ 4) := by
   intro C₃ CΛ C₀ C₂ h3 hΛ h0 h2

@@ -9,19 +9,17 @@ open GroundTheory.FunctionField
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis k κ`. Establish `hcard : Cardinal.mk s = 1` using `by rw [hs.cardinalMk_eq_trdeg, htr]`. Choose the witnesses or unpack the hypotheses as in `⟨⟨x, hx⟩⟩ : Nonempty s := by`. Rewrite using `[← Cardinal.mk_ne_zero_iff, hcard]`. Conclude with `one_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsx : s = {x}`. Establish `hsub : Subsingleton s`. Rewrite using `[← Cardinal.le_one_iff_subsingleton, hcard]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Use `Subsingleton.elim (⟨y, hy⟩ : s) ⟨x, hx⟩` as an intermediate fact. Simplify using `using congrArg Subtype.val this`. Introduce and unpack `rfl`. Conclude with `hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htrx : Transcendental k x` using `hs.1.transcendental ⟨x, hx⟩`. Establish `halg : Algebra.IsAlgebraic (IntermediateField.adjoin k {x}) κ`. Use `hs.isAlgebraic_field` as an intermediate fact. Rewrite `this` using `[Subtype.range_coe, hsx]`. Then use the resulting hypothesis. Take `⟨t, ht⟩` from `hfg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfd : ∀ F : IntermediateField k κ, Algebra.IsAlgebraic F κ → FiniteDimensional F κ`. Introduce `F hF`. Establish `hle : IntermediateField.adjoin k (↑t : Set κ) ≤ (IntermediateField.adjoin F (↑t : Set κ)).restrictScalars k` using `IntermediateField.adjoin_le_iff.2 (IntermediateField.subset_adjoin F _)`. Establish `htop : IntermediateField.adjoin F (↑t : Set κ) = ⊤`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y _`. Establish `hy : y ∈ IntermediateField.adjoin k (↑t : Set κ)`. Rewrite using `[ht]`. Conclude with `IntermediateField.mem_top`. Conclude with `hle hy`.
-
-Establish `h1 : FiniteDimensional F (IntermediateField.adjoin F (↑t : Set κ))` using `IntermediateField.finiteDimensional_adjoin fun y _ => (hF.isAlgebraic y).isIntegral`. Rewrite `h1` using `[htop]`. Conclude with `IntermediateField.topEquiv.toLinearEquiv.finiteDimensional`. Conclude with `⟨⟨x, htrx, hfd _ halg⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFunctionField_of_fg_trdeg {k κ : Type} [Field k] [Field κ] [Algebra k κ]
     (hfg : (⊤ : IntermediateField k κ).FG) (htr : Algebra.trdeg k κ = 1) :
@@ -102,11 +100,9 @@ def placesCurve : GlobalTheory.CompanionTheory.Ar.Crv.ACurve κ where
 end
 
 /- English proof (translation)
-Introduce `k κ _ _ _ hfg htr`. Use `haveI : IsFunctionField k κ := isFunctionField_of_fg_trdeg hfg htr`. Establish `key : ∀ i : Place k κ, (i.valuation).valuationSubring = i.ring` using `fun i => by`. Use extensionality with `y`. Rewrite using `[Valuation.mem_valuationSubring_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Place.valuation_le_one_iff i y`. Use `⟨placesCurve k κ, fun i => ?_, fun i a ha => ?_, fun i => ?_, fun W hW hk => ?_⟩` and prove the remaining obligations. Conclude with `Place.deg_pos i`. Conclude with `Place.valuation_algebraMap' i ha`. Conclude with `Place.valuation_surjective i`.
-
-Use `⟨⟨W, hW, hk⟩, key _, fun j hj => ?_⟩` and prove the remaining obligations. Conclude with `Place.ext ((key j).symm.trans hj)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_curve_of_function_field :
     ∀ (k κ : Type) [Field k] [Field κ] [Algebra k κ], (⊤ : IntermediateField k κ).FG →

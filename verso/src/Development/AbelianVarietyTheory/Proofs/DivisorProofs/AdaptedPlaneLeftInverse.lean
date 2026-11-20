@@ -6,15 +6,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.PlaneLeftInv
 
 /- English proof (translation)
-Set `T : ((Fin d₁ → E) × (E × E)) →ₗ[E] (Fin d → E)` to `ι.mulVecLin.coprod ((LinearMap.toSpanSingleton E _ x).coprod (LinearMap.toSpanSingleton E _ y))`. Establish `hsurj : Function.Surjective T`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hS, Submodule.span_le]`. Introduce `z hz`. Take `⟨s, t, u, rfl⟩` from `h z hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(u, (s, t)), ?_⟩` and prove the remaining obligations. Simplify using `only [T, LinearMap.coprod_apply, Matrix.mulVecLin_apply, LinearMap.toSpanSingleton_apply]`. Normalize the expressions using the abelian group laws. Establish `hrk : Module.finrank E ((Fin d₁ → E) × (E × E)) = Module.finrank E (Fin d → E)`. Simplify using `[Module.finrank_prod, hd]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinj : Function.Injective T` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrk).2 hsurj`. Establish `hker : LinearMap.ker (Matrix.toLin' ι) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `u hu`. Establish `h0 : T (u, (0, 0)) = T 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Simplify `hu` using `[T]`. Conclude with `congrArg Prod.fst (hinj h0)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_leftInv_of_span {E : Type} [Field E] {d d₁ : ℕ} (hd : d = d₁ + 2) (ι : Matrix (Fin d) (Fin d₁) E)
     (x y : Fin d → E) (S : Set (Fin d → E)) (hS : Submodule.span E S = ⊤)
@@ -45,7 +45,7 @@ theorem exists_leftInv_of_span {E : Type} [Field E] {d d₁ : ℕ} (hd : d = d�
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ r' s' i₀ i₁ W W₁ H' hW hH`. Use `exists_leftInv_of_span hH.rank H'.ι H'.x H'.y (W.L : Set (Fin d → E)) hW.lat.span_eq_top ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨s, t, u, -, -, -, hz'⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, hz'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_leftInv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E)

@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.NonzeroTypeTheory
 
 /- English proof (translation)
-Unfold `ArtinTransferDecompositionCharacter`. Introduce `E Ω _ _ _ _ _ A w h a ha n χ hχ`. Establish `hs : ∀ i, GlobalTheory.WeilDeligne.IsSmooth ((χ i).comp (Subgroup.inclusion (GlobalTheory.WeilDeligne.Weil_le_Dec h)))`. Introduce `i`. Establish `hc : Continuous fun σ : ReciprocityTheory.Gal.Ine A => Subgroup.inclusion (GlobalTheory.WeilDeligne.Weil_le_Dec h) (GlobalTheory.WeilDeligne.ineIncl h σ)` using `continuous_subtype_val.subtype_mk _`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hχ i).preimage hc`. Use `choose μ hμ hμe using fun i => ha.factor _ (hs i)`. Conclude with `⟨μ, hμ, fun i σ => DFunLike.congr_fun (hμe i) σ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem artinTransferDecomposition_holds : ArtinTransferDecompositionCharacter := by
   unfold ArtinTransferDecompositionCharacter

@@ -16,7 +16,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff FracTop IsFGTop cupFG IsCycOn)
 
 /- English proof (translation)
-Introduce `ψ hψ z hz`. Take `⟨B, hB⟩` from `h ψ hψ z hz`. Conclude with `⟨B, tbWIn ℓ B.D u w s m e d U hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem row_tb_of_w {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {A T' G : Type} [Ring A] [Algebra O A] [CommRing T'] [Algebra T' A] [Group G]
@@ -31,7 +31,7 @@ theorem row_tb_of_w {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-Introduce `ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1 L _ _ _ …`. Take `⟨o1, o2, o3, o4, o5, o6, o7, o8⟩` from `hOne`. Conclude with `theorem_n_five_real_second ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π γ lam …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theorem_n_five_real_lift : RealClassMapLift := by
   intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _

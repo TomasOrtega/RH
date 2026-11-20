@@ -15,25 +15,23 @@ namespace GlobalTheory
 namespace Unf
 
 /- English proof (translation)
-Introduce `H _ _ _ ν _ Γ _ Y _ _ y₀ htr 𝓕 𝓖 hF hG Φ hΦ hinv`. Use `set S : Subgroup H := (MulAction.stabilizer Γ y₀).map Γ.subtype with hSdef`. Use `haveI : Countable S := by`. Establish `hle : S ≤ Γ` using `Subgroup.map_subtype_le _`. Conclude with `Function.Injective.countable (Subgroup.inclusion_injective hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose σ hσ using htr`. Establish `hO : ∀ γ : Γ, γ • y₀ ∈ (Set.univ : Set Y)` using `fun _ => Set.mem_univ _`. Establish `hσ' : ∀ a : (Set.univ : Set Y), σ a • y₀ = a` using `fun a => hσ a`. Establish `hG'` using `GlobalTheory.OrbitUnfold.isFundamentalDomain_iUnion_pull hF y₀ hO (fun a => σ a) hσ'`. Establish `hinvS : ∀ (s : S) (h : H), Φ y₀ (s • h) = Φ y₀ h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨s, hs⟩ h`. Take `⟨t, ht, rfl⟩` from `Subgroup.mem_map.1 hs`. Use `hinv t y₀ h` as an intermediate fact. Rewrite `this` using `[show t • y₀ = y₀ from ht]`. Simplify `this` using `[Subgroup.smul_def]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hfun : ∀ (y : Y) (h : H), Φ y ((σ y : H) * h) = Φ y₀ h` using `fun y h => by`. Use `hinv (σ y) y₀ h` as an intermediate fact. Rewrite `this` using `[hσ y]`. Then use the resulting hypothesis. Establish `hlint : ∀ y : Y, ∫⁻ h in GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H), ‖Φ y₀ h‖ₑ ∂ν = ∫⁻ h in 𝓕, ‖Φ y h‖ₑ ∂ν` using `fun y => by`. Rewrite using `[← GlobalTheory.OrbitUnfold.setLIntegral_pull (σ y : H) (fun h => ‖Φ y h‖ₑ)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hfun]`. Establish `hint : ∀ y : Y, ∫ h in GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H), Φ y₀ h ∂ν = ∫ h in 𝓕, Φ y h ∂ν` using `fun y => by`. Rewrite using `[← GlobalTheory.OrbitUnfold.setIntegral_pull (σ y : H) (Φ y)]`. Simplify using `only [hfun]`. Establish `hd : Pairwise (Function.onFun (AEDisjoint ν) fun y : Y => GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b hab`. Use `GlobalTheory.OrbitUnfold.aedisjoint_pull hF fun h => hab ?_` and prove the remaining obligations. Rewrite using `[← hσ a, ← hσ b, h]`. Establish `hU : (⋃ a : (Set.univ : Set Y), GlobalTheory.OrbitUnfold.pull 𝓕 (σ a : H)) = ⋃ y : Y, GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H)`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `hG'` using `[hU]`. Establish `hL1 : ∫⁻ h in 𝓖, ‖Φ y₀ h‖ₑ ∂ν = ∫⁻ h in ⋃ y : Y, GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H), ‖Φ y₀ h‖ₑ ∂ν` using `hG.setLIntegral_eq hG' (fun h => ‖Φ y₀ h‖ₑ) (fun s h => by simp only [hinvS])`. Establish `hL2 : ∫⁻ h in ⋃ y : Y, GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H), ‖Φ y₀ h‖ₑ ∂ν = ∑' y, ∫⁻ h in 𝓕, ‖Φ y h‖ₑ ∂ν`. Rewrite using `[lintegral_iUnion₀ (fun y => GlobalTheory.OrbitUnfold.nullMeasurableSet_pull hF _) hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hlint]`. Establish `hL3 : ∫⁻ h in 𝓕, ∑' y, ‖Φ y h‖ₑ ∂ν = ∑' y, ∫⁻ h in 𝓕, ‖Φ y h‖ₑ ∂ν` using `lintegral_tsum fun y => (hΦ y).enorm.aemeasurable`. Establish `hmain : ∫⁻ h in 𝓖, ‖Φ y₀ h‖ₑ ∂ν = ∫⁻ h in 𝓕, ∑' y, ‖Φ y h‖ₑ ∂ν`. Rewrite using `[hL1, hL2, hL3]`. Use `⟨hmain, fun hfin => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin' : ∑' y, ∫⁻ h in 𝓕, ‖Φ y h‖ₑ ∂ν ≠ ⊤` using `by rwa [← hL3]`. Establish `hI : IntegrableOn (Φ y₀) (⋃ y : Y, GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H)) ν`. Use `⟨(hΦ y₀).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[HasFiniteIntegral, hL2]`. Conclude with `lt_top_iff_ne_top.2 hfin'`.
-
-Establish `hI1 : ∫ h in 𝓖, Φ y₀ h ∂ν = ∫ h in ⋃ y : Y, GlobalTheory.OrbitUnfold.pull 𝓕 (σ y : H), Φ y₀ h ∂ν` using `hG.setIntegral_eq hG' (fun s h => hinvS s h)`. Rewrite using `[hI1, integral_iUnion_ae (fun y => GlobalTheory.OrbitUnfold.nullMeasurableSet_pull hF _) hd hI]`. Simplify using `only [hint]`. Conclude with `(integral_tsum (fun y => (hΦ y).aestronglyMeasurable) hfin').symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_integral_unfold_transitive : ∀ (H : Type) [Group H] [MeasurableSpace H] [MeasurableMul H] (ν : Measure H) [ν.IsMulLeftInvariant] (Γ : Subgroup H) [Countable Γ] (Y : Type) [Countable Y] [MulAction Γ Y] (y₀ : Y), (∀ y, ∃ γ : Γ, γ • y₀ = y) → ∀ (𝓕 𝓖 : Set H), IsFundamentalDomain Γ 𝓕 ν → IsFundamentalDomain ((MulAction.stabilizer Γ y₀).map Γ.subtype) 𝓖 ν → ∀ Φ : Y → H → ℂ, (∀ y, Measurable (Φ y)) → (∀ (γ : Γ) y h, Φ (γ • y) ((γ : H) * h) = Φ y h) → (∫⁻ h in 𝓖, ‖Φ y₀ h‖ₑ ∂ν = ∫⁻ h in 𝓕, ∑' y, ‖Φ y h‖ₑ ∂ν) ∧ (∫⁻ h in 𝓕, ∑' y, ‖Φ y h‖ₑ ∂ν ≠ ⊤ → ∫ h in 𝓖, Φ y₀ h ∂ν = ∫ h in 𝓕, ∑' y, Φ y h ∂ν) := by
   intro H _ _ _ ν _ Γ _ Y _ _ y₀ htr 𝓕 𝓖 hF hG Φ hΦ hinv

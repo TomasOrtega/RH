@@ -25,7 +25,7 @@ namespace GlobalTheory.BottomFactor
 
 open GlobalTheory.SquareComm in
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, Ψ, hΨ, rfl⟩`. Simplify using `[map_sub, h u hu Ψ hΨ]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem finRel_le_ker {D : D7} {M X : HSp D} {ω : GlobalTheory.Grid.WRep M X} {S : Submodule ℂ (WO M X → ℂ)} {Pi : Type} [AddCommGroup Pi]
     [Module ℂ Pi] (p : (WO M X → ℂ) →ₗ[ℂ] Pi) (h : ∀ g ∈ GfC M, ∀ Φ ∈ S, p (ω (g, 1) Φ) = p Φ) : finRel ω S ≤ LinearMap.ker p := by
@@ -34,9 +34,9 @@ theorem finRel_le_ker {D : D7} {M X : HSp D} {ω : GlobalTheory.Grid.WRep M X} {
   simp [map_sub, h u hu Ψ hΨ]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ Pf, φ y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hy ((Module.forall_dual_apply_eq_zero_iff ℂ y).1 hc)`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg ((TensorProduct.rid ℂ Pr).toLinearMap ∘ₗ LinearMap.lTensor Pr φ) h0` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul, map_zero] at this`. Conclude with `hx ((smul_eq_zero.1 this).resolve_left hφ)`.
+A detailed English derivation is pending.
 -/
 theorem tmul_ne_zero' {Pr Pf : Type} [AddCommGroup Pr] [Module ℂ Pr] [AddCommGroup Pf] [Module ℂ Pf] {x : Pr} {y : Pf}
     (hx : x ≠ 0) (hy : y ≠ 0) : x ⊗ₜ[ℂ] y ≠ 0 := by
@@ -50,28 +50,28 @@ theorem tmul_ne_zero' {Pr Pf : Type} [AddCommGroup Pr] [Module ℂ Pr] [AddCommG
   exact hx ((smul_eq_zero.1 this).resolve_left hφ)
 
 /- English proof (translation)
-Simplify using `[thetaKO, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_smul {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (g : GA D S) (h : GA D T)
     (c : ℂ) (f : WO S T → ℂ) : thetaKO om g h (c • f) = c * thetaKO om g h f := by
   simp [thetaKO, map_smul]
 
 /- English proof (translation)
-Simplify using `[thetaKO, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_sub {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (g : GA D S) (h : GA D T)
     (f f' : WO S T → ℂ) : thetaKO om g h (f - f') = thetaKO om g h f - thetaKO om g h f' := by
   simp [thetaKO, map_sub]
 
 /- English proof (translation)
-Simplify using `[thetaKO, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_add {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (g : GA D S) (h : GA D T)
     (f f' : WO S T → ℂ) : thetaKO om g h (f + f') = thetaKO om g h f + thetaKO om g h f' := by
   simp [thetaKO, map_add]
 
 /- English proof (translation)
-Simplify using `[thetaKO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thetaKO_zero {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (g : GA D S) (h : GA D T) :
     thetaKO om g h 0 = 0 := by
@@ -80,59 +80,51 @@ theorem thetaKO_zero {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.E
 open GlobalTheory.SquareComm in
 
 /- English proof (translation)
-Introduce `hH hP hK hM _`. Establish `hLM` using `GlobalTheory.T.local_matching_of_howe_duality hH hP hK hM`. Establish `hTA` using `GlobalTheory.T.theta_integrals_of_minguez hP.minguezThetaGL hP hK hM`. Take `⟨CF1, H1⟩` from `GlobalTheory.T.definiteBottom_dictionary_frames_exponents_kernel`. Take `⟨CF2, H2⟩` from `GlobalTheory.T.finite_chain_frame_bottom hH hP hK hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max CF1 CF2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, G1⟩` from `H1 ε CF (le_trans (le_max_left _ _) hCF)`. Take `⟨C2, x2, G2⟩` from `H2 ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hR T Lc μ₀ hμ G W i j A A' WW X hX => ?_⟩` and prove the remaining obligations. Take `⟨FA, FA', FW, a, b, hdA, hdef, hdW, hD⟩` from `G1 C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hμ G W i j A A' WW X hX`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hF` using `G2 C (le_trans (le_max_right _ _) hC) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hμ G W i j A A' WW X hX`. Take `⟨Pr, q, q', hq, hq', hLMt⟩` from `hLM D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW a b`. Establish `eI : ∀ t P, thetaInt (X.ω t) X.m X.fd (fockF W.ψ W.θ true FA FW (X.f t) P) = X.I W.ψ W.θ t P` using `fun t P => by`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, Tri.I, (hD t).2.2.2.2.1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `eI' : ∀ t P, thetaInt (X.ω' t) X.m' X.fd' (fockF W.ψ W.θ false FA' FW (X.f' t) P) = X.I' W.ψ W.θ t P` using `fun t P => by`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, Tri.I', (hD t).2.2.2.2.2]`. Establish `iI' : ∀ t P h, IntegrableOn (fun g => thetaKO (X.ω' t) g h (fockF W.ψ W.θ false FA' FW (X.f' t) P)) X.fd' X.m'` using `fun t P h => by simp only [(hD t).2.2.2.2.2]; exact (hX.integrable t).2 P h`. Establish `key : ∀ t, (∀ P', q' P' = 0 → X.I' W.ψ W.θ t P' = 0) ∧ ((∀ P', X.I' W.ψ W.θ t P' = 0) ∨ ∀ P', X.I' W.ψ W.θ t P' = 0 → q' P' = 0) ∧ (∃ lam : ℂ, ∀ P P', q P = q' P' → X.I W.ψ W.θ t P = lam • X.I' W.ψ W.θ t P') ∧ Nontrivial Pr`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Take `⟨hTr, hInf, hf, hf', -, -⟩` from `hD t`. Take `⟨hex, hfac⟩` from `hLMt _ _ hTr hInf`. Take `⟨Pm, rf, rl, p, p', hm⟩` from `GlobalTheory.T.triple_match_existence hH hP hK hM D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hex (X.ω t) (X.ω' t) (hX.is.weil t) (hX.is.weil' t)`. Take `⟨Pf, r, r', e, -, -, hr, hr'⟩` from `hfac _ _ _ _ _ _ _ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hc⟩` from `hTA D W.ψ W.θ W.θ_is A A' WW FA FA' FW _ _ hTr X.m X.fd X.m' X.fd' hX.is.meas hX.is.meas' (X.ω t) (X.ω' t) Pm rf rl p p' hm`. Establish `hrel` using `GlobalTheory.T.theta_integral_finite_relation hP D W.ψ W.θ W.ψ_std W.θ_is A' WW FA' FW _ _ (X.ω' t) (hX.is.weil' t) hdef X.m' X.fd' hX.is.meas'`. Establish `kerp'` using `finRel_le_ker p' hm.mapB.invf`. Establish `memF : ∀ P', fockF W.ψ W.θ false FA' FW (X.f' t) P' ∈ algF W.ψ W.θ false FA' FW` using `fun P' => Submodule.subset_span ⟨_, P', hf', rfl⟩`. Establish `same : ∀ Ψ ∈ algF W.ψ W.θ false FA' FW, (∀ h, IntegrableOn (fun g => thetaKO (X.ω' t) g h Ψ) X.fd' X.m') → ∀ Φ₀, Ψ - Φ₀ ∈ finRel (X.ω' t) (algF W.ψ W.θ false FA' FW) → ModInt W.θ (X.ω' t) X.m' X.fd' Φ₀ → thetaInt (X.ω' t) X.m' X.fd' Ψ = thetaInt (X.ω' t) X.m' X.fd' Φ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Ψ _ hΨ Φ₀ hd hmod`. Take `⟨N, K, hmod⟩` from `hmod`. Use function extensionality and compare the values at `h`. Establish `h0` using `congrFun (hrel _ hd) h`. Simplify using `only [thetaInt, thetaKO_sub] at h0 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[integral_sub (hΨ h) (hmod h).1]`. Conclude with `sub_eq_zero.1 h0`. Establish `kill : ∀ Ψ ∈ algF W.ψ W.θ false FA' FW, (∀ h, IntegrableOn (fun g => thetaKO (X.ω' t) g h Ψ) X.fd' X.m') → p' Ψ = 0 → thetaInt (X.ω' t) X.m' X.fd' Ψ = 0`. Introduce `Ψ hΨ hi hp`. Take `⟨Φ₀, hΦ₀, hd, hmod, hI⟩` from `hc Ψ hΨ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp0 : p' Φ₀ = 0`. Use `kerp' hd` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, hp, zero_sub, neg_eq_zero]`. Conclude with `this`. Establish `h1` using `hI 0 (zero_mem _) (by rw [map_zero, hp0])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : thetaInt (X.ω t) X.m X.fd 0 = 0` using `by funext h; simp [thetaInt, thetaKO_zero]`. Rewrite `h1` using `[h2]`. Rewrite using `[same Ψ hΨ hi Φ₀ hd hmod]`. Conclude with `((smul_eq_zero.1 h1.symm).resolve_left hc0)`. Establish `hp'F : ∀ P', p' (fockF W.ψ W.θ false FA' FW (X.f' t) P') = e (q' P' ⊗ₜ r' (X.f' t))` using `hr' _ hf'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨fun P' h0 => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← eI']`. Conclude with `kill _ (memF P') (iI' t P') (by rw [hp'F, h0, TensorProduct.zero_tmul, map_zero])`. Distinguish the cases in `hall : ∀ P', X.I' W.ψ W.θ t P' = 0`. Conclude with `Or.inl hall`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Or.inr fun P' h0 => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hq0`. Use `hall fun P'' => ?_` and prove the remaining obligations. Rewrite using `[← eI']`. Distinguish the cases in `hy : r' (X.f' t) = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `kill _ (memF P'') (iI' t P'') (by rw [hp'F, hy, TensorProduct.tmul_zero, map_zero])`. Establish `hne : p' (fockF W.ψ W.θ false FA' FW (X.f' t) P') ≠ 0`. Rewrite using `[hp'F]`. Conclude with `e.map_ne_zero_iff.2 (tmul_ne_zero' hq0 hy)`. Conclude with `GlobalTheory.T.matching_triple_signature hH hP hK hM hTA D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hdA hdef hdW X.m X.fd X.m' X.fd' hX.is.meas hX.is.meas' (X.ω t) (X.ω' t) Pm rf rl p p' hm _ (memF P') hne (by rw [eI']; exact h0) _ (memF P'')`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩` from `hF FA FA' FW t hf hf' Pm rf rl p p' hm Pr Pf q q' r r' e hq hq' hr hr'`. Use `⟨c * κ, fun P P' hPP => ?_⟩` and prove the remaining obligations. Use `set Ψ := κ • fockF W.ψ W.θ false FA' FW (X.f' t) P' with hΨdef`. Establish `hΨ : Ψ ∈ algF W.ψ W.θ false FA' FW` using `Submodule.smul_mem _ _ (memF P')`. Establish `hΨi : ∀ h, IntegrableOn (fun g => thetaKO (X.ω' t) g h Ψ) X.fd' X.m'` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hΨdef, thetaKO_smul]`. Conclude with `(iI' t P' h).const_mul κ`. Take `⟨Φ₀, -, hd, hmod, hI⟩` from `hc Ψ hΨ`. Establish `hpp : p (fockF W.ψ W.θ true FA FW (X.f t) P) = p' Φ₀`. Establish `h1 : p' Φ₀ = p' Ψ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `kerp' hd` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[h1, hΨdef, map_smul, hp'F, hr _ hf, hκ, hPP, TensorProduct.tmul_smul, map_smul]`. Establish `h2` using `hI _ (Submodule.subset_span ⟨_, P, hf, rfl⟩) hpp`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Rewrite `h2` using `[eI, ← same Ψ hΨ hΨi Φ₀ hd hmod]`. Rewrite using `[h2, ← eI', mul_smul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[hΨdef, thetaInt, thetaKO_smul, integral_const_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hnt, -⟩` from `hm.irred`. Assume the negation of the conclusion as `hP0`. Rewrite `hP0` using `[not_nontrivial_iff_subsingleton]`. Establish `hz : ∀ z : Pr ⊗[ℂ] Pf, z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `zero => rfl`. Consider the case `tmul x y => rw [Subsingleton.elim x 0, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Take `⟨u, v, huv⟩` from `hnt.exists_pair_ne`. Conclude with `huv (by rw [← e.apply_symm_apply u, ← e.apply_symm_apply v, hz (e.symm u), hz (e.symm v)])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose hker hirr hlam hnt using key`. Set `Il : T → PolF D WW.rank A'.rank →ₗ[ℂ] (GA D WW → ℂ)` to `fun t => { toFun := fun P' => X.I' W.ψ W.θ t P' map_add' := fun P Q => by show X.I' W.ψ W.θ t (P + Q) = X.I' W.ψ W.θ t P + X.I' W.ψ W.θ t Q`. Rewrite using `[← eI', ← eI', ← eI', map_add]`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, thetaKO_add, Pi.add_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `integral_add (iI' t P h) (iI' t Q h)`. Use the proof step `map_smul' := fun c P => by show X.I' W.ψ W.θ t (c • P) = c • X.I' W.ψ W.θ t P`. Rewrite using `[← eI', ← eI', map_smul]`. Use function extensionality and compare the values at `h`. Simplify using `[thetaInt, thetaKO_smul, integral_const_mul] }`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : ∀ t, LinearMap.ker q' ≤ LinearMap.ker (Il t)` using `fun t P' h0 => hker t P' h0`. Set `J : T → (Pr →ₗ[ℂ] (GA D WW → ℂ))` to `fun t => ((LinearMap.ker q').liftQ (Il t) (hK t)) ∘ₗ (q'.quotKerEquivOfSurjective hq').symm.toLinearMap`. Establish `hJ : ∀ t P', J t (q' P') = X.I' W.ψ W.θ t P'` using `fun t P' => by`. Establish `: (q'.quotKerEquivOfSurjective hq').symm (q' P') = Submodule.Quotient.mk P'`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(LinearMap.quotKerEquivOfSurjective_apply_mk _ _ _).symm`. Simplify using `only [J, LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Both sides reduce to the same expression. Use `haveI := hnt μ₀`. Take `⟨x, hx⟩` from `exists_ne (0 : Pr)`.
-
-Take `⟨P0, rfl⟩` from `hq' x`. Use `⟨Pr, q, q', J, hq, ⟨P0, hx⟩, fun t => ?_, fun t => ?_, fun t P' => (hJ t P').symm⟩` and prove the remaining obligations. Break down `hirr t with h | h` into its components or cases. Use `left`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
-
-Take `⟨P', rfl⟩` from `hq' x`. Rewrite using `[hJ, h P']`. Both sides reduce to the same expression. Use `right`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
-
-Introduce `x hx0`. Take `⟨P', rfl⟩` from `hq' x`. Rewrite `hx0` using `[hJ]`. Conclude with `h P' hx0`. Take `⟨lam, hl⟩` from `hlam t`.
-
-Use `⟨lam, fun P => ?_⟩` and prove the remaining obligations. Take `⟨P', hP'⟩` from `hq' (q P)`. Rewrite using `[← hP', hJ]`. Conclude with `hl P P' hP'.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe →
     GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X →

@@ -42,9 +42,9 @@ def LatAt (c : NChoice D) (w : D.what₂.places.Pl) (j : ℕ)
   Submodule.span (c.Oe w) (e '' latS w j) = Submodule.span (c.Oe w) ((fun y => t • y) '' (latT c w j : Set (Tgt c w j)))
 
 /- English proof (translation)
-Introduce `b`. Take `⟨h1, h2⟩` from `h b`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h1.units_smul (fun _ => u) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[LinearMap.smul_apply, Units.smul_def]`. Establish `h3 : (Set.range fun i => ((u : FractionRing (c.Oe w)) • e) (b i)) = (u : FractionRing (c.Oe w)) • Set.range fun i => e (b i)`. Rewrite using `[← Set.range_smul]`. Both sides reduce to the same expression. Rewrite using `[h3, Submodule.span_smul_eq_of_isUnit _ _ u.isUnit, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem BasisAt.smul {c : NChoice D} {w : D.what₂.places.Pl} {j : ℕ}
     {e : D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j} (h : BasisAt c w j e) (u : (FractionRing (c.Oe w))ˣ) :
@@ -61,11 +61,11 @@ theorem BasisAt.smul {c : NChoice D} {w : D.what₂.places.Pl} {j : ℕ}
     rw [h3, Submodule.span_smul_eq_of_isUnit _ _ u.isUnit, h2]
 
 /- English proof (translation)
-Set `f : Tgt c w j →ₗ[c.Oe w] Tgt c w j` to `{ toFun := fun y => ((u⁻¹ : (FractionRing (c.Oe w))ˣ) : FractionRing (c.Oe w)) • y map_add' := fun _ _ => smul_add _ _ _ map_smul' := fun r y => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← algebraMap_smul (FractionRing (c.Oe w)) r y, ← algebraMap_smul (FractionRing (c.Oe w)) r, smul_smul, smul_smul, mul_comm] }`. Establish `h1 : ((((u⁻¹ : (FractionRing (c.Oe w))ˣ) : FractionRing (c.Oe w)) • e) '' latS w j) = f '' (e '' latS w j)`. Rewrite using `[Set.image_image]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, Submodule.span_image, h, ← Submodule.span_image, Set.image_image]`. Establish `h2 : (fun y => f ((u : FractionRing (c.Oe w)) • y)) = id`. Use function extensionality and compare the values at `y`. Use `show ((u⁻¹ : (FractionRing (c.Oe w))ˣ) : FractionRing (c.Oe w)) • ((u : FractionRing (c.Oe w)) • y) = y`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[h2, Set.image_id, Submodule.span_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LatAt.smul_inv {c : NChoice D} {w : D.what₂.places.Pl} {j : ℕ}
     {e : D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j} (u : (FractionRing (c.Oe w))ˣ)
@@ -103,7 +103,7 @@ def tupWithE {cf : CharFrame D} {c : NChoice D} (tp : TupTied D cf c) (E : ∀ w
   { tp with }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.nct.twOf_eq, h.nct.twSide_eq, h.nct.Q_eq, h.nct.psi_eq, h.nct.embedding_baseField_condition⟩, ⟨h.choice.twI_conj, h.choice.sd_place, h.choice.emb_side, h.choice.sd_conj, h.choice.one, h.choice.conj⟩, h.off, h.adm, h.psi, h.eMt_level⟩`.
+Supply the required witnesses or components.
 -/
 theorem choiceSide_withE {cf : CharFrame D} {mt : MtFam D} {exp : NExpTied D} {c : NChoice D} {tp : TupTied D cf c}
     (h : GlobalTheory.HeightCounting.ChoiceSide D cf mt exp c tp) (E : ∀ w j, D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j)
@@ -125,7 +125,7 @@ def pick (c : NChoice D)
   | w, k + 1 => if h : D.what₂.muAt w ≠ D.what₂.mu0 ∧ k < D.R.m then G w h.1 ⟨k, h.2⟩ else c.eMt w (k + 1)
 
 /- English proof (translation)
-Simplify using `only [pick, dif_pos (And.intro hw i.2)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pick_eq (c : NChoice D)
     (G : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∀ i : Fin D.R.m,
@@ -134,7 +134,7 @@ theorem pick_eq (c : NChoice D)
   simp only [pick, dif_pos (And.intro hw i.2)]
 
 /- English proof (translation)
-Introduce `w j hw h1 h2`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Use `h w hw ⟨k, by omega⟩` as an intermediate fact. Rewrite `this` using `[← pick_eq c G w hw ⟨k, by omega⟩]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pick_prop (c : NChoice D)
     (G : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∀ i : Fin D.R.m,
@@ -166,7 +166,7 @@ def ThetaAt (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (YS : NExpRealS R cG S
         (YS.eF (c.twI w) (i.1 + 1) (c.sd w) (by omega) (by omega)).symm ((1 : KB S (c.twI w) (c.sd w)) ⊗ₜ[S.Ks] f k)
 
 /- English proof (translation)
-Introduce `x hx n a f hf`. Rewrite using `[one_smul, LinearMap.smul_apply, map_smul, h x hx n a f hf, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ThetaAt.smul_inv {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {YS : NExpRealS R cG S} {c : NChoice D}
     {w : D.what₂.places.Pl} {i : Fin D.R.m} {e : D.what₂.MtL (D.what₂.muTw w) (i.1 + 1) →ₛₗ[c.embW w] Tgt c w (i.1 + 1)}
@@ -177,7 +177,7 @@ theorem ThetaAt.smul_inv {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {YS : NEx
     Units.val_one, one_smul]
 
 /- English proof (translation)
-Introduce `w i hw x hx n a f hf`. Use `h w i hw x hx n a f hf` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emtTheta_withE {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {YS : NExpRealS R cG S} {c : NChoice D}
     (E : ∀ w j, D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j)

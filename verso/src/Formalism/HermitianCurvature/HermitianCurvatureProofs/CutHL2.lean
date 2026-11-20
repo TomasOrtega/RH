@@ -76,9 +76,9 @@ def MinusZero : Prop :=
     ∀ Y : ℝ, Eq3 k r j hj z z' Φ Z γ τ Y
 
 /- English proof (translation)
-Introduce `k r j hj z z' E _ _ Dm Φ hz hz' hD hDs hR Z γ τ hZ hτ hγ hx Y`. Establish `hH : Hyp k r j hj z z' Dm Φ Z γ τ` using `⟨hz, hz', hD, hDs, hR, hZ, hτ, hγ, hx⟩`. Take `⟨c2, c4⟩` from `h1 k r j hj z z' E Dm Φ Z γ τ hH Y`. Break down `Nat.eq_zero_or_pos j with h0 | hpos` into its components or cases. Conclude with `⟨hPZ k r j hj z z' E Dm Φ Z γ τ h0 hH Y, c2, hMZ k r j hj z z' E Dm Φ Z γ τ h0 hH Y, c4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨hPP k r j hj z z' E Dm Φ Z γ τ hpos hH Y, c2, hMP k r j hj z z' E Dm Φ Z γ τ hpos hH Y, c4⟩`.
+Supply the required witnesses or components.
 -/
 theorem headLetter_of (h1 : Comp1) (hPP : PlusPos) (hPZ : PlusZero) (hMP : MinusPos) (hMZ : MinusZero) :
     LevelPointCoordinates.HeadLetter := by
@@ -167,7 +167,7 @@ def MinusPosOfParts : Prop := NormalFormsAtBasePoint → LeadingMinorsAtBasePoin
 def MinusZeroOfParts : Prop := NormalFormsAtBasePoint → LeadingMinorsAtBasePoint → ConjugateTorusDirectionAtBasePoint → MinusZero
 
 /- English proof (translation)
-The claim follows from `headLetter_of (h1 hNf) (hPP hNf hDm hL hT hFX) (hPZ hNf hDm hT) (hMP hNf hDm hSL hST hFV) (hMZ hNf hDm hST)`.
+A detailed English derivation is pending.
 -/
 theorem headLetter_of_leaves (hNf : NormalFormsAtBasePoint) (hDm : LeadingMinorsAtBasePoint) (hL : LeftActionRuleAtBasePoint) (hT : TorusDirectionAtBasePoint) (hSL : ConjugateActionRuleAtBasePoint)
     (hST : ConjugateTorusDirectionAtBasePoint) (hFX : FrozenX) (hFV : FrozenV) (h1 : Comp1OfParts) (hPP : PlusPosOfParts)

@@ -11,14 +11,14 @@ section Regrading
 variable {σ R M M' : Type*} [CommRing R] [AddCommMonoid M] [AddCommMonoid M']
 
 /- English proof (translation)
-Simplify using `[Finsupp.weight_apply, map_finsuppSum, map_nsmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_comp_addMonoidHom (φ : M →+ M') (w : σ → M) (d : σ →₀ ℕ) :
     Finsupp.weight (fun v => φ (w v)) d = φ (Finsupp.weight w d) := by
   simp [Finsupp.weight_apply, map_finsuppSum, map_nsmul]
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent, weight_comp_addMonoidHom, hφ.eq_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem weightedHomogeneousComponent_comp_addMonoidHom (φ : M →+ M') (hφ : Function.Injective φ)
     (w : σ → M) (b : M) (f : MvPolynomial σ R) :
@@ -40,7 +40,7 @@ def lexRelabel (e : K ≃ Fin (Fintype.card K)) : (K → ℕ) →+ Lex (Fin (Fin
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Introduce `i` and use `⟨fun k => ofLex i (e k), by change toLex (fun j => ofLex i (e (e.symm j))) = i simp only [Equiv.apply_symm_apply] rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lexRelabel_surjective (e : K ≃ Fin (Fintype.card K)) : Function.Surjective (lexRelabel e) :=
   fun i => ⟨fun k => ofLex i (e k), by
@@ -49,7 +49,7 @@ theorem lexRelabel_surjective (e : K ≃ Fin (Fintype.card K)) : Function.Surjec
     rfl⟩
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h' : (fun j => a (e.symm j)) = fun j => b (e.symm j)` using `toLex.injective h`. Use function extensionality and compare the values at `k`. Simplify using `using congrFun h' (e k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lexRelabel_injective (e : K ≃ Fin (Fintype.card K)) : Function.Injective (lexRelabel e) := by
   intro a b h
@@ -60,9 +60,9 @@ theorem lexRelabel_injective (e : K ≃ Fin (Fintype.card K)) : Function.Injecti
 variable [DecidableEq K] [DecidableEq (Lex (Fin (Fintype.card K) → ℕ))]
 
 /- English proof (translation)
-Use `letI := weightedGradedAlgebra R (fun v => lexRelabel e (blockWeight ι v))`. Introduce `i r hr`. Express the relevant statement in the definitionally equal form `((weightedDecomposition R (fun v => lexRelabel e (blockWeight ι v))).decompose' r i : MRing ι R) ∈ I`. Rewrite using `[weightedDecomposition.decompose'_apply]`. Take `⟨b, rfl⟩` from `lexRelabel_surjective e i`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[weightedHomogeneousComponent_comp_addMonoidHom _ (lexRelabel_injective e)]`. Conclude with `hI r hr b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_lex_of_isMultiHomogIdeal (e : K ≃ Fin (Fintype.card K))
     {I : Ideal (MRing ι R)} (hI : IsMultiHomogIdeal I) :
@@ -78,7 +78,7 @@ theorem isHomogeneous_lex_of_isMultiHomogIdeal (e : K ≃ Fin (Fintype.card K))
   exact hI r hr b
 
 /- English proof (translation)
-Use `letI := weightedGradedAlgebra R (fun v => lexRelabel e (blockWeight ι v))`. Introduce `f hf b`. Rewrite using `[← weightedHomogeneousComponent_comp_addMonoidHom _ (lexRelabel_injective e)]`. Conclude with `weightedHomogeneousComponent_mem_of_mem R _ hI hf _`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_of_isHomogeneous_lex (e : K ≃ Fin (Fintype.card K))
     {I : Ideal (MRing ι R)}
@@ -93,11 +93,11 @@ theorem isMultiHomogIdeal_of_isHomogeneous_lex (e : K ≃ Fin (Fintype.card K))
 end Lex
 
 /- English proof (translation)
-Introduce `R _ K _ _ ι J W hJ hW`. Set `e : K ≃ Fin (Fintype.card K)` to `Fintype.equivFin K`. Use `letI : DecidableEq (Lex (Fin (Fintype.card K) → ℕ)) := LinearOrder.toDecidableEq`. Use `letI := weightedGradedAlgebra R (fun v => lexRelabel e (blockWeight ι v))`. Establish `hJh : J.IsHomogeneous (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v)))` using `isHomogeneous_lex_of_isMultiHomogIdeal e hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hcore : (W.homogeneousCore (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v)))).toIdeal.IsPrime` using `hWp.homogeneousCore`. Establish `hJle : J ≤ (W.homogeneousCore (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v)))).toIdeal`. Rewrite using `[← hJh.toIdeal_homogeneousCore_eq_self]`. Conclude with `Ideal.homogeneousCore_mono (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v))) hW.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (W.homogeneousCore (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v)))).toIdeal ≤ W` using `Ideal.toIdeal_homogeneousCore_le (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v))) W`. Establish `heq : (W.homogeneousCore (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v)))).toIdeal = W` using `le_antisymm hle (hW.2 ⟨hcore, hJle⟩ hle)`. Apply `isMultiHomogIdeal_of_isHomogeneous_lex e` to reduce the goal to its premises. Rewrite using `[← heq]`. Conclude with `(W.homogeneousCore (weightedHomogeneousSubmodule R (fun v => lexRelabel e (blockWeight ι v)))).isHomogeneous`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MinimalPrimeMultiHomog.proof : MinimalPrimeMultiHomog.Statement := by
   intro R _ K _ _ ι J W hJ hW

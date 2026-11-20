@@ -21,14 +21,14 @@ Both sides reduce to the same expression.
 private theorem resK_apply (σ : G F Ω) (x : K) : resK K σ x = σ (algebraMap K Ω x) := rfl
 
 /- English proof (translation)
-Conclude with `⟨AlgEquiv.ofRingEquiv (f := (σ : Ω ≃+* Ω)) h, by ext x; rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem lift_of_fix (σ : G F Ω) (h : ∀ x : K, σ (algebraMap K Ω x) = algebraMap K Ω x) :
     ∃ τ : G K Ω, (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω) τ = σ := by
   exact ⟨AlgEquiv.ofRingEquiv (f := (σ : Ω ≃+* Ω)) h, by ext x; rfl⟩
 
 /- English proof (translation)
-Apply `lift_of_fix` to reduce the goal to its premises. Introduce `x`. Establish `e` using `congrArg (fun f => f x) h`. Simplify using `only [resK_apply] at e`. Rewrite using `[AlgEquiv.mul_apply, ← e]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -42,9 +42,9 @@ private theorem lift_of_res {σ τ : G F Ω} (h : resK K σ = resK K τ) :
   simp
 
 /- English proof (translation)
-Take `⟨a, b, hne, hab⟩` from `Finite.exists_ne_map_eq_of_infinite (fun m : ℕ => resK K (s ^ m))`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Take `⟨u, hu⟩` from `lift_of_res (K := K) hab`. Use `⟨b - a, by omega, u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, inv_mul_eq_iff_eq_mul, ← pow_add, Nat.add_sub_cancel' hlt.le]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `lift_of_res (K := K) hab.symm`. Use `⟨a - b, by omega, u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, inv_mul_eq_iff_eq_mul, ← pow_add, Nat.add_sub_cancel' hlt.le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_pow_lift [Finite (K →ₐ[F] Ω)] (s : G F Ω) :
     ∃ m : ℕ, 1 ≤ m ∧ ∃ u : G K Ω,
@@ -66,14 +66,14 @@ variable {F Ω K : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [Fi
   [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isFrob_descend {A : ValuationSubring Ω} {q : ℕ} {u : G K Ω}
     (h : IsFrob A q ((AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω) u)) : IsFrob A q u :=
   ⟨h.1, h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ine_descend {A : ValuationSubring Ω} {u : G K Ω}
     (h : (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω) u ∈ Ine (F := F) A) :
@@ -81,23 +81,21 @@ private theorem ine_descend {A : ValuationSubring Ω} {u : G K Ω}
   ⟨h.1, h.2⟩
 
 /- English proof (translation)
-Take `⟨hd, hf⟩` from `h`. Establish `hint : ∀ τ : G F Ω, τ ∈ ValuationSubring.decompositionSubgroup F A → ∀ y : Ω, A.valuation y ≤ 1 → A.valuation (τ y) ≤ 1`. Introduce `τ hτ y hy`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hc`. Establish `hprod : ∀ z : Ω, z ≠ 0 → A.valuation z * A.valuation z⁻¹ = 1` using `fun z hz => by`. Rewrite using `[← map_mul, mul_inv_cancel₀ hz, map_one]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : A.valuation (τ y⁻¹) < 1`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Establish `e` using `hprod (τ y) (by simpa using hy0)`. Rewrite `e` using `[← map_inv₀ τ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd e (ne_of_gt (one_lt_mul_of_lt_of_le hc h'))`. Rewrite `h1` using `[valuation_apply_lt_one_iff (A := A) hτ]`. Establish `e` using `hprod y hy0`. Conclude with `absurd e (ne_of_lt (lt_of_le_of_lt (mul_le_of_le_one_left' hy) h1))`. Use `⟨pow_mem hd k, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `set y := (σ ^ k) x with hydef`. Establish `hy : A.valuation y ≤ 1` using `hint _ (pow_mem hd k) x hx`. Establish `hz : A.valuation (x ^ q ^ k) ≤ 1`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_le_one' hx _`. Establish `e : (σ ^ (k + 1)) x - x ^ q ^ (k + 1) = (σ y - y ^ q) + (y ^ q - (x ^ q ^ k) ^ q)`. Rewrite using `[show σ ^ (k + 1) = σ * σ ^ k from pow_succ' σ k, show q ^ (k + 1) = q ^ k * q from pow_succ q k, pow_mul, AlgEquiv.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt (hf y hy) ?_)` and prove the remaining obligations. Rewrite using `[← geom_sum₂_mul, map_mul]`. Establish `hs : A.valuation (∑ i ∈ Finset.range q, y ^ i * (x ^ q ^ k) ^ (q - 1 - i)) ≤ 1`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `i _`.
-
-Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `mul_le_one' (pow_le_one' hy _) (pow_le_one' hz _)`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hs) (ih x hx)`.
+A detailed English derivation is pending.
 -/
 private theorem isFrob_pow {A : ValuationSubring Ω} {q : ℕ} {σ : G F Ω} (h : IsFrob A q σ) (k : ℕ) :
     IsFrob A (q ^ k) (σ ^ k) := by
@@ -148,11 +146,11 @@ private theorem isFrob_pow {A : ValuationSubring Ω} {q : ℕ} {σ : G F Ω} (h 
     exact lt_of_le_of_lt (mul_le_of_le_one_left' hs) (ih x hx)
 
 /- English proof (translation)
-Set `c : (K →ₐ[F] Ω) → GL (Fin n) (Qbar l)` to `fun φ => if hφ : ∃ g ∈ Ine (F := F) A, resK K g = φ then r (Classical.choose hφ) else 1`. Use `((Set.finite_univ.prod h).image (fun p : (K →ₐ[F] Ω) × GL (Fin n) (Qbar l) => c p.1 * p.2)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`. Establish `hex : ∃ g ∈ Ine (F` using `F) A, resK K g = resK K σ := ⟨σ, hσ, rfl⟩`. Take `⟨hg, hgres⟩` from `Classical.choose_spec hex`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `lift_of_res (K := K) hgres`. Establish `huI : u ∈ Ine (F` using `K) A := ine_descend (by rw [hu]; exact mul_mem (inv_mem hg) hσ)`. Use `⟨(resK K σ, r (AlgEquiv.restrictScalarsHom F u)), ⟨Set.mem_univ _, u, huI, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show c (resK K σ) * r ((AlgEquiv.restrictScalarsHom F) u) = r σ`. Simplify using `only [c, dif_pos hex]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, map_mul, map_inv, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 private theorem ine_finite [Finite (K →ₐ[F] Ω)] {l : ℕ} [Fact l.Prime] {n : ℕ}
     (r : G F Ω →* GL (Fin n) (Qbar l)) (A : ValuationSubring Ω)
@@ -176,7 +174,7 @@ private theorem ine_finite [Finite (K →ₐ[F] Ω)] {l : ℕ} [Fact l.Prime] {n
 end
 
 /- English proof (translation)
-Rewrite `h` using `[← Matrix.mem_spectrum_iff_isRoot_charpoly, spectrum.map_pow_of_pos M hN]`. Take `⟨a, ha, rfl⟩` from `h`. Conclude with `⟨a, Matrix.mem_spectrum_iff_isRoot_charpoly.1 ha, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem charpoly_root_pow {k : Type} [Field k] [IsAlgClosed k] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) k) {N : ℕ} (hN : 0 < N) {α : k}
@@ -186,9 +184,9 @@ private theorem charpoly_root_pow {k : Type} [Field k] [IsAlgClosed k] {n : ℕ}
   exact ⟨a, Matrix.mem_spectrum_iff_isRoot_charpoly.1 ha, rfl⟩
 
 /- English proof (translation)
-Introduce `α β hα hβ k hk heq`. Rewrite `hα`, `hβ` using `[Units.val_pow_eq_pow_val]`. Take `⟨a, ha, rfl⟩` from `charpoly_root_pow _ hN hα`. Take `⟨b, hb, rfl⟩` from `charpoly_root_pow _ hN hβ`. Apply `h a b ha hb (N * k) (Nat.mul_pos hN hk)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pow_mul, pow_mul, mul_pow]`. Move the coercions through the operations in `at heq`. Conclude with `heq`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem noLink_pow {l : ℕ} [Fact l.Prime] {n : ℕ} {x : GL (Fin n) (Qbar l)} {Q : ℕ}
     (h : NoLink x Q) {N : ℕ} (hN : 0 < N) : NoLink (x ^ N) (Q ^ N) := by
@@ -202,19 +200,15 @@ private theorem noLink_pow {l : ℕ} [Fact l.Prime] {n : ℕ} {x : GL (Fin n) (Q
   exact heq
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r K _ _ _ _ _ hU`. Introduce `w hl A hA hfin`. Use `haveI : Finite (K →ₐ[F] Ω) := inferInstance`. Use `set v := HeightOneSpectrum.under (𝓞 F) w with hvdef`. Establish `hAv : IsPlaceOver A v` using `GlobalTheory.AboveL.SatBC.isPlaceOver_under hA`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlv : (l : 𝓞 F) ∉ v.asIdeal`. Introduce `hm`. Apply `hl` to reduce the goal to its premises. Establish `hw : algebraMap (𝓞 F) (𝓞 K) (l : 𝓞 F) ∈ w.asIdeal` using `hm`. Simplify using `using hw`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, j, hj, hfrob, hnl⟩` from `hU v hlv A hAv (ine_finite r A hfin)`. Take `⟨m, hm, u, hu⟩` from `exists_pow_lift (K := K) s`. Use `set f := w.asIdeal.inertiaDeg (𝓞 F) with hfdef`. Establish `hnorm : normV w = normV v ^ f` using `GlobalTheory.AboveL.SatBC.normV_under_pow F K w`. Establish `hf : 0 < f`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos f with h0 | h0` into its components or cases. It suffices to derive a contradiction. Rewrite `hnorm` using `[h0, pow_zero]`. Unfold `normV at hnorm`. Use `haveI := w.isPrime`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Take `⟨hs, _⟩` from `Nat.card_eq_one_iff_unique.1 hnorm`. Conclude with `not_subsingleton _ hs`. Conclude with `h0`. Establish `e : normV w ^ (j * m) = (normV v ^ j) ^ (m * f)`. Rewrite using `[hnorm, ← pow_mul, ← pow_mul]`.
-
-Put the polynomial expressions in normal form. Use `⟨u ^ f, j * m, Nat.mul_pos hj hm, ?_, ?_⟩` and prove the remaining obligations. Apply `isFrob_descend (F := F)` to reduce the goal to its premises. Rewrite using `[map_pow, hu, ← pow_mul, e]`. Conclude with `isFrob_pow hfrob (m * f)`.
-
-Rewrite using `[MonoidHom.comp_apply, map_pow, hu, ← pow_mul, e, map_pow r]`. Conclude with `noLink_pow hnl (Nat.mul_pos hm hf)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.L.wup :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω], Unlinked r → Unlinked (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) := by

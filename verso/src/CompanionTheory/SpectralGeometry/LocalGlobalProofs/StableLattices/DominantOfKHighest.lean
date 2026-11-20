@@ -18,14 +18,14 @@ open PI.UpqRep (vNormSq rhoC nsq)
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `a b c d _ _` and use `hE a b c d`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma kRel_of_glRel {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E) : CompanionTheory.D.DSIC.KRel ε E :=
   fun a b c d _ _ => hE a b c d
 
 /- English proof (translation)
-Introduce `a b he x y`. Rewrite using `[hU a b x y]`. Simplify using `[Formalism.REAL.sgn, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma kUnit_of_isUnitary {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ V} (hU : IsUnitary ε E) : CompanionTheory.D.DSIC.KUnit ε E := by
@@ -34,9 +34,9 @@ lemma kUnit_of_isUnitary {V : Type} [NormedAddCommGroup V] [InnerProductSpace �
   simp [Formalism.REAL.sgn, he]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.KWeightMajor.norm_identity hF hU he hh.1`. Rewrite `h` using `[hh.2 a b hab he, norm_zero]`. Establish `hp : 0 < ‖u‖ ^ 2` using `by have := norm_pos_iff.2 hu; positivity`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: 0 < (μ b - μ a) * ‖u‖ ^ 2` using `mul_pos (by linarith) hp`. Use `sq_nonneg ‖E b a u‖` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma dominant_of_kHighest {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ V} (hF : CompanionTheory.D.DSIC.KRel ε E) (hU : CompanionTheory.D.DSIC.KUnit ε E)
@@ -52,7 +52,7 @@ lemma dominant_of_kHighest {V : Type} [NormedAddCommGroup V] [InnerProductSpace 
   nlinarith
 
 /- English proof (translation)
-Use `⟨((univ.filter fun b => a < b ∧ ε b = ε a).card : ℤ) - ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℤ), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, rhoC, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma two_rhoC_int (ε : Fin n → Bool) (a : Fin n) : ∃ m : ℤ, ((2 : ℝ) • rhoC ε) a = m := by
   refine ⟨((univ.filter fun b => a < b ∧ ε b = ε a).card : ℤ) - ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℤ), ?_⟩
@@ -61,11 +61,11 @@ lemma two_rhoC_int (ε : Fin n → Bool) (a : Fin n) : ∃ m : ℤ, ((2 : ℝ) �
   ring
 
 /- English proof (translation)
-Use `choose m hm using hμ`. Use `choose r hr using two_rhoC_int ε`. Use `⟨∑ a, ((m a + r a) ^ 2).toNat, ?_⟩` and prove the remaining obligations. Establish `h : ∀ a, (((m a + r a) ^ 2).toNat : ℝ) = (μ a + ((2 : ℝ) • rhoC ε) a) ^ 2`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (((m a + r a) ^ 2).toNat : ℤ) = (m a + r a) ^ 2` using `Int.toNat_of_nonneg (sq_nonneg _)`. Establish `h1 : (((m a + r a) ^ 2).toNat : ℝ) = (((m a + r a) ^ 2 : ℤ) : ℝ)` using `by exact_mod_cast h0`. Rewrite using `[h1, hm a, hr a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.cast_sum]`. Simplify using `only [vNormSq, PI.UpqRep.nsq, PI.UpqRep.dot, Pi.add_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [h a, sq]`.
+A detailed English derivation is pending.
 -/
 lemma vNormSq_nat (ε : Fin n → Bool) {μ : Fin n → ℝ} (hμ : ∀ a, ∃ m : ℤ, μ a = m) :
     ∃ k : ℕ, vNormSq ε μ = k := by
@@ -84,13 +84,13 @@ lemma vNormSq_nat (ε : Fin n → Bool) {μ : Fin n → ℝ} (hμ : ∀ a, ∃ m
   exact Finset.sum_congr rfl fun a _ => by rw [h a, sq]
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hE hV hU hfin hint`. Establish `hF : CompanionTheory.D.DSIC.KRel ε E` using `kRel_of_glRel hE`. Establish `hK : CompanionTheory.D.DSIC.KUnit ε E` using `kUnit_of_isUnitary hU`. Establish `hintK : ∀ (μ : Fin n → ℝ) (x : V), x ≠ 0 → KHighest ε E μ x → ∀ a, ∃ m : ℤ, μ a = m` using `fun μ x hx hh => hint μ x hx hh.1`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hfd, hS, hxS⟩` from `hfin x`. Take `⟨y, -, hy0, ν, hy⟩` from `Formalism.REAL.highestWeightExists_holds V n ε E S hfd hF hK hS (fun h => hx (by simpa [h] using hxS))`. Establish `hex : ∃ k : ℕ, ∃ (μ : Fin n → ℝ) (w : V), w ≠ 0 ∧ KHighest ε E μ w ∧ vNormSq ε μ = k`. Take `⟨k, hk⟩` from `vNormSq_nat ε (hintK ν y hy0 hy)`. Conclude with `⟨k, ν, y, hy0, hy, hk⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨γ, u, hu, hγ, hk⟩` from `Nat.find_spec hex`. Use `⟨γ, u, hu, hγ, ?_, hintK γ u hu hγ, fun a b hab he => dominant_of_kHighest hF hK hu hγ hab he⟩` and prove the remaining obligations. Introduce `μ w hw hμ`. Take `⟨k, hk'⟩` from `vNormSq_nat ε (hintK μ w hw hμ)`. Rewrite using `[hk, hk']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.find_min' hex ⟨μ, w, hw, hμ, hk'⟩` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem lktExists : LKTExists := by
   classical

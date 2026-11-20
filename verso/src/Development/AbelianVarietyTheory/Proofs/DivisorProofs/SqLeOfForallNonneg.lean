@@ -8,11 +8,11 @@ open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Glo
 namespace GlobalTheory.Poinc.Bdd
 
 /- English proof (translation)
-Establish `hA : 0 ≤ A` using `by simpa using h 1 0`. Establish `hD : 0 ≤ D` using `by simpa using h 0 1`. Break down `hA.eq_or_lt with hA0 | hA0` into its components or cases. Substitute `hA0` using the available equality. Establish `h2` using `h (-B * (D + 1)) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `: B = 0`. Assume the negation of the conclusion as `hB`. Establish `hB2 : 1 ≤ B * B` using `by nlinarith [mul_self_pos.2 hB]`. Use the polynomial consequences of the given equalities and inequalities. Substitute `this` using the available equality.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `h1` using `h B (-A)`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_le_of_forall_nonneg {A B D : ℤ} (h : ∀ s t : ℤ, 0 ≤ s * s * A + 2 * (s * t) * B + t * t * D) :
     B * B ≤ A * D := by
@@ -30,29 +30,27 @@ theorem sq_le_of_forall_nonneg {A B D : ℤ} (h : ∀ s t : ℤ, 0 ≤ s * s * A
     nlinarith
 
 /- English proof (translation)
-Use `set C := ∑ i ∈ Finset.range (d + 1), |p i| with hCdef`. Establish `hC1 : 1 ≤ C`. Use `Finset.single_le_sum (f := fun i => |p i|) (fun i _ => abs_nonneg (p i)) (Finset.self_mem_range_succ d)` as an intermediate fact. Simplify `this` using `[hd]`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hlt`. Establish `hF0 : 0 < F 0`. Break down `(h0 0).eq_or_lt with h | h` into its components or cases. Use `hlc 0` as an intermediate fact. Rewrite `this`, `hlt` using `[← h]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : F 1 * F 1 ≤ 0` using `by simpa using this`. Establish `: F 1 = 0` using `by nlinarith [mul_self_nonneg (F 1)]`. Simplify using `[this] at hlt`. Conclude with `h`. Establish `hF1 : C * F 0 < F 1` using `hlt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `key : ∀ k, 0 < F k ∧ F 1 * F k ≤ F 0 * F (k + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨hF0, by rw [mul_comm]⟩`. Consider the case `succ k ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hk, hk'⟩` from `ih`. Establish `hpos : 0 < F (k + 1)`. Establish `: 0 < F 1 * F k` using `mul_pos (by nlinarith) hk`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨hpos, ?_⟩` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hlc k`. Establish `h3 : F 1 * F k * F (k + 1) ≤ F 0 * F (k + 1) * F (k + 1)` using `mul_le_mul_of_nonneg_right hk' hpos.le`. Establish `h4 : F k * (F 1 * F (k + 1)) ≤ F k * (F 0 * F (k + 2))` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h4 hk`. Establish `inc : ∀ k, C * F k < F (k + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨hk, hk'⟩` from `key k`. Establish `: F 0 * (C * F k) < F 0 * F (k + 1)` using `by nlinarith`. Conclude with `lt_of_mul_lt_mul_left this hF0.le`. Establish `mono : Monotone F` using `monotone_nat_of_le_succ fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `inc k` as an intermediate fact. Use `(key k).1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Consider the cases of `d with`. Consider the case `zero`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hd] at hrec`. Conclude with `hF0.ne' hrec`. Consider the case `succ e`. Rewrite `hrec` using `[Finset.sum_range_succ, hd, one_mul]`. Rewrite `hCdef` using `[Finset.sum_range_succ, hd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : -(∑ i ∈ Finset.range (e + 1), p i * F i) ≤ (∑ i ∈ Finset.range (e + 1), |p i|) * F e`. Rewrite using `[← Finset.sum_neg_distrib, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ e` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Establish `h1 : -(p i * F i) ≤ |p i| * F i`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `neg_abs_le (p i)` as an intermediate fact. Use polynomial arithmetic with `[h0 i]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left (mono hi') (abs_nonneg _))`. Establish `he` using `inc e`. Establish `hpe` using `(key e).1`.
-
-Establish `: F (e + 1) = -(∑ i ∈ Finset.range (e + 1), p i * F i)` using `by linarith`. Rewrite `he` using `[this]`. Rewrite `he` using `[hCdef]`. Simplify using `only [abs_one] at he`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem seq_le (F : ℕ → ℤ) (h0 : ∀ k, 0 ≤ F k) (hlc : ∀ k, F (k + 1) * F (k + 1) ≤ F k * F (k + 2)) (d : ℕ)
     (p : ℕ → ℤ) (hd : p d = 1) (hrec : ∑ i ∈ Finset.range (d + 1), p i * F i = 0) :
@@ -119,23 +117,21 @@ theorem seq_le (F : ℕ → ℤ) (h0 : ∀ k, 0 ≤ F k) (hlc : ∀ k, F (k + 1)
     nlinarith
 
 /- English proof (translation)
-Introduce `c`. Take `⟨P, hPm, hP⟩` from `hint (bar c * c)`. Use `⟨∑ i ∈ Finset.range (P.natDegree + 1), |P.coeff i|, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ β hβ hpsd x`. Establish `hpow : ∀ k, bar (c ^ k) = bar c ^ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hone`. Consider the case `succ k ih => rw [pow_succ, hmul, ih, pow_succ]`. Establish `hcs : ∀ u v : X, β u v * β u v ≤ β u u * β v v`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `u v`. Use `sq_le_of_forall_nonneg fun s t => ?_` and prove the remaining obligations. Use `hpsd (s • u + t • v)` as an intermediate fact. Simplify using `only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hβ.1 v u] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hF : ∀ k, β (c ^ k • x) (c ^ k • x) = β x ((bar c * c) ^ k • x)`. Introduce `k`. Rewrite using `[hβ.2, smul_smul, hpow, mul_pow]`. Use `set F : ℕ → ℤ := fun k => β (c ^ k • x) (c ^ k • x) with hFdef`. Establish `hlc : ∀ k, F (k + 1) * F (k + 1) ≤ F k * F (k + 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `set y := c ^ k • x`. Establish `e1 : F (k + 1) = β y ((bar c * c) • y)`. Simplify using `only [hFdef, y, pow_succ', mul_smul]`. Rewrite using `[hβ.2, smul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : F (k + 2) = β ((bar c * c) • y) ((bar c * c) • y)`. Establish `hw : bar (c * c) * (c * c) = bar (bar c * c) * (bar c * c)` using `by rw [hmul, hmul, hinv]; ring`. Use `show β (c ^ (k + 2) • x) (c ^ (k + 2) • x) = β ((bar c * c) • (c ^ k • x)) ((bar c * c) • (c ^ k • x))`. Rewrite using `[show c ^ (k + 2) = (c * c) * c ^ k by ring, mul_smul, hβ.2, hβ.2 (bar c * c), smul_smul, smul_smul, hw]`. Simplify using `only [mul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Conclude with `hcs _ _`. Establish `hrec : ∑ i ∈ Finset.range (P.natDegree + 1), P.coeff i * F i = 0`. Establish `h0 : β x ((Polynomial.aeval (bar c * c) P) • x) = 0` using `by rw [Polynomial.aeval_def, hP, zero_smul, map_zero]`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range, Finset.sum_smul, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hFdef]`. Simplify using `only`. Rewrite using `[hF, smul_assoc, map_zsmul, smul_eq_mul]`.
-
-Use `seq_le F (fun k => hpsd _) hlc P.natDegree P.coeff hPm.coeff_natDegree hrec` as an intermediate fact. Simplify `this` using `[hFdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bddAct_of_isIntegral {O : Type} [CommRing O] (bar : O → O) (hmul : ∀ a b, bar (a * b) = bar a * bar b)
     (hone : bar 1 = 1) (hinv : ∀ a, bar (bar a) = a) (hint : ∀ a : O, IsIntegral ℤ a) : BddAct bar := by
@@ -189,7 +185,7 @@ namespace GlobalTheory.Poinc
 open NumberField
 
 /- English proof (translation)
-Use `⟨Bdd.bddAct_of_isIntegral id (fun _ _ => rfl) rfl (fun _ => rfl) fun a => Algebra.IsIntegral.isIntegral a, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ H`. Use `Bdd.bddAct_of_isIntegral H.bar (fun a b => map_mul _ a b) (map_one _) (fun a => ?_) fun a => Algebra.IsIntegral.isIntegral a` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem bddAct_int_and_cm : BddAct (id : ℤ → ℤ) ∧ ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), BddAct H.bar := by

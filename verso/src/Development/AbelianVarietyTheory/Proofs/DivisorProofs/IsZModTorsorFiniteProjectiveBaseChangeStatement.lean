@@ -5,7 +5,7 @@ open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LocAcyc.isZModTorsor_baseChange) | (exact GlobalTheory.LocAcyc.isZModTorsor_baseChange) | (intros; apply GlobalTheory.LocAcyc.isZModTorsor_baseChange <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isZModTorsorFiniteProjective_baseChange : ∀ (B B' D : Type) [CommRing B] [CommRing B'] [CommRing D] [Algebra B B'] [Algebra B D]
     (q : ℕ), 0 < q → ∀ (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D)),

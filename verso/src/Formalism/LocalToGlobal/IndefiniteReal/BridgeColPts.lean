@@ -20,7 +20,7 @@ def colJ : Subgroup (Col.UAd hc n) := (Col.JH hc n ST SG H).map (Col.ToUnitaryAd
 abbrev principalCongruenceSubgroup : Subgroup (Col.UAd hc n) := (Col.K1 hc n ST SG).subgroupOf (Col.UAd hc n)
 
 /- English proof (translation)
-The claim follows from `Subgroup.inclusion_injective _`.
+A detailed English derivation is pending.
 -/
 theorem J0toU_injective : Function.Injective (Col.ToUnitaryAdelic hc n ST) := Subgroup.inclusion_injective _
 
@@ -28,7 +28,7 @@ def colJEquiv : Col.JH hc n ST SG H ≃* colJ hc n ST SG H :=
   (Col.JH hc n ST SG H).equivMapOfInjective _ (J0toU_injective hc n ST)
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.coe_equivMapOfInjective_apply (Col.JH hc n ST SG H) (Col.ToUnitaryAdelic hc n ST) (J0toU_injective hc n ST)]`. Conclude with `congrArg Subtype.val ((colJEquiv hc n ST SG H).apply_symm_apply k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colJEquiv_symm_coe (k : colJ hc n ST SG H) :
     Col.ToUnitaryAdelic hc n ST (((colJEquiv hc n ST SG H).symm k : Col.JH hc n ST SG H) : Col.J0 hc n ST) = (k : Col.UAd hc n) := by
@@ -36,9 +36,9 @@ theorem colJEquiv_symm_coe (k : colJ hc n ST SG H) :
   exact congrArg Subtype.val ((colJEquiv hc n ST SG H).apply_symm_apply k)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨m', hm', he⟩` from `Subgroup.mem_subgroupOf.1 h`. Establish `e : m' = m` using `Subtype.ext he`. Rewrite using `[← e]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MonoidHom.mem_ker.1 hm'`. Introduce `h`. Conclude with `Col.mem_principal_congruence_of hc n ST SG h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_principal_congruence_iff (m : Col.J0 hc n ST) : Col.ToUnitaryAdelic hc n ST m ∈ principalCongruenceSubgroup hc n ST SG ↔ Col.redG hc n ST SG m = 1 := by
   constructor
@@ -51,7 +51,7 @@ theorem mem_principal_congruence_iff (m : Col.J0 hc n ST) : Col.ToUnitaryAdelic 
     exact Col.mem_principal_congruence_of hc n ST SG h
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨m, hm, hma⟩` from `Subgroup.mem_subgroupOf.1 ha`. Use `Subgroup.mem_map.2 ⟨m, Subgroup.mem_comap.2 ?_, Subtype.ext hma⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker.1 hm]`. Conclude with `H.one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principal_congruence_le_level_subgroup : principalCongruenceSubgroup hc n ST SG ≤ colJ hc n ST SG H := by
   intro a ha
@@ -84,9 +84,9 @@ theorem colGl_apply (γ : Col.URat hc n) (k : colJ hc n ST SG H) :
     colGl o (γ, k) = o.eG (Col.ratHom hc n γ, Col.redH hc n ST SG H ((colJEquiv hc n ST SG H).symm k)) := rfl
 
 /- English proof (translation)
-Introduce `g`. Take `⟨⟨u, h⟩, rfl⟩` from `o.eG.surjective g`. Take `⟨γ, hγ⟩` from `(Col.ratHom_bijective hc n).2 u`. Take `⟨k, hk⟩` from `hR h`. Use `⟨(γ, colJEquiv hc n ST SG H k), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[colGl_apply, MulEquiv.symm_apply_apply, hγ, hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem colGl_surj (hR : Col.RedHSurj hc n ST SG H) : Function.Surjective (colGl (hc := hc) o) := by
   intro g
@@ -97,7 +97,7 @@ theorem colGl_surj (hR : Col.RedHSurj hc n ST SG H) : Function.Surjective (colGl
   rw [colGl_apply, MulEquiv.symm_apply_apply, hγ, hk]
 
 /- English proof (translation)
-Rewrite using `[colGl_apply, MulEquiv.map_eq_one_iff, Prod.mk_eq_one, (injective_iff_map_eq_one' _).1 (Col.ratHom_bijective hc n).1, ← colJEquiv_symm_coe, mem_principal_congruence_iff]`. Conclude with `and_congr Iff.rfl Subtype.ext_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colGl_ker (γ : Col.URat hc n) (k : colJ hc n ST SG H) :
     colGl o (γ, k) = 1 ↔ γ = 1 ∧ (k : Col.UAd hc n) ∈ principalCongruenceSubgroup hc n ST SG := by
@@ -106,7 +106,7 @@ theorem colGl_ker (γ : Col.URat hc n) (k : colJ hc n ST SG H) :
   exact and_congr Iff.rfl Subtype.ext_iff
 
 /- English proof (translation)
-Introduce `d`. Take `⟨d', rfl⟩` from `o.eD.surjective d`. Take `⟨p, rfl⟩` from `hS d'`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective p`. Conclude with `⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem colQ_surj (hS : Col.DecoPtSurj hc n ST SG) : Function.Surjective (colQ (hc := hc) o) := by
   intro d
@@ -116,9 +116,9 @@ theorem colQ_surj (hS : Col.DecoPtSurj hc n ST SG) : Function.Surjective (colQ (
   exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Unfold `colQ`. Rewrite using `[o.eD.injective.eq_iff, (Col.decoPt_injective' hc n ST SG).eq_iff, QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, by rw [mul_inv_cancel_left]⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨k1, hk1, rfl⟩`. Rewrite using `[inv_mul_cancel_left]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem colQ_fib (x x' : Col.UAd hc n) :
     colQ o x = colQ o x' ↔ ∃ k1 ∈ principalCongruenceSubgroup hc n ST SG, x' = x * k1 := by
@@ -131,9 +131,9 @@ theorem colQ_fib (x x' : Col.UAd hc n) :
     rwa [inv_mul_cancel_left]
 
 /- English proof (translation)
-Establish `e1 : Col.ratIn hc n γ * x * (k : Col.UAd hc n)⁻¹ = Col.rawSm hc n ST γ (((colJEquiv hc n ST SG H).symm k : Col.JH hc n ST SG H) : Col.J0 hc n ST) x`. Unfold `Col.rawSm`. Rewrite using `[colJEquiv_symm_coe]`. Establish `e2` using `Col.decorated_point_equivariant hc n ST SG H ((γ, (((colJEquiv hc n ST SG H).symm k : Col.JH hc n ST SG H) : Col.JH hc n ST SG H ⧸ (Col.redH hc n ST SG H).ker)) : Col.AdG hc n ST SG H) (QuotientGroup.mk x : Col.adPt hc n ST SG)`. Unfold `colQ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `*` using `[e1, Col.adSmul_mk]`. Rewrite using `[e2, o.smul]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colQ_eqv (γ : Col.URat hc n) (k : colJ hc n ST SG H) (x : Col.UAd hc n) :
     colQ o (Col.ratIn hc n γ * x * (k : Col.UAd hc n)⁻¹) = colGl o (γ, k) • colQ o x := by

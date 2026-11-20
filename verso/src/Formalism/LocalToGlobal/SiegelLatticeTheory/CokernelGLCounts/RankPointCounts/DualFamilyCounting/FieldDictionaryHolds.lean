@@ -6,9 +6,9 @@ namespace Formalism.L2.SG.Pf.Cnt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D`. Use `⟨D.sp.cm.cmUnram, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[D.sp.cm.fixed a, RingHom.mem_range, Set.mem_range]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(D.sp.Y 0).nondeg.1 x hx`.
+A detailed English derivation is pending.
 -/
 theorem field_dictionary_holds : HostDict := by
   intro D

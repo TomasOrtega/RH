@@ -5,11 +5,11 @@ open GlobalTheory.DeRham TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R R' _ _ _ f _ M M' _ _ _ _ ρ hρ`. Establish `hloc : IsLocalizedModule (Submonoid.powers f) (TensorProduct.mk R R' M 1)` using `(isLocalizedModule_iff_isBaseChange (Submonoid.powers f) R' _).2 (TensorProduct.isBaseChange R M R')`. Use `⟨fun m' ↦ ?_, fun x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hρ.2 m'`. Take `⟨⟨x, ⟨_, n, rfl⟩⟩, h⟩` from `IsLocalizedModule.surj (Submonoid.powers f) (TensorProduct.mk R R' M 1) z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n, x, ?_⟩` and prove the remaining obligations. Establish `h' : (algebraMap R R' f ^ n) • z = (1 : R') ⊗ₜ[R] x`. Rewrite using `[← map_pow, algebraMap_smul]`. Conclude with `h`. Rewrite using `[← map_smul, h', liftSemi_tmul, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : TensorProduct.mk R R' M 1 x = TensorProduct.mk R R' M 1 0`. Apply `hρ.1` to reduce the goal to its premises. Simplify using `[hx]`. Take `⟨⟨_, n, rfl⟩, h⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers f) h0`. Conclude with `⟨n, by simpa [Submonoid.smul_def] using h⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DeRham.localisation_of_liftSemi_bijective :
     ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (f : R) [IsLocalization.Away f R']

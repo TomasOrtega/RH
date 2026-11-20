@@ -10,11 +10,11 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace GlobalTheory.FullRankLocalForm
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, fun Y hY => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ T`. Use `filter_upwards [hT.isOpen.mem_nhds hx, hΨ.1.1.eventually_eq x] with y hy h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy, h]`. Use `filter_upwards [hT.compl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]`. Use `HasCompactSupport.mono hΨ.1.2 fun y hy h => hy ?_` and prove the remaining obligations. Distinguish the cases in `hy' : y ∈ T`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hy', h]`. Conclude with `Set.indicator_of_notMem hy' _`. Distinguish the cases in `hy' : Y ∈ T`. Rewrite using `[Set.indicator_of_mem hy', hΨ.2 Y hY]`. Conclude with `Set.indicator_of_notMem hy' _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_mem_fullRk {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n d : ℕ} {T : Set (Matrix (Fin n) (Fin d) k)} (hT : IsClopen T)
@@ -37,43 +37,39 @@ theorem indicator_mem_fullRk {k : Type} [Field k] [ValuativeRel k] [TopologicalS
     · exact Set.indicator_of_notMem hy' _
 
 /- English proof (translation)
-Establish `hF0 : F 0 = 0`. Use `hF 0 (GlobalTheory.FullRankCoinv.fullRk k n d).zero_mem 0 (GlobalTheory.FullRankCoinv.fullRk k n d).zero_mem 1` as an intermediate fact. Simplify using `at this`. Conclude with `this`. Establish `hFsum : ∀ (t : Finset ι) (c : ι → ℂ), F (∑ i ∈ t, c i • (A i).1) = ∑ i ∈ t, c i • F (A i).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t c`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [hF0]`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hF _ (A a).2 _ ((GlobalTheory.FullRankCoinv.fullRk k n d).sum_mem fun i _ => (GlobalTheory.FullRankCoinv.fullRk k n d).smul_mem _ (A i).2), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `v : Matrix (Fin n) (Fin d) k → ι → ℂ` to `fun Y i => if i ∈ s then (B i).1 Y else 0`. Establish `hv : IsLocallyConstant v`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `: ∀ᶠ y in 𝓝 x, ∀ i ∈ s, (B i).1 y = (B i).1 x` using `(Filter.eventually_all_finset s).2 fun i _ => (B i).2.1.1.eventually_eq x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `filter_upwards [this] with y hy`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ s`. Simplify using `[v, hi, hy i hi]`. Simplify using `[v, hi]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K : Set (Matrix (Fin n) (Fin d) k)` to `⋃ i ∈ s, tsupport (B i).1`. Establish `hK : IsCompact K` using `s.isCompact_biUnion fun i _ => (B i).2.1.2`. Establish `hR : (v '' K).Finite` using `by haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Rewrite using `[Set.image_eq_range]`. Conclude with `(hv.comp_continuous continuous_subtype_val).range_finite`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hvK : ∀ Y, v Y ≠ 0 → Y ∈ K`. Introduce `Y hY`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hY`. Distinguish the cases in `his : i ∈ s`. Simplify using `only [v, his, if_true, Pi.zero_apply] at hi`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Set.mem_biUnion his (subset_tsupport _ hi)`. Simplify using `[v, his] at hi`. Establish `hE : ∀ w : ι → ℂ, ∃ E : GlobalTheory.FullRankCoinv.fullRk k n d, ∀ Y, E.1 Y = if v Y = w ∧ w ≠ 0 then 1 else 0`. Introduce `w`. Distinguish the cases in `hw : w = 0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, fun Y => by simp [hw]⟩`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hw`. Establish `hcl : IsClopen (v ⁻¹' {w})` using `hv.isClopen_fiber w`. Use `⟨⟨(v ⁻¹' {w}).indicator ((w i)⁻¹ • (B i).1), indicator_mem_fullRk hcl ((GlobalTheory.FullRankCoinv.fullRk k n d).smul_mem _ (B i).2)⟩, fun Y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hY : v Y = w`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `his : i ∈ s`. Assume the negation of the conclusion as `his`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← hY]`. Simplify using `[v, his]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hBi : (B i).1 Y = w i` using `by rw [← hY]; simp [v, his]`. Simplify using `only [Set.indicator, Set.mem_preimage, Set.mem_singleton_iff, hY, if_true, hw, ne_eq, not_false_eq_true, and_self, Pi.smul_apply, smul_eq_mul, hBi]`. Conclude with `inv_mul_cancel₀ hi`. Simplify using `[Set.indicator, hY]`. Use `choose E hEv using hE`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set T := hR.toFinset`. Establish `hdec : ∀ i ∈ s, B i = ∑ w ∈ T, w i • E w`. Introduce `i hi`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `Y`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, hEv]`. Distinguish the cases in `h0 : v Y = 0`. Establish `: (B i).1 Y = 0`. Use `congrFun h0 i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[v, hi]`. Rewrite using `[this]`. Use `(Finset.sum_eq_zero fun w _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ¬ (v Y = w)` using `fun h => hw (h ▸ h0)`. Simplify using `[this]`. Rewrite using `[Finset.sum_eq_single (v Y)]`. Simplify using `[h0, v, hi]`. Introduce `w _ hw`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ne.symm hw]`. Introduce `hn`. Conclude with `absurd (hR.mem_toFinset.mpr ⟨Y, hvK Y h0, rfl⟩) hn`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hdec i hi, map_sum]`. Simplify using the standard rewrite rules. Use `_ = ∑ w ∈ T, Bf (∑ i ∈ s, (starRingEnd ℂ) (w i) • A i) (E w) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using the standard rewrite rules. Use `_ = 0 := by`. Use `Finset.sum_eq_zero fun w _ => hloc _ _ fun Y hY => ?_` and prove the remaining obligations. Rewrite `hY` using `[hEv]`.
-
-Establish `hY' : v Y = w ∧ w ≠ 0`. Assume the negation of the conclusion as `hc`. Simplify using `[hc] at hY`. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`.
-
-Rewrite using `[hFsum, Finset.sum_apply, ← h Y]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: w i = (B i).1 Y` using `by rw [← hY'.1]; simp [v, hi]`. Simplify using `[this, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (F : (Matrix (Fin n) (Fin d) k → ℂ) → Matrix (Fin n) (Fin d) k → ℂ)
@@ -190,21 +186,21 @@ theorem key (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
         simp [this, mul_comm]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d F Bf hF hloc`. Establish `hF0 : F 0 = 0`. Use `hF 0 (GlobalTheory.FullRankCoinv.fullRk k n d).zero_mem 0 (GlobalTheory.FullRankCoinv.fullRk k n d).zero_mem 1` as an intermediate fact. Simplify using `at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hFs : ∀ Ψ ∈ GlobalTheory.FullRankCoinv.fullRk k n d, ∀ c : ℂ, F (c • Ψ) = c • F Ψ`. Introduce `Ψ hΨ c`. Use `hF Ψ hΨ 0 (GlobalTheory.FullRankCoinv.fullRk k n d).zero_mem c` as an intermediate fact. Simplify `this` using `[hF0]`. Set `Tm : (GlobalTheory.FullRankCoinv.fullRk k n d × GlobalTheory.FullRankCoinv.fullRk k n d →₀ ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)` to `Finsupp.linearCombination ℂ (fun p => fun Y => F p.1.1 Y * (starRingEnd ℂ) (p.2.1 Y))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Bm : (GlobalTheory.FullRankCoinv.fullRk k n d × GlobalTheory.FullRankCoinv.fullRk k n d →₀ ℂ) →ₗ[ℂ] ℂ` to `Finsupp.linearCombination ℂ (fun p => Bf p.1 p.2)`. Establish `hker : LinearMap.ker Tm ≤ LinearMap.ker Bm`. Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `key k n d F Bf hF hloc x.support (fun p => x p • p.1) (fun p => p.2) (fun Y => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun hx Y` as an intermediate fact. Simplify using `only [Tm, Finsupp.linearCombination_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFs _ p.1.2]`. Simplify using `[mul_assoc])`. Simplify using `only [Bm, Finsupp.linearCombination_apply, Finsupp.sum]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Set `g : LinearMap.range Tm →ₗ[ℂ] ℂ` to `(LinearMap.ker Tm).liftQ Bm hker ∘ₗ Tm.quotKerEquivRange.symm.toLinearMap`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend g`. Use `⟨Λ, fun Ψ₁ Ψ₂ => ?_⟩` and prove the remaining obligations. Establish `e3 : Tm.quotKerEquivRange.symm ⟨Tm (Finsupp.single (Ψ₁, Ψ₂) 1), LinearMap.mem_range_self _ _⟩ = (LinearMap.ker Tm).mkQ (Finsupp.single (Ψ₁, Ψ₂) 1)` using `LinearMap.quotKerEquivRange_symm_apply_image _ _ _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Λ (Tm (Finsupp.single (Ψ₁, Ψ₂) 1)) = Bm (Finsupp.single (Ψ₁, Ψ₂) 1)`. Use `LinearMap.congr_fun hΛ ⟨Tm (Finsupp.single (Ψ₁, Ψ₂) 1), LinearMap.mem_range_self _ _⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `Λ (Tm (Finsupp.single (Ψ₁, Ψ₂) 1)) = (LinearMap.ker Tm).liftQ Bm hker (Tm.quotKerEquivRange.symm ⟨Tm (Finsupp.single (Ψ₁, Ψ₂) 1), LinearMap.mem_range_self _ _⟩) at this`. Rewrite using `[this, e3, Submodule.mkQ_apply, Submodule.liftQ_apply]`. Establish `e4 : Tm (Finsupp.single (Ψ₁, Ψ₂) 1) = fun Y => F Ψ₁.1 Y * (starRingEnd ℂ) (Ψ₂.1 Y)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Tm, Finsupp.linearCombination_single]`. Establish `e5 : Bm (Finsupp.single (Ψ₁, Ψ₂) 1) = Bf Ψ₁ Ψ₂`. Simplify using `[Bm, Finsupp.linearCombination_single]`. Rewrite using `[← e5, ← e1, e4]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formP : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (F : (Matrix (Fin n) (Fin d) k → ℂ) → Matrix (Fin n) (Fin d) k → ℂ)

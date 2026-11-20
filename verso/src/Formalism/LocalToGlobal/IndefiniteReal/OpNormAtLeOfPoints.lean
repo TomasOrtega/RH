@@ -18,7 +18,7 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V]
   (v : InfinitePlace K)
 
 /- English proof (translation)
-Establish `h : Formalism.HermitianLatticesTheory.vecAt b v (c • x) = v.embedding c • Formalism.HermitianLatticesTheory.vecAt b v x`. Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Pi.smul_apply]`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord, h, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fc_smul (c : K) (x : V) :
     Formalism.HermitianLatticesTheory.fcoord b X v (c • x) = v.embedding c • Formalism.HermitianLatticesTheory.fcoord b X v x := by
@@ -31,14 +31,14 @@ def fcA : V →+ (ι → ℂ) :=
   AddMonoidHom.mk' (Formalism.HermitianLatticesTheory.fcoord b X v) (Formalism.HermitianLatticesTheory.fcoord_add b X v)
 
 /- English proof (translation)
-Conclude with `map_sum (fcA b X v) f s`.
+A detailed English derivation is pending.
 -/
 theorem fc_sum {α : Type} (s : Finset α) (f : α → V) :
     Formalism.HermitianLatticesTheory.fcoord b X v (∑ a ∈ s, f a) = ∑ a ∈ s, Formalism.HermitianLatticesTheory.fcoord b X v (f a) := by
   exact map_sum (fcA b X v) f s
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, fc_sum, fc_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, star_sum, star_mul', Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maj_sum_left {α : Type} (s : Finset α) (c : α → K) (f : α → V) (y : V) :
     Formalism.HermitianLatticesTheory.majAt b X v (∑ a ∈ s, c a • f a) y =
@@ -50,7 +50,7 @@ theorem maj_sum_left {α : Type} (s : Finset α) (c : α → K) (f : α → V) (
   ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, fc_sum, fc_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maj_sum_right {α : Type} (s : Finset α) (c : α → K) (f : α → V) (x : V) :
     Formalism.HermitianLatticesTheory.majAt b X v x (∑ a ∈ s, c a • f a) =
@@ -62,7 +62,7 @@ theorem maj_sum_right {α : Type} (s : Finset α) (c : α → K) (f : α → V) 
   ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_add, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maj_add_left (x x' y : V) :
     Formalism.HermitianLatticesTheory.majAt b X v (x + x') y = Formalism.HermitianLatticesTheory.majAt b X v x y + Formalism.HermitianLatticesTheory.majAt b X v x' y := by
@@ -70,7 +70,7 @@ theorem maj_add_left (x x' y : V) :
     Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_add, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maj_add_right (x y y' : V) :
     Formalism.HermitianLatticesTheory.majAt b X v x (y + y') = Formalism.HermitianLatticesTheory.majAt b X v x y + Formalism.HermitianLatticesTheory.majAt b X v x y' := by
@@ -78,7 +78,7 @@ theorem maj_add_right (x y y' : V) :
     Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, fc_smul, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maj_smul_left (a : K) (x y : V) :
     Formalism.HermitianLatticesTheory.majAt b X v (a • x) y = starRingEnd ℂ (v.embedding a) * Formalism.HermitianLatticesTheory.majAt b X v x y := by
@@ -88,7 +88,7 @@ theorem maj_smul_left (a : K) (x y : V) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, fc_smul, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maj_smul_right (a : K) (x y : V) :
     Formalism.HermitianLatticesTheory.majAt b X v x (a • y) = v.embedding a * Formalism.HermitianLatticesTheory.majAt b X v x y := by
@@ -97,7 +97,7 @@ theorem maj_smul_right (a : K) (x y : V) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm]`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun i _ => by positivity)]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Complex.conj_mul' _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem maj_self (x : V) :
     Formalism.HermitianLatticesTheory.majAt b X v x x = ((Formalism.HermitianLatticesTheory.normAt b X v x ^ 2 : ℝ) : ℂ) := by
@@ -108,7 +108,7 @@ theorem maj_self (x : V) :
   exact Complex.conj_mul' _
 
 /- English proof (translation)
-Rewrite using `[maj_self, Complex.ofReal_re, Real.sqrt_sq]`. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm]`. Conclude with `Real.sqrt_nonneg _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normAt_eq_sqrt (x : V) :
     Formalism.HermitianLatticesTheory.normAt b X v x = Real.sqrt (Formalism.HermitianLatticesTheory.majAt b X v x x).re := by
@@ -117,7 +117,7 @@ theorem normAt_eq_sqrt (x : V) :
   exact Real.sqrt_nonneg _
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq]`. Simplify using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normAt_eq_norm (x : V) :
     Formalism.HermitianLatticesTheory.normAt b X v x =
@@ -126,9 +126,9 @@ theorem normAt_eq_norm (x : V) :
   simp [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm]
 
 /- English proof (translation)
-Establish `hv : Formalism.HermitianLatticesTheory.vecAt b v (φ x) = ((LinearMap.toMatrix b b φ).map v.embedding).mulVec (Formalism.HermitianLatticesTheory.vecAt b v x)`. Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt]`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr b b φ x, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.fcoord, hv, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hX v), Matrix.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fcoord_map (hX : ∀ v, IsUnit (X v).det) (φ : V →ₗ[K] V) (x : V) :
     Formalism.HermitianLatticesTheory.fcoord b X v (φ x) =
@@ -146,13 +146,13 @@ theorem fcoord_map (hX : ∀ v, IsUnit (X v).det) (φ : V →ₗ[K] V) (x : V) :
 end Forms
 
 /- English proof (translation)
-Break down `Complex.subfield_eq_of_closed (v.embedding.fieldRange.isClosed_topologicalClosure) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hr : ComplexEmbedding.IsReal v.embedding`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hx : v.embedding x ∈ v.embedding.fieldRange.topologicalClosure` using `v.embedding.fieldRange.le_topologicalClosure (RingHom.mem_fieldRange.2 ⟨x, rfl⟩)`. Rewrite `hx` using `[h]`. Take `⟨r, hr⟩` from `RingHom.mem_fieldRange.1 hx`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hr]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(InfinitePlace.isComplex_iff.1 hv) hr`. Introduce `z`. Establish `hz : z ∈ v.embedding.fieldRange.topologicalClosure`. Rewrite using `[h]`. Conclude with `Subfield.mem_top z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (v.embedding.fieldRange.topologicalClosure : Set ℂ) = closure (Set.range v.embedding)`. Rewrite using `[← RingHom.coe_fieldRange]`. Both sides reduce to the same expression. Rewrite using `[← hc]`. Conclude with `hz`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_emb {K : Type} [Field K] [NumberField K] (v : InfinitePlace K) (hv : v.IsComplex) :
     DenseRange v.embedding := by
@@ -176,15 +176,15 @@ theorem dense_emb {K : Type} [Field K] [NumberField K] (v : InfinitePlace K) (hv
     rw [← hc]; exact hz
 
 /- English proof (translation)
-Establish `hemb : DenseRange v.embedding` using `dense_emb v (IsTotallyComplex.isComplex v)`. Establish `h1 : DenseRange fun x : V => Formalism.HermitianLatticesTheory.vecAt b v x`. Establish `hpi : DenseRange (Pi.map fun _ : ι => v.embedding)` using `DenseRange.piMap fun _ => hemb`. Establish `hr : Set.range (fun x : V => Formalism.HermitianLatticesTheory.vecAt b v x) = Set.range (Pi.map fun _ : ι => v.embedding)`. Use extensionality with `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨fun i => b.repr x i, rfl⟩`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨b.equivFun.symm c, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Establish `hc` using `congr_fun (b.equivFun.apply_symm_apply c) i`. Rewrite `hc` using `[Basis.equivFun_apply]`. Use `show v.embedding (b.repr (b.equivFun.symm c) i) = v.embedding (c i)`. Rewrite using `[hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DenseRange, hr]`. Conclude with `hpi`. Establish `h2 : Continuous fun u : ι → ℂ => (WithLp.toLp 2 ((X v)⁻¹.mulVec u) : EuclideanSpace ℂ ι)` using `by fun_prop`. Establish `h3 : Function.Surjective fun u : ι → ℂ => (WithLp.toLp 2 ((X v)⁻¹.mulVec u) : EuclideanSpace ℂ ι)`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨(X v).mulVec (WithLp.ofLp w), ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hX v)]`. Conclude with `h3.denseRange.comp h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem dense_fcoord {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
@@ -215,11 +215,9 @@ theorem dense_fcoord {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsT
   exact h3.denseRange.comp h1 h2
 
 /- English proof (translation)
-Unfold `Formalism.HN.opNormAt`. Use `set T := LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin ((X v)⁻¹ * (LinearMap.toMatrix b b φ).map v.embedding * X v)) with hTd`. Use `ContinuousLinearMap.opNorm_le_bound T hC fun u => ?_` and prove the remaining obligations. Use `(dense_fcoord b X hX v).induction_on (p := fun w => ‖T w‖ ≤ C * ‖w‖) u ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_le (by fun_prop) (by fun_prop)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f`. Establish `hT : T (WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v f)) = WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v (φ f))`. Rewrite using `[fcoord_map b X v hX φ f]`. Both sides reduce to the same expression. Use `show ‖T (WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v f))‖ ≤ C * ‖WithLp.toLp 2 (Formalism.HermitianLatticesTheory.fcoord b X v f)‖`.
-
-Rewrite using `[hT, ← normAt_eq_norm, ← normAt_eq_norm]`. Conclude with `h f`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opNormAt_le_of_points {K V ι : Type} [Field K] [NumberField K] [StarRing K]
     [IsTotallyComplex K] [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
@@ -242,13 +240,13 @@ theorem opNormAt_le_of_points {K V ι : Type} [Field K] [NumberField K] [StarRin
     exact h f
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hσ`. Take `⟨F1, F2, F3, F4⟩` from `hF`. Take `⟨G1, G2, G3, G4⟩` from `hG`. Establish `e1` using `h (x + y)`. Establish `e2` using `h (a • x + y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [F1, F2, F3, F4, G1, G2, G3, G4] at e1 e2`. Rewrite `e1`, `e2` using `[h x, h y]`. Establish `hne : starRingEnd ℂ (σ a) - σ a ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg Complex.im h0` as an intermediate fact. Simplify using `only [Complex.sub_im, Complex.conj_im, Complex.zero_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : (starRingEnd ℂ (σ a) - σ a) * (F x y - G x y) = 0`. Take the linear combination `e2 - σ a * e1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Break down `mul_eq_zero.1 key with h0 | h0` into its components or cases. Conclude with `absurd h0 hne`. Conclude with `sub_eq_zero.1 h0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sesq_ext {K V : Type} [Field K] [AddCommGroup V] [Module K V] {F G : V → V → ℂ}
     {σ : K →+* ℂ} (hσ : ∃ a : K, (σ a).im ≠ 0)
@@ -279,9 +277,9 @@ theorem sesq_ext {K V : Type} [Field K] [AddCommGroup V] [Module K V] {F G : V �
   · exact sub_eq_zero.1 h0
 
 /- English proof (translation)
-Establish `hv` using `IsTotallyComplex.isComplex v`. Rewrite `hv` using `[InfinitePlace.isComplex_iff, ComplexEmbedding.isReal_iff]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hv` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.2 (hcon a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_im_ne_zero {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
     (v : InfinitePlace K) : ∃ a : K, (v.embedding a).im ≠ 0 := by
@@ -299,7 +297,7 @@ end BlockMetrics
 open BlockMetrics
 
 /- English proof (translation)
-Rewrite using `[normAt_eq_norm, normAt_eq_norm, fc_smul, WithLp.toLp_smul, norm_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem normAt_smul_indefinite_real {K V ι : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
@@ -308,7 +306,7 @@ private theorem normAt_smul_indefinite_real {K V ι : Type} [Field K] [NumberFie
   rw [normAt_eq_norm, normAt_eq_norm, fc_smul, WithLp.toLp_smul, norm_smul]
 
 /- English proof (translation)
-Rewrite using `[normAt_eq_norm, normAt_eq_norm, normAt_eq_norm, Formalism.HermitianLatticesTheory.fcoord_add, WithLp.toLp_add]`. Conclude with `norm_add_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normAt_add_le {K V ι : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
@@ -318,7 +316,7 @@ private theorem normAt_add_le {K V ι : Type} [Field K] [NumberField K] [StarRin
   exact norm_add_le _ _
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using (normAt_smul_indefinite_real b X v (0 : K) (0 : V)).le`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(normAt_add_le b X v _ _).trans (add_le_add le_rfl ih)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normAt_finset_sum_le {K V ι : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
@@ -333,21 +331,21 @@ private theorem normAt_finset_sum_le {K V ι : Type} [Field K] [NumberField K] [
     exact (normAt_add_le b X v _ _).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ G _ _ V _ _ _ _ ι _ _ b X ρ hX hU`. Establish `hinv : ∀ (g : G) (y : V), ρ g (ρ g⁻¹ y) = y`. Introduce `g y`. Use `show (ρ g * ρ g⁻¹) y = y`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hρ : ∀ (v : InfinitePlace K) (g : G) (x y : V), Formalism.HermitianLatticesTheory.majAt b X v (ρ g x) y = Formalism.HermitianLatticesTheory.majAt b X v x (ρ g⁻¹ y)`. Introduce `v g x y`. Combine the equalities or inequalities in the displayed calculation. Use `⟨fun T _ _ _ τ v x y => ?_, fun H χ g v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `fun g => (charFacts K G T τ g).2 v.embedding`. Establish `hc1 : starRingEnd ℂ (v.embedding (charOf τ 1 / (Fintype.card G : K))) = v.embedding (charOf τ 1 / (Fintype.card G : K))`. Establish `h1` using `(hc 1).1`. Rewrite `h1` using `[inv_one]`. Simplify using `only [map_div₀, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[starRingEnd_apply, ← h1]`. Simplify using `only [Formalism.IndefR.TransferLatticeStatement.eS, LinearMap.smul_apply, LinearMap.sum_apply]`. Rewrite using `[maj_smul_left, maj_smul_right, maj_sum_left, maj_sum_right, hc1]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.inv G) _ _ fun g => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg` using `(hc g⁻¹).1`. Rewrite `hg` using `[inv_inv]`. Simplify using `only [Equiv.inv_apply, inv_inv]`. Rewrite using `[hρ, ← hg]`. Establish `hρn : ∀ (k : G) (z : V), Formalism.HermitianLatticesTheory.normAt b X v (ρ k z) = Formalism.HermitianLatticesTheory.normAt b X v z`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k z`. Rewrite using `[normAt_eq_sqrt, hU, ← normAt_eq_sqrt]`. Establish `hχ : ∀ h : H, ‖v.embedding (((χ h⁻¹ : (𝓞 K)ˣ) : 𝓞 K) : K)‖ = 1`. Introduce `h`. Rewrite using `[InfinitePlace.norm_embedding_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : χ h⁻¹ ∈ NumberField.Units.torsion K` using `χ.isOfFinOrder (isOfFinOrder_of_finite h⁻¹)`. Conclude with `(NumberField.Units.mem_torsion K).1 ht v`. Use `opNormAt_le_of_points b X hX _ v 1 zero_le_one fun f => ?_` and prove the remaining obligations. Rewrite using `[one_mul, LinearMap.comp_apply]`. Simplify using `only [Formalism.IndefR.TransferLatticeStatement.epP, LinearMap.smul_apply, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[normAt_smul_indefinite_real]`. Use `(mul_le_mul_of_nonneg_left (normAt_finset_sum_le b X v _ _) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Simplify using `only [normAt_smul_indefinite_real, hχ, hρn, one_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, map_inv₀, map_natCast, norm_inv, Complex.norm_natCast]`. Rewrite using `[Fintype.card_eq_nat_card, ← mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.2 (Nat.card_pos (α := H)).ne'), one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem metric : Metric := by
   intro K _ _ _ _ G _ _ V _ _ _ _ ι _ _ b X ρ hX hU
@@ -396,13 +394,13 @@ theorem metric : Metric := by
       inv_mul_cancel₀ (Nat.cast_ne_zero.2 (Nat.card_pos (α := H)).ne'), one_mul]
 
 /- English proof (translation)
-Introduce `K _ _ _ _ G _ _ V _ _ _ _ ι _ _ b X ρ hn v g x y`. Use `sesq_ext (F := fun x y => Formalism.HermitianLatticesTheory.majAt b X v (ρ g x) (ρ g y)) (G := Formalism.HermitianLatticesTheory.majAt b X v) (σ := v.embedding) (exists_im_ne_zero v) ⟨?_, ?_, ?_, ?_⟩ ⟨?_, ?_, ?_, ?_⟩ ?_ x y` and prove the remaining obligations. Introduce `x x' y`. Simplify using `only [map_add]`. Conclude with `maj_add_left b X v _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y y'`. Simplify using `only [map_add]`. Conclude with `maj_add_right b X v _ _ _`. Introduce `a x y`. Simplify using `only [map_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `maj_smul_left b X v _ _ _`. Introduce `a x y`. Simplify using `only [map_smul]`. Conclude with `maj_smul_right b X v _ _ _`. Conclude with `fun x x' y => maj_add_left b X v _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun x y y' => maj_add_right b X v _ _ _`. Conclude with `fun a x y => maj_smul_left b X v _ _ _`. Conclude with `fun a x y => maj_smul_right b X v _ _ _`. Introduce `z show Formalism.HermitianLatticesTheory.majAt b X v (ρ g z) (ρ g z) = Formalism.HermitianLatticesTheory.majAt b X v z z`. Rewrite using `[maj_self, maj_self, hn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOfNorm : UnitOfNorm := by
   intro K _ _ _ _ G _ _ V _ _ _ _ ι _ _ b X ρ hn v g x y

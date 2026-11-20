@@ -14,21 +14,19 @@ variable {R : Type u} [Ring R] {ι' : Type*} {c : ComplexShape ι'} {ι : Type*}
   {K : HomologicalComplex (ModuleCat.{u} R) c} {L : ι → HomologicalComplex (ModuleCat.{u} R) c}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Rewrite using `[← sub_eq_zero]`. Take `⟨z, hz⟩` from `(ModuleCat.epi_iff_surjective (K.homologyπ n)).1 inferInstance (x - y)`. Establish `h0 : ∀ i, (HomologicalComplex.homologyMap (p i) n).hom (x - y) = 0` using `fun i => by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun hxy i`. Rewrite `h0`, the goal using `[← hz]`. Establish `hw : ∀ i, ∃ w : (L i).X (c.prev n), ((L i).d (c.prev n) n).hom w = ((p i).f n).hom ((K.iCycles n).hom z)` using `fun i => by`. Establish `h` using `h0 i`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[homologyMap_homologyπ_apply, homologyπ_eq_zero_iff, iCycles_cyclesMap_apply]`. Conclude with `h`. Use `choose w hw using hw`. Take `⟨v, hv⟩` from `(hp (c.prev n)).2 w`. Rewrite using `[homologyπ_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨v, (hp n).1 (funext fun i => ?_)⟩` and prove the remaining obligations. Establish `hvi : ((p i).f (c.prev n)).hom v = w i` using `congrFun hv i`. Express the relevant statement in the definitionally equal form `((p i).f n).hom ((K.d (c.prev n) n).hom v) = ((p i).f n).hom ((K.iCycles n).hom z)`. Rewrite using `[hom_f_d_apply, hvi, hw i]`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : ∀ i, ∃ z : (L i).cycles n, ((L i).homologyπ n).hom z = y i` using `fun i => (ModuleCat.epi_iff_surjective _).1 inferInstance (y i)`. Use `choose z hz using hz`. Take `⟨x, hx⟩` from `(hp n).2 fun i => ((L i).iCycles n).hom (z i)`. Establish `hxi : ∀ i, ((p i).f n).hom x = ((L i).iCycles n).hom (z i)` using `fun i => congrFun hx i`. Establish `hdx : (K.d n (c.next n)).hom x = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(hp (c.next n)).1 (funext fun i => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((p i).f (c.next n)).hom ((K.d n (c.next n)).hom x) = ((p i).f (c.next n)).hom 0`. Rewrite using `[map_zero, hom_f_d_apply, hxi]`. Conclude with `iCycles_d_apply _ _ _ _`. Take `⟨w, hw⟩` from `exists_iCycles_eq K x hdx`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(K.homologyπ n).hom w, funext fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (p i) n).hom ((K.homologyπ n).hom w) = y i`. Rewrite using `[homologyMap_homologyπ_apply, ← hz i]`. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective ((L i).iCycles n)).1 inferInstance` to reduce the goal to its premises.
-
-Rewrite using `[iCycles_cyclesMap_apply, hw, hxi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homologyMap_pi_bijective (p : ∀ i, K ⟶ L i)
     (hp : ∀ m, Function.Bijective fun (x : K.X m) (i : ι) => ((p i).f m).hom x) (n : ι') :
@@ -81,9 +79,9 @@ variable {k G : Type u} [CommRing k] [Group G] {ι : Type*} {P : Rep.{u} k G}
   {A : ι → Rep.{u} k G}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f f' h`. Use function extensionality and compare the values at `g`. Apply `hp.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `congrFun (congrFun h i) g`. Introduce `F`. Use `⟨fun g => Function.surjInv hp.2 (fun i => F i g), funext fun i => funext fun g => ?_⟩` and prove the remaining obligations. Conclude with `congrFun (Function.surjInv_eq hp.2 (fun i => F i g)) i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cochainsMap_pi_bijective (p : ∀ i, P ⟶ A i)
     (hp : Function.Bijective fun (x : P) (i : ι) => (p i).hom x) (m : ℕ) :
@@ -100,7 +98,7 @@ theorem cochainsMap_pi_bijective (p : ∀ i, P ⟶ A i)
     exact congrFun (Function.surjInv_eq hp.2 (fun i => F i g)) i
 
 /- English proof (translation)
-The claim follows from `homologyMap_pi_bijective (fun i => groupCohomology.cochainsMap (MonoidHom.id G) (p i)) (cochainsMap_pi_bijective p hp) n`.
+A detailed English derivation is pending.
 -/
 theorem groupCohomology_pi_bijective (p : ∀ i, P ⟶ A i)
     (hp : Function.Bijective fun (x : P) (i : ι) => (p i).hom x) (n : ℕ) :

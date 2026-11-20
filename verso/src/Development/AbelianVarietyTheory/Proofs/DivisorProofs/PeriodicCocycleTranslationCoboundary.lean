@@ -15,53 +15,47 @@ noncomputable section
 namespace GlobalTheory.TauPeriod
 
 /- English proof (translation)
-Introduce `E _ _ _ g U τ hτ a hdiff hper hcoc b₀ hb₀`. Establish `hUo : IsOpen U` using `hτ.1`. Establish `hcovo : IsOpen (cov U g)` using `hUo.prod isOpen_univ`. Take `⟨r, hr, hsub, δ, hδ, hk⟩` from `GlobalTheory.T.period_character_bounded_away_one hτ b₀ hb₀`. Use `choose kk hkk using hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set V := Metric.ball b₀ r with hV`. Establish `hVU : V ⊆ U` using `Metric.ball_subset_closedBall.trans hsub`. Establish `hVo : IsOpen V` using `Metric.isOpen_ball`. Establish `hfb : ∀ k, ∀ b ∈ U, Differentiable ℂ (fun z => a k (b, z))`. Introduce `k b hb z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℂ (a k) (b, z)` using `(hdiff k).differentiableAt (hcovo.mem_nhds ⟨hb, Set.mem_univ _⟩)`. Conclude with `h1.comp z ((differentiableAt_const b).prodMk differentiableAt_id)`. Establish `hpb : ∀ k, ∀ b ∈ U, ∀ (j : Fin g) z, a k (b, z + Pi.single j 1) = a k (b, z)` using `fun k b hb j z => hper k j (b, z) ⟨hb, Set.mem_univ _⟩`. Use `set c : Fin g → (Fin g → ℤ) → E → ℂ := fun k n b => cf (fun z => a k (b, z)) n with hc`. Use `set T : E → Fin g → Fin g → ℂ := fun b k => per (τ b) (Pi.single (Sum.inl k) 1) with hT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hTe : ∀ b k, T b k = fun i => τ b k i`. Introduce `b k`. Use function extensionality and compare the values at `i`. Simplify using `[hT, per, vecMul, dotProduct, Pi.single_apply]`. Simplify using `only [apply_ite (fun t : ℝ => (t : ℂ)), Complex.ofReal_one, Complex.ofReal_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `cf_add : ∀ (f h : (Fin g → ℂ) → ℂ), Continuous f → Continuous h → ∀ n, cf (fun z => f z + h z) n = cf f n + cf h n`. Introduce `f h hf hh n`. Unfold `cf`. Rewrite using `[← integral_add]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(Continuous.continuousOn (by fun_prop)).integrableOn_compact isCompact_Icc`. Conclude with `(Continuous.continuousOn (by fun_prop)).integrableOn_compact isCompact_Icc`. Establish `hid : ∀ b ∈ U, ∀ n k j, c k n b * ex n (T b j) + c j n b = c j n b * ex n (T b k) + c k n b`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb n k j`. Establish `e1 : cf (fun z => a k (b, z + T b j) + a j (b, z)) n = cf (fun z => a j (b, z + T b k) + a k (b, z)) n`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `hcoc k j (b, z) ⟨hb, Set.mem_univ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc1` using `(hfb k b hb).continuous`. Establish `hc2` using `(hfb j b hb).continuous`. Establish `e2` using `cf_add (fun z => a k (b, z + T b j)) (fun z => a j (b, z)) (show Continuous fun z => a k (b, z + T b j) from hc1.comp (continuous_add_right _)) hc2 n`. Establish `e3` using `cf_add (fun z => a j (b, z + T b k)) (fun z => a k (b, z)) (show Continuous fun z => a j (b, z + T b k) from hc2.comp (continuous_add_right _)) hc1 n`. Establish `e4 : cf (fun z => a k (b, z + T b j)) n = ex n (T b j) * cf (fun z => a k (b, z)) n` using `cf_translate _ (hfb k b hb) (hpb k b hb) n _`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : cf (fun z => a j (b, z + T b k)) n = ex n (T b k) * cf (fun z => a j (b, z)) n` using `cf_translate _ (hfb j b hb) (hpb j b hb) n _`. Rewrite `e1` using `[e2, e3, e4, e5]`. Simplify using `only [hc]`. Take the linear combination `e1`. Use `set d : (Fin g → ℤ) → E → ℂ := fun n b => if h : n = 0 then 0 else c (kk n h) n b / (ex n (T b (kk n h)) - 1) with hd`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hden : ∀ n (h : n ≠ 0), ∀ b ∈ Metric.closedBall b₀ r, ex n (T b (kk n h)) - 1 ≠ 0`. Introduce `n h b hb h0`. Use `hkk n h b hb` as an intermediate fact. Establish `h0' : ex n (per (τ b) (Pi.single (Sum.inl (kk n h)) 1)) - 1 = 0` using `h0`. Rewrite `this` using `[h0', norm_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdk : ∀ n, n ≠ 0 → ∀ k, ∀ b ∈ Metric.closedBall b₀ r, d n b * (ex n (T b k) - 1) = c k n b`. Introduce `n h k b hb`. Establish `hD` using `hden n h b hb`. Establish `e` using `hid b (hsub hb) n k (kk n h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hd, dif_neg h]`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hD]`. Take the linear combination `-e`. Establish `hexT : ∀ n k, DifferentiableOn ℂ (fun b => ex n (T b k)) U`. Introduce `n k`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ∀ i, DifferentiableOn ℂ (fun b => τ b k i) U` using `fun i => hτ.2.1 k i`. Simplify using `only [hTe, ex]`. Conclude with `(DifferentiableOn.cexp (DifferentiableOn.const_mul (DifferentiableOn.fun_sum fun i _ => (this i).const_mul _) _))`. Establish `hdd : ∀ n, DifferentiableOn ℂ (d n) V`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : n = 0`. Simplify using `only [hd, dif_pos h]`. Conclude with `differentiableOn_const _`. Simplify using `only [hd, dif_neg h, div_eq_mul_inv]`. Introduce `b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Establish `hb'` using `hden n h b (Metric.ball_subset_closedBall hb)`. Establish `h1` using `((GlobalTheory.T.differentiableOn_fourier_coeff_family (a (kk n h)) hUo (hdiff _) n) b (hVU hb)).mono hVU`. Establish `h2` using `(((hexT n (kk n h)) b (hVU hb)).fun_sub (differentiableWithinAt_const 1)).mono hVU`. Conclude with `h1.fun_mul (h2.fun_inv hb')`. Establish `hdecay : ∀ K ⊆ V, IsCompact K → ∀ R : ℝ, 0 ≤ R → ∃ M : ℝ, ∀ n, ∀ b ∈ K, ‖d n b‖ ≤ M * Real.exp (-(2 * π * R) * l1 n)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `K hK hKc R hR`. Use `choose M hM using fun k => GlobalTheory.T.fourier_coeff_exp_decay_on_compact (a k) hUo (hdiff k) (hper k) K (hK.trans hVU) hKc R hR`. Use `⟨(∑ k, |M k|) / δ, fun n b hb => ?_⟩` and prove the remaining obligations. Establish `hE` using `Real.exp_pos (-(2 * π * R) * l1 n)`. Establish `hS : 0 ≤ ∑ k, |M k|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : n = 0`. Simplify using `only [hd, dif_pos h, norm_zero]`. Check the signs of the components of the expression. Simplify using `only [hd, dif_neg h]`. Establish `hbb : b ∈ Metric.closedBall b₀ r` using `Metric.ball_subset_closedBall (hK hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hkk n h b hbb`. Establish `h2` using `hM (kk n h) n b hb`. Establish `h3 : M (kk n h) ≤ ∑ k, |M k|` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun k => |M k|) (fun _ _ => abs_nonneg _) (Finset.mem_univ _))`. Rewrite using `[norm_div, div_le_iff₀ (hδ.trans_le h1)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ (∑ k, |M k|) / δ * Real.exp (-(2 * π * R) * l1 n) * ‖ex n (per (τ b) (Pi.single (Sum.inl (kk n h)) 1)) - 1‖ := by gcongr`. Take `⟨hψd, hψs⟩` from `GlobalTheory.T.differentiableOn_summable_fourier_series d hVo hdd hdecay`. Use `⟨r, hr, hVU, fun P => ∑' n, d n P.1 * ex n P.2, fun k b => c k 0 b, hψd, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j P _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ex_add_single]`. Introduce `k`. Conclude with `((GlobalTheory.T.differentiableOn_fourier_coeff_family (a k) hUo (hdiff k) 0).continuousOn).mono hVU`. Introduce `k P hP`. Take `⟨b, z⟩` from `P`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb : b ∈ V` using `hP.1`. Establish `hbU : b ∈ U` using `hVU hb`. Establish `hbc : b ∈ Metric.closedBall b₀ r` using `Metric.ball_subset_closedBall hb`. Establish `hA : HasSum (fun n => d n b * ex n z) (∑' n, d n b * ex n z)` using `(hψs (b, z) hb).hasSum`. Establish `hB : HasSum (fun n => c k n b * ex n z) (a k (b, z))`.
-
-Use `GlobalTheory.T.hasSum_fourier_series_of_exp_decay (fun z => a k (b, z)) (hfb k b hbU) (hpb k b hbU) (fun R hR => ?_) z` and prove the remaining obligations. Take `⟨M, hM⟩` from `GlobalTheory.T.fourier_coeff_exp_decay_on_compact (a k) hUo (hdiff k) (hper k) {b} (Set.singleton_subset_iff.2 hbU) isCompact_singleton R hR`. Conclude with `⟨M, fun n => hM n b rfl⟩`. Establish `hC` using `(hA.add hB).sub (hasSum_ite_eq (0 : Fin g → ℤ) (c k 0 b))`. Use `show ∑' n, d n b * ex n (z + per (τ b) (Pi.single (Sum.inl k) 1)) = _`.
-
-Rewrite using `[← hC.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Distinguish the cases in `h : n = 0`. Substitute `h` using the available equality. Simplify using `[hd, ex_zero]`.
-
-Use `hdk n h k b hbc` as an intermediate fact. Rewrite using `[if_neg h, ex_add]`. Simplify using `only [hT] at this`. Take the linear combination `(ex n z) * this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_tau_coboundary : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ} {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap U τ → ∀ a : Fin g → Pt E g → ℂ, (∀ k, DifferentiableOn ℂ (a k) (cov U g)) → (∀ k j, ∀ P ∈ cov U g, a k (P.1, P.2 + Pi.single j 1) = a k P) → (∀ k j, ∀ P ∈ cov U g, a k (transl τ (Pi.single (Sum.inl j) 1) P) + a j P = a j (transl τ (Pi.single (Sum.inl k) 1) P) + a k P) → ∀ b₀ ∈ U, ∃ r > 0, Metric.ball b₀ r ⊆ U ∧ ∃ (ψ : Pt E g → ℂ) (s : Fin g → E → ℂ), DifferentiableOn ℂ ψ (cov (Metric.ball b₀ r) g) ∧ (∀ j, ∀ P ∈ cov (Metric.ball b₀ r) g, ψ (P.1, P.2 + Pi.single j 1) = ψ P) ∧ (∀ k, ContinuousOn (s k) (Metric.ball b₀ r)) ∧ ∀ k, ∀ P ∈ cov (Metric.ball b₀ r) g, ψ (transl τ (Pi.single (Sum.inl k) 1) P) = ψ P + a k P - s k P.1 := by
   intro E _ _ _ g U τ hτ a hdiff hper hcoc b₀ hb₀

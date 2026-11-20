@@ -17,51 +17,47 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Introduce `ρ`. Take `⟨c, hc, hcv⟩` from `hAV`. Take `⟨C, hC⟩` from `Formalism.L2.SG.WConst.weightBound_holds X Y u u' hnc`. Take `⟨m, hm0, hmle⟩` from `Formalism.L2.SG.RowsAbsX.exists_wRow_lb u (X.Fu u) (Y.what₂ u) hAF`. Take `⟨m', hm0', hmle'⟩` from `Formalism.L2.SG.RowsAbsX.exists_wRow_lb u' (X.Fu u') (Y.what₂ u') hAF'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hwm : 0 < Real.sqrt (m * m')` using `Real.sqrt_pos.2 (mul_pos hm0 hm0')`. Establish `hcw : 0 < c * Real.sqrt (m * m')` using `mul_pos hc hwm`. Set `Mm : ℝ` to `∑ Λ ∈ Y.what₂ u, |PairVal.massRow D (X.Fu u) (Y.what₂ u) Λ|`. Set `τ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')` to `fun t => (hL t).choose`. Establish `hτ : ∀ t, (τ t).toTerm = t` using `fun t => (hL t).choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτi : Function.Injective τ` using `fun a b h => by rw [← hτ a, ← hτ b, h]`. Set `C' : ℝ` to `max C 0`. Establish `hC'0 : 0 ≤ C'` using `le_max_right _ _`. Set `K0 : ℝ` to `C' * Real.sqrt Mm / (c * Real.sqrt (m * m'))`. Establish `hK0n : 0 ≤ K0` using `div_nonneg (mul_nonneg hC'0 (Real.sqrt_nonneg _)) hcw.le`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℝ` to `fun t => K0 * ‖(Y.tO u u').vec (τ t)‖`. Establish `hg0 : ∀ t, 0 ≤ g t` using `fun t => mul_nonneg hK0n (norm_nonneg _)`. Establish `hg : Summable g` using `(hA.2.1.comp_injective hτi).mul_left K0`. Set `A : TB.Pt D.host.E → TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → Prop` to `fun p t => DataInst.Elig t ∧ κ t = ρ ∧ ∃ w, DataInst.ptOfList (D.R.rS + 1) p = some w ∧ t.atPt w`. Establish `hAu : ∀ p p' t, A p t → A p' t → p = p'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `p p' t ⟨-, -, w, hw, ht⟩ ⟨-, -, w', hw', ht'⟩`. Take `rfl` from `Formalism.L2.SG.RowsAbsX.ptUniq_holds X Y u u' t w w' ht ht'`. Conclude with `ptOfList_inj hw hw'`. Use `summable_of_fibre_bound A hAu g hg0 hg _ (fun p => mul_nonneg (norm_nonneg _) (norm_nonneg _)) ?_` and prove the remaining obligations. Introduce `p`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ ∑' t : {t // A p t}, g t` using `tsum_nonneg fun t => hg0 t`. Break down `hp : DataInst.ptOfList (D.R.rS + 1) p with _ | w` into its components or cases. Establish `h0 : DataInst.rowVec (vR) κ nc ρ p = 0`. Simplify using `[DataInst.rowVec, hp]`. Rewrite using `[h0, norm_zero, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hS0`. Establish `hA' : ∀ t, A p t ↔ (DataInst.Elig t ∧ κ t = ρ ∧ t.atPt w)`. Introduce `t`. Simplify using `only [A, hp, Option.some.injEq, exists_eq_left']`. Set `Sw` to `{t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) // DataInst.Elig t ∧ κ t = ρ ∧ t.atPt w}`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑' t : {t // A p t}, g t = ∑' t : Sw, g t.1`. Rewrite using `[← (Equiv.subtypeEquivRight hA').tsum_eq (fun t : Sw => g t.1)]`. Both sides reduce to the same expression. Rewrite using `[hsum]`. Establish `hgS : Summable (fun t : Sw => g t.1)` using `hg.comp_injective Subtype.val_injective`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : Sw → ℂ` to `fun t => ((Real.sqrt (PairVal.massTerm t.1) : ℝ) : ℂ) * PairVal.cAt (vR) t.1 w`. Set `Dn : ℝ` to `Real.sqrt (n0 nc (D.mem u).A.T (D.mem u').A.T w) * DataInst.phi (D.R.rS + 1) p`. Set `V : ℝ` to `‖PackageTie.hsEmb (RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq w)‖`. Set `N : ℝ` to `Real.sqrt (RealObj.nW X u u' w)`. Establish `hrow : DataInst.rowVec (vR) κ nc ρ p = (∑' t : Sw, f t) / (Dn : ℂ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [DataInst.rowVec, hp]`. Both sides reduce to the same expression. Establish `hvt : RealObj.VtPt X u u' 1 i0 i0' FdN FdN' νq p = ((N : ℝ) : ℂ) • PackageTie.hsEmb (RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq w)`. Apply the tactic sequence `simp only [RealObj.VtPt, RealObj.ptOfL, hp] <;> rfl`. Establish `hnv : ‖RealObj.VtPt X u u' 1 i0 i0' FdN FdN' νq p‖ = N * V`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hvt, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`. Establish `hnr : ‖DataInst.rowVec (vR) κ nc ρ p‖ = ‖∑' t : Sw, f t‖ / |Dn|`. Rewrite using `[hrow, norm_div, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[hnv, hnr]`. Establish `hgS0 : 0 ≤ ∑' t : Sw, g t.1` using `tsum_nonneg fun t => hg0 t.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hreal : ∃ γ, RealObj.IsPtRep X u u' w γ`. Use `swap`. Establish `hV : V = 0`. Establish `: RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq w = 0` using `by simp [RealObj.unscaledOperatorAtPointRepresentative, hreal]`. Simplify using `only [V, this, map_zero, norm_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV, mul_zero, mul_zero]`. Conclude with `hgS0`. Distinguish the cases in `hne : Nonempty Sw`. Use `swap`. Use `haveI : IsEmpty Sw := not_nonempty_iff.1 hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[tsum_empty, norm_zero, zero_div, zero_mul]`. Conclude with `hgS0`. Take `⟨t0⟩` from `hne`. Establish `hNC : N ≤ C' * |Dn|` using `(hC p w hp hreal ⟨t0.1, t0.2.1.2, t0.2.2.2⟩).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (abs_nonneg _))`. Establish `hterm : ∀ t : Sw, ‖f t‖ * (C' * V) ≤ g t.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Establish `hat : t.1.atPt w` using `t.2.2.2`. Establish `huq : ∀ w₁ w₂, t.1.atPt w₁ → t.1.atPt w₂ → w₁ = w₂` using `fun w₁ w₂ h h' => Formalism.L2.SG.RowsAbsX.atPt_uniq _ _ _ t.1.cls w₁ w₂ h h'`. Establish `hpt : PairVal.ptOf t.1 = w`. Establish `hrel` using `Formalism.L2.SG.Pf.FinXP.atPtRelevant_holds D u u' (X.Fu u) (Y.what₂ u) t.1 w hat`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `huq _ _ (PairVal.ptOf_spec t.1 ⟨w, hat, hrel⟩) hat`. Establish `hcT : PairVal.cTerm vR t.1 = PairVal.cAt vR t.1 w` using `PairVal.cTerm_of_atPt vR t.1 hat (fun w' h' => huq w' w h' hat)`. Establish `h1` using `hcv (τ t.1) (by rw [hτ]; exact t.2.1.1) (by rw [hτ]; exact t.2.1.2)`. Rewrite `h1` using `[hτ, hpt, hcT]`. Establish `h2` using `Formalism.L2.SG.Pf.RowForm.ClassAbs.vec_norm_ge X Y u u' (τ t.1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwt : Real.sqrt (m * m') ≤ Formalism.L2.SG.TermOp.wt (τ t.1)`. Unfold `Formalism.L2.SG.TermOp.wt`. Conclude with `Real.sqrt_le_sqrt (mul_le_mul (hmle _ (τ t.1).mem) (hmle' _ (τ t.1).mem') hm0'.le (hm0.le.trans (hmle _ (τ t.1).mem)))`. Establish `hm : Real.sqrt (PairVal.massTerm t.1) ≤ Real.sqrt Mm` using `Real.sqrt_le_sqrt (massTerm_le t.1)`. Establish `hf : ‖f t‖ = Real.sqrt (PairVal.massTerm t.1) * ‖PairVal.cAt vR t.1 w‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Simplify using `only [f]`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`. Establish `hV0 : 0 ≤ V` using `norm_nonneg _`. Establish `hamp0 : 0 ≤ ‖PackageTie.hsEmb (TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (τ t.1))‖` using `norm_nonneg _`. Establish `e3 : ‖PairVal.cAt vR t.1 w‖ * V ≤ ‖(Y.tO u u').vec (τ t.1)‖ / (c * Real.sqrt (m * m'))`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ hcw]`. Establish `k1 : Real.sqrt (m * m') * ‖PackageTie.hsEmb (TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (τ t.1))‖ ≤ ‖(Y.tO u u').vec (τ t.1)‖` using `(mul_le_mul_of_nonneg_right hwt hamp0).trans h2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hwm.le]`. Establish `e4 : 0 ≤ ‖PairVal.cAt (vR) t.1 w‖ * V` using `mul_nonneg (norm_nonneg _) hV0`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `mul_le_mul_of_nonneg_left _ hC'0` to reduce the goal to its premises. Conclude with `mul_le_mul hm e3 e4 (Real.sqrt_nonneg _)`. Use `_ = g t.1 := by simp only [g, K0]; ring`. Establish `hlhs : ‖∑' t : Sw, f t‖ / |Dn| * (N * V) ≤ ‖∑' t : Sw, f t‖ * (C' * V)`. Break down `(abs_nonneg Dn).eq_or_lt with hD | hD` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hD, div_zero, zero_mul]`. Conclude with `mul_nonneg (norm_nonneg _) (mul_nonneg hC'0 (norm_nonneg _))`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hD]`. Establish `: N * V ≤ C' * |Dn| * V` using `mul_le_mul_of_nonneg_right hNC (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `hlhs.trans ?_` and prove the remaining obligations. Break down `(mul_nonneg hC'0 (norm_nonneg _) : 0 ≤ C' * V).eq_or_lt with hK | hK` into its components or cases. Rewrite using `[← hK, mul_zero]`. Conclude with `hgS0`. Establish `hfb : ∀ t : Sw, ‖f t‖ ≤ g t.1 / (C' * V)` using `fun t => by`.
-
-Rewrite using `[le_div_iff₀ hK]`. Conclude with `hterm t`. Establish `hsn : Summable (fun t : Sw => ‖f t‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hfb (hgS.div_const _)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem rowsSum_of_val (vR : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℝ)
     (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ) (nc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)

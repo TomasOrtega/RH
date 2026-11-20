@@ -29,7 +29,7 @@ def crudeBd {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K
 
 omit [StarRing (𝓞 E)] in
 /- English proof (translation)
-Use `haveI := NumberField.IsCMField.isTotallyComplex E`. Introduce `hτ`. Establish `hc` using `NumberField.IsTotallyComplex.isComplex (NumberField.InfinitePlace.mk τ)`. Rewrite `hc` using `[← NumberField.InfinitePlace.not_isReal_iff_isComplex, NumberField.InfinitePlace.isReal_mk_iff]`. Conclude with `hc hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_ne_self_of_CM (τ : E →+* ℂ) : ComplexEmbedding.conjugate τ ≠ τ := by
   haveI := NumberField.IsCMField.isTotallyComplex E
@@ -39,9 +39,9 @@ theorem conj_ne_self_of_CM (τ : E →+* ℂ) : ComplexEmbedding.conjugate τ �
   exact hc hτ
 
 /- English proof (translation)
-Distinguish the cases in `hs : s ∈ α.support`. Establish `hd : α.degree = ∑ i ∈ α.support, α i` using `rfl`. Rewrite using `[hd]`. Conclude with `Finset.single_le_sum (fun i _ => Nat.zero_le (α i)) hs`. Establish `h0 : α s = 0` using `by simpa using hs`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 theorem Crude.le_degree {σ : Type} (α : σ →₀ ℕ) (s : σ) : α s ≤ α.degree := by
   by_cases hs : s ∈ α.support
@@ -77,13 +77,11 @@ def crudeInf {T : CDVR} {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB T
     nval T.V e (nabValN B T.Fr h w0 k f (fun ℓ : LtN Dw n => ℓ.2.2) (fun ℓ => uvec ⟨ℓ.1, ℓ.2.1⟩) P)
 
 /- English proof (translation)
-Establish `hpow : ∀ i (e : ℕ), Crude.OrdGe e (φ i ^ e)`. Introduce `i e`. Proceed by induction on `e with`. Consider the case `zero => exact Crude.cro_ordGe_zero (φ i ^ 0)`. Consider the case `succ e ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Conclude with `Crude.OrdGe.mul ih ((Crude.ordGe_one_iff _).2 (hφ i))`. Establish `hd : α.degree = ∑ i ∈ α.support, α i` using `rfl`. Rewrite using `[hd]`. Unfold `Finsupp.prod`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `α.support = s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, Finset.prod_empty]`. Conclude with `Crude.cro_ordGe_zero _`. Introduce `a s ha ih`.
-
-Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `Crude.OrdGe.mul (hpow a (α a)) ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ordGe_prod_lemma (T : CDVR) {n d : ℕ} {ι : Type} (φ : ι → PS T.Fr n d)
     (hφ : ∀ i, constantCoeff (φ i) = 0) (α : ι →₀ ℕ) :
@@ -108,35 +106,33 @@ private theorem ordGe_prod_lemma (T : CDVR) {n d : ℕ} {ι : Type} (φ : ι →
     exact Crude.OrdGe.mul (hpow a (α a)) ih
 
 /- English proof (translation)
-Establish `hβ : Function.Injective (colP Dw hn)` using `fun p q hpq => (Fintype.equivFin (Lt1 Dw)).injective (Fin.castLE_injective hn hpq)`. Use `set α := Crude.diagExp Dw.mult n (colP Dw hn) (fun τ i => a (τ, i)) with hαdef`. Establish `hdeg : α.degree = DF Dw a` using `by rw [hαdef, Crude.diagExp_degree]; rfl`. Establish `hcoeff : (P1 Dw T a hn).coeff α = 1` using `Crude.Pmin_coeff_diag (k := T.Fr) (hβ := hβ) (ha := ha)`. Establish `hαmem : α ∈ (P1 Dw T a hn).support`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.mem_support_iff, hcoeff]`. Conclude with `one_ne_zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show MvPolynomial.map (Int.castRingHom T.Fr) (Crude.Pmin Dw.mult n (colP Dw hn) (fun τ i => a (τ, i))) ∈ HaO Dw.mult n T.Fr (algebraMap T.V T.Fr).range ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))`. Conclude with `Crude.Pmin_mem (O := (algebraMap T.V T.Fr).range) (cc := ComplexEmbedding.conjugate) (isX := InPsi H) (hcc := fun τ _ => conj_ne_self_of_CM τ) (hβ := hβ) (ha := ha)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsat' : ∀ τ : E →+* ℂ, ∃ W : Fin (Dw.mult τ) → Fin d → T.V, ∀ i i' : Fin (Dw.mult τ), ∑ j, uvec ⟨τ, i'⟩ j * algebraMap T.V T.Fr (W i j) = if i' = i then 1 else 0` using `hsat`. Use `choose W hW using hsat'`. Set `φV : LtN Dw n → PS T.V n d` to `fun ℓ => if (∃ i, colP Dw hn ⟨ℓ.1, i⟩ = ℓ.2.2) then ∑ j, C (W ℓ.1 ℓ.2.1 j) * X (ℓ.2.2, j) else 0`. Set `φ : LtN Dw n → PS T.Fr n d` to `fun ℓ => if (∃ i, colP Dw hn ⟨ℓ.1, i⟩ = ℓ.2.2) then ∑ j, C (algebraMap T.V T.Fr (W ℓ.1 ℓ.2.1 j)) * X (ℓ.2.2, j) else 0`. Establish `hmapφ : ∀ ℓ, MvPowerSeries.map (algebraMap T.V T.Fr) (φV ℓ) = φ ℓ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ℓ`. Simplify using `only [φV, φ]`. Apply the tactic sequence `split_ifs <;> simp [map_sum]`. Establish `hφ0 : ∀ ℓ, constantCoeff (φ ℓ) = 0`. Introduce `ℓ`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ]`. Apply the tactic sequence `split_ifs <;> simp [map_sum]`. Establish `hdual : ∀ l ∈ Crude.GoodL Dw.mult n (colP Dw hn), ∀ l', Crude.Lin ((fun ℓ : LtN Dw n => ℓ.2.2) l) ((fun ℓ : LtN Dw n => uvec ⟨ℓ.1, ℓ.2.1⟩) l) (φ l') = C (if l = l' then 1 else 0)`. Introduce and unpack `⟨τ, i0, b⟩ ⟨i, hi⟩ ⟨τ', i', b'⟩`. Simplify using `only [φ]`.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Simplify using `only at hi ⊢`. Distinguish the cases in `hg : ∃ i'', colP Dw hn ⟨τ', i''⟩ = b'`. Rewrite using `[if_pos hg, Crude.Lin_linForm]`. Use `congr 1`. Distinguish the cases in `hbb : b = b'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Substitute `hbb` using the available equality. Take `⟨i'', hi''⟩` from `hg`. Establish `hp : (⟨τ, i⟩ : Lt1 Dw) = ⟨τ', i''⟩` using `hβ (hi.trans hi''.symm)`. Take `⟨rfl, -⟩` from `Sigma.mk.inj_iff.1 hp`. Rewrite using `[if_pos rfl, hW τ i' i0]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : i0 = i'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Introduce `hl`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `hl`. Conclude with `h rfl`. Rewrite using `[if_neg hbb, if_neg]`. Introduce `hl`. Consider the cases of `hl`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hbb rfl`. Rewrite using `[if_neg hg, if_neg]`. Simplify using `using Crude.div_Lin_C (n := n) b (uvec ⟨τ, i0⟩) (0 : T.Fr)`. Introduce `hl`. Consider the cases of `hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg ⟨i, hi⟩`. Take `⟨f, hfdef⟩ : ∃ f : PS T.Fr n d, f = MvPolynomial.aeval φ (MvPolynomial.monomial α (1 : T.Fr))` from `⟨_, rfl⟩`. Establish `hfprod : f = α.prod fun ℓ e => φ ℓ ^ e`. Rewrite using `[hfdef, MvPolynomial.aeval_monomial, map_one, one_mul]`. Establish `hfint : IsIntPS T f`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `m`. Establish `hmap : f = MvPowerSeries.map (algebraMap T.V T.Fr) (α.prod fun ℓ e => φV ℓ ^ e)`. Rewrite using `[hfprod]`. Unfold `Finsupp.prod`. Rewrite using `[map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_pow, hmapφ]`. Rewrite using `[hmap, MvPowerSeries.coeff_map]`. Conclude with `⟨_, rfl⟩`. Establish `hOrd : Crude.OrdGe (DF Dw a) f`. Rewrite using `[hfprod, ← hdeg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ordGe_prod_lemma T φ hφ0 α`. Establish `hPdeg : ∀ m ∈ (P1 Dw T a hn).support, m.degree = DF Dw a` using `fun m hm => Crude.Pmin_degree (ha := ha) (m := m) (hm := hm)`. Use `⟨f, hfint, hOrd, ?_⟩` and prove the remaining obligations. Rewrite using `[Crude.nabValN_eq_lin B h hg w0 k f (fun ℓ : LtN Dw n => ℓ.2.2) (fun ℓ => uvec ⟨ℓ.1, ℓ.2.1⟩) (P1 Dw T a hn) (DF Dw a) hPdeg hOrd, Finset.sum_eq_single α]`. Rewrite using `[hfdef, Crude.linMon_aeval_monomial _ _ φ hφ0 _ hdual α α (fun l hl => Crude.Pmin_good (m := α) (hm := hαmem) (ℓ := l) (hℓ := hl)), if_pos rfl, hcoeff, one_mul]`.
-
-Both sides reduce to the same expression. Introduce `m hm hne`. Rewrite using `[hfdef, Crude.linMon_aeval_monomial _ _ φ hφ0 _ hdual m α (fun l hl => Crude.Pmin_good (m := m) (hm := hm) (ℓ := l) (hℓ := hl)), if_neg hne, mul_zero]`. Introduce `hα`. Conclude with `absurd hαmem hα`.
+A detailed English derivation is pending.
 -/
 theorem crude_val {T : CDVR} {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB T.Fr d O) (h : PS T.Fr 2 d)
     (hg : B.IsCanonGauge T.Fr h) (w0 : O) (k : ℕ) (uvec : Lt1 Dw → Fin d → T.Fr) (hsat : SatDir T uvec)
@@ -235,11 +231,11 @@ theorem crude_val {T : CDVR} {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B :
     exact absurd hαmem hα
 
 /- English proof (translation)
-Take `⟨hP, f, hfI, -, hval⟩` from `crude_val B h hg w0 k uvec hsat a n ha hn`. Establish `hle : crudeInf B h w0 k uvec e a n ≤ nval T.V e ((fact1 Dw a hn : ℕ) : T.Fr)`. Unfold `crudeInf`. Conclude with `iInf_le_of_le (P1 Dw T a hn) (iInf_le_of_le hP (iInf_le_of_le f (iInf_le_of_le hfI (by rw [hval]))))`. Establish `hdeg : (Crude.diagExp Dw.mult n (colP Dw hn) (fun τ i => a (τ, i))).degree = DF Dw a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Crude.diagExp_degree]`. Both sides reduce to the same expression. Use `⟨hle.trans ?_, fun hlt => hle.trans ?_⟩` and prove the remaining obligations. Establish `h1` using `Crude.nval_factProd_le (ho := ho) (α := Crude.diagExp Dw.mult n (colP Dw hn) (fun τ i => a (τ, i)))`. Rewrite `h1` using `[hdeg]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `h2` using `Crude.nval_factProd_le_zero (ho := ho) (α := Crude.diagExp Dw.mult n (colP Dw hn) (fun τ i => a (τ, i))) (hα := fun s => lt_of_le_of_lt (Crude.le_degree _ s) (hdeg ▸ hlt))`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem crude_inf {T : CDVR} {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB T.Fr d O) (h : PS T.Fr 2 d)
     (hg : B.IsCanonGauge T.Fr h) (w0 : O) (k : ℕ) (uvec : Lt1 Dw → Fin d → T.Fr) (hsat : SatDir T uvec)

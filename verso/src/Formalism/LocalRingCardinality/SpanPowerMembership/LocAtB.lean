@@ -26,9 +26,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `show (ringChar (𝓞 F ⧸ v.asIdeal)).Prime`. Use `haveI : v.asIdeal.IsPrime := v.isPrime`. Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := by first`. Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot`. Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`.
-
-Consider the case `infer_instance`. Conclude with `(CharP.char_is_prime_or_zero (𝓞 F ⧸ v.asIdeal) (ringChar (𝓞 F ⧸ v.asIdeal))).resolve_right (CharP.char_ne_zero_of_finite (𝓞 F ⧸ v.asIdeal) _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem resChar_prime : (resChar v).Prime := by
   show (ringChar (𝓞 F ⧸ v.asIdeal)).Prime
@@ -42,7 +40,7 @@ theorem resChar_prime : (resChar v).Prime := by
     (CharP.char_ne_zero_of_finite (𝓞 F ⧸ v.asIdeal) _)
 
 /- English proof (translation)
-Use `show ((ringChar (𝓞 F ⧸ v.asIdeal) : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Use `first`. Consider the case `exact ringChar.Nat.cast_ringChar`. Consider the case `exact CharP.cast_eq_zero _ _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem resChar_mem : ((resChar v : ℕ) : 𝓞 F) ∈ v.asIdeal := by
   show ((ringChar (𝓞 F ⧸ v.asIdeal) : ℕ) : 𝓞 F) ∈ v.asIdeal
@@ -107,23 +105,21 @@ def locAtC : LocAt F E sig v :=
     split := none }
 
 /- English proof (translation)
-Set `K` to `v.adicCompletion F`. Set `_` to `LocF.vrel v`. Establish `hc` using `LocF.vcompat v`. Set `e : K ⊗[F] E →ₐ[K] K × K` to `Algebra.TensorProduct.lift (Algebra.ofId K (K × K)) (φ.prod (φ.comp sig)) (fun _ _ => Commute.all _ _)`. Establish `he : ∀ (a : K) (x : E), e (a ⊗ₜ x) = (a * φ x, a * φ (sig x))` using `fun a x => Algebra.TensorProduct.lift_tmul _ _ (fun _ _ => Commute.all _ _) a x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hr : φ b ≠ 0` using `(map_ne_zero φ).mpr hb0`. Establish `hsurj : Function.Surjective e`. Introduce and unpack `⟨x, y⟩`. Use `⟨((x + y) / 2) ⊗ₜ 1 + ((x - y) / (2 * φ b)) ⊗ₜ b, ?_⟩` and prove the remaining obligations. Establish `h2K : (2 : K) ≠ 0` using `two_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_add, he, he, hb, map_one sig, map_one φ, map_neg]`. Establish `aux : ∀ r : K, r ≠ 0 → ((x + y) / 2 * 1 + (x - y) / (2 * r) * r = x ∧ (x + y) / 2 * 1 + (x - y) / (2 * r) * -r = y)` using `fun r hr => by`. Establish `h1 : (x - y) / (2 * r) * r = (x - y) / 2`. Rewrite using `[div_mul_eq_mul_div, mul_div_mul_right _ _ hr]`. Establish `h3 : (2 : K)⁻¹ * 2 = 1` using `inv_mul_cancel₀ h2K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_neg, h1, div_eq_mul_inv, div_eq_mul_inv]`. Prove the components needed by the constructor for the conclusion. Take the linear combination `x * h3`. Take the linear combination `y * h3`. Conclude with `Prod.ext (aux _ hr).1 (aux _ hr).2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hdim : Module.finrank K (K ⊗[F] E) = Module.finrank K (K × K)`. Rewrite using `[Module.finrank_baseChange, h2]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective e` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := e.toLinearMap)).mpr hsurj`. Establish `hval : Valued.v ((resChar v : ℕ) : K) = exp (-1 : ℤ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap F K), adicCompl_val_algebraMap, hv]`. Establish `hmem : ∀ x : K, x ∈ 𝒪[K] ↔ x ∈ v.adicCompletionIntegers F` using `fun x => by`. Rewrite using `[Valuation.mem_integer_iff, mem_adicCompletionIntegers]`. Conclude with `(ValuativeRel.isEquiv (valuation K) (Valued.v : Valuation K ℤᵐ⁰)).le_one_iff_le_one`. Set `ι : 𝒪[K] ≃+* v.adicCompletionIntegers F` to `{ toFun := fun x => ⟨x.1, (hmem _).1 x.2⟩ invFun := fun x => ⟨x.1, (hmem _).2 x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_mul' := fun _ _ => rfl map_add' := fun _ _ => rfl }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hirr : Irreducible ((resChar v : ℕ) : v.adicCompletionIntegers F)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mpr (adicInt_max_eq_span v _ (by simpa using hval))`. Use `⟨⟨AlgEquiv.ofBijective e ⟨hinj, hsurj⟩, fun x => ?_, ((resChar v : ℕ) : 𝒪[K]), ?_, ?_⟩⟩` and prove the remaining obligations. Use `show e (cjT sig hsig v x) = (e x).swap`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb, Prod.swap_add]`. Consider the case `tmul a x => rw [cjT_tmul, he, he, hsig]`. Both sides reduce to the same expression. Use `show Irreducible ((resChar v : ℕ) : 𝒪[K])`. Rewrite using `[← MulEquiv.irreducible_iff ι.toMulEquiv]`.
-
-Establish `: ι.toMulEquiv ((resChar v : ℕ) : 𝒪[K]) = ((resChar v : ℕ) : v.adicCompletionIntegers F)` using `map_natCast ι _`. Rewrite using `[this]`. Conclude with `hirr`. Conclude with `SubringClass.coe_natCast _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitAt_nonempty (φ : E →ₐ[F] v.adicCompletion F) (b : E) (hb0 : b ≠ 0) (hb : sig b = -b)
     (hv : v.valuation F ((resChar v : ℕ) : F) = exp (-1 : ℤ)) :
@@ -186,27 +182,27 @@ theorem splitAt_nonempty (φ : E →ₐ[F] v.adicCompletion F) (b : E) (hb0 : b 
 
 include hsig in
 /- English proof (translation)
-Establish `hbF : b ∉ Set.range (algebraMap F E)`. Introduce and unpack `⟨a, ha⟩`. Apply `hb0` to reduce the goal to its premises. Establish `h1 : sig b = b` using `by rw [← ha]; exact sig.commutes a`. Establish `h2 : (2 : E) * b = 0` using `by linear_combination hb - h1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`. Establish `hmonic : (Polynomial.X ^ 2 + Polynomial.C (d : F) : Polynomial F).Monic` using `by first`. Consider the case `exact Polynomial.monic_X_pow_add_C _ two_ne_zero`. Consider the case `exact Polynomial.monic_X_pow_add_C _ (by norm_num)`. Consider the case `monicity!`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `haeval : Polynomial.aeval b (Polynomial.X ^ 2 + Polynomial.C (d : F) : Polynomial F) = 0`. Simplify using `[hb2]`. Establish `hirr : Irreducible (Polynomial.X ^ 2 + Polynomial.C (d : F) : Polynomial F)`. Apply `Polynomial.irreducible_of_degree_le_three_of_not_isRoot` to reduce the goal to its premises. Rewrite using `[Polynomial.natDegree_X_pow_add_C]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Evaluate the decidable proposition. Introduce `a ha`. Apply `hbF` to reduce the goal to its premises. Establish `ha' : a ^ 2 + (d : F) = 0` using `by simpa using ha`. Establish `hx : (algebraMap F E a) ^ 2 + (d : E) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← map_natCast (algebraMap F E) d, ← map_add, ha', map_zero]`. Establish `hsq : (b - algebraMap F E a) * (b + algebraMap F E a) = 0`. Take the linear combination `hb2 - hx`. Break down `mul_eq_zero.mp hsq with h | h` into its components or cases. Conclude with `⟨a, (sub_eq_zero.mp h).symm⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨-a, by rw [map_neg]; linear_combination -h⟩`. Establish `hmin : (Polynomial.X ^ 2 + Polynomial.C (d : F) : Polynomial F) = minpoly F b` using `minpoly.eq_of_irreducible_of_monic hirr haeval hmonic`. Establish `hint : IsIntegral F b` using `⟨_, hmonic, haeval⟩`. Establish `htop : IntermediateField.adjoin F {b} = ⊤`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Establish `hA : sig ((x + sig x) / 2) = (x + sig x) / 2`. Rewrite using `[map_div₀, map_add, hsig, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : sig ((x - sig x) / (2 * b)) = (x - sig x) / (2 * b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_sub, map_mul, hsig, map_ofNat, hb]`. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`. Consider the case `ring`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, ha1⟩` from `hfix _ hA`. Take `⟨a2, ha2⟩` from `hfix _ hB`. Establish `hx : x = algebraMap F E a1 + algebraMap F E a2 * b`. Rewrite using `[ha1, ha2]`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(field_simp; ring)`. Consider the case `field_simp`. Consider the case `ring`. Rewrite using `[hx]`. Conclude with `add_mem (IntermediateField.algebraMap_mem _ a1) (mul_mem (IntermediateField.algebraMap_mem _ a2) (IntermediateField.mem_adjoin_simple_self F b))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hr' : Polynomial.aeval r (minpoly F (IntermediateField.adjoin.powerBasis hint).gen) = 0`. Rewrite using `[IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen, ← hmin]`. Simplify using `[hr]`. Conclude with `⟨((IntermediateField.adjoin.powerBasis hint).lift r hr').comp ((IntermediateField.equivOfEq htop).trans IntermediateField.topEquiv).symm.toAlgHom⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_emb {K : Type} [Field K] [Algebra F K]
     (hfix : ∀ x, sig x = x → ∃ a, algebraMap F E a = x) (b : E) (hb0 : b ≠ 0) (hb : sig b = -b)
@@ -272,31 +268,27 @@ theorem exists_emb {K : Type} [Field K] [Algebra F K]
     ((IntermediateField.equivOfEq htop).trans IntermediateField.topEquiv).symm.toAlgHom⟩
 
 /- English proof (translation)
-Use `haveI : Fact g.Prime := ⟨hg⟩`. Establish `hne : (d : ZMod g) ≠ 0`. Introduce `h0`. Establish `h1 : (((-(d : ℤ)) : ℤ) : ZMod g) = 0` using `by push_cast; rw [h0, neg_zero]`. Establish `h2` using `(legendreSym.eq_zero_iff g (-(d : ℤ))).mpr h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Use `first`. Consider the case `(rw [jacobiSym.legendreSym.to_jacobiSym, hj] at h2; exact one_ne_zero h2)`. Consider the case `(rw [← jacobiSym.legendreSym.to_jacobiSym] at hj; rw [hj] at h2; exact one_ne_zero h2)`. Consider the case `(simp only [jacobiSym.legendreSym.to_jacobiSym, hj] at h2; exact one_ne_zero h2)`. Establish `hsqr : IsSquare (((-(d : ℤ)) : ℤ) : ZMod g)` using `by first`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ZMod.isSquare_of_jacobiSym_eq_one hj`. Consider the case `exact (legendreSym.eq_one_iff g (by push_cast; exact neg_ne_zero.mpr hne)).1 (by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hj)`. Take `⟨c, hc⟩` from `hsqr`. Move the coercions through the operations in `at hc`. Take `⟨a0, ha0⟩` from `ZMod.intCast_surjective c`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : (g : ℤ) ∣ a0 ^ 2 + d`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[ha0]`. Take the linear combination `-hc`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Treat this case separately.
 
-Establish `h2ne : (2 : ZMod g) ≠ 0` using `by first`. Consider the case `exact Ring.two_ne_zero (by rw [ZMod.ringChar_zmod_n]; exact hg2)`. Consider the case `(intro h`. Establish `h' : ((2 : ℕ) : ZMod g) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[ZMod.natCast_zmod_eq_zero_iff_dvd]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hg2 ((Nat.prime_dvd_prime_iff_eq hg Nat.prime_two).1 h'))`. Establish `hnd : ¬ (g : ℤ) ∣ 2 * a0`. Introduce `h`. Establish `h2 : (((2 * a0 : ℤ)) : ZMod g) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 h`. Move the coercions through the operations in `at h2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h2` using `[ha0]`. Establish `hc0 : c = 0` using `(mul_eq_zero.mp h2).resolve_left h2ne`. Apply `hne` to reduce the goal to its premises. Rewrite `hc` using `[hc0, mul_zero]`. Conclude with `neg_eq_zero.mp hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `set P : Polynomial ℤ_[g] := Polynomial.X ^ 2 + Polynomial.C (d : ℤ_[g]) with hP`. Establish `hev : P.eval (a0 : ℤ_[g]) = ((a0 ^ 2 + d : ℤ) : ℤ_[g])` using `by first`. Consider the case `(simp [hP]; done)`. Consider the case `(simp [hP]; norm_num; done)`. Consider the case `(simp [hP]; ring)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hder : P.derivative.eval (a0 : ℤ_[g]) = ((2 * a0 : ℤ) : ℤ_[g])` using `by first`. Consider the case `(simp [hP]; done)`. Consider the case `(simp [hP]; norm_num; done)`. Consider the case `(simp [hP]; ring)`. Establish `hn1 : ‖((a0 ^ 2 + d : ℤ) : ℤ_[g])‖ < 1` using `by first`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact (PadicInt.norm_int_lt_one_iff_dvd _).2 hdvd`. Consider the case `(rw [PadicInt.norm_lt_one_iff_dvd]; simpa using map_dvd (Int.castRingHom ℤ_[g]) hdvd)`. Establish `hn2 : ‖((2 * a0 : ℤ) : ℤ_[g])‖ = 1`. Establish `hle` using `PadicInt.norm_le_one ((2 * a0 : ℤ) : ℤ_[g])`. Establish `hnlt : ¬ ‖((2 * a0 : ℤ) : ℤ_[g])‖ < 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.norm_int_lt_one_iff_dvd]`. Conclude with `hnd`. Conclude with `le_antisymm hle (not_lt.mp hnlt)`. Take `⟨z, hz, -⟩` from `hensels_lemma (F := P) (a := (a0 : ℤ_[g])) (by simp only [Polynomial.coe_aeval_eq_eval]; rw [hev, hder, hn2]; simpa using hn1)`. Establish `hz' : z ^ 2 + (d : ℤ_[g]) = 0` using `by simpa [hP] using hz`.
-
-Establish `hs : z ^ 2 = -(d : ℤ_[g])` using `by linear_combination hz'`. Establish `hq : ((z : ℚ_[g])) ^ 2 = -(d : ℚ_[g])`. Use `congrArg (fun t : ℤ_[g] => (t : ℚ_[g])) hs` as an intermediate fact. Simplify using `using this`. Use `⟨LocF.emb v g hgv (z : ℚ_[g]), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← map_pow, hq, map_neg, map_natCast]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sqrt (g d : ℕ) (hg : g.Prime) (hg2 : g ≠ 2) (hgv : (g : 𝓞 F) ∈ v.asIdeal)
     (hj : jacobiSym (-(d : ℤ)) g = 1) : ∃ r : v.adicCompletion F, r ^ 2 = -(d : v.adicCompletion F) := by
@@ -375,11 +367,11 @@ section HostLoc
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Use `show H.conj (H.conj x) = x`. Establish `hcc : R.toFrame.cc * R.toFrame.cc = 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `decide`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `simp [Formalism.HC.Frame.cc]`. Use `first`. Consider the case `exact mul_one _`. Consider the case `simp [Formalism.HC.Frame.cc]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hc2 : H.conj * H.conj = 1` using `by show H.gal.symm R.toFrame.cc * H.gal.symm R.toFrame.cc = 1`. Rewrite using `[← map_mul, hcc, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem conjF_conjF (x : H.E) : conjF H (conjF H x) = x := by
   show H.conj (H.conj x) = x
@@ -399,35 +391,33 @@ theorem conjF_conjF (x : H.E) : conjF H (conjF H x) = x := by
     _ = x := by rw [hc2]; rfl
 
 /- English proof (translation)
-Establish `hcc : ∀ y, conjF H (conjF H y) = y` using `conjF_conjF H`. Establish `hdpos : 0 < H.d` using `lt_of_le_of_lt (Nat.zero_le _) H.qd_big.2`. Establish `hb0 : H.sqd ≠ 0`. Introduce `h0`. Establish `h1` using `H.sqd_sq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0]`. Establish `h3 : (H.d : H.E) = 0` using `by linear_combination h1`. Conclude with `hdpos.ne' (by exact_mod_cast h3)`. Establish `hb : conjF H H.sqd = -H.sqd` using `by show H.conj H.sqd = -H.sqd`. Establish `h1` using `H.gal_sqd H.conj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1 : H.gal H.conj = R.toFrame.cc` using `H.gal.apply_symm_apply _`. Rewrite `h1` using `[hg1]`. Establish `hc : (((R.toFrame.cc.1.2 : ℤˣ) : ℤ)) = -1` using `by first`. Consider the case `rfl`. Consider the case `decide`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Formalism.HC.Frame.cc]`. Rewrite using `[h1, hc]`. Simplify using the standard rewrite rules. Establish `hfix : ∀ x, conjF H x = x → ∃ a, algebraMap H.F H.E a = x` using `fun x hx => ⟨⟨x, (conj_eq_self_iff H x).1 hx⟩, rfl⟩`. Establish `hbF : H.sqd ∉ Set.range (algebraMap H.F H.E)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha⟩`. Apply `hb0` to reduce the goal to its premises. Establish `h1 : conjF H H.sqd = H.sqd` using `by rw [← ha]; exact (conjF H).commutes a`. Establish `h2 : (2 : H.E) * H.sqd = 0` using `by linear_combination hb - h1`. Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `hmonic : (Polynomial.X ^ 2 + Polynomial.C (H.d : H.F) : Polynomial H.F).Monic` using `by first`. Consider the case `exact Polynomial.monic_X_pow_add_C _ two_ne_zero`. Consider the case `exact Polynomial.monic_X_pow_add_C _ (by norm_num)`. Consider the case `monicity!`. Establish `haeval : Polynomial.aeval H.sqd (Polynomial.X ^ 2 + Polynomial.C (H.d : H.F) : Polynomial H.F) = 0`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[H.sqd_sq]`. Establish `hirr : Irreducible (Polynomial.X ^ 2 + Polynomial.C (H.d : H.F) : Polynomial H.F)`. Apply `Polynomial.irreducible_of_degree_le_three_of_not_isRoot` to reduce the goal to its premises. Rewrite using `[Polynomial.natDegree_X_pow_add_C]`. Evaluate the decidable proposition.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Apply `hbF` to reduce the goal to its premises. Establish `ha' : a ^ 2 + (H.d : H.F) = 0` using `by simpa using ha`. Establish `hx : (algebraMap H.F H.E a) ^ 2 + (H.d : H.E) = 0`. Rewrite using `[← map_pow, ← map_natCast (algebraMap H.F H.E) H.d, ← map_add, ha', map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hsq : (H.sqd - algebraMap H.F H.E a) * (H.sqd + algebraMap H.F H.E a) = 0`. Take the linear combination `H.sqd_sq - hx`. Break down `mul_eq_zero.mp hsq with h | h` into its components or cases. Conclude with `⟨a, (sub_eq_zero.mp h).symm⟩`. Conclude with `⟨-a, by rw [map_neg]; linear_combination -h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : (Polynomial.X ^ 2 + Polynomial.C (H.d : H.F) : Polynomial H.F) = minpoly H.F H.sqd` using `minpoly.eq_of_irreducible_of_monic hirr haeval hmonic`. Establish `hint : IsIntegral H.F H.sqd` using `⟨_, hmonic, haeval⟩`. Establish `htop : IntermediateField.adjoin H.F {H.sqd} = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : conjF H ((x + conjF H x) / 2) = (x + conjF H x) / 2`. Rewrite using `[map_div₀, map_add, hcc, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : conjF H ((x - conjF H x) / (2 * H.sqd)) = (x - conjF H x) / (2 * H.sqd)`. Rewrite using `[map_div₀, map_sub, map_mul, hcc, map_ofNat, hb]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`. Consider the case `ring`. Take `⟨a1, ha1⟩` from `hfix _ hA`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a2, ha2⟩` from `hfix _ hB`. Establish `hx : x = algebraMap H.F H.E a1 + algebraMap H.F H.E a2 * H.sqd`. Rewrite using `[ha1, ha2]`. Use `first`. Consider the case `(field_simp; ring)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `field_simp`. Consider the case `ring`. Rewrite using `[hx]`. Conclude with `add_mem (IntermediateField.algebraMap_mem _ a1) (mul_mem (IntermediateField.algebraMap_mem _ a2) (IntermediateField.mem_adjoin_simple_self H.F H.sqd))`. Establish `hfin : Module.finrank H.F (IntermediateField.adjoin H.F {H.sqd}) = (minpoly H.F H.sqd).natDegree` using `IntermediateField.adjoin.finrank hint`.
-
-Rewrite `hfin` using `[← hmin, Polynomial.natDegree_X_pow_add_C]`. Rewrite using `[← hfin]`. Conclude with `((IntermediateField.equivOfEq htop).trans IntermediateField.topEquiv).toLinearEquiv.finrank_eq.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_FE : Module.finrank H.F H.E = 2 := by
   classical
@@ -518,25 +508,25 @@ def slocH (v : HeightOneSpectrum (𝓞 H.F)) : LocAt H.F H.E (conjF H) v :=
 open Ideal in
 
 /- English proof (translation)
-Establish `: IsGaloisGroup Gal(H.E/ℚ) ℤ (𝓞 H.E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ H.E`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (span {(p : ℤ)}).IsPrime` using `(span_singleton_prime hpZ.ne_zero).2 hpZ`. Establish `hpM : (span {(p : ℤ)}).IsMaximal` using `hpI.isMaximal (by rw [Ne, span_singleton_eq_bot]; exact hpZ.ne_zero)`. Establish `hne0 : ∀ I : Ideal (𝓞 H.E), I.LiesOver (span {(p : ℤ)}) → I ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `I hI rfl`. Establish `h0 : span {(p : ℤ)} = ⊥`. Rewrite using `[hI.over]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective ℤ (𝓞 H.E))`. Conclude with `hpZ.ne_zero (span_singleton_eq_bot.1 h0)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `himg : (fun w : HeightOneSpectrum (𝓞 H.E) => w.asIdeal) '' placesOver H.E p = (span {(p : ℤ)}).primesOver (𝓞 H.E)`. Use extensionality with `I`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨w.isPrime, ⟨?_⟩⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : span {(p : ℤ)} ≤ w.asIdeal.under ℤ`. Rewrite using `[span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 H.E) p ∈ w.asIdeal`. Establish `hw' : ((p : ℕ) : 𝓞 H.E) ∈ w.asIdeal` using `hw`. Simplify using `using hw'`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `w.isPrime` as an intermediate fact. Conclude with `hpM.eq_of_le (Ideal.IsPrime.under ℤ w.asIdeal).ne_top hle`. Introduce and unpack `⟨hI, hIl⟩`. Use `⟨⟨I, hI, hne0 I hIl⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((p : ℕ) : 𝓞 H.E) ∈ I`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: (p : ℤ) ∈ I.under ℤ` using `by rw [← hIl.over]; exact mem_span_singleton_self _`. Simplify using `using this`. Establish `key` using `ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (span {(p : ℤ)}) (𝓞 H.E) Gal(H.E/ℚ)`. Rewrite `key` using `[← himg, Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h), h, IsGalois.card_aut_eq_finrank]`. Establish `hpos : 0 < Module.finrank ℚ H.E` using `Module.finrank_pos`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ramificationIdxIn (span {(p : ℤ)}) (𝓞 H.E) = 1` using `Nat.eq_one_of_mul_eq_one_right ((Nat.mul_eq_left hpos.ne').mp key)`. Establish `hvp` using `v.isPrime`. Establish `hvl : v.asIdeal.LiesOver (span {(p : ℤ)})` using `⟨by`. Use `hpM.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top ?_` and prove the remaining obligations. Rewrite using `[span_le, Set.singleton_subset_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 H.F) p ∈ v.asIdeal`. Simplify using `using hv⟩`. Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty (v.asIdeal.primesOver (𝓞 H.E))` from `inferInstance`. Establish `hPZ : P.LiesOver (span {(p : ℤ)})` using `Ideal.LiesOver.trans P v.asIdeal _`. Rewrite `he` using `[ramificationIdxIn_eq_ramificationIdx (span {(p : ℤ)}) P Gal(H.E/ℚ), Ideal.ramificationIdx_tower (R := ℤ) v.asIdeal P]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : eWL H.F v = 1` using `Nat.eq_one_of_mul_eq_one_right he`. Establish `h2` using `bridge_unit_rule_holds H.F p v hp hv`. Rewrite `h2` using `[h1, vAdd]`. Establish `hne : v.valuation H.F (p : H.F) ≠ 0` using `(Valuation.ne_zero_iff _).mpr (Nat.cast_ne_zero.mpr hp.ne_zero)`. Rewrite using `[← exp_log hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Move the coercions through the operations in `at h2`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem val_eq_of_split (p : ℕ) (hp : p.Prime)
     (h : (placesOver H.E p).ncard = Module.finrank ℚ H.E) (v : HeightOneSpectrum (𝓞 H.F))
@@ -596,19 +586,19 @@ theorem val_eq_of_split (p : ℕ) (hp : p.Prime)
   omega
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, resChar v = H.g k := by`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hv`. Break down `hv with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hp : (resChar v).Prime` using `resChar_prime v`. Establish `hmem : ((resChar v : ℕ) : 𝓞 H.F) ∈ v.asIdeal` using `resChar_mem v`. Establish `hspl : (placesOver H.E (resChar v)).ncard = Module.finrank ℚ H.E`. Rewrite using `[hk]`. Conclude with `hg k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : v.valuation H.F ((resChar v : ℕ) : H.F) = exp (-1 : ℤ)` using `val_eq_of_split H (resChar v) hp hspl v hmem`. Establish `hj2 : resChar v ≠ 2` using `by rw [hk]; exact (hj k).1`. Establish `hjac : jacobiSym (-(H.d : ℤ)) (resChar v) = 1` using `by rw [hk]; exact (hj k).2`. Take `⟨r, hr⟩` from `exists_sqrt v (resChar v) H.d hp hj2 hmem hjac`. Establish `hdpos : 0 < H.d` using `lt_of_le_of_lt (Nat.zero_le _) H.qd_big.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : H.sqd ≠ 0`. Introduce `h0`. Establish `h1` using `H.sqd_sq`. Rewrite `h1` using `[h0]`. Establish `h3 : (H.d : H.E) = 0` using `by linear_combination h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hdpos.ne' (by exact_mod_cast h3)`. Establish `hb : conjF H H.sqd = -H.sqd` using `by show H.conj H.sqd = -H.sqd`. Establish `h1` using `H.gal_sqd H.conj`. Establish `hg1 : H.gal H.conj = R.toFrame.cc` using `H.gal.apply_symm_apply _`. Rewrite `h1` using `[hg1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Establish `hc : (((R.toFrame.cc.1.2 : ℤˣ) : ℤ)) = -1` using `by first`. Consider the case `rfl`. Consider the case `decide`. Consider the case `simp [Formalism.HC.Frame.cc]`. Rewrite using `[h1, hc]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hfix : ∀ x, conjF H x = x → ∃ a, algebraMap H.F H.E a = x` using `fun x hx => ⟨⟨x, (conj_eq_self_iff H x).1 hx⟩, rfl⟩`. Take `⟨φ⟩` from `exists_emb (conjF H) (conjF_conjF H) hfix H.sqd hb0 hb H.d H.sqd_sq r hr`. Conclude with `splitAt_nonempty (conjF H) (conjF_conjF H) (finrank_FE H) v φ H.sqd hb0 hb hval`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem splH (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E)
     (hj : ∀ k, H.g k ≠ 2 ∧ jacobiSym (-(H.d : ℤ)) (H.g k) = 1) (v : HeightOneSpectrum (𝓞 H.F))

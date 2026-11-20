@@ -29,9 +29,9 @@ def total (ρ : AlgChart p σ 1 → CxPts p σ → ℝ) : ℝ :=
 variable {ρ ρ' : AlgChart p σ 1 → CxPts p σ → ℝ}
 
 /- English proof (translation)
-Unfold `part ChartGlue.glueMeas`. Use `iSup_congr fun c => Measure.ext fun A hA => ?_` and prove the remaining obligations. Rewrite using `[ChartGlue.chartMeas_apply _ _ hA, ChartGlue.chartMeas_apply _ _ hA]`. Use `setLIntegral_congr_fun (ChartGlue.measurableSet_image _ (c.e.open_source.measurableSet.inter hA) inter_subset_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [c.e.left_inv hy.1, h c y hy.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem part_congr (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ c y = ρ' c y) :
     part ρ = part ρ' := by
@@ -44,7 +44,7 @@ theorem part_congr (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ c y = 
   simp only [c.e.left_inv hy.1, h c y hy.1]
 
 /- English proof (translation)
-Rewrite using `[total, total, part_congr h, part_congr (ρ := fun c y => -ρ c y) (ρ' := fun c y => -ρ' c y) fun c y hy => by rw [h c y hy]]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem total_congr (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ c y = ρ' c y) :
     total ρ = total ρ' := by
@@ -52,7 +52,7 @@ theorem total_congr (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ c y =
     part_congr (ρ := fun c y => -ρ c y) (ρ' := fun c y => -ρ' c y) fun c y hy => by rw [h c y hy]]
 
 /- English proof (translation)
-Use `le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le` and prove the remaining obligations. Rewrite using `[ChartGlue.chartMeas_apply _ _ MeasurableSet.univ, inter_univ, c.e.image_source_eq_target]`. Use `setLIntegral_eq_zero c.e.open_target.measurableSet fun v hv => ?_` and prove the remaining obligations. Conclude with `ENNReal.ofReal_eq_zero.2 (h c _ (c.e.map_target hv))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem part_eq_zero (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ c y ≤ 0) : part ρ = 0 := by
   refine le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le
@@ -61,7 +61,7 @@ theorem part_eq_zero (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ c y 
   exact ENNReal.ofReal_eq_zero.2 (h c _ (c.e.map_target hv))
 
 /- English proof (translation)
-Rewrite using `[total, part_eq_zero (ρ := fun c y => -ρ c y) fun c y hy => neg_nonpos.2 (h c y hy)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem total_eq_of_nonneg (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, 0 ≤ ρ c y) :
     total ρ = (part ρ univ).toReal := by
@@ -69,7 +69,7 @@ theorem total_eq_of_nonneg (h : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, 0
   simp
 
 /- English proof (translation)
-Rewrite using `[part, ChartGlue.glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => by`. Rewrite using `[h.1 c c' y hy hy', ENNReal.ofReal_mul (sq_nonneg _)]) c hT hc,`. Use the proof step `ChartGlue.chartMeas_apply_of_subset _ _ hT hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDens.part_apply [SecondCountableTopology (CxPts p σ)] (h : IsDens ρ) (c : AlgChart p σ 1)
     {T : Set (CxPts p σ)} (hT : MeasurableSet T) (hc : T ⊆ c.e.source) :
@@ -79,27 +79,27 @@ theorem IsDens.part_apply [SecondCountableTopology (CxPts p σ)] (h : IsDens ρ)
     ChartGlue.chartMeas_apply_of_subset _ _ hT hc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy', mul_add], fun c => (h.2 c).add (h'.2 c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDens.add (h : IsDens ρ) (h' : IsDens ρ') : IsDens fun c y => ρ c y + ρ' c y :=
   ⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy', mul_add],
     fun c => (h.2 c).add (h'.2 c)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy', mul_sub], fun c => (h.2 c).sub (h'.2 c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDens.sub (h : IsDens ρ) (h' : IsDens ρ') : IsDens fun c y => ρ c y - ρ' c y :=
   ⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy', mul_sub],
     fun c => (h.2 c).sub (h'.2 c)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', mul_neg], fun c => (h.2 c).neg⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDens.neg (h : IsDens ρ) : IsDens fun c y => -ρ c y :=
   ⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', mul_neg], fun c => (h.2 c).neg⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', mul_left_comm], fun c => (hf.comp_continuousOn c.e.continuousOn_symm).mul (h.2 c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDens.mul (h : IsDens ρ) {f : CxPts p σ → ℝ} (hf : Continuous f) :
     IsDens fun c y => f y * ρ c y :=
@@ -107,7 +107,7 @@ theorem IsDens.mul (h : IsDens ρ) {f : CxPts p σ → ℝ} (hf : Continuous f) 
     fun c => (hf.comp_continuousOn c.e.continuousOn_symm).mul (h.2 c)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by rw [e c y hy, e c' y hy', h.1 c c' y hy hy'], fun c => (h.2 c).congr fun v hv => e c _ (c.e.map_target hv)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDens.congr (h : IsDens ρ) (e : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e.source, ρ' c y = ρ c y) :
     IsDens ρ' :=
@@ -115,7 +115,7 @@ theorem IsDens.congr (h : IsDens ρ) (e : ∀ c : AlgChart p σ 1, ∀ y ∈ c.e
     fun c => (h.2 c).congr fun v hv => e c _ (c.e.map_target hv)⟩
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [Weight.chernPart, part]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chernPart_eq {B : LB X} (φ : Weight p σ B) :
     φ.chernPart 1 1 = part (fun c y => c.chernDens φ y) ∧
@@ -133,11 +133,11 @@ Both sides reduce to the same expression.
 theorem bcMeas_eq_part : h.bcMeas hS h₁ h₃ = part fun c y => h.bcDens hS h₁ h₃ c y := rfl
 
 /- English proof (translation)
-Use `⟨fun c c' y hy hy' => Met.bcDens_trans hS h₁ h₃ c c' H hy hy', fun c v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ (c.e.symm v)`. Establish `hWo` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) a.U)`. Establish `hK : ∀ w ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ a.U, MContDiffAt ∞ (fun v => h.gram a.frame (c.e.symm v)) w` using `fun w hw => by`. Use `(H.gram a.frame hw.2).mContDiffAt c (c.e.map_target hw.1)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[c.e.right_inv hw.1]`. Then use the resulting hypothesis. Establish `hg` using `continuousOn_diagVal_extTrace hWo hK (fun w hw => h.posDef_gram_frame hS a hw.2) (EuclideanSpace.single 0 1)`. Establish `hm` using `hWo.mem_nhds (show v ∈ _ from ⟨hv, ha⟩)`. Use `ContinuousAt.continuousWithinAt (((continuousOn_const (c := (2 : ℝ))).mul hg).continuousAt hm |>.congr ?_)` and prove the remaining obligations. Use `filter_upwards [hm] with w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Met.bcDens_eq hS h₁ h₃ a c H (c.e.map_target hw.1) hw.2, Met.bcForm, c.e.right_inv hw.1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isDens_bcDens (H : h.IsCInf) : IsDens fun c y => h.bcDens hS h₁ h₃ c y := by
   refine ⟨fun c c' y hy hy' => Met.bcDens_trans hS h₁ h₃ c c' H hy hy', fun c v hv => ?_⟩
@@ -157,7 +157,7 @@ theorem isDens_bcDens (H : h.IsCInf) : IsDens fun c y => h.bcDens hS h₁ h₃ c
   rfl
 
 /- English proof (translation)
-The claim follows from `total_eq_of_nonneg fun c _ hy => Met.bcDens_nonneg hS h₁ h₃ c H hy`.
+A detailed English derivation is pending.
 -/
 theorem total_bcDens (H : h.IsCInf) :
     total (fun c y => h.bcDens hS h₁ h₃ c y) = (h.bcMeas hS h₁ h₃ univ).toReal :=
@@ -172,7 +172,7 @@ def IsCosSq {V L L' : X.Modules} {r : ℕ} (h : Met p σ V r) (l : L ⟶ V) (l' 
       v y * (h.form (l.app U t) (l.app U t) y).re * (h.form (l'.app U t') (l'.app U t') y).re
 
 /- English proof (translation)
-Introduce `U t' t y hy` and use `by rw [← h.conj_form, Complex.norm_conj, H U t t' y hy, mul_right_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCosSq.symm {V L L' : X.Modules} {r : ℕ} {h : Met p σ V r} {l : L ⟶ V} {l' : L' ⟶ V}
     {v : CxPts p σ → ℝ} (H : IsCosSq h l l' v) : IsCosSq h l' l v := fun U t' t y hy => by

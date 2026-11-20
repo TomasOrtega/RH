@@ -25,9 +25,9 @@ open GlobalTheory.TripleDarboux
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Chars)
 
 /- English proof (translation)
-Use `⟨h.1, fun y => (h.2 y).trans (forall₂_congr fun x _ => ?_)⟩` and prove the remaining obligations. Establish `e : ∑ i, ∑ j, star (x i) * (sgn true V).gram i j * y j = -∑ i, ∑ j, star (x i) * V.gram i j * y j`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show star (x i) * (-V.gram i j) * y j = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `⟨fun ⟨b, hb⟩ => ⟨-b, by simp [hb]⟩, fun ⟨b, hb⟩ => ⟨-b, by simp [hb]⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem selfDual_neg {D : D7} {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (h : IsSelfDualC V Λ) : IsSelfDualC (sgn true V) Λ := by
@@ -43,11 +43,9 @@ private theorem selfDual_neg {D : D7} {V : HSp D} {Λ : Submodule (𝓞 D.host.E
   exact ⟨fun ⟨b, hb⟩ => ⟨-b, by simp [hb]⟩, fun ⟨b, hb⟩ => ⟨-b, by simp [hb]⟩⟩
 
 /- English proof (translation)
-Establish `hlat` using `Formalism.L2.Col.brp_starLat_lattice _ _ hsd.1`. Take `⟨bas, hbas⟩` from `exists_bas B _ hlat`. Establish `eJ : ∀ w, ((-1 : D.host.E) • S.gram).map (B.emb w).1 = -((gramAt D S (τf w)).map star)` using `fun w => by`. Use extensionality with `a b`. Simplify using `[gramAt, hB]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨_, bas, ⟨fun a b => ?_, fun w => ?_, hlat, fun y => GlobalTheory.TripleSpace.mem_starLat_iff_form S hsd y, fun w => ?_, hbas⟩, fun y => Iff.rfl⟩` and prove the remaining obligations. Use `show star (((-1 : D.host.E) • S.gram) b a) = ((-1 : D.host.E) • S.gram) a b`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, star_mul', star_neg, star_one, GlobalTheory.TripleSpace.star_gram]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (((-1 : D.host.E) • S.gram).map (B.emb w).1) _ _`. Rewrite using `[eJ]`.
-
-Conclude with `GlobalTheory.TripleSpace.hasSig_neg_of_hasSignature (hasSignature_map_conj (hsig _))`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (((-1 : D.host.E) • S.gram).map (B.emb w).1) _`. Rewrite using `[eJ]`. Conclude with `GlobalTheory.TripleSpace.isCartan_neg_conj (hs _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem herm_of_lat {D : D7} (B : Base D.host.F D.host.E) (τf : InfinitePlace D.host.F → D.what₂.Tau)
     (hB : ∀ w x, (B.emb w).1 x = conj (tauE D (τf w) x)) (S : HSp D)
@@ -74,17 +72,13 @@ private theorem herm_of_lat {D : D7} (B : Base D.host.F D.host.E) (τf : Infinit
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Set `e' : Fin X.rank ⊕ Fin (zeroSp D).rank ≃ Fin k` to `(Equiv.sumEmpty (Fin X.rank) (Fin 0)).trans e.symm`. Establish `hJ : D.host.xi0 • (X.gramᵀ).submatrix e e = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram X (zeroSp D) e'` using `congrArg (D.host.xi0 • ·) (blk_empty e _ _).symm`. Establish `hZ` using `GlobalTheory.LineSelfDual.isSelfDualC_selfDualLatticeCoordsInFrame D (zeroSp D)`. Establish `hlat` using `GlobalTheory.SkewLat.isLattice_pairLat GlobalTheory.SkewLat.DualPair.AA_ne hA.1 hZ.1 e'`. Take `⟨bas, hbas⟩` from `exists_bas B _ hlat`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsub : Subsingleton (Matrix (Fin (zeroSp D).rank) (Fin (zeroSp D).rank) ℂ)` using `inferInstanceAs (Subsingleton (Matrix (Fin 0) (Fin 0) ℂ))`. Establish `hsub' : Subsingleton (Fin (zeroSp D).rank → D.host.E)` using `inferInstanceAs (Subsingleton (Fin 0 → D.host.E))`. Use `⟨_, bas, ⟨fun a b => ?_, fun w => ?_, hlat, fun y => ?_, fun w => ?_, hbas⟩, fun y => ?_⟩` and prove the remaining obligations. Use `show star (D.host.xi0 * X.gram (e a) (e b)) = -(D.host.xi0 * X.gram (e b) (e a))`. Rewrite using `[star_mul', GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg D, GlobalTheory.TripleSpace.star_gram, neg_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (Complex.I • (D.host.xi0 • (X.gramᵀ).submatrix e e).map (B.emb w).1) _ _`. Rewrite using `[hJ, GlobalTheory.SkewLat.I_smul_skewGram_map _ _ e' (τf w) (B.emb w).1 (hB w)]`. Apply the tactic sequence `have h0 : Formalism.UG.HasSignature (gramAt D (zeroSp D) (τf w)) 0 0 := ⟨(Equiv.sumEmpty (Fin 0) (Fin 0)).symm, 1, by ext (a | a) <;> exact a.elim0⟩`. Conclude with `GlobalTheory.SkewLat.hasSig_blk e' _ _ (Formalism.L2.Theta.xi_zero_im_pos D (τf w)) (hsig _) h0`. Use `show y ∈ _ ↔ ∀ x ∈ _, ∀ o : 𝓞 D.host.E, IsIntegral ℤ (Algebra.trace ℚ D.host.E (o * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig (D.host.xi0 • (X.gramᵀ).submatrix e e) y x))`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Conclude with `GlobalTheory.SkewLat.dual_pairLat (fun c hc => GlobalTheory.SkewLat.star_mem_AA hc) _ _ hA hZ e' y`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan (Complex.I • (D.host.xi0 • (X.gramᵀ).submatrix e e).map (B.emb w).1) (((s (τf w)).submatrix e e).map conj)`. Rewrite using `[hJ, GlobalTheory.SkewLat.I_smul_skewGram_map _ _ e' (τf w) (B.emb w).1 (hB w), ← blk_empty e (s (τf w)) 1]`. Establish `h0 : IsCartanInv (gramAt D (zeroSp D) (τf w)) 1` using `⟨Subsingleton.elim _ _, Subsingleton.elim _ _, by`.
-
-Rewrite using `[Subsingleton.elim (gramAt D (zeroSp D) (τf w) * 1) 1]`. Conclude with `Matrix.PosDef.one⟩`. Conclude with `GlobalTheory.SkewLat.isCartan_blk e' _ _ _ _ (Formalism.L2.Theta.xi_zero_im_pos D (τf w)) (hs _) h0`. Use `GlobalTheory.SkewLat.mem_pairLat.trans ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (fun k => y (e' (.inr k))) 0]`.
-
-Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem skew_of_lat {D : D7} (B : Base D.host.F D.host.E) (τf : InfinitePlace D.host.F → D.what₂.Tau)
     (hB : ∀ w x, (B.emb w).1 x = conj (tauE D (τf w) x)) (X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank)
@@ -128,7 +122,7 @@ private theorem skew_of_lat {D : D7} (B : Base D.host.F D.host.E) (τf : Infinit
     exact zero_mem _
 
 /- English proof (translation)
-Use `choose b hb using h`. Use `⟨fun v => if hv : v ∈ B.P then b ⟨v, hv⟩ else 1, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos v.2]`. Conclude with `hb v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ext_bas {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (B : Base F E) {n : ℕ}
     (Q : ∀ v : B.P, GL (Fin n) (Fv F v) → Prop) (h : ∀ v, ∃ b, Q v b) :
@@ -141,21 +135,21 @@ private theorem ext_bas {F E : Type} [Field F] [NumberField F] [Field E] [Number
 end UpperTheory.HermitianSkewLattice
 
 /- English proof (translation)
-Use `open GlobalTheory.TripleDarboux UpperTheory.HermitianSkewLattice in`. Introduce `D ψ T A A' WW X FA FA' FW hr Bs p q hBs hψ hτ rA rA' rW hm hm' nA nA' nW hev h1 h2 hκ`. Use `choose τf hemb using hτ`. Establish `hneg : ∀ τ, gramAt D (sgn true A) τ = -gramAt D A τ` using `fun τ => by ext i j; simp [gramAt, neg_gram]`. Take `⟨ΛV, basV, hV, lV⟩` from `herm_of_lat Bs τf hemb (sgn true A) X.rA.Λ (selfDual_neg rA.1) (fun τ => sgnM true (FA.cart τ)) (fun τ => isCartanInv_sgn true A τ (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv FA τ)) (fun τ => by rw [hneg]; exact hasSignature_neg (nA τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eJ : (-1 : D.host.E) • (sgn true A).gram = (1 : D.host.E) • A.gram`. Rewrite using `[neg_gram, neg_smul, one_smul, one_smul, neg_neg]`. Establish `eθ : (fun w => -sgnM true (FA.cart (τf w))) = fun w => FA.cart (τf w)` using `funext fun w => neg_neg _`. Rewrite `hV` using `[eJ, eθ]`. Take `⟨ΛV', basV', hV', lV'⟩` from `herm_of_lat Bs τf hemb A' X.rA'.Λ rA'.1 FA'.cart (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv FA') nA'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ΛX, basX, hX, lX⟩` from `skew_of_lat Bs τf hemb WW (finCongr hr) X.rW.Λ rW.1 FW.cart (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv FW) nW`. Establish `e3 : WW.rank - (p + q) = A.rank + A'.rank - (p + q)` using `by rw [hr]`. Rewrite `hX` using `[e3]`. Take `⟨bV, hbV⟩` from `ext_bas Bs (n := A.rank) (fun v b => IsSplitBasis (Bs.τ v) ΛV b ∧ (b⁻¹).1 = -(A.gram.map (Bs.τ v) * X.rA.β.1.map (evW (Bs.τ v)))ᵀ) fun v => by`. Take `⟨b, -, hb, hb'⟩` from `UpperTheory.exists_splitBasis_conj_lattice_of_selfDual_frame D A X.rA.Λ ΛV X.rA.β rA.1 rA.2.1 lV v (Bs.τ v)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_neg, Units.val_neg, hb']`. Take `⟨bV', hbV'⟩` from `ext_bas Bs (n := A'.rank) (fun v b => IsSplitBasis (Bs.τ v) ΛV' b ∧ (b⁻¹).1 = (A'.gram.map (Bs.τ v) * X.rA'.β.1.map (evW (Bs.τ v)))ᵀ) fun v => by`. Take `⟨b, hb, -, hb'⟩` from `UpperTheory.exists_splitBasis_conj_lattice_of_selfDual_frame D A' X.rA'.Λ ΛV' X.rA'.β rA'.1 rA'.2.1 lV' v (Bs.τ v)`. Conclude with `⟨b, hb, hb'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨bX, hbX⟩` from `ext_bas Bs (n := A.rank + A'.rank) (fun v b => IsSplitBasis (Bs.τ v) ΛX b ∧ (AUnit (Bs.τ v) → b.1 = (X.rW.β.1.map (evW (Bs.τ v))).submatrix (finCongr hr) (finCongr hr))) fun v => by`. Distinguish the cases in `hu : AUnit (Bs.τ v)`. Take `⟨c, hc, hc'⟩` from `UpperTheory.exists_splitBasis_skewLattice_of_frame D _ _ (finCongr hr) X.rW.Λ ΛX X.rW.β rW.2.1 lX v (Bs.τ v) hu`. Conclude with `⟨c, hc, fun _ => hc'⟩`. Conclude with `⟨basX v, hX.bas v, fun h => absurd h hu⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `V : Spc D.host.F D.host.E A.rank` to `⟨(1 : D.host.E) • A.gram, ΛV, fun w => FA.cart (τf w), bV⟩`. Set `V' : Spc D.host.F D.host.E A'.rank` to `⟨(-1 : D.host.E) • A'.gram, ΛV', fun w => -FA'.cart (τf w), bV'⟩`. Set `Ws : Spc D.host.F D.host.E (A.rank + A'.rank)` to `⟨D.host.xi0 • (WW.gramᵀ).submatrix (finCongr hr) (finCongr hr), ΛX, fun w => ((FW.cart (τf w)).submatrix (finCongr hr) (finCongr hr)).map conj, bX⟩`. Establish `gV : V.IsHerm D.sp.cm.sig Bs (A.rank - p) p` using `⟨hV.herm, hV.sig, hV.lat, hV.dual, hV.cartan, fun v => (hbV v).1⟩`. Establish `gV' : V'.IsHerm D.sp.cm.sig Bs q (A'.rank - q)` using `⟨hV'.herm, hV'.sig, hV'.lat, hV'.dual, hV'.cartan, fun v => (hbV' v).1⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `gW : Ws.IsSkew D.sp.cm.sig Bs (A.rank + A'.rank - (p + q)) (p + q)` using `⟨hX.skew, hX.sig, hX.lat, hX.dual, hX.cartan, fun v => (hbX v).1⟩`. Take `⟨hμ1, hd1⟩` from `GlobalTheory.T.conjugateUnitaryAdelicIso_map_haar_fundamentalDomain D A 1 (J := V.J) rfl one_ne_zero X.m X.fd hm`. Take `⟨hμ2, hd2⟩` from `GlobalTheory.T.conjugateUnitaryAdelicIso_map_haar_fundamentalDomain D A' (-1) (J := V'.J) rfl (neg_ne_zero.2 one_ne_zero) X.m' X.fd' hm'`. Take `⟨M, hMμ, hMd, hM⟩` from `GlobalTheory.T.exists_good_rational_schroedingerModel D Bs hBs V Ws _ _ _ _ gV gW _ _ hμ1 hd1`. Take `⟨M', hMμ', hMd', hM'⟩` from `GlobalTheory.T.exists_good_rational_schroedingerModel D Bs hBs V' Ws _ _ _ _ gV' gW _ _ hμ2 hd2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨p, q, V, V', Ws, M, M'⟩, rfl, rfl, ⟨by omega, hev, hκ, ?_, h2, gV, gV', gW, hM, hM'⟩, ⟨⟨hBs, hψ, rfl, rfl, ⟨_, _, gV⟩, ⟨_, _, gW⟩, hM⟩, ⟨hBs, hψ, rfl, rfl, ⟨_, _, gV'⟩, ⟨_, _, gW⟩, hM'⟩, ⟨lV, lX⟩, ⟨lV', lX⟩, fun w => ⟨τf w, hemb w, (one_smul _ _).symm, rfl⟩, fun w => ⟨τf w, hem …` and prove the remaining obligations. Take `⟨m, hm⟩` from `hev`. Use `show 2 * (p + q) + 1 < (A.rank - A'.rank) / 2`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_geo_of_signature_rank_bounds :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (T : Type) (A A' WW : HSp D) (X : Tri T A A' WW) (FA : Fr A) (FA' : Fr A') (FW : Fr WW)

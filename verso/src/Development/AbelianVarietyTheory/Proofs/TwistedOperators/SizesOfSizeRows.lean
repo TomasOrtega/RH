@@ -12,15 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowSizes
 
 /- English proof (translation)
-Introduce `D large₂ h`. Take `⟨⟨Pm, _, _⟩, _, hmf, hm44, _⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `D.R.f_le_k`. Establish `h2 : D.R.f = 2 * D.R.ord` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `h4 : 44 ^ 4 ≤ D.R.m ^ 4` using `Nat.pow_le_pow_left hm44 4`. Use linear arithmetic over natural numbers and integers. Introduce `τ j hj`. Establish `hg` using `(Pm.nodes_gap τ j hj).1`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf` using `Pm.heightBound_ge_rank_cubic`. Establish `hN : ((GlobalTheory.Grid.bigN D : ℕ) : ℝ) = (D.R.k : ℝ) + D.R.m * (D.R.t + (D.R.r + 6) + 1)`. Unfold `GlobalTheory.Grid.bigN GlobalTheory.Grid.sLen`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `key : ((2 * (GlobalTheory.Grid.bigN D : ℚ) ^ 3 : ℚ) : ℝ) < (((D.hc τ).b ⟨j + 1, hj⟩ - (D.hc τ).b ⟨j, by omega⟩ : ℚ) : ℝ)`. Move the coercions through the operations in `at hg ⊢`. Rewrite using `[hN]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem sizes_of_sizeRows : ∀ {D : D7} (large₂ : SizeData₂ D), GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D := by
   intro D large₂ h

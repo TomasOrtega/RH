@@ -18,11 +18,11 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Establish `co : ∀ i : Fin 3, m.F3 ≫ (x3 G i).left = (x3 G' i).left ≫ m.F` using `fun i => by`. Establish `h` using `m.psum_comm {i}`. Rewrite `h` using `[psum_single, psum_single]`. Conclude with `h.symm`. Establish `q : (lift a (lift b d)).left ≫ m.F3 = (lift (Out.toBase hw a) (lift (Out.toBase hw b) (Out.toBase hw d))).left` using `hom_ext_triple _ fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, co, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`. Establish `e` using `H _ (lift a (lift b d)).left z (fun I => J (((lift a (lift b d)).left ≫ thφ G' (x3 G') I) ≫ m.F)) (fun I => J' ((lift a (lift b d)).left ≫ thφ G' (x3 G') I)) (fun I => hJ _) (fun I => hJ' _)`. Use `Eq.trans ?_ e` and prove the remaining obligations. Use `(congrArg (fun r => val (L := L.L) (φ := thφ G (x3 G)) (ε := thε) c.t r z J) q.symm).trans ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `val_of _ _ _ _ _ fun I => congrArg J ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg _ (m.psum_comm I.down).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubV_of_pmaps {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj G] {G' : Over S'}
     [GrpObj G'] [IsCommMonObj G'] (m : CubeMap G' G) (hw : m.F ≫ G.hom = G'.hom ≫ f) {L : RigLB G} {L' : RigLB G'}
@@ -50,13 +50,13 @@ theorem cubV_of_pmaps {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G]
   exact congrArg _ (m.psum_comm I.down).symm
 
 /- English proof (translation)
-Introduce `S S' f G _ _ G' _ _ m hw mul L L' c c' h N T x y ζ hζ`. Take `⟨w, -, -, H⟩` from `(isPullCubical_iff m c c').1 h`. Set `β` to `toBaseHom mul T`. Use `⟨(map_pow β x N).symm.trans ((congrArg β hζ.1).trans (map_one β)), (map_pow β y N).symm.trans ((congrArg β hζ.2.1).trans (map_one β)), fun z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `exists_good_pt L'.isLB (Z := T.left) z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW⟩ : ∃ W : (T.left ⟶ G'.left) → (T.left.presheaf.stalk z)ˣ, W = fun q => gw w q z (J (q ≫ m.F)) (J' q)` from `⟨_, rfl⟩`. Set `θ : (Over.mk (T.hom ≫ f) ⟶ G) → (Over.mk (T.hom ≫ f) ⟶ G) → (Over.mk (T.hom ≫ f) ⟶ G) → (T.left.presheaf.stalk z)ˣ` to `cubV c (T := Over.mk (T.hom ≫ f)) z J`. Establish `a' : ∀ a b d : T ⟶ G', θ (β a) (β b) (β d) * W (a * b).left * W (a * d).left * W (b * d).left * W (1 : T ⟶ G').left = W (a * b * d).left * W a.left * W b.left * W d.left * cubV c' z J' a b d`. Introduce `a b d`. Establish `e` using `(cubV_of_pmaps m hw H (T := T) (z := z) hJ hJ' a b d).trans (congrArg₂ (· * ·) ((congrArg (fun V : (T.left ⟶ G'.left) → (T.left.presheaf.stalk z)ˣ => ∏ I : thK.{0}, V ((lift a (lift b d)).left ≫ thφ G' (x3 G') I) ^ thε I) hW.symm).trans (prod_cub a b d W)) rfl)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e' : θ (β a) (β b) (β d) = _` using `e`. Rewrite using `[e']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Conclude with `cubN_ratio_twist β (fun x => W x.left) a' hζ.1 hζ.2.1 (hζ.2.2 z J' hJ')`.
+A detailed English derivation is pending.
 -/
 theorem cubWeil_of_isPullCubical : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (G' : Over S') [GrpObj G'] [IsCommMonObj G'] (m : CubeMap G' G) (hw : m.F ≫ G.hom = G'.hom ≫ f), (∀ (T : Over S') (x y : T ⟶ G'), Out.toBase hw (x * y) = Out.toBase hw x * Out.toBase hw y) → ∀ (L : RigLB G) (L' : RigLB G') (c : CubicalStr G L) (c' : CubicalStr G' L'), m.IsPullCubical c' c → ∀ (N : ℕ) (T : Over S') (x y : T ⟶ G') (ζ : Γ(T.left, ⊤)ˣ), CubWeil c' N x y ζ → CubWeil c N (Out.toBase hw x) (Out.toBase hw y) ζ := by
   intro S S' f G _ _ G' _ _ m hw mul L L' c c' h N T x y ζ hζ

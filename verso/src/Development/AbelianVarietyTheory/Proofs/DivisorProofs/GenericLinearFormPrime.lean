@@ -15,14 +15,14 @@ def polyEquiv : MvPolynomial (Fin N) k ⊗[k] A ≃+* MvPolynomial (Unit × Fin 
     (renameEquiv A (Equiv.punitProd (Fin N)).symm).toRingEquiv
 
 /- English proof (translation)
-Simplify using `[polyEquiv, smul_eq_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyEquiv_X_tmul (i : Fin N) (x : A) :
     polyEquiv k A N (X i ⊗ₜ x) = C x * X ((), i) := by
   simp [polyEquiv, smul_eq_C_mul]
 
 /- English proof (translation)
-Simplify using `[polyEquiv, smul_eq_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyEquiv_one_tmul (x : A) : polyEquiv k A N (1 ⊗ₜ x) = C x := by
   simp [polyEquiv, smul_eq_C_mul]
@@ -32,21 +32,21 @@ variable {k A N}
 def genForm (a : Fin N → A) : MvPolynomial (Fin N) k ⊗[k] A := ∑ i, X i ⊗ₜ a i
 
 /- English proof (translation)
-Simplify using `[genForm, linForm, map_sum, polyEquiv_X_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyEquiv_genForm (a : Fin N → A) :
     polyEquiv k A N (genForm (k := k) a) = linForm a () := by
   simp [genForm, linForm, map_sum, polyEquiv_X_tmul]
 
 /- English proof (translation)
-The claim follows from `Function.Injective.isDomain (polyEquiv k A N).toRingHom (polyEquiv k A N).injective`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_tensor : IsDomain (MvPolynomial (Fin N) k ⊗[k] A) :=
   Function.Injective.isDomain (polyEquiv k A N).toRingHom
     (polyEquiv k A N).injective
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (polyEquiv k A N) h`. Rewrite `h1` using `[polyEquiv_genForm, map_zero, ← linFormEquiv_X_of_mem (ι := Unit) a hu (Set.mem_univ ())]`. Conclude with `X_ne_zero _ ((linFormEquiv a Set.univ j hu).injective (h1.trans (map_zero _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genForm_ne_zero (a : Fin N → A) {j : Fin N} (hu : IsUnit (a j)) :
     genForm (k := k) a ≠ 0 := by
@@ -56,16 +56,16 @@ theorem genForm_ne_zero (a : Fin N → A) {j : Fin N} (hu : IsUnit (a j)) :
   exact X_ne_zero _ ((linFormEquiv a Set.univ j hu).injective (h1.trans (map_zero _).symm))
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton, polyEquiv_genForm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_span_genForm (a : Fin N → A) :
     (Ideal.span {genForm (k := k) a}).map (polyEquiv k A N) = Ideal.span {linForm a ()} := by
   rw [Ideal.map_span, Set.image_singleton, polyEquiv_genForm]
 
 /- English proof (translation)
-Establish `hp : (Ideal.span {linForm a ()}).IsPrime`. Use `isPrime_span_linForm (ι := Unit) a hu Set.univ` as an intermediate fact. Rewrite `this` using `[Set.image_univ, Set.range_unique]`. Then use the resulting hypothesis. Establish `: Ideal.span {genForm (k` using `k) a} = (Ideal.span {linForm a ()}).map (polyEquiv k A N).symm := by`. Rewrite using `[Ideal.map_span, Set.image_singleton, ← polyEquiv_genForm (k := k) a, RingEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.map_isPrime_of_equiv _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrime_span_genForm (a : Fin N → A) {j : Fin N} (hu : IsUnit (a j)) :
     (Ideal.span {genForm (k := k) a}).IsPrime := by
@@ -79,9 +79,9 @@ theorem isPrime_span_genForm (a : Fin N → A) {j : Fin N} (hu : IsUnit (a j)) :
   exact Ideal.map_isPrime_of_equiv _
 
 /- English proof (translation)
-Establish `h1` using `Ideal.mem_map_of_mem (polyEquiv k A N) hx`. Rewrite `h1` using `[map_span_genForm, polyEquiv_one_tmul]`. Establish `h2 : C x ∈ RingHom.ker (linFormElim a hu (Set.univ : Set Unit))`. Rewrite using `[ker_linFormElim, Set.image_univ, Set.range_unique]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[RingHom.mem_ker, algHom_C, algebraMap_eq, C_eq_zero]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_one_tmul_mem (a : Fin N → A) {j : Fin N} (hu : IsUnit (a j)) {x : A}
     (hx : (1 : MvPolynomial (Fin N) k) ⊗ₜ[k] x ∈ Ideal.span {genForm (k := k) a}) : x = 0 := by
@@ -94,27 +94,23 @@ theorem eq_zero_of_one_tmul_mem (a : Fin N → A) {j : Fin N} (hu : IsUnit (a j)
   exact h2
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ N a j hu t ht`. Set `P` to `MvPolynomial (Fin N) k`. Set `K` to `FractionRing P`. Set `B` to `P ⊗[k] A`. Use `haveI : IsDomain B := isDomain_tensor`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : B →ₐ[k] K ⊗[k] A` to `Algebra.TensorProduct.map (IsScalarTower.toAlgHom k P K) (AlgHom.id k A)`. Use `letI : Algebra B (K ⊗[k] A) := φ.toRingHom.toAlgebra`. Establish `hφ : ∀ x, algebraMap B (K ⊗[k] A) x = φ x` using `fun _ => rfl`. Use `haveI : IsScalarTower P B (K ⊗[k] A) := by`. Use `IsScalarTower.of_algebraMap_eq fun p => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hφ]`. Simplify using `[φ, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression. Establish `H : (algebraMap B (K ⊗[k] A)).comp Algebra.TensorProduct.includeRight.toRingHom = Algebra.TensorProduct.includeRight.toRingHom`. Use extensionality with `x`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ (1 ⊗ₜ[k] x) = 1 ⊗ₜ[k] x`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Set `M : Submonoid B` to `Algebra.algebraMapSubmonoid B (nonZeroDivisors P)`. Use `haveI hL : IsLocalization M (K ⊗[k] A) := IsLocalization.tensorProduct_tensorProduct k A (nonZeroDivisors P) K H`. Establish `hkA : Function.Injective (algebraMap k A)` using `(algebraMap k A).injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : M ≤ nonZeroDivisors B`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero fun h => nonZeroDivisors.ne_zero hp ?_` and prove the remaining obligations. Use `Algebra.TensorProduct.includeLeft_injective (R := k) (S := k) (A := P) (B := A) hkA ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hinj : Function.Injective (algebraMap B (K ⊗[k] A))` using `IsLocalization.injective _ hM`. Establish `ht0 : t = algebraMap B (K ⊗[k] A) (genForm (k` using `k) a) := by`. Rewrite using `[ht, hφ, genForm, map_sum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : Ideal.span {t} = (Ideal.span {genForm (k` using `k) a}).map (algebraMap B (K ⊗[k] A)) := by`. Rewrite using `[Ideal.map_span, Set.image_singleton, ht0]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht0]`. Conclude with `fun h => genForm_ne_zero (k := k) a hu (hinj (h.trans (map_zero _).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI hQ := isPrime_span_genForm (k := k) a hu`. Distinguish the cases in `hd : Disjoint (M : Set B) (Ideal.span {genForm (k := k) a} : Set B)`. Use `right`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hspan]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `IsLocalization.isPrime_of_isPrime_disjoint M (K ⊗[k] A) _ hQ hd`. Establish `h1 : (1 : K) ⊗ₜ[k] x = algebraMap B (K ⊗[k] A) ((1 : P) ⊗ₜ[k] x)`. Rewrite using `[hφ, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Rewrite `hx` using `[h1, hspan]`. Establish `h2` using `IsLocalization.under_map_of_isPrime_disjoint M (K ⊗[k] A) hQ hd`.
-
-Establish `h3 : (1 : P) ⊗ₜ[k] x ∈ ((Ideal.span {genForm (k` using `k) a}).map (algebraMap B (K ⊗[k] A))).under B := hx`. Rewrite `h3` using `[h2]`. Conclude with `eq_zero_of_one_tmul_mem a hu h3`. Use `left`. Take `⟨m, hmM, hmQ⟩` from `Set.not_disjoint_iff.1 hd`.
-
-Rewrite using `[hspan]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hmQ) (IsLocalization.map_units (K ⊗[k] A) (⟨m, hmM⟩ : M))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_genericForm_isPrime_or_eq_top :
     ∀ (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A] (N : ℕ) (a : Fin N → A)

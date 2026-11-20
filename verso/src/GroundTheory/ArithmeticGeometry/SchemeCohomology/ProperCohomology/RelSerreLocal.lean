@@ -30,7 +30,7 @@ abbrev baseAlgebra {V : X.Opens} (hV : IsAffineOpen V) : Algebra A Γ(X, V) :=
 
 variable (A) in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (baseHom A hV).hom) = _`. Rewrite using `[CommRingCat.ofHom_hom]`. Conclude with `Spec.map_preimage _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma specMap_baseAlgebra {V : X.Opens} (hV : IsAffineOpen V) :
     letI := baseAlgebra A hV
@@ -60,7 +60,7 @@ abbrev overV {V : X.Opens} (hV : IsAffineOpen V) :
   pullback.fst _ _
 
 /- English proof (translation)
-Establish `e1 : (overV (N` using `N) A hV).opensRange = (pullback.snd (ProjSpace.toSpecBase A N) (X ↘ Spec (.of A))) ⁻¹ᵁ hV.fromSpec.opensRange := Scheme.Hom.opensRange_pullbackFst _ _`. Rewrite using `[e1, hV.opensRange_fromSpec, ← Scheme.Hom.comp_preimage, pullback.lift_snd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma preimage_opensRange_overV {V : X.Opens} (hV : IsAffineOpen V) :
     graph i ψ h ⁻¹ᵁ (overV (N := N) A hV).opensRange = ψ ⁻¹ᵁ V := by
@@ -81,7 +81,7 @@ instance {V : X.Opens} (hV : IsAffineOpen V) : IsIso (restrictT (N := N) i ψ h 
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[IsIso.inv_comp_eq, restrictT, pullback.lift_fst, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma inv_restrictT_fst {V : X.Opens} (hV : IsAffineOpen V) :
     inv (restrictT (N := N) i ψ h hV) ≫ pullback.fst _ _ = pullback.fst _ _ := by
@@ -94,7 +94,7 @@ def restrictIso {V : X.Opens} (hV : IsAffineOpen V) :
     (asIso (restrictT i ψ h hV)).symm
 
 /- English proof (translation)
-Simplify using `only [restrictIso, Iso.trans_hom, Iso.symm_hom, asIso_inv, Category.assoc, inv_restrictT_fst, pullbackRestrictIsoRestrict_inv_fst, Scheme.isoOfEq_hom_ι]`.
+Simplify using the standard rewrite rules.
 -/
 lemma restrictIso_hom_fst {V : X.Opens} (hV : IsAffineOpen V) :
     (restrictIso (N := N) i ψ h hV).hom ≫ pullback.fst _ _ = (ψ ⁻¹ᵁ V).ι := by
@@ -112,7 +112,7 @@ def pasteIso {V : X.Opens} (hV : IsAffineOpen V) :
 
 variable (A) in
 /- English proof (translation)
-Simplify using `only [pasteIso, Iso.trans_hom, Category.assoc, pullback.congrHom, asIso_hom, pullback.map]`. Use `erw [pullback.lift_fst]`. Rewrite using `[Category.comp_id, pullbackLeftPullbackSndIso_hom_fst]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pasteIso_hom_fst {V : X.Opens} (hV : IsAffineOpen V) :
     letI := baseAlgebra A hV
@@ -123,7 +123,7 @@ lemma pasteIso_hom_fst {V : X.Opens} (hV : IsAffineOpen V) :
 
 variable (A) in
 /- English proof (translation)
-Simplify using `only [pasteIso, Iso.trans_hom, Category.assoc, pullback.congrHom, asIso_hom, pullback.map]`. Use `erw [pullback.lift_snd]`. Rewrite using `[Category.comp_id, pullbackLeftPullbackSndIso_hom_snd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pasteIso_hom_snd {V : X.Opens} (hV : IsAffineOpen V) :
     letI := baseAlgebra A hV
@@ -144,7 +144,7 @@ instance isClosedImmersion_embed [IsClosedImmersion i] [IsSeparated (X ↘ Spec 
   infer_instance
 
 /- English proof (translation)
-Establish `hc : pullback.snd (graph i ψ h) (overV (N` using `N) A hV) ≫ overV A hV = pullback.fst _ _ ≫ graph i ψ h := pullback.condition.symm`. Establish `hp` using `pasteIso_hom_fst (N := N) A hV`. Simplify using `only [embed, Category.assoc]`. Rewrite using `[hp, ← Category.assoc (pullback.snd _ _) (pullback.fst _ _), show pullback.fst (pullback.snd (ProjSpace.toSpecBase A N) (X ↘ Spec (.of A))) hV.fromSpec = overV A hV from rfl, hc, Category.assoc, pullback.lift_fst, ← Category.assoc, restrictIso_hom_fst]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma embed_fst {V : X.Opens} (hV : IsAffineOpen V) :
     letI := baseAlgebra A hV

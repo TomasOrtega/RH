@@ -23,9 +23,7 @@ open GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.PointAt
 namespace GlobalTheory.TypeSum.GKCoef
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `: GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ ≤ kfin ε σ` using `sSup_le fun W hW w hw => ⟨W, hW.1, hw, hW.2⟩`. Conclude with `this hv`. Introduce and unpack `⟨S, h1, h2, h3⟩`.
-
-Conclude with `(le_sSup (show S ∈ {W : Submodule ℂ H | FiniteDimensional ℂ W ∧ IsKStableOn ε σ W} from ⟨h1, h3⟩)) h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_kFin_iff {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
     {σ : Mx n → (H →L[ℂ] H)} {v : H} : v ∈ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ ↔ IsKFin ε σ v := by
@@ -41,9 +39,9 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
   {σ : Mx V.rank → (H →L[ℂ] H)} {P : Mx V.rank} {T : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ →ₗ[ℂ] (GA D V → ℂ)}
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `hkU` using `K_le_UJ hk`. Establish `e : P * (P⁻¹ * k * P) * P⁻¹ = k`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Use `hT.mapK (P⁻¹ * k * P) (conj_inv_mem hP h hkU) (by rw [e]; exact hk) v w (by rw [e]; exact hw)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, rTr, conj_mul hP, atTau_mul hθ V τ (conj_inv_mem hP h hy) (conj_inv_mem hP h hkU), mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_K (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (h : Pᴴ * Jm ε * P = gramAt D V τ)
     (hT : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.IsGKMap θ V τ ε σ P T) {k : Mx V.rank} (hk : k ∈ Kset ε)
@@ -58,11 +56,11 @@ theorem map_K (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (h : Pᴴ * Jm ε * P
   rw [this, rTr, conj_mul hP, atTau_mul hθ V τ (conj_inv_mem hP h hy) (conj_inv_mem hP h hkU), mul_assoc]
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `hX' : P⁻¹ * X * P ∈ lieAt V τ` using `conj_lie hP h hX`. Establish `e1 : ∀ t : ℝ, P * NormedSpace.exp (t • (P⁻¹ * X * P)) * P⁻¹ = NormedSpace.exp (t • X)` using `fun t => by`. Rewrite using `[← conj_exp hP, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Establish `hder : HasDerivAt (fun t : ℝ => σ (P * NormedSpace.exp (t • (P⁻¹ * X * P)) * P⁻¹) v) w 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e1]`. Rewrite using `[hw]`. Conclude with `hasDerivAt_dRep (G := Jm ε) hv hX`. Establish `hTw` using `hT.mapLie _ hX' v w hder`. Rewrite using `[hTw, Rder]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiff` using `differentiable_oneP (hT.aut v).smooth hX' (x * atTau θ V τ (P⁻¹ * y * P)) 0`. Use `hdiff.hasDerivAt.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show T v (x * atTau θ V τ (P⁻¹ * (y * NormedSpace.exp (t • X)) * P)) = T v (x * atTau θ V τ (P⁻¹ * y * P) * oneP θ V τ (P⁻¹ * X * P) t)`. Rewrite using `[conj_mul hP, atTau_mul hθ V τ (conj_inv_mem hP h hy) (conj_inv_mem hP h (exp_mem_UJ hX t)), conj_exp hP, ← mul_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_map (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (h : Pᴴ * Jm ε * P = gramAt D V τ)
     (hT : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.IsGKMap θ V τ ε σ P T) (v w : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ) {X : Mx V.rank}

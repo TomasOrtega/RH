@@ -7,19 +7,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity Global
 namespace GlobalTheory.ScalLen
 
 /- English proof (translation)
-Introduce `C _ v M _ _ htf X hX c r hr`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hr`. Use `haveI : Module.IsTorsionFree (Int0 v) X := ⟨fun s hs x y hxy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `hs.ne_zero`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : s • ((x : M) - (y : M)) = 0`. Rewrite using `[smul_sub]`. Use `congrArg Subtype.val hxy` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul] at this`. Rewrite using `[this, sub_self]`. Conclude with `sub_eq_zero.1 (htf s _ hs0 h1)⟩`. Use `haveI : Module.Free (Int0 v) X := GlobalTheory.free_of_finite_of_isTorsionFree_of_valuationRing _ _`. Use `set n := finrank (Int0 v) X with hn`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `b : Basis (Fin n) (Int0 v) X` to `Module.finBasis _ _`. Set `g : X →ₗ[Int0 v] M` to `(LinearMap.lsmul (Int0 v) M c).comp X.subtype`. Establish `hg : Function.Injective g`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : c • ((x : M) - (y : M)) = 0`. Rewrite using `[smul_sub]`. Simplify using `only [g, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.lsmul_apply] at hxy`. Rewrite using `[hxy, sub_self]`. Conclude with `sub_eq_zero.1 (htf c _ hc h1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hrange : LinearMap.range g = X.map (LinearMap.lsmul (Int0 v) M c)`. Simplify using `only [g, LinearMap.range_comp, Submodule.range_subtype]`. Set `e : X ≃ₗ[Int0 v] X.map (LinearMap.lsmul (Int0 v) M c)` to `(LinearEquiv.ofInjective g hg).trans (LinearEquiv.ofEq _ _ hrange)`. Use `⟨n, b, b.map e, Matrix.diagonal (fun _ => c), fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Basis.map_apply, Matrix.diagonal_apply, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
-
-Both sides reduce to the same expression. Rewrite using `[Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Subring.coe_pow, AddValuation.map_pow, hr, ← WithTop.coe_nsmul, nsmul_eq_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLen_map_lsmul : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (M : Type)
     [AddCommGroup M] [Module (Int0 v) M], (∀ (c : Int0 v) (x : M), c ≠ 0 → c • x = 0 → x = 0) →

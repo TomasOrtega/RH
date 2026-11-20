@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.TupChar
 
 /- English proof (translation)
-Use `⟨⟨h.1.1.mul h'.1.1, fun x => (congrArg₂ (· * ·) (h.1.2 x) (h'.1.2 x)).trans (mul_one _)⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, Circle.coe_mul, h.2 P e he k x hx, h'.2 P e he k x hx, ← Units.val_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chrEq_mul {D : D7} {c c' : IdC D} {χ χ' : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ) (h' : ChrEq c' χ') :
     ChrEq (c * c') (χ * χ') := by
@@ -25,7 +25,7 @@ theorem chrEq_mul {D : D7} {c c' : IdC D} {χ χ' : Formalism.L2.Host.HChar D.ho
   rfl
 
 /- English proof (translation)
-Introduce `x hx h4 h5` and use `by obtain ⟨ι, h1, h2, h3⟩ := GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D apply Circle.ext rw [GlobalTheory.Mem.EtaTilde.val_finite D ι h1 h2 (GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3) c χ hc hu x hx, Circle.coe_one, Units.val_eq_one] refine finprod_eq_one_of_f …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unramEverywhere {D : D7} {c : IdC D} {χ : Formalism.L2.Host.HChar D.host.E} (hc : ChrEq c χ) (hu : ∀ P, χ.UnrAt P) :
     UnramEverywhere D c := fun x hx h4 h5 => by
@@ -43,15 +43,13 @@ theorem unramEverywhere {D : D7} {c : IdC D} {χ : Formalism.L2.Host.HChar D.hos
   rw [e1, WithZero.log_one, neg_zero, zpow_zero]
 
 /- English proof (translation)
-Introduce `D C xi hfin htriv`. Use `choose n hn ho using hfin`. Use `choose m hm using fun j => GlobalTheory.CharTransport.exists_chrEq D (C.mu0 j) (C.isMu0 j).unitary`. Use `choose x hx using fun μ => GlobalTheory.CharTransport.exists_chrEq D (xi μ) (Formalism.L2.Host.HChar.isUnitary_of_order (hn μ) (ho μ))`. Take `⟨η, hη⟩` from `GlobalTheory.CharTransport.exists_chrEq D C.eta C.isEta.unitary`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Establish `hres` using `GlobalTheory.Mem.EtaTilde.isEta_res D η C.eta hη C.isEta`. Establish `hexp : ∀ μ (j : Fin D.R.m) τ, HasInfExp D (m j * x μ) τ (-(D.hc τ).e j)` using `fun μ j τ => by`. Use `GlobalTheory.Chain.StepVac.hasInfExp_mul (GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hm j) (GlobalTheory.Chain.StepVac.hasInfQ_tau (C.isMu0 j).inf) τ) (GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hx μ) (hn μ) (ho μ) τ)` as an intermediate fact. Rewrite `this` using `[add_zero, Formalism.L2.Host.eExp, Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `chr : D.what₂.Tup → ℕ → IdC D` to `fun μ j => if h : 1 ≤ j ∧ j ≤ D.R.m then m ⟨j - 1, by omega⟩ * x μ else 1`. Establish `hchr : ∀ μ (j : Fin D.R.m), chr μ (j.1 + 1) = m j * x μ` using `fun μ j => dif_pos (⟨Nat.le_add_left _ _, j.2⟩ : 1 ≤ j.1 + 1 ∧ j.1 + 1 ≤ D.R.m)`. Use `⟨chr, η, fun μ j => ?_, fun μ j τ => hchr μ j ▸ hexp μ j τ, fun μ j h1 h2 => ?_, hη.1, fun τ => ?_, ⟨⟨_, hres⟩, fun η' h' a => ?_⟩, unramEverywhere hη C.isEta.unr, fun μ j => hchr μ j ▸ chrEq_mul (hm j) (hx μ), hη⟩` and prove the remaining obligations. Distinguish the cases in `h : 1 ≤ j ∧ j ≤ D.R.m`. Rewrite using `[show chr μ j = _ from dif_pos h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(chrEq_mul (hm _) (hx μ)).1, fun τ => ⟨_, hexp μ _ τ⟩⟩`. Rewrite using `[show chr μ j = _ from dif_neg h]`. Conclude with `isHC_one D`. Rewrite using `[show chr μ j = _ from dif_pos ⟨h1, h2⟩]`. Use `⟨⟨_, hres⟩, fun η' _ a => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[pow_zero, MonoidHom.mul_apply, GlobalTheory.GridWeil.triv_base (hm _) (C.isMu0 _).triv a, GlobalTheory.GridWeil.triv_base (hx μ) (htriv μ) a, mul_one]`. Conclude with `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hη (GlobalTheory.Chain.StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, C.isEta.inf⟩) τ`. Rewrite using `[(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique h' hres, pow_one, MonoidHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tupChars : ∀ (D : D7) (C : Formalism.L2.Host.CharFrame D) (xi : D.what₂.Tup → Formalism.L2.Host.HChar D.host.E), (∀ μ, ∃ n : ℕ, 0 < n ∧ (xi μ).OrderDvd n) → (∀ μ, (xi μ).TrivOn D.host.F) → ∃ (chr : D.what₂.Tup → ℕ → IdC D) (eta : IdC D), (∀ μ j, IsHC D (chr μ j)) ∧ (∀ μ (j : Fin D.R.m) τ, HasInfExp D (chr μ (j.1 + 1)) τ (-(D.hc τ).e j)) ∧ (∀ μ j, 1 ≤ j → j ≤ D.R.m → ResEta D (chr μ j) 0) ∧ IsHeckeChar D eta ∧ (∀ τ, HasInfExp D eta τ (1 / 2)) ∧ ResEta D eta 1 ∧ UnramEverywhere D eta ∧ (∀ μ (j : Fin D.R.m), Formalism.IndefR.Links.ChrEq (chr μ (j.1 + 1)) (C.mu0 j * xi μ)) ∧ Formalism.IndefR.Links.ChrEq eta C.eta := by
   intro D C xi hfin htriv

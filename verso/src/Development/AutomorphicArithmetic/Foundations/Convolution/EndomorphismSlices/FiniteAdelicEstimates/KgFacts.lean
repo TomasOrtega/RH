@@ -23,7 +23,7 @@ attribute [local instance] borelG borelF borelA borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Kg, Subgroup.mem_iInf, Subgroup.mem_inf]`. Use `forall_congr' fun w => forall_congr' fun _ => and_congr_right fun _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : IsSplitAt w`. Simplify using `[h, Subgroup.mem_comap]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem mem_Kg {S : Set (Pl E)} {L : ∀ w : Pl E, Subgroup (GLw n w)} {g : GL (Fin n) (Af E)} :
     g ∈ Kg S L ↔ ∀ w ∈ S, Slots.loc n w g ∈ L w ∧ (IsSplitAt w → Slots.loc n w (thF E n g) ∈ L w) := by
@@ -34,27 +34,27 @@ private theorem mem_Kg {S : Set (Pl E)} {L : ∀ w : Pl E, Subgroup (GLw n w)} {
   · simp [h]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_thF' : Continuous (thF E n) :=
   GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _)
 
 /- English proof (translation)
-Simplify using `only [Kf, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_Kf {g : GL (Fin n) (Af E)} : g ∈ Kf E n ↔ ∀ w, Slots.loc n w g ∈ KGL w n := by
   simp only [Kf, Subgroup.mem_iInf, Subgroup.mem_comap]
 
 /- English proof (translation)
-The claim follows from `mem_Kf.2 fun u => Slots.loc_thF_mem u (mem_Kf.1 hg _)`.
+A detailed English derivation is pending.
 -/
 private theorem thF_mem_Kf {g : GL (Fin n) (Af E)} (hg : g ∈ Kf E n) : thF E n g ∈ Kf E n :=
   mem_Kf.2 fun u => Slots.loc_thF_mem u (mem_Kf.1 hg _)
 
 /- English proof (translation)
-Establish `e : ((Kf E n ⊓ ⨅ w ∈ Z, ((L w).comap (Slots.loc n w) ⊓ (L w).comap ((Slots.loc n w).comp (thF E n))) : Subgroup (GL (Fin n) (Af E))) : Set (GL (Fin n) (Af E))) = (Kf E n : Set _) ∩ ⋂ w ∈ Z, (Slots.loc n w ⁻¹' (L w : Set _) ∩ (Slots.loc n w ∘ thF E n) ⁻¹' (L w : Set _))`. Use extensionality with `g`. Simplify using `[Subgroup.mem_iInf, Subgroup.mem_inf, Subgroup.mem_comap]`. Rewrite using `[e]`. Use `(PositivityTheory.Rg.BcB.G8.Fin.kfOC_holds E n).1.inter (isOpen_biInter_finset fun w _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hL w).preimage (Slots.continuous_loc n w)).inter ((hL w).preimage ((Slots.continuous_loc n w).comp continuous_thF'))`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_cut (Z : Finset (Pl E)) (L : ∀ w : Pl E, Subgroup (GLw n w))
     (hL : ∀ w, IsOpen (L w : Set (GLw n w))) :
@@ -71,27 +71,23 @@ private theorem isOpen_cut (Z : Finset (Pl E)) (L : ∀ w : Pl E, Subgroup (GLw 
     ((hL w).preimage ((Slots.continuous_loc n w).comp continuous_thF'))
 
 /- English proof (translation)
-Introduce `E _ _ _ n S Z L hS hZ hL hoff`. Take `⟨-, hcp, -, hsec⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.places E`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono ?_ (isOpen_cut Z L fun w => (hL w).1)` and prove the remaining obligations. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hgK, hgZ⟩` from `Subgroup.mem_inf.1 hg`. Use `mem_Kg.2 fun w hw => ?_` and prove the remaining obligations. Distinguish the cases in `hwZ : w ∈ Z`. Establish `h` using `Subgroup.mem_inf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hgZ w) hwZ)`. Conclude with `⟨h.1, fun _ => h.2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[hoff w hwZ]`. Conclude with `⟨mem_Kf.1 hgK w, fun _ => mem_Kf.1 (thF_mem_Kf hgK) w⟩`. Introduce `g hg`. Establish `hg'` using `mem_Kg.1 hg`. Use `mem_Kf.2 fun u => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `(hsec S hS u).1 with hu | hu` into its components or cases. Conclude with `(hL u).2 (hg' u hu).1`. Distinguish the cases in `hs : IsSplitAt (cPl u)`. Establish `h1 : Slots.loc n (cPl u) (thF E n g) ∈ KGL (cPl u) n` using `(hL _).2 ((hg' _ hu).2 hs)`. Establish `h2 : Slots.loc n u (thF E n (thF E n g)) ∈ KGL u n` using `Slots.loc_thF_mem u h1`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[GlobalTheory.EulerTw.Comm.thF_thF]`. Then use the resulting hypothesis. Establish `e1 : cPl (cPl u) = cPl u`. Assume the negation of the conclusion as `h`. Conclude with `hs ((hcp (cPl u)).2.2 h)`. Establish `e : cPl u = u` using `e1.symm.trans (hcp u).1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu` using `[e]`. Conclude with `(hL u).2 (hg' u hu).1`. Introduce `w hw k hk`. Use `mem_Kg.2 fun u hu => ⟨?_, fun _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = w`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Rewrite using `[hoff u hw.1]`. Establish `h : Slots.loc n u (locGL E n u k) = k` using `pLoc_locGL _ _`. Rewrite using `[h]` and apply the resulting hypothesis. Establish `h : Slots.loc n u (locGL E n w k) = 1` using `pLoc_locGL_of_ne e k`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `one_mem _`. Distinguish the cases in `e : cPl u = w`. Establish `hu' : u = cPl w` using `by rw [← e, (hcp u).1]`. Establish `huZ : u ∉ Z` using `hu' ▸ hw.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[hoff u huZ]`. Use `Slots.loc_thF_mem u ?_` and prove the remaining obligations. Substitute `e` using the available equality. Establish `h : Slots.loc n (cPl u) (locGL E n (cPl u) k) = k` using `pLoc_locGL _ _`. Use `show Slots.loc n (cPl u) (locGL E n (cPl u) k) ∈ KGL (cPl u) n`.
-
-Rewrite using `[h]` and apply the resulting hypothesis. Establish `h : Slots.loc n (Slots.cP u) (locGL E n w k) = Slots.loc n (Slots.cP u) 1`. Rewrite using `[map_one]`. Conclude with `pLoc_locGL_of_ne e k`. Rewrite using `[Slots.loc_thF_congr u h, map_one, map_one]`.
-
-Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kgFacts : KgFacts := by
   intro E _ _ _ n S Z L hS hZ hL hoff

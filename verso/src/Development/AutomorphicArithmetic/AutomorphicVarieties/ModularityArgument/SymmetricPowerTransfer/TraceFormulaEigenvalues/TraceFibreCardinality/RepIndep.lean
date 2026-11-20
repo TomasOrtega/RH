@@ -9,7 +9,7 @@ section
 variable {Γ G V : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V] {B : Base Γ G V} {s : B.Tw} {f : G → ℂ}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul B.U y`. Rewrite using `[hu, map_mul, hf.right, ← mul_assoc, φ.2.2, map_smul, smul_smul, mul_right_comm, Units.inv_mul, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rep_indep (hf : s.IsTest f) (φ : B.Forms) (h y : G) :
     f (s.θ (y : G ⧸ B.U).out) • s.Θ (φ.1 (h * (y : G ⧸ B.U).out)) = f (s.θ y) • s.Θ (φ.1 (h * y)) := by
@@ -18,7 +18,7 @@ private theorem rep_indep (hf : s.IsTest f) (φ : B.Forms) (h y : G) :
     Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Use `hf.fin.subset fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Function.mem_support]`. Rewrite using `[Set.mem_setOf_eq]`. Introduce `h0`. Conclude with `hx (by rw [h0, zero_smul])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem fin_supp (hf : s.IsTest f) (k : G ⧸ B.U → V) :
     (Function.support fun x : G ⧸ B.U => f (s.θ x.out) • k x).Finite := by
@@ -29,15 +29,15 @@ private theorem fin_supp (hf : s.IsTest f) (k : G ⧸ B.U → V) :
   exact hx (by rw [h0, zero_smul])
 
 /- English proof (translation)
-Use `⟨fun γ g => ?_, fun g u => ?_⟩` and prove the remaining obligations. Unfold `Base.Tw.opF`. Establish `hθ : s.θ.symm (B.ι γ) = B.ι (s.θΓ.symm γ)`. Rewrite using `[MulEquiv.symm_apply_eq, s.comm, MulEquiv.apply_symm_apply]`. Establish `key : B.W γ (∑ᶠ x : G ⧸ B.U, f (s.θ x.out) • s.Θ (φ.1 (s.θ.symm g * x.out))) = ∑ᶠ x : G ⧸ B.U, B.W γ (f (s.θ x.out) • s.Θ (φ.1 (s.θ.symm g * x.out)))` using `(B.W γ).toAddMonoidHom.map_finsum (fin_supp hf _)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_mul, hθ, mul_assoc, φ.2.1, s.int, MulEquiv.apply_symm_apply]`. Unfold `Base.Tw.opF`. Rewrite using `[smul_finsum' _ (fin_supp hf _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Set `e : Equiv.Perm (G ⧸ B.U)` to `MulAction.toPerm ((s.θ.symm (u : G))⁻¹)`. Rewrite using `[← finsum_comp_equiv e]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Establish `hex : e x = (((s.θ.symm (u : G))⁻¹ * x.out : G) : G ⧸ B.U)` using `by show (s.θ.symm (u : G))⁻¹ • x = _`. Rewrite using `[← smul_eq_mul, ← MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hex, rep_indep hf φ (s.θ.symm (g * u)) ((s.θ.symm (u : G))⁻¹ * x.out)]`. Establish `hg : s.θ.symm (g * ↑u) * ((s.θ.symm (u : G))⁻¹ * x.out) = s.θ.symm g * x.out`. Rewrite using `[map_mul, mul_assoc, mul_inv_cancel_left]`. Establish `hf1 : f (s.θ ((s.θ.symm (u : G))⁻¹ * x.out)) = (B.ω u : ℂ) * f (s.θ x.out)`. Rewrite using `[map_mul, map_inv, MulEquiv.apply_symm_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `hf.left u⁻¹ (s.θ x.out)`. Simplify using `only [Subgroup.coe_inv, InvMemClass.coe_inv] at hl`. Rewrite using `[hl, map_inv, inv_inv]`. Rewrite using `[hg, hf1, mul_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem opF_mem (hf : s.IsTest f) (φ : B.Forms) : s.opF f φ.1 ∈ B.Forms := by
   refine ⟨fun γ g => ?_, fun g u => ?_⟩
@@ -88,7 +88,7 @@ private def opL (hf : s.IsTest f) : Module.End ℂ B.Forms where
 end
 
 /- English proof (translation)
-Introduce `Γ G V _ _ _ _ B s f hf φ`. Establish `h : ∃ L : Module.End ℂ B.Forms, ∀ φ, (L φ).1 = s.opF f φ.1` using `⟨opL hf, fun _ => rfl⟩`. Unfold `Base.Tw.R`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rSpec : RSpec := by
   intro Γ G V _ _ _ _ B s f hf φ

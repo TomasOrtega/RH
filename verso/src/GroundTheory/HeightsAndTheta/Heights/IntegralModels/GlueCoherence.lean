@@ -15,7 +15,7 @@ universe u
 variable {T' T Y Z : Scheme.{u}}
 
 /- English proof (translation)
-Use `ext1`. Simplify using `[pullbackCompIso]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pullbackCompIso_trans_right {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z} (e : g ≫ h = k) {E : Z.Modules}
     {F F' : Y.Modules} (γ : (Scheme.Modules.pullback h).obj E ≅ F) (δ : F ≅ F') :
@@ -24,7 +24,7 @@ lemma pullbackCompIso_trans_right {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z} (e :
   simp [pullbackCompIso]
 
 /- English proof (translation)
-Rewrite using `[← pullbackCompIso_trans_right, Iso.refl_trans]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pullbackCompIso_eq_refl_trans {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z} (e : g ≫ h = k)
     {E : Z.Modules} {F : Y.Modules} (γ : (Scheme.Modules.pullback h).obj E ≅ F) :
@@ -32,13 +32,11 @@ lemma pullbackCompIso_eq_refl_trans {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z} (e
   rw [← pullbackCompIso_trans_right, Iso.refl_trans]
 
 /- English proof (translation)
-Substitute `eg ek e` using the available equality. Use `ext1`. Establish `assoc` using `congr_arg (fun φ => φ.app E) (Scheme.Modules.pseudofunctor_associativity t g h)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp, eqToHom_app] at assoc`. Establish `nat` using `(Scheme.Modules.pullbackComp t g).hom.naturality γ.hom`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Functor.comp_map] at nat`. Simplify using `only [pullbackCompIso, Scheme.Modules.pullbackCongr, Iso.trans_hom, Iso.symm_hom, Iso.app_inv, eqToIso_refl, Iso.refl_inv, NatTrans.id_app, Functor.mapIso_hom, Iso.app_hom, Functor.map_comp, Category.assoc, Category.id_comp, eqToIso.inv, eqToIso.hom, eqToHom_app, eqToHom_refl, Ca …`. Simplify using `only [Functor.mapIso_inv, Iso.app_inv, Iso.app_hom, Iso.refl_inv, Iso.refl_hom, NatTrans.id_app, Functor.map_id, Category.id_comp, Category.comp_id]`. Simplify using `only [CategoryTheory.Functor.map_id, Category.id_comp]`. Rewrite using `[nat]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `assoc' : (Scheme.Modules.pullbackComp t (g ≫ h)).inv.app E ≫ (Scheme.Modules.pullback t).map ((Scheme.Modules.pullbackComp g h).inv.app E) ≫ (Scheme.Modules.pullbackComp t g).hom.app ((Scheme.Modules.pullback h).obj E) = eqToHom (by rw [Category.assoc]) ≫ (Scheme.Modules.pullback …`. Rewrite using `[← cancel_mono ((Scheme.Modules.pullbackComp (t ≫ g) h).hom.app E)]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_app, Category.comp_id]`. Conclude with `assoc`. Use `slice_rhs 2 3 => erw [Category.id_comp]`.
-
-Use `slice_rhs 1 3 => rw [assoc']`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pullbackCompIso_comp (t : T' ⟶ T) {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z} (e : g ≫ h = k)
     {g' : T' ⟶ Y} (eg : t ≫ g = g') {k' : T' ⟶ Z} (ek : t ≫ k = k') (e' : g' ≫ h = k')
@@ -73,7 +71,7 @@ lemma pullbackCompIso_comp (t : T' ⟶ T) {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶
   simp only [Category.assoc]
 
 /- English proof (translation)
-Substitute `eg` using the available equality. Use `ext1`. Simplify using `[pullbackCompIso, Scheme.Modules.pullbackCongr]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pullbackComp_trans_congr (t : T' ⟶ T) {g : T ⟶ Y} {g' : T' ⟶ Y} (eg : t ≫ g = g')
     (F : Y.Modules) :
@@ -84,7 +82,7 @@ lemma pullbackComp_trans_congr (t : T' ⟶ T) {g : T ⟶ Y} {g' : T' ⟶ Y} (eg 
   simp [pullbackCompIso, Scheme.Modules.pullbackCongr]
 
 /- English proof (translation)
-Rewrite using `[pullbackCompIso_comp t e eg ek e' γ, pullbackComp_trans_congr, pullbackCompIso_eq_refl_trans ek (pullbackCompIso e γ), Iso.trans_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma pullbackCompIso_comp' (t : T' ⟶ T) {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z} (e : g ≫ h = k)
     {g' : T' ⟶ Y} (eg : t ≫ g = g') {k' : T' ⟶ Z} (ek : t ≫ k = k') (e' : g' ≫ h = k')
@@ -96,7 +94,7 @@ lemma pullbackCompIso_comp' (t : T' ⟶ T) {g : T ⟶ Y} {h : Y ⟶ Z} {k : T �
     pullbackCompIso_eq_refl_trans ek (pullbackCompIso e γ), Iso.trans_assoc]
 
 /- English proof (translation)
-Rewrite using `[pullbackCompIso_comp' t e eg ek e']`. Use `ext1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mapIso_pullbackCompIso_refl (t : T' ⟶ T) {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z}
     (e : g ≫ h = k) {g' : T' ⟶ Y} (eg : t ≫ g = g') {k' : T' ⟶ Z} (ek : t ≫ k = k')
@@ -109,9 +107,9 @@ lemma mapIso_pullbackCompIso_refl (t : T' ⟶ T) {g : T ⟶ Y} {h : Y ⟶ Z} {k 
   simp
 
 /- English proof (translation)
-Rewrite using `[← pullbackCompIso_eq_refl_trans]`. Substitute `eg` using the available equality. Use `ext1`. Establish `nat` using `(Scheme.Modules.pullbackComp t g).inv.naturality δ.hom`. Simplify using `only [Functor.comp_map] at nat`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pullbackCompIso, Scheme.Modules.pullbackCongr, nat]`.
+A detailed English derivation is pending.
 -/
 lemma pullbackCompIso_refl_naturality (t : T' ⟶ T) {g : T ⟶ Y} {g' : T' ⟶ Y} (eg : t ≫ g = g')
     {F F' : Y.Modules} (δ : F ≅ F') :
@@ -126,9 +124,9 @@ lemma pullbackCompIso_refl_naturality (t : T' ⟶ T) {g : T ⟶ Y} {g' : T' ⟶ 
   simp [pullbackCompIso, Scheme.Modules.pullbackCongr, nat]
 
 /- English proof (translation)
-Establish `hA` using `mapIso_pullbackCompIso_refl u ek ut uk ee A`. Establish `hB` using `mapIso_pullbackCompIso_refl u ek ut uk ee B`. Establish `nat` using `pullbackCompIso_refl_naturality u ut ψ`. Simplify using `only [pullbackIsoAlong, Functor.mapIso_trans, Functor.mapIso_symm, hA, hB]`. Simplify using `only [Iso.trans_symm, Iso.symm_symm_eq, Iso.trans_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Rewrite using `[← Iso.trans_assoc, ← Iso.trans_assoc, nat]`. Simplify using `only [Iso.trans_assoc, Iso.self_symm_id_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mapIso_pullbackIsoAlong {W' W O O' : Scheme.{0}} (u : W' ⟶ W) {t : W ⟶ O'} {h : O' ⟶ O}
     {k : W ⟶ O} (ek : t ≫ h = k) {t' : W' ⟶ O'} {k' : W' ⟶ O} (ee : t' ≫ h = k')
@@ -158,11 +156,11 @@ def starIso {W U V O' O N : Scheme.{0}} {t : W ⟶ O'} {h : O' ⟶ O} {k : W ⟶
     (pullbackCompIso e8 (Iso.refl ((Scheme.Modules.pullback τ).obj E₀))).symm
 
 /- English proof (translation)
-Establish `e'' : (rQp ≫ rU) ≫ ιU = bQ` using `by rw [Category.assoc, hrU, hp]`. Establish `qk : q ≫ k = cA` using `by rw [← ek, ← Category.assoc, qt, ee]`. Establish `ekk : q ≫ jU ≫ ρU = rQp ≫ rN` using `by rw [← Category.assoc, qU, Category.assoc, h5]`. Establish `e6 : (rQp ≫ rU) ≫ ρU = rQp ≫ rN` using `by rw [Category.assoc, h5]`. Establish `hL : pullbackCompIso h0 e₀ = pullbackCompIso e'' eU ≪≫ (pullbackCompIso qU (Iso.refl _) ≪≫ (Scheme.Modules.pullback q).mapIso (starIso ek e7 e8 ψ) ≪≫ (pullbackCompIso qV (Iso.refl ((Scheme.Modules.pullback jV).obj E₀))).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pullbackCompIso_comp' q hV qV qW h0 e₀, hglue, Functor.mapIso_trans, pullbackCompIso_comp' q hU qU qW e'' eU]`. Simplify using `only [Iso.trans_assoc, Iso.symm_self_id_assoc]`. Establish `hR : pullbackCompIso hp (pullbackCompIso hrU eU ≪≫ ((pullbackCompIso h5 (Iso.refl ((Scheme.Modules.pullback ρU).obj E'))).symm ≪≫ σ)) ≪≫ β = pullbackCompIso e'' eU ≪≫ (pullbackCompIso (rfl : rQp ≫ rU = rQp ≫ rU) (Iso.refl _) ≪≫ (Scheme.Modules.pullback rQp).mapIso ((pullbackCompI …`. Rewrite using `[pullbackCompIso_trans_right, pullbackCompIso_comp' rQp hrU rfl hp e'' eU, pullbackCompIso_eq_refl_trans hp (pullbackCompIso hrU eU)]`. Simplify using `only [Iso.trans_assoc, Iso.symm_self_id_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL, hR]`. Use `congr 1`. Simplify using `only [starIso, Functor.mapIso_trans, Functor.mapIso_symm]`. Rewrite using `[mapIso_pullbackIsoAlong q ek ee qt qk ψ, hψ, mapIso_pullbackCompIso_refl q e7 qk ekk e1 E', mapIso_pullbackCompIso_refl q e8 qk qV e2 E₀, mapIso_pullbackCompIso_refl q (rfl : jU ≫ ρU = jU ≫ ρU) qU ekk e6 E', mapIso_pullbackCompIso_refl rQp h5 rfl rfl e6 E', pullbackCompIso_eq_re …`. Simplify using `only [Iso.trans_symm, Iso.symm_symm_eq, Iso.trans_assoc, Iso.self_symm_id_assoc, Iso.symm_self_id_assoc, Iso.trans_refl, Iso.self_symm_id, Iso.symm_self_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem glue_compat_chase {X XQ Xp V U W Oa Oam ON : Scheme.{0}}
     {ιV : V ⟶ X} {ιU : U ⟶ X} {ιW : W ⟶ X} {jV : W ⟶ V} {jU : W ⟶ U}

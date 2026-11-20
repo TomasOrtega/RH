@@ -18,9 +18,9 @@ def toModPullZPowIso {X Y : Scheme.{0}} {L : ReciprocityTheory.ChartRestriction.
   (GlobalTheory.Twist.unitTwistIso _).symm ≪≫ (GlobalTheory.Twist.twistZPullIso f hL _ m).symm ≪≫ GlobalTheory.Twist.unitTwistIso _
 
 /- English proof (translation)
-Use `haveI : CompactSpace (O : Scheme.{0}) := isCompact_iff_compactSpace.mp (TopologicalSpace.NoetherianSpace.isCompact (O : Set X))`. Use `haveI : GlobalTheory.QCoh.IsFiniteQC E := ⟨hE.1, hE.2⟩`. Establish `hA` using `hH.pull_of_isOpenImmersion O.ι`. Take `⟨n, k, φ, hφ⟩` from `(hA.eventually_exists_epi_sigma E).exists`. Establish `hL` using `GlobalTheory.Twist.isLB_lbZPow hH.isLB (-n)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : GlobalTheory.QCoh.IsFiniteQC (GlobalTheory.LB.toMod (GlobalTheory.lbZPow H (-n))) := (GlobalTheory.VB.isVB_toMod hL).isFiniteQC`. Set `P : X.Modules` to `∐ fun _ : Fin k => GlobalTheory.LB.toMod (GlobalTheory.lbZPow H (-n))`. Establish `hP : GlobalTheory.QCoh.IsFiniteQC P` using `inferInstance`. Set `e : P.restrict O.ι ≅ ∐ fun _ : Fin k => GlobalTheory.LB.toMod (GlobalTheory.lbZPow (H.pull O.ι) (-n))` to `(Scheme.Modules.restrictFunctorIsoPullback O.ι).app P ≪≫ PreservesCoproduct.iso (Scheme.Modules.pullback O.ι) _ ≪≫ Sigma.mapIso (fun _ => GlobalTheory.LB.pullbackIso hL O.ι ≪≫ toModPullZPowIso hH.isLB O.ι (-n))`. Conclude with `⟨P, ⟨hP.1, hP.2⟩, e.hom ≫ φ, epi_comp _ _⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coherent_epi_restrict {X : Scheme.{0}} [IsNoetherian X] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X)
     (hH : GlobalTheory.IsAmpleLB H) (O : X.Opens) (E : (O : Scheme.{0}).Modules) (hE : IsCoherent E) :

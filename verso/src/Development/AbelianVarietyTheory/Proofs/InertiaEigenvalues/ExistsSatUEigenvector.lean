@@ -19,19 +19,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.HeckeSatakeEigen
 
 /- English proof (translation)
-Introduce `K _ _ _ ϖ σ q n hU V _ _ _ T hadd hsmul h1 hmul x₀ hx₀`. Use `haveI : Nontrivial V := ⟨⟨x₀, 0, hx₀⟩⟩`. Establish `hcomm : ∀ a b : Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), T a.1 * T b.1 = T b.1 * T a.1`. Introduce `a b`. Rewrite using `[← hmul _ a.2 _ b.2, ← hmul _ b.2 _ a.2, GlobalTheory.UnitarySwap.heckeCommU K ϖ σ q n ℂ hU _ a.2 _ b.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx0, hx⟩` from `GlobalTheory.exists_common_eigenvector_of_commute (fun b : Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n) => T b.1) hcomm`. Use `choose c hc using hx`. Establish `hinj : Function.Injective fun a : ℂ => a • x` using `smul_left_injective ℂ hx0`. Set `l : Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n) →ₗ[ℂ] ℂ` to `{ toFun := c map_add' := fun a b => hinj (by show c (a + b) • x = (c a + c b) • x`. Rewrite using `[← hc, add_smul, ← hc, ← hc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show T (a.1 + b.1) x = _`. Rewrite using `[hadd _ a.2 _ b.2]`. Use the proof step `rfl)`. Use the proof step `map_smul' := fun r a => hinj (by show c (r • a) • x = (r * c a) • x`. Rewrite using `[← hc, mul_smul, ← hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show T (r • a.1) x = _`. Rewrite using `[hsmul r _ a.2]`. Use the proof step `rfl) }`. Establish `hl1 : l ⟨_, Formalism.UG.Final.DosetIndMem _ _ ℂ 1⟩ = 1` using `hinj (by show c _ • x = (1 : ℂ) • x`. Rewrite using `[← hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show T (Formalism.UG.dosetInd ℂ _ 1) x = x`. Rewrite using `[h1]`. Use the proof step `rfl)`. Establish `hlm : ∀ f f' : Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), l ⟨_, Formalism.UG.Final.HeckeConvMem _ _ ℂ (Formalism.UG.P.isCommensurated_integral_unitary_of_unramified hU n) _ f.2 _ f'.2⟩ = l f * l f'` using `fun f f' => hinj (by show c _ • x = (c f * c f') • x`. Rewrite using `[← hc]`.
-
-Use `show T (Formalism.UG.conv _ f.1 f'.1) x = _`. Rewrite using `[hmul _ f.2 _ f'.2, Module.End.mul_apply, hc f', map_smul, hc f, smul_smul, mul_comm])`. Take `⟨α, hα⟩` from `GlobalTheory.LFun.SatCompare.exists_satU_eq hU l hl1 hlm`. Use `⟨fun i => (α i : ℂ), x, hx0, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hc ⟨h, hh⟩]`.
-
-Use `congr 1`. Conclude with `hα ⟨h, hh⟩`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_satU_eigenvector : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] [CompleteSpace K] (ϖ : K) (σ : K →+* K) (q n : ℕ), Formalism.UG.IsUnramInv ϖ σ q → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (T : (Formalism.UG.GU σ n → ℂ) → Module.End ℂ V), (∀ h₁ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), ∀ h₂ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), T (h₁ + h₂) = T h₁ + T h₂) → (∀ (c : ℂ), ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), T (c • h) = c • T h) → T (Formalism.UG.dosetInd ℂ (Formalism.UG.KU σ n) 1) = 1 → (∀ h₁ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), ∀ h₂ ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), T (Formalism.UG.conv (Formalism.UG.KU σ n) h₁ h₂) = T h₁ * T h₂) → ∀ x₀ : V, x₀ ≠ 0 → ∃ α : Fin (n / 2) → ℂ, ∃ x : V, x ≠ 0 ∧ ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), T h x = Formalism.UG.SatU ϖ q h α • x := by
   intro K _ _ _ ϖ σ q n hU V _ _ _ T hadd hsmul h1 hmul x₀ hx₀

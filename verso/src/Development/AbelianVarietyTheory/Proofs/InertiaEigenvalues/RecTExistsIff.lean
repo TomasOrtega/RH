@@ -11,7 +11,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun H => ⟨H.1, H.2, H.3, H.4, H.5, H.6, H.7, H.8, H.9, H.10, H.11, H.12⟩, fun H => ⟨H.1, H.2, H.3, H.4, H.5, H.6, H.7, H.8, H.9, H.10, H.11, H.12⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem lawsT_iff (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a)
     (rc : IrrGL (w.adicCompletion E) → WD h) : LawsT a ha rc ↔ UpperTheory.Zero.LLC.LawsT a ha rc :=
@@ -19,7 +19,7 @@ theorem lawsT_iff (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h 
    fun H => ⟨H.1, H.2, H.3, H.4, H.5, H.6, H.7, H.8, H.9, H.10, H.11, H.12⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, ha, H⟩ => ⟨a, ha, (lawsT_iff a ha rc).1 H⟩, fun ⟨a, ha, H⟩ => ⟨a, ha, (lawsT_iff a ha rc).2 H⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRecT_iff (rc : IrrGL (w.adicCompletion E) → WD h) : IsRecT h rc ↔ UpperTheory.Zero.LLC.IsRecT h rc :=
   ⟨fun ⟨a, ha, H⟩ => ⟨a, ha, (lawsT_iff a ha rc).1 H⟩, fun ⟨a, ha, H⟩ => ⟨a, ha, (lawsT_iff a ha rc).2 H⟩⟩

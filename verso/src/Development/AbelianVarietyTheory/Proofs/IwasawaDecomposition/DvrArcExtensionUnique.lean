@@ -11,17 +11,17 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.MemberUnif
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T io b y z _ _ _ hz`. Choose the witnesses or unpack the hypotheses as in `⟨t₀, ⟨m₀⟩⟩ : ∃ t₀ : SAB H (Sp T.V), Nonempty (SABMap t₀ Y.t y) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull CubePf.cubePull y Y.t`. Conclude with `⟨_, ⟨m⟩⟩`. Set `F` to `AlgebraicClosure (FractionRing T.V)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hF : Function.Injective (algebraMap T.V F)`. Rewrite using `[IsScalarTower.algebraMap_eq T.V (FractionRing T.V) F]`. Conclude with `(algebraMap (FractionRing T.V) F).injective.comp (IsFractionRing.injective T.V _)`. Establish `: FaithfulSMul T.V F` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hF`. Establish `: Algebra.IsAlgebraic T.V F` using `(IsFractionRing.comap_isAlgebraic_iff (K := FractionRing T.V)).2 inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hd, hc, hf, hs⟩` from `GlobalTheory.Ex.UnifModel.exists_split T.V F t₀.G t₀.semi`. Establish `hi : Function.Injective (algebraMap T.V W)` using `fun _ _ h => hF (congrArg (fun w : W => (w : F)) h)`. Establish `hz0 : CharZero W` using `charZero_of_injective_ringHom hi`. Establish `: FaithfulSMul T.V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Establish `hl : IsLocalHom (algebraMap T.V W)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, _, _, m₁, -⟩` from `sabPull CubePf.cubePull (spMap (algebraMap T.V W)) t₀`. Take `⟨m, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m₀ m₁`. Take `⟨_, _, _, _, _, mz, -⟩` from `sabPull CubePf.cubePull z Y.oF.t`. Take `⟨mK, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m mz`. Take `⟨mx, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m0.toSABMap mz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `j : Function.Injective ((algebraMap W (FractionRing W)).comp (algebraMap T.V W))` using `(IsFractionRing.injective W _).comp hi`. Set `gm : T.Fr →+* FractionRing W` to `IsFractionRing.lift j`. Establish `hp : PolAt _ (jK W)` using `GlobalTheory.UnifAfterExt.polAt_of_sabMap m mK mx Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK W) (spMap gm) (by`. Establish `e : spMap gm ≫ spMap (algebraMap T.V T.Fr) = jK W ≫ spMap (algebraMap T.V W)`. Conclude with `(GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).trans (GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc, ← e, Category.assoc]`. Conclude with `congrArg (spMap gm ≫ ·) hz.symm)`. Take `⟨P, hP⟩` from `GlobalTheory.LN.uDvrSt_holds E H W ⟨hd, hc, hz0⟩ _ hp hs`. Conclude with `⟨{ V := W }, algebraMap T.V W, _, m, P, hi, hl, hP⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext_unif_torsionIso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp β → y ≫ Y.s = spMap b → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y → ∃ (T' : CDVR) (g : T.V →+* T'.V) (t : SAB H (Sp T'.V)) (_ : SABMap t Y.t (spMap g ≫ y)) (P : PELUnif (maximalIdeal T'.V) t), Function.Injective g ∧ IsLocalHom g ∧ P.TorsionIso := by
   intro E _ _ _ H D l Xo c O _ β Y T io b y z _ _ _ hz

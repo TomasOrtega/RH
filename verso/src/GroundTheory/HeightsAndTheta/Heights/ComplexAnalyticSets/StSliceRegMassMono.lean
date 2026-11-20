@@ -12,11 +12,11 @@ open scoped ContDiff
 noncomputable section
 
 /- English proof (translation)
-Introduce `k m hkm`. Simplify using `only [sliceCut]`. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hkm' : (k : ℝ) + 1 ≤ (m : ℝ) + 1` using `by exact_mod_cast Nat.add_le_add_right hkm 1`. Break down `le_or_gt 0 (Real.log (h.dualNorm x)) with hL | hL` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `Real.smoothTransition.monotone` to reduce the goal to its premises. Use `div_le_div_of_nonneg_left hL hk hkm'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ∀ j : ℕ, Real.smoothTransition (2 - Real.log (h.dualNorm x) / ((j : ℝ) + 1)) = 1` using `fun j => Real.smoothTransition.one_of_one_le (by`. Establish `: Real.log (h.dualNorm x) / ((j : ℝ) + 1) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hL.le (by positivity)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Rewrite using `[h1 k, h1 m]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SliceCut.monotone {n : ℕ} (h : HermNorm n) (x : Fin n → ℂ) : Monotone fun k => sliceCut h k x := by
   intro k m hkm

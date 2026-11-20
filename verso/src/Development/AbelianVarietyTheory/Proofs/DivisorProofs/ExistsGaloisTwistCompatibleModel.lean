@@ -21,67 +21,67 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 section ModN
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, (smul_zero _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem modN_zero (n : ℕ) : D.ModN n 0 := ⟨0, (smul_zero _).symm⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, (smul_add _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modN_add {n : ℕ} {x y : D.La} (hx : D.ModN n x) (hy : D.ModN n y) : D.ModN n (x + y) := by
   obtain ⟨a, rfl⟩ := hx; obtain ⟨b, rfl⟩ := hy; exact ⟨a + b, (smul_add _ _ _).symm⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨-a, (smul_neg _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modN_neg {n : ℕ} {x : D.La} (hx : D.ModN n x) : D.ModN n (-x) := by
   obtain ⟨a, rfl⟩ := hx; exact ⟨-a, (smul_neg _ _).symm⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `modN_add hx (modN_neg hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modN_sub {n : ℕ} {x y : D.La} (hx : D.ModN n x) (hy : D.ModN n y) : D.ModN n (x - y) := by
   rw [sub_eq_add_neg]; exact modN_add hx (modN_neg hy)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨c • a, smul_comm c n a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modN_smul {n : ℕ} (c : 𝓞 E) {x : D.La} (hx : D.ModN n x) : D.ModN n (c • x) := by
   obtain ⟨a, rfl⟩ := hx; exact ⟨c • a, smul_comm c n a⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem modN_nsmul (n : ℕ) (x : D.La) : D.ModN n (n • x) := ⟨x, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `h`. Conclude with `⟨m • a, mul_smul n m a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modN_of_mul {n m : ℕ} {x : D.La} (h : D.ModN (n * m) x) : D.ModN n x := by
   obtain ⟨a, rfl⟩ := h; exact ⟨m • a, mul_smul n m a⟩
 
 /- English proof (translation)
-Use `modN_add h₁ h₂` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem modN_trans {n : ℕ} {a b c : D.La} (h₁ : D.ModN n (a - b)) (h₂ : D.ModN n (b - c)) : D.ModN n (a - c) := by
   have := modN_add h₁ h₂; rwa [sub_add_sub_cancel] at this
 
 /- English proof (translation)
-Use `modN_neg h` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem modN_symm {n : ℕ} {a b : D.La} (h : D.ModN n (a - b)) : D.ModN n (b - a) := by
   have := modN_neg h; rwa [neg_sub] at this
 
 /- English proof (translation)
-Use `modN_add h hb` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem modN_of_sub {n : ℕ} {a b : D.La} (h : D.ModN n (a - b)) (hb : D.ModN n b) : D.ModN n a := by
   have := modN_add h hb; rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `ha`. Take `⟨y, hy⟩` from `hb`. Rewrite `hx`, `hy` using `[sub_eq_iff_eq_add]`. Substitute `hx hy` using the available equality. Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `⟨D.EF x b' + D.EF a' y + n * D.EF x y, by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem dvd_EF_sub {n : ℕ} {a a' b b' : D.La} (ha : D.ModN n (a - a')) (hb : D.ModN n (b - b')) :
     (n : ℤ) ∣ D.EF a b - D.EF a' b' := by
@@ -107,7 +107,7 @@ variable {τ : 𝓞 E ≃+* 𝓞 E} {f : ℕ → D.La → D.La} (hf : IsSemiIso 
 include hf
 
 /- English proof (translation)
-Establish `h` using `hf.add n hn (a - b) b`. Rewrite `h` using `[sub_add_cancel]`. Establish `e : f n (a - b) - (f n a - f n b) = -(f n a - (f n (a - b) + f n b))` using `by abel`. Rewrite using `[e]`. Conclude with `modN_neg h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub {n : ℕ} (hn : 0 < n) (a b : D.La) : D.ModN n (f n (a - b) - (f n a - f n b)) := by
   have h := hf.add n hn (a - b) b
@@ -116,9 +116,9 @@ theorem sub {n : ℕ} (hn : 0 < n) (a b : D.La) : D.ModN n (f n (a - b) - (f n a
   rw [e]; exact modN_neg h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Establish `h1` using `hf.sub hn a b`. Rewrite `h1` using `[hc]`. Establish `h2` using `hf.semi n hn (n : 𝓞 E) c`. Simplify using `only [map_natCast, Nat.cast_smul_eq_nsmul] at h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : D.ModN n (f n (n • c))` using `modN_of_sub h2 (modN_nsmul _ _)`. Conclude with `modN_of_sub (modN_symm h1) h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem congr {n : ℕ} (hn : 0 < n) {a b : D.La} (h : D.ModN n (a - b)) : D.ModN n (f n a - f n b) := by
   obtain ⟨c, hc⟩ := h
@@ -130,9 +130,9 @@ theorem congr {n : ℕ} (hn : 0 < n) {a b : D.La} (h : D.ModN n (a - b)) : D.Mod
   exact modN_of_sub (modN_symm h1) h3
 
 /- English proof (translation)
-Establish `h0 : D.ModN n (f n 0)`. Use `hf.add n hn 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Establish `e : f n 0 = -(f n 0 - (f n 0 + f n 0))` using `by abel`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `modN_neg this`. Conclude with `modN_of_sub (hf.congr hn (by rwa [sub_zero])) h0`.
+A detailed English derivation is pending.
 -/
 theorem modN_map {n : ℕ} (hn : 0 < n) {a : D.La} (h : D.ModN n a) : D.ModN n (f n a) := by
   have h0 : D.ModN n (f n 0) := by
@@ -143,11 +143,11 @@ theorem modN_map {n : ℕ} (hn : 0 < n) {a : D.La} (h : D.ModN n a) : D.ModN n (
   exact modN_of_sub (hf.congr hn (by rwa [sub_zero])) h0
 
 /- English proof (translation)
-Establish `hM : ∀ x : D.La, D.ModN n x → x ∈ J • (⊤ : Submodule (𝓞 E) D.La)`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hnJ Submodule.mem_top`. Use `Submodule.smul_induction_on ha (fun r hr x _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hf.semi n hn r x`. Establish `e : f n (r • x) = (f n (r • x) - τ r • f n x) + τ r • f n x` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hM _ h) (Submodule.smul_mem_smul (hJ r hr) Submodule.mem_top)`. Establish `h` using `hf.add n hn x y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : f n (x + y) = (f n (x + y) - (f n x + f n y)) + (f n x + f n y)` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hM _ h) (Submodule.add_mem _ hx hy)`.
+A detailed English derivation is pending.
 -/
 theorem mem_smul_top {n : ℕ} (hn : 0 < n) {J : Ideal (𝓞 E)} (hJ : ∀ x ∈ J, τ x ∈ J) (hnJ : (n : 𝓞 E) ∈ J)
     {a : D.La} (ha : a ∈ J • (⊤ : Submodule (𝓞 E) D.La)) : f n a ∈ J • (⊤ : Submodule (𝓞 E) D.La) := by
@@ -168,15 +168,13 @@ theorem mem_smul_top {n : ℕ} (hn : 0 < n) {J : Ideal (𝓞 E)} (hJ : ∀ x ∈
 end IsSemiIso
 
 /- English proof (translation)
-Set `g : ℕ → D.La → D.La` to `fun n a => if h : 0 < n then Classical.choose (hf.onto n h a) else a`. Establish `fg : ∀ n, 0 < n → ∀ a, D.ModN n (f n (g n a) - a)` using `fun n hn a => by`. Simplify using `only [g, dif_pos hn]`. Conclude with `Classical.choose_spec (hf.onto n hn a)`. Establish `inj2 : ∀ n, 0 < n → ∀ x y, D.ModN n (f n x - f n y) → D.ModN n (x - y)` using `fun n hn x y h => hf.inj n hn _ (modN_of_sub (hf.sub hn x y) h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gf : ∀ n, 0 < n → ∀ a, D.ModN n (g n (f n a) - a)` using `fun n hn a => inj2 n hn _ _ (fg n hn (f n a))`. Use `⟨g, ⟨fun n hn a b => ?_, fun n hn c a => ?_, fun n m hn hm a => ?_, fun n hn a => ⟨f n a, gf n hn a⟩, fun n hn a h => modN_of_sub (modN_symm (fg n hn a)) (hf.modN_map hn h), fun n hn a b => ?_⟩, fg, gf⟩` and prove the remaining obligations. Use `inj2 n hn _ _ (modN_trans (fg n hn (a + b)) (modN_symm ?_))` and prove the remaining obligations. Establish `e : f n (g n a + g n b) - (a + b) = (f n (g n a + g n b) - (f n (g n a) + f n (g n b))) + ((f n (g n a) - a) + (f n (g n b) - b))` using `by abel`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `modN_add (hf.add n hn _ _) (modN_add (fg n hn a) (fg n hn b))`. Use `inj2 n hn _ _ (modN_trans (fg n hn (c • a)) (modN_symm ?_))` and prove the remaining obligations. Establish `e : f n (τ.symm c • g n a) - c • a = (f n (τ.symm c • g n a) - τ (τ.symm c) • f n (g n a)) + c • (f n (g n a) - a)` using `by rw [RingEquiv.apply_symm_apply, smul_sub]; abel`. Rewrite using `[e]`. Conclude with `modN_add (hf.semi n hn _ _) (modN_smul c (fg n hn a))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `inj2 n hn _ _ ?_` and prove the remaining obligations. Establish `e : f n (g (n * m) a) - f n (g n a) = -(f (n * m) (g (n * m) a) - f n (g (n * m) a)) + (f (n * m) (g (n * m) a) - a) - (f n (g n a) - a)` using `by abel`. Rewrite using `[e]`. Conclude with `modN_sub (modN_add (modN_neg (hf.tower n m hn hm _)) (modN_of_mul (fg (n * m) (Nat.mul_pos hn hm) a))) (fg n hn a)`. Establish `h1` using `hf.isom n hn (g n a) (g n b)`.
-
-Establish `h2` using `dvd_EF_sub (fg n hn a) (fg n hn b)`. Use `dvd_sub h2 h1` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_inv {τ : 𝓞 E ≃+* 𝓞 E} {f : ℕ → D.La → D.La} (hf : IsSemiIso D τ f) :
     ∃ g : ℕ → D.La → D.La, IsSemiIso D τ.symm g ∧ (∀ n, 0 < n → ∀ a, D.ModN n (f n (g n a) - a)) ∧
@@ -212,7 +210,7 @@ theorem exists_inv {τ : 𝓞 E ≃+* 𝓞 E} {f : ℕ → D.La → D.La} (hf : 
     rwa [sub_sub_sub_cancel_left] at this
 
 /- English proof (translation)
-Establish `h` using `congrArg τ H.two_weight_eq_one_add_root`. Rewrite `h` using `[map_mul, map_ofNat, hτ, H.two_weight_eq_one_add_root, map_add, map_one]`. Conclude with `(add_left_cancel h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_fix {τ : 𝓞 E ≃+* 𝓞 E} (hτ : τ H.w0 = H.w0) : τ H.rt = H.rt := by
   have h := congrArg τ H.two_weight_eq_one_add_root
@@ -220,7 +218,7 @@ theorem rt_fix {τ : 𝓞 E ≃+* 𝓞 E} (hτ : τ H.w0 = H.w0) : τ H.rt = H.r
   exact (add_left_cancel h).symm
 
 /- English proof (translation)
-The claim follows from `(τ.symm_apply_eq).2 hτ.symm`.
+A detailed English derivation is pending.
 -/
 theorem symm_w0 {τ : 𝓞 E ≃+* 𝓞 E} (hτ : τ H.w0 = H.w0) : τ.symm H.w0 = H.w0 :=
   (τ.symm_apply_eq).2 hτ.symm
@@ -230,9 +228,9 @@ section Tate
 variable {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
 /- English proof (translation)
-Establish `h0 : I.ev 1 0 = 1`. Use `I.add 1 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.mp this`. Use `I.lin 1 c 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[smul_zero, h0]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem act_one (I : TateIso D k Q act e) (c : 𝓞 E) : act c 1 = 1 := by
   have h0 : I.ev 1 0 = 1 := by
@@ -285,9 +283,9 @@ section Lie
 variable {S : Scheme.{0}} {k : Type} [Field k]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Use `h2 (τ.symm a)` as an intermediate fact. Simplify `this` using `[GlobalTheory.FiniteStable.twist]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a => ?_⟩` and prove the remaining obligations. Use `h2 (τ a)` as an intermediate fact. Simplify `this` using `[GlobalTheory.FiniteStable.twist]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isLieEigen_twist (τ : 𝓞 E ≃+* 𝓞 E) (hτ : τ H.w0 = H.w0) (t : SAB H S) (x : Sp k ⟶ S) (κ : 𝓞 E →+* k)
     (v : epsPt x ⟶ t.G) :
@@ -303,7 +301,7 @@ theorem isLieEigen_twist (τ : 𝓞 E ≃+* 𝓞 E) (hτ : τ H.w0 = H.w0) (t : 
     simpa [GlobalTheory.FiniteStable.twist] using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hw⟩`. Conclude with `⟨v, fun i => (isLieEigen_twist τ hτ t x κ _).1 (hv i), fun w h => hw w ((isLieEigen_twist τ hτ t x κ _).2 h)⟩`. Introduce and unpack `⟨v, hv, hw⟩`. Conclude with `⟨v, fun i => (isLieEigen_twist τ hτ t x κ _).2 (hv i), fun w h => hw w ((isLieEigen_twist τ hτ t x κ _).1 h)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lieMult_twist (τ : 𝓞 E ≃+* 𝓞 E) (hτ : τ H.w0 = H.w0) (t : SAB H S) (x : Sp k ⟶ S) (κ : 𝓞 E →+* k)
     (n : ℕ) : LieMult (GlobalTheory.FiniteStable.twist τ hτ t).act x κ n ↔ LieMult t.act x (κ.comp τ.symm.toRingHom) n := by
@@ -316,7 +314,7 @@ theorem lieMult_twist (τ : 𝓞 E ≃+* 𝓞 E) (hτ : τ H.w0 = H.w0) (t : SAB
       fun w h => hw w ((isLieEigen_twist τ hτ t x κ _).1 h)⟩
 
 /- English proof (translation)
-Introduce `κ`. Establish `e : (κ.comp τ.symm.toRingHom) H.rt = κ H.rt`. Simplify using `[rt_fix (symm_w0 hτ)]`. Take `⟨h1, h2⟩` from `h (κ.comp τ.symm.toRingHom)`. Conclude with `⟨fun hk => (lieMult_twist τ hτ t x κ _).2 (h1 (e.trans hk)), fun hk => (lieMult_twist τ hτ t x κ _).2 (h2 (by rw [e]; exact hk))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem detCond_twist (τ : 𝓞 E ≃+* 𝓞 E) (hτ : τ H.w0 = H.w0) (t : SAB H S) (x : Sp k ⟶ S) (ρ : k)
     (h : DetCond D t.act x ρ) : DetCond D (GlobalTheory.FiniteStable.twist τ hτ t).act x ρ := by
@@ -332,36 +330,34 @@ end Lie
 section Level
 
 /- English proof (translation)
-Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem M_pos (l : Level H) : 0 < l.M := by have := l.three_le; omega
 
 /- English proof (translation)
-Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem M_mem (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
   rw [l.prod]; exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-The claim follows from `Ideal.mul_le_left (M_mem l)`.
+A detailed English derivation is pending.
 -/
 theorem M_mem_Mb (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb :=
   Ideal.mul_le_left (M_mem l)
 
 /- English proof (translation)
-The claim follows from `Ideal.mul_le_right (M_mem l)`.
+A detailed English derivation is pending.
 -/
 theorem M_mem_Mbbar (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) :=
   Ideal.mul_le_right (M_mem l)
 
 /- English proof (translation)
-Establish `fix : ∀ a ∈ Algebra.adjoin ℤ {H.w0}, τ a = a`. Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx, hτ]`. Consider the case `algebraMap r => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, hx, hy]`. Introduce `x hx`. Rewrite `hx`, the goal using `[l.fromK]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `mem y hy => rw [fix y hy.2]`. Conclude with `Submodule.subset_span hy`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy => rw [smul_eq_mul, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mb_stable (l : Level H) {τ : 𝓞 E ≃+* 𝓞 E} (hτ : τ H.w0 = H.w0) : ∀ x ∈ l.Mb, τ x ∈ l.Mb := by
   have fix : ∀ a ∈ Algebra.adjoin ℤ {H.w0}, τ a = a := by
@@ -380,7 +376,7 @@ theorem mb_stable (l : Level H) {τ : 𝓞 E ≃+* 𝓞 E} (hτ : τ H.w0 = H.w0
   | smul r y _ hy => rw [smul_eq_mul, map_mul]; exact Ideal.mul_mem_left _ _ hy
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_of_equiv H.bar x).1 hx`. Rewrite using `[GlobalTheory.FiniteStable.aut_bar]`. Conclude with `Ideal.mem_map_of_mem _ (mb_stable l hτ y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mbbar_stable (l : Level H) {τ : 𝓞 E ≃+* 𝓞 E} (hτ : τ H.w0 = H.w0) :
     ∀ x ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E), τ x ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -446,21 +442,19 @@ section Moduli
 variable {l : Level H} (Xo : Moduli D l) (c : Coeff l)
 
 /- English proof (translation)
-Take `⟨n₁, hn₁⟩` from `GlobalTheory.ObjMaps.exists_sab_comp (twSab τ' hτ' k₁.toSABMap) (idTw τ τ' hτ hτ' e oF.t)`. Take `⟨n₂, hn₂⟩` from `GlobalTheory.ObjMaps.exists_sab_comp k₂.toSABMap n₁`. Establish `eta : ∀ a, (oF.eta a).left ≫ n₂.cm.F = ((𝟙 _ ≫ r₁) ≫ r₂) ≫ (oF.eta a).left`. Introduce `a`. Establish `e1 : oF.eta a = oF.eta (f l.M (f' l.M a))` using `GlobalTheory.Moduli.LevelAction.eta_congr oF (GlobalTheory.Moduli.LevelAction.mem_of_modN l (modN_symm (hinv _ (M_pos l) a)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `k1e : (oF.eta (f l.M (f' l.M a))).left ≫ k₁.cm.F = r₁ ≫ (oF.eta (f' l.M a)).left` using `k₁.eta (f' l.M a)`. Establish `k2e : (oF.eta (f' l.M a)).left ≫ k₂.cm.F = r₂ ≫ (oF.eta a).left` using `k₂.eta a`. Express the relevant statement in the definitionally equal form `(oF.eta a).left ≫ n₂.φ = _`. Rewrite using `[hn₂, hn₁]`. Express the relevant statement in the definitionally equal form `(oF.eta a).left ≫ (𝟙 _ ≫ k₁.cm.F) ≫ k₂.cm.F = _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e1]`. Use `erw [Category.id_comp, Category.assoc]`. Use `_ = r₁ ≫ r₂ ≫ (oF.eta a).left := by rw [k1e]; erw [Category.assoc]; rw [k2e]`. Use `_ = ((𝟙 _ ≫ r₁) ≫ r₂) ≫ (oF.eta a).left := by simp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `etaA : ∀ a, (oF.etaA a).left ≫ n₂.cm.F = ((𝟙 _ ≫ r₁) ≫ r₂) ≫ (oF.etaA a).left`. Introduce `a`. Establish `e1 : oF.etaA a = oF.etaA (f l.A (f' l.A a))` using `GlobalTheory.Moduli.LevelAction.etaA_congr oF (modN_symm (hinv _ l.A_pos a))`. Establish `k1e : (oF.etaA (f l.A (f' l.A a))).left ≫ k₁.cm.F = r₁ ≫ (oF.etaA (f' l.A a)).left` using `k₁.etaA (f' l.A a)`. Establish `k2e : (oF.etaA (f' l.A a)).left ≫ k₂.cm.F = r₂ ≫ (oF.etaA a).left` using `k₂.etaA a`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(oF.etaA a).left ≫ n₂.φ = _`. Rewrite using `[hn₂, hn₁]`. Express the relevant statement in the definitionally equal form `(oF.etaA a).left ≫ (𝟙 _ ≫ k₁.cm.F) ≫ k₂.cm.F = _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e1]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `erw [Category.id_comp, Category.assoc]`. Use `_ = r₁ ≫ r₂ ≫ (oF.etaA a).left := by rw [k1e]; erw [Category.assoc]; rw [k2e]`. Use `_ = ((𝟙 _ ≫ r₁) ≫ r₂) ≫ (oF.etaA a).left := by simp`. Set `k : ObjMap oF oF ((𝟙 _ ≫ r₁) ≫ r₂)` to `{ toSABMap := n₂, eta := eta, etaA := etaA }`. Take `⟨-, hcc⟩` from `GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ oF oF`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k', -⟩` from `(hcc (pullback.fst _ _) ((𝟙 _ ≫ r₁) ≫ r₂) m0).1 k`. Establish `hred` using `GlobalTheory.TransitionUnique.isReduced_XF Xo c`. Establish `hg : ((𝟙 _ ≫ r₁) ≫ r₂) ≫ pullback.snd _ _ = pullback.snd _ _`. Rewrite using `[Category.id_comp, Category.assoc, h₂, h₁]`. Establish `hs : (((𝟙 _ ≫ r₁) ≫ r₂) ≫ pullback.fst _ _) ≫ Xo.s = pullback.fst _ _ ≫ Xo.s`.
-
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hg]`. Establish `u` using `(Xo.rep _ _ hred oF).unique ⟨hs, ⟨k'⟩⟩ ⟨rfl, ⟨m0⟩⟩`. Apply `pullback.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem comp_eq_id
     (oF : Obj D l (baseKA l) (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s))
@@ -524,13 +518,13 @@ section Moduli
 variable {l : Level H} (Xo : Moduli D l) (c : Coeff l)
 
 /- English proof (translation)
-Take `⟨g, hg, hfg, hgf⟩` from `exists_inv hf`. Establish `hg' : IsSemiIso D σ g` using `by simpa using hg`. Establish `hred` using `GlobalTheory.TransitionUnique.isReduced_XF Xo c`. Establish `hσ'` using `symm_w0 hσ`. Take `⟨f₁, ⟨hf₁, ⟨m₁⟩⟩, -⟩` from `Xo.rep _ _ hred (objTw oF σ.symm hσ' f hf)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f₂, ⟨hf₂, ⟨m₂⟩⟩, -⟩` from `Xo.rep _ _ hred (objTw oF σ hσ g hg')`. Set `r₁ : Xo.XF c ⟶ Xo.XF c` to `pullback.lift f₁ (pullback.snd _ _) (by rw [hf₁, pullback.condition])`. Set `r₂ : Xo.XF c ⟶ Xo.XF c` to `pullback.lift f₂ (pullback.snd _ _) (by rw [hf₂, pullback.condition])`. Establish `e₁ : r₁ ≫ pullback.fst _ _ = f₁` using `pullback.lift_fst _ _ _`. Establish `e₂ : r₂ ≫ pullback.fst _ _ = f₂` using `pullback.lift_fst _ _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₁ : r₁ ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `s₂ : r₂ ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Take `⟨-, hc₁⟩` from `GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ oF (objTw oF σ.symm hσ' f hf)`. Take `⟨k₁, -⟩` from `(hc₁ (pullback.fst _ _) r₁ m0).2 (by rw [e₁]; exact m₁)`. Take `⟨-, hc₂⟩` from `GlobalTheory.ObjMaps.id_comp_cancel _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ oF (objTw oF σ hσ g hg')`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₂, -⟩` from `(hc₂ (pullback.fst _ _) r₂ m0).2 (by rw [e₂]; exact m₂)`. Use `⟨⟨r₁, r₂, comp_eq_id Xo c oF m0 hσ' hσ (fun a => σ.symm_apply_apply a) hf hg' hfg k₁ k₂ s₁ s₂, comp_eq_id Xo c oF m0 hσ hσ' (fun a => σ.apply_symm_apply a) hg' hf hgf k₂ k₁ s₂ s₁⟩, ⟨?_⟩, s₁⟩` and prove the remaining obligations. Conclude with `⟨k₁.cm, k₁.cart, k₁.base, fun a => by`. Use `k₁.act (σ a)` as an intermediate fact. Simplify `this, k₁.lin⟩` using `[GlobalTheory.FiniteStable.twist, objTw]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_twist
     (oF : Obj D l (baseKA l) (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s))
@@ -572,11 +566,11 @@ open CategoryTheory
 namespace GlobalTheory.GalTwist
 
 /- English proof (translation)
-Introduce `_ D O _ h hh`. Set `σ : 𝓞 D.host.E ≃+* 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv (D.host.sigmaOf h).toRingEquiv`. Establish `hs : ∀ a : 𝓞 D.host.E, ((σ a : 𝓞 D.host.E) : D.host.E) = D.host.sigmaOf h (a : D.host.E)` using `fun a => rfl`. Establish `hrt : σ O.A.H.rt = O.A.H.rt`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hs, O.A.rt_eq]`. Conclude with `GlobalTheory.InertiaPairs.sigmaOf_sqrt_pos D.host h hh`. Establish `hw : σ O.A.H.w0 = O.A.H.w0`. Establish `h2` using `congrArg σ O.A.H.two_weight_eq_one_add_root`. Rewrite `h2` using `[map_mul, map_ofNat, map_add, map_one, hrt, ← O.A.H.two_weight_eq_one_add_root]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_left_cancel₀ two_ne_zero h2`. Take `⟨f, hf1, hf2, hf3, hf4, hf5⟩` from `GlobalTheory.T.exists_compatible_level_maps O.A.H O.S.Dw σ.symm (symm_w0 hw)`. Establish `hf : IsSemiIso O.S.Dw σ.symm (fun n a => f n a)` using `⟨fun n _ a b => by rw [map_add, sub_self]; exact modN_zero n, hf1, hf2, hf3, hf4, hf5⟩`. Take `⟨r, hr, hsnd⟩` from `exists_twist (O.S.Xo O.κ.l) O.κ.c O.s.T.Z.oF O.s.T.Z.m0 σ hw hf`. Conclude with `⟨σ, r, hs, hw, hr, hsnd⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twist_aut : Hypotheses2 → ∀ (D : D7) (O : Setup D), O.Core → ∀ h ∈ D.R.Psi,
     ∃ (σ : 𝓞 D.host.E ≃+* 𝓞 D.host.E) (r : (O.S.Xo O.κ.l).XF O.κ.c ≅ (O.S.Xo O.κ.l).XF O.κ.c),

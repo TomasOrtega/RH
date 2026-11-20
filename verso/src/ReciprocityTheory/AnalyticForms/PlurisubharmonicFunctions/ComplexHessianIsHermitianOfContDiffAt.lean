@@ -20,7 +20,7 @@ theorem hessC_eq_lv {D : ℕ} (f : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) 
 variable {D : ℕ} (H : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ)
 
 /- English proof (translation)
-Simplify using `only [lv, smul_add, map_add, ContinuousLinearMap.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lv_add_left (a a' b : Fin D → ℂ) : lv H (a + a') b = lv H a b + lv H a' b := by
   simp only [lv, smul_add, map_add, ContinuousLinearMap.add_apply]
@@ -28,7 +28,7 @@ theorem lv_add_left (a a' b : Fin D → ℂ) : lv H (a + a') b = lv H a b + lv H
   ring
 
 /- English proof (translation)
-Simplify using `only [lv, smul_add, map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lv_add_right (a b b' : Fin D → ℂ) : lv H a (b + b') = lv H a b + lv H a b' := by
   simp only [lv, smul_add, map_add]
@@ -36,9 +36,9 @@ theorem lv_add_right (a b b' : Fin D → ℂ) : lv H a (b + b') = lv H a b + lv 
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Take the linear combination `((c.im : ℂ) * a k) * Complex.I_sq`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem smul_decomp (c : ℂ) (a : Fin D → ℂ) :
     c • a = c.re • a + c.im • (I • a) ∧ I • (c • a) = c.re • (I • a) - c.im • a := by
@@ -53,7 +53,7 @@ private theorem smul_decomp (c : ℂ) (a : Fin D → ℂ) :
     linear_combination ((c.im : ℂ) * a k) * Complex.I_sq
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `smul_decomp c a`. Unfold `lv`. Rewrite using `[h2, h1]`. Simplify using `only [map_add, map_sub, map_smul, ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lv_smul_left (c : ℂ) (a b : Fin D → ℂ) : lv H (c • a) b = c * lv H a b := by
   obtain ⟨h1, h2⟩ := smul_decomp c a
@@ -64,7 +64,7 @@ theorem lv_smul_left (c : ℂ) (a b : Fin D → ℂ) : lv H (c • a) b = c * lv
   apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `smul_decomp c b`. Unfold `lv`. Rewrite using `[h2, h1]`. Simplify using `only [map_add, map_sub, map_smul, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lv_smul_right (c : ℂ) (a b : Fin D → ℂ) :
     lv H a (c • b) = starRingEnd ℂ c * lv H a b := by
@@ -75,9 +75,9 @@ theorem lv_smul_right (c : ℂ) (a b : Fin D → ℂ) :
   apply Complex.ext <;> simp <;> ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use extensionality with `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vec_eq_sum (v : Fin D → ℂ) : v = ∑ i, v i • (Pi.single i 1 : Fin D → ℂ) := by
   conv_lhs => rw [← Finset.univ_sum_single v]
@@ -88,7 +88,7 @@ theorem vec_eq_sum (v : Fin D → ℂ) : v = ∑ i, v i • (Pi.single i 1 : Fin
   · simp [h]
 
 /- English proof (translation)
-Set `ℓ : (Fin D → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun a => lv H a b map_add' := fun a a' => lv_add_left H a a' b map_smul' := fun c a => lv_smul_left H c a b }`. Use `map_sum ℓ (fun i => v i • (Pi.single i 1 : Fin D → ℂ)) Finset.univ` as an intermediate fact. Rewrite `this` using `[← vec_eq_sum]`. Simplify using `only [map_smul, smul_eq_mul] at this`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lv_sum_left (v b : Fin D → ℂ) :
     lv H v b = ∑ i, v i * lv H (Pi.single i 1) b := by
@@ -102,9 +102,9 @@ theorem lv_sum_left (v b : Fin D → ℂ) :
   exact this
 
 /- English proof (translation)
-Set `ℓ : (Fin D → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun b => starRingEnd ℂ (lv H a b) map_add' := fun b b' => by simp [lv_add_right] map_smul' := fun c b => by simp [lv_smul_right] }`. Use `map_sum ℓ (fun i => v i • (Pi.single i 1 : Fin D → ℂ)) Finset.univ` as an intermediate fact. Rewrite `this` using `[← vec_eq_sum]`. Simplify using `only [map_smul, smul_eq_mul] at this`. Establish `h` using `congrArg (starRingEnd ℂ) this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ℓ, LinearMap.coe_mk, AddHom.coe_mk, Complex.conj_conj, map_sum, map_mul] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lv_sum_right (a v : Fin D → ℂ) :
     lv H a v = ∑ i, starRingEnd ℂ (v i) * lv H a (Pi.single i 1) := by
@@ -120,7 +120,7 @@ theorem lv_sum_right (a v : Fin D → ℂ) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[lv_sum_left]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[lv_sum_right, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lv_expand (u v : Fin D → ℂ) :
     lv H u v = ∑ a, ∑ b, u a * lv H (Pi.single a 1) (Pi.single b 1) * starRingEnd ℂ (v b) := by
@@ -136,15 +136,15 @@ section Comp
 variable {D E : ℕ}
 
 /- English proof (translation)
-Establish `hτev : ∀ᶠ x in 𝓝 z, AnalyticAt ℂ τ x` using `hτ.eventually_analyticAt`. Establish `hφev : ∀ᶠ y in 𝓝 (τ z), DifferentiableAt ℝ φ y` using `(hφ.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Establish `hφev' : ∀ᶠ x in 𝓝 z, DifferentiableAt ℝ φ (τ x)` using `hτ.continuousAt.tendsto.eventually hφev`. Establish `heq : (fun x => fderiv ℝ (φ ∘ τ) x b) =ᶠ[𝓝 z] (fun x => fderiv ℝ φ (τ x) (fderiv ℂ τ x b))` using `by filter_upwards [hτev, hφev'] with x hx hφx`. Establish `hxR : DifferentiableAt ℝ τ x` using `hx.differentiableAt.restrictScalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fderiv_comp x hφx hxR, hx.differentiableAt.fderiv_restrictScalars ℝ]`. Both sides reduce to the same expression. Establish `hf2 : ContDiffAt ℝ 2 (φ ∘ τ) z` using `hφ.comp z ((hτ.contDiffAt (n := 2)).restrict_scalars ℝ)`. Establish `hD : DifferentiableAt ℝ (fderiv ℝ (φ ∘ τ)) z` using `(hf2.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `h1 : fderiv ℝ (fderiv ℝ (φ ∘ τ)) z w b = fderiv ℝ (fun x => fderiv ℝ (φ ∘ τ) x b) z w`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fderiv_clm_apply hD (differentiableAt_const b)]`. Simplify using the standard rewrite rules. Rewrite using `[h1, heq.fderiv_eq]`. Establish `hφ2 : DifferentiableAt ℝ (fderiv ℝ φ) (τ z)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hτR : DifferentiableAt ℝ τ z` using `hτ.differentiableAt.restrictScalars ℝ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : HasFDerivAt (fun x => fderiv ℝ φ (τ x)) ((fderiv ℝ (fderiv ℝ φ) (τ z)).comp (fderiv ℝ τ z)) z` using `hφ2.hasFDerivAt.comp z hτR.hasFDerivAt`. Establish `hg : DifferentiableAt ℂ (fun x => fderiv ℂ τ x b) z` using `hτ.fderiv.differentiableAt.clm_apply (differentiableAt_const b)`. Establish `hu : HasFDerivAt (fun x => fderiv ℂ τ x b) ((fderiv ℂ (fun x => fderiv ℂ τ x b) z).restrictScalars ℝ) z` using `hg.hasFDerivAt.restrictScalars ℝ`. Rewrite using `[(hc.clm_apply hu).fderiv]`. Establish `hwR : fderiv ℝ τ z w = fderiv ℂ τ z w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hτ.differentiableAt.fderiv_restrictScalars ℝ]`. Both sides reduce to the same expression. Simplify using `[hwR, add_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem hess_comp (φ : (Fin E → ℂ) → ℝ) (τ : (Fin D → ℂ) → (Fin E → ℂ))
     (z : Fin D → ℂ) (hτ : AnalyticAt ℂ τ z) (hφ : ContDiffAt ℝ 2 φ (τ z)) (w b : Fin D → ℂ) :
@@ -188,11 +188,11 @@ theorem hess_comp (φ : (Fin E → ℂ) → ℝ) (τ : (Fin D → ℂ) → (Fin 
   simp [hwR, add_comm]
 
 /- English proof (translation)
-Establish `hg : ∀ c : Fin D → ℂ, DifferentiableAt ℂ (fun x => fderiv ℂ τ x c) z` using `fun c => hτ.fderiv.differentiableAt.clm_apply (differentiableAt_const c)`. Establish `hGI : fderiv ℂ (fun x => fderiv ℂ τ x (I • b)) z = I • fderiv ℂ (fun x => fderiv ℂ τ x b) z`. Establish `: (fun x => fderiv ℂ τ x (I • b)) = fun x => I • fderiv ℂ τ x b`. Use function extensionality and compare the values at `x`. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `((hg b).hasFDerivAt.const_smul I).fderiv`. Unfold `lv`. Rewrite using `[hess_comp φ τ z hτ hφ a b, hess_comp φ τ z hτ hφ (I • a) (I • b), hess_comp φ τ z hτ hφ a (I • b), hess_comp φ τ z hτ hφ (I • a) b, hGI]`. Simplify using `only [ContinuousLinearMap.smul_apply, map_smul, smul_smul, I_mul_I, neg_one_smul, map_neg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lv_comp (φ : (Fin E → ℂ) → ℝ) (τ : (Fin D → ℂ) → (Fin E → ℂ))
     (z : Fin D → ℂ) (hτ : AnalyticAt ℂ τ z) (hφ : ContDiffAt ℝ 2 φ (τ z)) (a b : Fin D → ℂ) :
@@ -214,7 +214,7 @@ theorem lv_comp (φ : (Fin E → ℂ) → ℝ) (τ : (Fin D → ℂ) → (Fin E 
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[hessC_eq_lv, lv_comp φ τ z hτ hφ, lv_expand]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul, ← hessC_eq_lv]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem complexHessian_comp_holomorphic_matrix (φ : (Fin E → ℂ) → ℝ) (τ : (Fin D → ℂ) → (Fin E → ℂ)) (z : Fin D → ℂ)
     (hτ : AnalyticAt ℂ τ z) (hφ : ContDiffAt ℝ 2 φ (τ z)) :
@@ -227,7 +227,7 @@ theorem complexHessian_comp_holomorphic_matrix (φ : (Fin E → ℂ) → ℝ) (�
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hs : IsSymmSndFDerivAt ℝ φ z` using `hφ.isSymmSndFDerivAt (by simp)`. Use `Matrix.IsHermitian.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [hessC_eq_lv, lv]`. Rewrite using `[hs (Pi.single j 1) (Pi.single i 1), hs (I • Pi.single j 1) (I • Pi.single i 1), hs (Pi.single j 1) (I • Pi.single i 1), hs (I • Pi.single j 1) (Pi.single i 1)]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem complexHessian_isHermitian_of_contDiffAt (φ : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hφ : ContDiffAt ℝ 2 φ z) :
     (hessC φ z).IsHermitian := by
@@ -239,11 +239,9 @@ theorem complexHessian_isHermitian_of_contDiffAt (φ : (Fin D → ℂ) → ℝ) 
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Establish `hev : fderiv ℝ (fun w => φ w + ψ w) =ᶠ[𝓝 z] fun w => fderiv ℝ φ w + fderiv ℝ ψ w` using `by filter_upwards [hφ.eventually (by simp), hψ.eventually (by simp)] with w hw1 hw2`. Conclude with `fderiv_add (hw1.differentiableAt (by norm_num)) (hw2.differentiableAt (by norm_num))`. Establish `hφ' : DifferentiableAt ℝ (fderiv ℝ φ) z` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hψ' : DifferentiableAt ℝ (fderiv ℝ ψ) z` using `(hψ.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hD : fderiv ℝ (fderiv ℝ fun w => φ w + ψ w) z = fderiv ℝ (fderiv ℝ φ) z + fderiv ℝ (fderiv ℝ ψ) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev.fderiv_eq]`. Conclude with `fderiv_add hφ' hψ'`. Use extensionality with `i j`. Simplify using `only [hessC_eq_lv, lv, hD, ContinuousLinearMap.add_apply, Matrix.add_apply]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem complexHessian_add_of_contDiffAt (φ ψ : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hφ : ContDiffAt ℝ 2 φ z)
     (hψ : ContDiffAt ℝ 2 ψ z) :
@@ -275,18 +273,18 @@ def sqForm (D : ℕ) : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ :
     (φ := fun _ : Fin D => ℂ) i)).flip
 
 /- English proof (translation)
-Simplify using `[sqForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqForm_apply (v u : Fin D → ℂ) :
     sqForm D v u = ∑ i, inner ℝ (v i) (u i) := by
   simp [sqForm]
 
 /- English proof (translation)
-Establish `hf : (fun w : Fin D → ℂ => ∑ i, Complex.normSq (w i)) = fun w => sqForm D w w`. Use function extensionality and compare the values at `w`. Rewrite using `[sqForm_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_self_eq_norm_sq, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Use function extensionality and compare the values at `w`. Establish `h : fderiv ℝ (fun y => sqForm D y y) w = _` using `((sqForm D).hasFDerivAt_of_bilinear (hasFDerivAt_id w) (hasFDerivAt_id w)).fderiv`. Rewrite using `[h]`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fderiv_sum_normSq :
     fderiv ℝ (fun w : Fin D → ℂ => ∑ i, Complex.normSq (w i)) =
@@ -305,9 +303,9 @@ theorem fderiv_sum_normSq :
   simp [add_comm]
 
 /- English proof (translation)
-Rewrite using `[sqForm_apply, Finset.sum_eq_single i]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.single_apply, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sqForm_single (i j : Fin D) (a b : ℂ) :
     sqForm D (Pi.single i a) (Pi.single j b) = if i = j then inner ℝ a b else 0 := by
@@ -319,7 +317,7 @@ theorem sqForm_single (i j : Fin D) (a b : ℂ) :
   · simp
 
 /- English proof (translation)
-Use extensionality with `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem smul_single_one (i : Fin D) (c : ℂ) :
     c • (Pi.single i 1 : Fin D → ℂ) = Pi.single i c := by
@@ -329,9 +327,9 @@ theorem smul_single_one (i : Fin D) (c : ℂ) :
   · simp [h]
 
 /- English proof (translation)
-Establish `h : (fun w => sqForm D w + (sqForm D).flip w) = ⇑(sqForm D + (sqForm D).flip)`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Use extensionality with `i j`. Simplify using `only [hessC, fderiv_sum_normSq, h, ContinuousLinearMap.fderiv, ContinuousLinearMap.add_apply, ContinuousLinearMap.flip_apply, smul_single_one, sqForm_single]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Matrix.one_apply, Complex.inner]`. Evaluate the numerical expressions. Simplify using `[Matrix.one_apply, hij, Ne.symm hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 -/
 theorem complexHessian_sum_normSq_coord (z : Fin D → ℂ) :
     hessC (fun w => ∑ i, Complex.normSq (w i)) z = 1 := by

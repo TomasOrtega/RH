@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace GlobalTheory.CompanionTheory.PoitouTateGlue
 
 /- English proof (translation)
-Take `⟨δ₁, δ₂, -, -, -, -, hex, -⟩` from `h`. Establish `key : ∀ z x, sumPair S Av μ j ρ hρ (loc1 S Av (twDual μ ρ) z) x = GlobalTheory.Published.PoitouTate.tr1 S Av μ j ρ hρ x z`. Introduce `z x`. Simplify using `[sumPair, GlobalTheory.Published.PoitouTate.tr1, loc1, LinearMap.sum_apply]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y`. Rewrite using `[Submodule.mem_iInf]`. Introduce and unpack `⟨z, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[LinearMap.mem_ker, key, (hex x).mpr (LinearMap.mem_range.mp hx)]`. Simplify using the standard rewrite rules. Introduce `hx`. Take `⟨y, hy⟩` from `(hex x).mp (LinearMap.ext fun z => by`. Establish `hz` using `(Submodule.mem_iInf _).mp (hx (loc1 S Av (twDual μ ρ) z)) ⟨z, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hz` using `[LinearMap.mem_ker, key]`. Simplify using `using hz)`. Conclude with `⟨y, hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem range_localization_eq_annihilator (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]

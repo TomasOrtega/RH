@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce and unpack `O K _ _ _ _ _ Δ τ L ⟨u, hu⟩`. Use `haveI := L.frac`. Establish `sq_int : ∀ (x : K) (a : O), x ^ 2 = algebraMap O K a → ∃ b : O, algebraMap O K b = x` using `fun x a h => IsIntegrallyClosed.algebraMap_eq_of_integral (IsIntegral.of_pow (n := 2) (by norm_num) (h ▸ isIntegral_algebraMap))`. Take `⟨τ₀, e₀⟩` from `sq_int τ (4 + u) (by rw [map_add, hu, map_ofNat]; ring)`. Establish `hm : (2 - τ₀) * (2 + τ₀) = (-u : Oˣ)` using `IsFractionRing.injective O K (by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_sub, map_add, map_ofNat, e₀, Units.val_neg, map_neg, hu]`. Use the proof step `ring)`. Establish `h1 : IsUnit (2 - τ₀)` using `isUnit_of_mul_isUnit_left (hm ▸ (-u).isUnit)`. Establish `h2 : IsUnit (2 + τ₀)` using `isUnit_of_mul_isUnit_right (hm ▸ (-u).isUnit)`. Use `⟨⟨τ₀, e₀⟩, ⟨h1.unit, by simp [map_ofNat, e₀]⟩, ⟨h2.unit, by simp [map_ofNat, e₀]⟩, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `down : ∀ a : K, IsIntegral O (algebraMap K (Etau K τ) a) → ∃ b : O, algebraMap O K b = a` using `fun a h => IsIntegrallyClosed.algebraMap_eq_of_integral ((isIntegral_algebraMap_iff (algebraMap K (Etau K τ)).injective).1 h)`. Take `⟨t, ht⟩` from `down (2 * x.re + τ * x.im) (by`. Use `hx.add (isIntegral_star hx) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp; ring)`. Take `⟨d, hd⟩` from `down (x.im ^ 2 * (τ ^ 2 - 4)) (by`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(hx.sub (isIntegral_star hx)).pow 2 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [sq] <;> ring)`. Establish `hi : algebraMap O K u * algebraMap O K (u⁻¹ : Oˣ) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Take `⟨b, hb⟩` from `sq_int x.im (d * (u⁻¹ : Oˣ)) (by rw [map_mul, hd, ← hu]; linear_combination (-x.im ^ 2) * hi)`. Take `⟨i, hi2⟩` from `L.two.exists_right_inv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi2' : 2 * algebraMap O K i = 1` using `by rw [← map_ofNat (algebraMap O K) 2, ← map_mul, hi2, map_one]`. Use `⟨⟨i * (t - τ₀ * b), ?_⟩, ⟨b, hb⟩⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, map_mul, ht, e₀, hb]`. Take the linear combination `x.re * hi2'`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `isIntegral_of_trace_norm (2 * a + τ₀ * b) (a * a + τ₀ * a * b + b * b) ?_ ?_` and prove the remaining obligations. Simplify using `[QuadraticAlgebra.trace_def, map_ofNat, ha, hb, e₀]`. Simplify using `[QuadraticAlgebra.norm_def, ha, hb, e₀]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.One.intE :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ →

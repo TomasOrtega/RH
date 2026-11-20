@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Polynomial GlobalTheory.Et
 namespace LateralTheory.E.PrimitiveRootLocalization
 
 /- English proof (translation)
-Take `⟨h, e1⟩` from `cyclotomic.dvd_X_pow_sub_one q A`. Take `⟨v, hv⟩` from `hq.exists_left_inv`. Establish `e2` using `congrArg derivative e1`. Rewrite `e2` using `[derivative_sub, derivative_X_pow, derivative_one, sub_zero, derivative_mul]`. Establish `e3 : C v * C (q : A) = 1` using `by rw [← C_mul, hv, C_1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq1 : 1 ≤ q` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `e4 : X * X ^ (q - 1) = (X : A[X]) ^ q` using `by rw [← pow_succ']; congr 1; omega`. Use `⟨C v * X * h, C v * X * derivative h - h, 0, ?_⟩` and prove the remaining obligations. Take the linear combination `(-(C v * X)) * e2 + (C v * C (q : A)) * e4 + X ^ q * e3 + e1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cyc_cond {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) :
     ∃ (p₁ p₂ : A[X]) (n : ℕ), derivative (cyclotomic q A) * p₁ + cyclotomic q A * p₂ = (1 : A[X]) ^ n := by
@@ -33,7 +33,7 @@ section
 variable {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A))
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[cycPair]`. Simplify using `[cycPair]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cycPair_hasMap_root : (cycPair q hq).HasMap (AdjoinRoot.root (cyclotomic q A)) := by
   refine ⟨?_, ?_⟩
@@ -41,9 +41,9 @@ theorem cycPair_hasMap_root : (cycPair q hq).HasMap (AdjoinRoot.root (cyclotomic
   · simp [cycPair]
 
 /- English proof (translation)
-Use `Ideal.Quotient.nontrivial_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Establish `h1` using `(cyclotomic.monic q A).isUnit_iff.mp hu`. Establish `h2` using `natDegree_cyclotomic q A`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, natDegree_one]`. Conclude with `(Nat.totient_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne q))).ne' h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoinRoot_nontrivial [Nontrivial A] : Nontrivial (AdjoinRoot (cyclotomic q A)) := by
   refine Ideal.Quotient.nontrivial_iff.mpr ?_
@@ -55,13 +55,13 @@ theorem adjoinRoot_nontrivial [Nontrivial A] : Nontrivial (AdjoinRoot (cyclotomi
   exact (Nat.totient_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne q))).ne' h2.symm
 
 /- English proof (translation)
-Distinguish the cases in `hA : Nontrivial A`. Set `ψ : (cycPair q hq).Ring →ₐ[A] AdjoinRoot (cyclotomic q A)` to `(cycPair q hq).lift _ (cycPair_hasMap_root q hq)`. Use `(cyclotomic.monic q A).free_adjoinRoot` as an intermediate fact. Use `adjoinRoot_nontrivial (A := A) q` as an intermediate fact. Establish `hs` using `PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := A) (B := AdjoinRoot (cyclotomic q A))`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : algebraMap A (AdjoinRoot (cyclotomic q A)) = (ψ : (cycPair q hq).Ring →+* _).comp (algebraMap A (cycPair q hq).Ring)`. Use extensionality with `a`. Simplify using the standard rewrite rules. Introduce `x`. Take `⟨y, hy⟩` from `hs x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨PrimeSpectrum.comap (ψ : (cycPair q hq).Ring →+* _) y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, e]`. Both sides reduce to the same expression. Introduce `x`. Rewrite `hA` using `[not_nontrivial_iff_subsingleton]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (Subsingleton.elim _ _) x.isPrime.ne_top`.
+A detailed English derivation is pending.
 -/
 theorem comap_surj : Function.Surjective (PrimeSpectrum.comap (algebraMap A (cycPair q hq).Ring)) := by
   by_cases hA : Nontrivial A
@@ -90,11 +90,11 @@ def primRing : Prim q (cycPair q hq).Ring :=
 end
 
 /- English proof (translation)
-Introduce `q _ U hq`. Set `P` to `cycPair (A := Γ(U, ⊤)) q hq`. Set `f : Spec (CommRingCat.of P.Ring) ⟶ Spec Γ(U, ⊤)` to `Spec.map (CommRingCat.ofHom (algebraMap Γ(U, ⊤) P.Ring))`. Establish `hfe : Etale f`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Etale)]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.etale_algebraMap.mpr inferInstance`. Establish `hfs : Surjective f` using `⟨comap_surj q hq⟩`. Establish `hge : Etale (pullback.fst U.toSpecΓ f)` using `inferInstance`. Establish `hgs : Surjective (pullback.fst U.toSpecΓ f)` using `inferInstance`. Set `S : Sieve U` to `{ arrows := fun V _ => Nonempty (Prim q Γ(V, ⊤)) downward_closed := fun {V W} g hg h => hg.elim fun ζ => ⟨Prim.map h.appTop.hom ζ⟩ }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S, ?_, fun V g hg => hg⟩` and prove the remaining obligations. Use `GrothendieckTopology.superset_covering _ ?_ (Precoverage.generate_mem_toGrothendieck ((Scheme.singleton_mem_precoverage_iff _ _).mpr ⟨hgs.surj, hge⟩))` and prove the remaining obligations. Introduce and unpack `V _ ⟨W, h, k, ⟨⟩, rfl⟩`. Conclude with `⟨Prim.map ((Scheme.ΓSpecIso (CommRingCat.of P.Ring)).inv ≫ (h ≫ pullback.snd _ _).appTop).hom (primRing q hq)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafPrimLoc_of : LateralTheory.E.LeafOneLocPf.LeafPrimLoc := by
   intro q _ U hq

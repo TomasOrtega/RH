@@ -4,9 +4,9 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Establish `hmem : ∀ v, prj W v ∈ W` using `fun v => by`. Establish `h1 : prj W v ∈ W.topologicalClosure` using `W.topologicalClosure.starProjection_apply_mem v`. Rewrite `h1` using `[hW.submodule_topologicalClosure_eq]`. Then use the resulting hypothesis. Establish `e : A ∘L prj W = W.subtypeL ∘L (T ∘L (prj W).codRestrict W hmem)`. Rewrite using `[← ContinuousLinearMap.comp_assoc, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(hT.comp_clm ((prj W).codRestrict W hmem)).clm_comp W.subtypeL`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compact_of_restrict {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (W : Submodule ℂ H) (hW : IsClosed (W : Set H)) (A : H →L[ℂ] H) (T : W →L[ℂ] W)
@@ -22,7 +22,7 @@ private theorem compact_of_restrict {H : Type*} [NormedAddCommGroup H] [InnerPro
   exact (hT.comp_clm ((prj W).codRestrict W hmem)).clm_comp W.subtypeL
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ f`. Use `⟨fun V hV v hv => ?_, fun v hv => ?_, ?_⟩` and prove the remaining obligations. Conclude with `UnitaryRep.IsInvariant.integrated_mem _ μ hV.closed hV.inv _ hv`. Conclude with `UnitaryRep.IsInvariant.integrated_mem _ μ (isClosed_cuspidalL2 μ) (isInvariant_cuspidalL2 μ) _ hv`. Conclude with `compact_of_restrict _ (isClosed_cuspidalL2 μ) _ _ (isCompactOperator_cuspRep μ f) (subtypeL_comp_integrated μ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.opBasics :
     UpperTheory.ConvolutionTheory.C.OpBasics := by

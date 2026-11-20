@@ -13,14 +13,14 @@ namespace GlobalTheory.CompanionTheory.FinHalfAsm
 open PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.G8.Fin
 
 /- English proof (translation)
-Unfold `GlobalTheory.BCT.cptPart`. Conclude with `(Subgroup.closure_le _).mpr fun t ht => ht.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cptPart_le' {G : Type} [Group G] [TopologicalSpace G] (T : Subgroup G) : cptPart T ≤ T := by
   unfold GlobalTheory.BCT.cptPart
   exact (Subgroup.closure_le _).mpr fun t ht => ht.1
 
 /- English proof (translation)
-Establish `h1 : (Γ ⊓ GlobalTheory.BCT.twCent θ δ).subgroupOf (GlobalTheory.BCT.twCent θ δ) = Γ.subgroupOf (GlobalTheory.BCT.twCent θ δ)` using `Subgroup.inf_subgroupOf_right _ _`. Establish `h2 : Γ ⊓ GlobalTheory.BCT.twCent θ δ ⊓ GlobalTheory.BCT.cptPart (GlobalTheory.BCT.twCent θ δ) = Γ ⊓ GlobalTheory.BCT.cptPart (GlobalTheory.BCT.twCent θ δ)`. Rewrite using `[inf_assoc, inf_eq_right.mpr (cptPart_le' _)]`. Unfold `GlobalTheory.BCT.mass`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mass_inf_twCent {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (Γ : Subgroup G) (δ : G) :
     mass θ (Γ ⊓ twCent θ δ) δ = mass θ Γ δ := by
@@ -33,13 +33,11 @@ theorem mass_inf_twCent {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G
   rw [h1, h2]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `hopen : IsOpen ((U.subgroupOf K : Subgroup K) : Set K)`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hU.preimage continuous_subtype_val`. Establish `hle : U.subgroupOf K ≤ GlobalTheory.BCT.rStab fun k : K => f ((x * k)⁻¹ * δ * θ (x * k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k' hk'`. Rewrite `hk'` using `[Subgroup.mem_subgroupOf]`. Express the relevant statement in the definitionally equal form `∀ y : K, f ((x * ↑(y * k'))⁻¹ * δ * θ (x * ↑(y * k'))) = f ((x * ↑y)⁻¹ * δ * θ (x * ↑y))`. Introduce `y`. Rewrite using `[← hf (k' : G) hk' ((x * ↑y)⁻¹ * δ * θ (x * ↑y))]`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [Subgroup.coe_mul, map_mul, _root_.mul_inv_rev, mul_assoc]`. Use `haveI : Finite (K ⧸ U.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hopen`. Use `haveI : (U.subgroupOf K).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `haveI := Subgroup.finiteIndex_of_le hle`.
-
-Conclude with `Subgroup.FiniteIndex.index_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem index_rStab_orbit {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (θ : G →* G) (K U : Subgroup G)
     (f : G → ℂ) (δ : G) (hK : IsCompact (K : Set G)) (hU : IsOpen (U : Set G))
@@ -63,20 +61,20 @@ theorem index_rStab_orbit {G : Type} [Group G] [TopologicalSpace G] [IsTopologic
   exact Subgroup.FiniteIndex.index_ne_zero
 
 /- English proof (translation)
-Conclude with `MonoidHom.range_prodMap _ _`.
+A detailed English derivation is pending.
 -/
 theorem range_pair (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) :
     ((ratF E a).prodMap (ratF E b)).range = (ratF E a).range.prod (ratF E b).range := by
   exact MonoidHom.range_prodMap _ _
 
 /- English proof (translation)
-Unfold `PositivityTheory.Rg.BcB.G8.Fin.FinHalfOf PositivityTheory.Rg.BcB.G8.Fin.DcCount PositivityTheory.Rg.BcB.G8.Fin.MassProd PositivityTheory.Rg.BcB.G8.Fin.RatFin PositivityTheory.Rg.BcB.G8.Fin.SuppFin PositivityTheory.Rg.BcB.G8.Fin.EulerFin PositivityTheory.Rg.BcB.G8.KfOC PositivityT …`. Introduce `hDc hMP hRat hSupp hEuler hKf hFL E _ _ _ hUnr a b S hS φ₁ φ₂ hT1 hT2 δ₁ δ₂ h1 h2`. Take `⟨hGood, hfin1, hfin2, hfin3⟩` from `hRat E hUnr a b δ₁ δ₂ h1 h2`. Take `⟨hsupp, hsuppG⟩` from `hSupp E hUnr a b S hS φ₁ φ₂ hT1 hT2 δ₁ δ₂ h1 h2`. Take `⟨U, hUo, hUinv⟩` from `hFL E hUnr a b S φ₁ φ₂ hT1 hT2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hKo : IsOpen (((PositivityTheory.Rg.BcB.G8.Kf E a).prod (PositivityTheory.Rg.BcB.G8.Kf E b) : Subgroup (PositivityTheory.Rg.BcB.G8.Gf E a b)) : Set (PositivityTheory.Rg.BcB.G8.Gf E a b))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(hKf E a).1.prod (hKf E b).1`. Establish `hKc : IsCompact (((PositivityTheory.Rg.BcB.G8.Kf E a).prod (PositivityTheory.Rg.BcB.G8.Kf E b) : Subgroup (PositivityTheory.Rg.BcB.G8.Gf E a b)) : Set (PositivityTheory.Rg.BcB.G8.Gf E a b))`. Rewrite using `[Subgroup.coe_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hKf E a).2.prod (hKf E b).2`. Establish `hdc` using `hDc (PositivityTheory.Rg.BcB.G8.Gf E a b) (PositivityTheory.Rg.BcB.G8.thP E a b) ((PositivityTheory.Rg.BcB.G8.Kf E a).prod (PositivityTheory.Rg.BcB.G8.Kf E b)) (PositivityTheory.Rg.BcB.G8.gam δ₁ δ₂) ((GlobalTheory.BCT.ratF E a) δ₁, (GlobalTheory.BCT.ratF E b) δ₂) (PositivityTheor …`. Establish `hdc' : PositivityTheory.Rg.BcB.G8.dcSum (PositivityTheory.Rg.BcB.G8.gam δ₁ δ₂) ((PositivityTheory.Rg.BcB.G8.Kf E a).prod (PositivityTheory.Rg.BcB.G8.Kf E b)) (PositivityTheory.Rg.BcB.G8.orbFn S φ₁ φ₂ δ₁ δ₂) = _` using `hdc`. Establish `hmass : GlobalTheory.BCT.mass (PositivityTheory.Rg.BcB.G8.thP E a b) (PositivityTheory.Rg.BcB.G8.gam δ₁ δ₂) ((GlobalTheory.BCT.ratF E a) δ₁, (GlobalTheory.BCT.ratF E b) δ₂) = GlobalTheory.BCT.mass (GlobalTheory.BCT.thF E a) (GlobalTheory.BCT.ratF E a).range ((GlobalTheory.BCT.rat …`. Unfold `PositivityTheory.Rg.BcB.G8.gam`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mass_inf_twCent, range_pair]`. Conclude with `hMP _ _ (GlobalTheory.BCT.thF E a) (GlobalTheory.BCT.thF E b) _ _ _ _`. Use `⟨hsuppG, hfin1, ?_⟩` and prove the remaining obligations. Rewrite using `[hdc', hmass, hEuler E hUnr a b S hS φ₁ φ₂ hT1 hT2 δ₁ δ₂ h1 h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finHalfOf : FinHalfOf := by
   unfold PositivityTheory.Rg.BcB.G8.Fin.FinHalfOf PositivityTheory.Rg.BcB.G8.Fin.DcCount PositivityTheory.Rg.BcB.G8.Fin.MassProd

@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Introduce `Y M V W a h hM hV hV' hW`. Use `haveI := GlobalTheory.LB.isQuasicoherent_toMod hM`. Use `⟨fun x hx => GlobalTheory.QCoh.Qcqs.exists_pow_smul_eq_zero_of_isCompact (GlobalTheory.LB.toMod M) hV a h hW x hx, fun y => ?_⟩` and prove the remaining obligations. Take `⟨k, x, e⟩` from `GlobalTheory.QCoh.Qcqs.exists_pow_smul_eq_res_of_qcqs (GlobalTheory.LB.toMod M) hV hV' a h hW y`. Conclude with `⟨k, x, e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secOn_basicOpen_localization :
     ∀ (Y : Scheme.{0}) (M : LB Y) (V W : Y.Opens) (a : Γ(Y, V)) (h : W ≤ V), M.IsLB → IsCompact (V : Set Y) → IsQuasiSeparated (V : Set Y) → W = Y.basicOpen a → (∀ x : SecOn M V, SecOn.restrict M h x = 0 → ∃ k : ℕ, a ^ k • x = 0) ∧ ∀ y : SecOn M W, ∃ (k : ℕ) (x : SecOn M V), SecOn.restrict M h x = rs Y h a ^ k • y := by

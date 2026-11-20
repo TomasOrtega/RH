@@ -5,21 +5,21 @@ import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.MinkowskiNumberD
 namespace Formalism.HermitianLatticeCounting.Final.S6
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.wedgeMapInLieAlgebra`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.wedgeMapInLieAlgebra`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem y1 : Formalism.HermitianLatticeCounting.S6.Y1 := by
   first
     | exact Formalism.HermitianLatticeCounting.P.wedgeMapInLieAlgebra
     | exact Formalism.HermitianLatticeCounting.P.S6e.wedgeMapInLieAlgebra
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.memOfOrthogonalAnisotropic`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.memOfOrthogonalAnisotropic`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem n0c : Formalism.HermitianLatticeCounting.S6.MemOfOrthogonalAnisotropic := by
   first
     | exact Formalism.HermitianLatticeCounting.P.memOfOrthogonalAnisotropic
     | exact Formalism.HermitianLatticeCounting.P.S6e.memOfOrthogonalAnisotropic
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.normalFormZero`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.normalFormZero`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nFJZero : Formalism.HermitianLatticeCounting.S6.NFJZero := by
   first
@@ -27,7 +27,7 @@ theorem nFJZero : Formalism.HermitianLatticeCounting.S6.NFJZero := by
     | exact Formalism.HermitianLatticeCounting.P.S6e.normalFormZero
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.existsNormalForm`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.existsNormalForm`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem normalForm : Formalism.HermitianLatticeCounting.S6.NormalForm := by
   first
@@ -35,7 +35,7 @@ theorem normalForm : Formalism.HermitianLatticeCounting.S6.NormalForm := by
     | exact Formalism.HermitianLatticeCounting.P.S6e.existsNormalForm
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.norm_singular_value_bound`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.norm_singular_value_bound`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem normSgBound : Formalism.HermitianLatticeCounting.S6.NormSgBound := by
   first
@@ -43,16 +43,16 @@ theorem normSgBound : Formalism.HermitianLatticeCounting.S6.NormSgBound := by
     | exact Formalism.HermitianLatticeCounting.P.S6e.norm_singular_value_bound
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.minkowski_number_dvd_factorial`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.minkowski_number_dvd_factorial`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem minkowskiDvdFactorial : Formalism.HermitianLatticeCounting.S6.MinkowskiDvdFactorial := by
   first
     | exact Formalism.HermitianLatticeCounting.P.minkowski_number_dvd_factorial
     | exact Formalism.HermitianLatticeCounting.P.S6e.minkowski_number_dvd_factorial
 /- English proof (translation)
-Introduce `hMk s f G hG`. Establish `h1` using `(hMk (2 * s * f) G hG).trans (minkowskiDvdFactorial (2 * s * f))`. Establish `h2 : Nat.card G ≤ (2 * (2 * s * f)).factorial` using `Nat.le_of_dvd (Nat.factorial_pos _) h1`. Establish `h3 : (2 * (2 * s * f)).factorial ≤ (4 * s * f) ^ (4 * s * f)`. Establish `e : 2 * (2 * s * f) = 4 * s * f` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Nat.factorial_le_pow _`. Conclude with `h2.trans h3` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem autBound_of_minkowskiBound : Formalism.HermitianLatticeCounting.S6.MinkowskiBound → Formalism.HermitianLatticeCounting.S6.AutBound := by
   intro hMk s f G hG
@@ -65,14 +65,14 @@ theorem autBound_of_minkowskiBound : Formalism.HermitianLatticeCounting.S6.Minko
   exact_mod_cast h2.trans h3
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.exponential_identity`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.exponential_identity`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem expIdentity : Formalism.HermitianLatticeCounting.S6.ExpIdentity := by
   first
     | exact Formalism.HermitianLatticeCounting.P.exponential_identity
     | exact Formalism.HermitianLatticeCounting.P.S6e.exponential_identity
 /- English proof (translation)
-Use `first`. Consider the case `exact Formalism.HermitianLatticeCounting.P.final_sum_bound`. Consider the case `exact Formalism.HermitianLatticeCounting.P.S6e.final_sum_bound`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finalSum : Formalism.HermitianLatticeCounting.S6.FinalSum := by
   first

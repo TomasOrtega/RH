@@ -47,13 +47,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
 
 /- English proof (translation)
-Introduce `w hw c c' y`. Establish `hwQ : w.1 ∈ QE sel (mu : Chr X.F X.E X.K)` using `(Finset.mem_union.mp w.2).resolve_left hw`. Establish `hc : c.1.1 ∈ prCat (Pr` using `Pr) cst.sharp i w.1 (L.h i al w) := by`. Conclude with `Subgroup.mem_subgroupOf.1 ((SetLike.ext_iff.1 (hok.grpQ i al ⟨w.1, hwQ⟩) c.1).1 c.2)`. Establish `hc' : c'.1.1 ∈ prCat (Pr` using `Pr) cst.sharp (i + 1) w.1 (L.h (i + 1) be w) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subgroup.mem_subgroupOf.1 ((SetLike.ext_iff.1 (hok.grpQ (i + 1) be ⟨w.1, hwQ⟩) c'.1).1 c'.2)`. Take `⟨r, hr, hrx⟩` from `hc`. Take `⟨r', hr', hrx'⟩` from `hc'`. Establish `hlam` using `hok.chrQ i al ⟨w.1, hwQ⟩ c r hr hrx`. Establish `hlam'` using `hok.chrQ (i + 1) be ⟨w.1, hwQ⟩ c' r' hr' hrx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hT w hw r' hr' c'.1.1 c'.1.2 hrx' (y ∘ₗ (c.1.1⁻¹).toLinearMap)`. Establish `e2` using `hS w hw r hr c.1.1 c.1.2 hrx y`. Establish `hl0 : (((L.levQ i al ⟨w.1, hwQ⟩).lam c : X.Kˣ) : X.K) ≠ 0` using `Units.ne_zero _`. Unfold `XiAt`. Rewrite using `[Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `rhoS Ch sel mu i w ((LinearEquiv.det c.1.1⁻¹ : X.Eˣ) : X.E) * rhoT Ch sel mu i w ((LinearEquiv.det c'.1.1⁻¹ : X.Eˣ) : X.E) * (_ * E1at Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w) (c'.1.1.toLinearMap ∘ₗ y ∘ₗ (c.1.1⁻¹).toLinearMap)) = (((L.levQ (i + 1) be ⟨w.1, hwQ⟩).lam c' : …`. Rewrite using `[← e2, hlam', ← hlam]`. Establish `e3 : ∀ a b v E : X.K, a * b * (v * E) = a * v * (b * E)` using `fun a b v E => by ring`. Rewrite using `[e3, e1]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem clXQ_xiLawQ (hok : L.Ok Ch sel mu cst G m2) {i : ℕ} (al : L.β i) (be : L.β (i + 1))
     (hT : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → TargetEquivarianceAtPrime Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w))
@@ -86,7 +86,7 @@ theorem clXQ_xiLawQ (hok : L.Ok Ch sel mu cst G m2) {i : ℕ} (al : L.β i) (be 
   field_simp
 
 /- English proof (translation)
-Take `⟨A₀, B₀, h⟩` from `h`. Introduce `r' hr' c' hc' hx y`. Establish `e` using `h (max A₀ cst.A) (max B₀ cst.B) (le_max_left _ _) (le_max_left _ _) r' hr' c' hc' hx y`. Rewrite `e` using `[hd _ _ (le_max_right _ _) (le_max_right _ _)]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_tgt_of_ev {i : ℕ} {w : rowSG Pr sel mu} {hal : AutY X R i} {hbe : AutY X R (i + 1)}
     (hd : ∀ A' B', cst.A ≤ A' → cst.B ≤ B' → E1at Ch sel mu { cst with A := A', B := B' } i w hal hbe = E1at Ch sel mu cst i w hal hbe)
@@ -98,7 +98,7 @@ theorem clXQ_tgt_of_ev {i : ℕ} {w : rowSG Pr sel mu} {hal : AutY X R i} {hbe :
   exact e
 
 /- English proof (translation)
-Take `⟨A₀, B₀, h⟩` from `h`. Introduce `r hr c hc hx y`. Establish `e` using `h (max A₀ cst.A) (max B₀ cst.B) (le_max_left _ _) (le_max_left _ _) r hr c hc hx y`. Rewrite `e` using `[hd _ _ (le_max_right _ _) (le_max_right _ _)]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_src_of_ev {i : ℕ} {w : rowSG Pr sel mu} {hal : AutY X R i} {hbe : AutY X R (i + 1)}
     (hd : ∀ A' B', cst.A ≤ A' → cst.B ≤ B' → E1at Ch sel mu { cst with A := A', B := B' } i w hal hbe = E1at Ch sel mu cst i w hal hbe)
@@ -110,7 +110,7 @@ theorem clXQ_src_of_ev {i : ℕ} {w : rowSG Pr sel mu} {hal : AutY X R i} {hbe :
   exact e
 
 /- English proof (translation)
-The claim follows from `clXQ_xiLawQ hok al be (fun w hw => clXQ_tgt_of_ev (fun A' B' hA hB => hok.deep A' B' hA hB i hi al be w) (hT w hw)) (fun w hw => clXQ_src_of_ev (fun A' B' hA hB => hok.deep A' B' hA hB i hi al be w) (hS w hw))`.
+A detailed English derivation is pending.
 -/
 theorem clXQ_xiLawQ_ev (hok : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : L.β i) (be : L.β (i + 1))
     (hT : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → TargetEquivarianceLargeDepths Ch sel mu cst i w (L.h i al w) (L.h (i + 1) be w))
@@ -127,9 +127,9 @@ section Res
 variable {k : Type} [Field k] {n c : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Unfold `Loc.inX`. Distinguish the cases in `h : l.1 < n`. Simplify using `only [LinearMap.pi_apply, dif_pos h, LinearMap.proj_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [LinearMap.pi_apply, dif_neg h, LinearMap.zero_apply]`. Conclude with `hv l (by simpa using h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clXQ_eq_inX {v : Fin (n + c) → k} (hv : v ∈ Loc.Ufl k n c 0) : v = Loc.inX k n c (twZrPr v) := by
   funext l
@@ -141,11 +141,9 @@ theorem clXQ_eq_inX {v : Fin (n + c) → k} (hv : v ∈ Loc.Ufl k n c 0) : v = L
     exact hv l (by simpa using h)
 
 /- English proof (translation)
-Establish `h1 : ∀ x, r (Loc.inX k n c x) = Loc.inX k n c (twZrPr (r (Loc.inX k n c x)))` using `fun x => clXQ_eq_inX (hr.1.1 0 _ (twZr_inX_mem_Ufl x 0))`. Establish `h2 : ∀ x, r⁻¹ (Loc.inX k n c x) = Loc.inX k n c (twZrPr (r⁻¹ (Loc.inX k n c x)))` using `fun x => clXQ_eq_inX (hr.2.1 0 _ (twZr_inX_mem_Ufl x 0))`. Use `⟨LinearEquiv.ofLinear (twZrPr ∘ₗ r.toLinearMap ∘ₗ Loc.inX k n c) (twZrPr ∘ₗ (r⁻¹).toLinearMap ∘ₗ Loc.inX k n c) ?_ ?_, h1⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_ show twZrPr (r (Loc.inX k n c (twZrPr (r⁻¹ (Loc.inX k n c x))))) = x` and prove the remaining obligations. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show twZrPr (r (r.symm (Loc.inX k n c x))) = x`. Rewrite using `[LinearEquiv.apply_symm_apply, twZrPr_inX]`. Use `LinearMap.ext fun x => ?_ show twZrPr (r⁻¹ (Loc.inX k n c (twZrPr (r (Loc.inX k n c x))))) = x` and prove the remaining obligations. Rewrite using `[← h1]`. Use `show twZrPr (r.symm (r (Loc.inX k n c x))) = x`.
-
-Rewrite using `[LinearEquiv.symm_apply_apply, twZrPr_inX]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_res {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : r ∈ Loc.R1 k n c) :
     ∃ g : (Fin n → k) ≃ₗ[k] (Fin n → k), ∀ x, r (Loc.inX k n c x) = Loc.inX k n c (g x) := by
@@ -174,7 +172,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Unfold `rhoT`. Conclude with `clX_unitV_ne _ (isUnit_reduction_of_integralAt_inv (intAt_det c hc) (intAt_det_inv c hc) (Units.ne_zero _))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem clXQ_rhoT_ne (i : ℕ) (w : rowSG Pr sel mu) {n : ℕ} {c : Sp X.E n ≃ₗ[X.E] Sp X.E n} (hc : c ∈ GLint X.E n w.1) :
     rhoT Ch sel mu i w ((LinearEquiv.det c : X.Eˣ) : X.E) ≠ 0 := by
@@ -182,7 +180,7 @@ theorem clXQ_rhoT_ne (i : ℕ) (w : rowSG Pr sel mu) {n : ℕ} {c : Sp X.E n ≃
   exact clX_unitV_ne _ (isUnit_reduction_of_integralAt_inv (intAt_det c hc) (intAt_det_inv c hc) (Units.ne_zero _))
 
 /- English proof (translation)
-Unfold `rhoT`. Rewrite using `[map_mul, Units.val_mul]`. Conclude with `unitV_mul_unit _ (intAt_det c' hc') (intAt_det_inv c' hc') (Units.ne_zero _) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_rhoT_mul (i : ℕ) (w : rowSG Pr sel mu) {n : ℕ} {c c' : Sp X.E n ≃ₗ[X.E] Sp X.E n} (hc' : c' ∈ GLint X.E n w.1) :
     rhoT Ch sel mu i w ((LinearEquiv.det (c * c') : X.Eˣ) : X.E) =
@@ -192,19 +190,17 @@ theorem clXQ_rhoT_mul (i : ℕ) (w : rowSG Pr sel mu) {n : ℕ} {c c' : Sp X.E n
   exact unitV_mul_unit _ (intAt_det c' hc') (intAt_det_inv c' hc') (Units.ne_zero _) _
 
 /- English proof (translation)
-Take `⟨A₀, B₀, hT⟩` from `hT`. Take `⟨A₁, B₁, hne⟩` from `hne`. Establish `T` using `hT (max A₀ A₁) (max B₀ B₁) (le_max_left _ _) (le_max_left _ _)`. Take `⟨y₀, hy₀⟩` from `Function.ne_iff.1 (hne (max A₀ A₁) (max B₀ B₁) (le_max_right _ _) (le_max_right _ _))`. Establish `hres : ∀ r ∈ Loc.Cbe (Jat (Pr` using `Pr) cst.sharp (i + 1) w.1) h, ∃ c ∈ GLint X.E (R.N (i + 1)) w.1, ∀ x, r (Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) x) = Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) (c x) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r hr`. Take `⟨c, hc⟩` from `clXQ_res (Subgroup.mem_inf.1 hr).1`. Conclude with `⟨c, hint ⟨r, hr, hc⟩, hc⟩`. Use `⟨fun r hr h0 => ?_, fun r hr r' hr' r'' hr'' hx => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hcx⟩` from `hres r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e` using `T r hr c hc hcx ((c⁻¹).toLinearMap ∘ₗ y₀)`. Establish `h0' : chiInv Ch sel mu { cst with A` using `max A₀ A₁, B := max B₀ B₁ } (i + 1) w h r = 0 := h0`. Rewrite `e` using `[h0', zero_mul]`. Establish `e2 : c.toLinearMap ∘ₗ (c⁻¹).toLinearMap ∘ₗ y₀ = y₀`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c (c.symm (y₀ v)) = y₀ v`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Rewrite `e` using `[e2]`. Break down `mul_eq_zero.1 e with e | e` into its components or cases. Conclude with `clXQ_rhoT_ne i w ((GLint X.E (R.N (i + 1)) w.1).inv_mem hc) e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hy₀ e`. Take `⟨c, hc, hcx⟩` from `hres r hr`. Take `⟨c', hc', hcx'⟩` from `hres r' hr'`. Establish `hcx'' : ∀ x, r'' (Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) x) = Loc.inX X.E (R.N (i + 1)) (cOf R (i + 1)) ((c * c') x)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hx, hcx', hcx]`. Both sides reduce to the same expression. Establish `e''` using `T r'' hr'' (c * c') ((GLint X.E (R.N (i + 1)) w.1).mul_mem hc hc') hcx'' y₀`. Establish `e` using `T r hr c hc hcx (c'.toLinearMap ∘ₗ y₀)`. Establish `e'` using `T r' hr' c' hc' hcx' y₀`.
-
-Establish `e3 : (c * c').toLinearMap ∘ₗ y₀ = c.toLinearMap ∘ₗ c'.toLinearMap ∘ₗ y₀` using `rfl`. Rewrite `e''` using `[e3, mul_inv_rev, clXQ_rhoT_mul i w ((GLint X.E (R.N (i + 1)) w.1).inv_mem hc), mul_assoc, e, ← mul_assoc, mul_comm (rhoT Ch sel mu i w _), mul_assoc, e', ← mul_assoc]`. Conclude with `(mul_right_cancel₀ hy₀ e'').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_chrOk {i : ℕ} {w : rowSG Pr sel mu} {hal : AutY X R i} {h : AutY X R (i + 1)}
     (hint : prCat (Pr := Pr) cst.sharp (i + 1) w.1 h ≤ GLint X.E (R.N (i + 1)) w.1)

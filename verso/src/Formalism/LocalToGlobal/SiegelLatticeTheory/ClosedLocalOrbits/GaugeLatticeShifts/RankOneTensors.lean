@@ -16,14 +16,14 @@ variable {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   [NormedAddCommGroup V'] [InnerProductSpace ℂ V']
 
 /- English proof (translation)
-Unfold `TermOp.rk1`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_rankOneInnerOperator (a : V) (b : V') : ‖TermOp.rk1 a b‖ = ‖a‖ * ‖b‖ := by
   unfold TermOp.rk1
   rw [ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x => innerSL ℂ (g x)` using `(innerSL ℂ).continuous.comp hg`. Establish `h2 : Continuous fun x => ContinuousLinearMap.smulRightL ℂ V' V (innerSL ℂ (g x))` using `(ContinuousLinearMap.smulRightL ℂ V' V).continuous.comp h1`. Unfold `TermOp.rk1`. Conclude with `h2.clm_apply hf`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_rankOneOperator {T : Type*} [TopologicalSpace T] {f : T → V} {g : T → V'} (hf : Continuous f)
     (hg : Continuous g) : Continuous fun x => TermOp.rk1 (f x) (g x) := by
@@ -41,9 +41,7 @@ variable {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ v, NormedAddCommGroup
   {Vt : Type*} [NormedAddCommGroup Vt] [InnerProductSpace ℂ Vt] (T : (∀ v, V v) → Vt)
 
 /- English proof (translation)
-Establish `h` using `hT x x`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h`. Establish `h' : ‖T x‖ ^ 2 = (∏ v, ‖x v‖) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Conclude with `h` after adjusting the coercions.
-
-Conclude with `(pow_left_inj₀ (norm_nonneg _) (Finset.prod_nonneg fun _ _ => norm_nonneg _) two_ne_zero).1 h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tens (hT : ∀ x y, ⟪T x, T y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (x : ∀ v, V v) : ‖T x‖ = ∏ v, ‖x v‖ := by
   have h := hT x x
@@ -54,7 +52,7 @@ theorem norm_tens (hT : ∀ x y, ⟪T x, T y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ)
   exact (pow_left_inj₀ (norm_nonneg _) (Finset.prod_nonneg fun _ _ => norm_nonneg _) two_ne_zero).1 h'
 
 /- English proof (translation)
-Rewrite using `[← norm_eq_zero, norm_tens T hT x]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v0) (by rw [h0, norm_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_eq_zero (hT : ∀ x y, ⟪T x, T y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (x : ∀ v, V v) (v0 : ι) (h0 : x v0 = 0) :
     T x = 0 := by
@@ -62,11 +60,9 @@ theorem tens_eq_zero (hT : ∀ x y, ⟪T x, T y⟫_ℂ = ∏ v, ⟪x v, y v⟫_�
   exact Finset.prod_eq_zero (Finset.mem_univ v0) (by rw [h0, norm_zero])
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Establish `hmem : ∀ w ∈ Submodule.span ℂ (Set.range T), ⟪w, a - b⟫_ℂ = 0`. Introduce `w hw`. Use `Submodule.span_induction (fun y hy => ?_) ?_ (fun y z _ _ hy hz => ?_) (fun c y _ hy => ?_) hw` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[inner_sub_right, h z, sub_self]`. Conclude with `inner_zero_left _`. Rewrite using `[inner_add_left, hy, hz, add_zero]`. Rewrite using `[inner_smul_left, hy, mul_zero]`. Establish `h2` using `hmem (a - b) (by rw [hS]; exact Submodule.mem_top)`.
-
-Conclude with `inner_self_eq_zero.mp h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_inner_tens (hS : Submodule.span ℂ (Set.range T) = ⊤) (a b : Vt)
     (h : ∀ z, ⟪T z, a⟫_ℂ = ⟪T z, b⟫_ℂ) : a = b := by
@@ -104,7 +100,7 @@ variable {ι : Type*} [Fintype ι] {G : ι → Type*} [∀ v, Group (G v)] [∀ 
 include hT hT' hS hW hW' hWt hWt' hten hten' in
 
 /- English proof (translation)
-Introduce `v` and use `FiniteDimensional.complete ℂ (V v) haveI := FiniteDimensional.complete ℂ Vt (∫ x, TermOp.rk1 (Wt x) (Wt' (γ⁻¹ * x)) ∂(Measure.pi μ)) (T' y) = T fun v => (∫ s, TermOp.rk1 (W v s) (W' v ((γ v)⁻¹ * s)) ∂(μ v)) (y v) := by have : ∀ v, CompleteSpace (V v) := fun v => FiniteDimensional …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oo_factor (γ : ∀ v, G v) (y : ∀ v, V' v) :
     haveI : ∀ v, CompleteSpace (V v) := fun v => FiniteDimensional.complete ℂ (V v)
@@ -180,7 +176,7 @@ end Fact
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `γ y`. Establish `h` using `oo_factor (fun v => Formalism.REAL.muG (X.B.I.ε v)) (X.tensU u) (X.tensU u') (X.tensU_inner u) (X.tensU_inner u') (X.tensU_span u) (X.Wloc u) (X.Wloc u') (X.Wloc_cont u) (X.Wloc_cont u') (X.Wu u) (X.Wu u') (X.Wu_spec u).2.2.1 (X.Wu_spec u').2.2.1 (X.Wu_tens u) (X.Wu_tens u') γ y`. Simplify `h` using `only [OOinf, Jv, TermOp.OO, Measure.restrict_univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem OOFactor_holds {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) : OOFactor X u u' := by
   intro γ y

@@ -6,7 +6,7 @@ namespace GlobalTheory.UnitLemma
 open Polynomial IsLocalRing
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hz`. Take `⟨y, hy⟩` from `K.c_int x`. Conclude with `⟨y, hy.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem c_mem (K : UQ) {z : K.E} (hz : z ∈ (algebraMap K.O K.E).range) : K.c z ∈ (algebraMap K.O K.E).range := by
   obtain ⟨x, rfl⟩ := hz

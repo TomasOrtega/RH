@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Take `⟨F, hF, rfl⟩` from `hx`. Use `(W.origin_π h F).trans ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `hF 0 (by rw [map_zero]; exact hj.symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem origin_part {O X B : Type} [CommRing O] [AddCommGroup X] [CommRing B] [Algebra O B]
     (W : WPres O X B) (h : W.HasOrigin) {j : X} (hj : j ≠ 0) {x : B} (hx : x ∈ W.part j) :
@@ -15,7 +15,7 @@ private theorem origin_part {O X B : Type} [CommRing O] [AddCommGroup X] [CommRi
   exact hF 0 (by rw [map_zero]; exact hj.symm)
 
 /- English proof (translation)
-Establish `hinj` using `injective_zpow_iff_not_isOfFinOrder.2 hu`. Distinguish the cases in `h1 : i.1 = j.1`. Use `⟨(zpowersHom Oˣ u).comp (AddMonoidHom.toMultiplicative (AddMonoidHom.snd ℤ ℤ)), fun e => h ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext h1 (hinj e)`. Conclude with `⟨(zpowersHom Oˣ u).comp (AddMonoidHom.toMultiplicative (AddMonoidHom.fst ℤ ℤ)), fun e => h1 (hinj e)⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sep_char {O : Type} [CommRing O] (u : Oˣ) (hu : ¬ IsOfFinOrder u) {i j : ℤ × ℤ} (h : i ≠ j) :
     ∃ t : Multiplicative (ℤ × ℤ) →* Oˣ, t (Multiplicative.ofAdd i) ≠ t (Multiplicative.ofAdd j) := by
@@ -26,31 +26,29 @@ private theorem sep_char {O : Type} [CommRing O] (u : Oˣ) (hu : ¬ IsOfFinOrder
   · exact ⟨(zpowersHom Oˣ u).comp (AddMonoidHom.toMultiplicative (AddMonoidHom.fst ℤ ℤ)), fun e => h1 (hinj e)⟩
 
 /- English proof (translation)
-Establish `hz : ∀ s, W.z s ∈ maximalIdeal B`. Introduce `s`. Assume the negation of the conclusion as `hs`. Establish `hu' : IsUnit (W.z s)`. Rewrite `hs` using `[mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hs`. Establish `h0 : W.origin h (W.z s) = 0`. Rewrite using `[WPres.z, WPres.origin_π, MvPowerSeries.constantCoeff_X]`. Establish `h3` using `hu'.map (W.origin h)`. Rewrite `h3` using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `not_isUnit_zero h3`. Establish `hmul : ∀ (c : O) (d : DualNumber O), (algebraMap O (DualNumber O) c * d).fst = c * d.fst ∧ (algebraMap O (DualNumber O) c * d).snd = c * d.snd`. Introduce `c d`. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Conclude with `⟨rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfst : ∀ x, (y x).fst = W.origin h x`. Establish `key` using `huniq ((Algebra.ofId O (DualNumber O)).comp ((TrivSqZeroExt.fstHom O O O).comp y)) ((Algebra.ofId O (DualNumber O)).comp (W.origin h)) (by`. Introduce `a`. Simplify using `only [AlgHom.comp_apply, TrivSqZeroExt.fstHom_apply, h1 a])`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4` using `congrArg TrivSqZeroExt.fst (AlgHom.congr_fun key x)`. Simplify `h4` using `[Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl]`. Use `⟨hfst, ?_⟩` and prove the remaining obligations. Introduce `i hij x hx`. Take `⟨s, hs⟩` from `sep_char u hu hij`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y1, hy1, -⟩` from `tact O (ℤ × ℤ) B W hz (DualNumber O) y ((Units.map (algebraMap O (DualNumber O)).toMonoidHom).comp s)`. Establish `hy1' : ∀ k, ∀ z ∈ W.part k, (y1 z).fst = ↑(s (Multiplicative.ofAdd k)) * (y z).fst ∧ (y1 z).snd = ↑(s (Multiplicative.ofAdd k)) * (y z).snd`. Introduce `k z hz'`. Rewrite using `[hy1 k z hz']`. Conclude with `hmul _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set c : O := ↑(s (Multiplicative.ofAdd j))⁻¹ with hc`. Set `φ : DualNumber O →ₐ[O] DualNumber O` to `TrivSqZeroExt.map (c • LinearMap.id)`. Establish `hφ : ∀ d : DualNumber O, (φ d).fst = d.fst ∧ (φ d).snd = c * d.snd`. Introduce `d`. Conclude with `⟨TrivSqZeroExt.fst_map _ _, TrivSqZeroExt.snd_map _ _⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcj : c * ↑(s (Multiplicative.ofAdd j)) = 1` using `Units.inv_mul _`. Establish `heq : φ.comp y1 = y`. Apply `huniq` to reduce the goal to its premises. Introduce `a`. Take `⟨ha1, ha2⟩` from `hy1' (w a) (e a) (he a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hb1, hb2⟩` from `hφ (y1 (e a))`. Rewrite using `[AlgHom.comp_apply]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hb1, ha1, hfst]`. Distinguish the cases in `hw : w a = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hw, ofAdd_zero, map_one, Units.val_one, one_mul]`. Rewrite using `[origin_part W h hw (he a), mul_zero]`. Rewrite using `[hb2, ha2]`. Distinguish the cases in `hw : w a = j`. Rewrite using `[hw, ← mul_assoc, hcj, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2 a hw, mul_zero, mul_zero]`. Establish `hx1` using `congrArg TrivSqZeroExt.snd (AlgHom.congr_fun heq x)`. Rewrite `hx1` using `[AlgHom.comp_apply, (hφ _).2, (hy1' i x hx).2, ← mul_assoc]`. Establish `hne : c * ↑(s (Multiplicative.ofAdd i)) - 1 ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hs` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `h5 : c * ↑(s (Multiplicative.ofAdd i)) = c * ↑(s (Multiplicative.ofAdd j))`. Rewrite using `[hcj]`. Conclude with `sub_eq_zero.mp h0`.
-
-Conclude with `(Units.isUnit _).mul_left_cancel h5`. Establish `h6 : (c * ↑(s (Multiplicative.ofAdd i)) - 1) * (y x).snd = 0`. Rewrite using `[sub_mul, one_mul, hx1, sub_self]`. Conclude with `(mul_eq_zero.mp h6).resolve_left hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core {O B ι : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [CommRing B] [Algebra O B] [IsCO O B]
     [IsCO O (DualNumber O)] (u : Oˣ) (hu : ¬ IsOfFinOrder u)
@@ -130,13 +128,11 @@ private theorem core {O B ι : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [
   exact (mul_eq_zero.mp h6).resolve_left hne
 
 /- English proof (translation)
-Take `⟨hinj, -, -, -, -, -, -, -, hunit⟩` from `dvrFacts l O`. Establish `hnd : ¬ l ∣ (l + 1)`. Introduce `h`. Establish `h'` using `(Nat.dvd_add_right (dvd_refl l)).mp h`. Conclude with `hl.out.one_lt.ne' (Nat.dvd_one.mp h')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hunit (l + 1) hnd`. Use `⟨u, ?_⟩` and prove the remaining obligations. Introduce `hfin`. Take `⟨n, hn, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.mp hfin`. Use `haveI : CharZero O := charZero_of_injective_algebraMap hinj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((l + 1 : ℕ) : O) ^ n = 1`. Rewrite using `[← hu, ← Units.val_pow_eq_pow_val, hpow, Units.val_one]`. Establish `h2 : (((l + 1) ^ n : ℕ) : O) = ((1 : ℕ) : O)`. Move the coercions through the operations in `at h1 ⊢`. Conclude with `h1`.
-
-Break down `Nat.pow_eq_one.mp (Nat.cast_injective h2) with h3 | h3` into its components or cases. Conclude with `hl.out.ne_zero (by omega)`. Conclude with `hn.ne' h3`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem ex_unit (l : ℕ) [hl : Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] : ∃ u : Oˣ, ¬ IsOfFinOrder u := by
@@ -160,9 +156,9 @@ private theorem ex_unit (l : ℕ) [hl : Fact l.Prime] (O : Type) [CommRing O] [I
   · exact hn.ne' h3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ L y j H`. Use `haveI := c.dvr`. Take `⟨u, hu⟩` from `ex_unit l c.O`. Use `core u hu L.W L.org (ι := (v : D.T) × D.Gp v × Fin 4 × Fin 4) (fun a => (L.ρ a.1).hom a.2.1 a.2.2.1 a.2.2.2) (fun a => wt a.2.2.1 a.2.2.2) (fun a => L.hom _ _ _ _) ?_ y j (fun a => (H _ _ _ _).1.trans (L.at0 _ _ _ _).symm) (fun a => (H _ _ _ _).2)` and prove the remaining obligations. Introduce `f f' hff`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f0, -, hf0⟩` from `L.univ (DualNumber c.O) (fun v => (L.ρ v).map f) (L.eqs.map f)`. Use `(hf0 f fun _ => rfl).trans (hf0 f' fun v => ?_).symm` and prove the remaining obligations. Conclude with `Lift.ext (MonoidHom.ext fun g => Matrix.ext fun a b => (hff ⟨v, g, a, b⟩).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.smoothPt_weightedPresentation_of_pointDerivations :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (L : LocBase D) (y : L.B →ₐ[c.O] DualNumber c.O) (j : ℤ × ℤ), (∀ (v : D.T) (g : D.Gp v) (a b : Fin 4), (y ((L.ρ v).hom g a b)).fst = D.r0 g a b ∧ (wt a b ≠ j → (y ((L.ρ v).hom g a b)).snd = 0)) → (∀ x, (y x).fst = L.W.origin L.org x) ∧ ∀ i, i ≠ j → ∀ x ∈ L.W.part i, (y x).snd = 0 := by

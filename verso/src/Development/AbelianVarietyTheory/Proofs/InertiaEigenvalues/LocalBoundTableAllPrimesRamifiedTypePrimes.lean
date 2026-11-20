@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `D L P X C tf hC`. Use `⟨⟨?_, hC.small.2.2.2.2.1⟩, ?_⟩` and prove the remaining obligations. Introduce `i _ hl`. Take `⟨hq, hd, hq8, hd16, -⟩` from `D.host.hyp`. Establish `h3q` using `D.host.q_ne_three`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : D.nd.l i ∉ D.host.small` using `UpperTheory.Small.not_mem_of_qd D.host hl`. Apply the tactic sequence `have h3 : D.nd.l i ≠ 3 := by rcases hl with h | h <;> rw [h] <;> omega`. Establish `hR : ¬ KillingConditions.RangeAD L X.exc (D.nd.l i)` using `fun h => h.2.1 hl`. Establish `hlen : (tab L X tf C).len i = fun _ => 0`. Use function extensionality and compare the values at `lam`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [tab, h2, h3, hR, if_false]`. Establish `hBB : (tab L X tf C).BB i = TwistedPlaces.midG L C (D.nd.l i)`. Simplify using `only [tab, h2, hl, if_false, if_true]`. Rewrite using `[hlen, hBB]`. Simplify using `[TwistedPlaces.sumOver]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j hj l hl`. Conclude with `⟨hC.typ j hj l hl, le_rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem localBoundTableAllPrimes_ramified_typePrimes : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (X : KillingConditions.HubData D) (C : ℝ) (tf : TwistedPlaces.Tab L),
     Concl L P X C → TwistedPlaces.RamifiedPrimeLengthBound L (tab L X tf C) C ∧ TwistedPlaces.GeneratorPrimeEtaBound L (tab L X tf C) C := by

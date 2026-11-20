@@ -17,7 +17,7 @@ def trAt (D : D7) (v : Pl D) : Af D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.
     LinearMap.lTensor (Af D.host.F) (Algebra.trace D.host.F D.host.E)
 
 /- English proof (translation)
-Simplify using `[trAt, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trAt_tmul (v : Pl D) (a : Af D.host.F) (x : D.host.E) :
     trAt D v (a ⊗ₜ[D.host.F] x) =
@@ -25,7 +25,7 @@ theorem trAt_tmul (v : Pl D) (a : Af D.host.F) (x : D.host.E) :
   simp [trAt, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := v) (r : D.host.F)` as an intermediate fact. Use `erw [this]`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_int_mem (v : Pl D) (r : 𝓞 D.host.F) :
     algebraMap D.host.F (Fv D.host.F v) (r : D.host.F) ∈ v.adicCompletionIntegers D.host.F := by
@@ -36,9 +36,9 @@ theorem algebraMap_int_mem (v : Pl D) (r : 𝓞 D.host.F) :
   exact v.intValuation_le_one r
 
 /- English proof (translation)
-Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `hle : intAE D ≤ (v.adicCompletionIntegers D.host.F).toSubring.toAddSubgroup.comap (trAt D v).toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, rfl⟩`. Express the relevant statement in the definitionally equal form `trAt D v (a ⊗ₜ[D.host.F] (x : D.host.E)) ∈ v.adicCompletionIntegers D.host.F`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trAt_tmul]`. Establish `hint : IsIntegral ℤ (Algebra.trace D.host.F D.host.E (x : D.host.E))` using `Algebra.isIntegral_trace x.isIntegral_coe`. Conclude with `mul_mem (algebraMap_int_mem v ⟨_, hint⟩) (ha v)`. Conclude with `hle hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trAt_int (v : Pl D) {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D) :
     trAt D v y ∈ v.adicCompletionIntegers D.host.F := by
@@ -55,14 +55,14 @@ theorem trAt_int (v : Pl D) {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈
   exact hle hy
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_same (fun w : Pl D => w.adicCompletionIntegers D.host.F) v y`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_same (v : Pl D) (y : Fv D.host.F v) : evalV D.host.F v (singleV D.host.F v y) = y := by
   classical
   exact RestrictedProduct.single_eq_same (fun w : Pl D => w.adicCompletionIntegers D.host.F) v y
 
 /- English proof (translation)
-Conclude with `RestrictedProduct.single_eq_of_ne (fun w : Pl D => w.adicCompletionIntegers D.host.F) y hw`.
+A detailed English derivation is pending.
 -/
 theorem evalV_single_ne (v : Pl D) (y : Fv D.host.F v) {w : Pl D} (hw : w ≠ v) :
     evalV D.host.F w (singleV D.host.F v y) = 0 := by
@@ -70,11 +70,9 @@ theorem evalV_single_ne (v : Pl D) (y : Fv D.host.F v) {w : Pl D} (hw : w ≠ v)
   exact RestrictedProduct.single_eq_of_ne (fun w : Pl D => w.adicCompletionIntegers D.host.F) y hw
 
 /- English proof (translation)
-Introduce `h`. Establish `hv : Valued.v (algebraMap D.host.F (Fv D.host.F v) (π : D.host.F)) < 1`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := v) (π : D.host.F)` as an intermediate fact. Use `erw [this]`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(v.intValuation_lt_one_iff_mem π).2 hπ`. Establish `hne : algebraMap D.host.F (Fv D.host.F v) (π : D.host.F) ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `hπ0` after adjusting the coercions. Establish `h1 : Valued.v ((algebraMap D.host.F (Fv D.host.F v) (π : D.host.F)) * (algebraMap D.host.F (Fv D.host.F v) (π : D.host.F))⁻¹) < 1`.
-
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h)) hv`. Rewrite `h1` using `[mul_inv_cancel₀ hne, map_one]`. Conclude with `lt_irrefl _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_not_mem (v : Pl D) {π : 𝓞 D.host.F} (hπ : π ∈ v.asIdeal) (hπ0 : π ≠ 0) :
     (algebraMap D.host.F (Fv D.host.F v) (π : D.host.F))⁻¹ ∉ v.adicCompletionIntegers D.host.F := by
@@ -95,13 +93,11 @@ theorem inv_not_mem (v : Pl D) {π : 𝓞 D.host.F} (hπ : π ∈ v.asIdeal) (h�
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Introduce `D v`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Take `⟨π, hπ, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `set n : ℕ := Module.finrank D.host.F D.host.E`. Establish `hn : (n : Fv D.host.F v) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set c : Fv D.host.F v := (algebraMap D.host.F (Fv D.host.F v) ((n : D.host.F) * (π : D.host.F)))⁻¹`. Use `⟨pairA D.host.F 0 (singleV D.host.F v c) ⊗ₜ[D.host.F] (1 : D.host.E), GlobalTheory.FinPl.LatMem.tmul_mem_idAt (P := (· = v)) (fun w hw => evalV_single_ne v c hw) 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `trAt_int v h.2`. Express the relevant statement in the definitionally equal form `trAt D v (singleV D.host.F v c ⊗ₜ[D.host.F] (1 : D.host.E)) ∈ _ at h2`. Establish `htr : Algebra.trace D.host.F D.host.E 1 = (n : D.host.F)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using Algebra.trace_algebraMap (R := D.host.F) (S := D.host.E) 1`. Rewrite `h2` using `[trAt_tmul, evalV_single_same, htr]`. Establish `e : algebraMap D.host.F (Fv D.host.F v) (n : D.host.F) * c = (algebraMap D.host.F (Fv D.host.F v) (π : D.host.F))⁻¹`. Simplify using `only [c, map_mul, map_natCast, mul_inv, ← mul_assoc, mul_inv_cancel₀ hn, one_mul]`. Rewrite `h2` using `[e]`.
-
-Conclude with `inv_not_mem v hπ hπ0 h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_intAt : ∀ (D : D7) (v : Pl D), ∃ u ∈ idAt D (· = v), u ∉ intAt D (· = v) := by
   intro D v

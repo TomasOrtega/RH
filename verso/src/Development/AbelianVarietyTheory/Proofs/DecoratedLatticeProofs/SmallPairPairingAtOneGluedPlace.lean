@@ -25,13 +25,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Distinguish the cases in `h : Nonempty (Pair k n)`. Take `⟨Q₀⟩` from `h`. Use `⟨(withLat Q₀.lat).card, Finset.card_pos.2 ⟨Q₀, mem_withLat.2 rfl⟩, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq (GL n k) Q₀ Q`. Use `Finset.card_nbij' (fun P => g⁻¹ • P) (fun P => g • P) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `P hP`. Establish `hP' : P.lat = g • Q₀.lat` using `mem_withLat.1 hP`. Use `Finset.mem_coe.2 (mem_withLat.2 ?_)` and prove the remaining obligations. Rewrite using `[Pair.smul_lat, hP', inv_smul_smul]`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP' : P.lat = Q₀.lat` using `mem_withLat.1 hP`. Use `Finset.mem_coe.2 (mem_withLat.2 ?_)` and prove the remaining obligations. Rewrite using `[Pair.smul_lat, Pair.smul_lat, hP']`. Introduce `P _`. Conclude with `smul_inv_smul g P`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P _`. Conclude with `inv_smul_smul g P`. Conclude with `⟨1, one_pos, fun Q => (h ⟨Q⟩).elim⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SmallPl.exists_card_withLat (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] :
@@ -56,17 +56,15 @@ theorem SmallPl.exists_card_withLat (k : Type) [Field k] [ValuativeRel k] [Topol
   · exact ⟨1, one_pos, fun Q => (h ⟨Q⟩).elim⟩
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D S) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hlift : (fun h => liftA o om vA φ Ξ h 0) = fun h => ∫ h₀ in vA.𝓕, φ h₀ * om (o.emb (h₀, 1), h) Ξ 0 ∂vA.μ`. Use function extensionality and compare the values at `h`. Simplify using `only [liftA]`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h₀`. Rewrite using `[show ((0 : WO A S), (0 : WO L S)) = 0 from rfl, map_zero]`. Rewrite using `[hlift]`. Establish `jc` using `GlobalTheory.Unf.jointCont_all D ψ V₀ S χV χW om hW Ξ hΞ`. Establish `hK₂c : Continuous (Function.uncurry fun (x : GA D A) (h : GA D S) => φ x * om (o.emb (x, 1), h) Ξ 0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : Continuous fun z : GA D A × GA D S => ((o.emb (z.1, 1), z.2), (0 : WO V₀ S))` using `((o.continuous_emb.comp (continuous_fst.prodMk continuous_const)).prodMk continuous_snd).prodMk continuous_const`. Conclude with `(hφ.2.comp continuous_fst).mul (jc.comp hmap)`. Establish `hK₂a : ∀ γ ∈ GQ A, ∀ (x : GA D A) (h : GA D S), φ (γ * x) * om (o.emb (γ * x, 1), h) Ξ 0 = φ x * om (o.emb (x, 1), h) Ξ 0`. Introduce `γ hγ x h`. Establish `e : o.emb (γ * x, 1) = o.emb (γ, 1) * o.emb (x, 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hq` using `GlobalTheory.Unf.om_rat_mul D ψ V₀ S _ _ om hW Ξ hΞ (o.emb (γ, 1)) (o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) (o.emb (x, 1)) h 0`. Rewrite `hq` using `[one_mul]`. Rewrite using `[hφ.1 γ hγ x, e, hq, Matrix.mul_zero, Matrix.zero_mul]`. Use `⟨fun γ hγ h => ?_, (GlobalTheory.CocompactParam.continuous_integral_param D A hA vA (GA D S) _ hK₂c hK₂a).2.1⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hq` using `GlobalTheory.Unf.om_rat_mul D ψ V₀ S _ _ om hW Ξ hΞ 1 (one_mem _) γ hγ (o.emb (x, 1)) h 0`. Rewrite `hq` using `[one_mul]`.
-
-Rewrite using `[hq, Matrix.mul_zero, Matrix.zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SmallPl.liftA_contAut {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V₀ A L S : HSp D} (o : OrthDec V₀ A L)
     (hA : CoCpt A) {χV χW : (AE D)ˣ →* Circle} {om : Om V₀ S} (hW : IsWeilDatumO ψ V₀ S χV χW om) (vA : Vol A)
@@ -106,21 +104,21 @@ theorem SmallPl.liftA_contAut {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V₀ A 
   rw [hq, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D S) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hHc : Continuous fun h => om (h, h') Φ₂ 0` using `(hW.om_cont Φ₂ hθ 0).comp (continuous_id.prodMk continuous_const)`. Establish `hHa : ∀ γ ∈ GQ S, ∀ h, om (γ * h, h') Φ₂ 0 = om (h, h') Φ₂ 0`. Introduce `γ hγ h`. Establish `hq` using `GlobalTheory.Unf.om_rat_mul D ψ S T _ _ om hW Φ₂ hθ γ hγ 1 (one_mem _) h h' 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[one_mul]`. Rewrite using `[hq, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hHb : ∀ i ∈ s, ∀ h, om (h * b i, h') Φ₂ 0 = om (h, h') Φ₂ 0`. Introduce `i hi h`. Establish `: ((h * b i, h') : GA D S × GA D T) = (h, h') * (b i, 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.mk_mul_mk, mul_one]`. Rewrite using `[this, map_mul, Module.End.mul_apply, hfix i hi]`. Take `⟨K, hK⟩ : ∃ K : GA D S → ℂ, K = fun h => om (h, h') Φ₂ 0 * G h` from `⟨_, rfl⟩`. Establish `hKc : Continuous K` using `hK ▸ hHc.mul hG.2`. Establish `hKa : ∀ γ ∈ GQ S, ∀ h, K (γ * h) = K h` using `fun γ hγ h => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK]`. Simplify using `only`. Rewrite using `[hHa γ hγ h, hG.1 γ hγ h]`. Establish `hint : ∀ i ∈ s, IntegrableOn (fun h => c * K (h * b i)) vS.𝓕 vS.μ`. Introduce `i _`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.CocompactParam.continuous_integral_param D S hS vS Unit (fun h _ => c * K (h * b i)) ?_ ?_).1 ()` and prove the remaining obligations. Conclude with `(continuous_const.mul (hKc.comp (continuous_mul_right _))).comp continuous_fst`. Introduce `γ hγ h _`. Rewrite using `[mul_assoc γ h, hKa γ hγ]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `integral_congr_ae (ae_of_all _ fun h => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hK]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hHb i hi h]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i ∈ s, c * ∫ h in vS.𝓕, K h ∂vS.μ := by`. Rewrite using `[integral_finset_sum _ hint]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, GlobalTheory.ChainOnto.setIntegral_fd_mul_right D S vS.μ vS.𝓕 vS.haar vS.fund K hKa]`. Use `_ = _ := by`. Rewrite using `[hK, Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SmallPl.integral_sum_translates {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (hS : CoCpt S)
     {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hW : IsWeilDatumO ψ S T χS χT om) (vS : Vol S) {Φ₂ : WO S T → ℂ}
@@ -172,33 +170,33 @@ theorem SmallPl.integral_sum_translates {D : D7} {ψ : AddChar (AF D.host.F) ℂ
         ring
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n n' _ _ _ _ q χ hχ`. Take `⟨r₀, e, hr₀, hsrc⟩` from `GlobalTheory.T.gluedPlaceSourceConstant_proof D k p n n' q χ hχ`. Take `⟨N, hN0, hN⟩` from `SmallPl.exists_card_withLat k n`. Use `⟨r₀ * N, e, mul_pos hr₀ (Nat.cast_pos.2 hN0), ?_⟩` and prove the remaining obligations. Introduce `ψ V₀ A L S T o ζ hζ hA hS hT χV χW χS χT om₁ omT hW₁ hWT hV hW hχS hχT vA vS vT α α₀ β hsum P Q s L₁ L₂ L₂' L₃ f₁ Ξ Ξ' Φ₂ hΞ hΞ' hsd₂ hsd₃ hlat hvac φ₀ hφ₀ F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ, hφ, rfl⟩` from `hφ₀`. Take `⟨χr, hχr⟩ : ∃ χr, χr = resChar χ hχ q` from `⟨_, rfl⟩`. Rewrite `hΞ'`, `hsrc`, the goal using `[← hχr]`. Establish `hob` using `GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n (n' ⊕ Fin 1) ψ hW₁.std V₀ S α₀ β L₁ L₂ hΞ.1 hΞ.2.1 f₁ hΞ.2.2.1`. Establish `hsb` using `GlobalTheory.T.schwartzBruhat_tensor_indicator_character_facts k n n'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Ξ'', hΞ'', -⟩` from `hob.1 (tensCol (phiOne P (s • Q)) (charInd χr (s • Q))) (hsb.1 _ _ (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ _) (hsb.2.2 _ _))`. Establish `hram` using `(GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k p n' q χ hχ χr hχr s A α P).2.1 φ hφ`. Establish `hram1` using `((GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k p n' q χ hχ χr hχr 1 A α P).2.1 φ hφ).1`. Rewrite `hram1` using `[map_one, Module.End.one_apply]`. Establish `hmove : liftA o om₁ vA (FFStar q χr φ P) Ξ'' = liftA o om₁ vA (sOp α P q χr s (φ P)) Ξ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨lS, hlS, hθ⟩` from `GlobalTheory.T.exists_bilinear_equivariant_orthogonalSummandLift D k p n n' ψ V₀ A L S o ζ hζ hA vA χV χW om₁ hW₁ α α₀ β hsum`. Take `⟨θ, hθv, hθe⟩` from `hθ L₁ L₂ f₁ hΞ.1 hΞ.2.1 hΞ.2.2.1`. Take `⟨g, hg⟩` from `MulAction.exists_smul_eq (GL n' k) P (s • P)`. Establish `hgs : g ∈ latStab P.lat`. Express the relevant statement in the definitionally equal form `g • P.lat = P.lat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Pair.smul_lat, hg, Pair.dia_lat]`. Establish `h1` using `hθe g ⟨FFStar q χr φ P, hram1.2.2 P⟩ _ hΞ''.2.2.2.1`. Establish `b2 : (fun x => tensCol (phiOne P (s • Q)) (charInd χr (s • Q)) (x * (SrcGl.blk g).val)) = tensCol (phiOne P Q) (charInd χr (s • Q))`. Use function extensionality and compare the values at `x`. Rewrite using `[SrcGl.tensCol_mul_blk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x₀`. Rewrite using `[← SrcGl.phiOne_smul_left, hg, phiOne_dia]`. Rewrite `h1` using `[b2, hθv _ _ _ hΞ', hθv _ _ _ hΞ'', GlobalTheory.T.unramifiedCharacter_det_latticeStabilizer_eq_one k n' P.lat inferInstance g hgs lS (hlS hW), Units.val_one, inv_one, one_smul, SrcGl.caRep_apply]`. Rewrite using `[hram.2, dia_apply, ← hg, hram1.1 g P]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm`. Take `⟨lS, lT, -, hlT, -, -, hlin⟩` from `GlobalTheory.T.linearModel_splitPlace_characterEquivariance D k p q ψ V₀ S χV χW om₁ hW₁`. Use `choose gs hgs using fun Q' : Pair k n => MulAction.exists_smul_eq (GL n k) (s • Q) Q'`. Establish `hstab : ∀ Q' ∈ withLat Q.lat, gs Q' • Q.lat = Q.lat` using `fun Q' hQ' => by`. Rewrite using `[← Pair.dia_lat s Q, ← Pair.smul_lat, hgs, mem_withLat.1 hQ', Pair.dia_lat]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfix : ∀ Q' ∈ withLat Q.lat, omT (β.gl (gs Q'), 1) Φ₂ = Φ₂`. Introduce `Q' hQ'`. Take `⟨-, -, -, hfr, -, -⟩` from `GlobalTheory.T.splitPlaceHermitianFrame_properties D k p S n β`. Take `⟨Λ', -, hΛ', hK⟩` from `hfr L₂' hsd₂`. Establish `hΛQ : Λ' = Q.lat` using `Submodule.ext fun x => (hΛ' x).trans (hlat x).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : InK S L₂' (· = p.v) (β.gl (gs Q'))` using `(hK _).2 (hΛQ ▸ hstab Q' hQ')`. Establish `hk2 : InK T L₃ (· = p.v) 1` using `⟨one_mem _, fun y _ => by simp [Formalism.L2.Theta.mt]⟩`. Conclude with `GlobalTheory.T.selfDualLatticeStabilizers_fix_weilVacuum_on_placeSet D ψ S T χS χT omT hWT L₂' L₃ hsd₂ hsd₃ (· = p.v) (fun v hv => by subst hv; exact ⟨GlobalTheory.T.isTameFinitePlaceHermitian_all D _, hχS, hχT⟩) Φ₂ hvac _ _ hk1 hk2`. Establish `hOver : ∀ Q' ∈ withLat Q.lat, Over ψ α₀ β L₁ L₂ f₁ (tensCol (phiOne P Q') (charInd χr Q')) (om₁ (1, β.gl (gs Q')) Ξ'')`. Introduce `Q' hQ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h0` using `hlin n (n' ⊕ Fin 1) α₀ β L₁ L₂ f₁ _ Ξ'' hΞ'' 1 (gs Q')`. Rewrite `h0` using `[GlobalTheory.T.unramifiedCharacter_det_latticeStabilizer_eq_one k n Q.lat inferInstance (gs Q') (hstab Q' hQ') lT (hlT hV)]`. Use `h0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [map_one, Units.val_one, one_mul, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tensCol_phiOne_charInd_smul, hgs]`. Rewrite using `[map_one]`. Establish `hfun` using `hsrc ψ V₀ A L S o ζ hζ hA vA χV χW om₁ hW₁ hV hW α α₀ β hsum P Q.lat L₁ L₂ f₁ Ξ (fun Q' => om₁ (1, β.gl (gs Q')) Ξ'') hΞ hOver φ hφ`. Establish `hterm : ∀ (f : GA D A → ℂ) b h, liftA o om₁ vA f (om₁ (1, b) Ξ'') h 0 = liftA o om₁ vA f Ξ'' (h * b) 0`. Introduce `f b h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [liftA]`. Use `congr 1`. Use function extensionality and compare the values at `h₀`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hG` using `SmallPl.liftA_contAut o hA hW₁ vA (hram1.2.2 P) (hob.2.1 _ _ hΞ'').1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [smallPair]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun h' => ?_)` and prove the remaining obligations. Simplify using `only`. Establish `key` using `SmallPl.integral_sum_translates hS hWT vS hvac.1 (withLat Q.lat) (fun Q' => β.gl (gs Q')) hfix hG ((r₀ : ℂ) * chrPow χW (p.idele q.unit) e) h'`.
+Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun, ← hmove]`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, hterm]`. Rewrite using `[key, hN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem smallOne : ∀ D : D7, SmallOne D := by
   intro D k _ _ _ _ p n n' _ _ _ _ q χ hχ

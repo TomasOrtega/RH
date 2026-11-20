@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-The claim follows from `JoinReconstruction.key`.
+A detailed English derivation is pending.
 -/
 theorem sSurj_of : SPrime → SHecke → SHt → SPU → SMom → SWhit → SCen → SGap → SLoc → SMean → SInv → SSurj :=
   JoinReconstruction.key

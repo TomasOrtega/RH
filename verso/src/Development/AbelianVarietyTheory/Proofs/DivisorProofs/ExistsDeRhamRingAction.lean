@@ -21,14 +21,14 @@ variable {R : Type} [CommRing R] {I : Ideal R} {S : Scheme.{0}} (κ : DividedPow
   {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem primPull_of_eq_id (f : A ⟶ A) [IsMonHom f] (h : f = 𝟙 A) (c : prim κ t A) : primPull κ t f c = c := by
   subst h
   exact Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) rfl c).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem primPull_of_eq_comp (f g k : A ⟶ A) [IsMonHom f] [IsMonHom g] [IsMonHom k] (h : k = f ≫ g)
     (c : prim κ t A) : primPull κ t k c = primPull κ t f (primPull κ t g c) := by
@@ -36,7 +36,7 @@ theorem primPull_of_eq_comp (f g k : A ⟶ A) [IsMonHom f] [IsMonHom g] [IsMonHo
   exact (GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) rfl c).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Subtype.ext (c.2 A f g)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem primPull_of_eq_mul (f g k : A ⟶ A) [IsMonHom f] [IsMonHom g] [IsMonHom k] (h : k = f * g)
     (c : prim κ t A) : primPull κ t k c = primPull κ t f c + primPull κ t g c := by
@@ -48,14 +48,14 @@ end Pull
 variable {O : Type} [CommRing O] {T : Scheme.{0}} {A : Over T} [GrpObj A] (i : OAct O A)
 
 /- English proof (translation)
-The claim follows from `haveI := i.hom primPull_of_eq_id _ _ _ (by rw [i.one, CategoryTheory.Functor.map_id]) c`.
+A detailed English derivation is pending.
 -/
 theorem actPull_one {V : T.Opens} (hV : IsAffineOpen V) (c : primDR (onAff A hV)) : actPull i 1 hV c = c :=
   haveI := i.hom
   primPull_of_eq_id _ _ _ (by rw [i.one, CategoryTheory.Functor.map_id]) c
 
 /- English proof (translation)
-The claim follows from `haveI := i.hom primPull_of_eq_comp _ _ _ _ _ (by rw [i.mul, CategoryTheory.Functor.map_comp]) c`.
+A detailed English derivation is pending.
 -/
 theorem actPull_mul (x y : O) {V : T.Opens} (hV : IsAffineOpen V) (c : primDR (onAff A hV)) :
     actPull i (x * y) hV c = actPull i x hV (actPull i y hV c) :=
@@ -63,7 +63,7 @@ theorem actPull_mul (x y : O) {V : T.Opens} (hV : IsAffineOpen V) (c : primDR (o
   primPull_of_eq_comp _ _ _ _ _ (by rw [i.mul, CategoryTheory.Functor.map_comp]) c
 
 /- English proof (translation)
-The claim follows from `haveI := i.hom primPull_of_eq_mul _ _ _ _ _ (by rw [i.add]; exact CategoryTheory.Functor.map_mul _ _ _) c`.
+A detailed English derivation is pending.
 -/
 theorem actPull_add (x y : O) {V : T.Opens} (hV : IsAffineOpen V) (c : primDR (onAff A hV)) :
     actPull i (x + y) hV c = actPull i x hV c + actPull i y hV c :=
@@ -71,11 +71,9 @@ theorem actPull_add (x y : O) {V : T.Opens} (hV : IsAffineOpen V) (c : primDR (o
   primPull_of_eq_mul _ _ _ _ _ (by rw [i.add]; exact CategoryTheory.Functor.map_mul _ _ _) c
 
 /- English proof (translation)
-Establish `k {W : T.Opens} (hW : IsAffineOpen W) : ((Over.pullback hW.fromSpec).map f).left ≫ pullback.fst A.hom hW.fromSpec = pullback.fst A.hom hW.fromSpec ≫ f.left` using `pullback.lift_fst _ _ _`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (φ ≫ ·) (k hV)).trans ?_)` and prove the remaining obligations. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f.left) hφ).trans ?_)` and prove the remaining obligations. Use `(k hV').symm.trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (_ ≫ ·) hφ.symm`. Use `(Category.assoc _ _ _).trans ((congrArg (φ ≫ ·) (Over.w ((Over.pullback hV.fromSpec).map f))).trans (w.trans ?_))` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) w.symm)` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _)` and prove the remaining obligations.
-
-Conclude with `congrArg (· ≫ b) (Over.w ((Over.pullback hV'.fromSpec).map f)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem transition_comm (f : A ⟶ A) {V V' : T.Opens} (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     {b : Sp Γ(T, V') ⟶ Sp Γ(T, V)} {φ : (onAff A hV').left ⟶ (onAff A hV).left}
@@ -100,11 +98,9 @@ theorem transition_comm (f : A ⟶ A) {V V' : T.Opens} (hV : IsAffineOpen V) (hV
 variable {H : T.Modules} (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV))
 
 /- English proof (translation)
-Use `letI := resAlg h`. Use `haveI := i.hom x`. Take `⟨φ, hφ, hφ'⟩` from `DeRhamSheaf.VB.exists_transition A hV hV' h`. Establish `a` using `he V V' hV hV' h φ hφ hφ'`. Use `(e V' hV').symm_apply_eq.2 (Eq.trans ?_ (a _).symm)` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (actPull i x hV') (a s)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (GlobalTheory.Published.AbelianDeRham.bcMor hφ).pull ((e V hV).apply_symm_apply _).symm)` and prove the remaining obligations. Establish `m` using `homMor (dp0 Γ(T, V)) (𝟙 _) (A := onAff A hV) (B := onAff A hV) ((Over.pullback hV.fromSpec).map (i.act x))`. Establish `m'` using `homMor (dp0 Γ(T, V')) (𝟙 _) (A := onAff A hV') (B := onAff A hV') ((Over.pullback hV'.fromSpec).map (i.act x))`. Establish `k` using `m.comp (GlobalTheory.Published.AbelianDeRham.bcMor hφ)`.
-
-Conclude with `(GrpMor.pull_pull (GlobalTheory.Published.AbelianDeRham.bcMor hφ) m' k (fun _ ↦ rfl) (transition_comm (i.act x) hV hV' hφ.1.w hφ').symm _).trans (GrpMor.pull_pull m (GlobalTheory.Published.AbelianDeRham.bcMor hφ) k (fun _ ↦ rfl) rfl _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actPull_res (he : IsDRIso A H e) (x : O) {V V' : T.Opens} (hV : IsAffineOpen V)
     (hV' : IsAffineOpen V') (h : V' ≤ V) (s : Γ(H, V)) :
@@ -128,7 +124,7 @@ theorem actPull_res (he : IsDRIso A H e) (x : O) {V V' : T.Opens} (hV : IsAffine
     (GrpMor.pull_pull m (GlobalTheory.Published.AbelianDeRham.bcMor hφ) k (fun _ ↦ rfl) rfl _).symm
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.hom_of_affine_compatible T H H (fun V hV ↦ (e V hV).symm.toLinearMap ∘ₗ actPull i x hV ∘ₗ (e V hV).toLinearMap) fun V V' hV hV' h s ↦ actPull_res i e he x hV hV' h s`. Conclude with `⟨u, fun V hV s ↦ (congrArg (e V hV) (LinearMap.congr_fun (hu V hV) s)).trans ((e V hV).apply_symm_apply _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hom (he : IsDRIso A H e) (x : O) :
     ∃ u : H ⟶ H, ∀ (V : T.Opens) (hV : IsAffineOpen V) (s : Γ(H, V)),
@@ -144,11 +140,11 @@ end GlobalTheory.AbDatum.DRAct
 open GlobalTheory.AbDatum.DRAct in
 
 /- English proof (translation)
-Introduce `O _ T A _ _ i H e he`. Use `choose u hu using exists_hom i e he`. Establish `h1 : u 1 = 𝟙 H` using `hom_ext_affine fun V hV s ↦ (e V hV).injective ((hu 1 V hV s).trans (actPull_one i hV (e V hV s)))`. Establish `h2 (x y : O) : u (x * y) = u y ≫ u x` using `hom_ext_affine fun V hV s ↦ by`. Express the relevant statement in the definitionally equal form `(u (x * y)).app V s = (u x).app V ((u y).app V s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(e V hV).injective` to reduce the goal to its premises. Rewrite using `[hu, hu, hu, actPull_mul]`. Establish `h3 (x y : O) : u (x + y) = u x + u y` using `hom_ext_affine fun V hV s ↦ by`. Express the relevant statement in the definitionally equal form `(u (x + y)).app V s = (u x).app V s + (u y).app V s`. Apply `(e V hV).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hu, hu, hu, actPull_add]`. Conclude with `⟨RingHom.mk' { toFun x := (u x : End H), map_one' := h1, map_mul' := h2 } h3, hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AbDatum.exists_isDRAct : ∀ (O : Type) [CommRing O] (T : Scheme.{0}) (A : Over T) [GrpObj A],
     IsAbelianScheme A → ∀ (i : OAct O A) (H : T.Modules)

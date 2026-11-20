@@ -14,27 +14,23 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R R₁ _ _ _ _ _ _ _ X X₁ p p₁ b H _ _ W hW s hs`. Establish `hg : IsFinite (spMap (algebraMap R R₁))`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.2 inferInstance`. Establish `hff : Flat (spMap (algebraMap R R₁)) ∧ Surjective (spMap (algebraMap R R₁))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[flat_and_surjective_SpecMap_iff]`. Conclude with `RingHom.faithfullyFlat_algebraMap_iff.2 inferInstance`. Establish `: Flat (spMap (algebraMap R R₁))` using `hff.1`. Establish `: Surjective (spMap (algebraMap R R₁))` using `hff.2`. Establish `: IsFinite b` using `MorphismProperty.of_isPullback H.flip hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: QuasiSeparatedSpace X` using `quasiSeparatedSpace_of_quasiSeparated p`. Set `O' : X.Opens` to `⟨(b '' (W : Set X₁)ᶜ)ᶜ, (b.isClosedMap _ W.isOpen.isClosed_compl).isOpen_compl⟩`. Establish `hsO' : ∀ x ∈ s, x ∈ O'`. Introduce and unpack `x hx ⟨z, hz, rfl⟩`. Conclude with `hz (hs z hx)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ x ∈ s, ∃ U : X.Opens, IsAffineOpen U ∧ x ∈ U ∧ U ≤ O'`. Introduce `x hx`. Take `⟨U, hU, hxU, hUO⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (hsO' x hx)`. Conclude with `⟨U, hU, hxU, hUO⟩`. Use `choose U hU hxU hUO using key`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `V : X.Opens` to `⨆ x : s, U x.1 x.2`. Establish `hVO : V ≤ O'` using `iSup_le fun x => hUO x.1 x.2`. Establish `hsV : ∀ x ∈ s, x ∈ V` using `fun x hx => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hxU x hx⟩`. Establish `hVc : IsCompact (V : Set X)`. Rewrite using `[TopologicalSpace.Opens.coe_iSup]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `isCompact_iUnion fun x => (hU x.1 x.2).isCompact`. Establish `hVq : IsQuasiSeparated (V : Set X)` using `IsQuasiSeparated.of_quasiSeparatedSpace _`. Establish `hVW : b ⁻¹ᵁ V ≤ W`. Introduce `z hz`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hVO hz ⟨z, h, rfl⟩`. Establish `hfin : (b ⁻¹' (s : Set X)).Finite` using `s.finite_toSet.preimage' fun x _ => b.finite_preimage_singleton x`. Take `⟨f, hfV, hft⟩` from `GlobalTheory.T.exists_basicOpen_between_finset_and_open' X₁ W hW (b ⁻¹ᵁ V) hVW hfin.toFinset (fun z hz => hsV _ ((hfin.mem_toFinset).1 hz))`. Set `f' : Γ(X₁, b ⁻¹ᵁ V)` to `X₁.presheaf.map (homOfLE hVW).op f`. Establish `hf' : X₁.basicOpen f' = X₁.basicOpen f`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Scheme.basicOpen_res]`. Conclude with `inf_eq_right.2 hfV`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_norm_basicOpen_finiteFree_baseChange R R₁ X X₁ p p₁ b H V hVc hVq f'`. Use `⟨X.basicOpen n, ?_, fun x hx => (hn x).2 ⟨hsV x hx, fun z hz => ?_⟩⟩` and prove the remaining obligations. Use `swap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf']`. Conclude with `hft z ((hfin.mem_toFinset).2 (by simpa [hz] using hx))`. Establish `hle : b ⁻¹ᵁ X.basicOpen n ≤ X₁.basicOpen f`. Introduce `z hz`. Rewrite using `[← hf']`.
-
-Conclude with `((hn (b z)).1 hz).2 z rfl`. Establish `hA : IsAffineOpen (b ⁻¹ᵁ X.basicOpen n)`. Set `g : Γ(X₁, X₁.basicOpen f)` to `X₁.presheaf.map (homOfLE hfV).op (b.app V n)`. Establish `e : X₁.basicOpen g = b ⁻¹ᵁ X.basicOpen n`. Rewrite using `[Scheme.basicOpen_res, ← Scheme.preimage_basicOpen]`.
-
-Conclude with `inf_eq_right.2 hle`. Rewrite using `[← e]`. Conclude with `(hW.basicOpen f).basicOpen g`. Establish `: IsAffine (b ⁻¹ᵁ X.basicOpen n).toScheme` using `hA`. Conclude with `isAffine_of_isPullback_of_flat_surjective ((isPullback_morphismRestrict b (X.basicOpen n)).paste_vert H)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isAffineOpen_of_preimage_le_affine : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] [Algebra R R₁]
     [Module.Finite R R₁] [Module.Free R R₁] [Nontrivial R₁] [IsLocalRing R] (X X₁ : Scheme.{0})

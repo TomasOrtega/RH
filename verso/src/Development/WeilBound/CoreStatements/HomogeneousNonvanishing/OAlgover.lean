@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I4 (IsPullHerm imageZ blockFnField)
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Use `(LinearEquiv.funCongrLeft ℂ ℂ e).toContinuousLinearEquiv.comp_fderiv (f := f) (x := x)` as an intermediate fact. Rewrite `h`, the goal using `[eq_bot_iff]`. Introduce `v hv`. Use `h ?_` and prove the remaining obligations. Establish `hv' : fderiv ℂ ((LinearEquiv.funCongrLeft ℂ ℂ e).toContinuousLinearEquiv ∘ f) x v = 0` using `hv`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hv'` using `[this]`. Conclude with `(LinearEquiv.funCongrLeft ℂ ℂ e).toContinuousLinearEquiv.map_eq_zero_iff.1 hv'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ao_fderiv {I I' : Type} [Fintype I] [Fintype I'] {n : ℕ} (e : I' ≃ I) (f : (Fin n → ℂ) → I → ℂ)
     (x : Fin n → ℂ) (h : (fderiv ℂ f x).ker = ⊥) : (fderiv ℂ (fun z i => f z (e i)) x).ker = ⊥ := by
@@ -28,43 +28,39 @@ theorem ao_fderiv {I I' : Type} [Fintype I] [Fintype I'] {n : ℕ} (e : I' ≃ I
   exact (LinearEquiv.funCongrLeft ℂ ℂ e).toContinuousLinearEquiv.map_eq_zero_iff.1 hv'
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or x hx hβ hloc`. Use `choose U lam hU hmem hholo hpt himm using hloc`. Establish `hP : IsMultiHomogIdeal (mCoordIdeal RM.y)` using `RM.arith.2.1.2.1`. Establish `hl : ∀ x, Or.Re.R.lift x x ∈ mcPts (mCoordIdeal RM.y)` using `fun x => Or.Re.R.mem x x (Or.Re.R.mem_U x)`. Establish `honto : Function.Surjective Or.Re.π`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsClosed (Set.range Or.Re.π)` using `(isCompact_range Or.Re.holo.1).isClosed`. Establish `hd : Dense (Or.Re.br)ᶜ` using `interior_eq_empty_iff_dense_compl.1 Or.Re.degree.2.1`. Establish `hs : (Or.Re.br)ᶜ ⊆ Set.range Or.Re.π` using `fun x hx => Set.nonempty_of_ncard_ne_zero (s := Or.Re.π ⁻¹' {x}) (by`. Rewrite using `[Or.Re.degree.2.2.2.2.1 x hx]`. Conclude with `Or.Re.deg_pos.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Set.range_eq_univ, ← hc.closure_eq]`. Conclude with `(hd.mono hs).closure_eq`. Establish `hπ : ∀ x' x, Or.Re.π x' ∈ U x → ∃ a : ℂ, a ≠ 0 ∧ ∀ i, lam x (Or.Re.π x') i = a * Or.Re.R.lift x' x' ⟨Or.k₀, Or.ix i⟩` using `fun x' x h => by`. Take `⟨a, ha⟩` from `Or.π_pt x'`. Take `⟨a₀, h0, e⟩` from `hpt x _ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Take `⟨i, hi⟩` from `(hl x').1 Or.k₀`. Take `⟨i, rfl⟩` from `Or.ix.surjective i`. Conclude with `hi (by simpa using congrFun ha i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a₀ / a, div_ne_zero h0 ha0, fun i => ?_⟩` and prove the remaining obligations. Use `congrFun ha i` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[e, this, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, d, hbd, hb, hint⟩` from `GlobalTheory.T.hodge_cpt_multihomog_form E H D l Xo c O β Y S RM.Ω RM.K RM.ι RM.y Or.𝔐 x hx hβ`. Use `letI := Or.g.toAlgebra`. Establish `: FiniteDimensional Fx.Ωf RM.Ω` using `Module.finite_of_finrank_pos (by`. Rewrite using `[Or.g_deg, ← Or.Re_deg]`. Conclude with `Or.Re.deg_pos)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨n, s, hs, hsQ, hs0⟩` from `AlgOv.norm_form Or.k₀ Or.ix Fx.yf Or.y_eq Fx.generate hbd hb`. Establish `hQ` using `AlgOv.imageZ_blk Or.k₀ Or.ix RM.y`. Use `⟨Unit, inferInstance, fun _ => Fin (Fx.m + 1), inferInstance, fun _ => Or.k₀, AlgOv.blk Or.k₀ Or.ix, U, fun x y p => lam x y p.2, s, fun _ => n, ⟨fun _ _ _ => rfl, ?_, fun _ => rfl, ?_⟩, ⟨hU, hmem, fun x p => hholo x p.2, ?_, ?_, ?_, ?_, ?_⟩, ?_, hs, fun h => hsQ (hQ ▸ h), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, i⟩ ⟨_, j⟩ h`. Establish `: Or.ix i = Or.ix j` using `eq_of_heq (Sigma.mk.inj h).2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Or.ix.injective this]`. Introduce and unpack `⟨k, i⟩ ⟨_, rfl⟩`. Conclude with `⟨⟨(), Or.ix.symm i⟩, by simp [AlgOv.blk]⟩`. Introduce `x y hy`. Take `⟨x', rfl⟩` from `honto y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, e⟩` from `hπ x' x hy`. Establish `hw` using `AlgOv.scale_mem hP (hl x') ha`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hw.1 Or.k₀`. Take `⟨i, rfl⟩` from `Or.ix.surjective i`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `⟨i, fun h => hi ((e i).symm.trans h)⟩`. Use `hw.2 _ hf` as an intermediate fact. Rewrite `this`, the goal using `[AlgOv.evC_eq]`. Use `Eq.trans ?_ ((aeval_rename _ _ f).symm.trans this)` and prove the remaining obligations. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `funext fun p => e p.2`. Introduce `x x' y hy`. Take `⟨a, ha, e⟩` from `hpt x y hy.1`. Take `⟨a', ha', e'⟩` from `hpt x' y hy.2`. Use `⟨fun _ => a / a', fun _ => div_ne_zero ha ha', funext fun p => ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [e, e', Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `z hz`. Take `⟨w, hw, a, ha, e⟩` from `AlgOv.blk_onto Or.k₀ Or.ix (fun k => (hl (honto Or.Re.nonempty_base.some).choose).1 k |>.imp fun i hi => AlgOv.coord_ne (hl _) hi) (hQ ▸ hz)`. Take `⟨x', t, ht, e'⟩` from `r_onto RM.K RM.ι _ _ _ Or.Re.R RM.arith w hw`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨a', ha', e''⟩` from `hπ x' _ (hmem _)`. Use `⟨Or.Re.π x', fun _ => a' * t Or.k₀ / a, fun _ => div_ne_zero (mul_ne_zero ha' (ht _)) ha,` and prove the remaining obligations. Use function extensionality and compare the values at `fun p => ?_⟩`. Establish `h1 : Or.Re.R.lift x' x' ⟨Or.k₀, Or.ix p.2⟩ = t Or.k₀ * w (AlgOv.blk Or.k₀ Or.ix p)` using `congrFun e' _`. Use `show lam _ _ p.2 = _ * z p`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e'', h1, e p]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `x x' ⟨t, ht, e⟩`. Take `⟨a, ha, e1⟩` from `hpt x x (hmem x)`. Take `⟨a', ha', e2⟩` from `hpt x' x' (hmem x')`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fx.pt_inj x x' (t () * a' / a) (funext fun i => ?_)` and prove the remaining obligations. Establish `: lam x x i = t () * lam x' x' i` using `congrFun e ⟨(), i⟩`. Simplify using `only [e1, e2, Pi.smul_apply, smul_eq_mul] at this ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x p hp j hj`. Conclude with `ao_fderiv (Equiv.uniqueSigma fun _ : Unit => Fin (Fx.m + 1)) _ _ (himm x (p ()) (hp ()) j hj)`. Introduce `x'`. Take `⟨a, ha, e⟩` from `hπ x' _ (hmem _)`. Conclude with `⟨fun _ => a, fun _ => ha, funext fun p => e p.2⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hxb`. Take `⟨x', rfl⟩` from `honto x`. Take `⟨a, ha, e⟩` from `hπ x' _ (hmem _)`. Establish `hb0 : aeval (Or.Re.R.lift x' x') b = 0`. Assume the negation of the conclusion as `h`.
-
-Take `⟨z, hz1, hz2⟩` from `hint _ (hl x') (fun h' => h ((AlgOv.evC_eq _ _).symm.trans h'))`. Conclude with `(Or.interior x' z hz1).1 hz2 hxb`. Use `(AlgOv.evC_eq _ _).trans ?_` and prove the remaining obligations. Establish `h1` using `aeval_blockScale hs (fun _ => a) (Or.Re.R.lift x' x' ∘ AlgOv.blk Or.k₀ Or.ix)`. Rewrite `h1` using `[hs0 _ (hl x') hb0, mul_zero]`.
-
-Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `congr 2`. Conclude with `funext fun p => e p.2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem o_algover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (RM : Top.RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (Or : RootOrigin Y S RM Fx) (x : Sp RM.Ω ⟶ Xo.XF c), Or.𝔐.ξ ≫ Or.𝔐.f = x ≫ Y.j → Mono (spMap β) → (∀ x : Sys.X, ∃ (U : Set Sys.X) (lam : Sys.X → Fin (Fx.m + 1) → ℂ), IsOpen U ∧ x ∈ U ∧ (∀ i, Sys.A.HoloOn U fun y => lam y i) ∧ (∀ y ∈ U, ∃ a₀ : ℂ, a₀ ≠ 0 ∧ lam y = a₀ • Fx.pt y) ∧ ∀ p, lam x p ≠ 0 → ∀ j, x ∈ (Sys.A.chart j).source → (fderiv ℂ (fun z i => lam ((Sys.A.chart j).symm z) i / lam ((Sys.A.chart j).symm z) p) (Sys.A.chart j x)).ker = ⊥) → AlgOver (Or.Re.comap some) := by
   intro E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or x hx hβ hloc

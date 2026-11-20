@@ -13,11 +13,11 @@ attribute [local instance] SplitExt.free SplitExt.finite
 namespace GlobalTheory.ZH.UFib
 
 /- English proof (translation)
-Introduce `k _ _ Φ Y L hL π N c K K' _ _ ψ ε φt εt t _ α hw b φ hr`. Introduce and unpack `χ ⟨l, hl⟩`. Assume the negation of the conclusion as `hne`. Use `hl ((GlobalTheory.T.hasTorusWeight_iff_torusEquivariant k Φ.E Φ.G Φ.D (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l) (φ.f l) α).1 ?_ χ hne)` and prove the remaining obligations. Introduce `Z τ g z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Φ.D.q_hom` as an intermediate fact. Take `⟨J, hJ, e⟩` from `exists_good L hL z (K := Unit) (fun _ => g.left ≫ Φ.D.q.left ≫ π) (fun _ => c.idx l) (fun _ _ _ => rfl) (fun _ => c.le l hz)`. Establish `hq : ((τ ≫ Φ.D.i) * g).left ≫ Φ.D.q.left = g.left ≫ Φ.D.q.left` using `congrArg (fun x => x.left) (GtBaseChange.translate_comp Φ.D.q Φ.D.i Φ.D.isKernel τ g)`. Establish `h₁` using `hr _ g.left z J hJ l hz (e ())`. Establish `h₂` using `hr _ ((τ ≫ Φ.D.i) * g).left z J hJ l (GtBaseChange.translate_mem Φ.D.q Φ.D.i Φ.D.isKernel τ g _ z hz) (by rw [← Category.assoc, hq, Category.assoc]; exact e ())`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₂` using `[hq, hw Z τ g z J hJ, Units.val_mul, mul_left_comm, ← h₁]`. Conclude with `h₂`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_of_red : ∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (Y : Scheme.{0}) (L : LB Y), L.IsLB → ∀ (π : Φ.E.B.left ⟶ Y) (N : ℕ) (c : ChartPull Φ.N₀ (npw L N) π) (K K' : Type) [Fintype K] [Fintype K'] (ψ : K → (Φ.E.B.left ⟶ Y)) (ε : K → ℤ) (φt : K' → (Φ.G.left ⟶ Y)) (εt : K' → ℤ) (t : LB.Gen (LB.LinComb L φt εt)), t.IsGen → ∀ α : Φ.E.X, UFib.GenWt Φ.D.i t α → ∀ (b : LB.Sec (LB.LinComb L ψ ε)) (φ : (Φ.H 1).Sec), UFib.Red Φ c t b φ → Φ.Pure α φ := by
   intro k _ _ Φ Y L hL π N c K K' _ _ ψ ε φt εt t _ α hw b φ hr

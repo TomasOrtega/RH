@@ -11,7 +11,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.bcris_regular_surjections_of_fontaine_theorem GlobalTheory.T.fontaineBcrisBasicTheorems_proof`.
+A detailed English derivation is pending.
 -/
 theorem tied_regular_and_onto :
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →

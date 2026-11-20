@@ -2,15 +2,15 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue
 
 /- English proof (translation)
-Introduce `ι M _ _ _ f hc n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `W hn hW hinv`. Distinguish the cases in `h : ∀ i, ∃ c : ℂ, ∀ x ∈ W, f i x = c • x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff W).1 hW`. Conclude with `⟨v, hv, hv0, fun i => (h i).imp fun c hc' => hc' v hv⟩`. Take `⟨i, hi⟩` from `not_forall.1 h haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.2 hW`. Take `⟨c, hce⟩` from `Module.End.exists_eigenvalue ((f i).restrict (p := W) (q := W) (hinv i) : Module.End ℂ W)`. Take `⟨w, hw⟩` from `hce.exists_hasEigenvector`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw1 : f i (w : M) = c • (w : M)` using `congrArg Subtype.val hw.apply_eq_smul`. Establish `hw0 : (w : M) ≠ 0` using `fun e => hw.2 (Subtype.ext e)`. Establish `hlt : W ⊓ (f i).eigenspace c < W`. Use `lt_of_le_of_ne inf_le_left fun e => hi ⟨c, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Module.End.mem_eigenspace_iff.1 hx.2`. Establish `hne : W ⊓ (f i).eigenspace c ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨w, ⟨w.2, Module.End.mem_eigenspace_iff.2 hw1⟩, hw0⟩`. Take `⟨v, hv, hv0, hall⟩` from `ih _ (hn ▸ Submodule.finrank_lt_finrank_of_lt hlt) (W ⊓ (f i).eigenspace c) rfl hne (fun j x hx => by`. Use `⟨hinv j x hx.1, Module.End.mem_eigenspace_iff.2 ?_⟩` and prove the remaining obligations. Establish `h1 : f i x = c • x` using `Module.End.mem_eigenspace_iff.1 hx.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : f i (f j x) = f j (f i x)` using `LinearMap.congr_fun (hc i j).eq x`. Rewrite using `[h2, h1, map_smul])`. Conclude with `⟨v, hv.1, hv0, hall⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ComplexCommonEigenvectorOfFinrankEq.common_eig :
     ∀ {ι M : Type} [inst : AddCommGroup M]

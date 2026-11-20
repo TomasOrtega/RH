@@ -17,32 +17,32 @@ variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin
 abbrev wd (l : List (Fin n × Fin n)) : Module.End ℂ V := (l.map fun p => E p.1 p.2).prod
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ ⟨l, hl, hx⟩ => ⟨l, hl.trans h, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem U_mono {j k : ℕ} (h : j ≤ k) : U E j ≤ U E k :=
   Submodule.span_mono fun _ ⟨l, hl, hx⟩ => ⟨l, hl.trans h, hx⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨[], by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem one_mem : (1 : Module.End ℂ V) ∈ U E 0 :=
   Submodule.subset_span ⟨[], by simp, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨[(a, b)], by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (a b : Fin n) : E a b ∈ U E 1 :=
   Submodule.subset_span ⟨[(a, b)], by simp, by simp⟩
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.main <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_mem {j k : ℕ} {x y : Module.End ℂ V} (hx : x ∈ U E j) (hy : y ∈ U E k) :
     x * y ∈ U E (j + k) :=
   by apply _root_.UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.main <;> assumption
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.ParabolicUnipotentGL.main <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bracket_mem (hE : IsGlRep E) {j k : ℕ} {x y : Module.End ℂ V} (hx : x ∈ U E j) (hy : y ∈ U E k) :
     x * y - y * x ∈ U E (j + k - 1) :=
@@ -51,9 +51,9 @@ theorem bracket_mem (hE : IsGlRep E) {j k : ℕ} {x y : Module.End ℂ V} (hx : 
 end WordFiltrationCommute
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hM`. Establish `hE : IsGlRep E` using `hM.gl`. Establish `hC : casimirK ε E ∈ U E 2`. Unfold `casimirK`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `WordFiltrationCommute.U_mono E (by norm_num : 1 + 1 ≤ 2) (WordFiltrationCommute.mul_mem E (WordFiltrationCommute.gen_mem E a b) (WordFiltrationCommute.gen_mem E b a))`. Use `⟨fun j k h => WordFiltrationCommute.U_mono E h, WordFiltrationCommute.one_mem E, WordFiltrationCommute.gen_mem E, fun j k x hx y hy => WordFiltrationCommute.mul_mem E hx hy, fun j k x hx y hy => WordFiltrationCommute.bracket_mem E hE hx hy, hC, fun a b => ?_⟩` and prove the remaining obligations. Establish `hZ` using `WordFiltrationCommute.bracket_mem E hE hC (WordFiltrationCommute.gen_mem E a b)`. Unfold `Z`. Conclude with `WordFiltrationCommute.U_mono E (by norm_num : 2 + 1 - 1 ≤ 2) hZ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem word_filtration_of_length : A1 := by
   intro n ε V _ _ E hM

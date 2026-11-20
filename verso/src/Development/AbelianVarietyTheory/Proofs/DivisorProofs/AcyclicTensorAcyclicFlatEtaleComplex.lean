@@ -29,7 +29,7 @@ def Tens.d (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{
         TensorProduct.map LinearMap.id (Sec.lin (J.d p.1.2 (p.1.2 + 1)) U))
 
 /- English proof (translation)
-Simplify using `[Tens.d, Tens.of, DirectSum.toModule_lof]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Tens.d_of_tmul (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -47,7 +47,7 @@ variable {R : Type} [CommRing R]
 open scoped DirectSum TensorProduct
 
 /- English proof (translation)
-Simplify using `[Pair.lift, Tens.of, DirectSum.toModule_lof]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pair.lift_of_tmul {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -55,13 +55,13 @@ theorem Pair.lift_of_tmul {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w :
   simp [Pair.lift, Tens.of, DirectSum.toModule_lof]
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b`. Establish `e` using `Tens.d_of_tmul I J U w p a b`. Simplify using `only [Tens.of, DirectSum.lof_eq_of] at e`. Rewrite using `[e, map_add, map_zsmul]`. Establish `e1` using `μ.lift_of_tmul U (w + 1) ⟨(p.1.1 + 1, p.1.2), by have := p.2; simp only at this ⊢; omega⟩ (Sec.map (I.d p.1.1 (p.1.1 + 1)) a) b`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `μ.lift_of_tmul U (w + 1) ⟨(p.1.1, p.1.2 + 1), by have := p.2; simp only at this ⊢; omega⟩ a (Sec.map (J.d p.1.2 (p.1.2 + 1)) b)`. Establish `e3` using `μ.lift_of_tmul U w p a b`. Simplify using `only [Tens.of, DirectSum.lof_eq_of] at e1 e2 e3`. Rewrite using `[e1, e2, e3, μ.leibniz U p.1.1 p.1.2 w p.2 a b, Units.smul_def]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem Pair.lift_tensD {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     μ.lift U (w + 1) (Tens.d I J U w x) = Sec.map (K.d w (w + 1)) (μ.lift U w x) := by
@@ -85,11 +85,11 @@ theorem Pair.lift_tensD {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : �
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b`. Establish `e3` using `μ.lift_of_tmul U w p a b`. Establish `e4` using `μ.lift_of_tmul V w p (Sec.res g a) (Sec.res g b)`. Simplify using `only [Tens.of, DirectSum.lof_eq_of] at e3 e4`. Rewrite using `[e3, μ.nat g, ← e4, ← DirectSum.lof_eq_of (ULift.{1} R), ← DirectSum.lof_eq_of (ULift.{1} R), Tens.res, DirectSum.lmap_lof]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 -/
 theorem Pair.lift_tensRes {I J K : Cx R} (μ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     μ.lift V w (Tens.res g w x) = Sec.res g (μ.lift U w x) := by
@@ -108,7 +108,7 @@ theorem Pair.lift_tensRes {I J K : Cx R} (μ : Pair I J K) {V U : Scheme.{0}} (g
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[Tens.res, Tens.of, DirectSum.lmap_lof]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Tens.res_of_tmul (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -117,7 +117,7 @@ theorem Tens.res_of_tmul (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ)
   rfl
 
 /- English proof (translation)
-Simplify using `only [Sec.res, Sec.map]`. Rewrite using `[← ModuleCat.comp_apply, ← ModuleCat.comp_apply, ← NatTrans.naturality]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Sec.res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
@@ -125,13 +125,13 @@ theorem Sec.res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U
   rw [← ModuleCat.comp_apply, ← ModuleCat.comp_apply, ← NatTrans.naturality]
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b`. Establish `e` using `Tens.res_of_tmul I J g w p a b`. Establish `e1` using `Tens.d_of_tmul I J U w p a b`. Establish `e2` using `Tens.d_of_tmul I J V w p (Sec.res g a) (Sec.res g b)`. Simplify using `only [Tens.of, DirectSum.lof_eq_of] at e e1 e2`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, e1, e2, map_add, map_zsmul, ← DirectSum.lof_eq_of (ULift.{1} R), ← DirectSum.lof_eq_of (ULift.{1} R), Tens.res, DirectSum.lmap_lof, DirectSum.lmap_lof]`. Simplify using `only [TensorProduct.map_tmul, DirectSum.lof_eq_of]`. Establish `h1` using `Sec.res_map (I.d p.1.1 (p.1.1 + 1)) g a`. Establish `h2` using `Sec.res_map (J.d p.1.2 (p.1.2 + 1)) g b`. Simplify using `only [Sec.res] at h1 h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem Tens.res_d (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     Tens.res g (w + 1) (Tens.d I J U w x) = Tens.d I J V w (Tens.res g w x) := by
@@ -162,7 +162,7 @@ variable {R : Type} [CommRing R]
 open scoped DirectSum TensorProduct
 
 /- English proof (translation)
-Establish `h : Sec.map (I.d j k) (Sec.map (I.d i j) a) = Sec.map (I.d i j ≫ I.d j k) a` using `rfl`. Rewrite using `[h, I.d_comp_d]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Sec.map_d_d (I : Cx R) (i j k : ℤ) {U : Scheme.{0}} (a : Sec (I.X i) U) :
     Sec.map (I.d j k) (Sec.map (I.d i j) a) = 0 := by
@@ -171,11 +171,11 @@ theorem Sec.map_d_d (I : Cx R) (i j k : ℤ) {U : Scheme.{0}} (a : Sec (I.X i) U
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b`. Establish `e` using `Tens.d_of_tmul I J U w p a b`. Establish `e1` using `Tens.d_of_tmul I J U (w + 1) ⟨(p.1.1 + 1, p.1.2), by have := p.2; simp only at this ⊢; omega⟩ (Sec.map (I.d p.1.1 (p.1.1 + 1)) a) b`. Establish `e2` using `Tens.d_of_tmul I J U (w + 1) ⟨(p.1.1, p.1.2 + 1), by have := p.2; simp only at this ⊢; omega⟩ a (Sec.map (J.d p.1.2 (p.1.2 + 1)) b)`. Simplify using `only [Tens.of, DirectSum.lof_eq_of] at e e1 e2`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_add, map_zsmul, e1, e2]`. Simplify using `only [Sec.map_d_d, TensorProduct.zero_tmul, TensorProduct.tmul_zero, map_zero, zero_add, smul_zero, add_zero, smul_add, Int.negOnePow_succ, Units.val_neg, neg_smul, smul_smul]`. Simplify using the standard rewrite rules. Consider the case `add y z hy hz => simp only [map_add, hy, hz, add_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 -/
 theorem Tens.d_d (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     Tens.d I J U (w + 1) (Tens.d I J U w x) = 0 := by
@@ -205,7 +205,7 @@ variable {R : Type} [CommRing R]
 open scoped DirectSum TensorProduct
 
 /- English proof (translation)
-Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Simplify using `only [Tens.d, DirectSum.toModule_lof]`. Simplify using `[Tens.of, DirectSum.lof_eq_of]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Tens.d_of (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (y : Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) :
@@ -224,13 +224,13 @@ def Tens.upper {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (n : ℤ) (x : Tens I J U
   DFinsupp.filter (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => n ≤ p.1.2) x
 
 /- English proof (translation)
-The claim follows from `DFinsupp.filter_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Tens.upper_apply {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (n : ℤ) (x : Tens I J U w) (p) :
     Tens.upper n x p = if n ≤ p.1.2 then x p else 0 := DFinsupp.filter_apply _ _ _
 
 /- English proof (translation)
-Unfold `Tens.upper`. Rewrite using `[DirectSum.of, DFinsupp.singleAddHom_apply, DFinsupp.filter_single]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tens.upper_of {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (n : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (y : Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) :
@@ -240,19 +240,19 @@ theorem Tens.upper_of {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (n : ℤ) (p : {p 
   rw [DirectSum.of, DFinsupp.singleAddHom_apply, DFinsupp.filter_single]
 
 /- English proof (translation)
-The claim follows from `DFinsupp.filter_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Tens.upper_add {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (n : ℤ) (x y : Tens I J U w) :
     Tens.upper n (x + y) = Tens.upper n x + Tens.upper n y := DFinsupp.filter_add _ _ _
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp [Tens.upper]`. Consider the case `of p y`. Rewrite using `[Tens.upper_of]`. Use `split_ifs with hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Tens.d_of, DFinsupp.add_apply, DFinsupp.smul_apply, DirectSum.of_eq_of_ne, DirectSum.of_eq_of_ne, smul_zero, add_zero]`. Introduce `h`. Substitute `h` using the available equality. Simplify using `at hq`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Substitute `h` using the available equality. Simplify using `at hq`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [Tens.upper_add, map_add, DFinsupp.add_apply, hx, hy, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem Tens.d_upper_low (I J : Cx R) (U : Scheme.{0}) (w n : ℤ) (x : Tens I J U w)
     (q : {q : ℤ × ℤ // q.1 + q.2 = w + 1}) (hq : q.1.2 < n) : Tens.d I J U w (Tens.upper n x) q = 0 := by
@@ -268,17 +268,17 @@ theorem Tens.d_upper_low (I J : Cx R) (U : Scheme.{0}) (w n : ℤ) (x : Tens I J
   | add x y hx hy => rw [Tens.upper_add, map_add, DFinsupp.add_apply, hx, hy, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp [Tens.upper]`. Consider the case `of p y`. Take `⟨⟨a, b⟩, hp⟩` from `p`. Rewrite using `[Tens.upper_of]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = s ∧ b = n`. Take `⟨rfl, rfl⟩` from `hab`. Rewrite using `[if_pos le_rfl, Tens.d_of, DFinsupp.add_apply, DFinsupp.smul_apply, DirectSum.of_eq_same, DirectSum.of_eq_of_ne, smul_zero, add_zero, DirectSum.of_eq_same]`. Introduce `e`. Simplify using `at e`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[DirectSum.of_eq_of_ne]`. Use `split_ifs with hb`. Rewrite using `[Tens.d_of, DFinsupp.add_apply, DFinsupp.smul_apply, DirectSum.of_eq_of_ne, DirectSum.of_eq_of_ne, smul_zero, add_zero, map_zero]`. Introduce `e`. Simplify using `at e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `at hb`. Use linear arithmetic over natural numbers and integers. Introduce `e`. Simplify using `at e`. Simplify using `at hb hp`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Introduce `e`. Simplify using `at e`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [Tens.upper_add, map_add, DFinsupp.add_apply, hx, hy, DFinsupp.add_apply, map_add]`.
+A detailed English derivation is pending.
 -/
 theorem Tens.d_upper_edge (I J : Cx R) (U : Scheme.{0}) (w n s : ℤ) (h : s + n = w) (x : Tens I J U w) :
     Tens.d I J U w (Tens.upper n x) ⟨(s + 1, n), by simp only; omega⟩ =
@@ -310,14 +310,14 @@ variable {R : Type} [CommRing R]
 open scoped DirectSum TensorProduct
 
 /- English proof (translation)
-Establish `h : Sec.map (𝟙 F) x = Sec.map (0 : F ⟶ F) x` using `by rw [hF.eq_of_src (𝟙 F) 0]`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Sec.eq_zero_of_isZero {F : Shv R} (hF : IsZero F) {U : Scheme.{0}} (x : Sec F U) : x = 0 := by
   have h : Sec.map (𝟙 F) x = Sec.map (0 : F ⟶ F) x := by rw [hF.eq_of_src (𝟙 F) 0]
   exact h
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul m n => rw [h m, TensorProduct.zero_tmul]`. Consider the case `add y z hy hz => rw [hy, hz, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensor_eq_zero_left {S M N : Type*} [CommRing S] [AddCommGroup M] [Module S M] [AddCommGroup N] [Module S N]
     (h : ∀ m : M, m = 0) (y : M ⊗[S] N) : y = 0 := by
@@ -327,7 +327,7 @@ theorem tensor_eq_zero_left {S M N : Type*} [CommRing S] [AddCommGroup M] [Modul
   | add y z hy hz => rw [hy, hz, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul m n => rw [h n, TensorProduct.tmul_zero]`. Consider the case `add y z hy hz => rw [hy, hz, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensor_eq_zero_right {S M N : Type*} [CommRing S] [AddCommGroup M] [Module S M] [AddCommGroup N] [Module S N]
     (h : ∀ n : N, n = 0) (y : M ⊗[S] N) : y = 0 := by
@@ -343,7 +343,7 @@ theorem Tens.res_apply {I J : Cx R} {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (
     Tens.res g w x p = TensorProduct.map ((I.X p.1.1).obj.map g.op).hom ((J.X p.1.2).obj.map g.op).hom (x p) := rfl
 
 /- English proof (translation)
-Use `DFinsupp.ext fun p => ?_` and prove the remaining obligations. Rewrite using `[Tens.res_apply, Tens.res_apply, Tens.res_apply, ← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Simplify using `[op_comp, Functor.map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Tens.res_comp {I J : Cx R} {W V U : Scheme.{0}} (m : W ⟶ V) (k : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     Tens.res (m ≫ k) w x = Tens.res m w (Tens.res k w x) := by
@@ -352,9 +352,9 @@ theorem Tens.res_comp {I J : Cx R} {W V U : Scheme.{0}} (m : W ⟶ V) (k : V ⟶
   simp [op_comp, Functor.map_comp]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `h` using `Sec.res_map g k a`. Simplify using `only [Sec.res, Sec.map] at h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [TensorProduct.map_tmul, LinearMap.rTensor_tmul, h]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem rTensor_res_comm {B C M : Shv R} (g : B ⟶ C) {V U : Scheme.{0}} (k : V ⟶ U)
     (x : Sec B U ⊗[ULift.{1} R] Sec M U) :
@@ -369,33 +369,31 @@ theorem rTensor_res_comm {B C M : Shv R} (g : B ⟶ C) {V U : Scheme.{0}} (k : V
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Take `⟨L_all, L_mono, -, -, L_trans, -, -⟩` from `loc_calculus`. Set `P : ℤ → Prop` to `fun n => ∀ (U : Scheme.{0}) (x : Tens C J U (w + 1)), Tens.upper n x = x → Tens.d C J U (w + 1) x = 0 → Loc U fun V g => ∃ y : Tens C J V w, Tens.d C J V w y = Tens.res g (w + 1) x`. Establish `base : P (w + 2 - a)`. Introduce `U x hu _`. Establish `hx0 : x = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `DFinsupp.ext fun p => ?_` and prove the remaining obligations. Rewrite using `[← hu, Tens.upper_apply]`. Use `split_ifs with hp`. Establish `hs : p.1.1 < a` using `by have := p.2; omega`. Conclude with `tensor_eq_zero_left (fun m => Sec.eq_zero_of_isZero (C.isZero_of_isStrictlyGE a p.1.1 hs) m) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `L_all _ _ fun V g => ⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hx0, map_zero, map_zero]`. Establish `step : ∀ n, P (n + 1) → P n`. Introduce `n ih U x hu hdx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hedge : LinearMap.rTensor _ ((C.d (w - n + 1) (w - n + 1 + 1)).hom.app (op U)).hom (x ⟨(w - n + 1, n), by simp only; omega⟩) = 0`. Use `Tens.d_upper_edge C J U (w + 1) n (w - n + 1) (by omega) x` as an intermediate fact. Rewrite `this` using `[hu, hdx]`. Conclude with `this.symm`. Establish `hexact : ∀ (U : Scheme.{0}) (b : Sec (C.X (w - n + 1)) U), Sec.map (C.d (w - n + 1) (w - n + 1 + 1)) b = 0 → Loc U fun V k => ∃ a : Sec (C.X (w - n)) V, Sec.map (C.d (w - n) (w - n + 1)) a = Sec.res k b` using `(GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally R (C.sc' (w - n) (w - n + 1) (w - n + 1 + 1))).mp ((C.exactAt_iff' (w - n) (w - n + 1) (w - n + 1 + 1) (by simp) (by simp)).mp (hC (w - n + 1)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hloc : Loc U fun V k => LinearMap.rTensor _ ((C.d (w - n + 1) (w - n + 1 + 1)).hom.app (op V)).hom (TensorProduct.map ((C.X (w - n + 1)).obj.map k.op).hom ((J.X n).obj.map k.op).hom (x ⟨(w - n + 1, n), by simp only; omega⟩)) = 0` using `L_all _ _ fun V k => by rw [rTensor_res_comm, hedge, map_zero]`. Establish `hrow` using `GlobalTheory.T.tensor_flat_etaleSheaf_preserves_local_exactness R (J.X n) (hJ n) (C.d (w - n) (w - n + 1)) (C.d (w - n + 1) (w - n + 1 + 1)) (C.d_comp_d _ _ _) hexact U _ hloc`. Apply `L_trans` to reduce the goal to its premises. Use `L_mono _ _ _ hrow ?_` and prove the remaining obligations. Introduce and unpack `V k ⟨y0, hy0⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `y : Tens C J V w` to `DirectSum.of (fun q : {q : ℤ × ℤ // q.1 + q.2 = w} => Sec (C.X q.1.1) V ⊗[ULift.{1} R] Sec (J.X q.1.2) V) ⟨(w - n, n), by simp only; omega⟩ y0`. Establish `hyu : Tens.upper n y = y`. Simplify using `only [y]`. Rewrite using `[Tens.upper_of, if_pos le_rfl]`. Set `x' : Tens C J V (w + 1)` to `Tens.res k (w + 1) x - Tens.d C J V w y`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx'd : Tens.d C J V (w + 1) x' = 0`. Simplify using `only [x', map_sub, ← Tens.res_d, hdx, map_zero, Tens.d_d, sub_zero]`. Establish `hx'u : Tens.upper (n + 1) x' = x'`. Use `DFinsupp.ext fun q => ?_` and prove the remaining obligations. Rewrite using `[Tens.upper_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hq`. Both sides reduce to the same expression. Use `symm`. Use `show (Tens.res k (w + 1) x - Tens.d C J V w y) q = 0`. Rewrite using `[DFinsupp.sub_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Break down `lt_or_eq_of_le (Int.lt_add_one_iff.mp (not_le.mp hq)) with hlt | heq` into its components or cases. Rewrite using `[Tens.res_apply, ← hu, Tens.upper_apply, if_neg (by omega), map_zero, ← hyu, Tens.d_upper_low C J V w n _ q hlt, sub_zero]`. Take `⟨⟨s', t'⟩, hq'⟩` from `q`. Simplify using `only at heq hq'`. Substitute `heq` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : s' = w - t' + 1` from `by omega`. Rewrite using `[Tens.res_apply, ← hyu, Tens.d_upper_edge C J V w t' (w - t') (by omega) y]`. Simplify using `only [y]`. Rewrite using `[DirectSum.of_eq_same, sub_eq_zero]`. Conclude with `hy0.symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `L_mono _ _ _ (ih V x' hx'u hx'd) ?_` and prove the remaining obligations. Introduce and unpack `W m ⟨z, hz⟩`. Use `⟨z + Tens.res m w y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hz, Tens.res_comp, ← Tens.res_d]`. Simplify using `only [x', map_sub, sub_add_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hall : ∀ k : ℕ, P (w + 2 - a - k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using base`. Consider the case `succ k ih`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e : w + 2 - a - ((k + 1 : ℕ) : ℤ) + 1 = w + 2 - a - (k : ℤ)` using `by push_cast; ring`. Conclude with `step _ (e ▸ ih)`. Use `hall (w + 2 - a - b).toNat U x ?_ hx` and prove the remaining obligations. Use `DFinsupp.ext fun p => ?_` and prove the remaining obligations. Rewrite using `[Tens.upper_apply]`.
-
-Use `split_ifs with hp`. Both sides reduce to the same expression. Establish `ht : p.1.2 < b` using `by omega`. Conclude with `(tensor_eq_zero_right (fun m => Sec.eq_zero_of_isZero (J.isZero_of_isStrictlyGE b p.1.2 ht) m) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem Tens.cycle_loc_boundary {C J : Cx R} (a b : ℤ) [C.IsStrictlyGE a] [J.IsStrictlyGE b]
     (hJ : ∀ t, FlatS (J.X t)) (hC : C.Acyclic) (w : ℤ) (U : Scheme.{0}) (x : Tens C J U (w + 1))
@@ -483,15 +481,15 @@ theorem Tens.cycle_loc_boundary {C J : Cx R} (a b : ℤ) [C.IsStrictlyGE a] [J.I
     exact (tensor_eq_zero_right (fun m => Sec.eq_zero_of_isZero (J.isZero_of_isStrictlyGE b p.1.2 ht) m) _).symm
 
 /- English proof (translation)
-Introduce `R _ C J T a b _ _ τ hT hJ hC j`. Take `⟨L_all, L_mono, -, -, L_trans, -, -⟩` from `loc_calculus`. Take `⟨w, rfl⟩ : ∃ w, j = w + 1` from `⟨j - 1, by ring⟩`. Rewrite using `[T.exactAt_iff' w (w + 1) (w + 1 + 1) (by simp) (by simp), GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally]`. Introduce and unpack `U (z : Sec (T.X (w + 1)) U) (hz' : Sec.map (T.d (w + 1) (w + 1 + 1)) z = 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `L_trans` to reduce the goal to its premises. Use `L_mono _ _ _ (hT.1 U (w + 1) z) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x, hx⟩`. Establish `h1 : τ.lift V (w + 1 + 1) (Tens.d C J V (w + 1) x) = 0`. Rewrite using `[Pair.lift_tensD, hx, ← Sec.res_map, hz']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Apply `L_trans` to reduce the goal to its premises. Use `L_mono _ _ _ (hT.2 V (w + 1 + 1) _ h1) ?_` and prove the remaining obligations. Introduce `W k hk`. Rewrite `hk` using `[Tens.res_d]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `L_mono _ _ _ (Tens.cycle_loc_boundary a b hJ hC w W _ hk) ?_` and prove the remaining obligations. Introduce and unpack `W' m ⟨y, hy⟩`. Use `⟨τ.lift W' w y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map (T.d w (w + 1)) (τ.lift W' w y) = _`. Rewrite using `[← Pair.lift_tensD, hy, Pair.lift_tensRes, Pair.lift_tensRes, hx]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Sec.res, op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem acyclic_of_isTensor : ∀ (R : Type) [CommRing R] {C J T : Cx R} (a b : ℤ) [C.IsStrictlyGE a] [J.IsStrictlyGE b]
     (τ : Pair C J T), τ.IsTensor → (∀ t, FlatS (J.X t)) → C.Acyclic → T.Acyclic := by

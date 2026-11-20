@@ -17,41 +17,41 @@ def IsIntM {a b : Type} (M : Matrix a b L) : Prop := ∀ i j, M i j ∈ Formalis
 def IsSmallM {a b : Type} (M : Matrix a b L) : Prop := ∀ i j, Valued.v (M i j) < 1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_int {x : L} : x ∈ Formalism.UG.intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact sum_mem fun k _ => mul_mem (hA i k) (hB k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_mul {a b c : Type} [Fintype b] {A : Matrix a b L} {B : Matrix b c L} (hA : IsIntM A) (hB : IsIntM B) :
     IsIntM (A * B) := fun i j => by
   rw [Matrix.mul_apply]; exact sum_mem fun k _ => mul_mem (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i j` and use `add_mem (hA i j) (hB i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_add {a b : Type} {A B : Matrix a b L} (hA : IsIntM A) (hB : IsIntM B) : IsIntM (A + B) :=
   fun i j => add_mem (hA i j) (hB i j)
 
 /- English proof (translation)
-Introduce `i j` and use `neg_mem (hA i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_neg {a b : Type} {A : Matrix a b L} (hA : IsIntM A) : IsIntM (-A) := fun i j => neg_mem (hA i j)
 
 /- English proof (translation)
-Introduce `i j` and use `mul_mem hc (hA i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_smul {a b : Type} {c : L} (hc : c ∈ Formalism.UG.intL L) {A : Matrix a b L} (hA : IsIntM A) : IsIntM (c • A) :=
   fun i j => mul_mem hc (hA i j)
 
 /- English proof (translation)
-Introduce `i j` and use `le_of_lt (hA i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_of_small {a b : Type} {A : Matrix a b L} (hA : IsSmallM A) : IsIntM A := fun i j => le_of_lt (hA i j)
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lt_one_mul {x y : L} (hx : Valued.v x < 1) (hy : Valued.v y ≤ 1) : Valued.v (x * y) < 1 := by
   rw [map_mul]
@@ -60,7 +60,7 @@ theorem lt_one_mul {x y : L} (hx : Valued.v x < 1) (hy : Valued.v y ≤ 1) : Val
     _ < 1 := hx
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply] exact Valuation.map_sum_lt _ one_ne_zero fun k _ => by rw [mul_comm]; exact lt_one_mul (hB k j) (hA i k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul_small {a b c : Type} [Fintype b] {A : Matrix a b L} {B : Matrix b c L} (hA : IsIntM A) (hB : IsSmallM B) :
     IsSmallM (A * B) := fun i j => by
@@ -68,13 +68,13 @@ theorem int_mul_small {a b c : Type} [Fintype b] {A : Matrix a b L} {B : Matrix 
   exact Valuation.map_sum_lt _ one_ne_zero fun k _ => by rw [mul_comm]; exact lt_one_mul (hB k j) (hA i k)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, mul_comm]; exact lt_one_mul (hA i j) hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem small_smul {a b : Type} {c : L} (hc : Valued.v c ≤ 1) {A : Matrix a b L} (hA : IsSmallM A) : IsSmallM (c • A) :=
   fun i j => by rw [Matrix.smul_apply, smul_eq_mul, mul_comm]; exact lt_one_mul (hA i j) hc
 
 /- English proof (translation)
-Introduce `i j` and use `by show Valued.v (σ (A j i)) ≤ 1 rw [hσ]; exact hA j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_cT {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {a b : Type} {A : Matrix a b L} (hA : IsIntM A) :
     IsIntM (Formalism.UG.cT σ A) := fun i j => by
@@ -82,23 +82,21 @@ theorem isIntM_cT {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {
   rw [hσ]; exact hA j i
 
 /- English proof (translation)
-The claim follows from `sum_mem fun i _ => hA i i`.
+A detailed English derivation is pending.
 -/
 theorem trace_mem {a : Type} [Fintype a] {A : Matrix a a L} (hA : IsIntM A) : A.trace ∈ Formalism.UG.intL L :=
   sum_mem fun i _ => hA i i
 
 /- English proof (translation)
-Set `O` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`. Set `Z' : Matrix (Fin m) (Fin m) O` to `fun i j => ⟨Z i j, (Valuation.mem_valuationSubring_iff _ _).2 (le_of_lt (hZ i j))⟩`. Set `M' : Matrix (Fin m) (Fin m) O` to `1 - Z'`. Establish `hmap : O.subtype.mapMatrix M' = 1 - Z`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : M' i j = (1 : Matrix (Fin m) (Fin m) O) i j - Z' i j` using `rfl`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, e, Matrix.sub_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [Z']`. Establish `hres : (IsLocalRing.residue O).mapMatrix M' = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h0 : IsLocalRing.residue O (Z' i j) = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff]`. Conclude with `hZ i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, M', Matrix.sub_apply, map_sub, h0, sub_zero, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hdet : IsUnit M'.det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, hres, Matrix.det_one]`. Conclude with `one_ne_zero`. Establish `hdetL : IsUnit (1 - Z).det`. Rewrite using `[← hmap, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hdet.map _`. Use `⟨hdetL, ?_⟩` and prove the remaining obligations. Establish `hinv : (1 - Z)⁻¹ = O.subtype.mapMatrix M'⁻¹`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← hmap, ← RingHom.map_mul, Matrix.mul_nonsing_inv _ hdet, map_one]`.
-
-Rewrite using `[hinv]`. Introduce `i j`. Conclude with `((M'⁻¹) i j).2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_one_sub {m : ℕ} {Z : Matrix (Fin m) (Fin m) L} (hZ : IsSmallM Z) :
     IsUnit (1 - Z).det ∧ IsIntM (1 - Z)⁻¹ := by
@@ -131,7 +129,7 @@ theorem inv_one_sub {m : ℕ} {Z : Matrix (Fin m) (Fin m) L} (hZ : IsSmallM Z) :
   exact ((M'⁻¹) i j).2
 
 /- English proof (translation)
-Establish `h : IsSmallM (-Z)` using `fun i j => by rw [Matrix.neg_apply, Valuation.map_neg]; exact hZ i j`. Simplify `inv_one_sub h` using `[sub_neg_eq_add]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_one_add {m : ℕ} {Z : Matrix (Fin m) (Fin m) L} (hZ : IsSmallM Z) :
     IsUnit (1 + Z).det ∧ IsIntM (1 + Z)⁻¹ := by
@@ -139,9 +137,9 @@ theorem inv_one_add {m : ℕ} {Z : Matrix (Fin m) (Fin m) L} (hZ : IsSmallM Z) :
   simpa [sub_neg_eq_add] using inv_one_sub h
 
 /- English proof (translation)
-Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `Matrix.map_injective (Formalism.UG.intL L).subtype_injective ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.map_injective (Formalism.UG.intL L).subtype_injective ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.inv_mul`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GLint_of_int {ι : Type} [Fintype ι] [DecidableEq ι] {x : GL ι L}
     (h1 : ∀ i j, x.1 i j ∈ Formalism.UG.intL L) (h2 : ∀ i j, (x⁻¹).1 i j ∈ Formalism.UG.intL L) :
@@ -157,9 +155,9 @@ theorem mem_GLint_of_int {ι : Type} [Fintype ι] [DecidableEq ι] {x : GL ι L}
     exact x.inv_mul
 
 /- English proof (translation)
-Establish `hc : (1 - Z) * (Z + Z) = (Z + Z) * (1 - Z)` using `by noncomm_ring`. Establish `hcomm : Pi * (Z + Z) = (Z + Z) * Pi`. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cayley_ring {α : Type*} [Ring α] {Z Pi : α} (h1 : Pi * (1 - Z) = 1) (h2 : (1 - Z) * Pi = 1) :
     Pi * (1 + Z) - 1 = (Z + Z) * Pi ∧ Pi - 1 = Pi * Z := by
@@ -176,9 +174,9 @@ theorem cayley_ring {α : Type*} [Ring α] {Z Pi : α} (h1 : Pi * (1 - Z) = 1) (
       _ = Pi * Z := by noncomm_ring
 
 /- English proof (translation)
-Establish `ha : (1 - Zs) * J = J * (1 + Z)` using `by rw [sub_mul, hZ]; noncomm_ring`. Establish `hb : (1 + Zs) * J = J * (1 - Z)` using `by rw [add_mul, hZ]; noncomm_ring`. Establish `h1 : Pis * J = J * Qi`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : Qi * (1 - Z) = (1 - Z) * Qi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hpq : (1 - Z) * (1 + Z) = (1 + Z) * (1 - Z)` using `by noncomm_ring`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem cayley_unitary_ring {α : Type*} [Ring α] {J Z Zs Pi Qi Pis : α} (hZ : Zs * J = -(J * Z))
     (hP1 : Pi * (1 - Z) = 1) (hP2 : (1 - Z) * Pi = 1) (hQ1 : Qi * (1 + Z) = 1) (hQ2 : (1 + Z) * Qi = 1)
@@ -205,31 +203,31 @@ section cT
 variable (σ : L →+* L) {a b : Type}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add (A B : Matrix a b L) : Formalism.UG.cT σ (A + B) = Formalism.UG.cT σ A + Formalism.UG.cT σ B := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub (A B : Matrix a b L) : Formalism.UG.cT σ (A - B) = Formalism.UG.cT σ A - Formalism.UG.cT σ B := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul (c : L) (A : Matrix a b L) : Formalism.UG.cT σ (c • A) = σ c • Formalism.UG.cT σ A := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, h j i]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_herm {J : Matrix a a L} (h : ∀ i j, σ (J i j) = J j i) : Formalism.UG.cT σ J = J := by
   ext i j; simp [Formalism.UG.cT, h j i]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, h j i]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_skew {C : Matrix a a L} (h : ∀ i j, σ (C i j) = - C j i) : Formalism.UG.cT σ C = -C := by
   ext i j; simp [Formalism.UG.cT, h j i]
@@ -237,47 +235,39 @@ theorem cT_skew {C : Matrix a a L} (h : ∀ i j, σ (C i j) = - C j i) : Formali
 end cT
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q δ n n' JS JT ψ hU hq hJS hJT _hermS hermT hδ hψ x hyp C hskew hsmall hCx`. Establish `h2 : Valued.v (2 : L) = 1` using `GlobalTheory.Hk3.Inh.v_two hU hq`. Establish `hσσ` using `hU.1`. Establish `hσv` using `hU.2.1`. Establish `hhalf : Valued.v ((2 : L)⁻¹) ≤ 1` using `by rw [map_inv₀, h2, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσhalf : σ ((2 : L)⁻¹) = 2⁻¹` using `by rw [map_inv₀, map_ofNat]`. Establish `hδI : δ ∈ Formalism.UG.intL L` using `le_of_eq hδ.1`. Use `set Jt : Matrix (Fin n') (Fin n') L := (JT : Matrix (Fin n') (Fin n') L) with hJt`. Use `set Jti : Matrix (Fin n') (Fin n') L := ((JT⁻¹ : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) with hJti`. Use `set JSi : Matrix (Fin n) (Fin n) L := ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hJSi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJtiI : IsIntM Jti` using `GlobalTheory.Hk3.HoweDuality.entry_mem_of_mem_GLint (inv_mem hJT)`. Establish `hJSiI : IsIntM JSi` using `GlobalTheory.Hk3.HoweDuality.entry_mem_of_mem_GLint (inv_mem hJS)`. Establish `hJJi : Jt * Jti = 1` using `by rw [hJt, hJti, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hcJt : Formalism.UG.cT σ Jt = Jt` using `cT_herm σ hermT`. Establish `hcC : Formalism.UG.cT σ C = -C` using `cT_skew σ hskew`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hcJti : Formalism.UG.cT σ Jti * Jt = 1`. Combine the equalities or inequalities in the displayed calculation. Use `set Y : Matrix (Fin n') (Fin n') L := Jti * C with hYdef`. Establish `hY : Formalism.UG.cT σ Y * Jt = -C` using `by rw [hYdef, Formalism.UG.cT_mul, hcC, Matrix.mul_assoc, hcJti, Matrix.mul_one]`. Establish `hJY : Jt * Y = C` using `by rw [hYdef, ← Matrix.mul_assoc, hJJi, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Z : Matrix (Fin n') (Fin n') L := (2⁻¹ : L) • Y with hZdef`. Establish `hZZ : Z + Z = Y`. Rewrite using `[hZdef, ← add_smul]`. Establish `: (2⁻¹ + 2⁻¹ : L) = 1`. Establish `h2ne : (2 : L) ≠ 0` using `fun h => by rw [h, map_zero] at h2; exact zero_ne_one h2`.
+Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Rewrite using `[this, one_smul]`. Establish `hZ : Formalism.UG.cT σ Z * Jt = -(Jt * Z)`. Rewrite using `[hZdef, cT_smul, hσhalf, Matrix.smul_mul, hY, Matrix.mul_smul, hJY, smul_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hYsmall : IsSmallM Y` using `int_mul_small hJtiI hsmall`. Establish `hZsmall : IsSmallM Z` using `small_smul hhalf hYsmall`. Take `⟨hPdet, hPiI⟩` from `inv_one_sub hZsmall`. Take `⟨hQdet, hQiI⟩` from `inv_one_add hZsmall`. Use `set Pi := (1 - Z)⁻¹ with hPi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Qi := (1 + Z)⁻¹ with hQi`. Establish `hP1 : Pi * (1 - Z) = 1` using `Matrix.nonsing_inv_mul _ hPdet`. Establish `hP2 : (1 - Z) * Pi = 1` using `Matrix.mul_nonsing_inv _ hPdet`. Establish `hQ1 : Qi * (1 + Z) = 1` using `Matrix.nonsing_inv_mul _ hQdet`. Establish `hQ2 : (1 + Z) * Qi = 1` using `Matrix.mul_nonsing_inv _ hQdet`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPs : Formalism.UG.cT σ Pi * (1 - Formalism.UG.cT σ Z) = 1`. Rewrite using `[← Formalism.UG.cT_one σ, ← cT_sub, ← Formalism.UG.cT_mul, hP2]`. Set `k : GL (Fin n') L` to `⟨Pi * (1 + Z), Qi * (1 - Z), by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (1 + Z), hQ2, Matrix.one_mul, hP1], by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (1 - Z), hP2, Matrix.one_mul, hQ1]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hkU : k ∈ Formalism.UG.UJ σ Jt` using `by show Formalism.UG.cT σ (Pi * (1 + Z)) * Jt * (Pi * (1 + Z)) = Jt`. Rewrite using `[Formalism.UG.cT_mul, cT_add, Formalism.UG.cT_one]`. Conclude with `cayley_unitary_ring hZ hP1 hP2 hQ1 hQ2 hPs`. Establish `hIZ : IsIntM (1 + Z)` using `isIntM_add (fun i j => by`. Rewrite using `[Matrix.one_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _) (isIntM_of_small hZsmall)`. Establish `hIZ' : IsIntM (1 - Z)`. Rewrite using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `isIntM_add (fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _) (isIntM_neg (isIntM_of_small hZsmall))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hkI : k ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L)` using `mem_GLint_of_int (isIntM_mul hPiI hIZ) (isIntM_mul hQiI hIZ')`. Take `⟨hr1, hr2⟩` from `cayley_ring hP1 hP2`. Use `set u := Pi * (Z * x) with hudef`. Establish `hYxI : IsIntM (Y * x)` using `by rw [hYdef, Matrix.mul_assoc]; exact isIntM_mul hJtiI hCx`. Establish `huI : IsIntM u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hudef, hZdef, Matrix.smul_mul]`. Conclude with `isIntM_mul hPiI (isIntM_smul hhalf hYxI)`. Establish `hkx : Pi * (1 + Z) * x - x = Y * x + Y * u`. Establish `e1 : Pi * (1 + Z) * x - x = (Pi * (1 + Z) - 1) * x` using `by rw [Matrix.sub_mul, Matrix.one_mul]`. Establish `e2 : Pi = 1 + Pi * Z` using `by rw [← hr2]; abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, hr1, hZZ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hkxI : ∀ i j, (Pi * (1 + Z) * x - x : Matrix (Fin n') (Fin n) L) i j ∈ Formalism.UG.intL L`. Rewrite using `[hkx]`. Conclude with `isIntM_add hYxI (isIntM_mul (isIntM_of_small hYsmall) huI)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3` using `hyp ⟨k, hkU⟩ hkI hkxI`. Express the relevant statement in the definitionally equal form `ψ ((GlobalTheory.Hk3.locH σ δ JS JT x (Pi * (1 + Z) * x - x) + σ (GlobalTheory.Hk3.locH σ δ JS JT x (Pi * (1 + Z) * x - x))) / 2) = 1 at h3`. Establish `hY' : ∀ {p : Type} (M : Matrix (Fin n') p L), Formalism.UG.cT σ Y * (Jt * M) = -(C * M)`. Introduce `p M`. Rewrite using `[← Matrix.mul_assoc, hY, Matrix.neg_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hb : GlobalTheory.Hk3.locH σ δ JS JT x (Y * x + Y * u) = -(δ * Matrix.trace (C * (x * JSi * Matrix.transpose (x.map σ)))) + δ * Matrix.trace (JSi * Formalism.UG.cT σ u * (-(C * x)))`. Unfold `GlobalTheory.Hk3.locH`. Express the relevant statement in the definitionally equal form `δ * Matrix.trace (JSi * Formalism.UG.cT σ (Y * x + Y * u) * Jt * x) = _`. Rewrite using `[cT_add, Formalism.UG.cT_mul σ Y x, Formalism.UG.cT_mul σ Y u]`. Establish `e : JSi * (Formalism.UG.cT σ x * Formalism.UG.cT σ Y + Formalism.UG.cT σ u * Formalism.UG.cT σ Y) * Jt * x = -((JSi * Formalism.UG.cT σ x) * (C * x)) + JSi * Formalism.UG.cT σ u * (-(C * x))`.
-
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hY', Matrix.mul_neg, Matrix.neg_mul]`. Rewrite using `[e, Matrix.trace_add, Matrix.trace_neg, Matrix.trace_mul_comm (JSi * Formalism.UG.cT σ x), mul_add, mul_neg]`. Simplify using `only [Matrix.mul_assoc, Formalism.UG.cT]`. Rewrite `h3` using `[hkx, hb]`. Use `set a := δ * Matrix.trace (C * (x * JSi * Matrix.transpose (x.map σ))) with ha`.
-
-Use `set b' := δ * Matrix.trace (JSi * Formalism.UG.cT σ u * (-(C * x))) with hb'`. Establish `hb'I : b' ∈ Formalism.UG.intL L` using `mul_mem hδI (trace_mem (isIntM_mul (isIntM_mul hJSiI (isIntM_cT hσv huI)) (isIntM_neg hCx)))`. Establish `hσb'I : σ b' ∈ Formalism.UG.intL L` using `by rw [mem_int, hσv]; exact hb'I`. Establish `hc : ψ ((b' + σ b') / 2) = 1`. Apply `hψ` to reduce the goal to its premises.
-
-Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (add_mem hb'I hσb'I) hhalf`. Rewrite using `[map_div₀, map_add, hσσ, map_ofNat, add_comm]`. Establish `e3 : (-a + b' + σ (-a + b')) / 2 = -((a + σ a) / 2) + (b' + σ b') / 2`. Rewrite using `[map_add, map_neg]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e3, AddChar.map_add_eq_mul, hc, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cayley_phase : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ),

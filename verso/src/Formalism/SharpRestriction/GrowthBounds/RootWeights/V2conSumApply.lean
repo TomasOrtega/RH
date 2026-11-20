@@ -19,7 +19,7 @@ def letterPolarizationDerivation (R : Type*) [CommRing R] {ι : Type*} [Fintype 
     else 0
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem v2con_sum_apply {R : Type*} [CommRing R] {σ : Type*} {α : Type*} (s : Finset α)
     (f : α → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)) (F : MvPolynomial σ R) :
@@ -31,7 +31,7 @@ theorem v2con_sum_apply {R : Type*} [CommRing R] {σ : Type*} {α : Type*} (s : 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]
 
 /- English proof (translation)
-Unfold `glAct letterPolarizationDerivation`. Rewrite using `[LinearMap.sum_apply, v2con_sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem v2con_glAct_eq {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b : Fin n) (F : MvPolynomial (ι × Fin n) R) : glAct R LL S a b F = letterPolarizationDerivation R LL S a b F := by
@@ -42,7 +42,7 @@ theorem v2con_glAct_eq {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : �
 
 open Classical in
 /- English proof (translation)
-Unfold `letterPolarizationDerivation`. Rewrite using `[v2con_sum_apply, Finset.sum_eq_single l]`. Apply the tactic sequence `split_ifs <;> simp_all [pderiv_X, Pi.single_apply]`. Apply the tactic sequence `intro l' _ hl' split_ifs <;> simp [pderiv_X, Pi.single_apply, Ne.symm hl']`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem v2con_der_X {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b : Fin n) (l : ι) (c : Fin n) : letterPolarizationDerivation R LL S a b (X (l, c)) =

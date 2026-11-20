@@ -23,12 +23,12 @@ def cg_D {α β : Type*} (m : ℕ) (A : Matrix α β R) : Prop := ∀ i j, (m : 
 variable {O} {α β γ : Type*}
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨0, zero_mem _, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cg_C_zero (c : ℕ) : cg_C O c (0 : Matrix α β R) := fun _ _ => ⟨0, zero_mem _, by simp⟩
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨s, hs, e1⟩` from `hA i j`. Take `⟨t, ht, e2⟩` from `hB i j`. Conclude with `⟨s + t, add_mem hs ht, by rw [Matrix.add_apply, e1, e2, mul_add]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cg_C_add {c : ℕ} {A B : Matrix α β R} (hA : cg_C O c A) (hB : cg_C O c B) : cg_C O c (A + B) := by
   intro i j
@@ -37,7 +37,7 @@ theorem cg_C_add {c : ℕ} {A B : Matrix α β R} (hA : cg_C O c A) (hB : cg_C O
   exact ⟨s + t, add_mem hs ht, by rw [Matrix.add_apply, e1, e2, mul_add]⟩
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨s, hs, e1⟩` from `hA i j`. Conclude with `⟨-s, neg_mem hs, by rw [Matrix.neg_apply, e1, mul_neg]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cg_C_neg {c : ℕ} {A : Matrix α β R} (hA : cg_C O c A) : cg_C O c (-A) := by
   intro i j
@@ -45,20 +45,20 @@ theorem cg_C_neg {c : ℕ} {A : Matrix α β R} (hA : cg_C O c A) : cg_C O c (-A
   exact ⟨-s, neg_mem hs, by rw [Matrix.neg_apply, e1, mul_neg]⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `cg_C_add hA (cg_C_neg hB)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_C_sub {c : ℕ} {A B : Matrix α β R} (hA : cg_C O c A) (hB : cg_C O c B) : cg_C O c (A - B) := by
   rw [sub_eq_add_neg]; exact cg_C_add hA (cg_C_neg hB)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ (cg_C O c) (fun _ _ => cg_C_add) (cg_C_zero c) h`.
+A detailed English derivation is pending.
 -/
 theorem cg_C_sum {ι : Type*} {s : Finset ι} {c : ℕ} {A : ι → Matrix α β R} (h : ∀ k ∈ s, cg_C O c (A k)) :
     cg_C O c (∑ k ∈ s, A k) :=
   Finset.sum_induction _ (cg_C O c) (fun _ _ => cg_C_add) (cg_C_zero c) h
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨s, hs, e1⟩` from `hA i j`. Conclude with `⟨k * s, mul_mem (natCast_mem _ _) hs, by rw [e1]; push_cast; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cg_C_dvd {c k : ℕ} {A : Matrix α β R} (hA : cg_C O (c * k) A) : cg_C O c A := by
   intro i j
@@ -66,7 +66,7 @@ theorem cg_C_dvd {c k : ℕ} {A : Matrix α β R} (hA : cg_C O (c * k) A) : cg_C
   exact ⟨k * s, mul_mem (natCast_mem _ _) hs, by rw [e1]; push_cast; ring⟩
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨s, hs, e1⟩` from `h i j`. Establish `e2 : A' i j = A i j + k * s` using `by rw [← e1, Matrix.sub_apply]; ring`. Rewrite using `[e2, mul_add, ← mul_assoc]`. Conclude with `add_mem (hA i j) (mul_mem (mul_mem (natCast_mem _ m) (natCast_mem _ k)) hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_D_of_C {m k : ℕ} {A A' : Matrix α β R} (hA : cg_D O m A) (h : cg_C O k (A' - A)) :
     cg_D O m A' := by
@@ -77,7 +77,7 @@ theorem cg_D_of_C {m k : ℕ} {A A' : Matrix α β R} (hA : cg_D O m A) (h : cg_
   exact add_mem (hA i j) (mul_mem (mul_mem (natCast_mem _ m) (natCast_mem _ k)) hs)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Nat.cast_mul, mul_comm (m : R), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hA i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_D_mul_right {m : ℕ} (k : ℕ) {A : Matrix α β R} (hA : cg_D O m A) : cg_D O (m * k) A := by
   intro i j
@@ -85,7 +85,7 @@ theorem cg_D_mul_right {m : ℕ} (k : ℕ) {A : Matrix α β R} (hA : cg_D O m A
   exact mul_mem (natCast_mem _ _) (hA i j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hA i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_D_mul_left {m : ℕ} (k : ℕ) {A : Matrix α β R} (hA : cg_D O m A) : cg_D O (k * m) A := by
   intro i j
@@ -93,9 +93,9 @@ theorem cg_D_mul_left {m : ℕ} (k : ℕ) {A : Matrix α β R} (hA : cg_D O m A)
   exact mul_mem (natCast_mem _ _) (hA i j)
 
 /- English proof (translation)
-Use `choose t ht e using hA`. Introduce `i j`. Use `⟨∑ k, ((m : R) * P i k) * t k j, sum_mem fun k _ => mul_mem (hP i k) (ht k j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e k j]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cg_C_mul_left [Fintype β] {m c : ℕ} {P : Matrix α β R} {A : Matrix β γ R} (hP : cg_D O m P)
     (hA : cg_C O (c * m) A) : cg_C O c (P * A) := by
@@ -107,9 +107,9 @@ theorem cg_C_mul_left [Fintype β] {m c : ℕ} {P : Matrix α β R} {A : Matrix 
   rw [e k j]; push_cast; ring
 
 /- English proof (translation)
-Use `choose t ht e using hA`. Introduce `i j`. Use `⟨∑ k, t i k * ((m : R) * Q k j), sum_mem fun k _ => mul_mem (ht i k) (hQ k j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e i k]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cg_C_mul_right [Fintype β] {m c : ℕ} {A : Matrix α β R} {Q : Matrix β γ R}
     (hA : cg_C O (c * m) A) (hQ : cg_D O m Q) : cg_C O c (A * Q) := by
@@ -121,7 +121,7 @@ theorem cg_C_mul_right [Fintype β] {m c : ℕ} {A : Matrix α β R} {Q : Matrix
   rw [e i k]; push_cast; ring
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[show ((m * k : ℕ) : R) * (P i l * Q l j) = ((m : R) * P i l) * ((k : R) * Q l j) by push_cast; ring]`. Conclude with `mul_mem (hP i l) (hQ l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_D_mul [Fintype β] {m k : ℕ} {P : Matrix α β R} {Q : Matrix β γ R} (hP : cg_D O m P)
     (hQ : cg_D O k Q) : cg_D O (m * k) (P * Q) := by
@@ -132,11 +132,9 @@ theorem cg_D_mul [Fintype β] {m k : ℕ} {P : Matrix α β R} {Q : Matrix β γ
   exact mul_mem (hP i l) (hQ l j)
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `i k`. Rewrite using `[pow_zero, pow_zero, Nat.cast_one, one_mul, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Consider the case `succ j ih`. Rewrite using `[pow_succ, pow_succ]`.
-
-Conclude with `cg_D_mul ih hA`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_D_pow [Fintype α] [DecidableEq α] {m : ℕ} {A : Matrix α α R} (hA : cg_D O m A) :
     ∀ j : ℕ, cg_D O (m ^ j) (A ^ j) := by
@@ -153,11 +151,11 @@ theorem cg_D_pow [Fintype α] [DecidableEq α] {m : ℕ} {A : Matrix α α R} (h
     exact cg_D_mul ih hA
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro c _`. Simplify using `using cg_C_zero (O := O) (α := α) (β := α) c`. Consider the case `succ j ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `c h`. Establish `e : A' ^ (j + 1) - A ^ (j + 1) = (A' ^ j - A ^ j) * A' + A ^ j * (A' - A)`. Rewrite using `[pow_succ, pow_succ, Matrix.sub_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `cg_C_add (cg_C_mul_right (ih (c * m) ?_) hA') (cg_C_mul_left (cg_D_pow hA j) ?_)` and prove the remaining obligations. Rewrite using `[show c * m * m ^ j = c * m ^ (j + 1) by ring]` and apply the resulting hypothesis. Conclude with `cg_C_dvd (k := m) (by rwa [show c * m ^ j * m = c * m ^ (j + 1) by ring])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cg_pow [Fintype α] [DecidableEq α] {m : ℕ} {A A' : Matrix α α R} (hA : cg_D O m A)
     (hA' : cg_D O m A') : ∀ (j c : ℕ), cg_C O (c * m ^ j) (A' - A) → cg_C O c (A' ^ j - A ^ j) := by
@@ -174,9 +172,9 @@ theorem cg_pow [Fintype α] [DecidableEq α] {m : ℕ} {A A' : Matrix α α R} (
     · exact cg_C_dvd (k := m) (by rwa [show c * m ^ j * m = c * m ^ (j + 1) by ring])
 
 /- English proof (translation)
-Unfold `geo`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `cg_C_sum fun j hj => cg_pow hA hA' j c ?_` and prove the remaining obligations. Establish `hj' : j ≤ N` using `(Finset.mem_range.1 hj).le`. Use `cg_C_dvd (k := m ^ (N - j)) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hj']` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem cg_geo [Fintype α] [DecidableEq α] {m : ℕ} {A A' : Matrix α α R} (hA : cg_D O m A)
     (hA' : cg_D O m A') (N c : ℕ) (h : cg_C O (c * m ^ N) (A' - A)) : cg_C O c (geo N A' - geo N A) := by
@@ -188,9 +186,9 @@ theorem cg_geo [Fintype α] [DecidableEq α] {m : ℕ} {A A' : Matrix α α R} (
   rwa [mul_assoc, ← pow_add, Nat.add_sub_cancel' hj']
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨t, ht, e⟩` from `h i j`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, e, smul_eq_mul]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((c : R) * t) * invOf_mul_self (2 : R)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cg_C_half [Invertible (2 : R)] {c : ℕ} {A : Matrix α β R} (h : cg_C O (2 * c) A) :
     cg_C O c ((⅟2 : R) • A) := by
@@ -202,9 +200,9 @@ theorem cg_C_half [Invertible (2 : R)] {c : ℕ} {A : Matrix α β R} (h : cg_C 
   linear_combination ((c : R) * t) * invOf_mul_self (2 : R)
 
 /- English proof (translation)
-Introduce `i j`. Establish `e : ((2 * m : ℕ) : R) * ((⅟2 : R) • A) i j = (m : R) * A i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Take the linear combination `((m : R) * A i j) * invOf_mul_self (2 : R)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e]`. Conclude with `h i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_D_half [Invertible (2 : R)] {m : ℕ} {A : Matrix α β R} (h : cg_D O m A) :
     cg_D O (2 * m) ((⅟2 : R) • A) := by
@@ -216,15 +214,13 @@ theorem cg_D_half [Invertible (2 : R)] {m : ℕ} {A : Matrix α β R} (h : cg_D 
   rw [e]; exact h i j
 
 /- English proof (translation)
-Take `⟨mZ, hmZ, hZ⟩` from `hden Z`. Take `⟨mG, hmG, hG⟩` from `hden (geo N ((⅟2 : R) • Z))`. Use `⟨2 * (c * (mZ * mG) * (2 * mZ) ^ N), ?_, fun Z' h => ?_⟩` and prove the remaining obligations. Establish `h1 : 0 < (2 * mZ) ^ N` using `pow_pos (Nat.mul_pos two_pos hmZ) N`. Conclude with `Nat.mul_pos two_pos (Nat.mul_pos (Nat.mul_pos hc (Nat.mul_pos hmZ hmG)) h1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : cg_D O (2 * mZ) ((⅟2 : R) • Z)` using `cg_D_half hZ`. Establish `hYd : cg_C O (c * (mZ * mG) * (2 * mZ) ^ N) ((⅟2 : R) • Z' - (⅟2 : R) • Z)`. Rewrite using `[← smul_sub]`. Conclude with `cg_C_half h`. Establish `hY' : cg_D O (2 * mZ) ((⅟2 : R) • Z')` using `cg_D_of_C hY hYd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGd` using `cg_geo hY hY' N (c * (mZ * mG)) hYd`. Establish `hZ0 : cg_D O (mZ * mG) Z` using `cg_D_mul_right mG hZ`. Establish `hG0 : cg_D O (mZ * mG) (geo N ((⅟2 : R) • Z))` using `cg_D_mul_left mZ hG`. Establish `hG0'` using `cg_D_of_C hG0 hGd`. Establish `e : cay N Z' - cay N Z = (Z' - Z) * geo N ((⅟2 : R) • Z') + Z * (geo N ((⅟2 : R) • Z') - geo N ((⅟2 : R) • Z))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `cay`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `cg_C_add (cg_C_mul_right ?_ hG0') (cg_C_mul_left hZ0 hGd)` and prove the remaining obligations.
-
-Conclude with `cg_C_dvd (k := 2 * (2 * mZ) ^ N) (by rwa [show c * (mZ * mG) * (2 * (2 * mZ) ^ N) = 2 * (c * (mZ * mG) * (2 * mZ) ^ N) by ring])`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cg_cay [Fintype α] [DecidableEq α] [Invertible (2 : R)]
     (hden : ∀ A : Matrix α α R, ∃ m : ℕ, 1 ≤ m ∧ cg_D O m A) (N : ℕ) (Z : Matrix α α R) (c : ℕ)
@@ -256,7 +252,7 @@ end Gen
 section Adelic
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `Formalism.L2.SG.Pf.Tau.TraceIntegralityAlt.uniform_nat_mul (IntAf F E) (fun p : α × β => A p.1 p.2) (fun p => Formalism.L2.SG.Pf.Tau.TraceIntegralityAlt.exists_nat_mul_IntAf _)`. Conclude with `⟨m, hm, fun i j => h (i, j)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cg_D_exists {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {α β : Type} [Fintype α] [Fintype β] (A : Matrix α β (E ⊗[F] Af F)) :
@@ -268,7 +264,7 @@ theorem cg_D_exists {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
 end Adelic
 
 /- English proof (translation)
-Introduce `D X Z c hc`. Conclude with `cg_cay (O := IntAf X.B.I.F X.B.I.E) (fun A => cg_D_exists A) _ Z c hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cayley_continuous : CayCont := by
   intro D X Z c hc

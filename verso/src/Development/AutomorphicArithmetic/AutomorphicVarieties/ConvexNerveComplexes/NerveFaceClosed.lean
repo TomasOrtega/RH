@@ -22,7 +22,7 @@ def nerve {I F : Type*} (X : Set F) (A : I → Set F) (n : ℕ) : Set (Fin n →
   {t | ∃ x ∈ X, ∀ j, x ∈ A (t j)}
 
 /- English proof (translation)
-Introduce `n t ht j`. Take `⟨x, hx, hA⟩` from `ht`. Conclude with `⟨x, hx, fun i => hA (j.succAbove i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nerve_faceClosed {I F : Type*} (X : Set F) (A : I → Set F) : FaceClosed (nerve X A) := by
   intro n t ht j

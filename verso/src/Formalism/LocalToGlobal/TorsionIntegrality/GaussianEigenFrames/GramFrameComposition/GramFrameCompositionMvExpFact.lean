@@ -14,9 +14,9 @@ open Formalism.G (unitBall)
 open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 
 /- English proof (translation)
-Introduce `K _ n m _ _ c A`. Rewrite using `[linSub_sqSum]`. Simplify using `only [sq, Finset.sum_mul, Finset.mul_sum, map_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GramSeries_proof : GramSeries := by
   intro K _ n m _ _ c A
@@ -36,11 +36,11 @@ section Alg
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Unfold `linSub`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_lin A) (hasSubst_lin B)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← linSub, ← linSubHom_apply, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, linSubHom_apply, linSub_X]`. Establish `hc : ∀ w, linSubHom B (MvPowerSeries.C (A i w)) = MvPowerSeries.C (A i w)` using `fun w => by`. Rewrite using `[linSubHom_apply, linSub_C]`. Simplify using `only [hc, Finset.mul_sum, map_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [linSub_C]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linSub_linSub {n m p : Type} [Finite n] [Fintype m] [Fintype p] (A : n → m → K)
     (B : m → p → K) (f : MvPowerSeries n K) :
@@ -62,11 +62,11 @@ theorem linSub_linSub {n m p : Type} [Finite n] [Fintype m] [Fintype p] (A : n �
   ring
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K))` using `by classical`. Use `⟨fun s => by simp, fun dd => ?_⟩` and prove the remaining obligations. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `s hs t ht`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce and unpack `rfl`. Apply `ht` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2`. Apply the tactic sequence `all_goals simp_all`. Conclude with `hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasSubst_block {ι B : Type} [Finite ι] (k : B) :
     MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) := by
@@ -87,13 +87,13 @@ theorem hasSubst_block {ι B : Type} [Finite ι] (k : B) :
   exact hs
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K))` using `by classical`. Use `⟨fun s => by simp, fun dd => ?_⟩` and prove the remaining obligations. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `s hs t ht`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce and unpack `rfl`. Apply `ht` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2`. Unfold `inBlock`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (MvPowerSeries.substAlgHom hs).commutes r`. Consider the case `simpa using (MvPowerSeries.substAlgHom hs).commutes r`. Consider the case `simp [← MvPowerSeries.algebraMap_apply']`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inBlock_C {ι B : Type} (k : B) (r : K) :
     inBlock k (MvPowerSeries.C r : MvPowerSeries ι K) = MvPowerSeries.C r := by
@@ -118,11 +118,11 @@ theorem inBlock_C {ι B : Type} (k : B) (r : K) :
     | simp [← MvPowerSeries.algebraMap_apply']
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K))` using `by classical`. Use `⟨fun s => by simp, fun dd => ?_⟩` and prove the remaining obligations. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `s hs t ht`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce and unpack `rfl`. Apply `ht` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2`. Apply the tactic sequence `all_goals simp_all`. Unfold `inBlock`. Conclude with `MvPowerSeries.subst_X hs i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inBlock_X {ι B : Type} [Finite ι] (k : B) (i : ι) :
     inBlock k (MvPowerSeries.X i : MvPowerSeries ι K) = MvPowerSeries.X (k, i) := by
@@ -144,11 +144,11 @@ theorem inBlock_X {ι B : Type} [Finite ι] (k : B) (i : ι) :
   exact MvPowerSeries.subst_X hs i
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K))` using `by classical`. Use `⟨fun s => by simp, fun dd => ?_⟩` and prove the remaining obligations. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `s hs t ht`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce and unpack `rfl`. Apply `ht` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2`. Unfold `inBlock`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs]`. Conclude with `map_sum (MvPowerSeries.substAlgHom hs) f s`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inBlock_sum {ι B α : Type} (k : B) (s : Finset α) (f : α → MvPowerSeries ι K) :
     inBlock k (∑ a ∈ s, f a) = ∑ a ∈ s, inBlock k (f a) := by
@@ -170,11 +170,11 @@ theorem inBlock_sum {ι B α : Type} (k : B) (s : Finset α) (f : α → MvPower
   exact map_sum (MvPowerSeries.substAlgHom hs) f s
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K))` using `by classical`. Use `⟨fun s => by simp, fun dd => ?_⟩` and prove the remaining obligations. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `s hs t ht`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce and unpack `rfl`. Apply `ht` to reduce the goal to its premises. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2`. Apply the tactic sequence `all_goals simp_all`. Unfold `inBlock`. Conclude with `MvPowerSeries.subst_smul hs r f`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inBlock_smul {ι B : Type} (k : B) (r : K) (f : MvPowerSeries ι K) :
     inBlock k (r • f) = r • inBlock k f := by
@@ -199,7 +199,7 @@ def diag4 {n ν : Type} (M : n → ν → K) (w : Fin 4 × n) (y : Fin 4 × ν) 
   if w.1 = y.1 then M w.2 y.2 else 0
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single k]`. Simplify using `[diag4]`. Introduce `b _ hb`. Simplify using `[diag4, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gramFrameComposition_form_fact {n ν : Type} [Fintype ν] (M : n → ν → K) (k : Fin 4) (i : n) :
     (∑ y, MvPowerSeries.C (diag4 M (k, i) y) * MvPowerSeries.X y : MvPowerSeries (Fin 4 × ν) K) =
@@ -212,9 +212,9 @@ theorem gramFrameComposition_form_fact {n ν : Type} [Fintype ν] (M : n → ν 
   · simp
 
 /- English proof (translation)
-Unfold `linSub inBlock`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_block k) (hasSubst_lin _), MvPowerSeries.subst_comp_subst_apply (hasSubst_lin M) (hasSubst_block k)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← inBlock, ← linSub, linSub_X, gramFrameComposition_form_fact, inBlock_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inBlock_mul, inBlock_C, inBlock_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linSub_diag4_inBlock {n ν : Type} [Finite n] [Fintype ν] (M : n → ν → K) (k : Fin 4)
     (T : MvPowerSeries n K) : linSub (diag4 M) (inBlock k T) = inBlock k (linSub M T) := by
@@ -227,7 +227,7 @@ theorem linSub_diag4_inBlock {n ν : Type} [Finite n] [Fintype ν] (M : n → ν
   simp only [inBlock_mul, inBlock_C, inBlock_X]
 
 /- English proof (translation)
-Unfold `tens4`. Rewrite using `[← linSubHom_apply, map_prod]`. Simplify using `only [linSubHom_apply, linSub_diag4_inBlock]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linSub_diag4_tens4 {n ν : Type} [Finite n] [Fintype ν] (M : n → ν → K)
     (T : MvPowerSeries n K) : linSub (diag4 M) (tens4 T) = tens4 (linSub M T) := by
@@ -236,9 +236,9 @@ theorem linSub_diag4_tens4 {n ν : Type} [Finite n] [Fintype ν] (M : n → ν �
   simp only [linSubHom_apply, linSub_diag4_inBlock]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single (x.1, ((!x.2.1.1, x.2.1.2), x.2.2))]`. Take `⟨a, ⟨⟨b, h⟩, p⟩⟩` from `x`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a', ⟨⟨b', h'⟩, p'⟩⟩ _ hne`. Take `⟨a, ⟨⟨b, h⟩, p⟩⟩` from `x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨rfl, rfl, rfl, hb⟩`. Apply `hne` to reduce the goal to its premises. Apply the tactic sequence `cases b <;> cases b' <;> simp_all`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
 Simplify using the standard rewrite rules.
 -/
@@ -264,9 +264,9 @@ theorem pair_row {H : Type} [Fintype H] [DecidableEq H] {N0 N1 : ℕ} (u : H →
   · simp
 
 /- English proof (translation)
-Simplify using `only [pair_row]`. Unfold `betaPair`. Simplify using `only [inBlock_sum, inBlock_mul, inBlock_C, inBlock_X]`. Rewrite using `[show (MvPowerSeries.C 2 : MvPowerSeries (Fin 4 × ((Bool × H) × Fin N0 × Fin N1)) K) = 2 from map_ofNat _ 2]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, Finset.mul_sum, ← Finset.sum_add_distrib, Bool.not_true, Bool.not_false]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun h _ => Finset.sum_congr rfl fun p0 _ => Finset.sum_congr rfl fun p1 _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pair_form {H : Type} [Fintype H] [DecidableEq H] {N0 N1 : ℕ} (u : H → K) :
     (∑ x : Fin 4 × ((Bool × H) × Fin N0 × Fin N1), ∑ y : Fin 4 × ((Bool × H) × Fin N0 × Fin N1),
@@ -287,7 +287,7 @@ def quadForm {m : Type} [Fintype m] (q : m → m → K) : MvPowerSeries m K :=
   ∑ x, ∑ y, MvPowerSeries.C (q x y) * MvPowerSeries.X x * MvPowerSeries.X y
 
 /- English proof (translation)
-Unfold `quadForm`. Simplify using `[map_sum, map_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem cc_quadForm {m : Type} [Fintype m] (q : m → m → K) :
     MvPowerSeries.constantCoeff (quadForm q) = 0 := by
@@ -295,9 +295,9 @@ theorem cc_quadForm {m : Type} [Fintype m] (q : m → m → K) :
   simp [map_sum, map_mul]
 
 /- English proof (translation)
-Introduce `κ`. Use `R.mul_mem (natCast_mem R _) ?_` and prove the remaining obligations. Unfold `quadForm`. Simplify using `only [map_sum]`. Use `R.sum_mem fun x _ => R.sum_mem fun y _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, MvPowerSeries.coeff_C_mul, MvPowerSeries.X_def, MvPowerSeries.X_def, MvPowerSeries.monomial_mul_monomial, MvPowerSeries.coeff_monomial]`. Use `split_ifs`. Simplify using `using hq x y`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetsIn_quadForm {R : Subring K} {m : Type} [Fintype m] {q : m → m → K}
     (hq : ∀ x y, q x y ∈ R) : JetsIn R (quadForm q) := by
@@ -316,11 +316,11 @@ theorem jetsIn_quadForm {R : Subring K} {m : Type} [Fintype m] {q : m → m → 
 variable [CharZero K]
 
 /- English proof (translation)
-Establish `hcc : ∀ k : Fin 4, MvPowerSeries.constantCoeff (inBlock k f) = 0` using `fun k => by`. Establish `h` using `Formalism.L2.Th1.G.HurwitzJetIntegrality.coeff_inBlock_embDomain k f 0`. Rewrite `h` using `[Finsupp.embDomain_zero]`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf]`. Take `⟨h0, _, hadd, _⟩` from `formalExpLaws' K (Fin 4 × ι)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `tens4`. Simplify using `only [inBlock_mvExp _ hf]`. Establish `key : ∀ s : Finset (Fin 4), ∏ k ∈ s, mvExp (inBlock k f) = mvExp (∑ k ∈ s, inBlock k f)`. Introduce `s`. Use `Finset.induction_on s (by simp [h0]) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, hadd _ _ (hcc a) ?_]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun k _ => hcc k`. Conclude with `key Finset.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramFrameComposition_mvExp_fact {ι : Type} [Finite ι] {f : MvPowerSeries ι K}
     (hf : MvPowerSeries.constantCoeff f = 0) :
@@ -351,29 +351,27 @@ end GramFrameCompositionLinFacts
 open GramFrameCompositionLinFacts
 
 /- English proof (translation)
-Introduce `K _ _ _ l linv ph d hlog h1 hph hS hd h2 n _ T γ G hG hT H _ _ N0 N1 M Cm u th q hCm hγ hth hq hgram`. Establish `hmem : ∀ x : K, x ∈ Formalism.G.unitBall K ↔ ‖x‖ ≤ 1` using `fun x => Formalism.ELL.SubstitutionCoefficientCongruence.mem_unitBall`. Take `⟨h0, _, hadd, _⟩` from `formalExpLaws' K ((Bool × H) × Fin N0 × Fin N1)`. Take `⟨h04, _, hadd4, _⟩` from `formalExpLaws' K (Fin 4 × ((Bool × H) × Fin N0 × Fin N1))`. Establish `hccβ : MvPowerSeries.constantCoeff (betaPair H N0 N1 u) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `betaPair`. Simplify using the standard rewrite rules. Establish `hccB : ∀ a : Fin 4, MvPowerSeries.constantCoeff (inBlock a (betaPair H N0 N1 u)) = 0` using `fun a => by`. Establish `h` using `Formalism.L2.Th1.G.HurwitzJetIntegrality.coeff_inBlock_embDomain a (betaPair H N0 N1 u) 0`. Rewrite `h` using `[Finsupp.embDomain_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hccβ]`. Establish `hccbe : MvPowerSeries.constantCoeff (∑ a : Fin 4, inBlock a (betaPair H N0 N1 u)) = 0`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun a _ => hccB a`. Establish `hccs : ∀ {ι : Type} (r : K) (f : MvPowerSeries ι K), MvPowerSeries.constantCoeff f = 0 → MvPowerSeries.constantCoeff (r • f) = 0` using `fun r f hf => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, hf, mul_zero]`. Establish `hQ : JetsIntegral (quadForm q)` using `(jetsInNorm K _ _).mpr (jetsIn_quadForm (fun x y => (hmem _).mpr (hq x y)))`. Establish `hgram' : linSub Cm (sqSum (fun _ => (1 : K))) = MvPowerSeries.C 2 * ∑ a : Fin 4, inBlock a (betaPair H N0 N1 u) + MvPowerSeries.C th * quadForm q`. Rewrite using `[GramSeries_proof]`. Simplify using `only [one_mul, hgram, map_add, add_mul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pair_form]`. Use `congr 1`. Unfold `quadForm`. Simplify using `only [map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨J, hJ, hJeq⟩` from `shapeOrth K l linv ph d hlog h1 hph hS (Fin 4 × n) (fun _ => (1 : K)) (fun _ => by simp) G hG`. Establish `hS0th : ‖jet l ph 2 * th‖ ≤ 1`. Rewrite using `[norm_mul]`. Establish `hdpos : 0 < ‖(d : K)‖` using `norm_pos_iff.mpr hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨sg, hsg, hsgeq⟩` from `shapeCong K (Fin 4 × n) (Fin 4 × ((Bool × H) × Fin N0 × Fin N1)) (jet l ph 2) th (fun _ => (1 : K)) Cm (∑ a : Fin 4, inBlock a (betaPair H N0 N1 u)) (quadForm q) h2 hS0th hCm hccbe (cc_quadForm q) hQ hgram' J hJ`. Establish `hdiag : (fun i x => ∑ w, γ i w * Cm w x) = diag4 M`. Use function extensionality and compare the values at `⟨a, i⟩ ⟨b, x⟩`. Rewrite using `[hγ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `htens : tens4 (linSub M T) = mvExp ((-(jet l ph 2)) • ∑ a : Fin 4, inBlock a (betaPair H N0 N1 u)) * sg`. Rewrite using `[← hsgeq, ← hJeq, ← hT, linSub_linSub, hdiag, linSub_diag4_tens4]`. Establish `hsm : ∑ k : Fin 4, inBlock k (jet l ph 2 • betaPair H N0 N1 u) = jet l ph 2 • ∑ a : Fin 4, inBlock a (betaPair H N0 N1 u)`. Rewrite using `[Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [inBlock_smul]`. Use `⟨linSub M T * mvExp (jet l ph 2 • betaPair H N0 N1 u), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[jetsInNorm]`. Use `jetsFourth K _ _ _ ?_ ?_` and prove the remaining obligations. Introduce `c hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hc`, the goal using `[hmem]`. Rewrite `hc` using `[norm_pow]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `: 1 < ‖c‖ ^ 4` using `one_lt_pow₀ hlt (by norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← jetsInNorm, tensor_four_mul, htens, gramFrameComposition_mvExp_fact (hccs _ _ hccβ), hsm]`. Establish `e : mvExp ((-(jet l ph 2)) • ∑ a : Fin 4, inBlock a (betaPair H N0 N1 u)) * mvExp (jet l ph 2 • ∑ a : Fin 4, inBlock a (betaPair H N0 N1 u)) = 1`. Rewrite using `[← hadd4 _ _ (hccs _ _ hccbe) (hccs _ _ hccbe), neg_smul, neg_add_cancel, h04]`. Rewrite using `[mul_right_comm, e, one_mul]`.
-
-Conclude with `hsg`. Use `show linSub M T = mvExp ((-(jet l ph 2)) • betaPair H N0 N1 u) * (linSub M T * mvExp (jet l ph 2 • betaPair H N0 N1 u))`. Rewrite using `[mul_left_comm, ← hadd _ _ (hccs _ _ hccβ) (hccs _ _ hccβ), neg_smul, neg_add_cancel, h0, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ShapeLin_proof : ShapeLin := by
   intro K _ _ _ l linv ph d hlog h1 hph hS hd h2 n _ T γ G hG hT H _ _ N0 N1 M Cm u th q hCm hγ hth hq hgram

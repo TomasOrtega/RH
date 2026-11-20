@@ -18,15 +18,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Take `⟨κ, -, hκ⟩` from `transferU`. Use `⟨κ, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or sm j j' n B FF v Ω₁ Ω₂ _ _ ξ₁ g cst e1 e2 e3 e4 a1 a2 hL hF hv b1 b2 b3`. Substitute `e1 e2 e3 e4` using the available equality. Take `⟨U, hU, hU', ⟨Z⟩⟩` from `exists_sheets Or B h1 h2 h3 h4 h5 FF hF`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hκ E H D Xo l c Y II K J Ω W Dc Hd S₀ Or (Z.pieces hG hF) (fun _ => 1) (fun _ _ => 1) (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) fun k => by`. Simplify using `only [one_mul]`. Conclude with `(GlobalTheory.T.cusp_weight_integrable_on_fundamental_set E _ _ _ _ _ _ H (B.F k) (B.Γ k) (FF k) (B.arith k) (hF k) a1 a2).1`. Use `h.trans (congrArg _ ?_)` and prove the remaining obligations. Use `c.fin` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NumberField c.F` using `{ to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Establish `hu` using `h7 hG E H D l (Xo l) c Y _ _ _ _ B _ Or.𝔐.ξ₀ Ω₁ Ω₂ ξ₁ g cst U hL Or.𝔐.gen₀ b1 b2 b3 hU hU'`. Establish `hc : (Finset.univ.filter fun k => ∃ t ∈ GlobalTheory.CompanionTheory.Ar.Cusp.ballDom (B.F k).q, ⊤ ≤ B.pt k t ⁻¹ᵁ U).card = Module.finrank ℚ c.F`. Rewrite using `[← NumberField.Embeddings.card c.F ℂ, ← Finset.card_univ]`. Use `Finset.card_bij (fun k _ => B.κ k) (fun _ _ => Finset.mem_univ _) (fun k hk k' hk' e => ?_) fun κ' _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hu (B.κ k')).unique ⟨e, (Finset.mem_filter.1 hk).2⟩ ⟨rfl, (Finset.mem_filter.1 hk').2⟩`. Take `⟨k, hk, -⟩` from `hu κ'`. Conclude with `⟨k, Finset.mem_filter.2 ⟨Finset.mem_univ _, hk.2⟩, hk.1⟩`. Use `show ∑ k : Fin B.np, (nSheets Or B U k : ℝ) * ∫ t in FF k, 1 * ballDens (B.F k).q t = _`. Simplify using `only [one_mul, hv, nSheets, Nat.cast_ite, Nat.cast_zero, ← Finset.sum_mul, Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`.
-
-Rewrite using `[← hc, mul_comm (Or.deg : ℝ)]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degMu_eq (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : CoverRoots) (h5 : LocInj) (h7 : OnePiece)
     (hG : Top.Given) : ∃ κ : ℕ → ℕ → ℕ → ℝ, ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E)
@@ -66,17 +64,17 @@ theorem degMu_eq (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : Cove
   rw [← hc, mul_comm (Or.deg : ℝ)]
 
 /- English proof (translation)
-Introduce `hC hG E _ _ _ _ H D Xo l c Y _ T o II hY hX hII hq hN`. Take `⟨κ, hκ⟩` from `degMu_eq h1 h2 h3 h4 h5 h7 hG`. Take `⟨c₀, hc₀, hP⟩` from `h9`. Take `⟨B, hL⟩` from `h6 hG E H D l (Xo l) c Y Sum.inr D.p D.q _ (by omega) (Or.inl ⟨rfl, rfl, rfl⟩) rfl`. Take `⟨FF, hF⟩` from `Classical.skolem.1 fun k => GlobalTheory.T.exists_fundamental_set E _ _ _ _ _ _ (B.F k) (GlobalTheory.T.exists_group_dictionary E _ _ _ _ _ _ H (B.F k)).some _ (B.arith k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, ∀ k, ∫ t in FF k, ballDens (B.F k).q t = v := by`. Break down `isEmpty_or_nonempty (Fin B.np) with h | ⟨⟨k₀⟩⟩` into its components or cases. Conclude with `⟨0, h.elim⟩`. Conclude with `⟨_, fun k => h8 hG E H D l (Xo l) c Y _ B FF hq hN hF k k₀⟩`. Use `c.fin` as an intermediate fact.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : ∀ a, c₀ (Fintype.card (CMType H)) D.p D.q * T.vol a = κ (Fintype.card (CMType H)) D.p D.q * v` using `fun a => by`. Take `⟨K, _, J, _, Ω, _, _, W, _, _, Dc, Hd, Or, e1, e2, e3, e4, e5, e6⟩` from `GlobalTheory.T.full_intersection_generic_bound hG Link.weilSt E H D Xo l c Y II hII hY (by omega) hq _ (o.Or 2 a).𝔐.ξ₀ (o.Or 2 a).𝔐.gen₀ T.bad ∅ false (fun p hp => ((o.bad_iff p).1 hp).1) (by simp) (by simp) fun p hp hd => (o.bad_iff p).2 ⟨hp, (hd.mul_left 2).mul_right _⟩`. Establish `eb : Or.bg = Sum.inl` using `e4`. Establish `ej : Dc.j = D.p` using `e3`. Establish `es : Or.sm = Sum.inr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ⟩ : Nonempty (CMType H)` from `(GlobalTheory.T.cm_host_rank_bounds E H).2.1`. Use `Or.side.elim (fun h => h.2.1) fun h => ?_` and prove the remaining obligations. Simplify `congrFun h.1 τ` using `[eb]`. Establish `eg : genPt (o.Fx a).ξf = genPt Or.𝔐.ξ₀`. Establish `g1` using `congrArg (fun f => f (IsLocalRing.closedPoint _)) ((o.Or 2 a).g_over.symm.trans (o.Or 2 a).𝔐.fn_over)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `((congrArg (fun x => (o.Fx a).ξf x) (Subsingleton.elim (α := PrimeSpectrum (o.Fx a).Ωf) _ _)).trans g1).trans (congrArg (fun x => (o.Or 2 a).𝔐.ξ₀ x) (Subsingleton.elim (α := PrimeSpectrum (o.Or 2 a).𝔐.Ω₀) _ _))`. Establish `ej' : Dc.j' = D.q` using `by have := Or.N_eq; unfold ComponentData.j'; omega`. Establish `k1` using `hκ E H D Xo l c Y II K J Ω W Dc Hd _ Or _ _ _ _ B FF v _ _ (o.Fx a).ξf (o.Or 2 a).g (o.Or 2 a).𝔐.cst es ej ej' Or.n_eq hq hN hL hF hv eg (by rw [← Category.assoc, ← (o.Or 2 a).g_over, Category.assoc, (o.Or 2 a).𝔐.cst_over]) (o.Or 2 a).g_const`. Establish `k2` using `hP GlobalTheory.T.agreement_positive GlobalTheory.T.proportional' hC hG (GlobalTheory.T.points_integrable_of_resolution_statement hG.2.2.2.2.1) E H D Xo l c Y T o II hY hX hII (by omega) hq (by omega) a K J Ω W Dc Hd Or eb es e5 ⟨fun p hp => e6 p (by simpa using hp), fun p hp => …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (Or.deg : ℝ) * Module.finrank ℚ c.F ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 Or.cover.1.ne') (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`. Conclude with `mul_left_cancel₀ hd (by linear_combination k1 - k2)`. Conclude with `fun a a' => mul_left_cancel₀ (hc₀ _ _ _) ((key a).trans (key a').symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem volEq_of (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : CoverRoots) (h5 : LocInj) (h6 : BaseUnifEx2)
     (h7 : OnePiece) (h8 : BallVolEq) (h9 : DegPush) : Cmp.CmpSt → Top.Given →

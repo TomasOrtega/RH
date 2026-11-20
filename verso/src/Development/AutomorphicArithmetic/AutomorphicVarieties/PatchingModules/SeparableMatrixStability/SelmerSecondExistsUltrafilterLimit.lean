@@ -9,9 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Subgr
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Introduce `c hc`. Use `H c hc` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Use `this c (Nat.lt_succ_self c)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this`, the goal using `[map_sub, sub_eq_zero]`. Rewrite using `[PowerSeries.coeff_mk, this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem diag_mk {K : Type} [Field K] (a : ℕ → PowerSeries K) (b : PowerSeries K) (j : ℕ)
     (H : ∀ c < j, Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ (c + 1)}) b =
@@ -27,7 +27,7 @@ private theorem diag_mk {K : Type} [Field K] (a : ℕ → PowerSeries K) (b : Po
   rw [PowerSeries.coeff_mk, this]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `ht`. Establish `h1 : IsLocallyConstant fun g => Ideal.Quotient.mk (Ideal.span {t} ^ N) (f g)` using `hf N`. Use `IsLocallyConstant.desc f (Ideal.Quotient.mk (Ideal.span {t} ^ N)) h1 ?_` and prove the remaining obligations. Rewrite using `[RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, Ideal.span_singleton_pow, hN, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lc_of_nil {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (t : R) (ht : IsNilpotent t) (f : Γ → R)
     (hf : AdicCont (Ideal.span {t}) f) : IsLocallyConstant f := by
@@ -37,7 +37,7 @@ private theorem lc_of_nil {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (t : 
   rw [RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, Ideal.span_singleton_pow, hN, Ideal.span_singleton_eq_bot]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y`. Establish `: ∀ᶠ g in nhds y, ∀ i j, f g i j = f y i j` using `eventually_all.2 fun i => eventually_all.2 fun j => (hf i j).eventually_eq y`. Conclude with `this.mono fun g hg => Matrix.ext hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R)
     (hf : ∀ i j, IsLocallyConstant fun g => f g i j) : IsLocallyConstant f := by
@@ -48,9 +48,9 @@ private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ →
   exact this.mono fun g hg => Matrix.ext hg
 
 /- English proof (translation)
-Take `⟨hfin, -, hn, hn', -⟩` from `am_fin l G0.frame n x j k.g`. Take `⟨-, ⟨h1, hm, -⟩, hlc, -⟩` from `rho_hom l G0.frame n x k (x.Am j)`. Establish `hfg : TopFG G.G₀` using `(TopFG.subgroup_quot G.Γ hG).1 G.η.ker G.η_open`. Use `coc_fin G.G₀ (DD (x.Am j) k.g) n (fun g => k.ρ1 (x.Am j) (h.p₀ g)) hfg (by simp only [map_one]; exact h1) (fun g g' => by simp only [map_mul]; exact hm _ _) ((hlc hn).2.comp_continuous h.p₀_cont)` as an intermediate fact. Use `this.subset ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z ⟨-, h2, h3, -⟩`. Conclude with `⟨lc_mat z fun a b => lc_of_nil _ hn' _ (h2 a b), h3⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem selmer_second_finite_modulo_power (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n)
     (k : Kap x) (hG : TopFG G.Γ) (j : ℕ) : (Sel2 h (x.Am j) k).Finite := by
@@ -65,17 +65,15 @@ private theorem selmer_second_finite_modulo_power (l : ℕ) [Fact l.Prime] (L : 
   exact ⟨lc_mat z fun a b => lc_of_nil _ hn' _ (h2 a b), h3⟩
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k U z hG hU hz`. Establish `hred : ∀ j, ∀ᶠ m in (U : Filter ℕ), (fun g => (z m g).map (x.redD k.g j)) ∈ Sel2 h (x.Am j) k`. Introduce `j`. Use `((eventually_ge_atTop j).filter_mono hU).mono fun m hm => ?_` and prove the remaining obligations. Establish `hle : Ideal.span {x.t ^ m} ≤ Ideal.span {x.t ^ j}` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(sel_red l L G G0 h n x k (x.Am m) (x.Am j) (Ideal.Quotient.factorₐ x.A hle)).2.2.1 _ (hz m)`. Establish `hst : ∀ j, ∃ m', ∀ᶠ m in (U : Filter ℕ), (fun g => (z m g).map (x.redD k.g j)) = fun g => (z m' g).map (x.redD k.g j)`. Introduce `j`. Take `⟨w, ⟨-, hw⟩, -⟩` from `ultra_fin ℕ _ U (fun m g => (z m g).map (x.redD k.g j)) _ (selmer_second_finite_modulo_power l L G G0 h n x k hG j) (hred j)`. Take `⟨m', hm'⟩` from `hw.exists`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m', hw.mono fun m hm => hm.trans hm'.symm⟩`. Use `choose μ hμ using hst`. Set `Ψ : G.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g)` to `fun g => Matrix.of fun a b => ⟨PowerSeries.mk fun c => PowerSeries.coeff c (z (μ (c + 1)) g a b).a, fun i => PowerSeries.mk fun c => PowerSeries.coeff c ((z (μ (c + 1)) g a b).ep i), fun i => PowerSeries.mk fun c => PowerSeries.coeff c ((z (μ (c + 1)) g a b).ep' i), PowerSeries.m …`. Establish `hΨ : ∀ j, ∀ᶠ m in (U : Filter ℕ), ∀ g, (Ψ g).map (x.redD k.g j) = (z m g).map (x.redD k.g j)`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ᶠ m in (U : Filter ℕ), ∀ c ∈ Finset.range j, (fun g => (z m g).map (x.redD k.g (c + 1))) = fun g => (z (μ (c + 1)) g).map (x.redD k.g (c + 1))` using `(Filter.eventually_all_finset _).2 fun c _ => hμ (c + 1)`. Use `h1.mono fun m hm g => Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h2 : ∀ c < j, x.redD k.g (c + 1) (z m g a b) = x.redD k.g (c + 1) (z (μ (c + 1)) g a b)` using `fun c hc => congrFun (congrFun (congrFun (hm c (Finset.mem_range.2 hc)) g) a) b`. Use `DD.ext ?_ (funext fun i => ?_) (funext fun i => ?_) ?_` and prove the remaining obligations. Conclude with `diag_mk (fun c => (z (μ (c + 1)) g a b).a) _ j fun c hc => congrArg DD.a (h2 c hc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `diag_mk (fun c => (z (μ (c + 1)) g a b).ep i) _ j fun c hc => congrArg (DD.ep · i) (h2 c hc)`. Conclude with `diag_mk (fun c => (z (μ (c + 1)) g a b).ep' i) _ j fun c hc => congrArg (DD.ep' · i) (h2 c hc)`. Conclude with `diag_mk (fun c => (z (μ (c + 1)) g a b).eta) _ j fun c hc => congrArg DD.eta (h2 c hc)`. Use `⟨Ψ, selmer_second_closed_under_limits l L G G0 h n x k Ψ fun j => ?_, hΨ⟩` and prove the remaining obligations. Take `⟨m, hm1, hm2⟩` from `((hΨ j).and (hred j)).exists`.
-
-Rewrite using `[funext hm1]`. Conclude with `hm2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.selmer_second_exists_ultrafilter_limit :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (U : Ultrafilter ℕ) (z : ℕ → G.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g)), TopFG G.Γ → (U : Filter ℕ) ≤ atTop → (∀ m, (fun g => (z m g).map (x.redD k.g m)) ∈ Sel2 h (x.Am m) k) → ∃ Ψ ∈ Sel2 h x.A k, ∀ j, ∀ᶠ m in (U : Filter ℕ), ∀ g, (Ψ g).map (x.redD k.g j) = (z m g).map (x.redD k.g j) := by

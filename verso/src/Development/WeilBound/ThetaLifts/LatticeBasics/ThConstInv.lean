@@ -30,7 +30,7 @@ def SplitModel : Prop :=
           Reads v ι (om (1, h)) (omB (chrW χW t) (chrW χX t) 1 h₀)
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `(ι ∘ₗ (SB X).subtype).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 fun a b h => Subtype.ext (hb.2.1 a.2 b.2 h))`. Establish `k : ∀ φ ∈ SB X, (q (ι φ)).1 = φ` using `fun φ h => congrArg Subtype.val (LinearMap.congr_fun hq ⟨φ, h⟩)`. Use `⟨(SB X).subtype ∘ₗ q, fun Φ h => ⟨(q Φ).2, ?_⟩, k⟩` and prove the remaining obligations. Take `⟨φ, h1, rfl⟩` from `hb.2.2 h`. Conclude with `congrArg ι (k φ h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_inv' {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {ι : (X → ℂ) →ₗ[ℂ] (Y → ℂ)}
     (hb : Set.BijOn ι (SB X : Set _) (SB Y : Set _)) : ∃ j : (Y → ℂ) →ₗ[ℂ] (X → ℂ),
@@ -43,9 +43,9 @@ theorem exists_inv' {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {ι :
   exact congrArg ι (k φ h1)
 
 /- English proof (translation)
-Take `⟨r, hr, hr'⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ h2`. Establish `m : ∀ ψ ∈ SB _, tens (evFin F v) ψ r ∈ schA F κ` using `fun ψ hψ => by`. Rewrite using `[hr']`. Use `PositivityTheory.KCo.pure_mem_schA f _ (fun u => ?_) (GlobalTheory.PureFactor.update_eventually φ v ψ h2)` and prove the remaining obligations. Distinguish the cases in `hu : u = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hu]`. Conclude with `h1 u`. Conclude with `⟨{ toFun := fun ψ => tens (evFin F v) ψ r, map_add' := fun _ _ => funext fun _ => add_mul _ _ _ map_smul' := fun _ _ => funext fun _ => mul_assoc _ _ _ }, hr', m, fun S ψ hψ ψ₁ h => h r ⟨hr, m ψ hψ⟩⟩`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intersection_update_fsHerm_neg_one {κ : Type} [Fintype κ] (v : Pl F) (f : SInf F κ) {φ : ∀ u : Pl F, (κ → Fv F u) → ℂ} (h1 : ∀ u, φ u ∈ SB _)
     (h2 : ∀ᶠ u in cofinite, φ u = Set.indicator {x | ∀ i, x i ∈ u.adicCompletionIntegers F} 1) :
@@ -62,7 +62,7 @@ theorem intersection_update_fsHerm_neg_one {κ : Type} [Fintype κ] (v : Pl F) (
            map_smul' := fun _ _ => funext fun _ => mul_assoc _ _ _ }, hr', m, fun S ψ hψ ψ₁ h => h r ⟨hr, m ψ hψ⟩⟩
 
 /- English proof (translation)
-Take `⟨φ₁, a, b, c⟩` from `h φ hφ`. Rewrite using `[← c, h2 φ₁ a]`. Conclude with `⟨a, b⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem acts_of_reads {v : Pl F} {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)} {S R}
     (h : Reads v ι S R) {j : (Matrix (Fin n) (Fin d) (Fv F v) → ℂ) →ₗ[ℂ] ((Fin n × Fin d → Fv F v) → ℂ)}
@@ -76,28 +76,28 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.SplitWeil.nabs k x ^ ((m : ℝ) / 2), Real.rpow_pos_of_pos (GlobalTheory.SplitWeil.nabs_pos k x) _, by rw [Complex.ofReal_cpow (GlobalTheory.SplitWeil.nabs_pos k x).le]; simp [apow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem apow_real (x : kˣ) (m : ℕ) : ∃ r : ℝ, 0 < r ∧ apow x ((m : ℂ) / 2) = r :=
   ⟨GlobalTheory.SplitWeil.nabs k x ^ ((m : ℝ) / 2), Real.rpow_pos_of_pos (GlobalTheory.SplitWeil.nabs_pos k x) _, by
     rw [Complex.ofReal_cpow (GlobalTheory.SplitWeil.nabs_pos k x).le]; simp [apow]⟩
 
 /- English proof (translation)
-The claim follows from `funext fun Y => by simp [omB, gdet]`.
+A detailed English derivation is pending.
 -/
 theorem omB_right (ν α : kˣ →* ℂˣ) (h : GL (Fin d) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ) :
     omB ν α 1 h Φ = ((α (gdet h) : ℂ) * apow (gdet h) ((n : ℂ) / 2)) • fun Y => Φ (Y * h.1) := funext fun Y => by
   simp [omB, gdet]
 
 /- English proof (translation)
-The claim follows from `funext fun Y => by simp [omB, gdet]`.
+A detailed English derivation is pending.
 -/
 theorem omB_left (ν α : kˣ →* ℂˣ) (g : GL (Fin n) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ) :
     omB ν α g 1 Φ = ((ν (gdet g) : ℂ) * apow (gdet g) ((d : ℂ) / 2)) • fun Y => Φ (g.1ᵀ * Y) := funext fun Y => by
   simp [omB, gdet]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp star, h.2.comp_left (g := star) (star_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_star {A : Type} [TopologicalSpace A] {f : A → ℂ} (h : f ∈ SB A) : star f ∈ SB A :=
   ⟨h.1.comp star, h.2.comp_left (g := star) (star_zero _)⟩
@@ -107,27 +107,27 @@ end Loc
 variable {B : Base F E} {X : Spc F E n} {X' : Spc F E n'} {W : Spc F E d} {M' : Model σ X' W}
 
 /- English proof (translation)
-Take `⟨j, j1, j2⟩` from `exists_inv' b`. Take `⟨j', j1', j2'⟩` from `exists_inv' b'`. Introduce `Φ hΦ Ψ hΨ`. Use `LinearMap.eqOn_span' (f := L.flip (om (u, 1) Ψ)) (g := L.flip Ψ) ?_ hΦ` and prove the remaining obligations. Introduce and unpack `_ ⟨f', hf', φ', p1', p2', rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `schA_le (LinearMap.eqLocus (L (pure f' φ') ∘ₛₗ om (u, 1)) (L (pure f' φ'))) (fun f φ p1 p2 => ?_) hΨ` and prove the remaining obligations. Take `⟨T, t1, t2, t3⟩` from `intersection_update_fsHerm_neg_one v f p1 p2`. Take `⟨T', t1', -, t3'⟩` from `intersection_update_fsHerm_neg_one v f' p1' ((p2'.and hM'.std).mono fun _ h => h.1.trans h.2)`. Establish `t2' : ∀ ψ ∈ SB _, T' ψ ∈ PolData B M'` using `fun ψ hψ => Submodule.subset_span ⟨f', hf', _, fun w => by`. Distinguish the cases in `hw : w = v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hw]; exact p1' w, by filter_upwards [p2', eventually_cofinite_ne v] with w h hw using (Function.update_of_ne hw _ _).trans h, t1' ψ⟩`. Set `N : (Fv F v)ˣ →* ℂˣ` to `MonoidHom.toHomUnits ⟨⟨fun x => apow x ((d : ℂ) / 2), apow_one _⟩, fun x y => apow_mul x y _⟩`. Establish `hN : ∀ x, ((ν * N⁻¹) x : ℂ) = ν x * (apow x ((d : ℂ) / 2))⁻¹` using `fun x => by simp [N]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `cj : ∀ {z : ℂ}, ‖z‖ = 1 → starRingEnd ℂ z = z⁻¹` using `fun h => (Complex.inv_eq_conj h).symm`. Establish `cj' : ∀ (x : (Fv F v)ˣ) (m : ℕ), starRingEnd ℂ (apow x ((m : ℂ) / 2)) = apow x ((m : ℂ) / 2)` using `fun x m => by`. Take `⟨r, -, h⟩` from `apow_real x m`. Rewrite using `[h, Complex.conj_ofReal]`. Set `β : SB (Matrix (Fin n) (Fin d) (Fv F v)) →ₗ[ℂ] SB (Matrix (Fin n') (Fin d) (Fv F v)) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun a b => L (T' (j' b.1)) (T (j (star a.1)))) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp) fun _ _ _ => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g₁` to `Matrix.GeneralLinearGroup.mkOfDetNeZero g₀.1ᵀ (by rw [Matrix.det_transpose]; exact g₀.det_ne_zero)`. Establish `key` using `locBil hL v e (ν * N⁻¹) (fun t ht h => hne (Units.ext ?_)) β (fun a b h₀ => ?_) ⟨_, sb_star (b.1 (p1 v))⟩ ⟨_, b'.1 (p1' v)⟩ g₁`. Establish `k2` using `t3 _ _ (p1 v) _ (acts_of_reads hu j2 (p1 v)).2`. Rewrite `k2` using `[omB_left, map_smul, map_smul, t1, Function.update_eq_self]`. Express the relevant statement in the definitionally equal form `L _ (T (j (star fun y => star (ι (φ v) (g₀.1ᵀ * y))))) = _ * L _ (T (j (star (star _)))) at key`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `key` using `[star_star, j2 _ (p1 v), j2' _ (p1' v), t1', t1 (φ v), Function.update_eq_self, Function.update_eq_self, hN, show Matrix.GeneralLinearGroup.det g₁ = gdet g₀ from Units.ext (Matrix.det_transpose _), ← Pi.star_def, star_star]`. Express the relevant statement in the definitionally equal form `L _ (om (u, 1) _) = _`. Rewrite using `[k2, map_smulₛₗ, key, map_mul, cj (n1 _), cj', smul_eq_mul]`. Use `apow_ne_zero (gdet g₀) ((d : ℂ) / 2)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨r, hr, e1⟩` from `apow_real (unifAt v) d`. Rewrite `h` using `[hN, e1, mul_inv_eq_iff_eq_mul₀ (by exact_mod_cast hr.ne'), ← Complex.ofReal_mul]`. Use `n1 (unifAt v)` as an intermediate fact. Rewrite `this` using `[h, Complex.norm_real, Real.norm_of_nonneg (mul_pos ht hr).le]`. Rewrite using `[h, this]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨h, r1, r2, r3⟩` from `hh h₀`. Establish `a1` using `j1 _ (sb_star a.2)`. Establish `b1` using `j1' _ b.2`. Establish `k1` using `t3 _ _ a1.1 _ (acts_of_reads r1 j2 a1.1).2`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2` using `t3' _ _ b1.1 _ (acts_of_reads r2 j2' b1.1).2`. Establish `k3` using `r3 _ (t2' _ b1.1) _ (t2 _ a1.1)`. Rewrite `k3` using `[k1, k2, a1.2, b1.2, omB_right, omB_right]`. Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, cj (n2 _), cj'] at k3`. Establish `hd : (d : ℂ) / 2 = (n : ℂ) / 2 + (n' : ℂ) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Fintype.card_congr e` as an intermediate fact. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at this`. Rewrite using `[← this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `L (T' (j' fun y => b.1 (y * h₀.1))) (T (j fun y => star a.1 (y * h₀.1))) = _ * L (T' (j' b.1)) (T (j (star a.1)))`. Rewrite using `[← k3, hN, hν, hd, apow_add]`. Use `apow_ne_zero (gdet h₀) ((n : ℂ) / 2)` as an intermediate fact. Use `apow_ne_zero (gdet h₀) ((n' : ℂ) / 2)` as an intermediate fact. Simplify using `only [Units.val_div_eq_div_val]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/

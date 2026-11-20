@@ -14,9 +14,9 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
 /- English proof (translation)
-Introduce `hu`. Set `_ : Algebra W O` to `j.toAlgebra`. Establish `_ : Module.Finite W O` using `hS.finite`. Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := W) (IsLocalRing.maximalIdeal O)`. Establish `heq : (IsLocalRing.maximalIdeal O).comap (algebraMap W O) = IsLocalRing.maximalIdeal W` using `IsLocalRing.eq_maximalIdeal hmax`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpW : (p : W) ∈ IsLocalRing.maximalIdeal W` using `hS.p_unif.not_isUnit`. Rewrite `hpW` using `[← heq, Ideal.mem_comap, map_natCast]`. Conclude with `hpW hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_nonunit (hS : HidaSetting p n' W Qq O Kf ι σ j w) : ¬ IsUnit (p : O) := by
   intro hu
@@ -32,19 +32,17 @@ theorem p_nonunit (hS : HidaSetting p n' W Qq O Kf ι σ j w) : ¬ IsUnit (p : O
 end Ring
 
 /- English proof (translation)
-Establish `h0 : ∀ i, φ i 0 = 0` using `fun i => by`. Establish `h` using `hadd i 0 0`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`. Set `S : Submodule O (Fin M → O)` to `{ carrier := {v | ∃ G ∈ A, ∀ i, algebraMap O Kf (v i) = φ i G} add_mem' := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Introduce and unpack `v v' ⟨G, hG, hv⟩ ⟨G', hG', hv'⟩`. Conclude with `⟨G + G', A.add_mem hG hG', fun i => by rw [Pi.add_apply, map_add, hv, hv', hadd]⟩`. Use the proof step `zero_mem' := ⟨0, A.zero_mem, fun i => by rw [Pi.zero_apply, map_zero, h0]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c v ⟨G, hG, hv⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨c • G, A.smul_mem c hG, fun i => by rw [Pi.smul_apply, smul_eq_mul, map_mul, hv, hsmul]⟩ }`. Establish `hS : ∀ c : Fin M → O, (∃ i, IsUnit (c i)) → ∃ s ∈ S, (∑ i, c i * s i) ∣ π ^ D`. Introduce `c hc`. Take `⟨G, hG, a, b, hab, hb⟩` from `hprim c hc`. Use `choose v hv using fun i => hint i G hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨v, ⟨G, hG, hv⟩, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ i, c i * v i = a` using `hinj (by rw [← hab, map_sum]; simp only [map_mul, hv])`. Conclude with `⟨b, by rw [hsum, hb]⟩`. Establish `hmem : ∀ k : Fin M, π ^ D • Pi.single k (1 : O) ∈ S` using `fun k => smith_mem S (π ^ D) hS _`. Use `choose G hGA hG using hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsumφ : ∀ i (s : Finset (Fin M)) (f : Fin M → X), φ i (∑ k ∈ s, f k) = ∑ k ∈ s, φ i (f k)` using `fun i s f => map_sum (AddMonoidHom.mk' (φ i) (hadd i)) f s`. Set `u : (Fin M → O) →ₗ[O] A` to `{ toFun := fun x => ∑ k, x k • (⟨G k, hGA k⟩ : A) map_add' := fun x y => by simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib] map_smul' := fun c x => by simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.smul_sum, smul_smul] }`. Establish `key : ∀ x i, φ i (u x : X) = algebraMap O Kf (π ^ D * x i)`. Introduce `x i`. Establish `hu : (u x : X) = ∑ k, x k • G k` using `by simp [u]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu, hsumφ]`. Repeatedly rewrite using `[hsmul, ← hG, ← map_mul, ← map_sum]`. Use `congr 1`. Simplify using `[Pi.single_apply, mul_comm]`. Use `⟨u, 1, fun x k => ?_⟩` and prove the remaining obligations.
-
-Simplify using `[key, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goodRank_of_prim {O Kf X : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] [AddCommGroup X] [Module O X]
@@ -99,28 +97,28 @@ section Be
 variable {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] {n' m : ℕ}
 
 /- English proof (translation)
-Simplify using `only [be, LinearMap.add_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem be_add_right (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (F : Vsp Kf lam0)
     (G G' : Module.Dual Kf (Vsp Kf lam0)) : be p r lam0 F (G + G') = be p r lam0 F G + be p r lam0 F G' := by
   simp only [be, LinearMap.add_apply]
 
 /- English proof (translation)
-Simplify using `only [be, LinearMap.smul_apply, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem be_smul_right (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (F : Vsp Kf lam0) (c : O)
     (G : Module.Dual Kf (Vsp Kf lam0)) : be p r lam0 F (c • G) = algebraMap O Kf c * be p r lam0 F G := by
   simp only [be, LinearMap.smul_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Simplify using `only [be, LinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem be_smulK_right (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (F : Vsp Kf lam0) (c : Kf)
     (G : Module.Dual Kf (Vsp Kf lam0)) : be p r lam0 F (c • G) = c * be p r lam0 F G := by
   simp only [be, LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [be, Finset.smul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul Kf (c i) (F i), smul_smul, mul_comm, ← smul_smul, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem be_sum_left (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) {n : ℕ} (c : Fin n → O) (F : Fin n → Vsp Kf lam0)
     (G : Module.Dual Kf (Vsp Kf lam0)) :
@@ -132,27 +130,25 @@ theorem be_sum_left (p r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) {n : ℕ
 end Be
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS hBP m r lam0 t D κ cStar L hdom hc hsrc`. Establish `_` using `hS.frac_O`. Take `⟨E, nE, F, hE, hFsrc, hFoth, hprim, hcard⟩` from `hsrc`. Establish `hRe : ∀ e ∈ E, ∀ i, F e i ∈ Re p ι σ w r lam0 e`. Introduce `e he i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(Submodule.mem_inf.mp (hFsrc e he i)).2`. Rewrite `h` using `[Submodule.mem_iInf]`. Conclude with `(Submodule.mem_iInf _).mp (h e) ⟨(hE e he).1, rfl⟩`. Set `T` to `Σ e : E, Fin (nE e.1)`. Set `eqv : Fin (Fintype.card T) ≃ T` to `(Fintype.equivFin T).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Fintype.card T, fun k => (eqv k).1.1, fun k => F (eqv k).1.1 (eqv k).2, fun k => hE _ (eqv k).1.2, fun k => hFsrc _ (eqv k).1.2 _, fun k e' he' hs' hne => hFoth _ (eqv k).1.2 _ e' he' hs' hne, Fintype.card T, ?_, ?_⟩` and prove the remaining obligations. Establish `hT : Fintype.card T = ∑ e ∈ E, nE e`. Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Conclude with `Finset.sum_coe_sort E nE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT]`. Conclude with `hcard`. Use `goodRank_of_prim (IsFractionRing.injective O Kf) (p : O) _ _ D (fun k G G' => be_add_right p r lam0 _ G G') (fun k c G => be_smul_right p r lam0 _ c G) ?_ ?_` and prove the remaining obligations. Introduce `k G hG`. Establish `he` using `hE _ (eqv k).1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG' : G ∈ Re' p ι σ w r lam0 (eqv k).1.1`. Establish `h` using `(Submodule.mem_inf.mp hG).2`. Rewrite `h` using `[Submodule.mem_iInf]`. Conclude with `(Submodule.mem_iInf _).mp (h _) he`. Conclude with `((hBP p n' W Qq O Kf ι σ j w hS m r lam0 hdom _ he.1).1 G).mp hG' _ (hRe _ (eqv k).1.2 _)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `c ⟨k0, hk0⟩`. Take `⟨⟨e0, i0⟩, hx⟩ : ∃ x, eqv k0 = x` from `⟨_, rfl⟩`. Establish `hk0' : IsUnit (c (eqv.symm ⟨e0, i0⟩))`. Rewrite using `[← hx, Equiv.symm_apply_apply]`. Conclude with `hk0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨G, hGN, hval, hGoth⟩` from `hprim e0.1 e0.2 (fun i => c (eqv.symm ⟨e0, i⟩)) ⟨i0, hk0'⟩`. Take `⟨a, b, hva, hab⟩` from `hval`. Use `⟨G, hGN, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ e : E, ∀ i : Fin (nE e.1), e ≠ e0 → ∃ z : O, be p r lam0 (F e.1 i) G = algebraMap O Kf ((p : O) ^ (D + 1) * z)`. Introduce `e i hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `he` using `hE e.1 e.2`. Take `⟨G₀, hG₀, hGeq⟩` from `Submodule.mem_map.mp (hGoth e.1 e.2 (fun h => hne (Subtype.ext h)))`. Take `⟨y, hy⟩` from `((hBP p n' W Qq O Kf ι σ j w hS m r lam0 hdom _ he.1).1 G₀).mp hG₀ _ (hRe _ e.2 i)`. Use `⟨w ^ (cStar - 2 * (D + 1)) * y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hGeq, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, be_smulK_right, ← hy, zpow_natCast, ← map_pow, ← map_mul, ← hS.w_sq, ← pow_mul, ← mul_assoc, ← pow_add]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 3`. Use linear arithmetic over natural numbers and integers. Establish `hsplit : ∑ k, algebraMap O Kf (c k) * be p r lam0 (F (eqv k).1.1 (eqv k).2) G = be p r lam0 (∑ i, c (eqv.symm ⟨e0, i⟩) • F e0.1 i) G + ∑ e ∈ Finset.univ.erase e0, ∑ i, algebraMap O Kf (c (eqv.symm ⟨e, i⟩)) * be p r lam0 (F e.1 i) G`. Establish `h1 : ∑ k, algebraMap O Kf (c k) * be p r lam0 (F (eqv k).1.1 (eqv k).2) G = ∑ x : T, algebraMap O Kf (c (eqv.symm x)) * be p r lam0 (F x.1.1 x.2) G` using `Fintype.sum_equiv eqv _ _ (fun k => by rw [Equiv.symm_apply_apply])`. Rewrite using `[h1, Fintype.sum_sigma, be_sum_left, ← Finset.add_sum_erase _ _ (Finset.mem_univ e0)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hrest : ∃ z : O, (∑ e ∈ Finset.univ.erase e0, ∑ i, algebraMap O Kf (c (eqv.symm ⟨e, i⟩)) * be p r lam0 (F e.1 i) G) = algebraMap O Kf ((p : O) ^ (D + 1) * z)`. Use `Finset.sum_induction _ (fun x => ∃ z : O, x = algebraMap O Kf ((p : O) ^ (D + 1) * z)) (fun x y ⟨z₁, h₁⟩ ⟨z₂, h₂⟩ => ⟨z₁ + z₂, by rw [h₁, h₂, mul_add, map_add]⟩) ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce `e he`. Use `Finset.sum_induction _ (fun x => ∃ z : O, x = algebraMap O Kf ((p : O) ^ (D + 1) * z)) (fun x y ⟨z₁, h₁⟩ ⟨z₂, h₂⟩ => ⟨z₁ + z₂, by rw [h₁, h₂, mul_add, map_add]⟩) ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce `i _`.
-
-Take `⟨z, hz⟩` from `hterm e i (Finset.ne_of_mem_erase he)`. Conclude with `⟨c (eqv.symm ⟨e, i⟩) * z, by rw [hz, ← map_mul]; congr 1; ring⟩`. Take `⟨z, hz⟩` from `hrest`. Take `⟨b', hb'⟩` from `dvd_of_add (p : O) (p_nonunit hS) D a z ⟨b, hab.symm⟩`. Conclude with `⟨a + (p : O) ^ (D + 1) * z, b', by rw [hsplit, hva, hz, map_add], hb'.symm⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem s7 : S7 := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS hBP m r lam0 t D κ cStar L hdom hc hsrc

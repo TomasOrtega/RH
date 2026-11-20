@@ -4,17 +4,17 @@ open scoped TensorProduct
 open UpperTheory.Lit.HoweDuality
 
 /- English proof (translation)
-Introduce `ι _ _ M₀ _ _ M _ _ i`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.eq_top_iff']`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `tmul x₀ w`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c y`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite using `[TensorProduct.tmul_smul]`. Use `Submodule.smul_mem _ c ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem (x₀, y) ⟨y i, ?_⟩` and prove the remaining obligations. Rewrite using `[position_apply]`. Simplify using `only [Function.update_eq_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add a b ha hb`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `g r x`. Rewrite using `[position_apply, position_apply, factorOp, TensorProduct.map_tmul, PiTensorProduct.map_tprod]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne h]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.HoweDuality.slotFacts :
     ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀] {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] (i : ι), (⨆ r : M₀ × (∀ j, M j), LinearMap.range (intersection_update_fsHerm_neg_one i r)) = ⊤ ∧ ∀ (g : Module.End ℂ (M i)) (r : M₀ × (∀ j, M j)) (x : M i), factorOp i g (intersection_update_fsHerm_neg_one i r x) = intersection_update_fsHerm_neg_one i r (g x) := by

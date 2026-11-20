@@ -9,9 +9,9 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Dens
 open Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos x with hx | hx` into its components or cases. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `h` using `harmonic_le_one_add_log x`. Establish `e : ((harmonic x : ℚ) : ℝ) = ∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[harmonic_eq_sum_Icc]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma space_harm (x : ℕ) : ∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹ ≤ 1 + Real.log x := by
   rcases Nat.eq_zero_or_pos x with hx | hx
@@ -22,9 +22,9 @@ lemma space_harm (x : ℕ) : ∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹ ≤ 1 + Real.lo
     rw [← e]; exact h
 
 /- English proof (translation)
-Establish `h1` using `Nat.floor_le ha`. Establish `h2` using `Nat.lt_floor_add_one a`. Establish `h3` using `Nat.floor_le hb`. Establish `h4` using `Nat.lt_floor_add_one b`. Rewrite `h1`, `h2` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rw [abs_lt]; constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma floor_eq_close {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : ⌊a⌋₊ = ⌊b⌋₊) : |a - b| < 1 := by
   have h1 := Nat.floor_le ha
@@ -35,17 +35,17 @@ lemma floor_eq_close {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : ⌊a⌋₊ =
   rw [abs_lt]; constructor <;> linarith
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn (fun x => ⌊f x⌋₊) Q`. Introduce `x hx y hy hxy`. Assume the negation of the conclusion as `hne`. Use `floor_eq_close (by linarith [h1 x hx]) (by linarith [h1 y hy]) hxy` as an intermediate fact. Use `hsp x hx y hy hne` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `step1 : ∑ x ∈ Q, 1 / f x ≤ ∑ x ∈ Q, ((⌊f x⌋₊ : ℕ) : ℝ)⁻¹`. Use `sum_le_sum (fun x hx => ?_)` and prove the remaining obligations. Establish `hf1` using `h1 x hx`. Establish `hfl : (1 : ℝ) ≤ (⌊f x⌋₊ : ℝ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ ⌊f x⌋₊` using `Nat.le_floor (by exact_mod_cast hf1)`. Conclude with `this` after adjusting the coercions. Rewrite using `[one_div]`. Conclude with `inv_anti₀ (by linarith) (Nat.floor_le (by linarith))`. Establish `step2 : ∑ x ∈ Q, ((⌊f x⌋₊ : ℕ) : ℝ)⁻¹ = ∑ k ∈ Q.image (fun x => ⌊f x⌋₊), ((k : ℕ) : ℝ)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sum_image hinj]`. Establish `hsub : Q.image (fun x => ⌊f x⌋₊) ⊆ Icc 1 ⌊2 * T⌋₊`. Introduce `k hk`. Rewrite `hk` using `[mem_image]`. Take `⟨x, hx, rfl⟩` from `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[mem_Icc]`. Conclude with `⟨Nat.le_floor (by exact_mod_cast h1 x hx), Nat.floor_le_floor (h2 x hx)⟩`. Establish `step3 : ∑ k ∈ Q.image (fun x => ⌊f x⌋₊), ((k : ℕ) : ℝ)⁻¹ ≤ ∑ k ∈ Icc 1 ⌊2 * T⌋₊, ((k : ℕ) : ℝ)⁻¹` using `sum_le_sum_of_subset_of_nonneg hsub (fun _ _ _ => by positivity)`. Establish `step4 : Real.log (⌊2 * T⌋₊ : ℝ) ≤ Real.log (2 * T + 1)`. Break down `Nat.eq_zero_or_pos ⌊2 * T⌋₊ with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[h0, Nat.cast_zero, Real.log_zero]; exact Real.log_nonneg (by linarith)`. Conclude with `Real.log_le_log (by exact_mod_cast h0) (by linarith [Nat.floor_le (by linarith : (0 : ℝ) ≤ 2 * T)])`. Combine the linear relations using `[space_harm ⌊2 * T⌋₊]`.
+A detailed English derivation is pending.
 -/
 lemma space_side (Q : Finset ℝ) (f : ℝ → ℝ) (T : ℝ) (hT : 0 ≤ T) (h1 : ∀ x ∈ Q, 1 ≤ f x)
     (h2 : ∀ x ∈ Q, f x ≤ 2 * T) (hsp : ∀ x ∈ Q, ∀ y ∈ Q, x ≠ y → 1 ≤ |f x - f y|) :
@@ -81,33 +81,31 @@ lemma space_side (Q : Finset ℝ) (f : ℝ → ℝ) (T : ℝ) (hT : 0 ≤ T) (h1
   linarith [space_harm ⌊2 * T⌋₊]
 
 /- English proof (translation)
-Introduce `P T hT hP hsp`. Prove the components needed by the constructor for the conclusion. Establish `hinj : Set.InjOn (fun x => ⌊x + T⌋₊) P`. Introduce `x hx y hy hxy`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx'` using `abs_le.1 (hP x hx)`. Establish `hy'` using `abs_le.1 (hP y hy)`. Use `floor_eq_close (by linarith) (by linarith) hxy` as an intermediate fact. Use `hsp x hx y hy hne` as an intermediate fact. Rewrite `*` using `[show x + T - (y + T) = x - y by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : P.image (fun x => ⌊x + T⌋₊) ⊆ range (⌊2 * T⌋₊ + 1)`. Introduce `k hk`. Rewrite `hk` using `[mem_image]`. Take `⟨x, hx, rfl⟩` from `hk`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mem_range, Nat.lt_succ_iff]`. Conclude with `Nat.floor_le_floor (by linarith [(abs_le.1 (hP x hx)).2])`. Establish `h1 : P.card ≤ ⌊2 * T⌋₊ + 1`. Rewrite using `[← card_image_of_injOn hinj]`. Conclude with `(card_le_card hsub).trans (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ((⌊2 * T⌋₊ + 1 : ℕ) : ℝ) ≤ 2 * T + 1` using `by push_cast; linarith [Nat.floor_le (by linarith : (0 : ℝ) ≤ 2 * T)]`. Conclude with `(by exact_mod_cast h1 : (P.card : ℝ) ≤ ((⌊2 * T⌋₊ + 1 : ℕ) : ℝ)).trans h2`. Introduce `t ht`. Establish `hsplit` using `sum_filter_add_sum_filter_not (P.erase t) (fun x => t < x) (fun x => 1 / |t - x|)`. Rewrite using `[← hsplit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR : ∑ x ∈ (P.erase t).filter (fun x => t < x), 1 / |t - x| ≤ 1 + Real.log (2 * T + 1)`. Establish `e : ∑ x ∈ (P.erase t).filter (fun x => t < x), 1 / |t - x| = ∑ x ∈ (P.erase t).filter (fun x => t < x), 1 / (x - t)`. Use `sum_congr rfl (fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[mem_filter]`. Rewrite using `[abs_sub_comm, abs_of_pos (by linarith [hx.2])]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Use `space_side _ (fun x => x - t) T hT (fun x hx => ?_) (fun x hx => ?_) (fun x hx y hy hne => ?_)` and prove the remaining obligations. Rewrite `hx` using `[mem_filter, mem_erase]`. Use `hsp x hx.1.2 t ht hx.1.1` as an intermediate fact. Rewrite `this` using `[abs_of_pos (by linarith [hx.2])]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite `hx` using `[mem_filter, mem_erase]`. Establish `a` using `abs_le.1 (hP x hx.1.2)`. Establish `b` using `abs_le.1 (hP t ht)`. Use `show x - t ≤ 2 * T`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hx`, `hy` using `[mem_filter, mem_erase]`. Use `hsp x hx.1.2 y hy.1.2 hne` as an intermediate fact. Rewrite using `[show x - t - (y - t) = x - y by ring]` and apply the resulting hypothesis. Establish `hL : ∑ x ∈ (P.erase t).filter (fun x => ¬ t < x), 1 / |t - x| ≤ 1 + Real.log (2 * T + 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∑ x ∈ (P.erase t).filter (fun x => ¬ t < x), 1 / |t - x| = ∑ x ∈ (P.erase t).filter (fun x => ¬ t < x), 1 / (t - x)`. Use `sum_congr rfl (fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[mem_filter, mem_erase]`. Establish `hlt : x < t` using `lt_of_le_of_ne (not_lt.1 hx.2) hx.1.1`. Rewrite using `[abs_of_pos (by linarith)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `space_side _ (fun x => t - x) T hT (fun x hx => ?_) (fun x hx => ?_) (fun x hx y hy hne => ?_)` and prove the remaining obligations. Rewrite `hx` using `[mem_filter, mem_erase]`. Establish `hlt : x < t` using `lt_of_le_of_ne (not_lt.1 hx.2) hx.1.1`. Use `hsp x hx.1.2 t ht hx.1.1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[abs_of_neg (by linarith)]`. Use `show 1 ≤ t - x`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hx` using `[mem_filter, mem_erase]`. Establish `a` using `abs_le.1 (hP x hx.1.2)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `b` using `abs_le.1 (hP t ht)`. Use `show t - x ≤ 2 * T`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hx`, `hy` using `[mem_filter, mem_erase]`. Use `hsp x hx.1.2 y hy.1.2 hne` as an intermediate fact.
-
-Rewrite using `[show t - x - (t - y) = -(x - y) by ring, abs_neg]` and apply the resulting hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem zero_spacing : Spacing := by
   intro P T hT hP hsp
@@ -182,7 +180,7 @@ theorem zero_spacing : Spacing := by
     linarith
 
 /- English proof (translation)
-Establish `h : (Finset.univ : Finset (DirichletCharacter ℂ M)).card = M.totient`. Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, DirichletCharacter.card_eq_totient_of_hasEnoughRootsOfUnity ℂ M]`. Rewrite using `[h]`. Conclude with `Nat.totient_le M` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem space_card_char_le (M : ℕ) [NeZero M] :
     ((Finset.univ : Finset (DirichletCharacter ℂ M)).card : ℝ) ≤ M := by
@@ -193,19 +191,17 @@ theorem space_card_char_le (M : ℕ) [NeZero M] :
   exact_mod_cast Nat.totient_le M
 
 /- English proof (translation)
-Introduce `M _ T S hT hS hsp`. Establish `hfib : ∀ χ : DirichletCharacter ℂ M, ((S.filter (fun p => p.1 = χ)).card : ℝ) ≤ 2 * T + 1`. Introduce `χ`. Use `set F := S.filter (fun p => p.1 = χ) with hF`. Establish `hinj : Set.InjOn (fun p : DirichletCharacter ℂ M × ℂ => p.2.im) F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp p' hp' h`. Assume the negation of the conclusion as `hne`. Rewrite `hp`, `hp'` using `[hF, coe_filter]`. Use `hsp p hp.1 p' hp'.1 hne (hp.2.trans hp'.2.symm)` as an intermediate fact. Simplify using `only at h`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h, sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsp'` using `(zero_spacing (F.image (fun p => p.2.im)) T hT (fun x hx => by`. Rewrite `hx` using `[mem_image]`. Take `⟨p, hp, rfl⟩` from `hx`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hS p (mem_of_mem_filter _ hp))`. Use the proof step `(fun x hx y hy hne => by`. Rewrite `hx`, `hy` using `[mem_image]`. Take `⟨p, hp, rfl⟩` from `hx`. Take `⟨p', hp', rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hpp : p ≠ p'` using `fun h => hne (by rw [h])`. Rewrite `hp`, `hp'` using `[hF, mem_filter]`. Conclude with `hsp p hp.1 p' hp'.1 hpp (hp.2.trans hp'.2.symm))).1`. Rewrite `hsp'` using `[card_image_of_injOn hinj]`. Then use the resulting hypothesis. Establish `hsum : (S.card : ℝ) = ∑ χ ∈ (Finset.univ : Finset (DirichletCharacter ℂ M)), ((S.filter (fun p => p.1 = χ)).card : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[card_eq_sum_card_fiberwise (f := fun p : DirichletCharacter ℂ M × ℂ => p.1) (t := Finset.univ) (fun _ _ => Finset.mem_univ _)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[sum_const, nsmul_eq_mul]`. Use `_ ≤ (M : ℝ) * (2 * T + 1) := mul_le_mul_of_nonneg_right (space_card_char_le M) (by linarith)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivial_bound : Triv := by
   intro M _ T S hT hS hsp

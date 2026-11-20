@@ -21,7 +21,7 @@ variable {n : ℕ}
 def sumNum (e : Option (Fin n) ≃ Fin (n + 1)) : Fin n ⊕ Unit ≃ Fin (n + 1) := (Equiv.optionEquivSumPUnit (Fin n)).symm.trans e
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [GlobalTheory.CompanionTheory.PairingAnalysis.emb, embH, sumNum, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_trans_apply, Equiv.symm_symm]`. Apply the tactic sequence `rcases e.symm a with _ | i <;> rcases e.symm b with _ | j <;> simp [Equiv.optionEquivSumPUnit]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emb_sumNum (e : Option (Fin n) ≃ Fin (n + 1)) (h : Mat n) : GlobalTheory.CompanionTheory.PairingAnalysis.emb (sumNum e) h = embH e h := by
   ext a b
@@ -32,7 +32,7 @@ variable {e : Option (Fin n) ≃ Fin (n + 1)} {ε : Fin (n + 1) → Bool} {lam :
   {mu : Fin n → ℝ} {B : ℝ}
 
 /- English proof (translation)
-Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Simplify `hP.signs.1` using `[GlobalTheory.CompanionTheory.PairingAnalysis.zi, sumNum, Equiv.optionEquivSumPUnit]`. Simplify `hP.signs.2 a` using `[sumNum, Equiv.optionEquivSumPUnit]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fits_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.PairingAnalysis.Fits ε ε' (sumNum e) := by
   refine ⟨?_, fun a => ?_⟩
@@ -40,19 +40,19 @@ theorem fits_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.Pair
   · simpa [sumNum, Equiv.optionEquivSumPUnit] using hP.signs.2 a
 
 /- English proof (translation)
-Establish `hs` using `hP.signs`. Use `⟨by linarith [hP.three_le], ?_, ?_, hP.hlam, hP.hmu, hP.bound.1, hP.bound.2, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hP.neg`. Conclude with `⟨e (some i), by rw [hs.2 i, hi]⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.card_le_card_of_surjOn (fun i => e (some i)) ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at ha`. Consider the cases of `hsa : e.symm a with`. Consider the case `none`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `: a = e none` using `by rw [← hsa, Equiv.apply_symm_apply]`. Rewrite `ha` using `[this, hs.1]`. Conclude with `absurd ha (by decide)`. Consider the case `some i`. Establish `: a = e (some i)` using `by rw [← hsa, Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, ?_, this.symm⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Rewrite using `[← hs.2 i, ← this, ha]`. Use `_ ≤ #{i | ε' i = true} := hP.pos`. Use `_ ≤ #{a | ε a = true} := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.card_le_card_of_injOn (fun i => e (some i)) ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hi ⊢`. Rewrite using `[hs.2 i, hi]`. Introduce `i _ j _ hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using hij`. Introduce `a b hab`. Establish `h1` using `hP.gap a b hab`. Establish `h2 : (0 : ℝ) ≤ (↑n + 1) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `h1` using `hP.gap' a b hab`. Establish `h2 : (0 : ℝ) ≤ (↑n + 1) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem par_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.PairingAnalysis.Par ε lam ε' mu B := by
   have hs := hP.signs
@@ -91,7 +91,7 @@ theorem par_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.Pairi
     linarith
 
 /- English proof (translation)
-Introduce `x y hxy hz`. Establish `h` using `hP.word x y hxy hz`. Simplify using `only [ne_eq] at h`. Unfold `Xor'`. The claim follows by propositional logic.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. The claim follows by propositional logic.
 -/
 theorem heWord_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.PairingAnalysis.HeWord ε lam ε' mu := by
   intro x y hxy hz
@@ -101,9 +101,9 @@ theorem heWord_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.Pa
   tauto
 
 /- English proof (translation)
-Establish `hJ : Jm ε * Jm ε = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hh' : hᴴ * Jm ε * h = Jm ε` using `hh`. Establish `h1 : (Jm ε * hᴴ * Jm ε) * h = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨⟨h, Jm ε * hᴴ * Jm ε, mul_eq_one_comm.mp h1, h1⟩, hh⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 private theorem exists_uj_umat_eq_of_mem_UJset {m : ℕ} {ε : Fin m → Bool} {h : Mat m} (hh : h ∈ UJset ε) :
     ∃ g : UJ ε, umat g = h := by
@@ -119,11 +119,11 @@ private theorem exists_uj_umat_eq_of_mem_UJset {m : ℕ} {ε : Fin m → Bool} {
   exact ⟨⟨⟨h, Jm ε * hᴴ * Jm ε, mul_eq_one_comm.mp h1, h1⟩, hh⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hJ : Jm ε = embH e (Jm ε')`. Use extensionality with `a b`. Establish `ha` using `e.apply_symm_apply a`. Establish `hb` using `e.apply_symm_apply b`. Simplify using `only [embH, Formalism.REAL.Jm, Matrix.diagonal_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases hA : e.symm a with _ | i <;> rcases hB : e.symm b with _ | j <;> rw [hA] at ha <;>`. Apply the tactic sequence `rw [hB] at hb <;> subst ha <;> subst hb <;> simp [hs.1, hs.2]`. Establish `hC : (embH e h)ᴴ = embH e hᴴ`. Use extensionality with `a b`. Simplify using `only [embH, Matrix.conjTranspose_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases e.symm a with _ | i <;> rcases e.symm b with _ | j <;> simp`. Rewrite `hh`, the goal using `[GlobalTheory.SepReal.ProjSm.mem_iff]`. Rewrite using `[hC, hJ, ← embH_mul, ← embH_mul, hh]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem embH_mem_UJset_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε : Fin (n + 1) → Bool}
     {ε' : Fin n → Bool} (hs : Signs e ε ε') {h : Mat n} (hh : h ∈ UJset ε') : embH e h ∈ UJset ε := by
@@ -142,11 +142,9 @@ private theorem embH_mem_UJset_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε
   rw [hC, hJ, ← embH_mul, ← embH_mul, hh]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ρ 1 = 1`. Conclude with `hρ.1.1`. Introduce `a b`. Establish `h` using `hρ.1.2 _ (GlobalTheory.SepReal.RealAsm.umat_mem ε a) _ (GlobalTheory.SepReal.RealAsm.umat_mem ε b)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ρ (umat a * umat b) = _`. Rewrite using `[h]`. Both sides reduce to the same expression. Introduce `g x`. Conclude with `hρ.2.1 _ (GlobalTheory.SepReal.RealAsm.umat_mem ε g) x`.
-
-Introduce `x`. Conclude with `(hρ.2.2 x).comp_continuous (GlobalTheory.SepReal.RealAsm.continuous_umat ε) (GlobalTheory.SepReal.RealAsm.umat_mem ε)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isU_comp_umat_of_isURepOn {m : ℕ} {ε : Fin m → Bool} {K : Type} [NormedAddCommGroup K]
     [InnerProductSpace ℂ K] {ρ : Mat m → K →L[ℂ] K} (hρ : IsURepOn (UJset ε) ρ) :
@@ -166,9 +164,9 @@ private theorem isU_comp_umat_of_isURepOn {m : ℕ} {ε : Fin m → Bool} {K : T
       (GlobalTheory.SepReal.RealAsm.umat_mem ε)
 
 /- English proof (translation)
-Establish `hc : Continuous (embH e)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [embH]`. Apply the tactic sequence `rcases e.symm a with _ | i <;> rcases e.symm b with _ | j <;> first | fun_prop | exact continuous_const`. Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => hπ.2.1 _ (embH_mem_UJset_of_signs hs hg) v, fun v => (hπ.2.2 v).comp hc.continuousOn (fun h hh => embH_mem_UJset_of_signs hs hh)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [embH_one]`. Conclude with `hπ.1.1`. Simplify using `only [embH_mul]`. Conclude with `hπ.1.2 _ (embH_mem_UJset_of_signs hs ha) _ (embH_mem_UJset_of_signs hs hb)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isURepOn_embH_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε : Fin (n + 1) → Bool}
     {ε' : Fin n → Bool} {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
@@ -186,23 +184,21 @@ private theorem isURepOn_embH_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε 
     exact hπ.1.2 _ (embH_mem_UJset_of_signs hs ha) _ (embH_mem_UJset_of_signs hs hb)
 
 /- English proof (translation)
-Unfold `ProjLarge ForPair`. Introduce `n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ v₀ hv₀`. Use `haveI : CompleteSpace H := hπ.1`. Use `haveI : CompleteSpace H' := hσ.1`. Take `⟨d, hd⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS mu σ hσ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK : PositivityTheory.RgHe.SchurK ε' σ (muG ε') d⁻¹`. Use `⟨inv_pos.2 hd.1, fun v w v' w' => ⟨(hd.2 v w v' w').1, ?_⟩⟩` and prove the remaining obligations. Use `(hd.2 v w v' w').2.trans ?_` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul, Complex.ofReal_inv]`. Take `⟨S, hKS⟩` from `hσ.2.2.2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hxS, hx0, -⟩` from `hKS.2.2.2.1`. Establish `hxL : x ∈ lowKSub ε' mu σ`. Unfold `Formalism.MainNotions.S.lowKSub`. Conclude with `Submodule.mem_sSup_of_mem hKS hxS`. Use `set w : H' := ((‖x‖ : ℂ)⁻¹) • x with hwdef`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwL : w ∈ lowKSub ε' mu σ` using `Submodule.smul_mem _ _ hxL`. Establish `hw1 : ‖w‖ = 1`. Rewrite using `[hwdef, norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hx0)]`. Establish `hfit` using `fits_of hP`. Establish `hpar` using `par_of hP`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hint, i, η, hiso, hieq, hη, hηi, hηa⟩` from `hS n ε lam ε' mu B (sumNum e) H H' π σ (muG ε') inferInstance hfit hpar hπ hσ (heWord_of hP) d⁻¹ hK w hwL hw1`. Take `⟨g₀, hg₀s, hg₀⟩` from `hB n ε lam ε' mu B (sumNum e) H H' π σ (muG ε') inferInstance hfit hpar hπ hσ d⁻¹ hK w hwL hw1 hint i η hiso hieq hη hηi hηa v₀ hv₀.2 hv₀.1`. Establish `hB1` using `GlobalTheory.SepReal.RealAsm.one_le_B hP`. Establish `hn : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `hX : 0 ≤ 8 * ((n : ℝ) + 1) * B` using `by nlinarith`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨i, ContinuousLinearMap.adjoint i, ⟨?_, hiso, fun v y => (ContinuousLinearMap.adjoint_inner_right i y v).symm⟩, umat g₀, GlobalTheory.SepReal.RealAsm.umat_mem ε g₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh y`. Take `⟨g, rfl⟩` from `exists_uj_umat_eq_of_mem_UJset hh`. Establish `h2` using `hieq g y`. Rewrite `h2` using `[emb_sumNum]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (10 : ℝ) * ((n : ℝ) + 1) = ((10 * (n + 1) : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast] show Real.sqrt (Formalism.REAL.hs (umat g₀)) ≤ _`. Rewrite using `[← Real.sqrt_sq (pow_nonneg hX (10 * (n + 1)))]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[← pow_mul]`. Apply the tactic sequence `convert hg₀s using 2 <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : 0 ≤ Real.log (8 * ((n : ℝ) + 1) * B)` using `Real.log_nonneg (by nlinarith)`. Establish `h1 : 1 ≤ big 100 n B * Real.exp (-(100 * ((n : ℝ) + 1) ^ 3 * Real.log (8 * ((n : ℝ) + 1) * B)))`. Unfold `big`. Rewrite using `[← Real.exp_add]`. Apply `Real.one_le_exp` to reduce the goal to its premises.
-
-Establish `h3 : 100 * ((n : ℝ) + 1) ^ 4 * Real.log (8 * ((n : ℝ) + 1) * B) + -(100 * ((n : ℝ) + 1) ^ 3 * Real.log (8 * ((n : ℝ) + 1) * B)) = 100 * (((n : ℝ) + 1) ^ 3 * (n : ℝ) * Real.log (8 * ((n : ℝ) + 1) * B))` using `by ring`. Rewrite using `[h3]`. Conclude with `mul_nonneg (by norm_num) (mul_nonneg (mul_nonneg (by positivity) hn) hL)`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left hg₀ (GlobalTheory.SepReal.RealAsm.big_pos _ _ _).le)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projLarge_of (hS : PositivityTheory.RgHe.A.SchurEigenProjectionExists) (hB : PositivityTheory.RgHe.A.BigProjP) : ProjLarge := by
   unfold ProjLarge ForPair
@@ -261,15 +257,13 @@ theorem projLarge_of (hS : PositivityTheory.RgHe.A.SchurEigenProjectionExists) (
     exact h1.trans (mul_le_mul_of_nonneg_left hg₀ (GlobalTheory.SepReal.RealAsm.big_pos _ _ _).le)
 
 /- English proof (translation)
-Unfold `EigMap ForPair`. Introduce `n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ d hd w₀ hw₀ hint j P hjP v hv hPv`. Use `haveI : CompleteSpace H := hπ.1`. Use `haveI : CompleteSpace H' := hσ.1`. Establish `hU' : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsU (fun g : UJ ε' => σ (umat g))` using `isU_comp_umat_of_isURepOn hσ.2.2.1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsU (fun g : UJ ε' => π (embH e (umat g)))` using `isU_comp_umat_of_isURepOn (ρ := fun h => π (embH e h)) (isURepOn_embH_of_signs hP.signs hπ.2.2.1)`. Establish `hFd : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsFd (muG ε') (fun g : UJ ε' => σ (umat g)) d` using `hd`. Establish `hiso : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsIsoMap (fun g : UJ ε' => σ (umat g)) (fun g => π (embH e (umat g))) j` using `⟨fun g x => hjP.1 _ (GlobalTheory.SepReal.RealAsm.umat_mem ε' g) x, hjP.2.1⟩`. Establish `hadj : ContinuousLinearMap.adjoint j = P`. Use `symm`.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[← inner_conj_symm, ← hjP.2.2 x y]`. Conclude with `inner_conj_symm _ _`. Take `⟨w, c, hw0, hc, hb⟩` from `hE (muG ε') (fun g : UJ ε' => σ (umat g)) (fun g => π (embH e (umat g))) d hU' hU hFd w₀ hw₀ hint j hiso v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[hadj]`. Establish `hcpos : 0 < c` using `lt_of_lt_of_le (div_pos (pow_pos (norm_pos_iff.2 hPv) 2) (by linarith [hd.1])) hc`. Take `⟨T, hT, hTv⟩` from `hT (muG ε') (fun g : UJ ε' => σ (umat g)) (fun g => π (embH e (umat g))) d hU' hU hFd v hv w c hcpos.ne' (fun b => (hb b).2)`. Use `⟨w, c, T, hw0, hc, fun b => (hb b).2, ?_, hTv⟩` and prove the remaining obligations. Introduce `h hh x`.
-
-Take `⟨g, rfl⟩` from `exists_uj_umat_eq_of_mem_UJset hh`. Conclude with `hT g x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eigMap_of (hE : PositivityTheory.RgHe.A.EigA) (hT : PositivityTheory.RgHe.A.TMap) : EigMap := by
   unfold EigMap ForPair
@@ -307,7 +301,7 @@ end
 namespace UpperTheory.Lit
 
 /- English proof (translation)
-The claim follows from `Branch.realInputE (Branch.projLarge_of (PositivityTheory.RgHe.A.Pf.seedB_of PositivityTheory.RgHe.LowestKTypeModel.seed PositivityTheory.RgHe.occ) (PositivityTheory.RgHe.A.Pf.bigProjP PositivityTheory.RgHe.A.Pf.momentP CompanionTheory.Lime.T3.analytic_estimates)) (Branch.eigMap_o …`.
+A detailed English derivation is pending.
 -/
 theorem realInputE_holds : Branch.RealInputE :=
   Branch.realInputE
@@ -316,7 +310,7 @@ theorem realInputE_holds : Branch.RealInputE :=
     (Branch.eigMap_of GlobalTheory.CompanionTheory.RgHeA.eigA GlobalTheory.CompanionTheory.RgHeA.TMapPf.tMap)
 
 /- English proof (translation)
-The claim follows from `functionalsSeparate_of_input P hH hSW realInputE_holds`.
+A detailed English derivation is pending.
 -/
 theorem functionalsSeparate_free (P : GlobalTheory.FunPr.Hypotheses₂) (hH : GlobalTheory.Hk3.HoweUnram)
     (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent) : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate :=

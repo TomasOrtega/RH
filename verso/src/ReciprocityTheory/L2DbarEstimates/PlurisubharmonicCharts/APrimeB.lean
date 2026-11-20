@@ -9,15 +9,15 @@ open scoped ContDiff ENNReal
 noncomputable section
 
 /- English proof (translation)
-Set `K` to `LinearMap.ker (Lm : V n →ₗ[ℂ] V d)`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl K`. Set `P : V n →ₗ[ℂ] K` to `Submodule.linearProjOfIsCompl K C hC`. Establish `hrank : Module.finrank ℂ (V d) + Module.finrank ℂ K = Module.finrank ℂ (V n)`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (Lm : V n →ₗ[ℂ] V d)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[LinearMap.range_eq_top.mpr hs, finrank_top]`. Then use the resulting hypothesis. Simplify using `only [finrank_euclideanSpace, Fintype.card_fin] at hrank`. Establish `hK : Module.finrank ℂ K = n - d` using `by omega`. Set `eK : K ≃ₗ[ℂ] V (n - d)` to `LinearEquiv.ofFinrankEq K (V (n - d)) (by rw [hK]; simp)`. Set `T : V n →ₗ[ℂ] V d × V (n - d)` to `LinearMap.prod (Lm : V n →ₗ[ℂ] V d) (eK.toLinearMap ∘ₗ P)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hT : Function.Injective T`. Use `LinearMap.ker_eq_bot.mp (LinearMap.ker_eq_bot'.mpr fun v hv => ?_)` and prove the remaining obligations. Establish `h1 : Lm v = 0` using `by simpa [T] using congrArg Prod.fst hv`. Establish `h2 : P v = 0` using `by simpa [T] using congrArg Prod.snd hv`. Establish `hvK : v ∈ K` using `by simpa [K] using h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨v, hvK⟩`. Establish `h4 : (⟨v, hvK⟩ : K) = 0` using `h3.symm.trans h2`. Simplify using `using congrArg Subtype.val h4`. Establish `hdim : Module.finrank ℂ (V n) = Module.finrank ℂ (V d × V (n - d))`. Simplify using `only [Module.finrank_prod, finrank_euclideanSpace, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨(LinearMap.linearEquivOfInjective T hT hdim).toContinuousLinearEquiv, fun v => ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem aprb_complement {n d : ℕ} (Lm : V n →L[ℂ] V d) (hs : Function.Surjective Lm) :
     ∃ A : V n ≃L[ℂ] V d × V (n - d), ∀ v, (A v).1 = Lm v := by
@@ -47,7 +47,7 @@ theorem aprb_complement {n d : ℕ} (Lm : V n →L[ℂ] V d) (hs : Function.Surj
   rfl
 
 /- English proof (translation)
-Rewrite using `[contDiffOn_euclidean]`. Introduce `i`. Establish `h1 : DifferentiableOn ℂ (fun x => p x i) U` using `(EuclideanSpace.proj i : V d →L[ℂ] ℂ).differentiable.comp_differentiableOn hp`. Conclude with `(contDiffOn_of_differentiableOn n _ U hU h1).of_le (by exact_mod_cast le_top)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aprb_contDiffOn {n d : ℕ} {U : Set (V n)} (hU : IsOpen U) {p : V n → V d}
     (hp : DifferentiableOn ℂ p U) (k : ℕ) : ContDiffOn ℂ k p U := by

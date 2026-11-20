@@ -11,9 +11,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 namespace ChartNormPts
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hc : (∏ i : (Σ k, ι k), c i.1 ^ d i) = ∏ k, c k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∏ y, c k ^ d ⟨k, y⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf d hd k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_smul_homog {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {R : Type*} [CommRing R]
     (f : MRing ι) (a : K → ℕ) (hf : IsMultiHomog f a) (c : K → R) (z : (Σ k, ι k) → R) :
@@ -34,7 +34,7 @@ def homogenise (v : P → V) (f g : Q → V) (F : MvPolynomial Q (MvPolynomial P
   ∑ μ ∈ F.support, rename v (F.coeff μ) * ∏ q, X (f q) ^ μ q * X (g q) ^ (degreeOf q F - μ q)
 
 /- English proof (translation)
-Simplify using `[homogenise, aeval_rename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_homogenise {R : Type*} [CommRing R] (v : P → V) (f g : Q → V)
     (F : MvPolynomial Q (MvPolynomial P ℤ)) (z : V → R) :
@@ -43,9 +43,9 @@ theorem aeval_homogenise {R : Type*} [CommRing R] (v : P → V) (f g : Q → V)
   simp [homogenise, aeval_rename]
 
 /- English proof (translation)
-Rewrite using `[aeval_homogenise, eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_pow, ← pow_mul_pow_sub (x (g q)) (monomial_le_degreeOf q hμ)]`. Clear denominators, using `[pow_ne_zero _ (hx q)]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem aeval_homogenise_div {L : Type*} [Field L] (v : P → V) (f g : Q → V)
     (F : MvPolynomial Q (MvPolynomial P ℤ)) (x : V → L) (hx : ∀ q, x (g q) ≠ 0) :
@@ -61,7 +61,7 @@ theorem aeval_homogenise_div {L : Type*} [Field L] (v : P → V) (f g : Q → V)
   field_simp [pow_ne_zero _ (hx q)]
 
 /- English proof (translation)
-Rewrite using `[aeval_homogenise, eval₂_eq']`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem aeval_homogenise_one {R : Type*} [CommRing R] (v : P → V) (f g : Q → V)
     (F : MvPolynomial Q (MvPolynomial P ℤ)) (z : V → R) (hz : ∀ q, z (g q) = 1) :

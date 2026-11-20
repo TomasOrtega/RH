@@ -7,19 +7,17 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hSh hAc hAC hTF E _ _ _ A n p _ S F x U w₀ Up V h1 h2 h3 h4 h5 r W hAux N hrN hSt L hw Ty hTy g θ hs`. Take `⟨-, hcase⟩` from `hSh E A n p S F x U w₀ Up V h1 h2 h3 h4 h5 r W hAux N hrN hSt L hw Ty hTy g θ hs`. Take `⟨hsupp, hdeck, hgen⟩` from `hAc E A n p S F x U w₀ Up V h1 h2 h3 h4 h5 r W hAux N hrN hSt L hw Ty hTy g θ hs`. Take `⟨tf1, tf2, -⟩` from `hTF E A n p S F x U w₀ Up V h1 h2 h3 h4 h5 r W hAux N hrN hSt L hw Ty hTy`. Break down `hcase with ⟨hD, hh, hθ⟩ | ⟨w, t, z, i, B, hFree, hAp, -, -, -, -, -, hinv, hCen, hWpr, hFg, -⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hA` using `hdeck hD hh`. Establish `hhK : g.h ∈ Ty.K` using `((Ty.mem_kerK _).1 hh).1`. Use `⟨hA.1, ?_, Or.inl ⟨hD, hθ, ?_⟩⟩` and prove the remaining obligations. Introduce `a ha u hu`. Take `⟨k, hk, hka⟩` from `hsupp a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `haK : a ∈ Ty.K`. Establish `e : a = (g.h * k)⁻¹ * (g.h * k * a)` using `by group`. Rewrite using `[e]`. Conclude with `Ty.K.mul_mem (Ty.K.inv_mem (Ty.K.mul_mem hhK hk)) hka`. Conclude with `(tf1 u hu).1.2 a haK`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e` using `(hAC _ _ Ty _ _ _ hA).1`. Rewrite `e` using `[one_smul]`. Then use the resulting hypothesis. Take `⟨hfac, hap⟩` from `tf2 w hFree.2.1 hFree.2.2.1 hAp`. Establish `hA` using `hgen _ (L w) _ t⁻¹ (F.j (z ^ i)⁻¹) hfac hFg hap hCen hinv`. Establish `hpr : Ty.L.pr g.h = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e` using `hA.2.1`. Rewrite `e` using `[map_inv, inv_eq_one]`. Then use the resulting hypothesis. Use `⟨hA.1, ?_, Or.inr ⟨hpr, hWpr, (hAC _ _ Ty _ _ _ hA).1⟩⟩` and prove the remaining obligations. Introduce `a ha u hu`. Take `⟨k, hk, hka⟩` from `hsupp a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f` using `(tf1 u hu).1.2`. Establish `e : (L u).pr (g.h * k * a) = (L u).pr k * (L u).pr a`. Rewrite using `[map_mul, map_mul, hWpr u hu, one_mul]`. Establish `h6` using `f _ hka`. Rewrite `h6` using `[e]`.
-
-Conclude with `(Subgroup.mul_mem_cancel_left _ (f k hk)).1 h6`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pMemFn :
     SeenShape → SeenActs → ActsConv → TyFact → MemFn := by

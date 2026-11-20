@@ -10,13 +10,13 @@ open UpperTheory.HF
 open NumberField Formalism.HC
 
 /- English proof (translation)
-Introduce `φ H`. Establish `hQ : (1 : ℝ) ≤ H.QS` using `by exact_mod_cast H.QS_pos`. Use `⟨fun l hl => ?_, ?_, (UpperTheory.HF.inert_d H).2.2.1.le, Real.logb_nonneg one_lt_two hQ, fun p => rfl⟩` and prove the remaining obligations. Take `⟨hp, hd⟩` from `H.mem_small_iff.1 hl`. Establish `hq : l ≠ H.q` using `fun h => H.q_notMem_small (h ▸ hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdd : l ≠ H.d` using `fun h => H.d_notMem_small (h ▸ hl)`. Establish `hle` using `(UpperTheory.HF.layer_bot H.toHostRaw (j := 0) hp (Nat.zero_le _)).2.2`. Establish `hfac : H.condN.factorization l = padicValNat l H.QS`. Rewrite using `[HostRaw.condN, Nat.factorization_mul (mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero) H.d_prime.ne_zero, Nat.factorization_mul H.QS_ne_zero H.q_prime.ne_zero, Finsupp.add_apply, Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd (n := H.q) (fun h => hq ((Nat.prime_dvd_prime_iff …`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨(UpperTheory.HF.vd_le H hp).2.trans (by exact_mod_cast hfac ▸ hle), ?_⟩` and prove the remaining obligations. Rewrite using `[Real.le_logb_iff_rpow_le one_lt_two (by linarith), Real.rpow_natCast]`. Establish `h1 : 2 ^ padicValNat l H.QS ≤ H.QS` using `(Nat.pow_le_pow_left hp.two_le _).trans (Nat.le_of_dvd H.QS_pos pow_padicValNat_dvd)`. Conclude with `h1` after adjusting the coercions. Take `⟨-, -, h1, h2, -⟩` from `UpperTheory.HF.inert_q H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : H.q ∈ H.ram`. Conclude with `(h1 h).2.1.le`. Rewrite using `[h2 h]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cmDatum_discriminantDepth_bounds :
     ∀ {φ : Frame} (H : HostAx φ), (∀ l ∈ H.small, H.vdH l ≤ (padicValNat l H.QS : ℝ) ∧ (padicValNat l H.QS : ℝ) ≤ Real.logb 2 H.QS) ∧

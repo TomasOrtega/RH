@@ -11,9 +11,9 @@ namespace GlobalTheory.SgStarOddTheta
 open Formalism.L2.Th1.F
 
 /- English proof (translation)
-Rewrite using `[jacobiTheta₂, jacobiTheta₂, ← (Equiv.addRight m).tsum_eq (fun n => jacobiTheta₂_term n z τ), ← tsum_mul_left]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[jacobiTheta₂_term, jacobiTheta₂_term, ← Complex.exp_add]`. Use `Complex.exp_eq_exp_iff_exists_int.2 ⟨n * k, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.coe_addRight]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jacobiTheta₂_add_int_lattice (z τ : ℂ) (m k : ℤ) :
     jacobiTheta₂ (z + (m * τ + k)) τ =
@@ -28,7 +28,7 @@ theorem jacobiTheta₂_add_int_lattice (z τ : ℂ) (m k : ℤ) :
   ring
 
 /- English proof (translation)
-Unfold `GlobalTheory.ThetaWeberRoad.oddTheta`. Rewrite using `[show z + (m * (τ : ℂ) + k) + ((τ : ℂ) + 1) / 2 = (z + ((τ : ℂ) + 1) / 2) + (m * (τ : ℂ) + k) by ring, jacobiTheta₂_add_int_lattice, ← mul_assoc, ← mul_assoc, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem oddTheta_add (τ : UpperHalfPlane) (z : ℂ) (m k : ℤ) :
     GlobalTheory.ThetaWeberRoad.oddTheta τ (z + (m * (τ : ℂ) + k)) =
@@ -41,7 +41,7 @@ theorem oddTheta_add (τ : UpperHalfPlane) (z : ℂ) (m k : ℤ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[mul_comm, Complex.exp_int_mul, Complex.exp_pi_mul_I]`. Use `split_ifs with h`. Conclude with `h.neg_one_zpow`. Conclude with `(Int.not_even_iff_odd.1 h).neg_one_zpow`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_pi_I_int (j : ℤ) : cexp ((Real.pi : ℂ) * I * j) = if Even j then 1 else -1 := by
   rw [mul_comm, Complex.exp_int_mul, Complex.exp_pi_mul_I]
@@ -50,19 +50,19 @@ theorem exp_pi_I_int (j : ℤ) : cexp ((Real.pi : ℂ) * I * j) = if Even j then
   · exact (Int.not_even_iff_odd.1 h).neg_one_zpow
 
 /- English proof (translation)
-Simplify using `[area, GlobalTheory.periodPairOfTau, abs_of_pos τ.im_pos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem area_periodPairOfTau (τ : UpperHalfPlane) : area (GlobalTheory.periodPairOfTau τ) = τ.im := by
   simp [area, GlobalTheory.periodPairOfTau, abs_of_pos τ.im_pos]
 
 /- English proof (translation)
-Establish `hpar : Even (k - m + m * k) ↔ Even m ∧ Even k`. Simplify using `only [parity_simps]`. The claim follows by propositional logic. Establish `hmem : (m * (τ : ℂ) + k) / 2 ∈ (GlobalTheory.periodPairOfTau τ).lattice ↔ Even m ∧ Even k`. Rewrite using `[GlobalTheory.mem_lattice_periodPairOfTau]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q, e⟩`. Establish `e1 : (m * (τ : ℂ) + k) = (p + p : ℤ) * (τ : ℂ) + (q + q : ℤ)`. Use `push_cast`. Take the linear combination `-2 * e`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h1` using `congrArg Complex.im e1`. Simplify using `only [Complex.add_im, Complex.mul_im, Complex.intCast_re, Complex.intCast_im, zero_mul, add_zero, UpperHalfPlane.coe_im, mul_left_inj' τ.im_ne_zero, Int.cast_inj] at h1`. Rewrite `e1` using `[h1, add_right_inj, Int.cast_inj]`. Conclude with `⟨⟨p, h1⟩, ⟨q, e1⟩⟩`. Introduce and unpack `⟨⟨p, rfl⟩, ⟨q, rfl⟩⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨p, q, by push_cast; ring⟩`. Rewrite using `[exp_pi_I_int, semiChar]`. Distinguish the cases in `h : Even m ∧ Even k`. Rewrite using `[if_pos (hmem.2 h), if_pos (hpar.2 h)]`. Rewrite using `[if_neg (fun h' => h (hmem.1 h')), if_neg (fun h' => h (hpar.1 h'))]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem semiChar_periodPairOfTau (τ : UpperHalfPlane) (m k : ℤ) :
     semiChar (GlobalTheory.periodPairOfTau τ) (m * (τ : ℂ) + k) =
@@ -92,7 +92,7 @@ def expOddTheta (τ : UpperHalfPlane) (z : ℂ) : ℂ :=
   cexp ((Real.pi : ℂ) * z ^ 2 / (2 * ((τ.im : ℝ) : ℂ))) * GlobalTheory.ThetaWeberRoad.oddTheta τ z
 
 /- English proof (translation)
-Use `GlobalTheory.ThetaWeberRoad.differentiable_oddTheta τ` as an intermediate fact. Unfold `expOddTheta`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_expOddTheta (τ : UpperHalfPlane) : Differentiable ℂ (expOddTheta τ) := by
   have := GlobalTheory.ThetaWeberRoad.differentiable_oddTheta τ
@@ -100,13 +100,13 @@ theorem differentiable_expOddTheta (τ : UpperHalfPlane) : Differentiable ℂ (e
   fun_prop
 
 /- English proof (translation)
-Introduce `ω hω z`. Take `⟨m, k, rfl⟩` from `(GlobalTheory.mem_lattice_periodPairOfTau τ ω).1 hω`. Simplify using `only [one_mul]`. Rewrite using `[semiChar_periodPairOfTau, opU, herm, herm, area_periodPairOfTau, expOddTheta, expOddTheta, oddTheta_add]`. Establish `hE : ∀ A B C D w : ℂ, cexp A * (cexp B * (cexp C * w) * cexp D) = cexp (A + B + C + D) * w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `intros`. Simplify using `only [Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hE]`. Use `congr 1`.
+Fix the arbitrary inputs and assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Complex.exp_eq_exp_iff_exists_int.2 ⟨k - m + m * k, ?_⟩` and prove the remaining obligations. Establish `hc : (starRingEnd ℂ) (τ : ℂ) = τ - 2 * τ.im * I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : ((τ.im : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast τ.im_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, map_intCast, hc]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem expOddTheta_law (τ : UpperHalfPlane) : ∀ ω ∈ (GlobalTheory.periodPairOfTau τ).lattice, ∀ z,
     semiChar (GlobalTheory.periodPairOfTau τ) ω * opU (GlobalTheory.periodPairOfTau τ) ω (expOddTheta τ) z =
@@ -133,13 +133,13 @@ theorem expOddTheta_law (τ : UpperHalfPlane) : ∀ ω ∈ (GlobalTheory.periodP
   ring
 
 /- English proof (translation)
-Introduce `hTL hSB τ z`. Take `⟨c, hc⟩` from `hTL _ (expOddTheta τ) (differentiable_expOddTheta τ) (expOddTheta_law τ)`. Establish `hfun : expOddTheta τ = fun z => c * sgStar (GlobalTheory.periodPairOfTau τ) z` using `funext hc`. Take `⟨hdiff, -, -, hd1, -⟩` from `hSB (GlobalTheory.periodPairOfTau τ)`. Establish `h1 : deriv (expOddTheta τ) 0 = c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Use `((hdiff 0).hasDerivAt.const_mul c).deriv` as an intermediate fact. Rewrite `this` using `[hd1, mul_one]`. Conclude with `this`. Establish `he : HasDerivAt (fun z : ℂ => cexp ((Real.pi : ℂ) * z ^ 2 / (2 * ((τ.im : ℝ) : ℂ)))) 0 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(((hasDerivAt_pow 2 (0 : ℂ)).const_mul (Real.pi : ℂ)).div_const (2 * ((τ.im : ℝ) : ℂ))).cexp` as an intermediate fact. Simplify using `using this`. Establish `h2 : deriv (expOddTheta τ) 0 = deriv (GlobalTheory.ThetaWeberRoad.oddTheta τ) 0`. Use `(he.mul (GlobalTheory.ThetaWeberRoad.differentiable_oddTheta τ 0).hasDerivAt).deriv` as an intermediate fact. Simplify using `only [zero_mul, zero_add, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, zero_div, Complex.exp_zero, one_mul] at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this`. Use `hc z` as an intermediate fact. Rewrite `this` using `[expOddTheta]`. Rewrite using `[this, ← h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mul_oddTheta_eq_deriv_mul_sgStar :
     Formalism.L2.Th1.F.ThetaLine → Formalism.L2.Th1.F.SgStarBasic → ∀ (τ : UpperHalfPlane) (z : ℂ),

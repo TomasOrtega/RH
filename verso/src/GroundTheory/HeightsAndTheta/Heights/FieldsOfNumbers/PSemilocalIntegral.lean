@@ -26,11 +26,11 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `h1 : (0 : WithBot ℕ∞) ≤ ringKrullDim (MRing ι F ⧸ Q)` using `ringKrullDim_nonneg_of_nontrivial`. Establish `h2` using `PFContracted.ringKrullDim_lt_top (F := F) Q`. Consider the cases of `h : ringKrullDim (MRing ι F ⧸ Q) with`. Consider the case `bot`. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h1 (by simp)`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`. Rewrite `h2` using `[h]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Conclude with `absurd h2 (by simp)`. Consider the case `coe D => exact ⟨D, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringKrullDim_eq_nat (Q : Ideal (MRing ι F)) [Q.IsPrime] :
     ∃ D : ℕ, ringKrullDim (MRing ι F ⧸ Q) = D := by
@@ -48,7 +48,7 @@ theorem exists_ringKrullDim_eq_nat (Q : Ideal (MRing ι F)) [Q.IsPrime] :
     | coe D => exact ⟨D, rfl⟩
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `exists_ringKrullDim_eq_nat Q`. Conclude with `⟨_, PFContracted.relDim_eq_int hD⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_relDim_eq_int (Q : Ideal (MRing ι F)) [Q.IsPrime] :
     ∃ d : ℤ, relDim Q = ((d : WithTop ℤ) : WithBot (WithTop ℤ)) := by
@@ -56,9 +56,9 @@ theorem exists_relDim_eq_int (Q : Ideal (MRing ι F)) [Q.IsPrime] :
   exact ⟨_, PFContracted.relDim_eq_int hD⟩
 
 /- English proof (translation)
-Take `⟨x, hx, hxQ⟩` from `SetLike.exists_of_lt h`. Establish `hle` using `Inter.krullDim_quot_add_one_le h.le hx hxQ`. Take `⟨D, hD⟩` from `exists_ringKrullDim_eq_nat Q`. Take `⟨D₂, hD₂⟩` from `exists_ringKrullDim_eq_nat Q₂`. Rewrite `hle` using `[hD, hD₂]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: D₂ + 1 ≤ D` using `by exact_mod_cast hle`. Rewrite using `[PFContracted.relDim_eq_int hD, PFContracted.relDim_eq_int hD₂]`. Conclude with `WithBot.coe_lt_coe.mpr (WithTop.coe_lt_coe.mpr (by omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relDim_lt_of_lt {Q Q₂ : Ideal (MRing ι F)} [Q.IsPrime] [Q₂.IsPrime] (h : Q < Q₂) :
     relDim Q₂ < relDim Q := by
@@ -81,15 +81,15 @@ variable {F : Type u} [Field F] {K K' : Type} [Fintype K] [DecidableEq K] [Finty
 omit [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-Establish `hy₀` using `isMultiProjPrime_contractPrime j ι' hy`. Introduce `a ha`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight _) a]`. Use `finsum_induction (· ∈ W) W.zero_mem (fun _ _ => W.add_mem) (fun c => ?_)` and prove the remaining obligations. Establish `hac` using `hy₀.multiHomog a ha c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf : IsMultiHomog (weightedHomogeneousComponent (blockWeight _) c a) c` using `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Assume the negation of the conclusion as `hfW`. Use `choose i hi using hy₀.relevant`. Establish `hu` using `isMultiHomog_prod_pow (R := F) i c`. Establish `huy` using `(haveI := hy₀.isPrime; prod_pow_not_mem _ i hi c)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `hR _ (div_mem_degZeroLoc _ {W} hu hf (fun h => hfW (hPW h)) (fun W' hW' => (Set.mem_singleton_iff.mp hW') ▸ hfW))`. Rewrite `hmem` using `[map_div₀, contractFracMap_algebraMap, contractFracMap_algebraMap]`. Establish `h2` using `((hcen _ _ _ (isMultiHomog_rename j ι' hf) (isMultiHomog_rename j ι' hu) huy).2).mp hac`. Establish `hne : ∀ g, g ∉ P' → algebraMap (MRing ι' F ⧸ P') (FractionRing (MRing ι' F ⧸ P')) (Ideal.Quotient.mk P' g) ≠ 0` using `fun g hg => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `ha0` using `hne _ (fun h => hfW (hPW h))`. Establish `hu0` using `hne _ (fun h => huy (hP'y h))`. Rewrite `h2` using `[ValuationSubring.mem_nonunits_iff]`. Establish `h3` using `(R.valuation_le_one_iff _).mpr hmem`. Establish `h4` using `mul_lt_one_of_lt_of_le h2 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[← map_mul, div_mul_div_cancel₀ hu0, div_self ha0, map_one]`. Conclude with `lt_irrefl _ h4`.
+A detailed English derivation is pending.
 -/
 theorem contract_le {P' : Ideal (MRing ι' F)} [P'.IsPrime] {W : Ideal (MRing (fun k => ι' (j k)) F)}
     (hPW : contractPrime j P' ≤ W) (R : ValuationSubring (FractionRing (MRing ι' F ⧸ P')))
@@ -129,21 +129,19 @@ theorem contract_le {P' : Ideal (MRing ι' F)} [P'.IsPrime] {W : Ideal (MRing (f
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-Establish `hF : ∀ c : F, algebraMap F (FractionRing (MRing ι' F ⧸ P')) c ∈ R` using `fun c => by`. Rewrite using `[← (contractFracMap j P').commutes c]`. Conclude with `hR _ (Subalgebra.algebraMap_mem _ c)`. Take `⟨y, hy, hP'y, hcen⟩` from `hC F K' ι' P' hP' R hF`. Establish `hle` using `contract_le hPW R hR hy hP'y hcen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hy.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Establish `hcases : contractPrime j y = contractPrime j P' ∨ contractPrime j y = W`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : relDim (contractPrime j y) < relDim (contractPrime j P')` using `relDim_lt_of_lt (lt_of_le_of_ne (Ideal.comap_mono hP'y) hne.1.symm)`. Establish `d2 : relDim W < relDim (contractPrime j y)` using `relDim_lt_of_lt (lt_of_le_of_ne hle hne.2)`. Take `⟨d, hd⟩` from `exists_relDim_eq_int (contractPrime j y)`. Rewrite `d1` using `[hd, hPn, PFContracted.natCast_withBot_withTop]`. Rewrite `d2` using `[hd, hWn, PFContracted.natCast_withBot_withTop]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `WithTop.coe_lt_coe.mp (WithBot.coe_lt_coe.mp d1)`. Establish `e2` using `WithTop.coe_lt_coe.mp (WithBot.coe_lt_coe.mp d2)`. Move the coercions through the operations in `at e1`. Use linear arithmetic over natural numbers and integers. Establish `havoid : ∀ g, g ∉ P' → (∀ W' ∈ fibrePrimes j P' W, g ∉ W') → g ∉ y`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hcases with h | h` into its components or cases. Establish `hyP' : y = P'`. Assume the negation of the conclusion as `hne`. Establish `d1` using `relDim_lt_of_lt (lt_of_le_of_ne hP'y (Ne.symm hne))`. Establish `d2` using `ContractRelDimLe.proof F K K' j ι' y hy`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `d2` using `[h, hPn, ← hP'n]`. Conclude with `lt_irrefl _ (lt_of_lt_of_le d1 d2)`. Conclude with `fun g hg _ => hyP' ▸ hg`. Conclude with `fun g _ hgW => hgW y ⟨hy, hP'y, h⟩`. Introduce `x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Unfold `degZeroLoc at hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨b, f, g, hf, hg, hgP, hgW, rfl⟩` from `hx`. Conclude with `(hcen b f g hf hg (havoid g hgP hgW)).1`.
-
-Consider the case `algebraMap c => exact hF c`. Consider the case `add a a' _ _ ha ha' => exact R.add_mem _ _ ha ha'`. Consider the case `mul a a' _ _ ha ha' => exact R.mul_mem _ _ ha ha'`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem semilocal_le (hC : ValuativeCentre.Statement.{u}) {P' : Ideal (MRing ι' F)} [P'.IsPrime]
     (hP' : IsMultiProjPrime P') {n : ℕ} (hP'n : relDim P' = (n + 1 : ℕ))
@@ -195,13 +193,11 @@ theorem semilocal_le (hC : ValuativeCentre.Statement.{u}) {P' : Ideal (MRing ι'
 end Centre
 
 /- English proof (translation)
-Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hP'n hPn W hW hWn hPW`. Use `hP'.isPrime` as an intermediate fact. Set `f : degZeroLoc (contractPrime j P') {W} →+* FractionRing (MRing ι' F ⧸ P')` to `(algebraMap (degZeroLoc P' (fibrePrimes j P' W)) (FractionRing (MRing ι' F ⧸ P'))).comp (algebraMap (degZeroLoc (contractPrime j P') {W}) (degZeroLoc P' (fibrePrimes j P' W)))`. Use `⟨fun b => ?_⟩` and prove the remaining obligations. Use `RingHom.IsIntegralElem.of_map (g := algebraMap (degZeroLoc P' (fibrePrimes j P' W)) (FractionRing (MRing ι' F ⧸ P'))) Subtype.val_injective ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (b : FractionRing (MRing ι' F ⧸ P')) ∈ ⨅ V : {V : ValuationSubring (FractionRing (MRing ι' F ⧸ P')) // Set.range f ⊆ V.toSubring}, V.1.toSubring`. Rewrite using `[Subring.mem_iInf]`. Introduce and unpack `⟨V, hV⟩`. Conclude with `semilocal_le hC hP' hP'n hPn hW hWn hPW V (fun a ha => hV ⟨⟨a, ha⟩, rfl⟩) b b.2`. Rewrite `hmem` using `[iInf_valuationSubring_superset, ← RingHom.coe_range, Subring.closure_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hpx⟩` from `(hmem : IsIntegral f.range (b : FractionRing (MRing ι' F ⧸ P')))`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.mem_lifts p).mpr (Polynomial.map_surjective f.rangeRestrict (fun ⟨_, a, ha⟩ => ⟨a, Subtype.ext ha⟩) p)) hp`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (f.range.subtype.comp f.rangeRestrict) (b : FractionRing _) q = 0`. Rewrite using `[← Polynomial.eval₂_map, hq]`.
-
-Conclude with `hpx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof (hC : ValuativeCentre.Statement.{u}) : SemilocalIntegral.Statement.{u} := by
   intro F _ K K' _ _ _ _ j ι' _ P' hP' n hP'n hPn W hW hWn hPW

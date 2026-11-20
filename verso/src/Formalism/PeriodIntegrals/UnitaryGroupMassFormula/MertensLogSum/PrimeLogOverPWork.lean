@@ -7,42 +7,42 @@ open Finset ArithmeticFunction Nat
 def E : Finset ℕ := {4, 8, 16, 9, 27, 25}
 
 /- English proof (translation)
-Rewrite using `[show (4:ℕ) = 2 ^ 2 by norm_num, vonMangoldt_apply_pow (by norm_num : (2:ℕ) ≠ 0), vonMangoldt_apply_prime Nat.prime_two]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem vm4 : Λ 4 = Real.log 2 := by
   rw [show (4:ℕ) = 2 ^ 2 by norm_num, vonMangoldt_apply_pow (by norm_num : (2:ℕ) ≠ 0),
     vonMangoldt_apply_prime Nat.prime_two]
   norm_num
 /- English proof (translation)
-Rewrite using `[show (8:ℕ) = 2 ^ 3 by norm_num, vonMangoldt_apply_pow (by norm_num : (3:ℕ) ≠ 0), vonMangoldt_apply_prime Nat.prime_two]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem vm8 : Λ 8 = Real.log 2 := by
   rw [show (8:ℕ) = 2 ^ 3 by norm_num, vonMangoldt_apply_pow (by norm_num : (3:ℕ) ≠ 0),
     vonMangoldt_apply_prime Nat.prime_two]
   norm_num
 /- English proof (translation)
-Rewrite using `[show (16:ℕ) = 2 ^ 4 by norm_num, vonMangoldt_apply_pow (by norm_num : (4:ℕ) ≠ 0), vonMangoldt_apply_prime Nat.prime_two]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem vm16 : Λ 16 = Real.log 2 := by
   rw [show (16:ℕ) = 2 ^ 4 by norm_num, vonMangoldt_apply_pow (by norm_num : (4:ℕ) ≠ 0),
     vonMangoldt_apply_prime Nat.prime_two]
   norm_num
 /- English proof (translation)
-Rewrite using `[show (9:ℕ) = 3 ^ 2 by norm_num, vonMangoldt_apply_pow (by norm_num : (2:ℕ) ≠ 0), vonMangoldt_apply_prime Nat.prime_three]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem vm9 : Λ 9 = Real.log 3 := by
   rw [show (9:ℕ) = 3 ^ 2 by norm_num, vonMangoldt_apply_pow (by norm_num : (2:ℕ) ≠ 0),
     vonMangoldt_apply_prime Nat.prime_three]
   norm_num
 /- English proof (translation)
-Rewrite using `[show (27:ℕ) = 3 ^ 3 by norm_num, vonMangoldt_apply_pow (by norm_num : (3:ℕ) ≠ 0), vonMangoldt_apply_prime Nat.prime_three]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem vm27 : Λ 27 = Real.log 3 := by
   rw [show (27:ℕ) = 3 ^ 3 by norm_num, vonMangoldt_apply_pow (by norm_num : (3:ℕ) ≠ 0),
     vonMangoldt_apply_prime Nat.prime_three]
   norm_num
 /- English proof (translation)
-Rewrite using `[show (25:ℕ) = 5 ^ 2 by norm_num, vonMangoldt_apply_pow (by norm_num : (2:ℕ) ≠ 0), vonMangoldt_apply_prime Nat.prime_five]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem vm25 : Λ 25 = Real.log 5 := by
   rw [show (25:ℕ) = 5 ^ 2 by norm_num, vonMangoldt_apply_pow (by norm_num : (2:ℕ) ≠ 0),
@@ -50,13 +50,13 @@ theorem vm25 : Λ 25 = Real.log 5 := by
   norm_num
 
 /- English proof (translation)
-The claim follows from `mul_le_mul_of_nonneg_left (div_sub_one_le n d) vonMangoldt_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem term_ge (n d : ℕ) : Λ d * ((n : ℝ) / d - 1) ≤ Λ d * ((n / d : ℕ) : ℝ) :=
   mul_le_mul_of_nonneg_left (div_sub_one_le n d) vonMangoldt_nonneg
 
 /- English proof (translation)
-Substitute `hc hx` using the available equality. Conclude with `term_ge n d`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem vonMangoldt_mul_div_sub_one_le_floor_div (n d : ℕ) (c x : ℝ) (hc : Λ d = c) (hx : (d : ℝ) = x) :
     c * ((n : ℝ) / x - 1) ≤ c * ((n / d : ℕ) : ℝ) := by
@@ -64,9 +64,9 @@ private theorem vonMangoldt_mul_div_sub_one_le_floor_div (n d : ℕ) (c x : ℝ)
   exact term_ge n d
 
 /- English proof (translation)
-Establish `hs : ∑ d ∈ E, Λ d * ((n / d : ℕ) : ℝ) = Λ 4 * ((n / 4 : ℕ) : ℝ) + (Λ 8 * ((n / 8 : ℕ) : ℝ) + (Λ 16 * ((n / 16 : ℕ) : ℝ) + (Λ 9 * ((n / 9 : ℕ) : ℝ) + (Λ 27 * ((n / 27 : ℕ) : ℝ) + Λ 25 * ((n / 25 : ℕ) : ℝ)))))`. Rewrite using `[E, Finset.sum_insert (by simp), Finset.sum_insert (by simp), Finset.sum_insert (by simp), Finset.sum_insert (by simp), Finset.sum_insert (by simp), Finset.sum_singleton]`. Rewrite using `[hs, vm4, vm8, vm16, vm9, vm27, vm25]`. Establish `h4` using `vonMangoldt_mul_div_sub_one_le_floor_div n 4 (Real.log 2) 4 vm4 (by norm_num)`. Establish `h8` using `vonMangoldt_mul_div_sub_one_le_floor_div n 8 (Real.log 2) 8 vm8 (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h16` using `vonMangoldt_mul_div_sub_one_le_floor_div n 16 (Real.log 2) 16 vm16 (by norm_num)`. Establish `h9` using `vonMangoldt_mul_div_sub_one_le_floor_div n 9 (Real.log 3) 9 vm9 (by norm_num)`. Establish `h27` using `vonMangoldt_mul_div_sub_one_le_floor_div n 27 (Real.log 3) 27 vm27 (by norm_num)`. Establish `h25` using `vonMangoldt_mul_div_sub_one_le_floor_div n 25 (Real.log 5) 25 vm25 (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sum_E_ge (n : ℕ) :
     Real.log 2 * ((n : ℝ) * (7 / 16) - 3) + Real.log 3 * ((n : ℝ) * (4 / 27) - 2)
@@ -88,16 +88,16 @@ theorem sum_E_ge (n : ℕ) :
   linarith
 
 /- English proof (translation)
-Simplify using `[Chebyshev.theta]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem theta_eq_sum_log_primes (n : ℕ) :
     Chebyshev.theta n = ∑ p ∈ Ioc 0 n with p.Prime, Real.log p := by
   simp [Chebyshev.theta]
 
 /- English proof (translation)
-Rewrite using `[theta_eq_sum_log_primes, S, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`. Establish `hpp : p.Prime` using `(Finset.mem_filter.mp hp).2`. Establish `h` using `term_ge n p`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h`, the goal using `[vonMangoldt_apply_prime hpp]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_primes_ge (n : ℕ) :
     (n : ℝ) * S n - Chebyshev.theta n
@@ -112,13 +112,13 @@ theorem sum_primes_ge (n : ℕ) :
     _ ≤ _ := h
 
 /- English proof (translation)
-Rewrite using `[log_factorial_eq]`. Establish `hdisj : Disjoint ({d ∈ Ioc 0 n | d.Prime} : Finset ℕ) E`. Rewrite using `[Finset.disjoint_right]`. Introduce `d hd`. Simplify using `only [E, Finset.mem_insert, Finset.mem_singleton] at hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, not_and]`. Introduce `_`. Apply the tactic sequence `rcases hd with rfl | rfl | rfl | rfl | rfl | rfl <;> norm_num`. Establish `hsub : ({d ∈ Ioc 0 n | d.Prime} : Finset ℕ) ∪ E ⊆ Ioc 0 n`. Introduce `d hd`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_union.mp hd with h | h` into its components or cases. Conclude with `(Finset.mem_filter.mp h).1`. Simplify using `only [E, Finset.mem_insert, Finset.mem_singleton] at h`. Rewrite using `[Finset.mem_Ioc]`. Apply the tactic sequence `rcases h with rfl | rfl | rfl | rfl | rfl | rfl <;> omega`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hle` using `Finset.sum_le_sum_of_subset_of_nonneg hsub (f := fun d => Λ d * ((n / d : ℕ) : ℝ)) (fun d _ _ => mul_nonneg vonMangoldt_nonneg (Nat.cast_nonneg _))`. Rewrite `hle` using `[Finset.sum_union hdisj]`. Establish `h1` using `sum_primes_ge n`. Establish `h2` using `sum_E_ge n`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_factorial_ge (n : ℕ) (hn : 27 ≤ n) :
     (n : ℝ) * S n - Chebyshev.theta n
@@ -148,13 +148,13 @@ theorem log_factorial_ge (n : ℕ) (hn : 27 ≤ n) :
   linarith
 
 /- English proof (translation)
-Establish `hset : ({p ∈ Ioc 0 n | p.Prime} : Finset ℕ) = {p ∈ range (n + 1) | p.Prime}`. Use extensionality with `p`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h⟩, hp⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨by omega, hp⟩`. Introduce and unpack `⟨h, hp⟩`. Conclude with `⟨⟨hp.pos, by omega⟩, hp⟩`. Establish `hprod : ∑ p ∈ Ioc 0 n with p.Prime, Real.log p = Real.log (primorial n : ℝ)`. Rewrite using `[hset, primorial, Nat.cast_prod, Real.log_prod]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `p hp`. Conclude with `(Finset.mem_filter.mp hp).2.ne_zero` after adjusting the coercions. Rewrite using `[theta_eq_sum_log_primes, hprod]`. Establish `h4 : (primorial n : ℝ) ≤ (4 : ℝ) ^ n` using `by exact_mod_cast primorial_le_four_pow n`. Establish `hpos : (0 : ℝ) < primorial n` using `by exact_mod_cast primorial_pos n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_pow, show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem theta_le_two_mul_log_two (n : ℕ) : Chebyshev.theta n ≤ 2 * n * Real.log 2 := by
   have hset : ({p ∈ Ioc 0 n | p.Prime} : Finset ℕ) = {p ∈ range (n + 1) | p.Prime} := by
@@ -179,15 +179,15 @@ private theorem theta_le_two_mul_log_two (n : ℕ) : Chebyshev.theta n ≤ 2 * n
       ring
 
 /- English proof (translation)
-Establish `hn' : (64 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hnpos : (0 : ℝ) < n` using `by linarith`. Establish `h1` using `log_factorial_ge n (by omega)`. Establish `h2` using `log_factorial_le n (by omega)`. Establish `hθ` using `theta_le_two_mul_log_two n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : Real.log 2 < 0.6931471808` using `Real.log_two_lt_d9`. Establish `hL0 : 0.6931471803 < Real.log 2` using `Real.log_two_gt_d9`. Establish `h3 : (19 : ℝ) / 12 * Real.log 2 ≤ Real.log 3`. Use `le_log_of_pow_le 3 19 12 (by norm_num) (by norm_num)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h5 : (51 : ℝ) / 22 * Real.log 2 ≤ Real.log 5`. Use `le_log_of_pow_le 5 51 22 (by norm_num) (by norm_num)` as an intermediate fact. Simplify using `using this`. Establish `h64 : Real.log 64 = 6 * Real.log 2`. Rewrite using `[show (64 : ℝ) = 2 ^ 6 by norm_num, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `hlogn : Real.log n ≤ n / 64 - 1 + 6 * Real.log 2`. Establish `h` using `Real.log_le_sub_one_of_pos (div_pos hnpos (by norm_num : (0 : ℝ) < 64))`. Rewrite `h` using `[Real.log_div hnpos.ne' (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hnL : (n : ℝ) * Real.log 2 ≤ n * 0.6931471808` using `mul_le_mul_of_nonneg_left hL1.le hnpos.le`. Establish `h3' : (19 : ℝ) / 12 * Real.log 2 * ((n : ℝ) * (4 / 27) - 2) ≤ Real.log 3 * ((n : ℝ) * (4 / 27) - 2)` using `mul_le_mul_of_nonneg_right h3 (by linarith)`. Establish `h5' : (51 : ℝ) / 22 * Real.log 2 * ((n : ℝ) / 25 - 1) ≤ Real.log 5 * ((n : ℝ) / 25 - 1)` using `mul_le_mul_of_nonneg_right h5 (by linarith)`. Establish `key : (n : ℝ) * S n ≤ n * Real.log n` using `by linarith`. Conclude with `le_of_mul_le_mul_left key hnpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem S_le_large (n : ℕ) (hn : 64 ≤ n) : S n ≤ Real.log (n : ℝ) := by
   have hn' : (64 : ℝ) ≤ n := by exact_mod_cast hn

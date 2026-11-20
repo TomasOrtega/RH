@@ -9,9 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hQP : Formalism.UG.cT σ Q * Formalism.UG.cT σ P = 1` using `by rw [← Formalism.UG.cT_mul, hPQ, Formalism.UG.cT_one]`. Substitute `hJ` using the available equality. Rewrite using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = Formalism.UG.cT σ P * P := by`. Rewrite using `[hQP, hPQ, Matrix.mul_one, Matrix.mul_one, Matrix.mul_assoc (Formalism.UG.cT σ P), hM2, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_conj_by_inverse_pair_preserves_form {K : Type} [CommRing K] (σ : K →+* K) {n : ℕ}
     (P Q M J : Matrix (Fin n) (Fin n) K) (hPQ : P * Q = 1) (hM2 : Formalism.UG.cT σ M * M = 1)
@@ -26,17 +26,15 @@ theorem unitary_conj_by_inverse_pair_preserves_form {K : Type} [CommRing K] (σ 
 
 open Formalism.UG in
 /- English proof (translation)
-Establish `hcomm : ∀ a : AL L, compAt L v (conjAL L a) = Formalism.UG.sigR (IsCMField.complexConj L).toAlgHom (v.adicCompletion (maximalRealSubfield L)) (compAt L v a)`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [compAt, conjAL, Formalism.UG.sigR, Algebra.TensorProduct.map_tmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Use `set f : AL L →+* w.adicCompletion L := (Dv.e : _ →+* w.adicCompletion L).comp (compAt L v) with hf`. Establish `hfc : ∀ a, f (conjAL L a) = Dv.σw (f a)`. Introduce `a`. Simplify using `only [hf, RingHom.comp_apply, hcomm]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Dv.comm _`. Use `set A : Matrix (Fin n) (Fin n) (AL L) := ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) with hA`. Establish `hx : A * conjT (conjAL L) A = 1` using `x.2`. Use `set M : Matrix (Fin n) (Fin n) (w.adicCompletion L) := A.map f with hM`. Establish `hMc : (conjT (conjAL L) A).map f = cT Dv.σw M`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[conjT, cT, hM, hfc]`. Establish `hM1 : M * cT Dv.σw M = 1`. Rewrite using `[← hMc, hM, ← Matrix.map_mul, hx, Matrix.map_one f (map_zero f) (map_one f)]`. Establish `hM2 : cT Dv.σw M * M = 1` using `mul_eq_one_comm.mp hM1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hloc : ((Dv.loc x : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) = ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) * M * (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L))`. Simplify using `only [Formalism.AUTREP.InertDatum.loc, Units.val_mul, hM, hA, hf]`. Use `congr 2`. Establish `hPQ : (Dv.P : Matrix (Fin n) (Fin n) (w.adicCompletion L)) * ((Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
-
-Establish `key` using `unitary_conj_by_inverse_pair_preserves_form Dv.σw _ _ M _ hPQ hM2 Dv.Panti`. Rewrite `key` using `[← hloc]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertLoc_mem_GU (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))

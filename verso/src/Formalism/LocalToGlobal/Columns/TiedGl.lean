@@ -17,13 +17,13 @@ variable {X : Fields} {Pr : Primes X} (hc : Formalism.BasicNotions.CMData X.F X.
 
 include hc hPr in
 /- English proof (translation)
-The claim follows from `(glk_under hc hPr i _).1 ⟨w, hw, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem glk_under_mem (i : Fin 2) {w : Pl X.E} (hw : w ∈ Pr.vG i) : (Pr.g i : 𝓞 X.F) ∈ (underPl X.F w).asIdeal :=
   (glk_under hc hPr i _).1 ⟨w, hw, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(gwOf_uniq hc hPr i (underPl X.F w) (glk_under_mem hc hPr i hw) ⟨w, glk_vG_le i hw⟩ (show (underPl X.F w).asIdeal = _ from rfl)).symm`.
+A detailed English derivation is pending.
 -/
 theorem glk_gwOf_under (i : Fin 2) {w : Pl X.E} (hw : w ∈ Pr.vG i) :
     gwOf hc hPr i (underPl X.F w) (glk_under_mem hc hPr i hw) = ⟨w, glk_vG_le i hw⟩ :=
@@ -32,15 +32,13 @@ theorem glk_gwOf_under (i : Fin 2) {w : Pl X.E} (hw : w ∈ Pr.vG i) :
 
 open Classical in
 /- English proof (translation)
-Establish `h1 : ∀ v : HeightOneSpectrum (𝓞 X.F), (∏ᶠ (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal), A (gwOf hc hPr i v h)) = if h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal then A (gwOf hc hPr i v h) else 1` using `fun v => finprod_eq_dif _`. Rewrite using `[finprod_congr h1]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := (Pr.vG i).image (underPl X.F))]`. Rewrite using `[Finset.prod_image]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dif_pos (glk_vG_le i hw), dif_pos (glk_under_mem hc hPr i hw), glk_gwOf_under hc hPr i hw]`. Introduce `w hw w' hw' e`. Establish `e1` using `glk_gwOf_under hc hPr i hw`. Establish `e2` using `glk_gwOf_under hc hPr i hw'`. Establish `e3 : gwOf hc hPr i (underPl X.F w) (glk_under_mem hc hPr i hw) = gwOf hc hPr i (underPl X.F w') (glk_under_mem hc hPr i hw')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite `e3` using `[e1, e2]`. Conclude with `congrArg Subtype.val e3`. Introduce `v hv`. Rewrite `hv` using `[Function.mem_mulSupport]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal`. Assume the negation of the conclusion as `hn`. Conclude with `hv (dif_neg hn)`. Rewrite using `[Finset.coe_image]`. Use `⟨(gwOf hc hPr i v hp).1, gwOf_mem hc hPr i v hp, ?_⟩` and prove the remaining obligations.
-
-Conclude with `HeightOneSpectrum.ext (gwOf_over hc hPr i v hp).symm`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glk_prod_i (A : Pr.vGs → ℂ) (i : Fin 2) :
     ∏ w ∈ Pr.vG i, (if h : w ∈ Pr.vGs then A ⟨w, h⟩ else 1) =
@@ -70,11 +68,11 @@ theorem glk_prod_i (A : Pr.vGs → ℂ) (i : Fin 2) :
     exact HeightOneSpectrum.ext (gwOf_over hc hPr i v hp).symm
 
 /- English proof (translation)
-Establish `h0 : ∏ w : Pr.vGs, A w = ∏ w ∈ Pr.vGs, (if h : w ∈ Pr.vGs then A ⟨w, h⟩ else 1)`. Rewrite using `[← Finset.prod_coe_sort Pr.vGs]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos w.2]`. Establish `hd : Disjoint (Pr.vG 0) (Pr.vG 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.disjoint_left]`. Introduce `w h0 h1`. Conclude with `hPr.g_ne ((hPr.vG_norm 0 w h0).symm.trans (hPr.vG_norm 1 w h1))`. Rewrite using `[h0, Fin.prod_univ_two, ← glk_prod_i hc hPr A 0, ← glk_prod_i hc hPr A 1]`. Unfold `Primes.vGs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Finset.prod_union hd using 2` and compare the differences between its conclusion and the goal.
+A detailed English derivation is pending.
 -/
 theorem glk_prod (A : Pr.vGs → ℂ) :
     ∏ w : Pr.vGs, A w =

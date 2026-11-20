@@ -19,9 +19,9 @@ section Host
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Establish `h1` using `H.conjE_apply H.φ₀ (H.conj x)`. Establish `h2` using `H.conjE_apply H.φ₀ x`. Use `h1.trans ?_` and prove the remaining obligations. Use `show starRingEnd ℂ (H.φ₀ (H.conj x)) = _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Complex.conj_conj]`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   apply H.φ₀.injective
@@ -32,7 +32,7 @@ theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   rw [h2, Complex.conj_conj]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨H.conj (x : H.E), (x.isIntegral_coe).map (H.conj.toAlgHom.restrictScalars ℤ)⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_conj_int (x : 𝓞 H.E) : ∃ y : 𝓞 H.E, (y : H.E) = H.conj (x : H.E) :=
   ⟨⟨H.conj (x : H.E), (x.isIntegral_coe).map (H.conj.toAlgHom.restrictScalars ℤ)⟩, rfl⟩
@@ -40,13 +40,13 @@ theorem exists_conj_int (x : 𝓞 H.E) : ∃ y : 𝓞 H.E, (y : H.E) = H.conj (x
 variable {H}
 
 /- English proof (translation)
-Introduce `x y hy` and use `(h y x (by rw [hy, conj_conj])).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isConjPl_symm {w w' : HeightOneSpectrum (𝓞 H.E)} (h : IsConjPl H w w') : IsConjPl H w' w :=
   fun x y hy => (h y x (by rw [hy, conj_conj])).symm
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨x, hx⟩` from `exists_conj_int H y`. Establish `hy : (y : H.E) = H.conj (x : H.E)` using `by rw [hx, conj_conj]`. Conclude with `(h₁ x y hy).symm.trans (h₂ x y hy)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isConjPl_unique {w w₁ w₂ : HeightOneSpectrum (𝓞 H.E)} (h₁ : IsConjPl H w w₁)
     (h₂ : IsConjPl H w w₂) : w₁ = w₂ := by

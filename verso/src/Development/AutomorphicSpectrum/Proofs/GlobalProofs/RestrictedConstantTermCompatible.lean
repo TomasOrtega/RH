@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n n' : ℕ} (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin n') (Fin n') E) {m m' : ℕ}
 
 /- English proof (translation)
-Use extensionality with `j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mulVec_col {R : Type} [CommRing R] {a b c : ℕ} (A : Matrix (Fin a) (Fin b) R) (B : Matrix (Fin b) (Fin c) R)
     (i : Fin c) : A *ᵥ Bᵀ i = (A * B)ᵀ i := by
@@ -26,7 +26,7 @@ omit [NumberField E] in
 variable {σ J} in
 
 /- English proof (translation)
-Use `⟨fun hy => by rwa [h y (hA hy)], fun hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `(inv_mem h) _ (hA hy)`. Rewrite `h1` using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`. Rewrite using `[h1]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_iff_of_ptStab {A A' : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[F] E)} {g : GAd σ J}
     (h : g ∈ ptStab σ J A) (hA : A' ≤ A) (y : Fin n → AF F ⊗[F] E) :
@@ -40,39 +40,37 @@ omit [NumberField E] in
 variable {σ J J'} in
 
 /- English proof (translation)
-Establish `c0 : ∀ {a c d : ℕ} (U : Matrix (Fin a) (Fin c) E) (W : Matrix (Fin c) (Fin d) E), adMat F U * adMat F W = adMat F (U * W)` using `fun U W => (Matrix.map_mul ..).symm`. Establish `dM : ∀ y, (matHom _ σ J g).1 *ᵥ y - y = adMat F I *ᵥ ((matHom _ σ J' b).1 *ᵥ (adMat F P *ᵥ y) - adMat F P *ᵥ y)` using `fun y => by`. Rewrite using `[hg, add_mulVec, one_mulVec, add_sub_cancel_left, ← mulVec_mulVec, ← mulVec_mulVec, sub_mulVec, one_mulVec]`. Establish `pe : ∀ i, adMat F P *ᵥ (adMat F X)ᵀ (e i) = (adMat F X')ᵀ i` using `fun i => by`. Rewrite using `[mulVec_col, c0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hPX]`. Both sides reduce to the same expression. Establish `ie : ∀ i, adMat F I *ᵥ (adMat F X')ᵀ i = (adMat F X)ᵀ (e i)` using `fun i => by`. Rewrite using `[mulVec_col, c0, hIX]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hz : ∀ l ∈ upTo T, adMat F P *ᵥ (adMat F X)ᵀ l = 0` using `fun l hl => by`. Rewrite using `[mulVec_col, c0]`. Use extensionality with `i`. Express the relevant statement in the definitionally equal form `inclR (F := F) (AF F) ((P * X) i l) = 0`. Rewrite using `[hPT l hl i, map_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ip : ∀ (S : Set (Fin m')) y, y ∈ colSpan F X' S → adMat F I *ᵥ y ∈ colSpan F X (e '' S)` using `fun S y hy => by`. Use `(Submodule.span_le (p := (colSpan F X (e '' S)).comap (adMat F I).mulVecLin)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Express the relevant statement in the definitionally equal form `adMat F I *ᵥ _ ∈ colSpan F X (e '' S)`. Rewrite using `[ie]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨e i, ⟨i, hi, rfl⟩, rfl⟩`. Establish `e0 : {i | ∃ k' ∈ ({k} : Finset (Fin m')), i ≤ k'} = {i | i ≤ k}` using `by simp`. Establish `fixB : ∀ i ≤ k, (matHom _ σ J' b).1 *ᵥ (adMat F X')ᵀ i = (adMat F X')ᵀ i` using `fun i hi => by`. Establish `h` using `(Subgroup.mem_iInf.1 hb.1 i).2 _ (Submodule.subset_span ⟨i, rfl, rfl⟩)`. Establish `e3 : {l | ∃ k' ∈ ({k} : Finset (Fin m')), l ≤ k' ∧ k' < i} = ∅`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `l`. Simplify using `using fun _ => hi`. Rewrite `h` using `[e3, colSpan, Set.image_empty, Submodule.span_empty, Submodule.mem_bot, sub_eq_zero]`. Conclude with `h`. Establish `spanB : ∀ j, k < j → (matHom _ σ J' b).1 *ᵥ (adMat F X')ᵀ j - (adMat F X')ᵀ j ∈ colSpan F X' {i | i ≤ k}` using `fun j hj => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `(Subgroup.mem_iInf.1 hb.1 j).2 _ (Submodule.subset_span ⟨j, rfl, rfl⟩)`. Establish `e2 : {l | ∃ k' ∈ ({k} : Finset (Fin m')), l ≤ k' ∧ k' < j} = {i | i ≤ k}` using `by simp [hj]`. Rewrite `h` using `[e2]`. Then use the resulting hypothesis. Establish `perpB : ∀ w ∈ colPerp σ J' X' {i | i ≤ k}, (matHom _ σ J' b).1 *ᵥ w - w ∈ colSpan F X' {i | i ≤ k}` using `fun w hw => by`. Establish `h` using `hb.2.2 w (by rwa [e0])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h` using `[e0]`. Then use the resulting hypothesis. Set `A : Set (Fin m)` to `{i | ∃ k' ∈ insert (e k) T, i ≤ k'}`. Establish `hup : ∀ i, i ∈ upTo T → i ∈ A` using `fun i ⟨t, ht, hi⟩ => ⟨t, Finset.mem_insert_of_mem ht, hi⟩`. Establish `hA : ∀ i ∈ A, i ∈ upTo T ∨ ∃ i', i' ≤ k ∧ e i' = i` using `fun i ⟨t, ht, hi⟩ => by`. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : i ∈ upTo T`. Conclude with `Or.inl h`. Take `⟨i', rfl⟩` from `(hr i).1 h`. Conclude with `Or.inr ⟨i', he.le_iff_le.1 hi, rfl⟩`. Conclude with `Or.inl ⟨t, ht, hi⟩`.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `fix : ∀ i ∈ A, (matHom _ σ J g).1 *ᵥ (adMat F X)ᵀ i = (adMat F X)ᵀ i` using `fun i hi => by`. Rewrite using `[← sub_eq_zero, dM]`. Break down `hA i hi with h | ⟨i', h, rfl⟩` into its components or cases. Rewrite using `[hz i h, mulVec_zero, sub_zero, mulVec_zero]`. Rewrite using `[pe, fixB i' h, sub_self, mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `pt : g ∈ ptStab σ J (colSpan F X A)` using `fun y hy => by`. Use `(Submodule.span_le (p := LinearMap.eqLocus (matHom _ σ J g).1.mulVecLin LinearMap.id)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `fix i hi`. Establish `pp : ∀ y ∈ colPerp σ J X A, adMat F P *ᵥ y ∈ colPerp σ J' X' {i | i ≤ k}` using `fun y hy => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [colPerp, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`. Introduce `i hi`. Establish `h1 : Formalism.UG.cT (σ : E →+* E) X' * J' * P = (Formalism.UG.cT (σ : E →+* E) X * J).submatrix e id`. Rewrite using `[Matrix.mul_assoc, ← hG, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul, hIX]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hy (e i) ⟨e k, Finset.mem_insert_self _ _, he.monotone hi⟩`. Express the relevant statement in the definitionally equal form `(adMat F (Formalism.UG.cT (σ : E →+* E) X' * J') *ᵥ adMat F P *ᵥ y) i = 0`. Rewrite using `[mulVec_mulVec, c0, h1]`. Conclude with `h2`. Use `⟨Subgroup.mem_iInf.2 fun j => ⟨mem_iff_of_ptStab pt ?_, fun y hy => ?_⟩, mem_iff_of_ptStab pt le_rfl, fun y hy => ?_⟩` and prove the remaining obligations.
+Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.span_mono (Set.image_mono fun i ⟨k', h1, h2, _⟩ => ⟨k', h1, h2⟩)`. It suffices to establish `h : y ∈ (colSpan F X {i | ∃ k' ∈ insert (e k) T, i ≤ k' ∧ k' < j}).comap ((matHom _ σ J g).1 - 1).mulVecLin by`. Rewrite `h` using `[Submodule.mem_comap, Matrix.mulVecLin_apply, sub_mulVec, one_mulVec]`. Then use the resulting hypothesis. Use `(Submodule.span_le (p := (colSpan F X {i | ∃ k' ∈ insert (e k) T, i ≤ k' ∧ k' < j}).comap ((matHom _ σ J g).1 - 1).mulVecLin)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl, rfl⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply, sub_mulVec, one_mulVec]`. Distinguish the cases in `hj : j ∈ A`. Rewrite using `[fix j hj, sub_self]`. Conclude with `zero_mem _`. Take `⟨j', rfl⟩` from `(hr j).1 fun h => hj (hup j h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : k < j'` using `lt_of_not_ge fun h => hj ⟨e k, Finset.mem_insert_self _ _, he.monotone h⟩`. Rewrite using `[dM, pe]`. Use `Submodule.span_mono (Set.image_mono ?_) (ip _ _ (spanB j' hk))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `⟨e k, Finset.mem_insert_self _ _, he.monotone hi, he hk⟩`.
-
-Rewrite using `[dM]`. Use `Submodule.span_mono (Set.image_mono ?_) (ip _ _ (perpB _ (pp y hy)))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `⟨e k, Finset.mem_insert_self _ _, he.monotone hi⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_unip_of_mat {T : Finset (Fin m)} {X : Matrix (Fin n) (Fin m) E} {X' : Matrix (Fin n') (Fin m') E}
     {I : Matrix (Fin n) (Fin n') E} {P : Matrix (Fin n') (Fin n) E} {e : Fin m' → Fin m}
@@ -178,9 +176,9 @@ theorem mem_unip_of_mat {T : Finset (Fin m)} {X : Matrix (Fin n) (Fin m) E} {X' 
 end Core
 
 /- English proof (translation)
-Introduce `D V m X Y hW T V' ι hι hR m' e X' Y' hS hW' s hs k b hb`. Take `⟨he, hr, hX, -⟩` from `hS`. Use `mem_unip_of_mat he hr hX ?_ ?_ cT_frameMat_mul_gram (mat_eq hι hs b) hb` and prove the remaining obligations. Rewrite using `[← hX, ← Matrix.mul_assoc, prM_mul_frameMat hι, Matrix.one_mul]`. Introduce `l hl i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `prM_mulVec_eq_zero (V' := V') (ι := ι) (x := fun j => X j l) fun v' => ((hR (ι v')).1 ⟨v', rfl⟩ l hl).1`. Conclude with `congrFun h i`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unip_embed : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)) (V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V), HSpace.IsIsomEmb V' V ι → (∀ v : V.V, v ∈ LinearMap.range ι ↔ ∀ i ∈ GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.upTo T, V.hT (V.frame.equivFun.symm fun j => X j i) v = 0 ∧ V.hT (V.frame.equivFun.symm fun j => Y j i) v = 0) → ∀ (m' : ℕ) (e : Fin m' → Fin m) (X' Y' : Matrix (Fin V'.rank) (Fin m') D.host.E), GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.IsSliceFrame V V' ι X Y T e X' Y' → GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V'.gram X' Y' → ∀ s : GA D V' →* GA D V, (∀ h, EmbRel V V' ι (s h) h) → ∀ k : Fin m', ∀ b ∈ unip D.sp.cm.sig V'.gram X' {k}, s b ∈ unip D.sp.cm.sig V.gram X (insert (e k) T) := by
   intro D V m X Y hW T V' ι hι hR m' e X' Y' hS hW' s hs k b hb

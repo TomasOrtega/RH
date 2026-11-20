@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Use `w.isPrime` as an intermediate fact. Establish `: Finite (𝓞 L ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `⟨ringChar (𝓞 L ⧸ w.asIdeal), CharP.char_is_prime (𝓞 L ⧸ w.asIdeal) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `(ringChar.spec _ _).2 dvd_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unrJ_prime (L : Type) [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) :
     ∃ p : ℕ, p.Prime ∧ (p : 𝓞 L) ∈ w.asIdeal := by
@@ -17,11 +17,11 @@ private theorem unrJ_prime (L : Type) [Field L] [NumberField L] (w : HeightOneSp
   exact (ringChar.spec _ _).2 dvd_rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `hM : f * 2 ^ n ≠ 0` using `by positivity`. Establish `hd : ordCompl[p] (f * 2 ^ n) ∣ 2`. Establish `h2` using `h.add_right 1`. Rewrite `h2` using `[Nat.sub_add_cancel (Nat.pos_of_ne_zero hM)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(h2.dvd_iff dvd_rfl).1 (Nat.ordCompl_dvd _ _)`. Establish `key : ∀ d : ℕ, d ∣ f * 2 ^ n → ¬ p ∣ d → d ∣ 2` using `fun d hd1 hd2 => (Nat.dvd_ordCompl_of_dvd_not_dvd hd1 hd2).trans hd`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Establish `h3` using `Nat.le_of_dvd two_pos (key f (dvd_mul_right _ _) hf.not_two_dvd_nat)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hf`. Use linear arithmetic over natural numbers and integers. Establish `h4 : 2 ^ 2 ∣ f * 2 ^ n` using `(pow_dvd_pow 2 hn).mul_left f`. Establish `h3` using `key _ h4 fun h5 => h2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 (hp.dvd_of_dvd_pow h5))`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem unrJ_arith (f n p : ℕ) (hp : p.Prime) (hf : Odd f) (h1 : 1 < f) (hn : 2 ≤ n) :
     ¬ (f * 2 ^ n - 1 ≡ 1 [MOD ordCompl[p] (f * 2 ^ n)]) := by
@@ -43,9 +43,9 @@ private theorem unrJ_arith (f n p : ℕ) (hp : p.Prime) (hf : Odd f) (h1 : 1 < f
     omega
 
 /- English proof (translation)
-Set `φ : L →+* ℂ` to `Classical.choice inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Establish `h1 : (φ ζ) ^ M = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `h2 : ‖φ ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one h1 hM`. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_pow, ← Complex.inv_eq_conj h2]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero hM), h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem unrJ_conj (L : Type) [Field L] [NumberField L] [IsCMField L] (M : ℕ) (hM : M ≠ 0) (ζ : L)
     (hζ : ζ ^ M = 1) : IsCMField.complexConj L ζ = ζ ^ (M - 1) := by
@@ -58,11 +58,11 @@ private theorem unrJ_conj (L : Type) [Field L] [NumberField L] [IsCMField L] (M 
   rw [← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero hM), h1]
 
 /- English proof (translation)
-Introduce `f n _ L _ _ _ _ hf h1 hn w`. Rewrite using `[← UpperTheory.V.CF.ineCard.1 (maximalRealSubfield L) L w, Subgroup.card_eq_one, eq_bot_iff]`. Introduce `τ hτ`. Rewrite using `[Subgroup.mem_bot]`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc : Nat.card Gal(L/maximalRealSubfield L) = 2`. Rewrite using `[IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two]`. Establish `hτc : τ = IsCMField.complexConj L` using `((Nat.card_eq_two_iff' 1).1 hc).unique hne (IsCMField.complexConj_ne_one L)`. Substitute `hτc` using the available equality. Take `⟨p, hp, hw⟩` from `unrJ_prime L w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec (f * 2 ^ n) ℚ L`. Establish `h` using `(UpperTheory.V.CF.cycIne (f * 2 ^ n) L _ p hp hζ w hw (UpperTheory.V.CF.relIncl ℚ (maximalRealSubfield L) L (IsCMField.complexConj L)) (f * 2 ^ n - 1) (unrJ_conj L _ (NeZero.ne _) _ hζ.pow_eq_one)).1.1 (fun z => hτ z)`. Conclude with `unrJ_arith f n p hp hf h1 hn h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.unrJ :
     ∀ (f n : ℕ) [NeZero (f * 2 ^ n)] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {f * 2 ^ n} ℚ L] [IsCMField L], Odd f → 1 < f → 2 ≤ n → UnrFin L := by

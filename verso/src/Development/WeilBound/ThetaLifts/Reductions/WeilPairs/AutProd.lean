@@ -20,7 +20,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
 variable {η : (AEF F E)ˣ →* Circle} {ε : AEF F E} {of oi : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E nS nT → ℂ)}
 
 /- English proof (translation)
-The claim follows from `exists_fin_A C hO h1 h2 hε`.
+A detailed English derivation is pending.
 -/
 theorem exists_fin (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (h1 : IsHeckeCharF η)
     (h2 : ResEtaF η 1) (hε : IsHalfF σ ε) : ∃ of, IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of ∧
@@ -28,7 +28,7 @@ theorem exists_fin (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ�
   exists_fin_A C hO h1 h2 hε
 
 /- English proof (translation)
-The claim follows from `fin_inf_comm_A C hO hof hi p q f hf`.
+A detailed English derivation is pending.
 -/
 theorem fin_inf_comm (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
@@ -37,7 +37,7 @@ theorem fin_inf_comm (C : Ctx σ B JS JT ξ₀ θ ι) (hO : IsLatRepF σ JS JT �
   fin_inf_comm_A C hO hof hi p q f hf
 
 /- English proof (translation)
-The claim follows from `datum_of_aut_A C hO h1 h2 hf hof hi haut`.
+A detailed English derivation is pending.
 -/
 theorem datum_of_aut (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (h1 : IsHeckeCharF η) (h2 : ResEtaF η 1) (hf : IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of)

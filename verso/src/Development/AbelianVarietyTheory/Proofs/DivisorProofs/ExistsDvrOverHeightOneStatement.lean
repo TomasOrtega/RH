@@ -17,7 +17,7 @@ open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one | exact GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one | (intros; apply GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_dvr_over_height_one : ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [IsNoetherianRing A] [CharZero A] (𝔭 : PrimeSpectrum A), 𝔭.asIdeal.height = 1 → ∃ (T : CDVR) (iT : Localization.AtPrime 𝔭.asIdeal →+* T.V), Function.Injective iT ∧ IsLocalHom iT := by
   first | exact @GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one | exact GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one | (intros; apply GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one <;> assumption)

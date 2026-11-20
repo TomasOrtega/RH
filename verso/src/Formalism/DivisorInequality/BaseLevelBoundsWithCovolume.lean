@@ -5,7 +5,7 @@ import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.YoungDiagramTopEx
 namespace Formalism.DivisorInequality
 
 /- English proof (translation)
-The claim follows from `slope_bounds`.
+A detailed English derivation is pending.
 -/
 theorem boundsMu : BoundsMu := slope_bounds
 

@@ -10,7 +10,7 @@ open Classical
 namespace GlobalTheory.LowerHeckeSupp
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Units.val_mul, val_lowU, val_lowU, val_lowU, fromBlocks_multiply]`. Simplify using `[add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lowU_add {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (a b : Matrix D A k) :
@@ -20,11 +20,11 @@ theorem lowU_add {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
   simp [add_comm]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ξ hT hU φ hφ ν y`. Use `split_ifs with h`. Take `⟨ν₁, ν₂, h₁, h₂, rfl⟩` from `h`. Establish `hd : ∀ μ : Matrix D A k, ((1 : kˣ) : k) = ((lowU μ : GL (A ⊕ D) k) : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det`. Introduce `μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[val_lowU]`. Rewrite using `[lowU_add, mul_assoc, ← emb_mul_lowU]`. Rewrite using `[(hφ _ (lowU_mem h₁) 1 (hd ν₁) _).1, (hφ _ (lowU_mem h₂) 1 (hd ν₂) _).2]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x, z, j, hj, j', hj', he⟩` from `GlobalTheory.ParHeckeSupp.support_levi k A D ξ hT hU φ hφ _ hne`. Establish `hv : (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, y)).1 = fromBlocks 1 0 ν y.1`. Rewrite using `[Units.val_mul, val_lowU, val_emb_one, fromBlocks_multiply]`. Simplify using the standard rewrite rules. Conclude with `h (GlobalTheory.ParHeckeCap.lowerUni_mem_cap k A D _ ν y hv ⟨x, z, j, hj, j', hj', he⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem biType_lowU_emb : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ξ : kˣ →* ℂˣ), IsTame ξ → ¬ IsUnram ξ → ∀ φ : GL (A ⊕ D) k → ℂ, IsBiType ξ φ → ∀ (ν : Matrix D A k) (y : GL D k), φ (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, y)) = if ∃ ν₁ ν₂ : Matrix D A k, (∀ i a, valuation k (ν₁ i a) < 1) ∧ (∀ i a, valuation k (ν₂ i a) < 1) ∧ ν = ν₁ + y.1 * ν₂ then φ (emb₂ k (Equiv.refl (A ⊕ D)) (1, y)) else 0 := by
   intro k _ _ _ _ A D _ _ _ _ ξ hT hU φ hφ ν y

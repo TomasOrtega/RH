@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.SplitSourceAlg
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t N e P _ _ g hg _`. Establish `hx : (GlobalTheory.Grid.ofSgn true A).symm g ∈ GfC (GlobalTheory.Grid.neg A)`. Rewrite using `[GlobalTheory.SgnIdent.mem_GfC_sgn, MulEquiv.apply_symm_apply]`. Conclude with `hg`. Conclude with `GlobalTheory.BotExpand.om_vac_algComb hX.is.isVac (GlobalTheory.RowTest.isSelfDualC_neg' hX.is.rigA.1) hX.is.rigW.1 (fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hX.is.rigA.2.2 τ).1) (fun τ => (hX.is.rigW.2.2 τ).1) (hX.is.weil t) hx (one_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem src_split_algComb : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

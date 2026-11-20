@@ -17,7 +17,7 @@ def low (wt : ι → ℕ) (P : ι → Module.End L V) (m : ℕ) : Submodule L V 
   smul_mem' c x hx i hi := by rw [map_smul, hx i hi, smul_zero]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun T : Module.End L V => T x) hP.sum`. Simplify `h` using `[LinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_pieces {P : ι → Module.End L V} (hP : IsPieces P) (x : V) :
     ∑ j, P j x = x := by
@@ -25,9 +25,9 @@ theorem sum_pieces {P : ι → Module.End L V} (hP : IsPieces P) (x : V) :
   simpa [LinearMap.sum_apply] using h
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩ i hi`. Establish `hx' : x ∈ low wt P m` using `hx`. Rewrite using `[← sum_pieces hP x, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : m ≤ wt j`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hx' j hj, map_zero, map_zero]`. Establish `h` using `congrArg (fun T : Module.End L V => T x) (ha i j (by omega))`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_low_le {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPieces P)
     {a : Module.End L V} (ha : IsUpper wt P a) (m : ℕ) :
@@ -42,7 +42,7 @@ theorem map_low_le {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPieces 
     simpa using h
 
 /- English proof (translation)
-Set `e : V ≃ₗ[L] V` to `LinearEquiv.ofLinear a a' h1 h2`. Conclude with `Submodule.eq_of_le_of_finrank_eq (map_low_le hP ha m) (LinearEquiv.finrank_map_eq e (low wt P m))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem map_low_eq [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module.End L V}
     (hP : IsPieces P) {a a' : Module.End L V} (h1 : a * a' = 1) (h2 : a' * a = 1)
@@ -52,7 +52,7 @@ theorem map_low_eq [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module.
     (LinearEquiv.finrank_map_eq e (low wt P m))
 
 /- English proof (translation)
-Rewrite `hx` using `[← map_low_eq hP h1 h2 ha m]`. Take `⟨y, hy, rfl⟩` from `hx`. Establish `h` using `congrArg (fun T : Module.End L V => T y) h2`. Establish `h' : a' (a y) = y` using `by simpa using h`. Rewrite using `[h']` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem inv_mem_low [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module.End L V}
     (hP : IsPieces P) {a a' : Module.End L V} (h1 : a * a' = 1) (h2 : a' * a = 1)
@@ -64,9 +64,9 @@ theorem inv_mem_low [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module
   rwa [h']
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `h` using `congrArg (fun T : Module.End L V => T x) (hP.orth i j hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem piece_mem_low {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPieces P) (j : ι) (x : V) :
     P j x ∈ low wt P (wt j + 1) := by
@@ -78,7 +78,7 @@ theorem piece_mem_low {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPiec
   simpa using h
 
 /- English proof (translation)
-Introduce `L V ι _ _ _ _ _ wt P hP a a' h1 h2 ha i j hij`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h` using `inv_mem_low hP h1 h2 ha (piece_mem_low (wt := wt) hP j x) i (by omega)`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUpper_inv : ∀ {L V ι : Type} [Field L] [AddCommGroup V] [Module L V]
     [FiniteDimensional L V] [Fintype ι] (wt : ι → ℕ) (P : ι → Module.End L V),

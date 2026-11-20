@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKr
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad
 
 /- English proof (translation)
-Use `letI : Algebra L K := j.toAlgebra`. Use `haveI : IsScalarTower ℚ L K := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Module.Finite L K := Module.Finite.of_restrictScalars_finite ℚ L K`. Use `⟨Module.finrank L K, Module.finrank_pos, by rw [mul_comm, Module.finrank_mul_finrank], ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ ψ`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra L Ω := ψ.toAlgebra`. Establish `e : {θ : K →+* Ω // θ.comp j = ψ} ≃ (K →ₐ[L] Ω)` using `⟨fun θ => ⟨θ.1, fun a => RingHom.congr_fun θ.2 a⟩, fun θ => ⟨θ.toRingHom, θ.comp_algebraMap⟩, fun _ => rfl, fun _ => rfl⟩`. Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, AlgHom.card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem embedding_fibre_constant_card {L K : Type} [Field L] [NumberField L] [Field K] [NumberField K] (j : L →+* K) :
     ∃ d : ℕ, 0 < d ∧ d * Module.finrank ℚ L = Module.finrank ℚ K ∧
@@ -23,13 +23,11 @@ private theorem embedding_fibre_constant_card {L K : Type} [Field L] [NumberFiel
   rw [Nat.card_congr e, Nat.card_eq_fintype_card, AlgHom.card]
 
 /- English proof (translation)
-Establish `hP (ψ : {ψ : X.residueField x →+* Ω // ψ.comp ι.hom = σ}) : (Spec.map (CommRingCat.ofHom ψ.1) ≫ X.fromSpecResidueField x) ≫ s = spMap σ`. Establish `h : ι ≫ CommRingCat.ofHom ψ.1 = CommRingCat.ofHom σ` using `CommRingCat.hom_ext ψ.2`. Rewrite using `[Category.assoc, ← hι, ← Spec.map_comp]`. Conclude with `congrArg Spec.map h`. Set `P : {ψ : X.residueField x →+* Ω // ψ.comp ι.hom = σ} → {z : {z : Sp Ω ⟶ X // z ≫ s = spMap σ} // below z.1 = x}` to `fun ψ => ⟨⟨Spec.map (CommRingCat.ofHom ψ.1) ≫ X.fromSpecResidueField x, hP ψ⟩, (Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply x _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Equiv.ofBijective P ⟨fun a b h => ?_, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `h1 : Spec.map (CommRingCat.ofHom a.1) ≫ X.fromSpecResidueField x = Spec.map (CommRingCat.ofHom b.1) ≫ X.fromSpecResidueField x` using `congrArg (fun t => t.1.1) h`. Conclude with `Subtype.ext (congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 h1)))`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, h⟩ : ∃ ψ : X.residueField x ⟶ CommRingCat.of Ω, Spec.map ψ ≫ X.fromSpecResidueField x = y := by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hyx` using the available equality. Conclude with `⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField Ω X y⟩`. Establish `h2 : Spec.map (ι ≫ ψ) = Spec.map (CommRingCat.ofHom σ)`. Rewrite using `[Spec.map_comp, hι, ← Category.assoc, h]`. Conclude with `hy`.
-
-Conclude with `⟨⟨ψ.hom, congrArg CommRingCat.Hom.hom (Spec.map_injective h2)⟩, Subtype.ext (Subtype.ext h)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem residueField_embedding_points_equiv {F Ω : Type} [Field F] [Field Ω] {X : Scheme.{0}} (s : X ⟶ Sp F) (x : X)
     (ι : CommRingCat.of F ⟶ X.residueField x) (hι : Spec.map ι = X.fromSpecResidueField x ≫ s) (σ : F →+* Ω) :
@@ -59,9 +57,9 @@ private theorem residueField_embedding_points_equiv {F Ω : Type} [Field F] [Fie
     exact ⟨⟨ψ.hom, congrArg CommRingCat.Hom.hom (Spec.map_injective h2)⟩, Subtype.ext (Subtype.ext h)⟩
 
 /- English proof (translation)
-Rewrite using `[← finsum_subtype_eq_finsum_cond, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Set `r : {θ : K →+* Ω // θ.comp (j.comp ι) = σ} → {ψ : L →+* Ω // ψ.comp ι = σ}` to `fun θ => ⟨θ.1.comp j, θ.2⟩`. Rewrite using `[← Finset.sum_fiberwise Finset.univ r]`. Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => h ψ) fun θ hθ => (hG θ.1 ψ (congrArg Subtype.val (Finset.mem_filter.1 hθ).2)).symm, Finset.sum_const, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[← hd ψ.1, ← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr ⟨fun θ => ⟨⟨θ.1, by rw [← RingHom.comp_assoc, θ.2, ψ.2]⟩, Subtype.ext θ.2⟩, fun θ => ⟨θ.1.1, congrArg Subtype.val θ.2⟩, fun _ => rfl, fun _ => rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finsum_fibre_degree {F L K Ω : Type} [Field F] [Field L] [NumberField L] [Field K] [NumberField K]
     [Field Ω] [CharZero Ω] (ι : F →+* L) (j : L →+* K) (σ : F →+* Ω) (d : ℕ)
@@ -83,17 +81,15 @@ private theorem finsum_fibre_degree {F L K Ω : Type} [Field F] [Field L] [Numbe
     fun θ => ⟨θ.1.1, congrArg Subtype.val θ.2⟩, fun _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `F K _ _ _ _ Y φ q hq`. Take `⟨ι, hι⟩` from `Spec.map_surjective (Y.X.fromSpecResidueField (below q) ≫ Y.str)`. Take `⟨j, hj⟩ : ∃ j : Y.X.residueField (below q) ⟶ CommRingCat.of K, Spec.map j ≫ Y.X.fromSpecResidueField (below q) = q` from `⟨_, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K Y.X q⟩`. Establish `hφ : j.hom.comp ι.hom = φ`. Establish `h2 : Spec.map (ι ≫ j) = Spec.map (CommRingCat.ofHom φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, hι, ← Category.assoc, hj]`. Conclude with `hq`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h2)`. Use `haveI : CharZero (Y.X.residueField (below q)) := j.hom.charZero`. Use `haveI : NumberField (Y.X.residueField (below q)) := { to_finiteDimensional := FiniteDimensional.of_injective j.hom.toRatAlgHom.toLinearMap j.hom.injective }`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd0, hd1, hd⟩` from `embedding_fibre_constant_card j.hom`. Take `⟨n, -, hn1, hn⟩` from `embedding_fibre_constant_card (L := F) ι.hom`. Use `⟨d, hd0, ?_, ?_⟩` and prove the remaining obligations. Take `⟨E, -⟩` from `residueField_embedding_points_equiv Y.str (below q) ι hι (algebraMap F (AlgebraicClosure F))`. Establish `h1 : Nat.card {y : AlgPt Y // below y.1 = below q} = n` using `(Nat.card_congr E).symm.trans (hn _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, ← hd1, ← hn1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `Ω _ _ σ f G hfG haveI : CharZero Ω := charZero_of_injective_ringHom σ.injective`. Take `⟨E, hE⟩` from `residueField_embedding_points_equiv Y.str (below q) ι hι σ`. Establish `h1` using `finsum_fibre_degree (F := F) ι.hom j.hom σ d (hd Ω) (fun ψ => f (E ψ).1) G fun θ ψ hθ => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hfG θ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hφ, ← RingHom.comp_assoc, hθ, ψ.2]`. Establish `h3 : CommRingCat.ofHom ψ.1 = j ≫ CommRingCat.ofHom θ` using `CommRingCat.hom_ext hθ.symm`. Rewrite using `[hE, h3, Spec.map_comp, Category.assoc, hj]`. Rewrite `h1` using `[hφ]`.
-
-Rewrite using `[← h1, ← finsum_subtype_eq_finsum_cond, ← finsum_comp_equiv E]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.algebraic_points_degree_sum :
     ∀ (F K : Type) [Field F] [NumberField F] [Field K] [NumberField K] (Y : Var F) (φ : F →+* K) (q : Sp K ⟶ Y.X), q ≫ Y.str = spMap φ → ∃ d : ℕ, 0 < d ∧ d * Module.finrank ℚ F * Nat.card {y : AlgPt Y // below y.1 = below q} = Module.finrank ℚ K ∧ ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (σ : F →+* Ω) (f : {z : Sp Ω ⟶ Y.X // z ≫ Y.str = spMap σ} → ℝ) (G : (K →+* Ω) → ℝ), (∀ (θ : K →+* Ω) (z : {z : Sp Ω ⟶ Y.X // z ≫ Y.str = spMap σ}), θ.comp φ = σ → z.1 = spMap θ ≫ q → f z = G θ) → (d : ℝ) * ∑ᶠ (z : {z : Sp Ω ⟶ Y.X // z ≫ Y.str = spMap σ}) (_ : below z.1 = below q), f z = ∑ᶠ (θ : K →+* Ω) (_ : θ.comp φ = σ), G θ := by

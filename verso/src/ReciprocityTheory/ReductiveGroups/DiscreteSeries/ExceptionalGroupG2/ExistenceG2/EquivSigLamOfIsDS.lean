@@ -41,7 +41,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
 /- English proof (translation)
-Introduce `a b hab hne w hw hkhw`. Conclude with `cfa_no_of_vogan hgap hσ hD hV hVK hvog a b hab hne w hw hkhw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cf_no_of_vogan (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v)
@@ -53,7 +53,7 @@ theorem cf_no_of_vogan (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD
   exact cfa_no_of_vogan hgap hσ hD hV hVK hvog a b hab hne w hw hkhw
 
 /- English proof (translation)
-Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Conclude with `casimir_eq_casVal_of_no hgap.1 hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV (cf_no_of_vogan hgap hσ hD hV hVK hDS.2.2.2.2.2.2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem casOnDatum_of_isDS (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) :
@@ -70,14 +70,14 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Conclude with `casOnSmooth_of_copies hDS hgap (fun V hV hVK => casOnDatum_of_isDS hDS hgap (isDerivedOn_smE hDS.2.2.1) hV hVK)`.
+A detailed English derivation is pending.
 -/
 theorem casOnSmooth_of_isDS (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) : CasOnSmooth ε lam σ := by
   exact casOnSmooth_of_copies hDS hgap
     (fun V hV hVK => casOnDatum_of_isDS hDS hgap (isDerivedOn_smE hDS.2.2.1) hV hVK)
 
 /- English proof (translation)
-Conclude with `equiv_sigLam_of_cas hDS hgap (casOnSmooth_of_isDS hDS hgap) hP hv₀`.
+A detailed English derivation is pending.
 -/
 theorem equiv_sigLam_of_isDS (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam)
     {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
@@ -88,7 +88,7 @@ theorem equiv_sigLam_of_isDS (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hga
 end Arbitrary
 
 /- English proof (translation)
-Introduce `n ε lam hlam h hh hbig H _ _ _ σ hDS`. Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hh, hbig⟩`. Conclude with `isDS_props_of_copies hlam hh hbig (fun H' _ _ _ σ' hDS' V hV hVK => casOnDatum_of_isDS hDS' hgap (isDerivedOn_smE hDS'.2.2.1) hV hVK) H σ hDS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDS_props_of_gap :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →

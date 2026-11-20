@@ -20,9 +20,9 @@ section Lemmas
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Use `FiniteAdeleRing.ext _ fun w ↦ ?_` and prove the remaining obligations. Take `⟨i, hi, hia⟩` from `F.right w (w.under (𝓞 (maximalRealSubfield L))) rfl`. Rewrite using `[hia, GlobalTheory.DefU.ClassFin.adMap_eq_complMap rfl]`. Use `congrFun ((HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield L) (w.under (𝓞 (maximalRealSubfield L)))).equalizer hi (GlobalTheory.LFun.InertChart.continuous_complMap rfl) (funext fun k ↦ ?_)) _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i (algebraMap _ _ k) = GlobalTheory.LFun.complMap rfl (algebraMap _ _ k)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.LFun.complMap_algebraMap]`. Establish `h1 : (algebraMap (maximalRealSubfield L) (AFplus L) k) (w.under (𝓞 (maximalRealSubfield L))) = algebraMap _ (HeightOneSpectrum.adicCompletion (maximalRealSubfield L) (w.under (𝓞 (maximalRealSubfield L)))) k` using `rfl`. Rewrite using `[← h1, ← hia, Algebra.algebraMap_eq_smul_one (A := AFplus L) k, TensorProduct.tmul_smul, TensorProduct.smul_tmul', ← Algebra.algebraMap_eq_smul_one, F.left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kappa_one_tmul (F : FinIso L n) (a : AFplus L) :
     F.κ (1 ⊗ₜ a) = GlobalTheory.AdeleBaseChange.adMap (maximalRealSubfield L) L a := by
@@ -41,16 +41,14 @@ theorem kappa_one_tmul (F : FinIso L n) (a : AFplus L) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← kappa_one_tmul, ← F.left, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kappa_tmul (F : FinIso L n) (x : L) (a : AFplus L) :
     F.κ (x ⊗ₜ a) = algebraMap L _ x * GlobalTheory.AdeleBaseChange.adMap (maximalRealSubfield L) L a := by
   rw [← kappa_one_tmul, ← F.left, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.AdeleBaseChange.mem_int_of_map (F := maximalRealSubfield L) (E := L) (ι := F.κ.toRingHom) (fun x a ↦ kappa_tmul F x a) hy`. Use `(Subring.closure_le.2 ?_) h` and prove the remaining obligations. Introduce and unpack `_ (⟨x, rfl⟩ | ⟨a, rfl⟩)`. Take `⟨r, hr⟩` from `x.2`. Conclude with `Subring.subset_closure (Or.inl ⟨r, by show (x : L) ⊗ₜ _ = _; rw [← hr]⟩)`.
-
-Conclude with `Subring.subset_closure (Or.inr ⟨a.1, a.2, rfl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_ALint_of_kappa (F : FinIso L n) {y : AL L} (hy : F.κ y ∈ Formalism.UG.intAd L) :
     y ∈ ALint L := by
@@ -65,23 +63,23 @@ theorem mem_ALint_of_kappa (F : FinIso L n) {y : AL L} (hy : F.κ y ∈ Formalis
 end Lemmas
 
 /- English proof (translation)
-Introduce `L _ _ _ n F N hN`. Use `set c : Af L := algebraMap L (Af L) (N : L)⁻¹ with hc`. Set `S : Set (Af L)` to `{z | z * c ∈ Formalism.UG.intAd L}`. Establish `hI : IsOpen ((Formalism.UG.intAd L : Subring (Af L)) : Set (Af L))` using `RestrictedProduct.isOpen_forall_mem (fun v ↦ Valued.isOpen_valuationSubring _)`. Establish `hS : IsOpen S` using `hI.preimage (continuous_id.mul continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : Fin n → Fin n → finU L n → Af L` to `fun s t k ↦ pFin L ((((k : UA L n) : GlobalTheory.CuspRep.GA L n) : Matrix (Fin n) (Fin n) (Ad L)) s t) - pFin L ((1 : Matrix (Fin n) (Fin n) (Ad L)) s t)`. Establish `hm : Continuous (fun k : finU L n ↦ (((k : UA L n) : GlobalTheory.CuspRep.GA L n) : Matrix (Fin n) (Fin n) (Ad L)))` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hp : Continuous (pFin L)` using `continuous_snd`. Establish `hf : ∀ s t, Continuous (f s t)` using `fun s t ↦ (hp.comp (hm.matrix_elem s t)).sub continuous_const`. Use `⟨{k | ∀ s t, f s t k ∈ S}, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : {k | ∀ s t, f s t k ∈ S} = ⋂ s, ⋂ t, (f s t) ⁻¹' S` using `by ext; simp`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun s ↦ isOpen_iInter_of_finite fun t ↦ hS.preimage (hf s t)`. Introduce `s t`. Establish `e : f s t 1 = 0` using `by simp [f]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show f s t 1 * c ∈ Formalism.UG.intAd L`. Rewrite using `[e, zero_mul]`. Conclude with `zero_mem _`. Introduce `k hk x hx`. Establish `hloc : ∀ s t, F.κ (((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) s t) = pFin L ((((k : UA L n) : GlobalTheory.CuspRep.GA L n) : Matrix (Fin n) (Fin n) (Ad L)) s t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `s t`. Use `FiniteAdeleRing.ext _ fun w ↦ ?_` and prove the remaining obligations. Rewrite using `[← F.loc x w s t, hx]`. Both sides reduce to the same expression. Establish `hone : ∀ s t, F.κ ((1 : Matrix (Fin n) (Fin n) (AL L)) s t) = pFin L ((1 : Matrix (Fin n) (Fin n) (Ad L)) s t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s t`. Apply the tactic sequence `by_cases h : s = t <;> simp [Matrix.one_apply, h]`. Establish `key : ∀ s t, ∃ y ∈ ALint L, ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) s t - (1 : Matrix (Fin n) (Fin n) (AL L)) s t = (N : AL L) * y`. Introduce `s t`. Establish `h1 : f s t k * c ∈ Formalism.UG.intAd L` using `hk s t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : F.κ (((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) s t - (1 : Matrix (Fin n) (Fin n) (AL L)) s t) = f s t k`. Simplify using `only [f, map_sub, hloc, hone]`. Use `⟨F.κ.symm (f s t k * c), mem_ALint_of_kappa F (by rw [RingEquiv.apply_symm_apply]; exact h1), ?_⟩` and prove the remaining obligations. Apply `F.κ.injective` to reduce the goal to its premises. Rewrite using `[hz, map_mul, RingEquiv.apply_symm_apply, map_natCast, mul_comm (f s t k), ← mul_assoc, hc, ← map_natCast (algebraMap L (Af L)), ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hU : ∀ s t, ((x : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) s t ∈ ALint L`. Introduce `s t`. Take `⟨y, hy, e⟩` from `key s t`. Rewrite `e` using `[sub_eq_iff_eq_add]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `add_mem (mul_mem (natCast_mem _ N) hy) ?_` and prove the remaining obligations. Distinguish the cases in `h : s = t`. Simplify using `[Matrix.one_apply, h, one_mem]`. Simplify using `[Matrix.one_apply, h, zero_mem]`. Conclude with `⟨hU, key⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_open_cong : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (N : ℕ),
     0 < N → ∃ O : Set (finU L n), IsOpen O ∧ (1 : finU L n) ∈ O ∧

@@ -16,13 +16,13 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.Mem.An.PsiFix
 
 /- English proof (translation)
-Establish `hl : 0 ≤ Real.log u` using `Real.log_nonneg hu`. Unfold `GlobalTheoryTheory.psi0`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ‖∑ n ∈ Finset.Icc 1 ⌊u⌋₊, (GlobalTheoryTheory.abelian₂ n : ℂ) * χ (n : ZMod q)‖ ≤ u * Real.log u`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∀ n ∈ Finset.Icc 1 ⌊u⌋₊, ‖(GlobalTheoryTheory.abelian₂ n : ℂ) * χ (n : ZMod q)‖ ≤ Real.log u`. Introduce `n hn`. Establish `hn'` using `Finset.mem_Icc.1 hn`. Establish `hnu : (n : ℝ) ≤ u` using `(Nat.cast_le.2 hn'.2).trans (Nat.floor_le (by linarith))`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn'.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg vonMangoldt_nonneg]`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_le_card_nsmul _ _ _ this).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_Icc, Nat.add_sub_cancel, nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (Nat.floor_le (by linarith)) hl`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(add_le_add h1 (?_ : _ ≤ u)).trans (le_of_eq (by ring))` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by linarith)]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_psi0_le {q : ℕ} (χ : DirichletCharacter ℂ q) (u : ℝ) (hu : 1 ≤ u) :
     ‖GlobalTheoryTheory.psi0 χ u‖ ≤ u * (Real.log u + 1) := by
@@ -50,21 +50,19 @@ theorem norm_psi0_le {q : ℕ} (χ : DirichletCharacter ℂ q) (u : ℝ) (hu : 1
   · simp; linarith
 
 /- English proof (translation)
-Take `⟨c0, hc0, hZ⟩` from `hZ`. Establish `hfin` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 0).1`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδ'⟩ : ∃ δ : ℝ, 0 < δ ∧ ∀ ρ ∈ zerosIn χ 0 0, ρ.re ≤ 1 - δ := by`. Break down `(zerosIn χ 0 0).eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨ρ0, h0, hmax⟩` from `Set.exists_max_image _ (fun ρ : ℂ => ρ.re) hfin h`. Conclude with `⟨1 - ρ0.re, by linarith [h0.2.1], fun ρ hρ => by linarith [hmax ρ hρ]⟩`. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne q)`. Use `⟨min (min (c0 / 2) δ) 1, by positivity, min_le_right _ _, fun s hs hs' ρ hρ => ?_⟩` and prove the remaining obligations. Establish `hm1 : min (min (c0 / 2) δ) 1 ≤ c0 / 2` using `(min_le_left _ _).trans (min_le_left _ _)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm2 : min (min (c0 / 2) δ) 1 ≤ δ` using `(min_le_left _ _).trans (min_le_right _ _)`. Establish `hs0 : 0 < s` using `by linarith`. Distinguish the cases in `him : ρ.im = 0`. Use `hδ' ρ ⟨hρ.1, hρ.2.1, by simp [him], hρ.2.2.2⟩` as an intermediate fact. Establish `h2 : min (min (c0 / 2) δ) 1 / s ≤ δ`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hs0]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : ρ ≠ 1`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `him` to reduce the goal to its premises. Simplify using `[h]`. Establish `hnot : ¬ Formalism.ZeroFreeDirichlet.InRegion c0 q ρ` using `fun h => him (hZ q χ ρ h ⟨Or.inr hne, hρ.2.2.2⟩).2.2.1`. Unfold `Formalism.ZeroFreeDirichlet.InRegion at hnot`. Use `push Not at hnot`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hg : |ρ.im| ≤ Real.exp s` using `by simpa using hρ.2.2.1`. Establish `he : 1 ≤ Real.exp s` using `Real.one_le_exp hs0.le`. Establish `ha : 0 ≤ |ρ.im|` using `abs_nonneg _`. Establish `hpos : 0 < Real.log (q * (|ρ.im| + 2))` using `Real.log_pos (by nlinarith)`. Establish `hle : Real.log (q * (|ρ.im| + 2)) ≤ 2 * s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_exp]`. Use `_ ≤ 2 * s := by linarith`. Establish `h3 : min (min (c0 / 2) δ) 1 / s ≤ c0 / Real.log (q * (|ρ.im| + 2))`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_re_le (hZ : Formalism.ZeroFreeDirichlet.ZFRDirichlet) (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) :
     ∃ c : ℝ, 0 < c ∧ c ≤ 1 ∧ ∀ s : ℝ, 1 ≤ s → Real.log (3 * q) ≤ s →
@@ -108,11 +106,11 @@ theorem exists_re_le (hZ : Formalism.ZeroFreeDirichlet.ZFRDirichlet) (q : ℕ) [
     linarith
 
 /- English proof (translation)
-Establish `h1` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 1).1`. Establish `hT` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 T).1`. Rewrite using `[zsumR_eq_sum_toFinset χ 0 T _ hT, zsumR_eq_sum_toFinset χ 0 T _ hT, zsumR_eq_sum_toFinset χ 0 1 _ h1]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not hT.toFinset (fun ρ : ℂ => 1 < |ρ.im|), add_comm]`. Use `add_le_add ?_ (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun _ _ _ => by positivity)` and prove the remaining obligations. Introduce `ρ hρ`. Take `⟨ha, hb⟩` from `Finset.mem_filter.1 hρ`. Establish `ha' : ρ ∈ zerosIn χ 0 T` using `by simpa using ha`. Simplify using `only [Set.Finite.mem_toFinset]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨ha'.1, ha'.2.1, by simpa using hb, ha'.2.2.2⟩`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zsumR_recip_split {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (T : ℝ) :
     zsumR χ 0 T (fun ρ => 1 / ‖ρ‖) ≤ zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖) +
@@ -134,9 +132,9 @@ theorem zsumR_recip_split {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (
     split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hT` using `(ZeroWindow.finite_and_one_le_zmult q χ 0 T).1`. Rewrite using `[zsumR_eq_sum_toFinset χ 0 T _ hT, zsum, finsum_mem_eq_finite_toFinset_sum _ hT, Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun ρ hρ => ?_)` and prove the remaining obligations. Establish `h` using `hB ρ (by simpa using hρ)`. Rewrite using `[norm_mul, norm_div, Complex.norm_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_zsum_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (T u B : ℝ)
     (hB : ∀ ρ ∈ zerosIn χ 0 T, ‖(u : ℂ) ^ ρ‖ ≤ B) :
@@ -150,29 +148,29 @@ theorem norm_zsum_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (T u B
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨c, hc, hc1, hre⟩` from `exists_re_le hZ q χ`. Take `⟨C1, hC1⟩` from `GlobalTheory.Mem.An.ExplUsed.explicit_formula_used h1 h2 h3`. Take `⟨C2, hC2⟩` from `zsumR_recip_le h4`. Use `set A := zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖) with hA`. Establish `hA0 : 0 ≤ A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, zsumR_eq_sum_toFinset χ 0 1 _ (ZeroWindow.finite_and_one_le_zmult q χ 0 1).1]`. Check the signs of the components of the expression. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne q)`. Use `⟨|C1| * (9 + 2 + A) + (A + 4 * |C2|), c, by positivity, hc, fun s hs hs' => ?_⟩` and prove the remaining obligations. Establish `hs0 : 0 < s` using `by linarith`.
+Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hss : s ≤ s ^ 2` using `by nlinarith`. Establish `hT2 : 2 ≤ Real.exp s` using `by linarith [Real.add_one_le_exp s]`. Establish `hTu : Real.exp s ≤ Real.exp (s ^ 2)` using `Real.exp_le_exp.2 hss`. Establish `hlq : Real.log q ≤ s` using `(Real.log_le_log (by linarith) (by linarith)).trans hs'`. Establish `hlq0 : 0 ≤ Real.log q` using `Real.log_nonneg hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hC1 q χ hχ _ _ hT2 hTu`. Establish `e2` using `(hC2 q χ hχ _ hT2).1`. Use `set u := Real.exp (s ^ 2) with hu`. Establish `hu0 : 0 < u` using `Real.exp_pos _`. Use `set E := u * Real.exp (-c * s) with hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `l1 : Real.log (q * u) = Real.log q + s ^ 2`. Rewrite using `[Real.log_mul (by positivity) hu0.ne', hu, Real.log_exp]`. Establish `l2 : Real.log (q * u * Real.exp s) = Real.log q + s ^ 2 + s`. Rewrite using `[Real.log_mul (by positivity) (by positivity), l1, Real.log_exp]`. Establish `l3 : Real.log (q * Real.exp s) = Real.log q + s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_exp]`. Rewrite `e1` using `[l1, l2, ← hA]`. Rewrite `e2` using `[l3]`. Establish `hE1 : u / Real.exp s ≤ E`. Rewrite using `[hE, div_eq_mul_inv, ← Real.exp_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 (by nlinarith)) hu0.le`. Establish `hE2 : 1 ≤ E` using `le_trans (by rw [le_div_iff₀ (Real.exp_pos _)]; linarith) hE1`. Establish `hB : ∀ ρ ∈ zerosIn χ 0 (Real.exp s), ‖(u : ℂ) ^ ρ‖ ≤ E`. Introduce `ρ hρ`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hu0, hE, hu, ← Real.exp_mul, ← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `e3` using `norm_zsum_le χ _ u E hB`. Establish `e4` using `zsumR_recip_split χ (Real.exp s)`. Rewrite `e4` using `[← hA]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs4 : 1 ≤ s ^ 4` using `one_le_pow₀ hs`. Establish `hs24 : s ^ 2 ≤ s ^ 4` using `pow_le_pow_right₀ hs (by norm_num)`. Establish `e5 : zsumR χ 0 (Real.exp s) (fun ρ => 1 / ‖ρ‖) ≤ (A + 4 * |C2|) * s ^ 4`. Establish `a1 : C2 * (Real.log q + s) ^ 2 ≤ |C2| * (4 * s ^ 4)` using `(mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)).trans (mul_le_mul_of_nonneg_left (by nlinarith) (abs_nonneg _))`. Establish `a2 : A ≤ A * s ^ 4` using `le_mul_of_one_le_right hA0 hs4`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e6 : u * (Real.log q + s ^ 2 + s) ^ 2 / Real.exp s + (Real.log q + s ^ 2) + A ≤ (9 + 2 + A) * s ^ 4 * E`. Establish `a1 : (Real.log q + s ^ 2 + s) ^ 2 ≤ 9 * s ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : u * (Real.log q + s ^ 2 + s) ^ 2 / Real.exp s ≤ 9 * s ^ 4 * E`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `a3 : (2 + A) * s ^ 4 ≤ (2 + A) * s ^ 4 * E` using `le_mul_of_one_le_right (by positivity) hE2`. Establish `a4 : A ≤ A * s ^ 4` using `le_mul_of_one_le_right hA0 hs4`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e7 : C1 * (u * (Real.log q + s ^ 2 + s) ^ 2 / Real.exp s + (Real.log q + s ^ 2) + A) ≤ |C1| * ((9 + 2 + A) * s ^ 4 * E)` using `(mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)).trans (mul_le_mul_of_nonneg_left e6 (abs_nonneg _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e8 : E * zsumR χ 0 (Real.exp s) (fun ρ => 1 / ‖ρ‖) ≤ E * ((A + 4 * |C2|) * s ^ 4)` using `mul_le_mul_of_nonneg_left e5 (by linarith)`. Establish `e9` using `norm_sub_le (GlobalTheoryTheory.psi0 χ u + zsum χ 0 (Real.exp s) (fun ρ => (u : ℂ) ^ ρ / ρ)) (zsum χ 0 (Real.exp s) (fun ρ => (u : ℂ) ^ ρ / ρ))`. Rewrite `e9` using `[add_sub_cancel_right]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem large (h1 : ExplZeta) (h2 : ExplChi) (h3 : LogDerOne) (h4 : ZeroCount) (hZ : Formalism.ZeroFreeDirichlet.ZFRDirichlet)
     (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ.IsPrimitive) :
@@ -256,21 +254,19 @@ end GlobalTheory.Mem.An.PsiFix
 namespace GlobalTheory.Mem.An
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 hZ q _ χ hχ`. Take `⟨K, c, hK, hc, hl⟩` from `PsiFix.large h1 h2 h3 h4 hZ q χ hχ`. Use `set S := max 1 (Real.log (3 * q)) with hS`. Use `⟨K * (24 / (c / 2) ^ 4) + (S ^ 2 + 1) * Real.exp (c / 2 * S), c / 2, by positivity, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hu0 : 0 < u` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlu : 0 ≤ Real.log u` using `Real.log_nonneg (by linarith)`. Use `set s := Real.sqrt (Real.log u) with hs`. Establish `hs0 : 0 ≤ s` using `Real.sqrt_nonneg _`. Establish `hsq : s ^ 2 = Real.log u` using `Real.sq_sqrt hlu`. Establish `hF : 0 < u * Real.exp (-(c / 2) * s)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : 0 ≤ K * (24 / (c / 2) ^ 4)` using `by positivity`. Establish `hp2 : 0 ≤ (S ^ 2 + 1) * Real.exp (c / 2 * S)` using `by positivity`. Rewrite using `[mul_assoc]`. Break down `le_total S s with h | h` into its components or cases. Establish `e` using `hl s ((le_max_left _ _).trans h) ((le_max_right _ _).trans h)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hsq, Real.exp_log hu0]`. Establish `a` using `Real.pow_div_factorial_le_exp (c / 2 * s) (by positivity) 4`. Establish `a' : s ^ 4 ≤ 24 / (c / 2) ^ 4 * Real.exp (c / 2 * s)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (by positivity)]`. Establish `: ((Nat.factorial 4 : ℕ) : ℝ) = 24` using `by norm_num [Nat.factorial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `a` using `[this, mul_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `e.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_mul_of_nonneg_right (by linarith) hF.le`. Use `(PsiFix.norm_psi0_le χ u (by linarith)).trans ?_` and prove the remaining obligations. Establish `a1 : 1 ≤ Real.exp (c / 2 * S) * Real.exp (-(c / 2) * s)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.exp_add]`. Conclude with `Real.one_le_exp (by nlinarith)`. Establish `a2 : Real.log u + 1 ≤ S ^ 2 + 1`. Rewrite using `[← hsq]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem psi0_le_exp_neg_sqrt_log : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne →
     GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet →

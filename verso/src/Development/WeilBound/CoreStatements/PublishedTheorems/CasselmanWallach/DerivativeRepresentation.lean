@@ -25,7 +25,7 @@ theorem incl_val (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.Cha
     ((incl hK v : ReciprocityTheory.ChartRestriction.DS.smD ε σ) : H) = v := rfl
 
 /- English proof (translation)
-Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem incl_inj (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.ChartRestriction.DS.smD ε σ) {v w : kfin ε σ}
     (h : incl hK v = incl hK w) : v = w := by
@@ -43,13 +43,13 @@ variable (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.ChartRestri
     (h2 : ∀ a b, ∀ v ∈ CompanionTheory.D.gk.HC.KF ε σ, ReciprocityTheory.ChartRestriction.DS.smE ε σ a b v ∈ CompanionTheory.D.gk.HC.KF ε σ)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem incl_E (a b : Fin n) (v : kfin ε σ) :
     incl hK (Eop hK h2 a b v) = ReciprocityTheory.ChartRestriction.DS.smE ε σ a b (incl hK v) := Subtype.ext rfl
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.ChartRestriction.DS.actM, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, incl_E]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incl_actM (X : Mx n) (v : kfin ε σ) :
     incl hK (ReciprocityTheory.ChartRestriction.DS.actM (Eop hK h2) X v) = ReciprocityTheory.ChartRestriction.DS.actM (ReciprocityTheory.ChartRestriction.DS.smE ε σ) X (incl hK v) := by
@@ -62,23 +62,21 @@ namespace PositivityTheory.CW
 open KFiniteInclusion
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hσ hirr`. Take `⟨hK, h2⟩` from `CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H σ hσ hirr`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `hun` using `ReciprocityTheory.ChartRestriction.DS.isInfUnitary_of_isDerivedOn hσ hD`. Use `⟨Eop hK h2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X hX v`. Establish `h` using `ReciprocityTheory.ChartRestriction.DS.dS_eq_actM hD (X := X) hX (incl hK v)`. Establish `e1 : ((ReciprocityTheory.ChartRestriction.DS.actM (Eop hK h2) X v : kfin ε σ) : H) = ((ReciprocityTheory.ChartRestriction.DS.actM (ReciprocityTheory.ChartRestriction.DS.smE ε σ) X (incl hK v) : ReciprocityTheory.ChartRestriction.DS.smD ε σ) : H)`. Rewrite using `[← incl_actM hK h2 X v]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, ← h]`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.dS, dRep, Complex.coe_smul, incl_val]`. Introduce `a b c d`. Use `LinearMap.ext fun v => incl_inj hK ?_` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (hD.glRep a b c d) (incl hK v)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, map_sub, incl_E] at h ⊢`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp [incl_E]`. Introduce `a b x y`. Establish `h` using `hun a b (incl hK x) (incl hK y)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Submodule.coe_inner, Submodule.coe_inner]`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner]`. Conclude with `h`. Introduce `N hN set M := N.map (incl hK) with hM`. Establish `hMK : (M : Set (ReciprocityTheory.ChartRestriction.DS.smD ε σ)) ⊆ CompanionTheory.D.gk.HC.KF ε σ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨w, -, rfl⟩`. Conclude with `w.2`. Establish `hMst : ∀ a b, ∀ v ∈ M, ReciprocityTheory.ChartRestriction.DS.smE ε σ a b v ∈ M`. Introduce and unpack `a b _ ⟨w, hw, rfl⟩`. Conclude with `⟨Eop hK h2 a b w, hN a b w hw, incl_E hK h2 a b w⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `CompanionTheory.D.gk.HC.uIrr n ε H σ hσ hirr M hMK hMst with h | h` into its components or cases. Use `left`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `: incl hK x ∈ M` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_bot]`. Conclude with `incl_inj hK (this.trans (map_zero _).symm)`. Use `right`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `: incl hK x ∈ (M : Set (ReciprocityTheory.ChartRestriction.DS.smD ε σ))` using `by rw [h]; exact x.2`.
-
-Take `⟨w, hw, e⟩` from `this`. Rewrite using `[← incl_inj hK e]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem c1 : C1 := by
   intro n ε H _ _ _ σ hσ hirr

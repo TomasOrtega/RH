@@ -27,9 +27,9 @@ section General
 variable {F : Type} [Field F] {Y : Var F} {σ : F →+* ℂ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Establish `hO : IsOpen (h '' U)` using `h.isOpenMap U hU`. Rewrite using `[← (DivSec.isAlgAtlas_algAtlas hA).smoothOn_iff (Y.an σ) hO, ← DivSec.smoothOn_comp_iff hA]`. Establish `e1 : h ⁻¹' (h '' U) = U` using `h.preimage_image U`. Establish `e2 : (fun y => f (h.symm y)) ∘ h = f` using `by funext z; simp`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_image {A : FinHolAtlas Y.dim X} {h : X ≃ₜ Pts Y σ} (hA : DivSec.ChartsAlg A h) {U : Set X}
     (hU : IsOpen U) {f : X → ℝ} (hf : A.SmoothOn U f) :
@@ -43,19 +43,17 @@ theorem smoothOn_image {A : FinHolAtlas Y.dim X} {h : X ≃ₜ Pts Y σ} (hA : D
 variable [NumberField F]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hQ z`. Establish `hf0 : f ≠ 0` using `have ⟨_, _, hu⟩ := (hf z (Q.mem_U z)).1`. Use `left_ne_zero_of_mul hu.ne_zero`. Use `set g : Y.Fnˣ := (Units.mk0 f hf0)⁻¹ with hg`. Establish `hginv : ((g : Y.Fn))⁻¹ = f` using `by simp [g]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ y' ∈ Q.U z, h y' ∈ Var.eqnSet σ Δ g` using `fun y' hy' => Cartier.CartierDiv.isEqn_iff_generatesAt_inv.2 (by rw [hginv]; exact (hf y' hy').1)`. Establish `hval : ∀ y' ∈ Q.U z, Q.φ z y' = m.wt g (h y') / 2`. Introduce `y' hy'`. Establish `e₁ : (cxSt F).pn Y σ Δ m ((cxSt F).cx Y σ f) (h y') = m.h g (h y')`. Use `Var.pn_frame (m := m) (hmem y' hy')` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Units.val_inv_eq_inv_val, hginv]`. Then use the resulting hypothesis. Rewrite using `[(hf y' hy').2.2]`. Unfold `lnN`. Rewrite using `[e₁, Var.Met.wt]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ y' ∈ Q.U z, h y' ∈ m.posSet` using `fun y' hy' => pos_of_mul_pos_right (hf y' hy').2.1 (sq_nonneg _)`. Establish `hO : IsOpen (h '' Q.U z)` using `h.isOpenMap _ (Q.isOpen_U z)`. Establish `hzU : h z ∈ h '' Q.U z` using `⟨z, Q.mem_U z, rfl⟩`. Establish `hwt : ∀ y ∈ h '' Q.U z, m.wt g y = 2 * Q.φ z (h.symm y)`. Introduce and unpack `_ ⟨y', hy', rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h.symm_apply_apply, hval y' hy']`. Expand and normalize the polynomial expressions, which then agree. Establish `hsg : (Y.an σ).SmoothOn (h '' Q.U z) (m.wt g)` using `fun i => (contDiffOn_const.mul (hs i)).congr fun v hv => hwt _ hv.2`. Establish `hS1 : ∀ y ∈ h '' Q.U z ∩ Var.eqnSet σ Δ (Var.eqn Δ (h z)), y ∈ Var.eqnSet σ Δ g ∧ y ∈ m.posSet`. Introduce and unpack `_ ⟨⟨y', hy', rfl⟩, _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hmem y' hy', hpos y' hy'⟩`. Establish `hL : c.levi (m.wt (Var.eqn Δ (h z))) (h z) ξ = c.levi (m.wt g) (h z) ξ` using `AnRead.levi_eq_of_add_log (R := Y.an σ) (hO.inter (Var.isOpen_eqnSet Δ _)) (hsg.mono Set.inter_subset_left) ((Var.holoOn_tv Δ g (Var.eqn Δ (h z))).mono fun y hy => ⟨(hS1 y hy).1, hy.2⟩) (fun y hy => Var.tv_ne_zero (hS1 y hy).1 hy.2) (fun y hy => Var.Met.wt_trans (hS1 y hy).2 (hS1 …`. Establish `hc2 : ContDiffAt ℝ 2 (m.wt g ∘ c.e.symm) (c.e (h z))` using `hsg.contDiffAt_two hO hz hzU`. Establish `e2 : c.levi (fun y => Q.φ z (h.symm y)) (h z) ξ = c.levi (fun y => (1 / 2 : ℝ) * m.wt g y) (h z) ξ` using `AlgChart.levi_congr hO hz hzU (fun y hy => by rw [hwt y hy]; ring) ξ`. Rewrite using `[e2, AlgChart.levi_const_mul _ hc2, curvMet, ddcForm, hL]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem levi_pot_eq_curvMet {Δ : Y.Dv} {m : Var.Met Y σ Δ} (h : X ≃ₜ Pts Y σ) {Q : LocPot X}
     (hQ : IsPot (C := cxSt F) h m Q) (z : X)
@@ -113,23 +111,23 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Substitute `he` using the available equality. Establish `hA : DivSec.ChartsAlg (M.A a) (I.pt a)` using `I.alg a`. Take `⟨Q, hQ, hlev⟩` from `hF a`. Establish `hO : IsOpen ((I.pt a) '' (P a).U x)` using `(I.pt a).isOpenMap _ ((P a).isOpen_U x)`. Establish `hsP : (Y.an (I.ε a)).SmoothOn ((I.pt a) '' (P a).U x) (fun y => (P a).φ x ((I.pt a).symm y))` using `smoothOn_image hA ((P a).isOpen_U x) (hP.1 x)`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hO, fun i => contDiffOn_const.mul (hsP i), fun c y hyc hyW ξ => ?_⟩` and prove the remaining obligations. Take `⟨z, hzU, rfl⟩` from `hyW`. Take `⟨j, hj⟩` from `(M.A a).cover z`. Take `⟨c', hc'⟩` from `I.alg a j`. Establish `hv : (M.A a).chart j z ∈ ((M.A a).chart j).target` using `((M.A a).chart j).map_source hj`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsymm : ((M.A a).chart j).symm ((M.A a).chart j z) = z` using `((M.A a).chart j).left_inv hj`. Establish `hz' : (I.pt a) z ∈ c'.e.source`. Rewrite `hj` using `[hc', Homeomorph.transOpenPartialHomeomorph_source]`. Conclude with `hj`. Establish `hsQ : ∀ i, (Y.an (I.ε a)).SmoothOn ((I.pt a) '' (Q i).U z) (fun y => (Q i).φ z ((I.pt a).symm y))` using `fun i => smoothOn_image hA ((Q i).isOpen_U z) ((hQ i).2.1 z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOQ : ∀ i, IsOpen ((I.pt a) '' (Q i).U z)` using `fun i => (I.pt a).isOpenMap _ ((Q i).isOpen_U z)`. Establish `hzQ : ∀ i, (I.pt a) z ∈ (I.pt a) '' (Q i).U z` using `fun i => ⟨z, (Q i).mem_U z, rfl⟩`. Establish `hzP : (I.pt a) z ∈ (I.pt a) '' (P a).U x` using `⟨z, hzU, rfl⟩`. Establish `hcv : (M.A a).chart j z = c'.finChart ((I.pt a) z)` using `by rw [hc']; rfl`. Establish `hcs : ⇑((M.A a).chart j).symm = (I.pt a).symm ∘ c'.finChart.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Establish `conv : ∀ (φ : M.X a → ℝ) (w : Fin Y.dim → ℂ), ContDiffAt ℝ 2 ((fun y => φ ((I.pt a).symm y)) ∘ c'.e.symm) (c'.e ((I.pt a) z)) → c'.levi (fun y => φ ((I.pt a).symm y)) ((I.pt a) z) w = levi (φ ∘ ((M.A a).chart j).symm) ((M.A a).chart j z) w`. Introduce `φ w hφ`. Rewrite using `[AlgChart.levi, c'.leviV_re_eq hφ, hcv, hcs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key : ∀ w, c'.levi (fun y => (P a).φ x ((I.pt a).symm y)) ((I.pt a) z) w = ∑ i, t i * c'.levi (fun y => (Q i).φ z ((I.pt a).symm y)) ((I.pt a) z) w`. Introduce `w`. Establish `hb` using `GlobalTheory.ShellMass.levi_base hP x j hv (by rw [hsymm]; exact hzU) w`. Rewrite `hb` using `[hlev j _ hv w]`. Rewrite using `[conv _ w (hsP.contDiffAt_two hO hz' hzP), hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[conv _ w ((hsQ i).contDiffAt_two (hOQ i) hz' (hzQ i))]`. Simplify using `only [leviAt, hsymm]`. Establish `eP` using `AlgChart.levi_trans hyc hz' (hsP.contDiffAt_two hO hz' hzP) ξ`. Establish `eQ : ∀ i, c.levi (fun y => (Q i).φ z ((I.pt a).symm y)) ((I.pt a) z) ξ = c'.levi (fun y => (Q i).φ z ((I.pt a).symm y)) ((I.pt a) z) (c.dtrans c' ((I.pt a) z) ξ)` using `fun i => AlgChart.levi_trans hyc hz' ((hsQ i).contDiffAt_two (hOQ i) hz' (hzQ i)) ξ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : ∀ i, c.levi (fun y => (Q i).φ z ((I.pt a).symm y)) ((I.pt a) z) ξ = Real.pi / 2 * curvMet (m i (I.ε a)) c ((I.pt a) z) ξ` using `fun i => levi_pot_eq_curvMet (I.pt a) (hQ i).1 z (hsQ i) c hyc ξ`. Use `show ∑ i, t i * curvMet (m i (I.ε a)) c ((I.pt a) z) ξ = c.levi (fun y => 2 * (P a).φ x ((I.pt a).symm y)) ((I.pt a) z) ξ / Real.pi`. Rewrite using `[AlgChart.levi_const_mul 2 (hsP.contDiffAt_two hO hyc hzP), eP, key]`. Repeatedly rewrite using `[← eQ, hA']`. Rewrite using `[Finset.mul_sum, Finset.sum_div]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem isPotential_formOf {e : ℕ} {M : Man e} (I : ManIs M Y) (he : Y.dim = e) {ι : Type} [Fintype ι]
     {Δ : ι → Y.Dv} (m : ∀ i σ, (cxSt F).Met Y σ (Δ i)) (t : ι → ℝ) {P : M.Pot} (hF : I.FormOf m t P)
@@ -195,9 +193,9 @@ end GlobalTheory.FormPotBridge
 open GlobalTheory.FormPotBridge in
 
 /- English proof (translation)
-Introduce `D O A T H R c a u x`. Establish `hd : (O.var c).dim = Formalism.MainNotions.WeightThresholdDefs.dimY O.Y` using `by rw [O.dim_eq c]; rfl`. Establish `h` using `isPotential_formOf (R.man c) hd (fun r σ => O.met.h0 c σ (O.ex r)) (fun r => -u r.1 r.2) ((R.an c).th u) a (T.th_pot c u a) x`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c' y ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GlobalTheory.ShFam.thW, neg_mul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.FormPotBridge.thW_isPotential : ∀ (D : D7) (O : Setup D) (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y)
     (R : O.Reads A T H) (c : O.s.Comp) (a : Fin ((T.M c).n + 1)) (u : D.what₂.Tau → Fin O.N → ℝ) (x : (T.M c).X a),

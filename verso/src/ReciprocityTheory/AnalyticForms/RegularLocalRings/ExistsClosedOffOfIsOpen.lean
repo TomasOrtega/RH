@@ -12,14 +12,14 @@ namespace WData
 variable (w : WData P D hP)
 
 /- English proof (translation)
-Use `w.lft` as an intermediate fact. Conclude with `LocallyOfFiniteType.jacobsonSpace (w.π ≫ toSpecC hP)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jacobsonSpace_W : JacobsonSpace w.W := by
   have := w.lft
   exact LocallyOfFiniteType.jacobsonSpace (w.π ≫ toSpecC hP)
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `chartOpen_cover hP (w.π.base x)`. Establish `hx : x ∈ w.π ⁻¹ᵁ (chartOpen hP p).1` using `hp`. Rewrite `hx` using `[← w.iSup_pres p]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `⟨⟨p, i⟩, hi⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_pres_V (x : w.W) : ∃ c : w.Idx, x ∈ (w.pres c.1 c.2).V := by
   obtain ⟨p, hp⟩ := chartOpen_cover hP (w.π.base x)
@@ -29,13 +29,11 @@ theorem exists_mem_pres_V (x : w.W) : ∃ c : w.Idx, x ∈ (w.pres c.1 c.2).V :=
   exact ⟨⟨p, i⟩, hi⟩
 
 /- English proof (translation)
-Use `haveI := w.jacobsonSpace_W`. Take `⟨x0, hx0N, hx0c⟩` from `nonempty_inter_closedPoints hne hN.isLocallyClosed`. Take `⟨c, hc⟩` from `w.exists_mem_pres_V x0`. Use `haveI := ((w.pres c.1 c.2).isRegularLocalRing_stalk_iff x0 hc hx0c).mp (w.regular x0)`. Take `⟨𝔮, h𝔮min, h𝔮x, -, -⟩` from `regular_point_unique_minimalPrime (w.pres c.1 c.2).K ((w.pres c.1 c.2).coord x0 hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `(w.pres c.1 c.2).exists_basicOpen_cover ⟨N, hN⟩`. Take `⟨G, hGT, hx0G⟩` from `(hT x0 hc).mp hx0N`. Establish `hG0 : eval ((w.pres c.1 c.2).coord x0 hc) G ≠ 0`. Use `(w.mem_basicOpen_iff c ⟨x0, hx0c⟩ hc G).mp hx0G` as an intermediate fact. Rewrite `this` using `[w.coord_of_mem c ⟨x0, hx0c⟩ hc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x', hx'V, -, hx'B, hx'G⟩` from `w.exists_closed_off (w.pres c.1 c.2) ⟨x0, hx0c⟩ hc 𝔮 h𝔮min h𝔮x G hG0`. Use `⟨x', ?_, hx'B⟩` and prove the remaining obligations. Establish `hmem : x'.1 ∈ w.W.basicOpen ((w.pres c.1 c.2).secHom G)`. Rewrite using `[w.mem_basicOpen_iff c x' hx'V G, w.coord_of_mem c x' hx'V]`. Conclude with `hx'G`.
-
-Conclude with `(hT x'.1 hx'V).mpr ⟨G, hGT, hmem⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_off_of_isOpen (N : Set w.W) (hN : IsOpen N) (hne : N.Nonempty) :
     ∃ x' : w.M, x'.1 ∈ N ∧ w.π.base x'.1 ∉ (projB P D hP : Set (projX P hP)) := by
@@ -58,7 +56,7 @@ theorem exists_closed_off_of_isOpen (N : Set w.W) (hN : IsOpen N) (hne : N.Nonem
   exact (hT x'.1 hx'V).mpr ⟨G, hGT, hmem⟩
 
 /- English proof (translation)
-Establish `h1 : eval (w.coord c x) (bind₁ (w.lift c) f) = eval (fun q => eval (w.coord c x) (w.lift c q)) f` using `by show aeval (w.coord c x) (bind₁ (w.lift c) f) = aeval (fun q => aeval (w.coord c x) (w.lift c q)) f`. Conclude with `aeval_bind₁ _ _ _`. Rewrite using `[h1]`. Introduce `h0`. Conclude with `hxB ((w.mem_projB_iff_lift hD c x hx).mpr (hzero _ (w.lift_mem c x hx) h0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eval_bind_lift_ne_zero (hD : IsMultiHomogIdeal D) (f : MvPolynomial (Σ k, ι k) ℂ)
     (hzero : ∀ z ∈ conePts P, eval z f = 0 → z ∈ conePts D)
@@ -74,11 +72,11 @@ theorem eval_bind_lift_ne_zero (hD : IsMultiHomogIdeal D) (f : MvPolynomial (Σ 
   exact hxB ((w.mem_projB_iff_lift hD c x hx).mpr (hzero _ (w.lift_mem c x hx) h0))
 
 /- English proof (translation)
-Introduce `h0`. Establish `h0' : w.W.presheaf.germ _ x hx ((w.pres c.1 c.2).secHom (bind₁ (w.lift c) f)) = w.W.presheaf.germ _ x hx 0` using `by rw [h0, map_zero]`. Take `⟨O, hxO, iO, iO', hO⟩` from `TopCat.Presheaf.germ_eq w.W.presheaf x hx hx _ _ h0'`. Take `⟨x', hx'O, hx'B⟩` from `w.exists_closed_off_of_isOpen O O.isOpen ⟨x, hxO⟩`. Establish `hx'V : x'.1 ∈ (w.pres c.1 c.2).V` using `iO.le hx'O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnot : x'.1 ∉ w.W.basicOpen ((w.pres c.1 c.2).secHom (bind₁ (w.lift c) f))`. Introduce `hm`. Establish `hres : x'.1 ∈ w.W.basicOpen (w.W.presheaf.map iO.op ((w.pres c.1 c.2).secHom (bind₁ (w.lift c) f)))`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨hx'O, hm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hres` using `[hO, map_zero, Scheme.basicOpen_zero]`. Conclude with `hres`. Apply `w.eval_bind_lift_ne_zero hD f hzero c x' hx'V hx'B` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Conclude with `hnot ((w.mem_basicOpen_iff c x' hx'V _).mpr hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem germ_lift_ne_zero (hD : IsMultiHomogIdeal D)
     (hcomp : ∀ Q ∈ P.minimalPrimes, IsRelevant Q → ¬ D ≤ Q)
@@ -104,11 +102,11 @@ theorem germ_lift_ne_zero (hD : IsMultiHomogIdeal D)
   exact hnot ((w.mem_basicOpen_iff c x' hx'V _).mpr hne)
 
 /- English proof (translation)
-Use `haveI := w.jacobsonSpace_W`. Use `(w.W.mem_basicOpen _ x hx).mp ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hxs`. Set `U : w.W.Opens` to `(w.pres c.1 c.2).V ⊓ w.π ⁻¹ᵁ projBCompl P D hP`. Establish `hZ : (closure {x} ∩ (U : Set w.W)).Nonempty` using `⟨x, subset_closure rfl, hx, hxB⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZlc : IsLocallyClosed (closure {x} ∩ (U : Set w.W))` using `isClosed_closure.isLocallyClosed.inter U.isOpen.isLocallyClosed`. Take `⟨y, ⟨hyx, hyV, hyB⟩, hyc⟩` from `nonempty_inter_closedPoints hZ hZlc`. Establish `hys : y ∉ w.W.basicOpen ((w.pres c.1 c.2).secHom (bind₁ (w.lift c) f))`. Introduce `hm`. Take `⟨z, hzU, hz⟩` from `mem_closure_iff.mp hyx _ (w.W.basicOpen _).isOpen hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzU` using `[Set.mem_singleton_iff.mp hz]`. Conclude with `hxs hzU`. Apply `w.eval_bind_lift_ne_zero hD f hzero c ⟨y, hyc⟩ hyV hyB` to reduce the goal to its premises. Assume the negation of the conclusion as `hne`. Conclude with `hys ((w.mem_basicOpen_iff c ⟨y, hyc⟩ hyV _).mpr hne)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem germ_lift_isUnit (hD : IsMultiHomogIdeal D)
     (f : MvPolynomial (Σ k, ι k) ℂ) (a : K → ℕ) (hf : IsMultiHomog f a)

@@ -15,7 +15,7 @@ section AlgGen
 variable {X : Type*} [AddCommGroup X] [Module ℂ X] {ε : Fin n → Bool}
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_filter]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [eq_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_compact_swap {R : Type*} [AddCommMonoid R] (f : Fin n → Fin n → R) :
     ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a), f a b =
@@ -26,11 +26,11 @@ theorem sum_compact_swap {R : Type*} [AddCommMonoid R] (f : Fin n → Fin n → 
   simp only [eq_comm]
 
 /- English proof (translation)
-Introduce `a b c d`. Simplify using `only [Pi.add_apply]`. Establish `h1` using `hA a b c d`. Establish `h2` using `hB a b c d`. Establish `h3` using `hAB a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hAB c d a b`. Establish `: (A a b + B a b) * (A c d + B c d) - (A c d + B c d) * (A a b + B a b) = (A a b * A c d - A c d * A a b) + (B a b * B c d - B c d * B a b)`. Simplify using `only [add_mul, mul_add]`. Rewrite using `[h3, h4]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[this, h1, h2]`. Apply the tactic sequence `split_ifs <;> (try simp only [sub_zero, zero_sub, add_zero]) <;> abel`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isGlRep_add {A B : Fin n → Fin n → Module.End ℂ X} (hA : IsGlRep A) (hB : IsGlRep B)
     (hAB : ∀ a b c d, A a b * B c d = B c d * A a b) : IsGlRep (A + B) := by
@@ -49,9 +49,9 @@ theorem isGlRep_add {A B : Fin n → Fin n → Module.End ℂ X} (hA : IsGlRep A
   split_ifs <;> (try simp only [sub_zero, zero_sub, add_zero]) <;> abel
 
 /- English proof (translation)
-Unfold `casimirK`. Simplify using `only [Pi.add_apply, add_mul, mul_add, Finset.sum_add_distrib]`. Establish `: ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a), A a b * B b a = ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a), B a b * A b a`. Rewrite using `[sum_compact_swap]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => hAB b a a b`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, two_nsmul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem casimirK_add (A B : Fin n → Fin n → Module.End ℂ X)
     (hAB : ∀ a b c d, A a b * B c d = B c d * A a b) :
@@ -67,7 +67,7 @@ theorem casimirK_add (A B : Fin n → Fin n → Module.End ℂ X)
   abel
 
 /- English proof (translation)
-Unfold `casimirK`. Conclude with `Commute.sum_right _ _ _ fun a _ => Commute.sum_right _ _ _ fun b _ => (h a b).mul_right (h b a)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem commute_casimirK {A : Fin n → Fin n → Module.End ℂ X} {Z : Module.End ℂ X}
     (h : ∀ c d, Commute Z (A c d)) : Commute Z (casimirK ε A) := by
@@ -82,7 +82,7 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M}
 
 /- English proof (translation)
-The claim follows from `(WithLp.ext_iff 2).2 (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem big_ext {k : ℕ} {F G : Big n k M} (h : ∀ κ, F κ = G κ) : F = G :=
   (WithLp.ext_iff 2).2 (funext h)
@@ -101,7 +101,7 @@ theorem mAct_apply (k : ℕ) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n
     mAct E k a b F κ = E a b (F κ) := rfl
 
 /- English proof (translation)
-Use `show (ofCoords k _ F) κ = _`. Rewrite using `[ofCoords_apply, LinearMap.sub_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem factorAd_apply (k : ℕ) (i : Fin k) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
     factorAd k i a b F κ =
@@ -112,7 +112,7 @@ theorem factorAd_apply (k : ℕ) (i : Fin k) (a b : Fin n) (F : Big n k M) (κ :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Simplify using `only [ncV, Submodule.mem_iInf, Submodule.mem_comap]`. Use `forall_congr' fun κ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs with h <;> simp [h] <;> rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_ncV_iff {k : ℕ} {F : Big n k M} : F ∈ ncV ε V k ↔
     ∀ κ : Fin k → Fin n × Fin n, ((∀ i, ε (κ i).1 ≠ ε (κ i).2) → F κ ∈ V) ∧
@@ -122,7 +122,7 @@ theorem mem_ncV_iff {k : ℕ} {F : Big n k M} : F ∈ ncV ε V k ↔
   split_ifs with h <;> simp [h] <;> rfl
 
 /- English proof (translation)
-Use extensionality with `F : 1`. Use `big_ext fun κ => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, mAct_apply, factorAd_apply, map_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mAct_comm_factorAd (k : ℕ) (i : Fin k) (a b c d : Fin n) :
     mAct E k a b * factorAd k i c d = factorAd k i c d * mAct E k a b := by
@@ -132,7 +132,7 @@ theorem mAct_comm_factorAd (k : ℕ) (i : Fin k) (a b c d : Fin n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `F : 1`. Use `big_ext fun κ => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, factorAd_apply, Function.update_of_ne hij.symm, Function.update_of_ne hij, Function.update_comm hij]`. Apply the tactic sequence `split_ifs <;> abel`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem factorAd_comm_factorAd {k : ℕ} {i j : Fin k} (hij : i ≠ j) (a b c d : Fin n) :
     factorAd (M := M) k i a b * factorAd k j c d = factorAd k j c d * factorAd k i a b := by
@@ -143,9 +143,9 @@ theorem factorAd_comm_factorAd {k : ℕ} {i j : Fin k} (hij : i ≠ j) (a b c d 
   split_ifs <;> abel
 
 /- English proof (translation)
-Introduce `a b c d`. Use extensionality with `F : 1`. Use `big_ext fun κ => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (hE a b c d) (F κ)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs at this ⊢ <;> simpa [mAct_apply, PiLp.sub_apply] using this`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mAct_isGlRep (hE : IsGlRep E) (k : ℕ) : IsGlRep (mAct E k) := by
   intro a b c d
@@ -156,9 +156,9 @@ theorem mAct_isGlRep (hE : IsGlRep E) (k : ℕ) : IsGlRep (mAct E k) := by
   split_ifs at this ⊢ <;> simpa [mAct_apply, PiLp.sub_apply] using this
 
 /- English proof (translation)
-Introduce `a b c d`. Use extensionality with `F : 1`. Use `big_ext fun κ => ?_` and prove the remaining obligations. Break down `hx : κ i with ⟨x, y⟩` into its components or cases. Establish `hz : ∀ p : Prop, ∀ _ : Decidable p, ∀ f : Module.End ℂ (Big n k M), ((if p then f else 0) F) κ = if p then f F κ else 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Apply the tactic sequence `intro p _ f; split_ifs <;> rfl`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, PiLp.sub_apply, hz, factorAd_apply, Function.update_self, Function.update_idem, hx]`. Apply the tactic sequence `split_ifs <;> (try subst_vars) <;> (try contradiction) <;> abel`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isGlRep_factorAd (k : ℕ) (i : Fin k) : IsGlRep (n := n) (fun a b => factorAd (M := M) k i a b) := by
   intro a b c d
@@ -186,29 +186,29 @@ theorem positionPerm_apply {k : ℕ} (i : Fin k) (τ : Equiv.Perm (Fin n × Fin 
     positionPerm i τ κ = Function.update κ i (τ (κ i)) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inner_ite_left (p : Prop) [Decidable p] (x y : M) :
     inner ℂ (if p then x else 0) y = if p then inner ℂ x y else 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inner_ite_right (p : Prop) [Decidable p] (x y : M) :
     inner ℂ x (if p then y else 0) = if p then inner ℂ x y else 0 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [PiLp.inner_apply, factorAd_apply, inner_sub_left, inner_sub_right, Finset.sum_sub_distrib, inner_ite_left, inner_ite_right]`. Use `congr 1`. Use `Fintype.sum_equiv (positionPerm i (Equiv.prodCongr (Equiv.swap a b) (Equiv.refl _))) _ _ fun κ => ?_` and prove the remaining obligations. Break down `hx : κ i with ⟨x, y⟩` into its components or cases. Simplify using `only [positionPerm_apply, Function.update_self, Function.update_idem, hx, Equiv.prodCongr_apply, Prod.map, Equiv.refl_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : x = a`. Substitute `h` using the available equality. Simplify using `only [Equiv.swap_apply_left, if_true]`. Rewrite using `[← hx, Function.update_eq_self]`. Establish `: Equiv.swap a b x ≠ b`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]`. Conclude with `h`. Simplify using `[h, this]`. Use `Fintype.sum_equiv (positionPerm i (Equiv.prodCongr (Equiv.refl _) (Equiv.swap a b))) _ _ fun κ => ?_` and prove the remaining obligations. Break down `hx : κ i with ⟨x, y⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [positionPerm_apply, Function.update_self, Function.update_idem, hx, Equiv.prodCongr_apply, Prod.map, Equiv.refl_apply]`. Distinguish the cases in `h : y = b`. Substitute `h` using the available equality. Simplify using `only [Equiv.swap_apply_right, if_true]`. Rewrite using `[← hx, Function.update_eq_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Equiv.swap a b y ≠ a`. Rewrite using `[Ne, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Conclude with `h`. Simplify using `[h, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem factorAd_adjoint (k : ℕ) (i : Fin k) (a b : Fin n) (F G : Big n k M) :
     inner ℂ (factorAd k i a b F) G = inner ℂ F (factorAd k i b a G) := by
@@ -241,30 +241,28 @@ theorem factorAd_adjoint (k : ℕ) (i : Fin k) (a b : Fin n) (F G : Big n k M) :
       simp [h, this]
 
 /- English proof (translation)
-Simplify using `only [PiLp.inner_apply, mAct_apply, hU a b, adjSign, hab, if_true, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mAct_adj (hU : IsInfUnitary ε E) (k : ℕ) {a b : Fin n} (hab : ε a = ε b) (F G : Big n k M) :
     inner ℂ (mAct E k a b F) G = inner ℂ F (mAct E k b a G) := by
   simp only [PiLp.inner_apply, mAct_apply, hU a b, adjSign, hab, if_true, one_mul]
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_ncV_iff]`. Introduce `κ`. Break down `hx : κ i with ⟨x, y⟩` into its components or cases. Simplify using `only [factorAd_apply, hx]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hκ`. Establish `hxy : ε x ≠ ε y` using `by simpa [hx] using hκ i`. Apply the tactic sequence `refine Submodule.sub_mem _ ?_ ?_ <;> split_ifs with h <;> try exact Submodule.zero_mem _`. Use `(hF _).1 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `only [Function.update_self]`. Rewrite using `[← hab, ← h]`. Conclude with `hxy`. Rewrite using `[Function.update_of_ne hj]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hκ j`. Use `(hF _).1 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [Function.update_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hab, ← h]`. Conclude with `hxy`. Rewrite using `[Function.update_of_ne hj]`. Conclude with `hκ j`. Introduce `hκ push Not at hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨j, hj⟩` from `hκ`. Establish `key : ∀ p : Fin n × Fin n, ε p.1 = ε p.2 → (¬ ∀ l, ε ((Function.update κ i p) l).1 ≠ ε ((Function.update κ i p) l).2)`. Introduce `p hp h`. Distinguish the cases in `hji : j = i`. Substitute `hji; exact h j (by simpa using hp)` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `h j (by rw [Function.update_of_ne hji]; exact hj)`. Establish `hxy : j = i → ε x = ε y` using `by intro hji; subst hji; simpa [hx] using hj`. Establish `hc : ∀ p : Fin n × Fin n, (j = i → ε p.1 = ε p.2) → F (Function.update κ i p) = 0`. Introduce `p hp`. Distinguish the cases in `hji : j = i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hF _).2 (key p (hp hji))`. Use `(hF _).2 fun h => h j ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hj`. Rewrite using `[ite_eq_right_iff.2 ?_, ite_eq_right_iff.2 ?_, sub_zero]`.
-
-Introduce `h; subst h; exact hc _ fun hji => by show ε x = ε a; rw [hxy hji, ← hab]`. Introduce `h; subst h; exact hc _ fun hji => by show ε b = ε y; rw [← hab, hxy hji]`.
+A detailed English derivation is pending.
 -/
 theorem factorAd_mem_ncV {k : ℕ} (i : Fin k) {a b : Fin n} (hab : ε a = ε b) {F : Big n k M}
     (hF : F ∈ ncV ε V k) : factorAd k i a b F ∈ ncV ε V k := by
@@ -305,7 +303,7 @@ theorem factorAd_mem_ncV {k : ℕ} (i : Fin k) {a b : Fin n} (hab : ε a = ε b)
     · intro h; subst h; exact hc _ fun hji => by show ε b = ε y; rw [← hab, hxy hji]
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_ncV_iff]`. Introduce `κ`. Simplify using `only [mAct_apply]`. Conclude with `⟨fun h => hV a b hab _ ((hF κ).1 h), fun h => by rw [(hF κ).2 h, map_zero]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mAct_mem_ncV (hV : IsKStableSub ε E V) (k : ℕ) {a b : Fin n} (hab : ε a = ε b)
     {F : Big n k M} (hF : F ∈ ncV ε V k) : mAct E k a b F ∈ ncV ε V k := by

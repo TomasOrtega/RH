@@ -11,9 +11,9 @@ variable {H M : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Add
   {ρ : Representation ℂ H M} {Y : Submodule ℂ M} {σ : SmIrr H}
 
 /- English proof (translation)
-Introduce `y hy`. Use `Submodule.iSup_induction _ (motive := fun y => ρ g y ∈ Y) (h hy) ?_ (by simp) ?_` and prove the remaining obligations. Introduce and unpack `f _ ⟨v, rfl⟩`. Rewrite using `[← f.2.1]`. Conclude with `f.2.2 ⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoStab (h : IsoSum ρ Y σ) (g : H) : ∀ y ∈ Y, ρ g y ∈ Y := by
   intro y hy
@@ -25,23 +25,21 @@ theorem isoStab (h : IsoSum ρ Y σ) (g : H) : ∀ y ∈ Y, ρ g y ∈ Y := by
     rw [map_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Take `⟨z, ⟨hz, hz'⟩, hz0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Take `⟨_, ⟨u, rfl⟩, w, hw, rfl⟩` from `Submodule.mem_sup.1 hz'`. Establish `uniq : ∀ a ∈ Z, ∀ b ∈ Z, ∀ x, x - a ∈ W → x - b ∈ W → a = b`. Introduce `a ha b hb x h1 h2`. Establish `: a - b ∈ Z ⊓ W` using `⟨sub_mem ha hb, by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `sub_mem h2 h1` as an intermediate fact. Simplify using `using this⟩`. Rewrite `this` using `[hd]`. Conclude with `sub_eq_zero.1 this`. Establish `hu : f u - (f u + w) ∈ W` using `by simpa using hw`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : (Z ⊔ W).comap f = ⊤`. Use `(((isIrreducible_iff σ.ρ).1 σ.irred).2 _ fun g v hv => ?_).resolve_left fun hb => ?_` and prove the remaining obligations. Rewrite `hv`, the goal using `[Submodule.mem_comap]`. Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[hf, ← e, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem_sup (hZ g a ha) (hW g b hb)`. Establish `: u ∈ (Z ⊔ W).comap f` using `Submodule.mem_sup.2 ⟨_, hz, -w, neg_mem hw, by simp⟩`. Rewrite `this` using `[hb]`. Establish `h0 : u = 0` using `this`. Use `hz0 (uniq _ hz 0 (zero_mem _) (f u) hu ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h0]`. Establish `hex : ∀ v, ∃ a ∈ Z, f v - a ∈ W`. Introduce `v`. Establish `: v ∈ (Z ⊔ W).comap f` using `htop ▸ Submodule.mem_top`. Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨a, ha, by rw [← e]; simpa using hb⟩`. Use `choose p hp1 hp2 using hex`. Use `⟨{ toFun := p map_add' := fun a b => uniq _ (hp1 _) _ (add_mem (hp1 a) (hp1 b)) _ (hp2 _) (by` and prove the remaining obligations. Use `add_mem (hp2 a) (hp2 b)` as an intermediate fact. Rewrite using `[map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `abel)`. Use the proof step `map_smul' := fun c a => uniq _ (hp1 _) _ (Z.smul_mem c (hp1 a)) _ (hp2 _) (by`. Use `W.smul_mem c (hp2 a)` as an intermediate fact. Rewrite using `[map_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Rewrite using `[smul_sub] at this) }, fun g v => ?_, ?_, fun h0 => hz0 ?_⟩` and apply the resulting hypothesis. Use `uniq _ (hp1 _) _ (hZ g _ (hp1 v)) _ (hp2 _) ?_` and prove the remaining obligations. Use `hW g _ (hp2 v)` as an intermediate fact. Rewrite `this` using `[map_sub, ← hf]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨v, rfl⟩`.
-
-Conclude with `hp1 v`. Establish `: p u = 0` using `LinearMap.congr_fun h0 u`. Rewrite using `[← this]`. Conclude with `uniq _ hz _ (hp1 u) _ hu (hp2 u)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step (Z W : Submodule ℂ M) (hZ : ∀ g, ∀ z ∈ Z, ρ g z ∈ Z) (hW : ∀ g, ∀ z ∈ W, ρ g z ∈ W)
     (hd : Z ⊓ W = ⊥) (f : σ.V →ₗ[ℂ] M) (hf : ∀ g v, f (σ.ρ g v) = ρ g (f v))
@@ -90,13 +88,13 @@ private theorem step (Z W : Submodule ℂ M) (hZ : ∀ g, ∀ z ∈ Z, ρ g z �
     exact uniq _ hz _ (hp1 u) _ hu (hp2 u)
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset {f : σ.V →ₗ[ℂ] M // (∀ g v, f (σ.ρ g v) = ρ g (f v)) ∧ LinearMap.range f ≤ Y}, (∀ g, ∀ z ∈ ⨆ f ∈ S, LinearMap.range f.1, ρ g z ∈ ⨆ f ∈ S, LinearMap.range f.1) ∧ (Z ⊓ (⨆ f ∈ S, LinearMap.range f.1) ≠ ⊥ → ∃ p : σ.V →ₗ[ℂ] M, (∀ g v, p (σ.ρ g v) = ρ g (p v)) ∧ Line …`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert f S _ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.iSup_insert]`. Use `⟨fun g z hz => ?_, fun hn => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨u, rfl⟩, w, hw, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[map_add, ← f.2.1]`. Conclude with `Submodule.add_mem_sup ⟨_, rfl⟩ (ih.1 g w hw)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hd : Z ⊓ (⨆ f ∈ S, LinearMap.range f.1) = ⊥`. Conclude with `step Z _ hZ ih.1 hd f.1 f.2.1 hn`. Conclude with `ih.2 hd`. Take `⟨z, hz, hz0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Take `⟨S, hS⟩` from `Submodule.mem_iSup_iff_exists_finset.1 (h (hZY hz))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, h1, h2, h3⟩` from `(key S).2 ((Submodule.ne_bot_iff _).2 ⟨z, ⟨hz, hS⟩, hz0⟩)`. Use `⟨p, h1, h2, LinearMap.ker_eq_bot.1 ?_⟩` and prove the remaining obligations. Use `(((isIrreducible_iff σ.ρ).1 σ.irred).2 _ fun g v hv => ?_).resolve_right fun ht => h3 (LinearMap.ker_eq_top.1 ht)` and prove the remaining obligations. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h1, hv, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoSub (h : IsoSum ρ Y σ) (Z : Submodule ℂ M) (hZY : Z ≤ Y) (hne : Z ≠ ⊥) (hZ : ∀ g, ∀ z ∈ Z, ρ g z ∈ Z) :
     ∃ p : σ.V →ₗ[ℂ] M, (∀ g v, p (σ.ρ g v) = ρ g (p v)) ∧ LinearMap.range p ≤ Z ∧ Function.Injective p := by
@@ -128,11 +126,11 @@ theorem isoSub (h : IsoSum ρ Y σ) (Z : Submodule ℂ M) (hZY : Z ≤ Y) (hne :
 end Iso
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite I`. Establish `key : ∀ s : Finset I, Y ⊓ (⨅ i ∈ s, C i) ≠ ⊥`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hY`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert j s hj ih`. Rewrite using `[Finset.iInf_insert, inf_comm (C j), ← inf_assoc]`. Use `hZ j _ inf_le_left ih fun φ hφ y hy => ⟨hYS j φ hφ y hy.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hy.2`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf] at h2 ⊢`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `fun i hi => hC i j (fun e => hj (e ▸ hi)) φ hφ y (h2 i hi)`. Take `⟨F, ⟨h1, h2⟩, h0⟩` from `(Submodule.ne_bot_iff _).1 (key Finset.univ)`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf] at h2`. Conclude with `⟨F, h1, h0, fun i => h2 i (Finset.mem_univ i)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem meet {I M : Type} [Finite I] [AddCommGroup M] [Module ℂ M] (S : I → Set (Module.End ℂ M)) (C : I → Submodule ℂ M)
     (Y : Submodule ℂ M) (hY : Y ≠ ⊥) (hYS : ∀ j, ∀ φ ∈ S j, ∀ y ∈ Y, φ y ∈ Y)
@@ -161,9 +159,7 @@ variable {σ : Type} [Finite σ] [DecidableEq σ] {G : σ → Type} [∀ v, Grou
   {M : Type} [AddCommGroup M] [Module ℂ M] (π : Representation ℂ (∀ v, G v) M)
 
 /- English proof (translation)
-Introduce `u hu`. Set `St : Subgroup (∀ v, G v)` to `(MulAction.stabilizer (Module.End ℂ M)ˣ F).comap π.toHomUnits`. Establish `: Subgroup.pi Set.univ K ≤ St` using `Subgroup.pi_le_iff.2 fun v => by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `h v g hg`.
-
-Conclude with `this hu`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fixPi (K : ∀ v, Subgroup (G v)) (F : M) (h : ∀ v, F ∈ fixd (π.comp (MonoidHom.mulSingle G v)) (K v)) :
     F ∈ fixd π (Subgroup.pi Set.univ K) := by
@@ -175,9 +171,9 @@ theorem fixPi (K : ∀ v, Subgroup (G v)) (F : M) (h : ∀ v, F ∈ fixd (π.com
   exact this hu
 
 /- English proof (translation)
-Introduce `w _`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.mulSingle_eq_of_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(I w).P.one_mem`.
+A detailed English derivation is pending.
 -/
 theorem singleP (v : σ) (a : G v) (ha : a ∈ (I v).P) : Pi.mulSingle v a ∈ (piIwa I).P := by
   intro w _
@@ -186,21 +182,21 @@ theorem singleP (v : σ) (a : G v) (ha : a ∈ (I v).P) : Pi.mulSingle v a ∈ (
   · rw [Pi.mulSingle_eq_of_ne h]; exact (I w).P.one_mem
 
 /- English proof (translation)
-Establish `hN : ∀ u ∈ (I v).N, Pi.mulSingle v u ∈ (piIwa I).N`. Introduce `u hu w _`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]` and apply the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(I w).N.one_mem`. Take `⟨⟨s, hs1, hs2⟩, hs3⟩` from `uOpSum _ (I v) ℂ M (π.comp (MonoidHom.mulSingle G v)) a ha`. Rewrite using `[(hs3 s hs1 hs2).2 F fun u hu => hF _ (hN u hu), ((uOpSum _ (piIwa I) ℂ M π _ (singleP I v a ha)).2 (s.image (Pi.mulSingle v)) ?_ ?_).2 F hF, Finset.sum_image (Pi.mulSingle_injective v).injOn]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Pi.mulSingle_mul]`. Both sides reduce to the same expression. Introduce `u hu`. Take `⟨u', hu', rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `hN _ (hs1 _ hu')`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hiff : ∀ u, (Pi.mulSingle v u)⁻¹ * x ∈ (piIwa I).Nconj (Pi.mulSingle v a) ↔ u⁻¹ * x v ∈ (I v).Nconj a`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨y v, hy v trivial, ?_⟩` and prove the remaining obligations. Use `congrFun e v` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨y, hy, e⟩`. Use `⟨Function.update x v y, fun w _ => ?_, funext fun w => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne h]`. Conclude with `hx w trivial`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `using e`. Simplify using `[h]`. Take `⟨u, ⟨h1, h2⟩, h3⟩` from `hs2 (x v) (hx v trivial)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.mulSingle v u, ⟨Finset.mem_image_of_mem _ h1, (hiff u).2 h2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨h4, h5⟩`. Take `⟨u', hu', rfl⟩` from `Finset.mem_image.1 h4`. Rewrite using `[h3 u' ⟨hu', (hiff u').1 h5⟩]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uOpPi (v : σ) (a : G v) (ha : a ∈ (I v).P) (F : M) (hF : F ∈ fixd π (piIwa I).N) :
     (piIwa I).uOp π (Pi.mulSingle v a) F = (I v).uOp (π.comp (MonoidHom.mulSingle G v)) a F := by
@@ -244,9 +240,9 @@ theorem uOpPi (v : σ) (a : G v) (ha : a ∈ (I v).P) (F : M) (hF : F ∈ fixd �
 end Pi
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil => exact ⟨one_mem _, by simpa using (uOpMul G I ℂ M π 1 1 (one_mem _) (one_mem _) F hF).2.2.1⟩`. Consider the case `cons k s ih`. Take `⟨h1, h2⟩` from `ih fun k' hk => h k' (List.mem_cons_of_mem _ hk)`. Take `⟨h3, h4⟩` from `h k List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [List.map_cons, List.prod_cons]`. Use `⟨mul_mem h3 h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← (uOpMul G I ℂ M π _ _ h3 h1 F hF).2.1, h2, map_smul, h4, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem uOpList {G M : Type} [Group G] (I : Iwa G) [AddCommGroup M] [Module ℂ M] (π : Representation ℂ G M)
     (F : M) (hF : F ∈ fixd π I.N) {κ : Type} (a : κ → G) (μ : κ → ℂ) (s : List κ)
@@ -262,7 +258,7 @@ theorem uOpList {G M : Type} [Group G] (I : Iwa G) [AddCommGroup M] [Module ℂ 
     rw [← (uOpMul G I ℂ M π _ _ h3 h1 F hF).2.1, h2, map_smul, h4, smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← hf, hv u hu]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fixMap {G M M' : Type} [Group G] [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
     (π : Representation ℂ G M) (π' : Representation ℂ G M') (f : M →ₗ[ℂ] M') (hf : ∀ g v, f (π g v) = π' g (f v))
@@ -278,7 +274,7 @@ noncomputable def ordC {M : Type} [AddCommGroup M] [Module ℂ M] (π : Represen
   (glIwa k n).eig π c φ ⊓ ⨅ j : ℕ, ⨅ _ : j ≤ n, Module.End.eigenspace ((glIwa k n).uOp π (al k n j)) (μ j)
 
 /- English proof (translation)
-Simplify using `only [ordC, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ordC {M : Type} [AddCommGroup M] [Module ℂ M] (π : Representation ℂ (GL (Fin n) k) M) (c : ℕ)
     (φ : (glIwa k n).T →* ℂˣ) (μ : ℕ → ℂ) (v : M) :
@@ -286,9 +282,9 @@ theorem mem_ordC {M : Type} [AddCommGroup M] [Module ℂ M] (π : Representation
   simp only [ordC, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_ordC]`. Use `⟨⟨fixMap π π' f hf _ v hv.1.1, fixMap π π' f hf _ v hv.1.2.1, fun t => ?_⟩, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, hv.1.2.2, map_smul]`. Use `uOpNat _ (glIwa k n) ℂ M π ℂ M' π' f.toAddMonoidHom (al k n j) (al_mem k n j) v fun u _ => hf _ _` as an intermediate fact. Simplify using `only [LinearMap.toAddMonoidHom_coe] at this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, hv.2 j hj, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordMap {M M' : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
     (π : Representation ℂ (GL (Fin n) k) M) (π' : Representation ℂ (GL (Fin n) k) M') (f : M →ₗ[ℂ] M')
@@ -302,11 +298,11 @@ theorem ordMap {M M' : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [
     rw [← this, hv.2 j hj, map_smul]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (GlobalTheory.SmGL.diagT k (Fin n))`. Introduce `s t h`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun (congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k)) h) i) i` as an intermediate fact. Simplify using `only [GlobalTheory.SmGL.val_diagT, Matrix.diagonal_apply_eq] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Units.ext this`. Set `χ : (Fin n → kˣ) →* ℂˣ` to `∏ i, (ω i)⁻¹.comp (Pi.evalMonoidHom (fun _ => kˣ) i)`. Use `⟨χ.comp ((MonoidHom.ofInjective hinj).symm.toMonoidHom.comp (Subgroup.inclusion (glIwa k n).T_le)), fun i y => ?_⟩` and prove the remaining obligations. Establish `h1 : (MonoidHom.ofInjective hinj).symm (Subgroup.inclusion (glIwa k n).T_le (eT k n i y)) = Pi.mulSingle i (y : kˣ)`. Conclude with `(MulEquiv.symm_apply_eq _).2 rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `χ ((MonoidHom.ofInjective hinj).symm (Subgroup.inclusion (glIwa k n).T_le (eT k n i y))) = _`. Rewrite using `[h1]`. Simplify using `only [χ, MonoidHom.finset_prod_apply, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, MonoidHom.inv_apply]`. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.mulSingle_eq_same]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exInv (ω : Fin n → kˣ →* ℂˣ) : ∃ φ : (glIwa k n).T →* ℂˣ, IsInvOn φ ω := by
   have hinj : Function.Injective (GlobalTheory.SmGL.diagT k (Fin n)) := by
@@ -326,7 +322,7 @@ theorem exInv (ω : Fin n → kˣ →* ℂˣ) : ∃ φ : (glIwa k n).T →* ℂ�
   rw [Finset.prod_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.mulSingle_eq_same]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `(Valuation.integer.integers (ValuativeRel.valuation k)).valuation_unit u`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Uc_le (c : ℕ) : Uc k c ≤ Uo k := by
   rintro _ ⟨u, -, rfl⟩

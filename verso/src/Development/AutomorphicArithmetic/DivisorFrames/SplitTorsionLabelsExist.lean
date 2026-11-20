@@ -12,9 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Use `letI := a.toAlgebra`. Establish `h1 : Flat (spMap a)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `(inferInstance : Module.Flat k K)`. Establish `h2 : Surjective (spMap a)` using `⟨fun y => ⟨IsLocalRing.closedPoint K, Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
-
-Conclude with `Flat.epi_of_flat_of_surjective _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem epi_sp {k K : Type} [Field k] [Field K] (a : k →+* K) : Epi (spMap a) := by
   letI := a.toAlgebra
@@ -25,9 +23,9 @@ private theorem epi_sp {k K : Type} [Field k] [Field K] (a : k →+* K) : Epi (s
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Substitute `e e'` using the available equality. Take `⟨cq, hcq, -⟩` from `GlobalTheory.LevelCompare.weil_existsUnique P q σ σ' hσ hσ'`. Take `⟨u, rfl⟩` from `GlobalTheory.Ex.Specialise.unitOn_bijective.2 cq`. Establish `hN` using `(GlobalTheory.LevelCompare.weil_skew_natural P q (Over.mk y)).2 (Over.mk y') h σ σ' (unitOn u) hcq`. Rewrite `hN` using `[hl, GlobalTheory.Ex.Specialise.map_unitOn]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 ((GlobalTheory.LevelCompare.weil_existsUnique P q (h ≫ σ) (h ≫ σ') (by rw [← MonObj.comp_pow, hσ, MonObj.comp_one]) (by rw [← MonObj.comp_pow, hσ', MonObj.comp_one])).unique hN hv)`. Rewrite using `[← Units.map_injective io.injective hu]`. Conclude with `hcq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem weil_desc {S : Scheme.{0}} (P : Out.PolAV S) {K Ω : Type} [Field K] [Field Ω] (io : K →+* Ω)
     {y : Sp K ⟶ S} {y' : Sp Ω ⟶ S} (h : Over.mk y' ⟶ Over.mk y) (hl : h.left = spMap io) (q : ℕ)
@@ -46,39 +44,35 @@ private theorem weil_desc {S : Scheme.{0}} (P : Out.PolAV S) {K Ω : Type} [Fiel
   exact hcq
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z K _ _ y q hq ⟨ζ₀, hζ₀⟩ hs`. Establish `hq0 : 0 < q` using `Nat.pos_of_ne_zero hq`. Use `haveI : NeZero q := ⟨hq⟩`. Set `Ω` to `AlgebraicClosure K`. Set `io : K →+* Ω` to `algebraMap K Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := epi_sp io`. Set `y' : Sp Ω ⟶ Xo.XF c` to `spMap io ≫ y`. Take `⟨β₀, hβ₀⟩ : ∃ β₀ : KA l →+* Ω, y' ≫ (Limits.pullback.fst _ _ ≫ Xo.s) = spMap β₀` from `⟨(Spec.preimage (y' ≫ (Limits.pullback.fst _ _ ≫ Xo.s))).hom, by simp [spMap]⟩`. Take `⟨-, I, -⟩` from `Z.oF.geom Ω y' β₀ hβ₀`. Set `h : Over.mk y' ⟶ Over.mk y` to `Over.homMk (spMap io) rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hl : h.left = spMap io` using `rfl`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv Z.m.cart (Over.mk y) (y ≫ Z.j) rfl`. Take `⟨e', he'⟩` from `GlobalTheory.LiePull.exists_pushEquiv Z.m.cart (Over.mk y') (spMap io ≫ y ≫ Z.j) (Category.assoc _ _ _).symm`. Establish `hinj : ∀ σ σ' : Over.mk y ⟶ Z.oF.t.G, h ≫ σ = h ≫ σ' → σ = σ'`. Introduce `σ σ' hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `congrArg (fun z => z.left) hh` as an intermediate fact. Simplify using `only [Over.comp_left, hl] at this`. Conclude with `(cancel_epi (spMap io)).1 this`. Establish `hex : ∀ τ : Over.mk y' ⟶ Z.oF.t.G, τ ^ q = 1 → ∃ σ : Over.mk y ⟶ Z.oF.t.G, h ≫ σ = τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `τ hτ`. Take `⟨w₀, hw₀⟩` from `hs Ω io (e' τ) (by rw [← map_pow, hτ, map_one])`. Establish `hw : w₀ ≫ Z.t.G.hom = y ≫ Z.j`. Rewrite using `[← cancel_epi (spMap io), ← Category.assoc, hw₀]`. Conclude with `Over.w (e' τ)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `w : Over.mk (y ≫ Z.j) ⟶ Z.t.G` to `Over.homMk w₀ hw`. Use `⟨e.symm w, e'.injective (Over.OverMorphism.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[he', ← hw₀, Over.comp_left, Category.assoc, ← he, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hev : ∀ a, I.ev q a ^ q = 1` using `fun a => (I.onto q hq0 _).2 ⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose lb hlb using fun a => hex (I.ev q a) (hev a)`. Establish `htor : ∀ σ : Over.mk y ⟶ Z.oF.t.G, σ ^ q = 1 ↔ (h ≫ σ) ^ q = 1`. Introduce `σ`. Rewrite using `[← MonObj.comp_pow]`. Use `⟨fun hσ => by rw [hσ, MonObj.comp_one], fun hσ => hinj _ _ (by rw [hσ, MonObj.comp_one])⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlt : ∀ a, lb a ^ q = 1` using `fun a => by rw [htor, hlb]; exact hev a`. Establish `hmi : Function.Injective (Units.map (io : K →* Ω))` using `Units.map_injective io.injective`. Choose the witnesses or unpack the hypotheses as in `⟨ζ, hζ⟩ : ∃ ζ : Kˣ, Units.map (io : K →* Ω) ζ = I.ζ q := by`. Establish `h1 : IsPrimitiveRoot (io ζ₀) q` using `hζ₀.map_of_injective io.injective`. Take `⟨i, -, hi⟩` from `h1.eq_pow_of_pow_eq_one (ξ := (I.ζ q : Ω)) (by rw [← Units.val_pow_eq_pow_val, (I.ζ_prim q hq0).pow_eq_one, Units.val_one])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨(hζ₀.isUnit hq).unit ^ i, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hi]`. Simplify using the standard rewrite rules. Set `P` to `GlobalTheory.Obj.toPolAV Z.oF`. Establish `hadd : ∀ a b, lb (a + b) = lb a * lb b` using `fun a b => hinj _ _ (by rw [MonObj.comp_mul, hlb, hlb, hlb, I.add])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `honto : ∀ σ : Over.mk y ⟶ Z.oF.t.G, σ ^ q = 1 ↔ ∃ a, lb a = σ`. Introduce `σ`. Use `⟨fun hσ => ?_, by rintro ⟨a, rfl⟩; exact hlt a⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(I.onto q hq0 _).1 ((htor σ).1 hσ)`. Conclude with `⟨a, hinj _ _ (by rw [hlb, ha])⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hweil : ∀ a b, Out.WeilIs Z.oF.t.G Z.oF.t.PP.L (q : ℤ) (lb a) (lb b) (unitOn (ζ ^ Dw.EF a b))`. Introduce `a b`. Use `weil_desc P io h hl q (lb a) (lb b) (hlt a) (hlt b) (I.ev q a) (I.ev q b) (hlb a) (hlb b) _ ?_` and prove the remaining obligations. Establish `hz : Units.map (io : K →* Ω) (ζ ^ Dw.EF a b) = I.ζ q ^ Dw.EF a b` using `by rw [map_zpow, hζ]`. Rewrite using `[hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `I.isom q hq0 a b`. Establish `hwd : ∀ a b b', lb b = lb b' → ζ ^ Dw.EF a b = ζ ^ Dw.EF a b'`. Introduce `a b b' hb`. Establish `h2` using `hweil a b'`. Rewrite `h2` using `[← hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.Ex.Specialise.unitOn_bijective.1 ((GlobalTheory.LevelCompare.weil_existsUnique P q (lb a) (lb b) (hlt a) (hlt b)).unique (hweil a b) h2)`. Establish `hk : ∀ k : GlobalTheory.HtGen.TorsK Z.t (y ≫ Z.j) q, ∃ b, lb b = e.symm k.1` using `fun k => (honto _).1 (by`. Establish `hk1 : k.1 ^ q = 1` using `k.2`. Rewrite using `[← map_pow, hk1, map_one])`. Use `choose bk hbk using hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨lb, ζ, ⟨?_, hadd, ?_, honto, hweil⟩, fun a => MonoidHom.mk' (fun k => ζ ^ Dw.EF a (bk k)) ?_, ?_⟩` and prove the remaining obligations. Use `IsPrimitiveRoot.of_map_of_injective (f := Units.map (io : K →* Ω)) ?_ hmi` and prove the remaining obligations. Rewrite using `[hζ]`. Conclude with `I.ζ_prim q hq0`. Introduce `o a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hinj _ _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hlb, hlb]`. Conclude with `I.lin q o a`. Introduce `k k'`. Rewrite using `[← zpow_add, ← map_add]`.
-
-Use `hwd _ _ _ ?_` and prove the remaining obligations. Conclude with `(hbk (k * k')).trans ((map_mul e.symm k.1 k'.1).trans ((congrArg₂ (· * ·) (hbk k) (hbk k')).symm.trans (hadd _ _).symm))`. Introduce `a b k hkb`. Use `hwd _ _ _ ?_` and prove the remaining obligations. Rewrite using `[hbk, MulEquiv.symm_apply_eq]`.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[he]`. Conclude with `hkb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.split_torsion_labels_exist :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (K : Type) [Field K] [CharZero K] (y : Sp K ⟶ Xo.XF c) (q : ℕ), q ≠ 0 → (∃ ζ : K, IsPrimitiveRoot ζ q) → GlobalTheory.HtGen.SplitK Z.t (y ≫ Z.j) q → ∃ (lb : Dw.La → (Over.mk y ⟶ Z.oF.t.G)) (ζ : Kˣ), IsLabel Z y q lb ζ ∧ ∃ χ : Dw.La → (GlobalTheory.HtGen.TorsK Z.t (y ≫ Z.j) q →* Kˣ), ∀ a b (k : GlobalTheory.HtGen.TorsK Z.t (y ≫ Z.j) q), k.1.left = (lb b).left ≫ Z.m.φ → χ a k = ζ ^ Dw.EF a b := by

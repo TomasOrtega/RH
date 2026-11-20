@@ -8,7 +8,7 @@ section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.Pst
 
 /- English proof (translation)
-Use extensionality with `g i j`. Express the relevant statement in the definitionally equal form `f (Matrix.fromBlocks (r₁ g : Matrix (Fin a) (Fin a) k) 0 0 (r₂ g : Matrix (Fin b) (Fin b) k) (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)) = Matrix.fromBlocks (mapRep f r₁ g : Matrix (Fin a) (Fin a) k') 0 0 (mapRep f r₂ g : Matrix (Fin b) (Fin b) k') (finSumFinEquiv.symm i) (f …`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [mapRep]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_sum' {Γ : Type} [Group Γ] {k k' : Type} [CommRing k] [CommRing k'] {a b : ℕ}
     (f : k →+* k') (r₁ : Γ →* GL (Fin a) k) (r₂ : Γ →* GL (Fin b) k) :
@@ -26,7 +26,7 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   {r : ↥Gw →* GL (Fin a) (Om l)} {r' : ↥Gw →* GL (Fin b) (Om l)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h₁.1, by rw [map_sum', h₁.2, h₂.2]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem model_sum {L : FinExt l} {r₁ : ↥Gw →* GL (Fin a) ↥L.1} {r₂ : ↥Gw →* GL (Fin b) ↥L.1}
     (h₁ : IsModel Bw r L r₁) (h₂ : IsModel Bw r' L r₂) :
@@ -34,9 +34,9 @@ private theorem model_sum {L : FinExt l} {r₁ : ↥Gw →* GL (Fin a) ↥L.1} {
   ⟨h₁.1, by rw [map_sum', h₁.2, h₂.2]⟩
 
 /- English proof (translation)
-Take `⟨L₁, r₁, m₁, -⟩` from `id h`. Take `⟨L₂, r₂, m₂, -⟩` from `id h'`. Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `n₁` using `m₁.enlarge l₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₂` using `m₂.enlarge l₂`. Conclude with `⟨_, _, model_sum n₁ n₂, (GlobalTheory.T.sumRep_deRham_iff_and_multiplicity_add l _ _ (UpperTheory.V.Loc.tiedP l) E Ω Gw O Bw _ a b _ _).1.2 ⟨(n₁.isdRAt_iff _).1 h, (n₂.isdRAt_iff _).1 h'⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem dR_sum (h : IsdRAt (UpperTheory.V.Loc.PP l) Bw r) (h' : IsdRAt (UpperTheory.V.Loc.PP l) Bw r') :
     IsdRAt (UpperTheory.V.Loc.PP l) Bw (Formalism.MainNotions.SumRepresentations.At.sumRep r r') := by
@@ -50,9 +50,9 @@ private theorem dR_sum (h : IsdRAt (UpperTheory.V.Loc.PP l) Bw r) (h' : IsdRAt (
     ⟨(n₁.isdRAt_iff _).1 h, (n₂.isdRAt_iff _).1 h'⟩⟩
 
 /- English proof (translation)
-Take `⟨L₁, r₁, m₁, d₁, τ₁, t₁, -⟩` from `id h`. Take `⟨L₂, r₂, m₂, d₂, -⟩` from `id h'`. Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `n₁` using `m₁.enlarge l₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₂` using `m₂.enlarge l₂`. Establish `t : IsInduced Bw τ (LL'` using `supExt L₁ L₂) ((IntermediateField.inclusion l₁).comp τ₁) := t₁`. Establish `S` using `GlobalTheory.T.sumRep_deRham_iff_and_multiplicity_add l _ _ (UpperTheory.V.Loc.tiedP l) E Ω Gw O Bw _ a b (mapRep (IntermediateField.inclusion l₁).toRingHom r₁) (mapRep (IntermediateField.inclusion l₂).toRingHom r₂)`. Use `⟨_, _, model_sum n₁ n₂, S.1.2 ⟨(n₁.isdRAt_iff _).1 ⟨_, _, m₁, d₁⟩, (n₂.isdRAt_iff _).1 ⟨_, _, m₂, d₂⟩⟩, _, t, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[S.2, ← h.count_eq _ n₁ t, ← h'.count_eq _ n₂ t, Multiset.count_add, Nat.cast_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem jumps_sum {τ : E →+* Om l} {J J' : Multiset ℤ}
     (h : IsJumpsAt (UpperTheory.V.Loc.PP l) Bw r τ J) (h' : IsJumpsAt (UpperTheory.V.Loc.PP l) Bw r' τ J') :
@@ -73,9 +73,9 @@ private theorem jumps_sum {τ : E →+* Om l} {J J' : Multiset ℤ}
 end
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ a b r r' _ _ HT HT' H H' w A hA O _ _ _ Bw hj`. Take `⟨d, J⟩` from `H w A hA O Bw hj`. Take `⟨d', J'⟩` from `H' w A hA O Bw hj`. Establish `e : (Formalism.MainNotions.SumRepresentations.At.sumRep r r').comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype = Formalism.MainNotions.SumRepresentations.At.sumRep (r.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) (r'.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) := by`. Use extensionality with `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `⟨dR_sum d d', fun τ L τ' t => jumps_sum (J τ L τ' t) (J' τ L τ' t)⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem UpperTheory.sum_hodge_tate :
     SumHT := by

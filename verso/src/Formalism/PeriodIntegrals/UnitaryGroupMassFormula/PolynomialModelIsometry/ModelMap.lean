@@ -10,7 +10,7 @@ open scoped InnerProductSpace
 namespace MMap
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, hp, aeval_X, map_mul, eval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma eval_aeval_eq {σ τ : Type*} (y : τ → ℂ) (g : σ → MvPolynomial τ ℂ) (f : MvPolynomial σ ℂ) :
     eval y (aeval g f) = eval (fun i => eval y (g i)) f := by
@@ -20,7 +20,7 @@ lemma eval_aeval_eq {σ τ : Type*} (y : τ → ℂ) (g : σ → MvPolynomial τ
   | mul_X p i hp => rw [map_mul, map_mul, hp, aeval_X, map_mul, eval_X]
 
 /- English proof (translation)
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Use `h (Matrix.of fun i j => x (i, j))` as an intermediate fact. Simplify `this` using `[evM]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma poly_ext {N : ℕ} {p q : MvPolynomial (Fin N × Fin N) ℂ}
     (h : ∀ A : Matrix (Fin N) (Fin N) ℂ, evM A p = evM A q) : p = q := by
@@ -30,27 +30,27 @@ lemma poly_ext {N : ℕ} {p q : MvPolynomial (Fin N × Fin N) ℂ}
   simpa [evM] using this
 
 /- English proof (translation)
-Simplify using `[evM]`.
+Simplify using the standard rewrite rules.
 -/
 lemma evM_add {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     evM A (p + q) = evM A p + evM A q := by simp [evM]
 
 /- English proof (translation)
-Rewrite using `[evM, evM, smul_eq_C_mul, eval_mul, eval_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma evM_smul {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (p : MvPolynomial (Fin N × Fin N) ℂ) :
     evM A (c • p) = c * evM A p := by
   rw [evM, evM, smul_eq_C_mul, eval_mul, eval_C]
 
 /- English proof (translation)
-Rewrite using `[evM, evM, eval_mul, eval_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma evM_C_mul {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (p : MvPolynomial (Fin N × Fin N) ℂ) :
     evM A (C c * p) = c * evM A p := by
   rw [evM, evM, eval_mul, eval_C]
 
 /- English proof (translation)
-Simplify using `only [evM, eval_rename]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma evM_rename_swap {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (q : MvPolynomial (Fin N × Fin N) ℂ) :
     evM A (rename Prod.swap q) = evM Aᵀ q := by
@@ -58,7 +58,7 @@ lemma evM_rename_swap {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (q : MvPolynomi
   rfl
 
 /- English proof (translation)
-Unfold `rowAct evM`. Rewrite using `[eval_aeval_eq]`. Use `congrArg (fun y => eval y f) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma evM_rowAct {N : ℕ} (g A : Matrix (Fin N) (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     evM A (rowAct ℂ (n := N) g f) = evM (g * A) f := by
@@ -68,9 +68,9 @@ lemma evM_rowAct {N : ℕ} (g A : Matrix (Fin N) (Fin N) ℂ) (f : MvPolynomial 
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Unfold `colAdd evM`. Rewrite using `[eval_aeval_eq]`. Use `congrArg (fun y => eval y f) (funext fun v => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_apply]`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply, Matrix.single_apply, h, mul_comm]`. Establish `h' : j ≠ v.2` using `fun e => h e.symm`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma evM_colAdd {N : ℕ} (l j : Fin N) (c : ℂ) (A : Matrix (Fin N) (Fin N) ℂ)
     (f : MvPolynomial (Fin N × Fin N) ℂ) :
@@ -85,7 +85,7 @@ lemma evM_colAdd {N : ℕ} (l j : Fin N) (c : ℂ) (A : Matrix (Fin N) (Fin N) �
     simp [Matrix.mul_apply, Matrix.single_apply, h']
 
 /- English proof (translation)
-Unfold `evM`. Rewrite using `[eval_aeval_eq]`. Use `congrArg (fun y => eval y f) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mul_diagonal, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma evM_scale {N : ℕ} (t : Fin N → ℂ) (A : Matrix (Fin N) (Fin N) ℂ)
     (f : MvPolynomial (Fin N × Fin N) ℂ) :
@@ -96,9 +96,9 @@ lemma evM_scale {N : ℕ} (t : Fin N → ℂ) (A : Matrix (Fin N) (Fin N) ℂ)
   simp [Matrix.mul_diagonal, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial]`. Simplify using `only [mul_pow]`. Rewrite using `[Finsupp.prod_mul]`. Establish `hC : (u.prod fun v e => (C (w v) : MvPolynomial σ ℂ) ^ e) = C (u.prod fun v e => w v ^ e)`. Rewrite using `[map_finsuppProd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_pow]`. Rewrite using `[hC, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), monomial_eq, C_mul, algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma aeval_scale_monomial {σ : Type*} [Fintype σ] [DecidableEq σ] (w : σ → ℂ) (u : σ →₀ ℕ) (c : ℂ) :
     aeval (fun v : σ => C (w v) * X v) (monomial u c) = monomial u (c * ∏ v, w v ^ u v) := by
@@ -111,9 +111,9 @@ lemma aeval_scale_monomial {σ : Type*} [Fintype σ] [DecidableEq σ] (w : σ �
   ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Rewrite using `[aeval_scale_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, add_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma coeff_scale {σ : Type*} [Fintype σ] [DecidableEq σ] (w : σ → ℂ) (f : MvPolynomial σ ℂ) (m : σ →₀ ℕ) :
     coeff m (aeval (fun v : σ => C (w v) * X v) f) = coeff m f * ∏ v, w v ^ m v := by
@@ -126,9 +126,9 @@ lemma coeff_scale {σ : Type*} [Fintype σ] [DecidableEq σ] (w : σ → ℂ) (f
   | add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, add_mul]
 
 /- English proof (translation)
-Repeatedly rewrite using `[← Complex.exp_nat_mul]`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 lemma prod_exp {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (θ : Fin N → ℝ) :
     ∏ v : Fin N × Fin N, Complex.exp ((θ v.2 : ℂ) * Complex.I) ^ m v =
@@ -141,11 +141,11 @@ lemma prod_exp {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (θ : Fin N → ℝ) :
   refine Finset.sum_congr rfl fun v _ => by ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hk : d - c ≠ 0` using `sub_ne_zero.mpr hne`. Establish `h1` using `h (Real.pi / (d - c))`. Establish `h2 : Complex.exp (((Real.pi / (d - c) * d : ℝ) : ℂ) * Complex.I - ((Real.pi / (d - c) * c : ℝ) : ℂ) * Complex.I) = 1`. Rewrite using `[Complex.exp_sub, h1, div_self (Complex.exp_ne_zero _)]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((Real.pi / (d - c) * d : ℝ) : ℂ) * Complex.I - ((Real.pi / (d - c) * c : ℝ) : ℂ) * Complex.I = (Real.pi : ℂ) * Complex.I`. Rewrite using `[← sub_mul]`. Use `congr 1`. Rewrite using `[← Complex.ofReal_sub]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[h3, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h2`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 lemma real_eq_of_exp {d c : ℝ}
     (h : ∀ τ : ℝ, Complex.exp (((τ * d : ℝ) : ℂ) * Complex.I) = Complex.exp (((τ * c : ℝ) : ℂ) * Complex.I)) :
@@ -167,9 +167,9 @@ lemma real_eq_of_exp {d c : ℝ}
   norm_num at h2
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : v.2 = s`. Substitute `h` using the available equality. Simplify using `[colW]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[colW, h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 lemma weight_colW {N : ℕ} (m : Fin N × Fin N →₀ ℕ) (s : Fin N) :
     Finsupp.weight (colW N N) m s = ∑ v : Fin N × Fin N, if v.2 = s then m v else 0 := by
@@ -188,7 +188,7 @@ def Fq (x : V) : MvPolynomial (Fin N × Fin N) ℂ :=
   rename Prod.swap (Classical.choose (hP.poly x v0))
 
 /- English proof (translation)
-Unfold `Fq`. Rewrite using `[evM_rename_swap]`. Conclude with `Classical.choose_spec (hP.poly x v0) Aᵀ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma evM_Fq (x : V) (A : Matrix (Fin N) (Fin N) ℂ) : evM A (Fq hP v0 x) = ⟪v0, P Aᵀ x⟫_ℂ := by
   unfold Fq
@@ -208,7 +208,7 @@ Both sides reduce to the same expression.
 lemma Fl_apply (x : V) : Fl hP v0 x = Fq hP v0 x := rfl
 
 /- English proof (translation)
-The claim follows from `poly_ext fun A => by rw [evM_rowAct, evM_Fq, evM_Fq, Matrix.transpose_mul, Matrix.transpose_transpose, hP.mul, LinearMap.comp_apply]`.
+A detailed English derivation is pending.
 -/
 lemma Fq_intertwine (g : Matrix (Fin N) (Fin N) ℂ) (x : V) :
     Fq hP v0 (P g x) = rowAct ℂ (n := N) gᵀ (Fq hP v0 x) := poly_ext fun A => by
@@ -216,7 +216,7 @@ lemma Fq_intertwine (g : Matrix (Fin N) (Fin N) ℂ) (x : V) :
     LinearMap.comp_apply]
 
 /- English proof (translation)
-The claim follows from `poly_ext fun A => by rw [evM_colAdd, evM_Fq, evM_Fq, Matrix.transpose_mul, Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_single, hP.mul, LinearMap.comp_apply, hlow l j hlj]`.
+A detailed English derivation is pending.
 -/
 lemma Fq_colAdd
     (hlow : ∀ a b : Fin N, a < b → ∀ (c : ℂ) (x : V), ⟪v0, P (1 + Matrix.single b a c) x⟫_ℂ = ⟪v0, x⟫_ℂ)
@@ -226,7 +226,7 @@ lemma Fq_colAdd
     Matrix.transpose_single, hP.mul, LinearMap.comp_apply, hlow l j hlj]
 
 /- English proof (translation)
-The claim follows from `poly_ext fun A => by rw [evM_scale (fun s => Complex.exp ((θ s : ℂ) * Complex.I)), evM_C_mul, evM_Fq, evM_Fq, Matrix.transpose_mul, Matrix.diagonal_transpose, ← htor θ, hP.mul, LinearMap.comp_apply] rfl`.
+A detailed English derivation is pending.
 -/
 lemma Fq_scale (μ : Fin N → ℤ) (K : ℕ)
     (htor : ∀ (θ : Fin N → ℝ) (x : V), ⟪v0, P (torus θ) x⟫_ℂ =
@@ -240,13 +240,13 @@ lemma Fq_scale (μ : Fin N → ℤ) (K : ℕ)
     rfl
 
 /- English proof (translation)
-Establish `key : ((∑ v : Fin N × Fin N, if v.2 = s then m v else 0 : ℕ) : ℝ) = (μ s : ℝ) + K`. Apply `real_eq_of_exp` to reduce the goal to its premises. Introduce `τ`. Establish `h1` using `congrArg (coeff m) (Fq_scale hP v0 μ K htor (fun s' => if s' = s then τ else 0) x)`. Rewrite `h1` using `[coeff_scale, coeff_C_mul, mul_comm (Complex.exp _), prod_exp m (fun s' => if s' = s then τ else 0)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `mul_left_cancel₀ hm h1`. Establish `e1 : (∑ v : Fin N × Fin N, (m v : ℝ) * (if v.2 = s then τ else 0)) = τ * ((∑ v : Fin N × Fin N, if v.2 = s then m v else 0 : ℕ) : ℝ)`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> ring`. Establish `e2 : (∑ a : Fin N, ((μ a : ℝ) + K) * (if a = s then τ else 0)) = τ * ((μ s : ℝ) + K)`. Simplify using `[mul_ite, Finset.sum_ite_eq']`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e1, e2]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma Fq_deg (μ : Fin N → ℤ) (K : ℕ)
     (htor : ∀ (θ : Fin N → ℝ) (x : V), ⟪v0, P (torus θ) x⟫_ℂ =
@@ -278,15 +278,15 @@ end MMap
 
 open MMap in
 /- English proof (translation)
-Introduce `N V _ _ _ P v0 μ K hP hv0 htor hlow`. Establish `hF0 : Fq hP v0 v0 ≠ 0`. Introduce `h`. Establish `h1` using `evM_Fq hP v0 v0 1`. Rewrite `h1` using `[h, Matrix.transpose_one, hP.one, LinearMap.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : evM (1 : Matrix (Fin N) (Fin N) ℂ) (0 : MvPolynomial (Fin N × Fin N) ℂ) = 0` using `by simp [evM]`. Rewrite `h1` using `[h2]`. Conclude with `hv0 (inner_self_eq_zero.mp h1.symm)`. Take `⟨m0, hm0⟩` from `MvPolynomial.ne_zero_iff.mp hF0`. Establish `hnn : ∀ s, 0 ≤ μ s + K` using `fun s => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fq_deg hP v0 μ K htor v0 m0 hm0 s]`. Check the signs of the components of the expression. Use `⟨fun s => (μ s + K).toNat, Fl hP v0, fun s => Int.toNat_of_nonneg (hnn s), ?_, hF0, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[Fl_apply, dualWeylPoint ℂ N N _ _]`.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun l j hlj c => Fq_colAdd hP v0 hlow l j hlj c x⟩` and prove the remaining obligations. Introduce `m hm`. Use function extensionality and compare the values at `s`. Rewrite using `[weight_colW]`. Establish `h1` using `Fq_deg hP v0 μ K htor x m hm s`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Int.toNat_of_nonneg (hnn s)`. Use linear arithmetic over natural numbers and integers. Introduce `g x`. Rewrite using `[Fl_apply, Fl_apply]`. Conclude with `Fq_intertwine hP v0 g x`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_map_equivariance : ModelMap := by
   intro N V _ _ _ P v0 μ K hP hv0 htor hlow

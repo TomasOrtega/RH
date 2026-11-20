@@ -13,7 +13,7 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `GroundTheory.Automorphic.Reduction.posIdele_finite s hs v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem pos_snd (s : ℝ) (hs : 0 < s) :
     (((GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E) : A E)).2 = 1 := by
@@ -22,7 +22,7 @@ private theorem pos_snd (s : ℝ) (hs : 0 < s) :
   exact GroundTheory.Automorphic.Reduction.posIdele_finite s hs v
 
 /- English proof (translation)
-Establish `e : ((((GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E)⁻¹ : IdeleGroup E) : A E)).2 * (((GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E) : A E)).2 = 1` using `congrArg Prod.snd (Units.inv_mul (GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E))`. Rewrite `e` using `[pos_snd, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem pos_inv_snd (s : ℝ) (hs : 0 < s) :
     ((((GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E)⁻¹ : IdeleGroup E) : A E)).2 = 1 := by
@@ -32,7 +32,7 @@ private theorem pos_inv_snd (s : ℝ) (hs : 0 < s) :
   rwa [pos_snd, mul_one] at e
 
 /- English proof (translation)
-Establish `e : ((((GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E)⁻¹ : IdeleGroup E) : A E)).1 w * (((GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E) : A E)).1 w = 1` using `congrArg (fun z : A E => z.1 w) (Units.inv_mul (GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E))`. Establish `h` using `congrArg norm e`. Rewrite `h` using `[norm_mul, GroundTheory.Automorphic.Reduction.norm_posIdele_infinite, norm_one]`. Conclude with `eq_inv_of_mul_eq_one_left h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_pos_inv (s : ℝ) (hs : 0 < s) (w : InfinitePlace E) :
     ‖((((GroundTheory.Automorphic.Reduction.posIdele s hs : IdeleGroup E)⁻¹ : IdeleGroup E) : A E)).1 w‖ = s⁻¹ := by
@@ -46,9 +46,9 @@ private theorem norm_pos_inv (s : ℝ) (hs : 0 < s) (w : InfinitePlace E) :
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `e : pInf E x w = InfinitePlace.Completion.extensionEmbedding w (x.1 w)`. Establish `h` using `UpperTheory.V.Cm.infEq_apply (pInf E x) w`. Rewrite `h` using `[show infEq E (pInf E x) = x.1 from (infEq E).apply_symm_apply x.1]`. Rewrite using `[← InfinitePlace.Completion.ringEquivComplexOfIsComplex_apply (IsTotallyComplex.isComplex w), h, RingEquiv.apply_symm_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _`.
+A detailed English derivation is pending.
 -/
 private theorem norm_pInf (x : A E) (w : InfinitePlace E) : ‖pInf E x w‖ = ‖x.1 w‖ := by
   have e : pInf E x w = InfinitePlace.Completion.extensionEmbedding w (x.1 w) := by
@@ -60,11 +60,11 @@ private theorem norm_pInf (x : A E) (w : InfinitePlace E) : ‖pInf E x w‖ = �
   exact (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg hr).2 fun i => (pi_norm_le_iff_of_nonneg hr).2 fun j => (pi_norm_le_iff_of_nonneg hr).2 fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖pInf E ((mD q).1 i j) w‖ ≤ r`. Rewrite using `[norm_pInf]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using `using h1 w`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 
-Use `le_trans (le_of_eq ?_) hr` and prove the remaining obligations. Simplify using the standard rewrite rules. Apply the tactic sequence `first | exact norm_zero | rfl`. Use `le_trans (le_of_eq ?_) hr` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `first | exact norm_zero | rfl`. Simplify using `using h2 w`.
+A detailed English derivation is pending.
 -/
 private theorem norm_toL_mD_le (q : (A E)ˣ) {r : ℝ} (hr : 0 ≤ r) (h1 : ∀ w, ‖(q : A E).1 w‖ ≤ r)
     (h2 : ∀ w, ‖((q⁻¹ : (A E)ˣ) : A E).1 w‖ ≤ r) :
@@ -87,43 +87,39 @@ end SlopeTestRemainingChoices
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Introduce `E _ _ _ c hc`. Take `⟨S, hS, hSm⟩` from `exists_isCompact_mul_mem_of_ideleModule_mem_Icc (K := E) hc c`. Establish `hcont : Continuous fun x : InfiniteAdeleRing E => ∑ w : InfinitePlace E, ‖x w‖` using `continuous_finset_sum _ fun w _ => continuous_norm.comp (continuous_apply w)`. Take `⟨M, hM⟩` from `(isCompact_closure_fundamentalSetInfinite E).exists_bound_of_continuousOn hcont.continuousOn`. Set `L : Set (A E)` to `((homeomorphMixedSpace E) ⁻¹' Metric.closedBall 0 M) ×ˢ (integralFiniteAdeles (𝓞 E) E : Set (FiniteAdeleRing (𝓞 E) E))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hL : IsCompact L` using `((homeomorphMixedSpace E).isCompact_preimage.2 (isCompact_closedBall _ _)).prod (isCompact_integralFiniteAdeles E)`. Use `⟨(fun x : A E × IdeleGroup E => nU x.1 * mD x.2) '' (L ×ˢ S), 3 / c, (hL.prod hS).image ((continuous_nU.comp continuous_fst).mul (continuous_mD.comp continuous_snd)), fun u b hb => ?_⟩` and prove the remaining obligations. Use `set d := Module.finrank ℚ E`. Establish `hd : d ≠ 0` using `Module.finrank_pos.ne'`. Establish `hx : 1 ≤ ab b / c` using `(one_le_div hc).2 hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s := (ab b / c) ^ (d : ℝ)⁻¹`. Establish `hs1 : 1 ≤ s` using `Real.one_le_rpow hx (by positivity)`. Establish `hs0 : 0 < s` using `one_pos.trans_le hs1`. Establish `hsd : s ^ d = ab b / c` using `Real.rpow_inv_natCast_pow (zero_le_one.trans hx) hd`. Use `set p : IdeleGroup E := posIdele s hs0 with hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : (IdeleGroup.ideleModule E (p⁻¹ * b) : ℝ) = c`. Establish `h1 : (IdeleGroup.ideleModule E (p⁻¹ * b) : ℝ) = ((IdeleGroup.ideleModule E p : ℝ))⁻¹ * (IdeleGroup.ideleModule E b : ℝ)`. Simplify using `[map_mul, map_inv]`. Establish `h2 : (0 : ℝ) < ab b` using `hc.trans_le hb`. Rewrite using `[h1, hp, ideleModule_posIdele, hsd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(ab b / c)⁻¹ * ab b = c`. Clear the denominators using the available nonvanishing facts. Take `⟨t, ht⟩` from `hSm _ hm.ge hm.le`. Use `set a : (A E)ˣ := IdeleGroup.diagonal E t with ha`. Use `set w0 : IdeleGroup E := a * (p⁻¹ * b) with hw0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : b = a⁻¹ * p * w0`. Rewrite using `[hw0, mul_assoc, mul_left_comm p, mul_inv_cancel_left, inv_mul_cancel_left]`. Use `set v : A E := (a : A E) ^ 2 * u with hv`. Take `⟨f, hf, -⟩` from `existsUnique_sub_mem_fundamentalSet E v`. Use `set u2 : A E := v - rt f with hu2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set u3 : A E := (((p⁻¹ : IdeleGroup E) : (A E)ˣ) : A E) ^ 2 * u2 with hu3`. Establish `h1 : nU u * mD a⁻¹ = mD a⁻¹ * nU v`. Rewrite using `[mD_mul_nU a⁻¹ v]`. Use `congr 2`. Rewrite using `[hv, ← mul_assoc, ← mul_pow, Units.inv_mul, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : nU v = nU (rt f) * nU u2`. Rewrite using `[← nU_add, hu2, add_sub_cancel]`. Establish `h3 : nU u2 * mD p = mD p * nU u3`. Rewrite using `[mD_mul_nU p u3]`. Use `congr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hu3, ← mul_assoc, ← mul_pow, Units.mul_inv, one_pow, one_mul]`. Establish `hdec : nU u * mD b = (mD a⁻¹ * nU (rt f)) * mD p * (nU u3 * mD w0)`. Combine the equalities or inequalities in the displayed calculation. Establish `hG : mD a⁻¹ * nU (rt f) ∈ Gam E`. Use `(Gam E).mul_mem ?_ (nU_rt_mem f)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[mD_inv]`. Conclude with `(Gam E).inv_mem (mD_diagonal_mem t)`. Take `⟨γ, hγ⟩` from `hG`. Establish `hu3L : u3 ∈ L`. Establish `hpw : ∀ w, ‖u3.1 w‖ ≤ ‖u2.1 w‖` using `fun w => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : u3.1 w = ((((p⁻¹ : IdeleGroup E) : A E)).1 w) ^ 2 * u2.1 w` using `rfl`. Rewrite using `[e, norm_mul, norm_pow, hp, norm_pos_inv]`. Establish `: (s⁻¹) ^ 2 ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ hs1)`. Use polynomial arithmetic with `[norm_nonneg (u2.1 w)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_closedBall_zero_iff.2 ?_` and prove the remaining obligations. Use `(GJGlobal.norm_homeomorphMixedSpace_le_sum u3.1).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun w _ => hpw w).trans ?_` and prove the remaining obligations. Conclude with `(le_abs_self _).trans ((Real.norm_eq_abs _ ▸ hM u2.1 (subset_closure hf.1)))`. Establish `e : u3.2 = ((((p⁻¹ : IdeleGroup E) : A E)).2) ^ 2 * u2.2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e, hp, pos_inv_snd, one_pow, one_mul]`. Conclude with `hf.2`. Set `z : GL (Fin 2) (Cinf E)` to `Matrix.GeneralLinearGroup.map (pInf E) (gl (mD p))`. Establish `hz : infGL E 2 z = gl (mD p)`. Use `ga_ext (pInf_infGL z) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pFin_infGL]`. Establish `hpf : pFin E (p : A E) = 1` using `pos_snd s hs0`. Establish `hpfi : pFin E (((p⁻¹ : IdeleGroup E) : (A E)ˣ) : A E) = 1` using `pos_inv_snd s hs0`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) (Af E)) i j = pFin E ((mD p).1 i j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hpf, hpfi]`. Use `⟨γ, z, nU u3 * mD w0, ⟨(u3, w0), ⟨hu3L, ht⟩, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdec, ← hγ, hz]`. Conclude with `Units.ext rfl`. Establish `hsi : s⁻¹ ≤ s` using `(inv_le_one_of_one_le₀ hs1).trans hs1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle1 : ‖toL z.val‖ ≤ s` using `norm_toL_mD_le p hs0.le (fun w => (norm_posIdele_infinite s hs0 w).le) (fun w => (norm_pos_inv s hs0 w).le.trans hsi)`. Establish `hzi : z⁻¹ = Matrix.GeneralLinearGroup.map (pInf E) (gl (mD p⁻¹))`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Establish `e : gl (mD p) * gl (mD p⁻¹) = 1`. Establish `e1 : mD p * mD p⁻¹ = 1` using `by rw [← mD_mul, mul_inv_cancel, mD_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : gl (mD p) * gl (mD p⁻¹) = gl (mD p * mD p⁻¹)` using `Units.ext rfl`. Rewrite using `[e2, e1]`. Conclude with `Units.ext rfl`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (pInf E) (gl (mD p)) * _ = 1`. Rewrite using `[← map_mul, e, map_one]`.
-
-Establish `hle2 : ‖toL (z⁻¹).val‖ ≤ s`. Rewrite using `[hzi]`. Use `norm_toL_mD_le p⁻¹ hs0.le (fun w => (norm_pos_inv s hs0 w).le.trans hsi) fun w => ?_` and prove the remaining obligations. Rewrite using `[inv_inv]`. Conclude with `(norm_posIdele_infinite s hs0 w).le`.
-
-Establish `hss : s ≤ ab b / c` using `hsd ▸ le_self_pow₀ hs1 hd`. Establish `e3 : 3 / c * ab b = 3 * (ab b / c)` using `by ring`. Establish `e4 : Ht z = 1 + ‖toL z.val‖ + ‖toL (z⁻¹).val‖` using `rfl`. Rewrite using `[e3, e4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_compact_siegel_decomposition_height_le :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (c : ℝ), 0 < c → ∃ (Y : Set (G1 E)) (C₂ : ℝ), IsCompact Y ∧ ∀ (u : A E) (b : (A E)ˣ), c ≤ ab b → ∃ (γ : Matrix.SpecialLinearGroup (Fin 2) E) (z : GL (Fin 2) (Cinf E)), ∃ w ∈ Y, gl (nU u * mD b) = gl (ratS E γ) * infGL E 2 z * gl w ∧ Ht z ≤ C₂ * ab b := by

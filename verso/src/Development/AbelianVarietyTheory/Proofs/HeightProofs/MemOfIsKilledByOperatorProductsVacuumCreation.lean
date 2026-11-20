@@ -11,9 +11,7 @@ open GlobalTheory.FockCompare
 variable {I M : Type} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h [] rfl`. Introduce `h l hl`. Take `rfl` from `List.length_eq_zero_iff.1 hl`.
-
-Conclude with `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem killed_zero (a : I → Module.End ℂ M) (m : M) : Killed a 0 m ↔ m = 0 := by
   constructor
@@ -23,9 +21,9 @@ theorem killed_zero (a : I → Module.End ℂ M) (m : M) : Killed a 0 m ↔ m = 
     exact h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i l hl`. Use `h (l ++ [i]) (by simp [hl])` as an intermediate fact. Simplify `this` using `[List.foldr_append]`. Introduce `h l hl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl | ⟨l', i, rfl⟩` from `List.eq_nil_or_concat l`. Simplify using `at hl`. Use `h i l' (by simpa using hl)` as an intermediate fact. Simplify `this` using `[List.foldr_append]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem killed_succ (a : I → Module.End ℂ M) (N : ℕ) (m : M) :
     Killed a (N + 1) m ↔ ∀ i, Killed a N (a i m) := by
@@ -44,9 +42,9 @@ noncomputable def prodE (E : Module.End ℂ M) (lam : ℂ) : ℕ → ℕ → M �
   | N + 1, j, x => prodE E lam N (j + 1) (E x - ((j : ℂ) * lam) • x)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro j x`. Both sides reduce to the same expression. Consider the case `succ N ih`. Introduce `j x`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [prodE]`. Rewrite using `[← ih, map_sub, map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodE_comm (E : Module.End ℂ M) (lam : ℂ) (N : ℕ) :
     ∀ (j : ℕ) (x : M), prodE E lam N j (E x) = E (prodE E lam N j x) := by
@@ -58,9 +56,9 @@ theorem prodE_comm (E : Module.End ℂ M) (lam : ℂ) (N : ℕ) :
     rw [← ih, map_sub, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro j x`. Both sides reduce to the same expression. Consider the case `succ N ih`. Introduce `j x`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [prodE]`. Rewrite using `[ih, map_sub, map_smul, h]`. Use `congr 1`. Use `push_cast`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem shift_prodE (E A : Module.End ℂ M) (lam : ℂ) (h : ∀ x, A (E x) = E (A x) + lam • A x) (N : ℕ) :
     ∀ (j : ℕ) (x : M), A (prodE E lam N (j + 1) x) = prodE E lam N j (A x) := by
@@ -75,11 +73,11 @@ theorem shift_prodE (E A : Module.End ℂ M) (lam : ℂ) (h : ∀ x, A (E x) = E
     module
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro t x hx`. Rewrite `hx`, the goal using `[killed_zero]`. Simplify using `[hx]`. Consider the case `succ N ih`.
+Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `t x hx`. Rewrite `hx`, the goal using `[killed_succ]`. Introduce `i`. Establish `e : a i (E x - t • x) = E (a i x) - (t - lam) • a i x`. Rewrite using `[map_sub, map_smul, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Rewrite using `[e]`. Conclude with `ih _ _ (hx i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killed_stable (a : I → Module.End ℂ M) (E : Module.End ℂ M) (lam : ℂ)
     (h : ∀ i x, a i (E x) = E (a i x) + lam • a i x) (N : ℕ) :
@@ -96,9 +94,9 @@ theorem killed_stable (a : I → Module.End ℂ M) (E : Module.End ℂ M) (lam :
     exact ih _ _ (hx i)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro x hx`. Conclude with `(killed_zero a x).1 hx`. Consider the case `succ N ih`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[killed_succ]`. Simplify using `only [prodE, Nat.cast_zero, zero_mul, zero_smul, sub_zero]`. Rewrite using `[prodE_comm]`. Use `h0 _ fun i => ?_` and prove the remaining obligations. Rewrite using `[shift_prodE E (a i) lam (h i), ih _ (hx i)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodE_kills (a : I → Module.End ℂ M) (E : Module.End ℂ M) (lam : ℂ)
     (h : ∀ i x, a i (E x) = E (a i x) + lam • a i x) (h0 : ∀ x, (∀ i, a i x = 0) → E x = 0) (N : ℕ) :
@@ -114,9 +112,9 @@ theorem prodE_kills (a : I → Module.End ℂ M) (E : Module.End ℂ M) (lam : �
     rw [shift_prodE E (a i) lam (h i), ih _ (hx i)]
 
 /- English proof (translation)
-Proceed by induction on `K with`. Consider the case `zero => intro j x _ hx`. Conclude with `hx`. Consider the case `succ K ih`. Introduce `j x hx hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [prodE] at hp`. Establish `h1` using `ih _ _ (hS _ x hx) hp`. Establish `h2` using `P.sub_mem (hE x hx) h1`. Rewrite `h2` using `[sub_sub_cancel]`. Conclude with `(P.smul_mem_iff (mul_ne_zero (Nat.cast_ne_zero.2 (Nat.succ_ne_zero j)) hl)).1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem peel (E : Module.End ℂ M) (lam : ℂ) (hl : lam ≠ 0) (S : M → Prop) (P : Submodule ℂ M)
     (hS : ∀ (t : ℂ) x, S x → S (E x - t • x)) (hE : ∀ x, S x → E x ∈ P) (K : ℕ) :
@@ -132,15 +130,13 @@ theorem peel (E : Module.End ℂ M) (lam : ℂ) (hl : lam ≠ 0) (S : M → Prop
     exact (P.smul_mem_iff (mul_ne_zero (Nat.cast_ne_zero.2 (Nat.succ_ne_zero j)) hl)).1 h2
 
 /- English proof (translation)
-Introduce `I M _ _ a c n e lam hl hc P hv hP N`. Use `set E : Module.End ℂ M := ∑ k, c (e k) * a (e k) with hEdef`. Establish `hEx : ∀ x, E x = ∑ k, c (e k) (a (e k) x)`. Introduce `x`. Simplify using `[hEdef, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : ∀ i x, a i (E x) = E (a i x) + lam • a i x`. Introduce `i x`. Use `LinearMap.congr_fun (hc i) x` as an intermediate fact. Simplify using `using this`. Establish `h0 : ∀ x, (∀ i, a i x = 0) → E x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `[hEx, hx]`. Proceed by induction on `N with`. Consider the case `zero => intro m hm`. Rewrite using `[(killed_zero a m).1 hm]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `P.zero_mem`. Consider the case `succ N ih`. Introduce `m hm`. Use `peel E lam hl (Killed a (N + 1)) P (killed_stable a E lam h (N + 1)) (fun x hx => ?_) N 0 m hm (hv _ fun i => ?_)` and prove the remaining obligations. Rewrite using `[hEx]`.
-
-Conclude with `P.sum_mem fun k _ => hP _ _ (ih _ ((killed_succ a N x).1 hx _))`. Rewrite using `[shift_prodE E (a i) lam (h i)]`. Conclude with `prodE_kills a E lam h h0 N _ ((killed_succ a N m).1 hm i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_killed : ∀ (I M : Type) [AddCommGroup M] [Module ℂ M] (a c : I → Module.End ℂ M) (n : ℕ) (e : Fin n → I) (lam : ℂ), lam ≠ 0 → (∀ i, a i * (∑ k, c (e k) * a (e k)) = ((∑ k, c (e k) * a (e k)) + lam • (1 : Module.End ℂ M)) * a i) → ∀ P : Submodule ℂ M, (∀ m, (∀ i, a i m = 0) → m ∈ P) → (∀ i, ∀ m ∈ P, c i m ∈ P) → ∀ (N : ℕ) (m : M), Killed a N m → m ∈ P := by
   intro I M _ _ a c n e lam hl hc P hv hP N

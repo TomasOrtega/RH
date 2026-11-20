@@ -46,21 +46,17 @@ namespace GlobalTheory.FreeLev
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c G _ h m g₁ g₂ I₁ I₂ _ hg₁ hg₂ hne hI₁ hI₂ hm₁ hm₂ hMb₁ hMb₂ hu₁ hu₂ hfaith`. Introduce `g k _ _ y y' hR hx`. Take `⟨ρ, ν, -, hlev, hmove⟩` from `hR`. Establish `hfix : y.x ≫ ρ = y.x` using `hmove.1.symm.trans hx`. Take `⟨x', hx'⟩` from `GlobalTheory.T.exists_fixed_complexPoint_of_fixed_fieldPoint E H Dw l Xo k y.x ρ hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, act, θ, N, ev, hθ, hN, hθN, hcomm, hadd, hlin, hker, honto, hrel⟩` from `GlobalTheory.T.exists_finiteOrder_fibreAut_at_levelMove_fixedPoint E H Dw l Xo x' ρ ν (h g) LinearMap.id hlev hx'`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Take `⟨Λ, _, _, F, ψ, hfin, htf, hFN, hψadd, hψlin, hψker, hψonto, hψF⟩` from `GlobalTheory.T.periodLattice_action_of_finiteOrder_automorphism E P act θ N l.M hθ hN hθN hcomm hM0`. Use `letI := P.isAb.comm`. Use `letI : Module (𝓞 E) (Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)) := ptModule P act`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Set `evL : Dw.La →ₗ[𝓞 E] Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)` to `{ toFun := fun a => Additive.ofMul (ev a) map_add' := fun a b => congrArg Additive.ofMul (hadd a b) map_smul' := fun c a => congrArg Additive.ofMul (hlin c a) }`. Set `ψL : Λ →ₗ[𝓞 E] Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)` to `{ toFun := fun a => Additive.ofMul (ψ a) map_add' := fun a b => congrArg Additive.ofMul (hψadd a b) map_smul' := fun c a => congrArg Additive.ofMul (hψlin c a) }`. Set `θL : Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A) →ₗ[𝓞 E] Additive (𝟙_ (Over (Sp ℂ)) ⟶ P.A)` to `{ toFun := fun q => Additive.ofMul (q.toMul ≫ θ) map_add' := fun q q' => by show Additive.ofMul ((q.toMul * q'.toMul) ≫ θ) = Additive.ofMul (q.toMul ≫ θ * q'.toMul ≫ θ)`. Rewrite using `[MonObj.mul_comp]`. Use the proof step `map_smul' := fun c q => by show Additive.ofMul ((q.toMul ≫ act.act c) ≫ θ) = Additive.ofMul ((q.toMul ≫ θ) ≫ act.act c)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hcomm] }`. Establish `hMmem : (l.M : 𝓞 E) ∈ l.Mb`. Establish `h1 : (l.M : 𝓞 E) ∈ Ideal.span {(l.M : 𝓞 E)}` using `Ideal.subset_span rfl`. Rewrite `h1` using `[← l.prod]`. Conclude with `Ideal.mul_le_left h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hfaith g (GlobalTheory.T.sub_mem_smul_top_of_neat_level_alt E Dw.La Λ _ l.Mb l.M N m g₁ g₂ I₁ I₂ evL ψL θL F (h g) hfin htf hM0 hMmem (fun a => by show Additive.ofMul (ev a) = 0 ↔ _` and prove the remaining obligations. Rewrite using `[← hker a]`. Conclude with `ofMul_eq_zero)`. Use the proof step `(fun q hq => by`. Take `⟨a, ha⟩` from `honto q.toMul (fun c hc => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hq c hc` as an intermediate fact. Conclude with `congrArg Additive.toMul this)`. Conclude with `⟨a, congrArg Additive.ofMul ha⟩)`. Use the proof step `(fun b => by show Additive.ofMul (ψ b) = 0 ↔ _`. Rewrite using `[← hψker b]`.
-
-Conclude with `ofMul_eq_zero)`. Use the proof step `(fun q hq => by`. Take `⟨b, hb⟩` from `hψonto q.toMul (by`. Use `congrArg Additive.toMul hq` as an intermediate fact. Rewrite using `[toMul_nsmul] at this)` and apply the resulting hypothesis.
-
-Conclude with `⟨b, congrArg Additive.ofMul hb⟩)`. Use the proof step `(fun b => congrArg Additive.ofMul (hψF b))`. Use the proof step `(fun a => congrArg Additive.ofMul (hrel a))`. Use `hN hFN hg₁ hg₂ hne hI₁ hI₂ hm₁ hm₂ hMb₁ hMb₂ (hu₁ g) (hu₂ g))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem free_of_unip : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (G : Type) [Group G] (h : G → (Dw.La →ₗ[𝓞 E] Dw.La)) (m g₁ g₂ : ℕ) (I₁ I₂ : Ideal (𝓞 E)), 1 ≤ Dw.p + Dw.q → g₁.Prime → g₂.Prime → g₁ ≠ g₂ → I₁ ≠ ⊤ → I₂ ≠ ⊤ → (g₁ : 𝓞 E) ∈ I₁ → (g₂ : 𝓞 E) ∈ I₂ → l.Mb ≤ I₁ → l.Mb ≤ I₂ → (∀ g x, ((h g - 1) ^ m) x ∈ I₁ • (⊤ : Submodule (𝓞 E) Dw.La)) → (∀ g x, ((h g - 1) ^ m) x ∈ I₂ • (⊤ : Submodule (𝓞 E) Dw.La)) → (∀ g, (∀ x, h g x - x ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) → g = 1) → FreePt Xo c (fun g => (h g, (LinearMap.id : Dw.La →ₗ[𝓞 E] Dw.La))) := by
   intro E _ _ _ H Dw l Xo c G _ h m g₁ g₂ I₁ I₂ _ hg₁ hg₂ hne hI₁ hI₂ hm₁ hm₂ hMb₁ hMb₂ hu₁ hu₂ hfaith

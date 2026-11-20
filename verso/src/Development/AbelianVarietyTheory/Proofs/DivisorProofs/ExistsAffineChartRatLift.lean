@@ -9,9 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPoinc.ChartAt
 
 /- English proof (translation)
-Take `⟨g₁, rfl⟩` from `Spec.map_surjective h₁`. Take `⟨g₂, rfl⟩` from `Spec.map_surjective h₂`. Rewrite `e` using `[spMap, ← Spec.map_comp, ← Spec.map_comp]`. Establish `e'` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext1`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors A) e'`.
+A detailed English derivation is pending.
 -/
 theorem spec_ext_of_isFractionRing {A K T : Type} [CommRing A] [IsDomain A] [Field K] [Algebra A K] [IsFractionRing A K]
     [CommRing T] (h₁ h₂ : Sp T ⟶ Sp K) (e : h₁ ≫ spMap (algebraMap A K) = h₂ ≫ spMap (algebraMap A K)) : h₁ = h₂ := by
@@ -24,9 +24,9 @@ theorem spec_ext_of_isFractionRing {A K T : Type} [CommRing A] [IsDomain A] [Fie
   exact IsLocalization.ringHom_ext (nonZeroDivisors A) e'
 
 /- English proof (translation)
-Use `haveI := C.ded`. Establish `h1 : IsAlgebraic ℚ (C.b a)` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `h2 : IsAlgebraic ℤ (C.b a)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ cf.F).2 h1`. Establish `h3 : IsAlgebraic ℤ a` using `(isAlgebraic_algHom_iff C.b.toIntAlgHom C.inj).1 h2`. Establish `h4` using `Ideal.comap_ne_bot_of_algebraic_mem ha (Ideal.mem_span_singleton_self a) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h4`. Use `⟨n, hn0, ?_⟩` and prove the remaining obligations. Use `Ideal.mem_span_singleton.1 (Ideal.mem_comap.1 hn)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_int_dvd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {cf : Coeff l} (C : UCompact Xo cf) {a : C.o} (ha : a ≠ 0) :
@@ -46,33 +46,27 @@ end GlobalTheory.UPoinc.ChartAt
 namespace GlobalTheory.UPoinc.ChartAt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo cf C X w hw`. Use `haveI := X.ar.char`. Use `haveI := C.iF_open`. Use `haveI := C.ded`. Use `letI := C.b.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := C.isFractionRing`. Use `haveI : IsPreimmersion (spMap C.b) := IsPreimmersion.of_isLocalization (nonZeroDivisors C.o)`. Establish `hemb` using `Scheme.Hom.isEmbedding (pullback.fst C.z (spMap C.b))`. Take `⟨V, hVo, hV⟩` from `hemb.isInducing.isOpen_iff.1 C.iF.isOpenEmbedding.isOpen_range`. Use `set V' : X.M.Z.Opens := X.π ⁻¹ᵁ ⟨V, hVo⟩ with hV'def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hwV : w ∈ V'`. Take `⟨x, hx⟩` from `hw`. Use `show X.π w ∈ V`. Establish `: C.iF x ∈ pullback.fst C.z (spMap C.b) ⁻¹' V` using `hV ▸ ⟨x, rfl⟩`. Rewrite using `[← hx]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨U, hU, hwU, hUV⟩` from `exists_isAffineOpen_mem_and_subset (X := X.M.Z) (U := V') hwV`. Establish `hne : ((U : X.M.Z.Opens) : Set X.M.Z).Nonempty` using `⟨w, hwU⟩`. Use `set R₀ := X.M.ringOn U with hR₀`. Set `φ : Γ(X.M.Z, U) ⟶ CommRingCat.of R₀` to `CommRingCat.ofHom (X.M.sectionsEquiv U hne).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Sp R₀ ⟶ X.M.Z` to `Spec.map φ ≫ hU.fromSpec`. Set `g : Sp (ratHull R₀) ⟶ C.Z` to `spMap (toRat R₀) ≫ f ≫ X.π`. Establish `hgV : ∀ y, g y ∈ V`. Introduce `y`. Establish `hy : hU.fromSpec (Spec.map φ (spMap (toRat R₀) y)) ∈ Set.range hU.fromSpec` using `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[hU.range_fromSpec]`. Conclude with `hUV hy`. Set `ψ : C.o →+* ratHull R₀` to `(Spec.preimage (g ≫ C.z)).hom`. Establish `hψ : ∀ a : nonZeroDivisors C.o, IsUnit (ψ a)`. Introduce and unpack `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨n, hn, hdvd⟩` from `exists_int_dvd C (nonZeroDivisors.ne_zero ha)`. Conclude with `isUnit_of_dvd_unit (map_dvd ψ hdvd) (by simpa using isUnit_intCast_ratHull R₀ hn)`. Set `θ : cf.F →+* ratHull R₀` to `IsLocalization.lift (M := nonZeroDivisors C.o) hψ`. Establish `hθ : θ.comp (algebraMap C.o cf.F) = ψ` using `IsLocalization.lift_comp hψ`. Establish `hw' : g ≫ C.z = spMap θ ≫ spMap C.b`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Express the relevant statement in the definitionally equal form `_ = Spec.map (CommRingCat.ofHom (θ.comp (algebraMap C.o cf.F)))`. Rewrite using `[hθ]`. Conclude with `(Spec.map_preimage _).symm`. Set `g' : Sp (ratHull R₀) ⟶ pullback C.z (spMap C.b)` to `pullback.lift g (spMap θ) hw'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrange : Set.range g' ⊆ Set.range C.iF`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← hV]`. Use `show pullback.fst C.z (spMap C.b) (g' y) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgV y`. Use `⟨U, IsOpenImmersion.lift C.iF g' hrange, hU, hwU, ?_⟩` and prove the remaining obligations. Establish `hpt : ⊤ ≤ X.M.pt ⁻¹ᵁ U` using `X.M.top_le_preimage_pt hne`. Establish `hφ : φ ≫ CommRingCat.ofHom R₀.val.toRingHom = valMap X.M.pt U hpt`. Use extensionality with `a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((X.M.sectionsEquiv U hne a : X.M.ringOn U) : X.Ω₁) = _`. Rewrite using `[RatModel.coe_sectionsEquiv, ← valR_eq, valF_eq_valR]`. Establish `hf : spMap R₀.val.toRingHom ≫ f = X.M.pt`. Simplify using `only [f, ← Category.assoc]`. Rewrite using `[spMap, ← Spec.map_comp, hφ, specMap_valMap_fromSpec]`.
-
-Establish `hfst : spMap (ratHull R₀).val.toRingHom ≫ g = X.uΩ ≫ C.i` using `by show spMap (ratHull R₀).val.toRingHom ≫ spMap (toRat R₀) ≫ f ≫ X.π = _`. Rewrite using `[← Category.assoc, spMap_val_toRat, ← Category.assoc, hf, X.comp]`. Simplify using `only [USetup.uΩ, Category.assoc]`. Rewrite using `[← cancel_mono C.iF, Category.assoc, IsOpenImmersion.lift_fac]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
-
-Rewrite using `[Category.assoc, pullback.lift_fst, hfst]`. Simplify using `only [UCompact.i, Category.assoc]`. Establish `key : spMap (ratHull R₀).val.toRingHom ≫ g' ≫ pullback.snd C.z (spMap C.b) ≫ spMap C.b = X.uΩ ≫ C.iF ≫ pullback.snd C.z (spMap C.b) ≫ spMap C.b`. Rewrite using `[← pullback.condition, ← Category.assoc g', pullback.lift_fst, reassoc_of% hfst]`. Simplify using `only [UCompact.i, Category.assoc]`.
-
-Conclude with `spec_ext_of_isFractionRing (A := C.o) _ _ (by simpa only [Category.assoc] using key)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_affine_chart_ratLift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf) (X : USetup C) (w : X.M.Z), X.π w ∈ Set.range C.i → ∃ (U₀ : X.M.Z.Opens) (u₀ : Sp (ratHull (X.M.ringOn U₀)) ⟶ Xo.XF cf), IsAffineOpen U₀ ∧ w ∈ U₀ ∧ spMap (ratHull (X.M.ringOn U₀)).val.toRingHom ≫ u₀ = X.uΩ := by
   intro E _ _ _ H Dw l Xo cf C X w hw

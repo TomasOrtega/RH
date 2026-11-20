@@ -4,7 +4,7 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← AdicCompletion.factor_eval_eq_evalₐ I x (by simp), AdicCompletion.eval_apply]`. Use `erw [hd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adicCompletion_evalₐ_of_val {R : Type} [CommRing R] (I : Ideal R) (x : AdicCompletion I R)
     {n : ℕ} (d : R) (hd : x.val n = Submodule.Quotient.mk d) :
@@ -14,7 +14,7 @@ theorem adicCompletion_evalₐ_of_val {R : Type} [CommRing R] (I : Ideal R) (x :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← x.prop hmn, hd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adicCompletion_val_of_le {R : Type} [CommRing R] (I : Ideal R) (x : AdicCompletion I R)
     {m n : ℕ} (hmn : m ≤ n) (d : R) (hd : x.val n = Submodule.Quotient.mk d) :
@@ -23,19 +23,17 @@ theorem adicCompletion_val_of_le {R : Type} [CommRing R] (I : Ideal R) (x : Adic
   rfl
 
 /- English proof (translation)
-Use `set φ := algebraMap D N with hφ`. Establish `hle : ∀ n : ℕ, J ^ n ≤ ((J.map φ) ^ n).comap φ` using `fun n => by`. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.le_comap_map`. Set `g : (n : ℕ) → AdicCompletion J D →+* N ⧸ (J.map φ) ^ n` to `fun n => (Ideal.quotientMap ((J.map φ) ^ n) φ (hle n)).comp (AdicCompletion.evalₐ J n).toRingHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ {m n : ℕ} (hmn : m ≤ n), (Ideal.Quotient.factorPow (J.map φ) hmn).comp (g n) = g m`. Introduce `m n hmn`. Use extensionality with `x`. Take `⟨d, hd⟩` from `Submodule.Quotient.mk_surjective _ (x.val n)`. Establish `hn` using `adicCompletion_evalₐ_of_val J x d hd.symm`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm` using `adicCompletion_evalₐ_of_val J x d (adicCompletion_val_of_le J x hmn d hd.symm)`. Simplify using `only [g, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, hn, hm, Ideal.quotientMap_mk]`. Both sides reduce to the same expression. Use `⟨AdicCompletion.liftRingHom _ g hg, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hmap` using `AdicCompletion.map_injective J (f := Algebra.linearMap D N) hinj`. Apply `hmap` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `AdicCompletion.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n`. Take `⟨d, hd⟩` from `Submodule.Quotient.mk_surjective _ (x.val n)`. Establish `h1` using `adicCompletion_evalₐ_of_val J x d hd.symm`. Establish `h2` using `congrArg (AdicCompletion.evalₐ (J.map φ) n) hx`. Rewrite `h2` using `[AdicCompletion.evalₐ_liftRingHom, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, h1, Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem] at h2`. Rewrite using `[AdicCompletion.map_val_apply]`. Use `erw [← hd]`. Rewrite using `[LinearMap.reduceModIdeal_apply]`. Use `((Submodule.Quotient.mk_eq_zero _).2 ?_).trans rfl` and prove the remaining obligations.
-
-Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, Ideal.map_pow]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adicCompletion_injective_ringHom_of_finite
     (D N : Type) [CommRing D] [CommRing N] [IsNoetherianRing D] [Algebra D N]

@@ -13,27 +13,27 @@ def IsAbelianExtension (K L : OpenSubgroup G) : Prop :=
 variable {K L : OpenSubgroup G}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsAbelianExtension.le (h : IsAbelianExtension K L) : L ≤ K :=
   h.1
 
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem IsAbelianExtension.commutator_le (h : IsAbelianExtension K L) :
     commutator (K : Subgroup G) ≤ (L : Subgroup G).subgroupOf K :=
   h.2
 
 /- English proof (translation)
-The claim follows from `Subgroup.Normal.of_commutator_le _ h.2`.
+A detailed English derivation is pending.
 -/
 theorem IsAbelianExtension.normal (h : IsAbelianExtension K L) :
     ((L : Subgroup G).subgroupOf K).Normal :=
   Subgroup.Normal.of_commutator_le _ h.2
 
 /- English proof (translation)
-The claim follows from `Subgroup.Normal.quotient_commutative_iff_commutator_le.2 h.2`.
+A detailed English derivation is pending.
 -/
 theorem IsAbelianExtension.isMulCommutative (h : IsAbelianExtension K L)
     [((L : Subgroup G).subgroupOf K).Normal] :
@@ -41,28 +41,28 @@ theorem IsAbelianExtension.isMulCommutative (h : IsAbelianExtension K L)
   Subgroup.Normal.quotient_commutative_iff_commutator_le.2 h.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hLK, Subgroup.Normal.quotient_commutative_iff_commutator_le.1 inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAbelianExtension_of_isMulCommutative (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
     [IsMulCommutative ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)] : IsAbelianExtension K L :=
   ⟨hLK, Subgroup.Normal.quotient_commutative_iff_commutator_le.1 inferInstance⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hHK, fun _ hx => hLH (h.2 hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAbelianExtension.mono {H : OpenSubgroup G} (h : IsAbelianExtension K L) (hLH : L ≤ H)
     (hHK : H ≤ K) : IsAbelianExtension K H :=
   ⟨hHK, fun _ hx => hLH (h.2 hx)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inf_le_left.trans h.le, fun _ hx => ⟨h.2 hx, h'.2 hx⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAbelianExtension.inf {L' : OpenSubgroup G} (h : IsAbelianExtension K L)
     (h' : IsAbelianExtension K L') : IsAbelianExtension K (L ⊓ L') :=
   ⟨inf_le_left.trans h.le, fun _ hx => ⟨h.2 hx, h'.2 hx⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, fun x _ => x.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAbelianExtension_self (K : OpenSubgroup G) : IsAbelianExtension K K :=
   ⟨le_rfl, fun x _ => x.2⟩
@@ -76,7 +76,7 @@ def maxAbelian (hLK : L ≤ K) : OpenSubgroup G where
     (fun x hx => ⟨⟨x, hLK hx⟩, Subgroup.mem_sup_left (Subgroup.mem_subgroupOf.2 hx), rfl⟩) L.isOpen
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_map_iff_mem Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem mem_maxAbelian (hLK : L ≤ K) (x : (K : Subgroup G)) :
     (x : G) ∈ (maxAbelian hLK : Subgroup G) ↔
@@ -84,19 +84,19 @@ theorem mem_maxAbelian (hLK : L ≤ K) (x : (K : Subgroup G)) :
   Subgroup.mem_map_iff_mem Subtype.val_injective
 
 /- English proof (translation)
-Introduce `_ ⟨x, _, hx⟩` and use `hx ▸ x.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem maxAbelian_le (hLK : L ≤ K) : maxAbelian hLK ≤ K :=
   fun _ ⟨x, _, hx⟩ => hx ▸ x.2
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨⟨x, hLK hx⟩, Subgroup.mem_sup_left (Subgroup.mem_subgroupOf.2 hx), rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_maxAbelian (hLK : L ≤ K) : L ≤ maxAbelian hLK :=
   fun x hx => ⟨⟨x, hLK hx⟩, Subgroup.mem_sup_left (Subgroup.mem_subgroupOf.2 hx), rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨maxAbelian_le hLK, fun x hx => (mem_maxAbelian hLK x).2 (Subgroup.mem_sup_right hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAbelianExtension_maxAbelian (hLK : L ≤ K) : IsAbelianExtension K (maxAbelian hLK) :=
   ⟨maxAbelian_le hLK, fun x hx => (mem_maxAbelian hLK x).2 (Subgroup.mem_sup_right hx)⟩
@@ -114,7 +114,7 @@ noncomputable def normGroup (K L : OpenSubgroup G) : Subgroup (fixedModule A (K 
 variable {A}
 
 /- English proof (translation)
-The claim follows from `range_norm_le_range_norm hLH hHK`.
+A detailed English derivation is pending.
 -/
 theorem normGroup_mono {K L H : OpenSubgroup G} (hLH : L ≤ H) (hHK : H ≤ K) :
     normGroup A K L ≤ normGroup A K H :=
@@ -123,7 +123,7 @@ theorem normGroup_mono {K L H : OpenSubgroup G} (hLH : L ≤ H) (hHK : H ≤ K) 
 end NormGroup
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one L.isOpen L.one_mem`. Conclude with `⟨U.toOpenSubgroup, fun x hx => hU hx, U.isNormal'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_openSubgroup_normal_le {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (L : OpenSubgroup G) :
@@ -143,14 +143,14 @@ variable {K L : OpenSubgroup G}
 
 omit [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-The claim follows from `(QuotientGroup.eq_one_iff x).trans Subgroup.mem_subgroupOf`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq_one_iff [((L : Subgroup G).subgroupOf K).Normal] (x : (K : Subgroup G)) :
     (x : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) = 1 ↔ (x : G) ∈ (L : Subgroup G) :=
   (QuotientGroup.eq_one_iff x).trans Subgroup.mem_subgroupOf
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `reciprocity_surjective (D := D) hLK hax (a : tateZero A (K : Subgroup G) (L : Subgroup G))`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective q`. Conclude with `⟨x, hq⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_reciprocity_mk_eq (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
     (a : fixedModule A (K : Subgroup G)) :
@@ -163,7 +163,7 @@ theorem exists_reciprocity_mk_eq (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K
   exact ⟨x, hq⟩
 
 /- English proof (translation)
-Establish `e` using `D.reciprocity_galRestrict hax hL'K hLK le_rfl hLL' (x : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)`. Rewrite `e` using `[galRestrict_mk, h, normTateZero_mk, norm_self]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity_mk_of_le {L' : OpenSubgroup G} (hLK : L ≤ K)
     [((L : Subgroup G).subgroupOf K).Normal] (hL'K : L' ≤ K) [((L' : Subgroup G).subgroupOf K).Normal]
@@ -178,7 +178,7 @@ theorem reciprocity_mk_of_le {L' : OpenSubgroup G} (hLK : L ≤ K)
   exact e
 
 /- English proof (translation)
-The claim follows from `haveI := hL.isMulCommutative (reciprocity_bijective_of_isMulCommutative (D := D) hL.le hax).1`.
+A detailed English derivation is pending.
 -/
 theorem reciprocity_injective (hL : IsAbelianExtension K L)
     [((L : Subgroup G).subgroupOf K).Normal] : Function.Injective (D.reciprocity hL.le hax) :=
@@ -186,7 +186,7 @@ theorem reciprocity_injective (hL : IsAbelianExtension K L)
   (reciprocity_bijective_of_isMulCommutative (D := D) hL.le hax).1
 
 /- English proof (translation)
-Rewrite using `[← mk_eq_one_iff, ← (D.reciprocity_injective hax hL).eq_iff, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocity_mk_eq_one_iff (hL : IsAbelianExtension K L)
     [((L : Subgroup G).subgroupOf K).Normal] (x : (K : Subgroup G)) :
@@ -195,7 +195,7 @@ theorem reciprocity_mk_eq_one_iff (hL : IsAbelianExtension K L)
   rw [← mk_eq_one_iff, ← (D.reciprocity_injective hax hL).eq_iff, map_one]
 
 /- English proof (translation)
-Rewrite using `[← D.reciprocity_mk_eq_one_iff hax hL, h, QuotientGroup.eq_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_normGroup_iff_of_reciprocity (hL : IsAbelianExtension K L)
     [((L : Subgroup G).subgroupOf K).Normal] {x : (K : Subgroup G)}
@@ -215,13 +215,13 @@ variable {K L : OpenSubgroup G}
 include D hax
 
 /- English proof (translation)
-Use `le_antisymm ?_ (normGroup_mono (le_maxAbelian hLK) (maxAbelian_le hLK))` and prove the remaining obligations. Take `⟨N, hNL, hN⟩` from `exists_openSubgroup_normal_le L`. Establish `hNK : N ≤ K` using `hNL.trans hLK`. Establish `hM` using `isAbelianExtension_maxAbelian hLK`. Use `hM.normal` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hN` as an intermediate fact. Introduce and unpack `a ⟨m, rfl⟩`. Take `⟨x, hx⟩` from `D.exists_reciprocity_mk_eq hax hNK (norm A (K : Subgroup G) (maxAbelian hLK : Subgroup G) m)`. Establish `hxM : (x : G) ∈ (maxAbelian hLK : Subgroup G)` using `(D.mem_normGroup_iff_of_reciprocity hax hM (D.reciprocity_mk_of_le hax hNK hM.le (hNL.trans (le_maxAbelian hLK)) x _ hx)).1 ⟨m, rfl⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Subgroup.mem_sup_of_normal_right.1 ((mem_maxAbelian hLK x).1 hxM)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz1 : D.reciprocity hNK hax (z : (K : Subgroup G) ⧸ (N : Subgroup G).subgroupOf K) = 1` using `MonoidHom.mem_ker.1 (Abelianization.commutator_subset_ker ((D.reciprocity hNK hax).comp (QuotientGroup.mk' _)) hz)`. Take `⟨b, hb⟩` from `QuotientGroup.mk_surjective (D.reciprocity hNL hax ((⟨y, hy⟩ : (L : Subgroup G)) : (L : Subgroup G) ⧸ (N : Subgroup G).subgroupOf L))`. Establish `e` using `D.reciprocity_galRestrict hax hNK hNL hLK le_rfl ((⟨y, hy⟩ : (L : Subgroup G)) : (L : Subgroup G) ⧸ (N : Subgroup G).subgroupOf L)`. Rewrite `e` using `[galRestrict_mk, ← hb, normTateZero_mk]`. Establish `e' : D.reciprocity hNK hax (y : (K : Subgroup G) ⧸ (N : Subgroup G).subgroupOf K) = (norm A (K : Subgroup G) (L : Subgroup G) b : tateZero A (K : Subgroup G) (N : Subgroup G))` using `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[QuotientGroup.mk_mul, map_mul, hz1, mul_one, e']`. Take `⟨c, hc⟩` from `QuotientGroup.eq.1 hx`. Use `⟨b * norm A (L : Subgroup G) (N : Subgroup G) c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, norm_norm hNL hLK, hc, mul_inv_cancel_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem normGroup_maxAbelian (hLK : L ≤ K) :
     normGroup A K (maxAbelian hLK) = normGroup A K L := by
@@ -264,11 +264,11 @@ variable {K L L' : OpenSubgroup G}
 include D hax
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => normGroup_mono h hL'.le⟩` and prove the remaining obligations. Establish `hI` using `hL.inf hL'`. Use `hI.normal` as an intermediate fact. Use `hL.normal` as an intermediate fact. Use `hL'.normal` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `hgK : g ∈ (K : Subgroup G)` using `hL.le hg`. Take `⟨a, ha⟩` from `QuotientGroup.mk_surjective (D.reciprocity hI.le hax ((⟨g, hgK⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ ((L ⊓ L' : OpenSubgroup G) : Subgroup G).subgroupOf K))`. Establish `h1` using `D.reciprocity_mk_of_le hax hI.le hL.le inf_le_left ⟨g, hgK⟩ a ha.symm`. Establish `h2` using `D.reciprocity_mk_of_le hax hI.le hL'.le inf_le_right ⟨g, hgK⟩ a ha.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(D.mem_normGroup_iff_of_reciprocity hax hL' h2).1 (h ((D.mem_normGroup_iff_of_reciprocity hax hL h1).2 hg))`.
+A detailed English derivation is pending.
 -/
 theorem normGroup_le_normGroup_iff (hL : IsAbelianExtension K L) (hL' : IsAbelianExtension K L') :
     normGroup A K L ≤ normGroup A K L' ↔ L ≤ L' := by
@@ -287,7 +287,7 @@ theorem normGroup_le_normGroup_iff (hL : IsAbelianExtension K L) (hL' : IsAbelia
     (h ((D.mem_normGroup_iff_of_reciprocity hax hL h1).2 hg))
 
 /- English proof (translation)
-Rewrite using `[le_antisymm_iff, le_antisymm_iff, D.normGroup_le_normGroup_iff hax hL hL', D.normGroup_le_normGroup_iff hax hL' hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normGroup_eq_normGroup_iff (hL : IsAbelianExtension K L) (hL' : IsAbelianExtension K L') :
     normGroup A K L = normGroup A K L' ↔ L = L' := by
@@ -295,22 +295,20 @@ theorem normGroup_eq_normGroup_iff (hL : IsAbelianExtension K L) (hL' : IsAbelia
     D.normGroup_le_normGroup_iff hax hL' hL]
 
 /- English proof (translation)
-Introduce `L L' h` and use `Subtype.ext ((D.normGroup_eq_normGroup_iff hax L.2 L'.2).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normGroup_injective (K : OpenSubgroup G) :
     Function.Injective fun L : {L : OpenSubgroup G // IsAbelianExtension K L} => normGroup A K L :=
   fun L L' h => Subtype.ext ((D.normGroup_eq_normGroup_iff hax L.2 L'.2).1 h)
 
 /- English proof (translation)
-Use `hL.normal` as an intermediate fact. Use `set Q : Subgroup ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) := (B.map (QuotientGroup.mk' (norm A (K : Subgroup G) (L : Subgroup G)).range)).comap (D.reciprocity hL.le hax) with hQ`. Establish `hH : IsAbelianExtension K (fixedOpen hL.le Q)` using `hL.mono (le_fixedOpen hL.le Q) (fixedOpen_le hL.le Q)`. Use `hH.normal` as an intermediate fact. Use `⟨fixedOpen hL.le Q, hH, le_fixedOpen hL.le Q, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Take `⟨x, hx⟩` from `D.exists_reciprocity_mk_eq hax hL.le a`. Rewrite using `[D.mem_normGroup_iff_of_reciprocity hax hH (D.reciprocity_mk_of_le hax hL.le hH.le (le_fixedOpen hL.le Q) x a hx), mem_fixedOpen]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hq⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hq' : D.reciprocity hL.le hax (x : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) ∈ B.map (QuotientGroup.mk' (norm A (K : Subgroup G) (L : Subgroup G)).range)` using `hq`. Rewrite `hq'` using `[hx]`. Take `⟨b, hbB, hba⟩` from `Subgroup.mem_map.1 hq'`. Take `⟨n, hn⟩` from `QuotientGroup.eq.1 hba`. Establish `ha : a = b * (b⁻¹ * a)` using `(mul_inv_cancel_left b a).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, ← hn]`. Conclude with `B.mul_mem hbB (hB ⟨n, rfl⟩)`. Introduce `ha`. Use `⟨x.2, ?_⟩` and prove the remaining obligations. Use `show D.reciprocity hL.le hax (x : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) ∈ B.map (QuotientGroup.mk' (norm A (K : Subgroup G) (L : Subgroup G)).range)`.
-
-Rewrite using `[hx]`. Conclude with `⟨a, ha, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_normGroup_eq_of_le_of_isAbelianExtension (hL : IsAbelianExtension K L)
     {B : Subgroup (fixedModule A (K : Subgroup G))} (hB : normGroup A K L ≤ B) :
@@ -345,7 +343,7 @@ theorem exists_normGroup_eq_of_le_of_isAbelianExtension (hL : IsAbelianExtension
     exact ⟨a, ha, rfl⟩
 
 /- English proof (translation)
-Rewrite `hB` using `[← D.normGroup_maxAbelian hax hLK]`. Take `⟨H, hH, hMH, e⟩` from `D.exists_normGroup_eq_of_le_of_isAbelianExtension hax (isAbelianExtension_maxAbelian hLK) hB`. Conclude with `⟨H, hH, (le_maxAbelian hLK).trans hMH, e⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_normGroup_eq_of_le (hLK : L ≤ K) {B : Subgroup (fixedModule A (K : Subgroup G))}
     (hB : normGroup A K L ≤ B) :
@@ -356,7 +354,7 @@ theorem exists_normGroup_eq_of_le (hLK : L ≤ K) {B : Subgroup (fixedModule A (
   exact ⟨H, hH, (le_maxAbelian hLK).trans hMH, e⟩
 
 /- English proof (translation)
-Use `hL.normal` as an intermediate fact. Use `hL.isMulCommutative` as an intermediate fact. Rewrite using `[Subgroup.index_eq_card, ← card_quotient_eq_relIndex]`. Conclude with `(Nat.card_congr (Equiv.ofBijective _ (reciprocity_bijective_of_isMulCommutative (D := D) hL.le hax))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_normGroup (hL : IsAbelianExtension K L) :
     (normGroup A K L).index = (L : Subgroup G).relIndex K := by

@@ -5,7 +5,7 @@ namespace LateralTheory.DivDb.UnipotentPartTrivial
 open LateralTheory.DivDb
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Rewrite using `[pow_add, sq, h, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_vanish {C : Type} [Field C] {N : ℕ} (E : Mat C N) (h : E * E = 0) (k : ℕ) (hk : 2 ≤ k) :
     E ^ k = 0 := by
@@ -13,9 +13,9 @@ theorem pow_vanish {C : Type} [Field C] {N : ℕ} (E : Mat C N) (h : E * E = 0) 
   rw [pow_add, sq, h, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[PowerSeries.coeff_mk, Polynomial.coeff_coe]`. Break down `k with _ | _ | k` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_vanish E h _ (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem series_eq {C : Type} [Field C] {N : ℕ} (E : Mat C N) (h : E * E = 0) (p : Fin N × Fin N) :
     PowerSeries.mk (fun k => ((k.factorial : C)⁻¹ • E ^ k) p.1 p.2)
@@ -30,15 +30,15 @@ theorem series_eq {C : Type} [Field C] {N : ℕ} (E : Mat C N) (h : E * E = 0) (
     simp
 
 /- English proof (translation)
-Introduce `C _ _ N S E hE hEE f hf`. Establish `h0` using `h C N S E hE f hf`. Set `g : Fin N × Fin N → Polynomial C` to `fun p => Polynomial.C ((1 : Mat C N) p.1 p.2) + Polynomial.X * Polynomial.C (E p.1 p.2)`. Establish `h1 : MvPolynomial.aeval g f = 0`. Apply `Polynomial.coe_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Polynomial.coe_zero]`. Establish `hc` using `congrArg (fun φ => φ f) (MvPolynomial.comp_aeval (R := C) g (Polynomial.coeToPowerSeries.algHom C))`. Simplify using `only [AlgHom.comp_apply] at hc`. Simplify using `only [Polynomial.coeToPowerSeries.algHom_apply, PowerSeries.map_id, Algebra.algebraMap_self] at hc`. Simplify using `only [id] at hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hs : (fun p : Fin N × Fin N => PowerSeries.mk (fun k => ((k.factorial : C)⁻¹ • E ^ k) p.1 p.2)) = fun i => ((g i : Polynomial C) : PowerSeries C)` using `funext (series_eq E hEE)`. Rewrite `h0` using `[hs]`. Conclude with `hc.trans h0`. Establish `h2` using `congrArg (fun q => Polynomial.aeval (1 : C) q) h1`. Simplify using `only [map_zero] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc` using `congrArg (fun φ => φ f) (MvPolynomial.comp_aeval (R := C) g (Polynomial.aeval (1 : C)))`. Simplify using `only [AlgHom.comp_apply] at hc`. Rewrite `h2` using `[hc]`. Establish `h3 : (fun p : Fin N × Fin N => Polynomial.aeval (1 : C) (g p)) = fun p => (1 + E) p.1 p.2`. Use function extensionality and compare the values at `p`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[g]`. Rewrite `h2` using `[h3]`. Unfold `ev`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Unip_of (h : ExpVan) : Unip := by
   intro C _ _ N S E hE hEE f hf

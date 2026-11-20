@@ -10,7 +10,7 @@ set_option autoImplicit false
 namespace GlobalTheory.EndLoc.HomGlue
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : p = q` from `pullback.hom_ext h1 h2`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem Pt.comp_f_eq {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {L : LB A.left} {M : LB B.left}
     {Z W : Scheme.{0}} {x x' : Pt A B L M Z} (e : x = x') (p : W ⟶ pullback A.hom x.t)
@@ -21,13 +21,13 @@ theorem Pt.comp_f_eq {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {L : 
   rfl
 
 /- English proof (translation)
-Introduce `S A B _ _ L M hL hM Z 𝒰 y y' h`. Establish `ht : y.t = y'.t` using `𝒰.hom_ext _ _ fun i => congrArg Pt.t (h i)`. Take `⟨t, f, w⟩` from `y`. Take `⟨t', f', w'⟩` from `y'`. Simplify using `only at ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `ht` using the available equality. It suffices to establish `hf : f = f' by subst hf; rfl`. Use `(Scheme.Pullback.openCoverOfRight 𝒰 A.hom t).hom_ext _ _ fun (i : 𝒰.I₀) => ?_` and prove the remaining obligations. Use `Pt.comp_f_eq (h i) (𝟙 _) (𝟙 _) rfl rfl` as an intermediate fact. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ pmap A t (𝒰.f i) ≫ f = 𝟙 _ ≫ pmap A t (𝒰.f i) ≫ f' at this`.
+Substitute using the available equality. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[Category.id_comp, Category.id_comp]`. Establish `e : (Scheme.Pullback.openCoverOfRight 𝒰 A.hom t).f i = pmap A t (𝒰.f i)`. Rewrite using `[Scheme.Pullback.openCoverOfRight_f]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [pullback.lift_fst]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `erw [pullback.lift_snd]`. Rewrite using `[e]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem Pt.ext_cover : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left)
     (hL : L.IsLB) (hM : M.IsLB) (Z : Scheme.{0}) (𝒰 : Z.OpenCover) (y y' : HomGlue.Pt A B L M Z),

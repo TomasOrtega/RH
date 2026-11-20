@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.AdicSpan
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v q` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rat_mem_adicInt_iff (v : HeightOneSpectrum ℤ) (q : ℚ) :
     algebraMap ℚ (v.adicCompletion ℚ) q ∈ v.adicCompletionIntegers ℚ ↔ v.valuation ℚ q ≤ 1 := by
@@ -20,7 +20,7 @@ theorem rat_mem_adicInt_iff (v : HeightOneSpectrum ℤ) (q : ℚ) :
   rfl
 
 /- English proof (translation)
-Establish `e : ((s : ℚ)) = algebraMap ℤ ℚ s` using `rfl`. Rewrite using `[e]`. Use `le_antisymm (v.valuation_le_one s) (not_lt.1 fun h => hs ?_)` and prove the remaining obligations. Conclude with `(Ideal.dvd_span_singleton).1 ((v.valuation_lt_one_iff_dvd s).1 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valuation_int_eq_one (v : HeightOneSpectrum ℤ) {s : ℤ} (hs : s ∉ v.asIdeal) :
     v.valuation ℚ (s : ℚ) = 1 := by
@@ -30,13 +30,13 @@ theorem valuation_int_eq_one (v : HeightOneSpectrum ℤ) {s : ℤ} (hs : s ∉ v
   exact (Ideal.dvd_span_singleton).1 ((v.valuation_lt_one_iff_dvd s).1 h)
 
 /- English proof (translation)
-Introduce `hd`. Establish `hlt : v.valuation ℚ ((q.den : ℤ) : ℚ) < 1`. Establish `e : (((q.den : ℤ)) : ℚ) = algebraMap ℤ ℚ (q.den : ℤ)` using `rfl`. Rewrite using `[e]`. Conclude with `(v.valuation_lt_one_iff_dvd _).2 (Ideal.dvd_span_singleton.2 hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : v.valuation ℚ ((q.num : ℤ) : ℚ) < 1`. Establish `e : ((q.num : ℤ) : ℚ) = q * ((q.den : ℤ) : ℚ)`. Rewrite using `[Int.cast_natCast, Rat.mul_den_eq_num]`. Rewrite using `[e, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hq) hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnm : q.num ∈ v.asIdeal`. Establish `e : ((q.num : ℤ) : ℚ) = algebraMap ℤ ℚ q.num` using `rfl`. Rewrite `hn` using `[e]`. Conclude with `Ideal.dvd_span_singleton.1 ((v.valuation_lt_one_iff_dvd _).1 hn)`. Establish `hc : IsCoprime q.num (q.den : ℤ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Simplify `q.reduced` using `[Int.gcd]`. Take `⟨u, w, h⟩` from `hc`. Establish `h1 : (1 : ℤ) ∈ v.asIdeal` using `h ▸ add_mem (Ideal.mul_mem_left _ _ hnm) (Ideal.mul_mem_left _ _ hd)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem den_not_mem (v : HeightOneSpectrum ℤ) (q : ℚ) (hq : v.valuation ℚ q ≤ 1) :
     ((q.den : ℤ)) ∉ v.asIdeal := by
@@ -61,7 +61,7 @@ theorem den_not_mem (v : HeightOneSpectrum ℤ) (q : ℚ) (hq : v.valuation ℚ 
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← d.sum_repr z]`. Rewrite using `[map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_via {K M ι κ : Type} [Field K] [AddCommGroup M] [Module K M] [Fintype ι] (c : Module.Basis κ K M)
     (d : Module.Basis ι K M) (z : M) (i : κ) :
@@ -72,7 +72,7 @@ theorem repr_via {K M ι κ : Type} [Field K] [AddCommGroup M] [Module K M] [Fin
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `IsIntB`. Simplify using `only [repr_tmul_apply, one_mul, rat_mem_adicInt_iff]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem isIntB_one_tmul_iff (v : HeightOneSpectrum ℤ) {L κ : Type} [Field L] [Algebra ℚ L]
     (ℓ : Module.Basis κ ℚ L) (z : L) :
@@ -81,27 +81,23 @@ theorem isIntB_one_tmul_iff (v : HeightOneSpectrum ℤ) {L κ : Type} [Field L] 
   simp only [repr_tmul_apply, one_mul, rat_mem_adicInt_iff]
 
 /- English proof (translation)
-Introduce `L _ _ κ ℓ`. Use `haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex ℓ`. Use `set b := integralBasis L`. Establish `h1 : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ t : κ × Module.Free.ChooseBasisIndex ℤ (𝓞 L), algebraMap ℚ (v.adicCompletion ℚ) (ℓ.repr (b t.2) t.1) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun t => rat_mem_adicCompletionIntegers_eventually _`. Establish `h2 : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ t : Module.Free.ChooseBasisIndex ℤ (𝓞 L) × κ, algebraMap ℚ (v.adicCompletion ℚ) (b.repr (ℓ t.2) t.1) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun t => rat_mem_adicCompletionIntegers_eventually _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin` using `Filter.eventually_cofinite.1 (h1.and h2)`. Use `⟨hfin.toFinset, fun v hv z => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Take `⟨h1v, h2v⟩` from `hv`. Simplify using `only [rat_mem_adicInt_iff] at h1v h2v`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[isIntB_one_tmul_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hb : ∀ j, v.valuation ℚ (b.repr z j) ≤ 1` using `fun j => by`. Rewrite using `[repr_via b ℓ z j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hz i) (h2v (j, i))`. Use `⟨∏ j, ((b.repr z j).den : ℤ), ?_, ?_⟩` and prove the remaining obligations. Introduce `hd`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, _, hj⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := v.isPrime)).1 hd`. Conclude with `den_not_mem v _ (hb j) hj`. Use `set d : ℤ := ∏ j, ((b.repr z j).den : ℤ) with hd`. Establish `hdv : ∀ j, ((b.repr z j).den : ℤ) ∣ d` using `fun j => Finset.dvd_prod_of_mem _ (Finset.mem_univ j)`. Establish `hmem : (d : L) * z ∈ Submodule.span ℤ (Set.range b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun j => d / ((b.repr z j).den : ℤ) * (b.repr z j).num, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr z]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (((d / ((b.repr z j).den : ℤ) * (b.repr z j).num : ℤ)) : ℚ) = (d : ℚ) * b.repr z j`. Establish `e1` using `Int.ediv_mul_cancel (hdv j)`. Use `conv_rhs => rw [← e1]`. Rewrite using `[Int.cast_mul, Int.cast_mul, Int.cast_natCast, mul_assoc, mul_comm ((b.repr z j).den : ℚ), Rat.mul_den_eq_num]`. Rewrite using `[← zsmul_eq_mul, ← Int.cast_smul_eq_zsmul ℚ, ← Int.cast_smul_eq_zsmul ℚ, hc, mul_smul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `(mem_span_integralBasis L).1 hmem`. Rewrite using `[← hy]`. Conclude with `RingOfIntegers.isIntegral_coe y`. Introduce and unpack `⟨s, hs, hint⟩ i`. Establish `hmem : (s : L) * z ∈ Submodule.span ℤ (Set.range b)` using `(mem_span_integralBasis L).2 ⟨⟨_, hint⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hmem`. Establish `hsz : ℓ.repr ((s : L) * z) i = (s : ℚ) * ℓ.repr z i`. Rewrite using `[← zsmul_eq_mul, map_zsmul, Finsupp.smul_apply, zsmul_eq_mul]`. Establish `hval : v.valuation ℚ (ℓ.repr ((s : L) * z) i) ≤ 1`. Rewrite using `[← hc, map_sum, Finsupp.finset_sum_apply]`.
-
-Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.smul_apply, zsmul_eq_mul, map_mul]`. Establish `e : ((c j : ℤ) : ℚ) = algebraMap ℤ ℚ (c j)` using `rfl`. Rewrite using `[e]`. Conclude with `mul_le_one' (v.valuation_le_one (c j)) (h1v (i, j))`.
-
-Rewrite `hval` using `[hsz, map_mul, valuation_int_eq_one v hs, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isIntB_one_tmul_iff_exists_isIntegral : ∀ (L : Type) [Field L] [NumberField L] (κ : Type)
     (ℓ : Module.Basis κ ℚ L),

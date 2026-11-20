@@ -26,9 +26,7 @@ namespace GlobalTheory.TypeVec
 section Gen
 
 /- English proof (translation)
-Set `e : Subrepresentation (τ.comp f : Representation ℂ H X) ≃o Subrepresentation τ` to `{ toFun := fun U => ⟨U.toSubmodule, fun g v hv => by`. Take `⟨g', rfl⟩` from `hf g`. Conclude with `U.apply_mem_toSubmodule g' hv⟩`. Use `invFun := fun U => ⟨U.toSubmodule, fun g v hv => U.apply_mem_toSubmodule (f g) hv⟩`. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `(OrderIso.isSimpleOrder_iff e).2 hτ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp {H H' X : Type} [Group H] [Group H'] [AddCommGroup X] [Module ℂ X]
     (τ : Representation ℂ H' X) (f : H →* H') (hf : Function.Surjective f) (hτ : τ.IsIrreducible) :
@@ -55,7 +53,7 @@ theorem glMap_apply {K K' : Type} [CommRing K] [CommRing K'] {m n : ℕ} (e : K 
     (g : GL (Fin n) K) (i j : Fin m) : (glMap e h g).1 i j = e (g.1 (Fin.cast h i) (Fin.cast h j)) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[glMap_apply, glMap_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem glMap_symm {K K' : Type} [CommRing K] [CommRing K'] {m n : ℕ} (e : K ≃+* K') (h : m = n)
     (g : GL (Fin m) K') : glMap e h (glMap e.symm h.symm g) = g := by
@@ -65,13 +63,13 @@ theorem glMap_symm {K K' : Type} [CommRing K] [CommRing K'] {m n : ℕ} (e : K �
   simp
 
 /- English proof (translation)
-Introduce `g` and use `⟨glMap e.symm h.symm g, glMap_symm e h g⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem glMap_surjective {K K' : Type} [CommRing K] [CommRing K'] {m n : ℕ} (e : K ≃+* K') (h : m = n) :
     Function.Surjective (glMap e h) := fun g => ⟨glMap e.symm h.symm g, glMap_symm e h g⟩
 
 /- English proof (translation)
-Use `show (∀ h : K, ρ h x = ((1 : K →* ℂˣ) h : ℂ) • x) ↔ _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_fixed_iff {H X : Type} [Group H] [AddCommGroup X] [Module ℂ X] {ρ : Representation ℂ H X}
     {K : Subgroup H} {x : X} : x ∈ GlobalTheory.PRep.fixed ρ K ↔ ∀ h : K, ρ h x = x := by
@@ -94,7 +92,7 @@ def typeOf {V : HSp D} {P : Finset (HeightOneSpectrum (𝓞 D.host.E))} {r : ℕ
   irred := fun w => isIrreducible_comp _ _ (glMap_surjective _ _) (hτ (pl w))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hne, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem noFixed_typeOf {V : HSp D} {P : Finset (HeightOneSpectrum (𝓞 D.host.E))} {r : ℕ} (hr : r = V.rank)
     (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (pl : S ≃ P) (s : ∀ v : S, SplitAt D.sp.cm.sig V.gram (frameLat V) v)
@@ -107,7 +105,7 @@ theorem noFixed_typeOf {V : HSp D} {P : Finset (HeightOneSpectrum (𝓞 D.host.E
   ⟨hne, h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, hx, hoff, hon⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasTypeVec_typeOf {V : HSp D} {P : Finset (HeightOneSpectrum (𝓞 D.host.E))} {r : ℕ} (hr : r = V.rank)
     (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (pl : S ≃ P) (s : ∀ v : S, SplitAt D.sp.cm.sig V.gram (frameLat V) v)
@@ -124,49 +122,43 @@ theorem hasTypeVec_typeOf {V : HSp D} {P : Finset (HeightOneSpectrum (𝓞 D.hos
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hGC D G _ _ Pl0 T A Ks _ _ _ R F hF W _ _ σ _hadm hgood`. Establish `hrk : (Yc D 0).rank = D.R.r` using `by rw [D.sp.Y_rank _ (min_le_right _ _)]; simp [Ranks.rankY]`. Establish `hr2 : 2 ≤ D.R.r` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; unfold Ranks.r; omega`. Establish `hlev` using `hF.core.lev`. Take `⟨c0, hbase⟩` from `hlev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnc : ∀ PP ∈ (R.dat0 R.triv).Pg, ∀ PP' ∈ (R.dat0 R.triv).Pg, ¬ Formalism.IndefR.Lev.IsConjPl PP PP'`. Introduce `PP hP PP' hP'`. Take `⟨k, hk⟩` from `(hlev.Pg PP).1 hP`. Take `⟨k', hk'⟩` from `(hlev.Pg PP').1 hP'`. Conclude with `GlobalTheory.ProjectedLift.not_isConjPl R.C.P hk hk'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_finiteGroupAction_principalLevelFixedVectors D (Yc D 0) (R.βY 0) (R.dat0 R.triv) (GlobalTheory.ProjectedLift.liftsExist_rows R hlev) W σ`. Take `⟨v, hv0, hvK, κ, hκ, hve⟩` from `hgood`. Establish `hvmem : v ∈ GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0)))` using `mem_fixed_iff.2 fun k => hvK _ (Subgroup.mem_subgroupOf.1 k.2)`. Use `haveI : Finite (G0 R.Pg D.R.r) := Finite.of_equiv G R.eG.toEquiv`. Establish `hfix : ∑ g, RealDat.eC (A` using `A) D.what₂.embLL g • ρ (R.eG g) ⟨v, hvmem⟩ = ⟨v, hvmem⟩ := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Use `Eq.trans (Finset.sum_congr rfl fun g _ => ?_) hve` and prove the remaining obligations. Rewrite using `[SetLike.val_smul, hρ (R.eG g) (κ g) (hκ g)]`. Take `⟨U, hUfd, hUirr, y, hy0, hye⟩` from `GlobalTheory.T.exists_irreducible_subrep_with_groupAlgebra_fixed _ _ _ ρ (fun g => R.eG g) _ ⟨v, hvmem⟩ (fun h => hv0 (congrArg Subtype.val h)) hfix`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hUfd`. Establish `hH` using `GlobalTheory.T.irreducible_not_killed_by_good_projector_satisfies_H hGC R F hF U.toSubmodule U.toRepresentation hUirr ⟨y, hy0, hye⟩`. Use `choose n τ hτ hrest using GlobalTheory.T.isotypic_factor_of_isIrreducible_pi_finite_groups (↥R.Pg) (fun PP => GL (Fin D.R.r) (kP PP.1)) U.toSubmodule U.toRepresentation hUirr`. Take `⟨a, S, pl, s, ρv, hoff, hon⟩ : ∃ (a : GfC (Yc D 0)) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (pl : S ≃ R.Pg) (s : ∀ v : S, SplitAt D.sp.cm.sig (Yc D 0).gram (frameLat (Yc D 0)) v) (ρv : ∀ v : S, ResF v.1 ≃+* kP (pl v).1), (∀ v ∉ S, ∀ k ∈ Kv (Yc D 0) v, ((a * locFin (Yc D 0) …` from `GlobalTheory.T.exists_splitFrame_principalLevel_finiteGroup D (Yc D 0) (R.βY 0) (R.ΛY 0) _ (R.dat0 R.triv) hrk.symm hbase rfl hnc`. Set `yW : W` to `(((y : U.toSubmodule) : GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0)))) : W)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyK : ∀ h : ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0))), σ h yW = yW` using `mem_fixed_iff.1 (y : GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0)))).2`. Establish `hcomm : ∀ (l : GfC (Yc D 0)) (q : W), σ a⁻¹ (σ (a * l * a⁻¹) q) = σ l (σ a⁻¹ q)`. Introduce `l q`. Establish `e1 : σ a⁻¹ * σ (a * l * a⁻¹) = σ l * σ a⁻¹`. Rewrite using `[← map_mul, ← map_mul, show a⁻¹ * (a * l * a⁻¹) = l * a⁻¹ by group]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `congrArg (fun f : Module.End ℂ W => f q) e1`. Establish `hconj : ∀ l : GfC (Yc D 0), σ (a * l * a⁻¹) yW = yW → σ l (σ a⁻¹ yW) = σ a⁻¹ yW` using `fun l hl => (hcomm l yW).symm.trans (congrArg (σ a⁻¹) hl)`. Use `⟨typeOf hrk.symm S pl s ρv n τ hτ, noFixed_typeOf _ _ _ _ _ _ _ _ ?_ ?_, hasTypeVec_typeOf _ _ _ _ _ _ _ _ σ (σ a⁻¹ yW) ?_ ?_ ?_⟩` and prove the remaining obligations. Take `⟨PP, -⟩` from `hH 1 one_pos (by omega)`. Conclude with `⟨(pl.symm PP).1, (pl.symm PP).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `b hb hbr`. Take `⟨PP, hPP⟩` from `hH b hb (lt_of_lt_of_eq hbr hrk)`. Use `⟨pl.symm PP, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨⟨φ, hφi, hφ⟩, -⟩` from `hrest (pl (pl.symm PP))`. Establish `hpl : pl (pl.symm PP) = PP` using `pl.apply_symm_apply PP`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite `hPP` using `[← hpl]`. Apply `hφi` to reduce the goal to its premises. Use `Eq.trans ?_ (map_zero φ).symm` and prove the remaining obligations. Apply `hPP` to reduce the goal to its premises. Introduce and unpack `u ⟨hu1, hu2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `hφ (u (pl (pl.symm PP))) z`. Establish `hmem : glMap (ρv (pl.symm PP)).symm hrk (u (pl (pl.symm PP))) ∈ GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.unipBlock (ResF (pl.symm PP).1) (Yc D 0).rank b`. Introduce `i j hij`. Rewrite using `[glMap_apply]`. Establish `hent : (u (pl (pl.symm PP))).1 (Fin.cast hrk i) (Fin.cast hrk j) = (1 : Matrix (Fin D.R.r) (Fin D.R.r) (kP (pl (pl.symm PP)).1)) (Fin.cast hrk i) (Fin.cast hrk j)`.
+Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hij (hu2 _ _ hne)`. Distinguish the cases in `hij' : i = j`. Substitute `hij'` using the available equality. Establish `h1 : (u (pl (pl.symm PP))).1 (Fin.cast hrk i) (Fin.cast hrk i) = 1` using `by simpa using hent`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [h1, map_one, Matrix.one_apply_eq]`. Establish `h1 : (u (pl (pl.symm PP))).1 (Fin.cast hrk i) (Fin.cast hrk j) = 0`. Rewrite using `[hent, Matrix.one_apply_ne (fun h => hij' (Fin.cast_injective hrk h))]`. Simplify using `only [h1, map_zero, Matrix.one_apply_ne hij']`. Establish `h2` using `hz _ hmem`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite `h2` using `[glMap_symm]`. Use `Eq.trans ?_ (congrArg φ h2)` and prove the remaining obligations. Use `Eq.trans ?_ e1.symm` and prove the remaining obligations. Use `congrArg (fun g => U.toRepresentation g (φ z)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `P'`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : P' = pl (pl.symm PP)`. Substitute `h` using the available equality. Conclude with `(Pi.mulSingle_eq_same (M := fun PP : R.Pg => GL (Fin D.R.r) (kP PP.1)) _ _).symm`. Conclude with `(hu1 P' h).trans (Pi.mulSingle_eq_of_ne (M := fun PP : R.Pg => GL (Fin D.R.r) (kP PP.1)) h _).symm`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hy0` to reduce the goal to its premises. Establish `h1 : yW = 0`. Use `congrArg (σ a) h0` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, map_zero]`. Then use the resulting hypothesis. Conclude with `Subtype.ext (Subtype.ext h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw k hk`. Conclude with `hconj _ (hyK ⟨_, Subgroup.mem_subgroupOf.2 (hoff w hw k hk)⟩)`. Introduce `w`. Take `⟨-, hsp⟩` from `hrest (pl w)`. Establish `hkey : ∀ (k : Kv (Yc D 0) w) (q : U.toSubmodule), σ a⁻¹ ((((U.toRepresentation (Pi.mulSingle (pl w) (glMap (ρv w) hrk.symm ((s w).red k))) q) : U.toSubmodule) : GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0)))) : W) = σ (locF …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k q`. Establish `h2` using `hon w k`. Establish `hlift` using `h2.choose_spec.1`. Establish `hone` using `h2.choose_spec.2.1`. Establish `hent` using `h2.choose_spec.2.2`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Establish `hg0 : Pi.mulSingle (pl w) (glMap (ρv w) hrk.symm ((s w).red k)) = h2.choose`. Use function extensionality and compare the values at `P'`. Distinguish the cases in `hP : P' = pl w`. Substitute `hP` using the available equality. Use `(Pi.mulSingle_eq_same (M := fun PP : R.Pg => GL (Fin D.R.r) (kP PP.1)) _ _).trans ?_` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `(glMap_apply _ _ _ i j).trans (hent i j).symm`. Conclude with `(Pi.mulSingle_eq_of_ne (M := fun PP : R.Pg => GL (Fin D.R.r) (kP PP.1)) hP _).trans (hone P' hP).symm`. Establish `e2` using `hρ _ (a * locFin (Yc D 0) w k * a⁻¹) hlift (q : GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0))))`.
-
-Conclude with `(congrArg (fun g => σ a⁻¹ ((((U.toRepresentation g q) : U.toSubmodule) : GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0)))) : W)) hg0).trans ((congrArg (σ a⁻¹) e2).trans (hcomm _ _))`. Establish `hy` using `Submodule.eq_top_iff'.1 hsp y`. Use `show σ a⁻¹ (((y : U.toSubmodule) : GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0)))) : W) ∈ _`. Use `clear hconj hyK yW hye hy0`. Proceed by induction on `hy using Submodule.span_induction with`.
-
-Consider the case `mem u hu`. Take `⟨ψ, hψ, z, rfl⟩` from `hu`. Conclude with `Submodule.subset_span ⟨(σ a⁻¹ ∘ₗ (GlobalTheory.PRep.fixed σ ((levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv))).subgroupOf (GfC (Yc D 0)))).subtype ∘ₗ U.toSubmodule.subtype) ∘ₗ ψ, fun k z' => (congrArg (fun q : U.toSubmodule => σ a⁻¹ (((q : U.toSubmodule) : GlobalTheory.PRep.fixed …`. Consider the case `zero => simpa using zero_mem _`. Consider the case `add u u' _ _ hu hu' => simpa only [Submodule.coe_add, map_add] using add_mem hu hu'`.
-
-Consider the case `smul c u _ hu => simpa only [Submodule.coe_smul, map_smul] using Submodule.smul_mem _ c hu`.
+A detailed English derivation is pending.
 -/
 theorem hasTypeVec_of_goodRep : GlobalTheory.Published.GreenCuspidal → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC (Yc D 0)) W), IsAdmissible σ → GlobalTheory.CuspMult.IsGoodRep (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG (RealDat.eC (A := A) D.what₂.embLL) σ → ∃ T : TypeDataG (Yc D 0), NoFixed T ∧ HasTypeVec T σ := by
   intro hGC D G _ _ Pl0 T A Ks _ _ _ R F hF W _ _ σ _hadm hgood

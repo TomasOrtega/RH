@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.PullSharp
 
 /- English proof (translation)
-Take `⟨hL, hr, -, -⟩` from `CubePf.cubePull S S' G G' m L c`. Conclude with `⟨hL, hr, CubePf.cubical m L c hL hr, (CubePf.thetaPull_eq m L.L c.t).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cube_pull_sharp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G]
     [GrpObj G'] [IsCommMonObj G'] (m : CubeMap G' G) (L : RigLB G) (c : CubicalStr G L) :
@@ -21,7 +21,7 @@ theorem cube_pull_sharp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj 
   exact ⟨hL, hr, CubePf.cubical m L c hL hr, (CubePf.thetaPull_eq m L.L c.t).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.laws3.1, GlobalTheory.laws3.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem both : GtBaseChangeSt ∧ CubePullSt := ⟨GlobalTheory.laws3.1, GlobalTheory.laws3.2⟩
 

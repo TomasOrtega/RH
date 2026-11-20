@@ -9,9 +9,9 @@ open NumberField Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V
 open scoped MatrixGroups
 
 /- English proof (translation)
-Establish `h : ∀ x, TR.pInf ℚ (TR.sInf ℚ x) = x` using `fun x => (TR.infEq ℚ).symm_apply_apply x`. Establish `h2 : ∀ x, TR.pInf ℚ (sFin ℚ x) = 0` using `fun x => map_zero (TR.infEq ℚ).symm`. Establish `h3 : ∀ x, pFin ℚ (TR.sInf ℚ x) = 0` using `fun x => rfl`. Establish `h4 : ∀ x, pFin ℚ (sFin ℚ x) = x` using `fun x => rfl`. Use `Units.ext (TR.ad_ext ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `TR.pInf ℚ ((1 - TR.sInf ℚ 1 + TR.sInf ℚ (TR.pInf ℚ x.val)) * (1 - sFin ℚ 1 + sFin ℚ (pFin ℚ x.val))) = _`. Simplify using `[h, h2]`. Express the relevant statement in the definitionally equal form `pFin ℚ ((1 - TR.sInf ℚ 1 + TR.sInf ℚ (TR.pInf ℚ x.val)) * (1 - sFin ℚ 1 + sFin ℚ (pFin ℚ x.val))) = _`. Simplify using `[h3, h4]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem idele_split (x : Ideles ℚ) :
     TR.infId ℚ (Units.map (TR.pInf ℚ).toMonoidHom x) * finId ℚ (Units.map (pFin ℚ).toMonoidHom x) = x := by
@@ -26,7 +26,7 @@ private theorem idele_split (x : Ideles ℚ) :
     simp [h3, h4]
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) S) i j - s ((1 : Matrix (Fin 2) (Fin 2) R) i j) + s (Matrix.scalar (Fin 2) u.val i j) = Matrix.scalar (Fin 2) (1 - s 1 + s u.val) i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem corner_sc {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+* S) (u : Rˣ) :
     cornerGL 2 s (GeneralLinearGroup.scalar (Fin 2) u) = GeneralLinearGroup.scalar (Fin 2) (Units.map (corner s) u) := by
@@ -36,17 +36,15 @@ private theorem corner_sc {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+*
   by_cases e : i = j <;> simp [Matrix.one_apply, e]
 
 /- English proof (translation)
-Take `⟨r, u, -, hu, e⟩` from `ratAd.1 (Units.map (pFin ℚ).toMonoidHom z)`. Use `set w : Ideles ℚ := (Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom r)⁻¹ * z with hw`. Establish `hz : z = Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom r * w` using `by rw [hw, mul_inv_cancel_left]`. Establish `e1 : Units.map (pFin ℚ).toMonoidHom w = u`. Rewrite using `[hw, map_mul, map_inv, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_mul_cancel_left _ _`. Establish `h0` using `TR.unit_ne_zero (Units.map (TR.pInf ℚ).toMonoidHom w) Rat.infinitePlace`. Break down `lt_or_gt_of_ne h0 with h | h` into its components or cases. Use `⟨-r, Units.map (TR.pInf ℚ).toMonoidHom (-w), Units.map (pFin ℚ).toMonoidHom (-w), fun v => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v Rat.infinitePlace]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `0 < TR.pInf ℚ (-w.val) Rat.infinitePlace`. Rewrite using `[map_neg]`. Conclude with `neg_pos.2 h`. Establish `: Units.map (pFin ℚ).toMonoidHom (-w) = -u`. Rewrite using `[← e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (map_neg (pFin ℚ) w.val)`. Rewrite using `[this]`. Conclude with `⟨neg_mem hu.1, neg_mem hu.2⟩`. Rewrite using `[idele_split]`. Use `hz.trans (Units.ext ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨r, Units.map (TR.pInf ℚ).toMonoidHom w, Units.map (pFin ℚ).toMonoidHom w, fun v => ?_, e1 ▸ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v Rat.infinitePlace]`. Conclude with `h`. Rewrite using `[idele_split]`.
-
-Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 private theorem idele_dec (z : Ideles ℚ) : ∃ (r : ℚˣ) (t : (TR.Rinf ℚ)ˣ) (u : (Af ℚ)ˣ), (∀ v, 0 < t.val v) ∧ IsZU u ∧
     z = Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom r * (TR.infId ℚ t * finId ℚ u) := by
@@ -78,19 +76,19 @@ private theorem idele_dec (z : Ideles ℚ) : ∃ (r : ℚˣ) (t : (TR.Rinf ℚ)�
       exact hz
 
 /- English proof (translation)
-Introduce `k M hM χ ω hω f hf φ hφ z g`. Take `⟨r, t, u, ht, hu, rfl⟩` from `idele_dec z`. Take `⟨γ, h, κ, hκ, rfl⟩` from `decomp M hM g`. Take `⟨δ, β, hδ, hβ, hK, hd⟩` from `(ratK M hM).2 u hu`. Establish `h1 : ω.1 (Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom r) = 1` using `ω.2.2 r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hω.unit u hu _ hd`. Establish `s1 : GeneralLinearGroup.scalar (Fin 2) (Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom r) = ratGL ℚ 2 (GeneralLinearGroup.scalar (Fin 2) r)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [ratGL, Matrix.diagonal_apply, e, Matrix.algebraMap_matrix_apply]`. Use `set T : GL (Fin 2) ℝ := GeneralLinearGroup.map ev (GeneralLinearGroup.scalar (Fin 2) t) with hT`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `s2 : GeneralLinearGroup.scalar (Fin 2) (TR.infId ℚ t) = upR T`. Rewrite using `[hT, upR_ev]`. Conclude with `(corner_sc _ t).symm`. Establish `s3 : GeneralLinearGroup.scalar (Fin 2) (finId ℚ u) = finGL ℚ 2 (GeneralLinearGroup.scalar (Fin 2) u)` using `(corner_sc _ u).symm`. Establish `e : GeneralLinearGroup.scalar (Fin 2) (Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom r * (TR.infId ℚ t * finId ℚ u)) * (ratGL ℚ 2 γ * (upR h * finGL ℚ 2 κ)) = ratGL ℚ 2 (GeneralLinearGroup.scalar (Fin 2) r * γ * β) * (upR ((toR β)⁻¹ * (T * h)) * finGL ℚ 2 ((toF β)⁻¹ * GeneralLinear …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `c : ∀ (x : GL (Fin 2) ℝ) (y : GL (Fin 2) (Af ℚ)) (w : GA ℚ 2), finGL ℚ 2 y * (upR x * w) = upR x * (finGL ℚ 2 y * w)` using `fun x y w => by rw [← mul_assoc, ← upR_comm, mul_assoc]`. Rewrite using `[map_mul, mul_assoc, ← mul_assoc _ (ratGL ℚ 2 γ), GeneralLinearGroup.scalar_commute (TR.infId ℚ t * finId ℚ u) (ratGL ℚ 2 γ), map_mul, s1, s2, s3, map_mul (ratGL ℚ 2), map_mul (ratGL ℚ 2), ratGL_eq β]`. Simplify using `only [mul_assoc, c]`. Simplify using `only [mul_assoc, map_mul, map_inv, mul_inv_cancel_left]`. Establish `hβ' : (toR β).val = δ.1.map (Int.cast : ℤ → ℝ)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `congrFun (congrFun hβ i) j` as an intermediate fact. Express the relevant statement in the definitionally equal form `(Rat.castHom ℝ) (β.val i j) = _`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((toR β)⁻¹ * (T * h)).val = t.val Rat.infinitePlace • ((toR β)⁻¹ * h).val`. Establish `: T.val = t.val Rat.infinitePlace • (1 : Matrix (Fin 2) (Fin 2) ℝ)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [hT, ev, Matrix.diagonal_apply, e]`. Simplify using `only [Units.val_mul, this, Matrix.smul_mul, Matrix.mul_smul, one_mul]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `((nslInv k M f ((toR β)⁻¹ * h).val ((toR β)⁻¹ * h).det_ne_zero).2 χ hf δ hδ)`. Rewrite `e3` using `[← hβ', ← Units.val_mul, mul_inv_cancel_left]`. Rewrite using `[e, hφ _ _ _ (mul_mem hK hκ), hφ _ _ _ hκ, e2, (nslMul k f).2.2.1 _ _ (ht _), e3, map_mul, map_mul, h1, hω.pos t ht, one_mul, one_mul, Pi.smul_apply, smul_eq_mul, ← mul_assoc, h2, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Nf.liftCent :
     UpperTheory.V.Af.Nf.LiftCent := by

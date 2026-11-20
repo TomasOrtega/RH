@@ -12,7 +12,7 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas IsCompatChart)
 namespace LevelTowerAlt.Charts
 
 /- English proof (translation)
-Introduce `x hx` and use `analyticAt_pi_iff.2 fun i => GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ParametricCircleIntegralAnalytic.analyticOnNhd_of_differentiableOn_fd hU (differentiableOn_pi.1 hf i) x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem an_of_diff {σ τ : Type} [Fintype σ] [Fintype τ] {U : Set (σ → ℂ)} {f : (σ → ℂ) → τ → ℂ} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) : AnalyticOnNhd ℂ f U := fun x hx => analyticAt_pi_iff.2 fun i =>
@@ -20,7 +20,7 @@ theorem an_of_diff {σ τ : Type} [Fintype σ] [Fintype τ] {U : Set (σ → ℂ
     (differentiableOn_pi.1 hf i) x hx
 
 /- English proof (translation)
-The claim follows from `an_of_diff (hU.preimage continuous_star) fun t ht => by have := (hf (star t) ht).differentiableAt.star_star rw [star_star] at this exact this.differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem an_star_star {σ τ : Type} [Fintype σ] [Fintype τ] {U : Set (σ → ℂ)} {f : (σ → ℂ) → τ → ℂ} (hU : IsOpen U)
     (hf : AnalyticOnNhd ℂ f U) : AnalyticOnNhd ℂ (fun t => star (f (star t))) (star ⁻¹' U) :=
@@ -30,7 +30,7 @@ theorem an_star_star {σ τ : Type} [Fintype σ] [Fintype τ] {U : Set (σ → �
     exact this.differentiableWithinAt
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover x`. Establish `h1` using `(hf j (A.chart j x) ⟨(A.chart j).map_source hj, by simp [(A.chart j).left_inv hj, hx]⟩).continuousAt`. Use `(h1.comp ((A.chart j).continuousAt hj)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_of_holo {n : ℕ} {X E : Type} [TopologicalSpace X] [NormedAddCommGroup E] [NormedSpace ℂ E]
     {A : FinHolAtlas n X} {U : Set X} {f : X → E}
@@ -58,11 +58,11 @@ structure Good (P : Ideal (MRing J)) (γ : (Fin n → ℂ) → (Σ k, J k) → �
 variable {P : Ideal (MRing J)} {γ : (Fin n → ℂ) → (Σ k, J k) → ℂ}
 
 /- English proof (translation)
-Establish `hb : ∀ t ∈ ball (0 : Fin n → ℂ) 1, t₀ + (ε : ℂ) • t ∈ ball (0 : Fin n → ℂ) 1` using `fun t ht => SncPiece.add_smul_mem_ball h₀ hε hε' ((mem_ball_zero_iff.1 ht).trans one_lt_two)`. Establish `hne : (ε : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hε.ne'`. Use `⟨fun t ht => (h.an _ (hb t ht)).comp_of_eq (analyticAt_const.add (analyticAt_id.const_smul (c := (ε : ℂ)))) rfl, fun t ht => h.mem _ (hb t ht), fun t ht t' ht' c hc e => smul_right_injective _ hne (add_left_cancel (h.inj _ (hb t ht) _ (hb t' ht') c hc e)), fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨V, T, hV, hm, hT, hTe, hz⟩` from `h.loc _ (hb s hs)`. Use `⟨V ∩ T ⁻¹' ball t₀ ε, fun z => (ε : ℂ)⁻¹ • (T z - t₀), hT.continuousOn.isOpen_inter_preimage hV isOpen_ball, ⟨hm, ?_⟩, fun z hz => ((hT z hz.1).sub (analyticAt_const (v := t₀))).const_smul (c := (ε : ℂ)⁻¹), ?_, fun z hz' => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_preimage, hTe, mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Complex.norm_real, Real.norm_of_nonneg hε.le]`. Conclude with `mul_lt_of_lt_one_right hε (mem_ball_zero_iff.1 hs)`. Simplify using `only [hTe, add_sub_cancel_left, inv_smul_smul₀ hne]`. Establish `h1 : ‖T z - t₀‖ < ε` using `by simpa [dist_eq_norm] using hz'.1.2`. Rewrite using `[mem_ball_zero_iff, norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hε.le, inv_mul_lt_iff₀ hε, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Simplify using `only [smul_inv_smul₀ hne, add_sub_cancel]`. Conclude with `(hz z ⟨hz'.1.1, hz'.2⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem Good.affine (h : Good P γ) {t₀ : Fin n → ℂ} {ε : ℝ} (h₀ : ‖t₀‖ ≤ 1 / 2) (hε : 0 < ε) (hε' : ε ≤ 1 / 4) :
     Good P fun t => γ (t₀ + (ε : ℂ) • t) := by
@@ -92,7 +92,7 @@ def cj (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ) : (Fin n → ℂ) → (Σ 
 
 omit [Fintype K] [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [cj, star_star, SncPiece.conj_conj]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ) : cj (cj γ) = γ := by
   funext t
@@ -100,7 +100,7 @@ theorem cj_cj (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ) : cj (cj γ) = γ :
 
 omit [Fintype K] [∀ k, Fintype (J k)] in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[conjVec, torusSmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_torus (c : K → ℂ) (z : (Σ k, J k) → ℂ) :
     conjVec (torusSmul c z) = torusSmul (fun k => starRingEnd ℂ (c k)) (conjVec z) := by
@@ -108,17 +108,17 @@ theorem conj_torus (c : K → ℂ) (z : (Σ k, J k) → ℂ) :
   simp [conjVec, torusSmul]
 
 /- English proof (translation)
-Simplify using `only [mem_ball_zero_iff, norm_star]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_mem_ball {t : Fin n → ℂ} {r : ℝ} : star t ∈ ball (0 : Fin n → ℂ) r ↔ t ∈ ball (0 : Fin n → ℂ) r := by
   simp only [mem_ball_zero_iff, norm_star]
 
 /- English proof (translation)
-Use `⟨fun t ht => an_star_star isOpen_ball h.an t (star_mem_ball.2 ht), fun t ht => SncPiece.conj_mem (h.mem _ (star_mem_ball.2 ht)), fun t ht t' ht' c hc e => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg conjVec e`. Simplify using `only [Charts.cj, conj_torus, SncPiece.conj_conj] at e'`. Conclude with `star_injective (h.inj _ (star_mem_ball.2 ht) _ (star_mem_ball.2 ht') _ (fun k => (map_ne_zero _).2 (hc k)) e')`. Take `⟨V, T, hV, hm, hT, hTe, hz⟩` from `h.loc _ (star_mem_ball.2 hs)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcc : star (Charts.cj γ s) = γ (star s)` using `SncPiece.conj_conj _`. Use `⟨star ⁻¹' V, fun z => star (T (star z)), hV.preimage continuous_star, by rwa [mem_preimage, hcc], an_star_star hV hT, by simp only [hcc, hTe, star_star], fun z hz' => ?_⟩` and prove the remaining obligations. Take `⟨h1, c, hc, e⟩` from `hz (conjVec z) ⟨hz'.1, SncPiece.conj_mem hz'.2⟩`. Use `⟨star_mem_ball.2 h1, fun k => starRingEnd ℂ (c k), fun k => (map_ne_zero _).2 (hc k), ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg conjVec e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[SncPiece.conj_conj, conj_torus]`. Simplify using `only [Charts.cj, star_star]`. Conclude with `e'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Good.cj (h : Good P γ) : Good P (cj γ) := by
   refine ⟨fun t ht => an_star_star isOpen_ball h.an t (star_mem_ball.2 ht),
@@ -139,25 +139,23 @@ theorem Good.cj (h : Good P γ) : Good P (cj γ) := by
     exact e'
 
 /- English proof (translation)
-Establish `ext : ∀ z ∈ U ∩ U', ∃ t : K → ℂ, (∀ k, t k ≠ 0) ∧ s z = fun q => t q.1 * s' z q` using `fun z hz => (M.fibre _ (hs' z hz.2).1 _ (hs z hz.1).1).mp ((hs' z hz.2).2.trans (hs z hz.1).2.symm)`. Use `choose p hp using (hs' y hy'.2).1.1`. Take `⟨c, hc, hcy⟩` from `ext y hy'`. Establish `hnum : ∀ k, s y ⟨k, p k⟩ ≠ 0` using `fun k => by`. Rewrite using `[hcy]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (hc k) (hp k)`. Establish `hr : ∀ k, s y ⟨k, p k⟩ / s' y ⟨k, p k⟩ ≠ 0` using `fun k => div_ne_zero (hnum k) (hp k)`. Establish `hO : IsOpen (U ∩ U')` using `hU.inter hU'`. Set `q : K → M.Xc → ℂ` to `fun k z => s z ⟨k, p k⟩ / s' z ⟨k, p k⟩ / (s y ⟨k, p k⟩ / s' y ⟨k, p k⟩)`. Set `W : Set M.Xc` to `{z | z ∈ U ∩ U' ∧ ∀ k, s' z ⟨k, p k⟩ ≠ 0 ∧ q k z ∈ Complex.slitPlane}`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hW : IsOpen W`. Use `isOpen_iff_mem_nhds.mpr fun z hz => ?_` and prove the remaining obligations. Establish `hn : ∀ k, ContinuousAt (fun z => s z ⟨k, p k⟩) z` using `fun k => continuousAt_of_holo (hh _) hz.1.1`. Establish `hd : ∀ k, ContinuousAt (fun z => s' z ⟨k, p k⟩) z` using `fun k => continuousAt_of_holo (hh' _) hz.1.2`. Use `filter_upwards [hO.mem_nhds hz.1, eventually_all.mpr fun k => (hd k).eventually_ne (hz.2 k).1, eventually_all.mpr fun k => (((hn k).div (hd k) (hz.2 k).1).div_const _).eventually_mem (Complex.isOpen_slitPlane.mem_nhds (hz.2 k).2)] with w h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨h1, fun k => ⟨h2 k, h3 k⟩⟩`. Establish `hyW : y ∈ W`. Use `⟨hy', fun k => ⟨hp k, ?_⟩⟩` and prove the remaining obligations. Establish `: q k y = 1` using `div_self (hr k)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Complex.mem_slitPlane_iff.mpr (Or.inl (by simp))`. Set `G : M.Xc → ℂ` to `fun z => ∑ k, ((L.a k : ℝ) : ℂ) * (Complex.log (q k z) + ((Real.log ‖s y ⟨k, p k⟩ / s' y ⟨k, p k⟩‖ : ℝ) : ℂ))`. Use `⟨W, hW, hyW, G, fun j y' hy'' => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz : (M.atlas.chart j).symm y' ∈ W` using `hy''.2`. Establish `hterm : ∀ k, AnalyticAt ℂ (fun y'' => ((L.a k : ℝ) : ℂ) * (Complex.log (q k ((M.atlas.chart j).symm y'')) + ((Real.log ‖s y ⟨k, p k⟩ / s' y ⟨k, p k⟩‖ : ℝ) : ℂ))) y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `hn : AnalyticAt ℂ (fun y'' => s ((M.atlas.chart j).symm y'') ⟨k, p k⟩) y'` using `hh _ j y' ⟨hy''.1, hz.1.1⟩`. Establish `hd : AnalyticAt ℂ (fun y'' => s' ((M.atlas.chart j).symm y'') ⟨k, p k⟩) y'` using `hh' _ j y' ⟨hy''.1, hz.1.2⟩`. Establish `hq : AnalyticAt ℂ (fun y'' => q k ((M.atlas.chart j).symm y'')) y'` using `(hn.div hd (hz.2 k).1).div analyticAt_const (hr k)`. Establish `hl : AnalyticAt ℂ (Complex.log ∘ fun y'' => q k ((M.atlas.chart j).symm y'')) y'` using `AnalyticAt.comp (f := fun y'' => q k ((M.atlas.chart j).symm y'')) (analyticAt_clog (hz.2 k).2) hq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `analyticAt_const.mul (hl.add analyticAt_const)`. Conclude with `Finset.analyticAt_fun_sum _ fun k _ => hterm k`. Establish `hzW : z ∈ W` using `hz.1.1`. Take `⟨c', hc', hcz⟩` from `ext z hzW.1`. Establish `hpos : 0 < L.h (s' z)` using `L.pos _ (hs' z hzW.1.2).1.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : (∏ k, ‖c' k‖ ^ L.a k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc' k))`. Establish `hterm : ∀ k, Real.log ‖q k z‖ + Real.log ‖s y ⟨k, p k⟩ / s' y ⟨k, p k⟩‖ = Real.log ‖c' k‖`. Introduce `k`. Establish `hqz : q k z = c' k / (s y ⟨k, p k⟩ / s' y ⟨k, p k⟩)`. Simplify using `only [q]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcz, mul_div_assoc, div_self (hzW.2 k).1, mul_one]`. Rewrite using `[hqz, norm_div, Real.log_div (norm_ne_zero_iff.mpr (hc' k)) (norm_ne_zero_iff.mpr (hr k))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcz, L.smul c' _ hc', Real.log_mul hprod hpos.ne', add_sub_cancel_right, Real.log_prod fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc' k))]`. Simplify using `only [G, Complex.re_sum, Complex.re_ofReal_mul, Complex.add_re, Complex.log_re, Complex.ofReal_re]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hterm k, Real.log_zpow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_diff (M : CxModel P n) (L : HermLine J) {U U' : Set M.Xc} (hU : IsOpen U) (hU' : IsOpen U')
     {s s' : M.Xc → (Σ k, J k) → ℂ} (hs : ∀ y ∈ U, s y ∈ mcPts P ∧ M.proj (s y) = y)
@@ -233,9 +231,9 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   {D : ComponentData II Ψ K J Ω W} (M : XModel D) {γ : (Fin D.n → ℂ) → (Σ k, J k) → ℂ}
 
 /- English proof (translation)
-Take `⟨V, T, hV, hm, hT, -, hz⟩` from `h.loc t₀ ht`. Take `⟨U, hU, hx, s, hs, hh⟩` from `M.sections (M.proj (γ t₀))`. Take `⟨c, hc, e⟩` from `(M.fibre _ (hs _ hx).1 _ (h.mem _ ht)).1 (hs _ hx).2`. Establish `hs' : ∀ j, AnalyticOnNhd ℂ ((fun x => torusSmul c (s x)) ∘ (M.atlas.chart j).symm) ((M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' U)` using `fun j y hy => analyticAt_pi_iff.2 fun p => analyticAt_const.mul (hh p j y hy)`. Establish `hmem : ∀ x ∈ U, torusSmul c (s x) ∈ mcPts (mCoordIdeal D.y)` using `fun x hx => mcPts_smul D.arith.2.1.2.1 c hc (hs x hx).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨U ∩ (fun x => torusSmul c (s x)) ⁻¹' V, ContinuousOn.isOpen_inter_preimage (fun x hx => (continuousAt_of_holo hs' hx).continuousWithinAt) hU hV, ⟨hx, by rw [mem_preimage, ← e]; exact hm⟩, fun x => T (torusSmul c (s x)), fun j y hy => (hT _ hy.2.2).comp_of_eq (hs' j y ⟨hy.1, hy.2 …` and prove the remaining obligations. Take `⟨h1, c', hc', e'⟩` from `hz _ ⟨hx.2, hmem x hx.1⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[(M.fibre _ (h.mem _ h1) _ (hmem x hx.1)).2 ⟨c', hc', e'⟩, ← (M.fibre _ (hs x hx.1).1 _ (hmem x hx.1)).2 ⟨c, hc, rfl⟩, (hs x hx.1).2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Good.locInv (h : Good (mCoordIdeal D.y) γ) {t₀ : Fin D.n → ℂ} (ht : t₀ ∈ ball (0 : Fin D.n → ℂ) 1) :
     ∃ U : Set M.Xc, IsOpen U ∧ M.proj (γ t₀) ∈ U ∧ ∃ ψ : M.Xc → Fin D.n → ℂ,
@@ -260,15 +258,13 @@ theorem Good.locInv (h : Good (mCoordIdeal D.y) γ) {t₀ : Fin D.n → ℂ} (ht
     ← (M.fibre _ (hs x hx.1).1 _ (hmem x hx.1)).2 ⟨c, hc, rfl⟩, (hs x hx.1).2]
 
 /- English proof (translation)
-Set `g : (Fin D.n → ℂ) → M.Xc` to `fun t => M.proj (γ t)`. Establish `hinj : InjOn g (ball 0 1)` using `fun t ht t' ht' e => by`. Take `⟨c, hc, e'⟩` from `(M.fibre _ (h.mem _ ht') _ (h.mem _ ht)).1 e.symm`. Conclude with `h.inj t ht t' ht' c hc e'`. Establish `hloc : ∀ x ∈ g '' ball 0 1, ∃ U : Set M.Xc, IsOpen U ∧ x ∈ U ∧ U ⊆ g '' ball 0 1 ∧ ∀ j, AnalyticOnNhd ℂ (Function.invFunOn g (ball 0 1) ∘ (M.atlas.chart j).symm) ((M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' U)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Take `⟨U, hU, hx, ψ, hψ, hi⟩` from `h.locInv M ht`. Use `⟨U, hU, hx, fun x hx => ⟨ψ x, hi x hx⟩, fun j => ?_⟩` and prove the remaining obligations. Use `(hψ j).congr ((M.atlas.chart j).isOpen_inter_preimage_symm hU) fun y hy => ?_` and prove the remaining obligations. Establish `h1` using `hi _ hy.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hinj.leftInvOn_invFunOn h1.1`. Simplify using `only [g, h1.2] at h2`. Conclude with `h2.symm`. Establish `hall : ∀ j, AnalyticOnNhd ℂ (Function.invFunOn g (ball 0 1) ∘ (M.atlas.chart j).symm) ((M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' (g '' ball 0 1))` using `fun j y hy => by`. Take `⟨U, -, hx, -, ha⟩` from `hloc _ hy.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ha j y ⟨hy.1, hx⟩`. Use `⟨{ toPartialEquiv := (hinj.toPartialEquiv g (ball 0 1)).symm open_source := ?_ open_target := isOpen_ball continuousOn_toFun := fun x hx => (continuousAt_of_holo hall hx).continuousWithinAt continuousOn_invFun := M.cont.comp h.an.continuousOn h.mem }, rfl, fun _ => rfl, fun j => …` and prove the remaining obligations. Use `isOpen_iff_mem_nhds.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨U, hU, hxU, hsub, -⟩` from `hloc x hx`. Conclude with `mem_of_superset (hU.mem_nhds hxU) hsub`.
-
-Establish `ht1 : t ∈ ball (0 : Fin D.n → ℂ) 1` using `ht.1`. Take `⟨V, hV, hz, F, hF, hFe⟩` from `GlobalTheory.CompanionTheory.Ar.Giv.projHoloLocal II Ψ K J Ω W D M (M.atlas.chart j) (fun k => ⟨M.atlas.holo k j, M.atlas.holo j k⟩) (γ t) (h.mem t ht1) ht.2`. Use `(((an_of_diff hV hF) _ hz).comp (h.an t ht1)).congr ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_ball.mem_nhds ht1, (h.an t ht1).continuousAt.preimage_mem_nhds (hV.mem_nhds hz)] with t' h1 h2`. Conclude with `((hFe _ ⟨h2, h.mem t' h1⟩).2).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Good.exists_chart (h : Good (mCoordIdeal D.y) γ) :
     ∃ e : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ), e.target = ball 0 1 ∧ (∀ t, e.symm t = M.proj (γ t)) ∧

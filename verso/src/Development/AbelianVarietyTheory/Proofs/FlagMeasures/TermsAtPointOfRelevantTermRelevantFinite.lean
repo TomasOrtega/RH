@@ -15,19 +15,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocOver
 
 /- English proof (translation)
-Introduce `D X Y u u' t₀ hG hrel`. Establish `hrows : IsRowReps D (X.Fu u) (Y.what₂ u)` using `Y.rowsOK u`. Establish `hex : ∃ v, t₀.toTerm.atPt v ∧ t₀.toTerm.relevant`. Take `⟨v, hv⟩` from `Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u' t₀.toTerm hG hrel`. Conclude with `⟨v, hv, hrel⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hw₀ : t₀.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf t₀.toTerm)` using `Formalism.L2.SG.PairVal.ptOf_spec _ hex`. Use `⟨Formalism.L2.SG.PairVal.ptOf t₀.toTerm, rfl, ?_⟩` and prove the remaining obligations. Establish `key : ∀ t : TauC Y u u', ptPN t = ptPN t₀ → t.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf t₀.toTerm) ∧ t.toTerm.relevant`. Introduce `t ht`. Establish `hpt : Formalism.L2.SG.PairVal.ptOf t.toTerm = Formalism.L2.SG.PairVal.ptOf t₀.toTerm` using `Formalism.L2.SG.Pf.FormRelPf.toPts_injective ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `h : ∃ v, t.toTerm.atPt v ∧ t.toTerm.relevant`. Conclude with `⟨hpt ▸ Formalism.L2.SG.PairVal.ptOf_spec _ h, h.choose_spec.2⟩`. It suffices to derive a contradiction. Establish `hj : Formalism.L2.SG.PairVal.ptOf t.toTerm = Formalism.L2.SG.PairVal.junkPoint D u u'`. Unfold `Formalism.L2.SG.PairVal.ptOf`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `dif_neg h`. Take `⟨F', -, hGv, hc⟩` from `hw₀`. Establish `he` using `Formalism.L2.SG.WConst.gPoint_eq_gval (lf D (X.Fu u)) F' _ hc`. Rewrite `he` using `[← hpt, hj]`. Establish `hz` using `Formalism.L2.SG.PairVal.Gpt_junkPoint_eq_zero D u u'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hGv (he.symm.trans hz)`. Use `⟨fun t ht => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hat, hr⟩` from `key t ht`. Establish `hTF` using `Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t.lam (hrows.1 t.lam t.mem)`. Establish `hmk : Formalism.L2.SG.TermDef.mk t.toTerm.lam (lf D (X.Fu u)) (PD D t.toTerm.lam (lf D (X.Fu u)) u') (Quot.out t.toTerm.cls) = t.toTerm.cls` using `Quot.out_eq _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : Formalism.L2.SG.TermDef.AtPt t.toTerm.lam (lf D (X.Fu u)) (PD D t.toTerm.lam (lf D (X.Fu u)) u') (Formalism.L2.SG.TermDef.mk t.toTerm.lam (lf D (X.Fu u)) (PD D t.toTerm.lam (lf D (X.Fu u)) u') (Quot.out t.toTerm.cls)) (Formalism.L2.SG.PairVal.ptOf t₀.toTerm)`. Rewrite using `[hmk]`. Conclude with `hat`. Conclude with `⟨hr, (Formalism.L2.SG.TermDef.atPt_mk hTF.1 hTF.2.1 _ _).1 hA⟩`. Use `(Formalism.L2.SG.TermDef.term_atPt_finite (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') (D.sp.Y_sig 0) (X.Fu u) (Y.what₂ u) hrows (Formalism.L2.SG.PairVal.ptOf t₀.toTerm)).subset ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `(key t ht).1`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem terms_at_point_of_relevant : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t₀ : TauC Y u u', t₀.G ≠ 0 → t₀.relevant → ∃ w : Point D.host.E (D.R.rS + 1), toPts w = ptPN t₀ ∧ (∀ t : TauC Y u u', ptPN t = ptPN t₀ → t.relevant ∧ Gval (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 ≠ 0 ∧ IsInCell (ZhatOM (ZhatL (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1)) w) ∧ (GTerm.toTerm '' {t : TauC Y u u' | ptPN t = ptPN t₀}).Finite := by
   intro D X Y u u' t₀ hG hrel

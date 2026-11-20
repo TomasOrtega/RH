@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SumLogEmbedd
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad
 
 /- English proof (translation)
-Establish `h` using `congr_arg (‖·‖) (Algebra.norm_eq_prod_embeddings ℚ ℂ N)`. Simplify using `only [norm_prod] at h`. Rewrite using `[← Real.log_prod (fun σ _ => by simpa using hN)]`. Use `congr 1`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom F ℂ) (fun σ : F →+* ℂ => ‖σ N‖) (fun σ : F →ₐ[ℚ] ℂ => ‖σ N‖) (fun _ => by simp [RingHom.equivRatAlgHom_apply]), ← h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[← Complex.norm_ratCast]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_log_emb (F : Type) [Field F] [NumberField F] (N : F) (hN : N ≠ 0) :
     ∑ σ : F →+* ℂ, Real.log ‖σ N‖ = Real.log ((|Algebra.norm ℚ N| : ℚ) : ℝ) := by
@@ -20,11 +20,11 @@ private theorem sum_log_emb (F : Type) [Field F] [NumberField F] (N : F) (hN : N
   simp [← Complex.norm_ratCast]
 
 /- English proof (translation)
-Establish `h : {θ : K →+* L | θ.comp (algebraMap F K) = algebraMap F L} = Set.range (fun σ : K →ₐ[F] L => (σ : K →+* L))`. Use extensionality with `θ`. Prove the components needed by the constructor for the conclusion. Introduce `hθ`. Conclude with `⟨⟨θ, fun r => RingHom.congr_fun hθ r⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨σ, rfl⟩`. Conclude with `σ.comp_algebraMap`. Establish `h2` using `finsum_mem_range (f := g) (g := fun σ : K →ₐ[F] L => (σ : K →+* L)) AlgHom.coe_ringHom_injective`. Rewrite `h2` using `[← h]`. Rewrite using `[← finsum_eq_sum_of_fintype, ← h2]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem finsum_emb (F K L : Type) [Field F] [Field K] [Field L] [Algebra F K] [Algebra F L]
     [Fintype (K →ₐ[F] L)] (g : (K →+* L) → ℝ) :
@@ -44,13 +44,11 @@ private theorem finsum_emb (F K L : Type) [Field F] [Field K] [Field L] [Algebra
   rfl
 
 /- English proof (translation)
-Introduce `F K _ _ _ _ φ ε c hc`. Use `letI : Algebra F K := φ.toAlgebra`. Use `haveI : IsScalarTower ℚ F K := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Module.Finite F K := Module.Finite.of_restrictScalars_finite ℚ F K`. Establish `hN : Algebra.norm F c ≠ 0` using `Algebra.norm_ne_zero_iff.2 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : (fun v : HeightOneSpectrum (𝓞 F) => ∑ᶠ (θ : K →+* AlgebraicClosure F) (_ : θ.comp φ = algebraMap F (AlgebraicClosure F)), Real.log ((ε v).w (θ c))) = fun v => Real.log (NumberField.HeightOneSpectrum.adicAbv F v (Algebra.norm F c))`. Use function extensionality and compare the values at `v`. Establish `h1` using `finsum_emb F K (AlgebraicClosure F) (fun θ => Real.log ((ε v).w (θ c)))`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← Real.log_prod (fun σ _ => by simpa using hc), ← map_prod, ← (ε v).w_alg, Algebra.norm_eq_prod_embeddings F (AlgebraicClosure F) c]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key]`. Take `⟨h1, h2⟩` from `GlobalTheory.sum_log_embedding_add_finsum_log_adicAbv_eq_zero F _ hN`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[sum_log_emb F _ hN, Algebra.norm_norm]`.
-
-Rewrite using `[sum_log_emb K c hc]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.product_formula_height :
     ∀ (F K : Type) [Field F] [NumberField F] [Field K] [NumberField K] (φ : F →+* K) (ε : ∀ v : HeightOneSpectrum (𝓞 F), GlobalTheory.TrueGeo.Ext v) (c : K), c ≠ 0 → (Function.support fun v : HeightOneSpectrum (𝓞 F) => ∑ᶠ (θ : K →+* AlgebraicClosure F) (_ : θ.comp φ = algebraMap F (AlgebraicClosure F)), Real.log ((ε v).w (θ c))).Finite ∧ ∑ σ : K →+* ℂ, Real.log ‖σ c‖ + ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ᶠ (θ : K →+* AlgebraicClosure F) (_ : θ.comp φ = algebraMap F (AlgebraicClosure F)), Real.log ((ε v).w (θ c)) = 0 := by

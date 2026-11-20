@@ -24,14 +24,14 @@ def sumAct (M : GKMod p q) (Y : Type) : Mat p q →ₗ[ℂ] Module.End ℂ (Y �
     simp
 
 /- English proof (translation)
-Simplify using `[sumAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumAct_apply (M : GKMod p q) (Y : Type) (X : Mat p q) (v : Y →₀ M.V) (y : Y) :
     sumAct M Y X v y = M.act X (v y) := by
   simp [sumAct]
 
 /- English proof (translation)
-Simplify using `[sumAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumAct_single (M : GKMod p q) (Y : Type) (X : Mat p q) (y : Y) (x : M.V) :
     sumAct M Y X (Finsupp.single y x) = Finsupp.single y (M.act X x) := by
@@ -91,17 +91,17 @@ def fockMod (p q r s : ℕ) : GKMod p q where
   wts P := ((GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).2
 
 /- English proof (translation)
-Set `E : (Y →₀ M.V) →ₗ[ℂ] Z` to `Finsupp.lsum ℂ fun y => B.flip y`. Establish `hE1 : ∀ y P, E (Finsupp.single y P) = B P y` using `fun y P => by`. Simplify using `[E]`. Establish `hE : ∀ X (x x' : Y →₀ M.V), ⟪E (sumAct M Y X x), E x'⟫_ℂ = ⟪E x, E (sumAct M Y (adjZ X) x')⟫_ℂ`. Introduce `X x x'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, inner_add_left, hf, hg]`. Consider the case `single y P`. Proceed by induction on `x' using Finsupp.induction_linear with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, inner_add_right, hf, hg]`. Consider the case `single y' P' => simp only [sumAct_single, hE1, hB]`. Take `⟨A, f, j, hf, hj, hjf, hact⟩` from `GlobalTheory.GKQuot.exists_unitary_quotient p q (sumMod M Y) Z E hE`. Set `g : (Y →₀ M.V) →ₗ[ℂ] A.M.V` to `f`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hjg : ∀ y P, j (g (Finsupp.single y P)) = B P y` using `fun y P => (hjf _).trans (hE1 y P)`. Set `B' : M.V →ₗ[ℂ] Y →ₛₗ[starRingEnd ℂ] A.M.V` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun P y => g (Finsupp.single y P)) (fun P P' y => by rw [Finsupp.single_add, map_add]) (fun c P y => by rw [← Finsupp.smul_single, map_smul, RingHom.id_apply]) (fun P y y' => hj (by rw [map_add, hjg, hjg, hjg, map_add])) (fun c P y …`. Establish `hB' : ∀ P y, B' P y = g (Finsupp.single y P)` using `fun _ _ => rfl`. Use `⟨A, j, B', hj, fun P y => hjg y P, ?_, fun X P y => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x -`. Take `⟨v, rfl⟩ : ∃ v, g v = x` from `hf x`. Proceed by induction on `v using Finsupp.induction_linear with`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `single y P => exact Submodule.subset_span ⟨P, y, rfl⟩`. Rewrite using `[hB', hB', ← sumAct_single]`. Conclude with `hact X _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_image (M : GKMod p q) (Y Z : Type) [AddCommGroup Y] [Module ℂ Y]
     [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] (B : M.V →ₗ[ℂ] Y →ₛₗ[starRingEnd ℂ] Z)
@@ -148,7 +148,7 @@ theorem exists_unitary_image (M : GKMod p q) (Y Z : Type) [AddCommGroup Y] [Modu
     exact hact X _
 
 /- English proof (translation)
-Introduce `p q r s Y Z _ _ _ _ B hB` and use `exists_unitary_image (fockMod p q r s) Y Z B hB`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitaryImage : ∀ p q r s : ℕ, UnitaryImage p q r s :=
   fun p q r s Y Z _ _ _ _ B hB => exists_unitary_image (fockMod p q r s) Y Z B hB

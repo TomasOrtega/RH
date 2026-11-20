@@ -16,7 +16,7 @@ section GtIso
 variable {S : Scheme.{0}} {E : SplitExt S} {G₁ G₂ : Over S} [GrpObj G₁] [GrpObj G₂]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (fun φ => φ.hom u.val) (f.naturality (homOfLE h).op)` as an intermediate fact. Simplify `this` using `[pullU, res]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pullU_res₂ {X Y : Scheme.{0}} (f : X ⟶ Y) {U V : Y.Opens} (h : V ≤ U) (u : Γ(Y, U)ˣ) :
     pullU f V (res h u) = res (f.preimage_mono h) (pullU f U u) := by
@@ -25,19 +25,19 @@ theorem pullU_res₂ {X Y : Scheme.{0}} (f : X ⟶ Y) {U V : Y.Opens} (h : V ≤
   simpa [pullU, res] using this
 
 /- English proof (translation)
-The claim follows from `(gm_pull (𝟙 Y) f y U h a).trans (by rw [Category.id_comp])`.
+A detailed English derivation is pending.
 -/
 theorem gm_id_pull {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)ˣ) :
     gm (𝟙 Y) y (f ⁻¹ᵁ U) (pullU f U a) = gm f y U a := (gm_pull (𝟙 Y) f y U h a).trans (by rw [Category.id_comp])
 
 /- English proof (translation)
-The claim follows from `(gm_res (𝟙 Z) z hle hz _).trans (gm_id_pull a z U (hle hz) u)`.
+A detailed English derivation is pending.
 -/
 theorem gm_rp₁ {X Z : Scheme.{0}} (a : Z ⟶ X) (z : Z) (U : X.Opens) (V : Z.Opens) (hle : V ≤ a ⁻¹ᵁ U) (hz : z ∈ V)
     (u : Γ(X, U)ˣ) : gm (𝟙 Z) z V (res hle (pullU a U u)) = gm a z U u := (gm_res (𝟙 Z) z hle hz _).trans (gm_id_pull a z U (hle hz) u)
 
 /- English proof (translation)
-The claim follows from `(gm_res (𝟙 Z) z hle hz _).trans ((gm_id_pull b z _ (hle hz) _).trans (gm_pull b a z U (hle hz) u))`.
+A detailed English derivation is pending.
 -/
 theorem gm_rp₂ {X Y Z : Scheme.{0}} (b : Z ⟶ Y) (a : Y ⟶ X) (z : Z) (U : X.Opens) (V : Z.Opens)
     (hle : V ≤ b ⁻¹ᵁ (a ⁻¹ᵁ U)) (hz : z ∈ V) (u : Γ(X, U)ˣ) :
@@ -45,7 +45,7 @@ theorem gm_rp₂ {X Y Z : Scheme.{0}} (b : Z ⟶ Y) (a : Y ⟶ X) (z : Z) (U : X
     ((gm_id_pull b z _ (hle hz) _).trans (gm_pull b a z U (hle hz) u))
 
 /- English proof (translation)
-Use `congrArg (pullU a _) h` as an intermediate fact. Rewrite `this` using `[map_mul, pullU_res₂, pullU_res₂]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transL {B Y Z : Scheme.{0}} (a : Z ⟶ Y) (q : Y ⟶ B) (U U' : B.Opens) (g : Γ(B, U ⊓ U')ˣ)
     (u : Γ(Y, q ⁻¹ᵁ U)ˣ) (u' : Γ(Y, q ⁻¹ᵁ U')ˣ)
@@ -58,7 +58,7 @@ theorem transL {B Y Z : Scheme.{0}} (a : Z ⟶ Y) (q : Y ⟶ B) (U U' : B.Opens)
   exact this
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `first`. Consider the case `(simp [pullU]; done)`. Consider the case `(simp [pullU]; rfl)`. Consider the case `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem pullU_comp_lemma {X Y Z : Scheme.{0}} (b : Z ⟶ Y) (a : Y ⟶ X) (W : X.Opens) (u : Γ(X, W)ˣ) :
     pullU b (a ⁻¹ᵁ W) (pullU a W u) = pullU (b ≫ a) W u := by
@@ -69,7 +69,7 @@ private theorem pullU_comp_lemma {X Y Z : Scheme.{0}} (b : Z ⟶ Y) (a : Y ⟶ X
     | rfl
 
 /- English proof (translation)
-Substitute `hA hS` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem res_pullU_eq_mul_of_eq_of_eq {T Y P : Scheme.{0}} (W : Y.Opens) (u : Γ(Y, W)ˣ) (c : Γ(T, ⊤)ˣ) (F : P ⟶ T)
     (A S A' S' : P ⟶ Y) (hA : A = A') (hS : S = S')
@@ -81,9 +81,9 @@ private theorem res_pullU_eq_mul_of_eq_of_eq {T Y P : Scheme.{0}} (W : Y.Opens) 
   exact h
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Establish `h'` using `congrArg (pullU b (s₁ ⁻¹ᵁ W)) h`. Rewrite `h'` using `[map_mul, pullU_res₂, pullU_res₂]`. Establish `key` using `res_pullU_eq_mul_of_eq_of_eq W u c (b ≫ f₁) (b ≫ act₁) (b ≫ s₁) (act₂ ≫ a) (s₂ ≫ a) ha.symm hs.symm (b.preimage_mono le₁) (b.preimage_mono t₁) (by first`. Consider the case `exact h'`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(rw [pullU_comp_lemma, pullU_comp_lemma, pullU_comp_lemma] at h'; exact h')) le₂ t₂`. Use `first`. Consider the case `exact key`. Consider the case `(rw [pullU_comp_lemma, pullU_comp_lemma]; exact key)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem equivL {T Y Z P₁ P₂ : Scheme.{0}} (act₁ s₁ : P₁ ⟶ Y) (f₁ : P₁ ⟶ T) (b : P₂ ⟶ P₁) (a : Z ⟶ Y) (act₂ s₂ : P₂ ⟶ Z)
     (f₂ : P₂ ⟶ T) (W : Y.Opens) (u : Γ(Y, W)ˣ) (c : Γ(T, ⊤)ˣ) (le₁ : s₁ ⁻¹ᵁ W ≤ act₁ ⁻¹ᵁ W)
@@ -105,7 +105,7 @@ theorem equivL {T Y Z P₁ P₂ : Scheme.{0}} (act₁ s₁ : P₁ ⟶ Y) (f₁ :
     | (rw [pullU_comp_lemma, pullU_comp_lemma]; exact key)
 
 /- English proof (translation)
-Substitute `he` using the available equality. Use `first`. Consider the case `exact h`. Consider the case `(rw [pullU_comp_lemma]; exact h)`. Consider the case `(convert h using 4; exact pullU_comp_lemma e₂ a W u)`.
+Substitute using the available equality. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem normL {S Y Z : Scheme.{0}} (e₁ : S ⟶ Y) (e₂ : S ⟶ Z) (a : Z ⟶ Y) (he : e₂ ≫ a = e₁) (W : Y.Opens) (V : S.Opens)
     (u : Γ(Y, W)ˣ) (r : Γ(S, V)ˣ)
@@ -118,7 +118,7 @@ theorem normL {S Y Z : Scheme.{0}} (e₁ : S ⟶ Y) (e₂ : S ⟶ Z) (a : Z ⟶ 
     | (convert h using 4; exact pullU_comp_lemma e₂ a W u)
 
 /- English proof (translation)
-Apply `AddMonoidAlgebra.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[AddMonoidAlgebra.liftNCRingHom, AddMonoidAlgebra.liftNC_single]`. Introduce `x`. Simplify using `[AddMonoidAlgebra.liftNCRingHom, AddMonoidAlgebra.liftNC_single]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem liftNC_comp₀ {A B C X : Type} [CommRing A] [CommRing B] [CommRing C] [AddCommGroup X] (f : A →+* B)
     (ρ : B →+* C) (g : Multiplicative X →* B) :
@@ -131,11 +131,11 @@ theorem liftNC_comp₀ {A B C X : Type} [CommRing A] [CommRing B] [CommRing C] [
     simp [AddMonoidAlgebra.liftNCRingHom, AddMonoidAlgebra.liftNC_single]
 
 /- English proof (translation)
-Establish `hlin : (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map ρ.toMonoidHom))).comp (b.constr ℤ (fun k => Additive.ofMul (v k))) = b.constr ℤ (fun k => Additive.ofMul (v' k))`. Use `b.ext fun k => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Module.Basis.constr_basis]`. Apply `congrArg Additive.ofMul` to reduce the goal to its premises. Conclude with `Units.ext (by rw [hv k]; rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `key : ∀ y : X, ρ ((Additive.toMul (b.constr ℤ (fun k => Additive.ofMul (v k)) y) : Bˣ) : B) = ((Additive.toMul (b.constr ℤ (fun k => Additive.ofMul (v' k)) y) : Cˣ) : C)`. Introduce `y`. Use `congrArg (fun φ : X →ₗ[ℤ] Additive Cˣ => ((Additive.toMul (φ y) : Cˣ) : C)) hlin` as an intermediate fact. Simplify using `using this`. Rewrite using `[← liftNC_comp₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Use `first`. Consider the case `exact (key (Multiplicative.toAdd x)).symm`. Consider the case `simpa using (key x).symm`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem liftNC_comp {A B C X ι' : Type} [CommRing A] [CommRing B] [CommRing C] [AddCommGroup X] (f : A →+* B)
     (ρ : B →+* C) (b : Module.Basis ι' ℤ X) (v : ι' → Bˣ) (v' : ι' → Cˣ) (hv : ∀ k, (v' k).val = ρ (v k).val) :
@@ -163,21 +163,17 @@ theorem liftNC_comp {A B C X ι' : Type} [CommRing A] [CommRing B] [CommRing C] 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Take `⟨d⟩` from `h`. Use `d.q_hom` as an intermediate fact. Use `d.i_hom` as an intermediate fact. Establish `: IsIso e.inv.left` using `⟨⟨e.hom.left, by rw [← Over.comp_left, e.inv_hom_id, Over.id_left], by rw [← Over.comp_left, e.hom_inv_id, Over.id_left]⟩⟩`. Use `d.q_flat` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `d.q_surjective` as an intermediate fact. Use `d.q_affine` as an intermediate fact. Establish `hact : (lift (fst (splitTorus S E.X) G₂ ≫ d.i ≫ e.hom) (snd _ _) ≫ μ[G₂]).left ≫ e.inv.left = (splitTorus S E.X ◁ e.inv).left ≫ (lift (fst (splitTorus S E.X) G₁ ≫ d.i) (snd _ _) ≫ μ[G₁]).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Hom.mul_def, ← Hom.mul_def, MonObj.mul_comp, MonObj.comp_mul]`. Simplify using the standard rewrite rules. Establish `hsnd : (snd (splitTorus S E.X) G₂).left ≫ e.inv.left = (splitTorus S E.X ◁ e.inv).left ≫ (snd (splitTorus S E.X) G₁).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`. Establish `hfst : (fst (splitTorus S E.X) G₂).left = (splitTorus S E.X ◁ e.inv).left ≫ (fst (splitTorus S E.X) G₁).left`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, whiskerLeft_fst]`. Establish `he : eSec G₂ ≫ e.inv.left = eSec G₁` using `congrArg (fun z => z.left) (IsMonHom.one_hom e.inv)`. Establish `m₁ : ∀ (j : E.ChartIdx) (y : (splitTorus S E.X ⊗ G₂).left), y ∈ (snd (splitTorus S E.X) G₂).left ⁻¹ᵁ ((e.inv ≫ d.q).left ⁻¹ᵁ E.chart j) → (splitTorus S E.X ◁ e.inv).left y ∈ (snd (splitTorus S E.X) G₁).left ⁻¹ᵁ (d.q.left ⁻¹ᵁ E.chart j)`. Introduce `j y hy`. Establish `e₁` using `congrArg (fun g => g y) hsnd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun z => d.q.left z ∈ E.chart j) e₁).mp hy`. Establish `le : ∀ j : E.ChartIdx, (snd (splitTorus S E.X) G₂).left ⁻¹ᵁ ((e.inv ≫ d.q).left ⁻¹ᵁ E.chart j) ≤ (lift (fst (splitTorus S E.X) G₂ ≫ d.i ≫ e.hom) (snd _ _) ≫ μ[G₂]).left ⁻¹ᵁ ((e.inv ≫ d.q).left ⁻¹ᵁ E.chart j)`. Introduce `j y hy`. Establish `e₁` using `congrArg (fun g => g y) hact`. Conclude with `(congrArg (fun z => d.q.left z ∈ E.chart j) e₁).mpr (d.act_le j (m₁ j y hy))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨{ q := e.inv ≫ d.q i := d.i ≫ e.hom q_hom := inferInstance i_hom := inferInstance q_flat := by rw [Over.comp_left]; infer_instance q_surjective := by rw [Over.comp_left]; infer_instance q_affine := by rw [Over.comp_left]; infer_instance isKernel := by` and prove the remaining obligations. Apply the tactic sequence `refine IsPullback.of_iso d.isKernel (Iso.refl _) e (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`. Use `u := fun j k => pullU e.inv.left _ (d.u j k)`. Use `coord := fun j V hV hle => ?_`. Use `trans := fun j j' k => transL e.inv.left d.q.left _ _ _ _ _ (d.trans j j' k)`.
-
-Use `act_le := le`. Use `equiv := fun j k => equivL _ _ _ _ e.inv.left _ _ _ (d.q.left ⁻¹ᵁ E.chart j) (d.u j k) _ (d.act_le j) _ (d.equiv j k) hact hsnd hfst (le j) _`. Use `unit_norm := fun j k => normL (eSec G₁) (eSec G₂) e.inv.left he (d.q.left ⁻¹ᵁ E.chart j) _ (d.u j k) _ (d.unit_norm j k) }⟩`. Establish `hb : Function.Bijective (e.inv.left.app (d.q.left ⁻¹ᵁ V)).hom` using `ConcreteCategory.bijective_of_isIso (e.inv.left.app (d.q.left ⁻¹ᵁ V))`. Establish `hl` using `liftNC_comp (d.q.left.app V).hom (e.inv.left.app (d.q.left ⁻¹ᵁ V)).hom E.basis (fun k => res (Scheme.Hom.preimage_mono d.q.left hle) (d.u j k)) (fun k => res (e.inv.left.preimage_mono (Scheme.Hom.preimage_mono d.q.left hle)) (pullU e.inv.left _ (d.u j k))) (fun k => congrArg Unit …`.
-
-Establish `hb₂` using `hb.comp (d.coord j V hV hle)`. Rewrite `hb₂` using `[← RingHom.coe_comp, ← hl]`. Conclude with `hb₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGt_of_iso (e : G₁ ≅ G₂) [IsMonHom e.hom] (h : E.IsGt G₁) : E.IsGt G₂ := by
   obtain ⟨d⟩ := h
@@ -246,23 +242,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
 /- English proof (translation)
-Use `P.complete` as an intermediate fact. Set `f₀ : Sp (ResidueField P.V) ⟶ Y.X` to `spMap (residue P.V) ≫ P.yt`. Set `x : Y.X` to `f₀ (closedPoint (ResidueField P.V))`. Set `φ₀ : Y.X.residueField x ⟶ CommRingCat.of (ResidueField P.V)` to `Scheme.descResidueField (Scheme.stalkClosedPointTo f₀)`. Establish `hf₀ : Spec.map φ₀ ≫ Y.X.fromSpecResidueField x = f₀` using `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField _ _ f₀`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨k, _, _, hfin, hsep, S, hGt⟩` from `hS x`. Set `Ω` to `AlgebraicClosure (ResidueField P.V)`. Set `_ : Algebra (Y.X.residueField x) (ResidueField P.V)` to `φ₀.hom.toAlgebra`. Set `σ : k →ₐ[Y.X.residueField x] Ω` to `IsAlgClosed.lift`. Set `bs` to `Module.finBasis (Y.X.residueField x) k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k'` to `IntermediateField.adjoin (ResidueField P.V) (Set.range fun i => σ (bs i))`. Establish `sepσ : ∀ z : k, IsSeparable (ResidueField P.V) (σ z)` using `fun z => ((Algebra.IsSeparable.isSeparable (Y.X.residueField x) z).map σ σ.injective).tower_top _`. Establish `: FiniteDimensional (ResidueField P.V) k'` using `IntermediateField.finiteDimensional_adjoin (by rintro _ ⟨i, rfl⟩; exact (sepσ _).isIntegral)`. Establish `: Algebra.IsSeparable (ResidueField P.V) k'` using `(IntermediateField.isSeparable_adjoin_iff_isSeparable _ _).2 (by rintro _ ⟨i, rfl⟩; exact sepσ _)`. Establish `hmem : ∀ z : k, σ z ∈ k'` using `fun z => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← bs.sum_repr z, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply (Y.X.residueField x) (ResidueField P.V) Ω]`. Conclude with `mul_mem (k'.algebraMap_mem _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Take `⟨W, _, _, _, hc, _, h₁, h₂, -, h₄, e, he⟩` from `hU P.V k'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Wx : UnramExt P.V` to `{ W := W, fin := h₁, inj := h₂, unram := h₄, complete := hc }`. Set `g : k →+* ResidueField W` to `e.symm.toRingHom.comp (σ.toRingHom.codRestrict k'.toSubring hmem)`. Establish `hg : g.comp (algebraMap (Y.X.residueField x) k) = (e.symm.toRingHom.comp (algebraMap (ResidueField P.V) k')).comp φ₀.hom`. Use extensionality with `z`. Conclude with `congrArg e.symm (Subtype.ext (σ.commutes z))`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hr : (residue W).comp (algebraMap P.V W) = (e.symm.toRingHom.comp (algebraMap (ResidueField P.V) k')).comp (residue P.V)`. Use extensionality with `v`. Conclude with `e.injective ((he v).trans (e.apply_symm_apply _).symm)`. Establish `key : spMap g ≫ Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField x) k)) ≫ Y.X.fromSpecResidueField x = spMap (residue W) ≫ P.ξ Wx`. Establish `a₁ : spMap g ≫ Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField x) k)) = spMap (e.symm.toRingHom.comp (algebraMap (ResidueField P.V) k')) ≫ Spec.map φ₀` using `(spMap_comp _ _).symm.trans ((congrArg spMap hg).trans (spMap_comp _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a₂ : spMap (residue W) ≫ spMap (algebraMap P.V W) = spMap (e.symm.toRingHom.comp (algebraMap (ResidueField P.V) k')) ≫ spMap (residue P.V)` using `(spMap_comp _ _).symm.trans ((congrArg spMap hr).trans (spMap_comp _ _))`. Rewrite using `[← Category.assoc, a₁, Category.assoc, hf₀]`. Use `show _ = spMap (residue W) ≫ spMap (algebraMap P.V W) ≫ P.yt`. Rewrite using `[← Category.assoc (spMap (residue W)), a₂, Category.assoc]`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull hC (P.ξ Wx) Y.t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S', -, -, -, -, hGt'⟩` from `hB _ _ (spMap g) S _ hGt`. Use `⟨Wx, _, m, S', ?_⟩` and prove the remaining obligations. Establish `: IsMonHom (pullCompIso (spMap g) (Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField x) k)) ≫ Y.X.fromSpecResidueField x) Y.t.G).symm.hom` using `by show IsMonHom (pullCompIso _ _ _).inv infer_instance`. Establish `h₀` using `isGt_of_iso (pullCompIso (spMap g) _ Y.t.G).symm hGt'`. Rewrite `h₀` using `[key]`.
-
-Conclude with `isGt_of_iso (pullCompIso (spMap (residue W)) (P.ξ Wx) Y.t.G) h₀`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitsAt (hC : Out.CubePullSt) (hU : Out.UnramExtSt) (hB : Out.GtBaseChangeSt) (hS : Y.SplitFibres)
     (P : ValPt Y) : SplitsAt P := by

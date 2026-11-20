@@ -12,9 +12,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Z.Win UpperTheory.V.Z.Kato UpperTheory.V.Z.Kato.WeilSphericalRecords UpperTheory.Zero.LLC
 namespace UpperTheory.V.Z.Kato.WeilSphericalRecords.TwistWitness
 /- English proof (translation)
-Take `⟨hne, -, hmin⟩` from `h`. Use `⟨hne, fun _ _ _ => Submodule.mem_top, fun U _ hU => hmin U le_top fun s v hv => ?_⟩` and prove the remaining obligations. Establish `e : (tw r φ s : Matrix (Fin n) (Fin n) k).mulVec v = (φ s : k) • (r s : Matrix (Fin n) (Fin n) k).mulVec v`. Rewrite using `[tw_val, Matrix.smul_mulVec]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.smul_mem _ (hU s v hv)`.
+A detailed English derivation is pending.
 -/
 private theorem irr_of_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (φ : Γ →* kˣ)
     (h : IsIrr (tw r φ)) : IsIrr r := by
@@ -26,16 +26,16 @@ private theorem irr_of_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ �
   rw [e]
   exact U.smul_mem _ (hU s v hv)
 /- English proof (translation)
-Use `MonoidHom.ext fun s => Units.ext ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, tw_val]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem comp_tw {Γ Δ k : Type} [Group Γ] [Group Δ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (φ : Γ →* kˣ)
     (f : Δ →* Γ) : (tw r φ).comp f = tw (r.comp f) (φ.comp f) := by
   refine MonoidHom.ext fun s => Units.ext ?_
   simp only [MonoidHom.comp_apply, tw_val]
 /- English proof (translation)
-Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := K) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hφ _ fun ζ hζ => hs ζ hζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem open_ker {K Ω C : Type} [Field K] [NumberField K] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω]
     [Algebra ℚ K] [IsScalarTower ℚ K Ω] [IsAlgClosure K Ω] [Group C] {M : ℕ} (hM : 1 ≤ M) {φ : G ℚ Ω →* C}
@@ -54,9 +54,9 @@ private theorem open_ker {K Ω C : Type} [Field K] [NumberField K] [Field Ω] [A
 end UpperTheory.V.Z.Kato.WeilSphericalRecords.TwistWitness
 open UpperTheory.V.Z.Kato.WeilSphericalRecords.TwistWitness in
 /- English proof (translation)
-Introduce `P hI l _ Ω _ _ _ ι n W M φ hM hφ hW K _ _ _ _ _ _ hK hirr`. Use `haveI : Algebra.IsAlgebraic ℚ K := inferInstance`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, (IsAlgClosure.isAlgebraic (R := ℚ) (K := Ω)).tower_top K⟩`. Rewrite `hirr`, the goal using `[comp_tw]`. Establish `hW'` using `hW K hK (irr_of_tw _ _ hirr)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `(_root_.UpperTheory.V.Sd.alg_cyclotomic_of_printed_results P K Ω l ι).1 0 (φ.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω)) (open_ker hM hφ)`. Rewrite `hs` using `[zpow_zero, one_mul]`. Take `⟨hc, art, χ, a, h⟩` from `hs`. Conclude with `(hI P K Ω l ι n _ hW').2 _ ⟨χ, hc, art, a, h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.WeilSphericalRecords.twWit_alt :
     _root_.UpperTheory.V.Af.Hypotheses' → _root_.UpperTheory.V.Z.Win.AIsoTwAlt → TwWit := by

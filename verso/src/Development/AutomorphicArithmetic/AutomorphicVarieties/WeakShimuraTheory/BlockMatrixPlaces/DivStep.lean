@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
 /- English proof (translation)
-Establish `hm : maximalIdeal A = Ideal.span {t}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer t).1 ht`. Use `show x ∈ maximalIdeal A ^ n • (⊤ : Submodule A T) ↔ _`. Rewrite using `[hm, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_lev_iff {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] {T : Type} [AddCommGroup T]
     [Module A T] {t : A} (ht : Irreducible t) (n : ℕ) (x : T) : x ∈ lev A T n ↔ ∃ w, t ^ n • w = x := by
@@ -15,11 +15,11 @@ private theorem mem_lev_iff {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValu
   simp
 
 /- English proof (translation)
-Set `g` to `Q.mapQ Q f hQ`. Establish `hs : Function.Surjective g`. Introduce `q`. Take `⟨x, rfl⟩` from `Q.mkQ_surjective q`. Take `⟨w, rfl⟩` from `hf x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Q.mkQ w, by simp [g]⟩`. Establish `hi` using `OrzechProperty.injective_of_surjective_endomorphism g hs`. Establish `h0 : g (Q.mkQ y) = g 0`. Simplify using `only [g, Submodule.mkQ_apply, Submodule.mapQ_apply, map_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero Q).2 hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hi h0`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem mem_of_bij {A : Type} [CommRing A] {T : Type} [AddCommGroup T] [Module A T] [Module.Finite A T]
     (f : T →ₗ[A] T) (hf : Function.Surjective f) (Q : Submodule A T) (hQ : Q ≤ Q.comap f) {y : T} (hy : f y ∈ Q) :
@@ -38,49 +38,45 @@ private theorem mem_of_bij {A : Type} [CommRing A] {T : Type} [AddCommGroup T] [
   simpa using h1
 
 /- English proof (translation)
-Introduce `A _ _ _ T _ _ _ _ Γ _ _ ρ c N H P hL t ht n z hz hnp`. Take `⟨y, hzy⟩` from `hz`. Establish `ht0 : t ≠ 0` using `ht.ne_zero`. Establish `hinjt : Function.Injective (fun x : T => t • x)` using `smul_right_injective T ht0`. Establish `hlev` using `fun k x => mem_lev_iff (T := T) ht k x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : lev A T n ≤ (lev A T (n + 1)).comap (t • LinearMap.id)`. Introduce `x hx`. Take `⟨w, rfl⟩` from `(hlev n x).1 hx`. Rewrite using `[Submodule.mem_comap]`. Use `(hlev (n + 1) _).2 ⟨w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, pow_succ', mul_smul]`. Set `φ` to `(lev A T n).mapQ (lev A T (n + 1)) (t • LinearMap.id) hφ`. Establish `hφmk : ∀ x, φ ((lev A T n).mkQ x) = (lev A T (n + 1)).mkQ (t • x)` using `fun x => rfl`. Establish `hφinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective a`. Rewrite `ha` using `[hφmk, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨w, hw⟩` from `(hlev (n + 1) _).1 ha`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(hlev n x).2 ⟨w, hinjt ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← hw, pow_succ', mul_smul]`. Establish `hφP : ∀ a, φ a ∈ Submodule.map (lev A T (n + 1)).mkQ P → a ∈ Submodule.map (lev A T n).mkQ P`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective a`. Take `⟨q, hq, hqe⟩` from `Submodule.mem_map.1 ha`. Rewrite `hqe` using `[hφmk, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨v, hv⟩` from `(hlev (n + 1) _).1 hqe`. Establish `hq' : t • (x + t ^ n • v) ∈ P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : t • (x + t ^ n • v) = q`. Rewrite using `[smul_add, ← mul_smul, ← pow_succ', hv]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxP` using `hL.sat t _ ht0 hq'`. Use `Submodule.mem_map.2 ⟨x + t ^ n • v, hxP, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `(hlev n _).2 ⟨v, by abel⟩`. Establish `hφρ : ∀ g a, φ (modRep ρ n g a) = modRep ρ (n + 1) g (φ a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g a`. Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective a`. Rewrite using `[modRep_mk, hφmk, hφmk, modRep_mk, LinearMap.map_smul (ρ g) t x]`. Establish `hz1 : ∀ g, z g ∈ Submodule.map (lev A T (n + 1)).mkQ (lev A T 1)`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hnp ⟨g, hc⟩`. Establish `hrange : ∀ g, ∃ a, φ a = z g`. Introduce `g`. Take `⟨u, hu, hue⟩` from `Submodule.mem_map.1 (hz1 g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩` from `(hlev 1 u).1 hu`. Use `⟨(lev A T n).mkQ w, ?_⟩` and prove the remaining obligations. Rewrite using `[hφmk, ← hue, pow_one]`. Use `choose z' hz' using hrange`. Take `⟨s, hsH, hsb⟩` from `hL.fr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨y0, rfl⟩` from `(lev A T (n + 1)).mkQ_surjective y`. Establish `hle1 : lev A T (n + 1) ≤ lev A T 1` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right (by omega))`. Establish `hy0 : y0 ∈ P ⊔ lev A T 1`. Set `f : T →ₗ[A] T` to `ρ s - LinearMap.id`. Establish `hfs : Function.Surjective f` using `hsb.2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mem_of_bij f hfs` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[Submodule.mem_comap]`. Use `show ρ s x - x ∈ _`. Apply `Submodule.sub_mem _ _ hx` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.1 hx`. Use `Submodule.mem_sup.2 ⟨ρ s p, hL.stab s hsH p hp, ρ s q, ?_, (map_add _ _ _).symm⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(hlev 1 q).1 hq`. Conclude with `(hlev 1 _).2 ⟨ρ s w, (map_smul _ _ _).symm⟩`. Use `show ρ s y0 - y0 ∈ _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hloc : z s - (modRep ρ (n + 1) s ((lev A T (n + 1)).mkQ y0) - (lev A T (n + 1)).mkQ y0) ∈ Submodule.map (lev A T (n + 1)).mkQ P` using `hzy.loc s hsH`. Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.1 hloc`. Take `⟨u, hu, hue⟩` from `Submodule.mem_map.1 (hz1 s)`. Rewrite `hpe` using `[modRep_mk, ← hue, ← map_sub, ← map_sub, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `e : ρ s y0 - y0 = ((p - (u - (ρ s y0 - y0))) + u) - p` using `by abel`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[e]`. Apply `Submodule.sub_mem _ _ (Submodule.mem_sup_left hp)` to reduce the goal to its premises. Apply `Submodule.add_mem _ (Submodule.mem_sup_right (hle1 hpe)) (Submodule.mem_sup_right hu)` to reduce the goal to its premises. Take `⟨p0, hp0, q0, hq0, hpq⟩` from `Submodule.mem_sup.1 hy0`. Take `⟨w0, rfl⟩` from `(hlev 1 q0).1 hq0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Substitute `hpq` using the available equality. Establish `hcomp : ⇑φ ∘ z' = z` using `funext hz'`. Use `⟨z', ⟨(lev A T n).mkQ w0, ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨IsLocallyConstant.desc z' φ (by rw [hcomp]; exact hzy.lc) hφinj, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g h show z' (g * h) = z' g + modRep ρ n g (z' h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hφinj` to reduce the goal to its premises. Rewrite using `[hz', map_add, hφρ, hz', hz']`. Conclude with `hzy.coc g h`. Apply `hφinj` to reduce the goal to its premises. Rewrite using `[hz', map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hzy.cz`. Introduce `g hg`. Apply `hφinj` to reduce the goal to its premises. Rewrite using `[hz', map_zero]`. Conclude with `hzy.kill g hg`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h hh show z' h - (modRep ρ n h ((lev A T n).mkQ w0) - (lev A T n).mkQ w0) ∈ Submodule.map (lev A T n).mkQ P`. Apply `hφP` to reduce the goal to its premises. Rewrite using `[map_sub, map_sub, hφρ, hz', hφmk]`. Establish `hloc : z h - (modRep ρ (n + 1) h ((lev A T (n + 1)).mkQ (p0 + t ^ 1 • w0)) - (lev A T (n + 1)).mkQ (p0 + t ^ 1 • w0)) ∈ Submodule.map (lev A T (n + 1)).mkQ P` using `hzy.loc h hh`. Establish `e : z h - (modRep ρ (n + 1) h ((lev A T (n + 1)).mkQ (t • w0)) - (lev A T (n + 1)).mkQ (t • w0)) = (z h - (modRep ρ (n + 1) h ((lev A T (n + 1)).mkQ (p0 + t ^ 1 • w0)) - (lev A T (n + 1)).mkQ (p0 + t ^ 1 • w0))) + (lev A T (n + 1)).mkQ (ρ h p0 - p0)`.
-
-Simplify using `only [pow_one, map_add, map_sub, modRep_mk]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ hloc (Submodule.mem_map_of_mem (Submodule.sub_mem _ (hL.stab h hh p0 hp0) hp0))`. Introduce `g x hx`.
-
-Rewrite using `[← hφmk, hx, hz']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.divStep :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (T : Type) [AddCommGroup T] [Module A T] [Module.Finite A T] [Module.Free A T] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (ρ : Representation A Γ T) (c : Γ) (N : Set Γ) (H : Subgroup Γ) (P : Submodule A T), Lat ρ H P → ∀ t : A, Irreducible t → ∀ n, ∀ z ∈ Zn ρ c N H P (n + 1), ¬ Prim z →

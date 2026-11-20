@@ -7,9 +7,9 @@ open scoped ComplexConjugate
 namespace GlobalTheory.CMGen
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `NumberField.IsCMField.complexConj_ne_one K` to reduce the goal to its premises. Use extensionality with `y`. Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) y`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : NumberField.IsCMField.complexConj K (algebraMap (𝓞 K) K a) = algebraMap (𝓞 K) K a` using `(NumberField.IsCMField.complexConj_eq_self_iff K _).mpr (h a)`. Establish `hb : NumberField.IsCMField.complexConj K (algebraMap (𝓞 K) K b) = algebraMap (𝓞 K) K b` using `(NumberField.IsCMField.complexConj_eq_self_iff K _).mpr (h b)`. Rewrite using `[map_div₀, ha, hb, AlgEquiv.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integer_not_mem (K : Type) [Field K] [NumberField K] [IsCMField K] :
     ∃ x : 𝓞 K, (x : K) ∉ maximalRealSubfield K := by
@@ -25,7 +25,7 @@ theorem exists_integer_not_mem (K : Type) [Field K] [NumberField K] [IsCMField K
   rw [map_div₀, ha, hb, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Use `letI : Algebra (maximalRealSubfield K) ℂ := (Complex.ofRealHom.comp φ).toAlgebra`. Use `haveI : Algebra.IsAlgebraic (maximalRealSubfield K) K := Algebra.IsAlgebraic.tower_top (K := ℚ) _`. Set `f : K →ₐ[maximalRealSubfield K] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨f.toRingHom, fun x => f.commutes x⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extension (K : Type) [Field K] [NumberField K] (φ : maximalRealSubfield K →+* ℝ) :
     ∃ ψ : K →+* ℂ, ∀ x : maximalRealSubfield K,
@@ -36,27 +36,25 @@ theorem exists_extension (K : Type) [Field K] [NumberField K] (φ : maximalRealS
   exact ⟨f.toRingHom, fun x => f.commutes x⟩
 
 /- English proof (translation)
-Introduce `K _ _ _`. Take `⟨x, hx⟩` from `exists_integer_not_mem K`. Set `y : 𝓞 K` to `x - NumberField.IsCMField.ringOfIntegersComplexConj K x`. Establish `hy : (y : K) = (x : K) - NumberField.IsCMField.complexConj K (x : K)`. Simplify using `[y, NumberField.IsCMField.coe_ringOfIntegersComplexConj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hconj : NumberField.IsCMField.complexConj K (y : K) = -(y : K)`. Rewrite using `[hy, map_sub, NumberField.IsCMField.complexConj_apply_apply, neg_sub]`. Establish `hy0 : (y : K) ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← NumberField.IsCMField.complexConj_eq_self_iff]`. Rewrite `h0` using `[hy, sub_eq_zero]`. Conclude with `h0.symm`. Establish `hsq : (y : K) ^ 2 ∈ maximalRealSubfield K`. Rewrite using `[← NumberField.IsCMField.complexConj_eq_self_iff, map_pow, hconj, neg_sq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ (⟨(y : K) ^ 2, hsq⟩ : maximalRealSubfield K)`. Use `(isIntegral_algebraMap_iff (FaithfulSMul.algebraMap_injective (maximalRealSubfield K) K)).mp ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsIntegral ℤ ((y : K) ^ 2)`. Conclude with `(RingOfIntegers.isIntegral_coe y).pow 2`. Use `⟨⟨⟨(y : K) ^ 2, hsq⟩, hint⟩, (y : K), rfl, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hmem`. Apply `hy0` to reduce the goal to its premises. Establish `h2` using `hconj`. Rewrite `h2` using `[(NumberField.IsCMField.complexConj_eq_self_iff K _).mpr hmem]`. Establish `h3 : (2 : K) * (y : K) = 0` using `by rw [two_mul]; nth_rewrite 1 [h2]; ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `mul_eq_zero.mp h3 with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Conclude with `h`. Introduce `φ`. Take `⟨ψ, hψ⟩` from `exists_extension K φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval` using `hψ ⟨(y : K) ^ 2, hsq⟩`. Establish `hψy : ψ (y : K) = ψ (x : K) - conj (ψ (x : K))`. Rewrite using `[hy, map_sub, NumberField.IsCMField.complexEmbedding_complexConj]`. Establish `hne : ψ (y : K) ≠ 0`. Rewrite using `[map_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy0`. Establish `him : (ψ (x : K)).im ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hψy, Complex.sub_conj, h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `key : ((φ ⟨(y : K) ^ 2, hsq⟩ : ℝ) : ℂ) = ((-(2 * (ψ (x : K)).im) ^ 2 : ℝ) : ℂ)`. Rewrite using `[← hval]`. Express the relevant statement in the definitionally equal form `ψ ((y : K) ^ 2) = _`. Rewrite using `[map_pow, hψy, Complex.sub_conj]`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `key' : φ ⟨(y : K) ^ 2, hsq⟩ = -(2 * (ψ (x : K)).im) ^ 2` using `by exact_mod_cast key`.
-
-Use `show φ ⟨(y : K) ^ 2, hsq⟩ < 0`. Rewrite using `[key']`. Establish `: 0 < (2 * (ψ (x : K)).im) ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sqrt_totallyNegative : ∀ (K : Type) [Field K] [NumberField K] [IsCMField K],
     ∃ (d : 𝓞 (maximalRealSubfield K)) (δ : K), δ ^ 2 = algebraMap (maximalRealSubfield K) K d ∧

@@ -30,7 +30,7 @@ theorem coe_embW {K LL : FinExt l} (e : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1) (w : 
     ((embW e w : ↥(OL LL)) : ↥LL.1) = e (w : ↥(K0 K)) := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (e.toRingHom.injective (congrArg Subtype.val h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem embW_injective {K LL : FinExt l} (e : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1) : Function.Injective (embW e) :=
   fun _ _ h => Subtype.ext (e.toRingHom.injective (congrArg Subtype.val h))

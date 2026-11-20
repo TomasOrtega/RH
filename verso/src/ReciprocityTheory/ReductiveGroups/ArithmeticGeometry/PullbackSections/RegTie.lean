@@ -96,15 +96,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Sc
 def gsec (G : Over S) : G.left ⟶ (𝟙_ (Over S) ⊗ G).left := (lift (toUnit G) (𝟙 G)).left
 
 /- English proof (translation)
-Rewrite using `[gsec, ← Over.comp_left, lift_snd, Over.id_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gsec_snd (G : Over S) : gsec G ≫ (snd (𝟙_ (Over S)) G).left = 𝟙 _ := by
   rw [gsec, ← Over.comp_left, lift_snd, Over.id_left]
 
 /- English proof (translation)
-Establish `hF : FormEq (Sum.elim (fun k => gsec t.G ≫ (fun _ : Fin 1 => (snd (𝟙_ (Over S)) t.G).left) k) (PEmpty.elim : PEmpty → _)) (Sum.elim (fun _ : Fin 1 => a) (PEmpty.elim : PEmpty → ℤ)) (fun _ : Fin 1 => 𝟙 t.G.left) (fun _ => a)`. Introduce `U _ h`. Establish `e` using `gsec_snd t.G`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, e, Finset.univ_eq_empty, Finset.prod_empty, _root_.mul_one]`. Take `⟨σ, hσ⟩` from `exists_sec t.PP.isLB hF (pullMulSec (F : LB.Sec (LB.LinComb t.PP.L (fun _ : Fin 1 => (snd (𝟙_ (Over S)) t.G).left) (fun _ => a))) (gsec t.G) (LB.oneGen t.PP.L) (fun _ _ => by dsimp only [LB.oneGen]; erw [map_one, map_one, _root_.mul_one]; simp [LB.LinComb]; rfl))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `(hσ Z r z J hJ).trans ((sval_pullMulSec _ _ _ _ r z hJ).trans ?_)` and prove the remaining obligations. Rewrite using `[val_one, Units.val_one, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_restrict (t : SAB H S) (a : ℤ) (F : LB.Sec (LPow t.G t.PP.L a (𝟙_ (Over S)))) :
     ∃ σ : LB.Sec (LB.LinComb t.PP.L (K := Fin 1) (fun _ => 𝟙 t.G.left) (fun _ => a)),
@@ -126,13 +126,13 @@ theorem exists_restrict (t : SAB H S) (a : ℤ) (F : LB.Sec (LPow t.G t.PP.L a (
 end Restrict
 
 /- English proof (translation)
-Establish `h1 : la.valuation K (M : K) = 1`. Establish `e1 : (M : K) = algebraMap (𝓞 K) K (M : 𝓞 K)` using `by simp`. Rewrite using `[e1, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hM`. Establish `h2` using `ho.2 (M : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[vLa, h1, WithZero.log_one, neg_zero, mul_zero, map_natCast]`. Establish `e2 : ((M : ℕ) : Tc.Fr) = algebraMap Tc.V Tc.Fr (M : Tc.V)` using `by simp`. Rewrite `h2` using `[e2, vV, valV, HeightOneSpectrum.valuation_of_algebraMap, neg_eq_zero]`. Establish `hne : (IsDiscreteValuationRing.maximalIdeal Tc.V).intValuation (M : Tc.V) ≠ 0`. Use `HeightOneSpectrum.intValuation_ne_zero _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hM` to reduce the goal to its premises. Establish `: M = 0` using `by exact_mod_cast h0`. Rewrite using `[this, Nat.cast_zero]`. Conclude with `la.asIdeal.zero_mem`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (IsDiscreteValuationRing.maximalIdeal Tc.V).intValuation (M : Tc.V) = 1`. Rewrite using `[← WithZero.exp_log hne, h2, WithZero.exp_zero]`. Rewrite `h3` using `[HeightOneSpectrum.intValuation_eq_one_iff]`. Assume the negation of the conclusion as `hu`. Conclude with `h3 ((IsLocalRing.mem_maximalIdeal _).2 hu)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_of_overLa {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} (Tc : CDVR)
     {io : K →+* Tc.Fr} {e : ℕ} (ho : OverLa la Tc.V io e) {M : ℕ} (hM : (M : 𝓞 K) ∉ la.asIdeal) :

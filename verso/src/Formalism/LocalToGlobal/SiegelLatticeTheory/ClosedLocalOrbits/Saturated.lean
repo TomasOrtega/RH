@@ -14,16 +14,16 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Conclude with `hβ x y`.
+A detailed English derivation is pending.
 -/
 theorem isom_apply {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) (x y : S.V) :
     S.hT (β x) (β y) = S.hT x y := by
   exact hβ x y
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `hyx' : β y = x` using `hyx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hyx', LinearEquiv.symm_apply_apply]`. Conclude with `hy`. Introduce `h`. Conclude with `⟨β.symm x, h, β.apply_symm_apply x⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_gmap_iff (β : S.V ≃ₗ[E] S.V) (L : Submodule (𝓞 E) S.V) (x : S.V) :
     x ∈ Formalism.HermitianLatticesTheory.gmap β L ↔ β.symm x ∈ L := by
@@ -49,7 +49,7 @@ def mapL (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheor
   ⟨mapFlag β hβ F.fl, β F.zt⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `[FlagG.fvec, mapFlag]`. Simplify using `[FlagG.fvec, mapFlag]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fvec_mapFlag (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) {T : E} (F : FlagG S r T) :
     (mapFlag β hβ F).fvec = fun a => β (F.fvec a) := by
@@ -59,14 +59,14 @@ theorem fvec_mapFlag (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianL
   · simp [FlagG.fvec, mapFlag]
 
 /- English proof (translation)
-Conclude with `congrFun (fvec_mapFlag β hβ F.fl) a`.
+A detailed English derivation is pending.
 -/
 theorem frame_mapL (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) {T : E} (F : LFlag S r T)
     (a : Fin (r + 1)) : frame (mapL β hβ F) a = β (frame F a) := by
   exact congrFun (fvec_mapFlag β hβ F.fl) a
 
 /- English proof (translation)
-Use `show Zhat (mapFlag β hβ F.fl) (mapFlag β hβ F'.fl) = Zhat F.fl F'.fl`. Use extensionality with `a b`. Simplify using `only [Zhat, brS, fvec_mapFlag, isom_apply hβ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zhat_mapL (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) {T T' : E} (F : LFlag S r T)
     (F' : LFlag S r T') : ZhatL (mapL β hβ F) (mapL β hβ F') = ZhatL F F' := by
@@ -75,7 +75,7 @@ theorem zhat_mapL (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatt
   simp only [Zhat, brS, fvec_mapFlag, isom_apply hβ]
 
 /- English proof (translation)
-Establish `hz : Zhat (mapFlag β hβ F.fl) (mapFlag β hβ F'.fl) = Zhat F.fl F'.fl` using `zhat_mapL β hβ F F'`. Use `show Gflag (mapFlag β hβ F.fl) (mapFlag β hβ F'.fl) = Gflag F.fl F'.fl`. Simplify using `only [Gflag, Dl, hz]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gval_mapL (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) {T T' : E} (F : LFlag S r T)
     (F' : LFlag S r T') : Gval (mapL β hβ F) (mapL β hβ F') = Gval F F' := by
@@ -91,7 +91,7 @@ theorem mapL_mul (β γ : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLa
     mapL (β * γ) (Subgroup.mul_mem _ hβ hγ) F = mapL β hβ (mapL γ hγ F) := rfl
 
 /- English proof (translation)
-Take `⟨e₁, z₁, _, _, _, _⟩` from `F₁`. Take `⟨e₂, z₂, _, _, _, _⟩` from `F₂`. Simplify using `only at he hz`. Substitute `he hz` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem flag_ext_lemma {T : E} {F₁ F₂ : FlagG S r T} (he : F₁.e = F₂.e) (hz : F₁.z = F₂.z) :
     F₁ = F₂ := by
@@ -102,7 +102,7 @@ private theorem flag_ext_lemma {T : E} {F₁ F₂ : FlagG S r T} (he : F₁.e = 
   rfl
 
 /- English proof (translation)
-Take `⟨f₁, z₁⟩` from `F₁`. Take `⟨f₂, z₂⟩` from `F₂`. Simplify using `only at h1 h2`. Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem lflag_ext_lemma_2 {T : E} {F₁ F₂ : LFlag S r T} (h1 : F₁.fl = F₂.fl) (h2 : F₁.zt = F₂.zt) :
     F₁ = F₂ := by
@@ -113,11 +113,9 @@ private theorem lflag_ext_lemma_2 {T : E} {F₁ F₂ : LFlag S r T} (h1 : F₁.f
   rfl
 
 /- English proof (translation)
-Establish `he : ∀ a, β (F.fl.e a) = F.fl.e a` using `fun a => by`. Establish `h` using `hf (Fin.castSucc a)`. Simplify `h` using `[frame, FlagG.fvec]`. Establish `hz' : β F.fl.z = F.fl.z`. Establish `h` using `hf (Fin.last r)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[frame, FlagG.fvec]`. Apply `lflag_ext_lemma_2` to reduce the goal to its premises. Apply `flag_ext_lemma` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Conclude with `he a`.
-
-Conclude with `hz'`. Conclude with `hz`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mapL_eq_self (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) {T : E} (F : LFlag S r T)
     (hf : ∀ a, β (frame F a) = frame F a) (hz : β F.zt = F.zt) : mapL β hβ F = F := by
@@ -138,7 +136,7 @@ def AutF {T : E} (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) : Set (S.V ≃�
   {β | IsAutLam S Λ β ∧ (∀ a, β (frame F a) = frame F a) ∧ β F.zt = F.zt}
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_AutF {T : E} {Λ : Submodule (𝓞 E) S.V} {F : LFlag S r T} {β : S.V ≃ₗ[E] S.V} :
     β ∈ AutF Λ F ↔ IsAutLam S Λ β ∧ (∀ a, β (frame F a) = frame F a) ∧ β F.zt = F.zt := by
@@ -147,13 +145,13 @@ theorem mem_AutF {T : E} {Λ : Submodule (𝓞 E) S.V} {F : LFlag S r T} {β : S
 variable {T T' : E} {Λ : Submodule (𝓞 E) S.V} {F : LFlag S r T}
 
 /- English proof (translation)
-Conclude with `(mem_AutF.mp β.2).1.1`.
+A detailed English derivation is pending.
 -/
 theorem AutF.isom (β : AutF Λ F) : (β : S.V ≃ₗ[E] S.V) ∈ Formalism.HermitianLatticesTheory.isom S.hT := by
   exact (mem_AutF.mp β.2).1.1
 
 /- English proof (translation)
-Conclude with `(mem_AutF.mp β.2).1.2`.
+A detailed English derivation is pending.
 -/
 theorem AutF.lam (β : AutF Λ F) : Formalism.HermitianLatticesTheory.gmap (β : S.V ≃ₗ[E] S.V) Λ = Λ := by
   exact (mem_AutF.mp β.2).1.2
@@ -161,7 +159,7 @@ theorem AutF.lam (β : AutF Λ F) : Formalism.HermitianLatticesTheory.gmap (β :
 def act (β : AutF Λ F) (F' : LFlag S r T') : LFlag S r T' := mapL β.1 (AutF.isom β) F'
 
 /- English proof (translation)
-Use `mem_AutF.mpr (And.intro (And.intro (Subgroup.one_mem _) ?_) (And.intro (fun a => rfl) rfl))` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[mem_gmap_iff]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem one_mem_AutF : (1 : S.V ≃ₗ[E] S.V) ∈ AutF Λ F := by
   refine mem_AutF.mpr (And.intro (And.intro (Subgroup.one_mem _) ?_) (And.intro (fun a => rfl) rfl))
@@ -170,17 +168,15 @@ theorem one_mem_AutF : (1 : S.V ≃ₗ[E] S.V) ∈ AutF Λ F := by
   exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `mapL_eq_self _ _ _ (fun _ => rfl) rfl`.
+A detailed English derivation is pending.
 -/
 theorem act_one (F' : LFlag S r T') : act (⟨1, one_mem_AutF⟩ : AutF Λ F) F' = F' := by
   exact mapL_eq_self _ _ _ (fun _ => rfl) rfl
 
 /- English proof (translation)
-Take `⟨⟨hiso, hlam⟩, hf, hz⟩` from `mem_AutF.mp h`. Use `mem_AutF.mpr (And.intro (And.intro (Subgroup.inv_mem _ hiso) ?_) (And.intro (fun a => ?_) ?_))` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[mem_gmap_iff]`. Use `show β x ∈ Λ ↔ x ∈ Λ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hlam]`. Rewrite using `[mem_gmap_iff, LinearEquiv.symm_apply_apply]`. Use `show β.symm (frame F a) = frame F a`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `(hf a).symm`.
-
-Use `show β.symm F.zt = F.zt`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `hz.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_AutF' {β : S.V ≃ₗ[E] S.V} (h : β ∈ AutF Λ F) : β⁻¹ ∈ AutF Λ F := by
   obtain ⟨⟨hiso, hlam⟩, hf, hz⟩ := mem_AutF.mp h
@@ -206,7 +202,7 @@ variable (Λ F) in
 def Inv (Q : LFlag S r T' → Prop) : Prop := ∀ (β : AutF Λ F) (F' : LFlag S r T'), Q (act β F') ↔ Q F'
 
 /- English proof (translation)
-Introduce `β F'`. Establish `h` using `hQ β.1 (AutF.isom β) Λ F F'`. Rewrite `h` using `[AutF.lam β, mapL_eq_self β.1 (AutF.isom β) F (mem_AutF.mp β.2).2.1 (mem_AutF.mp β.2).2.2]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_of_isoInv {Q : Submodule (𝓞 E) S.V → LFlag S r T → LFlag S r T' → Prop} (hQ : IsoInv Q) :
     Inv Λ F (Q Λ F) := by
@@ -216,7 +212,7 @@ theorem inv_of_isoInv {Q : Submodule (𝓞 E) S.V → LFlag S r T → LFlag S r 
   exact h
 
 /- English proof (translation)
-Establish `h` using `gval_mapL β.1 (AutF.isom β) F F'`. Rewrite `h` using `[mapL_eq_self β.1 (AutF.isom β) F (mem_AutF.mp β.2).2.1 (mem_AutF.mp β.2).2.2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gval_act (β : AutF Λ F) (F' : LFlag S r T') : Gval F (act β F') = Gval F F' := by
   have h := gval_mapL β.1 (AutF.isom β) F F'
@@ -243,7 +239,7 @@ def BBneP (g : ℕ) (F : LFlag S r T) (F' : LFlag S r T') (P : HeightOneSpectrum
       (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (BLat Λ F F') ≠ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UU Λ F F')))
 
 /- English proof (translation)
-Introduce and unpack `⟨h1, h2⟩`. Take `⟨ξ, hξ, hP⟩` from `h`. Distinguish the cases in `hg : ((g : 𝓞 E) ∈ P.asIdeal)`. Conclude with `h1 hg ξ hξ ((hP P).1 hg)`. Conclude with `h2 hg ((hP P).2 hg)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem not_BBneP_of_generic {g : ℕ} {F' : LFlag S r T'} (h : IsGeneric Λ g F F')
     (P : HeightOneSpectrum (𝓞 E)) : ¬ BBneP Λ g F F' P := by
@@ -262,9 +258,7 @@ def MplusIndep (g : ℕ) (F' : LFlag S r T') : Prop :=
         Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Mplus Λ g F F' ξ₂))
 
 /- English proof (translation)
-Take `⟨ξ, hξ⟩` from `hadm`. Use `Exists.intro ξ (And.intro hξ (fun P => And.intro (fun hg => ?_) (fun hg => ?_)))` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `h P (And.intro (fun _ ξ' hξ' heq => hne (heq.trans (hI hL hF P hg ξ' ξ hξ' hξ))) (fun hg' => absurd hg hg'))`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `h P (And.intro (fun hg' => absurd hg' hg) (fun _ => hne))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem generic_of_not_BBneP {g : ℕ} {F' : LFlag S r T'} (hI : MplusIndep Λ F g F') (hL : IsLift Λ F)
     (hF : IsFixedConv Λ g F)
@@ -334,9 +328,9 @@ variable (Λ F P) in
 def QFun (Q : LFlag S r T' → Prop) : Prop := ∀ x y : Carrier P, Rel Λ F P x y → (Q x.1 ↔ Q y.1)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', ⟨h, e⟩, hq⟩`. Establish `he : Q F' = Q x.1` using `congrArg (Quot.lift (fun y : Carrier P => Q y.1) (fun a b hab => propext (hF a b hab))) e`. Conclude with `he ▸ hq`. Introduce `hq`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `Exists.intro x.1 (And.intro (Exists.intro x.2 rfl) hq)`.
+A detailed English derivation is pending.
 -/
 theorem mem_famOf_mk {Q : LFlag S r T' → Prop} (hF : QFun Λ F P Q) (x : Carrier P) :
     mk Λ F P x ∈ famOf Λ F P Q ↔ Q x.1 := by
@@ -349,7 +343,7 @@ theorem mem_famOf_mk {Q : LFlag S r T' → Prop} (hF : QFun Λ F P Q) (x : Carri
     exact Exists.intro x.1 (And.intro (Exists.intro x.2 rfl) hq)
 
 /- English proof (translation)
-Introduce `β x h hx`. Rewrite `hx`, the goal using `[mem_famOf_mk hF]`. Conclude with `(hQ β x.1).mpr hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_famOf {Q : LFlag S r T' → Prop} (hQ : Inv Λ F Q) (hF : QFun Λ F P Q) :
     IsSat Λ F P (famOf Λ F P Q) := by
@@ -358,7 +352,7 @@ theorem sat_famOf {Q : LFlag S r T' → Prop} (hQ : Inv Λ F Q) (hF : QFun Λ F 
   exact (hQ β x.1).mpr hx
 
 /- English proof (translation)
-Introduce `β x h hx`. Rewrite `hx`, the goal using `[Set.mem_compl_iff, mem_famOf_mk hF]`. Conclude with `fun hq => hx ((hQ β x.1).mp hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sat_famOf_compl {Q : LFlag S r T' → Prop} (hQ : Inv Λ F Q) (hF : QFun Λ F P Q) :
     IsSat Λ F P (famOf Λ F P Q)ᶜ := by
@@ -367,15 +361,15 @@ theorem sat_famOf_compl {Q : LFlag S r T' → Prop} (hQ : Inv Λ F Q) (hF : QFun
   exact fun hq => hx ((hQ β x.1).mp hq)
 
 /- English proof (translation)
-The claim follows from `congrArg (Quot.lift (fun y : Carrier P => Gval F y.1) hG) (Quot.out_eq (mk Λ F P x))`.
+A detailed English derivation is pending.
 -/
 private theorem gt_mk_lemma_3 (hG : GFun Λ F P) (x : Carrier P) : Gt Λ F P (mk Λ F P x) = Gval F x.1 :=
   congrArg (Quot.lift (fun y : Carrier P => Gval F y.1) hG) (Quot.out_eq (mk Λ F P x))
 
 /- English proof (translation)
-Introduce `β x hp hx`. Establish `hx' : Gval F x.1 = 0`. Rewrite using `[← gt_mk_lemma_3 hG]`. Conclude with `hx`. Use `show Gt Λ F P (mk Λ F P ⟨act β x.1, hp⟩) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gt_mk_lemma_3 hG]`. Use `show Gval F (act β x.1) = 0`. Rewrite using `[gval_act]`. Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 theorem saturated_g_zero (hG : GFun Λ F P) : IsSat Λ F P {t | Gt Λ F P t = 0} := by
   intro β x hp hx
@@ -389,9 +383,9 @@ theorem saturated_g_zero (hG : GFun Λ F P) : IsSat Λ F P {t | Gt Λ F P t = 0}
   exact hx'
 
 /- English proof (translation)
-Introduce `β x hp hx`. Establish `hx' : Gval F x.1 ≠ 0`. Rewrite using `[← gt_mk_lemma_3 hG]`. Conclude with `hx`. Use `show Gt Λ F P (mk Λ F P ⟨act β x.1, hp⟩) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gt_mk_lemma_3 hG]`. Use `show Gval F (act β x.1) ≠ 0`. Rewrite using `[gval_act]`. Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 theorem sat_Gne (hG : GFun Λ F P) : IsSat Λ F P {t | Gt Λ F P t ≠ 0} := by
   intro β x hp hx
@@ -405,21 +399,21 @@ theorem sat_Gne (hG : GFun Λ F P) : IsSat Λ F P {t | Gt Λ F P t ≠ 0} := by
   exact hx'
 
 /- English proof (translation)
-Conclude with `⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩`.
+Supply the required witnesses or components.
 -/
 theorem sat_gen {g : ℕ} (hI : GenIso S r g) (hF : GenFun Λ F P g) :
     IsSat Λ F P {t | IsGen Λ F P g t} ∧ IsSat Λ F P {t | ¬ IsGen Λ F P g t} := by
   exact ⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩
 
 /- English proof (translation)
-Conclude with `⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩`.
+Supply the required witnesses or components.
 -/
 theorem sat_rel {K : Type} [Field K] [Algebra K E] (hI : RelIso S r K) (hF : RelFun Λ F P K) :
     IsSat Λ F P {t | IsRel Λ F P K t} ∧ IsSat Λ F P {t | ¬ IsRel Λ F P K t} := by
   exact ⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩
 
 /- English proof (translation)
-Conclude with `⟨sat_famOf (inv_of_isoInv (hI _ _)) hF, sat_famOf_compl (inv_of_isoInv (hI _ _)) hF⟩`.
+Supply the required witnesses or components.
 -/
 theorem sat_feqF (hI : FeqFIso S r) (hF : FeqFFun Λ F P) :
     IsSat Λ F P {t | IsFeqF Λ F P t} ∧ IsSat Λ F P {t | ¬ IsFeqF Λ F P t} := by
@@ -484,7 +478,7 @@ def termBBne (t : Term D u u' F0 what₂) (p : HeightOneSpectrum (𝓞 D.host.F)
   ∃ F', Rep _ _ _ t.cls F' ∧ BBneF D t.lam (lf D F0) F' p
 
 /- English proof (translation)
-Establish `e` using `hPD u' β.1 (AutF.isom β) Λ (lf D F0) F'`. Rewrite `e` using `[AutF.lam β, mapL_eq_self β.1 (AutF.isom β) _ (mem_AutF.mp β.2).2.1 (mem_AutF.mp β.2).2.2]`. Conclude with `e.mpr h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pd_act (hPD : PDIso D) {Λ : Submodule (𝓞 D.host.E) (VS D).V} (β : AutF Λ (lf D F0))
     {F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} (h : PD D Λ (lf D F0) u' F') :
@@ -499,7 +493,7 @@ def TSat (TT : Set (Term D u u' F0 what₂)) : Prop :=
       (⟨t.lam, t.mem, mk _ _ _ ⟨act β x.1, h⟩⟩ : Term D u u' F0 what₂) ∈ TT
 
 /- English proof (translation)
-Introduce `t ht β x hp hx`. Conclude with `h t.lam t.mem β x hp (by rw [hx]; exact ht)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tsat_of (fam : ∀ Λ : Submodule (𝓞 D.host.E) (VS D).V, Set (TermsOf D u' F0 Λ))
     (h : ∀ Λ ∈ what₂, IsSat Λ (lf D F0) (PD D Λ (lf D F0) u') (fam Λ)) :
@@ -508,9 +502,9 @@ theorem tsat_of (fam : ∀ Λ : Submodule (𝓞 D.host.E) (VS D).V, Set (TermsOf
   exact h t.lam t.mem β x hp (by rw [hx]; exact ht)
 
 /- English proof (translation)
-Establish `hQ : Inv Λ (lf D F0) (fun F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) => BBneF D Λ (lf D F0) F' p)`. Introduce `β F'`. Simplify using `only [BBneF]`. Conclude with `exists_congr (fun P => and_congr_right (fun _ => inv_of_isoInv (hI _ _ P) β F'))`. Establish `hF' : QFun Λ (lf D F0) (PD D Λ (lf D F0) u') (fun F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) => BBneF D Λ (lf D F0) F' p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Simplify using `only [BBneF]`. Conclude with `exists_congr (fun P => and_congr_right (fun _ => hF P x y hxy))`. Conclude with `⟨sat_famOf hQ hF', sat_famOf_compl hQ hF'⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sat_BBF (p : HeightOneSpectrum (𝓞 D.host.F)) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hI : BBIso (VS D) D.R.rS (gS D))
@@ -528,11 +522,7 @@ theorem sat_BBF (p : HeightOneSpectrum (𝓞 D.host.F)) {Λ : Submodule (𝓞 D.
   exact ⟨sat_famOf hQ hF', sat_famOf_compl hQ hF'⟩
 
 /- English proof (translation)
-Establish `hrow : ∀ Λ ∈ what₂, IsRowLat D F0 Λ` using `hrows.1`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `tsat_of (fun Λ => {c | Gt _ _ _ c = 0}) (fun Λ hΛ => saturated_g_zero (hTF F0 Λ (hrow Λ hΛ)).1)`. Conclude with `tsat_of (fun Λ => {c | Gt _ _ _ c ≠ 0}) (fun Λ hΛ => sat_Gne (hTF F0 Λ (hrow Λ hΛ)).1)`. Conclude with `tsat_of (fun Λ => {c | IsGen _ _ _ (gS D) c}) (fun Λ hΛ => (sat_gen hGen (hTF F0 Λ (hrow Λ hΛ)).2.2.2.1).1)`.
-
-Conclude with `tsat_of (fun Λ => {c | ¬ IsGen _ _ _ (gS D) c}) (fun Λ hΛ => (sat_gen hGen (hTF F0 Λ (hrow Λ hΛ)).2.2.2.1).2)`. Conclude with `tsat_of (fun Λ => {c | IsRel _ _ _ D.host.F c}) (fun Λ hΛ => (sat_rel hRel (hTF F0 Λ (hrow Λ hΛ)).2.2.1).1)`. Conclude with `tsat_of (fun Λ => {c | ¬ IsRel _ _ _ D.host.F c}) (fun Λ hΛ => (sat_rel hRel (hTF F0 Λ (hrow Λ hΛ)).2.2.1).2)`. Conclude with `tsat_of (fun Λ => {c | IsFeqF _ _ _ c}) (fun Λ hΛ => (sat_feqF hFeq (hTF F0 Λ (hrow Λ hΛ)).2.2.2.2).1)`. Conclude with `tsat_of (fun Λ => {c | ¬ IsFeqF _ _ _ c}) (fun Λ hΛ => (sat_feqF hFeq (hTF F0 Λ (hrow Λ hΛ)).2.2.2.2).2)`.
-
-Conclude with `tsat_of (fun Λ => famOf _ _ _ (fun F' => BBneF D Λ (lf D F0) F' p)) (fun Λ hΛ => (sat_BBF p hBB (fun P => hBF F0 Λ (hrow Λ hΛ) P)).1)`. Conclude with `tsat_of (fun Λ => (famOf _ _ _ (fun F' => BBneF D Λ (lf D F0) F' p))ᶜ) (fun Λ hΛ => (sat_BBF p hBB (fun P => hBF F0 Λ (hrow Λ hΛ) P)).2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem saturated_term_classes_of_iso (hrows : IsRowReps D F0 what₂) (hTF : TermFun D u u') (hBF : BBFun D u u')
     (hGen : GenIso (VS D) D.R.rS (gS D)) (hRel : RelIso (VS D) D.R.rS D.host.F) (hFeq : FeqFIso (VS D) D.R.rS)
@@ -563,9 +553,9 @@ theorem saturated_term_classes_of_iso (hrows : IsRowReps D F0 what₂) (hTF : Te
       (fun Λ hΛ => (sat_BBF p hBB (fun P => hBF F0 Λ (hrow Λ hΛ) P)).2)
 
 /- English proof (translation)
-Take `⟨p₁, e₁⟩` from `h₁`. Take `⟨p₂, e₂⟩` from `h₂`. Establish `k₁` using `mem_famOf_mk hF ⟨F₁, p₁⟩`. Establish `k₂` using `mem_famOf_mk hF ⟨F₂, p₂⟩`. Rewrite `k₁` using `[e₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k₂` using `[e₂]`. Conclude with `k₁.symm.trans k₂`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rep_iff_lemma_4 {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
     {T T' : E} {Λ : Submodule (𝓞 E) S.V} {F : LFlag S r T} {P : LFlag S r T' → Prop}
@@ -580,7 +570,7 @@ private theorem rep_iff_lemma_4 {E : Type} [Field E] [NumberField E] [StarRing E
   exact k₁.symm.trans k₂
 
 /- English proof (translation)
-Introduce and unpack `⟨F₂, hrep₂, P, hcomap, hbb⟩`. Take `⟨F₁, hrep₁, hgen⟩` from `hg`. Establish `hQF` using `hBF F0 t.lam (hrows.1 t.lam t.mem) P`. Conclude with `not_BBneP_of_generic hgen P ((rep_iff_lemma_4 hQF hrep₁ hrep₂).mpr hbb)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_bbne_of_generic (hrows : IsRowReps D F0 what₂) (hBF : BBFun D u u')
     {t : Term D u u' F0 what₂} (hg : t.generic) (p : HeightOneSpectrum (𝓞 D.host.F)) : ¬ termBBne t p := by

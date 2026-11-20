@@ -19,11 +19,11 @@ open GlobalTheory.AmpleGen
 namespace GlobalTheory.AmpleGen
 
 /- English proof (translation)
-Establish `hd : (((1 : ℤ) * (-1) - 1 * 1 : ℤ) : K) ≠ 0`. Establish `: (((1 : ℤ) * (-1) - 1 * 1 : ℤ) : K) = -2` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `neg_ne_zero.2 h2`. Take `⟨j₁, j₂, e, h₁, h₂⟩` from `GlobalTheory.T.cech_nonvanishing_invMix_pair_kunneth_isogeny K A hA 1 1 1 (-1) (by norm_num) hd L hL a b j h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `t1 : tri 1 = 1` using `by decide`. Establish `t0 : tri (-1) = 0` using `by decide`. Simplify using `only [t1, t0, neg_neg] at h₁ h₂`. Use `⟨j₁, j₂, e, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `convert h₁ using 2 <;> push_cast <;> ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `convert h₂ using 2 <;> push_cast <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem stepTwo {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (h2 : (2 : K) ≠ 0) (L : LB A.left) (hL : L.IsLB) (a b j : ℕ) (h : NV A (mix A L a b) j) :
@@ -41,11 +41,11 @@ theorem stepTwo {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A
   · convert h₂ using 2 <;> push_cast <;> ring
 
 /- English proof (translation)
-Establish `hd : (((1 : ℤ) * (-1) - 2 * 2 : ℤ) : K) ≠ 0`. Establish `: (((1 : ℤ) * (-1) - 2 * 2 : ℤ) : K) = -5` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `neg_ne_zero.2 h5`. Take `⟨j₁, j₂, e, h₁, h₂⟩` from `GlobalTheory.T.cech_nonvanishing_invMix_pair_kunneth_isogeny K A hA 1 2 2 (-1) (by norm_num) hd L hL a b j h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `t1 : tri 1 = 1` using `by decide`. Establish `t0 : tri (-1) = 0` using `by decide`. Establish `t2 : tri 2 = 3` using `by decide`. Establish `t2' : tri (-2) = 1` using `by decide`. Simplify using `only [t1, t0, t2, t2', neg_neg] at h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j₁, j₂, e, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `convert h₁ using 2 <;> push_cast <;> ring`. Apply the tactic sequence `convert h₂ using 2 <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem stepFive {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (h5 : (5 : K) ≠ 0) (L : LB A.left) (hL : L.IsLB) (a b j : ℕ) (h : NV A (mix A L a b) j) :
@@ -65,9 +65,9 @@ theorem stepFive {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj 
   · convert h₂ using 2 <;> push_cast <;> ring
 
 /- English proof (translation)
-Distinguish the cases in `h2 : (2 : K) = 0`. Establish `h5 : (5 : K) ≠ 0`. Establish `: (5 : K) = 2 * 2 + 1` using `by norm_num`. Rewrite using `[this, h2]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨i₁, i₂, e, h₁, h₂⟩` from `stepFive A hA h5 L hL a b i h`. Use `⟨i₁, i₂, _, _, _, _, e, h₁, h₂, by omega, by omega, Or.inl (by push_cast; ring)⟩` and prove the remaining obligations. Take `⟨i₁, i₂, e, h₁, h₂⟩` from `stepTwo A hA h2 L hL a b i h`. Use `⟨i₁, i₂, _, _, _, _, e, h₁, h₂, by omega, by omega, Or.inr (by push_cast; ring)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem step {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (L : LB A.left) (hL : L.IsLB) (a b i : ℕ) (h : NV A (mix A L a b) i) :
@@ -83,23 +83,21 @@ theorem step {K : Type} [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (
     refine ⟨i₁, i₂, _, _, _, _, e, h₁, h₂, by omega, by omega, Or.inr (by push_cast; ring)⟩
 
 /- English proof (translation)
-Introduce `K _ _ A _ hA L hL hamp`. Use `GlobalTheory.T.relativelyAcyclic_of_cech_vanishing_all_covers K A L fun j hj => ?_` and prove the remaining obligations. Establish `h0` using `GlobalTheory.T.cechNonvanishing_lineBundleInvMix_one_zero K A L hL _ hj`. Take `⟨c, hc⟩` from `GlobalTheory.T.abelianVariety_cech_vanishing_above_degree K A hA`. Establish `hLB : ∀ a b : ℤ, (mix A L a b).IsLB` using `fun a b => LB.isLB_linComb hL _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `S : ℕ → Prop` to `fun i => 1 ≤ i ∧ ∃ a b : ℕ, 1 ≤ a + b ∧ NV A (mix A L a b) i`. Establish `hS : ∀ i, S i → i ≤ c` using `fun i ⟨_, a, b, _, h⟩ => le_of_lt (not_le.1 fun hi => hc _ (hLB a b) i hi h)`. Establish `hj1 : S (j + 1)` using `⟨by omega, 1, 0, by omega, by exact_mod_cast h0⟩`. Set `T` to `Nat.findGreatest S c`. Establish `hT : S T` using `Nat.findGreatest_spec (hS _ hj1) hj1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmax : ∀ i, S i → i ≤ T` using `fun i hi => Nat.le_findGreatest (hS i hi) hi`. Take `⟨hT1, a, b, hab, hTab⟩` from `hT`. Establish `next : ∀ a' b' : ℕ, 1 ≤ a' + b' → NV A (mix A L a' b') T → ∃ a₂ b₂ : ℕ, NV A (mix A L a₂ b₂) T ∧ 2 * (a' + b') ≤ a₂ + b₂ ∧ ((a₂ : ℤ) - b₂ = (a' : ℤ) - b' ∨ (a₂ : ℤ) - b₂ = 0)`. Introduce `a' b' h1 h`. Take `⟨i₁, i₂, a₁, b₁, a₂, b₂, e, h₁, h₂, l₁, l₂, hd⟩` from `step A hA L hL a' b' T h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `u₁ : i₁ ≤ T`. Break down `Nat.eq_zero_or_pos i₁ with h0 | h0` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `hmax _ ⟨h0, a₁, b₁, by omega, h₁⟩`. Establish `u₂ : i₂ ≤ T`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos i₂ with h0 | h0` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `hmax _ ⟨h0, a₂, b₂, by omega, h₂⟩`. Conclude with `⟨a₂, b₂, by rwa [show i₂ = T by omega] at h₂, l₂, hd⟩`. Establish `grow : ∀ n : ℕ, ∃ a' b' : ℕ, 1 ≤ a' + b' ∧ n ≤ a' + b' ∧ NV A (mix A L a' b') T ∧ ((a' : ℤ) - b' = (a : ℤ) - b ∨ (a' : ℤ) - b' = 0)`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨a, b, hab, by omega, hTab, Or.inl rfl⟩`. Consider the case `succ n ih`. Take `⟨a', b', h1, hn, h, hd⟩` from `ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a₂, b₂, h₂, l, hd₂⟩` from `next a' b' h1 h`. Use `⟨a₂, b₂, by omega, by omega, h₂, ?_⟩` and prove the remaining obligations. Break down `hd₂ with e | e` into its components or cases. Rewrite using `[e]`. Conclude with `hd`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Prove the second alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr e`. Take `⟨N₁, hN₁⟩` from `GlobalTheory.T.serre_vanishing_lineBundleInvMix_fixed_difference K A hA L hL hamp ((a : ℤ) - b)`. Take `⟨N₂, hN₂⟩` from `GlobalTheory.T.serre_vanishing_lineBundleInvMix_fixed_difference K A hA L hL hamp 0`. Take `⟨a', b', -, hn, h, hd⟩` from `grow (N₁ + N₂)`. Take `⟨t, ht⟩ : ∃ t, T = t + 1` from `⟨T - 1, by omega⟩`.
-
-Rewrite `h` using `[ht]`. Break down `hd with e | e` into its components or cases. Conclude with `hN₁ a' b' (by omega) e t h`. Conclude with `hN₂ a' b' (by omega) e t h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ampleVanishing : GlobalTheory.Published.AmpleVanishing := by
   intro K _ _ A _ hA L hL hamp

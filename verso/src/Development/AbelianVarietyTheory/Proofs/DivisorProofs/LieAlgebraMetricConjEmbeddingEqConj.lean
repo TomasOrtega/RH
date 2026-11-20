@@ -16,9 +16,9 @@ namespace GlobalTheory.CM.LieMetricConj
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `key : ∀ t : K →+* ℂ, h.form t a b = ∑ j, t (b j) * starRingEnd ℂ (∑ i, t (a i) * h.form t (Pi.single j 1) (Pi.single i 1))`. Introduce `t`. Rewrite using `[LieMetric.form_sum_right h t a b]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← h.conj_symm t (Pi.single j 1) a, LieMetric.form_sum_right h t (Pi.single j 1) a]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key ((starRingEnd ℂ).comp s), key s]`. Simplify using `only [map_sum, map_mul, RingHom.comp_apply, e, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_conj_of_single {g : ℕ} (h : HermFam K (Fin g → K)) (s : K →+* ℂ)
     (e : ∀ i j, h.form ((starRingEnd ℂ).comp s) (Pi.single i 1) (Pi.single j 1) =
@@ -42,21 +42,19 @@ open GlobalTheory.ConjUnif
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by simp`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj_comp (s : K →+* ℂ) : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp s) = s :=
   RingHom.ext fun x => by simp
 
 /- English proof (translation)
-Take `⟨Q, ψ, v, u, Hm, χ, W, a, b, c, d⟩` from `H s`. Take `⟨Q', ψ', v', u', Hm', χ', W', a', b', c', d'⟩` from `H ((starRingEnd ℂ).comp s)`. Take `⟨A'', _, ψc, hc⟩ : ∃ (A'' : Over (Sp ℂ)) (_ : GrpObj A'') (ψc : A''.left ⟶ Q'.A.left), IsGrpPullback A'' Q'.A cj ψc` from `⟨_, _, _, isGrpPullback_pullback Q'.A cj⟩`. Set `Q'' : Out.PolAV (Sp ℂ)` to `pullPol Q' hc`. Establish `hQ : IsPolFibre (starRingEnd ℂ) Q' Q'' ψc` using `⟨rfl, hc, ⟨idIso _, idIso_isGen (pull_isLB Q'.isLB ψc)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `a'' : IsPolFibre s F.P₀ Q'' (ψc ≫ ψ')`. Rewrite using `[← conj_conj_comp s]`. Conclude with `PolFibre.comp a' hQ`. Use `choose v'' hv'' using fun k => (existsUnique_isVecOver hc.1 (v' k)).exists`. Establish `ht : ∀ k, IsTangent (v' k)` using `fun k => (c' k).1.isTangent a'.2.1 (F.basis.1 k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c'' : ∀ k, IsVecOver s (ψc ≫ ψ') (F.v k) (v'' k) ∧ (conjPull hc u').IsDiff (star (W' k)) (v'' k)`. Introduce `k`. Use `⟨?_, cj_isDiff hc (pullId u') (ht k) (hv'' k) (c' k).2⟩` and prove the remaining obligations. Rewrite using `[← conj_conj_comp s]`. Conclude with `(PolFibre.vec_iff a'.2.1.1 hc.1.w (c' k).1).1 (hv'' k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `e` using `LieMetric.hermForm_eq hU a a'' b (conjPull_isAH hc u' b') F.basis.1 c c'' j i`. Rewrite using `[d, d', e]`. Unfold `hermForm`. Rewrite using `[map_mul, Complex.conj_ofReal, star_star]`. Use `congr 1`.
-
-Simplify using `[dotProduct, Matrix.mulVec, map_sum, Complex.star_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_conj (hU : ThetaUnifAV) {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib P) (h : HermFam K (Fin F.P₀.g → K))
     (H : F.IsHerm h) (s : K →+* ℂ) (i j : Fin F.P₀.g) :
@@ -87,7 +85,7 @@ theorem single_conj (hU : ThetaUnifAV) {P : Out.PolAV (Sp (𝓞 K))} (F : GenFib
   simp [dotProduct, Matrix.mulVec, map_sum, Complex.star_def]
 
 /- English proof (translation)
-Introduce `_ _ _ _ F h H σ a b` and use `form_conj_of_single h σ (single_conj thetaUnifAV_all F h H σ) a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem form_conj : ∀ (K : Type) [Field K] [NumberField K] (P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp (𝓞 K)))
     (F : GlobalTheory.CM.GenFib P) (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin F.P₀.g → K)), F.IsHerm h → ∀ (σ : K →+* ℂ)

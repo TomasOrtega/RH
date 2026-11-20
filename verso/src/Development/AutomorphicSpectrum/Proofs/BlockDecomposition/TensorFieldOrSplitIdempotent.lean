@@ -13,29 +13,27 @@ section Core
 variable {K R : Type} [Field K] [CommRing R] [Algebra K R]
 
 /- English proof (translation)
-Distinguish the cases in `hsq : ∃ t : K, t * t = D`. Take `⟨t, ht⟩` from `hsq`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `hD (by rw [← ht, mul_zero])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `right`. Establish `hw : (algebraMap K R t⁻¹ * T) * (algebraMap K R t⁻¹ * T) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `: t⁻¹ * t⁻¹ * D = 1`. Rewrite using `[← ht]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this, map_one]`. Establish `hh : algebraMap K R 2⁻¹ * 2 = 1`. Establish `h : algebraMap K R 2 = 2` using `map_ofNat _ 2`. Rewrite using `[← h, ← map_mul, inv_mul_cancel₀ h2, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : s (algebraMap K R 2⁻¹ * (1 + algebraMap K R t⁻¹ * T)) = algebraMap K R 2⁻¹ * (1 - algebraMap K R t⁻¹ * T)`. Rewrite using `[map_mul, map_add, map_mul, hsK, hsK, hsT, map_one]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨algebraMap K R 2⁻¹ * (1 + algebraMap K R t⁻¹ * T), ?_, ?_, ?_⟩` and prove the remaining obligations. Generalize the expression as in `algebraMap K R t⁻¹ * T = w at hw`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Generalize the expression as in `algebraMap K R 2⁻¹ = h at hh`. Take the linear combination `h ^ 2 * hw + h * (1 + w) * hh`. Rewrite using `[hs]`. Generalize the expression as in `algebraMap K R t⁻¹ * T = w`. Generalize the expression as in `algebraMap K R 2⁻¹ = h at hh`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hh`. Rewrite using `[hs]`. Generalize the expression as in `algebraMap K R t⁻¹ * T = w at hw`. Generalize the expression as in `algebraMap K R 2⁻¹ = h at hh`. Take the linear combination `(-h ^ 2) * hw`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `left`. Establish `h10 : (1 : R) ≠ 0` using `fun h => one_ne_zero (hind 1 0 (by rw [map_one, map_zero, zero_mul, add_zero, h])).1`. Use `⟨⟨1, 0, h10⟩, mul_comm, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨x, y, rfl⟩` from `hspan z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hn : x * x - D * (y * y) ≠ 0`. Introduce `h0`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `hx : x = 0` using `by simpa using h0`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hz (by rw [hx, map_zero, zero_mul, add_zero])`. Use `hsq ⟨x / y, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `h0`. Use `⟨algebraMap K R (x * (x * x - D * (y * y))⁻¹) - algebraMap K R (y * (x * x - D * (y * y))⁻¹) * T, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hni : algebraMap K R (x * x - D * (y * y)) * algebraMap K R (x * x - D * (y * y))⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hn, map_one]`. Establish `hnn : algebraMap K R (x * x - D * (y * y)) = algebraMap K R x * algebraMap K R x - algebraMap K R D * (algebraMap K R y * algebraMap K R y)`. Simplify using `only [map_sub, map_mul]`. Rewrite using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `algebraMap K R (x * x - D * (y * y))⁻¹ = N at hni ⊢`. Generalize the expression as in `algebraMap K R (x * x - D * (y * y)) = n at hni hnn`. Generalize the expression as in `algebraMap K R x = X at hnn ⊢`. Generalize the expression as in `algebraMap K R y = Y at hnn ⊢`. Generalize the expression as in `algebraMap K R D = D' at hT hnn`.
-
-Take the linear combination `(-(Y * Y * N)) * hT + hni - N * hnn`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core (s : R →+* R) (T : R) (D : K) (hT : T * T = algebraMap K R D) (hD : D ≠ 0) (h2 : (2 : K) ≠ 0)
     (hsK : ∀ x, s (algebraMap K R x) = algebraMap K R x) (hsT : s T = -T)
@@ -112,7 +110,7 @@ section CM
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -120,9 +118,9 @@ theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hreal : ComplexEmbedding.IsReal τ` using `ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hc x]`. Conclude with `this.symm)`. Establish `hcx` using `h.2.1.isComplex (InfinitePlace.mk τ)`. Conclude with `(InfinitePlace.isComplex_mk_iff.1 hcx) hreal`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_moved {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ y, σ y ≠ y := by
   by_contra hc
@@ -137,23 +135,23 @@ theorem exists_moved {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ y, σ y ≠
   exact (InfinitePlace.isComplex_mk_iff.1 hcx) hreal
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_moved h`. Establish `hE2 : (2 : E) ≠ 0` using `two_ne_zero`. Establish `hσθ : σ (y - σ y) = -(y - σ y)`. Rewrite using `[map_sub, sigma_sigma h]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hθ : y - σ y ≠ 0` using `sub_ne_zero.2 (Ne.symm hy)`. Generalize the expression as in `y - σ y = θ at hσθ hθ`. Establish `hli : LinearIndependent F ![(1 : E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Algebra.smul_def, mul_one] at hst`. Establish `h1` using `congrArg σ hst`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hσθ, map_zero] at h1`. Establish `hs : (2 : E) * algebraMap F E s = 0`. Take the linear combination `hst + h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `ht : (2 : E) * (algebraMap F E t * θ) = 0`. Take the linear combination `hst - h1`. Establish `hs0 : s = 0`. Use `(mul_eq_zero.1 hs).resolve_left hE2` as an intermediate fact. Conclude with `(map_eq_zero _).1 this`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : t = 0`. Use `((mul_eq_zero.1 ((mul_eq_zero.1 ht).resolve_left hE2))).resolve_right hθ` as an intermediate fact. Conclude with `(map_eq_zero _).1 this`. Conclude with `⟨hs0, ht0⟩`. Set `B : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [h.2.2.1, Fintype.card_fin])`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : B 0 = 1` using `by simp [B]`. Establish `hB1 : B 1 = θ` using `by simp [B]`. Establish `hsum` using `B.sum_repr (θ * θ)`. Rewrite `hsum` using `[Fin.sum_univ_two, hB0, hB1]`. Generalize the expression as in `B.repr (θ * θ) 0 = a at hsum`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `B.repr (θ * θ) 1 = b at hsum`. Establish `hsum' : algebraMap F E a + algebraMap F E b * θ = θ * θ`. Simplify `hsum` using `only [Algebra.smul_def, mul_one]`. Establish `hconj` using `congrArg σ hsum'`. Simplify using `only [map_add, map_mul, AlgHom.commutes, hσθ] at hconj`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hb : (2 : E) * (algebraMap F E b * θ) = 0`. Take the linear combination `hsum' - hconj`. Establish `hb0 : algebraMap F E b = 0` using `(mul_eq_zero.1 ((mul_eq_zero.1 hb).resolve_left hE2)).resolve_right hθ`. Establish `hsq : θ * θ = algebraMap F E a`. Rewrite using `[← hsum', hb0, zero_mul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hsq` using `[map_zero]`. Conclude with `hθ (mul_self_eq_zero.1 hsq)`. Conclude with `⟨θ, a, B, hθ, ha, hσθ, hsq, hB0, hB1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_theta {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
     ∃ (θ : E) (d : F) (B : Module.Basis (Fin 2) F E), θ ≠ 0 ∧ d ≠ 0 ∧ σ θ = -θ ∧ θ * θ = algebraMap F E d ∧
@@ -209,17 +207,17 @@ theorem exists_theta {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
 end CM
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h K _ _`. Take `⟨θ, d, B, hθ, hd, hσθ, hsq, hB0, hB1⟩` from `exists_theta h`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Set `C : Module.Basis (Fin 2) K (K ⊗[F] E)` to `Algebra.TensorProduct.basis K B`. Establish `hC0 : C 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [C, Algebra.TensorProduct.basis_apply, hB0]`. Both sides reduce to the same expression. Establish `hC1 : C 1 = (1 : K) ⊗ₜ[F] θ`. Simplify using `only [C, Algebra.TensorProduct.basis_apply, hB1]`. Use `core (K := K) (sigR K σ) ((1 : K) ⊗ₜ[F] θ) (algebraMap F K d) ?_ ?_ two_ne_zero ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hsq, mul_one, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one (A := E), TensorProduct.tmul_smul, Algebra.algebraMap_eq_smul_one (A := K), TensorProduct.smul_tmul']`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `fun h0 => hd ((map_eq_zero _).1 h0)`. Introduce `x`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id F K) σ (algebraMap K (K ⊗[F] E) x) = _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id F K) σ ((1 : K) ⊗ₜ[F] θ) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, hσθ, TensorProduct.tmul_neg]`. Both sides reduce to the same expression. Introduce `z`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz` using `C.sum_repr z`. Rewrite `hz` using `[Fin.sum_univ_two, hC0, hC1, Algebra.smul_def, Algebra.smul_def, mul_one]`. Conclude with `⟨_, _, hz.symm⟩`. Introduce `x y hxy`. Establish `hl` using `Fintype.linearIndependent_iff.1 C.linearIndependent ![x, y] (by`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_two, hC0, hC1]`. Simplify `hxy)` using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Algebra.smul_def, mul_one]`. Conclude with `⟨hl 0, hl 1⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem field_or_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K],

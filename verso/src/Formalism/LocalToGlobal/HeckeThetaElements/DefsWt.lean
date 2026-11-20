@@ -23,7 +23,7 @@ def wtOf (D : D7) (V : HSp D) (τ : D.what₂.Tau) : Fin (V.sig (tauE D τ)).1 �
   kapW (D.hc τ) _ _
 
 /- English proof (translation)
-Unfold `lamAt`. Rewrite using `[dif_pos hn]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lamAt_eq_v_of_lt {R : Ranks} (h : HCParam R) {n : ℕ} (hn : n < R.k - 1) :
     lamAt h n = h.v ⟨n, hn⟩ := by
@@ -31,7 +31,7 @@ private theorem lamAt_eq_v_of_lt {R : Ranks} (h : HCParam R) {n : ℕ} (hn : n <
   rw [dif_pos hn]
 
 /- English proof (translation)
-Unfold `lamAt`. Rewrite using `[dif_neg hn, dif_pos hm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lamAt_eq_neg_b_of_not_lt {R : Ranks} (h : HCParam R) {n : ℕ} (hn : ¬ n < R.k - 1)
     (hm : n - (R.k - 1) < R.m) : lamAt h n = -h.b ⟨n - (R.k - 1), hm⟩ := by
@@ -39,9 +39,9 @@ private theorem lamAt_eq_neg_b_of_not_lt {R : Ranks} (h : HCParam R) {n : ℕ} (
   rw [dif_neg hn, dif_pos hm]
 
 /- English proof (translation)
-Distinguish the cases in `hn : n < R.k - 1`. Rewrite using `[lamAt_eq_v_of_lt h hn]`. Conclude with `h.v_int ⟨n, hn⟩`. Distinguish the cases in `hm : n - (R.k - 1) < R.m`. Rewrite using `[lamAt_eq_neg_b_of_not_lt h hn hm]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `h.b_int ⟨n - (R.k - 1), hm⟩`. Conclude with `⟨-z, by rw [hz, Int.cast_neg]⟩`. Use `⟨0, ?_⟩` and prove the remaining obligations. Unfold `lamAt`. Rewrite using `[dif_neg hn, dif_neg hm, Int.cast_zero]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamAt_int {R : Ranks} (h : HCParam R) (n : ℕ) : ∃ z : ℤ, lamAt h n = z := by
   by_cases hn : n < R.k - 1
@@ -56,7 +56,7 @@ theorem lamAt_int {R : Ranks} (h : HCParam R) (n : ℕ) : ∃ z : ℤ, lamAt h n
       rw [dif_neg hn, dif_neg hm, Int.cast_zero]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem b_congr {R : Ranks} (h : HCParam R) {i j : ℕ} (hi : i < R.m) (hj : j < R.m) (e : i = j) :
     h.b ⟨i, hi⟩ = h.b ⟨j, hj⟩ := by
@@ -64,7 +64,7 @@ private theorem b_congr {R : Ranks} (h : HCParam R) {i j : ℕ} (hi : i < R.m) (
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem u_congr {R : Ranks} (h : HCParam R) {i j : ℕ} (hi : i < R.k) (hj : j < R.k) (e : i = j) :
     h.u ⟨i, hi⟩ = h.u ⟨j, hj⟩ := by
@@ -72,17 +72,17 @@ private theorem u_congr {R : Ranks} (h : HCParam R) {i j : ℕ} (hi : i < R.k) (
   rfl
 
 /- English proof (translation)
-Establish `hr : R.r = R.k + R.m - 1` using `rfl`. Establish `hk5` using `R.m_add_three_le_k`. Establish `hm2` using `R.two_le_m`. Establish `hpos : (0 : ℚ) < ((R.t : ℚ) + 3) / 2` using `by positivity`. Distinguish the cases in `h1 : n + 1 < R.k - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h0 : n < R.k - 1` using `by omega`. Rewrite using `[lamAt_eq_v_of_lt h h1, lamAt_eq_v_of_lt h h0]`. Establish `e1 : h.v ⟨n + 1, h1⟩ < h.u ⟨n + 1, by omega⟩` using `h.u_gt_v ⟨n + 1, h1⟩`. Establish `e2 : h.u ⟨n + 1, by omega⟩ < h.v ⟨n, h0⟩` using `h.v_gt_u ⟨n, h0⟩`. Conclude with `lt_trans e1 e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : n < R.k - 1`. Establish `hm : n + 1 - (R.k - 1) < R.m` using `by omega`. Establish `hmp : 0 < R.m` using `by omega`. Establish `hkp : 0 < R.k` using `by omega`. Rewrite using `[lamAt_eq_neg_b_of_not_lt h h1 hm, lamAt_eq_v_of_lt h h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b_congr h hm hmp (by omega : n + 1 - (R.k - 1) = 0)]`. Establish `e1 : -h.b ⟨0, hmp⟩ < h.u ⟨R.k - 1, by omega⟩` using `h.u_last_gt hkp hmp`. Establish `e2 : h.u ⟨n + 1, by omega⟩ < h.v ⟨n, h0⟩` using `h.v_gt_u ⟨n, h0⟩`. Rewrite `e2` using `[u_congr h (by omega : n + 1 < R.k) (by omega : R.k - 1 < R.k) (by omega : n + 1 = R.k - 1)]`. Conclude with `lt_trans e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : n + 1 - (R.k - 1) < R.m` using `by omega`. Establish `hm0 : n - (R.k - 1) < R.m` using `by omega`. Establish `hj : n - (R.k - 1) + 1 < R.m` using `by omega`. Rewrite using `[lamAt_eq_neg_b_of_not_lt h h1 hm1, lamAt_eq_neg_b_of_not_lt h h0 hm0]`. Establish `g1 : ((R.t : ℚ) + 3) / 2 ≤ h.e ⟨n - (R.k - 1), hm0⟩ - h.b ⟨n - (R.k - 1), hm0⟩` using `h.gap_be ⟨n - (R.k - 1), hm0⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `g2 : ((R.t : ℚ) + 3) / 2 ≤ h.b ⟨n - (R.k - 1) + 1, hj⟩ - h.e ⟨n - (R.k - 1), hm0⟩` using `h.gap_eb ⟨n - (R.k - 1), hm0⟩ hj`. Rewrite using `[b_congr h hm1 hj (by omega : n + 1 - (R.k - 1) = n - (R.k - 1) + 1)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lamAt_lt {R : Ranks} (h : HCParam R) (n : ℕ) (hn : n + 1 < R.r) : lamAt h (n + 1) < lamAt h n := by
   have hr : R.r = R.k + R.m - 1 := rfl
@@ -117,9 +117,9 @@ theorem lamAt_lt {R : Ranks} (h : HCParam R) (n : ℕ) (hn : n + 1 < R.r) : lamA
       linarith
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `lamAt_int h (n + 1)`. Take `⟨c, hc⟩` from `lamAt_int h n`. Establish `hlt` using `lamAt_lt h n hn`. Rewrite `hlt`, the goal using `[ha, hc]`. Establish `hac : a < c` using `by exact_mod_cast hlt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hac' : a + 1 ≤ c` using `by omega`. Conclude with `hac'` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamAt_step {R : Ranks} (h : HCParam R) (n : ℕ) (hn : n + 1 < R.r) : lamAt h (n + 1) + 1 ≤ lamAt h n := by
   obtain ⟨a, ha⟩ := lamAt_int h (n + 1)
@@ -131,7 +131,7 @@ theorem lamAt_step {R : Ranks} (h : HCParam R) (n : ℕ) (hn : n + 1 < R.r) : la
   exact_mod_cast hac'
 
 /- English proof (translation)
-The claim follows from `| 0, n, _ => by simp | d + 1, n, hd => by have h1 := lamAt_step h (n + d) (by omega) have h2 := lamAt_add_add_le h d n (by omega) rw [show n + (d + 1) = n + d + 1 by ring] push_cast linarith`.
+A detailed English derivation is pending.
 -/
 theorem lamAt_add_add_le {R : Ranks} (h : HCParam R) : ∀ d n : ℕ, n + d < R.r → lamAt h (n + d) + d ≤ lamAt h n
   | 0, n, _ => by simp
@@ -143,13 +143,13 @@ theorem lamAt_add_add_le {R : Ranks} (h : HCParam R) : ∀ d n : ℕ, n + d < R.
     linarith
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hpq`. Establish `hk' : (p : ℚ) + q = 2 * k + 1` using `by exact_mod_cast hk`. Consider the cases of `a with`. Consider the case `inl i`. Take `⟨z, hz⟩` from `lamAt_int h i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨z + ((k : ℤ) + 1 - p) + ((i : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Simplify using `only [kapQ, Sum.elim_inl]`. Rewrite using `[hz]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `inr c`. Take `⟨z, hz⟩` from `lamAt_int h (p + c)`. Use `⟨z - k + ((c : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Simplify using `only [kapQ, Sum.elim_inr]`. Rewrite using `[hz]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kapQ_int {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : Odd (p + q)) (a : Fin p ⊕ Fin q) :
     ∃ z : ℤ, kapQ h p q a = z := by
@@ -172,7 +172,7 @@ theorem kapQ_int {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : Odd (p + q)) (a 
     linarith
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `kapQ_int h p q hpq a`. Simplify using `only [kapW]`. Rewrite using `[hz, Int.floor_intCast]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem kapW_cast {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : Odd (p + q)) (a : Fin p ⊕ Fin q) :
     ((kapW h p q a : ℤ) : ℚ) = kapQ h p q a := by
@@ -181,9 +181,9 @@ theorem kapW_cast {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : Odd (p + q)) (a
   rw [hz, Int.floor_intCast]
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `inl i`. Simplify using `only [holEnt, Sum.elim_inl]`. Rewrite using `[kapW_cast h p q hpq (Sum.inl i)]`. Simplify using `only [kapQ, Sum.elim_inl]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `inr c`. Simplify using `only [holEnt, Sum.elim_inr]`. Rewrite using `[kapW_cast h p q hpq (Sum.inr c)]`. Simplify using `only [kapQ, Sum.elim_inr]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -202,9 +202,9 @@ theorem holEnt_kapW {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : Odd (p + q)) 
     ring
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.k_even`. Take `⟨c, hc⟩` from `R.m_even`. Establish `hk5` using `R.m_add_three_le_k`. Use `⟨a + c - 1, ?_⟩` and prove the remaining obligations. Use `show R.k + R.m - 1 = 2 * (a + c - 1) + 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem odd_r (R : Ranks) : Odd R.r := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -215,23 +215,21 @@ theorem odd_r (R : Ranks) : Odd R.r := by
   omega
 
 /- English proof (translation)
-Establish `hodd : Odd (p + q)`. Rewrite using `[hpq]`. Conclude with `odd_r R`. Use `⟨fun i i' hii => ?_, fun c c' hcc => ?_, fun i c => ?_⟩` and prove the remaining obligations. Establish `hq : ((kapW h p q (Sum.inl i') : ℤ) : ℚ) ≤ ((kapW h p q (Sum.inl i) : ℤ) : ℚ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kapW_cast h p q hodd, kapW_cast h p q hodd]`. Simplify using `only [kapQ, Sum.elim_inl]`. Establish `hle : (i : ℕ) ≤ (i' : ℕ)` using `hii`. Establish `hi'` using `i'.isLt`. Establish `hm` using `lamAt_add_add_le h ((i' : ℕ) - i) i (by omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (i : ℕ) + ((i' : ℕ) - i) = i'` using `by omega`. Rewrite `hm` using `[e]`. Establish `hc : (((i' : ℕ) - i : ℕ) : ℚ) = ((i' : ℕ) : ℚ) - ((i : ℕ) : ℚ)`. Rewrite using `[Nat.cast_sub hle]`. Rewrite `hm` using `[hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hq` after adjusting the coercions. Establish `hq : ((kapW h p q (Sum.inr c') : ℤ) : ℚ) ≤ ((kapW h p q (Sum.inr c) : ℤ) : ℚ)`. Rewrite using `[kapW_cast h p q hodd, kapW_cast h p q hodd]`. Simplify using `only [kapQ, Sum.elim_inr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (c : ℕ) ≤ (c' : ℕ)` using `hcc`. Establish `hc'` using `c'.isLt`. Establish `hm` using `lamAt_add_add_le h ((c' : ℕ) - c) (p + c) (by omega)`. Establish `e : p + (c : ℕ) + ((c' : ℕ) - c) = p + c'` using `by omega`. Rewrite `hm` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (((c' : ℕ) - c : ℕ) : ℚ) = ((c' : ℕ) : ℚ) - ((c : ℕ) : ℚ)`. Rewrite using `[Nat.cast_sub hle]`. Rewrite `hm` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hq` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[holEnt_kapW h p q hodd, holEnt_kapW h p q hodd]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Establish `hi` using `i.isLt`. Establish `hc` using `c.isLt`. Establish `hm` using `lamAt_add_add_le h (p + (c : ℕ) - i) i (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (i : ℕ) + (p + (c : ℕ) - i) = p + c` using `by omega`. Rewrite `hm` using `[e]`. Establish `hd : (1 : ℚ) ≤ ((p + (c : ℕ) - i : ℕ) : ℚ)`. Establish `h1 : 1 ≤ p + (c : ℕ) - i` using `by omega`. Conclude with `h1` after adjusting the coercions.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem holOK_kapW {R : Ranks} (h : HCParam R) (p q : ℕ) (hpq : p + q = R.r) : HolOK p q (kapW h p q) := by
   have hodd : Odd (p + q) := by

@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.DivisorFrames.EqTopOfCircleSup
 open Filter Topology
 
 /- English proof (translation)
-Introduce `G _ _ _ M hM hμ ι s c hc`. Proceed by induction on `s using Finset.induction_on generalizing M with`. Consider the case `empty`. Introduce `h`. Use `UpperTheory.closed_subgroup_eq_top_of_dense G M hM hμ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h`. Consider the case `insert a s ha ih`. Introduce `h`. Use `UpperTheory.eq_top_of_circle_sup G M hM hμ (c a) (hc a) ?_` and prove the remaining obligations. Establish `hcl : IsClosed ((M ⊔ (c a).range : Subgroup G) : Set G)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mul_normal]`. Use `hM.mul_right_of_isCompact ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_range]`. Conclude with `isCompact_range (hc a)`. Use `ih (M ⊔ (c a).range) hcl ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ hμc hk`. Conclude with `hμ μ hμc fun m hm => hk m (Subgroup.mem_sup_left hm)`. Rewrite `h` using `[Finset.iSup_insert, ← sup_assoc]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eq_top_of_finite_circle_sup :
     ∀ (G : Type) [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] (M : Subgroup G), IsClosed (M : Set G) →

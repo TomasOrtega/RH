@@ -16,28 +16,28 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ} [MeasurableSpace (G n)]
 
 /- English proof (translation)
-Use `show Matrix.det y.val ≠ 0`. Conclude with `(Matrix.isUnits_det_units y).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem val_mem_GLs (y : G n) : y.val ∈ GLs n := by
   show Matrix.det y.val ≠ 0
   exact (Matrix.isUnits_det_units y).ne_zero
 
 /- English proof (translation)
-Rewrite using `[cls, dif_pos hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_eq_toLp (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {f : Mat n → V} (hf : MemLp (fun y : G n => f y.val) 2 μ) : cls μ f = hf.toLp _ := by
   rw [cls, dif_pos hf]
 
 /- English proof (translation)
-Conclude with `hf.comp_continuous Units.continuous_val (fun y => val_mem_GLs y)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lift {V : Type} [TopologicalSpace V] {f : Mat n → V}
     (hf : ContinuousOn f (GLs n)) : Continuous (fun y : G n => f y.val) := by
   exact hf.comp_continuous Units.continuous_val (fun y => val_mem_GLs y)
 
 /- English proof (translation)
-Establish `hff : (fun y : G n => f y.val) = fun y => f' y.val` using `funext fun y => h _ (val_mem_GLs y)`. Unfold `cls`. Rewrite using `[hff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_congr (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {f f' : Mat n → V} (h : ∀ g ∈ GLs n, f g = f' g) : cls μ f = cls μ f' := by
@@ -46,9 +46,9 @@ theorem cls_congr (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [InnerP
   rw [hff]
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite `h` using `[cls_eq_toLp (f := f) μ hf, cls_eq_toLp (f := f') μ hf']`. Establish `h1` using `(MemLp.toLp_eq_toLp_iff hf hf').1 h`. Establish `h2` using `(Continuous.ae_eq_iff_eq μ (continuous_lift hc) (continuous_lift hc')).1 h1`. Establish `hu : IsUnit (Matrix.det g)` using `isUnit_iff_ne_zero.2 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrFun h2 (Matrix.nonsingInvUnit g hu)`.
+A detailed English derivation is pending.
 -/
 theorem cls_unique [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] {V : Type}
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] {f f' : Mat n → V}
@@ -63,7 +63,7 @@ theorem cls_unique [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] {V
   exact congrFun h2 (Matrix.nonsingInvUnit g hu)
 
 /- English proof (translation)
-Establish `hs : MemLp (fun y : G n => (a • f + f') y.val) 2 μ` using `(hf.const_smul a).add hf'`. Rewrite using `[cls_eq_toLp (f := a • f + f') μ hs, cls_eq_toLp (f := f) μ hf, cls_eq_toLp (f := f') μ hf', ← MemLp.toLp_const_smul, ← MemLp.toLp_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cls_add_smul (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (a : ℂ) {f f' : Mat n → V} (hf : MemLp (fun y : G n => f y.val) 2 μ)
@@ -74,9 +74,9 @@ theorem cls_add_smul (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [Inn
   rfl
 
 /- English proof (translation)
-Establish `hmp : MeasurePreserving (fun y : G n => y * h) μ μ`. Use `(hU n μ).1` as an intermediate fact. Conclude with `measurePreserving_mul_right μ h`. Rewrite using `[cls_eq_toLp (f := f) μ hf, cls_eq_toLp (f := fun y => f (y * h.val)) μ (hf.comp_measurePreserving hmp)]`. Unfold `rR`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hmp]`. Conclude with `Lp.toLp_compMeasurePreserving hf hmp`.
+A detailed English derivation is pending.
 -/
 theorem rR_cls [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] {V : Type}
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] (hU : Unimod) (h : G n) {f : Mat n → V}
@@ -92,7 +92,7 @@ theorem rR_cls [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] {V : T
   exact Lp.toLp_compMeasurePreserving hf hmp
 
 /- English proof (translation)
-Establish `hA : MemLp (fun y : G n => A (f y.val)) 2 μ` using `A.comp_memLp' hf`. Rewrite using `[cls_eq_toLp (f := f) μ hf, cls_eq_toLp (f := fun y => A (f y)) μ hA]`. Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [A.coeFn_compLpL (p := 2) (μ := μ) (hf.toLp _), MemLp.coeFn_toLp hf, MemLp.coeFn_toLp hA] with y h1 h2 h3`. Rewrite using `[h1, h2, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compLpL_cls (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (A : V →L[ℂ] V) {f : Mat n → V} (hf : MemLp (fun y : G n => f y.val) 2 μ) :
@@ -105,7 +105,7 @@ theorem compLpL_cls (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V] [Inne
   rw [h1, h2, h3]
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ hU`. Conclude with `⟨fun f f' hc hc' hf hf' h => cls_unique μ hc hc' hf hf' h, fun a f f' hf hf' => cls_add_smul μ a hf hf', fun f f' h => cls_congr μ h, fun h f hf => rR_cls μ hU h hf, fun A f hf => compLpL_cls μ A hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem clsFacts : ClsFacts := by
   intro n _ _ μ _ V _ _ hU

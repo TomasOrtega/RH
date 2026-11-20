@@ -6,7 +6,7 @@ namespace PositivityTheory.RgJS
 open GlobalTheory.CuspRep
 
 /- English proof (translation)
-Introduce `E _ _ _ m π χ w B hχ h`. Proceed by induction on `π using Quotient.inductionOn`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist _ _ _ χ w B hχ h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. A detailed English derivation is pending.
 -/
 theorem satake_twist_holds : SatTw := by
   intro E _ _ _ m π χ w B hχ h

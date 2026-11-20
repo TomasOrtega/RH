@@ -24,7 +24,7 @@ structure RecTie (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) 
   hQ : J.Qcc j = P.Qcc
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts.leafMeans_iff, t.hX, t.hsl, t.hT, t.hLL, t.hU, t.hE, t.hcc, t.hQ]`. Conclude with `P.means h ha hdd he h6 hp h7 hCa hCb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafMeans_of_pack (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : SlopeArithmeticParameters R.toRealDat)
     (hd : NeZero D.host.d) (j : Fin D.R.m) {Tau : Type} [Fintype Tau] (P : MeansPack Tau (J.ι j))

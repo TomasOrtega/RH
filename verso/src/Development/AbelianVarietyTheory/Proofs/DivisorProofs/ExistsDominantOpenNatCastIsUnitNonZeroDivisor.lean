@@ -9,15 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨(T.basicOpen (c : Γ(T, ⊤))).toScheme, (T.basicOpen (c : Γ(T, ⊤))).ι, ?_, ?_⟩` and prove the remaining obligations. Use `isSchemeTheoreticallyDominant_ι_of_germ_eq_zero_over_affine T T (𝟙 T) _ ?_` and prove the remaining obligations. Introduce `U V hU _ _ b hb`. Establish `key : ∀ (n : ℕ) (b : Γ(T, U)), (c : Γ(T, U)) ^ n * b = 0 → b = 0`. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro b h`. Simplify using `using h`. Consider the case `succ n ih`. Introduce `b h`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc U b (ih _ (by rw [← _root_.mul_assoc, ← pow_succ]; exact h))`. Establish `hD : T.basicOpen (c : Γ(T, U)) = U ⊓ T.basicOpen (c : Γ(T, ⊤))`. Rewrite using `[← T.basicOpen_res (c : Γ(T, ⊤)) (homOfLE (le_top : U ≤ ⊤)).op, map_natCast]`. Establish `h0 : T.presheaf.map (homOfLE (T.basicOpen_le (c : Γ(T, U)))).op b = 0`. Use `TopCat.Presheaf.section_ext T.sheaf _ _ 0 (fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show T.presheaf.germ _ x hx (T.presheaf.map _ b) = T.presheaf.germ _ x hx 0`. Rewrite using `[TopCat.Presheaf.germ_res_apply, map_zero]`. Conclude with `hb x _ (hD ▸ hx).2`. Use `letI := hU.isLocalization_basicOpen (c : Γ(T, U))`. Take `⟨⟨m, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (c : Γ(T, U))) Γ(T, T.basicOpen (c : Γ(T, U))) b).mp h0`.
-
-Conclude with `key n b hm`. Use `(T.toRingedSpace.isUnit_res_basicOpen (c : Γ(T, ⊤))).map (T.basicOpen (c : Γ(T, ⊤))).topIso.inv.hom` as an intermediate fact. Conclude with `(congrArg IsUnit ((congrArg _ (map_natCast _ c)).trans (map_natCast _ c))).mp this`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_schemeTheoreticallyDominant_isUnit_natCast (T : Scheme.{0}) (c : ℕ)
     (hc : ∀ (U : T.Opens) (f : Γ(T, U)), (c : Γ(T, U)) * f = 0 → f = 0) :

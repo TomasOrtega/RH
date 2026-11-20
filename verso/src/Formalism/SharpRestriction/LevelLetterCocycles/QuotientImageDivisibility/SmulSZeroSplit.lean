@@ -14,9 +14,9 @@ section LemK
 variable {LL' : Type} [Field LL'] {V : Type} [AddCommGroup V] [Module LL' V]
 
 /- English proof (translation)
-Take `⟨N, hN⟩ : ∃ N : ℕ, (0 : ℤ) - M < (N + 1 : ℕ)` from `⟨(0 - M).toNat, by have := Int.self_le_toNat (0 - M); push_cast; omega⟩`. Rewrite using `[smulS_eq_sum hf g 0 (N + 1) hN, Finset.sum_range_succ']`. Simplify using `only [Nat.cast_zero, sub_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply, add_sub_cancel_right]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h` using `hneg ((0 : ℤ) - ((i + 1 : ℕ) : ℤ)) (by push_cast; omega)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hFa (show (1 : ℤ) ≤ -((0 : ℤ) - ((i + 1 : ℕ) : ℤ)) by push_cast; omega) h`.
+A detailed English derivation is pending.
 -/
 theorem smulS_zero_split {Fil : ℤ → Submodule LL' V} (hFa : Antitone Fil) {M : ℤ} {f : ℤ → V}
     (hf : LB M f) (hneg : ∀ k : ℤ, k < 0 → f k ∈ Fil (-k)) (g : PowerSeries LL') :
@@ -39,9 +39,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hs : W.s = 1` using `hA.2.1`. Establish `hg` using `W.gam_gen`. Rewrite `hg` using `[hs, Nat.cast_one]`. Establish `h1 : (1 : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ W.gam : O) - 1)` using `le_of_eq hg.symm`. Establish `hne : algebraMap O LL (W.χΓ W.gam : O) ≠ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hg` using `[h, sub_self, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hg`. Establish `hp3 : 3 ≤ PD.p` using `by have := PD.hp.two_le; have := hA.2.2; omega`. Conclude with `Val.zpow_ne_one_of_close v PD.hp W.v_l hp3 _ h1 hne k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_zpow_ne_one (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (k : ℤ) (hk : k ≠ 0) :
     (algebraMap O LL (W.χΓ W.gam : O)) ^ k ≠ 1 := by
@@ -57,27 +57,25 @@ theorem chi_zpow_ne_one (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (k : 
   exact Val.zpow_ne_one_of_close v PD.hp W.v_l hp3 _ h1 hne k hk
 
 /- English proof (translation)
-Introduce `hA T hT i ζ hζ x d hDL hd ⟨j, hj⟩`. Establish `hp` using `p_ne_zero_LL W`. Take `⟨-, -, hAdd, hO, -, hGam, -⟩` from `expRules_of W h4 hN hA' hA T hT i ζ hζ`. Establish `hCr` using `expCritN_of W hA hdom hFr h1 h3 h4 h5 hD hR hΓ hΔ T hT i ζ hζ x d hDL hd`. Establish `hLv1 : ∀ (z : ↥(W.N T)) (k : ℤ), W.levN T i ζ z k ∈ Formalism.MainNotions.WachCoordinates.FilLev W T i 0 (-k)` using `(h4 T hT i 0 ζ (by rwa [zero_add, pow_one])).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFl : Antitone (Formalism.MainNotions.WachCoordinates.FilLev W T i 0)` using `Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T i 0`. Establish `hcoef : ∀ k : ℤ, k ≠ 0 → d k ∈ Formalism.MainNotions.WachCoordinates.FilLev W T i 0 (-k)`. Introduce `k hk`. Establish `hE` using `hO (((PD.p : ℕ) : O) ^ j) _ _ (hAdd _ _ _ _ (hGam x d hd) (hO (-1) x d hd))`. Establish `hz : ((PD.p : ℕ) : O) ^ j • (W.γ T x + (-1 : O) • x) ∈ W.N T`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[neg_one_smul, ← sub_eq_add_neg]`. Conclude with `hj`. Establish `huq` using `congrFun (isExp_unique W T i ζ hE (isExp_self W T i ζ hz)) k`. Establish `hmem` using `hLv1 ⟨_, hz⟩ k`. Rewrite `hmem` using `[← huq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply] at hmem`. Establish `e : algebraMap O LL (((PD.p : ℕ) : O) ^ j) • ((algebraMap O LL (W.χΓ W.gam : O)) ^ k • d k + algebraMap O LL (-1) • d k) = (algebraMap O LL (((PD.p : ℕ) : O) ^ j) * ((algebraMap O LL (W.χΓ W.gam : O)) ^ k - 1)) • d k`. Rewrite using `[map_neg, map_one, neg_one_smul, ← sub_eq_add_neg, mul_smul, sub_smul, one_smul]`. Establish `hc0 : algebraMap O LL (((PD.p : ℕ) : O) ^ j) * ((algebraMap O LL (W.χΓ W.gam : O)) ^ k - 1) ≠ 0`. Use `mul_ne_zero ?_ (sub_ne_zero.2 (chi_zpow_ne_one W hA k hk))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_natCast]`. Conclude with `pow_ne_zero _ hp`. Rewrite `hmem` using `[e]`. Use `(Formalism.MainNotions.WachCoordinates.FilLev W T i 0 (-k)).smul_mem (algebraMap O LL (((PD.p : ℕ) : O) ^ j) * ((algebraMap O LL (W.χΓ W.gam : O)) ^ k - 1))⁻¹ hmem` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hcoef, fun y hy => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨u, hu, hlq⟩` from `(expRing_of W hR hA i ζ hζ).1`. Take `⟨m, hm⟩` from `hd.1`. Establish `hEq` using `isExp_unique W T i ζ (isExp_self W T i ζ hy) (isExp_smulA W T i ζ hd _)`. Establish `hc` using `hLv1 ⟨_, hy⟩ (y : ℤ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hc` using `[hEq, map_pow, hlq, mul_pow, mul_comm, smulS_mul hm, smulS_X_pow (LB_smulS hm _)]`. Simplify using `only [sub_self] at hc`. Establish `hsplit` using `smulS_zero_split hFl hm (fun k hk => hcoef k (by omega)) (u ^ y)`. Establish `h2 : PowerSeries.constantCoeff (u ^ y) • d 0 ∈ Formalism.MainNotions.WachCoordinates.FilLev W T i 0 (-(y : ℤ))`. Use `Submodule.sub_mem _ hc (hFl (show -(y : ℤ) ≤ 1 by omega) hsplit)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hcu : PowerSeries.constantCoeff (u ^ y) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ (PowerSeries.isUnit_iff_constantCoeff.1 hu).ne_zero`. Use `(Formalism.MainNotions.WachCoordinates.FilLev W T i 0 (-(y : ℤ))).smul_mem (PowerSeries.constantCoeff (u ^ y))⁻¹ h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hcu, one_smul]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `(hCr ⟨y, hy⟩).1 hx 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `h0`. Use `(hCr ⟨y, hy⟩).2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Simplify using `using h0`.
-
-Conclude with `hcoef k hk`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lemK_of [NeZero n] (hdom : IsDomain O) (hFr : IsFractionRing O LL)
     (h1 : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFree W) (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3W W) (h4 : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W)

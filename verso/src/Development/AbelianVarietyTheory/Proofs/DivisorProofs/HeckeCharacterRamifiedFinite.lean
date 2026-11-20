@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.L2.Host
 namespace GlobalTheory.HCharRam
 
 /- English proof (translation)
-Introduce `K _ _ χ`. Conclude with `Filter.eventually_cofinite.1 (GlobalTheory.HeckeSplit.eventually_unrAt χ.1 χ.2.1)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ram_finite : ∀ (K : Type) [Field K] [NumberField K] (χ : HChar K),
     {w : HeightOneSpectrum (𝓞 K) | ¬ χ.UnrAt w}.Finite := by

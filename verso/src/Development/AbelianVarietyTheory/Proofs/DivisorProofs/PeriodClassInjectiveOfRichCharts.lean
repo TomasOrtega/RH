@@ -15,15 +15,13 @@ namespace GlobalTheory.AnPer.Charts
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `(H1.mk_eq_mk (F := K.Oc)).1 h`. Establish `hd : ∀ (T T' : K.Obj) (φ : T ⟶ T'), G T' - φ.φ (G T) = algebraMap (Hol F.V) T'.C (per φ.deg) - algebraMap (Hol F.V) T'.C (per' φ.deg)`. Introduce `T T' φ`. Use `congrFun (congrFun (congrFun hG T) T') φ` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ (T T' : K.Obj) (φ : T ⟶ T'), φ.deg = 0 → G T' = φ.φ (G T)`. Introduce `T T' φ hφ`. Use `hd T T' φ` as an intermediate fact. Simplify using `only [hφ, map_zero, sub_zero] at this`. Conclude with `sub_eq_zero.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `GlobalTheory.T.exists_holomorphic_param_of_degZero_compatible K hK G h0`. Establish `hv : ∀ (T T' : K.Obj) (φ : T ⟶ T'), algebraMap (Hol F.V) T'.C (per φ.deg - per' φ.deg) = 0`. Introduce `T T' φ`. Use `hd T T' φ` as an intermediate fact. Rewrite `this` using `[hp T, hp T', AlgHom.commutes, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[map_sub, ← this]`. Use extensionality with `l : 1`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.parameter_function_eq_zero_of_composable K hK l 0 (per l - per' l) fun k k' k'' e e' ↦ ?_` and prove the remaining obligations. Establish `h1 : K.cst k' (per l - per' l) = 0` using `hv _ _ (ptHom (K.triv k') e)`.
-
-Rewrite using `[← sh_cst e' (per l - per' l), h1, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perCl_injective (K : Charts F) (hK : K.Rich) (per per' : Λ →+ Hol F.V)
     (h : K.perCl per = K.perCl per') : per = per' := by

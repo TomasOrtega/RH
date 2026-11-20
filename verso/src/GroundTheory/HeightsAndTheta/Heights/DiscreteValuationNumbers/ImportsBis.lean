@@ -12,23 +12,21 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c₁ c₂ L`. Take `⟨bf, bg, hbf, hbg, -⟩` from `hD.degrees`. Establish `hPmh : IsMultiHomogIdeal P` using `hP.multiProj.multiHomog`. Establish `: P.IsPrime` using `hP.multiProj.isPrime`. Establish `hϖP : (C ϖ : MRing ι O) ∉ P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : ϖ ∈ P.comap (C : O →+* MRing ι O)` using `h`. Rewrite `h'` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero h'`. Establish `hmh : ∀ (h : MRing ι O) (e : K → ℕ), IsMultiHomog h e → ∀ W, divCycle P h W ≠ 0 → IsMultiHomogIdeal W ∧ W.IsPrime ∧ P ≤ W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h e he W hW`. Unfold `divCycle at hW`. Use `split_ifs at hW with hW'`. Conclude with `⟨MinimalPrimeMultiHomog.full O K ι _ W (SupSpanMultiHomog.full O K ι P h e hPmh he) hW'.1, hW'.1.1.1, le_sup_left.trans hW'.1.1.2⟩`. Conclude with `absurd rfl hW`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hadd : ∀ W, ratDiv P f g W ≠ 0 → vNum W (Matrix.vecCons (fun k => ((c₁ + c₂) k : ℤ)) L) = vNum W (Matrix.vecCons (fun k => (c₁ k : ℤ)) L) + vNum W (Matrix.vecCons (fun k => (c₂ k : ℤ)) L)`. Introduce `W hW`. Establish `hϖW : (C ϖ : MRing ι O) ∈ W` using `hD.vertical W hW`. Choose the witnesses or unpack the hypotheses as in `⟨hWm, hWp, hPW⟩ : IsMultiHomogIdeal W ∧ W.IsPrime ∧ P ≤ W := by`. Distinguish the cases in `hWf : divCycle P f W = 0`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmh g bg hbg W fun hWg => hW (by simp [ratDiv, hWf, hWg])`. Conclude with `hmh f bf hbf W hWf`. Establish `hlt : P < W` using `lt_of_le_of_ne hPW (fun e => hϖP (e ▸ hϖW))`. Establish `hdrop` using `DimStrictDrop.full (MRing ι O) P W hlt`. Rewrite `hdrop` using `[hP.dim]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim : ringKrullDim (MRing ι (IsLocalRing.ResidueField O) ⧸ specialIdeal W) < ((d + 2 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[SpecialQuotDim.full O ϖ hϖ K ι W hϖW]`. Establish `e : d + 1 + 1 + Fintype.card K = d + 2 + Fintype.card K` using `by omega`. Rewrite `hdrop` using `[e]`. Conclude with `lt_natCast_of_add_one_le hdrop`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `IntNumAddFirst.full (IsLocalRing.ResidueField O) K ι d (specialIdeal W) (SpecialIdealCorresp.full O ϖ hϖ K ι P W hWp hϖW).1 (SpecialIdealMultiHomog.full O K ι W hWm) hdim (fun k => (c₁ k : ℤ)) (fun k => (c₂ k : ℤ)) L`. Establish `hsum : (fun k => ((c₁ + c₂) k : ℤ)) = (fun k => (c₁ k : ℤ)) + (fun k => (c₂ k : ℤ))`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Unfold `vNum`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hsum, key]`. Establish `hZfin` using `ratDiv_support_finite DivCycleFiniteSupport.full P f g`. Unfold `cutIdentityLeftSide cycEval`. Rewrite using `[← finsum_add_distrib (hZfin.subset (Function.support_mul_subset_left _ _)) (hZfin.subset (Function.support_mul_subset_left _ _))]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hW : ratDiv P f g W = 0`. Simplify using `[hW]`. Use `beta_reduce`. Rewrite using `[hadd W hW, mul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeftSideAdditiveInDegree.proof : LeftSideAdditiveInDegree.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c₁ c₂ L

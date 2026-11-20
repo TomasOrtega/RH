@@ -13,7 +13,7 @@ namespace GlobalTheory.HSAmp.ExtPow
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Take `⟨m, i, hi, rfl⟩` from `h`. Use `isProper_str R m` as an intermediate fact. Establish `: IsProper (i ≫ PSpace.str R m)` using `inferInstance`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_of_projOver {R : Type} [CommRing R] {Y : Scheme.{0}} {f : Y ⟶ Sp R}
     (h : IsProjOver f) : CompactSpace Y := by
@@ -23,9 +23,9 @@ theorem compactSpace_of_projOver {R : Type} [CommRing R] {Y : Scheme.{0}} {f : Y
   exact QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)
 
 /- English proof (translation)
-Establish `hu : u ≠ 0` using `h.ne_zero`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => rw [zpow_zero]`. Conclude with `unitAt_one z`. Consider the case `succ n ih => rw [zpow_add_one₀ hu]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `ih.mul h`. Consider the case `pred n ih => rw [zpow_sub_one₀ hu]`. Conclude with `ih.mul h.inv`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_zpow {z : X} {u : X.functionField} (h : UnitAt z u) (n : ℤ) : UnitAt z (u ^ n) := by
   have hu : u ≠ 0 := h.ne_zero
@@ -35,7 +35,7 @@ theorem unitAt_zpow {z : X} {u : X.functionField} (h : UnitAt z u) (n : ℤ) : U
   | pred n ih => rw [zpow_sub_one₀ hu]; exact ih.mul h.inv
 
 /- English proof (translation)
-Establish `h1 : (P.r i : X.functionField) ^ a ≠ 0` using `zpow_ne_zero _ (Units.ne_zero _)`. Establish `h2 : (P.r' j : X.functionField) ^ b ≠ 0` using `zpow_ne_zero _ (Units.ne_zero _)`. Simplify using `only [Pair.loc, div_zpow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem loc_change (P : Pair p) (a b : ℤ) (f : X.functionField) (i i' : P.L.B.ι) (j j' : P.A.B.ι) :
     P.loc a b f i' j' = P.loc a b f i j *
@@ -46,7 +46,7 @@ theorem loc_change (P : Pair p) (a b : ℤ) (f : X.functionField) (i i' : P.L.B.
   field_simp
 
 /- English proof (translation)
-The claim follows from `(unitAt_zpow (germOf_eq_iff.1 (P.hr.germOf_eq hi' hi)) a).mul (unitAt_zpow (germOf_eq_iff.1 (P.hr'.germOf_eq hj' hj)) b)`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_quot (P : Pair p) (a b : ℤ) {z : X} {i i' : P.L.B.ι} {j j' : P.A.B.ι}
     (hi : z ∈ P.L.B.U i) (hi' : z ∈ P.L.B.U i') (hj : z ∈ P.A.B.U j) (hj' : z ∈ P.A.B.U j') :
@@ -55,7 +55,7 @@ theorem unitAt_quot (P : Pair p) (a b : ℤ) {z : X} {i i' : P.L.B.ι} {j j' : P
     (unitAt_zpow (germOf_eq_iff.1 (P.hr'.germOf_eq hj' hj)) b)
 
 /- English proof (translation)
-Establish `h0 : (P.r i : X.functionField) ≠ 0` using `Units.ne_zero _`. Simplify using `only [Pair.loc, zpow_zero, mul_one, zpow_add₀ h0, zpow_mul, zpow_natCast, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem loc_pow_mul (P : Pair p) (e a b : ℤ) (c : ℕ) (x f : X.functionField) (i : P.L.B.ι) (j : P.A.B.ι) :
     P.loc (e * c + a) b (x ^ c * f) i j = P.loc e 0 x i j ^ c * P.loc a b f i j := by
@@ -64,11 +64,11 @@ theorem loc_pow_mul (P : Pair p) (e a b : ℤ) (c : ℕ) (x f : X.functionField)
   ring
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_fnOf_eq hg h`. Use `hW.isLocalization_basicOpen s` as an intermediate fact. Take `⟨⟨b, m⟩, hm⟩` from `IsLocalization.surj (Submonoid.powers s) a`. Take `⟨N, hN⟩` from `m.2`. Use `⟨N, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg (fnOf _ hg) hm`. Simplify using `only [map_mul] at e`. Express the relevant statement in the definitionally equal form `fnOf _ hg a * fnOf _ hg (resG X (X.basicOpen_le s) (m : Γ(X, W))) = fnOf _ hg (resG X (X.basicOpen_le s) b) at e`. Rewrite `e` using `[fnOf_resG, fnOf_resG, ha, ← hN, map_pow]`. Rewrite using `[mul_comm, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `regAt_fnOf hz _ b`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_regAt {W : X.Opens} (hW : IsAffineOpen W) (s : Γ(X, W)) (hg : genericPoint X ∈ X.basicOpen s)
     {g : X.functionField} (h : ∀ z ∈ X.basicOpen s, RegAt z g) :
@@ -91,19 +91,17 @@ end GlobalTheory.HSAmp.ExtPow
 open GlobalTheory.HSAmp.ExtPow in
 
 /- English proof (translation)
-Introduce `k _ X _ p D hD P e a b x f hx hx0 hf`. Use `haveI : CompactSpace X := compactSpace_of_projOver hD.isProjOver`. Establish `loc_ok : ∀ z : X, ∃ W : X.Opens, z ∈ W ∧ ∃ N : ℕ, ∀ c : ℕ, N ≤ c → ∀ w ∈ W, ∀ i j, w ∈ P.L.B.U i → w ∈ P.A.B.U j → RegAt w (P.loc (e * c + a) b (x ^ c * f) i j)`. Introduce `z`. Take `⟨i, hi⟩` from `exists_chart P.L.isLB z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `exists_chart P.A.isLB z`. Take `⟨W, hW, hzW, hWle⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show z ∈ P.L.B.U i ⊓ P.A.B.U j from ⟨hi, hj⟩)`. Establish `hgW : genericPoint X ∈ W` using `gen_mem hzW`. Establish `hsW : ∀ w ∈ W, RegAt w (P.loc e 0 x i j)` using `fun w hw => hx w i j (hWle hw).1 (hWle hw).2`. Take `⟨s, hs⟩` from `exists_fnOf_eq hgW hsW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbas : ∀ w ∈ X.basicOpen s, w ∈ NV P e 0 x`. Introduce `w hw i' j' hi' hj'`. Establish `hwW` using `X.basicOpen_le s hw`. Establish `hu : UnitAt w (P.loc e 0 x i j)` using `hs ▸ (unitAt_fnOf_iff hwW hgW s).2 hw`. Rewrite using `[loc_change P e 0 x i i' j j']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu.mul (unitAt_quot P e 0 (hWle hwW).1 hi' (hWle hwW).2 hj')`. Establish `hne : P.loc e 0 x i j ≠ 0` using `mul_ne_zero (mul_ne_zero hx0 (zpow_ne_zero _ (Units.ne_zero _))) (zpow_ne_zero _ (Units.ne_zero _))`. Establish `hg0 : genericPoint X ∈ X.basicOpen s`. Establish `hu : UnitAt (genericPoint X) (fnOf W hgW s)` using `by rw [hs]; exact unitAt_genericPoint hne`. Conclude with `(unitAt_fnOf_iff hgW hgW s).1 hu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨N, hN⟩` from `exists_pow_mul_regAt hW s hg0 (g := P.loc a b f i j) fun w hw => hf w (hbas w hw) i j (hWle (X.basicOpen_le s hw)).1 (hWle (X.basicOpen_le s hw)).2`. Use `⟨W, hzW, N, fun c hc w hw i' j' hi' hj' => ?_⟩` and prove the remaining obligations. Rewrite using `[loc_change P (e * c + a) b (x ^ c * f) i i' j j', loc_pow_mul, ← hs]`. Use `RegAt.mul ?_ (unitAt_quot P _ b (hWle hw).1 hi' (hWle hw).2 hj').regAt` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `regAt_fnOf hw hgW (s ^ d)`. Rewrite `hd` using `[map_pow]`. Rewrite using `[pow_add, mul_comm (_ ^ N) (_ ^ d), mul_assoc]`. Conclude with `hd.mul (hN w hw)`. Use `choose W hzW N hN using loc_ok`.
-
-Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun z => (W z : Set X)) (fun z => (W z).isOpen) (fun z _ => Set.mem_iUnion.2 ⟨z, hzW z⟩)`. Use `eventually_atTop.2 ⟨t.sup N, fun c hc w i j hi hj => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hwz⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ w))`. Conclude with `hN z c ((Finset.le_sup hz).trans hc) w hwz i j hi hj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSAmp.eventually_pow_mul_mem_H : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (e a b : ℤ) (x f : X.functionField), x ∈ P.H e 0 → x ≠ 0 → (∀ z ∈ NV P e 0 x, ∀ i j, z ∈ P.L.B.U i → z ∈ P.A.B.U j → RegAt z (P.loc a b f i j)) → ∀ᶠ c : ℕ in atTop, x ^ c * f ∈ P.H (e * c + a) b := by
   intro k _ X _ p D hD P e a b x f hx hx0 hf

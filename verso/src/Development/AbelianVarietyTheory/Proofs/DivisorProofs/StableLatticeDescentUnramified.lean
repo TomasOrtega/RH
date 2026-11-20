@@ -33,15 +33,15 @@ Both sides reduce to the same expression.
 @[simp] lemma consZero_succ (n : ℕ) (w : Fin n → R') (j : Fin n) : consZero n w j.succ = w j := rfl
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro x _; exact ⟨0, by simp⟩`. Consider the case `succ a ih`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c0, hc0⟩` from `hres x fun σ hσ => (dvd_pow_self _ (Nat.succ_ne_zero a)).trans (hx σ hσ)`. Take `⟨t, ht⟩` from `hc0`. Establish `hx' : x = algebraMap R R' c0 + algebraMap R R' ϖ * t` using `by rw [← ht]; ring`. Establish `ht' : ∀ σ ∈ D, (algebraMap R R' ϖ) ^ a ∣ σ t - t`. Introduce `σ hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hx σ hσ`. Establish `e : σ x - x = algebraMap R R' ϖ * (σ t - t)`. Rewrite using `[hx']`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h` using `[e, pow_succ']`. Conclude with `(mul_dvd_mul_iff_left hπ).mp h`. Take `⟨c1, hc1⟩` from `ih t ht'`. Use `⟨c0 + ϖ * c1, ?_⟩` and prove the remaining obligations. Establish `e : x - algebraMap R R' (c0 + ϖ * c1) = algebraMap R R' ϖ * (t - algebraMap R R' c1)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx']`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pow_succ']`. Conclude with `mul_dvd_mul_left _ hc1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_descent [IsDomain R'] (D : Set (R' ≃ₐ[R] R')) (ϖ : R)
     (hπ : algebraMap R R' ϖ ≠ 0)
@@ -78,65 +78,59 @@ namespace GlobalTheory.StableLatticeDescent
 variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
 
 /- English proof (translation)
-Establish `hπ : algebraMap R R' ϖ ≠ 0` using `hirr.ne_zero`. Establish `hfix : ∀ (σ : R' ≃ₐ[R] R') (y : R'), y ∈ Set.range (algebraMap R R') → σ y = y`. Introduce and unpack `σ y ⟨c, rfl⟩`. Conclude with `AlgEquiv.commutes σ c`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `N _ _`. Use `⟨fun v _ => ?_, fun u _ => ⟨0, fun i => i.elim0, ?_⟩⟩` and prove the remaining obligations. Establish `: v = 0` using `Subsingleton.elim _ _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Establish `: u - 0 = 0` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Consider the case `succ n ih`. Introduce `N hlat hstab`. Use `set π := algebraMap R R' ϖ with hπdef`. Set `L` to `consZero (R' := R') n`. Establish `hLact : ∀ (σ : R' ≃ₐ[R] R') (w : Fin n → R'), (fun i => σ (L w i)) = L (fun i => σ (w i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Introduce `σ w`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ ?_ i <;> simp [L]`. Set `K` to `N.comap L`. Establish `hKlat : ∀ w : Fin n → R', π ^ r • w ∈ K` using `fun w => by show L (π ^ r • w) ∈ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[L.map_smul]`. Conclude with `hlat _`. Establish `hKstab : ∀ σ ∈ D, ∀ w ∈ K, (fun i => σ (w i)) ∈ K`. Introduce `σ hσ w hw`. Use `show L _ ∈ N`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hLact]`. Conclude with `hstab σ hσ _ hw`. Take `⟨hPK, hQK⟩` from `ih K hKlat hKstab`. Set `I : Ideal R'` to `N.map (LinearMap.proj (R := R') (φ := fun _ : Fin (n + 1) => R') 0)`. Establish `hrI : π ^ r ∈ I` using `⟨π ^ r • (fun _ => 1 : Fin (n + 1) → R'), hlat _, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hI0 : I ≠ ⊥`. Introduce `h`. Rewrite `hrI` using `[h, Submodule.mem_bot]`. Conclude with `pow_ne_zero r hπ hrI`. Take `⟨a, ha⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hI0 hirr`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hmemI : ∀ v ∈ N, π ^ a ∣ v 0`. Introduce `v hv`. Establish `: v 0 ∈ I` using `⟨v, hv, rfl⟩`. Rewrite `this` using `[ha, Ideal.mem_span_singleton]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Choose the witnesses or unpack the hypotheses as in `⟨vs, hvsN, hvs0⟩ : ∃ v ∈ N, v 0 = π ^ a := by`. Establish `: π ^ a ∈ I` using `by rw [ha]; exact Ideal.subset_span rfl`. Take `⟨v, hv, hv0⟩` from `this`. Conclude with `⟨v, hv, hv0⟩`. Establish `hpa : π ^ a ∈ Set.range (algebraMap R R')` using `⟨ϖ ^ a, by simp [hπdef]⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hvsK : ∀ σ ∈ D, (fun i => σ (Fin.tail vs i)) - Fin.tail vs ∈ K`. Introduce `σ hσ`. Establish `e : L ((fun i => σ (Fin.tail vs i)) - Fin.tail vs) = (fun i => σ (vs i)) - vs`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[L, hvs0, hfix σ _ hpa]`. Introduce `j`. Simplify using `[L, Fin.tail]`. Use `show L _ ∈ N`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `N.sub_mem (hstab σ hσ _ hvsN) hvsN`. Take `⟨a0, ha0, ha0K⟩` from `hQK (Fin.tail vs) hvsK`. Take `⟨vo, hvo⟩ : ∃ vo, vo = vs - L (Fin.tail vs - a0)` from `⟨_, rfl⟩`. Establish `hvoN : vo ∈ N` using `hvo ▸ N.sub_mem hvsN ha0K`. Establish `hvo0 : vo 0 = π ^ a` using `by rw [hvo]; simp [L, hvs0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hvorat : ∀ i, vo i ∈ Set.range (algebraMap R R')`. Introduce `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Rewrite using `[hvo0]`. Conclude with `hpa`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `: vo j.succ = a0 j` using `by rw [hvo]; simp [L, Fin.tail]`. Rewrite using `[this]`. Conclude with `ha0 j`. Establish `hrat_add : ∀ x y : R', x ∈ Set.range (algebraMap R R') → y ∈ Set.range (algebraMap R R') → x + y ∈ Set.range (algebraMap R R')`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ _ ⟨c, rfl⟩ ⟨d, rfl⟩`. Conclude with `⟨c + d, map_add _ _ _⟩`. Establish `hrat0 : (0 : R') ∈ Set.range (algebraMap R R')` using `⟨0, map_zero _⟩`. Establish `hLrat : ∀ w : Fin n → R', (∀ i, w i ∈ Set.range (algebraMap R R')) → ∀ i, L w i ∈ Set.range (algebraMap R R')`. Introduce `w hw i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Simplify `hrat0` using `[L]`. Introduce `j`. Simplify `hw j` using `[L]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv`. Take `⟨t, ht⟩` from `hmemI v hv`. Take `⟨w, hw⟩ : ∃ w, w = Fin.tail (v - t • vo)` from `⟨_, rfl⟩`. Establish `hLw : L w = v - t • vo`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Simplify using `[L, ht, hvo0]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j`. Simplify using `[L, hw, Fin.tail]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hwK : w ∈ K` using `by show L w ∈ N`. Rewrite using `[hLw]`. Conclude with `N.sub_mem hv (N.smul_mem t hvoN)`. Establish `hspan : Submodule.span R' {v | v ∈ K ∧ ∀ i, v i ∈ Set.range (algebraMap R R')} ≤ (Submodule.span R' {v | v ∈ N ∧ ∀ i, v i ∈ Set.range (algebraMap R R')}).comap L`. Rewrite using `[Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `w' ⟨hw'K, hw'r⟩`. Conclude with `Submodule.subset_span ⟨hw'K, hLrat w' hw'r⟩`. Establish `h1 : L w ∈ Submodule.span R' {v | v ∈ N ∧ ∀ i, v i ∈ Set.range (algebraMap R R')}` using `hspan (hPK w hwK)`. Establish `h2 : t • vo ∈ Submodule.span R' {v | v ∈ N ∧ ∀ i, v i ∈ Set.range (algebraMap R R')}` using `Submodule.smul_mem _ t (Submodule.subset_span ⟨hvoN, hvorat⟩)`. Establish `: v = L w + t • vo` using `by rw [hLw]; abel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ h1 h2`. Introduce `u hu`. Establish `h0 : ∀ σ ∈ D, π ^ a ∣ σ (u 0) - u 0`. Introduce `σ hσ`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using hmemI _ (hu σ hσ)`. Take `⟨c, hc⟩` from `scalar_descent D ϖ hπ hres a (u 0) h0`. Take `⟨t, ht⟩` from `hc`. Take `⟨e, he⟩ : ∃ e : Fin (n + 1) → R', e = Fin.cons (algebraMap R R' c) 0` from `⟨_, rfl⟩`. Establish `herat : ∀ i, e i ∈ Set.range (algebraMap R R')`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `⟨c, rfl⟩`. Introduce `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Simplify using `using hrat0`. Take `⟨u', hu'⟩ : ∃ u', u' = u - e - t • vo` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w, w = Fin.tail u'` from `⟨_, rfl⟩`. Establish `hLw : L w = u'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations. Simplify using `[L, hu', he, hvo0]`. Rewrite using `[ht, hπdef]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Simplify using `[L, hw, Fin.tail]`. Establish `hwinv : ∀ σ ∈ D, (fun i => σ (w i)) - w ∈ K`. Introduce `σ hσ`. Establish `key : L ((fun i => σ (w i)) - w) = ((fun i => σ (u i)) - u) - (σ t - t) • vo`.
-
-Rewrite using `[L.map_sub, ← hLact, hLw, hu']`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, hfix σ _ (herat i), hfix σ _ (hvorat i)]`. Expand and normalize the polynomial expressions, which then agree. Use `show L _ ∈ N`.
-
-Rewrite using `[key]`. Conclude with `N.sub_mem (hu σ hσ) (N.smul_mem _ hvoN)`. Take `⟨a', ha', ha'K⟩` from `hQK w hwinv`. Use `⟨e + L a', fun i => hrat_add _ _ (herat i) (hLrat a' ha' i), ?_⟩` and prove the remaining obligations. Establish `: u - (e + L a') = t • vo + L (w - a')`.
-
-Rewrite using `[L.map_sub, hLw, hu']`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `N.add_mem (N.smul_mem t hvoN) ha'K`.
+A detailed English derivation is pending.
 -/
 theorem main_induction [IsDomain R'] [IsDiscreteValuationRing R'] (D : Set (R' ≃ₐ[R] R')) (ϖ : R)
     (hirr : Irreducible (algebraMap R R' ϖ))
@@ -288,13 +282,11 @@ end GlobalTheory.StableLatticeDescent
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hmax : maximalIdeal R' = Ideal.span {algebraMap R R' ϖ}`. Rewrite using `[← hm, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span, Set.image_singleton]`. Establish `hirr : Irreducible (algebraMap R R' ϖ)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mpr hmax`. Establish `hres' : ∀ x : R', (∀ σ ∈ D, algebraMap R R' ϖ ∣ σ x - x) → ∃ c : R, algebraMap R R' ϖ ∣ x - algebraMap R R' c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨c, hc⟩` from `hres x fun σ hσ => by`. Rewrite using `[hmax, Ideal.mem_span_singleton]`. Conclude with `hx σ hσ`. Rewrite `hc` using `[hmax, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨c, hc⟩`. Establish `hmem : algebraMap R R' ϖ ∈ maximalIdeal R'`. Rewrite using `[hmax]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hlat' : ∀ w : Fin n → R', (algebraMap R R' ϖ) ^ r • w ∈ N` using `fun w => hlat (Submodule.smul_mem_smul (Ideal.pow_mem_pow hmem r) Submodule.mem_top)`.
-
-Take `⟨hP, -⟩` from `StableLatticeDescent.main_induction D ϖ hirr hres' r n N hlat' hstab`. Conclude with `le_antisymm (fun v hv => hP v hv) (Submodule.span_le.mpr fun v hv => hv.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stable_lattice_descent_unramified (R R' : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [CommRing R'] [IsDomain R'] [IsDiscreteValuationRing R']

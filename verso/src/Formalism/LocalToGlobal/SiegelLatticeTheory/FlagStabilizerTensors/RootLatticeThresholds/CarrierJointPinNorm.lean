@@ -58,7 +58,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[← Complex.exp_neg, Complex.star_def, ← Complex.exp_conj]`. Use `congr 1`. Simplify using `[Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem star_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mat k r) :
     star (psi k r z c g) = (psi k r z c g)⁻¹ := by
@@ -68,7 +68,7 @@ theorem star_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mat k r) :
   simp [Complex.conj_ofReal]
 
 /- English proof (translation)
-Unfold `xiTau`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_xiTau (D : RealPlaceData k r Wp Wq) (p : SS k r) : ‖xiTau D (1, 1) p‖ = 1 := by
   unfold xiTau
@@ -76,7 +76,7 @@ theorem norm_xiTau (D : RealPlaceData k r Wp Wq) (p : SS k r) : ‖xiTau D (1, 1
   simp
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.D.orbIntegrand`. Rewrite using `[Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.xiTau_eq, star_psi]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem orbIntegrand_eq [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq) (γ : Mat k r) (F : Mat k r → (Wq →L[ℂ] Wp)) (p : SS k r) :
     Formalism.FourierDecayAlt.D.orbIntegrand D γ F p =
@@ -89,16 +89,16 @@ theorem orbIntegrand_eq [FiniteDimensional ℂ Wq] (D : RealPlaceData k r Wp Wq)
   rfl
 
 /- English proof (translation)
-Simplify using `only [hsVec, PiLp.norm_eq_of_L2, ContinuousLinearMap.comp_apply, hA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_left [FiniteDimensional ℂ Wq] (A : Wp →L[ℂ] Wp) (hA : ∀ v, ‖A v‖ = ‖v‖) (X : Wq →L[ℂ] Wp) :
     ‖hsVec (A.comp X)‖ = ‖hsVec X‖ := by
   simp only [hsVec, PiLp.norm_eq_of_L2, ContinuousLinearMap.comp_apply, hA]
 
 /- English proof (translation)
-Set `li : Wq →ₗᵢ[ℂ] Wq` to `⟨U.toLinearMap, hU⟩`. Set `e : Wq ≃ₗᵢ[ℂ] Wq` to `li.toLinearIsometryEquiv rfl`. Establish `h` using `Formalism.L2.SG.RealObj.InfCut.hsb_indep ((stdOrthonormalBasis ℂ Wq).map e) (stdOrthonormalBasis ℂ Wq) X`. Simplify using `only [OrthonormalBasis.map_apply] at h`. Simplify using `only [hsVec, PiLp.norm_eq_of_L2, ContinuousLinearMap.comp_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem hs_right [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (U : Wq →L[ℂ] Wq) (hU : ∀ v, ‖U v‖ = ‖v‖)
     (X : Wq →L[ℂ] Wp) : ‖hsVec (X.comp U)‖ = ‖hsVec X‖ := by
@@ -110,16 +110,16 @@ theorem hs_right [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (U : Wq �
   congr 1
 
 /- English proof (translation)
-Simplify using `only [hsVec, PiLp.norm_eq_of_L2, ContinuousLinearMap.smul_apply, norm_smul, hc, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_smul [FiniteDimensional ℂ Wq] (c : ℂ) (hc : ‖c‖ = 1) (X : Wq →L[ℂ] Wp) :
     ‖hsVec (c • X)‖ = ‖hsVec X‖ := by
   simp only [hsVec, PiLp.norm_eq_of_L2, ContinuousLinearMap.smul_apply, norm_smul, hc, one_mul]
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D F p hp g`. Establish `hj` using `Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.jf_equiv D F p hp g`. Unfold `rho at hj`. Establish `hh : Matrix.of p.1.1 ∈ UWset k r D.z` using `hp.1`. Establish `hh' : (Matrix.of p.2.1)⁻¹ ∈ UWset k r D.z'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hp.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs_left _ (D.π_unitary _ hh), hs_right _ (D.π'_unitary _ hh')]`. Use `_ = ‖hsVec ((xiTau D (1, 1) p)⁻¹ • JF D F g)‖ := by rw [hj]`. Use `_ = ‖hsVec (JF D F g)‖ := hs_smul _ (by rw [norm_inv, norm_xiTau, inv_one]) _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hSsgs_holds : HSsgs := by
   intro k r Wp Wq _ _ _ _ _ _ D F p hp g
@@ -134,17 +134,17 @@ theorem hSsgs_holds : HSsgs := by
     _ = ‖hsVec (JF D F g)‖ := hs_smul _ (by rw [norm_inv, norm_xiTau, inv_one]) _
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ D γ hγ F`. Establish `hu` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hγ`. Establish `hinv : γ⁻¹ * γ = 1` using `by first`. Consider the case `exact Matrix.nonsing_inv_mul γ ((Matrix.isUnit_iff_isUnit_det _).1 hu)`. Consider the case `exact Matrix.nonsing_inv_mul γ hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hact : ∀ p, Formalism.FourierDecayAlt.C6.actR γ (Matrix.of (Matrix.of.symm (1 : Mat k r))) p = p`. Introduce `p`. Simplify using `only [Formalism.FourierDecayAlt.C6.actR, Equiv.apply_symm_apply, Matrix.mul_one, Matrix.one_mul, hinv]`. Both sides reduce to the same expression. Establish `hnc1 : Formalism.FourierDecayAlt.D.IsNormCut D γ (Measure.dirac (Matrix.of.symm (1 : Mat k r))) (fun _ => (1 : ℝ))` using `⟨measurable_const, fun _ => zero_le_one, fun p _ => by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hJF : JF D F γ = ∫ p, Formalism.FourierDecayAlt.D.orbIntegrand D γ F p ∂D.μSS`. Establish `h` using `orbIntegrand_eq D γ F`. Simplify using `only [h]`. Both sides reduce to the same expression. Unfold `Formalism.FourierDecayAlt.D.orbJ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Take `⟨hnc, -⟩` from `h.choose_spec`. Rewrite using `[hJF]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS D] with p hp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hnc.2.2 p hp`. Rewrite `h1` using `[integral_dirac, hact]`. Simplify using `[h1]`. Rewrite using `[hJF]`. Use `symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `integral_undef` to reduce the goal to its premises. Introduce `hi`. Conclude with `h ⟨fun _ => 1, hnc1, by simpa using hi⟩`.
+A detailed English derivation is pending.
 -/
 theorem orbDirac_holds : OrbDirac := by
   intro k r Wp Wq _ _ _ _ _ D γ hγ F
@@ -179,7 +179,7 @@ theorem orbDirac_holds : OrbDirac := by
     exact h ⟨fun _ => 1, hnc1, by simpa using hi⟩
 
 /- English proof (translation)
-Unfold `Dmin`. Rewrite using `[hZ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dmin_diag (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Mat k r) (x : Fin (r + 1) → ℂ)
     (hZ : Formalism.QuantumDeterminants.Zhat k r z z' γ = Matrix.diagonal x) (l : Fin (r + 2)) :
@@ -189,7 +189,7 @@ theorem dmin_diag (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Mat k r) (x : Fin (
   rfl
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_castSucc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_castLE_succ (x : Fin (r + 1) → ℂ) (m : ℕ) (hm : m + 1 ≤ r + 1) :
     ∏ i : Fin (m + 1), x (Fin.castLE hm i) =
@@ -198,38 +198,34 @@ theorem prod_castLE_succ (x : Fin (r + 1) → ℂ) (m : ℕ) (hm : m + 1 ≤ r +
   rfl
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun i _ => hx _`.
+A detailed English derivation is pending.
 -/
 theorem prod_castLE_ne (x : Fin (r + 1) → ℂ) (hx : ∀ a, x a ≠ 0) (m : ℕ) (hm : m ≤ r + 1) :
     ∏ i : Fin m, x (Fin.castLE hm i) ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun i _ => hx _
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D γ hγ q hq hZ`. Use `set x : Fin (r + 1) → ℂ := Fin.snoc (α := fun _ => ℂ) q.1 q.2 with hxdef`. Establish `hT` using `mul_pos D.T_pos D.T'_pos`. Establish `hq2 : q.2 ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hq.2` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `absurd this (not_lt.2 hT.le)`. Establish `hx : ∀ a, x a ≠ 0` using `fun a => by`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hxdef, Fin.snoc_last]`. Conclude with `hq2`. Simplify using `only [hxdef, Fin.snoc_castSucc]`. Conclude with `hq.1 i`. Establish `hZ' : Formalism.QuantumDeterminants.Zhat k r D.z D.z' γ = Matrix.diagonal x` using `hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD` using `dmin_diag D.z D.z' γ x hZ'`. Establish `hDr1 : Dmin k r D.z D.z' γ (Fin.last (r + 1)) = Dmin k r D.z D.z' γ ⟨r, by omega⟩ * q.2`. Rewrite using `[hD, hD]`. Use `prod_castLE_succ x r (le_refl _)` as an intermediate fact. Simplify using `only [Fin.val_last] at *`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `congr 1`. Use `show x (Fin.last r) = q.2`. Simplify using `[hxdef]`. Establish `hOm : γ ∈ Formalism.FourierDecayAlt.JF.Om k r D.z D.z'`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hγ, fun l _ => by rw [hD]; exact prod_castLE_ne x hx _ _, ?_⟩` and prove the remaining obligations. Unfold `Gf`. Rewrite using `[hDr1, map_mul]`. Establish `h0 : 0 < Complex.normSq (Dmin k r D.z D.z' γ ⟨r, by omega⟩)`. Rewrite using `[hD]`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Complex.normSq_pos.2 (prod_castLE_ne x hx _ _)`. Use polynomial arithmetic with `[hq.2]`. Take `⟨p, hp, q', hq', he⟩` from `Formalism.FourierDecayAlt.Final.jf_psiOnto k r Wp Wq D γ hOm`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `hcm : ∀ a : Fin r, cmin k r D.z D.z' γ a = q.1 a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Unfold `cmin`. Rewrite using `[hD, hD]`. Use `prod_castLE_succ x a.val (by omega)` as an intermediate fact. Simplify using `only at this ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, mul_div_cancel_left₀ _ (prod_castLE_ne x hx _ _)]`. Use `show x (Fin.castSucc a) = q.1 a`. Simplify using `[hxdef]`. Establish `hzt : zeta k r D.z D.z' γ = q.2`. Unfold `zeta`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[hDr1, mul_div_cancel_left₀ _ (by rw [hD]; exact prod_castLE_ne x hx _ _)]`. Establish `hqq : q' = q`. Establish `h1 : ∀ a, cmin k r D.z D.z' γ a = q'.1 a`. Introduce `a`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Unfold `cmin`. Simplify using `only [Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs D hp]`. Conclude with `Formalism.FourierDecayAlt.P.BigCellZetaMinors.cmin_gq D hq' a`. Establish `h2 : zeta k r D.z D.z' γ = q'.2`. Rewrite using `[he]`.
-
-Unfold `zeta`. Simplify using `only [Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs D hp]`. Conclude with `Formalism.FourierDecayAlt.P.BigCellZetaMinors.zeta_gq D hq'`. Use extensionality with `a`. Rewrite using `[← h1, hcm]`.
-
-Rewrite using `[← h2, hzt]`. Rewrite using `[he, hqq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetOf_holds : CosetOf := by
   intro k r Wp Wq _ _ _ _ D γ hγ q hq hZ
@@ -286,9 +282,9 @@ theorem cosetOf_holds : CosetOf := by
   rw [he, hqq]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => intro a b`. Simplify using `[Formalism.FourierDecayAlt.D.ptEntry]`. Consider the case `cons t l ih`. Introduce `a b`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `cases a <;> cases b <;> simp [Formalism.FourierDecayAlt.D.ptEntry, ih]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ptEntry_ones (l : List ℂ) : ∀ a b : ℕ,
     Formalism.FourierDecayAlt.D.ptEntry (l.map fun t => (1, t)) a b = if a = b then l.getD a 0 else 0 := by
@@ -299,13 +295,13 @@ theorem ptEntry_ones (l : List ℂ) : ∀ a b : ℕ,
     cases a <;> cases b <;> simp [Formalism.FourierDecayAlt.D.ptEntry, ih]
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D γ d hγ hd hZ`. Use `Formalism.FourierDecayAlt.Final.d_ptRelevant k r Wp Wq D ((List.ofFn d).map fun t => (1, t)) γ ⟨?_, ?_⟩ hγ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [List.mem_map, List.mem_ofFn] at hb`. Take `⟨t, ⟨a, rfl⟩, rfl⟩` from `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨le_refl _, hd a⟩`. Simplify using `only [Formalism.FourierDecayAlt.D.ptSize, List.map_map, List.map_ofFn, List.sum_ofFn, Function.comp_def, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`. Rewrite using `[hZ]`. Use extensionality with `i j`. Apply the tactic sequence `show Matrix.diagonal d i j = Formalism.FourierDecayAlt.D.ptEntry _ i.val j.val`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptEntry_ones, Matrix.diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Rewrite using `[List.getD_eq_getElem _ _ (by simp; omega), List.getElem_ofFn]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Fin.val_inj]`.
+A detailed English derivation is pending.
 -/
 theorem relDiag_holds : RelDiag := by
   intro k r Wp Wq _ _ _ _ D γ d hγ hd hZ
@@ -345,9 +341,9 @@ def ZhatTr (P : Parts X u u') (hr : P.S.G.r = D.R.rS) : Prop :=
     phiQ P hr cv ∈ Formalism.FourierDecayAlt.JF.QDom P.S.G.k P.S.G.r (P.T (P.τ.symm v)).base.z (P.T (P.τ.symm v)).base.z'
 
 /- English proof (translation)
-Unfold `trMeas`. Establish `h1 : Continuous (fun s : Formalism.REAL.UJ (X.B.I.ε v) => ((s : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hm : Measurable (fun s : Formalism.REAL.UJ (X.B.I.ε v) => Matrix.of.symm (trG (P.Q v) (P.Qi v) s))`. Use `Continuous.measurable ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul h1).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_dirac' hm]`. Use `congr 1`. Simplify using `[trG, uMat, hQ]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trMeas_dirac (P : Parts X u u') (v : InfinitePlace X.B.I.F) (hQ : P.Qi v * P.Q v = 1) :
     trMeas P v (Measure.dirac 1) = Measure.dirac (Matrix.of.symm (1 : Formalism.FourierDecayAlt.B.Mat P.S.G.k P.S.G.r)) := by
@@ -362,17 +358,17 @@ theorem trMeas_dirac (P : Parts X u u') (v : InfinitePlace X.B.I.F) (hQ : P.Qi v
   simp [trG, uMat, hQ]
 
 /- English proof (translation)
-Introduce `hFX hBuilt hg v g cv hcv hZg`. Take `⟨hGV, hZB, hq⟩` from `hZ hFX hg v g cv hcv hZg`. Establish `hQ : P.Qi v * P.Q v = 1` using `(hFX v).1.1`. Establish `hS` using `hSt v g cv hcv hZg`. Use `⟨Measure.dirac 1, Formalism.REAL.muG _, ⟨?_, ?_, ?_, ?_, ?_⟩, rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hZg]`. Conclude with `hcv.2`. Rewrite using `[hZg]`. Apply the tactic sequence `exact ⟨1, cv, hcv.1, by ext i a; simp only [Formalism.FourierDecayAlt.C2.monoP, Matrix.diagonal_apply, Matrix.of_apply, Equiv.Perm.coe_one, id]; split_ifs with h <;> simp_all⟩`. Conclude with `hRel _ _ _ _ _ _ (Fin.snoc (α := fun _ => ℂ) (phiQ P hr cv).1 (phiQ P hr cv).2) hGV (fun a => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`. Introduce `h`. Use `hq.2` as an intermediate fact. Rewrite `this` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd this (not_lt.2 (mul_pos (P.T (P.τ.symm v)).base.T_pos (P.T (P.τ.symm v)).base.T'_pos).le)`. Simplify using `only [Fin.snoc_castSucc]`. Conclude with `hq.1 i) hZB`. Rewrite using `[hS]`. Use `⟨inferInstance, Measure.dirac_ne_zero, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `s hs`. Rewrite using `[Set.mem_singleton_iff.1 hs]`. Simplify using the standard rewrite rules. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[lintegral_dirac]`. Rewrite using `[trMeas_dirac P v hQ, hOD _ _ _ _ _ _ hGV]`. Take `⟨p, hp, hγ⟩` from `hCo _ _ _ _ _ _ hGV _ hq hZB`. Rewrite using `[hγ]`. Conclude with `hHS _ _ _ _ _ _ _ hp _`.
+A detailed English derivation is pending.
 -/
 theorem normBridge_of (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hOD : OrbDirac) (hHS : HSsgs) (hCo : CosetOf)
     (hRel : RelDiag) (hSt : StOne X u u') (hZ : ZhatTr P hr) : NormBridge P hr := by
@@ -402,7 +398,7 @@ theorem normBridge_of (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hOD : OrbDirac
     exact hHS _ _ _ _ _ _ _ hp _
 
 /- English proof (translation)
-The claim follows from `normBridge_of P hr orbDirac_holds hSsgs_holds cosetOf_holds relDiag_holds hSt hZ`.
+A detailed English derivation is pending.
 -/
 theorem normBridge_of_two (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hSt : StOne X u u') (hZ : ZhatTr P hr) :
     NormBridge P hr :=

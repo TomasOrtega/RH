@@ -10,26 +10,26 @@ namespace GlobalTheory.ArcConst
 def AlgZ {A : Type} [CommRing A] (s : A) : Prop := IsAlgebraic ℤ s
 
 /- English proof (translation)
-Take `rfl : inst = Ring.toIntAlgebra A` from `Subsingleton.elim _ _`. Conclude with `h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem algZ_of {A : Type} [CommRing A] [inst : Algebra ℤ A] {s : A} (h : IsAlgebraic ℤ s) : AlgZ s := by
   obtain rfl : inst = Ring.toIntAlgebra A := Subsingleton.elim _ _
   exact h
 
 /- English proof (translation)
-The claim follows from `IsAlgebraic.algHom f.toIntAlgHom h`.
+A detailed English derivation is pending.
 -/
 theorem AlgZ.map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {s : A} (h : AlgZ s) : AlgZ (f s) :=
   IsAlgebraic.algHom f.toIntAlgHom h
 
 /- English proof (translation)
-The claim follows from `IsAlgebraic.sub (R := ℤ) h h'`.
+A detailed English derivation is pending.
 -/
 theorem AlgZ.sub {A : Type} [CommRing A] {s t : A} (h : AlgZ s) (h' : AlgZ t) : AlgZ (s - t) :=
   IsAlgebraic.sub (R := ℤ) h h'
 
 /- English proof (translation)
-Set `` to `f.toAlgebra`. Establish `h : IsAlgebraic K s` using `IsAlgebraic.extendScalars (R := ℤ) (A_alg := hs) (RingHom.injective_int (algebraMap ℤ K))`. Conclude with `h.isIntegral`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegralElem_of_isAlgebraic_int {K A : Type} [Field K] [CharZero K] [CommRing A] (f : K →+* A)
     {s : A} (hs : AlgZ s) : f.IsIntegralElem s := by
@@ -38,7 +38,7 @@ theorem isIntegralElem_of_isAlgebraic_int {K A : Type} [Field K] [CharZero K] [C
   exact h.isIntegral
 
 /- English proof (translation)
-Set `` to `f.toAlgebra`. Conclude with `IsIntegral.isUnit (R := K) hs h0`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isIntegralElem {K A : Type} [Field K] [CommRing A] [IsDomain A] (f : K →+* A)
     {s : A} (hs : f.IsIntegralElem s) (h0 : s ≠ 0) : IsUnit s := by
@@ -46,13 +46,11 @@ theorem isUnit_of_isIntegralElem {K A : Type} [Field K] [CommRing A] [IsDomain A
   exact IsIntegral.isUnit (R := K) hs h0
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap R S)` using `IsLocalization.injective S hM`. Establish `h1 : ((algebraMap R S).comp f).IsIntegralElem s` using `isIntegralElem_of_isAlgebraic_int _ hs`. Establish `h2 : IsIntegral R s`. Take `⟨p, hp, hp0⟩` from `h1`. Conclude with `⟨p.map f, hp.map f, by rw [Polynomial.eval₂_map]; exact hp0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `g : S →ₐ[R] FractionRing R` to `IsLocalization.liftAlgHom (M := M) (f := Algebra.ofId R (FractionRing R)) (fun y => IsLocalization.map_units (M := nonZeroDivisors R) (FractionRing R) ⟨y.1, hM y.2⟩)`. Establish `hg : Function.Injective g`. Set `: Algebra S (FractionRing R)` to `g.toRingHom.toAlgebra`. Establish `: IsScalarTower R S (FractionRing R)` using `IsScalarTower.of_algebraMap_eq fun x => (g.commutes x).symm`. Establish `: IsFractionRing S (FractionRing R)` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization M S (FractionRing R)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsFractionRing.injective S (FractionRing R)`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (h2.map g)`. Establish `hrs : algebraMap R S r = s` using `hg (by rw [g.commutes]; exact hr)`. Use `⟨r, hrs, ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[← hrs]`.
-
-Conclude with `(isAlgebraic_algHom_iff (algebraMap R S).toIntAlgHom hinj).1 hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_localization {K R S : Type} [Field K] [CharZero K] [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     [CommRing S] [Algebra R S] (M : Submonoid R) [IsLocalization M S] (hM : M ≤ nonZeroDivisors R) (f : K →+* R)
@@ -77,9 +75,9 @@ theorem exists_of_localization {K R S : Type} [Field K] [CharZero K] [CommRing R
   exact (isAlgebraic_algHom_iff (algebraMap R S).toIntAlgHom hinj).1 hs
 
 /- English proof (translation)
-Use `⟨PowerSeries.constantCoeff p, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1 : AlgZ (PowerSeries.C (R` using `K) (PowerSeries.constantCoeff p)) := (hp.map (PowerSeries.constantCoeff (R := K))).map (PowerSeries.C (R := K))`. Establish `h2` using `isUnit_of_isIntegralElem _ (isIntegralElem_of_isAlgebraic_int (PowerSeries.C (R := K)) (hp.sub h1)) (sub_ne_zero.2 hne)`. Establish `h3` using `h2.map (PowerSeries.constantCoeff (R := K))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at h3`.
+Simplify using the standard rewrite rules.
 -/
 theorem powerSeries_const {K : Type} [Field K] [CharZero K] {p : PowerSeries K} (hp : AlgZ p) :
     ∃ x : K, p = PowerSeries.C (R := K) x := by
@@ -93,9 +91,9 @@ theorem powerSeries_const {K : Type} [Field K] [CharZero K] {p : PowerSeries K} 
   simp at h3
 
 /- English proof (translation)
-Use `⟨MvPolynomial.constantCoeff P, ?_, hP.map (MvPolynomial.constantCoeff (R := L) (σ := σ))⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1 : AlgZ (MvPolynomial.C (σ` using `σ) (MvPolynomial.constantCoeff P)) := (hP.map (MvPolynomial.constantCoeff (R := L) (σ := σ))).map (MvPolynomial.C (σ := σ) (R := L))`. Establish `h2` using `isUnit_of_isIntegralElem _ (isIntegralElem_of_isAlgebraic_int (MvPolynomial.C (σ := σ) (R := L)) (hP.sub h1)) (sub_ne_zero.2 hne)`. Establish `h3` using `h2.map (MvPolynomial.constantCoeff (R := L) (σ := σ))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at h3`.
+Simplify using the standard rewrite rules.
 -/
 theorem mvPolynomial_const {σ L : Type} [Field L] [CharZero L] {P : MvPolynomial σ L} (hP : AlgZ P) :
     ∃ y : L, P = MvPolynomial.C y ∧ AlgZ y := by
@@ -111,9 +109,9 @@ theorem mvPolynomial_const {σ L : Type} [Field L] [CharZero L] {P : MvPolynomia
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `congrArg (MvPolynomial.eval (fun t : ArcLt Dw => if t.2.1 = t.2.2 then (1 : LaurentSeries K) else 0)) h0`. Rewrite `h` using `[arcDet, map_prod, map_zero, Finset.prod_eq_one]`. Conclude with `one_ne_zero h`. Introduce `τ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det]`. Use `Matrix.det_one (n := Fin (Dw.mult τ)) (R := LaurentSeries K)` and compare the differences between its conclusion and the goal. Use `ext1 i k`. Simplify using `[Matrix.one_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem arcDet_ne_zero (Dw : Datum H) (K : Type) [Field K] : arcDet Dw K ≠ 0 := by
   classical
@@ -128,7 +126,7 @@ theorem arcDet_ne_zero (Dw : Datum H) (K : Type) [Field K] : arcDet Dw K ≠ 0 :
     simp [Matrix.one_apply]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective (M := Submonoid.powers (arcDet Dw K)) (S := ArcS Dw K) (powers_le_nonZeroDivisors_of_noZeroDivisors (arcDet_ne_zero Dw K))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_injective (Dw : Datum H) (K : Type) [Field K] :
     Function.Injective (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K)) (ArcS Dw K)) :=
@@ -136,13 +134,13 @@ theorem algebraMap_injective (Dw : Datum H) (K : Type) [Field K] :
     (powers_le_nonZeroDivisors_of_noZeroDivisors (arcDet_ne_zero Dw K))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors (arcDet_ne_zero Dw K))`.
+A detailed English derivation is pending.
 -/
 theorem isDomain (Dw : Datum H) (K : Type) [Field K] : IsDomain (ArcS Dw K) :=
   IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors (arcDet_ne_zero Dw K))
 
 /- English proof (translation)
-The claim follows from `have := isDomain Dw K RingHom.injective _`.
+A detailed English derivation is pending.
 -/
 theorem arcι_C_injective (Dw : Datum H) (K : Type) [Field K] :
     Function.Injective ((arcι Dw K).comp (PowerSeries.C (R := K))) :=
@@ -150,9 +148,9 @@ theorem arcι_C_injective (Dw : Datum H) (K : Type) [Field K] :
   RingHom.injective _
 
 /- English proof (translation)
-Establish `: CharZero (LaurentSeries K)` using `(HahnSeries.C : K →+* LaurentSeries K).charZero_iff (RingHom.injective _) |>.1 ‹_›`. Establish `: IsIntegrallyClosed (MvPolynomial (ArcLt Dw) (LaurentSeries K))` using `inferInstance`. Take `⟨P, hP, hPa⟩` from `exists_of_localization (K := LaurentSeries K) (R := MvPolynomial (ArcLt Dw) (LaurentSeries K)) (S := ArcS Dw K) (Submonoid.powers (arcDet Dw K)) (powers_le_nonZeroDivisors_of_noZeroDivisors (arcDet_ne_zero Dw K)) MvPolynomial.C hs`. Take `⟨y, rfl, hy⟩` from `mvPolynomial_const hPa`. Take `⟨p, hp, hpa⟩` from `exists_of_localization (K := K) (R := PowerSeries K) (nonZeroDivisors _) le_rfl (PowerSeries.C (R := K)) hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `powerSeries_const hpa`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hP, ← hp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_const (Dw : Datum H) (K : Type) [Field K] [CharZero K] (s : ArcS Dw K) (hs : AlgZ s) :
     ∃ x : K, s = arcι Dw K (PowerSeries.C (R := K) x) := by
@@ -170,11 +168,11 @@ theorem exists_const (Dw : Datum H) (K : Type) [Field K] [CharZero K] (s : ArcS 
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw K _ _`. Use `⟨isDomain Dw K, algebraMap_injective Dw K, fun s hs => exists_const Dw K s (algZ_of hs), fun F _ _ f => ?_⟩` and prove the remaining obligations. Establish `hinj` using `arcι_C_injective Dw K`. Establish `hex : ∀ a : F, ∃ x : K, ((arcι Dw K).comp (PowerSeries.C (R` using `K))) x = f a := fun a => by`. Establish `ha : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `exists_const Dw K (f a) ((algZ_of ha).map f)`. Conclude with `⟨x, hx.symm⟩`. Use `choose g hg using hex`. Use `⟨{ toFun := g, map_one' := hinj ?_, map_mul' := fun a b => hinj ?_, map_zero' := hinj ?_, map_add' := fun a b => hinj ?_ }, RingHom.ext fun a => (hg a).symm⟩` and prove the remaining obligations. Rewrite using `[hg, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, map_mul, map_mul, hg, hg]`. Rewrite using `[hg, map_zero, map_zero]`. Rewrite using `[hg, map_add, map_add, hg, hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraic_const : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (K : Type) [Field K] [CharZero K], IsDomain (ArcS Dw K) ∧ Function.Injective (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K)) (ArcS Dw K)) ∧ (∀ s : ArcS Dw K, IsAlgebraic ℤ s → ∃ x : K, s = arcι Dw K (PowerSeries.C (R := K) x)) ∧ ∀ (F : Type) [Field F] [NumberField F] (f : F →+* ArcS Dw K), ∃ f₀ : F →+* K, f = ((arcι Dw K).comp (PowerSeries.C (R := K))).comp f₀ := by
   intro E _ _ _ H Dw K _ _

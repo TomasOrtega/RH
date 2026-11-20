@@ -15,11 +15,11 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ}
 
 omit [StarRing E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s, hs, h⟩`. Establish `h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hs`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (P.valuation E) h`. Rewrite `h2` using `[map_mul, h1, one_mul]`. Rewrite using `[h2]`. Conclude with `P.valuation_le_one r`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, s, hs⟩` from `P.exists_primeCompl_mul_eq_of_integer a h`. Conclude with `⟨r, s, s.2, by rw [mul_comm]; exact hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem intAt_iff_val_le_one {P : HeightOneSpectrum (𝓞 E)} {a : E} : IntAt P a ↔ P.valuation E a ≤ 1 := by
   constructor
@@ -36,7 +36,7 @@ theorem intAt_iff_val_le_one {P : HeightOneSpectrum (𝓞 E)} {a : E} : IntAt P 
   exact ⟨r, s, s.2, by rw [mul_comm]; exact hs⟩
 
 /- English proof (translation)
-Rewrite using `[ciMem_stdAt]`. Conclude with `forall_congr' fun _ => intAt_iff_val_le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (x : Sp E n) :
     x ∈ stdAt E n P ↔ ∀ i, P.valuation E (x i) ≤ 1 := by
@@ -44,7 +44,7 @@ theorem mem_stdAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (x : Sp E n) :
   exact forall_congr' fun _ => intAt_iff_val_le_one
 
 /- English proof (translation)
-Introduce `i j`. Use `(hg i j).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `WithZero.exp (-(N' : ℤ)) ≤ WithZero.exp (-(N : ℤ))`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lqPrinc_mono {P : HeightOneSpectrum (𝓞 E)} {N N' : ℕ} (h : N ≤ N') {g : Sp E n ≃ₗ[E] Sp E n}
     (hg : lqPrinc P N' g) : lqPrinc P N g := by
@@ -55,13 +55,13 @@ theorem lqPrinc_mono {P : HeightOneSpectrum (𝓞 E)} {N N' : ℕ} (h : N ≤ N'
   omega
 
 /- English proof (translation)
-Use `set f : Sp E n ≃ₗ[E] Sp E n := g.1 with hf`. Establish `hgw : f (c⁻¹ • (x - z)) ∈ stdAt E n P` using `(g.2 _).2 hx`. Establish `hsplit : c⁻¹ • (f x - z) = f (c⁻¹ • (x - z)) + c⁻¹ • (f z - z)`. Rewrite using `[map_smul, map_sub, smul_sub, smul_sub, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Use `(stdAt E n P).add_mem hgw ?_` and prove the remaining obligations. Rewrite using `[mem_stdAt_iff_val]`. Introduce `i`. Establish `hfz : f z - z = (LinearMap.toMatrix' (f : Sp E n →ₗ[E] Sp E n) - 1) *ᵥ z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, LinearMap.toMatrix'_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `e : (c⁻¹ • (f z - z)) i = ∑ j, (LinearMap.toMatrix' (f : Sp E n →ₗ[E] Sp E n) - 1) i j * (c⁻¹ * z j)`. Rewrite using `[hfz, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smul_sub_mem_of_princ {P : HeightOneSpectrum (𝓞 E)} {N a : ℕ} (g : ↥(GLint E n P))
     (hg : lqPrinc P (N + a) (g : Sp E n ≃ₗ[E] Sp E n)) {c : E} {z : Sp E n}
@@ -92,15 +92,15 @@ theorem smul_sub_mem_of_princ {P : HeightOneSpectrum (𝓞 E)} {N a : ℕ} (g : 
     _ ≤ 1 := by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; omega
 
 /- English proof (translation)
-Introduce `P`. Take `⟨N, hN, hT⟩` from `hΘ P`. Establish `hstab : ∃ N' : ℕ, N ≤ N' ∧ ∀ g : ↥(GLint E n P.1), lqPrinc P.1 N' (g : Sp E n ≃ₗ[E] Sp E n) → g ∈ frStab P.1 (C P)`. Break down `hC P with h | ⟨z, c, _, h⟩` into its components or cases. Use `⟨N, le_rfl, fun g _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_frStab, h]`. Introduce `v`. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `qth_bound P.1 (Matrix.of fun (_ j : Fin n) => c⁻¹ * z j)`. Establish `ha' : ∀ j, P.1.valuation E (c⁻¹ * z j) ≤ WithZero.exp (a : ℤ)` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using ha j j`. Use `⟨N + a, by omega, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_frStab, h]`. Introduce `v`. Use `show c⁻¹ • (g.1 v - z) ∈ stdAt E n P.1 ↔ c⁻¹ • (v - z) ∈ stdAt E n P.1`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hi` using `smul_sub_mem_of_princ g⁻¹ (qth_princ_inv P.1 g hg) ha' hv`. Establish `e : ((g⁻¹ : ↥(GLint E n P.1)) : Sp E n ≃ₗ[E] Sp E n) (g.1 v) = v` using `LinearEquiv.symm_apply_apply g.1 v`. Rewrite `hi` using `[e]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `smul_sub_mem_of_princ g hg ha'`. Take `⟨N', hNN, hS⟩` from `hstab`. Use `⟨N', by omega, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨hH, hl⟩` from `hT g (lqPrinc_mono hNN hg)`. Conclude with `⟨⟨hH, hS g hg⟩, hl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thetaOpen_cutQ {Q : Finset (HeightOneSpectrum (𝓞 E))} (Θ : LevQFam E K n Q) (hΘ : ThetaOpen Θ)
     (C : ∀ P : Q, Set (Sp E n))

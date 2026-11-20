@@ -24,20 +24,18 @@ def aMul {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Submo
   Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ Λ, w = a • v}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, ha, v, hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_aMul {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {a : D.host.E} (ha : a ∈ D.host.AA)
     {v : Fin n → D.host.E} (hv : v ∈ Λ) : a • v ∈ aMul Λ :=
   Submodule.subset_span ⟨a, ha, v, hv, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ c : 𝓞 D.host.E, p (c • w)`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, v, hv, rfl⟩` from `hw`. Introduce `c`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_comm]`. Conclude with `mem a ha _ (Λ.smul_mem c hv)`. Consider the case `zero => intro c`. Rewrite using `[smul_zero]`. Conclude with `zero`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => intro c`. Rewrite using `[smul_add]`. Conclude with `add _ _ (hx c) (hy c)`. Consider the case `smul a x _ hx => intro c`. Rewrite using `[smul_smul]`.
-
-Conclude with `hx _`. Use `key 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem aMul_induction {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {p : (Fin n → D.host.E) → Prop}
     (mem : ∀ a ∈ D.host.AA, ∀ v ∈ Λ, p (a • v)) (zero : p 0) (add : ∀ x y, p x → p y → p (x + y))
@@ -56,11 +54,11 @@ theorem aMul_induction {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.ho
   rwa [one_smul] at this
 
 /- English proof (translation)
-Establish `hA : (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).FG` using `(isNoetherian_submodule.1 (FractionalIdeal.isNoetherian D.host.AA)) _ le_rfl`. Use `hA.map₂ ((LinearMap.lsmul D.host.E (Fin n → D.host.E)).restrictScalars₁₂ (𝓞 D.host.E) (𝓞 D.host.E)) h` as an intermediate fact. Rewrite `this` using `[Submodule.map₂_eq_span_image2]`. Unfold `aMul`. Use `this using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, v, hv, rfl⟩`. Conclude with `⟨a, ha, v, hv, rfl⟩`. Introduce and unpack `⟨a, ha, v, hv, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, v, hv, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem aMul_fg {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG) : (aMul Λ).FG := by
   have hA : (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).FG :=
@@ -79,19 +77,19 @@ theorem aMul_fg {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} 
 def frm (T : HSp D) (t y : Fin T.rank → D.host.E) : D.host.E := ∑ c, ∑ d, star (t c) * T.gram c d * y d
 
 /- English proof (translation)
-Simplify using `only [frm, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frm_add_left (T : HSp D) (t t' y : Fin T.rank → D.host.E) : frm T (t + t') y = frm T t y + frm T t' y := by
   simp only [frm, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [frm, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frm_add_right (T : HSp D) (t y y' : Fin T.rank → D.host.E) : frm T t (y + y') = frm T t y + frm T t y' := by
   simp only [frm, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [frm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, star_mul']`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frm_smul_left (T : HSp D) (e : D.host.E) (t y : Fin T.rank → D.host.E) :
     frm T (e • t) y = star e * frm T t y := by
@@ -99,31 +97,27 @@ theorem frm_smul_left (T : HSp D) (e : D.host.E) (t y : Fin T.rank → D.host.E)
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-The claim follows from `RatDual.form_smul T e t y`.
+A detailed English derivation is pending.
 -/
 theorem frm_smul_right (T : HSp D) (e : D.host.E) (t y : Fin T.rank → D.host.E) :
     frm T t (e • y) = e * frm T t y := RatDual.form_smul T e t y
 
 /- English proof (translation)
-Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `hAA` using `Formalism.L2.Pj.AA_ne_zero hP D`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Use `Formalism.L2.Pj.trace_int_of_mem hP D ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `aMul_induction (p := fun x => frm T y x ∈ Formalism.L2.Pj.NAA D) ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `a' ha' t' ht'`. Use `aMul_induction (p := fun y => frm T y (a' • t') ∈ Formalism.L2.Pj.NAA D) ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `a ha t ht`. Take `⟨q, hq⟩` from `(hT.2 t').1 ht' t ht`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hq' : frm T t t' = q` using `hq.symm`. Establish `hs : star a = D.host.conj a` using `bridge_star_holds D.R D.host a`. Establish `e : frm T (a • t) (a' • t') = q • (a' * D.host.conj a)`. Rewrite using `[frm_smul_left, frm_smul_right, hq', hs, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `_ = (q : D.host.E) * _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (FractionalIdeal.mul_mem_mul ha' (Formalism.L2.Pj.conj_mem_AAbar D ha))`. Simplify using `[frm]`. Introduce `u v hu hv`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frm_add_left]`. Conclude with `add_mem hu hv`. Simplify using `[frm]`. Introduce `u v hu hv`. Rewrite using `[frm_add_right]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `add_mem hu hv`. Introduce `h`. Establish `h5 : ∀ t ∈ Λ, frm T t x ∈ D.host.AA` using `fun t ht => RatDual.mem_AA_of_trace D _ fun a ha => by`. Rewrite using `[← frm_smul_left]`. Conclude with `h _ (smul_mem_aMul ha ht)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h6 : ∀ b ∈ D.host.AA⁻¹, b • x ∈ Λ`. Introduce `b hb`. Use `(hT.2 _).2 fun t ht => ?_` and prove the remaining obligations. Rewrite using `[RatDual.form_smul]`. Use `FractionalIdeal.mul_mem_mul hb (h5 t ht)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[inv_mul_cancel₀ hAA, FractionalIdeal.mem_one_iff]`. Conclude with `this`. Establish `h7 : ∀ e ∈ D.host.AA * D.host.AA⁻¹, e • x ∈ aMul Λ`. Introduce `e he`. Use `FractionalIdeal.mul_induction_on (C := fun e => e • x ∈ aMul Λ) he (fun a ha c hc => ?_) (fun u w hu hw => ?_)` and prove the remaining obligations.
-
-Use `show (a * c) • x ∈ aMul Λ`. Rewrite using `[mul_smul]`. Conclude with `smul_mem_aMul ha (h6 c hc)`. Use `show (u + w) • x ∈ aMul Λ`. Rewrite using `[add_smul]`.
-
-Conclude with `add_mem hu hw`. Use `h7 1 (by rw [mul_inv_cancel₀ hAA]; exact FractionalIdeal.one_mem_one _)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem aMul_selfDual (T : HSp D) {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hT : IsSelfDualC T Λ)
     (x : Fin T.rank → D.host.E) :
@@ -173,11 +167,11 @@ theorem aMul_selfDual (T : HSp D) {Λ : Submodule (𝓞 D.host.E) (Fin T.rank �
     rwa [one_smul] at this
 
 /- English proof (translation)
-Rewrite using `[EF_def, hX.kap, hX.model.1, ← map_neg]`. Use `congr 1`. Establish `: herm (-(Matrix.reindex (finCongr (rfl : T.rank = T.rank)) (finCongr rfl) T.gram).transpose) x y = -frm T y x`. Unfold `herm frm`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x b * -(T.gram a b) * star (y a) = _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem EF_eq (T : HSp D) (X : Data D.host.E T.rank) (hX : IsMod T rfl X) (x y : Fin T.rank → D.host.E) :
     EF X x y = -Algebra.trace ℚ D.host.E (D.host.xi0 * frm T y x) := by
@@ -196,7 +190,7 @@ theorem EF_eq (T : HSp D) (X : Data D.host.E T.rank) (hX : IsMod T rfl X) (x y :
   ring
 
 /- English proof (translation)
-Use `⟨aMul_fg hT.1.fg, fun x => (aMul_selfDual T hT x).trans (forall_congr' fun y => forall_congr' fun _ => ?_)⟩` and prove the remaining obligations. Rewrite using `[EF_eq T X hX]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩; exact ⟨-k, by rw [hk, Int.cast_neg]⟩`. Introduce and unpack `⟨k, hk⟩; exact ⟨-k, by rw [Int.cast_neg, ← hk, neg_neg]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem selfD_aMul (T : HSp D) (X : Data D.host.E T.rank) (hX : IsMod T rfl X)
     {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hT : IsSelfDualC T Λ) : SelfD X (aMul Λ) := by
@@ -208,15 +202,13 @@ theorem selfD_aMul (T : HSp D) (X : Data D.host.E T.rank) (hX : IsMod T rfl X)
   · rintro ⟨k, hk⟩; exact ⟨-k, by rw [Int.cast_neg, ← hk, neg_neg]⟩
 
 /- English proof (translation)
-Take `⟨s, hfin, rfl⟩` from `Submodule.fg_def.1 h`. Use `Submodule.fg_def.2 ⟨star '' s, hfin.image _, le_antisymm (Submodule.span_le.2 ?_) fun v hv => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `(hs _).2 (by rw [star_star]; exact Submodule.subset_span hw)`. Establish `key : ∀ w ∈ Submodule.span (𝓞 D.host.E) s, star w ∈ Submodule.span (𝓞 D.host.E) (star '' s)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact Submodule.subset_span ⟨w, hw, rfl⟩`. Consider the case `zero => rw [star_zero]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `e : star (c • x) = Formalism.L2.Pj.barE D c • star x`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `star ((c : D.host.E) * x i) = ((Formalism.L2.Pj.barE D c : 𝓞 D.host.E) : D.host.E) * star (x i)`. Rewrite using `[star_mul', Formalism.L2.Pj.barE_eq_star]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `key _ ((hs v).1 hv)` as an intermediate fact.
-
-Rewrite `this` using `[star_star]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fg_of_star {n : ℕ} {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG)
     (hs : ∀ v, v ∈ Λ' ↔ star v ∈ Λ) : Λ'.FG := by
@@ -241,11 +233,11 @@ theorem fg_of_star {n : ℕ} {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.ho
     rwa [star_star] at this
 
 /- English proof (translation)
-Introduce `v`. Express the relevant statement in the definitionally equal form `v ∈ Λ' ↔ ∀ w ∈ Λ', ∃ b : 𝓞 D.host.E, (b : D.host.E) = ∑ j, star (v j) * w j`. Establish `e : ∀ x : Fin S.rank → D.host.E, ∑ i, ∑ j, star (x i) * S.gram i j * (star v) j = ∑ j, star (v j) * (star x) j`. Introduce `x`. Simplify using `[hS, Matrix.one_apply, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, h.2]`. Simplify using `only [e]`. Prove the components needed by the constructor for the conclusion. Introduce `H w hw`. Use `H _ ((hs w).1 hw)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[star_star]`. Then use the resulting hypothesis. Introduce `H x hx`. Conclude with `H _ ((hs _).2 (by rwa [star_star]))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unimod_of_star (S : HSp D) (hS : S.gram = 1) {Λ Λ' : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     (h : IsSelfDualC S Λ) (hs : ∀ v, v ∈ Λ' ↔ star v ∈ Λ) :
@@ -266,7 +258,7 @@ theorem unimod_of_star (S : HSp D) (hS : S.gram = 1) {Λ Λ' : Submodule (𝓞 D
     exact H _ ((hs _).2 (by rwa [star_star]))
 
 /- English proof (translation)
-Use extensionality with `j i`. Simplify using `[genMap, hS, Matrix.one_apply, vecMulVec_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMap_transpose (S T : HSp D) (hS : S.gram = 1) (a : D.host.E) (s : Fin S.rank → D.host.E)
     (t : Fin T.rank → D.host.E) : (genMap S T a s t)ᵀ = vecMulVec (star s) (a • t) := by
@@ -274,21 +266,17 @@ theorem genMap_transpose (S T : HSp D) (hS : S.gram = 1) (a : D.host.E) (s : Fin
   simp [genMap, hS, Matrix.one_apply, vecMulVec_apply, mul_comm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, s, hs', t, ht, rfl⟩` from `hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[genMap_transpose S T hS]`. Conclude with `AddSubgroup.subset_closure ⟨_, (hs _).2 (by rwa [star_star]), _, smul_mem_aMul ha ht, rfl⟩`. Consider the case `zero => rw [transpose_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [transpose_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [transpose_neg]`. Conclude with `neg_mem hx`. Introduce `h`. Establish `key : ∀ y ∈ tens Λ' (aMul ΛT), yᵀ ∈ latRat S T (Λ : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `y h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨v, hv, u, hu, rfl⟩` from `hw`. Use `aMul_induction (p := fun u => (vecMulVec v u)ᵀ ∈ latRat S T (Λ : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E))) ?_ ?_ ?_ hu` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha t ht`. Establish `e` using `genMap_transpose S T hS a (star v) t`. Rewrite `e` using `[star_star]`. Rewrite using `[← e, transpose_transpose]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, (hs v).1 hv, t, ht, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `e : (vecMulVec v (0 : Fin T.rank → D.host.E))ᵀ = 0` using `Matrix.ext fun _ _ => mul_zero _`. Rewrite using `[e]`. Conclude with `zero_mem _`. Introduce `x y hx hy`. Rewrite using `[vecMulVec_add, transpose_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `zero => rw [transpose_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [transpose_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `neg x _ hx => rw [transpose_neg]`. Conclude with `neg_mem hx`. Conclude with `key _ h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_latRat_iff (S T : HSp D) (hS : S.gram = 1) {Λ Λ' : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (hs : ∀ v, v ∈ Λ' ↔ star v ∈ Λ)
@@ -329,9 +317,9 @@ theorem mem_latRat_iff (S T : HSp D) (hS : S.gram = 1) {Λ Λ' : Submodule (𝓞
     exact key _ h
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_parts` to reduce the goal to its premises. Rewrite using `[RingHom.map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h1 i) j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun h2 i) j`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_parts {m n : ℕ} {u u' : Formalism.IndefR.Datum.Mx D m n} (h1 : u.map (infPart D) = u'.map (infPart D))
     (h2 : u.map (finPart D) = u'.map (finPart D)) : u = u' := by
@@ -342,7 +330,7 @@ theorem eq_of_parts {m n : ℕ} {u u' : Formalism.IndefR.Datum.Mx D m n} (h1 : u
   · rw [RingHom.map_sub, sub_eq_zero]; exact congrFun (congrFun h2 i) j
 
 /- English proof (translation)
-Use `⟨fun h => ?_, finTens_mem_latO (one_mem_intAf _)⟩` and prove the remaining obligations. Use `(GlobalTheory.T.rationalHermitianRankOneLattice_selfDual D S T ΛS ΛT hS hT (GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace D S ΛS hS) _).2 fun ℓ hℓ => ?_` and prove the remaining obligations. Establish `h1` using `char_sympl_eq_one hψ hS hT h (finTens_mem_latO (one_mem_intAf _) hℓ)`. Rewrite `h1` using `[symplO_finTens, one_mul, one_mul]`. Conclude with `(char_rat hψ _).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finTens_mem_iff {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -356,15 +344,13 @@ theorem finTens_mem_iff {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
   exact (char_rat hψ _).1 h1
 
 /- English proof (translation)
-Introduce `D ψ θ V W r g hr X bas idx hψ _ hV _ hX _ ΛV ΛW Λ' L hΛV hΛW hs hL`. Substitute `hr` using the available equality. Establish `hL' : L = aMul ΛW`. Rewrite using `[hL (aMul ΛW) rfl]`. Conclude with `Submodule.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hL'` using the available equality. Establish `hinf : ∀ u ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True, u.map (infPart D) = 0` using `fun u hu => Matrix.ext fun i j => infPart_of_mem hu i j`. Use `⟨⟨hinf, ⟨_, GlobalTheory.LatOpen.isOpen_nsmul_latO D V W ΛV ΛW hΛV hΛW 1 one_pos, fun u hu => ⟨fun h => ?_, ?_⟩⟩, fun γ u hu => ?_⟩, selfD_aMul W X hX hΛW, unimod_of_star V hV hΛV hs, fg_of_star hΛV.1.fg hs⟩` and prove the remaining obligations. Use `⟨u, h, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Matrix.ext fun _ _ => RingHom.map_zero (finPart D)`. Introduce and unpack `⟨l, hl, h⟩`. Establish `: u = l`. Use `eq_of_parts (hu.trans (hinf l hl).symm) (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h1 : finPart D (u i j - l i j) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Rewrite `h1` using `[RingHom.map_sub, sub_eq_zero]`. Conclude with `h1`. Rewrite using `[this]` and apply the resulting hypothesis.
-
-Establish `: u = finTens 1 γ` using `eq_of_parts (hu.1.trans (Matrix.ext fun i j => (infPart_pair _ _).symm)) (hu.2.trans rfl)`. Rewrite using `[this, finTens_mem_iff hψ hΛV hΛW]`. Conclude with `mem_latRat_iff V W hV ΛW hs γ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLatOf_tens : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∀ (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (Λ' : Lt D.host.E V.rank) (L : Lt D.host.E r), IsSelfDualC V ΛV → IsSelfDualC W ΛW → (∀ v : Fin V.rank → D.host.E, v ∈ Λ' ↔ (fun j => star (v j)) ∈ ΛV) → (∀ L₀ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E), L₀ = Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ ΛW, w = a • v} → L = latR hr L₀) → IsLatOf V W hr (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) (tens Λ' L) ∧ SelfD X L ∧ (⟨Λ'⟩ : Formalism.L2.Pj.GenLat D.host.E V.rank).Unimod ∧ Λ'.FG := by
   intro D ψ θ V W r g hr X bas idx hψ _ hV _ hX _ ΛV ΛW Λ' L hΛV hΛW hs hL

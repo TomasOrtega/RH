@@ -17,17 +17,17 @@ namespace GlobalTheory.DivSecAtlas
 open scoped ContDiff
 
 /- English proof (translation)
-Use `⟨fun x => (hB.smoothOn_iff (Y.an σ) ((GlobalTheory.DivSec.divPot hn).isOpen_U x)).2 ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `h : ∀ i, (Y.an σ).SmoothOn ((GlobalTheory.DivSec.divPot hn).U x) (fun z => GlobalTheory.DivSec.eqF hn i x z / 2)` using `fun i j => (((GlobalTheory.DivSec.eq_spec hn i x).2.2.1.mono fun z hz => GlobalTheory.DivSec.mem_eqV hn hz i) j).div_const 2`. Introduce `j`. Establish `key : ∀ s : Finset (Fin m), ContDiffOn ℝ ∞ ((fun z => ∑ i ∈ s, GlobalTheory.DivSec.eqF hn i x z / 2) ∘ ((Y.an σ).chart j).e.symm) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' (GlobalTheory.DivSec.divPot hn).U x)`. Introduce `s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact (contDiffOn_const (c := (0 : ℝ))).congr fun v _ => by simp`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a j).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(key Finset.univ).congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.DivSec.divPot]`. Establish `hQ : ∀ i, ∃ W : Set (Pts Y σ), IsOpen W ∧ y ∈ W ∧ ∃ G : Pts Y σ → ℂ, (Y.an σ).HoloOn W G ∧ ∀ z ∈ W ∩ ptsIn Y.str σ (GlobalTheory.DivSec.eqV hn i x).1 ∩ ptsIn Y.str σ (GlobalTheory.DivSec.eqV hn i x').1, GlobalTheory.DivSec.eqF hn i x z - GlobalTheory.DivSec.eqF hn i x' z = (G z). …` using `fun i => GlobalTheory.T.smooth_ratio_of_local_generators F Y σ (C i) (n i) _ _ _ _ _ _ ⟨_, hgen i⟩ (GlobalTheory.DivSec.eq_spec hn i x).2.1 (GlobalTheory.DivSec.eq_spec hn i x').2.1 (GlobalTheory.DivSec.eq_spec hn i x).2.2.1 (GlobalTheory.DivSec.eq_spec hn i x').2.2.1 (GlobalTheo …`. Use `⟨⋂ i, W i, isOpen_iInter_of_finite hW, Set.mem_iInter.2 hyW, fun z => ∑ i, G i z / 2, (hB.holoOn_iff (Y.an σ) (isOpen_iInter_of_finite hW)).2 ?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : ∀ i, DifferentiableOn ℂ (fun v => G i (((Y.an σ).chart j).e.symm v) / 2) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' ⋂ i, W i)` using `fun i => by`. Establish `h1 : DifferentiableOn ℂ (G i ∘ ((Y.an σ).chart j).e.symm) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' ⋂ i, W i)` using `(hG i j).mono fun v hv => ⟨hv.1, Set.mem_iInter.1 hv.2 i⟩`. Conclude with `(h1.mul_const (2⁻¹ : ℂ)).congr fun v _ => by simp [div_eq_mul_inv]`. Establish `key : ∀ s : Finset (Fin m), DifferentiableOn ℂ (fun v => ∑ i ∈ s, G i (((Y.an σ).chart j).e.symm v) / 2) (((Y.an σ).chart j).e.target ∩ ((Y.an σ).chart j).e.symm ⁻¹' ⋂ i, W i)`. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (c := (0 : ℂ))`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a).add ih`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(key Finset.univ).congr fun v _ => by simp`. Establish `hzi : ∀ i, GlobalTheory.DivSec.eqF hn i x z - GlobalTheory.DivSec.eqF hn i x' z = (G i z).re` using `fun i => he i z ⟨⟨Set.mem_iInter.1 hz.1.1 i, GlobalTheory.DivSec.mem_eqV hn hz.1.2 i⟩, GlobalTheory.DivSec.mem_eqV hn hz.2 i⟩`. Simplify using `only [GlobalTheory.DivSec.divPot, Complex.re_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_div, hzi i, Complex.div_ofNat_re]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPotential_divPot_of_generic {F : Type} [Field F] [NumberField F] {Y : Var F} {σ : F →+* ℂ} {m : ℕ}
     {C : Fin m → Closeds Y.X} {n : Fin m → Pts Y σ → ℝ} (hn : ∀ i, IsDivNorm (Y.an σ) (C i) (n i))
@@ -82,9 +82,9 @@ theorem isPotential_divPot_of_generic {F : Type} [Field F] [NumberField F] {Y : 
       rw [← sub_div, hzi i, Complex.div_ofNat_re]
 
 /- English proof (translation)
-Take `⟨hne, hd⟩` from `GlobalTheory.CxPtsDense.nonempty_and_dense F Y σ`. Use `haveI := hne`. Set `W : Y.X.Opens` to `⟨(⋃ i, (C i : Set Y.X))ᶜ, (isClosed_iUnion_of_finite fun i => (C i).isClosed).isOpen_compl⟩`. Establish `hWne : (W : Set Y.X).Nonempty` using `⟨genericPoint Y.X, fun h => by obtain ⟨i, hi⟩ := Set.mem_iUnion.1 h; exact hgen i hi⟩`. Take `⟨z, hz⟩` from `(hd W hWne).nonempty`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, fun i hi => ?_⟩` and prove the remaining obligations. Establish `hzW : under z ∈ (W : Set Y.X)` using `GlobalTheory.CxPts.mem_ptsIn.1 hz`. Conclude with `hzW (Set.mem_iUnion.2 ⟨i, hi⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pt_not_mem {F : Type} [Field F] {Y : Var F} (σ : F →+* ℂ) {m : ℕ} {C : Fin m → Closeds Y.X}
     (hgen : ∀ i, genericPoint Y.X ∉ C i) : ∃ z : Pts Y σ, ∀ i, under z ∉ C i := by
@@ -99,13 +99,11 @@ theorem exists_pt_not_mem {F : Type} [Field F] {Y : Var F} (σ : F →+* ℂ) {m
   exact hzW (Set.mem_iUnion.2 ⟨i, hi⟩)
 
 /- English proof (translation)
-Introduce `F _ _ Y σ m C n hn hgen`. Establish `hlog : ∀ z, logNormSec (GlobalTheory.DivSec.divPot hn) (GlobalTheory.DivSec.divSec hn) z = Real.log (∏ i, n i z)` using `fun z => by`. Simplify using `only [logNormSec]`. Rewrite using `[GlobalTheory.DivSec.norm_divSec_mul hn ((GlobalTheory.DivSec.divPot hn).mem_U _)]`. Use `⟨GlobalTheory.DivSec.divPot hn, GlobalTheory.DivSec.divSec hn, isPotential_divPot_of_generic hn hgen _ (isAlgAtlas_atlasOf σ), GlobalTheory.DivSec.isSection_divSec hn (isAlgAtlas_atlasOf σ), fun z => ?_, ?_, ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hlog]`. Conclude with `Real.log_nonpos (Finset.prod_nonneg fun i _ => ((hn i).1 _).1) (Finset.prod_le_one (fun i _ => ((hn i).1 _).1) fun i _ => ((hn i).1 _).2)`. Use extensionality with `z`. Conclude with `(GlobalTheory.DivSec.divSec_eq_zero_iff hn z).symm`. Introduce `hu`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `exists_pt_not_mem σ hgen`. Establish `hzZ : z ∈ {z : Pts Y σ | ∃ i, under z ∈ C i}` using `hu ▸ Set.mem_univ z`. Take `⟨i, hi⟩` from `hzZ`. Conclude with `hz i hi`. Use `show Real.exp 1 - Real.log ((∏ i, n i z) ^ 2) = P.rW (GlobalTheory.DivSec.divPot hn) (GlobalTheory.DivSec.divSec hn) z`.
-
-Rewrite using `[P.rW, hlog, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isBdSec_atlasOf : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) (m : ℕ) (C : Fin m → Closeds Y.X) (n : Fin m → Pts Y σ → ℝ), (∀ i, IsDivNorm (Y.an σ) (C i) (n i)) → (∀ i, genericPoint Y.X ∉ C i) → ∃ (L : LocPot (Pts Y σ)) (t : Pts Y σ → Pts Y σ → ℂ), IsBdSec (atlasOf Y σ) {z | ∃ i, under z ∈ C i} (fun z => Real.exp 1 - Real.log ((∏ i, n i z) ^ 2)) L t := by
   intro F _ _ Y σ m C n hn hgen

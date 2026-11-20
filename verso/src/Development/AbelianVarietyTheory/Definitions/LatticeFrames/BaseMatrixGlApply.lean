@@ -36,9 +36,9 @@ Both sides reduce to the same expression.
 theorem coordHom_val (κ : GA D V) : (coordHom V pr β γ βγ γβ κ).val = γ * (mt V κ).map pr * β := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[coordHom_val, h]`. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `rfl`. Rewrite using `[coordHom_val]`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem eq_coordHom_iff (κ : GA D V) (g : GL Y K) :
     (mt V κ).map pr = β * g.val * γ ↔ g = coordHom V pr β γ βγ γβ κ := by
@@ -88,7 +88,7 @@ def GX.mat0 : GA D (D.sp.X 0) →* GL (XIx (Fin D.R.k) (Fin D.R.t) 0) H.k :=
   coordHom (D.sp.X 0) H.q.pr _ _ (H.FX 0 (Nat.zero_le _)).βγ (H.FX 0 (Nat.zero_le _)).γβ
 
 /- English proof (translation)
-The claim follows from `eq_coordHom_iff _ _ _ _ _ _ κ g`.
+A detailed English derivation is pending.
 -/
 theorem GX.matAt_iff (κ : GA D (D.sp.X 0)) (g : GL (XIx (Fin D.R.k) (Fin D.R.t) 0) H.k) : H.MatAt κ g ↔ g = H.mat0 κ :=
   eq_coordHom_iff _ _ _ _ _ _ κ g
@@ -105,7 +105,7 @@ def InLev0 (κ : GA D (D.sp.X 0)) : Prop :=
     ∀ PP g, (G PP).MatAt κ g → embX ((G PP).s + 1) g ∈ (G PP).lev0.J
 
 /- English proof (translation)
-Use `and_congr Iff.rfl (and_congr (forall_congr' fun i => ?_) (forall_congr' fun PP => ?_))` and prove the remaining obligations. Simplify using `only [eq_coordHom_iff _ _ _ _ (o.β 0 i).bb' (o.β 0 i).b'b, forall_eq]`. Both sides reduce to the same expression. Simplify using `only [GX.matAt_iff, forall_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem inLev0_iff (κ : GA D (D.sp.X 0)) : InLev0 o G κ ↔
     GlobalTheory.FinPl.Moves (D.sp.X 0) κ (a.x 0).L (a.x 0).L (fun _ => True) ∧ (∀ i, o.mat0 i κ • o.Q 0 i = o.Q 0 i) ∧
@@ -121,7 +121,7 @@ def levelZeroSubgroup : Subgroup (GA D (D.sp.X 0)) :=
       ⨅ PP, ((G PP).lev0.J.comap (embX ((G PP).s + 1))).comap (G PP).mat0)
 
 /- English proof (translation)
-Rewrite using `[inLev0_iff]`. Simplify using `only [levelZeroSubgroup, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap, MulAction.mem_stabilizer_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_lev0Grp (κ : GA D (D.sp.X 0)) : κ ∈ levelZeroSubgroup o G ↔ InLev0 o G κ := by
   rw [inLev0_iff]
@@ -131,7 +131,7 @@ theorem mem_lev0Grp (κ : GA D (D.sp.X 0)) : κ ∈ levelZeroSubgroup o G ↔ In
 variable {o G} in
 
 /- English proof (translation)
-The claim follows from `(mem_lev0Grp o G _).1 (mul_mem ((mem_lev0Grp o G _).2 h) ((mem_lev0Grp o G _).2 h'))`.
+A detailed English derivation is pending.
 -/
 theorem InLev0.mul {κ κ' : GA D (D.sp.X 0)} (h : InLev0 o G κ) (h' : InLev0 o G κ') : InLev0 o G (κ * κ') :=
   (mem_lev0Grp o G _).1 (mul_mem ((mem_lev0Grp o G _).2 h) ((mem_lev0Grp o G _).2 h'))
@@ -139,7 +139,7 @@ theorem InLev0.mul {κ κ' : GA D (D.sp.X 0)} (h : InLev0 o G κ) (h' : InLev0 o
 variable {o G} in
 
 /- English proof (translation)
-The claim follows from `(mem_lev0Grp o G _).1 (inv_mem ((mem_lev0Grp o G _).2 h))`.
+A detailed English derivation is pending.
 -/
 theorem InLev0.inv {κ : GA D (D.sp.X 0)} (h : InLev0 o G κ) : InLev0 o G κ⁻¹ :=
   (mem_lev0Grp o G _).1 (inv_mem ((mem_lev0Grp o G _).2 h))
@@ -148,7 +148,7 @@ open scoped Pointwise in
 variable {o G} in
 
 /- English proof (translation)
-Rewrite using `[← Pair.smul_ker, ((inLev0_iff o G κ).1 h).2.1 i]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem InLev0.smul_ker {κ : GA D (D.sp.X 0)} (h : InLev0 o G κ) (i : ι) : o.mat0 i κ • (o.Q 0 i).ker = (o.Q 0 i).ker := by
   rw [← Pair.smul_ker, ((inLev0_iff o G κ).1 h).2.1 i]
@@ -165,7 +165,7 @@ structure Arith : Prop where
   lz : a.Lz.SigOK ∧ a.Lz.IsPosDef
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨unifT, oneG, unifG, under, GlobalTheory.FinPl.TamePlaces.tame D, unr, D.X_posDef, lz⟩`.
+Supply the required witnesses or components.
 -/
 theorem Arith.of_local
     (unifT : ∀ i, valuation k ((o.p i).pr (incA D (((D.mem u).A.T : ℕ) : D.host.E))) = valuation k ((o.q.1 : 𝒪[k]) : k))

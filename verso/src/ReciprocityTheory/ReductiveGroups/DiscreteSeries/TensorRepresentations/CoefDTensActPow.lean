@@ -19,9 +19,9 @@ def coefBm (dual : Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin 
   cond dual (-Xᵀ) X
 
 /- English proof (translation)
-Consider the cases of `dual`. Both sides reduce to the same expression. Simplify using `only [coefAm, coefBm, cond_true]`. Rewrite using `[← Matrix.exp_neg, ← Matrix.exp_transpose]`. Use `congr 1`.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.transpose_neg, Matrix.transpose_smul, smul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coefD_Am_exp (dual : Bool) (X : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) :
     coefAm dual (NormedSpace.exp ((s : ℂ) • X)) = NormedSpace.exp ((s : ℂ) • coefBm dual X) := by
@@ -40,16 +40,16 @@ def coefPm (B : Matrix (Fin n) (Fin n) ℂ) : Module.End ℂ (Fin n → M) :=
   LinearMap.pi fun c => ∑ d, B c d • LinearMap.proj d
 
 /- English proof (translation)
-Simplify using `[coefPm, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefPm_apply (B : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → M) (c : Fin n) :
     coefPm B u c = ∑ d, B c d • u d := by
   simp [coefPm, LinearMap.sum_apply]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing c with`. Consider the case `zero`. Simplify using `only [pow_zero, Module.End.one_apply, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, coefPm_apply, pow_succ']`. Repeatedly rewrite using `[ih, Matrix.mul_apply, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefPm_pow (B : Matrix (Fin n) (Fin n) ℂ) (j : ℕ) (u : Fin n → M) (c : Fin n) :
     ((coefPm (M := M) B) ^ j) u c = ∑ d, (B ^ j) c d • u d := by
@@ -64,7 +64,7 @@ theorem coefPm_pow (B : Matrix (Fin n) (Fin n) ℂ) (j : ℕ) (u : Fin n → M) 
     rw [Finset.sum_comm]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing u with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, diagOp_coord, ← Module.End.mul_apply, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefD_diag_pow (A : Module.End ℂ M) (k : ℕ) (u : Fin n → M) (c : Fin n) :
     ((diagOp (n := n) A) ^ k) u c = (A ^ k) (u c) := by
@@ -74,7 +74,7 @@ theorem coefD_diag_pow (A : Module.End ℂ M) (k : ℕ) (u : Fin n → M) (c : F
     rw [pow_succ, Module.End.mul_apply, ih, diagOp_coord, ← Module.End.mul_apply, ← pow_succ]
 
 /- English proof (translation)
-Use `LinearMap.ext fun u => funext fun c => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, coefPm_apply, diagOp_coord, map_sum, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coefD_comm (A : Module.End ℂ M) (B : Matrix (Fin n) (Fin n) ℂ) :
     Commute (coefPm (M := M) B) (diagOp A) := by
@@ -82,7 +82,7 @@ theorem coefD_comm (A : Module.End ℂ M) (B : Matrix (Fin n) (Fin n) ℂ) :
   simp only [Module.End.mul_apply, coefPm_apply, diagOp_coord, map_sum, map_smul]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Simplify using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coefD_sum_ite (c : Fin n) (f : Fin n → Fin n → M) :
     ∑ x, ∑ y, (if c = x then f x y else 0) = ∑ y, f c y := by
@@ -90,16 +90,16 @@ theorem coefD_sum_ite (c : Fin n) (f : Fin n → Fin n → M) :
   simp [Finset.sum_ite_eq]
 
 /- English proof (translation)
-Simplify using `[Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefD_sum_ite' (c : Fin n) (f : Fin n → Fin n → M) :
     ∑ x, ∑ y, (if c = y then f x y else 0) = ∑ x, f x c := by
   simp [Finset.sum_ite_eq]
 
 /- English proof (translation)
-Use `LinearMap.ext fun u => funext fun c => ?_` and prove the remaining obligations. Simplify using `only [actM, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, coefPm_apply, diagOp_coord, Pi.add_apply]`. Consider the cases of `dual`. Simplify using `only [tensF, cond_false, coefBm, tensV_coord, smul_add, Finset.sum_add_distrib, smul_ite, smul_zero, coefD_sum_ite]`. Rewrite using `[add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tensF, cond_true, coefBm, tensVd_coord, smul_sub, Finset.sum_sub_distrib, smul_ite, smul_zero, coefD_sum_ite', Matrix.neg_apply, Matrix.transpose_apply, neg_smul, Finset.sum_neg_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem coefD_tensAct_eq (dual : Bool) (E : Fin n → Fin n → Module.End ℂ M)
     (X : Matrix (Fin n) (Fin n) ℂ) :
@@ -117,7 +117,7 @@ theorem coefD_tensAct_eq (dual : Bool) (E : Fin n → Fin n → Module.End ℂ M
     abel
 
 /- English proof (translation)
-Rewrite using `[coefD_tensAct_eq, (coefD_comm (actM E X) (coefBm dual X)).add_pow', LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun kl _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, ← Nat.cast_smul_eq_nsmul ℂ, Module.End.mul_apply, coefPm_pow]`. Repeatedly rewrite using `[coefD_diag_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem coefD_tensAct_pow (dual : Bool) (E : Fin n → Fin n → Module.End ℂ M)
     (X : Matrix (Fin n) (Fin n) ℂ) (m : ℕ) (u : Fin n → M) (c : Fin n) :
@@ -149,9 +149,9 @@ theorem coefD_tensGrp_eq (dual : Bool) (g : Matrix (Fin n) (Fin n) ℂ) (f : Fin
     coefTG dual σ g f c = ∑ d, coefAm dual g c d • σ g (f d) := rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun kl hkl => ?_` and prove the remaining obligations. Rewrite `hkl` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← hkl, coefC_choose_coef, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coefD_comb (s : ℂ) (m : ℕ) (B : Matrix (Fin n) (Fin n) ℂ) (L : Fin n → Fin n → ℕ → ℂ) :
     s ^ m / (m.factorial : ℂ) * ∑ c, ∑ kl ∈ antidiagonal m, (m.choose kl.1 : ℂ) *
@@ -168,23 +168,21 @@ theorem coefD_comb (s : ℂ) (m : ℕ) (B : Matrix (Fin n) (Fin n) ℂ) (L : Fin
   ring
 
 /- English proof (translation)
-Use `set lc : Fin n → (H →L[ℂ] ℂ) := fun c => Λ.comp (ContinuousLinearMap.single ℂ (fun _ : Fin n => H) c)`. Establish `hΛ : ∀ u : Fin n → H, Λ u = ∑ c, lc c (u c)`. Introduce `u`. Use `conv_lhs => rw [← Finset.univ_sum_single u]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set B := coefBm dual X`. Use `set Y := actM E X`. Use `set L : Fin n → Fin n → ℕ → ℂ := fun c d k => lc c ((((Y ^ k) (w d) : D) : H))`. Establish `hpair : ∀ c d, HasSum (fun m => ∑ kl ∈ antidiagonal m, (s : ℂ) ^ kl.1 / (kl.1.factorial : ℂ) * (B ^ kl.1) c d * ((s : ℂ) ^ kl.2 / (kl.2.factorial : ℂ) * L c d kl.2)) (coefAm dual (NormedSpace.exp ((s : ℂ) • X)) c d * lc c (σ (NormedSpace.exp ((s : ℂ) • X)) ((w d : D) : H)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `c d`. Take `⟨a, ha, hs⟩` from `hb d`. Establish `hA` using `coefC_exp_entry_hasSum B s c d`. Rewrite `hA` using `[← coefD_Am_exp]`. Establish `hA'` using `coefC_exp_entry_summable B s c d`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `horb` using `hasSum_orbit_of_bound hσ hD hX (w d) a ha 0 s (by simpa using hs)`. Rewrite `horb` using `[exp_zero_smul, hσ.1.1]`. Establish `horb'` using `horb.mapL (lc c)`. Establish `hσs : HasSum (fun k : ℕ => (s : ℂ) ^ k / (k.factorial : ℂ) * L c d k) (lc c (σ (NormedSpace.exp ((s : ℂ) • X)) ((w d : D) : H)))`. Use `horb'.congr_fun fun k => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [L, Y, ContinuousLinearMap.one_apply, map_smul, smul_eq_mul, sub_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hσ' : Summable fun k : ℕ => ‖(s : ℂ) ^ k / (k.factorial : ℂ) * L c d k‖`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun k => ?_) (hs.mul_left ‖lc c‖)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, Complex.norm_natCast]`. Establish `h1 : ‖L c d k‖ ≤ ‖lc c‖ * a k` using `((lc c).le_opNorm _).trans (mul_le_mul_of_nonneg_left (ha k) (norm_nonneg _))`. Combine the equalities or inequalities in the displayed calculation. Establish `hmul` using `coefC_hasSum_mul hA hσs hA' hσ'`. Conclude with `hmul`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `htot` using `hasSum_sum fun c (_ : c ∈ (Finset.univ : Finset (Fin n))) => hasSum_sum fun d (_ : d ∈ (Finset.univ : Finset (Fin n))) => hpair c d`. Establish `hR : Λ (coefTG dual σ (NormedSpace.exp ((s : ℂ) • X)) (fun d => ((w d : D) : H))) = ∑ c, ∑ d, coefAm dual (NormedSpace.exp ((s : ℂ) • X)) c d * lc c (σ (NormedSpace.exp ((s : ℂ) • X)) ((w d : D) : H))`. Rewrite using `[hΛ]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[coefD_tensGrp_eq, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[hR]`. Use `htot.congr_fun fun m => ?_` and prove the remaining obligations. Rewrite using `[hΛ]`. Simplify using `only [coefD_tensAct_pow, Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul, smul_eq_mul]`.
-
-Rewrite using `[← coefD_comb]`.
+A detailed English derivation is pending.
 -/
 theorem coefD_taylor (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (Λ : (Fin n → H) →L[ℂ] ℂ) (w : Fin n → D) (s : ℝ)

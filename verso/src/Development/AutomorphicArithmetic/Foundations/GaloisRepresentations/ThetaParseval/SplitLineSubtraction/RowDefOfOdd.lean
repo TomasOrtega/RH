@@ -113,7 +113,7 @@ def Subtract : Prop :=
     (ι : Qbar l ≃+* ℂ) (n : ℕ), (∀ d, Odd d → RowAt E Ω ι d) → TwoUp E n → RowAt E Ω ι n
 
 /- English proof (translation)
-Break down `Nat.even_or_odd a with he | ho` into its components or cases. Introduce `E Ω _ _ _ _ _ _ l _ ι hs`. Conclude with `hS E Ω l ι a (fun d hd => hO d hd E Ω l ι hs) (hT E hs.unram hs.even a ha he)`. Conclude with `hO a ho`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rowDef_of_odd (hS : Subtract) (hT : TwoUpAll) (hO : ∀ d, Odd d → RowDef d) (a : ℕ) (ha : 1 ≤ a) : RowDef a := by
   rcases Nat.even_or_odd a with he | ho

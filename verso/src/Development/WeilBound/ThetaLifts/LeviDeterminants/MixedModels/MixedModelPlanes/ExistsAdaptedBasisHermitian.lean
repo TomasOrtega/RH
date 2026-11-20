@@ -5,7 +5,7 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 /- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.Mix.exists_adapted_index_hermitian | exact fun _ => @PositivityTheory.Mix.exists_adapted_index_hermitian | exact PositivityTheory.Mix.exists_adapted_index_hermitian | exact @PositivityTheory.Mix.exists_adapted_index_hermitian trivial`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.Mix.T.exists_adapted_basis_hermitian : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

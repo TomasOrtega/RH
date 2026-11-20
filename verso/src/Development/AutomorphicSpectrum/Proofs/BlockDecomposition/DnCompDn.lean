@@ -28,7 +28,7 @@ theorem act_apply {m n : ℕ} (θ : Fin (m + 1) →o Fin (n + 1)) (f : Cn F m) (
   rfl
 
 /- English proof (translation)
-Establish `hc : c.map h = 𝟙 (c.obj x)`. Rewrite using `[Subsingleton.elim h (𝟙 x)]`. Conclude with `c.map_id x`. Rewrite using `[hc, GlobalTheory.CatCoh.mp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mp_map_endo_apply {n : ℕ} (c : Fin (n + 1) ⥤ C) {x : Fin (n + 1)} (h : x ⟶ x)
     (b : F.obj (c.obj x)) : GlobalTheory.CatCoh.mp F (c.map h) b = b := by
@@ -38,7 +38,7 @@ private theorem mp_map_endo_apply {n : ℕ} (c : Fin (n + 1) ⥤ C) {x : Fin (n 
   rw [hc, GlobalTheory.CatCoh.mp_id]
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim h (h₁ ≫ h₂), Functor.map_comp, GlobalTheory.CatCoh.mp_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mp_map_comp_apply {n : ℕ} (c : Fin (n + 1) ⥤ C) {x y z : Fin (n + 1)}
     (h : x ⟶ z) (h₁ : x ⟶ y) (h₂ : y ⟶ z) (b : F.obj (c.obj x)) :
@@ -47,7 +47,7 @@ private theorem mp_map_comp_apply {n : ℕ} (c : Fin (n + 1) ⥤ C) {x y z : Fin
   rw [Subsingleton.elim h (h₁ ≫ h₂), Functor.map_comp, GlobalTheory.CatCoh.mp_comp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `show GlobalTheory.CatCoh.mp F (c.map (𝟙 (Fin.last n))) (f c) = f c`. Conclude with `mp_map_endo_apply F c _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem act_id {n : ℕ} (f : Cn F n) : act F (OrderHom.id : Fin (n + 1) →o Fin (n + 1)) f = f := by
   funext c
@@ -55,7 +55,7 @@ theorem act_id {n : ℕ} (f : Cn F n) : act F (OrderHom.id : Fin (n + 1) →o Fi
   exact mp_map_endo_apply F c _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `mp_map_comp_apply F c _ (homOfLE (ψ.monotone (Fin.le_last (θ (Fin.last k))))) (homOfLE (Fin.le_last (ψ (Fin.last m)))) (f ((ψ.comp θ).monotone.functor ⋙ c))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem act_comp {k m n : ℕ} (θ : Fin (k + 1) →o Fin (m + 1)) (ψ : Fin (m + 1) →o Fin (n + 1))
     (f : Cn F k) : act F (ψ.comp θ) f = act F ψ (act F θ f) := by
@@ -77,9 +77,9 @@ theorem cof_eq (n : ℕ) (i : Fin (n + 2)) :
     cof F n i = act F (Fin.succAboveOrderEmb i).toOrderHom := rfl
 
 /- English proof (translation)
-Unfold `AlgebraicTopology.AlternatingCofaceMapComplex.objD`. Rewrite using `[ModuleCat.hom_sum, MainStatements.Hodge.dn]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_zsmul]`. Use `first`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `(rw [← Int.cast_smul_eq_zsmul R, Int.cast_pow, Int.cast_neg, Int.cast_one]; rfl)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem objD_hom (n : ℕ) : (AlgebraicTopology.AlternatingCofaceMapComplex.objD (cosimp F) n).hom = dn F n := by
   unfold AlgebraicTopology.AlternatingCofaceMapComplex.objD
@@ -91,7 +91,7 @@ theorem objD_hom (n : ℕ) : (AlgebraicTopology.AlternatingCofaceMapComplex.objD
   | (rw [← Int.cast_smul_eq_zsmul R, Int.cast_pow, Int.cast_neg, Int.cast_one]; rfl)
 
 /- English proof (translation)
-Establish `h` using `congrArg ModuleCat.Hom.hom (AlgebraicTopology.AlternatingCofaceMapComplex.d_squared (GlobalTheory.CompanionTheory.HodgeCx.cosimp F) n)`. Rewrite `h` using `[ModuleCat.hom_comp, GlobalTheory.CompanionTheory.HodgeCx.objD_hom, GlobalTheory.CompanionTheory.HodgeCx.objD_hom, ModuleCat.hom_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dn_comp_dn (n : ℕ) : dn F (n + 1) ∘ₗ dn F n = 0 := by
   have h := congrArg ModuleCat.Hom.hom
@@ -103,7 +103,7 @@ theorem dn_comp_dn (n : ℕ) : dn F (n + 1) ∘ₗ dn F n = 0 := by
 end Act
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Conclude with `m.3 (c.map (homOfLE (Fin.le_last _))) (f (MainStatements.Hodge.face i c ⋙ m.1))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pulln_cof {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
     (m : CoefMap (RingHom.id R) F G) (n : ℕ) (i : Fin (n + 2)) (f : Cn F n) :
@@ -112,7 +112,7 @@ theorem pulln_cof {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
   exact m.3 (c.map (homOfLE (Fin.le_last _))) (f (MainStatements.Hodge.face i c ⋙ m.1))
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `only [LinearMap.comp_apply, MainStatements.Hodge.dn, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, map_zsmul, GlobalTheory.CompanionTheory.HodgeCx.pulln_cof]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem pulln_dn {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
     (m : CoefMap (RingHom.id R) F G) (n : ℕ) :
@@ -123,7 +123,7 @@ theorem pulln_dn {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
     LinearMap.smul_apply, map_sum, map_smul, map_zsmul, GlobalTheory.CompanionTheory.HodgeCx.pulln_cof]
 
 /- English proof (translation)
-Introduce `R _ C _ F`. Conclude with `⟨GlobalTheory.CompanionTheory.HodgeCx.dn_comp_dn F, fun D _ G m n => GlobalTheory.CompanionTheory.HodgeCx.pulln_dn m n⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cxSt : CxSt := by
   intro R _ C _ F

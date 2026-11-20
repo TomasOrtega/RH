@@ -9,17 +9,15 @@ open GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `k F _ _ _ _ _ hFF n g hg`. Take `⟨hdet, hfin⟩` from `hg`. Use `⟨hfin.subset ?_, fun w hw => ⟨?_, fun v h => hw (Matrix.eq_zero_of_mulVec_eq_zero (hdet v) h)⟩⟩` and prove the remaining obligations. Introduce `v hv hu`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[ord, hu.2]`. Set `S : Set (Place k F)` to `{v | ¬ Unimod v (g v)} ∪ ⋃ i ∈ {i : Fin n | w i ≠ 0}, {v : Place k F | v.1 (w i) ≠ 1}`. Establish `hS : S.Finite` using `hfin.union (Set.Finite.biUnion (Set.toFinite _) fun i hi => ((GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hFF (w i) hi).1))`. Use `hS.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvS`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [S, Set.mem_union, Set.mem_setOf_eq, Set.mem_iUnion, not_or, not_not, not_exists] at hvS`. Take `⟨hu, hw1⟩` from `hvS`. Apply `hv` to reduce the goal to its premises. Rewrite using `[(((GlobalTheory.T.functionFieldPlaceOrder_calculus k F v).2.2.2.2.2.2.2.2.1) n (g v) w hu)]`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, w i ≠ 0 := by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hw (funext h)`. Establish `h1 : ∀ i, v.1 (w i) ≤ 1`. Introduce `i`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : w i = 0`. Simplify using `[hi]`. Conclude with `le_of_eq (hw1 i hi)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Finset.sup_le fun i _ => h1 i`.
-
-Use `Finset.le_sup (f := fun i => v.1 (w i)) (Finset.mem_univ i0)` as an intermediate fact. Establish `e : v.1 (w i0) = 1` using `hw1 i0 hi0`. Rewrite `this` using `[e]`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineFin : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∀ (n : ℕ) (g : Place k F → Matrix (Fin n) (Fin n) F), admitted g → {v : Place k F | ord v (g v).det ≠ 0}.Finite ∧ ∀ w : Fin n → F, w ≠ 0 → {v : Place k F | nrm v ((g v).mulVec w) ≠ 1}.Finite ∧ ∀ v, (g v).mulVec w ≠ 0 := by

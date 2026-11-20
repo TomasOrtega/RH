@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain GlobalTheory.CuspGeneric GlobalTheory.CuspRep 
 namespace GlobalTheory.CompanionTheory.HeckeEigenspaces
 
 /- English proof (translation)
-Use `⟨{ carrier := {φ | ∀ T ∈ 𝒯, T φ = 0} add_mem' := fun {x y} hx hy T hT => by rw [map_add, hx T hT, hy T hT, add_zero] zero_mem' := fun T _ => map_zero T smul_mem' := fun c x hx T hT => by rw [map_smul, hx T hT, smul_zero] }, ?_, fun _ => Iff.rfl⟩` and prove the remaining obligations. Establish `e : ({φ | ∀ T ∈ 𝒯, T φ = 0} : Set X) = ⋂ T ∈ 𝒯, T ⁻¹' {0}`. Use extensionality with `φ`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `IsClosed ({φ | ∀ T ∈ 𝒯, T φ = 0} : Set X)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `isClosed_biInter fun T _ => isClosed_singleton.preimage T.continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_common_ker {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] (𝒯 : Set (X →L[ℂ] X)) :
     ∃ Y : Submodule ℂ X, IsClosed (Y : Set X) ∧ ∀ φ, φ ∈ Y ↔ ∀ T ∈ 𝒯, T φ = 0 := by
@@ -27,9 +27,9 @@ theorem exists_closed_common_ker {X : Type} [NormedAddCommGroup X] [NormedSpace 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hs` using `Formalism.UG.P.finite_support_cosets (Final.GLintComm E w a) hh.2`. Use `⟨∑ c ∈ hs.toFinset, h c.out • Rt E a (fl a w c.out), fun x => ?_, fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[heckeVec, finsum_eq_sum_of_support_subset (s := hs.toFinset)]`. Simplify using the standard rewrite rules. Introduce `c hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.mem_coe.2 (hs.mem_toFinset.2 fun h0 => hc (by simp [h0]))` and prove the remaining obligations. Conclude with `Commute.sum_right _ _ _ fun c _ => (hA c.out).smul_right _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_heckeOp (w : Pl E) {h : GL (Fin a) (w.adicCompletion E) → ℂ} (hh : h ∈ Hecke ℂ (KGL w a)) :
     ∃ T : XB E a →L[ℂ] XB E a, (∀ x, heckeVec (repW a w) (KGL w a) h x = T x) ∧
@@ -44,19 +44,19 @@ theorem exists_heckeOp (w : Pl E) {h : GL (Fin a) (w.adicCompletion E) → ℂ} 
   · exact Commute.sum_right _ _ _ fun c _ => (hA c.out).smul_right _
 
 /- English proof (translation)
-Introduce `h0 E _ _ _ a w B hB`. Establish `hcomm : ∀ g : GA E a, cLoc w g = 1 → ∀ u, Commute (Rt E a g) (Rt E a (fl a w u))` using `fun g hg u => by`. Establish `e` using `(h0 E a).2.2.2.2.2.2.2.1 w g hg u`. Express the relevant statement in the definitionally equal form `Rt E a g * Rt E a (fl a w u) = Rt E a (fl a w u) * Rt E a g`. Rewrite using `[← map_mul, ← map_mul, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `choose T hT hC using fun (p : {ϖ // IsUnifV E w ϖ}) (j : ℕ) => exists_heckeOp (a := a) w (Tj_mem_hecke (n := a) p.2 j)`. Take `⟨Y, hcl, hY⟩` from `exists_closed_common_ker ({R | (∃ k ∈ KGL w a, R = Rt E a (fl a w k) - 1) ∨ ∃ (p : {ϖ // IsUnifV E w ϖ}) (j : ℕ), j ≤ a ∧ R = T p j - satEig (qV E w) a B j • 1} : Set (XB E a →L[ℂ] XB E a))`. Use `⟨Y, hcl, fun g hg φ hφ => ?_, fun φ => ?_⟩` and prove the remaining obligations. Rewrite `hφ`, the goal using `[hY]`. Introduce `R hR`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hRc : Commute (Rt E a g) R`. Break down `hR with ⟨k, -, rfl⟩ | ⟨p, j, -, rfl⟩` into its components or cases. Conclude with `(hcomm g hg k).sub_right (Commute.one_right _)`. Conclude with `(hC p j _ (hcomm g hg)).sub_right ((Commute.one_right _).smul_right _)`. Establish `e : R (Rt E a g φ) = Rt E a g (R φ)` using `(DFunLike.congr_fun hRc.eq φ).symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[e, hφ R hR, map_zero]`. Rewrite using `[hY]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hφ : φ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Or.inl hφ`. Use `Or.inr ⟨hφ, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, hB, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Use `h _ (Or.inl ⟨k, hk, rfl⟩)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `h _ (Or.inr ⟨⟨ϖ, hϖ⟩, j, hj, rfl⟩)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hT ⟨ϖ, hϖ⟩ j]`. Simplify `this` using `[sub_eq_zero]`. Introduce and unpack `(rfl | ⟨-, hfix, -, heig⟩) R hR`. Conclude with `map_zero R`. Break down `hR with ⟨k, hk, rfl⟩ | ⟨p, j, hj, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.LGrp.mem_fixed.1 hfix k hk` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `heig p.1 p.2 j hj` as an intermediate fact. Rewrite `this` using `[hT p j]`. Simplify `this` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hecke_eigenfunctions_closed : G0 → G2c := by
   intro h0 E _ _ _ a w B hB

@@ -18,7 +18,7 @@ open GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[gs_eq (𝟙 X) y V hy a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem gs_id_eq_germ (X : Scheme.{0}) (V : X.Opens) (y : X) (hy : y ∈ V) (a : Γ(X, V)) :
     gs (𝟙 X) y V a = X.presheaf.germ V y hy a := by
@@ -26,11 +26,11 @@ private theorem gs_id_eq_germ (X : Scheme.{0}) (V : X.Opens) (y : X) (hy : y ∈
   rfl
 
 /- English proof (translation)
-Introduce `X V J f r hV h`. Rewrite using `[hV.mem_ideal_iff]`. Introduce `y hy`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Distinguish the cases in `hz : ∀ i, y ∉ X.basicOpen (f i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hr` using `h y hy hz`. Simplify using `only [gs_id_eq_germ X V y hy] at hr`. Conclude with `hr`. Simplify using `only [not_forall, not_not] at hz`. Take `⟨i, hi⟩` from `hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[X.mem_basicOpen (f i) y hy]`. Establish `hmem : X.presheaf.germ V y hy (f i) ∈ Ideal.span (Set.range (⇑(X.presheaf.germ V y hy).hom ∘ f))` using `Ideal.subset_span ⟨i, rfl⟩`. Rewrite using `[Ideal.eq_top_of_isUnit_mem _ hmem hi]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem mem_span_of_forall_germ_mem_span : ∀ (X : Scheme.{0}) (V : X.Opens) (J : Type) (f : J → Γ(X, V)) (r : Γ(X, V)), IsAffineOpen V → (∀ y : X, y ∈ V → (∀ i, y ∉ X.basicOpen (f i)) → gs (𝟙 X) y V r ∈ Ideal.span (Set.range fun i => gs (𝟙 X) y V (f i))) → r ∈ Ideal.span (Set.range f) := by
   intro X V J f r hV h

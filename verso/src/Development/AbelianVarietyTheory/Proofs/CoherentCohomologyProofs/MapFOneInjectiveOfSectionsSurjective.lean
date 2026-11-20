@@ -36,7 +36,7 @@ lemma freeYonedaHomEquiv_comp (U : C) {F G : Sheaf J AddCommGrpCat.{v}}
     freeYonedaHomEquiv U G (φ ≫ f) = f.hom.app (op U) (freeYonedaHomEquiv U F φ) := rfl
 
 /- English proof (translation)
-Rewrite using `[tautSection, ← freeYonedaHomEquiv_comp, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma freeYonedaHomEquiv_apply (U : C) {F : Sheaf J AddCommGrpCat.{v}}
     (φ : (freeYoneda J).obj U ⟶ F) :
@@ -44,7 +44,7 @@ lemma freeYonedaHomEquiv_apply (U : C) {F : Sheaf J AddCommGrpCat.{v}}
   rw [tautSection, ← freeYonedaHomEquiv_comp, Category.id_comp]
 
 /- English proof (translation)
-Establish `h1` using `(sheafificationAdjunction J AddCommGrpCat.{v}).homEquiv_naturality_left (((Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free).map (yoneda.map i)) φ`. Establish `h2` using `(AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv_naturality_left (yoneda.map i) ((sheafificationAdjunction J AddCommGrpCat.{v}).homEquiv _ F φ)`. Establish `h3` using `yonedaEquiv_naturality ((AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv (yoneda.obj U) F.obj ((sheafificationAdjunction J AddCommGrpCat.{v}).homEquiv _ F φ)) i`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations. Conclude with `congrArg yonedaEquiv ((congrArg ((AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv (yoneda.obj V) F.obj) h1).trans h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma freeYonedaHomEquiv_map_comp {U V : C} (i : V ⟶ U) {F : Sheaf J AddCommGrpCat.{v}}
     (φ : (freeYoneda J).obj U ⟶ F) :
@@ -95,13 +95,13 @@ lemma res_apply (n : ℕ) {U V : C} (i : V ⟶ U) (x : Ext.{w'} ((freeYoneda J).
     res F n i x = (Ext.mk₀ ((freeYoneda J).map i)).comp x (zero_add n) := rfl
 
 /- English proof (translation)
-The claim follows from `Ext.comp_mk₀_id (X := (freeYoneda J).obj U) x`.
+A detailed English derivation is pending.
 -/
 @[simp] lemma map_id (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) : map (𝟙 F) n U x = x :=
   Ext.comp_mk₀_id (X := (freeYoneda J).obj U) x
 
 /- English proof (translation)
-Establish `(y : Ext.{w'} ((freeYoneda J).obj U) F n) : y.comp (Ext.mk₀ (f ≫ g)) (add_zero n) = (y.comp (Ext.mk₀ f) (add_zero n)).comp (Ext.mk₀ g) (add_zero n)` using `by simp`. Conclude with `this x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma map_comp (f : F ⟶ G) (g : G ⟶ K) (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) :
     map (f ≫ g) n U x = map g n U (map f n U x) := by
@@ -110,7 +110,7 @@ lemma map_comp (f : F ⟶ G) (g : G ⟶ K) (n : ℕ) (U : C) (x : Sheaf.H'.{w'} 
   exact this x
 
 /- English proof (translation)
-Establish `(y : Ext.{w'} ((freeYoneda J).obj U) F n) : y.comp (Ext.mk₀ (0 : F ⟶ G)) (add_zero n) = 0` using `by simp`. Conclude with `this x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 @[simp] lemma map_zero_hom (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) :
     map (0 : F ⟶ G) n U x = 0 := by
@@ -119,7 +119,7 @@ Establish `(y : Ext.{w'} ((freeYoneda J).obj U) F n) : y.comp (Ext.mk₀ (0 : F 
   exact this x
 
 /- English proof (translation)
-Establish `(y : Ext.{w'} ((freeYoneda J).obj U) F n) : y.comp (Ext.mk₀ (f + g)) (add_zero n) = y.comp (Ext.mk₀ f) (add_zero n) + y.comp (Ext.mk₀ g) (add_zero n)`. Simplify using `[Ext.mk₀_add]`. Conclude with `this x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma map_add_hom (f g : F ⟶ G) (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) :
     map (f + g) n U x = map f n U x + map g n U x := by
@@ -130,20 +130,20 @@ lemma map_add_hom (f g : F ⟶ G) (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) :
   exact this x
 
 /- English proof (translation)
-Simplify using `[res]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma res_id (n : ℕ) (U : C) (x : Sheaf.H'.{w'} F n U) : res F n (𝟙 U) x = x := by
   simp [res]
 
 /- English proof (translation)
-Simplify using `[res]`.
+Simplify using the standard rewrite rules.
 -/
 lemma res_comp (n : ℕ) {U V W : C} (i : V ⟶ U) (j : W ⟶ V) (x : Sheaf.H'.{w'} F n U) :
     res F n (j ≫ i) x = res F n j (res F n i x) := by
   simp [res]
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.congr_hom (((Sheaf.cohomologyPresheafFunctor.{w'} J n).map f).naturality i.op) x).symm`.
+A detailed English derivation is pending.
 -/
 lemma res_map (f : F ⟶ G) (n : ℕ) {U V : C} (i : V ⟶ U) (x : Sheaf.H'.{w'} F n U) :
     res G n i (map f n U x) = map f n V (res F n i x) :=
@@ -155,7 +155,7 @@ def equivZero (F : Sheaf J AddCommGrpCat.{v}) (U : C) :
   (Ext.addEquiv₀ (X := (freeYoneda J).obj U) (Y := F)).trans (freeYonedaHomAddEquiv U F)
 
 /- English proof (translation)
-Establish `: Ext.addEquiv₀.{w'} (Ext.mk₀ φ) = φ`. Apply `(Ext.mk₀_bijective _ _).injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Conclude with `congrArg (freeYonedaHomEquiv U F) this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma equivZero_mk₀ (U : C) (φ : (freeYoneda J).obj U ⟶ F) :
     equivZero.{w'} F U (Ext.mk₀ φ) = freeYonedaHomEquiv U F φ := by
@@ -165,7 +165,7 @@ lemma equivZero_mk₀ (U : C) (φ : (freeYoneda J).obj U ⟶ F) :
   exact congrArg (freeYonedaHomEquiv U F) this
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective ((freeYoneda J).obj U) F).surjective x`. Rewrite using `[map_apply, Ext.mk₀_comp_mk₀, equivZero_mk₀, equivZero_mk₀, freeYonedaHomEquiv_comp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma equivZero_map (f : F ⟶ G) (U : C) (x : Sheaf.H'.{w'} F 0 U) :
     equivZero G U (map f 0 U x) = f.hom.app (op U) (equivZero F U x) := by
@@ -173,7 +173,7 @@ lemma equivZero_map (f : F ⟶ G) (U : C) (x : Sheaf.H'.{w'} F 0 U) :
   rw [map_apply, Ext.mk₀_comp_mk₀, equivZero_mk₀, equivZero_mk₀, freeYonedaHomEquiv_comp]
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective ((freeYoneda J).obj U) F).surjective x`. Rewrite using `[res_apply, Ext.mk₀_comp_mk₀, equivZero_mk₀, equivZero_mk₀, freeYonedaHomEquiv_map_comp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma equivZero_res {U V : C} (i : V ⟶ U) (x : Sheaf.H'.{w'} F 0 U) :
     equivZero F V (res F 0 i x) = F.obj.map i.op (equivZero F U x) := by
@@ -181,7 +181,7 @@ lemma equivZero_res {U V : C} (i : V ⟶ U) (x : Sheaf.H'.{w'} F 0 U) :
   rw [res_apply, Ext.mk₀_comp_mk₀, equivZero_mk₀, equivZero_mk₀, freeYonedaHomEquiv_map_comp]
 
 /- English proof (translation)
-Apply `(equivZero G U).injective` to reduce the goal to its premises. Rewrite using `[equivZero_map, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_equivZero_symm (f : F ⟶ G) (U : C) (s : F.obj.obj (op U)) :
     map f 0 U ((equivZero.{w'} F U).symm s) = (equivZero G U).symm (f.hom.app (op U) s) := by
@@ -206,28 +206,28 @@ lemma δ_apply (n : ℕ) (U : C) (x : Ext.{w'} ((freeYoneda J).obj U) S.X₃ n) 
 include hS in
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ab_exact_iff_function_exact _).1 (Ext.covariant_sequence_exact₂' ((freeYoneda J).obj U) hS n)`.
+A detailed English derivation is pending.
 -/
 theorem exact₂ (n : ℕ) (U : C) : Function.Exact (map.{w'} S.f n U) (map.{w'} S.g n U) :=
   (ShortComplex.ab_exact_iff_function_exact _).1
     (Ext.covariant_sequence_exact₂' ((freeYoneda J).obj U) hS n)
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ab_exact_iff_function_exact _).1 (Ext.covariant_sequence_exact₃' ((freeYoneda J).obj U) hS n (n + 1) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exact₃ (n : ℕ) (U : C) : Function.Exact (map.{w'} S.g n U) (δ.{w'} hS n U) :=
   (ShortComplex.ab_exact_iff_function_exact _).1
     (Ext.covariant_sequence_exact₃' ((freeYoneda J).obj U) hS n (n + 1) rfl)
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.ab_exact_iff_function_exact _).1 (Ext.covariant_sequence_exact₁' ((freeYoneda J).obj U) hS n (n + 1) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exact₁ (n : ℕ) (U : C) : Function.Exact (δ.{w'} hS n U) (map.{w'} S.f (n + 1) U) :=
   (ShortComplex.ab_exact_iff_function_exact _).1
     (Ext.covariant_sequence_exact₁' ((freeYoneda J).obj U) hS n (n + 1) rfl)
 
 /- English proof (translation)
-The claim follows from `Ext.postcomp_mk₀_injective_of_mono ((freeYoneda J).obj U) f`.
+A detailed English derivation is pending.
 -/
 theorem map_zero_injective_of_mono {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) [Mono f]
     (U : C) : Function.Injective (map.{w'} f 0 U) :=
@@ -236,28 +236,28 @@ theorem map_zero_injective_of_mono {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ 
 include hS in
 
 /- English proof (translation)
-The claim follows from `have := hS.mono_f map_zero_injective_of_mono S.f U`.
+A detailed English derivation is pending.
 -/
 theorem injective_zero (U : C) : Function.Injective (map.{w'} S.f 0 U) :=
   have := hS.mono_f
   map_zero_injective_of_mono S.f U
 
 /- English proof (translation)
-The claim follows from `(exact₃ hS n U).apply_apply_eq_zero x`.
+A detailed English derivation is pending.
 -/
 @[simp] lemma δ_map (n : ℕ) (U : C) (x : Sheaf.H'.{w'} S.X₂ n U) :
     δ hS n U (map S.g n U x) = 0 :=
   (exact₃ hS n U).apply_apply_eq_zero x
 
 /- English proof (translation)
-The claim follows from `(exact₁ hS n U).apply_apply_eq_zero x`.
+A detailed English derivation is pending.
 -/
 @[simp] lemma map_δ (n : ℕ) (U : C) (x : Sheaf.H'.{w'} S.X₃ n U) :
     map S.f (n + 1) U (δ hS n U x) = 0 :=
   (exact₁ hS n U).apply_apply_eq_zero x
 
 /- English proof (translation)
-Establish `(y : Ext.{w'} ((freeYoneda J).obj U) S₁.X₃ n) : (y.comp h₁.extClass rfl).comp (Ext.mk₀ φ.τ₁) (add_zero (n + 1)) = (y.comp (Ext.mk₀ φ.τ₃) (add_zero n)).comp h₂.extClass rfl`. Rewrite using `[Ext.comp_assoc_of_third_deg_zero, Ext.comp_assoc_of_second_deg_zero, ShortComplex.ShortExact.extClass_naturality h₁ h₂ φ]`. Conclude with `this x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem δ_naturality {S₁ S₂ : ShortComplex (Sheaf J AddCommGrpCat.{v})} (h₁ : S₁.ShortExact)
     (h₂ : S₂.ShortExact) (φ : S₁ ⟶ S₂) (n : ℕ) (U : C) (x : Sheaf.H'.{w'} S₁.X₃ n U) :
@@ -270,7 +270,7 @@ theorem δ_naturality {S₁ S₂ : ShortComplex (Sheaf J AddCommGrpCat.{v})} (h�
   exact this x
 
 /- English proof (translation)
-Establish `(y : Ext.{w'} ((freeYoneda J).obj U) S.X₃ n) : (Ext.mk₀ ((freeYoneda J).map i)).comp (y.comp hS.extClass rfl) (zero_add (n + 1)) = ((Ext.mk₀ ((freeYoneda J).map i)).comp y (zero_add n)).comp hS.extClass rfl` using `(Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega)).symm`. Conclude with `this x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem δ_res (n : ℕ) {U V : C} (i : V ⟶ U) (x : Sheaf.H'.{w'} S.X₃ n U) :
     res S.X₁ (n + 1) i (δ hS n U x) = δ hS n V (res S.X₃ n i x) := by
@@ -283,9 +283,9 @@ theorem δ_res (n : ℕ) {U V : C} (i : V ⟶ U) (x : Sheaf.H'.{w'} S.X₃ n U) 
 include hS
 
 /- English proof (translation)
-Rewrite using `[exact₃ hS 0 U]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨equivZero S.X₂ U x, by rw [← equivZero_map, hx, AddEquiv.apply_symm_apply]⟩`. Introduce and unpack `⟨t, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, map_equivZero_symm S.g U t⟩`.
+Supply the required witnesses or components.
 -/
 theorem δ_equivZero_symm_eq_zero_iff (U : C) (s : S.X₃.obj.obj (op U)) :
     δ.{w'} hS 0 U ((equivZero S.X₃ U).symm s) = 0 ↔ ∃ t, S.g.hom.app (op U) t = s := by
@@ -297,21 +297,21 @@ theorem δ_equivZero_symm_eq_zero_iff (U : C) (s : S.X₃.obj.obj (op U)) :
     exact ⟨_, map_equivZero_symm S.g U t⟩
 
 /- English proof (translation)
-Introduce `s` and use `(δ_equivZero_symm_eq_zero_iff.{w'} hS U s).1 (@Subsingleton.elim _ h _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sections_surjective_of_subsingleton (U : C)
     (h : Subsingleton (Sheaf.H'.{w'} S.X₁ 1 U)) : Function.Surjective (S.g.hom.app (op U)) :=
   fun s => (δ_equivZero_symm_eq_zero_iff.{w'} hS U s).1 (@Subsingleton.elim _ h _ _)
 
 /- English proof (translation)
-Introduce `x` and use `((exact₁ hS n U) x).1 (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem δ_surjective_of_subsingleton (n : ℕ) (U : C)
     (h : Subsingleton (Sheaf.H'.{w'} S.X₂ (n + 1) U)) : Function.Surjective (δ.{w'} hS n U) :=
   fun x => ((exact₁ hS n U) x).1 (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `((exact₃ hS n U) x).1 hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem δ_injective_of_subsingleton (n : ℕ) (U : C)
     (h : Subsingleton (Sheaf.H'.{w'} S.X₂ n U)) : Function.Injective (δ.{w'} hS n U) := by
@@ -321,7 +321,7 @@ theorem δ_injective_of_subsingleton (n : ℕ) (U : C)
   rw [Subsingleton.elim y 0, map_zero]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `((exact₁ hS n U) x).1 hx`. Take `⟨z, rfl⟩` from `h y`. Conclude with `δ_map hS n U z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_f_injective_of_surjective (n : ℕ) (U : C)
     (h : Function.Surjective (map.{w'} S.g n U)) :
@@ -333,7 +333,7 @@ theorem map_f_injective_of_surjective (n : ℕ) (U : C)
   exact δ_map hS n U z
 
 /- English proof (translation)
-Use `map_f_injective_of_surjective hS 0 U fun x => ?_` and prove the remaining obligations. Take `⟨s, rfl⟩` from `(equivZero S.X₃ U).symm.surjective x`. Take `⟨t, rfl⟩` from `h s`. Conclude with `⟨_, map_equivZero_symm S.g U t⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_f_one_injective_of_sections_surjective (U : C)
     (h : Function.Surjective (S.g.hom.app (op U))) : Function.Injective (map.{w'} S.f 1 U) := by
@@ -343,7 +343,7 @@ theorem map_f_one_injective_of_sections_surjective (U : C)
   exact ⟨_, map_equivZero_symm S.g U t⟩
 
 /- English proof (translation)
-The claim follows from `subsingleton_of_forall_eq 0 fun x => by obtain ⟨y, rfl⟩ := ((exact₂ hS n U) x).1 (Subsingleton.elim _ _) rw [Subsingleton.elim y 0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton₂ (n : ℕ) (U : C) (h₁ : Subsingleton (Sheaf.H'.{w'} S.X₁ n U))
     (h₃ : Subsingleton (Sheaf.H'.{w'} S.X₃ n U)) : Subsingleton (Sheaf.H'.{w'} S.X₂ n U) :=
@@ -352,14 +352,14 @@ theorem subsingleton₂ (n : ℕ) (U : C) (h₁ : Subsingleton (Sheaf.H'.{w'} S.
     rw [Subsingleton.elim y 0, map_zero]
 
 /- English proof (translation)
-The claim follows from `(δ_injective_of_subsingleton hS n U h₂).subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton₃ (n : ℕ) (U : C) (h₂ : Subsingleton (Sheaf.H'.{w'} S.X₂ n U))
     (h₁ : Subsingleton (Sheaf.H'.{w'} S.X₁ (n + 1) U)) : Subsingleton (Sheaf.H'.{w'} S.X₃ n U) :=
   (δ_injective_of_subsingleton hS n U h₂).subsingleton
 
 /- English proof (translation)
-The claim follows from `(δ_surjective_of_subsingleton hS n U h₂).subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton₁ (n : ℕ) (U : C) (h₃ : Subsingleton (Sheaf.H'.{w'} S.X₃ n U))
     (h₂ : Subsingleton (Sheaf.H'.{w'} S.X₂ (n + 1) U)) :
@@ -367,14 +367,14 @@ theorem subsingleton₁ (n : ℕ) (U : C) (h₃ : Subsingleton (Sheaf.H'.{w'} S.
   (δ_surjective_of_subsingleton hS n U h₂).subsingleton
 
 /- English proof (translation)
-The claim follows from `(injective_zero hS U).subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton₁_zero (U : C) (h₂ : Subsingleton (Sheaf.H'.{w'} S.X₂ 0 U)) :
     Subsingleton (Sheaf.H'.{w'} S.X₁ 0 U) :=
   (injective_zero hS U).subsingleton
 
 /- English proof (translation)
-The claim follows from `(map_f_one_injective_of_sections_surjective hS U h).subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton₁_one_of_sections_surjective (U : C)
     (h : Function.Surjective (S.g.hom.app (op U)))
@@ -393,7 +393,7 @@ variable {C : Type u'} [Category.{v'} C] {J : GrothendieckTopology C} (R : Sheaf
   [HasSheafify J AddCommGrpCat.{v}] [J.WEqualsLocallyBijective AddCommGrpCat.{v}]
 
 /- English proof (translation)
-Set `e : F ≅ (F ⋙ SheafOfModules.forget R) ⋙ PresheafOfModules.sheafification (𝟙 R.obj)` to `Functor.isoWhiskerLeft F (asIso (PresheafOfModules.sheafificationAdjunction (𝟙 R.obj)).counit).symm`. Establish `h1 : PreservesColimitsOfShape K (PresheafOfModules.sheafification.{v} (𝟙 R.obj) ⋙ SheafOfModules.toSheaf.{v} R)` using `inferInstanceAs (PreservesColimitsOfShape K (PresheafOfModules.toPresheaf R.obj ⋙ presheafToSheaf J AddCommGrpCat.{v}))`. Establish `h2 : PreservesColimit ((F ⋙ SheafOfModules.forget R) ⋙ PresheafOfModules.sheafification (𝟙 R.obj)) (SheafOfModules.toSheaf.{v} R)` using `preservesColimit_of_preserves_colimit_cocone (isColimitOfPreserves (PresheafOfModules.sheafification.{v} (𝟙 R.obj)) (colimit.isColimit (F ⋙ SheafOfModules.forget R))) (isColimitOfPreserves (PresheafOfModules.sheafification.{v} (𝟙 R.obj) ⋙ SheafOfModules.toSheaf.{v} R) (colimit.is …`. Conclude with `preservesColimit_of_iso_diagram _ e.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toSheaf_preservesColimitsOfShape (K : Type*) [Category K]
     [HasColimitsOfShape K AddCommGrpCat.{v}] :
@@ -421,7 +421,7 @@ instance toSheaf_preservesFiniteColimits :
   preservesFiniteColimits K _ _ := toSheaf_preservesColimitsOfShape R K
 
 /- English proof (translation)
-The claim follows from `hS.map_of_exact _`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_map_toSheaf {S : ShortComplex (SheafOfModules.{v} R)} (hS : S.ShortExact) :
     (S.map (SheafOfModules.toSheaf.{v} R)).ShortExact :=
@@ -471,14 +471,14 @@ Both sides reduce to the same expression.
     ((toAbSheaf X).map φ).hom = φ.mapPresheaf := rfl
 
 /- English proof (translation)
-The claim follows from `hS.map_of_exact _`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_map_toAbSheaf {S : ShortComplex X.Modules} (hS : S.ShortExact) :
     (S.map (toAbSheaf X)).ShortExact :=
   hS.map_of_exact _
 
 /- English proof (translation)
-The claim follows from `S.exact_map_iff_of_faithful _`.
+A detailed English derivation is pending.
 -/
 theorem exact_map_toAbSheaf_iff (S : ShortComplex X.Modules) :
     (S.map (toAbSheaf X)).Exact ↔ S.Exact :=

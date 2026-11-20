@@ -3,9 +3,9 @@ import Mathlib
 namespace PI.MassDataKppVolLemmas
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun c => f (Function.surjInv hq c)) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `c c' hcc`. Establish `h1` using `(h (Function.surjInv hq c) (Function.surjInv hq c')).2 hcc`. Simplify `h1` using `only [Function.surjInv_eq hq]`. Introduce `b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `hf b`. Conclude with `⟨q a, (h _ _).1 (Function.surjInv_eq hq (q a))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem natCard_eq_of_surjective_of_same_fibres {α β γ : Type*} (q : α → γ) (f : α → β)
     (hq : Function.Surjective q) (hf : Function.Surjective f)
@@ -19,9 +19,9 @@ private theorem natCard_eq_of_surjective_of_same_fibres {α β γ : Type*} (q : 
     exact ⟨q a, (h _ _).1 (Function.surjInv_eq hq (q a))⟩
 
 /- English proof (translation)
-Unfold `Subgroup.index`. Rewrite using `[← Nat.card_pi]`. Use `natCard_eq_of_surjective_of_same_fibres (fun a : A => (a : A ⧸ S)) (fun a i => ((ψ i a : B i) : B i ⧸ T i)) QuotientGroup.mk_surjective ?_ ?_` and prove the remaining obligations. Introduce `f choose g hg using fun i => QuotientGroup.mk_surjective (f i)`. Take `⟨a, ha⟩` from `hsurj g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, funext fun i => by simp only [ha, hg]⟩`. Introduce `a b`. Simplify using `only [funext_iff, QuotientGroup.eq, hmem, map_mul, map_inv]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem index_eq_prod_index_of_surjective_prod {A : Type*} [Group A] (S : Subgroup A) {ι : Type*}
     [Fintype ι] {B : ι → Type*} [∀ i, Group (B i)] (T : ∀ i, Subgroup (B i))
@@ -40,11 +40,11 @@ private theorem index_eq_prod_index_of_surjective_prod {A : Type*} [Group A] (S 
     simp only [funext_iff, QuotientGroup.eq, hmem, map_mul, map_inv]
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩ : ∃ ψ : ∀ i, K →* Lp i, ∀ i (a : K), ((ψ i a : Lp i) : Gp i) = π i a` from `⟨fun i => ((π i).comp K.subtype).codRestrict (Lp i) (fun z => hK i z z.2), fun _ _ => rfl⟩`. Establish `hs : ∀ f : ∀ i, Lp i, ∃ a : K, ∀ i, ψ i a = f i`. Introduce `f`. Take `⟨z, hzK, hz⟩` from `hsurj f`. Conclude with `⟨⟨z, hzK⟩, fun i => Subtype.ext ((hψ i ⟨z, hzK⟩).trans (hz i))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hm : ∀ a : K, a ∈ K2.subgroupOf K ↔ ∀ i, ψ i a ∈ (K2.map (π i)).subgroupOf (Lp i)`. Introduce `a`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_map, hψ]`. Conclude with `⟨fun ha _ => ⟨(a : G), ha, rfl⟩, fun h => hloc a a.2 h⟩`. Establish `key` using `index_eq_prod_index_of_surjective_prod (K2.subgroupOf K) (fun i => (K2.map (π i)).subgroupOf (Lp i)) ψ hs hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem IdxAbs_relIndex {G : Type} [Group G] (K K2 : Subgroup G) {ι : Type} [Fintype ι]
     {Gp : ι → Type} [∀ i, Group (Gp i)] (π : ∀ i, G →* Gp i) (Lp : ∀ i, Subgroup (Gp i))

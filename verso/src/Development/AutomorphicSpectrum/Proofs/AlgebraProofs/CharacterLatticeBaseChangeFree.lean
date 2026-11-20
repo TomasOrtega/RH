@@ -28,9 +28,9 @@ abbrev swp (Γ : AddSubgroup (V × Z)) : AddSubgroup (Z × V) :=
 
 omit [Module Ω V] [Module Ω Z] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, y⟩, h, e⟩`. Establish `e' : (y, x) = (u, v)` using `e`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj e'`. Conclude with `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨(v, u), h, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_swp {Γ : AddSubgroup (V × Z)} {u : Z} {v : V} : (u, v) ∈ swp Γ ↔ (v, u) ∈ Γ := by
   constructor
@@ -43,9 +43,9 @@ theorem mem_swp {Γ : AddSubgroup (V × Z)} {u : Z} {v : V} : (u, v) ∈ swp Γ 
 
 omit [Module Ω V] [Module Ω Z] in
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨u, v⟩, h, rfl⟩`. Conclude with `⟨(v, u), mem_swp.1 h, rfl⟩`. Introduce and unpack `⟨⟨u, v⟩, h, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(v, u), mem_swp.2 h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_fst_swp (Γ : AddSubgroup (V × Z)) :
     (swp Γ).map (AddMonoidHom.fst Z V) = Γ.map (AddMonoidHom.snd V Z) := by
@@ -57,7 +57,7 @@ theorem map_fst_swp (Γ : AddSubgroup (V × Z)) :
     exact ⟨(v, u), mem_swp.2 h, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `a ha ⟨u, v⟩ h`. Use `hs a ha _ (mem_swp.1 h)` as an intermediate fact. Conclude with `mem_swp.2 this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem swp_stable {Γ : AddSubgroup (V × Z)} (hs : ∀ a ∈ R, ∀ v ∈ Γ, a • v ∈ Γ) :
     ∀ a ∈ R, ∀ v ∈ swp Γ, a • v ∈ swp Γ := by
@@ -68,11 +68,11 @@ theorem swp_stable {Γ : AddSubgroup (V × Z)} (hs : ∀ a ∈ R, ∀ v ∈ Γ, 
 include hR in
 
 /- English proof (translation)
-Establish `key` using `(GlobalTheory.T.locally_free_base_change_quotient R RC hR b' b hb' hb (swp Γ) ⊥ N (swp_stable R hs) (by rw [map_fst_swp]; exact hf) bot_le (by`. Introduce `a _ v hv`. Rewrite `hv`, the goal using `[AddSubgroup.mem_bot]`. Rewrite using `[hv, smul_zero])).2`. Establish `hcom : (swp Γ).comap (AddMonoidHom.inr Z V) = Γ.comap (AddMonoidHom.inl V Z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_comap, AddMonoidHom.inr_apply, AddMonoidHom.inl_apply]`. Conclude with `mem_swp`. Rewrite `key` using `[hcom, spanOver_swap RC b' b Γ]`. Rewrite using `[← key]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_comap, AddMonoidHom.inr_apply, AddMonoidHom.inl_apply]`. Conclude with `(mem_swp (Γ := spanOver RC (Prod.map b b' '' Γ))).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comap_inl (hb : IsBaseChange C b) (hb' : IsBaseChange C b')
     (Γ : AddSubgroup (V × Z)) (N : ℕ) (hs : ∀ a ∈ R, ∀ v ∈ Γ, a • v ∈ Γ)
@@ -98,11 +98,11 @@ theorem comap_inl (hb : IsBaseChange C b) (hb' : IsBaseChange C b')
 include hR in
 
 /- English proof (translation)
-Establish `key` using `(GlobalTheory.T.locally_free_base_change_quotient R RC hR b' b hb' hb (swp Γ) H N (swp_stable R hs) (by rw [map_fst_swp]; exact hf) (by rw [map_fst_swp]; exact hle) hH).1`. Establish `hres : swp Γ ⊓ H.prod (⊤ : AddSubgroup V) = swp (Γ ⊓ (⊤ : AddSubgroup V).prod H : AddSubgroup (V × Z))`. Use extensionality with `⟨u, v⟩`. Rewrite using `[mem_swp]`. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_prod, AddSubgroup.mem_top, and_true, true_and]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_swp]`. Rewrite `key` using `[hres, spanOver_swap RC b' b Γ, spanOver_swap RC b' b]`. Use extensionality with `⟨x, y⟩`. Use `SetLike.ext_iff.1 key (y, x)` as an intermediate fact. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_prod, AddSubgroup.mem_top, and_true, true_and] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[mem_swp (Γ := spanOver RC (Prod.map b b' '' Γ)), mem_swp (Γ := spanOver RC (Prod.map b b' '' _))]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_top_prod (hb : IsBaseChange C b) (hb' : IsBaseChange C b')
     (Γ : AddSubgroup (V × Z)) (H : AddSubgroup Z) (N : ℕ) (hs : ∀ a ∈ R, ∀ v ∈ Γ, a • v ∈ Γ)
@@ -144,29 +144,29 @@ variable {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [Algeb
 include hR in
 
 /- English proof (translation)
-Use `set T : AddSubgroup (B × S) := Del ⊓ hh.prod (⊤ : AddSubgroup S) with hT`. Use `set K : AddSubgroup B := T.comap (AddMonoidHom.inl B S) with hK`. Establish `hTs : ∀ x ∈ R, ∀ v ∈ T, x • v ∈ T`. Introduce and unpack `x hx ⟨u, v⟩ h`. Take `⟨h1, h2⟩` from `AddSubgroup.mem_inf.1 h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `AddSubgroup.mem_inf.2 ⟨hDs x hx _ h1, ?_⟩` and prove the remaining obligations. Conclude with `AddSubgroup.mem_prod.2 ⟨hhs x hx _ (AddSubgroup.mem_prod.1 h2).1, AddSubgroup.mem_top _⟩`. Establish `hKs : ∀ x ∈ R, ∀ v ∈ K, x • v ∈ K`. Introduce `x hx v hv`. Use `hTs x hx _ hv` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[hK]`. Establish `hKhh : K ≤ hh` using `fun v hv => (AddSubgroup.mem_prod.1 (AddSubgroup.mem_inf.1 hv).2).1`. Establish `hKG : K ≤ Gam.map (AddMonoidHom.snd A B)`. Rewrite using `[hGD]`. Conclude with `fun v hv => (AddSubgroup.mem_inf.1 hv).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(GlobalTheory.T.locally_free_base_change_quotient R RC hR b c hb hc Del hh n₁ hDs f₁ hle hhs).1`. Establish `e2` using `comap_inl R RC hR b c hb hc T n₂ hTs f₂`. Establish `e3` using `comap_inl R RC hR b c hb hc Del n₂ hDs f₃`. Establish `e4 : (spanOver RC (Prod.map a b '' Gam)).map (AddMonoidHom.snd Ac Bc) = spanOver RC (b '' Gam.map (AddMonoidHom.snd A B))`. Use `SpanExact.map_spanOver RC (Prod.map a b '' (Gam : Set (A × B))) (LinearMap.snd C Ac Bc)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `Eq.trans this ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨⟨u, v⟩, h, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨v, ⟨(u, v), h, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨⟨u, v⟩, h, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨(u, v), h, rfl⟩, rfl⟩`. Establish `e5` using `inf_top_prod R RC hR a b ha hb Gam K n₃ hGs f₄ hKG hKs`. Establish `hspan : spanOver RC (b '' K) ≤ spanOver RC (b '' hh)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, e, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨x, hx, _, ⟨v, hKhh hv, rfl⟩, rfl⟩`. Establish `e6 : spanOver RC (Prod.map a b '' Gam) ⊓ (⊤ : AddSubgroup Ac).prod (spanOver RC (b '' hh)) = spanOver RC (Prod.map a b '' Gam) ⊓ (⊤ : AddSubgroup Ac).prod (spanOver RC (b '' K))`. Use extensionality with `⟨x, y⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_prod, AddSubgroup.mem_top, true_and]`. Use `⟨fun ⟨h1, h2⟩ => ⟨h1, ?_⟩, fun ⟨h1, h2⟩ => ⟨h1, hspan h2⟩⟩` and prove the remaining obligations. Establish `h3 : y ∈ (spanOver RC (Prod.map a b '' Gam)).map (AddMonoidHom.snd Ac Bc)` using `⟨(x, y), h1, rfl⟩`. Rewrite `h3` using `[e4, hGD, ← e3]`. Establish `h4 : (y, (0 : Sc)) ∈ spanOver RC (Prod.map b c '' Del) ⊓ (spanOver RC (b '' hh)).prod (⊤ : AddSubgroup Sc)` using `AddSubgroup.mem_inf.2 ⟨h3, AddSubgroup.mem_prod.2 ⟨h2, AddSubgroup.mem_top _⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[e1]`. Rewrite using `[← e2]`. Conclude with `h4`. Establish `e7 : (Gam ⊓ (⊤ : AddSubgroup A).prod K : AddSubgroup (A × B)) = Gam ⊓ (⊤ : AddSubgroup A).prod hh`. Use extensionality with `⟨x, y⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_prod, AddSubgroup.mem_top, true_and]`. Use `⟨fun ⟨h1, h2⟩ => ⟨h1, hKhh h2⟩, fun ⟨h1, h2⟩ => ⟨h1, ?_⟩⟩` and prove the remaining obligations. Establish `h3 : y ∈ Gam.map (AddMonoidHom.snd A B)` using `⟨(x, y), h1, rfl⟩`. Rewrite `h3` using `[hGD]`. Conclude with `AddSubgroup.mem_inf.2 ⟨h3, AddSubgroup.mem_prod.2 ⟨h2, AddSubgroup.mem_top _⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[e6, e5, e7]`. Use `SpanExact.map_spanOver RC (Prod.map a b '' ((Gam ⊓ (⊤ : AddSubgroup A).prod hh : AddSubgroup (A × B)) : Set (A × B))) (LinearMap.fst C Ac Bc)` as an intermediate fact. Use `Eq.trans this ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨⟨u, v⟩, h, rfl⟩, rfl⟩`. Conclude with `⟨u, ⟨(u, v), h, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨⟨u, v⟩, h, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨(u, v), h, rfl⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem core (ha : IsBaseChange C a) (hb : IsBaseChange C b) (hc : IsBaseChange C c)
     (Gam : AddSubgroup (A × B)) (Del : AddSubgroup (B × S)) (hh : AddSubgroup B) (n₁ n₂ n₃ : ℕ)
@@ -256,13 +256,11 @@ theorem core (ha : IsBaseChange C a) (hb : IsBaseChange C b) (hc : IsBaseChange 
 end Core
 
 /- English proof (translation)
-Rewrite using `[mem_stdLat]`. Introduce `j`. Establish `h1 : (Pi.single j 1 : Fin n → Ω) ∈ stdLat R (Fin n)`. Rewrite using `[mem_stdLat]`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `R.one_mem`. Conclude with `R.zero_mem`. Establish `hl : w • (Pi.single j 1 : Fin n → Ω) ∈ D.af R p χ` using `hw ⟨_, h1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `LieLatticeData.hh dotDual at hv`. Simplify using `only [AddSubgroup.mem_iInf] at hv`. Establish `h2 : (w • (Pi.single j 1 : Fin n → Ω)) ⬝ᵥ v ∈ R` using `hv _ hl`. Establish `h3 : (w • (Pi.single j 1 : Fin n → Ω)) ⬝ᵥ v = (w • v) j`. Simplify using `[smul_dotProduct, single_one_dotProduct]`.
-
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smul_mem_stdLat_of_mem_hh {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type}
     [Zero F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s)
@@ -288,25 +286,25 @@ theorem smul_mem_stdLat_of_mem_hh {o Ω : Type} [CommRing o] [Field Ω] [Algebra
   rwa [h3] at h2
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hcd hB hG₁ hG₂ hw C _ _ _ _ RC hR τ`. Take `⟨h1a, h1b⟩` from `GlobalTheory.T.lattice_good_base_change D R p w χ hcd hB hG₁`. Establish `hhh` using `(h1b C RC hR).2 τ |>.2.1`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨hp, -, ⟨c, -, hc⟩, -⟩` from `hcd`. Conclude with `hp (by simpa using hc)`. Establish `hhfree : LocFree R n (D.hh R p (χ τ))` using `(h1a τ).2.1`. Take `⟨hdF, hdS, hd0, hdG⟩` from `hB.del τ`. Take `⟨-, -, -, hOm⟩` from `hB.free τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGs` using `(fun x hx => (hB.stable τ x hx).1)`. Establish `hDs` using `(fun x hx => (hB.stable τ x hx).2.1)`. Establish `eF : (D.Del τ).map (AddMonoidHom.fst _ _) = divLat w (stdLat R (Fin n))`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨x, y⟩, h, rfl⟩`. Conclude with `(hdF x).1 ⟨y, h⟩`. Introduce `hv`. Take `⟨y, hy⟩` from `(hdF v).2 hv`. Conclude with `⟨(v, y), hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `eS : (D.Del τ).map (AddMonoidHom.snd _ _) = divLat w (D.omHT τ)`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, y⟩, h, rfl⟩`. Conclude with `(hdS y).1 ⟨x, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hv`. Take `⟨y, hy⟩` from `(hdS v).2 hv`. Conclude with `⟨(y, v), hy, rfl⟩`. Establish `hGD : (D.Gam τ).map (AddMonoidHom.snd _ _) = (D.Del τ).comap (AddMonoidHom.inl _ _)`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, y⟩, h, rfl⟩`. Conclude with `(hdG y).2 ⟨x, h⟩`. Introduce `hv`. Take `⟨y, hy⟩` from `(hdG v).1 hv`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨(y, v), hy, rfl⟩`. Establish `hG2 : LocFree R n ((D.Gam τ).map (AddMonoidHom.snd _ _))`. Rewrite using `[hGD]`. Use `(LocFreeSchanuel.main R n (s τ) (divLat w (stdLat R (Fin n))) (divLat w (D.omHT τ)) (D.omHT τ) (D.Del τ) (LatticeGoodness.locFree_divLat R hw0 (LatticeGoodness.locFree_stdLat R n)) (LatticeGoodness.locFree_divLat R hw0 hOm) hOm hDs ?_ ?_ hd0 ?_).2` and prove the remaining obligations. Introduce `v y h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `⟨(hdF v).1 ⟨y, h⟩, (hdS y).1 ⟨v, h⟩⟩`. Conclude with `fun v hv => (hdF v).2 hv`. Conclude with `fun y hy => (hdS y).2 hy`. Establish `hle : D.hh R p (χ τ) ≤ (D.Del τ).map (AddMonoidHom.fst _ _)`. Rewrite using `[eF]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun v hv => smul_mem_stdLat_of_mem_hh D R p w (χ τ) (hw τ) hv`. Establish `key` using `core R RC hR (bcMap Ω C (Fin (r τ))) (bcMap Ω C (Fin n)) (bcMap Ω C (Fin (s τ))) (LatticeGoodness.isBaseChange_bcMap Ω C _) (LatticeGoodness.isBaseChange_bcMap Ω C _) (LatticeGoodness.isBaseChange_bcMap Ω C _) (D.Gam τ) (D.Del τ) (D.hh R p (χ τ)) n (s τ) n hGs hDs hhfree.1 (by rw …`. Unfold `LieLatticeData.kerH`. Rewrite using `[hhh]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → D.Good₂ R p χ → (∀ τ, mulLat w (stdLat R _) ≤ D.af R p (χ τ)) → ∀ (C : Type) [Field C] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → ∀ τ, (D.bc RC).kerH RC p τ (fun a => algebraMap Ω C (χ τ a)) = spanOver RC (bcMap Ω C _ '' D.kerH R p τ (χ τ)) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hcd hB hG₁ hG₂ hw C _ _ _ _ RC hR τ

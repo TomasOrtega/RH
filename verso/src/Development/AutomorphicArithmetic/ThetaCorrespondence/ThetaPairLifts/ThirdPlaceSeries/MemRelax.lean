@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.LevOnto
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word} {a : _root_.GlobalTheory.Fam.GeometricFamily W u}
 /- English proof (translation)
-Establish `h1` using `(_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hTr t J hJ).2 i`. Establish `h2` using `(_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hTr t₂ J₂ hJ₂).2 i₂`. Conclude with `hW.pk.sel _ _ ⟨t, J.mem i⟩ ⟨t₂, J₂.mem i₂⟩ (h1.symm.trans (h.trans h2))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pl_eq_of_quadratic_data_same_place (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) (hTr : a.True) {t t₂ : W.P.T} (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (hJ : J.Reads) (J₂ : _root_.GlobalTheory.Fam.QuadraticExtensionData a t₂)
     (hJ₂ : J₂.Reads) (i : Fin J.r) (i₂ : Fin J₂.r) (h : (J.G i).q.v = (J₂.G i₂).q.v) : J.pl i = J₂.pl i₂ := by
@@ -30,7 +30,7 @@ theorem pl_eq_of_quadratic_data_same_place (hW : _root_.GlobalTheory.Fam.AllFami
   have h2 := (_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hTr t₂ J₂ hJ₂).2 i₂
   exact hW.pk.sel _ _ ⟨t, J.mem i⟩ ⟨t₂, J₂.mem i₂⟩ (h1.symm.trans (h.trans h2))
 /- English proof (translation)
-The claim follows from `((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 (hgl y)).symm`.
+A detailed English derivation is pending.
 -/
 theorem locHom_gl_eq_self_of_map_pr_eq (j : ℕ) {PP} (h₁ h₂ : _root_.GlobalTheory.Fam.QAllAlt W PP) (hj₁ : j ≤ (a.Q PP h₁).s + 1) (hj₂ : j ≤ (a.Q PP h₂).s + 1)
     (gl : GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (a.Q PP h₂).k →* GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))
@@ -42,13 +42,11 @@ end
 namespace GlobalTheory.LevOnto
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word} {a : _root_.GlobalTheory.Fam.GeometricFamily W u}
 /- English proof (translation)
-Establish `hAt : ∀ P : GlobalTheory.FinPl.Pl (I.rec7 l Z) → Prop, P (J₂.G i).q.v → gl y ∈ GlobalTheory.FinPl.grpAt _ P` using `GlobalTheory.SuppGrp.mem_grpAt_of_suppAt _ _ _ _ _ (hgl y).1`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨?_, GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ (hAt (· = (J₂.G i).q.v) rfl)⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : _root_.GlobalTheory.LevProd.quadraticTwistAtPlace J (J₂.G i).q.v`. Conclude with `Subgroup.mem_sup_right (hAt _ hv)`. Conclude with `Subgroup.mem_sup_left (_root_.GlobalTheory.T.true_geometry_lattice_open_alt W hW u a ha hTr j hj t J hJ α t₂ J₂ hJ₂ i hv gl hgl y hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.mem_comap, Subgroup.mem_pi]`. Introduce `i' _`. Use `show GlobalTheory.LevIdx.locHom (J.G i').q _ ((J.G i').FX j _) (gl y) ∈ KO (J.G i').k _`. Distinguish the cases in `hv : (J.G i').q.v = (J₂.G i).q.v`. Establish `e` using `_root_.GlobalTheory.LevOnto.pl_eq_of_quadratic_data_same_place hW ha hTr J hJ J₂ hJ₂ i' i hv`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ P (hP : P ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t) (hj₁ : j ≤ (a.Q P ⟨t, hP⟩).s + 1), P = J₂.pl i → GlobalTheory.LevIdx.locHom (a.Q P ⟨t, hP⟩).q _ ((a.Q P ⟨t, hP⟩).FX j hj₁) (gl y) ∈ KO (a.Q P ⟨t, hP⟩).k (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j)`. Introduce and unpack `P hP hj₁ rfl`. Rewrite using `[_root_.GlobalTheory.LevOnto.locHom_gl_eq_self_of_map_pr_eq j _ _ hj₁ _ gl (fun y => (hgl y).2) y]`. Conclude with `hy`. Conclude with `key _ (J.mem i') _ e`.
-
-Rewrite using `[locHom_eq_one (J₂.G i).q (J.G i').q _ _ (gl y) (hgl y).1 (Ne.symm hv)]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gl_mem_relax_of_supp_at_and_map_pr (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j + 2 ≤ B.R.m) {t t₂ : W.P.T} (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (hJ : J.Reads)
     (α : J.Ch j) (J₂ : _root_.GlobalTheory.Fam.QuadraticExtensionData a t₂) (hJ₂ : J₂.Reads) (i : Fin J₂.r)
@@ -77,17 +75,15 @@ theorem gl_mem_relax_of_supp_at_and_map_pr (hW : _root_.GlobalTheory.Fam.AllFami
     · rw [locHom_eq_one (J₂.G i).q (J.G i').q _ _ (gl y) (hgl y).1 (Ne.symm hv)]
       exact one_mem _
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α x hx`. Establish `hex : ∃ t, ∃ J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t, J.Reads ∧ Nonempty (J.Ch j)` using `⟨t, J, hJ, ⟨α⟩⟩`. Establish `hUp : _root_.GlobalTheory.LevProd.upperLevelSubgroup a j hj = _root_.GlobalTheory.LevProd.relaxedLevelSubgroup hex.choose_spec.choose j hj hex.choose_spec.choose_spec.2.some`. Unfold `_root_.GlobalTheory.LevProd.upperLevelSubgroup`. Rewrite using `[dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ₀ : hex.choose_spec.choose.Reads` using `hex.choose_spec.choose_spec.1`. Establish `hgl` using `fun i : Fin J.r => GlobalTheory.LocEmb.exists_gl _ _ (J.G i).q ((I.rec7 l Z).sp.X j) (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) ((J.G i).FX j (by have := _root_.GlobalTheory.LevProd.step_index_le_s_alt J i hj; omega))`. Use `choose gl _ hglp _ using hgl`. Use `⟨((List.finRange J.r).map fun i => gl i (x i)).prod, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hUp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subgroup.list_prod_mem` to reduce the goal to its premises. Introduce `g hg`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `_root_.GlobalTheory.LevOnto.gl_mem_relax_of_supp_at_and_map_pr hW ha hTr j hj _ hJ₀ _ J hJ i (gl i) (hglp i) (x i) (hx i)`. Rewrite using `[map_list_prod, List.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hphi : ∀ i, _root_.GlobalTheory.LevProd.localHomProduct J j hj (gl i (x i)) = Pi.mulSingle i (x i)`. Introduce `i`. Use function extensionality and compare the values at `i'`. Use `show GlobalTheory.LevIdx.locHom (J.G i').q _ ((J.G i').FX j _) (gl i (x i)) = _`. Distinguish the cases in `h : i' = i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 ((hglp i' (x i')).2)).symm`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Use `locHom_eq_one (J.G i).q (J.G i').q _ _ _ (hglp i (x i)).1 fun hv => h ?_` and prove the remaining obligations.
-
-Conclude with `hJ.inj (_root_.GlobalTheory.LevOnto.pl_eq_of_quadratic_data_same_place hW ha hTr J hJ J hJ i' i hv.symm)`. Simplify using `only [Function.comp_def, hphi]`. Conclude with `list_prod_mulSingle x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem onto_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → J.Ch j → ∀ x : (i : Fin J.r) → GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J.G i).k, (∀ i, x i ∈ KO (J.G i).k _) → ∃ g ∈ _root_.GlobalTheory.LevProd.upperLevelSubgroup a j hj, _root_.GlobalTheory.LevProd.localHomProduct J j hj g = x := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α x hx

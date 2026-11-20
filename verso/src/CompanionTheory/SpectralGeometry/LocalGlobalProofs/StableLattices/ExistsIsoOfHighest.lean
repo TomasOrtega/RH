@@ -37,13 +37,13 @@ Both sides reduce to the same expression.
 @[simp] theorem sndL_pair (x : V) (y : V') : sndL V V' (pair x y) = y := rfl
 
 /- English proof (translation)
-The claim follows from `WithLp.ofLp_injective _ (Prod.ext h₁ h₂)`.
+A detailed English derivation is pending.
 -/
 theorem ext2 {x y : WithLp 2 (V × V')} (h₁ : fstL V V' x = fstL V V' y) (h₂ : sndL V V' x = sndL V V' y) : x = y :=
   WithLp.ofLp_injective _ (Prod.ext h₁ h₂)
 
 /- English proof (translation)
-The claim follows from `WithLp.prod_inner_apply x y`.
+A detailed English derivation is pending.
 -/
 theorem inner_eq (x y : WithLp 2 (V × V')) :
     ⟪x, y⟫_ℂ = ⟪fstL V V' x, fstL V V' y⟫_ℂ + ⟪sndL V V' x, sndL V V' y⟫_ℂ :=
@@ -69,9 +69,9 @@ Both sides reduce to the same expression.
     sndL V V' (sumE E E' a b x) = E' a b (sndL V V' x) := rfl
 
 /- English proof (translation)
-Introduce `a b c d`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h₁` using `LinearMap.congr_fun (hE a b c d) (fstL V V' x)`. Establish `h₂` using `LinearMap.congr_fun (hE' a b c d) (sndL V V' x)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ext2 ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases p : b = c <;> by_cases q : d = a <;> simp_all`. Apply the tactic sequence `by_cases p : b = c <;> by_cases q : d = a <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_sumE (hE : GlRel E) (hE' : GlRel E') : GlRel (sumE E E') := by
   intro a b c d
@@ -84,16 +84,16 @@ theorem glRel_sumE (hE : GlRel E) (hE' : GlRel E') : GlRel (sumE E E') := by
   · by_cases p : b = c <;> by_cases q : d = a <;> simp_all
 
 /- English proof (translation)
-Introduce `a b hab x y`. Rewrite using `[inner_eq, inner_eq, fstL_sumE, sndL_sumE, fstL_sumE, sndL_sumE, hU a b hab, hU' a b hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem kUnit_sumE {ε : Fin n → Bool} (hU : KUnit ε E) (hU' : KUnit ε E') : KUnit ε (sumE E E') := by
   intro a b hab x y
   rw [inner_eq, inner_eq, fstL_sumE, sndL_sumE, fstL_sumE, sndL_sumE, hU a b hab, hU' a b hab]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨S, hS, hk, hx⟩` from `hF (fstL V V' x)`. Take `⟨S', hS', hk', hx'⟩` from `hF' (sndL V V' x)`. Establish `hfg : (S.prod S').FG` using `Submodule.FG.prod (Module.Finite.iff_fg.1 hS) (Module.Finite.iff_fg.1 hS')`. Use `⟨(S.prod S').map (WithLp.linearEquiv 2 ℂ (V × V')).symm.toLinearMap, Module.Finite.iff_fg.2 (hfg.map _), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a b hab _ ⟨y, ⟨hy₁, hy₂⟩, rfl⟩`. Conclude with `⟨(E a b y.1, E' a b y.2), ⟨hk a b hab _ hy₁, hk' a b hab _ hy₂⟩, rfl⟩`. Conclude with `⟨(fstL V V' x, sndL V V' x), ⟨hx, hx'⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem locFin_sumE {ε : Fin n → Bool} (hF : LocFin ε E) (hF' : LocFin ε E') : LocFin ε (sumE E E') := by
   intro x
@@ -108,7 +108,7 @@ theorem locFin_sumE {ε : Fin n → Bool} (hF : LocFin ε E) (hF' : LocFin ε E'
   · exact ⟨(fstL V V' x, sndL V V' x), ⟨hx, hx'⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by rw [← fstL_sumE (E' := E'), h.1 a, map_smul], fun a b hab he => by rw [← fstL_sumE (E' := E'), h.2 a b hab he, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem kHighest_fst {ε : Fin n → Bool} {μ : Fin n → ℝ} {x : WithLp 2 (V × V')}
     (h : KHighest ε (sumE E E') μ x) : KHighest ε E μ (fstL V V' x) :=
@@ -116,7 +116,7 @@ theorem kHighest_fst {ε : Fin n → Bool} {μ : Fin n → ℝ} {x : WithLp 2 (V
     fun a b hab he => by rw [← fstL_sumE (E' := E'), h.2 a b hab he, map_zero]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by rw [← sndL_sumE (E := E), h.1 a, map_smul], fun a b hab he => by rw [← sndL_sumE (E := E), h.2 a b hab he, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem kHighest_snd {ε : Fin n → Bool} {μ : Fin n → ℝ} {x : WithLp 2 (V × V')}
     (h : KHighest ε (sumE E E') μ x) : KHighest ε E' μ (sndL V V' x) :=
@@ -124,7 +124,7 @@ theorem kHighest_snd {ε : Fin n → Bool} {μ : Fin n → ℝ} {x : WithLp 2 (V
     fun a b hab he => by rw [← sndL_sumE (E := E), h.2 a b hab he, map_zero]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => ext2 (by simpa using h.1 a) (by simpa using h'.1 a), fun c d hcd he => ext2 (by simpa using h.2 c d hcd he) (by simpa using h'.2 c d hcd he)⟩`.
+Supply the required witnesses or components.
 -/
 theorem kHighest_pair {ε : Fin n → Bool} {μ : Fin n → ℝ} {x : V} {y : V'} (h : KHighest ε E μ x)
     (h' : KHighest ε E' μ y) : KHighest ε (sumE E E') μ (pair x y) :=
@@ -132,7 +132,7 @@ theorem kHighest_pair {ε : Fin n → Bool} {μ : Fin n → ℝ} {x : V} {y : V'
     fun c d hcd he => ext2 (by simpa using h.2 c d hcd he) (by simpa using h'.2 c d hcd he)⟩
 
 /- English proof (translation)
-Introduce `μ x hx h`. Distinguish the cases in `h₁ : fstL V V' x = 0`. Use `hM' μ _ (fun h₂ => hx ?_) (kHighest_snd h)` and prove the remaining obligations. Conclude with `ext2 (by simpa using h₁) (by simpa using h₂)`. Conclude with `hM μ _ h₁ (kHighest_fst h)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMin_sumE {ε : Fin n → Bool} {lam : Fin n → ℝ} (hM : IsMin ε E lam) (hM' : IsMin ε E' lam) :
     IsMin ε (sumE E E') lam := by
@@ -143,41 +143,37 @@ theorem isMin_sumE {ε : Fin n → Bool} {lam : Fin n → ℝ} (hM : IsMin ε E 
   · exact hM μ _ h₁ (kHighest_fst h)
 
 /- English proof (translation)
-Use `set v : WithLp 2 (V × V') := pair v₁ v₂ with hv`. Establish `hv0 : v ≠ 0` using `fun h => h₁ (show fstL V V' v = 0 by rw [h, map_zero])`. Establish `hvk : KHighest ε (sumE E E') (lowK ε lam) v` using `kHighest_pair k₁ k₂`. Establish `hone : ∀ w ∈ Cyc (sumE E E') v, KHighest ε (sumE E E') (lowK ε lam) w → ∃ c : ℂ, w = c • v` using `fun w hw hh => hMultAlg n ε lam _ (sumE E E') hlam (glRel_sumE hE hE') (kUnit_sumE hU hU') (locFin_sumE hF hF') (isMin_sumE hM hM') v w hv0 hvk hh hw`. Use `set C := Cyc (sumE E E') v with hC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvC : v ∈ C` using `mem_cyc.2 ⟨1, by simp⟩`. Establish `hst : ∀ a b, ∀ w ∈ C, sumE E E' a b w ∈ C` using `fun a b w hw => cyc_stab a b hw`. Establish `hp₁ : C.map (fstL V V') = ⊤`. Use `(hS _ ?_).resolve_left fun h => h₁ ?_` and prove the remaining obligations. Introduce and unpack `a b _ ⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, hst a b w hw, rfl⟩`. Establish `: v₁ ∈ C.map (fstL V V')` using `⟨v, hvC, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hp₂ : C.map (sndL V V') = ⊤`. Use `(hS' _ ?_).resolve_left fun h => h₂ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `a b _ ⟨w, hw, rfl⟩`. Conclude with `⟨_, hst a b w hw, rfl⟩`. Establish `: v₂ ∈ C.map (sndL V V')` using `⟨v, hvC, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hno₁ : pair v₁ (0 : V') ∉ C`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨c, hc⟩` from `hone _ h (kHighest_pair k₁ ⟨fun a => by simp, fun a b _ _ => by simp⟩)`. Establish `e₁ : v₁ = c • v₁` using `by simpa [hv] using congrArg (fstL V V') hc`. Establish `e₂ : (0 : V') = c • v₂` using `by simpa [hv] using congrArg (sndL V V') hc`. Break down `smul_eq_zero.1 e₂.symm with rfl | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h₁ (by simpa using e₁)`. Conclude with `h₂ h`. Establish `hno₂ : pair (0 : V) v₂ ∉ C`. Introduce `h`. Take `⟨c, hc⟩` from `hone _ h (kHighest_pair ⟨fun a => by simp, fun a b _ _ => by simp⟩ k₂)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e₁ : (0 : V) = c • v₁` using `by simpa [hv] using congrArg (fstL V V') hc`. Establish `e₂ : v₂ = c • v₂` using `by simpa [hv] using congrArg (sndL V V') hc`. Break down `smul_eq_zero.1 e₁.symm with rfl | h` into its components or cases. Conclude with `h₂ (by simpa using e₂)`. Conclude with `h₁ h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : pair v₁ (0 : V') + pair (0 : V) v₂ = v` using `ext2 (by simp [hv]) (by simp [hv])`. Set `K₁ : Submodule ℂ V` to `C.comap ((WithLp.linearEquiv 2 ℂ (V × V')).symm.toLinearMap ∘ₗ LinearMap.inl ℂ V V')`. Set `K₂ : Submodule ℂ V'` to `C.comap ((WithLp.linearEquiv 2 ℂ (V × V')).symm.toLinearMap ∘ₗ LinearMap.inr ℂ V V')`. Establish `mem₁ : ∀ x, x ∈ K₁ ↔ pair x (0 : V') ∈ C` using `fun x => Iff.rfl`. Establish `mem₂ : ∀ y, y ∈ K₂ ↔ pair (0 : V) y ∈ C` using `fun y => Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hK₁ : K₁ = ⊥`. Use `(hS K₁ fun a b x hx => ?_).resolve_right fun h => hno₂ ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem₁]`. Use `hst a b _ hx` as an intermediate fact. Establish `e : sumE E E' a b (pair x (0 : V')) = pair (E a b x) (0 : V')` using `ext2 (by simp) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `: pair v₁ (0 : V') ∈ C` using `(mem₁ _).1 (h ▸ Submodule.mem_top)`. Establish `h'` using `C.sub_mem hvC this`. Rewrite `h'` using `[← hsplit, add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hK₂ : K₂ = ⊥`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(hS' K₂ fun a b x hx => ?_).resolve_right fun h => hno₁ ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem₂]`. Use `hst a b _ hx` as an intermediate fact. Establish `e : sumE E E' a b (pair (0 : V) x) = pair (0 : V) (E' a b x)` using `ext2 (by simp) (by simp)`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: pair (0 : V) v₂ ∈ C` using `(mem₂ _).1 (h ▸ Submodule.mem_top)`. Establish `h'` using `C.sub_mem hvC this`. Rewrite `h'` using `[← hsplit, add_sub_cancel_right]`. Then use the resulting hypothesis. Set `q₁ : C →ₗ[ℂ] V` to `(fstL V V').comp C.subtype`. Set `q₂ : C →ₗ[ℂ] V'` to `(sndL V V').comp C.subtype`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b₁ : Function.Bijective q₁`. Use `⟨(injective_iff_map_eq_zero q₁).2 fun w hw => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hw' : fstL V V' (w : WithLp 2 (V × V')) = 0` using `hw`. Establish `e : (w : WithLp 2 (V × V')) = pair (0 : V) (sndL V V' w)` using `ext2 (by simpa using hw') (by simp)`. Establish `: sndL V V' w ∈ K₂` using `(mem₂ _).2 (e ▸ w.2)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hK₂, Submodule.mem_bot]`. Conclude with `Subtype.ext (by rw [e, this]; exact ext2 (by simp) (by simp))`. Take `⟨w, hw, rfl⟩ : x ∈ C.map (fstL V V')` from `hp₁ ▸ Submodule.mem_top`. Conclude with `⟨⟨w, hw⟩, rfl⟩`. Establish `b₂ : Function.Bijective q₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨(injective_iff_map_eq_zero q₂).2 fun w hw => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hw' : sndL V V' (w : WithLp 2 (V × V')) = 0` using `hw`. Establish `e : (w : WithLp 2 (V × V')) = pair (fstL V V' w) (0 : V')` using `ext2 (by simp) (by simpa using hw')`. Establish `: fstL V V' w ∈ K₁` using `(mem₁ _).2 (e ▸ w.2)`. Rewrite `this` using `[hK₁, Submodule.mem_bot]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (by rw [e, this]; exact ext2 (by simp) (by simp))`. Take `⟨w, hw, rfl⟩ : x ∈ C.map (sndL V V')` from `hp₂ ▸ Submodule.mem_top`. Conclude with `⟨⟨w, hw⟩, rfl⟩`. Set `f₁ : C ≃ₗ[ℂ] V` to `LinearEquiv.ofBijective q₁ b₁`. Set `f₂ : C ≃ₗ[ℂ] V'` to `LinearEquiv.ofBijective q₂ b₂`.
-
-Use `⟨f₁.symm.trans f₂, fun a b x => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `f₁.surjective x`. Establish `e : E a b (f₁ w) = f₁ ⟨sumE E E' a b w, hst a b w w.2⟩` using `rfl`. Rewrite using `[e]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_highest {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : StrictAnti lam) (hE : GlRel E)
     (hE' : GlRel E') (hU : KUnit ε E) (hU' : KUnit ε E') (hF : LocFin ε E) (hF' : LocFin ε E')
@@ -283,15 +279,15 @@ theorem exists_iso_of_highest {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam 
   rfl
 
 /- English proof (translation)
-Introduce `n ε V V' _ _ _ _ E E' hE hE' s mu hU hU' hF hF' hS hS' hD hD'`. Take `⟨hP, -, hM, v₁, h₁, k₁⟩` from `hD`. Take `⟨-, -, hM', v₂, h₂, k₂⟩` from `hD'`. Establish `gl : ∀ {W : Type} [AddCommGroup W] [Module ℂ W] {F : Fin n → Fin n → Module.End ℂ W}, GlRel F → GlRel fun a b => F (s a) (s b)`. Introduce `W _ _ F hF a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hF (s a) (s b) (s c) (s d)` using `only [s.injective.eq_iff]`. Establish `un : ∀ {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {F : Fin n → Fin n → Module.End ℂ W}, IsUnitary ε F → KUnit (ε ∘ s) fun a b => F (s a) (s b)`. Introduce `W _ _ F hF a b hab x y`. Establish `hab' : ε (s a) = ε (s b)` using `hab`. Rewrite using `[hF (s a) (s b) x y]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.REAL.sgn, hab']`. Establish `lf : ∀ {W : Type} [AddCommGroup W] [Module ℂ W] {F : Fin n → Fin n → Module.End ℂ W}, LocFin ε F → LocFin (ε ∘ s) fun a b => F (s a) (s b)`. Introduce `W _ _ F hF x`. Take `⟨S, hS, hk, hx⟩` from `hF x`. Conclude with `⟨S, hS, fun a b hab y hy => hk (s a) (s b) hab y hy, hx⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `si : ∀ {W : Type} [AddCommGroup W] [Module ℂ W] {F : Fin n → Fin n → Module.End ℂ W}, (∀ S : Submodule ℂ W, (∀ a b, ∀ x ∈ S, F a b x ∈ S) → S = ⊥ ∨ S = ⊤) → ∀ S : Submodule ℂ W, (∀ a b, ∀ x ∈ S, F (s a) (s b) x ∈ S) → S = ⊥ ∨ S = ⊤`. Introduce `W _ _ F hF S hst`. Use `hF S fun a b x hx => ?_` and prove the remaining obligations. Simplify using `using hst (s.symm a) (s.symm b) x hx`. Take `⟨e, he⟩` from `exists_iso_of_highest (ε := ε ∘ s) (lam := mu) (E := fun a b => E (s a) (s b)) (E' := fun a b => E' (s a) (s b)) hP.1 (gl hE) (gl hE') (un hU) (un hU') (lf hF) (lf hF') hM hM' (si hS.2) (si hS'.2) h₁ h₂ k₁ k₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨e, fun a b x => ?_⟩` and prove the remaining obligations. Simplify using `using he (s.symm a) (s.symm b) x`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem algUniq : CompanionTheory.RgExh.Fin.AlgUniq := by
   intro n ε V V' _ _ _ _ E E' hE hE' s mu hU hU' hF hF' hS hS' hD hD'

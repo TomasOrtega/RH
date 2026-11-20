@@ -19,9 +19,7 @@ open GlobalTheory.KZ GlobalTheory.K4
 namespace UpperTheory.V.Z.Kato.Sym
 
 /- English proof (translation)
-Use `haveI : NeZero (k * M) := ⟨mul_ne_zero (NeZero.ne k) (NeZero.ne M)⟩`. Take `⟨n, rfl⟩` from `ZMod.natCast_zmod_surjective z`. Rewrite `h` using `[map_natCast]`. Simplify using `only [up]`. Rewrite using `[← h, ZMod.val_natCast, ← Nat.cast_mul, ZMod.natCast_eq_natCast_iff]`.
-
-Conclude with `(Nat.mod_modEq n M).mul_left' k`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_eq_up (k M : ℕ) [NeZero k] [NeZero M] (x : Row M) (i : Fin 2) (z : ZMod (k * M))
     (h : ZMod.castHom (dvd_mul_left M k) (ZMod M) z = x i) : up k M x i = (k : ZMod (k * M)) * z := by
@@ -33,7 +31,7 @@ private theorem mul_eq_up (k M : ℕ) [NeZero k] [NeZero M] (x : Row M) (i : Fin
   exact (Nat.mod_modEq n M).mul_left' k
 
 /- English proof (translation)
-Use `haveI : NeZero (k * M) := ⟨mul_ne_zero (NeZero.ne k) (NeZero.ne M)⟩`. Take `⟨n, rfl⟩` from `ZMod.natCast_zmod_surjective z`. Rewrite `h` using `[← Nat.cast_mul, ZMod.natCast_eq_zero_iff]`. Rewrite using `[map_natCast, ZMod.natCast_eq_zero_iff]`. Conclude with `Nat.dvd_of_mul_dvd_mul_left (Nat.pos_of_ne_zero (NeZero.ne k)) h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cast_eq_zero_of (k M : ℕ) [NeZero k] [NeZero M] (z : ZMod (k * M))
     (h : (k : ZMod (k * M)) * z = 0) : ZMod.castHom (dvd_mul_left M k) (ZMod M) z = 0 := by
@@ -46,26 +44,24 @@ private theorem cast_eq_zero_of (k M : ℕ) [NeZero k] [NeZero M] (z : ZMod (k *
 private def InF (k M : ℕ) (x : Row M) (x' : Row (k * M)) : Prop := x' 0 = up k M x 0 ∧ dn k M x' 1 = x 1
 
 /- English proof (translation)
-The claim follows from `ZMod.castHom_surjective _ w`.
+A detailed English derivation is pending.
 -/
 private theorem lift_ex (k M : ℕ) (w : ZMod M) : ∃ z : ZMod (k * M), ZMod.castHom (dvd_mul_left M k) (ZMod M) z = w :=
   ZMod.castHom_surjective _ w
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `lift_ex k M (x 1)`. Conclude with `⟨![up k M x 0, z], rfl, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem inF_ex (k M : ℕ) (x : Row M) : ∃ x', InF k M x x' := by
   obtain ⟨z, hz⟩ := lift_ex k M (x 1)
   exact ⟨![up k M x 0, z], rfl, hz⟩
 
 /- English proof (translation)
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Take `⟨z, hz⟩` from `lift_ex k M (x 0)`. Establish `a0 : (2 : ZMod (k * M)) * x' 0 = 0` using `congrFun h0 0`. Establish `a1 : (2 : ZMod (k * M)) * x' 1 = 0` using `congrFun h0 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b0 : (2 : ZMod M) * x 0 = 0`. Rewrite `a0` using `[h.1, mul_eq_up k M x 0 z hz, mul_left_comm]`. Use `cast_eq_zero_of k M _ a0` as an intermediate fact. Rewrite `this` using `[map_mul, hz, map_ofNat]`. Then use the resulting hypothesis. Establish `b1 : (2 : ZMod M) * x 1 = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `congrArg (ZMod.castHom (dvd_mul_left M k) (ZMod M)) a1` as an intermediate fact. Rewrite `this` using `[map_mul, map_ofNat, map_zero]`. Rewrite using `[← h.2]`. Conclude with `this`. Use function extensionality and compare the values at `i`.
-
-Use `fin_cases i`. Conclude with `b0`. Conclude with `b1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem inF_two (k M : ℕ) [NeZero k] [NeZero M] (x : Row M) (x' : Row (k * M)) (h : InF k M x x')
     (hx : (2 : ZMod M) • x ≠ 0) : (2 : ZMod (k * M)) • x' ≠ 0 := by
@@ -88,41 +84,39 @@ private theorem inF_two (k M : ℕ) [NeZero k] [NeZero M] (x : Row M) (x' : Row 
   · exact b1
 
 /- English proof (translation)
-Simplify using `[rt, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_zero {M : ℕ} (x : Row M) (γ : SL(2, ℤ)) : rt x γ 0 = x 0 * (γ.1 0 0 : ℤ) + x 1 * (γ.1 1 0 : ℤ) := by
   simp [rt, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `[rt, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_one' {M : ℕ} (x : Row M) (γ : SL(2, ℤ)) : rt x γ 1 = x 0 * (γ.1 0 1 : ℤ) + x 1 * (γ.1 1 1 : ℤ) := by
   simp [rt, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
 /- English proof (translation)
-Simplify using `only [rt, Matrix.vecMul_vecMul, Matrix.SpecialLinearGroup.coe_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_rt {M : ℕ} (x : Row M) (γ δ : SL(2, ℤ)) : rt (rt x γ) δ = rt x (γ * δ) := by
   simp only [rt, Matrix.vecMul_vecMul, Matrix.SpecialLinearGroup.coe_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Simplify using `[rt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rt_id {M : ℕ} (x : Row M) : rt x 1 = x := by
   simp [rt]
 
 /- English proof (translation)
-Establish `hk : (k : ℤ) ≠ 0` using `by exact_mod_cast NeZero.ne k`. Establish `e00 : γ'.1 0 0 = γ.1 0 0`. Use `congrFun (congrFun hg 0) 0` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at this`. Conclude with `mul_left_cancel₀ hk (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e01 : γ'.1 0 1 = k * γ.1 0 1`. Use `congrFun (congrFun hg 0) 1` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e10 : γ.1 1 0 = k * γ'.1 1 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun hg 1) 0` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e11 : γ'.1 1 1 = γ.1 1 1`. Use `congrFun (congrFun hg 1) 1` as an intermediate fact.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z, hz⟩` from `lift_ex k M (x 0)`. Establish `h0 : x' 0 = k * z` using `h.1.trans (mul_eq_up k M x 0 z hz)`. Establish `h1 : ZMod.castHom (dvd_mul_left M k) (ZMod M) (x' 1) = x 1` using `h.2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_eq_up k M (rt x γ') 0 (z * (γ'.1 0 0 : ℤ) + x' 1 * (γ'.1 1 0 : ℤ)) (by rw [rt_zero, map_add, map_mul, map_mul, hz, h1, map_intCast, map_intCast]), rt_zero, h0, e00, e10] push_cast; ring`. Use `show ZMod.castHom (dvd_mul_left M k) (ZMod M) (rt x' γ 1) = _`. Rewrite using `[rt_one', rt_one', h0, map_add, map_mul, map_mul, map_mul, hz, h1, map_intCast, map_intCast, map_natCast, e01, e11]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem inF_rt (k M : ℕ) [NeZero k] [NeZero M] (γ γ' : SL(2, ℤ))
     (hg : !![(k : ℤ), 0; 0, 1] * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (γ' : Matrix (Fin 2) (Fin 2) ℤ) * !![(k : ℤ), 0; 0, 1])
@@ -156,9 +150,9 @@ private theorem inF_rt (k M : ℕ) [NeZero k] [NeZero M] (γ γ' : SL(2, ℤ))
     push_cast; ring
 
 /- English proof (translation)
-Establish `a : ((γ'⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) * γ' = 1`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one]`. Establish `b : (γ : Matrix (Fin 2) (Fin 2) ℤ) * ((γ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) = 1`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, mul_inv_cancel, Matrix.SpecialLinearGroup.coe_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[a, one_mul]`. Use `_ = _ := by rw [mul_assoc _ (γ' : Matrix (Fin 2) (Fin 2) ℤ), ← hg, mul_assoc, mul_assoc, b, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rel_inv (k : ℕ) (γ γ' : SL(2, ℤ))
     (hg : !![(k : ℤ), 0; 0, 1] * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (γ' : Matrix (Fin 2) (Fin 2) ℤ) * !![(k : ℤ), 0; 0, 1]) :
@@ -175,7 +169,7 @@ private theorem rel_inv (k : ℕ) (γ γ' : SL(2, ℤ))
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `H` using `(rowB Ω M (Nat.pos_of_ne_zero (NeZero.ne M))).2.2.2 k (Nat.pos_of_ne_zero (NeZero.ne k))`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[H.2.2.2.2.1 s x']`. Use `show cyc M s * dn k M x' 1 = cyc M s * x 1`. Rewrite using `[h.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inF_gr (k M : ℕ) [NeZero k] [NeZero M] (s : Ω ≃ₐ[ℚ] Ω)
     (x : Row M) (x' : Row (k * M)) (h : InF k M x x') : InF k M (gr M s x) (gr (k * M) s x') := by
@@ -186,9 +180,9 @@ private theorem inF_gr (k M : ℕ) [NeZero k] [NeZero M] (s : Ω ≃ₐ[ℚ] Ω)
   rw [h.2]
 
 /- English proof (translation)
-Establish `E` using `mvEx Ω ε X m hm τ' s' hτ' _ _ Q hQ`. Take `⟨f0, -, h0⟩` from `E.1 R hR`. Establish `hc` using `mvComp Ω ε X m hm τ τ' s s' hτ hτ' u v P Q R hP hQ hR 1 f0 h1 h0`. Rewrite `hc` using `[map_one, one_pow, one_mul]`. Establish `hA` using `(admB Ω ε X).2.2.2.1 τ s τ' s' hτ hτ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(E.2.2.2 R hR f0 f h0).2 (((mvEx Ω ε X m hm _ _ hA u v P hP).2.2.2 R hR f0 f hc).1 h2)`.
+A detailed English derivation is pending.
 -/
 private theorem mv_cancel (X : Tower Ω ε) (m : ℕ) (hm : 0 < m) (τ τ' : X.K ≃+* X.K) (s s' : Ω ≃ₐ[ℚ] Ω) (hτ : admitted X τ s)
     (hτ' : admitted X τ' s') (u v : X.K) (P Q R : Pt X m) (hP : IsPt X m u v P) (hQ : IsPt X m (τ u) (τ v) Q)
@@ -202,13 +196,11 @@ private theorem mv_cancel (X : Tower Ω ε) (m : ℕ) (hm : 0 < m) (τ τ' : X.K
   exact (E.2.2.2 R hR f0 f h0).2 (((mvEx Ω ε X m hm _ _ hA u v P hP).2.2.2 R hR f0 f hc).1 h2)
 
 /- English proof (translation)
-Substitute `hu hv` using the available equality. Establish `h4` using `mvComp Ω ε X m hm ρ τ s 1 hρ hτ u v P P' Q' hP hP' hQ' f 1 h3 h2`. Establish `hA` using `(admB Ω ε X).2.2.2.1 ρ s τ 1 hρ hτ`. Establish `h5 : Mv X m (ρ.trans τ) (1 * s) P Q' (unU X τ f)`. Use `((mvEx Ω ε X m hm _ _ hA u v P hP).2.2.2 Q' hQ' _ _ h4).2 ?_` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[((lgB Ω ε X m hm).2.2.2.2.2.2 1 1).2.1, mul_one]`. Break down `Nat.eq_or_lt_of_le (Nat.succ_le_of_lt hm) with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `⟨_, by rw [pow_one]; exact (mul_inv_cancel_left _ _).symm⟩`. Use `haveI : Fact (1 < m) := ⟨h⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, by rw [ZMod.val_one, pow_one, one_pow, mul_one]⟩`. Establish `e : ρ.trans τ = τ.trans ρ'` using `RingEquiv.ext fun f => (hc f).symm`. Rewrite `h5` using `[e, one_mul, ← mul_one s]`. Use `mv_cancel X m hm τ ρ' 1 s hτ hρ' u v P Q Q' hP hQ ?_ _ h1 h5` and prove the remaining obligations. Rewrite using `[hc, hc]`.
-
-Conclude with `hQ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mv_swap (X : Tower Ω ε) (m : ℕ) (hm : 0 < m) (τ ρ ρ' : X.K ≃+* X.K) (s : Ω ≃ₐ[ℚ] Ω) (hτ : admitted X τ 1)
     (hρ : admitted X ρ s) (hρ' : admitted X ρ' s) (hc : ∀ f, ρ' (τ f) = τ (ρ f)) (u v u' v' : X.K) (hu : ρ u = u') (hv : ρ v = v')
@@ -233,39 +225,37 @@ private theorem mv_swap (X : Tower Ω ε) (m : ℕ) (hm : 0 < m) (τ ρ ρ' : X.
 
 open Classical in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X m c d k M _ _ hm hc hd hc6 hd6 hL t w' w ht hw' hw`. Use `haveI : NeZero (k * M) := ⟨mul_ne_zero (NeZero.ne k) (NeZero.ne M)⟩`. Establish `hk : 0 < k` using `Nat.pos_of_ne_zero (NeZero.ne k)`. Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hcM : Nat.Coprime c M` using `hL.2.1.coprime_mul_left_right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdM : Nat.Coprime d M` using `hL.2.2.coprime_mul_left_right`. Establish `RB` using `rowB Ω M hM`. Establish `RB'` using `rowB Ω (k * M) hL.1`. Establish `AB` using `admB Ω ε X`. Establish `GD` using `galDg Ω ε X k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Sc` using `sgB Ω ε X c M hc hc6 hM hcM`. Establish `Sd` using `sgB Ω ε X d M hd hd6 hM hdM`. Establish `Sc'` using `sgB Ω ε X c (k * M) hc hc6 hL.1 hL.2.1`. Establish `Sd'` using `sgB Ω ε X d (k * M) hd hd6 hL.1 hL.2.2`. Set `fib : Row M → Finset (Row (k * M))` to `fun x => Finset.univ.filter (fun x' => x' 0 = up k M x 0 ∧ dn k M x' 1 = x 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `mf : ∀ x x', x' ∈ fib x ↔ InF k M x x'` using `fun x x' => by simp only [fib, InF, Finset.mem_filter, Finset.mem_univ, true_and]`. Establish `ne : ∀ x, (fib x).Nonempty` using `fun x => (inF_ex k M x).imp fun x' h => (mf x x').2 h`. Establish `ok : ∀ x y, Ok x y → ∀ i ∈ fib x, ∀ j ∈ fib y, Ok i j` using `fun x y h i hi j hj => ⟨inF_two k M x i ((mf _ _).1 hi) h.1, inF_two k M y j ((mf _ _).1 hj) h.2⟩`. Establish `nzc : ∀ x y, Ok x y → ∀ i ∈ fib x, i ≠ 0` using `fun x y h i hi => (RB'.2.1 _ _ (ok x y h i hi _ (ne y).choose_spec)).1`. Establish `nzd : ∀ x y, Ok x y → ∀ j ∈ fib y, j ≠ 0` using `fun x y h j hj => (RB'.2.1 _ _ (ok x y h _ (ne x).choose_spec j hj)).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `T'` using `fun (x y : Row M) (h : Ok x y) i (hi : i ∈ fib x) j (hj : j ∈ fib y) => ht _ _ (Sc' i (nzc x y h i hi)).1 (Sd' j (nzd x y h j hj)).1`. Establish `T` using `fun (x y : Row M) (h : Ok x y) => ht _ _ (Sc x (RB.2.1 x y h).1).1 (Sd y (RB.2.1 x y h).2.1).1`. Establish `gg : ∀ (N : ℕ) (hN : 0 < N) (s : Ω ≃ₐ[ℚ] Ω) (x : Row N), gr N s (gr N s⁻¹ x) = x ∧ gr N s⁻¹ (gr N s x) = x` using `fun N hN s x => by`. Establish `H` using `(rowB Ω N hN).1`. Conclude with `⟨by rw [← (H _ _ x).1, mul_inv_cancel, (H 1 1 x).2], by rw [← (H _ _ x).1, inv_mul_cancel, (H 1 1 x).2]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `bg : ∀ (s : Ω ≃ₐ[ℚ] Ω) (x : Row M), Set.BijOn (gr (k * M) s⁻¹) (fib x) (fib (gr M s⁻¹ x))` using `fun s x => by`. Use `Set.InvOn.bijOn (f' := gr (k * M) s) ⟨fun i _ => (gg _ hL.1 s i).1, fun i _ => (gg _ hL.1 s i).2⟩ (fun i hi => (mf _ _).2 (inF_gr k M _ x i ((mf _ _).1 hi))) fun i hi => (mf _ _).2 ?_` and prove the remaining obligations. Use `inF_gr k M s _ i ((mf _ _).1 hi)` as an intermediate fact. Rewrite `this` using `[(gg M hM s x).1]`. Then use the resulting hypothesis. Establish `rr : ∀ (N : ℕ) (γ : SL(2, ℤ)) (x : Row N), rt (rt x γ) γ⁻¹ = x ∧ rt (rt x γ⁻¹) γ = x` using `fun N γ x => ⟨by rw [rt_rt, mul_inv_cancel, rt_id], by rw [rt_rt, inv_mul_cancel, rt_id]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `br : ∀ γ γ' : SL(2, ℤ), !![(k : ℤ), 0; 0, 1] * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (γ' : Matrix (Fin 2) (Fin 2) ℤ) * !![(k : ℤ), 0; 0, 1] → ∀ x : Row M, Set.BijOn (fun i : Row (k * M) => rt i γ⁻¹) (fib (rt x γ') : Set (Row (k * M))) (fib x : Set (Row (k * M)))` using `fun γ γ' hg x => by`. Use `Set.InvOn.bijOn (s := (fib (rt x γ') : Set (Row (k * M)))) (t := (fib x : Set (Row (k * M)))) (f' := fun i => rt i γ) ⟨fun i _ => (rr _ γ i).2, fun i _ => (rr _ γ i).1⟩ (fun i hi => ?_) fun i hi => ?_` and prove the remaining obligations. Use `(mf _ _).2 ?_` and prove the remaining obligations. Use `inF_rt k M _ _ (rel_inv k γ γ' hg) _ i ((mf _ _).1 hi)` as an intermediate fact. Rewrite `this` using `[(rr M γ' x).1]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `(mf (rt x γ') (rt i γ)).2 (inF_rt k M γ γ' hg x i ((mf x i).1 hi))`. Establish `hR : ∀ x y : Row M, ∃ R : Pt X m, Ok x y → IsSum X m (fib x) (fib y) (fun i j => t (sg X c (k * M) i) (sg X d (k * M) j)) R ∧ IsPt X m (slR X (dg k) (sg X c M x)) (slR X (dg k) (sg X d M y)) R` using `fun x y => by`. Distinguish the cases in `h : Ok x y`. Establish `S` using `sumB Ω ε X m hm _ _ (fib x) (fib y) (sg X c (k * M)) (sg X d (k * M)) _ (ne x) (ne y) fun i hi j hj => (T' x y h i hi j hj).1`. Take `⟨R, hR⟩` from `S.1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `S.2 R hR`. Establish `e1` using `sgIsog Ω ε X c k M hc hc6 hL.2.1 x (RB.2.1 x y h).1`. Establish `e2` using `sgIsog Ω ε X d k M hd hd6 hL.2.2 y (RB.2.1 x y h).2.1`. Use `⟨R, fun _ => ⟨hR, ?_⟩⟩` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `e1.symm.trans (by congr)`. Conclude with `e2.symm.trans (by congr)`. Conclude with `⟨t 1 1, fun h' => absurd h' h⟩`. Use `choose R hR using hR`. Establish `hQ : ∀ x y : Row M, ∃ Q : Pt X m, Ok x y → IsPt X m (slR X (dg k) (sg X c M x)) (slR X (dg k) (sg X d M y)) Q ∧ Mv X m (slR X (dg k)) 1 (t (sg X c M x) (sg X d M y)) Q 1` using `fun x y => by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : Ok x y`. Take `⟨Q, hQ⟩` from `(mvEx Ω ε X m hm _ _ (AB.1 (dg k)) _ _ _ (T x y h).1).2.1`. Conclude with `⟨Q, fun _ => hQ⟩`. Conclude with `⟨t 1 1, fun h' => absurd h' h⟩`. Use `choose Q hQ using hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, hb⟩` from `cmp Ω ε X m M hm hM (fun x => slR X (dg k) (sg X c M x)) (fun y => slR X (dg k) (sg X d M y)) R Q (fun s => pushH X k M (w' s)) (fun s x y => slU X (toGQ !![(k : ℤ), 0; 0, 1]) (w s x y)) (fun x y h => ⟨(hR x y h).2, (hQ x y h).1⟩) (fun s x y h => by`. Establish `h0` using `(RB.2.1 x y h).2.2.1 s⁻¹`. Establish `eu : X.gal s (sg X c M (gr M s⁻¹ x)) = sg X c M x`. Rewrite using `[(Sc _ (RB.2.1 _ _ h0).1).2.2.1, (gg M hM s x).1]`. Establish `ev : X.gal s (sg X d M (gr M s⁻¹ y)) = sg X d M y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Sd _ (RB.2.1 _ _ h0).2.1).2.2.1, (gg M hM s y).1]`. Use `⟨(GD.1 s _).trans (congrArg _ eu), (GD.1 s _).trans (congrArg _ ev), ?_, ?_⟩` and prove the remaining obligations. Use `sumMv Ω ε X m hm _ _ _ (fib x) _ (fib y) (sg X c (k * M)) (sg X c (k * M)) (sg X d (k * M)) (sg X d (k * M)) _ _ _ _ _ _ (X.gal s) s (AB.2.1 s) (ne _) (ne _) (bg s x) (bg s y) (fun i hi j hj => (T' _ _ h0 i hi j hj).1) (fun i hi j hj => (T' _ _ h i hi j hj).1) (fun i hi => by rw …` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [pushH, fib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mv_swap X m hm (slR X (dg k)) (X.gal s) (X.gal s) s (AB.1 _) (AB.2.1 s) (AB.2.1 s) (GD.1 s) _ _ _ _ eu ev _ _ _ _ (T _ _ h0).1 (T _ _ h).1 (hQ _ _ h0).1 (hQ _ _ h).1 (hQ _ _ h0).2 (hQ _ _ h).2 _ (hw s x y h).2)`. Use `⟨a, fun x y h => ⟨(hb x y h).1, fun γ γ' hg => ?_⟩, ha⟩` and prove the remaining obligations. Establish `h1` using `(RB.2.1 x y h).2.2.2 γ'`. Establish `eu` using `(Sc x (RB.2.1 x y h).1).2.1 γ'`. Establish `ev` using `(Sd y (RB.2.1 x y h).2.1).2.1 γ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hb x y h).2 (slR X (ofSL γ)) _ _ (AB.1 _) h1 ((GD.2.1 γ γ' hg _).trans (congrArg _ eu)) ((GD.2.1 γ γ' hg _).trans (congrArg _ ev)) ?_ ?_` and prove the remaining obligations. Establish `ei : ∀ i ∈ fib (rt x γ'), sg X c (k * M) i = X.sl (ofSL γ) (sg X c (k * M) (rt i γ⁻¹))` using `fun i hi => by`. Rewrite using `[(Sc' _ (nzc _ _ h _ ((br γ γ' hg x).mapsTo hi))).2.1, (rr _ γ i).2]`. Establish `ej : ∀ i ∈ fib (rt y γ'), sg X d (k * M) i = X.sl (ofSL γ) (sg X d (k * M) (rt i γ⁻¹))` using `fun i hi => by`. Rewrite using `[(Sd' _ (nzd _ _ h _ ((br γ γ' hg y).mapsTo hi))).2.1, (rr _ γ i).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `sumMv Ω ε X m hm _ _ (fib x) _ (fib y) _ (sg X c (k * M)) (sg X c (k * M)) (sg X d (k * M)) (sg X d (k * M)) _ _ _ _ _ _ (slR X (ofSL γ)) 1 (AB.1 _) (ne _) (ne _) (br γ γ' hg x) (br γ γ' hg y) (fun i hi j hj => (T' _ _ h i hi j hj).1) (fun i hi j hj => (T' _ _ h1 i hi j hj).1) ei …` as an intermediate fact. Use `(T' _ _ h _ ((br γ γ' hg x).mapsTo hi) _ ((br γ γ' hg y).mapsTo hj)).2 γ` as an intermediate fact. Rewrite using `[← ei i hi, ← ej j hj] at this)` and apply the resulting hypothesis. Simplify `this` using `only [Finset.prod_const_one]`. Establish `h3` using `(T x y h).2 γ'`.
-
-Rewrite `h3` using `[eu, ev]`. Use `mv_swap X m hm (slR X (dg k)) (slR X (ofSL γ')) (slR X (ofSL γ)) 1 (AB.1 _) (AB.1 _) (AB.1 _) (GD.2.1 γ γ' hg) _ _ _ _ eu ev _ _ _ _ (T _ _ h).1 (T _ _ h1).1 (hQ _ _ h).1 (hQ _ _ h1).1 (hQ _ _ h).2 (hQ _ _ h1).2 _ h3` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pIsog : PIsog := by
   intro Ω _ _ _ ε X m c d k M _ _ hm hc hd hc6 hd6 hL t w' w ht hw' hw

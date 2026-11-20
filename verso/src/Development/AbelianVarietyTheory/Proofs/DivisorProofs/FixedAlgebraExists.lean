@@ -10,25 +10,21 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.FixedCentraliserReg
 
 /- English proof (translation)
-Introduce `p _ G β Y hsep hdeg`. Establish `hcomm : ∀ a b : G.C, Commute a (Y : G.C) → Commute b (Y : G.C) → Commute a b` using `fun a b ha hb => GlobalTheory.LKCx.ClsReg.commute_of_commute_of_separable G (Y : G.C) hsep hdeg a b ha hb`. Establish `hshmul : ∀ x y : G.C, sh G (x * y) = sh G y * sh G x`. Introduce `x y`. Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hshadd : ∀ x y : G.C, sh G (x + y) = sh G x + sh G y`. Introduce `x y`. Simplify using `only [sh, map_add, MulOpposite.unop_add]`. Establish `hshalg : ∀ q : ℚ, sh G (algebraMap ℚ G.C q) = algebraMap ℚ G.C q`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `RingHom.congr_fun (RingHom.ext_rat (G.star.comp (algebraMap ℚ G.C)) (algebraMap ℚ G.Cᵐᵒᵖ)) q`. Simplify using `only [RingHom.comp_apply, MulOpposite.algebraMap_apply] at h`. Simplify using `only [sh, h, MulOpposite.unop_op]`. Establish `hββ : ((β⁻¹ : G.Cˣ) : G.C) * (β : G.C) = 1` using `by simp`. Set `S : Subalgebra ℚ G.C` to `{ carrier := {c | Commute c (Y : G.C) ∧ (β : G.C) * sh G c * ((β⁻¹ : G.Cˣ) : G.C) = c} mul_mem' := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce and unpack `a b ⟨ha1, ha2⟩ ⟨hb1, hb2⟩`. Use `⟨ha1.mul_left hb1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hshmul]`. Simplify using `only [mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc ((β⁻¹ : G.Cˣ) : G.C) (β : G.C), hββ, one_mul]`. Use `_ = b * a := by rw [ha2, hb2]`. Use `_ = a * b := (hcomm a b ha1 hb1).eq.symm`. Use the proof step `add_mem' := by`. Introduce and unpack `a b ⟨ha1, ha2⟩ ⟨hb1, hb2⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ha1.add_left hb1, ?_⟩` and prove the remaining obligations. Rewrite using `[hshadd, mul_add, add_mul, ha2, hb2]`. Use the proof step `algebraMap_mem' := by`. Introduce `q`. Use `⟨Algebra.commutes q _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hshalg, ← Algebra.commutes q (β : G.C), mul_assoc, Units.mul_inv, mul_one] }`. Use `letI cr : CommRing S := { (inferInstance : Ring S) with mul_comm := fun a b => Subtype.ext (hcomm a b a.2.1 b.2.1).eq }`. Establish `hred : IsReduced S`. Use `⟨fun x ⟨k, hk⟩ => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hk' : (x : G.C) ^ k = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Subtype.val hk` as an intermediate fact. Simplify using `using this`. Conclude with `GlobalTheory.LKCx.ClsReg.eq_zero_of_commute_of_pow_eq_zero p G (Y : G.C) hsep hdeg x x.2.1 k hk'`. Use `haveI := G.towerC`. Use `haveI := G.finC`.
-
-Use `haveI : FiniteDimensional ℚ G.C := Module.Finite.trans G.F G.C`. Establish `hfd : FiniteDimensional ℚ S` using `Module.Finite.of_injective (S.val.toLinearMap) Subtype.val_injective`. Use `⟨S, cr, hred, S.algebra, hfd, S.val, Subtype.val_injective, fun c => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
-
-Conclude with `x.2`. Introduce `h`. Conclude with `⟨⟨c, h⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixed_algebra_exists : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β Y : G.Cˣ),
     (minpoly G.F (Y : G.C)).Separable → (minpoly G.F (Y : G.C)).natDegree = G.n →

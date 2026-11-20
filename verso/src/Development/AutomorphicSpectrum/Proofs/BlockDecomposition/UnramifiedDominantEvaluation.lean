@@ -34,15 +34,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 local notation "ϖ" => (GLnLocal.uniformizer F : F)
 
 /- English proof (translation)
-Simplify `GodementSectionLocal.modPow_mul (a : F) (b : F) s` using `[mp, GodementSectionLocal.modPow]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mp_mul' (a b : Fˣ) (s : ℂ) : mp (a * b) s = mp a s * mp b s := by
   simpa [mp, GodementSectionLocal.modPow] using GodementSectionLocal.modPow_mul (a : F) (b : F) s
 
 /- English proof (translation)
-Take `⟨hc, h1, h0⟩` from `hψ`. Establish `ht` using `isTrivialOn_addCharConductor hc h1`. Rewrite `ht` using `[h0]`. Introduce `x hx`. Use `ht x (mem_valBall_zero_iff.2 hx)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem standard_character_trivial_integers {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     ∀ x ∈ 𝒪[F], (Circle.coeHom.compAddChar ψ) x = 1 := by
@@ -59,7 +59,7 @@ def f1 (ψ : AddChar F Circle) (ν : Fˣ →* ℂˣ) (l : Fin 3 → ℤ) (k : GL
     inn ψ (Φ0 F) (k * (torusPow F 2 ![l 0, l 1])⁻¹) (torusPow F 3 l)
 
 /- English proof (translation)
-Unfold `f1`. Rewrite using `[mul_assoc κ k, GlobalTheory.T.local_inner_product_left_integral F ψ κ hκ, map_mul GeneralLinearGroup.det κ, mp_mul', GlobalTheory.CompanionTheory.LFNe.mp_det_eq_one hκ, one_mul, mul_inv_rev (κ) _]`. Use `congr 2`. Conclude with `sphericalWhittaker_mul_right (standard_character_trivial_integers hψ) _ _ ((integralGL F 2).inv_mem hκ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem unramified_vector_left_invariant {ψ : AddChar F Circle} (hψ : IsStd ψ) (ν : Fˣ →* ℂˣ) (l : Fin 3 → ℤ)
     {κ : GL (Fin 2) F} (hκ : κ ∈ integralGL F 2) (k : GL (Fin 2) F) :
@@ -71,7 +71,7 @@ theorem unramified_vector_left_invariant {ψ : AddChar F Circle} (hψ : IsStd ψ
   exact sphericalWhittaker_mul_right (standard_character_trivial_integers hψ) _ _ ((integralGL F 2).inv_mem hκ)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hk`. Apply `h` to reduce the goal to its premises. Unfold `f1`. Rewrite using `[(GlobalTheory.T.local_inner_product_support F ψ (k * (torusPow F 2 ![l 0, l 1])⁻¹) l).1 (by simpa using hk), mul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem unramified_vector_support_integral (ψ : AddChar F Circle) (ν : Fˣ →* ℂˣ) (l : Fin 3 → ℤ) (k : GL (Fin 2) F)
     (h : f1 ψ ν l k ≠ 0) : ∀ a b, (k : Matrix (Fin 2) (Fin 2) F) a b ∈ 𝒪[F] := by
@@ -83,13 +83,13 @@ theorem unramified_vector_support_integral (ψ : AddChar F Circle) (ν : Fˣ →
 abbrev V2 (ψ : AddChar F Circle) : ℝ := (vol2 ψ).real {x : Fin 2 → F | ∀ i, x i ∈ 𝒪[F]}
 
 /- English proof (translation)
-Simplify using `[Units.val_zpow_eq_zpow_val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unifUnit_zpow_val (z : ℤ) : ((uniformizerUnit F ^ z : Fˣ) : F) = ϖ ^ z := by
   simp [Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv, GlobalTheory.T.det_row_rep, GlobalTheory.T.det_torus_power, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[← _root_.zpow_neg, ← _root_.zpow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_kd (l : Fin 3 → ℤ) (i j : ℕ) (c : Fin j → 𝓀[F]) :
     GeneralLinearGroup.det (rowRep i j c * (torusPow F 2 ![l 0, l 1])⁻¹) =
@@ -101,7 +101,7 @@ theorem det_kd (l : Fin 3 → ℤ) (i j : ℕ) (c : Fin j → 𝓀[F]) :
   ring
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, inv_inv, GlobalTheory.T.torus_row_rep_factorization]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_kd (l : Fin 3 → ℤ) (i j : ℕ) (c : Fin j → 𝓀[F]) :
     (rowRep i j c * (torusPow F 2 ![l 0, l 1])⁻¹)⁻¹ =
@@ -109,9 +109,9 @@ theorem inv_kd (l : Fin 3 → ℤ) (i j : ℕ) (c : Fin j → 𝓀[F]) :
   rw [_root_.mul_inv_rev, inv_inv, GlobalTheory.T.torus_row_rep_factorization]
 
 /- English proof (translation)
-Rewrite using `[_root_.mul_inv_rev, inv_kd, mul_assoc, ← torusPow_neg, ← torusPow_add]`. Establish `e : (![l 0 - i, l 1 - j] + -![l 2, l 2] : Fin 2 → ℤ) = ![l 0 - i - l 2, l 1 - j - l 2]`. Apply the tactic sequence `ext t; fin_cases t <;> simp <;> ring`. Rewrite using `[e, Units.val_mul, coe_torusPow]`. Simplify using `only [uni2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_A (l : Fin 3 → ℤ) (i j : ℕ) (c : Fin j → 𝓀[F]) (b : Fin 2) :
     (((torusPow F 2 ![l 2, l 2] * (rowRep i j c * (torusPow F 2 ![l 0, l 1])⁻¹))⁻¹ : GL (Fin 2) F) :
@@ -124,19 +124,17 @@ theorem row_A (l : Fin 3 → ℤ) (i j : ℕ) (c : Fin j → 𝓀[F]) (b : Fin 2
   fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]
 
 /- English proof (translation)
-Use `set k := rowRep i j c with hk`. Use `set d := torusPow F 2 ![l 0, l 1] with hd`. Use `set A := torusPow F 2 ![l 2, l 2] * (k * d⁻¹) with hA`. Establish `hint : ∀ a b, (((k * d⁻¹ * d : GL (Fin 2) F)) : Matrix (Fin 2) (Fin 2) F) a b ∈ 𝒪[F]`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[inv_mul_cancel_right, hk, coe_rowRep]`. Establish `h0` using `(GLnLocal.uniformizer F).2`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp`. Conclude with `pow_mem h0 _`. Conclude with `digitSum_mem _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `pow_mem h0 _`. Rewrite using `[(GlobalTheory.T.local_inner_product_support F ψ (k * d⁻¹) l).2 hint]`. Establish `hrow : (∀ b, ((A⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) 1 b ∈ 𝒪[F]) ↔ (j : ℤ) ≤ l 1 - l 2`. Rewrite using `[Fin.forall_fin_two, hA, hk, hd, row_A, row_A]`. Simplify using `only [zero_ne_one, if_false, if_true, Subring.zero_mem, true_and, GlobalTheory.T.uniformizer_zpow_mem_integers_iff']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> intro h <;> linarith`. Use `split_ifs with hj`. Rewrite using `[GlobalTheory.T.lattice_character_integral_value F ψ hψ A (hrow.2 hj), GlobalTheory.T.lattice_volume_gl_two_translate F ψ hψ A]`. Establish `hdet : GeneralLinearGroup.det A = uniformizerUnit F ^ (2 * l 2 + i + j - l 0 - l 1)`. Rewrite using `[hA, map_mul, GlobalTheory.T.det_torus_power, det_kd, Fin.sum_univ_two]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[← _root_.zpow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hm` using `GlobalTheory.T.unramified_character_uniformizer_power F (2 * l 2 + i + j - l 0 - l 1) (-2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[← hdet]`. Establish `hm' : mp (GeneralLinearGroup.det A) (-1) = ((modulus ((GeneralLinearGroup.det A : Fˣ) : F) : ℝ) : ℂ)⁻¹`. Simplify using `[mp, Complex.cpow_neg_one]`. Establish `e1 : (((-2 : ℤ) : ℂ) / 2) = -1` using `by norm_num`. Rewrite `hm` using `[e1, hm']`.
-
-Use `push_cast`. Rewrite using `[hm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Conclude with `GlobalTheory.T.lattice_character_integral_zero F ψ hψ A (fun h => hj (hrow.1 h))`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inn_rep {ψ : AddChar F Circle} (hψ : IsStd ψ) (l : Fin 3 → ℤ) (i j : ℕ) (c : Fin j → 𝓀[F]) :
     inn ψ (Φ0 F) (rowRep i j c * (torusPow F 2 ![l 0, l 1])⁻¹) (torusPow F 3 l) =
@@ -183,9 +181,9 @@ def Cc (ψ : AddChar F Circle) (l : Fin 3 → ℤ) (i j : ℕ) : ℂ :=
     ((V2 ψ : ℝ) : ℂ)
 
 /- English proof (translation)
-Unfold `f1`. Rewrite using `[inv_kd, GlobalTheory.T.whittaker_unipotent_equivariant_holds F ψ hψ, det_kd, inn_rep hψ]`. Establish `hm` using `GlobalTheory.T.unramified_character_uniformizer_power F ((i : ℤ) + j - l 0 - l 1) 3`. Establish `e : (((3 : ℤ) : ℂ) / 2) = 3 / 2` using `by norm_num`. Rewrite `hm` using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hm]`. Use `split_ifs`. Simplify using `only [Cc]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unramified_vector_rep_formula {ψ : AddChar F Circle} (hψ : IsStd ψ) (ν : Fˣ →* ℂˣ) (l : Fin 3 → ℤ) (i j : ℕ)
     (c : Fin j → 𝓀[F]) :
@@ -204,9 +202,9 @@ theorem unramified_vector_rep_formula {ψ : AddChar F Circle} (hψ : IsStd ψ) (
   · simp
 
 /- English proof (translation)
-Rewrite `h` using `[unramified_vector_rep_formula hψ]`. Use `split_ifs at h with hj`. Use `⟨hj, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h2`. Apply `h` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.T.whittaker_torus_value_formula_holds F ψ hψ ν _ _).2 (not_le.1 h2)]`. Simplify using the standard rewrite rules. Conclude with `absurd rfl h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unramified_vector_rep_support {ψ : AddChar F Circle} (hψ : IsStd ψ) (ν : Fˣ →* ℂˣ) (l : Fin 3 → ℤ) (i j : ℕ)
     (c : Fin j → 𝓀[F]) (h : f1 ψ ν l (rowRep i j c) ≠ 0) :
@@ -221,9 +219,9 @@ theorem unramified_vector_rep_support {ψ : AddChar F Circle} (hψ : IsStd ψ) (
   · exact absurd rfl h
 
 /- English proof (translation)
-Repeatedly rewrite using `[unramified_vector_rep_formula hψ, if_pos hj]`. Rewrite using `[← Finset.sum_mul, ← Finset.sum_mul]`. Use `split_ifs with hi`. Rewrite using `[(GlobalTheory.T.digit_character_sum_values F ψ hψ j _).1 (by linarith)]`. Distinguish the cases in `h2 : l 1 - j ≤ l 0 - i`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.T.digit_character_sum_values F ψ hψ j _).2 (by linarith) (by linarith)]`. Simplify using the standard rewrite rules. Rewrite using `[(GlobalTheory.T.whittaker_torus_value_formula_holds F ψ hψ ν _ _).2 (not_le.1 h2)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_rep {ψ : AddChar F Circle} (hψ : IsStd ψ) (ν : Fˣ →* ℂˣ) (l : Fin 3 → ℤ) (i j : ℕ)
     (hj : (j : ℤ) ≤ l 1 - l 2) :
@@ -240,13 +238,13 @@ theorem sum_rep {ψ : AddChar F Circle} (hψ : IsStd ψ) (ν : Fˣ →* ℂˣ) (
       simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subset (Finset.range_subset_range.2 hN) hg]`. Use `Finset.sum_nbij' (fun i : ℕ => v - i) (fun a => (v - a).toNat) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.mem_range, Finset.mem_Icc] at hi ⊢`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `a ha`. Simplify using `only [Finset.mem_range, Finset.mem_Icc] at ha ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [Finset.mem_range] at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `show (v - (v - (i : ℤ))).toNat = i`. Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Simplify using `only [Finset.mem_Icc] at ha`. Use `show v - (((v - a).toNat : ℕ) : ℤ) = a`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [Finset.mem_range] at hi`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_range_reindex (u v : ℤ) (huv : u ≤ v) (N : ℕ) (hN : (v - u + 1).toNat ≤ N) (g : ℕ → ℂ)
     (hg : ∀ i ∈ Finset.range N, i ∉ Finset.range (v - u + 1).toNat → g i = 0) :
@@ -275,39 +273,37 @@ theorem sum_range_reindex (u v : ℤ) (huv : u ≤ v) (N : ℕ) (hN : (v - u + 1
 end Main
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ ν _ _`. Establish `hHaar : (hG ψ).IsHaarMeasure` using `by unfold hG; infer_instance`. Establish `hRight : (hG ψ).IsMulRightInvariant` using `by unfold hG; infer_instance`. Establish `hBox : {x : Fin 2 → F | ∀ i, x i ∈ 𝒪[F]} = (GodementSectionLocal.box F 0 : Set (Fin 2 → F))`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[GodementSectionLocal.mem_box, mem_valBall_zero_iff]`. Establish `hV : V2 ψ ≠ 0`. Unfold `V2`. Rewrite using `[hBox]`. Conclude with `GlobalTheory.CompanionTheory.LFNe.volume_unit_box_ne_zero ψ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK : (hG ψ).real (integralGL F 2 : Set (GL (Fin 2) F)) ≠ 0`. Use `(ENNReal.toReal_ne_zero).2 ⟨?_, (isCompact_integralGL F 2).measure_lt_top.ne⟩` and prove the remaining obligations. Conclude with `(isOpen_integralGL F 2).measure_ne_zero _ ⟨1, (integralGL F 2).one_mem⟩`. Use `⟨(((hG ψ).real (integralGL F 2 : Set (GL (Fin 2) F)) : ℝ) : ℂ) * ((V2 ψ : ℝ) : ℂ), mul_ne_zero (by exact_mod_cast hK) (by exact_mod_cast hV), fun l hl => ?_⟩` and prove the remaining obligations. Establish `h01 : l 1 ≤ l 0` using `hl (by decide)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h12 : l 2 ≤ l 1` using `hl (by decide)`. Use `set A' := (l 0 - l 2 + 1).toNat with hA'`. Use `set B := (l 1 - l 2 + 1).toNat with hB`. Use `set S : Finset (Σ _ : ℕ, Σ j : ℕ, (Fin j → 𝓀[F])) := (Finset.range A').sigma fun _ => (Finset.range B).sigma fun _ => Finset.univ with hS`. Establish `hcover : ∀ g, f1 ψ ν l g ≠ 0 → ∃ a ∈ S, g * (rowRep a.1 a.2.1 a.2.2)⁻¹ ∈ integralGL F 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g hg`. Take `⟨i, j, c, hc⟩` from `GlobalTheory.T.integral_matrix_row_rep_exists F g (unramified_vector_support_integral ψ ν l g hg)`. Use `⟨⟨i, j, c⟩, ?_, hc⟩` and prove the remaining obligations. Establish `he : g = (g * (rowRep i j c)⁻¹) * rowRep i j c` using `by group`. Rewrite `hg` using `[he, unramified_vector_left_invariant hψ ν l hc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `unramified_vector_rep_support hψ ν l i j c hg`. Simplify using `only [hS, Finset.mem_sigma, Finset.mem_range, Finset.mem_univ, and_true, hA', hB]`. Use linear arithmetic over natural numbers and integers. Establish `hcos` using `GlobalTheory.T.integral_right_coset_decomposition (GL (Fin 2) F) (hG ψ) (integralGL F 2) (isOpen_integralGL F 2) (isCompact_integralGL F 2) (Σ _ : ℕ, Σ j : ℕ, (Fin j → 𝓀[F])) (fun a => rowRep a.1 a.2.1 a.2.2) S (f1 ψ ν l) (GlobalTheory.T.row_reps_distinct_cosets F) (fun κ hκ g => …`. Establish `hsub : ∫ h, s2 ψ ν h⁻¹ * mp (GeneralLinearGroup.det h) (3 / 2) * inn ψ (Φ0 F) h (torusPow F 3 l) ∂hG ψ = ∫ k, f1 ψ ν l k ∂hG ψ` using `(integral_mul_right_eq_self (fun h => s2 ψ ν h⁻¹ * mp (GeneralLinearGroup.det h) (3 / 2) * inn ψ (Φ0 F) h (torusPow F 3 l)) (torusPow F 2 ![l 0, l 1])⁻¹).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ a ∈ S, f1 ψ ν l (rowRep a.1 a.2.1 a.2.2) = ∑ a ∈ Finset.Icc (l 1) (l 0), ∑ b ∈ Finset.Icc (l 2) (l 1), (qF F : ℂ) ^ (l 1 - b).toNat * s2 ψ ν (torusPow F 2 ![a, b]) * Cc ψ l (l 0 - a).toNat (l 1 - b).toNat`. Rewrite using `[hS, Finset.sum_sigma]`. Simplify using `only [Finset.sum_sigma]`. Rewrite using `[sum_range_reindex (l 1) (l 0) h01 A' (by omega) _ ?_]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[Finset.mem_Icc]`. Rewrite using `[sum_range_reindex (l 2) (l 1) h12 B le_rfl _ (fun i h1 h2 => absurd h1 h2)]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite `hb` using `[Finset.mem_Icc]`. Establish `hi : (((l 0 - a).toNat : ℕ) : ℤ) = l 0 - a` using `Int.toNat_of_nonneg (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hj : (((l 1 - b).toNat : ℕ) : ℤ) = l 1 - b` using `Int.toNat_of_nonneg (by omega)`. Rewrite using `[sum_rep hψ ν l _ _ (by omega), if_pos (by omega), hi, hj, sub_sub_cancel, sub_sub_cancel]`. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_range] at hi hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sum_rep hψ ν l _ _ (by omega), if_neg (by omega)]`. Establish `hS0 : sqrtQ F ≠ 0` using `sqrtQ_ne_zero`. Establish `hterm : ∀ a ∈ Finset.Icc (l 1) (l 0), ∀ b ∈ Finset.Icc (l 2) (l 1), (qF F : ℂ) ^ (l 1 - b).toNat * s2 ψ ν (torusPow F 2 ![a, b]) * Cc ψ l (l 0 - a).toNat (l 1 - b).toNat = sqrtQ F ^ (2 * l 1 + 4 * l 2) * ((V2 ψ : ℝ) : ℂ) * evalAt ![ν (unifUnit F), (ν (unifUnit F))⁻¹] (schur ![a, …`. Introduce `a ha b hb`. Rewrite `ha`, `hb` using `[Finset.mem_Icc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hi : (((l 0 - a).toNat : ℕ) : ℤ) = l 0 - a` using `Int.toNat_of_nonneg (by omega)`. Establish `hj : (((l 1 - b).toNat : ℕ) : ℤ) = l 1 - b` using `Int.toNat_of_nonneg (by omega)`. Establish `hq : (qF F : ℂ) ^ (l 1 - b).toNat = sqrtQ F ^ (2 * (l 1 - b))`. Rewrite using `[← hj, ← sqrtQ_sq, ← pow_mul, ← zpow_natCast]`. Use `push_cast`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Rewrite using `[(GlobalTheory.T.whittaker_torus_value_formula_holds F ψ hψ ν a b).1 (by omega), hq, Cc, hi, hj]`. Establish `: sqrtQ F ^ (2 * (l 1 - b)) * sqrtQ F ^ (-(a - b)) * sqrtQ F ^ (-(3 * (l 0 - a + (l 1 - b) - l 0 - l 1))) * sqrtQ F ^ (2 * (2 * l 2 + (l 0 - a) + (l 1 - b) - l 0 - l 1)) = sqrtQ F ^ (2 * l 1 + 4 * l 2)`. Rewrite using `[← zpow_add₀ hS0, ← zpow_add₀ hS0, ← zpow_add₀ hS0]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmp : mp (GeneralLinearGroup.det (torusPow F 3 l)) 1 = sqrtQ F ^ (-(2 * (l 0 + l 1 + l 2)))`. Use `GlobalTheory.T.unramified_character_uniformizer_power F (l 0 + l 1 + l 2) 2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((2 : ℤ) : ℂ) / 2) = 1` using `by norm_num`. Rewrite `this` using `[e]`. Rewrite using `[GlobalTheory.T.det_torus_power, Fin.sum_univ_three, this]`. Establish `hhalf : halfModulus F l = sqrtQ F ^ (2 * l 2 - 2 * l 0)`. Rewrite using `[halfModulus_eq]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[rhoPair, Fin.sum_univ_three]`. Expand and normalize the polynomial expressions, which then agree. Use `show Wp ψ (s2 ψ ν) (Φ0 F) (torusPow F 3 l) = _`. Unfold `Wp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsub, hcos, hsum, hmp, hhalf, Finset.sum_congr rfl fun a ha => Finset.sum_congr rfl fun b hb => hterm a ha b hb]`. Simplify using `only [← Finset.mul_sum]`. Establish `: sqrtQ F ^ (-(2 * (l 0 + l 1 + l 2))) * sqrtQ F ^ (2 * l 1 + 4 * l 2) = sqrtQ F ^ (2 * l 2 - 2 * l 0)`. Rewrite using `[← zpow_add₀ hS0]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem uDomA : UDomA := by
   intro F _ _ _ _ _ _ ψ hψ ν _ _

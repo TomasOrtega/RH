@@ -26,9 +26,9 @@ def crdAll {M n : ℕ} {ι : Type} (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (fr
   fun i => crd (θ i) (fr i) (g i) X
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hji : h j i = star (h i j)`. Use `congrFun (congrFun hh j) i` as an intermediate fact. Simplify `this.symm` using `[Matrix.conjTranspose_apply]`. Apply `Complex.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[herm, hinv, hji]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[herm, hinv, hji]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem herm_hinv {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) : herm (hinv h) = h := by
   ext i j
@@ -41,7 +41,7 @@ theorem herm_hinv {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian
   · simp [herm, hinv, hji]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Simplify using `[herm, hinv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hinv_herm {n : ℕ} (y : WR.E n) : hinv (herm y) = y := by
   funext i j
@@ -49,26 +49,26 @@ theorem hinv_herm {n : ℕ} (y : WR.E n) : hinv (herm y) = y := by
   ring
 
 /- English proof (translation)
-Take `⟨k, e, -⟩` from `GlobalTheory.SiegelWeilConvCompare.exists_coord_tens F E`. Conclude with `e.secondCountableTopology`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem secondCountable_tens [IsTotallyReal F] : SecondCountableTopology (Ainf F ⊗[F] E) := by
   obtain ⟨k, e, -⟩ := GlobalTheory.SiegelWeilConvCompare.exists_coord_tens F E
   exact e.secondCountableTopology
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem borel_tens : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem borel_herm (σ : E →ₐ[F] E) (n : ℕ) : BorelSpace (HermR (Ainf F) σ n) := ⟨rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Conclude with `((hx.map (θ i)).ne_zero)`. Introduce `hx`. Take `⟨y, hy⟩` from `hP.bij.2 (fun i => (θ i x)⁻¹)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.of_mul_eq_one y (hP.bij.1 ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrFun hy i` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[map_mul, map_one, this, mul_inv_cancel₀ (hx i)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_th (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) (x : Ainf F ⊗[F] E) :
@@ -85,19 +85,17 @@ theorem isUnit_iff_th (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type}
     rw [map_mul, map_one, this, mul_inv_cancel₀ (hx i)]
 
 /- English proof (translation)
-Use `haveI : IsTotallyReal F := hCM.1`. Take `⟨k, e, he⟩` from `GlobalTheory.SiegelWeilConvCompare.exists_coord_tens F E`. Set `Θ : (Ainf F ⊗[F] E) →+ (ι → ℂ)` to `{ toFun := fun z i => θ i z map_zero' := by funext i; simp map_add' := by intro x y; funext i; simp }`. Establish `hΘc : Continuous Θ` using `continuous_pi fun i => hP.cont i`. Establish `hes : ∀ a b, e.symm (a + b) = e.symm a + e.symm b`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]`. Set `eA : (Fin k → ℝ) →+ (Ainf F ⊗[F] E)` to `{ toFun := e.symm map_zero' := by`. Establish `h0` using `hes 0 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[add_zero]`. Conclude with `(add_eq_left.1 h0.symm)`. Use the proof step `map_add' := hes }`. Set `f : (Fin k → ℝ) →+ (ι → ℂ)` to `Θ.comp eA`. Establish `hfc : Continuous f` using `hΘc.comp e.symm.continuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `L` to `f.toRealLinearMap hfc`. Establish `hLb : Function.Bijective L`. Establish `h1 : Function.Bijective (e.symm : (Fin k → ℝ) → (Ainf F ⊗[F] E))` using `e.symm.bijective`. Conclude with `hP.bij.comp h1`. Set `Le` to `LinearEquiv.ofBijective (L : (Fin k → ℝ) →ₗ[ℝ] (ι → ℂ)) hLb`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `Lc` to `Le.toContinuousLinearEquiv`. Set `A` to `AddEquiv.ofBijective Θ hP.bij`. Establish `hinvA : (A.symm : (ι → ℂ) → (Ainf F ⊗[F] E)) = e.symm ∘ Lc.symm`. Use function extensionality and compare the values at `w`. Apply `A.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddEquiv.apply_symm_apply]`. Establish `: Lc (Lc.symm w) = w` using `Lc.apply_symm_apply w`. Conclude with `this.symm`. Use `⟨{ toAddEquiv := A, continuous_toFun := hΘc, continuous_invFun := ?_ }, fun z i => rfl⟩` and prove the remaining obligations. Use `show Continuous (A.symm : (ι → ℂ) → (Ainf F ⊗[F] E))`.
-
-Rewrite using `[hinvA]`. Conclude with `e.symm.continuous.comp Lc.symm.continuous`.
+A detailed English derivation is pending.
 -/
 theorem exists_thHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) :
@@ -141,37 +139,35 @@ theorem exists_thHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar
   exact e.symm.continuous.comp Lc.symm.continuous
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gl_sandwich {m k : ℕ} (A : GL (Fin m) ℂ) (B : GL (Fin k) ℂ) (X : Matrix (Fin m) (Fin k) ℂ) :
     A.1 * ((A⁻¹).1 * X * B.1) * (B⁻¹).1 = X := by
   simp [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gl_sandwich' {m k : ℕ} (A : GL (Fin m) ℂ) (B : GL (Fin k) ℂ) (X : Matrix (Fin m) (Fin k) ℂ) :
     (A⁻¹).1 * (A.1 * X * (B⁻¹).1) * B.1 = X := by
   simp [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨eT, heT⟩` from `exists_thHomeo σ hCM ψ θ l hP`. Establish `hθinv : ∀ w i, θ i (eT.symm w) = w i` using `fun w i => by rw [← heT, ContinuousAddEquiv.apply_symm_apply]`. Set `cinv : (ι → Fin M → Fin n → ℂ) → (Fin n → Fin M → Ainf F ⊗[F] E)` to `fun x j a => eT.symm (fun i => ((fr i).1 * Matrix.of (x i) * ((g i)⁻¹).1) a j)`. Establish `hli : ∀ X, cinv (crdAll θ fr g X) = X`. Introduce `X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `j a`. Simplify using `only [cinv, crdAll, crd]`. Rewrite using `[← ContinuousAddEquiv.symm_apply_apply eT (X j a)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show ∀ Y : Matrix (Fin M) (Fin n) ℂ, Matrix.of Y = Y from fun _ => rfl, gl_sandwich, heT]`. Both sides reduce to the same expression. Establish `hri : ∀ x, crdAll θ fr g (cinv x) = x`. Introduce `x`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [cinv, crdAll, crd]`. Establish `: (Matrix.of fun a j => θ i (eT.symm (fun i' => ((fr i').1 * Matrix.of (x i') * ((g i')⁻¹).1) a j))) = (fr i).1 * Matrix.of (x i) * ((g i)⁻¹).1`. Use extensionality with `a j`. Simplify using `[hθinv]`. Rewrite using `[this, gl_sandwich']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hadd : ∀ X Y, crdAll θ fr g (X + Y) = crdAll θ fr g X + crdAll θ fr g Y`. Introduce `X Y`. Use function extensionality and compare the values at `i`. Simplify using `only [crdAll, crd, Pi.add_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (Matrix.of fun a j => θ i (X j a + Y j a)) = Matrix.of (fun a j => θ i (X j a)) + Matrix.of (fun a j => θ i (Y j a))`. Use extensionality with `a j`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mul_add, Matrix.add_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc1 : Continuous (crdAll θ fr g)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [crdAll, crd]`. Use `(continuous_const.matrix_mul ?_).matrix_mul continuous_const` and prove the remaining obligations. Conclude with `continuous_pi fun a => continuous_pi fun j => (hP.cont i).comp ((continuous_apply a).comp (continuous_apply j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc2 : Continuous cinv`. Use `continuous_pi fun j => continuous_pi fun a => eT.symm.continuous.comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Establish `hx : Continuous fun x : ι → Fin M → Fin n → ℂ => Matrix.of (x i)` using `continuous_apply i`. Conclude with `(continuous_apply j).comp ((continuous_apply a).comp (((continuous_const.matrix_mul hx).matrix_mul continuous_const)))`. Set `A : (Fin n → Fin M → Ainf F ⊗[F] E) ≃+ (ι → Fin M → Fin n → ℂ)` to `{ toFun := crdAll θ fr g invFun := cinv left_inv := hli right_inv := hri map_add' := hadd }`.
-
-Conclude with `⟨{ toAddEquiv := A, continuous_toFun := hc1, continuous_invFun := hc2 }, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_crdHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (fr : ι → GL (Fin M) ℂ)
@@ -225,7 +221,7 @@ theorem exists_crdHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddCha
   exact ⟨{ toAddEquiv := A, continuous_toFun := hc1, continuous_invFun := hc2 }, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[← hc]`. Conclude with `congrArg θ (b.2 a c)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHerm_map (σ : E →ₐ[F] E) (θ : Ainf F ⊗[F] E →+* ℂ)
     (hc : ∀ z, θ (sigR (Ainf F) σ z) = star (θ z)) {n : ℕ} (b : HermR (Ainf F) σ n) :
@@ -236,7 +232,7 @@ theorem isHerm_map (σ : E →ₐ[F] E) (θ : Ainf F ⊗[F] E →+* ℂ)
   exact congrArg θ (b.2 a c)
 
 /- English proof (translation)
-Establish `h1 : ((A⁻¹).1)ᴴ * (A.1)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul]`. Simplify using the standard rewrite rules. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc _ _ (A.1)ᴴ, h1, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -249,7 +245,7 @@ theorem gl_sandwich2 {n : ℕ} (A : GL (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) 
   simp
 
 /- English proof (translation)
-Establish `h1 : (A.1)ᴴ * ((A⁻¹).1)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul]`. Simplify using the standard rewrite rules. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc _ _ ((A⁻¹).1)ᴴ, h1, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -262,29 +258,27 @@ theorem gl_sandwich3 {n : ℕ} (A : GL (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) 
   simp
 
 /- English proof (translation)
-Take `⟨eT, heT⟩` from `exists_thHomeo σ hCM ψ θ l hP`. Establish `hθinv : ∀ w i, θ i (eT.symm w) = w i` using `fun w i => by rw [← heT, ContinuousAddEquiv.apply_symm_apply]`. Set `fwd : HermR (Ainf F) σ n → ι → WR.E n` to `fun S i => hinv ((A i).1 * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * ((A i).1)ᴴ)`. Set `w : (ι → WR.E n) → Fin n → Fin n → ι → ℂ` to `fun y a b i => (((A i)⁻¹).1 * herm (y i) * (((A i)⁻¹).1)ᴴ) a b`. Establish `hwH : ∀ y a b i, star (w y b a i) = w y a b i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y a b i`. Establish `h` using `Matrix.isHermitian_mul_mul_conjTranspose (((A i)⁻¹).1) (WR.I.herm_isHermitian (y i))`. Use `congrFun (congrFun h a) b` as an intermediate fact. Simplify using `only [Matrix.conjTranspose_apply] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : ∀ y, (Matrix.of fun a b => eT.symm (w y a b)) ∈ HermR (Ainf F) σ n`. Introduce `y a b`. Apply `hP.bij.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.of_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP.conj, hθinv, hθinv, hwH]`. Set `bwd : (ι → WR.E n) → HermR (Ainf F) σ n` to `fun y => ⟨Matrix.of fun a b => eT.symm (w y a b), hmem y⟩`. Establish `hmapb : ∀ y i, ((bwd y : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))).map (θ i) = ((A i)⁻¹).1 * herm (y i) * (((A i)⁻¹).1)ᴴ`. Introduce `y i`. Use extensionality with `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[bwd, hθinv, w]`. Establish `hli : ∀ S, bwd (fwd S) = S`. Introduce `S`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show eT.symm (w (fwd S) a b) = (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) a b`. Rewrite using `[← ContinuousAddEquiv.symm_apply_apply eT ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) a b)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [w, fwd]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[herm_hinv _ (Matrix.isHermitian_mul_mul_conjTranspose _ (isHerm_map σ (θ i) (hP.conj i) S)), gl_sandwich3, heT]`. Both sides reduce to the same expression. Establish `hri : ∀ y, fwd (bwd y) = y`. Introduce `y`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fwd]`. Rewrite using `[hmapb, gl_sandwich2, hinv_herm]`. Establish `hadd : ∀ S T, fwd (S + T) = fwd S + fwd T`. Introduce `S T`. Use function extensionality and compare the values at `i a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) + (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))).map (θ i) = (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) + (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)` using `by ext; simp`. Simplify using `only [fwd, hinv, AddSubgroup.coe_add, hm, Matrix.mul_add, Matrix.add_mul, Pi.add_apply, Matrix.add_apply, Complex.add_re, Complex.add_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc1 : Continuous fwd`. Use `continuous_pi fun i => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [fwd, hinv]`. Establish `hm : Continuous fun S : HermR (Ainf F) σ n => (A i).1 * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * ((A i).1)ᴴ` using `(continuous_const.matrix_mul ((continuous_subtype_val).matrix_map (hP.cont i))).matrix_mul continuous_const`. Establish `he : Continuous fun S : HermR (Ainf F) σ n => ((A i).1 * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * ((A i).1)ᴴ) a b` using `(continuous_apply b).comp ((continuous_apply a).comp hm)`. Conclude with `(Complex.continuous_re.comp he).add (Complex.continuous_im.comp he)`. Establish `hc2 : Continuous bwd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => eT.symm.continuous.comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Establish `hh : Continuous fun y : ι → WR.E n => herm (y i)` using `WR.I.continuous_herm.comp (continuous_apply i)`. Conclude with `(continuous_apply b).comp ((continuous_apply a).comp ((continuous_const.matrix_mul hh).matrix_mul continuous_const))`. Set `Ae : HermR (Ainf F) σ n ≃+ (ι → WR.E n)` to `{ toFun := fwd invFun := bwd left_inv := hli right_inv := hri map_add' := hadd }`.
-
-Conclude with `⟨{ toAddEquiv := Ae, continuous_toFun := hc1, continuous_invFun := hc2 }, fun S i => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hermHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (A : ι → GL (Fin n) ℂ) :
@@ -361,7 +355,7 @@ theorem exists_hermHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddCh
   exact ⟨{ toAddEquiv := Ae, continuous_toFun := hc1, continuous_invFun := hc2 }, fun S i => rfl⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_hermHomeo σ hCM ψ θ l hP (fun i => (g i)⁻¹)`. Conclude with `⟨e, funext fun S => funext fun i => he S i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ybHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ) :
@@ -370,7 +364,7 @@ theorem exists_ybHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar
   exact ⟨e, funext fun S => funext fun i => he S i⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_hermHomeo σ hCM ψ θ l hP (fun i => star (g i))`. Use `⟨e, funext fun S => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[he S i]`. Simplify using `[ygAll, Matrix.star_eq_conjTranspose]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_ygHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ) :
@@ -381,9 +375,9 @@ theorem exists_ygHomeo (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar
   simp [ygAll, Matrix.star_eq_conjTranspose]
 
 /- English proof (translation)
-Establish `h1 : (volume : Measure (WR.E n)).IsAddHaarMeasure`. Establish `: (volume : Measure (Fin n → Fin n → ℝ)) = Measure.pi (fun _ => volume)` using `rfl`. Rewrite using `[this]`. Conclude with `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (ι → WR.E n)) = Measure.pi (fun _ => volume)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem haar_volE (ι : Type) [Fintype ι] (n : ℕ) : (volume : Measure (ι → WR.E n)).IsAddHaarMeasure := by
   have h1 : (volume : Measure (WR.E n)).IsAddHaarMeasure := by
@@ -393,11 +387,9 @@ theorem haar_volE (ι : Type) [Fintype ι] (n : ℕ) : (volume : Measure (ι →
   rw [this]; exact Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-Establish `h0 : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure`. Establish `: (volume : Measure (Fin n → ℂ)) = Measure.pi (fun _ => volume)` using `rfl`. Rewrite using `[this]`. Conclude with `Measure.pi.isAddHaarMeasure _`. Establish `h1 : (volume : Measure (Fin M → Fin n → ℂ)).IsAddHaarMeasure`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (volume : Measure (Fin M → Fin n → ℂ)) = Measure.pi (fun _ => volume)` using `rfl`. Rewrite using `[this]`. Conclude with `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (ι → Fin M → Fin n → ℂ)) = Measure.pi (fun _ => volume)` using `rfl`. Rewrite using `[this]`.
-
-Conclude with `Measure.pi.isAddHaarMeasure _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_volW (ι : Type) [Fintype ι] (M n : ℕ) :
     (volume : Measure (ι → Fin M → Fin n → ℂ)).IsAddHaarMeasure := by
@@ -411,9 +403,9 @@ theorem haar_volW (ι : Type) [Fintype ι] (M n : ℕ) :
   rw [this]; exact Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd G := by`. Use `⟨?_⟩` and prove the remaining obligations. Establish `h : (fun p : G × G => p.1 + p.2) = fun p => e.symm (e p.1 + e p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[← map_add, ContinuousAddEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `e.symm.continuous.comp ((e.continuous.comp continuous_fst).add (e.continuous.comp continuous_snd))`. Use `haveI : (μ.map e).IsAddHaarMeasure := Measure.isAddHaarMeasure_map μ (e : G →+ W) e.continuous e.surjective e.toHomeomorph.isClosedEmbedding.tendsto_cocompact`. Use `⟨Measure.addHaarScalarFactor (μ.map e) vol, Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _, ?_⟩` and prove the remaining obligations. Conclude with `Measure.isAddLeftInvariant_eq_smul (μ.map e) vol`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_map_eq_smul {G W : Type} [AddCommGroup G] [TopologicalSpace G]
     [MeasurableSpace G] [BorelSpace G] [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]

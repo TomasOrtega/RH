@@ -16,7 +16,7 @@ instance smoothOfRelativeDimension_strK (Xo : Moduli Dw l) (c : Coeff l) :
   exact MorphismProperty.pullback_snd (P := @SmoothOfRelativeDimension Dw.dim) _ _ Xo.smooth
 
 /- English proof (translation)
-Introduce `Z`. Establish `h` using `@TranscendenceDegreeLemmas.trdeg_residueField_genericPoint c.F _ _ _ _ (strK (Xo := Xo) (c := c)) Dw.dim _ _ Z.2 (algKap Z)`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kapTrdeg_pf (Xo : Moduli Dw l) (c : Coeff l) : KapTrdeg Xo c Dw.dim := by
   intro Z
@@ -25,7 +25,7 @@ theorem kapTrdeg_pf (Xo : Moduli Dw l) (c : Coeff l) : KapTrdeg Xo c Dw.dim := b
   exact h
 
 /- English proof (translation)
-Introduce `Z`. Establish `h` using `@TranscendenceDegreeLemmas.fg_residueField_genericPoint c.F _ _ _ _ (strK (Xo := Xo) (c := c)) Dw.dim _ _ Z.2 (algKap Z)`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kapFG_pf (Xo : Moduli Dw l) (c : Coeff l) : KapFG Xo c := by
   intro Z

@@ -19,15 +19,15 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.RecS
 
 /- English proof (translation)
-Introduce `eps ez A heps hez`. Take `⟨x1, h1⟩` from `GlobalTheory.T.roomy_of_large_scale eps 100 A heps le_rfl`. Take `⟨x2, h2⟩` from `GlobalTheory.T.eleven_le_inertOddPrimeImagQuadratic_large_scale ez hez`. Use `⟨max x1 x2, ?_⟩` and prove the remaining obligations. Introduce `D L Pm HW he hZ hA hx hadm hfont hja i hin r ρ π hpt w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : Roomy L 100` using `h1 D L Pm he hA (le_trans (le_max_left _ _) hx)`. Establish `h11 : 11 ≤ D.nd.l i` using `h2 D L _ hZ (le_trans (le_max_right _ _) hx) Fact.out hin`. Establish `hn2` using `hin.ne_two`. Establish `hj` using `hin.2.2.2`. Use `⟨GlobalTheory.T.placeCompletion_le_maxUnramified_away_2qd D.nbr i w hw hin.1 hin.2.1 hin.2.2.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Cx hG`. Take `⟨ε, g, hg, hB⟩` from `GlobalTheory.T.wordConditions_common_natural_representation L 100 HW i r ρ π w hw Cx hG hR hadm hfont hja hpt hin.1 hin.2.1 hin.2.2.1`. Establish `hs` using `(GlobalTheory.T.frobG_isArithFrobAt_and_sign_eq_jacobiSym D (D.nd.l i) hin.1 hin.2.1 hin.2.2.1).2`. Establish `hm : (DV.frobG D (D.nd.l i)).1.2 = -1`. Use `(Int.units_eq_one_or _).resolve_left fun h => hj ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs, h]`. Both sides reduce to the same expression. Establish `hm' : ((DV.frobG D (D.nd.l i))⁻¹).1.2 = -1`. Express the relevant statement in the definitionally equal form `((DV.frobG D (D.nd.l i)).1.2)⁻¹ = -1`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨_, hB, GlobalTheory.T.thickLetterWord_hypotheses_of_common_conditions L HW i r ρ π w hw Cx hG _ hn2 hB, h11, GlobalTheory.T.twistedDualSizeWord_boxesAndSizes L 100 _ ε g _ hR hg, ?_⟩` and prove the remaining obligations. Break down `GlobalTheory.T.twistedDualSizeWord_inert_dichotomy L 100 _ ε g _ _ hR hg h11 hm' with h | ⟨d, hd⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨d, hd, GlobalTheory.T.alternatingWord_hypotheses_every_lattice_surjection L HW i r ρ π w hw Cx hG _ d h11 hB hd⟩`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem jointCD_of_large : ∀ eps ez A : ℝ, 0 < eps → 0 < ez → ∃ x0 : ℝ, ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L)
     (HW : HWOf D.loc), L.sc.eps = eps → L.sc.ez = ez → Pm.CLw ≤ A → x0 ≤ L.sc.x → LocalSituation.adm7 D →

@@ -34,7 +34,7 @@ theorem listOp_cons (X : 𝔤) (L : List 𝔤) (v : E) :
     h.listOp π (X :: L) v = h.derivOp π X (h.listOp π L v) := rfl
 
 /- English proof (translation)
-Proceed by induction on `L₁ with`. Consider the case `nil => rfl`. Consider the case `cons X L ih => rw [List.cons_append, listOp_cons, listOp_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem listOp_append (L₁ L₂ : List 𝔤) (v : E) :
     h.listOp π (L₁ ++ L₂) v = h.listOp π L₁ (h.listOp π L₂ v) := by
@@ -43,7 +43,7 @@ theorem listOp_append (L₁ L₂ : List 𝔤) (v : E) :
   | cons X L ih => rw [List.cons_append, listOp_cons, listOp_cons, ih]
 
 /- English proof (translation)
-The claim follows from `| [] => hv | X :: L => h.isSmoothVector_derivOp π (isSmoothVector_listOp hv L) X`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothVector_listOp {v : E} (hv : h.IsSmoothVector π v) :
     ∀ L : List 𝔤, h.IsSmoothVector π (h.listOp π L v)
@@ -51,9 +51,9 @@ theorem isSmoothVector_listOp {v : E} (hv : h.IsSmoothVector π v) :
   | X :: L => h.isSmoothVector_derivOp π (isSmoothVector_listOp hv L) X
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons X L ih`. Rewrite using `[listOp_cons, ih]`. Use `show _ = h.wordOp π (k := L.length + 1) (fun i : Fin (L.length + 1) => (X :: L)[i]) v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wordOp_succ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem listOp_eq_wordOp (L : List 𝔤) (v : E) :
     h.listOp π L v = h.wordOp π (fun i : Fin L.length => L[i]) v := by

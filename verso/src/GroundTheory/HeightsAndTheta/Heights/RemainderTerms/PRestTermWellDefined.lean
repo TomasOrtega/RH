@@ -11,9 +11,9 @@ namespace RestTerms
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f N F Q Q' hQ hQ' k hk1 hkN τ G hG`. Take `⟨c, -, -, hA⟩` from `h1 f N`. Take `⟨P, hP, -, S, hS, hI⟩` from `hA F Q hQ k hk1 hkN τ G hG`. Take `⟨P', hP', -, S', hS', hI'⟩` from `hA F Q' hQ' k hk1 hkN τ G hG`. Establish `hPP : P = P'` using `IsFractionRing.injective (RootRing f N) (FractionRing (RootRing f N)) (hP.trans hP'.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSS : S = S'` using `Flag.powerSumHom_injective N (by rw [hS, hS', hPP])`. Simplify using `only [restTerm, hI, hI', hSS]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem RestTermWellDefined.proof (h1 : LemmaA.Statement) : RestTermWellDefined.Statement := by
   intro f N F Q Q' hQ hQ' k hk1 hkN τ G hG

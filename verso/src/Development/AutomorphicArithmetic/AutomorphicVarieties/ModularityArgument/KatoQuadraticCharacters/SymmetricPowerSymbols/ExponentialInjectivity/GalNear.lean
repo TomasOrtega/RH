@@ -11,12 +11,12 @@ private def Nr (X : Tower Ω ε) (f : X.K) : Prop :=
   ∃ T : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ z ∈ T, s z = z) → X.gal s f = f
 
 /- English proof (translation)
-The claim follows from `X.exp.toRingHom.injective`.
+A detailed English derivation is pending.
 -/
 private theorem exp_inj (X : Tower Ω ε) : Function.Injective X.exp := X.exp.toRingHom.injective
 
 /- English proof (translation)
-Use `⟨∅, fun s _ => exp_inj X ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Take `⟨n, hn⟩` from `X.j_exp.2.2 r`. Rewrite using `[X.gal_exp, hn, map_intCast]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nr_j (X : Tower Ω ε) : Nr X X.jK := by
   refine ⟨∅, fun s _ => exp_inj X ?_⟩
@@ -25,7 +25,7 @@ private theorem nr_j (X : Tower Ω ε) : Nr X X.jK := by
   rw [X.gal_exp, hn, map_intCast]
 
 /- English proof (translation)
-Use `⟨{c}, fun s hs => exp_inj X ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Rewrite using `[X.gal_exp, AlgHom.commutes, HahnSeries.algebraMap_apply']`. Apply the tactic sequence `by_cases h : r = 0 <;> simp [h, hs c (Finset.mem_singleton_self c)]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem nr_c (X : Tower Ω ε) (c : Ω) : Nr X (algebraMap Ω X.K c) := by
   refine ⟨{c}, fun s hs => exp_inj X ?_⟩
@@ -34,7 +34,7 @@ private theorem nr_c (X : Tower Ω ε) (c : Ω) : Nr X (algebraMap Ω X.K c) := 
   by_cases h : r = 0 <;> simp [h, hs c (Finset.mem_singleton_self c)]
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hf`. Take `⟨B, hB⟩` from `hg`. Conclude with `⟨A ∪ B, fun s hs => ⟨hA s fun z hz => hs z (Finset.mem_union_left _ hz), hB s fun z hz => hs z (Finset.mem_union_right _ hz)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem nr_two (X : Tower Ω ε) {f g : X.K} (hf : Nr X f) (hg : Nr X g) :
     ∃ T : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ z ∈ T, s z = z) → X.gal s f = f ∧ X.gal s g = g := by
@@ -45,11 +45,11 @@ private theorem nr_two (X : Tower Ω ε) {f g : X.K} (hf : Nr X f) (hg : Nr X g)
     hB s fun z hz => hs z (Finset.mem_union_right _ hz)⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `hf using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx]`. Conclude with `nr_j X`. Consider the case `algebraMap c => exact nr_c X c`. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `nr_two X hx hy`. Conclude with `⟨T, fun s hs => by rw [map_add, (hT s hs).1, (hT s hs).2]⟩`. Consider the case `inv x _ hx`. Take `⟨T, hT⟩` from `hx`. Conclude with `⟨T, fun s hs => by rw [map_inv₀, hT s hs]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨T, hT⟩` from `nr_two X hx hy`. Conclude with `⟨T, fun s hs => by rw [map_mul, (hT s hs).1, (hT s hs).2]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem nr_adj (X : Tower Ω ε) (f : X.K) (hf : f ∈ IntermediateField.adjoin Ω {X.jK}) : Nr X f := by
   induction hf using IntermediateField.adjoin_induction with
@@ -68,21 +68,17 @@ private theorem nr_adj (X : Tower Ω ε) (f : X.K) (hf : f ∈ IntermediateField
 end
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X f`. Take `⟨p, hp0, hpf⟩` from `X.alg_j f`. Use `set q : Polynomial X.K := p.map (algebraMap _ X.K) with hq`. Establish `hq0 : q ≠ 0` using `Polynomial.map_ne_zero hp0`. Establish `hqf : q.eval f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, Polynomial.eval_map, ← Polynomial.aeval_def]`. Conclude with `hpf`. Establish `hc : ∀ i, Nr X (q.coeff i)` using `fun i => by`. Rewrite using `[hq, Polynomial.coeff_map, IntermediateField.algebraMap_apply]`. Conclude with `nr_adj X _ (p.coeff i).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hd : ∀ b, b ≠ f → ∃ r, (X.exp b).coeff r ≠ (X.exp f).coeff r`. Introduce `b hb`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hb (exp_inj X (HahnSeries.ext (funext h)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `choose TC hTC using hc`. Use `choose! rr hrr using hd`. Use `⟨(q.support.biUnion TC) ∪ ((q.roots.toFinset.erase f).image (fun b => (X.exp f).coeff (rr b))), ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hfix : ∀ i, X.gal s (q.coeff i) = q.coeff i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `hi : i ∈ q.support`. Conclude with `hTC i s fun z hz => hs z (Finset.mem_union_left _ (Finset.mem_biUnion.mpr ⟨i, hi, hz⟩))`. Rewrite using `[Polynomial.notMem_support_iff.mp hi, map_zero]`. Establish `hmap : q.map (X.gal s).toRingHom = q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use extensionality with `i`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `hfix i`. Establish `hroot : q.eval (X.gal s f) = 0`. Establish `h1 : (q.map (X.gal s).toRingHom).eval ((X.gal s).toRingHom f) = (X.gal s).toRingHom (q.eval f)`.
-
-Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_at_apply]`. Rewrite `h1` using `[hmap, hqf, map_zero]`. Conclude with `h1`. Assume the negation of the conclusion as `hne`. Establish `hb : X.gal s f ∈ q.roots.toFinset.erase f` using `Finset.mem_erase.mpr ⟨hne, Multiset.mem_toFinset.mpr ((Polynomial.mem_roots hq0).mpr hroot)⟩`.
-
-Establish `hsz` using `hs ((X.exp f).coeff (rr (X.gal s f))) (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨_, hb, rfl⟩))`. Apply `hrr _ hne` to reduce the goal to its premises. Rewrite using `[X.gal_exp, hsz]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.PC.galNear :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (f : X.K), ∃ T : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ z ∈ T, s z = z) → X.gal s f = f := by

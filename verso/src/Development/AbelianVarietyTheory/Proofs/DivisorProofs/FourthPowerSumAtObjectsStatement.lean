@@ -12,7 +12,7 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 /- English proof (citation)
-Apply `GlobalTheory.Whole4.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFourthPowerSumAtObjects.lean&line=128#L128)
 -/
